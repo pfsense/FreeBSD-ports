@@ -1,13 +1,12 @@
-# Created by: Lung-Pin Chang <changlp@cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	dropbox-api-command
 PORTVERSION=	2.13
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net perl5
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dropbox API wrapper command
+WWW=		https://metacpan.org/pod/App::dropboxapi
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

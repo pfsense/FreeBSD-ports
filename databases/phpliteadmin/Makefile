@@ -1,18 +1,16 @@
-# Created by: olevole@olevole.ru
-# $FreeBSD$
-
 PORTNAME=	phpLiteAdmin
 DISTVERSION=	1-9-8-2
 CATEGORIES=	databases www
 MASTER_SITES=	https://bitbucket.org/phpliteadmin/public/downloads/
 DISTNAME=	${PORTNAME}_v${DISTVERSION}
 
-MAINTAINER=	portmaster@BSDforge.com
+MAINTAINER=	ports@freebsd.org
 COMMENT=	Web-based database management tool for Sqlite
+WWW=		https://www.phpliteadmin.org/
 
 LICENSE=	GPLv3
 
-USES=		php:web zip
+USES=		cpe php:web zip
 
 NO_ARCH=	yes
 NO_BUILD=	yes

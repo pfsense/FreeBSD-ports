@@ -1,14 +1,12 @@
-# Created by: Henk van Oers <hvo.pm@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	Dancer2-Plugin-Auth-Extensible
-PORTVERSION=	0.709
+PORTVERSION=	0.710
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extensible authentication framework for Dancer2 apps
+WWW=		https://metacpan.org/release/Dancer2-Plugin-Auth-Extensible
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -33,6 +31,7 @@ TEST_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \
 		p5-Path-Tiny>=0.016:devel/p5-Path-Tiny \
 		p5-Test-Deep>=0.114:devel/p5-Test-Deep \
 		p5-Test-Exception>=0:devel/p5-Test-Exception \
+		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 		p5-Test-MockDateTime>=0:devel/p5-Test-MockDateTime \
 		p5-Test-Warnings>=0:devel/p5-Test-Warnings
 

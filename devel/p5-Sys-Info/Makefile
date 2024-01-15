@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sys-Info
 PORTVERSION=	0.7811
 CATEGORIES=	devel sysutils perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fetch information from the host system
+WWW=		https://metacpan.org/release/Sys-Info
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

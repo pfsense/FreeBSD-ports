@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-HomeDir-PathClass
 PORTVERSION=	1.112060
 CATEGORIES=	devel perl5
@@ -9,17 +6,20 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	File::HomeDir returning Path::Class objects
+WWW=		https://metacpan.org/release/File-HomeDir-PathClass
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-HomeDir>=0.93:devel/p5-File-HomeDir \
 		p5-Path-Class>=0:devel/p5-Path-Class \
 		p5-Sub-Exporter>=0:devel/p5-Sub-Exporter
 
-NO_ARCH=	yes
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

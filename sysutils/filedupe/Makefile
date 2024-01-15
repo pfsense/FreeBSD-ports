@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	filedupe
 PORTVERSION=	1.1
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://sammy.net/~sammy/hacks/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for quickly finding duplicate files
+WWW=		https://sammy.net/~sammy/hacks/
 
 LIB_DEPENDS=	libgdbm.so:databases/gdbm
 

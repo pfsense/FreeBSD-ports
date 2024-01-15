@@ -1,6 +1,3 @@
-# Created by: brix@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Module-Runtime
 PORTVERSION=	0.016
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Runtime module handling
+WWW=		https://metacpan.org/release/Module-Runtime
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

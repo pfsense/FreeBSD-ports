@@ -1,6 +1,3 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	ctrace
 PORTVERSION=	0.9
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.pratyeka.org/ctrace/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiprotocol traceroute tool
+WWW=		http://www.pratyeka.org/ctrace/
 
 BUILD_DEPENDS=	p5-Net-RawIP>=0:net/p5-Net-RawIP
 RUN_DEPENDS=	p5-Net-RawIP>=0:net/p5-Net-RawIP \

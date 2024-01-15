@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	javatar
 PORTVERSION=	2.5
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.gjt.org/download/time/java/tar/
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java tar archive I/O package
+WWW=		http://www.trustice.com/java/tar/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE

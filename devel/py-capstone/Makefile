@@ -1,22 +1,21 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	capstone
-PORTVERSION=	4.0.1
+DISTVERSION=	5.0.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DIST_SUBDIR=	python	# Conflicts with devel/capstone distfile
+DIST_SUBDIR=	python # Conflicts with devel/capstone distfile
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python bindings for the Capstone Disassembly Engine
+WWW=		https://www.capstone-engine.org
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-LIB_DEPENDS=	libcapstone.so:devel/capstone4
+LIB_DEPENDS=	libcapstone.so:devel/capstone
 
-USES=		python:3.6+
+USES=		cpe python
+CPE_VENDOR=	${PORTNAME}-engine
 USE_PYTHON=	autoplist distutils
 MAKE_ENV+=	LIBCAPSTONE_PATH= # Prevent bundled libcapstone from being built
 

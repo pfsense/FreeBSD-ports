@@ -1,6 +1,3 @@
-# Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
-
 PORTNAME=	cream
 PORTVERSION=	0.43
 CATEGORIES=	editors
@@ -8,10 +5,11 @@ MASTER_SITES=	SF/${PORTNAME}/Cream/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gvim extension with many features
+WWW=		https://cream.sourceforge.net/
 
 LICENSE=	GPLv3+
 
-RUN_DEPENDS=	${LOCALBASE}/bin/gvim:editors/vim
+RUN_DEPENDS=	${LOCALBASE}/bin/gvim:editors/vim@gtk3
 
 NO_ARCH=	yes
 NO_BUILD=	yes

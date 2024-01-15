@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	LWP-Authen-Negotiate
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to enable LWP to authenticate using negotiate
+WWW=		https://metacpan.org/release/LWP-Authen-Negotiate
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww

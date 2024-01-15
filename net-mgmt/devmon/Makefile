@@ -1,14 +1,12 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	devmon
 DISTVERSION=	0.3.1-beta1
 PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Device monitoring addition to Xymon/Hobbit/BigBrother
+WWW=		https://devmon.sourceforge.net/
 
 LICENSE=	GPLv2
 

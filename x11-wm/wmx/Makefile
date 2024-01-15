@@ -1,6 +1,3 @@
-# Created by: Stefan Zehl <sec@42.org>
-# $FreeBSD$
-
 PORTNAME=	wmx
 PORTVERSION=	8
 CATEGORIES=	x11-wm
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.all-day-breakfast.com/wmx/
 
 MAINTAINER=	kwhite@site.uottawa.ca
 COMMENT=	Simple window manager based on wm2
+WWW=		https://www.all-day-breakfast.com/wmx/
 
 USES=		pkgconfig xorg
 GNU_CONFIGURE=	yes

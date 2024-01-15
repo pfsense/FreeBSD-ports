@@ -1,10 +1,7 @@
-# Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bogofilter
-PORTREVISION=	0
 
 COMMENT=	Spam filtering plugin for Claws Mail
+WWW=		https://www.claws-mail.org/plugin.php?plugin=bogofilter
 
 CLAWS_PLUGINS_BUILD=	${PORTNAME}
 

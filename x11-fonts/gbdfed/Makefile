@@ -1,14 +1,12 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gbdfed
 PORTVERSION=	1.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://sofia.nmsu.edu/~mleisher/Software/gbdfed/
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	GTK2 bitmap font editor
+WWW=		http://sofia.nmsu.edu/~mleisher/Software/gbdfed/
 
 LICENSE=	MIT
 

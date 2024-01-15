@@ -1,26 +1,23 @@
-# Created by: Alexander Vereeken <Alexander88207@protonmail.com>
-# $FreeBSD$
-
 PORTNAME=	matcha-gtk-themes
-DISTVERSION=	2020-12-25
+DISTVERSION=	2021-11-29
 CATEGORIES=	x11-themes
 
 MAINTAINER=	Alexander88207@protonmail.com
-COMMENT=	Matcha is a flat Design theme for GTK 3, GTK 2 and Gnome-Shell
+COMMENT=	Flat design theme for GTK 3, GTK 2, and Gnome-Shell
+WWW=		https://github.com/vinceliuice/Matcha-gtk-theme
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash>0:shells/bash
-RUN_DEPENDS=	gtk-murrine-engine>0:x11-themes/gtk-murrine-engine \
-		gtk-engines2>0:x11-themes/gtk-engines2
+RUN_DEPENDS=	gtk-engines2>0:x11-themes/gtk-engines2 \
+		gtk-murrine-engine>0:x11-themes/gtk-murrine-engine
 
 USES=		shebangfix
-SHEBANG_FILES=	install.sh
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	vinceliuice
 GH_PROJECT=	Matcha-gtk-theme
+SHEBANG_FILES=	install.sh
 NO_ARCH=	yes
 NO_BUILD=	yes
 

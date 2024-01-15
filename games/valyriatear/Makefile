@@ -1,13 +1,11 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	valyriatear
 PORTVERSION=	1.1.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Open Source J-RPG based on the Hero of Allacrost engine
+WWW=		https://valyriatear.blogspot.com/
 
 # Valyria Tear underwent a licensing audit.
 # The main game is GPLv2 but artwork/music/fonts are a variety of licenses:
@@ -30,7 +28,6 @@ CMAKE_ARGS=	-DUSE_PCH_COMPILATION=OFF
 USE_SDL=	sdl2 image2 ttf2
 USE_GL=		gl glu glew
 USE_XORG=	x11 xext sm ice
-INSTALLS_ICONS=	yes
 LDFLAGS_i386=	-Wl,-znotext
 
 PORTDOCS=	*

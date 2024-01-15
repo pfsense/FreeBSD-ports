@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-XML-Feed
 PORTVERSION=	0.09
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Perl extension for Catalyst view for RSS, Atom, or other XML feeds
+WWW=		https://metacpan.org/release/Catalyst-View-XML-Feed
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,21 +1,12 @@
---- src/klayout.pri.orig	2019-02-23 17:34:47 UTC
+--- src/klayout.pri.orig	2022-12-22 22:17:08 UTC
 +++ src/klayout.pri
-@@ -68,7 +68,8 @@ QMAKE_CXXFLAGS_WARN_ON += \
-     -Wno-deprecated-declarations \
-     -Wno-reserved-user-defined-literal \
- 
--QT += network xml sql 
-+QT += network xml sql widgets 
-+INCLUDEPATH += .
- 
- equals(HAVE_QT5, "1") {
-   QT += designer printsupport
-@@ -84,7 +85,7 @@ equals(HAVE_QT5, "1") {
- win32 {
-   QMAKE_LFLAGS += -Wl,--exclude-all-symbols
- } else {
--  QMAKE_CXXFLAGS += -fvisibility=hidden
-+#  QMAKE_CXXFLAGS += -fvisibility=hidden
+@@ -113,7 +113,9 @@ equals(HAVE_RUBY, "1") {
  }
  
- VERSION_STRING = $$KLAYOUT_VERSION
+ !isEmpty(RPATH) {
++  !equals($$basename(_PRO_FILE_), "unit_tests.pro") {
+   QMAKE_RPATHDIR += $$RPATH
++  }
+ }
+ 
+ !isEmpty(BITS_PATH) {

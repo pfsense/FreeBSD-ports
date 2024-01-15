@@ -1,55 +1,36 @@
-# Created by: jseger@FreeBSD.org
-# $FreeBSD$
-#    $MCom: ports/lang/guile/Makefile,v 1.1 2006/09/12 14:57:06 ahze Exp $
-
-PORTNAME=	guile
-PORTVERSION=	1.8.8
-PORTREVISION=	4
+PORTNAME=	guile-meta
+PORTVERSION=	4
 CATEGORIES=	lang scheme
-MASTER_SITES=	GNU
+MASTER_SITES=	# empty
+DISTFILES=	# empty
+EXTRACT_ONLY=	# empty
 
-MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	GNU Ubiquitous Intelligent Language for Extension
+MAINTAINER=	andrew@tao11.riddles.org.uk
+COMMENT=	Meta-port for the Guile interpreter
+WWW=		http://www.gnu.org/software/guile/
 
-LICENSE=	LGPL21
-LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
+LICENSE=	NA
+LICENSE_COMB=	single
+LICENSE_NAME=	Non applicable
+LICENSE_TEXT=	No licenses are applicable to metaports
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl \
-		libgmp.so:math/gmp
+# no flavors and no version specified, so that we get the default
+# version as specified in DEFAULT_VERSIONS.
+USES=		guile:run
 
-CONFLICTS_INSTALL=	guile2-[0-9]*
+NO_ARCH=	yes
+NO_BUILD=	yes
 
-USES=		autoreconf gmake libtool makeinfo ncurses pathfix
-USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-CFLAGS+=	-fwrapv
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
-INSTALL_TARGET=	install-strip
-PORTSCOUT=	limit:^1\.
+# We don't provide a pkgconf or similar - this is purely a user
+# convenience, and building should always be done against a specific
+# version.
+PLIST_FILES=	bin/guile bin/guild
 
-PLIST_SUB=	GUILE_VER=${PORTVERSION:R}
-
-REINPLACE_FILES=	libguile/smob.c libguile/filesys.c libguile/gc.c \
-			libguile/mallocs.c libguile/eval.c libguile/gc-malloc.c \
-			libguile/ports.c libguile/gc-mark.c libguile/gc_os_dep.c
-
-INFO=		goops guile-tut guile r5rs
-
-OPTIONS_DEFINE=	NLS
-OPTIONS_SUB=	yes
-
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=		gettext
-NLS_USES_OFF=		gettext-tools
-
-post-extract:
-	@${FIND} ${WRKSRC}/doc -name "*.info*" -delete
-
-post-patch:
-	@cd ${WRKSRC} ; \
-	  ${REINPLACE_CMD} -e 's|<malloc\.h>|<stdlib.h>|g' ${REINPLACE_FILES}
-	@${REINPLACE_CMD} -e 's|$$(libdir)|$$(libdir)data|g' ${WRKSRC}/Makefile.am
-	@${TOUCH} ${WRKSRC}/Makefile.in
+do-install:
+	for prog in guile guild; do \
+		${LN} -sf $${prog}-${GUILE_VER} \
+			${STAGEDIR}${PREFIX}/bin/$${prog}; \
+	done
 
 .include <bsd.port.mk>

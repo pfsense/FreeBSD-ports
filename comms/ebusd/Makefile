@@ -1,17 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	ebusd
-PORTVERSION=	3.4
-DISTVERSIONPREFIX=	v
+PORTVERSION=	23.3
 CATEGORIES=	comms
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Daemon for communication with eBUS heating systems
+WWW=		https://github.com/john30/ebusd/wiki
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-LIB_DEPENDS=	libargp.so:devel/argp-standalone
 
 USES=		autoreconf compiler:c++11-lang localbase:ldflags
 
@@ -34,6 +30,7 @@ PLIST_SUB=	USER=${USERS} GROUP=${GROUPS} \
 
 OPTIONS_DEFINE=	MQTT
 OPTIONS_DEFAULT=MQTT
+OPTIONS_SUB=	yes
 MQTT_DESC=	MQTT protocol support
 
 MQTT_CONFIGURE_WITH=	mqtt

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	String-Print
 PORTVERSION=	0.94
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Alternative of printf
+WWW=		https://metacpan.org/release/String-Print
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

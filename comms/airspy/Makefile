@@ -1,14 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	airspy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.9-18
-DISTVERSIONSUFFIX=	-gbfb6670
-PORTREVISION=	1
+DISTVERSION=	1.0.10
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	AirSpy's usemode driver and associated tools
+WWW=		https://airspy.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/airspy-tools/LICENSE.md

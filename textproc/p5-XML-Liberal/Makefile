@@ -1,15 +1,12 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	XML-Liberal
-PORTVERSION=	0.30
-PORTREVISION=	1
+PORTVERSION=	0.32
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Super liberal XML parser that parses broken XML
+WWW=		https://metacpan.org/release/XML-Liberal
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \

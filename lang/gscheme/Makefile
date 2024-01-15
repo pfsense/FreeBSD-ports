@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gscheme
 PORTVERSION=	0.6
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	lang gnustep
 MASTER_SITES=	http://www.gnustep.it/marko/GScheme/ \
 		LOCAL/dinoex
@@ -12,6 +10,7 @@ DIST_SUBDIR=	repacked
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep-aware scheme interpreter
+WWW=		http://www.gnustep.it/marko/GScheme/index.html
 
 LICENSE=	GPLv2+
 

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-Path-Tiny
 PORTVERSION=	0.012
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of Path::Tiny types and coercions for Moose
+WWW=		https://metacpan.org/release/MooseX-Types-Path-Tiny
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENCE

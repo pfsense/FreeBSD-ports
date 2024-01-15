@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	MooseX-MethodAttributes
 PORTVERSION=	0.32
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Code attribute introspection
+WWW=		https://metacpan.org/release/MooseX-MethodAttributes
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

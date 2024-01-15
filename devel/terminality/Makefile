@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	terminality
 PORTVERSION=	2.1
 CATEGORIES=	devel

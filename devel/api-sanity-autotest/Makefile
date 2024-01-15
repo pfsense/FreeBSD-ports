@@ -1,20 +1,18 @@
-# Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	api-sanity-checker
 PORTVERSION=	1.98.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel perl5
 MASTER_SITES=	LOCAL/bf/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quickly generate sanity tests for the API of a C/C++ shared library
+WWW=		https://ispras.linux-foundation.org/index.php/API_Sanity_Autotest
 
 LICENSE=	LGPL20 GPLv2
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${LOCALBASE}/bin/abi-compliance-checker.pl:devel/abi-compliance-checker
+RUN_DEPENDS=	${LOCALBASE}/bin/abi-compliance-checker:devel/abi-compliance-checker
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	${PORTNAME}.pl
@@ -22,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	lvc
 
 .if defined(MAINTAINER_MODE) || defined(PACKAGE_BUILDING)
-BUILD_DEPENDS=	${LOCALBASE}/bin/abi-compliance-checker.pl:devel/abi-compliance-checker
+BUILD_DEPENDS=	${LOCALBASE}/bin/abi-compliance-checker:devel/abi-compliance-checker
 .else
 USE_PERL5=	run
 .endif
@@ -36,16 +34,12 @@ PORTDOCS=	Changes.html Descriptor.html Options.html Readme.html \
 
 OPTIONS_DEFINE=	DOCS
 
+PICFLAG?=	-fpic
+
 .include <bsd.port.options.mk>
 
 CPPFILT?=	/usr/bin/c++filt
 READELF?=	/usr/bin/readelf
-
-.if ${ARCH} == "sparc64"
-PICFLAG?=	-fPIC
-.else
-PICFLAG?=	-fpic
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -E \

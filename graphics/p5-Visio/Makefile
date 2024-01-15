@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Visio
 PORTVERSION=	1.010
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension manipulating XML based Visio files
+WWW=		https://metacpan.org/release/Visio
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Log-Log4perl>=0:devel/p5-Log-Log4perl \

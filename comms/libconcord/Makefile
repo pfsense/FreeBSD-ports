@@ -1,17 +1,16 @@
-# Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libconcord
 PORTVERSION=	1.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	comms
 MASTER_SITES=	SF/concordance/concordance/${PORTVERSION}
 DISTNAME=	concordance-${PORTVERSION}
 
-MAINTAINER=	shurd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Logitech Harmony configuration library
 
 LICENSE=	GPLv2
+DEPRECATED=     Logitech Harmony were officially discontinued in 2021, last major product in 2019.
+EXPIRATION_DATE=2024-12-31
 
 LIB_DEPENDS=	libhidapi.so:comms/hidapi \
 		libzip.so:archivers/libzip

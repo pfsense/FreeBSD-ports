@@ -1,27 +1,25 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	when
-PORTVERSION=	1.1.40
+PORTVERSION=	1.1.45
 CATEGORIES=	deskutils
+MASTER_SITES=	https://bitbucket.org/ben-crowell/when/get/${PORTVERSION}.tgz?dummy=/
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple personal calendar
+WWW=		https://www.lightandmatter.com/when/when.html \
+		https://bitbucket.org/ben-crowell/when
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	bcrowell
-GH_TAGNAME=	5de0120
-
 USES=		perl5 shebangfix
 USE_PERL5=	run
-NO_BUILD=	yes
-NO_ARCH=	yes
-SHEBANG_FILES=	when
 
-MAKE_ARGS+=	prefix=${PREFIX} \
-		MANDIR=${MANPREFIX}/man/man1
+MAKE_ARGS=	MANDIR=${PREFIX}/share/man/man1 prefix=${PREFIX}
+NO_ARCH=	yes
+NO_BUILD=	yes
+
+WRKSRC=		${WRKDIR}/ben-crowell-when-965b37762cc7/
+
+SHEBANG_FILES=	when
 
 .include <bsd.port.mk>

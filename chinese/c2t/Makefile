@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@FreeBSD.org)
-# $FreeBSD$
-
 PORTNAME=	c2t
 PORTVERSION=	1.0
 CATEGORIES=	chinese
@@ -13,6 +10,8 @@ COMMENT=	Translates GB/Big5 encoding to tone pinyin
 
 NO_WRKSUBDIR=	yes
 EXTRACT_ONLY=	c2t.tar.gz
+
+CFLAGS+=	-Dregister=
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/chinese/gb

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-Accessor-Chained
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make chained accessors
+WWW=		https://metacpan.org/release/Class-Accessor-Chained
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

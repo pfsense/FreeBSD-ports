@@ -1,14 +1,12 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	No-Worries
-PORTVERSION=	1.6
+PORTVERSION=	1.7
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Coding without worries in Perl
+WWW=		https://metacpan.org/release/No-Worries
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,6 +19,6 @@ RUN_DEPENDS=	p5-HTTP-Date>=0:www/p5-HTTP-Date \
 USES=		perl5
 USE_PERL5=	configure
 
-NO_ARCH=	y
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

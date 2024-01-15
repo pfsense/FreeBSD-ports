@@ -1,16 +1,14 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	dparser
-PORTVERSION=	1.31
+PORTVERSION=	1.33
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple but powerful tool for parsing
+WWW=		https://dparser.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		gmake
 
@@ -21,9 +19,6 @@ EXTRACT_AFTER_ARGS=	--exclude "*my*"
 MAKE_ARGS=	CC="${CC}" D_OPTIMIZE= PREFIX=${PREFIX}
 
 PORTDOCS=	*
-PLIST_FILES=	bin/make_dparser include/dparse.h include/dparse_tables.h \
-		include/dparse_tree.h include/dsymtab.h lib/${LIBDPARSE} \
-		man/man1/make_dparser.1.gz
 
 OPTIONS_DEFINE=	BOEHM DOCS
 BOEHM_DESC=	Boehm garbage collector support
@@ -49,6 +44,6 @@ do-install:
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.html ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/*.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

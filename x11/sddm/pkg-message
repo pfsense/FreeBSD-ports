@@ -10,4 +10,11 @@ following commands as root:
 # rm -rf /usr/local/etc/sddm/home
 EOM
 }
+{ type: install
+  message: <<EOM
+SDDM lists a "user session" which needs either an .xinitrc in the user's
+home directory, or as a fallback, xterm. In order to use the "user session"
+feature, a ~/.xinitrc is recommended.
+EOM
+}
 ]

@@ -1,6 +1,3 @@
-# Created by: Dima Sivachenko <dima@Chg.RU>
-# $FreeBSD$
-
 PORTNAME=	calamaris
 PORTVERSION=	2.59
 PORTREVISION=	2
@@ -9,10 +6,11 @@ MASTER_SITES=	http://cord.de/files/calamaris/
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Perl script to produce statistics out of Squid log files
+WWW=		https://Cord.de/tools/squid/calamaris/
 
 LICENSE=	GPLv2
 
-CONFLICTS_INSTALL=	calamaris-devel-[0-9]*
+CONFLICTS_INSTALL=	calamaris-devel
 
 USES=		shebangfix perl5
 NO_BUILD=	yes

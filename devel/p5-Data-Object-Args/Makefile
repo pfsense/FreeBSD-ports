@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object-Args
 PORTVERSION=	2.01
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Args Class for Data::Object
+WWW=		https://metacpan.org/release/Data-Object-Args
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

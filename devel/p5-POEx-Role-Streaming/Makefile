@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POEx-Role-Streaming
 PORTVERSION=	1.102610
 PORTREVISION=	1
@@ -8,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:NPEREZ
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for streaming from one filehandle to another
+WWW=		https://metacpan.org/release/NPEREZ/POEx-Role-Streaming-1.102610
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

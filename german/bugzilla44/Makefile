@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bugzilla
 PORTVERSION=	4.4.10
 PORTREVISION=	1
@@ -9,9 +7,12 @@ DISTNAME=	${PORTNAME}-de-${PORTVERSION}-1.utf-8
 
 MAINTAINER=	bz-ports@FreeBSD.org
 COMMENT=	German localization for Bugzilla
+WWW=		https://sourceforge.net/projects/bugzilla-de/
 
 RUN_DEPENDS=	bugzilla44>=${PORTVERSION}:devel/bugzilla44
 
+USES=		cpe
+CPE_VENDOR=	mozilla
 NO_WRKSUBDIR=	yes
 
 # adjust BZ_REVNUM if bugzilla revision was incremented and there are no

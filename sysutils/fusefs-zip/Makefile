@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	fuse-zip
 PORTVERSION=	0.4.4
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://bitbucket.org/agalanin/fuse-zip/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FUSE filesystem to mount ZIP archives with write support
+WWW=		https://bitbucket.org/agalanin/fuse-zip/
 
 LICENSE=	LGPL3
 

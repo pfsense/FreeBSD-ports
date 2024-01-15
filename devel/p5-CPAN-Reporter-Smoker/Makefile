@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CPAN-Reporter-Smoker
 PORTVERSION=	0.29
 CATEGORIES=	devel perl5
@@ -8,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DAGOLDEN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Turnkey CPAN Testers smoking
+WWW=		https://metacpan.org/release/CPAN-Reporter-Smoker
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-CPAN-Reporter>0:devel/p5-CPAN-Reporter \

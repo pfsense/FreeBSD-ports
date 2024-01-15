@@ -1,12 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	openpiv
-PORTVERSION=	0.22.3
+PORTVERSION=	0.23.8
+PORTREVISION=	2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Python module for Particle Image Velocimetry
+WWW=		http://www.openpiv.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -14,14 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=0:science/py-scipy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scikit-image>=0.12.0:graphics/py-scikit-image@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}progressbar2>=3.8.1:misc/py-progressbar2@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}scikit-image>=0.12.0:graphics/py-scikit-image@${PY_FLAVOR}
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist distutils cython cython_run
+USES=		python
+USE_PYTHON=	autoplist distutils
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenPIV
 GH_PROJECT=	openpiv-python
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	EXTRA
 EXTRA_DESC=	Install additional Python packages (for tutorial/examples)

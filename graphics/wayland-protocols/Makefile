@@ -1,21 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	wayland-protocols
-PORTVERSION=	1.20
-CATEGORIES=	graphics wayland
-MASTER_SITES=	https://wayland.freedesktop.org/releases/
+PORTVERSION=	1.32
+PORTREVISION=	1
+CATEGORIES=	graphics
+MASTER_SITES=	https://gitlab.freedesktop.org/wayland/${PORTNAME}/-/releases/${DISTVERSION}/downloads/
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Wayland protocols
+WWW=		https://wayland.freedesktop.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	wayland-scanner:graphics/wayland
 
-USES=		tar:xz
+USES=		meson pkgconfig tar:xz
+MESON_ARGS=	-Dtests=false
 NO_ARCH=	yes
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-noarch-pkgconfigdir='$${prefix}/libdata/pkgconfig'
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-HomeDir
 PORTVERSION=	1.006
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Get home directory for self or other users
+WWW=		https://metacpan.org/release/File-HomeDir
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

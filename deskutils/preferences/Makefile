@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	preferences
 PORTVERSION=	1.2.0
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	SF/prefsapp/prefsapp/${PORTVERSION}
 DISTNAME=	Preferences-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep workspace manager
+WWW=		https://www.nongnu.org/backbone/
 
 LICENSE_COMB=	multi
 LICENSE=	GPLv2 LGPL21

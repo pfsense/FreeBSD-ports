@@ -1,23 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	cocoalib
-DISTVERSION=	0.99710
+DISTVERSION=	0.99800
 CATEGORIES=	math
-MASTER_SITES=	http://cocoa.dima.unige.it/cocoalib/tgz/
+MASTER_SITES=	https://cocoa.dima.unige.it/cocoa/cocoalib/tgz/
 DISTNAME=	CoCoALib-${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	salvadore@FreeBSD.org
 COMMENT=	C++ library for doing Computations in Commutative Algebra
+WWW=		https://cocoa.dima.unige.it
 
 LICENSE=			GPLv3+ GFDL PD
 LICENSE_COMB=			multi
-LICENSE_FILE_GPLv3+ =		${WRKSRC}/COPYING-GPLv3
+LICENSE_FILE_GPLv3+ =		${WRKSRC}/COPYRIGHT-full-text
 LICENSE_FILE_GFDL=		${WRKSRC}/doc/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-USES=		compiler:c++11-lang shebangfix tar:tgz
+USES=		compiler:c++11-lang localbase:ldflag shebangfix tar:tgz
+USE_CXXSTD=	c++14
+USE_LDCONFIG=	yes
 
 SHEBANG_GLOB=	*.sh
 
@@ -25,9 +26,10 @@ CXXFLAGS+=	-I${WRKSRC}/include \
 		-I${WRKSRC}/src/AlgebraicCore/TmpFactorDir \
 		-I${WRKSRC}/src/AlgebraicCore/TmpFactorDir/multivariate \
 		-I${WRKSRC}/src/AlgebraicCore/TmpFactorDir/linalg \
-		-I${LOCALBASE}/include \
-		-DCoCoA_ULONG2LONG=1
-LDFLAGS+=	-L${LOCALBASE}/lib -L${BUILD_WRKSRC} -lcocoa -lgmp
+		-DCoCoA_ULONG2LONG=1 \
+		-DCoCoA_ULONGLONG2LONGLONG=1 \
+		-fPIC
+LDFLAGS+=	-L${BUILD_WRKSRC} -lcocoa -lgmp
 
 BUILD_WRKSRC=	${WRKSRC}/src/AlgebraicCore
 
@@ -53,7 +55,7 @@ GSL_BUILD_DEPENDS=	${LOCALBASE}/lib/libgsl.a:math/gsl
 NORMALIZ_BUILD_DEPENDS=	${LOCALBASE}/lib/libnormaliz.a:math/libnormaliz
 SMALLDEG_EXTRA_PATCHES=	${FILESDIR}/extra-patch-include-CoCoA_config.H
 
-post-patch:
+pre-configure:
 	${REINPLACE_CMD} "s,%%DISTVERSION%%,${DISTVERSION},g" ${BUILD_WRKSRC}/Makefile
 
 do-configure-BOOST-on:
@@ -93,6 +95,9 @@ post-build-TEST-on: do-test
 
 do-install:
 	${INSTALL_DATA} ${BUILD_WRKSRC}/libcocoa.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${BUILD_WRKSRC}/libcocoa.so.0 ${STAGEDIR}${PREFIX}/lib
+	cd ${STAGEDIR}${PREFIX}/lib &&	\
+	${LN} -sf libcocoa.so.0 ${STAGEDIR}${PREFIX}/lib/libcocoa.so
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/CoCoA
 	cd ${WRKSRC}/include/CoCoA && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include/CoCoA '-name *\.H -a ! -name \._*'
 

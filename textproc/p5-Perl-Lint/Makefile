@@ -1,14 +1,13 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Perl-Lint
 PORTVERSION=	0.25
+PORTREVISION=	1
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Yet another Perl source code linter
+WWW=		https://metacpan.org/pod/Perl::Lint
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

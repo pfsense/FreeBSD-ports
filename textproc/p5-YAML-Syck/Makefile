@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	YAML-Syck
 PORTVERSION=	1.34
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Fast, lightweight YAML and JSON loader and dumper
+WWW=		https://metacpan.org/release/YAML-Syck
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

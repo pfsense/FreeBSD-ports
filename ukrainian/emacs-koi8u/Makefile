@@ -1,6 +1,3 @@
-# Created by: Andrey Slusar <anray@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	koi8u
 PORTVERSION=	1.0
 PORTREVISION=	1

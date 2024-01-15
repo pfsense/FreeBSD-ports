@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	${DICT}-aspell
 SPELLVERSION=	5-hil-0.11-0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Hiligaynon dictionary
+WWW=		http://aspell.net/
 
 DICT=	 	hil
 

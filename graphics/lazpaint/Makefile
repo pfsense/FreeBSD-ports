@@ -1,34 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	lazpaint
-PORTVERSION=	7.1.2
-PORTREVISION=	1
+PORTVERSION=	7.2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Image editor written in Lazarus
+WWW=		https://wiki.freepascal.org/LazPaint
 
 LICENSE=	GPLv3
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5 ${PORTNAME}-qt6
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt6
+qt6_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
 
 USES=		desktop-file-utils dos2unix fpc gnome lazarus:flavors xorg
-USE_FPC=	chm fcl-base fcl-image fcl-json fcl-net fcl-web fcl-xml \
-		opengl openssl pasjpeg rtl-extra rtl-objpas x11
 USE_XORG=	x11
 DOS2UNIX_REGEX=	.*\.([txt]|pas|lpi|txt)
 USE_GITHUB=	yes
+GH_TAGNAME=	501d44c
 GH_ACCOUNT=	bgrabitmap
-GH_PROJECT=	lazpaint
-GH_TUPLE=	bgrabitmap:bgracontrols:a0a5a40:bgracontrols/bgracontrols \
-		bgrabitmap:bgrabitmap:1ea4cb9:bgrabitmap/bgrabitmapnew
+GH_TUPLE=	bgrabitmap:bgracontrols:a1220e6:bgracontrols/bgracontrols \
+		bgrabitmap:bgrabitmap:2814b06:bgrabitmap/bgrabitmapnew
 
-USE_FPC_gtk2=	cairo
 USE_GNOME_gtk2=	cairo
-USE_FPC+=	${USE_FPC_${FLAVOR}}
 USE_GNOME+=	${USE_GNOME_${FLAVOR}}
 
 DESKTOP_ENTRIES="LazPaint" \
@@ -51,7 +46,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/lazpaint/release/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/48x48/apps
-	${INSTALL_DATA} ${WRKSRC}/lazpaint/release/debian/linux32/usr/share/pixmaps/${PORTNAME}.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png
+	${INSTALL_DATA} ${WRKSRC}/resources/icon/48x48.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC}/lazpaint/release/bin && ${COPYTREE_SHARE} "i18n models" ${STAGEDIR}${DATADIR}
 

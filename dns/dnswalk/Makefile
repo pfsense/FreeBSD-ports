@@ -1,6 +1,3 @@
-# Created by: Matthew Hunt <mph@pobox.com>
-# $FreeBSD$
-
 PORTNAME=	dnswalk
 PORTVERSION=	2.0.2
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	mark@foster.cc
 COMMENT=	DNS debugger - requests a zone transfer and analyzes the result
+WWW=		https://sourceforge.net/projects/dnswalk/
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

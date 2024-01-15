@@ -1,27 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	swayidle
-DISTVERSION=	1.6
-PORTREVISION=	2
-CATEGORIES=	x11
+DISTVERSION=	1.8.0
+CATEGORIES=	x11 wayland
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	4cc31289ee81.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
-PATCHFILES+=	8862b3bad223.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
-PATCHFILES+=	88bc257f72f6.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
+PATCHFILES+=	28950f787813.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
+PATCHFILES+=	26e192a5f1b2.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
+PATCHFILES+=	f2f7e4d0a7c8.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Idle management daemon for Wayland
+WWW=		https://github.com/swaywm/swayidle
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>=1.14:graphics/wayland-protocols
+BUILD_DEPENDS=	wayland-protocols>=1.27:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 
 USES=		compiler:c11 meson pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	swaywm
+MESON_ARGS=	-Dsd-bus-provider=basu
 PLIST_FILES=	bin/${PORTNAME} \
 		share/bash-completion/completions/${PORTNAME} \
 		share/fish/vendor_completions.d/${PORTNAME}.fish \

@@ -1,6 +1,3 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	Text-FindIndent
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl5 module to heuristically determine the indent style of a file
+WWW=		https://metacpan.org/release/Text-FindIndent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

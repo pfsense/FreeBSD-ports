@@ -1,21 +1,17 @@
-# Created by: Alex Povolotsky <tarkhil@over.ru>
-# $FreeBSD$
-
 PORTNAME=	cadaver
-PORTVERSION=	0.23.3
-PORTREVISION=	4
+PORTVERSION=	0.24
 CATEGORIES=	www
-MASTER_SITES=	http://www.webdav.org/cadaver/ \
-		http://www.tcbug.org/
+MASTER_SITES=	https://notroj.github.io/cadaver/
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Commandline client for DAV
+WWW=		https://notroj.github.io/cadaver/
 
 LIB_DEPENDS=	libneon.so:www/neon
 
+USES=		ssl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-netrc
-ALL_TARGET=	cadaver
+CONFIGURE_ARGS=	--enable-netrc --with-ssl
 
 PLIST_FILES=	bin/cadaver \
 		man/man1/cadaver.1.gz
@@ -34,26 +30,18 @@ EXTRACT_AFTER_ARGS=	\
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-.if !defined(WITHOUT_OPENSSL)
-USES+=	ssl
-CONFIGURE_ARGS+=	--with-ssl --with-force-ssl
-post-install:
-	#
-	#
-	@${CAT} ${PKGMESSAGE}
-	#
-	#
-.endif
+USES+=		cpe
+CPE_VENDOR=	webdav
 
 OPTIONS_DEFINE=	NLS
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}
-USES=		gettext iconv
+USES+=		gettext iconv
 CONFIGURE_ARGS+=${ICONV_CONFIGURE_ARG} \
 		--with-libintl-prefix=${LOCALBASE}
-LANGS=en@quot es it
+LANGS=en@quot es
 .for lang in ${LANGS}
 PLIST_FILES+=	share/locale/${lang}/LC_MESSAGES/cadaver.mo
 .endfor
@@ -63,7 +51,7 @@ CONFIGURE_ARGS+=--disable-nls \
 		--without-libintl-prefix
 .endif
 
-NEON_VERSION=	31
+NEON_VERSION=	31 32
 
 post-patch:
 	@${REINPLACE_CMD} 's,27 28 29,& ${NEON_VERSION},' ${WRKSRC}/configure

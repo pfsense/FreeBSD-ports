@@ -1,20 +1,17 @@
-# Created by: Xavier Beaudouin <kiwi@oav.net>
-# $FreeBSD$
-
 PORTNAME=	mod_evasive
 PORTVERSION=	1.10.1
 PORTREVISION=	2
 CATEGORIES=	www security
-DISTNAME=	mod_evasive_${PORTVERSION}
 DIST_SUBDIR=	apache2
 
 MAINTAINER=	kiwi@oav.net
 COMMENT=	Apache module to try to protect the HTTP Server from DoS/DDoS attacks
+WWW=		https://github.com/jzdziarski/mod_evasive
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		apache:2.2+
+USES=		apache
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jzdziarski

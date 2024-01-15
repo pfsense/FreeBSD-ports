@@ -1,14 +1,12 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=		mt_dolphin_ia
 PORTVERSION=		0.1.98
-PORTREVISION=		5
+PORTREVISION=		7
 CATEGORIES=		games
 MASTER_SITES=		SAVANNAH/maitretarot
 
 MAINTAINER=		thierry@FreeBSD.org
 COMMENT=		Basic AI for MaitreTarot, a Tarot card game
+WWW=		https://www.nongnu.org/maitretarot/
 
 LICENSE=		GPLv2
 

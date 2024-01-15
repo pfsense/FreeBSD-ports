@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-ConfigLoader
 PORTVERSION=	0.34
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Load config files of various types
+WWW=		https://metacpan.org/release/Catalyst-Plugin-ConfigLoader
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-HTTP-LocalServer
-PORTVERSION=	0.71
+PORTVERSION=	0.75
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Spawn a local HTTP server for testing
+WWW=		https://metacpan.org/release/Test-HTTP-LocalServer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

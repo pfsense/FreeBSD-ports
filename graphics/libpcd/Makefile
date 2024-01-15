@@ -1,6 +1,3 @@
-# Created by: Andrey Slusar <anray@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libpcd
 PORTVERSION=	1.0.1
 CATEGORIES=	graphics
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for reading PhotoCD images
+WWW=		https://www.kraxel.org/blog/linux/libpcd/
 
 LICENSE=	GPLv2+
 

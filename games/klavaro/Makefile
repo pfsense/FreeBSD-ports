@@ -1,27 +1,23 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	klavaro
-PORTVERSION=	3.01
+PORTVERSION=	3.14
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/
 
-MAINTAINER=	h.skuhra@gmail.com
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Touchtyping trainer
+WWW=		http://klavaro.sourceforge.net/
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libcurl.so:ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libgtkdatabox.so:x11-toolkits/gtkdatabox
 
-USES=		gettext gmake gnome iconv pkgconfig tar:bzip2
-USE_GNOME=	gtk30 intlhack
+USES=		gettext gmake gnome iconv localbase pkgconfig tar:bzip2
+USE_GNOME=	cairo gtk30 intlhack
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-rdynamic
-LIBS+=		-L${LOCALBASE}/lib
 
 GNU_CONFIGURE=	yes
 

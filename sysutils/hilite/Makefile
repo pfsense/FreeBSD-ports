@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	hilite
 PORTVERSION=	1.5
 CATEGORIES=	sysutils
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.c
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command-line utility to highlight anything printed to stderr
+WWW=		https://sourceforge.net/projects/hilite/
 
 PLIST_FILES=	bin/hilite
 

@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	Graphics-ColorNames
 PORTVERSION=	2.11
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl class that defines RGB values for common color names
+WWW=		https://metacpan.org/release/Graphics-ColorNames
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

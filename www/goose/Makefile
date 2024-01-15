@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	goose
 PORTVERSION=	0.5
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line Google search utility
+WWW=		https://goose-search.sourceforge.net/
 
 RUN_DEPENDS=	p5-SOAP-Lite>=0:net/p5-SOAP-Lite \
 		p5-HTML-Tree>=0:www/p5-HTML-Tree \
@@ -19,6 +17,9 @@ RUN_DEPENDS=	p5-SOAP-Lite>=0:net/p5-SOAP-Lite \
 		urlview:textproc/urlview
 
 USES=		perl5
+
+CONFLICTS_INSTALL=	cfssl # bin/goose
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 POD2MAN?=	pod2man
 

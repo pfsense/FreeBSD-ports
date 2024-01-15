@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ohmu
 PORTVERSION=	1.1.0
 PORTREVISION=	4
@@ -8,6 +6,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to view space usage in your terminal
+WWW=		https://github.com/paul-nechifor/ohmu
 
 LICENSE=	MIT
 
@@ -17,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}scandir>=1.3:sysutils/py-scandir@${PY_FLAVOR
 USE_GITHUB=	yes
 GH_ACCOUNT=	paul-nechifor
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils concurrent optsuffix
 NO_ARCH=	yes
 

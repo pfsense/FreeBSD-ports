@@ -1,6 +1,3 @@
-# Created by: Timur Bakeyev <bat@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	Unicode-Stringprep
 PORTVERSION=	1.105
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Preparation of Internationalized Strings (RFC 3454)
+WWW=		https://metacpan.org/release/Unicode-Stringprep
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

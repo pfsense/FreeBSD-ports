@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MongoDB
 PORTVERSION=	2.2.2
 DISTVERSIONPREFIX=	v
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Mongo Driver for Perl
+WWW=		https://metacpan.org/release/MongoDB
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

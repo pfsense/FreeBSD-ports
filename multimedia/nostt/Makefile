@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nostt
 DISTVERSION=	1.1.1
 PORTREVISION=	1
@@ -7,6 +5,7 @@ CATEGORIES=	multimedia
 
 MAINTAINER=	ik@sjmulder.nl
 COMMENT=	Command line NOS Teletekst reader, the Dutch public teletext system
+WWW=		https://github.com/sjmulder/nostt
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

@@ -1,12 +1,10 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	VersionControl_Git
 PORTVERSION=	0.5.0
 CATEGORIES=	devel pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	OO interface to handle Git repository
+WWW=		https://pear.php.net/package/VersionControl_Git
 
 LICENSE=	APACHE20
 

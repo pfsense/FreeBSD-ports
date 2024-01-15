@@ -1,25 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=		minimap2
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.17
+DISTVERSION=		2.25
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Pairwise aligner for genomic and spliced nucleotide sequences
+WWW=		https://github.com/lh3/minimap2
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-# Depends on hard-coded SSE instructions
-# There appears to be some support for AARCH64 as well
-ONLY_FOR_ARCHS=	amd64 i386
+BUILD_DEPENDS=	simde>0:devel/simde
 
-USES=		gmake
+USES=		gmake localbase
 USE_GITHUB=	yes
+
 GH_ACCOUNT=	lh3
 
+ALL_TARGET=	extra
 INSTALL_TARGET=	install-strip
-PLIST_FILES=	bin/minimap2 man/man1/minimap2.1.gz
+
+MAKEFILE=	Makefile.simde
 
 .include <bsd.port.mk>

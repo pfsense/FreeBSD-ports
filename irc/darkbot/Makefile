@@ -1,6 +1,3 @@
-# Created by: A. Gabriel <backslash@BSDCode.org>
-# $FreeBSD$
-
 PORTNAME=	darkbot
 PORTVERSION=	6f6.r6
 PORTREVISION=	3
@@ -12,11 +9,17 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/./_/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IRC talking bot with a fast algorithm for its database
+WWW=		https://darkbot.sourceforge.net/
+
+# Converted from NO_CDROM
+LICENSE=	darkbot
+LICENSE_NAME=	darkbot
+LICENSE_TEXT=	no commercial distribution
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 SUB_FILES=	pkg-message
 
 PORTDOCS=	README
-NO_CDROM=	no commercial distribution
 
 OPTIONS_DEFINE=	DOCS
 

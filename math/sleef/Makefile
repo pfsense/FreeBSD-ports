@@ -1,30 +1,30 @@
-# Created by: Johannes M Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sleef
-DISTVERSION=	3.5.0
+DISTVERSION=	3.5.1-62
+DISTVERSIONSUFFIX=	-g85440a5
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	SIMD Library for Evaluating Elementary Functions, vectorized libm
+WWW=		https://sleef.org
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake compiler:c11
+USES=		cmake:testing compiler:c11 pathfix
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	shibatch
 
-CFLAGS_powerpc64=	-mpower8-vector
+CMAKE_OFF=	BUILD_TESTS
+CMAKE_TESTING_ON=	BUILD_TESTS
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
-PLIST_SUB+=	NO_PPC64="@comment "
+.if ${ARCH:Mpowerpc64*} || ${ARCH:Marmv?}
+PLIST_SUB+=	GNUABI="@comment "
 .else
-PLIST_SUB+=	NO_PPC64=""
+PLIST_SUB+=	GNUABI=""
 .endif
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Jeff Putsch <jdputsch@comcast.net>
-# $FreeBSD$
-
 PORTNAME=	POE-Filter-XML
 PORTVERSION=	1.140700
 CATEGORIES=	textproc devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE Filter for parsing XML
+WWW=		https://metacpan.org/release/POE-Filter-XML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

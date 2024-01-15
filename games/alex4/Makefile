@@ -1,6 +1,3 @@
-# Created by: Nikolai Lifanov <lifanov@mail.lifanov.com>
-# $FreeBSD$
-
 PORTNAME=	alex4
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -10,8 +7,9 @@ MASTER_SITES=	SF/allegator/Alex4/source%20and%20data/ \
 DISTFILES=	alex4src_data.zip ${PORTNAME}.png:icons
 EXTRACT_ONLY=	alex4src_data.zip
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Classic platformer with Alex the Allegator
+WWW=		https://allegator.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt

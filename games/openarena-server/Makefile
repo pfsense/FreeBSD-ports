@@ -1,6 +1,3 @@
-# Created by: Dominic Fandrey
-# $FreeBSD$
-
 PORTNAME=	openarena
 PKGNAMESUFFIX=	-server
 

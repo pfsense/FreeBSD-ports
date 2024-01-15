@@ -1,14 +1,12 @@
-# Created by: ports@c0decafe.net <ports@c0decafe.net>
-# $FreeBSD$
-
 PORTNAME=	File-Path-Tiny
-PORTVERSION=	0.9
+PORTVERSION=	1.0
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Lightweight File::Path alternative
+WWW=		https://metacpan.org/release/File-Path-Tiny
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,6 @@
---- texk/xdvik/util.c.orig	2014-04-08 18:43:12 UTC
+--- texk/xdvik/util.c.orig	2022-02-15 20:44:41 UTC
 +++ texk/xdvik/util.c
-@@ -215,6 +215,7 @@ struct debug_string_options debug_option
+@@ -214,6 +214,7 @@ struct debug_string_options debug_options[] = {
      {  DBG_GUI,		"gui",		", " },
      {  DBG_FIND,	"find",		", " },
      {  DBG_FILES,	"files",	", " },
@@ -8,7 +8,7 @@
      {  DBG_ALL,		"all",		"\n" },
      /* end marker */
      {  0,		NULL,		NULL }
-@@ -708,6 +709,38 @@ alloc_bitmap(struct bitmap *bitmap)
+@@ -677,7 +678,39 @@ alloc_bitmap(struct bitmap *bitmap)
      bitmap->bits = xmalloc(size != 0 ? size : 1);
  }
  
@@ -17,7 +17,7 @@
 +{
 +    memset(bitmap->bits, 0, bitmap->bytes_wide * bitmap->h);
 +}
-+
+ 
 +void
 +fill_bitmap(struct bitmap *bitmap)
 +{
@@ -44,10 +44,11 @@
 +
 +    for (i=0; i<size; i++) p[i] = reverse_byte[p[i]];
 +}
- 
++
  #ifndef HAVE_MEMICMP
  /*
-@@ -1581,6 +1614,8 @@ put_str_int_hash(hashTableT *hashtable, 
+  * Case-insensitive version of memcmp().  This code assumes that the second
+@@ -1568,6 +1601,8 @@ put_str_int_hash(hashTableT *hashtable, const char *ke
  }
  
  
@@ -56,12 +57,12 @@
  /*
   *	General AVL tree mechanism.  Search for a node, and return it if found.
   *	Otherwise insert a node.
-@@ -1712,6 +1747,8 @@ avladd(const char *key, size_t key_len, 
+@@ -1698,6 +1733,8 @@ avladd(const char *key, size_t key_len, struct avl **h
+ 
  	return ap;
  }
- 
-+#endif /* FREETYPE || PS */
 +
++#endif /* FREETYPE || PS */
+ 
  
  /* set globals.dvi_name, globals.dvi_file.dirname and globals.dvi_file.dirlen */
- void

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Image-Base-SVG
 PORTVERSION=	5
 CATEGORIES=	graphics perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	SVG image file output
+WWW=		https://metacpan.org/release/Image-Base-SVG
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

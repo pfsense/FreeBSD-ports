@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	WebService-Linode
 PORTVERSION=	0.29
 CATEGORIES=	www
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Interface to the Linode.com API
+WWW=		https://metacpan.org/release/WebService-Linode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

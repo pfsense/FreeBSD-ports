@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Finance-TW-TSEQuote
 PORTVERSION=	0.28
 CATEGORIES=	finance perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Check stock quotes from Taiwan Security Exchange
+WWW=		https://metacpan.org/release/Finance-TW-TSEQuote
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

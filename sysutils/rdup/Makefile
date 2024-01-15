@@ -1,6 +1,3 @@
-# Created by: Charlie Kester <corky1951@comcast.net>
-# $FreeBSD$
-
 PORTNAME=	rdup
 PORTVERSION=	1.1.15
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	rm@FreeBSD.org
 COMMENT=	Tool to generate (incremental) backup file list
+WWW=		https://github.com/miekg/rdup
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

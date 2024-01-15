@@ -1,98 +1,106 @@
-# $FreeBSD$
-
 PORTNAME=	ptex
 PORTVERSION=	3.6
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	japanese print
-MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
+MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/:source \
+		LOCAL/tex:texmf
 PKGNAMEPREFIX=	ja-tex-
-DISTNAME=	texlive-${DISTVERSION_TEXLIVE_SOURCE}-source
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		${DISTNAME_TEXMF}${EXTRACT_SUFX}
+DISTFILES=	texlive-${TEXLIVE_VERSION}-source${EXTRACT_SUFX}:source \
+		texlive-${TEXLIVE_VERSION}-texmf-japanese_tex-ptex-freebsd${EXTRACT_SUFX}:texmf
 DIST_SUBDIR=	TeX
-EXTRACT_ONLY=	texlive-${DISTVERSION_TEXLIVE_SOURCE}-source${EXTRACT_SUFX}
+EXTRACT_ONLY=	texlive-${TEXLIVE_VERSION}-source${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	ASCII Japanese pTeX
+WWW=		https://ctan.org/pkg/ptex
 
-USES=		tar:xz pkgconfig
-USE_TEX=	kpathsea web2c ptexenc texmf formats fmtutil
-TEXHASHDIRS=	${TEXMFDISTDIR} ${TEXMFVARDIR}
-EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
-EXTRACT_FILES=	build-aux \
-		libs/xpdf \
-		texk/web2c
-EXTRACT_AFTER_ARGS_TEXMF= \
-	| ${TAR} -xf - -C ${STAGEDIR}${PREFIX}/share \
-	    --strip-components 1 --no-same-permission --no-same-owner \
-	    ${EXTRACT_FILES_TEXMF:S,^,${DISTNAME_TEXMF}/,}
-DISTVERSION_TEXLIVE_SOURCE=	20150521
-DISTVERSION_TEXLIVE_TEXMF=	20150523
-DISTNAME_TEXMF=	texlive-${DISTVERSION_TEXLIVE_TEXMF}-texmf
-EXTRACT_FILES_TEXMF= \
-	texmf-dist/doc/ptex \
-	texmf-dist/doc/platex \
-	texmf-dist/doc/uptex \
-	texmf-dist/doc/uplatex \
-	texmf-dist/doc/fonts/japanese-otf \
-	texmf-dist/doc/fonts/japanese-otf-uptex \
-	texmf-dist/doc/fonts/jfontmaps \
-	texmf-dist/fonts/source/ptex \
-	texmf-dist/fonts/ovp/public/japanese-otf-uptex \
-	texmf-dist/fonts/vf/ptex \
-	texmf-dist/fonts/vf/uptex \
-	texmf-dist/fonts/vf/public/japanese-otf \
-	texmf-dist/fonts/vf/public/japanese-otf-uptex \
-	texmf-dist/fonts/type1/ptex \
-	texmf-dist/fonts/tfm/ptex \
-	texmf-dist/fonts/tfm/uptex \
-	texmf-dist/fonts/tfm/public/japanese-otf-uptex \
-	texmf-dist/fonts/tfm/public/japanese-otf \
-	texmf-dist/fonts/ofm/public/japanese-otf \
-	texmf-dist/source/fonts/uptex \
-	texmf-dist/source/fonts/japanese-otf-uptex \
-	texmf-dist/source/fonts/japanese-otf \
-	texmf-dist/source/platex \
-	texmf-dist/source/uplatex \
-	texmf-dist/tex/ptex \
-	texmf-dist/tex/uptex \
-	texmf-dist/tex/platex \
-	texmf-dist/tex/uplatex \
-	texmf-dist/tex/generic/hyph-utf8/patterns/ptex \
-	texmf-dist/fonts/map/dvipdfmx/ptex \
-	texmf-dist/fonts/map/dvipdfmx/japanese-otf \
-	texmf-dist/fonts/map/dvipdfmx/jfontmaps \
-	texmf-dist/fonts/map/dvipdfmx/updmap/kanjix.map \
-	texmf-dist/fonts/cmap/uptex
-WRKSRC=		${WRKDIR}/${DISTNAME}/texk/web2c
-GNU_CONFIGURE=	yes
-EXCLUDE_ENGINES=aleph etex pdftex luatex luajittex mf mf-nowin \
-		otangle mp pmp upmp web2c web-progs xetex tex synctex
-CONFIGURE_ARGS=	${EXCLUDE_ENGINES:S/^/--disable-/} \
-		--enable-ptex \
-		--enable-eptex \
-		--enable-uptex \
-		--enable-euptex \
-		--with-system-zlib \
-		--without-x
+USES=				localbase perl5 pkgconfig tar:xz tex
+USE_TEX=			fmtutil formats kpathsea ptexenc web2c
+
+GNU_CONFIGURE=			yes
+CONFIGURE_ARGS=		${EXCLUDE_ENGINES:S/^/--disable-/} \
+			--enable-eptex \
+			--enable-euptex \
+			--enable-ptex \
+			--enable-uptex \
+			--with-system-zlib \
+			--without-x
 .for L in kpathsea ptexenc
-CONFIGURE_ARGS+=--with-system-$L \
-		--with-$L-include=${LOCALBASE}/include \
-		--with-$L-libdir=${LOCALBASE}/lib
+CONFIGURE_ARGS+=	--with-$L-include=${LOCALBASE}/include \
+			--with-$L-libdir=${LOCALBASE}/lib \
+			--with-system-$L
 .endfor
-CFLAGS+=	-I${LOCALBASE}/include
+
 MAKE_JOBS_UNSAFE=	yes
-TEX_FORMATS=	ptex uptex
+EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${_DISTNAME_SOURCE}/,}
+EXTRACT_FILES=			build-aux libs/xpdf texk/web2c
+WRKSRC=				${WRKDIR}/${_DISTNAME_SOURCE}/texk/web2c
+EXCLUDE_ENGINES=		aleph etex pdftex luatex luajittex mf mf-nowin \
+				otangle mp pmp upmp web2c web-progs xetex tex \
+				synctex mflua mfluajit luahbtex luajithbtex
+
+_DISTNAME_SOURCE=	texlive-${TEXLIVE_VERSION}-source
+TEXHASHDIRS=			${TEXMFDISTDIR} ${TEXMFVARDIR}
+TEX_FORMATS=		ptex uptex
+
+#post-extract:
+#	@${FIND} ${WRKSRC} -name '*.orig' -delete
 
 pre-configure:
-	for D in libs/xpdf; do \
-		cd ${WRKDIR}/${DISTNAME}/$$D && \
-		${SETENV} ${CONFIGURE_ENV} ${SH} ${CONFIGURE_SCRIPT} \
-		    ${CONFIGURE_ARGS}; \
-	done
+	cd ${WRKDIR}/${_DISTNAME_SOURCE}/libs/xpdf && \
+	${SETENV} ${CONFIGURE_ENV} ${SH} ${CONFIGURE_SCRIPT} \
+		${CONFIGURE_ARGS}; \
 
 pre-install:
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/texlive-${DISTVERSION_TEXLIVE_TEXMF}-texmf${EXTRACT_SUFX} \
-	    ${EXTRACT_AFTER_ARGS_TEXMF}
+	${TAR} -Jxf ${DISTDIR}/${DIST_SUBDIR}/texlive-${TEXLIVE_VERSION}-texmf-japanese_tex-ptex-freebsd${EXTRACT_SUFX} \
+		-C ${STAGEDIR}${PREFIX}/share \
+		--strip-components 1 --no-same-permission --no-same-owner
+
+post-install:
+	${FIND} -s ${STAGEDIR}${PREFIX}/share -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
+	${FIND} -s ${STAGEDIR}${PREFIX}/share -type d -empty | ${SORT} -r | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/#@dir #' >> ${TMPPLIST}
+
+.if defined(MAINTAINER_MODE)
+_MAINTAINER_DISTNAME=	${DISTNAME_TEXMF}${EXTRACT_SUFX}
+_EXTRACT_TARGETDIR=		texlive-${TEXLIVE_VERSION}-texmf-japanese_tex-ptex-freebsd
+EXTRACT_FILES_TEXMF=		doc/ptex doc/platex doc/uptex doc/uplatex \
+				doc/fonts/japanese-otf fonts/vf/public/japanese-otf \
+				fonts/tfm/public/japanese-otf source/uplatex tex/ptex \
+				fonts/ofm/public/japanese-otf source/platex \
+				tex/uplatex source/fonts/japanese-otf tex/uptex \
+				tex/platex tex/generic/hyph-utf8/patterns/ptex \
+				fonts/map/dvipdfmx/updmap/kanjix.map
+
+_maintainer-extract:
+	${MAKE} clean
+	${MKDIR} ${WRKDIR}/${_EXTRACT_TARGETDIR}
+	${TAR} -xf ${DISTDIR}/${DIST_SUBDIR}/texlive-${TEXLIVE_VERSION}-texmf${EXTRACT_SUFX} \
+		-C ${WRKDIR}/${_EXTRACT_TARGETDIR} \
+		--strip-components 1 --no-same-permission --no-same-owner \
+		${EXTRACT_FILES_TEXMF:S,^,${DISTNAME_TEXMF}/texmf-dist/,}
+
+_maintainer-patch: _maintainer-extract
+	${REINPLACE_CMD} -i '' -e 's|/usr/bin/perl|${PERL}|g' \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/mkjvf \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mkcidvf.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mkjp04tfmvf.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mkmlcidvf.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mktfm.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mktfm_sp.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mkutf32list.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mkutfvf.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/mkutfvf_sp.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/umkvpkana.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/script/umkpkana.pl \
+	${WRKDIR}/${_EXTRACT_TARGETDIR}/texmf-dist/source/fonts/japanese-otf/umkjvf
+
+_maintainer-dist: _maintainer-patch
+	${TAR} --options xz:compression-level=9 -Jcvf \
+		${WRKDIR}/${_EXTRACT_TARGETDIR}${EXTRACT_SUFX} \
+		-C ${WRKDIR} ${_EXTRACT_TARGETDIR}
+
+.endif
 
 .include <bsd.port.mk>

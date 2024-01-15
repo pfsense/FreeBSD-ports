@@ -1,14 +1,12 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	B-Hooks-EndOfScope
-PORTVERSION=	0.24
+PORTVERSION=	0.26
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Execute code after a scope finished compilation
+WWW=		https://metacpan.org/release/B-Hooks-EndOfScope
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,8 +17,9 @@ RUN_DEPENDS=	p5-Module-Implementation>=0.05:devel/p5-Module-Implementation \
 		p5-Sub-Exporter-Progressive>=0.001006:devel/p5-Sub-Exporter-Progressive \
 		p5-Variable-Magic>=0.48:devel/p5-Variable-Magic
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

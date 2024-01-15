@@ -1,9 +1,6 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	camlidl
 PORTVERSION=	1.05
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	http://caml.inria.fr/distrib/bazar-ocaml/
 PKGNAMEPREFIX=	ocaml-
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	kennedy.greg@gmail.com
 COMMENT=	Stub code generator for using C/C++ libraries from OCaml
+WWW=		https://caml.inria.fr/pub/old_caml_site/camlidl/
 
 LICENSE=	LGPL20 LGPL21
 LICENSE_COMB=	dual
@@ -25,6 +23,12 @@ MAKE_JOBS_UNSAFE=	yes
 DOCSDIR=	${PREFIX}/share/doc/ocaml/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
 
 post-extract:
 	@${REINPLACE_CMD} -e "s,^\(OCAMLLIB=\).*,\1${STAGEDIR}${PREFIX}/lib/ocaml,g" \
@@ -58,4 +62,4 @@ test:
 		${WRKSRC}/tests/Makefile
 	cd ${WRKSRC}/tests && ${SETENV} ${MAKE_ENV} ${MAKE} all
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

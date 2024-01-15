@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	HTML-WikiConverter-MediaWiki
 PORTVERSION=	0.59
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert HTML to MediaWiki markup
+WWW=		https://metacpan.org/release/HTML-WikiConverter-MediaWiki
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HTML-WikiConverter>=0.63:www/p5-HTML-WikiConverter \

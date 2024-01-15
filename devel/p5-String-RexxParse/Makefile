@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	String-RexxParse
 PORTVERSION=	1.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module that provides an interface to REXX parsing routines
+WWW=		https://metacpan.org/release/String-RexxParse
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

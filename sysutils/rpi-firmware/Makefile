@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	rpi-firmware
-PORTVERSION=	1.20210201.g20210201
-PORTREVISION=	1
+PORTVERSION=	1.20230405.g20230405
 CATEGORIES=	sysutils
 
 MAINTAINER=	uboot@FreeBSD.org
 COMMENT=	Firmware for RaspberryPi Single Board Computer
+WWW=		https://github.com/raspberrypi/firmware
 
 LICENSE=	BROADCOM
 LICENSE_NAME=	Broadcom Corporation
@@ -17,9 +15,9 @@ BUILD_DEPENDS=	aarch64-none-elf-gcc:devel/aarch64-none-elf-gcc
 
 USE_GITHUB=	yes
 
-GH_ACCOUNT=	raspberrypi gonzoua:pscimon
+GH_ACCOUNT=	raspberrypi freebsd:pscimon
 GH_PROJECT=	firmware rpi3-psci-monitor:pscimon
-FW_TAG=		8572bb5
+FW_TAG=		055e044
 PSCI_TAG=	558620c
 GH_TAGNAME=	${FW_TAG} ${PSCI_TAG}:pscimon
 

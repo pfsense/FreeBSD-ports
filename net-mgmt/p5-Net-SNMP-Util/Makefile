@@ -1,6 +1,3 @@
-# Created by: Hsin-Han You <hhyou@cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Net-SNMP-Util
 PORTVERSION=	1.04
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	hhyou@cs.nctu.edu.tw
 COMMENT=	Utility functions for Net::SNMP
+WWW=		https://metacpan.org/release/Net-SNMP-Util
 
 RUN_DEPENDS=	p5-Net-SNMP>=0:net-mgmt/p5-Net-SNMP
 

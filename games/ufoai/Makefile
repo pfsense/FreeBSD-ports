@@ -1,9 +1,6 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ufoai
 PORTVERSION=	2.5
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/UFO_AI%202.x/${PORTVERSION}
 DISTNAME=	${PORTNAME:S/$/-/}${PORTVERSION}-source
@@ -14,6 +11,7 @@ PATCHFILES=	163073ab9527cdaa33d77a713b8e46ff462a2b5c.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Strategy game featuring tactical combat
+WWW=		https://ufoai.org/
 
 LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libpng.so:graphics/png \

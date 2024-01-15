@@ -1,14 +1,12 @@
-# Created by: kamikaze@bsdforen.de
-# $FreeBSD$
-
 PORTNAME=	libbdplus
-DISTVERSION=	0.1.2
-PORTREVISION=	1
+DISTVERSION=	0.2.0
 CATEGORIES=	multimedia
-MASTER_SITES=	https://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION}/
+MASTER_SITES=	https://get.videolan.org/${PORTNAME}/${DISTVERSION}/ \
+		https://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BD+ System research implementation
+WWW=		https://www.videolan.org/developers/libbdplus.html
 
 LICENSE=	LGPL21
 

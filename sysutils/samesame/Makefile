@@ -1,6 +1,3 @@
-# Created by: Alex de Kruijff
-# $FreeBSD$
-
 PORTNAME=	samesame
 PORTVERSION=	1.10
 PORTREVISION=	2
@@ -10,10 +7,13 @@ MASTER_SITES=	http://samesame.kruijff.org/ \
 
 MAINTAINER=	samesame@akruijff.dds.nl
 COMMENT=	Find duplicate files and optionally link them together
+WWW=		https://samesame.kruijff.org/
 
 LICENSE=	BSD2CLAUSE
 
-CONFLICTS=	samefile-[0-9]*
+BROKEN_FreeBSD_14=	ld: error: undefined symbol: eprol
+
+CONFLICTS=	samefile
 
 HAS_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

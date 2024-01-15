@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Statistics-Distributions
 PORTVERSION=	1.02
 PORTREVISION=	1

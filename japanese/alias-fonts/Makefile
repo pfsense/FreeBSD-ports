@@ -1,6 +1,3 @@
-# Created by: sada
-# $FreeBSD$
-
 PORTNAME=	alias-fonts
 PORTVERSION=	1.0
 PORTREVISION=	12

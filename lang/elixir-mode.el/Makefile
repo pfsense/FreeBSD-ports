@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	elixir-mode.el
 DISTVERSIONPREFIX=	v
 PORTVERSION=	2.3.1
-PORTREVISION=	5
+PORTREVISION=	14
 CATEGORIES=	lang
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Emacs major mode for Elixir
+WWW=		https://github.com/elixir-lang/emacs-elixir
 
 LICENSE=	GPLv3
 

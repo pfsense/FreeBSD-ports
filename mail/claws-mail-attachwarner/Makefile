@@ -1,10 +1,7 @@
-# Created by: Pawel Pekala <c0rn@o2.pl>
-# $FreeBSD$
-
 PORTNAME=	attachwarner
-PORTREVISION=	0
 
 COMMENT=	Not attached file warning plugin for Claws Mail
+WWW=		https://www.claws-mail.org/plugin.php?plugin=attachwarner
 
 CLAWS_PLUGINS_BUILD=	${PORTNAME}
 

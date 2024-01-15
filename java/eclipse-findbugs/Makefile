@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	findbugs
 DISTVERSION=	3.0.1.20150306-5afe4d1
 CATEGORIES=	java devel
@@ -11,6 +8,7 @@ DIST_SUBDIR=	eclipse
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Eclipse plug-in that provides FindBugs support
+WWW=		https://findbugs.sourceforge.net/manual/eclipse.html
 
 RUN_DEPENDS=	eclipse:java/eclipse
 

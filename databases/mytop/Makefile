@@ -1,12 +1,10 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mytop
 PORTVERSION=	1.7
 CATEGORIES=	databases
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Top clone for MySQL
+WWW=		https://jeremy.zawodny.com/mysql/mytop/
 
 LICENSE=	GPLv2
 

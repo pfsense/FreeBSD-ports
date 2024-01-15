@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Mail-Audit-Attach
 PORTVERSION=	0.96
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Mail::Audit plugin for attachment handling
+WWW=		https://metacpan.org/release/Mail-Audit-Attach
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Mail-Audit>=2:mail/p5-Mail-Audit \

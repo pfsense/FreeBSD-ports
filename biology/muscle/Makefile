@@ -1,6 +1,3 @@
-# Created by: Motomichi Matsuzaki <mzaki@biol.s.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	muscle
 PORTVERSION=	3.8.1551
 CATEGORIES=	biology
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_src_${PORTVERSION}
 
 MAINTAINER=	mzaki@e-mail.ne.jp
 COMMENT=	MUltiple Sequence Comparison by Log-Expectation
+WWW=		https://www.drive5.com/muscle/
 
 LICENSE=	PD
 

@@ -1,21 +1,23 @@
-# Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
-
 PORTNAME=	pgpdump
-PORTVERSION=	0.33
+PORTVERSION=	0.35
 CATEGORIES=	security
 MASTER_SITES=	https://www.mew.org/~kazu/proj/pgpdump/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PGP packet visualizer
+WWW=		https://www.mew.org/~kazu/proj/pgpdump/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
+USES=		cpe
 
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/pgpdump \
 		share/man/man1/pgpdump.1.gz
+
+CPE_VENDOR=	pgpdump_project
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pgpdump ${STAGEDIR}${PREFIX}/bin

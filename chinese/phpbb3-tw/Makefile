@@ -1,6 +1,3 @@
-# Created by: Bo-Yi Wu <appleboy.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	phpbb
 PORTVERSION=	3.0.12
 PORTREVISION=	0
@@ -12,11 +9,12 @@ DISTNAME=	phpBB-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Traditional Chinese version of phpBB3
+WWW=		https://www.phpbb.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
-CONFLICTS=	phpbb-tw-[0-2]* phpbb-devel-[0-3]* phpbb-[0-3]*
+CONFLICTS_INSTALL=	phpbb phpbb3 zh-phpbb-tw # share/doc/phpbb/AUTHORS share/doc/phpbb/CHANGELOG.html
 
 USES=		zip
 

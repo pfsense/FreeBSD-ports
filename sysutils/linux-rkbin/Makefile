@@ -1,15 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	linux-rkbin
 DISTVERSION=	g20190719
 CATEGORIES=	sysutils linux
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Firmware and tools for RockChip SoCs
+WWW=		https://github.com/rockchip-linux/rkbin
 
 ONLY_FOR_ARCHS=	amd64
 
-LEGAL_TEXT=	No license
+# Converted from LEGAL_TEXT
+LICENSE=	rkbin
+LICENSE_NAME=	rkbin
+LICENSE_TEXT=	No license
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 NO_BUILD=	yes
 

@@ -1,14 +1,12 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	combinat
 DISTVERSION=	0.0-8
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Routines for combinatorics
+WWW=		https://cran.r-project.org/package=combinat
 
 LICENSE=	GPLv2
 

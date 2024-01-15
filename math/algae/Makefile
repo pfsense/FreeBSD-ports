@@ -1,14 +1,12 @@
-# Created by: Michael Neumann <mneumann@ntecs.de>
-# $FreeBSD$
-
 PORTNAME=	algae
 PORTVERSION=	4.3.6
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Programming language for numerical analysis
+WWW=		https://algae.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BROKEN_aarch64=		does not build: checking for proper floating point exception handling... no
 BROKEN_armv6=		does not build: checking for proper floating point exception handling... no
 BROKEN_armv7=		does not build: checking for proper floating point exception handling... no
-BROKEN_powerpc64=	does not build: configure: error: Cannot handle floating point exceptions
 
 GNU_CONFIGURE=	yes
 USES=		fortran

@@ -1,6 +1,3 @@
-# Created by: elbarto
-# $FreeBSD$
-
 PORTNAME=	asmx
 PORTVERSION=	1.8.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://xi6.com/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-CPU macro assembler for many major 8-bit and 16-bit CPUs
+WWW=		http://xi6.com/projects/asmx/
 
 USES=		zip
 NO_WRKSUBDIR=	yes

@@ -1,6 +1,3 @@
-# Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tcmplex-panteltje
 PORTVERSION=	0.4.7
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://panteltje.com/panteltje/dvd/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Re-write of the A/V multiplexer from the transcode distribution
+WWW=		http://panteltje.com/panteltje/dvd/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE

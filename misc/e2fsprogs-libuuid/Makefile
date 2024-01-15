@@ -1,6 +1,3 @@
-# Created by: Matthias Andree <matthias.andree@gmx.de>
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	misc devel
 PKGNAMESUFFIX=	-libuuid
@@ -13,7 +10,7 @@ LICENSE_FILE=	${INSTALL_WRKSRC}/COPYING
 CONFIGURE_ARGS=	--enable-elf-shlibs --enable-libuuid
 
 OPTIONS_EXCLUDE=	NLS
-MASTERDIR=	${.CURDIR}/../../sysutils/e2fsprogs
+MASTERDIR=	${.CURDIR}/../../sysutils/e2fsprogs-core
 MAKE_ARGS=	LIB_SUBDIRS=lib/uuid
 USE_LDCONFIG=	yes
 ALL_TARGET=	libs

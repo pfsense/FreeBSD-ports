@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Skinny-InflateColumn-DateTime
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to inflate/deflate DateTime for DBIx::Skinny
+WWW=		https://metacpan.org/release/DBIx-Skinny-InflateColumn-DateTime
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

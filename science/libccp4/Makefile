@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libccp4
 DISTVERSION=	6.5.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	science education
 MASTER_SITES=	ftp://ftp.ccp4.ac.uk/opensource/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Protein X-ray crystallography toolkit
+WWW=		https://www.ccp4.ac.uk/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual

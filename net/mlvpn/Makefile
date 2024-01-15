@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mlvpn
 PORTVERSION=	2.3.1
 PORTREVISION=	2
@@ -7,6 +5,7 @@ CATEGORIES=	net net-vpn
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Multi-link VPN
+WWW=		https://zehome.github.io/MLVPN/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE

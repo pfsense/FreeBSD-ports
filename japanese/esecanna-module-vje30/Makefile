@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	esecanna-module-vje30
 PORTVERSION=	1.0.1
 PORTREVISION=	2
@@ -12,6 +9,7 @@ DIST_SUBDIR=	esecanna
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Esecanna module for VJE-Delta 3.0
+WWW=		http://esecanna.netfort.gr.jp/
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/esecannaserver:japanese/esecanna
 

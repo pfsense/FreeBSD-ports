@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	URI-Template
 PORTVERSION=	0.24
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object for handling URI templates
+WWW=		https://metacpan.org/release/URI-Template
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,5 +17,7 @@ TEST_DEPENDS=	p5-JSON>=0:converters/p5-JSON
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

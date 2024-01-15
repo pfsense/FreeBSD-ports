@@ -1,6 +1,3 @@
-# Created by: Norikatsu Shigemura <nork@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	scim-canna
 PORTVERSION=	1.0.0
 PORTREVISION=	15
@@ -9,6 +6,7 @@ MASTER_SITES=	OSDN/scim-imengine
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SCIM IMEngine module using Canna
+WWW=		https://sourceforge.jp/projects/scim-imengine/
 
 BUILD_DEPENDS=	scim:textproc/scim
 LIB_DEPENDS=	libcanna.so:japanese/canna-lib

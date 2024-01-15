@@ -1,6 +1,3 @@
-# Created by: Stephon Chen <stephon@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Term-QRCode
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	stephon@gmail.com
 COMMENT=	Generate QR Code on Terminal
+WWW=		https://metacpan.org/release/Term-QRCode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

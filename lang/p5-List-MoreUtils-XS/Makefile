@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	List-MoreUtils-XS
 PORTVERSION=	0.430
 CATEGORIES=	lang perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Provide compiled List::MoreUtils functions
+WWW=		https://metacpan.org/release/List-MoreUtils-XS
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

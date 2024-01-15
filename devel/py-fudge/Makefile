@@ -1,18 +1,16 @@
-# Created by: Yi-Huan Chan <yhchan@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	fudge
-PORTVERSION=	1.1.0
+PORTVERSION=	1.1.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yhchan@csie.nctu.edu.tw
 COMMENT=	Python module for using fake objects to test real ones
+WWW=		http://farmdev.com/projects/fudge/
 
 LICENSE=	MIT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

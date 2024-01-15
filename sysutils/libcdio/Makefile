@@ -1,6 +1,3 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	libcdio
 PORTVERSION=	2.1.0
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	GNU
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Compact Disc Input and Control Library
+WWW=		https://www.gnu.org/software/libcdio/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

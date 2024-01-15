@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	carton
 PORTVERSION=	1.0.28
 PORTREVISION=	1
@@ -9,8 +7,9 @@ MASTER_SITE_SUBDIR=	CPAN:MIYAGAWA
 PKGNAMEPREFIX=	p5-
 DISTNAME=	Carton-v${PORTVERSION}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module dependency manager
+WWW=		https://metacpan.org/release/Carton
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

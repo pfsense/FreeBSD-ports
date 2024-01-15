@@ -1,14 +1,12 @@
-# Created by: Jie Gao	<gaoj@cpsc.ucalgary.ca>
-# $FreeBSD$
-
 PORTNAME=	scim
 PORTVERSION=	1.4.9
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
-MAINTAINER=	lx@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Smart Common Input Method platform
+WWW=		https://github.com/scim-im/scim
 
 LICENSE=	LGPL21
 

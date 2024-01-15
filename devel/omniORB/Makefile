@@ -1,46 +1,57 @@
-# Created by: ejc@bazzle.com
-# $FreeBSD$
-
 PORTNAME=	omniORB
-DISTVERSION=	4.2.4
+DISTVERSION=	${ABI_VER}.${ABI_MAJOR_VER}.${ABI_MINOR_VER}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTNAME}-${DISTVERSION:S/-2//}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Robust high performance CORBA ORB for C++ and Python
+WWW=		http://omniorb.sourceforge.net/
 
 LICENSE=	GPLv2
 
-BROKEN_FreeBSD_13=	posix.cc:605:15: error: no matching function for call to 'pthread_detach'
-BROKEN_FreeBSD_14=	posix.cc:605:15: error: no matching function for call to 'pthread_detach'
+NOT_FOR_ARCHS=	armv7 i386
+NOT_FOR_ARCHS_REASON=	use of overloaded operator '[]' is ambiguous (with operand types
+
+LIB_DEPENDS=	libzstd.so:archivers/zstd
+
+USES=		gmake pkgconfig python shebangfix ssl tar:bzip2
 BROKEN_SSL=	openssl
 BROKEN_SSL_REASON_openssl=	member access into incomplete type 'DH' (aka 'dh_st')
-
-USES=		compiler:c++11-lang gmake pkgconfig python tar:bzip2 \
-		shebangfix ssl
-
-CONFLICTS=	omniORB41-4.1.*
-SONUM=		4
-PLIST_SUB+=	SONUM=${SONUM}
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
-MAKEFILE=	GNUmakefile
-CONFIGURE_ENV+=	PYTHON=${PYTHON_CMD}
-CONFIGURE_ARGS=	--datadir=${DATADIR} --with-openssl=${OPENSSLBASE} \
-		--with-omniORB-config=${PREFIX}/etc/omniORB.cfg \
-		--with-omniNames-logdir=/var/log
-OPTIONS_DEFINE=	DOCS STATIC
-OPTIONS_DEFAULT=	STATIC
-OPTIONS_SUB=	yes
-STATIC_CONFIGURE_OFF=	--disable-static
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:S/-2//}
-SHEBANG_FILES=	src/tool/omniidl/python/scripts/omniidlrun.py \
+
+SHEBANG_FILES=	src/tool/omniidl/python2/scripts/omniidlrun.py \
 		src/tool/omniidl/python3/scripts/omniidlrun.py
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--datadir=${DATADIR} \
+		--with-omniNames-logdir=/var/log \
+		--with-omniORB-config=${PREFIX}/etc/omniORB.cfg \
+		--with-openssl=${OPENSSLBASE}
+CONFIGURE_ENV+=	PYTHON=${PYTHON_CMD}
+
+MAKEFILE=	GNUmakefile
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:S/-2//}
+
+PLIST_SUB+=		ABI_MAJOR_VER=${ABI_MAJOR_VER} \
+			ABI_MINOR_VER=${ABI_MINOR_VER} \
+			ABI_VER=${ABI_VER}
+
+OPTIONS_DEFINE=		DOCS STATIC
+OPTIONS_DEFAULT=	STATIC
+OPTIONS_SUB=		yes
+
+STATIC_CONFIGURE_OFF=	--disable-static
+
+ABI_VER=		4
+ABI_MAJOR_VER=		3
+ABI_MINOR_VER=		1
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#-O2#${CFLAGS}#g' ${WRKSRC}/mk/beforeauto.mk.in
-	@${REINPLACE_CMD} -e 's#%%STAGEDIR%%%%PREFIX%%#${STAGEDIR}${PREFIX}#g' \
+	@${REINPLACE_CMD} -e 's#$$(INSTALLLIBDIR)/pkgconfig#${STAGEDIR}${PREFIX}/libdata/pkgconfig#g' \
 		${WRKSRC}/contrib/pkgconfig/GNUmakefile.in
 
 post-install:
@@ -49,13 +60,22 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/sample.cfg ${STAGEDIR}${PREFIX}/etc/omniORB.cfg.sample
 	@cd ${WRKSRC}/man/man1 && ${INSTALL_MAN} *.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 	@cd ${WRKSRC}/man/man8 && ${INSTALL_MAN} *.8 ${STAGEDIR}${MAN8PREFIX}/man/man8
-.for i in catior convertior omniMapper omniNames omnicpp nameclt omkdepend genior
+.for i in catior convertior omniMapper omniNames omnicpp nameclt omkdepend \
+	genior
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${i}
 .endfor
-.for i in libomniDynamic4.so.2.${SONUM} libomnisslTP4.so.2.${SONUM} libCOS4.so.2.${SONUM} \
-	libomniCodeSets4.so.2.${SONUM} libomniZIOPDynamic4.so.2.${SONUM} libomniZIOP4.so.2.${SONUM} \
-	libomniConnectionMgmt4.so.2.${SONUM} libomniORB4.so.2.${SONUM} libCOSDynamic4.so.2.${SONUM} \
-	libomnithread.so.4.1
+.for i in libomniConnectionMgmt4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomniORB4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libCOSDynamic4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomnihttpTP4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomnihttpCrypto4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomnisslTP4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomniDynamic4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libCOS4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomniCodeSets4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomniZIOPDynamic4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
+	libomnithread.so.${ABI_VER}.${ABI_MAJOR_VER} \
+	libomniZIOP4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER}
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${i}
 .endfor
 	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/*.so

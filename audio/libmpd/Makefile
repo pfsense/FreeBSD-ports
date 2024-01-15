@@ -1,6 +1,3 @@
-# Created by: Stepan Zastupov [RedChrom] <redchrom@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libmpd
 PORTVERSION=	11.8.17
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION:R}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Abstraction around libmpdclient
+WWW=		https://gmpc.wikia.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

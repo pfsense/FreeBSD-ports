@@ -1,6 +1,3 @@
-# Created by: Chris D. Faulhaber <jedgar@fxp.org>
-# $FreeBSD$
-
 PORTNAME=	lmmon
 PORTVERSION=	0.65
 PORTREVISION=	1

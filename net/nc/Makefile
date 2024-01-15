@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	nc
 PORTVERSION=	1.0.1
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	net
 MASTER_SITES=	SUNSITE/utils/file
 DISTNAME=	ncat-${PORTVERSION}
 
-MAINTAINER=	lx@redundancy.redundancy.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network aware cat
+WWW=		https://www.kyne.com.au/~mark/software/ncat.php
 
 GNU_CONFIGURE=	yes
 

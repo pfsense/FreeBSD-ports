@@ -1,15 +1,13 @@
-# Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
-
 PORTNAME=	glaxium
 PORTVERSION=	0.5
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	http://xhosxe.free.fr/glaxium/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL based space-ship "shoot-em-up" game
+WWW=		http://xhosxe.free.fr/glaxium/
 
 LIB_DEPENDS=	libpng.so:graphics/png
 

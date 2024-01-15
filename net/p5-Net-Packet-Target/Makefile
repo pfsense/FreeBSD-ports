@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Packet-Target
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Target object for all Net-Packet related stuff
+WWW=		https://metacpan.org/release/GOMOR/Net-Packet-Target-1.01
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/LICENSE.Artistic

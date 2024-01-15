@@ -1,12 +1,10 @@
-# Created by: Alexander Vereeken <Alexander88207@protonmail.com>
-# $FreeBSD$
-
 PORTNAME=	numix-icon-theme-circle
-DISTVERSION=	20.09.19
+DISTVERSION=	22.04.06
 CATEGORIES=	x11-themes
 
 MAINTAINER=	Alexander88207@protonmail.com
 COMMENT=	Icon theme from the Numix project
+WWW=		https://github.com/numixproject/numix-icon-theme-circle
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

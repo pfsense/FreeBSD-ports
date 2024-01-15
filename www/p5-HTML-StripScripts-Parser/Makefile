@@ -1,6 +1,3 @@
-# Created by: kftseng@iyard.org
-# $FreeBSD$
-
 PORTNAME=	HTML-StripScripts-Parser
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	XSS filter using HTML::Parser
+WWW=		https://metacpan.org/release/HTML-StripScripts-Parser
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

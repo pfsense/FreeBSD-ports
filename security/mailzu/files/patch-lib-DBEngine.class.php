@@ -1,5 +1,14 @@
 --- lib/DBEngine.class.php.orig	2007-06-14 19:00:15 UTC
 +++ lib/DBEngine.class.php
+@@ -67,7 +67,7 @@ class DBEngine {
+ 	* DBEngine constructor to initialize object
+ 	* @param none
+ 	*/
+-	function DBEngine() {
++	function __construct() {
+ 		global $conf;
+ 
+ 		$this->dbType = $conf['db']['dbType'];
 @@ -133,35 +133,35 @@ class DBEngine {
  			MAX(stattable.pending) AS pending
  			FROM (
@@ -141,3 +150,27 @@
  					FROM msgs INNER JOIN msgrcpt ON msgs.mail_id=msgrcpt.mail_id
  					$join_type maddr AS recip ON msgrcpt.rid=recip.id
  					WHERE msgrcpt.rs='p' AND NOT (msgs.quar_type = '')
+@@ -606,7 +606,7 @@ class DBEngine {
+ 	*/
+ 	function get_raw_mail($mail_id, $email_recip) {
+ 		global $conf;
+-
++		$ret_text = "";
+ 		$mail_text_column = ' mail_text';
+ 		# If using the bytea or BLOB type for sql quarantine use proper conversion
+ 		# (since amavisd 2.4.4
+@@ -642,12 +642,12 @@ class DBEngine {
+                         return false;
+                 }
+                 while ($rs = $result->fetchRow()) {
+-                        $return .= $rs['mail_text'];
++                        $ret_text .= $rs['mail_text'];
+                 }
+                 
+                 $result->free();
+                 
+-                return $return;
++                return $ret_text;
+         }
+ 		
+ 	/**

@@ -1,13 +1,12 @@
-# Created by: Stefan Ehmann <shoesoft@gmx.net>
-# $FreeBSD$
-
 PORTNAME=		Ice
-PORTVERSION=		3.6.4
+PORTVERSION=		3.6.5
+PORTREVISION=		1
 DISTVERSIONPREFIX=	v
 CATEGORIES=		devel
 
 MAINTAINER=		grembo@FreeBSD.org
 COMMENT=		Modern alternative to object middleware such as CORBA/COM/DCOM/COM+
+WWW=		http://www.zeroc.com/
 
 LICENSE=		GPLv2
 
@@ -20,6 +19,7 @@ MAKE_JOBS_UNSAFE=	yes
 LIB_DEPENDS=		libexpat.so:textproc/expat2 \
 			libmcpp.so:devel/mcpp
 USES+=			compiler:c++11-lang ssl
+USE_CXXSTD=	c++11
 .else
 LIB_VRS=		${PORTVERSION:R:S|.||g}
 LIB_DEPENDS+=		libIce.so.${LIB_VRS}:devel/ice
@@ -28,24 +28,21 @@ PLIST_SUB+=		LIB_VERSION="${PORTVERSION}" LIB_VRS="${LIB_VRS}"
 
 OPTIONS_DEFINE?=	DEBUG TEST
 
-.include <bsd.port.options.mk>
-
-USES+=			iconv gmake
-
-.if ${PORT_OPTIONS:MTEST} && ${SLAVE_PORT} == "no"
-USES+=			python:build
-BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib@${PY_FLAVOR}
-.endif
-
-USES+=			bdb:5
-INVALID_BDB_VER=	48 6
+USES+=			bdb iconv gmake
 USE_LDCONFIG=		yes
 BUILD_WRKSRC?=		${WRKSRC}/cpp
 INSTALL_WRKSRC?=	${WRKSRC}/cpp
 PORTSCOUT=		limit:^3\.6\.
 USE_GITHUB=		yes
-GH_ACCOUNT=		zeroc-ice
-GH_PROJECT=		ice
+GH_TUPLE=		zeroc-ice:ice:${DISTVERSIONFULL}
+TEST_GH_TUPLE=		zeroc-ice:ice:v3.7.6:CERTS
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MTEST} && ${SLAVE_PORT} == "no"
+USES+=			python:build
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib@${PY_FLAVOR}
+.endif
 
 CFLAGS+=		-ftemplate-depth-128 -fPIC -DPIC -Wall -D_REENTRANT -I${LOCALBASE}/include
 
@@ -72,15 +69,6 @@ MAKE_ENV+=		LD_LIBRARY_PATH=${WRKSRC}/cpp/lib:$$LD_LIBRARY_PATH
 PYSITEDIR=	${PREFIX}${PYTHON_SITELIBDIR:S|^${LOCALBASE}||}
 .else
 PYSITEDIR=	${PYTHON_SITELIBDIR}
-.endif
-
-.if ${PORT_OPTIONS:MNAMESPACES}
-MAKE_ARGS+=	USE_NAMESPACES=yes
-PLIST_SUB+=	NAMESPACES=""
-PLIST_SUB+=	NONAMESPACES="@comment "
-.else
-PLIST_SUB+=	NAMESPACES="@comment "
-PLIST_SUB+=	NONAMESPACES=""
 .endif
 
 post-patch:
@@ -122,6 +110,8 @@ post-patch:
 		s|%%LOCALBASE%%|${LOCALBASE}|g;' ${WRKSRC}/php/config/Make.rules.php
 
 do-test-TEST-on:
+	@${RM} -r ${WRKSRC}/certs
+	@${CP} -r ${WRKSRC_CERTS}/certs ${WRKSRC}/certs
 	@cd ${BUILD_WRKSRC} && ${PYTHON_CMD} ./allTests.py
 
 .if ${SLAVE_PORT} == "no"

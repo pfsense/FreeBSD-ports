@@ -1,6 +1,3 @@
-# Created by: Norberto Lopes <nlopes.ml@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	anonymous-pro
 PORTVERSION=	1.002
 PORTREVISION=	3
@@ -10,10 +7,13 @@ DISTNAME=	AnonymousPro-${PORTVERSION}
 
 MAINTAINER=	nlopes.ml@gmail.com
 COMMENT=	Fixed width sans designed especially for coders
+WWW=		https://www.ms-studio.com/FontSales/anonymouspro.html
 
 LICENSE=	OFL11
 
 USES=		fonts zip
+
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message

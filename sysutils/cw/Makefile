@@ -1,6 +1,3 @@
-# Created by: Dryice Liu <dryice@dryice.name>
-# $FreeBSD$
-
 PORTNAME=	cw
 PORTVERSION=	1.0.16
 PORTREVISION=	1
@@ -10,11 +7,14 @@ MASTER_SITES=	http://cwrapper.sourceforge.net/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Non-intrusive color wrapper for common commands
+WWW=		https://cwrapper.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		shebangfix
+
+CONFLICTS_INSTALL=	unixcw # bin/cw
 
 SHEBANG_FILES=	def/*
 SHEBANG_LANG=	cw

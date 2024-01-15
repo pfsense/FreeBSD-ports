@@ -1,36 +1,44 @@
-# Created by: anholt@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	asciidoc
-PORTVERSION=	9.0.4
-PORTREVISION=	1
+PORTVERSION=	10.2.0
+PORTREVISION=	2
 CATEGORIES=	textproc
-MASTER_SITES=	https://github.com/asciidoc/asciidoc-py3/releases/download/${PORTVERSION}/
+MASTER_SITES=	PYPI \
+		https://github.com/asciidoc-py/asciidoc-py/raw/${PORTVERSION}/doc/:manpage
+DISTFILES=	asciidoc-${PORTVERSION}${EXTRACT_SUFX} \
+		a2x.1.txt:manpage \
+		asciidoc.1.txt:manpage
+EXTRACT_ONLY=	asciidoc-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Text document format for writing short documents and man pages
+WWW=		https://github.com/asciidoc-py/asciidoc-py
 
-LICENSE=	GPLv2 MIT
-LICENSE_COMB=	multi
+LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl
 
-USES=		gmake gnome python:3.5+ shebangfix
+USES=		gnome python shebangfix
 USE_GNOME=	libxml2 libxslt
+USE_PYTHON=	autoplist distutils noflavors
 
-GNU_CONFIGURE=	yes
 NO_ARCH=	yes
 
-SHEBANG_GLOB=	*.py
+PLIST_FILES=	share/man/man1/a2x.1.gz \
+		share/man/man1/asciidoc.1.gz
+
+SHEBANG_FILES=	asciidoc/resources/filters/*.py \
+		asciidoc/resources/filters/*/*.py
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|python3 |${PYTHON_CMD} |' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/a2x.py
-	@${FIND} ${WRKSRC} -name '*.conf' | ${XARGS} -I % ${LN} % %.sample
+	@${CP} ${DISTDIR}/a2x.1.txt ${WRKSRC}/a2x.1.txt
+	@${CP} ${DISTDIR}/asciidoc.1.txt ${WRKSRC}/asciidoc.1.txt
+
+post-build:
+	@cd ${WRKSRC} && ${PYTHON_CMD} -m asciidoc.a2x -f manpage a2x.1.txt
+	@cd ${WRKSRC} && ${PYTHON_CMD} -m asciidoc.a2x -f manpage asciidoc.1.txt
 
 post-install:
-	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/
-	${INSTALL_DATA} ${WRKSRC}/asciidocapi.py ${STAGEDIR}${PYTHON_SITELIBDIR}/
+	${INSTALL_MAN} ${WRKSRC}/a2x.1 ${WRKSRC}/asciidoc.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 .include <bsd.port.mk>

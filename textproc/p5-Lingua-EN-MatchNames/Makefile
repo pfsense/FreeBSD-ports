@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-MatchNames
 PORTVERSION=	1.36
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Smart matching for human names
+WWW=		https://metacpan.org/release/Lingua-EN-MatchNames
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

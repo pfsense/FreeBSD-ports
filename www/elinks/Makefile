@@ -1,106 +1,131 @@
-# Created by: Michael Vasilenko <acid@stu.cn.ua>
-# $FreeBSD$
-
 PORTNAME=	elinks
-DISTVERSION=	0.11.7
-PORTREVISION=	13
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.17.0
 CATEGORIES=	www
-MASTER_SITES=	http://elinks.or.cz/download/
 
-MAINTAINER=	beat@FreeBSD.org
+MAINTAINER=	jailbird@fdf.net
 COMMENT=	Links text WWW browser with enhancements
+WWW=		https://github.com/rkd77/elinks/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-GNU_CONFIGURE=	yes
-USES=		bison:alias cpe gmake localbase ssl tar:bzip2
-CONFIGURE_ARGS=	--without-zlib
+BUILD_DEPENDS=	xmlto:textproc/xmlto
 
-LIBS+=		-lexecinfo
+USES=		bison:alias cpe gmake iconv meson perl5 pkgconfig python ssl
+USE_GITHUB=	yes
+GH_ACCOUNT=	rkd77
 
-OPTIONS_DEFINE=		88COLORS 256COLORS SPIDERMONKEY XBELMARKS LOCAL_CGI \
-			FINGER GOPHER BITTORRENT NNTP FTP FSP SMB EXMODE \
-			HIGHLIGHT IDN NOROOT FASTMEM PERL \
-			LUA GUILE ICONV MOUSE NLS
-OPTIONS_DEFAULT=	88COLORS 256COLORS FTP EXMODE HIGHLIGHT FASTMEM MOUSE
+LDFLAGS+=	-lexecinfo
+MESON_ARGS=	-Dgpm=false -Dperl=true
+
+OPTIONS_DEFINE=		256COLORS 88COLORS TRUECOLORS BITTORRENT BROTLI CSS \
+			CURL EXMODE FASTMEM FINGER FSP FTP GOPHER GUILE \
+			HIGHLIGHT IDN LOCAL_CGI LUA LZMA MOUSE NLS NNTP NOROOT \
+			SMB SPIDERMONKEY TRE XBELMARKS ZSTD
+OPTIONS_DEFAULT=	256COLORS 88COLORS BROTLI EXMODE FASTMEM FTP \
+			HIGHLIGHT LZMA MOUSE
 OPTIONS_SUB=		yes
 
 88COLORS_DESC=		88 color support
 256COLORS_DESC=		256 color support
-SPIDERMONKEY_DESC=	ECMAScript support (via SpiderMonkey)
-XBELMARKS_DESC=		XBEL bookmarks (via expat)
-LOCAL_CGI_DESC=		Local CGI support
-FSP_DESC=		FSP protocol support (via fsplib)
+TRUECOLORS_DESC=	True color support
+CSS_DESC=		Cascading Style Sheets support (via libcss & libdom)
 EXMODE_DESC=		Exmode (CLI) support
-HIGHLIGHT_DESC=		HTML highlighting using DOM engine
-NOROOT_DESC=		Prevention of usage by root
 FASTMEM_DESC=		Fast memory allocation functions
+FSP_DESC=		FSP protocol support (via fsplib)
+HIGHLIGHT_DESC=		HTML highlighting using DOM engine
+LOCAL_CGI_DESC=		Local CGI support
+NOROOT_DESC=		Prevention of usage by root
+SPIDERMONKEY_DESC=	ECMAScript support (via SpiderMonkey)
+TRE_DESC=		TRE regex search support
+XBELMARKS_DESC=		XBEL bookmarks (via expat)
 
-NLS_USES=		gettext
-NLS_CONFIGURE_OFF=	--disable-nls
+256COLORS_MESON_TRUE=	256-colors
 
-GUILE_LIB_DEPENDS=	libguile.so:lang/guile
-GUILE_CONFIGURE_WITH=	guile
+88COLORS_MESON_TRUE=	88-colors
 
-LUA_USES=		lua:51
-LUA_CONFIGURE_WITH=	lua
-LUA_CPPFLAGS=		-I${LUA_INCDIR}
-LUA_LDFLAGS=		-L${LUA_LIBDIR}
+TRUECOLORS_MESON_TRUE=	true-color
 
-PERL_USES=		perl5
-PERL_CONFIGURE_WITH=	perl
+BITTORRENT_MESON_TRUE=	bittorrent
 
-FASTMEM_CONFIGURE_ON=	--enable-fastmem
+BROTLI_LIB_DEPENDS=	libbrotlidec.so:archivers/brotli
+BROTLI_MESON_TRUE=	brotli
 
-IDN_LIB_DEPENDS=	libidn.so:dns/libidn
-IDN_CONFIGURE_WITH=	idn
+CSS_LIB_DEPENDS=	libcss.so:textproc/libcss \
+			libdom.so:www/libdom
+CSS_MESON_TRUE=		libcss
 
-NOROOT_CONFIGURE_ON=	--enable-no-root
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
+CURL_MESON_TRUE=	libcurl
 
-HIGHLIGHT_CONFIGURE_ON=	--enable-html-highlight
+EXMODE_MESON_TRUE=	exmode
 
-EXMODE_CONFIGURE_ON=	--enable-exmode
+FASTMEM_MESON_TRUE=	fastmem
 
-SMB_USES=		samba # smbclient
-SMB_CONFIGURE_ENABLE=	smb
+FINGER_MESON_TRUE=	finger
 
 FSP_RUN_DEPENDS=	${LOCALBASE}/lib/libfsplib.a:net/fsplib
 FSP_BUILD_DEPENDS=	${LOCALBASE}/lib/libfsplib.a:net/fsplib
-FSP_CONFIGURE_ENABLE=	fsp
+FSP_MESON_TRUE=		fsp
 
-FTP_CONFIGURE_ENABLE=	ftp
+FTP_MESON_TRUE=		ftp
 
-NNTP_CONFIGURE_ENABLE=	nntp
+GOPHER_MESON_TRUE=	gopher
 
-BITTORRENT_CONFIGURE_ENABLE=	bittorrent
+GUILE_USES=		guile:3.0
+GUILE_MESON_TRUE=	guile
 
-GOPHER_CONFIGURE_ENABLE=	gopher
+HIGHLIGHT_MESON_TRUE=	html-highlight
 
-MOUSE_CONFIGURE_ENABLE=	mouse
+IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
+IDN_USES=		localbase
+IDN_MESON_TRUE=		idn
 
-FINGER_CONFIGURE_ENABLE=	finger
+LOCAL_CGI_MESON_TRUE=	cgi
 
-LOCAL_CGI_CONFIGURE_ENABLE=	cgi
+LUA_USES=		lua:52-53
+LUA_MESON_ON=		-Dluapkg=lua-${LUA_VER}
+
+LZMA_MESON_TRUE=	lzma
+
+MOUSE_MESON_TRUE=	mouse
+
+NLS_USES=		gettext
+NLS_MESON_TRUE=		nls
+
+NNTP_MESON_TRUE=	nntp
+
+NOROOT_MESON_TRUE=	no-root
+
+SMB_USES=		samba # smbclient
+SMB_MESON_TRUE=		smb
+
+SPIDERMONKEY_USES=		compiler:c++17-lang sqlite
+SPIDERMONKEY_BUILD_DEPENDS=	${LOCALBASE}/lib/libmozjs-102.so:lang/spidermonkey102 \
+				${LOCALBASE}/lib/libxml++-5.0.so:textproc/libxml++
+SPIDERMONKEY_LIB_DEPENDS=	libnspr4.so:devel/nspr \
+				libxml++-5.0.so:textproc/libxml++
+SPIDERMONKEY_CFLAGS=		-I${LOCALBASE}/include/nspr \
+				-I${LOCALBASE}/include/js-102
+SPIDERMONKEY_CXXFLAGS=		-I${LOCALBASE}/include/nspr \
+				-I${LOCALBASE}/include/js-102
+SPIDERMONKEY_LDFLAGS=		-L${LOCALBASE}/lib -lnspr4 -lpthread -lm
+SPIDERMONKEY_MESON_ON=		-Dsm-scripting=true -Dspidermonkey=true
+SPIDERMONKEY_IMPLIES=		CURL
+
+TRE_LIB_DEPENDS=	libtre.so:textproc/libtre
+TRE_MESON_TRUE=		tre
 
 XBELMARKS_LIB_DEPENDS=	libexpat.so:textproc/expat2
-XBELMARKS_CONFIGURE_ON=	--enable-xbel --with-expat
-XBELMARKS_CONFIGURE_OFF=--disable-xbel
+XBELMARKS_MESON_TRUE=	xbel
 
-256COLORS_CONFIGURE_ON=	--enable-256-colors
+ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
+ZSTD_USES=		localbase
+ZSTD_MESON_TRUE=	zstd
 
-88COLORS_CONFIGURE_ON=	--enable-88-colors
-
-SPIDERMONKEY_BUILD_DEPENDS=	${LOCALBASE}/lib/libjs.so:lang/spidermonkey17
-SPIDERMONKEY_RUN_DEPENDS=	js:lang/spidermonkey17
-SPIDERMONKEY_LIB_DEPENDS=	libnspr4.so:devel/nspr
-SPIDERMONKEY_CFLAGS=		-I${LOCALBASE}/include/nspr \
-				-I${LOCALBASE}/include/js-1.7
-SPIDERMONKEY_LDFLAGS=		-lnspr4 -pthread -lpthread -lm
-SPIDERMONKEY_CONFIGURE_ON=	--enable-sm-scripting --with-spidermonkey
-SPIDERMONKEY_CONFIGURE_OFF=	--disable-sm-scripting --without-spidermonkey
-
-ICONV_USES=		iconv
-ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
+post-patch:
+	@${REINPLACE_CMD} -e 's|/usr/bin/perl|${PERL}|g' ${WRKSRC}/doc/tools/help2xml
+	@${REINPLACE_CMD} -e 's|/usr/bin/env python3|${PYTHON_CMD}|g' ${WRKSRC}/doc/tools/asciidoc/asciidoc.py
 
 .include <bsd.port.mk>

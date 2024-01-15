@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Table-TinyColorWide
 PORTVERSION=	0.001
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Text::Table::Tiny with support for colored text and wide character
+WWW=		https://metacpan.org/release/Text-Table-TinyColorWide
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

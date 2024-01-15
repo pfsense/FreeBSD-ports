@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	prefork
 PORTVERSION=	1.05
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Optimize module loading across forking and non-forking scenarios
+WWW=		https://metacpan.org/release/prefork
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	normalizemime
 PORTVERSION=	1.19
 PORTREVISION=	1
@@ -12,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mime normalizer to be used as a preprocessor for email classification
+WWW=		http://hyvatti.iki.fi/~jaakko/spam/
 
 LICENSE=	GPLv2
 

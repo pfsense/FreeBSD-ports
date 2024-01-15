@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Korean support
 
     SUBDIR += FreeWnn-lib
@@ -27,15 +24,24 @@
     SUBDIR += ko.TeX-fonts-extra
     SUBDIR += libhangul
     SUBDIR += libreoffice
-    SUBDIR += man-doc
     SUBDIR += munhwafonts-cid
     SUBDIR += nabi
-    SUBDIR += nanumcoding-ttf
-    SUBDIR += nanumfonts-otf
-    SUBDIR += nanumfonts-ttf
+    SUBDIR += nanum-barun-gothic
+    SUBDIR += nanum-barun-pen
+    SUBDIR += nanum-brush
+    SUBDIR += nanum-gothic
+    SUBDIR += nanum-gothic-coding
+    SUBDIR += nanum-gothic-eco
+    SUBDIR += nanum-myeongjo
+    SUBDIR += nanum-myeongjo-eco
+    SUBDIR += nanum-pen
+    SUBDIR += nanum-square
+    SUBDIR += nanum-square-round
+    SUBDIR += nanumfonts
     SUBDIR += nhpf
     SUBDIR += p5-Lingua-KO-Hangul-Util
     SUBDIR += p5-Lingua-KO-Romanize-Hangul
+    SUBDIR += py-korean-lunar-calendar
     SUBDIR += scim-hangul
     SUBDIR += scim-tables
     SUBDIR += sourcehansans-otf

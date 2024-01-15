@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	timidity
 PORTVERSION=	0.2i
 PORTREVISION=	1
@@ -9,11 +7,12 @@ DISTFILES+=	${DISTNAME}.tar.gz:timidity
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIDI to PCM software synthesizer
+WWW=		http://www.onicos.com/staff/iz/timidity/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL=	timidity++-2.*
+CONFLICTS_INSTALL=	timidity++
 
 USES=		alias ncurses
 INSTALL_TARGET=	install.all

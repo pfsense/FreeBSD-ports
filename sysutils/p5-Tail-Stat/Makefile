@@ -1,6 +1,3 @@
-# Created by: Oleg A. Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	Tail-Stat
 PORTVERSION=	0.26
 CATEGORIES=	sysutils perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Real-time log statistics server
+WWW=		https://metacpan.org/release/Tail-Stat
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

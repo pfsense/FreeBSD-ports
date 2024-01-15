@@ -1,6 +1,3 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
-
 PORTNAME=	bbe
 PORTVERSION=	0.2.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}-/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sed-like editor for binary files
+WWW=		https://sourceforge.net/projects/bbe-/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Martin Mersberger
-# $FreeBSD$
-
 PORTNAME=	pam_mkhomedir
 PORTVERSION=	0.2
 CATEGORIES=	security

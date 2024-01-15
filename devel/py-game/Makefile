@@ -1,15 +1,13 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	game
-DISTVERSION=	2.0.0
+DISTVERSION=	2.5.2
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Module designed to write games in Python
+WWW=		https://www.pygame.org/news
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/docs/LGPL.txt
@@ -21,7 +19,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 RUN_DEPENDS=	${PYNUMPY} \
 		v4l_compat>0:multimedia/v4l_compat
 
-USES=		compiler:c11 jpeg pkgconfig python:3.6+ sdl xorg
+USES=		compiler:c11 jpeg localbase pkgconfig python sdl xorg
 USE_SDL=	sdl2 ttf2 image2 mixer2
 USE_PYTHON=	autoplist distutils
 USE_XORG=	x11

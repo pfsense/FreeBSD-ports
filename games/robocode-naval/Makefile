@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	robocode
 PORTVERSION=	0.9.2
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-setup
 CATEGORIES=	games education java
 MASTER_SITES=	SF/${PORTNAME}/naval-robocode/${PORTVERSION}
@@ -12,12 +10,14 @@ DIST_SUBDIR=	java
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Game for learning Java[tm] programming language
+WWW=		https://robo-code.blogspot.com.br
 
 LICENSE=	EPL
 
 PORTSCOUT=	limit:^\d+\.\d+\.\d+$$
 
-USES=		dos2unix zip
+USES=		cpe dos2unix zip
+CPE_VENDOR=	${PORTNAME}_project
 DOS2UNIX_GLOB=	*.css *.team *.properties package-list MANIFEST.MF
 USE_JAVA=	yes
 JAVA_EXTRACT=	yes
@@ -29,7 +29,7 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}${PKGNAMESUFFIX}
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
-SUB_FILES=	${PORTNAME}-NavalRobocode pkg-deinstall pkg-message
+SUB_FILES=	${PORTNAME}-NavalRobocode pkg-message
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}-NavalRobocode \

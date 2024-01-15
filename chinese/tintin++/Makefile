@@ -1,6 +1,3 @@
-# Created by: Foxfair Hu <foxfair@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	chinese
 
 CONFLICTS_INSTALL=	tintin++

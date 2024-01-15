@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	cymem
-PORTVERSION=	2.0.5
+DISTVERSION=	2.0.8
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cython memory helper
+WWW=		https://github.com/explosion/cymem
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils cython autoplist
 
 post-install:

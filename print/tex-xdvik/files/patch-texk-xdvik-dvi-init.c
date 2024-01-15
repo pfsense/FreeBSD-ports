@@ -1,4 +1,4 @@
---- texk/xdvik/dvi-init.c.orig	2013-04-05 00:14:54 UTC
+--- texk/xdvik/dvi-init.c.orig	2022-02-13 22:53:37 UTC
 +++ texk/xdvik/dvi-init.c
 @@ -31,6 +31,10 @@ in xdvi.c.
  
@@ -130,7 +130,7 @@
      default:
  	XDVI_FATAL((stderr, "Cannot recognize format for font file %s",
  	  fontp->filename));
-@@ -783,7 +845,13 @@ process_preamble(FILE *fp, dviErrFlagT *
+@@ -783,7 +845,13 @@ process_preamble(FILE *fp, dviErrFlagT *errflag)
  	TRACE_FILES((stderr, "process_preamble: fp = %p, errflag = %d, returning False", (void *)fp, *errflag));
  	return False;
      }
@@ -145,7 +145,7 @@
  	*errflag = WRONG_DVI_VERSION;
  	TRACE_FILES((stderr, "process_preamble: fp = %p, errflag = %d, returning False", (void *)fp, *errflag));
  	return False;
-@@ -845,7 +913,12 @@ find_postamble(FILE *fp, dviErrFlagT *er
+@@ -845,7 +913,12 @@ find_postamble(FILE *fp, dviErrFlagT *errflag)
  	fseek(fp, --pos, SEEK_SET);
  	byte = get_byte(fp);
      }
@@ -219,8 +219,8 @@
 +		snprintf(hstr, sizeof(hstr), "%f mm", h);
 +		wstr[sizeof(wstr) - 1] = '\0';
 +		hstr[sizeof(hstr) - 1] = '\0';
-+		m_paper_unshrunk_w = atopix(wstr, False);
-+		m_paper_unshrunk_h = atopix(hstr, False);
++		m_paper_unshrunk_w = atopix(wstr);
++		m_paper_unshrunk_h = atopix(hstr);
 +    		globals.grid_paper_unit = atopixunit("mm");
 +
 +		break;
@@ -234,7 +234,7 @@
      for (p = paper_types; p < paper_types + paper_types_size; p += 2) {
  	if (strcmp(temp, *p) == 0) {
 @@ -898,6 +1027,7 @@ set_paper_type(const char *arg)
-     m_paper_unshrunk_h = atopix(arg1 + 1, False);
+     m_paper_unshrunk_h = atopix(arg1 + 1);
  
      globals.grid_paper_unit = atopixunit(arg);
 +#endif

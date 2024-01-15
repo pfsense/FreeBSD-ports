@@ -1,6 +1,3 @@
-# Created by: Alex Allan <alex@kamaz.org.uk>
-# $FreeBSD$
-
 PORTNAME=	taglookup
 PORTVERSION=	0.2
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.kamaz.org.uk/taglookup/
 
 MAINTAINER=	alex@kamaz.org.uk
 COMMENT=	Utility for tagging groups of audio files using CDDB
+WWW=		https://www.kamaz.org.uk/taglookup
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,6 +15,7 @@ LIB_DEPENDS=	libcddb.so:audio/libcddb \
 		libtag.so:audio/taglib
 
 USES=		compiler:c++11-lang pkgconfig tar:tgz
+USE_CXXSTD=	c++11
 
 PLIST_FILES=	bin/taglookup \
 		man/man1/taglookup.1.gz

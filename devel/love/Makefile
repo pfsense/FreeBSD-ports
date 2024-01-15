@@ -1,20 +1,17 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	love
-PORTVERSION=	11.3
+PORTVERSION=	11.4
 CATEGORIES=	devel games
-MASTER_SITES=	https://bitbucket.org/rude/love/downloads/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://github.com/love2d/love/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-linux-src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Open-source 2D game engine
+WWW=		https://www.love2d.org/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-NOT_FOR_ARCHS=		mips mips64 powerpc powerpc64 powerpcspe sparc64
+NOT_FOR_ARCHS=		mips mips64 powerpc powerpc64 powerpcspe
 NOT_FOR_ARCHS_REASON=	Hashing not yet implemented for big endian
 
 LIB_DEPENDS=	libmodplug.so:audio/libmodplug \
@@ -32,6 +29,7 @@ GNU_CONFIGURE=	yes
 WRKSRC=		${WRKDIR}/love-${PORTVERSION}
 INSTALL_TARGET=	install-strip
 
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS LUAJIT GME
@@ -41,9 +39,7 @@ OPTIONS_DEFAULT_amd64=	LUAJIT
 LUAJIT_DESC=		Use luajit
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 LUAJIT_CONFIGURE_ON=	--with-lua=luajit
-# does not build with newer lua versions:
-# love.cpp:217:9: error: no matching function for call to 'lua_resume'
-LUAJIT_USES_OFF=	lua:51
+LUAJIT_USES_OFF=	lua:51  # stay compatible, e.g. games/mari0 crashes with 53..54
 LUAJIT_CONFIGURE_OFF=	--with-lua=lua \
 			--with-luaversion="-${LUA_VER}"
 LUAJIT_CONFIGURE_ENV_OFF=LUA_EXECUTABLE="${LUA_CMD}"

@@ -1,24 +1,22 @@
-# Created by: steve farrell
-# $FreeBSD$
-
 PORTNAME=	xqf
-PORTVERSION=	1.0.5
-PORTREVISION=	11
+PORTVERSION=	1.0.6.2
+PORTREVISION=	2
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Server browser for many popular 3D action games
-
-BROKEN_FreeBSD_13=	duplicate symbol: current_server_filter
-BROKEN_FreeBSD_14=	duplicate symbol: current_server_filter
+WWW=		http://www.linuxgames.com/xqf/
 
 RUN_DEPENDS=	qstat:games/qstat
 
-USES=		gettext gmake gnome pkgconfig xorg
-USE_GNOME=	intlhack
+USES=		autoreconf gettext gmake gnome pkgconfig xorg
+USE_GNOME=	intlhack gdkpixbuf2 gdkpixbuf2xlib
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	XQF
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib -lX11
@@ -30,7 +28,6 @@ OPTIONS_DEFINE=	GTK2 BZIP2 DOCS
 OPTIONS_DEFAULT=GTK2 BZIP2
 
 GTK2_USE=		GNOME=gtk20
-GTK2_USE_OFF=		GNOME=gdkpixbuf
 GTK2_CONFIGURE_ENABLE=	gtk2
 
 BZIP2_CONFIGURE_ENABLE=	bzip2

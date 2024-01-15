@@ -1,6 +1,3 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	paperkey
 PORTVERSION=	1.6
 CATEGORIES=	security
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.jabberwocky.com/software/paperkey/ \
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Extract just the secret information out of OpenPGP secret keys
+WWW=		https://www.jabberwocky.com/software/paperkey/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

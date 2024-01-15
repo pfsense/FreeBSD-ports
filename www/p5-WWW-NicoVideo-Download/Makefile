@@ -1,6 +1,3 @@
-# Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-NicoVideo-Download
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Download FLV/MP4/SWF files from nicovideo.jp
+WWW=		https://metacpan.org/release/WWW-NicoVideo-Download
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

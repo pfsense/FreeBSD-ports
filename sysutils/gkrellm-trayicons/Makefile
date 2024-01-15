@@ -1,6 +1,3 @@
-# Created by: Tobias Roth <ports@fsck.ch>
-# $FreeBSD$
-
 PORTNAME=	trayicons
 PORTVERSION=	1.03
 PORTREVISION=	8
@@ -11,6 +8,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GKrellM2 plugin to display definable icons as notifiers or launchers
+WWW=		http://sweb.cz/tripie/gkrellm/trayicons/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2

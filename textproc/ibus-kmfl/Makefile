@@ -1,6 +1,3 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	ibus-kmfl
 PORTVERSION=	1.0.3
 PORTREVISION=	7
@@ -11,6 +8,7 @@ DIST_SUBDIR=	kmfl
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	KMFL IMEngine for IBus framework
+WWW=		https://kmfl.sourceforge.net/
 
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus \
 		libkmfl.so:textproc/libkmfl \

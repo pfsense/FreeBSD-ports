@@ -1,0 +1,15 @@
+--- src/modules/rtaudio/CMakeLists.txt.orig	2023-12-06 23:26:22 UTC
++++ src/modules/rtaudio/CMakeLists.txt
+@@ -32,7 +32,11 @@ else()
+       target_compile_definitions(mltrtaudio PRIVATE __LINUX_PULSE__)
+     endif()
+     if(NOT (TARGET PkgConfig::alsa OR TARGET PkgConfig::libpulse-simple))
+-      target_link_libraries(mltrtaudio PRIVATE ossaudio)
++      if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
++        # Nothing to do for OSS!
++      else()
++        target_link_libraries(mltrtaudio PRIVATE ossaudio)
++      endif()
+       target_compile_definitions(mltrtaudio PRIVATE __LINUX_OSS__)
+     endif()
+   endif()

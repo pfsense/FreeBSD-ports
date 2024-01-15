@@ -1,6 +1,3 @@
-# Created by: KANOU Hiroki <kanou@mil.allnet.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	kochi
 PORTVERSION=	20030809
 PORTREVISION=	6
@@ -11,11 +8,12 @@ DISTNAME=	${PORTNAME}-substitute-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Kochi Japanese TrueType font
+WWW=		http://wiki.fdiary.net/font/?kochi-alternative
 
 LICENSE=	COPYINGATTACHED
 LICENSE_NAME=	Free redistribution with copyright document attached
 LICENSE_FILE=	${WRKSRC}/COPYING
-LICENSE_PERMS=  dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		fonts:fc tar:bzip2
 FONTPATHSPEC=	${FONTNAME}:pri=60

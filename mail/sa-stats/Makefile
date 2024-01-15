@@ -1,6 +1,3 @@
-# Created by: Alexey V. Degtyarev <alexey@renatasystems.org>
-# $FreeBSD$
-
 PORTNAME=	sa-stats
 PORTVERSION=	1.0
 PORTREVISION=	3
@@ -12,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generates top spam/ham rules fired for SpamAssassin installations
+WWW=		http://www.rulesemporium.com/programs/
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	sa-stats-1.0.txt

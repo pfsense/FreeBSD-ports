@@ -1,6 +1,3 @@
-# Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-# $FreeBSD$
-
 PORTNAME=	backuppc
 PORTVERSION=	3.3.2
 PORTREVISION=	5
@@ -11,6 +8,7 @@ DISTNAME=	BackupPC-${PORTVERSION}
 
 MAINTAINER=	moiseev@mezonplus.ru
 COMMENT=	Multi-platform backup to disk-based storage
+WWW=		https://backuppc.github.io/backuppc/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

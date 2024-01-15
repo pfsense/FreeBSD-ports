@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jdk
 PORTVERSION=	${JDK_VERSION}.${JDK_UPDATE_VERSION}
 CATEGORIES=	java devel
@@ -9,13 +7,19 @@ DISTNAME=	jdk-${JDK_VERSION}u${JDK_UPDATE_VERSION}-linux-${JAVA_DISTFILE_ARCH}
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	Oracle Java ${JDK_VERSION} Development Kit for Linux
+WWW=		https://www.oracle.com/java/
+
+# Converted from RESTRICTED
+LICENSE=	jdk
+LICENSE_NAME=	jdk
+LICENSE_TEXT=	Redistribution of repackaged binaries not permitted
+LICENSE_PERMS=	auto-accept
 
 RUN_DEPENDS=	javavm:java/javavmwrapper
 
 OPTIONS_DEFINE=	DEMO
 DEMO_DESC=	Install demos and samples
 
-RESTRICTED=	Redistribution of repackaged binaries not permitted
 PKGNAMESUFFIX=	1${JDK_VERSION}
 
 WRKSRC=		${WRKDIR}/jdk${DL_JDK_VERSION}
@@ -23,14 +27,15 @@ PLIST_SUB=	T=${APP_HOME:S/^${PREFIX}\///} \
 		PORTVERSION=${PORTVERSION}
 
 NO_BUILD=	yes
-USES=		linux shebangfix
+USES=		cpe linux shebangfix
+CPE_VENDOR=	oracle
 USE_LINUX=	xorglibs
 ONLY_FOR_ARCHS=	i386 amd64
 
 JDK_VENDOR=		oracle
 JDK_VERSION=		8
 JDK_INTERNAL_VERSION=	1.${JDK_VERSION}.0
-JDK_UPDATE_VERSION=	241
+JDK_UPDATE_VERSION=	291
 .if ${JDK_UPDATE_VERSION} == 0
 DL_JDK_VERSION=		${JDK_INTERNAL_VERSION}
 .elif ${JDK_UPDATE_VERSION} <= 9

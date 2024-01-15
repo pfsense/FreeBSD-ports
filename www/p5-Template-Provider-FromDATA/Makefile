@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	Template-Provider-FromDATA
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Load templates from your __DATA__ section
+WWW=		https://metacpan.org/release/Template-Provider-FromDATA
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

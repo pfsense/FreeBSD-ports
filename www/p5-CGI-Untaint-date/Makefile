@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CGI-Untaint-date
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Validate a date
+WWW=		https://metacpan.org/release/CGI-Untaint-date
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-CGI-Untaint>=0:www/p5-CGI-Untaint \

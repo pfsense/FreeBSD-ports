@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	p4.el
 PORTVERSION=	10.6
 PORTREVISION=	1
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perforce-Emacs Integration
+WWW=		https://p4el.sourceforge.net/
 
 RUN_DEPENDS=	p4:devel/p4
 

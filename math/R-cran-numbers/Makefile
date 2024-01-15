@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	numbers
-DISTVERSION=	0.7-5
+DISTVERSION=	0.8-5
 PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Number-Theoretic Functions
+WWW=		https://cran.r-project.org/web/packages/numbers/
 
 LICENSE=	GPLv3+
 

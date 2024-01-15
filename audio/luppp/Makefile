@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	luppp
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	1.2.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Live looping music creation tool
+WWW=		http://openavproductions.com/luppp
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

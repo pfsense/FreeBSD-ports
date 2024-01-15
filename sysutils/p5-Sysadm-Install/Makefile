@@ -1,6 +1,3 @@
-# Created by: Christopher Boumenot <boumenot@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Sysadm-Install
 PORTVERSION=	0.48
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Typical installation tasks for system administrators
+WWW=		https://metacpan.org/release/Sysadm-Install
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

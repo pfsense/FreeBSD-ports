@@ -1,31 +1,26 @@
-# Created by: Jeff Brown <jabrown@caida.org>
-# $FreeBSD$
-
 PORTNAME=	clisp
 PORTVERSION=	2.49.93+
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	lang lisp
 
 MAINTAINER=	kiri@TrueFC.org
 COMMENT=	Common Lisp implementation
+WWW=		https://www.gnu.org/software/clisp/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GNU-GPL
-
-BROKEN_powerpc=	Does not compile
-BROKEN_sparc64=	Does not compile
 
 LIB_DEPENDS=	libffcall.so:devel/libffcall \
 		libreadline.so:devel/readline \
 		libsigsegv.so:devel/libsigsegv
 
 USES=		compiler gettext ghostscript gnome iconv localbase:ldflags
-USE_GCC=	any
+USE_GCC=	yes
 USE_GITLAB=	yes
 
 GL_ACCOUNT=	gnu-clisp
 GL_PROJECT=	clisp
-GL_COMMIT=	df3b9f6fdcff22832898e89a989eb499c0f842ed
+GL_TAGNAME=	df3b9f6fdcff22832898e89a989eb499c0f842ed
 USE_LDCONFIG=	yes
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1

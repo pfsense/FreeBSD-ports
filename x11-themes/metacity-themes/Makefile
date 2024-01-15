@@ -1,6 +1,3 @@
-# Created by: Remington Lang <MrL0L@charter.net>
-# $FreeBSD$
-
 # Port logic stolen from x11-themes/kde-icons-noia by
 # lioux@.
 
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	# Empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Meta-port for Gnome Metacity themes
+WWW=		https://art.gnome.org
 
 RUN_DEPENDS=	${LOCALBASE}/share/themes/microgui/metacity-1/metacity-theme-1.xml:x11-themes/metacity-theme-microgui
 

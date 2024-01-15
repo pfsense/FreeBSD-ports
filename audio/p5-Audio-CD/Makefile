@@ -1,6 +1,3 @@
-# Created by: Roman Shterenzon <roman@xpert.com>
-# $FreeBSD$
-
 PORTNAME=	Audio-CD
 PORTVERSION=	0.04
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to libcdaudio (cd + cddb)
+WWW=		https://metacpan.org/release/Audio-CD
 
 LIB_DEPENDS=	libcdaudio.so:audio/libcdaudio
 

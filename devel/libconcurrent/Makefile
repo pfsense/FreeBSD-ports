@@ -1,13 +1,10 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	libconcurrent
-PORTVERSION=	0.0.20160629
-PORTREVISION=	3
+PORTVERSION=	0.0.20210731
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny asymmetric-coroutine library
+WWW=		https://github.com/sharow/libconcurrent/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,7 +17,7 @@ USES=		gmake compiler:c11
 USE_GITHUB=	yes
 GH_ACCOUNT=	sharow
 # Rolling release
-GH_TAGNAME=	d84e7374c89be147ed7c0ba0fe844dad7f7ebb3e
+GH_TAGNAME=	50fe214cac8e17a8bdafdcf37c20365cbbc0caa4
 
 MAKEFILE=	makefile
 MAKE_ARGS=	LIBCONCURRENT_DESTDIR=${STAGEDIR}${PREFIX}

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Cassandra-Easy
 PORTVERSION=	0.15
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perlish interface to the Cassandra database
+WWW=		https://metacpan.org/release/TEODOR/Net-Cassandra-Easy-0.15
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

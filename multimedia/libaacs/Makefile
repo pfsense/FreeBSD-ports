@@ -1,13 +1,12 @@
-# Created by: kamikaze@bsdforen.de
-# $FreeBSD$
-
 PORTNAME=	libaacs
-DISTVERSION=	0.11.0
+DISTVERSION=	0.11.1
 CATEGORIES=	multimedia
-MASTER_SITES=	https://downloads.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION}/
+MASTER_SITES=	https://get.videolan.org/${PORTNAME}/${DISTVERSION}/ \
+		https://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced Access Content System implementation
+WWW=		https://www.videolan.org/developers/libaacs.html
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

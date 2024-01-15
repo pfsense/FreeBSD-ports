@@ -1,6 +1,3 @@
-# Created by: Mikhail Teterin
-# $FreeBSD$
-
 PORTNAME=	skem
 PORTVERSION=	1.0.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://virtual-estates.net/skem/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Cache earlier sendmail's verdicts for the relays
+WWW=		http://virtual-estates.net/skem/
 
 .if !exists( /usr/include/libmilter/mfapi.h )
 BUILD_DEPENDS+=	${LOCALBASE}/include/libmilter/mfapi.h:mail/libmilter
@@ -36,6 +34,7 @@ NO_WRKSUBDIR=	yes
 MAKE_ARGS+=	-D$o
 .	endif
 .endfor
+MAKE_ARGS+=	NO_WDATE_TIME=yes
 
 post-patch:
 	@${REINPLACE_CMD} -E 's/char[[:blank:]]+c;/int c;/' ${WRKSRC}/milter.c

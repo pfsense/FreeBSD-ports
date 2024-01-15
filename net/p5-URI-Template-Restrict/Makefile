@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	URI-Template-Restrict
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for restricted URI Templates handler
+WWW=		https://metacpan.org/release/URI-Template-Restrict
 
 RUN_DEPENDS=	\
 	p5-Class-Accessor>0:devel/p5-Class-Accessor \

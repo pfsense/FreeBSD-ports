@@ -1,6 +1,3 @@
-# Created by: Kuan-Chung Chiu <buganini@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	yamdi
 PORTVERSION=	1.9
 CATEGORIES=	multimedia
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	Metadata injector for FLV files
+WWW=		https://yamdi.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 

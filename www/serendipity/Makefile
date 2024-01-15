@@ -1,12 +1,11 @@
-# Created by: babak@farrokhi.net
-# $FreeBSD$
-
 PORTNAME=	serendipity
 PORTVERSION=	2.3.5
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP based weblog software
+WWW=		https://www.s9y.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,7 +19,7 @@ GH_PROJECT=		Serendipity
 NO_BUILD=	YES
 SERENDIPITY?=	www/${PORTNAME}
 PLIST_SUB+=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
-USE_PHP=	session pcre gd openssl mbstring iconv zlib xml
+USE_PHP=	session gd mbstring iconv zlib xml
 SUB_FILES=	pkg-message
 CPE_VENDOR=	s9y
 
@@ -33,7 +32,7 @@ OPTIONS_DEFAULT=	MYSQL MAGICK
 MYSQL_USE=	PHP=mysqli
 PGSQL_USE=	PHP=pgsql
 SQLITE_USE=	PHP=sqlite3
-MAGICK_RUN_DEPENDS+=	convert:graphics/ImageMagick7
+MAGICK_USES=	magick:7,run
 
 do-install:
 	@-${MKDIR} ${STAGEDIR}${PREFIX}/${SERENDIPITY}

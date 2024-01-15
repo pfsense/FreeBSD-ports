@@ -1,35 +1,20 @@
---- chrome/browser/download/download_commands.cc.orig	2020-11-13 06:36:36 UTC
+--- chrome/browser/download/download_commands.cc.orig	2023-04-05 11:05:06 UTC
 +++ chrome/browser/download/download_commands.cc
-@@ -27,7 +27,7 @@
- #include "net/base/url_util.h"
+@@ -26,7 +26,7 @@
  #include "ui/base/clipboard/scoped_clipboard_writer.h"
  
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  #include "chrome/browser/ui/browser.h"
  #include "chrome/browser/ui/browser_finder.h"
-@@ -155,7 +155,7 @@ void DownloadCommands::ExecuteCommand(Command command)
-   model_->ExecuteCommand(this, command);
+ #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
+@@ -167,7 +167,7 @@ void DownloadCommands::ExecuteCommand(Command command)
  }
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  
  Browser* DownloadCommands::GetBrowser() const {
-@@ -179,12 +179,12 @@ bool DownloadCommands::CanOpenPdfInSystemViewer() cons
-   return IsDownloadPdf() &&
-          (IsAdobeReaderDefaultPDFViewer() ? is_adobe_pdf_reader_up_to_date
-                                           : true);
--#elif defined(OS_MAC) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#elif defined(OS_MAC) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   return IsDownloadPdf();
- #endif
- }
- 
--#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS)
- 
- void DownloadCommands::CopyFileAsImageToClipboard() {
+   if (!model_)

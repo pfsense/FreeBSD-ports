@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	graphics
 
@@ -12,6 +10,8 @@ MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
 
 # Clang has issues with Overloaded stuff inside OpenCV
 CXXFLAGS+=	-Wno-overloaded-virtual
+LIB_DEPENDS=   libopencv_highgui.so:graphics/opencv
+GST_PLUGIN_DIR=  gst-libs/gst/opencv ext/opencv
 
 PLIST=		${.CURDIR}/pkg-plist
 

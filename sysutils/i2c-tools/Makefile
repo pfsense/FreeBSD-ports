@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	i2c-tools
 PORTVERSION=	4.1
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	https://mirrors.edge.kernel.org/pub/software/utils/i2c-tools/
 
 MAINTAINER=	avg@FreeBSD.org
 COMMENT=	Heterogeneous set of I2C tools
+WWW=		https://i2c.wiki.kernel.org/index.php/I2C_Tools
 
 LICENSE=	GPLv2
 

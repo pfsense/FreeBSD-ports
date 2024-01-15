@@ -1,23 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	omniauth_crowd
 PORTVERSION=	2.4.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ports@michael-fausten.de
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	OmniAuth provider for Atlassian Crowds REST API
+WWW=		https://github.com/robdimarco/omniauth_crowd
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS?=	rubygem-activesupport60>=0:devel/rubygem-activesupport60 \
+RUN_DEPENDS?=	rubygem-activesupport61>=0:devel/rubygem-activesupport61 \
 		rubygem-nokogiri>=1.4.4:textproc/rubygem-nokogiri \
-		rubygem-omniauth>=1.0:security/rubygem-omniauth
+		rubygem-omniauth1>=1.0<2:security/rubygem-omniauth1
+
+USES=		gem
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

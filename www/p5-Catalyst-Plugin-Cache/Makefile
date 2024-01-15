@@ -1,6 +1,3 @@
-# Created by: lbr@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Cache
 PORTVERSION=	0.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Flexible caching support for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Cache
 
 LICENSE=	ART10 GPLv1+ MIT
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rcracki_mt
 PORTVERSION=	0.7.0
 CATEGORIES=	security
@@ -8,10 +6,11 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}_src
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Rainbow table based crack tool
+WWW=		https://www.freerainbowtables.com
 
 LICENSE=	GPLv2
 
-NOT_FOR_ARCHS=	aarch64 armv6 armv7 mips mips64 riscv64 sparc64
+NOT_FOR_ARCHS=	aarch64 armv6 armv7 mips mips64 riscv64
 NOT_FOR_ARCHS_REASON=	cannot detect endianness
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/${PORTNAME}

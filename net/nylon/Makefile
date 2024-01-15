@@ -1,6 +1,3 @@
-# Created by: William Ward <William.Ward@ericsson.com>
-# $FreeBSD$
-
 PORTNAME=	nylon
 PORTVERSION=	1.21
 PORTREVISION=	10
@@ -9,6 +6,7 @@ MASTER_SITES=	http://monkey.org/~marius/nylon/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix SOCKS 4 and 5 proxy server
+WWW=		https://monkey.org/~marius/nylon/
 
 LICENSE=	BSD3CLAUSE
 

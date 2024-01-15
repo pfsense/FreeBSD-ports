@@ -1,6 +1,3 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	CPAN-Inject
 PORTVERSION=	1.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Base class for injecting distributions into CPAN sources
+WWW=		https://metacpan.org/release/CPAN-Inject
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

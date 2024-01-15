@@ -1,6 +1,3 @@
-# Created by: Dmitry Liakh <dliakh@ukr.net>
-# $FreeBSD$
-
 PORTNAME=	Lingua-DetectCyrillic
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dliakh@ukr.net
 COMMENT=	Detects 7 Cyrillic codings as well as the language
+WWW=		https://metacpan.org/release/Lingua-DetectCyrillic
 
 RUN_DEPENDS=	p5-Unicode-Map8>=0:converters/p5-Unicode-Map8 \
 		p5-Unicode-String>=0:converters/p5-Unicode-String

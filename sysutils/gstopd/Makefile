@@ -1,6 +1,3 @@
-# Created by: Michael Reifenberger
-# $FreeBSD$
-
 PORTNAME=	gstopd
 PORTVERSION=	1.1
 CATEGORIES=	sysutils
@@ -10,6 +7,12 @@ MAINTAINER=	mr@FreeBSD.org
 COMMENT=	GEOM stop daemon
 
 PLIST_FILES=	sbin/gstopd man/man8/gstopd.8.gz
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=unused-but-set-variable
+.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gstopd ${STAGEDIR}${PREFIX}/sbin

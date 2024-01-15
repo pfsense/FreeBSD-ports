@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	get_iplayer
-PORTVERSION=	3.26
+DISTVERSION=	3.34
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	multimedia net
 
 MAINTAINER=	jamie@catflap.org
-COMMENT=	Search, index, or stream archive video from BBC iPlayer
+COMMENT=	Lists and records BBC iPlayer TV and BBC Sounds radio programmes
+WWW=		https://github.com/get-iplayer/get_iplayer
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -21,11 +19,13 @@ USES=		perl5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	get-iplayer
 USE_PERL5=	run
-SHEBANG_FILES=	${PORTNAME} ${PORTNAME}.cgi
-NO_BUILD=	yes
-NO_ARCH=	yes
-
 USE_RC_SUBR=	${PORTNAME}
+
+SHEBANG_FILES=	${PORTNAME} ${PORTNAME}.cgi
+
+DATADIR=	${WWWDIR}
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 USERS=		get_iplayer
 GROUPS=		get_iplayer
@@ -34,7 +34,6 @@ SCRIPTS=	${PORTNAME} ${PORTNAME}.cgi
 PLIST_FILES=	bin/${PORTNAME} ${SCRIPTS:S,^,${WWWDIR_REL}/,} \
 		man/man1/${PORTNAME}.1.gz
 
-DATADIR=	${WWWDIR}
 PORTDOCS=	CHANGELOG.md README.md
 
 OPTIONS_DEFINE=	DOCS FFMPEG ATOMICPARSLEY
@@ -42,7 +41,7 @@ OPTIONS_DEFAULT=	FFMPEG ATOMICPARSLEY
 FFMPEG_DESC=	Enable file conversion using FFmpeg
 FFMPEG_RUN_DEPENDS=	ffmpeg>=0:multimedia/ffmpeg
 ATOMICPARSLEY_DESC=	Enable tagging of media files
-ATOMICPARSLEY_RUN_DEPENDS=	AtomicParsley>=0:multimedia/atomicparsley
+ATOMICPARSLEY_RUN_DEPENDS=	atomicparsley>=0:multimedia/atomicparsley
 
 post-patch:
 	${REINPLACE_CMD} -e "108,110c\\${.newline}	\$$opt_cmdline->{getiplayer} = \"${PREFIX}/bin/${PORTNAME}\";" \

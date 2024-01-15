@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	BSD-stat
 PORTVERSION=	1.35
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Stat() with BSD 4.4 extensions
+WWW=		https://metacpan.org/release/BSD-stat
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

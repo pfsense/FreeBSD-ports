@@ -1,30 +1,28 @@
-# Created by: Dryice Dong Liu <dryice@dryice.name>
-# $FreeBSD$
-
 PORTNAME=	sqlalchemy
 PORTVERSION=	1.0.14
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	10
 DISTNAME=	SQLAlchemy-${DISTVERSION}
 
 MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	Python SQL toolkit and Object Relational Mapper 1.0.x
+WWW=		https://www.sqlalchemy.org/
 
 LICENSE=	MIT
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		cpe python
 USE_PYTHON=	distutils autoplist
 
 PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}
 PY2TO3_ARGS=	--no-diffs --nobackups --verbose --write
 TEST_TARGET=	do-test
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlalchemy0[6789]* ${PYTHON_PKGNAMEPREFIX}sqlalchemy1[12]
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlalchemy[0-9][0-9] # lib/python3.8/site-packages/sqlalchemy/__init__.py
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_MULTI=		BACKEND
@@ -40,14 +38,10 @@ SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_F
 PORTDOCS=		*
 PORTEXAMPLES=		*
 
-.include <bsd.port.pre.mk>
-
 pre-build:
-.if ${PYTHON_REL} >= 3000
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/lib
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/doc
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/examples
-.endif
 
 # C extensions are not supported with all versions of Python, so ignore
 # errors here if there are no .so files to strip.
@@ -63,9 +57,7 @@ post-install-EXAMPLES-on:
 	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 do-test:
-.if ${PYTHON_REL} >= 3000
 	${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/test
-.endif
 	@(cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

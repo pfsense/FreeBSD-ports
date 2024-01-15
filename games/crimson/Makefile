@@ -1,16 +1,13 @@
-# Created by: Jan Jungnickel <jan@jungnickel.com>
-# $FreeBSD$
-
 PORTNAME=	crimson
 PORTVERSION=	0.5.3
 PORTREVISION=	5
 CATEGORIES=	games
-MASTER_SITES=	http://crimson.seul.org/files/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	http://crimson.seul.org/files/
 PKGNAMESUFFIX=	-fields
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tactical war game in the tradition of Battle Isle
+WWW=		http://crimson.seul.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

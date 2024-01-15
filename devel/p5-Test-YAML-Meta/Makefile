@@ -1,14 +1,12 @@
-# Created by: Felippe de Meirelles Motta <lippemail@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Test-YAML-Meta
 PORTVERSION=	0.22
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Validation of the META.yml file in a distribution
+WWW=		https://metacpan.org/release/Test-YAML-Meta
 
 LICENSE=	ART20
 

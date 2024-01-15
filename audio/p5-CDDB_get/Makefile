@@ -1,6 +1,3 @@
-# Created by: Oyvind Moll <oyvindmo@initio.no>
-# $FreeBSD$
-
 PORTNAME=	CDDB_get
 PORTVERSION=	2.28
 PORTREVISION=	3
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	High-level interface to the Compact Disc Database
+WWW=		https://metacpan.org/release/CDDB_get
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Copying

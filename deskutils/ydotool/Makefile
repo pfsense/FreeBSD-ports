@@ -1,36 +1,31 @@
-# $FreeBSD$
-
 PORTNAME=	ydotool
-PORTVERSION=	0.1.8
-PORTREVISION=	2
+PORTVERSION=	1.0.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic command-line automation tool (no X!)
+WWW=		https://github.com/ReimuNotMoe/ydotool
 
-LICENSE=	MIT
+LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/include/linux/uinput.h:devel/evdev-proto
-LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
-		libuInputPlus.so:devel/libuinputplus \
-		libboost_program_options.so:devel/boost-libs \
-		libevdevPlus.so:devel/libevdevplus
+BUILD_DEPENDS=	${LOCALBASE}/include/linux/uinput.h:devel/evdev-proto \
+		scdoc:textproc/scdoc
+LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim
 
 USES=		cmake compiler:c++11-lang localbase
-
-CXXFLAGS+=	-I${LOCALBASE}/include/libepoll-shim
-LDFLAGS+=	-L${LOCALBASE}/lib -lepoll-shim
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ReimuNotMoe
 
+CFLAGS+=	-I${LOCALBASE}/include/libepoll-shim
+LDFLAGS+=	-L${LOCALBASE}/lib -lepoll-shim
+
 PLIST_FILES=	bin/ydotool \
 		bin/ydotoold \
-		lib/libydotool.so \
-		lib/libydotool.so.0
-
-USE_LDCONFIG=	yes
+		lib/systemd/user/ydotool.service \
+		share/man/man1/ydotool.1.gz \
+		share/man/man8/ydotoold.8.gz
 
 .include <bsd.port.mk>

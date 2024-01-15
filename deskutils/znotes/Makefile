@@ -1,25 +1,22 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	znotes
-PORTVERSION=	0.4.5.20150825
-PORTREVISION=	4
+DISTVERSION=	0.4.7
 CATEGORIES=	deskutils
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple notes managment application based on Qt
+WWW=		http://znotes.sourceforge.net
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		compiler:c++11-lang gl qmake qt:5
 USE_GL=		gl
-USE_QT=		buildtools_build linguisttools_build core gui network printsupport widgets xml
+USE_QT=		buildtools:build linguisttools:build core gui network \
+		printsupport widgets xml
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	proton
 GH_PROJECT=	zNotes
-GH_TAGNAME=	6423c5e
 
 CONFLICTS_INSTALL=	znotes-qt[45]
 

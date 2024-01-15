@@ -1,9 +1,6 @@
-# Created by: Greg Lewis <glewis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	grads
 PORTVERSION=	1.9b4
-PORTREVISION=	14
+PORTREVISION=	18
 CATEGORIES=	graphics science math
 MASTER_SITES=	ftp://grads.iges.org/grads/1.9/:src \
 		ftp://cola.gmu.edu/grads/1.9/:src \
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	${PORTNAME}-src-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	The Grid Analysis and Display System
+WWW=		http://grads.iges.org/grads/
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libudunits2.a:science/udunits \
 		${LOCALBASE}/lib/libsx.a:x11/libsx

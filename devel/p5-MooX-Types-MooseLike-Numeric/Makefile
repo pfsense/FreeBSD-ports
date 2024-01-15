@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooX-Types-MooseLike-Numeric
 PORTVERSION=	1.03
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Moo types for numbers
+WWW=		https://metacpan.org/release/MooX-Types-MooseLike-Numeric
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

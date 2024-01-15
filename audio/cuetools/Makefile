@@ -1,12 +1,10 @@
-# Created by: Vincent Tantardini <vinc@FreeBSD-fr.org>
-# $FreeBSD$
-
 PORTNAME=	cuetools
 DISTVERSION=	1.4.1
 CATEGORIES=	audio
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Utilities for working with CUE and TOC files
+WWW=		https://github.com/svend/cuetools
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

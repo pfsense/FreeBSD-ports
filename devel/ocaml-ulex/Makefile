@@ -1,9 +1,6 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	ulex
 PORTVERSION=	1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.cduce.org/download/
 PKGNAMEPREFIX=	ocaml-
@@ -29,6 +26,10 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 DOCS_ALL_TARGET=	doc
+
+post-patch:
+	@${REINPLACE_CMD} -e '/^let latin1_sub_lexeme/,+3 \
+		s,^  s,  Bytes.to_string s,' ${WRKSRC}/ulexing.ml
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

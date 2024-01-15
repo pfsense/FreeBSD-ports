@@ -1,27 +1,28 @@
-# Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libvirt-glib
-PORTVERSION=	3.0.0
+PORTVERSION=	5.0.0
 CATEGORIES=	devel
 MASTER_SITES=	ftp://libvirt.org/libvirt/glib/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Glib bindings for Libvirt virtualization API
+WWW=		https://www.libvirt.org
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libvirt.so:devel/libvirt
 
-OPTIONS_DEFINE=	VALA
-OPTIONS_SUB=	yes
-VALA_DESC=	Vala binding
-VALA_CONFIGURE_ENABLE=	vala
-VALA_BUILD_DEPENDS=	valac:lang/vala
+USES=		gettext gmake gnome libtool meson pathfix pkgconfig \
+		python tar:xz
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-introspection
-USES=		gettext gmake gnome libtool pathfix pkgconfig python
+OPTIONS_DEFINE=	DOCS VAPI
+OPTIONS_DEFAULT=	DOCS VAPI
+OPTIONS_SUB=	yes
+DOCS_MESON_ENABLED=	docs
+DOCS_BUILD_DEPENDS=	gtk-doc>=0:textproc/gtk-doc
+VAPI_MESON_ENABLED=	vapi
+VAPI_USES=		vala:build
+
+MESON_ARGS+=	-Dintrospection=enabled -Dgit_werror=disabled
 USE_LDCONFIG=	yes
 USE_GNOME=	intlhack introspection libxml2
 CPPFLAGS+=	-I${LOCALBASE}/include

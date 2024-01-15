@@ -1,40 +1,49 @@
-# Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	q3cellshading
 PORTVERSION=	1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	q3cel-${PORTVERSION}-src
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Quake III engine with Cell Shading capabilities
+WWW=		https://q3cellshading.sourceforge.net/
 
 ONLY_FOR_ARCHS=	i386
 ONLY_FOR_ARCHS_REASON=	does not run properly; try games/ioquake3 with option
 
-USES=		compiler dos2unix gmake zip
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-BUILD_WRKSRC=	${WRKSRC}/code/unix
+USES=		gmake zip
+
+MAKE_ENV=	LIBDIR="${LIBDIR}"
 MAKE_JOBS_UNSAFE=	yes
 
-LIBDIR=		${PREFIX}/lib/${PORTNAME}
-MAKE_ENV=	LIBDIR="${LIBDIR}"
+BUILD_WRKSRC=	${WRKSRC}/code/unix
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
 PLIST_SUB=	LIBDIR="${LIBDIR:S/${PREFIX}\///}"
 
 VM_ARCHS=	i386 powerpc
 
 OPTIONS_DEFINE=	GAMELIBS OPTIMIZED_CFLAGS
+OPTIONS_DEFAULT=	CLIENT DEDICATED OPTIMIZED_CFLAGS SMP_CLIENT
 OPTIONS_MULTI=	FLAVOR
 OPTIONS_MULTI_FLAVOR=	CLIENT DEDICATED SMP_CLIENT
-OPTIONS_DEFAULT=	CLIENT DEDICATED OPTIMIZED_CFLAGS SMP_CLIENT
 OPTIONS_SUB=	yes
 
 CLIENT_DESC=		Build client
 DEDICATED_DESC=		Build dedicated server
 GAMELIBS_DESC=		Force building game libraries
 SMP_CLIENT_DESC=	Build SMP (threaded) client
+
+CLIENT_MAKE_ENV=	CLIENT=YES
+CLIENT_VARS=	Q3BIN+=quake3
+DEDICATED_MAKE_ENV=	DEDICATED=YES
+DEDICATED_VARS=	Q3BIN+=q3ded
+OPTIMIZED_CFLAGS_MAKE_ENV=	OPTIMIZED_CFLAGS=YES
+SMP_CLIENT_MAKE_ENV=	SMP=YES
+SMP_CLIENT_VARS=	Q3BIN+=quake3-smp
+
+LIBDIR=		${PREFIX}/lib/${PORTNAME}
 
 .include <bsd.port.options.mk>
 
@@ -55,44 +64,11 @@ MAKE_ENV+=	DLL_ONLY=true
 .if ${PORT_OPTIONS:MCLIENT} || ${PORT_OPTIONS:MSMP_CLIENT}
 USES+=		gl xorg
 USE_GL=		glu
-USE_XORG=	xxf86dga
-.endif
-
-.if ${PORT_OPTIONS:MCLIENT}
-MAKE_ENV+=	CLIENT=YES
-Q3BIN+=		quake3
-.endif
-
-.if ${PORT_OPTIONS:MDEDICATED}
-MAKE_ENV+=	DEDICATED=YES
-Q3BIN+=		q3ded
+USE_XORG=	xxf86dga xxf86vm
 .endif
 
 .if ${PORT_OPTIONS:MGAMELIBS} || !defined(HAVE_VM_COMPILED)
 MAKE_ENV+=	GAMELIBS=YES
-.endif
-
-.if ${PORT_OPTIONS:MOPTIMIZED_CFLAGS}
-MAKE_ENV+=	OPTIMIZED_CFLAGS=YES
-.endif
-
-.if ${PORT_OPTIONS:MSMP_CLIENT}
-MAKE_ENV+=	SMP=YES
-Q3BIN+=		quake3-smp
-.endif
-
-.include <bsd.port.pre.mk>
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|botlib\.log|/dev/null|' \
-		${WRKSRC}/code/botlib/be_interface.c
-	@${REINPLACE_CMD} -e \
-		's|//[[:blank:]]*\(Swap_Init[[:blank:]]*();\)|\1|' \
-		${WRKSRC}/code/botlib/be_interface.c \
-		${WRKSRC}/code/renderer/tr_init.c
-.if ${COMPILER_TYPE} == clang
-	@${REINPLACE_CMD} -E 's,-falign-(jumps|loops)=2,,g; s|-O6||' \
-		${WRKSRC}/code/unix/Makefile
 .endif
 
 do-install:
@@ -110,4 +86,6 @@ do-install:
 .endif
 
 .include "${.CURDIR}/../quake3-data/Makefile.include"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>
+
+PATCH_ARGS+=	-l

@@ -1,16 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	mongodb
-PORTVERSION=	1.9.0
+PORTVERSION=	1.15.3
 CATEGORIES=	databases pear
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	PECL classes for MongoDB
+WWW=		https://docs.mongodb.org/ecosystem/drivers/php/
 
 LICENSE=	APACHE20
 
-USES=		php:pecl ssl
-USE_PHP=	spl:build
-CFLAGS+=	-I${LOCALBASE}/include
+USES=		gmake localbase php:build,pecl ssl
 
 .include <bsd.port.mk>

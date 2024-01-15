@@ -1,6 +1,3 @@
-# Created by: Alexandre Biancalana <ale@biancalanas.net>
-# $FreeBSD$
-
 PORTNAME=	Net-IPAddress
 PORTVERSION=	1.10
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ale@biancalanas.net
 COMMENT=	Perl functions used to manipulate IP addresses, masks and FQDN's
+WWW=		https://metacpan.org/release/Net-IPAddress
 
 USES=		perl5
 USE_PERL5=	configure

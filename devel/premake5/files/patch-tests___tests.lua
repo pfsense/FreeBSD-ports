@@ -1,12 +1,14 @@
---- tests/_tests.lua.orig	2019-11-16 06:02:45 UTC
+--- tests/_tests.lua.orig	2022-09-28 21:00:51 UTC
 +++ tests/_tests.lua
-@@ -57,9 +57,4 @@ return {
- 	-- Control system tests
- 	"test_premake.lua",
+@@ -60,8 +60,8 @@ return {
  	"base/test_validation.lua",
--
--	-- -- Toolset tests
+ 
+ 	-- -- Toolset tests
 -	"tools/test_dotnet.lua",
 -	"tools/test_gcc.lua",
++--	"tools/test_dotnet.lua",
++--	"tools/test_gcc.lua",
+ 	"tools/test_clang.lua",
 -	"tools/test_msc.lua",
++--	"tools/test_msc.lua",
  }

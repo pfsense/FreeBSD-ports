@@ -1,30 +1,32 @@
-# Created by: mathias.picker@gmx.de
-# $FreeBSD$
-
 PORTNAME=	rubberband
-DISTVERSION=	1.8.2
-PORTREVISION=	2
+DISTVERSION=	3.3.0
 CATEGORIES=	audio
 MASTER_SITES=	https://breakfastquay.com/files/releases/
 
-PATCH_SITES=	https://github.com/breakfastquay/${PORTNAME}/commit/
-PATCHFILES=	03202fa4749c0b4e264f2115bb49028267e2a572.patch:-p1
-
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Audio time-stretching and pitch-shifting library and utility program
+WWW=		https://breakfastquay.com/rubberband/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	ladspa>0:audio/ladspa \
 		lv2>0:audio/lv2
-LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
+LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsamplerate.so:audio/libsamplerate \
-		libvamp-sdk.so:audio/vamp-plugin-sdk \
-		libfftw3.so:math/fftw3
+		libsndfile.so:audio/libsndfile \
+		libvamp-sdk.so:audio/vamp-plugin-sdk
 
-USES=		gmake pkgconfig tar:bzip2
-GNU_CONFIGURE=	yes
+USES=		localbase meson pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
+
+MESON_ARGS=	-Dfft=fftw \
+		-Dresampler=libsamplerate \
+		-Djni=disabled
+
+OPTIONS_DEFINE=	TEST
+
+TEST_BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
+TEST_MESON_ENABLED=	tests
 
 .include <bsd.port.mk>

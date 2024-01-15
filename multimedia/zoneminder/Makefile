@@ -1,16 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	zoneminder
-PORTVERSION=	1.34.21
-PORTREVISION=	1
+DISTVERSION=	1.36.33
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	bsd@abinet.ru
 COMMENT=	Complete security camera solution, fully web based with image analysis
+WWW=		https://www.zoneminder.com/
 
 LICENSE=	GPLv2
-
-ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
 ZM_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
 		p5-DBD-mysql>=0:databases/p5-DBD-mysql \
@@ -38,13 +35,13 @@ RUN_DEPENDS=	${ZM_DEPENDS} \
 		p5-Data-Entropy>=0:security/p5-Data-Entropy \
 		zip:archivers/zip
 
-USES=		cmake:insource,noninja jpeg mysql perl5 php shebangfix ssl
+USES=		cmake:insource,noninja cpe jpeg mysql perl5 php shebangfix ssl
 USE_GITHUB=	yes
-GH_PROJECT=	zoneminder
-GH_TUPLE=	zoneminder:crud:0bd63fb:crud \
-		zoneminder:CakePHP-Enum-Behavior:ea90c0c:crud_plugin
+GH_TUPLE=	FriendsOfCake:crud:1429237:crud/web/api/app/Plugin/Crud \
+		ZoneMinder:CakePHP-Enum-Behavior:ea90c0c:crud_plugin/web/api/app/Plugin/CakePHP-Enum-Behavior \
+		ZoneMinder:RtspServer:eab3285:rtsp_server/dep/RtspServer
 USE_RC_SUBR=	zoneminder
-USE_PHP=	json pdo_mysql session gd sockets ctype opcache openssl hash
+USE_PHP=	ctype gd intl opcache pdo_mysql session sockets sysvsem
 
 OPTIONS_DEFINE=	NLS V4L
 OPTIONS_SUB=	yes
@@ -52,7 +49,6 @@ NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
-PKGMESSAGE=	${MASTERDIR}/pkg-message
 
 PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_FILES=	pkg-message
@@ -80,7 +76,7 @@ CMAKE_ARGS+=	-DZM_PERL_MM_PARMS=INSTALLDIRS=site \
 		-DZM_WEBDIR=${WWWDIR} \
 		-DZM_CGIDIR=${WWWDIR}/cgi-bin \
 		-DZM_CONTENTDIR=/var/db/zoneminder \
-		-DZM_MANPAGE_DEST_PREFIX=${PREFIX}/man \
+		-DZM_MANPAGE_DEST_PREFIX=${PREFIX}/share/man \
 		-DHAVE_SENDFILE=0 \
 		-DZM_NO_CURL=ON \
 		-DZM_NO_LIBVLC=ON \
@@ -91,18 +87,13 @@ CMAKE_ARGS+=	-DZM_PERL_MM_PARMS=INSTALLDIRS=site \
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1200000
+.if ${OPSYS} == FreeBSD
     EXTRA_PATCHES=	${PATCHDIR}/extra-patch-CMakeLists.txt
 .endif
 
 RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu@${PHP_FLAVOR}
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
-
-post-extract:
-	${CP} -R ${WRKSRC_crud}/* ${WRKSRC}/web/api/app/Plugin/Crud
-	${CP} -R ${WRKSRC_crud_plugin}/* ${WRKSRC}/web/api/app/Plugin/CakePHP-Enum-Behavior
-	${REINPLACE_CMD} -e 's|/dev/shm|/tmp|g' ${WRKSRC}/scripts/ZoneMinder/lib/ZoneMinder/ConfigData.pm.in
 
 post-patch:
 # Avoid conflict with C++20 <version> by adding .txt suffix
@@ -114,10 +105,16 @@ pre-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}/temp
 	${MKDIR} ${STAGEDIR}${WWWDIR}/api/app/tmp
 	${MKDIR} ${STAGEDIR}/var/cache/zoneminder
-	${MKDIR} ${STAGEDIR}/var/cache/zoneminder/events
-	${MKDIR} ${STAGEDIR}/var/cache/zoneminder/images
 	${MKDIR} ${STAGEDIR}/var/db/zoneminder
+	${MKDIR} ${STAGEDIR}/var/db/zoneminder/events
 	${MKDIR} ${STAGEDIR}/var/run/zm
 	${MKDIR} ${STAGEDIR}/var/tmp/zm
+	${MKDIR} ${STAGEDIR}/var/log/zm
+
+post-install: # zmsystemctl.pl is only for systend-based systems
+	@cd ${STAGEDIR}${PREFIX} && \
+		${RM} \
+			bin/zmsystemctl.pl \
+			share/man/man8/zmsystemctl.pl.8.gz
 
 .include <bsd.port.post.mk>

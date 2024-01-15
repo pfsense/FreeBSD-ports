@@ -1,3 +1,2 @@
-Fast indexing and retrieval of FASTA records from flat file data bases.
-
-WWW: https://sourceforge.net/projects/cdbfasta/
+Cdbfasta creates an index file for a multi-FASTA file to facilitate
+fast retrieval of any sequence using cdbyank.

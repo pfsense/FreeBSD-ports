@@ -1,6 +1,3 @@
-# Created by: Quinton Dolan <q@onthenet.com.au>
-# $FreeBSD$
-
 PORTNAME=	frontbase
 PORTVERSION=	2.5.6
 CATEGORIES=	databases java
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tar
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT=	The Java JDBC implementation for FrontBase
+WWW=		http://www.frontbase.com/
 
 USE_JAVA=	yes
 

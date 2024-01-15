@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-LoadableClass
 PORTVERSION=	0.015
 CATEGORIES=	devel perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	ClassName type constraint with coercion to load the class
+WWW=		https://metacpan.org/pod/MooseX::Types::LoadableClass
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

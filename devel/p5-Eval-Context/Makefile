@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Eval-Context
 PORTVERSION=	0.09.11
 PORTREVISION=	3
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Evaluate Perl code in context wrapper
+WWW=		https://metacpan.org/release/Eval-Context
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

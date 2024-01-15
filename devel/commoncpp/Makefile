@@ -1,6 +1,3 @@
-# Created by: David Sugar <dyfet@gnu.org>
-# $FreeBSD$
-
 PORTNAME=	commoncpp
 PORTVERSION=	1.8.1
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}2-${PORTVERSION}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	GNU project portable class framework for C++
+WWW=		https://www.gnu.org/software/commoncpp/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

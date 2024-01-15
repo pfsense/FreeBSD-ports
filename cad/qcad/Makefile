@@ -1,10 +1,8 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	qcad
-PORTVERSION=	3.25.2.4
-#PORTREVISION=
+PORTVERSION=	3.28.1.0
 DISTVERSIONPREFIX=	v
+#PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	cad
 DIST_SUBDIR=	${PORTNAME}
 
@@ -14,20 +12,28 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Professional CAD system
+WWW=		https://www.ribbonsoft.com/qcad.html
 
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	bash:shells/bash	\
 		${LOCALBASE}/lib/libopenNURBS.a:graphics/opennurbs
 
-MAKE_JOBS_UNSAFE=yes
-
+#USES=		compiler:c++11-lang gl gmake qmake qt:${FLAVOR:S/qt//}
 USES=		compiler:c++11-lang gl gmake qmake qt:5
+USE_CXXSTD=	c++14
+#FLAVORS=	qt5 qt6
+#FLAVOR?=	qt5
+#qt5_PKGNAMESUFFIX=	-qt5
+#qt6_PKGNAMESUFFIX=	-qt6
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-USE_QT=		buildtools qmake_build \
-		designer gui help imageformats network opengl script \
-		scripttools sql svg uitools xml xmlpatterns webkit
+_USE_QT5=	buildtools qmake:build \
+		concurrent designer gui help imageformats network opengl script \
+		scripttools sql svg uitools xml xmlpatterns
+#_USE_QT6=	base tools
+#USE_QT=		${_USE_QT${FLAVOR:S/qt//}}
+USE_QT=		${_USE_QT5}
 USE_GL=		glu
 
 DESKTOP_ENTRIES="QCad"	\
@@ -52,14 +58,26 @@ QSCRIPTS=	bbox dwg2bmp dwg2pdf dwg2svg
 
 OPTIONS_DEFINE=	EXAMPLES
 
-CFLAGS_i386= -fPIC
-CXXFLAGS_i386= -fPIC
-LDFLAGS_i386= -Wl,-z,notext
+CFLAGS_i386=	-fPIC
+CXXFLAGS_i386=	-fPIC
+LDFLAGS_i386=	-Wl,-z,notext
+
+.include <bsd.port.options.mk>
+
+.if defined(WITH_DEBUG)
+ALL_TARGET=	debug
+PLIST_SUB+=	DEBUG_LIB_SUFFIX="_debug"
+RESDIR=		${WRKSRC}/debug
+.else
+ALL_TARGET=	release
+PLIST_SUB+=	DEBUG_LIB_SUFFIX=""
+RESDIR=		${WRKSRC}/release
+.endif
 
 pre-configure:
 	${MKDIR} ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}
 	${CP} ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-5.13.2/qt-labs-qtscriptgenerator-5.13.2.pro \
-           ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}/qt-labs-qtscriptgenerator-${_QT_VERSION}.pro
+		${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}/qt-labs-qtscriptgenerator-${_QT_VERSION}.pro
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
 		${WRKSRC}/src/core/RS.cpp
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\

@@ -1,14 +1,12 @@
-# Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
-
 PORTNAME=	gens
 PORTVERSION=	2.15.5
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Gens%20Source%20Code/Gens%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sega Genesis/CD/32X emulator
+WWW=		http://www.gens.me/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

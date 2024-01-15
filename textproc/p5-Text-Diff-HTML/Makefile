@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Diff-HTML
 PORTVERSION=	0.08
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XHTML format for Text::Diff::Unified Perl module
+WWW=		https://metacpan.org/release/Text-Diff-HTML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

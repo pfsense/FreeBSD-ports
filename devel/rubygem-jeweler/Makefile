@@ -1,6 +1,3 @@
-# Created by: Douglas Thrift
-# $FreeBSD$
-
 PORTNAME=	jeweler
 PORTVERSION=	2.3.9
 CATEGORIES=	devel rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	Simple and opinionated helper for creating Rubygem projects
+WWW=		https://github.com/technicalpickles/jeweler
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -24,7 +22,6 @@ RUN_DEPENDS=	rubygem-builder>=0:devel/rubygem-builder \
 		rubygem-semver2>=0:devel/rubygem-semver2
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

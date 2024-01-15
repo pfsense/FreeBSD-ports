@@ -1,13 +1,12 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	stagit
-PORTVERSION=	0.9.4
+PORTVERSION=	1.2
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	https://codemadness.org/releases/stagit/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Static Git page generator
+WWW=		https://codemadness.org/git/stagit/log.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

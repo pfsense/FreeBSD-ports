@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	beecrypt
 PORTVERSION=	4.2.1
 PORTREVISION=	2
@@ -12,6 +9,7 @@ PATCH_SITES=	http://sourceforge.net/p/beecrypt/patches/_discuss/thread/bff89ba1/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Open source cryptographic library
+WWW=		https://sourceforge.net/projects/beecrypt/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
@@ -21,9 +19,10 @@ BROKEN_powerpc64=	Does not build: Error: unsupported relocation against r3
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-java --without-python
 INSTALL_TARGET=	install-strip
-USES=		libtool
+USES=		cpe libtool
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
+CPE_VENDOR=	beecrypt_project
 
 OPTIONS_DEFINE=	OPENMP
 OPENMP_CONFIGURE_ENABLE=	openmp

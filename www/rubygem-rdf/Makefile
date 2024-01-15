@@ -1,22 +1,20 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rdf
-PORTVERSION=	3.1.7
+PORTVERSION=	3.3.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Pure-Ruby library for working with RDF data
+WWW=		https://ruby-rdf.github.io/rdf/ \
+		https://github.com/ruby-rdf/rdf
 
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/UNLICENSE
 
-RUN_DEPENDS=	rubygem-hamster>=3.0<4:devel/rubygem-hamster \
+RUN_DEPENDS=	rubygem-bcp47_spec>=0.2<1:devel/rubygem-bcp47_spec \
 		rubygem-link_header>=0.0.8<1:www/rubygem-link_header
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

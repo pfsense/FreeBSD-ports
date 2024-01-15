@@ -1,12 +1,11 @@
-# Created by: John Hixson <john@pcbsd.org>
-# $FreeBSD$
-
 PORTNAME=	pianobar
-PORTVERSION=	2020.04.05
+PORTVERSION=	2022.04.01
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Command-line Pandora online radio player
+WWW=		https://6xq.net/pianobar/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

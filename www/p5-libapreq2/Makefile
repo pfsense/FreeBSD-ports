@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libapreq2
-PORTVERSION=	2.13
-PORTREVISION=	6
+PORTVERSION=	2.16
 CATEGORIES=	www perl5 devel
 MASTER_SITES=	APACHE_HTTPD/libapreq
 DISTFILE=	libapreq2-${PORTVERSION}
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Perl binding for the Generic Apache2 Request Library
+WWW=		https://metacpan.org/dist/libapreq2
 
 LICENSE=	APACHE20
 
@@ -17,7 +15,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-apache2-apxs=${APXS} \
 		--with-expat=${LOCALBASE} \
 		--enable-perl-glue --with-perl=${PERL}
-USES=		apache:2.2+ libtool perl5
+USES=		apache cpe libtool perl5
+CPE_VENDOR=	apache
 USE_PERL5=	run
 USE_LDCONFIG=	yes
 

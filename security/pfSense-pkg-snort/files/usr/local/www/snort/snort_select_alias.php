@@ -3,11 +3,11 @@
  * snort_select_alias.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,14 +74,7 @@ if (is_null($type) || is_null($varname)) {
 // Used to track if any selectable Aliases are found
 $selectablealias = false;
 
-// Initialize required array variables as necessary
-if (!is_array($config['aliases'])) {
-	$config['aliases'] = array();
-}
-if (!is_array($config['aliases']['alias'])) {
-	$config['aliases']['alias'] = array();
-}
-$a_aliases = $config['aliases']['alias'];
+$a_aliases = config_get_path('aliases/alias', []);
 
 // Create an array consisting of the Alias types the
 // caller wants to select from.
@@ -179,7 +172,7 @@ if (!in_array($alias['type'], $a_types))
  if ($disable):
  ?>
 				<tr title="<?=$tooltip;?>">
-					<td><i class="fa fa-times text-danger"></i></td>
+					<td><i class="fa-solid fa-times text-danger"></i></td>
 <?php else: ?>
 				<tr>
 					<td align="center"><input type="radio" name="alias" value="<?=htmlspecialchars($alias['name']);?>" title="<?=$tooltip;?>"/></td>

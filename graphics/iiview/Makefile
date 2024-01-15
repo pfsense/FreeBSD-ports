@@ -1,6 +1,3 @@
-# Created by: Martin Sugioarto <martin.sugioarto@udo.edu>
-# $FreeBSD$
-
 PORTNAME=	iiview
 PORTVERSION=	0.31
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	graphics
 
 MAINTAINER=	martin.sugioarto@udo.edu
 COMMENT=	Thumb viewer application
+WWW=		https://sourceforge.net/projects/iiview/
 
 LICENSE=	BSD2CLAUSE
 

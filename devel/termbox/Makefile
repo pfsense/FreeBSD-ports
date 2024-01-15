@@ -1,6 +1,3 @@
-# Created by: Adam Saponara <as@php.net>
-# $FreeBSD$
-
 PORTNAME=	termbox
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.3
@@ -8,13 +5,13 @@ CATEGORIES=	devel
 
 MAINTAINER=	as@php.net
 COMMENT=	Legacy-free alternative to ncurses
+WWW=		https://github.com/termbox/termbox
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:c11 gmake
 USE_GITHUB=	yes
-GH_ACCOUNT=	termbox
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	include/termbox.h \

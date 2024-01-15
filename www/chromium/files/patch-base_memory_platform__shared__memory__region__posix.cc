@@ -1,38 +1,29 @@
---- base/memory/platform_shared_memory_region_posix.cc.orig	2020-11-13 06:36:34 UTC
+--- base/memory/platform_shared_memory_region_posix.cc.orig	2023-02-08 09:03:45 UTC
 +++ base/memory/platform_shared_memory_region_posix.cc
-@@ -70,7 +70,7 @@ FDPair ScopedFDPair::get() const {
-   return {fd.get(), readonly_fd.get()};
- }
+@@ -55,7 +55,7 @@ bool CheckFDAccessMode(int fd, int expected_mode) {
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ }  // namespace
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  // static
  ScopedFD PlatformSharedMemoryRegion::ExecutableRegion::CreateFD(size_t size) {
    PlatformSharedMemoryRegion region =
-@@ -79,7 +79,7 @@ ScopedFD PlatformSharedMemoryRegion::ExecutableRegion:
-     return region.PassPlatformHandle().fd;
-   return ScopedFD();
- }
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- 
- // static
- PlatformSharedMemoryRegion PlatformSharedMemoryRegion::Take(
-@@ -204,7 +204,7 @@ bool PlatformSharedMemoryRegion::MapAtInternal(off_t o
+@@ -168,7 +168,7 @@ bool PlatformSharedMemoryRegion::ConvertToUnsafe() {
  // static
  PlatformSharedMemoryRegion PlatformSharedMemoryRegion::Create(Mode mode,
                                                                size_t size
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
                                                                ,
                                                                bool executable
  #endif
-@@ -233,7 +233,7 @@ PlatformSharedMemoryRegion PlatformSharedMemoryRegion:
+@@ -197,7 +197,7 @@ PlatformSharedMemoryRegion PlatformSharedMemoryRegion:
    // flag.
    FilePath directory;
    if (!GetShmemTempDir(
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
            executable,
  #else
            false /* executable */,

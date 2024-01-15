@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-Loader
 PORTVERSION=	0.34
 PORTREVISION=	2
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dynamic definition of Class::DBI sub classes
+WWW=		https://metacpan.org/release/Class-DBI-Loader
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

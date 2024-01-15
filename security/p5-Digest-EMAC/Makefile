@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Digest-EMAC
 PORTVERSION=	1.2
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Perl5 interface to EMAC Double Message-Digest Algorithms
+WWW=		https://metacpan.org/release/Digest-EMAC
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

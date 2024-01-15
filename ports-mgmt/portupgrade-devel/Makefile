@@ -1,9 +1,6 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	portupgrade
 PORTVERSION=	20180309
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	3
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	GH \
@@ -13,19 +10,19 @@ PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	FreeBSD ports/packages management tool (devel version)
+WWW=		https://wiki.freebsd.org/portupgrade
 
 LICENSE=	BSD3CLAUSE
 
-CONFLICTS_INSTALL=	portupgrade-[0-9]*
+CONFLICTS_INSTALL=	portupgrade
 
-USES=		uidfix
+USES=		ruby uidfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_TAGNAME=	2.4.16
 
 DIST_SUBDIR=	${PORTNAME}
-USE_RUBY=	yes
 USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
 MAKE_ARGS=	PREFIX="${PREFIX}" RUBY="${RUBY}" \
 		RUBY_SITELIBDIR="${RUBY_SITELIBDIR}" MKDIR="${MKDIR}"

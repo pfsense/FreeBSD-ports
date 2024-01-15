@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	kdeedu
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	misc education kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Entertaining and educational programs for KDE (meta port)
+WWW=		https://www.kde.org
 
 USES=		kde:5 metaport
 

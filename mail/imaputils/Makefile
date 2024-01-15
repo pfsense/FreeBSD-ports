@@ -1,12 +1,10 @@
-# Created by: Mikhail T. (m.tsatsenko@gmail.com)
-# $FreeBSD$
-
 PORTNAME=	imaputils
 DISTVERSION=	1.0.5
 CATEGORIES=	mail
 
 MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	Number of tools and scripts for use with IMAP servers
+WWW=		https://github.com/mtsatsenko/imaputils
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,13 +1,11 @@
-# Created by: Giuseppe Pilichi aka Jacula Modyun <jacula@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	unlambda
 PORTVERSION=	0.1.4.2
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	lang haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Unlambda interpreter
+WWW=		https://hackage.haskell.org/package/unlambda
 
 LICENSE=	GPLv2
 

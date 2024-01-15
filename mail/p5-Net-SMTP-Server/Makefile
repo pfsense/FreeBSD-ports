@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	Net-SMTP-Server
 PORTVERSION=	1.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	SMTP-Server-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Native Perl SMTP Server
+WWW=		http://www.macgyver.org/software/perl/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

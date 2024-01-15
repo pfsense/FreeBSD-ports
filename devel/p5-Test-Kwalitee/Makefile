@@ -1,14 +1,12 @@
-# Created by: Felippe de Meirelles Motta <lippemail@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Test-Kwalitee
 PORTVERSION=	1.28
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Test the Kwalitee of a distribution before you release it
+WWW=		https://metacpan.org/release/Test-Kwalitee
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

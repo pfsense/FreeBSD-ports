@@ -1,9 +1,6 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xglk
 PORTVERSION=	411
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://www.ifarchive.org/if-archive/programming/glk/implementations/
 DISTNAME=	${PORTNAME}-0${PORTVERSION}
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X Windows Implementation of the Glk API
+WWW=		https://www.ifarchive.org/if-archive/programming/glk/implementations/
 
 LIB_DEPENDS+=	libpng.so:graphics/png
 

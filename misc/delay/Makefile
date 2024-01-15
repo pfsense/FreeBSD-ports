@@ -1,13 +1,10 @@
-# Created by: gmarco@giovannelli.it
-# $FreeBSD$
-
 PORTNAME=	delay
 PORTVERSION=	1.6
 CATEGORIES=	misc
 MASTER_SITES=	http://onegeek.org/~tom/software/delay/dl/ \
 		http://utenti.gufi.org/~gmarco/files/distfiles/
 
-MAINTAINER=	gmarco@gufi.org
+MAINTAINER=	gmarco@giovannelli.it
 COMMENT=	Delay program with feedback to the user
 
 USES=		ncurses

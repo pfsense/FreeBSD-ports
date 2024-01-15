@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object-Class
 PORTVERSION=	2.02
 CATEGORIES=	devel perl5

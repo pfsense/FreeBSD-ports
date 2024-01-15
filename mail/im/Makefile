@@ -1,6 +1,3 @@
-# Created by: Kiriyama Kazuhiko <kiri@kiri.toba-cmt.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	im
 PORTVERSION=	153
 CATEGORIES=	mail
@@ -8,6 +5,7 @@ MASTER_SITES=	http://tats.haun.org/im/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set of user interfaces of Email and NetNews
+WWW=		http://tats.haun.org/im/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/00copyright

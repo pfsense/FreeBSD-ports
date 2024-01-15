@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Business-TW-TSIB-VirtualAccount
 PORTVERSION=	0.04b
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Module for Taishin Bank Virtual Account Management
+WWW=		https://metacpan.org/release/Business-TW-TSIB-VirtualAccount
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

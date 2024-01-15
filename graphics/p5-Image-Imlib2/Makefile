@@ -1,6 +1,3 @@
-# Created by: Erwin Lansing <erwin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Image-Imlib2
 PORTVERSION=	2.03
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the Imlib2 image library
+WWW=		https://metacpan.org/release/Image-Imlib2
 
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 

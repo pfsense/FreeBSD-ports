@@ -1,6 +1,3 @@
-# Created by: Matt Emmerton <matt@gsicomp.on.ca>
-# $FreeBSD$
-
 PORTNAME=	sntop
 PORTVERSION=	1.4.3
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Monitor status of network nodes using fping
+WWW=		https://sntop.sourceforge.net/
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING

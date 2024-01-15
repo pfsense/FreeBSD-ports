@@ -1,8 +1,5 @@
-# Created by: Rozhuk Ivan <rozhuk.im@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mantis
-PORTVERSION=	2.24.3
+PORTVERSION=	2.26.0
 PORTEPOCH=	1
 CATEGORIES=	databases www
 MASTER_SITES=	SF/mantisbt/mantis-stable/${PORTVERSION}
@@ -12,12 +9,13 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	zab@zltech.eu
 COMMENT=	Bug tracking system written in PHP
+WWW=		https://www.mantisbt.org/
 
 LICENSE=	GPLv2
 
 USES=		php:flavors
 USE_GITHUB=	nodefault
-USE_PHP=	fileinfo filter hash json mbstring pcre session xml
+USE_PHP=	fileinfo filter mbstring session xml
 
 DATADIR=	${WWWDIR}
 NO_ARCH=	yes
@@ -36,8 +34,6 @@ OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	MYSQL PGSQL
 OPTIONS_SUB=		yes
 
-# XXX: All of these should probably be either separate ports or at
-# least subpackages...
 ACTIVITY_DESC=		Shows bug notes by creation date
 ANNOUNCE_DESC=		Announcements
 COLORIZED_DESC=		Colorized Theme
@@ -57,8 +53,8 @@ SNIPPETS_DESC=		Text snippets that can be pasted into text fields
 TASKODROME_DESC=	Interactive scrum board
 TIMETRACKING_DESC=	Time Tracking
 
-ACTIVITY_GH_TUPLE=		mantisbt-plugins:Activity:99cf873396ebc3fec431c6746dae1a604768f322:activity/plugins/Activity
-ANNOUNCE_GH_TUPLE=		mantisbt-plugins:Announce:v2.4.1:announce/plugins/Announce
+ACTIVITY_GH_TUPLE=		mantisbt-plugins:Activity:2b1e3da2243613ebd13878501cfdcd9422cf4d4b:activity/plugins/Activity
+ANNOUNCE_GH_TUPLE=		mantisbt-plugins:Announce:v2.4.3:announce/plugins/Announce
 COLORIZED_GH_TUPLE=		mantisbt-plugins:MantisBT-Colorized:f43dc4cc36e8851f8df1797116f904ccf5f1689d:colorized/css/themes/colorized
 CUSTOMREPORTER_GH_TUPLE=	mantisbt-plugins:CustomReporter:v2.0.0:customreporter/plugins/CustomReporter
 EMAILREP_GH_TUPLE=		mantisbt-plugins:EmailReporting:EmailReporting_0.10.1:emailrep/plugins/EmailReporting
@@ -73,10 +69,10 @@ PGSQL_USE=			PHP=pgsql
 PIWIK_GH_TUPLE=			mantisbt-plugins:piwik:a2dba46836bdc07a80b8040e889ba0606f97415e:piwik
 SAMPLEAUTH_GH_TUPLE=		mantisbt-plugins:SampleAuth:34856715f49a5c273f33e094c759c0e0b52b3912:sampleauth/plugins/SampleAuth
 SI_USE=				PHP=curl
-SI_GH_TUPLE=			mantisbt-plugins:source-integration:v2.2.0:si
-SLACK_GH_TUPLE=			mantisbt-plugins:Slack:9286d2eeeb8a986ed949e378711fef5f0bf182dc:slack/plugins/Slack
-SNIPPETS_GH_TUPLE=		mantisbt-plugins:Snippets:v2.2.5:snippets/plugins/Snippets
-TASKODROME_GH_TUPLE=		mantisbt-plugins:Taskodrome:8bb3dd80af9190d636ce1117a291d9f8d0fec78e:taskodrome
+SI_GH_TUPLE=			mantisbt-plugins:source-integration:v2.6.0:si
+SLACK_GH_TUPLE=			mantisbt-plugins:Slack:v1.0.3:slack
+SNIPPETS_GH_TUPLE=		mantisbt-plugins:Snippets:v2.4.1:snippets/plugins/Snippets
+TASKODROME_GH_TUPLE=		mantisbt-plugins:Taskodrome:69577a62e7db1c50945b513616ca15db97eeb67f:taskodrome
 TIMETRACKING_GH_TUPLE=		mantisbt-plugins:timetracking:3a560673d85e17651fc1994f5e09e2ae9df62336:timetracking
 
 post-extract-COLORIZED-on:

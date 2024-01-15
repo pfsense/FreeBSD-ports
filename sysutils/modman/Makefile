@@ -1,12 +1,10 @@
-# Created by: Lukasz Wasikowski <lukasz@wasikowski.net>
-# $FreeBSD$
-
 PORTNAME=	modman
 PORTVERSION=	1.12
 CATEGORIES=	sysutils www
 
 MAINTAINER=	lukasz@wasikowski.net
 COMMENT=	Modularize extensions using symlinks
+WWW=		https://github.com/colinmollenhour/modman
 
 LICENSE=	APACHE20
 

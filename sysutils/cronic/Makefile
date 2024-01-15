@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cronic
 PORTVERSION=	3
 CATEGORIES=	sysutils
@@ -9,12 +7,14 @@ EXTRACT_SUFX=
 
 MAINTAINER=	dharrigan@gmail.com
 COMMENT=	Shell script that handles cron error detection
+WWW=		https://habilis.net/cronic
 
 LICENSE=	CC0-1.0
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		shebangfix
+USES=		cpe shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes

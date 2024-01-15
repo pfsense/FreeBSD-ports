@@ -1,19 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	kactivitymanagerd
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	x11 kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	System service to manage user's activities, track the usage patterns
+WWW=		https://www.kde.org/plasma-desktop
 
-USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
-USE_KDE=	auth codecs config configwidgets coreaddons crash dbusaddons ecm \
-		globalaccel i18n kio service widgetsaddons windowsystem xmlgui
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/range/algorithm.hpp:devel/boost-libs
+
+USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz xorg
+USE_KDE=	auth codecs config configwidgets coreaddons crash dbusaddons \
+		globalaccel i18n kio service widgetsaddons windowsystem xmlgui \
+		ecm:build
 USE_QT=		concurrent core dbus gui network sql widgets xml \
-		buildtools_build qmake_build
-
-# https://bugs.kde.org/show_bug.cgi?id=305529#c10
-CMAKE_ARGS+=	-DCMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS=-rdynamic
+		buildtools:build qmake:build
+USE_XORG=	x11
 
 .include <bsd.port.mk>

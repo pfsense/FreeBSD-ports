@@ -1,6 +1,3 @@
-# Created by: Daisuke Aoyama <aoyama@peach.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	istgt
 PORTVERSION=	20150713
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.peach.ne.jp/archives/istgt/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	iSCSI target for openSUSE/Debian/NetBSD/FreeBSD
+WWW=		http://shell.peach.ne.jp/aoyama/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

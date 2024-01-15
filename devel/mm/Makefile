@@ -1,6 +1,3 @@
-# Created by: Ralf S. Engelschall
-# $FreeBSD$
-
 PORTNAME=	mm
 PORTVERSION=	1.4.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	OSSP/lib/${PORTNAME}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Shared memory allocation library for pre-forked process models
+WWW=		http://www.ossp.org/pkg/lib/mm/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	2016.06.30
 CATEGORIES=	textproc
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Slovenian thesaurus
+WWW=		http://www.tezaver.si/
 
 LICENSE=	LGPL21
 
@@ -18,8 +17,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/th_sl_SI_v2.dat \
-		%%DATADIR%%/th_sl_SI_v2.idx
+PLIST_FILES=	${DATADIR}/th_sl_SI_v2.dat \
+		${DATADIR}/th_sl_SI_v2.idx
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

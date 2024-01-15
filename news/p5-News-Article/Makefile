@@ -1,6 +1,3 @@
-# Created by: Don Croyle <croyle@gelemna.org>
-# $FreeBSD$
-
 PORTNAME=	News-Article
 PORTVERSION=	1.27
 PORTREVISION=	4

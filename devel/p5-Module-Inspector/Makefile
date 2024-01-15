@@ -1,6 +1,3 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	Module-Inspector
 PORTVERSION=	1.05
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Integrated API for inspecting Perl distributions
+WWW=		https://metacpan.org/release/Module-Inspector
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-Find-Rule-VCS>=0:devel/p5-File-Find-Rule-VCS \

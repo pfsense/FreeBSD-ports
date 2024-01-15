@@ -1,6 +1,3 @@
-# Created by: Makoto Matsushita <matusita@jp.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	kon2
 PORTVERSION=	0.3
 PORTREVISION=	7
@@ -14,7 +11,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 # '+=' is for slave ports
-MAINTAINER=	TsurutaniNaoki@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Kanji On Console -- Display kanji characters on your own console
 
 ONLY_FOR_ARCHS=	i386 amd64
@@ -23,7 +20,15 @@ PORTDOCS=	README README.FreeBSD
 SUB_LIST=	KON16FONT=${KON16FONT} \
 		KON14FONT=${KON14FONT}
 
+USES=		cpe
+CPE_VENDOR=	ishikawa_mutsumi
+
+CONFLICTS_INSTALL=	ja-kon2-*dot # bin/fld
+
 OPTIONS_DEFINE=	DOCS
+
+# XXX Static libraries with PIE are currently unsupported.
+MAKE_ARGS+=	WITHOUT_PIE=true
 
 .include <bsd.port.pre.mk>
 

@@ -3,11 +3,11 @@
  * suricata_defs.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
+ * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
+ * Copyright (c) 2009 Robert Zelaya Sr. Developer
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,13 +31,10 @@ require_once("pkg-utils.inc");
 /* the "suricata.inc" and "suricata_post_install.php" files.             */
 /*************************************************************************/
 
-global $g, $config;
-
-if (!is_array($config['installedpackages']['suricata']))
-	$config['installedpackages']['suricata'] = array();
+global $g;
 
 /* Get installed package version for display */
-$suricata_package_version = "{$config['installedpackages']['package'][get_package_id("suricata")]['version']}";
+$suricata_package_version = config_get_path('installedpackages/package/' . get_package_id("suricata") . '/version');
 
 // Define the installed package version
 if (!defined('SURICATA_PKG_VER'))
@@ -56,11 +53,15 @@ if (!defined('SURICATA_PBI_BINDIR'))
 if (!defined("SURICATA_BIN_VERSION")) {
 	// Grab the Suricata binary version programmatically
 	$suricatabindir = SURICATA_PBI_BINDIR;
-	$suricataver = exec_command("{$suricatabindir}suricata -V 2>&1 |/usr/bin/cut -c26-");
+
+	// Since upstream now includes extra text after the version number, we cut by fields instead
+	// of grabbing up to the EOL. Field 5 currently has the version string we need.
+	$suricataver = exec_command("{$suricatabindir}suricata -V 2>&1 |/usr/bin/cut -d \" \" -f5");
 	if (!empty($suricataver))
 		define("SURICATA_BIN_VERSION", $suricataver);
 	else
-		define("SURICATA_BIN_VERSION", "");
+		// If we could not find a version, set a safe default
+		define("SURICATA_BIN_VERSION", "5.0.0");
 }
 
 // Define the name of the pf table used for IP blocks
@@ -81,6 +82,14 @@ if (!defined('SURICATA_SID_MODS_PATH'))
 if (!defined('SURICATA_IPREP_PATH'))
 	define('SURICATA_IPREP_PATH', "{$g['vardb_path']}/suricata/iprep/");
 
+// Define an array consisting of Suricata default events rules
+if (!defined("SURICATA_DEFAULT_RULES"))
+	define("SURICATA_DEFAULT_RULES", array( "app-layer-events.rules", "decoder-events.rules", "dhcp-events.rules", "dnp3-events.rules",
+						"dns-events.rules", "files.rules", "ftp-events.rules", "http-events.rules", "http2-events.rules", "ipsec-events.rules",
+						"kerberos-events.rules", "modbus-events.rules", "mqtt-events.rules", "nfs-events.rules", "ntp-events.rules",
+						"quic-events.rules", "rfb-events.rules", "smb-events.rules", "smtp-events.rules", "ssh-events.rules",
+						"stream-events.rules", "tls-events.rules" ));
+
 // Rule set download URLs, filenames and prefixes
 if (!defined("VRT_DNLD_URL"))
 	define("VRT_DNLD_URL", "https://www.snort.org/rules/");
@@ -100,6 +109,16 @@ if (!defined("GPLV2_DNLD_FILENAME"))
 	define("GPLV2_DNLD_FILENAME", "community-rules.tar.gz");
 if (!defined("GPLV2_DNLD_URL"))
 	define("GPLV2_DNLD_URL", "https://www.snort.org/downloads/community/");
+
+if (!defined("FEODO_TRACKER_DNLD_FILENAME"))
+	define("FEODO_TRACKER_DNLD_FILENAME", "feodotracker.tar.gz");
+if (!defined("FEODO_TRACKER_DNLD_URL"))
+	define("FEODO_TRACKER_DNLD_URL", "https://feodotracker.abuse.ch/downloads/");
+if (!defined("ABUSE_SSLBL_DNLD_FILENAME"))
+	define("ABUSE_SSLBL_DNLD_FILENAME", "sslblacklist_tls_cert.tar.gz");
+if (!defined("ABUSE_SSLBL_DNLD_URL"))
+	define("ABUSE_SSLBL_DNLD_URL", "https://sslbl.abuse.ch/blacklist/");
+
 if (!defined("VRT_FILE_PREFIX"))
 	define("VRT_FILE_PREFIX", "snort_");
 if (!defined("GPL_FILE_PREFIX"))
@@ -108,6 +127,8 @@ if (!defined("ET_OPEN_FILE_PREFIX"))
 	define("ET_OPEN_FILE_PREFIX", "emerging-");
 if (!defined("ET_PRO_FILE_PREFIX"))
 	define("ET_PRO_FILE_PREFIX", "etpro-");
+if (!defined("EXTRARULE_FILE_PREFIX"))
+	define("EXTRARULE_FILE_PREFIX", "extrarule-");
 if (!defined('SURICATA_ENFORCING_RULES_FILENAME'))
 	define('SURICATA_ENFORCING_RULES_FILENAME', 'suricata.rules');
 if (!defined('FLOWBITS_FILENAME'))

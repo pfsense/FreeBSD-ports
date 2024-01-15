@@ -1,13 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	deutex
-PORTVERSION=	5.2.1
+PORTVERSION=	5.2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers games
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	WAD file manipulator for Doom, Heretic, Hexen, and Strife
+WWW=		https://github.com/Doom-Utils/deutex
 
 LICENSE=	GPLv2 LGPL20 MIT
 LICENSE_COMB=	multi

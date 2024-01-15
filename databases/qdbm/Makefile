@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@nigredo.org>
-# $FreeBSD$
-
 PORTNAME=	qdbm
 PORTVERSION=	1.8.78
 PORTREVISION=	4
@@ -9,13 +6,14 @@ MASTER_SITES=	https://dbmx.net/qdbm/
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Quick Database Manager
+WWW=		https://dbmx.net/qdbm/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 
-USES=		iconv
+USES=		cpe iconv
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ENV=	ac_cv_lib_iconv_main=yes

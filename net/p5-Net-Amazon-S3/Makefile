@@ -1,14 +1,12 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Amazon-S3
-PORTVERSION=	0.97
+PORTVERSION=	0.991
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Use the Amazon S3 - Simple Storage Service
+WWW=		https://metacpan.org/release/Net-Amazon-S3
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	liblognorm
 PORTVERSION=	2.0.6
 CATEGORIES=	devel net security
@@ -7,6 +5,7 @@ MASTER_SITES=	http://www.liblognorm.com/download/files/download/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Log normalizer
+WWW=		https://www.liblognorm.com/
 
 LICENSE=	LGPL21+ APACHE20
 LICENSE_COMB=	multi

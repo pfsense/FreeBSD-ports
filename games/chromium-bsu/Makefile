@@ -1,14 +1,12 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	chromium-bsu
 PORTVERSION=	0.9.16.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Chromium%20B.S.U.%20source%20code/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Arcade-style, top-scrolling space shooter
+WWW=		http://chromium-bsu.sourceforge.net/
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,8 +26,6 @@ CONFIGURE_ARGS=	--disable-sdl \
 		--disable-glpng
 MAKE_ARGS=	LDFLAGS="${LDFLAGS}"
 LDFLAGS_i386=	-Wl,-znotext
-
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	*
 PORTDATA=	*

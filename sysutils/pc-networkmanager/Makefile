@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	pc-networkmanager
 PORTVERSION=	201710031301
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	jt@ixsystems.com
 COMMENT=	TrueOS Qt based network manager
+WWW=		https://github.com/trueos/pc-networkmanager
 
 LICENSE=	BSD2CLAUSE
 
@@ -29,7 +28,6 @@ QMAKE_ARGS=	CONFIG+="configure"
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
-GH_PROJECT=	pc-networkmanager
 GH_TAGNAME=	ae50abf3ba522a7685f275157455f6d424453bb2
 
 .include <bsd.port.mk>

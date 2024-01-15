@@ -1,21 +1,19 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pss
-PORTVERSION=	1.42
-PORTREVISION=	1
+PORTVERSION=	1.45
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool for grepping through source code
+WWW=		https://github.com/eliben/pss
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

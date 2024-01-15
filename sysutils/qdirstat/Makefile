@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	qdirstat
-PORTVERSION=	1.7
+PORTVERSION=	1.8.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Qt utility that sums up disk usage for directory trees
+WWW=		https://github.com/shundhammer/qdirstat
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		compiler:c++11-lang desktop-file-utils gl qmake qt:5 shebangfix
 USE_GL=		gl
-USE_QT=		buildtools_build core gui widgets
+USE_QT=		buildtools:build core gui widgets
 
 OPTIONS_DEFINE=	DOCS
 

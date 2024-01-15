@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freepats
 PORTVERSION=	20060219
 CATEGORIES=	audio
@@ -8,10 +5,13 @@ MASTER_SITES=	http://freepats.zenvoid.org/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free and open set of instrument patches
+WWW=		https://freepats.zenvoid.org/
 
 USES=		tar:bzip2
-WRKSRC=		${WRKDIR}/${PORTNAME}
+
+NO_ARCH=	yes
 NO_BUILD=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 do-install:
 	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}

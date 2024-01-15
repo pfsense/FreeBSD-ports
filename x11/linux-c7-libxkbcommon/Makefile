@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libxkbcommon
 PORTVERSION=	0.7.1
 DISTVERSIONSUFFIX=	-3.el7
@@ -8,8 +6,10 @@ CATEGORIES=	x11 linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Keymap handling library (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://xkbcommon.org/
 
-USES=		linux:c7
+USES=		cpe linux:c7
+CPE_VENDOR=	xkbcommon
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
 

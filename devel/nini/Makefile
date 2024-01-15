@@ -1,15 +1,13 @@
-# Created by: Romain Tartiere <romain@blogreen.org>
-# $FreeBSD$
-
 PORTNAME=	nini
 PORTVERSION=	1.1.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF/nini/Nini/${PORTVERSION}
 DISTNAME=	Nini-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	NET configuration library
+WWW=		https://nini.sourceforge.net
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

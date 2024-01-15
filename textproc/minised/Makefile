@@ -1,13 +1,11 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minised
 PORTVERSION=	1.15
 CATEGORIES=	textproc
 MASTER_SITES=	http://dl.exactcode.de/oss/minised/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Smaller, cheaper, faster sed implementation
+WWW=		http://www.exactcode.de/oss/minised/
 
 ALL_TARGET=	${PORTNAME}
 PLIST_FILES=	bin/${PORTNAME} man/man1/minised.1.gz

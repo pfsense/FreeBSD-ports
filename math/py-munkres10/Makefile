@@ -1,6 +1,3 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	munkres
 PORTVERSION=	1.0.12
 DISTVERSIONPREFIX=	release-
@@ -10,10 +7,11 @@ PKGNAMESUFFIX=	10
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Munkres implementation for Python
+WWW=		https://software.clapper.org/munkres/
 
 LICENSE=	APACHE20
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

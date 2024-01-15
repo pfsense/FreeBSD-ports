@@ -1,8 +1,5 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Rose-DB
-PORTVERSION=	0.783
+PORTVERSION=	0.785
 PORTEPOCH=	1
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBI wrapper and abstraction layer
+WWW=		https://metacpan.org/release/Rose-DB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,15 +1,13 @@
-# Created by: Kay Lehmann
-# $FreeBSD$
-
 PORTNAME=	cdbkup
 PORTVERSION=	1.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/release-1-0
 DISTNAME=	${PORTNAME}_${PORTVERSION}-1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple but full-featured backup/restore perl scripts (uses gnu tar)
+WWW=		https://cdbkup.sourceforge.net/
 
 BUILD_DEPENDS=	${LOCALBASE}/sbin/eject:sysutils/eject \
 		cdrecord:sysutils/cdrtools

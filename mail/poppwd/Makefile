@@ -1,6 +1,3 @@
-# Created by: Andrew Stevenson <andrew@ugh.net.au>
-# $FreeBSD$
-
 PORTNAME=	poppwd
 PORTVERSION=	2.0
 CATEGORIES=	mail

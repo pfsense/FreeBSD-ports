@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rtmpdump
 DISTVERSION=	2.4.20190330
 CATEGORIES=	multimedia net
@@ -7,17 +5,19 @@ MASTER_SITES=	https://git.ffmpeg.org/gitweb/rtmpdump.git/snapshot/c5f04a58fc2aee
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	RTMP streams download utility
+WWW=		https://rtmpdump.mplayerhq.hu/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	librtmp.so:multimedia/librtmp
 
-USES=		pkgconfig ssl
+USES=		cpe pkgconfig ssl
 MAKE_ENV=	THREADLIB="-lpthread"
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${LOCALBASE}/lib -L${OPENSSLLIB}
 PORTDOCS=	ChangeLog README
+CPE_VENDOR=	rtmpdump_project
 
 OPTIONS_DEFINE=	DOCS
 

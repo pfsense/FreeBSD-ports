@@ -1,21 +1,17 @@
-# Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	fastcap
 DISTVERSION=	2.0wr-011109
+PORTREVISION=	1
 CATEGORIES=	science cad
 MASTER_SITES=	http://www.wrcad.com/ftp/pub/ LOCAL/bf
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Three-dimensional capacitance extraction program
+WWW=		https://www.rle.mit.edu/cpg/research_codes.htm
 
 LICENSE=	FASTCAP
 LICENSE_NAME=	fastcap license
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	auto-accept
-
-BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_riscv64=	Fails to link: missing sbrk
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config
@@ -23,6 +19,8 @@ WRKSRC=		${WRKDIR}/fastcap-2.0wr
 
 # Fix build with clang11
 CFLAGS+=	-fcommon
+# Use malloc
+CFLAGS+=	-DNO_SBRK
 
 BINFILES=	busgen capgen cubegen fastcap pipedgen pyragen
 

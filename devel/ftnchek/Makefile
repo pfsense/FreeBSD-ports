@@ -1,6 +1,3 @@
-# Created by: kargl@apl.washington.edu
-# $FreeBSD$
-
 PORTNAME=	ftnchek
 PORTVERSION=	3.3.1
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ MASTER_SITES=	SUNSITE/devel/lang/fortran \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fortran 77 semantic checking utility
+WWW=		https://www.dsm.fordham.edu/~ftnchek/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

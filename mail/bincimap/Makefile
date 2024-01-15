@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	bincimap
 PORTVERSION=	1.2.13
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}final
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Light-weight IMAP server for Maildir
+WWW=		https://sourceforge.net/projects/bincimap/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	checkpassword-pam:security/checkpassword-pam \
 		tcpserver:sysutils/ucspi-tcp
 
+USE_CXXSTD=	c++14
 USE_RC_SUBR=	bincimapd
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sysconfdir=${ETCDIR}

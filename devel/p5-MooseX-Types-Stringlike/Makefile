@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-Stringlike
 PORTVERSION=	0.003
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of Moose type constraints for string-like objects
+WWW=		https://metacpan.org/release/MooseX-Types-Stringlike
 
 LICENSE=	APACHE20
 

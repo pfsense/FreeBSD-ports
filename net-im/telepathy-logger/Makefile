@@ -1,15 +1,12 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-#    $MCom: ports/trunk/net-im/telepathy-logger/Makefile 19955 2014-10-15 10:15:00Z gusi $
-
 PORTNAME=	telepathy-logger
 PORTVERSION=	0.8.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net-im
 MASTER_SITES=	http://telepathy.freedesktop.org/releases/${PORTNAME}/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Logger utility library for the Telepathy framework
+WWW=		https://telepathy.freedesktop.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

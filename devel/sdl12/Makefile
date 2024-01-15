@@ -1,9 +1,6 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdl
 PORTVERSION=	1.2.15
-PORTREVISION=	15
+PORTREVISION=	16
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.libsdl.org/release/
@@ -11,13 +8,17 @@ DISTNAME=	SDL-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Cross-platform multimedia development API
+WWW=		https://www.libsdl.org/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	nasm:devel/nasm
 
-USES=		gmake iconv libtool localbase:ldflags pathfix pkgconfig
+USES=		cpe gmake iconv libtool localbase:ldflags pathfix pkgconfig
+
+CPE_VENDOR=	libsdl
+CPE_PRODUCT=	simple_directmedia_layer
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

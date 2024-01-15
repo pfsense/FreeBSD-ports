@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	resid
 PORTVERSION=	0.16
 PORTREVISION=	3

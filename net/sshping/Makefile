@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sshping
 PORTVERSION=	0.1.4
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	net
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	SSH-based ping to measure character echo latency and bandwidth
+WWW=		https://github.com/spook/sshping/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

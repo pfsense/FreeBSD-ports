@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libccd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1
@@ -7,6 +5,7 @@ CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for collision detection between two convex shapes
+WWW=		https://github.com/danfis/libccd
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/BSD-LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	babel
 PORTVERSION=	2010.01.16
 PORTREVISION=	2
@@ -9,6 +7,7 @@ MASTER_SITES=	LOCAL/olgeni
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Charset encoding/decoding library written in Common Lisp
+WWW=		https://www.cliki.net/Babel
 
 BUILD_DEPENDS=	${LOCALBASE}/${CL_LIBDIR_REL}/alexandria/alexandria.asd:devel/cl-alexandria \
 		${LOCALBASE}/${CL_LIBDIR_REL}/trivial-features/trivial-features.asd:devel/cl-trivial-features \

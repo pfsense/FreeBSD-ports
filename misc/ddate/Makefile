@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	ddate
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.2-6
@@ -10,6 +7,7 @@ CATEGORIES=	misc
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command to print the date in Discordian date format
+WWW=		https://github.com/bo0ts/ddate/
 
 LICENSE=	GPLv2
 

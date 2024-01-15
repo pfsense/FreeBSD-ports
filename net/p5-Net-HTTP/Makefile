@@ -1,14 +1,12 @@
-# Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-HTTP
-PORTVERSION=	6.19
+PORTVERSION=	6.23
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Low-level HTTP client
+WWW=		https://metacpan.org/release/Net-HTTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

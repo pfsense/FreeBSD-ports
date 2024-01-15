@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	neXtaw
 PORTVERSION=	0.15.1
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://siag.nu/pub/neXtaw/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Athena Widgets with N*XTSTEP appearance
+WWW=		https://siag.nu/neXtaw/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

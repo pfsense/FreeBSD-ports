@@ -1,6 +1,3 @@
-# Created by: Vivek Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	PayflowPro
 PORTVERSION=	4706
 CATEGORIES=	finance perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vivek@khera.org
 COMMENT=	Pure Perl PayflowPro payment gateway interface
+WWW=		http://www.mailermailer.com/labs/projects/Payflow-Pro-API.rwp
 
 RUN_DEPENDS+=	p5-libwww>0.0:www/p5-libwww
 BUILD_DEPENDS+=	p5-libwww>0.0:www/p5-libwww

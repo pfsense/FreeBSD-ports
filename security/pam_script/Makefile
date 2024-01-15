@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pam_script
 PORTVERSION=	1.1.9
 CATEGORIES=	security
@@ -7,20 +5,18 @@ MASTER_SITES=	GH
 
 MAINTAINER=	natalino.picone@nozominetworks.com
 COMMENT=	PAM script module allows to hook user space scripts on PAM events
+WWW=		https://github.com/jeroennijhof/pam_script
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=	autoreconf libtool shebangfix
+USES=		autoreconf libtool shebangfix
+GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
-
+GH_ACCOUNT=	jeroennijhof
+GH_TAGNAME=	1.1.9
 SHEBANG_FILES=	etc/tally
 
-GH_ACCOUNT=	jeroennijhof
-GH_PROJECT=	pam_script
-GH_TAGNAME=	1.1.9
-
-GNU_CONFIGURE=	yes
 PATCHDIR=	${.CURDIR}/files
 
 do-install:

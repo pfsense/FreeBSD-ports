@@ -1,6 +1,3 @@
-# Created by: Babak Farrokhi <babak@farrokhi.net>
-# $FreeBSD$
-
 PORTNAME=	pathneck
 PORTVERSION=	1.3
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.cs.cmu.edu/~hnn/pathneck/
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Active network path probing tool
+WWW=		https://www.cs.cmu.edu/~hnn/pathneck/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

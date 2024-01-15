@@ -1,11 +1,10 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-data-full
-PORTVERSION=	g20201223
+PORTVERSION=	g20211129
 CATEGORIES=	chinese textproc
 
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Rime data files full set
+WWW=		https://github.com/rime/plum
 
 LICENSE=	GPLv3 LGPL3 APACHE20
 LICENSE_COMB=	multi

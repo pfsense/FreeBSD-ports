@@ -1,14 +1,12 @@
-# Created by: michael johnson <ahze@ahze.net>
-# $FreeBSD$
-
 PORTNAME=	lsdvd
 PORTVERSION=	0.17
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Print information about the contents and structure of a DVD
+WWW=		https://sourceforge.net/projects/lsdvd/
 
 LICENSE=	GPLv2
 

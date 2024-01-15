@@ -1,8 +1,5 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Array-Compare
-PORTVERSION=	3.0.7
+PORTVERSION=	3.0.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for comparing arrays
+WWW=		https://metacpan.org/release/Array-Compare
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

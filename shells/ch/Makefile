@@ -1,6 +1,3 @@
-# Created by: conrads@cox.net
-# $FreeBSD$
-
 PORTNAME=	ch
 PORTVERSION=	7.0.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	chstandard-${PORTVERSION}.freebsd9.0
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Embeddable C/C++ interpreter/shell
+WWW=		http://www.softintegration.com/products/chstandard/
 
 IA32_BINARY_PORT=	yes
 NO_BUILD=	yes

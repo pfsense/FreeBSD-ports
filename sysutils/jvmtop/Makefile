@@ -1,6 +1,3 @@
-# Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jvmtop
 DISTVERSION=	0.8.0-27
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTFILES=	jvmtop-maven-repository-${BUILD}.tar.gz:source2
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Lightweight console application to monitor running jvms
+WWW=		https://github.com/patric-r/jvmtop
 
 LICENSE=	GPLv2
 

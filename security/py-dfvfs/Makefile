@@ -1,8 +1,5 @@
-# Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dfvfs
-PORTVERSION=	20201219
+PORTVERSION=	20221224
 CATEGORIES=	security devel python
 MASTER_SITES=	https://github.com/log2timeline/dfvfs/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Digital Forensics Virtual File System
+WWW=		https://github.com/log2timeline/dfvfs
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,32 +16,36 @@ RUN_DEPENDS=	libbde>=a:devel/libbde \
 		libewf>=0:devel/libewf \
 		libfsapfs>=e:devel/libfsapfs \
 		libfsext>=e:devel/libfsext \
+		libfsfat>=e:devel/libfsfat \
 		libfshfs>=e:devel/libfshfs \
 		libfsntfs>=e:devel/libfsntfs \
 		libfsxfs>=e:devel/libfsxfs \
 		libfvde>=0:sysutils/libfvde \
 		libfwnt>=e:devel/libfwnt \
 		libluksde>=e:devel/libluksde \
+		libmodi>=e:devel/libmodi \
+		libphdi>=e:devel/libphdi \
 		libqcow>=a:devel/libqcow \
 		libsigscan>=e:devel/libsigscan \
 		libsmdev>=a:devel/libsmdev \
 		libsmraw>=a:devel/libsmraw \
 		libvhdi>=e:devel/libvhdi \
 		libvmdk>=e:devel/libvmdk \
+		libvsgpt>=e:devel/libvsgpt \
 		libvshadow>=0:devel/libvshadow \
 		libvslvm>=e:devel/libvslvm \
-		${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dfdatetime>=0:security/py-dfdatetime@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dtfabric>=0:devel/py-dtfabric@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}idna>=0:dns/py-idna@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytsk>=0:sysutils/py-pytsk@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
-		ca_root_nss>=0:security/ca_root_nss
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xattr>=0:devel/py-xattr@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>=3.10:devel/py-yaml@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python
 USE_LOCALE=	en_US.UTF-8
-USE_PYTHON=	distutils autoplist concurrent
+USE_PYTHON=	autoplist concurrent cryptography distutils
+DO_MAKE_TEST=	${SETENV} ${TEST_ENV} ${PYTHON_CMD}
+TEST_TARGET=	run_tests.py
 
 NO_ARCH=	yes
 
@@ -52,8 +54,6 @@ EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
 
 post-patch:
 	${REINPLACE_CMD} "s,share/doc/dfvfs,${DOCSDIR_REL}," ${WRKSRC}/setup.py
-
-do-test:
-	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} run_tests.py)
+	${REINPLACE_CMD} "/pip/d" ${WRKSRC}/requirements.txt
 
 .include <bsd.port.mk>

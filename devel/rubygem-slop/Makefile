@@ -1,19 +1,17 @@
-# Created by: Shin-ya MURAKAMI <murashin@gfd-dennou.org>
-# $FreeBSD$
-
 PORTNAME=	slop
-PORTVERSION=	4.6.2
+PORTVERSION=	4.10.1
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Simple DSL for gathering options and parsing the command line
+WWW=		https://github.com/leejarvis/slop
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

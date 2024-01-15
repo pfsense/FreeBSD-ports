@@ -1,6 +1,3 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	electric
 PORTVERSION=	9.07
 PORTREVISION=	1
@@ -13,8 +10,9 @@ EXTRACT_SUFX=
 DISTFILES+=	${PORTNAME}Binary-${PORTVERSION}.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sophisticated VLSI design system
+WWW=		https://www.staticfreesoft.com/
 
 LICENSE=	GPLv3
 

@@ -1,22 +1,22 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libfastjson
-PORTVERSION=	0.99.8
+PORTVERSION=	1.2304.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	libfastjson is a fork from json-c
+COMMENT=	Fork of json-c (JSON implementation in C)
+WWW=		https://github.com/rsyslog/libfastjson
 
 LICENSE=	MIT
 
-GNU_CONFIGURE=	yes
-USES=		autoreconf libtool pathfix pkgconfig
-INSTALL_TARGET=	install-strip
-
+USES=		autoreconf cpe libtool pathfix pkgconfig
+CPE_VENDOR=	rsyslog
 USE_GITHUB=	yes
 GH_ACCOUNT=	rsyslog
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
+
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

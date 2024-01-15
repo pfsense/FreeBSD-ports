@@ -1,12 +1,10 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	shc
 PORTVERSION=	4.0.3
 CATEGORIES=	misc
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Generic script compiler
+WWW=		https://github.com/neurobin/shc/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

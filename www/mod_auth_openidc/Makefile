@@ -1,14 +1,12 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mod_auth_openidc
-PORTVERSION=	2.4.4.1
+PORTVERSION=	2.4.14.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	OpenID Connect Relying Party and OAuth 2.0 Resource Server for Apache
+WWW=		https://github.com/pingidentity/mod_auth_openidc/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -18,7 +16,7 @@ LIB_DEPENDS=	libcjose.so:devel/cjose \
 		libjansson.so:devel/jansson \
 		libpcre.so:devel/pcre
 
-USES=		apache:2.2+ autoreconf cpe gmake libtool pkgconfig ssl
+USES=		apache autoreconf cpe gmake libtool pkgconfig ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	pingidentity
 CPE_VENDOR=	${GH_ACCOUNT}
@@ -39,7 +37,7 @@ HIREDIS_CONFIGURE_WITH=	hiredis
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|@APXS2@ @APXS2_OPTS@ -i|@APXS2@ @APXS2_OPTS@ -S LIBEXECDIR=${STAGEDIR}${PREFIX}/${APACHEMODDIR} -i|' \
-		${WRKSRC}/Makefile.in
+		${WRKSRC}/Makefile.*
 
 pre-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEMODDIR} \

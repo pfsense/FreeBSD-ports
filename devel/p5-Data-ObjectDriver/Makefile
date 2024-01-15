@@ -1,14 +1,13 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Data-ObjectDriver
-PORTVERSION=	0.21
+PORTVERSION=	0.22
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple, transparent data interface, with caching
+WWW=		https://metacpan.org/release/Data-ObjectDriver
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

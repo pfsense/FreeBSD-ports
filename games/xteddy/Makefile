@@ -1,6 +1,3 @@
-# Created by: Eckart "Isegrim" Hofmann
-# $FreeBSD$
-
 PORTNAME=	xteddy
 PORTVERSION=	2.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://webstaff.itn.liu.se/~stegu/xteddy/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cuddlesome teddy for the X desktop
+WWW=		http://webstaff.itn.liu.se/~stegu/xteddy/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

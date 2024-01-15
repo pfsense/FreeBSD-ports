@@ -1,17 +1,17 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nss
-PORTVERSION=	3.61
+PORTVERSION=	3.95
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Libraries to support development of security-enabled applications
+WWW=		https://developer.mozilla.org/docs/Mozilla/Projects/NSS
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${BUILD_DEPENDS_${ARCH}}
+BUILD_DEPENDS_powerpc64le=	as:devel/binutils
 LIB_DEPENDS=	libnspr4.so:devel/nspr \
 		libsqlite3.so:databases/sqlite3
 TEST_DEPENDS=	bash:shells/bash
@@ -60,11 +60,15 @@ BINS=		${DIST}/${OPSYS}${OSREL}_OPT.OBJ
 BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
 .endif
 
+.if ${ARCH} == armv6
+MAKE_ENV+=	NSS_DISABLE_ARM32_NEON=1
+.endif
+
 .if ${ARCH} == powerpc64 || ${ARCH} == powerpc
-EXTRA_PATCHES=	${FILESDIR}/${ARCH}${PPC_ABI:tl}-lib_freebl_scripts_gen.sh
+EXTRA_PATCHES=	${FILESDIR}/${ARCH}-lib_freebl_scripts_gen.sh
 USES+=		compiler:c++11-lang # -mcrypto -mvsx
 .if ! ${PORT_OPTIONS:MVSX}
-MAKE_ENV+=	NSS_DISABLE_ALTIVEC=1
+MAKE_ENV+=	NSS_DISABLE_CRYPTO_VSX=1
 .endif
 .endif
 

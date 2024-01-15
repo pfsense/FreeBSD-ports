@@ -1,6 +1,3 @@
-# Created by: gugu
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-AutoCRUD
 PORTVERSION=	2.200002
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Instant AJAX web front-end for DBIx::Class
+WWW=		https://metacpan.org/release/Catalyst-Plugin-AutoCRUD
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

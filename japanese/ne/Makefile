@@ -1,6 +1,3 @@
-# Created by: SASAKI Shunsuke <ele@pop17.odn.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	ne
 PORTVERSION=	3.05
 CATEGORIES=	japanese editors
@@ -8,6 +5,7 @@ MASTER_SITES=	http://hp.vector.co.jp/authors/VA018758/archive/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	VZ-like full-screen text editor with Japanese support
+WWW=		https://hp.vector.co.jp/authors/VA018758/ne/
 
 LICENSE=	GPLv2
 

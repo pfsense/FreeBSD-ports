@@ -1,6 +1,3 @@
-# Created by: swallace
-# $FreeBSD$
-
 PORTNAME=	xchomp
 PORTVERSION=	pl1
 PORTREVISION=	2

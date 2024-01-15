@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	URI-Sequin
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extract information from the URLs of Search-Engines
+WWW=		https://metacpan.org/release/URI-Sequin
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

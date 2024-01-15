@@ -1,12 +1,11 @@
-# Created by: Johnny Sorocil <jsorocil@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	lattice-ice40-examples-hx8k
 PORTVERSION=	g20180310
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	manu@FreeBSD.org
 COMMENT=	Lattice iCE40 FPGA examples for the Olimex HX8K board
+WWW=		https://github.com/OLIMEX/iCE40HX8K-EVB
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

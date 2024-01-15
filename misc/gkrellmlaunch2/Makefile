@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	gkrellmlaunch
 PORTVERSION=	0.5
 PORTREVISION=	9
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application launcher plugin for GKrellM2
+WWW=		https://gkrellmlaunch.sourceforge.net/
 
 LICENSE=	GPLv2+
 

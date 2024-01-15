@@ -1,6 +1,3 @@
-# Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bdelta
 PORTVERSION=	0.3.1
 DISTVERSIONPREFIX=v
@@ -8,6 +5,7 @@ CATEGORIES=	misc devel
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Advanced delta creator, patcher, and library
+WWW=		https://github.com/jjwhitney/BDelta
 
 LICENSE=	MPL20
 
@@ -18,6 +16,8 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	jjwhitney
 GH_PROJECT=	BDelta
+
+CONFLICTS_INSTALL=	bpatch # bin/bpatch
 
 PLIST_FILES=	bin/bdelta bin/bpatch lib/libbdelta.so
 PORTDOCS=	README

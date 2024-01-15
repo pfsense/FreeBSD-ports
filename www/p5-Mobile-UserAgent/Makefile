@@ -1,6 +1,3 @@
-# Created by: Dmitry Liakh <dliakh@ukr.net>
-# $FreeBSD$
-
 PORTNAME=	Mobile-UserAgent
 PORTVERSION=	1.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dliakh@ukr.net
 COMMENT=	Parses a mobile user agent string into its basic constituent parts
+WWW=		https://metacpan.org/release/Mobile-UserAgent
 
 RUN_DEPENDS=	p5-Class-Singleton>=0:devel/p5-Class-Singleton
 

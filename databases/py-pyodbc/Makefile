@@ -1,14 +1,12 @@
-# Created by: Robert Kruus <rob.kruus@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pyodbc
-PORTVERSION=	4.0.30
+PORTVERSION=	4.0.32
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	rob.kruus@gmail.com
 COMMENT=	ODBC connections for python
+WWW=		https://github.com/mkleehammer/pyodbc
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 BUILD_DEPENDS=	unixODBC>=2.2.14:databases/unixODBC
 
-USES=		localbase python:3.6+
+USES=		localbase python
 USE_PYTHON=	autoplist distutils
 
 post-install:

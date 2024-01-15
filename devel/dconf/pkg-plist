@@ -8,6 +8,7 @@ lib/gio/modules/libdconfsettings.so
 lib/libdconf.so
 lib/libdconf.so.1
 lib/libdconf.so.1.0.0
+lib/systemd/user/dconf.service
 libdata/pkgconfig/dconf.pc
 libexec/dconf-service
 man/man1/dconf-service.1.gz
@@ -19,5 +20,3 @@ share/vala/vapi/dconf.deps
 share/vala/vapi/dconf.vapi
 @dir %%ETCDIR%%/db
 @dir %%ETCDIR%%/profile
-@postexec %D/bin/gio-querymodules %D/lib/gio/modules 2>/dev/null || /usr/bin/true
-@postunexec %D/bin/gio-querymodules %D/lib/gio/modules 2>/dev/null || /usr/bin/true

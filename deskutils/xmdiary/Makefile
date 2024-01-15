@@ -1,6 +1,3 @@
-# Created by: mi@aldan.ziplink.net
-# $FreeBSD$
-
 PORTNAME=	xmdiary
 PORTVERSION=	3.0.3
 PORTREVISION=	6
@@ -10,7 +7,12 @@ MASTER_SITES=	XCONTRIB/office
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Personal and group calendar utility
 
-NO_CDROM=	Do not sell for profit
+# Converted from NO_CDROM
+LICENSE=	xmdiary
+LICENSE_NAME=	xmdiary
+LICENSE_TEXT=	Do not sell for profit
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
 USES=		imake motif xorg
 USE_XORG=	x11 xext xpm xt
 

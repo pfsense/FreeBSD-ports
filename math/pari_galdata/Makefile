@@ -1,9 +1,6 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	galdata
 DISTVERSION=	2008-04-11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	https://pari.math.u-bordeaux.fr/pub/pari/packages/
 PKGNAMEPREFIX=	pari-
@@ -12,6 +9,7 @@ DIST_SUBDIR=	${PKGNAMEPREFIX}${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Data needed by PARI/GP for polgalois
+WWW=		https://pari.math.u-bordeaux.fr/packages.html
 
 LICENSE=	GPLv2
 

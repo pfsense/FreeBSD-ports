@@ -1,17 +1,18 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-viewer
+PORTREVISION=	2
 CATEGORIES=	net
 
 COMMENT=	TigerVNC Viewer
+WWW=		https://tigervnc.org/
 
-USES+=		gnome iconv jpeg xorg
-USE_XORG+=	ice pixman sm x11 xcursor xext xfixes xft xi xinerama xrender
+USES+=		gnome iconv jpeg magick:7,build xorg
+USE_XORG+=	ice pixman sm x11 xcursor xext xfixes xft xi xinerama xrender xrandr
 
-BUILD_DEPENDS+=	convert:graphics/ImageMagick7 # to generate icons during build
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
-		libfltk.so:x11-toolkits/fltk
+		libfltk.so:x11-toolkits/fltk \
+		libnettle.so:security/nettle \
+		libgmp.so:math/gmp
 
 OPTIONS_DEFINE=	DOCS GNUTLS NLS
 OPTIONS_DEFAULT=	GNUTLS
@@ -24,7 +25,6 @@ GNUTLS_LIB_DEPENDS=	libtasn1.so:security/libtasn1 \
 			libgpg-error.so:security/libgpg-error \
 			libgnutls.so:security/gnutls
 
-INSTALLS_ICONS=	yes
 DESKTOP_ENTRIES=	"TigerVNC viewer" "Connect to VNC server and display remote desktop" \
 				"${PORTNAME}" "vncviewer" "Network;" false
 DESCR=		${.CURDIR}/pkg-descr

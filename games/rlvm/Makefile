@@ -1,25 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	rlvm
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	0.14-75
-DISTVERSIONSUFFIX=	-g975e740c
-PORTREVISION=	1
+DISTVERSION=	0.14-77
+DISTVERSIONSUFFIX=	-gfabf134a
+PORTREVISION=	4
 CATEGORIES=	games
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	RealLive virtual machine clone
+WWW=		http://www.rlvm.net/
 
 LICENSE=	GPLv2 GPLv3 MIT
 LICENSE_COMB=	multi
 
-BROKEN_FreeBSD_11_powerpc64=	fails to link on powerpc64 elfv1: gcn_platform.cc: undefined reference to gcn::Exception::Exception
-BROKEN_FreeBSD_12_powerpc64=	fails to link on powerpc64 elfv1: gcn_platform.cc: undefined reference to gcn::Exception::Exception
-
-BUILD_DEPENDS=	${LOCALBASE}/include/utf8cpp/utf8.h:devel/utf8cpp
+BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
+		utf8cpp>=4.0.3:devel/utf8cpp
 LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
 		libvorbisfile.so:audio/libvorbis \
-		libboost_serialization.so:devel/boost-libs \
 		libguichan.so:devel/guichan
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu
 
@@ -35,7 +31,6 @@ EXCLUDE=	GLEW SDL_image SDL_mixer SDL_ttf gmock gtest guichan \
 EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude vendor/,}
 LDFLAGS+=	-Wl,--as-needed # avoid overlinking (gtk deps)
 MAKE_ARGS=	VERBOSE=1
-INSTALLS_ICONS=	yes
 PORTDOCS=	AUTHORS.TXT NEWS.TXT README.md STATUS.TXT notes
 
 OPTIONS_DEFINE=	DEBUG DOCS NLS TEST
@@ -61,6 +56,8 @@ TEST_BUILD_DEPENDS=googletest>=1.7.0:devel/googletest \
 TEST_EXTRA_PATCHES_OFF=${FILESDIR}/extra-patch-disable-test
 
 post-patch:
+	@${REINPLACE_CMD} -e "s/boost_[^\"]*/:lib&$$'\\\x2e'a/" \
+		${WRKSRC}/SConstruct
 	@${REINPLACE_CMD} -e 's,/usr/share,${PREFIX}/share,' \
 		${WRKSRC}/src/platforms/gtk/gtk_rlvm_instance.cc
 	@${REINPLACE_CMD} -e 's,/usr/share,${LOCALBASE}/share,' \

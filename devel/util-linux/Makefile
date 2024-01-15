@@ -1,34 +1,40 @@
-# $FreeBSD$
-
 PORTNAME=	util-linux
-DISTVERSION=	2.36
-PORTREVISION=	1
+DISTVERSION=	2.39.2
 CATEGORIES=	devel
-MASTER_SITES=	KERNEL_ORG/linux/utils/util-linux/v${DISTVERSION}/
+MASTER_SITES=	KERNEL_ORG/linux/utils/util-linux/v${DISTVERSION:R}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Random collection of Linux utilities
+WWW=		https://github.com/util-linux/util-linux
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
 		libuuid.so:misc/e2fsprogs-libuuid
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		autoreconf gettext-tools gmake libtool ncurses pkgconfig \
 		shebangfix tar:xz
+
 USE_LDCONFIG=	yes
 
-SHEBANG_FILES=	misc-utils/getopt-parse.bash
+SHEBANG_FILES=	misc-utils/getopt-example.bash \
+		tools/*.sh \
+		tools/git-tp-sync \
+		tools/git-tp-sync-man \
+		tests/run.sh
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-nls --disable-ipcrm --disable-ipcs \
-		--disable-makeinstall-chown --disable-makeinstall-setuid
+		--disable-makeinstall-chown --disable-makeinstall-setuid \
+		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
 
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check # tests fail due to https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=273196
 
-#CONFLICTS_INSTALL=	cal getopt flock hardlink # non-default options conflicts
+CONFLICTS_INSTALL=	heirloom-doctools
 
 OPTIONS_DEFINE=		CAL FLOCK GETOPT HARDLINK UUID
 OPTIONS_SUB=		yes

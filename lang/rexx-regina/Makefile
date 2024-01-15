@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	regina
 PORTVERSION=	3.9.3
 CATEGORIES=	lang
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
 MAINTAINER=	bob@eager.cx
 COMMENT=	Rexx interpreter
+WWW=		http://regina-rexx.sourceforge.net/
 
 LICENSE=	LGPL21+
 
@@ -25,7 +23,7 @@ CONFIGURE_ARGS=	--with-addon-dir=${PREFIX}/lib/Regina-REXX/addons
 CONFIGURE_ENV=	ac_cv_c_char_unsigned=yes
 MAKE_JOBS_UNSAFE=	yes
 
-CONFLICTS=	rexx-imc-[0-0]* oorexx-[0-9]*
+CONFLICTS=	rexx-imc-[0-0]* oorexx
 
 DATADIR=	${PREFIX}/share/${PKGNAMEPREFIX}${PORTNAME}
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}

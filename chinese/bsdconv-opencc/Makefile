@@ -1,6 +1,3 @@
-# Created by: buganini@gmail.com
-# $FreeBSD$
-
 PORTNAME=	opencc
 PORTVERSION=	11.5
 CATEGORIES=	chinese converters
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	bsdconv-
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	OpenCC conversion module for bsdconv
+WWW=		https://github.com/buganini/bsdconv-opencc
 
 LICENSE=	BSD2CLAUSE
 

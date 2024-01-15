@@ -1,21 +1,19 @@
-# Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	icon-slicer
 PORTVERSION=	0.3
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.freedesktop.org/software/icon-slicer/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for generating icon and cursor themes
+WWW=		https://www.freedesktop.org/wiki/Software/icon-slicer/
 
 LICENSE=	MIT # in readme and sources; COPYING seem to be unrelated
 
 LIB_DEPENDS=	libpopt.so:devel/popt
 
 USES=		gnome localbase pkgconfig
-USE_GNOME=	gtk20
+USE_GNOME=	gdkpixbuf2
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	AUTHORS ChangeLog README

@@ -1,128 +1,227 @@
-# Created by: alepulver
-# $FreeBSD$
+PORTNAME=	mame
+DISTVERSION=	0.261
+CATEGORIES=	emulators games
 
-PORTNAME?=	mame
-PORTVERSION=	0.226
-CATEGORIES=	emulators
+MAINTAINER=	agh@riseup.net
+COMMENT=	MAME: a multi-purpose emulation framework
+WWW=		https://mamedev.org/
 
-MAINTAINER=	manu@FreeBSD.org
-COMMENT=	Multi Arcade Machine Emulator
+LICENSE=	BSD2CLAUSE BSD3CLAUSE CC0-1.0 GPLv2 LGPL21 MIT ZLIB
+LICENSE_COMB=	multi
+LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/docs/legal/BSD-2-Clause
+LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/docs/legal/BSD-3-Clause
+LICENSE_FILE_CC0-1.0=	${WRKSRC}/docs/legal/CC0
+LICENSE_FILE_GPLv2=	${WRKSRC}/docs/legal/GPL-2.0
+LICENSE_FILE_LGPL21=	${WRKSRC}/docs/legal/LGPL-2.1
+LICENSE_FILE_MIT=	${WRKSRC}/docs/legal/MIT
+LICENSE_FILE_ZLIB=	${WRKSRC}/docs/legal/Zlib
+LICENSE_FILE=	${WRKSRC}/docs/LICENSE
 
-LICENSE=	GPLv2
+ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	not yet ported to any architecture other than armv7, arm64, x86, and powerpc*
 
-ONLY_FOR_ARCHS=		amd64 i386 powerpc64
-ONLY_FOR_ARCHS_REASON=	not yet ported to any arch other than x86 and powerpc64
-
-LIB_DEPENDS=	libFLAC.so:audio/flac \
-		libexpat.so:textproc/expat2 \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinxcontrib-svg2pdfconverter>0:textproc/py-sphinxcontrib-svg2pdfconverter@${PY_FLAVOR} \
+		asio>0:net/asio \
+		genie:devel/genie \
+		glm>0:math/glm \
+		rapidjson>0:devel/rapidjson
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libFLAC.so:audio/flac \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libpugixml.so:textproc/pugixml
+		libportmidi.so:audio/portmidi \
+		libpugixml.so:textproc/pugixml \
+		libutf8proc.so:textproc/utf8proc
 RUN_DEPENDS=	liberation-fonts-ttf>=0:x11-fonts/liberation-fonts-ttf
 
-USES=		compiler:c++14-lang gl gmake jpeg localbase pkgconfig \
-		python:3.7,build qt:5 sdl shebangfix xorg
+USES=		compiler:c++17-lang gl gmake jpeg llvm:min=16 localbase \
+		pkgconfig python:3.9,build sdl shebangfix sqlite:3 xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mamedev
-GH_PROJECT=	mame				# explicit (master port)
-GH_TAGNAME=	mame${PORTVERSION:S/.//}
+GH_TAGNAME=	mame${DISTVERSION:S/.//}
 USE_GL=		gl
-USE_QT=		buildtools core gui qmake_build widgets
 USE_SDL=	sdl2 ttf2
 USE_XORG=	x11 xext xi xinerama xrender
 
-SHEBANG_FILES=	src/devices/cpu/m6502/m6502make.py \
-		src/devices/cpu/m6809/m6809make.py \
-		src/devices/cpu/mcs96/mcs96make.py \
-		src/devices/cpu/tms57002/tmsmake.py
-
 MAKEFILE=	makefile
-MAKE_ARGS=	TARGETOS=freebsd VERBOSE=1 TOOLS=1 USE_SYSTEM_LIB_PUGIXML=1
-MAKE_ENV=	NOWERROR=1 USE_NETWORK=1 \
-		LD="${CXX}" PYTHON="${PYTHON_CMD}" \
-		OPT_FLAGS="${CXXFLAGS}" GCC_LDFLAGS="${LDFLAGS}" \
-		TARGET="${MTARGET}" SUBTARGET="${MSUBTARGET}" FULLNAME="mame" SDL_NETWORK="pcap"
-MAKE_JOBS_UNSAFE=	yes
+MAKE_ARGS=	SILENT= \
+		verbose=yes
+MAKE_ENV=	NO_USE_PORTAUDIO=1 \
+		NO_USE_PULSEAUDIO=1 \
+		NOWERROR=1 \
+		OVERRIDE_AR="llvm-ar${LLVM_VERSION}" \
+		OVERRIDE_CC="clang${LLVM_VERSION}" \
+		OVERRIDE_CXX="clang++${LLVM_VERSION}" \
+		OVERRIDE_LD="lld${LLVM_VERSION}" \
+		PRECOMPILE=0 \
+		PYTHON_EXECUTABLE="${PYTHON_CMD}" \
+		TARGETOS=freebsd \
+		USE_PCAP=1 \
+		USE_SYSTEM_LIB_ASIO=1 \
+		USE_SYSTEM_LIB_EXPAT=1 \
+		USE_SYSTEM_LIB_FLAC=1 \
+		USE_SYSTEM_LIB_GLM=1 \
+		USE_SYSTEM_LIB_JPEG=1 \
+		USE_SYSTEM_LIB_PORTMIDI=1 \
+		USE_SYSTEM_LIB_PUGIXML=1 \
+		USE_SYSTEM_LIB_RAPIDJSON=1 \
+		USE_SYSTEM_LIB_SQLITE3=1 \
+		USE_SYSTEM_LIB_UTF8PROC=1 \
+		USE_SYSTEM_LIB_ZLIB=1 \
+		USE_TAPTUN=1
 
-SUB_FILES=	pkg-message target.ini
-SUB_LIST=	MTARGET=${MTARGET} MSUBTARGET=${MSUBTARGET}
+CFLAGS_aarch64=	-march=armv8-a+crc+crypto
 
-PORTDOCS=	*
-PORTEXAMPLES=	${MSUBTARGET}.ini
+EXTRACT_AFTER_ARGS=	${_DIST_EXCLUDES:S,^,--exclude ,}
 
-OPTIONS_DEFINE=		DEBUG DOCS EXAMPLES
+SUB_FILES=	mame.ini pkg-message plugin.ini ui.ini
 
-DEBUG_MAKE_ENV=		DEBUG=1
+PORTDOCS=	html/*
 
-GENIE=		${WRKSRC}/3rdparty/genie
-MSUBTARGET?=	mame
-MTARGET?=	mame
+OPTIONS_DEFINE=			DOCS NLS OPENMP QTDEBUGGER SSE2 TOOLS
+OPTIONS_RADIO=			BUILDTYPE
+OPTIONS_RADIO_BUILDTYPE=	DEBUG SIZE_OPTIMIZED_CFLAGS \
+				SPEED_OPTIMIZED_CFLAGS
+.if !exists(/usr/include/omp.h)
+OPTIONS_EXCLUDE=		OPENMP
+.endif
+OPTIONS_SUB=			yes
+
+BUILDTYPE_DESC=			Application production type
+DEBUG_DESC=			Produce profiling data, and symbols for debugging
+DOCS_DESC=			Install extensive online MAME documentation
+NLS_DESC=			Install language translations for use in the GUI
+QTDEBUGGER_DESC=		Build with Qt interactive low-level machine debugger
+SIZE_OPTIMIZED_CFLAGS_DESC=	Optimize for smaller binaries (-Os)
+SPEED_OPTIMIZED_CFLAGS_DESC=	Optimize for faster binaries (-O3)
+SSE2_DESC=			Build with Streaming SIMD Extensions 2
+TOOLS_DESC=			Additional tools for archiving, development, and multimedia
+
+DEBUG_MAKE_ENV=				DEBUG=1 \
+					OPTIMIZE=g \
+					STRIP_SYMBOLS=0
+DEBUG_MAKE_ENV_OFF=			STRIP_SYMBOLS=1
+# Attempt to avoid address space exhaustion during linking, specifically
+# on armv7, and possibly other architectures:
+DEBUG_LDFLAGS_OFF=			-s
+NLS_USES=				gettext-runtime
+OPENMP_MAKE_ENV=			OPENMP=1
+OPENMP_MAKE_ENV_OFF=			OPENMP=0
+QTDEBUGGER_USES=			qt:6
+QTDEBUGGER_USE=				QT=base,tools:build
+QTDEBUGGER_MAKE_ENV=			QT_HOME="${PREFIX}" \
+					USE_QTDEBUG=1
+QTDEBUGGER_MAKE_ENV_OFF=		USE_QTDEBUG=0
+SIZE_OPTIMIZED_CFLAGS_MAKE_ENV=		OPTIMIZE=s
+SIZE_OPTIMIZED_CFLAGS_CXXFLAGS=		-Os
+SPEED_OPTIMIZED_CFLAGS_MAKE_ENV=	OPTIMIZE=3
+SPEED_OPTIMIZED_CFLAGS_CXXFLAGS=	-O3
+SSE2_MAKE_ENV=				SSE2=1
+SSE2_MAKE_ENV_OFF=			SSE2=0
+TOOLS_MAKE_ENV=				TOOLS=1
+TOOLS_MAKE_ENV_OFF=			TOOLS=0
+
+# man page for command line utility that is not built at all:
+_DIST_EXCLUDES=		docs/man/ldplayer.1
+# Libraries, and shaders for proprietary platforms:
+_DIST_EXCLUDES+=	"bgfx/shaders/dx*" \
+			3rdparty/bgfx/examples/runtime/shaders/dx11 \
+			3rdparty/bgfx/examples/runtime/shaders/metal \
+			3rdparty/dxsdk bgfx/shaders/metal
+# Headers that mask system abstractions required to build MAME:
+_DIST_EXCLUDES+=	3rdparty/bx/include/compat/freebsd/dirent.h \
+			3rdparty/bx/include/compat/freebsd/signal.h
+# Make use of Ports instead of bundled libraries:
+_DIST_EXCLUDES+=	3rdparty/expat 3rdparty/glm 3rdparty/libflac \
+			3rdparty/libjpeg 3rdparty/portmidi 3rdparty/pugixml \
+			3rdparty/rapidjson 3rdparty/sqlite3 \
+			3rdparty/utf8proc 3rdparty/zlib
+# Bundled libraries not used at all:
+_DIST_EXCLUDES+=	3rdparty/genie 3rdparty/portaudio 3rdparty/tap-windows6
+# pre-built GENie binaries for other platforms:
+_DIST_EXCLUDES+=	3rdparty/bx/tools/bin
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == amd64 || ${ARCH} == powerpc64
-MAKE_ARGS+=	PTR64=1
-EMULATOR=	${MSUBTARGET}64
-.else
-EMULATOR=	${MSUBTARGET}
+.if ${ARCH:Maarch64} || ${ARCH:Mamd64} || ${ARCH:Mpowerpc64*}
+MAKE_ENV+=	PTR64=1
 .endif
-PLIST_SUB+=	EMULATOR=${EMULATOR}
+
+# Compiling with -pg (PROFILE) causes the linker to run out of memory on i386,
+# build with less profiling data:
+.if ${ARCH:Mi386}
+DEBUG_MAKE_ENV+=	PROFILER=1
+.else
+DEBUG_MAKE_ENV+=	PROFILE=1
+.endif
+
+post-extract:
+	${MV} ${WRKSRC}/src/lib/util/png.h \
+		${WRKSRC}/src/lib/util/localpng.h
 
 post-patch:
-	@${RM} ${WRKSRC}/3rdparty/bx/include/compat/freebsd/dirent.h
-	@${RM} ${WRKSRC}/3rdparty/bx/include/compat/freebsd/signal.h
-	@${MV} ${GENIE}/build/gmake.freebsd ${GENIE}/build/gmake.bsd
-	@${REINPLACE_CMD} -e \
-		's|^\(CC \)|#\1| ; \
-		 s|^\(CXX \)|#\1| ; \
-		 s|^\(CXX:\)|#\1| ; \
-		 s|^\(LD \)|#\1| ; \
-		 s|^\(PYTHON \)|#\1| ; \
-		 s| .(ARCH)|| ; \
-		 s|FreeBSD|${OPSYS}|g' \
-		 ${WRKSRC}/makefile \
-		 ${GENIE}/build/gmake.bsd/genie.make
-	@${REINPLACE_CMD} -e 's|gcc|cc|; s|g++|c++|' \
-		${GENIE}/src/tools/gcc.lua \
-		${GENIE}/src/tools/snc.lua \
-		${GENIE}/tests/test_gmake_cpp.lua
-	@${REINPLACE_CMD} -e 's|= \"gcc|= \"cc|; s|= \"g++|= \"c++|' \
-		-e "s|'CXX =|'#CXX =|; s|'CC  =|'#CC  =|; s| .(ARCH)| |g" \
-		${GENIE}/src/host/scripts.c
-	# we can't fix two types of python shebangs, so do these manually
-	@${REINPLACE_CMD} -i "" -e "s|/usr/bin/env python|${PYTHON_CMD}|" \
-		${WRKSRC}/scripts/build/png*.py
-	@${REINPLACE_CMD} -e 's|"python"|"${PYTHON_CMD}"|' \
-		${WRKSRC}/scripts/genie.lua
-	@${GREP} -rl '"png.h"' ${WRKSRC}/src | ${XARGS} ${REINPLACE_CMD} \
-		-e 's|"png.h"|"localpng.h"|'
-	@${REINPLACE_CMD} -e 's|"util/png.h"|"util/localpng.h"|' \
+# Patch build to use bundled PNG.
+	${GREP} -rl '"png.h"' ${WRKSRC}/src | \
+		${XARGS} ${REINPLACE_CMD} -e 's|"png.h"|"localpng.h"|'
+	${REINPLACE_CMD} -e 's|"util/png.h"|"util/localpng.h"|' \
 		${WRKSRC}/src/frontend/mame/ui/icorender.cpp
-	@${MV} ${WRKSRC}/src/lib/util/png.h ${WRKSRC}/src/lib/util/localpng.h
+# Patch build to use GENie from Ports:
+	${REINPLACE_CMD} -e 's|%%GENIE_PREFIX%%|${PREFIX}/bin/|' \
+	${WRKSRC}/makefile \
+		${WRKSRC}/3rdparty/bx/makefile
+
+do-build-DOCS-on:
+	(cd ${WRKSRC}/docs && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} html SPHINXBUILD=sphinx-build-${PYTHON_VER})
+
+post-build:
+	(cd ${WRKSRC}/docs && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} man SPHINXBUILD=sphinx-build-${PYTHON_VER})
+
+post-build-TOOLS-on:
+.for EXTRA_TOOL in nl virtual
+	(cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} SUBTARGET=${EXTRA_TOOL} \
+		TOOLS=0)
+.endfor
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${DATADIR} \
-		${STAGEDIR}${DOCSDIR} \
-		${STAGEDIR}${EXAMPLESDIR} \
-		${STAGEDIR}${PREFIX}/libexec/${MSUBTARGET}
-	${INSTALL_PROGRAM} ${WRKSRC}/${EMULATOR} ${STAGEDIR}${PREFIX}/bin
-.if ${MSUBTARGET:Mmame}
+.for DATA in artwork bgfx ctrlr ini hash plugins samples
 	(cd ${WRKSRC} && \
-		${INSTALL_PROGRAM} chdman jedutil ldresample ldverify \
-		romcmp unidasm \
-		${STAGEDIR}${PREFIX}/libexec/mame)
-.endif
-.if ${MSUBTARGET:Mmess}
-	(cd ${WRKSRC} && ${INSTALL_PROGRAM} castool chdman floptool imgtool jedutil \
-		ldresample ldverify nltool nlwav pngcmp regrep romcmp split \
-		srcclean unidasm \
-		${STAGEDIR}${PREFIX}/libexec/mess)
-.endif
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} artwork ${STAGEDIR}${DATADIR})
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} hash ${STAGEDIR}${DATADIR})
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} docs ${STAGEDIR}${DOCSDIR})
-	${INSTALL_DATA} ${WRKDIR}/target.ini \
-		${STAGEDIR}${EXAMPLESDIR}/${MSUBTARGET}.ini
+		${COPYTREE_SHARE} ${DATA} ${STAGEDIR}${DATADIR})
+.endfor
+	${MKDIR} ${STAGEDIR}${ETCDIR}
+.for INI in mame plugin ui
+	${INSTALL_DATA} ${WRKDIR}/${INI}.ini \
+		${STAGEDIR}${ETCDIR}/${INI}.ini.sample
+.endfor
+	${MKDIR} ${STAGEDIR}${DATADIR}/keymaps
+.for KEYMAP in be br ch de es fr gb it pt se
+	${INSTALL_DATA} ${WRKSRC}/keymaps/km_${KEYMAP}_LINUX.map \
+		${STAGEDIR}${DATADIR}/keymaps/km_${KEYMAP}.map
+.endfor
+	${INSTALL_MAN} ${WRKSRC}/docs/build/man/${PORTNAME:tu}.1 \
+		${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/docs/man/${PORTNAME}.6 \
+		${STAGEDIR}${PREFIX}/share/man/man6
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/docs/build && \
+		${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR} "! -name .buildinfo -not -regex ^./_sources.*")
+
+do-install-NLS-on:
+	(cd ${WRKSRC} && \
+		${COPYTREE_SHARE} language ${STAGEDIR}${DATADIR} "! -name *.po")
+
+do-install-TOOLS-on:
+	${FIND} ${WRKSRC} -depth 1 -type f -and ! -type d -and ! -name ${PORTNAME} \
+		-perm -o=+x -exec ${INSTALL_PROGRAM} {} ${STAGEDIR}${PREFIX}/bin/ \
+		\;
+	${INSTALL_MAN} ${WRKSRC}/docs/man/*.1 \
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

@@ -1,14 +1,12 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	penguin-command
 PORTVERSION=	1.6.11
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Clone of the classic game Missile Command
+WWW=		https://www.linux-games.com/penguin-command/
 
 LIB_DEPENDS=	libpng.so:graphics/png
 

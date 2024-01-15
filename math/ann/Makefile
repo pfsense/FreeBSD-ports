@@ -1,6 +1,3 @@
-# Created by: Tz-Huan Huang <tzhuan@csie.org>
-# $FreeBSD$
-
 PORTNAME=	ann
 PORTVERSION=	1.1.2
 PORTREVISION=	1
@@ -10,9 +7,11 @@ DISTNAME=	ann_1.1.2
 
 MAINTAINER=	tzhuan@csie.org
 COMMENT=	Library for Approximate Nearest Neighbor Searching
+WWW=		https://www.cs.umd.edu/~mount/ANN/
 
-USE_LDCONFIG=	yes
 USES=		gmake
+USE_CXXSTD=	c++14
+USE_LDCONFIG=	yes
 
 post-install:
 	${INSTALL_LIB} ${WRKSRC}/lib/libann.so.0 ${STAGEDIR}${PREFIX}/lib

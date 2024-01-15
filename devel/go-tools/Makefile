@@ -1,31 +1,62 @@
-# Created by: Carlo Strub <cs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tools
-DISTVERSION=	20180726
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.16.1
+PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Go Tools
+WWW=		https://godoc.org/golang.org/x/tools
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		go:modules
+GO_MODULE=	golang.org/x/tools
+GO_TARGET=	./cmd/auth/cookieauth \
+		./cmd/auth/gitauth \
+		./cmd/auth/netrcauth \
+		./cmd/bisect \
+		./cmd/bundle \
+		./cmd/callgraph \
+		./cmd/compilebench \
+		./cmd/deadcode \
+		./cmd/digraph \
+		./cmd/eg \
+		./cmd/file2fuzz \
+		./cmd/fiximports \
+		./cmd/go-contrib-init \
+		./cmd/godex \
+		./cmd/godoc \
+		./cmd/goimports \
+		./cmd/gomvpkg \
+		./cmd/gonew \
+		./cmd/gorename \
+		./cmd/gotype \
+		./cmd/goyacc \
+		./cmd/guru \
+		./cmd/html2article \
+		./cmd/present \
+		./cmd/present2md \
+		./cmd/signature-fuzzer/fuzz-driver \
+		./cmd/signature-fuzzer/fuzz-runner \
+		./cmd/splitdwarf \
+		./cmd/ssadump \
+		./cmd/stress \
+		./cmd/stringer \
+		./cmd/toolstash
 
-USE_GITHUB=	yes
-GH_TUPLE=	golang:tools:bfb5194:DEFAULT \
-		golang:crypto:3cb0727:crypto/vendor/golang.org/x/crypto \
-		golang:net:b6d7b13:net/vendor/golang.org/x/net
+CONFLICTS_INSTALL=	easygit rubygem-bundler
 
-GO_PKGNAME=	golang.org/x/tools
-GO_TARGET=	./cmd/benchcmp ./cmd/bundle ./cmd/callgraph ./cmd/compilebench \
-		./cmd/cover ./cmd/digraph ./cmd/eg ./cmd/fiximports ./cmd/getgo \
-		./cmd/go-contrib-init ./cmd/godex ./cmd/godoc ./cmd/goimports \
-		./cmd/gomvpkg ./cmd/gorename ./cmd/gotype ./cmd/goyacc ./cmd/guru \
-		./cmd/heapview ./cmd/html2article ./cmd/present ./cmd/ssadump \
-		./cmd/stress ./cmd/stringer ./cmd/tip ./cmd/toolstash
+PLIST_FILES=	${GO_TARGET:T:S,^,bin/,}
+
+OPTIONS_DEFINE=	RARE
+RARE_DESC=	install rarely used tools
+RARE_VARS=	GO_TARGET+=" \
+		./cmd/auth/authtest \
+		./cmd/benchcmp \
+		./cmd/getgo \
+		./cmd/getgo/server"
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Tatsuya Kuidoh <cdr@ga.xdsl.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	xjumpx
 PORTVERSION=	1.4
 PORTREVISION=	3

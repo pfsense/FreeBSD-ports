@@ -1,6 +1,3 @@
-# Created by: Mikhail T. <michael@fun-box.ru>
-# $FreeBSD$
-
 PORTNAME=	netty
 PORTVERSION=	4.1.53
 DISTVERSIONSUFFIX=	.Final
@@ -9,6 +6,7 @@ MASTER_SITES=	http://dl.bintray.com/netty/downloads/
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Java NIO client server framework
+WWW=		https://netty.io/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -16,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 USES=		cpe tar:bzip2
 USE_JAVA=	yes
 
-CPE_VENDOR=	netty_project
 JAVA_VERSION=	8+
 JAVA_EXTRACT=	yes
 NO_ARCH=	yes
@@ -52,11 +49,13 @@ NETTY_ARCH=	x86_32
 NETTY_ARCH=	ppc_32
 .elif ${ARCH:Mpowerpc64*}
 NETTY_ARCH=	ppc_64
-.elif ${ARCH} == "sparc64"
-NETTY_ARCH=	sparc_64
 .else
 # Default to ${ARCH}
 NETTY_ARCH=	${ARCH}
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
 .endif
 
 post-extract:
@@ -78,6 +77,9 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${JAVAJARDIR}
 	${INSTALL_DATA} ${WRKSRC}/jar/all-in-one/${PORTNAME}-all-${PORTVERSION}.Final.jar ${STAGEDIR}${JAVAJARDIR}/${PORTNAME}-${PORTVERSION}.jar
 	${LN} -nfs ${PORTNAME}-${PORTVERSION}.jar ${STAGEDIR}${JAVAJARDIR}/${PORTNAME}.jar
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${JAVAJARDIR}
 .for DIR in ${DOCDIRS}
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} ${DIR} ${STAGEDIR}${DOCSDIR}
 .endfor

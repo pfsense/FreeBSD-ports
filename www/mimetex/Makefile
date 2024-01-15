@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	mimetex
 PORTVERSION=	20120331.1.74
 CATEGORIES=	www math
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	CGI script that lets you embed LaTeX math in your HTML pages
+WWW=		http://www.forkosh.com/mimetex.html
 
 LICENSE=	GPLv3
 

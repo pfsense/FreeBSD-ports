@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	slop
-PORTVERSION=	7.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+DISTVERSION=	7.6
+PORTREVISION=	5
 CATEGORIES=	x11
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Make a screen selection and print the selection coordinates to stdout
+WWW=		https://github.com/naelstrof/slop
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/license.txt
@@ -27,6 +26,6 @@ PLIST_FILES=	bin/slop \
 		include/slop.hpp \
 		lib/libslopy.so \
 		lib/libslopy.so.${PORTVERSION} \
-		man/man1/slop.1.gz
+		share/man/man1/slop.1.gz
 
 .include <bsd.port.mk>

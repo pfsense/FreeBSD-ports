@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	amazon-ssm-agent
 PORTVERSION=	2.3.1205.0
+PORTREVISION=	18
 CATEGORIES=	sysutils
 
 MAINTAINER=	cperciva@FreeBSD.org
 COMMENT=	Amazon Simple Systems Manager Agent
+WWW=		https://github.com/aws/amazon-ssm-agent
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,6 +17,8 @@ USES=		go
 USE_GITHUB=	yes
 GH_ACCOUNT=	aws
 GH_SUBDIR=	src/github.com/aws/amazon-ssm-agent
+GH_TUPLE=	creack:pty:v1.1.18:pty \
+		golang:sys:v0.6.0:sys
 
 GO_BUILDFLAGS=	-ldflags "-s -w"
 GO_TARGET=	./agent:${PREFIX}/sbin/amazon-ssm-agent \
@@ -34,6 +36,12 @@ PLIST_FILES=	etc/amazon/ssm/amazon-ssm-agent.json.template	\
 		sbin/ssm-cli
 
 USE_RC_SUBR=	amazon-ssm-agent
+
+pre-patch:
+	${MKDIR} ${WRKSRC}/vendor/src/github.com/creack
+	${LN} -s ${WRKSRC_pty} ${WRKSRC}/vendor/src/github.com/creack/pty
+	${RM} -r ${WRKSRC}/vendor/src/golang.org/x/sys
+	${LN} -s ${WRKSRC_sys} ${WRKSRC}/vendor/src/golang.org/x/sys
 
 post-patch:
 	${LN} -s ${WRKSRC}/vendor/src/* ${WRKSRC}/vendor/

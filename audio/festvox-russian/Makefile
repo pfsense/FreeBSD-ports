@@ -1,6 +1,3 @@
-# Created by: Alexander Yerenkow <yerenkow@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	festvox
 PORTVERSION=	0.5
 CATEGORIES=	audio
@@ -12,6 +9,7 @@ DIST_SUBDIR=	festival
 
 MAINTAINER=	yerenkow@gmail.com
 COMMENT=	Russian male voice for Festival speech synthesis system
+WWW=		http://festlang.berlios.de/docu/doku.php?id=russian
 
 RUN_DEPENDS=	festival:audio/festival
 

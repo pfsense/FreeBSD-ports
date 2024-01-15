@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ExtUtils-MakeMaker-CPANfile
 PORTVERSION=	0.09
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cpanfile support for ExtUtils::MakeMaker
+WWW=		https://metacpan.org/release/ExtUtils-MakeMaker-CPANfile
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

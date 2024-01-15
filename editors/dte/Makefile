@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dte
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.9.1
@@ -7,6 +5,7 @@ CATEGORIES=	editors
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Small and easy to use console text editor
+WWW=		https://craigbarnes.gitlab.io/dte/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,7 +14,7 @@ USES=		iconv gmake ncurses
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	craigbarnes
-GL_COMMIT=	cae7c45ea5a563c022001a54d1eee71c268f62b4
+GL_TAGNAME=	cae7c45ea5a563c022001a54d1eee71c268f62b4
 
 MAKEFILE=	${WRKSRC}/GNUmakefile
 MAKE_ARGS=	V=1 prefix=${PREFIX} mandir=${PREFIX}/man

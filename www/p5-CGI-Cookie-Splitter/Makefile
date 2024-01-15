@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	CGI-Cookie-Splitter
 PORTVERSION=	0.05
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Split big cookies into smaller ones
+WWW=		https://metacpan.org/release/CGI-Cookie-Splitter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

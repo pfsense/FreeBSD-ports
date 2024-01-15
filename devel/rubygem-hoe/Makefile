@@ -1,20 +1,17 @@
-# Created by: Jonathan Weiss (<jw@innerewut.de>)
-# $FreeBSD$
-
 PORTNAME=	hoe
-PORTVERSION=	3.22.1
+PORTVERSION=	3.26.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Simple rake/rubygems helper for project Rakefiles
+WWW=		https://github.com/seattlerb/hoe
 
 LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-rake>=0.8<15.0:devel/rubygem-rake
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	liggghts
-DISTVERSION=	3.8.0-26
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g6e873439
+DISTVERSION=	3.8.0-58
+PORTREVISION=	5
+DISTVERSIONSUFFIX=	-g6e28cfe3
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Discrete element method particle simulation software
+WWW=		https://www.cfdem.com/liggghts-open-source-discrete-element-method-particle-simulation-code
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../LICENSE
@@ -15,27 +14,33 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 BUILD_DEPENDS=	gsed:textproc/gsed
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libfreetype.so:print/freetype2 \
-		libmpi.so:net/openmpi \
+		libhdf5_hl.so:science/hdf5 \
+		libmpi.so:net/mpich \
+		libnetcdf.so:science/netcdf \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
-		libvtkViewsCore-8.2.so:math/vtk8
+		libvtkViewsCore-${VTK_VER}.so:math/vtk${VTK_VER:R}
 
-USES=		compiler:c++17-lang cmake fortran jpeg qt:5 xorg
+USES=		compiler:c++17-lang cmake fortran gl jpeg python qt:5 xorg
+USE_XORG=	ice sm x11 xext xt
+USE_QT=		core declarative gui network opengl sql widgets qmake:build buildtools:build
+USE_GL=		gl
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	CFDEMproject
 GH_PROJECT=	${PORTNAME:tu}-PUBLIC
-USE_XORG=	ice sm x11 xext xt
-USE_QT=		core gui sql widgets qmake_build buildtools_build
-USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DMPI_C_COMPILER:FILEPATH="${LOCALBASE}/mpi/openmpi/bin/mpicc" \
-		-DMPI_CXX_COMPILER:FILEPATH="${LOCALBASE}/mpi/openmpi/bin/mpicxx"
+CMAKE_ARGS=	-DVTK_DIR=${LOCALBASE}/lib/cmake/vtk-${VTK_VER} \
+		-DPython3_EXECUTABLE=${PYTHON_CMD}
 
 WRKSRC_SUBDIR=	src
 
 CFLAGS+=	-fPIC
-CXXFLAGS+=	-fPIC
+CXXFLAGS+=	-fPIC \
+		-I${LOCALBASE}/include/vtk-${VTK_VER}
 
 BINARY_ALIAS=	sed=gsed
 
+.include <../../math/vtk9/Makefile.version>
 .include <bsd.port.mk>

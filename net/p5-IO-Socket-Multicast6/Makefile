@@ -1,6 +1,3 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	IO-Socket-Multicast6
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Send and receive IPv4 and IPv6 multicast messages
+WWW=		https://metacpan.org/release/IO-Socket-Multicast6
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

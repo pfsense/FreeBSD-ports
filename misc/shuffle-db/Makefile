@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	shuffle-db
 DISTVERSION=	1.0-rc1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	rebuild_db-${DISTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	IPod shuffle database builder
+WWW=		https://shuffle-db.sourceforge.net/
 
 USES=		python shebangfix
 NO_ARCH=	yes

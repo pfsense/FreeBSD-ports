@@ -1,15 +1,15 @@
 - .git/ is missing in archive, so use version from environment
 
---- build/gen.py.orig	2020-09-21 09:20:32 UTC
+--- build/gen.py.orig	2023-11-01 07:04:33 UTC
 +++ build/gen.py
-@@ -149,25 +149,16 @@ def main(argv):
+@@ -225,25 +225,16 @@ def GenerateLastCommitPosition(host, header):
  
  
  def GenerateLastCommitPosition(host, header):
 -  ROOT_TAG = 'initial-commit'
 -  describe_output = subprocess.check_output(
--      ['git', 'describe', 'HEAD', '--match', ROOT_TAG], shell=host.is_windows(),
--      cwd=REPO_ROOT)
+-      ['git', 'describe', 'HEAD', '--abbrev=12', '--match', ROOT_TAG],
+-      shell=host.is_windows(), cwd=REPO_ROOT)
 -  mo = re.match(ROOT_TAG + '-(\d+)-g([0-9a-f]+)', describe_output.decode())
 -  if not mo:
 -    raise ValueError(
@@ -30,3 +30,12 @@
  
    # Only write/touch this file if the commit position has changed.
    old_contents = ''
+@@ -286,7 +277,7 @@ def WriteGenericNinja(path, static_libraries, executab
+       'msys': 'build_linux.ninja.template',
+       'darwin': 'build_mac.ninja.template',
+       'linux': 'build_linux.ninja.template',
+-      'freebsd': 'build_linux.ninja.template',
++      'freebsd': 'build_openbsd.ninja.template',
+       'aix': 'build_aix.ninja.template',
+       'openbsd': 'build_openbsd.ninja.template',
+       'haiku': 'build_haiku.ninja.template',

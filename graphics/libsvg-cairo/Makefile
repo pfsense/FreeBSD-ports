@@ -1,15 +1,12 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/graphics/libsvg-cairo/Makefile,v 1.5 2005/08/09 04:49:38 ahze Exp $
-
 PORTNAME=	libsvg-cairo
 PORTVERSION=	0.1.6
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	http://cairographics.org/snapshots/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	SVG rendering library
+WWW=		https://cairographics.org
 
 LIB_DEPENDS=	libsvg.so:graphics/libsvg \
 		libcairo.so:graphics/cairo

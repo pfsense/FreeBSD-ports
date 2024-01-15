@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	Data-Throttler-Memcached
 PORTVERSION=	0.00003
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Memcached-Based Data::Throttler
+WWW=		https://metacpan.org/release/Data-Throttler-Memcached
 
 BUILD_DEPENDS=	p5-Cache-Memcached-Managed>=0:databases/p5-Cache-Memcached-Managed \
 		p5-Data-Throttler>=0:devel/p5-Data-Throttler \

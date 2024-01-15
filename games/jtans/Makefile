@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	jtans
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.jar
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ancient puzzle
+WWW=		https://jtans.sourceforge.net/
 
 LICENSE=	GPLv2+ # got from website
 

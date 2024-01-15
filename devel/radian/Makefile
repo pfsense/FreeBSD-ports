@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	radian
 DISTVERSION=	0.5.4
 CATEGORIES=	devel math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	21st century R console
+WWW=		https://github.com/randy3k/radian
 
 LICENSE=	MIT
 

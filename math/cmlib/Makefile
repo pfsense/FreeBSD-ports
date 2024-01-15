@@ -1,9 +1,6 @@
-# Created by: Anton Shterenlikht <mexas@bris.ac.uk>
-# $FreeBSD$
-
 PORTNAME=	cmlib
 PORTVERSION=	3.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	math
 MASTER_SITES=	NL/blas:blas ftp://ftp.nist.gov/pub/cmlib/
 # Get d1mach.f, i1mach.f, r1mach.f from BLAS, rather than from CMLIB.
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	src.tar.Z
 
 MAINTAINER=	fortran@FreeBSD.org
 COMMENT=	NIST Core math library (CMLIB)
+WWW=		https://www.nist.gov/itl/math/mcsd-software.cfm
 
 USES=		fortran uidfix
 USE_LDCONFIG=	yes

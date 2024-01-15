@@ -1,6 +1,3 @@
-# Created by: Blaz Zupan <blaz@amis.net>
-# $FreeBSD$
-
 PORTNAME=	Convert-UUlib
 PORTVERSION=	1.70
 PORTEPOCH=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/0$//}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to the uulib library (a.k.a. uudeview/uuenview)
+WWW=		https://metacpan.org/release/Convert-UUlib
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

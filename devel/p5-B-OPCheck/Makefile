@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	B-OPCheck
 PORTVERSION=	0.32
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	PL_check hacks using Perl callbacks
+WWW=		https://metacpan.org/release/B-OPCheck
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

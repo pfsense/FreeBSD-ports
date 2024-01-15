@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooX-HandlesVia
 PORTVERSION=	0.001009
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	NativeTrait-like behavior for Moo
+WWW=		https://metacpan.org/release/MooX-HandlesVia
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

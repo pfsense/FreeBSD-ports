@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fidogate
 PORTVERSION=	4.4.10
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMESUFFIX?=	4${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Fido-Internet Gateway and Tosser
+WWW=		https://fidogate.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

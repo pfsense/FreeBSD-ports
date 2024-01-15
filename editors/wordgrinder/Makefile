@@ -1,12 +1,12 @@
-# Created by: Vitaly Magerya <vmagerya@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	wordgrinder
 PORTVERSION=	0.6
 CATEGORIES=	editors
 
 MAINTAINER=	vmagerya@gmail.com
 COMMENT=	Simple Unicode-aware console and X11-based word processor
+WWW=		https://cowlark.com/wordgrinder/
+
+BROKEN_FreeBSD_14=	Fails to build with llvm16 use of undeclared identifier 'KEY_EVENT'
 
 RUN_DEPENDS=	${LUA_REFMODLIBDIR}/lfs.so:devel/luafilesystem@${LUA_FLAVOR}
 

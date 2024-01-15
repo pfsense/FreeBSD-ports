@@ -1,6 +1,3 @@
-# Created by: Sean Chittenden <seanc@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wfb2sql
 PORTVERSION=	0.6
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CIA World Fact Book to SQL Conversion Utility
+WWW=		http://wfb2sql.sf.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

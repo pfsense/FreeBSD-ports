@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	REST-Google-Apps-Provisioning
 PORTVERSION=	1.1.10
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl library to Google's RESTful Apps API
+WWW=		https://metacpan.org/release/REST-Google-Apps-Provisioning
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

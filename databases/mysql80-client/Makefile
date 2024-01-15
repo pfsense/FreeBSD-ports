@@ -1,6 +1,3 @@
-# Created by: "Mahdi Mokhtari <mokhi64@gmail.com>"
-# $FreeBSD$
-
 PORTNAME=	mysql
 PORTREVISION=	0
 PKGNAMESUFFIX=	80-client
@@ -15,10 +12,10 @@ PKGMESSAGE=	${.CURDIR}/pkg-message
 PATCHDIR=	${MASTERDIR}/files
 PLIST=		${.CURDIR}/pkg-plist
 
-CONFLICTS_INSTALL=	mysql8[1-9]-client-* \
-			mysql[0-79][0-9]-client-* \
-			mariadb[0-9][0-9]-client-* \
-			percona[0-9][0-9]-client-*
+CONFLICTS_INSTALL=	mysql8[1-9]-client \
+			mysql[0-79][0-9]-client \
+			mariadb[0-9][0-9]-client \
+			percona[0-9][0-9]-client
 
 CMAKE_ARGS+=	-DWITHOUT_SERVER=1 -DINSTALL_SUPPORTFILESDIR=0
 
@@ -36,12 +33,16 @@ OPTIONS_GROUP_PLUGINS=	SASLCLIENT
 SASLCLIENT_DESC=	SASL client plugin module
 SASLCLIENT_CMAKE_BOOL=	WITH_AUTHENTICATION_LDAP
 SASLCLIENT_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
-SASLCLIENT_USE=		OPENLDAP=yes
+SASLCLIENT_USES=		ldap
+
 OPTIONS_DEFAULT+=	SASLCLIENT
 OPTIONS_SUB=	yes
 
 # issue 166367: adding symlinks for back-compatibility with ${lib}_r
 post-install:
+#	@${RM} ${STAGEDIR}${PREFIX}/lib/mysql/private/libprotobuf-lite.so.3.19.4
+#	@${RM} ${STAGEDIR}${PREFIX}/lib/mysql/private/libprotobuf.so.3.19.4
+	@${RM} -r ${STAGEDIR}${PREFIX}/lib/mysql/private
 	@${LN} -s libmysqlclient.a ${STAGEDIR}${PREFIX}/lib/mysql/libmysqlclient_r.a
 	@${LN} -s libmysqlclient.so ${STAGEDIR}${PREFIX}/lib/mysql/libmysqlclient_r.so
 	@${LN} -s libmysqlclient.so.21 ${STAGEDIR}${PREFIX}/lib/mysql/libmysqlclient_r.so.21

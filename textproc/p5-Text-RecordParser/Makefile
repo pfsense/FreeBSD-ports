@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-RecordParser
 PORTVERSION=	1.6.5
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read record-oriented files
+WWW=		https://metacpan.org/release/Text-RecordParser
 
 LICENSE=	GPLv2
 

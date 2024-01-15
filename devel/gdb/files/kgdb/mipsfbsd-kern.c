@@ -23,10 +23,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * from: src/gnu/usr.bin/gdb/kgdb/trgt_alpha.c,v 1.2.2.1 2005/09/15 05:32:10 marcel
- *
- * $FreeBSD: head/gnu/usr.bin/gdb/kgdb/trgt_mips.c 249878 2013-04-25 04:53:01Z imp $
  */
 
 #include "defs.h"
@@ -128,7 +124,7 @@ mipsfbsd_supply_pcb(struct regcache *regcache, CORE_ADDR pcb_addr)
 }
 
 static struct trad_frame_cache *
-mipsfbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
+mipsfbsd_trapframe_cache (frame_info_ptr this_frame, void **this_cache)
 {
   struct gdbarch *gdbarch = get_frame_arch (this_frame);
   size_t regsize = mips_isa_regsize (gdbarch);
@@ -207,7 +203,7 @@ mipsfbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
 }
 
 static void
-mipsfbsd_trapframe_this_id (struct frame_info *this_frame,
+mipsfbsd_trapframe_this_id (frame_info_ptr this_frame,
 			    void **this_cache, struct frame_id *this_id)
 {
   struct trad_frame_cache *cache =
@@ -217,7 +213,7 @@ mipsfbsd_trapframe_this_id (struct frame_info *this_frame,
 }
 
 static struct value *
-mipsfbsd_trapframe_prev_register (struct frame_info *this_frame,
+mipsfbsd_trapframe_prev_register (frame_info_ptr this_frame,
 				  void **this_cache, int regnum)
 {
   struct trad_frame_cache *cache =
@@ -228,7 +224,7 @@ mipsfbsd_trapframe_prev_register (struct frame_info *this_frame,
 
 static int
 mipsfbsd_trapframe_sniffer (const struct frame_unwind *self,
-			    struct frame_info *this_frame,
+			    frame_info_ptr this_frame,
 			    void **this_prologue_cache)
 {
   const char *name;
@@ -240,6 +236,7 @@ mipsfbsd_trapframe_sniffer (const struct frame_unwind *self,
 }
 
 static const struct frame_unwind mipsfbsd_trapframe_unwind = {
+  "mips FreeBSD kernel trap",
   SIGTRAMP_FRAME,
   default_frame_unwind_stop_reason,
   mipsfbsd_trapframe_this_id,
@@ -261,33 +258,25 @@ mipsfbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
 	break;
       case MIPS_ABI_N32:
 	set_gdbarch_long_double_bit (gdbarch, 128);
-	/* These floatformats should probably be renamed.  MIPS uses
-	   the same 128-bit IEEE floating point format that IA-64 uses,
-	   except that the quiet/signalling NaN bit is reversed (GDB
-	   does not distinguish between quiet and signalling NaNs).  */
-	set_gdbarch_long_double_format (gdbarch, floatformats_ia64_quad);
+	set_gdbarch_long_double_format (gdbarch, floatformats_ieee_quad);
 	break;
       case MIPS_ABI_N64:
 	set_gdbarch_long_double_bit (gdbarch, 128);
-	/* These floatformats should probably be renamed.  MIPS uses
-	   the same 128-bit IEEE floating point format that IA-64 uses,
-	   except that the quiet/signalling NaN bit is reversed (GDB
-	   does not distinguish between quiet and signalling NaNs).  */
-	set_gdbarch_long_double_format (gdbarch, floatformats_ia64_quad);
+	set_gdbarch_long_double_format (gdbarch, floatformats_ieee_quad);
 	break;
     }
 
   frame_unwind_prepend_unwinder (gdbarch, &mipsfbsd_trapframe_unwind);
 
-  set_solib_ops (gdbarch, &kld_so_ops);
+  set_gdbarch_so_ops (gdbarch, &kld_so_ops);
 
   fbsd_vmcore_set_supply_pcb (gdbarch, mipsfbsd_supply_pcb);
   fbsd_vmcore_set_cpu_pcb_addr (gdbarch, kgdb_trgt_stop_pcb);
 }
 
-void _initialize_mips_kgdb_tdep(void);
+void _initialize_mips_kgdb_tdep ();
 void
-_initialize_mips_kgdb_tdep (void)
+_initialize_mips_kgdb_tdep ()
 {
   gdbarch_register_osabi_sniffer(bfd_arch_mips,
 				 bfd_target_elf_flavour,

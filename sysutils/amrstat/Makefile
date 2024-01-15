@@ -1,13 +1,12 @@
-# Created by: Bjoern A. Zeeb <bzeeb+freebsd+ports@zabbadoz.net>
-# $FreeBSD$
-
 PORTNAME=	amrstat
 PORTVERSION=	20070216
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	LOCAL/jkim
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Utility for LSI Logic's MegaRAID RAID controllers
+WWW=		https://lists.freebsd.org/pipermail/freebsd-scsi/2006-February/002294.html
 
 LICENSE=	BSD2CLAUSE
 

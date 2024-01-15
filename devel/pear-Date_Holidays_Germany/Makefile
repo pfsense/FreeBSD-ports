@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	Date_Holidays_Germany
 PORTVERSION=	0.1.2
 PORTREVISION=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Driver based class to calculate holidays in Germany
+WWW=		https://pear.php.net/package/Date_Holidays_Germany
 
 LICENSE=	PHP301
 

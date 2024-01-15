@@ -1,13 +1,11 @@
-# Created by: Hokan
-# $FreeBSD$
-
 PORTNAME=	modules
-PORTVERSION=	4.6.0
+DISTVERSION=	5.3.1
 CATEGORIES=	sysutils tcl
 MASTER_SITES=	https://github.com/cea-hpc/modules/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	laurent.chardon@gmail.com
 COMMENT=	Dynamic modification of a user environment
+WWW=		https://modules.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.GPLv2

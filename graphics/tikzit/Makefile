@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	tikzit
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1.6
-PORTREVISION=	2
+PORTREVISION=	27
 CATEGORIES=	graphics
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	PGF/TikZ diagram editor
+WWW=		https://tikzit.github.io/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

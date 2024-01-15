@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Color-Library
 PORTVERSION=	0.021
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy-to-use and comprehensive named-color library
+WWW=		https://metacpan.org/release/Color-Library
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

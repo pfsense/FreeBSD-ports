@@ -1,6 +1,3 @@
-# Created by: Ion-Mihai "IOnut" Tetcu <itetcu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mark_read
 PORTVERSION=	1.4.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME:S/-/_/}-${PORTVERSION}-1.2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides one-click link to mark read/unread all mails in a folder
+WWW=		https://www.squirrelmail.org/plugin_view.php?id=218
 
 USE_SM_COMPAT=	YES
 

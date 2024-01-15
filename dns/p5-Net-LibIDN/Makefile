@@ -1,6 +1,3 @@
-# Created by: Dominik Brettnacher <domi@saargate.de>
-# $FreeBSD$
-
 PORTNAME=	Net-LibIDN
 PORTVERSION=	0.12
 PORTREVISION=	5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	This module provides access to the libidn library
+WWW=		https://metacpan.org/release/Net-LibIDN
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

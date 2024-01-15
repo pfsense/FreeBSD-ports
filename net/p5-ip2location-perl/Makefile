@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ip2location-perl
 PORTVERSION=	20180302
 CATEGORIES=	net
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Perl module to find user\'s location
+WWW=		https://www.ip2location.com/development-libraries/ip2location/perl
 
 LICENSE=	LGPL3
 

@@ -1,32 +1,37 @@
-# Created by: Bernard Spil <brnrd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME?=	mariadb
-PORTVERSION=	10.5.8
+PORTVERSION=	10.5.23
 PORTREVISION?=	0
 CATEGORIES=	databases
-MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
-		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
-		http://gd.tuwien.ac.at/db/${SITESDIR}/ \
-		http://mirrors.fe.up.pt/pub/${SITESDIR}/ \
-		http://mirror.de.gsnw.de:56431/${SITESDIR}/ \
-		http://mirror.layerjet.com/${SITESDIR}/ \
-		http://mirror.switch.ch/mirror/${SITESDIR}/ \
-		http://ftp.osuosl.org/pub/${SITESDIR}/
+MASTER_SITES=	\
+		https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
+		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
+		https://mirror.truenetwork.ru/${SITESDIR}/ \
+		https://mirrors.aliyun.com/${SITESDIR}/ \
+		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
+		https://mirror.kku.ac.th/${SITESDIR}/ \
+		https://espejito.fder.edu.uy/${SITESDIR}/ \
+		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
+		https://ftp.osuosl.org/pub/${SITESDIR}/ \
+		https://downloads.mariadb.org/rest-api/mariadb/${PORTVERSION}/
 PKGNAMESUFFIX?=	105-server
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
+WWW=		https://mariadb.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+#EXPIRATION_DATE=	2025-06-01
 
 LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2
 
 # Ugly workaround for MariaDB/CMake library detection
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-USES=		bison:build cmake:insource compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
+USES=		bison:build cmake:insource,noninja compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
 
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -57,6 +62,9 @@ OPTIONS_GROUP=		COMPRESSION ENGINES GROONGA
 OPTIONS_DEFINE=		CONNECT_EXTRA DOCS
 OPTIONS_DEFINE_amd64=	WSREP
 OPTIONS_DEFINE_aarch64=	WSREP
+OPTIONS_DEFINE_powerpc64le=	WSREP
+OPTIONS_DEFINE_powerpc64=	WSREP
+OPTIONS_DEFINE_riscv64=	WSREP
 OPTIONS_GROUP_COMPRESSION=	LZ4 LZO SNAPPY ZSTD
 OPTIONS_GROUP_ENGINES=	COLUMNSTORE INNOBASE MROONGA OQGRAPH ROCKSDB S3 SPHINX SPIDER
 OPTIONS_GROUP_GROONGA=	ZMQ MSGPACK
@@ -85,6 +93,7 @@ CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${PREFIX} \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INFODIR="info" \
 		-DINSTALL_LIBDIR="lib/mysql" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="${MARIADB_DBDIR}" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
 		-DINSTALL_MYSQLTESTDIR= \
@@ -113,10 +122,11 @@ DISABLED_PLUGINS+=	AUTH_TEST_PLUGIN DAEMON_EXAMPLE DIALOG_EXAMPLES \
 DATADIR=	${PREFIX}/share/mysql
 ETCDIR=		${PREFIX}/etc/mysql
 
-CONFLICTS_INSTALL=	mariadb10[0-46-9]-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
-			mysql[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
-			mysqlwsrep* \
-			percona[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-*
+CONFLICTS_INSTALL=	mariadb10[0-46-9]-${PKGNAMESUFFIX:C/^[0-9]*-//} \
+			mariadb1011-${PKGNAMESUFFIX:C/^[0-9]*-//} \
+			mysql[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//} \
+			mysqlwsrep*-server \
+			percona[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}
 
 FASTMTX_CMAKE_BOOL=	WITH_FAST_MUTEXES
 GSSAPI_BASE_USES=	gssapi
@@ -157,7 +167,7 @@ ${ENGINE}_CMAKE_OFF=	-DPLUGIN_${ENGINE}=NO
 ${ENGINE}_CMAKE_ON=	-DPLUGIN_${ENGINE}=DYNAMIC
 .endfor
 INNOBASE_VARS_OFF=	disabled_plugins+=INNOBASE
-#COLUMNSTORE_BROKEN=	fatal error: 'sys/sysinfo.h' file not found
+COLUMNSTORE_BROKEN=	ColumnStore build failure "'swap<logging::Message>' is missing exception specification"
 CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USE=		gnome=libxml2
 CONNECT_EXTRA_USES=		gnome
@@ -170,9 +180,10 @@ LZO_CMAKE_ON=		-DWITH_INNODB_LZO=ON
 LZO_CMAKE_OFF=		-DWITH_INNODB_LZO=OFF
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 MROONGA_IMPLIES=	LZ4
-MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack
+MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack-c
 OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 			libJudy.so:devel/judy
+#ROCKSDB_BROKEN=		RocksDB build failure "incompatible pointer to integer conversion assigning to 'size_t'"
 ROCKSDB_USES=		python
 ROCKSDB_CMAKE_ON=	-DPYTHON_SHEBANG=${PYTHON_CMD}
 SNAPPY_CMAKE_ON=	-DWITH_INNODB_SNAPPY=ON  -DWITH_ROCKSDB_snappy=ON
@@ -197,14 +208,12 @@ CMAKE_ARGS+=		-DPLUGIN_${PLUGIN}=NO
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
-
 .if ${SSL_DEFAULT} != base && ${PORT_OPTIONS:MGSSAPI_BASE}
 GSSAPI_BASE_IGNORE=	GSSAPI_BASE is not compatible with OpenSSL from ports. Use other GSSAPI options or OpenSSL from base system
+.endif
+
+.if ${SSL_DEFAULT:Mlibressl*}
+CFLAGS+=        -Wno-incompatible-function-pointer-types
 .endif
 
 .if ${ARCH} != amd64 && ${ARCH} != aarch64
@@ -213,12 +222,10 @@ PLIST_SUB+=	WSREP="@comment "
 
 .if ${ARCH} == i386
 USE_GCC=	yes
-CFLAGS+=	-DHAVE_GCC_C11_ATOMICS -latomic -DUSE_NEW_READLINE_INTERFACE
-CXXFLAGS+=	-fpermissive
+CFLAGS+=	-latomic -fasynchronous-unwind-tables
 .endif
 
 post-patch:
-	${MV} ${WRKSRC}/storage/mroonga/version ${WRKSRC}/storage/mroonga/version_txt
 .if ${OPSYS} == DragonFly
 	${CP} ${WRKSRC}/cmake/os/FreeBSD.cmake \
 		${WRKSRC}/cmake/os/DragonFly.cmake

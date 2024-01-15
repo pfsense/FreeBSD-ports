@@ -1,34 +1,23 @@
-# Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
-
 PORTNAME=	octave-forge-symbolic
-PORTVERSION=	2.9.0
+PORTVERSION=	3.1.1
+PORTREVISION=	1
 CATEGORIES=	math
+MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
+DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
+WWW=		https://packages.octave.org/
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
+LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
-BUILD_DEPENDS+=	isympy:math/py-sympy
-RUN_DEPENDS+=	isympy:math/py-sympy
+BUILD_DEPENDS+=	isympy:math/py-sympy@${PY_FLAVOR}
+RUN_DEPENDS+=	isympy:math/py-sympy@${PY_FLAVOR}
 
-# OCTSRC is the name of the directory of the package.
-# It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${DISTNAME}
-
-WRKSRC=		${WRKDIR}/${OCTSRC}/src
-
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
-
-do-build:
-	${DO_NADA}
+USES=		octave python
 
 NO_ARCH=	yes
-
-post-build:
-	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
-	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
+NO_BUILD=	yes
 
 .include <bsd.port.mk>

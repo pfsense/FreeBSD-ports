@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Bytes-Random-Secure-Tiny
 PORTVERSION=	1.008
 CATEGORIES=	security perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Generate cryptographically-secure random bytes
+WWW=		https://metacpan.org/release/Bytes-Random-Secure-Tiny
 
 LICENSE=	ART20
 

@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	pdumpfs
 PORTVERSION=	1.3
 PORTREVISION=	5
@@ -9,12 +6,12 @@ MASTER_SITES=	http://0xcc.net/pdumpfs/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daily backup system similar to Plan9's dumpfs
+WWW=		http://0xcc.net/pdumpfs/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_RUBY=	yes
-USES=		shebangfix
+USES=		ruby shebangfix
 NO_ARCH=	yes
 
 SHEBANG_FILES=	${WRKSRC}/pdumpfs.in

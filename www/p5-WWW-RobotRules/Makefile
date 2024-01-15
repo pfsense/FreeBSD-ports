@@ -1,6 +1,3 @@
-# Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-RobotRules
 PORTVERSION=	6.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Database of robots.txt-derived permissions
+WWW=		https://metacpan.org/release/WWW-RobotRules
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-URI>=1.10:net/p5-URI

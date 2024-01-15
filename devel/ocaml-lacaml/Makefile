@@ -1,15 +1,13 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	lacaml
 PORTVERSION=	8.0.7
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/mmottl/lacaml/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml interface to BLAS and LAPACK libraries
+WWW=		https://mmottl.github.io/lacaml/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

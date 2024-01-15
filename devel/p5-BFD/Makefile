@@ -1,6 +1,3 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PORTNAME=	BFD
 PORTVERSION=	0.31
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Impromptu dumping of data structures for debugging purposes
+WWW=		https://metacpan.org/release/BFD
 
 LICENSE=	ART10 GPLv1+ MIT BSD2CLAUSE
 LICENSE_COMB=	dual

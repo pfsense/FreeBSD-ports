@@ -1,6 +1,3 @@
-# Created by: Vick Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	Business-Stripe
 PORTVERSION=	0.07
 CATEGORIES=	finance perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module interface for the Stripe.com payment system
+WWW=		https://metacpan.org/release/Business-Stripe
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,3 +1,5 @@
 PinYin engine for IBus.
 
-WWW: http://code.google.com/p/ibus
+This pinyin input method is deprecated; new users should switch to
+chinese/ibus-libpinyin, which is a contemporary implementation of pinyin input
+method.

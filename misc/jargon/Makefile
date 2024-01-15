@@ -1,6 +1,3 @@
-# Created by: moeding
-# $FreeBSD$
-
 PORTNAME=	jargon
 PORTVERSION=	4.4.7
 CATEGORIES=	misc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.catb.org/~esr/jargon/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The famous jargon file
+WWW=		http://www.catb.org/~esr/jargon/
 
 NO_BUILD=	yes
 

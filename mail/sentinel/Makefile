@@ -1,6 +1,3 @@
-# Created by: Peter Hollaubek <fifteen@inext.hu>
-# $FreeBSD$
-
 PORTNAME=	sentinel
 PORTVERSION=	1.7b
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/smfilter/${PORTNAME}/Sentinel%20${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Sendmail milter API implementation
+WWW=		https://smfilter.sourceforge.net/
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 

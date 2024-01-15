@@ -1,15 +1,13 @@
-# Created by: Craig Rodrigues <rodrigc@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xfsprogs
 PORTVERSION=	3.2.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	ftp://oss.sgi.com/projects/xfs/cmd_tars/ \
 		ftp://oss.sgi.com/projects/xfs/previous/cmd_tars/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utilities for managing XFS filesystems
+WWW=		http://oss.sgi.com/projects/xfs/
 
 LICENSE=	LGPL21 GPLv2
 LICENSE_COMB=	multi

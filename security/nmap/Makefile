@@ -1,15 +1,12 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	nmap
-DISTVERSION=	7.91
-PORTREVISION=	0
+DISTVERSION=	7.94
 CATEGORIES=	security
 MASTER_SITES=	https://nmap.org/dist/ \
 		LOCAL/ohauer
 
-MAINTAINER?=	ohauer@FreeBSD.org
+MAINTAINER?=	cy@FreeBSD.org
 COMMENT?=	Port scanning utility for large networks
+WWW=		https://nmap.org/
 
 # nmap-6.47 => svn.nmap.org/nmap-releases/nmap-6.47 (r33605)
 # https://nmap.org/book/man-legal.html
@@ -29,7 +26,7 @@ GNU_CONFIGURE=	yes
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	DOCS PCAP SSH2 SSL
-OPTIONS_DEFAULT=PCAP SSH2 SSL
+OPTIONS_DEFAULT=SSH2 SSL
 
 PCAP_DESC=		Build with libpcap from nmap
 SSH2_DESC=		SSH2 protocol support
@@ -53,6 +50,8 @@ CONFIGURE_ARGS+=--without-localdirs \
 		--with-libpcre=${LOCALBASE} \
 		--with-liblua=included \
 		--without-nmap-update
+
+.include <bsd.port.options.mk>
 
 # XXX limit results if we do a grep in the sources!
 post-extract:

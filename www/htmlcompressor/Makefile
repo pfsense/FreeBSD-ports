@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	htmlcompressor
 PORTVERSION=	1.5.3
 PORTREVISION=	3
@@ -11,6 +8,7 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HTML/XML Compressor
+WWW=		https://github.com/serg472/htmlcompressor
 
 LICENSE=	APACHE20
 

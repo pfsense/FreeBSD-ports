@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CommitBit
 PORTVERSION=	0.02
 PORTREVISION=	3
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Project administration tool
+WWW=		https://metacpan.org/release/CommitBit
 
 RUN_DEPENDS=	p5-UNIVERSAL-require>=0:devel/p5-UNIVERSAL-require \
 		p5-Jifty>=0.60728:www/p5-Jifty \

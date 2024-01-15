@@ -1,14 +1,12 @@
-# Created by: Andrej Zverev <az@inec.ru>
-# $FreeBSD$
-
 PORTNAME=	mdf2iso
 PORTVERSION=	0.3.1
 CATEGORIES=	sysutils
 MASTER_SITES=	DEBIAN
-DISTFILES=	${PORTNAME}_${PORTVERSION}.orig.tar.gz ${PORTNAME}_${PORTVERSION}-${DEBIANVERSION}.debian.tar.xz  
+DISTFILES=	${PORTNAME}_${PORTVERSION}.orig.tar.gz ${PORTNAME}_${PORTVERSION}-${DEBIANVERSION}.debian.tar.xz
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Alcohol 120% to ISO converter
+WWW=		https://BSDforge.com/projects/sysutils/mdf2iso/
 
 LICENSE=	GPLv2+
 

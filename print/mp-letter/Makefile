@@ -1,6 +1,3 @@
-# Created by: David O'Brien <obrien@cs.ucdavis.edu>
-# $FreeBSD$
-
 PORTNAME=	mp-${PAPERSIZE}
 PORTVERSION=	3.0.1
 CATEGORIES=	print
@@ -9,6 +6,8 @@ DISTNAME=	mp-3.0.1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostScript printing util for ASCII files
+
+CONFLICTS_INSTALL?=	mp-a4
 
 WRKSRC=		${WRKDIR}/mp
 LINKS=		digestp filep filofaxp franklinp mailp newsp timemanp timesysp

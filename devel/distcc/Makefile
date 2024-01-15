@@ -1,18 +1,11 @@
-# Created by: Frerich Raabe <frerich.raabe@gmx.de>
-# $FreeBSD$
-#   $MCom: ports/devel/distcc/Makefile,v 1.3 2007/10/21 02:46:13 ahze Exp $
-
 PORTNAME=	distcc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.3
-PORTREVISION=	2
+DISTVERSION=	3.4
 CATEGORIES=	devel
-
-PATCH_SITES=	https://github.com/distcc/distcc/commit/
-PATCHFILES=	307f6cfe58ff3fb7e4b3ef1044a5dfc2006f95f5.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distribute compilation of C(++) code across machines on a network
+WWW=		https://distcc.github.io/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/lib/libiberty.a:devel/gnulibiberty
 LIB_DEPENDS=	libpopt.so:devel/popt
 
-USES=		alias autoreconf gmake libtool localbase pkgconfig
+USES=		alias autoreconf cpe gmake libtool localbase pkgconfig
 USE_GITHUB=	yes
 USE_RC_SUBR=	distccd
 
@@ -47,14 +40,10 @@ PLIST_FILES=	${_BIN_FILES:S|^|bin/|} \
 		${_SBIN_FILES:S|^|sbin/|} \
 		etc/default/distcc
 
-OPTIONS_DEFINE=		AVAHI CLANGLINK DOCS IPV6 LLVMLINK PUMP
-OPTIONS_RADIO=		GUI
-OPTIONS_RADIO_GUI=	GNOME GTK
+OPTIONS_DEFINE=		AVAHI CLANGLINK DOCS IPV6 LLVMLINK PUMP GUI
 
 CLANGLINK_DESC=	Create clang compiler links if clang is installed
-GNOME_DESC=	Monitor based on GNOME
-GTK_DESC=	Monitor based on GTK
-GUI_DESC=	Build GUI for distcc monitor
+GUI_DESC=	Build GUI distcc monitor
 LLVMLINK_DESC=	Create llvm compiler links if llvm is installed
 PUMP_DESC=	Distribute compilation as well as preprocessing to distcc servers
 
@@ -62,14 +51,11 @@ AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 AVAHI_CONFIGURE_WITH=	avahi
 DOCS_PLIST_FILES+=	${_DOC_FILES:S|^|${DOCSDIR_REL}/|} \
 			${_README_FILES:S|^|${DOCSDIR_REL}/|}
-GNOME_USES=		gnome
-GNOME_USE=		GNOME=gtk20,libgnome,libgnomeui,pango
-GNOME_CONFIGURE_WITH=	gnome
-GTK_USES=		gnome
-GTK_USE=		GNOME=gtk20
-GTK_CONFIGURE_WITH=	gtk
+GUI_USES=		gnome
+GUI_USE=		GNOME=gtk20
+GUI_CONFIGURE_WITH=	gtk
 IPV6_CONFIGURE_ENABLE=	rfc2553
-PUMP_USES=		python:3.1+
+PUMP_USES=		python
 PUMP_CONFIGURE_ENABLE=	pump-mode
 PUMP_PLIST_FILES=	${PYTHON_SITELIBDIR}/include_server-${PORTVERSION}-py${PYTHON_VER}.egg-info \
 			${PYTHON_SITELIBDIR}/include_server/basics.py \
@@ -78,7 +64,7 @@ PUMP_PLIST_FILES=	${PYTHON_SITELIBDIR}/include_server-${PORTVERSION}-py${PYTHON_
 			${PYTHON_SITELIBDIR}/include_server/cache_basics.py \
 			${PYTHON_SITELIBDIR}/include_server/compiler_defaults.py \
 			${PYTHON_SITELIBDIR}/include_server/compress_files.py \
-			${PYTHON_SITELIBDIR}/include_server/distcc_pump_c_extensions.so \
+			${PYTHON_SITELIBDIR}/include_server/distcc_pump_c_extensions.cpython-${PYTHON_SUFFIX}.so \
 			${PYTHON_SITELIBDIR}/include_server/include_analyzer.py \
 			${PYTHON_SITELIBDIR}/include_server/include_analyzer_memoizing_node.py \
 			${PYTHON_SITELIBDIR}/include_server/include_analyzer_memoizing_node_test.py \
@@ -130,22 +116,16 @@ _DISTCC_COMPILERS+=	llvm-c++ llvm-g++ llvm-gcc
 .endif
 _DISTCC_COMPILERS+=	${EXTRA_COMPILERS}
 
-.if ${PORT_OPTIONS:MGNOME} || ${PORT_OPTIONS:MGTK}
-.if ${PORT_OPTIONS:MGNOME}
-PKGNAMESUFFIX=	-gnome
-.else
+.if ${PORT_OPTIONS:MGTUI}
 PKGNAMESUFFIX=	-gtk
-.endif
 _BIN_FILES+=	distccmon-gnome
 PLIST_FILES+=	${DESKTOPDIR}/distccmon-gnome.desktop \
 		share/pixmaps/distccmon-gnome-icon.png
 .endif
 
-.if ${PORT_OPTIONS:MGNOME} || ${PORT_OPTIONS:MGTK}
-post-patch:
+post-patch-GUI-on:
 	${REINPLACE_CMD} -e 's|PKGDATADIR "|"${PREFIX}/share/pixmaps|' \
 	    ${WRKSRC}/src/mon-gnome.c
-.endif
 
 .if ${PORT_OPTIONS:MPUMP}
 _BIN_FILES+=	pump
@@ -161,7 +141,7 @@ post-install:
 	${RM} -rf ${STAGEDIR}${PREFIX}/${DOCSDIR_REL}/example
 
 post-install-PUMP-on:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/include_server/distcc_pump_c_extensions.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/include_server/distcc_pump_c_extensions.cpython-${PYTHON_SUFFIX}.so
 
 post-install-PUMP-off:
 	${RM} ${STAGEDIR}${PUMP_PLIST_FILES}

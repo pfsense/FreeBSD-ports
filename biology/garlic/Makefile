@@ -1,6 +1,3 @@
-# Created by: maho@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	garlic
 PORTVERSION=	1.6
 PORTREVISION=	1
@@ -11,6 +8,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Molecular viewer, editor, and visualization program
+WWW=		http://www.zucic.org/garlic/
 
 USES=		gmake xorg
 USE_XORG=	x11

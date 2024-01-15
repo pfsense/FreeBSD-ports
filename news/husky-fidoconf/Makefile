@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	husky-fidoconf
 
 COMMENT=	Husky FTN configuration library

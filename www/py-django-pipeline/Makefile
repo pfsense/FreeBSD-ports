@@ -1,22 +1,21 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	django-pipeline
-PORTVERSION=	1.6.14
+PORTVERSION=	2.1.0
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	rm@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Asset (css/js) packaging library for Django
+WWW=		https://github.com/jazzband/django-pipeline
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PY_FUTURES}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

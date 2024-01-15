@@ -1,6 +1,3 @@
-# Created by: Kirill Bezzubets <kirill@solaris.ru>
-# $FreeBSD$
-
 PORTNAME=	gammu
 PORTVERSION=	1.42.0
 CATEGORIES=	comms
@@ -8,6 +5,7 @@ MASTER_SITES=	http://dl.cihar.com/gammu/releases/
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	GNU All Mobile Management Utilities
+WWW=		https://wammu.eu/gammu/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

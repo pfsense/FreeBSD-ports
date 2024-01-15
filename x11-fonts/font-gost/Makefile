@@ -1,6 +1,3 @@
-# Created by: Gvozdikov Veniamin <g.veniamin@googlemail.com>
-# $FreeBSD$
-
 PORTNAME=	gost
 PORTVERSION=	0.2
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DISTNAME=	TTF_FON
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GOST TrueType fonts
+WWW=		http://sd.ascon.ru/ftp/Public/Utils/DWG-DXF/
 
 USES=		fonts zip
 NO_BUILD=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		nss_wrapper
 PORTVERSION=		1.1.3
 PORTREVISION=	2
@@ -8,6 +6,7 @@ MASTER_SITES=		SAMBA/cwrap
 
 MAINTAINER=		timur@FreeBSD.org
 COMMENT=		Wrapper for the user, group and hosts NSS API
+WWW=		https://cwrap.org/nss_wrapper.html
 
 LICENSE=		GPLv3
 

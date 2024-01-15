@@ -1,6 +1,3 @@
-# Created by: Johann Visagie <johann@egenetics.com>
-# $FreeBSD$
-
 PORTNAME=	sim4
 PORTVERSION=	2003.09.21
 PORTREVISION=	1
@@ -10,8 +7,12 @@ DISTNAME=	${PORTNAME}.${PORTVERSION:S/./-/g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Algorithm for aligning expressed DNA with genomic sequences
+WWW=		http://globin.cse.psu.edu/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Upstream last update was in 2005
+EXPIRATION_DATE=	2024-01-17
 
 WRKSRC=		${WRKDIR}/sim4.${PORTVERSION:S/./-/g}
 

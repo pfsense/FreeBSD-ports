@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	openssl
-PORTVERSION=	1.4.3
+DISTVERSION=	2.1.1
 CATEGORIES=	security
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Toolkit for Encryption, Signatures and Certificates Based on OpenSSL
+WWW=		https://cran.r-project.org/web/packages/openssl/
 
 LICENSE=	MIT
 
@@ -15,6 +13,8 @@ CRAN_DEPENDS=	R-cran-askpass>0:security/R-cran-askpass
 BUILD_DEPENDS=	bash:shells/bash \
 		${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
+TEST_DEPENDS=	R-cran-sodium>0:security/R-cran-sodium \
+		R-cran-testthat>0:devel/R-cran-testthat
 
 USES=		cran:auto-plist,compiles shebangfix ssl
 

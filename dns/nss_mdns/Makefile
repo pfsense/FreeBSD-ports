@@ -1,13 +1,10 @@
-# Created by: Bruce M. Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nss_mdns
 PORTVERSION=	0.14.1.20200624
 CATEGORIES=	dns
-DISTNAME=	nss-mdns-${PORTVERSION}
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	NSS module implementing multicast DNS name resolution
+WWW=		https://github.com/lathiat/nss-mdns
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -27,7 +24,7 @@ CONFIGURE_ARGS=	--localstatedir=/var \
 
 INSTALL_TARGET=	install-strip
 
-CONFLICTS_INSTALL=	mDNSResponder_nss-[0-9]*
+CONFLICTS_INSTALL=	mDNSResponder_nss
 
 # TODO: Print a message about the etc directory used for mdns.allow
 # being relative to ${PREFIX}.

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	rematch2
 DISTVERSION=	2.1.2
+PORTREVISION=	1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	Tidy Output from Regular Expression Matching
+WWW=		https://github.com/r-lib/rematch2 #readme
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

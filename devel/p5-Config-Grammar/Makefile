@@ -1,6 +1,3 @@
-# Created by: Dikshie <dikshie@sfc.wide.ad.jp>
-# $FreeBSD$
-
 PORTNAME=	Config-Grammar
 PORTVERSION=	1.10
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dikshie@sfc.wide.ad.jp
 COMMENT=	Grammar-based, user-friendly config parser
+WWW=		https://metacpan.org/release/Config-Grammar
 
 USES=		perl5
 USE_PERL5=	configure

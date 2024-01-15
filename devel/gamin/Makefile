@@ -1,7 +1,3 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-#    $MCom: ports/trunk/devel/gamin/Makefile 18634 2013-07-26 10:42:35Z kwm $
-
 PORTNAME=	gamin
 PORTVERSION=	0.1.10
 PORTREVISION?=	10
@@ -10,6 +6,7 @@ MASTER_SITES=	http://people.gnome.org/~veillard/gamin/sources/
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	File and directory monitoring system
+WWW=		http://people.gnome.org/~veillard/gamin/index.html
 
 USES+=		gettext gnome libtool pathfix pkgconfig
 USE_GNOME?=	glib20
@@ -21,7 +18,7 @@ CPPFLAGS+=	-DHAVE_LINUX -I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
-CONFLICTS=	fam-[0-9]*
+CONFLICTS=	fam
 
 .if !defined(GAMIN_SLAVE)
 OPTIONS_DEFINE=	GAM_POLLER LIBINOTIFY RUN_AS_EUID

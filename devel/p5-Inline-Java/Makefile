@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Inline-Java
 PORTVERSION=	0.540
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Write Perl subroutines and classes in Java
+WWW=		https://metacpan.org/release/Inline-Java
 
 LICENSE=	ARTPERL10
 

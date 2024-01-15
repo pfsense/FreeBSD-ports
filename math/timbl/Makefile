@@ -1,33 +1,36 @@
-# Created by: Yuri Victorovich <yuri@tsoft.com>
-# $FreeBSD$
-
 PORTNAME=	timbl
-DISTVERSIONPREFIX=	v
-DISTVERSION=	6.4.13
-PORTREVISION=	4
+DISTVERSION=	6.8.2
+PORTREVISION=	1
 CATEGORIES=	math education
+MASTER_SITES=	https://github.com/LanguageMachines/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tilburg Memory Based Learner
+WWW=		https://ilk.uvt.nl/timbl/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libticcutils.so:devel/ticcutils
+LIB_DEPENDS=	libicui18n.so:devel/icu \
+		libticcutils.so:devel/ticcutils
 
-USES=		autoreconf compiler:c++11-lang gmake gnome libtool \
-		pathfix pkgconfig
-USE_GITHUB=	yes
-GH_ACCOUNT=	LanguageMachines
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-static
+USES=		compiler:c++14-lang gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
+GNU_CONFIGURE=	yes
+
+TEST_TARGET=	check
 INSTALL_TARGET=	install-strip
+
+CONFIGURE_ARGS=	--disable-static
 
 OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|-O3 -g||g' \
+		${PATCH_WRKSRC}/src/Makefile.in
 
 .include <bsd.port.mk>

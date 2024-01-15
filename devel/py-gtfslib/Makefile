@@ -1,14 +1,12 @@
-# Created by: Loïc BARTOLETTI <lbartoletti@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtfslib
 PORTVERSION=	1.0.0
 CATEGORIES=	devel python databases geography
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Library for reading GTFS-based transit data in Python
+WWW=		https://pypi.org/project/gtfslib/
 
 LICENSE=	GPLv3+
 
@@ -21,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy11>=0.6.1:databases/py-sqlalchemy1
 
 NO_ARCH=	yes
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

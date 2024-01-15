@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphen
 PORTVERSION=	2004.04.15
 PORTREVISION=	1
@@ -19,7 +17,7 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/hyph_is_IS.dic
+PLIST_FILES=	${DATADIR}/hyph_is_IS.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

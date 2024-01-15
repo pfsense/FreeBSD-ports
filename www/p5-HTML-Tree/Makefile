@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <dima@Chg.RU>
-# $FreeBSD$
-
 PORTNAME=	HTML-Tree
 PORTVERSION=	5.07
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Collection of modules to manipulate HTML syntax trees
+WWW=		https://metacpan.org/release/HTML-Tree
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

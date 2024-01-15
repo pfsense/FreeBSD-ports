@@ -1,6 +1,3 @@
-# Created by: Jan Stocker <Jan.Stocker@t-online.de>
-# $FreeBSD$
-
 PORTNAME=	zoom
 PORTVERSION=	1.1.5
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.logicalshift.co.uk/unix/zoom/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Z-Interpreter for X with full V6 support
+WWW=		http://www.logicalshift.demon.co.uk/unix/zoom/
 
 LICENSE=	LGPL21
 

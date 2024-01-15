@@ -1,6 +1,3 @@
-# Created by: Aldis Berjoza <aldis@bsdroot.lv>
-# $FreeBSD$
-
 PORTNAME=	htpasswd
 PORTVERSION=	2019.10.15
 CATEGORIES=	security python
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Replacement for htpasswd
+WWW=		https://trac.edgewall.org/browser/trunk/contrib/htpasswd.py
 
 USES=		python shebangfix
 SHEBANG_FILES=	${PORTNAME}.py

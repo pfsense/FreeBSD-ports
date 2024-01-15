@@ -61,7 +61,7 @@ diff -ru eclipse.platform.ui/bundles/org.eclipse.ui.browser/plugin.xml eclipse.p
 diff -ru eclipse.platform.ui/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/internal/forms/widgets/TitleRegion.java eclipse.platform.ui/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/internal/forms/widgets/TitleRegion.java
 --- eclipse.platform.ui/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/internal/forms/widgets/TitleRegion.java	0000-00-00 00:00:00.000000000 +0000
 +++ eclipse.platform.ui/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/internal/forms/widgets/TitleRegion.java	0000-00-00 00:00:00.000000000 +0000
-@@ -210,7 +210,8 @@
+@@ -209,7 +209,8 @@
  				if (currentTitleControl.getVisible()) {
  					int tw = width - HMARGIN * 2 - SPACING * 2;
  					String os = System.getProperty("os.name"); //$NON-NLS-1$
@@ -71,7 +71,7 @@ diff -ru eclipse.platform.ui/bundles/org.eclipse.ui.forms/src/org/eclipse/ui/int
  						tw += 1; // See Bug 342610
  					}
  					if (bsize != null)
-@@ -584,4 +585,4 @@
+@@ -577,4 +578,4 @@
  		target.setTransfer(transferTypes);
  		target.addDropListener(listener);
  	}
@@ -114,7 +114,7 @@ diff -ru eclipse.platform.ui/bundles/org.eclipse.urischeme/src/org/eclipse/urisc
 diff -ru eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml
 --- eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml	0000-00-00 00:00:00.000000000 +0000
 +++ eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml	0000-00-00 00:00:00.000000000 +0000
-@@ -403,20 +403,20 @@
+@@ -406,19 +406,29 @@
           fragment="true"/>
  
     <plugin
@@ -131,6 +131,28 @@ diff -ru eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml eclipse.pla
           fragment="true"/>
  
     <plugin
+-         id="org.eclipse.equinox.launcher.gtk.linux.aarch64"
+-         os="linux"
++         id="org.eclipse.equinox.launcher.gtk.freebsd.powerpc64le"
++         os="freebsd"
+          ws="gtk"
++         arch="powerpc64le"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         fragment="true"/>
++
++   <plugin
++         id="org.eclipse.equinox.launcher.gtk.freebsd.aarch64"
++         os="freebsd"
++         ws="gtk"
+          arch="aarch64"
+          download-size="0"
+          install-size="0"
+@@ -426,10 +436,10 @@
+          fragment="true"/>
+ 
+    <plugin
 -         id="org.eclipse.equinox.launcher.gtk.linux.x86_64"
 -         os="linux"
 +         id="org.eclipse.equinox.launcher.gtk.freebsd.amd64"
@@ -141,7 +163,7 @@ diff -ru eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml eclipse.pla
           download-size="0"
           install-size="0"
           version="0.0.0"
-@@ -451,10 +451,10 @@
+@@ -464,10 +474,10 @@
           unpack="false"/>
  
     <plugin
@@ -155,7 +177,30 @@ diff -ru eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml eclipse.pla
           download-size="0"
           install-size="0"
           version="0.0.0"
-@@ -462,10 +462,10 @@
+@@ -475,9 +485,20 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.swt.gtk.linux.aarch64"
+-         os="linux"
++         id="org.eclipse.swt.gtk.freebsd.powerpc64le"
++         os="freebsd"
+          ws="gtk"
++         arch="powerpc64le"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         fragment="true"
++         unpack="false"/>
++
++   <plugin
++         id="org.eclipse.swt.gtk.freebsd.aarch64"
++         os="freebsd"
++         ws="gtk"
+          arch="aarch64"
+          download-size="0"
+          install-size="0"
+@@ -486,10 +507,10 @@
           unpack="false"/>
  
     <plugin
@@ -172,13 +217,16 @@ diff -ru eclipse.platform.ui/features/org.eclipse.e4.rcp/feature.xml eclipse.pla
 diff -ru eclipse.platform.ui/features/org.eclipse.e4.rcp/pom.xml eclipse.platform.ui/features/org.eclipse.e4.rcp/pom.xml
 --- eclipse.platform.ui/features/org.eclipse.e4.rcp/pom.xml	0000-00-00 00:00:00.000000000 +0000
 +++ eclipse.platform.ui/features/org.eclipse.e4.rcp/pom.xml	0000-00-00 00:00:00.000000000 +0000
-@@ -39,8 +39,8 @@
-                 <plugin id="javax.xml"/>
+@@ -39,9 +39,10 @@
                  <plugin id="org.eclipse.swt"/>
                  <plugin id="org.eclipse.equinox.launcher.cocoa.macosx.x86_64"/>
+                 <plugin id="org.eclipse.equinox.launcher.cocoa.macosx.aarch64"/>
 -                <plugin id="org.eclipse.equinox.launcher.gtk.linux.ppc64le"/>
+-                <plugin id="org.eclipse.equinox.launcher.gtk.linux.aarch64"/>
 -                <plugin id="org.eclipse.equinox.launcher.gtk.linux.x86_64"/>
 +                <plugin id="org.eclipse.equinox.launcher.gtk.freebsd.powerpc64"/>
++                <plugin id="org.eclipse.equinox.launcher.gtk.freebsd.powerpc64le"/>
++                <plugin id="org.eclipse.equinox.launcher.gtk.freebsd.aarch64"/>
 +                <plugin id="org.eclipse.equinox.launcher.gtk.freebsd.amd64"/>
                  <plugin id="org.eclipse.equinox.launcher.win32.win32.x86_64"/>
                </excludes>

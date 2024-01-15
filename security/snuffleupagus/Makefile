@@ -1,23 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	snuffleupagus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.1
+DISTVERSION=	0.10.0
 CATEGORIES=	security
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	franco@opnsense.org
-COMMENT=	Security module for PHP 7+
+COMMENT=	Security module for PHP
+WWW=		https://snuffleupagus.readthedocs.io/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
-USES=		localbase:ldflags php:ext
+USES=		localbase:ldflags php:build,ext
 USE_GITHUB=	yes
 GH_ACCOUNT=	jvoisin
-USE_PHP=	hash:build session:build
+USE_PHP=	session:build
 
 CONFIGURE_ARGS=	--enable-snuffleupagus
 

@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	prawn-templates
 PORTVERSION=	0.1.2
 CATEGORIES=	print rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Include other pdfs or combine several pdf documents into one
+WWW=		https://github.com/prawnpdf/prawn-templates
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
@@ -18,7 +16,6 @@ RUN_DEPENDS=	rubygem-pdf-reader>=2.0<3:print/rubygem-pdf-reader \
 		rubygem-prawn>=2.2<3:print/rubygem-prawn
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,9 +1,6 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ted
 PORTVERSION=	2.23
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	editors
 MASTER_SITES=	ftp://ftp.nluug.nl/pub/editors/ted/ \
 		http://fossies.org/linux/misc/
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.src.tar.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11 based RTF editor
+WWW=		https://www.nllgg.nl/Ted/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/gpl.txt

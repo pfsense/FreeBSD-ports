@@ -1,6 +1,3 @@
-# Created by: Geoffroy Desvernay <dgeo@centrale-marseille.fr>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-Swagger
 PORTVERSION=	0.2.0
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Dancer plugin to create Swagger documentation for app REST
+WWW=		https://metacpan.org/pod/Dancer::Plugin::Swagger
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

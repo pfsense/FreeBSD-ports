@@ -1,6 +1,3 @@
-# Created by: Markus Brueffer <markus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pdixtract
 PORTVERSION=	1.5
 PORTREVISION=	1

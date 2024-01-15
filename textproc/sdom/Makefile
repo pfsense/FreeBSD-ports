@@ -1,21 +1,23 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	sdom
 PORTVERSION=	0.5.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc scheme
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of the W3C DOM recommendation in Scheme
+WWW=		https://www.nongnu.org/sdom/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	guile-lib>=0:devel/guile-lib
+RUN_DEPENDS=	guile-lib-${GUILE_FLAVOR}>=0:devel/guile-lib@${GUILE_FLAVOR}
 
+USES=		guile:env
+
+NO_ARCH=	yes
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 INFO=		sdom
 PLIST_FILES=	share/guile/sdom/common.scm \

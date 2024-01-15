@@ -1,21 +1,19 @@
-# Created by: Babak Farrokhi <farrokhi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	uvloop
-PORTVERSION=	0.14.0
+PORTVERSION=	0.17.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Fast drop-in replacement of asyncio event loop based on libuv
+WWW=		https://github.com/MagicStack/uvloop
 
 LICENSE=	APACHE20 MIT
 LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

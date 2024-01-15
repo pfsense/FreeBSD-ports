@@ -1,15 +1,13 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	m17n-im-config
 PORTVERSION=	0.9.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.m17n.org/common/im-config/ \
 		http://anthesphoria.net/FreeBSD/ports/distfiles/
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	GUI for per-user configuration of m17n-lib input methods
+WWW=		https://www.m17n.org
 
 LIB_DEPENDS=	libm17n.so:devel/m17n-lib
 

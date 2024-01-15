@@ -3,7 +3,7 @@
  * status_rrd_summary.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2010-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2010-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +24,9 @@ require_once("guiconfig.inc");
 $unitlist = array("MiB" => 2, "GiB" => 3, "TiB" => 4, "PiB" => 5);
 
 // validate interface
-$iflist = get_configured_interface_list();
+$iflist = get_configured_interface_with_descr();
 $interface = filter_input(INPUT_POST, "interface", FILTER_SANITIZE_STRING);
-$interface = in_array($interface, $iflist) ? $interface : "wan";
+$interface = array_key_exists($interface, $iflist) ? $interface : "wan";
 
 // get rrd bounds for interface
 $rrd = "{$interface}-traffic.rrd";
@@ -47,32 +47,49 @@ $units = filter_input(INPUT_POST, "units", FILTER_VALIDATE_INT,
 	array("options" => array("min_range" => min(array_values($unitlist)), "max_range" => max(array_values($unitlist)) )) );
 $units = in_array($units, $unitlist) ? $units : $unitlist["GiB"];
 
-// 1:timestamp 2:inpass 3:outpass 4:inblock 5:outblock 6:inpass6 7:outpass6 8:inblock6 9:outblock6
-// total_in = $2 + $4 + $6 + $8; total_out = $3 + $7 (blocked outbound traffic is excluded)
+/* rrd_fetch() outputs a multi-level array first by DS name, then timestamp */
 function fetch_rrd_summary($rrd, $start, $end, $units=2, $resolution=24*60*60) {
-	$traffic = array();
-	$rrd = escapeshellarg("/var/db/rrd/{$rrd}");
-	$start = escapeshellarg($start);
-	$end = escapeshellarg($end);
-	exec("/usr/local/bin/rrdtool fetch {$rrd} AVERAGE -r {$resolution} -s {$start} -e {$end}", $traffic);
+	$rrd = "/var/db/rrd/{$rrd}";
 	$divisor = 1024 ** $units;
-	$t_keys = preg_split("/\s+/", $traffic[0]);	// grab keys
-	//print "time=$t_first st=$start end=$end div=$divisor res=$resolution";
-	$traffic = preg_grep("/^[0-9]+:/", $traffic);	// select data rows
-	$traffic = preg_grep("/nan/", $traffic, PREG_GREP_INVERT);	// filter nan rows
-	$data = array( "first" => time() );
-	foreach ( $traffic as $t ) {
-		$t = preg_split("/[\s:]+/", $t);
-		if (count($t) != count($t_keys)) continue;	// error: field mismatch
-		$data["first"] = min($t[0], $data["first"]);
-		$data["last"] = max($t[0], $data["last"]);
-		foreach ($t_keys as $i => $k) { $data[$k] += ($t[$i] / $divisor) * $resolution; }
+
+	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
+	$traffic = rrd_fetch($rrd, $rrd_options);
+
+	if (!is_array($traffic) ||
+	    empty($traffic) ||
+	    !is_array($traffic["data"])) {
+		return [];
 	}
-	// Adjust for resolution
-	foreach ($t_keys as $k) {
-		if (preg_match("/^outblock/", $k)) continue;
-		$data["total_in"] += preg_match("/^in/", $k) ? $data[$k] : 0;
-		$data["total_out"] += preg_match("/^out/", $k) ? $data[$k] : 0;
+
+	$data = [
+		"first"     => time(),
+		"last"      => 0,
+		"total_in"  => 0,
+		"total_out" => 0
+	];
+
+	foreach ($traffic["data"] as $dsname => $dsdata) {
+		$dstotal = 0;
+		foreach ($dsdata as $timestamp => $d) {
+			if (is_nan($d)) {
+				continue;
+			}
+			$data["first"] = min((int) $timestamp, (int) $data["first"]);
+			$data["last"] = max((int) $timestamp, (int) $data["last"]);
+			$dstotal += ($d / $divisor) * $resolution;
+		}
+		$data[$dsname] = $dstotal;
+	}
+
+	foreach (array_keys($traffic["data"]) as $ds) {
+		if ($ds != 'outblock' ||
+		    $ds != 'outblock6') {
+			if (substr($ds, 0, 2) == 'in') {
+				$data["total_in"] += $data[$ds];
+			} elseif (substr($ds, 0, 3) == 'out') {
+				$data["total_out"] += $data[$ds];
+			}
+		}
 	}
 	return $data;
 }
@@ -86,20 +103,24 @@ function print_rrd_summary($rrd, $units, $startyear, $startday) {
 		if ($startyear > 0 && $startyear != $year) continue;
 		foreach (range(12, 1, -1) as $month) {
 			$start = strtotime(date("{$month}/{$startday}/{$year}"));
-			$end = strtotime("-1 second", strtotime("+1 month", $start));
+			$end = strtotime("+1 month", $start);
+			/* End time should be one second less than the start of the
+			 * next month otherwise RRDtool will include the first day
+			 * of the next month in the summary. */
+			$end = strtotime("-1 second", $end);
 			if ($start > $last || $end < $first) continue;
 			if ($start < $first) $start = $first;
-			if ($end > $last) $end = $last;
-			$data = fetch_rrd_summary($rrd, "epoch+{$start}s", "epoch+{$end}s", $units, 24*60*60);
+			/* Use at-time format as unix timestamps can be problematic in various ways. */
+			$data = fetch_rrd_summary($rrd, date('m/d/Y H:i', $start), date('m/d/Y H:i', $end), $units, 24*60*60);
 			?>
 				<tr>
-					<td><?=date("Y-m-d", $start); ?> to <?=date("m-d-Y", $end); ?></td>
+					<td><?=date("Y-m-d", $start); ?> to <?=date("Y-m-d", $end); ?></td>
 					<td><?=sprintf("%0.2f %s", $data["total_in"], $u[$units]); ?></td>
 					<td><?=sprintf("%0.2f %s", $data["total_out"], $u[$units]); ?></td>
 					<td><?=sprintf("%0.2f %s", $data["total_in"] + $data["total_out"], $u[$units]); ?></td>
 				</tr>
 			<?php
-	  }
+		}
 	}
 }
 
@@ -112,8 +133,8 @@ $form = new Form(false);
 $section = new Form_Section('Select RRD Parameters');
 
 $if_options = array();
-foreach ($iflist as $i) {
-	$if_options[$i] = $i;
+foreach ($iflist as $i => $ifdesc) {
+	$if_options[$i] = $ifdesc . " (" . $i . ") ";
 }
 
 $section->addInput(new Form_Select(

@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	jrefentry
 PORTVERSION=	1.1
 PORTREVISION=	2

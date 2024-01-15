@@ -1,6 +1,3 @@
-# Created by: Denis Shaposhnikov <dsh@vlink.ru>
-# $FreeBSD$
-
 PORTNAME=	nagiosgraph
 PORTVERSION=	1.5.2
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	hizel@vyborg.ru
 COMMENT=	Generate rrdtool graphs using performance data from nagios plugins
+WWW=		https://nagiosgraph.sourceforge.net/
 
 LICENSE=	ART20
 

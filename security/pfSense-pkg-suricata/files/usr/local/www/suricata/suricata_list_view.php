@@ -3,11 +3,11 @@
  * suricata_list_view.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 
 $contents = '';
 
@@ -49,7 +49,7 @@ if ($_REQUEST['ajax'] == 'ajax') {
 $title = "List";
 
 if (isset($id) && isset($wlist)) {
-	$a_rule = $config['installedpackages']['suricata']['rule'][$id];
+	$a_rule = config_get_path("installedpackages/suricata/rule/{$id}", []);
 	if ($type == "homenet") {
 		$list = suricata_build_list($a_rule, $wlist);
 		$contents = implode("\n", $list);
@@ -68,7 +68,7 @@ if (isset($id) && isset($wlist)) {
 	elseif ($type == "externalnet") {
 		if ($wlist == "default") {
 			$list = suricata_build_list($a_rule, $a_rule['homelistname']);
-			$contents = "";
+			$contents = "Defined in suricata.yaml as: !\$HOME_NET which expands to:\n\n";
 			foreach ($list as $ip)
 				$contents .= "!{$ip}\n";
 			$contents = trim($contents, "\n");

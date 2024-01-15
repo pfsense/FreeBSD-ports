@@ -1,14 +1,12 @@
-# Created by: Liam J. Foy <liamfoy@sepulcrum.org>
-# $FreeBSD$
-
 PORTNAME=	gtick
 PORTVERSION=	0.5.5
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	http://www.antcom.de/gtick/download/
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Metronome application
+WWW=		https://www.antcom.de/gtick/
 
 LICENSE=	GPLv3
 
@@ -20,7 +18,6 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 USES=		desktop-file-utils gnome pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	cairo gtk20
-INSTALLS_ICONS=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	NLS

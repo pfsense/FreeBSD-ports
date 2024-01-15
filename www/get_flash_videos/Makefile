@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	get_flash_videos
 DISTVERSION=	1.24.${DISTFILE_DATE}
 CATEGORIES=	www perl5
@@ -11,6 +8,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Download videos from various Flash-based video hosting sites
+WWW=		http://code.google.com/p/get-flash-videos/
 
 LICENSE=	APACHE20
 

@@ -1,13 +1,11 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libiconv
-PORTVERSION=	1.16
+PORTVERSION=	1.17
 CATEGORIES=	converters devel
 MASTER_SITES=	GNU
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Character set conversion library
+WWW=		https://www.gnu.org/software/libiconv/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

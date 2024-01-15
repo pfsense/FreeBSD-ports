@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	hacx
 PORTVERSION=	1.0
 CATEGORIES=	games
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.bz2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full TC using the Doom II engine
+WWW=		http://www.sonic.net/~nostromo/hacx/index.html
 
 USES=	tar:bzip2
 NO_BUILD=	yes

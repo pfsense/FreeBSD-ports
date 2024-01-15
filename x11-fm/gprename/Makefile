@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	gprename
 PORTVERSION=	2.7
 PORTEPOCH=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl script for renaming multiple files
+WWW=		https://gprename.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

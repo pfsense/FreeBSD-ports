@@ -1,19 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	async_timeout
-PORTVERSION=	3.0.1
+PORTVERSION=	4.0.3
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	async-timeout-${DISTVERSIONFULL}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Timeout context manager for asyncio programs
+WWW=		https://github.com/aio-libs/async-timeout
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.4+
+TEST_DEPENDS=     ${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
+
+USES=		python
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
+
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

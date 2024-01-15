@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hamlit-rails
 PORTVERSION=	0.2.3
 CATEGORIES=	www rubygems
@@ -8,6 +6,7 @@ PKGNAMESUFFIX=	-rails5
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Hamlit (haml) generators for Rails 5
+WWW=		https://github.com/mfung/hamlit-rails
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -18,7 +17,6 @@ RUN_DEPENDS=	rubygem-activesupport5>=0:devel/rubygem-activesupport5 \
 		rubygem-railties5>=0:www/rubygem-railties5
 
 USES=		gem shebangfix
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

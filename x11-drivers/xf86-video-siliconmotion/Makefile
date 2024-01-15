@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-siliconmotion
 PORTVERSION=	1.7.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org siliconmotion display driver
+WWW=		https://www.x.org/
 
 USES=		xorg-cat:driver
 

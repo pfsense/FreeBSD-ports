@@ -1,10 +1,9 @@
 #!/bin/sh
 # MAINTAINER: rust@FreeBSD.org
-# $FreeBSD$
 set -eu
 set -o pipefail
 
-if [ "${OPSYS}" != FreeBSD ] || [ "${OSVERSION}" -lt 1200000 ]; then
+if [ "${OPSYS}" != FreeBSD ] ; then
 	exit 0
 fi
 

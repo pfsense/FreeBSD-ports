@@ -1,20 +1,20 @@
---- ui/gfx/gpu_memory_buffer.h.orig	2021-01-18 21:29:48 UTC
+--- ui/gfx/gpu_memory_buffer.h.orig	2023-04-05 11:05:06 UTC
 +++ ui/gfx/gpu_memory_buffer.h
 @@ -15,7 +15,7 @@
  #include "ui/gfx/geometry/rect.h"
  #include "ui/gfx/gfx_export.h"
  
--#if defined(USE_OZONE) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(USE_OZONE) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_OZONE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_OZONE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include "ui/gfx/native_pixmap_handle.h"
- #elif defined(OS_MAC)
+ #elif BUILDFLAG(IS_APPLE)
  #include "ui/gfx/mac/io_surface.h"
-@@ -69,7 +69,7 @@ struct GFX_EXPORT GpuMemoryBufferHandle {
+@@ -75,7 +75,7 @@ struct GFX_EXPORT GpuMemoryBufferHandle {
    base::UnsafeSharedMemoryRegion region;
    uint32_t offset = 0;
-   int32_t stride = 0;
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_FUCHSIA) || defined(OS_BSD)
+   uint32_t stride = 0;
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
    NativePixmapHandle native_pixmap_handle;
- #elif defined(OS_MAC)
-   gfx::ScopedIOSurface io_surface;
+ #elif BUILDFLAG(IS_APPLE)
+   ScopedIOSurface io_surface;

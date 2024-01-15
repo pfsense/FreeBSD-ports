@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	openctm
 DISTVERSION=	1.0.3
+PORTREVISION=	3
 CATEGORIES=	cad
 MASTER_SITES=	https://sourceforge.net/projects/openctm/files/
 DISTNAME=	OpenCTM-${DISTVERSION}-src
 
 MAINTAINER=	db@FreeBSD.org
 COMMENT=	File format for compression of 3D triangle meshes
+WWW=		https://sourceforge.net/projects/openctm/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

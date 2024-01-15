@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-EncodedColumn
 PORTVERSION=	0.00020
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Automatically encode columns
+WWW=		https://metacpan.org/release/DBIx-Class-EncodedColumn
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Jeff Putsch <jdputsch@comcast.net>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Jabber
 PORTVERSION=	3.00
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE Component for communicating over Jabber
+WWW=		https://metacpan.org/release/POE-Component-Jabber
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Authen-SASL>=0:security/p5-Authen-SASL \

@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	POE-API-Hooks
 PORTVERSION=	1.0800
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S|00$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Implement lightweight hooks into POE
+WWW=		https://metacpan.org/release/SUNGO/POE-API-Hooks-1.08
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

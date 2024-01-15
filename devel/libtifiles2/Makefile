@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libtifiles2
 PORTVERSION=	1.1.7
 CATEGORIES=	devel
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/tilp/tilp2-linux/tilp2-1.18
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	TI calculator file types library
+WWW=		http://tilp.info/
 
 LICENSE=	GPLv2
 

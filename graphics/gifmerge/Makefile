@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <nakai@mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	gifmerge
 PORTVERSION=	1.33
 DISTVERSIONSUFFIX=	.src

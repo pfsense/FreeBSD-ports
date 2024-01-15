@@ -1,6 +1,3 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libXxf86vm
 PORTVERSION=	1.1.4
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X Vidmode Extension
+WWW=		https://www.freedesktop.org/Software/xorg
 
 LICENSE=	MIT
 

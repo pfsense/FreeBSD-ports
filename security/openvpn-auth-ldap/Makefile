@@ -1,13 +1,12 @@
-# Created by: Nick Barkas <snb@threerings.net>
-# $FreeBSD$
-
 PORTNAME=	openvpn-auth-ldap
 PORTVERSION=	2.0.4
+PORTREVISION=	2
 DISTVERSIONPREFIX=	auth-ldap-
 CATEGORIES=	security net-vpn
 
-MAINTAINER=	mandree@FreeBSD.org
+MAINTAINER=	zi@FreeBSD.org
 COMMENT=	LDAP authentication plugin for OpenVPN
+WWW=		https://github.com/threerings/openvpn-auth-ldap
 
 LICENSE=	BSD3CLAUSE
 
@@ -20,18 +19,14 @@ BUILD_DEPENDS=	re2c:devel/re2c \
 # and https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235776
 # appears to document issues on some systems when --with-openssl
 # is missing.
-USES=		autoreconf objc ssl tar:xz
-
+USES=		autoreconf ldap objc ssl tar:xz
+USE_GITHUB=	yes
+GH_ACCOUNT=	threerings
 GNU_CONFIGURE=	yes
-USE_OPENLDAP=	yes
 CONFIGURE_ARGS+=	--with-openldap=${LOCALBASE} \
 			--with-openvpn=${LOCALBASE}/include \
 			--with-objc-runtime=GNU \
 			--with-openssl=${OPENSSLBASE}
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	threerings
-GH_PROJECT=	openvpn-auth-ldap
 
 PORTDOCS=	README
 PORTEXAMPLES=	auth-ldap.conf

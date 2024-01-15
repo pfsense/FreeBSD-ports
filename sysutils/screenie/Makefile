@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	screenie
 PORTVERSION=	20120406
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/screenie
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small and lightweight screen(1) wrapper
+WWW=		https://sourceforge.net/projects/screenie/
 
 LICENSE=	GPLv2
 

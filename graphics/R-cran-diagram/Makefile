@@ -1,13 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	diagram
 PORTVERSION=	1.6.5
+PORTREVISION=	1
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Functions for visualising simple graphs, plotting flow diagrams
+WWW=		https://cran.r-project.org/web/packages/diagram/
 
 LICENSE=	GPLv2+
 

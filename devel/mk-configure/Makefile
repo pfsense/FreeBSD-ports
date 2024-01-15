@@ -1,13 +1,11 @@
-# Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mk-configure
-PORTVERSION=	0.35.0
+PORTVERSION=	0.38.2
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Lightweight, easy to use replacement for GNU autotools
+WWW=		https://sourceforge.net/projects/mk-configure/
 
 LICENSE=	BSD2CLAUSE
 
@@ -16,6 +14,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		bmkdep:devel/bmkdep
 
 MAKE_JOBS_UNSAFE=	yes
+NO_ARCH=	yes
 
 BMAKE?=		${LOCALBASE}/bin/bmake
 INSTALL_TARGET=	installdirs install install-doc

@@ -1,21 +1,19 @@
-# Created by: antoine@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	python-snappy
-PORTVERSION=	0.5.4
+PORTVERSION=	0.6.1
 CATEGORIES=	archivers devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Python library for the snappy compression library from Google
+WWW=		https://github.com/andrix/python-snappy
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libsnappy.so:archivers/snappy
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 CPPFLAGS+=	-I${LOCALBASE}/include
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}

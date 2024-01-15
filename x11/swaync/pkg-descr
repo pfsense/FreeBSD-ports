@@ -1,0 +1,19 @@
+A simple notification daemon with a GTK gui for notifications and the
+control center
+
+Features:
+- Keyboard shortcuts
+- Notification body markup with image support
+- A panel to view previous notifications
+- Show album art for notifications like Spotify
+- Do not disturb
+- Click notification to execute default action
+- Show alternative notification actions
+- Customization through a CSS file
+- Trackpad/mouse gesture to close notification
+- The same features as any other basic notification daemon
+- Basic configuration through a JSON config file
+- Hot-reload config through swaync-client
+
+Planned Features:
+- Slick animations

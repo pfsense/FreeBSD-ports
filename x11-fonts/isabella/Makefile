@@ -1,6 +1,3 @@
-# Created by: Lowell Gilbert <lgfbsd@be-well.ilk.org>
-# $FreeBSD$
-
 PORTNAME=	isabella-ttf
 PORTVERSION=	1.202
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	Isabella-${PORTVERSION}-ttf
 
 MAINTAINER=	lgfbsd@be-well.ilk.org
 COMMENT=	Font by John Stracke based on the Isabella Breviary
+WWW=		https://www.thibault.org/fonts/isabella/
 
 LICENSE=	OFL11 LGPL20
 LICENSE_COMB=	dual

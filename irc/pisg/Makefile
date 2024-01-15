@@ -1,6 +1,3 @@
-# Created by: pgl@instinct.org
-# $FreeBSD$
-
 PORTNAME=	pisg
 PORTVERSION=	0.73
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl IRC Statistics Generator
+WWW=		https://pisg.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

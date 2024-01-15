@@ -1,6 +1,3 @@
-# Created by: Frerich Raabe <frerich.raabe@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	fvcool
 PORTVERSION=	1.0.4
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTNAME=	FVCool${PORTVERSION:S/.//g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	VCool for FreeBSD - Cooling software for AMD Athlon/Duron CPUs
+WWW=		http://www.nt.phys.kyushu-u.ac.jp/shimizu/
 
 LICENSE=	BSD3CLAUSE # misses 2nd clause, but it's still not BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/CopyRight

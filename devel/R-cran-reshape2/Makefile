@@ -1,14 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	reshape2
 PORTVERSION=	1.4.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Flexibly reshape data: a reboot of the reshape package
+WWW=		https://cran.r-project.org/web/packages/reshape2/
 
 LICENSE=	MIT
 

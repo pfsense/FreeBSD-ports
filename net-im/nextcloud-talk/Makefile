@@ -1,38 +1,25 @@
-# Created by: Bernard Spil <brnrd@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	talk
-PORTVERSION=	10.0.4
+PORTVERSION=	18.0.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im www
-MASTER_SITES=	https://github.com/${PKGNAMEPREFIX:S/-//}/${DISTNAME:C/-.*//}/releases/download/v${PORTVERSION}/
-PKGNAMEPREFIX=	nextcloud-
-PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
-DISTNAME=	spreed-${PORTVERSION}
-DIST_SUBDIR=	${PKGNAMEPREFIX:S/-//}/${DISTNAME}
-WRKSRC=		${WRKDIR}/spreed
+DISTNAME=	spreed-${DISTVERSIONPREFIX}${DISTVERSION}
+DIST_SUBDIR=	nextcloud
+
+MASTER_SITES?=   https://github.com/nextcloud-releases/spreed/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Online meeting app for Nextcloud
+WWW=		https://nextcloud.com/talk/
 
-LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=20:www/nextcloud@${PHP_FLAVOR}
+NEXTCLOUD_RUN_DEPENDS=	28
 
-USES=		php:flavors
-NO_BUILD=	yes
-NO_ARCH=	yes
+WRKSRC=		${WRKDIR}/spreed
+WWWDIR=		${NEXTCLOUD_APPSDIR}/spreed
 
-NEXTCLOUD_USERNAME?=	${WWWOWN}
-NEXTCLOUD_GROUPNAME?=	${WWWGRP}
+USES=		cpe nextcloud php:flavors
 
-PLIST_SUB=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
-		NEXTCLOUD_GROUPNAME=${NEXTCLOUD_GROUPNAME}
-
-WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/spreed
-
-do-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR}
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
+CPE_VENDOR=	nextcloud
 
 .include <bsd.port.mk>

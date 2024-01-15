@@ -1,6 +1,3 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Apache-Htpasswd
 PORTVERSION=	1.9
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Manage Unix crypt-style password file
+WWW=		https://metacpan.org/release/Apache-Htpasswd
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

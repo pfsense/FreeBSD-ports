@@ -1,6 +1,3 @@
-# Created by: Henk van Oers <hvo.pm@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	Mojolicious-Plugin-Database
 PORTVERSION=	1.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Handling of DBI based connections in Mojolicious
+WWW=		https://metacpan.org/release/Mojolicious-Plugin-Database
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

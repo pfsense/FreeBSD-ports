@@ -1,13 +1,12 @@
-# Created by: asami
-# $FreeBSD$
-
 PORTNAME=	igmpproxy
-DISTVERSION=	0.3
+DISTVERSION=	0.4
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net
 
 MAINTAINER=	franco@opnsense.org
 COMMENT=	Multicast forwarding IGMP proxy
+WWW=		https://github.com/pali/igmpproxy
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

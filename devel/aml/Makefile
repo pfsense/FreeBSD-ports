@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	aml
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.0
+DISTVERSION=	0.3.0
 CATEGORIES=	devel
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Another Main Loop
+WWW=		https://github.com/any1/aml
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING

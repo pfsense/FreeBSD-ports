@@ -1,6 +1,3 @@
-# Created by: joerg@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	dwarfdump
 PORTVERSION=	20161124
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	libdwarf-${PORTVERSION}
 
 MAINTAINER=	joerg@FreeBSD.org
 COMMENT=	Tool to display DWARF debugging information in ELF files
+WWW=		https://www.prevanders.net/dwarf.html
 
 LICENSE=	GPLv2
 

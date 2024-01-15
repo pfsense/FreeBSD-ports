@@ -1,0 +1,33 @@
+commit eab8453fd857de3352f352332896b065110313f4
+Author: Reid Linnemann <rlinnemann@netgate.com>
+Date:   Mon Aug 7 10:49:10 2023 -0600
+
+    Retain peer settings for CARP vhid when creating an additional alias. Fixes #14586
+    
+    When creating an IP alias of an existing CARP alias in
+    interface_ipalias_configure(), the ifconfig arguments omitted the peer mode
+    settings, causing the alias configure to always revert the CARP alias to
+    multicast. This change adds the carp mode selection to
+    interface_ipalias_configure() as is done in interface_carp_configure().
+
+diff --git a/src/etc/inc/interfaces.inc b/src/etc/inc/interfaces.inc
+index 1136a256f7..7f4cb42072 100644
+--- a/src/etc/inc/interfaces.inc
++++ b/src/etc/inc/interfaces.inc
+@@ -3054,9 +3054,14 @@ function interface_ipalias_configure(&$vip) {
+ 		$carpvip = get_configured_vip($vip['interface']);
+ 		$iface = $carpvip['interface'];
+ 		$vhid = "vhid {$carpvip['vhid']}";
++		if ($af == 'inet') {
++			$mode = ($carpvip['carp_mode'] == 'ucast' ? "peer ". escapeshellarg($carpvip['carp_peer']) : " mcast");
++		} else {
++			$mode = ($carpvip['carp_mode'] == 'ucast' ? "peer6 ". escapeshellarg($carpvip['carp_peer']) : " mcast6");
++		}
+ 	}
+-	mwexec("/sbin/ifconfig " . escapeshellarg($realif) ." {$af} ". escapeshellarg($vip['subnet']) ."/" . escapeshellarg($vip['subnet_bits']) . " alias {$gateway} {$vhid}");
+-	unset($iface, $af, $realif, $carpvip, $vhid, $gateway);
++	mwexec("/sbin/ifconfig " . escapeshellarg($realif) ." {$af} ". escapeshellarg($vip['subnet']) ."/" . escapeshellarg($vip['subnet_bits']) . " alias {$gateway} {$vhid} {$mode}");
++	unset($iface, $af, $realif, $carpvip, $vhid, $gateway, $mode);
+ }
+ 
+ function interface_carp_configure(&$vip, $ipalias_reload = false) {

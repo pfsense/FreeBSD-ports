@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	roget-fpw
 PORTVERSION=	1.0.2
 PORTREVISION=	0
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Roget's Thesaurus (EPWING V1 format)
+WWW=		http://openlab.ring.gr.jp/edict/fpw/
 
 USES=		zip
 NO_BUILD=	yes

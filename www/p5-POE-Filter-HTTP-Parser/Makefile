@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POE-Filter-HTTP-Parser
 PORTVERSION=	1.08
 CATEGORIES=	www perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTTP POE filter for HTTP clients or servers
+WWW=		https://metacpan.org/release/POE-Filter-HTTP-Parser
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-POE>=1.003:devel/p5-POE \

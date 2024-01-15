@@ -1,38 +1,43 @@
-# Created by: Mathieu Arnold
-# $FreeBSD$
-
 PORTNAME=	owncloudclient
-DISTVERSION=	2.6.0
-DISTVERSIONSUFFIX=	.13018
+DISTVERSION=	2.8.2
+DISTVERSIONSUFFIX=	.4246
+PORTREVISION=	4
 CATEGORIES=	deskutils
-MASTER_SITES=	https://download.owncloud.com/desktop/stable/
-# owncloudclient-2.6.0.13018.tar.xz
+MASTER_SITES=	https://download.owncloud.com/desktop/ownCloud/stable/${DISTVERSION}${DISTVERSIONSUFFIX}/source/
+DISTNAME=	ownCloud-${DISTVERSION}${DISTVERSIONSUFFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+PATCH_SITES=	https://github.com/owncloud/client/commit/
+PATCHFILES=	ff43c9394b45dd78106069ba89ae92f25abba158.patch:-p1
+
+MAINTAINER=	daniel@morante.net
 COMMENT=	OwnCloud Desktop Syncing Client
+WWW=		https://github.com/owncloud/client
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
-		libqt5keychain.so:security/qtkeychain
+		libqt5keychain.so:security/qtkeychain@qt5
 
-USES=		cmake:noninja compiler:c++11-lib gmake iconv kde:5 \
-		localbase:ldflags pkgconfig qt:5 sqlite tar:xz
-USE_QT=		buildtools_build concurrent core dbus gui linguist_build network \
-		qmake_build sql webkit widgets xml
-USE_KDE=	completion config coreaddons jobwidgets kio service widgetsaddons
-CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=OFF \
-		-DCMAKE_INSTALL_MANDIR:STRING=man \
-		-DWITH_DOC:BOOL=OFF \
-		-DWITH_STACK_PROTECTOR:BOOL=OFF
+USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gmake \
+		iconv kde:5 localbase:ldflags pkgconfig qt:5 shared-mime-info \
+		sqlite tar:xz
+USE_KDE=	completion config coreaddons jobwidgets kio service \
+		widgetsaddons windowsystem \
+		ecm:build
 USE_LDCONFIG=	yes
+USE_QT=		concurrent core dbus gui network sql widgets xml \
+		buildtools:build linguist:build qmake:build
+
+CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR:STRING=man \
+		-DSYSCONF_INSTALL_DIR="${PREFIX}/etc"
+CMAKE_OFF=	BUILD_WITH_QT4 WITH_DOC WITH_STACK_PROTECTOR
+
+PLIST_SUB=	VERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=		DEBUG
 
 DEBUG_CMAKE_ON=		-DCMAKE_BUILD_TYPE:STRING=Debug
-
-PLIST_SUB=	VERSION=${PORTVERSION}
 
 post-patch:
 	@${REINPLACE_CMD} -e \

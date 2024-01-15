@@ -1,6 +1,3 @@
-# Created by: Yoshisato YANAGISAWA
-# $FreeBSD$
-
 PORTNAME=	dkimproxy
 PORTVERSION=	1.4.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	andrey@bsdnir.info
 COMMENT=	DKIM filter for Postfix
+WWW=		https://dkimproxy.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

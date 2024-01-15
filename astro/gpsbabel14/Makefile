@@ -1,6 +1,3 @@
-# Created by: Laurent Courty
-# $FreeBSD$
-
 PORTNAME=	gpsbabel
 PORTVERSION=	1.4.4
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	14
 
 MAINTAINER=	dev2@heesakkers.info
 COMMENT=	GPS file translating tool (pre-qt version)
+WWW=		https://www.gpsbabel.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,7 +22,7 @@ CONFIGURE_ARGS=	--with-expathdr=${LOCALBASE}/include \
 
 PLIST_FILES=	bin/gpsbabel
 
-CONFLICTS=	gpsbabel-[0-9]*
+CONFLICTS=	gpsbabel
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/gpsbabel

@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	${DICT}-aspell
 SPELLVERSION=	6-az-0.02-0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Azerbaijani dictionary
+WWW=		http://aspell.net/
 
 DICT=	 	az
 

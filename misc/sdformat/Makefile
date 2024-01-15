@@ -1,18 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	sdformat
 DISTVERSION=	8.0.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	misc
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Simulation Description Format (SDF) parser and description files
+WWW=		https://bitbucket.org/osrf/sdformat/src/default/
 
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	ignition-cmake==2:devel/ignition-cmake \
-		ignition-tools>0:devel/ignition-tools
+		ignition-tools>0:devel/ignition-tools \
+		rubygem-rexml>0:textproc/rubygem-rexml
 LIB_DEPENDS=	libignition-math6.so:math/ignition-math \
 		libconsole_bridge.so:devel/ros-console_bridge \
 		libtinyxml2.so:textproc/tinyxml2 \

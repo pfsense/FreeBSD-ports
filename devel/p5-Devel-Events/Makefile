@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Devel-Events
 PORTVERSION=	0.09
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module providing an extensible instrumentation framework
+WWW=		https://metacpan.org/release/Devel-Events
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

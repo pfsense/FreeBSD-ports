@@ -1,23 +1,21 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	azure-storage-common
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.4
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Storage Common Client Library for Ruby
+WWW=		https://github.com/Azure/azure-storage-ruby/tree/master/common
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-faraday>=1.0<2:www/rubygem-faraday \
-		rubygem-faraday_middleware>=1.0.0<1.1:www/rubygem-faraday_middleware \
+RUN_DEPENDS=	rubygem-faraday1>=1.0<2:www/rubygem-faraday1 \
+		rubygem-faraday_middleware>=1.0.0<2:www/rubygem-faraday_middleware \
 		rubygem-net-http-persistent>=4.0<5:www/rubygem-net-http-persistent \
-		rubygem-nokogiri>=1.10.4<1.11:textproc/rubygem-nokogiri
+		rubygem-nokogiri>=1.10.8<2:textproc/rubygem-nokogiri
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

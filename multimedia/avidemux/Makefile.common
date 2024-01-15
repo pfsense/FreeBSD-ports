@@ -1,12 +1,16 @@
-# $FreeBSD$
-
-AVIDEMUX_VERSION=	2.7.6
+AVIDEMUX_VERSION=	2.8.1
 MASTER_SITES=	\
 		SF/avidemux/avidemux/${PORTVERSION}
 DISTNAME=	avidemux_${PORTVERSION}
 
-BUILD_DEPENDS+=	yasm:devel/yasm \
-		bash:shells/bash
+#PATCH_SITES=	https://github.com/mean00/avidemux2/commit/
+#PATCHFILES=		76f72e226684d68953de60c6d097f22c1c2f8ef1.patch
+#PATCH_DIST_STRIP=	-p1
+
+BUILD_DEPENDS+=	${BUILD_DEPENDS_${ARCH}}
+BUILD_DEPENDS_amd64=	yasm:devel/yasm
+BUILD_DEPENDS_i386=	yasm:devel/yasm
+BUILD_DEPENDS+=	bash:shells/bash
 LIB_DEPENDS+=	libmad.so:audio/libmad \
 		libpng.so:graphics/png
 
@@ -17,7 +21,7 @@ USE_GNOME=	libxml2
 OPTIONS_FILE=	${PORT_DBDIR}/${OPTIONS_NAME:C/-.*//}/options
 
 USES=		cmake:noninja pkgconfig iconv gmake compiler:features sqlite
-USES+=		dos2unix
+USES+=		dos2unix gnome
 DOS2UNIX_FILES=	cmake/admCheckMiscLibs.cmake \
 		avidemux_core/ADM_coreVideoCodec/include/ADM_coreVideoCodec6_export.h \
 		avidemux_core/ADM_coreVideoCodec/include/ADM_ffmp43.h
@@ -29,25 +33,29 @@ CXXFLAGS+=	-I${LOCALBASE}/include
 MAKE_JOBS_UNSAFE=	yes
 NOPRECIOUSMAKEVARS=	yes # ARCH
 
-BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 
 OPTIONS_DEFINE=	CLI FREETYPE FONTCONFIG OSS JACK PULSEAUDIO \
 		XVIDEO FAAC FRIBIDI OPUS TWOLAME \
 		FAAD X264 X265 VPX AOM XVID AMR VORBIS NLS LAME VAAPI VDPAU \
-		DCA FDK QT5 TINYPY VAPOURSYNTH
+		DCA FDK QT5 TINYPY VAPOURSYNTH NVENC
 OPTIONS_DEFAULT=	FREETYPE FONTCONFIG OSS XVIDEO VPX XVID \
 			FAAD VDPAU VORBIS DCA FDK QT5 TINYPY VAPOURSYNTH \
 			PULSEAUDIO
+OPTIONS_DEFAULT_amd64=	NVENC
+OPTIONS_DEFAULT_i386=	NVENC
 
 OPTIONS_SUB=	yes
 AOM_DESC=	AOM AV1 decoder support
 CLI_DESC=	Build CLI tool
 FDK_DESC=	FDK AAC codec support
+NVENC_DESC=	NVIDIA decoder/encoder with CUDA support
 TINYPY_DESC=	Python scripting support via TinyPy
 VAPOURSYNTH_DESC=	VapourSynth video manipulation support
 
+NLS_USES=	gettext-runtime
+NLS_CMAKE_BOOL=	GETTEXT
 FRIBIDI_CMAKE_OFF=	-DFRIBIDI:BOOL=OFF
 FRIBIDI_LIB_DEPENDS=	libfribidi.so:converters/fribidi
 OPUS_CMAKE_OFF=		-DOPUS:BOOL=OFF -DOPUS_ENCODER:BOOL=OFF
@@ -61,19 +69,16 @@ OPTIONS_DEFAULT+=	LAME FAAC AMR X264
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-.else
-CMAKE_ARGS+=	-DNO_NLS:BOOL=ON
-.endif
-
 # for libexecinfo: (so that __builtin_frame_address() finds the top
 # of the stack)
 .if ${ARCH} == amd64
 CFLAGS+=	-fno-omit-frame-pointer
-#MAKE_ENV+=	ARCH=x86_64
-#CONFIGURE_ENV+=	ARCH=x86_64
 .endif
+
+.if ${ARCH} == i386
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-i386-nosse
+.endif
+
 CMAKE_ARGS+=	-DLIBEXECINFO_INCLUDE_DIR=/usr/include
 CMAKE_ARGS+=	-DLIBEXECINFO_LIBRARY_DIR=-lexecinfo
 
@@ -87,10 +92,10 @@ USE_GNOME+=	libxslt
 .endif
 
 .if ${PORT_OPTIONS:MQT5}
-USES+=		desktop-file-utils gl qt:5 xorg
+USES+=		gl qt:5 xorg
 USE_GL=		gl glu
 USE_QT=		core gui network widgets \
-		qmake_build buildtools_build linguist_build
+		qmake:build buildtools:build linguist:build
 USE_XORG=	x11
 CMAKE_ARGS+=	-DENABLE_QT5:BOOL=ON
 PLIST_SUB+=	QT5=""
@@ -148,9 +153,8 @@ CMAKE_ARGS+=	-DFONTCONFIG:BOOL=OFF
 .endif
 
 .if ${PORT_OPTIONS:MXVIDEO}
-#LIB_DEPENDS+=	Xv:x11/libXv
 USES+=		xorg
-USE_XORG+=	xv
+USE_XORG+=	xv xext
 .else
 CMAKE_ARGS+=	-DXVIDEO:BOOL=OFF
 .endif
@@ -235,7 +239,10 @@ PLIST_SUB+=	DCA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MVAPOURSYNTH}
-LIB_DEPENDS+=	libvapoursynth.so:multimedia/vapoursynth
+LIB_DEPENDS+=	libva.so:multimedia/libva \
+				libvdpau.so:multimedia/libvdpau \
+				libvapoursynth.so:multimedia/vapoursynth
+USE_XORG+=	x11
 PLIST_SUB+=	VAPOURSYNTH=""
 .else
 CMAKE_ARGS+=	-DVAPOURSYNTH:BOOL=OFF
@@ -277,6 +284,14 @@ CMAKE_ARGS+=	-DOPENCORE_AMRWB:BOOL=OFF
 PLIST_SUB+=	AMRWB="@comment "
 .endif
 
+.if ${PORT_OPTIONS:MNVENC}
+BUILD_DEPENDS+=	${LOCALBASE}/include/ffnvcodec/nvEncodeAPI.h:multimedia/ffnvcodec-headers
+PLIST_SUB+=	NVENC=""
+.else
+CMAKE_ARGS+=	-DNVENC:BOOL=OFF
+PLIST_SUB+=	NVENC="@comment "
+.endif
+
 .include <bsd.port.pre.mk>
 
 # is this kosher?  the result seems to run tho...  (see ports/185997)
@@ -284,17 +299,18 @@ PLIST_SUB+=	AMRWB="@comment "
 LDFLAGS+=	-lc++
 .endif
 
-#.if ${COMPILER_TYPE} == clang
 USE_GCC=	yes
-#.endif
 
-NOT_FOR_ARCHS=		aarch64 powerpc powerpc64 powerpcspe sparc64
+NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe sparc64
 NOT_FOR_ARCHS_REASON=	cmake/admDetermineSystem.cmake:78: CPU not supported
+
+post-extract:
+	@${CP} ${FILESDIR}/ffmpeg_fix_build_with_binutils_2.41.patch \
+	       ${WRKSRC}/avidemux_core/ffmpeg_package/patches
 
 post-patch:
 	@${MKDIR} ${CONFIGURE_WRKSRC}/config
 	@${LN} -s ${LOCALBASE}/include/iconv.h ${CONFIGURE_WRKSRC}/config
-	@${REINPLACE_CMD} 's|-ldl||' ${WRKSRC}/avidemux_core/CMakeLists.txt
 	@${FIND} ${WRKSRC}/cmake -name '*.cmake.orig' -delete
 
 post-configure-common:

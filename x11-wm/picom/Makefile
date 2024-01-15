@@ -1,15 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	picom
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.2
+DISTVERSION=	10.2
 CATEGORIES=	x11-wm
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	78223caea3f7.patch:-p1 # https://github.com/yshui/picom/pull/422
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Lightweight X11 compositor
+WWW=		https://github.com/yshui/picom
 
 LICENSE=	MIT MPL20
 LICENSE_COMB=	multi
@@ -22,14 +18,17 @@ LIB_DEPENDS=	libev.so:devel/libev \
 RUN_DEPENDS=	xprop:x11/xprop \
 		xwininfo:x11/xwininfo
 
-CONFLICTS_INSTALL=	compton # bin/compton
-
 USES=		compiler:c11 meson localbase pkgconfig xorg
 USE_GITHUB=	yes
 USE_XORG=	x11 xcb xext pixman
 GH_ACCOUNT=	yshui
-MESON_ARGS=	-Dunittest=true
+MESON_ARGS=	-Dcompton=false -Dunittest=true
 TEST_TARGET=	test
+PLIST_FILES=	bin/${PORTNAME} \
+		bin/${PORTNAME}-trans \
+		etc/xdg/autostart/${PORTNAME}.desktop \
+		"@sample etc/xdg/${PORTNAME}.conf.sample" \
+		share/applications/${PORTNAME}.desktop
 
 OPTIONS_DEFINE=	CONFIG DBUS DOCS DRM OPENGL PCRE
 OPTIONS_DEFAULT=CONFIG DBUS OPENGL PCRE
@@ -46,7 +45,7 @@ DRM_LIB_DEPENDS=	libdrm.so:graphics/libdrm
 DRM_MESON_TRUE=		vsync_drm
 
 OPENGL_USES=		gl
-OPENGL_USE=		GL=gl
+OPENGL_USE=		GL=egl,gl
 OPENGL_MESON_TRUE=	opengl
 
 DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
@@ -54,12 +53,13 @@ DBUS_MESON_TRUE=	dbus
 
 DOCS_BUILD_DEPENDS=	a2x:textproc/asciidoc
 DOCS_MESON_TRUE=	with_docs
-DOCS_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
-			share/man/man1/${PORTNAME}-trans.1.gz
+DOCS_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
+			man/man1/${PORTNAME}-trans.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}&,' \
-		${WRKSRC}/src/config_libconfig.c
+		${WRKSRC}/man/${PORTNAME}.1.asciidoc \
+		${WRKSRC}/src/config.c
 # Extract (snapshot) version from the port instead of meson.build
 	@${REINPLACE_CMD} -i .nogit -e 's/git.found()/false/' \
 		-e "/project_version/s/=.*/= '${DISTVERSIONFULL}'/" \

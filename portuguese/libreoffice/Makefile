@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	portuguese
 LO_I18N=	pt
 LO_HAS_HELPPACK=	yes

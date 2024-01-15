@@ -1,6 +1,3 @@
-# Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	coccigrep
 PORTVERSION=	1.20
 DISTVERSIONPREFIX=	v
@@ -8,12 +5,13 @@ CATEGORIES=	textproc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Semantic grep for the C language
+WWW=		https://home.regit.org/software/coccigrep/
 
 LICENSE=	GPLv3
 
 RUN_DEPENDS=	spatch:devel/coccinelle
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	distutils autoplist concurrent optsuffix
 
 USE_GITHUB=	yes

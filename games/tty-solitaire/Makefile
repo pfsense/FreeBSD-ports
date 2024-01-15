@@ -1,13 +1,11 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tty-solitaire
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Play solitaire in your terminal
+WWW=		https://github.com/mpereira/tty-solitaire
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +16,7 @@ GH_ACCOUNT=	mpereira
 USES=		gmake ncurses
 TEST_TARGET=	test
 
-MAKE_ARGS=	NCURSES=-l${NCURSES_IMPL}
+MAKE_ARGS=	NCURSES="${NCURSESLIBS}"
 
 PORTDOCS=	*
 PLIST_FILES=	bin/ttysolitaire

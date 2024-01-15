@@ -1,6 +1,3 @@
-# Created by: Lars Köller <Lars.Koeller@Uni-Bielefeld.DE>
-# $FreeBSD$
-
 PORTNAME=	apcctrl
 PORTVERSION=	0.8.21
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	lobo@bsd.com.br
 COMMENT=	Fork of apcupsd 3.14.x with support for Brazilian APC nobreaks
+WWW=		http://www.apcctrl.com.br
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

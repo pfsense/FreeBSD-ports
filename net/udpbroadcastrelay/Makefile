@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	udpbroadcastrelay
 DISTVERSIONPREFIX=v
 DISTVERSION=	0.3-beta
@@ -7,6 +5,7 @@ CATEGORIES=	net
 
 MAINTAINER=	m.muenz@gmail.com
 COMMENT=	UDP multicast/unicast relayer
+WWW=		https://github.com/marjohn56/udpbroadcastrelay
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,19 +1,22 @@
-# Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hptcli
 PORTVERSION=	3.6
 PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.highpoint-tech.com/BIOS_Driver/HRM/FreeBSD/
+MASTER_SITES=	https://download.freenas.org/distfiles/
 DISTNAME=	CLI-FreeBSD-3.6-1-120913
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	HighPoint storage controllers management CLI
+WWW=		http://www.highpoint-tech.com/USA_new/cs-service_support.htm
+
+# Converted from RESTRICTED
+LICENSE=	hptcli
+LICENSE_NAME=	hptcli
+LICENSE_TEXT=	Redistribution is not allowed
+LICENSE_PERMS=	auto-accept
 
 EXTRACT_SUFX=	.tgz
 
-RESTRICTED=	Redistribution is not allowed
 ONLY_FOR_ARCHS=	i386 amd64
 
 NO_BUILD=	yes

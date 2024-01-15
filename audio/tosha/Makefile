@@ -1,6 +1,3 @@
-# Created by: Oliver Fromme <oliver.fromme@heim3.tu-clausthal.de>
-# $FreeBSD$
-
 PORTNAME=	tosha
 PORTVERSION=	0.6
 PORTREVISION=	1

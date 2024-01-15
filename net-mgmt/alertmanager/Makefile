@@ -1,20 +1,18 @@
-# Created by: Michal Hanula <michal@hanu.la>
-# $FreeBSD$
-
 PORTNAME=	alertmanager
+PORTVERSION=	0.26.0
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.20.0
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	michal@hanu.la
-COMMENT=	Alert routing for prometheus
+COMMENT=	Alert routing for Prometheus
+WWW=		https://prometheus.io/docs/alerting/alertmanager/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake go:modules
-USE_GITHUB=	yes
-GH_ACCOUNT=	prometheus
+USES=		go:modules
+GO_MODULE=	github.com/prometheus/alertmanager
+
 USE_RC_SUBR=	alertmanager
 
 GO_TARGET=	./cmd/alertmanager ./cmd/amtool

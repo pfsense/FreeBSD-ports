@@ -1,20 +1,20 @@
-# Created by: Gerald Pfeifer <gerald@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gcc
 PORTVERSION=	4.8.5
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	lang
 MASTER_SITES=	GCC
 PKGNAMESUFFIX=	${SUFFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU Compiler Collection 4.8
+WWW=		https://gcc.gnu.org
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-DEPRECATED=	Unsupported by upstream since 2015. Use GCC 10 or newer instead.
+DEPRECATED=		Unsupported by upstream since 2015. Use GCC 10 or newer instead.
+EXPIRATION_DATE=	2024-05-01
+
 ONLY_FOR_ARCHS=	amd64 i386
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -26,7 +26,7 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 BUILD_DEPENDS+=	runtest:misc/dejagnu
 .endif
 
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+USES=		compiler cpe gmake iconv libtool perl5 tar:bzip2
 USE_BINUTILS=	yes
 USE_PERL5=	build
 
@@ -70,7 +70,6 @@ CONFIGURE_ARGS+=--disable-nls \
 		--with-system-zlib \
 		--disable-libgcj \
 		--enable-languages=${LANGUAGES}
-MAKE_ARGS+=	MAKEINFOFLAGS="--no-split"
 USE_LDCONFIG=	${TARGLIB}
 PLIST_SUB+=	GCC_VERSION=${GCC_VERSION} \
 		GNU_HOST=${CONFIGURE_TARGET} \
@@ -97,7 +96,6 @@ post-patch:
 
 pre-configure:
 	cd ${WRKSRC} ; contrib/gcc_update --touch
-	@${RM} ${WRKSRC}/gcc/*/*.info*
 
 .if defined(MAINTAINER_MODE)
 full-regression-test: build

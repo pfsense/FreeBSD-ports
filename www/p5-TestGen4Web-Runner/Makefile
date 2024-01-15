@@ -1,6 +1,3 @@
-# Created by: Conor McDermottroe <ports@mcdermottroe.com>
-# $FreeBSD$
-
 PORTNAME=	TestGen4Web-Runner
 PORTVERSION=	0.11
 PORTREVISION=	2
@@ -8,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN/WWW/MACKERS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	eg@fbsd.lt
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to replay files recorded with TestGen4Web
+WWW=		https://metacpan.org/release/TestGen4Web-Runner
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \

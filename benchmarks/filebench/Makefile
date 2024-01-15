@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tom@tomjudge.com>
-# $FreeBSD$
-
 PORTNAME=	filebench
 DISTVERSION=	1.5-alpha3-27
 DISTVERSIONSUFFIX=	-g22620e6
@@ -8,6 +5,7 @@ CATEGORIES=	benchmarks
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	File system and storage benchmark
+WWW=		https://github.com/filebench/filebench/wiki
 
 LICENSE=	CDDL
 LICENSE_FILE=	${WRKSRC}/LICENSE

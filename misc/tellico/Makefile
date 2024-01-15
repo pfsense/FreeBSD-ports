@@ -1,14 +1,11 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	tellico
-DISTVERSION=	3.3.4
-PORTREVISION=	1
+DISTVERSION=	3.5.3
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Collection manager for KDE
+WWW=		https://tellico-project.org
 
 LICENSE=	GPLv2
 
@@ -24,15 +21,18 @@ LIB_DEPENDS=	libbtparse.so:textproc/btparse \
 
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext gnome \
 		kde:5 pkgconfig python:run qt:5 shared-mime-info shebangfix \
-		tar:xz
+		tar:xz xorg
 USE_GNOME=	libxml2 libxslt
 USE_KDE=	archive attica5 auth bookmarks codecs completion config \
-		configwidgets coreaddons crash ecm filemetadata guiaddons \
-		i18n iconthemes itemmodels itemviews jobwidgets js khtml kio \
-		libkcddb libksane newstuff parts service solid sonnet \
-		textwidgets wallet widgetsaddons windowsystem xmlgui
-USE_QT=		concurrent core dbus gui network widgets xml  \
-		buildtools_build qmake_build
+		configwidgets coreaddons crash filemetadata guiaddons \
+		i18n iconthemes itemmodels itemviews jobwidgets kio \
+		libkcddb libksane newstuff service solid sonnet \
+		textwidgets wallet widgetsaddons windowsystem xmlgui \
+		doctools:build ecm:build
+USE_QT=		charts concurrent core dbus declarative gui location network \
+		printsupport webchannel webengine widgets xml \
+		buildtools:build qmake:build testlib:build
+USE_XORG=	x11
 
 SHEBANG_FILES=	src/fetch/scripts/dark_horse_comics.py \
 		src/fetch/scripts/fr.allocine.py

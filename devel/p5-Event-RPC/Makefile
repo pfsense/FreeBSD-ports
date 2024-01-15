@@ -1,6 +1,3 @@
-# Created by: Vivek Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	Event-RPC
 PORTVERSION=	1.03
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vivek@khera.org
 COMMENT=	Event based transparent Client/Server RPC framework
+WWW=		https://metacpan.org/release/Event-RPC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

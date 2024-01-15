@@ -1,6 +1,3 @@
-# Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
-
 PORTNAME=	librevisa-vxi
 PORTVERSION=	0.0.20121221
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	vxi-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source VISA VXI-11 (TCP/IP RPC bindings)
+WWW=		http://www.librevisa.org
 
 PLIST_FILES=	include/vxi.h include/vxi_intr.h lib/libvxiclient.a lib/libvxiserver.a
 

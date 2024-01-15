@@ -1,15 +1,13 @@
-# Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cqrlog
-PORTVERSION=	2.4.0
-PORTREVISION=	3
+PORTVERSION=	2.5.2
+PORTREVISION=	7
 DISTVERSIONPREFIX=	v
 CATEGORIES=	comms hamradio
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio logging application
+WWW=		https://www.cqrlog.com/
 
 LICENSE=	GPLv2
 
@@ -25,9 +23,6 @@ GH_ACCOUNT=	ok2cqr
 
 SHEBANG_FILES=	tools/cqrlog-apparmor-fix \
 		voice_keyer/voice_keyer.sh
-USE_FPC=	cairo fcl-base chm fcl-db fcl-image fcl-json fcl-net fcl-web \
-		fcl-registry rtl-extra fcl-xml mysql numlib opengl openssl \
-		pasjpeg regexpr x11
 
 ALL_TARGET=	${PORTNAME}
 
@@ -38,11 +33,11 @@ MAKE_ENV+=	LAZBUILD_CMD="${LAZBUILD_CMD}" \
 
 NO_LAZBUILD=	yes
 LAZBUILD_ARGS=	-d --pcp=.
-INSTALLS_ICONS=	yes
 DOS2UNIX_WRKSRC=${WRKSRC}/src/synapse/
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5 ${PORTNAME}-qt6
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt6
+qt6_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
 
 post-extract:
 	@${RM} -r ${WRKSRC}/src/lnet/lib/openssl.pas
@@ -59,15 +54,14 @@ post-patch:
 		${WRKSRC}/src/dUtils.pas \
 		${WRKSRC}/src/fLoTWExport.pas ${WRKSRC}/src/fLoTWExport.lfm \
 		${WRKSRC}/src/fPreferences.pas ${WRKSRC}/src/fRotControl.pas \
-		${WRKSRC}/src/fTRXControl.pas ${WRKSRC}/src/fGrayline.pas \
-		${WRKSRC}/src/fPreferences.lfm ${WRKSRC}/src/fPreferences.pas
+		${WRKSRC}/src/fTRXControl.pas ${WRKSRC}/src/fPreferences.lfm
 	${REINPLACE_CMD} -e s!%%DATADIR%%!${DATADIR}!g \
 		${WRKSRC}/src/dData.pas ${WRKSRC}/src/fGrayline.pas
-	${REINPLACE_CMD} -e s!Linux!FreeBSD!g \
-		${WRKSRC}/src/fMain.lfm ${WRKSRC}/src/fNewQSO.lfm \
-		${WRKSRC}/src/dUtils.pas
-	${REINPLACE_CMD} -e s!%%OPENSSLLIB%%!${OPENSSLLIB}!g \
-		${WRKSRC}/src/synapse/ssl_openssl_lib.pas
-	${RM} -r ${WRKSRC}/src/mysql
+	${REINPLACE_CMD} -e 's|ifdef LCLQT5|if defined\(LCLQT5\) or defined\(LCLQT6\)|g' \
+		${WRKSRC}/src/lnet/lib/lclnet.pas
+
+post-build:
+	@${RM} ${WRKSRC}/help/cwd.html.*
+	@${RM} ${WRKSRC}/help/h1.html.*
 
 .include <bsd.port.mk>

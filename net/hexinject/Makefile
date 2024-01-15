@@ -1,6 +1,3 @@
-# Created by: Sofian Brabez <sbrabez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	hexinject
 PORTVERSION=	1.6
 CATEGORIES=	net security
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Versatile packet injector and sniffer
+WWW=		https://hexinject.sourceforge.net
 
 LICENSE=	BSD2CLAUSE
 

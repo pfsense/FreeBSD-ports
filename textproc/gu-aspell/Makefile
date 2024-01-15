@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	${DICT}-aspell
 SPELLVERSION=	6-gu-0.03-0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Gujarati dictionary
+WWW=		https://sourceforge.net/projects/aspell-gu/
 
 DICT=	 	gu
 

@@ -1,7 +1,7 @@
 bin/janet
-bin/jpm
+include/janet/janet_%%SOVERSION%%.h
 include/janet/janet.h
-include/janet/janetconf.h
+include/janet.h
 lib/janet/.keep
 lib/libjanet.a
 lib/libjanet.so
@@ -9,4 +9,3 @@ lib/libjanet.so.%%SOVERSION_R%%
 lib/libjanet.so.%%SOVERSION%%
 libdata/pkgconfig/janet.pc
 man/man1/janet.1.gz
-man/man1/jpm.1.gz

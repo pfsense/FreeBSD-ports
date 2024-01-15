@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	routines
 PORTVERSION=	0.02
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Typeable method and function signatures
+WWW=		https://metacpan.org/release/routines
 
 LICENSE=	APACHE20
 

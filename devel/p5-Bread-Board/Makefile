@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bread-Board
 PORTVERSION=	0.37
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Solderless way to wire up your application components
+WWW=		https://metacpan.org/release/Bread-Board
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

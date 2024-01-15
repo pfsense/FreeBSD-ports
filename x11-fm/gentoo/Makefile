@@ -1,13 +1,12 @@
-# Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
-
 PORTNAME=	gentoo
 PORTVERSION=	0.20.7
+PORTREVISION=	2
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk+ based, file manager inspired by DirectoryOpus
+WWW=		https://www.obsession.se/gentoo/
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING

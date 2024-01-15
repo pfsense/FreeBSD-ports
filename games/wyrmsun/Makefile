@@ -1,13 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wyrmsun
-PORTVERSION=	3.5.4
+PORTVERSION=	5.3.6
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Strategy game based on history, mythology and fiction
+WWW=		https://andrettin.github.io/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
@@ -19,11 +18,15 @@ GH_ACCOUNT=	Andrettin
 GH_PROJECT=	Wyrmsun
 
 USES=		cmake gnome
-INSTALLS_ICONS=	yes
+INSTALL_TARGET=	install
 NO_ARCH=	yes
+NO_BUILD=	yes
+CMAKE_ARGS=	-DBIN_DIR=bin
 
 PORTDATA=	*
 PORTDOCS=	*
+
+PORTSCOUT=	limit:^[0-9]\..*
 
 OPTIONS_DEFINE=	DOCS
 

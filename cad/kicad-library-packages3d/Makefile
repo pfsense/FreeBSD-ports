@@ -1,15 +1,14 @@
-# Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kicad
-PORTVERSION=	5.1.9
+PORTVERSION=	7.0.2
+PORTREVISION=	2
 CATEGORIES=	cad
-MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-packages3D/-/archive/${DISTVERSION}/
+MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-packages3D/-/archive/${DISTVERSION}${DISTVERSIONSUFFIX}/
 PKGNAMESUFFIX=	-library-packages3d
-DISTNAME=	${PORTNAME}-packages3D-${DISTVERSION}
+DISTNAME=	${PORTNAME}-packages3D-${DISTVERSION}${DISTVERSIONSUFFIX}
 
 MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Official KiCad 3D model libraries for rendering and MCAD integration
+WWW=		https://gitlab.com/kicad/libraries/kicad-packages3D
 
 LICENSE=	GPLv2
 
@@ -17,7 +16,7 @@ RUN_DEPENDS=	kicad:cad/kicad
 
 USES=		cmake tar:bz2
 
-CONFLICTS=	kicad-devel-r2*
+CONFLICTS_INSTALL=	kicad-library-packages3d-devel # share/kicad/3dmodels/Battery.3dshapes/BatteryHolder_Bulgin_BX0036_1xC.step
 
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Release" \

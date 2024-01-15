@@ -1,0 +1,16 @@
+PORTNAME=	http-accept
+PORTVERSION=	2.2.0
+CATEGORIES=	www rubygems
+MASTER_SITES=	RG
+
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Parse Accept and Accept-Language HTTP headers
+WWW=		https://github.com/socketry/http-accept
+
+LICENSE=	MIT
+
+USES=		gem
+
+NO_ARCH=	yes
+
+.include <bsd.port.mk>

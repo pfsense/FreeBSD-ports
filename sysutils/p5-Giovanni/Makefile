@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Giovanni
 PORTVERSION=	1.12
 CATEGORIES=	sysutils perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	PERL-based software deployment tool inspired by capistrano
+WWW=		https://metacpan.org/release/Giovanni
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,9 +22,10 @@ RUN_DEPENDS=	\
 		p5-Mouse>=0:devel/p5-Mouse \
 		p5-Net-OpenSSH>=0:net/p5-Net-OpenSSH
 
-
 NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+CONFLICTS_INSTALL=	glib # bin/gio
 
 .include <bsd.port.mk>

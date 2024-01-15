@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	treekin
 DISTVERSION=	0.5.1
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	biology
 MASTER_SITES=	https://www.tbi.univie.ac.at/RNA/packages/source/
 DISTNAME=	Treekin-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Efficient computation of RNA folding dynamics
+WWW=		https://www.tbi.univie.ac.at/RNA/Treekin/
 
 LICENSE=	LatticeLib
 LICENSE_NAME=	LatticeLib Disclaimer and Copyright

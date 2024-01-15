@@ -1,16 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	mxnet
-DISTVERSION=	1.7.0
+DISTVERSION=	1.9.1
+PORTREVISION=	5
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Apache MXNet: Ultra-scalable deep learning framework
+WWW=		https://mxnet.apache.org/
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	googletest>0:devel/googletest \
-		${LOCALBASE}/include/dnnl.h:math/onednn
+BROKEN_i386=	https://github.com/apache/incubator-mxnet/issues/20832
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
+
+BUILD_DEPENDS=	googletest>0:devel/googletest
 LIB_DEPENDS=	libdmlc.so:devel/dmlc-core \
 		liblapack.so:math/lapack \
 		libopenblas.so:math/openblas
@@ -19,8 +23,9 @@ USES=		cmake compiler:c++11-lang localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	apache
 GH_PROJECT=	incubator-mxnet
-GH_TUPLE=	apache:incubator-tvm:9bd2c7b:tvm/3rdparty/tvm \
-		dmlc:dlpack:3efc489:dlpack/3rdparty/dlpack
+GH_TUPLE=	apache:tvm:efdac94:tvm/3rdparty/tvm \
+		dmlc:dlpack:3efc489:dlpack/3rdparty/dlpack \
+		oneapi-src:oneDNN:f40443c:onednn/3rdparty/mkldnn # same as BUILD_DEPENDS=${LOCALBASE}/include/dnnl.h:math/onednn
 USE_LDCONFIG=	yes
 
 CMAKE_OFF=	USE_CUDA USE_CUDNN USE_MKLDNN USE_NCCL ENABLE_CUDA_RTC \
@@ -38,7 +43,7 @@ CPP_USES=		python:build
 CPP_VARS=		BINARY_ALIAS=python=${PYTHON_CMD}
 
 OPENCV_CMAKE_BOOL=	USE_OPENCV
-OPENCV_LIB_DEPENDS=	libopencv_core.so:graphics/opencv-core \
+OPENCV_LIB_DEPENDS=	libopencv_core.so:graphics/opencv \
 			libopencv_videoio.so:graphics/opencv
 
 .include <bsd.port.pre.mk>
@@ -47,7 +52,7 @@ OPENCV_LIB_DEPENDS=	libopencv_core.so:graphics/opencv-core \
 CMAKE_OFF+=	USE_SSE
 .endif
 
-post-patch:
+xpost-patch:
 	@${RM} ${WRKSRC}/include/mkldnn/*
 .for h in dnnl.h dnnl.hpp mkldnn.h mkldnn.hpp mkldnn_dnnl_mangling.h mkldnn_types.h mkldnn_version.h
 	@${LN} -s ${LOCALBASE}/include/${h} ${WRKSRC}/include/mkldnn/${h}

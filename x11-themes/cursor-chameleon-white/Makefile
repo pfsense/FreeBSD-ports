@@ -1,6 +1,3 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	chameleon
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	Chameleon-White-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Chameleon Xcursors theme
+WWW=		http://kde-look.org/content/show.php/Chameleon+Xcursors?content=38459
 
 LICENSE=	GPLv2
 

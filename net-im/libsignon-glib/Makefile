@@ -1,29 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	libsignon-glib
 DISTVERSION=	2.1
+PORTREVISION=	1
 CATEGORIES=	net-im
 DIST_SUBDIR=	KDE/${GL_ACCOUNT}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	GLib-based client library for applications handling account authentication
+WWW=		https://gitlab.com/accounts-sso/libsignon-glib
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	signond:sysutils/signon-qt5 \
-		vapigen:lang/vala
-RUN_DEPENDS=	signond:sysutils/signon-qt5
+BUILD_DEPENDS=	signond:sysutils/signond@qt5
+RUN_DEPENDS=	signond:sysutils/signond@qt5
 
-
-USES=		gnome libtool meson pathfix pkgconfig python tar:bz2
+USES=		gnome libtool meson pathfix pkgconfig python tar:bz2 vala:build
 USE_GNOME=	introspection pygobject3
 USE_PYTHON=	py3kplist
 
 # gitlab variables
 USE_GITLAB=	yes
 GL_ACCOUNT=	accounts-sso
-GL_COMMIT=	7f9f10a2e7533b74eaf027b26de48818326a1dcf
+GL_TAGNAME=	7f9f10a2e7533b74eaf027b26de48818326a1dcf
 CFLAGS+=	-Wno-error
 
 CONFIGURE_ARGS=	-Dtests=false

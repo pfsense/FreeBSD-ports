@@ -1,21 +1,21 @@
-# Created by: Andrea Cervesato <andrea@cervesato.it>
-# $FreeBSD$
-
 PORTNAME=	mod_qos
-DISTVERSION=	11.66
+DISTVERSION=	11.74
 CATEGORIES=	www
 MASTER_SITES=	SF/mod-qos
 DIST_SUBDIR=	apache2
 
 MAINTAINER=	fax@nohik.ee
 COMMENT=	QoS for Apache
+WWW=		https://mod-qos.sourceforge.net/
 
 LICENSE=	APACHE20
 
-USES=		apache:2.2+
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
-AP_GENPLIST=	yes
+USES=		apache
+
 AP_FAST_BUILD=	yes
+AP_GENPLIST=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/apache2
 

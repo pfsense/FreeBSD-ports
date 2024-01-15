@@ -1,16 +1,14 @@
-# Created by: Choe, Cheng-Dae
-# $FreeBSD$
-
 PORTNAME=	nevow
 PORTVERSION=	0.14.0
 PORTREVISION=	1
 CATEGORIES=	www python devel
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Nevow-${PORTVERSION}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Web application templating system, based on the Twisted Woven
+WWW=		https://pypi.org/project/Nevow/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${PY_FLAVOR}
 
 USE_PYTHON=	autoplist distutils
-USES=		gettext python:3.6+
+USES=		gettext python
 NO_ARCH=	yes
 
 SUB_FILES=	pkg-message

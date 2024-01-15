@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	twind
 PORTVERSION=	1.1.0
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Match and remove all of the blocks before time runs out
+WWW=		https://twind.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

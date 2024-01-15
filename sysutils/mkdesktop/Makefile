@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	mkdesktop
-PORTVERSION=	4.3
+PORTVERSION=	5.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	bourne.identity@hotmail.com
 COMMENT=	Set up any desktop under FreeBSD with ease
+WWW=		https://github.com/bourne-again/mkdesktop
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

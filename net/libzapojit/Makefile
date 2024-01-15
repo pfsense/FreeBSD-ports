@@ -1,7 +1,3 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-#   $MCom: ports/trunk/net/libzapojit/Makefile 19822 2014-08-20 08:57:46Z gusi $
-
 PORTNAME=	libzapojit
 PORTVERSION=	0.0.3
 PORTREVISION=	2
@@ -11,13 +7,15 @@ DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GLib/GObject wrapper for the Skydrive and Hotmail API
+WWW=		https://github.com/GNOME/libzapojit
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libgoa-1.0.so:net/gnome-online-accounts \
 		libjson-glib-1.0.so:devel/json-glib \
 		librest-0.7.so:devel/librest
 
-USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
+USES=		cpe gettext gmake gnome libtool pathfix pkgconfig tar:xz
+CPE_VENDOR=	gnome
 USE_GNOME=	gnomeprefix intltool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

@@ -1,5 +1,5 @@
-@(,,0755) sbin/debootstrap
 man/man8/debootstrap.8.gz
+sbin/debootstrap
 %%DATADIR%%/functions
 %%DATADIR%%/scripts/aequorea
 %%DATADIR%%/scripts/amber
@@ -12,9 +12,11 @@ man/man8/debootstrap.8.gz
 %%DATADIR%%/scripts/breezy
 %%DATADIR%%/scripts/bullseye
 %%DATADIR%%/scripts/buster
+%%DATADIR%%/scripts/byzantium
 %%DATADIR%%/scripts/ceres
 %%DATADIR%%/scripts/chromodoris
 %%DATADIR%%/scripts/cosmic
+%%DATADIR%%/scripts/crimson
 %%DATADIR%%/scripts/dapper
 %%DATADIR%%/scripts/dasyatis
 %%DATADIR%%/scripts/debian-common
@@ -25,11 +27,15 @@ man/man8/debootstrap.8.gz
 %%DATADIR%%/scripts/etch-m68k
 %%DATADIR%%/scripts/feisty
 %%DATADIR%%/scripts/focal
+%%DATADIR%%/scripts/groovy
 %%DATADIR%%/scripts/gutsy
 %%DATADIR%%/scripts/hardy
+%%DATADIR%%/scripts/hirsute
 %%DATADIR%%/scripts/hoary
 %%DATADIR%%/scripts/hoary.buildd
+%%DATADIR%%/scripts/impish
 %%DATADIR%%/scripts/intrepid
+%%DATADIR%%/scripts/jammy
 %%DATADIR%%/scripts/jaunty
 %%DATADIR%%/scripts/jessie
 %%DATADIR%%/scripts/jessie-kfreebsd
@@ -38,6 +44,7 @@ man/man8/debootstrap.8.gz
 %%DATADIR%%/scripts/kali-last-snapshot
 %%DATADIR%%/scripts/kali-rolling
 %%DATADIR%%/scripts/karmic
+%%DATADIR%%/scripts/kinetic
 %%DATADIR%%/scripts/lenny
 %%DATADIR%%/scripts/lucid
 %%DATADIR%%/scripts/maverick
@@ -58,6 +65,7 @@ man/man8/debootstrap.8.gz
 %%DATADIR%%/scripts/stable
 %%DATADIR%%/scripts/stretch
 %%DATADIR%%/scripts/testing
+%%DATADIR%%/scripts/trixie
 %%DATADIR%%/scripts/trusty
 %%DATADIR%%/scripts/unstable
 %%DATADIR%%/scripts/utopic

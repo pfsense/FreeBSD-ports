@@ -1,9 +1,6 @@
-# Created by: Christopher J. Ruwe
-# $FreeBSD$
-
 PORTNAME=	ess
 DISTVERSION=	18.10.2
-PORTREVISION=	3
+PORTREVISION=	17
 CATEGORIES=	math
 MASTER_SITES=	http://ess.r-project.org/downloads/ess/ \
 		http://stat.ethz.ch/ESS/downloads/ess/
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	R support for Emacsen
+WWW=		https://ess.r-project.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -34,6 +32,13 @@ post-patch:
 		 s|share/info|${INFO_PATH}|' ${WRKSRC}/Makeconf
 	@${REINPLACE_CMD} -e \
 		'/^PDFs/s|=.*|=|' ${WRKSRC}/doc/Makefile
+	@${REINPLACE_CMD} -e \
+		"s|require 'cl)|require 'cl-lib)|g" \
+		${WRKSRC}/lisp/julia-mode.el
+	@${REINPLACE_CMD} -e \
+		"/require 'cl)/d" \
+		${WRKSRC}/lisp/ess-tracebug.el \
+		${WRKSRC}/lisp/ess.el \
 
 post-install:
 	@${CP} ${WRKSRC}/lisp/*.el ${STAGEDIR}${PREFIX}/share/emacs/site-lisp/ess/

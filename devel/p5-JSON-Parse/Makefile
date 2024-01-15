@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	JSON-Parse
-PORTVERSION=	0.57
+PORTVERSION=	0.62
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Read JSON into a Perl variable
+WWW=		https://metacpan.org/release/JSON-Parse
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

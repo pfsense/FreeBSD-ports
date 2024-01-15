@@ -1,23 +1,24 @@
-# Created by: kamikaze@bsdforen.de
-# $FreeBSD$
-
 PORTNAME=	libbluray
-DISTVERSION=	1.2.1
+DISTVERSION=	1.3.4
 PORTEPOCH=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	https://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION}/
+MASTER_SITES=	https://get.videolan.org/${PORTNAME}/${DISTVERSION}/ \
+		https://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	se@FreeBSD.org
 COMMENT=	Blu-Ray discs playback library for media players
+WWW=		https://www.videolan.org/developers/libbluray.html
 
 LICENSE=	LGPL21
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gnome libtool pathfix pkgconfig tar:bzip2
+USES=		cpe gnome libtool pathfix pkgconfig tar:bzip2
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	videolan
 
 GNU_CONFIGURE=	yes
 
@@ -44,11 +45,9 @@ JAVA_VERSION=	8
 JAVA_BUILD=	yes
 MAKE_ENV=	JAVA_HOME=${JAVA_HOME} \
 		PATH=${JAVA_HOME}/bin:${PATH}
-
 .endif
 
-post-patch:
-	@${RLN} ${WRKSRC}/jni/linux ${WRKSRC}/jni/freebsd
+pre-build:
 	@${REINPLACE_CMD} -e 's|/usr/share|${LOCALBASE}/share|' ${WRKSRC}/src/libbluray/bdj/bdj.c
 
 .include <bsd.port.mk>

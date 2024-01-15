@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	1.4
 CATEGORIES=	hebrew textproc
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Hebrew hunspell dictionaries
+WWW=		http://hspell.ivrix.org.il/
 
 LICENSE=	AGPLv3
 
@@ -21,8 +20,8 @@ USE_PERL5=	build
 USES=		gmake iconv:build perl5 shebangfix
 SHEBANG_FILES=	${WRKSRC}/pmerge
 
-PLIST_FILES=	%%DATADIR%%/he.aff \
-		%%DATADIR%%/he.dic
+PLIST_FILES=	${DATADIR}/he.aff \
+		${DATADIR}/he.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

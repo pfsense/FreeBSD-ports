@@ -1,6 +1,3 @@
-# Created by: Eugene Grosbein <eugen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hping3
 PORTVERSION=	20051105
 CATEGORIES=	net security
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.hping.org/ \
 
 MAINTAINER=	eugen@FreeBSD.org
 COMMENT=	Network auditing tool
+WWW=		http://www.hping.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

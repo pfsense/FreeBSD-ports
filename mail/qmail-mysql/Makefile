@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	qmail
 PORTVERSION=	${QMAIL_VERSION}.${MYSQL_PATCH_VERSION}
 PORTREVISION=	3
@@ -8,8 +5,9 @@ CATEGORIES=	mail
 PKGNAMESUFFIX=	-mysql
 
 COMMENT=	Secure, reliable, and fast MTA for UNIX systems with MySQL support
+WWW=		https://iain.cx/unix/qmail/mysql.php
 
-CONFLICTS=	*qmail-[0-9]* qmail-ldap-[0-9]* qmail-spamcontrol-[0-9]* *qmail-tls-[0-9]*
+CONFLICTS=	*qmail qmail-ldap qmail-spamcontrol *qmail-tls
 
 MYSQL_PATCH_VERSION=	1.1.15
 

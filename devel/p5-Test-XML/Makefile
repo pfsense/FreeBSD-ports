@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-XML
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Compare XML in perl tests
+WWW=		https://metacpan.org/release/Test-XML
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-SemanticDiff>=0:textproc/p5-XML-SemanticDiff \

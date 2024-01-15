@@ -1,13 +1,11 @@
-# Created by: Dreamcat4 <dreamcat4@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	dtv-scan-tables
-PORTVERSION=	20200902
+PORTVERSION=	20221125
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/decke
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	Digital TV scan tables from linuxtv.org
+WWW=		https://linuxtv.org/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi

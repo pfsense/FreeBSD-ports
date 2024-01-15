@@ -1,12 +1,11 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	neofetch
 DISTVERSION=	7.1.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Fast, highly customizable system info script
+WWW=		https://github.com/dylanaraps/neofetch
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

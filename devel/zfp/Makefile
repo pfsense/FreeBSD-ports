@@ -1,18 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	zfp
-DISTVERSION=	0.5.5
+DISTVERSION=	1.0.0
 CATEGORIES=	devel science
-MASTER_SITES=	https://computation.llnl.gov/projects/floating-point-compression/download/
+MASTER_SITES=	https://github.com/LLNL/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	High throughput library for compressed floating-point arrays
+WWW=		https://computing.llnl.gov/projects/zfp
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake
+USES=		cmake:testing
 USE_LDCONFIG=	yes
+
+.if !exists(/usr/include/omp.h)
+CMAKE_OFF=	ZFP_WITH_OPENMP
+.endif
 
 LDFLAGS+=	-lm
 

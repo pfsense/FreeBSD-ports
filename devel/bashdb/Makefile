@@ -1,17 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	bashdb
-DISTVERSION=	5.0-1.1.0
+DISTVERSION=	5.0-1.1.2
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Source-code debugger for bash
+WWW=		https://bashdb.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN=		fails to configure
 
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
@@ -19,7 +16,10 @@ RUN_DEPENDS=	bash:shells/bash
 USES=		gmake python shebangfix
 
 SHEBANG_FILES=	lib/term-highlight.py
+
 GNU_CONFIGURE=	yes
+CONFIGURE_SHELL=	${LOCALBASE}/bin/bash
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

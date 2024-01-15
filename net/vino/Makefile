@@ -1,14 +1,13 @@
-# Created by: Tom McLaughlin <tmclaugh@sdf.lonestar.org>
-# $FreeBSD$
-
 PORTNAME=	vino
 PORTVERSION=	3.22.0
+PORTREVISION=	3
 CATEGORIES=	net gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	VNC server that allows for remote access to your GNOME desktop
+WWW=		https://wiki.gnome.org/Projects/Vino
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -32,7 +31,6 @@ CPE_VENDOR=	david_king
 USE_GNOME=	cairo gtk30 intlhack
 USE_XORG=	ice x11 xdamage xext xfixes sm xtst
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 CPPFLAGS+=	-Wno-format-nonliteral
 GLIB_SCHEMAS=	org.gnome.Vino.enums.xml org.gnome.Vino.gschema.xml
 

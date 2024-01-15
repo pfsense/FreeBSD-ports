@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Term-ANSIScreen
 PORTVERSION=	1.50
 PORTREVISION=	1
@@ -11,8 +8,13 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Term::ANSIColor clone with screen mode support
+WWW=		https://metacpan.org/release/Term-ANSIScreen
 
-USE_PERL5=	configure
+LICENSE=	CC0-1.0
+
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

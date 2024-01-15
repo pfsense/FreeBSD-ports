@@ -1,6 +1,3 @@
-# Created by: Aaron Landwehr <aaron@snaphat.com>
-# $FreeBSD$
-
 PORTNAME=	usrinfo
 PORTVERSION=	.10
 CATEGORIES=	sysutils

@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	git-subrepo
-DISTVERSION=	0.4.0
+DISTVERSION=	0.4.6
 CATEGORIES=	devel
 
 MAINTAINER=	jhb@FreeBSD.org
 COMMENT=	Git command for managing subrepositories
+WWW=		https://github.com/ingydotnet/git-subrepo
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License

@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	atris
 PORTVERSION=	1.0.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sounds for Atris: Alizarin Tetris
+WWW=		https://www.wkiri.com/projects/atris/
 
 RUN_DEPENDS=	atris:games/atris
 

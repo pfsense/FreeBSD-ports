@@ -1,13 +1,12 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libdparse
-PORTVERSION=	0.11.4
+PORTVERSION=	0.20.0
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Library for lexing and parsing D source code
+WWW=		https://github.com/dlang-community/libdparse
 
 LICENSE=	BSL
 
@@ -22,12 +21,10 @@ GH_ACCOUNT=	dlang-community
 DUB_CMD=	${LOCALBASE}/bin/dub build --build=release
 D_INCLUDE_DIR=	${PREFIX}/include/d
 D_LIB_DIR=	${PREFIX}/lib/d
-
-post-patch:
-	${REINPLACE_CMD} '11,13d' ${WRKSRC}/dub.json
+DC=		${PREFIX}/bin/ldmd2
 
 do-build:
-	@cd ${WRKSRC} && ${DUB_CMD}
+	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

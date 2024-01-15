@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	vcglib
 PORTVERSION=	2020.09
 CATEGORIES=	devel
 
 MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Library for manipulation of triangle meshes
+WWW=		https://github.com/cnr-isti-vclab/vcglib
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -16,6 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	cnr-isti-vclab
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}

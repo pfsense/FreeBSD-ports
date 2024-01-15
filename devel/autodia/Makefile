@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	autodia
 PORTVERSION=	2.14
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	Autodia-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automatic Dia XML - from Source Code and Data
+WWW=		https://metacpan.org/release/Autodia
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

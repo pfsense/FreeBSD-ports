@@ -1,40 +1,43 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	websh
 PORTVERSION=	3.6.0b5
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	www tcl
-MASTER_SITES=	APACHE/tcl/${PORTNAME}/source
+MASTER_SITES=	https://archive.apache.org/dist/tcl/${PORTNAME}/source/
 EXTRACT_SUFX=	-src.tar.gz
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Embeds a TCL8 interpreter in the Apache server
+WWW=		https://tcl.apache.org/websh/
 
-MAKE_JOBS_UNSAFE=	yes
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC:H:H}/LICENSE
 
-TCL_DVER=	${TCL_VER:S/.//}
-
-USES=		apache:2.2+ autoreconf gmake tcl:tea
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src/unix
+USES=		apache autoreconf gmake tcl:tea
 USE_LDCONFIG=	yes
-SUB_FILES=	httpd.conf pkgIndex.tcl pkg-message
-SUB_LIST+=	TCL_DVER=${TCL_DVER} WS_VER=${PORTVERSION}
-SUB_LIST+=	APACHEETCDIR=${APACHEETCDIR} APACHEMODDIR=${APACHEMODDIR}
-PLIST_SUB+=	TCL_DVER=${TCL_DVER}
-PLIST_SUB+=	NOMINORVERSION=${TCL_VER:C/8.[345]//:C/^..*/"@comment "/}
-
-PORTDOCS=	*
-PORTEXAMPLES=	*
 
 CONFIGURE_ARGS+=--with-httpdinclude=`apxs -q includedir`
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+MAKE_JOBS_UNSAFE=	yes
 
 CPPFLAGS+=	-I ${LOCALBASE}/include/apr-1
 .if !defined(NO_WERROR) && ${CC} == "cc" || ${CC:T:Mgcc*} != ""
 CPPFLAGS+=	-Wall -Werror
 .endif
+
+SUB_FILES=	httpd.conf pkgIndex.tcl pkg-message
+SUB_LIST+=	LIBSUF=${LIBSUF} WS_VER=${PORTVERSION}
+SUB_LIST+=	APACHEETCDIR=${APACHEETCDIR} APACHEMODDIR=${APACHEMODDIR}
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src/unix
+
+PLIST_SUB+=	LIBSUF=${LIBSUF}
+PLIST_SUB+=	NOMINORVERSION=${TCL_VER:C/8.[345]//:C/^..*/"@comment "/}
+PORTDOCS=	*
+PORTEXAMPLES=	*
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+LIBSUF=		${PORTVERSION:S/.//g}
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/usr/local/websh,${PREFIX},' \
@@ -45,7 +48,7 @@ post-patch:
 	done
 	${REINPLACE_CMD} -e 's,\.html,.whtml,g' ${WRKSRC:H:H}/doc/mod_websh/htdocs/*.ws3
 	${REINPLACE_CMD} -e 's|__declspec(dllexport)|DLLEXPORT|' \
-		${WRKSRC}/../generic/*.[ch]
+		${WRKSRC:H}/generic/*.[ch]
 
 post-configure:
 	# Remove the "STUBS" and the PACKAGE_* defines, which may conflict
@@ -53,7 +56,7 @@ post-configure:
 	${REINPLACE_CMD} -e 's,tclstub,tcl,'	\
 		-e 's,-DPACKAGE_[^=]*=."[^"]*",,g' ${WRKSRC}/Makefile
 
-post-build test:
+test:
 	${SETENV} HOME=${WRKDIR} ${MAKE_CMD} -C ${WRKSRC} test | ${AWK} '\
 		/Failed/ && $$NF {failed=1}	\
 		END {exit failed}	\
@@ -68,18 +71,18 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}
 	${INSTALL_LIB} ${WRKSRC}/mod_websh${PORTVERSION}.so \
 		${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_websh.so
-	if [ -f ${WRKSRC}/libwebsh${TCL_DVER}.so.1.0 ]; then	\
-		${INSTALL_LIB} ${WRKSRC}/libwebsh${TCL_DVER}.so.1.0 \
+	if [ -f ${WRKSRC}/libwebsh${LIBSUF}.so.1.0 ]; then	\
+		${INSTALL_LIB} ${WRKSRC}/libwebsh${LIBSUF}.so.1.0 \
 			${STAGEDIR}${PREFIX}/lib;	\
-		${LN} -sf libwebsh${TCL_DVER}.so.1.0	\
-			${STAGEDIR}${PREFIX}/lib/libwebsh${TCL_DVER}.so.1;	\
-		${LN} -sf libwebsh${TCL_DVER}.so.1.0	\
-			${STAGEDIR}${PREFIX}/lib/libwebsh${TCL_DVER}.so;	\
+		${LN} -sf libwebsh${LIBSUF}.so.1.0	\
+			${STAGEDIR}${PREFIX}/lib/libwebsh${LIBSUF}.so.1;	\
+		${LN} -sf libwebsh${LIBSUF}.so.1.0	\
+			${STAGEDIR}${PREFIX}/lib/libwebsh${LIBSUF}.so;	\
 	else	\
-		${INSTALL_LIB} ${WRKSRC}/libwebsh${TCL_DVER}.so.1 \
+		${INSTALL_LIB} ${WRKSRC}/libwebsh${LIBSUF}.so.1 \
 			${STAGEDIR}${PREFIX}/lib;	\
-		${LN} -sf libwebsh${TCL_DVER}.so.1	\
-			${STAGEDIR}${PREFIX}/lib/libwebsh${TCL_DVER}.so;	\
+		${LN} -sf libwebsh${LIBSUF}.so.1	\
+			${STAGEDIR}${PREFIX}/lib/libwebsh${LIBSUF}.so;	\
 	fi
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC:H:H}/doc/mod_websh/htdocs/*.ws3	\

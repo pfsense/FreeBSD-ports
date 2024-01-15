@@ -1,14 +1,12 @@
-# Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTTP-Date
-PORTVERSION=	6.05
+PORTVERSION=	6.06
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Conversion routines for the HTTP protocol date formats
+WWW=		https://metacpan.org/release/HTTP-Date
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,11 +19,4 @@ USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 503000
-BUILD_DEPENDS+=	p5-Time-Local>=1.28:devel/p5-Time-Local
-RUN_DEPENDS+=	p5-Time-Local>=1.28:devel/p5-Time-Local
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

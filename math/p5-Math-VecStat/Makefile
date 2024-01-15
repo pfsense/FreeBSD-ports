@@ -1,6 +1,3 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-VecStat
 PORTVERSION=	0.08
 PORTREVISION=	1

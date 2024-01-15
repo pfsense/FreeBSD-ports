@@ -806,7 +806,6 @@ share/locale/be@latin/LC_MESSAGES/totem.mo
 share/locale/bg/LC_MESSAGES/totem.mo
 share/locale/bn/LC_MESSAGES/totem.mo
 share/locale/bn_IN/LC_MESSAGES/totem.mo
-share/locale/br/LC_MESSAGES/totem.mo
 share/locale/bs/LC_MESSAGES/totem.mo
 share/locale/ca/LC_MESSAGES/totem.mo
 share/locale/ca@valencia/LC_MESSAGES/totem.mo
@@ -842,6 +841,7 @@ share/locale/is/LC_MESSAGES/totem.mo
 share/locale/it/LC_MESSAGES/totem.mo
 share/locale/ja/LC_MESSAGES/totem.mo
 share/locale/ka/LC_MESSAGES/totem.mo
+share/locale/kab/LC_MESSAGES/totem.mo
 share/locale/kk/LC_MESSAGES/totem.mo
 share/locale/km/LC_MESSAGES/totem.mo
 share/locale/kn/LC_MESSAGES/totem.mo

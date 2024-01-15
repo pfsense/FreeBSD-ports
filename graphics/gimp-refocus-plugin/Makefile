@@ -1,9 +1,6 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	refocus
 PORTVERSION=	0.9.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	gimp-
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	-plugin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GIMP plugin to "refocus" images through FIR Wiener filtering
+WWW=		https://refocus.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

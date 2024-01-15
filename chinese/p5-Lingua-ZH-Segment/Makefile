@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Lingua-ZH-Segment
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Chinese Text Segmentation
+WWW=		https://metacpan.org/release/Lingua-ZH-Segment
 
 USES=		perl5
 USE_PERL5=	configure

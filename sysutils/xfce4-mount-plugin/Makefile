@@ -1,26 +1,25 @@
-# Created by: Olivier Duchateau <duchateau.olivier@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	xfce4-mount-plugin
-PORTVERSION=	1.1.5
-PORTREVISION=	1
+PORTVERSION=	1.1.6
+PORTREVISION=	2
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Mount and umount utility for the Xfce4 panel
+WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-mount-plugin
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
+
 USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
 		tar:bzip2 xfce
-USE_GNOME=	cairo gtk30 intltool
+USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 USE_LDCONFIG=	yes
-USE_XFCE=	panel
+USE_XFCE=	libmenu panel
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=		NLS

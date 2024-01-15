@@ -1,6 +1,3 @@
-# Created by: Tim Vanderhoek <hoek@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cc65
 PORTVERSION=	2.19
 DISTVERSIONPREFIX=	V
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Cross-compiler for 6502-based systems
+WWW=		https://cc65.github.io/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE

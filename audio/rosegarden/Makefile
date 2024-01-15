@@ -1,14 +1,12 @@
-# Created by: shanee@augusta.de
-# $FreeBSD$
-
 PORTNAME=	rosegarden
-PORTVERSION=	20.06
+DISTVERSION=	22.12.1
 PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	SF
+MASTER_SITES=	https://sourceforge.net/projects/${PORTNAME}/files/${PORTNAME}/${DISTVERSION:R}/
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	General purpose music editor and sequencer suite
+WWW=		https://www.rosegardenmusic.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -32,14 +30,12 @@ USES=		alias cmake compiler:c++11-lib desktop-file-utils \
 		localbase:ldflags pkgconfig shared-mime-info tar:bzip2 \
 		qt:5 xorg
 USE_QT=		core gui network printsupport testlib widgets xml \
-		buildtools_build linguisttools_build qmake_build
+		buildtools:build linguisttools:build qmake:build
 USE_XORG=	ice sm x11 xext
 
 OPTIONS_DEFINE=		LIRC
 
 LIRC_LIB_DEPENDS=	liblirc_client.so:comms/lirc
 LIRC_CMAKE_ON=		-DENABLE_LIRC:BOOL=ON
-
-CMAKE_ON=		USE_QT5
 
 .include <bsd.port.mk>

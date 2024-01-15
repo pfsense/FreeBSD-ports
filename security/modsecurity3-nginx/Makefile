@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	modsecurity3-nginx
-DISTVERSION=	1.0.1
-PORTREVISION=	1
+DISTVERSION=	1.0.3
+PORTREVISION=	0
 CATEGORIES=	security www
 MASTER_SITES=	http://nginx.org/download/
 DISTFILES=	${_NGINX_DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Instruction detection and prevention engine / nginx Wrapper
+WWW=		https://github.com/SpiderLabs/ModSecurity-nginx
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -82,7 +81,7 @@ _NGINX_TMPDIR=		${_NGINX_VARDIR}/tmp/nginx
 _NGINX_VARDIR=	/var
 
 _NGINX_PORTNAME=	nginx
-_NGINX_PORTVERSION=	1.18.0
+_NGINX_PORTVERSION=	1.22.0
 _NGINX_DISTNAME=	${_NGINX_PORTNAME}-${_NGINX_PORTVERSION}
 
 do-install:

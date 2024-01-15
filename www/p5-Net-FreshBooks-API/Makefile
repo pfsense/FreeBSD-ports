@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-FreshBooks-API
 PORTVERSION=	0.24
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy OO access to the FreshBooks.com API
+WWW=		https://metacpan.org/release/Net-FreshBooks-API
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

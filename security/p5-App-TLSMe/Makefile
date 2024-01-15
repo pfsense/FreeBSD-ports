@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	App-TLSMe
 PORTVERSION=	0.110000
 PORTREVISION=	1
@@ -8,8 +6,9 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/0000$//}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for TLS/SSL tunnel
+WWW=		https://metacpan.org/release/App-TLSMe
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

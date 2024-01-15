@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	htmltolatex
 PORTVERSION=	1
 PORTREVISION=	25

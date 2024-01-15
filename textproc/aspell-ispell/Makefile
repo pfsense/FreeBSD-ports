@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aspell
 PORTVERSION=	0.60.8
 CATEGORIES=	textproc
@@ -8,10 +6,14 @@ PKGNAMESUFFIX=	-ispell
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Ispell compatibility script for aspell
+WWW=		http://aspell.net/
 
 LICENSE=	LGPL21
 
 RUN_DEPENDS=	aspell:textproc/aspell
+
+USES=		cpe
+CPE_VENDOR=	gnu
 
 NO_ARCH=	yes
 NO_BUILD=	yes

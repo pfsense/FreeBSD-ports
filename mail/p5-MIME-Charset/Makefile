@@ -1,6 +1,3 @@
-# Created by: Olivier Girard <Olivier.Girard@univ-angers.fr>
-# $FreeBSD$
-
 PORTNAME=	MIME-Charset
 PORTVERSION=	1.012.2
 CATEGORIES=	mail perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 # blanket update approval granted, see pr136540
 MAINTAINER=	Olivier.Girard@univ-angers.fr
 COMMENT=	Charset Informations for MIME
+WWW=		https://metacpan.org/release/MIME-Charset
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xfsm
 PORTVERSION=	1.99
 PORTREVISION=	1

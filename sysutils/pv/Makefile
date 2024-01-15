@@ -1,24 +1,24 @@
-# Created by: Daniel Roethlisberger <daniel@roe.ch>
-# $FreeBSD$
-
 PORTNAME=	pv
-PORTVERSION=	1.6.6
+PORTVERSION=	1.7.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.ivarch.com/programs/sources/
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Pipe throughput monitor
+WWW=		https://www.ivarch.com/programs/pv.shtml
 
 LICENSE=	ART20
 
-CONFLICTS=	waon-[0-9]*
-
 USES=	tar:bzip2 gmake
+
+CONFLICTS=	waon
+
 GNU_CONFIGURE=	yes
+MAKE_ENV+=	LD=${LD}
 
 PLIST_FILES=	bin/pv man/man1/pv.1.gz
 
-PORTDOCS=	README INSTALL NEWS PACKAGE TODO VERSION release-checklist
+PORTDOCS=	README.md INSTALL NEWS.md TODO.md
 
 OPTIONS_DEFINE=	DOCS NLS LFS
 OPTIONS_DEFAULT=	LFS
@@ -27,7 +27,7 @@ NLS_CONFIGURE_OFF=	--disable-nls
 LFS_CONFIGURE_ENABLE=	lfs
 
 post-patch:
-	@${CP} ${WRKSRC}/README ${WRKSRC}/doc
+	@${CP} ${WRKSRC}/README.md ${WRKSRC}/doc
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pv

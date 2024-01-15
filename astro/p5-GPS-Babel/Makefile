@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	GPS-Babel
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to gpsbabel
+WWW=		https://metacpan.org/release/GPS-Babel
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

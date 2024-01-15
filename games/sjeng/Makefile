@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	sjeng
 PORTVERSION=	11.2
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	Sjeng-Free-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Chess engine supporting chess variations
+WWW=		https://sjeng.org/indexold.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

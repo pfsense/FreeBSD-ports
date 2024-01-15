@@ -1,14 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	xen
-PORTVERSION=	4.14.0
-PORTREVISION=	0
-CATEGORIES=	emulators
-MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
 PKGNAMESUFFIX=	-kernel
+DISTVERSION=	4.18.0.20231212
+CATEGORIES=	emulators
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	xen-project
+GL_TAGNAME=	1792d1723b7fb45a20b145d2de4d233913b22c09
 
 MAINTAINER=	royger@FreeBSD.org
 COMMENT=	Hypervisor using a microkernel design
+WWW=		https://www.xenproject.org/
 
 LICENSE=	GPLv2
 
@@ -23,10 +24,9 @@ MAKE_ARGS=	clang=y PYTHON=${PYTHON_CMD} ARCH=x86_64
 NO_MTREE=	yes
 STRIP=		#
 PLIST_FILES=	/boot/xen \
-		lib/debug/boot/xen.debug
-
-# Fix build with clang 11
-EXTRA_PATCHES+= ${PATCHDIR}/0001-x86-use-constant-flags-for-section-.init.rodata.patch:-p1
+		/boot/xen-debug \
+		lib/debug/boot/xen.debug \
+		lib/debug/boot/xen-debug.debug
 
 .include <bsd.port.options.mk>
 
@@ -34,13 +34,15 @@ EXTRA_PATCHES+= ${PATCHDIR}/0001-x86-use-constant-flags-for-section-.init.rodata
 IGNORE=		only supported on FreeBSD
 .endif
 
-.if ${OSVERSION} < 1200074
-IGNORE=		only supported on FreeBSD 12.0 or newer
-.endif
-
 # The ports native 'build' target cannot be used because it sets
 # CFLAGS, and that breaks the Xen build system.
+#
+# Build both a production and a debug hypervisor.
 do-build:
+	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} build-xen ${MAKE_ARGS} debug=y
+	cp ${WRKSRC}/xen/xen ${WRKSRC}/xen/xen-debug
+	cp ${WRKSRC}/xen/xen-syms ${WRKSRC}/xen/xen-debug-syms
+	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} clean-xen ${MAKE_ARGS}
 	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} build-xen ${MAKE_ARGS}
 
 do-install:
@@ -48,5 +50,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/debug/boot/
 	${INSTALL_PROGRAM} ${WRKSRC}/xen/xen ${STAGEDIR}/boot
 	${INSTALL_DATA} ${WRKSRC}/xen/xen-syms ${STAGEDIR}${PREFIX}/lib/debug/boot/xen.debug
+	${INSTALL_PROGRAM} ${WRKSRC}/xen/xen-debug ${STAGEDIR}/boot
+	${INSTALL_DATA} ${WRKSRC}/xen/xen-debug-syms ${STAGEDIR}${PREFIX}/lib/debug/boot/xen-debug.debug
 
 .include <bsd.port.mk>

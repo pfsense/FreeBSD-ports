@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Math-Bezier-Convert
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert cubic and quadratic Bezier each other
+WWW=		https://metacpan.org/release/Math-Bezier-Convert
 
 USES=		perl5 dos2unix
 USE_PERL5=	configure

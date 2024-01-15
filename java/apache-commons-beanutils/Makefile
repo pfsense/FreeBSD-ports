@@ -1,6 +1,3 @@
-# Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	commons-beanutils
 PORTVERSION=	1.9.4
 CATEGORIES=	java devel
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	JavaBeans utility library
+WWW=		https://commons.apache.org/proper/commons-beanutils/
 
 LICENSE=	APACHE20
 
@@ -25,6 +23,7 @@ DOS2UNIX_FILES=	build.xml
 ALL_TARGET=	dist
 MAKE_ARGS+=	-Dcommons-collections.jar=${JAVALIBDIR}/commons-collections.jar \
 		-Dcommons-logging.jar=${JAVALIBDIR}/commons-logging.jar
+NO_ARCH=	yes
 
 JARFILE=	${PORTNAME}.jar
 PLIST_FILES=	${JAVAJARDIR}/${JARFILE}

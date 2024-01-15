@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	shell-toolbox
 DISTVERSION=	20190528
 CATEGORIES=	devel
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Collection of shell script development tools
+WWW=		https://github.com/kusalananda/shell-toolbox
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

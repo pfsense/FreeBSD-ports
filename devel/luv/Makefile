@@ -1,48 +1,35 @@
-# $FreeBSD$
-
 PORTNAME=	luv
-DISTVERSION=	1.30.1-1
-PORTREVISION=	1
+DISTVERSION=	1.47.0-0
 CATEGORIES=	devel
 
-MAINTAINER=	checo1705@secmail.pro
+MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	libuv bindings for lua
+WWW=		https://github.com/luvit/luv
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libuv.so:devel/libuv
 
-USES=		cmake
+USES=		cmake luajit
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	luvit keplerproject:compat
 GH_PROJECT=	luv lua-compat-5.3:compat
-GH_TAGNAME=	bc91f40:compat
+GH_TAGNAME=	e245d3a:compat
 GH_SUBDIR=	deps/lua-compat-5.3:compat
 
-OPTIONS_DEFINE=		DOCS EXAMPLES LUAJIT
-OPTIONS_DEFAULT_amd64=	LUAJIT
-OPTIONS_DEFAULT_i386=	LUAJIT
-OPTIONS_DEFAULT_powerpc64=	LUAJIT
-
-LUAJIT_DESC=		Use LuaJIT (instead of just Lua)
-LUAJIT_LIB_DEPENDS=	${LUAJIT_LIB_DEPENDS_${ARCH}}
-LUAJIT_LIB_DEPENDS_amd64=	libluajit-5.1.so:lang/luajit
-LUAJIT_LIB_DEPENDS_i386=	libluajit-5.1.so:lang/luajit
-LUAJIT_LIB_DEPENDS_powerpc64=	libluajit-5.1.so:lang/luajit-openresty
-LUAJIT_CMAKE_ON=	-DWITH_LUA_ENGINE=LuaJIT
-LUAJIT_USES_OFF=	lua
-LUAJIT_CMAKE_OFF=	-DWITH_LUA_ENGINE=Lua
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 CMAKE_ON=	BUILD_SHARED_LIBS WITH_SHARED_LIBUV
 CMAKE_OFF=	BUILD_MODULE
 CMAKE_ARGS=	-DLUA_BUILD_TYPE=System \
-		-DLUA_COMPAT53_DIR=deps/lua-compat-5.3
+		-DLUA_COMPAT53_DIR=deps/lua-compat-5.3 \
+		-DWITH_LUA_ENGINE=LuaJIT
 
 PLIST_FILES=	lib/libluv.so \
 		lib/libluv.so.1 \
-		lib/libluv.so.1.30.1 \
+		lib/libluv.so.1.47.0 \
 		libdata/pkgconfig/libluv.pc \
 		include/luv/util.h \
 		include/luv/luv.h \

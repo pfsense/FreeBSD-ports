@@ -1,14 +1,13 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	avahi
 PORTVERSION=	0.8
+PORTREVISION=	1
 CATEGORIES?=	net dns
 MASTER_SITES=	http://www.avahi.org/download/
 PKGNAMESUFFIX?=	-app
 
 MAINTAINER?=	desktop@FreeBSD.org
 COMMENT?=	Service discovery on a local network
+WWW=		https://www.avahi.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -26,7 +25,7 @@ LIB_DEPENDS?=	libexpat.so:textproc/expat2 \
 USERS?=		${PORTNAME}
 GROUPS?=	${USERS}
 
-USES+=		alias gettext gmake gnome libtool pathfix pkgconfig
+USES+=		alias cpe gettext gmake gnome libtool pathfix pkgconfig
 USE_GNOME+=	glib20 intltool introspection:build
 USE_GNOME_SUBR=	yes
 USE_LDCONFIG=	yes
@@ -47,7 +46,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 INSTALL_TARGET=	install-strip
 
 .if ${AVAHI_SLAVE} == no
-CONFLICTS=	howl-[0-9]*
+CONFLICTS=	howl
 
 DAEMON_CONFIG_FILES=	hosts avahi-daemon.conf
 .endif

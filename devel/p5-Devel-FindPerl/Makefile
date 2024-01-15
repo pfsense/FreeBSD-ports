@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-FindPerl
-PORTVERSION=	0.015
+PORTVERSION=	0.016
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Find the path to your perl
+WWW=		https://metacpan.org/release/Devel-FindPerl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

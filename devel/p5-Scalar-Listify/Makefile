@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Scalar-Listify
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Poduces an array(ref)? from a scalar value or array ref
+WWW=		https://metacpan.org/release/Scalar-Listify
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

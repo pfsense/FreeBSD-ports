@@ -1,6 +1,3 @@
-# Created by: Mita Yoshio <mita@jp.FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kaname12
 PORTVERSION=	1.1
 PORTREVISION=	3
@@ -28,8 +25,6 @@ PORTDOCS=	readme readme.kaname_bdf kaname.doc \
 		readme.knm gijutsu-siryou.doc
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias ${STAGEDIR}${FONTSDIR}

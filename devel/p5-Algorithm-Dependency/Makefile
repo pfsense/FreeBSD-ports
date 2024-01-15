@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Algorithm-Dependency
 PORTVERSION=	1.112
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base class for implementing various dependency trees
+WWW=		https://metacpan.org/release/Algorithm-Dependency
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

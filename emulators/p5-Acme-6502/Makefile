@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Acme-6502
 PORTVERSION=	0.77
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Pure Perl 65C02 simulator
+WWW=		https://metacpan.org/release/Acme-6502
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	pspg
-DISTVERSION=	3.1.5
+DISTVERSION=	5.7.4
 CATEGORIES=	databases
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Tabular data pager designed to be used with psql
+WWW=		https://github.com/okbob/pspg
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf compiler:c11 gmake localbase ncurses pkgconfig \
+USES=		autoreconf compiler:c11 gmake localbase ncurses:port pkgconfig \
 		readline
 
 USE_GITHUB=	yes
@@ -20,7 +19,7 @@ GNU_CONFIGURE=	yes
 
 SUB_FILES=	pkg-message
 
-PLIST_FILES=	bin/pspg
+PLIST_FILES=	bin/pspg man/man1/pspg.1.gz
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=		DOCS INOTIFY PGSQL
@@ -40,6 +39,7 @@ PGSQL_VARS=		WANT_PGSQL=client
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pspg
+	${INSTALL_MAN} ${WRKSRC}/pspg.1 ${STAGEDIR}${PREFIX}/man/man1/
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,6 +1,3 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gradle
 PORTVERSION=	5.0
 CATEGORIES=	devel java
@@ -10,12 +7,13 @@ PKGNAMESUFFIX=	5
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Project automation tool
+WWW=		https://www.gradle.org/
 
 LICENSE=	APACHE20
 
 NO_ARCH=	yes
-USES=		zip
-JAVA_VERSION=	1.7+
+USES=		cpe zip
+JAVA_VERSION=	8+
 USE_JAVA=	yes
 NO_BUILD=	yes
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}

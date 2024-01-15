@@ -1,16 +1,13 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/textproc/libxml++26/Makefile,v 1.43 2011/04/18 19:58:29 kwm Exp $
-
 PORTNAME=	libxml++
 PORTVERSION=	2.40.1
-PORTREVISION?=	0
+PORTREVISION?=	2
 PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	GNOME
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	XML API for C++
+WWW=		https://libxmlplusplus.sourceforge.net/
 
 USES+=		tar:xz compiler:c++11-lang
 USE_CXXSTD=	c++11

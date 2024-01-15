@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	IO-Socket-Timeout
 PORTVERSION=	0.32
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	IO::Socket with read/write timeout
+WWW=		https://metacpan.org/release/IO-Socket-Timeout
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

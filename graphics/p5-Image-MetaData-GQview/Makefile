@@ -1,22 +1,20 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Image-MetaData-GQview
-PORTVERSION=	2.0.0
+PORTVERSION=	2.0.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl extension for GQview image metadata
+WWW=		https://metacpan.org/release/Image-MetaData-GQview
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xmodem
 DISTVERSION=	0.4.5
 CATEGORIES=	comms python
@@ -7,6 +5,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	loader@FreeBSD.org
 COMMENT=	XMODEM protocol implementation
+WWW=		https://github.com/tehmaze/xmodem
 
 LICENSE=	MIT
 
@@ -15,7 +14,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR} \
 		lrz:comms/lrzsz
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
 

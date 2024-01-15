@@ -1,10 +1,11 @@
---- setup.py.orig	2018-10-25 00:05:26 UTC
+--- setup.py.orig	2023-04-17 11:03:59 UTC
 +++ setup.py
-@@ -82,6 +82,6 @@ setup(
-     cmdclass=cmdclass,
+@@ -112,7 +112,7 @@ setup(
      command_options=command_options,
-     install_requires=[
--        'msgpack-python>=0.4',
-+        'msgpack>=0.4',
-     ]
+     install_requires=get_dependencies('requirements.txt'),
+     setup_requires=[
+-        'setuptools_scm==6.4.2',
++        'setuptools_scm>=6.4.2',
+     ],
+     python_requires='>=3.6',
  )

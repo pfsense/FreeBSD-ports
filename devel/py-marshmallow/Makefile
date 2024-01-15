@@ -1,24 +1,24 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	marshmallow
-PORTVERSION=	3.10.0
+PORTVERSION=	3.20.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simplified object serialization for Python
+WWW=		https://marshmallow.readthedocs.io/en/stable/ \
+		https://github.com/marshmallow-code/marshmallow
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=2.7.0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}simplejson>=0:devel/py-simplejson@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}packaging>=17.0:devel/py-packaging@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	marshmallow_project
 
 .include <bsd.port.mk>

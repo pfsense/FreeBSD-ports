@@ -1,6 +1,3 @@
-# Created by: onatan@gmail.com
-# $FreeBSD$
-
 PORTNAME=	ADMsnmp
 PORTVERSION=	0.1
 CATEGORIES=	security

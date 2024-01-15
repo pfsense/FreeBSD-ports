@@ -1,14 +1,12 @@
-# Created by: Harold Gutch <logix@foobar.franken.de>
-# $FreeBSD$
-
 PORTNAME=	vcdimager
 PORTVERSION=	2.0.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	GNU
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	GNU VCDImager/VCDRip -- The GNU VideoCD Image Maker/Ripping Tool
+WWW=		https://www.gnu.org/software/vcdimager/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

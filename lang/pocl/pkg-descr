@@ -1,8 +1,12 @@
+[
+{	type: install
+	message: <<EOM
 Portable OpenCL (pocl)
 ----------------------
 
-Portable OpenCL aims to be an efficient open source (MIT-licensed)
-implementation of the OpenCL 1.2 standard.
+Portable OpenCL (>= 3.0) aims to be an efficient open source
+(MIT-licensed) implementation of the OpenCL 2.X standard with
+adaptions of OpenCL 3.0.
 
 In addition to producing an easily portable open source OpenCL
 implementation, another major goal of the project is improving
@@ -19,4 +23,6 @@ in the host-device layer. A generic multithreaded "target driver" is
 included. It allows running OpenCL applications on a host that supports
 the pthread library with multithreading at the work group granularity.
 
-WWW: http://portablecl.org/
+EOM
+}
+]

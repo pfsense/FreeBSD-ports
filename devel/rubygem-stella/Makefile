@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	stella
 PORTVERSION=	2.1.2.004
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Define realistic testplans and run them against your webapps
+WWW=		https://github.com/solutious/stella
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -25,7 +23,6 @@ RUN_DEPENDS=	rubygem-benelux>=0.6.1:devel/rubygem-benelux \
 		rubygem-yajl-ruby>=0.7.9:devel/rubygem-yajl-ruby
 
 USES=		gem shebangfix
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

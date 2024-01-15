@@ -1,6 +1,3 @@
-# Created by: Jerry A! <jerry@thehutt.org>
-# $FreeBSD$
-
 PORTNAME=	libstroke
 PORTVERSION=	0.5.1
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	http://etla.net/libstroke/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stroke translation library
+WWW=		http://www.etla.net/libstroke/
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

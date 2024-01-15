@@ -1,6 +1,3 @@
-# Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Template-Toolkit-Simple
 PORTVERSION=	0.31
 CATEGORIES=	www textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Simple Interface to Template Toolkit
+WWW=		https://metacpan.org/release/Template-Toolkit-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

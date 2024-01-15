@@ -1,13 +1,10 @@
-# Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
-
 PORTNAME=	unmakeself
 PORTVERSION=	1.1
 PORTREVISION=	1
 CATEGORIES=	archivers
 DISTFILES=
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Extract Makeself archives
 
 USES=		libarchive

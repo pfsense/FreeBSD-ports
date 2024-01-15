@@ -1,6 +1,3 @@
-# Created by: Konstantin Menshikov <kostjnspb@yandex.ru>
-# $FreeBSD$
-
 PORTNAME=	Sys-Load
 PORTVERSION=	0.2
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	kostjnspb@yandex.ru
 COMMENT=	Getting the current system load and uptime
+WWW=		https://metacpan.org/release/Sys-Load
 
 USES=		perl5
 USE_PERL5=	configure

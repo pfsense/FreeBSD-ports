@@ -1,6 +1,3 @@
-# Created by: Dario Freni <saturnero@gufi.org>
-# $FreeBSD$
-
 PORTNAME=	proxsmtp
 PORTVERSION=	1.10
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	http://thewalter.net/stef/software/proxsmtp/ \
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Flexible SMTP filter which can act also as transparent proxy
+WWW=		http://thewalter.net/stef/software/proxsmtp/
 
 LICENSE=	BSD3CLAUSE
 

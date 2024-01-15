@@ -1,27 +1,30 @@
-# Created by: Matt Dawson <matt@mattsnetwork.co.uk>
-# $FreeBSD$
-
 PORTNAME=	grig
-PORTVERSION=	0.8.1
+PORTVERSION=	0.9.0
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
-MASTER_SITES=	SF/groundstation/Grig/${PORTVERSION}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio control front-end
+WWW=		https://groundstation.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libhamlib.so:comms/hamlib
+LIB_DEPENDS=	libhamlib.so:comms/hamlib \
+			libharfbuzz.so:print/harfbuzz \
+			libfontconfig.so:x11-fonts/fontconfig \
+			libfreetype.so:print/freetype2
 
-USE_GNOME=	gtk20 intltool
+USES=		autoreconf gettext gmake gnome libtool pkgconfig
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	fillods
+GH_PROJECT=	grig
+GH_TAGNAME=	9d79adb
+
+USE_GNOME=	cairo gdkpixbuf2 gtk20 intltool
 GNU_CONFIGURE=	yes
-USES=		gettext gmake gnome pkgconfig
 
 LIBS+=		-lm
-
-post-patch:
-	@${FIND} ${WRKSRC} -name Makefile.* | ${XARGS} ${REINPLACE_CMD} -e \
-		's|-D.*_DISABLE_DEPRECATED||g'
 
 .include <bsd.port.mk>

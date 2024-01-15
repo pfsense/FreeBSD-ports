@@ -1,16 +1,13 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hedgewars
-PORTVERSION=	1.0.0
+PORTVERSION=	1.0.2
 PORTREVISION=	3
 CATEGORIES=	games
-MASTER_SITES=	http://www.hedgewars.org/download/releases/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://www.hedgewars.org/download/releases/
 DISTNAME=	${PORTNAME}-src-${DISTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Free Worms-like turn based strategy game
+WWW=		https://www.hedgewars.org
 
 LICENSE=	GPLv2 GFDL
 LICENSE_COMB=	multi
@@ -23,8 +20,8 @@ USES=		cmake:noninja desktop-file-utils fpc gl lua:51 pkgconfig qt:5 \
 USE_SDL=	sdl2 mixer2 image2 ttf2 net2
 USE_FPC=	opengl libpng rtl-objpas rtl-extra
 USE_QT=		core gui widgets network \
-		qmake_build buildtools_build \
-		linguisttools_build
+		qmake:build buildtools:build \
+		linguisttools:build
 USE_GL=		gl glu
 USE_LDCONFIG=	yes
 CMAKE_ON=	NOSERVER
@@ -38,17 +35,13 @@ PLIST_FILES=	bin/${PORTNAME} bin/hwengine \
 		lib/libphyslayer.so.1.0
 PORTDATA=	*
 
-USE_LOCALE=	en_US.UTF-8
-MAKE_ENV=	LOCALBASE="${LOCALBASE}"  # fpc issue https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=251712
-CONFIGURE_ENV=	LOCALBASE="${LOCALBASE}"  # fpc issue https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=251712
-
 OPTIONS_DEFINE=	VIDEOREC
 OPTIONS_DEFAULT=VIDEOREC
 OPTIONS_EXCLUDE_i386=	VIDEOREC  # some pascal issues preventing to use it
 
 VIDEOREC_DESC=	Enable video recording (requires ffmpeg)
 
-VIDEOREC_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+VIDEOREC_LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4
 VIDEOREC_PLIST_FILES=	lib/libavwrapper.so \
 			lib/libavwrapper.so.1.0
 VIDEOREC_CMAKE_OFF=	-DNOVIDEOREC=1
@@ -59,10 +52,16 @@ VIDEOREC_CMAKE_OFF=	-DNOVIDEOREC=1
 BUILD_DEPENDS+=	ghc:lang/ghc
 .endif
 
+post-extract:
+	# Remove included CMakeFile, which is incompatible with >= cmake-3.24
+	${RM} ${WRKSRC}/cmake_modules/CMakeSystemSpecificInformation.cmake
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/cmake_modules/*.cmake
 	@${REINPLACE_CMD} -e "s|'liblua'|'liblua-${LUA_VER}'|" ${WRKSRC}/hedgewars/LuaPas.pas
 	@${REINPLACE_CMD} -e "/linklib/ s|lua|&-${LUA_VER}|" ${WRKSRC}/hedgewars/LuaPas.pas
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${PATCH_WRKSRC}/cmake_modules/FindLIBAV.cmake
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*

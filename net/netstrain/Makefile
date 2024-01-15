@@ -1,6 +1,3 @@
-# Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	netstrain
 PORTVERSION=	3.0
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Tool to measure practical TCP throughput between two machines
+WWW=		https://netstrain.sourceforge.net/
 
 PLIST_FILES=	bin/netstrain bin/netstraind
 PORTDOCS=	README

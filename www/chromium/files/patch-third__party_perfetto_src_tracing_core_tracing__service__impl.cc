@@ -1,14 +1,12 @@
---- third_party/perfetto/src/tracing/core/tracing_service_impl.cc.orig	2021-01-18 21:31:50 UTC
+--- third_party/perfetto/src/tracing/core/tracing_service_impl.cc.orig	2023-10-11 18:22:24 UTC
 +++ third_party/perfetto/src/tracing/core/tracing_service_impl.cc
-@@ -2564,8 +2564,9 @@ bool TracingServiceImpl::SnapshotClocks(
+@@ -3213,7 +3213,8 @@ bool TracingServiceImpl::SnapshotClocks(
  
-   TracingSession::ClockSnapshotData new_snapshot_data;
- 
--#if !PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE) && \
--    !PERFETTO_BUILDFLAG(PERFETTO_OS_WIN) &&   \
-+#if !PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE) &&   \
-+    !PERFETTO_BUILDFLAG(PERFETTO_OS_WIN) &&     \
-+    !PERFETTO_BUILDFLAG(PERFETTO_OS_FREEBSD) && \
-     !PERFETTO_BUILDFLAG(PERFETTO_OS_NACL)
+ #if !PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE) && \
+     !PERFETTO_BUILDFLAG(PERFETTO_OS_WIN) &&   \
+-    !PERFETTO_BUILDFLAG(PERFETTO_OS_NACL)
++    !PERFETTO_BUILDFLAG(PERFETTO_OS_NACL) && \
++    !PERFETTO_BUILDFLAG(PERFETTO_OS_BSD)
    struct {
      clockid_t id;
+     protos::pbzero::BuiltinClock type;

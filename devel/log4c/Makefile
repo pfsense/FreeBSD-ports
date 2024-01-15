@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	log4c
 PORTVERSION=	1.2.4
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Logging for C Library
+WWW=		https://log4c.sourceforge.net/
 
 LICENSE=	LGPL21
 

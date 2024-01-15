@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	eterm-bg
 PORTVERSION=	0.9.6
 CATEGORIES=	graphics
@@ -9,6 +6,7 @@ DISTNAME=	Eterm-bg-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Image files for background of Eterm
+WWW=		http://www.eterm.org/
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

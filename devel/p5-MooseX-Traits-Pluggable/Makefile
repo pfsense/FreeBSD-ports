@@ -1,6 +1,3 @@
-# Created by: Bill Brinzer <bill.brinzer@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Traits-Pluggable
 PORTVERSION=	0.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bill.brinzer@gmail.com
 COMMENT=	Trait loading and resolution for Moose
+WWW=		https://metacpan.org/release/MooseX-Traits-Pluggable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -24,5 +22,7 @@ TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

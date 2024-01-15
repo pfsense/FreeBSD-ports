@@ -1,39 +1,39 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	aisleriot
-PORTVERSION=	3.22.9
-PORTREVISION=	1
+DISTVERSION=	3.22.25
+PORTREVISION=	3
 CATEGORIES=	games gnome
-MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Collection of patience games written in guile scheme
+WWW=		https://wiki.gnome.org/Apps/Aisleriot
+
+LICENSE=	GPLv3
 
 BUILD_DEPENDS=	itstool:textproc/itstool \
 		bash:shells/bash
-LIB_DEPENDS=	libguile-2.2.so:lang/guile2 \
-		libcanberra.so:audio/libcanberra \
-		libcanberra-gtk3.so:audio/libcanberra-gtk3 \
-		libgc-threaded.so:devel/boehm-gc-threaded
+LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
+		libcanberra-gtk3.so:audio/libcanberra-gtk3
 
-CONFLICTS_INSTALL=	sol-[0-9]*
+CONFLICTS_INSTALL=	sol
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake gnome pathfix pkgconfig \
-		tar:xz xorg
-USE_GNOME=	cairo gconf2 gtk30 intlhack librsvg2 libxml2:build
+USES=		desktop-file-utils gettext meson gnome guile:2.2,3.0 \
+		pkgconfig python:build shebangfix xorg
+USE_GITLAB=	yes
+USE_GNOME=	cairo gtk30 intlhack librsvg2 libxml2:build
 USE_XORG=	x11
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-card-theme-formats=svg
-# work around because configure needs bash
-CONFIGURE_SHELL=${LOCALBASE}/bin/bash
+GL_SITE=	https://gitlab.gnome.org/
+GL_ACCOUNT=	GNOME
+GL_TAGNAME=	8a4542d2f44ee1425a56ac7595ed51449ae0290e
 
-GCONF_SCHEMAS=	aisleriot.schemas
+MESON_ARGS=	-Dtheme_kde=false -Dguile=${GUILE_VER}
+SHEBANG_FILES=	data/icons/meson_updateiconcache.py \
+		data/meson_desktopfile.py \
+		src/lib/meson_compileschemas.py \
+		src/meson_gconf.py
+
 GLIB_SCHEMAS=	org.gnome.Patience.WindowState.gschema.xml
-
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.mk>

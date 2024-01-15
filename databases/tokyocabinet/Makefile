@@ -1,14 +1,12 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	tokyocabinet
 PORTVERSION=	1.4.48
 CATEGORIES=	databases
 MASTER_SITES=	LOCAL/kuriyama \
 		https://dbmx.net/${PORTNAME}/
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern implementation of DBM
+WWW=		https://dbmx.net/tokyocabinet/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

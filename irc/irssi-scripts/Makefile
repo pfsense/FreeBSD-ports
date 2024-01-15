@@ -1,18 +1,17 @@
-# Created by: Alexey Mikhailov <karma@ez.pereslavl.ru>
-# $FreeBSD$
-
 PORTNAME=	irssi-scripts
-PORTVERSION=	20181120
+PORTVERSION=	20220704
+PORTREVISION=	1
 CATEGORIES=	irc
 MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	zachary.crownover@gmail.com
 COMMENT=	Collection of useful scripts for the irssi IRC-client
+WWW=		https://scripts.irssi.org/
 
 RUN_DEPENDS=	irssi:irc/irssi
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		shebangfix tar:xz
 SHEBANG_FILES=	scripts/*.pl

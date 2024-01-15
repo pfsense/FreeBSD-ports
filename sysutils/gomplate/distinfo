@@ -1,3 +1,5 @@
-TIMESTAMP = 1528575929
-SHA256 (hairyhenderson-gomplate-v2.6.0_GH0.tar.gz) = 6376e1eb1cf0eb9d452181361e69c99a6e28604cd986a1b3580cc7e58aa7c578
-SIZE (hairyhenderson-gomplate-v2.6.0_GH0.tar.gz) = 4208683
+TIMESTAMP = 1700385107
+SHA256 (go/sysutils_gomplate/gomplate-v3.11.6/v3.11.6.mod) = 28ff54ecf3a762c6a324506740aa0248afed8800d791ecb5b9e6cd207f1be1e6
+SIZE (go/sysutils_gomplate/gomplate-v3.11.6/v3.11.6.mod) = 7264
+SHA256 (go/sysutils_gomplate/gomplate-v3.11.6/v3.11.6.zip) = 4e095ae014fff40bf12d3ada71d97ad0b04900aa0e228ef5b9e53511e0489c6d
+SIZE (go/sysutils_gomplate/gomplate-v3.11.6/v3.11.6.zip) = 688334

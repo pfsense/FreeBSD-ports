@@ -1,15 +1,13 @@
-# Created by: gahr
-# $FreeBSD$
-
-PORTNAME=	dbus-tcl
-PORTVERSION=	2.1
-PORTREVISION=	2
+PORTNAME=	dbus
+PORTVERSION=	3.1
+PORTREVISION=	0
 CATEGORIES=	devel
 MASTER_SITES=	https://chiselapp.com/user/schelte/repository/dbus/uv/
-DISTNAME=	dbus-${PORTVERSION}
+PKGNAMESUFFIX=	-tcl
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Tcl interface to the D-Bus messaging system
+WWW=		http://chiselapp.com/user/schelte/repository/dbus/home
 
 LICENSE=	ISCL
 
@@ -24,14 +22,13 @@ PORTDOCS=	*
 
 TEST_TARGET=	do-test
 
-PLIST_FILES=	lib/dbus/libdbus21.so.1 \
+PLIST_FILES=	lib/dbus/lib${TCL_PKG}.so \
 		lib/dbus/pkgIndex.tcl \
 		man/mann/dbus.n.gz
 
 post-patch:
 	${REINPLACE_CMD} \
 	    -e '/^INSTALL_PROGRAM/s|$$| -s|' \
-	    -e 's|\$$\+|$$>|' \
 	    ${WRKSRC}/Makefile.in
 
 do-test:

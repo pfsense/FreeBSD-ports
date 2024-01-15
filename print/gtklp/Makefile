@@ -1,14 +1,13 @@
-# Created by: Martin Klaffenboeck <martin.klaffenboeck@gmx.at>
-# $FreeBSD$
-
 PORTNAME=	gtklp
 DISTVERSION=	1.3.4
 DISTVERSIONSUFFIX=	.src
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	SF
 
 MAINTAINER=	m.ne@gmx.net
 COMMENT=	GTK interface to cups
+WWW=		https://gtklp.sirtobi.com
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +18,6 @@ LIB_DEPENDS=	libcups.so:print/cups \
 
 USES=		autoreconf gettext gnome libtool pkgconfig xorg
 USE_GNOME=	cairo gtk20
-INSTALLS_ICONS=	yes
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes

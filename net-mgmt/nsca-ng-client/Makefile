@@ -1,6 +1,3 @@
-# Created by: Alexander Sulfrian <alexander@sulfrian.net>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-client
 
 CONFLICTS=	nsca-client-2.* nsca27-client-2.*

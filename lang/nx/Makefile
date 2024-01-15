@@ -1,8 +1,5 @@
-# Created by: gahr@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	nx
-DISTVERSION=	2.3.0
+DISTVERSION=	2.4.0
 PORTREVISION=	0
 CATEGORIES=	lang
 MASTER_SITES=	SF/next-scripting/${DISTVERSION}/
@@ -10,6 +7,7 @@ DISTNAME=	nsf${DISTVERSION}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Highly flexible, Tcl-based, object-oriented scripting language
+WWW=		https://next-scripting.org
 
 LICENSE=	MIT
 

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Email-Find
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Find RFC 822 email addresses in plain text
+WWW=		https://metacpan.org/release/Email-Find
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

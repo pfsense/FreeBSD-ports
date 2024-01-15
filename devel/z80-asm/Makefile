@@ -1,6 +1,3 @@
-# Created by: Samy Al Bahra <samy@kerneled.org>
-# $FreeBSD$
-
 PORTNAME=	z80-asm
 PORTVERSION=	2.4.p3
 CATEGORIES=	devel
@@ -14,6 +11,7 @@ PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Z80 assembly code assembler and disassembler
+WWW=		https://wwwhomes.uni-bielefeld.de/achim/z80-asm.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
@@ -23,6 +21,12 @@ USES=		gmake
 PORTDOCS=	CHANGELOG README TODO z80-asm.html z80-mon.html
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-extract:
 	@${TOUCH} ${WRKSRC}/hardware/bus_masters

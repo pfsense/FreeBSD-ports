@@ -1,6 +1,3 @@
-# Created by: swallace
-# $FreeBSD$
-
 PORTNAME=	xasteroids
 PORTVERSION=	5.0
 PORTREVISION=	2

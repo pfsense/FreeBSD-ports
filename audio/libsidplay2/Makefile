@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libsidplay2
 DISTVERSION=	2.1.1
 PORTREVISION=	9
@@ -10,6 +7,7 @@ DISTNAME=	sidplay-libs-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to play Commodore 64 SID-tunes cycle accurately
+WWW=		https://sidplay2.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

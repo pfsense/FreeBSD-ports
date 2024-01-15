@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libixp
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://dl.suckless.org/libs/
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Standalone client/server 9P library
+WWW=		https://libs.suckless.org/deprecated/libixp/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/libixp/LICENSE

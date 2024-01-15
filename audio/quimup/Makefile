@@ -1,15 +1,13 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	quimup
 PORTVERSION=	1.4.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}
 DISTNAME=	Quimup_${PORTVERSION}_source
 
 MAINTAINER=	cmangin@arobas.net
 COMMENT=	Qt5 client for MPD (the Music Player Daemon)
+WWW=		https://coonsden.com/?cat=4
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,7 +16,7 @@ LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
 		libtag.so:audio/taglib
 
 USES=		compiler:c++11-lang gl pkgconfig qmake qt:5
-USE_QT=		core gui network widgets buildtools_build
+USE_QT=		core gui network widgets buildtools:build
 USE_GL=		gl
 
 WRKSRC=		${WRKDIR}/Quimup_${PORTVERSION}_source

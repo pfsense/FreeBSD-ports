@@ -1,14 +1,12 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PORTNAME=	Module-CoreList
-PORTVERSION=	5.20201220
+PORTVERSION=	5.20231129
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	See what modules shipped with versions of Perl
+WWW=		https://metacpan.org/release/Module-CoreList
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

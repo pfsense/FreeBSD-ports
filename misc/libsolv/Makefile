@@ -1,16 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	libsolv
-DISTVERSION=	0.7.16
+DISTVERSION=	0.7.22
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Package dependency solver using a satisfiability algorithm
+WWW=		https://github.com/openSUSE/libsolv
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.BSD
 
-USES=		cmake localbase:ldflags
+USES=		cmake cpe localbase:ldflags
+CPE_VENDOR=	opensuse
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

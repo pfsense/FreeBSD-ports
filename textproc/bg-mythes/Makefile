@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	4.3
 PORTREVISION=	1
@@ -11,6 +9,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Bulgarian thesaurus
+WWW=		https://bgoffice.sourceforge.net
 
 LICENSE=	GPLv2 LGPL21 MPL11
 LICENSE_COMB=	dual
@@ -22,8 +21,8 @@ USES=		zip
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-PLIST_FILES=	%%DATADIR%%/th_bg_BG.dat \
-		%%DATADIR%%/th_bg_BG.idx
+PLIST_FILES=	${DATADIR}/th_bg_BG.dat \
+		${DATADIR}/th_bg_BG.idx
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

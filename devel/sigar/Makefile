@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sigar
 PORTVERSION=	1.7.3
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sigar system information API
+WWW=		https://support.hyperic.com/display/SIGAR/Home
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/NOTICE

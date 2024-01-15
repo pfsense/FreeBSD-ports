@@ -1,8 +1,5 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net
-PORTVERSION=	3.12
+PORTVERSION=	3.15
 PORTEPOCH=	1
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
@@ -11,6 +8,7 @@ DISTNAME=	libnet-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 modules to access and use network protocols
+WWW=		https://metacpan.org/release/libnet
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

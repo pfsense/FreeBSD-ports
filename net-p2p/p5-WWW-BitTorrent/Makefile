@@ -1,6 +1,3 @@
-# Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	WWW-BitTorrent
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
 COMMENT=	Search and Download .torrent(s) files from BitTorrents boards
+WWW=		https://metacpan.org/release/WWW-BitTorrent
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww

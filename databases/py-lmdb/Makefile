@@ -1,14 +1,12 @@
-# Created by: Keith Gaughan <k@sterechro.me>
-# $FreeBSD$
-
 PORTNAME=	lmdb
 PORTVERSION=	0.97
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	k@stereochro.me
 COMMENT=	Python bindings for LMDB
+WWW=		https://github.com/jnwatson/py-lmdb
 
 LICENSE=	OPENLDAP
 LICENSE_NAME=	OpenLDAP Public LIcense
@@ -19,7 +17,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>0.8:devel/py-cffi@${PY_FLAVOR}
 LIB_DEPENDS=	liblmdb.so:databases/lmdb
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		localbase python:3.6+
+USES=		localbase python
 USE_PYTHON=	autoplist distutils
 
 MAKE_ENV=	LMDB_FORCE_SYSTEM=1 \

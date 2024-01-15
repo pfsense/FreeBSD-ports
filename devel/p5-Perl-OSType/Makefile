@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Perl-OSType
 PORTVERSION=	1.010
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Map Perl operating system names to generic types
+WWW=		https://metacpan.org/release/Perl-OSType
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

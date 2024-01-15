@@ -1,20 +1,18 @@
-# Created by: Thomas Dreibholz <dreibh@iem.uni-due.de>
-# $FreeBSD$
-
 PORTNAME=	sctplib
-PORTVERSION=	1.0.24
+PORTVERSION=	1.0.31
 CATEGORIES=	net
-MASTER_SITES=	https://www.uni-due.de/~be0001/sctplib/download/
+MASTER_SITES=	https://www.nntb.no/~dreibh/sctplib/download/
 
-MAINTAINER=	dreibh@iem.uni-due.de
+MAINTAINER=	thomas.dreibholz@gmail.com
 COMMENT=	User-space implementation of the SCTP protocol RFC 4960
+WWW=		https://www.nntb.no/~dreibh/sctplib/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gnome libtool pkgconfig
-USE_LDCONFIG=	yes
 USE_GNOME=	glib20
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-sctp-over-udp

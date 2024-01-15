@@ -1,6 +1,3 @@
-# Created by: Oleg Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Authentication-Store-DBIx-Class
 PORTVERSION=	0.1506
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Storage class for Catalyst Authentication using DBIx::Class
+WWW=		https://metacpan.org/release/Catalyst-Authentication-Store-DBIx-Class
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

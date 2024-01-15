@@ -1,6 +1,3 @@
-# Created by: Sulev-Madis Silber <madis555@hot.ee>
-# $FreeBSD$
-
 PORTNAME=	Number-Bytes-Human
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	madis555@hot.ee
 COMMENT=	Convert byte count to human readable format
+WWW=		https://metacpan.org/release/Number-Bytes-Human
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

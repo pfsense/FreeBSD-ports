@@ -1,14 +1,12 @@
-# Created by: Simun Mikecin <numisemis@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	Net-SFTP-Foreign
-PORTVERSION=	1.89
+DISTVERSION=	1.93
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	numisemis@yahoo.com
 COMMENT=	Secure File Transfer Protocol client
+WWW=		https://metacpan.org/release/Net-SFTP-Foreign
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-MarkdownTable
 PORTVERSION=	0.3.1
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Write Markdown syntax tables from data
+WWW=		https://metacpan.org/release/Text-MarkdownTable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

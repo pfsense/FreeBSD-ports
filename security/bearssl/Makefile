@@ -1,6 +1,3 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bearssl
 PORTVERSION=	0.6
 CATEGORIES=	security devel
@@ -8,6 +5,7 @@ MASTER_SITES=	https://bearssl.org/
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Implementation of TLS/SSL in C
+WWW=		https://bearssl.org/
 
 LICENSE=	MIT
 

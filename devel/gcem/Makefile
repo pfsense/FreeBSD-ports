@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	gcem
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.13.1
+DISTVERSION=	1.17.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ header-only library for Generalized Constant Expression Math
+WWW=		https://gcem.readthedocs.io/en/latest/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,9 +1,6 @@
-# Created by: Miguel Mendez <flynn@energyhq.es.eu.org>
-# $FreeBSD$
-#    $MCom: ports/games/adonthell/Makefile,v 1.1 2006/10/04 20:13:33 ahze Exp $
-
 PORTNAME=	wastesedge
 PORTVERSION=	0.3.8
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH/adonthell
 PKGNAMEPREFIX=	adonthell-
@@ -11,6 +8,7 @@ DISTFILES=	${PORTNAME}-src-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Role playing game for the Adonthell engine
+WWW=		https://adonthell.nongnu.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

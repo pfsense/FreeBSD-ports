@@ -1,6 +1,3 @@
-# Created by: Nadelyaev Stanislav <funkblaster@n11.bmstu.ru>
-# $FreeBSD$
-
 PORTNAME=		icegenerator
 DISTVERSION=		0.5.5-pre2
 PORTREVISION=		2
@@ -9,6 +6,7 @@ MASTER_SITES=		SF/${PORTNAME}/${PORTNAME}/0.5.5-pre2
 
 MAINTAINER=		funkblaster@mail.ru
 COMMENT=		Direct streaming generator for Icecast/Shoutcast
+WWW=		http://www.becrux.com
 
 LIB_DEPENDS=		libshout.so:audio/libshout
 

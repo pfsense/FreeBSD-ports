@@ -1,6 +1,3 @@
-# Created by: Daniel Wijnands <daniel@itxl.nl>
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-DDL
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DDL for Class-DBI
+WWW=		https://metacpan.org/release/Class-DBI-DDL
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-DBI>=0:databases/p5-Class-DBI

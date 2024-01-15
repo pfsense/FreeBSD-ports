@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	grabc
 PORTVERSION=	1.1
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Grab a color from screen
+WWW=		https://www.muquit.com/muquit/software/grabc/grabc.html
 
 LICENSE=	GPLv2 # specified on the website
 

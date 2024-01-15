@@ -1,6 +1,3 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	ExtUtils-XSpp
 PORTVERSION=	0.18
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XS for C++ in Perl
+WWW=		https://metacpan.org/release/ExtUtils-XSpp
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

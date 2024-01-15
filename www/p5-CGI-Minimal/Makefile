@@ -1,6 +1,3 @@
-# Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CGI-Minimal
 PORTVERSION=	1.30
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extremely lightweight CGI processing package
+WWW=		https://metacpan.org/release/CGI-Minimal
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

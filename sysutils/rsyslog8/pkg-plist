@@ -1,3 +1,5 @@
+@dir etc/rsyslog.d
+@sample etc/rsyslog.conf.sample
 lib/rsyslog/fmhash.so
 lib/rsyslog/fmhttp.so
 lib/rsyslog/im3195.so
@@ -22,6 +24,7 @@ lib/rsyslog/omprog.so
 lib/rsyslog/omstdout.so
 lib/rsyslog/omtesting.so
 lib/rsyslog/omuxsock.so
+lib/rsyslog/pmciscoios.so
 man/man5/rsyslog.conf.5.gz
 man/man8/rsyslogd.8.gz
 sbin/rsyslogd

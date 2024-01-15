@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	frost
 PORTVERSION=	1.2.0.20090314
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-14-Mar-2009
 
 MAINTAINER=	peter.thoenen@yahoo.com
 COMMENT=	Freenet client that provides messenger and file services
+WWW=		https://jtcfrost.sourceforge.net/
 
 USES=		zip
 USE_JAVA=	yes

@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	pmars
 PORTVERSION=	0.9.2
 PORTREVISION=	7
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-5
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Port of pMARS using the Simple Directmedia Library
+WWW=		https://corewar.co.uk/pihlaja/pmars-sdl/
 
 LICENSE=	GPLv2+
 

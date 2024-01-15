@@ -1,6 +1,3 @@
-# Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	geoapi
 PORTVERSION=	3.0.0
 CATEGORIES=	graphics geography
@@ -9,6 +6,7 @@ DISTNAME=	GeoAPI-3_0_0
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Java interface API based upon OGC Standards
+WWW=		http://geoapi.sf.net
 
 USES=		zip
 NO_BUILD=	yes

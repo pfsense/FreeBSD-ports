@@ -1,6 +1,3 @@
-# Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bitlib
 PORTVERSION=	24
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny library for bitwise operations
+WWW=		http://luaforge.net/projects/bitlib/
 
 USES=		lua:module
 

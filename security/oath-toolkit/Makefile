@@ -1,18 +1,25 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	oath-toolkit
-PORTVERSION=	2.6.2
+PORTVERSION=	2.6.9
 CATEGORIES=	security
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Library, tools, and PAM module for OATH authentication
+WWW=		https://www.nongnu.org/oath-toolkit/
+
+LICENSE=	GPLv3+ LGPL20+
+LICENSE_COMB=	multi
+
+LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR}
+CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR} \
+		--disable-pam-tests
 USES=		gmake libtool pathfix pkgconfig
+USE_GNOME=	libxslt
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=	PSKC DOCS
 OPTIONS_DEFAULT=PSKC

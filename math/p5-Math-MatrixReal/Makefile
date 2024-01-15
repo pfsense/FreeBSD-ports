@@ -1,6 +1,3 @@
-# Created by: Sander Vesik <sander@haldjas.folklore.ee>
-# $FreeBSD$
-
 PORTNAME=	Math-MatrixReal
 PORTVERSION=	2.13
 CATEGORIES=	math perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module implementing a Matrix of Reals
+WWW=		https://metacpan.org/release/Math-MatrixReal
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Piotr Smyrak <smyru@heron.pl>
-# $FreeBSD$
-
 PORTNAME=	potrace
 DISTVERSION=	1.16
 CATEGORIES=	graphics
@@ -8,12 +5,15 @@ MASTER_SITES=	SF/potrace/${PORTVERSION}
 
 MAINTAINER=	ps.ports@smyrak.com
 COMMENT=	Transforms bitmaps into vector graphics
+WWW=		https://potrace.sourceforge.net
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe
 GNU_CONFIGURE=	yes
+
+CPE_VENDOR=	potrace_project
 
 OPTIONS_DEFINE=	METRIC A4 DOCS
 OPTIONS_DEFAULT=METRIC A4

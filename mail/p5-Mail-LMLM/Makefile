@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Mail-LMLM
 PORTVERSION=	0.6807
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	List of Mailing Lists Manager
+WWW=		https://metacpan.org/release/Mail-LMLM
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

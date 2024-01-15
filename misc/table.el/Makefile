@@ -1,6 +1,3 @@
-# Created by: Denis Shaposhnikov <dsh@vlink.ru>
-# $FreeBSD$
-
 PORTNAME=	table.el
 PORTVERSION=	1.5.54
 PORTREVISION=	1
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create and edit WYSIWYG text based embedded tables in Emacs
+WWW=		https://table.sourceforge.net/
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

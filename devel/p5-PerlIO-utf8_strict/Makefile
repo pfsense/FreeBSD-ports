@@ -1,14 +1,12 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PerlIO-utf8_strict
-PORTVERSION=	0.008
+PORTVERSION=	0.010
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast and correct UTF-8 IO
+WWW=		https://metacpan.org/release/PerlIO-utf8_strict
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

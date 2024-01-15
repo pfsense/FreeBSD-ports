@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	mod_fcgid
 PORTVERSION=	2.3.9
 CATEGORIES=	www
@@ -10,10 +7,11 @@ DIST_SUBDIR=	apache2
 
 MAINTAINER=	freebsd.ports@webstyle.ch
 COMMENT=	Alternative FastCGI module for Apache2
+WWW=		https://httpd.apache.org/mod_fcgid/
 
 LICENSE=	APACHE20
 
-USES=		apache:2.2+ cpe
+USES=		apache cpe
 CPE_VENDOR=	apache
 
 HAS_CONFIGURE=		yes

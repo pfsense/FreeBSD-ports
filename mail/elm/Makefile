@@ -1,6 +1,3 @@
-# Created by: dhagan@cs.vt.edu
-# $FreeBSD$
-
 PORTNAME=	elm
 PORTVERSION=	2.5.8
 PORTREVISION=	5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Once-popular mail user agent, version 2.5.x
+WWW=		https://instinct.org/elm/
 
 LICENSE=	ELM
 LICENSE_NAME=	Elm(tm) Mail System General Public License
@@ -19,6 +17,8 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BUILD_DEPENDS=	ispell:textproc/aspell-ispell
 
 CFLAGS+=	-D_SIZE_T
+
+CONFLICTS_INSTALL=	hs-elm mailutils # bin/elm bin/frm
 
 WRKSRC=			${WRKDIR}/elm${PORTVERSION}
 USES=		gettext ncurses

@@ -1,10 +1,7 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tnef_parse
-PORTREVISION=	0
 
 COMMENT=	TNEF attachment format parser plugin for Claws Mail
+WWW=		https://www.claws-mail.org/plugin.php?plugin=tnef_parser
 
 LIB_DEPENDS=	libytnef.so:converters/ytnef
 

@@ -1,20 +1,20 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	gf2x
 PORTVERSION=	1.3.0
 CATEGORIES=	math
-MASTER_SITES=	https://gforge.inria.fr/frs/download.php/file/38243/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Library for multiplying polynomials over the binary field
+WWW=		https://gitlab.inria.fr/gf2x/gf2x
 
 LICENSE=		GPLv3 LGPL21
 LICENSE_COMB=		dual
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING
 
-USES=		libtool
+USES=		autoreconf libtool
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.inria.fr/
+GL_TAGNAME=	27ba588f03bf6e1e74763903bab25e6e8bb6d0f0
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

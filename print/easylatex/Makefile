@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	easylatex
 PORTVERSION=	0.080
 CATEGORIES=	print textproc
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/0$//}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Perl script which transforms "pseudo-LaTeX" into proper LaTeX
+WWW=		https://easylatex.sourceforge.net/
 
 RUN_DEPENDS=	p5-Getopt-Declare>=0:devel/p5-Getopt-Declare
 

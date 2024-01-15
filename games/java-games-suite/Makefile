@@ -1,6 +1,3 @@
-# Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	java-games-suite
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/javagamessuite
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Simple Java games collection
+WWW=		https://sourceforge.net/projects/javagamessuite/
 
 USE_JAVA=	yes
 

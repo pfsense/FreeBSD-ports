@@ -1,9 +1,6 @@
-# Created by: Douglas K. Rand (rand@meridian-enviro.com)
-# $FreeBSD$
-
 PORTNAME=	NetCDF
 PORTVERSION=	1.2.4
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	math perl5
 MASTER_SITES=	ftp://ftp.unidata.ucar.edu/pub/netcdf-perl/
 PKGNAMEPREFIX=	p5-
@@ -11,6 +8,7 @@ DISTNAME=	netcdf-perl-${PORTVERSION}
 
 MAINTAINER=	rand@meridian-enviro.com
 COMMENT=	Perl5 module to read and write netCDF files
+WWW=		http://www.unidata.ucar.edu/packages/netcdf-perl/
 
 LIB_DEPENDS=	libnetcdf.so:science/netcdf
 

@@ -1,15 +1,13 @@
-# Created by: Dan Pelleg <dpelleg+unison@cs.cmu.edu>
-# $FreeBSD$
-
 PORTNAME=	unison
 PORTVERSION=	2.48.15
-PORTREVISION=	2
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	v4
 CATEGORIES=	net
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	User-level file synchronization tool
+WWW=		https://www.cis.upenn.edu/~bcpierce/unison/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,19 +26,18 @@ x11_BUILD_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2 \
 			icotool:graphics/icoutils
 x11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
-x11_RUN_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION} VERSIONSUFFIX=${VERSIONSUFFIX}
 USES=		gmake localbase
 USE_OCAML=	yes
 WRKSRC_SUBDIR=	src
 NO_OCAML_RUNDEPENDS=yes
-CONFLICTS=	unison-devel-[0-9]*
+CONFLICTS=	unison-devel
 MAKE_ENV=	CLIBS="${LIBS:S/^-/-ccopt -/}" COFLAGS="${CFLAGS:C/ *(-[^ ]*) */ -ccopt \"\1 \"/gW}"
 ALL_TARGET=	unison all
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     bcpierce00
+USE_GITHUB=	yes
+GH_ACCOUNT=	bcpierce00
 
 DOCS=		BUGS.txt NEWS README
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}

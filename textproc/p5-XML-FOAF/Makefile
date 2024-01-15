@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	XML-FOAF
 PORTVERSION=	0.04
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Parse FOAF (Friend of a Friend) data
+WWW=		https://metacpan.org/release/XML-FOAF
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Filter>=0:devel/p5-Filter \

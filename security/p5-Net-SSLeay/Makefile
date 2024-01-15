@@ -1,20 +1,14 @@
-# Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
-
 PORTNAME=	Net-SSLeay
-PORTVERSION=	1.88
+PORTVERSION=	1.92
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to SSL
+WWW=		https://metacpan.org/release/Net-SSLeay
 
 LICENSE=	OpenSSL
-
-TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception \
-		p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings \
-		p5-Test-Warn>=0:devel/p5-Test-Warn
 
 USES=		perl5 shebangfix ssl
 USE_PERL5=	configure

@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	super
 PORTVERSION=	3.30.3
 PORTREVISION=	1
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	-tar.gz
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Allow others to run commands as root
+WWW=		http://www.ucolick.org/~will/ #super
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

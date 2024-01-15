@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		spoqahansans
 DISTVERSIONPREFIX=	v
 DISTVERSION=		2.1.2
@@ -13,6 +11,7 @@ DISTNAME=		SpoqaHanSans_all
 
 MAINTAINER=		hyun@caffeinated.codes
 COMMENT=		Korean custom font based on Noto Sans and Lato
+WWW=		https://github.com/spoqa/spoqa-han-sans
 
 LICENSE=		OFL11
 LICENSE_FILE=		${WRKSRC}/LICENSE

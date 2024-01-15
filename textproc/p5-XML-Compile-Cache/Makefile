@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	XML-Compile-Cache
 PORTVERSION=	1.06
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Cache Compiled XML Translators
+WWW=		https://metacpan.org/release/XML-Compile-Cache
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

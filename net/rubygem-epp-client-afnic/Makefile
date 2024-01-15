@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	epp-client-afnic
 PORTVERSION=	0.15.2
 CATEGORIES=	net rubygems
@@ -7,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	AFNIC EPP client library
+WWW=		https://github.com/Absolight/epp-client
 
 LICENSE=	MIT
 

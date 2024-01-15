@@ -1,12 +1,11 @@
-# Created by: Eric L. Camachat <eric@camachat.org>
-# $FreeBSD$
-
 PORTNAME=	ibus-chewing
 PORTVERSION=	1.5.1
+PORTREVISION=	1
 CATEGORIES=	chinese
 
 MAINTAINER=	eric@camachat.org
 COMMENT=	Chewing engine for IBus
+WWW=		https://github.com/definite/ibus-chewing
 
 LICENSE=	GPLv2
 

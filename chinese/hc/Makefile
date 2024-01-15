@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@FreeBSD.org)
-# $FreeBSD$
-
 PORTNAME=	hc
 PORTVERSION=	3.0
 CATEGORIES=	chinese
@@ -9,6 +6,8 @@ DISTFILES=	hc-30.tar.gz hc-supp.tab
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Hanzi Converter -- converts between GB and BIG-5 codes
+
+CONFLICTS_INSTALL=	rubygem-hieracles
 
 WRKSRC=		${WRKDIR}/hc3
 EXTRACT_ONLY=	hc-30.tar.gz

@@ -1,6 +1,3 @@
-# Created by: Peter Vereshagin <peter@vereshagin.org>
-# $FreeBSD$
-
 PORTNAME=	Sub-Alias
 PORTVERSION=	1.0.0
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple subroutine alias
+WWW=		https://metacpan.org/release/Sub-Alias
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

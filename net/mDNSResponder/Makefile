@@ -1,21 +1,16 @@
-# Created by: Alfred Perlstein <alfred@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mDNSResponder
-PORTVERSION=	1096.40.7
-CATEGORIES=	net dns
+PORTVERSION=	1790.80.10	# Reset PORTREVISION on slave port (dns/mDNSResponder_nss) after update
+PORTREVISION?=	1
+CATEGORIES?=	net dns
 MASTER_SITES=	https://opensource.apple.com/tarballs/mDNSResponder/
 
-MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Bonjour (zero-configuration networking) by Apple
+MAINTAINER?=	sunpoet@FreeBSD.org
+COMMENT?=	Bonjour (zero-configuration networking) by Apple
+WWW?=		https://developer.apple.com/bonjour/ \
+		https://github.com/apple-oss-distributions/mDNSResponder
 
 LICENSE=	APACHE20 BSD3CLAUSE
 LICENSE_COMB=	dual
-
-# lib/libdns_sd.so.1 sbin/mdnsd
-CONFLICTS_INSTALL=	avahi-libdns openmdns
-
-OPTIONS_DEFINE=	IPV6
 
 USES=		compiler:c11 cpe gmake
 
@@ -26,14 +21,19 @@ MAKE_ARGS=	LDCONFIG=${TRUE} LOCALBASE=${PREFIX} MAN_PATH=${PREFIX}/share/man STR
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	mdnsd mdnsresponderposix
+WRKSRC=		${WRKDIR}/mDNSResponder-mDNSResponder-${PORTVERSION}
 
 CPE_VENDOR=	apple
-CPE_PRODUCT=	${PORTNAME:tl}
 
 EXTRA_BIN=	mDNSClientPosix mDNSNetMonitor mDNSProxyResponderPosix mDNSResponderPosix
 EXTRA_MAN1=	dns-sd.1
 EXTRA_MAN8=	dnsextd.8 mDNSResponderPosix.8
 EXTRA_SBIN=	dnsextd
+
+# lib/libdns_sd.so.1 sbin/mdnsd
+CONFLICTS_INSTALL?=	avahi-libdns openmdns
+
+OPTIONS_DEFINE=	IPV6
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^CFLAGS_DEBUG/ s|-Os|${CFLAGS}|' ${WRKSRC}/mDNSPosix/Makefile

@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	puredb
 PORTVERSION=	2.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	pure-db-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set of libraries for creating and reading constant databases
+WWW=		https://pureftpd.sourceforge.net/puredb/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

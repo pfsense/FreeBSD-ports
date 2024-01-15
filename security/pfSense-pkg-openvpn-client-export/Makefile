@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense-pkg-openvpn-client-export
-PORTVERSION=	1.5
-PORTREVISION=	5
+PORTVERSION=	1.9.3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,13 +7,14 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package openvpn-client-export
+WWW=		https://docs.netgate.com/pfsense/en/latest/packages/openvpn-client-export.html
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	openvpn>=2.4.3:security/openvpn \
-		openvpn-client-export>=2.5.0:security/openvpn-client-export \
+RUN_DEPENDS=	openvpn>=2.6.0:security/openvpn \
+		openvpn-client-export>=2.6.7:security/openvpn-client-export \
 		zip>0:archivers/zip \
-		p7zip>0:archivers/p7zip
+		7-zip>0:archivers/7-zip
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -37,8 +35,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/openvpn-client-export.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vpn_openvpn_export.php \
-		${STAGEDIR}${PREFIX}/www
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vpn_openvpn_export_shared.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/openvpnexport.inc \
 		${STAGEDIR}/etc/inc/priv

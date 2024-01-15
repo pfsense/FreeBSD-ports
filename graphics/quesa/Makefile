@@ -1,14 +1,12 @@
-# Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
-
 PORTNAME=	quesa
 PORTVERSION=	1.8
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High level 3D graphics library compatible with Apple's QuickDraw(TM)
+WWW=		https://quesa.sourceforge.net/
 
 USES=		gl libtool xorg
 USE_CXXSTD=	gnu++98

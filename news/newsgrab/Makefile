@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	newsgrab
 PORTVERSION=	0.4.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Download and uudecode binary files from USENET using regexps
+WWW=		https://newsgrab.sourceforge.net/
 
 RUN_DEPENDS=	p5-NNTPClient>=0:news/p5-NNTPClient \
 		p5-Term-ReadKey>=0:devel/p5-Term-ReadKey \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ayu18
 PORTVERSION=	1.3.1.1
 PORTREVISION=	3
@@ -11,6 +9,7 @@ DISTFILES=	ayu18gothic-1.3a${EXTRACT_SUFX} \
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Ayu 18-dot Kanji font
+WWW=		https://x-tt.osdn.jp/ayu.html
 
 LICENSE=	PD
 
@@ -26,8 +25,6 @@ MAKEFILE=	${WRKDIR}/Makefile
 PORTDOCS=	README.txt
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

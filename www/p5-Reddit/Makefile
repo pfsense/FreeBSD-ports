@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Reddit
 PORTVERSION=	0.30.03
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Module for interacting with Reddit
+WWW=		https://github.com/three18ti/Reddit.pm
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

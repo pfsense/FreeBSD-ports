@@ -1,18 +1,16 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	train
-PORTVERSION=	3.3.27
+PORTVERSION=	3.11.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Transport interface to talk to different backends
+WWW=		https://github.com/inspec/train
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-activesupport52>=5.2.4.3<6.0.0:devel/rubygem-activesupport52 \
+RUN_DEPENDS=	rubygem-activesupport60>=6.0.3.1:devel/rubygem-activesupport60 \
 		rubygem-azure_graph_rbac>=0.16<1:devel/rubygem-azure_graph_rbac \
 		rubygem-azure_mgmt_key_vault>=0.17<1:devel/rubygem-azure_mgmt_key_vault \
 		rubygem-azure_mgmt_resources>=0.15<1:devel/rubygem-azure_mgmt_resources \
@@ -22,11 +20,10 @@ RUN_DEPENDS=	rubygem-activesupport52>=5.2.4.3<6.0.0:devel/rubygem-activesupport5
 		rubygem-google-api-client>=0.23.9:devel/rubygem-google-api-client \
 		rubygem-googleauth>=0.6.6:security/rubygem-googleauth \
 		rubygem-inifile>=3.0<4:textproc/rubygem-inifile \
-		rubygem-train-core>=${PORTVERSION}:net/rubygem-train-core \
+		rubygem-train-core>=${PORTVERSION}<${PORTVERSION}_99:net/rubygem-train-core \
 		rubygem-train-winrm>=0.2<1:net/rubygem-train-winrm
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

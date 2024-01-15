@@ -1,18 +1,16 @@
-# Created by: Alfred Perlstein <alfred@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	djangorestframework-csv
 PORTVERSION=	2.0.0
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	alfred@FreeBSD.org
 COMMENT=	Django REST framework
+WWW=		https://github.com/mjumbewu/django-rest-framework-csv
 
 LICENSE=	BSD2CLAUSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

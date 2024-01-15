@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	XML-Encoding
 PORTVERSION=	2.11
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for parsing XML encoding maps
+WWW=		https://metacpan.org/release/XML-Encoding
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Benchmarking tools
 
     SUBDIR += ali
@@ -13,7 +10,7 @@
     SUBDIR += clpeak
     SUBDIR += cpipe
     SUBDIR += dbench
-    SUBDIR += dbs
+    SUBDIR += ddosify
     SUBDIR += dhrystone
     SUBDIR += dkftpbench
     SUBDIR += fhourstones
@@ -34,19 +31,27 @@
     SUBDIR += imb
     SUBDIR += inferno
     SUBDIR += interbench
+    SUBDIR += ior
     SUBDIR += iorate
     SUBDIR += iozone
     SUBDIR += iozone21
     SUBDIR += iperf
     SUBDIR += iperf3
+    SUBDIR += kdiskmark
     SUBDIR += libcelero
     SUBDIR += libmicro
     SUBDIR += linux-gputest
+    SUBDIR += linux-unigine-heaven
+    SUBDIR += linux-unigine-sanctuary
+    SUBDIR += linux-unigine-superposition
+    SUBDIR += linux-unigine-tropics
+    SUBDIR += linux-unigine-valley
     SUBDIR += linux-vdbench
     SUBDIR += lmbench
     SUBDIR += lzbench
     SUBDIR += mangohud
     SUBDIR += mdtest
+    SUBDIR += mst-bench
     SUBDIR += nbench
     SUBDIR += netio
     SUBDIR += netperf
@@ -66,9 +71,12 @@
     SUBDIR += perftest
     SUBDIR += phoronix-test-suite
     SUBDIR += pipebench
+    SUBDIR += plow
     SUBDIR += polygraph
     SUBDIR += postal
     SUBDIR += postmark
+    SUBDIR += py-asv
+    SUBDIR += py-asv-runner
     SUBDIR += py-locust
     SUBDIR += py-naarad
     SUBDIR += py-throughpy
@@ -84,6 +92,8 @@
     SUBDIR += rubygem-railsbench
     SUBDIR += scimark2
     SUBDIR += scimark2c
+    SUBDIR += scimark4c
+    SUBDIR += shellbench
     SUBDIR += siege
     SUBDIR += sipp
     SUBDIR += slowloris
@@ -91,18 +101,21 @@
     SUBDIR += spp
     SUBDIR += stream
     SUBDIR += stress-ng
-    SUBDIR += super-smack
     SUBDIR += sysbench
     SUBDIR += tcpblast
     SUBDIR += thrulay
+    SUBDIR += tinymembench
     SUBDIR += tsung
     SUBDIR += ttcp
     SUBDIR += typometer
     SUBDIR += ubench
+    SUBDIR += uica
     SUBDIR += unixbench
     SUBDIR += uperf
     SUBDIR += vegeta
     SUBDIR += vkmark
+    SUBDIR += vkoverhead
+    SUBDIR += vkpeak
     SUBDIR += webbench
     SUBDIR += wrk
 

@@ -1,29 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	minizinc
-DISTVERSION=	2.5.3
+DISTVERSION=	2.8.2
 CATEGORIES=	math lang
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Constraint modeling language
+WWW=		https://www.minizinc.org/
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+CONFLICTS_BUILD=	CoinMP
+
 LIB_DEPENDS=	libCbc.so:math/cbc \
 		libCgl.so:math/cgl \
-		libgecodekernel.so:devel/gecode \
+		libCoinUtils.so:math/coinutils \
+		libgecodekernel.so:math/gecode \
+		libhighs.so:math/highs \
+		libOsi.so:math/osi \
 		libOsiClp.so:math/clp
 
 USES=		bison cmake compiler:c++11-lang
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	MiniZinc
 GH_PROJECT=	libminizinc
-USE_LDCONFIG=	yes
-
-CXXFLAGS+=	-DFREEBSD_MZN_STDLIB_DIR="\\\"${DATADIR}\\\""
 
 CMAKE_ON=	BUILD_SHARED_LIBS
+
+CXXFLAGS+=	-DFREEBSD_MZN_STDLIB_DIR="\\\"${DATADIR}\\\""
+CXXFLAGS+=	-I${LOCALBASE}/include/highs # workaround for https://github.com/MiniZinc/libminizinc/issues/744
+LDFLAGS+=	-L${LOCALBASE}/lib # workaround for https://github.com/MiniZinc/libminizinc/issues/744
 
 OPTIONS_DEFINE=		WITH_SCIP
 

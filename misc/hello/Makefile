@@ -1,14 +1,11 @@
-# Created by: shipley@dis.org
-# $FreeBSD$
-
 PORTNAME=	hello
-PORTVERSION=	2.10
-PORTREVISION=	1
+PORTVERSION=	2.12.1
 CATEGORIES=	misc
 MASTER_SITES=	GNU
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Utility for saying hello to the world and reading email
+WWW=		https://www.gnu.org/software/hello/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,12 +16,10 @@ GNU_CONFIGURE=	yes
 
 INFO=		hello
 
-OPTIONS_DEFINE=		NLS
-OPTIONS_SUB=		yes
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
 
-NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
-NLS_CPPFLAGS=		-I${LOCALBASE}/include
-NLS_LDFLAGS=		-L${LOCALBASE}/lib
+NLS_USES=		gettext localbase
 
 .include <bsd.port.mk>

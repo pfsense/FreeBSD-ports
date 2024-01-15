@@ -1,14 +1,12 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mate-backgrounds
-PORTVERSION=	1.24.2
+PORTVERSION=	1.26.0
 CATEGORIES=	x11-themes graphics mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Collection of backgrounds for MATE
+WWW=		https://mate-desktop.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

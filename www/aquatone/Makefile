@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	aquatone
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.7.0
-PORTREVISION=	1
+PORTREVISION=	16
 CATEGORIES=	www security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tool for domain flyovers that checks open ports and takes screenshots
+WWW=		https://michenriksen.com/blog/aquatone-now-in-go/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

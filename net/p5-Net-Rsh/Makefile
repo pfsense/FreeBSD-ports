@@ -1,6 +1,3 @@
-# Created by: Jon Nistor <nistor@snickers.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Rsh
 PORTVERSION=	0.05
 PORTREVISION=	1

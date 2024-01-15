@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	myrepos
 PORTVERSION=	1.20180726
 CATEGORIES=	devel
@@ -9,10 +7,12 @@ DISTNAME=	mr-${PORTVERSION}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Tool to manage all your version control repos
+WWW=		https://myrepos.branchable.com/
 
 LICENSE=	GPLv2+
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	run
 SHEBANG_FILES=	mr
 

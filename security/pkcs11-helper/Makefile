@@ -1,13 +1,11 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pkcs11-helper
-PORTVERSION=	1.27.0
+PORTVERSION=	1.29.0
 CATEGORIES=	security devel
-MASTER_SITES=	https://github.com/OpenSC/pkcs11-helper/releases/download/pkcs11-helper-${PORTVERSION:R}/
+MASTER_SITES=	https://github.com/OpenSC/pkcs11-helper/releases/download/pkcs11-helper-${PORTVERSION}/
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Helper library for multiple PKCS\#11 providers
+WWW=		https://github.com/OpenSC/pkcs11-helper
 
 LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	dual

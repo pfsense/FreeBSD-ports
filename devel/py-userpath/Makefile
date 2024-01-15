@@ -1,24 +1,21 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	userpath
-PORTVERSION=	1.4.1
+PORTVERSION=	1.9.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Add locations to the user PATH without elevated privileges
+WWW=		https://github.com/ofek/userpath
 
-LICENSE=	APACHE20 MIT
-LICENSE_COMB=	dual
-LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
-LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>=0:devel/py-hatchling@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=0:devel/py-click@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

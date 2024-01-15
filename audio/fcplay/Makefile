@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
-
 PORTNAME=	fcplay
 PORTVERSION=	0.0.1
 PORTREVISION=	2
@@ -16,11 +13,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libsidplay.so:audio/libsidplay
 
-USES=		gmake tar:tgz
+USES=		gmake localbase tar:tgz
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
-CXXFLAGS+=	-I${LOCALBASE}/include
-PORTDOCS=	ABOUT POINTER
+
 PLIST_FILES=	bin/fcplay
+PORTDOCS=	ABOUT POINTER
 
 OPTIONS_DEFINE=	DOCS
 

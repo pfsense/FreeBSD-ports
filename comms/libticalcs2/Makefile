@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libticalcs2
 PORTVERSION=	1.1.9
 CATEGORIES=	comms
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/tilp/tilp2-linux/tilp2-1.18
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	TI calculator library
+WWW=		http://tilp.info/
 
 LICENSE=	GPLv2
 

@@ -1,12 +1,10 @@
-# Created by: Sofian Brabez <sbrabez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	honggfuzz
 PORTVERSION=	0.7
 CATEGORIES=	security
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	General-purpose fuzzer with simple, command-line interface
+WWW=		http://code.google.com/p/honggfuzz/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING

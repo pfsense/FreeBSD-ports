@@ -1,6 +1,3 @@
-# Created by: Christopher Preston <rbg@gayteenresource.org>
-# $FreeBSD$
-
 PORTNAME=	nettoe
 PORTVERSION=	1.5.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.c-s.li/ports/ \
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Tic tac toe game playable over the network
+WWW=		http://nettoe.sourceforge.net/
 
 LICENSE=	GPLv2
 

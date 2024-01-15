@@ -1,8 +1,5 @@
-# Created by: John Merryweather Cooper
-# $FreeBSD$
-
 PORTNAME=	docs
-PORTVERSION=	3.2.0
+PORTVERSION=	3.2.2
 CATEGORIES=	lang
 MASTER_SITES=	ftp://ftp.freepascal.org/pub/fpc/dist/${PORTVERSION}/docs/ \
 		ftp://freepascal.stack.nl/pub/fpc/dist/${PORTVERSION}/docs/
@@ -12,6 +9,7 @@ DIST_SUBDIR=	freepascal/${PORTVERSION}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Free Pascal compiler Adobe Acrobat(tm) documentation
+WWW=		https://www.freepascal.org/
 
 ONLY_FOR_ARCHS=	i386 amd64
 NO_BUILD=	yes

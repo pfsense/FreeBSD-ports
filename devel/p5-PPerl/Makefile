@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	PPerl
 PORTVERSION=	0.25
 PORTREVISION=	4
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make perl scripts persistent in memory
+WWW=		https://metacpan.org/release/PPerl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-IDEA
 PORTVERSION=	1.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to IDEA block cipher
+WWW=		https://metacpan.org/release/Crypt-IDEA
 
 USES=		perl5
 USE_PERL5=	configure

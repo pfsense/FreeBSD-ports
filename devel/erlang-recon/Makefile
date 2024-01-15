@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	recon
-PORTVERSION=	2.4.0
+DISTVERSION=	2.5.3
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Collection of functions and scripts to debug Erlang in production
+WWW=		https://ferd.github.io/recon/
 
 LICENSE=	BSD3CLAUSE
 

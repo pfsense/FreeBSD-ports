@@ -1,12 +1,10 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	scterc
 PORTVERSION=	0.0.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Configure SCT ERC for hard disks on system startup
+WWW=		https://github.com/AMDmi3/scterc-rc.d
 
 RUN_DEPENDS=	smartctl:sysutils/smartmontools
 

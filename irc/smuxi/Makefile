@@ -1,15 +1,13 @@
-# Created by: Romain Tartiere <romain@blogreen.org>
-# $FreeBSD$
-
 PORTNAME=	smuxi
-PORTVERSION=	1.0.8
+PORTVERSION=	1.2.1
 CATEGORIES=	irc
 MASTER_SITES=	http://www.smuxi.org/jaws/data/files/
 
 MAINTAINER=	fox@FreeBSD.org
 COMMENT=	Smart MUltipleXed Irc
+WWW=		https://smuxi.im/
 
-LICENSE=	LGPL21
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/log4net.pc:devel/log4net \
@@ -24,7 +22,6 @@ GNU_CONFIGURE=	yes
 USES=		desktop-file-utils gettext-tools:build gmake gnome mono \
 		pkgconfig
 USE_GNOME=	gtksharp20
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		DBUS NLS SPELLCHECK
 OPTIONS_DEFAULT=	DBUS NLS SPELLCHECK
@@ -32,8 +29,9 @@ OPTIONS_SUB=		yes
 
 SPELLCHECK_DESC=	Spell checking support via GtkSpell
 
-DBUS_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/ndesk-dbus-1.0.pc:devel/ndesk-dbus \
-			${LOCALBASE}/libdata/pkgconfig/ndesk-dbus-glib-1.0.pc:devel/ndesk-dbus-glib
+DBUS_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/dbus-sharp-glib-2.0.pc:devel/dbus-sharp-glib \
+			${LOCALBASE}/libdata/pkgconfig/gtk-sharp-3.0.pc:x11-toolkits/gtk-sharp30
+
 SPELLCHECK_LIB_DEPENDS=	libgtkspell.so:textproc/gtkspell
 
 NLS_USES=		gettext

@@ -9,6 +9,3 @@ Key improvements include:
     * Ignores source code control directories, like CVS, .svn and _darcs.
     * Uses Perl regular expressions
     * Highlights matched text
-
-WWW: https://metacpan.org/release/ack
-WWW: https://beyondgrep.com/

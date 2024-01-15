@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	${DICT}-aspell
 SPELLVERSION=	-hr-0.51-0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Croatian dictionary
+WWW=		http://aspell.net/
 
 DICT=	 	hr
 

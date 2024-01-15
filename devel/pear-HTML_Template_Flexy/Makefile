@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	HTML_Template_Flexy
 PORTVERSION=	1.3.13
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Extremely powerful Tokenizer driven Template engine
+WWW=		https://pear.php.net/package/HTML_Template_Flexy
 
 LICENSE=	PHP202
 

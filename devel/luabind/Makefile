@@ -1,24 +1,23 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	luabind
 PORTVERSION=	0.9.1
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library that helps you create bindings between C++ and Lua
+WWW=		https://www.rasterbar.com/products/luabind.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	${PY_BOOST}
 
-USES=		compiler:c++11-lang lua:51 python:env
+USES=		compiler:c++11-lang localbase lua:51 python:env
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
-CPPFLAGS+=	-I.. -I${LUA_INCDIR} -I${LOCALBASE}/include
+CPPFLAGS+=	-I.. -I${LUA_INCDIR}
 LDFLAGS+=	-L${LUA_LIBDIR}
 CXXFLAGS+=	-fPIC
 

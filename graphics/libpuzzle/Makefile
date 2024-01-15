@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpuzzle
 PORTVERSION=	0.11
 PORTREVISION=	11
@@ -8,6 +6,7 @@ MASTER_SITES=	ftp://ftp.pureftpd.org/pub/pure-ftpd/misc/libpuzzle/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to find similar pictures
+WWW=		http://libpuzzle.pureftpd.org/project/libpuzzle
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING

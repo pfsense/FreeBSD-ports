@@ -1,14 +1,12 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	xdiskusage
-PORTVERSION=	1.52
+PORTVERSION=	1.54
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://xdiskusage.sourceforge.net/ \
 		http://www.gnu-darwin.org/distfiles/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Show where disk space is taken up
+WWW=		https://xdiskusage.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/README

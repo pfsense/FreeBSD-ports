@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	sdlmm
 PORTVERSION=	0.1.8
 PORTREVISION=	9
@@ -10,6 +7,7 @@ DISTNAME=	SDLmm-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ Wrapper for the SDL (Simple DirectMedia Layer)
+WWW=		https://sdlmm.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

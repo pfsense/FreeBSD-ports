@@ -1,6 +1,3 @@
-# Created by: Michael Le Barbier GrÃ¼newald <michipili@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	bsdowl
 PORTVERSION=	2.2.1
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	https://github.com/michipili/bsdowl/releases/download/v${PORTVERSI
 
 MAINTAINER=	michipili@gmail.com
 COMMENT=	BSD Make macros for TeX, OCaml, noweb and more
+WWW=		https://github.com/michipili/bsdowl
 
 LICENSE=	CeCILL-Bv1
 LICENSE_NAME=	CeCILL B, Version 1.0

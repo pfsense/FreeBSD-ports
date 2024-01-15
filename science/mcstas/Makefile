@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcstas
 PORTVERSION=	2.5
 CATEGORIES=	science
@@ -8,6 +6,7 @@ DISTNAME=	mcstas-${PORTVERSION}-src
 
 MAINTAINER=	erkn@fysik.dtu.dk
 COMMENT=	Monte Carlo neutron ray tracing package
+WWW=		https://www.mcstas.org
 
 LICENSE=	GPLv2
 

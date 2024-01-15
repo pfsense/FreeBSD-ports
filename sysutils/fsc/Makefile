@@ -1,12 +1,10 @@
-# Created by: Tom Rhodes <trhodes@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fsc
 PORTVERSION=	1.2
 CATEGORIES=	sysutils
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	FreeBSD Services Control family of utilities
+WWW=		https://github.com/bsdtrhodes/freebsd-fscd/
 
 LICENSE=	BSD2CLAUSE
 
@@ -17,6 +15,12 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	bsdtrhodes
 GH_PROJECT=	freebsd-fscd
 GH_TAGNAME=	ef16626
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=unused-but-set-variable
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc|${PREFIX}/etc|' \

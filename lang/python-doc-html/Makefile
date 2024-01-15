@@ -1,16 +1,14 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	python-doc-${DOCFORMAT}
-PORTVERSION=	${PYTHON_PORTVERSION}
+DISTVERSION=	${PYTHON_DISTVERSION}
 CATEGORIES=	lang python
-MASTER_SITES=	PYTHON/ftp/python/doc/${PORTVERSION} \
+MASTER_SITES=	PYTHON/ftp/python/doc/${DISTVERSION} \
 		PYTHON/ftp/python/doc/current
-DISTNAME=	python-${PORTVERSION}-docs-${DOCFORMAT}
+DISTNAME=	python-${DISTVERSION}-docs-${DOCFORMAT}
 DIST_SUBDIR=	python
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Documentation for the Python programming language
+WWW=		https://www.python.org/doc/
 
 PORTSCOUT=	ignore:1
 
@@ -39,7 +37,7 @@ _VERS!=		${MAKE} -V _PYTHON_VERSIONS:O
 
 all_python_versions:
 .for v in ${_VERS}
-	@${MAKE} -V PYTHON_PORTVERSION DEFAULT_VERSIONS=python=${v}
+	@${MAKE} -C ${PORTSDIR}/lang/python${v:S/.//} -V PYTHON_DISTVERSION
 .endfor
 
 .if make(makesum)
@@ -55,6 +53,7 @@ DISTFILES+=	python-${v}-docs-${f}${EXTRACT_SUFX}:${v:S/./x/g},DEFAULT
 .endfor
 .endfor
 MASTER_SITES+=	PYTHON/ftp/python/doc/current
+.export MASTER_SITES
 .endif
 
 pre-install:

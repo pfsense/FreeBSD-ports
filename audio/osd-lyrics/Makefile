@@ -1,14 +1,12 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	osdlyrics
 PORTVERSION=	0.4.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	audio deskutils
 MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/osd-lyrics/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	On-screen lyrics display program for various media players
+WWW=		https://code.google.com/archive/p/osd-lyrics/
 
 LICENSE=	GPLv3
 
@@ -20,7 +18,6 @@ USES=		compiler:c++11-lang desktop-file-utils gettext gmake gnome \
 		iconv localbase pkgconfig sqlite
 USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 

@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Mail-Freshmeat
 PORTVERSION=	1.20
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to parse daily newsletters from freshmeat.net
+WWW=		https://metacpan.org/release/ASPIERS/Mail-Freshmeat-0.94
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

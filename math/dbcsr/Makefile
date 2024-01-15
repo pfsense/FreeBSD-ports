@@ -1,32 +1,37 @@
-# $FreeBSD$
-
 PORTNAME=	dbcsr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.1
-PORTREVISION=	4
+DISTVERSION=	2.6.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Distributed Block Compressed Sparse Row matrix library
+WWW=		https://www.cp2k.org/dbcsr
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
+
 BUILD_DEPENDS=	fypp:devel/py-fypp@${PY_FLAVOR}
 
-USES=		blaslapack:openblas cmake:noninja compiler:c++14-lang fortran \
+USES=		blaslapack:openblas cmake:noninja,testing compiler:c++14-lang fortran \
 		python:build
-USE_GITHUB=	yes
-GH_ACCOUNT=	cp2k
 USE_LDCONFIG=	yes
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	cp2k
+
+FFLAGS+=	-D__NO_STATM_ACCESS # disable /proc/self/statm access
 LDFLAGS+=	-lopenblas
 
 CMAKE_ON=	BUILD_SHARED_LIBS
-CMAKE_OFF=	BUILD_TESTING
-CMAKE_ARGS=	-DBLA_VENDOR:STRING="OpenBLAS"
+CMAKE_OFF=	BUILD_TESTING WITH_EXAMPLES
+CMAKE_ARGS=	-DBLA_VENDOR:STRING="OpenBLAS" -DPython_EXECUTABLE=${PYTHON_CMD}
 
-TEST_TARGET=	test # tests hang: https://github.com/cp2k/dbcsr/issues/72
+BINARY_ALIAS=	git=false # with git sonames get messed up
 
 OPTIONS_DEFINE=		MPI OPENMP C_API # libxsmm is supposed to be supported, but cmake build lacks the corresponding option: https://github.com/cp2k/dbcsr/issues/73
 OPTIONS_DEFAULT=	MPI OPENMP C_API
@@ -47,11 +52,5 @@ CMAKE_ARGS+=	-DCMAKE_Fortran_FLAGS="${FFLAGS} -fallow-argument-mismatch" # -fall
 .  else
 CMAKE_ARGS+=	-DCMAKE_Fortran_FLAGS="${FFLAGS}"
 .  endif
-
-do-test: # tests are broken: https://github.com/cp2k/dbcsr/issues/150
-	@cd ${BUILD_WRKSRC} && \
-		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DBUILD_TESTING:BOOL=ON ${CMAKE_SOURCE_PATH} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
 
 .include <bsd.port.post.mk>

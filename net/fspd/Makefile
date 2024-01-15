@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	fspd
 PORTVERSION=	2.8.1.29
 CATEGORIES=	net
@@ -9,6 +6,7 @@ DISTNAME=	fsp-2.8.1b29
 
 MAINTAINER=	hsn@sendmail.cz
 COMMENT=	FSP daemon, clients, and scanner
+WWW=		https://fsp.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

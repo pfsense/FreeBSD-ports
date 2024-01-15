@@ -1,45 +1,46 @@
-# $FreeBSD$
-
 PORTNAME=	ocrmypdf
-DISTVERSION=	11.3.1
+DISTVERSION=	15.4.4
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Adds an OCR text layer to scanned PDF files
+WWW=		https://github.com/ocrmypdf/OCRmyPDF
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.9.1:devel/py-cffi@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm_git_archive>=0:devel/py-setuptools_scm_git_archive@${PY_FLAVOR}
-LIB_DEPENDS=	liblept.so:graphics/leptonica
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.9.1:devel/py-cffi@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}coloredlogs>=14.0:devel/py-coloredlogs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}img2pdf>=0.3.0<0.5:graphics/py-img2pdf@${PY_FLAVOR} \
-		${PY_PILLOW} \
-		${PYTHON_PKGNAMEPREFIX}tqdm>=4:misc/py-tqdm@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}reportlab>=3.3.0:print/py-reportlab@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}chardet>=3.0.4,<4:textproc/py-chardet@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pdfminer.six>=20191110<20201019:textproc/py-pdfminer.six@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pikepdf>=1.14.0<3:textproc/py-pikepdf@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pluggy>=0.13.0<1.0:devel/py-pluggy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}deprecation>=2.1.0:devel/py-deprecation@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}img2pdf>=0.4.4:graphics/py-img2pdf@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>=20:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=10.0.1:graphics/py-pillow@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}reportlab>=3.6.8:print/py-reportlab@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rich>=13:textproc/py-rich@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pdfminer.six>=20220319:textproc/py-pdfminer.six@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pikepdf>=8.7.1:textproc/py-pikepdf@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pluggy>=0.13.0:devel/py-pluggy@${PY_FLAVOR} \
 		tesseract:graphics/tesseract
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=4.4.1:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-helpers-namespace>=2019.1.8:devel/py-pytest-helpers-namespace@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=1.31.0:devel/py-pytest-xdist@${PY_FLAVOR} \
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hypothesis>=6.36.0:devel/py-hypothesis@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=2.5.0:devel/py-pytest-xdist@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-xmp-toolkit>=2.0.1:textproc/py-python-xmp-toolkit@${PY_FLAVOR}
 
-USES=		ghostscript:run python:3.6+ shebangfix
-USE_LOCALE=	en_US.UTF-8
-USE_PYTHON=	autoplist concurrent distutils
+USES=		ghostscript:run python:3.9+ shebangfix
+USE_PYTHON=	autoplist concurrent pep517 pytest
+# Skip some checks as they yield wrong results if run with the root account
+PYTEST_IGNORED_TESTS=	test_chmod \
+			test_input_file_not_readable \
+			test_malformed_docinfo # leads to an internal pytest error
 
 SHEBANG_FILES=	src/ocrmypdf/__main__.py \
 		src/ocrmypdf/hocrtransform.py \
-	       	src/ocrmypdf/leptonica.py \
 		src/ocrmypdf/pdfinfo/__init__.py
+
+TEST_ARGS=	-n ${MAKE_JOBS_NUMBER}
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 NO_ARCH=	yes
 
@@ -54,18 +55,16 @@ UNPAPER_DESC=	Deskew and clean up pages before OCR processing
 PNGQUANT_RUN_DEPENDS=	pngquant:graphics/pngquant
 UNPAPER_RUN_DEPENDS=	unpaper:graphics/unpaper
 
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 31000
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4:devel/py-typing-extensions@${PY_FLAVOR}
+.endif
+
 post-install:
 	# Install shell completion files
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d ${STAGEDIR}${PREFIX}/share/fish/vendor_completions.d/
 	${INSTALL_DATA} ${WRKSRC}/misc/completion/ocrmypdf.bash ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 	${INSTALL_DATA} ${WRKSRC}/misc/completion/ocrmypdf.fish ${STAGEDIR}${PREFIX}/share/fish/vendor_completions.d/
 
-do-test:
-	# Skip some checks as they yield wrong results if run with the root account
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} -m pytest -rs -v \
-	       	-n ${MAKE_JOBS_NUMBER} -k ' \
-		not test_dev_null \
-		and not test_input_file_not_readable \
-		and not test_chmod'
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

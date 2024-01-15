@@ -4,13 +4,15 @@ include/KF5/KDBusAddons/KDBusInterProcessLock
 include/KF5/KDBusAddons/KDBusService
 include/KF5/KDBusAddons/KDEDModule
 include/KF5/KDBusAddons/KDEInitInterface
+include/KF5/KDBusAddons/UpdateLaunchEnvironmentJob
 include/KF5/KDBusAddons/kdbusaddons_export.h
+include/KF5/KDBusAddons/kdbusaddons_version.h
 include/KF5/KDBusAddons/kdbusconnectionpool.h
 include/KF5/KDBusAddons/kdbusinterprocesslock.h
 include/KF5/KDBusAddons/kdbusservice.h
 include/KF5/KDBusAddons/kdedmodule.h
 include/KF5/KDBusAddons/kdeinitinterface.h
-include/KF5/kdbusaddons_version.h
+include/KF5/KDBusAddons/updatelaunchenvironmentjob.h
 lib/cmake/KF5DBusAddons/KF5DBusAddonsConfig.cmake
 lib/cmake/KF5DBusAddons/KF5DBusAddonsConfigVersion.cmake
 lib/cmake/KF5DBusAddons/KF5DBusAddonsMacros.cmake
@@ -23,6 +25,7 @@ lib/libKF5DBusAddons.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KDBusAddons.pri
 share/locale/ar/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/az/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/bg/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/bs/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ca/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ca@valencia/LC_MESSAGES/kdbusaddons5_qt.qm
@@ -31,6 +34,7 @@ share/locale/da/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/de/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/el/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/en_GB/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/eo/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/es/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/et/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/eu/LC_MESSAGES/kdbusaddons5_qt.qm
@@ -38,11 +42,14 @@ share/locale/fi/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/fr/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/gd/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/gl/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/hi/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/hu/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ia/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/id/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/is/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/it/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ja/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/ka/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ko/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/lt/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ml/LC_MESSAGES/kdbusaddons5_qt.qm

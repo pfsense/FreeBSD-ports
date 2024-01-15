@@ -1,6 +1,3 @@
-# Created by: keiichi@iijlab.net
-# $FreeBSD$
-
 PORTNAME=	ical2html
 PORTVERSION=	2.1
 CATEGORIES=	converters
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.w3.org/Tools/Ical2html/
 
 MAINTAINER=	keiichi@iijlab.net
 COMMENT=	Manipulation commands for iCalendar files
+WWW=		https://www.w3.org/Tools/Ical2html/
 
 LIB_DEPENDS=	libical.so:devel/libical
 

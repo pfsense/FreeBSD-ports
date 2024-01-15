@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xanalyser
 PORTVERSION=	1.32
 PORTREVISION=	3
@@ -9,12 +7,15 @@ MASTER_SITES=	http://arvin.schnell-web.net/xanalyser/ \
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Spectrum analyser
+WWW=		http://arvin.schnell-web.net/xanalyser/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake libtool motif tar:bzip2 xorg
 USE_XORG=	x11 xmu ice sm xt xext
+USE_CXXSTD=	c++14 # to fix build on 14 with clang-16 that has c++20 by default: error: ISO C++17 does not allow 'register' storage class specifier
+
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/xanalyser lib/X11/app-defaults/XAnalyser man/man1/xanalyser.1.gz

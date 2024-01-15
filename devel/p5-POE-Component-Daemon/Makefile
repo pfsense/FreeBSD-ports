@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Daemon
 PORTVERSION=	0.1400
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Handles all the housework for a daemon in POE
+WWW=		https://metacpan.org/release/POE-Component-Daemon
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

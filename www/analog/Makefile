@@ -1,9 +1,6 @@
-# Created by: jfitz
-# $FreeBSD$
-
 PORTNAME=	analog
 PORTVERSION=	6.0
-PORTREVISION=	12
+PORTREVISION=	13
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://analog.gsp.com/ \
@@ -11,6 +8,7 @@ MASTER_SITES=	http://analog.gsp.com/ \
 
 MAINTAINER=	john@essenz.com
 COMMENT=	Fast program for analysing WWW logfiles
+WWW=		https://analog.gsp.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Licence.txt

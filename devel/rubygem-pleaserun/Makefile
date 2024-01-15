@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	pleaserun
-PORTVERSION=	0.0.31
+PORTVERSION=	0.0.32
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Tool to generate startup scripts
+WWW=		https://github.com/jordansissel/pleaserun
 
 LICENSE=	APACHE20
 
@@ -18,7 +17,6 @@ RUN_DEPENDS=	rubygem-cabin>=0:devel/rubygem-cabin \
 		rubygem-stud>=0:devel/rubygem-stud
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

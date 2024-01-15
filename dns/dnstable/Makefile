@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	dnstable
-PORTVERSION=	0.11.2
+PORTVERSION=	0.13.2
+PORTREVISION=	0
 CATEGORIES=	dns
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 
 MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	Encoding format, library, and utilities for passive DNS data
+WWW=		https://github.com/farsightsec/dnstable
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

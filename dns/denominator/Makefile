@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	denominator
 PORTVERSION=	4.7.1
 CATEGORIES=	dns java
@@ -8,8 +5,9 @@ MASTER_SITES=	https://bintray.com/artifact/download/netflixoss/maven/com/netflix
 DISTNAME=	${PORTNAME}-cli-${PORTVERSION}-fat.jar
 EXTRACT_SUFX=
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Portably control DNS clouds
+WWW=		https://github.com/Netflix/denominator
 
 USE_JAVA=	yes
 NO_BUILD=	yes

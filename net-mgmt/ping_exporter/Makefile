@@ -1,37 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	ping_exporter
-DISTVERSION=	0.44
-PORTREVISION=	3
+DISTVERSION=	1.1.0
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	jp+ports@supplntr.io
 COMMENT=	Prometheus exporter for ICMP echo requests
+WWW=		https://github.com/czerwonk/ping_exporter
 
-LICENSE=	APACHE20
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
-USE_GITHUB=	yes
-GH_ACCOUNT=	czerwonk
-GH_TUPLE=	golang:net:83d349e8ac1a:golang_net/vendor/golang.org/x/net_83d349e8ac1a \
-		golang:sys:fead79001313:golang_sys/vendor/golang.org/x/sys_fead79001313
-
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
-GO_TARGET=	github.com/${GH_ACCOUNT}/${PORTNAME}
+USES=		go:modules
 
 USE_RC_SUBR=	ping_exporter
-SUB_FILES=	pkg-message
 
-pre-build:
-	${RM} -r ${WRKSRC}/vendor/golang.org/x/net ${WRKSRC}/vendor/golang.org/x/sys
-	${MV} ${WRKSRC}/vendor/golang.org/x/net_83d349e8ac1a ${WRKSRC}/vendor/golang.org/x/net
-	${MV} ${WRKSRC}/vendor/golang.org/x/sys_fead79001313 ${WRKSRC}/vendor/golang.org/x/sys
+GO_MODULE=	github.com/czerwonk/ping_exporter@v0.0.0-20230519045214-d3a6779128c3
+
+SUB_FILES=	pkg-message
 
 post-install:
 	${INSTALL_DATA} ${PATCHDIR}/ping_exporter.yml.sample \
 		${STAGEDIR}${PREFIX}/etc/ping_exporter.yml.sample
 	${MKDIR} ${STAGEDIR}${DATADIR}/syslog.d \
-	    	${STAGEDIR}${DATADIR}/newsyslog.conf.d
+		${STAGEDIR}${DATADIR}/newsyslog.conf.d
 	${INSTALL_DATA} ${PATCHDIR}/ping_exporter.syslog \
 		${STAGEDIR}${DATADIR}/syslog.d/ping_exporter.conf
 	${INSTALL_DATA} ${PATCHDIR}/ping_exporter.newsyslog \

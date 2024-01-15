@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	openbubbles
 PORTVERSION=	1.2
 PORTREVISION=	5
@@ -11,6 +8,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clone of Evan Bailey's game Bubbles
+WWW=		https://web.archive.org/web/20101126190910/http://www.freewebs.com/lasindi/openbubbles/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,6 @@ GNU_CONFIGURE=	yes
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
 
 DESKTOP_ENTRIES="OpenBubbles" "" "${PORTNAME}" \

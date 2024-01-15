@@ -1,6 +1,3 @@
-# Created by: Martin Blapp
-# $FreeBSD$
-
 PORTNAME=	imapproxy
 DISTVERSION=	1.2.8-pre20171105
 CATEGORIES=	mail
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	up-
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Caching IMAP proxy server
+WWW=		http://www.imapproxy.org
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

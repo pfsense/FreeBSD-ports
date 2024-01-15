@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mplayer-skins
 PORTVERSION=	1.1.5
 CATEGORIES=	multimedia
@@ -11,6 +8,7 @@ DIST_SUBDIR=	mplayer-skins
 
 MAINTAINER=	riggs@FreeBSD.org
 COMMENT=	Skins for MPlayer's Graphical User Interface (GUI)
+WWW=		http://www.mplayerhq.hu/
 
 #
 # When adding a new skin, please make sure to add it into the following

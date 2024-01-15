@@ -1,19 +1,17 @@
-# Created by: Michael Gmelin <grembo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	buildbot-pkg
-PORTVERSION=	2.7.0
+PORTVERSION=	3.10.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Buildbot packaging tools
+WWW=		https://buildbot.net
 
 LICENSE=	GPLv2
 #LICENSE_FILE=	Not packaged in sdist
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

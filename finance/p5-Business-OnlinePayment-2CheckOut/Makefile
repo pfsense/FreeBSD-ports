@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Business-OnlinePayment-2CheckOut
 PORTVERSION=	0.02
 PORTREVISION=	2

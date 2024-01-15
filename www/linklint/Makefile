@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	linklint
 DISTVERSION=	2.3.6.d
 CATEGORIES=	www
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.linklint.org/download/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Perl script that checks links on web sites
+WWW=		http://www.linklint.org/
 
 USES=		shebangfix perl5
 USE_PERL5=	run

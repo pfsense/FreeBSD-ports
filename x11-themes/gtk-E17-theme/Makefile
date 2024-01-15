@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	E17
-PORTVERSION=	3.22.1
+PORTVERSION=	3.22.2
 DISTVERSIONPREFIX=	V
 PORTEPOCH=	1
 CATEGORIES=	x11-themes enlightenment
@@ -10,6 +8,7 @@ PKGNAMESUFFIX=	-theme
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dark GTK theme for Enlightenment
+WWW=		https://github.com/tsujan/E17gtk
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

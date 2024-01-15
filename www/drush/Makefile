@@ -1,8 +1,5 @@
-# Created by: Thomas Sandford <freebsduser@paradisegreen.co.uk>
-# $FreeBSD$
-
 PORTNAME=	drush
-DISTVERSION=	8.3.3
+DISTVERSION=	8.4.12
 PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/drush-ops/drush/releases/download/${DISTVERSION}/
@@ -10,8 +7,9 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	drush
 EXTRACT_SUFX=	.phar
 
-MAINTAINER=	mfechner@FreeBSD.org
+MAINTAINER=	me@skylord.ru
 COMMENT=	Drupal command line and scripting interface
+WWW=		https://github.com/drush-ops/drush
 
 LICENSE=	GPLv2+
 
@@ -21,7 +19,9 @@ NO_ARCH=	yes
 
 USES=		php:cli,flavors
 # set php requirements same as drupal itself
-USE_PHP=	gd pcre session mbstring ctype json hash simplexml dom pdo filter phar
+USE_PHP=	gd session mbstring ctype simplexml dom pdo filter phar
+
+CONFLICTS_INSTALL=	drush-php* # bin/drush bin/drush.phar
 
 PLIST_FILES=	bin/drush bin/drush.phar
 

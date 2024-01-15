@@ -1,6 +1,3 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tarantool
 PORTVERSION=	0.5.8
 CATEGORIES=	databases rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tarantool KV-storage client
+WWW=		https://github.com/tarantool/tarantool-ruby
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,6 +16,5 @@ RUN_DEPENDS=	rubygem-bin_utils>=0.0.3<0.1:devel/rubygem-bin_utils \
 		rubygem-sumbur>=0.0.2:devel/rubygem-sumbur
 
 USES=		gem
-USE_RUBY=	yes
 
 .include <bsd.port.mk>

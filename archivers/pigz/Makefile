@@ -1,14 +1,12 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	pigz
-PORTVERSION=	2.4
+PORTVERSION=	2.8
 CATEGORIES=	archivers
 MASTER_SITES=	http://www.zlib.net/pigz/ \
 		http://freebsd.unixfreunde.de/sources/
 
 MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	Parallel GZIP
+WWW=		https://www.zlib.net/pigz/
 
 LICENSE=	ZLIB
 
@@ -24,7 +22,10 @@ PLIST_FILES=	bin/pigz bin/pigzn bin/pigzt bin/unpigz
 PLIST_FILES+=	share/man/man1/pigz.1.gz
 
 post-patch:
-	${REINPLACE_CMD} -e 's/$${ZOPFLI}.*//' \
+	${REINPLACE_CMD} -e 's/$$(ZOPFLI).*//' \
+		-e 's/$$(ZOP).*//' \
+		${WRKSRC}/Makefile
+	${REINPLACE_CMD} -E -e 's/-o pigz(t?) /-pthread -o pigz\1 /' \
 		${WRKSRC}/Makefile
 	${REINPLACE_CMD} -e 's,zopfli/src/,,' \
 		${WRKSRC}/pigz.c

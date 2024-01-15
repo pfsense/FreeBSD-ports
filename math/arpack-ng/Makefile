@@ -1,12 +1,11 @@
-# Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	arpack-ng
-DISTVERSION=	3.8.0
+DISTVERSION=	3.9.1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Revised Argand library for solving large-scale eigenvalue problems
+WWW=		https://forge.scilab.org/index.php/p/arpack-ng/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

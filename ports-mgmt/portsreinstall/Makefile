@@ -1,14 +1,12 @@
-# Created by: Mamoru Sakaue / MwGhennndo
-# $FreeBSD$
-
 PORTNAME=	portsreinstall
-PORTVERSION=	4.1.0
+DISTVERSION=	4.1.1
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	OSDN/${PORTNAME} \
 		http://www.mwghennndo.com/software/${PORTNAME}/
 
 MAINTAINER=	sakaue.mamoru@mwghennndo.com
 COMMENT=	Ports upgrading utility for massive forced reinstall
+WWW=		http://www.mwghennndo.com/software/portsreinstall/
 
 LICENSE=	BSD2CLAUSE
 

@@ -1,14 +1,13 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tk
 PORTVERSION=	804.035
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits tk perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Re-port of a perl5 interface to Tk8.4
+WWW=		https://metacpan.org/release/Tk
 
 LICENSE=	ARTPERL10
 

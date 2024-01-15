@@ -1,43 +1,28 @@
-# Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
-
 PORTNAME=	cavezofphear
-PORTVERSION=	0.5.1
-PORTREVISION=	1
+PORTVERSION=	0.6.1
 CATEGORIES=	games
-MASTER_SITES=	http://www.x86.no/cavezofphear/ \
-		http://mirror.amdmi3.ru/distfiles/
-DISTNAME=	phear-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Boulder Dash / Digger-like game written using ncurses
+MAINTAINER=	amdmi3@FreeBSD.org
+COMMENT=	Boulder Dash / Digger-like game for consoles/terminals
+WWW=		https://github.com/AMDmi3/cavezofphear
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_WRKSRC=	${WRKDIR}/${DISTNAME}/src
+BUILD_DEPENDS=	help2man:misc/help2man
 
-USES=		gmake ncurses tar:bzip2
-MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
-ALL_TARGET=	phear
+USES=		cmake ncurses
+USE_GITHUB=	true
+GH_ACCOUNT=	AMDmi3
+CMAKE_ON=	SYSTEMWIDE
+CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=share/man
 
-CFLAGS+=		-fcommon
-
-DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
-EXPIRATION_DATE=2021-04-01
-
-PORTDOCS=	ChangeLog README README-EDITOR TODO
+DATADIR=	${PREFIX}/share/phear
+PLIST_FILES=	bin/phear share/man/man6/phear.6.gz
+PORTDOCS=	ChangeLog.md README.md TODO
+PORTDATA=	*
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|\./data|${DATADIR}/data|' ${WRKSRC}/src/chk.c
-	@${REINPLACE_CMD} -e 's|\./phear|phear|' ${WRKSRC}/README-EDITOR
-
-do-install:
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/phear ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${DATADIR}
-	(cd ${WRKSRC}; ${COPYTREE_SHARE} data ${STAGEDIR}${DATADIR})
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

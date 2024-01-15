@@ -1,13 +1,12 @@
-# Created by: Aragon Gouveia <aragon@phat.za.net>
-# $FreeBSD$
-
 PORTNAME=	spectrwm
 DISTVERSIONPREFIX=	SPECTRWM_
 DISTVERSION=	3_4_1
+PORTREVISION=	1
 CATEGORIES=	x11-wm
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	pyrus@bsdmail.com
 COMMENT=	Small, dynamic tiling window manager for X11
+WWW=		https://github.com/conformal/spectrwm
 
 LICENSE=	ISCL
 
@@ -19,7 +18,7 @@ RUN_DEPENDS+=	dmenu:x11/dmenu
 USE_GITHUB=	yes
 GH_ACCOUNT=	conformal
 
-OPTIONS_DEFINE= EXAMPLES
+OPTIONS_DEFINE=	EXAMPLES
 
 .include	<bsd.port.options.mk>
 

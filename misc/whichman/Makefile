@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@cae.ce.ntu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	whichman
 PORTVERSION=	2.4
 CATEGORIES=	misc
@@ -9,6 +6,7 @@ MASTER_SITES=	http://main.linuxfocus.org/~guido.socher/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Approximate matching utilities to search for manpages and files
+WWW=		http://main.linuxfocus.org/~guido/ #whichman
 
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
 

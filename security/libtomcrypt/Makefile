@@ -1,6 +1,3 @@
-# Created by: Yonatan <Yonatan@Xpert.com>
-# $FreeBSD$
-
 PORTNAME=	libtomcrypt
 PORTVERSION=	1.18.2
 PORTREVISION=	1
@@ -10,11 +7,13 @@ DISTNAME=	crypt-${PORTVERSION}
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Comprehensive, modular, and portable cryptographic toolkit
+WWW=		https://libtom.net/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake libtool:build tar:xz
+USES=		cpe gmake libtool:build tar:xz
+CPE_VENDOR=	libtom
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

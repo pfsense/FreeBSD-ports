@@ -1,8 +1,5 @@
-# Created by: Dmitry Sivachenko <dima@Chg.RU>
-# $FreeBSD$
-
 PORTNAME=	GD-Graph
-PORTVERSION=	1.54
+PORTVERSION=	1.56
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,6 +7,7 @@ DISTNAME=	GDGraph-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Graph plotting module for perl5
+WWW=		https://metacpan.org/release/GDGraph
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

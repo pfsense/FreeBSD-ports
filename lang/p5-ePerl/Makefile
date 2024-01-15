@@ -1,6 +1,3 @@
-# Created by: Ralf S. Engelschall <rse@engelschall.com>
-# $FreeBSD$
-
 PORTNAME=	eperl
 PORTVERSION=	2.2.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl Modules of ePerl package: Parse::ePerl, Apache::ePerl
+WWW=		http://www.ossp.org/pkg/tool/eperl/
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual

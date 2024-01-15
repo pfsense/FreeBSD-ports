@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Sample
 DISTVERSION=	1.2.12
 CATEGORIES=	math
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	COIN-OR data samples
+WWW=		https://www.coin-or.org/
 
 LICENSE=	EPL
 

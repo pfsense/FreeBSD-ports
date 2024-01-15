@@ -1,12 +1,10 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-prelude
-DISTVERSION=	g20201212
+DISTVERSION=	g20211023
 CATEGORIES=	chinese textproc
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Essential files for building up your Rime configuration
+WWW=		https://github.com/rime/rime-prelude
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +14,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
-GH_TAGNAME=	00a5b5a40b0e4419869ec3783744c75a8c86a5d7
+GH_TAGNAME=	4001edf96791bbb5663573ba79ba4b1e9c0b8626
 
 NO_BUILD=	yes
 NO_ARCH=	yes

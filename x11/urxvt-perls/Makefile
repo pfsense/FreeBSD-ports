@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	urxvt-perls
 PORTVERSION=	2.0
 PORTREVISION=	1
@@ -7,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	rea@FreeBSD.org
 COMMENT=	Perl extension scripts for rxvt-unicode terminal emulator
+WWW=		https://github.com/muennich/urxvt-perls
 
 LICENSE=	GPLv2
 

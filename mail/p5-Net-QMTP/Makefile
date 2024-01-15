@@ -1,6 +1,3 @@
-# Created by: James Raftery <james@now.ie>
-# $FreeBSD$
-
 PORTNAME=	Net-QMTP
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	james@now.ie
 COMMENT=	Perl module to provide a Quick Mail Transfer Protocol (QMTP) client
+WWW=		https://metacpan.org/release/Net-QMTP
 
 BUILD_DEPENDS=	p5-Text-Netstring>=0:textproc/p5-Text-Netstring
 RUN_DEPENDS=	p5-Text-Netstring>=0:textproc/p5-Text-Netstring

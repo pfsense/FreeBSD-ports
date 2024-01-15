@@ -1,13 +1,11 @@
-# Created by: Ryan T. Dean <rtdean@cytherianage.net>
-# $FreeBSD$
-
 PORTNAME=	jicmp
 PORTVERSION=	1.4.4
 CATEGORIES=	net java
 MASTER_SITES=	SF/opennms/JICMP/stable-1.4/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java native interface (JNI) to ICMP (ping)
+WWW=		https://www.opennms.org/index.php/Jicmp
 
 WRKSRC=		${WRKDIR}/jicmp-${PORTVERSION}
 

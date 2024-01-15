@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	cminpack
 PORTVERSION=	1.3.6
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math
 
 MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Solving nonlinear equations and nonlinear least squares problems
+WWW=		http://devernay.free.fr/hacks/cminpack/
 
 LICENSE_FILE=	${WRKSRC}/CopyrightMINPACK.txt
 

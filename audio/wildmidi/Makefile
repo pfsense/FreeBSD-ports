@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wildmidi
 PORTVERSION=	0.4.2
 DISTVERSIONPREFIX=	${PORTNAME}-
@@ -7,11 +5,13 @@ CATEGORIES=	audio
 
 MAINTAINER=	liangtai.s16@gmail.com
 COMMENT=	Simple software midi player and core softsynth library
+WWW=		https://www.mindwerks.net/projects/wildmidi/
 
 # player: GPLv3, library: LGPL3
 LICENSE=	LGPL3
 
-USES=		cmake
+USES=		cmake cpe
+CPE_VENDOR=	mindwerks
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

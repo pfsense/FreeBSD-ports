@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	agame
 PORTVERSION=	1577
 PORTREVISION=	13
@@ -11,6 +8,7 @@ DISTNAME=	game-src-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simple Tetris-like game
+WWW=		https://web.archive.org/web/20170226223853/http://zevv.nl/play/code/game/
 
 LICENSE=	GPLv2+
 

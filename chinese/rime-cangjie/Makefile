@@ -1,13 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-cangjie
-DISTVERSION=	g20201030
+DISTVERSION=	g20210223
 PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com
 COMMENT=	Rime Cangjie v5 schema support
+WWW=		https://github.com/rime/rime-cangjie
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,7 +22,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
-GH_TAGNAME=	d0f6f521ec049166ada29085434126be175f6439
+GH_TAGNAME=	8dfad9e537f18821b71ba28773315d9c670ae245
 
 NO_ARCH=	yes
 

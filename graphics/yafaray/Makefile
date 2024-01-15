@@ -1,36 +1,33 @@
-# Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	yafaray
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.5.1
-PORTREVISION=	2
+PORTREVISION=	21
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Montecarlo raytracing engine
+WWW=		http://www.yafaray.org/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/LICENSES
 LICENSE_FILE_LGPL21=	${WRKSRC}/LICENSES
 
-ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	assembly is only for amd64 and i386, but it breaks on i386: https://github.com/YafaRay/Core/issues/111
+ONLY_FOR_ARCHS=	amd64 powerpc64le
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
-		libHalf.so:graphics/ilmbase \
-		libIlmImf.so:graphics/openexr \
+		libImath.so:math/Imath \
+		libOpenEXR.so:graphics/openexr \
 		libopencv_photo.so:graphics/opencv \
-		libopencv_core.so:graphics/opencv-core \
+		libopencv_core.so:graphics/opencv \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
 USES=		cmake gnome jpeg
 USE_GITHUB=	yes
 GH_ACCOUNT=	YafaRay
-GH_PROJECT=	Core
+GH_PROJECT=	libYafaRay
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
@@ -44,7 +41,7 @@ OPTIONS_SUB=	yes
 QT_DESC=	Enable Qt Gui build
 QT_USES=	qt:5
 QT_CMAKE_BOOL=	WITH_QT
-QT_USE=		QT=core,gui,widgets,qmake_build,buildtools_build,qmake_build
+QT_USE=		QT=core,gui,widgets,qmake:build,buildtools:build,qmake:build
 
 post-install:
 	@${RM} ${STAGEDIR}${DOCSDIR}/LICENSES

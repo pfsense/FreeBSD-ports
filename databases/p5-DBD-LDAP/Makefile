@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	DBD-LDAP
 PORTVERSION=	1.00
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBI interface for accessing LDAP servers
+WWW=		https://metacpan.org/release/DBD-LDAP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

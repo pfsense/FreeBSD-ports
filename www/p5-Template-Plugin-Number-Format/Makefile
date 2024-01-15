@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Template-Plugin-Number-Format
 PORTVERSION=	1.06
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Plugin/filter interface to Number::Format
+WWW=		https://metacpan.org/release/Template-Plugin-Number-Format
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Number-Format>0:textproc/p5-Number-Format \

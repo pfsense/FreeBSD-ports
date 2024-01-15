@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
-
 PORTNAME=	wmmemload
 PORTVERSION=	0.1.8
 CATEGORIES=	sysutils windowmaker
@@ -8,6 +5,7 @@ MASTER_SITES=	https://dev.gentoo.org/~voyageur/distfiles/
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Dockapp for monitoring memory and swap usage
+WWW=		https://windowmaker.org/dockapps/?name=wmmemload
 
 LICENSE=	GPLv2+
 

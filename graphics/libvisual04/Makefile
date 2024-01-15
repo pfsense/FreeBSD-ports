@@ -1,6 +1,3 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libvisual
 PORTVERSION=	0.4.0
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	04
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Abstraction library that sits between apps and visual plugin
+WWW=		https://libvisual.sourceforge.net/
 
 LICENSE=	LGPL21+
 

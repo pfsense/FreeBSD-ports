@@ -1,15 +1,13 @@
-# Created by: Christopher Nehren <apeiron@coitusmentis.info>
-# $FreeBSD$
-
 PORTNAME=	log4net
 PORTVERSION=	1.2.10
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel
-MASTER_SITES=	APACHE/incubator/log4net/${PORTVERSION}
+MASTER_SITES=	https://archive.apache.org/dist/incubator/${PORTNAME}/${PORTVERSION}/
 DISTNAME=	incubating-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Port for .NET of the Apache Logging Services project
+WWW=		https://logging.apache.org/log4net/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -26,7 +24,7 @@ SUB_LIST=	PORTVERSION=${PORTVERSION}
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE= DOCS EXAMPLES
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
 	@(cd ${INSTALL_WRKSRC}/bin/mono/2.0/release && ${SETENV} MONO_SHARED_DIR=${WRKDIR} ${LOCALBASE}/bin/gacutil /root ${STAGEDIR}${PREFIX}/lib/ /gacdir ${STAGEDIR}${PREFIX}/lib /package 2.0 /i log4net.dll)

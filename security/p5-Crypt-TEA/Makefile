@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Crypt-TEA
 PORTVERSION=	1.26
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Perl extension to Tiny Encryption Algorithm
+WWW=		https://metacpan.org/release/Crypt-TEA
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

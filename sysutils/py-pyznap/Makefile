@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=		pyznap
 DISTVERSION=		1.6.0
 CATEGORIES=		sysutils python
-MASTER_SITES=		CHEESESHOP
+MASTER_SITES=		PYPI
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	ZFS snapshot tool written in Python
+WWW=		https://github.com/yboetz/pyznap
 
 LICENSE=	GPLv3
 
@@ -21,7 +20,7 @@ RUN_DEPENDS=	lzop:archivers/lzop \
 #		${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${PY_FLAVOR} \
 #		faketime:devel/faketime
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

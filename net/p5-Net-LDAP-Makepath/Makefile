@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Net-LDAP-Makepath
 PORTVERSION=	1.0.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Provides a method for creating paths in LDAP simply
+WWW=		https://metacpan.org/release/Net-LDAP-Makepath
 
 RUN_DEPENDS=	p5-perl-ldap>=0:net/p5-perl-ldap
 

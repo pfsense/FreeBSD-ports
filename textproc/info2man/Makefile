@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	info2man
 PORTVERSION=	20040717
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Translate GNU info files into man pages
+WWW=		http://www.cskk.ezoshosting.com/cs/css/info2pod.html
 
 RUN_DEPENDS=	p5-Perl4-CoreLibs>0:devel/p5-Perl4-CoreLibs
 USES=		perl5 shebangfix

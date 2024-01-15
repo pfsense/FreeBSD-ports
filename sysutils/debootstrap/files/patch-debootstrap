@@ -1,4 +1,4 @@
---- debootstrap.orig	2019-07-06 11:22:30 UTC
+--- debootstrap.orig	2022-10-14 11:16:30 UTC
 +++ debootstrap
 @@ -1,4 +1,4 @@
 -#!/bin/sh
@@ -15,7 +15,18 @@
  	fi
  fi
  
-@@ -498,13 +498,7 @@ fi
+@@ -379,8 +379,8 @@ if [ $# != 0 ] ; then
+ 		shift
+ 		;;
+ 	    --keyring|--keyring=?*)
+-		if ! gpgv --version >/dev/null 2>&1; then
+-			error 1 NEEDGPGV "gpgv not installed, but required for Release verification"
++		if ! gpgv2 --version >/dev/null 2>&1; then
++			error 1 NEEDGPGV "gpgv2 not installed, but required for Release verification"
+ 		fi
+ 		if [ "$1" = "--keyring" ] && [ -n "$2" ]; then
+ 			KEYRING="$2"
+@@ -536,13 +536,7 @@ fi
  
  ###########################################################################
  
@@ -30,7 +41,7 @@
  	HOST_ARCH=$(cat "$DEBOOTSTRAP_DIR/arch")
  fi
  HOST_OS="$HOST_ARCH"
-@@ -524,6 +518,11 @@ if [ -z "$HOST_OS" ]; then
+@@ -562,6 +556,14 @@ if [ -z "$HOST_OS" ]; then
  			HOST_OS=freebsd
  		;;
  	esac
@@ -38,6 +49,9 @@
 +
 +if [ "$HOST_OS" = "freebsd" -a -z "$HOST_ARCH" ]; then
 +	HOST_ARCH=`/sbin/sysctl -n hw.machine_arch`
++	if [ "$HOST_ARCH" = "aarch64" ]; then
++		HOST_ARCH=arm64
++	fi
 +	EXTRACTOR_OVERRIDE=ar
  fi
  

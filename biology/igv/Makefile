@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	igv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.8.13
+DISTVERSION=	2.16.0
+PORTREVISION=	1
 CATEGORIES=	biology java
 MASTER_SITES=	http://software.broadinstitute.org/software/igv/sites/cancerinformatics.org.igv/files/images/:img
 DISTFILES=	tools.png:img
@@ -11,12 +10,13 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Visualization tool for genomic datasets
+WWW=		https://software.broadinstitute.org/software/igv/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/license.txt
 
 BUILD_DEPENDS=	openjfx14>0:java/openjfx14 \
-		gradle:devel/gradle
+		gradle:devel/gradle6
 RUN_DEPENDS=	openjfx14>0:java/openjfx14
 
 USES=		gettext-runtime
@@ -33,7 +33,7 @@ MAKE_ENV+=	GRADLE_USER_HOME=${WRKDIR}
 
 SUB_FILES=	${PORTNAME}.sh
 
-DESKTOP_ENTRIES="IGV" "Integrative Genomics Viewer" "${PREFIX}/share/pixmaps/igv.xpm" "${PORTNAME}" \
+DESKTOP_ENTRIES="IGV" "Integrative Genomics Viewer" "${PREFIX}/share/pixmaps/igv.png" "${PORTNAME}" \
 		"Biology;Science;" true
 
 # to rebuild the deps archive:
@@ -52,7 +52,7 @@ SUB_LIST=	JAVA_HOME=${JAVA_HOME}
 
 .if (${DEV_UPDATE_MODE} == "yes")
 post-build:
-	@cd ${DEPS_CACHE_DIR} && ${TAR} czf ${DISTDIR}/${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX} gradle-${PORTNAME}
+	@cd ${DEPS_CACHE_DIR} && ${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX} gradle-${PORTNAME}
 	@${ECHO} "(!!!) Please upload the deps archive: ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX}"
 .else
 MASTER_SITES+=	LOCAL/yuri/:deps

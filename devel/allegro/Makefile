@@ -1,14 +1,12 @@
-# Created by: Jimmy Olgeni <olgeni@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	allegro
 DISTVERSION=	4.4.3.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/liballeg/allegro5/releases/download/${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform library for games and multimedia programming
+WWW=		https://liballeg.org/
 
 LICENSE=	GIFTWARE
 LICENSE_NAME=	Giftware
@@ -19,28 +17,27 @@ LIB_DEPENDS=	libogg.so:audio/libogg \
 		libpng.so:graphics/png \
 		libvorbis.so:audio/libvorbis
 
-USES=		cmake gl makeinfo pkgconfig xorg
+USES=		cmake gl pkgconfig xorg
 USE_GL=		gl glu
-USE_XORG=	ice sm x11 xcursor xext xpm xxf86dga xxf86vm
 USE_LDCONFIG=	yes
+USE_XORG=	ice sm x11 xcursor xext xpm xxf86dga xxf86vm
 
-INFO=		allegro
-PORTDOCS=	*
-PORTEXAMPLES=	*
-
-PLIST_SUB=	SHLIB_VER="${PORTVERSION:R}"
 CMAKE_ARGS=	-DDOCDIR="${DOCSDIR}"
-CMAKE_OFF=	WANT_EXAMPLES WANT_MODULES
 CMAKE_ON=	WANT_LOGG
+CMAKE_OFF=	WANT_EXAMPLES WANT_MODULES
 
 # Wrong versioning upstream
 PORTSCOUT=	ignore:1
 
+INFO=		allegro
+PLIST_SUB=	SHLIB_VER="${PORTVERSION:R}"
+PORTDOCS=	*
+PORTEXAMPLES=	*
+
 OPTIONS_DEFINE=		DOCS EXAMPLES
+OPTIONS_DEFAULT=	OSS
 OPTIONS_MULTI=		AUDIO
 OPTIONS_MULTI_AUDIO=	ALSA JACK OSS SNDIO
-OPTIONS_DEFAULT=	OSS
-
 OPTIONS_SUB=	yes
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib

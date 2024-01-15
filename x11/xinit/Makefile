@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	xinit
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.2
 PORTEPOCH=	1
 CATEGORIES=	x11
 
@@ -11,6 +9,7 @@ COMMENT=	X Window System initializer
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+EXTRACT_SUFX=	.tar.xz
 USES=		xorg xorg-cat:app
 USE_XORG=	x11
 

@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Search
 PORTVERSION=	2.519
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module for WWW searches
+WWW=		https://metacpan.org/release/WWW-Search
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

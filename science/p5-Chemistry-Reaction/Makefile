@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	Chemistry-Reaction
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ITUB
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Represent a ring as a substructure of a molecule
+WWW=		https://metacpan.org/release/Chemistry-Reaction
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

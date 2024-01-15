@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	alienblaster
 PORTVERSION=	1.1.0
 PORTREVISION=	7
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.schwardtnet.de/alienblaster/archives/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Alien Blaster
+WWW=		https://www.schwardtnet.de/alienblaster/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE

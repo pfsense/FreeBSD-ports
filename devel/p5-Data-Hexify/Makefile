@@ -1,6 +1,3 @@
-# Created by: Nobutaka Mantani <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Hexify
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Perl extension for hexdumping arbitrary data
+WWW=		https://metacpan.org/release/Data-Hexify
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

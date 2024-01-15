@@ -1,18 +1,18 @@
-# Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
-
 PORTNAME=	glfw
 PORTVERSION=	2.7.9
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable framework for OpenGL development
+WWW=		https://www.glfw.org/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
+CONFLICTS_INSTALL=	glfw
 
 USES=		gl tar:bzip2 xorg
 HAS_CONFIGURE=	yes

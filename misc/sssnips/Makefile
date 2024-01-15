@@ -1,6 +1,3 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sssnips
 PORTVERSION=	0.05
 CATEGORIES=	misc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://devel.ringlet.net/files/misc/sssnips/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shell script snippets written by Peter Pentchev
+WWW=		https://devel.ringlet.net/misc/sssnips/
 
 LICENSE=	BSD2CLAUSE
 

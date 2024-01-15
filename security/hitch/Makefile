@@ -1,14 +1,12 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=		hitch
-PORTVERSION=		1.7.0
+PORTVERSION=		1.8.0
 CATEGORIES=		security
 MASTER_SITES=		http://hitch-tls.org/source/ \
 			ZI
 
 MAINTAINER=		zi@FreeBSD.org
 COMMENT=		TLS proxy to forward connections to an unencrypted backend
+WWW=			https://github.com/varnish/hitch/
 
 LICENSE=		BSD2CLAUSE
 

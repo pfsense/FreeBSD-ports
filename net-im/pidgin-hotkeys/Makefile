@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	pidgin-hotkeys
 PORTVERSION=	0.2.4
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	net-im
 MASTER_SITES=	SF
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Pidgin plugin that allows user to assign global hotkeys
+WWW=		https://sourceforge.net/projects/pidgin-hotkeys/
 
 LICENSE=	GPLv2
 

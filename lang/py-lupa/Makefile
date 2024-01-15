@@ -1,27 +1,27 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lupa
-PORTVERSION=	1.9
+PORTVERSION=	2.0
 CATEGORIES=	lang python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python wrapper around Lua and LuaJIT
+WWW=		https://github.com/scoder/lupa
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		lua pkgconfig python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		lua pkgconfig python
+USE_PYTHON=	autoplist concurrent cython distutils unittest
 
-MAKE_ARGS=	--no-bundle
+MAKE_ARGS=	--no-bundle --with-cython --with-lua-checks
+TEST_ARGS=	lupa.tests.test
 
 post-patch:
-	@${RM} -fr ${WRKSRC}/third-party
+# Clean up bundled libraries
+	@${RM} -r ${WRKSRC}/third-party/
 
-do-test:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} setup.py test
+post-install:
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

@@ -1,14 +1,12 @@
-# Created by: tobez
-# $FreeBSD$
-
 PORTNAME=	GraphViz
-PORTVERSION=	2.24
+PORTVERSION=	2.25
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to GraphViz graphing tool
+WWW=		https://metacpan.org/release/GraphViz
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +19,7 @@ RUN_DEPENDS=	dot:graphics/graphviz \
 		p5-XML-Twig>=3.52:textproc/p5-XML-Twig
 TEST_DEPENDS=	p5-Test2-Suite>=0.000030:devel/p5-Test2-Suite
 
-USES=		perl5 tar:tgz
+USES=		cpe perl5 tar:tgz
 USE_PERL5=	configure
 
 NO_ARCH=	yes

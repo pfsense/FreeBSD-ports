@@ -1,6 +1,3 @@
-# Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
-
 PORTNAME=	SpecTcl
 PORTVERSION=	1.2.2a
 CATEGORIES=	devel tk
@@ -8,12 +5,18 @@ MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Free drag-and-drop GUI builder for Tk and Java from Sun
+WWW=		https://spectcl.sourceforge.net/
+
+LICENSE=	SUN
+LICENSE_NAME=	SUN
+LICENSE_FILE=	${WRKSRC}/license.terms
+LICENSE_PERMS=	auto-accept
+
+USES=		tk
 
 NO_BUILD=	yes
-
-USES+=		tk:85
 
 post-patch:
 .for file in specJava specTcl

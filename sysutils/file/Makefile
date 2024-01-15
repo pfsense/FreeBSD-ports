@@ -1,6 +1,3 @@
-# Created by: Jason Harris <jharris@widomaker.com>
-# $FreeBSD$
-
 PORTNAME=	file
 PORTVERSION=	5.39
 CATEGORIES=	sysutils
@@ -11,11 +8,13 @@ MASTER_SITES=	https://astron.com/pub/file/ \
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Utility to determine file type
+WWW=		https://darwinsys.com/file/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool
+USES=		cpe libtool
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

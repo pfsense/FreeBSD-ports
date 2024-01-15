@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	dcw-gmt
-DISTVERSION=	1.1.4
+DISTVERSION=	2.1.2
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.soest.hawaii.edu/%SUBDIR%/ \
 		ftp://ftp.geologi.uio.no/pub/%SUBDIR%/ \
@@ -15,6 +13,7 @@ MASTER_SITE_SUBDIR=	gmt gmt/legacy
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Digital Chart of the World for GMT 5 or later
+WWW=		https://www.soest.hawaii.edu/wessel/dcw/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi

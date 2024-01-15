@@ -1,12 +1,20 @@
---- src/gimplensfun.cpp.orig	2019-07-07 08:42:51 UTC
+--- src/gimplensfun.cpp.orig	2023-07-02 12:36:07 UTC
 +++ src/gimplensfun.cpp
-@@ -37,8 +37,7 @@ CHANGES:
- #include <libgimp/gimp.h>
- #include <libgimp/gimpui.h>
+@@ -1034,7 +1034,7 @@ static void process_image (GimpDrawable *drawable) {
+ //
+ static int read_opts_from_exif(const char *filename) {
  
--#include <exiv2/image.hpp>
--#include <exiv2/exif.hpp>
-+#include <exiv2/exiv2.hpp>
+-    Exiv2::Image::AutoPtr Exiv2image;
++    Exiv2::Image::UniquePtr Exiv2image;
+     Exiv2::ExifData exifData;
  
- #define VERSIONSTR "0.2.4-dev"
- 
+     const lfCamera  **cameras    = 0;
+@@ -1062,7 +1062,7 @@ static int read_opts_from_exif(const char *filename) {
+             return -1;
+         }
+     }
+-    catch (Exiv2::AnyError& e) {
++    catch (Exiv2::Error& e) {
+         if (DEBUG) {
+             g_print ("exception on reading data. \n");
+         }

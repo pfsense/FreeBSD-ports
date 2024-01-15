@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	abduco
 PORTVERSION=	0.6
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	http://www.brain-dump.org/projects/abduco/
 
 MAINTAINER=	swdragonmaus@gmail.com
 COMMENT=	Session management in a clean and simple way
+WWW=		http://www.brain-dump.org/projects/abduco/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Christian Brueffer <chris@unixpages.org>
-# $FreeBSD$
-
 PORTNAME=	edith
 PORTVERSION=	1.58
 PORTREVISION=	2
@@ -12,14 +9,23 @@ DISTFILES=	edith1.55.common.tar.gz \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11 GUI editor for binary and plain text files
 
-ONLY_FOR_ARCHS=	i386 amd64
+# Converted from RESTRICTED
+LICENSE=	edithlicense
+LICENSE_NAME=	edith
+LICENSE_TEXT=	Redistribution not allowed
+LICENSE_PERMS=	auto-accept
+
+DEPRECATED=	Upstream last release was in 2000
+EXPIRATION_DATE=	2024-01-16
+ONLY_FOR_ARCHS=	amd64 i386
+
 USES=		linux
 USE_LINUX=	xorglibs
 
-RESTRICTED=	Redistribution not allowed
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/edith
+
 EDITHDIR=	${PREFIX}/lib/edith
 
 do-install:

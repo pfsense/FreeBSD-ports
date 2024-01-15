@@ -1,6 +1,3 @@
-# Created by: Christopher Boumenot <boumenot@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	CPAN-SQLite
 PORTVERSION=	0.199
 PORTREVISION=	2
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:RKOBES
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	eg@fbsd.lt
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Search CPAN using a SQLite database
+WWW=		https://metacpan.org/release/CPAN-SQLite
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

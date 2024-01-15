@@ -1,14 +1,12 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Net-SIP
-PORTVERSION=	0.826
+PORTVERSION=	0.836
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Framework SIP (Voice Over IP, RFC3261)
+WWW=		https://metacpan.org/release/Net-SIP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

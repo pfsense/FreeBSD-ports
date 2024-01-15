@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ebsynth
 PORTVERSION=	0.0.0.20190510
 PORTREVISION=	1
@@ -7,15 +5,21 @@ CATEGORIES=	graphics
 
 MAINTAINER=	FreeBSD@ShaneWare.biz
 COMMENT=	Example-based Image Synthesis and Style Transfer
+WWW=		https://ebsynth.com
 
 LICENSE=	PD
 
-USES=		compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	jamriska
 GH_TAGNAME=	2f5c97c0c21a
 
 PLIST_FILES=	bin/ebsynth
+
+.if !exists(/usr/include/omp.h)
+USES=		compiler:gcc-c++11-lib
+.else
+USES=		compiler:c++11-lang
+.endif
 
 do-build:
 	@(cd ${BUILD_WRKSRC} && ${CXX} src/ebsynth.cpp \

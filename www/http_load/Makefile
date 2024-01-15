@@ -1,6 +1,3 @@
-# Created by: Ask Bjoern Hansen <ask@valueclick.com>
-# $FreeBSD$
-
 PORTNAME=	http_load
 PORTVERSION=	20160309
 CATEGORIES=	www
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-09Mar2016
 
 MAINTAINER=	marcel@herrbischoff.com
 COMMENT=	Multiprocessing http performance test client
+WWW=		https://www.acme.com/software/http_load/
 
 LICENSE=	BSD2CLAUSE
 

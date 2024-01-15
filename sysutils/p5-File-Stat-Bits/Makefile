@@ -1,6 +1,3 @@
-# Created by: Jim Pirzyk pirzyk@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	File-Stat-Bits
 PORTVERSION=	1.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pirzyk@FreeBSD.org
 COMMENT=	Perl5 module interface to the major()/minor() C routines
+WWW=		https://metacpan.org/release/File-Stat-Bits
 
 USES=		perl5
 USE_PERL5=	configure

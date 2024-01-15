@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Shell-GetEnv
 PORTVERSION=	0.10
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extract shell environment after executing commands
+WWW=		https://metacpan.org/release/Shell-GetEnv
 
 LICENSE=	GPLv3+
 

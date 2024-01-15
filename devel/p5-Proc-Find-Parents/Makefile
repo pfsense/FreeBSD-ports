@@ -1,6 +1,3 @@
-# Created by: Zane C. Bowers-Hadley <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Proc-Find-Parents
 PORTVERSION=	0.631
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Find parents of a process (up to the root)
+WWW=		https://metacpan.org/release/Proc-Find-Parents
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

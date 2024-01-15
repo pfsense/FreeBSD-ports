@@ -1,20 +1,15 @@
-# Created by: Euan Thoms <euan@potensol.com>
-# $FreeBSD$
-
 PORTNAME=		sope2
-PORTVERSION=		2.3.23
-PORTREVISION=	5
+PORTVERSION=		2.4.3
+PORTREVISION=		1
 CATEGORIES=		devel gnustep
 MASTER_SITES=		http://www.sogo.nu/files/downloads/SOGo/Sources/
 DISTNAME=		SOPE-${PORTVERSION}
 
 MAINTAINER=		acm@FreeBSD.org
 COMMENT=		Extensive set of GNUstep web application frameworks
+WWW=		https://sogo.nu/
 
 LICENSE=		LGPL20
-
-BROKEN_aarch64=		fails to build: bundle.make:301: STXSaxDriver.sax/Resources/Info-gnustep.plist] Abort trap (core dumped)
-BROKEN_powerpc64=	fails to build: bundle.make:301: STXSaxDriver.sax/Resources/Info-gnustep.plist] Illegal instruction (core dumped)
 
 LIB_DEPENDS=		libxml2.so:textproc/libxml2 \
 			libmemcached.so:databases/libmemcached
@@ -25,12 +20,11 @@ OPTIONS_DEFINE=		LDAP MYSQL PGSQL MEMCACHED
 OPTIONS_DEFAULT=	LDAP PGSQL MEMCACHED
 OPTIONS_SUB=		yes
 
-LDAP_DESC=		Build with LDAP support
 MYSQL_DESC=		Build with MySQL support
 PGSQL_DESC=		Build with PostgreSQL support
 MEMCACHED_DESC=		Install memcached
 
-USES=			gmake iconv gnustep
+USES=			gmake iconv gnustep ssl
 USE_GNUSTEP=		base build
 USE_LDCONFIG=		${GNUSTEP_LOCAL_LIBRARIES}
 LLD_UNSAFE=		yes # PR 230608
@@ -40,13 +34,23 @@ SUB_LIST+=		GNUSTEP_LOCAL_TOOLS=${GNUSTEP_LOCAL_TOOLS} \
 
 CONFIGURE_ARGS=		--with-gnustep --disable-debug --enable-strip
 
-LDAP_USE=		OPENLDAP=client
+LDAP_USES=		ldap
 PGSQL_USES=		pgsql
 MYSQL_USES=		mysql
 MEMCACHED_RUN_DEPENDS=	${LOCALBASE}/bin/memcached:databases/memcached
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+ADDITIONAL_CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|gcc|${CC}|g' ${WRKSRC}/sope-core/NGStreams/configure
+.for f in config.guess config.sub
+	@${CP} ${TEMPLATES}/$f ${WRKSRC}/sope-core/NGStreams/
+.endfor
 
 post-patch-LDAP-off:
 	@${REINPLACE_CMD} -e '/checkLinking "ldap"/d' ${WRKSRC}/configure

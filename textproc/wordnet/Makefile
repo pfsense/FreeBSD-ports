@@ -1,6 +1,3 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	WordNet
 PORTVERSION=	3.0
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:code wn3.1.dict.tar.gz:dict
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Dictionaries and thesauri with devel. libraries (C, TCL) and browsers
+WWW=		https://wordnet.princeton.edu/
 
 EXTRACT_ONLY=	${DISTFILES:M*code:S/:code//}
 EXTRACT_AFTER_ARGS=--exclude dict

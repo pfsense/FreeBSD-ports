@@ -1,8 +1,6 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	ipacctd
 PORTVERSION=	1.47
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/skv
 

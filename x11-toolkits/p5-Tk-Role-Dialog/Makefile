@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tk-Role-Dialog
 PORTVERSION=	1.112380
 CATEGORIES=	x11-toolkits tk perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Moose role for enhanced Tk dialogs
+WWW=		https://metacpan.org/release/Tk-Role-Dialog
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

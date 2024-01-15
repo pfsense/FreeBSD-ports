@@ -1,6 +1,3 @@
-# Created by: Martti Kuparinen <martti.kuparinen@ericsson.com>
-# $FreeBSD$
-
 PORTNAME=	IMAP-Admin
 PORTVERSION=	1.6.8
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for basic IMAP server administration
+WWW=		https://metacpan.org/release/IMAP-Admin
 
 LICENSE=	ART10
 

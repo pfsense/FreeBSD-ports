@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Event-Chinese
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	DateTime Extension for Calculating Important Chinese Dates
+WWW=		https://metacpan.org/release/DateTime-Event-Chinese
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

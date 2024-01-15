@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	sharedance
 PORTVERSION=	0.6
 PORTREVISION=	7
@@ -9,6 +6,7 @@ MASTER_SITES=	http://download.pureftpd.org/pub/sharedance/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemon to centralize keys and associated data
+WWW=		http://sharedance.pureftpd.org/project/sharedance
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 

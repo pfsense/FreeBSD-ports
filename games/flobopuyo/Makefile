@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	flobopuyo
 PORTVERSION=	0.20
 PORTREVISION=	16
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.ios-software.com/flobopuyo/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Clone of the famous PuyoPuyo
+WWW=		http://www.ios-software.com/?page=projet&quoi=29&lg=AN
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

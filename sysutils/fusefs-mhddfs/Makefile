@@ -1,6 +1,3 @@
-# Created by: Oleg Alexeenkov <proler@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mhddfs
 PORTVERSION=	0.1.37
 CATEGORIES=	sysutils
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	proler@gmail.com
 COMMENT=	Multi HDD [FUSE] File System
+WWW=		http://mhddfs.uvw.ru/
 
 USES=		fuse pkgconfig gmake
 MAKE_ARGS=	WITHOUT_XATTR=1

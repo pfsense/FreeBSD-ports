@@ -1,9 +1,6 @@
-# Created by: bmc@WillsCreek.COM
-# $FreeBSD$
-
 PORTNAME=	tgif
 PORTVERSION=	4.2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://bourbon.usc.edu/pub/tgif/ \
 		http://groups.yahoo.com/group/tgif4-announce/files/ \
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-QPL-${PORTVERSION}
 
 MAINTAINER=	bmc@clapper.org
 COMMENT=	Xlib-based two-dimensional drawing tool and hyper-object browser
+WWW=		http://bourbon.usc.edu:8001/tgif/
 
 LICENSE=	QPLv1
 LICENSE_NAME=	Q PUBLIC LICENSE v1.0

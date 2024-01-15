@@ -96,6 +96,7 @@ etc/bash_completion.d/dnf
 %%PYTHON_SITELIBDIR%%/dnf/yum/rpmtrans.py
 share/locale/ar/LC_MESSAGES/dnf.mo
 share/locale/bg/LC_MESSAGES/dnf.mo
+share/locale/bn/LC_MESSAGES/dnf.mo
 share/locale/bn_IN/LC_MESSAGES/dnf.mo
 share/locale/ca/LC_MESSAGES/dnf.mo
 share/locale/cs/LC_MESSAGES/dnf.mo
@@ -135,6 +136,7 @@ share/locale/pl/LC_MESSAGES/dnf.mo
 share/locale/pt/LC_MESSAGES/dnf.mo
 share/locale/pt_BR/LC_MESSAGES/dnf.mo
 share/locale/ru/LC_MESSAGES/dnf.mo
+share/locale/si/LC_MESSAGES/dnf.mo
 share/locale/sk/LC_MESSAGES/dnf.mo
 share/locale/sq/LC_MESSAGES/dnf.mo
 share/locale/sr/LC_MESSAGES/dnf.mo
@@ -146,4 +148,5 @@ share/locale/uk/LC_MESSAGES/dnf.mo
 share/locale/ur/LC_MESSAGES/dnf.mo
 share/locale/vi/LC_MESSAGES/dnf.mo
 share/locale/zh_CN/LC_MESSAGES/dnf.mo
+share/locale/zh_Hans/LC_MESSAGES/dnf.mo
 share/locale/zh_TW/LC_MESSAGES/dnf.mo

@@ -1,6 +1,3 @@
-# Created by: anders
-# $FreeBSD$
-
 PORTNAME=	httplog
 PORTVERSION=	2.1
 PORTREVISION=	1

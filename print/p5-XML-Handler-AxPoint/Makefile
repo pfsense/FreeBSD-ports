@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	XML-Handler-AxPoint
 PORTVERSION=	1.5
 CATEGORIES=	print perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XML Based Presentations
+WWW=		https://metacpan.org/release/XML-Handler-AxPoint
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

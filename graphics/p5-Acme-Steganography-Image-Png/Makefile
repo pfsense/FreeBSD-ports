@@ -1,6 +1,3 @@
-# Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Acme-Steganography-Image-Png
 PORTVERSION=	0.06
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
 COMMENT=	Hide data (badly) in Png images
+WWW=		https://metacpan.org/release/Acme-Steganography-Image-Png
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Imager>=0:graphics/p5-Imager \

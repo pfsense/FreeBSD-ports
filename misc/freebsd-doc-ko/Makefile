@@ -1,6 +1,3 @@
-# Created by: Marc Fonvieille <blackend@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	misc docs
 PKGNAMEPREFIX=	ko-
 
@@ -10,10 +7,9 @@ COMMENT=	Korean translation of the FreeBSD Documentation Project
 MASTERDIR=	${.CURDIR}/../freebsd-doc-en
 PLIST=		${.CURDIR}/pkg-plist
 
-DOCLANG=	ko_KR.UTF-8
+# en-freebsd-doc installs the common files
+HTML_RUN_DEPENDS=	en-freebsd-doc>=${PORTVERSION}:misc/freebsd-doc-en
+
+DOCLANG=	ko
 
 .include "${MASTERDIR}/Makefile"
-
-.if ${PORT_OPTIONS:MPDF}
-BUILD_DEPENDS+=	${LOCALBASE}/share/fonts/nanum-ttf/NanumBarunGothic.ttf:korean/nanumfonts-ttf
-.endif

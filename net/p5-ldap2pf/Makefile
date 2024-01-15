@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ldap2pf
 PORTVERSION=	20170424
 CATEGORIES=	net
@@ -7,6 +5,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Create and update PF tables from LDAP groups
+WWW=		https://github.com/dag-erling/ldap2pf
 
 LICENSE=	BSD3CLAUSE
 

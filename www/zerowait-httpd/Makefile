@@ -1,6 +1,3 @@
-# Created by: Vsevolod Stakhov
-# $FreeBSD$
-
 PORTNAME=	zerowait
 PORTVERSION=	0.8d
 PORTREVISION=	4
@@ -11,8 +8,11 @@ DISTNAME=	0W-httpd-${PORTVERSION}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Lightweight and fast http server
+WWW=		https://www.0w.ru/httpd/
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN=		Unfetchable
 
 USES=		gmake ssl
 USE_RC_SUBR=	0W-httpd

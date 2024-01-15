@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Model-DBIC-Plain
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBIx::Class model class for Catalyst, without loader
+WWW=		https://metacpan.org/release/Catalyst-Model-DBIC-Plain
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Catalyst-Runtime>=5.7000:www/p5-Catalyst-Runtime \

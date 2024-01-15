@@ -1,6 +1,3 @@
-# Created by: Stephon Chen <stephon@pixnet.tw>
-# $FreeBSD$
-
 PORTNAME=	SES
 PORTVERSION=	1.01
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	ses-tools-2011-11-14
 
 MAINTAINER=	stephon@gmail.com
 COMMENT=	Perl module of Amazon Simple Email Services
+WWW=		https://aws.amazon.com/code/Amazon-SES/8945574369528337
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

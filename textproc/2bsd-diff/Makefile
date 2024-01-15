@@ -1,6 +1,3 @@
-# Created by: risner@stdio.com
-# $FreeBSD$
-
 PORTNAME=	diff
 PORTVERSION=	2.11.1
 PORTREVISION=	1

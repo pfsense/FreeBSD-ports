@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nbdkit
 PORTVERSION=	1.20.4
 PORTREVISION=	1
@@ -11,13 +9,17 @@ MASTER_SITES=	http://download.libguestfs.org/${PORTNAME}/${PORTVERSION:R}-stable
 
 MAINTAINER=	asomers@FreeBSD.org
 COMMENT=	Network Block Device server toolkit with stable ABI and permissive license
+WWW=		https://github.com/libguestfs/nbdkit
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	bash:shells/bash
+BUILD_DEPENDS=	bash:shells/bash \
+		bash-completion>0:shells/bash-completion
 
-USES=		compiler:c11 gmake libtool pkgconfig
+USES=		compiler:c11 cpe gmake libtool pkgconfig
+
+CPE_VENDOR=	nbdkit_project
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -58,7 +60,7 @@ MANPAGES_USES+=		perl5
 PERL_CONFIGURE_ENABLE=	perl
 PERL_USE+=		perl5
 PYTHON_CONFIGURE_ENABLE=	python
-PYTHON_USES+=		python:3.3+
+PYTHON_USES+=		python
 RUBY_CONFIGURE_ENABLE=	ruby
 RUBY_USE+=		ruby
 SSH_CONFIGURE_WITH=	ssh

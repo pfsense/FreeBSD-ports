@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-FTPSSL
 PORTVERSION=	0.42
 CATEGORIES=	ftp perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	FTP over SSL/TLS class
+WWW=		https://metacpan.org/release/Net-FTPSSL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

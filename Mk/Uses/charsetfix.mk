@@ -1,19 +1,17 @@
-# $FreeBSD$
-#
 # Lookup in Makefile.in to prevent a package from installing/modifying charset.alias
 #
 # Feature:	charsetfix
 # Usage:	USES=charsetfix
 # Valid ARGS:	does not require args
 #
-# MAINTAINER: portmgr@FreeBSD.org
+# MAINTAINER: ports@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_CHARSETFIX_MK)
 _INCLUDE_USES_CHARSETFIX_MK=	yes
 
-.if !empty(charsetfix_ARGS)
+.  if !empty(charsetfix_ARGS)
 IGNORE=	USES=charsetfix does not require args
-.endif
+.  endif
 
 CHARSETFIX_MAKEFILEIN?=	Makefile.in
 

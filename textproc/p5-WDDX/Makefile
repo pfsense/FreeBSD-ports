@@ -1,6 +1,3 @@
-# Created by: Eric A. Griff <eric@talesfromthereal.com>
-# $FreeBSD$
-
 PORTNAME=	WDDX
 PORTVERSION=	1.02
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to parse WDDX Packets
+WWW=		https://metacpan.org/release/WDDX
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser

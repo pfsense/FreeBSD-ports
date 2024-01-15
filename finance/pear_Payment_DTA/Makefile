@@ -1,12 +1,10 @@
-# Created by: Dorit Rottner (<rottner@punkt.de>)
-# $FreeBSD$
-
 PORTNAME=	Payment_DTA
 PORTVERSION=	1.4.3
 CATEGORIES=	finance pear
 
-MAINTAINER=	rottner@punkt.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR class to create and handle DTA files used in Germany
+WWW=		https://pear.php.net/package/Payment_DTA
 
 USES=	pear
 

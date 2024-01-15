@@ -1,6 +1,3 @@
-# Created by: Pedro F. Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	jama
 PORTVERSION=	1.2.5
 CATEGORIES=	math devel
@@ -12,6 +9,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	erik@bz.bzflag.bz
 COMMENT=	Java-like Matrix C++ Templates
+WWW=		https://math.nist.gov/tnt/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/tnt/tnt.h:devel/tnt
 RUN_DEPENDS=	${LOCALBASE}/include/tnt/tnt.h:devel/tnt

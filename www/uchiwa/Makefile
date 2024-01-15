@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=		uchiwa
 PORTVERSION=	0.18.2
-PORTREVISION=	1
+PORTREVISION=	16
 CATEGORIES=		www
 MASTER_SITES=	http://uchiwa.io/
 
 MAINTAINER=	alexander@treg.io
 COMMENT=	Simple dashboard for Sensu
+WWW=		https://uchiwa.io/
 
 LICENSE=	MIT
 

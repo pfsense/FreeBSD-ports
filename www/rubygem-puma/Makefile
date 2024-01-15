@@ -1,22 +1,19 @@
-# Created by: Steve Wills <swills@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	puma
-PORTVERSION=	3.12.1
+PORTVERSION=	6.4.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Fast, multithreaded and highly concurrent ruby web server
+WWW=		https://puma.io/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gem shebangfix ssl
-USE_RUBY=	yes
+RUN_DEPENDS=	rubygem-nio4r>=2.0<3:devel/rubygem-nio4r
+
+USES=		cpe gem ssl
 
 PLIST_FILES=	bin/puma bin/pumactl
-
-SHEBANG_FILES=	tools/jungle/init.d/run-puma
 
 .include <bsd.port.mk>

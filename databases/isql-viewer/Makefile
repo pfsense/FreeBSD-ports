@@ -1,6 +1,3 @@
-# Created by: Stefan Schmidt <stefan.schmidt@stadtbuch.de>
-# $FreeBSD$
-
 PORTNAME=	isql-viewer
 PORTVERSION=	2.1.8
 PORTREVISION=	5
@@ -13,10 +10,14 @@ EXTRACT_ONLY=	# none
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JDBC 2.x compliant database front end
+WWW=		https://isql.sourceforge.net
+
+DEPRECATED=	Requires old mysql versions and last upstream release was in 2004
+EXPIRATION_DATE=	2024-01-24
 
 RUN_DEPENDS=	${JYTHON_PREFIX}/${JYTHON_JAR}:lang/jython \
 		${JAVALIBDIR}/postgresql.jar:databases/postgresql-jdbc \
-		${JAVALIBDIR}/mysql-connector-java.jar:databases/mysql-connector-java
+		${JAVALIBDIR}/mysql-connector-java.jar:databases/mysql-connector-java51
 
 USE_JAVA=	yes
 NO_BUILD=	yes

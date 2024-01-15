@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Crypt_Blowfish
 DISTVERSION=	1.1.0RC2
 CATEGORIES=	security www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class for blowfish encryption
+WWW=		https://pear.php.net/package/Crypt_Blowfish
 
 USES=		pear
 

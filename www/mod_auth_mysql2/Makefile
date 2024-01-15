@@ -1,6 +1,3 @@
-# Created by: Clement Laforet <clement@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mod_auth_mysql
 PORTVERSION=	1.11
 CATEGORIES=	www
@@ -11,10 +8,11 @@ DIST_SUBDIR=	apache2
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	MySQL-based authentication module with VirtualHost support
+WWW=		https://www.heuer.org/mod_auth_mysql/
 
 LICENSE=	APACHE20
 
-USES=		apache:2.2+ mysql tar:tgz
+USES=		apache mysql tar:tgz
 WRKSRC=		${WRKDIR}/${PORTNAME}
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
@@ -28,8 +26,14 @@ OPTIONS_DEFINE=	DOCS OPENSSL
 OPENSSL_USES=		ssl
 OPENSSL_VARS=	AP_EXTRAS+=-DMYSQL_USE_SSL
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+AP_EXTRAS+=       '-Wc, -Wno-error=int-conversion'
+.endif
+
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,6 +1,3 @@
-# Created by: Danilo G. Baio <dbaio@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	httpstat
 PORTVERSION=	1.3.0
 CATEGORIES=	net python
@@ -8,13 +5,14 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Curl statistics made simple
+WWW=		https://github.com/reorx/httpstat
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	curl:ftp/curl
 
-USES=		python:3.6+
+USES=		python
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	reorx

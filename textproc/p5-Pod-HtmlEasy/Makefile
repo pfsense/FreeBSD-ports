@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Pod-HtmlEasy
 PORTVERSION=	1.0108
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Generate personalized HTML from PODs
+WWW=		https://metacpan.org/release/Pod-HtmlEasy
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

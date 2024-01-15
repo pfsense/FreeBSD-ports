@@ -1,6 +1,3 @@
-# Created by: Neil Blakey-Milner
-# $FreeBSD$
-
 PORTNAME=	pwm
 PORTVERSION=	2007.07.20
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//g}
 
 MAINTAINER=	schot@a-eskwadraat.nl
 COMMENT=	Lightweight window manager with emphasis on usability
+WWW=		http://iki.fi/tuomov/ion/pwm.html
 
 USES=		gmake xorg
 USE_XORG=	x11

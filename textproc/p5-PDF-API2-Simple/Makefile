@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PDF-API2-Simple
 PORTVERSION=	1.1.5
 CATEGORIES=	textproc perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Wrapper for the PDF::API2 modules
+WWW=		https://metacpan.org/release/PDF-API2-Simple
 
 LICENSE=	PD
 

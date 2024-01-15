@@ -1,27 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	onednn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7
-PORTREVISION=	3
+DISTVERSION=	3.3.3
 CATEGORIES=	math # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Intel(R) Math Kernel Library for Deep Neural Networks
+WWW=		https://github.com/oneapi-src/oneDNN
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_i386=	error: shift count >= width of type (and other errors), see https://github.com/intel/mkl-dnn/issues/315
+NOT_FOR_ARCHS=	armv6 armv7 i386 mips powerpc powerpcspe
+BROKEN_aarch64=	error: sys/prctl.h file not found
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 TEST_DEPENDS=	bash:shells/bash \
 		libsysinfo>0:devel/libsysinfo
 
 USES=		cmake compiler:c++11-lang localbase:ldflags
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	oneapi-src
 GH_PROJECT=	oneDNN
-USE_LDCONFIG=	yes
 
 CMAKE_OFF=	DNNL_BUILD_TESTS DNNL_BUILD_EXAMPLES
 
@@ -68,7 +71,7 @@ CXXFLAGS:=	${CXXFLAGS:S/-O2/-O3/} # clang writes wrong binary code when -O2 opti
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/share/doc
 
-do-test: # some tests are known to fail: https://github.com/intel/mkl-dnn/issues/350 (the upstream failed to reproduce it and closed the report)
+do-test: # tests never finish, see https://github.com/oneapi-src/oneDNN/issues/1619
 	@${REINPLACE_CMD} 's| /bin/bash | ${LOCALBASE}/bin/bash |' ${WRKSRC}/tests/CMakeLists.txt
 	@cd ${BUILD_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DDNNL_BUILD_TESTS=ON ${CMAKE_SOURCE_PATH} && \

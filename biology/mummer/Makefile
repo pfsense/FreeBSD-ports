@@ -1,6 +1,3 @@
-# Created by: Tony Maher
-# $FreeBSD$
-
 PORTNAME=	mummer
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.0.0beta2-2
@@ -10,6 +7,7 @@ CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Modular system for rapid whole genome alignment
+WWW=		https://mummer.sourceforge.net/
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -22,6 +20,8 @@ CONFIGURE_ARGS=	--disable-static
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}4
 USE_LDCONFIG=	yes
+
+CONFLICTS_INSTALL=	??-libgd libgd
 
 SHEBANG_FILES=	scripts/*.pl
 perl_OLD_CMD=	__PERL_PATH

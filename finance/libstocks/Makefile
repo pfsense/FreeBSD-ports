@@ -1,6 +1,3 @@
-# Created by: Mikhail Teterin
-# $FreeBSD$
-
 PORTNAME=	libstocks
 PORTVERSION=	0.5.0
 CATEGORIES=	finance devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	C library which can be used to fetch stocks quotes
+WWW=		https://libstocks.sourceforge.net/
 
 USE_LDCONFIG=	yes
 REINPLACE_ARGS=	-i ""

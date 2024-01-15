@@ -1,14 +1,12 @@
-# Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Crypt-Argon2
-PORTVERSION=	0.007
+DISTVERSION=	0.020
 CATEGORIES=	security
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Perl interface to the Argon2 key derivation functions
+WWW=		https://metacpan.org/release/Crypt-Argon2
 
 LICENSE=	CC0-1.0
 LICENSE_FILE=	${WRKSRC}/README

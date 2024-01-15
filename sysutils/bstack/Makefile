@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bstack
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Debug tool that shows the stack trace of a running process
+WWW=		https://github.com/pizzamig/bstack
 
 LICENSE=	BSD3CLAUSE
 

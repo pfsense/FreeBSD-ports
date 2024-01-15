@@ -1,12 +1,10 @@
 bin/heimer
-@comment include/argengine.hpp
-@comment include/simple_logger.hpp
-@comment lib/libArgengine.a
-@comment lib/libSimpleLogger.a
 share/applications/heimer.desktop
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/Company.alz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/Family.alz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/Heimer.alz
-share/icons/hicolor/64x64/apps/heimer.png
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/Large.alz
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/Matrix.alz
+share/icons/hicolor/256x256/apps/heimer.png
 share/metainfo/heimer.appdata.xml
 share/pixmaps/heimer.png

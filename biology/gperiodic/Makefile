@@ -1,14 +1,12 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-#    $MCom: ports/biology/gperiodic/Makefile,v 1.1 2006/09/29 23:42:13 ahze Exp $
-
 PORTNAME=	gperiodic
 PORTVERSION=	3.0.3
+PORTREVISION=	1
 CATEGORIES=	biology
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Displays a periodic table of the elements
+WWW=		https://sourceforge.net/projects/gperiodic/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl.txt

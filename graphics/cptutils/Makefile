@@ -1,13 +1,11 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cptutils
-PORTVERSION=	1.72
+PORTVERSION=	1.77
 CATEGORIES=	graphics
 MASTER_SITES=	http://soliton.vm.bytemark.co.uk/pub/jjg/src/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Convert and manipulate colour gradients
+WWW=		http://soliton.vm.bytemark.co.uk/pub/jjg/en/code/cptutils/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,16 +22,14 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG}
 USE_GNOME=	libxml2 libxslt
 
-PORTDOCS=	CHANGELOG CREDITS README.md
+PORTDOCS=	CHANGELOG.md CREDITS.md README.md
 
 OPTIONS_DEFINE=		DOCS TEST
 
 TEST_CONFIGURE_ENABLE=	tests
-TEST_BUILD_DEPENDS=	bash:shells/bash \
-			xml:textproc/xmlstarlet
+TEST_BUILD_DEPENDS=	bash:shells/bash
 TEST_LIB_DEPENDS=	libcunit.so:devel/cunit
-TEST_TEST_TARGET=	test unit
-TEST_BROKEN=		depends on expired xml2
+TEST_TEST_TARGET=	test
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

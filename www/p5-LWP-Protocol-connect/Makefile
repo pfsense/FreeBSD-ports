@@ -1,6 +1,3 @@
-# Created by: Lawrence Chen <beastie@tardisi.com>
-# $FreeBSD$
-
 PORTNAME=	LWP-Protocol-connect
 PORTVERSION=	6.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	beastie@tardisi.com
 COMMENT=	Provides HTTP/CONNECT proxy support for LWP::UserAgent
+WWW=		https://metacpan.org/release/LWP-Protocol-connect
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

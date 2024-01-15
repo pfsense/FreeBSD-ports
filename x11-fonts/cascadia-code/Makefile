@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	cascadia-code
-DISTVERSION=	2009.22
+PORTVERSION=	2111.01
 CATEGORIES=	x11-fonts
-MASTER_SITES=	https://github.com/microsoft/cascadia-code/releases/download/v${DISTVERSION}/
-DISTNAME=	CascadiaCode-${DISTVERSION}
+MASTER_SITES=	https://github.com/microsoft/cascadia-code/releases/download/v${PORTVERSION}/
+DISTNAME=	CascadiaCode-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Monospaced font with programming ligatures
+WWW=		https://github.com/microsoft/cascadia-code
 
 LICENSE=	OFL11
 

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libarena
 PORTVERSION=	0.3.7
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.25thandclement.com/~william/projects/releases/
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Custom Memory Allocator Interface
+WWW=		https://www.25thandclement.com/~william/projects/libarena.html
 
 LICENSE=	MIT
 

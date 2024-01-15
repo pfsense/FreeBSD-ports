@@ -1,6 +1,3 @@
-# Created by: Erwin Lansing <erwin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Exception
 PORTVERSION=	0.43
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Test functions for exception based code
+WWW=		https://metacpan.org/release/Test-Exception
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

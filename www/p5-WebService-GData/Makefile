@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WebService-GData
 PORTVERSION=	0.0600
 PORTREVISION=	2
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/00$//}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Google data protocol v2 base object to inherit from
+WWW=		https://metacpan.org/release/WebService-GData
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

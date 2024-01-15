@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tktray
 PORTVERSION=	1.3.9
 CATEGORIES=	x11-toolkits tk
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	System tray icon support
+WWW=		https://sw4me.com/wiki/Tktray
 
 USES+=		tk:tea xorg
 USE_XORG=	x11 xext

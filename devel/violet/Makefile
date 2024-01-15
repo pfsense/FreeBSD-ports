@@ -1,6 +1,3 @@
-# Created by: Aldis Berjoza <aldis@bsdroot.lv>
-# $FreeBSD$
-
 PORTNAME=	violet
 PORTVERSION=	2.1.0
 CATEGORIES=	devel editors java
@@ -11,6 +8,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Easy to learn and use UML editor
+WWW=		https://horstmann.com/violet/
 
 LICENSE=	GPLv2
 

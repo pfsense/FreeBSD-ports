@@ -1,21 +1,19 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pycups
 PORTVERSION=	2.0.1
 CATEGORIES=	print python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	CUPS bindings for Python
+WWW=		https://github.com/zdohnal/pycups
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libcups.so:print/cups
 
-USES=		iconv localbase python:3.5+
+USES=		iconv localbase python
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.pre.mk>
@@ -31,6 +29,6 @@ pre-configure:
 	@${REINPLACE_CMD} -e 's|#ifdef __SVR4|#ifdef __FreeBSD__|' ${WRKSRC}/cupsppd.c
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cups*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.post.mk>

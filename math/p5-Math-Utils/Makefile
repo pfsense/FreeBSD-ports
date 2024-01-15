@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Utils
 PORTVERSION=	1.14
 CATEGORIES=	math perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Useful mathematical functions not in Perl
+WWW=		https://metacpan.org/release/Math-Utils
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

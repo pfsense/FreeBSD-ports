@@ -1,18 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	mod_wsgi
-DISTVERSION=	4.7.0
+DISTVERSION=	4.9.2
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	Python WSGI adapter module for Apache
+WWW=		https://www.modwsgi.org/
 
 LICENSE=	APACHE20
 
-USES=		apache:2.4+ gettext python:3.6+
+USES=		apache cpe gettext python:3.8-3.11
 USE_PYTHON=	flavors
+
+CPE_VENDOR=	modwsgi
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-apxs="${APXS}" --with-python="${PYTHON_CMD}"

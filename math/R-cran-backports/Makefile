@@ -1,13 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	backports
-PORTVERSION=	1.2.1
+PORTVERSION=	1.4.1
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Reimplementations of Functions Introduced Since R-3.0.0
+WWW=		https://cran.r-project.org/web/packages/backports/
 
 LICENSE=	GPLv2+
 

@@ -1,6 +1,3 @@
-# Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	colt
 PORTVERSION=	1.2.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://acs.lbl.gov/software/colt/colt-download/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java package for scalable scientific and technical computing
+WWW=		https://acs.lbl.gov/~hoschek/colt/
 
 USE_JAVA=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}

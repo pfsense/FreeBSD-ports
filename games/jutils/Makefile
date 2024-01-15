@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jutils
 PORTVERSION=	1.0.1
 PORTREVISION=	1
@@ -8,6 +6,7 @@ CATEGORIES=	games java
 
 MAINTAINER=	voidanix@420blaze.it
 COMMENT=	Common utilities for Java Game Technology Group projects
+WWW=		https://github.com/jinput/jutils
 
 LICENSE=	BSD2CLAUSE
 
@@ -16,7 +15,7 @@ BUILD_DEPENDS=	mvn:devel/maven
 # Using a fork because of maven dependencies
 USE_GITLAB=	yes
 GL_ACCOUNT=	voidanix
-GL_COMMIT=	f950e23e42081308b4be3b0fc4b57d4dbab70dac
+GL_TAGNAME=	f950e23e42081308b4be3b0fc4b57d4dbab70dac
 
 USE_JAVA=	8+
 

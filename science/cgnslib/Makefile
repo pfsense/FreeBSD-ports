@@ -1,15 +1,12 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	cgnslib
-PORTVERSION=	4.1.2
+PORTVERSION=	4.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	science
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	CFD General Notation System library code
+WWW=		https://cgns.github.io/
 
 LICENSE=	AS-IS
 LICENSE_NAME=	AS-IS
@@ -23,8 +20,10 @@ GH_PROJECT=	CGNS
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
 
+#CMAKE_ARGS=	-DOpenGL_GL_PREFERENCE:STRING="GLVND"
+CMAKE_ARGS=	-DOpenGL_GL_PREFERENCE:STRING="LEGACY"
+FFLAGS+=	-fPIC -std=legacy
 TEST_TARGET=	test
-FFLAGS+=	-std=legacy
 
 OPTIONS_DEFINE=		FORTRAN HDF5 TESTS TOOLS
 OPTIONS_DEFAULT=	FORTRAN HDF5 TESTS TOOLS
@@ -37,7 +36,8 @@ TOOLS_DESC=		Build the CGNSTools package
 FORTRAN_USES=		fortran
 FORTRAN_CMAKE_BOOL=	CGNS_ENABLE_FORTRAN
 
-HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5 libsz.so:science/szip
+HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5	\
+			libsz.so:science/libaec
 HDF5_CMAKE_BOOL=	CGNS_ENABLE_HDF5
 HDF5_CMAKE_ON=		-DHDF5_INCLUDE_PATH:PATH="${LOCALBASE}/include"
 
@@ -51,6 +51,12 @@ TOOLS_USE=		GL=egl,gl,glu	\
 TOOLS_CMAKE_BOOL=	CGNS_BUILD_CGNSTOOLS
 TOOLS_CMAKE_ON=		-DTCL_INCLUDE_PATH:STRING="${TCL_INCLUDEDIR}" \
 			-DTK_INCLUDE_PATH:STRING="${TK_INCLUDEDIR}"
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-install:
 	${RLN} ${STAGEDIR}${PREFIX}/lib/libcgns.so.${PORTVERSION:R} \

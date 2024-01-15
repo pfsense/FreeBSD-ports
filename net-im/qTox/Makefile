@@ -1,14 +1,12 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	qTox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.17.3
-PORTREVISION=	1
+DISTVERSION=	1.17.6
+PORTREVISION=	4
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Qt 5 based Tox client
+WWW=		https://qtox.github.io/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,13 +20,15 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libqrencode.so:graphics/libqrencode \
 		libsodium.so:security/libsodium \
 		libsqlcipher.so:databases/sqlcipher \
+		libtox_extension_messages.so:net-im/tox_extension_messages \
 		libtoxcore.so:net-im/tox \
+		libtoxext.so:net-im/toxext \
 		libvpx.so:multimedia/libvpx
 
 USES=		cmake compiler:c++11-lib desktop-file-utils gettext openal:soft pkgconfig qt:5
 USE_GITHUB=	yes
-USE_QT=		core gui network xml opengl sql sql-sqlite3_run widgets svg \
-		concurrent_build buildtools_build linguisttools_build qmake_build testlib_build
+USE_QT=		core gui network xml opengl sql sql-sqlite3:run widgets svg \
+		concurrent:build buildtools:build linguisttools:build qmake:build testlib:build
 
 CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
 CMAKE_OFF=	USE_CCACHE

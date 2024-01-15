@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Set
 PORTVERSION=	0.3900
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Datetime sets and set math
+WWW=		https://metacpan.org/release/DateTime-Set
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

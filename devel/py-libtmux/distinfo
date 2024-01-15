@@ -1,3 +1,3 @@
-TIMESTAMP = 1604680150
-SHA256 (libtmux-0.8.5.tar.gz) = 1d35b9f8451944d31c5ed22ed9e6c8e18034adcc75718fcc5b27fbd9621543e1
-SIZE (libtmux-0.8.5.tar.gz) = 36961
+TIMESTAMP = 1703227876
+SHA256 (libtmux-0.25.0.tar.gz) = 54037f57c7411d2896bcfdb6085d4b1d0eed411e1ff72ba258ecf5d2e803f0b0
+SIZE (libtmux-0.25.0.tar.gz) = 239500

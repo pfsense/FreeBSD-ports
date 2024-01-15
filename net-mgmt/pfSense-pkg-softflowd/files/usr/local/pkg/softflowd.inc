@@ -3,7 +3,7 @@
  * softflowd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,6 +58,9 @@ function sync_package_softflowd() {
 			}
 			if (is_numericint($cf['sample']) && ($cf['sample'] > 0)) {
 				$start .= " -s " . escapeshellarg($cf['sample']);
+			}
+			if ($cf['biflows']) {
+				$start .= " -b ";
 			}
 			if ($cf['version'] != "") {
 				$start .= " -v " . escapeshellarg($cf['version']);
@@ -121,6 +124,9 @@ function validate_form_softflowd($post, &$input_errors) {
 	}
 	if (!in_array($post['version'], array(1, 5, 9, 10, 'psamp'))) {
 		$input_errors[] = 'You must specify a netflow version';
+	}
+	if ($post['biflows'] and $post['version'] != 10) {
+		$input_errors[] = 'You must specify IPFIX(10) netflow version for using bidirectional flows';
 	}
 	if (!in_array($post['flowtracking'], array("ether", "vlan", "full", "proto", "ip"))) {
 		$input_errors[] = 'You must specify a valid flow tracking selection';

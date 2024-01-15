@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hploscripts
 PORTVERSION=	3.0
 PORTREVISION=	2

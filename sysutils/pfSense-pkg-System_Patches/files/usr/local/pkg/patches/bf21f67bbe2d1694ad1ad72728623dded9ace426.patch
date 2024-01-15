@@ -1,0 +1,188 @@
+diff --git a/src/etc/inc/interfaces.inc b/src/etc/inc/interfaces.inc
+index 55234e755f..6b601a9c13 100644
+--- a/src/etc/inc/interfaces.inc
++++ b/src/etc/inc/interfaces.inc
+@@ -7468,14 +7468,16 @@ function return_gateway_groups_array_with_descr() {
+ 	return $interfaces;
+ }
+ 
+-function get_serial_ports() {
++function get_serial_ports($short=false) {
+ 	$linklist = array();
+ 	if (!is_dir("/var/spool/lock")) {
+ 		mwexec("/bin/mkdir -p /var/spool/lock");
+ 	}
+ 	$serialports = glob("/dev/cua[a-zA-Z][0-9]{,.[0-9],.[0-9][0-9],[0-9],[0-9].[0-9],[0-9].[0-9][0-9]}", GLOB_BRACE);
+ 	foreach ($serialports as $port) {
+-		$linklist[$port] = trim($port);
++		$port = trim($port);
++		$port = ($short) ? basename($port) : $port;
++		$linklist[$port] = $port;
+ 	}
+ 	return $linklist;
+ }
+diff --git a/src/etc/inc/system.inc b/src/etc/inc/system.inc
+index c94e802bf3..c3514f738b 100644
+--- a/src/etc/inc/system.inc
++++ b/src/etc/inc/system.inc
+@@ -1664,9 +1664,14 @@ function system_ntp_setup_gps($serialport) {
+ 	}
+ 
+ 	init_config_arr(array('ntpd', 'gps'));
++	$serialports = get_serial_ports(true);
++
++	if (!array_key_exists($serialport, $serialports)) {
++		return false;
++	}
+ 
+ 	$gps_device = '/dev/gps0';
+-	$serialport = '/dev/'.$serialport;
++	$serialport = '/dev/'.basename($serialport);
+ 
+ 	if (!file_exists($serialport)) {
+ 		return false;
+@@ -1751,8 +1756,14 @@ function system_ntp_setup_rawspeed($serialport, $baud) {
+ function system_ntp_setup_pps($serialport) {
+ 	global $config, $g;
+ 
++	$serialports = get_serial_ports(true);
++
++	if (!array_key_exists($serialport, $serialports)) {
++		return false;
++	}
++
+ 	$pps_device = '/dev/pps0';
+-	$serialport = '/dev/'.$serialport;
++	$serialport = '/dev/'.basename($serialport);
+ 
+ 	if (!file_exists($serialport)) {
+ 		return false;
+diff --git a/src/usr/local/www/services_ntpd.php b/src/usr/local/www/services_ntpd.php
+index 0a506cff56..deb4b97f40 100644
+--- a/src/usr/local/www/services_ntpd.php
++++ b/src/usr/local/www/services_ntpd.php
+@@ -115,12 +115,6 @@ if ($_POST) {
+ 			unset($config['ntpd']['interface']);
+ 		}
+ 
+-		if (!empty($_POST['gpsport']) && file_exists('/dev/'.$_POST['gpsport'])) {
+-			$config['ntpd']['gpsport'] = $_POST['gpsport'];
+-		} elseif (isset($config['ntpd']['gpsport'])) {
+-			unset($config['ntpd']['gpsport']);
+-		}
+-
+ 		unset($config['ntpd']['prefer']);
+ 		unset($config['ntpd']['noselect']);
+ 		unset($config['ntpd']['ispool']);
+diff --git a/src/usr/local/www/services_ntpd_gps.php b/src/usr/local/www/services_ntpd_gps.php
+index 09531256ea..5e7875bc96 100644
+--- a/src/usr/local/www/services_ntpd_gps.php
++++ b/src/usr/local/www/services_ntpd_gps.php
+@@ -36,6 +36,8 @@ $gpstypes = array(gettext('Custom'), gettext('Default'), 'Generic', 'Garmin', 'M
+ global $ntp_poll_min_default_gps, $ntp_poll_max_default_gps;
+ $ntp_poll_values = system_ntp_poll_values();
+ 
++$serialports = get_serial_ports(true);
++
+ function set_default_gps() {
+ 	global $config;
+ 
+@@ -159,6 +161,10 @@ if ($_POST) {
+ 		$input_errors[] = gettext("The submitted GPS type is invalid.");
+ 	}
+ 
++	if (!empty($_POST['gpsport']) && !array_key_exists($_POST['gpsport'], $serialports)) {
++		$input_errors[] = gettext("The selected GPS port does not exist.");
++	}
++
+ 	if (!array_key_exists($pconfig['gpsminpoll'], $ntp_poll_values)) {
+ 		$input_errors[] = gettext("The supplied value for Minimum Poll Interval is invalid.");
+ 	}
+@@ -183,7 +189,7 @@ if ($_POST) {
+ 
+ if ($_POST && empty($input_errors)) {
+ 
+-	if (!empty($_POST['gpsport']) && file_exists('/dev/'.$_POST['gpsport'])) {
++	if (!empty($_POST['gpsport']) && array_key_exists($_POST['gpsport'], $serialports)) {
+ 		$config['ntpd']['gps']['port'] = $_POST['gpsport'];
+ 	} else {
+ 		/* if port is not set, remove all the gps config */
+@@ -399,21 +405,12 @@ $section->addInput(new Form_Select(
+     'Default is the configuration of %1$s 2.1 and earlier (not recommended). Select Generic if the GPS is not listed.%2$s' .
+     'The predefined configurations assume the GPS has already been set to NMEA mode.', $g['product_label'], '<br /><br />');
+ 
+-$serialports = glob("/dev/cua?[0-9]{,.[0-9]}", GLOB_BRACE);
+-
+ if (!empty($serialports)) {
+-	$splist = array();
+-
+-	foreach ($serialports as $port) {
+-		$shortport = substr($port, 5);
+-		$splist[$shortport] = $shortport;
+-	}
+-
+ 	$section->addInput(new Form_Select(
+ 		'gpsport',
+ 		'Serial Port',
+ 		$pconfig['port'],
+-		['' => gettext('None')] + $splist
++		['' => gettext('None')] + $serialports
+ 	))->setHelp('All serial ports are listed, be sure to pick the port with the GPS attached. ');
+ 
+ 	$section->addInput(new Form_Select(
+diff --git a/src/usr/local/www/services_ntpd_pps.php b/src/usr/local/www/services_ntpd_pps.php
+index 8651acb6ca..cdc888fe4c 100644
+--- a/src/usr/local/www/services_ntpd_pps.php
++++ b/src/usr/local/www/services_ntpd_pps.php
+@@ -34,6 +34,8 @@ require_once("guiconfig.inc");
+ global $ntp_poll_min_default_pps, $ntp_poll_max_default_pps;
+ $ntp_poll_values = system_ntp_poll_values();
+ 
++$serialports = get_serial_ports(true);
++
+ if (!is_array($config['ntpd'])) {
+ 	$config['ntpd'] = array();
+ }
+@@ -44,6 +46,10 @@ if (!is_array($config['ntpd']['pps'])) {
+ if ($_POST) {
+ 	unset($input_errors);
+ 
++	if (!empty($_POST['ppsport']) && !array_key_exists($_POST['ppsport'], $serialports)) {
++		$input_errors[] = gettext("The selected PPS port does not exist.");
++	}
++
+ 	if (!array_key_exists($pconfig['ppsminpoll'], $ntp_poll_values)) {
+ 		$input_errors[] = gettext("The supplied value for Minimum Poll Interval is invalid.");
+ 	}
+@@ -59,7 +65,7 @@ if ($_POST) {
+ 	}
+ 
+ 	if (!$input_errors) {
+-		if (!empty($_POST['ppsport']) && file_exists('/dev/'.$_POST['ppsport'])) {
++		if (!empty($_POST['ppsport']) && array_key_exists($_POST['ppsport'], $serialports)) {
+ 			$config['ntpd']['pps']['port'] = $_POST['ppsport'];
+ 		} else {
+ 			/* if port is not set, remove all the pps config */
+@@ -153,21 +159,12 @@ $section->addInput(new Form_StaticText(
+ 	'<a href="services_ntpd.php">' . 'Services > NTP > Settings' . '</a>' . ' to reliably supply the time of each PPS pulse.'
+ ));
+ 
+-$serialports = glob("/dev/cua?[0-9]{,.[0-9]}", GLOB_BRACE);
+-
+ if (!empty($serialports)) {
+-	$splist = array();
+-
+-	foreach ($serialports as $port) {
+-		$shortport = substr($port, 5);
+-		$splist[$shortport] = $shortport;
+-	}
+-
+ 	$section->addInput(new Form_Select(
+ 		'ppsport',
+ 		'Serial Port',
+ 		$pconfig['port'],
+-		['' => gettext('None')] + $splist
++		['' => gettext('None')] + $serialports
+ 	))->setHelp('All serial ports are listed, be sure to pick the port with the PPS source attached. ');
+ }
+ 

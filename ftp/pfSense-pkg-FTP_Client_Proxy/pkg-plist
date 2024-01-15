@@ -1,5 +1,7 @@
-pkg/ftpproxy.xml
-pkg/ftpproxy.inc
 /etc/inc/priv/ftpproxy.priv.inc
+pkg/ftpproxy.inc
+pkg/ftpproxy.xml
 %%DATADIR%%/info.xml
+www/shortcuts/pkg_ftpproxy.inc
 @dir /etc/inc/priv
+@dir /etc/inc

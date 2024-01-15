@@ -1,21 +1,19 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	maxr
-PORTVERSION=	0.2.9
-PORTREVISION=	3
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	0.2.13
 CATEGORIES=	games
-MASTER_SITES=	http://www.maxr.org/downloads/ \
-		http://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Mechanized Assault and Exploration Reloaded
+WWW=		https://www.maxr.org/ \
+		https://github.com/maxr-dot-org/maxr/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/data/COPYING
 
-USES=		cmake compiler:c++11-lib dos2unix sdl
-DOS2UNIX_FILES=	src/config/selectplatformconfig.h
+USES=		cmake compiler:c++17-lang sdl
+USE_GITHUB=	yes
+GH_ACCOUNT=	maxr-dot-org
 USE_SDL=	sdl2 mixer2 net2
 
 PLIST_FILES=	bin/${PORTNAME}

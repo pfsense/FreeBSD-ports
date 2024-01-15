@@ -1,11 +1,11 @@
---- chrome/browser/signin/signin_util.cc.orig	2021-01-18 21:28:51 UTC
+--- chrome/browser/signin/signin_util.cc.orig	2023-11-03 10:09:45 UTC
 +++ chrome/browser/signin/signin_util.cc
-@@ -33,7 +33,7 @@
- #include "google_apis/gaia/gaia_auth_util.h"
- #include "ui/base/l10n/l10n_util.h"
+@@ -75,7 +75,7 @@ CookiesMover::CookiesMover(base::WeakPtr<Profile> sour
+ CookiesMover::~CookiesMover() = default;
  
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
- #include "chrome/browser/ui/browser_finder.h"
- #include "chrome/browser/ui/browser_list.h"
+ void CookiesMover::StartMovingCookies() {
+-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+   bool allow_cookies_to_be_moved = base::FeatureList::IsEnabled(
+       profile_management::features::kThirdPartyProfileManagement);
+ #else

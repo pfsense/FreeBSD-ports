@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dnsdbck
 PORTVERSION=	1.01
 CATEGORIES=	dns perl5
@@ -8,6 +5,7 @@ MASTER_SITES=	http://download.gnu.org.ua/pub/release/dnstools/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Verify consistency of DNS information in an SQL database
+WWW=		https://www.gnu.org.ua/software/dnstools/dnsdbck.html
 
 LICENSE=	GPLv3
 

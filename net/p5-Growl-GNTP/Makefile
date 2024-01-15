@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Growl-GNTP
 PORTVERSION=	0.21
 CATEGORIES=	net perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl implementation of the Growl GNTP Protocol (Client Part)
+WWW=		https://metacpan.org/release/Growl-GNTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

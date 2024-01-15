@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	sonic-visualiser
 DISTVERSION=	4.0.1
-PORTREVISION=	2
+PORTREVISION=	10
 CATEGORIES=	audio
 MASTER_SITES=	https://code.soundsoftware.ac.uk/attachments/download/2607/
 
 MAINTAINER=	uddka@student.kit.edu
 COMMENT=	Program for viewing and analysing the contents of music audio files
+WWW=		https://www.sonicvisualiser.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,7 +27,7 @@ LIB_DEPENDS=	libcapnp.so:devel/capnproto \
 
 USES=		autoreconf compiler:c++11-lang desktop-file-utils dos2unix gmake gl pkgconfig qt:5 xorg
 DOS2UNIX_FILES=	convert.pro
-USE_QT=		buildtools_build core gui network qmake_build svg testlib widgets xml
+USE_QT=		buildtools:build core gui network qmake:build svg testlib widgets xml
 USE_XORG=	x11
 USE_GL=		gl
 

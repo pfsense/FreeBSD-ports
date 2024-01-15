@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-NameParse
 PORTVERSION=	1.38
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Routines for manipulating a person's name #'
+WWW=		https://metacpan.org/release/Lingua-EN-NameParse
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

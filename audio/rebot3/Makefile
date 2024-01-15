@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rebot3
 PORTVERSION=	1.0.2
 CATEGORIES=	audio
@@ -8,6 +6,7 @@ MASTER_SITES=	http://www.headmqa.com/${PORTNAME}/ \
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Renames mp3 files using freedb or local CDDB
+WWW=		http://www.headmqa.com/rebot3/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Template-Declare
 PORTVERSION=	0.47
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perlish declarative templates
+WWW=		https://metacpan.org/release/Template-Declare
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

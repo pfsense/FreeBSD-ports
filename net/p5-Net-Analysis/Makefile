@@ -1,6 +1,3 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Net-Analysis
 PORTVERSION=	0.41
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Modules for analysing network traffic
+WWW=		https://metacpan.org/release/Net-Analysis
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-Pcap>=0:net/p5-Net-Pcap \

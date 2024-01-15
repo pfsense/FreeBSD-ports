@@ -1,16 +1,13 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-#   $MCom: ports/net-p2p/gtorrentviewer/Makefile,v 1.4 2007/08/06 17:16:29 mezz Exp $
-
 PORTNAME=	gtorrentviewer
 PORTVERSION=	0.2b
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/GTorrentViewer/${PORTVERSION}
 DISTNAME=	GTorrentViewer-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	GTK+2 viewer and editor for BitTorrent meta files
+COMMENT=	GTK 2 viewer and editor for BitTorrent meta files
+WWW=		https://gtorrentviewer.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

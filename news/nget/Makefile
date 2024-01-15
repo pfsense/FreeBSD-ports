@@ -1,6 +1,3 @@
-# Created by: George Sorsby <george@crackpipe.net>
-# $FreeBSD$
-
 PORTNAME=	nget
 PORTVERSION=	0.27.1
 DISTVERSIONSUFFIX=	+uulib
@@ -10,6 +7,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Auto-resuming command line NNTP file grabber
+WWW=		https://nget.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

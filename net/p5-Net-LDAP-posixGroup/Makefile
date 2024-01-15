@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Net-LDAP-posixGroup
 PORTVERSION=	0.0.2
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Creates new Net::LDAP::Entry objects for a posixGroup entry
+WWW=		https://metacpan.org/release/Net-LDAP-posixGroup
 
 RUN_DEPENDS=	p5-perl-ldap>=0:net/p5-perl-ldap
 

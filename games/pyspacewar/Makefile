@@ -1,15 +1,13 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pyspacewar
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DIST_SUBDIR=	python
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Game loosely based on the original Spacewar!
+WWW=		https://mg.pov.lt/pyspacewar/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,13 +18,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mgedmin
 #GH_TAGNAME=	f872564
 
-USES=		gnome python:3.6+
+USES=		gnome python
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 
 PORTDOCS=	*.rst
-
-INSTALLS_ICONS=	yes
 
 DESKTOP_ENTRIES="PySpaceWar" "" ${PORTNAME} \
 		"${PORTNAME}" "Game;ArcadeGame;" ""

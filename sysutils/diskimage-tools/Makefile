@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	diskimage-tools
 DISTVERSION=	0.2
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	http://acadix.biz/Ports/distfiles/
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Convenience tools for manipulating disk images
+WWW=		https://acadix.biz/diskimage-tools.php
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

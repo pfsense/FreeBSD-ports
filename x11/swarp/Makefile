@@ -1,6 +1,3 @@
-# Created by: Daniel Roethlisberger <daniel@roe.ch>
-# $FreeBSD$
-
 PORTNAME=	swarp
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://dl.suckless.org/tools/
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	X11 generic pointer warping utility
+WWW=		https://tools.suckless.org/x/swarp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

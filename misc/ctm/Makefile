@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	ctm
 PORTVERSION=	2.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Generate, receive and apply FreeBSD source updates per mail
+WWW=		https://github.com/freebsd/ctm
 
 LICENSE=	Beerware BSD2CLAUSE
 LICENSE_COMB=	multi
@@ -21,7 +20,7 @@ USES=		tar:txz
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	ef289f3
+GH_TAGNAME=	5b03b48
 
 OPTIONS_DEFINE=	DOCS
 MAKE_FLAGS=	MK_MAN=no

@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	IO-Prompt-Simple
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple interface for user input
+WWW=		https://metacpan.org/pod/IO::Prompt::Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Ming-I Hseh <PA@FreeBSD.Ntu.edu.TW>
-# $FreeBSD$
-
 PORTNAME=	kcfonts
 PORTVERSION=	1.05
 PORTREVISION=	4
@@ -15,7 +12,6 @@ BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf
 
 MAKE_ARGS=	CFONTDIR=${FONTSDIR} EFONTDIR=${FONTSDIR}
 MAKE_JOBS_UNSAFE=yes
-BROKEN_sparc64=		Does not build on sparc64
 
 NO_WRKSUBDIR=	yes
 

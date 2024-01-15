@@ -1,6 +1,3 @@
-# Created by: tremere@cainites.net
-# $FreeBSD$
-
 PORTNAME=	opendbx
 PORTVERSION=	1.4.6
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.linuxnetworks.de/opendbx/download/
 
 MAINTAINER=	tremere@cainites.net
 COMMENT=	C library for accessing databases with a single API
+WWW=		http://www.linuxnetworks.de/opendbx/
 
 LICENSE=	LGPL21
 

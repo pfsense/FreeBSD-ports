@@ -1,14 +1,12 @@
-# Created by: T. William Wells <bill@twwells.com>
-# $FreeBSD$
-
 PORTNAME=	BerkeleyDB
-PORTVERSION=	0.64
+PORTVERSION=	0.65
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to the Berkeley DB package
+WWW=		https://metacpan.org/release/BerkeleyDB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

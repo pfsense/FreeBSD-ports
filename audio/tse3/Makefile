@@ -1,6 +1,3 @@
-# Created by: Mathew Kanner <mat@hak.cnd.mcgill.ca>
-# $FreeBSD$
-
 PORTNAME=	tse3
 PORTVERSION=	0.3.1
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME:tu}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIDI library
+WWW=		https://tse3.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

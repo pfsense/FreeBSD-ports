@@ -1,7 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/x11-themes/clearlooks-metacity/Makefile,v 1.3 2007/09/10 15:44:29 mezz Exp $
-
 PORTNAME=	clearlooks-metacity
 PORTVERSION=	2.0
 PORTREVISION=	7
@@ -11,6 +7,7 @@ MASTER_SITES=	http://www.stellingwerff.com/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clearlooks Metacity theme
+WWW=		https://clearlooks.sourceforge.net/
 
 USES=		gnome
 

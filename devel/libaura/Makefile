@@ -1,6 +1,3 @@
-# Created by: Andrew Turner <andrew+ports@fubar.geek.nz>
-# $FreeBSD$
-
 PORTNAME=	libaura
 PORTVERSION=	3.1.20051222
 CATEGORIES=	devel

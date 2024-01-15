@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Filter
 PORTVERSION=	1.10
 PORTREVISION=	1

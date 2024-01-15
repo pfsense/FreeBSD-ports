@@ -1,19 +1,20 @@
-# Created by: Matt Mills <matt_mills@btopenworld.com>
-# $FreeBSD$
-
 PORTNAME=	ipbt
 DISTVERSION=	r8765
 CATEGORIES=	misc
 MASTER_SITES=	http://www.chiark.greenend.org.uk/~sgtatham/ipbt/ \
 		LOCAL/uqs
 
-MAINTAINER=	uqs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-tech ttyrec player with improvements over ttyplay
+WWW=		https://www.chiark.greenend.org.uk/~sgtatham/ipbt/
 
 USES=		ncurses perl5 shebangfix
 
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENCE
+
 ALL_TARGET=	${PORTNAME}
-MAKE_ARGS=	LFLAGS="${LDFLAGS}" NCURSES_LIB=-l${NCURSES_IMPL}
+MAKE_ARGS=	LFLAGS="${LDFLAGS}" NCURSES_LIB="${NCURSESLIBS}"
 PLIST_FILES=	bin/ipbt bin/ttygrep bin/ttydump man/man1/ipbt.1.gz
 SHEBANG_FILES=	sbcsgen.pl Makefile ttygrep ttydump
 

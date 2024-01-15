@@ -1,13 +1,11 @@
-# Created by: Diego Depaoli <trebestie@gmail.com> and Yinghong Liu <relaxbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	smplayer
-DISTVERSION=	21.1.0
+DISTVERSION=	23.6.0
 CATEGORIES=	multimedia audio kde
 MASTER_SITES=	SF/${PORTNAME}/SMPlayer/${PORTVERSION}
 
-MAINTAINER=	vvd@unislabs.com
+MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Complete front-end based on Qt for mplayer
+WWW=		https://www.smplayer.info/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/Copying.txt
@@ -15,20 +13,22 @@ LICENSE_FILE=	${WRKSRC}/Copying.txt
 USES=		cpe compiler:c++11-lang desktop-file-utils dos2unix gl \
 		gmake qmake qt:5 tar:bzip2 xorg
 USE_GL=		gl
-USE_QT=		buildtools_build linguisttools_build \
+USE_QT=		buildtools:build linguisttools:build \
 		core dbus gui network script widgets xml
 USE_XORG=	x11 xext
 
 CPE_VENDOR=	ricardo_villalba
-DOS2UNIX_REGEX=	.*.[^p][^n][^g]$
+DOS2UNIX_GLOB=	*.md *.txt
 
 ALL_TARGET=	src/smplayer
 CONFIGURE_WRKSRC=	${WRKSRC}/src
-MAKE_ARGS=	PREFIX=${PREFIX} DESTDIR=${STAGEDIR}
+MAKE_ENV=	DESTDIR=${STAGEDIR} LRELEASE=${LRELEASE}
 QMAKE_ARGS=	"DEFINES_DISABLED+=MPLAYER2_SUPPORT"
 
-PORTDOCS=	Changelog Not_so_obvious_things.txt \
-		Readme.txt Release_notes.txt Watching_TV.txt
+PORTDOCS=	${DOCS:T}
+DOCS=		old-docs/Changelog old-docs/dvdmenus.txt old-docs/Finding_subtitles.txt \
+		old-docs/Not_so_obvious_things.txt old-docs/Release_notes.txt \
+		old-docs/Watching_TV.txt README.md Readme.txt Release_notes.md
 
 OPTIONS_MULTI=		ENGINE
 OPTIONS_MULTI_ENGINE=	MPLAYER MPV
@@ -56,12 +56,10 @@ PORTSCOUT=	site:http://sourceforge.net/projects/smplayer/files/Unstable/releases
 SUB_FILES=	pkg-message
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|&& $$(QMAKE) $$(QMAKE_OPTS)||; \
-		s|lrelease|${LRELEASE}|; \
-		s| make| ${MAKE_CMD}|g' \
-		${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e 's|-O2 -W -Wall -Werror|${CFLAGS}|' \
 		${WRKSRC}/webserver/Makefile
+	@${REINPLACE_CMD} -e 's|^sed|#sed|' \
+		${WRKSRC}/install_appdata.sh
 
 post-patch-DEBUG-on:
 	@${REINPLACE_CMD} -e '/CONFIG += debug/s|#||' \
@@ -77,6 +75,6 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	vgb
 PORTVERSION=	3.0
 PORTREVISION=	5
@@ -13,6 +10,10 @@ EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nintendo GameBoy(tm) emulator (closed binary version of vgb)
+WWW=		https://fms.komkon.org/VGB/
+
+ONLY_FOR_ARCHS=	i386
+ONLY_FOR_ARCHS_REASON=	required i386 dependencies
 
 LIB_DEPENDS=	libc.so.5:misc/compat5x
 

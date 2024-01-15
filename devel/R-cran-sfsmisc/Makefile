@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sfsmisc
-DISTVERSION=	1.1-7
+DISTVERSION=	1.1-16
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Utilities from 'Seminar fuer Statistik' ETH Zurich
+WWW=		https://cran.r-project.org/web/packages/sfsmisc/
 
 LICENSE=	GPLv2+
 

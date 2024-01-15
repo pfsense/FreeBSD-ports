@@ -1,11 +1,11 @@
---- configure.ac.orig	2020-01-17 11:05:36 UTC
+--- configure.ac.orig
 +++ configure.ac
 @@ -2,7 +2,7 @@
  # Process this file with autoconf to produce a configure script.
  
- AC_PREREQ(2.53)
--AC_INIT(ejabberd, m4_esyscmd([echo `git describe --tags 2>/dev/null || echo 0.0` | sed 's/-g.*//;s/-/./' | tr -d '\012']), [ejabberd@process-one.net], [ejabberd])
+ AC_PREREQ(2.59)
+-AC_INIT(ejabberd, m4_esyscmd([echo `git describe --tags 2>/dev/null || echo 23.10` | sed 's/-g.*//;s/-/./' | tr -d '\012']), [ejabberd@process-one.net], [ejabberd])
 +AC_INIT(ejabberd, %%PORTVERSION%%, [ejabberd@process-one.net], [ejabberd])
- REQUIRE_ERLANG_MIN="8.3 (Erlang/OTP 19.3)"
+ REQUIRE_ERLANG_MIN="9.0.5 (Erlang/OTP 20.0)"
  REQUIRE_ERLANG_MAX="100.0.0 (No Max)"
  

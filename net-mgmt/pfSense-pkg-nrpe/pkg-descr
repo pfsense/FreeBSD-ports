@@ -1,4 +1,4 @@
-pfSense GUI for Nagios NRPE
+pfSense software package GUI for Nagios NRPE
 
 nrpe is used to execute Nagios plugins on remote hosts and report the results
 to the main Nagios server. From the Nagios homepage:

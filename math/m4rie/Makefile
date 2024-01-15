@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	M4RIE
 PORTVERSION=	20200115
 DISTVERSIONPREFIX=	release-
@@ -8,6 +5,7 @@ CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Library for fast arithmetic with dense matrices over GF(2^e)
+WWW=		https://bitbucket.org/malb/m4rie/src/master/
 
 LICENSE=	GPLv2+
 

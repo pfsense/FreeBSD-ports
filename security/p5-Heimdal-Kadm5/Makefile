@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Heimdal-Kadm5
 PORTVERSION=	0.08
 CATEGORIES=	security perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Perl extension for Heimdal administrative client library
+WWW=		https://metacpan.org/release/Heimdal-Kadm5
 
 USES=		perl5
 USE_PERL5=	configure

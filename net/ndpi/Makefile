@@ -1,42 +1,38 @@
-# Created by: Muhammad Moinur Rahman <5u623l20@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	ndpi
-PORTVERSION=	3.4.d20201222
-PORTREVISION=	1
+PORTVERSION=	4.8.d20231102
 PORTEPOCH=	1
 CATEGORIES=	net
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	NTOP-maintained superset of the popular OpenDPI library
+WWW=		https://www.ntop.org/products/deep-packet-inspection/ndpi/
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libjson-c.so:devel/json-c \
+LIB_DEPENDS=	librrd.so:databases/rrdtool \
+		libjson-c.so:devel/json-c \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 
-USES=		autoreconf compiler:c++11-lang libtool localbase:ldflags pathfix \
+USES=		autoreconf compiler:c++11-lang cpe libtool localbase:ldflags pathfix \
 		pkgconfig
+CPE_VENDOR=	ntop
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=	--with-pic
-CPPFLAGS+=	-I${LOCALBASE}/include/json-c
-LIBS+=		-ljson-c
-MAKE_ENV+=	EXAMPLESDIR="${EXAMPLESDIR_REL}"
+CONFIGURE_ARGS=	--with-pic --with-local-libgcrypt
+CPPFLAGS=	-I${LOCALBASE}/include/json-c
+LIBS=		-ljson-c
+MAKE_ENV=	EXAMPLESDIR="${EXAMPLESDIR_REL}"
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ntop
 GH_PROJECT=	nDPI
-GH_TAGNAME=	75898a4
+GH_TAGNAME=	816b001
 
 PLIST_SUB=	MAJOR_VER=${PORTVERSION:R:R} VER=${PORTVERSION:R}
-
-post-patch:
-	(cd ${WRKSRC} && ${SH} autogen.sh)
 
 post-configure:
 	@${REINPLACE_CMD} -e 's/#define PACKAGE/#define NDPI_PACKAGE/g' \

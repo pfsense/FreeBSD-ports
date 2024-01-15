@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-InflateColumn-Serializer
 PORTVERSION=	0.09
 CATEGORIES=	databases perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Inflators to serialize data structures for DBIx::Class
+WWW=		https://metacpan.org/release/DBIx-Class-InflateColumn-Serializer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

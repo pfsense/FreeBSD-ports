@@ -1,18 +1,17 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	varnish-modules
-PORTVERSION=	0.17.0
+PORTVERSION=	0.23.0
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Collection of Varnish Cache modules by Varnish Software
+WWW=		https://github.com/varnish/varnish-modules
 
 LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	rst2man:textproc/py-docutils
 
-USES=		autoreconf:build gmake libtool pkgconfig python:build varnish:6
+USES=		autoreconf:build gmake libtool pkgconfig python:build varnish:7
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
 INSTALL_TARGET=	install-strip
@@ -31,8 +30,10 @@ CFLAGS+=	-Wno-error=deprecated-declarations
 pre-configure:
 	cd ${WRKSRC} && ./bootstrap
 
+post-build-DOCS-on:
+	cd ${WRKSRC} && ${MAKE_CMD} rst-docs
+
 post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} '-not -regex .*.man.rst'
 
 .include <bsd.port.mk>

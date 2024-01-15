@@ -1,22 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	vkquake
-DISTVERSION=	1.03.0
-PORTREVISION=	1
+DISTVERSION=	1.30.1
 CATEGORIES=	games
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	a869a22d9b51.patch:-p2 # vulkan-headers >= 140
-
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake 1 port using Vulkan instead of OpenGL, based on QuakeSpasm
+WWW=		https://github.com/Novum/vkQuake
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 
-BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
-LIB_DEPENDS=	libX11-xcb.so:x11/libX11 \
-		libvulkan.so:graphics/vulkan-loader
+BUILD_DEPENDS=	glslangValidator:graphics/glslang \
+		vulkan-headers>0:graphics/vulkan-headers
+LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 
 WRKSRC_SUBDIR=	Quake
 
@@ -27,9 +22,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Novum
 GH_PROJECT=	vkQuake
 
-INSTALLS_ICONS=	yes
-
 MAKE_ENV=	prefix=${PREFIX} bindir=${PREFIX}/bin VULKAN_SDK=${LOCALBASE}
+MAKE_ARGS=	HOST_CC="${CC}" CC="${CC}"
 ALL_TARGET=	# empty
 
 .include	"${.CURDIR}/../quake-data/Makefile.include"

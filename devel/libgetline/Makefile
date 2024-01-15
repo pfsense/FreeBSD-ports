@@ -1,6 +1,3 @@
-# Created by: roberto
-# $FreeBSD$
-
 PORTNAME=	getline
 PORTVERSION=	3.9
 CATEGORIES=	devel

@@ -1,6 +1,3 @@
-# Created by: Mohammad S. Babaei <info@babaei.net>
-# $FreeBSD$
-
 PORTNAME=	cppdb
 PORTVERSION=	0.3.1
 PORTREVISION=	2
@@ -9,10 +6,15 @@ MASTER_SITES=	SF/cppcms/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	info@babaei.net
 COMMENT=	Platform and database independent SQL connectivity library
+WWW=		http://cppcms.com/sql/cppdb/
 
 LICENSE=	BSL MIT
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/copyright.txt
+
+USES=		cmake tar:bzip2
+USE_CXXSTD=	c++14
+USE_LDCONFIG=	yes
 
 NO_OPTIONS_SORT=	yes
 OPTIONS_SINGLE=		SQLITE3 PGSQL MYSQL ODBC
@@ -39,9 +41,6 @@ SQLITE3_DESC=		SQLite 3 Backend
 SQLITE3_DISABLE_DESC=	Disable SQLite 3 backend
 SQLITE3_INTERNAL_DESC=	Link SQLite 3 backend into CppDB
 SQLITE3_MODULE_DESC=	Build SQLite 3 backend as a CppDB module
-
-USE_LDCONFIG=	yes
-USES=		cmake tar:bzip2
 
 .include <bsd.port.options.mk>
 

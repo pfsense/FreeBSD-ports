@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	check_logfiles
-PORTVERSION=	3.13
+PORTVERSION=	4.1.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://labs.consol.de/assets/downloads/nagios/
 
 MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Nagios plugin which scans log files for specific patterns
+WWW=		https://labs.consol.de/lang/en/nagios/check_logfiles/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

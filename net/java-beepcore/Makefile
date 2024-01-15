@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	beepcore
 PORTVERSION=	0.9.08
 PORTREVISION=	3
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of BEEP core and BEEP mapping for TCP in Java
+WWW=		https://sourceforge.net/projects/beepcore-java/
 
 RUN_DEPENDS=	${JAVALIBDIR}/xercesImpl.jar:textproc/xerces-j
 

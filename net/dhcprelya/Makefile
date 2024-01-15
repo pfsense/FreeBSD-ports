@@ -1,13 +1,10 @@
-# Created by: Sergey Matveychuk <sem@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dhcprelya
 PORTVERSION=	6.1
 PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	sem@semmy.ru
-COMMENT=	Lightweight DHCP relay agent. Yandex edition
+COMMENT=	Lightweight DHCP relay agent (Yandex edition)
 
 LICENSE=	BSD3CLAUSE
 
@@ -27,7 +24,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000
+.if ${OPSYS} == FreeBSD
 LDFLAGS+=	-Wl,-E
 .endif
 

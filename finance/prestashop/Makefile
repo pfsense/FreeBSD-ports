@@ -1,20 +1,18 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	prestashop
-PORTVERSION=	1.7.7.0
+PORTVERSION=	1.7.8.8
 CATEGORIES=	finance www
 MASTER_SITES=	https://download.prestashop.com/download/releases/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Open-Source e-Commerce Software for Web 2.0
+WWW=		https://www.prestashop.com/
 
 USES=		cpe php shebangfix zip:infozip
 NO_BUILD=	yes
 PRESTADIR=	www/${PORTNAME}
 PLIST=		${WRKDIR}/plist
-USE_PHP=	ctype curl dom filter gd hash intl json mcrypt \
+USE_PHP=	ctype curl dom filter gd intl mcrypt \
 		mysqli pdo_mysql posix session simplexml soap
 WRKSRC=		${WRKDIR}/${PORTNAME}
 SUB_FILES=	pkg-message

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Convert-Base32
 PORTVERSION=	0.06
 CATEGORIES=	converters perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Encoding and decoding of base32 strings
+WWW=		https://metacpan.org/release/Convert-Base32
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,14 +1,12 @@
-# Created by: gary@hotlava.com
-# $FreeBSD$
-
 PORTNAME=	sane-backends
-PORTVERSION=	1.0.31
-PORTREVISION=	2
+DISTVERSION=	1.2.1
+PORTREVISION=	4
 CATEGORIES=	graphics
-MASTER_SITES=	https://gitlab.com/sane-project/backends/uploads/8bf1cae2e1803aefab9e5331550e5d5d/
+MASTER_SITES=	https://gitlab.com/sane-project/backends/uploads/110fc43336d0fb5e514f1fdc7360dd87/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	API for accessing scanners, digital cameras, frame grabbers, etc
+WWW=		http://www.sane-project.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,12 +15,13 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
 USES=		compiler:c++11-lang gmake gnome jpeg libtool localbase:ldflags \
-		pathfix pkgconfig
+		pathfix pkgconfig python:build
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	saned
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-locking \
 		--enable-pthread \
 		--without-systemd
@@ -33,20 +32,20 @@ SUB_FILES=	pkg-message
 USERS=		saned
 GROUPS=		saned
 
-PLIST_SUB=	SOVERSION=${PORTVERSION}
+PLIST_SUB=	SOVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=		AVAHI DOCS GPHOTO IEEE1284 IPV6 NLS SNMP USB V4L
 OPTIONS_DEFAULT=	AVAHI GPHOTO USB
 OPTIONS_SUB=		yes
 
-IEEE1284_DESC=	Parallel port support via libieee1284
+IEEE1284_DESC=	Parallel port support via libieee1284 (for i386 only)
 USB_DESC=	USB support
 
 AVAHI_LIB_DEPENDS=		libavahi-client.so:net/avahi-app \
 				libcurl.so:ftp/curl \
 				libpoppler-glib.so:graphics/poppler-glib
 AVAHI_USE=			GNOME=cairo,glib20
-AVAHI_CONFIGURE_WITH=		avahi libcurl
+AVAHI_CONFIGURE_WITH=		avahi libcurl poppler-glib
 GPHOTO_LIB_DEPENDS=		libgphoto2.so:graphics/libgphoto2
 GPHOTO_CONFIGURE_WITH=		gphoto2
 IEEE1284_LIB_DEPENDS=		libieee1284.so:sysutils/libieee1284

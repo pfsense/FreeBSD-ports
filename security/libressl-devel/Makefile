@@ -1,30 +1,43 @@
-# Created by: Bernard Spil <brnrd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libressl
-PORTVERSION=	3.3.1
+PORTVERSION=	3.8.2
 CATEGORIES=	security devel
 MASTER_SITES=	OPENBSD/LibreSSL
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Free version of the SSL/TLS protocol forked from OpenSSL
+WWW=		https://www.libressl.org/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+FLAVORS=	default libtls
+FLAVOR?=	${FLAVORS:[1]}
+libtls_DESCR=	pkg-descr-libtls
+libtls_PKGNAMESUFFIX=	-devel-libtls
+libtls_PLIST=	pkg-plist-libtls
+
 CPE_VENDOR=	openbsd
 
-OPTIONS_DEFINE=	MAN3 NC
+OPTIONS_DEFINE=	LIBTLS MAN3 NC
 OPTIONS_DEFAULT=	MAN3 NC
+LIBTLS_DESC=	Only install libtls (no libcrypto/libssl)
 MAN3_DESC=	Install API manpages (section 3)
 NC_DESC=	Install TLS-enabled netcat
 
-CONFLICTS_INSTALL=	libressl-[0-9]* \
-			openssl-[0-9]* \
-			openssl-devel-[0-9]*
+CONFLICTS_INSTALL=		libressl \
+				libretls
+default_CONFLICTS_INSTALL=	openssl openssl111 openssl3[12] openssl-quictls
 
-NC_CONFIGURE_ENABLE=	nc
+.if ${FLAVOR:U} == default
+OPTIONS_EXCLUDE=	LIBTLS
+.elif ${FLAVOR:U} == libtls
+OPTIONS_SLAVE=		LIBTLS
+OPTIONS_EXCLUDE=	MAN3
+.endif
+
+LIBTLS_CONFIGURE_ENABLE=	libtls-only
+NC_CONFIGURE_ENABLE=		nc
 
 GNU_CONFIGURE=	yes
 USES=		cpe libtool pathfix pkgconfig
@@ -36,6 +49,13 @@ LDFLAGS+=	-pthread
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
+PLIST_SUB+=	LIBCRYPTO_SHLIBMAJ=52 \
+		LIBCRYPTO_SHLIBFULL=52.0.0 \
+		LIBSSL_SHLIBMAJ=55 \
+		LIBSSL_SHLIBFULL=55.0.0 \
+		LIBTLS_SHLIBMAJ=28 \
+		LIBTLS_SHLIBFULL=28.0.0
+
 post-patch-MAN3-off:
 	${REINPLACE_CMD} -e '/^install-man:/s/install-man3//' \
 		-e '/$$(MAKE) $$(AM_MAKEFLAGS) install-data-hook/d' \
@@ -43,5 +63,11 @@ post-patch-MAN3-off:
 
 post-install:
 	${RM} -r ${STAGEDIR}/${PREFIX}/etc/ssl/cert.pem
+	${RMDIR} ${STAGEDIR}${PREFIX}/etc/ssl/certs
+	${LN} -s /etc/ssl/certs ${STAGEDIR}${PREFIX}/etc/ssl/certs
+
+post-stage-MAN3-on:
+	(cd ${STAGEDIR}${MANPREFIX}; ${FIND} man/man3 -not -type d | \
+		${SED} 's/$$/.gz/' >> ${TMPPLIST})
 
 .include <bsd.port.mk>

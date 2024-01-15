@@ -1,15 +1,13 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	gmime
 PORTVERSION=	2.6.23
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES?=	mail
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	26
 
 MAINTAINER?=	bofh@FreeBSD.org
 COMMENT?=	Library (written in C) for parsing and creating messages using MIME
+WWW=		https://spruce.sourceforge.net/gmime/
 
 LICENSE=	LGPL21
 
@@ -27,16 +25,15 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	GINTRO VALA
+OPTIONS_DEFINE=	GINTRO VAPI
 OPTIONS_SUB=	yes
 GINTRO_DESC=	Install GObject Introspection data
-VALA_DESC=	Install vala binding
 GINTRO_BUILD_DEPENDS=	gobject-introspection>=0.6.8:devel/gobject-introspection
 GINTRO_RUN_DEPENDS=	gobject-introspection>=0.6.8:devel/gobject-introspection
 GINTRO_CONFIGURE_ENABLE=introspection
-VALA_BUILD_DEPENDS=	vala>=0.20:lang/vala
-VALA_CONFIGURE_ENABLE=	vala
-VALA_IMPLIES=	GINTRO
+VAPI_USES=		vala:build
+VAPI_CONFIGURE_ENABLE=	vala
+VAPI_IMPLIES=	GINTRO
 
 # www.freebsd.org/cgi/query-pr.cgi?pr=118092
 # Rename uudecode and uuencode to gmime-* to not conflict with userland

@@ -1,14 +1,12 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libdap
-PORTVERSION=	3.20.6
+PORTVERSION=	3.20.11
 CATEGORIES=	devel
 MASTER_SITES=	https://www.opendap.org/pub/source/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	SDK which contains an implementation of DAP 2.0 and 4.0
+WWW=		https://www.opendap.org/software/libdap
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

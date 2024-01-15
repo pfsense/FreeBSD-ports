@@ -1,6 +1,3 @@
-# Created by: Kay Lehmann <kay_lehmann@web.de>
-# $FreeBSD$
-
 PORTNAME=	gorilla
 PORTVERSION=	1.5.3.6
 DISTVERSIONSUFFIX=	a72f9d7
@@ -11,6 +8,7 @@ DISTFILES=	zdia-${PORTNAME}-v${DISTVERSION}-0-g${DISTVERSIONSUFFIX}${EXTRACT_SUF
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Password Gorilla is a cross-platform Password Manager
+WWW=		https://github.com/zdia/gorilla
 
 LICENSE=	GPLv2
 

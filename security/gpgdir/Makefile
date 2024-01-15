@@ -1,6 +1,3 @@
-# Created by: Hakisho Nukama <nukama@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gpgdir
 PORTVERSION=	1.9.5
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	https://www.cipherdyne.org/~cipherdy/gpgdir/download/ \
 
 MAINTAINER=	nukama+maintainer@gmail.com
 COMMENT=	Recursive directory encryption with GnuPG
+WWW=		https://www.cipherdyne.org/gpgdir/
 
 LICENSE=	GPLv2
 
@@ -21,6 +19,8 @@ NO_BUILD=	yes
 USES=		perl5 shebangfix
 USE_PERL5=	run
 SHEBANG_FILES=	gpgdir
+
+CONFLICTS_INSTALL=	signing-party # bin/gpgdir
 
 PLIST_FILES=	bin/gpgdir man/man1/gpgdir.1.gz
 

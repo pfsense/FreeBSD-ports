@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	pyftpdlib
-PORTVERSION=	1.5.6
+PORTVERSION=	1.5.9
 CATEGORIES=	ftp python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Python FTP server library
+WWW=		https://github.com/giampaolo/pyftpdlib
 
 LICENSE=	MIT
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_PYTHON=	autoplist distutils
 SHEBANG_FILES=	demo/*.py
 NO_ARCH=	yes

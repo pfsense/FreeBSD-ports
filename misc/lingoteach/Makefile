@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	lingoteach
 PORTVERSION=	0.3.9
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	misc education
 MASTER_SITES=	SF/${PORTNAME}/OldFiles:src
 DISTFILES=	${PORTNAME}-ui-${PORTVERSION}.tar.gz:src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Language teaching program with sound
+WWW=		http://www.lingoteach.org
 
 LIB_DEPENDS=	liblingoteach.so:textproc/liblingoteach
 

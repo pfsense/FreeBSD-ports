@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-SSLify
 PORTVERSION=	1.012
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Integrate SSL into POE
+WWW=		https://metacpan.org/release/POE-Component-SSLify
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

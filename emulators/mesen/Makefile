@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	mesen
 DISTVERSION=	0.9.8-4
-PORTREVISION=	2
 DISTVERSIONSUFFIX=	-g4c701ad6
+PORTREVISION=	4
 CATEGORIES=	emulators
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform Nintendo Entertainment System (NES/Famicom) emulator
+WWW=		https://www.mesen.ca/
 
 LICENSE=	GPLv3
 
@@ -28,23 +27,10 @@ USE_SDL=	sdl2
 MAKEFILE=	makefile
 MAKE_ARGS=	MESENPLATFORM=${MESEN_ARCH} \
 		CC="${CC}" CPPC="${CXX}" \
+		FSLIB=-lc++experimental \
+		LTO=true \
 		SYSTEM_LIBEVDEV=true
 MESEN_ARCH=	${ARCH:S/amd64/x64/:S/i386/x86/}
-
-.if exists(/usr/lib/libc++fs.a)
-MAKE_ARGS+=	FSLIB=-lc++fs
-.elif exists(/usr/lib/libc++experimental.a)
-# XXX Remove after FreeBSD 12.0 EOL
-MAKE_ARGS+=	FSLIB=-lc++experimental
-.else
-# XXX Remove after FreeBSD 11.2 EOL
-USE_GCC=	yes
-.endif
-
-# XXX Always enable LTO after FreeBSD 11.2 and 12.0 EOL
-.if defined(USE_GCC) || (${/usr/bin/ld:L:tA} == /usr/bin/ld.lld)
-MAKE_ARGS+=	LTO=true
-.endif
 
 OPTIONS_MULTI=			FRONTENDS
 OPTIONS_MULTI_FRONTENDS=	MONO LIBRETRO
@@ -55,8 +41,8 @@ MONO_DESC=	Mono based GUI frontend
 LIBRETRO_DESC=	Libretro core
 
 MONO_ALL_TARGET=	ui
-MONO_BUILD_DEPENDS=	mono:lang/mono
-MONO_RUN_DEPENDS=	mono:lang/mono
+MONO_BUILD_DEPENDS=	mono:lang/mono${MONO_DEFAULT}
+MONO_RUN_DEPENDS=	mono:lang/mono${MONO_DEFAULT}
 MONO_DESKTOP_ENTRIES=	"Mesen" "NES/Famicom Emulator" \
 			"${PORTNAME}" "${PORTNAME}" "Game;Emulator;" false
 
@@ -64,8 +50,8 @@ LIBRETRO_ALL_TARGET=	libretro
 
 .include <bsd.port.pre.mk>
 
-.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 5.10
-BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: The imported project "/usr/local/lib/mono/msbuild/15.0/bin/Roslyn/Microsoft.CSharp.Core.targets" was not found
+.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
+BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: error MSB4184: The expression ""Program.cs".GetPathsOfAllDirectoriesAbove()" cannot be evaluated. Method 'System.String.GetPathsOfAllDirectoriesAbove' not found.
 .endif
 
 do-install: 	# empty to avoid default

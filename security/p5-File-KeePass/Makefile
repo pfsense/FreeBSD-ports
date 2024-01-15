@@ -1,6 +1,3 @@
-# Created by: Alexander Y. Grigoryev <alexander.4mail@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	File-KeePass
 PORTVERSION=	2.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	alexander.4mail@gmail.com
 COMMENT=	Interface to KeePassX, KeePass 1.x and 2.x database files
+WWW=		https://metacpan.org/release/File-KeePass
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

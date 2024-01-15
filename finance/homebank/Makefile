@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	homebank
-PORTVERSION=	5.4.3
+PORTVERSION=	5.7.3
 CATEGORIES=	finance
-MASTER_SITES=	http://homebank.free.fr/public/
+MASTER_SITES=	https://www.gethomebank.org/public/sources/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Free, easy, personal accounting for everyone
+WWW=		https://www.gethomebank.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+LIB_DEPENDS=	libsoup-3.0.so:devel/libsoup3 \
 		libosp.so:textproc/opensp
 
 GNU_CONFIGURE=	yes
@@ -19,7 +18,6 @@ USES=		desktop-file-utils gettext gmake gnome localbase pkgconfig \
 		shared-mime-info
 USE_CSTD=	c99
 USE_GNOME=	cairo gtk30 intltool
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 

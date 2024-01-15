@@ -1,12 +1,10 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	b612
 PORTVERSION=	1.008
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Highly legible font family for aircraft cockpit screens
+WWW=		https://github.com/polarsys/b612
 
 LICENSE=	EDL EPL OFL11
 LICENSE_COMB=	dual

@@ -1,11 +1,9 @@
-# Created by: Lev Serebryakov <lev@FreeBSD.org>
-# $FreeBSD$
-
 PKGNAMEPREFIX=	java-
 CATEGORIES=	java
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Java bindings for Version control system
+WWW=		https://subversion.apache.org/
 
 USES=		compiler
 
@@ -13,7 +11,6 @@ USE_JAVA=	yes
 JAVA_OS=	native
 JAVA_BUILD=	yes
 JAVA_RUN=	yes
-
 
 PORTREVISION_114=	0
 PORTREVISION_LTS=	0

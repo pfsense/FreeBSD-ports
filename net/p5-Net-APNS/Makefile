@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-APNS
 PORTVERSION=	0.0202
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Apple Push Notification Service
+WWW=		https://metacpan.org/release/Net-APNS
 
 RUN_DEPENDS=	\
 	p5-Any-Moose>=0.10:devel/p5-Any-Moose \

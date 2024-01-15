@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	BSON
 PORTVERSION=	1.12.2
 DISTVERSIONPREFIX=	v
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Pure Perl implementation of MongoDB BSON serialization
+WWW=		https://metacpan.org/release/BSON
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

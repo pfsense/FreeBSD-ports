@@ -1,14 +1,13 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mahjong
 PORTVERSION=	1.16
+PORTREVISION=	1
 CATEGORIES=	games net
 MASTER_SITES=	http://mahjong.julianbradfield.org/Source/%SUBDIR%/
 DISTNAME=	mj-${PORTVERSION}-src
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Networked Mah Jong program, together with a computer player
+WWW=		https://mahjong.julianbradfield.org/
 
 LICENSE=	GPLv2+
 

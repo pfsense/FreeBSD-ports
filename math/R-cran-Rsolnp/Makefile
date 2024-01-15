@@ -1,14 +1,12 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	Rsolnp
 DISTVERSION=	1.16
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General Non-Linear Optimization
+WWW=		https://cran.r-project.org/web/packages/Rsolnp/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

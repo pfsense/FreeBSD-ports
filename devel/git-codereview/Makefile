@@ -1,18 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	git-codereview
-PORTVERSION=	0.0.0.2020082801
+PORTVERSION=	1.8.0
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Command-line tool for working with Gerrit
+WWW=		https://godoc.org/golang.org/x/review/git-codereview
+
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang
 GH_PROJECT=	review
-GH_TAGNAME=	a2b90d2
 
 GO_PKGNAME=	golang.org/x/review
 GO_TARGET=	./git-codereview

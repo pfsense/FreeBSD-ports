@@ -1,21 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	bosh-cli
 PORTVERSION=	5.5.0
-PORTREVISION=	1
+PORTREVISION=	16
 CATEGORIES=	net sysutils
 
 MAINTAINER=	dumbbell@FreeBSD.org
 COMMENT=	CLI for BOSH
+WWW=		https://bosh.io/docs/cli-v2.html
 
 LICENSE=	APACHE20
 
 USE_GITHUB=	yes
 GH_TUPLE=	cloudfoundry:bosh-cli:v${PORTVERSION}
 
-CONFLICTS_INSTALL=	rubygem-bosh_cli
-
 USES=		go tar:xz
+
+CONFLICTS_INSTALL=	schilyutils # bin/bosh
 
 GO_PKGNAME=	github.com/cloudfoundry/bosh-cli
 

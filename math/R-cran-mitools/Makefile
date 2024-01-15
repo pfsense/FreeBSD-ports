@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	mitools
 DISTVERSION=	2.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Tools for Multiple Imputation of Missing Data
+WWW=		https://cran.r-project.org/package=mitools
 
 LICENSE=	GPLv2
 

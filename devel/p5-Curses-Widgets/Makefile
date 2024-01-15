@@ -1,6 +1,3 @@
-# Created by: petef@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Curses-Widgets
 PORTVERSION=	1.997
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	CursesWidgets-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Curses-based widgets and functions
+WWW=		https://metacpan.org/release/CursesWidgets
 
 LICENSE=	GPLv2
 

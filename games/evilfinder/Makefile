@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	evilfinder
 PORTVERSION=	1.00
 PORTREVISION=	5
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	ef.tgz
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Numerologically determine the evilness of things
+WWW=		https://lcamtuf.coredump.cx/evilfinder/ef.shtml
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

@@ -1,16 +1,13 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/x11-toolkits/unique/Makefile,v 1.12 2012/09/03 16:28:30 mezz Exp $
-
 PORTNAME=	unique
 PORTVERSION=	1.1.6
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME/sources/lib${PORTNAME}/${PORTVERSION:R}/
 DISTNAME=	lib${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Library for single instance applications
+WWW=		http://live.gnome.org/LibUnique
 
 PORTSCOUT=	ignore:1
 

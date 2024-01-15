@@ -1,14 +1,13 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	scite
 DISTVERSION=	4.4.5
+PORTREVISION=	2
 CATEGORIES=	editors gnome
 MASTER_SITES=	SF/scintilla/SciTE/${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//g}
 
 MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	Full-featured SCIntilla based text editor for GTK/GNOME
+WWW=		https://www.scintilla.org/SciTE.html
 
 LICENSE=	SCINTILLA
 LICENSE_NAME=	License for Scintilla and SciTE

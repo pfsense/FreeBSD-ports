@@ -1,0 +1,17 @@
+PORTNAME=	ssh_data
+PORTVERSION=	1.3.0
+CATEGORIES=	security rubygems
+MASTER_SITES=	RG
+
+MAINTAINER=	mfechner@FreeBSD.org
+COMMENT=	Library for parsing SSH certificates
+WWW=		https://github.com/github/ssh_data
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+USES=		gem
+
+NO_ARCH=	yes
+
+.include <bsd.port.mk>

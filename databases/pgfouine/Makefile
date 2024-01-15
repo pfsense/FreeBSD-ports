@@ -1,6 +1,3 @@
-# Created by: Pierre-Emmanuel Andre <pea@raveland.org>
-# $FreeBSD$
-
 PORTNAME=	pgfouine
 PORTVERSION=	1.2
 CATEGORIES=	databases
@@ -9,11 +6,12 @@ MASTER_SITES=	http://pgfoundry.org/frs/download.php/2575/ \
 
 MAINTAINER=	pea@raveland.org
 COMMENT=	PostgreSQL log analyzer
+WWW=		http://pgfouine.projects.postgresql.org/
 
 USES+=		php
 
-NO_BUILD=	Yes
-USE_PHP=	gd pcre
+NO_BUILD=	yes
+USE_PHP=	gd
 
 OPTIONS_DEFINE=	DOCS
 

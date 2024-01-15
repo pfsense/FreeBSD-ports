@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hp48xgcc
 PORTVERSION=	1.0.2
 PORTREVISION=	2
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	GNU C cross-compiler for HP48 calculators
+WWW=		https://hp48xgcc.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -39,6 +37,8 @@ post-extract: .SILENT
 	${TAR} xzf ${_DISTDIR}/gcc-${GCC_VER}.tar.gz -C ${WRKDIR}
 # Patch GCC a bit
 	${PATCH} -d ${GCC_DIR} -s < ${WRKSRC}/gcc-target/patches-${GCC_VER}
+# Respect user's preferred compiler
+	${REINPLACE_CMD} -e 's,CC = cc,CC = ${CC},' ${GCC_DIR}/Makefile.in
 # Prepare GCC by creating proper config symlink
 	${LN} -sf ../../saturn/gcc-target/config-saturn ${GCC_DIR}/config/saturn
 # Allow GCC to build in our environment

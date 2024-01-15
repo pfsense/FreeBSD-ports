@@ -1,6 +1,3 @@
-# Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CPS
 PORTVERSION=	0.19
 CATEGORIES=	devel perl5
@@ -8,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PEVANS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Manage flow of control in Continuation-Passing Style
+WWW=		https://metacpan.org/release/CPS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

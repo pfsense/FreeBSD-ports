@@ -1,9 +1,6 @@
-# Created by: Eric van Gyzen <vangyzen@stat.duke.edu>
-# $FreeBSD$
-
 PORTNAME=	mcmc-jags
-DISTVERSION=	4.3.0
-PORTREVISION=	7
+DISTVERSION=	4.3.1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/mcmc-jags/JAGS/${S}.x/Source/:1 \
 		SF/mcmc-jags/Examples/${S}.x/:2 \
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	${DISTFILES:M*[12]:C|:.*||}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Just Another Gibbs Sampler
+WWW=		http://mcmc-jags.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

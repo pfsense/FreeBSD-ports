@@ -1,6 +1,3 @@
-# Created by: Yoichi Asai <yatt@msc.biglobe.ne.jp>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-motif
 
 MAINTAINER=	ports@FreeBSD.org

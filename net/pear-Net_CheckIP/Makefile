@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Net_CheckIP
 PORTVERSION=	1.2.2
 CATEGORIES=	net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Check the syntax of IPv4 addresses
+WWW=		https://pear.php.net/package/Net_CheckIP
 
 USES=		pear
 

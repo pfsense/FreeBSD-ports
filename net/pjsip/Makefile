@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	pjsip
-DISTVERSION=	2.10
-PORTREVISION=	1
+DISTVERSION=	2.13.1
 CATEGORIES=	net
 
-MAINTAINER=	madpilot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multimedia communication library written in C language
+WWW=		https://www.pjsip.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,10 +12,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libportaudio.so:audio/portaudio \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		gmake localbase pathfix ssl tar:bz2
+USES=		cpe gmake localbase pathfix ssl tar:bz2
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_PROJECT=	pjproject
-USE_LDCONFIG=	yes
+
+CPE_VENDOR=	teluu
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-external-pa \
@@ -26,9 +27,9 @@ PATHFIX_MAKEFILEIN=	Makefile
 PLIST_SUB=	CONFIGURE_TARGET="${CONFIGURE_TARGET}"
 
 OPTIONS_DEFINE=	AMR DEBUG EXTSRTP FFMPEG G711 G722 G7221 GSM ILBC IPV6 \
-		L16 OPENH264 OPUS PJSUA RESAMPLE RESAMPLEDLL SAMPLERATE SDL \
-		SHARED SOUND SPEEX SPEEXAEC V4L VIDEO VPX WEBRTC
-OPTIONS_DEFAULT=G711 G722 G7221 GSM ILBC L16 OPUS SHARED SPEEX SPEEXAEC \
+		L16 OPENH264 OPUS PJSUA PJSUA2 RESAMPLE RESAMPLEDLL \
+		SAMPLERATE SDL SHARED SOUND SPEEX SPEEXAEC V4L VIDEO VPX WEBRTC
+OPTIONS_DEFAULT=G711 G722 G7221 GSM ILBC L16 OPUS PJSUA2 SHARED SPEEX SPEEXAEC \
 		VIDEO VPX WEBRTC
 
 EXTSRTP_DESC=	Use libsrtp port (needed to get SRTP support in asterisk pjsip backend)
@@ -39,11 +40,11 @@ ILBC_DESC=	iLBC codec support
 L16_DESC=	Linear/L16 codec support
 OPENH264_DESC=	OpenH264 support
 PJSUA_DESC=	Command line SIP agent
+PJSUA2_DESC=	SIP User agent 2 library
 RESAMPLE_DESC=	Enable resampling implementations
 RESAMPLEDLL_DESC=	Build libresample as shared library
 SHARED_DESC=	Build shared libraries (other ports may depend on this)
 SPEEXAEC_DESC=	Speex Acoustic Echo Canceller/AEC
-V4L_DESC=	Video4Linux2 support
 WEBRTC_DESC=	Build libwebrtc
 
 OPTIONS_SUB=	yes
@@ -72,6 +73,7 @@ OPENH264_CONFIGURE_ENABLE=	openh264
 OPENH264_LIB_DEPENDS=		libopenh264.so:multimedia/openh264
 OPUS_CONFIGURE_ENABLE=		opus
 OPUS_LIB_DEPENDS=		libopus.so:audio/opus
+PJSUA2_CONFIGURE_ENABLE=	pjsua2
 RESAMPLE_CONFIGURE_ENABLE=	resample
 RESAMPLEDLL_CONFIGURE_ENABLE=	resample-dll
 SAMPLERATE_CONFIGURE_ENABLE=	libsamplerate
@@ -97,9 +99,6 @@ WEBRTC_CONFIGURE_OFF=		--disable-libwebrtc
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		${WRKSRC}/pkgconfig.py
-	@${REINPLACE_CMD} -e 's/$$(APP_LDFLAGS) \{0,1\}//' \
-		-e 's/$$(OS_LDFLAGS)/$$(APP_LDFLAGS) &/' \
-		${WRKSRC}/*/build/Makefile
 	@${CP} ${FILESDIR}/config_site.h \
 		${WRKSRC}/pjlib/include/pj/config_site.h
 

@@ -1,24 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	elm
 PORTVERSION=	0.19.1
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	lang
 MASTER_SITES=	LOCAL/arrowd/:package_list
 DISTFILES=	elm-compiler-bootstrap-${PORTVERSION}${EXTRACT_SUFX}:package_list
-EXTRACT_ONLY=	${DISTNAME_DEFAULT}${EXTRACT_SUFX} \
-		elm-compiler-bootstrap-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Delightful language for reliable webapps
+WWW=		https://elm-lang.org/
 
 LICENSE=	BSD3CLAUSE
+
+BUILD_DEPENDS=	ghc-8.10.7:lang/ghc810
 
 USES=		cabal
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	elm
 GH_PROJECT=	compiler
+
+CONFLICTS_INSTALL=	elm # bin/elm (from mail/elm)
 
 USE_CABAL=	ansi-terminal-0.8.2 \
 		ansi-wl-pprint-0.6.8.2_2 \

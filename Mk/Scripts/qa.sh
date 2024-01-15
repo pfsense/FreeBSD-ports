@@ -1,6 +1,5 @@
 #!/bin/sh
 # MAINTAINER: portmgr@FreeBSD.org
-# $FreeBSD$
 
 set -o pipefail
 
@@ -80,6 +79,7 @@ shebangonefile() {
 	/usr/bin/sed) ;;
 	/usr/sbin/dtrace) ;;
 	/usr/bin/make) ;;
+	/usr/libexec/atf-sh) ;;
 	*)
 		badinterp="${interp}"
 		;;
@@ -211,7 +211,7 @@ stripped() {
 	# files with spaces are kept intact.
 	# Using readelf -h ... /ELF Header:/ will match on all ELF files.
 	find ${STAGEDIR} -type f ! -name '*.a' ! -name '*.o' \
-	    -exec sh -c 'readelf -S -- /dev/null "$@" || :' -- {} + 2>/dev/null | awk '
+	    -exec sh -c 'readelf -S -- /dev/null "$0" "$@" || :' -- {} + 2>/dev/null | awk '
 	    /File:/ {sub(/File: /, "", $0); file=$0}
 	    /[[:space:]]\.debug_info[[:space:]]*PROGBITS/ {print file}' |
 	    while read -r f; do
@@ -373,28 +373,20 @@ proxydeps_suggest_uses() {
 		${pkg} = "audio/gsound" -o \
 		${pkg} = "x11-toolkits/gtk20" -o \
 		${pkg} = "x11-toolkits/gtk30" -o \
-		${pkg} = "www/gtkhtml3" -o \
 		${pkg} = "www/gtkhtml4" -o \
 		${pkg} = "x11-toolkits/gtkmm20" -o \
 		${pkg} = "x11-toolkits/gtkmm24" -o \
 		${pkg} = "x11-toolkits/gtkmm30" -o \
-		${pkg} = "x11-toolkits/gtksourceview" -o \
 		${pkg} = "x11-toolkits/gtksourceview2" -o \
 		${pkg} = "x11-toolkits/gtksourceview3" -o \
 		${pkg} = "x11-toolkits/gtksourceviewmm3" -o \
-		${pkg} = "devel/libbonobo" -o \
-		${pkg} = "x11-toolkits/libbonoboui" -o \
 		${pkg} = "databases/libgda5" -o \
 		${pkg} = "databases/libgda5-ui" -o \
 		${pkg} = "databases/libgdamm5" -o \
 		${pkg} = "devel/libglade2" -o \
-		${pkg} = "x11/libgnome" -o \
 		${pkg} = "graphics/libgnomecanvas" -o \
 		${pkg} = "x11/libgnomekbd" -o \
-		${pkg} = "x11-toolkits/libgnomeui" -o \
 		${pkg} = "devel/libgsf" -o \
-		${pkg} = "www/libgtkhtml" -o \
-		${pkg} = "x11-toolkits/libgtksourceviewmm" -o \
 		${pkg} = "graphics/librsvg2" -o \
 		${pkg} = "devel/libsigc++12" -o \
 		${pkg} = "devel/libsigc++20" -o \
@@ -416,12 +408,10 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "graphics/gdk-pixbuf" ]; then warn "you need USE_GNOME+=gdkpixbuf"
 	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf2"
 	elif [ ${pkg} = "x11/gnome-desktop" ]; then warn "you need USE_GNOME+=gnomedesktop3"
-	elif [ ${pkg} = "devel/gnome-vfs" ]; then warn "you need USE_GNOME+=gnomevfs2"
 	elif [ ${pkg} = "devel/gobject-introspection" ]; then warn "you need USE_GNOME+=introspection"
 	elif [ ${pkg} = "graphics/libart_lgpl" ]; then warn "you need USE_GNOME+=libartlgpl2"
 	elif [ ${pkg} = "devel/libIDL" ]; then warn "you need USE_GNOME+=libidl"
 	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus3"
-	elif [ ${pkg} = "devel/ORBit2" ]; then warn "you need USE_GNOME+=orbit2"
 	elif [ ${pkg} = "graphics/librsvg2-rust" ]; then warn "you need USE_GNOME+=librsvg2"
 	# mate
 	# grep LIB_DEPENDS= Mk/Uses/mate.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|elif [ ${pkg} = "\2/\3" ]; then warn "you need USE_MATE+=\1"|'
@@ -435,7 +425,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/mate-panel" ]; then warn "you need USE_MATE+=panel"
 	elif [ ${pkg} = "sysutils/mate-polkit" ]; then warn "you need USE_MATE+=polkit"
 	# KDE
-	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^kde-\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/' 
+	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^kde-\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/'
 	# KDE Applications
 	elif [ ${pkg} = "net/akonadi-contacts" ]; then warn "you need to use USE_KDE+=akonadicontacts"
 	elif [ ${pkg} = "deskutils/akonadi-import-wizard" ]; then warn "you need to use USE_KDE+=akonadiimportwizard"
@@ -443,7 +433,6 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "net/akonadi-notes" ]; then warn "you need to use USE_KDE+=akonadinotes"
 	elif [ ${pkg} = "net/akonadi-calendar" ]; then warn "you need to use USE_KDE+=akonadicalendar"
 	elif [ ${pkg} = "net/akonadi-search" ]; then warn "you need to use USE_KDE+=akonadisearch"
-	elif [ ${pkg} = "net/kalarmcal" ]; then warn "you need to use USE_KDE+=alarmcalendar"
 	elif [ ${pkg} = "net/calendarsupport" ]; then warn "you need to use USE_KDE+=calendarsupport"
 	elif [ ${pkg} = "net/kcalcore" ]; then warn "you need to use USE_KDE+=calendarcore"
 	elif [ ${pkg} = "net/kcalutils" ]; then warn "you need to use USE_KDE+=calendarutils"
@@ -507,7 +496,6 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/kf5-kded" ]; then warn "you need to use USE_KDE+=kded"
 	elif [ ${pkg} = "x11/kf5-kdelibs4support" ]; then warn "you need to use USE_KDE+=kdelibs4support"
 	elif [ ${pkg} = "security/kf5-kdesu" ]; then warn "you need to use USE_KDE+=kdesu"
-	elif [ ${pkg} = "www/kf5-kdewebkit" ]; then warn "you need to use USE_KDE+=kdewebkit"
 	elif [ ${pkg} = "www/kf5-khtml" ]; then warn "you need to use USE_KDE+=khtml"
 	elif [ ${pkg} = "devel/kf5-kio" ]; then warn "you need to use USE_KDE+=kio"
 	elif [ ${pkg} = "lang/kf5-kross" ]; then warn "you need to use USE_KDE+=kross"
@@ -543,12 +531,16 @@ proxydeps_suggest_uses() {
 	# gl-related
 	elif expr ${lib_file} : "${LOCALBASE}/lib/libGL.so.*$" > /dev/null; then
 		warn "you need USE_GL+=gl"
+	elif expr ${lib_file} : "${LOCALBASE}/lib/libGLX.so.*$" > /dev/null; then
+		warn "you need USE_GL+=gl"
 	elif expr ${lib_file} : "${LOCALBASE}/lib/libgbm.so.*$" > /dev/null; then
 		warn "you need USE_GL+=gbm"
 	elif expr ${lib_file} : "${LOCALBASE}/lib/libGLESv2.so.*$" > /dev/null; then
 		warn "you need USE_GL+=glesv2"
 	elif expr ${lib_file} : "${LOCALBASE}/lib/libEGL.so.*$" > /dev/null; then
 		warn "you need USE_GL+=egl"
+	elif expr ${lib_file} : "${LOCALBASE}/lib/libOpenGL.so.*$" > /dev/null; then
+		warn "you need USE_GL+=opengl"
 	elif [ ${pkg} = 'graphics/glew' ]; then
 		warn "you need USE_GL+=glew"
 	elif [ ${pkg} = 'graphics/libGLU' ]; then
@@ -602,6 +594,15 @@ proxydeps_suggest_uses() {
 	# lua
 	elif expr ${pkg} : "^lang/lua" > /dev/null; then
 		warn "you need USES+=lua"
+	# magick
+	elif [ ${pkg} = "graphics/ImageMagick6" ] ; then
+		warn "you need USES=magick:6"
+	elif [ ${pkg} = "graphics/ImageMagick6-nox11" ] ; then
+		warn "you need USES=magick:6,nox11"
+	elif [ ${pkg} = "graphics/ImageMagick7" ] ; then
+		warn "you need USES=magick:7"
+	elif [ ${pkg} = "graphics/ImageMagick7-nox11" ] ; then
+		warn "you need USES=magick:7,nox11"
 	# motif
 	elif [ ${pkg} = "x11-toolkits/lesstif" -o ${pkg} = "x11-toolkits/open-motif" ]; then
 		warn "you need USES+=motif"
@@ -647,11 +648,11 @@ proxydeps_suggest_uses() {
 }
 
 proxydeps() {
-	local file dep_file dep_file_pkg already rc
+	local file dep_file dep_file_pkg already rc dep_lib_file dep_lib_files
 
 	rc=0
 
-	# Check all dynamicaly linked ELF files
+	# Check all dynamically linked ELF files
 	# Some .so are not executable, but we want to check them too.
 	while read -r file; do
 		# No results presents a blank line from heredoc.
@@ -668,9 +669,13 @@ proxydeps() {
 
 				# Check that the .so we need has a SONAME
 				if [ "${dep_file_pkg}" != "${PKGORIGIN}" ]; then
-					if ! readelf -d "${dep_file}" | grep -q SONAME; then
+					# When grep -q finds a match it will close the pipe immediately.
+					# This may cause the test to fail when pipefail is turned on.
+					set +o pipefail
+					if ! readelf -d "${dep_file}" | grep SONAME > /dev/null; then
 						err "${file} is linked to ${dep_file} which does not have a SONAME.  ${dep_file_pkg} needs to be fixed."
 					fi
+					set -o pipefail
 				fi
 
 				# If we don't already depend on it, and we don't provide it
@@ -691,6 +696,8 @@ proxydeps() {
 				rc=1
 			fi
 			already="${already} ${dep_file}"
+			dep_lib_file=$(basename ${dep_file})
+			dep_lib_files="${dep_lib_files} ${dep_lib_file%%.so*}.so"
 		done <<-EOT
 		$(env LD_LIBMAP_DISABLE=1 ldd -a "${STAGEDIR}${file}" | \
 			awk '
@@ -706,6 +713,13 @@ proxydeps() {
 		sed -e 's/^\.//')
 	EOT
 
+	# Check whether all files in LIB_DPEENDS are actually linked against
+	for _library in ${WANTED_LIBRARIES} ; do
+		if ! listcontains ${_library} "${dep_lib_files}" ; then
+			warn "you might not need LIB_DEPENDS on ${_library}"
+		fi
+	done
+
 	[ -z "${PROXYDEPS_FATAL}" ] && return 0
 
 	return ${rc}
@@ -718,7 +732,7 @@ sonames() {
 		[ -z "${f}" ] && continue
 		# Ignore symlinks
 		[ -f "${f}" -a ! -L "${f}" ] || continue
-		if ! readelf -d ${f} | grep -q SONAME; then
+		if ! readelf -d ${f} | grep SONAME > /dev/null; then
 			warn "${f} doesn't have a SONAME."
 			warn "pkg(8) will not register it as being provided by the port."
 			warn "If another port depend on it, pkg will not be able to know where it comes from."
@@ -851,7 +865,7 @@ gemdeps()
 				EOF
 			fi
 		done <<-EOF
-		$(grep -a 'add_runtime_dependency' ${STAGEDIR}${PREFIX}/lib/ruby/gems/*/specifications/${PORTNAME}-*.gemspec \
+		$(grep -a 's.add_runtime_dependency' ${STAGEDIR}${PREFIX}/lib/ruby/gems/*/specifications/${PORTNAME}-*.gemspec \
 			| sed 's|.*<\(.*\)>.*\[\(.*\)\])|\1 \2|' \
 			| sort -u)
 		EOF
@@ -870,24 +884,24 @@ gemfiledeps()
 	if [ -z "$USE_RUBY" ]; then
 		return 0
 	fi
-	
+
 	# skip check if port is a rubygem-* one; they have no Gemfiles
 	if [ "${PKGBASE%%-*}" = "rubygem" ]; then
 		return 0
 	fi
-	
+
 	# advise install of bundler if its not present for check
 	if ! type bundle > /dev/null 2>&1; then
 		notice "Please install sysutils/rubygem-bundler for additional Gemfile-checks"
 		return 0
 	fi
- 
+
 	# locate the Gemfile(s)
 	while read -r f; do
-	
+
 		# no results presents a blank line from heredoc
 		[ -z "$f" ] && continue
-	
+
 		# if there is no Gemfile everything is fine - stop here
 		[ ! -f "$f" ] && return 0;
 
@@ -897,7 +911,7 @@ gemfiledeps()
 		if ! bundle check --dry-run --gemfile $f > /dev/null 2>&1; then
 			warn "Dependencies defined in ${f} are not satisfied"
 		fi
-      
+
 	done <<-EOF
 		$(find ${STAGEDIR} -name Gemfile)
 		EOF
@@ -972,14 +986,14 @@ depends_blacklist()
 			lang/gcc)
 				instead="USE_GCC"
 				;;
-			lang/julia)
-				instead="a dependency on lang/julia\${JULIA_DEFAULT:S/.//}"
+			lang/go)
+				instead="USES=go"
+				;;
+			lang/mono)
+				instead="USES=mono"
 				;;
 			devel/llvm)
-				instead="a dependency on devel/llvm\${LLVM_DEFAULT}"
-				;;
-			www/py-django)
-				instead="one of the www/py-djangoXYZ port"
+				instead="USES=llvm"
 				;;
 		esac
 
@@ -998,7 +1012,7 @@ pkgmessage()
 		if [ -f "${message}" ]; then
 			if ! head -1 "${message}" | grep -q '^\['; then
 				warn "${message} not in UCL format, will be shown on initial install only."
-				warn "See https://www.freebsd.org/doc/en/books/porters-handbook/pkg-files.html#porting-message"
+				warn "See https://docs.freebsd.org/en/books/porters-handbook/pkg-files/#porting-message"
 			fi
 		fi
 	done

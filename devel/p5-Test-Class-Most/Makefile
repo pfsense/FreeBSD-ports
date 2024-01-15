@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman <5u623l20@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Test-Class-Most
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Test Classes the easy way
+WWW=		https://metacpan.org/release/Test-Class-Most
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

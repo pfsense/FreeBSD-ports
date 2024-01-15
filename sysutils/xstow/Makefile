@@ -1,6 +1,3 @@
-# Created by: Alan Eldridge <alane@geeksrus.net>
-# $FreeBSD$
-
 PORTNAME=	xstow
 PORTVERSION=	1.0.2
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Enhanced replacement for GNU stow written in C++
+WWW=		https://xstow.sourceforge.net/
 
 LICENSE=	GPLv2
 

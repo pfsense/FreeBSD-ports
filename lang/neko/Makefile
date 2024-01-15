@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	neko
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2-2-0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	lang
 
 MAINTAINER=	penzin.dev@gmail.com
 COMMENT=	Neko programming languages and virtual machine
+WWW=		https://nekovm.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -36,7 +35,7 @@ UI_USES=	gnome
 UI_USE=		gnome=atk,cairo,gdkpixbuf2,glib20,gtk20,pango
 UI_CMAKE_BOOL=	WITH_UI
 
-APACHE_USE=	apache=22+
+APACHE_USES=	apache
 APACHE_CMAKE_BOOL=	WITH_APACHE
 
 .include <bsd.port.mk>

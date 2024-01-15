@@ -1,6 +1,3 @@
-# Created by: Pav Lucistnik <pav@oook.cz>
-# $FreeBSD$
-
 PORTNAME=	gkrellm-xkb
 PORTVERSION=	1.05
 PORTREVISION=	11
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.sweb.cz/tripie/gkrellm/xkb/dist/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X keyboard layout plugin for GKrellM
+WWW=		http://www.sweb.cz/tripie/gkrellm/xkb/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2

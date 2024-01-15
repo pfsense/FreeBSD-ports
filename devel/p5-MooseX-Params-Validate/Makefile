@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Params-Validate
 PORTVERSION=	0.21
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extension of Params::Validate for using Moose types
+WWW=		https://metacpan.org/release/MooseX-Params-Validate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

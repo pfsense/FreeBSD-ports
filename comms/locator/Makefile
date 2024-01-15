@@ -1,6 +1,3 @@
-# Created by: db
-# $FreeBSD$
-
 PORTNAME=	locator
 PORTVERSION=	0.1
 CATEGORIES=	comms hamradio astro geography

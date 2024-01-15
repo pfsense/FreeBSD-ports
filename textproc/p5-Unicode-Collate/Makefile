@@ -1,14 +1,12 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Unicode-Collate
-PORTVERSION=	1.29
+PORTVERSION=	1.31
 CATEGORIES=	textproc converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Unicode Collation Algorithm
+WWW=		https://metacpan.org/release/Unicode-Collate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

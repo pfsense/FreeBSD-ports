@@ -1,0 +1,15 @@
+diff --git a/src/usr/local/www/status_interfaces.php b/src/usr/local/www/status_interfaces.php
+index 77a0071870..2dd1d7fa16 100644
+--- a/src/usr/local/www/status_interfaces.php
++++ b/src/usr/local/www/status_interfaces.php
+@@ -134,8 +134,8 @@ foreach ($ifdescrs as $ifdescr => $ifname):
+ 
+ 	$ifhwinfo = $ifinfo['hwif'];
+ 	$vlan = interface_is_vlan($ifinfo['hwif']);
+-	if ($vlan && is_array($config['switches']['switch'][0]['vlangroups']['vlangroup'])) {
+-		foreach ($config['switches']['switch'][0]['vlangroups']['vlangroup'] as $vlangroup) {
++	if ($vlan) {
++		foreach (config_get_path('switches/switch/0/vlangroups/vlangroup', []) as $vlangroup) {
+ 			if ($vlangroup['vlanid'] == $vlan['tag']) {
+ 				$ifhwinfo .= ', switchports: ' . $vlangroup['members'];
+ 				break;

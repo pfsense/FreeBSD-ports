@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	namespace-autoclean
 PORTVERSION=	0.29
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Keep imports out of your namespace
+WWW=		https://metacpan.org/release/namespace-autoclean
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

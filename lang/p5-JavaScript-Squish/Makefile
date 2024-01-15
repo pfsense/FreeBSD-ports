@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	JavaScript-Squish
 PORTVERSION=	0.07
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Reduce/Compact JavaScript code to as few characters as possible
+WWW=		https://metacpan.org/release/JavaScript-Squish
 
 USES=		perl5
 USE_PERL5=	configure

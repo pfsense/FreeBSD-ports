@@ -1,6 +1,3 @@
-# Created by: Oyvind Moll <oyvindmo@initio.no>
-# $FreeBSD$
-
 PORTNAME=	juke
 PORTVERSION=	0.7
 CATEGORIES=	audio

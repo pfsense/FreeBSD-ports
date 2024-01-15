@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	CAM-PDF
 PORTVERSION=	1.60
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	PDF manipulation library
+WWW=		https://metacpan.org/release/CAM-PDF
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,6 +21,8 @@ TEST_DEPENDS=	p5-Test-Memory-Cycle>=1.02:devel/p5-Test-Memory-Cycle \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 

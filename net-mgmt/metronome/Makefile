@@ -1,28 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	metronome
 DISTVERSION=	0.9.0
-PORTREVISION=	12
+PORTREVISION=	19
 CATEGORIES=	net-mgmt dns
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Client-side java script to render graphs w/o depending on graphite
+WWW=		https://github.com/ahupowerdns/metronome
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-USES=		autoreconf:build compiler:c++11-lang eigen:3 libtool:build pathfix pkgconfig
-
+USES=		autoreconf:build compiler:c++11-lang eigen:3 libtool:build \
+	localbase:ldflags pathfix pkgconfig
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	ahupowerdns
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib
-USE_LDCONFIG=	yes
-SUB_FILES=	pkg-message
+
 INSTALL_TARGET=	install-strip
+
+SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS
 

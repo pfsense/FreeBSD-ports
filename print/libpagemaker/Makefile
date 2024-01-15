@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libpagemaker
 PORTVERSION=	0.0.4
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	print graphics devel
 MASTER_SITES=	LODEV/${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Library and tools for parsing Aldus/Adobe PageMaker documents
+WWW=		https://wiki.documentfoundation.org/DLP/Libraries/libpagemaker
 
 LICENSE=	MPL20
 

@@ -1,6 +1,3 @@
-# Created by: Andrew McNaughton <andrew@scoop.co.nz>
-# $FreeBSD$
-
 PORTNAME=	MySQL-Diff
 PORTVERSION=	0.50
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Perl module for comparing the table structure of two MySQL databases
+WWW=		https://metacpan.org/release/MySQL-Diff
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

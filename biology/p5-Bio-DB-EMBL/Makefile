@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bio-DB-EMBL
 PORTVERSION=	1.7.4
 CATEGORIES=	biology perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Database object interface for EMBL entry retrieval
+WWW=		https://metacpan.org/release/Bio-DB-EMBL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

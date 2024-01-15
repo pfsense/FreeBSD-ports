@@ -1,12 +1,10 @@
-# Created by: Peter Ankerstal <peter@pean.org>
-# $FreeBSD$
-
 PORTNAME=	sha2wordlist
 PORTVERSION=	1.0.20140124
 CATEGORIES=	security
 
 MAINTAINER=	peter@pean.org
 COMMENT=	Create SHA256 digests as PGP words
+WWW=		https://github.com/kirei/sha2wordlist
 
 LICENSE=	BSD2CLAUSE BSD3CLAUSE
 LICENSE_COMB=	multi

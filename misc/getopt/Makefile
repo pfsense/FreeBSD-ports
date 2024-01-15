@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	getopt
 PORTVERSION=	1.1.6
 CATEGORIES=	misc
@@ -9,6 +6,7 @@ MASTER_SITES=	http://frodo.looijaard.name/system/files/software/getopt/ \
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Replacement for getopt(1) that supports GNU-style long options
+WWW=		https://software.frodo.looijaard.name/getopt/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

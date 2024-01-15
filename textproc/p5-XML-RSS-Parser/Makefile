@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-RSS-Parser
 PORTVERSION=	4.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Liberal object-oriented parser for RSS feeds
+WWW=		https://metacpan.org/release/XML-RSS-Parser
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-Elemental>=0:textproc/p5-XML-Elemental \

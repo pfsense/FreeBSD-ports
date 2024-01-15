@@ -1,16 +1,14 @@
-# Created by: Radim Kolar <hsn@netmag.cz>
-# $FreeBSD$
-
 PORTNAME=	lzma
 PORTVERSION=	19.00
 CATEGORIES=	archivers
 MASTER_SITES=	SF/sevenzip/LZMA%20SDK/
 DISTNAME=	lzma${PORTVERSION:S/.//g}
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-ratio LZMA compressor
+WWW=		https://www.7-zip.org/sdk.html
 
-CONFLICTS=	lzmautils-[0-9]* xz-[0-9]*
+CONFLICTS=	lzmautils xz
 
 USES=		7z gmake dos2unix
 NO_WRKSUBDIR=	yes

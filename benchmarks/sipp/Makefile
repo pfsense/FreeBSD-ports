@@ -1,18 +1,14 @@
-# Created by: jesper@jdn.dk
-# $FreeBSD$
-
 PORTNAME=	sipp
 PORTVERSION=	3.5.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	benchmarks net
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	SIP benchmarking and testing tool
+WWW=		https://sipp.sourceforge.net/
 
 LICENSE=	GPLv2
-
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: /usr/local/lib/gcc9/include/c++/cstddef:52:8: expected unqualified-id before string constant
 
 BUILD_DEPENDS=	help2man:misc/help2man
 

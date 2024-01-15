@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin
-# $FreeBSD$
-
 PORTNAME=	ShipIt
 PORTVERSION=	0.60
 PORTREVISION=	1
@@ -11,8 +8,14 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Software release tool
+WWW=		https://metacpan.org/release/ShipIt
+
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

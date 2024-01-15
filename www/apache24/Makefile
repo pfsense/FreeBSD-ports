@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	apache24
-PORTVERSION=	2.4.46
-PORTREVISION=	0
+PORTVERSION=	2.4.58
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	APACHE_HTTPD
 DISTNAME=	httpd-${PORTVERSION}
@@ -10,18 +8,21 @@ DIST_SUBDIR=	apache24
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Version 2.4.x of Apache web server
+WWW=		https://httpd.apache.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libapr-1.so:devel/apr1 \
-		libpcre.so:devel/pcre
+		libpcre2-8.so:devel/pcre2
 
 USES=		apache:server,2.4 autoreconf compiler:c11 cpe iconv libtool perl5 tar:bzip2
 USE_PERL5=	run
 USE_RC_SUBR=	apache24 htcacheclean
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	py*-circuits # bin/htpasswd
 
 CPE_VENDOR=	apache
 CPE_PRODUCT=	http_server
@@ -173,6 +174,7 @@ CFLAGS=		${DEBUG_FLAGS}
 CONFIGURE_ARGS+=	--enable-maintainer-mode
 WITH_EXCEPTION_HOOK=	yes
 .else
+CONFIGURE_ENV+=	INSTALL_PROG_FLAGS="-s"
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-server_buildmark.c
 .endif
 .if defined(WITH_EXCEPTION_HOOK)
@@ -220,12 +222,10 @@ post-configure:
 post-install:
 	@${MKDIR} ${ETC_SUBDIRS:S|^|${STAGEDIR}${ETCDIR}/|}
 	${INSTALL_DATA} ${FILESDIR}/no-accf.conf ${STAGEDIR}${ETCDIR}/Includes/
-# place for 3rd party module configuration
 	${INSTALL_DATA} ${FILESDIR}/README_modules.d ${STAGEDIR}${ETCDIR}/modules.d/
-# strip returns an error for non binary files, but we have a big mix
-	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/* 2>/dev/null
-	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/apache24/mod_*.so
+	# Remove files left behind by strip
+	${RM} ${STAGEDIR}${DATADIR}/build/ecp.???????? 2>/dev/null
 
 post-install-LOG_FORENSIC-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/support/check_forensic ${STAGEDIR}${PREFIX}/sbin

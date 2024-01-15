@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-ICal
 PORTVERSION=	0.24
 CATEGORIES=	deskutils perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate iCalendar (RFC 2445) calendar files
+WWW=		https://metacpan.org/release/Data-ICal
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

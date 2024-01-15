@@ -1,6 +1,3 @@
-# Created by: janek@gaja.ipan.lublin.pl
-# $FreeBSD$
-
 PORTNAME=	xspread
 PORTVERSION=	3.1.1c
 PORTREVISION=	4
@@ -29,7 +26,6 @@ PLIST_FILES=	bin/pxspread bin/xspread man/man1/pxspread.1.gz \
 OPTIONS_DEFINE=	X11 DOCS
 
 X11_USE=		XORG=x11,xau,xcb,xdmcp,xt
-X11_LIB_DEPENDS=	libpthread-stubs.so:devel/libpthread-stubs
 X11_USES=		localbase xorg
 X11_CONFIGURE_ENV_OFF=	ac_cv_header_X11_X_h=no
 

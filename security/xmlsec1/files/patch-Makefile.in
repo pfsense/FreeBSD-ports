@@ -1,6 +1,6 @@
---- Makefile.in.orig	2017-12-12 16:05:23.187628000 +0300
-+++ Makefile.in	2017-12-12 16:07:19.241092000 +0300
-@@ -480,7 +480,7 @@
+--- Makefile.in.orig	2022-12-06 14:04:01 UTC
++++ Makefile.in
+@@ -491,7 +491,7 @@ pkgconfigdir = $(prefix)/libdata/pkgconfig
  bin_SCRIPTS = xmlsec1-config
  pkgconfig_DATA = xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@
  pkgconfigdir = $(prefix)/libdata/pkgconfig

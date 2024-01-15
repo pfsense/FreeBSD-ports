@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	consolamono-ttf
 PORTVERSION=	20130127
 PORTREVISION=	2
@@ -9,6 +7,7 @@ DISTNAME=	consolamono
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Monospace font created for programming, text editors and terminal-use
+WWW=		https://fontlibrary.org/en/font/consolamono
 
 LICENSE=	OFL11
 

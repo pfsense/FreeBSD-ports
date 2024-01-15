@@ -1,6 +1,3 @@
-# Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	prng
 DISTVERSION=	3.0.2
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://statistik.wu-wien.ac.at/software/prng/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable, high-performance ANSI-C pseudorandom number generators
+WWW=		http://statistik.wu-wien.ac.at/software/prng/index.html
 
 LICENSE=	GPLv2
 

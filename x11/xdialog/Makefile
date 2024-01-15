@@ -1,15 +1,13 @@
-# Created by: Ying-Chieh Liao <ijliao@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	xdialog
 PORTVERSION=	2.3.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	x11
 MASTER_SITES=	http://xdialog.free.fr/
 DISTNAME=	${PORTNAME:S/x/X/}-${PORTVERSION}
 
-MAINTAINER=	ler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drop in replacement for the "dialog" or "cdialog" programs
+WWW=		http://xdialog.free.fr/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

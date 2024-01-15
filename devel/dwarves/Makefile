@@ -1,13 +1,12 @@
-# Created by: Conrad Meyer <cem@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dwarves
 DISTVERSION=	1.19
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://fedorapeople.org/~acme/dwarves/
 
 MAINTAINER=	cem@FreeBSD.org
 COMMENT=	Debugging Information Manipulation Tools (pahole & friends)
+WWW=		https://acmel.wordpress.com
 
 LICENSE=	BSD2CLAUSE GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -15,14 +14,12 @@ LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/lib/bpf/LICENSE.BSD-2-Clause
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL21=	${WRKSRC}/lib/bpf/LICENSE.LPGL-2.1
 
-IGNORE_FreeBSD_11=	inherited from dependency devel/elfutils
-
 BUILD_DEPENDS=	gnulib>=0:devel/gnulib
 LIB_DEPENDS=	libargp.so:devel/argp-standalone \
 		libdw.so:devel/elfutils
 
-USES=		cmake gettext python:3.7+,env shebangfix tar:xz
-USE_GCC=	9+
+USES=		cmake gettext python:env shebangfix tar:xz
+USE_GCC=	yes
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	btfdiff fullcircle ostra/ostra-cg ostra/python/ostra.py

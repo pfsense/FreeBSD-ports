@@ -1,6 +1,3 @@
-# Created by: Bernard Spil <brnrd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bdes
 PORTVERSION=	1993
 CATEGORIES=	security

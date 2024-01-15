@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	easyloggingpp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	9.97.0
+DISTVERSION=	9.97.1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ logging library
+WWW=		https://github.com/amrayn/easyloggingpp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

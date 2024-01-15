@@ -1,6 +1,3 @@
-# Created by: nork@cityfujisawa.ne.jp
-# $FreeBSD$
-
 PORTNAME=	DBD-SQLite2
 PORTVERSION=	0.38
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Provides access to SQLite2 databases through the DBI
+WWW=		https://www.sqlite.org/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

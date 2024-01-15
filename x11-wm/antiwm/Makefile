@@ -1,6 +1,3 @@
-# Created by: Dennis Herrmann <adox@mcx2.org>
-# $FreeBSD$
-
 PORTNAME=	antiwm
 PORTVERSION=	0.0.5
 CATEGORIES=	x11-wm
@@ -8,9 +5,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Minimalist window manager inspired by Ratpoison
+WWW=		https://sourceforge.net/projects/antiwm/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Last upstream release was in 2009
+EXPIRATION_DATE=	2024-01-20
 
 USES=		xorg
 USE_XORG=	x11

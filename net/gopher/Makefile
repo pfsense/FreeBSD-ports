@@ -1,6 +1,3 @@
-# Created by: ats (original)
-# $FreeBSD$
-
 PORTNAME=	gopher
 PORTVERSION=	3.0.6
 PORTREVISION=	1

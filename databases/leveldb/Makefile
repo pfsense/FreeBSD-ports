@@ -1,42 +1,37 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	leveldb
-PORTVERSION=	1.22
+PORTVERSION=	1.23
 PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast and lightweight key/value database library by Google
+WWW=		https://github.com/google/leveldb
 
 LICENSE=	BSD3CLAUSE
 
-OPTIONS_DEFINE=	GPERFTOOLS SNAPPY
-OPTIONS_DEFAULT=SNAPPY
+TEST_DEPENDS=	benchmark>=0:devel/benchmark \
+		googletest>=0:devel/googletest
 
-USES=		cmake compiler:c++11-lang localbase
+USES=		cmake:testing compiler:c++11-lang localbase:ldflags
 
 CMAKE_OFF=	LEVELDB_BUILD_TESTS
 CMAKE_ON=	BUILD_SHARED_LIBS LEVELDB_BUILD_BENCHMARKS LEVELDB_INSTALL
+CMAKE_TESTING_ON=	LEVELDB_BUILD_TESTS
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	SHLIB_MAJOR=${SHLIB_MAJOR} \
-		SHLIB_MINOR=${SHLIB_MINOR}
-
-SHLIB_MAJOR=	${PORTVERSION:R}
-SHLIB_MINOR=	${PORTVERSION:E}
+PLIST_SUB=	PORTVERSION=${PORTVERSION} SHLIB_VER=${PORTVERSION:R}
 
 GH_ACCOUNT=	google
 USE_GITHUB=	yes
+
+OPTIONS_DEFINE=	GPERFTOOLS SNAPPY
+OPTIONS_DEFAULT=SNAPPY
 
 GPERFTOOLS_LIB_DEPENDS=	libtcmalloc.so:devel/google-perftools
 SNAPPY_LIB_DEPENDS=	libsnappy.so:archivers/snappy
 SNAPPY_VARS=		SNAPPY=1 SNAPPY_CFLAGS=-DSNAPPY
 SNAPPY_VARS_OFF=	SNAPPY=0 SNAPPY_CFLAGS=
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|%%SHLIB_MAJOR%%|${SHLIB_MAJOR}|; s|%%SHLIB_MINOR%%|${SHLIB_MINOR}|' ${WRKSRC}/CMakeLists.txt
 
 post-install:
 	${AR} cq ${STAGEDIR}${PREFIX}/lib/libleveldb.a ${BUILD_WRKSRC}/CMakeFiles/leveldb.dir/*/*.o

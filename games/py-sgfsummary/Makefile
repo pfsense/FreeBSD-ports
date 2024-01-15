@@ -1,6 +1,3 @@
-# Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
-
 PORTNAME=	sgfsummary
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -11,10 +8,11 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SGF Summarizer
+WWW=		http://gotools.sourceforge.net/sgfsummary/
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/sgflib.py:games/py-sgflib@${PY_FLAVOR}
 
-USES=		python:3.6+ shebangfix tar:tgz
+USES=		python shebangfix tar:tgz
 USE_PYTHON=	flavors
 SHEBANG_FILES=	sgfsummary.py
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}

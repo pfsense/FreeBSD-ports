@@ -1,6 +1,3 @@
-# Created by: Cy Schubert <cy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-KeePass-Agent
 PORTVERSION=	2.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Application agent for working with File::KeePass objects
+WWW=		https://metacpan.org/release/File-KeePass-Agent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

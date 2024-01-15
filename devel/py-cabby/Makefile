@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	cabby
 PORTVERSION=	0.1.20
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	gmm@tutanota.com
 COMMENT=	Python TAXII client implementation from EclecticIQ
+WWW=		https://github.com/EclecticIQ/cabby/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}furl>0:devel/py-furl@${PY_FLAVOR}

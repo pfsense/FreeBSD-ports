@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	liblzxcomp
 PORTVERSION=	20050705
 CATEGORIES=	archivers
@@ -9,6 +6,7 @@ DISTNAME=	lzx_compress
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	LZX compression library
+WWW=		http://www.russotto.net/chm/
 
 LICENSE=	LGPL21
 

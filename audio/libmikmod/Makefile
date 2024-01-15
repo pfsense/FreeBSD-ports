@@ -1,6 +1,3 @@
-# Created by: Michael Haro <mharo@area51.fremont.ca.us>
-# $FreeBSD$
-
 PORTNAME=	libmikmod
 PORTVERSION=	3.3.11.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/mikmod/libmikmod/${PORTVERSION}/
 
 MAINTAINER=	neuroworker@gmail.com
 COMMENT=	MikMod Sound Library
+WWW=		https://mikmod.sourceforge.net/
 
 LICENSE=	LGPL21
 

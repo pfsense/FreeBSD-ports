@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Module-Build-Pluggable-ReadmeMarkdownFromPod
 PORTVERSION=	0.04
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Make README.mkdn from POD
+WWW=		https://metacpan.org/release/Module-Build-Pluggable-ReadmeMarkdownFromPod
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

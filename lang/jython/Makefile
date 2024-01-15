@@ -1,16 +1,13 @@
-# Created by: Hye-Shik Chang <perky@python.or.kr>
-# $FreeBSD$
-
 PORTNAME=	jython
 PORTVERSION=	2.7.0
 DISTVERSIONPREFIX=	installer-
 CATEGORIES=	lang python java
-MASTER_SITES=	https://repo1.maven.org/maven2/org/python/jython-installer/${PORTVERSION}/ \
-		http://repo1.maven.org/maven2/org/python/jython-installer/${PORTVERSION}/
+MASTER_SITES=	https://repo1.maven.org/maven2/org/python/jython-installer/${PORTVERSION}/
 EXTRACT_SUFX=	.jar
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Implementation of Python Interpreter in Pure Java
+WWW=		https://www.jython.org/
 
 LICENSE=	PSFL APACHE20
 LICENSE_COMB=	multi
@@ -23,6 +20,9 @@ RUN_DEPENDS=	bash:shells/bash
 # Extract only license files
 EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions \
 			LICENSE.txt LICENSE_Apache.txt
+
+USES=		cpe
+CPE_VENDOR=	python
 USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,19 +1,18 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mypaedia-fpw-package
 PORTVERSION=	1.0.7
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	japanese elisp
 MASTER_SITES=	http://openlab.ring.gr.jp/edict/fpw/dist/mypaedia/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Supplement file to use "mypaedia" on lookup
+WWW=		http://openlab.ring.gr.jp/edict/mypaedia-fpw/
 
 RUN_DEPENDS=	sox:audio/sox \
 		timidity:audio/timidity++ \
-		xanim:multimedia/xanim \
-		display:graphics/ImageMagick6
+		xanim:multimedia/xanim
+
+USES=		magick:6,run
 
 NO_BUILD=	yes
 PLIST_SUB=	PKGNAME=${PKGNAME}

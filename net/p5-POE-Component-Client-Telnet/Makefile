@@ -1,6 +1,3 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Client-Telnet
 PORTVERSION=	0.06
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	POE component that provides non-blocking access to Net::Telnet
+WWW=		https://metacpan.org/release/POE-Component-Client-Telnet
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

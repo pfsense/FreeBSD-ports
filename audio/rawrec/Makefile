@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rawrec
 PORTVERSION=	0.9.991
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	SUNSITE/apps/sound/recorders \
 
 MAINTAINER=	antonfb@hesiod.org
 COMMENT=	Utility to record and playback raw audio data
+WWW=		http://rawrec.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/copyright

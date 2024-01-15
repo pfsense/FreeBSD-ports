@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	httpry
 PORTVERSION=	0.1.8
 CATEGORIES=	net
@@ -7,6 +5,7 @@ MASTER_SITES=	http://dumpsterventures.com/jason/httpry/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Packet sniffer designed for displaying and logging HTTP traffic
+WWW=		https://dumpsterventures.com/jason/httpry/
 
 USE_RC_SUBR=	httpry
 

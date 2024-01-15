@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	fansi
-PORTVERSION=	0.4.1
-PORTREVISION=	1
+DISTVERSION=	1.0.6
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	ANSI Control Sequence Aware String Functions
+WWW=		https://cran.r-project.org/web/packages/fansi/
 
 LICENSE=	GPLv2+
 

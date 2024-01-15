@@ -1,15 +1,12 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/textproc/gtkspell/Makefile,v 1.2 2006/09/10 00:51:13 mezz Exp $
-
 PORTNAME=	gtkspell
 PORTVERSION=	2.0.16
-PORTREVISION?=	6
+PORTREVISION?=	7
 CATEGORIES=	textproc gnome
 MASTER_SITES=	LOCAL/marcus
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GTK+ 2 spell checking component
+COMMENT=	GTK 2 spell checking component
+WWW=		https://gtkspell.sourceforge.net/
 
 LIB_DEPENDS=	libenchant.so:textproc/enchant
 

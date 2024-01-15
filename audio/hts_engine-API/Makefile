@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hts_engine-API
 PORTVERSION=	1.10
 CATEGORIES=	audio
@@ -9,6 +7,7 @@ DISTNAME=	hts_engine_API-${PORTVERSION}
 
 MAINTAINER=	tomason510@gmail.com
 COMMENT=	HMM-based speech synthesis system (HTS) engine and API
+WWW=		https://hts-engine.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 

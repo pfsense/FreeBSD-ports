@@ -1,31 +1,29 @@
-# Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	locker
-PORTVERSION=	0.4.0
+PORTVERSION=	0.4.2
+PORTREVISION=	1
 CATEGORIES=	x11
-MASTER_SITES=	http://www.defora.org/os/download/download/4424/
+MASTER_SITES=	https://ftp.defora.org/pub/DeforaOS/Apps/Desktop/src/Locker/
 PKGNAMEPREFIX=	deforaos-
 DISTNAME=	Locker-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop screensaver
+WWW=		https://www.defora.org/
 
-LICENSE=	GPLv3
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/Panel.pc:x11-wm/deforaos-panel
 LIB_DEPENDS=	libDesktop.so:x11/deforaos-libdesktop \
 		libSystem.so:devel/deforaos-libsystem \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
 		libXss.so:x11/libXScrnSaver
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/Panel.pc:x11/deforaos-panel
-
-USES=		desktop-file-utils gnome pkgconfig xorg
-USE_GNOME=	gtk20 cairo gdkpixbuf2
+USES=		gnome pkgconfig xorg desktop-file-utils
+USE_GNOME=	gtk30 cairo gdkpixbuf2
 USE_XORG=	x11 xext
 MAKE_ARGS+=	PREFIX=${PREFIX}
+MAKE_ARGS+=	LDFLAGS=${LDFLAGS:Q}
 MAKE_ENV+=	MANDIR=${STAGEDIR}${MANPREFIX}/man
 LDFLAGS+=	-lXext
 
@@ -33,13 +31,8 @@ OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 NLS_USES=		gettext
 DOCS_BUILD_DEPENDS=	xsltproc:textproc/libxslt \
-			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
-
-post-patch:
-	${REINPLACE_CMD} 's|-Wl,-pie||g' \
-		${WRKSRC}/tests/Makefile \
-		${WRKSRC}/tools/Makefile \
-		${WRKSRC}/src/Makefile
+			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
+			gtkdoc-mkhtml:textproc/gtk-doc
 
 post-patch-DOCS-off:
 	${REINPLACE_CMD} 's|data doc include|data include|' \

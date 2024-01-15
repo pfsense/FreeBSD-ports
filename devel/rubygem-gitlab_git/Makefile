@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gitlab_git
 PORTVERSION=	10.7.0
 PORTREVISION=	3
@@ -9,6 +7,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	GitLab wrapper around git objects
+WWW=		https://gitlab.com/gitlab-org/gitlab_git
 
 LICENSE=	MIT
 
@@ -18,7 +17,6 @@ RUN_DEPENDS=	rubygem-activesupport4>=4.0:devel/rubygem-activesupport4 \
 		rubygem-rugged>=0.24.0:devel/rubygem-rugged
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

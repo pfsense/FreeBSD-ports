@@ -1,6 +1,3 @@
-# Created by: Peter Johnson <johnson.peter@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	zzuf
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://caca.zoy.org/raw-attachment/wiki/zzuf/
 
 MAINTAINER=	johnson.peter@gmail.com
 COMMENT=	Transparent application input fuzzer
+WWW=		http://sam.zoy.org/zzuf/
 
 USES=		libtool
 GNU_CONFIGURE=	yes

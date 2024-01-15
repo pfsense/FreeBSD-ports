@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	bugzilla
 PORTVERSION=	4.4.13
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	MOZILLA/webtools MOZILLA/webtools/archived
 
 MAINTAINER=	bz-ports@FreeBSD.org
 COMMENT=	Bug-tracking system developed by Mozilla Project
+WWW=		https://www.bugzilla.org/
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -46,7 +45,7 @@ EMPTY_DIRS_LIST=data graphs contrib lib t xt
 .include "${.CURDIR}/Makefile.common"
 .include "${.CURDIR}/Makefile.options"
 
-MODPERL_USE=		APACHE_RUN=22+
+MODPERL_USES=		apache:run
 MYSQL_USES=		mysql
 MYSQL_RUN_DEPENDS=	p5-DBD-mysql>=4.0001:databases/p5-DBD-mysql
 PGSQL_USES=		pgsql
@@ -71,7 +70,7 @@ MAIL_QUEUEING_RUN_DEPENDS=	p5-TheSchwartz>=1.10:devel/p5-TheSchwartz \
 				p5-File-Slurp>=9999.13:devel/p5-File-Slurp
 MOVE_BUGZ_RUN_DEPENDS=	p5-MIME-Tools>=5.406:mail/p5-MIME-Tools \
 			p5-XML-Twig>=0:textproc/p5-XML-Twig
-BMP2PNG_RUN_DEPENDS=	convert:graphics/ImageMagick6
+BMP2PNG_USES=		magick:6,run
 # Note: XML-RPC and JSON-RPC are deprecated in favor of REST
 # and will likely be removed in the Bugzilla 7.0 release.
 # XXX SOAP::Lite can be removed if upstream officially depends on

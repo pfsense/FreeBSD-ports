@@ -1,14 +1,13 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=		cpp-netlib
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=		0.13.0
+PORTREVISION=		6
 DISTVERSIONSUFFIX=	-final
 CATEGORIES=		devel
 
 MAINTAINER=		zi@FreeBSD.org
 COMMENT=		Cross-platform, standards compliant networking library
+WWW=		https://github.com/cpp-netlib/cpp-netlib/
 
 LICENSE=		BSL
 LICENSE_FILE=		${WRKSRC}/LICENSE_1_0.txt

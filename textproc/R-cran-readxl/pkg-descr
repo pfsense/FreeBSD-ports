@@ -3,4 +3,4 @@ Import excel files into R. Supports '.xls' via the embedded 'libxls' C library
 library <http://rapidxml.sourceforge.net>. Works on Windows, Mac and Linux
 without external dependencies.
 
-WWW: https://readxl.tidyverse.org
+See also <https://cran.r-project.org/package=readxl>.

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Refcount
 PORTVERSION=	0.10
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Assert reference counts on objects
+WWW=		https://metacpan.org/release/Test-Refcount
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

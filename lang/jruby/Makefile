@@ -1,14 +1,12 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	jruby
-PORTVERSION=	9.2.5.0
+PORTVERSION=	9.2.17.0
 DISTVERSIONPREFIX=	bin-
 CATEGORIES=	lang ruby java
 MASTER_SITES=	http://jruby.org.s3.amazonaws.com/downloads/${PORTVERSION}/
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Implementation of Ruby Interpreter in Pure Java
+WWW=		http://jruby.org/
 
 LICENSE=	EPL GPLv2 LGPL21
 LICENSE_COMB=	dual
@@ -18,7 +16,7 @@ RUN_DEPENDS=	bash:shells/bash
 USES=		cpe
 USE_JAVA=	yes
 
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 NO_BUILD=	yes
 
 JRUBY_HOME?=	${PREFIX}/share/${PORTNAME}
@@ -37,6 +35,7 @@ PORTEXAMPLES=	*
 post-patch:
 	@${RM} -r \
 		${WRKSRC}/lib/jni/*AIX \
+		${WRKSRC}/lib/jni/*DragonFlyBSD \
 		${WRKSRC}/lib/jni/*Linux \
 		${WRKSRC}/lib/jni/*OpenBSD \
 		${WRKSRC}/lib/jni/*SunOS \

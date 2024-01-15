@@ -1,6 +1,3 @@
-# Created by: Bill Brinzer <bill.brinzer@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Moose-Autobox
 PORTVERSION=	0.15
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bill.brinzer@gmail.com
 COMMENT=	Autoboxed wrappers for Native Perl datatypes
+WWW=		https://metacpan.org/release/Moose-Autobox
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

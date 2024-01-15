@@ -1,12 +1,8 @@
 [
 { type: install
   message: <<EOM
-If Perl support was enabled during compilation you need to load the module
-by adding:
-
-load perl
-
-to ~/.irssi/startup
+If Perl support was enabled during compilation you need to make sure the module
+is listed in /set autoload_modules
 EOM
 }
 ]

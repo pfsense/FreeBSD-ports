@@ -1,6 +1,3 @@
-# Created by: Pav Lucistnik <pav@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	exif
 PORTVERSION=	0.6.22
 CATEGORIES=	graphics
@@ -8,6 +5,7 @@ MASTER_SITES=	https://github.com/libexif/exif/releases/download/exif-${PORTVERSI
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Command line utility to read and manipulate EXIF data
+WWW=		https://libexif.github.io/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

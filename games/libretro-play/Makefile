@@ -1,13 +1,12 @@
-# Created by: Rozhuk Ivan <rozhuk.im@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	play
-PORTVERSION=	0.33.0.20201020
+PORTVERSION=	0.48
+PORTREVISION=	4
 CATEGORIES=	games
 PKGNAMEPREFIX=	libretro-
 
 MAINTAINER=	rozhuk.im@gmail.com
 COMMENT=	Play! - PlayStation 2 Emulator
+WWW=		https://purei.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
@@ -24,20 +23,23 @@ USE_CXXSTD=	c++17
 USE_GITHUB=	yes
 GH_ACCOUNT=	jpd002 \
 		jpd002:codegen \
+		jpd002:libchdr \
 		jpd002:framework \
 		jpd002:dependencies \
 		gulrak:ghc_filesystem
 GH_PROJECT=	Play- \
 		Play--CodeGen:codegen \
+		libchdr:libchdr \
 		Play--Framework:framework \
 		Play-Dependencies:dependencies \
 		filesystem:ghc_filesystem
-GH_TAGNAME=	80b31dd8c1583b2200ee6345c1047e901dcd54ed \
-		e52d41b0c18132edf657225a422e6699c1d241c4:codegen \
-		26314863b9af9fd2c492d6410a8fbe24701eabd2:framework \
-		41b68c0dd63dee867e8519fca9b52970fc0c8ddf:dependencies \
-		3605e869150032ffdd9eae3db93e12f8711a0c82:ghc_filesystem
+GH_TAGNAME=	448bac159733c6799a451ac75a18ce04aff5e223:codegen \
+		532a3f60f75eec3454ff4e52cad8862afc40e65f:libchdr \
+		faa4c23a2e96ba42b6ff1438bf33f111295c55cf:framework \
+		636810ead6f1a3c8ee8006a3b9a698a81a0efbf6:dependencies \
+		2a8b380f8d4e77b389c42a194ab9c70d8e3a0f1e:ghc_filesystem
 GH_SUBDIR=	deps/CodeGen:codegen \
+		deps/libchdr:libchdr \
 		deps/Framework:framework \
 		deps/Dependencies:dependencies \
 		deps/Dependencies/ghc_filesystem:ghc_filesystem
@@ -49,8 +51,15 @@ CMAKE_OFF=	BUILD_AOT_CACHE \
 		BUILD_PLAY \
 		BUILD_PSFPLAYER \
 		BUILD_TESTS \
+		USE_AOT_CACHE \
 		ENABLE_AMAZON_S3
-CMAKE_ARGS=	-DSHORT_HASH=${GH_TAGNAME_DEFAULT}
+CMAKE_ARGS=	-DGIT_TAG=${GH_TAGNAME_DEFAULT} \
+		-DGIT_DESCRIBE_RESULT=0 \
+		-DOpenGL_GL_PREFERENCE="GLVND"
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|execute_process(COMMAND git.*||g' \
+		${WRKSRC}/CMakeLists.txt
 
 do-install:
 	${MKDIR} ${STAGEDIR}/${PREFIX}/lib/libretro;

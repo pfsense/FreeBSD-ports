@@ -1,14 +1,13 @@
-# Created by: Brian Handy <handy@physics.montana.edu>
-# $FreeBSD$
-
 PORTNAME=	windowmaker
-PORTVERSION=	0.95.9
+PORTVERSION=	0.96.0
 CATEGORIES=	x11-wm windowmaker
-MASTER_SITES=	http://windowmaker.org/pub/source/release/
+MASTER_SITES=	https://www.windowmaker.org/pub/source/release/ \
+		https://github.com/window-maker/wmaker/releases/download/wmaker-${PORTVERSION}/ LOCAL/danfe
 DISTNAME=	WindowMaker-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	GNUstep-compliant NeXTstep window manager clone
+WWW=		https://www.windowmaker.org/
 
 LICENSE=	GPLv2
 
@@ -17,14 +16,14 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libjbig.so:graphics/jbigkit \
 		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp \
-		libMagickWand-7.so:graphics/ImageMagick7 \
 		libwraster.so:x11-wm/libwraster \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libexif.so:graphics/libexif
 RUN_DEPENDS=	${LOCALBASE}/share/WindowMaker/Themes/LeetWM.themed/style:graphics/wmicons
 
-USES=		gnome jpeg libtool shebangfix pathfix perl5 pkgconfig xorg
+USES=		cpe gmake gnome jpeg libtool pathfix perl5 pkgconfig \
+		shebangfix xorg
 USE_CSTD=	c99
 USE_GNOME=	pango
 USE_LDCONFIG=	yes
@@ -47,15 +46,29 @@ CONFIGURE_ARGS=	--with-pixmapdir=${PREFIX}/include/X11/pixmaps \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
+
 PORTDOCS=	AUTHORS BUGFORM BUGS ChangeLog FAQ INSTALL \
 		INSTALL-WMAKER NEWS README README.definable-cursor \
 		README.i18n TODO The-perfect-Window-Maker-patch.txt
 
-OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_DEFINE=	IMAGEMAGICK DOCS NLS
+OPTIONS_DEFAULT=	IMAGEMAGICK
 OPTIONS_SUB=	yes
+
+IMAGEMAGICK_USES=		magick
+IMAGEMAGICK_CONFIGURE_OFF=	--disable-magick
+
 NLS_USES=	gettext
 NLS_CONFIGURE_ENV=	LINGUAS="*"
 NLS_CONFIGURE_ENABLE=	locale
+
+.include <bsd.port.options.mk>
+
+post-patch-IMAGEMAGICK-on:
+.if ${IMAGEMAGICK_DEFAULT} == 6
+	@${REINPLACE_CMD} -e '/MagickWand\.h/s,MagickWand/,wand/,' \
+		${WRKSRC}/configure ${WRKSRC}/wrlib/load_magick.c
+.endif
 
 post-install:
 	@${MKDIR} \

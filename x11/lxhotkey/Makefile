@@ -1,13 +1,12 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	lxhotkey
-PORTVERSION=	0.1.0
+PORTVERSION=	0.1.1
+PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	SF/lxde/LXHotkey/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Keyboard shortcuts settings
+WWW=		https://www.lxde.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

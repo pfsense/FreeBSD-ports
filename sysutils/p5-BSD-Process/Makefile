@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	BSD-Process
 PORTVERSION=	0.07
 PORTREVISION=	2
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DLAND
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Information about running processes on BSD platforms
+WWW=		https://metacpan.org/release/BSD-Process
 
 BUILD_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor
 RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor

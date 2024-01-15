@@ -1,15 +1,13 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mate-session-manager
-PORTVERSION=	1.24.1
-PORTREVISION=	1
+PORTVERSION=	1.26.0
+PORTREVISION=	5
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Session component for the MATE desktop
+WWW=		https://mate-desktop.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -32,7 +30,6 @@ CONFIGURE_ARGS=	--disable-docbook-docs \
 		--with-default-wm=mate-wm \
 		--enable-upower \
 		--with-systemd=no
-INSTALLS_ICONS=	yes
 
 GLIB_SCHEMAS=	org.mate.session.gschema.xml
 

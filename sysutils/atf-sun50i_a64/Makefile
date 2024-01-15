@@ -1,5 +1,4 @@
-# $FreeBSD$
-
+WWW=		https://github.com/ARM-software/arm-trusted-firmware
 MASTERDIR=	${.CURDIR}/../atf-master
 
 PLAT=	sun50i_a64

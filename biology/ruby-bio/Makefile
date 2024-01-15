@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	bio
 PORTVERSION=	1.5.1
 CATEGORIES=	biology ruby
@@ -11,6 +8,7 @@ DIST_SUBDIR=	ruby
 
 MAINTAINER=	mauricio@arareko.net
 COMMENT=	Integrated environment for Bioinformatics written in Ruby
+WWW=		http://bioruby.org/
 
 LICENSE=	GPLv2 RUBY
 LICENSE_COMB=	dual
@@ -19,15 +17,15 @@ OPTIONS_DEFINE=	BDB4 MYSQL PGSQL DOCS
 BDB4_DESC=	bdb4 support for faster flat file indexing
 
 NO_ARCH=	yes
-USES=		shebangfix
-USE_RUBY=	yes
-USE_RUBY_SETUP=	yes
+USES=		ruby:setup shebangfix
 SHEBANG_FILES=	sample/biofetch.rb
 ruby_OLD_CMD=	/usr/proj/bioruby/bin/ruby
 
 BDB4_RUN_DEPENDS=	${RUBY_SITEARCHLIBDIR}/bdb.so:databases/ruby-bdb
 MYSQL_RUN_DEPENDS=	rubygem-dbd-mysql>=0:databases/rubygem-dbd-mysql
 PGSQL_RUN_DEPENDS=	rubygem-dbd-pg>=0:databases/rubygem-dbd-pg
+
+CONFLICTS_INSTALL=	rubygem-bio-shell
 
 post-patch:
 	${RUBY} -i -pe 'gsub(%r"(/etc/bioinformatics/)") { "${PREFIX}" + $$1 }' \

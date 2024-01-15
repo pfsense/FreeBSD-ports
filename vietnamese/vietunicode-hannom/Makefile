@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	vietunicode-hannom
 PORTVERSION=	2005.02.06
 PORTREVISION=	6
@@ -10,6 +7,7 @@ DISTNAME=	hannom
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	UNICODE Han Nom Font Set
+WWW=		https://vietunicode.sourceforge.net/
 
 USES=		zip
 DIST_SUBDIR=	VietUnicode

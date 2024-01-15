@@ -1,13 +1,11 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	jts
-DISTVERSION=	1.17.1
+DISTVERSION=	1.18.1
 DISTVERSIONPREFIX=	jts-
 CATEGORIES=	math databases java
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	JTS Topology Suite
+WWW=		https://github.com/locationtech/jts
 
 LICENSE=	EPL
 #LICENSE_COMB=	dual
@@ -18,7 +16,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	locationtech
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	11+
 NO_ARCH=	yes
 
 VER=		${PORTVERSION:tl}
@@ -49,7 +47,7 @@ pre-build:
 	cd ${WRKDIR}/.m2 && rm -Rf repository
 	cd ${WRKDIR}/.m2 && git checkout master
 	cd ${WRKDIR}/.m2 && rm -Rf repository
-	
+
 post-build:
 	@${ECHO} "(!!!) Please upload the maven repo using: make pushToGH"
 .else
@@ -75,6 +73,7 @@ do-install:
 	@${INSTALL_DATA} ${WRKSRC}/modules/${jar}-${VER}.jar	\
 		${STAGEDIR}${JAVALIBDIR}/
 .endfor
+	${RLN} ${STAGEDIR}${JAVALIBDIR}/jts-core-${VER}.jar ${STAGEDIR}${JAVALIBDIR}/jts-core.jar
 
 do-install-DOCS-on:
 .for jar in ${JARDOCFILES}

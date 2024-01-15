@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@netnews.NCTU.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	WebService-NoPaste
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Pastebin web application to upload snippets of text
+WWW=		https://metacpan.org/release/WebService-NoPaste
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

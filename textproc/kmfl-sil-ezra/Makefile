@@ -1,6 +1,3 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	kmfl-sil-ezra
 PORTVERSION=	2.4
 PORTREVISION=	5
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	EzraSIL251_Src.zip
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	KMFL keyboard for Unicode Biblical Hebrew
+WWW=		https://scripts.sil.org/SILHebrUnic2
 
 RUN_DEPENDS=	kmflcomp:textproc/kmflcomp
 

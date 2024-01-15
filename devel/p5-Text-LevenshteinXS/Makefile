@@ -1,6 +1,3 @@
-# Created by: christian
-# $FreeBSD$
-
 PORTNAME=	Text-LevenshteinXS
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XS implementation of the Levenshtein edit distance
+WWW=		https://metacpan.org/release/Text-LevenshteinXS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

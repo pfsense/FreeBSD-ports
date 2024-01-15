@@ -1,9 +1,6 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	ir
 DISTVERSION=	1.3.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -12,6 +9,7 @@ PATCHFILES=	001904135bafa8931e4cf67402e0fa332feb857d.patch:-p1 # Fixing build fo
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	LV2 impulse response plugin for reverb and cabinet simulation
+WWW=		https://github.com/tomszilagyi/ir.lv2
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

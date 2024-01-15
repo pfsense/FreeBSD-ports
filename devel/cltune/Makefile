@@ -1,6 +1,3 @@
-# Created by: Johannes M Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cltune
 PORTVERSION=	2.7.0
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Library to tune OpenCL kernels
+WWW=		https://github.com/CNugteren/CLTune
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

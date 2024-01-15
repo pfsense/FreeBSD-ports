@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Amazon-AWSSign
 PORTVERSION=	0.12
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to create signatures for AWS requests
+WWW=		https://metacpan.org/release/Net-Amazon-AWSSign
 
 RUN_DEPENDS=	p5-URI>=0:net/p5-URI
 

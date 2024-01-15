@@ -1,16 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=		afni
 DISTVERSIONPREFIX=	AFNI_
-DISTVERSION=		20.3.04
+DISTVERSION=		23.3.14
 CATEGORIES=		science biology graphics perl5 python
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Advanced Functional Neuro Imaging
+WWW=		https://afni.nimh.nih.gov/afni/
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	fails to compile: ./predicates_init.c:46: error: implicit declaration of function 'fpsetprec'
+BROKEN_aarch64=	fails to build: statement requires expression of scalar type \
+		('va_list' (aka '__builtin_va_list') invalid)
 
 CRAN_DEPENDS=	R-cran-lme4>0:math/R-cran-lme4 \
 		R-cran-snow>0:science/R-cran-snow \
@@ -19,25 +19,31 @@ BUILD_DEPENDS=	gm4:devel/m4 \
 		R:math/R \
 		${CRAN_DEPENDS}
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
-		libf2c.so:lang/f2c \
-		libgsl.so:math/gsl \
-		libnetcdff.so:science/netcdf-fortran \
-		libxml2.so:textproc/libxml2 \
 		libXm.so:x11-toolkits/open-motif \
-		libnetpbm.so:graphics/netpbm
+		libf2c.so:lang/f2c \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libgsl.so:math/gsl \
+		libicudata.so:devel/icu \
+		libnetcdff.so:science/netcdf-fortran \
+		libnetpbm.so:graphics/netpbm \
+		libpcre2-8.so:devel/pcre2 \
+		libpng16.so:graphics/png \
+		libxml2.so:textproc/libxml2
+
 # Remote execution of suma.  Also needed for glxinfo.
 RUN_DEPENDS=	endian:sysutils/endian \
 		mpeg_encode:multimedia/mpeg_encode \
-		qhull:math/qhull5 \
+		qhull:math/qhull \
 		R:math/R \
 		${CRAN_DEPENDS}
 
-USES=		compiler:openmp gettext gl gmake gnome iconv jpeg:run motif
+USES=		gettext gl gmake gnome iconv jpeg:run motif readline
 USES+=		perl5 python shebangfix tar:xz xorg
 USE_GITHUB=	yes
 USE_GL=		gl glu
 USE_GNOME=	glib20
-USE_XORG=	x11 xext xi xmu xt
+USE_XORG= 	ice sm x11 xau xcb xdmcp xext xft xi xmu xrender xt
 
 SHEBANG_FILES=	scripts_install/* \
 		python_scripts/afnipy/*.py \
@@ -52,8 +58,9 @@ SHEBANG_FILES=	scripts_install/* \
 
 MAKE_ENV=	CC="${CC}" R_SHARE_DIR=${LOCALBASE}/lib/R/share
 MAKE_JOBS_UNSAFE=yes
-
 ALL_TARGET=	vastness suma
+
+CFLAGS+=	-fcommon -Wno-incompatible-function-pointer-types
 
 ###########################################################################
 # Install parameters
@@ -70,12 +77,14 @@ PRESTAGE=	${WRKSRC}/prestage
 
 .include <bsd.port.options.mk>
 
-CONFLICTS=	im-[0-9]* \
-		nifticlib-[0-9]* \
-		open-usp-tukubai-[0-9]*
+CONFLICTS=	im \
+		nifticlib \
+		open-usp-tukubai
 
 X11R6_FILES=	coxplot/Makefile \
 		coxplot/Makefile.f2c
+
+PKG_COMPRESSION_LEVEL= 	6
 
 post-extract:
 .for f in ${X11R6_FILES}

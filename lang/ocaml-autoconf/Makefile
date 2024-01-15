@@ -1,8 +1,6 @@
-# Created by: stas
-# $FreeBSD$
-
 PORTNAME=	autoconf
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://forge.ocamlcore.org/frs/download.php/181/
 PKGNAMEPREFIX=	ocaml-
@@ -10,6 +8,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Autoconf module for ocaml
+WWW=		https://forge.ocamlcore.org/projects/ocaml-autoconf/
 
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PKGNAMEPREFIX}${PORTNAME}-1.0

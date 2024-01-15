@@ -1,6 +1,3 @@
-# Created by: Stefan Hagen <ports@textmail.me>
-# $FreeBSD$
-
 PORTNAME=	pdfstitch
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6
@@ -8,6 +5,7 @@ CATEGORIES=	print
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Crop and stitch pages from PDF to larger, single-page PDF
+WWW=		https://github.com/sur5r/pdfstitch
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

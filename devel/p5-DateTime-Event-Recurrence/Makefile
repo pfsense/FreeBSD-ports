@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Event-Recurrence
 PORTVERSION=	0.19
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl DateTime extension for computing basic recurrences
+WWW=		https://metacpan.org/release/DateTime-Event-Recurrence
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,11 +1,16 @@
---- ffi/Makefile.freebsd.orig	2020-01-03 17:02:39 UTC
+--- ffi/Makefile.freebsd.orig	2023-10-17 13:15:45 UTC
 +++ ffi/Makefile.freebsd
-@@ -1,7 +1,7 @@
+@@ -1,12 +1,12 @@
  
--CXX = clang++ -std=c++11 -stdlib=libc++
--CXXFLAGS = $(LLVM_CXXFLAGS)
--LDFLAGS = $(LLVM_LDFLAGS)
-+CXX ?= clang++
+-CXX = clang++ -stdlib=libc++
++CXX ?= clang++ -stdlib=libc++
+ 
+ # -flto and --exclude-libs allow us to remove those parts of LLVM we don't use
+ CXX_FLTO_FLAGS ?= -flto
+ LD_FLTO_FLAGS ?= -flto -Wl,--exclude-libs=ALL
+ 
+-CXXFLAGS := $(CPPFLAGS) $(CXXFLAGS) $(LLVM_CXXFLAGS) $(CXX_FLTO_FLAGS)
+-LDFLAGS := $(LDFLAGS) $(LLVM_LDFLAGS) $(LD_FLTO_FLAGS)
 +CXXFLAGS := $(CPPFLAGS) $(CXXFLAGS) $(LLVM_CXXFLAGS)
 +LDFLAGS := $(LDFLAGS) $(LLVM_LDFLAGS)
  LIBS = $(LLVM_LIBS)

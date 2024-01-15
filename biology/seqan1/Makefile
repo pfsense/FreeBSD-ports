@@ -1,6 +1,3 @@
-# Created by: h2
-# $FreeBSD$
-
 PORTNAME=	seqan
 PORTVERSION=	1.3.1
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	1
 
 MAINTAINER=	h2+fbsdports@fsfe.org
 COMMENT=	C++ Sequence Analysis Library
+WWW=		https://www.seqan.de/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/seqan/LICENSE
@@ -17,7 +15,7 @@ LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/seqan/LICENSE
 USES=		zip
 NO_BUILD=	yes
 
-CONFLICTS=	seqan-[2-9]*
+CONFLICTS_INSTALL=	seqan # include/seqan/align.h
 
 OPTIONS_DEFINE=	DOCS
 

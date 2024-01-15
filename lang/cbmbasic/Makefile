@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	cbmbasic
 PORTVERSION=	20180708
 CATEGORIES=	lang
 
-MAINTAINER=	trasz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable version of Commodore 64 BASIC
+WWW=		https://github.com/mist64/cbmbasic
 
-LICENSE=	BSD
-
-RESTRICTED=	Not really sure about the legal status
+LICENSE=	BSD NONE
+# Not really sure about the legal status
+LICENSE_COMB=	multi
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mist64

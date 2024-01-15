@@ -1,24 +1,17 @@
-# Created by: Craig Leres <leres@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hostapd
-PORTVERSION=	2.9
-PORTREVISION=	2
+PORTVERSION=	2.10
+PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	https://w1.fi/releases/
 
-PATCH_SITES=	https://w1.fi/security/2020-1/
-PATCHFILES=	0001-WPS-UPnP-Do-not-allow-event-subscriptions-with-URLs-.patch:-p1 \
-		0002-WPS-UPnP-Fix-event-message-generation-using-a-long-U.patch:-p1 \
-		0003-WPS-UPnP-Handle-HTTP-initiation-failures-for-events-.patch:-p1
-
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator
+WWW=		https://w1.fi/hostapd/
 
 LICENSE=	BSD3CLAUSE
 
 USES=		cpe gmake ssl
-CPE_VENDOR=	w1.f1
+CPE_VENDOR=	w1.fi
 BUILD_WRKSRC=	${WRKSRC}/hostapd
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}

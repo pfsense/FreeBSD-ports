@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Yadis
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Yadis service discovery protocol, and parses XRDS xml documents
+WWW=		https://metacpan.org/release/Net-Yadis
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-XPath>=0:textproc/p5-XML-XPath \

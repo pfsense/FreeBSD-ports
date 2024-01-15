@@ -1,6 +1,3 @@
-# Created by: Kevin Lo <kevlo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Match-FastAlternatives
 PORTVERSION=	1.05
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Efficient search for many strings
+WWW=		https://metacpan.org/release/Text-Match-FastAlternatives
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual

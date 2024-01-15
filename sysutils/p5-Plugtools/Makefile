@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Plugtools
 PORTVERSION=	1.3.0
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Manages POSIX users in LDAP and is extensible via a plugin system
+WWW=		https://metacpan.org/release/Plugtools
 
 RUN_DEPENDS=	p5-perl-ldap>=0:net/p5-perl-ldap \
 		p5-Sys-User-UIDhelper>=0:sysutils/p5-Sys-User-UIDhelper \

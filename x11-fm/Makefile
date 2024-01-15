@@ -1,12 +1,12 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 file managers
 
+    SUBDIR += 4pane
+    SUBDIR += arqiver
     SUBDIR += caja
     SUBDIR += catseye-fm
     SUBDIR += deforaos-browser
     SUBDIR += dolphin
+    SUBDIR += dolphin-devel
     SUBDIR += doublecmd
     SUBDIR += filerunner
     SUBDIR += fsv2
@@ -22,13 +22,13 @@
     SUBDIR += nemo
     SUBDIR += pcmanfm
     SUBDIR += pcmanfm-qt
+    SUBDIR += polo
     SUBDIR += qtfm
     SUBDIR += rodent
     SUBDIR += rox-filer
     SUBDIR += sushi
     SUBDIR += tdfsb
     SUBDIR += thunar
-    SUBDIR += wcmcommander
     SUBDIR += worker
     SUBDIR += xcruise
     SUBDIR += xdiskusage

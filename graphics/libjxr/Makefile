@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jxrlib
 PORTVERSION=	1.1
 CATEGORIES=	graphics devel
@@ -9,6 +7,7 @@ DISTFILES=	jxrlib_${PORTVERSION}.orig.tar.gz	\
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Library for JPEG XR, a.k.a. Windows MediaTM Photo
+WWW=		https://jxrlib.codeplex.com/
 
 LICENSE=	BSD2CLAUSE
 

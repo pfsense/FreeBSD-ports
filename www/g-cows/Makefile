@@ -1,6 +1,3 @@
-# Created by: Andrea Sozzi <as@g-cows.org>
-# $FreeBSD$
-
 PORTNAME=	g-cows
 PORTVERSION=	1.12
 CATEGORIES=	www
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.g-cows.org/download/1.12/
 
 MAINTAINER=	as@g-cows.org
 COMMENT=	Scripting language for creation of web sites
+WWW=		https://www.g-cows.org/
 
 GNU_CONFIGURE=	YES
 

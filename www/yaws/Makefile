@@ -1,12 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	yaws
-PORTVERSION=	2.0.6
+PORTVERSION=	2.1.0
 CATEGORIES=	www devel
-MASTER_SITES=	http://yaws.hyber.org/download/
+MASTER_SITES=	LOCAL/dch
+
+USE_GITHUB=	nodefault
+GH_ACCOUNT=	erlyaws
+GH_PROJECT=	yaws
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Web server for dynamic content written in Erlang
+WWW=		http://yaws.hyber.org/
 
 LICENSE=	BSD3CLAUSE
 
@@ -16,7 +19,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 OPTIONS_SUB=	yes
 PLIST_SUB=	VERSION="${PORTVERSION}"
 
-USES=		autoreconf gmake libtool pathfix shebangfix
+USES=		autoreconf cpe gmake libtool pathfix shebangfix
+
 SHEBANG_FILES=	www/cgi-bin/foo.py
 
 OPTIONS_DEFINE=	WWW
@@ -33,6 +37,7 @@ INSTALL_TARGET=	install-strip
 .include <bsd.port.options.mk>
 
 post-extract:
+	@${MV} ${WRKDIR}/yaws-yaws-* ${WRKDIR}/yaws-${PORTVERSION}
 	@${FIND} ${WRKSRC} -name .empty -delete
 
 post-patch:

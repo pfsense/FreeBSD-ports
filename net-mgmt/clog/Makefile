@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	clog
 PORTVERSION=	1.6
 CATEGORIES=	net-mgmt security

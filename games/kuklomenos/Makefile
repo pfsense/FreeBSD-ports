@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	kuklomenos
 PORTVERSION=	0.4.5
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://mbays.freeshell.org/kuklomenos/src/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple but challenging abstract shoot-em-up game
+WWW=		https://mbays.freeshell.org/kuklomenos/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

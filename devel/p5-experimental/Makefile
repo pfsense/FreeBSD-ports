@@ -1,8 +1,5 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	experimental
-PORTVERSION=	0.022
+PORTVERSION=	0.031
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:LEONT
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Experimental features made easy
+WWW=		https://metacpan.org/release/experimental
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

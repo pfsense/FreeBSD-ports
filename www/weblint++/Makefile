@@ -1,6 +1,3 @@
-# Created by: aaron@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	weblint++
 PORTVERSION=	1.15
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITE_SUBDIR=	CPAN:BDFOY
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTML validator and sanity checker
+WWW=		https://metacpan.org/release/BDFOY/weblint++-1.15
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

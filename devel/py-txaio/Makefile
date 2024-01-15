@@ -1,39 +1,32 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	txaio
-PORTVERSION=	18.8.1
+PORTVERSION=	22.2.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Compatibility API between asyncio/Twisted/Trollius
+WWW=		https://github.com/crossbario/txaio
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
-TEST_DEPENDS=	${PY_FUTURES} \
-		${PYTHON_PKGNAMEPREFIX}pytest>=2.6.4:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mock>=1.3.0:devel/py-mock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}twisted>=12.1.0:devel/py-twisted@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=2.6.4:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
-
-PATCH_SITES=	https://github.com/crossbario/${PORTNAME}/commit/
-PATCHFILES=	9217f054b7eccc120f84e01995479125e07de59a.patch:-p1
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=		TWISTED
+OPTIONS_DEFAULT=	TWISTED
 
-.if ${PYTHON_REL} < 3000
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}trollius>=2.0:devel/py-trollius@${PY_FLAVOR}
-.endif
+TWISTED_DESC=	Twisted network backend support
+
+TWISTED_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=20.3.0:devel/py-twisted@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}zope.interface>=5.2.0:devel/py-zope.interface@${PY_FLAVOR}
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

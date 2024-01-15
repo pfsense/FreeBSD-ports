@@ -1,19 +1,20 @@
-# $FreeBSD$
+PORTNAME=		dhcpcd-ui
+DISTVERSIONPREFIX=	v
+DISTVERSION=		0.7.9
+CATEGORIES=		net
 
-PORTNAME=	dhcpcd-ui
-PORTVERSION=	0.7.8
-CATEGORIES=	net
-MASTER_SITES=	https://roy.marples.name/downloads/dhcpcd/ \
-		https://cflags.cc/roy/dhcpcd/
-
-MAINTAINER=	woodsb02@FreeBSD.org
-COMMENT=	GTK+ / Curses interface to dhcpcd
+MAINTAINER=	driesm@FreeBSD.org
+COMMENT=	GTK / Curses interface to dhcpcd
+WWW=		https://roy.marples.name/projects/dhcpcd-ui
 
 LICENSE=	BSD2CLAUSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairosvg>=0:graphics/py-cairosvg@${PY_FLAVOR}
 LIB_DEPENDS=	libnotify.so:devel/libnotify
 
-USES=		pkgconfig tar:xz
+USES=		pkgconfig python
+USE_GITHUB=	yes
+GH_ACCOUNT=	NetworkConfiguration
 
 GNU_CONFIGURE=	yes
 

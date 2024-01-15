@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wayland
 PORTVERSION=	1.15.0
 DISTVERSIONSUFFIX=	-1.el7
@@ -7,8 +5,9 @@ CATEGORIES=	graphics linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Wayland compositor libraries (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://wayland.freedesktop.org/
 
-USES=		linux:c7
+USES=		cpe linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
 

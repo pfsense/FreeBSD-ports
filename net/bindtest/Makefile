@@ -1,6 +1,3 @@
-# Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
-
 PORTNAME=	bindtest
 PORTVERSION=	1.56
 PORTREVISION=	1
@@ -13,10 +10,17 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Test bind() semantics of IPv6 sockets
+WWW=		https://www.kame.net/newsletter/20010504/
 
 USES=		tar:tgz
 
 PLIST_FILES=	bin/bindtest bin/bindtest.sh man/man1/bindtest.1.gz
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=deprecated-non-prototype
+.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bindtest ${STAGEDIR}${PREFIX}/bin

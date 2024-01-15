@@ -1,14 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	findlib
-PORTVERSION=	1.7.1
+PORTVERSION=	1.9.6
 CATEGORIES=	devel
 MASTER_SITES=	http://download.camlcity.org/download/
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	OCaml package manager
+WWW=		http://projects.camlcity.org/projects/findlib.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -31,7 +29,8 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	TOOLBOX DOCS
 OPTIONS_DEFAULT=TOOLBOX
 OPTIONS_SUB=	yes
-TOOLBOX_DESC=	Include toolbox interface (requires OCaml with TK)
+
+TOOLBOX_DESC=	Include toolbox interface (requires OCaml with Tk)
 TOOLBOX_CONFIGURE_ON=	-with-toolbox
 TOOLBOX_RUN_DEPENDS=	labltk:x11-toolkits/ocaml-labltk
 TOOLBOX_BUILD_DEPENDS=	${TOOLBOX_RUN_DEPENDS}
@@ -44,8 +43,14 @@ post-install:
 	    ${OCAML_SITELIBDIR}/findlib/findlib.cmxs \
 	    ${OCAML_SITELIBDIR}/findlib/findlib_dynload.cmxs \
 	    ${OCAML_SITELIBDIR}/findlib/findlib_top.cmxs
+.if !exists(${LOCALBASE}/lib/ocaml/graphics.cmi)
+	@${REINPLACE_CMD} -e '/graphics\/META/d' ${TMPPLIST}
+.endif
+.if !exists(${LOCALBASE}/lib/ocaml/ocamlbuild/ocamlbuildlib.cma)
+	@${REINPLACE_CMD} -e '/ocamlbuild\/META/d' ${TMPPLIST}
+.endif
 # Spacetime profiling is only available for native code on 64-bit targets
-.if ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpcspe
+.if ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpcspe
 	@${REINPLACE_CMD} -e '/raw_spacetime/d' ${TMPPLIST}
 .endif
 

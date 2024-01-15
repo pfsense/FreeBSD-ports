@@ -1,21 +1,19 @@
-# Created by: Peter Lai <cowbert@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mod_rivet
-PORTVERSION=	3.1.1
+PORTVERSION=	3.2.0
 CATEGORIES=	www tcl
 MASTER_SITES=	APACHE/tcl/rivet
 DISTNAME=	rivet-${PORTVERSION}
 
 MAINTAINER=	jeff.lawson@flightaware.com
 COMMENT=	Embeds a Tcl interpreter in the Apache server
+WWW=		https://tcl.apache.org/rivet/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libitcl.so:lang/itcl
 
-USES+=		apache:2.2-2.4 compiler:c11 gmake \
+USES=		apache compiler:c11 gmake \
 		libtool tcl:86+,tea
 USE_LDCONFIG=	${PREFIX}/lib/rivet
 

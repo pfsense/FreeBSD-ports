@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
-PORTVERSION=	20201103
+PORTVERSION=	20231201
 CATEGORIES=	polish textproc
 MASTER_SITES=	https://sjp.pl/slownik/ort/ \
 		LOCAL/sunpoet/${PORTNAME}
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Polish hunspell dictionaries
+WWW=		https://sjp.pl/slownik/en/
 
 LICENSE=	APACHE20 CC-BY-NC-SA-1.0 GPLv3 LGPL3 MPL11
 LICENSE_COMB=	dual

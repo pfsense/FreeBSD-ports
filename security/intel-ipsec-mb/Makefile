@@ -1,12 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	intel-ipsec-mb
-DISTVERSION=	0.55.0
-DISTVERSIONSUFFIX=	-dev
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.5
 CATEGORIES=	security
+
+PATCH_SITES=	https://github.com/intel/${PORTNAME}/commit/
+PATCHFILES=	c266eb633019bf0eef2c9df1ce814f22b9ee2d51.patch:-p1
 
 MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Intel(R) Multi-Buffer Crypto for IPsec Library
+WWW=		https://github.com/intel/intel-ipsec-mb
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,28 +17,24 @@ ONLY_FOR_ARCHS=	amd64
 
 BUILD_DEPENDS=	nasm:devel/nasm
 
-USES=		gmake compiler:c11 localbase:ldflags
-
+USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	intel
-GH_TAGNAME=	55179f0
-
 USE_LDCONFIG=	yes
+
+TEST_TARGET=	test
+
 PLIST_FILES=	include/intel-ipsec-mb.h \
 		lib/libIPSec_MB.so \
-		lib/libIPSec_MB.so.0 \
-		lib/libIPSec_MB.so.${DISTVERSION} \
+		lib/libIPSec_MB.so.1 \
+		lib/libIPSec_MB.so.${DISTVERSION}.0 \
+		man/man7/libipsec-mb-dev.7.gz \
 		man/man7/libipsec-mb.7.gz
 
-do-install:
-	${INSTALL_DATA} ${WRKSRC}/lib/intel-ipsec-mb.h ${STAGEDIR}${PREFIX}/include/
-	${INSTALL_LIB} ${WRKSRC}/lib/libIPSec_MB.so.${DISTVERSION} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.${DISTVERSION}
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.${DISTVERSION} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.0
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.0 ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so
-	${INSTALL_MAN} ${WRKSRC}/lib/libipsec-mb.7 ${STAGEDIR}${PREFIX}/man/man7
+OPTIONS_DEFINE=	AESNIEMU
 
-do-test:
-	cd ${WRKSRC}/test && ./ipsec_xvalid_test -v
-	cd ${WRKSRC}/test && ./ipsec_MB_testapp --auto-detect
+AESNIEMU_DESC=	Enable AESI-NI Emulation
+
+AESNIEMU_CMAKE_BOOL=    AESNI_EMU
 
 .include <bsd.port.mk>

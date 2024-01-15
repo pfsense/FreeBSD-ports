@@ -1,9 +1,8 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	puzzles
-PORTVERSION=	20201208
+PORTVERSION=	20231120
+PORTREVISION=	1
 CATEGORIES=	games
+# upstream does not preserve older versions, mirroring is mandatory
 MASTER_SITES=	https://www.chiark.greenend.org.uk/~sgtatham/puzzles/ \
 		https://mirror.amdmi3.ru/distfiles/
 PKGNAMEPREFIX=	sgt-
@@ -11,67 +10,39 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}.${COMMITHASH}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simon Tatham's Portable Puzzle Collection
+WWW=		https://www.chiark.greenend.org.uk/~sgtatham/puzzles/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-COMMITHASH=	84cb4c6
+BUILD_DEPENDS=	halibut:textproc/halibut
 
-USES=		autoreconf gmake gnome pkgconfig
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--program-prefix=sgt-
-INSTALL_TARGET=	install-strip
+USES=		cmake gnome magick:build perl5 pkgconfig
+USE_PERL5=	build
+CMAKE_ARGS=	-DNAME_PREFIX:STRING=sgt-
 
-PORTDOCS=	*
+COMMITHASH=	08365fb
 
-PUZZLE_LIST=	blackbox bridges cube dominosa fifteen filling flip \
-		flood galaxies guess inertia keen lightup loopy magnets map \
-		mines net netslide palisade pattern pearl pegs range rect \
-		samegame signpost singles sixteen slant solo tents towers \
-		tracks twiddle undead unequal unruly untangle
+DATADIR=	${PREFIX}/share/sgt-puzzles
+PORTDATA=	*
 
-.for f in ${PUZZLE_LIST}
-PLIST_FILES+=	bin/sgt-${f}
-DESKTOP_FILES_PLIST_FILES+=\
-		share/pixmaps/sgt-${f}.png
-DESKTOP_FILES_DESKTOP_ENTRIES+=\
-		"${f}" \
-		"${f} puzzle game" \
-		"sgt-${f}" \
-		"sgt-${f}" \
-		"Game;LogicGame;" \
-		""
-.endfor
-
-OPTIONS_DEFINE=	DESKTOP_FILES DOCS
-OPTIONS_DEFAULT=DESKTOP_FILES GTK2
 OPTIONS_SINGLE=	GTK
 OPTIONS_SINGLE_GTK=	GTK2 GTK3
+OPTIONS_DEFAULT=GTK3
 
-DESKTOP_FILES_DESC=	Install menu entries (lots of them)
+GTK_DESC=	Gtk version
+GTK2_CMAKE_ON=	-DPUZZLES_GTK_VERSION=2
+GTK2_USE=	GNOME=gtk20
+GTK3_CMAKE_ON=	-DPUZZLES_GTK_VERSION=3
+GTK3_USE=	GNOME=gtk30
 
-GTK_DESC=		Gtk version
-GTK2_CONFIGURE_ON=	--with-gtk=2
-GTK2_USE=		GNOME=gtk20
-GTK3_CONFIGURE_ON=	--with-gtk=3
-GTK3_USE=		GNOME=gtk30
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-Werror||' ${WRKSRC}/configure.ac \
-		${WRKSRC}/configure
-
-post-install-DESKTOP_FILES-on:
-.for f in ${PUZZLE_LIST}
-	${INSTALL_DATA} ${WRKSRC}/icons/${f}-48d24.png ${STAGEDIR}${PREFIX}/share/pixmaps/sgt-${f}.png
-.endfor
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/puzzles.txt ${WRKSRC}/HACKING ${STAGEDIR}${DOCSDIR}/
-
-check-puzzle-list-completeness: extract
-	@${ECHO_CMD} ${PUZZLE_LIST} | ${FMT} -w 1 | ${SORT} > ${WRKDIR}/puzzle_list.port
-	@${LS} ${WRKSRC}/icons | ${GREP} 48d24.png | ${CUT} -f 1 -d- | ${SORT} > ${WRKDIR}/puzzle_list.upstream
-	@cmp ${WRKDIR}/puzzle_list.port ${WRKDIR}/puzzle_list.upstream
+maintainer-update:
+	@location=$$(curl -sI ${MASTER_SITES:[1]}/puzzles.tar.gz | grep -i ^location | awk '{print $$2}'); \
+		version=$$(echo $$location | tr '.-' '  ' | awk '{print $$(NF-3)}'); \
+		hash=$$(echo $$location | tr '.-' '  ' | awk '{print $$(NF-2)}'); \
+		sed -i '' \
+			-e "s|${COMMITHASH}|$$hash|" \
+			-e "s|${PORTVERSION}|$$version|" \
+			${.CURDIR}/Makefile
 
 .include <bsd.port.mk>

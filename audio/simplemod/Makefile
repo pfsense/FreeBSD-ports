@@ -1,6 +1,3 @@
-# Created by: Christian Laursen <xi@borderworlds.dk>
-# $FreeBSD$
-
 PORTNAME=	simplemod
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://borderworlds.dk/projects/sm/
 
 MAINTAINER=	xi@borderworlds.dk
 COMMENT=	Minimalistic module player
+WWW=		https://borderworlds.dk/projects/ #sm
 
 LIB_DEPENDS=	libmikmod.so:audio/libmikmod
 

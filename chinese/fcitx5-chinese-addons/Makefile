@@ -1,30 +1,32 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	fcitx5-chinese-addons
-DISTVERSION=	5.0.2
+DISTVERSION=	5.0.17
+PORTREVISION=	5
 CATEGORIES=	chinese textproc
-MASTER_SITES=	https://download.fcitx-im.org/data/:py_stroke,py_table
-DISTFILES=	${PY_STROKE_TAR}:py_stroke \
+MASTER_SITES=	https://download.fcitx-im.org/fcitx5/${PORTNAME}/ \
+		https://download.fcitx-im.org/data/:py_stroke,py_table
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		${PY_STROKE_TAR}:py_stroke \
 		${PY_TABLE_TAR}:py_table
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Pinyin and table input method support for Fcitx5
+WWW=		https://github.com/fcitx/fcitx5-chinese-addons
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSES/LGPL-2.1-or-later.txt
 
 BUILD_DEPENDS=	fcitx5-lua>0:textproc/fcitx5-lua
-LIB_DEPENDS=	libcurl.so:ftp/curl \
+LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
+		libcurl.so:ftp/curl \
+		libFcitx5Core.so:textproc/fcitx5 \
 		libfmt.so:devel/libfmt \
-		libopencc.so:chinese/opencc \
-		libboost_iostreams.so:devel/boost-libs \
 		libIMEPinyin.so:chinese/libime \
-		libFcitx5Core.so:textproc/fcitx5
+		libopencc.so:chinese/opencc
 RUN_DEPENDS=	fcitx5-lua>0:textproc/fcitx5-lua
 
-USES=		compiler:c++17-lang gettext cmake kde:5 localbase pkgconfig
+USES=		cmake compiler:c++17-lang gettext kde:5 localbase pkgconfig \
+		tar:xz
 
 OPTIONS_DEFINE=		GUI
 OPTIONS_DEFAULT=	GUI
@@ -33,12 +35,9 @@ USE_LDCONFIG=	yes
 
 GUI_DESC=	Configuration GUI
 GUI_USES=	qt:5
-GUI_USE=	qt=dbus,concurrent,webkit,buildtools_build,qmake_build
+GUI_USE=	qt=concurrent,dbus,webengine,buildtools:build,qmake:build
 GUI_LIB_DEPENDS=	libFcitx5Qt5DBusAddons.so:textproc/fcitx5-qt
-GUI_CMAKE_ON=	-DUSE_WEBKIT:BOOL=true
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	fcitx
+GUI_CMAKE_ON=	-DUSE_WEBKIT:BOOL=false
 
 USE_KDE=	ecm
 
@@ -46,6 +45,9 @@ CMAKE_ON=	ENABLE_OPENCC
 CMAKE_OFF=	ENABLE_TEST
 MAKE_ENV=	FCITX5_DOWNLOAD_DISALLOWED=TRUE
 
+CONFLICTS_INSTALL=	zh-fcitx # share/icons/hicolor/16x16/apps/fcitx-fullwidth-active.png
+
+# These must follow modules/pinyinhelper/CMakeLists.txt
 PY_STROKE_VER=	20121124
 PY_TABLE_VER=	20121124
 PY_STROKE_TAR=	py_stroke-${PY_STROKE_VER}.tar.gz

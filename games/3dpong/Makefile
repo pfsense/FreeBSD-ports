@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov <andy@icc.surw.chel.su>
-# $FreeBSD$
-
 PORTNAME=	3dpong
 PORTVERSION=	0.5
 PORTREVISION=	6
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X Window 3D Pong game for 1 or 2 players
+WWW=		http://www.newbreedsoftware.com/3dpong/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/COPYING.txt

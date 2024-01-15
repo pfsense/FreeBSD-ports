@@ -1,8 +1,5 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mprime
-PORTVERSION=	29.8b3
+PORTVERSION=	30.7b9
 PORTREVISION=	1
 CATEGORIES=	math benchmarks net
 MASTER_SITES=	http://www.mersenne.org/ftp_root/gimps/ \
@@ -11,6 +8,7 @@ DISTNAME=	p95v${PORTVERSION:R}${PORTVERSION:E}.source
 
 MAINTAINER=	rozhuk.im@gmail.com
 COMMENT=	Great Internet Mersenne Prime Search
+WWW=		https://www.mersenne.org/
 
 LICENSE=	EULA
 LICENSE_NAME=	EULA
@@ -19,11 +17,12 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386
 
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/circular_buffer.hpp:devel/boost-libs
 LIB_DEPENDS=	libcurl.so:ftp/curl					\
-		libhwloc.so:devel/hwloc					\
+		libhwloc.so.15:devel/hwloc2				\
 		libgmp.so:math/gmp
 
-USES=		zip
+USES=		localbase zip
 
 NO_WRKSUBDIR=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

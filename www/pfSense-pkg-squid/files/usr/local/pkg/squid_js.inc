@@ -3,7 +3,7 @@
  * squid_js.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,17 +29,8 @@ require_once('config.inc');
  * depending on selected 'Authentication Method' value
  */
 function squid_print_javascript_auth() {
-	global $config;
-	if (is_array($config['installedpackages']['squid'])) {
-		$squidsettings = $config['installedpackages']['squid']['config'][0];
-	} else {
-		$squidsettings = array();
-	}
-	if (is_array($config['installedpackages']['squidauth']['config'])) {
-		$settingsauth = $config['installedpackages']['squidauth']['config'][0];
-	} else {
-		$settingsauth = array();
-	}
+	$squidsettings = config_get_path('installedpackages/squid/config/0', []);
+	$settingsauth = config_get_path('installedpackages/squidauth/config/0', []);
 	$transparent_proxy = ($squidsettings['transparent_proxy'] == 'on');
 	$auth_method = $settingsauth['auth_method'];
 

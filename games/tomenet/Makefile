@@ -1,22 +1,22 @@
-# Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tomenet
 PORTVERSION=	4.6.0
 CATEGORIES=	games
 MASTER_SITES=	http://tomenet.eu/downloads/
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Online multiplayer rogue-like role-playing game
-
-WRKSRC=		${WRKDIR}/${DISTNAME}/src
-MAKEFILE=	makefile
+WWW=		https://tomenet.eu/
 
 USES=		gmake ncurses tar:bzip2
-CFLAGS+=	-DDEFAULT_PATH="\\\"${DATADIR}/lib/\\\""
+
+MAKEFILE=	makefile
 MAKE_JOBS_UNSAFE=	yes
 
+CFLAGS+=	-DDEFAULT_PATH="\\\"${DATADIR}/lib/\\\""
+
 SUB_FILES=	pkg-message
+
+WRKSRC=		${WRKDIR}/${DISTNAME}/src
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XS-Object-Magic
 PORTVERSION=	0.05
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Opaque, extensible XS pointer backed objects using sv_magic
+WWW=		https://metacpan.org/release/XS-Object-Magic
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Crypt-CipherSaber
 PORTVERSION=	1.01
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module providing an OO interface to CipherSaber encryption
+WWW=		https://metacpan.org/release/Crypt-CipherSaber
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

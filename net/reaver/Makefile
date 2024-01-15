@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	reaver
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.6
@@ -7,6 +5,7 @@ CATEGORIES=	net
 
 MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Reaver brute force attack against WPS (Wi-Fi Protected Setup)
+WWW=		https://github.com/t6x/reaver-wps-fork-t6x/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../docs/LICENSE

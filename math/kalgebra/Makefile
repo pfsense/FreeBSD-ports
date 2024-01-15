@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	kalgebra
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	math education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE graph calculator
+WWW=		https://www.kde.org/applications/education/kalgebra
 
 LIB_DEPENDS=	libAnalitza.so:math/analitza
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
@@ -14,11 +13,12 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext gl kde:5 \
 		readline qt:5 tar:xz
 USE_GL=		glu
-USE_KDE=	auth codecs config configwidgets coreaddons doctools ecm i18n \
-		kio service widgetsaddons xmlgui
+USE_KDE=	auth codecs config configwidgets coreaddons doctools i18n \
+		kio plasma-workspace service widgetsaddons xmlgui \
+		ecm:build
 USE_QT=		concurrent core dbus declarative gui location network opengl printsupport \
 		svg testlib webchannel widgets xml \
-		buildtools_build qmake_build
+		buildtools:build qmake:build
 CMAKE_ARGS=	-DBUILD_mobile:BOOL=FALSE
 
 OPTIONS_DEFINE=	DOCS WEBENGINE

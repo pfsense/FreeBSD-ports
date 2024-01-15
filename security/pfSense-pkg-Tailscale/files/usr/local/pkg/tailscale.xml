@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * tailscale.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>tailscale</name>
+	<version>%%PKGVERSION%%</version>
+	<title>VPN/Tailscale</title>
+	<include_file>/usr/local/pkg/tailscale/tailscale.inc</include_file>
+	<aftersaveredirect>/pkg_edit.php?xml=tailscale.xml</aftersaveredirect>
+	<service>
+		<name>tailscale</name>
+		<rcfile>pfsense_tailscaled</rcfile>
+		<executable>tailscaled</executable>
+		<description>Tailscale Daemon</description>
+	</service>
+	<menu>
+		<name>Tailscale</name>
+		<section>VPN</section>
+		<configfile>tailscale.xml</configfile>
+		<url>/pkg_edit.php?xml=tailscale.xml</url>
+	</menu>
+	<menu>
+		<name>Tailscale </name>
+		<section>Status</section>
+		<configfile>tailscale.xml</configfile>
+		<url>/status_tailscale.php</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Authentication</text>
+			<url>pkg_edit.php?xml=tailscale/tailscale_auth.xml</url>
+		</tab>
+		<tab>
+			<text>Settings</text>
+			<url>pkg_edit.php?xml=tailscale.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>status_tailscale.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>
+				<![CDATA[
+				Enable Tailscale
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Listen Port</fielddescr>
+			<fieldname>listenport</fieldname>
+			<description>
+				<![CDATA[
+				UDP port to listen on for WireGuard and peer-to-peer traffic.
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>41641</default_value>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>State Directory</fielddescr>
+			<fieldname>statedir</fieldname>
+			<description>
+				<![CDATA[
+				Path to directory for storage of config state, certificates, and incoming files.
+				WARNING: Changing this value will not move an existing configuration and will require
+				reauthentication with the control server.
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>/usr/local/pkg/tailscale/state</default_value>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Keep Configuration</fielddescr>
+			<fieldname>keepconfig</fieldname>
+			<description>
+				<![CDATA[
+				Enable
+				]]>
+			</description>
+			<sethelp>
+				<![CDATA[
+				With 'Keep Configuration' enabled (default), all package settings and the local Tailscale state cache
+				will persist on install/de-install.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<name>DNS</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Accept DNS</fielddescr>
+			<fieldname>acceptdns</fieldname>
+			<description>
+				<![CDATA[
+				Accept DNS configuration from the control server.
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<name>Routing</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Advertise Exit Node</fielddescr>
+			<fieldname>exitnode</fieldname>
+			<description>
+				<![CDATA[
+				Offer to be an exit node for outbound internet traffic from the Tailscale network.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Accept Subnet Routes</fielddescr>
+			<fieldname>acceptroutes</fieldname>
+			<description>
+				<![CDATA[
+				Accept subnet routes that other nodes advertise.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+<!-- This is currently only available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
+		<field>
+			<fielddescr>SNAT Subnet Routes</fielddescr>
+			<fieldname>snatsubnetroutes</fieldname>
+			<description>
+				<![CDATA[
+				By disabling source NAT (SNAT), the end machine sees the LAN IP address of the originating machine as the source.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+-->
+		<field>
+			<fielddescr>Notice</fielddescr>
+			<description>
+				<![CDATA[
+				Routes will be transformed into proper subnet start boundaries prior to validating and saving.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Advertised Routes</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Subnet expressed using CIDR notation</fielddescr>
+					<fieldname>advertisedroutevalue</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Administrative description (not parsed)</fielddescr>
+					<fieldname>advertisedroutedescr</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<name>Logging</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Syslog Logging</fielddescr>
+			<fieldname>syslogenable</fieldname>
+			<description>
+				<![CDATA[
+				Enable syslog output
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Syslog Settings</fielddescr>
+			<fieldname>syslogpriority</fieldname>
+			<description>Set the syslog logging priority.</description>
+			<type>select</type>
+			<default_value>notice</default_value>
+			<options>
+				<option><name>EMERGENCY</name><value>emerg</value></option>
+				<option><name>ALERT</name><value>alert</value></option>
+				<option><name>CRITICAL</name><value>crit</value></option>
+				<option><name>ERROR</name><value>err</value></option>
+				<option><name>WARNING</name><value>warning</value></option>
+				<option><name>NOTICE</name><value>notice</value></option>
+				<option><name>INFORMATIONAL</name><value>info</value></option>
+				<option><name>DEBUG</name><value>debug</value></option>
+			</options>
+			<required/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Syslog Settings</fielddescr>
+			<fieldname>syslogfacility</fieldname>
+			<description>Set the syslog logging facility.</description>
+			<type>select</type>
+			<default_value>daemon</default_value>
+			<options>
+				<option><name>LOG_AUTH</name><value>auth</value></option>
+				<option><name>LOG_AUTHPRIV</name><value>authpriv</value></option>
+				<option><name>LOG_CONSOLE</name><value>console</value></option>
+				<option><name>LOG_CRON</name><value>cron</value></option>
+				<option><name>LOG_DAEMON</name><value>daemon</value></option>
+				<option><name>LOG_FTP</name><value>ftp</value></option>
+				<option><name>LOG_KERN</name><value>kern</value></option>
+				<option><name>LOG_LPR</name><value>lpr</value></option>
+				<option><name>LOG_MAIL</name><value>mail</value></option>
+				<option><name>LOG_NEWS</name><value>news</value></option>
+				<option><name>LOG_NTP</name><value>ntp</value></option>
+				<option><name>LOG_SECURITY</name><value>security</value></option>
+				<option><name>LOG_SYSLOG</name><value>syslog</value></option>
+				<option><name>LOg_USER</name><value>user</value></option>
+				<option><name>LOG_UUCP</name><value>uucp</value></option>
+				<option><name>LOG_LOCAL0</name><value>local0</value></option>
+				<option><name>LOG_LOCAL1</name><value>local1</value></option>
+				<option><name>LOG_LOCAL2</name><value>local2</value></option>
+				<option><name>LOG_LOCAL3</name><value>local3</value></option>
+				<option><name>LOG_LOCAL4</name><value>local4</value></option>
+				<option><name>LOG_LOCAL5</name><value>local5</value></option>
+				<option><name>LOG_LOCAL6</name><value>local6</value></option>
+				<option><name>LOG_LOCAL7</name><value>local7</value></option>
+			</options>
+			<required/>
+			<combinefields>end</combinefields>
+		</field>
+	</fields>
+	<note>
+		<![CDATA[
+		Changes to these settings may temporarily disrupt peer connections and access to Tailscale.
+		]]>
+	</note>
+	<custom_php_install_command>
+		<![CDATA[tailscale_install_hook();]]>
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		<![CDATA[tailscale_deinstall_hook();]]>
+	</custom_php_deinstall_command>
+	<custom_php_after_head_command>
+		<![CDATA[tailscale_common_after_head_hook();]]>
+	</custom_php_after_head_command>
+	<custom_php_validation_command>
+		<![CDATA[tailscale_validation_hook($_POST, $input_errors);]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[tailscale_resync_config_hook();]]>
+	</custom_php_resync_config_command>
+</packagegui>

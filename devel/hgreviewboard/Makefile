@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	hgreviewboard
 PORTVERSION=	1.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel python
 MASTER_SITES=	https://bitbucket.org/ccaughie/hgreviewboard/get/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,6 +9,7 @@ DIST_SUBDIR=	hgreviewboard
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mercurial reviewboard extension
+WWW=		http://www.review-board.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

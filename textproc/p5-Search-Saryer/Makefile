@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	Search-Saryer
 PORTVERSION=	0.40
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the Sary library
+WWW=		http://sary.namazu.org/index.html.en
 
 LIB_DEPENDS=	libsary.so:textproc/sary
 

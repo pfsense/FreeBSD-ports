@@ -1,6 +1,3 @@
-# Created by: Marc Bruenink
-# $FreeBSD$
-
 PORTNAME=	coccinella
 PORTVERSION=	0.96.20
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	Coccinella-${PORTVERSION}Src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Jabber client with whiteboard communication
+WWW=		https://thecoccinella.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

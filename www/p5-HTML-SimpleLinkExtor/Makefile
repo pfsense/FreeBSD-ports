@@ -1,6 +1,3 @@
-# Created by: Andrey Chernov <ache@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-SimpleLinkExtor
 PORTVERSION=	1.273
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple HTML link extractor
+WWW=		https://metacpan.org/release/HTML-SimpleLinkExtor
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

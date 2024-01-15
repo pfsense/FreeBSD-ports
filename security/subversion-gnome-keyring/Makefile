@@ -1,11 +1,9 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-gnome-keyring
 CATEGORIES=	security gnome
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Gnome Keyring integration for Version control system
+WWW=		https://subversion.apache.org/
 
 PORTREVISION_114=	0
 PORTREVISION_LTS=	0

@@ -1,15 +1,19 @@
-# Created by: Sergey A. Osokin <osa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	luajit
 DISTVERSION=	2.0.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang
 MASTER_SITES=	https://luajit.org/download/
 DISTNAME=	LuaJIT-${DISTVERSION}
 
+PATCH_SITES=	https://github.com/LuaJIT/LuaJIT/commit/
+PATCHFILES=	a4f4f5b83564a1075bea0ac7c1fd8768be1caff7.patch:-p1
+
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Just-In-Time Compiler for Lua
+WWW=		https://luajit.org/luajit.html
+
+OPTIONS_DEFINE=	PTHREAD
+PTHREAD_DESC=	with pthread support
 
 LICENSE=	MIT PD
 LICENSE_COMB=	multi
@@ -19,32 +23,19 @@ IGNORE_aarch64=		fails to compile: lj_arch.h:55:2: No support for this architect
 IGNORE_powerpc64=	fails to compile: lj_arch.h:346:2: No support for PowerPC 64 bit mode
 IGNORE_riscv64=		fails to compile: lj_arch.h:55:2: No support for this architecture (yet)
 
-CONFLICTS_INSTALL=	luajit-openresty
+CONFLICTS_INSTALL=	luajit-devel luajit-openresty
 
 WRKSRC=		${WRKDIR}/LuaJIT-${DISTVERSION}
-USES=		gmake
+USES=		compiler cpe gmake
 USE_LDCONFIG=	yes
 MAKE_ARGS=	CC=${CC} CCOPT= CCOPT_x86=
 
 PLIST_SUB+=	VERSION=${DISTVERSION}
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${ARCH:Mpowerpc*} || ${ARCH:Mmips*} || ${ARCH:Msparc*}
-USE_GCC=yes
-.elif ${ARCH} == amd64
-# FreeBSD 12.1 shipped LLVM 8.0.1, which links libluajit with a TLS phdr that
-# requests a 16-byte alignment but an offset that's 8 mod 16.  This results in
-# hilarity when an error is raised, as luajit raises an exception (stored in a
-# static TLS variable) via libunwind.  libunwind assumes proper alignment of
-# the exception and uses a movaps instruction, which throws a SIGBUS when it
-# encounters this misaligned TLS data.  While the linker problem doesn't seem
-# to be specific to amd64, the effect on luajit does seem to be.
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1201000 && ${OSVERSION} < 1202000
-LLVM_MINIMUM=	10
-BUILD_DEPENDS+=	llvm${LLVM_MINIMUM}>=10.0:devel/llvm${LLVM_MINIMUM}
-CC=		clang10
-.endif
+.if ${PORT_OPTIONS:MPTHREAD}
+LDFLAGS+=	-lm -pthread
 .endif
 
 post-install:
@@ -52,4 +43,4 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_MAN} ${WRKSRC}/etc/luajit.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

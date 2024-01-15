@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Archive-Zip
 PORTVERSION=	1.68
 CATEGORIES=	archivers perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Create, manipulate, read, and write Zip archive files
+WWW=		https://metacpan.org/release/Archive-Zip
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

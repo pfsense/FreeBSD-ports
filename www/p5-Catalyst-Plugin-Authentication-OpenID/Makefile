@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Authentication-OpenID
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	OpenID Authentication
+WWW=		https://metacpan.org/release/BTROTT/Catalyst-Plugin-Authentication-OpenID-0.02
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

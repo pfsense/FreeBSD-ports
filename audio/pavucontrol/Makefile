@@ -1,20 +1,19 @@
-# Created by: Romain Tartière <romain@blogreen.org>
-# $FreeBSD$
-
 PORTNAME=	pavucontrol
-PORTVERSION=	4.0
-PORTREVISION=	2
+PORTVERSION=	5.0
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	http://freedesktop.org/software/pulseaudio/${PORTNAME}/
 
 MAINTAINER=	romain@FreeBSD.org
 COMMENT=	GTK mixer for PulseAudio
+WWW=		https://freedesktop.org/software/pulseaudio/pavucontrol/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
-		libcanberra-gtk3.so:audio/libcanberra-gtk3
+LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
+		libjson-glib-1.0.so:devel/json-glib \
+		libpulse.so:audio/pulseaudio
 
 USES=		compiler:c++11-lang gettext gmake gnome pkgconfig tar:xz
 USE_GNOME=	glibmm gtkmm30 intltool libsigc++20

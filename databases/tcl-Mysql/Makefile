@@ -1,6 +1,3 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	${TCL_NODOT}-sql
 PORTVERSION=	20000114
 PORTREVISION=	7
@@ -10,6 +7,7 @@ DISTNAME=	tcl-sql-${PORTVERSION}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	TCL module for accessing MySQL databases
+WWW=		https://sourceforge.net/projects/tcl-sql/
 
 PATCH_DEPENDS=	rcsdiff:devel/rcs
 

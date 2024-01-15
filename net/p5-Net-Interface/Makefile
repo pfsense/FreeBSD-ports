@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Interface
 PORTVERSION=	1.016
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to access network interfaces
+WWW=		https://metacpan.org/release/Net-Interface
 
 USES=		perl5
 USE_PERL5=	configure

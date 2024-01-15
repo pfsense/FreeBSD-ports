@@ -1,16 +1,15 @@
-# Created by: igor@zynaps.ru
-# $FreeBSD$
-
 PORTNAME=	trafshow
 PORTVERSION=	5.2.3
 PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	net
-MASTER_SITES=	ftp://renatasystems.org/pub/FreeBSD/ports/distfiles/ \
-		ftp://ftp.nsk.su/pub/RinetSoftware/
+MASTER_SITES=	https://src.fedoraproject.org/rpms/trafshow/blob/f32/f/ \
+		http://gentoo.osuosl.org/distfiles/ \
+		ftp://ftp.iij.ad.jp/pub/linux/gentoo/distfiles/0a/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Full screen visualization of network traffic
+WWW=		https://BSDforge.com/projects/net/trafshow
 
 LICENSE=	BSD2CLAUSE
 
@@ -18,8 +17,6 @@ USES=		ncurses tar:tgz
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PTHREAD_LIBS="-lpthread"
 ALL_TARGET=	trafshow
-
-CONFLICTS=	trafshow-4.* trafshow3-*
 
 OPTIONS_DEFINE=	IPV6
 IPV6_CFLAGS=	-DINET6

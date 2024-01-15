@@ -1,14 +1,12 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	debhelper
-PORTVERSION=	13.3
+PORTVERSION=	13.11.9
 CATEGORIES=	sysutils
 MASTER_SITES=	DEBIAN
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	debhelper_${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Helper programs for debian/rules
+WWW=		https://salsa.debian.org/debian/debhelper
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL
@@ -18,7 +16,7 @@ USES=		gmake perl5 shebangfix tar:xz
 MAKE_ARGS=	PREFIX=${PREFIX} SITE_PERL=${PREFIX}/${SITE_PERL_REL} VERSION=${PORTVERSION}
 NO_ARCH=	yes
 NO_BUILD=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}
+WRKSRC=		${WRKDIR}/debhelper
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 

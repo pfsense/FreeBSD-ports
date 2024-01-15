@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bareword-filehandles
 PORTVERSION=	0.007
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Disables bareword filehandles
+WWW=		https://metacpan.org/release/bareword-filehandles
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

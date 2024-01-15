@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xprintidle
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1
@@ -7,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Print X idle time
+WWW=		https://github.com/lucianposton/xprintidle
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

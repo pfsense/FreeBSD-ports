@@ -1,13 +1,11 @@
-# Created by: Janky Jay <ek@purplehat.org>
-# $FreeBSD$
-
 PORTNAME=	maia
 DISTVERSION=	1.0.4
-PORTREVISION=	5
+PORTREVISION=	11
 CATEGORIES=	security
 
 MAINTAINER=	ek@purplehat.org
 COMMENT=	Web-based management system based on amavisd-new and SpamAssassin
+WWW=		http://www.maiamailguard.com/
 
 LICENSE=GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -31,8 +29,9 @@ USES=		perl5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	technion
 GH_PROJECT=	maia_mailguard
-GH_TAGNAME=	09eb7e5
+GH_TAGNAME=	48df5fb
 USE_PERL5=	run
+NO_ARCH=	yes
 NO_BUILD=	yes
 DOCS=	LICENSE.txt README.md maiad.conf.dist maia-mysql.sql maia-pgsql.sql maia.conf.dist
 USERS=	vscan
@@ -42,22 +41,20 @@ MAIAQUARANTINE?=	/var/maiad/virusmails
 PEAR_DIR?=	${LOCALBASE}/share/pear
 PLIST_SUB+=	USERS="${USERS}" GROUPS="${GROUPS}" WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
-OPTIONS_DEFINE=	APACHE LIGHTTPD WEBHOST MYSQL MYSQLSERVER PGSQL PGSQLSERVER DOVECOT2 \
-		POSTFIX PFA CLAMAV SPAMASSASSIN BDB CRYPT \
+OPTIONS_DEFINE=	APACHE LIGHTTPD NGINX WEBHOST MYSQL LOCAL PGSQL \
+		DOVECOT2 POSTFIX PFA CLAMAV SPAMASSASSIN BDB CRYPT \
 		IPCOUNTRY DOMAINKEYS SPF DKIM FILE RAR UNRAR ARJ UNARJ LHA ARC NOMARCH CAB \
-		RPM ZOO UNZOO LZOP P7ZIP TNEF DOCS
+		RPM ZOO UNZOO LZOP TNEF DOCS
 
-OPTIONS_DEFAULT=	MYSQL CLAMAV SPAMASSASSIN BDB IPCOUNTRY \
-			DOMAINKEYS SPF DKIM FILE UNRAR ARJ LHA ARC CAB RPM \
-			ZOO P7ZIP
+OPTIONS_DEFAULT=	MYSQL CLAMAV DOCS SPAMASSASSIN BDB IPCOUNTRY \
+			DOMAINKEYS SPF DKIM FILE UNRAR ARJ LHA ARC CAB RPM ZOO
 
-APACHE_DESC=		Use Apache web server
 LIGHTTPD_DESC=		Use LighTTPD web server
+NGINX_DESC=			Use Nginx web server
 WEBHOST_DESC=		PHP, PEAR, etc... for Maia web interface
-MYSQL_DESC=		Use MySQL datebase
-MYSQLSERVER_DESC=	Install MySQL Server
-PGSQL_DESC=		Use PgSQL database
-PGSQLSERVER_DESC=	Install PGSQL Server
+MYSQL_DESC=		Use MySQL
+LOCAL_DESC=		All services/databases hosted locally
+PGSQL_DESC=		Use PgSQL
 DOVECOT2_DESC=		Use Dovecot 2.x IMAP/POP3
 POSTFIX_DESC=		Use Postfix MTA
 PFA_DESC=		Use Postfixadmin
@@ -82,7 +79,6 @@ RPM_DESC=		RPM support with archivers/rpm2cpio
 ZOO_DESC=		ZOO support with archivers/zoo
 UNZOO_DESC=		ZOO support with archivers/unzoo
 LZOP_DESC=		LZOP support with archivers/lzop
-P7ZIP_DESC=		P7ZIP support with archivers/p7zip
 TNEF_DESC=		Add external tnef decoder
 
 SUB_FILES=	maiad pkg-message
@@ -101,14 +97,14 @@ USE_RC_SUBR+=	maiad
 # setting USE_ variables. C'est la vie.
 
 .if ${PORT_OPTIONS:MAPACHE}
-USES+=		apache:run,2.2+
+USES+=		apache:run
 .endif
 
 .if ${PORT_OPTIONS:MWEBHOST}
-USES+=		php
-USE_PHP=	bcmath ctype dom gettext hash iconv imap json mbstring \
+USES+=	php
+USE_PHP=	bcmath ctype dom gettext iconv imap mbstring \
 		mcrypt pdo pdo_sqlite posix session simplexml sockets \
-		sqlite3 tokenizer xml wddx xmlreader xmlwriter xmlrpc
+		sqlite3 tokenizer xml xmlreader xmlwriter xmlrpc
 
 RUN_DEPENDS+=	${PEAR_DIR}/Mail/mime.php:mail/pear-Mail_Mime@${PHP_FLAVOR} \
 		${PEAR_DIR}/Mail/mimeDecode.php:mail/pear-Mail_mimeDecode@${PHP_FLAVOR} \
@@ -135,16 +131,31 @@ PLIST_SUB+=	WEBHOST=""
 PLIST_SUB+=	WEBHOST="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MMYSQL}
-USES+=		mysql
+.if ${PORT_OPTIONS:MMYSQL} && ${PORT_OPTIONS:MLOCAL}
+USES+=		mysql:server,client
+RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
 .endif
+
+.if ${PORT_OPTIONS:MMYSQL} && ! ${PORT_OPTIONS:MLOCAL}
+USES+=	mysql:client
+RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
+.endif
+
 .if ${PORT_OPTIONS:MMYSQL} && ${PORT_OPTIONS:MWEBHOST}
 USE_PHP+=	mysqli
 .endif
 
-.if ${PORT_OPTIONS:MPGSQL}
+.if ${PORT_OPTIONS:MPGSQL} && ${PORT_OPTIONS:MLOCAL}
 USES+=		pgsql
+WANT_PGSQL=	server
+RUN_DEPENDS+=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
 .endif
+
+.if ${PORT_OPTIONS:MPGSQL} && ! ${PORT_OPTIONS:MLOCAL}
+USES+=		pgsql
+RUN_DEPENDS+=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
+.endif
+
 .if ${PORT_OPTIONS:MPGSQL} && ${PORT_OPTIONS:MWEBHOST}
 USE_PHP+=	pgsql
 .endif
@@ -153,21 +164,8 @@ USE_PHP+=	pgsql
 RUN_DEPENDS+=	lighttpd:www/lighttpd
 .endif
 
-.if ${PORT_OPTIONS:MMYSQL}
-RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
-.endif
-
-.if ${PORT_OPTIONS:MMYSQLSERVER}
-USES+=		mysql:server
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL}
-RUN_DEPENDS+=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
-.endif
-
-.if ${PORT_OPTIONS:MPGSQLSERVER}
-USES:=		${USES:Npgsql} pgsql
-WANT_PGSQL=	server
+.if ${PORT_OPTIONS:MNGINX}
+RUN_DEPENDS+=	nginx:www/nginx
 .endif
 
 .if ${PORT_OPTIONS:MDOVECOT2}
@@ -179,7 +177,8 @@ RUN_DEPENDS+=	postfix:mail/postfix
 .endif
 
 .if ${PORT_OPTIONS:MPFA}
-RUN_DEPENDS+=	${LOCALBASE}/www/postfixadmin/config.inc.php:mail/postfixadmin
+USES+=	php
+RUN_DEPENDS+=	postfixadmin-${PHP_FLAVOR}>=0:mail/postfixadmin
 .endif
 
 .if ${PORT_OPTIONS:MCLAMAV}
@@ -274,10 +273,6 @@ RUN_DEPENDS+=	unzoo>=4.4_1:archivers/unzoo
 RUN_DEPENDS+=	lzop:archivers/lzop
 .endif
 
-.if ${PORT_OPTIONS:MP7ZIP}
-RUN_DEPENDS+=	7zr:archivers/p7zip
-.endif
-
 .if ${PORT_OPTIONS:MTNEF}
 RUN_DEPENDS+=	tnef:converters/tnef
 .endif
@@ -289,8 +284,8 @@ post-patch:
 	scripts/load-sa-rules.pl scripts/maiadbtool.pl \
 	scripts/process-quarantine.pl scripts/resend.pl scripts/send-quarantine-digests.pl \
 	scripts/send-quarantine-reminders.pl scripts/stats-snapshot.pl
-		@${REINPLACE_CMD} -e "s|/etc/maia/maia.conf|${ETCDIR}/maia.conf|" \
-			${WRKSRC}/${m}
+	@${REINPLACE_CMD} -e "s|/etc/maia/maia.conf|${ETCDIR}/maia.conf|" \
+		${WRKSRC}/${m}
 .endfor
 
 .for i in digest.tpl newuser.tpl reminder.tpl
@@ -300,22 +295,20 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|daemon_user  = 'maia'|daemon_user  = '${USERS}'|" \
 		-e "s|daemon_group = 'maia'|daemon_group = '${GROUPS}'|" \
 		-e "s|/var/lib/maia|${MAIAHOME}|" \
-		-e "s|'unrar'|'unrar v -c- -p- --'|" \
-		-e "s|DO_SYSLOG = 0|DO_SYSLOG = 1|" ${WRKSRC}/maiad.conf.dist
+		${WRKSRC}/maiad.conf.dist
 
 	@${REINPLACE_CMD} -e "s|/etc/maia.conf|${ETCDIR}/maia.conf|" \
 		-e "s|username = 'maia'|username = '${USERS}'|" \
 		-e "s|/var/lib/maia|${DATADIR}|" \
 		-e "s|/usr/bin/sa-learn|${PREFIX}/bin/sa-learn|" \
 		-e "s|local_cf_dir = undef|local_cf_dir = '${PREFIX}/etc/mail/spamassassin'|" \
-		-e "s|system_rules_dir = undef|system_rules_dir = '/var/db/spamassassin'|" \
 		-e "s|user_rules_dir = undef|user_rules_dir = '${MAIAHOME}/.spamassassin'|" \
 		-e "s|template_dir = '/etc/maia/templates/'|template_dir = '${ETCDIR}/templates/'|" \
-			${WRKSRC}/maia.conf.dist
+		${WRKSRC}/maia.conf.dist
 
 	@${REINPLACE_CMD} -e "s|/etc/maia/maiad.conf|${ETCDIR}/maiad.conf|" \
 		-e "s|/var/lib/maia|${DATADIR}|" \
-		-e "s@'zoo'\]@['zoo','unzoo'] ]@" ${WRKSRC}/maiad
+		${WRKSRC}/maiad
 
 	@${FIND} -E ${WRKSRC} -iregex '.*(bak|~)$$' -delete
 	@${FIND} -E ${WRKSRC} -iregex '.*(gitkeep|~)$$' -delete
@@ -323,7 +316,9 @@ post-patch:
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR} ${STAGEDIR}${WWWDIR}/web
 	@cd ${WRKSRC}/php && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
+.if ${PORT_OPTIONS:MWEBHOST}
 	${LN} -s ${PREFIX}/share/smarty3-${PHP_FLAVOR} ${STAGEDIR}${WWWDIR}/libs/Smarty
+.endif
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	@cd ${WRKSRC}/scripts && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/scripts
 	${MKDIR} ${STAGEDIR}${ETCDIR}/templates

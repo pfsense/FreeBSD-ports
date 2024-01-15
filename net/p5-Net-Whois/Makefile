@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Whois
 PORTVERSION=	1.9
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Perl5 module to get information using the Whois protocol
+WWW=		https://metacpan.org/release/Net-Whois
 
 RUN_DEPENDS=	p5-Locale-Codes>=0:misc/p5-Locale-Codes
 

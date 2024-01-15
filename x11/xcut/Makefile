@@ -1,6 +1,3 @@
-# Created by: Cy Schubert <Cy.Schubert@uumail.gov.bc.ca>
-# $FreeBSD$
-
 PORTNAME=	xcut
 PORTVERSION=	0.2
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTVERSION} \
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Manipulate X cut buffers from the commandline
+WWW=		https://xcut.sourceforge.net/
 
 USES=		imake xorg
 USE_XORG=	x11

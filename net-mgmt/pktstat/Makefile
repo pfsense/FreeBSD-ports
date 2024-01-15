@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pktstat
 PORTVERSION=	1.8.5
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	net-mgmt
 
 MAINTAINER=	freebsd@sosend.de
 COMMENT=	Network traffic viewer
+WWW=		https://github.com/dleonard0/pktstat
 
 LICENSE=	PD
 

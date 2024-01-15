@@ -1,6 +1,3 @@
-# Created by: wen@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Bio-Graphics
 PORTVERSION=	2.40
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate GD Images of Bio::Seq Objects
+WWW=		https://metacpan.org/release/Bio-Graphics
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

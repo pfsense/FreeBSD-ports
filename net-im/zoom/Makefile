@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zoom
 DISTVERSION=	5.3.465578.0920
 PORTREVISION=	1
@@ -10,12 +8,13 @@ DISTNAME=	zoom_x86_64.pkg
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Zoom videoconferencing client (CAVEAT: Sound doesn't yet work)
+WWW=		https://zoom.us/
 
 RUN_DEPENDS=	linux-c7-xcb-util-image>0:x11/linux-c7-xcb-util-image \
 		linux-c7-xcb-util-keysyms>0:x11/linux-c7-xcb-util-keysyms \
 		linux-c7-xcb-util>0:x11/linux-c7-xcb-util
 
-USES=		desktop-file-utils linux tar:xz
+USES=		cpe desktop-file-utils linux tar:xz
 USE_LINUX=	alsalib alsa-plugins-oss atk cairo-gobject dbuslibs fontconfig freetype gdkpixbuf2 gtk3 libdrm libglvnd pango xorglibs # pulseaudio-libs (asserts under the linux emulator)
 
 NO_BUILD=	yes

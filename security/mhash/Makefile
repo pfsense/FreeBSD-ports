@@ -1,6 +1,3 @@
-# Created by: nsayer@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	mhash
 PORTVERSION=	0.9.9.9
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Easy-to-use library for strong hashes such as MD5 and SHA1
+WWW=		https://mhash.sourceforge.net/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING

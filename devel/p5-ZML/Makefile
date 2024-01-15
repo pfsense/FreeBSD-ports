@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	ZML
 PORTVERSION=	1.0.0
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Simple, fast, and easy to read binary data storage format
+WWW=		https://metacpan.org/release/ZML
 
 BUILD_DEPENDS=	p5-Error-Helper>=0:devel/p5-Error-Helper
 RUN_DEPENDS=	p5-Error-Helper>=0:devel/p5-Error-Helper

@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	videogen
 PORTVERSION=	0.33
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.dynaweb.hu/opensource/videogen/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for calculating XFree86 modelines
+WWW=		http://www.dynaweb.hu/opensource/videogen/
 
 LICENSE=	GPLv2
 

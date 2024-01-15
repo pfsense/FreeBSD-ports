@@ -1,14 +1,12 @@
-# Created by: Bill "I hate Perl" Fumerola
-# $FreeBSD$
-
 PORTNAME=	Text-Template
-PORTVERSION=	1.59
+PORTVERSION=	1.61
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Expand template text with embedded Perl
+WWW=		https://metacpan.org/release/Text-Template
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

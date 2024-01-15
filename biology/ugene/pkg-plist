@@ -10,7 +10,6 @@ lib/ugene/libU2Private.so
 lib/ugene/libU2Script.so
 lib/ugene/libU2Test.so
 lib/ugene/libU2View.so
-lib/ugene/libugenedb.so
 lib/ugene/plugins/CoreTests.license
 lib/ugene/plugins/CoreTests.plugin
 lib/ugene/plugins/GUITestBase.license
@@ -147,8 +146,8 @@ lib/ugene/plugins/wevote_support.plugin
 lib/ugene/plugins/workflow_designer.license
 lib/ugene/plugins/workflow_designer.plugin
 lib/ugene/plugins_checker
-lib/ugene/transl_en.qm
 lib/ugene/transl_ru.qm
+lib/ugene/transl_tr.qm
 lib/ugene/ugene
 lib/ugene/ugenecl
 lib/ugene/ugenem
@@ -229,6 +228,7 @@ share/pixmaps/ugene.xpm
 %%DATADIR%%/cmdline/hmm2-build.uwl
 %%DATADIR%%/cmdline/hmm2-search.uwl
 %%DATADIR%%/cmdline/hmm3-build-and-search.uwl
+%%DATADIR%%/cmdline/hmm3-search.uwl
 %%DATADIR%%/cmdline/join-quality.uwl
 %%DATADIR%%/cmdline/local-blast+.uwl
 %%DATADIR%%/cmdline/pfm-build.uwl
@@ -1034,6 +1034,7 @@ share/pixmaps/ugene.xpm
 %%DATADIR%%/samples/PDB/3INS.PDB
 %%DATADIR%%/samples/Raw/raw.seq
 %%DATADIR%%/samples/SCF/90-JRI-07.scf
+%%DATADIR%%/samples/Sanger/alignment.ugenedb
 %%DATADIR%%/samples/Stockholm/CBS.sto
 %%DATADIR%%/samples/Stockholm/UPSK.sto
 %%DATADIR%%/samples/Swiss-Prot/D0VTW9.txt

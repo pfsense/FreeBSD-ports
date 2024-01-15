@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	CGI-Application-Plugin-Authorization
 PORTVERSION=	0.07
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Support for authorization of requests in CGI::Application
+WWW=		https://metacpan.org/release/CGI-Application-Plugin-Authorization
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

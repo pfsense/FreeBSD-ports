@@ -1,63 +1,48 @@
-# Created by: Aragon Gouveia <aragon@phat.za.net>
-# $FreeBSD$
-
 PORTNAME=	alsa-plugins
-PORTVERSION=	1.1.1
-PORTREVISION=	7
+PORTVERSION=	1.2.7.1
 CATEGORIES=	audio
-MASTER_SITES=	ftp://ftp.alsa-project.org/pub/plugins/ \
-		GENTOO
+MASTER_SITES=	https://www.alsa-project.org/files/pub/plugins/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ALSA compatibility library plugins
+WWW=		https://www.alsa-project.org/
 
 LICENSE=	LGPL21+
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib
 
 USES=		alias libtool:keepla localbase pkgconfig tar:bzip2
+USE_LDCONFIG=	${PREFIX}/lib/alsa-lib
 GNU_CONFIGURE=	yes
-EXTRA_PATCHES+=	${FILESDIR}/alsa-plugins.patch
+MAKE_ARGS+=	RM="${RM}"
 INSTALL_TARGET=	install-strip
 CPPFLAGS+=	-I${.CURDIR}/../alsa-lib/files
 
-OPTIONS_DEFAULT=IO_PTR
-OPTIONS_DEFINE=	JACK FFMPEG PULSEAUDIO SAMPLERATE SPEEX
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		FFMPEG JACK PULSEAUDIO SAMPLERATE SPEEX
+OPTIONS_DEFAULT=	PULSEAUDIO
+OPTIONS_SUB=		yes
 
-OPTIONS_GROUP=	OSS
-OPTIONS_GROUP_OSS=IO_PTR BLKCNT_P2 BUFSZ_P2 VERBOSE
+FFMPEG_LIB_DEPENDS=		libavcodec.so:multimedia/ffmpeg
+FFMPEG_CONFIGURE_ENABLE=	libav
 
-IO_PTR_DESC=	Precise playback/recording pointer
-BLKCNT_P2_DESC=	Restrict number of fragments to ^2 aligned
-BUFSZ_P2_DESC=	Restrict buffer size to ^2 aligned
-VERBOSE_DESC=	Print debugging messages
-
-IO_PTR_CFLAGS=	-DFREEBSD_OSS_USE_IO_PTR
-BLKCNT_P2_CFLAGS=-DFREEBSD_OSS_BLKCNT_P2
-BUFSZ_P2_CFLAGS=-DFREEBSD_OSS_BUFSZ_P2
-VERBOSE_CFLAGS=	-DFREEBSD_OSS_DEBUG_VERBOSE
-
+JACK_IMPLIES=		SAMPLERATE
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_ENABLE=	jack
-JACK_IMPLIES=		SAMPLERATE
 
-FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
-FFMPEG_CONFIGURE_ENABLE=avcodec
+PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
+PULSEAUDIO_CONFIGURE_ENABLE=	pulseaudio
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-PULSEAUDIO_CONFIGURE_ENABLE=pulseaudio
+SAMPLERATE_LIB_DEPENDS=		libsamplerate.so:audio/libsamplerate
+SAMPLERATE_CONFIGURE_ENABLE=	samplerate
 
-SAMPLERATE_LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
-SAMPLERATE_CONFIGURE_ENABLE=samplerate
-
-SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex
+SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex \
+			libspeexdsp.so:audio/speexdsp
 SPEEX_CONFIGURE_ON=	--with-speex=lib
 SPEEX_CONFIGURE_OFF=	--without-speex
 
-post-patch:	.SILENT
-	${REINPLACE_CMD} -e '/LIBS/s/-ldl//g' \
-		-e '/lt_cv_dlopen/s/-ldl//g' \
-		${WRKSRC}/configure
+post-install:
+# sanitize links
+	cd ${STAGEDIR}${PREFIX}/etc/alsa/conf.d && for i in [0-9][0-9]-*.conf ; do \
+		${LN} -sf ../../../share/alsa/alsa.conf.d/$$i . ; done
 
 .include <bsd.port.mk>

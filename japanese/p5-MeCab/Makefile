@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	MeCab
 PORTVERSION=	0.996
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME:tl}-perl-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	MeCab library module for Perl5
+WWW=		https://code.google.com/p/mecab/
 
 LICENSE=	BSD3CLAUSE GPLv2 LGPL21
 LICENSE_COMB=	dual
@@ -18,6 +16,8 @@ LIB_DEPENDS=	libmecab.so:japanese/mecab
 
 USES=		perl5
 USE_PERL5=	configure
+
+CFLAGS+=	--std=c++14
 
 OPTIONS_DEFINE=	EXAMPLES
 

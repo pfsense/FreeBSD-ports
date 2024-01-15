@@ -1,6 +1,3 @@
-# Created by: mi@aldan.algebra.com
-# $FreeBSD$
-
 PORTNAME=	tkp4
 PORTVERSION=	1.12
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.timshel.ca/tkp4/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Tcl/Tk frontends to Perforce's p4
+WWW=		https://www.timshel.ca/tkp4/
 
 OPTIONS_DEFINE=	DOCS
 

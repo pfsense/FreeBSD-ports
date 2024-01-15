@@ -1,6 +1,3 @@
-# Created by: roam@orbitel.bg
-# $FreeBSD$
-
 PORTNAME=	bogosort
 PORTVERSION=	0.4.2
 PORTREVISION=	2
@@ -12,6 +9,7 @@ DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sort (or not) stdin using the bogo-sort algorithm
+WWW=		https://www.lysator.liu.se/~qha/bogosort/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

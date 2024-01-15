@@ -1,13 +1,12 @@
-# Created by: GreenDog <fiziologus@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	fife
 PORTVERSION=	0.4.2
+PORTREVISION=	6
 CATEGORIES=	games
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	fiziologus@gmail.com
 COMMENT=	Flexible Isometric Free Engine
+WWW=		https://www.fifengine.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -55,7 +54,7 @@ CEGUI_LIB_DEPENDS=	libCEGUIBase-0.so:graphics/cegui
 LOGGING_CMAKE_BOOL=	logging
 
 PYTHON_CMAKE_BOOL=	build-python
-PYTHON_USES=		python:3.6+
+PYTHON_USES=		python
 PYTHON_USE=		python=flavors
 PYTHON_BUILD_DEPENDS=	${LOCALBASE}/bin/swig:devel/swig
 PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}

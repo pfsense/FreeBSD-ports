@@ -1,14 +1,12 @@
-# Created by: Max Khon
-# $FreeBSD$
-
 PORTNAME=	golded+
 PORTVERSION=	1.1.5.a${SNAPDATE}
 CATEGORIES=	news mail
 MASTER_SITES=	SF/golded-plus/Golded%2B%201.1.5%20snapshots/${_SNAPDATE}
 DISTNAME=	gpsrc-115-${SNAPDATE}
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GoldEd+ (FTN message editor)
+WWW=		https://golded-plus.sourceforge.net/
 
 LICENSE=	GPLv2 LGPL20
 LICENSE_COMB=	multi
@@ -28,6 +26,12 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 DOCS_SUB_LIST=	NOTEWORK="Please read the ${DOCSDIR}/notework.txt before using ${PORTNAME}"
 DOCS_SUB_LIST_OFF=	NOTEWORK=""
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=  -Dregister=
+.endif
 
 post-patch:
 	@${SED}\

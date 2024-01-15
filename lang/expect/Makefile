@@ -1,9 +1,6 @@
-# Created by: pst
-# $FreeBSD$
-
 PORTNAME=	expect
 PORTVERSION=	5.45.4
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	lang tcl tk
 MASTER_SITES=	SF/${PORTNAME}/Expect/${PORTVERSION}
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Sophisticated scripter based on Tcl/Tk
+WWW=		https://expect.sourceforge.net
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/license.terms
@@ -23,6 +21,7 @@ PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 SUB_FILES+=	pkg-message
 SUB_LIST+=	MANPREFIX=${MANPREFIX}
 TEST_TARGET=	test
+MAKE_ENV+=	STRIPPROG=${STRIP_CMD}
 
 post-install:
 	${LN} -sf ${DISTNAME}/lib${DISTNAME}.so \

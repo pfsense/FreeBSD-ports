@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	initutil
 PORTVERSION=	2.1.b
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	STL Container Initialization Library
+WWW=		https://www.bdsoft.com/tools/initutil.html
 
 USES=		dos2unix zip
 NO_BUILD=	yes

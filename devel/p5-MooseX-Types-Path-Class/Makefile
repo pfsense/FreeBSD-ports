@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-Path-Class
 PORTVERSION=	0.09
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Path::Class type library for Moose
+WWW=		https://metacpan.org/release/MooseX-Types-Path-Class
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Heiner <h.eichmann@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	emovix
 PORTVERSION=	0.9.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/movix/eMoviX/0.9
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mini Linux distro to create bootable video CDs
+WWW=		https://movix.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

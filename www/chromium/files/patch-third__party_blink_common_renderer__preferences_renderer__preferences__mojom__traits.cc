@@ -1,11 +1,11 @@
---- third_party/blink/common/renderer_preferences/renderer_preferences_mojom_traits.cc.orig	2021-01-19 11:50:03 UTC
+--- third_party/blink/common/renderer_preferences/renderer_preferences_mojom_traits.cc.orig	2023-08-17 07:33:31 UTC
 +++ third_party/blink/common/renderer_preferences/renderer_preferences_mojom_traits.cc
-@@ -64,7 +64,7 @@ bool StructTraits<blink::mojom::RendererPreferencesDat
-   if (!data.ReadAcceptLanguages(&out->accept_languages))
-     return false;
+@@ -66,7 +66,7 @@ bool StructTraits<blink::mojom::RendererPreferencesDat
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+   out->send_subresource_notification = data.send_subresource_notification();
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (!data.ReadSystemFontFamilyName(&out->system_font_family_name))
      return false;
  #endif

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	ipv6mon
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Tool for monitoring IPv6 address usage
+WWW=		https://www.si6networks.com/tools/ipv6mon/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT

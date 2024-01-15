@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	makepatch
 PORTVERSION=	2.05
 PORTREVISION=	1
@@ -9,6 +7,7 @@ MASTER_SITE_SUBDIR=	CPAN:JV
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl scripts to assist in the generation and application of patches
+WWW=		https://www.vromans.org/johan/software/sw_makepatch.html
 
 USES=		perl5
 USE_PERL5=	configure

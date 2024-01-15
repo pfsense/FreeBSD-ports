@@ -1,14 +1,12 @@
-# Created by: nemysis <nemysis@gmx.ch>
-# $FreeBSD$
-
 PORTNAME=	apngdis
 PORTVERSION=	2.9
 DISTVERSIONSUFFIX=-src
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Deconstructs APNG files into individual frames
+WWW=		https://sourceforge.net/projects/apngdis/
 
 LICENSE=	ZLIB
 

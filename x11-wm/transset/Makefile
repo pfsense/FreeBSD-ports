@@ -1,6 +1,3 @@
-# Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
-
 PORTNAME=	transset
 PORTVERSION=	1.0.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ CATEGORIES=	x11-wm
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Make your windows transparent
+WWW=		https://forchheimer.se/transset-df/
 
 USES=		xorg xorg-cat:app
 USE_XORG=	x11 xorgproto

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	octopress
 PORTVERSION=	3.0.11
 PORTREVISION=	2
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Static blogging framework leveraging Jekyll
+WWW=		http://octopress.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +20,6 @@ RUN_DEPENDS=	rubygem-jekyll3>=2.0:www/rubygem-jekyll3 \
 		rubygem-titlecase>=0:devel/rubygem-titlecase
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

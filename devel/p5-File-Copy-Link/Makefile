@@ -1,6 +1,3 @@
-# Created by: Fukang Chen <loader@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Copy-Link
 PORTVERSION=	0.140
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	loader@FreeBSD.org
 COMMENT=	Extension for replacing a link with a copy of linked file
+WWW=		https://metacpan.org/release/File-Copy-Link
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

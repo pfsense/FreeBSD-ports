@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	XML-SemanticDiff
 PORTVERSION=	1.0007
 CATEGORIES=	textproc perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for comparing XML documents
+WWW=		https://metacpan.org/release/XML-SemanticDiff
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

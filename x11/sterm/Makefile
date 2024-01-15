@@ -1,14 +1,12 @@
-# Created by: Matthew Donovan <kitchetech@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	sterm
-DISTVERSION=	0.8.4
+DISTVERSION=	0.9
 CATEGORIES=	x11
 MASTER_SITES=	http://dl.suckless.org/st/
 DISTNAME=	st-${PORTVERSION}
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Simple X terminal
+WWW=		https://st.suckless.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -27,22 +25,16 @@ BINARY_ALIAS=	tic=true
 PORTDATA=	config.def.h st.info
 PORTDOCS=	FAQ LEGACY README TODO
 
-OPTIONS_DEFINE=	DOCS
-OPTIONS_RADIO=	PATCHES
-OPTIONS_RADIO_PATCHES=	OPEN_COPIED_URL SCROLLBACK SOLARIZED
-OPEN_COPIED_URL_DESC=	Open contents of the clipboard in a user-defined browser
+OPTIONS_DEFINE=	DOCS SCROLLBACK XRESOURCES
 SCROLLBACK_DESC=	Scroll back through terminal output
-SOLARIZED_DESC=	Use Solarized color scheme
-
-OPEN_COPIED_URL_PATCH_SITES=	https://st.suckless.org/patches/open_copied_url/
-OPEN_COPIED_URL_PATCHFILES=	st-openclipboard-20190202-3be4cf1.diff:-p1
+XRESOURCES_DESC=	Allow to handle settings from Xresources
 
 SCROLLBACK_PATCH_SITES=	https://st.suckless.org/patches/scrollback/
-SCROLLBACK_PATCHFILES=	st-scrollback-0.8.4.diff:-p1 \
-			st-scrollback-mouse-20191024-a2c479c.diff:-p1
+SCROLLBACK_PATCHFILES=	st-scrollback-0.8.5.diff:-p1 \
+			st-scrollback-mouse-20220127-2c5edf2.diff:-p1
 
-SOLARIZED_PATCH_SITES=	https://st.suckless.org/patches/solarized/
-SOLARIZED_PATCHFILES=	st-solarized-both-0.8.4.diff:-p1
+XRESOURCES_PATCH_SITES=	https://st.suckless.org/patches/xresources/
+XRESOURCES_PATCHFILES=	st-xresources-20200604-9ba7ecf.diff:-p1
 
 pre-everything::
 	@${ECHO_MSG} "You can build st with your own config.h using the ST_CONF knob:"

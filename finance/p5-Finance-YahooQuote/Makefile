@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Finance-YahooQuote
 PORTVERSION=	0.26
 CATEGORIES=	finance perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Get stock quotes from Yahoo! Finance
+WWW=		https://metacpan.org/release/Finance-YahooQuote
 
 LICENSE=	GPLv2+
 

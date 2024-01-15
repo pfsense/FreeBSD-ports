@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		sourcehansans
 PORTVERSION=		2.000
 DISTVERSIONSUFFIX=	R
@@ -11,6 +9,7 @@ PKGNAMESUFFIX=		-otf
 
 MAINTAINER=		hyun@caffeinated.codes
 COMMENT=		Korean font by Adobe designed for user interfaces
+WWW=		https://github.com/adobe-fonts/source-han-sans
 
 LICENSE=		OFL11
 LICENSE_FILE=		${WRKSRC}/LICENSE.txt

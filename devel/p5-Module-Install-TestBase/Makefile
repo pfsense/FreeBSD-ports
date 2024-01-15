@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Module-Install-TestBase
 PORTVERSION=	0.86
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Module::Install Support for Test::Base
+WWW=		https://metacpan.org/release/Module-Install-TestBase
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,6 +18,6 @@ RUN_DEPENDS=	p5-Module-Install>=1.10:devel/p5-Module-Install \
 
 USES=		perl5
 USE_PERL5=	configure
-NO_ARCH=
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

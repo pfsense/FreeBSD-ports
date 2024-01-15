@@ -1,12 +1,11 @@
-# Created by: Emmanuel Vadot <manu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	opensmtpd-filter-senderscore
 PORTVERSION=	0.1.1
+PORTREVISION=	15
 CATEGORIES=	mail
 
 MAINTAINER=	manu@FreeBSD.Org
 COMMENT=	OpenSMTPD filter integration for the senderscore reputation
+WWW=		https://github.com/poolpOrg/filter-senderscore
 
 LICENSE=	ISCL
 

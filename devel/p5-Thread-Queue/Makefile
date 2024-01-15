@@ -1,14 +1,12 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	Thread-Queue
 PORTVERSION=	3.13
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 thread-safe queues
+WWW=		https://metacpan.org/release/Thread-Queue
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

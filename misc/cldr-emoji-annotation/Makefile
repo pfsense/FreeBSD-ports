@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	cldr-emoji-annotation
 DISTVERSION=	37.0_13.0_0_2
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Emoji annotation files in CLDR
+WWW=		https://github.com/fujiwarat/cldr-emoji-annotation
 
 LICENSE=	UNICODE
 LICENSE_NAME=	UNICODE

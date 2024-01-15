@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	comfortaa-ttf
 PORTVERSION=	3.001
 PORTREVISION=	1
@@ -9,6 +7,7 @@ DISTNAME=	comfortaa___font_by_aajohan-d1qr019
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Stylish, modern and free sans-serif true type font
+WWW=		https://fonts.google.com/specimen/Comfortaa
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/OFL.txt

@@ -1,6 +1,3 @@
-# Created by: clive
-# $FreeBSD$
-
 PORTNAME=	Tie-DBI
 PORTVERSION=	1.08
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module implementing Tie hash to a DBI handle
+WWW=		https://metacpan.org/release/Tie-DBI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

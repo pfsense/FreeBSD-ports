@@ -1,9 +1,6 @@
-# Created by: NAKATA, Maho <maho@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lapack95
 PORTVERSION=	1.0
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	math
 MASTER_SITES=	NL
 DISTNAME=	${PORTNAME}
@@ -11,6 +8,7 @@ DIST_SUBDIR=	lapack95
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LAPACK95, Fortran90/95 wrapper for LAPACK
+WWW=		https://www.netlib.org/lapack95/
 
 USES=		fortran tar:tgz
 
@@ -31,13 +29,9 @@ WRKSRC=		${WRKDIR}/LAPACK95
 
 MAKE_JOBS_UNSAFE=yes
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == "sparc64"
-PICFLAG?=	-fPIC
-.else
 PICFLAG?=	-fpic
-.endif
+
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MEXAMPLES}
 PORTEXAMPLES=	make.inc EXAMPLES1 EXAMPLES2

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	XML-DT
 PORTVERSION=	0.69
 CATEGORIES=	textproc perl5

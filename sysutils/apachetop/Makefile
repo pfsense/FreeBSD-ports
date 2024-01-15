@@ -1,23 +1,20 @@
-# Created by: Sebastian Yepes F. <esn@x123.info>
-# $FreeBSD$
-
 PORTNAME=	apachetop
-PORTVERSION=	0.18.4
-PORTREVISION=	1
+DISTVERSION=	0.19.7
 CATEGORIES=	sysutils
+MASTER_SITES=	https://github.com/tessus/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	lukasz@wasikowski.net
 COMMENT=	Apache realtime log stats
+WWW=		https://github.com/tessus/apachetop
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf ncurses readline
-USE_GITHUB=	yes
-GH_ACCOUNT=	tessus
+USES=		cpe ncurses readline
 
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--mandir=${PREFIX}/man
+GNU_CONFIGURE=	yes
+
+CONFIGURE_ENV+=	NCURSES_CFLAGS="-I${NCURSESINC}" NCURSES_LIBS="-lncursesw"
 
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 

@@ -1,15 +1,13 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pangomm
 PORTVERSION=	2.40.1
-PORTREVISION?=	4
+PORTREVISION?=	6
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for Pango
+WWW=		http://gtkmm.sourceforge.net/
 
 LICENSE=	LGPL21
 

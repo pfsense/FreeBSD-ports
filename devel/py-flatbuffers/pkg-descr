@@ -1,3 +1,6 @@
-Python runtime library for use with the Flatbuffers serialization format.
+FlatBuffers is a cross platform serialization library architected for maximum
+memory efficiency. It allows you to directly access serialized data without
+parsing/unpacking it first, while still having great forwards/backwards
+compatibility.
 
-WWW: https://google.github.io/flatbuffers/
+Python runtime library for use with the Flatbuffers serialization format.

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Vimana
 PORTVERSION=	2010.09303
 PORTREVISION=	4
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Vim script manager
+WWW=		https://metacpan.org/release/Vimana
 
 BUILD_DEPENDS=	vim:editors/vim
 RUN_DEPENDS=	vim:editors/vim \

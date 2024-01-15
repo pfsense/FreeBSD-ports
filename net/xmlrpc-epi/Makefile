@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	xmlrpc-epi
 PORTVERSION=	0.54.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-base/${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General purpose implementation of the xmlrpc specification in C
+WWW=		https://xmlrpc-epi.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,7 +25,7 @@ PORTDOCS=	AUTHORS ChangeLog NEWS README
 METHODS=	TestNormal TestFault TestStruct TestArray TestBoolean \
 		TestInt TestString TestDouble TestBase64 TestDateTime
 
-CONFLICTS=	xmlrpc-c-[0-9]*
+CONFLICTS=	xmlrpc-c
 
 OPTIONS_DEFINE=	DOCS
 

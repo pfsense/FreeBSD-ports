@@ -1,20 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	xkeyboard-config
-PORTVERSION=	2.31
+DISTVERSION=	2.40
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	XORG/individual/data/${PORTNAME}
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X Keyboard Configuration Database
+WWW=		https://freedesktop.org/wiki/Software/XKeyboardConfig/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	xkbcomp:x11/xkbcomp
-
-USES=		gmake gnome localbase pathfix perl5 python:3.5+,build \
-		shebangfix xorg-cat:data
+USES=		meson gnome localbase pathfix perl5 python:build \
+		shebangfix tar:xz
 
 NO_ARCH=	yes
 USE_GNOME=	libxslt:build
@@ -22,16 +20,19 @@ USE_PERL5=	build
 SHEBANG_FILES=	rules/merge.py \
 		rules/compat/map-variants.py
 
-CONFIGURE_ARGS=	--with-xkb-base=${PREFIX}/share/X11/xkb \
-		--with-xkb-rules-symlink=xorg
+MESON_ARGS=	-Dxkb-base=${PREFIX}/share/X11/xkb \
+		-Dxorg-rules-symlinks=true
 
-OPTIONS_DEFINE=	ETERSOFT NLS
+OPTIONS_DEFINE=	ETERSOFT NLS X11
+OPTIONS_DEFAULT=X11
+NLS_USES=	gettext-tools iconv
+NLS_MESON_TRUE=	nls
 ETERSOFT_DESC=	Add pre-1918 Russian letters to typographic layout
 OPTIONS_SUB=	yes
 
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=		gettext-tools iconv
 ETERSOFT_EXTRA_PATCHES=	${FILESDIR}/etersoft-patch-symbols-typo
+X11_BUILD_DEPENDS=	xkbcomp:x11/xkbcomp
+X11_DESC=		XKB keyboard description compiler support
 
 .include <bsd.port.options.mk>
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mysql-snmp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2-17
@@ -8,6 +6,7 @@ CATEGORIES=	net-mgmt perl5
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Net-SNMP Perl agent for monitoring MySQL servers
+WWW=		https://github.com/masterzen/mysql-snmp
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

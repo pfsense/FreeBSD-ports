@@ -1,23 +1,19 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	virtualenv-clone
-PORTVERSION=	0.5.4
-PORTREVISION=	0
+PORTVERSION=	0.5.7
 CATEGORIES=	devel
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Python virtualenv cloning script
+WWW=		https://github.com/edwardgeorge/virtualenv-clone
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-
-USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.mk>

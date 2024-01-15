@@ -1,14 +1,12 @@
-# Created by: Rainer Hurling <rhurlin@gwdg.de>
-# $FreeBSD$
-
 PORTNAME=	ggobi
 PORTVERSION=	2.1.11
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.ggobi.org/downloads/
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Data visualization system
+WWW=		http://www.ggobi.org/
 
 LICENSE=	EPL
 

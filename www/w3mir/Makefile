@@ -1,6 +1,3 @@
-# Created by: ache
-# $FreeBSD$
-
 PORTNAME=	w3mir
 PORTVERSION=	1.0.10
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.langfeldt.net/w3mir/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	All-purpose HTTP copying and mirroring tool
+WWW=		https://www.langfeldt.net/w3mir/
 
 LICENSE=	ART10
 

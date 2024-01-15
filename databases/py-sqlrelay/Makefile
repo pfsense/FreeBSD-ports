@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	${SQLRELAY_PORTNAME}
 PORTVERSION=	${SQLRELAY_PORTVERSION}
 CATEGORIES=	databases python
@@ -10,6 +7,7 @@ DISTFILES=	# none
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Python modules to access to SQL Relay
+WWW=		https://sqlrelay.sourceforge.net/
 
 EXTRACT_DEPENDS=	${NONEXISTENT}:${SQLRELAY_PORTDIR}:patch
 LIB_DEPENDS=	libsqlrclient.so:${SQLRELAY_PORTDIR}

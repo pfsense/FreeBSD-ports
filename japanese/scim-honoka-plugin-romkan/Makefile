@@ -1,6 +1,3 @@
-# Created by: Masashi CHIBA
-# $FreeBSD$
-
 PORTNAME=	scim-honoka-plugin-romkan
 PORTVERSION=	0.9.0
 PORTREVISION=	12
@@ -10,6 +7,7 @@ DISTNAME=	honoka-plugin-romkan-${PORTVERSION}
 
 MAINTAINER=	chiba.masashi@gmail.com
 COMMENT=	Honoka plugin for romaji input
+WWW=		http://scim.freedesktop.org
 
 BUILD_DEPENDS=	scim:textproc/scim \
 		${LOCALBASE}/lib/scim-1.0/1.4.0/IMEngine/honoka.so:japanese/scim-honoka

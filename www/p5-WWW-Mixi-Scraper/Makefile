@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	WWW-Mixi-Scraper
 PORTVERSION=	0.34
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Yet another mixi scraper
+WWW=		https://metacpan.org/release/WWW-Mixi-Scraper
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

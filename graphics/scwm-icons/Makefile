@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <nacai@iname.com>
-# $FreeBSD$
-
 PORTNAME=	scwm-icons
 PORTVERSION=	0.99.2
 PORTREVISION=	2

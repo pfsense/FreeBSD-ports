@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	XML-DifferenceMarkup
 PORTVERSION=	1.05
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	This module implements an XML diff producing XML output
+WWW=		https://metacpan.org/release/XML-DifferenceMarkup
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

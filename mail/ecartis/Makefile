@@ -1,6 +1,3 @@
-# Created by: Trish Lynch <trish@bsdunix.net>
-# $FreeBSD$
-
 PORTNAME=	ecartis
 DISTVERSION=	1.0.0-snap20060813
 PORTREVISION=	1
@@ -11,8 +8,9 @@ MASTER_SITES=	ftp://ftp.ecartis.net/pub/ecartis/ \
 
 MAINTAINER=	jtrigg@spamcop.net
 COMMENT=	The Ecartis Listserver / Mailing List Manager
+WWW=		https://www.ecartis.net
 
-USES=		gmake
+USES=		cpe gmake
 
 USERS=		ecartis
 GROUPS=		ecartis

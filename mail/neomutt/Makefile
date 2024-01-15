@@ -1,19 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	neomutt
-PORTVERSION=	20201127
+PORTVERSION=	20231221
 CATEGORIES=	mail
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Bringing together all the Mutt Code
+WWW=		https://neomutt.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support \
 		urlview:textproc/urlview
+LIB_DEPENDS=	libpcre2-posix.so:devel/pcre2
 
-USES=		iconv:translit localbase perl5 shebangfix ssl
+USES=		cpe iconv:translit localbase ncurses perl5 pkgconfig python:env shebangfix ssl
 
 USE_GITHUB=	yes
 USE_PERL5=	build
@@ -22,14 +22,15 @@ MAKE_JOBS_UNSAFE=	yes
 HAS_CONFIGURE=	yes
 
 OPTIONS_SUB=	yes
-SHEBANG_FILES=	contrib/smime_keys
+SHEBANG_FILES=	contrib/smime_keys \
+		contrib/oauth2/mutt_oauth2.py \
+		data/account-command/macos-keychain/keychain.py
 
 OPTIONS_DEFINE=	NLS DOCS SASL IDN FLOCK GPGME NOTMUCH
 OPTIONS_DEFAULT=SASL TOKYOCABINET NOTMUCH GPGME LMDB NCURSES GSSAPI_BASE
 OPTIONS_MULTI=	HCACHE
 OPTIONS_MULTI_HCACHE=	BDB GDBM KYOTOCABINET LMDB QDBM TOKYOCABINET
-OPTIONS_SINGLE=	SCREEN GSSAPI
-OPTIONS_SINGLE_SCREEN=	NCURSES SLANG
+OPTIONS_SINGLE=	GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
 
 FLOCK_DESC=	Use flock() to lock files
@@ -45,8 +46,12 @@ SCREEN_DESC=	Screen options
 CONFIGURE_ARGS=	--with-ssl="${OPENSSLBASE}" \
 		--locales-fix \
 		--fmemopen \
+		--pcre2 \
+		--disable-idn \
+		--prefix=${PREFIX} \
 		--mandir=${PREFIX}/man \
 		${ICONV_CONFIGURE_ARGS}
+CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 
 # Header cache
 BDB_CONFIGURE_ON=		--bdb
@@ -65,8 +70,8 @@ TOKYOCABINET_LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
-IDN_LIB_DEPENDS=	libidn.so:dns/libidn
-IDN_CONFIGURE_ENABLE=	idn
+IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
+IDN_CONFIGURE_ON=	--idn2
 
 FLOCK_CONFIGURE_ON=	--with-lock=flock
 
@@ -81,11 +86,6 @@ GPGME_CONFIGURE_ENABLE=	gpgme
 NOTMUCH_LIB_DEPENDS=	libnotmuch.so:mail/notmuch
 NOTMUCH_CONFIGURE_ENABLE=	notmuch
 
-SLANG_CONFIGURE_ON=	--with-slang=${LOCALBASE} --with-ui=slang
-SLANG_CONFIGURE_OFF=	--with-ui=ncurses
-SLANG_LIB_DEPENDS=	libslang.so:devel/libslang2
-SLANG_VARS=	PKGMESSAGE=${FILESDIR}/pkg-message.slang
-
 # GSSAPI
 GSSAPI_BASE_USES=		gssapi
 GSSAPI_BASE_CONFIGURE_ON=	--gss
@@ -93,15 +93,12 @@ GSSAPI_HEIMDAL_USES=		gssapi:heimdal
 GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gss=${LOCALBASE}
 GSSAPI_MIT_USES=		gssapi:mit
 GSSAPI_MIT_CONFIGURE_ON=	--with-gss=${LOCALBASE}
+GSSAPI_NONE_CONFIGURE_ON=	--disable-gss
 
-NCURSES_USES=	ncurses
-
+DOCS_CONFIGURE_OFF=	--disable-doc
 DOCS_BUILD_DEPENDS=	xsltproc:textproc/libxslt \
 			${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
 			lynx:www/lynx
-# Trick neomutt into building manpages and neomuttrc
-DOCS_VARS_OFF=		BINARY_ALIAS=xsltproc=true \
-			BINARY_ALIAS+=xmlcatalog=true
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/etc/mime*

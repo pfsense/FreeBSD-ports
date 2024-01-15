@@ -1,6 +1,3 @@
-# Created by: Charlie Kester <corky1951@comcast.net>
-# $FreeBSD$
-
 PORTNAME=	gaffitter
 PORTVERSION=	0.6.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Binary packing utility that uses a genetic algorithm
+WWW=		https://gaffitter.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

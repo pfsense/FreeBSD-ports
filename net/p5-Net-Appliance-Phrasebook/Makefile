@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Appliance-Phrasebook
 PORTVERSION=	2.103642
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Network appliance command-line phrasebook
+WWW=		https://metacpan.org/release/Net-Appliance-Phrasebook
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

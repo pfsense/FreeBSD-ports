@@ -1,13 +1,11 @@
-# Created by: Alexander Vereeken <Alexander88207@protonmail.com>
-# $FreeBSD$
-
 PORTNAME=	flat-remix-gtk
-PORTVERSION=	20201129
+PORTVERSION=	20220627
 CATEGORIES=	x11-themes
 PKGNAMESUFFIX=	-themes
 
 MAINTAINER=	Alexander88207@protonmail.com
 COMMENT=	Flat Remix is a GTK application theme inspired by material design
+WWW=		https://github.com/daniruiz/flat-remix-gtk
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

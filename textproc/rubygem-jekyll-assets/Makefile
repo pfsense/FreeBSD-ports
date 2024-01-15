@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jekyll-assets
 PORTVERSION=	3.0.12
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Create JavaScript/CSS assets for Jekyll sites
+WWW=		http://jekyll-assets.github.io/jekyll-assets/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,7 +23,6 @@ RUN_DEPENDS=	rubygem-activesupport5>=5.0<6:devel/rubygem-activesupport5 \
 		rubygem-sprockets3>=3.3<4.1:devel/rubygem-sprockets3
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

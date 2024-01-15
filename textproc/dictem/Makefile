@@ -1,15 +1,13 @@
-# Created by: Max N. Boyarov <m.boyarov@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	dictem
 PORTVERSION=	1.0.4
-PORTREVISION=	9
+PORTREVISION=	18
 CATEGORIES=	textproc net elisp
 MASTER_SITES=	SF/dictem/dictem/dictem-${PORTVERSION}
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	max.n.boyarov@gmail.com
 COMMENT=	DICT protocol client for [X]Emacs
+WWW=		https://sourceforge.net/projects/dictem/
 
 LICENSE=	GPLv2
 

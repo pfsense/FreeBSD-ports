@@ -1,12 +1,30 @@
---- media/media_options.gni.orig	2021-01-18 21:29:00 UTC
+--- media/media_options.gni.orig	2023-12-10 06:10:27 UTC
 +++ media/media_options.gni
-@@ -123,6 +123,9 @@ declare_args() {
+@@ -187,12 +187,15 @@ declare_args() {
    # Enables runtime selection of ALSA library for audio.
    use_alsa = false
  
 +  # Enable runtime selection of sndio(7)
 +  use_sndio = false
 +
-   # Alsa should be used on non-Android, non-Mac POSIX systems.
-   # Alsa should be used on desktop Chromecast and audio-only Chromecast builds.
-   if (is_posix && !is_android && !is_mac &&
+   # Alsa should be used on all non-Android, non-Mac POSIX systems - with the
+   # exception of CastOS desktop builds.
+   #
+   # TODO(crbug.com/1336055): Remove legacy target_cpu hack used for targeting
+   # desktop Chromecast builds.
+-  if (is_posix && !is_android && !is_apple &&
++  if (is_posix && !is_android && !is_apple && !is_bsd &&
+       (!is_castos || (target_cpu == "x86" || target_cpu == "x64") ||
+        is_cast_audio_only)) {
+     use_alsa = true
+@@ -208,6 +211,10 @@ declare_args() {
+     if (!use_cras && !is_castos && !is_asan && !is_tsan) {
+       use_pulseaudio = true
+     }
++  }
++  if (is_openbsd) {
++    use_sndio = true
++    use_pulseaudio = false
+   }
+ }
+ 

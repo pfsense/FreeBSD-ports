@@ -1,6 +1,3 @@
-# Created by: Kevin Lo <kevlo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	iniparser
 PORTVERSION=	4.1
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free stand-alone ini file parsing library
+WWW=		https://github.com/ndevilla/iniparser
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

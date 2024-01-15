@@ -1,6 +1,3 @@
-# Created by: TOMIDA, Hiroaki <t.hiroaki.209 at gmail.com>
-# $FreeBSD$
-
 PORTNAME=	taglib
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DIST_SUBDIR=	ruby
 
 MAINTAINER=	t.hiroaki.209@gmail.com
 COMMENT=	Ruby library wrapping the Taglib library
+WWW=		https://www.hakubi.us/ruby-taglib/
 
 LICENSE=	MIT
 
@@ -19,8 +17,7 @@ LIB_DEPENDS=	libtag.so:audio/taglib
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_RUBY=	yes
-USES=		tar:bzip2
+USES=		ruby tar:bzip2
 
 OPTIONS_DEFINE=	DOCS
 

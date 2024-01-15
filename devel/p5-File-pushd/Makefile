@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	File-pushd
 PORTVERSION=	1.016
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Temporary chdir for a limited scope in Perl
+WWW=		https://metacpan.org/release/File-pushd
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

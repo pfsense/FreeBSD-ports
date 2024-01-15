@@ -10,8 +10,6 @@ bin/librespeed-go
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/example-singleServer-pretty.html
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/example-singleServer-progressBar.html
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/index.html
-%%WWWDIR%%/NotoSansDisplay-Light.ttf
-%%WWWDIR%%/NotoSansDisplay-Medium.ttf
 %%WWWDIR%%/speedtest.js
 %%WWWDIR%%/speedtest_worker.js
 @owner %%LIBRESPEED_USER%%

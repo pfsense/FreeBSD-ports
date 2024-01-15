@@ -1,50 +1,43 @@
-# Created by: donnex
-# $FreeBSD$
-
 PORTNAME=	pwsafe
-DISTVERSION=	0.2.0-155
-DISTVERSIONSUFFIX=	-g1dbcfd0
+DISTVERSION=	0.2.2beta-196
+DISTVERSIONSUFFIX=	-g4bf61c5
 CATEGORIES=	sysutils
 
 MAINTAINER=	m.ne@gmx.net
-COMMENT=	Cmdline program that manages encrypted password databases
+COMMENT=	Command-line encrypted password database manager
+WWW=		https://github.com/nsd20463/pwsafe/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+
+FLAVORS=		x11 nox11
+FLAVOR?=		${FLAVORS:[1]}
+nox11_PKGNAMESUFFIX=	-nox11
 
 USES=		autoreconf gmake ncurses readline ssl
+GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	ac_cv_header_curses_h=yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	nsd20463
-GH_PROJECT=	pwsafe
-GH_TAGNAME=	1dbcfd0
-
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV+=	ac_cv_header_curses_h=yes
+GH_TAGNAME=	4bf61c5
 
 PLIST_FILES=	bin/pwsafe \
 		man/man1/pwsafe.1.gz
 
-OPTIONS_DEFINE=	SETUID X11
-
+OPTIONS_DEFINE=	SETUID
 SETUID_DESC=	Install setuid pwsafe binary
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MX11}
-CONFIGURE_ARGS=	--with-x
-USES+=		xorg
-USE_XORG=	ice sm x11 xmu
-.else
-CONFIGURE_ARGS=	ac_cv_have_x="have_x=no" \
-		ac_cv_lib_ICE_IceConnectionNumber=no \
-		ac_cv_lib_X11_XOpenDisplay=no \
-		ac_cv_lib_Xmu_XmuInternAtom=no
+.if ${FLAVOR} == "x11"
+USES+=			xorg
+USE_XORG=		ice sm x11 xmu
+.elif ${FLAVOR} == "nox11"
+CONFIGURE_ARGS+=	--without-x
 .endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pwsafe ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/pwsafe.1 ${STAGEDIR}${MANPREFIX}/man/man1
-.if ${PORT_OPTIONS:MSETUID}
+
+post-install-SETUID-on:
 	${CHMOD} u+s ${STAGEDIR}${PREFIX}/bin/pwsafe
-.endif
 
 .include <bsd.port.mk>

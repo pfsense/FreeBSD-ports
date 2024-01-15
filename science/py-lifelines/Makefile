@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	lifelines
 DISTVERSION=	0.19.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	rm@FreeBSD.org
 COMMENT=	Survival analysis in Python
+WWW=		https://github.com/CamDavidsonPilon/lifelines/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,7 +19,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}bottleneck>=1.0:math/py-bottleneck@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}autograd>=1.2:math/py-autograd@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

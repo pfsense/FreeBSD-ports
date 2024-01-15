@@ -1,6 +1,3 @@
-# Created by: Tatsuya Ueda <ml+freebsd@tatsuya.info>
-# $FreeBSD$
-
 PORTNAME=	Path-Class-File-Lockable
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ml+freebsd@tatsuya.info
 COMMENT=	Lock your files with Path::Class::File
+WWW=		https://metacpan.org/release/Path-Class-File-Lockable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

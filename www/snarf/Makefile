@@ -1,6 +1,3 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	snarf
 PORTVERSION=	7.0
 CATEGORIES=	www
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.xach.com/snarf/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Another small command-line URL (http/ftp/gopher/finger) fetcher
+WWW=		https://www.xach.com/snarf/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -91,6 +91,7 @@ bin/hyphy
 %%DATADIR%%/TemplateBatchFiles/CodonModelCompare.bf
 %%DATADIR%%/TemplateBatchFiles/CodonToProtein.bf
 %%DATADIR%%/TemplateBatchFiles/ConvertDataFile.bf
+%%DATADIR%%/TemplateBatchFiles/DirectionalREL.bf
 %%DATADIR%%/TemplateBatchFiles/DistanceMatrix.bf
 %%DATADIR%%/TemplateBatchFiles/Distances/CodonTools.def
 %%DATADIR%%/TemplateBatchFiles/Distances/CodonTools2.def
@@ -146,6 +147,9 @@ bin/hyphy
 %%DATADIR%%/TemplateBatchFiles/ModelTest.bf
 %%DATADIR%%/TemplateBatchFiles/MolClockAllRoots.bf
 %%DATADIR%%/TemplateBatchFiles/MolecularClock.bf
+%%DATADIR%%/TemplateBatchFiles/MSS-joint-fitter.bf
+%%DATADIR%%/TemplateBatchFiles/MSS-selector-2.bf
+%%DATADIR%%/TemplateBatchFiles/MSS-selector.bf
 %%DATADIR%%/TemplateBatchFiles/NeighborJoining.bf
 %%DATADIR%%/TemplateBatchFiles/NielsenYang.bf
 %%DATADIR%%/TemplateBatchFiles/NucModelCompare.bf
@@ -187,6 +191,8 @@ bin/hyphy
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/SingleOmega.bf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/aBSREL.bf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/contrast-fel.bf
+%%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/contrast-meme.bf
+%%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/error-filter.bf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/modules/grid_compute.ibf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/modules/io_functions.ibf
 %%DATADIR%%/TemplateBatchFiles/SelectionAnalyses/modules/selection_lib.ibf
@@ -387,6 +393,7 @@ bin/hyphy
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon/MG_REV_MH.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon/MG_REV_PROPERTIES.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/codon/MG_REV_TRIP.bf
+%%DATADIR%%/TemplateBatchFiles/libv3/models/codon/MSS.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/frequencies.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/model_functions.bf
 %%DATADIR%%/TemplateBatchFiles/libv3/models/parameters.bf

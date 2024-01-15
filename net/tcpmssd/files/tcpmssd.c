@@ -22,8 +22,6 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 
 #include <sys/param.h>
@@ -125,7 +123,11 @@ main(int argc, char *argv[])
 		/* NOTREACHED */
 	}
 
+#ifdef PF_DIVERT
+	if ((s = socket(PF_DIVERT, SOCK_RAW, 0)) == -1) {
+#else
 	if ((s = socket(PF_INET, SOCK_RAW, IPPROTO_DIVERT)) == -1) {
+#endif
 		err(1, "can't create divert socket");
 		/* NOTREACHED */
 	}

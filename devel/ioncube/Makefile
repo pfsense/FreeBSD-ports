@@ -1,8 +1,5 @@
-# Created by: Svyatoslav Lempert <svyatoslav.lempert@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	ioncube
-DISTVERSION=	10.4.1
+DISTVERSION=	12.0.5
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.ioncube.com/loader_downloads/ \
 		http://downloads2.ioncube.com/loader_downloads/ \
@@ -13,6 +10,7 @@ DIST_SUBDIR=	${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	svyatoslav.lempert@gmail.com
 COMMENT=	Loader for ionCube-encoded PHP files
+WWW=		https://www.ioncube.com/
 
 LICENSE=	IONCUBE-PHP-LOADER
 LICENSE_NAME=	ionCube PHP Loader
@@ -21,10 +19,10 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 IGNORE_DragonFly=	is unsupported on DragonFly
 ONLY_FOR_ARCHS=	amd64 i386
-NO_BUILD=	yes
 USES=		php:flavors
-IGNORE_WITH_PHP=	80
+IGNORE_WITH_PHP=	82 83
 
+NO_BUILD=	yes
 SUB_FILES=	pkg-message
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

@@ -1,22 +1,20 @@
-# Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CPAN-Meta-Check
-PORTVERSION=	0.014
+PORTVERSION=	0.018
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Verify requirements in a CPAN::Meta object
+WWW=		https://metacpan.org/release/CPAN-Meta-Check
 
-LICENSE=	ART10 GPLv1+
+LICENSE=	ARTPERL10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-TEST_DEPENDS=	p5-Test-Deep>0:devel/p5-Test-Deep
-
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

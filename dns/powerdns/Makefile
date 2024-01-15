@@ -1,21 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	powerdns
-DISTVERSION=	4.4.1
+DISTVERSION=	4.8.4
 CATEGORIES=	dns
 MASTER_SITES=	https://downloads.powerdns.com/releases/
 DISTNAME=	pdns-${DISTVERSION}
 
 MAINTAINER=	tremere@cainites.net
 COMMENT=	Advanced DNS server with multiple backends including SQL
+WWW=		https://www.powerdns.com/auth.html
 
 LICENSE=	GPLv2
 
-BROKEN_sparc64=	Does not compile: error: to_string is not a member of std
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	archs with 32-bits time_t are no longer supported by upstream
 
 LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs \
-		libcurl.so:ftp/curl \
-		libprotobuf.so:devel/protobuf
+		libcurl.so:ftp/curl
 
 USES=		autoreconf compiler:c++11-lib cpe gmake libtool \
 		localbase:ldflags pathfix pkgconfig ssl tar:bzip2
@@ -29,8 +28,8 @@ CONFIGURE_ARGS=	--disable-static \
 		--sysconfdir="${PREFIX}/etc/pdns" \
 		--with-boost="${LOCALBASE}" \
 		--with-dynmodules="pipe bind ${MODULES}" \
-		--with-modules="" \
-		--with-protobuf
+		--with-libsodium=no \
+		--with-modules=""
 
 SCRIPTS_ENV=	CURDIR2="${.CURDIR}" \
 		DISTNAME="${DISTNAME}" \
@@ -50,7 +49,7 @@ OPTIONS_DEFAULT=		LMDB LUA MYSQL PGSQL SQLITE3
 OPTIONS_GROUP=			GEOIPOPT REMOTEOPT
 OPTIONS_GROUP_REMOTEOPT=	ZEROMQ
 OPTIONS_SINGLE=			EXTLUA
-OPTIONS_SINGLE_EXTLUA=		LUA LUAJIT LUAJITOR
+OPTIONS_SINGLE_EXTLUA=		LUA LUAJIT
 
 OPTIONS_SUB=	yes
 
@@ -59,8 +58,7 @@ GEOIP_DESC=		GeoIP backend (GeoIP2 DB)
 IXFRDIST_DESC=		Build ixfrdist
 LMDB_DESC=		LMDB backend
 LUABACKEND_DESC=	Lua2 backend
-LUAJITOR_DESC=		Use lang/luajit-openresty
-LUAJIT_DESC=		Use lang/luajit
+LUAJIT_DESC=		Use luajit
 LUA_DESC=		Use lang/lua
 MYSQL_DESC=		MySQL backend
 OPENLDAP_DESC=		OpenLDAP backend
@@ -86,10 +84,7 @@ LMDB_VARS=		MODULES+=lmdb
 
 LUABACKEND_VARS=	MODULES+=lua2
 
-LUAJITOR_LIB_DEPENDS=	libluajit-5.1.so.2:lang/luajit-openresty
-LUAJITOR_CONFIGURE_ON=	--with-lua=luajit
-
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so.2:lang/luajit
+LUAJIT_USES=		luajit
 LUAJIT_CONFIGURE_ON=	--with-lua=luajit
 
 LUA_USES=	lua
@@ -99,7 +94,7 @@ MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}
 MYSQL_CONFIGURE_OFF=	--without-mysql
 MYSQL_VARS=		MODULES+=gmysql
 
-OPENLDAP_USE=		OPENLDAP=YES
+OPENLDAP_USES=		ldap
 OPENLDAP_CXXFLAGS=	-DLDAP_DEPRECATED=1
 OPENLDAP_VARS=		MODULES+=ldap
 
@@ -126,20 +121,9 @@ ZEROMQ_IMPLIES=		REMOTE
 ZEROMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
 ZEROMQ_CONFIGURE_ON=	--enable-remotebackend-zeromq
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} != openssl
-CONFIGURE_ARGS+=	--with-libdecaf \
-			--with-libsodium
-LIB_DEPENDS+=		libdecaf.so:security/libdecaf \
-			libsodium.so:security/libsodium
-.else
-CONFIGURE_ARGS+=	--with-libsodium=no
-.endif
-
 post-install::
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR} ${STAGEDIR}/var/run/pdns
 	@${STAGEDIR}${PREFIX}/sbin/pdns_server --module-dir=${STAGEDIR}${PREFIX}/lib/pdns --launch="pipe bind ${MODULES}" --config > ${STAGEDIR}${EXAMPLESDIR}/pdns.conf
 	@${REINPLACE_CMD} -e 's;${STAGEDIR};;' -i '' ${STAGEDIR}${EXAMPLESDIR}/pdns.conf
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

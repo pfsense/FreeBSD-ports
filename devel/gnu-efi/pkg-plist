@@ -4,6 +4,7 @@ include/efi/efi_pxe.h
 include/efi/efiapi.h
 include/efi/eficompiler.h
 include/efi/eficon.h
+include/efi/eficonex.h
 include/efi/efidebug.h
 include/efi/efidef.h
 include/efi/efidevp.h
@@ -22,12 +23,13 @@ include/efi/efipxebc.h
 include/efi/efirtlib.h
 include/efi/efiser.h
 include/efi/efisetjmp.h
+include/efi/efishell.h
 include/efi/efishellintf.h
-include/efi/efishellparm.h
 include/efi/efistdarg.h
 include/efi/efitcp.h
 include/efi/efiudp.h
 include/efi/efiui.h
+include/efi/lib.h
 include/efi/libsmbios.h
 include/efi/pci22.h
 include/efi/protocol/adapterdebug.h

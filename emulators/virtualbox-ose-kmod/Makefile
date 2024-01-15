@@ -1,16 +1,13 @@
-# Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
-
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.44
-PORTREVISION=	3
+PORTVERSION=	6.1.48
 CATEGORIES=	emulators
-MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
+MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX=	-kmod
 DISTNAME=	VirtualBox-${PORTVERSION}
 
 MAINTAINER=	vbox@FreeBSD.org
 COMMENT=	VirtualBox kernel module for FreeBSD
+WWW=		https://www.virtualbox.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,11 +17,14 @@ BUILD_DEPENDS=	kmk:devel/kBuild
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
 
-USES=		cpe kmod tar:bzip2
+SUB_FILES=	pkg-message
+SUB_LIST=	OPSYS=${OPSYS} OSREL=${OSREL}
+
+USES=		cpe compiler:c++14-lang kmod tar:bzip2
 PATCHDIR=	${.CURDIR}/../${PORTNAME}/files
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 USE_RC_SUBR=	vboxnet
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--build-headless
@@ -38,8 +38,7 @@ CONFIGURE_ARGS+=	--disable-alsa \
 			--disable-xpcom
 CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
-CONFLICTS_INSTALL=	virtualbox-ose-kmod-devel-* \
-			virtualbox-ose-kmod-legacy-*
+CONFLICTS_INSTALL=	virtualbox-ose-kmod-legacy
 
 OPTIONS_DEFINE=	DEBUG VIMAGE
 OPTIONS_DEFAULT=VIMAGE
@@ -63,7 +62,8 @@ KMK_FLAGS=	HostDrivers-scripts vboxdrv-src VBoxNetFlt-src VBoxNetAdp-src
 .if ${PORT_OPTIONS:MDEBUG}
 KMK_FLAGS+=	BUILD_TYPE=debug
 KMK_BUILDTYPE=	debug
-EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-HostDrivers-Support-freebsd-Makefile
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-Config.kmk \
+		${PATCHDIR}/extrapatch-src-VBox-HostDrivers-Support-freebsd-Makefile
 MAKE_ARGS+=	DEBUG_FLAGS="-O1 -g"
 .endif
 

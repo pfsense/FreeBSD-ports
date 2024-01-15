@@ -1,6 +1,3 @@
-# Created by: hrs, lesi
-# $FreeBSD$
-
 # NOTE: libc.so.5 is built with _PATH_LOCALE defined to
 # "/usr/local/share/compat/locale" in src/include/paths.h so data installed by
 # misc/localedata works out of the box if installed in default PREFIX.
@@ -22,7 +19,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=	tar:bzip2
 NO_BUILD=	yes
-ONLY_FOR_ARCHS=	amd64 i386 sparc64
+ONLY_FOR_ARCHS=	amd64 i386
 TARGET_DIR=	${PREFIX}/lib/compat
 TARGET32_DIR=	${PREFIX}/lib32/compat
 USE_LDCONFIG=	${TARGET_DIR}
@@ -40,12 +37,6 @@ PLIST_SUB+=	AMD64="@comment "
 PLIST_SUB+=	I386=""
 .else
 PLIST_SUB+=	I386="@comment "
-.endif
-
-.if ${ARCH} == sparc64
-PLIST_SUB+=	SPARC64=""
-.else
-PLIST_SUB+=	SPARC64="@comment "
 .endif
 
 do-install:

@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Sub-Current
 PORTVERSION=	0.03
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Get the current subroutine
+WWW=		https://metacpan.org/release/Sub-Current
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

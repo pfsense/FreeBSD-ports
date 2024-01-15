@@ -1,6 +1,3 @@
-# Created by: Kurt Lidl <kurt.lidl@cello.com>
-# $FreeBSD$
-
 PORTNAME=	Data-Inspect
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	kurt.lidl@cello.com
 COMMENT=	Another pretty-printer for perl objects
+WWW=		https://metacpan.org/release/Data-Inspect
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,6 +1,3 @@
-# Created by: torstenb
-# $FreeBSD$
-
 PORTNAME=	mirror
 PORTVERSION=	2.9
 PORTREVISION=	2
@@ -13,6 +10,7 @@ PATCHFILES=	ftp.pl_wupatch
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Mirror packages on remote sites
+WWW=		http://ry.ca/mirror/mirror/
 
 MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 

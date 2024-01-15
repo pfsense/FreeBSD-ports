@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Benchmark-Forking
 PORTVERSION=	1.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Run benchmarks in separate processes
+WWW=		https://metacpan.org/release/Benchmark-Forking
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

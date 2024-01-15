@@ -1,7 +1,7 @@
---- src/Makefile.orig	2018-07-16 09:17:06 UTC
+--- src/Makefile.orig	2023-12-28 23:33:46 UTC
 +++ src/Makefile
-@@ -554,8 +554,10 @@ LIBS:=
- LDFLAGS:=
+@@ -613,8 +613,10 @@ endif
+ OPTINC:=
  INSTALL_SUPPL:=
  
 -CFLAGS:=
@@ -12,16 +12,17 @@
  ifdef ARCH
    # if does not have leading -march, -mcpu, -mtune, or similar.
    ifeq ($(filter -march% -mcpu% -mtune% -m%, $(strip $(ARCH))),)
-@@ -598,7 +600,7 @@ ifeq ($(SMIF), SDL)
-       # default is Linux, for all unix SDL
-       EXENAME:=doomlegacy
-       LDFLAGS+=-L/usr/X11R6/lib
--      LIBS+=-lGL -lGLU -lm
-+      LIBS+=-lGL -lGLU -lm -lipx
-       # -L/usr/X11R6/lib is needed by Linux 2.4 and others that still have
-       # the GLU libraries in an X11 directory.
-       # -lm is needed for pow, powf, and other MATH1 functions.
-@@ -1001,11 +1003,11 @@ ifdef DEBUG
+@@ -1260,8 +1262,7 @@ ifdef CDMUS
+ endif
+ 
+ # LIBZIP
+-# For now, Linux only.
+-ifeq ($(OS), LINUX)
++ifneq ($(filter LINUX FREEBSD,$(OS)),)
+   ifdef HAVE_DLOPEN
+     LIBS+=-ldl
+     OPTS+=-DHAVE_DLOPEN
+@@ -1317,11 +1318,11 @@ ifdef DEBUG
  else
  # build a normal optimized version
    #CFLAGS+=-O3

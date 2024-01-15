@@ -1,28 +1,38 @@
---- content/browser/webui/web_ui_main_frame_observer.cc.orig	2021-01-18 21:28:57 UTC
+--- content/browser/webui/web_ui_main_frame_observer.cc.orig	2023-05-31 08:12:17 UTC
 +++ content/browser/webui/web_ui_main_frame_observer.cc
-@@ -10,7 +10,7 @@
- #include "content/browser/webui/web_ui_impl.h"
+@@ -13,7 +13,7 @@
  #include "content/public/browser/navigation_handle.h"
+ #include "content/public/browser/web_ui_controller.h"
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- #include "base/callback_helpers.h"
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include "base/feature_list.h"
+ #include "base/functional/callback_helpers.h"
  #include "base/logging.h"
-@@ -41,7 +41,7 @@ void WebUIMainFrameObserver::DidFinishNavigation(
-   web_ui_->DisallowJavascriptOnAllHandlers();
- }
+@@ -31,7 +31,7 @@ namespace content {
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ namespace {
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ // Remove the pieces of the URL we don't want to send back with the error
+ // reports. In particular, do not send query or fragments as those can have
+ // privacy-sensitive information in them.
+@@ -55,7 +55,7 @@ WebUIMainFrameObserver::WebUIMainFrameObserver(WebUIIm
+ 
+ WebUIMainFrameObserver::~WebUIMainFrameObserver() = default;
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  void WebUIMainFrameObserver::OnDidAddMessageToConsole(
      RenderFrameHost* source_frame,
      blink::mojom::ConsoleMessageLevel log_level,
-@@ -101,6 +101,6 @@ void WebUIMainFrameObserver::OnDidAddMessageToConsole(
-   processor->SendErrorReport(std::move(report), base::DoNothing(),
-                              web_contents()->GetBrowserContext());
- }
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+@@ -167,7 +167,7 @@ void WebUIMainFrameObserver::ReadyToCommitNavigation(
  
- }  // namespace content
+ // TODO(crbug.com/1129544) This is currently disabled due to Windows DLL
+ // thunking issues. Fix & re-enable.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+   MaybeEnableWebUIJavaScriptErrorReporting(navigation_handle);
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+ }

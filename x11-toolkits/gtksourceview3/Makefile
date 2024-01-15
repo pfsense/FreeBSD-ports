@@ -1,38 +1,34 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtksourceview
 PORTVERSION=	3.24.11
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Text widget that adds syntax highlighting to the GtkTextView widget
+WWW=		https://wiki.gnome.org/Projects/GtkSourceView/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c11 tar:xz
+USES=		compiler:c11 tar:xz vala:build
 
 PORTSCOUT=	limitw:1,even
 
-BUILD_DEPENDS=	vala:lang/vala
 LIB_DEPENDS=	libfribidi.so:converters/fribidi
 
-USES+=		gettext gmake gnome libtool pathfix pkgconfig
+USES+=		gettext gmake gnome libtool localbase pathfix pkgconfig
 USE_CSTD=	c11
-USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 intlhack \
-		introspection:build libxml2 referencehack
+USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 \
+		introspection:build libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-compile-warnings=no \
 		--enable-glade-catalog=no \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--enable-introspection
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS

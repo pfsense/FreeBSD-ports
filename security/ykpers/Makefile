@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ykpers
 PORTVERSION=	1.19.0
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	https://developers.yubico.com/yubikey-personalization/Releases/
 
 MAINTAINER=	matt@mjslabs.com
 COMMENT=	Library and tool for personalization of Yubico's YubiKey
+WWW=		https://developers.yubico.com/yubikey-personalization/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

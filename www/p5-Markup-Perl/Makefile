@@ -1,6 +1,3 @@
-# Created by: Jeremy Chadwick <koitsu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Markup-Perl
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	Markup-Perl-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Support perl code inside CGI scripts using simple tags
+WWW=		https://metacpan.org/release/Markup-Perl
 
 USES=		perl5
 USE_PERL5=	configure

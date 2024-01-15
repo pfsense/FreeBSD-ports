@@ -1,12 +1,11 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	libarea
 PORTVERSION=	20191031
+PORTREVISION=	1
 CATEGORIES=	devel cad
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CAM-related software for profile and pocketing operations
+WWW=		https://github.com/heeks/libarea
 
 LICENSE=	BSD3CLAUSE
 
@@ -19,6 +18,8 @@ GH_ACCOUNT=	Heeks
 GH_TAGNAME=	2752cd9
 
 USE_LDCONFIG=	yes
+
+CXXFLAGS+=	"-DBOOST_TIMER_ENABLE_DEPRECATED=yes"
 
 post-patch:
 	@${REINPLACE_CMD} 's,COMMAND python ,COMMAND ${PYTHON_CMD} , ; \

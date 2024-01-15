@@ -1,19 +1,16 @@
-# Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	netgen
-PORTVERSION=	6.2.2009
+PORTVERSION=	6.2.2307
 DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Automatic 3D tetrahedral mesh generator
+WWW=		https://ngsolve.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	relies on rdtsc() call and the TSC is specific to x86
+BROKEN_i386=	compiler errors
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR} \
 		git:devel/git
@@ -22,7 +19,7 @@ USES=		cmake python tcl tk gl xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	NGSolve
-GH_TUPLE=	NGSolve:pybind11:v2.4.3:pybind11/external_dependencies/pybind11
+GH_TUPLE=	NGSolve:pybind11:v2.7.1:pybind11/external_dependencies/pybind11
 
 USE_GL=		gl glu
 USE_XORG=	x11 xmu xi
@@ -31,6 +28,12 @@ USE_LDCONFIG=	yes
 CFLAGS+=	-I${LOCALBASE}/include -I${TK_INCLUDEDIR}/generic -I${TK_INCLUDEDIR}/unix
 CXXFLAGS+=	-I${LOCALBASE}/include -I${TK_INCLUDEDIR}/generic -I${TK_INCLUDEDIR}/unix
 LDFLAGS+=	-lexecinfo
+
+CMAKE_OFF=	USE_NATIVE_ARCH
+
+CMAKE_ARGS+=	-DUSE_OCC=OFF
+
+CONFLICTS_INSTALL=	libvisual pybind11 # bin/netgen include/pybind11/attr.h lib/libvisual.so
 
 OPTIONS_DEFINE=	JPEG MPEG CGNS
 

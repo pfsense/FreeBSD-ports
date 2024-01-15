@@ -3,7 +3,7 @@
  * squid_monitor.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2012-2014 Marcello Coutinho
  * Copyright (C) 2012-2014 Carlos Cesario <carloscesario@gmail.com>
  * All rights reserved.
@@ -168,7 +168,6 @@ display_top_tabs($tab_array);
 	<div class="panel-body">
 		<div class="table-responsive">
 			<table class="table table-hover table-condensed">
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">

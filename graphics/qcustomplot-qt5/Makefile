@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	qcustomplot
-DISTVERSION=	2.0.1
+DISTVERSION=	2.1.1
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.qcustomplot.com/release/${PORTVERSION}/
 PKGNAMESUFFIX=	${SUFFIX}
@@ -10,12 +8,13 @@ DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Qt C++ widget for plotting and data visualization
+WWW=		https://www.qcustomplot.com
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/GPL.txt
 
 USES=		compiler:c++11-lang pkgconfig qt:5
-USE_QT=		core gui widgets printsupport buildtools_build
+USE_QT=		core gui widgets printsupport buildtools:build
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

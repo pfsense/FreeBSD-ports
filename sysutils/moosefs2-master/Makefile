@@ -1,6 +1,3 @@
-# Created by: Jakub Kruszona-Zawadzki <acid@moosefs.com> ; Based on port created by: Chifeng Qu <chifeng@gmail.com>
-# $FreeBSD$
-
 PORTNAME=		moosefs2
 PORTVERSION=		2.0.91
 CATEGORIES=		sysutils
@@ -10,6 +7,7 @@ DISTNAME=		moosefs-${PORTVERSION}-1
 
 MAINTAINER=		freebsd@moosefs.com
 COMMENT?=		Fault-tolerant distributed filesystem
+WWW=		https://moosefs.com/
 
 LICENSE=		GPLv2
 

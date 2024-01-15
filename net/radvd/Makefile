@@ -1,13 +1,12 @@
-# Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
-
 PORTNAME=	radvd
 PORTVERSION=	2.19
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.litech.org/radvd/dist/
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Linux/BSD IPv6 router advertisement daemon
+WWW=		http://www.litech.org/radvd/
 
 LICENSE=	RADVD
 LICENSE_NAME=	RADVD License

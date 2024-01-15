@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object-Role-Arguable
 PORTVERSION=	0.01
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Arguable Role for Data::Object
+WWW=		https://metacpan.org/release/Data-Object-Role-Arguable
 
 LICENSE=	APACHE20
 

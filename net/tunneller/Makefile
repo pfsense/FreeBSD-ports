@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	tunneller
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.6
+PORTREVISION=	15
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Expose internal services to be accessed over the internet
+WWW=		https://github.com/skx/tunneller
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

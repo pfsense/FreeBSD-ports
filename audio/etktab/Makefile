@@ -1,6 +1,3 @@
-# Created by: Juha Erkkilä <erkkila@cc.jyu.fi>
-# $FreeBSD$
-
 PORTNAME=	etktab
 PORTVERSION=	3.2
 PORTREVISION=	3
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Guitar tablature editor
+WWW=		https://etktab.sourceforge.net/
 
 USES=		tk
 NO_BUILD=	yes

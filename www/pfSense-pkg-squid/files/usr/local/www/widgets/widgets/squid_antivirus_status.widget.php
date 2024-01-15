@@ -3,7 +3,7 @@
  * squid_antivirus_status.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2010 Serg Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -31,7 +31,7 @@ if (file_exists("/usr/local/pkg/squid.inc")) {
 	echo "No squid.inc found. You must have Squid package installed to use this widget.";
 }
 
-if (isset($config['system']['use_mfs_tmpvar'])) {
+if (config_path_enabled('system', 'use_mfs_tmpvar')) {
 	define('PATH_CLAMDB', '/usr/local/share/clamav-db/');
 } else {
 	define('PATH_CLAMDB', '/var/db/clamav/');
@@ -41,10 +41,10 @@ define('PATH_AVLOG', '/var/log/c-icap/virus.log');
 global $clamd_path, $img;
 $clamd_path = SQUID_BASE . "/sbin/clamd";
 $img = array();
-$img['up'] = '<i class="fa fa-level-up text-success" title="Service running"></i>';
-$img['down'] = '<i class="fa fa-level-down text-danger" title="Service not running"></i>';
+$img['up'] = '<i class="fa-solid fa-turn-up text-success" title="Service running"></i>';
+$img['down'] = '<i class="fa-solid fa-turn-down text-danger" title="Service not running"></i>';
 // Update once per minute by default, instead of every 10 seconds
-$widgetperiod = isset($config['widgets']['period']) ? $config['widgets']['period'] * 1000 * 6 : 60000;
+$widgetperiod = config_get_path('widgets/period', 10) * 6000;
 
 function squid_avdb_info($filename) {
 	$stl = "style='padding-top: 0px; padding-bottom: 0px; padding-left: 4px; padding-right: 4px; border-left: 1px solid #999999;'";

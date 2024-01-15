@@ -1,6 +1,3 @@
-# Created by: Alexander Y. Grigoryev <alexander.4mail@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	cnagios
 PORTVERSION=	0.33
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	net-mgmt
 
 MAINTAINER=	danny@dannywarren.com
 COMMENT=	Curses-based interface for nagios
+WWW=		https://github.com/dannywarren/cnagios
 
 LICENSE=	ISCL
 
@@ -23,6 +21,8 @@ nagios4_RUN_DEPENDS=	nagios4>=4.0:net-mgmt/nagios4
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dannywarren
+
+CONFLICTS_INSTALL=	cnagios-nagios* # bin/cnagios
 
 NAGIOSDIR?=	/var/spool/nagios
 ETCDIR=		${PREFIX}/etc/nagios

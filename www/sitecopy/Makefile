@@ -1,24 +1,24 @@
-# Created by: nik
-# $FreeBSD$
-
 PORTNAME=	sitecopy
 PORTVERSION=	0.16.6
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	www
 MASTER_SITES=	http://www.manyfish.co.uk/${PORTNAME}/ \
 		GENTOO
 
 MAINTAINER=	sitecopy@oldach.net
 COMMENT=	Maintains remote websites, uses FTP or WebDAV to sync up w/ local copy
+WWW=		https://www.manyfish.co.uk/sitecopy/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libneon.so:www/neon
 
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
-CONFIGURE_ARGS=	--with-neon --with-libxml2
+USES=		gmake gnome localbase
 USE_GNOME=	libxml2
-USES=		gmake gnome
+GNU_CONFIGURE=	yes
+
+CONFIGURE_ARGS=	--with-neon --with-libxml2
 
 OPTIONS_DEFINE=	NLS
 
@@ -41,9 +41,9 @@ CONFIGURE_ARGS+=	--with-ssl
 post-patch:
 	@${REINPLACE_CMD} -e 's|;;|;|g' \
 		${WRKSRC}/src/sitestore.c
-	@${REINPLACE_CMD} -e 's|25 26 27 28|& 29 30 31|g' \
+	@${REINPLACE_CMD} -e 's|25 26 27 28|& 29 30 31 32|g' \
 		${WRKSRC}/configure
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200072
+.if ${OPSYS} == FreeBSD
 	@${REINPLACE_CMD} -e '/#define ksize_t /d' \
 		${WRKSRC}/configure
 .endif

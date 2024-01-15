@@ -1,31 +1,39 @@
-# $FreeBSD$
+PORTNAME=		bc
+PORTVERSION=		6.7.5
+CATEGORIES=		math lang
+MASTER_SITES=		https://github.com/gavinhoward/bc/releases/download/${PORTVERSION}/
+PKGNAMEPREFIX=		gh-
 
-PORTNAME=	bc
-PORTVERSION=	3.2.4
-CATEGORIES=	math lang
-PKGNAMEPREFIX=	gh-
+MAINTAINER=		se@FreeBSD.org
+COMMENT=		GNU compatible bc/dc calculator
+WWW=			https://git.gavinhoward.com/gavin/bc
 
-MAINTAINER=	se@FreeBSD.org
-COMMENT=	GNU compatible bc/dc calculator
+LICENSE=		BSD2CLAUSE MIT
+LICENSE_COMB=		multi
+LICENSE_FILE=		${WRKSRC}/LICENSE.md
 
-LICENSE=	BSD2CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
+USES=			compiler:c11 tar:xz
 
-USES=		compiler
-USE_GITHUB=	yes
-GH_ACCOUNT=	gavinhoward
-
-HAS_CONFIGURE=	yes
+HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	configure.sh
-CONFIGURE_ARGS=	-G
+CONFIGURE_ARGS+=	--predefined-build-type=BSD --disable-problematic-tests
 
-.include <bsd.port.pre.mk>
+TEST_TARGET=		test
 
-.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
-CFLAGS+=	--std=c99
-.endif
+CONFLICTS_INSTALL=	gnubc
 
-CONFLICTS_INSTALL=	gnubc-[0-9]*
+OPTIONS_DEFAULT=	LIBEDIT
+OPTIONS_RADIO=		HISTORY
+OPTIONS_RADIO_HISTORY=	LIBEDIT READLINE INTERNAL
+INTERNAL_DESC=		Command line editing via private functions
+
+INTERNAL_CONFIGURE_ON=	--enable-internal-history
+
+LIBEDIT_USES=		libedit
+LIBEDIT_CONFIGURE_ON=	--enable-editline
+
+READLINE_USES=		readline
+READLINE_CONFIGURE_ON=	--enable-readline
 
 pre-build:
 		${INSTALL_SCRIPT} ${WRKSRC}/gen/strgen.sh ${WRKSRC}/gen/strgen
@@ -36,11 +44,8 @@ do-install:
 		${INSTALL_MAN} ${WRKSRC}/manuals/bc.1 ${STAGEDIR}${MANPREFIX}/share/man/man1
 		${INSTALL_MAN} ${WRKSRC}/manuals/dc.1 ${STAGEDIR}${MANPREFIX}/share/man/man1
 		${MKDIR} ${STAGEDIR}${PREFIX}/share/nls/C
-		${WRKSRC}/locale_install.sh ${STAGEDIR}${PREFIX}/share/nls/%L/%N.cat ${PORTNAME}
+		${WRKSRC}/scripts/locale_install.sh ${STAGEDIR}${PREFIX}/share/nls/%L/%N.cat ${PORTNAME}
 		${MV} ${STAGEDIR}${PREFIX}/share/nls/en_US/bc.cat ${STAGEDIR}${PREFIX}/share/nls/C/
 		${RMDIR} ${STAGEDIR}${PREFIX}/share/nls/en_US
 
-do-test:
-		${MAKE} -C ${WRKSRC} test
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

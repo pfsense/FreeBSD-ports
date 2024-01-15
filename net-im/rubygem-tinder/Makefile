@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tinder
 PORTVERSION=	1.10.1
 PORTREVISION=	3
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby API for interfacing with Campfire
+WWW=		https://github.com/collectiveidea/tinder
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
@@ -22,7 +21,6 @@ RUN_DEPENDS=	rubygem-eventmachine>=1.0<2:devel/rubygem-eventmachine \
 		rubygem-twitter-stream>=0.1<1:net/rubygem-twitter-stream
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

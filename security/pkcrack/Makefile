@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	pkcrack
 PORTVERSION=	1.2.2
 CATEGORIES=	security
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Utility for breaking pkzip encryption
+WWW=		https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html
 
 USES=		gmake
 

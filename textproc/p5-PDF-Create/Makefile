@@ -1,6 +1,3 @@
-# Created by: petef@databits.net
-# $FreeBSD$
-
 PORTNAME=	PDF-Create
 PORTVERSION=	1.46
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl script to convert text files to PDF files
+WWW=		https://metacpan.org/release/PDF-Create
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

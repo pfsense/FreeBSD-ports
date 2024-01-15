@@ -1,6 +1,3 @@
-# Created by: Foxfair Hu <foxfair@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-Anubis
 PORTVERSION=	1.0.4
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Crypt::CBC-compliant block cipher
+WWW=		https://metacpan.org/release/Crypt-Anubis
 
 USES=		perl5
 USE_PERL5=	configure

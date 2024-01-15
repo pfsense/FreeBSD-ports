@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	App-Trace
 PORTVERSION=	0.50
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Embedded debug statements, including call/return tracing
+WWW=		https://metacpan.org/release/App-Trace
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

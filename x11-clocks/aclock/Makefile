@@ -1,15 +1,13 @@
-# Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
-
 PORTNAME=	aclock
 PORTVERSION=	0.4.0
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	x11-clocks gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	AClock-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Analog Clock for GNUstep
+WWW=		https://gap.nongnu.org/aclock/index.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

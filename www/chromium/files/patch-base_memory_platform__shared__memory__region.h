@@ -1,29 +1,29 @@
---- base/memory/platform_shared_memory_region.h.orig	2020-11-13 06:36:34 UTC
+--- base/memory/platform_shared_memory_region.h.orig	2023-07-16 15:47:57 UTC
 +++ base/memory/platform_shared_memory_region.h
-@@ -27,7 +27,7 @@
- #include "base/files/scoped_file.h"
- #endif
+@@ -16,7 +16,7 @@
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ #include <stdint.h>
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  namespace content {
  class SandboxIPCHandler;
  }
-@@ -120,7 +120,7 @@ class BASE_EXPORT PlatformSharedMemoryRegion {
+@@ -83,7 +83,7 @@ class BASE_EXPORT PlatformSharedMemoryRegion {
      kMaxValue = GET_SHMEM_TEMP_DIR_FAILURE
    };
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    // Structure to limit access to executable region creation.
    struct ExecutableRegion {
     private:
-@@ -264,7 +264,7 @@ class BASE_EXPORT PlatformSharedMemoryRegion {
+@@ -215,7 +215,7 @@ class BASE_EXPORT PlatformSharedMemoryRegion {
                             CheckPlatformHandlePermissionsCorrespondToMode);
    static PlatformSharedMemoryRegion Create(Mode mode,
                                             size_t size
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
                                             ,
                                             bool executable = false
  #endif

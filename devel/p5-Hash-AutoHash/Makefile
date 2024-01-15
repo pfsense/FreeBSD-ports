@@ -1,6 +1,3 @@
-# Created by: Frederic Culot <frederic@culot.org>
-# $FreeBSD$
-
 PORTNAME=	Hash-AutoHash
 PORTVERSION=	1.17
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object-oriented access to real and tied hashes
+WWW=		https://metacpan.org/release/Hash-AutoHash
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -22,5 +20,7 @@ TEST_DEPENDS=	p5-Test-Deep>=0.11:devel/p5-Test-Deep \
 
 USES=		perl5
 USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

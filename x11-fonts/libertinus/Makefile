@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libertinus
-DISTVERSION=	7.020
+DISTVERSION=	7.040
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://github.com/alerque/libertinus/releases/download/v${DISTVERSION}/
 DISTNAME=	Libertinus-${DISTVERSION}
 
 MAINTAINER=	tcberner@FreeBSD.org
 COMMENT=	Libertinus Open Fonts
+WWW=		https://github.com/alerque/libertinus
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/OFL.txt

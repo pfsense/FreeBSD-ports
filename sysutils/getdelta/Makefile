@@ -1,17 +1,12 @@
-# Created by: Anton Statutov <astatutov@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	getdelta
 PORTVERSION=	0.7.8
 PORTREVISION=	5
 CATEGORIES=	sysutils ports-mgmt
-MASTER_SITES=	GENTOO \
-		http://132.207.4.160/distfiles/ \
-		http://distfiles.gentoo.org/distfiles/ \
-		http://linux01.gwdg.de/~nlissne/
+MASTER_SITES=	http://linux01.gwdg.de/~nlissne/
 
 MAINTAINER=	astatutov@gmail.com
 COMMENT=	Script for reducing bandwidth load while upgrading ports disfiles
+WWW=		http://linux01.gwdg.de/~nlissne/
 
 LICENSE=	GPLv2
 

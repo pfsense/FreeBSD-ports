@@ -1,6 +1,3 @@
-# Created by: Hung-Yi Chen <gaod@hychen.org>
-# $FreeBSD$
-
 PORTNAME=	sshsudo
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Bash script to run sudo command on multiple remote computers
+WWW=		https://github.com/gaod/sshsudo
 
 LICENSE=	GPLv3
 

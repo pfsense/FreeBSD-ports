@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../bitcoin
 PKGNAMESUFFIX=	-daemon
 
@@ -24,8 +22,6 @@ PLIST_FILES=	bin/bitcoind \
 		"@sample %%ETCDIR%%.conf.sample"
 
 USE_RC_SUBR=	bitcoind
-
-PORTREVISION=	3
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/bitcoin.conf ${STAGEDIR}${PREFIX}/etc/bitcoin.conf.sample

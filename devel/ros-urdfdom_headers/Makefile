@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ros-urdfdom_headers
-DISTVERSION=	1.0.4
-PORTREVISION=	1
+DISTVERSION=	1.0.6
 CATEGORIES=	devel
 
 MAINTAINER=	trueos@norwegianrockcat.com
 COMMENT=	Headers for Unified Robot Description Format (URDF) parsers
+WWW=		https://wiki.ros.org/urdf
 
 LICENSE=	BSD3CLAUSE
 

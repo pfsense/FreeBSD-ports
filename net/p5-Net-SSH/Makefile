@@ -1,6 +1,3 @@
-# Created by: Vadim Belman <vab@lflat.vas.mobilix.dk>
-# $FreeBSD$
-
 PORTNAME=	Net-SSH
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to access and use ssh protocol
+WWW=		https://metacpan.org/release/Net-SSH
 
 USES=		perl5
 USE_PERL5=	configure

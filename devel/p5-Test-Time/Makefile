@@ -1,16 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Time
-PORTVERSION=	0.04
-PORTREVISION=	1
+PORTVERSION=	0.092
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to override time()/sleep() core functions for testing
+WWW=		https://metacpan.org/release/Test-Time
+
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

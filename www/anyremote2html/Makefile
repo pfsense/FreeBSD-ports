@@ -1,6 +1,3 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
-
 PORTNAME=	anyremote2html
 PORTVERSION=	1.4
 CATEGORIES=	www deskutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/anyremote/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web interface for anyRemote
+WWW=		https://anyremote.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

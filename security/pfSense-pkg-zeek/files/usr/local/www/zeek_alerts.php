@@ -25,7 +25,7 @@ require_once("/etc/inc/pkg-utils.inc");
 require_once("/etc/inc/globals.inc");
 require_once("guiconfig.inc");
 
-$pgtitle = array(gettext("Package"), gettext("Zeek"), gettext("Alerts"));
+$pgtitle = array(gettext("Status"), gettext("Zeek"), gettext("Alerts"));
 $shortcut_section = "zeek";
 include("head.inc");
 
@@ -113,7 +113,9 @@ $( "#logfile" ).change(function() {
 });
 
 function updateSelect() {
+	var selected = $('#logfile').val();
 	var x = 'x='+$('#logfile').length;
+
 	jQuery.ajax({
 		type: "POST",
 		url: "select_box_file.php",
@@ -121,6 +123,10 @@ function updateSelect() {
 		success: function(html) {
 			if (html) {
 				$("#logfile").html(html);
+
+				if (typeof selected !== 'undefined' && selected) {
+					$('#logfile').val(selected);
+				}
 			}
 		},
 	});

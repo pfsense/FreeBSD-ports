@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	npth
 PORTVERSION=	1.6
 CATEGORIES=	devel
@@ -7,6 +5,7 @@ MASTER_SITES=	GNUPG
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	New GNU Portable Threads
+WWW=		https://www.gnupg.org/software/npth/index.html
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

@@ -1,6 +1,3 @@
-# Created by: milki <milki@rescomp.berkeley.edu>
-# $FreeBSD$
-
 PORTNAME=	SQL-Tokenizer
 PORTVERSION=	0.24
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:IZUT
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple regular expressions based SQL tokenizer
+WWW=		https://metacpan.org/release/SQL-Tokenizer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	hhm
 PORTVERSION=	0.1.1
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HTML Help Maker
+WWW=		http://bonedaddy.net/pabs3/code/ #hhm
 
 LIB_DEPENDS=	liblzxcomp.so:archivers/liblzxcomp
 

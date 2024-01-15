@@ -1,6 +1,3 @@
-# Created by: Michal Bielicki <m.bielicki@llizardfs.com>
-# $FreeBSD$
-
 PORTNAME=	isa-l_crypto
 PORTVERSION=	2.21.0
 DISTVERSIONPREFIX=	v
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	-kmod
 
 MAINTAINER=	gallatin@FreeBSD.org
 COMMENT=	KTLS module using Intel(R) ISA-L crypto
+WWW=		https://github.com/01org/isa-l_crypto
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -32,6 +30,10 @@ PLIST_FILES=	${KMODDIR}/ktls_intel-isa-l.ko
 
 .if !exists(${SRC_BASE}/sys/sys/ktls.h)
 IGNORE=		requires KTLS support
+.endif
+
+.if ${OSVERSION} >= 1400016
+IGNORE=		is only supported on FreeBSD 13
 .endif
 
 post-extract:

@@ -1,15 +1,13 @@
-# Created by: Christopher Nehren <apeiron+ports@coitusmentis.info>
-# $FreeBSD$
-
 PORTNAME=	nant
 PORTVERSION=	0.92
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	.NET build tool inspired by Ant
+WWW=		https://github.com/nant/nant
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

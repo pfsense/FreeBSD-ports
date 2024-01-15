@@ -3,11 +3,11 @@
  * suricata_suppress_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,21 +26,12 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-
-if (!is_array($config['installedpackages']['suricata']))
-	$config['installedpackages']['suricata'] = array();
-$suricataglob = $config['installedpackages']['suricata'];
-
-if (!is_array($config['installedpackages']['suricata']['suppress']))
-	$config['installedpackages']['suricata']['suppress'] = array();
-if (!is_array($config['installedpackages']['suricata']['suppress']['item']))
-	$config['installedpackages']['suricata']['suppress']['item'] = array();
-$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
-
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
+
+$a_suppress = config_get_path('installedpackages/suricata/suppress/item', []);
 
 /* returns true if $name is a valid name for a whitelist file name or ip */
 function is_validwhitelistname($name) {
@@ -101,7 +92,7 @@ if ($_POST['save']) {
 		$s_list = array();
 		$s_list['name'] = $_POST['name'];
 		$s_list['uuid'] = uniqid();
-		$s_list['descr']  =  mb_convert_encoding($_POST['descr'],"HTML-ENTITIES","auto");
+		$s_list['descr'] = $_POST['descr'];
 		if ($_POST['suppresspassthru']) {
 			$s_list['suppresspassthru'] = str_replace("&#8203;", "", $s_list['suppresspassthru']);
 			$s_list['suppresspassthru'] = base64_encode($_POST['suppresspassthru']);
@@ -112,6 +103,7 @@ if ($_POST['save']) {
 		else
 			$a_suppress[] = $s_list;
 
+		config_set_path('installedpackages/suricata/suppress/item', $a_suppress);
 		write_config("Suricata pkg: saved changes to Suppress List {$s_list['name']}.");
 		sync_suricata_package_config();
 
@@ -120,7 +112,8 @@ if ($_POST['save']) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Suppression List Edit"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_suppress.php", "@self");
+$pgtitle = array("Services", "Suricata", "Suppression List", "Edit");
 include_once("head.inc");
 
 if ($input_errors) print_input_errors($input_errors);
@@ -132,6 +125,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), true, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");

@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	enchive
 PORTVERSION=	3.5
 CATEGORIES=	security
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Tool to encrypt files to yourself for long-term archival
+WWW=		https://github.com/skeeto/enchive
 
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/UNLICENSE

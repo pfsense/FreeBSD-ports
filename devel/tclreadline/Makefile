@@ -1,6 +1,3 @@
-# Created by: darius@dons.net.au
-# $FreeBSD$
-
 PORTNAME=	tclreadline
 PORTVERSION=	2.3.8
 DISTVERSIONPREFIX=	v
@@ -9,10 +6,11 @@ CATEGORIES=	devel tcl
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	GNU readline for TCL
+WWW=		https://tclreadline.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		autoreconf libtool tcl readline:port
+USES=		autoreconf libtool tcl readline
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-tcl=${TCL_LIBDIR} \

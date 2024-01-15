@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	quantum-espresso-pseudopotentials
 DISTVERSION=	g20180406
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Pseudopotentials for use with Quantum Espresso
+WWW=		https://www.quantum-espresso.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/License

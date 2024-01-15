@@ -1,12 +1,10 @@
-# Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libmowgli
 PORTVERSION=	1.0.0
 CATEGORIES=	devel
 
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Development framework for C
+WWW=		http://www.atheme.org/projects/libmowgli.html
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING

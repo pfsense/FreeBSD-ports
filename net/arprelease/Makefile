@@ -1,9 +1,6 @@
-# Created by: nbm
-# $FreeBSD$
-
 PORTNAME=	arprelease
 PORTVERSION=	1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	SF
 

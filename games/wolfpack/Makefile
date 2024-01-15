@@ -1,14 +1,12 @@
-# Created by: Daniel O'Connor <darius@dons.net.au>
-# $FreeBSD$
-
 PORTNAME=	wolfpack
-PORTVERSION=	4.4.0
+PORTVERSION=	4.4.1
 CATEGORIES=	games
 MASTER_SITES=	SF/empserver/${DISTNAME}
 DISTNAME=	empire-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Long term multiplayer strategy game
+WWW=		http://www.wolfpackempire.com/
 
 LICENSE=	GPLv3+
 
@@ -19,7 +17,7 @@ GNU_CONFIGURE=	yes
 BINDIR=		lib/${PORTNAME}
 CONFIGURE_ARGS=	--bindir=${PREFIX}/${BINDIR} --sbindir=${PREFIX}/${BINDIR}
 
-CONFLICTS_INSTALL=	empire-[0-9]*
+CONFLICTS_INSTALL=	empire
 
 USERS=		wolfpack
 GROUPS=		wolfpack
@@ -27,15 +25,9 @@ GROUPS=		wolfpack
 USE_RC_SUBR=	wolfpack
 SUB_FILES+=	pkg-message
 
-.include <bsd.port.pre.mk>
-
 post-patch:
 	${REINPLACE_CMD} -e '/^econfig/,/^$$/s|/empire|/${PORTNAME}|' \
 		${WRKSRC}/Make.mk ${WRKSRC}/sources.mk
-.if ${ARCH} == "sparc64"
-	${REINPLACE_CMD} -e '/ucontext\.h/ { h; s|ucontext|sys/types|; G; }' \
-		${WRKSRC}/src/lib/lwp/lwpint.h
-.endif
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DATADIR}
@@ -45,4 +37,4 @@ post-install:
 	${STAGEDIR}${PREFIX}/lib/wolfpack/pconfig > \
 		${STAGEDIR}${ETCDIR}/econfig.sample
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

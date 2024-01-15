@@ -1,6 +1,3 @@
-# Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Sys-Hostname-FQDN
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
 COMMENT=	Get the short or long hostname
+WWW=		https://metacpan.org/release/Sys-Hostname-FQDN
 
 LICENSE=	ART20
 

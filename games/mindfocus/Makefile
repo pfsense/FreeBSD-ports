@@ -1,6 +1,3 @@
-# Created by: Sugimoto Sadahiro <ixtl@utmc.or.jp>
-# $FreeBSD$
-
 PORTNAME=	mindfocus
 PORTVERSION=	0.88
 PORTREVISION=	2
@@ -10,10 +7,16 @@ DISTFILES=	mindfocus-0.88.tar.gz mindfocus-data1.tar.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lovely characters stay on top of active window
+WWW=		https://www.toyoshima-house.net/classic/mf/index.html
+
+# Converted from RESTRICTED
+LICENSE=	mindfocus
+LICENSE_NAME=	mindfocus
+LICENSE_TEXT=	'contains commercial character data'
+LICENSE_PERMS=	auto-accept
 
 USES=		imake xorg
 USE_XORG=	xpm
-RESTRICTED=	'contains commercial character data'
 
 DOCSDIR=	${PREFIX}/share/doc/ja/${PORTNAME}
 

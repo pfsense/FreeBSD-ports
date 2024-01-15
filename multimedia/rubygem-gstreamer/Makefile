@@ -1,20 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	gstreamer
-PORTVERSION=	3.4.3
+PORTVERSION=	4.2.0
 CATEGORIES=	multimedia rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Ruby/GStreamer is a Ruby binding for GStreamer
+COMMENT=	Ruby binding of GStreamer
+WWW=		https://ruby-gnome.github.io/ \
+		https://github.com/ruby-gnome/ruby-gnome
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 LIB_DEPENDS=	libgstreamer-1.0.so:multimedia/gstreamer1
-RUN_DEPENDS=	rubygem-gobject-introspection>=${PORTVERSION}:devel/rubygem-gobject-introspection
+RUN_DEPENDS=	rubygem-gobject-introspection>=${PORTVERSION}<${PORTVERSION}_99:devel/rubygem-gobject-introspection
 
 USES=		gem
-USE_RUBY=	yes
 
 .include <bsd.port.mk>

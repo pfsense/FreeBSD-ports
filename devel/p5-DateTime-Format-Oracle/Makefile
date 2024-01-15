@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Format-Oracle
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Parse and format Oracle dates and timestamps
+WWW=		https://metacpan.org/release/DateTime-Format-Oracle
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,8 +17,9 @@ RUN_DEPENDS=	p5-Convert-NLS_DATE_FORMAT>=0.03:converters/p5-Convert-NLS_DATE_FOR
 		p5-DateTime>=0:devel/p5-DateTime \
 		p5-DateTime-Format-Builder>=0:devel/p5-DateTime-Format-Builder
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

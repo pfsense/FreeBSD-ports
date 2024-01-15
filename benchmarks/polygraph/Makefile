@@ -1,23 +1,24 @@
-# Created by: Dima Sivachenko <dima@chg.ru>
-# $FreeBSD$
-
 PORTNAME=	polygraph
 DISTVERSION=	4.13.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	benchmarks www
 MASTER_SITES=	http://www.web-polygraph.org/downloads/srcs/
 EXTRACT_SUFX=	-src.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Benchmarking tool for Web proxies
+WWW=		https://www.web-polygraph.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=		does not build: libstdc++.so: undefined reference to __floatunditf@GCC_4.2.0
+
 USES=		gmake ncurses shebangfix
 SHEBANG_FILES=	tools/*.pl
-USE_GCC=	any
+USE_GCC=	yes
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	ac_cv_have_64bit_byte_order_conversion=yes
 
 # The port does not build with C++11 or later (bug 219275).
 USE_CXXSTD=	gnu++98
@@ -26,6 +27,7 @@ CONFLICTS=	ltrace-0*
 
 OPTIONS_DEFINE=		DOCS GNUPLOT GSSAPI LDNS PERL SSL ZLIB
 OPTIONS_DEFAULT=	SSL ZLIB
+OPTIONS_EXCLUDE_i386=	SSL
 
 GNUPLOT_DESC=		GNUPlot for full reporting functionality
 GNUPLOT_RUN_DEPENDS=	gnuplot:math/gnuplot

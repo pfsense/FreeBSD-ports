@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Compress-Snappy
 PORTVERSION=	0.24
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl interface to Google Snappy (de)compressor
+WWW=		https://metacpan.org/release/Compress-Snappy
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fsplib
 PORTVERSION=	0.14
 CATEGORIES=	net
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/fsp/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Library implementing FSP protocol
+WWW=		https://fsp.sourceforge.net/fsplib.html
 
 LICENSE=	FSPSSC
 LICENSE_NAME=	FSP software suite copyright

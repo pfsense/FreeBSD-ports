@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	keeperrl
 PORTVERSION=	0.0.${ALPHA_VERSION}
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -10,6 +8,7 @@ PATCHFILES=	c0fc69cbee72.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ambitious dungeon builder with roguelike elements
+WWW=		https://keeperrl.com/
 
 LICENSE=	GPLv2 OFL11
 LICENSE_COMB=	multi

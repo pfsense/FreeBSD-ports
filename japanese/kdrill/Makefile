@@ -1,6 +1,3 @@
-# Created by: Seth Kingsley <sethk@osd.bsdi.com>
-# $FreeBSD$
-
 PORTNAME=	kdrill
 PORTVERSION=	6.5
 CATEGORIES=	japanese
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to quiz you on the meanings of Kanji
+WWW=		http://www.bolthole.com/kdrill/
 
 RUN_DEPENDS=	xjdic:japanese/edict
 
@@ -16,6 +14,12 @@ USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 
 DATADIR=	${PREFIX}/share/dict/kdrill
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-build:
 	@(cd ${WRKSRC}/makedic && ${DO_MAKE_BUILD} ${ALL_TARGET})

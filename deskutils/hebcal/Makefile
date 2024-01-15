@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis
-# $FreeBSD$
-
 PORTNAME=	hebcal
 PORTVERSION=	4.13
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	deskutils
 
 MAINTAINER=	rtd24@columbia.edu
 COMMENT=	Perpetual Jewish calendar
+WWW=		https://hebcal.github.io
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

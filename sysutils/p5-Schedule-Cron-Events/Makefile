@@ -1,6 +1,3 @@
-# Created by: Andrey Kuzmin <akuz84@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Schedule-Cron-Events
 PORTVERSION=	1.95
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	akuz84@gmail.com
 COMMENT=	Take a line from a crontab and find out when events will occur
+WWW=		https://metacpan.org/release/Schedule-Cron-Events
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

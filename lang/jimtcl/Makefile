@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	jimtcl
-PORTVERSION=	0.80
+PORTVERSION=	0.82
 CATEGORIES=	lang tcl
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Small footprint implementation of the Tcl programming language
+WWW=		http://jim.tcl.tk
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +16,6 @@ GH_ACCOUNT=	msteveb
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
-		--full \
 		--enable-utf8 \
 		--enable-shared
 
@@ -31,6 +29,8 @@ PORTDOCS=		*
 TEST_TARGET=		test
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/jimsh
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/bin/jimsh \
+		${STAGEDIR}${PREFIX}/lib/libjim.so.${PORTVERSION}
 
 .include <bsd.port.mk>

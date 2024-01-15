@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PerlPoint-Package
 PORTVERSION=	0.45.2
 PORTREVISION=	2
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Presentation and documentation toolset
+WWW=		https://metacpan.org/release/PerlPoint-Package
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Digest-SHA1>=0:security/p5-Digest-SHA1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dsbmc-cli
 PORTVERSION=	0.4
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	http://freeshell.de/~mk/download/
 
 MAINTAINER=	mk@nic-nac-project.org
 COMMENT=	Command-line client for DSBMD
+WWW=		https://freeshell.de/~mk/projects/dsbmc-cli.html
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

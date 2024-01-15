@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	multi_json
 PORTVERSION=	1.14.1
 CATEGORIES=	devel rubygems
@@ -9,12 +6,12 @@ PKGNAMESUFFIX=	114
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Ruby library provide swappable JSON backends
+WWW=		https://github.com/intridea/multi_json
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

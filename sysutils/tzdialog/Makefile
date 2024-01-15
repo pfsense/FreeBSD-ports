@@ -1,6 +1,3 @@
-# Created by: Devin Teske <dteske@vicor.com>
-# $FreeBSD$
-
 PORTNAME=	tzdialog
 PORTVERSION=	1.2
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	http://druidbsd.sourceforge.net/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set the local timezone using dialog(1) or Xdialog(1)
+WWW=		https://druidbsd.sourceforge.net/
 
 NO_BUILD=	yes
 

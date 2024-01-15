@@ -1,6 +1,3 @@
-# Created by: Motomichi Matsuzaki <mzaki@e-mail.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	fastdnaml
 PORTVERSION=	1.2.2
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	fastDNAml_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Faster DNAML, makes phylogenetic trees using maximum likelihood
+WWW=		https://www.life.illinois.edu/gary/programs/fastDNAml.html
 
 LICENSE=	GPLv2+
 

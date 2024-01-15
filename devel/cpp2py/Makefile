@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	cpp2py
 DISTVERSION=	2.0.0
+PORTREVISION=	2
 CATEGORIES=	devel
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -9,6 +8,7 @@ PATCHFILES=	44d5238ab4f05ed4064736ffd2f2b63438d3f64c.patch:-p1 # fix build on i3
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Reflection tools based on clang
+WWW=		https://github.com/TRIQS/cpp2py
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,12 +17,10 @@ PY_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}h5py>0:science/py-h5py@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR}
-BUILD_DEPENDS=	${PY_DEPENDS} \
-		llvm${LLVM_VER}>0:devel/llvm${LLVM_VER}
-RUN_DEPENDS=	${PY_DEPENDS} \
-		llvm${LLVM_VER}>0:devel/llvm${LLVM_VER}
+BUILD_DEPENDS=	${PY_DEPENDS}
+RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		cmake compiler:c++14-lang gettext-runtime python:3.6+ shebangfix
+USES=		cmake compiler:c++14-lang gettext-runtime python shebangfix
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -30,10 +28,7 @@ GH_ACCOUNT=	TRIQS
 
 SHEBANG_FILES=	bin/c*
 
-CMAKE_ARGS=	-DPYTHON_INTERPRETER:STRING=${PYTHON_CMD} \
-		-DFREEBSD_LLVM_VER:STRING=${LLVM_VER}
-
-LLVM_VER=	10
+CMAKE_ARGS=	-DPYTHON_INTERPRETER:STRING=${PYTHON_CMD}
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 

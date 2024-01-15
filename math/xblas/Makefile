@@ -1,6 +1,3 @@
-# Created by: bf@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	xblas
 PORTVERSION=	1.0.248
 CATEGORIES=	math
@@ -9,6 +6,7 @@ DISTNAME=	xblas
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extra Precise Basic Linear Algebra Subroutines (BLAS)
+WWW=		https://www.netlib.org/xblas/
 
 LICENSE=	BSD3CLAUSE
 
@@ -28,6 +26,8 @@ PLIST_FILES=	${HEADERS:S|^|${HDIR}/|}
 SHLIB_MAJOR=	0
 WRKSRC=		${WRKDIR}/xblas-${PORTVERSION}
 
+PICFLAG=	-fpic
+
 .include <bsd.port.options.mk>
 
 M4?=	m4
@@ -36,12 +36,6 @@ MANGLING?=	-DCONFIG_FC_UNDERSCORE
 
 .if ${ARCH} == "i386" || ${ARCH} == "amd64"
 CFLAGS+=	-Dx86
-.endif
-
-.if ${ARCH} == "sparc64"
-PICFLAG=	-fPIC
-.else
-PICFLAG=	-fpic
 .endif
 
 PORTDOCS=	report.ps

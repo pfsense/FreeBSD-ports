@@ -1,6 +1,3 @@
-# Created by: jack
-# $FreeBSD$
-
 PORTNAME=	asfsm
 DISTVERSION=	1.0pre15
 PORTREVISION=	3

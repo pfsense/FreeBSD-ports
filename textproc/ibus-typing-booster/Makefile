@@ -1,26 +1,25 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	ibus-typing-booster
-PORTVERSION=	2.10.2
+PORTVERSION=	2.24.10
 CATEGORIES=	textproc
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Faster typing by context sensitive completion
+WWW=		https://mike-fabian.github.io/ibus-typing-booster/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/Menu.py:devel/py-xdg@${PY_FLAVOR}		\
-		${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}		\
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus	\
 		libm17n.so:devel/m17n-lib
 RUN_DEPENDS=	CLDR>0:textproc/CLDR	\
-		${PYTHON_SITELIBDIR}/xdg/Menu.py:devel/py-xdg@${PY_FLAVOR}		\
-		${PYTHON_SITELIBDIR}/dbus/bus.py:devel/py-dbus@${PY_FLAVOR}		\
-		${PYTHON_SITELIBDIR}/hunspell.so:textproc/py-hunspell@${PY_FLAVOR}	\
+		${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}		\
+		${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR}		\
+		${PYTHON_PKGNAMEPREFIX}hunspell>0:textproc/py-hunspell@${PY_FLAVOR}	\
+		${PYTHON_PKGNAMEPREFIX}pycountry>0:textproc/py-pycountry@${PY_FLAVOR}	\
 		${LOCALBASE}/share/unicode/ucd/Index.txt:textproc/UCD			\
-		${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 TEST_DEPENDS=	${LOCALBASE}/share/hunspell/cs_CZ.dic:textproc/cs-hunspell	\
 		${LOCALBASE}/share/hunspell/de_DE.dic:german/hunspell		\
 		${LOCALBASE}/share/hunspell/en_US.aff:textproc/en-hunspell	\
@@ -30,18 +29,23 @@ TEST_DEPENDS=	${LOCALBASE}/share/hunspell/cs_CZ.dic:textproc/cs-hunspell	\
 		${LOCALBASE}/share/hunspell/sv_SE.dic:textproc/sv-hunspell	\
 		${LOCALBASE}/libexec/ibus-engine-m17n:textproc/ibus-m17n	\
 		${LOCALBASE}/share/m17n/hi-inscript2.mim:devel/m17n-inscript2	\
-		${PYTHON_SITELIBDIR}/mock/mock.py:devel/py-mock@${PY_FLAVOR}	\
+		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}	\
 		gmake:devel/gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mike-fabian
 
-USES=		autoreconf gettext gmake gnome iconv pathfix pkgconfig python:3.6+
+USES=		autoreconf desktop-file-utils gettext gmake gnome iconv pathfix	\
+		pkgconfig python shebangfix
+SHEBANG_FILES=	engine/emoji-picker.in engine/ibus-engine-typing-booster.in	\
+		setup/ibus-setup-typing-booster.in
+SHEBANG_LANG=	sh
+sh_OLD_CMD=	/usr/bin/sh
+sh_CMD=		${SH}
 USE_GNOME=	glib20 gtk30 pygobject3
 USE_LOCALE=	en_US.UTF-8
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 GLIB_SCHEMAS=	org.freedesktop.ibus.engine.typing-booster.gschema.xml
 
 TEST_TARGET=	check
@@ -61,7 +65,7 @@ PY2FIX=		setup/user_transliteration.py tests/test_m17n_db_info.py	\
 		tests/test_emoji_similar.py tests/test_emoji_candidates.py
 SHR2FIX=	engine/itb_util.py engine/itb_emoji.py engine/hunspell_table.py	\
 		tests/test_compose_sequences.py typing-booster.appdata.xml	\
-		setup/user_transliteration.py
+		setup/user_transliteration.py ${GLIB_SCHEMAS} engine/itb_sound.py
 COMP2DEL=	engine/Makefile setup/Makefile
 
 pre-configure:

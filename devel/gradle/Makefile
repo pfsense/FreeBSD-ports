@@ -1,21 +1,22 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gradle
-PORTVERSION=	6.7.1
+PORTVERSION=	8.2.1
 CATEGORIES=	devel java
 MASTER_SITES=	https://downloads.gradle.org/distributions/
 EXTRACT_SUFX=	-bin.zip
 
 MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	Project automation tool
+WWW=		https://www.gradle.org/
 
 LICENSE=	APACHE20 BSD3CLAUSE CDDL EPL LGPL21+ MIT MPL20
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		zip
+USES=		cpe zip
 USE_JAVA=	yes
+
+CONFLICTS_INSTALL=	gradle6 gradle62
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	gradle

@@ -1,6 +1,3 @@
-# Created by: giffunip@asme.org
-# $FreeBSD$
-
 PORTNAME=	the
 PORTVERSION=	3.3.r4
 PORTREVISION=	2
@@ -9,11 +6,10 @@ MASTER_SITES=	http://downloads.sourceforge.net/hessling-editor/
 DISTNAME=	THE-${PORTVERSION:S/.r/RC/}
 
 MAINTAINER=	comet.berkeley@gmail.com
-COMMENT=	THE, The Hessling Editor, is like the vm/cms xedit editor
+COMMENT=	The Hessling Editor, like the VM/CMS xedit editor
+WWW=		https://hessling-editor.sourceforge.net/
 
 LICENSE=	GPLv2
-
-BROKEN_powerpc=	fails to configure
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-rexxincdir=${LOCALBASE}/include \

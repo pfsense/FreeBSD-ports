@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	jd-gui
 PORTVERSION=	1.6.6
 DISTVERSIONPREFIX=	v
@@ -11,6 +8,7 @@ EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java Decompiler GUI
+WWW=		http://jd.benow.ca/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Audio-Scan
 PORTVERSION=	1.01
 CATEGORIES=	audio perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Scanner for audio file metadata and tag information
+WWW=		https://metacpan.org/release/Audio-Scan
 
 LICENSE=	GPLv2
 

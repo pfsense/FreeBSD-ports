@@ -1,11 +1,11 @@
---- chrome/test/BUILD.gn.orig	2021-01-18 21:28:52 UTC
+--- chrome/test/BUILD.gn.orig	2023-12-13 12:27:17 UTC
 +++ chrome/test/BUILD.gn
-@@ -6791,7 +6791,7 @@ test("chrome_app_unittests") {
+@@ -11241,7 +11241,7 @@ test("chrome_app_unittests") {
+     "//components/heap_profiling/in_process",
      "//components/safe_browsing:buildflags",
-     "//pdf:pdf_ppapi",
    ]
--  if (!is_fuchsia) {
-+  if (!is_fuchsia && !is_bsd) {
-     # TODO(crbug.com/753619): Enable crash reporting on Fuchsia.
+-  if (!is_fuchsia && !is_mac) {
++  if (!is_fuchsia && !is_mac && !is_bsd) {
      deps += [ "//third_party/breakpad:client" ]
    }
+   if (is_android) {

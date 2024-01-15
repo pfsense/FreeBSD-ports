@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
-
 PORTNAME=	tt
 PORTVERSION=	15.1
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.miketaylor.org.uk/tech/tt/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tetris for Terminals
+WWW=		http://www.miketaylor.org.uk/tech/tt/
 
 USES=		ncurses
 

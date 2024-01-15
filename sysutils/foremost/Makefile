@@ -1,6 +1,3 @@
-# Created by: Yonatan <Yonatan@xpert.com>
-# $FreeBSD$
-
 PORTNAME=	foremost
 PORTVERSION=	1.5.7
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	http://foremost.sourceforge.net/pkg/
 
 MAINTAINER=	onatan@gmail.com
 COMMENT=	Console program to recover files based on their headers and footers
+WWW=		https://foremost.sourceforge.net
 
 USES=		gmake
 ALL_TARGET=	freebsd

@@ -1,42 +1,43 @@
-# $FreeBSD$
-
 PORTNAME=	kpathsea
-PORTVERSION=	6.2.1
-PORTREVISION=	2
+PORTVERSION=	6.3.5
 CATEGORIES=	devel
-MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
+MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/
 PKGNAMEPREFIX=	tex-
-DISTNAME=	texlive-20150521-source
+DISTNAME=	texlive-${TEXLIVE_VERSION}-source
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	Path searching library for TeX
 
 LICENSE=	LGPL21+
 
-USES=		libtool pathfix tar:xz
+USES=		libtool pathfix tar:xz tex
 USE_LDCONFIG=	yes
-USE_TEX=	yes
-EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
-EXTRACT_FILES=	build-aux \
-		texk/kpathsea \
-		texk/texlive/tl_scripts
-WRKSRC=		${WRKDIR}/${DISTNAME}/texk/kpathsea
+
 GNU_CONFIGURE=	yes
+
 INSTALL_TARGET=	install-strip
 
+EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
+EXTRACT_FILES=	build-aux texk/kpathsea texk/texlive/tl_support \
+		texk/texlive/linked_scripts/texlive-extra \
+		texk/texlive/linked_scripts/texlive
+
+WRKSRC=		${WRKDIR}/${DISTNAME}/texk/kpathsea
+
 INFO=		kpathsea
+PLIST_SUB= VERSION=${PORTVERSION}
 
 post-install:
-	cd ${WRKDIR}/${DISTNAME}/texk/texlive/tl_scripts && \
+	(cd ${WRKDIR}/${DISTNAME}/texk/texlive/linked_scripts/texlive-extra && \
 	    for f in kpsetool kpsewhere; do \
 		${INSTALL_SCRIPT} $${f}.sh ${STAGEDIR}${PREFIX}/bin/$$f; \
-		${INSTALL_MAN} $${f}.1 \
+		${INSTALL_MAN} ../../tl_support/$${f}.1 \
 		    ${STAGEDIR}${MANPREFIX}/man/man1/$${f}.1; \
 	    done; \
 	    for l in kpsexpand kpsepath; do \
 		${LN} -sf kpsetool ${STAGEDIR}${PREFIX}/bin/$$l; \
 		${LN} -sf kpsetool.1 ${STAGEDIR}${MANPREFIX}/man/man1/$${l}.1; \
-	    done
+	    done)
 
 .include <bsd.port.mk>

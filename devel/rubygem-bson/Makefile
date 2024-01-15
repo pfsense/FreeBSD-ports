@@ -1,18 +1,17 @@
-# Created by: Evan Sarmiento <bsdports@wayfair.com>
-# $FreeBSD$
-
 PORTNAME=	bson
-PORTVERSION=	4.10.0
+PORTVERSION=	4.15.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Full featured BSON specification implementation in Ruby
+WWW=		https://github.com/mongodb/bson-ruby
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
+
+CPE_VENDOR=	bson_project
 
 .include <bsd.port.mk>

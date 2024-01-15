@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	File-Copy-Recursive
 PORTVERSION=	0.45
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for recursively copying files and directories
+WWW=		https://metacpan.org/release/File-Copy-Recursive
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

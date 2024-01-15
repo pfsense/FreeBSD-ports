@@ -1,0 +1,29 @@
+PORTNAME=	freebsd-ftpd
+DISTVERSIONPREFIX=	v
+DISTVERSION=	20221002
+CATEGORIES=	ftp
+
+MAINTAINER=	cy@FreeBSD.org
+COMMENT=	FreeBSD ftpd
+WWW=		https://github.com/cschuber/freebsd-ftpd
+
+LICENSE=	BSD3CLAUSE
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	cschuber
+
+USES=		uidfix
+
+MAKE_ARGS+=		BINOWN=${BINOWN} BINMODE=${BINMODE}
+MAKE_ENV+=		MAKESYSPATH=/usr/src/share/mk \
+			BINDIR=${PREFIX}/libexec \
+			MANDIR=${PREFIX}/man/man \
+			MK_WERROR=no
+
+OPTIONS_DEFINE=		IPV6 LIBBLACKLIST
+OPTIONS_DEFAULT=	IPV6 LIBBLACKLIST
+
+LIBBLACKLIST_DESC=	libblacklist(3) support for rlogind(8) and rshd(8)
+LIBBLACKLIST_MAKE_ARGS=	USE_LIBBLACKLIST=yes
+
+.include <bsd.port.mk>

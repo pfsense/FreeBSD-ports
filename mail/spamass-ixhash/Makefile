@@ -1,6 +1,3 @@
-# Created by: Michael Ranner <michael@ranner.eu>
-# $FreeBSD$
-
 PORTNAME=	iXhash
 PORTVERSION=	1.5.5
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	spamass-
 
 MAINTAINER=	michael@ranner.eu
 COMMENT=	Plugin for SpamAssassin supporting iXhash
+WWW=		https://ixhash.sourceforge.net/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Gvozdikov Veniamin <g.veniamin@googlemail.com>
-# $FreeBSD$
-
 PORTNAME=	fondu
 PORTVERSION=	051010
 CATEGORIES=	converters
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Series of programs to interconvert between mac fonts
+WWW=		https://fondu.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 

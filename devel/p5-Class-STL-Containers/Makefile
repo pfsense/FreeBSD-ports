@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-STL-Containers
 PORTVERSION=	0.37
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl extension for STL-like object management
+WWW=		https://metacpan.org/release/Class-STL-Containers
 
 LICENSE=	GPLv2
 

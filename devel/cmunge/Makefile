@@ -1,6 +1,3 @@
-# Created by: Frerich Raabe <frerich.raabe@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	cmunge
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -9,8 +6,9 @@ MASTER_SITES=	ftp://ftp.vcpc.univie.ac.at/vcpc/jhm/code/ \
 		http://bsd-geek.de/FreeBSD/distfiles/
 DISTNAME=	${PORTNAME}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for encrypting and compacting C source code
+WWW=		http://www.vcpc.univie.ac.at/~jhm/cmunge/
 
 WRKSRC=		${WRKDIR}/cmunger
 MAKE_ARGS=	CC="${CC} ${CFLAGS}"

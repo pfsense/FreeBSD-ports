@@ -1,19 +1,18 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	reduce
-PORTVERSION=	20190413
+PORTVERSION=	${SFSUBDIR:S/snapshot_//:S/-//g}
+PORTREVISION=	1
 CATEGORIES=	math lang
 MASTER_SITES=	SF/${PORTNAME}-algebra/${SFSUBDIR}/
-DISTNAME=	Reduce-svn4961-src
+DISTNAME=	Reduce-svn6339-src
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Codemist Standard Lisp REDUCE general-purpose computer system
+WWW=		http://www.reduce-algebra.com/
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_armv6=		fails to compile: redfront.h:118:12: conflicting types for '__wcwidth'
-BROKEN_powerpc64=	fails to compile: arith01.cpp: 'statuc' does not name a type
+BROKEN_armv7=	fails to compile: error: no viable overloaded '=': return *this = int128_t(rhs);
+BROKEN_i386=	fails to compile: sysv.S:832:1: changed section flags for .eh_frame, expected: 0x2
 
 BUILD_DEPENDS=	gnuplot:math/gnuplot
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
@@ -24,7 +23,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 USES=		autoreconf:build libtool gmake ncurses jpeg xorg
 USE_XORG=	x11 xcursor xext xorgproto xft xrandr xrender
 
-SFSUBDIR=	snapshot_2019-04-13
+SFSUBDIR=	snapshot_2022-06-17
 
 TARGET_SDIR=	${ARCH:S/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
 CPPFLAGS+=	-I${NCURSESINC}

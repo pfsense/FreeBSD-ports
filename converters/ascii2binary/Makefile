@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	ascii2binary
 PORTVERSION=	2.14
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://billposer.org/Software/Downloads/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Convert between textual representations of numbers and binary
+WWW=		https://billposer.org/Software/a2b.html
 
 LICENSE=	GPLv3
 

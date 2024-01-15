@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	snmptt
-PORTVERSION=	1.4.2
+DISTVERSION=	1.5
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}_${PORTVERSION}
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}_${DISTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	nistor@snickers.org
 COMMENT=	SNMP trap handler/translator/swiss-army-knife
+WWW=		http://www.snmptt.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +17,7 @@ RUN_DEPENDS=	net-snmp>=0:net-mgmt/net-snmp \
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		perl5 shebangfix tar:tgz
+USES=		cpe perl5 shebangfix tar:tgz
 USE_RC_SUBR=	snmptt
 SUB_LIST=	PERL=${PERL}
 

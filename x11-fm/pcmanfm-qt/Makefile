@@ -1,13 +1,11 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	pcmanfm-qt
-PORTVERSION=	0.16.0
+PORTVERSION=	1.3.0
 CATEGORIES=	x11-fm
 MASTER_SITES=	LXQT
 
-MAINTAINER=	mbeis@xs4all.nl
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	LXQt file manager
+WWW=		https://github.com/lxde/pcmanfm-qt
 
 LICENSE=	GPLv2
 
@@ -16,9 +14,10 @@ LIB_DEPENDS=	libmenu-cache.so:x11/menu-cache \
 		libexif.so:graphics/libexif
 
 USES=		cmake compiler:c++14-lang desktop-file-utils gnome\
-		gettext-runtime localbase:ldflags lxqt pkgconfig kde:5 qt:5 \
+		gettext-runtime localbase:ldflags lxqt perl5 pkgconfig kde:5 qt:5 \
 		tar:xz xorg
-USE_QT=		buildtools_build qmake_build core dbus gui linguisttools \
+USE_PERL5=	build
+USE_QT=		buildtools:build qmake:build core dbus gui linguisttools \
 		widgets x11extras
 USE_KDE=	oxygen-icons5
 USE_LXQT=	buildtools libfmqt

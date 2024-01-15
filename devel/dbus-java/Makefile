@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dbus-java
 PORTVERSION=	2.7
 CATEGORIES=	devel java
@@ -7,6 +5,7 @@ MASTER_SITES=	https://dbus.freedesktop.org/releases/dbus-java/
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Java API for D-BUS
+WWW=		https://dbus.freedesktop.org/doc/dbus-java/
 
 LICENSE=	ACADEMIC LGPL21+
 LICENSE_COMB=	dual
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libunix-java.so:devel/libmatthew
 
 USES=		gettext gmake
 USE_JAVA=	yes
-JAVA_VERSION=	7+
+JAVA_VERSION=	8+
 
 MAKE_ARGS=	MANPREFIX=${MAN1PREFIX}/share/man/man1
 .if defined(WITH_DEBUG)

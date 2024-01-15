@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lsyncd
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	2.2.3
@@ -7,13 +5,14 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	junichi@junichi.org
 COMMENT=	Live Syncing (Mirror) Daemon
+WWW=		https://axkibe.github.io/lsyncd/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 
-USES=		cmake localbase lua
+USES=		cmake localbase lua:-53
 USE_GITHUB=	yes
 GH_ACCOUNT=	axkibe
 USE_RC_SUBR=	lsyncd
@@ -27,7 +26,7 @@ post-patch:
 	@${REINPLACE_CMD} 's,/usr/local,${LOCALBASE},' \
 		${WRKSRC}/CMakeLists.txt \
 		${WRKSRC}/default-rsync.lua
-	
+
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/lsyncd.conf.sample ${STAGEDIR}${PREFIX}/etc
 

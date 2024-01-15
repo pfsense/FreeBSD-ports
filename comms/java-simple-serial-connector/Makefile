@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	java-simple-serial-connector
 PORTVERSION=	2.8.0
 PORTREVISION=	1
@@ -8,6 +6,7 @@ CATEGORIES=	comms java
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Library for working with serial ports from Java
+WWW=		https://github.com/scream3r/java-simple-serial-connector
 
 LICENSE=	LGPL3
 

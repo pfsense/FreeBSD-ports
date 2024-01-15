@@ -1,6 +1,3 @@
-# Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	prn
 PORTVERSION=	1.0
 PORTREVISION=	1

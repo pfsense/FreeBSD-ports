@@ -8,7 +8,7 @@
  * frr.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,6 +60,12 @@
 		<url>/pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 	</menu>
 	<menu>
+		<name>FRR RIP</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr/frr_rip.xml</url>
+	</menu>
+	<menu>
 		<name>FRR</name>
 		<section>Status</section>
 		<configfile>frr.xml</configfile>
@@ -104,6 +110,10 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
 		</tab>
@@ -119,6 +129,12 @@
 		<rcfile>frr.sh</rcfile>
 		<executable>staticd</executable>
 		<description>FRR static route daemon</description>
+	</service>
+	<service>
+		<name>FRR mgmtd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>mgmtd</executable>
+		<description>FRR management daemon</description>
 	</service>
 	<service>
 		<name>FRR bfdd</name>
@@ -145,6 +161,12 @@
 		<description>FRR OSPF6 routing daemon</description>
 	</service>
 	<service>
+		<name>FRR ripd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>ripd</executable>
+		<description>FRR RIP routing daemon</description>
+	</service>
+	<service>
 		<name>FRR watchfrr</name>
 		<rcfile>frr.sh</rcfile>
 		<executable>watchfrr</executable>
@@ -153,6 +175,9 @@
 	<plugins>
 		<item>
 			<type>plugin_carp</type>
+		</item>
+		<item>
+			<type>plugin_statusoutput</type>
 		</item>
 	</plugins>
 	<fields>
@@ -297,6 +322,23 @@
 					<source_value>value</source_value>
 				</rowhelperfield>
 			</rowhelper>
+		</field>
+		<field>
+			<name>Next hop Tracking</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Resolve via default route</fielddescr>
+			<fieldname>nht</fieldname>
+			<description>By default, next hop tracking does not resolve next hops via the default route. Allowing this behavior can be useful, for example, so BGP can peer across the default route.</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Default (none)</name><value>none</value></option>
+				<option><name>IPv4</name><value>ipv4</value></option>
+				<option><name>IPv6</name><value>ipv6</value></option>
+				<option><name>IPv4+IPv6</name><value>both</value></option>
+			</options>
 		</field>
 		<field>
 			<name>Force Service Restart</name>

@@ -1,6 +1,3 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	libogg
 PORTVERSION=	1.3.0
 DISTVERSIONSUFFIX=	-7.el7
@@ -9,12 +6,13 @@ CATEGORIES=	audio linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Ogg bitstream library (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://www.xiph.org/ogg/
 
 USES=		linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+CONFLICTS=	linux-c6-${PORTNAME}
 DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS

@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	goto-file
 PORTVERSION=	0.005
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Stop parsing the current file and move on to a different one
+WWW=		https://metacpan.org/release/goto-file
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

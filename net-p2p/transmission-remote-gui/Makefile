@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	transmission-remote-gui
 PORTVERSION=	5.18.0
-PORTREVISION=	4
+PORTREVISION=	18
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
@@ -12,19 +10,20 @@ GH_PROJECT=	transgui
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Remote GUI for transmission daemon
+WWW=		https://github.com/transmission-remote-gui/transgui
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		desktop-file-utils fpc iconv lazarus:flavors
-USE_FPC=	cairo chm fcl-base fcl-image fcl-json fcl-net fcl-xml pasjpeg \
-		rtl-objpas rtl-extra x11
+USES=		desktop-file-utils fpc gnome iconv lazarus:flavors xorg
+USE_GNOME=	cairo
+USE_XORG=	x11
 
 DESKTOP_ENTRIES="Transmission Remote GUI" \
                 "Remote GUI for transmission daemon" \
                 "transgui" \
                 "${PREFIX}/bin/transgui" \
-                "Application;Network;" \
+                "Network;P2P;" \
                 ${TRUE}
 
 PLIST_FILES=	bin/transgui \
@@ -36,8 +35,9 @@ LAZARUS_PROJECT_FILES=	transgui.lpi
 LAZBUILD_ARGS=		-d
 PROJECT_NAME=		transgui
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5 ${PORTNAME}-qt6
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt6
+qt6_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
 
 post-patch:
 	${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|g' ${WRKSRC}/restranslator.pas

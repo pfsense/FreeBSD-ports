@@ -1,6 +1,3 @@
-# Created by: Junho CHOI <junho.choi@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	scim-hangul
 PORTVERSION=	0.4.0
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/scim/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	SCIM IMEngine module for Korean(Hangul) input
+WWW=		https://sourceforge.net/projects/scim/files/scim-hangul/
 
 LICENSE=	GPLv2
 

@@ -1,48 +1,43 @@
-# $FreeBSD$
-
 PORTNAME=	hikari
-DISTVERSION=	2.2.2
-PORTREVISION=	1
-CATEGORIES=	x11-wm
+DISTVERSION=	2.3.3
+PORTREVISION=	4
+CATEGORIES=	x11-wm wayland
 MASTER_SITES=	https://hikari.acmelabs.space/releases/
 
-MAINTAINER=	ports@xanderio.de
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Stacking Wayland compositor with tiling capabilities
+WWW=		https://hikari.acmelabs.space
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>=1.14:graphics/wayland-protocols \
-		wlroots>=0.9.0<0.13.0:x11-toolkits/wlroots
-LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
-		libinput.so:x11/libinput \
+		wlroots>=0.15.0<0.16.0:x11-toolkits/wlroots
+LIB_DEPENDS=	libinput.so:x11/libinput \
 		libucl.so:textproc/libucl \
 		libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
 		libxkbcommon.so:x11/libxkbcommon
+RUN_DEPENDS=	unix-selfauth-helper>0:security/unix-selfauth-helper
 
 USES=		compiler:c11 gnome pkgconfig xorg
-USE_GNOME=	cairo glib20 pango
+USE_GNOME=	cairo pango
 USE_XORG=	pixman
 
-MAKE_ARGS+=	${WITH_DEBUG:DDEBUG=YES} \
-		WITHOUT_SUID=YES
+MAKE_ARGS+=	${WITH_DEBUG:DDEBUG=YES}
 
-OPTIONS_DEFINE=		GAMMA LAYERSHELL SCREENCOPY SUID VIRTUALINPUT X11
-OPTIONS_DEFAULT=	GAMMA LAYERSHELL SCREENCOPY SUID VIRTUALINPUT X11
+OPTIONS_DEFINE=		GAMMA LAYERSHELL SCREENCOPY VIRTUALINPUT X11
+OPTIONS_DEFAULT=	GAMMA LAYERSHELL SCREENCOPY VIRTUALINPUT X11
 
 GAMMA_DESC=		Include gammacontrol protocol (required by, e.g., Redshift)
 LAYERSHELL_DESC=	Include layer_shell protocol (required by, e.g., waybar)
 SCREENCOPY_DESC=	Include screenshot protocol (required by, e.g., grim)
-SUID_DESC=		Setuid bit on binaries (required for DRM and PAM)
 VIRTUALINPUT_DESC=	needed for VNC support (requiered by e.g. wayvnc)
 
 GAMMA_MAKE_ARGS=	WITH_GAMMACONTROL=YES
 LAYERSHELL_MAKE_ARGS=	WITH_LAYERSHELL=YES
 SCREENCOPY_MAKE_ARGS=	WITH_SCREENCOPY=YES
-SUID_PLIST_SUB=		MAYBE_SUID="@(,,4755) "
-SUID_PLIST_SUB_OFF=	MAYBE_SUID=""
 VIRTUALINPUT_MAKE_ARGS=	WITH_VIRTUAL_INPUT=YES
 X11_MAKE_ARGS=		WITH_XWAYLAND=YES
 
@@ -54,4 +49,5 @@ post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/hikari.conf \
 		${STAGEDIR}${ETCDIR}/hikari.conf.sample
 
+.include "${.CURDIR:H:H}/x11-toolkits/wlroots015/override.mk"
 .include <bsd.port.mk>

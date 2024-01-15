@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POE-Filter-SSL
 PORTVERSION=	0.41
 CATEGORIES=	security perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Esiest and flexiblest way to SSL in POEIntegrate SSL into POE
+WWW=		https://metacpan.org/release/POE-Filter-SSL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

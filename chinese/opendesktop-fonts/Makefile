@@ -1,6 +1,3 @@
-# Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	opendesktop-fonts
 PORTVERSION=	1.4.2
 PORTREVISION=	6
@@ -9,8 +6,9 @@ MASTER_SITES?=	LOCAL/chinsan/fonts
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ming and Kai face of OpenDesktop fonts
+WWW=		http://opendesktop.org.tw
 
-CONFLICTS=	zh-fireflyttf-[0-9]*
+CONFLICTS=	zh-fireflyttf
 DIST_SUBDIR=	OpenFonts
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	strictures
 PORTVERSION=	2.000006
 PORTEPOCH=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Turn on strict and make all warnings fatal
+WWW=		https://metacpan.org/release/strictures
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -24,9 +24,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -50,6 +47,7 @@ __FBSDID("$FreeBSD$");
 #include <cli-out.h>
 #include <main.h>
 #include <objfiles.h>
+#include "serial.h"
 #include <target.h>
 #include <top.h>
 #include <ui-file.h>

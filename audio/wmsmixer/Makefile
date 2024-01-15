@@ -1,6 +1,3 @@
-# Created by: Konstantinos Konstantinidis <kkonstan@daemon.gr>
-# $FreeBSD$
-
 PORTNAME=	wmsmixer
 PORTVERSION=	0.5.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.dockapps.net/download/
 
 MAINTAINER=	blackend@FreeBSD.org
 COMMENT=	Audio mixer for the Window Maker dock
+WWW=		https://www.dockapps.net/wmsmixer
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

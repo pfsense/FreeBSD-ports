@@ -1,12 +1,10 @@
-# Created by: Mohammad S. Babaei <info@babaei.net>
-# $FreeBSD$
-
 PORTNAME=	omnibackup
 PORTVERSION=	0.2.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	info@babaei.net
 COMMENT=	One Script to back them all up
+WWW=		https://github.com/NuLL3rr0r/omnibackup
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,6 +22,7 @@ OPTIONS_DEFAULT=	\
 	MYSQL
 
 OPENLDAP_DESC=	OpenLDAP support
+OPENLDAP_USES=	ldap
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -50,7 +49,7 @@ PLIST_FILES+=	${DOCSDIR}/README.md
 	|| ${PORT_OPTIONS:MMYSQL}
 RUN_DEPENDS+=	sudo:security/sudo
 .if ${PORT_OPTIONS:MOPENLDAP}
-RUN_DEPENDS+=	slapcat:net/openldap24-server
+RUN_DEPENDS+=	slapcat:net/openldap${OPENLDAP_VER}-server
 .endif
 .if ${PORT_OPTIONS:MPGSQL}
 USES+=	pgsql

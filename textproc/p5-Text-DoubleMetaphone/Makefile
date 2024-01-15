@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Text-DoubleMetaphone
 PORTVERSION=	0.07
 PORTREVISION=	1

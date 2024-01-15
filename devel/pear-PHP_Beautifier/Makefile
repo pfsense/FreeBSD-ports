@@ -1,13 +1,11 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	PHP_Beautifier
 PORTVERSION=	0.1.15
 PORTREVISION=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR beautifier for PHP
+WWW=		https://pear.php.net/package/PHP_Beautifier
 
 BUILD_DEPENDS=	${PEARDIR}/Log.php:sysutils/pear-Log@${PHP_FLAVOR}
 RUN_DEPENDS=	${PEARDIR}/Log.php:sysutils/pear-Log@${PHP_FLAVOR}

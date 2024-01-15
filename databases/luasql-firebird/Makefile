@@ -1,5 +1,4 @@
-# Created by: Martin Matuska <martin@matuska.org>
-# $FreeBSD$
+PORTREVISION=	2
 
 LUASQL_DRIVER=	firebird
 

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
-PORTNAME=	arduino
+PORTNAME=	${GH_PROJECT:tl}
 PORTVERSION=	1.8.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel java
 PKGNAMESUFFIX=	18
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Open-source electronics prototyping platform
+WWW=		https://arduino.cc/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../license.txt
@@ -22,7 +21,7 @@ RUN_DEPENDS=	arduino-builder:devel/arduino-builder \
 		bash:shells/bash \
 		${JSSC_DEP}
 
-CONFLICTS=	arduino-[0-9]*
+CONFLICTS=	arduino
 
 BUNDLE_GH_ACCOUNT=	arduino-libraries
 BUNDLE_LIBRARIES=	Firmata:2.5.6:firmata \
@@ -55,7 +54,7 @@ WRKSRC_SUBDIR=	build
 PATCH_WRKSRC=	${WRKSRC}/../
 MAKE_ARGS+=	-Dlight_bundle=true -Dlocal_sources=true -Dno_arduino_builder=true
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 USE_ANT=	yes
 OS_DIR=		${WRKSRC}/linux
 BUILD_DIR=	${OS_DIR}/work
@@ -83,7 +82,7 @@ INSLIST+=	reference
 INSLIST+=	examples
 .endif
 
-post-extract:
+post-extract-DOCS-on:
 	${MKDIR} ${BUILD_DIR}/reference
 	${MV} ${WRKDIR}/code.jquery.com ${BUILD_DIR}/reference
 	${MV} ${WRKDIR}/www.arduino.cc ${BUILD_DIR}/reference

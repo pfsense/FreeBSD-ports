@@ -1,22 +1,20 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
-
 PORTNAME=	memory-profiler
-PORTVERSION=	0.58.0
+PORTVERSION=	0.61.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	memory_profiler-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Module for monitoring memory usage of a python program
+WWW=		https://github.com/pythonprofilers/memory_profiler
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil@${PY_FLAVOR}
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

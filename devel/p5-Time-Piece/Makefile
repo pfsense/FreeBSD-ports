@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Time-Piece
 PORTVERSION=	1.3300
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S|00$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object-oriented time objects for Perl
+WWW=		https://metacpan.org/release/Time-Piece
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

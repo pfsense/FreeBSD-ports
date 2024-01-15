@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	libshhopt
 PORTVERSION=	1.1.7
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	shhopt-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for parsing command line options
+WWW=		https://shh.thathost.com/pub-unix/ #shhopt
 
 LICENSE=	ART10
 

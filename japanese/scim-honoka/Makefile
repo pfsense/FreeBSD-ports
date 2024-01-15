@@ -1,6 +1,3 @@
-# Created by: Masashi CHIBA
-# $FreeBSD$
-
 PORTNAME=	scim-honoka
 PORTVERSION=	0.9.1
 PORTREVISION=	13
@@ -10,6 +7,7 @@ DISTNAME=	honoka-${PORTVERSION}
 
 MAINTAINER=	chiba.masashi@gmail.com
 COMMENT=	SCIM IMEngine module using various input methods
+WWW=		http://scim.freedesktop.org
 
 BUILD_DEPENDS=	scim:textproc/scim
 RUN_DEPENDS:=	${BUILD_DEPENDS}

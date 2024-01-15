@@ -1,14 +1,12 @@
-# Created by: perl@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Crypt-RHash
-PORTVERSION=	0.99
+PORTVERSION=	1.00
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Compute hash sums and magnet links
+WWW=		https://metacpan.org/release/Crypt-RHash
 
 LICENSE=	MIT
 

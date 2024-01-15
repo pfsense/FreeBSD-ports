@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	Unicode-Japanese
 PORTVERSION=	0.49
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	CPAN
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to handle Japanese character encodings
+WWW=		https://metacpan.org/release/Unicode-Japanese
 
 USES=		perl5
 USE_PERL5=	configure

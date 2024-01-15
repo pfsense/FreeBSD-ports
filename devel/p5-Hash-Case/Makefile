@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin
-# $FreeBSD$
-
 PORTNAME=	Hash-Case
 PORTVERSION=	1.030
 CATEGORIES=	devel perl5
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S|0$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base class for hashes with key-casing requirements
+WWW=		https://metacpan.org/release/Hash-Case
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,0 +1,12 @@
+etc/rc.conf.d/pfsense_tailscaled
+etc/rc.conf.d/tailscaled
+etc/rc.d/pfsense_tailscaled
+pkg/tailscale.xml
+pkg/tailscale/tailscale.inc
+pkg/tailscale/tailscale_auth.inc
+pkg/tailscale/tailscale_auth.xml
+pkg/tailscale/tailscale_common.inc
+pkg/tailscale/tailscale_install.inc
+%%DATADIR%%/info.xml
+www/status_tailscale.php
+www/shortcuts/pkg_tailscale.inc

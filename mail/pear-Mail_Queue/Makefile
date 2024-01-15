@@ -1,13 +1,11 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Mail_Queue
 PORTVERSION=	1.2.7
 PORTREVISION=	1
 CATEGORIES=	mail www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class for put mails in queue and send them later in background
+WWW=		https://pear.php.net/package/Mail_Queue
 
 BUILD_DEPENDS=	${PEARDIR}/Mail.php:mail/pear-Mail@${PHP_FLAVOR} \
 		${PEARDIR}/Mail/mime.php:mail/pear-Mail_Mime@${PHP_FLAVOR}

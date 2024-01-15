@@ -1,14 +1,12 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	yelp-xsl
-PORTVERSION=	3.38.2
+DISTVERSION=	42.0
 CATEGORIES=	textproc gnome
-MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	DocBook XSLT stylesheets for yelp
+WWW=		https://www.gnome.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LGPL

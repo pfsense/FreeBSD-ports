@@ -1,6 +1,3 @@
-# Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
-
 PORTNAME=	openvanilla-framework
 PORTVERSION=	0.7.2.20070514
 CATEGORIES=	textproc
@@ -9,6 +6,7 @@ DISTNAME=	openvanilla-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Development header files for OpenVanilla
+WWW=		https://openvanilla.org/
 
 NO_BUILD=	yes
 

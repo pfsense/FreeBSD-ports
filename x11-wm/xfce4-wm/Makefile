@@ -1,8 +1,6 @@
-# Created by: James Earl <jdearl@telus.net>
-# $FreeBSD$
-
 PORTNAME=	xfce4-wm
-PORTVERSION=	4.16.0
+PORTVERSION=	4.18.0
+PORTREVISION=	3
 CATEGORIES=	x11-wm xfce
 MASTER_SITES=	XFCE
 DISTNAME=	xfwm4-${DISTVERSIONFULL}
@@ -10,14 +8,16 @@ DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Xfce's window manager
+WWW=		https://xfce.org/
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
+		libharfbuzz.so:print/harfbuzz
 
 USES=		compiler:c11 gettext-tools gmake gnome pkgconfig tar:bzip2 \
 		xfce xorg
-USE_GNOME=	cairo gtk30 intltool libwnck3
+USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool libwnck3
 USE_XFCE=	libmenu xfconf
 USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xi xinerama \
 		xorgproto xpresent xrandr xrender xres
@@ -29,7 +29,6 @@ CONFIGURE_ARGS=	--enable-xsync \
 		--enable-xpresent \
 		--disable-kde-systray
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 DATADIR=	${PREFIX}/share/xfwm4
 
 PORTSCOUT=	limitw:1,even

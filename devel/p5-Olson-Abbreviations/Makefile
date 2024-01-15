@@ -1,6 +1,3 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	Olson-Abbreviations
 PORTVERSION=	0.04
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Globally unique timezones abbreviation handling
+WWW=		https://metacpan.org/release/Olson-Abbreviations
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Volker Stolz <vs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jasmin
 PORTVERSION=	2.4
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java Assembler Interface
+WWW=		https://jasmin.sourceforge.net/
 
 USES=		dos2unix zip
 USE_ANT=	yes

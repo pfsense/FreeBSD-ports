@@ -1,6 +1,3 @@
-# Created by: clsung@dragon2.net
-# $FreeBSD$
-
 PORTNAME=	Object-MultiType
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Objects as Hash, Array, and Scalar at the same time
+WWW=		https://metacpan.org/release/Object-MultiType
 
 USES=		perl5
 USE_PERL5=	configure

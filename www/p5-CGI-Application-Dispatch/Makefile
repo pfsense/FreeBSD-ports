@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	CGI-Application-Dispatch
 PORTVERSION=	3.12
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dispatch requests to CGI::Application based objects
+WWW=		https://metacpan.org/release/CGI-Application-Dispatch
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

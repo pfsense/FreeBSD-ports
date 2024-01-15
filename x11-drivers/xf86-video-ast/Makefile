@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-ast
 PORTVERSION=	1.1.5
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org ASPEED display driver
+WWW=		https://www.x.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

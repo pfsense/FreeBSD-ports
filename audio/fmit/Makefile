@@ -1,13 +1,12 @@
-# Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fmit
 PORTVERSION=	1.2.14
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Free Music Instrument Tuner
+WWW=		https://github.com/gillesdegottex/fmit
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3
 
 USES=		compiler:c++11-lang gl gnome pkgconfig qmake qt:5 tar:bzip2 xorg
 
-USE_QT=		buildtools_build core gui opengl qmake_build multimedia network svg widgets
+USE_QT=		buildtools:build core gui opengl qmake:build multimedia network svg widgets
 USE_GL=		gl glut
 
 USE_GITHUB=	yes

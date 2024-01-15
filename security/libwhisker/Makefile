@@ -1,6 +1,3 @@
-# Created by: pandzilla
-# $FreeBSD$
-
 PORTNAME=	libwhisker
 PORTVERSION=	2.5
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}2-${PORTVERSION}
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Perl module to create HTTP test scripts
+WWW=		https://sourceforge.net/projects/whisker/
 
 LICENSE=	BSD2CLAUSE
 

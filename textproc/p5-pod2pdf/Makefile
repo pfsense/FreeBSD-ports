@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pod2pdf
 PORTVERSION=	0.42
 PORTREVISION=	2
@@ -11,12 +8,13 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Converts POD to PDF format
+WWW=		https://metacpan.org/release/pod2pdf
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Getopt-ArgvFile>0:devel/p5-Getopt-ArgvFile \
 		p5-PDF-API2>=0.60:textproc/p5-PDF-API2 \
 		p5-Pod-Escapes>0:textproc/p5-Pod-Escapes \
-		${P5_POD_PARSER}
+		p5-Pod-Parser>=0:textproc/p5-Pod-Parser
 
 USES=		perl5
 USE_PERL5=	configure

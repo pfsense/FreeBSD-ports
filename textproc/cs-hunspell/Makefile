@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	2.0
 CATEGORIES=	textproc
@@ -11,13 +9,14 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Czech hunspell dictionaries
+WWW=		https://extensions.services.openoffice.org/en/project/czech-dictionary-pack-ceske-slovniky-cs-cz
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/cs_CZ.aff \
-		%%DATADIR%%/cs_CZ.dic
+PLIST_FILES=	${DATADIR}/cs_CZ.aff \
+		${DATADIR}/cs_CZ.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

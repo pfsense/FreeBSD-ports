@@ -1,35 +1,31 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libkml
 PORTVERSION=	1.3.0
-PORTREVISION=	16
+PORTREVISION=	26
 CATEGORIES=	science
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Reference implementation of OGC KML 2.2
+WWW=		https://github.com/libkml/libkml
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	boost-libs>=1.44.0:devel/boost-libs \
-		googletest>=1.7.0:devel/googletest \
-		minizip>=1.2.8:archivers/minizip
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libexpat.so:textproc/expat2 \
-		libgtest.so:devel/googletest \
-		libminizip.so:archivers/minizip \
 		liburiparser.so:net/uriparser
 
-OPTIONS_DEFINE=	EXAMPLES
+USES=		cmake compiler:c++11-lang minizip pathfix
 
-USES=		cmake compiler:c11 pathfix
-
-CMAKE_OFF=	WITH_JAVA WITH_PYTHON WITH_SWIG
-USE_CXXSTD=	gnu++98
+CMAKE_OFF=	BUILD_TESTING WITH_JAVA WITH_PYTHON WITH_SWIG
+CMAKE_ON=	BUILD_SHARED_LIBS
+LDFLAGS+=	-lz
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
+GH_TAGNAME=	916a801
+
+OPTIONS_DEFINE=	EXAMPLES
 
 EXAMPLES_CMAKE_BOOL=	BUILD_EXAMPLES INSTALL_EXAMPLES
 EXAMPLES_CMAKE_ON=	-DKML_EXAMPLES_DIR=${EXAMPLESDIR}

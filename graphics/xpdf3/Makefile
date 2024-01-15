@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	xpdf
 PORTVERSION=	3.04
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics print
 MASTER_SITES=	https://xpdfreader-dl.s3.amazonaws.com/old/
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	3
-CONFLICTS_INSTALL=	xpdf4-* xpdf-*
+CONFLICTS_INSTALL=	xpdf4 xpdf
 .else
-CONFLICTS_INSTALL=	xpdf4-*	xpdf3-*
+CONFLICTS_INSTALL=	xpdf4 xpdf3
 .endif
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Display PDF files and convert them to other formats
+WWW=		https://www.xpdfreader.com/
 
 LICENSE=	GPLv2
 
@@ -24,7 +23,8 @@ GNU_CONFIGURE=	yes
 USES=		gmake cpe localbase xorg
 USE_XORG=	ice sm x11 xext xt
 
-CPE_VENDOR=	foolabs
+CPE_VENDOR=	glyphandcog
+CPE_PRODUCT=	xpdfreader
 CONFIGURE_ARGS=	--enable-opi \
 		--with-freetype2-library="${LOCALBASE}/lib" \
 		--with-freetype2-includes="${LOCALBASE}/include/freetype2" \

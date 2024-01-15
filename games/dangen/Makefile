@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	dangen
 PORTVERSION=	0.5
 PORTREVISION=	5
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.interq.or.jp/libra/oohara/dangen/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Shoot'em up game where accurate shooting matters
+WWW=		http://www.interq.or.jp/libra/oohara/dangen/index.html
 
 LICENSE=	GPLv2 ART20
 LICENSE_COMB=	dual

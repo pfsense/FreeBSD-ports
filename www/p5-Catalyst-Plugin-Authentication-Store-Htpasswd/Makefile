@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Authentication-Store-Htpasswd
 PORTVERSION=	0.020
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C|0$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Use .htpasswd with Catalyst
+WWW=		https://metacpan.org/release/DKAMHOLZ/Catalyst-Plugin-Authentication-Store-Htpasswd-0.02
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

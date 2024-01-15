@@ -6,6 +6,8 @@
 %%MANPAGES%%man/man1/notmuch-dump.1.gz
 %%MANPAGES%%man/man1/notmuch-insert.1.gz
 %%MANPAGES%%man/man1/notmuch-new.1.gz
+%%MANPAGES%%man/man1/nmbug.1.gz
+%%MANPAGES%%man/man1/notmuch-git.1.gz
 %%MANPAGES%%man/man1/notmuch-reindex.1.gz
 %%MANPAGES%%man/man1/notmuch-reply.1.gz
 %%MANPAGES%%man/man1/notmuch-restore.1.gz
@@ -17,11 +19,12 @@
 %%MANPAGES%%man/man5/notmuch-hooks.5.gz
 %%MANPAGES%%man/man7/notmuch-properties.7.gz
 %%MANPAGES%%man/man7/notmuch-search-terms.7.gz
+%%MANPAGES%%man/man7/notmuch-sexp-queries.7.gz
 bin/notmuch
 include/notmuch.h
 lib/libnotmuch.so
 lib/libnotmuch.so.5
-lib/libnotmuch.so.5.3.0
+lib/libnotmuch.so.5.6.0
 share/bash-completion/completions/notmuch
 share/zsh/site-functions/_email-notmuch
 share/zsh/site-functions/_notmuch

@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Devel-RingBuffer
 PORTVERSION=	0.31
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Shared memory ring buffers for Perl scripts diagnosis/debug
+WWW=		https://metacpan.org/release/Devel-RingBuffer
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-IPC-Mmap>=0:devel/p5-IPC-Mmap

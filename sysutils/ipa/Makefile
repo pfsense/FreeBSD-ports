@@ -1,6 +1,3 @@
-# Created by: Andrey Simonenko
-# $FreeBSD$
-
 PORTNAME=	ipa
 PORTVERSION=	2.1.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/ipa-system
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pluggable accounting system
+WWW=		https://ipa-system.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,9 +1,6 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	lcms
 PORTVERSION=	1.19
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF \
@@ -11,11 +8,12 @@ MASTER_SITES=	SF \
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Light Color Management System -- a color management library
+WWW=		https://www.littlecms.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool localbase:ldflags pathfix
+USES=		cpe libtool localbase:ldflags pathfix
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -23,6 +21,9 @@ TEST_TARGET=	check
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
+
+CPE_VENDOR=	littlecms
+CPE_PRODUCT=	little_cms_color_engine
 
 OPTIONS_DEFINE=	DOCS JPEGICC TIFFICC
 OPTIONS_DEFAULT=JPEGICC TIFFICC

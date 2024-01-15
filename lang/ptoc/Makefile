@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	ptoc
 PORTVERSION=	3.58
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.garret.ru/
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	ANSI/Turbo Pascal to C/C++ converter
+WWW=		http://www.garret.ru/~knizhnik/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

@@ -1,6 +1,3 @@
-# Created by: Jeremy Norris <ishmael27@home.com>
-# $FreeBSD$
-
 PORTNAME=	libast
 PORTVERSION=	0.7
 PORTREVISION=	13
@@ -21,7 +18,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		libtool pathfix
+USES=		cpe libtool pathfix
 
 .if defined(MACHINE_CPU) && ${MACHINE_CPU:Mmmx}
 CONFIGURE_ARGS+=--enable-mmx

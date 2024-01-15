@@ -1,15 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	xfs
 PORTVERSION=	1.2.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org font server
+WWW=		https://www.x.org/
 
 USES=		cpe gmake xorg xorg-cat:app
-CPE_VENDOR=	x
+CPE_VENDOR=	x.org
 CPE_PRODUCT=	x_font_server
 USE_XORG=	libfs xfont2 xorgproto xtrans
 USE_RC_SUBR=	xfs

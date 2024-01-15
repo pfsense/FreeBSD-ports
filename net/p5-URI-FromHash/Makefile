@@ -1,14 +1,12 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	URI-FromHash
 DISTVERSION=	0.05
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create URI from hash of components
+WWW=		https://metacpan.org/release/URI-FromHash
 
 LICENSE=	ART20
 

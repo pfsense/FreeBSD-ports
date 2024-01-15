@@ -1,6 +1,3 @@
-# Created by: Yarema <yds@CoolRat.org>
-# $FreeBSD$
-
 PORTREVISION=	0
 PKGNAMESUFFIX=	-ldap
 

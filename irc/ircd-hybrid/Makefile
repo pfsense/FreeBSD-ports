@@ -1,13 +1,11 @@
-# Created by: David Taylor <davidt@yadt.co.uk>
-# $FreeBSD$
-
 PORTNAME=	ircd-hybrid
-PORTVERSION=	8.2.36
+PORTVERSION=	8.2.43
 CATEGORIES=	irc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	fox@FreeBSD.org
-COMMENT=	Fast irc daemon with a number of new features
+COMMENT=	Fast IRC daemon with a number of new features
+WWW=		https://www.ircd-hybrid.org/
 
 LICENSE=	GPLv2
 
@@ -18,6 +16,8 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 LIB_DEPENDS+=	libltdl.so:devel/libltdl
+
+CONFLICTS_INSTALL=	ircd-ratbox ircd-ratbox-devel
 
 USERS=		ircd
 GROUPS=		${USERS}

@@ -1,23 +1,22 @@
-# Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	APCu
-PORTVERSION=	5.1.19
+PORTVERSION=	5.1.23
 CATEGORIES=	devel
-DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
+DISTNAME=	apcu-${PORTVERSION}
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	APC User Caching
+WWW=		https://pecl.php.net/package/apcu
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS_INSTALL=	pecl-APC
-
 USES=		localbase php:pecl
-PHP_MODNAME=	${PORTNAME:tl}
+
+PHP_MODNAME=	apcu
 
 PLIST_FILES=	${DATADIR}/apc.php
+
+CONFLICTS_INSTALL=	pecl-APC
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

@@ -1,34 +1,38 @@
-# Created by: saper@system.pl
-# $FreeBSD$
-#   $MCom: ports/graphics/dia/Makefile,v 1.16 2007/10/11 02:49:12 mezz Exp $
-
 PORTNAME=	dia
 PORTVERSION=	0.97.3
-PORTREVISION=	1
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome2
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Diagram creation program, similar to Visio
+WWW=		https://wiki.gnome.org/Apps/Dia
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libicudata.so:devel/icu
+
+USES=		cpe desktop-file-utils gettext gmake gnome libtool \
+		localbase:ldflags pathfix pkgconfig tar:xz
+CPE_VENDOR=	gnome
+USE_GNOME=	gtk20 gnomeprefix libxslt libartlgpl2 intlhack
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-gnome
+CONFIGURE_ENV=	LOCALBASE="${LOCALBASE}"
+
+INSTALL_TARGET=	install-strip
+
+LDFLAGS+=	`pkg-config --libs gmodule-2.0`
 
 OPTIONS_DEFINE=	DOCS
 
-LIB_DEPENDS=	libpng.so:graphics/png
-
-USES=		desktop-file-utils gettext gmake gnome libtool pathfix \
-		pkgconfig tar:xz
-USE_GNOME=	gtk20 gnomeprefix libxslt libartlgpl2 intlhack
-INSTALLS_ICONS=	yes
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	LOCALBASE="${LOCALBASE}"
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib `pkg-config --libs gmodule-2.0`
-CONFIGURE_ARGS=	--disable-gnome
-INSTALL_TARGET=	install-strip
-
 DOCS_BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
+
 .include <bsd.port.options.mk>
 
 #.if ${ARCH} == "i386"
@@ -39,6 +43,10 @@ DOCS_BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc
 CONFIGURE_ARGS+=	--disable-libemf
 PLIST_SUB+=		WMF="@comment "
 #.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \

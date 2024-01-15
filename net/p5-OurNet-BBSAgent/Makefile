@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	OurNet-BBSAgent
 PORTVERSION=	1.61
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Scriptable telnet-based virtual users
+WWW=		https://metacpan.org/release/OurNet-BBSAgent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -17,8 +15,9 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-Telnet>=0:net/p5-Net-Telnet
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

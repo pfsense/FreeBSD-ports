@@ -1,6 +1,3 @@
-# Created by: Paolo Pisati <flag@gufi.org>
-# $FreeBSD$
-
 PORTNAME=	wmnd
 PORTVERSION=	0.4.18
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.thregr.org/~wavexx/software/wmnd/releases/
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Improved network monitoring dock app (with tons of features)
+WWW=		https://www.thregr.org/~wavexx/software/wmnd/
 
 LICENSE=	GPLv2
 

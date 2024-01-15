@@ -1,20 +1,20 @@
---- chrome/browser/extensions/api/settings_private/prefs_util.cc.orig	2021-01-18 21:28:50 UTC
+--- chrome/browser/extensions/api/settings_private/prefs_util.cc.orig	2023-11-03 10:09:45 UTC
 +++ chrome/browser/extensions/api/settings_private/prefs_util.cc
-@@ -171,7 +171,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
-   (*s_allowlist)[bookmarks::prefs::kShowBookmarkBar] =
+@@ -195,7 +195,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
+   (*s_allowlist)[::prefs::kSidePanelHorizontalAlignment] =
        settings_api::PrefType::PREF_TYPE_BOOLEAN;
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    (*s_allowlist)[::prefs::kUseCustomChromeFrame] =
        settings_api::PrefType::PREF_TYPE_BOOLEAN;
  #endif
-@@ -181,7 +181,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
-   // Appearance settings.
-   (*s_allowlist)[::prefs::kCurrentThemeID] =
+@@ -207,7 +207,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
        settings_api::PrefType::PREF_TYPE_STRING;
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
-   (*s_allowlist)[::prefs::kUsesSystemTheme] =
-       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+   (*s_allowlist)[::prefs::kPolicyThemeColor] =
+       settings_api::PrefType::PREF_TYPE_NUMBER;
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   (*s_allowlist)[::prefs::kSystemTheme] =
+       settings_api::PrefType::PREF_TYPE_NUMBER;
  #endif

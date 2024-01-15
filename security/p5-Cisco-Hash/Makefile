@@ -1,6 +1,3 @@
-# Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Cisco-Hash
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
 COMMENT=	De- and encrypts Cisco type 7 hashes
+WWW=		https://metacpan.org/release/Cisco-Hash
 
 USES=		perl5
 USE_PERL5=	configure

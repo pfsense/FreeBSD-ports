@@ -1,14 +1,12 @@
-# Created by: Espen Tagestad <espen@tagestad.no>
-# $FreeBSD$
-
 PORTNAME=	CGI-Application-Plugin-DBH
 PORTVERSION=	4.04
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy DBI access from CGI::Application
+WWW=		https://metacpan.org/release/CGI-Application-Plugin-DBH
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

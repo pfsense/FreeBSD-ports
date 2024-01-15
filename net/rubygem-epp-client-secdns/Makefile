@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	epp-client-secdns
 PORTVERSION=	0.15.2
 CATEGORIES=	net rubygems
@@ -7,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	SecDNS EPP client library
+WWW=		https://github.com/Absolight/epp-client
 
 LICENSE=	MIT
 

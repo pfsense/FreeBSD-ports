@@ -1,6 +1,3 @@
-# Created by: arrowd <6yearold@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Hasklig
 DISTVERSION=	1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	https://github.com/i-tu/Hasklig/releases/download/${PORTVERSION}/
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Haskell code font with monospaced ligatures
+WWW=		https://github.com/i-tu/Hasklig
 
 LICENSE=	OFL11
 

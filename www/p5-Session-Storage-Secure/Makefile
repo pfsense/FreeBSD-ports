@@ -1,20 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	Session-Storage-Secure
-PORTVERSION=	0.010
-PORTREVISION=	1
+PORTVERSION=	1.000
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DAGOLDEN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for encrypted, serialized session data with integrity
+WWW=		https://metacpan.org/release/Session-Storage-Secure
 
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	\
-	p5-Crypt-CBC>0:security/p5-Crypt-CBC \
+	p5-Crypt-CBC>3.01:security/p5-Crypt-CBC \
 	p5-Crypt-Rijndael>0:security/p5-Crypt-Rijndael \
 	p5-Crypt-URandom>0:security/p5-Crypt-URandom \
 	p5-Math-Random-ISAAC-XS>0:math/p5-Math-Random-ISAAC-XS \

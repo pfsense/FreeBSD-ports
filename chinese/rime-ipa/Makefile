@@ -1,12 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-ipa
 DISTVERSION=	g20200413
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com
 COMMENT=	Rime IPA schema support
+WWW=		https://github.com/rime/rime-ipa
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE

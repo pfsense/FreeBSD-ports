@@ -1,25 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	terraform
-PORTVERSION=	0.13.4
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.6.6
 CATEGORIES=	sysutils
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	nulldutra@proton.me
 COMMENT=	Provides a common configuration to launch infrastructure
+WWW=		https://terraform.io/
 
-LICENSE=	MPL20
+LICENSE_NAME=	Business Source License 1.1
 LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror pkg-mirror pkg-sell auto-accept
 
-USES=		go:modules
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	hashicorp
+USES=		cpe go:1.21,modules
+CPE_VENDOR=	hashicorp
+GO_MODULE=	github.com/hashicorp/terraform
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-patch:
-	${REINPLACE_CMD} 's|Prerelease = "dev"|Prerelease = ""|' \
-		${WRKSRC}/version/version.go
 
 .include <bsd.port.mk>

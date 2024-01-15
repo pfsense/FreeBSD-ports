@@ -1,6 +1,3 @@
-# Created by: Mathias Monnerville <mathias@monnerville.com>
-# $FreeBSD$
-
 PORTNAME=	sextractor
 PORTVERSION=	2.5.0
 PORTREVISION=	2
@@ -10,12 +7,15 @@ MASTER_SITES=	ftp://ftp.iap.fr/pub/from_users/bertin/sextractor/ \
 
 MAINTAINER=	mathias@monnerville.com
 COMMENT=	Catalogue of objects builder from astronomical images
+WWW=		http://terapix.iap.fr/soft/sextractor/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 USES=		gmake
+
+CONFLICTS_INSTALL=	sex # bin/sex
 
 OPTIONS_DEFINE=	STATIC
 OPTIONS_DEFAULT=	STATIC

@@ -1,0 +1,87 @@
+diff --git a/src/etc/inc/captiveportal.inc b/src/etc/inc/captiveportal.inc
+index a67e395c1c..d39732b9b8 100644
+--- a/src/etc/inc/captiveportal.inc
++++ b/src/etc/inc/captiveportal.inc
+@@ -2264,7 +2264,7 @@ function portal_reply_page($redirurl, $type = null, $message = null, $clientmac
+ 
+ 	/* Get captive portal layout */
+ 	if ($type == "redir") {
+-		$redirurl = is_URL($redirurl) ? $redirurl : $portal_url;
++		$redirurl = is_URL($redirurl, true) ? $redirurl : $portal_url;
+ 		header("Location: {$redirurl}");
+ 		return;
+ 	} else if ($type == "login") {
+@@ -2665,11 +2665,11 @@ function portal_allow($clientip, $clientmac, $username, $password = null, $redir
+ 		}
+ 	}
+ 	/* redirect user to desired destination */
+-	if (is_URL($attributes['url_redirection'])) {
++	if (is_URL($attributes['url_redirection'], true)) {
+ 		$my_redirurl = $attributes['url_redirection'];
+-	} else if (is_URL($config['captiveportal'][$cpzone]['redirurl'])) {
++	} else if (is_URL($config['captiveportal'][$cpzone]['redirurl'], true)) {
+ 		$my_redirurl = $config['captiveportal'][$cpzone]['redirurl'];
+-	} else if (is_URL($redirurl)) {
++	} else if (is_URL($redirurl, true)) {
+ 		$my_redirurl = $redirurl;
+ 	}
+ 
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 7ff1da9bbc..4a3757546e 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -2511,14 +2511,20 @@ function msort($array, $id = "id", $sort_ascending = true) {
+  * NAME
+  *   is_URL
+  * INPUTS
+- *   string to check
++ *   $url: string to check
++ *   $httponly: Only allow HTTP or HTTPS scheme
+  * RESULT
+  *   Returns true if item is a URL
+  ******/
+-function is_URL($url) {
++function is_URL($url, $httponly = false) {
+ 	$match = preg_match("'\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))'", $url);
+ 	if ($match) {
+-		return true;
++		if ($httponly) {
++			$urlparts = parse_url($url);
++			return in_array(strtolower($urlparts['scheme']), array('http', 'https'));
++		} else {
++			return true;
++		}
+ 	}
+ 	return false;
+ }
+diff --git a/src/usr/local/captiveportal/index.php b/src/usr/local/captiveportal/index.php
+index 25cb57fba9..6df64aacd7 100644
+--- a/src/usr/local/captiveportal/index.php
++++ b/src/usr/local/captiveportal/index.php
+@@ -44,7 +44,7 @@ $cpcfg = $config['captiveportal'][$cpzone];
+ $orig_request = trim($_REQUEST['redirurl'], " /");
+ 
+ /* If the post-auth redirect is set, always use it. Otherwise take what was supplied in URL. */
+-if (!empty($cpcfg) && is_URL($cpcfg['redirurl'])) {
++if (!empty($cpcfg) && is_URL($cpcfg['redirurl'], true)) {
+ 	$redirurl = $cpcfg['redirurl'];
+ } elseif (preg_match("/redirurl=(.*)/", $orig_request, $matches)) {
+ 	$redirurl = urldecode($matches[1]);
+@@ -52,7 +52,7 @@ if (!empty($cpcfg) && is_URL($cpcfg['redirurl'])) {
+ 	$redirurl = $_REQUEST['redirurl'];
+ }
+ /* Sanity check: If the redirect target is not a URL, do not attempt to use it like one. */
+-if (!is_URL(urldecode($redirurl))) {
++if (!is_URL(urldecode($redirurl), true)) {
+ 	$redirurl = "";
+ }
+ 
+@@ -228,7 +228,7 @@ if ($_POST['logout_id']) {
+ 		captiveportal_free_dn_ruleno($pipeno);
+ 		$type = "error";
+ 			
+-		if (is_URL($auth_result['attributes']['url_redirection'])) {
++		if (is_URL($auth_result['attributes']['url_redirection'], true)) {
+ 			$redirurl = $auth_result['attributes']['url_redirection'];
+ 			$type = "redir";
+ 		}

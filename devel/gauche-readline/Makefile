@@ -1,6 +1,3 @@
-# Created by: Erik Greenwald <erik@smluc.org>
-# $FreeBSD$
-
 PORTNAME=	readline
 PORTVERSION=	0.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DIST_SUBDIR=	gauche
 
 MAINTAINER=	erik@bz.bzflag.bz
 COMMENT=	Pure gauche/scheme implementation of the Readline library
+WWW=		https://practical-scheme.net/gauche/packages.html
 
 LICENSE=	PD
 

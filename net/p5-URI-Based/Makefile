@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	URI-Based
 PORTVERSION=	1.03
 CATEGORIES=	net perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Define a base URI and then generate variations on it
+WWW=		https://metacpan.org/release/URI-Based
 
 LICENSE=	ARTPERL10
 

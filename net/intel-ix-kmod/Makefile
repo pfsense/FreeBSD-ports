@@ -1,14 +1,8 @@
-# Created by: Sergey Kozlov <skozlov@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ix
-PORTVERSION=	3.3.14
-PORTREVISION=	1
+PORTVERSION=	3.3.35
 PORTEPOCH=	0
-MASTER_SITES?=	https://downloadmirror.intel.com/14688/eng/ \
-		http://downloadmirror.intel.com/14688/eng/ \
+MASTER_SITES?=	https://downloadmirror.intel.com/786094/ \
 		https://downloadmirror.intel.com/29625/eng/:man \
-		http://downloadmirror.intel.com/29625/eng/:man
 
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${_MAN_SOURCE}${EXTRACT_SUFX}:man
@@ -20,9 +14,8 @@ COMMENT=	10 gigabit FreeBSD Base Driver for Intel(R) Network Connections
 MANPAGENAME=	ixgbe
 MANPAGELINKS=	ix if_ix if_ixgbe
 
-MAX_NETMAP_OSVERSION=	9999999
-
 MASTERDIR=	${.CURDIR}/../intel-ixl-kmod
+PATCHDIR=	${.CURDIR}/files
 PKGDIR=		${.CURDIR}
 DISTINFO_FILE=	${.CURDIR}/distinfo
 

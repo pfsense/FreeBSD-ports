@@ -1,13 +1,12 @@
-# Created by: crwhipp@gmail.com
-# $FreeBSD$
-
 PORTNAME=	foxtrotgps
 PORTVERSION=	1.2.2
+PORTREVISION=	5
 CATEGORIES=	astro geography
 MASTER_SITES=	http://www.foxtrotgps.org/releases/
 
 MAINTAINER=	crwhipp@gmail.com
 COMMENT=	Lightweight opensource gps moving map application
+WWW=		https://www.foxtrotgps.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,9 +20,8 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 
 USES=		compiler:c++11-lang gettext gmake gnome pkgconfig python \
 		shebangfix sqlite:3
-USE_GNOME=	cairo gconf2 gtk20 intltool libglade2 libxml2
+USE_GNOME=	cairo gtk20 intltool libglade2 libxml2
 GLIB_SCHEMAS=	org.foxtrotgps.gschema.xml
-INSTALLS_ICONS=	yes
 
 SHEBANG_FILES=	contrib/convert2gpx \
 		contrib/convert2osm \
@@ -38,4 +36,10 @@ CONFIGURE_ENV=	DATADIRNAME=share
 
 INFO=		foxtrotgps
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
+
+.include <bsd.port.post.mk>

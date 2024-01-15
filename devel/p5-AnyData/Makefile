@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	AnyData
 PORTVERSION=	0.12
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy access to data in many formats
+WWW=		https://metacpan.org/release/AnyData
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hike
 PORTVERSION=	2.1.3
 PORTEPOCH=	1
@@ -9,12 +6,13 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby library for finding files in a set of paths
+WWW=		https://github.com/sstephenson/hike
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

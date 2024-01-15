@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	apbs
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	1.5-102
@@ -8,6 +6,7 @@ CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Electrostatic and solvation properties for complex molecules
+WWW=		https://www.poissonboltzmann.org/
 
 LICENSE=	MIT
 

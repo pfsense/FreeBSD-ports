@@ -1,9 +1,6 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	mumps4
 PORTVERSION=	4.10.0	# Please do not upgrade to 5+: use math/mumps
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	http://mumps.enseeiht.fr/		\
 		http://graal.ens-lyon.fr/MUMPS/		\
@@ -13,6 +10,7 @@ DISTNAME=	MUMPS_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MUltifrontal Massively Parallel sparse direct Solver
+WWW=		https://graal.ens-lyon.fr/MUMPS/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE

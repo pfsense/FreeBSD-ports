@@ -1,10 +1,7 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bsfilter
-PORTREVISION=	0
 
 COMMENT=	Spam filtering, bsfilter based plugin for Claws Mail
+WWW=		https://www.claws-mail.org/plugins.php
 
 RUN_DEPENDS=	bsfilter:mail/bsfilter
 

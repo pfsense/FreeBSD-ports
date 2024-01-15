@@ -1,20 +1,17 @@
-# Created by: Aragon Gouveia <aragon@phat.za.net>
-# $FreeBSD$
-
 PORTNAME=	alsa-lib
-PORTVERSION=	1.1.2
-PORTREVISION=	2
+PORTVERSION=	1.2.10
 CATEGORIES=	audio
-MASTER_SITES=	ftp://ftp.alsa-project.org/pub/lib/ \
-		GENTOO
+MASTER_SITES=	https://www.alsa-project.org/files/pub/lib/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	ALSA compatibility library
+WWW=		https://www.alsa-project.org/
 
 LICENSE=	LGPL21+
 
 USES=		cpe libtool:keepla tar:bzip2
-CPE_VENDOR=	alsa
+CPE_VENDOR=	alsa-project
+CPE_PRODUCT=	alsa
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-pkgconfdir="\$${prefix}/libdata/pkgconfig"
@@ -24,22 +21,20 @@ TEST_ENV=	${MAKE_ENV} \
 		ALSA_CONFIG_PATH="${FILESDIR}/asound.conf.sample"
 TEST_TARGET=	check
 CPPFLAGS+=	-I${FILESDIR}
+# Some symbols in the linker version script Versions.in are only defined when
+# --enable-alisp is used at configure time. Suppress errors with lld >= 17 due
+# to these undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
 
 OPTIONS_DEFINE=	PYTHON
 OPTIONS_SUB=	yes
 
-PYTHON_USES=			python
-PYTHON_CONFIGURE_ENABLE=	python
+PYTHON_USES=			gettext-runtime python
+PYTHON_CONFIGURE_ENABLE=	mixer-pymods python
+PYTHON_BINARY_ALIAS=		python3-config=${PYTHON_CMD:T}-config
 
-post-patch:	.SILENT
-	${REINPLACE_CMD} -e '/LIBS/ { s/-ldl//g; s/-lrt//g; }' \
-		-e 's/python-config/${PYTHON_CMD:T}-config/g' \
-		-e '/pythonlibs/s/--libs/--ldflags/' \
-		-e '/_GNU_SOURCE/d' \
-		-e '/lt_cv_dlopen/s/-ldl//g' ${WRKSRC}/configure
-	${REINPLACE_CMD} '/LIBADD/s/-ldl//g' \
-		${WRKSRC}/modules/mixer/simple/Makefile.in
-	${REINPLACE_CMD} 's|/etc|${PREFIX}&|g' \
+post-patch:
+	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' \
 		${WRKSRC}/src/conf/alsa.conf
 
 post-install:

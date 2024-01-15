@@ -1,14 +1,12 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Net-Pcap
-PORTVERSION=	0.18
+PORTVERSION=	0.21
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Interface to pcap(3) LBL packet capture library
+WWW=		https://metacpan.org/release/Net-Pcap
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

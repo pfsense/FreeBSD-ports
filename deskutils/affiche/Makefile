@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	affiche
 PORTVERSION=	0.6.0
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	http://www.collaboration-world.com/affiche.data/releases/Stable/
 DISTNAME=	Affiche-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Affiche allows people to stick notes
+WWW=		http://www.collaboration-world.com/cgi-bin/project/index.cgi?pid=5
 
 LICENSE=	GPLv2
 

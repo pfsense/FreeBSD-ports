@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	pipe
 PORTVERSION=	2.5
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	pipe25_rc5
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for creating and analysing Petri nets
+WWW=		https://pipe2.sourceforge.net/
 
 USES=		zip
 NO_BUILD=	yes

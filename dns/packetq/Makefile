@@ -1,6 +1,3 @@
-# Created by: Leo Vandewoestijne <freebsd@dns.company>
-# $FreeBSD$
-
 PORTNAME=	packetq
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.1
@@ -9,6 +6,7 @@ CATEGORIES=	dns
 
 MAINTAINER=	freebsd@dns.company
 COMMENT=	Basic SQL-frontend to PCAP-files
+WWW=		https://www.dns-oarc.net/tools/packetq
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

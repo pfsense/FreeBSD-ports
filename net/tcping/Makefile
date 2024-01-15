@@ -1,12 +1,10 @@
-# Created by: Dryice Liu
-# $FreeBSD$
-
 PORTNAME=	tcping
-PORTVERSION=	1.3.6
+PORTVERSION=	2.1.0
 CATEGORIES=	net
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Do a TCP connect to the given IP/port combination
+WWW=		https://github.com/mkirchner/tcping
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,15 +13,15 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	mkirchner
 
-OPTIONS_DEFINE=	DOCS
-
 CFLAGS+=	-DHAVE_HSTRERROR
 
 PLIST_FILES=	bin/tcping
 PORTDOCS=	README
 
+OPTIONS_DEFINE=	DOCS
+
 do-build:
-	${CC} ${CFLAGS} -o ${WRKSRC}/tcping ${WRKSRC}/tcping.c
+	${CC} ${CFLAGS} -o ${WRKSRC}/tcping ${WRKSRC}/tcping.c ${WRKSRC}/cli.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/tcping ${STAGEDIR}${PREFIX}/bin

@@ -1,19 +1,19 @@
-# Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	spice-protocol
-PORTVERSION=	0.12.15
+PORTVERSION=	0.14.4
 CATEGORIES=	devel
 MASTER_SITES=	http://www.spice-space.org/download/releases/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Simple Protocol for Independent Computing Environments
+WWW=		https://www.spice-space.org
 
 LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
-GNU_CONFIGURE=	yes
-USES=		gmake pathfix pkgconfig python tar:bzip2
+USES=		meson ninja pathfix pkgconfig python tar:xz
+
+MESON_ARGS=	-Ddatadir=libdata
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

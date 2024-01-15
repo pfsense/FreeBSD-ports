@@ -1,4 +1,4 @@
---- texk/xdvik/encodings.c.orig	2013-03-31 05:28:20 UTC
+--- texk/xdvik/encodings.c.orig	2019-07-27 23:56:42 UTC
 +++ texk/xdvik/encodings.c
 @@ -69,10 +69,18 @@ OTHER DEALINGS IN THE SOFTWARE.
  #if HAVE_ICONV_H
@@ -19,17 +19,17 @@
  #include "util.h"
  #include "encodings.h"
  #include "my-snprintf.h"
-@@ -3021,8 +3029,74 @@ close_iconv(void *dummy)
+@@ -3021,9 +3029,75 @@ close_iconv(void *dummy)
  	iconv_close(m_iconv_gb_ucs4);
  	m_iconv_gb_ucs4 = (iconv_t)(-1);
      }
 +    if (m_iconv_jis_ucs4 != (iconv_t)(-1)) {
-+	iconv_close(m_iconv_jis_ucs4);
-+	m_iconv_jis_ucs4 = (iconv_t)(-1);
++       iconv_close(m_iconv_jis_ucs4);
++       m_iconv_jis_ucs4 = (iconv_t)(-1);
 +    }
-+#endif /* HAVE_ICONV_H */
-+}
-+
+ }
+ #endif /* HAVE_ICONV_H */
+ 
 +#ifdef PTEX
 +/* convert a JIS char to unicode (UCS-4) using iconv() */
 +uint32_t
@@ -88,13 +88,14 @@
 +        warned = True;
 +    }
 +    return 0;
- #endif /* HAVE_ICONV_H */
- }
++ #endif /* HAVE_ICONV_H */
++ }
 +#endif /* PTEX */
- 
++
  /* convert a CJK char to unicode (UCS-4) using iconv() */
  static uint32_t
-@@ -3577,6 +3651,24 @@ guess_encoding(wide_ubyte ch, const char
+ cjk2unicode(unsigned char *cjk)
+@@ -3577,6 +3651,24 @@ guess_encoding(wide_ubyte ch, const char *fontname, ch
      
      TRACE_FIND_VERBOSE((stderr, "guess_encoding: |%s|, char 0x%.4X", fontname, ch));
  

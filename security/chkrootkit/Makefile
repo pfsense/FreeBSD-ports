@@ -1,18 +1,16 @@
-# Created by: Luiz Eduardo R. Cordeiro
-# $FreeBSD$
-
 PORTNAME=	chkrootkit
-PORTVERSION=	0.53
+PORTVERSION=	0.58b
 CATEGORIES=	security
-MASTER_SITES=	ftp://ftp.pangeia.com.br/pub/seg/pac/
+MASTER_SITES=	ftp://ftp.chkrootkit.org/pub/seg/pac/
 
 MAINTAINER=	lacey.leanne@gmail.com
 COMMENT=	Tool to locally check for signs of a rootkit
+WWW=		http://www.chkrootkit.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-OPTIONS_DEFINE=	DOCS
+USES=		cpe
 
 SCRIPT_FILES=	chkrootkit
 PROG_FILES=	chklastlog \
@@ -24,15 +22,18 @@ PROG_FILES=	chklastlog \
 		check_wtmpx \
 		strings
 ALL_TARGET=	${SCRIPT_FILES} ${PROG_FILES}
+
+BINMODE=	0700
+
+PLIST_FILES=	${ALL_TARGET:C,^,sbin/,}
+
 PORTDOCS=	ACKNOWLEDGMENTS \
 		COPYRIGHT \
 		README \
 		README.chklastlog \
 		README.chkwtmp
 
-PLIST_FILES=	${ALL_TARGET:C,^,sbin/,}
-
-BINMODE=	0700
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	orthorobot
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.1-1
@@ -9,6 +7,7 @@ CATEGORIES=	games
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Perspective puzzle game
+WWW=		https://stabyourself.net/orthorobot/
 
 LICENSE=	WTFPL
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

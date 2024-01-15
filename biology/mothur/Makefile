@@ -1,32 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	mothur
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.43.0
+DISTVERSION=	1.48.0
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software for bioinformatics of the microbial ecology community
+WWW=		https://www.mothur.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BUILD_DEPENDS=	bash:shells/bash
 
-USES=		compiler:c++11-lang gmake localbase readline shebangfix
-SHEBANG_FILES=	source/uchime_src/mk
+USES=		compiler:c++11-lang gmake localbase readline
 USE_GITHUB=	yes
+#USE_CXXSTD=	c++11 # not all C++ files are compiled with -std=c++11 which causes failure in addtargets2.cpp due to a collision of the 'byte' symbol with std::byte
+
+MAKE_ARGS=	INSTALL_DIR=${STAGEDIR}${PREFIX}/bin
+
 ALL_TARGET=	${PORTNAME}
 
 BINARY_ALIAS=	g++=${CXX}
 
-EXES=		${PORTNAME} uchime
+PLIST_FILES=	bin/${PORTNAME}
 
-PLIST_FILES=	${EXES:S/^/bin\//}
+.include <bsd.port.options.mk>
 
-do-install: # https://github.com/mothur/mothur/issues/615
-.for e in ${EXES}
-	${INSTALL_PROGRAM} ${WRKSRC}/${e} ${STAGEDIR}${PREFIX}/bin
-.endfor
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+.endif
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

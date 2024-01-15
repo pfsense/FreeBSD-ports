@@ -1,6 +1,3 @@
-# Created by: Frank Fenor <frank@fenor.de>
-# $FreeBSD$
-
 PORTNAME=	tcludp
 PORTVERSION=	1.0.11
 CATEGORIES=	net tcl
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	frank@fenor.de
 COMMENT=	UDP extension for TCL
+WWW=		https://tcludp.sourceforge.net/
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License

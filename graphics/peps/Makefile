@@ -1,15 +1,13 @@
-# Created by: petef@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	peps
 PORTVERSION=	2.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	http://peps.redprince.net/peps/ \
 		ftp://ftp.peps.redprince.net/unix/peps/
 
 MAINTAINER=	doceng@FreeBSD.org
 COMMENT=	Converts EPS images to anti-aliased bitmaps
+WWW=		http://peps.redprince.net/peps/
 
 LICENSE=	BSD2CLAUSE
 

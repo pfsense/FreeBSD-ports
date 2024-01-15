@@ -1,6 +1,3 @@
-# Created by: Erwin Lansing <erwin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Quoted
 PORTVERSION=	2.10
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extract structure of quoted email message in Perl
+WWW=		https://metacpan.org/release/Text-Quoted
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

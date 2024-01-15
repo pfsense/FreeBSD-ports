@@ -1,6 +1,3 @@
-# Created by: Michael Vasilenko <acid@stu.cn.ua>
-# $FreeBSD$
-
 PORTNAME=	xcode
 PORTVERSION=	4.1
 CATEGORIES=	russian converters
@@ -10,6 +7,7 @@ DISTNAME=	xcodesrc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program for converting Russian encodings with care to letter YO
+WWW=		https://www.rusf.ru/books/yo/xcode.html
 
 USES=		zip
 PLIST_FILES=	bin/xcode

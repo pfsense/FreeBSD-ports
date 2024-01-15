@@ -1,6 +1,3 @@
-# Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
-
 PORTNAME=	Reflex
 PORTVERSION=	0.100
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Class library for flexible, reactive programs
+WWW=		https://metacpan.org/release/Reflex
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	rsyslog
-PORTVERSION=	8.2012.0
+PORTVERSION=	8.2312.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.rsyslog.com/files/download/rsyslog/
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Syslogd supporting SQL, TCP, and TLS
+WWW=		https://www.rsyslog.com/
 
 LICENSE=	GPLv3 LGPL3 APACHE20
 LICENSE_COMB=	multi
@@ -18,8 +17,7 @@ LIB_DEPENDS=	libestr.so:devel/libestr \
 		libcurl.so:ftp/curl
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils@${PY_FLAVOR}
 
-USES=		libtool pkgconfig autoreconf python:env
-USE_LDCONFIG=	yes
+USES=		cpe libtool pkgconfig autoreconf python:env
 
 PORTSCOUT=	limit:^8\.
 
@@ -144,15 +142,17 @@ SUB_FILES=	pkg-message
 CONFIGURE_ARGS+=	--enable-imdiag --enable-imfile --enable-impstats \
 			--enable-mail --enable-omprog --enable-omstdout \
 			--enable-omuxsock --enable-rfc3195 --disable-testbench \
+			--enable-pmciscoios \
 			ac_cv_func_inotify_init=no ac_cv_header_sys_inotify_h=no
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/lib/rsyslog/|${PREFIX}/lib/rsyslog/|'\
-		${WRKSRC}/tools/syslogd.c
 	@${GREP} -rl '/etc/rsyslog.conf' ${WRKSRC}|${XARGS} ${REINPLACE_CMD} -e\
 		's|/etc/rsyslog.conf|${PREFIX}/etc/rsyslog.conf|'
-	@${REINPLACE_CMD} -e 's,/lib/rsyslog,${PREFIX}/lib/rsyslog,' ${WRKSRC}/tools/syslogd.c
 	@${FIND} ${WRKSRC} -name '*.bak' -delete
+
+post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rsyslog.d
+	${INSTALL_DATA} ${FILESDIR}/rsyslog.conf ${STAGEDIR}${PREFIX}/etc/rsyslog.conf.sample
 
 post-install-DOCS-on:
 .for SQL in ${PORTDOCS:M*.sql}

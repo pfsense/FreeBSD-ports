@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	jcommon
 PORTVERSION=	1.0.23
 CATEGORIES=	java devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/jfreechart/3.%20JCommon/${PORTVERSION}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Collection of useful classes used by JFreeChart and JFreeReport
+WWW=		https://www.jfree.org/jcommon/
 
 LICENSE=	LGPL21
 

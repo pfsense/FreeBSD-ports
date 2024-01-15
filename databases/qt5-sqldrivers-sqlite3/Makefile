@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sqlite3
 
 DB=		SQLite

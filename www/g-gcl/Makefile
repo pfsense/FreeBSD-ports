@@ -1,6 +1,3 @@
-# Created by: G. Adam Stanislav <adam@whizkidtech.net>
-# $FreeBSD$
-
 PORTNAME=	g-gcl
 PORTVERSION=	1.10
 CATEGORIES=	www graphics
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.whizkidtech.redprince.net/gcl/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sample counter scripts for Graphic Counter Language
+WWW=		http://www.whizkidtech.redprince.net/gcl/
 
 RUN_DEPENDS=	gracula:graphics/gracula
 

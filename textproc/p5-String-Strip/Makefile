@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	String-Strip
 PORTVERSION=	1.02
 PORTREVISION=	1

@@ -1,6 +1,3 @@
-# Created by: Matthew Seaman
-# $FreeBSD$
-
 PORTNAME=	sa-utils
 PORTVERSION=	0.04
 CATEGORIES=	mail

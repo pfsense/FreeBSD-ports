@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rainbow
 DISTVERSION=	2.0.4
 CATEGORIES=	biology
@@ -8,6 +6,7 @@ DISTNAME=	rainbow_${PORTVERSION}
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Efficient clustering and assembling of short reads, especially for RAD
+WWW=		https://sourceforge.net/projects/bio-rainbow/
 
 LICENSE=	GPLv3+
 

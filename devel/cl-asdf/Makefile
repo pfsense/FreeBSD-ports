@@ -1,6 +1,3 @@
-# Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
-
 PORTNAME=	asdf
 DISTVERSION=	3.3.4.7
 PORTEPOCH=	2
@@ -9,13 +6,14 @@ PKGNAMEPREFIX=	cl-
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	System definition facility for Common Lisp
+WWW=		https://www.cliki.net/asdf
 
 LICENSE=	MIT
 
 USES=		gmake
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.common-lisp.net
-GL_COMMIT=	a58828745a610c1af841a86587ba197707c89eb3
+GL_TAGNAME=	a58828745a610c1af841a86587ba197707c89eb3
 
 ALL_TARGET=	build/asdf.lisp
 SUB_FILES=	pkg-message

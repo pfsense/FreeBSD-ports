@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	fluent-plugin-config-expander
-PORTVERSION=	0.1.3
+PORTVERSION=	1.0.1
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	girgen@FreeBSD.org
 COMMENT=	Fluent plugin which provides directives for loop extraction
+WWW=		https://github.com/tagomoris/fluent-plugin-config-expander
 
-RUN_DEPENDS=	\
-	rubygem-fluentd>0:sysutils/rubygem-fluentd
+LICENSE=	APACHE20
 
-USE_RUBY=	yes
+RUN_DEPENDS=	rubygem-fluentd>0:sysutils/rubygem-fluentd
+
 USES=		gem
 
 .include <bsd.port.mk>

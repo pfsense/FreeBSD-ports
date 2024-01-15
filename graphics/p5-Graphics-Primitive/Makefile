@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Graphics-Primitive
 PORTVERSION=	0.67
 CATEGORIES=	graphics perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Device and library agnostic graphic primitives
+WWW=		https://metacpan.org/release/Graphics-Primitive
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

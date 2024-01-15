@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PBKDF2-Tiny
 PORTVERSION=	0.005
 CATEGORIES=	security perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Minimalist PBKDF2 (RFC 2898) with HMAC-SHA1 or HMAC-SHA2
+WWW=		https://metacpan.org/release/PBKDF2-Tiny
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

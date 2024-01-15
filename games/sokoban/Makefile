@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=		sokoban
 PORTVERSION=		1.0
 PORTREVISION=		2
@@ -8,7 +5,7 @@ CATEGORIES=		games
 MASTER_SITES=		SUNSITE/games/strategy
 DISTNAME=		${PORTNAME}-src
 
-MAINTAINER=		lifanov@FreeBSD.org
+MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Logical game: problems with packets in cave
 
 USES=			ncurses

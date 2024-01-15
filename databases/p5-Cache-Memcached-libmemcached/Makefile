@@ -1,6 +1,3 @@
-# Created by: Dmitry Liakh <dliakh@ukr.net>
-# $FreeBSD$
-
 PORTNAME=	Cache-Memcached-libmemcached
 PORTVERSION=	0.02011
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dliakh@ukr.net
 COMMENT=	Cache::Memcached compatible interface to libmemcached
+WWW=		https://metacpan.org/release/Cache-Memcached-libmemcached
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Memcached-libmemcached>=0.42.01:databases/p5-Memcached-libmemcached \

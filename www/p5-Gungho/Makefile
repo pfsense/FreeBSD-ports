@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Gungho
 PORTVERSION=	0.09008
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Event Based High Performance Web Crawler Framework
+WWW=		https://metacpan.org/release/Gungho
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

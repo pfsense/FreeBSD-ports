@@ -1,9 +1,7 @@
 #!/bin/sh
 
-# $FreeBSD$
-#
 # PROVIDE: tailscaled
-# REQUIRE: networking
+# REQUIRE: NETWORKING
 # KEYWORD: shutdown
 #
 # Add the following lines to /etc/rc.conf.local or /etc/rc.conf
@@ -11,6 +9,8 @@
 #
 # tailscaled_enable (bool):	Set it to YES to enable tailscaled.
 #				Default is "NO".
+# tailscaled_state_dir (str):	Set the path to use for the state directory.
+# 				Default is "/var/db/tailscale"
 # tailscaled_port (number):	Set the port to listen on for incoming VPN packets.
 #				Default is "41641".
 # tailscaled_syslog_output_enable (bool):	Set to enable syslog output.
@@ -19,6 +19,12 @@
 #						Default is "info". See daemon(8).
 # tailscaled_syslog_output_facility (str):	Set syslog facility if syslog enabled.
 #						Default is "daemon". See daemon(8).
+# tailscaled_exitnode_enable (bool):	Set it to YES to announce tailscaled as
+#                                       an exit node. Default is "NO".
+# tailscaled_up_args (str):		Additional arguments to pass to tailscale up
+#                                       Default is "" (empty string).
+# tailscaled_tun_dev (str):	Set the name of the tun interface tailscaled creates.
+#				Default is "tailscale0"
 
 . /etc/rc.subr
 
@@ -28,7 +34,11 @@ rcvar=tailscaled_enable
 load_rc_config $name
 
 : ${tailscaled_enable:="NO"}
+: ${tailscaled_state_dir:="/var/db/tailscale"}
 : ${tailscaled_port:="41641"}
+: ${tailscaled_exitnode_enable:="NO"}
+: ${tailscaled_up_args:=""}
+: ${tailscaled_tun_dev:="tailscale0"}
 
 DAEMON=$(/usr/sbin/daemon 2>&1 | grep -q syslog ; echo $?)
 if [ ${DAEMON} -eq 0 ]; then
@@ -53,23 +63,40 @@ fi
 
 pidfile=/var/run/${name}.pid
 procname="%%PREFIX%%/bin/${name}"
-
-# XXX: Can we have multiple interfaces?
-tailscale_tap_dev="tailscale0"
+ctlname="%%PREFIX%%/bin/tailscale"
 
 start_cmd="${name}_start"
+start_postcmd="${name}_poststart"
 stop_postcmd="${name}_poststop"
 
 tailscaled_start()
 {
-	env CACHE_DIRECTORY=/var/db/tailscale /usr/sbin/daemon -f ${tailscaled_syslog_output_flags} -p ${pidfile} ${procname} --port ${tailscaled_port}
+	# Check for orphaned tailscale network interface
+	# And if it exists, then destroy it
+	/sbin/ifconfig ${tailscaled_tun_dev} >/dev/null 2>&1 && (
+		/sbin/ifconfig ${tailscaled_tun_dev} | fgrep -qw PID ||
+		/sbin/ifconfig ${tailscaled_tun_dev} destroy
+	)
+
+	/usr/sbin/daemon -f ${tailscaled_syslog_output_flags} -p ${pidfile} ${procname} -port ${tailscaled_port} -tun ${tailscaled_tun_dev} -statedir ${tailscaled_state_dir}
+}
+
+tailscaled_poststart()
+{
+        if checkyesno tailscaled_exitnode_enable; then
+		logger -s -t tailscale "Enabling Exit node mode"
+		tailscaled_up_args=" --advertise-exit-node ${tailscaled_up_args}"
+        fi
+        if [ -n "${tailscaled_up_args}" ]; then
+                ${ctlname} up ${tailscaled_up_args}
+        fi
 }
 
 tailscaled_poststop()
 {
-	/sbin/ifconfig ${tailscale_tap_dev} >/dev/null 2>&1 && (
-		logger -s -t tailscaled "Destroying tailscale0 adapter"
-		/sbin/ifconfig ${tailscale_tap_dev} destroy || logger -s -t tailscaled "Failed to destroy ${tailscale_tap_dev} adapter"
+	/sbin/ifconfig ${tailscaled_tun_dev} >/dev/null 2>&1 && (
+		logger -s -t tailscaled "Destroying ${tailscaled_tun_dev} adapter"
+		/sbin/ifconfig ${tailscaled_tun_dev} destroy || logger -s -t tailscaled "Failed to destroy ${tailscaled_tun_dev} adapter"
 	)
 }
 

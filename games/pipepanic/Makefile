@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	pipepanic
 PORTVERSION=	0.1.3
 PORTREVISION=	6
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Pipe connecting game using libSDL
+WWW=		http://www.users.waitrose.com/~thunor/pipepanic/
 
 LICENSE=	GPLv2+ FAL
 LICENSE_COMB=	multi

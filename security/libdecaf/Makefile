@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libdecaf
 PORTVERSION=	1.0.0
 PORTREVISION=	3
@@ -8,6 +6,7 @@ MASTER_SITES=	SF/ed448goldilocks/
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Implementation of elliptic curve cryptography
+WWW=		https://ed448goldilocks.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

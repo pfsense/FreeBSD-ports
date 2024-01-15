@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dvtm
 PORTVERSION=	0.15
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	http://www.brain-dump.org/projects/dvtm/
 
 MAINTAINER=	beat@FreeBSD.org
 COMMENT=	Tiling window management for the console
+WWW=		https://www.brain-dump.org/projects/dvtm/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

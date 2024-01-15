@@ -1,15 +1,13 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	sushi
-PORTVERSION=	3.34.0
-PORTREVISION=	1
+PORTVERSION=	42.0
+PORTREVISION=	2
 CATEGORIES=	x11-fm gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Tool similar to Gloobus Preview that provides quick file previews
+WWW=		http://www.ubuntugeek.com/gnome-sushi-quick-previewer-for-nautilus.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -32,13 +30,11 @@ RUN_DEPENDS=	nautilus:x11-fm/nautilus
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 gettext gl gnome localbase meson \
+USES=		compiler:c11 gettext gl gnome gstreamer localbase meson \
 		pkgconfig tar:xz xorg
 USE_CSTD=	c11
-INSTALLS_ICONS=	yes
 USE_GNOME=	cairo gtksourceview4 intlhack introspection
 USE_GL=		egl
-USE_GSTREAMER1=	yes
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xcomposite xdamage xext xi xfixes xrandr
 

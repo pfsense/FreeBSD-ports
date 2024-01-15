@@ -1,6 +1,3 @@
-# Created by: dillon
-# $FreeBSD$
-
 PORTNAME=	crw
 PORTVERSION=	1.03
 PORTREVISION=	3

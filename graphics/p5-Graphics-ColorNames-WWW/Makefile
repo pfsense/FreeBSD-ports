@@ -1,6 +1,3 @@
-# Created by: Tomoyuki Sakurai <cherry@trombik.org>
-# $FreeBSD$
-
 PORTNAME=	Graphics-ColorNames-WWW
 PORTVERSION=	1.14
 CATEGORIES=	graphics perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	WWW color names and equivalent RGB values
+WWW=		https://metacpan.org/release/Graphics-ColorNames-WWW
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

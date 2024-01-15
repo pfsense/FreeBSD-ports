@@ -1,13 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	datamash
-PORTVERSION=	1.7
+PORTVERSION=	1.8
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Numeric, textual, and statistical operations on text files
+WWW=		https://www.gnu.org/software/datamash/
 
 LICENSE=	GPLv3+
 
@@ -17,7 +15,7 @@ TEST_TARGET=	check
 USE_PERL5=	test
 
 INFO=		${PORTNAME}
-PORTDOCS=	AUTHORS ChangeLog NEWS README THANKS TODO
+PORTDOCS=	AUTHORS ChangeLog NEWS README THANKS
 
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes

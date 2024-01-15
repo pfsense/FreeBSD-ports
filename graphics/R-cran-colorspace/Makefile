@@ -1,16 +1,14 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	colorspace
-DISTVERSION=	2.0-0
+DISTVERSION=	2.1-0
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	Color Space Manipulation
+WWW=		https://cran.r-project.org/web/packages/colorspace/
 
 LICENSE=	BSD3CLAUSE
 
-USES=	cran:auto-plist,compiles
+USES=		cran:auto-plist,compiles
 
 .include <bsd.port.mk>

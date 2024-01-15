@@ -1,37 +1,16 @@
-# Created by: Bernard Spil <brnrd@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	calendar
-PORTVERSION=	2.1.2
+PORTVERSION=	4.6.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
-MASTER_SITES=	https://github.com/${PKGNAMEPREFIX:S/-//}/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
-PKGNAMEPREFIX=	nextcloud-
-PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
-DISTNAME=	${PORTNAME}
-DIST_SUBDIR=	${PKGNAMEPREFIX:S/-//}/${DISTNAME}-${DISTVERSIONPREFIX}${PORTVERSION}
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Calendar app for Nextcloud
+WWW=		https://apps.nextcloud.com/apps/calendar
 
-LICENSE=	AGPLv3
+NEXTCLOUD_RUN_DEPENDS= 25
 
-RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=20:www/nextcloud@${PHP_FLAVOR}
+USES=		cpe nextcloud php:flavors
 
-USES=		php:flavors
-NO_BUILD=	yes
-NO_ARCH=	yes
-
-NEXTCLOUD_USERNAME?=	${WWWOWN}
-NEXTCLOUD_GROUPNAME?=	${WWWGRP}
-
-PLIST_SUB=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
-		NEXTCLOUD_GROUPNAME=${NEXTCLOUD_GROUPNAME}
-
-WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/${PORTNAME}
-
-do-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR}
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
+CPE_VENDOR=	nextcloud
 
 .include <bsd.port.mk>

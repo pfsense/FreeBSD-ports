@@ -1,0 +1,215 @@
+--- configure.ac.in.orig	2023-11-03 09:27:20 UTC
++++ configure.ac.in
+@@ -142,40 +142,8 @@ LIBPCAP=-lpcap
+ MAKE=make
+ BIN_PATH=/usr/bin
+ LIBPCAP=-lpcap
++OS=`uname -or | cut -d '-' -f 1`
+ 
+-if test $SYSTEM = "FreeBSD" || test $SYSTEM = "Darwin"; then
+-   CFLAGS="${CFLAGS} -I/usr/local/include"
+-   LDFLAGS="${LDFLAGS} -L/usr/local/lib"
+-
+-   dnl> https://github.com/google/sanitizers/wiki/AddressSanitizerFlags
+-   CC=clang
+-   CXX="clang++ -fpie -fno-color-diagnostics $CLANG_STDLIB"
+-   if test $SYSTEM = "FreeBSD"; then
+-    MAKE=gmake
+-    BIN_PATH=/usr/local/bin
+-   else
+-     dnl> Adds /opt if MacPorts is installed
+-     if [ test -f /opt/local/bin/port ]; then
+-       CFLAGS="${CFLAGS} -I/opt/local/include"
+-       LDFLAGS="${LDFLAGS} -L/opt/local/lib"
+-     fi
+-   fi
+-   dnl> CXX=clang++ -fsanitize=address -fsanitize-address-use-after-scope
+-   OSXV=`sw_vers -productVersion`
+-   if test $SYSTEM = "Darwin"; then
+-     OS="macOS $OSXV"
+-   else
+-     OS=`uname -or | cut -d '-' -f 1`
+-   fi
+-   if test $MACHINE = "x86_64"; then
+-      LDFLAGS="${LDFLAGS} -L/usr/local/opt/ntopng"
+-      RES=`g++ -Wall -fno-color-diagnostics Prefs.cpp 2>&1 | grep "unrecognized command line option "|wc -l`
+-      if test $RES -eq 0; then
+-            CFLAGS="-fno-color-diagnostics $CFLAGS"
+-      fi
+-   fi
+-fi
+-
+ dnl> Remove spaces
+ OS="${OS#"${OS%%[![:space:]]*}"}"
+ 
+@@ -220,15 +188,6 @@ fi
+   LIBS="${LIBS} -lnetfilter_queue -lnfnetlink -lnetfilter_conntrack"
+ fi
+ 
+-if test -d "/usr/local/include"; then
+-  CFLAGS="${CFLAGS} -I/usr/local/include"
+-  CXXFLAGS="${CXXFLAGS} -I/usr/local/include"
+-fi
+-
+-if test -d "/usr/local/lib"; then
+-  LIBS="${LIBS} -L/usr/local/lib"
+-fi
+-
+ if test -d /opt/local/include; then :
+   CFLAGS="${CFLAGS} -I/opt/local/include"
+   CXXFLAGS="${CXXFLAGS} -I/opt/local/include"
+@@ -282,15 +241,12 @@ AC_ARG_WITH(ndpi-includes,
+       NDPI_CUST_INC="-I$withval -I$withval/../lib/third_party/include"
+    ])
+ 
+-if test -d /usr/local/include/ndpi ; then :
+-   echo "WARNING: /usr/local/include/ndpi is present and might lead to compile errors"
+-fi
+-
+-NDPI_INC=`echo $NDPI_CFLAGS | sed -e "s/[ ]*$//"`
+-NDPI_LIB=
+-NDPI_LIB_DEP=
+-
+-AC_MSG_CHECKING(for nDPI source)
++PKG_CHECK_MODULES([NDPI], [libndpi >= 2.0], [
++  NDPI_INC=`echo $NDPI_CFLAGS | sed -e "s/[ ]*$//"`
++  NDPI_LIB="$NDPI_LIBS"
++  NDPI_LIB_DEP=
++  ], [
++      AC_MSG_CHECKING(for nDPI source)
+       if test -d "./nDPI" ; then :
+          NDPI_HOME=./nDPI
+       elif test -d "../nDPI" ; then :
+@@ -315,8 +271,8 @@ AC_MSG_CHECKING(for nDPI source)
+       else
+          AC_MSG_RESULT(not found)
+       fi
++  ])
+ 
+-
+ if test ! -z "$NDPI_CUST_INC" ; then :
+   NDPI_INC=$NDPI_CUST_INC
+ fi
+@@ -339,45 +295,10 @@ AC_ARG_WITH(json-c-static,
+     [PKG_CHECK_MODULES(JSON, json-c, [], [AC_MSG_ERROR(Please install libjson-c-dev package prerequisite)])]
+ )
+ 
+-if test -x /bin/freebsd-version; then
+- FREEBSD_VERSION=`freebsd-version | cut -f 1 -d '.'`
+-fi
+ 
+-if test "${FREEBSD_VERSION}" != "14"; then
+-pkg-config --exists libssl
+-if test "$?" -ne 1; then
+-  AC_DEFINE_UNQUOTED(NO_SSL_DL, 1, [has openssl])
+-  SSL_INC="`pkg-config --cflags libssl` -I/usr/include/openssl"
+-  SSL_LIB="`pkg-config --libs libssl` -lssl -lcrypto"
+-else
+-  dnl Workaround for MacOS Brew
+-  if test -d "/usr/local/Cellar/openssl@1.1"; then
+-    AC_DEFINE_UNQUOTED(NO_SSL_DL, 1, [has openssl])
+-    SSL_INC="-I/usr/local/Cellar/openssl@1.1/include"
+-    SSL_LIB="-L/usr/local/Cellar/openssl@1.1 -lssl -lcrypto"
+-  elif test -d "/usr/local/opt/openssl/lib"; then
+-    AC_DEFINE_UNQUOTED(NO_SSL_DL, 1, [has openssl])
+-    SSL_INC="-I/usr/local/opt/openssl/include"
+-    SSL_LIB="-L/usr/local/opt/openssl/lib -lssl -lcrypto"
+-  elif test -d "/opt/homebrew/Cellar/openssl@1.1"; then
+-    AC_DEFINE_UNQUOTED(NO_SSL_DL, 1, [has openssl])
+-    SSL_INC="-I/opt/homebrew/Cellar/openssl@1.1/include"
+-    SSL_LIB="-L/opt/homebrew/Cellar/openssl@1.1 -lssl -lcrypto"
+-  elif test -d "/usr/local/opt/openssl/lib"; then
+-    AC_DEFINE_UNQUOTED(NO_SSL_DL, 1, [has openssl])
+-    SSL_INC="-I/usr/local/opt/openssl/include"
+-    SSL_LIB="-L/usr/local/opt/openssl/lib -lssl -lcrypto"
+-  dnl Workaround for FreeBSD
+-  elif test -f "/usr/lib/libssl.so"; then
+-    AC_DEFINE_UNQUOTED(NO_SSL_DL, 1, [has openssl])
+-    SSL_INC="-I/usr/include"
+-    SSL_LIB="-L/usr/lib -lssl -lcrypto"
+-  else
+-    echo "Please install openssl-dev(el) package prerequisite"
+-    exit -1
+-  fi
+-fi
+-fi
++AC_DEFINE_UNQUOTED(NO_SSL_DL, 1, [has openssl])
++SSL_INC="-I%%SSL_INC%%"
++SSL_LIB="-L%%SSL_LIB%% -lssl -lcrypto"
+ 
+ AC_MSG_CHECKING([PF_RING nBPF])
+ NBPF_HOME=${PWD}/../PF_RING/userland/nbpf
+@@ -510,12 +431,8 @@ AS_VAR_IF(with_hiredis, yes, [
+     pkg-config --exists hiredis
+     if test "$?" -ne 1; then
+     HIREDIS_INC="`pkg-config --cflags hiredis` -I/usr/include/hiredis"
+-    if test $SYSTEM = "FreeBSD"; then
+-        HIREDIS_LIB="/usr/local/lib/libhiredis.a"
++    HIREDIS_LIB="`pkg-config --libs hiredis`"
+     else
+-        HIREDIS_LIB="`pkg-config --libs hiredis`"
+-    fi
+-    else
+     echo "Please install hiredis package prerequisite"
+     exit -1
+     fi
+@@ -533,14 +450,14 @@ if test "${with_nedge+set}" != set; then
+   fi
+ 
+   if test $SYSTEM = "FreeBSD"; then
+-     LIBPCAP="${PF_RING_HOME}/userland/libpcap/libpcap.a"
++      # Use pcap from base
+   else
+     if test -d ${PF_RING_HOME}; then
+       AC_MSG_CHECKING(for PF_RING source installed in $PF_RING_HOME)
+     fi
+   fi
+ 
+- if test -f "/usr/local/lib/libpfring.a" || test -f "/opt/pfring/lib/libpfring.a" || test -f "${PF_RING_HOME}/userland/lib/libpfring.a"; then
++ if test -f "%%LOCALBASE%%/lib/libpfring.a" || test -f "/opt/pfring/lib/libpfring.a" || test -f "${PF_RING_HOME}/userland/lib/libpfring.a"; then
+   AC_DEFINE_UNQUOTED(HAVE_PF_RING, 1, [Native PF_RING support])
+   if test -f "${PF_RING_HOME}/userland/lib/libpfring.a"; then
+      echo "${PF_RING_HOME}/userland/libpcap/libpcap.a"
+@@ -560,18 +477,18 @@ if test "${with_nedge+set}" != set; then
+          CXXFLAGS="${CXXFLAGS} -I/opt/pfring/include"
+          echo "Using PF_RING installed in /opt/pfring"
+       else
+-       if test -f "/usr/local/lib/libpfring.a"; then
+-        if test -f "/usr/local/lib/libpcap.a"; then
+-    	  LIBS="${LIBS} /usr/local/lib/libpfring.a"
+-          echo "Using PF_RING installed in /usr/local/lib"
++       if test -f "%%LOCALBASE%%/lib/libpfring.a"; then
++        if test -f "%%LOCALBASE%%/lib/libpcap.a"; then
++        LIBS="${LIBS} %%LOCALBASE%%/lib/libpfring.a"
++        echo "Using PF_RING installed in %%LOCALBASE%%/lib"
+ 	  AC_CHECK_LIB([pcap], [pcap_open_live], pcap=true)
+ 	  if test x$pcap = x
+ 	  then
+-	    echo "Found /usr/local/lib/libpfring.a but missing header files."
++	    echo "Found %%LOCALBASE%%/lib/libpfring.a but missing header files."
+ 	    exit 1
+ 	  fi
+ 	else
+-	  echo "Found /usr/local/lib/libpfring.a  but missing libpcap.a in the same directory"
++	  echo "Found %%LOCALBASE%%/lib/libpfring.a  but missing libpcap.a in the same directory"
+ 	  echo "Please make sure you have installed your PF_RING libraries and try again"
+ 	  exit 1
+         fi
+@@ -756,14 +673,12 @@ else
+     echo "Building without support for MySQL libraries."
+   fi
+ else
+-  if test "${FREEBSD_VERSION}" != "14"; then
+    dnl> FreeBSD
+    if test -f "/usr/local/lib/mysql/libmysqlclient.a"; then
+-     MYSQL_LIB=/usr/local/lib/mysql/libmysqlclient.a
+-     MYSQL_INC="-I /usr/local/include/mysql/"
+-     AC_DEFINE_UNQUOTED(HAVE_MYSQL, 1, [use mysql])
++    MYSQL_LIB="-L%%LOCALBASE%%/lib/mysql -lmysqlclient"
++    MYSQL_INC="-I%%LOCALBASE%%/include/mysql"
++    AC_DEFINE_UNQUOTED(HAVE_MYSQL, 1, [use mysql])
+    fi
+-  fi
+ fi
+ 
+ AC_CHECK_LIB([expat], [XML_ParserCreate], expat=true)

@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	simplestroke
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.1
@@ -8,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Detect mouse gestures
+WWW=		https://github.com/t6/simplestroke
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

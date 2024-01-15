@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bio-Variation
 PORTVERSION=	1.7.5
 CATEGORIES=	biology perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	BioPerl variation-related functionality
+WWW=		https://metacpan.org/release/Bio-Variation
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

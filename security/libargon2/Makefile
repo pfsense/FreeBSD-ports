@@ -1,12 +1,10 @@
-# Created by: Christopher Hall <hsw@bitmark.com>
-# $FreeBSD$
-
 PORTNAME=	libargon2
 PORTVERSION=	20190702
 CATEGORIES=	security devel
 
 MAINTAINER=	hsw@bitmark.com
 COMMENT=	Memory hard password hashing program and library
+WWW=		https://github.com/P-H-C/phc-winner-argon2
 
 LICENSE=	CC0-1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE

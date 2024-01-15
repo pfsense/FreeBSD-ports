@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	POE-API-Peek
 DISTVERSION=	2.20
 PORTREVISION=	1
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Peek into the internals of a running POE environment
+WWW=		https://metacpan.org/release/POE-API-Peek
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,15 +1,13 @@
-# Created by: Stas Timokhin <stast@bsdportal.ru>
-# $FreeBSD$
-
 PORTNAME=	eiskaltdcpp
 PORTVERSION=	2.2.10
 DISTVERSIONPREFIX=	v
-PORTREVISION?=	20
+PORTREVISION?=	25
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX?=	-lib
 
-MAINTAINER?=	fjoe@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	EiskaltDC++ shared library and header files
+WWW=		https://github.com/eiskaltdcpp/eiskaltdcpp
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,12 +1,10 @@
-# Created by: trociny
-# $FreeBSD$
-
 PORTNAME=	bmkdep
 PORTVERSION=	20140112
 CATEGORIES=	devel
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Construct Makefile dependency list
+WWW=		https://netbsd.org
 
 LICENSE=	BSD2CLAUSE
 

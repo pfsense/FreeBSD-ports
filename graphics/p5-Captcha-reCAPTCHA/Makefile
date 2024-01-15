@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Captcha-reCAPTCHA
 PORTVERSION=	0.99
 CATEGORIES=	graphics perl5
@@ -11,6 +8,7 @@ DISTNAME=	Captcha-reCaptcha-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl implementation of the reCAPTCHA API
+WWW=		https://metacpan.org/release/Captcha-reCaptcha
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: znerd@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	xalan-j
 PORTVERSION=	2.7.2
 CATEGORIES=	textproc java
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/g}-bin
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Apache XSLT processor for transforming XML documents
+WWW=		https://xml.apache.org/xalan-j/
 
 LICENSE=	APACHE20
 

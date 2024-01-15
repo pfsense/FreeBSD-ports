@@ -4,9 +4,9 @@
 # https://github.com/certbot/certbot/pull/7056
 # TODO: Upstream
 
---- certbot/compat/misc.py.orig	2020-01-14 18:41:31 UTC
+--- certbot/compat/misc.py.orig	2023-04-04 15:06:41 UTC
 +++ certbot/compat/misc.py
-@@ -74,6 +74,11 @@ LINUX_DEFAULT_FOLDERS = {
+@@ -100,6 +100,11 @@ LINUX_DEFAULT_FOLDERS = {
      'work': '/var/lib/letsencrypt',
      'logs': '/var/log/letsencrypt',
  }
@@ -17,8 +17,8 @@
 +}
  
  
- def get_default_folder(folder_type):
-@@ -88,8 +93,13 @@ def get_default_folder(folder_type):
+ def get_default_folder(folder_type: str) -> str:
+@@ -113,8 +118,13 @@ def get_default_folder(folder_type: str) -> str:
  
      """
      if os.name != 'nt':

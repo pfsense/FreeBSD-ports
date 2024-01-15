@@ -1,21 +1,18 @@
-# Created by: Denise H. G. <darcsis@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gnormalize
 PORTVERSION=	0.63
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	darcsis@gmail.com
 COMMENT=	Alternative for replaygain
+WWW=		https://gnormalize.sourceforge.net/
 
 RUN_DEPENDS+=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		wavegain:audio/wavegain
 
 USES=		gnome perl5 shebangfix
 USE_PERL5=	run
-INSTALLS_ICONS=	yes
 
 SHEBANG_FILES=	${PORTNAME}
 

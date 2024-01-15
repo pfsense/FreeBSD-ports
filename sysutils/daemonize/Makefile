@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	daemonize
 DISTVERSION=	1.7.8
 DISTVERSIONPREFIX=	release-
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool to run a command as a daemon
+WWW=		https://github.com/bmc/daemonize
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

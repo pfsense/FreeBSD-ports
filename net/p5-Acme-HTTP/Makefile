@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Acme-HTTP
 PORTVERSION=	0.10
 CATEGORIES=	net www perl5
@@ -9,16 +6,19 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	High-level access to Net::HTTP::NB and Net::HTTPS::NB
+WWW=		https://metacpan.org/release/Acme-HTTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-HTTP>=0:net/p5-Net-HTTP \
 		p5-Net-HTTPS-NB>=0:net/p5-Net-HTTPS-NB
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

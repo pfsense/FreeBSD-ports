@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flex-sdk
 PORTVERSION=	3.5.0.12683
 PORTREVISION=	1
@@ -10,8 +8,9 @@ PKGNAMESUFFIX=	3
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Adobe Flex SDK
+WWW=		http://opensource.adobe.com/wiki/display/flexsdk/Flex+3
 
-CONFLICTS=	ja-flex-sdk-2.* flex-sdk2-2.* flex-sdk-4.*
+CONFLICTS=	flex-sdk
 USES=		zip
 USE_JAVA=	yes
 SUB_FILES=	${SCRIPTS:C/\$/.sh/g}

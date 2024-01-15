@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	onlykey
 PORTVERSION=	1.2.2
+PORTREVISION=	1
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dmytro@posteo.net
 COMMENT=	Python command line tool for configuring and using OnlyKey
+WWW=		https://github.com/trustcrypto/python-onlykey
 
 LICENSE=	MIT
 
@@ -22,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hidapi>0:comms/py-hidapi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}uhid-freebsd>0:devel/py-uhid-freebsd@${PY_FLAVOR} \
 		u2f-host:security/libu2f-host
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 SUB_FILES=	pkg-message

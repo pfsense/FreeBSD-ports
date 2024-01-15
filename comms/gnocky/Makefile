@@ -1,14 +1,12 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnocky
 PORTVERSION=	0.0.7
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	comms
 MASTER_SITES=	http://www.gnokii.org/download/gnocky/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Graphical (GTK+2) frontend for gnokii
+COMMENT=	Graphical (GTK 2) frontend for gnokii
+WWW=		http://wiki.gnokii.org/index.php/Gnocky
 
 LIB_DEPENDS=	libgnokii.so:comms/gnokii
 

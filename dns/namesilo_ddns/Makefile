@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	namesilo_ddns
-PORTVERSION=	2.2
+PORTVERSION=	2.3.1
 DISTVERSIONPREFIX=v
 CATEGORIES=	dns net
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Updates DNS records with Namesilo for dynamic IP addresses
+WWW=		https://github.com/crees/namesilo_ddns
 
 LICENSE=	MIT
 

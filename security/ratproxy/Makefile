@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@exit2shell.com>
-# $FreeBSD$
-
 PORTNAME=	ratproxy
 PORTVERSION=	1.58
 CATEGORIES=	security
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.bit.nl/openbsd/distfiles/ \
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Semi-automated, largely passive web application security audit tool
+WWW=		https://github.com/codenote/ratproxy
 
 USES=		shebangfix ssl
 CFLAGS+=	-I${OPENSSLINC} -fcommon

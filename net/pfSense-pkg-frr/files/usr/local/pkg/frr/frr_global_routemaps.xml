@@ -8,7 +8,7 @@
  * frr_global_routemaps.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,6 +66,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -339,7 +343,6 @@
 			<options>
 				<option><name>None (Do Nothing)</name><value>none</value></option>
 				<option><name>Match AS Path</name><value>match</value></option>
-				<option><name>Set</name><value>set</value></option>
 				<option><name>Set Exclude</name><value>setexclude</value></option>
 				<option><name>Set Prepend</name><value>setprepend</value></option>
 				<option><name>Set Prepend Last-AS</name><value>setprependlast</value></option>

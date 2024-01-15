@@ -1,14 +1,12 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Email-Filter
-PORTVERSION=	1.034
+PORTVERSION=	1.035
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Library for creating easy email filters
+WWW=		https://metacpan.org/release/Email-Filter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,8 +18,9 @@ RUN_DEPENDS=	p5-Class-Trigger>=0:devel/p5-Class-Trigger \
 		p5-Email-Simple>=0:mail/p5-Email-Simple \
 		p5-IPC-Run>=0:devel/p5-IPC-Run
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

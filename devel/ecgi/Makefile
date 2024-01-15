@@ -1,6 +1,3 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	ecgi
 PORTVERSION=	0.6.3
 CATEGORIES=	devel
@@ -8,8 +5,11 @@ MASTER_SITES=	https://BSDforge.com/projects/source/devel/ecgi/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Library for the creation of CGI-based Web applications
+WWW=		https://BSDforge.com/projects/devel/ecgi/
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN=		Unfetchable
 
 USES=		gmake tar:xz
 PORTDOCS=	*

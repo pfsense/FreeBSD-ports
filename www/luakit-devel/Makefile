@@ -1,22 +1,22 @@
-# $FreeBSD$
-
-PORTNAME=	luakit-devel
-DISTVERSION=	2.2-8
-DISTVERSIONSUFFIX=	-g22d5e10
+PORTNAME=	luakit
+DISTVERSION=	2.3.3-0
+DISTVERSIONSUFFIX=	-g68e4ffc
+PORTREVISION=	2
+PORTEPOCH=	2
 CATEGORIES=	www
+PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Fast, small, webkit2 based browser framework extensible with Lua
+WWW=		https://luakit.github.io
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.GPLv3
 
-NOT_FOR_ARCHS=	sparc64
-NOT_FOR_ARCHS_REASON_sparc64=	Does not install on sparc64
-
 BUILD_DEPENDS=	help2man:misc/help2man \
 		${LUA_MODLIBDIR}/lfs.so:devel/luafilesystem@${LUA_FLAVOR}
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
+		libharfbuzz.so:print/harfbuzz \
 		libsoup-2.4.so:devel/libsoup \
 		libfreetype.so:print/freetype2 \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
@@ -31,6 +31,9 @@ GH_PROJECT=	luakit
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
 
 CONFLICTS_INSTALL=	luakit
+
+PORTDATA=	*
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS LUAJIT
 LUAJIT_DESC=	Use the Just-In-Time compiler for lua

@@ -1,13 +1,11 @@
-# Created by: Dikshie <dikshie@sfc.wide.ad.jp>
-# $FreeBSD$
-
 PORTNAME=	yaf
-PORTVERSION=	2.11.0
+DISTVERSION=	2.13.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 
 MAINTAINER=	dikshie@sfc.wide.ad.jp
 COMMENT=	Yet Another Flowmeter
+WWW=		https://tools.netsa.cert.org/yaf/index.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: bms@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	p4genpatch
 PORTVERSION=	1
 CATEGORIES=	devel

@@ -1,13 +1,11 @@
-# Created by: CHOI Junho <cjh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	qdecoder
-PORTVERSION=	12.0.8
+PORTVERSION=	12.1.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C/C++ language library including CGI support
+WWW=		https://wolkykim.github.io/qdecoder/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	typometer
 PORTVERSION=	1.0.1
 DISTVERSIONSUFFIX=	-bin
@@ -10,12 +7,13 @@ MASTER_SITES=	https://github.com/pavelfatin/${PORTNAME}/releases/download/v${POR
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Text/code editor typing latency analyzer
+WWW=		https://pavelfatin.com/typometer/
 
 LICENSE=	APACHE20
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

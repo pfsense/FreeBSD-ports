@@ -1,14 +1,12 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Module-Install
-PORTVERSION=	1.19
+PORTVERSION=	1.21
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Standalone, extensible Perl module installer
+WWW=		https://metacpan.org/release/Module-Install
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,5 +21,7 @@ RUN_DEPENDS=	p5-File-Remove>=1.42:devel/p5-File-Remove \
 USES=		perl5
 USE_PERL5=	configure
 CONFIGURE_ARGS=	--skip
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Server-POE
 PORTVERSION=	0.4
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Plack Server implementation for POE
+WWW=		https://metacpan.org/release/FRODWITH/Plack-Server-POE-0.4
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

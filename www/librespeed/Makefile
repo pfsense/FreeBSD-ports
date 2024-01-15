@@ -1,39 +1,41 @@
-# $FreeBSD$
-
 PORTNAME=	librespeed
-DISTVERSION=	5.2.2
+DISTVERSION=	5.3.0
 CATEGORIES=	www net
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Lightweight selfhosted speedtest
+WWW=		https://github.com/librespeed/speedtest
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=	php:flavors,web
+USES=		php:flavors,web
+
+USE_PHP=	ctype pdo session
 
 USE_GITHUB=	YES
 GH_PROJECT=	speedtest
 
-NO_BUILD=	YES
 NO_ARCH=	YES
+NO_BUILD=	YES
+SUB_FILES=	pkg-message
 
 PLIST_SUB=	LIBRESPEED_USERNAME=${WWWOWN}
-SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-OPTIONS_RADIO=	BACKEND
+OPTIONS_RADIO=		BACKEND
 OPTIONS_RADIO_BACKEND=	MYSQL PGSQL SQLITE
 
-MYSQL_USE=	PHP=mysqli
+MYSQL_USE=	PHP=pdo_mysql
 PGSQL_USE=	PHP=pdo_pgsql
 SQLITE_USE=	PHP=pdo_sqlite
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
 	${CP} -a ${WRKSRC}/*.js ${WRKSRC}/favicon.ico ${STAGEDIR}${WWWDIR}
+	${CP} -a ${WRKSRC}/index.html ${STAGEDIR}${WWWDIR}/index.html.sample
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/backend
 	cd ${WRKSRC}/backend && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}/backend
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/results
@@ -49,6 +51,6 @@ post-install-DOCS-on:
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${CP} -a ${WRKSRC}/*.html ${STAGEDIR}${EXAMPLESDIR}
+	${CP} -a ${WRKSRC}/examples/*.html ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

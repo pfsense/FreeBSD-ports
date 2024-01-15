@@ -38,6 +38,7 @@ if (!function_exists("filter_configure")) {
 $shortcut_section = "zeek";
 
 define('ZEEK_LOCALBASE', '/usr/local');
+define('ZEEKCTL_BIN', ZEEK_LOCALBASE .'/bin');
 define('ZEEK_ETC', ZEEK_LOCALBASE .'/etc');
 define('ZEEK_LOGDIR', ZEEK_LOCALBASE .'/logs/current');
 define('ZEEK_SITEDIR', ZEEK_LOCALBASE .'/share/zeek/site');
@@ -61,11 +62,10 @@ function zeek_enabled() {
 	global $config, $zeek_enabled;
 	$zeek_enabled = false;
 
-	init_config_arr(array('installedpackages', 'zeek', 'config'));
-	$settings = &$config['installedpackages']['zeek']['config'][0];
+	$settings = config_get_path('installedpackages/zeek/config/0', []);
 
 	// check whether Zeek is enabled ...
-	if ($settings['enable_zeek'] == "on") {
+	if ($settings['enable'] == "on") {
 		// ... and has at least one interface configured ...
 		if (!empty($settings['active_interface'])) {
 			$zeek_enabled = true;
@@ -79,11 +79,10 @@ function zeek_cluster_enabled() {
 	global $config, $zeek_cluster_enabled;
 	$zeek_cluster_enabled = false;
 
-	init_config_arr(array('installedpackages', 'zeekcluster', 'config'));
-	$settings = &$config['installedpackages']['zeekcluster']['config'][0];
+	$settings = config_get_path('installedpackages/zeekcluster/config/0', []);
 
 	// check whether zeek cluster is enabled
-	if ($settings['enable_cluster'] == "on") {
+	if ($settings['enable'] == "on") {
 		$zeek_cluster_enabled = true;
 	}
 	return $zeek_cluster_enabled;
@@ -141,21 +140,18 @@ function zeek_install_cron($should_install) {
 }
 
 function zeek_write_rcfile() {
-	$zeek_etc_dir = ZEEK_ETC;
+	$zeekctl_bin_dir = ZEEKCTL_BIN;
 	$rcfile = array();
 	$rcfile['file'] = 'zeek.sh';
 	$rcfile['start'] = <<< EOD
-{$zeek_etc_dir}/rc.d/zeek onestart
+/sbin/mount -t procfs proc /proc
+{$zeekctl_bin_dir}/zeekctl deploy
 
 EOD;
 
 	$rcfile['stop'] = <<< EOD
-{$zeek_etc_dir}/rc.d/zeek stop
-# Just to be sure...
-sleep 5
-if [ /usr/bin/pgrep "zeek" ]; then
-	/usr/bin/killall zeek 2>/dev/null
-fi
+{$zeekctl_bin_dir}/zeekctl stop
+
 EOD;
 
 	write_rcfile($rcfile);
@@ -227,7 +223,7 @@ function zeek_validate_general($post, &$input_errors) {
 	init_config_arr(array('installedpackages', 'zeek', 'config'));
 	$settings = &$config['installedpackages']['zeek']['config'][0];
 
-	if ($post['enable_zeek'] == "on") {
+	if ($post['enable'] == "on") {
 		if (!zeek_cluster_enabled()) {
 			if (empty($post['active_interface'])) {
 				$input_errors[] = "Select at least one interface under 'Zeek Interface(s)' to enable Zeek instance.";
@@ -269,7 +265,7 @@ function zeek_validate_zeekctl($post, &$input_errors) {
 		$input_errors[] = 'Log location must not end with a / character.';
 	}
 
-	if ($post['log_dir']{0} != '/') {
+	if ($post['log_dir'][0] != '/') {
 		$input_errors[] = 'Log location must start with a / character.';
 	}
 
@@ -285,7 +281,7 @@ function zeek_validate_zeekctl($post, &$input_errors) {
 }
 
 function zeek_validate_cluster($post, &$input_errors) {
-	if ($post['enable_cluster'] != 'on') {
+	if ($post['enable'] != 'on') {
 		return;
 	}
 
@@ -332,7 +328,7 @@ function zeek_validate_script($post, &$input_errors) {
 			$input_errors[] = 'Script location must not end with a / character.';
 		}
 
-		if ($post['zeekscriptpath']{0} != '/') {
+		if ($post['zeekscriptpath'][0] != '/') {
 			$input_errors[] = 'Script location must start with a / character.';
 		}
 
@@ -469,6 +465,9 @@ function zeek_zeekctl_resync() {
 
 # Recipient address for all emails sent out by Zeek and ZeekControl.
 MailTo = {$email}
+
+# Location of the sendmail binary
+SendMail = /usr/sbin/sendmail
 
 # Mail connection summary reports each log rotation interval.  A value of 1
 # means mail connection summaries, and a value of 0 means do not mail
@@ -772,8 +771,7 @@ EOD;
 function zeek_sync_on_changes() {
 	global $config;
 
-	init_config_arr(array('installedpackages', 'zeeksync', 'config'));
-	$zeek_sync = &$config['installedpackages']['zeeksync']['config'][0];
+	$zeek_sync = config_get_path('installedpackages/zeeksync/config/0', []);
 	$synconchanges = $zeek_sync['synconchanges'];
 	$synctimeout = $zeek_sync['synctimeout'] ?: '250';
 	switch ($synconchanges) {
@@ -842,7 +840,7 @@ function zeek_sync_on_changes() {
 					$valid = FALSE;
 				}
 				if ($valid) {
-					zeek_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+					zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $port, $protocol, $synctimeout);
 				} else {
 					log_error("[zeek] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
 				}
@@ -856,15 +854,10 @@ function zeek_sync_on_changes() {
 function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
 	global $config, $g;
 
-	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
+	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
 		log_error("[zeek] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
-	// Take care of IPv6 literal address
-	if (is_ipaddrv6($sync_to_ip)) {
-		$sync_to_ip = "[{$sync_to_ip}]";
-	}
-	$url = "{$protocol}://{$sync_to_ip}";
 	/* XML will hold the sections to sync */
 	$xml = array();
 	$xml['zeek'] = $config['installedpackages']['zeek'];
@@ -872,57 +865,14 @@ function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $v
 	$xml['zeekcluster'] = $config['installedpackages']['zeekcluster'];
 	$xml['zeekscript'] = $config['installedpackages']['zeekscript'];
 
-	/* Assemble XMLRPC payload */
-	$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-	/* Set a few variables needed for sync */
-	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	if ($g['debug']) {
-		$cli->setDebug(1);
-	}
-	/* Send our XMLRPC message and timeout after defined sync timeout value*/
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} else {
-		log_error("[zeek] XMLRPC sync successfully completed with {$url}:{$port}.");
-	}
-
-	/* Tell zeek to reload our settings on the destination sync host. */
-	$method = 'pfsense.exec_php';
+	$synctimeout = intval($varsynctimeout);
 	$execcmd = "require_once('/usr/local/pkg/zeek.inc');\n";
 	$execcmd .= "zeek_all_after_XMLRPC_resync();";
-	/* Assemble XMLRPC payload */
-	$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} else {
-		log_error("[zeek] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
-	}
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	/* Tell zeek to reload our settings on the destination sync host. */
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
 }
 
 function zeek_all_after_XMLRPC_resync() {

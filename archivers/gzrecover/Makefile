@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	gzrecover
 PORTVERSION=	0.8
 CATEGORIES=	archivers
@@ -10,6 +7,7 @@ DISTNAME=	gzrt-${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	GZIP recovery toolkit
+WWW=		https://www.urbanophile.com/arenn/hacking/gzrt/
 
 LICENSE=	GPLv2
 

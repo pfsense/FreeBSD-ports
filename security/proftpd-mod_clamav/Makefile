@@ -1,15 +1,13 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mod_clamav
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.14rc2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security ftp
 PKGNAMEPREFIX=	proftpd-
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	ClamAV ProFTPD module
+WWW=		https://github.com/jbenden/mod_clamav
 
 LICENSE=	GPLv2
 

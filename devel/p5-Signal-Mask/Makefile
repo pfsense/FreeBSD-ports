@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Signal-Mask
 PORTVERSION=	0.008
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Signal masks made easy
+WWW=		https://metacpan.org/release/Signal-Mask
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

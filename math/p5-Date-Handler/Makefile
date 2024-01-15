@@ -1,6 +1,3 @@
-# Created by: Shell Hung <shell@shellhung.org>
-# $FreeBSD$
-
 PORTNAME=	Date-Handler
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for calculating time differences
+WWW=		https://metacpan.org/release/Date-Handler
 
 USES=		perl5
 USE_PERL5=	configure patch

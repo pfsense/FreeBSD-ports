@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	WWW-NioTV
 PORTVERSION=	0.04
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Retrieve TV information from http://www.niotv.com/
+WWW=		https://metacpan.org/release/WWW-NioTV
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HTML-SimpleLinkExtor>=1.19:www/p5-HTML-SimpleLinkExtor \

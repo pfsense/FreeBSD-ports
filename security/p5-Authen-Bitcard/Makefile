@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Authen-Bitcard
 PORTVERSION=	0.90
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Bitcard authentication verification
+WWW=		https://metacpan.org/release/Authen-Bitcard
 
 RUN_DEPENDS=	p5-Class-ErrorHandler>=0:devel/p5-Class-ErrorHandler \
 		p5-JSON>=2.12:converters/p5-JSON \

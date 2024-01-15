@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	trivial-features
 PORTVERSION=	2010.01.16
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	cl-
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Ensures consistent *FEATURES* in Common Lisp
+WWW=		https://www.cliki.net/trivial-features
 
 NO_BUILD=	yes
 

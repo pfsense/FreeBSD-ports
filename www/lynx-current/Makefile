@@ -1,22 +1,20 @@
-# Created by: ache
-# $FreeBSD$
-
 PORTNAME=	lynx
-PORTVERSION=	2.9.0d6
+PORTVERSION=	2.9.0d12
 CATEGORIES=	www
 MASTER_SITES=	http://invisible-mirror.net/archives/lynx/tarballs/ \
-		ftp://invisible-island.net/lynx/tarballs/
+		ftp://ftp.invisible-island.net/lynx/tarballs/
 PKGNAMESUFFIX=	-current
 DISTNAME=	${PORTNAME}${PORTVERSION:S/p/pre./:S/d/dev./}
 
 MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Console-based web browser (current/development version)
+WWW=		https://lynx.invisible-island.net/current/
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support
 
-CONFLICTS_INSTALL=	lynx-2.8* ja-lynx-[0-9]*
+CONFLICTS_INSTALL=	lynx-2.8* ja-lynx
 
 USES=		cpe iconv ncurses shebangfix tar:bzip2
 WRKSRC=		${WRKDIR}/${DISTNAME}

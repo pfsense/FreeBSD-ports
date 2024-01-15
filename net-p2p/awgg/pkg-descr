@@ -1,6 +1,6 @@
-AWGG comes from Advanced Wget GUI. AWGG is a lightweight multiplatform and 
-multilanguage download manager, basically a wget frontend and other tools like 
-aria2, curl, youtube-dl and axel. AWGG is written in Free Pascal , using 
+AWGG comes from Advanced Wget GUI. AWGG is a lightweight multiplatform and
+multilanguage download manager, basically a wget frontend and other tools like
+aria2, curl, youtube-dl and axel. AWGG is written in Free Pascal , using
 CodeTyphon and Lazarus IDE.
 
 Features:
@@ -15,5 +15,3 @@ Features:
     Multiple queues.
     Supports HTTP, HTTPS, FTP.
     Drop box
-
-WWW: https://github.com/Nenirey/AWGG

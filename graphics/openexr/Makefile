@@ -1,90 +1,106 @@
-# Created by: nork@FreeBSD.org
-# $FreeBSD$
-
-PORTNAME=	openexr
-PORTVERSION=	2.5.5
+PORTNAME?=	openexr
+PORTVERSION=	3.2.1
+PORTREVISION?=	0
 CATEGORIES=	graphics devel
-MASTER_SITES=	LOCAL/mandree/:test
-DISTFILES=	${PORTNAME}-2.2.0-comp_dwa-test-images.tar.xz:test
+.if !defined(MASTERDIR)
+MASTER_SITES=	https://raw.githubusercontent.com/AcademySoftwareFoundation/openexr-images/v1.0/:testimages \
+		LOCAL/mandree/openexr/:DEFAULT \
+		LOCAL/mandree/openexr/:testimages
+DISTFILES+=	Beachball/multipart.0001.exr:testimages
+DISTFILES+=	Beachball/singlepart.0001.exr:testimages
+DISTFILES+=	Chromaticities/Rec709_YC.exr:testimages
+DISTFILES+=	Chromaticities/Rec709.exr:testimages
+DISTFILES+=	Chromaticities/XYZ_YC.exr:testimages
+DISTFILES+=	Chromaticities/XYZ.exr:testimages
+DISTFILES+=	LuminanceChroma/Flowers.exr:testimages
+DISTFILES+=	LuminanceChroma/Garden.exr:testimages
+DISTFILES+=	MultiResolution/ColorCodedLevels.exr:testimages
+DISTFILES+=	MultiResolution/WavyLinesCube.exr:testimages
+DISTFILES+=	MultiResolution/WavyLinesLatLong.exr:testimages
+DISTFILES+=	MultiView/Adjuster.exr:testimages
+DISTFILES+=	TestImages/GammaChart.exr:testimages
+DISTFILES+=	TestImages/GrayRampsHorizontal.exr:testimages
+DISTFILES+=	v2/LeftView/Balls.exr:testimages
+DISTFILES+=	v2/Stereo/Trunks.exr:testimages
+.endif
+DIST_SUBDIR=	${PORTNAME}
+EXTRACT_ONLY=	${DISTFILES:M*${EXTRACT_SUFX}}
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	High dynamic-range (HDR) image file format
+WWW=		https://www.openexr.com/
 
 LICENSE=	BSD3CLAUSE
 
-# exact version required to avoid hard-to-debug issues
-LIB_DEPENDS=	libImath-2_5.so.25:graphics/ilmbase
+BUILD_DEPENDS?=	help2man:misc/help2man
+# exact libImath version required to avoid hard-to-debug issues
+LIB_DEPENDS?=	libImath-3_1.so.29:math/Imath \
+		libdeflate.so:archivers/libdeflate
 
-USES=		cmake compiler:c++14-lang libtool pathfix pkgconfig
+USES?=		cmake compiler:c++14-lang cpe pathfix pkgconfig
 
 USE_GITHUB=	yes
 GH_TUPLE=	AcademySoftwareFoundation:openexr:v${PORTVERSION}
 
 USE_LDCONFIG=	yes
-CPPFLAGS+=	-I. -I../IlmImf
+
+CMAKE_ARGS?=	-DCMAKE_DEBUG_POSTFIX=
+
+CPPFLAGS+=	-I.
 # must be linked with -l{thr|pthread} explicitly
 LDFLAGS+=	-lpthread
 
-WRKSRC_SUBDIR=	OpenEXR
+_MAJORVER=	3_2
+_VER=		31
+_REL=		${PORTVERSION}
+PLIST_SUB+=	MAJORVER=${_MAJORVER} \
+		VER=${_VER} \
+		REL=${_REL}
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
+.if !defined(MASTERDIR)
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONS_SUB=	yes
+DOCS_CMAKE_BOOL=OPENEXR_INSTALL_DOCS INSTALL_DOCS
 
-_DOCSRCDIR1=	${WRKSRC:H}/
-_DOCSRCDIR2=	${WRKSRC}/doc
+_DOCSRCDIR1=	${WRKSRC}
 _DOC_FILES1=	CHANGES.md CONTRIBUTING.md GOVERNANCE.md LICENSE.md SECURITY.md \
 		CODE_OF_CONDUCT.md CONTRIBUTORS.md README.md
-_DOC_FILES2=	*.odt *.pdf
-
-MAJORVER=	2_5
-_VER=		25
-_MINVER=	0
-_PLVER=		4
-
-PLIST_SUB+=	MAJORVER=${MAJORVER} \
-		VER=${_VER} \
-		MINVER=${_MINVER} \
-		PLVER=${_PLVER}
 
 # too many reports about compilation failures, so
 # sanity check we are using the same C++ standard library
-_ilm_libcxx=	${COMPILER_FEATURES:Mlib*c++}
+_imath_libcxx=	${COMPILER_FEATURES:Mlib*c++}
+
+# This would be better placed in pre-test to avoid wasting space,
+# but if we do that, the cmake in src/test/bin will go downloading the files,
+# so we do not benefit from our checksumming and the distdir caching.
+post-extract:
+	${MKDIR} ${CONFIGURE_WRKSRC}/src/test/bin
+.for i in ${DISTFILES:M*.exr}
+	${PRINTF} %s ${i} | ( cd ${DISTDIR}/${DIST_SUBDIR} && ${CPIO} -dumpl ${CONFIGURE_WRKSRC}/src/test/bin/ 2>/dev/null )
+.endfor
+
 pre-configure:
 	@${READELF} -d ${LOCALBASE}/lib/libImath.so \
-	| ${EGREP} -q '\<NEEDED\>.*\[${_ilm_libcxx:C/\+/\\+/g}\.' \
-	|| {	${ECHO_CMD} "*** Your ilmbase package uses a different C++ standard library than ***" ; \
-		${ECHO_CMD} "*** OpenEXR would. Please recompile and reinstall ilmbase with the  ***" ; \
-		${ECHO_CMD} "*** same C++ std. library before trying to build OpenEXR.  Abort.   ***" ; \
+	| ${EGREP} -q '\<NEEDED\>.*\[${_imath_libcxx:C/\+/\\+/g}\.' \
+	|| {	${ECHO_CMD} "*** Your Imath package uses a different C++ standard library than ***" ; \
+		${ECHO_CMD} "*** OpenEXR would. Please recompile and reinstall Imath with the  ***" ; \
+		${ECHO_CMD} "*** same C++ std. library before trying to build OpenEXR.  Abort. ***" ; \
 		exit 1; }
-
-post-install:
-	${STRIP_CMD} \
-		${STAGEDIR}${PREFIX}/lib/libIlmImf-${MAJORVER}.so.${_VER} \
-		${STAGEDIR}${PREFIX}/lib/libIlmImfUtil-${MAJORVER}.so.${_VER}
-
-post-install-DOCS-off:
-	${RM} ${STAGEDIR}${DOCSDIR:H}/OpenEXR/*.pdf
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/${PORTNAME} 2>/dev/null || :
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${_DOC_FILES1:S|^|${_DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${_DOC_FILES2:S|^|${_DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR}
-	${MV} ${STAGEDIR}${DOCSDIR:H}/OpenEXR/[a-df-zA-Z]* ${STAGEDIR}${DOCSDIR}
-
-post-install-EXAMPLES-off:
-	${RM} -R ${STAGEDIR}${PREFIX}/share/doc/OpenEXR/examples/
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/OpenEXR 2>/dev/null || :
 
 post-install-EXAMPLES-on:
 	${MV} \
 		${STAGEDIR}${PREFIX}/share/doc/OpenEXR/examples/ ${STAGEDIR}${EXAMPLESDIR}
 	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/OpenEXR 2>/dev/null || :
 
+post-install-EXAMPLES-off:
+	${RM} -R ${STAGEDIR}${PREFIX}/share/doc/OpenEXR/examples/
+	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/OpenEXR 2>/dev/null || :
+
 do-test:
 	cd ${BUILD_WRKSRC} && ctest -j ${MAKE_JOBS_NUMBER}
 
+.endif
 .include <bsd.port.mk>

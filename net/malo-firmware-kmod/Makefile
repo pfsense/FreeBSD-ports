@@ -1,6 +1,3 @@
-# Created by: cpm <cpm@fbsd.es>
-# $FreeBSD$
-
 PORTNAME=	malo-firmware
 PORTVERSION=	${FWVERSION}
 CATEGORIES=	net
@@ -10,8 +7,9 @@ DISTNAME=	${FWNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Marvell Libertas 88W8335 IEEE 802.11b/g Firmware Kernel Module
+WWW=		http://www.nazgul.ch/malo/
 
-ONLY_FOR_ARCHS=		amd64 i386 powerpc64
+ONLY_FOR_ARCHS=		amd64 i386 powerpc powerpc64
 ONLY_FOR_ARCHS_REASON=	hardware particular to PCI
 
 FWNAME=		malo-fw-${FWVERSION}

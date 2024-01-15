@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	libvdpau-va-gl
 PORTVERSION=	0.4.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -11,6 +9,7 @@ PATCHFILES=	58a98e8a735f.patch:-p1
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	VDPAU driver with OpenGL/VAAPI backend
+WWW=		https://github.com/i-rinat/libvdpau-va-gl
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

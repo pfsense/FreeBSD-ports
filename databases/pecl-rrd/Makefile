@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	rrd
-DISTVERSION=	2.0.1
-PORTREVISION=	1
+DISTVERSION=	2.0.3
 CATEGORIES=	databases pear
 
 MAINTAINER=	flo@FreeBSD.org
 COMMENT=	PHP bindings to rrd tool system
+WWW=		https://pecl.php.net/package/rrd
 
 LICENSE=	PHP301
 

@@ -1,6 +1,3 @@
-# Created by: Chris Hutchinson <portmaster@BSDforge.com>
-# $FreeBSD$
-
 PORTNAME=	xrdesktop2
 PORTVERSION=	2.00
 CATEGORIES=	net
@@ -8,9 +5,12 @@ MASTER_SITES=	https://BSDforge.com/projects/source/net/xrdesktop2/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	GTK2 frontend for Rdesktop
+WWW=		https://BSDforge.com/projects/net/xrdesktop2/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		Unfetchable
 
 RUN_DEPENDS=	rdesktop:net/rdesktop \
 		p5-Gtk2>=0:x11-toolkits/p5-Gtk2

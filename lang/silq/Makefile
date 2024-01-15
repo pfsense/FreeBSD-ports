@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	silq
-PORTVERSION=	20200919
+PORTVERSION=	20230412
 PORTREVISION=	1
 CATEGORIES=	lang math science
+DIST_SUBDIR=	silq
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Silq from ETH Zuerich
+WWW=		https://silq.ethz.ch/
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,18 +18,26 @@ BUILD_DEPENDS=	ldmd2:lang/ldc
 
 USE_GITHUB=	yes
 
-GH_TUPLE=	eth-sri:silq:b09da8a \
-		tgehr:ast:0e36dc2:ast/ast \
-		tgehr:util:eb42377:util/util
+GH_TUPLE=	eth-sri:silq:e9750cb \
+		tgehr:ast:072796e:ast/ast \
+		tgehr:util:a4532a4:util/util
 
 OPTIONS_DEFINE=	EXAMPLES
 
+.include <bsd.port.options.mk>
+
 do-build:
-		cd ${WRKSRC}; ldmd2 -O -inline -J. -Jlibrary *.d ast/*.d util/*.d -linker=lld -of=silq
+		cd ${WRKSRC}; ldmd2 -O -inline -J. -Jlibrary *.d ast/*.d util/*.d -of=silq
+
+do-test:
+		cd ${WRKSRC}/test; ldmd2 -O runtests.d -of=runtests
+		cd ${WRKSRC}/test; ./runtests
 
 do-install:
 		${INSTALL_PROGRAM} ${WRKSRC}/silq ${STAGEDIR}${PREFIX}/bin/
+.if ${PORT_OPTIONS:MEXAMPLES}
 		${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 		cd ${WRKSRC}/test && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR} "-name *\.slq"
+.endif
 
 .include <bsd.port.mk>

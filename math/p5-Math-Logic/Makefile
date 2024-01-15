@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	Math-Logic
 PORTVERSION=	1.19
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module providing pure 2, 3, or multi-value logic
+WWW=		https://metacpan.org/release/Math-Logic
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,6 +1,3 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sub-Signatures
 PORTVERSION=	0.21
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Use proper signatures for subroutines, including dispatching
+WWW=		https://metacpan.org/release/Sub-Signatures
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Sub-Uplevel>=0.12:devel/p5-Sub-Uplevel

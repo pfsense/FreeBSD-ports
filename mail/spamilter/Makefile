@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spamilter
 PORTVERSION=	0.60
 PORTREVISION=	5
@@ -8,6 +6,7 @@ MASTER_SITES=	http://www.wanlink.com/spamilter/download/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Sendmail LibMilter filter to block spam
+WWW=		https://www.wanlink.com/spamilter/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -48,7 +47,6 @@ IPFWMTAD_USES=	ssl
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MIPFWMTAD}
-BROKEN_FreeBSD_12=	option IPFWMTAD needs old openssl
 BROKEN_FreeBSD_13=	option IPFWMTAD needs old openssl
 .endif
 

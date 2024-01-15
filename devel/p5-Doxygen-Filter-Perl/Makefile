@@ -1,6 +1,3 @@
-# Created by: Sergey Golyashov <svvord@soft-wizard.ru>
-# $FreeBSD$
-
 PORTNAME=	Doxygen-Filter-Perl
 PORTVERSION=	1.61
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svvord@soft-wizard.ru
 COMMENT=	Input filter for Doxygen enabling support for Perl code documentation
+WWW=		http://perldoxygen.sourceforge.net/
 
 LICENSE=	GPLv3
 

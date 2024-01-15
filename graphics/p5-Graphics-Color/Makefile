@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Graphics-Color
 PORTVERSION=	0.31
 CATEGORIES=	graphics perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Device and library agnostic color spaces
+WWW=		https://metacpan.org/release/Graphics-Color
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -24,5 +22,7 @@ TEST_DEPENDS=	p5-Test-Number-Delta>=0:devel/p5-Test-Number-Delta
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

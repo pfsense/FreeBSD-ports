@@ -1,6 +1,3 @@
-# Created by: past@ebs.gr
-# $FreeBSD$
-
 PORTNAME=	mgopen
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	fonts-mgopen_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MgOpen greek fonts collection
+WWW=		https://ellak.gr/tag/fonts/
 
 # almost identical to the license used in bitstream-vera
 LICENSE=	MGOPEN

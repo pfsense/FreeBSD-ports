@@ -1,6 +1,3 @@
-# Created by: vanilla
-# $FreeBSD$
-
 PORTNAME=	Tk-Enscript
 PORTVERSION=	1.10
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Text-to-PostScript converter using Tk::Canvas
+WWW=		https://metacpan.org/release/Tk-Enscript
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Tk>=0:x11-toolkits/p5-Tk

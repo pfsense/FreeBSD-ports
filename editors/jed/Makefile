@@ -1,6 +1,3 @@
-# Created by: eric
-# $FreeBSD$
-
 PORTNAME=	jed
 DISTVERSION=	0.99-19
 PORTREVISION=	4
@@ -11,12 +8,13 @@ MASTER_SITES=	ftp://space.mit.edu/pub/davis/jed/v${PORTVERSION:R}/ \
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	SLang-based text editor
+WWW=		https://www.jedsoft.org/jed/
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libslang.so:devel/libslang2
 
-CONFLICTS=	jed-devel-[0-9]*
+CONFLICTS=	ja-jed
 
 OPTIONS_DEFINE=	X11 PERMS HOSTLOOKUP DOCS
 OPTIONS_DEFAULT=X11 HOSTLOOKUP

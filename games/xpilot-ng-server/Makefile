@@ -1,6 +1,3 @@
-# Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
-
 PORTNAME=	xpilot-ng
 PORTVERSION=	4.7.3
 PORTREVISION?=	5
@@ -10,6 +7,7 @@ PKGNAMESUFFIX?=	-server
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	Enhanced version of XPilot (server program)
+WWW=		https://xpilot.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

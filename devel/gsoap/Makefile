@@ -1,46 +1,50 @@
-# Created by: Sergey Matveychuk <sem@ciam.ru>
-# $FreeBSD$
-
 PORTNAME=	gsoap
-PORTVERSION=	2.8.108
+PORTVERSION=	2.8.132
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME}2/gsoap-2.8
+MASTER_SITES=	SF/${PORTNAME}2
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Generator Tools for Coding SOAP/XML Web Services in C and C++
+WWW=		https://www.cs.fsu.edu/~engelen/soap.html
 
 LICENSE=	GPLv2
 
-USES=		autoreconf pathfix ssl zip
+USES=		autoreconf cpe pathfix ssl zip
+CPE_VENDOR=	genivia
 
-CONFIGURE_ENV=	LEX=flex YACC=yacc
 GNU_CONFIGURE=	yes
-MAKE_JOBS_UNSAFE=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
+CONFIGURE_ENV=	LEX=flex \
+		YACC=yacc
 
-OPTIONS_DEFINE=	IPV6
-OPTIONS_RADIO=	SSL
-OPTIONS_RADIO_SSL=	GNUTLS OPENSSL
-OPTIONS_DEFAULT=	OPENSSL IPV6
-GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls \
-			libgcrypt.so:security/libgcrypt \
-			libgpg-error.so:security/libgpg-error
-GNUTLS_CONFIGURE_ON=	--enable-gnutls
-GNUTLS_LDFLAGS=		-L${LOCALBASE}/lib
-OPENSSL_CONFIGURE_ENABLE=	ssl
-IPV6_CONFIGURE_ENABLE=	ipv6
-CFLAGS+=	-fPIC
+MAKE_JOBS_UNSAFE=	yes
+
+CFLAGS+=	-fPIC -I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 
 PORTSCOUT=	limit:^2\.8\.[0-9][0-9][0-9]$
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
+
+OPTIONS_DEFINE=			DEBUG IPV6
+OPTIONS_DEFAULT=		IPV6 OPENSSL
+OPTIONS_RADIO=			SSL
+OPTIONS_RADIO_SSL=		GNUTLS OPENSSL
+
+DEBUG_CONFIGURE_ON=	--enable-debug
+GNUTLS_LIB_DEPENDS=		libgcrypt.so:security/libgcrypt \
+				libgnutls.so:security/gnutls \
+				libgpg-error.so:security/libgpg-error
+GNUTLS_USES=	localbase:ldflags
+GNUTLS_CONFIGURE_ON=		--enable-gnutls
+IPV6_CONFIGURE_ENABLE=		ipv6
+OPENSSL_CONFIGURE_ENABLE=	ssl
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|sys/timeb.h | |' \
 	    -e 's|-DSOAPCPP_IMPORT_PATH=|-DSOAPCPP2_IMPORT_PATH=|' \
 	    -e 's|-DWSDL_IMPORT_PATH=|-DWSDL2H_IMPORT_PATH=|' \
 	    ${WRKSRC}/configure.ac
-	@${REINPLACE_CMD} -e 's|$$(libdir)|$$(libdir)data|' \
-	    ${WRKSRC}/Makefile.am
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/gsoap

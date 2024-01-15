@@ -1,14 +1,12 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	praise
 DISTVERSION=	1.0.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Praise Users
+WWW=		https://cran.r-project.org/web/packages/praise/
 
 LICENSE=	MIT
 

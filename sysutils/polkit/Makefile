@@ -1,52 +1,62 @@
-# Created by: Koop Mast<kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	polkit
-PORTVERSION=	0.118
+DISTVERSION=	123
+PORTREVISION=	1
 CATEGORIES=	sysutils gnome
-MASTER_SITES=	https://www.freedesktop.org/software/polkit/releases/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Framework for controlling access to system-wide components
+WWW=		https://gitlab.freedesktop.org/polkit/polkit
 
-LICENSE=	GPLv2
+LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
-		libmozjs-78.so:lang/spidermonkey78
-RUN_DEPENDS=	dbus-launch:devel/dbus
+		libdbus-1.so:devel/dbus
 
 USERS=		polkitd
 GROUPS=		polkitd
 
-USES=		compiler:c++11-lib gettext gmake gnome libtool localbase \
-		pathfix pkgconfig shebangfix
+USES=		compiler:c++17-lang cpe gettext gnome libtool localbase meson \
+		pathfix pkgconfig shebangfix tar:bz2
 USE_GNOME=	glib20 intltool introspection:build
 SHEBANG_FILES=	${WRKSRC}/src/polkitbackend/toarray.pl
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	--disable-gtk-doc-html \
-		--without-html-dir \
-		--with-authfw=pam \
-		--with-pam-include=system \
-		--with-os-type=freebsd \
-		--with-polkitd-user=${USERS} \
-		--disable-static \
-		--disable-examples \
-		--enable-libsystemd-login=no \
-		--enable-libelogind=no \
-		--disable-test \
-		--enable-introspection=yes \
-		--localstatedir=/var
-#MAKE_JOBS_UNSAFE=yes
-INSTALL_TARGET=	install-strip
+CPE_VENDOR=	polkit_project
 
-OPTIONS_DEFINE=	MANPAGES
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.freedesktop.org
+
+MESON_ARGS=	-Dpam_include=system \
+		-Dpolkitd_user=${USERS} \
+		-Dexamples=false \
+		-Dsession_tracking=ConsoleKit \
+		-Dtests=false \
+		-Dintrospection=true \
+		-Dlocalstatedir=/var \
+		-Dgtk_doc=false
+
+OPTIONS_DEFINE=		MANPAGES
+OPTIONS_DEFAULT=	DUKTAPE
+
+OPTIONS_SINGLE=		JS
+OPTIONS_SINGLE_JS=	DUKTAPE SPIDERMONKEY
+
+JS_DESC=		JavaScript engines
+DUKTAPE_DESC=		Duktape JavaScript backend
+SPIDERMONKEY_DESC=	SpiderMonkey JavaScript backend
+
+DUKTAPE_LIB_DEPENDS=	libduktape.so:lang/duktape-lib
+DUKTAPE_MESON_ON=	-Djs_engine='duktape'
+
+SPIDERMONKEY_LIB_DEPENDS=	libmozjs-102.so:lang/spidermonkey102
+SPIDERMONKEY_MESON_ON=		-Djs_engine='mozjs'
+
 MANPAGES_BUILD_DEPENDS=	docbook-sgml>=4.5:textproc/docbook-sgml \
-		docbook-xsl>=1.76:textproc/docbook-xsl
-MANPAGES_USE=	gnome=libxslt:build
-MANPAGES_CONFIGURE_ENABLE=	man-pages
-OPTIONS_SUB=	yes
+			docbook-xsl>=1.76:textproc/docbook-xsl
+MANPAGES_USE=		gnome=libxslt:build
+MANPAGES_MESON_TRUE=	man
+
+OPTIONS_SUB=		yes
 
 .include <bsd.port.pre.mk>
 
@@ -58,9 +68,8 @@ post-patch:
 		${WRKSRC}/docs/man/polkit.xml
 
 post-install:
-	@${MKDIR} ${STAGEDIR}/var/lib/polkit-1
-	${INSTALL_DATA} ${WRKSRC}/data/org.freedesktop.PolicyKit1.conf \
-		${STAGEDIR}${PREFIX}/etc/dbus-1/system.d/org.freedesktop.PolicyKit1.conf.sample
+	@${MKDIR} ${STAGEDIR}/var/lib/polkit-1 \
+		  ${STAGEDIR}${PREFIX}/share/polkit-1/rules.d
 .for i in 10-vendor.d 20-org.d 30-site.d 50-local.d 90-mandatory.d
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/polkit-1/localauthority/${i}
 	${MKDIR} ${STAGEDIR}/var/lib/polkit-1/localauthority/${i}

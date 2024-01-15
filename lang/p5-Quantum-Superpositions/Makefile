@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Quantum-Superpositions
 PORTVERSION=	2.03
 CATEGORIES=	lang science perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	QM-like superpositions in Perl
+WWW=		https://metacpan.org/release/Quantum-Superpositions
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

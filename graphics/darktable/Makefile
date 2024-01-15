@@ -1,14 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	darktable
-PORTVERSION=	3.2.1
-PORTREVISION=	5
+PORTVERSION=	4.6.0
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
 MAINTAINER=	dumbbell@FreeBSD.org
 COMMENT=	Virtual lighttable and darkroom for photographers
+WWW=		https://www.darktable.org/
 
 LICENSE=	GPLv3
 
@@ -18,84 +15,94 @@ ONLY_FOR_ARCHS_REASON=	uses 64-bit address space
 BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes \
 		p5-Pod-Parser>=0:textproc/p5-Pod-Parser \
 		po4a-translate:textproc/po4a \
-		xsltproc:textproc/libxslt
-LIB_DEPENDS=	libcolord-gtk.so:graphics/colord-gtk \
+		xsltproc:textproc/libxslt \
+		bash:shells/bash
+LIB_DEPENDS=	libavif.so:graphics/libavif \
+		libcolord-gtk.so:graphics/colord-gtk \
 		libcolord.so:graphics/colord \
 		libcurl.so:ftp/curl \
 		libexiv2.so:graphics/exiv2 \
+		libgphoto2.so:graphics/libgphoto2 \
+		libharfbuzz.so:print/harfbuzz \
+		libheif.so:graphics/libheif \
+		libicui18n.so:devel/icu \
+		libImath.so:math/Imath \
+		libjasper.so:graphics/jasper \
 		libjson-glib-1.0.so:devel/json-glib \
+		libjxl_threads.so:graphics/libjxl \
 		liblcms2.so:graphics/lcms2 \
 		liblensfun.so:graphics/lensfun \
+		libOpenEXR.so:graphics/openexr \
+		libopenjp2.so:graphics/openjpeg \
+		libosmgpsmap-1.0.so:x11-toolkits/osm-gps-map \
 		libpng.so:graphics/png \
 		libpugixml.so:textproc/pugixml \
 		libsoup-2.4.so:devel/libsoup \
-		libtiff.so:graphics/tiff
+		libtiff.so:graphics/tiff \
+		libwebp.so:graphics/webp
 
-USES=		cmake compiler:c++11-lib desktop-file-utils gl gnome jpeg \
-		pkgconfig shebangfix sqlite tar:xz xorg
-USE_GL=		glu
+USES=		cmake compiler:gcc-c++11-lib desktop-file-utils gl gnome jpeg \
+		llvm:15,build lua:54 perl5 pkgconfig sdl shebangfix sqlite \
+		tar:xz xorg
+USE_GCC=	yes
+USE_GL=		gl
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
+USE_SDL=	sdl2
 USE_XORG=	ice sm x11 xext xrandr
 
 SHEBANG_FILES=	tools/*.sh
 
-CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1 \
-		-DBUILD_CMSTEST:BOOL=ON \
-		-DUSE_KWALLET:BOOL=ON
+CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1 -DUSE_PORTMIDI:BOOL=OFF
 
-CFLAGS+=	-fopenmp
+CMAKE_BOOL+=	BUILD_CMSTEST USE_AVIF USE_CAMERA_SUPPORT USE_HEIF \
+		USE_ISOBMFF USE_KWALLET USE_LUA USE_MAP USE_OPENEXR \
+		USE_OPENJPEG USE_WEBP RAWSPEED_ENABLE_LTO
+
+CFLAGS+=	-fopenmp -I${LOCALBASE}/include/Imath
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/\.rc/~rc/}
 
-OPTIONS_DEFINE=		DOCS GEO GPHOTO GRAPHMAGICK LIBSECRET LUA NLS OPENEXR \
-			OPENJPEG PRINT TOOLS WEBP
-OPTIONS_DEFAULT=	GEO GPHOTO LUA OPENEXR OPENJPEG PRINT WEBP
+OPTIONS_DEFINE=		DOCS GMIC GRAPHMAGICK LIBSECRET NLS PRINT TOOLS
+OPTIONS_DEFAULT=	PRINT
 OPTIONS_SUB=		yes
 
-GEO_DESC=		Support geotagging
+GMIC_DESC=		Support G'Mic-compressed LUT in lut3d
 LIBSECRET_DESC=		Support libsecret as password backend
+TOOLS_DESC=		Install additional scripts
 
-GEO_LIB_DEPENDS=	libosmgpsmap-1.0.so:x11-toolkits/osm-gps-map
-GEO_CMAKE_OFF=		-DUSE_MAP:BOOL=OFF
-
-GPHOTO_LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2
-GPHOTO_CMAKE_OFF=	-DUSE_CAMERA_SUPPORT:BOOL=OFF
+GMIC_LIB_DEPENDS=	libgmic.so:graphics/gmic
+GMIC_CMAKE_BOOL=	USE_GMIC
 
 GRAPHMAGICK_LIB_DEPENDS=libGraphicsMagick.so:graphics/GraphicsMagick
-GRAPHMAGICK_CMAKE_OFF=	-DUSE_GRAPHICSMAGICK:BOOL=OFF
+GRAPHMAGICK_CMAKE_BOOL=	USE_GRAPHICSMAGICK
 
 LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
-LIBSECRET_CMAKE_OFF=	-DUSE_LIBSECRET:BOOL=OFF
-
-LUA_USES=		lua:53
-LUA_CMAKE_OFF=		-DUSE_LUA:BOOL=OFF
+LIBSECRET_CMAKE_BOOL=	USE_LIBSECRET
 
 # FIXME: Even with NLS turned off, darktable(1) is still linked to
 # libintl.so.
 NLS_USES=		gettext
 NLS_USES_OFF=		gettext-runtime
-NLS_CMAKE_OFF=		-DUSE_NLS:BOOL=OFF
+NLS_CMAKE_BOOL=		USE_NLS
 NLS_LDFLAGS=		-L${LOCALBASE}/lib -lintl
 
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
-			libIlmThread.so:graphics/ilmbase
-OPENEXR_CMAKE_OFF=	-DUSE_OPENEXR:BOOL=OFF
-
-OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
-OPENJPEG_CMAKE_OFF=	-DUSE_OPENJPEG:BOOL=OFF
-
 PRINT_LIB_DEPENDS=	libcups.so:print/cups
-PRINT_CMAKE_OFF=	-DBUILD_PRINT:BOOL=OFF
+PRINT_CMAKE_BOOL=	BUILD_PRINT
 
-TOOLS_DESC=		Install additional scripts
 TOOLS_BUILD_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 TOOLS_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 
-WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-WEBP_CMAKE_OFF=		-DUSE_WEBP:BOOL=OFF
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
+CMAKE_ARGS+=	-DUSE_OPENCL:BOOL=OFF
+CXXFLAGS+=	-DGDK_DISABLE_DEPRECATED
+PLIST_SUB+=	NO_OPENCL="@comment "
+.else
+PLIST_SUB+=	NO_OPENCL=""
+.endif
 
 .include <bsd.port.pre.mk>
 

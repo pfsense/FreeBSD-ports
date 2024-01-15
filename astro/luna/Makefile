@@ -1,6 +1,3 @@
-# Created by: ABURAYER Rewsirow <rewsirow@ff.iij4u.or.jp>
-# $FreeBSD$
-
 PORTNAME=	luna
 PORTVERSION=	1.9
 CATEGORIES=	astro games
@@ -9,6 +6,7 @@ DISTNAME=	luna19s
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Display the moon's phase
+WWW=		https://www.vector.co.jp/soft/dos/edu/se004823.html
 
 USES=		dos2unix lha
 NO_WRKSUBDIR=	yes

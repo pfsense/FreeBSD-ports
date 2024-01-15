@@ -1,6 +1,3 @@
-# Created by: krion@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	openmortal
 PORTVERSION=	0.7
 PORTREVISION=	13
@@ -9,15 +6,18 @@ MASTER_SITES=	SF
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Parody of the once popular coin-up fighting game, Mortal Kombat
+WWW=		http://apocalypse.rulez.org/~upi/Mortal/
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-USES=		dos2unix perl5 sdl tar:bzip2
+USES=		dos2unix perl5 pkgconfig sdl tar:bzip2
 GNU_CONFIGURE=	yes
 USE_SDL=	mixer image sdl net
 DOS2UNIX_FILES=	src/gfx.cpp
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*
+
+BINARY_ALIAS=	freetype-config=true
 
 .include <bsd.port.mk>

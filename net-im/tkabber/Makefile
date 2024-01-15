@@ -1,6 +1,3 @@
-# Created by: Alexander Timoshenko <gonzo@univ.kiev.ua>
-# $FreeBSD$
-
 PORTNAME=	tkabber
 PORTVERSION=	1.1.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://files.jabber.ru/tkabber/
 
 MAINTAINER=	mp39590@gmail.com
 COMMENT=	Tcl/Tk based jabber client
+WWW=		http://tkabber.jabber.ru/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,9 +17,10 @@ RUN_DEPENDS=	tcllib>=1.2:devel/tcllib \
 OPTIONS_DEFINE=	DOCS EXAMPLES IPV6 SOUND TDOM TKCON TKTRAY TLS
 OPTIONS_DEFAULT=	TLS
 
-CONFLICTS=	tkabber-devel-[0-9]*
+CONFLICTS=	tkabber-devel
 
-USES=		shebangfix tar:xz
+USES=		cpe shebangfix tar:xz
+CPE_VENDOR=	${PORTNAME}_project
 SHEBANG_FILES=	contrib/extract-translations/extract.tcl
 
 IPV6_USES=	tk:86+

@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	elki
 DISTVERSIONPREFIX=	release
 DISTVERSION=	0.7.1-1166
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-gfb1fffdf3
 CATEGORIES=	misc java
 MASTER_SITES=	LOCAL/yuri/:deps
@@ -11,6 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Data mining toolkit
+WWW=		https://elki-project.github.io/
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -18,6 +18,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 BUILD_DEPENDS=	gradle5:devel/gradle5
 
 USE_JAVA=	yes
+JAVA_VERSION=	17 # Java 8 fails on aarch64: Java VM: OpenJDK 64-Bit Server VM (25.342-b07 mixed mode bsd-aarch64 compressed oops) Core dump written.
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	elki-project
 

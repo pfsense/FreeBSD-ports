@@ -1,6 +1,3 @@
-# Created by: <jkoshy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fhist
 PORTVERSION=	1.21
 DISTVERSIONSUFFIX=	.D001
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	aryeh.friedman@gmail.com
 COMMENT=	Utilities to maintain file history, do file comparisons, and merges
+WWW=		https://fhist.sourceforge.net/
 
 LICENSE=	GPLv3
 

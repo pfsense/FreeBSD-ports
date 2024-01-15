@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	GLee
 DISTVERSION=	5.4.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://elf-stone.com/downloads/${PORTNAME}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cross-platform extension loading library for OpenGL
+WWW=		https://elf-stone.com/glee.php
 
 LICENSE=	BSD2CLAUSE
 

@@ -1,14 +1,12 @@
-# Created by: Chao Shin <quakelee@cn.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	mdtest
 PORTVERSION=	1.9.3
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	benchmarks
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20latest/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Filesystem metadata benchmark utility
+WWW=		https://sourceforge.net/projects/mdtest/
 
 LICENSE=	GPLv2
 

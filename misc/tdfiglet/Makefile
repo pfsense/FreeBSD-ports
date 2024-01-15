@@ -1,12 +1,10 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tdfiglet
 PORTVERSION=	0.5
 CATEGORIES=	misc
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Figlet for TDF ANSI fonts
+WWW=		https://github.com/tat3r/tdfiglet
 
 USES=		gmake
 ALL_TARGET=	default

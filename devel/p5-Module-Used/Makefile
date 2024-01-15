@@ -1,6 +1,3 @@
-# Created by: Takuya Tsuchida <tsucchi@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	Module-Used
 PORTVERSION=	v1.2.0
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	tsucchi@cpan.org
 COMMENT=	Find modules loaded by Perl code without running it
+WWW=		https://metacpan.org/release/Module-Used
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

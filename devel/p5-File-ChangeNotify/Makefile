@@ -1,6 +1,3 @@
-# Created by: Alexey V. Degtyarev
-# $FreeBSD$
-
 PORTNAME=	File-ChangeNotify
 PORTVERSION=	0.31
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Watch for changes to files
+WWW=		https://metacpan.org/release/File-ChangeNotify
 
 LICENSE=	ART20
 

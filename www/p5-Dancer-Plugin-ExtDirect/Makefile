@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-ExtDirect
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dancer plugin for implementing ExtDirect APIs
+WWW=		https://metacpan.org/release/Dancer-Plugin-ExtDirect
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

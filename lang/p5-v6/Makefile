@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	v6
 PORTVERSION=	0.047
 CATEGORIES=	lang perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Experimental compiler for Perl 6
+WWW=		https://metacpan.org/release/v6-alpha
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

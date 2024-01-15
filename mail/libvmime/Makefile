@@ -1,14 +1,12 @@
-# Created by: delphij@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	libvmime
 PORTVERSION=	0.9.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	7
+PORTREVISION=	14
 CATEGORIES=	mail
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	All-in-one Internet mail library
+WWW=		https://www.vmime.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

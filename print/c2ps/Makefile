@@ -1,6 +1,3 @@
-# Created by: Matthew Hunt <mph@pobox.com>
-# $FreeBSD$
-
 PORTNAME=	c2ps
 PORTVERSION=	4.0
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.cs.technion.ac.il/users/c2ps/
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	PostScript pretty-printer for C source
+WWW=		https://www.cs.technion.ac.il/users/c2ps/
 
 LIB_DEPENDS=	libpaper.so:print/libpaper
 

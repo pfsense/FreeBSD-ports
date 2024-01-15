@@ -1,6 +1,3 @@
-# Created by: Masafumi NAKANE <max@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kakasi
 PORTVERSION=	2.3.5
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://kakasi.namazu.org/stable/
 
 MAINTAINER=	ota@j.email.ne.jp
 COMMENT=	Kanji-Kana Simple Inverter, language filter for Japanese
+WWW=		http://kakasi.namazu.org/
 
 LICENSE=	GPLv2
 

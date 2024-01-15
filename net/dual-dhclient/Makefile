@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dual-dhclient
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -12,6 +10,8 @@ MAINTAINER=	cperciva@FreeBSD.org
 COMMENT=	Spawns dhclients for a dual-stack network
 
 LICENSE=	PD
+
+DEPRECATED=	Use net/dual-dhclient-daemon instead
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/dhclient:net/isc-dhcp44-client
 

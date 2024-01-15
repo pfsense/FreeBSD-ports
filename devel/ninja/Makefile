@@ -1,14 +1,12 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ninja
-PORTVERSION=	1.10.2
+PORTVERSION=	1.11.1
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	2
 CATEGORIES=	devel
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Small build system closest in spirit to Make
+WWW=		https://ninja-build.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,8 +14,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	ninja-build
 
-CONFLICTS=	irc/ninja-[0-9]*
+CONFLICTS=	irc/ninja
 USES=		python
+
+PORTSCOUT=	limit:^1\.
 
 PLIST_FILES=	bin/ninja
 PORTDOCS=	README.md manual.asciidoc

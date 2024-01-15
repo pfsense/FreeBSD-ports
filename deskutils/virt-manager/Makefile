@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	virt-manager
-PORTVERSION=	3.2.0
+PORTVERSION=	4.1.0
+PORTREVISION=	2
 CATEGORIES=	deskutils net-mgmt
 MASTER_SITES=	https://virt-manager.org/download/sources/${PORTNAME}/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Toolkit to interact with virtualization capabilities
+WWW=		https://virt-manager.org/
 
 LICENSE=	LGPL3
 
@@ -27,14 +27,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.83.2:devel/py-dbus@${PY_FLAVOR} \
 PYDISTUTILS_INSTALLNOSINGLE=	yes
 PYDISTUTILS_CONFIGURE_TARGET=	configure
 PYDISTUTILS_CONFIGUREARGS=	--prefix=${PREFIX}
-USES=		python:3.3+ gettext gnome shebangfix
+USES=		python gettext gnome shebangfix
 USE_PYTHON=	noegginfo autoplist distutils noflavors
 
 NO_ARCH=	yes
 
 USE_GNOME=	gtksourceview4 introspection:run intltool librsvg2 pygobject3
-
-INSTALLS_ICONS=	yes
 
 SHEBANG_FILES=	virt-manager \
 		virt-install \

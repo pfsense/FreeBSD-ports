@@ -1,6 +1,3 @@
-# Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
-
 PORTNAME=	sobby
 PORTVERSION=	0.4.8
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://releases.0x539.de/sobby/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standalone obby server
+WWW=		http://gobby.0x539.de
 
 LICENSE=	GPLv2
 

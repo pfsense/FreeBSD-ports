@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	puckman
 PORTVERSION=	1.0
 PORTREVISION=	6
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unofficial clone of the original Pac-Man game
+WWW=		https://github.com/patapizza/puckman
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

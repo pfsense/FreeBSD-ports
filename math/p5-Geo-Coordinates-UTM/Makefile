@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Geo-Coordinates-UTM
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for converting latitude/longitude to UTM
+WWW=		https://metacpan.org/release/Geo-Coordinates-UTM
 
 USES=		perl5
 USE_PERL5=	configure

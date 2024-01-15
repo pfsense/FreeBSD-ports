@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	tcpkali
-PORTVERSION=	1.1.1
+PORTVERSION=	1.1.1.20180104
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance load generator for TCP and WebSocket servers
+WWW=		https://github.com/satori-com/tcpkali
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,6 +15,7 @@ USES=		autoreconf compiler:c11 libtool gmake ncurses
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	machinezone
+GH_TAGNAME=	3c3175e417366c7ccafba56454903690fede501a
 
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man1/${PORTNAME}.1.gz

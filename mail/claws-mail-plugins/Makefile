@@ -1,18 +1,14 @@
-# Created by: Rozhuk Ivan <rozhuk.im@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	claws-mail-plugins
-PORTVERSION=	3.17.8
 CATEGORIES=	mail news
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	claws-mail plugins meta-port
-
-LICENSE=	BSD2CLAUSE
+WWW=		https://www.claws-mail.org/plugins.php
 
 USES=		metaport
 
-.include "../claws-mail/Makefile.claws.plugins"
+.include "${.CURDIR}/../claws-mail/Makefile.ver"
+.include "${.CURDIR}/../claws-mail/Makefile.claws.plugins"
 
 # pgpcore, pgpinline, pgpmime, smime
 CLAWS_PLUGINS+=	pgp

@@ -1,6 +1,3 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Horde_Crypt
 DISTVERSION=	2.7.12
 CATEGORIES=	security www pear
@@ -8,17 +5,17 @@ PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Cryptography API
+WWW=		https://pear.horde.org
 
 OPTIONS_DEFINE=	BCMATH
 BCMATH_DESC=	Depend on bcmath PHP extension
 
-USES=		horde php
+USES=		horde php cpe
 USE_HORDE_RUN=	Horde_Exception \
 		Horde_Mime \
 		Horde_Stream_Filter \
 		Horde_Translation \
 		Horde_Util
-USE_PHP=	hash openssl
 
 BCMATH_USE=	PHP=bcmath
 

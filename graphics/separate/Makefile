@@ -1,6 +1,3 @@
-# Created by: Pietro Cerutti <gahr@gahr.ch>
-# $FreeBSD$
-
 PORTNAME=	separate
 PORTVERSION=	0.5.8
 PORTREVISION=	6
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}+-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CMYK plugin for The GIMP
+WWW=		https://cue.yellowmagic.info/softwares/separate.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

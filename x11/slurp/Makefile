@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	slurp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.1
-CATEGORIES=	x11
+DISTVERSION=	1.5.0
+CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Select a region in a Wayland compositor
+WWW=		https://wayland.emersion.fr/slurp/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayland-protocols>=1.14:graphics/wayland-protocols
+		wayland-protocols>=1.32:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
 

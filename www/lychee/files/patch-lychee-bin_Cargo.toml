@@ -1,0 +1,10 @@
+--- lychee-bin/Cargo.toml.orig	2023-06-25 16:13:10 UTC
++++ lychee-bin/Cargo.toml
+@@ -76,7 +76,6 @@ tracing-subscriber = { version = "0.3.17", default-fea
+ 
+ [features]
+ #tokio-console = ["console-subscriber", "tracing-subscriber/registry"]
+-vendored-openssl = ["openssl-sys/vendored"]
+ check_example_domains = ["lychee-lib/check_example_domains"]
+ 
+ # Unfortunately, it's not possible to automatically enable features

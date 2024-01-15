@@ -1,6 +1,3 @@
-# Created by: kiesel@schlund.de
-# $FreeBSD$
-
 PORTNAME=	lxsplit
 PORTVERSION=	0.2.4
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple program to split or join files
+WWW=		https://lxsplit.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,15 +1,13 @@
-# Created by: jmz
-# $FreeBSD$
-
 PORTNAME=	pgplot
 PORTVERSION=	5.2.2
-PORTREVISION=	29
+PORTREVISION=	30
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.astro.caltech.edu/pub/pgplot/
 DISTNAME=	${PORTNAME}${PORTVERSION:R}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C/FORTRAN library for drawing graphs on a variety of display devices
+WWW=		https://sites.astro.caltech.edu/~tjp/pgplot/
 
 LICENSE=	PGPLOT
 LICENSE_NAME=	PGPLOT License

@@ -1,6 +1,3 @@
-# Created by: Hye-Shik Chang
-# $FreeBSD$
-
 PORTNAME=	jsl
 PORTVERSION=	0.3.0
 PORTREVISION=	2
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	-src.tar.gz
 
 MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	Analyzes JavaScript code looking for bugs and signs of poor quality
+WWW=		https://www.javascriptlint.com/
 
 PLIST_FILES=	bin/jsl
 WRKSRC=		${WRKDIR}/${DISTNAME}/src

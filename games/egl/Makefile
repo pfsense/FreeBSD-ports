@@ -1,9 +1,6 @@
-# Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	egl
 PORTVERSION=	0.3.1
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 DISTNAME=	${PORTNAME}-v${PORTVERSION}-stable-src
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Enhanced OpenGL-only Quake II engine
+WWW=		http://bfeared.com/library/quake/archive/quakedev/egl/
 
 LICENSE=	GPLv2
 

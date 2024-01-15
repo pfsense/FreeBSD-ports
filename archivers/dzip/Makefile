@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dzip
 PORTVERSION=	2.9
 CATEGORIES=	archivers games
@@ -9,10 +6,13 @@ DISTNAME=	dz${PORTVERSION:S/.//g}src
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	File compression utility specializing in Quake demo compression
+WWW=		https://speeddemosarchive.com/dzip/
 
 LICENSE=	ZLIB
 
-USES=		dos2unix zip
+USES=		cpe dos2unix zip
+
+CPE_VENDOR=	evan_wagner
 
 NO_WRKSUBDIR=	yes
 MAKEFILE=	${WRKSRC}/Makefile.linux
@@ -23,6 +23,12 @@ PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	Readme
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-extract: .SILENT
 	${REINPLACE_CMD} -e 's/ifdef BIG_ENDIAN/if BYTE_ORDER == BIG_ENDIAN/' \

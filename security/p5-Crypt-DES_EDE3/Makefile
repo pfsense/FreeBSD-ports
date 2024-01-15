@@ -1,6 +1,3 @@
-# Created by: jesper
-# $FreeBSD$
-
 PORTNAME=	Crypt-DES_EDE3
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to a implementing 3-DES EDE encryption and decryption
+WWW=		https://metacpan.org/release/Crypt-DES_EDE3
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

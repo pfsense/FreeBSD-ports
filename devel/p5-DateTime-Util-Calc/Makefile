@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Util-Calc
 PORTVERSION=	0.13002
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	DateTime Calculation Utilities
+WWW=		https://metacpan.org/release/DateTime-Util-Calc
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime

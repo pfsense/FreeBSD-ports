@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	linguisttools
-DISTVERSION=	${QT5_VERSION}
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -9,7 +7,7 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt localization tools
 
 USES=		compiler:c++11-lang qmake qt-dist:5,tools
-USE_QT=		core xml buildtools_build declarative_build
+USE_QT=		core xml buildtools:build declarative:build
 
 BUILD_WRKSRC=	${WRKSRC}/src/linguist
 INSTALL_WRKSRC=	${WRKSRC}/src/linguist
@@ -24,6 +22,7 @@ post-install:
 .for f in lrelease lupdate
 	${INSTALL_MAN} ${WRKSRC}/src/linguist/${f}/${f}.1 \
 		${STAGEDIR}${MANPREFIX}/man/man1
+	${RLN} ${STAGEDIR}${QT_BINDIR}/${f} ${STAGEDIR}${PREFIX}/bin/${f}-qt5
 .endfor
 
 .include <bsd.port.mk>

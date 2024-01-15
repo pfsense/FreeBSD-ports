@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Pod-Readme
 PORTVERSION=	1.2.3
 DISTVERSIONPREFIX=	v
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert POD to README file
+WWW=		https://metacpan.org/release/Pod-Readme
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	xsoldier
 PORTVERSION=	1.8
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.interq.or.jp/libra/oohara/xsoldier/
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Space-based shoot-em up game for X11
+WWW=		http://www.interq.or.jp/libra/oohara/xsoldier/
 
 USES=		xorg
 USE_XORG=	x11 ice sm xpm

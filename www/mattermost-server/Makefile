@@ -1,12 +1,15 @@
-# $FreeBSD$
-
-PORTNAME=	mattermost-server
-PORTVERSION=	5.28.0
+PORTNAME=	mattermost
+PORTVERSION=	7.10.5
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
+MASTER_SITES=	https://raw.githubusercontent.com/${PORTNAME}/${PORTNAME}/${DISTVERSIONFULL}/:gomod
+PKGNAMESUFFIX=	-server
+DISTFILES=	go.mod:gomod
 
-MAINTAINER=	loic.blot@unix-experience.fr
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Open source Slack-alternative in Golang and React
+WWW=		https://mattermost.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,14 +20,13 @@ RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
 		mattermost-webapp>=${PORTVERSION}:www/mattermost-webapp
 
 USES=		go:modules
-
-GO_TARGET=	./cmd/mattermost ./config/config_generator
-GO_BUILDFLAGS=	-ldflags="-X github.com/mattermost/mattermost-server/model.BuildNumber=${PORTVERSION}"
-
-USE_RC_SUBR=	mattermostd
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	mattermost
+USE_RC_SUBR=	mattermostd
+
+GO_MODULE=	github.com/mattermost/mattermost-server/v6
+GO_TARGET=	./cmd/mattermost ./scripts/config_generator
+GO_BUILDFLAGS=	-ldflags="-X github.com/mattermost/mattermost-server/v6/model.BuildNumber=${PORTVERSION}"
 
 WWWDIR=		${PREFIX}/www/mattermost
 
@@ -43,7 +45,8 @@ post-install:
 	${SETENV} OUTPUT_CONFIG=${WRKSRC}/config/default.json ${WRKDIR}/bin/config_generator
 	${INSTALL_DATA} ${WRKSRC}/config/default.json ${STAGEDIR}${PREFIX}/etc/mattermost/config.json.sample
 	${RM} ${STAGEDIR}${PREFIX}/bin/config_generator
-	${MKDIR} ${STAGEDIR}${WWWDIR}
-	cd ${GO_WRKSRC} && ${COPYTREE_SHARE} 'fonts i18n templates' ${STAGEDIR}${WWWDIR}
+	${MKDIR} ${STAGEDIR}${WWWDIR}/templates
+	cd ${GO_WRKSRC} && ${COPYTREE_SHARE} 'fonts i18n' ${STAGEDIR}${WWWDIR}
+	cd ${GO_WRKSRC}/templates && ${CP} *.html *.js ${STAGEDIR}${WWWDIR}/templates
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Francisco Gomez <francisco@gomezmarin.com>
-# $FreeBSD$
-
 PORTNAME=	mp3riot
 PORTVERSION=	1.3
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.linuxsecure.de/f2html/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mp3riot creates mp3 playlists, HTML files, etc
+WWW=		http://www.linuxsecure.de/index.php?action=55
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

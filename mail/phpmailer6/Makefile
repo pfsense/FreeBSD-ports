@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	phpmailer
-PORTVERSION=	6.2.0
+PORTVERSION=	6.8.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 PKGNAMESUFFIX=	6
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Full Featured Email Transfer Class for PHP
+WWW=		https://github.com/PHPMailer/PHPMailer
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE

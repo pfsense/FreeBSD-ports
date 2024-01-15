@@ -1,6 +1,3 @@
-# Created by: jraynard
-# $FreeBSD$
-
 PORTNAME=	simh
 PORTVERSION=	3.9.0
 PORTREVISION=	5
@@ -14,6 +11,7 @@ DISTFILES=	${PORTNAME}v${PORTVERSION:R:S/.//}-${PORTVERSION:E}.zip:src \
 
 MAINTAINER=	bob@eager.cx
 COMMENT=	Emulates classic DEC, HP, GRI, IBM, Altair, SDS, Honeywell, and others
+WWW=		http://simh.trailing-edge.com
 
 LICENSE=	MIT
 
@@ -24,6 +22,8 @@ DOS2UNIX_GLOB=	*.c *.h *.txt *.mak *.ini makefile
 CFLAGS+=	-Wno-format-extra-args -Wno-comment
 MAKE_ENV=	GCC="${CC}" CFLAGS_O="${CFLAGS}" USE_NETWORK=1
 MAKEFILE=	makefile
+
+CONFLICTS_INSTALL=	simh-hp2100
 
 SUB_FILES=	pkg-message simh.1
 

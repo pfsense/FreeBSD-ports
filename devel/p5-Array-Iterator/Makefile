@@ -1,17 +1,16 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Array-Iterator
-PORTVERSION=	0.12
+PORTVERSION=	0.132
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Set of array iterators
+WWW=		https://metacpan.org/release/Array-Iterator
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception
 

@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Unaccent
 PORTVERSION=	1.08
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Remove accents from a string
+WWW=		https://metacpan.org/release/Text-Unaccent
 
 LICENSE=	GPLv2
 

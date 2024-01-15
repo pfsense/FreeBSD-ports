@@ -1,15 +1,13 @@
-# Created by: Dave McKay <dave@mu.org>
-# $FreeBSD$
-
 PORTNAME=	libcryptui
 PORTVERSION=	3.12.2
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	security gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME application for managing encryption keys (PGP, SSH)
+WWW=		https://gitlab.gnome.org/GNOME/libcryptui
 
 BUILD_DEPENDS=	seahorse>=3.0.0:security/seahorse \
 		gpg:security/gnupg
@@ -41,7 +39,7 @@ CONFIGURE_ARGS+=--disable-libnotify
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|"1.2 1.4 2.0"|"1.2 1.4 2.0 2.1 2.2"|g' \
+	@${REINPLACE_CMD} -e 's|"1.2 1.4 2.0"|"1.2 1.4 2.0 2.1 2.2 2.3 2.4"|g' \
 		${WRKSRC}/configure
 
 .include <bsd.port.mk>

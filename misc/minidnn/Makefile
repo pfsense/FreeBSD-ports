@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	minidnn
 DISTVERSION=	g20200330
+PORTREVISION=	1
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Header-only C++ library for deep neural networks
+WWW=		https://github.com/yixuan/MiniDNN
 
 LICENSE=	MPL20
 

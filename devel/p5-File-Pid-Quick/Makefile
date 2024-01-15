@@ -1,6 +1,3 @@
-# Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
-
 PORTNAME=	File-Pid-Quick
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Associates a PID file with your script
+WWW=		https://metacpan.org/release/File-Pid-Quick
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Frontier-RPC
 PORTVERSION=	0.07.b4
 PORTREVISION=	1

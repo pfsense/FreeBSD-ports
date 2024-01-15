@@ -1,14 +1,12 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	openbox
 PORTVERSION=	3.6
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://openbox.org/dist/openbox/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Small, fast, standards compliant, extensible window manager
+WWW=		http://openbox.org/
 
 LICENSE=	GPLv2
 

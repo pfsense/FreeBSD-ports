@@ -1,6 +1,3 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
-
 PORTNAME=	activerecord
 PORTVERSION=	4.2.11.3
 CATEGORIES=	databases rubygems
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	4
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Object-relational mapping layer for Rails MVC Framework
+WWW=		https://github.com/rails/rails/tree/main/activerecord
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
@@ -18,7 +16,6 @@ RUN_DEPENDS=	rubygem-activemodel4>=${PORTVERSION}:databases/rubygem-activemodel4
 		rubygem-arel6>=6.0<7:databases/rubygem-arel6
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

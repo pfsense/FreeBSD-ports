@@ -1,28 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	entt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.5.2
+DISTVERSION=	3.12.2
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast and reliable entity-component system (ECS) and much more
+WWW=		https://github.com/skypjack/entt/wiki
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake
+TEST_DEPENDS=	googletest>0:devel/googletest
+
+USES=		cmake:testing compiler:c++17-lang
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	skypjack
 
-CMAKE_OFF=	BUILD_TESTING
+CMAKE_TESTING_ON=	ENTT_BUILD_TESTING ENTT_FIND_GTEST_PACKAGE
 
+NO_BUILD=	yes
 NO_ARCH=	yes
-
-do-test:
-	@cd ${BUILD_WRKSRC} && \
-		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DBUILD_TESTING:BOOL=ON ${CMAKE_SOURCE_PATH} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Philippe Pepiot <phil@philpep.org>
-# $FreeBSD$
-
 PORTNAME=	adsuck
 PORTVERSION=	2.3
 PORTREVISION=	9
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	phil@philpep.org
 COMMENT=	DNS relay for ad blocking
+WWW=		http://opensource.conformal.com/wiki/Adsuck
 
 LICENSE=	ISCL
 

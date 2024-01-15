@@ -1,16 +1,13 @@
-# Created by: Gleb Smirnoff <glebius@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	josm
-PORTVERSION=	17329
+PORTVERSION=	18822
 CATEGORIES=	astro java
-MASTER_SITES=	http://josm.openstreetmap.de/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://josm.openstreetmap.de/download/
 DISTNAME=	${PORTNAME}-snapshot-${PORTVERSION}.jar
 EXTRACT_SUFX=	# empty
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Comprehensive editor for OpenStreetMap.org database
+WWW=		https://josm.openstreetmap.de/
 
 LICENSE=	GPLv2+
 
@@ -20,15 +17,13 @@ NO_WRKSUBDIR=	yes
 
 USES=		zip:infozip
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
-
-JOSM_MEMORY_LIMIT?=1024
+JAVA_VERSION=	8+
 
 NO_BUILD=	yes
 NO_ARCH=	yes
 
 SUB_FILES=	josm.sh
-SUB_LIST=	JARNAME=${DISTNAME} JOSM_MEMORY_LIMIT=${JOSM_MEMORY_LIMIT}
+SUB_LIST=	JARNAME=${DISTNAME}
 
 PLIST_FILES=	bin/josm \
 		${JAVAJARDIR:C,${PREFIX}/?,,}/${DISTNAME} \
@@ -40,10 +35,6 @@ DESKTOP_ENTRIES="JOSM" \
 		"${PORTNAME}" \
 		"Education;Geoscience;Maps;" \
 		true
-
-pre-everything::
-	@${ECHO_CMD} "You can change limit of memory available to josm by defining"
-	@${ECHO_CMD} "JOSM_MEMORY_LIMIT variable in /etc/make.conf. Default is 1024 (MB)."
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${JAVAJARDIR}/

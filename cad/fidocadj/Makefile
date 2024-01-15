@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fidocadj
 PORTVERSION=	0.24.8
 PORTREVISION=	0
@@ -13,6 +10,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Easy to use graphical editor for electronics
+WWW=		https://darwinne.github.io/FidoCadJ/index.html
 
 LICENSE=	GPLv3
 

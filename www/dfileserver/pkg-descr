@@ -1,8 +1,0 @@
-A small and simple webserver programmed in C++ that was designed to make
-sharing files easy.
-
-By default, it shares whatever folder it was executed from on port 2000.
-While simple, a good deal of flexibility is exposed when you read the
-documentation and look at the optional configuration files.
-
-WWW: http://www.bebik.net/doku.php?id=software:dfileserver

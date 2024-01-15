@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Scripter-Plugin-Ajax
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	WWW::Scripter plugin that provides the XMLHttpRequest object
+WWW=		https://metacpan.org/release/WWW-Scripter-Plugin-Ajax
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-WWW-Scripter-Plugin-JavaScript>0:www/p5-WWW-Scripter-Plugin-JavaScript \

@@ -1,6 +1,3 @@
-# Created by: Ashish SHUKLA <wahjava@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	POD2-Base
 PORTVERSION=	0.043
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Base module for translations of Perl documentation
+WWW=		https://metacpan.org/release/POD2-Base
 
 USES=		perl5
 USE_PERL5=	configure

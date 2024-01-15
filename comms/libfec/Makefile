@@ -1,6 +1,3 @@
-# Created by: db
-# $FreeBSD$
-
 PORTNAME=	libfec
 PORTVERSION=	3.0.1
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTNAME=	fec-${PORTVERSION}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Several forward error correction (FEC) decoders
+WWW=		http://www.ka9q.net/code/fec/
 
 LICENSE=	LGPL21
 
@@ -30,6 +28,8 @@ PLIST_FILES=	include/fec.h		\
 
 # makefile tries to create libfec.so from object files compiled without -fPIC.
 CFLAGS+=	-fPIC
+
+CONFLICTS_INSTALL=	reed-solomon simd-viterbi # man/man3/rs.3.gz man/man3/simd-viterbi.3.gz
 
 post-patch:
 	@${CP} ${FILESDIR}/cpu_mode.c ${WRKSRC}

@@ -1,6 +1,3 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Util-Any
 PORTVERSION=	0.25
 CATEGORIES=	devel perl5
@@ -8,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:KTAT
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Export any utilities and create your own utility module
+WWW=		https://github.com/ktat/Util-Any
 
 LICENSE=	ART10
 

@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Net-Twitter
 PORTVERSION=	4.01043
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to twitter.com
+WWW=		https://metacpan.org/release/Net-Twitter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

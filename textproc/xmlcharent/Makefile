@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	xmlcharent
 PORTVERSION=	0.3
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	https://www.oasis-open.org/docbook/${PORTNAME}/${PORTVERSION}/ \
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	XML character entities
+WWW=		https://www.oasis-open.org/docbook/xmlcharent/
 
 LICENSE=	OASIS
 LICENSE_NAME=	OASIS License

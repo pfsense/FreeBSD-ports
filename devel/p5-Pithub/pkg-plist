@@ -21,7 +21,10 @@
 %%SITE_PERL%%/Pithub/Orgs/Teams.pm
 %%SITE_PERL%%/Pithub/PullRequests.pm
 %%SITE_PERL%%/Pithub/PullRequests/Comments.pm
+%%SITE_PERL%%/Pithub/PullRequests/Reviewers.pm
 %%SITE_PERL%%/Pithub/Repos.pm
+%%SITE_PERL%%/Pithub/Repos/Actions.pm
+%%SITE_PERL%%/Pithub/Repos/Actions/Workflows.pm
 %%SITE_PERL%%/Pithub/Repos/Collaborators.pm
 %%SITE_PERL%%/Pithub/Repos/Commits.pm
 %%SITE_PERL%%/Pithub/Repos/Contents.pm
@@ -37,6 +40,7 @@
 %%SITE_PERL%%/Pithub/Repos/Watching.pm
 %%SITE_PERL%%/Pithub/Result.pm
 %%SITE_PERL%%/Pithub/Result/SharedCache.pm
+%%SITE_PERL%%/Pithub/ResultSet.pm
 %%SITE_PERL%%/Pithub/Search.pm
 %%SITE_PERL%%/Pithub/SearchV3.pm
 %%SITE_PERL%%/Pithub/Users.pm
@@ -66,7 +70,10 @@
 %%PERL5_MAN3%%/Pithub::Orgs::Teams.3.gz
 %%PERL5_MAN3%%/Pithub::PullRequests.3.gz
 %%PERL5_MAN3%%/Pithub::PullRequests::Comments.3.gz
+%%PERL5_MAN3%%/Pithub::PullRequests::Reviewers.3.gz
 %%PERL5_MAN3%%/Pithub::Repos.3.gz
+%%PERL5_MAN3%%/Pithub::Repos::Actions.3.gz
+%%PERL5_MAN3%%/Pithub::Repos::Actions::Workflows.3.gz
 %%PERL5_MAN3%%/Pithub::Repos::Collaborators.3.gz
 %%PERL5_MAN3%%/Pithub::Repos::Commits.3.gz
 %%PERL5_MAN3%%/Pithub::Repos::Contents.3.gz
@@ -82,6 +89,7 @@
 %%PERL5_MAN3%%/Pithub::Repos::Watching.3.gz
 %%PERL5_MAN3%%/Pithub::Result.3.gz
 %%PERL5_MAN3%%/Pithub::Result::SharedCache.3.gz
+%%PERL5_MAN3%%/Pithub::ResultSet.3.gz
 %%PERL5_MAN3%%/Pithub::Search.3.gz
 %%PERL5_MAN3%%/Pithub::SearchV3.3.gz
 %%PERL5_MAN3%%/Pithub::Users.3.gz

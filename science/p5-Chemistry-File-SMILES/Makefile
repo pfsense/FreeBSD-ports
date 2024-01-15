@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	Chemistry-File-SMILES
 PORTVERSION=	0.47
 PORTREVISION=	2
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ITUB
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	SMILES linear notation parser/writer
+WWW=		https://metacpan.org/release/Chemistry-File-SMILES
 
 BUILD_DEPENDS=	p5-Chemistry-Mol>=0:science/p5-Chemistry-Mol \
 		p5-Chemistry-Bond-Find>=0:science/p5-Chemistry-Bond-Find \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	AnyEvent-MPRPC
 PORTVERSION=	0.20
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for simple TCP-based MPRPC client/server
+WWW=		https://metacpan.org/release/AnyEvent-MPRPC
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

@@ -1,18 +1,16 @@
-# Created by: Thomas E. Zander with help from Vladimir Kushnir
-# $FreeBSD$
-
 PORTNAME=	mplayer
 PORTVERSION=	${MPLAYER_PORT_VERSION}.${MPLAYER_SNAPSHOT_DATE:S/-//g}
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	riggs@FreeBSD.org
 COMMENT=	High performance media player supporting many formats
+WWW=		http://www.mplayerhq.hu/
 
 .include "${.CURDIR}/../../multimedia/mplayer/Makefile.common"
 
 OPTIONS_DEFINE=	AALIB AMR_NB AMR_WB ASS BLURAY CACA CDIO DV DVDNAV \
 		ENCA FONTCONFIG FRIBIDI GIF GNUTLS GSM GUI IPV6 JACK \
-		LADSPA LIBMNG LIRC LZO NAS OPENAL OPENGL \
+		JPEG LADSPA LIBMNG LIRC LZO NAS NLS OPENAL OPENGL \
 		OPENJPEG OPUS PULSEAUDIO RTMP \
 		SDL SKINS SNDIO SMB SPEEX SVGALIB V4L VDPAU VPX \
 		X11 X11DGA X11VM XINERAMA XVIDEO XVMC

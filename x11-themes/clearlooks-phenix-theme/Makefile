@@ -1,6 +1,3 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	clearlooks-phenix
 PORTVERSION=	7.0.1
 CATEGORIES=	x11-themes xfce
@@ -8,6 +5,7 @@ PKGNAMESUFFIX=	-theme
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk3 port of Clearlooks theme for the Xfce Desktop
+WWW=		https://github.com/jpfleury/clearlooks-phenix
 
 LICENSE=	GPLv3
 

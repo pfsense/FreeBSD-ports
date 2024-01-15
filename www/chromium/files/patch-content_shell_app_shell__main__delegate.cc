@@ -1,29 +1,11 @@
---- content/shell/app/shell_main_delegate.cc.orig	2020-11-13 06:36:43 UTC
+--- content/shell/app/shell_main_delegate.cc.orig	2023-12-10 06:10:27 UTC
 +++ content/shell/app/shell_main_delegate.cc
-@@ -186,7 +186,7 @@ bool ShellMainDelegate::BasicStartupComplete(int* exit
- 
- void ShellMainDelegate::PreSandboxStartup() {
- #if defined(ARCH_CPU_ARM_FAMILY) && \
--    (defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS))
-+    (defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD))
-   // Create an instance of the CPU class to parse /proc/cpuinfo and cache
-   // cpu_brand info.
-   base::CPU cpu_info;
-@@ -195,7 +195,7 @@ void ShellMainDelegate::PreSandboxStartup() {
- // Disable platform crash handling and initialize the crash reporter, if
- // requested.
- // TODO(crbug.com/753619): Implement crash reporter integration for Fuchsia.
--#if !defined(OS_FUCHSIA)
-+#if !defined(OS_FUCHSIA) && !defined(OS_BSD)
-   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-           switches::kEnableCrashReporter)) {
-     std::string process_type =
-@@ -211,7 +211,7 @@ void ShellMainDelegate::PreSandboxStartup() {
+@@ -227,7 +227,7 @@ void ShellMainDelegate::PreSandboxStartup() {
+     // Reporting for sub-processes will be initialized in ZygoteForked.
+     if (process_type != switches::kZygoteProcess) {
+       crash_reporter::InitializeCrashpad(process_type.empty(), process_type);
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+       crash_reporter::SetFirstChanceExceptionHandler(
+           v8::TryHandleWebAssemblyTrapPosix);
  #endif
-     }
-   }
--#endif  // !defined(OS_FUCHSIA)
-+#endif  // !defined(OS_FUCHSIA) && !defined(OS_BSD)
- 
-   crash_reporter::InitializeCrashKeys();
- 

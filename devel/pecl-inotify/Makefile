@@ -1,12 +1,10 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	inotify
 PORTVERSION=	3.0.0
 CATEGORIES=	devel
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Inotify bindings for PHP
+WWW=		https://pecl.php.net/package/inotify
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE

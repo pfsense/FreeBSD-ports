@@ -1,14 +1,12 @@
-# Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libscca
-DISTVERSION=	alpha-20200717
+DISTVERSION=	alpha-20221027
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libscca/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Library and tools to access the Windows Prefetch File (SCCA) format
+WWW=		https://github.com/libyal/libscca
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,7 +16,7 @@ LIB_DEPENDS=	libfwnt.so:devel/libfwnt
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python --with-libfwnt=${LOCALBASE}
 CONFIGURE_ENV=	PYTHON_CONFIG=${PYTHON_CMD}-config
-USES=		libtool pathfix python:3.5+
+USES=		libtool pathfix python
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:E}

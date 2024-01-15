@@ -33,7 +33,7 @@ PORT_TO_SEARCH=${1}
 BASEDIR=$(pwd)
 # Get a list of all ports
 echo "Prepare a list of all ports"
-ports=$(find . -name Makefile ! -path "./Tools/* | sort")
+ports=`find . -name Makefile -maxdepth 3 -not \( -path "./distfiles/*" -prune \) -not \( -path "./Tools/*" -prune \) -print | sort`
 echo "done."
 echo
 
@@ -94,7 +94,6 @@ do
 		echo "All portlint test successfull, please review the changes before you commit them carefully."
 		echo "You maybe want to run now"
 		echo "git diff"
-		echo "svn diff"
 		echo
 		break;
 	fi

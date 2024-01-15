@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	fmoo-audiotools
 PORTVERSION=	3.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio python
 MASTER_SITES=	SF/audiotools/audiotools
 DISTNAME=	audiotools-${PORTVERSION}
@@ -10,12 +8,15 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ryu0@ymail.com
 COMMENT=	Collection of command line audio handling utilities
+WWW=		https://audiotools.sourceforge.net
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig python:3.6+
+USES=		pkgconfig python
 USE_PYTHON=	autoplist concurrent distutils
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}zita-audiotools
 
 OPTIONS_DEFINE=	CDIO LAME MPG123 OPUS TWOLAME VORBIS
 OPTIONS_DEFAULT=CDIO MPG123 OPUS TWOLAME VORBIS

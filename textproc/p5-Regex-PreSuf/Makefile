@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	Regex-PreSuf
 PORTVERSION=	1.17
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Given word lists, create Perl regular expressions
+WWW=		https://metacpan.org/release/Regex-PreSuf
 
 USES=		perl5
 USE_PERL5=	configure

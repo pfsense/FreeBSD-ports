@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Number-Uncertainty
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -10,12 +7,14 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Object-orientated uncertainty object
+WWW=		https://metacpan.org/release/Number-Uncertainty
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

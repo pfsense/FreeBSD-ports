@@ -1,13 +1,12 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	clamtk
-PORTVERSION=	6.06
+PORTVERSION=	6.14
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	security
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	GTK front-end for Clam Antivirus
+WWW=		https://dave-theunsub.github.io/clamtk/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	amoebax
 PORTVERSION=	0.2.1
 PORTREVISION=	8
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.emma-soft.com/games/amoebax/download/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Cute and addictive Puyo Puyo like game
+WWW=		https://www.emma-soft.com/games/amoebax/
 
 LICENSE=	GPLv2 FAL
 LICENSE_COMB=	dual
@@ -18,15 +16,17 @@ LICENSE_FILE_FAL=	${WRKSRC}/COPYING.LAL
 LICENSE_PERMS_FAL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		gmake sdl tar:bzip2
-GNU_CONFIGURE=	yes
+USE_CXXSTD=	c++14
 USE_SDL=	sdl mixer image
 
-PORTDOCS=	*
-PORTDATA=	*
+GNU_CONFIGURE=	yes
+
 PLIST_FILES=	bin/amoebax \
 		man/man6/amoebax.6.gz \
 		share/applications/amoebax.desktop \
 		share/pixmaps/amoebax.svg
+PORTDATA=	*
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 

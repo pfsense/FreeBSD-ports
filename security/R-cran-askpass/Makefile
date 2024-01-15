@@ -1,19 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	askpass
-PORTVERSION=	1.1
-PORTREVISION=	1
+PORTVERSION=	1.2.0
 CATEGORIES=	security
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Safe Password Entry for R, Git, and SSH
+WWW=		https://cran.r-project.org/web/packages/askpass/
 
 LICENSE=	MIT
 
-CRAN_DEPENDS=	R-cran-sys>0:devel/R-cran-sys
-BUILD_DEPENDS=	${CRAN_DEPENDS}
-RUN_DEPENDS=	${CRAN_DEPENDS}
+RUN_DEPENDS=	R-cran-sys>=2.1:devel/R-cran-sys
 
 USES=		cran:auto-plist,compiles
 

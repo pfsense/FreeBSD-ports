@@ -1,6 +1,3 @@
-# Created by: Martin Kropfinger
-# $FreeBSD$
-
 PORTNAME=	minecraft-client
 PORTVERSION=	1.7.9
 PORTREVISION=	6
@@ -14,13 +11,14 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client for the block building game
+WWW=		https://minecraft.net/
 
 RUN_DEPENDS=	${JAVALIBDIR}/lwjgl/lwjgl.jar:games/lwjgl \
 		xrandr:x11/xrandr
 
 USES=		openal
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk
 

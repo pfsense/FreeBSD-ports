@@ -1,6 +1,3 @@
-# Created by: kai
-# $FreeBSD$
-
 PORTNAME=	Net-Ident
 PORTVERSION=	1.23
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	kai@xs4all.nl
 COMMENT=	Lookup the username on the remote end of a TCP/IP connection
+WWW=		https://metacpan.org/release/Net-Ident
 
 USES=		perl5
 USE_PERL5=	configure

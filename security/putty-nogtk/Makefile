@@ -1,11 +1,8 @@
-# Created by: Matthias Andree <mandree@FreeBSD.org>
-# $FreeBSD$
-
 PKGNAMESUFFIX=		-nogtk
 
-OPTIONS_EXCLUDE=	GTK2 GTK3
+OPTIONS_EXCLUDE=	GTK3
 
-CONFLICTS_INSTALL=	pssh-[0-9]* putty-[0-9]* putty-gtk2-[0-9]*
+CONFLICTS_INSTALL=	pssh* putty*
 
 MASTERDIR=		${.CURDIR}/../../security/putty
 

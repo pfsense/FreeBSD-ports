@@ -1,14 +1,13 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	SPRNG
 PORTVERSION=	5.0
+PORTREVISION=	2
 CATEGORIES=	math science
 MASTER_SITES=	http://www.sprng.org/Version${PORTVERSION}/
 DISTNAME=	${PORTNAME:tl}${PORTVERSION:R}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Scalable Parallel Pseudo Random Number Generators Library
+WWW=		http://www.sprng.org/
 
 LICENSE=	CC-BY-NC-SA-4.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -27,11 +26,11 @@ TEST_TARGET=	check
 
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=		EXAMPLES MPI
-OPTIONS_DEFAULT=	EXAMPLES MPI
+OPTIONS_DEFINE=		EXAMPLES MPICH
+OPTIONS_DEFAULT=	EXAMPLES MPICH
 OPTIONS_SUB=		yes
-MPI_LIB_DEPENDS=	libmpi.so:net/mpich
-MPI_CONFIGURE_WITH=	mpi
+MPICH_USES=		mpi:mpich
+MPICH_CONFIGURE_WITH=	mpi
 
 ASCII_TEXTS=	checkcmrg checklcg checklcg64 checklfg checkmlfg checkpmlcg	\
 		checksprng timecmrg timelcg timelcg64 timelfg timemlfg timepmlcg\

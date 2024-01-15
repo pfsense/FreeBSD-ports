@@ -1,6 +1,3 @@
-# Created by: Alex Kapranoff <kapr@crosswinds.net>
-# $FreeBSD$
-
 PORTNAME=	Tie-Cache
 PORTVERSION=	0.21
 PORTREVISION=	1
@@ -11,10 +8,13 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	LRU Cache in Memory through a tie interface
+WWW=		https://metacpan.org/release/Tie-Cache
 
-INSTALL_TARGET=	pure_install
 USES=		perl5 shebangfix
 USE_PERL5=	configure
+
+INSTALL_TARGET=	pure_install
+NO_ARCH=	yes
 
 SHEBANG_FILES=	tie-cache-bench.pl
 

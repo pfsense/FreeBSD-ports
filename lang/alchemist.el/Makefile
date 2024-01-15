@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	alchemist.el
 PORTVERSION=	1.8.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	14
 CATEGORIES=	lang
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Elixir Tooling Integration Into Emacs
+WWW=		https://github.com/tonini/alchemist.el
 
 LICENSE=	GPLv3
 

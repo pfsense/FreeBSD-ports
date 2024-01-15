@@ -1,14 +1,13 @@
-# Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	chrony
-DISTVERSION=	4.0
+DISTVERSION=	4.5
 CATEGORIES=	net
-MASTER_SITES=	https://download.tuxfamily.org/chrony/ \
+MASTER_SITES=	https://chrony-project.org/releases/ \
 		LOCAL/mandree
 
-MAINTAINER=	mandree@FreeBSD.org
-COMMENT=	System clock synchronization client and server
+# overridden in net/chrony-lite
+MAINTAINER?=	mandree@FreeBSD.org
+COMMENT?=	System clock synchronization client and server
+WWW=		https://chrony-project.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,6 +22,7 @@ HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--chronyvardir=/var/db/${PORTNAME} \
 		--datarootdir=${DATADIR} \
 		--docdir=${DOCSDIR} \
+		--enable-ntp-signd \
 		--mandir=${MANPREFIX}/man \
 		--prefix=${PREFIX} \
 		--sysconfdir=${PREFIX}/etc \
@@ -30,10 +30,13 @@ CONFIGURE_ARGS=	--chronyvardir=/var/db/${PORTNAME} \
 
 ALL_TARGET=	all
 INSTALL_TARGET=	install
-PORTDOCS=	FAQ NEWS README
+TEST_TARGET=	check
 
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+CONFLICTS_INSTALL?=	chrony-lite
+
+PORTDOCS=	FAQ NEWS README
 PORTEXAMPLES=	chrony.conf.example1 chrony.conf.example2 chrony.conf.example3 \
 		chrony.keys.example
 
@@ -44,8 +47,6 @@ OPTIONS_DEFAULT=	NETTLE NTS USER
 OPTIONS_GROUP=		SECHASH
 OPTIONS_GROUP_SECHASH=	NETTLE NSS
 OPTIONS_SUB=		yes
-NTS_IMPLIES=		NETTLE
-NETTLE_PREVENTS=	NSS
 
 HTMLDOCS_DESC=	Build HTML docs (IMPLIES DOCS, needs ruby, asciidoctor)
 NETTLE_DESC=	Nettle crypto library support for secure hash and NTS
@@ -59,10 +60,12 @@ HTMLDOCS_IMPLIES=	DOCS
 HTMLDOCS_BUILD_DEPENDS+=	asciidoctor:textproc/rubygem-asciidoctor
 HTMLDOCS_ALL_TARGET=		docs
 HTMLDOCS_INSTALL_TARGET=	docs
+NETTLE_PREVENTS=		NSS
 NETTLE_LIB_DEPENDS=		libnettle.so:security/nettle
 NETTLE_CONFIGURE_OFF=		--without-nettle
 NSS_LIB_DEPENDS=		libfreebl3.so:security/nss
 NSS_CONFIGURE_OFF=		--without-nss
+NTS_IMPLIES=			NETTLE
 NTS_LIB_DEPENDS=		libgnutls.so:security/gnutls
 NTS_CONFIGURE_OFF=		--without-gnutls
 USER_CONFIGURE_ON=		--with-user=chronyd

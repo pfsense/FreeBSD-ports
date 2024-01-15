@@ -1,6 +1,3 @@
-# Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	packter-agent
 PORTVERSION=	2.5
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	PackterAgent-${PORTVERSION}
 
 MAINTAINER=	masaki@club.kyutech.ac.jp
 COMMENT=	Agent of the tool for graphical Internet traffic visualization
+WWW=		http://www.packter.jp
 
 LICENSE=	BSD2CLAUSE
 

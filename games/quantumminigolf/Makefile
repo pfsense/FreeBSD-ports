@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	quantumminigolf
 PORTVERSION=	1.1.1
 PORTREVISION=	6
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Computer game visualizing quantum mechanics
+WWW=		https://quantumminigolf.sourceforge.net/
 
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libfftw3.so:math/fftw3

@@ -1,6 +1,3 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Append-TempFile
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Append data to files using a temporary copy
+WWW=		https://metacpan.org/release/File-Append-TempFile
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

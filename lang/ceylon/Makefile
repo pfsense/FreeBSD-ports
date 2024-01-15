@@ -1,6 +1,3 @@
-# Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ceylon
 PORTVERSION=	1.3.3
 CATEGORIES=	lang java
@@ -8,6 +5,7 @@ MASTER_SITES=	http://downloads.ceylon-lang.org/cli/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Language for writing large programs in teams
+WWW=		https://ceylon-lang.org/
 
 LICENSE=	APACHE20 GPLv2
 LICENSE_COMB=	multi

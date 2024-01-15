@@ -1,14 +1,12 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Judy
-PORTVERSION=	1.0.5
-PORTREVISION=	2
+DISTVERSION=	1.0.5
+PORTREVISION=	3
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General purpose dynamic array
+WWW=		https://judy.sourceforge.net/
 
 LICENSE=	LGPL21
 
@@ -21,7 +19,7 @@ USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 
-WRKSRC=	${WRKDIR}/${PORTNAME:tl}-${PORTVERSION}
+WRKSRC=	${WRKDIR}/${PORTNAME:tl}-${DISTVERSION}
 
 PORTDOCS=	COPYRIGHT README *.htm
 

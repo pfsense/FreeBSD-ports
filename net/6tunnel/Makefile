@@ -1,6 +1,3 @@
-# Created by: Vassili Tchersky <vt@bsdjeunz.org>
-# $FreeBSD$
-
 PORTNAME=	6tunnel
 DISTVERSION=	0.13
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	GH
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	TCP proxy for applications that do not speak IPv6
+WWW=		https://github.com/wojtekka/6tunnel
 
 LICENSE=	GPLv2
 

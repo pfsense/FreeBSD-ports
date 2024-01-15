@@ -1,6 +1,3 @@
-# Created by: Yoichi NAKAYAMA <yoichi@eken.phys.nagoya-u.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	jisx0213
 PORTVERSION=	20040425
 PORTREVISION=	8
@@ -15,6 +12,7 @@ DISTFILES=	jiskan16-2004-1.bdf.gz jiskan16-2000-1.bdf.gz \
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Japanese jisx0213 fonts
+WWW=		http://www12.ocn.ne.jp/~imamura/jisx0213.html
 
 LICENSE=	PD
 

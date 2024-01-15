@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Phrasebook
 PORTVERSION=	0.35
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Accessing phrasebooks from various data sources
+WWW=		https://metacpan.org/release/Data-Phrasebook
 
 LICENSE=	ART20
 

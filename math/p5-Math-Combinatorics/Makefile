@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Math-Combinatorics
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perform combinations and permutations on lists
+WWW=		https://metacpan.org/release/Math-Combinatorics
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

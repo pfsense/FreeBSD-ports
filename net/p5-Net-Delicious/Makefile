@@ -1,6 +1,3 @@
-# Created by: Aaron Straup Cope <ascope@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Delicious
 PORTVERSION=	1.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	OOP for managing posts on del.icio.us
+WWW=		https://metacpan.org/release/Net-Delicious
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

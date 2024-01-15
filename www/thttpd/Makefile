@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
-
 PORTNAME=	thttpd
 PORTVERSION=	2.29
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.acme.com/software/thttpd/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Tiny/turbo/throttling HTTP server with CGI support
+WWW=		https://www.acme.com/software/thttpd/
 
 LICENSE=	BSD2CLAUSE
 

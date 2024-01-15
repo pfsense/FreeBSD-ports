@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Pipe
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for common text filter API
+WWW=		https://metacpan.org/release/Text-Pipe
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ipdbtools
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.2
@@ -8,6 +6,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	cyclaero@gmail.com
 COMMENT=	Tools for IP based Geo-blocking and Geo-routing
+WWW=		https://cyclaero.github.io/ipdb/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

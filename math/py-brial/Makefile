@@ -1,13 +1,12 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	brial
-PORTVERSION=	1.2.10
+PORTVERSION=	1.2.11
+PORTREVISION=	1
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Python implementation of BRiAl
+WWW=		https://github.com/BRiAl/BRiAl
 
 LICENSE=	GPLv2
 
@@ -17,9 +16,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	BRiAl
 GH_PROJECT=	${GH_ACCOUNT}
 
-USES=		python:3.6+
+USES=		python
 
 WRKSRC_SUBDIR=	sage-brial
 USE_PYTHON=	distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

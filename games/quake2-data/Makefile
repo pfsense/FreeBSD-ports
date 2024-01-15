@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	data
 PORTVERSION=	3.20
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DISTFILES=	${Q2_UPDATE}:data ${Q2_SRC}:src
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Quake II data files
+WWW=		http://www.idsoftware.com/games/quake/quake2/
 
 # XXX we need info-unzip for q2-314-demo-x86.exe
 USES=		zip:infozip

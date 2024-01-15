@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Data-Currency
 PORTVERSION=	0.06000
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Container class for currency conversion/formatting
+WWW=		https://metacpan.org/release/Data-Currency
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Accessor-Grouped>=0:devel/p5-Class-Accessor-Grouped \

@@ -9,6 +9,9 @@ bin/promtool
 %%PROMETHEUS_CONSOLES_DIR%%/node.html
 %%PROMETHEUS_CONSOLES_DIR%%/prometheus-overview.html
 %%PROMETHEUS_CONSOLES_DIR%%/prometheus.html
+%%PORTDOCS%%%%DOCSDIR%%/command-line/index.md
+%%PORTDOCS%%%%DOCSDIR%%/command-line/%%PROMETHEUS_USER%%.md
+%%PORTDOCS%%%%DOCSDIR%%/command-line/promtool.md
 %%PORTDOCS%%%%DOCSDIR%%/configuration/alerting_rules.md
 %%PORTDOCS%%%%DOCSDIR%%/configuration/configuration.md
 %%PORTDOCS%%%%DOCSDIR%%/configuration/https.md
@@ -17,8 +20,10 @@ bin/promtool
 %%PORTDOCS%%%%DOCSDIR%%/configuration/template_examples.md
 %%PORTDOCS%%%%DOCSDIR%%/configuration/template_reference.md
 %%PORTDOCS%%%%DOCSDIR%%/configuration/unit_testing_rules.md
+%%PORTDOCS%%%%DOCSDIR%%/feature_flags.md
 %%PORTDOCS%%%%DOCSDIR%%/federation.md
 %%PORTDOCS%%%%DOCSDIR%%/getting_started.md
+%%PORTDOCS%%%%DOCSDIR%%/http_sd.md
 %%PORTDOCS%%%%DOCSDIR%%/images/remote_integrations.png
 %%PORTDOCS%%%%DOCSDIR%%/index.md
 %%PORTDOCS%%%%DOCSDIR%%/installation.md
@@ -30,6 +35,7 @@ bin/promtool
 %%PORTDOCS%%%%DOCSDIR%%/querying/functions.md
 %%PORTDOCS%%%%DOCSDIR%%/querying/index.md
 %%PORTDOCS%%%%DOCSDIR%%/querying/operators.md
+%%PORTDOCS%%%%DOCSDIR%%/querying/remote_read_api.md
 %%PORTDOCS%%%%DOCSDIR%%/stability.md
 %%PORTDOCS%%%%DOCSDIR%%/storage.md
 @sample etc/prometheus.yml.sample

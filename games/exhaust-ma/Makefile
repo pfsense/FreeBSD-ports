@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	exhaust-ma
 PORTVERSION=	1.9
 CATEGORIES=	games
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Redcode simulator easy to embed into applications
+WWW=		https://corewar.co.uk/ankerl/exhaust-ma.htm
 
 USES=		gmake dos2unix zip
 

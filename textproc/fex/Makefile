@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fex
 PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Powerful field extraction tool
+WWW=		https://semicomplete.com/projects/fex/
 
 LICENSE=	APACHE20
 

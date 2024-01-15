@@ -1,42 +1,44 @@
-# Created by: Kai Wang <kaiw27@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	fish
-PORTVERSION=	3.1.2
+DISTVERSION=	3.6.1
+PORTREVISION=	1
 CATEGORIES=	shells
 MASTER_SITES=	https://github.com/fish-shell/fish-shell/releases/download/${PORTVERSION}/
 
+PATCH_SITES=	https://github.com/fish-shell/fish-shell/commit/
+PATCHFILES+=	85504ca694ae099f023ae0febb363238d9c64e8d.patch:-p1
+
 MAINTAINER=	asomers@FreeBSD.org
 COMMENT=	User friendly command line shell
+WWW=		https://fishshell.com/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS+=	libpcre2-32.so:devel/pcre2
+LIB_DEPENDS=	libpcre2-32.so:devel/pcre2
 
 # The python dependency is only needed by shebangfix.  At runtime python is
 # only needed by some optional scripts that aren't in PATH.
-USES=		cmake cpe ncurses python:3.4+,build \
-		localbase compiler:c++11-lang shebangfix
-
+USES=		cmake compiler:c++11-lang cpe localbase ncurses python:env \
+		shebangfix tar:xz
+CPE_VENDOR=	fishshell
 SHEBANG_FILES=	share/tools/*.py share/tools/web_config/webconfig.py
 
 CONFLICTS_INSTALL=	comms/mlan3
 
-CPE_VENDOR=	fishshell
-
 MANDIRS=	${DATADIR}/man/man1
 
-OPTIONS_DEFAULT=	MANPAGES DOCS NLS
-OPTIONS_DEFINE=	MANPAGES DOCS NLS
-OPTIONS_SUB=	yes
-
-MAKE_JOBS_UNSAFE=yes	# sphinx stuff seems to be racy
-DOCS_BUILD_DEPENDS+=	sphinx-build:textproc/py-sphinx
-MANPAGES_BUILD_DEPENDS+=	sphinx-build:textproc/py-sphinx
-NLS_USES=		gettext
-NLS_CMAKE_BOOL=		WITH_GETTEXT
-
 PORTDOCS=	*
+
+OPTIONS_DEFINE=		DOCS MANPAGES NLS
+OPTIONS_DEFAULT=	MANPAGES NLS
+OPTIONS_SUB=		yes
+
+DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_CMAKE_BOOL=	BUILD_DOCS
+DOCS_VARS=		MAKE_JOBS_UNSAFE=yes
+
+NLS_USES=	gettext
+NLS_CMAKE_BOOL=	WITH_GETTEXT
 
 .include <bsd.port.pre.mk>
 
@@ -48,12 +50,9 @@ post-install:
 .for i in fish fish_indent fish_key_reader
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${i}
 .endfor
+	@${MV} ${STAGEDIR}${ETCDIR}/config.fish ${STAGEDIR}${ETCDIR}/config.fish.sample
 
 post-stage-DOCS-on:
 	@${RM} ${STAGEDIR}${DOCSDIR}/.buildinfo
-
-post-stage-MANPAGES-off:
-	@${RM} -rf ${STAGEDIR}${MANPREFIX}/man/man1
-	@${RM} -rf ${STAGEDIR}${DATADIR}/man
 
 .include <bsd.port.post.mk>

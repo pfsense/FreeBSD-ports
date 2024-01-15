@@ -1,15 +1,13 @@
-# Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ini_file_manager
 PORTVERSION=	03
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	misc
 MASTER_SITES=	http://sourceforge.net/projects/${SFPATH}/
 DISTNAME=	ini-files-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ini configuration file reader and manipulator package for Ada
+WWW=		https://sourceforge.net/projects/ini-files/
 
 LICENSE=	MIT
 

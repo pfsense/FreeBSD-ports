@@ -1,34 +1,39 @@
-# Created by: adamw
-# $FreeBSD$
-
 PORTNAME=	lz4
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.3
+PORTVERSION=	1.9.4
 PORTEPOCH=	1
 CATEGORIES=	archivers
+MASTER_SITES=	https://github.com/lz4/lz4/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	lib
 
-MAINTAINER=	martin@waschbuesch.de
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	LZ4 compression library, lossless and very fast
+WWW=		https://lz4.org/ \
+		https://github.com/lz4/lz4
 
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	multi
 
-USES=		meson pkgconfig python:3.5+,build shebangfix
-USE_GITHUB=	yes
+USES=		cpe meson pkgconfig python:build shebangfix
+
+MESON_ARGS=	--default-library=both \
+		-Dcontrib=false \
+		-Dexamples=false \
+		-Dmemory-usage=0 \
+		-Dprograms=true \
+		-Dunstable=false
 USE_LDCONFIG=	yes
-
-SHEBANG_FILES=	meson/*.py \
-		${WRKDIR}/${PORTNAME}-${DISTVERSION}/tests/*.py
-
-MESON_ARGS=	-Ddefault_library=both -Dbin_programs=true
-
 WRKSRC_SUBDIR=	contrib/meson
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
+CPE_VENDOR=	lz4_project
+
+PORTSCOUT=	limit:^[0-9]*\.
+
+SHEBANG_FILES=	../../tests/*.py meson/*.py
+
 OPTIONS_DEFINE=	TEST
 
-TEST_MESON_TRUE=	bin_tests
+TEST_MESON_TRUE=	tests
 
 .include <bsd.port.mk>

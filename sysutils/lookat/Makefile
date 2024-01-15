@@ -1,6 +1,3 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	lookat
 PORTVERSION=	1.4.4
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_bekijk-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to view Un*x text files and manual pages
+WWW=		http://www.wagemakers.be/english/programs/lookat
 
 GNU_CONFIGURE=	yes
 USES=		gmake ncurses

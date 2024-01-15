@@ -1,9 +1,6 @@
-# Created by: gpalmer
-# $FreeBSD$
-
 PORTNAME=	snmp
-PORTVERSION=	5.9
-PORTREVISION=   1
+PORTVERSION=	5.9.1
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
@@ -13,6 +10,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Extendable SNMP implementation
+WWW=		http://net-snmp.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,7 @@ NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
 
 OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
 		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP \
-		TLS NEWSYSLOG NOLIBPKG
+		TLS NEWSYSLOG NOLIBPKG SCTP
 OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX NEWSYSLOG
 OPTIONS_SUB=	yes
 
@@ -37,6 +35,7 @@ SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
 JAIL_DESC=		Options for running snmpd within a jail(8)
 NEWSYSLOG_DESC=		Automatically rotate snmpd.log via newsyslog
 NOLIBPKG_DESC=		Build without libpkg
+SCTP_DESC=		Build with SCTP MIB support
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -46,7 +45,7 @@ GNU_CONFIGURE=	yes
 USE_RC_SUBR=	snmpd snmptrapd
 USE_LDCONFIG=	yes
 USES=		cpe libtool perl5 ssl
-CPE_VENDOR=	net-snmp
+CPE_PRODUCT=	net-snmp
 USE_PERL5=	build run
 USE_CSTD=	c99
 
@@ -78,9 +77,9 @@ TLS_CONFIGURE_ON=	--with-security-modules=tsm --with-transports=TLSTCP,DTLSUDP
 .if ${PORT_OPTIONS:MPYTHON}
 PYDISTUTILS_PKGNAME?=		netsnmp-python
 PYDISTUTILS_PKGVERSION?=	1.0a1
-USES+=		python:3.5+
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+USES+=		python
+RUN_DEPENDS+=	${PY_SETUPTOOLS}
+BUILD_DEPENDS+=	${PY_SETUPTOOLS}
 CONFIGURE_ARGS+=--with-python-modules
 CONFIGURE_ENV+=	PYTHONPROG="${PYTHON_CMD}"
 MAKE_ENV+=	PYDISTUTILS_INSTALLARGS="${PYDISTUTILS_INSTALLARGS}" STAGEDIR="${STAGEDIR}"
@@ -147,7 +146,7 @@ CONFIGURE_ARGS+=--without-root-access
 .endif
 
 SHLIB_VERSION=	40
-SHLIB_VERSION2=	.0.0
+SHLIB_VERSION2=	.1.0
 PLIST_SUB+=	SHLIB_VERSION=${SHLIB_VERSION} SHLIB_VERSION2=${SHLIB_VERSION2}
 SCRIPTS_SUB=	PREFIX=${PREFIX} PERL=${PERL}
 
@@ -156,10 +155,14 @@ NET_SNMP_SYS_CONTACT?=	nobody@nowhere.invalid
 NET_SNMP_SYS_LOCATION?=	somewhere
 NET_SNMP_LOGFILE?=	/var/log/snmpd.log
 NET_SNMP_PERSISTENTDIR?=/var/net-snmp
-NET_SNMP_WITH_MIB_MODULE_LIST+=	host disman/event-mib mibII/mta_sendmail mibII/tcpTable ucd-snmp/diskio sctp-mib
+NET_SNMP_WITH_MIB_MODULE_LIST+=	host disman/event-mib mibII/mta_sendmail mibII/tcpTable ucd-snmp/diskio
 
 .if ${OPSYS} == FreeBSD
 NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	mibII/ipv6
+.endif
+
+.if ${PORT_OPTIONS:MSCTP}
+NET_SNMP_WITH_MIB_MODULE_LIST+=	sctp-mib
 .endif
 
 .if ${PORT_OPTIONS:MMFD_REWRITES}
@@ -241,12 +244,14 @@ pre-everything::
 post-patch:
 	@${REINPLACE_CMD} -E -e 's|return pci_lookup_name|disabled broken|g' \
 		${WRKSRC}/configure
-.if (${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085) || ${SSL_DEFAULT:Mopenssl}
+.if ${OPSYS} == FreeBSD || ${SSL_DEFAULT:Mopenssl}
 	@${REINPLACE_CMD} -E -e 's|SSL_library_init|OPENSSL_init_ssl|g' \
 		${WRKSRC}/configure
 .endif
 	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd12.h \
 		${WRKSRC}/include/net-snmp/system/freebsd13.h
+	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd14.h \
+		${WRKSRC}/include/net-snmp/system/freebsd15.h
 .for header in darwin7.h darwin8.h darwin9.h darwin10.h darwin11.h darwin12.h \
 	darwin13.h darwin14.h darwin15.h darwin16.h darwin17.h
 	@${CP} ${WRKSRC}/include/net-snmp/system/darwin.h \

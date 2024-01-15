@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Ima-DBI
 PORTVERSION=	0.35
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Database connection caching and organization
+WWW=		https://metacpan.org/release/Ima-DBI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

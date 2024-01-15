@@ -1,9 +1,6 @@
-# Created by: Andrey Fesenko <andrey@bsdnir.info>
-# $FreeBSD$
-
 PORTNAME=	emkatic
-PORTVERSION=	0.38
-PORTREVISION=	3
+PORTVERSION=	0.41
+PORTREVISION=	8
 CATEGORIES=	russian emulators
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 MASTER_SITES=	SF/${PORTNAME}/eMKatic%20Source
@@ -11,13 +8,12 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	andrey@bsdnir.info
 COMMENT=	Emulator of Elektronika RPN programmable calculator series
+WWW=		https://sourceforge.net/projects/emkatic/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 USES=		fpc lazarus:flavors xorg
-USE_FPC=	cairo chm fcl-base fcl-image fcl-json fcl-registry fcl-xml \
-		pasjpeg regexpr rtl-extra x11
 USE_XORG=	x11
 
 LAZARUS_PROJECT_FILES=	emkatic.lpi
@@ -27,8 +23,9 @@ PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*
 PORTDOCS=	CHANGELOG.*.txt README.*.txt
 
-gtk2_CONFLICTS_INSTALL=	ru-${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	ru-${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	ru-${PORTNAME}-qt5 ru-${PORTNAME}-qt6
+qt5_CONFLICTS_INSTALL=	ru-${PORTNAME}-gtk2 ru-${PORTNAME}-qt6
+qt6_CONFLICTS_INSTALL=	ru-${PORTNAME}-gtk2 ru-${PORTNAME}-qt5
 
 OPTIONS_DEFINE=		DOCS PORTAUDIO
 OPTIONS_DEFAULT=	PORTAUDIO

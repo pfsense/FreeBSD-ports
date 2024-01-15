@@ -1,6 +1,3 @@
-# Created by: Damian Gerow <dgerow@afflictions.org>
-# $FreeBSD$
-
 PORTNAME=	mktorrent
 PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	net-p2p
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line utility for creating BitTorrent metainfo files
+WWW=		https://github.com/Rudde/mktorrent
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

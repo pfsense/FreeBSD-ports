@@ -1,14 +1,12 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	chemtool
 DISTVERSION=	1.6.14
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science
 MASTER_SITES=	http://ruby.chemie.uni-freiburg.de/~martin/chemtool/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Draw organic molecules easily and store them
+WWW=		http://ruby.chemie.uni-freiburg.de/~martin/chemtool/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

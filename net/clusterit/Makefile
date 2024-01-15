@@ -1,6 +1,3 @@
-# Created by: Dima Sivachenko
-# $FreeBSD$
-
 PORTNAME=	clusterit
 PORTVERSION=	2.5
 CATEGORIES=	net devel parallel
@@ -8,10 +5,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Collection of clustering tools
+WWW=		https://www.garbled.net/clusterit.html
 
 LICENSE=	BSD2CLAUSE
 
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	barrier heirloom-sh pdsh schilyutils # bin/barrier bin/dshbak bin/jsh
 
 OPTIONS_DEFINE=	X11
 OPTIONS_SUB=	yes

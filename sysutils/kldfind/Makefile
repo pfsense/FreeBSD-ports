@@ -1,6 +1,3 @@
-# Created by: Ricardo A. Reis <ricardo.areis@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	kldfind
 PORTVERSION=	0.61
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ricardo.areis@gmail.com
 COMMENT=	Find kernel modules by string
+WWW=		https://sourceforge.net/projects/kldfind/
 
 NO_BUILD=	yes
 USES=	tar:bzip2

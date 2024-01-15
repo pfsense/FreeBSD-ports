@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Session-FastMmap
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	FastMmap sessions for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Session-FastMmap
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

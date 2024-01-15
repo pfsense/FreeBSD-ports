@@ -1,15 +1,13 @@
-# Created by: dd
-# $FreeBSD$
-
 PORTNAME=	tuareg-mode
 PORTVERSION=	2.0.8
-PORTREVISION=	7
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	lang elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	michipili@gmail.com
 COMMENT=	Emacs major mode for editing Caml code
+WWW=		http://tuareg.forge.ocamlcore.org/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	osm2mp
 PORTVERSION=	r475
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenStreetMap data into Polish map format (MP) converter
+WWW=		https://code.google.com/archive/p/osm2mp/
 
 RUN_DEPENDS=	p5-YAML>=0:textproc/p5-YAML \
 		p5-Encode-Locale>=0:converters/p5-Encode-Locale \

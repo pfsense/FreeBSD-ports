@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cogbot
 PORTVERSION=	0.1.13
 PORTREVISION=	8
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	mose@mose.com
 COMMENT=	Irc bot based on Cinch
+WWW=		https://github.com/mose/cogbot
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,7 +23,6 @@ RUN_DEPENDS=	rubygem-cinch>=2.3.3:irc/rubygem-cinch \
 		rubygem-fortune_gem>=0.0.9:games/rubygem-fortune_gem
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 PLIST_FILES=	bin/cogbot

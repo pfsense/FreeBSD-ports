@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	ncbi-blast+
-DISTVERSION=	2.11.0
+DISTVERSION=	2.14.1
+PORTREVISION=	1
 CATEGORIES=	biology perl5 python
 MASTER_SITES=	https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ \
 		https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${PORTVERSION}/
@@ -9,9 +8,13 @@ DISTNAME=	ncbi-blast-${PORTVERSION}+-src
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	NCBI implementation of Basic Local Alignment Search Tool
+WWW=		https://blast.ncbi.nlm.nih.gov
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/scripts/projects/blast/LICENSE
+
+ONLY_FOR_ARCHS=		aarch64 amd64 powerpc64 powerpc64le riscv64
+ONLY_FOR_ARCHS_REASON=	Requires 64-bit processor
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		liblmdb.so:databases/lmdb \
@@ -28,11 +31,14 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libgpg-error.so:security/libgpg-error \
 		libsqlite3.so:databases/sqlite3 \
 		libuv.so:devel/libuv \
-		libnghttp2.so:www/libnghttp2
+		libnghttp2.so:www/libnghttp2 \
+		libgrpc.so:devel/grpc \
+		libzstd.so:archivers/zstd \
+		libdw.so:devel/elfutils
 RUN_DEPENDS=	p5-List-MoreUtils>=0:lang/p5-List-MoreUtils \
 		p5-JSON>=0:converters/p5-JSON
 
-USES=		compiler:openmp gmake shebangfix perl5 python
+USES=		compiler:c++14-lang gmake localbase:ldflags shebangfix perl5 python
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	src/app/blast/legacy_blast.pl \
@@ -47,15 +53,20 @@ GNU_CONFIGURE=	yes
 # --libdir=${PREFIX}/lib/ncbi-tools++ doesn't respect DESTDIR, so do
 # a postinstall mv.
 CONFIGURE_ARGS=	AR="ar cr" --without-boost --libdir=${PREFIX}/lib/ncbi-tools++
-LDFLAGS+=	-latomic
 
-WRKSRC_SUBDIR=		c++
+CONFLICTS_INSTALL=	ncbi-cxx-toolkit
+
+WRKSRC_SUBDIR=	c++
+
+.if !exists(/usr/include/omp.h)
+CONFIGURE_ARGS+=	--without-openmp
+.endif
 
 .include <bsd.port.pre.mk>
 
-# Force newer GCC on platforms using GCC 4.2 as base
 .if ${CHOSEN_COMPILER_TYPE} == gcc
-USE_GCC=	yes
+# In case of problems: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=220822
+LDFLAGS+=	-latomic # Only exists in gcc libs
 .endif
 
 post-install:

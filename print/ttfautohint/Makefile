@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ttfautohint
-PORTVERSION=	1.8.3
+PORTVERSION=	1.8.4
 CATEGORIES=	print
 MASTER_SITES=	SAVANNAH/freetype \
 		SF/freetype/ttfautohint/${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Automatic font hinting library
+WWW=		https://www.freetype.org/ttfautohint/
 
 LICENSE=	FTL GPLv2+
 LICENSE_COMB=	dual
@@ -26,5 +24,6 @@ USES=		compiler:c++11-lang gmake libtool pkgconfig
 
 CONFIGURE_ARGS=	--with-doc=no --with-qt=no
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

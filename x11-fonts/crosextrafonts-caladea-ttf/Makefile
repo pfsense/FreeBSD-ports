@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	crosextrafonts
 PORTVERSION=	20130214
 PORTREVISION=	4
@@ -10,6 +8,7 @@ PKGNAMESUFFIX=	-caladea
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Font created by Google for ChromeOS to replace MS Cambria
+WWW=		https://code.google.com/p/chromium/issues/detail?id=168879
 
 LICENSE=	APACHE20
 

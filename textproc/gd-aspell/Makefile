@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	${DICT}-aspell
 SPELLVERSION=	5-gd-0.1.1-1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Scottish Gaelic dictionary
+WWW=		http://aspell.net/
 
 DICT=	 	gd
 

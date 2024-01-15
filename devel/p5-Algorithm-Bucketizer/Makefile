@@ -1,6 +1,3 @@
-# Created by: Christopher Boumenot <boumenot@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Algorithm-Bucketizer
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Distribute sized items to buckets with limited size
+WWW=		https://metacpan.org/release/Algorithm-Bucketizer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

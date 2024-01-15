@@ -1,15 +1,11 @@
-# Created by: gnome@freebsd.org
-# $FreeBSD$
-#   $MCom: ports/trunk/net-im/telepathy-glib/Makefile 20031 2014-11-02 21:47:55Z kwm $
-
 PORTNAME=	telepathy-glib
-PORTVERSION=	0.24.1
-PORTREVISION=	1
+PORTVERSION=	0.24.2
 CATEGORIES=	net-im
 MASTER_SITES=	http://telepathy.freedesktop.org/releases/${PORTNAME}/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GLib utility library for the Telepathy framework
+WWW=		https://telepathy.freedesktop.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -26,5 +22,11 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-vala-bindings
 INSTALL_TARGET=	install-strip
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

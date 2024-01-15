@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-HTTPS-Any
 PORTVERSION=	0.12
 CATEGORIES=	net perl5 www
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple HTTPS class using whichever underlying SSL module is available
+WWW=		https://metacpan.org/release/Net-HTTPS-Any
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

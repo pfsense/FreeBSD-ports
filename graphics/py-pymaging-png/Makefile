@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pymaging-png
 PORTREVISION=	1
 PORTVERSION=	g20130727
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	PNG support for pymaging
+WWW=		https://pymaging.rtfd.org
 
 LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	multi
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pymaging>=g20130908:graphics/py-pymaging@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 USE_GITHUB=	yes

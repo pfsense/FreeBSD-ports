@@ -1,8 +1,6 @@
-# Created by: Pedro F. Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	xcircuit
-PORTVERSION=	3.10.29
+PORTVERSION=	3.10.30
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://opencircuitdesign.com/xcircuit/archive/ \
@@ -10,6 +8,7 @@ MASTER_SITES=	http://opencircuitdesign.com/xcircuit/archive/ \
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	X11 circuit schematics drawing program
+WWW=		http://opencircuitdesign.com/xcircuit/
 
 LICENSE=	GPLv2
 
@@ -39,6 +38,7 @@ post-patch:
 		 s|-fpic|-fPIC|g' ${WRKSRC}/configure
 
 post-install:
+	cd ${STAGEDIR}${PREFIX}/share/xcircuit && ${STRIP_CMD} xcircuit.so xcircexec xcircdnull
 	@${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/.xcircuitrc ${STAGEDIR}/${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/*.lgf ${STAGEDIR}/${EXAMPLESDIR}

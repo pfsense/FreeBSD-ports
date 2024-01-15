@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	screego
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.1
+DISTVERSION=	1.2.0
+PORTREVISION=	15
 CATEGORIES=	www
 MASTER_SITES=	https://registry.yarnpkg.com/:yarn
 DISTFILES=	@babel/code-frame/-/code-frame-7.8.3.tgz:yarn \
@@ -663,6 +662,7 @@ DISTFILES=	@babel/code-frame/-/code-frame-7.8.3.tgz:yarn \
 		hmac-drbg/-/hmac-drbg-1.0.1.tgz:yarn \
 		hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz:yarn \
 		hosted-git-info/-/hosted-git-info-2.8.8.tgz:yarn \
+		hotkeys-js/-/hotkeys-js-3.8.1.tgz:yarn \
 		hpack.js/-/hpack.js-2.1.6.tgz:yarn \
 		hsl-regex/-/hsl-regex-1.0.0.tgz:yarn \
 		hsla-regex/-/hsla-regex-1.0.0.tgz:yarn \
@@ -1156,6 +1156,7 @@ DISTFILES=	@babel/code-frame/-/code-frame-7.8.3.tgz:yarn \
 		react-dev-utils/-/react-dev-utils-10.2.1.tgz:yarn \
 		react-dom/-/react-dom-16.13.1.tgz:yarn \
 		react-error-overlay/-/react-error-overlay-6.0.7.tgz:yarn \
+		react-hotkeys-hook/-/react-hotkeys-hook-3.0.3.tgz:yarn \
 		react-is/-/react-is-16.13.1.tgz:yarn \
 		react-router-dom/-/react-router-dom-5.2.0.tgz:yarn \
 		react-router/-/react-router-5.2.0.tgz:yarn \
@@ -1472,6 +1473,7 @@ EXTRACT_ONLY=	${DISTFILES:N*\:yarn*:C/:.*$//}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Screen sharing server based on WebRTC
+WWW=		https://github.com/screego/server
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -1556,7 +1558,11 @@ _YARNRC=		${_YARN_HOME}/yarnrc
 _YARN_CMD=		${SETENV} ${_YARN_ENV} ${_YARN_BIN} ${_YARN_FLAGS}
 _YARN_CWD=		${WRKSRC}/ui
 
-OPTIONS_DEFINE=	DOCS
+.include <bsd.port.options.mk>
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl} || ${SSL_DEFAULT:Mopenssl3*}
+BROKEN=	Fails to compile with OpenSSL 3 and later
+.endif
 
 pre-everything::
 	@${ECHO_MSG} ""

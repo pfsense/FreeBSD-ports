@@ -1,14 +1,12 @@
-# Created by: nork@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	java3d
 PORTVERSION=	1.5.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	java graphics games devel
 MASTER_SITES=	https://sites.google.com/site/daemonwizard/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides API for creating and manipulation of 3D geometry
+WWW=		http://java3d.java.net/
 
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	multi

@@ -1,31 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	heimer
-DISTVERSION=	1.21.0
+DISTVERSION=	4.3.0
 CATEGORIES=	graphics
+MASTER_SITES=	https://github.com/juzzlin/Heimer/releases/download/${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Simple mind map, diagram, and note-taking tool
+WWW=		https://github.com/juzzlin/Heimer
 
-LICENSE=	CC-BY-SA-3.0 GPLv3+
-LICENSE_COMB=	multi
-LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake compiler:c++14-lang qt:5
-USE_GITHUB=	yes
-GH_ACCOUNT=	juzzlin
-GH_PROJECT=	Heimer
-USE_QT=		core gui svg widgets xml buildtools_build linguisttools_build \
-		qmake_build testlib_build
-TEST_TARGET=	test
+USES=		cmake:testing compiler:c++17-lang gl qt:6
+USE_GL=		opengl
+USE_QT=		base svg translations
 
-OPTIONS_DEFINE=	EXAMPLES
+CMAKE_ON=	BUILD_WITH_QT6
+
+PORTDOCS=	README.md
+
+OPTIONS_DEFINE=		DOCS EXAMPLES TEST
+OPTIONS_SUB=		yes
+TEST_CMAKE_BOOL=	BUILD_TESTS
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+
+do-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/heimer
-
-post-install-EXAMPLES-on:
-	cd ${WRKSRC}/examples && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

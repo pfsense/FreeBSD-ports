@@ -1,6 +1,3 @@
-# Created by: Michael Elbel (me)
-# $FreeBSD$
-
 PORTNAME=	mmv
 PORTVERSION=	1.01b.19
 PORTREVISION=	1
@@ -14,6 +11,7 @@ PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Move/Copy/Append/Link multiple files
+WWW=		https://packages.debian.org/unstable/utils/mmv
 
 LICENSE=	Freeware
 LICENSE_NAME=	MMV

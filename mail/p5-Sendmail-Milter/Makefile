@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sendmail-Milter
 PORTVERSION=	0.18
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	marc@pilgerer.org
 COMMENT=	Module to write mail filters in Perl using sendmail's mail filter API
+WWW=		https://sourceforge.net/projects/sendmail-milter/
 
 USES=		perl5
 USE_PERL5=	configure

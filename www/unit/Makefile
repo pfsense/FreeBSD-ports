@@ -1,14 +1,12 @@
-# Created by: Sergey A. Osokin <osa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	unit
-PORTVERSION=	1.21.0
-PORTREVISION=	4
+PORTVERSION=	${UNIT_VERSION}
+PORTREVISION?=	1
 CATEGORIES=	www
 MASTER_SITES?=	https://unit.nginx.org/download/
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT?=	Dynamic web application server
+WWW=		https://unit.nginx.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,6 +19,7 @@ CPE_PRODUCT=	unit
 OPTIONS_DEFINE?=	\
 	DEBUG \
 	IPV6 \
+	NJS \
 	SSL \
 	UNIXSOCK
 OPTIONS_DEFAULT?=	IPV6 PCRE2 SSL UNIXSOCK
@@ -29,8 +28,8 @@ OPTIONS_RADIO+=		REGEX
 OPTIONS_RADIO_REGEX=	NOPCRE PCRE PCRE2
 
 DEBUG_DESC=	Enable debug logging
-DEVKIT_DESC=	Install headers and library
 REGEX_DESC=	Support regular expressions
+NJS_DESC=	Enable NGINX JavaScript
 NOPCRE_DESC=	No support for Regular Expressions
 PCRE_DESC=	Regular Expressions via devel/pcre
 PCRE2_DESC=	Regular Expressions via devel/pcre2
@@ -42,6 +41,7 @@ UNIXSOCK_DESC=	Enable unix sockets
 HAS_CONFIGURE=	yes
 
 UNIT_VARDIR?=	/var
+UNIT_DBDIR?=	${UNIT_VARDIR}/db/${PORTNAME}
 UNIT_LOGDIR?=	${UNIT_VARDIR}/log/${PORTNAME}
 UNIT_LOGFILE?=	${UNIT_LOGDIR}/${PORTNAME}.log
 UNIT_PIDFILE?=	${UNIT_RUNDIR}/${PORTNAME}.pid
@@ -52,10 +52,12 @@ UNIT_TMPDIR?=	${UNIT_VARDIR}/tmp/unit
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--ld-opt="-L${LOCALBASE}/lib" \
 		--log=${UNIT_LOGFILE} \
-		--modules=libexec/unit/modules \
+		--logdir=${UNIT_LOGDIR} \
+		--modulesdir=${PREFIX}/libexec/unit/modules \
 		--pid=${UNIT_PIDFILE} \
-		--state=libexec/unit \
-		--tmp=${UNIT_TMPDIR} \
+		--runstatedir=${UNIT_RUNDIR} \
+		--statedir=${UNIT_DBDIR} \
+		--tmpdir=${UNIT_TMPDIR} \
 		--user=${WWWOWN} --group=${WWWGRP}
 
 USERS?=	${WWWOWN}
@@ -65,7 +67,8 @@ ALL_TARGET=
 
 PLIST_DIRS?=	libexec/unit/modules \
 		libexec/unit
-PLIST_FILES?=	sbin/unitd
+PLIST_FILES?=	sbin/unitd \
+		share/man/man8/unitd.8.gz
 
 USE_RC_SUBR?=	unitd
 SUB_LIST=	PREFIX=${PREFIX} \
@@ -81,6 +84,14 @@ CONFIGURE_ARGS+=--debug
 
 .if empty(PORT_OPTIONS:MIPV6)
 CONFIGURE_ARGS+=--no-ipv6
+.endif
+
+.if ${PORT_OPTIONS:MNJS}
+USES+=	pkgconfig
+BUILD_DEPENDS+=	${LOCALBASE}/lib/libnjs.a:devel/libnjs
+CONFIGURE_ARGS+=--njs \
+	--cc-opt="-I${LOCALBASE}/include" \
+	--ld-opt="-L${LOCALBASE}/lib"
 .endif
 
 .if ${PORT_OPTIONS:MNOPCRE}
@@ -107,15 +118,25 @@ CONFIGURE_ARGS+=--no-unix-sockets
 CONFIGURE_ARGS+=--control=unix:${UNIT_SOCK}
 .endif
 
+.if defined(UNIT_MODNAME) && ${UNIT_MODNAME:Mperl*}
+# Fix build failure on clang >= 12
+CFLAGS+=	-Wno-compound-token-split-by-macro
+.endif
+
 .if !target(post-install)
 post-install:
+	${MKDIR} ${STAGEDIR}${UNIT_DBDIR}
 	${MKDIR} ${STAGEDIR}${UNIT_LOGDIR}
 	${MKDIR} ${STAGEDIR}${UNIT_RUNDIR}
 	${MKDIR} ${STAGEDIR}${UNIT_TMPDIR}
+	${ECHO_CMD} @dir ${UNIT_DBDIR} >> ${TMPPLIST}
 	${ECHO_CMD} @dir ${UNIT_LOGDIR} >> ${TMPPLIST}
 	${ECHO_CMD} @dir ${UNIT_RUNDIR} >> ${TMPPLIST}
 	${ECHO_CMD} @dir ${UNIT_TMPDIR} >> ${TMPPLIST}
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/unit/modules
+	${INSTALL_MAN} ${WRKSRC}/build/share/man/man8/unitd.8 \
+		${STAGEDIR}${MAN8PREFIX}/share/man/man8
 .endif
 
+.include "../../www/unit/version.mk"
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Zeus Panchenko <zeus@gnu.org.ua>
-# $FreeBSD$
-
 PORTNAME=	Crypt-HSXKPasswd
 PORTVERSION=	3.6
 DISTVERSIONPREFIX=	v
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Secure memorable password generator inspired by XKCD
+WWW=		https://metacpan.org/release/Crypt-HSXKPasswd
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

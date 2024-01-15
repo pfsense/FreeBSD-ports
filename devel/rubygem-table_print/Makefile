@@ -1,19 +1,17 @@
-# Created by: Michael Moll <kvedulv@kvedulv.de>
-# $FreeBSD$
-
 PORTNAME=	table_print
-PORTVERSION=	1.5.6
+PORTVERSION=	1.5.7
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Turn objects into formatted columns
+WWW=		http://tableprintgem.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

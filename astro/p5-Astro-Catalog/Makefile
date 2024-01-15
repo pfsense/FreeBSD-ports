@@ -1,18 +1,15 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Astro-Catalog
-PORTVERSION=	4.35
+PORTVERSION=	4.37
 CATEGORIES=	astro perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generic stellar catalogue object
+WWW=		https://metacpan.org/release/Astro-Catalog
 
 LICENSE=	GPLv3
 
-# p5-Astro-FITS-CFITSIO is a recommended dependency
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Astro-Coords>=0.12:astro/p5-Astro-Coords \
 		p5-Astro-FITS-CFITSIO>=1.03:astro/p5-Astro-FITS-CFITSIO \

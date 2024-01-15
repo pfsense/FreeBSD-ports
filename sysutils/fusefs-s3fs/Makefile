@@ -1,14 +1,12 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	s3fs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.87
+DISTVERSION=	1.92
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	FUSE-based file system backed by Amazon S3
+WWW=		https://github.com/s3fs-fuse/s3fs-fuse
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,6 +21,8 @@ GH_ACCOUNT=	s3fs-fuse
 GH_PROJECT=	s3fs-fuse
 
 GNU_CONFIGURE=	yes
+
+CONFIGURE_ENV+=	ac_cv_prog_GITCMD=no
 
 PLIST_FILES=	bin/s3fs man/man1/s3fs.1.gz
 

@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	qconfirm
 PORTVERSION=	0.14.3
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://smarden.org/qconfirm/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Filter spam by requesting confirmation from sender
+WWW=		http://smarden.org/qconfirm/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/package/COPYING
@@ -18,6 +16,12 @@ WRKSRC=		${WRKDIR}/mail/${DISTNAME}
 ALL_TARGET=	default
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 do-configure:
 	@${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/src/conf-cc

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	lizzie
 DISTVERSION=	0.6-105
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-gd0e7040
 CATEGORIES=	games java
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Leela Zero Interface: GUI for the Go game
+WWW=		https://github.com/featurecat/lizzie
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

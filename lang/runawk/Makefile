@@ -1,6 +1,3 @@
-# Created by: Sahil Tandon <sahil@tandon.net>
-# $FreeBSD$
-
 PORTNAME=	runawk
 DISTVERSION=	1.6.1
 CATEGORIES=	lang
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wrapper for AWK interpreter that implements a modules system
+WWW=		https://sourceforge.net/projects/runawk/
 
 LICENSE=	MIT
 

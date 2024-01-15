@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spmfilter
 PORTVERSION=	0.6.7
 PORTREVISION=	6
@@ -8,6 +6,7 @@ MASTER_SITES=	http://www.${PORTNAME}.org/files/
 
 MAINTAINER=	ast@treibsand.com
 COMMENT=	High-performance mail filtering framework written in C
+WWW=		https://www.spmfilter.org/
 
 LICENSE=	LGPL3
 
@@ -55,10 +54,7 @@ CMAKE_ARGS+=	-DENABLE_DEBUG=TRUE
 .endif
 
 .if ${PORT_OPTIONS:MLDAP}
-USE_OPENLDAP=	yes
-.if ${PORT_OPTIONS:MOPENLDAP_VER}
-WANT_OPENLDAP_VER=	${WITH_OPENLDAP_VER}
-.endif
+USES+=	ldap
 .else
 CMAKE_ARGS+=	-DWITHOUT_LDAP=TRUE
 .endif

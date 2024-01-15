@@ -1,6 +1,3 @@
-# Created by: Tim Welch <ports@thepentagon.org>
-# $FreeBSD$
-
 PORTNAME=	nzbperl
 PORTVERSION=	0.6.8
 PORTREVISION=	1
@@ -13,6 +10,7 @@ EXTRACT_SUFX=
 
 MAINTAINER=	ports@thepentagon.org
 COMMENT=	Perl script for downloading nzb files
+WWW=		https://noisybox.net/computers/nzbperl/
 
 RUN_DEPENDS=	p5-XML-DOM>=0:textproc/p5-XML-DOM \
 		p5-Term-ReadKey>=0:devel/p5-Term-ReadKey \

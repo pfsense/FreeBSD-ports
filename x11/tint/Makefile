@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	tint2
 PORTVERSION=	16.7
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11
 
 MAINTAINER=	yamagi@yamagi.org
 COMMENT=	Lightweight freedesktop-compliant panel/taskbar/systray/clock
+WWW=		https://gitlab.com/o9000/tint2
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,7 +20,6 @@ USES=		alias cmake desktop-file-utils gettext-runtime gnome pkgconfig \
 USE_GNOME=	cairo glib20 gtk20 librsvg2 pango
 USE_XORG=	x11 xcomposite xdamage xext xfixes xinerama xrandr xrender
 
-INSTALLS_ICONS=	yes
 CMAKE_ARGS=	-DMANDIR:PATH=man \
 		-DSYSCONFDIR:PATH=etc
 
@@ -32,6 +30,6 @@ NLS_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Gettext
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	o9000
-GL_COMMIT=	78313502d3b26c217f5583a23ef571bc9e0edc45
+GL_TAGNAME=	78313502d3b26c217f5583a23ef571bc9e0edc45
 
 .include <bsd.port.mk>

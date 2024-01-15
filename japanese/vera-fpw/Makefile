@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vera-fpw
 PORTVERSION=	${VERA_VER}.${VERAFPW_VER}
 PORTREVISION=	0
@@ -10,6 +7,7 @@ DISTNAME=	vera-${VERA_VER}-fpw${VERAFPW_VER}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Virtual Entity of Relevant Aconyms (EPWING V1 format)
+WWW=		http://openlab.ring.gr.jp/edict/fpw/
 
 USES=		zip
 NO_BUILD=	yes

@@ -1,9 +1,6 @@
-# Created by: antonakis@gmail.com
-# $FreeBSD$
-
 PORTNAME=	optar
 PORTVERSION=	2015.02.09
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://ronja.twibright.com/
 DISTNAME=	${PORTNAME}
@@ -11,16 +8,16 @@ DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for encoding data on paper
+WWW=		http://ronja.twibright.com/optar/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
-RUN_DEPENDS=	convert:graphics/ImageMagick6
 
 WRKSRC=		${WRKDIR}/optar_dist
 
-USES=		gmake tar:tgz
+USES=		gmake magick:6,run tar:tgz
 
 PLIST_FILES=	bin/optar bin/unoptar bin/pgm2ps
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-NSCA-Client
 PORTVERSION=	0.009002
 PORTREVISION=	2
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for sending passive service checks to nagios
+WWW=		https://metacpan.org/release/Net-NSCA-Client
 
 RUN_DEPENDS=	p5-Const-Fast>=0.013:devel/p5-Const-Fast \
 		p5-Convert-Binary-C>=0.76:converters/p5-Convert-Binary-C \

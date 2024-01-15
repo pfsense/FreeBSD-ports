@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	svt-vp9
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.0
@@ -8,16 +6,16 @@ PKGNAMEPREFIX=	gstreamer1-plugins-
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	GStreamer (svt-vp9) plugin
+WWW=		https://01.org/svt
 
 LICENSE=	LGPL21+ # based on SPDX header
 LICENSE_FILE=	${_LICENSE_STORE}/LGPL21
 
 LIB_DEPENDS=	libSvtVp9Enc.so:multimedia/svt-vp9
 
-USES=		gnome meson pkgconfig
+USES=		gnome gstreamer meson pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	glib20
-USE_GSTREAMER1=	yes
 GH_ACCOUNT=	OpenVisualCloud
 GH_PROJECT=	SVT-VP9
 WRKSRC_SUBDIR=	gstreamer-plugin

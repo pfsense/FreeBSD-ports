@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Log4perl
 PORTVERSION=	0.1001
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Test what's being logged with Log::Log4perl
+WWW=		https://metacpan.org/release/Test-Log4perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

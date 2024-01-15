@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	icoutils
 PORTVERSION=	0.32.3
 CATEGORIES=	graphics
@@ -8,15 +5,19 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Convert/extract images in Microsoft Windows(R) icon/cursor files
+WWW=		https://www.nongnu.org/icoutils/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		localbase shebangfix tar:bzip2
+USES=		cpe localbase shebangfix tar:bzip2
+
 CONFIGURE_ARGS=	--disable-nls
 GNU_CONFIGURE=	yes
+
+CPE_VENDOR=	icoutils_project
 
 SHEBANG_FILES=	extresso/*.in
 

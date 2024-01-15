@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rtsx
 DISTVERSION=	${GH_TAGNAME}
 PORTEPOCH=	1
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	FreeBSD driver for Realtec card readers
+WWW=		https://github.com/hlh-restart/rtsx
 
 LICENSE=	BSD2CLAUSE
 
@@ -14,7 +13,7 @@ USES=		kmod uidfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hlh-restart
-GH_TAGNAME=	2.0c
+GH_TAGNAME=	2.0n
 
 OPTIONS_DEFINE=	MMCCAM
 

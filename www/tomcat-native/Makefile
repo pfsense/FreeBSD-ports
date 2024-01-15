@@ -1,15 +1,12 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tomcat-native
-PORTVERSION=	1.2.24
-PORTREVISION=	1
+DISTVERSION=	1.2.38
 CATEGORIES=	www java
-MASTER_SITES=	APACHE/tomcat/tomcat-connectors/native/${PORTVERSION}/source
+MASTER_SITES=	https://archive.apache.org/dist/tomcat/tomcat-connectors/native/${PORTVERSION}/source/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Tomcat native library
+WWW=		https://tomcat.apache.org/native-1.2-doc/
 
 LICENSE=	APACHE20
 

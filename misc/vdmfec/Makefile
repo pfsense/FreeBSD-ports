@@ -1,6 +1,3 @@
-# Created by: Harald Schmalzbauer <freebsd@omnilan.de>
-# $FreeBSD$
-
 PORTNAME=	vdmfec
 PORTVERSION=	1.0
 CATEGORIES=	misc archivers
@@ -8,6 +5,7 @@ MASTER_SITES=	http://members.tripod.com/professor_tom/archives/
 
 MAINTAINER=	freebsd@omnilan.de
 COMMENT=	ECC wrapper using Vandermonde matrices based FEC
+WWW=		https://members.tripod.com/professor_tom/archives/
 
 LICENSE=	GPLv2
 

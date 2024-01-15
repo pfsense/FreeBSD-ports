@@ -1,6 +1,3 @@
-# Created by: Dennis Herrmann <dhn@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	termtter
 PORTVERSION=	2.2.9
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Terminal based Twitter client
+WWW=		https://termtter.github.io/
 
 LICENSE=	MIT
 
@@ -22,7 +20,6 @@ RUN_DEPENDS=	rubygem-activerecord4>=4.1.0<5:databases/rubygem-activerecord4 \
 		rubygem-termcolor>=1.0<2:textproc/rubygem-termcolor
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

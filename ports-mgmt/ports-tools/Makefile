@@ -1,12 +1,10 @@
-# Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ports-tools
 PORTVERSION=	1.8
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of ports tree related scripts
+WWW=		https://github.com/ppekala/ports-tools
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

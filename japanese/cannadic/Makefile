@@ -1,6 +1,3 @@
-# Created by: TOGAWA Satoshi <toga@puyo.org>
-# $FreeBSD$
-
 PORTNAME=	cannadic
 PORTVERSION=	0.95c
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	LOCAL/hrs
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Canna dictionary containing a lot of words
+WWW=		http://cannadic.oucrc.org/
 
 LICENSE=	GPLv2
 

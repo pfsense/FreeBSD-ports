@@ -1,8 +1,5 @@
-# Created by: Alexander Logvinov <avl@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gobject-introspection
-PORTVERSION=	1.66.1
+DISTVERSION=	1.78.1
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
@@ -10,6 +7,7 @@ DIST_SUBDIR=	gnome
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Generate interface introspection data for GObject libraries
+WWW=		https://gi.readthedocs.io/en/latest/
 
 LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
@@ -22,8 +20,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi
 
 PORTSCOUT=	limitw:1,even
 
-USES=		bison gettext gnome localbase meson pkgconfig python:3.4+ tar:xz
-BINARY_ALIAS=	python3=${PYTHON_CMD}
+USES=		bison gettext gnome localbase meson pkgconfig python tar:xz
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Ddoctool=disabled \
@@ -37,5 +34,8 @@ post-stage:
 		"${STAGEDIR}${PREFIX}/lib/${PORTNAME}"
 	@${PYTHON_CMD} -O -m compileall -d ${PREFIX}/lib/${PORTNAME} \
 		"${STAGEDIR}${PREFIX}/lib/${PORTNAME}"
+
+post-install:
+	@${RM} ${STAGEDIR}${PREFIX}/lib/gobject-introspection/giscanner/doctemplates/*/meson.build*
 
 .include <bsd.port.mk>

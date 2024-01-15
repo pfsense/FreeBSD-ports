@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-XSAccessor
 PORTVERSION=	1.19
 PORTREVISION=	2
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate fast XS accessors without runtime compilation
+WWW=		https://metacpan.org/release/Class-XSAccessor
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	classiclooks
-DISTVERSION=	1.4.4
+DISTVERSION=	2.2.0
+PORTREVISION=	1
 CATEGORIES=	x11-themes
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	fbsd@opal.com
 COMMENT=	Retro theme providing a consistent look for all standard GUI toolkits
+WWW=		http://www.itgroup.ro/classiclooks
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,12 +18,12 @@ RUN_DEPENDS=	fontconfig>0:x11-fonts/fontconfig \
 USES=		shebangfix gnome zip
 USE_GNOME=	gtk20
 
-NO_BUILD=	yes
-NO_ARCH=	yes
 SHEBANG_REGEX=	00.[0-4]0
 bash_CMD=	/bin/sh
 
 EXTRACT_AFTER_ARGS=	-d ${DISTNAME}
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 EXTRADIRS=	TOOLS/SETUP
 

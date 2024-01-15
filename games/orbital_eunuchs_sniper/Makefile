@@ -1,6 +1,3 @@
-# Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
-
 PORTNAME=	orbital_eunuchs_sniper
 PORTVERSION=	1.30
 PORTREVISION=	9
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.icculus.org/oes/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Overhead shooting game
+WWW=		https://www.icculus.org/oes/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/COPYING

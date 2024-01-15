@@ -1,6 +1,3 @@
-# Created by: Andreas Fehlner (fehlner@gmx.de)
-# $FreeBSD$
-
 PORTNAME=	userneu
 PORTVERSION=	1.43
 DISTVERSIONSUFFIX=	b
@@ -13,6 +10,7 @@ PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	fehlner@gmx.de
 COMMENT=	Account management and creation tool
+WWW=		http://btw23.de/johannes/userneu/userneu.html
 
 LICENSE=	GPLv2
 

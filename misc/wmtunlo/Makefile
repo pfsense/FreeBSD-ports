@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adam@vectors.cx>
-# $FreeBSD$
-
 PORTNAME=	wmtunlo
 PORTVERSION=	0.1.3
 PORTREVISION=	4

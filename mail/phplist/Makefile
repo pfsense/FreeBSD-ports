@@ -1,14 +1,12 @@
-# Created by: Nick Hilliard <nick@foobar.org>
-# $FreeBSD$
-
 PORTNAME=	phplist
-PORTVERSION=	3.5.7
+DISTVERSION=	3.6.14
 CATEGORIES=	mail www
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@bsdserwis.com
 COMMENT=	Full-featured open-source newsletter manager
+WWW=		https://www.phplist.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,20 +14,20 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
 
 USES=		cpe tar:tgz php:web,flavors
-USE_PHP=	curl gd gettext hash iconv imap json mbstring mysqli pcre session xml zlib
+USE_PHP=	curl gd gettext iconv imap mbstring mysqli session xml zlib
+IGNORE_WITH_PHP=	83
 
-NO_BUILD=	yes
 NO_ARCH=	yes
-
-PEARDIR?=	${LOCALBASE}/share/pear
-
-PORTDOCS=	CONTRIBUTING.md COPYING INSTALL PEOPLE README.md TODO UPGRADE VERSION
-
-OPTIONS_DEFINE=	DOCS
+NO_BUILD=	yes
 SUB_FILES=	phplist
 
 PLIST_SUB=	WWWOWN=${WWWOWN} \
 		WWWGRP=${WWWGRP}
+PORTDOCS=	CONTRIBUTING.md COPYING INSTALL PEOPLE README.md TODO UPGRADE VERSION
+
+OPTIONS_DEFINE=	DOCS
+
+PEARDIR?=	${LOCALBASE}/share/pear
 
 post-extract:
 	@${MV} ${WRKSRC}/public_html/lists/config/config.php ${WRKSRC}/public_html/lists/config/config.php.sample

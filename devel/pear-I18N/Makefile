@@ -1,18 +1,15 @@
-# Created by: Thierry Thomas (<thierry@pompo.net>)
-# $FreeBSD$
-
 PORTNAME=	I18N
 PORTVERSION=	1.0.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	PEAR internationalization package
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Internationalization package
+WWW=		https://pear.php.net/package/I18N
 
 LICENSE=	PHP30
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:devel/pear@${PHP_FLAVOR}
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:devel/pear@${PHP_FLAVOR}
-
 USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

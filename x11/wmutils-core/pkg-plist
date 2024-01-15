@@ -1,9 +1,11 @@
+bin/atomx
 bin/chwb
 bin/chwso
 bin/ignw
 bin/killw
 bin/lsw
 bin/mapw
+bin/pdw
 bin/pfw
 bin/slw
 bin/wattr
@@ -12,6 +14,7 @@ bin/wmv
 bin/wrs
 bin/wtf
 bin/wtp
+man/man1/atomx.1.gz
 man/man1/chwb.1.gz
 man/man1/chwso.1.gz
 man/man1/ignw.1.gz

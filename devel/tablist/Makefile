@@ -1,14 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	tablist
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0
-PORTREVISION=	2
+DISTVERSION=	1.0-13
+PORTREVISION=	5
+DISTVERSIONSUFFIX=	-gfaab7a0
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Emacs package for extended tabulated-list-mode
+WWW=		https://github.com/politza/tablist
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

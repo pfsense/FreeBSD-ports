@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kickpass
 PORTVERSION=	0.2.0
 DISTVERSIONPREFIX=	v
@@ -8,6 +6,7 @@ CATEGORIES=	security
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Stupid simple password safe
+WWW=		https://kickpass.pw/
 
 LICENSE=	MIT
 

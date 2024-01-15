@@ -1,14 +1,13 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libmatekbd
-PORTVERSION=	1.24.1
+PORTVERSION=	1.26.0
+PORTREVISION=	2
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	MATE keyboard shared library
+WWW=		https://mate-desktop.org/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,7 +22,6 @@ USE_GNOME=	cairo gtk30 intltool introspection:build
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.peripherals-keyboard-xkb.gschema.xml

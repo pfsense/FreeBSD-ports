@@ -1,14 +1,12 @@
-# Created by: Alexey V. Degtyarev
-# $FreeBSD$
-
 PORTNAME=	nagios-snmp-plugins-extras
 PORTVERSION=	1.1.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.renatasystems.org/pub/FreeBSD/ports/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Set of Nagios plugins written in Perl to check devices with SNMP
+WWW=		http://nagios.manubulon.com/
 
 LICENSE=	GPLv2
 
@@ -43,6 +41,10 @@ post-extract:
 	${SED} -i "" -e "s#/tmp/#/var/tmp/#" \
 		-e "s#/usr/local/nagios/libexec#${LOCALBASE}/libexec/nagios#" \
 		${PLUGINS:S,^,${WRKSRC}/,}
+
+	# The format of Net::SNMP->Version has changed
+	@${SED} -i "" -e 's/Net::SNMP->VERSION < 4/Net::SNMP->VERSION lt "4"/' \
+		    ${WRKSRC}/check_snmp_*
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/nagios

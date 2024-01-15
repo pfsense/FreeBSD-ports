@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@cs.ucdavis.edu)
-# $FreeBSD$
-
 PORTNAME=	vnless
 PORTVERSION=	1.0
 PORTREVISION=	1

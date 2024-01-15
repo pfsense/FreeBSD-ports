@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	listserialc
 PORTVERSION=	1.1.0
 CATEGORIES=	devel java
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Simple multiplatform program to list serial ports with vid/pid/iserial
+WWW=		https://github.com/arduino/listSerialPortsC
 
 LICENSE=	LGPL3+
 

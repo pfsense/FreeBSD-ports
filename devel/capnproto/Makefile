@@ -1,29 +1,25 @@
-# Created by: Felix Hanley
-# $FreeBSD$
-
 PORTNAME=	capnproto
-PORTVERSION=	0.7.0
-PORTREVISION=	1
-DISTVERSIONPREFIX=	v
+DISTVERSION=	0.10.3
 CATEGORIES=	devel
+MASTER_SITES=	https://capnproto.org/
+DISTNAME=	${PORTNAME}-c++-${DISTVERSION}
 
 MAINTAINER=	felix@userspace.com.au
 COMMENT=	Serialization/RPC system
+WWW=		https://capnproto.org/
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/../LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		autoreconf compiler:c++14-lang gmake libtool ssl
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	capnproto
+USES=		cmake:testing compiler:c++14-lang cpe pathfix ssl
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	ac_cv_lib_ssl_OPENSSL_init_ssl=yes
 
-WRKSRC_SUBDIR=	c++
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	BUILD_TESTING
+CMAKE_TESTING_ON=	BUILD_TESTING
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
+CONFLICTS_INSTALL=	capnproto080
+
+PLIST_SUB=	DISTVERSION="${DISTVERSION}"
 
 .include <bsd.port.mk>

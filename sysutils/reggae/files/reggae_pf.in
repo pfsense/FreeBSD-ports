@@ -1,9 +1,7 @@
 #!/bin/sh
-# $FreeBSD$
-#
+
 # PROVIDE: reggae_pf
-# REQUIRE: pf
-# AFTER: NETWORKING local_unbound named nsd unbound
+# REQUIRE: pf local_unbound
 
 # Add the following lines to /etc/rc.conf.local, /etc/rc.conf or
 # /etc/rc.conf.d/reggae_pf to enable this service:
@@ -23,7 +21,7 @@ start_precmd="${name}_precmd"
 load_rc_config $name
 
 : ${reggae_pf_enable:="NO"}
-: ${reggae_pf_directory:="/etc/pf.d"}
+: ${reggae_pf_directory:="/etc/pf.conf.d"}
 
 command="%%PREFIX%%/bin/reggae"
 command_args="pf ${reggae_pf_directory}"

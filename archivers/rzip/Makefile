@@ -1,6 +1,3 @@
-# Created by: Pav Lucistnik <pav@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rzip
 PORTVERSION=	2.1
 PORTREVISION=	1
@@ -9,8 +6,13 @@ MASTER_SITES=	SAMBA/rzip
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Compression program similar to gzip or bzip2
+WWW=		https://rzip.samba.org/
 
 LICENSE=	GPLv2
+
+USES=		cpe
+
+CPE_VENDOR=	rzip_project
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=${STAGEDIR}${PREFIX}

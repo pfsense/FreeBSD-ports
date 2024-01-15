@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	biblical-curse
 PORTVERSION=	0.02
 CATEGORIES=	misc
@@ -9,6 +6,7 @@ DISTFILES=	# none
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Fake biblical curse generator
+WWW=		https://web.archive.org/web/20071226004947/http://shipoffools.com/curses/index.html
 
 USES=		perl5 shebangfix
 USE_PERL5=	run

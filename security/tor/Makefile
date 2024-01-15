@@ -1,13 +1,11 @@
-# Created by: peter.thoenen@yahoo.com
-# $FreeBSD$
-
 PORTNAME=	tor
-DISTVERSION=	0.4.5.6
+DISTVERSION=	0.4.8.10
 CATEGORIES=	security net
 MASTER_SITES=	TOR
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Anonymizing overlay network for TCP
+WWW=		https://www.torproject.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -29,7 +27,6 @@ OPTIONS_GROUP_TRACING=	LTTNG USDT LOG_DEBUG
 OPTIONS_DEFAULT=MANPAGES ZSTD LZMA
 OPTIONS_SUB=	yes
 STATIC_TOR_DESC=	Build a static tor
-TCMALLOC_DESC=		Use the tcmalloc memory allocation library
 COMPRESSION_DESC=	Supported compression libraries
 TRACING_DESC=		Tracing
 
@@ -107,10 +104,6 @@ LDFLAGS+=		-lc++ -lm # required by libtcmalloc.a and isn't cocered by google-per
 .else
 LIB_DEPENDS+=		libtcmalloc.so:devel/google-perftools
 .endif
-.endif
-
-.if ${SSL_DEFAULT:Mlibressl*}
-BROKEN=		Libressl 3.2.1 with compatibility issues to Tor relays: https://gitlab.torproject.org/tpo/core/tor/-/issues/40128
 .endif
 
 post-patch:

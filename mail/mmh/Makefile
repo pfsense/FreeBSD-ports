@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mmh
 PORTVERSION=	0.4
 CATEGORIES=	mail
@@ -7,6 +5,7 @@ MASTER_SITES=	http://marmaro.de/prog/mmh/files/
 
 MAINTAINER=	satanist+freebsd@bureaucracy.de
 COMMENT=	CLI mail user agent, fork from nmh
+WWW=		http://marmaro.de/prog/mmh/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -42,7 +41,7 @@ LDFLAGS+=		-g
 DEBUG_FLAGS+=		-O0 -Wall -Wextra -g
 .endif
 
-CONFLICTS=		ja-mh-[0-9]* nmh-[0-9]* p5-Dist-Joseki-*
+CONFLICTS=		ali ja-mh nmh p5-Dist-Joseki
 
 post-install:
 	@${FIND} ${STAGEDIR}${ETCDIR} -type f -exec ${MV} {} {}.sample \;

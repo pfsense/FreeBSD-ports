@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Regexp-Shellish
 PORTVERSION=	0.93
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for shell-like regular expressions
+WWW=		https://metacpan.org/release/Regexp-Shellish
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

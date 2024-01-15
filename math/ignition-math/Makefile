@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	ignition-math
 DISTVERSION=	6.0.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	General purpose math library for robot applications
+WWW=		https://ignitionrobotics.org/home
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

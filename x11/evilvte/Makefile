@@ -1,14 +1,12 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	evilvte
 DISTVERSION=	0.5.2~pre1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11 gnome
 MASTER_SITES=	http://www.calno.com/${PORTNAME}/
 
 MAINTAINER=	aragon@phat.za.net
 COMMENT=	VTE based, super lightweight terminal emulator
+WWW=		https://www.calno.com/evilvte/
 
 BUILD_DEPENDS=	gsed:textproc/gsed
 
@@ -16,7 +14,6 @@ USES=		gmake gnome pkgconfig tar:xz
 BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 HAS_CONFIGURE=	yes
 ALL_TARGET=	evilvte
-INSTALLS_ICONS=	yes
 USE_GNOME=	vte
 
 pre-everything::

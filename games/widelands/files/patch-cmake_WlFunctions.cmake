@@ -1,9 +1,21 @@
---- cmake/WlFunctions.cmake.orig	2020-07-12 19:33:44 UTC
+--- cmake/WlFunctions.cmake.orig	2022-10-22 11:51:16 UTC
 +++ cmake/WlFunctions.cmake
-@@ -289,5 +289,5 @@ function(wl_binary NAME)
+@@ -93,8 +93,8 @@ macro(_common_compile_tasks)
  
-   #Quoting the CMake documentation on DESTINATION:
-   #"If a relative path is given it is interpreted relative to the value of CMAKE_INSTALL_PREFIX"
--  install(TARGETS ${NAME} DESTINATION "." COMPONENT ExecutableFiles)
-+  install(TARGETS ${NAME} DESTINATION "bin" COMPONENT ExecutableFiles)
- endfunction()
+   if(ARG_USES_MINIZIP)
+       if(MINIZIP_STATIC_LIBRARIES)
+-          target_link_libraries(${NAME} minizip)
+-          message(STATUS "Link ${NAME} with minizip")
++          target_link_libraries(${NAME} ${MINIZIP_STATIC_LIBRARIES})
++          message(STATUS "Link ${NAME} with ${MINIZIP_STATIC_LIBRARIES}")
+       else()
+           target_link_libraries(${NAME} third_party_minizip)
+           message(STATUS "Link ${NAME} with third_party_minizip")
+@@ -103,7 +103,6 @@ macro(_common_compile_tasks)
+ 
+   if(ARG_USES_ATOMIC AND NOT APPLE AND ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"))
+     # clang on linux needs explicit linkage against standard library atomic
+-    target_link_libraries(${NAME} atomic)
+   endif()
+ 
+   if(ARG_USES_ZLIB)

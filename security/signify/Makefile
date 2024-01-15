@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	signify
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9
-PORTREVISION=	1
+DISTVERSION=	0.13
 PORTEPOCH=	1
 CATEGORIES=	security
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Create and verify cryptographic signatures
+WWW=		https://github.com/leahneukirchen/outils/
 
 # outils includes signify from OpenBSD's base system which is under an
 # ISC license.  The parts of liboutils that signify uses are licensed

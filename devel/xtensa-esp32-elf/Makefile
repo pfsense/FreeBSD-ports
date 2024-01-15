@@ -1,9 +1,6 @@
-# Created by: Craig Leres <leres@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	xtensa-esp32-elf
 DISTVERSION=	1.22.0.g20200907
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases/binutils:source1 \
 		GNU/binutils:source1 \
@@ -18,8 +15,7 @@ MASTER_SITES=	SOURCEWARE/binutils/releases/binutils:source1 \
 		GNU/mpfr:source8 \
 		ftp://ftp.invisible-island.net/ncurses/:source9 \
 		GNU/ncurses:source9 \
-		SOURCEWARE/newlib:source10 \
-		ftp://sources.redhat.com/pub/newlib/:source10
+		SOURCEWARE/newlib:source10
 DISTFILES=	binutils-2.25.1.tar.bz2:source1 \
 		expat-2.1.0.tar.gz:source2 \
 		gcc-${GCCVER}.tar.bz2:source3 \
@@ -34,6 +30,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Espressif ESP32 toolchain
+WWW=		https://dl.espressif.com/doc/esp-idf/latest/get-started/index.html #setup-toolchain
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -49,7 +46,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		wget:ftp/wget
 
 USES=		autoreconf:build bison gmake libtool python
-USE_GCC=	9
+USE_GCC=	10
 USE_GITHUB=	yes
 
 NO_MTREE=	yes

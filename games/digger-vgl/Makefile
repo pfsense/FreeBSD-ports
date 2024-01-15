@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	digger
 PORTVERSION=	20020314
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.digger.org/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD graphics console (VGL) version of the famous Digger game
+WWW=		https://www.digger.org/
 
 ONLY_FOR_ARCHS=	amd64 i386
 
@@ -18,7 +16,7 @@ OPTIONS_DEFINE=	SOUND DOCS
 
 SOUND_USES=	sdl
 SOUND_USE=	SDL=sdl
-SOUND_MAKE_ENV= SOUND=yes
+SOUND_MAKE_ENV=	SOUND=yes
 SOUND_VARS=	PKGMESSAGE=${PKGDIR}/pkg-message.sound
 
 post-patch:

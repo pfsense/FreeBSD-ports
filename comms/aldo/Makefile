@@ -1,6 +1,3 @@
-# Created by: lambert@lambertfam.org
-# $FreeBSD$
-
 PORTNAME=	aldo
 DISTVERSION=	0.7.7
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	lambert@lambertfam.org
 COMMENT=	Morse code training program
+WWW=		https://www.nongnu.org/aldo/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

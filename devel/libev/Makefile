@@ -1,6 +1,3 @@
-# Created by: vsevolod
-# $FreeBSD$
-
 PORTNAME=	libev
 DISTVERSION=	4.33
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://dist.schmorp.de/libev/ \
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Full-featured and high-performance event loop library
+WWW=		http://software.schmorp.de/pkg/libev.html
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Paul Schmehl <pauls@utdallas.edu>
-# $FreeBSD$
-
 PORTNAME=	Gtk2-Ex-Dialogs
 PORTVERSION=	0.11
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Useful tools for Gnome2/Gtk2 Perl GUI design
+WWW=		https://metacpan.org/release/Gtk2-Ex-Dialogs
 
 LICENSE=	LGPL21
 

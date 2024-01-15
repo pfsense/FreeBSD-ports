@@ -1,20 +1,20 @@
-# Created by: Marcin Jessa <yazzy@yazzy.org>
-# $FreeBSD$
-
 PORTNAME=	pcapy
 PORTVERSION=	0.11.1
 CATEGORIES=	net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	anastasios@mageirias.com
 COMMENT=	Python pcap extension
+WWW=		http://www.coresecurity.com/corelabs-research/open-source-tools/pcapy
 
 LICENSE=	APACHE11
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+ dos2unix
+USES=		python dos2unix
 USE_PYTHON=	autoplist distutils
+
+CFLAGS+=	--std=c++14
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 PORTDOCS=	README pcapy.html

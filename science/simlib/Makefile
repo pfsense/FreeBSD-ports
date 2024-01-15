@@ -1,6 +1,3 @@
-# Created by: Pav Lucistnik <pav@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	simlib
 DISTVERSION=	3.06
 DISTVERSIONSUFFIX=	-20181003
@@ -9,19 +6,21 @@ MASTER_SITES=	http://www.fit.vutbr.cz/~peringer/SIMLIB/source/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SIMulation LIBrary for C++ programming language
+WWW=		https://www.fit.vutbr.cz/~peringer/SIMLIB/index.html.en
 
 LICENSE=	LGPL20
 
-USES=		gmake
-USE_LDCONFIG=	yes
+BROKEN_riscv64=		fails to compile: process.cc:53:3: module process.cc is not ported to this processor architecture
+NOT_FOR_ARCHS=		aarch64 armv6 armv7 mips mips64 powerpc powerpc64
+NOT_FOR_ARCHS_REASON=	contains not working ${ARCH}-dependent assembly code
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+USES=		gmake
+USE_CXXSTD=	c++14
+USE_LDCONFIG=	yes
 
 CXXFLAGS+=	-fPIC
 
-BROKEN_riscv64=		fails to compile: process.cc:53:3: module process.cc is not ported to this processor architecture
-NOT_FOR_ARCHS=		aarch64 armv6 armv7 mips mips64 powerpc powerpc64 sparc64
-NOT_FOR_ARCHS_REASON=	contains not working ${ARCH}-dependent assembly code
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 .include <bsd.port.options.mk>
 

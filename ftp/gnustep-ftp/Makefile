@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	ftp
 PORTVERSION=	0.6
+PORTREVISION=	2
 CATEGORIES=	ftp gnustep
 MASTER_SITES=	SAVANNAH/gap
 PKGNAMEPREFIX=	gnustep-
@@ -9,6 +8,7 @@ DISTNAME=	FTP-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compact and handy FTP client for GNUstep
+WWW=		https://www.nongnu.org/gap/ftp/index.html
 
 LICENSE=	GPLv2
 

@@ -1,16 +1,16 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	picocom
 DISTVERSION=	3.1
 CATEGORIES=	comms
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rmm1.bob@gmail.com
 COMMENT=	Dumb Terminal Emulator
+WWW=		https://github.com/npat-efault/picocom
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+USES=		cpe
+CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
 GH_ACCOUNT=	npat-efault
 

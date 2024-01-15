@@ -3,7 +3,7 @@
  * nut.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
@@ -54,8 +54,8 @@ function nut_check_var_db() {
 	if (!is_dir($d)) {
 		mkdir($d, 0750, true);
 		safe_mkdir($d, 0750);
-		chown($d, "uucp");
-		chgrp($d, "uucp");
+		chown($d, "nut");
+		chgrp($d, "nut");
 	}
 }
 
@@ -82,14 +82,19 @@ function nut_write_rcfile($driver) {
 		$start .= "\n	/usr/bin/killall -q -9 $driver";
 	}
 
-	/* Service status keys off upsmon, so start it first. */
-	$start .= "\n	/usr/local/sbin/upsmon";
 	if (isset($driver)) {
 		$start .= "\n	/usr/local/sbin/upsdrvctl start &";
-		/* Since we are starting the driver in backgroud, give it a moment to start. */
-		$start .= "\n	sleep 1";
 		$start .= "\n	/usr/local/sbin/upsd -u root";
+
+		/*
+		 * Since we are starting the driver in backgroud, give
+		 * the driver and upsd a moment to start.
+		 */
+		$start .= "\n	sleep 1";
 	}
+
+	/* NB: Service status keys off of upsmon. */
+	$start .= "\n	/usr/local/sbin/upsmon";
 	$start .= "\n	return 0";
 
 	$stop = "echo stopping NUT";
@@ -130,8 +135,8 @@ function nut_sync_config() {
 		stop_service('nut');
 	}
  
-	$nut_config = &$config['installedpackages']['nut']['config'][0];
-	if (isset($nut_config['type'])) {
+	$nut_config = config_get_path('installedpackages/nut/config/0', []);
+	if (!empty($nut_config) && isset($nut_config['type'])) {
 		$type = $nut_config['type'];
 	} else {
 		$type = 'disabled';
@@ -303,8 +308,8 @@ function nut_ups_status()
 	global $config;
 	$status = array();
 
-	$nut_config = &$config['installedpackages']['nut']['config'][0];
-	if (isset($nut_config['type'])) {
+	$nut_config = config_get_path('installedpackages/nut/config/0', []);
+	if (!empty($nut_config) && isset($nut_config['type'])) {
 		$type = $nut_config['type'];
 	} else {
 		$type = 'disabled';
@@ -343,7 +348,6 @@ function nut_ups_status()
 		return $status;
 	}
 
-	/* FIXME: use the -t option for upsc when it becomes available (targeted for nut 2.8.0) */
 	$pipe = popen("/usr/local/bin/upsc $ups", 'r');
 	if ($pipe) {
 		while ($line = fgets($pipe)) {
@@ -446,22 +450,6 @@ function nut_ups_status()
 	}
 
 	return $status;
-}
-
-
-function nut_install_command() {
-	global $config;
-
-	/* Remove obsolete menu entry */
-	$menus =& $config['installedpackages']['menu'];
-	if (is_array($config['installedpackages']['menu'])) {
-		foreach ($menus as $key => $menu) {
-			if ($menu['name'] == 'NUT') {
-				unset($menus[$key]);
-				break;
-			}
-		}
-	}
 }
 
 

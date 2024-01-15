@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	libmesode
-PORTVERSION=	0.10.0
+PORTVERSION=	0.10.1
 CATEGORIES=	net-im
 
-MAINTAINER=	arved@FreeBSD.org
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Lightweight XMPP library
+WWW=		https://github.com/boothj5/libmesode
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE.txt

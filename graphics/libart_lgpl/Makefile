@@ -1,6 +1,3 @@
-# Created by: Hye-Shik Chang <perky@python.or.kr>
-# $FreeBSD$
-
 PORTNAME=	libart_lgpl
 PORTVERSION=	2.3.21
 PORTREVISION=	3
@@ -12,6 +9,7 @@ DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library for high-performance 2D graphics
+WWW=		https://www.levien.com/libart/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,6 +19,6 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 
-CONFLICTS=	libart-[0-9]*
+CONFLICTS=	libart
 
 .include <bsd.port.mk>

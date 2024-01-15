@@ -1,6 +1,3 @@
-# Created by: Geraud CONTINSOUZAS <geraud@gcu.info>
-# $FreeBSD$
-
 PORTNAME=	KyotoCabinet
 PORTVERSION=	1.20
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	kyotocabinet-perl-${PORTVERSION}
 
 MAINTAINER=	geraud@gcu.info
 COMMENT=	Perl extension for KyotoCabinet
+WWW=		https://dbmx.net/kyotocabinet/
 
 LICENSE=	GPLv3
 

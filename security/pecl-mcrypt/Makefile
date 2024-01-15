@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	mcrypt
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.6
 PORTREVISION=	0
 CATEGORIES=	security pear
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	PHP extension for mcrypt, removed in PHP 7.2
+WWW=		https://pecl.php.net/package/mcrypt
 
 LICENSE=	PHP301
 

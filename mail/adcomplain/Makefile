@@ -1,6 +1,3 @@
-# Created by: ache@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	adcomplain
 PORTVERSION=	3.52
 CATEGORIES=	mail news
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.uu
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Complain about inappropriate commercial use (f.e. SPAM) of usenet/e-mail
+WWW=		http://www.rdrop.com/users/billmc/adcomplain.html
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	adcomplain.pl
@@ -23,7 +21,7 @@ PLIST_FILES=	bin/adcomplain
 
 # fix-shebang normally runs before the patches in ${FILESDIR} are applied.  In
 # this case, we need it to run after, so that it can fix the right shebang.
-TARGET_ORDER_OVERRIDE= 750:fix-shebang
+TARGET_ORDER_OVERRIDE=	750:fix-shebang
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/adcomplain.pl \

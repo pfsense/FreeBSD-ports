@@ -1,6 +1,3 @@
-# Created by: alex@kapranoff.ru
-# $FreeBSD$
-
 PORTNAME=	HTML-Template-JIT
 PORTVERSION=	0.05
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to compile HTML Templates with Inline::C
+WWW=		https://html-template.sourceforge.net/html_template_jit.html
 
 LICENSE=	ARTPERL10
 

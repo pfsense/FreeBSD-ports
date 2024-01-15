@@ -1,6 +1,3 @@
-# Created by: Pierre David <pdagog@gmail.com>, Jean Benoit <jean@unistra.fr>
-# $FreeBSD$
-
 PORTNAME=	netmagis
 PORTREVISION=	1
 PKGNAMESUFFIX=	-topo
@@ -13,7 +10,6 @@ RUN_DEPENDS=	netmagis-config:net-mgmt/netmagis-common \
 		rancid-run:net-mgmt/rancid3 \
 		fping:net/fping
 
-NO_ARCH=	# no
 USE_RC_SUBR=	topographd toposendd
 SUB_LIST=	TCLSH=${TCLSH}
 

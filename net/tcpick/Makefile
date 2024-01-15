@@ -1,6 +1,3 @@
-# Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tcpick
 PORTVERSION=	0.2.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Text-based TCP stream sniffer
+WWW=		https://tcpick.sourceforge.net/
 
 LICENSE=	GPLv2
 

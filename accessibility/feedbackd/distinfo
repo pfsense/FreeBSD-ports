@@ -1,3 +1,5 @@
-TIMESTAMP = 1595761595
-SHA256 (Librem5-feedbackd-9e2c13a1fe228970d933ce05cf56be0ae98a6ae1_GL0.tar.gz) = 9bab0b1e105ce15425a8a9c5674501204639cf3571d998828875adf27ae0dab4
-SIZE (Librem5-feedbackd-9e2c13a1fe228970d933ce05cf56be0ae98a6ae1_GL0.tar.gz) = 75572
+TIMESTAMP = 1677701315
+SHA256 (feedbackd-v0.1.0.tar.bz2) = 17351120edabd4a5cf8599b7b5b04ce63b88e910b9aa9b9a614f0344e78259a9
+SIZE (feedbackd-v0.1.0.tar.bz2) = 75888
+SHA256 (gmobile-v0.0.1-11-gff85498.tar.bz2) = a2a8587b03b386da62c22e486fbb752a8913becbc8c45c2aabd43b9e63ed07a7
+SIZE (gmobile-v0.0.1-11-gff85498.tar.bz2) = 20328

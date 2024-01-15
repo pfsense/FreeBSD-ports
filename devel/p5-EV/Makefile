@@ -1,8 +1,5 @@
-# Created by: Vladimir Timofeev <vovkasm@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	EV
-PORTVERSION=	4.33
+DISTVERSION=	4.34
 PORTEPOCH=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
@@ -11,13 +8,14 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vovkasm@gmail.com
 COMMENT=	Perl interface to libev, a high performance full-featured event loop
+WWW=		https://metacpan.org/release/EV
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
+BUILD_DEPENDS=	p5-Canary-Stability>=0:devel/p5-Canary-Stability \
+		p5-common-sense>=0:devel/p5-common-sense
 RUN_DEPENDS=	p5-common-sense>=0:devel/p5-common-sense
-BUILD_DEPENDS=	p5-common-sense>=0:devel/p5-common-sense \
-		p5-Canary-Stability>=0:devel/p5-Canary-Stability
 
 USES=		perl5
 USE_PERL5=	configure

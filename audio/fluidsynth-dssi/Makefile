@@ -1,14 +1,12 @@
-# Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
-
 PORTNAME=	fluidsynth-dssi
 PORTVERSION=	1.0.0
-PORTREVISION=	14
+PORTREVISION=	19
 CATEGORIES=	audio
 MASTER_SITES=	SF/dssi/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wrapper for FluidSynth allowing it to function as a DSSI plugin
+WWW=		https://dssi.sourceforge.net/
 
 LIB_DEPENDS=	libdssialsacompat.so:audio/libdssialsacompat \
 		liblo.so:audio/liblo \

@@ -28,6 +28,7 @@
 #include <arpa/inet.h>
 #include <netinet/ip.h>
 
+#include <netinet/sctp.h>
 #include <netinet/udp.h>
 
 #include <stdio.h>
@@ -125,9 +126,19 @@ again:
 		up = (const struct udphdr *)ipds->cp;
 		sbuf_printf(sbuf, "%d,%d,%d", EXTRACT_16BITS(&up->uh_sport), EXTRACT_16BITS(&up->uh_dport),
 			EXTRACT_16BITS(&up->uh_ulen));
-
-	}
 		break;
+	}
+
+	case IPPROTO_SCTP:
+	{
+		const struct sctphdr *sh;
+
+		sh = (const struct sctphdr *)ipds->cp;
+		sbuf_printf(sbuf, "%d,%d,%lu", EXTRACT_16BITS(&sh->src_port), EXTRACT_16BITS(&sh->dest_port),
+			ipds->len - sizeof(*sh));
+
+		break;
+	}
 
 	case IPPROTO_ICMP:
 		/* pass on the MF bit plus the offset to detect fragments */

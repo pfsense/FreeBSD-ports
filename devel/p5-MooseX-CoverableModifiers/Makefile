@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-CoverableModifiers
 PORTVERSION=	0.30
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make Moose method modifiers Devel::Cover friendly
+WWW=		https://metacpan.org/release/MooseX-CoverableModifiers
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

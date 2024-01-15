@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	WWW-Baseball-NPB
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Fetches Japanese baseball games information
+WWW=		https://metacpan.org/release/WWW-Baseball-NPB
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww

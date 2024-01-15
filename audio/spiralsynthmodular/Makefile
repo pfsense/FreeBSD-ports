@@ -1,15 +1,13 @@
-# Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	spiralsynthmodular
 PORTVERSION=	0.2.2a
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	SF/spiralmodular/spiralmodular/${PORTVERSION}%20%28Latest%20Version%29
 DISTNAME=	spiralmodular-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Object-oriented modular softsynth/sequencer/sampler
+WWW=		https://www.pawfal.org/Software/SSM/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa \
 		jackd:audio/jack

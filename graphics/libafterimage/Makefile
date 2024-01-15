@@ -1,15 +1,13 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libafterimage
 PORTVERSION=	1.20
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	SF/afterstep/libAfterImage/${PORTVERSION}
 DISTNAME=	libAfterImage-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic imaging library originally designed for AfterStep
+WWW=		http://www.afterstep.org/afterimage/
 
 LICENSE=	LGPL21+
 

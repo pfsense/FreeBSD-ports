@@ -1,6 +1,3 @@
-# Created by: Zane C. Bowers-Hadley <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Text-sprintfn
 PORTVERSION=	0.090
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Drop-in replacement for sprintf(), with named parameter support
+WWW=		https://metacpan.org/release/Text-sprintfn
 
 BUILD_DEPENDS=	p5-Exporter>=5.57:devel/p5-Exporter
 RUN_DEPENDS:=	${BUILD_DEPENDS}

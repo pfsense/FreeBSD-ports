@@ -1,14 +1,12 @@
-# Created by: kris@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	libnids
 PORTVERSION=	1.24
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	Network monitoring library with TCP/IP reassembly
+WWW=		http://libnids.sf.net
 
 LIB_DEPENDS=	libnet.so:net/libnet
 
@@ -23,7 +21,8 @@ GLIB2_USES=	gnome
 GLIB2_USE=	gnome=glib20
 GLIB2_CONFIGURE_ENABLE=	libglib
 
-USES=		pkgconfig
+USES=		cpe pkgconfig
+CPE_VENDOR=	${PORTNAME}_project
 GNU_CONFIGURE=	yes
 
 do-install:

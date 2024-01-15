@@ -1,6 +1,3 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-SiteMap
 PORTVERSION=	0.14
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Automated site map for the Dancer web framework
+WWW=		https://metacpan.org/release/Dancer-Plugin-SiteMap
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Junho CHOI <junho.choi@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	uniksc
 PORTVERSION=	0.9
 CATEGORIES=	korean converters

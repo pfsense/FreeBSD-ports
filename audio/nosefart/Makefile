@@ -1,6 +1,3 @@
-# Created by: Seth Kingsley <sethk@osd.bsdi.com>
-# $FreeBSD$
-
 PORTNAME=	nosefart
 PORTVERSION=	1.92f
 PORTREVISION=	1
@@ -10,12 +7,14 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-mls
 
 MAINTAINER=	sethk@meowfishies.com
 COMMENT=	Player for NES Sound Format (NSF)
+WWW=		https://nosefart.sourceforge.net/
 
 LICENSE=	GPLv2
 
-USES=		gmake
+USES=		cpe gmake
 MAKE_ENV=	INSTALL="${INSTALL}" COPY="${COPY}" STRIP="${STRIP}" \
 		BINGRP="${BINGRP}" BINMODE="${BINMODE}" BINOWN="${BINOWN}"
+CPE_VENDOR=	nosefart_project
 
 PLIST_FILES=	bin/nosefart
 

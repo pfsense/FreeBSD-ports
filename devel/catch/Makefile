@@ -1,25 +1,26 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	catch
+PORTVERSION=	2.13.10
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.13.3
-PORTREVISION=	0
 CATEGORIES=	devel
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Header-only test framework for C++
+WWW=		https://github.com/catchorg/Catch2
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		compiler:c++14-lang cmake pathfix
+USES=		cmake compiler:c++14-lang pathfix python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	catchorg
 GH_PROJECT=	Catch2
 
 CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR=${DOCSDIR}
 PORTDOCS=	*
+
+NO_ARCH=	yes
+
+PORTSCOUT=	limit:^2\.
 
 OPTIONS_DEFINE=	DOCS
 

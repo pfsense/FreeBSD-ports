@@ -1,35 +1,45 @@
-# $FreeBSD$
-
 PORTNAME=	neochat
-PORTVERSION=	0.1.0
-PORTREVISION=	3
-CATEGORIES=	net-im
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
+CATEGORIES=	net-im deskutils kde kde-applications
 
-MAINTAINER=	adridg@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Glossy Matrix IM client based on KDE technologies
+WWW=		https://invent.kde.org/network/neochat
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSES/GPL-3.0-only.txt
 
-LIB_DEPENDS=	libcmark.so:textproc/cmark \
-		libqt5keychain.so:security/qtkeychain
-BUILD_DEPENDS=	libquotient>=0.6.2:net-im/libquotient
+LIB_DEPENDS=	libQCoro5Core.so:devel/qcoro@qt5 \
+		libcmark.so:textproc/cmark \
+		libqt5keychain.so:security/qtkeychain@qt5 \
+		libolm.so:security/olm
+BUILD_DEPENDS=	libquotient-qt5>=0.8.1:net-im/libquotient@qt5 \
+		kquickimageeditor>=0.2.0:graphics/kquickimageeditor \
+		kirigami-addons>=0.6.1:x11-toolkits/kirigami-addons
+# Quotient is a static lib, doesn't need to be in RUN_DEPENDS
+RUN_DEPENDS=	kquickimageeditor>=0.2.0:graphics/kquickimageeditor \
+		kirigami-addons>=0.6.1:x11-toolkits/kirigami-addons
 
-USES=		cmake compiler:c++17-lang gl kde:5 pkgconfig qt:5 tar:bz2
-USE_GL=		gl
-USE_QT=		core dbus declarative graphicaleffects gui imageformats \
+USES=		cmake compiler:c++20-lang desktop-file-utils kde:5 \
+		pkgconfig qt:5 tar:xz xorg
+USE_QT=		concurrent core dbus declarative graphicaleffects gui imageformats \
 		multimedia network quickcontrols quickcontrols2 \
-		svg widgets xml \
-		buildtools_build linguist_build qmake_build
-USE_KDE=	config i18n kirigami2 notifications \
-		ecm_build 
+		sql widgets xml \
+		buildtools:build linguist:build qmake:build
+USE_KDE=	auth codecs completion config configwidgets coreaddons dbusaddons \
+		i18n itemmodels jobwidgets kio kirigami2 service solid sonnet \
+		notifications qqc2-desktop-style widgetsaddons windowsystem \
+		ecm:build
+USE_XORG=	x11
 
-COMMIT=		1ed467bd193b7e210cdafd1ce61f5150fa566190
-DISTFILES=	${PORTNAME}-${COMMIT}.tar.bz2:neochat
-MASTER_SITES=	https://invent.kde.org/network/${PORTNAME}/-/archive/${COMMIT}/:neochat
+.include <bsd.port.options.mk>
 
-# This is a hack before the first KDE release service release, since we're
-# fetching GIT hashes rather than a tidy tarball.
-WRKSRC=		${WRKDIR}/${PORTNAME}-${COMMIT}
+.if ${ARCH:Mpowerpc*}
+USES+=		llvm:min=16
+.elif ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+# Work around compiler bug, see pr: 272285
+USES+=		llvm
+.endif
 
 .include <bsd.port.mk>

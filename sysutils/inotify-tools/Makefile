@@ -1,32 +1,35 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
-PORTNAME=	inotify-tools # new fork https://github.com/ericcurtin/inotify-tools
-DISTVERSION=	3.20.11.0
+PORTNAME=	inotify-tools
+DISTVERSION=	4.23.9.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Command-line utilities to watch for file events
+WWW=		https://github.com/inotify-tools/inotify-tools/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify
+TEST_DEPENDS=	bash:shells/bash
 
-USES=		autoreconf compiler:c11 gmake libtool localbase
+USES=		autoreconf compiler:c11 gmake libtool localbase shebangfix
 USE_GITHUB=	yes
+USE_LDCONFIG=	yes
+
+SHEBANG_GLOB=	*.t *.sh
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-doxygen
-USE_LDCONFIG=	yes
+
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	STATIC
 OPTIONS_SUB=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|stat64|stat|' \
-		${WRKSRC}/src/common.c \
-		${WRKSRC}/libinotifytools/src/inotifytools.c
+	@${REINPLACE_CMD} \
+		-e 's|SHELL_PATH ?= /bin/bash|SHELL_PATH ?= ${LOCALBASE}/bin/bash|' \
+		${WRKSRC}/t/Makefile
 
 post-build-STATIC-on:
 	@cd ${WRKSRC}/src && \

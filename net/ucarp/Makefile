@@ -1,12 +1,10 @@
-# Created by: Meno Abels <meno.abels@adviser.com>
-# $FreeBSD$
-
 PORTNAME=	ucarp
 PORTVERSION=	1.5.2.20171201
 CATEGORIES=	net
 
 MAINTAINER=	jcpierri@gmail.com
 COMMENT=	Userlevel Common Address Redundancy Protocol
+WWW=		https://github.com/jedisct1/UCarp
 
 LICENSE=	ISC
 LICENSE_NAME=	ISC License

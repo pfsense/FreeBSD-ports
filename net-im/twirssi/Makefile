@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	twirssi
 PORTVERSION=	2.8.0
 CATEGORIES=	net-im
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Twitter script to irssi
+WWW=		https://twirssi.com/
 
 LICENSE=	GPLv2
 

@@ -1,8 +1,5 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	seed7
-DISTVERSION=	05_20201208
+DISTVERSION=	05_20230913
 PORTREVISION=	0
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}/
@@ -10,14 +7,14 @@ DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	High-level, extensible programming language
+WWW=		https://seed7.sourceforge.net/
 
-# The language libraries are licensed under the LGPL21 license. Starting from
-# version 05_20140601, the compiler libraries are also distributed. These are
-# licensed under the GPLv2 and can be found in ${PREFIX}/lib/seed7/lib/comp.
+# The interpreter and the example programs use the GPL license, while the
+# runtime library uses the LGPL license.
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	amd64 i386 sparc64
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 
@@ -25,7 +22,7 @@ USES=		mysql:client ncurses pgsql sqlite tar:tgz xorg
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USE_XORG=	x11
+USE_XORG=	x11 xrender
 WANT_PGSQL=	client
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/src
@@ -68,6 +65,11 @@ do-install:
 	cd ${WRKSRC}/../lib/comp && ${COPYTREE_SHARE} '*.s7i' ${STAGEDIR}${SEED7_LIBRARY}/comp
 #	install static libraries
 	${INSTALL} -d ${STAGEDIR}${S7_LIB_DIR}
+#	install vim and nano syntax files
+	${INSTALL} -d ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/../doc/seed7.vim ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/../doc/sd7.vim ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/../doc/seed7.nanorc ${STAGEDIR}${DATADIR}
 .for s7_lib in ${S7_LIBS}
 	${INSTALL_DATA} ${WRKSRC}/../bin/${s7_lib} ${STAGEDIR}${S7_LIB_DIR}
 .endfor

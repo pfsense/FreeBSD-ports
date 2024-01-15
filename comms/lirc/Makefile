@@ -1,15 +1,13 @@
-# Created by: Mike Heffner <mikeh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lirc
 PORTVERSION=	0.9.0
-PORTREVISION=	12
+PORTREVISION=	13
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	SF/${PORTNAME}/LIRC/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Linux Infrared Remote Control
+WWW=		https://www.lirc.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

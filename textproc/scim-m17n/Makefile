@@ -1,6 +1,3 @@
-# Created by: Yinghong Liu <relaxbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	scim-m17n
 PORTVERSION=	0.2.3
 PORTREVISION=	10
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/scim/${PORTNAME}/${PORTVERSION} \
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	SCIM IMEngine module which uses m17n library as the backend
+WWW=		https://github.com/scim-im/scim
 
 BUILD_DEPENDS=	scim:textproc/scim \
 		gsed:textproc/gsed

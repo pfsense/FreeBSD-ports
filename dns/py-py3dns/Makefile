@@ -1,29 +1,25 @@
-# Created by: Mark Linimon <linimon@lonesome.com>
-# $FreeBSD$
-
 PORTNAME=	py3dns
-PORTVERSION=	3.2.1
+PORTVERSION=	4.0.0
 CATEGORIES=	dns python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python 3 DNS library
+WWW=		https://launchpad.net/py3dns
 
 LICENSE=	CNRI
 LICENSE_NAME=	CNRI LICENSE AGREEMENT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flit-core>=3.2<4:devel/py-flit-core@${PY_FLAVOR}
 
-USES=		python:3.3+
-USE_PYTHON=	autoplist distutils
+USES=		python shebangfix
+USE_PYTHON=	autoplist concurrent pep517 pytest
 
 NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-do-test:
-	cd ${WRKSRC}/ && ${PYTHON_CMD} -m pytest
+SHEBANG_FILES=	DNS/tests/testPackers.py
 
 .include <bsd.port.mk>

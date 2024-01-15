@@ -1,6 +1,3 @@
-# Created by: Shell Hung <shell@shellhung.org>
-# $FreeBSD$
-
 PORTNAME=	Date-Chinese
 PORTVERSION=	1.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to calculate dates in the Chinese calendar
+WWW=		https://metacpan.org/release/Date-Chinese
 
 USES=		perl5
 USE_PERL5=	configure

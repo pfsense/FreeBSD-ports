@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	phing
 PORTVERSION=	2.6.1
 CATEGORIES=	devel pear
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	PHP project build system based on Apache Ant
+WWW=		https://www.phing.info/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	Test-Able
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	Xunit with Moose
+WWW=		https://metacpan.org/release/Test-Able
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

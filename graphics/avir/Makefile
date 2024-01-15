@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	avir
-DISTVERSION=	2.6
+DISTVERSION=	3.0
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	High-quality image resizing/scaling C++ library
+WWW=		https://github.com/avaneev/avir
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

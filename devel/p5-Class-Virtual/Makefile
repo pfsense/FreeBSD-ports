@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Virtual
 PORTVERSION=	0.08
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base class for virtual base classes in Perl
+WWW=		https://metacpan.org/release/Class-Virtual
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,5 +18,7 @@ RUN_DEPENDS=	p5-Carp-Assert>=0:devel/p5-Carp-Assert \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

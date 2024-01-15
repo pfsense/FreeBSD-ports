@@ -1,22 +1,18 @@
-# Created by: Mikhail T. <m.tsatsenko@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rubytree
-PORTVERSION=	1.0.0
+PORTVERSION=	2.0.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Implementation of the Tree data structure for the Ruby
+WWW=		http://rubytree.anupamsg.me/
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-json>=2.1<3:devel/rubygem-json \
-		rubygem-structured_warnings>=0.3<1:devel/rubygem-structured_warnings
+RUN_DEPENDS=	rubygem-json>=2.3.1<3:devel/rubygem-json
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

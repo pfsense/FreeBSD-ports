@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Zen-Koans
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Library containing over 100 Zen Koans
+WWW=		https://metacpan.org/release/Zen-Koans
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

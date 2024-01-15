@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Singleton
 PORTVERSION=	0.30
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Turn Moose class into a singleton
+WWW=		https://metacpan.org/release/MooseX-Singleton
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

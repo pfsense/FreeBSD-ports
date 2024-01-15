@@ -1,13 +1,10 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	xapian-bindings
-PORTVERSION=	1.4.17
-PORTREVISION=	1
+PORTVERSION=	1.4.24
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Bindings allowing Xapian to be used from various programming languages
+WWW=		https://xapian.org/
 
 LICENSE=	GPLv2
 
@@ -26,7 +23,6 @@ PHP_USES=		php
 PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xapian>=${PORTVERSION}:databases/py-xapian@${PY_FLAVOR}
 PYTHON_USES=		python:run
 RUBY_RUN_DEPENDS=	${RUBY_PKGNAMEPREFIX}xapian>=${PORTVERSION}:databases/ruby-xapian
-RUBY_USE=		RUBY=yes
-RUBY_VARS=		RUBY_NO_BUILD_DEPENDS=yes
+RUBY_USES=		ruby:run
 
 .include <bsd.port.mk>

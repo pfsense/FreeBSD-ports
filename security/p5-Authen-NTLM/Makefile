@@ -1,6 +1,3 @@
-# Created by: James Thomason <james@divide.org>
-# $FreeBSD$
-
 PORTNAME=	Authen-NTLM
 PORTVERSION=	1.09
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME:C/.*-//}-${PORTVERSION}
 
 MAINTAINER=	james@divide.org
 COMMENT=	Perl5 NTLM authentication module
+WWW=		https://metacpan.org/release/NTLM
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

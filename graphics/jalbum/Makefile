@@ -1,6 +1,3 @@
-# Created by: Tim Bishop <tim@bishnet.net>
-# $FreeBSD$
-
 PORTNAME=	jalbum
 PORTVERSION=	10.10.7
 CATEGORIES=	graphics java
@@ -9,6 +6,7 @@ DISTNAME=	jAlbum${PORTVERSION}
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Web photo album generator
+WWW=		http://jalbum.net/
 
 WRKSRC=		${WRKDIR}/jAlbum
 

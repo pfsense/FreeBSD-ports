@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	kcoreaddons
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
+PORTEVISION=	1
 CATEGORIES=	devel kde kde-frameworks
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,9 +10,9 @@ LICENSE=	LGPL21+ BSD3CLAUSE
 LICENSE_COMB=	multi
 
 USES=		cmake compiler:c++11-lib kde:5 qt:5 shared-mime-info tar:xz
-USE_KDE=	ecm
-USE_QT=		core linguisttools \
-		buildtools_build qmake_build
+USE_KDE=	ecm:build
+USE_QT=		core dbus linguisttools \
+		buildtools:build qmake:build
 
 OPTIONS_DEFINE=		FAM INOTIFY
 OPTIONS_DEFAULT=	INOTIFY
@@ -28,13 +27,6 @@ FAM_DESC=		Filesystem alteration notifications using fam (broken: hangs on NFS)
 FAM_USES=		fam
 FAM_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_FAM
 
-.include <bsd.port.pre.mk>
-# FreeBSD base gained /etc/os-release in r354922, which
-# corresponds to __FreeBSD_version 1300060
-.if ${OSVERSION} < 1300060
-post-patch:
-	${REINPLACE_CMD} -e '/QStringLiteral/s|/etc/os-release|${LOCALBASE}/etc/os-release|g' \
-		${WRKSRC}/src/lib/util/kosrelease.cpp
-.endif
+CMAKE_ARGS=	-DACCOUNTS_SERVICE_ICON_DIR:PATH=/var/db/AccountsService/icons
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

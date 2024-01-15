@@ -1,95 +1,89 @@
-# Created by: Mahdi Mokhtari <mokhi64@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	netdata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.28.0
+DISTVERSION=	1.43.2
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nk@nkeor.me
 COMMENT=	Scalable distributed realtime performance and health monitoring
+WWW=		https://github.com/netdata/netdata
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
+		libyaml.so:textproc/libyaml \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libuv.so:devel/libuv
-RUN_DEPENDS=	bash:shells/bash \
-		curl:ftp/curl \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR}
+		bash:shells/bash \
+		curl:ftp/curl
 
-USES=		autoreconf cpe gmake pathfix pkgconfig:both python shebangfix \
-		ssl
-
+USES=		autoreconf compiler:c++17-lang cpe gmake localbase:ldflags pathfix \
+		pkgconfig:both python shebangfix ssl
+USE_RC_SUBR=	${PORTNAME}
 SHEBANG_GLOB=	*
+BINARY_ALIAS=	ar=llvm-ar ranlib=llvm-ranlib
 
-NETDATA_CACHE=	/var/cache/${PORTNAME}
-NETDATA_LOG=	/var/log/${PORTNAME}
-NETDATA_PERST=	/var/db/${PORTNAME}
+# Libs that you can't unbundle...
+# SQLite3, --exclude database/sqlite/sqlite3*
+# (lib)judy, --exclude libnetdata/libjudy
+EXTRACT_AFTER_ARGS=	--exclude ml/dlib --exclude web/server/h2o
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-unit-tests
-CPPFLAGS+=	-D_WANT_VMMETER
-INSTALL_TARGET=	install-strip
+CONFIGURE_ARGS=	--disable-h2o --disable-unit-tests --with-user=netdata
 
+INSTALL_TARGET=	install-strip
+CPPFLAGS+=	-D_WANT_VMMETER
+USE_CXXSTD=	c++17
+
+SUB_FILES=	${PORTNAME}.conf.sample
 SUB_LIST=	NETDATA_CACHE=${NETDATA_CACHE} \
 		NETDATA_LOG=${NETDATA_LOG} \
 		NETDATA_PERST=${NETDATA_PERST}
+
+USERS=		netdata
+GROUPS=		netdata
 
 PLIST_SUB=	NETDATA_CACHE=${NETDATA_CACHE} \
 		NETDATA_LOG=${NETDATA_LOG} \
 		NETDATA_PERST=${NETDATA_PERST}
 
-USE_RC_SUBR=	${PORTNAME}
-SUB_FILES=	${PORTNAME}.conf.sample
-
-USERS=		netdata
-GROUPS=		netdata
-
-OPTIONS_DEFINE=		CLOUD CUPS DBENGINE FREEIPMI GOPLUGIN LTO
+OPTIONS_DEFINE=		CLOUD CUPS DBENGINE FREEIPMI GOPLUGIN LTO ML
+OPTIONS_DEFAULT=	CLOUD DBENGINE LTO ML
+OPTIONS_EXCLUDE_riscv64=	LTO
 OPTIONS_SUB=		YES
-OPTIONS_DEFAULT=	DBENGINE
-OPTIONS_DEFAULT_FreeBSD_12=	LTO
-OPTIONS_DEFAULT_FreeBSD_13=	LTO
-OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
 
 CLOUD_DESC=		Enable cloud functionality
-CLOUD_CONFIGURE_OFF=	--disable-cloud
-CLOUD_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-web_gui_index.html \
-			${FILESDIR}/extra-patch-web_gui_main.js
-
 CUPS_DESC=		Enable support for cups
-CUPS_CONFIGURE_ENABLE=	plugin-cups
-CUPS_LIB_DEPENDS=	libcups.so:print/cups
-
-DBENGINE_DESC=			Enable support for database engine
-DBENGINE_CONFIGURE_ENABLE=	dbengine
-DBENGINE_LIB_DEPENDS=		libJudy.so:devel/judy \
-				liblz4.so:archivers/liblz4
-
-FREEIPMI_DESC=			Enable support for freeipmi
-FREEIPMI_CONFIGURE_ENABLE=	plugin-freeipmi
-FREEIPMI_LIB_DEPENDS=		libfreeipmi.so:sysutils/freeipmi
-
+DBENGINE_DESC=		Enable support for database engine
+FREEIPMI_DESC=		Enable support for freeipmi
 GOPLUGIN_DESC=		Enable the go collector plugin
-GOPLUGIN_RUN_DEPENDS=	${LOCALBASE}/libexec/netdata/plugins.d/god.plugin:net-mgmt/netdata-go
+ML_DESC=			Enable anomaly detection via dlib
 
-LTO_DESC=		Use Link-Time Optimization
-LTO_CONFIGURE_ENABLE=	lto
-LTO_USES=		compiler:c11
+CLOUD_LIB_DEPENDS=		libprotobuf.so:devel/protobuf
+CLOUD_CONFIGURE_OFF=		--disable-cloud
+CUPS_LIB_DEPENDS=		libcups.so:print/cups
+CUPS_CONFIGURE_ENABLE=		plugin-cups
+DBENGINE_LIB_DEPENDS=		liblz4.so:archivers/liblz4
+DBENGINE_CONFIGURE_ENABLE=	dbengine
+FREEIPMI_LIB_DEPENDS=		libfreeipmi.so:sysutils/freeipmi
+FREEIPMI_CONFIGURE_ENABLE=	plugin-freeipmi
+GOPLUGIN_RUN_DEPENDS=		${LOCALBASE}/libexec/netdata/plugins.d/god.plugin:net-mgmt/netdata-go
+LTO_USES=			compiler:c11
+LTO_CONFIGURE_ENABLE=		lto
+ML_BUILD_DEPENDS=		${LOCALBASE}/include/dlib/matrix.h:science/dlib-cpp
+ML_CONFIGURE_ENABLE=		ml
 
-.include <bsd.port.options.mk>
-.if ${PORT_OPTIONS:MLTO} && ${OPSYS}_${OSREL:R} == FreeBSD_11
-BROKEN=		Link-Time Optimization breaks compilation on FreeBSD 11
-.endif
-
-.if ${PORT_OPTIONS:MLTO} && ${ARCH:Mpowerpc*}
-USE_GCC=	yes
-.endif
+NETDATA_CACHE=	/var/cache/${PORTNAME}
+NETDATA_LOG=	/var/log/${PORTNAME}
+NETDATA_PERST=	/var/db/${PORTNAME}
 
 post-patch:
+	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|g' \
+	    ${PATCH_WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|%%NETDATA_CACHE%%|${NETDATA_CACHE}|g' \
 	    ${PATCH_WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|%%NETDATA_LOG%%|${NETDATA_LOG}|g' \
@@ -110,8 +104,13 @@ post-install:
 	${MKDIR} ${STAGEDIR}${NETDATA_PERST}
 	(for fi in 	${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.conf \
 			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.conf \
-			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.txt ; do \
+			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.txt ; do \
 		${MV} $$fi $$fi".sample"; \
 	done)
+	${RM} ${STAGEDIR}${ETCDIR}/netdata-updater.conf
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/netdata/system
+
+post-install-CLOUD-off:
+	rm ${STAGEDIR}${PREFIX}/sbin/netdata-claim.sh
 
 .include <bsd.port.mk>

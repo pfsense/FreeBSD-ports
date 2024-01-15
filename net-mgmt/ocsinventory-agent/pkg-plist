@@ -58,6 +58,7 @@ bin/ocsinventory-agent
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Lspci/Videos.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Lsusb.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Lsusb/Usb.pm
+%%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/OS.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Packaging.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Packaging/AppImage.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Packaging/BSDpkg.pm
@@ -74,6 +75,7 @@ bin/ocsinventory-agent
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Repository/CentOS.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Repository/Debian.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Repository/Rhel.pm
+%%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Repository/SuSE.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Screen.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Generic/Users.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/HPUX.pm
@@ -92,6 +94,7 @@ bin/ocsinventory-agent
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/HPUX/Storages.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/ARM.pm
+%%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/ARM/Bios.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/ARM/CPU.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/Alpha.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/Alpha/CPU.pm
@@ -108,6 +111,7 @@ bin/ocsinventory-agent
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/m68k/CPU.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/s390x.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Archs/s390x/CPU.pm
+%%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Bios.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Distro/LSB.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Distro/NonLSB.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Backend/OS/Linux/Distro/NonLSB/ArchLinux.pm
@@ -205,24 +209,6 @@ bin/ocsinventory-agent
 %%SITE_PERL%%/Ocsinventory/Agent/Modules/Databases/Oracle/Instances.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Modules/Download.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Modules/Example.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/11.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/231.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/2620.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/311.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/3224.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/3375.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/42.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/641.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/7244.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/789.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/8072.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/9.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/Default.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/Entity_Mib.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/Host_Resources_Mib.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/If_Mib.pm
-%%SITE_PERL%%/Ocsinventory/Agent/Modules/Snmp/Printer_Mib.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Modules/SnmpScan.pm
 %%SITE_PERL%%/Ocsinventory/Agent/Network.pm
 %%SITE_PERL%%/Ocsinventory/Agent/XML/Inventory.pm

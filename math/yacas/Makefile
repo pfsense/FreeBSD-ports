@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	yacas
 PORTVERSION=	1.9.1
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	math
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Yet Another Computer Algebra System
+WWW=		https://www.yacas.org/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

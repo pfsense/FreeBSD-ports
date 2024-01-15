@@ -1,0 +1,7 @@
+Libbe(3) is a FreeBSD library for creating, destroying, and modifying
+ZFS boot environments. A ZFS boot environment is a bootable clone of
+the datasets needed to boot the operating system.
+
+This is the Libbe(3) Extension for PHP.
+
+WWW: https://github.com/theonemcdonald/php-ext-libbe

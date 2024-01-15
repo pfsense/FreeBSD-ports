@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PerlIO-via-Unidecode
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Perlio layer for Unidecode
+WWW=		https://metacpan.org/release/PerlIO-via-Unidecode
 
 BUILD_DEPENDS=	p5-Text-Unidecode>=0:converters/p5-Text-Unidecode
 RUN_DEPENDS=	p5-Text-Unidecode>=0:converters/p5-Text-Unidecode

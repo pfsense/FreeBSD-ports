@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	onscripter
-PORTVERSION=	20200722
+PORTVERSION=	20230825
 CATEGORIES=	games
 MASTER_SITES=	http://onscripter.osdn.jp/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT?=	Visual novel engine compatible with NScripter
+WWW=		https://onscripter.osdn.jp/onscripter.html
 
 LICENSE=	GPLv2+
 
@@ -20,14 +19,13 @@ MAKEFILE=	Makefile.Linux
 ALL_TARGET=	ALL
 MAKE_ARGS=	RM="${RM}"
 LDFLAGS+=	-Wl,--as-needed # limit jpeg to bin/*conv
-PORTDOCS=	*
 PLIST_FILES?=	bin/nsaconv \
 		bin/nsadec \
 		bin/onscripter \
 		bin/sarconv \
 		bin/sardec
 
-OPTIONS_DEFINE=	DOCS ENGLISH LUA PDA UTF8
+OPTIONS_DEFINE=	ENGLISH LUA PDA UTF8
 OPTIONS_DEFAULT=LUA UTF8
 OPTIONS_EXCLUDE?=ENGLISH
 
@@ -50,11 +48,6 @@ do-install:
 .for f in ${PLIST_FILES:T}
 	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
-
-post-install-DOCS-on:
-	(cd ${WRKSRC}/www && ${COPYTREE_SHARE} \
-		. ${STAGEDIR}${DOCSDIR} \
-		"! -name *.orig ! -name *.bak")
 .endif # do-install
 
 .include <bsd.port.mk>

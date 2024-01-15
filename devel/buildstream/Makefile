@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	BuildStream
 DISTVERSION=	1.2.8
 PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Free software tool for integrating software stacks
+WWW=		https://buildstream.build/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

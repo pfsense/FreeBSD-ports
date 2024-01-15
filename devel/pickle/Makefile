@@ -1,6 +1,3 @@
-# Created by: Bruce M. Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pickle
 PORTVERSION=	4.20
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	http://wiki.kewl.org/downloads/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Programs Microchip PICs using ICSP
+WWW=		https://wiki.kewl.org/dokuwiki/projects:pickle
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,7 +14,6 @@ BROKEN_armv6=		invokes x86 assembler
 BROKEN_armv7=		invokes x86 assembler
 BROKEN_mips=		invokes x86 assembler
 BROKEN_mips64=		invokes x86 assembler
-BROKEN_sparc64=		invokes x86 assembler
 
 USES=		gmake tar:tgz
 
@@ -36,6 +33,12 @@ BIN_SYMLINKS=	bin/n14 \
 		bin/p16 \
 		bin/p24 \
 		bin/p32
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USES+=		llvm:max=14
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

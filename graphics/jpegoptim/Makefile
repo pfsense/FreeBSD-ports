@@ -1,25 +1,23 @@
-# Created by: Devaux Fabien <fab@gcu.info>
-# $FreeBSD$
-
 PORTNAME=	jpegoptim
-PORTVERSION=	1.4.6
+DISTVERSION=	1.5.5
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.kokkonen.net/tjko/src/ \
-		LOCAL/ehaupt
+MASTER_SITES=	https://www.kokkonen.net/tjko/src/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Utility to optimize jpeg files
+WWW=		http://www.kokkonen.net/tjko/projects.html
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USES=		jpeg
+USES=		cpe gmake jpeg localbase:ldflags
+CPE_VENDOR=	${PORTNAME}_project
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-libjpeg=${LOCALBASE}
 
-PLIST_FILES=	bin/jpegoptim man/man1/jpegoptim.1.gz
-
-MAKE_ENV+=	INSTALL_ROOT=${STAGEDIR}
+PLIST_FILES=	bin/jpegoptim \
+		man/man1/jpegoptim.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e \

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	vncreflector
 PORTVERSION=	1.2.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	SF/vnc-reflector/vnc-reflector/${PORTVERSION}
 DISTNAME=	vnc_reflector-${PORTVERSION}
 
 MAINTAINER=	paul@it.ca
 COMMENT=	Multi-client VNC proxy server
+WWW=		https://sourceforge.net/projects/vnc-reflector/
 
 USES=		jpeg
 USE_RC_SUBR=	vncreflector

@@ -1,28 +1,20 @@
-# Created by: Steven Kreuzer <steven@exit2shell.com>
-# $FreeBSD$
-
 PORTNAME=	dtrace-toolkit
 PORTVERSION=	1.0
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Collection of useful scripts for DTrace
+WWW=		https://github.com/opendtrace/toolkit
 
 LICENSE=	CDDL
 LICENSE_FILE=	${WRKSRC}/Docs/cddl1.txt
 
-USES=		perl5 python shebangfix
+USES=		perl5 python ruby shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	opendtrace
 GH_PROJECT=	toolkit
-GH_TAGNAME=	f36d00b
-USE_RUBY=	yes
-SHEBANG_LANG=	sh
-sh_OLD_CMD=	/usr/bin/sh ./sh
-sh_CMD=		${SH}
-perl_OLD_CMD=	\\./perl
-ruby_OLD_CMD=	\\./ruby
+GH_TAGNAME=	ec23e25c8995bfa50cd7c0058129f1f489fdabb4
 SHEBANG_FILES=	Apps/shellsnoop \
 		Code/Perl/func_abc.pl \
 		Code/Perl/func_malloc.pl \
@@ -74,12 +66,20 @@ SHEBANG_FILES=	Apps/shellsnoop \
 		rwsnoop \
 		rwtop \
 		statsnoop
+SHEBANG_LANG=	sh
+sh_OLD_CMD=	/usr/bin/sh ./sh
+sh_CMD=		${SH}
+perl_OLD_CMD=	\\./perl
+ruby_OLD_CMD=	\\./ruby
 
+NO_ARCH=	yes
 NO_BUILD=	yes
+
+SUB_FILES=	pkg-message
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1200031
+.if ${OPSYS} == FreeBSD
 # lstat calls are no longer available on 12.0+
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-dtruss
 .endif
@@ -95,8 +95,9 @@ do-install:
 	${RLN} ${STAGEDIR}${DATADIR}/Apps/shellsnoop ${STAGEDIR}${PREFIX}/bin/shellsnoop
 
 .for MANPAGE in dtruss hotkernel procsystime opensnoop shellsnoop
-	${INSTALL_MAN} ${WRKSRC}/Man/man1m/${MANPAGE}.1m \
+	${RLN} ${STAGEDIR}${DATADIR}/Man/man1m/${MANPAGE}.1m \
 		${STAGEDIR}${MAN1PREFIX}/man/man1/${MANPAGE}.1
 .endfor
+	${ECHO_CMD} 'MANPATH ${DATADIR}/Man' > ${STAGEDIR}${PREFIX}/etc/man.d/${PORTNAME}.conf
 
 .include <bsd.port.mk>

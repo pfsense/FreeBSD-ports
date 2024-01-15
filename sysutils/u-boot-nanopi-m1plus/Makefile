@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../u-boot-master
 
 MODEL=		nanopi_m1plus

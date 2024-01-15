@@ -1,13 +1,15 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
-
 PORTNAME=	quaqut
-PORTVERSION=	0.2.0
+DISTVERSION=	0.2.0
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20C%20sources/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Queries information from Unreal Tournament 2004 game servers
+WWW=		https://quaqut.sourceforge.net/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 HAS_CONFIGURE=	yes
 USE_RC_SUBR=	${PORTNAME}

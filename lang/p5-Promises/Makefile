@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Promises
 PORTVERSION=	0.94
 CATEGORIES=	lang perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Promise/A+ pattern implementation
+WWW=		https://metacpan.org/release/Promises
 
 USES=		perl5
 USE_PERL5=	configure

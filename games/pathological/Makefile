@@ -1,14 +1,12 @@
-# Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
-
 PORTNAME=	pathological
 PORTVERSION=	1.1.3
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Enriched clone of the game "Logical"
+WWW=		https://pathological.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,24 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	belcard
-PORTVERSION=	1.0.2
-PORTREVISION=	2
+DISTVERSION=	5.2.94
 CATEGORIES=	deskutils
-MASTER_SITES=	https://www.linphone.org/releases/sources/belcard/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	vCard support library
+WWW=		https://www.linphone.org/
 
-LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox \
 		libbelr.so:textproc/belr
 
-USES=		cmake compiler:c++11-lib
+USES=		cmake compiler:c++17-lang
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.linphone.org/BC
+GL_ACCOUNT=	public
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DENABLE_STATIC=NO -DENABLE_STRICT=NO -DENABLE_UNIT_TESTS=NO
-WRKSRC= 	${WRKDIR}/${DISTNAME}-0
+CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE} \
+		-DENABLE_STATIC=NO \
+		-DENABLE_STRICT=NO \
+		-DENABLE_UNIT_TESTS=NO
 
 .include <bsd.port.mk>

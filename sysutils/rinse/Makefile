@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rinse
 PORTVERSION=	3.2
 CATEGORIES=	sysutils
@@ -8,6 +6,7 @@ DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Install RPM-based system into a directory
+WWW=		http://collab-maint.alioth.debian.org/rinse/
 
 LICENSE=	ART10
 

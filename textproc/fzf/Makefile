@@ -1,34 +1,27 @@
-# Created by: Sascha Holzleiter <sascha@root-login.org>
-# $FreeBSD$
-
 PORTNAME=	fzf
-PORTVERSION=	0.24.2
+DISTVERSION=	0.42.0
+PORTREVISION=	1
 CATEGORIES=	textproc
+MASTER_SITES=	https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${DISTVERSIONFULL}/:gomod
+DISTFILES=	go.mod:gomod
 
-MAINTAINER=	sascha@root-login.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Blazing fast command-line fuzzy finder
+WWW=		https://github.com/junegunn/fzf/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler go:modules
+USES=		go:modules
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	junegunn
-GH_TUPLE=	\
-		gdamore:encoding:v1.0.0:gdamore_encoding/vendor/github.com/gdamore/encoding \
-		gdamore:tcell:v1.4.0:gdamore_tcell/vendor/github.com/gdamore/tcell \
-		golang:crypto:9e8e0b390897:golang_crypto/vendor/golang.org/x/crypto \
-		golang:sync:67f06af15bc9:golang_sync/vendor/golang.org/x/sync \
-		golang:sys:119d4633e4d1:golang_sys/vendor/golang.org/x/sys \
-		golang:text:v0.3.3:golang_text/vendor/golang.org/x/text \
-		lucasb-eyer:go-colorful:v1.0.3:lucasb_eyer_go_colorful/vendor/github.com/lucasb-eyer/go-colorful \
-		mattn:go-isatty:v0.0.12:mattn_go_isatty/vendor/github.com/mattn/go-isatty \
-		mattn:go-runewidth:v0.0.9:mattn_go_runewidth/vendor/github.com/mattn/go-runewidth \
-		mattn:go-shellwords:v1.0.10:mattn_go_shellwords/vendor/github.com/mattn/go-shellwords \
-		saracen:walker:v0.1.1:saracen_walker/vendor/github.com/saracen/walker
+GH_PROJECT=	fzf
 
-GO_BUILDFLAGS=	-ldflags="-X main.revision=e3e76fa -w"
+GO_MODULE=	github.com/junegunn/fzf
+GO_BUILDFLAGS=	-ldflags="-X main.revision=${COMMIT_ID} -s -w"
+
+COMMIT_ID=	2023012
 
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/fzf man/man1/fzf.1.gz

@@ -2,6 +2,7 @@
 %%AO%%lib/cmus/op/ao.so
 %%CDIO%%lib/cmus/ip/cdio.so
 %%CUE%%lib/cmus/ip/cue.so
+%%DATADIR%%/amazon.theme
 %%DATADIR%%/cyan.theme
 %%DATADIR%%/default.theme
 %%DATADIR%%/dracula.theme
@@ -9,12 +10,14 @@
 %%DATADIR%%/green-mono-88.theme
 %%DATADIR%%/green.theme
 %%DATADIR%%/gruvbox-alt.theme
+%%DATADIR%%/gruvbox-warm.theme
 %%DATADIR%%/gruvbox.theme
 %%DATADIR%%/jellybeans.theme
 %%DATADIR%%/night.theme
 %%DATADIR%%/rc
 %%DATADIR%%/solarized-dark.theme
 %%DATADIR%%/solarized-light.theme
+%%DATADIR%%/spotify.theme
 %%DATADIR%%/xterm-white.theme
 %%DATADIR%%/zenburn.theme
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/cmus-status-display

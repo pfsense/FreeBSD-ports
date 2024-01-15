@@ -1,12 +1,10 @@
-# Created by: Peter Ankerstal <peter@pean.org>
-# $FreeBSD$
-
 PORTNAME=	zfs-periodic
 PORTVERSION=	1.0.20130213
 CATEGORIES=	sysutils
 
 MAINTAINER=	peter@pean.org
 COMMENT=	Simple way of maintaining zfs snapshots using the periodic system
+WWW=		https://github.com/ross/zfs-periodic
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ross

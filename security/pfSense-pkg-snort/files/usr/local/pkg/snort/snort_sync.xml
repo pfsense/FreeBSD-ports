@@ -8,7 +8,7 @@
  * snort_sync.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Marcello Coutinho
  * Copyright (c) 2014-2015 Bill Meeks
  * All rights reserved.
@@ -29,7 +29,7 @@
 	</copyright>
 	<description>Snort: XMLRPC Sync</description>
 	<name>snortsync</name>
-	<version>%%PKGVERSION%%</version>
+	<version>4.1.6</version>
 	<title>Snort: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
 	<tabs>

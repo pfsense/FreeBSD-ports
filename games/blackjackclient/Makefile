@@ -1,6 +1,3 @@
-# Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	BlackjackClient
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	t-blackjack-beta
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Simple Blackjack game in Java
+WWW=		https://sourceforge.net/projects/t-blackjack/
 
 LICENSE=	GPLv2
 

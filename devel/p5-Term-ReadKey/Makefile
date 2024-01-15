@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Term-ReadKey
 PORTVERSION=	2.38
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	TermReadKey-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl5 module for simple terminal control
+WWW=		https://metacpan.org/release/TermReadKey
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

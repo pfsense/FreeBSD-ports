@@ -1,21 +1,23 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libGLU
-PORTVERSION=	9.0.1
+PORTVERSION=	9.0.2
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.freedesktop.org/pub/mesa/glu/ \
 		https://mesa.freedesktop.org/archive/glu/
 DISTNAME=	glu-${PORTVERSION}
 
+PATCH_SITES=	https://gitlab.freedesktop.org/mesa/glu/-/commit/
+PATCHFILES+=	b6c308172993.patch:-p1 #https://gitlab.freedesktop.org/mesa/glu/-/merge_requests/10
+
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	OpenGL utility library
+WWW=		https://gitlab.freedesktop.org/mesa/glu
 
-USES=		gl libtool pathfix pkgconfig tar:xz xorg
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-static
-INSTALL_TARGET=	install-strip
-USE_GL=		gl
+USES=		gl meson pkgconfig tar:xz
+
+USE_GL=		opengl
 USE_LDCONFIG=	yes
+
+MESON_ARGS=	-Ddefault_library=shared
 
 .include <bsd.port.mk>

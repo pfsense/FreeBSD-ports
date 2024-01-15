@@ -1,14 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gsasl
-PORTVERSION=	1.8.1
+PORTVERSION=	2.2.0
 CATEGORIES=	security
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	lib
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	GNU SASL library
+WWW=		https://www.gnu.org/software/gsasl/
 
 LICENSE=	LGPL21
 
@@ -39,8 +37,8 @@ GSSAPI_NONE_CONFIGURE_ON=	--disable-gssapi
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
-post-patch:
-	@${REINPLACE_CMD} -e '/^en@/d' ${WRKSRC}/lib/po/LINGUAS
+post-install:
+	@${INSTALL_DATA} ${WRKSRC}/lib/gl/.libs/liblgl.a ${STAGEDIR}${PREFIX}/lib
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${DOCSDIR}/reference

@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Inline-Filters
 PORTVERSION=	0.20
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Common source code filters for Inline Modules
+WWW=		https://metacpan.org/release/Inline-Filters
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,50 +1,29 @@
---- chrome/browser/ui/task_manager/task_manager_table_model.cc.orig	2020-11-13 06:36:38 UTC
+--- chrome/browser/ui/task_manager/task_manager_table_model.cc.orig	2023-12-10 06:10:27 UTC
 +++ chrome/browser/ui/task_manager/task_manager_table_model.cc
-@@ -450,13 +450,13 @@ base::string16 TaskManagerTableModel::GetText(int row,
+@@ -454,7 +454,7 @@ std::u16string TaskManagerTableModel::GetText(size_t r
            ? stringifier_->backgrounded_string()
            : stringifier_->foregrounded_string();
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
      case IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN: {
        const int fd_count = observed_task_manager()->GetOpenFdCount(tasks_[row]);
        return fd_count >= 0 ? base::FormatNumber(fd_count)
-                            : stringifier_->n_a_string();
-     }
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
- 
-     case IDS_TASK_MANAGER_KEEPALIVE_COUNT_COLUMN: {
-       return stringifier_->GetKeepaliveCountText(
-@@ -616,7 +616,7 @@ int TaskManagerTableModel::CompareValues(int row1,
+@@ -621,7 +621,7 @@ int TaskManagerTableModel::CompareValues(size_t row1,
        return BooleanCompare(is_proc1_bg, is_proc2_bg);
      }
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
      case IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN: {
        const int proc1_fd_count =
            observed_task_manager()->GetOpenFdCount(tasks_[row1]);
-@@ -624,7 +624,7 @@ int TaskManagerTableModel::CompareValues(int row1,
-           observed_task_manager()->GetOpenFdCount(tasks_[row2]);
-       return ValueCompare(proc1_fd_count, proc2_fd_count);
-     }
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
- 
-     default:
-       NOTREACHED();
-@@ -790,11 +790,11 @@ void TaskManagerTableModel::UpdateRefreshTypes(int col
+@@ -799,7 +799,7 @@ void TaskManagerTableModel::UpdateRefreshTypes(int col
        type = REFRESH_TYPE_KEEPALIVE_COUNT;
        break;
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
      case IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN:
        type = REFRESH_TYPE_FD_COUNT;
        break;
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
- 
-     default:
-       NOTREACHED();

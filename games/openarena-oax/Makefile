@@ -1,6 +1,3 @@
-# Created by: Dominic Fandrey
-# $FreeBSD$
-
 PORTNAME=	oax
 PORTVERSION=	B51
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenArena Mod: OpenArena Xpanded
+WWW=		https://code.google.com/p/oax/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

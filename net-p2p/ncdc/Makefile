@@ -1,6 +1,3 @@
-# Created by: Dmitriy Limonov
-# $FreeBSD$
-
 PORTNAME=	ncdc
 PORTVERSION=	1.22.1
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://dev.yorhel.nl/download/
 
 MAINTAINER=	earl1k@mail.ru
 COMMENT=	Lightweight direct connect client with ncurses interface
+WWW=		https://dev.yorhel.nl/ncdc
 
 LICENSE=	MIT
 

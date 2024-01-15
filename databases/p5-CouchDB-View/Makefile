@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CouchDB-View
 PORTVERSION=	0.003
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Handle and create CouchDB views in Perl
+WWW=		https://metacpan.org/release/CouchDB-View
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

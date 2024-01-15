@@ -1,21 +1,19 @@
-# Created by: Carlos J Puga Medina <cpm@fbsd.es>
-# $FreeBSD$
-
 PORTNAME=	sphinxcontrib-programoutput
 PORTVERSION=	0.11
 CATEGORIES=	textproc
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Sphinx extension to include program output
+WWW=		https://pythonhosted.org/sphinxcontrib-programoutput/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PY_SPHINX}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.3.5,1:textproc/py-sphinx@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 USE_LOCALE=	en_US.UTF-8
 

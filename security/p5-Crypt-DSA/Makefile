@@ -1,6 +1,3 @@
-# Created by: Michael Haro <mharo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-DSA
 PORTVERSION=	1.17
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DSA signature and key generation
+WWW=		https://metacpan.org/release/Crypt-DSA
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Digest-SHA1>=0:security/p5-Digest-SHA1 \

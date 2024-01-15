@@ -1,6 +1,3 @@
-# Created by: Sahil Tandon <sahil@tandon.net>
-# $FreeBSD$
-
 PORTNAME=	AnyEvent-Twitter
 PORTVERSION=	0.64
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Implementation of the Twitter API for AnyEvent
+WWW=		https://metacpan.org/release/AnyEvent-Twitter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

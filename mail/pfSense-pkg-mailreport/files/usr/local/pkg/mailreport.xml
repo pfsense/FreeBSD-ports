@@ -8,7 +8,7 @@
  * mailreport.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,8 @@
 		]]>
 	</copyright>
 	<name>mailreport</name>
-	<title>Status: Email Reports</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Status/Email Reports</title>
 	<menu>
 		<name>Email Reports</name>
 		<tooltiptext>Setup periodic email reports.</tooltiptext>

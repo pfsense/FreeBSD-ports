@@ -1,21 +1,19 @@
-# Created by: Haowu Ge <ghw@7axu.com>
-# $FreeBSD$
-
 PORTNAME=	remotebox
-DISTVERSION=	2.5
-PORTREVISION=	3
+DISTVERSION=	3.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://remotebox.knobgoblin.org.uk/downloads/
 DISTNAME=	RemoteBox-${DISTVERSION}
 
-MAINTAINER=	kai@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Open Source VirtualBox Client with Remote Management
+WWW=		https://remotebox.knobgoblin.org.uk/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
-RUN_DEPENDS=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
-		p5-SOAP-Lite>=0:net/p5-SOAP-Lite
+RUN_DEPENDS=	p5-Gtk3>0:x11-toolkits/p5-Gtk3 \
+		p5-SOAP-Lite>0:net/p5-SOAP-Lite
 
 USES=		shebangfix tar:bzip2
 
@@ -26,7 +24,7 @@ NO_BUILD=	yes
 DESKTOP_ENTRIES=	"RemoteBox" "${COMMENT}" "${PORTNAME}" "${PORTNAME}" \
 			"System;" false
 
-OPTIONS_DEFINE=		DOCS KRDC
+OPTIONS_DEFINE=		KRDC
 OPTIONS_DEFAULT=	FREERDP TIGERVNC
 OPTIONS_MULTI=		VIEWER
 OPTIONS_MULTI_VIEWER=	FREERDP RDESKTOP TIGERVNC VINAGRE
@@ -44,8 +42,7 @@ TIGERVNC_RUN_DEPENDS=	vncviewer:net/tigervnc-viewer
 VINAGRE_RUN_DEPENDS=	vinagre:net/vinagre
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|$$Bin/share/remotebox|${DATADIR}|; \
-		s|$$Bin/docs|${DOCSDIR}|' \
+	@${REINPLACE_CMD} -e 's|$$Bin/share/remotebox|${DATADIR}|' \
 	       	${WRKSRC}/remotebox
 
 do-install:
@@ -66,10 +63,5 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/share/remotebox/icons/remotebox.png \
 	       ${STAGEDIR}${PREFIX}/share/pixmaps
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/applications
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/docs/remotebox.pdf ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/docs/changelog.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

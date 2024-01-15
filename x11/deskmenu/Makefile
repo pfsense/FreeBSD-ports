@@ -1,14 +1,13 @@
-# Created by: Matt Peterson <matt@peterson.org>
-# $FreeBSD$
-
 PORTNAME=	deskmenu
 PORTVERSION=	1.4.5
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	DEBIAN/pool/main/d/${PORTNAME} GENTOO
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	matt@peterson.org
 COMMENT=	X11 application launcher
+WWW=		https://www.oroborus.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

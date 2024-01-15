@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	google-compute-engine-oslogin
 DISTVERSION=	20191018.00
 PORTREVISION=	1
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OS Login Guest Environment for Google Compute Engine
+WWW=		https://github.com/GoogleCloudPlatform/guest-oslogin
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/packaging/debian/copyright

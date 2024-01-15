@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	ply
 PORTVERSION=	3.11
 CATEGORIES=	devel python
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Python Lex-Yacc
+WWW=		http://www.dabeaz.com/ply/
 
 LICENSE=	BSD3CLAUSE
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	audio
 
@@ -9,5 +7,9 @@ GST_PLUGIN=	mpg123
 DIST=		good
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
+
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS= libmpg123.so:audio/mpg123
 
 .include "${MASTERDIR}/Makefile"

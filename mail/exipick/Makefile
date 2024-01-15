@@ -1,6 +1,3 @@
-# Created by: Vsevolod Stakhov <vsevolod@highsecure.ru>
-# $FreeBSD$
-
 PORTNAME=	exipick
 PORTVERSION=	20100323.0
 CATEGORIES=	mail
@@ -10,6 +7,7 @@ EXTRACT_SUFX=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Display messages from Exim queue based on a variety of criteria
+WWW=		http://jetmore.org/john/code/ #exipick
 
 PLIST_FILES=	bin/${PORTNAME}
 

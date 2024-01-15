@@ -1,13 +1,11 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-
 PORTNAME=	skippy-xd
 PORTVERSION=	0.5.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Full-screen Expose-style standalone task switcher for X11
+WWW=		https://github.com/richardgv/skippy-xd
 
 LICENSE=	GPLv2
 

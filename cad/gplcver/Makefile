@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gplcver
 PORTVERSION=	2.12.a
 CATEGORIES=	cad
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}.src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Verilog HDL simulator
+WWW=		https://sourceforge.net/projects/gplcver/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Joe Barbish
-# $FreeBSD$
-
 PORTNAME=	dynip
 PORTVERSION=	0.0
 CATEGORIES=	dns
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	dynip@a1poweruser.com
 COMMENT=	Dynamic IP Address Updater
+WWW=		http://dynip.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 

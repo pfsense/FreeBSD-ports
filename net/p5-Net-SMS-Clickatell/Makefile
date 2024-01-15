@@ -1,6 +1,3 @@
-# Created by: John Bayly <freebsd.ports@tipstrade.net>
-# $FreeBSD$
-
 PORTNAME=	Net-SMS-Clickatell
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	freebsd.ports@tipstrade.net
 COMMENT=	Access to Clickatell SMS messaging service
+WWW=		https://metacpan.org/release/Net-SMS-Clickatell
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

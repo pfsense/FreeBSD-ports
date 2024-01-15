@@ -1,12 +1,10 @@
-# Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	bsnmp-ucd
 PORTVERSION=	0.4.5
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	bsnmpd module that implements parts of UCD-SNMP-MIB
+WWW=		https://github.com/trociny/bsnmp-ucd
 
 LICENSE=	BSD2CLAUSE
 

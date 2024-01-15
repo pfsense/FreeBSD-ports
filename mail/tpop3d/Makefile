@@ -1,6 +1,3 @@
-# Created by: chris@shagged.org
-# $FreeBSD$
-
 PORTNAME=	tpop3d
 PORTVERSION=	1.5.5
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Virtual-domain capable POP3 server supporting MySQL, PgSQL etc auth
+WWW=		https://savannah.nongnu.org/projects/tpop3d/
 
 LICENSE=	GPLv2
 
@@ -47,11 +45,12 @@ MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ON=	--enable-auth-mysql \
 			--with-mysql-lib-dir=${LOCALBASE}/lib/mysql \
 			--with-mysql-include-dir=${LOCALBASE}/include/mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ON=	--enable-auth-pgsql \
 			--with-pgsql-lib-dir=${LOCALBASE}/lib \
 			--with-pgsql-include-dir=${LOCALBASE}/include
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_ON=	--enable-auth-ldap --with-openldap-root=${LOCALBASE}
 PERLAUTH_USES=		perl5
 FIX_PERLAUTH_EXTRA_PATCHES=${PATCHDIR}/extra-patch-auth_perl.c

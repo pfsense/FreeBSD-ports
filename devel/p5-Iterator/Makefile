@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Iterator
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	General-purpose iterator class
+WWW=		https://metacpan.org/release/Iterator
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

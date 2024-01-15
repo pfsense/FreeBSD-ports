@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libftdi
 PORTVERSION=	0.20
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	devel
 MASTER_SITES=	http://www.intra2net.com/en/developer/libftdi/download/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library (using libusb) to talk to FTDI chips
+WWW=		https://www.intra2net.com/de/produkte/opensource/ftdi/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi

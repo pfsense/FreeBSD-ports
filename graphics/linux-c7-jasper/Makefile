@@ -1,6 +1,3 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	jasper
 PORTVERSION=	1.900.1
 DISTVERSIONSUFFIX=	-33.el7
@@ -10,8 +7,10 @@ PKGNAMESUFFIX=	-libs
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	JPEG-2000 reference implementation (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://www.ece.uvic.ca/~frodo/jasper/
 
-USES=		linux:c7
+USES=		cpe linux:c7
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 USE_LINUX=	jpeg
 USE_LINUX_RPM=	yes

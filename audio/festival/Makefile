@@ -1,9 +1,6 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	festival
 PORTVERSION=	2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio accessibility
 MASTER_SITES=	FESTIVAL
 DISTFILES=	${DISTNAME}-release.tar.gz	\
@@ -21,21 +18,24 @@ PATCHFILES=	src_modules_diphone_diphone.h.diff?id=b58a836:debian	\
 		languagespatch.diff?id=b58a836:debian	\
 		${SPT_PATCHES:C/.*/patch-speech__tools_\0:netbsd/}
 PATCH_SITES=	ftp://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/audio/festival/patches/:netbsd	\
-		http://anonscm.debian.org/cgit/tts/festival.git/plain/debian/patches/:debian
+		https://salsa.debian.org/tts-team/festival/-/raw/b58a836b84ff9a9afa82eb0283bac19bf9c22e71/debian/patches/:debian
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Multi-lingual speech synthesis system
+WWW=		https://www.cstr.ed.ac.uk/projects/festival/
+
+USES=		gmake
+USE_CXXSTD=	gnu++11
 
 OPTIONS_DEFINE=	NAS
 OPTIONS_DEFAULT=NAS
 
-CXXFLAGS+=	-DFTLIBDIR=${LOCALBASE}/share/festival/lib
+CXXFLAGS+=	-DFTLIBDIR=${LOCALBASE}/share/festival/lib -fno-delete-null-pointer-checks
 CONFIGURE_WRKSRC=${WRKDIR}/festival
-USES=		gmake
 SPEECHTOOLS=	${WRKSRC}/speech_tools
 FESTIVAL=	${WRKSRC}/festival
-MAKE_ARGS+=	CC="${CC}" GCC="${CC}" \
-		CXX="${CXX}" GXX="${CXX}" \
+MAKE_ARGS+=	CC="${CCACHE_BIN} ${CC}" GCC="${CCACHE_BIN} ${CC}" \
+		CXX="${CCACHE_BIN} ${CXX}" GXX="${CCACHE_BIN} ${CXX}" \
 		EST_HOME=${SPEECHTOOLS}
 WRKSRC=		${WRKDIR}
 

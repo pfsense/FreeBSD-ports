@@ -1,6 +1,3 @@
-# Created by: Paul Schmehl <pauls@utdallas.edu>
-# $FreeBSD$
-
 PORTNAME=	sancp
 PORTVERSION=	1.6.1
 DISTVERSIONSUFFIX=	-stable
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}-stable
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Network connection profiler
+WWW=		http://www.metre.net/sancp.html
 
 LICENSE=	QPLv1
 LICENSE_NAME=	Q PUBLIC LICENSE v1.0

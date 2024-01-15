@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	d2coding
 PORTVERSION=	1.3.2
 CATEGORIES=	korean x11-fonts
@@ -10,6 +8,7 @@ DISTNAME=	D2Coding-Ver${PORTVERSION}-${PORTRELEASE}
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	D2Coding Hangul font
+WWW=		https://github.com/naver/d2codingfont
 
 LICENSE=	OFL11
 

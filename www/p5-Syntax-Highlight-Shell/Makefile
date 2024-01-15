@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Syntax-Highlight-Shell
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for shell script highlighting
+WWW=		https://metacpan.org/release/Syntax-Highlight-Shell
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Shell-Parser>=0:devel/p5-Shell-Parser

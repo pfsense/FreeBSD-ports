@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	lpSolve
-PORTVERSION=	5.6.15
-PORTREVISION=	1
+DISTVERSION=	5.6.20
 CATEGORIES=	math
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs
+WWW=		https://cran.r-project.org/web/packages/lpSolve/
 
 LICENSE=	LGPL20
 

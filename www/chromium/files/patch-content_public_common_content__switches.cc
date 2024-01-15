@@ -1,20 +1,20 @@
---- content/public/common/content_switches.cc.orig	2021-01-18 21:28:57 UTC
+--- content/public/common/content_switches.cc.orig	2023-12-10 06:10:27 UTC
 +++ content/public/common/content_switches.cc
-@@ -895,7 +895,7 @@ const char kWebXrRuntimeWMR[] = "windows-mixed-reality
- const char kDisableAcceleratedVideoDecode[] =
-     "disable-accelerated-video-decode";
+@@ -364,6 +364,8 @@ const char kEnableIsolatedWebAppsInRenderer[] =
+ // builds.
+ const char kEnableLogging[]                 = "enable-logging";
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(OS_ANDROID)) || defined(OS_BSD)
- // Enables hardware acceleration of video decoding on linux. (defaults to off)
- const char kEnableAcceleratedVideoDecode[] = "enable-accelerated-video-decode";
- #endif
-@@ -959,7 +959,7 @@ const char kEnableAggressiveDOMStorageFlushing[] =
- // Enable indication that browser is controlled by automation.
- const char kEnableAutomation[] = "enable-automation";
++const char kDisableUnveil[]                 = "disable-unveil";
++
+ // Enables the type, downlinkMax attributes of the NetInfo API. Also, enables
+ // triggering of change attribute of the NetInfo API when there is a change in
+ // the connection type.
+@@ -994,7 +996,7 @@ const char kEnableAutomation[] = "enable-automation";
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_FREEBSD)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
  // Allows sending text-to-speech requests to speech-dispatcher, a common
  // Linux speech service. Because it's buggy, the user must explicitly
  // enable it so that visiting a random webpage can't cause instability.

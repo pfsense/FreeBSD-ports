@@ -1,19 +1,17 @@
-# Created by: Yasuhiro KIMURA <yasu@utahime.org>
-# $FreeBSD$
-
 PORTNAME=	authres
 PORTVERSION=	1.2.0
 CATEGORIES=	mail python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Python module for RFC 5451 Authentication-Results headers
+WWW=		https://launchpad.net/authentication-results-python/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

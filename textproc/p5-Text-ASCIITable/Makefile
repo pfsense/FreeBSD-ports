@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-ASCIITable
 PORTVERSION=	0.22
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Create a nice formatted table using ASCII characters
+WWW=		https://metacpan.org/release/Text-ASCIITable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

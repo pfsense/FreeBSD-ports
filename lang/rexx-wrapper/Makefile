@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	wrapper
 PORTVERSION=	2.4
 CATEGORIES=	lang
@@ -10,6 +7,7 @@ DISTNAME=	RexxWrapper-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool that wraps Rexx source or tokenised code into an executable
+WWW=		https://rexxwrapper.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

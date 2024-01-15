@@ -1,6 +1,3 @@
-# Created by: Henk van Oers <hvo.pm@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	Dancer2-Plugin-Path-Class
 PORTVERSION=	0.08
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	List a directory using Path::Class
+WWW=		https://metacpan.org/release/HVOERS/Dancer2-Plugin-Path-Class-0.08
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

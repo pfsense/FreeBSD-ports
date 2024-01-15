@@ -1,6 +1,3 @@
-# Created by: Ashish Shukla <wahjava@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	inconsolata-ttf
 PORTVERSION=	2.001
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Monospaced truetype font
+WWW=		https://fonts.google.com/specimen/Inconsolata
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/OFL.txt

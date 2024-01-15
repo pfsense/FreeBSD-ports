@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	gamess
 DISTVERSION=	20181013
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	science
 PKGNAMESUFFIX=	-us # "US" fork
 DISTNAME=	gamess-current
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	General Atomic and Molecular Electronic Structure System (US)
+WWW=		https://www.msg.chem.iastate.edu/gamess/
 
 LICENSE=	GAMESS_LICENSE
 LICENSE_NAME=	GAMESS User License Agreement

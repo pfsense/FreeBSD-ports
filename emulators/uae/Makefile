@@ -1,19 +1,16 @@
-# Created by: Simon Dick <simond@irrelevant.org>
-# $FreeBSD$
-
 PORTNAME=	uae
 PORTVERSION=	0.8.29
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	emulators
 MASTER_SITES=	LOCAL/grembo
 
 MAINTAINER=	simond@irrelevant.org
 COMMENT=	Commodore Amiga emulator
+WWW=		http://www.amigaemulator.org/
 
 LICENSE=	GPLv2
 
-CONFLICTS=	e-uae-[0-9]*
-MAKE_JOBS_UNSAFE=yes
+CONFLICTS=	e-uae
 
 USES=		gmake gnome pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
@@ -21,9 +18,17 @@ USE_GNOME=	gtk20
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|build68kc|build68k|' \
 		${WRKSRC}/src/Makefile.in
+	@${REINPLACE_CMD} -e 's|struct socketbase {|extern &|' \
+		${WRKSRC}/src/include/bsdsocket.h
 	@${LN} -sf ../md-ppc/support.c ${WRKSRC}/src/md-ppc-gcc/support.c
 
 do-install:

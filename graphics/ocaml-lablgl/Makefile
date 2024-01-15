@@ -1,9 +1,6 @@
-# Created by: Ronald Kuehn <rk@ronald.org>
-# $FreeBSD$
-
 PORTNAME=	lablgl
 PORTVERSION=	1.05
-PORTREVISION=	3
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://wwwfun.kurims.kyoto-u.ac.jp/soft/lsl/dist/ \
@@ -12,10 +9,11 @@ PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL interface for Objective Caml
+WWW=		https://forge.ocamlcore.org/projects/lablgl/
 
 LICENSE=	BSD3CLAUSE
 
-CONFLICTS=	ocaml-nox11-[0-9]*
+CONFLICTS=	ocaml-nox11
 
 USES=		gl gmake tk xorg
 USE_XORG=	x11 xext xmu

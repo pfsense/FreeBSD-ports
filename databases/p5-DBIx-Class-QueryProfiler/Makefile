@@ -1,6 +1,3 @@
-# Created by: andrey@kostenko.name
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-QueryProfiler
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBIx::Class profiler
+WWW=		https://metacpan.org/release/DBIx-Class-QueryProfiler
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

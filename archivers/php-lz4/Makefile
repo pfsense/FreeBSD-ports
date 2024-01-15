@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	lz4
-DISTVERSION=	0.3.5
+DISTVERSION=	0.4.3
 CATEGORIES=	archivers
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	pave@FreeBSD.org
 COMMENT=	LZ4 extension for PHP
+WWW=		https://github.com/kjdev/php-ext-lz4
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,7 +13,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	liblz4.so:archivers/liblz4
 
 USES=		php:ext
-IGNORE_WITH_PHP=	80
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kjdev

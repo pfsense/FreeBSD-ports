@@ -1,6 +1,3 @@
-# Created by: buratello@easy.com
-# $FreeBSD$
-
 PORTNAME=	redorblack
 PORTVERSION=	1.0
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/redorb/
 
 MAINTAINER=	buratello@easy.com
 COMMENT=	Simple card game to test fortune and probability theory
+WWW=		https://sourceforge.net/projects/redorb/
 
 LICENSE=	BSD2CLAUSE
 

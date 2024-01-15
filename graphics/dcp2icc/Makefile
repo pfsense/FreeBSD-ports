@@ -1,14 +1,12 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dcp2icc
 PORTVERSION=	0.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics converters
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Version%20${PORTVERSION}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	DCP to ICC camera profile converter
+WWW=		https://sourceforge.net/projects/dcp2icc/
 
 LICENSE=	GPLv2
 
@@ -16,7 +14,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		liblcms.so:graphics/lcms
 
 USES=		localbase:ldflags scons tar:bzip2
-USE_GCC=	any	# segfaults on exit when built with Clang
+USE_GCC=	yes	# segfaults on exit when built with Clang
 
 PLIST_FILES=	bin/${PORTNAME}
 

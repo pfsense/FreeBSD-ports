@@ -1,6 +1,3 @@
-# Created by: Damien Bobillot
-# $FreeBSD$
-
 PORTNAME=	pam_jail
 PORTVERSION=	0.4
 CATEGORIES=	security

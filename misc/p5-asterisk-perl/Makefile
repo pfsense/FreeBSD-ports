@@ -1,6 +1,3 @@
-# Created by: Alexander Timoshenko <gonzo@univ.kiev.ua>
-# $FreeBSD$
-
 PORTNAME=	asterisk-perl
 PORTVERSION=	1.08
 CATEGORIES=	misc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Asterisk perl library
+WWW=		http://asterisk.gnuinter.net/
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/LICENSE

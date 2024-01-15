@@ -1,6 +1,3 @@
-# Created by: mike@LITech.lviv.ua
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../../www/webalizer
 CATEGORIES=	ukrainian
 

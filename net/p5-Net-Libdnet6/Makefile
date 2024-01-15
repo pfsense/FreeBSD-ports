@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Libdnet6
 PORTVERSION=	0.28
 CATEGORIES=	net perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Add IPv6 support to Net::Libdnet
+WWW=		https://metacpan.org/release/Net-Libdnet6
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/LICENSE.Artistic

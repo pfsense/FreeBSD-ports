@@ -1,6 +1,3 @@
-# Created by: John-Mark Gurney <jmg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nist-kat
 DISTVERSION=	0.0.2015.02.23
 PORTREVISION=	1

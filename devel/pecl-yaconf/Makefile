@@ -1,12 +1,10 @@
-# Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	yaconf
-DISTVERSION=	1.1.0
+PORTVERSION=	1.1.2
 CATEGORIES=	devel
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP Persistent Configurations Container
+WWW=		https://pecl.php.net/package/yaconf
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE

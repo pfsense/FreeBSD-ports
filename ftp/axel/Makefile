@@ -1,28 +1,29 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	axel
-PORTVERSION=	2.4
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.17.11-21
+DISTVERSIONSUFFIX=	-gd65dffa
 CATEGORIES=	ftp
-MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/axel/axel-2.4.tar.gz/a2a762fce0c96781965c8f9786a3d09d/
 
-MAINTAINER=	prudhvi-krishna-bsd@surapaneni.in
-COMMENT=	Download accelerator
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Lightweight CLI download accelerator
+WWW=		https://github.com/axel-download-accelerator/axel
 
-USES=		gmake
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--prefix=${PREFIX} --mandir=${MANPREFIX}/man
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	NLS DEBUG
-OPTIONS_SUB=	yes
+BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive \
+		txt2man:textproc/txt2man
 
-NLS_USES=	gettext iconv
-NLS_CONFIGURE_ON=	--i18n=1
-NLS_CONFIGURE_OFF=	--i18n=0
-DEBUG_CONFIGURE_ON=--debug=1 --strip=0
+USES=		autoreconf gettext-tools gmake pkgconfig ssl
 
-post-configure:
-	@${REINPLACE_CMD} -e 's|gcc|${CC}|' ${WRKSRC}/Makefile.settings
+USE_GITHUB=	yes
+GH_ACCOUNT=	axel-download-accelerator
+
+GNU_CONFIGURE=	yes
+
+CONFIGURE_ARGS=	--with-ssl=openssl
+
+PLIST_FILES=	bin/axel \
+		man/man1/axel.1.gz
 
 .include <bsd.port.mk>

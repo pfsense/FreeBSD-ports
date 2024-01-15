@@ -1,14 +1,12 @@
-# Created by: James Earl <jdearl@telus.net>
-# $FreeBSD$
-
 PORTNAME=	libxfce4util
-PORTVERSION=	4.16.0
+PORTVERSION=	4.18.1
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Extension library for the Xfce desktop environment
+WWW=		https://www.xfce.org/
 
 LICENSE=	GPLv2
 
@@ -30,13 +28,13 @@ OPTIONS_SUB=		yes
 GIR_DESC=		Use Gobject Introspection
 
 GIR_USE=		gnome=introspection:build
-GIR_CONFIGURE_ON=       --enable-introspection=yes
-GIR_CONFIGURE_OFF=      --enable-introspection=no
+GIR_CONFIGURE_ON=	--enable-introspection=yes
+GIR_CONFIGURE_OFF=	--enable-introspection=no
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
 
-VAPI_BUILD_DEPENDS=	vapigen:lang/vala
+VAPI_USES=		vala:build
 VAPI_CONFIGURE_ENABLE=	vala
 VAPI_IMPLIES=		GIR
 

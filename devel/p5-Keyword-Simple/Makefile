@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Keyword-Simple
 PORTVERSION=	0.04
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Define new keywords in pure Perl
+WWW=		https://metacpan.org/release/Keyword-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

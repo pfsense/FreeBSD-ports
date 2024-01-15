@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	man2web
 PORTVERSION=	0.88
 PORTREVISION=	2
@@ -8,10 +6,12 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert man pages to HTML
+WWW=		https://man2web.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/GPL
 
+USES=		cpe
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--bindir="${PREFIX}/${CGIDIR}" \
 		--sysconfdir="${PREFIX}/etc" \

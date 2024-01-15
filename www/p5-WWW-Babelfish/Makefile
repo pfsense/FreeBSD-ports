@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	WWW-Babelfish
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to obtain translations from the babelfish server
+WWW=		https://metacpan.org/release/WWW-Babelfish
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \

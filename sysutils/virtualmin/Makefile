@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	virtualmin
-PORTVERSION=	6.11
+PORTVERSION=	7.2
+PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.webmin.com/download/virtualmin/
@@ -10,20 +9,22 @@ EXTRACT_SUFX=	.wbm.gz
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Virtual hosting management system based on webmin
+WWW=		https://www.webmin.com/virtualmin.html
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	${LOCALBASE}/lib/webmin/webmin-init:sysutils/webmin
 
-USES=		shebangfix
-SHEBANG_FILES=	*.cgi \
-		bin/virtualmin-get-domains-ssl-status.pl
-NO_ARCH=	yes
+USES=		cpe shebangfix
+SHEBANG_FILES=	*.cgi
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/virtual-server
 
+post-build:
+	cd ${WRKSRC} && ${CC} procmail-wrapper.c -o procmail-wrapper
+
 post-extract:
-	@${RM} -r ${WRKSRC}/images/.xvpics
+	@${RM} -r ${WRKSRC}/images/.xvpics ${WRKSRC}/.gitignore
 	@${FIND} ${WRKSRC} -name "*.swp" -delete
 	@${FIND} ${WRKSRC} -name "*.cgi" | ${XARGS} ${REINPLACE_CMD} -e "s@/usr/local/bin/perl@${PERL}@"
 	@${FIND} ${WRKSRC} -name "*.bak" -delete

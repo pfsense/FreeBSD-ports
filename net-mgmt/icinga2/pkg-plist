@@ -22,12 +22,12 @@ etc/bash_completion.d/icinga2
 %%MYSQL%%@sample(%%ICINGA2USER%%,%%ICINGA2GROUP%%,0640) %%ETCDIR%%/features-available/ido-mysql.conf.sample
 %%PGSQL%%@sample(%%ICINGA2USER%%,%%ICINGA2GROUP%%,0640) %%ETCDIR%%/features-available/ido-pgsql.conf.sample
 @sample %%ETCDIR%%/features-available/influxdb.conf.sample
+@sample %%ETCDIR%%/features-available/influxdb2.conf.sample
 @sample %%ETCDIR%%/features-available/livestatus.conf.sample
 @sample %%ETCDIR%%/features-available/mainlog.conf.sample
 @sample %%ETCDIR%%/features-available/notification.conf.sample
 @sample %%ETCDIR%%/features-available/opentsdb.conf.sample
 @sample %%ETCDIR%%/features-available/perfdata.conf.sample
-@sample %%ETCDIR%%/features-available/statusdata.conf.sample
 @sample %%ETCDIR%%/features-available/syslog.conf.sample
 %%ETCDIR%%/features-enabled/checker.conf
 %%ETCDIR%%/features-enabled/mainlog.conf
@@ -38,9 +38,9 @@ etc/bash_completion.d/icinga2
 @sample %%ETCDIR%%/zones.conf.sample
 %%ETCDIR%%/zones.d/README
 %%MYSQL%%lib/icinga2/libmysql_shim.so
-%%MYSQL%%lib/icinga2/libmysql_shim.so.2.12.3
+%%MYSQL%%lib/icinga2/libmysql_shim.so.2.14.0
 %%PGSQL%%lib/icinga2/libpgsql_shim.so
-%%PGSQL%%lib/icinga2/libpgsql_shim.so.2.12.3
+%%PGSQL%%lib/icinga2/libpgsql_shim.so.2.14.0
 lib/icinga2/sbin/icinga2
 libexec/nagios/check_nscp_api
 man/man8/icinga2.8.gz
@@ -81,6 +81,8 @@ sbin/icinga2
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/addons/icingaweb2_grafana.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/addons/icingaweb2_graphite.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/addons/icingaweb2_maps.png
+%%PORTDOCS%%%%DOCSDIR%%/markdown/images/addons/nano-syntax.png
+%%PORTDOCS%%%%DOCSDIR%%/markdown/images/addons/vim-syntax.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/advanced-topics/flapping-state-graph.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/advanced-topics/icinga2_external_checks_freshness_icingaweb2.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/advanced-topics/icingaweb2_downtime_handled.png
@@ -115,25 +117,21 @@ sbin/icinga2
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_02_global_zone.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_03.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_04.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_05_nsclient_01.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_05_nsclient_02.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_05_nsclient_03.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_05_nsclient_04.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_05_nsclient_05.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_05_nsclient_06.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_05_nsclient_07.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_06_finish_no_ticket.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_06_finish_with_ticket.png
 %%PORTDOCS%%%%DOCSDIR%%/markdown/images/distributed-monitoring/icinga2_windows_setup_wizard_examine_config.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/installation/mariadb-centos7.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/installation/nano-syntax.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/installation/postgr-import-ido.png
-%%PORTDOCS%%%%DOCSDIR%%/markdown/images/installation/vim-syntax.png
+%%PORTDOCS%%%%DOCSDIR%%/markdown/images/icingadb/icingadb-architecture.png
+%%PORTDOCS%%%%DOCSDIR%%/markdown/images/icingadb/icingadb-daemon.png
+%%PORTDOCS%%%%DOCSDIR%%/markdown/images/icingadb/icingadb-icinga2.png
+%%PORTDOCS%%%%DOCSDIR%%/markdown/images/icingadb/icingadb-redis.png
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/newsyslog/icinga2.conf
 %%MYSQL%%%%DATADIR%%-ido-mysql/schema/mysql.sql
 %%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.0.2.sql
 %%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.1.0.sql
 %%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.11.0.sql
+%%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.12.7.sql
+%%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.13.0.sql
+%%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.13.3.sql
 %%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.2.0.sql
 %%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.3.0.sql
 %%MYSQL%%%%DATADIR%%-ido-mysql/schema/upgrade/2.4.0.sql
@@ -175,6 +173,7 @@ sbin/icinga2
 %%DATADIR%%/include/plugins-contrib.d/raid-controller.conf
 %%DATADIR%%/include/plugins-contrib.d/smart-attributes.conf
 %%DATADIR%%/include/plugins-contrib.d/storage.conf
+%%DATADIR%%/include/plugins-contrib.d/systemd.conf
 %%DATADIR%%/include/plugins-contrib.d/virtualization.conf
 %%DATADIR%%/include/plugins-contrib.d/vmware.conf
 %%DATADIR%%/include/plugins-contrib.d/web.conf

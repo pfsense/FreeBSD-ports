@@ -1,21 +1,24 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	cvsgraph
-PORTVERSION=	1.7.0
-PORTREVISION=	8
+DISTVERSION=	1.7.2
+PORTREVISION=	1
 CATEGORIES=	devel graphics
-MASTER_SITES=	http://www.akhphd.au.dk/~bertho/cvsgraph/release/
+MASTER_SITES=	https://www.vagrearg.org/cvsgraph/release/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	terry-freebsd@glaver.org
 COMMENT=	Graph the life story of a file under CVS or RCS
+WWW=		https://www.vagrearg.org/content/cvsgraph
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgd.so:graphics/gd
+LIB_DEPENDS=	libgd.so:graphics/gd \
+		libpng16.so:graphics/png \
+		libtiff.so:graphics/tiff \
+		libwebp.so:graphics/webp \
+		libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		localbase:ldflags
+USES=		localbase:ldflags jpeg pkgconfig
 SUB_FILES=	pkg-message
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-lm

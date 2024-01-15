@@ -1,6 +1,3 @@
-# Created by: Steve Jacobson <sjac@cs.stanford.edu>
-# $FreeBSD$
-
 PORTNAME=	sock
 PORTVERSION=	0.4.2
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www-cs-students.stanford.edu/~sjac/sock/
 
 MAINTAINER=	sjac@cs.stanford.edu
 COMMENT=	W. Richard Stevens' sock program plus IPv6 and SCTP
+WWW=		http://www-cs-students.stanford.edu/~sjac/sock_info.html
 
 LICENSE=	WRSTEVENS
 LICENSE_NAME=	WRSTEVENS

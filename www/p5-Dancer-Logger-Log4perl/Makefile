@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Logger-Log4perl
 PORTVERSION=	0.9.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dancer logging adapter for Log::Log4perl
+WWW=		https://metacpan.org/release/Dancer-Logger-Log4perl
 
 LICENSE=	ART20
 

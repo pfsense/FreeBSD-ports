@@ -1,23 +1,21 @@
-# Created by: Koop Mast <einekoai@chello.nl>
-# $FreeBSD$
-
 PORTNAME=	tsclient
 PORTVERSION=	0.150
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	net gnome
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@thepentagon.org
 COMMENT=	GNOME 2 frontend for rdesktop and vncviewer
+WWW=		https://sourceforge.net/projects/tsclient/
 
 RUN_DEPENDS=	rdesktop:net/rdesktop
 
-USE_GNOME=	gtk20 intltool
 USES=		gettext gmake gnome libtool pathfix pkgconfig
+USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-gnome
-CPPFLAGS+=	-I${LOCALBASE}/include `pkg-config --cflags libgnomeui-2.0`
-LIBS+=		-L${LOCALBASE}/lib `pkg-config --libs libgnomeui-2.0`
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 PORTDOCS=	COPYING NEWS README
 
@@ -32,7 +30,7 @@ RUN_DEPENDS+=	vncviewer:net/tightvnc
 .endif
 
 .if ${PORT_OPTIONS:MXNEST}
-RUN_DEPENDS+=	Xnest:x11-servers/xorg-nestserver
+RUN_DEPENDS+=	Xnest:x11-servers/xorg-server@xnest
 .endif
 
 .include <bsd.port.pre.mk>

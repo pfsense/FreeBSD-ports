@@ -1,6 +1,3 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	specification
 PORTVERSION=	000328
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}.html
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Specification of the Sather programming language
+WWW=		https://www.gnu.org/software/sather/
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Benchmark
 PORTVERSION=	0.004
 PORTREVISION=	2
@@ -10,13 +7,16 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Make sure something really is faster
+WWW=		https://metacpan.org/release/Test-Benchmark
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/LGPL
 
 TEST_DEPENDS=	p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

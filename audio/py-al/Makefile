@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	al
 PORTVERSION=	0.1.0
 CATEGORIES=	audio python
@@ -9,12 +7,13 @@ DISTNAME=	PyAL-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenAL bindings for Python
+WWW=		https://bitbucket.org/marcusva/py-al
 
 LICENSE=	PD ZLIB
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/doc/copying.rst
 
-USES=		openal:al python:3.6+
+USES=		openal:al python
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

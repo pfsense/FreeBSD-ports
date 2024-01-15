@@ -1,14 +1,12 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	Parse-ErrorString-Perl
 PORTVERSION=	0.27
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse error messages from the Perl interpreter
+WWW=		https://github.com/PadreIDE/Parse-ErrorString-Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

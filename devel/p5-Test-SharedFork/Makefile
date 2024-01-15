@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-SharedFork
 PORTVERSION=	0.35
 CATEGORIES=	devel perl5
@@ -7,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:EXODIST
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for fork test
+WWW=		https://metacpan.org/release/Test-SharedFork
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -70,6 +70,8 @@ include/wangle/client/ssl/SSLSessionCallbacks.h
 include/wangle/client/ssl/SSLSessionPersistentCache-inl.h
 include/wangle/client/ssl/SSLSessionPersistentCache.h
 include/wangle/client/ssl/ThreadSafeSSLSessionCache.h
+include/wangle/ssl/SNIConfig.h
+include/wangle/ssl/test/MockSSLStats.h
 include/wangle/client/ssl/test/Mocks.h
 include/wangle/client/ssl/test/TestUtil.h
 include/wangle/codec/ByteToMessageDecoder.h
@@ -106,5 +108,4 @@ lib/cmake/wangle/wangle-config.cmake
 lib/cmake/wangle/wangle-targets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/wangle/wangle-targets.cmake
 lib/libwangle.so
-lib/libwangle.so.1
 lib/libwangle.so.1.0.0

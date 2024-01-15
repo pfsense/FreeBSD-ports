@@ -1,6 +1,3 @@
-# Created by: jkoshy
-# $FreeBSD$
-
 PORTNAME=		cvslines
 PORTVERSION=		1.6.9
 CATEGORIES=		devel
@@ -8,6 +5,7 @@ MASTER_SITES=		SF
 
 MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Wrapper to ease merging of changes between CVS branches
+WWW=		https://cvslines.sourceforge.net/menu.html
 
 WRKSRC=			${WRKDIR}/${PORTNAME}
 NO_BUILD=		yes

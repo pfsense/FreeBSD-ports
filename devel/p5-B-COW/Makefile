@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	B-COW
-PORTVERSION=	0.004
+PORTVERSION=	0.007
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Additional B helpers to check COW status
+WWW=		https://metacpan.org/release/B-COW
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

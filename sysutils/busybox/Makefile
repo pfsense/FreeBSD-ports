@@ -1,13 +1,12 @@
-# Created by: luigi@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	busybox
-PORTVERSION=	1.31.1
+PORTVERSION=	1.36.1
+PORTREVISION=	1
 CATEGORIES=	sysutils misc shells
 MASTER_SITES=	https://busybox.net/downloads/
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Set of common utilities built as single binary
+WWW=		https://www.busybox.net/
 
 LICENSE=	GPLv2
 

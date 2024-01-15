@@ -1,6 +1,3 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	hanazono-fonts-ttf
 PORTVERSION=	20170904
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME:C/-.*//}-${PORTVERSION}
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	CJK Mincho-typeface developed by Hanazono University
+WWW=		http://fonts.jp/hanazono/
 
 LICENSE=	OFL11
 

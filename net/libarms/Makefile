@@ -1,6 +1,3 @@
-# Created by: shigeru@iij.ad.jp
-# $FreeBSD$
-
 PORTNAME=	libarms
 PORTVERSION=	5.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	https://dev.smf.jp/dl/ \
 
 MAINTAINER=	shigeru@iij.ad.jp
 COMMENT=	SMFv2/ARMS client library for C
+WWW=		https://dev.smf.jp/libarms/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
-
 PORTNAME=	wmcube
 PORTVERSION=	0.98
 PORTREVISION=	4
@@ -11,12 +8,14 @@ MASTER_SITES=	http://www.tucows.com/download/linux/files/x11/dock/	\
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Window Maker dockapp that displays cpu load and a realtime 3D object
+WWW=		https://www.dockapps.net/wmcube
 
 LICENSE=	GPLv2
 
 USES=		xorg
-USE_XORG=	xpm
+USE_XORG=	x11 xext xpm
 
+CFLAGS+=	-fcommon
 OPTIONS_DEFINE=	DOCS
 WRKSRC=		${WRKDIR}/${PORTNAME}/${PORTNAME}
 MAKEFILE=	Makefile.FREEBSD

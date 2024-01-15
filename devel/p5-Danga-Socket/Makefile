@@ -1,6 +1,3 @@
-# Created by: Jacques Marneweck <jacques@php.net>
-# $FreeBSD$
-
 PORTNAME=	Danga-Socket
 PORTVERSION=	1.62
 CATEGORIES=	devel net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Event loop and event-driven async socket base class
+WWW=		https://metacpan.org/release/Danga-Socket
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

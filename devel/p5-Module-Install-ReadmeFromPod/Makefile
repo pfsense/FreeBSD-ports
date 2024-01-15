@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Install-ReadmeFromPod
 PORTVERSION=	0.30
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Automatically generate README from POD during installation
+WWW=		https://metacpan.org/release/Module-Install-ReadmeFromPod
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

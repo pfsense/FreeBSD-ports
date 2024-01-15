@@ -1,20 +1,18 @@
-# Created by: Thomas E. Zander <riggs@rrr.de>
-# $FreeBSD$
-
 PORTNAME=	freesbie
 PORTVERSION=	2.0.20070710
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	LOCAL/riggs/freesbie
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/2.0.//}
 
 MAINTAINER=	riggs@FreeBSD.org
 COMMENT=	Yet another cool answer to the system-on-cd question
+WWW=		http://www.freesbie.org/
 
 LICENSE=	BSD2CLAUSE
 
 ONLY_FOR_ARCHS=	amd64 i386 powerpc
-ONLY_FOR_ARCHS_REASON=	FreeSBIE build system only supports amd64, i386 and powerpc
+ONLY_FOR_ARCHS_REASON=	build system only supports amd64, i386, and powerpc
 
 RUN_DEPENDS=	cdrecord:sysutils/cdrtools
 

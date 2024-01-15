@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	gtk-sharp-beans
 PORTVERSION=	2.14.1
 PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extensions on top of GTK-sharp
+WWW=		http://gitorious.org/gtk-sharp-beans
 
 LICENSE=	LGPL21
 

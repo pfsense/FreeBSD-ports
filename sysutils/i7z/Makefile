@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	i7z
 PORTVERSION=	0.27.4
 DISTVERSIONPREFIX=	v
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	dim@FreeBSD.org
 COMMENT=	Thermal and C-state reporting utility for Intel Core CPUs
+WWW=		https://github.com/DimitryAndric/i7z
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

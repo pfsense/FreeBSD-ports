@@ -1,6 +1,3 @@
-# Created by: Max Khon
-# $FreeBSD$
-
 PORTNAME=	pod
 PORTVERSION=	0.5.2
 PORTREVISION=	14
@@ -9,8 +6,9 @@ MASTER_SITES=	SF/fuse${PORTNAME}/fuse${PORTNAME}/FUSEPod%20v${PORTVERSION}
 PKGNAMEPREFIX=	fusefs-
 DISTNAME=	fusepod-${PORTVERSION}
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FUSE-based filesystem for iPod
+WWW=		https://fusepod.sourceforge.net/
 
 LIB_DEPENDS=	libgpod.so:audio/libgpod\
 		libtag.so:audio/taglib

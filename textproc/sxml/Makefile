@@ -1,6 +1,3 @@
-# Created by: Kouichi ABE (WALL) <kouichi@mysticwall.com>
-# $FreeBSD$
-
 PORTNAME=	sxml
 PORTVERSION=	1.0.7
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.MysticWALL.COM/download/
 
 MAINTAINER=	takefu@airport.fm
 COMMENT=	Skimpy XML parsing and grafting library for C language
+WWW=		http://www.MysticWALL.COM/software/sxml/index.html
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

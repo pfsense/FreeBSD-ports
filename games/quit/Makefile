@@ -1,6 +1,3 @@
-# Created by: UMENO Takashi <umeno@rr.iij4u.or.jp>
-# $FreeBSD$
-
 PORTNAME=	quit
 PORTVERSION=	1.2a
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	https://fukuchi.org/archive/shortshort/
 
 MAINTAINER?=	meta@FreeBSD.org
 COMMENT=	Bicycle with trailers like "sl"
+WWW=		https://fukuchi.org/works/shortshort/ #quit
 
 USES=		ncurses
 

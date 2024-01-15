@@ -1,6 +1,3 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	sqlite-ext-spellfix
 PORTVERSION=	3.8.11.1
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DIST_SUBDIR=	sqlite-ext
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Search large vocabulary for close matches for SQLite
+WWW=		https://www.sqlite.org/spellfix1.html
 
 LICENSE=	PD
 

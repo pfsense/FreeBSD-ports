@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Types-Serialiser
 PORTVERSION=	1.01
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple data types for common serialisation formats
+WWW=		https://metacpan.org/release/Types-Serialiser
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

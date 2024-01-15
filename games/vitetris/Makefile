@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vitetris
 PORTVERSION=	0.59.1
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Terminal-based Tetris clone in vein of Nintendo Tetris
+WWW=		http://victornils.net/tetris/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/licence.txt

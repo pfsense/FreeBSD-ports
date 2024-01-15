@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	blackout
 DISTVERSION=	g20140730
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Stencil font inspired by filling in sans-serif newspaper headlines
+WWW=		https://www.theleagueofmoveabletype.com/blackout
 
 LICENSE=	OFL11
 LICENSE_FILE=	"${WRKSRC}/Open Font License.markdown"

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Clone-Fast
 PORTVERSION=	0.97
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Natively copying Perl data structures
+WWW=		https://metacpan.org/release/WAZZUTEKE/Clone-Fast-0.97
 
 LICENSE=	ART20
 

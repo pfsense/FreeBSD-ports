@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	io
 PORTVERSION=	20180807
 PORTREVISION=	2
@@ -9,11 +6,12 @@ PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Small prototype-based programming language (devel version)
+WWW=		https://iolanguage.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS=	io-[0-9]*
+CONFLICTS=	io
 
 USES=		cmake:noninja compiler:c11
 

@@ -1,6 +1,3 @@
-# Created by: andrey@kostenko.name
-# $FreeBSD$
-
 PORTNAME=	Crypt-DH-GMP
 PORTVERSION=	0.00012
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Crypt::DH Using GMP Directly
+WWW=		https://metacpan.org/release/Crypt-DH-GMP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

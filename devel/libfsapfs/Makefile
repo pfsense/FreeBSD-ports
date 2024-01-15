@@ -1,23 +1,21 @@
-# Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libfsapfs
 # If/When moving from experimental to alpha, switch to DISTVERSIONPREFIX to prevent PORTEPOCH
-DISTVERSION=	experimental-20201107
+DISTVERSION=	experimental-20221102
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libfsapfs/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Library and tools to access the Apple File System (APFS)
+WWW=		https://github.com/libyal/libfsapfs
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python --with-openssl=no
-CONFIGURE_ENV= PYTHON_CONFIG=${PYTHON_CMD}-config
-USES=		fuse libtool pathfix pkgconfig python:3.5+
+CONFIGURE_ENV=	PYTHON_CONFIG=${PYTHON_CMD}-config
+USES=		fuse libtool pathfix pkgconfig python
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:E}

@@ -1,39 +1,43 @@
-# Created by: johalun
-# $FreeBSD$
-
 PORTNAME=	mesa-gallium-xa
 PORTVERSION=	${MESAVERSION}
 CATEGORIES=	graphics
 
 COMMENT=	Mesa Gallium XA state tracker
+WWW=		https://www.mesa3d.org/
 
-USES=		xorg
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/docs/license.rst
+
+ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS_REASON=	used only by VMware supported architectures
+
+USES=		llvm:lib,noexport xorg
 USE_XORG=	xorgproto
 
 .include <bsd.port.options.mk>
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
 
-ONLY_FOR_ARCHS=		i386 amd64
-ONLY_FOR_ARCHS_REASON=	Used only by VMWare supported architectures
-
-MESON_ARGS+=	-Ddri-drivers="" \
-		-Dgallium-drivers="svga" \
+MESON_ARGS+=	-Dgallium-drivers="svga" \
 		-Dvulkan-drivers="" \
 		-Dplatforms="" \
+		-Dandroid-libbacktrace=disabled \
 		-Dgallium-vdpau=disabled \
 		-Dgallium-omx=disabled \
 		-Dgallium-va=disabled \
 		-Dgallium-opencl=disabled \
-		-Dgallium-xvmc=disabled \
 		-Dgallium-nine=false \
 		-Degl=disabled \
 		-Dgbm=disabled \
 		-Dgles1=disabled \
 		-Dgles2=disabled \
 		-Dglx=disabled \
+		-Dlmsensors=disabled \
+		-Dmicrosoft-clc=disabled \
 		-Dopengl=false \
 		-Dshared-glapi=disabled \
-		-Dosmesa=none
+		-Dosmesa=false \
+		-Dvalgrind=disabled \
+		-Dxlib-lease=disabled
 
 LDFLAGS_i386=		-Wl,-znotext
 

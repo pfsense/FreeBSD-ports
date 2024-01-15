@@ -1,6 +1,3 @@
-# Created by: Göran Runfeldt <goranrunfeldt@home.se>
-# $FreeBSD$
-
 PORTNAME=	xtux
 PORTVERSION=	20030306
 CATEGORIES=	games
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Humorous Arcade game for X
+WWW=		https://xtux.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	abGate
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
+PORTREVISION=	5
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Noise gate LV2 plugin
+WWW=		https://github.com/antanasbruzas/abGate
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,10 +18,13 @@ USES=		compiler:c++11-lang gl gmake gnome pkgconfig qt:5 xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	antanasbruzas
 USE_CXXSTD=	c++11
-USE_QT=		core gui widgets buildtools_build qmake_build
+USE_QT=		core gui widgets buildtools:build qmake:build
 USE_GL=		gl
 USE_GNOME=	atkmm gtk20 gtkmm24 libsigc++20
 USE_LDCONFIG=	yes
+
+# Makefile directly calls 'qmake' binary. Give it such.
+BINARY_ALIAS=	qmake=${QMAKE}
 
 post-patch:
 	@${REINPLACE_CMD} -e ' \

@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nomyso
 PORTVERSION=	4.3
 CATEGORIES=	converters devel
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert MASM/TASM files to NASM compatible sources
+WWW=		http://www.devoresoftware.com/nomyso/
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT

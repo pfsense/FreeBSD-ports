@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	npcomplete
 PORTVERSION=	0.0.r20090116
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	numptyphysics-
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Level pack for Numpty Physics
+WWW=		http://numptyphysics.garage.maemo.org/levels/
 
 RUN_DEPENDS=	numptyphysics:games/numptyphysics
 

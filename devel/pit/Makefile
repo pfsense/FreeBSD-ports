@@ -1,12 +1,10 @@
-# Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
-
 PORTNAME=	pit
 PORTVERSION=	0.1.0
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line project manager that integrates with Git
+WWW=		https://github.com/michaeldv/pit
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

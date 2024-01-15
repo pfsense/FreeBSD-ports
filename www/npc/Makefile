@@ -1,6 +1,3 @@
-# Created by: Yasuhiro Fukuma <yasuf@big.or.jp>
-# $FreeBSD$
-
 PORTNAME=	npc
 PORTVERSION=	0.83
 CATEGORIES=	www
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www2.biglobe.ne.jp/%7Enir/soft/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Animated web counter
+WWW=		http://www2.biglobe.ne.jp/%7Enir/npc/
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/src
 MAKE_ARGS=	INDEX_DIR="${INDEX_DIR}"

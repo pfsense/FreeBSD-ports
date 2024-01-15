@@ -1,19 +1,19 @@
-# Created by: Tony Maher <tonymaher@optusnet.com.au>
-# $FreeBSD$
-
 PORTNAME=	wcslib
-PORTVERSION=	7.3.1
+PORTVERSION=	8.2.2
 CATEGORIES=	astro
 MASTER_SITES=	ftp://ftp.atnf.csiro.au/pub/software/wcslib/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Library for parsing/generating FITS headers
+WWW=		https://www.atnf.csiro.au/people/mcalabre/WCS/index.html
 
 LICENSE=	GPLv3
 
 USES=		tar:bzip2 gmake fortran
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	 --docdir=${DOCSDIR}
+
 MAKEFILE=	GNUmakefile
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=yes
@@ -39,11 +39,5 @@ PGPLOT_USES=		xorg
 post-patch:
 	@${REINPLACE_CMD} -e 's#%%PKGDIR%%#${STAGEDIR}${PREFIX}/libdata#g' \
 		${WRKSRC}/GNUmakefile
-
-post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/ && ${INSTALL_DATA} CHANGES README COPYING COPYING.LESSER wcslib.pdf ${STAGEDIR}${DOCSDIR})
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/html
-	(cd ${WRKSRC}/html && ${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR}/html)
 
 .include <bsd.port.mk>

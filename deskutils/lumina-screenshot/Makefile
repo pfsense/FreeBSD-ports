@@ -1,13 +1,11 @@
-# Created by: Ken Moore <ken@pcbsd.org>
-# $FreeBSD$
-
 PORTNAME=	lumina-screenshot
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.0
+DISTVERSION=	1.6.2
 CATEGORIES=	deskutils
 
-MAINTAINER=	lbartoletti@FreeBSD.org
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Screenshot utility from the Lumina Desktop
+WWW=		https://lumina-desktop.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../../../LICENSE
@@ -18,7 +16,7 @@ LIB_DEPENDS=	libxcb-ewmh.so:x11/xcb-util-wm \
 		libxcb-util.so:x11/xcb-util
 
 USES=		compiler:c++11-lang gl qmake qt:5 xorg
-USE_QT=		buildtools_build concurrent core gui \
+USE_QT=		buildtools:build concurrent core gui \
 		multimedia network svg x11extras widgets
 USE_XORG=	xcb xdamage
 USE_GL=		gl
@@ -29,7 +27,7 @@ GH_PROJECT=	lumina
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
-NLS_USE=	QT=linguist_build
+NLS_USE=	QT=linguist:build
 NLS_QMAKE_ON=	CONFIG+=WITH_I18N
 
 CONFLICTS_INSTALL=	lumina-1.2.*

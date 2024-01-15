@@ -1,6 +1,3 @@
-# Created by: jabley
-# $FreeBSD$
-
 PORTNAME=	aggregate
 PORTVERSION=	1.6
 PORTREVISION=	1

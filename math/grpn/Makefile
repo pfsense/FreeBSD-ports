@@ -1,13 +1,12 @@
-# Created by: Chris D. Faulhaber <jedgar@fxp.org>
-# $FreeBSD$
-
 PORTNAME=	grpn
 PORTVERSION=	1.5.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	GTK+-based reverse polish notation (RPN) calculator
+COMMENT=	GTK-based reverse polish notation (RPN) calculator
+WWW=		https://github.com/utopiabound/grpn
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Sandro Sigala
-# $FreeBSD$
-
 PORTNAME=	cutils
 PORTVERSION=	1.6
 PORTREVISION=	1
@@ -9,13 +6,25 @@ MASTER_SITES=	http://www.sigala.it/sandro/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Miscellaneous C programmer's utilities
+WWW=		http://www.sigala.it/sandro/software.php #cutils
 
-USES=		makeinfo
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
 GNU_CONFIGURE=	yes
-MAKE_ENV=	MAKEINFO="${MAKEINFO}"
-INFO=		cutils
+
 MAKE_JOBS_UNSAFE=	yes
 
-CONFLICTS=	cdecl-[0-9]*
+CONFLICTS=	cdecl
+
+OPTIONS_DEFINE=	INFO
+OPTIONS_DEFAULT=	INFO
+
+INFO_USES=		makeinfo
+INFO_MAKE_ENV=	MAKEINFO="${MAKEINFO}"
+INFO_INFO=		cutils
+
+post-patch-INFO-off:
+	@${REINPLACE_CMD} -e '/^subdirs/s|doc||g' ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

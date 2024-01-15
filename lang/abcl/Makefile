@@ -1,14 +1,12 @@
-# Created by: Frank Fischer
-# $FreeBSD$
-
 PORTNAME=	abcl
-PORTVERSION=	1.7.0
+PORTVERSION=	1.9.2
 CATEGORIES=	lang lisp java
 MASTER_SITES=	http://abcl.org/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Implementation of ANSI Common Lisp in Java
+WWW=		https://common-lisp.net/project/armedbear/
 
 BROKEN_armv6=		fails to build: build.xml: Java returned: 1
 BROKEN_armv7=		fails to build: build.xml: Java returned: 1

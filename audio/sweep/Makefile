@@ -1,17 +1,18 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sweep
 PORTVERSION=	0.9.3
-PORTREVISION=	12
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	audio gnome
 MASTER_SITES=	SF
 
-MAINTAINER=	portmaster@BSDforge.com
-COMMENT=	Sound editor for the GNOME/GTK+2 desktop
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Sound editor for the GNOME/GTK 2 desktop
+WWW=		http://www.metadecks.org/software/sweep/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Abandonware, last release in 2008 and upstream is dead. Consider using audio/audacity
+EXPIRATION_DATE=2024-02-29
 
 LIB_DEPENDS=	libmad.so:audio/libmad \
 		libsamplerate.so:audio/libsamplerate \
@@ -33,6 +34,8 @@ CONFIGURE_ARGS=	--with-extralibdir=${LOCALBASE}/lib \
 		--with-ogg-libraries=${LOCALBASE}/lib \
 		--with-ogg-includes=${LOCALBASE}/include/ogg
 CONFIGURE_ENV=	LIBS="`pkg-config --libs gmodule-2.0`"
+
+CONFLICTS_INSTALL=	libsweep-lidar # include/sweep/sweep.h
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^ac_enable_alsa=yes|ac_enable_alsa=no|g ; \

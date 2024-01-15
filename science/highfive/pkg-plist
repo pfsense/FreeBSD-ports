@@ -16,7 +16,6 @@ include/highfive/H5Version.hpp
 include/highfive/bits/H5Annotate_traits.hpp
 include/highfive/bits/H5Annotate_traits_misc.hpp
 include/highfive/bits/H5Attribute_misc.hpp
-include/highfive/bits/H5ConverterEigen_misc.hpp
 include/highfive/bits/H5Converter_misc.hpp
 include/highfive/bits/H5DataSet_misc.hpp
 include/highfive/bits/H5DataType_misc.hpp
@@ -24,10 +23,14 @@ include/highfive/bits/H5Dataspace_misc.hpp
 include/highfive/bits/H5Exception_misc.hpp
 include/highfive/bits/H5FileDriver_misc.hpp
 include/highfive/bits/H5File_misc.hpp
+include/highfive/bits/H5Friends.hpp
+include/highfive/bits/H5Inspector_misc.hpp
 include/highfive/bits/H5Iterables_misc.hpp
 include/highfive/bits/H5Node_traits.hpp
 include/highfive/bits/H5Node_traits_misc.hpp
 include/highfive/bits/H5Object_misc.hpp
+include/highfive/bits/H5Path_traits.hpp
+include/highfive/bits/H5Path_traits_misc.hpp
 include/highfive/bits/H5PropertyList_misc.hpp
 include/highfive/bits/H5ReadWrite_misc.hpp
 include/highfive/bits/H5Reference_misc.hpp
@@ -36,6 +39,7 @@ include/highfive/bits/H5Slice_traits.hpp
 include/highfive/bits/H5Slice_traits_misc.hpp
 include/highfive/bits/H5Utils.hpp
 include/highfive/bits/H5_definitions.hpp
+include/highfive/bits/string_padding.hpp
 include/highfive/h5easy_bits/H5Easy_Eigen.hpp
 include/highfive/h5easy_bits/H5Easy_misc.hpp
 include/highfive/h5easy_bits/H5Easy_opencv.hpp
@@ -43,6 +47,7 @@ include/highfive/h5easy_bits/H5Easy_public.hpp
 include/highfive/h5easy_bits/H5Easy_scalar.hpp
 include/highfive/h5easy_bits/H5Easy_vector.hpp
 include/highfive/h5easy_bits/H5Easy_xtensor.hpp
+include/highfive/highfive.hpp
 share/HighFive/CMake/HighFiveConfig.cmake
 share/HighFive/CMake/HighFiveConfigVersion.cmake
 share/HighFive/CMake/HighFiveTargetDeps.cmake

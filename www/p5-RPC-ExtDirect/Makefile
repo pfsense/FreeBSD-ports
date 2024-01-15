@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	RPC-ExtDirect
 PORTVERSION=	3.24
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for implementing the Ext.Direct remoting protocol
+WWW=		https://metacpan.org/release/RPC-ExtDirect
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

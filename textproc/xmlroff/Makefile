@@ -1,13 +1,12 @@
-# Created by: James Earl
-# $FreeBSD$
-
 PORTNAME=	xmlroff
 PORTVERSION=	0.6.3
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	XSL formatter that produces PDF and PostScript
+WWW=		http://xmlroff.org
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

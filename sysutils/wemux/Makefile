@@ -1,6 +1,3 @@
-# Created by: Carlo Strub
-# $FreeBSD$
-
 PORTNAME=	wemux
 PORTVERSION=	3.2.0
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Enhances tmux to make multi-user terminal multiplexing easier
+WWW=		https://github.com/zolrath/wemux
 
 LICENSE=	MIT
 

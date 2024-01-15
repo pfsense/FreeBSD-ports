@@ -1,18 +1,16 @@
-# Created by: Colin Booth <colin@heliocat.net>
-# $FreeBSD$
-
 PORTNAME=	s6
-PORTVERSION=	2.9.1.0
+DISTVERSION=	2.11.3.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://www.skarnet.org/software/${PORTNAME}/
 
 MAINTAINER=	crest@rlwinm.de
 COMMENT=	Skarnet.org supervision suite
+WWW=		https://www.skarnet.org/software/s6/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	execline>=2.6.0.1:lang/execline
+BUILD_DEPENDS=	execline>=2.9.3.0:lang/execline
 LIB_DEPENDS=	libskarnet.so:devel/skalibs
 RUN_DEPENDS=	execlineb:lang/execline
 
@@ -40,6 +38,7 @@ DOCS=		AUTHORS README doc/*.html
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libs6.so.${PORTVERSION}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libs6auto.so.${PORTVERSION}
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/s6lockd-helper
 	cd ${WRKDIR} && ${INSTALL_SCRIPT} s6-svscanboot \
 		${STAGEDIR}${PREFIX}/bin

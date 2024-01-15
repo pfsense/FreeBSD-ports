@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Misc-Quality
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Class for handling quality flags for astronomical objects
+WWW=		https://metacpan.org/release/Misc-Quality
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL

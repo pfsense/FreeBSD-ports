@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-CORS
 PORTVERSION=	0.13
 CATEGORIES=	www perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dancer plugin for using cross origin resource sharing
+WWW=		https://metacpan.org/release/Dancer-Plugin-CORS
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

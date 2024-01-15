@@ -1,23 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	riscv-isa-sim
 DISTVERSION=	git
-PORTREVISION=	20201102
+PORTREVISION=	20211015
 CATEGORIES=	emulators
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Spike, a RISC-V ISA Simulator
+WWW=		https://github.com/riscv/riscv-isa-sim
 
 LICENSE=	BSD3CLAUSE
 
-ONLY_FOR_ARCHS=	amd64
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	Does not build
 
 USES=	compiler:c++11-lang gmake shebangfix
 
 GH_ACCOUNT=	riscv
-GH_TAGNAME=	641d7d0
+GH_TAGNAME=	4f12984
 
 HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--without-boost
 SHEBANG_FILES=	scripts/vcs-version.sh
 
 USE_GITHUB=	yes

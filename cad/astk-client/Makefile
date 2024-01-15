@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	astk
 
 COMMENT=	Graphical interface for Code_Aster (client side)

@@ -1,0 +1,11 @@
+--- rust/stracciatella_c_api/Cargo.toml.orig	2022-04-14 10:20:57 UTC
++++ rust/stracciatella_c_api/Cargo.toml
+@@ -16,8 +16,5 @@ log = "0.4"
+ stracciatella = { path = "../stracciatella" }
+ tempfile = "3.2"
+ 
+-[target.'cfg(target_os = "android")'.dependencies.jni]
+-version = "0.14"
+-
+ [build-dependencies]
+ cbindgen = "0.20"

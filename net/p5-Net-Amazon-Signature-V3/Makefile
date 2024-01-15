@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Amazon-Signature-V3
-PORTVERSION=	0.001
+PORTVERSION=	0.003
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to sign AWS requests V3
+WWW=		https://metacpan.org/release/Net-Amazon-Signature-V3
 
 LICENSE=	LGPL21
 

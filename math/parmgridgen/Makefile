@@ -1,9 +1,6 @@
-# Created by: Stas Timokhin <devel@stasyan.com>
-# $FreeBSD$
-
 PORTNAME=	parmgridgen
 PORTVERSION=	1.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	math science
 MASTER_SITES=	http://www.mgnet.org/mgnet/Codes/parmgridgen/ \
 		http://www-users.cs.umn.edu/~moulitsa/download/ \
@@ -12,6 +9,7 @@ DISTNAME=	ParMGridGen-${PORTVERSION}
 
 MAINTAINER=	devel@stasyan.com
 COMMENT=	Library for obtaining a sequence of successive coarse grids
+WWW=		http://www.mgnet.org/mgnet-codes-parmgridgen.html
 
 LIB_DEPENDS=	libmpi.so:net/openmpi
 

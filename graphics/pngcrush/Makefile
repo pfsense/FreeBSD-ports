@@ -1,6 +1,3 @@
-# Created by: Chris D. Faulhaber <jedgar@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pngcrush
 PORTVERSION=	1.8.13
 CATEGORIES=	graphics
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-nolib
 
 MAINTAINER=	vsasjason@gmail.com
 COMMENT=	Optimizer for PNG files
+WWW=		http://pmt.sourceforge.net/pngcrush/
 
 LICENSE=	Pngcrush
 LICENSE_NAME=	Pngcrush License
@@ -18,9 +16,11 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		localbase:ldflags tar:xz
+USES=		cpe localbase:ldflags tar:xz
 MAKE_ARGS+=	CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" LD="${CC}" \
 		LDFLAGS="${LDFLAGS}"
+
+CPE_VENDOR=	pngcrush_project
 
 PLIST_FILES=	bin/pngcrush
 

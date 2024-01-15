@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Unix-Processors
 PORTVERSION=	2.046
 CATEGORIES=	sysutils perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Interface to processor (CPU) information
+WWW=		https://metacpan.org/release/Unix-Processors
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

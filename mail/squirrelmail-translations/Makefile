@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	squirrelmail-translations
 PORTVERSION=	20200422
 CATEGORIES=	mail www
@@ -12,6 +9,7 @@ DIST_SUBDIR=	squirrelmail
 
 MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	NLS translations for Squirrelmail (mail/squirrelmail)
+WWW=		https://www.squirrelmail.org/
 
 LICENSE=	GPLv2
 

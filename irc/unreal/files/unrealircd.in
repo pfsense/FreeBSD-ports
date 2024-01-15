@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
 
 # PROVIDE: unrealircd
 # REQUIRE: NETWORKING SERVERS
@@ -20,13 +17,15 @@ name=unrealircd
 rcvar=unrealircd_enable
 load_rc_config $name
 
-: ${unrealircd_enable:=NO}
+: ${unrealircd_enable=NO}
+: ${unrealircd_pidfile="/var/run/ircd/ircd.pid"}
+: ${unrealircd_user="ircd"}
 
 command=%%PREFIX%%/libexec/ircd
 pidfile=%%RUNDIR%%/ircd.pid
 start_precmd=unreal_prestart
 
-required_files="%%PREFIX%%/etc/Unreal/unrealircd.conf"
+required_files="%%PREFIX%%/etc/unreal/unrealircd.conf"
 
 unreal_prestart()
 {

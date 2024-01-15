@@ -1,6 +1,3 @@
-# Created by: Jordan Irwin <antumdeluge@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	tlwg-ttf
 PORTVERSION=	0.6.1
 CATEGORIES=	x11-fonts
@@ -10,6 +7,7 @@ DISTNAME=	ttf-tlwg-${PORTVERSION}
 
 MAINTAINER=	antumdeluge@gmail.com
 COMMENT=	Collection of Thai TrueType fonts
+WWW=		https://linux.thai.net/projects/fonts-tlwg
 
 LICENSE=	GPLv2
 

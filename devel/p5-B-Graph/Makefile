@@ -1,6 +1,3 @@
-# Created by: Leo Kim <leo@florida.sarang.net>
-# $FreeBSD$
-
 PORTNAME=	B-Graph
 PORTVERSION=	0.51
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl Compiler backend to diagram OP trees
+WWW=		https://metacpan.org/release/B-Graph
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

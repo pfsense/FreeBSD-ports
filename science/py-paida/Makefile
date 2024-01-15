@@ -1,6 +1,3 @@
-# Created by: Vsevolod Stakhov <vsevolod@highsecure.ru>
-# $FreeBSD$
-
 PORTNAME=	paida
 PORTVERSION=	3.2.1.2.10
 PORTREVISION=	1
@@ -13,8 +10,9 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLA
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pure Python scientific analysis package
+WWW=		https://paida.sourceforge.net
 
-USES=		python:3.6+
+USES=		dos2unix python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

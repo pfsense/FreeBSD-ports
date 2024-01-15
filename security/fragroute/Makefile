@@ -1,6 +1,3 @@
-# Created by: Dominic Marks <dominic.marks@btinternet.com>
-# $FreeBSD$
-
 PORTNAME=	fragroute
 PORTVERSION=	1.2
 PORTREVISION=	16
@@ -10,6 +7,7 @@ MASTER_SITES=	http://monkey.org/~dugsong/fragroute/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for intercepting, modifying, and rewriting egress traffic
+WWW=		https://www.monkey.org/~dugsong/fragroute/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

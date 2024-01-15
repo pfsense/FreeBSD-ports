@@ -1,22 +1,20 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tmuxinator
-PORTVERSION=	2.0.1
+PORTVERSION=	3.0.5
+PORTREVISION=	1
 CATEGORIES=	sysutils ruby
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Manage complex tmux sessions easily
+WWW=		https://github.com/tmuxinator/tmuxinator
 
 LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-erubis>=2.6<3:www/rubygem-erubis \
-		rubygem-thor>=1.0<2:devel/rubygem-thor \
+		rubygem-thor12>=1.2.1<1.3:devel/rubygem-thor12 \
 		rubygem-xdg2>=2.2.5<3:devel/rubygem-xdg2
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

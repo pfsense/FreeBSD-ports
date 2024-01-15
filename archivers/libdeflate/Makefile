@@ -1,34 +1,29 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libdeflate
-PORTVERSION=	1.7
+PORTVERSION=	1.19
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Fast, whole-buffer DEFLATE-based compression library
+WWW=		https://github.com/ebiggers/libdeflate
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		cmake:testing pathfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	ebiggers
 USE_LDCONFIG=	yes
-
-MAKE_ARGS=	V=1
-TEST_TARGET=	check
-
-PLIST_FILES=	bin/libdeflate-gunzip bin/libdeflate-gzip \
-		include/libdeflate.h \
-		lib/libdeflate.a lib/libdeflate.so lib/libdeflate.so.0
-PORTDOCS=	NEWS README.md
+CMAKE_ON=	LIBDEFLATE_USE_SHARED_LIB
+CMAKE_TESTING_ON=	LIBDEFLATE_BUILD_TESTS
 
 OPTIONS_DEFINE=	DOCS
 
+post-patch:
+	@${REINPLACE_CMD} -e '/-O2 -DNDEBUG/d' ${WRKSRC}/CMakeLists.txt
+
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

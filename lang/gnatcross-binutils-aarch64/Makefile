@@ -1,6 +1,3 @@
-# Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
-
 PORTREVISION=	1
 PKGNAMEPREFIX=	gnatcross-
 PKGNAMESUFFIX=	-aarch64

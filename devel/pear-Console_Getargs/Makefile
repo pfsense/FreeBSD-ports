@@ -1,15 +1,15 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Console_Getargs
-DISTVERSION=	1.4.0
+PORTVERSION=	1.4.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR command-line arguments parser
+WWW=		https://pear.php.net/package/Console_Getargs
 
 LICENSE=	PHP301
 
 USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

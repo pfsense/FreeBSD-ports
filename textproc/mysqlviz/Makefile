@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mysqlviz
 PORTVERSION=	0.3
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	MySQL and SQLite Database Visualisation Tool
+WWW=		https://github.com/globalcitizen/mysqlviz
 
 LICENSE=	GPLv3
 

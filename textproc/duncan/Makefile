@@ -1,15 +1,13 @@
-# Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
-
 PORTNAME=	duncan
-PORTVERSION=	0.3
-PORTREVISION=	2
+PORTVERSION=	0.4
+PORTREVISION=	1
 CATEGORIES=	textproc gnustep
 MASTER_SITES=	http://www.eskimo.com/~pburns/Dictionaries/files/
 DISTNAME=	Duncan-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	English to Thai dictionary for GNUstep
+WWW=		https://www.eskimo.com/~pburns/Dictionaries/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

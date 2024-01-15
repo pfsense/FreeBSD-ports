@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cryptofs
 PORTVERSION=	0.6.0
 PORTREVISION=	7
@@ -10,9 +7,12 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Encrypted filesystem for FUSE
+WWW=		https://BSDforge.com/projects/sysutils/fusefs-cryptofs/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		Unfetchable
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 

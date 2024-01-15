@@ -1,6 +1,3 @@
-# Created by: TERAMOTO Masahiro <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	Danga-Socket-Callback
 PORTVERSION=	0.013
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Use Danga::Socket From Callbacks
+WWW=		https://metacpan.org/release/Danga-Socket-Callback
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

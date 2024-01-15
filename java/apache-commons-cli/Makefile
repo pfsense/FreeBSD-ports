@@ -1,6 +1,3 @@
-# Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	commons-cli
 PORTVERSION=	1.4
 CATEGORIES=	java devel
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java library for command line arguments and options
+WWW=		https://commons.apache.org/proper/commons-cli/
 
 LICENSE=	APACHE20
 

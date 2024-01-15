@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	piranha
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Piranha computer algebra system
+WWW=		https://github.com/bluescarni/piranha
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual
@@ -27,8 +26,6 @@ NO_ARCH=	yes
 HEADER_DEPENDS=	${LOCALBASE}/include/boost/numeric/conversion/cast.hpp:devel/boost-libs \
 		${LOCALBASE}/include/gmp.h:math/gmp \
 		${LOCALBASE}/include/mpfr.h:math/mpfr
-
-TEST_USES=	compiler:c++14-lang
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \

@@ -1,6 +1,3 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-
 COMMENT=	Fast C routines (Single Percision)
 
 FFTW_FLAVOR=	float

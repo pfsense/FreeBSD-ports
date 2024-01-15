@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Sort-ArbBiLex
 PORTVERSION=	4.01
 PORTREVISION=	1

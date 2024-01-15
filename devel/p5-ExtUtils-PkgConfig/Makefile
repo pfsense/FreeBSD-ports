@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	ExtUtils-PkgConfig
 PORTVERSION=	1.16
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simplistic interface to pkg-config
+WWW=		https://metacpan.org/release/ExtUtils-PkgConfig
 
 LICENSE=	LGPL3
 

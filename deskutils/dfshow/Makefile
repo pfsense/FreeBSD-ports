@@ -1,24 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	dfshow
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.1-beta
+DISTVERSION=	0.10.1-beta
 CATEGORIES=	deskutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Directory file editor
+WWW=		https://dfshow.op-ezy.co.uk/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libconfig.so:devel/libconfig
 
-USES=		autoreconf gmake localbase ncurses
+USES=		autoreconf gettext-runtime gettext-tools gmake localbase ncurses
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	roberthawdon
+
 GNU_CONFIGURE=	yes
 
+CONFLICTS_INSTALL=	ja-mh mmh nmh nmh-devel # man/man1/show.1.gz
+
 post-patch:
-	@${REINPLACE_CMD} 's/-lncursesw/-l${NCURSES_IMPL}/g' ${WRKSRC}/Makefile.am
+	@${REINPLACE_CMD} 's/-lncursesw/${NCURSESLIBS}/g' ${WRKSRC}/Makefile.am
 
 .include <bsd.port.mk>

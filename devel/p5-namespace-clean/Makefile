@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	namespace-clean
 PORTVERSION=	0.27
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Keep imports and functions out of your namespace
+WWW=		https://metacpan.org/release/namespace-clean
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

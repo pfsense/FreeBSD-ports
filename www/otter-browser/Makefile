@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	otter-browser
 DISTVERSIONPREFIX=	v
 # Occasionally otter-browser is updated to intermediate commits;
@@ -11,11 +9,13 @@ DISTVERSIONPREFIX=	v
 #   intentional
 #
 # PORTVERSION=	1.0.01.1
-DISTVERSION=	1.0.02
+DISTVERSION=	1.0.03
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Browser based on Qt 5
+WWW=		https://otter-browser.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,7 +25,7 @@ LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 USES=		cmake compiler:c++11-lib desktop-file-utils qt:5
 USE_QT=		concurrent core dbus declarative gui multimedia network printsupport \
 		script sql sql-sqlite3 svg widgets xmlpatterns \
-		buildtools_build qmake_build
+		buildtools:build qmake:build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OtterBrowser
@@ -33,9 +33,7 @@ GH_ACCOUNT=	OtterBrowser
 
 OPTIONS_MULTI=		BACKEND
 OPTIONS_MULTI_BACKEND=	QTWEBENGINE QTWEBKIT
-OPTIONS_DEFAULT=	QTWEBKIT
-OPTIONS_DEFAULT_amd64=	QTWEBENGINE
-OPTIONS_DEFAULT_i386=	QTWEBENGINE
+OPTIONS_DEFAULT=	QTWEBENGINE
 
 QTWEBENGINE_DESC=	Build QtWebEngine backend
 QTWEBKIT_DESC=		Build QtWebKit backend

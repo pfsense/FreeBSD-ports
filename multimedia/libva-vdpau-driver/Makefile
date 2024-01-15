@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libva-vdpau-driver
 PORTVERSION=	0.7.4
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.freedesktop.org/software/vaapi/releases/${PORTNAME}/
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	VDPAU-based backend for VAAPI
+WWW=		https://cgit.freedesktop.org/vaapi/vdpau-driver/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

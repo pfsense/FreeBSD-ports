@@ -1,5 +1,4 @@
-Patch from Gentoo: https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtnetwork/files/qtnetwork-5.15.1-libressl.patch
---- src/network/ssl/qsslcontext_openssl_p.h.orig	2020-09-02 10:15:07 UTC
+--- src/network/ssl/qsslcontext_openssl_p.h.orig	2022-06-22 10:58:13 UTC
 +++ src/network/ssl/qsslcontext_openssl_p.h
 @@ -61,6 +61,13 @@
  

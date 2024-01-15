@@ -1,6 +1,3 @@
-# Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libxspf
 PORTVERSION=	1.2.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/libspiff/Sources/${PORTVERSION}
 
 MAINTAINER=	ed@FreeBSD.org
 COMMENT=	XSPF parsing library
+WWW=		https://libspiff.sourceforge.net/
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 

@@ -52,6 +52,8 @@ include/webkitgtk-4.0/webkit2/WebKitHitTestResult.h
 include/webkitgtk-4.0/webkit2/WebKitInputMethodContext.h
 include/webkitgtk-4.0/webkit2/WebKitInstallMissingMediaPluginsPermissionRequest.h
 include/webkitgtk-4.0/webkit2/WebKitJavascriptResult.h
+include/webkitgtk-4.0/webkit2/WebKitMediaKeySystemPermissionRequest.h
+include/webkitgtk-4.0/webkit2/WebKitMemoryPressureSettings.h
 include/webkitgtk-4.0/webkit2/WebKitMimeInfo.h
 include/webkitgtk-4.0/webkit2/WebKitNavigationAction.h
 include/webkitgtk-4.0/webkit2/WebKitNavigationPolicyDecision.h
@@ -219,10 +221,10 @@ lib/girepository-1.0/WebKit2-4.0.typelib
 lib/girepository-1.0/WebKit2WebExtension-4.0.typelib
 lib/libjavascriptcoregtk-4.0.so
 lib/libjavascriptcoregtk-4.0.so.18
-lib/libjavascriptcoregtk-4.0.so.18.17.10
+lib/libjavascriptcoregtk-4.0.so.18.19.11
 lib/libwebkit2gtk-4.0.so
 lib/libwebkit2gtk-4.0.so.37
-lib/libwebkit2gtk-4.0.so.37.49.6
+lib/libwebkit2gtk-4.0.so.37.55.9
 lib/webkit2gtk-4.0/injected-bundle/libwebkit2gtkinjectedbundle.so
 libdata/pkgconfig/javascriptcoregtk-4.0.pc
 libdata/pkgconfig/webkit2gtk-4.0.pc

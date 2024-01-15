@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	boiled-mozc
 PORTVERSION=	0.7
 DISTVERSIONPREFIX=v
-PORTREVISION=	7
+PORTREVISION=	19
 CATEGORIES=	japanese editors elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Wrapper to mozc.el that offers modeless ("boil"ed) input style
+WWW=		https://github.com/tadanagao/boiled-mozc
 
 LICENSE=	BSD2CLAUSE
 

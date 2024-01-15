@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	kdesdk
-DISTVERSION=	${KDE_APPLICATIONS_VERSION}$
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	devel kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -31,7 +29,7 @@ DEVUTILS_DESC=		KDE development utilities
 DEVUTILS_RUN_DEPENDS=	kde-dev-utils>=${KDE_APPLICATIONS_VERSION}:devel/kde-dev-utils
 
 DEVSCRIPTS_DESC=	KDE development scripts
-DEVSCRIPTS_RUN_DEPENDS= kde-dev-scripts>=${KDE_APPLICATIONS_VERSION}:devel/kde-dev-scripts
+DEVSCRIPTS_RUN_DEPENDS=	kde-dev-scripts>=${KDE_APPLICATIONS_VERSION}:devel/kde-dev-scripts
 
 DOLPHIN_DESC=		Plugins for Dolphin file manager
 DOLPHIN_RUN_DEPENDS=	dolphin-plugins>=${KDE_APPLICATIONS_VERSION}:devel/dolphin-plugins
@@ -40,7 +38,7 @@ KAPPTEMPLATE_DESC=	Template generator
 KAPPTEMPLATE_RUN_DEPENDS=	kapptemplate>=${KDE_APPLICATIONS_VERSION}:devel/kapptemplate
 
 KATE_DESC=		KDE advanced text editor
-KATE_USE=		KDE=kate_run
+KATE_USE=		KDE=kate:run
 
 KCACHEGRIND_DESC=	Profiler frontend
 KCACHEGRIND_RUN_DEPENDS=	kcachegrind>=${KDE_APPLICATIONS_VERSION}:devel/kcachegrind

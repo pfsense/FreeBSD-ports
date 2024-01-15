@@ -1,4 +1,5 @@
-bin/qtxdg-mat
+etc/xdg/lxqt-qtxdg.conf
+etc/xdg/qtxdg.conf
 %%QT_INCDIR%%xdg/XdgAction
 %%QT_INCDIR%%xdg/XdgAutoStart
 %%QT_INCDIR%%xdg/XdgDefaultApps

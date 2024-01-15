@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	spellutils
 PORTVERSION=	0.7
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	LOCAL/thierry
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Programs used to isolate some parts or texts before spell-checking
+WWW=		https://www.sourcefiles.org/Utilities/Text_Utilities/spellutils-0.7.tar.bz2.shtml
 
 LICENSE=	GPLv2
 

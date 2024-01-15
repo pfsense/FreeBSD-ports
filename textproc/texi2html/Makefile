@@ -1,6 +1,3 @@
-# Created by: Ian Vaudrey <i.vaudrey@bigfoot.com>
-# $FreeBSD$
-
 PORTNAME=	texi2html
 PORTVERSION=	5.0
 PORTREVISION=	2
@@ -10,8 +7,10 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Texinfo to HTML converter
+WWW=		https://www.nongnu.org/texi2html/
 
 GNU_CONFIGURE=	yes
+NO_ARCH=	yes
 CONFIGURE_ENV=	PERL=${PERL}
 CONFIGURE_ARGS=	--disable-multiplatform
 USES=		gmake perl5 shebangfix tar:bzip2

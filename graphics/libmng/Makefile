@@ -1,15 +1,13 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	libmng
 PORTVERSION=	1.0.10
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-devel/${PORTVERSION} \
 		http://www.libmng.com/download/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Multiple-image Network Graphics (MNG) reference library
+WWW=		https://www.libmng.com/
 
 LIB_DEPENDS=	liblcms.so:graphics/lcms
 

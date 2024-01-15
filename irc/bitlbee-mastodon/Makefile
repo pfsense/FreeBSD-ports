@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	bitlbee-mastodon
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.4
+DISTVERSION=	1.4.5
 CATEGORIES=	irc
 
 MAINTAINER=	tobias.rehbein@web.de
 COMMENT=	Bitlbee plugin to communicate with Mastodon instances
+WWW=		https://alexschroeder.ch/software/Bitlbee_Mastodon
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

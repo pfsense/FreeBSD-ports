@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	metalog
 PORTVERSION=	3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern syslogd replacement with PCRE support
+WWW=		https://metalog.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

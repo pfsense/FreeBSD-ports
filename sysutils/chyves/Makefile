@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	chyves
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	bhyve front-end manager
+WWW=		http://chyves.org
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

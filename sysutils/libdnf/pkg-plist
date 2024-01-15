@@ -16,6 +16,7 @@ include/libdnf/config.h
 include/libdnf/dnf-advisory.h
 include/libdnf/dnf-advisorypkg.h
 include/libdnf/dnf-advisoryref.h
+include/libdnf/dnf-conf.h
 include/libdnf/dnf-context.h
 include/libdnf/dnf-db.h
 include/libdnf/dnf-enums.h
@@ -112,6 +113,7 @@ share/locale/pl/LC_MESSAGES/libdnf.mo
 share/locale/pt/LC_MESSAGES/libdnf.mo
 share/locale/pt_BR/LC_MESSAGES/libdnf.mo
 share/locale/ru/LC_MESSAGES/libdnf.mo
+share/locale/si/LC_MESSAGES/libdnf.mo
 share/locale/sk/LC_MESSAGES/libdnf.mo
 share/locale/sq/LC_MESSAGES/libdnf.mo
 share/locale/sr/LC_MESSAGES/libdnf.mo
@@ -124,3 +126,4 @@ share/locale/tr/LC_MESSAGES/libdnf.mo
 share/locale/uk/LC_MESSAGES/libdnf.mo
 share/locale/zh_CN/LC_MESSAGES/libdnf.mo
 share/locale/zh_TW/LC_MESSAGES/libdnf.mo
+%%PYTHON%%share/man/man3/hawkey.3.gz

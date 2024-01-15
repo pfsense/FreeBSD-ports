@@ -1,14 +1,12 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	kaffeine
 DISTVERSION=	2.0.18
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	multimedia kde
 MASTER_SITES=	KDE/stable/${PORTNAME}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Multimedia player based on KDE and VLC
+WWW=		https://www.kde.org/applications/multimedia/kaffeine/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,10 +19,11 @@ USES=		cmake compiler:c++11-lang cpe desktop-file-utils gettext \
 		pkgconfig kde:5 qt:5 tar:xz xorg
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
 		coreaddons i18n itemviews kio solid dbusaddons jobwidgets \
-		service widgetsaddons windowsystem xmlgui
-USE_QT=		concurrent core dbus gui network phonon4 sql svg x11extras xml \
-		widgets qmake_build buildtools_build
-USE_XORG=	xscrnsaver
+		phonon service widgetsaddons windowsystem xmlgui \
+		doctools:build ecm:build
+USE_QT=		concurrent core dbus gui network sql svg x11extras xml \
+		widgets qmake:build buildtools:build
+USE_XORG=	x11 xscrnsaver
 
 CPE_VENDOR=	kaffeine
 CPE_PRODUCT=	kaffeine_player

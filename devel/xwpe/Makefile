@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@FreeBSD.org)
-# $FreeBSD$
-
 PORTNAME=	xwpe
 PORTVERSION=	1.5.30a
 CATEGORIES=	devel
@@ -10,6 +7,7 @@ MASTER_SITES=	SUNSITE/apps/editors/X \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Borland-like IDE programming environment
+WWW=		http://www.identicalsoftware.com/xwpe/
 
 USES=		desthack ncurses xorg
 DESTDIRNAME=	STAGEDIR

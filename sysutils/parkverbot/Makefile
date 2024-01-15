@@ -1,13 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	parkverbot
-PORTVERSION=	1.3
+PORTVERSION=	1.5
 CATEGORIES=	sysutils
 MASTER_SITES=	https://inai.de/files/parkverbot/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Hard disk head parking inhibitor
+WWW=		https://inai.de/projects/parkverbot/
 
 LICENSE=	GPLv2+
 

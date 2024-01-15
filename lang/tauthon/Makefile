@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # This Makefile was copied from lang/python27 and then gradually
 # adapted/cleaned-up for Tauthon.
 # As for lang/python27, some core modules with extraneous dependencies are
@@ -7,23 +5,28 @@
 # 'pkg-message').
 # -- Olivier Certner <olce.freebsd.ports@certner.fr>
 PORTNAME=	tauthon
-DISTVERSION=	2.8.2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.8.5
 CATEGORIES=	lang python
 
 MAINTAINER=	olce.freebsd.ports@certner.fr
-COMMENT=	Backward-compatible fork of Python 2.7 interpreter with Python 3.x features
+COMMENT=	Backwards-compatible fork of CPython 2.7 with Python 3.x features
+WWW=		https://github.com/naftaliharris/tauthon
 
 LICENSE=	PSFL
 
-USES=		pathfix shebangfix autoreconf ncurses pkgconfig readline:port ssl tar:xz
+DEPRECATED=	Uses Python 2.7 codebase
+
+USES=		pathfix shebangfix autoreconf ncurses pkgconfig readline ssl \
+		tar:xz compiler
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	naftaliharris
 GH_PROJECT=	tauthon
-GH_TAGNAME=	v${DISTVERSION}
 
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
 # Piggyback on Python support in shebangfix
 python_CMD=	${PREFIX}/bin/${NAME_VERSION}
 # Better be safe than sorry
@@ -39,7 +42,6 @@ python_CMD=	${PREFIX}/bin/${NAME_VERSION}
 SHEBANG_FILES+=	${_DIRS}/*.py
 .endfor
 
-GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-shared
 CONFIGURE_ENV+=		ac_cv_opt_olimit_ok=no OPT=""				# Null out OPT to respect user CFLAGS and remove optimizations
 
@@ -51,7 +53,9 @@ TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
-			PORTVERSION=${PORTVERSION} \
+			DISTVERSION=${DISTVERSION} \
+			TAUTHON_VERSION=${TAUTHON_VERSION} \
+			VERSION_LONG=${VERSION_LONG} \
 			VERSION_NOMICRO=${VERSION_NOMICRO} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
@@ -62,9 +66,9 @@ OPTIONS_SINGLE_UNICODE=	UCS2 UCS4
 OPTIONS_SUB=		yes
 
 LIBFFI_DESC=	Use libffi from ports instead of bundled version
-LTO_DESC=	Apply Link-Time Optimizations (needs OPTIMIZATIONS)
+LTO_DESC=	Apply Link-Time Optimizations (implies OPTIMIZATIONS)
 NLS_DESC=	Enable gettext support for the locale module
-OPTIMIZATIONS_DESC=	Enable code optimizations and PGO (BROKEN)
+OPTIMIZATIONS_DESC=	Enable code optimizations (notably PGO)
 UCS2_DESC=	Enable UCS2 Unicode Strings
 UCS4_DESC=	Enable UCS4 Unicode Strings
 PYMALLOC_DESC=	Enable specialized mallocs
@@ -86,8 +90,6 @@ NLS_LIBS=		-L${LOCALBASE}/lib -lintl
 NLS_CONFIGURE_ENV_OFF=	ac_cv_lib_intl_textdomain=no ac_cv_header_libintl_h=no
 
 OPTIMIZATIONS_CONFIGURE_ENABLE=	optimizations
-OPTIMIZATIONS_BROKEN=	Please disable OPTIMIZATIONS option for now\
-			(some tests fail and no PGO profile is computed)
 
 PYMALLOC_CONFIGURE_WITH=pymalloc
 
@@ -97,12 +99,24 @@ THREADS_LDFLAGS=	-lpthread
 UCS2_CONFIGURE_ENABLE=	unicode=ucs2
 UCS4_CONFIGURE_ENABLE=	unicode=ucs4
 
-PYTHON_PORTVERSION=	${DISTVERSION}
-
-VERSION_NOMICRO=	${DISTVERSION:R}
+TAUTHON_VERSION=	${DISTVERSION:C/-.*\$//}
+VERSION_LONG=		${TAUTHON_VERSION}.final.0
+VERSION_NOMICRO=	${TAUTHON_VERSION:R}
 NAME_VERSION=		tauthon${VERSION_NOMICRO}
 
-.include <bsd.port.options.mk>
+DISABLED_MODULES=	_bsddb _sqlite3 _tkinter gdbm
+
+.include <bsd.port.pre.mk>
+
+.if !empty(PORT_OPTIONS:MLTO) && ${CC:T} == "cc"
+# Tauthon's configure and Makefile recognize which compiler we are using based
+# on the executable name.
+.  if ${CC:T} == ${CC}
+CC:=${COMPILER_TYPE}
+.  else
+CC:=${CC:H}/${COMPILER_TYPE}
+.  endif
+.endif
 
 # https://bugs.python.org/issue22521
 # https://bugs.python.org/issue23042
@@ -122,17 +136,10 @@ PLIST_SUB+=	32BIT_ONLY="@comment "
 PLIST_SUB+=	32BIT_ONLY=""
 .endif
 
-.if ${ARCH} == powerpc64
-MAKE_ENV+=	UNAME_m="powerpc64"
-.endif
-
-.if ${ARCH} == sparc64
-CFLAGS+=	-DPYTHON_DEFAULT_RECURSION_LIMIT=900
-.endif
-
 # See https://bugs.freebsd.org/115940 and https://bugs.freebsd.org/193650
 .if !exists(/usr/bin/ypcat) || defined(WITHOUT_NIS)
 PLIST_SUB+=	NO_NIS="@comment "
+DISABLED_MODULES+=	nis
 .else
 PLIST_SUB+=	NO_NIS=""
 .endif
@@ -141,10 +148,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local/bin/python|${python_CMD}|' \
 		${WRKSRC}/Lib/cgi.py
 
-.if !exists(/usr/bin/ypcat) || defined(WITHOUT_NIS)
-	@${REINPLACE_CMD} -e 's/disabled_module_list =[^]]*/&, "nis"/' \
+	@${REINPLACE_CMD} -e \
+		's/%%DISABLED_MODULES%%/${DISABLED_MODULES:C/^(.*)$/"\1", /g}/g' \
 		${WRKSRC}/setup.py
-.endif
 
 post-install:
 # Create symlink for tauthon executable
@@ -173,4 +179,11 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/Tools/gdb/libpython.py \
 		${STAGEDIR}${PREFIX}/lib/lib${NAME_VERSION}.so.1-gdb.py
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
+
+.if !empty(PORT_OPTIONS:MLTO) && ${COMPILER_TYPE} == gcc
+# These have to be appended after bsd.port.mk appends to them, because we are
+# basically overriding what it did on seeing USE_BINUTILS (pulled by USE_GCC).
+CONFIGURE_ENV+=	AR=${CC:S/^gcc/gcc-ar/} RANLIB=${CC:S/^gcc/gcc-ranlib/}
+MAKE_ENV+=	AR=${CC:S/^gcc/gcc-ar/} RANLIB=${CC:S/^gcc/gcc-ranlib/}
+.endif

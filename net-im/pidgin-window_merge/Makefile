@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	window_merge
 PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	net-im
 PKGNAMEPREFIX=	pidgin-
 
 MAINTAINER=	arcade@b1t.name
 COMMENT=	One window interface for pidgin
+WWW=		https://github.com/dm0-/window_merge
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

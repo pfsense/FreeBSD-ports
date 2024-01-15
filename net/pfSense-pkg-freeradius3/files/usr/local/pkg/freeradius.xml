@@ -8,7 +8,7 @@
  * freeradius.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -27,7 +27,7 @@
 	]]>
 	</copyright>
 	<name>freeradius</name>
-	<title>FreeRADIUS: Users</title>
+	<title>Services/FreeRADIUS</title>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<menu>
 		<name>FreeRADIUS</name>
@@ -39,6 +39,7 @@
 		<rcfile>radiusd.sh</rcfile>
 		<executable>radiusd</executable>
 		<description>FreeRADIUS Server</description>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<tabs>
 		<tab>
@@ -60,27 +61,27 @@
 		</tab>
 		<tab>
 			<text>Settings</text>
-			<url>/pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussettings.xml</url>
 		</tab>
 		<tab>
 			<text>EAP</text>
-			<url>/pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiuseapconf.xml</url>
 		</tab>
 		<tab>
 			<text>SQL</text>
-			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussqlconf.xml</url>
 		</tab>
 		<tab>
 			<text>LDAP</text>
-			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml</url>
 		</tab>
 		<tab>
-			<text>View config</text>
+			<text>View Config</text>
 			<url>/freeradius_view_config.php</url>
 		</tab>
 		<tab>
 			<text>XMLRPC Sync</text>
-			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussync.xml</url>
 		</tab>
 	</tabs>
 	<adddeleteeditpagefields>
@@ -250,11 +251,11 @@
 					}
 				</script>
 				<button type="button" class="btn btn-info btn-sm" onClick="genotpsecret();" id='btn_genotp' value="genotp">
-					<i class="fa fa-random"></i>
+					<i class="fa-solid fa-random"></i>
 					Generate OTP Secret
 				</button>
 				<button type="button" class="btn btn-info btn-sm" onClick="$('#varusersmotpinitsecret').attr('type', 'text');" id='btn_showotp' value="showotp">
-					<i class="fa fa-search"></i>
+					<i class="fa-solid fa-search"></i>
 					Show OTP Secret
 				</button>
 				]]>
@@ -271,7 +272,7 @@
 				<span class="text-info">May only contain a PIN consisting of 4-8 digits. Normally 4 digits are used.</span>
 				<br/>
 				<button type="button" class="btn btn-info btn-sm" onClick="$('#varusersmotppin').attr('type', 'text');" id='btn_showotppin' value="showotppin">
-					<i class="fa fa-search"></i>
+					<i class="fa-solid fa-search"></i>
 					Show OTP PIN
 				</button>
 				]]>
@@ -309,7 +310,7 @@
 				it as a secure piece of information and do not send it through an insecure channel such as e-mail.
 				<br/>
 				<button type="button" class="btn btn-info btn-sm" onClick="genOTPQR();" id='btn_makeqrcode' value="makeqrcode">
-					<i class="fa fa-qrcode"></i>
+					<i class="fa-solid fa-qrcode"></i>
 					Generate QR Code
 				</button>
 				<div id="qrcode" style="display: none; width:200px; height:200px; margin-top:15px;"></div>
@@ -542,7 +543,8 @@
 			<fieldname>varusersmaxtotaloctets</fieldname>
 			<description>
 				<![CDATA[
-				Enter the amount of download and upload traffic (summarized) <span class="text-info">in megabytes (MB)</span> for this user.
+				Enter the amount of download and upload traffic (summarized) <span class="text-info">in megabytes (MB)</span> for this user.<br/>
+				<strong><span class="text-danger">IMPORTANT: </span></strong>If using captive portal without periodic reauthentication enabled, this value must not exceed 4095 due to protocol limitations communicating this value to the captive portal via the 32 bit unsigned <b>pfSense-Max-Total-Octets</b> attribute.
 				]]>
 			</description>
 			<type>input</type>
@@ -658,6 +660,11 @@
 			<cols>75</cols>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_certificates</type>
+		</item>
+	</plugins>
 	<custom_delete_php_command>
 		freeradius_users_resync();
 	</custom_delete_php_command>

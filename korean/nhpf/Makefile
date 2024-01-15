@@ -1,6 +1,3 @@
-# Created by: Junho CHOI <junho.choi@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	nhpf
 PORTVERSION=	1.42
 PORTREVISION=	1

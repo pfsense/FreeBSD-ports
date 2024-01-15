@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libbind
 PORTVERSION=	6.0
 PORTREVISION=	1
@@ -10,6 +8,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standard C resolver library
+WWW=		https://www.isc.org/software/libbind
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
-
 PORTNAME=	nwreckdum
 PORTVERSION=	0.0.6
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	archivers games
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for manipulating of Quake packed data files
+WWW=		https://github.com/danfe/nwreckdum
 
 LICENSE=	GPLv2
 

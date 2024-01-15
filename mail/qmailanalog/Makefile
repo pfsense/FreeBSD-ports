@@ -1,6 +1,3 @@
-# Created by: Neil Blakey-Milner <nbm@rucus.ru.ac.za>
-# $FreeBSD$
-
 PORTNAME=	qmailanalog
 PORTVERSION=	0.70
 PORTREVISION=	4
@@ -10,6 +7,7 @@ MASTER_SITES=	http://cr.yp.to/software/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools to analyze qmail-send activity
+WWW=		https://cr.yp.to/qmailanalog.html
 
 USES=		qmail:run
 

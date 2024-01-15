@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	20131101
 CATEGORIES=	russian textproc
@@ -9,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Russian hunspell dictionaries
+WWW=		http://code.google.com/p/hunspell-ru/
 
 LICENSE=	LGPL3
 
@@ -17,8 +16,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/ru_RU.aff \
-		%%DATADIR%%/ru_RU.dic
+PLIST_FILES=	${DATADIR}/ru_RU.aff \
+		${DATADIR}/ru_RU.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

@@ -1,6 +1,3 @@
-# Created by: Morten Slot Kristensen
-# $FreeBSD$
-
 PORTNAME=	dzen
 PORTVERSION=	0.9.5
 CATEGORIES=	x11
@@ -8,11 +5,12 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	General purpose messaging, notification and menuing program for X11
+WWW=		https://github.com/robm/dzen
 
 LICENSE=	MIT
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     robm
+USE_GITHUB=	yes
+GH_ACCOUNT=	robm
 GH_TAGNAME=	488ab66
 
 USES=		pkgconfig xorg

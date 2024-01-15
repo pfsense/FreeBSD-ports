@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Table-CSV
 PORTVERSION=	0.023
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Generate CSV
+WWW=		https://metacpan.org/release/Text-Table-CSV
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

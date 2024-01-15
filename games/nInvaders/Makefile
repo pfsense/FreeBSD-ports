@@ -1,16 +1,19 @@
-# Created by: Michael L. Hostbaek (mich@freebsdcluster.org)
-# $FreeBSD$
-
 PORTNAME=	nInvaders
-PORTVERSION=	0.1.1
+DISTVERSION=	0.1.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	ninvaders-${PORTVERSION}
 
-MAINTAINER=	mich@FreeBSD.org
-COMMENT=	The nInvaders game is a Space Invaders clone for ncurses
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Space Invaders clone for ncurses
+WWW=		https://ninvaders.sourceforge.net/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/gpl.txt
 
 USES=		ncurses
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	DOCS
 

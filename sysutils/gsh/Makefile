@@ -1,12 +1,10 @@
-# Created by: <jsmith@resonatingmedia.com>
-# $FreeBSD$
-
 PORTNAME=	gsh
 PORTVERSION=	1.1.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	jsmith@resonatingmedia.com
 COMMENT=	Program to run commands on multiple remote hosts
+WWW=		https://github.com/kees/gsh/
 
 LICENSE=	GPLv2
 

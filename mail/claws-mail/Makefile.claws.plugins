@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CLAWS_PLUGINS=	acpi_notifier \
 		address_keeper \
 		archive \
@@ -12,6 +10,7 @@ CLAWS_PLUGINS=	acpi_notifier \
 		fancy \
 		fetchinfo \
 		gdata \
+		keyword_warner \
 		libravatar \
 		litehtml_viewer \
 		mailmbox \

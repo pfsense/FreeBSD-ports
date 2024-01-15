@@ -1,6 +1,3 @@
-# Created by: joseph@randomnetworks.com
-# $FreeBSD$
-
 PORTNAME=	sendip
 PORTVERSION=	2.5
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.earth.li/projectpurple/files/
 
 MAINTAINER=	coco@executive-computing.de
 COMMENT=	Command-line tool for sending arbitrary IP packets
+WWW=		https://www.earth.li/projectpurple/progs/sendip.html
 
 LICENSE=	GPLv2
 
@@ -22,6 +20,10 @@ USE_LDCONFIG=	yes
 
 .if ${COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-empty-body -Wno-constant-conversion
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=deprecated-non-prototype -Wno-error=strict-prototypes
 .endif
 
 post-install:

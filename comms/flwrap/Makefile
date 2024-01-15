@@ -1,13 +1,11 @@
-# Created by: Diane Bruce <db@db.net>
-# $FreeBSD$
-
 PORTNAME=	flwrap
-PORTVERSION=	1.3.5
+PORTVERSION=	1.3.6
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/fldigi/${PORTNAME}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Companion utility for fldigi
+WWW=		http://www.w1hkj.com/Flwrap/
 
 LICENSE=	GPLv2
 
@@ -24,7 +22,7 @@ post-configure:
 	@${REINPLACE_CMD} -e 's|^CPPFLAGS|#CPPFLAGS|' \
 		${WRKSRC}/src/Makefile
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

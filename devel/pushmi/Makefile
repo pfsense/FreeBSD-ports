@@ -1,6 +1,3 @@
-# Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pushmi
 PORTVERSION=	1.0.0
 PORTREVISION=	9
@@ -11,6 +8,7 @@ DISTNAME=	Pushmi-v${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subversion repository replication tool
+WWW=		https://metacpan.org/release/Pushmi
 
 LICENSE=	APACHE20
 
@@ -26,7 +24,7 @@ RUN_DEPENDS=	p5-subversion>=0:devel/p5-subversion \
 		p5-YAML-Syck>=0:textproc/p5-YAML-Syck \
 		svk>=2.0.0:devel/svk
 
-USES=		apache:2.2+ perl5
+USES=		apache perl5
 USE_PERL5=	configure
 
 .include <bsd.port.mk>

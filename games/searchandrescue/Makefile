@@ -1,14 +1,12 @@
-# Created by: Jesse Smith <jessefrgsmith@yahoo.ca>
-# $FreeBSD$
-
 PORTNAME=	SearchAndRescue
 PORTVERSION=	1.4.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME:tl}/Program/
 
 MAINTAINER=	jessefrgsmith@yahoo.ca
 COMMENT=	Flight simulator in which the player rescues people
+WWW=		https://searchandrescue.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

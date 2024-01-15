@@ -1,6 +1,3 @@
-# Created by: lars.eggert@gmx.net
-# $FreeBSD$
-
 PORTNAME=	Text-Aspell
 PORTVERSION=	0.09
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the GNU Aspell library
+WWW=		https://metacpan.org/release/Text-Aspell
 
 LIB_DEPENDS=	libaspell.so:textproc/aspell
 

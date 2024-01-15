@@ -1,5 +1,3 @@
-TIMESTAMP = 1605289372
-SHA256 (fuse-emulator-roms-0.9.0-14.fc33.noarch.rpm) = 6969ff7f792daef0402fc9d7df8966c74fe84c59bb298e76855e7375c0f4e4a1
-SIZE (fuse-emulator-roms-0.9.0-14.fc33.noarch.rpm) = 134171
-SHA256 (Opus-22.rom) = 0a658b83257db99370f086f8ec57a5c9108ffc846e6fe567f262b63befc85dc9
-SIZE (Opus-22.rom) = 8192
+TIMESTAMP = 1672585064
+SHA256 (menelkir-fuseroms-fed6cfca1d13acad86a0802bfbd4b8af3a42d688_GL0.tar.gz) = 011d3bb7f033b0424da0d944d3ac9a46b15e38c7888ba9a5ef8ded5045e87dde
+SIZE (menelkir-fuseroms-fed6cfca1d13acad86a0802bfbd4b8af3a42d688_GL0.tar.gz) = 500560

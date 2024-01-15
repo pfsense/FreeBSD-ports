@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	HTML-Tiny
 PORTVERSION=	1.05
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Lightweight, dependency free HTML/XML generation
+WWW=		https://metacpan.org/release/HTML-Tiny
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

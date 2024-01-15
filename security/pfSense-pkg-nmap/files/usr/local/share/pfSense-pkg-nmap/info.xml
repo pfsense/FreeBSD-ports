@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>nmap</name>
-		<descr><![CDATA[NMap is a utility for network exploration or security auditing.&lt;br/&gt;
+		<descr><![CDATA[Nmap is a utility for network exploration or security auditing.&lt;br/&gt;
 			It supports ping scanning (determine which hosts are up), many port scanning techniques (determine what services the hosts are offering), version detection (determine what application/service is running on a port), and TCP/IP fingerprinting (remote host OS or device identification).
 			It also offers flexible target and port specification, decoy/stealth scanning, SunRPC scanning, and more.]]></descr>
 		<version>%%PKGVERSION%%</version>

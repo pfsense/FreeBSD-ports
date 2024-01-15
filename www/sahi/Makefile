@@ -1,16 +1,13 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sahi
 PORTVERSION=	3.5.${SAHI_BUILD}
-#PORTREVISION=	0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-v${PORTVERSION:R:R:R:S,.,,}/${SAHI_BUILD:S,.,,g}/
 DISTNAME=	${PORTNAME}_${SAHI_BUILD:S,.,,g}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Web automation and testing tool
+WWW=		http://www.sahi.co.in/w/sahi
 
 LICENSE=	APACHE20 MPL11
 LICENSE_COMB=	multi
@@ -27,11 +24,10 @@ NO_BUILD=	yes
 OPTIONS_DEFINE=	DOCS
 OPTIONS_DEFAULT=	CHROME
 OPTIONS_SINGLE=	BROWSER
-OPTIONS_SINGLE_BROWSER=	CHROME FIREFOX OPERA
+OPTIONS_SINGLE_BROWSER=	CHROME FIREFOX
 
 CHROME_DESC=	Use Chrome as default browser
 FIREFOX_DESC=	Use Firefox as default browser
-OPERA_DESC=	Use Opera as default browser
 
 USES=		dos2unix zip
 DOS2UNIX_GLOB=	linux.xml os.properties sahi.properties
@@ -88,11 +84,6 @@ RUN_DEPENDS+=	chrome:www/chromium
 .if ${PORT_OPTIONS:MFIREFOX}
 BROWSER=	firefox
 RUN_DEPENDS+=	firefox:www/firefox
-.endif
-
-.if ${PORT_OPTIONS:MOPERA}
-BROWSER=	opera
-RUN_DEPENDS+=	opera:www/opera
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PerlIO-via-Timeout
 PORTVERSION=	0.32
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	PerlIO layer to add read and write timeouts to a handle
+WWW=		https://metacpan.org/release/PerlIO-via-Timeout
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

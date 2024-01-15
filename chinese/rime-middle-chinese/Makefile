@@ -1,12 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-middle-chinese
-DISTVERSION=	g20201219
+DISTVERSION=	g20210926
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Rime Middle Chinese schema support
+WWW=		https://github.com/rime/rime-middle-chinese
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,7 +22,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
-GH_TAGNAME=	9fad7a7c0c26167d5e6e85db8df48a15c7f7d4f0
+GH_TAGNAME=	582e144e525525ac2b6c2498097d7c7919e84174
 
 NO_ARCH=	yes
 

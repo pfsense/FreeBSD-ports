@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	unicorn
 DISTVERSION=	1.0.2
 CATEGORIES=	emulators
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Unicorn CPU emulator framework
+WWW=		https://www.unicorn-engine.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,15 +1,11 @@
---- Makefile.in.orig	2019-01-08 06:06:39.654833000 +0100
-+++ Makefile.in	2019-01-08 06:06:53.077532000 +0100
-@@ -188,11 +188,7 @@
- 	for BIN in bird @CLIENT@ ; do								\
+--- Makefile.in.orig	2022-02-21 11:12:46 UTC
++++ Makefile.in
+@@ -207,7 +207,7 @@ install: all
  		$(INSTALL_PROGRAM) $(exedir)/$$BIN $(DESTDIR)/$(sbindir)/$$BIN ;		\
  	done
--	if ! test -f $(DESTDIR)/@CONFIG_FILE@ ; then						\
+ 	if ! test -f $(DESTDIR)/@CONFIG_FILE@ ; then						\
 -		$(INSTALL_DATA) $(srcdir)/doc/bird.conf.example $(DESTDIR)/@CONFIG_FILE@ ;	\
--	else											\
--		echo "Not overwriting old bird.conf" ;						\
--	fi
-+	$(INSTALL_DATA) $(srcdir)/doc/bird.conf.example $(DESTDIR)/@CONFIG_FILE@.sample ;	\
- 
- install-docs:
- 	$(INSTALL) -d $(DESTDIR)/$(docdir)
++		$(INSTALL_DATA) $(srcdir)/doc/bird.conf.example $(DESTDIR)/@CONFIG_FILE@.sample ;	\
+ 	else											\
+ 		echo "Not overwriting old bird.conf" ;						\
+ 	fi

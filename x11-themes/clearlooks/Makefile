@@ -1,18 +1,14 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/x11-themes/clearlooks/Makefile,v 1.8 2007/08/07 04:34:29 mezz Exp $
-
 PORTNAME?=	clearlooks
 PORTVERSION=	0.6.2
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	x11-themes
 MASTER_SITES=	SF/clearlooks/clearlooks/clearlooks%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT?=	GTK+ 2.x engine based on Bluecurve
+COMMENT?=	GTK 2.x engine based on Bluecurve
+WWW=		https://clearlooks.sourceforge.net/
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 USES=		gnome libtool pkgconfig tar:bzip2
 USE_GNOME=	gtk20
@@ -30,10 +26,10 @@ METACITY_DESC=	Depend on MetaCity Theme
 .include <bsd.port.options.mk>
 
 .if !defined(PKGNAMESUFFIX)
-CONFLICTS+=	gtk-engines2-[0-9]* clearlooks-themes[0-9]*
+CONFLICTS+=	gtk-engines2 clearlooks-themes[0-9]*
 PLIST_SUB+=	ENGINE=""
 .else
-CONFLICTS+=	clearlooks-[0-9]*
+CONFLICTS+=	clearlooks
 
 BUILD_DEPENDS+=	gtk-engines2>=2.7.5_1:x11-themes/gtk-engines2
 RUN_DEPENDS+=	gtk-engines2>=2.7.5_1:x11-themes/gtk-engines2

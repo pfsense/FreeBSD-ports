@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	vulkan-loader
-DISTVERSIONPREFIX=v
-DISTVERSION=	1.2.165
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.3.275
 CATEGORIES=	graphics devel
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Driver loader for the Vulkan graphics API
+WWW=		https://github.com/KhronosGroup/Vulkan-Loader
 
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 
-USES=		cmake compiler:${ARCH:Mi386:C/.+/gcc-/}c++11-lib pkgconfig python:3.4+,build
+USES=		alias cmake compiler:c++11-lib pkgconfig python:build
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	KhronosGroup
@@ -37,7 +36,17 @@ XLIB_USE=		XORG=x11,xrandr
 XLIB_CMAKE_BOOL=	BUILD_WSI_XLIB_SUPPORT
 
 post-patch:
-# _XOPEN_SOURCE enforces X/Open-compliance but alloca isn't there
-	@${REINPLACE_CMD} '/_XOPEN_SOURCE/d' ${WRKSRC}/loader/CMakeLists.txt
+# Extract (snapshot) version from the port
+# Respect PREFIX when XDG_CONFIG_DIRS and XDG_DATA_DIRS are unset
+	@${REINPLACE_CMD} -e '/find_.*Git/d' \
+		-e '/BRANCH/s/--unknown--/main/' \
+		-e '/TAG/s/--unknown--/${DISTVERSIONFULL}/' \
+		-e '/FALLBACK/s,/etc,${PREFIX}&,' \
+		-e 's,/usr/local,${PREFIX},' \
+		${WRKSRC}/CMakeLists.txt
+# https://github.com/llvm/llvm-project/issues/46692
+	@if [ "${CHOSEN_COMPILER_TYPE}-${ARCH}-${_OSRELEASE:C/.*-//}" = "clang-i386-CURRENT" ]; then \
+		${ECHO} "disabled" >${WRKSRC}/loader/asm_test_x86.S; \
+	fi
 
 .include <bsd.port.mk>

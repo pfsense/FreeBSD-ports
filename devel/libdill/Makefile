@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	libdill
 DISTVERSION=	2.14
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Structured concurrency library in C
+WWW=		https://github.com/sustrik/libdill
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

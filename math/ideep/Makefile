@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ideep
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.0-119
@@ -8,6 +6,7 @@ CATEGORIES=	math # neural-networks
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Chainer module for numpy-like API and DNN acceleration using MKL-DNN
+WWW=		https://github.com/intel/ideep
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

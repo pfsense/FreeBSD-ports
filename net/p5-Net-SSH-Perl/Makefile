@@ -1,6 +1,3 @@
-# Created by: Jesper Skriver <jesper@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-SSH-Perl
 PORTVERSION=	2.14
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module implementing both the SSH1 and SSH2 protocols
+WWW=		https://metacpan.org/release/Net-SSH-Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

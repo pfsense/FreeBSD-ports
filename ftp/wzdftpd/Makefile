@@ -1,35 +1,29 @@
-# Created by: Roman Bogorodskiy
-# $FreeBSD$
-
 PORTNAME=	wzdftpd
 PORTVERSION=	0.8.3
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	ftp
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-sources/${PORTNAME}-${PORTVERSION:R}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Modular FTP server configurable online using SITE commands
+WWW=		https://sourceforge.net/projects/wzdftpd/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf gettext-tools libtool localbase pkgconfig
+USES=		autoreconf:2.69 cpe gettext-tools libtool localbase pkgconfig
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--sysconfdir=${ETCDIR} --without-pam --disable-bonjour
+CONFIGURE_ARGS=	--sysconfdir=${ETCDIR} --datadir=${PREFIX}/lib \
+		--disable-bonjour --disable-static
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-CFLAGS+=		-fcommon
-
-DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
-EXPIRATION_DATE=2021-04-01
-
 USE_RC_SUBR=	wzdftpd
 
-OPTIONS_DEFINE=	AVAHI ICONV IPV6 MYSQL PERL PGSQL SQLITE TCL DOCS
+OPTIONS_DEFINE=	AVAHI DOCS ICONV IPV6 MYSQL PAM PERL PGSQL SQLITE TCL
 OPTIONS_RADIO=	TLS
 OPTIONS_RADIO_TLS=	GNUTLS OPENSSL
-OPTIONS_DEFAULT=	AVAHI GNUTLS
+OPTIONS_DEFAULT=	AVAHI GNUTLS ICONV PAM PERL SQLITE
 OPTIONS_SUB=	yes
 
 ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
@@ -53,6 +47,9 @@ PERL_USES=		perl5
 
 MYSQL_CONFIGURE_ENABLE=	mysql
 MYSQL_USES=		mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
+
+PAM_CONFIGURE_WITH=	pam
 
 PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}
 PGSQL_CONFIGURE_OFF=	--disable-pgsql
@@ -67,24 +64,12 @@ AVAHI_LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 
 post-patch:
 	@${TOUCH} ${WRKSRC}/config.rpath
-	@${ECHO_CMD} "ACLOCAL_AMFLAGS= -I ac-helpers" >> ${WRKSRC}/Makefile.am
-	@${REINPLACE_CMD} -e \
-		'/LDFLAGS/s|@PTHREAD_CFLAGS@|@LTLIBICONV@|' \
-		${WRKSRC}/libwzd-core/Makefile.am
-	@${REINPLACE_CMD} -e \
-		's|INSTALLDIRS=vendor|INSTALLPRIVLIB=$${prefix}/lib| ; \
-		 /MAKE/s| install| pure_install|' \
-		${WRKSRC}/libwzd-perl/Makefile.am
-.for i in backends modules
-	@${FIND} ${WRKSRC}/${i} -name "Makefile.am" | ${XARGS} \
-		${REINPLACE_CMD} -e \
-		'/^libdir/s|$${pkgdatadir}|$${prefix}/lib/wzdftpd|'
-.endfor
-	@${FIND} ${WRKSRC} -name "*_tls.c" | ${XARGS} ${REINPLACE_CMD} -e \
-		'/<gcrypt.h>/d ; \
-		 /gcry_control/d' \
 
+# wzd.m4 gets installed into the wrong spot due to our --datadir hack
 post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/aclocal
+	${MV} ${STAGEDIR}${PREFIX}/lib/aclocal/wzd.m4 ${STAGEDIR}${PREFIX}/share/aclocal
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/aclocal
 	${INSTALL_DATA} ${WRKSRC}/*.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig
 
 post-install-DOCS-on:

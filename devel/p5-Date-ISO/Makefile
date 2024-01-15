@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	Date-ISO
 PORTVERSION=	1.31
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Converts dates between ISO and Gregorian formats
+WWW=		https://metacpan.org/release/Date-ISO
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Date-ICal>=1.54:devel/p5-Date-ICal \

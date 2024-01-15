@@ -1,6 +1,3 @@
-# Created by: <hvo.pm@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	Dancer2-Plugin-DBIC
 PORTVERSION=	0.0100
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBIx::Class interface for Dancer2 applications
+WWW=		https://github.com/ironcamel/Dancer2-Plugin-DBIC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

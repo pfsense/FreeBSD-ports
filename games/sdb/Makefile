@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	sdb
 PORTVERSION=	1.0.2
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	http://stage.gamecreation.org/shotgund/ \
 		https://mirror.amdmi3.ru/distfiles/
@@ -12,23 +9,20 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Futuristic overhead shooter
+WWW=		http://www.gamecreation.org/games/shotgun-debugger
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gl gmake sdl
-USE_SDL=	mixer image sdl
+USE_CXXSTD=	c++14
 USE_GL=		gl glu
+USE_SDL=	mixer image sdl
 
-BUILD_WRKSRC=	${WRKSRC}/src
+MAKE_ARGS=	CPP="${CXX}" CXXFLAGS="${CXXFLAGS}" LIBS="${LIBS}"
 
 CXXFLAGS+=	`${SDL_CONFIG} --cflags`
 LIBS+=		`${SDL_CONFIG} --libs` -lSDL_image -lSDL_mixer -lGL -lGLU
-MAKE_ARGS=	CPP="${CXX}" CXXFLAGS="${CXXFLAGS}" LIBS="${LIBS}"
-
-PLIST_FILES=	bin/sdb
-PORTDOCS=	*
-PORTDATA=	*
 
 DESKTOP_ENTRIES="Shotgun Debugger" \
 		"" \
@@ -37,11 +31,17 @@ DESKTOP_ENTRIES="Shotgun Debugger" \
 		"Game;ActionGame;" \
 		""
 
+BUILD_WRKSRC=	${WRKSRC}/src
+
+PLIST_FILES=	bin/sdb
+PORTDATA=	*
+PORTDOCS=	*
+
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != "powerpc" && ${ARCH} != "sparc64"
+.if ${ARCH} != "powerpc" && ${ARCH} != "powerpc64"
 PLIST_SUB+=	MODEL_SUFFIX="md2"
 .else
 # big-endian requires different set of models

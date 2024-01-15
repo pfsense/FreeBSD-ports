@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	payara
 PORTVERSION=	5.2020.4
 CATEGORIES=	www java
 MASTER_SITES=	https://repo1.maven.org/maven2/fish/payara/distributions/${PORTNAME}/${PORTVERSION}/
 MAINTAINER=	dmytro@posteo.net
 COMMENT=	Jakarta EE application server derived from GlassFish Server Open Source Edition
+WWW=		https://www.payara.fish/
 
 LICENSE=	GPLv2 CDDL
 LICENSE_COMB=	dual
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/payara5

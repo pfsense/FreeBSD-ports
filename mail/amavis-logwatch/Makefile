@@ -1,14 +1,12 @@
-# Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	amavis-logwatch
 PORTVERSION=	1.51.03
 PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	SF/logreporters/${PORTNAME}/release/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Amavisd-new log parser
+WWW=		https://logreporters.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

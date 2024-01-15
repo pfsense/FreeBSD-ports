@@ -1,6 +1,3 @@
-# Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
-
 PORTNAME=	DNS-Config
 PORTVERSION=	0.66
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	DNS::Config is set of perl modules for name service configurations
+WWW=		https://metacpan.org/release/DNS-Config
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

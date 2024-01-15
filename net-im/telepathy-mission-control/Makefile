@@ -1,14 +1,12 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#    $MCom: ports/trunk/net-im/telepathy-mission-control/Makefile 19955 2014-10-15 10:15:00Z gusi $
-
 PORTNAME=	telepathy-mission-control
 PORTVERSION=	5.16.6
+PORTREVISION=	2
 CATEGORIES=	net-im devel
 MASTER_SITES=	http://telepathy.freedesktop.org/releases/telepathy-mission-control/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Telepathy component to apps to abstract details of connection managers
+WWW=		https://mission-control.sourceforge.net/
 
 LIB_DEPENDS=	libtelepathy-glib.so:net-im/telepathy-glib \
 		libdbus-glib-1.so:devel/dbus-glib \

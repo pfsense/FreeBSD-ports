@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	WWW-Wikipedia
 PORTVERSION=	2.05
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module of Automated interface to the Wikipedia
+WWW=		https://metacpan.org/release/WWW-Wikipedia
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

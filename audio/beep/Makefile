@@ -1,6 +1,3 @@
-# Created by: Tyler Spivey
-# $FreeBSD$
-
 PORTNAME=	beep
 PORTVERSION=	1.0
 PORTREVISION=	1

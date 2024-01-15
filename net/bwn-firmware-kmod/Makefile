@@ -1,6 +1,3 @@
-# Created by: Weongyo Jeong <weongyo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bwn-firmware
 PORTVERSION=	0.1.2
 CATEGORIES=	net

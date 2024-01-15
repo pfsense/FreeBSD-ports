@@ -1,17 +1,15 @@
-# Created by: Soeren Boll Overgaard <boll@tolkien.dk>
-# $FreeBSD$
-
 PORTNAME=	pdftohtml
 PORTVERSION=	0.40a
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/Experimental%20Versions/${PORTNAME}%20${PORTVERSION:S|a||} \
 		http://fossies.org/linux/www/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line tool for converting pdf-files into html
+WWW=		https://sourceforge.net/projects/pdftohtml/
 
-USES=		ghostscript gmake
+USES=		cpe ghostscript gmake
 
 PLIST_FILES=	bin/pdf-to-html
 

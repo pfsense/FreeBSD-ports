@@ -3,7 +3,7 @@
  * status_mail_report.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,8 @@
 ##|-PRIV
 
 require("guiconfig.inc");
-require_once("mail_reports.inc");
+
+require_once('mailreport/mail_report.inc');
 
 init_config_arr(array('mailreports', 'schedule'));
 $a_mailreports = &$config['mailreports']['schedule'];
@@ -106,6 +107,9 @@ include("head.inc");
 			} else {
 				$friendly = "-";
 			}
+
+			array_init_path($mailreport, 'cmd/row');
+			array_init_path($mailreport, 'log/row');
 ?>
 		<tr>
 			<td><input type="checkbox" id="frc<?=$i?>" name="reports[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
@@ -125,8 +129,8 @@ include("head.inc");
 				<?=(is_array($mailreport['log']['row']) ? count($mailreport['log']['row']) : 0);?>
 			</td>
 			<td style="cursor: pointer;">
-				<a class="fa fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Report');?>"></a>
+				<a class="fa-solid fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
+				<a class="fa-solid fa-trash-can no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Report');?>"></a>
 				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete Report'); ?>">Delete</button>
 			</td>
 		</tr>
@@ -142,12 +146,12 @@ include("head.inc");
 	<nav class="action-buttons">
 		<br />
 		<a href="status_mail_report_edit.php" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add New Report")?>
 		</a>
 <?php if ($i !== 0): ?>
 		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Reports")?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete")?>
 		</button>
 <?php endif; ?>

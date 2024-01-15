@@ -1,6 +1,3 @@
-# Created by: Nikolay Korotkiy <sikmir@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	polyclipping
 PORTVERSION=	6.4.2
 CATEGORIES=	graphics
@@ -9,6 +6,7 @@ DISTNAME=	clipper_ver${PORTVERSION}
 
 MAINTAINER=	sikmir@gmail.com
 COMMENT=	Polygon and line clipping and offsetting library
+WWW=		https://sourceforge.net/projects/polyclipping/
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/License.txt

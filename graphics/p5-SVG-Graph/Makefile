@@ -1,6 +1,3 @@
-# Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
-
 PORTNAME=	SVG-Graph
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Visualize your data in Scalable Vector Graphics (SVG) format
+WWW=		https://metacpan.org/release/SVG-Graph
 
 LICENSE=	ART20
 

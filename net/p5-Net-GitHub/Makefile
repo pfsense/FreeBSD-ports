@@ -1,14 +1,12 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Net-GitHub
-PORTVERSION=	1.01
+PORTVERSION=	1.05
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to github.com
+WWW=		https://metacpan.org/release/Net-GitHub
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

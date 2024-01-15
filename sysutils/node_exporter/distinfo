@@ -1,3 +1,5 @@
-TIMESTAMP = 1592327241
-SHA256 (prometheus-node_exporter-v1.0.1_GH0.tar.gz) = a841bf3e236376840be9e1d8e6c4a38196be6f3957b0982d1c7970a5e416b0ad
-SIZE (prometheus-node_exporter-v1.0.1_GH0.tar.gz) = 2792033
+TIMESTAMP = 1696869041
+SHA256 (go/sysutils_node_exporter/node_exporter-v1.6.1/v1.6.1.mod) = a0809a9aa7204b6ce15d2b4b6e8cf267ec21987687bd5751c52d43441b703fa2
+SIZE (go/sysutils_node_exporter/node_exporter-v1.6.1/v1.6.1.mod) = 2537
+SHA256 (go/sysutils_node_exporter/node_exporter-v1.6.1/v1.6.1.zip) = 0c8d801c75d210e0352f9fbf5ba163603d03621c14103724240851ec194e8d9c
+SIZE (go/sysutils_node_exporter/node_exporter-v1.6.1/v1.6.1.zip) = 521898

@@ -1,6 +1,3 @@
-# Created by: eivind
-# $FreeBSD$
-
 PORTNAME=	ydiff
 DISTVERSION=	1.2
 PORTEPOCH=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	LOCAL/mat/ydiff
 
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Diff readability enhancer for color terminals
+WWW=		https://github.com/ymattw/ydiff
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

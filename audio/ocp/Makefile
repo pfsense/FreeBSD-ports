@@ -1,15 +1,13 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	ocp
-PORTVERSION=	0.2.2
-DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTVERSION=	0.2.106
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	audio
+MASTER_SITES=	https://stian.cubic.org/ocp/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Legendary Open Cubic Player
+WWW=		https://stian.cubic.org/project-ocp.php
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,41 +15,40 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
 BUILD_DEPENDS=	xa65:devel/xa65
-LIB_DEPENDS=	libid3tag.so:audio/libid3tag \
+LIB_DEPENDS=	libancient.so:archivers/ancient \
+		libcjson.so:devel/libcjson \
+		libdiscid.so:audio/libdiscid \
+		libid3tag.so:audio/libid3tag \
 		libmad.so:audio/libmad \
 		libogg.so:audio/libogg \
-		libsidplay.so:audio/libsidplay \
+		libpng.so:graphics/png \
 		libvorbis.so:audio/libvorbis
 
-USES=		compiler:c11 dos2unix gmake gnome iconv localbase:ldflags \
-		makeinfo ncurses pkgconfig tar:xz
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	mywave82
-GH_PROJECT=	opencubicplayer
-GH_TUPLE=	mywave82:timidity:77cd92d:timidity/playgmi/timidity-git \
-		mywave82:sidplay-residfp-ocp:152551f:sidplayresidfpocp/playsid/sidplayfp-git
-
-INSTALLS_ICONS=	yes
-USE_LDCONFIG=	yes
+USES=		compiler:c11 dos2unix gmake gnome iconv jpeg localbase:ldflags \
+		makeinfo ncurses pkgconfig shared-mime-info tar:xz
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--libdir=${PREFIX}/lib \
 		--with-dir-suffix="" \
-		--without-sdl
-CONFIGURE_ENV=	SHARED_FLAGS="${LDFLAGS} -shared"
+		--without-sdl \
+		--without-update-desktop-database
+CONFIGURE_ENV=	SHARED_FLAGS="${LDFLAGS} -shared" \
+		XA=${PREFIX}/bin/xa65
 
 MAKE_JOBS_UNSAFE=	yes
 
 LDFLAGS_i386=	-Wl,-z,notext
 
+CONFLICTS_INSTALL=	alliance # man/man1/ocp.1.gz
+
 INFO=		ocp
 
-OPTIONS_DEFINE=		ADPLUG ALSA DOCS FLAC MIDI OSS SDL X11
-OPTIONS_DEFAULT=	ADPLUG ALSA FLAC MIDI OSS SDL X11
+OPTIONS_DEFINE=		ADPLUG ALSA DOCS FLAC GME MIDI OSS SDL X11
+OPTIONS_DEFAULT=	ADPLUG ALSA FLAC GME MIDI OSS SDL X11
 OPTIONS_SUB=		yes
 
 ADPLUG_DESC=	adplug support
+GME_DESC=	libgme support for additional video game music support
 MIDI_DESC=	timidity support
 
 ADPLUG_LIB_DEPENDS=	libadplug.so:audio/libadplug \
@@ -64,29 +61,31 @@ ALSA_CONFIGURE_WITH=	alsa
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
 FLAC_CONFIGURE_WITH=	flac
 
+GME_LIB_DEPENDS=	libgme.so:audio/libgme
+GME_CONFIGURE_WITH=	libgme
+
 MIDI_RUN_DEPENDS=	eawpats>0:audio/eawpats
 
 OSS_CONFIGURE_WITH=	oss
 
 SDL_IMPLIES=		X11
-SDL_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
-SDL_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-			libpng16.so:graphics/png
-SDL_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
-SDL_USES=		desktop-file-utils jpeg sdl
+SDL_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
+SDL_LIB_DEPENDS=	libfreetype.so:print/freetype2
+SDL_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
+SDL_USES=		desktop-file-utils sdl
 SDL_USE=		SDL=sdl2
 SDL_CONFIGURE_WITH=	sdl2 \
-			unifontdir=${LOCALBASE}/share/fonts/gnu-unifont-ttf
+			unifontdir=${LOCALBASE}/share/fonts/gnu-unifont-otf
 SDL_PLIST_SUB=		DESKTOP=''
 SDL_PLIST_SUB_OFF=	DESKTOP='@comment '
 
-X11_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
-X11_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-			libpng16.so:graphics/png
-X11_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
-X11_USES=		desktop-file-utils jpeg xorg
+X11_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
+X11_LIB_DEPENDS=	libfreetype.so:print/freetype2
+X11_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
+X11_USES=		desktop-file-utils xorg
 X11_USE=		XORG=x11,xext,xpm,xxf86dga,xxf86vm
-X11_CONFIGURE_WITH=	unifontdir=${LOCALBASE}/share/fonts/gnu-unifont-ttf x11
+X11_CONFIGURE_WITH=	unifontdir-otf=${LOCALBASE}/share/fonts/gnu-unifont-otf \
+			x11
 X11_PLIST_SUB=		DESKTOP='' \
 			XORG=''
 X11_PLIST_SUB_OFF=	DESKTOP='@comment ' \
@@ -94,15 +93,15 @@ X11_PLIST_SUB_OFF=	DESKTOP='@comment ' \
 
 TIMIDITY_CFG=	${LOCALBASE}/share/timidity/timidity.cfg
 
-post-patch-SDL-off:
-	@${REINPLACE_CMD} -E '/(LIBJPEG|LIBPNG_LIBS)/d' ${WRKSRC}/Rules.make.in
+.include <bsd.port.pre.mk>
 
-post-patch-X11-off:
-	@${REINPLACE_CMD} -E '/(LIBJPEG|LIBPNG_LIBS)/d' ${WRKSRC}/Rules.make.in
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ocp
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocp/*.so
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocp/autoload/*.so
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

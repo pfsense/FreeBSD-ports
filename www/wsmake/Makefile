@@ -1,6 +1,3 @@
-# Created by: Joseph Koshy <jkoshy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wsmake
 PORTVERSION=	0.7.901
 PORTREVISION=	1
@@ -9,11 +6,14 @@ MASTER_SITES=	SF/${PORTNAME}/OldFiles
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Software for production and maintenance of web sites
+WWW=		https://sourceforge.net/projects/wsmake/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake tar:bzip2
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gwsmake=no --enable-iswmake=no
 

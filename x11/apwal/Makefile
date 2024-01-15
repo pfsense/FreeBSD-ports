@@ -1,14 +1,12 @@
-# Created by: Volker Stolz <stolz@i2.informatik.rwth-aachen.de>
-# $FreeBSD$
-
 PORTNAME=	apwal
 PORTVERSION=	0.4.5
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	x11
 MASTER_SITES=	http://apwal.free.fr/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple and powerful application launcher
+WWW=		http://apwal.free.fr/
 
 USE_GNOME=	gtk20 libxml2
 USES=		gmake gnome pkgconfig

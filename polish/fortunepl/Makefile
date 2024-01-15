@@ -1,6 +1,3 @@
-# Created by: Aleksander Fafula <alex@bsdguru.org>
-# $FreeBSD$
-
 PORTNAME=	fortunepl
 PORTVERSION=	20091121
 CATEGORIES=	polish

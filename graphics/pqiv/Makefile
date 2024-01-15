@@ -1,13 +1,11 @@
-# Created by: Martin Tournoij <carpetsmoker@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	pqiv
-PORTVERSION=	2.11
-PORTREVISION=	16
+PORTVERSION=	2.12
+PORTREVISION=	24
 CATEGORIES=	graphics
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Pretty Quick Image Viewer
+WWW=		https://github.com/phillipberndt/pqiv
 
 LICENSE=	GPLv2
 
@@ -52,7 +50,7 @@ SPECTRE_CONFIGURE_WITH=	spectre
 SPECTRE_LIB_DEPENDS=	libspectre.so:print/libspectre
 
 WAND_CONFIGURE_WITH=	wand
-WAND_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
+WAND_USES=		magick:6
 
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp

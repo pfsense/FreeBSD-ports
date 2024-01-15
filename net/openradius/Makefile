@@ -1,29 +1,27 @@
-# Created by: Adam Jette <jettea46@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	openradius
 PORTVERSION=	0.9.12c
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	http://sites.e-advies.nl/openradius/download/ \
 		https://BSDforge.COM/projects/source/net/openradius/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	RADIUS server with some actual documentation
+WWW=		https://BSDforge.COM/projects/net/openradius/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LOGFILE?=	/var/log/openradius.log
 
-CONFLICTS=	freeradius-[0-9]* gnu-radius-[0-9]* radiusd-cistron-[0-9]* \
-		freeradius-mysql-[0-9]*
+CONFLICTS=	freeradius gnu-radius radiusd-cistron \
+		freeradius-mysql
 
 CC?=		gcc
 CXX?=		g++
 MAKE_ENV=	INST_PREFIX=${STAGEDIR}
 
-USES=		gmake shebangfix
+USES=		cpe gmake shebangfix
 SHEBANG_FILES=	modules/ascfile/ascfile \
 		modules/radsql/radsql \
 		modules/unixpasswd/unixpasswd
@@ -35,7 +33,7 @@ OPTIONS_DEFINE=	LDAP DOCS EXAMPLES
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLDAP}
-USE_OPENLDAP=	YES
+USES+=	ldap
 PLIST_SUB+=	LDAP=""
 SCRIPTS_ENV+=	USE_LDAP=yes
 .else

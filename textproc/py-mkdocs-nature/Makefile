@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	mkdocs-nature
-DISTVERSION=	0.2.1
+DISTVERSION=	0.6
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	MkDocs theme, a clone of the "greenish" Sphinx theme of the same name
+WWW=		https://waylan.github.io/mkdocs-nature
 
 LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mkdocs>0:textproc/py-mkdocs@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

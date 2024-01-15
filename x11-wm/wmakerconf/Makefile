@@ -1,32 +1,41 @@
-# Created by: Dominik Rothert <dr@domix.de>
-# $FreeBSD$
-
 PORTNAME=	wmakerconf
 PORTVERSION=	2.12
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Configuration tool for Window Maker
+WWW=		https://sourceforge.net/projects/wmakerconf/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libWINGs.so:x11-wm/windowmaker
+DEPRECATED=	Last upstream release was in 2007
+EXPIRATION_DATE=	2024-01-17
+
+LIB_DEPENDS=	\
+		libWINGs.so:x11-wm/windowmaker \
+		libharfbuzz.so:print/harfbuzz \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libwraster.so:x11-wm/libwraster
 RUN_DEPENDS=	rpm:archivers/rpm4
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+USES=		gettext pkgconfig perl5 gmake gnome localbase shebangfix xorg
+USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_XORG=	x11
 
-USES=		gettext pkgconfig perl5 gmake gnome shebangfix xorg
-USE_GNOME=	gtk20
 SHEBANG_FILES=	scripts/getfile.pl.in scripts/upgrade.pl.in
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-wmakerdataprefix="${LOCALBASE}/share" \
 		--with-wmakeretcprefix="${LOCALBASE}/share"
-USE_XORG=	x11
-LIBS=		-L${LOCALBASE}/lib -lintl -lX11 -lWUtil
+
+LIBS=		-lintl -lX11 -lWUtil
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-extract:
 	@${FIND} ${WRKSRC} -name "*.gmo" -delete

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	spiped
-PORTVERSION=	1.6.1
-PORTREVISION=	2
+PORTVERSION=	1.6.2
 CATEGORIES=	sysutils security
 MASTER_SITES=	http://www.tarsnap.com/spiped/
 
 MAINTAINER=	cperciva@tarsnap.com
 COMMENT=	Daemon for creating secure symmetric pipes
+WWW=		https://www.tarsnap.com/spiped.html
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

@@ -1,6 +1,3 @@
-# Created by: Joel Sutton <sutton@aardvark.apana.org.au>
-# $FreeBSD$
-
 PORTNAME=	yahtzee
 PORTVERSION=	1.0
 PORTREVISION=	2

@@ -1,6 +1,3 @@
-# Created by: D'Arcy J.M. Cain <darcy@druid.net>
-# $FreeBSD$
-
 PORTNAME=	generate
 PORTVERSION=	2.8
 PORTREVISION=	1
@@ -9,11 +6,14 @@ MASTER_SITES=	http://www.druid.net/darcy/
 
 MAINTAINER=	darcy@druid.net
 COMMENT=	Simple text pre-processor
+WWW=		https://www.druid.net/darcy/readme-generate.html
 
 USES=		gmake tar:tgz
 
 MAKE_ARGS=	BINDIR=${STAGEDIR}${PREFIX}/bin \
 		MANDIR=${STAGEDIR}${PREFIX}/man
+
+CONFLICTS_INSTALL=	julius php*-pear-Text_Highlighter
 
 PLIST_FILES=	bin/generate bin/rgenerate man/man1/generate.1.gz
 

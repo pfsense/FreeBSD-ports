@@ -1,0 +1,41 @@
+--- meson.build.orig	2023-12-25 11:25:27 UTC
++++ meson.build
+@@ -211,6 +211,10 @@ endif
+     conf_data.set('HAVE_FCNTL_H', 1)
+ endif
+ 
++if compiler.has_header('execinfo.h')
++    conf_data.set('HAVE_EXECINFO_H', 1)
++endif
++
+ if compiler.has_header('libgen.h')
+     conf_data.set('HAVE_LIBGEN_H', 1)
+ endif
+@@ -396,7 +400,8 @@ if conf_data.get('CONFIG_OPENSSL')
+ if conf_data.get('CONFIG_OPENSSL')
+     ssldeps = dependency('openssl', static: st, required: false)
+     if not ssldeps.found()
+-        ssldeps = compiler.find_library('ssl', static: st, dirs: [get_option('prefix')+'/lib', '/usr/local/lib'])
++        ssldeps = compiler.find_library('crypto', static: st, dirs: [get_option('prefix')+'/lib', '/usr/local/lib'])
++        ssldeps += compiler.find_library('ssl', static: st, dirs: [get_option('prefix')+'/lib', '/usr/local/lib'])
+     endif
+     deps += ssldeps
+     conf_data.set('USE_OPENSSL', true)
+@@ -959,7 +964,7 @@ endif
+     conf_data.set('HAVE_ICONV', 1)
+ endif
+ 
+-if conf_data.get('CONFIG_OS_DOS') or compiler.has_function('alloca', prefix: '#include <alloca.h>')
++if conf_data.get('CONFIG_OS_DOS') or compiler.has_function('alloca', prefix: '#include <stdlib.h>')
+     conf_data.set('HAVE_ALLOCA', 1)
+ endif
+ 
+@@ -975,7 +980,7 @@ endif
+     conf_data.set('HAVE_GNUTLS_CERTIFICATE_SET_X509_SYSTEM_TRUST', 1)
+ endif
+ 
+-if compiler.has_function('mkstemps', prefix: '#include <stdlib.h>', args: '-D_GNU_SOURCE')
++if compiler.has_function('mkstemps', prefix: '#include <unistd.h>')
+     conf_data.set('HAVE_MKSTEMPS', 1)
+ endif
+ 

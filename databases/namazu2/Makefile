@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	namazu
 PORTVERSION=	${NAMAZU_PORTVERSION}
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search system intended for easy use
+WWW=		http://www.namazu.org/
 
 BUILD_DEPENDS=	p5-File-MMagic>=0:devel/p5-File-MMagic
 RUN_DEPENDS=	p5-File-MMagic>=0:devel/p5-File-MMagic

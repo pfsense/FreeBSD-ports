@@ -1,6 +1,3 @@
-# Created by: Jonathan Weiss (<jw@innerewut.de>)
-# $FreeBSD$
-
 PORTNAME=	activesupport
 PORTVERSION=	4.2.11.3
 CATEGORIES=	devel rubygems
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	4
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Utility classes and extension that are required by Rails MVC Framework
+WWW=		https://github.com/rails/rails/tree/main/activesupport
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
@@ -18,10 +16,11 @@ RUN_DEPENDS=	rubygem-i18n>=0.7,2:devel/rubygem-i18n \
 		rubygem-thread_safe>=0.3.4<1:devel/rubygem-thread_safe \
 		rubygem-tzinfo1>=1.1<2:devel/rubygem-tzinfo1
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	activesupport_project
 
 PORTSCOUT=	limit:^4\.2\.
 

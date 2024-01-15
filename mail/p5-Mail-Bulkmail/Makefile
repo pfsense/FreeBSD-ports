@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Mail-Bulkmail
 PORTVERSION=	3.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for mailing lists
+WWW=		https://metacpan.org/release/Mail-Bulkmail
 
 USES=		perl5
 USE_PERL5=	configure patch

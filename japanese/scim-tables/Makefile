@@ -1,6 +1,3 @@
-# Created by: Jie Gao	<gaoj@cpsc.ucalgary.ca>
-# $FreeBSD$
-
 PORTNAME=	scim-tables
 PORTVERSION=	0.5.10
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/scim/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SCIM table based Japanese input methods
+WWW=		https://github.com/scim-im/scim
 
 BUILD_DEPENDS=	scim:textproc/scim \
 		scim-make-table:textproc/scim-table-imengine

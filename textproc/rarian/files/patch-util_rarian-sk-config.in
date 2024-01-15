@@ -1,6 +1,15 @@
---- util/rarian-sk-config.in.orig	2007-10-10 23:00:03.000000000 -0500
-+++ util/rarian-sk-config.in	2007-10-10 23:00:30.000000000 -0500
-@@ -47,7 +47,7 @@
+--- util/rarian-sk-config.in.orig	2023-12-09 03:14:08 UTC
++++ util/rarian-sk-config.in
+@@ -8,7 +8,7 @@ convert_dir=@CONVERT_DIR@
+ exec_prefix=@exec_prefix@
+ bindir=@bindir@
+ convert_dir=@CONVERT_DIR@
+-statedir=@localstatedir@/lib/rarian
++statedir=@localstatedir@/db/rarian
+ datarootdir=@datarootdir@
+ datadir=@datadir@
+ output_dir=${datadir}/help
+@@ -47,7 +47,7 @@ case "$1" in
  		print_help
  		;;
  	--version )

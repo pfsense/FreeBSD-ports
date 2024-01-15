@@ -1,37 +1,42 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pcre2
-PORTVERSION=	10.36
+PORTVERSION=	10.42
 CATEGORIES=	devel
-MASTER_SITES=	SF/pcre/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	https://github.com/PCRE2Project/${PORTNAME}/releases/download/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Perl Compatible Regular Expressions library, version 2
+WWW=		https://www.pcre.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf cpe libtool pkgconfig tar:bz2
+CPE_VENDOR=	pcre
+
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
+CONFIGURE_ARGS=	--enable-pcre2-16 \
+		--enable-pcre2-32
 INSTALL_TARGET=	install-strip
-CONFIGURE_ARGS=	--enable-pcre2-16 --enable-pcre2-32
 
-OPTIONS_DEFINE=	DOCS
-OPTIONS_RADIO=	CLI
+OPTIONS_DEFINE=		DOCS LIBBZ2 LIBZ
+OPTIONS_RADIO=		CLI
 OPTIONS_RADIO_CLI=	LIBEDIT READLINE
 
-LIBEDIT_CONFIGURE_ENABLE=	pcre2test-libedit
-LIBEDIT_USES=			libedit
+LIBBZ2_DESC=	Using pcre2grep with .bz2 files
+LIBZ_DESC=	Using pcre2grep with .gz files
 
+LIBBZ2_CONFIGURE_ON=	--enable-pcre2grep-libbz2
+LIBEDIT_USES=			libedit
+LIBEDIT_CONFIGURE_ENABLE=	pcre2test-libedit
+LIBZ_CONFIGURE_ON=	--enable-pcre2grep-libz
 READLINE_USES=			readline
 READLINE_CONFIGURE_ENABLE=	pcre2test-libreadline
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != "sparc64" && ${ARCH:Mmips64*} == "" && ${ARCH:Mriscv64*} == ""
+.if ${ARCH:Mmips64*} == "" && ${ARCH:Mriscv64*} == ""
 CONFIGURE_ARGS+=	--enable-jit
 .else
 CONFIGURE_ARGS+=	--disable-jit

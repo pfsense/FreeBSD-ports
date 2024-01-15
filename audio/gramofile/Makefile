@@ -1,9 +1,6 @@
-# Created by: nox@jelal.kn-bremen.de
-# $FreeBSD$
-
 PORTNAME=	gramofile
 PORTVERSION=	1.6P
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	audio
 MASTER_SITES=	http://www.opensourcepartners.nl/~costar/gramofile/
 
@@ -13,15 +10,21 @@ PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Audio recording and tick/scratch reduction for e.g. vinyl records
+WWW=		http://www.opensourcepartners.nl/~costar/gramofile/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfftw.so:math/fftw
 
-ALL_TARGET=	gramofile
 USES=		alias gmake ncurses perl5
 USE_CSTD=	gnu89
+
 MAKE_ARGS=	CC="${CC}" \
 		CXX="${CXX}" \
 		PERLCOREDIR=${PERLCOREDIR}
+ALL_TARGET=	gramofile
+
 CFLAGS+=	-D_WANT_SEMUN
 
 PERLCOREDIR=	${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE

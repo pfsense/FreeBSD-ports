@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-DispatchType-Regex
 PORTVERSION=	5.90035
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Regex DispatchType
+WWW=		https://metacpan.org/release/Catalyst-DispatchType-Regex
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,8 +19,9 @@ RUN_DEPENDS=	p5-Catalyst-Runtime>=5.90060:www/p5-Catalyst-Runtime \
 TEST_DEPENDS=	p5-MRO-Compat>=0:devel/p5-MRO-Compat \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
 
-NO_ARCH=	yes
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

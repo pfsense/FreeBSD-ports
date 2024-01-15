@@ -1,6 +1,3 @@
-# Created by: Felippe M. Motta <lippe@shire.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	Async-MergePoint
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	johan@stromnet.se
 COMMENT=	Perl modules that resynchronise diverged control flow
+WWW=		https://metacpan.org/release/Async-MergePoint
 
 TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception \
 		p5-Test-Fatal>=0:devel/p5-Test-Fatal

@@ -1,6 +1,3 @@
-# Created by: Marc Fonvieille <blackend@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	misc docs
 PKGNAMEPREFIX=	ja-
 
@@ -10,10 +7,9 @@ COMMENT=	Japanese translation of the FreeBSD Documentation Project
 MASTERDIR=	${.CURDIR}/../freebsd-doc-en
 PLIST=		${.CURDIR}/pkg-plist
 
-DOCLANG=	ja_JP.eucJP
+# en-freebsd-doc installs the common files
+HTML_RUN_DEPENDS=	en-freebsd-doc>=${PORTVERSION}:misc/freebsd-doc-en
+
+DOCLANG=	ja
 
 .include "${MASTERDIR}/Makefile"
-
-.if ${PORT_OPTIONS:MPDF}
-BUILD_DEPENDS+=	${LOCALBASE}/share/fonts/ipa/ipam.otf:japanese/font-ipa
-.endif

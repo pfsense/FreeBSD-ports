@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman <5u623l20@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Mason
 PORTVERSION=	2.24
 CATEGORIES=	www textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High-performance, dynamic web site authoring system
+WWW=		https://metacpan.org/release/Mason
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lato
 PORTVERSION=	g20180831
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	flo@snakeoilproductions.net
 COMMENT=	Sans-serif type family
+WWW=		https://www.latofonts.com
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/Lato2OFL/OFL.txt

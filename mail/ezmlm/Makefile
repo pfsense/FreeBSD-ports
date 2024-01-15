@@ -1,6 +1,3 @@
-# Created by: Neil Blakey-Milner <nbm@rucus.ru.ac.za>
-# $FreeBSD$
-
 PORTNAME=	ezmlm
 PORTVERSION=	0.53
 PORTREVISION=	1
@@ -15,12 +12,17 @@ MASTER_SITES=	http://cr.yp.to/software/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Easy-to-use, high-speed mailing list manager for qmail
+WWW=		https://cr.yp.to/ezmlm.html
 
-LEGAL_TEXT=	No license -- see http://cr.yp.to/softwarelaw.html
+# Converted from LEGAL_TEXT
+LICENSE=	djb
+LICENSE_NAME=	djb
+LICENSE_TEXT=	No license -- see http://cr.yp.to/softwarelaw.html
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		qmail:run
 
-CONFLICTS=	ezmlm-idx-*
+CONFLICTS=	ezmlm-idx
 
 ALL_TARGET=	it
 

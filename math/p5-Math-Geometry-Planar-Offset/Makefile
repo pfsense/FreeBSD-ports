@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Geometry-Planar-Offset
 PORTVERSION=	1.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Calculate offset polygons
+WWW=		https://metacpan.org/release/Math-Geometry-Planar-Offset
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

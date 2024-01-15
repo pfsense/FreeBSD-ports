@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MARC-XML
 PORTVERSION=	1.0.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Extension to the MARC-Record distribution for working with XML data
+WWW=		https://metacpan.org/release/MARC-XML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,23 +1,25 @@
-# Created by: Nikolai Lifanov <lifanov@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=		docker
 PORTVERSION=		18.09.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=		1
+PORTREVISION=		15
 CATEGORIES=		sysutils
 
-MAINTAINER=		lifanov@FreeBSD.org
+MAINTAINER=		joneum@FreeBSD.org
 COMMENT=		Open-source application container engine
+WWW=		https://www.docker.com/
 
 LICENSE=		APACHE20
+
+BROKEN_aarch64=		fails to build: golang.org/x/sys/unix/cap_freebsd.go:18:23: undefined: CAP_RIGHTS_VERSION_00
 
 PLIST_FILES=		bin/docker
 
 USE_GITHUB=		yes
 GH_PROJECT=		docker-ce
 
-USES=	go
+USES=	cpe go
+
+CONFLICTS_INSTALL=	docker-tray # bin/docker
 
 GO_PKGNAME=	github.com/${PORTNAME}
 GO_TARGET=	${GO_PKGNAME}/cli/cmd/docker

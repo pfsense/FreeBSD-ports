@@ -1,6 +1,3 @@
-# Created by: Samy Al Bahra <samy@kerneled.com>
-# $FreeBSD$
-
 PORTNAME=	ae_fonts_mono
 PORTVERSION=	1.0
 PORTREVISION=	5
@@ -10,10 +7,15 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of PCF fonts that include Arabic glyphs
+WWW=		https://www.arabeyes.org/
+
+LICENSE=	NONE
 
 USES=		fonts tar:bzip2
+
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
+
 PLIST_FILES=	${FONTSDIR}/10x21.pcf
 
 do-install:

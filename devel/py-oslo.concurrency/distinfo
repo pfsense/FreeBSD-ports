@@ -1,3 +1,3 @@
-TIMESTAMP = 1604680156
-SHA256 (oslo.concurrency-4.3.1.tar.gz) = 1333853e08d87ba36c26c2f4d9d5ce99e9053cb96ed14b9b3777aab6c7880bed
-SIZE (oslo.concurrency-4.3.1.tar.gz) = 54815
+TIMESTAMP = 1693333963
+SHA256 (oslo.concurrency-5.2.0.tar.gz) = 8a19ec574ed057e93d5167432605ff874c4b9017a5215fd021a2034c6cd52a92
+SIZE (oslo.concurrency-5.2.0.tar.gz) = 60052

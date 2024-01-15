@@ -1,6 +1,3 @@
-# Created by: Vsevolod Stakhov <vsevolod@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minisat
 PORTVERSION=	2.2.1
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://highsecure.ru/distfiles/
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Minimalistic, open-source SAT solver
+WWW=		http://minisat.se/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

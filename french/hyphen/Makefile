@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphen
 PORTVERSION=	3.0
 CATEGORIES=	french textproc
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	French hyphenation rules
+WWW=		https://www.dicollecte.org/
 
 LICENSE=	LGPL21+
 

@@ -1,11 +1,15 @@
---- src/Common/MemoryStatisticsOS.cpp.orig	2020-08-31 16:22:57 UTC
+--- src/Common/MemoryStatisticsOS.cpp.orig	2021-12-26 09:29:33 UTC
 +++ src/Common/MemoryStatisticsOS.cpp
-@@ -1,7 +1,13 @@
+@@ -1,4 +1,4 @@
 -#if defined(OS_LINUX)
--
++#if defined(OS_LINUX) || defined(OS_FREEBSD)
+ 
  #include <sys/types.h>
  #include <sys/stat.h>
-+
+@@ -6,6 +6,13 @@
+ #include <unistd.h>
+ #include <cassert>
+ 
 +#ifdef OS_FREEBSD
 +#include <sys/param.h>
 +#include <sys/sysctl.h>
@@ -13,22 +17,10 @@
 +#include <libprocstat.h>
 +#endif
 +
- #include <fcntl.h>
- #include <unistd.h>
- #include <cassert>
-@@ -11,9 +17,10 @@
- #include <Common/Exception.h>
- #include <IO/ReadBufferFromMemory.h>
- #include <IO/ReadHelpers.h>
--#include <common/logger_useful.h>
+ #include "MemoryStatisticsOS.h"
  
- 
-+
-+
- namespace DB
- {
- 
-@@ -23,21 +30,40 @@ namespace ErrorCodes
+ #include <base/logger_useful.h>
+@@ -24,20 +31,40 @@ namespace ErrorCodes
      extern const int CANNOT_OPEN_FILE;
      extern const int CANNOT_READ_FROM_FILE_DESCRIPTOR;
      extern const int CANNOT_CLOSE_FILE;
@@ -37,9 +29,10 @@
 +#endif
  }
  
+-static constexpr auto filename = "/proc/self/statm";
 +#ifndef OS_FREEBSD
- static constexpr auto filename = "/proc/self/statm";
- static constexpr size_t PAGE_SIZE = 4096;
++ static constexpr auto filename = "/proc/self/statm";
++ static constexpr size_t PAGE_SIZE = 4096;
 +#endif
  
  MemoryStatisticsOS::MemoryStatisticsOS()
@@ -69,7 +62,7 @@
      if (0 != ::close(fd))
      {
          try
-@@ -51,12 +77,43 @@ MemoryStatisticsOS::~MemoryStatisticsOS()
+@@ -51,12 +78,42 @@ MemoryStatisticsOS::~MemoryStatisticsOS()
              DB::tryLogCurrentException(__PRETTY_FUNCTION__);
          }
      }
@@ -109,19 +102,15 @@
 +    ::procstat_freevmmap(pstat, kve);
 +    ::procstat_freeprocs(pstat, kp);
 +#else
-+
      constexpr size_t buf_size = 1024;
      char buf[buf_size];
  
-@@ -98,10 +155,8 @@ MemoryStatisticsOS::Data MemoryStatisticsOS::get() con
-     data.shared *= PAGE_SIZE;
-     data.code *= PAGE_SIZE;
-     data.data_and_stack *= PAGE_SIZE;
+@@ -99,7 +156,7 @@ MemoryStatisticsOS::Data MemoryStatisticsOS::get() con
+     data.shared *= page_size;
+     data.code *= page_size;
+     data.data_and_stack *= page_size;
 -
 +#endif
      return data;
  }
  
- }
--
--#endif

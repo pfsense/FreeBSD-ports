@@ -1,6 +1,3 @@
-# Created by: Alex Semenyaka <alex@rinet.ru>
-# $FreeBSD$
-
 PORTNAME=	proguard
 PORTVERSION=	7.0.0
 CATEGORIES=	java devel
@@ -8,6 +5,7 @@ MASTER_SITES=	https://github.com/Guardsquare/proguard/releases/download/v${PORTV
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java class file shrinker, optimizer, and obfuscator
+WWW=		https://www.guardsquare.com/en/products/proguard
 
 LICENSE=	GPLv2
 

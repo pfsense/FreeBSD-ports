@@ -1,45 +1,57 @@
-# Created by: Daniel O'Connor <darius@dons.net.au>
-# $FreeBSD$
-
 PORTNAME=	miniupnpd
-DISTVERSION=	2.2.1
+DISTVERSION=	2.3.3
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net
-MASTER_SITES=	http://miniupnp.tuxfamily.org/files/ \
-		http://miniupnp.free.fr/files/
 
 MAINTAINER=	squat@squat.no
-COMMENT=	UPnP IGD implementation which uses pf/ipf
+COMMENT=	UPnP IGD implementation which uses pf
+WWW=		http://miniupnp.free.fr/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		cpe ssl
-HAS_CONFIGURE=	yes
+LIB_DEPENDS=   libpfctl.so:net/libpfctl
+
+USES=		cpe ssl localbase:ldflags
 CPE_VENDOR=	miniupnp_project
-PLIST_FILES=	etc/miniupnpd.conf.sample sbin/miniupnpd \
-		man/man8/miniupnpd.8.gz
-MAKE_JOBS_UNSAFE=yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	miniupnp
+GH_PROJECT=	miniupnp
+GH_TAGNAME=	e439318
+
 USE_RC_SUBR=	miniupnpd
 
+HAS_CONFIGURE=	yes
+MAKE_JOBS_UNSAFE=	yes
+
 CFLAGS+=	-I${OPENSSLINC}
-LDFLAGS+=	-L${OPENSSLLIB}
+LDFLAGS+=	-L${OPENSSLLIB} -lpfctl
 
-OPTIONS_DEFINE=	PF_FILTER_RULES CHECK_PORTINUSE IPV6 UPNP_IGDV2 UPNP_STRICT LEASEFILE
-PF_FILTER_RULES_DESC=	Enable pf generation of filter rules
-CHECK_PORTINUSE_DESC=	Check if ports are in use
-UPNP_IGDV2_DESC=	Build an IGDv2 instead of an IGDv1
-UPNP_STRICT_DESC=	More strict UPnP specification compliance
-LEASEFILE_DESC=	Enable lease file
+WRKSRC_SUBDIR=	miniupnpd
 
-PF_FILTER_RULES_CONFIGURE_ON=	--firewall=pf
+PLIST_FILES=	etc/miniupnpd.conf.sample \
+		man/man8/miniupnpd.8.gz \
+		sbin/miniupnpd
+
+# unconditionally use pf, ipfw does not work on FreeBSD
+CONFIGURE_ARGS=	--firewall=pf
+
+OPTIONS_DEFINE=			CHECK_PORTINUSE IPV6 LEASEFILE UPNP_IGDV2 \
+				UPNP_STRICT
+CHECK_PORTINUSE_DESC=		Check if ports are in use
+LEASEFILE_DESC=			Enable lease file
+UPNP_IGDV2_DESC=		Build an IGDv2 instead of an IGDv1
+UPNP_STRICT_DESC=		More strict UPnP specification compliance
+
 CHECK_PORTINUSE_CONFIGURE_ON=	--portinuse
 IPV6_CONFIGURE_ON=		--ipv6
+LEASEFILE_CONFIGURE_ON=		--leasefile
 UPNP_IGDV2_CONFIGURE_ON=	--igd2
 UPNP_STRICT_CONFIGURE_ON=	--strict
-LEASEFILE_CONFIGURE_ON=		--leasefile
 
 post-patch:
-	${REINPLACE_CMD} -e 's|\(-lssl -lcrypto\)|$$(LDFLAGS) \1|g' \
-		${WRKSRC}/Makefile.bsd
+	@${REINPLACE_CMD} -e 's|\(-lssl -lcrypto\)|$$(LDFLAGS) \1|g' \
+	${WRKSRC}/Makefile.bsd
 
 .include <bsd.port.mk>

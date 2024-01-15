@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	ibus-hangul
 PORTVERSION=	1.5.1
+PORTREVISION=	2
 CATEGORIES=	korean
 MASTER_SITES=	https://github.com/choehwanjin/ibus-hangul/releases/download/${PORTVERSION}/
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Hangul input engine for IBus
+WWW=		https://github.com/libhangul/ibus-hangul/wiki
 
 LICENSE=	GPLv2
 
@@ -29,7 +29,6 @@ CONFIGURE_ARGS=	--with-python="${PYTHON_CMD}"
 
 GLIB_SCHEMAS=	org.freedesktop.ibus.engine.hangul.gschema.xml
 
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

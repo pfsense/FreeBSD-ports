@@ -1,29 +1,32 @@
-# $FreeBSD$
-
 PORTNAME=	barrier
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.3
+DISTVERSION=	2.4.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sec.research.2005@gmail.com
 COMMENT=	Mouse and keyboard sharing utility
+WWW=		https://github.com/debauchee/barrier
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++14-lang localbase:ldflags pkgconfig ssl xorg
+USES=		cmake compiler:c++14-lang cpe localbase:ldflags pkgconfig ssl xorg
 USE_GITHUB=	yes
-GH_ACCOUNT=	debauchee
+GH_ACCOUNT=	debauchee gulrak:gulrak
+GH_PROJECT=	filesystem:gulrak
+GH_TAGNAME= v1.5.12:gulrak
 USE_XORG=	ice sm x11 xext xi xinerama xrandr xtst
+CPE_VENDOR=	barrier_project
 
-CMAKE_ARGS=	-DBARRIER_BUILD_DATE=00000000
+CMAKE_ARGS=	-DBARRIER_BUILD_DATE=00000000 \
+						-DBARRIER_BUILD_TESTS=OFF
+
+CONFLICTS_INSTALL=	clusterit # bin/barrier
 
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		EXAMPLES GUI
 OPTIONS_DEFAULT=	GUI
-# no GUI option on 11.x with base SSL since qt5-network is not available
-OPTIONS_EXCLUDE=	${${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} == base:?GUI:}
 OPTIONS_SUB=		yes
 
 GUI_DESC=	Build configuration utility (requires Qt 5)
@@ -31,8 +34,17 @@ GUI_DESC=	Build configuration utility (requires Qt 5)
 GUI_LIB_DEPENDS=	libcurl.so:ftp/curl \
 			libdns_sd.so:net/avahi-libdns
 GUI_USES=		qt:5
-GUI_USE=		QT=core,gui,network,widgets,buildtools_build,qmake_build
+GUI_USE=		QT=core,gui,network,widgets,buildtools:build,qmake:build
 GUI_CMAKE_BOOL=		BARRIER_BUILD_GUI
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_lib_net_SecureUtils.cpp
+.endif
+
+post-extract:
+	@${CP} -a ${WRKSRC_gulrak}/include ${WRKSRC}/ext/gulrak-filesystem/
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|"/etc/barrier/|"${ETCDIR}/|' \

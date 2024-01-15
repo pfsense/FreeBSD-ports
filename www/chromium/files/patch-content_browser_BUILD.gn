@@ -1,18 +1,16 @@
---- content/browser/BUILD.gn.orig	2021-01-18 21:28:57 UTC
+--- content/browser/BUILD.gn.orig	2023-12-10 06:10:27 UTC
 +++ content/browser/BUILD.gn
-@@ -2132,6 +2132,15 @@ source_set("browser") {
-     deps += [ "//third_party/speech-dispatcher" ]
+@@ -2474,6 +2474,13 @@ source_set("browser") {
+     deps += [ "//media/mojo/mojom/stable:stable_video_decoder" ]
    }
  
 +  if (is_bsd) {
 +    sources -= [
-+      "sandbox_host_linux.cc",
-+      "sandbox_host_linux.h",
 +      "sandbox_ipc_linux.cc",
 +      "sandbox_ipc_linux.h",
 +    ]
 +  }
 +
-   # ChromeOS also defines linux but their memory-monitors conflict.
    if (is_chromeos) {
      sources += [
+       "handwriting/handwriting_recognition_service_impl_cros.cc",

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	gmm++
-PORTVERSION=	5.4
+PORTVERSION=	5.4.2
 CATEGORIES=	math
 MASTER_SITES=	http://download-mirror.savannah.gnu.org/releases/getfem/stable/
 DISTNAME=	${PORTNAME:S/+//g}-${PORTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Generic matrix template library
+WWW=		https://getfem.org/gmm/
 
 # Note: even though the port's COPYING file mentions gmm++ is licensed under
 # the LGPL version 2.1 with the GCC runtime exception,
@@ -18,6 +17,7 @@ LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 .include <bsd.port.mk>

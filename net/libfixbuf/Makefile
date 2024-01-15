@@ -1,13 +1,11 @@
-# Created by: David Thiel <lx@redundancy.redundancy.org>
-# $FreeBSD$
-
 PORTNAME=	libfixbuf
-PORTVERSION=	2.3.1
+DISTVERSION=	2.4.2
 CATEGORIES=	net
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 
 MAINTAINER=	nacho319+freebsdZilla@gmail.com
 COMMENT=	Library for using the IP Flow Information Export protocol
+WWW=		https://tools.netsa.cert.org/fixbuf/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

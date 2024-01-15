@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Address-Ethernet
 PORTVERSION=	1.129
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Find hardware ethernet address
+WWW=		https://metacpan.org/release/Net-Address-Ethernet
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

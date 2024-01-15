@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	OpenSim
 DISTVERSION=	4.1
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	science
 PKGNAMESUFFIX=	-core
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software for modeling of musculoskeletal structures
+WWW=		https://opensim.stanford.edu/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

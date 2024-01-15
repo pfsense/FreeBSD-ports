@@ -1,6 +1,3 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
-
 PORTNAME=	gitlab-flowdock-git-hook
 PORTVERSION=	1.0.1
 CATEGORIES=	www rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	GitLab-patched Git Post-Receive hook for Flowdock
+WWW=		https://github.com/flowdock/flowdock-git-hook
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,7 +15,6 @@ RUN_DEPENDS=	rubygem-flowdock>=0.7<1:www/rubygem-flowdock \
 		rubygem-multi_json>=0:devel/rubygem-multi_json
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

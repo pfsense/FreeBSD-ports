@@ -1,6 +1,3 @@
-# Created by: Ed Schouten <ed@fxq.nl>
-# $FreeBSD$
-
 PORTNAME=	mimir
 PORTVERSION=	2.15
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.cs.ru.nl/pub/vb/mimir/src/
 
 MAINTAINER=	ed@FreeBSD.org
 COMMENT=	Data-structure library used by the Elan Programming Environment
+WWW=		http://www.cs.ru.nl/elan/
 
 USES=		gmake libtool
 GNU_CONFIGURE=	yes

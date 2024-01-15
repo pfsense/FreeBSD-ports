@@ -1,21 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	acidwarp-sdl
-PORTVERSION=	g2020062101
+PORTVERSION=	g2022112701
+PORTREVISION=	1
 CATEGORIES=	graphics
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Eye candy program which displays various patterns
+WWW=		https://github.com/dreamlayers/acidwarp
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick7
-
-USES=		cmake sdl
+USES=		cmake magick:7,build sdl
 USE_SDL=	sdl2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dreamlayers
 GH_PROJECT=	acidwarp
-GH_TAGNAME=	698c4e1
+GH_TAGNAME=	c48e1e2
 
 # Fix build on recent current (clang11)
 CFLAGS+=	-fcommon

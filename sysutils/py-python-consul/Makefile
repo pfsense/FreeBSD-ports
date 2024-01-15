@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-consul
 PORTVERSION=	1.1.0
 DISTVERSIONPREFIX=	v
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Python client for consul
+WWW=		https://github.com/cablehead/python-consul
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +20,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/consul:sysutils/consul \
 				${PYTHON_PKGNAMEPREFIX}six>=1.4:devel/py-six@${PY_FLAVOR}
 
 # 2.7 or 3.6+, but it cannot be expressed right now.
-USES=	python:3.6+
+USES=	python
 
 USE_PYTHON=	distutils autoplist
 

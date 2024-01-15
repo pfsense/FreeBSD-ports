@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	2015.12.10
 CATEGORIES=	textproc
@@ -11,6 +9,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Dutch thesaurus
+WWW=		https://data.opentaal.org/opentaalbank/thesaurus/
 
 LICENSE=	BSD3CLAUSE
 
@@ -18,13 +17,13 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/th_nl_NL_v2.dat \
-		%%DATADIR%%/th_nl_NL_v2.idx
+PLIST_FILES=	${DATADIR}/th_nl_NL_v2.dat \
+		${DATADIR}/th_nl_NL_v2.idx
 
 NLALIASES=	nl_AW nl_BE
 .for ALIAS in ${NLALIASES}
-PLIST_FILES+=	%%DATADIR%%/th_${ALIAS}_v2.dat \
-		%%DATADIR%%/th_${ALIAS}_v2.idx
+PLIST_FILES+=	${DATADIR}/th_${ALIAS}_v2.dat \
+		${DATADIR}/th_${ALIAS}_v2.idx
 .endfor
 
 do-install:

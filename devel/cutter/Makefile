@@ -1,14 +1,12 @@
-# Created by: Romain Tartiere <romain@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cutter
 PORTVERSION=	1.2.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	romain@FreeBSD.org
 COMMENT=	Unit Testing Framework for C and C++
+WWW=		https://cutter.sourceforge.net/
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/license/lgpl-3.txt

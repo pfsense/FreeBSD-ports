@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=		CuraEngine
-DISTVERSION=		4.8
 PORTEPOCH=		1
+DISTVERSION=		4.13.1
+PORTREVISION=	2
 CATEGORIES=		cad
 DIST_SUBDIR=		Ultimaker
 
 MAINTAINER=	db@FreeBSD.org
 COMMENT=	Engine of slicing solution for RepRap 3D printers
+WWW=		http://wiki.ultimaker.com/Cura
 
 LICENSE=	AGPLv3
 
@@ -21,11 +21,14 @@ STB_TAG=	d5d052c
 USE_GITHUB=	yes
 GH_ACCOUNT=	Ultimaker
 GH_PROJECT=	CuraEngine
-GH_TAGNAME=	fadb5d6b
 GH_TUPLE=	nothings:stb:${STB_TAG}:stb/include/stb
 
 CMAKE_ARGS+=	-DStb_FOUND:BOOL=ON		\
 		-DStb_INCLUDE_DIRS=${WRKSRC}/include
+
+# disable OpenMP as it does not work (at least) on CURRENT.
+# OpenMP support is planned to be replaced with native thread.
+# see files/patch-CMakeLists.txt
 
 PLIST_FILES=	bin/CuraEngine
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	myrddin
 PORTVERSION=	0.3.1
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	http://myrlang.org/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Myrddin Compiler
+WWW=		https://myrlang.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: jkh
-# $FreeBSD$
-
 PORTNAME=	nas
 PORTVERSION=	1.9.4
 PORTREVISION=	3
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.src.tar.gz
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Network Audio System
+WWW=		https://radscan.com/nas.html
 
 USES=		imake perl5 shebangfix xorg
 SHEBANG_FILES=	clients/audio/auscope/auscope
@@ -20,7 +18,7 @@ USE_LDCONFIG=	yes
 MAKE_ENV+=	COMPRESS_CMD="${COMPRESS_CMD:S/c//}"
 MAKE_JOBS_UNSAFE=	yes
 
-.include <bsd.port.pre.mk>
+FPIC=	-fpic
 
 post-configure:
 # Work around shortcomings of the Imake.rules et. al:
@@ -29,13 +27,7 @@ post-configure:
 	    -e 's,\(\$$(AR) \$$@ \$$\)(OBJS),\1(OBJS:S|^|unshared/|),' \
 		${WRKSRC}/lib/audio/Makefile
 
-.if ${ARCH} == "sparc64"
-FPIC=	-fPIC
-.else
-FPIC=	-fpic
-.endif
-
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libaudio.so.2
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

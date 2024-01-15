@@ -1,30 +1,31 @@
-# $FreeBSD$
-
 PORTNAME=	compute-runtime
-DISTVERSION=	20.52.18783
+DISTVERSION=	22.24.23453
 CATEGORIES=	lang
 PKGNAMEPREFIX=	intel-
+PKGNAMESUFFIX=	-${FLAVOR}
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	2a423820aaa4.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
-
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenCL implementation for Intel HD 5000 (Gen8) or newer
+WWW=		https://01.org/compute-runtime
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	only Intel GPUs on x86 are supported
 
-LIB_DEPENDS=	libigc.so:devel/intel-graphics-compiler \
+LIB_DEPENDS=	libigc.so:devel/intel-graphics-compiler@${FLAVOR} \
 		libigdgmm.so:multimedia/gmmlib
 
-USES=		cmake compiler:c++14-lang localbase:ldflags pkgconfig
+FLAVORS=	${14 13 12 11:L:S/^/llvm/}
+
+CONFLICTS_INSTALL=	${PORTNAME}-*
+
+USES=		cmake compiler:c++17-lang localbase:ldflags pkgconfig
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
-CMAKE_ON=	SKIP_UNIT_TESTS SUPPORT_DG1
+CMAKE_ON=	RELEASE_WITH_REGKEYS SKIP_UNIT_TESTS SUPPORT_DG1
 CMAKE_ARGS=	-DNEO_OCL_DRIVER_VERSION:STRING="${DISTVERSIONFULL}"
 PLIST_FILES=	bin/ocloc \
 		etc/OpenCL/vendors/intel.icd \
@@ -33,17 +34,15 @@ PLIST_FILES=	bin/ocloc \
 		lib/libocloc.so \
 		${NULL}
 
-OPTIONS_DEFINE=	VAAPI
-OPTIONS_DEFAULT=VAAPI
-OPTIONS_DEFINE_amd64=	L0
-OPTIONS_DEFAULT_amd64=	L0
+OPTIONS_DEFINE=	L0 VAAPI
+OPTIONS_DEFAULT=L0 VAAPI
 
 L0_DESC=		oneAPI Level Zero support
 L0_BUILD_DEPENDS=	level-zero>=1.0:devel/level-zero
 L0_CMAKE_BOOL=		BUILD_WITH_L0
 L0_CMAKE_ON=		-DNEO_VERSION_BUILD:STRING="0"
 L0_PLIST_FILES=		lib/libze_intel_gpu.so.1 \
-			lib/libze_intel_gpu.so.1.0.0
+			lib/libze_intel_gpu.so.1.3.0
 
 VAAPI_BUILD_DEPENDS=	${LOCALBASE}/include/va/va.h:multimedia/libva
 VAAPI_CMAKE_BOOL_OFF=	DISABLE_LIBVA

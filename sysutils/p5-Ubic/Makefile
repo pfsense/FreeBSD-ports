@@ -1,6 +1,3 @@
-# Created by: Dmitry Yashin <dmitry@yashin.su>
-# $FreeBSD$
-
 PORTNAME=	Ubic
 PORTVERSION=	1.58
 CATEGORIES=	sysutils perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dmitry@yashin.su
 COMMENT=	Flexible perl-based service manager
+WWW=		https://metacpan.org/release/Ubic
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

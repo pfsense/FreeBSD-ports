@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Class-Default
 PORTVERSION=	1.51
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Static calls apply to a default instantiation
+WWW=		https://metacpan.org/release/Class-Default
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

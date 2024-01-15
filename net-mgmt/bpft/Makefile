@@ -1,6 +1,3 @@
-# Created by: El Vampiro <vampiro@rootshell.ru>
-# $FreeBSD$
-
 PORTNAME=	bpft
 PORTVERSION=	4.20040506
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}4-2004-05-06
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BPF Traffic collector
+WWW=		https://bpft4.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING.GNU

@@ -1,22 +1,19 @@
-# Created by: Waitman Gobble <waitman@waitman.net>
-# $FreeBSD$
-
 PORTNAME=	aiodns
-PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTVERSION=	3.0.0
 CATEGORIES=	dns python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	waitman@waitman.net
+MAINTAINER=	nork@FreeBSD.org
 COMMENT=	Simple DNS resolver for asyncio
+WWW=		https://pypi.org/project/aiodns/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycares>0:dns/py-pycares@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycares>4.0.0:dns/py-pycares@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 

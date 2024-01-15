@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Mail-Audit
 PORTVERSION=	2.228
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for creating easy mail filters
+WWW=		https://metacpan.org/release/Mail-Audit
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

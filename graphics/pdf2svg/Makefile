@@ -1,14 +1,12 @@
-# Created by: Martin Dieringer <martin.dieringe@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	pdf2svg
 PORTVERSION=	0.2.3
-PORTREVISION=	24
+PORTREVISION=	50
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
 MAINTAINER=	martin.dieringer@gmx.de
 COMMENT=	Convert PDF to SVG
+WWW=		http://www.cityinthesky.co.uk/pdf2svg.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

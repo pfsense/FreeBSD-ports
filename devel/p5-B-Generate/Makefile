@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	B-Generate
 PORTVERSION=	1.56
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create your own Perl op trees
+WWW=		https://metacpan.org/release/B-Generate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

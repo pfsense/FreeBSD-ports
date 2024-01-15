@@ -1,15 +1,13 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	apl
 PORTVERSION=	1.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu-
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Free interpreter for APL programming language
+WWW=		https://www.gnu.org/software/apl/
 
 LICENSE=	GPLv3+
 
@@ -21,6 +19,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3
 
 USES=		compiler:c++11-lang gmake libtool localbase
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	CXX_WERROR=no
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
@@ -50,6 +49,9 @@ SQLITE_CONFIGURE_WITH=	sqlite3=${LOCALBASE}
 post-patch:
 	@${REINPLACE_CMD} -e '25s,^,#include <sys/socket.h>,' \
 		${WRKSRC}/src/Common.hh
+	@${REINPLACE_CMD} -e 's,auto_ptr,unique_ptr,' \
+		${WRKSRC}/src/emacs_mode/network.cc \
+		${WRKSRC}/src/sql/apl-sqlite.cc
 	@${REINPLACE_CMD} -e 's,bind(,::&,' \
 		${WRKSRC}/src/emacs_mode/TcpListener.cc \
 		${WRKSRC}/src/emacs_mode/UnixSocketListener.cc

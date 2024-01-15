@@ -1,29 +1,25 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gigolo
-PORTVERSION=	0.5.1
+PORTVERSION=	0.5.3
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	XFCE/apps
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Frontend to easily manage filesystem connections
+WWW=		https://docs.xfce.org/apps/gigolo/start
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=         aarch64 amd64 armv6 armv7 i386 powerpc \
-			powerpc64 powerpc64le powerpcspe
-ONLY_FOR_ARCHS_REASON=	Does not compile
-
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
-USES=		fuse gettext-tools gmake gnome pkgconfig tar:bzip2 xfce xorg
+USES=		gettext-tools gmake gnome pkgconfig tar:bzip2 xfce xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk30 gvfs intltool
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
 
-PORTDOCS=	AUTHORS ChangeLog NEWS README
+PORTDOCS=	AUTHORS ChangeLog NEWS THANKS TODO
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

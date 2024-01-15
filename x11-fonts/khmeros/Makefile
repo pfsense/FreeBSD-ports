@@ -1,6 +1,3 @@
-# Created by: Kuan-Chung Chiu <buganini@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	khmeros
 PORTVERSION=	5.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	All_KhmerOS_5.0
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	Khmer OS fonts
+WWW=		https://sourceforge.net/projects/khmer/
 
 USES=		fonts zip
 NO_BUILD=	yes

@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Rose-DBx-Object-MoreHelpers
 PORTVERSION=	0.100
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl 5 module to deploy a DBIx::Class schema
+WWW=		https://metacpan.org/release/Rose-DBx-Object-MoreHelpers
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	XML-SAXDriver-Excel
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl SAX driver for converting Excel files to XML
+WWW=		https://metacpan.org/release/XML-SAXDriver-Excel
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Spreadsheet-ParseExcel>=0.2603:textproc/p5-Spreadsheet-ParseExcel \

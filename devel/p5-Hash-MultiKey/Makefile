@@ -1,6 +1,3 @@
-# Created by: Marzhan Mykola <delgod@portaone.com>
-# $FreeBSD$
-
 PORTNAME=	Hash-MultiKey
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	delgod@portaone.com
 COMMENT=	Hashes whose keys can be multiple
+WWW=		https://metacpan.org/release/Hash-MultiKey
 
 USES=		perl5
 USE_PERL5=	configure

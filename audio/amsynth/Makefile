@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	amsynth
 DISTVERSION=	1.11.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/amsynth/amsynth/releases/download/release-${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Analog modelling software synth
+WWW=		https://amsynth.github.io/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,7 +24,6 @@ RUN_DEPENDS=	dssi>0:audio/dssi
 USES=		compiler:c++11-lang gettext-tools gmake gnome libtool localbase \
 		pkgconfig
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 intltool pango
-INSTALLS_ICONS=	yes
 
 GNU_CONFIGURE=	yes
 

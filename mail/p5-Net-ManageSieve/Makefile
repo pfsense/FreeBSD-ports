@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Net-ManageSieve
 PORTVERSION=	0.13
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	ManageSieve Protocol Client
+WWW=		https://metacpan.org/release/Net-ManageSieve
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

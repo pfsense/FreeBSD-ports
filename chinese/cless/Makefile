@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@cs.ucdavis.edu)
-# $FreeBSD$
-
 PORTNAME=	cless
 PORTVERSION=	290
 CATEGORIES=	chinese

@@ -1,6 +1,3 @@
-# Created by: KOMATSU Shinichiro
-# $FreeBSD$
-
 PORTNAME=	mkbold-mkitalic
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	http://hp.vector.co.jp/authors/VA013651/lib/
 
 MAINTAINER=	koma2@lovepeers.org
 COMMENT=	Programs to make BDF font bold/italic
+WWW=		https://hp.vector.co.jp/authors/VA013651/freeSoftware/mkbold-mkitalic.html
 
-CONFLICTS=	mkbold-[0-9]* mkitalic-[0-9]*
+CONFLICTS=	mkbold mkitalic
 
 PLIST_FILES=	bin/mkbold bin/mkitalic bin/mkbolditalic
 PORTDOCS=	ALGORITHM ALGORITHM.eucJP LICENSE README README.eucJP

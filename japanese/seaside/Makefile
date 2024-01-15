@@ -1,9 +1,6 @@
-# Created by: mutoh@openedu.org
-# $FreeBSD$
-
 PORTNAME=	seaside
 DISTVERSION=	080908-sq39
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	japanese lang
 MASTER_SITES=	ftp://swikis.ddo.jp/SeasideJ/
 DISTNAME=	Seaside-JPatched${DISTVERSION}
@@ -11,6 +8,7 @@ EXTRACT_ONLY=	Seaside-JPatched${DISTVERSION}.zip
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Seaside: squeak based WWW application framework with Japanized patch
+WWW=		http://seaside.st/
 
 RUN_DEPENDS=	squeak:lang/squeak
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Prophet
 PORTVERSION=	0.751
 PORTREVISION=	2
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Distributed database system
+WWW=		https://metacpan.org/release/Prophet
 
 LICENSE=	MIT
 

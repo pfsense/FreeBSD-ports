@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Template-AutoFilter
 PORTVERSION=	0.143050
 CATEGORIES=	textproc perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Template::Toolkit subclass with automatic filtering
+WWW=		https://metacpan.org/release/Template-AutoFilter
 
 LICENSE=	CC0-1.0
 

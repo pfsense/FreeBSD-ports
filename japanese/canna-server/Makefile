@@ -1,6 +1,3 @@
-# Created by: hrs
-# $FreeBSD$
-
 PORTNAME=	canna
 PORTVERSION=	3.7p3
 PORTREVISION=	10
@@ -11,6 +8,7 @@ DISTNAME=	Canna${PORTVERSION:S/.//g}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Kana-to-Kanji conversion system, binary part
+WWW=		http://canna.sourceforge.jp/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -25,6 +23,12 @@ PORTDOCS=	canna.bib canna.sty Imakefile README.jp Makefile \
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+MAKE_ARGS+=	CCOPTIONS="-Wno-error=int-conversion"
+.endif
 
 post-install:
 	@cd ${INSTALL_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} \

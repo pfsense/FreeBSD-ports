@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Test-Database
 PORTVERSION=	1.113
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Database handles ready for testing
+WWW=		https://metacpan.org/release/Test-Database
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

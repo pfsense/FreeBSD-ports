@@ -1,6 +1,3 @@
-# Created by: David Xu
-# $FreeBSD$
-
 PORTNAME=	byaccj
 PORTVERSION=	1.15
 CATEGORIES=	devel java
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}_src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java extension of BSD YACC-compatible parser generator
+WWW=		https://byaccj.sourceforge.net
 
 PLIST_FILES=	bin/byaccj
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}/src

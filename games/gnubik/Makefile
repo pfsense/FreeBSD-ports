@@ -1,23 +1,21 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnubik
 PORTVERSION=	2.4.3
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	GNU
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	3D Rubik's cube game
+WWW=		https://www.gnu.org/software/gnubik/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libguile-2.2.so:lang/guile2 \
-		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
+LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lang gettext gl gmake gnome localbase pkgconfig
+USES=		compiler:c++11-lang gettext gl gmake gnome guile:2.2 \
+		localbase pkgconfig
 USE_GNOME=	gtk20
 USE_GL=		gl glu
 

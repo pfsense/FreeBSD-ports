@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	aspell
 SPELLVERSION=	6-hu-0.99.4.2-0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	hungarian textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Hungarian dictionaries
+WWW=		http://aspell.net/
 
 DICT=	 	hu
 

@@ -1,11 +1,56 @@
---- content/browser/utility_process_host.cc.orig	2020-11-13 06:36:42 UTC
+--- content/browser/utility_process_host.cc.orig	2023-12-10 06:10:27 UTC
 +++ content/browser/utility_process_host.cc
-@@ -58,7 +58,7 @@ UtilityProcessHost::UtilityProcessHost()
+@@ -60,7 +60,7 @@
+ #include "content/browser/v8_snapshot_files.h"
+ #endif
  
- UtilityProcessHost::UtilityProcessHost(std::unique_ptr<Client> client)
-     : sandbox_type_(sandbox::policy::SandboxType::kUtility),
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-       child_flags_(ChildProcessHost::CHILD_ALLOW_SELF),
- #else
-       child_flags_(ChildProcessHost::CHILD_NORMAL),
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ #include "base/files/file_util.h"
+ #include "base/files/scoped_file.h"
+ #include "base/pickle.h"
+@@ -70,7 +70,7 @@
+ #include "media/capture/capture_switches.h"
+ #endif
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+ #include "base/task/sequenced_task_runner.h"
+ #include "components/viz/host/gpu_client.h"
+ #include "media/capture/capture_switches.h"
+@@ -81,7 +81,7 @@ namespace content {
+ 
+ namespace {
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ base::ScopedFD PassNetworkContextParentDirs(
+     std::vector<base::FilePath> network_context_parent_dirs) {
+   base::Pickle pickle;
+@@ -130,7 +130,7 @@ UtilityProcessHost::UtilityProcessHost(std::unique_ptr
+       started_(false),
+       name_(u"utility process"),
+       file_data_(std::make_unique<ChildProcessLauncherFileData>()),
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+       gpu_client_(nullptr, base::OnTaskRunnerDeleter(nullptr)),
+ #endif
+       client_(std::move(client)) {
+@@ -417,7 +417,7 @@ bool UtilityProcessHost::StartProcess() {
+     file_data_->files_to_preload.merge(GetV8SnapshotFilesToPreload());
+ #endif  // BUILDFLAG(IS_POSIX)
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+     // The network service should have access to the parent directories
+     // necessary for its usage.
+     if (sandbox_type_ == sandbox::mojom::Sandbox::kNetwork) {
+@@ -428,7 +428,7 @@ bool UtilityProcessHost::StartProcess() {
+     }
+ #endif  // BUILDFLAG(IS_LINUX)
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+     // Pass `kVideoCaptureUseGpuMemoryBuffer` flag to video capture service only
+     // when the video capture use GPU memory buffer enabled and NV12 GPU memory
+     // buffer supported.

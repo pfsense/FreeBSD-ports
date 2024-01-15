@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		pnscan
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.14.1
@@ -7,6 +5,7 @@ CATEGORIES=		sysutils security
 
 MAINTAINER=		pen@lysator.liu.se
 COMMENT=		Parallel Network Scanner
+WWW=		https://github.com/ptrrkssn/pnscan
 
 LICENSE=		BSD3CLAUSE
 LICENSE_FILE=		${WRKSRC}/LICENSE

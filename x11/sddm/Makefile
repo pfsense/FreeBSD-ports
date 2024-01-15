@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	sddm
-PORTVERSION=	0.19.0
+PORTVERSION=	0.20.0
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	QML based login manager
+WWW=		https://github.com/sddm/sddm
 
 # The source code is GPLv2+, but the provided themes are:
 #  - CC-BY 3.0 (default greeter theme, maldives)
@@ -18,20 +18,29 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/LICENSE
 LICENSE_FILE_CC-BY-3.0=	${WRKSRC}/LICENSE.CC-BY-3.0
 
 BUILD_DEPENDS=	rst2man.py-${PYTHON_VER}:textproc/py-docutils@${PY_FLAVOR}
-RUN_DEPENDS=	dbus-run-session:devel/dbus
+RUN_DEPENDS=	consolekit2>1.2.5:sysutils/consolekit2 \
+		dbus-launch:devel/dbus \
+		xauth:x11/xauth \
+		xmessage:x11/xmessage
 
-USES=		cmake compiler:c++11-lang kde:5 pkgconfig python:build qt:5 xorg
+USES=		cmake compiler:c++11-lang cpe kde:5 pkgconfig python:build qt:5 xorg
+CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
-USE_KDE=	ecm
+USE_KDE=	ecm:build
 USE_QT=		core declarative dbus gui network \
-		buildtools_build linguisttools_build qmake_build
-USE_XORG=	xcb
+		buildtools:build linguisttools:build declarative-test:build \
+		qmake:build testlib:build
+USE_XORG=	xau xcb
+
+CONFLICTS_INSTALL=	lightdm
 
 CMAKE_ON=	BUILD_MAN_PAGES
 CMAKE_ARGS=	-DUID_MIN=1000 \
 		-DUID_MAX=65000 \
 		-DCMAKE_INSTALL_SYSCONFDIR:PATH=${LOCALBASE}/etc \
-		-DRST2MAN_EXECUTABLE=${LOCALBASE}/bin/rst2man.py-${PYTHON_VER}
+		-DACCOUNTSSERVICE_DATA_DIR:PATH=/var/db/AccountsService \
+		-DRST2MAN_EXECUTABLE=${LOCALBASE}/bin/rst2man.py-${PYTHON_VER} \
+		-DSDDM_INITIAL_VT=7
 
 USE_RC_SUBR=	sddm
 SUB_FILES=	xinitrc.desktop
@@ -43,6 +52,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's#/etc/X11#${LOCALBASE}/etc/X11#' \
 		-e 's#/usr/bin/#${LOCALBASE}/bin/#g' \
 		-e 's#/usr/share/#${LOCALBASE}/share/#' \
+		-e 's#%%LOCALBASE%%#${LOCALBASE}#g' \
 		${WRKSRC}/data/scripts/Xsession \
 		${WRKSRC}/src/common/Configuration.h
 
@@ -51,5 +61,9 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/xsessions
 	${INSTALL_DATA} ${WRKDIR}/xinitrc.desktop ${STAGEDIR}${PREFIX}/share/xsessions
 	${INSTALL_SCRIPT} ${FILESDIR}/xinit-session ${STAGEDIR}${PREFIX}/share/sddm/scripts
+	${REINPLACE_CMD} -e 's#@@LOCALBASE@@#${LOCALBASE}#' ${STAGEDIR}${PREFIX}/share/sddm/scripts/xinit-session
+	${MV} ${STAGEDIR}${PREFIX}/etc/pam.d/sddm ${STAGEDIR}${PREFIX}/etc/pam.d/sddm.default
+	${MV} ${STAGEDIR}${PREFIX}/etc/pam.d/sddm-autologin ${STAGEDIR}${PREFIX}/etc/pam.d/sddm-autologin.default
+	${MV} ${STAGEDIR}${PREFIX}/etc/pam.d/sddm-greeter ${STAGEDIR}${PREFIX}/etc/pam.d/sddm-greeter.default
 
 .include <bsd.port.mk>

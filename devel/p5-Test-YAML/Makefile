@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-YAML
 PORTVERSION=	1.07
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Testing Module for YAML Implementations
+WWW=		https://metacpan.org/release/Test-YAML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

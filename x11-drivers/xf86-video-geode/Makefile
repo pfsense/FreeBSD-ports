@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-geode
 PORTVERSION=	2.11.20
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org geode display driver
+WWW=		https://www.x.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	kmfl-sil-yi
 PORTVERSION=	20020903
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DIST_SUBDIR=	kmfl
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	KMFL Unicode keyboard for standardized Yi script
+WWW=		https://scripts.sil.org/SILYI_home
 
 RUN_DEPENDS=	kmflcomp:textproc/kmflcomp
 

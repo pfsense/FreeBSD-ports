@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	librarian
 PORTVERSION=	0.1.2
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	robak@FreeBSD.org
 COMMENT=	Ruby framework for writing bundlers
+WWW=		https://github.com/applicationsonline/librarian
 
 LICENSE=	MIT
 
@@ -16,7 +15,6 @@ RUN_DEPENDS=	rubygem-highline>=0:devel/rubygem-highline \
 
 NO_ARCH=	yes
 
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

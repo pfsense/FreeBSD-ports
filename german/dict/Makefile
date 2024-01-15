@@ -1,6 +1,3 @@
-# Created by: wosch
-# $FreeBSD$
-
 PORTNAME=	dict
 PORTVERSION=	1.2
 CATEGORIES=	german
@@ -10,6 +7,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple English/German dictionary
+WWW=		http://www.de.freebsd.org/~wosch/dict/dict.cgi
 
 LICENSE=	BSD2CLAUSE
 

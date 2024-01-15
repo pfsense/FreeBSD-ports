@@ -1,6 +1,3 @@
-# Created by: vanilla
-# $FreeBSD$
-
 # devel/hadoop2 needs version 2.5.0
 PORTNAME=	protobuf
 PORTVERSION=	2.5.0
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	25
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Data interchange format library
+WWW=		https://github.com/google/protobuf
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
@@ -18,9 +16,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${PREFIX}/protobuf25
 USE_LDCONFIG=	${PREFIX}/protobuf25/lib
-USES=		gmake pathfix pkgconfig tar:bzip2 libtool
+USES=		cpe gmake pathfix pkgconfig tar:bzip2 libtool
 ONLY_FOR_ARCHS=	i386 amd64
 INSTALL_TARGET=	install-strip
+
+CPE_VENDOR=	google
 
 # clang will generate code that just doesn't work with clementine-player
 # if this isn't compiled as though it were C99.

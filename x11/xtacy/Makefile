@@ -1,6 +1,3 @@
-# Created by: matt@bdd.net
-# $FreeBSD$
-
 PORTNAME=	xtacy
 PORTVERSION=	1.14
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}114
 
 MAINTAINER=	matt@bdd.net
 COMMENT=	X11 trippy color-cycling toy
+WWW=		http://www.gweep.net/~jer/xtacy.html
 
 LICENSE=	GPLv2
 

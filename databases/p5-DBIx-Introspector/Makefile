@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Introspector
 PORTVERSION=	0.001005
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Detect what database you are connected to
+WWW=		https://metacpan.org/release/DBIx-Introspector
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

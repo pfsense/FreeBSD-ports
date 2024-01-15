@@ -1,6 +1,3 @@
-# Created by: Jon Nistor <nistor@snickers.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Abstract
 PORTVERSION=	1.040
 CATEGORIES=	databases perl5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/0$//}
 
 MAINTAINER=	nistor@snickers.org
 COMMENT=	Perl module for DBI SQL abstraction
+WWW=		https://metacpan.org/release/DBIx-Abstract
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

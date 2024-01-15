@@ -1,49 +1,45 @@
-# Created by: Hirohisa Yamaguchi <umq@ueo.co.jp>
-# $FreeBSD$
-
 PORTNAME=	milter-manager
-PORTVERSION=	2.1.1
+DISTVERSION=	2.1.6
 PORTREVISION=	1
 CATEGORIES=	mail ruby
-MASTER_SITES=	OSDN/${PORTNAME}
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Super milter that can invoke several milters selectively
+WWW=		https://milter-manager.osdn.jp/
 
 LICENSE=	AGPLv3 GFDL GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	rubygem-glib2>0:devel/rubygem-glib2
+BUILD_DEPENDS=	rubygem-gio2>0:devel/rubygem-gio2
 LIB_DEPENDS=	libev.so:devel/libev
-RUN_DEPENDS=	rubygem-glib2>0:devel/rubygem-glib2
+RUN_DEPENDS=	rubygem-gio2>0:devel/rubygem-gio2 \
+		rubygem-rexml>0:textproc/rubygem-rexml
 
-USES=		compiler:c++11-lang gettext gmake gnome libtool pathfix pkgconfig
+USES=		compiler:c++11-lang gettext gmake gnome libtool localbase \
+		pathfix pkgconfig ruby
 USE_GNOME=	glib20 intltool
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	milter-manager
-USE_RUBY=	yes
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-libev \
+CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR} \
+		--with-libev \
 		--with-package-platform=freebsd
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+CFLAGS+=	-fdeclspec
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.if ${PORT_OPTIONS:MDOCS}
-CONFIGURE_ARGS+=--with-html-dir=${DOCSDIR}
-.else
-CONFIGURE_ARGS+=--with-html-dir=${WRKDIR}/doc
-.endif
+.include <bsd.port.pre.mk>
 
-.if ! ${PORT_OPTIONS:MEXAMPLES}
-EXAMPLESDIR=	${WRKDIR}/examples
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 post-patch:
@@ -51,6 +47,5 @@ post-patch:
 	${REINPLACE_CMD} -e "s#\$$(datadir)/@PACKAGE@#${DATADIR}#" \
 			 -e "s#\$$(datarootdir)/\$$(PACKAGE)#${DATADIR}#" {} +
 	@${REINPLACE_CMD} -e "s#\\\\\$$(pkgdatadir)/sample#${EXAMPLESDIR}#" ${WRKSRC}/configure
-	@${RM} -r ${WRKSRC}/binding/ruby/glib-2.2.5
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

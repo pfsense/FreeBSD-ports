@@ -1,11 +1,11 @@
---- ui/views/window/frame_background.cc.orig	2020-11-13 06:37:06 UTC
+--- ui/views/window/frame_background.cc.orig	2023-10-11 18:22:24 UTC
 +++ ui/views/window/frame_background.cc
-@@ -99,7 +99,7 @@ void FrameBackground::PaintMaximized(gfx::Canvas* canv
-                                      const View* view) const {
+@@ -110,7 +110,7 @@ void FrameBackground::PaintMaximized(gfx::Canvas* canv
+                                      int width) const {
  // Fill the top with the frame color first so we have a constant background
  // for areas not covered by the theme image.
--#if (defined(OS_LINUX) || defined(OS_CHROMEOS)) && \
-+#if (defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)) && \
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && \
      BUILDFLAG(ENABLE_DESKTOP_AURA)
-   auto* native_theme = view->GetNativeTheme();
-   ui::NativeTheme::ExtraParams params;
+   ui::NativeTheme::FrameTopAreaExtraParams frame_top_area;
+   frame_top_area.use_custom_frame = use_custom_frame_;

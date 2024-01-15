@@ -1,12 +1,10 @@
-# Created by: Max Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	openr2
 PORTVERSION=	1.3.3
 CATEGORIES=	misc
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MFC/R2 call setup library
+WWW=		https://libopenr2.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER

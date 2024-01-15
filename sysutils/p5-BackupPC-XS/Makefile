@@ -1,6 +1,3 @@
-# Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-# $FreeBSD$
-
 PORTNAME=	BackupPC-XS
 PORTVERSION=	0.62
 CATEGORIES=	sysutils perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	moiseev@mezonplus.ru
 COMMENT=	Perl extension for BackupPC libraries
+WWW=		https://backuppc.sourceforge.net
 
 LICENSE=	GPLv3
 

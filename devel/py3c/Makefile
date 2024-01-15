@@ -1,13 +1,11 @@
-# Created by: lev@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	py3c
-PORTVERSION=	1.0
+PORTVERSION=	1.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Py3c helps you port C extensions to Python 3
+WWW=		https://github.com/encukou/py3c
 
 LICENSE=	MIT
 

@@ -1,6 +1,3 @@
-# Created by: Timur I. Bakeyev <bat@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	boolean
 PORTVERSION=	0.46
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Boolean support for Perl
+WWW=		https://metacpan.org/release/boolean
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

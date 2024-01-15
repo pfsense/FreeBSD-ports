@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	wolfendoom
 PORTVERSION=	1.0
 CATEGORIES=	games
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wolfenstein 3D levels ported to Doom II
+WWW=		https://www.doomworld.com/wolfendoom/
 
 USES=		tar:bzip2
 NO_BUILD=	yes

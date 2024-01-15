@@ -1,19 +1,18 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Amelia
-DISTVERSION=	1.7.6
+DISTVERSION=	1.8.1
 PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Program for Missing Data
+WWW=		https://gking.harvard.edu/amelia
 
 LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	R-cran-Rcpp>=0.11:devel/R-cran-Rcpp \
-		R-cran-RcppArmadillo>=0:math/R-cran-RcppArmadillo
+		R-cran-RcppArmadillo>=0:math/R-cran-RcppArmadillo \
+		R-cran-rlang>=0:devel/R-cran-rlang
 RUN_DEPENDS=	R-cran-Rcpp>=0.11:devel/R-cran-Rcpp \
 		R-cran-RcppArmadillo>=0:math/R-cran-RcppArmadillo
 

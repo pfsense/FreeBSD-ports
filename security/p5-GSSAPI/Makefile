@@ -1,15 +1,13 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	GSSAPI
 PORTVERSION=	0.28
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN/LWP/AGROLMS
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension providing access to the GSSAPIv2 library
+WWW=		https://metacpan.org/release/GSSAPI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -28,7 +26,9 @@ GSSAPI_MIT_VARS=	KRB5CONF=${KRB5_HOME}/bin/krb5-config
 GSSAPI_MIT_VARS_OFF=	KRB5CONF=${HEIMDAL_HOME}/bin/krb5-config
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%KRB5CONF%%|${KRB5CONF}|g' \
-	    ${WRKSRC}/Makefile.PL
+	@${REINPLACE_CMD} -e 's|%%KRB5CONF%%|${KRB5CONF}|g' ${WRKSRC}/Makefile.PL
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/GSSAPI/GSSAPI.so
 
 .include <bsd.port.mk>

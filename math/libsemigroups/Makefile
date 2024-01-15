@@ -1,14 +1,12 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	libsemigroups
-PORTVERSION=	1.3.4
-PORTREVISION=	1
+PORTVERSION=	1.3.7
 DISTVERSIONPREFIX=	v
+PORTREVISION=	8
 CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	C++ library for semigroups and monoids
+WWW=		https://libsemigroups.readthedocs.io/en/latest/
 
 LICENSE=	GPLv3
 
@@ -24,6 +22,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-fmt --with-external-fmt=yes	\
 		--with-external-eigen
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 .include <bsd.port.pre.mk>
@@ -42,6 +41,6 @@ pre-configure:
 		${WRKSRC}/include/libsemigroups/hpcombi.hpp
 .endif
 	${REINPLACE_CMD} -e 's|fmtinclude_HEADERS|#fmtinclude_HEADERS|'	\
-		${WRKSRC}/Makefile.am
+		-e 's|-O3 ||' ${WRKSRC}/Makefile.am
 
 .include <bsd.port.post.mk>

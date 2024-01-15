@@ -1,12 +1,10 @@
-# Created by: Oleg Alexeenkov <proler@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	watchmen
 PORTVERSION=	0.09
 CATEGORIES=	sysutils
 
 MAINTAINER=	proler@gmail.com
 COMMENT=	Watch and restart daemons
+WWW=		https://github.com/proller/watchmen
 
 LICENSE=	GPLv3+
 

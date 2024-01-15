@@ -1,18 +1,16 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jsonrpclib-pelix
-PORTVERSION=	0.4.2
+PORTVERSION=	0.4.3.2
 CATEGORIES=	devel
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	JSON-RPC over HTTP that mirrors xmlrpclib syntax
+WWW=		https://pypi.org/project/jsonrpclib-pelix/
 
 LICENSE=	APACHE20
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

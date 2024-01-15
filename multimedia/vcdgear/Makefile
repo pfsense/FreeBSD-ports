@@ -1,6 +1,3 @@
-# Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vcdgear
 PORTVERSION=	1.6d
 CATEGORIES=	multimedia
@@ -9,8 +6,11 @@ DISTNAME=	${PORTNAME}16d_i386_freebsd42
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to convert VCDs from cue/bin format to mpeg
+WWW=		https://www.vcdgear.com/
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386
+
+USES=		cpe
 
 WRKSRC=		${WRKDIR}/vcdgear16
 NO_BUILD=	yes

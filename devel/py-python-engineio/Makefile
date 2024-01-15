@@ -1,20 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	python-engineio
-PORTVERSION=	3.14.2
-PORTREVISION=	1
-CATEGORIES=	devel python net
-MASTER_SITES=	CHEESESHOP
+PORTVERSION=	4.8.0
+CATEGORIES=	devel net python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python implementation of the Engine.IO realtime client and server
+WWW=		https://github.com/miguelgrinberg/python-engineio
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.5+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61.2:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simple-websocket>=0.10.0:www/py-simple-websocket@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

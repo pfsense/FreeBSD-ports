@@ -1,6 +1,3 @@
-# Created by: clsung@dragon2.net
-# $FreeBSD$
-
 PORTNAME=	CGI-Kwiki
 PORTVERSION=	0.18
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Quickie Wiki Package that's not too Tricky #'
+WWW=		http://www.kwiki.org/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

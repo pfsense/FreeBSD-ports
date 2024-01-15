@@ -1,12 +1,10 @@
-# Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
-
 PORTNAME=	fpdns
 PORTVERSION=	20190131
 CATEGORIES=	dns net perl5
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fingerprinting DNS servers
+WWW=		https://github.com/kirei/fpdns
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

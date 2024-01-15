@@ -1,15 +1,12 @@
-# Created by: bf@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	spblas
-DISTVERSION=	1_02
-PORTREVISION=	8
+DISTVERSION=	1_03
 CATEGORIES=	math
-MASTER_SITES=	http://math.nist.gov/spblas/:1 LOCAL/bf/:1 NL/blas/blast-forum/:2
+MASTER_SITES=	http://math.nist.gov/spblas/:1 NL/blas/blast-forum/:2
 DISTFILES=	nist_spblas_${DISTVERSION}.zip:1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	NIST Sparse Basic Linear Algebra Subprograms (BLAS)
+WWW=		https://math.nist.gov/spblas/
 
 LICENSE=	PD
 

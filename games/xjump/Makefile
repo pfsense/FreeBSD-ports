@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	xjump
 PORTVERSION=	2.7.5
 PORTREVISION=	3

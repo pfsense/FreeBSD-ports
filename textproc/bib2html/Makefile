@@ -1,15 +1,13 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	bib2html
 DISTVERSION=	6.7
 CATEGORIES=	textproc print
-MASTER_SITES=	TEX_CTAN/biblio/bibtex/utils
+MASTER_SITES=	TEX/biblio/bibtex/utils
 DISTNAME=	bib2ml
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BibTeX to HTML Translator
+WWW=		https://www.arakhne.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../COPYING
@@ -21,6 +19,8 @@ SHEBANG_FILES=	*.pl
 USE_PERL5=	run
 NO_BUILD=	yes
 NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	bibutils sowing # bin/bib2html bin/bib2xml
 
 post-patch:
 .for i in bib2html bib2sql bib2xml

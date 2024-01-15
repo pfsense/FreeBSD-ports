@@ -1,14 +1,13 @@
-# Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	atomix
 PORTVERSION=	3.34.0
+PORTREVISION=	2
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Yet another little mind game
+WWW=		https://wiki.gnome.org/Apps/Atomix
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

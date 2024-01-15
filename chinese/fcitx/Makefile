@@ -1,8 +1,6 @@
-# Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	fcitx
-PORTVERSION=	4.2.9.7
+PORTVERSION=	4.2.9.8
+PORTREVISION=	2
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -17,6 +15,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Flexible Input Method Framework
+WWW=		https://fcitx-im.org/wiki/Fcitx
 
 LICENSE=	GPLv2
 
@@ -38,7 +37,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 SUB_FILES=	pkg-message
 SUB_LIST+=	PORTSDIR=${PORTSDIR}
 
-CONFLICTS=	zh-scim-fcitx-3.* fcitx5
+CONFLICTS_INSTALL=	fcitx5 zh-fcitx5-chinese-addons # bin/createPYMB share/icons/hicolor/128x128/apps/fcitx.png share/icons/hicolor/16x16/apps/fcitx-fullwidth-active.png
 
 USE_GNOME=	pango intltool libxml2 introspection
 USE_KDE=	ecm
@@ -47,7 +46,6 @@ USE_LDCONFIG=	yes
 USES=		compiler:c++11-lang gnome tar:xz cmake:noninja desktop-file-utils \
 		gettext-tools:build,run gettext-runtime iconv:wchar_t \
 		kde:5 pkgconfig shared-mime-info compiler:c++14-lang xorg
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	GTK2 GTK3 OPENCC TPUNC DOCS
 OPTIONS_DEFAULT=GTK2 GTK3

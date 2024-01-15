@@ -1,11 +1,11 @@
---- extensions/common/features/feature.cc.orig	2021-01-18 21:28:59 UTC
+--- extensions/common/features/feature.cc.orig	2023-09-13 12:11:42 UTC
 +++ extensions/common/features/feature.cc
-@@ -26,7 +26,7 @@ Feature::Platform Feature::GetCurrentPlatform() {
-   return LACROS_PLATFORM;
- #elif BUILDFLAG(IS_CHROMEOS_ASH) && !BUILDFLAG(IS_CHROMEOS_LACROS)
-   return CHROMEOS_PLATFORM;
--#elif defined(OS_LINUX)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
-   return LINUX_PLATFORM;
- #elif defined(OS_MAC)
-   return MACOSX_PLATFORM;
+@@ -34,6 +34,8 @@ Feature::Platform Feature::GetCurrentPlatform() {
+   return WIN_PLATFORM;
+ #elif BUILDFLAG(IS_FUCHSIA)
+   return FUCHSIA_PLATFORM;
++#elif BUILDFLAG(IS_BSD)
++  return LINUX_PLATFORM;
+ #else
+   return UNSPECIFIED_PLATFORM;
+ #endif

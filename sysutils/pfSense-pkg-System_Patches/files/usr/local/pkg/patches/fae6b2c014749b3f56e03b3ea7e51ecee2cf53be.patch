@@ -1,0 +1,302 @@
+diff --git a/src/etc/inc/pfsense-utils.inc b/src/etc/inc/pfsense-utils.inc
+index 7bd7a8d312..25667356c1 100644
+--- a/src/etc/inc/pfsense-utils.inc
++++ b/src/etc/inc/pfsense-utils.inc
+@@ -1395,6 +1395,9 @@ function print_value_list($list, $count = 10, $separator = ",") {
+ /* DHCP enabled on any interfaces? */
+ function is_dhcp_server_enabled() {
+ 	foreach (config_get_path('dhcpd', []) as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 		if (isset($dhcpifconf['enable']) &&
+ 			!empty(config_get_path("interfaces/{$dhcpif}"))) {
+ 			return true;
+@@ -1413,6 +1416,9 @@ function is_dhcpv6_server_enabled() {
+ 	}
+ 
+ 	foreach (config_get_path('dhcpdv6', []) as $dhcpv6if => $dhcpv6ifconf) {
++		if (empty($dhcpv6ifconf)) {
++			continue;
++		}
+ 		if (isset($dhcpv6ifconf['enable']) &&
+ 			!empty(config_get_path("interfaces/{$dhcpv6if}"))) {
+ 			return true;
+@@ -1430,6 +1436,9 @@ function is_radvd_enabled() {
+ 
+ 	/* handle manually configured DHCP6 server settings first */
+ 	foreach ($dhcpdv6cfg as $dhcpv6if => $dhcpv6ifconf) {
++		if (empty($dhcpv6ifconf)) {
++			continue;
++		}
+ 		if (config_path_enabled("interfaces/{$dhcpv6if}")) {
+ 			continue;
+ 		}
+diff --git a/src/etc/inc/rrd.inc b/src/etc/inc/rrd.inc
+index 3de2c7599f..1184ace017 100644
+--- a/src/etc/inc/rrd.inc
++++ b/src/etc/inc/rrd.inc
+@@ -924,6 +924,9 @@ function enable_rrd_graphing() {
+ 		/* Start dhcpd statistics */
+ 		if (is_array($config['dhcpd'])) {
+ 			foreach ($config['dhcpd'] as $dhcpif => $dhcpifconf) {
++				if (empty($dhcpifconf)) {
++					continue;
++				}
+ 				if (isset($config['dhcpd'][$dhcpif]['statsgraph'])) {
+ 					if (!file_exists("$rrddbpath$dhcpif$dhcpd")) {
+ 						$rrdcreate = "$rrdtool create $rrddbpath$dhcpif$dhcpd --step $rrddhcpdinterval ";
+diff --git a/src/etc/inc/services.inc b/src/etc/inc/services.inc
+index ae99278746..636d79680e 100644
+--- a/src/etc/inc/services.inc
++++ b/src/etc/inc/services.inc
+@@ -50,6 +50,9 @@ function services_radvd_configure($blacklist = array()) {
+ 
+ 	/* handle manually configured DHCP6 server settings first */
+ 	foreach (config_get_path('dhcpdv6', []) as $dhcpv6if => $dhcpv6ifconf) {
++		if (empty($dhcpv6ifconf)) {
++			continue;
++		}
+ 		if (!config_path_enabled("interfaces/{$dhcpv6if}")) {
+ 			continue;
+ 		}
+@@ -537,6 +540,9 @@ function services_dhcpdv4_configure() {
+ 
+ 	$custoptions = "";
+ 	foreach ($dhcpdcfg as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 		$idx = 0;
+ 		$httpclient = false;
+ 		if (is_array($dhcpifconf['numberoptions']) && is_array($dhcpifconf['numberoptions']['item'])) {
+@@ -635,6 +641,9 @@ EOD;
+ 	 * see https://redmine.pfsense.org/issues/10270 
+ 	 * TODO: Global Settings tab, see https://redmine.pfsense.org/issues/5080 */
+ 	foreach ($dhcpdcfg as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 		if (!isset($dhcpifconf['disableauthoritative'])) {
+ 			$dhcpdconf .= "authoritative;\n";
+ 		}
+@@ -676,6 +685,9 @@ EOD;
+ 	 *    failover peer "bleh" entries
+ 	 */
+ 	foreach ($dhcpdcfg as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 
+ 		if (!config_path_enabled("interfaces/{$dhcpif}")) {
+ 			continue;
+@@ -750,6 +762,9 @@ EOPP;
+ 	}
+ 
+ 	foreach ($dhcpdcfg as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 
+ 		$newzone = array();
+ 		$ifcfg = config_get_path("interfaces/{$dhcpif}");
+@@ -1656,6 +1671,9 @@ function services_dhcpdv6_configure($blacklist = array()) {
+ 
+ 	$custoptionsv6 = "";
+ 	foreach ($dhcpdv6cfg as $dhcpv6if => $dhcpv6ifconf) {
++		if (empty($dhcpv6ifconf)) {
++			continue;
++		}
+ 		if (is_array($dhcpv6ifconf['numberoptions']) && is_array($dhcpv6ifconf['numberoptions']['item'])) {
+ 			foreach ($dhcpv6ifconf['numberoptions']['item'] as $itemv6idx => $itemv6) {
+ 				$custoptionsv6 .= "option custom-{$dhcpv6if}-{$itemv6idx} code {$itemv6['number']} = text;\n";
+@@ -1697,6 +1715,9 @@ EOD;
+ 	$nsupdate = false;
+ 
+ 	foreach ($dhcpdv6cfg as $dhcpv6if => $dhcpv6ifconf) {
++		if (empty($dhcpv6ifconf)) {
++			continue;
++		}
+ 
+ 		$ddns_zones = array();
+ 
+diff --git a/src/etc/inc/system.inc b/src/etc/inc/system.inc
+index 6464ed99a2..d6c18cee08 100644
+--- a/src/etc/inc/system.inc
++++ b/src/etc/inc/system.inc
+@@ -419,6 +419,9 @@ function system_hosts_dhcpd_entries() {
+ 	$conf_dhcpd = config_get_path('dhcpd', []);
+ 
+ 	foreach ($conf_dhcpd as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 		if (!is_array($dhcpifconf['staticmap']) ||
+ 		    !isset($dhcpifconf['enable'])) {
+ 			continue;
+@@ -452,6 +455,9 @@ function system_hosts_dhcpd_entries() {
+ 	$conf_dhcpdv6 = config_get_path('dhcpdv6', []);
+ 
+ 	foreach ($conf_dhcpdv6 as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 		if (!is_array($dhcpifconf['staticmap']) ||
+ 		    !isset($dhcpifconf['enable'])) {
+ 			continue;
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 30f402de1a..2f47c44c5b 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -3476,6 +3476,9 @@ function dhcpd_date_adjust_gmt($dt) {
+ 	init_config_arr(array('dhcpd'));
+ 
+ 	foreach (config_get_path('dhcpd', []) as $dhcpditem) {
++		if (empty($dhcpditem)) {
++			continue;
++		}
+ 		if ($dhcpditem['dhcpleaseinlocaltime'] == "yes") {
+ 			$ts = strtotime($dt . " GMT");
+ 			if ($ts !== false) {
+diff --git a/src/etc/rc.filter_synchronize b/src/etc/rc.filter_synchronize
+index d8ca448074..cee0339a47 100755
+--- a/src/etc/rc.filter_synchronize
++++ b/src/etc/rc.filter_synchronize
+@@ -126,6 +126,9 @@ function carp_sync_xml($rpc_client, $sections) {
+ 	}
+ 
+ 	foreach (config_get_path('dhcpd', []) as $dhcpif => $dhcpifconf) {
++		if (empty($dhcpifconf)) {
++			continue;
++		}
+ 		$dhcpif_addr = array_get_path($config, "interfaces/{$dhcpif}/ipaddr");
+ 		if (($dhcpifconf['failover_peerip'] <> "") && 
+ 			$dhcpif_addr != null) {
+diff --git a/src/usr/local/pfSense/include/www/bandwidth_by_ip.inc b/src/usr/local/pfSense/include/www/bandwidth_by_ip.inc
+index 52162c11a5..d6ccf3e804 100644
+--- a/src/usr/local/pfSense/include/www/bandwidth_by_ip.inc
++++ b/src/usr/local/pfSense/include/www/bandwidth_by_ip.inc
+@@ -77,6 +77,9 @@ function printBandwidth($interface, $filter, $sort, $hostipformat, $mode) {
+ 		if (is_array($config['dhcpd'])) {
+ 			// Build an array of static-mapped DHCP entries keyed by IP address.
+ 			foreach ($config['dhcpd'] as $ifdata) {
++				if (empty($ifdata)) {
++					continue;
++				}
+ 				if (is_array($ifdata['staticmap'])) {
+ 					foreach ($ifdata['staticmap'] as $hostent) {
+ 						if (($hostent['ipaddr'] != "") && ($hostent['hostname'] != "")) {
+diff --git a/src/usr/local/www/services_dhcp.php b/src/usr/local/www/services_dhcp.php
+index c06bdd36fd..7dc327a129 100644
+--- a/src/usr/local/www/services_dhcp.php
++++ b/src/usr/local/www/services_dhcp.php
+@@ -137,6 +137,9 @@ if (is_array($dhcpdconf)) {
+ 		// dhcpleaseinlocaltime is global to all interfaces. So if it is selected on any interface,
+ 		// then show it true/checked.
+ 		foreach (config_get_path('dhcpd', []) as $dhcpdifitem) {
++			if (empty($dhcpdifitem)) {
++				continue;
++			}
+ 			$dhcpleaseinlocaltime = $dhcpdifitem['dhcpleaseinlocaltime'];
+ 			if ($dhcpleaseinlocaltime) {
+ 				break;
+@@ -630,6 +633,9 @@ if (isset($_POST['save'])) {
+ 			$dhcpdconf['failover_peerip'] = $_POST['failover_peerip'];
+ 			// dhcpleaseinlocaltime is global to all interfaces. So update the setting on all interfaces.
+ 			foreach (config_get_path('dhcpd', []) as $dhcpdifkey => $keyvalue) {
++				if (empty($keyvalue)) {
++					continue;
++				}
+ 				if (isset($_POST['dhcpleaseinlocaltime'])) {
+ 					config_set_path("dhcpd/{$dhcpdifkey}/dhcpleaseinlocaltime", $_POST['dhcpleaseinlocaltime']);
+ 				} else {
+diff --git a/src/usr/local/www/services_dhcp_relay.php b/src/usr/local/www/services_dhcp_relay.php
+index 2c921934ea..a9db5cb896 100644
+--- a/src/usr/local/www/services_dhcp_relay.php
++++ b/src/usr/local/www/services_dhcp_relay.php
+@@ -76,6 +76,9 @@ $carpiflist = array_merge(array('none' => 'none'), array_intersect_key(
+ $dhcpd_enabled = false;
+ if (is_array($config['dhcpd'])) {
+ 	foreach ($config['dhcpd'] as $dhcpif => $dhcp) {
++		if (empty($dhcp)) {
++			continue;
++		}
+ 		if (isset($dhcp['enable']) && isset($config['interfaces'][$dhcpif]['enable'])) {
+ 			$dhcpd_enabled = true;
+ 			break;
+diff --git a/src/usr/local/www/services_dhcpv6_relay.php b/src/usr/local/www/services_dhcpv6_relay.php
+index 9c67c93e2c..7b3615cc12 100644
+--- a/src/usr/local/www/services_dhcpv6_relay.php
++++ b/src/usr/local/www/services_dhcpv6_relay.php
+@@ -72,6 +72,9 @@ $carpiflist = array_merge(array('none' => 'none'), array_intersect_key(
+  */
+ $dhcpd_enabled = false;
+ foreach (config_get_path('dhcpdv6', []) as $dhcpif => $dhcp) {
++	if (empty($dhcp)) {
++		continue;
++	}
+ 	if (isset($dhcp['enable']) && config_path_enabled("interfaces/{$dhcpif}")) {
+ 		$dhcpd_enabled = true;
+ 		break;
+diff --git a/src/usr/local/www/status_dhcp_leases.php b/src/usr/local/www/status_dhcp_leases.php
+index 518ef7aafa..338cac7ac0 100644
+--- a/src/usr/local/www/status_dhcp_leases.php
++++ b/src/usr/local/www/status_dhcp_leases.php
+@@ -238,6 +238,9 @@ foreach ($leases['lease'] as $data):
+ 
+ 	if ($data['act'] != $static_string) {
+ 		foreach ($config['dhcpd'] as $dhcpif => $dhcpifconf) {
++			if (empty($dhcpifconf)) {
++				continue;
++			}
+ 			if (!is_array($dhcpifconf['range']) || !isset($dhcpifconf['enable'])) {
+ 				continue;
+ 			}
+diff --git a/src/usr/local/www/status_dhcpv6_leases.php b/src/usr/local/www/status_dhcpv6_leases.php
+index 37e3d241e9..3e43cd0308 100644
+--- a/src/usr/local/www/status_dhcpv6_leases.php
++++ b/src/usr/local/www/status_dhcpv6_leases.php
+@@ -103,6 +103,9 @@ function adjust_gmt($dt) {
+ 	if (is_array($config['dhcpdv6'])) {
+ 		$dhcpdv6 = config_get_path('dhcpdv6');
+ 		foreach ($dhcpdv6 as $dhcpdv6params) {
++			if (empty($dhcpdv6params)) {
++				continue;
++			}
+ 			$dhcpv6leaseinlocaltime = $dhcpdv6params['dhcpv6leaseinlocaltime'];
+ 			if ($dhcpv6leaseinlocaltime == "yes") {
+ 				break;
+@@ -312,6 +315,9 @@ foreach ($leases as $data):
+ 
+ 	if ($data['act'] == $static_string) {
+ 		foreach ($config['dhcpdv6'] as $dhcpif => $dhcpifconf) {
++			if (empty($dhcpifconf)) {
++				continue;
++			}
+ 			if (is_array($dhcpifconf['staticmap'])) {
+ 				foreach ($dhcpifconf['staticmap'] as $staticent) {
+ 					if ($data['ip'] == $staticent['ipaddrv6']) {
+@@ -405,6 +411,9 @@ foreach ($prefixes as $data):
+ 
+ 	if ($data['act'] == $static_string) {
+ 		foreach ($config['dhcpdv6'] as $dhcpif => $dhcpifconf) {
++			if (empty($dhcpifconf)) {
++				continue;
++			}
+ 			if (is_array($dhcpifconf['staticmap'])) {
+ 				foreach ($dhcpifconf['staticmap'] as $staticent) {
+ 					if ($data['ip'] == $staticent['ipaddrv6']) {
+diff --git a/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php b/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
+index fdc06cab95..00bbdb9f72 100644
+--- a/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
++++ b/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
+@@ -141,6 +141,9 @@ endif;
+ $dhcpd_enabled = false;
+ if (is_array($config['dhcpd'])) {
+ 	foreach ($config['dhcpd'] as $dhcpif => $dhcp) {
++		if (empty($dhcp)) {
++			continue;
++		}
+ 		if (isset($dhcp['enable']) && isset($config['interfaces'][$dhcpif]['enable'])) {
+ 			$dhcpd_enabled = true;
+ 			break;

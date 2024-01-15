@@ -1,14 +1,14 @@
-# Created by: dmitry@karasik.eu.org
-# $FreeBSD$
-
 PORTNAME=	Prima
-PORTVERSION=	1.60
+PORTVERSION=	1.68.002
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
+DISTNAME=	${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extensible Perl toolkit for multi-platform GUI development
+WWW=		https://metacpan.org/release/Prima
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,16 +20,19 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp
 
-USES=		jpeg perl5 pkgconfig xorg
+USES=		dos2unix jpeg perl5 pkgconfig xorg
 USE_PERL5=	configure
 USE_XORG=	x11 xcursor xext xpm xrender xrandr
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=	FRIBIDI GTK2 GTK3 HARFBUZZ ICONV XFT
+PORTSCOUT=	skipv:1.67001
+
+OPTIONS_DEFINE=	FRIBIDI GTK2 GTK3 HARFBUZZ ICONV THAI XFT
 OPTIONS_DEFAULT=ICONV XFT
 FRIBIDI_DESC=	Bidirectional text support
 HARFBUZZ_DESC=	Harfbuzz support
+THAI_DESC=	Thai support
 
 FRIBIDI_CONFIGURE_OFF=	WITH_FRIBIDI=0
 FRIBIDI_CONFIGURE_ON=	WITH_FRIBIDI=1
@@ -48,6 +51,9 @@ HARFBUZZ_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 ICONV_CONFIGURE_OFF=	WITH_ICONV=0
 ICONV_CONFIGURE_ON=	WITH_ICONV=1
 ICONV_USES=		iconv
+THAI_CONFIGURE_OFF=	WITH_THAI=0
+THAI_CONFIGURE_ON=	WITH_THAI=1
+THAI_LIB_DEPENDS=	libthai.so.0:devel/libthai
 XFT_CONFIGURE_OFF=	WITH_XFT=0
 XFT_CONFIGURE_ON=	WITH_XFT=1
 XFT_USE=		XORG=xft

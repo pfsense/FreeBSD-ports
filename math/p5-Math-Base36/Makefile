@@ -1,6 +1,3 @@
-# Created by: Yi-Hsuan Hsin <mhsin@mhsin.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Base36
 PORTVERSION=	0.14
 PORTEPOCH=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Encoding and decoding of base36 strings
+WWW=		https://metacpan.org/release/Math-Base36
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,5 +19,7 @@ TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

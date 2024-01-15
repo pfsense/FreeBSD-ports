@@ -1,6 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ldouble
 PORTVERSION=	0.1
 PORTREVISION=	2
@@ -11,13 +8,14 @@ DISTFILES=	${LDOUBLE_DISTFILE}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Long double math precision functions
+WWW=		http://www.moshier.net/
 
 BUILD_DEPENDS=	as:devel/binutils
 
 NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile
 USE_LDCONFIG=	yes
-ONLY_FOR_ARCHS=	i386 sparc64
+ONLY_FOR_ARCHS=	i386
 
 PLIST_FILES=	lib/libml.a \
 		lib/libml.so \
@@ -39,10 +37,8 @@ PORTDOCS=	128bdoc.html
 .endif
 
 post-patch:
-.if ${ARCH}!="sparc64"
 	@${REINPLACE_CMD} -e 's|-msoft-quad-float||' \
 		${WRKSRC}/${MAKEFILE}
-.endif
 	@${REINPLACE_CMD} -e 's|%%CC%%|${CC}|; s|%%CFLAGS%%|${CFLAGS}|' \
 		${WRKSRC}/${MAKEFILE}
 

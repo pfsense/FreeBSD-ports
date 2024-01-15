@@ -1,6 +1,3 @@
-# Created by: kstailey
-# $FreeBSD$
-
 PORTNAME=	klh10
 PORTVERSION=	2.0a
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTFILES=	${DISTNAME}.tgz klh10-2.0a-aux.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emulator for DEC PDP-10
+WWW=		https://www.inwap.com/pdp10/
 
 ONLY_FOR_ARCHS=	i386
 

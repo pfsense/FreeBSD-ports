@@ -1,6 +1,3 @@
-# Created by: Kiriyama Kazuhiko <kiri@kiri.toba-cmt.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	man-doc
 PORTVERSION=	5.4.20050911
 PORTREVISION=	3
@@ -11,7 +8,7 @@ MASTER_SITES=	LOCAL/hrs
 DISTFILES=	# empty
 .endif
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Japanese translation of FreeBSD manual pages
 
 RUN_DEPENDS=	jman:japanese/man

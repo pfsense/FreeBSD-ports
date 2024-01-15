@@ -1,6 +1,3 @@
-# Created by: Travis Campbell <hcoyote@ghostar.org>
-# $FreeBSD$
-
 PORTNAME=	MasonX-WebApp
 PORTVERSION=	0.12
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Works with HTML::Mason to do processing before Mason is invoked
+WWW=		https://metacpan.org/release/MasonX-WebApp
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	mp2bug:www/mod_perl2 \
@@ -22,7 +20,7 @@ RUN_DEPENDS=	mp2bug:www/mod_perl2 \
 TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception \
 		p5-Test-Output>=0:devel/p5-Test-Output
 
-USES=		apache:run,2.2+ perl5
+USES=		apache:run perl5
 USE_PERL5=	modbuild
 
 .include <bsd.port.mk>

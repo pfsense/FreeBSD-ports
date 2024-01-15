@@ -1,21 +1,21 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	genson
 PORTVERSION=	1.2.2
+PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	GenSON is a powerful, user-friendly JSON Schema generator
+COMMENT=	Powerful, user-friendly JSON Schema generator
+WWW=		https://pypi.org/project/genson/
 
 LICENSE=	MIT
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=3.0.1:devel/py-jsonschema@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python:3.4+
+USES=		python shebangfix
+SHEBANG_FILES=	bin/genson.py
 USE_PYTHON=	autoplist concurrent distutils
 
 do-test:

@@ -1,6 +1,3 @@
-# Created by: Bjorn Konig <bkoenig@alpha-tierchen.de>
-# $FreeBSD$
-
 PORTNAME=	linknx
 PORTVERSION=	0.0.1.32
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	bkoenig@alpha-tierchen.de
 COMMENT=	Rule-based event handling in a KNX installation
+WWW=		https://linknx.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -20,6 +18,8 @@ LIB_DEPENDS=	libpthsem.so:devel/pthsem
 BUILD_DEPENDS=	${LOCALBASE}/lib/libargp.a:devel/argp-standalone
 
 USES=	compiler gmake autoreconf pkgconfig
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=CFLAGS="-I${LOCALBASE}/include" \
 		LDFLAGS="-I${LOCALBASE}/include -L/${LOCALBASE}/lib"
@@ -34,6 +34,7 @@ LIBCURL_DESC=	Install libcurl for Clickatell SMS support
 LIBLUA_DESC=	Install liblua for scripting
 MYSQL_DESC=	Install libmysql for logging & persist
 
+LIBESMTP_CFLAGS=	-lesmtp
 LIBESMTP_CONFIGURE_ENABLE=	smtp
 LIBESMTP_LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 LIBCURL_CONFIGURE_WITH=	libcurl
@@ -47,6 +48,7 @@ LIBLUA_LDFLAGS=	-L${LUA_LIBDIR}
 MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
 MYSQL_CONFIGURE_OFF=	--without-mysql
 MYSQL_USES=	mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 
 PORTDOCS=	*
 

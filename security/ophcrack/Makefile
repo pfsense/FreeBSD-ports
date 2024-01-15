@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ophcrack
 PORTVERSION=	3.8.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Windows password cracker based on rainbow tables
+WWW=		http://ophcrack.sourceforge.net/
 
 LICENSE=	APACHE20 GPLv2
 LICENSE_COMB=	multi
@@ -27,7 +25,7 @@ OPTIONS_DEFAULT=	X11
 X11_DESC=	Build with Qt 5 GUI frontend
 
 X11_USES=	pkgconfig qt:5
-X11_USE=	QT=buildtools_build,qmake_build,charts,core,gui,widgets
+X11_USE=	QT=buildtools:build,qmake:build,charts,core,gui,widgets
 X11_CONFIGURE_OFF=	--disable-gui
 
 post-patch:

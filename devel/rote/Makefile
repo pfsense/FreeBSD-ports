@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rote
 PORTVERSION=	0.2.8
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple library for VT102 terminal emulation
+WWW=		https://rote.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 USES=		gmake ncurses

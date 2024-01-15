@@ -1,14 +1,12 @@
-# Created by: sahne
-# $FreeBSD$
-
 PORTNAME=	lxde-common
 PORTVERSION=	0.99.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	SF/lxde/${PORTNAME}%20%28default%20config%29/${PORTNAME}%20${PORTVERSION:R}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LXDE Common files
+WWW=		https://lxde.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,7 +23,6 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 NO_ARCH=	yes
 
 DATADIR=	${PREFIX}/share/lxde
-INSTALLS_ICONS=	yes
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/desktop.conf \

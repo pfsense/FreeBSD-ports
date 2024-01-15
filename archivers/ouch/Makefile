@@ -1,0 +1,215 @@
+PORTNAME=	ouch
+DISTVERSION=	0.5.1
+CATEGORIES=	archivers
+
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Painless compression and decompression for your terminal
+WWW=		https://github.com/ouch-org/ouch
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+LIB_DEPENDS=	libzstd.so:archivers/zstd
+
+USES=		cargo pkgconfig
+USE_GITHUB=	yes
+GH_ACCOUNT=	ouch-org
+
+CARGO_CRATES=	adler-1.0.2 \
+		aho-corasick-1.1.2 \
+		anstream-0.6.4 \
+		anstyle-1.0.4 \
+		anstyle-parse-0.2.2 \
+		anstyle-query-1.0.0 \
+		anstyle-wincon-3.0.1 \
+		assert_cmd-2.0.12 \
+		atty-0.2.14 \
+		autocfg-1.1.0 \
+		bit-set-0.5.3 \
+		bit-vec-0.6.3 \
+		bitflags-1.3.2 \
+		bitflags-2.4.1 \
+		block-buffer-0.9.0 \
+		bstr-1.8.0 \
+		bumpalo-3.14.0 \
+		byteorder-1.5.0 \
+		bytes-1.5.0 \
+		bzip2-0.4.4 \
+		bzip2-sys-0.1.11+1.0.8 \
+		cc-1.0.83 \
+		cfb-0.7.3 \
+		cfg-if-1.0.0 \
+		chrono-0.4.31 \
+		clap-4.4.11 \
+		clap_builder-4.4.11 \
+		clap_complete-4.4.4 \
+		clap_derive-4.4.7 \
+		clap_lex-0.6.0 \
+		clap_mangen-0.2.15 \
+		colorchoice-1.0.0 \
+		console-0.15.7 \
+		core_affinity-0.8.1 \
+		cpufeatures-0.2.11 \
+		crc-3.0.1 \
+		crc-catalog-2.4.0 \
+		crc32fast-1.3.2 \
+		crossbeam-deque-0.8.3 \
+		crossbeam-epoch-0.9.15 \
+		crossbeam-utils-0.8.16 \
+		deranged-0.3.9 \
+		difflib-0.4.0 \
+		digest-0.9.0 \
+		doc-comment-0.3.3 \
+		either-1.9.0 \
+		encode_unicode-0.3.6 \
+		errno-0.3.7 \
+		fastrand-2.0.1 \
+		filetime-0.2.22 \
+		filetime_creation-0.1.6 \
+		flate2-1.0.28 \
+		flume-0.10.14 \
+		fnv-1.0.7 \
+		fs-err-2.11.0 \
+		futures-core-0.3.29 \
+		futures-sink-0.3.29 \
+		generic-array-0.14.7 \
+		getrandom-0.2.11 \
+		globset-0.4.14 \
+		gzp-0.11.3 \
+		heck-0.4.1 \
+		hermit-abi-0.1.19 \
+		hermit-abi-0.3.3 \
+		ignore-0.4.21 \
+		infer-0.15.0 \
+		insta-1.34.0 \
+		is_executable-1.0.1 \
+		itertools-0.11.0 \
+		jobserver-0.1.27 \
+		js-sys-0.3.65 \
+		lazy_static-1.4.0 \
+		libc-0.2.150 \
+		libm-0.2.8 \
+		libz-sys-1.1.12 \
+		linked-hash-map-0.5.6 \
+		linux-raw-sys-0.4.11 \
+		lock_api-0.4.11 \
+		log-0.4.20 \
+		lz4_flex-0.11.1 \
+		lzma-rust-0.1.5 \
+		lzma-sys-0.1.20 \
+		memchr-2.6.4 \
+		memoffset-0.9.0 \
+		miniz_oxide-0.7.1 \
+		nanorand-0.7.0 \
+		nt-time-0.5.0 \
+		num-traits-0.2.17 \
+		num_cpus-1.16.0 \
+		once_cell-1.18.0 \
+		opaque-debug-0.3.0 \
+		parse-display-0.8.2 \
+		parse-display-derive-0.8.2 \
+		pin-project-1.1.3 \
+		pin-project-internal-1.1.3 \
+		pkg-config-0.3.27 \
+		powerfmt-0.2.0 \
+		ppv-lite86-0.2.17 \
+		predicates-3.0.4 \
+		predicates-core-1.0.6 \
+		predicates-tree-1.0.9 \
+		proc-macro2-1.0.69 \
+		proptest-1.4.0 \
+		quick-error-1.2.3 \
+		quote-1.0.33 \
+		rand-0.8.5 \
+		rand_chacha-0.3.1 \
+		rand_core-0.6.4 \
+		rand_xorshift-0.3.0 \
+		rayon-1.8.0 \
+		rayon-core-1.12.0 \
+		redox_syscall-0.3.5 \
+		redox_syscall-0.4.1 \
+		regex-1.10.2 \
+		regex-automata-0.4.3 \
+		regex-syntax-0.7.5 \
+		regex-syntax-0.8.2 \
+		roff-0.2.1 \
+		rustix-0.38.25 \
+		rusty-fork-0.3.0 \
+		same-file-1.0.6 \
+		scopeguard-1.2.0 \
+		serde-1.0.193 \
+		serde_derive-1.0.193 \
+		sevenz-rust-0.5.3 \
+		sha2-0.9.9 \
+		similar-2.3.0 \
+		snap-1.1.0 \
+		spin-0.9.8 \
+		static_assertions-1.1.0 \
+		strsim-0.10.0 \
+		structmeta-0.2.0 \
+		structmeta-derive-0.2.0 \
+		syn-2.0.39 \
+		tar-0.4.40 \
+		tempfile-3.8.1 \
+		termtree-0.4.1 \
+		test-strategy-0.3.1 \
+		thiserror-1.0.50 \
+		thiserror-impl-1.0.50 \
+		time-0.3.30 \
+		time-core-0.1.2 \
+		time-macros-0.2.15 \
+		twox-hash-1.6.3 \
+		typenum-1.17.0 \
+		unarray-0.1.4 \
+		unicode-ident-1.0.12 \
+		unrar-0.5.2 \
+		unrar_sys-0.3.1 \
+		utf8parse-0.2.1 \
+		uuid-1.6.1 \
+		vcpkg-0.2.15 \
+		version_check-0.9.4 \
+		wait-timeout-0.2.0 \
+		walkdir-2.4.0 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.88 \
+		wasm-bindgen-backend-0.2.88 \
+		wasm-bindgen-macro-0.2.88 \
+		wasm-bindgen-macro-support-0.2.88 \
+		wasm-bindgen-shared-0.2.88 \
+		widestring-1.0.2 \
+		winapi-0.3.9 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.6 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		windows-sys-0.45.0 \
+		windows-sys-0.48.0 \
+		windows-targets-0.42.2 \
+		windows-targets-0.48.5 \
+		windows_aarch64_gnullvm-0.42.2 \
+		windows_aarch64_gnullvm-0.48.5 \
+		windows_aarch64_msvc-0.42.2 \
+		windows_aarch64_msvc-0.48.5 \
+		windows_i686_gnu-0.42.2 \
+		windows_i686_gnu-0.48.5 \
+		windows_i686_msvc-0.42.2 \
+		windows_i686_msvc-0.48.5 \
+		windows_x86_64_gnu-0.42.2 \
+		windows_x86_64_gnu-0.48.5 \
+		windows_x86_64_gnullvm-0.42.2 \
+		windows_x86_64_gnullvm-0.48.5 \
+		windows_x86_64_msvc-0.42.2 \
+		windows_x86_64_msvc-0.48.5 \
+		xattr-1.0.1 \
+		xz2-0.1.7 \
+		yaml-rust-0.4.5 \
+		zip-0.6.6 \
+		zstd-0.13.0 \
+		zstd-safe-7.0.0 \
+		zstd-sys-2.0.9+zstd.1.5.5
+
+PLIST_FILES=	bin/${PORTNAME}
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+.include <bsd.port.mk>

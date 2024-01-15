@@ -1,9 +1,6 @@
-# Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
-
 PORTNAME=	fracplanet
 PORTVERSION=	0.5.1
-PORTREVISION=	11
+PORTREVISION=	17
 CATEGORIES=	graphics
 MASTER_SITES=	SF \
 		SF/nemysisfreebsdp/:icons
@@ -12,6 +9,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive tool for creating random fractal planets and terrain
+WWW=		http://www.bottlenose.demon.co.uk/share/fracplanet/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +19,7 @@ LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs
 USES=		compiler:c++11-lang gl gnome qmake:outsource qt:5
 USE_GL=		gl glu
 QMAKE_ARGS=	VERSION_NUMBER=${PORTVERSION}
-USE_QT=		buildtools_build core gui opengl
+USE_QT=		buildtools:build core gui opengl
 
 DESKTOP_ENTRIES=	"Fracplanet" \
 			"" \
@@ -29,7 +27,6 @@ DESKTOP_ENTRIES=	"Fracplanet" \
 			"${PORTNAME}" \
 			"Graphics;" \
 			""
-INSTALLS_ICONS=	yes
 PORTDOCS=	*
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

@@ -1,24 +1,22 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	qt
 PORTVERSION=	4.8.7
-DISTVERSIONSUFFIX=	-8.el7
-PORTREVISION=	3
+DISTVERSIONSUFFIX=	-9.el7_9
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits linux
 PKGNAMESUFFIX=	-x11
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Cross-platform application and UI framework (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://qt-project.org
 
-USES=		linux:c7
+USES=		cpe linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX=	alsalib dri fontconfig jpeg png qt tiff xorglibs
 USE_LINUX_RPM=	yes
 
 LIB_DISTNAMES=	${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSIONFULL}
 
-CONFLICTS=	linux-c6-qt47-x11-[0-9]*
+CONFLICTS=	linux-c6-qt47-x11
 DATADIR=	${PREFIX}/usr/share/${PORTNAME}4
 
 post-patch:

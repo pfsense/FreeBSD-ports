@@ -1,33 +1,31 @@
-# $FreeBSD$
-
 PORTNAME=	libbigwig
-DISTVERSION=	0.4.4
+DISTVERSION=	0.4.7
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C library for handling bigWig files (containing genomic data)
+WWW=		https://github.com/dpryan79/libBigWig
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		gmake localbase:ldflags
+USES=		cmake:testing localbase:ldflags
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	dpryan79
 GH_PROJECT=	libBigWig
-USE_LDCONFIG=	yes
 
-MAKE_ARGS=	LDFLAGS=-L${LOCALBASE}/lib
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_TESTING_ON=	ENABLE_TESTING # unclear how to run tests, see https://github.com/dpryan79/libBigWig/issues/63
+CMAKE_TESTING_TARGET=
 
-PLIST_FILES=	include/bigWig.h \
-		include/bigWigIO.h \
-		include/bwCommon.h \
-		include/bwValues.h \
-		lib/libBigWig.a \
+PLIST_FILES=	include/libbigwig/bigWig.h \
+		include/libbigwig/bigWigIO.h \
+		include/libbigwig/bwCommon.h \
+		include/libbigwig/bwValues.h \
 		lib/libBigWig.so
-
-post-stage:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libBigWig.so
 
 .include <bsd.port.mk>

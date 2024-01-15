@@ -1,29 +1,22 @@
-# Created by: Stephen Montgomery-Smith <stephen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	octave-forge-netcdf
-PORTVERSION=	1.0.14
+PORTVERSION=	1.0.17
 CATEGORIES=	math
+MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
+DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
+WWW=		https://packages.octave.org/
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
-
-# OCTSRC is the name of the directory of the package.
-# It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${DISTNAME}
-
-WRKSRC=		${WRKDIR}/${OCTSRC}/src
-GNU_CONFIGURE=	yes
+LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
 LIB_DEPENDS+=	libnetcdf.so:science/netcdf
 
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
+USES=		octave
 
-post-build:
-	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
-	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
+GNU_CONFIGURE=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

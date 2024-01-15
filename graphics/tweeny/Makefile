@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tweeny
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3-6
@@ -8,6 +6,7 @@ CATEGORIES=	graphics devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Modern C++ tweening library
+WWW=		https://mobius3.github.io/tweeny/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

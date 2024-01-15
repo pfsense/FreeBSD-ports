@@ -1,6 +1,3 @@
-# Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Test-Regexp
 PORTVERSION=	2017040101
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Test your regular expressions
+WWW=		https://metacpan.org/release/Test-Regexp
 
 LICENSE=	MIT
 

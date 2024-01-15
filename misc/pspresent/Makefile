@@ -1,14 +1,12 @@
-# Created by: Timothy Bourke <timbob@bigpond.com>
-# $FreeBSD$
-
 PORTNAME=	pspresent
 PORTVERSION=	1.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	misc
 MASTER_SITES=	http://www.zmatt.net/pspresent/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-screen slide shows of postscript files
+WWW=		http://www.zmatt.net/pspresent/
 
 LICENSE=	GPLv2
 

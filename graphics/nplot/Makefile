@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	nplot
 PORTVERSION=	0.9.11
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	cs@innolan.dk
 COMMENT=	Charting library for .NET
+WWW=		http://nplot.com
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

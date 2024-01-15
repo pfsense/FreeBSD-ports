@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Astro-Telescope
 PORTVERSION=	0.71
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Class for obtaining telescope information
+WWW=		https://metacpan.org/release/Astro-Telescope
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

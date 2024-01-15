@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Flow
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for simple-minded recipe-controlled build of data
+WWW=		https://metacpan.org/release/Data-Flow
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mini_sendmail
 PORTVERSION=	1.3.9
 CATEGORIES+=	mail
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.acme.com/software/mini_sendmail/
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Tiny MTA with only smart relay capability
+WWW=		https://www.acme.com/software/mini_sendmail/
 
 PLIST_FILES=	bin/mini_sendmail man/man8/mini_sendmail.8.gz
 

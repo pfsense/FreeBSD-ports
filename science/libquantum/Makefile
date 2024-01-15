@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libquantum
 PORTVERSION=	1.1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.libquantum.de/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C library for quantum computing and quantum simulation
+WWW=		http://www.libquantum.de/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-Gender
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Inflect pronouns for gender
+WWW=		https://metacpan.org/release/Lingua-EN-Gender
 
 USES=		perl5
 USE_PERL5=	configure

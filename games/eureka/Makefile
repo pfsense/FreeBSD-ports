@@ -1,14 +1,13 @@
-# Created by: Kalten <kalten@gmx.at>
-# $FreeBSD$
-
 PORTNAME=	eureka
 DISTVERSION=	1.27b
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}-editor/Eureka/${PORTVERSION:R}
 DISTNAME=	${PORTNAME}-${DISTVERSION}-source
 
 MAINTAINER=	kalten@gmx.at
 COMMENT=	Map editor for various Doom-derived games
+WWW=		https://eureka-editor.sourceforge.net/
 
 LICENSE=	GPLv2+
 

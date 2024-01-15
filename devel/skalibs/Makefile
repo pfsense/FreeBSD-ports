@@ -1,18 +1,16 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	skalibs
-PORTVERSION=	2.9.2.1
+DISTVERSION=    2.13.1.1
 CATEGORIES=	devel
 MASTER_SITES=	https://www.skarnet.org/software/${PORTNAME}/
 
 MAINTAINER=	crest@rlwinm.de
 COMMENT=	General purpose C libraries used by skarnet.org software
+WWW=		https://www.skarnet.org/software/skalibs/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_mips64=		fails to build: Checking whether system has auto-close after fd-passing... test crashed, aborting
+BROKEN_mips64=	fails to build: Checking whether system has auto-close after fd-passing... test crashed, aborting
 
 USES=		gmake
 USE_LDCONFIG=	yes
@@ -30,7 +28,7 @@ post-install:
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
-.for d in libbiguint libdatastruct librandom libstdcrypto libstddjb libunixonacid
+.for d in libdatastruct libposixplz librandom libstdcrypto libstddjb libunixonacid
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/${d}
 	cd ${WRKSRC} && ${INSTALL_DATA} doc/${d}/*.html ${STAGEDIR}${DOCSDIR}/${d}
 .endfor

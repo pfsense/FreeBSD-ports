@@ -1,14 +1,13 @@
-# Created by: Tilman Linneweh <arved@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cmt
 PORTVERSION=	1.16
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.ladspa.org/download/
 DISTNAME=	${PORTNAME}_src_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Computer Music Toolkit - a collection of LADSPA plugins
+WWW=		https://www.ladspa.org/cmt
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
 RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa

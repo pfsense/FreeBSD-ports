@@ -1,14 +1,11 @@
-# Created by Radim Kolar <hsn@sendmail.cz>
-# $FreeBSD$
-
 PORTNAME=	courier-sox
-DISTVERSION=	0.12.20180428
-PORTREVISION=	1
+DISTVERSION=	0.17
 CATEGORIES=	net
-MASTER_SITES=	SF/courier/sox-devel/${DISTVERSION:E}
+MASTER_SITES=	SF/courier/sox/${DISTVERSION}
 
 MAINTAINER=	hsn@sendmail.cz
 COMMENT=	Courier Socks 5 Proxy client library and wrapper
+WWW=		https://www.Courier-MTA.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,10 +21,11 @@ RUN_DEPENDS=	courier-authlib-base>0.56:security/courier-authlib-base \
 
 USES=		autoreconf libtool localbase perl5 tar:bz2
 USE_LDCONFIG=	yes
+USE_RC_SUBR=	sockd
 
 GNU_CONFIGURE=	yes
+
 INSTALL_TARGET=	install-strip
-USE_RC_SUBR=	sockd
 TEST_TARGET=	check
 
 post-stage:

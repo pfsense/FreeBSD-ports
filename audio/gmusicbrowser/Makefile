@@ -1,6 +1,3 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gmusicbrowser
 PORTVERSION=	1.1.15
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://gmusicbrowser.org/download/
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Jukebox for large collections of mp3/ogg/flac/mpc files
+WWW=		https://gmusicbrowser.org/
 
 LICENSE=	GPLv3
 

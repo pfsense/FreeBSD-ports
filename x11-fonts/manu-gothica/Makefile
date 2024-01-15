@@ -1,6 +1,3 @@
-# Created by: heiner Eichmann <h.eichmann@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	manu-gothica
 DISTVERSION=	0
 PORTREVISION=	5
@@ -12,10 +9,15 @@ EXTRACT_SUFX=	.ttf
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Old German blackletter handwriting (Suetterlin)
+WWW=		https://www.bryld.dk/hent-filer/
+
+# Converted from RESTRICTED
+LICENSE=	manu-gothica
+LICENSE_NAME=	manu-gothica
+LICENSE_TEXT=	The font is free for personal use
+LICENSE_PERMS=	auto-accept
 
 USES=		fonts
-
-RESTRICTED=	The font is free for personal use
 
 FONTNAME=	TTF
 EXTRACT_CMD=	${CP}

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	6.4.1
 DISTVERSIONPREFIX=	french-dictionaries-v
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Modern French hunspell dictionaries
+WWW=		https://www.dicollecte.org/
 
 LICENSE=	MPL20
 

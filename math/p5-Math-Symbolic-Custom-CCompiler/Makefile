@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Symbolic-Custom-CCompiler
 PORTVERSION=	1.04
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Compile Math::Symbolic trees to C
+WWW=		https://metacpan.org/release/Math-Symbolic-Custom-CCompiler
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

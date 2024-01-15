@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tachyon
 DISTVERSION=	0.98.9
 CATEGORIES=	graphics science
@@ -7,6 +5,7 @@ MASTER_SITES=	http://jedi.ks.uiuc.edu/~johns/raytracer/files/${DISTVERSION}/
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Multiproccess ray tracing system
+WWW=		http://jedi.ks.uiuc.edu/~johns/raytracer/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../Copyright

@@ -1,7 +1,5 @@
-TIMESTAMP = 1532699975
-SHA256 (golang-tools-20180726-bfb5194_GH0.tar.gz) = 533a034e94aade0b4e61197dd9cb29e230944224fb20b5afe88b46e8701376a0
-SIZE (golang-tools-20180726-bfb5194_GH0.tar.gz) = 2314123
-SHA256 (golang-crypto-3cb0727_GH0.tar.gz) = eef75f6cbd2cb14d1c0a4561acde19d725808cc2338d440b54d91b9befc07d46
-SIZE (golang-crypto-3cb0727_GH0.tar.gz) = 1318217
-SHA256 (golang-net-b6d7b13_GH0.tar.gz) = fed6d62b1aee0d44726739836ef4164ca268ad1343b868e8d42dc5c7285a7898
-SIZE (golang-net-b6d7b13_GH0.tar.gz) = 740584
+TIMESTAMP = 1702456829
+SHA256 (go/devel_go-tools/tools-v0.16.1/v0.16.1.mod) = 908067e91be85a2ad342fd0c4f54a444549e05c3ec272c475f9e15fa153af868
+SIZE (go/devel_go-tools/tools-v0.16.1/v0.16.1.mod) = 168
+SHA256 (go/devel_go-tools/tools-v0.16.1/v0.16.1.zip) = b3f3c12d493747930eee9054fdd7e35aa36fe2c6d4b2aac2e0c29801e9fc9516
+SIZE (go/devel_go-tools/tools-v0.16.1/v0.16.1.zip) = 3147509

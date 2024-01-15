@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <rpsfa@rit.edu>
-# $FreeBSD$
-
 PORTNAME=	dm-paperclip
 PORTVERSION=	2.5.0
 CATEGORIES=	databases rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	File attachments as attributes for DataMapper
+WWW=		https://github.com/krobertson/dm-paperclip
 
 LICENSE=	MIT
 
@@ -18,7 +16,6 @@ RUN_DEPENDS=	rubygem-dm-core>=1.2.0:databases/rubygem-dm-core \
 
 NO_ARCH=	yes
 
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

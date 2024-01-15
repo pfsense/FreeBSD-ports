@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jalingo
 PORTVERSION=	0.6.0
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Free OS independent dictionary application
+WWW=		https://jalingo.sourceforge.net/
 
 LICENSE=	GPLv2
 

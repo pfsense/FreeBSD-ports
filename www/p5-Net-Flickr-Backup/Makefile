@@ -1,6 +1,3 @@
-# Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Net-Flickr-Backup
 PORTVERSION=	3.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
 COMMENT=	OOP for backing up your Flickr photos locally
+WWW=		https://metacpan.org/release/Net-Flickr-Backup
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

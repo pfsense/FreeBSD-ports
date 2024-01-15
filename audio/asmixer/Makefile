@@ -1,6 +1,3 @@
-# Created by: Mike Makonnen <mtm@identd.net>
-# $FreeBSD$
-
 PORTNAME=	asmixer
 PORTVERSION=	0.5
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://tigr.net/afterstep/download/asmixer/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mixer control for AfterStep window manager
+WWW=		http://www.tigr.net/afterstep/
 
 LICENSE=	GPLv2
 

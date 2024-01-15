@@ -1,13 +1,12 @@
-# Created by: Edson Brandi <ebrandi@fugspbr.org>
-# $FreeBSD$
-
 PORTNAME=	wipe
 PORTVERSION=	2.3.1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File and block device wiping utility
+WWW=		https://wipe.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,6 +21,7 @@ OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|@CFLAGS@|${CFLAGS}|' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|/usr/doc/wipe|${DOCSDIR}|' ${WRKSRC}/wipe.1
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

@@ -1,6 +1,3 @@
-# Created by: Marc van Woerkom <3d@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	quake3
 DISTVERSION=	1.11-6
 PORTREVISION=	5
@@ -13,8 +10,16 @@ EXTRACT_SUFX=	.gz.sh
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake III Arena Demo
+WWW=		http://quake3arena.com/
 
-RESTRICTED=	Restrictive license by Loki Software
+# Converted from RESTRICTED
+LICENSE=	Loki
+LICENSE_NAME=	Loki
+LICENSE_TEXT=	Restrictive license by Loki Software
+LICENSE_PERMS=	auto-accept
+
+DEPRECATED=	Cannot be fetched from GENTOO sites
+EXPIRATION_DATE=	2024-01-25
 
 USES=		linux
 USE_LINUX=	dri

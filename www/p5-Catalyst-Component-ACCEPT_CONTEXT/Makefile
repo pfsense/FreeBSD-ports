@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Component-ACCEPT_CONTEXT
 PORTVERSION=	0.07
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make the Catalyst request context available in Models and Views
+WWW=		https://metacpan.org/release/Catalyst-Component-ACCEPT_CONTEXT
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

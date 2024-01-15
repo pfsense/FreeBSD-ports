@@ -1,6 +1,3 @@
-# Created by: Vivek Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	Sphinx-Search
 PORTVERSION=	0.31
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Sphinx search engine API Perl client
+WWW=		https://metacpan.org/release/Sphinx-Search
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

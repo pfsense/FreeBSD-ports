@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-OpenSearch
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Search A9 OpenSearch compatible engines
+WWW=		https://metacpan.org/release/WWW-OpenSearch
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-URI-Template>=0:net/p5-URI-Template \

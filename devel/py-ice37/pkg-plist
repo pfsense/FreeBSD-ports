@@ -186,7 +186,7 @@
 %%PYTHON_SITELIBDIR%%/IcePatch2/__init__.py
 %%PYTHON_SITELIBDIR%%/IcePatch2/__init__.pyc
 %%PYTHON_SITELIBDIR%%/IcePatch2/__init__.pyo
-%%PYTHON_SITELIBDIR%%/IcePy.so
+%%PYTHON_SITELIBDIR%%/IcePy%%PYTHON_EXT_SUFFIX%%.so
 %%PYTHON_SITELIBDIR%%/IceStorm/IceStorm_ice.py
 %%PYTHON_SITELIBDIR%%/IceStorm/IceStorm_ice.pyc
 %%PYTHON_SITELIBDIR%%/IceStorm/IceStorm_ice.pyo
@@ -196,6 +196,6 @@
 %%PYTHON_SITELIBDIR%%/IceStorm/__init__.py
 %%PYTHON_SITELIBDIR%%/IceStorm/__init__.pyc
 %%PYTHON_SITELIBDIR%%/IceStorm/__init__.pyo
-%%PYTHONGT34%%%%PYTHON_SITELIBDIR%%/Ice/Py3/IceFuture.py
-%%PYTHONGT34%%%%PYTHON_SITELIBDIR%%/Ice/Py3/IceFuture.pyc
-%%PYTHONGT34%%%%PYTHON_SITELIBDIR%%/Ice/Py3/IceFuture.pyo
+%%PYTHONGT27%%%%PYTHON_SITELIBDIR%%/Ice/Py3/IceFuture.py
+%%PYTHONGT27%%%%PYTHON_SITELIBDIR%%/Ice/Py3/IceFuture.pyc
+%%PYTHONGT27%%%%PYTHON_SITELIBDIR%%/Ice/Py3/IceFuture.pyo

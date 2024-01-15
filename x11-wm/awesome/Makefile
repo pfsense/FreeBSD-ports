@@ -1,21 +1,18 @@
-# Created by: Nikos Ntarmos <ntarmos@ceid.upatras.gr>
-# $FreeBSD$
-
 PORTNAME=	awesome
 PORTVERSION=	4.3
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Highly configurable, next generation framework window manager
+WWW=		https://awesomewm.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick6 \
-		${LUA_REFMODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi@${LUA_FLAVOR}
+BUILD_DEPENDS=	${LUA_REFMODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi@${LUA_FLAVOR}
 RUN_DEPENDS=	${LUA_REFMODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi@${LUA_FLAVOR} \
 		bash:shells/bash
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
@@ -28,20 +25,22 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libxcb-xrm.so:x11/xcb-util-xrm \
 		libxkbcommon.so:x11/libxkbcommon
 
-CONFLICTS_INSTALL=	awesome3-[0-9]*
+CONFLICTS_INSTALL=	awesome3
 
-USES=		cmake compiler:c11 gettext gnome iconv pkgconfig lua \
+USES=		cmake compiler:c11 gettext gnome iconv magick:build pkgconfig lua:-53 \
 		shebangfix xorg
+USE_GNOME=	glib20 pango gdkpixbuf2 librsvg2
+USE_XORG=	pixman x11 xau xcb xdmcp xext xft xinerama xrandr xrender \
+		xorgproto
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	awesomewm
+
 SHEBANG_FILES=	utils/awesome-client
 CMAKE_ARGS=	-DSYSCONFDIR=${PREFIX}/etc \
 		-DAWESOME_MAN_PATH=${MANPREFIX}/man \
 		-DGENERATE_DOC=OFF \
 		-DLUA_INCLUDE_DIR=${LUA_INCDIR}
-USE_GNOME=	glib20 pango gdkpixbuf2
-USE_XORG=	pixman x11 xau xcb xdmcp xext xft xinerama xrandr xrender \
-		xorgproto
 
 OPTIONS_DEFINE=	DBUS DOCS MANPAGES
 OPTIONS_DEFAULT=DBUS MANPAGES
@@ -64,5 +63,9 @@ post-patch:
 	# Ref https://github.com/awesomeWM/awesome/issues/1377
 	@${REINPLACE_CMD} -e "/COMMAND lua/ s,lua,${LUA_CMD}," \
 		${WRKSRC}/awesomeConfig.cmake
+	# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=267119
+	# Fix build with clang14
+	@${REINPLACE_CMD} -e "s/-export-dynamic/\"-Xlinker -E\"/" \
+		${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.post.mk>

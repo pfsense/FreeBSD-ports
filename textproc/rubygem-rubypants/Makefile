@@ -1,18 +1,16 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
-
 PORTNAME=	rubypants
-PORTVERSION=	0.7.0
+PORTVERSION=	0.7.1
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Translates ASCII into smart typographic punctuation HTML entities
+WWW=		https://github.com/jmcnevin/rubypants
 
 LICENSE=	MIT
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

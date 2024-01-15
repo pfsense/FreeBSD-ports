@@ -1,6 +1,3 @@
-# Created by: Oleg R. Muhutdinov <mor@WhiteLuna.com>
-# $FreeBSD$
-
 PORTNAME=	Convert-Bencode
 PORTVERSION=	1.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Encode and decode bencoded strings
+WWW=		https://metacpan.org/release/Convert-Bencode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

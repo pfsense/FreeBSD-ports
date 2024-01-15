@@ -1,6 +1,3 @@
-# Created by: Maksym Sobolyev <sobomax@pbxpress.it>
-# $FreeBSD$
-
 PORTNAME=	Asterisk-FastAGI
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for FastAGI handling
+WWW=		https://metacpan.org/release/Asterisk-FastAGI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

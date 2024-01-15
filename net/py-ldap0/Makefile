@@ -1,28 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	ldap0
-PORTVERSION=	1.1.3
+PORTVERSION=	1.4.7
 CATEGORIES=	net python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	girgen@FreeBSD.org
 COMMENT=	Module package for implementing LDAP clients
+WWW=		https://gitlab.com/ae-dir/python-ldap0
 
 LICENSE=	PSFL
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyasn1>=0.4.5:devel/py-pyasn1@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyasn1-modules>=0.2.5:devel/py-pyasn1-modules@${PY_FLAVOR}
-# OpenLDAP needs SASL option enabled
 # Cyrus needs PLAIN / CRAM-MD5 / DIGEST-MD5 enabled
-TEST_DEPENDS=	${LOCALBASE}/libexec/slapd:net/openldap24-server
+TEST_DEPENDS=	${LOCALBASE}/libexec/slapd:net/openldap${OPENLDAP_VER}-server
 
-USES=		localbase python:3.6+
+USES=		ldap:24 localbase python
 USE_LOCALE=	en_US.UTF-8
-USE_OPENLDAP=	yes
 USE_PYTHON=	autoplist distutils
 
-WANT_OPENLDAP_SASL=	yes
+USE_GITLAB=	yes
+GL_ACCOUNT=	ae-dir
+GL_PROJECT=	python-ldap0
+GL_TAGNAME=	70b3aad8593d34c82f6bca1eca53f1c8938d345d
 
 PYDISTUTILS_BUILD_TARGET=	build_ext
 PYDISTUTILS_BUILDARGS+=		--inplace

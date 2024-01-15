@@ -1,6 +1,3 @@
-# Created by: mi@aldan.algebra.com
-# $FreeBSD$
-
 PORTNAME=	cyr-rfx-${CYR_RFX_ENCODING}
 PORTVERSION=	1.1
 PORTREVISION=	5
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.bdfs.tgz
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Cyrillic X11 bitmap fonts from CYR-RFX project
+WWW=		https://www.inp.nsk.su/~bolkhov/files/fonts/cyr-rfx/00index.en.html
 
 BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
 		mkfontscale>=0:x11-fonts/mkfontscale

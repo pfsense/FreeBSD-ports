@@ -1,6 +1,3 @@
-# Created by: sec@42.org
-# $FreeBSD$
-
 PORTNAME=	tileworld
 PORTVERSION=	1.3.0
 PORTREVISION=	6
@@ -10,6 +7,7 @@ DISTNAME=	tworld-${PORTVERSION}
 
 MAINTAINER=	sec@42.org
 COMMENT=	Emulation of the game "Chip's Challenge"
+WWW=		https://www.muppetlabs.com/~breadbox/software/tworld/
 
 USE_SDL=	sdl
 GNU_CONFIGURE=	YES

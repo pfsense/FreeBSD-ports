@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ptx
 PORTVERSION=	0.0.20111212
 PORTREVISION=	2
@@ -10,10 +8,11 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S,0.0.,,}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Device driver for PT1/PT2 ISDB-S/T tuner cards
+WWW=		https://d.hatena.ne.jp/bsdaemon/20100429/1272556078
 
 LICENSE=	GPLv3
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc64 powerpc64le
 
 USES=		kmod shebangfix
 SHEBANG_FILES=	tools/recptx.pl

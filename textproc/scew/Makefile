@@ -1,6 +1,3 @@
-# Created by: Pietro Cerutti <gahr@gahr.ch>
-# $FreeBSD$
-
 PORTNAME=	scew
 PORTVERSION=	1.2.0
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple C Expat Wrapper
+WWW=		https://savannah.nongnu.org/projects/scew
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,11 +18,12 @@ CONFIGURE_ARGS=	enable_tests=yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+TEST_WRKSRC=	${WRKSRC}/tests
 
 OPTIONS_DEFINE=	TEST
 
 TEST_LIB_DEPENDS=	libcheck.so:devel/check
-TEST_VARS=		TEST_TARGET=check TEST_WRKSRC=${WRKSRC}/tests
+TEST_TEST_TARGET=	check
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/scew_print/scew_print ${STAGEDIR}${PREFIX}/bin/

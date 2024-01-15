@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	blind
 DISTVERSION=	1.1
 CATEGORIES=	multimedia
@@ -7,6 +5,7 @@ MASTER_SITES=	https://dl.suckless.org/tools/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Collection of command line video editing utilities
+WWW=		https://tools.suckless.org/blind/
 
 LICENSE=	ISC
 LICENSE_GROUPS=	FSF GPL OSI

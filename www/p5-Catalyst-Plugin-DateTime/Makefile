@@ -1,6 +1,3 @@
-# Created by: Mikhail T. <michael@fun-box.ru>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-DateTime
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DateTime support for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-DateTime
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

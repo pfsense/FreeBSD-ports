@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-InflateColumn-FS
 PORTVERSION=	0.01007
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to {in,de}flate columns to Path::Class::File objects
+WWW=		https://metacpan.org/release/DBIx-Class-InflateColumn-FS
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

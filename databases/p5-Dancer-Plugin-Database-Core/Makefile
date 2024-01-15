@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-Database-Core
 PORTVERSION=	0.20
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Shared core for D1 and D2 Database plugins
+WWW=		https://metacpan.org/release/Dancer-Plugin-Database-Core
 
 LICENSE=	ART20
 

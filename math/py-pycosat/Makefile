@@ -1,21 +1,19 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pycosat
 PORTVERSION=	0.6.3
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Bindings to PicoSAT (a SAT solver)
+WWW=		https://github.com/ContinuumIO/pycosat
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpicosat.so:math/picosat
 
-USES=		python:3.6+ zip
+USES=		python zip
 USE_PYTHON=	autoplist distutils
 
 PYDISTUTILS_BUILDARGS=	build_ext \

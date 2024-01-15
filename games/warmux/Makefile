@@ -1,6 +1,3 @@
-# Created by: Anton Yudin <toha@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	warmux
 DISTVERSION=	11.04.1
 PORTREVISION=	10
@@ -12,6 +9,7 @@ MASTER_SITES=	http://ftp.nluug.nl/ibiblio/distributions/slitaz/sources/packages-
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Turn-based artillery game with free software mascots
+WWW=		https://web.archive.org/web/20170513192248/http://gna.org/projects/warmux/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

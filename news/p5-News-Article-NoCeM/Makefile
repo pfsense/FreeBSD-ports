@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	News-Article-NoCeM
 PORTVERSION=	0.09
 CATEGORIES=	news perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Module to generate accurate NoCeM notices
+WWW=		https://metacpan.org/release/News-Article-NoCeM
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

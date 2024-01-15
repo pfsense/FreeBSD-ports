@@ -1,6 +1,3 @@
-# Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mancala
 PORTVERSION=	1.0.3
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	https://shh.thathost.com/pub-unix/files/
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Implementation of the simple board game called Mancala
+WWW=		https://shh.thathost.com/pub-unix
 
 LICENSE=	ART10
 

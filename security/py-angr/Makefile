@@ -1,15 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	angr
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${ANGR_VERSION}
+PORTREVISION=	2
 CATEGORIES=	security devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-PATCH_SITES=	https://github.com/angr/angr/commit/
-PATCHFILES=	44748a8e8a298dafc88c513c8ba5f716b3b90be2.patch:-p1
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-architecture binary analysis toolkit
+WWW=		https://github.com/angr/angr
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,12 +19,12 @@ LIB_DEPENDS=	libunicorn.so:emulators/unicorn \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ailment>=${ANGR_VERSION}:security/py-ailment@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cachetools>=0:devel/py-cachetools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}capstone>=3.0.5:devel/py-capstone@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cffi>=1.7.0:devel/py-cffi@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cffi>=1.14.0:devel/py-cffi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}claripy>=${ANGR_VERSION}:math/py-claripy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cle>=${ANGR_VERSION}:devel/py-cle@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cppheaderparser>=0:devel/py-cppheaderparser@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dpkt>=0:net/py-dpkt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}GitPython>=0:devel/py-gitpython@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gitpython>=0:devel/py-gitpython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}itanium_demangler>=0:devel/py-itanium_demangler@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mulpyplexer>=0:devel/py-mulpyplexer@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}networkx>=2.0:math/py-networkx@${PY_FLAVOR} \
@@ -42,9 +40,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ailment>=${ANGR_VERSION}:security/py-ailment
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}keystone-engine>=0:devel/py-keystone-engine@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
-USES=		gmake localbase:ldflags python:3.6+
+USES=		angr:binaries gmake localbase:ldflags python
 USE_GITHUB=	yes
-GH_TUPLE=	${PORTNAME}:binaries:${ANGR_BINARIES_TAGNAME}:binaries
 USE_PYTHON=	autoplist distutils
 
 TEST_ENV=	${MAKE_ENV} \
@@ -88,11 +85,7 @@ _NOSE_EXCLUDE=	(${_EXCLUDED_TESTS:S,  , ,g:S, ,|,gW})
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/lib/angr_native*.so
 
-pre-test:
-	@${LN} -Fs ${WRKSRC_binaries} ${WRKDIR}/binaries
-
 do-test:
 	@(cd ${WRKSRC}/tests && ${SETENV} ${TEST_ENV} nosetests-${PYTHON_VER} -v)
 
-.include "${.CURDIR}/Makefile.version"
 .include <bsd.port.mk>

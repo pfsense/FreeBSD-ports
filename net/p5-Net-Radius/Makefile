@@ -1,6 +1,3 @@
-# Created by: Kelly Yancey <kbyanc@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Radius
 PORTVERSION=	2.103
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to manipulate RADIUS packets
+WWW=		https://metacpan.org/release/Net-Radius
 
 TEST_DEPENDS=	p5-Test-Warn>=0:devel/p5-Test-Warn
 

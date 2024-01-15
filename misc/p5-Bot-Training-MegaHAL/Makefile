@@ -1,6 +1,3 @@
-# Created by: milki <milki@rescomp.berkeley.edu>
-# $FreeBSD$
-
 PORTNAME=	Bot-Training-MegaHAL
 PORTVERSION=	0.03
 CATEGORIES=	misc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Provide megahal.trn via Bot::Training
+WWW=		https://metacpan.org/release/Bot-Training-MegaHAL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

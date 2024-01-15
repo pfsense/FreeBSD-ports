@@ -1,24 +1,20 @@
---- chrome/browser/ui/browser_view_prefs.cc.orig	2020-11-13 06:36:38 UTC
+--- chrome/browser/ui/browser_view_prefs.cc.orig	2023-07-16 15:47:57 UTC
 +++ chrome/browser/ui/browser_view_prefs.cc
-@@ -26,7 +26,7 @@ namespace {
- // Old values: 0 = SHRINK (default), 1 = STACKED.
- const char kTabStripLayoutType[] = "tab_strip_layout_type";
+@@ -15,7 +15,7 @@
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
+ namespace {
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  bool GetCustomFramePrefDefault() {
- #if defined(USE_OZONE)
-   if (features::IsUsingOzonePlatform()) {
-@@ -51,10 +51,10 @@ void RegisterBrowserViewLocalPrefs(PrefRegistrySimple*
+ #if BUILDFLAG(IS_OZONE)
+   return ui::OzonePlatform::GetInstance()
+@@ -31,7 +31,7 @@ bool GetCustomFramePrefDefault() {
  
  void RegisterBrowserViewProfilePrefs(
      user_prefs::PrefRegistrySyncable* registry) {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    registry->RegisterBooleanPref(prefs::kUseCustomChromeFrame,
                                  GetCustomFramePrefDefault());
--#endif  // defined(OS_LINUX) && defined(!OS_CHROMEOS)
-+#endif  // (defined(OS_LINUX) || defined(OS_BSD)) && defined(!OS_CHROMEOS)
- }
- 
- void MigrateBrowserTabStripPrefs(PrefService* prefs) {
+ #endif

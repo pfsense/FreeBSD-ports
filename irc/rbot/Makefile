@@ -1,14 +1,12 @@
-# Created by: David Bushong <david+ports@bushong.net>
-# $FreeBSD$
-
 PORTNAME=	rbot
 PORTVERSION=	20160325
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	irc ruby
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ruby IRC bot similar to infobot
+WWW=		https://ruby-rbot.org/
 
 LICENSE=	GPLv2 MIT
 LICENSE_COMB=	dual
@@ -22,11 +20,11 @@ RUN_DEPENDS=	${RUBY_SITEARCHLIBDIR}/tokyocabinet.so:databases/ruby-tokyocabinet 
 		rubygem-mechanize>=0:www/rubygem-mechanize \
 		rubygem-tzinfo>=0:devel/rubygem-tzinfo \
 		rubygem-oauth>=0:net/rubygem-oauth \
-		rubygem-oauth2>=0:net/rubygem-oauth2
+		rubygem-oauth21>=0:net/rubygem-oauth21
 LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet
 
-USE_RUBY=	yes
-USE_RUBY_SETUP=	yes
+USES=		cpe ruby:setup
+
 CONFIGURE_ARGS=	--prefix=${PREFIX}
 NO_ARCH=	yes
 
@@ -37,6 +35,8 @@ GH_TAGNAME=	e358601cc521d8aced941eb928fae2d8c53cf0c2
 SUB_FILES=	pkg-message
 
 PORTDOCS=	REQUIREMENTS ChangeLog
+
+CPE_VENDOR=	ruby-rbot
 
 OPTIONS_DEFINE=	DOCS
 

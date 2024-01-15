@@ -1,22 +1,22 @@
-# Created by: Palle Girgensohn <girgen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pgmetrics
-PORTVERSION=	1.10.3
+PORTVERSION=	1.16.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	databases
 
 MAINTAINER=	girgen@FreeBSD.org
 COMMENT=	Collect and display info & stats from a running PostgreSQL server
+WWW=		https://pgmetrics.io/
 
 LICENSE=	APACHE20
 
 USES=		go:modules
 
-USE_GITHUB=	yes
+GO_MODULE=	github.com/rapidloop/pgmetrics
+#USE_GITHUB=	yes
 
-GH_ACCOUNT=	rapidloop
-GH_TUPLE=	\
+#GH_ACCOUNT=	rapidloop
+#GH_TUPLE=	\
 		aws:aws-sdk-go:v1.29.29:aws_aws_sdk_go/vendor/github.com/aws/aws-sdk-go \
 		dustin:go-humanize:bb3d318650d4:dustin_go_humanize/vendor/github.com/dustin/go-humanize \
 		golang:crypto:e9b2fee46413:golang_crypto/vendor/golang.org/x/crypto \

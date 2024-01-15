@@ -1,6 +1,3 @@
-# Created by: tundra
-# $FreeBSD$
-
 PORTNAME=	tdir
 PORTVERSION=	1.73
 CATEGORIES=	sysutils

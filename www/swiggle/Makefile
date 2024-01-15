@@ -1,15 +1,13 @@
-# Created by: Josef El-Rayes <j.el-rayes@daemon.li>
-# $FreeBSD$
-
 PORTNAME=	swiggle
 PORTVERSION=	0.4
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	www
 MASTER_SITES=	http://homepage.univie.ac.at/l.ertl/swiggle/files/ \
 		http://bsd-geek.de/FreeBSD/distfiles/
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line web image gallery generator
+WWW=		http://homepage.univie.ac.at/l.ertl/swiggle/
 
 LICENSE=	BSD4CLAUSE
 

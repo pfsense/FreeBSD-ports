@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	gmines
 PORTVERSION=	0.2
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	games gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	GMines-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Well-known minesweeper game for GNUstep
+WWW=		https://gap.nongnu.org/gmines/
 
 LICENSE=	GPLv2+
 

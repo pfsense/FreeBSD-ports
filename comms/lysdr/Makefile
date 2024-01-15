@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	lysdr
 PORTVERSION=	0.0.6
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Lysdr SDR program for Unix
+WWW=		https://github.com/gordonjcp/lysdr
 
 LICENSE=	GPLv2
 

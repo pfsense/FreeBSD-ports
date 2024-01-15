@@ -1,27 +1,24 @@
-# Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pioneers
-PORTVERSION=	15.5
-PORTREVISION=	2
+PORTVERSION=	15.6
+PORTREVISION=	4
 CATEGORIES=	games gnome
 MASTER_SITES=	SF/pio/Source
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Internet playable version of the Settlers of Catan
+WWW=		https://pio.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libavahi-common.so:net/avahi-app \
+		libcanberra.so:audio/libcanberra \
 		libnotify.so:devel/libnotify
 RUN_DEPENDS=	yelp:x11/yelp
 
 USES=		gettext gmake gnome pkgconfig
-USE_GNOME=	cairo gnomeprefix gtk30 intltool libgnome librsvg2
-INSTALLS_ICONS=	yes
-INSTALLS_OMF=	yes
+USE_GNOME=	cairo gnomeprefix gtk30 intltool librsvg2
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

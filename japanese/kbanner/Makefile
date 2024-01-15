@@ -1,6 +1,3 @@
-# Created by: sumikawa
-# $FreeBSD$
-
 PORTNAME=	kbanner
 PORTVERSION=	2.1
 PORTREVISION=	5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Displays large Japanese letters on the standard output
+WWW=		http://kanji.zinbun.kyoto-u.ac.jp/~yasuoka/program.html
 
 USES=		tar:Z
 ALL_TARGET=	kbanner

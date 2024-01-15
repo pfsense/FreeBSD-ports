@@ -1,19 +1,17 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fastdb
 PORTVERSION=	3.75
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Main Memory Relational Database Management System
+WWW=		https://sourceforge.net/projects/fastdb/
 
 LICENSE=	MIT
 
 USES=		gmake dos2unix
-USE_GCC=	any
+USE_GCC=	yes
 MAKE_ENV=	OSTYPE="${OPSYS}"
 MAKEFILE=	makefile
 USE_LDCONFIG=	yes

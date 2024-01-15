@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	POE-Filter-LZW
 PORTVERSION=	1.74
 CATEGORIES=	archivers perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE filter wrapped around Compress::LZW
+WWW=		https://metacpan.org/release/POE-Filter-LZW
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

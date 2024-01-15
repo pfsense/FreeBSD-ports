@@ -1,6 +1,3 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	XML-RAI
 PORTVERSION=	1.3031
 PORTEPOCH=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	RSS Abstraction Interface
+WWW=		https://metacpan.org/release/XML-RAI
 
 LICENSE=	ART10
 

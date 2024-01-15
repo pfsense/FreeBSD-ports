@@ -1,6 +1,3 @@
-# Created by: Mauricio Herrera Cuadra <mauricio@arareko.net>
-# $FreeBSD$
-
 PORTNAME=	Bio-ASN1-EntrezGene
 PORTVERSION=	1.73
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Regular expression-based Perl Parser for NCBI Entrez Gene
+WWW=		https://metacpan.org/release/Bio-ASN1-EntrezGene
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

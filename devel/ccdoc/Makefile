@@ -1,6 +1,3 @@
-# Created by: lonewolf@flame.org
-# $FreeBSD$
-
 PORTNAME=	ccdoc
 PORTVERSION=	0.8r41
 CATEGORIES=	devel textproc
@@ -10,6 +7,7 @@ DIST_SUBDIR=	ccdoc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extracting comments from C++ source and generating HTML
+WWW=		https://ccdoc.sourceforge.net/
 
 LICENSE=	MIT
 

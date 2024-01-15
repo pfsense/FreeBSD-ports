@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	rack-timeout
-PORTVERSION=	0.5.1
+PORTVERSION=	0.6.3
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Abort requests that are taking too long
+WWW=		https://github.com/heroku/rack-timeout
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

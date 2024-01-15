@@ -1,6 +1,3 @@
-# Created by: Shigeyuki FUKUSHIMA <shige@kuis.kyoto-u.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	skk-tools
 PORTVERSION=	1.3.3
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	skktools-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Jisyo-tools for the SKK Japanese-input software
+WWW=		http://openlab.ring.gr.jp/skk/
 
 LICENSE=	GPLv2
 

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	libpwquality
-DISTVERSION=	1.4.4
+DISTVERSION=	1.4.5
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Library for generating random passwords and quality checking
+WWW=		https://github.com/libpwquality/libpwquality
 
 LICENSE=	GPLv2+ LIBPWQUALITY
 LICENSE_COMB=	dual
@@ -16,9 +15,10 @@ LICENSE_PERMS_LIBPWQUALITY=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accep
 
 LIB_DEPENDS=	libcrack.so:security/cracklib
 
-USES=		gmake libtool localbase pathfix tar:bz2
+USES=		cpe gmake libtool localbase pathfix tar:bz2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+CPE_VENDOR=	libpwquality_project
 CONFIGURE_ARGS+=--disable-pam
 INSTALL_TARGET=	install-strip
 
@@ -28,8 +28,12 @@ OPTIONS_SUB=	yes
 NLS_USES=	gettext gnome
 NLS_USE=	GNOME=intltool
 NLS_CONFIGURE_ENABLE=	nls
-PYTHON_USES=	python
+PYTHON_USES=			python:build
+PYTHON_BUILD_DEPENDS=		${PY_SETUPTOOLS}
 PYTHON_CONFIGURE_ENABLE=	python-bindings
-PYTHON_CONFIGURE_ON=	--with-python-binary=${PYTHON_CMD}
+PYTHON_CONFIGURE_ON=		--with-python-binary=${PYTHON_CMD}
+
+post-install-PYTHON-on:
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pwquality*.so
 
 .include <bsd.port.mk>

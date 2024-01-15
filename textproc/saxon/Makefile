@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	saxon
 PORTVERSION=	6.5.5
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/./-/g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XSLT 1.0 processor for Java
+WWW=		https://saxon.sourceforge.net/
 
 LICENSE=	MPL10
 

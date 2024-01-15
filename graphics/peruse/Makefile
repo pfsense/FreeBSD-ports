@@ -1,23 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	peruse
-DISTVERSION=	1.2-186
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g4982089
+DISTVERSION=	1.80
+PORTREVISION=	2
 CATEGORIES=	graphics kde
+MASTER_SITES=	KDE/stable/${PORTNAME}/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Comic book viewer
+WWW=		https://peruse.kde.org/
 
 LICENSE=	LGPL21
 
-USES=		cmake compiler:c++11-lang pkgconfig kde:5 qt:5 tar:xz
-USE_GITHUB=	yes
-GH_ACCOUNT=	KDE
-USE_KDE=	archive baloo completion config coreaddons ecm filemetadata i18n \
-		iconthemes jobwidgets kdeclarative kio package service \
-		widgetsaddons
-USE_QT=		concurrent core dbus declarative gui network opengl sql widgets \
-		buildtools_build qmake_build
+USES=		cmake compiler:c++11-lang gl kde:5 pkgconfig qt:5 tar:xz xorg
+USE_GL=		gl
+USE_KDE=	archive attica baloo completion config coreaddons crash \
+		filemetadata guiaddons i18n iconthemes jobwidgets kdeclarative \
+		kio newstuff package service solid widgetsaddons windowsystem \
+		ecm:build
+USE_QT=		concurrent core dbus declarative gui network opengl sql \
+		widgets xml \
+		buildtools:build qmake:build
+USE_XORG=	x11
 
 .include <bsd.port.mk>

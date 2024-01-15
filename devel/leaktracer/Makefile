@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
-
 PORTNAME=	leaktracer
 PORTVERSION=	2.4
 CATEGORIES=	devel
@@ -10,6 +7,7 @@ DISTNAME=	LeakTracer
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Trace and analyze memory leaks in C++ programs
+WWW=		https://www.andreasen.org/LeakTracer/
 
 LICENSE=	PD
 

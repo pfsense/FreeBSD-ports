@@ -1,20 +1,20 @@
-# Created by: Hugo Leisink
-# $FreeBSD$
-
 PORTNAME=	hiawatha
-PORTVERSION=	10.11
+PORTVERSION=	11.2
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://www.hiawatha-webserver.org/files/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Advanced and secure webserver for Unix
+MAINTAINER=	johntdarrah@gmail.com
+COMMENT=	Advanced and secure web server for Unix
+WWW=		https://www.hiawatha-webserver.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libmbedtls.so:security/mbedtls
 
-USES=		cmake:insource compiler:c11 localbase:ldflags shebangfix
+USES=		cmake:insource compiler:c11 cpe localbase:ldflags shebangfix
+CPE_VENDOR=	${PORTNAME}-webserver
 USE_RC_SUBR=	hiawatha
 SHEBANG_FILES=	extra/letsencrypt/lefh.in
 
@@ -59,8 +59,8 @@ post-patch:
 		${WRKSRC}/man/hiawatha.1.in
 
 post-install:
-.for f in hiawatha.conf mimetype.conf cgi-wrapper.conf toolkit.conf \
-	error.xslt index.xslt
+.for f in hiawatha.conf mimetype.conf cgi-wrapper.conf toolkit.conf error.xslt \
+	index.xslt
 	${INSTALL_DATA} ${WRKSRC}/config/${f} \
 		${STAGEDIR}${PREFIX}/etc/hiawatha/${f}.sample
 .endfor

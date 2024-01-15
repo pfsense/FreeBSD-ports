@@ -1,10 +1,7 @@
-# Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	managesieve
-PORTREVISION=	0
 
 COMMENT=	Sieve filters manager for Claws Mail
+WWW=		https://www.claws-mail.org/plugin.php?plugin=managesieve
 
 CLAWS_PLUGINS_BUILD=	${PORTNAME}
 

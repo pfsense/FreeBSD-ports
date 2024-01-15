@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Thrift-XS
 PORTVERSION=	1.04
 PORTREVISION=	2
@@ -11,6 +8,9 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Faster Thrift binary protocol encoding and decoding
+WWW=		https://metacpan.org/release/Thrift-XS
+
+LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Bit-Vector>=0:math/p5-Bit-Vector \
@@ -22,8 +22,8 @@ TEST_DEPENDS=	p5-Proc-ProcessTable>=0:devel/p5-Proc-ProcessTable \
 		p5-Test-Pod>=1.14:devel/p5-Test-Pod \
 		p5-Test-Pod-Coverage>=1.04:devel/p5-Test-Pod-Coverage
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Thrift/XS/XS.so

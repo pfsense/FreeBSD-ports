@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Pegex
 PORTVERSION=	0.75
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Acmeist PEG Parser Framework
+WWW=		https://metacpan.org/release/Pegex
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

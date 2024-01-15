@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	passage
 PORTVERSION=	4
 PORTREVISION=	7
@@ -10,6 +7,7 @@ DISTNAME=	Passage_v${PORTVERSION}_UnixSource
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Experimental video game by Jason Rohrer
+WWW=		https://hcsoftware.sourceforge.net/passage/
 
 USES=		sdl
 USE_SDL=	sdl

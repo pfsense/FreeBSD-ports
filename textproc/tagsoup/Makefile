@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tagsoup
 PORTVERSION=	1.2.1
 PORTREVISION=	1
@@ -9,6 +7,7 @@ EXTRACT_SUFX=	.jar
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	SAX-compliant parser written in Java
+WWW=		http://vrici.lojban.org/~cowan/XML/tagsoup
 
 LICENSE=	APACHE20
 

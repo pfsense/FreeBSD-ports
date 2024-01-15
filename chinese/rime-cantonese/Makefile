@@ -1,20 +1,16 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-cantonese
-DISTVERSION=	g20201212
+DISTVERSION=	g20211029
 PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Rime Cantonese (Jyutping) schema support
+WWW=		https://github.com/rime/rime-cantonese
 
 LICENSE=		CC-BY-4.0 ODbL
 LICENSE_COMB=		multi
-LICENSE_NAME_ODbL=	Open Database License
 LICENSE_FILE_CC-BY-4.0=	${WRKSRC}/LICENSE-CC-BY
 LICENSE_FILE_ODbL=	${WRKSRC}/LICENSE-ODbL
-LICENSE_PERMS_ODbL=	dist-mirror dist-sell auto-accept
 
 BUILD_DEPENDS=	\
 		rime_deployer:chinese/librime \
@@ -29,7 +25,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
-GH_TAGNAME=	99785a30d1f3bffef4142bbc7b73435a73a16cb1
+GH_TAGNAME=	5b6d334a878af8cdb180bb48408fae7cf839da1c
 
 NO_ARCH=	yes
 

@@ -1,6 +1,3 @@
-# Created by: Sam Lawrance <boris@brooknet.com.au>
-# $FreeBSD$
-
 PORTNAME=	libmimedir
 PORTVERSION=	0.5.1
 PORTREVISION=	2
@@ -13,7 +10,8 @@ COMMENT=	Library for parsing RFC2425 MIME Directory Profile information
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		desthack libtool
+USES=		cpe desthack libtool
+CPE_VENDOR=	${PORTNAME}_project
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	YACC=byacc
 USE_LDCONFIG=	yes

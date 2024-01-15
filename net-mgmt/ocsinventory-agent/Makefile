@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	ocsinventory
-PORTVERSION=	2.8
+PORTVERSION=	2.10.0
+DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 PKGNAMESUFFIX=	-agent
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Keep track of the computers configuration and software
+WWW=		https://www.ocsinventory-ng.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -52,10 +52,10 @@ SNMP_RUN_DEPENDS=	nmap:security/nmap \
 			p5-Net-SNMP>=0:net-mgmt/p5-Net-SNMP \
 			p5-Nmap-Parser>=0:security/p5-Nmap-Parser
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
-.if ${ARCH} == amd64 || ${ARCH} == i386
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == riscv64 || ${ARCH} == riscv64sf
 RUN_DEPENDS+=	dmidecode:sysutils/dmidecode
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

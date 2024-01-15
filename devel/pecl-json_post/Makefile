@@ -1,17 +1,14 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	json_post
-PORTVERSION=	1.0.2
+PORTVERSION=	1.1.0
 CATEGORIES=	devel
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	JSON POST handler in PHP
+WWW=		https://pecl.php.net/package/json_post
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		php:pecl
-USE_PHP=	json:build
+USES=		php:build,pecl
 
 .include <bsd.port.mk>

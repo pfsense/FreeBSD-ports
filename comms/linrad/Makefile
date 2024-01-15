@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	linrad
 PORTVERSION=	4.02
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.nitehawk.com/sm5bsz/linuxdsp/archive/\
 		http://www.sm5bsz.com/linuxdsp/archive/
@@ -10,6 +8,7 @@ DISTNAME=	lir04-02
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio DSP utility (SDR)
+WWW=		https://www.nitehawk.com/sm5bsz/linuxdsp/linrad.htm
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,7 +19,6 @@ BROKEN_armv7=		fails to configure: cannot find /nxb-bin/usr/bin/cc
 BROKEN_powerpc64=	fails to compile: implicit declaration of function outb
 BROKEN_powerpc64le=	fails to compile: implicit declaration of function outb
 BROKEN_riscv64=		fails to build: gmake: No rule to make target 'Makefile'
-BROKEN_sparc64=		fails to compile: implicit declaration of function outb
 
 LIB_DEPENDS=	librtlsdr.so:comms/rtl-sdr \
 		libportaudio.so:audio/portaudio \
@@ -52,18 +50,14 @@ BINFILE=	xlinrad64
 ALL_TARGET=	${BINFILE}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}/|' \
-		${WRKSRC}/help.c
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}/|' \
-		${WRKSRC}/libfind1.c
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}/|' \
+		${WRKSRC}/libfind1.c ${WRKSRC}/help.c
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/errors.lir ${STAGEDIR}${DATADIR}/errors.lir
 	${INSTALL_DATA} ${WRKSRC}/help.lir ${STAGEDIR}${DATADIR}/help.lir
 	${INSTALL_SCRIPT} -m0555 ${FILESDIR}/linrad ${STAGEDIR}${PREFIX}/bin/linrad
-# Some day we may want the svga version as well.
-#	${INSTALL_PROGRAM} -m0555 ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}.svga
 	${INSTALL_PROGRAM} -m0555 ${WRKSRC}/${BINFILE} ${STAGEDIR}${PREFIX}/bin/x${PORTNAME}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${LINRAD_DOCFILES}

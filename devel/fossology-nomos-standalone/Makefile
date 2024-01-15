@@ -1,19 +1,14 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fossology
-PORTVERSION=	3.9.0
+PORTVERSION=	4.2.1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-nomos-standalone
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Standalone Nomos license scanner from fossology project
+WWW=		https://www.fossology.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_13=	ld: error: duplicate symbol: dbErrString
-BROKEN_FreeBSD_14=	ld: error: duplicate symbol: dbErrString
 
 BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libjson-c.so:devel/json-c
@@ -32,5 +27,8 @@ PLIST_FILES=	bin/nomossa
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/nomos/agent/nomossa ${STAGEDIR}${PREFIX}/bin
+
+do-test:
+	@${STAGEDIR}${PREFIX}/bin/nomossa ${WRKSRC}/src/nomos/agent/nomos.c | ${GREP} GPL-2.0
 
 .include <bsd.port.mk>

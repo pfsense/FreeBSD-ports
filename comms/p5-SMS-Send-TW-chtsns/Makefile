@@ -1,6 +1,3 @@
-# Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	SMS-Send-TW-chtsns
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw
 COMMENT=	SMS::Send driver for SNS service of CHT
+WWW=		https://metacpan.org/release/SMS-Send-TW-chtsns
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-SMS-Send>=0:comms/p5-SMS-Send \

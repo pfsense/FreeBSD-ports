@@ -1,6 +1,3 @@
-# Created by: Shigeyuki FUKUSHIMA <shige@kuis.kyoto-u.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	skkserv
 PORTVERSION=	9.6
 PORTREVISION=	6
@@ -10,6 +7,7 @@ DISTNAME=	skk${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Dictionary server for the SKK Japanese-input software
+WWW=		http://openlab.ring.gr.jp/skk/index.html
 
 RUN_DEPENDS=	${LOCALBASE}/share/skk/${SKKJISYO}:japanese/skk-jisyo
 

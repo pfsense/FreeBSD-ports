@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	multimedia
 
@@ -12,9 +10,8 @@ SMOOTH_GST_DIRS=	gst-libs/gst/isoff
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
 
-pre-build:
-.for dir in ${SMOOTH_GST_DIRS}
-	@(cd ${BUILD_WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET})
-.endfor
+PLIST=  ${.CURDIR}/pkg-plist
+
+USE_GNOME=  libxml2
 
 .include "${MASTERDIR}/Makefile"

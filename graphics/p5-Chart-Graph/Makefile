@@ -1,15 +1,13 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Chart-Graph
 PORTVERSION=	3.2
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl extension for a front-end to gnuplot, XRT, and Xmgrace
+WWW=		https://metacpan.org/release/Chart-Graph
 
 LICENSE=	GPLv2
 

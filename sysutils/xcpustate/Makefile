@@ -1,6 +1,3 @@
-# Created by: David O'Brien <obrien@cs.ucdavis.edu>
-# $FreeBSD$
-
 PORTNAME=	xcpustate
 PORTVERSION=	2.9
 PORTREVISION=	3
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.shar
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	System monitoring utility graphically showing cpu load and status
+WWW=		https://www.cs.toronto.edu/~jdd/
 
 EXTRACT_CMD=	${SH}
 EXTRACT_BEFORE_ARGS=	# none

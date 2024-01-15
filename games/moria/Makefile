@@ -1,6 +1,3 @@
-# Created by: glewis@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	moria
 PORTVERSION=	5.5.2
 CATEGORIES=	games
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Dungeon exploration game
+WWW=		http://remarque.org/~grabiner/moria.html
 
 USES=		alias ncurses
 WRKSRC=		${WRKDIR}/umoria

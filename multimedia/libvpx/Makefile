@@ -1,13 +1,11 @@
-# Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libvpx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.0
+DISTVERSION=	1.13.1
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	VP8/VP9 reference encoder/decoder
+WWW=		https://www.webmproject.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	webmproject
 
 USES=		compiler:c++11-lib cpe gmake perl5 shebangfix
-CPE_VENDOR=	john_koleszar
+CPE_VENDOR=	webmproject
 HAS_CONFIGURE=	yes
 USE_PERL5=	build
 USE_LDCONFIG=	yes

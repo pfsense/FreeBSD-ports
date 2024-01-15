@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	delatt
 DISTVERSION=	1.1.3
 PORTREVISION=	1

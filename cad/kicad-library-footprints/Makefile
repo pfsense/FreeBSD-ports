@@ -1,15 +1,14 @@
-# Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kicad
-PORTVERSION=	5.1.9
+PORTVERSION=	7.0.2
+PORTREVISION=	2
 CATEGORIES=	cad
-MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-footprints/-/archive/${DISTVERSION}/
+MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-footprints/-/archive/${DISTVERSION}${DISTVERSIONSUFFIX}/
 PKGNAMESUFFIX=	-library-footprints
-DISTNAME=	${PORTNAME}-footprints-${DISTVERSION}
+DISTNAME=	${PORTNAME}-footprints-${DISTVERSION}${DISTVERSIONSUFFIX}
 
 MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Official KiCad Footprint Libraries
+WWW=		https://gitlab.com/kicad/libraries/kicad-footprints
 
 LICENSE=	GPLv2
 
@@ -17,7 +16,7 @@ RUN_DEPENDS=	kicad:cad/kicad
 
 USES=		cmake tar:bz2
 
-CONFLICTS=	kicad-devel-r2*
+CONFLICTS_INSTALL=	kicad-library-footprints-devel # share/kicad/footprints/Audio_Module.pretty/Reverb_BTDR-1H.kicad_mod
 
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Release" \

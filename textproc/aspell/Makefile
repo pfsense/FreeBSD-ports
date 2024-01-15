@@ -1,14 +1,12 @@
-# Created by: Josh Gilliam <josh@quick.net>
-# $FreeBSD$
-
 PORTNAME=	aspell
-PORTVERSION=	0.60.8
+PORTVERSION=	0.60.8.1
 PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	GNU/aspell
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Spelling checker with better suggestion logic than ispell
+WWW=		http://aspell.net/
 
 LICENSE=	LGPL21
 
@@ -20,7 +18,7 @@ OPTIONS_SUB=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-dict-dir=${DATADIR}	\
 		--enable-docdir=${DOCSDIR}	\
-		--enable-curses=${NCURSES_IMPL} \
+		--enable-curses="${NCURSESLIBS}" \
 		--enable-static
 
 USE_LDCONFIG=	yes
@@ -28,7 +26,7 @@ SHEBANG_FILES=	scripts/aspell-import
 CPE_VENDOR=	gnu
 
 INSTALL_TARGET=	install-strip
-VERINST=	${PORTVERSION:R}
+VERINST=	${PORTVERSION:R:R}
 SUB_FILES=	aspell.ver
 PLIST_SUB=	VER=${VERINST}
 SUB_LIST=	VERINST=${VERINST}

@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	mupen64plus-qt
 DISTVERSION=	1.14
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	emulators
 
 MAINTAINER=	maintainer@hasting.email
 COMMENT=	Basic launcher for Mupen64Plus
+WWW=		https://github.com/dh4/mupen64plus-qt
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libquazip1-qt5.so:archivers/quazip
+LIB_DEPENDS=	libquazip1-qt5.so:archivers/quazip@qt5
 RUN_DEPENDS=	${LOCALBASE}/lib/libmupen64plus.so.2:emulators/mupen64plus-core \
 		${LOCALBASE}/lib/mupen64plus/mupen64plus-audio-sdl.so:emulators/mupen64plus-audio-sdl \
 		${LOCALBASE}/lib/mupen64plus/mupen64plus-input-sdl.so:emulators/mupen64plus-input-sdl \
@@ -22,8 +21,8 @@ RUN_DEPENDS=	${LOCALBASE}/lib/libmupen64plus.so.2:emulators/mupen64plus-core \
 USES=		gl pkgconfig qmake qt:5
 USE_GL=		gl
 USE_QT=		core gui network sql widgets xml \
-		buildtools_build \
-		sql-sqlite3_run
+		buildtools:build \
+		sql-sqlite3:run
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dh4

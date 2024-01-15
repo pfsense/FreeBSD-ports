@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	acme-tiny
 DISTVERSION=	4.1.0
 CATEGORIES=	security python
 
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Tiny script to issue and renew TLS certs from Let's Encrypt
+WWW=		https://github.com/diafygi/acme-tiny
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

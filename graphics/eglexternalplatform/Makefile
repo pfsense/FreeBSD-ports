@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	eglexternalplatform
 DISTVERSION=	1.1
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	EGL External Platform interface
+WWW=		https://github.com/NVIDIA/eglexternalplatform
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

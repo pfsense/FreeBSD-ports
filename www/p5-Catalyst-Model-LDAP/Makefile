@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Model-LDAP
 PORTVERSION=	0.21
 CATEGORIES=	www perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	LDAP model class for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Model-LDAP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

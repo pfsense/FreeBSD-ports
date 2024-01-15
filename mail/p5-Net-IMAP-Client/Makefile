@@ -1,15 +1,12 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Net-IMAP-Client
-PORTVERSION=	0.9505
-PORTREVISION=	1
+PORTVERSION=	0.9507
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Not so simple IMAP client library
+WWW=		https://metacpan.org/release/Net-IMAP-Client
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,5 +17,7 @@ RUN_DEPENDS=	p5-IO-Socket-SSL>=0:security/p5-IO-Socket-SSL \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

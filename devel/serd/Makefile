@@ -1,25 +1,22 @@
-# Created by: meka
-# $FreeBSD$
-
 PORTNAME=	serd
-PORTVERSION=	0.30.6
+DISTVERSION=	0.32.0
 CATEGORIES=	devel
 MASTER_SITES=	http://download.drobilla.net/
 
 MAINTAINER=	meka@tilda.center
 COMMENT=	C library for RDF syntax
+WWW=		https://drobilla.net/software/serd.html
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig tar:bzip2 waf
+USES=		meson pkgconfig python:test tar:xz
 USE_CSTD=	c99
 USE_LDCONFIG=	yes
+MESON_ARGS=	-Ddocs=disabled
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/serdi
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 .include <bsd.port.mk>

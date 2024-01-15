@@ -1,14 +1,12 @@
-# Created by: Anders Nordby <anders@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pwman
 DISTVERSION=	0.4.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console password management application based on gpg(me)
+WWW=		https://pwman.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Kapil Chowksey <kchowksey@hss.hns.com>
-# $FreeBSD$
-
 PORTNAME=	gindent
 DISTVERSION=	2.2.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	indent-${DISTVERSION}
 
 MAINTAINER=	moritz@schmi.tt
 COMMENT=	C source code reformatter
+WWW=		https://www.gnu.org/software/indent/indent.html
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

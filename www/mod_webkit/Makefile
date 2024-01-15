@@ -1,12 +1,10 @@
-# Created by: Choe, Cheng-Dae
-# $FreeBSD$
-
 PORTNAME=	mod_webkit
 PORTVERSION=	1.2.3
 CATEGORIES=	www
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Apache module for WebWare WebKit AppServer
+WWW=		https://cito.github.io/w4py/
 
 LICENSE=	PSFL
 
@@ -14,7 +12,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Cito
 GH_PROJECT=	w4py
 
-USES=		apache:2.4+
+USES=		apache
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 AP_EXTRAS=	marshal.c

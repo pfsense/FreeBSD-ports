@@ -1,20 +1,18 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdoc
-PORTVERSION=	1.0.0
+PORTVERSION=	2.6.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Create rdoc html with javascript search index
+WWW=		https://github.com/zzak/sdoc
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-rdoc>=5.0:devel/rubygem-rdoc
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

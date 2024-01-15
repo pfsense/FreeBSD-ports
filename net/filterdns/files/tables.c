@@ -2,7 +2,7 @@
  * tables.c
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ static int pf_tableentry(struct action *, struct sockaddr *, int);
 static int
 table_entry(struct action *act, struct _addr_entry *addr, int action)
 {
-	int error;
+	int error = 0;
 
 	switch (act->type) {
 	case IPFW_TYPE:
@@ -79,7 +79,7 @@ int
 table_update(struct action *act)
 {
 	char buffer[INET6_ADDRSTRLEN];
-	int add, del, error;
+	int add = 0, del = 0, error = 0;
 	struct _addr_entry *ent, *enttmp;
 
 	TAILQ_FOREACH(ent, &act->tbl_rnh, entry) {
@@ -94,7 +94,6 @@ table_update(struct action *act)
 		    (ent->flags & ADDR_STATIC));
 	}
 
-	error = 0;
 	TAILQ_FOREACH_SAFE(ent, &act->tbl_rnh, entry,
 	    enttmp) {
 		add = del = 0;
@@ -105,7 +104,6 @@ table_update(struct action *act)
 		}
 		if (ent->flags & ADDR_OLD) {
 			error = table_del(act, ent);
-			addr_del(&act->tbl_rnh, NULL, ent);
 			del++;
 		}
 		if (debug >= 4 && (add > 0 || del > 0)) {
@@ -118,24 +116,30 @@ table_update(struct action *act)
 				inet_ntop(ent->addr->sa_family,
 				    &satosin6(ent->addr)->sin6_addr.s6_addr,
 				    buffer, sizeof(buffer));
-			if (add > 0 && error == EEXIST)
-				syslog(LOG_WARNING,
-				    "\t\t%s %s address, table: %s host: %s address: %s",
+			if (add > 0 && error == EEXIST) {
+				LOG(LOG_WARNING,
+				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s",
 				    "Already exist",
-				    action_to_string(act->type), act->tablename,
+				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer);
-			else if (error != 0)
-				syslog(LOG_WARNING,
-				    "\t\t%s %s address, table: %s host: %s address: %s error: %d",
+			} else if (error != 0) {
+				LOG(LOG_WARNING,
+				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s error: %d",
 				    ((add > 0) ? "FAILED to add" : "FAILED to remove"),
-				    action_to_string(act->type), act->tablename,
+				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer, error);
-			else
-				syslog(LOG_WARNING,
-				    "\t\t%s %s address, table: %s host: %s address: %s",
+			} else {
+				LOG(LOG_WARNING,
+				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s",
 				    ((add > 0) ? "Added" : "Removed"),
-				    action_to_string(act->type), act->tablename,
+				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer);
+			}
+		}
+		/* deletion of addr from tbl_rnh is delayed so ent is still
+		 * valid for logging above */
+		if (del > 0) {
+			addr_del(&act->tbl_rnh, NULL, ent);
 		}
 	}
 
@@ -145,10 +149,9 @@ table_update(struct action *act)
 int
 table_cleanup(struct action *act)
 {
-	int error;
+	int error = 0;
 	struct _addr_entry *ent, *enttmp;
 
-	error = 0;
 	TAILQ_FOREACH_SAFE(ent, &act->tbl_rnh, entry, enttmp) {
 		error = table_del(act, ent);
 		addr_del(&act->tbl_rnh, NULL, ent);
@@ -162,7 +165,7 @@ table_do_create(int s, ipfw_obj_header *oh, int pipe)
 {
 	char tbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_xtable_info)];
 	ipfw_xtable_info xi;
-	int error;
+	int error = 0;
 
 	memset(&xi, 0, sizeof(xi));
 	xi.type = IPFW_TABLE_ADDR;
@@ -222,7 +225,7 @@ ipfw_tableentry(struct action *act, struct sockaddr *addr, int action)
 {
 	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_ctlv) +
 	    sizeof(ipfw_obj_tentry)];
-	int error, retry;
+	int error = 0, retry = 0;
 	ipfw_obj_ctlv *ctlv;
 	ipfw_obj_header *oh;
 	ipfw_obj_ntlv *ntlv;
@@ -234,9 +237,6 @@ ipfw_tableentry(struct action *act, struct sockaddr *addr, int action)
 
 	retry = 3;
 	while (retry-- > 0) {
-
-		error = 0;
-
 		/* XXX - the socket will remain open between calls. */
 		if (s == -1)
 			s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
@@ -345,7 +345,7 @@ set_ipmask(struct in6_addr *h, int b)
 }
 
 static int
-pf_table_create(int dev, const char *tablename)
+pf_table_create(int dev, const char *anchor, const char *tablename)
 {
 	struct pfioc_table io;
 	struct pfr_table table;
@@ -354,10 +354,20 @@ pf_table_create(int dev, const char *tablename)
 	if (strlcpy(table.pfrt_name, tablename,
 	    sizeof(table.pfrt_name)) >= sizeof(table.pfrt_name)) {
 		if (debug >= 1)
-			syslog(LOG_WARNING, "%s: could not set table name: %s",
+			LOG(LOG_WARNING, "%s: could not set table name: %s",
 			    __func__, tablename);
 		return (-1);
 	}
+	if (anchor != NULL) {
+		if (strlcpy(table.pfrt_anchor, anchor,
+		    sizeof(table.pfrt_anchor)) >= sizeof(table.pfrt_anchor)) {
+			if (debug >= 1)
+				LOG(LOG_WARNING, "%s: could not set anchor: %s",
+				    __func__, anchor);
+			return (-1);
+		}
+	}
+
 	table.pfrt_flags |= PFR_TFLAG_PERSIST;
 
 	memset(&io, 0, sizeof(io));
@@ -376,7 +386,7 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 	struct pfioc_table io;
 	struct pfr_table table;
 	struct pfr_addr pfaddr;
-	int error, retry;
+	int error = 0, retry = 3;
 	static int dev = -1;
 	unsigned long iocmd;
 
@@ -387,9 +397,18 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 	if (strlcpy(table.pfrt_name, act->tablename,
 	    sizeof(table.pfrt_name)) >= sizeof(table.pfrt_name)) {
 		if (debug >= 1)
-			syslog(LOG_WARNING, "%s: could not set table name: %s",
+			LOG(LOG_WARNING, "%s: could not set table name: %s",
 			    __func__, act->tablename);
 		return (-1);
+	}
+	if (act->anchor != NULL) {
+		if (strlcpy(table.pfrt_anchor, act->anchor,
+			sizeof(table.pfrt_anchor)) >= sizeof(table.pfrt_anchor)) {
+			if (debug >= 1)
+				LOG(LOG_WARNING, "%s: could not set anchor: %s",
+					__func__, act->anchor);
+			return (-1);
+		}
 	}
 
 	bzero(&pfaddr, sizeof(pfaddr));
@@ -410,7 +429,6 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 	} else
 		return (-1);
 
-	retry = 3;
 	while (retry-- > 0) {
 
 		/* XXX - the fd will remain open between calls. */
@@ -423,7 +441,7 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 
 		if (ACTION_IS_ADD(action)) {
 			/* Create the Table if it does not exist. */
-			error = pf_table_create(dev, act->tablename);
+			error = pf_table_create(dev, act->anchor, act->tablename);
 			if (error != 0)
 				continue;
 		}

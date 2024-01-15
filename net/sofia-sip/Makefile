@@ -1,20 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	sofia-sip
-PORTVERSION=	1.12.11
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.13.17
 CATEGORIES=	net
-MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jailbird@fdf.net
 COMMENT=	Open-source SIP User-Agent library
+WWW=		https://github.com/freeswitch/sofia-sip/
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		autoreconf gmake gnome libtool pathfix pkgconfig ssl
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	freeswitch
+
+USE_GNOME=	glib20
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+
 INSTALL_TARGET=	install-strip
-# Looks like GNU make(1) is needed for parallel (-jX) builds to work
-USES=		gmake gnome libtool pathfix pkgconfig ssl
-USE_GNOME=	glib20
+
+PLIST_SUB+=	VER=${DISTVERSION:R}
 
 .include <bsd.port.mk>

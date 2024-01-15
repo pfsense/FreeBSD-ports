@@ -1,6 +1,3 @@
-# Created by: Nick Hilliard
-# $FreeBSD$
-
 PORTNAME=	netdot
 PORTVERSION=	1.0.7
 DISTVERSIONPREFIX=	${PORTNAME}-
@@ -9,6 +6,7 @@ CATEGORIES=	net-mgmt
 
 MAINTAINER=	nick@foobar.org
 COMMENT=	Open source tool to organize and maintain network information
+WWW=		https://github.com/cvicente/Netdot/
 
 LICENSE=	GPLv2
 

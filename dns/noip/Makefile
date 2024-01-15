@@ -1,6 +1,3 @@
-# Created by: Eyal Soha <esoha@attbi.com>
-# $FreeBSD$
-
 PORTNAME=	noip
 PORTVERSION=	2.1.9
 PORTREVISION=	4
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.no-ip.com/client/linux/ \
 
 MAINTAINER=	sthalik@tehran.lain.pl
 COMMENT=	No-IP.com's dynamic DNS update client
+WWW=		https://www.No-IP.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

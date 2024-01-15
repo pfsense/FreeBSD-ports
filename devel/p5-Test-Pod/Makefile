@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	Test-Pod
 PORTVERSION=	1.52
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Check for POD errors in files
+WWW=		https://metacpan.org/release/Test-Pod
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

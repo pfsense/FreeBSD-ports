@@ -1,7 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#    $MCom: ports-stable/textproc/hyperestraier/Makefile,v 1.3 2006/10/17 11:45:45 ahze Exp $
-
 PORTNAME=	hyperestraier
 PORTVERSION=	1.4.13
 PORTREVISION=	3
@@ -10,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search system
+WWW=		https://hyperestraier.sourceforge.net/
 
 BUILD_DEPENDS=	qdbm>=1.8.77:databases/qdbm
 # check configure for min version of qdbm.

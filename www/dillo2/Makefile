@@ -1,19 +1,17 @@
-# Created by: bf <bf2006a@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	dillo
 PORTVERSION=	3.0.5
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://www.dillo.org/download/ \
 		LOCAL/bf/dillo/ \
-		TEX_CTAN/language/hyph-utf8/tex/generic/hyph-utf8/patterns/txt/:hyphen
+		TEX/language/hyph-utf8/tex/generic/hyph-utf8/patterns/txt/:hyphen
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Fast, small graphical Web browser built upon fltk
+WWW=		https://www.dillo.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	wget:ftp/wget
 
-USES=		gmake iconv pkgconfig tar:bzip2 xorg
+USES=		cpe gmake iconv pkgconfig tar:bzip2 xorg
 USE_XORG=	x11 xcursor xext xfixes xft xinerama xrender
 
 GNU_CONFIGURE=	yes
@@ -38,7 +36,7 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=		COOKIES DEBUG DOCS HYPHENATION IPV6 JPEG PNG SSL \
 			THREADS
-OPTIONS_DEFAULT=	COOKIES HYPHENATION IPV6 JPEG PNG SSL THREADS
+OPTIONS_DEFAULT=	COOKIES IPV6 JPEG PNG SSL THREADS
 
 COOKIES_DESC=		Cookie support
 HYPHENATION_DESC=	Hyphenation file(s) for HYPHENATION_LANGS
@@ -65,6 +63,7 @@ THREADS_CONFIGURE_ENABLE=	threaded-dns
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MHYPHENATION}
+BROKEN=		HYPHENATION master sites no longer available
 ALL_HYPHENATION_LANGS=	af as bg bn ca cop cs cy da de-1901 de-1996 de-ch-1901 \
 			el-monoton el-polyton en-gb en-us eo es et eu fi fr fur \
 			ga gl grc gu hi hr hsb hu hy ia id is it ka kmr kn la \

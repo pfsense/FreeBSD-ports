@@ -1,25 +1,21 @@
-# Created by: Loïc BARTOLETTI
-# $FreeBSD$
-
 PORTNAME=	pgmodeler
-PORTVERSION=	0.9.3
+PORTVERSION=	1.0.6
 DISTVERSIONPREFIX=	v
-DISTVERSIONSUFFIX=	-beta
 CATEGORIES=	databases
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	PostgreSQL Database Modeler
+WWW=		http://pgmodeler.com.br/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c++11-lib gl gmake gnome pgsql pkgconfig qmake qt:5 \
+USES=		compiler:c++11-lib gl gmake gnome pgsql pkgconfig qmake qt:6 \
 		xorg
 USE_GITHUB=	yes
 USE_GNOME=	libxml2
 USE_GL=		gl
-USE_QT=		core gui network printsupport sql svg widgets testlib uitools \
-		buildtools_build 
+USE_QT=		base svg tools
 USE_XORG=	x11 xext
 
 USE_LDCONFIG=	yes

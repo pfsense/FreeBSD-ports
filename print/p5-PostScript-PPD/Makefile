@@ -1,14 +1,12 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PostScript-PPD
-PORTVERSION=	0.0300
+PORTVERSION=	0.0402
 CATEGORIES=	print perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Read PostScript Printer Definition files
+WWW=		https://metacpan.org/release/PostScript-PPD
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

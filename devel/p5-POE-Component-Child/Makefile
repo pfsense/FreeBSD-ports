@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Child
 PORTVERSION=	1.39
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE child management
+WWW=		https://metacpan.org/release/POE-Component-Child
 
 BUILD_DEPENDS=	p5-POE>=0:devel/p5-POE
 RUN_DEPENDS=	p5-POE>=0:devel/p5-POE

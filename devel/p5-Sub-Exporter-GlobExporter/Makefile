@@ -1,6 +1,3 @@
-# Created by: Geraud CONTINSOUZAS <geraud@gcu.info>
-# $FreeBSD$
-
 PORTNAME=	Sub-Exporter-GlobExporter
 PORTVERSION=	0.005
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	geraud@gcu.info
 COMMENT=	Export shared globs with Sub::Exporter collectors
+WWW=		https://metacpan.org/release/Sub-Exporter-GlobExporter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

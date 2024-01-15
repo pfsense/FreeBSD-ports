@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-DependentModules
 PORTVERSION=	0.27
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Test all modules which depend on your module
+WWW=		https://metacpan.org/release/Test-DependentModules
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

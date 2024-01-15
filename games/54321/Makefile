@@ -1,6 +1,3 @@
-# Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
-
 PORTNAME=	54321
 PORTVERSION=	1.0.2001.11.16
 PORTREVISION=	15
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Five games in four-, three-, or two-dimensions for one player
+WWW=		https://old.nklein.com/products/54321/
 
 LIB_DEPENDS=	libpng.so:graphics/png
 

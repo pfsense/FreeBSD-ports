@@ -1,18 +1,17 @@
-# Created by: ache
-# $FreeBSD$
-
 PORTNAME=	mnogosearch
 PORTVERSION=	3.4.1
+PORTREVISION=	1
 CATEGORIES=	www databases
 MASTER_SITES=	http://www.mnogosearch.org/Download/
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Full featured SQL-based hypertext search engine
+WWW=		http://www.mnogosearch.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	dpsearch-[0-9]* udmsearch-[0-9]* mguesser-[0-9]*
+CONFLICTS=	sphinxsearch udmsearch mguesser
 
 OPTIONS_DEFINE=	DOCS EXAMPLES THREADS SSL ASIAN SYSLOG
 

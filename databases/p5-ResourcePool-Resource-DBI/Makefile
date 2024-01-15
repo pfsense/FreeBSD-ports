@@ -1,6 +1,3 @@
-# Created by: erwin@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	ResourcePool-Resource-DBI
 PORTVERSION=	1.0101
 PORTREVISION=	1
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Resource pool wrapper for DBI Perl module
+WWW=		https://metacpan.org/release/ResourcePool-Resource-DBI
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-ResourcePool>=0:devel/p5-ResourcePool \

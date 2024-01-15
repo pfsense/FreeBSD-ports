@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	openldap-plugins
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	ltb-project-nagios-plugins-${PORTVERSION}
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Nagios Plugins to monitor OpenLDAP
+WWW=		https://ltb-project.org/wiki/documentation/
 
 LICENSE=	GPLv2
 

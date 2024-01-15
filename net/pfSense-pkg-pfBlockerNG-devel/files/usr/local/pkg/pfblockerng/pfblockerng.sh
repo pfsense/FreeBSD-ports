@@ -1,6 +1,6 @@
 #!/bin/sh
 # pfBlockerNG Shell Function Script - By BBcan177@gmail.com - 04-12-14
-# Copyright (c) 2015-2021 BBcan177@gmail.com
+# Copyright (c) 2015-2023 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
@@ -20,7 +20,6 @@ now=$(/bin/date +%m/%d/%y' '%T)
 # Application Locations
 pathgrepcidr="/usr/local/bin/grepcidr"
 pathaggregate="/usr/local/bin/iprange"
-pathmwhois="/usr/local/bin/mwhois"
 pathgeoip="/usr/local/bin/mmdblookup"
 pathcurl="/usr/local/bin/curl"
 pathjq="/usr/local/bin/jq"
@@ -118,7 +117,7 @@ if [ ! -f "${mastercat}" ]; then touch "${mastercat}"; fi
 
 # Remove temp files before exiting.
 exitnow() {
-	rm -f /tmp/pfbtemp?_"${rvar}"
+	rm -f /tmp/pfbtemp*_"${rvar}"
 	exit
 }
 
@@ -198,22 +197,21 @@ suppress() {
 	if [ ! -x "${pathgrepcidr}" ]; then
 		log="Application [ grepcidr ] Not found. Cannot proceed."
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	if [ -e "${pfbsuppression}" ] && [ -s "${pfbsuppression}" ]; then
 		data="$(cat ${pfbsuppression} | sort | uniq)"
 
-		if [ ! -z "${data}" ] && [ ! -z "${cc}" ]; then
-			if [ "${cc}" == 'suppressheader' ]; then
+		if [ ! -z "${data}" ] && [ ! -z "${alias}" ]; then
+			if [ "${alias}" == 'suppressheader' ]; then
 				echo; echo '===[ Suppression Stats ]==================================='; echo
 				printf "%-20s %-10s %-10s %-10s\n" 'List' 'Pre' 'Suppress' 'Master'
 				echo '-----------------------------------------------------------'
-				exitnow
+				return
 			fi
 
-			alias="$(echo ${cc%|*})"
-			pfbfolder="$(echo ${cc#*|})"
+			pfbfolder="${max}/"
 			counter=0; > "${dupfile}"
 
 			if [ ! -z "${alias}" ]; then
@@ -257,7 +255,7 @@ suppress() {
 				"${pathgrepcidr}" -vf "${pfbsuppression}" "${tempfile}" > "${pfbfolder}${alias}.txt"
 
 				# Update masterfiles. Don't execute if duplication process is disabled
-				if [ "${dedup}" == 'x' ]; then
+				if [ "${dedup}" == 'on' ]; then
 					# Don't execute if alias doesn't exist in masterfile
 					lcheck="$(grep -m1 ${alias} ${masterfile})"
 
@@ -316,7 +314,7 @@ duplicate() {
 	if [ ! -x "${pathgrepcidr}" ]; then
 		log="Application [ grepcidr ] Not found. Cannot proceed."
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	dupcheck=1
@@ -403,7 +401,7 @@ dnsbl_scrub() {
 
 	# Remove Whitelisted Domains and Sub-Domains, if configured
 	if [ -s "${pfbdnsblsuppression}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
-		grep -vF -f "${pfbdnsblsuppression}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		/usr/local/bin/ggrep -vF -f "${pfbdnsblsuppression}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
 		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 		countw="$((countf - countx))"
 
@@ -434,7 +432,7 @@ dnsbl_scrub() {
 	# Process TOP1M Whitelist
 	if [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
 		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
-		grep -vF -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		/usr/local/bin/ggrep -vF -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
 		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 		counta="$((countf - countx))"
 
@@ -517,7 +515,7 @@ domaintld() {
 				cp "${dupfile}" "${dnsbl_file}.dup"
 			fi
 
-			grep -vF -f "${dnsbl_tld_remove}" "${dupfile}" > "${tempfile}"
+			/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}" "${dupfile}" > "${tempfile}"
 		else
 			mv -f "${dupfile}" "${tempfile}"
 		fi
@@ -526,7 +524,7 @@ domaintld() {
 	# 'Transparent zone'
 	# Remove redundant Domains (in 'transparent zone')
 	if [ -s "${dnsbl_tld_remove}.tsp" ] && [ -s "${dnsbl_file}.tsp" ]; then
-		grep -vF -f "${dnsbl_tld_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
+		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
 	else
 		echo "XXX"
 		# XXXX to be confirmed!
@@ -562,7 +560,7 @@ domaintld() {
 
 			# Remove redundant TLD Domains
 			if [ -s "${pfbdomain}${alias}.txt" ]; then
-				grep -vF -f "${dnsbl_tld_remove}.tsp" "${pfbdomain}${alias}.txt" > "${tempfile}"
+				/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}.tsp" "${pfbdomain}${alias}.txt" > "${tempfile}"
 				mv -f "${tempfile}" "${pfbdomain}${alias}.txt"
 			fi
 		done
@@ -614,7 +612,7 @@ domaintldpy() {
 
 	# Remove redundant Domains (in data)
 	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_data}.raw" ]; then
-		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_data}.raw" > "${dnsbl_python_data}"
+		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_data}.raw" > "${dnsbl_python_data}"
 	elif [ -e "${dnsbl_python_data}.raw" ]; then
 		mv "${dnsbl_python_data}.raw" "${dnsbl_python_data}"
 	fi
@@ -623,7 +621,7 @@ domaintldpy() {
 
 	# Remove redundant Domains (in zone)
 	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_zone}.raw" ]; then
-		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_zone}.raw" > "${dnsbl_python_zone}"
+		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_zone}.raw" > "${dnsbl_python_zone}"
 	elif [ -e "${dnsbl_python_zone}.raw" ]; then
 		mv "${dnsbl_python_zone}.raw" "${dnsbl_python_zone}"
 	fi
@@ -724,15 +722,10 @@ dnsbl_livesync() {
 
 # Function to convert Domains/ASs to its respective IP addresses
 whoisconvert() {
-	if [ ! -x "${pathmwhois}" ]; then
-		log="Application [ mwhois ] Not found. Cannot proceed."
-		echo "${log}" | tee -a "${errorlog}"
-		exitnow
-	fi
 
 	vtype="${max}"
 	custom_list="$(echo ${dedup} | tr ',' ' ')"
-	rm -f "${pfborig}${alias}.orig"
+	multiple="$(echo ${dedup} | tr -cd , | wc -c | tr -d ' ')"
 
 	if [ "${vtype}" == '_v4' ]; then
 		_type=A
@@ -744,29 +737,112 @@ whoisconvert() {
 		_ip_type=':'
 	fi
 
+	# Backup previous orig file
+	if [ -e "${pfborig}${alias}.orig" ]; then
+		mv "${pfborig}${alias}.orig" "${pfborig}${alias}.bk"
+	fi
+
+	echo
+	found=false
+
 	for host in ${custom_list}; do
 		# Determine if host is a Domain or an AS
 		host_check="$(echo ${host} | grep '\.')"
 		if [ ! -z "${host_check}" ]; then
+			found=true
+			printf "  Collecting host IP: ${host}"
 			echo "### Domain: ${host} ###" >> "${pfborig}${alias}.orig"
 			"${pathhost}" -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
+			echo "... completed"
 		else
 			asn="$(echo ${host} | tr -d 'AaSs')"
-			echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
+			printf "  Downloading ASN: ${asn}"
+
+			ua="pfSense/pfBlockerNG cURL download agent-"
+			guid="$(/usr/sbin/gnid)"
+			ua_final="${ua}${guid}"
 
 			bgp_url="https://api.bgpview.io/asn/${asn}/prefixes"
-			"${pathcurl}" -sS1 "${bgp_url}" > "${asntemp}"
-			if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
-				cat "${asntemp}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+			unavailable=''
+			for i in 1 2 3 4 5; do
+				printf "."
+				"${pathcurl}" -A "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+
+				if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
+					printf "."
+					unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
+					if [ -z "${unavailable}" ]; then
+						found=true
+						echo ". completed"
+						echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
+						cat "${asntemp}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+						break
+					else
+						sleep_val="$((i * 2))"
+						sleep "${sleep_val}"
+					fi
+				fi
+			done
+
+			if [ ! -z "${unavailable}" ]; then
+				echo ". Failed to download ASN"
+				touch "${pfborig}${alias}.fail"
 			fi
 
-			if [ ! -e "${pfborig}${alias}.orig" ]; then
-				echo "Failed to download ASN"
-				mv "${asntemp}" "${pfborig}${alias}.orig"
-				touch "${pfborig}${alias}.fail"
+			if [ "${multiple}" -gt 0 ]; then
+				sleep 1
 			fi
 		fi
 	done
+
+	# Restore previous orig file
+	if [ "${found}" == false ]; then
+		if [ -e "${pfborig}${alias}.bk" ]; then
+			mv "${pfborig}${alias}.bk" "${pfborig}${alias}.orig"
+		else
+			echo > "${pfborig}${alias}.orig"
+		fi
+	else
+		if [ -e "${pfborig}${alias}.bk" ]; then
+			rm -f "${pfborig}${alias}.bk"
+		fi
+	fi
+}
+
+
+# Function to convert IP to ASN
+iptoasn() {
+	host="${alias}"
+
+	ua="pfSense/pfBlockerNG cURL download agent-"
+	guid="$(/usr/sbin/gnid)"
+	ua_final="${ua}${guid}"
+
+	bgp_url="https://api.bgpview.io/ip/${host}"
+
+	unavailable=''
+	found=false
+	for i in 1 2 3 4 5; do
+		"${pathcurl}" -A "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+
+		if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
+			unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
+			if [ -z "${unavailable}" ]; then
+				found=true
+				break
+			else
+				sleep_val="$((i * 2))"
+				sleep "${sleep_val}"
+			fi
+		fi
+	done
+
+	if [ "${found}" == false ]; then
+		echo ""
+	else
+		asn_final="$(cat ${asntemp} | ${pathjq} -r '.data.prefixes[0] | {ASN: .asn.asn, Name: .name, Desc: .description, Prefix: .prefix} | tostring' | tr ',' '|' | tr -d '"{}')"
+		echo "${asn_final}"
+	fi
 }
 
 
@@ -792,7 +868,6 @@ reputation_depends() {
 	fi
 
 	# Clear variables and tempfiles
-	rm -f /tmp/pfbtemp?_"${rvar}"
 	count=0; countb=0; countm=0; counts=0; countr=0
 }
 
@@ -1114,7 +1189,7 @@ processxlsx() {
 	if [ ! -x "${pathtar}" ]; then
 		log='Application [ TAR ] Not found, cannot proceed.'
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	if [ -s "${pfborig}${alias}.raw" ]; then
@@ -1137,7 +1212,7 @@ closingprocess() {
 	counto=0
 	echo; echo '===[ FINAL Processing ]====================================='; echo
 	if [ -d "${pfborig}" ] && [ "$(ls -A ${pfborig})" ]; then
-		counto="$(find ${pfborig}*.orig 2>/dev/null | xargs cat | grep -cv '^#\|^$')"
+		counto="$(find ${pfborig}*_v4.orig 2>/dev/null | xargs cat | grep -cv '^#\|^$')"
 	fi
 
 	# Execute when 'de-duplication' is enabled
@@ -1254,6 +1329,9 @@ case "${1}" in
 		;;
 	whoisconvert)
 		whoisconvert
+		;;
+	iptoasn)
+		iptoasn
 		;;
 	suppress)
 		suppress

@@ -1,6 +1,3 @@
-# Created by: ports@c0decafe.net <ports@c0decafe.net>
-# $FreeBSD$
-
 PORTNAME=	ondir
 PORTVERSION=	0.2.4
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://swapoff.org/files/${PORTNAME}/
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Automatically executes scripts as you traverse directories
+WWW=		https://swapoff.org/ondir.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 .include "Makefile.inc"
 
 .if ${PORT_OPTIONS:MAPROFILE}
@@ -8,7 +6,7 @@ MULTILIB_LIST=	rmprofile,aprofile
 MULTILIB_LIST=	rmprofile
 .endif
 
-PKGVERSION=	GNU Arm Embedded Toolchain
+PKGVERSION=	GNU Arm Embedded Toolchain ${FULL_VERSION}
 
 BUILD_PREFIX=	${WRKDIR}/build
 DOC_PREFIX=	${INTERIM_PREFIX}/${DOCS_SUFFIX}
@@ -21,8 +19,12 @@ WORLD_LIB=${LOCALBASE}
 
 LDFLAGS+=	-L${WORLD_LIB}/lib
 
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+MAKE_ARGS+=     CFLAGS="-Wno-error -Wno-deprecated-register" CXXFLAGS="-Wno-error -Wno-deprecated-register"
+.else
 .if ${CHOSEN_COMPILER_TYPE} == clang
 MAKE_ARGS+=     CFLAGS="-Wno-error -fbracket-depth=512 -Wno-deprecated-register" CXXFLAGS="-Wno-error -fbracket-depth=512 -Wno-deprecated-register"
+.endif
 .endif
 
 MISC_DOCS=	license.txt readme.txt release.txt

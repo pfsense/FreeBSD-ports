@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Algorithm-IncludeExclude
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Build and evaluate include/exclude lists
+WWW=		https://metacpan.org/release/Algorithm-IncludeExclude
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

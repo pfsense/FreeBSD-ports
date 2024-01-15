@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	volleyball
 PORTVERSION=	0.8.6
 PORTREVISION=	12
@@ -12,6 +9,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Game similar to GNU Arcade Volleyball
+WWW=		http://www.losersjuegos.com.ar/juegos/volleyball
 
 USES=		gmake sdl
 USE_SDL=	sdl image mixer

@@ -1,6 +1,3 @@
-# Created by: Martin Otto
-# $FreeBSD$
-
 PORTNAME=	bsd-splash-changer
 PORTVERSION=	060211
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTFILES=	# none
 
 MAINTAINER=	gamato@users.sf.net
 COMMENT=	Boot Splash Image Changer
+WWW=		https://mato.gamato.org/freebsd/
 
 USE_RC_SUBR=	change_splash
 SUB_FILES=	pkg-message

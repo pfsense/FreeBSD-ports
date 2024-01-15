@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Xporter
 PORTVERSION=	0.1.2
 PORTREVISION=	2
@@ -10,16 +7,19 @@ MASTER_SITE_SUBDIR=	CPAN:LAWALSH
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Alternative Exporter with persistant defaults and auto-ISA
+COMMENT=	Alternative Exporter with persistent defaults and auto-ISA
+WWW=		https://metacpan.org/release/Xporter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE_ART10=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-mem>=0.4.5:devel/p5-mem
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

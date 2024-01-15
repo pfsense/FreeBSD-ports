@@ -1,6 +1,3 @@
-# Created by: Marc Fonvieille <blackend@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	misc docs
 PKGNAMEPREFIX=	ru-
 
@@ -10,6 +7,9 @@ COMMENT=	Russian translation of the FreeBSD Documentation Project
 MASTERDIR=	${.CURDIR}/../freebsd-doc-en
 PLIST=		${.CURDIR}/pkg-plist
 
-DOCLANG=	ru_RU.KOI8-R
+# en-freebsd-doc installs the common files
+HTML_RUN_DEPENDS=	en-freebsd-doc>=${PORTVERSION}:misc/freebsd-doc-en
+
+DOCLANG=	ru
 
 .include "${MASTERDIR}/Makefile"

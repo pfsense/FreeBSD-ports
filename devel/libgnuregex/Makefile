@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libgnuregex
 PORTVERSION=	6.0
 CATEGORIES=	devel
@@ -8,6 +6,7 @@ DISTFILES=	# Nothing to fetch
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	GNU Regex Library
+WWW=		https://www.gnu.org/software/gnulib/
 
 LICENSE=	LGPL20+
 

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libfixposix
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.3
+PORTREVISION=	2
 CATEGORIES=	devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ports@shiori.com.br
 COMMENT=	Replacement for inconsistent parts of POSIX
+WWW=		https://github.com/sionescu/libfixposix
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENCE

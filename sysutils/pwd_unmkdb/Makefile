@@ -1,14 +1,14 @@
-# Created by: Matthew Fuller <fullermd@over-yonder.net>
-# $FreeBSD$
-
 PORTNAME=	pwd_unmkdb
-PORTVERSION=	1.3.1
+PORTVERSION=	1.4
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.over-yonder.net/~fullermd/projects/pwd_unmkdb/ \
 		http://distfiles.over-yonder.net/pwd_unmkdb/
 
 MAINTAINER=	fullermd@over-yonder.net
 COMMENT=	Recover a master.passwd from the hashed database
+WWW=		https://www.over-yonder.net/~fullermd/projects/pwd_unmkdb/
+
+USES=		tar:xz
 
 PLIST_FILES=	man/man8/pwd_unmkdb.8.gz sbin/pwd_unmkdb
 

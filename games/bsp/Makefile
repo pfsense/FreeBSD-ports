@@ -1,6 +1,3 @@
-# Created by: Christian Brueffer <chris@unixpages.org>
-# $FreeBSD$
-
 PORTNAME=	bsp
 PORTVERSION=	5.2
 CATEGORIES=	games
@@ -9,6 +6,7 @@ MASTER_SITES=	http://games.moria.org.uk/doom/bsp/download/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Node builder for Doom
+WWW=		https://doombsp.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

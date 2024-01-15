@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	sdump
 PORTVERSION=	2015.01.16
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	sue@iwmt.org
 COMMENT=	Sixel image dumper
+WWW=		https://github.com/uobikiemukot/sdump
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-SymbolicX-Statistics-Distributions
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Statistical distributions
+WWW=		https://metacpan.org/release/Math-SymbolicX-Statistics-Distributions
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

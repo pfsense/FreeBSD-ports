@@ -1,20 +1,18 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-
 PORTNAME=	convertall
 PORTVERSION=	0.8.0
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/doug-101/ConvertAll/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Another unit converter
+WWW=		https://convertall.bellz.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
-USES=		pyqt:5 python:3.5+ shebangfix
-USE_PYQT=	core gui widgets sip
+USES=		pyqt:5 python shebangfix
+USE_PYQT=	pyqt5 sip
 
 SHEBANG_FILES=	source/convertall.py
 

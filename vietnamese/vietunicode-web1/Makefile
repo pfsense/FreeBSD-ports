@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	vietunicode-web1
 PORTVERSION=	2004.04.30
 PORTREVISION=	6
@@ -10,6 +7,7 @@ DISTNAME=	VietFontsWeb1_ttf
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	100% Viet Unicode & Viet Phan/Pali-Sanskrit compatible
+WWW=		https://vietunicode.sourceforge.net/
 
 USES=		zip
 DIST_SUBDIR=	VietUnicode

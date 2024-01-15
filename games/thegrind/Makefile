@@ -1,14 +1,12 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	thegrind
 PORTVERSION=	0.1.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/radius-engine/ld21/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple game about escaping from work
+WWW=		https://radius-engine.sourceforge.net/development/the-grind--ld21-.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/License.txt

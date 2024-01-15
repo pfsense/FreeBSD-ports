@@ -1,6 +1,3 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	net lang
 PKGNAMESUFFIX=	-${LIBPROXY_SLAVE}

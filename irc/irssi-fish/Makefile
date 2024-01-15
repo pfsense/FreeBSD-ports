@@ -1,12 +1,10 @@
-# Created by: Jens Holmqvist <zparta@hispan.se>
-# $FreeBSD$
-
 PORTNAME=	irssi-fish
 DISTVERSION=	1.6.20200629
 CATEGORIES=	irc security
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Encryption plugin for irssi
+WWW=		https://github.com/falsovsky/FiSH-irssi
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

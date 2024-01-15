@@ -1,6 +1,3 @@
-# Created by: Ivan Dreckman <ivannashdreckman@fastmail.fm>
-# $FreeBSD$
-
 PORTNAME=	zxfer
 PORTVERSION=	1.1.7
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	ports@scaleengine.com
 COMMENT=	Easily and reliably transfer ZFS filesystems
+WWW=		https://github.com/allanjude/zxfer
 
 LICENSE=	BSD2CLAUSE
 

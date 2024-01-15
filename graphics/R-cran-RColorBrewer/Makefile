@@ -1,14 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	RColorBrewer
-DISTVERSION=	1.1-2
-PORTREVISION=	4
+DISTVERSION=	1.1-3
+PORTREVISION=	1
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	ColorBrewer palettes
+WWW=		https://cran.r-project.org/web/packages/RColorBrewer/
 
 LICENSE=	APACHE20
 

@@ -3,9 +3,9 @@
  * snort_passlist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -28,17 +28,11 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-if (!is_array($config['installedpackages']['snortglobal']['whitelist'])) {
-	$config['installedpackages']['snortglobal']['whitelist'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['whitelist']['item'])) {
-	$config['installedpackages']['snortglobal']['whitelist']['item'] = array();
-}
-$a_passlist = &$config['installedpackages']['snortglobal']['whitelist']['item'];
+$a_passlist = config_get_path('installedpackages/snortglobal/whitelist/item', []);
 
 // Calculate the next Pass List index ID
-if (isset($config['installedpackages']['snortglobal']['whitelist']['item']))
-	$id_gen = count($config['installedpackages']['snortglobal']['whitelist']['item']);
+if (config_get_path('installedpackages/snortglobal/whitelist/item'))
+	$id_gen = count(config_get_path('installedpackages/snortglobal/whitelist/item', []));
 else
 	$id_gen = '0';
 
@@ -55,12 +49,8 @@ function snort_is_passlist_used($list) {
 	 *          FALSE if not in use               *
 	 **********************************************/
 
-	global $config;
 
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return FALSE;
-
-	foreach($config['installedpackages']['snortglobal']['rule'] as $v) {
+	foreach(config_get_path('installedpackages/snortglobal/rule', []) as $v) {
 		if (isset($v['whitelistname']) && $v['whitelistname'] == $list)
 			return TRUE;
 	}
@@ -69,18 +59,18 @@ function snort_is_passlist_used($list) {
 
 if (isset($_POST['del_btn'])) {
 	$need_save = false;
-	if (is_array($_POST['del']) && count($_POST['del'])) {
+	if (count(array_get_path($_POST, 'del')) > 0) {
 		foreach ($_POST['del'] as $itemi) {
 			/* make sure list is not being referenced by any interface */
-			if (snort_is_passlist_used($a_passlist[$_POST['list_id']]['name'])) {
+			if (snort_is_passlist_used($a_passlist[$itemi]['name'])) {
 				$input_errors[] = gettext("Pass List '{$a_passlist[$itemi]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
 			} else {
 				unset($a_passlist[$itemi]);
 				$need_save = true;
 			}
 		}
-		if ($need_save) {
-			unset($a_passlist);
+		if ($need_save && empty($input_errors)) {
+			config_set_path('installedpackages/snortglobal/whitelist/item', $a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");
@@ -98,12 +88,12 @@ else {
 		}
 	}
 	if (is_numeric($delbtn_list) && $a_passlist[$delbtn_list]) {
-		if (snort_is_passlist_used($a_passlist[$_POST['list_id']]['name'])) {
+		if (snort_is_passlist_used($a_passlist[$delbtn_list]['name'])) {
 			$input_errors[] = gettext("This Pass List '{$a_passlist[$delbtn_list]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
 		}
 		else {
 			unset($a_passlist[$delbtn_list]);
-			unset($a_passlist);
+			config_set_path('installedpackages/snortglobal/whitelist/item', $a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");
@@ -163,8 +153,8 @@ display_top_tabs($tab_array, true);
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['name']);?></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=snort_is_passlist_used($list['name']) ? gettext("Yes"):gettext("No");?></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['descr']);?>&nbsp;</td>
-				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit this Pass List');?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
+				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa-solid fa-pencil" title="<?=gettext('Edit this Pass List');?>"></a>
+				<a class="fa-solid fa-trash-can no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
 				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>">Delete Pass List</button></td>
 			</tr>
 		<?php endforeach; ?>
@@ -174,12 +164,12 @@ display_top_tabs($tab_array, true);
 
 	<nav class="action-buttons">
 		<a href="snort_passlist_edit.php?id=<?php echo $id_gen;?>" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add a new pass list');?>">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<?php if (count($a_passlist) > 0): ?>
 			<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete selected items');?>">
-				<i class="fa fa-trash icon-embed-btn"></i>
+				<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 				<?=gettext('Delete');?>
 			</button>
 		<?php endif; ?>
@@ -214,6 +204,5 @@ events.push(function() {
 
 //]]>
 </script>
-<?php unset($a_passlist); ?>
 <?php include("foot.inc"); ?>
 

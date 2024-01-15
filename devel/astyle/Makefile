@@ -1,36 +1,35 @@
-# Created by: Don Croyle <croyle@gelemna.org>
-# $FreeBSD$
-
 PORTNAME=	astyle
-PORTVERSION=	3.1
-PORTREVISION=	3
+PORTVERSION=	3.4.10
 CATEGORIES=	devel textproc
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
-DISTNAME=	${PORTNAME}_${PORTVERSION}_linux
+MASTER_SITES=	SF/astyle/astyle/astyle%20${PORTVERSION:R}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Source code indenter and formatter for C, C++, C\#, and Java
+WWW=		https://astyle.sourceforge.net/ \
+		https://gitlab.com/saalen/astyle
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKDIR}/astyle/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/../../LICENSE.md
 
-USES=		compiler:c++11-lang dos2unix gmake
+USES=		compiler:c++11-lang dos2unix gmake tar:bz2
 
 ALL_TARGET=	astyle
+MAKE_ENV=	CXX="${CXX}"
+WRKSRC_SUBDIR=	build/${CHOSEN_COMPILER_TYPE}
+
 DOS2UNIX_GLOB=	*.ini
-WRKSRC=		${WRKDIR}/astyle/build/${CHOSEN_COMPILER_TYPE}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-do-configure:
-	@${REINPLACE_CMD} -e "s:%%CXX%%:${CXX}:" \
-		${WRKSRC}/${MAKEFILE}
-
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/astyle ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/astyle/doc/* ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/../../doc/* ${STAGEDIR}${DOCSDIR}
+
+do-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKDIR}/astyle/file/* ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/../../file/* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

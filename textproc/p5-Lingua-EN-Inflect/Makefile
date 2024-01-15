@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-Inflect
 PORTVERSION=	1.905
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert singular words to their plural form
+WWW=		https://metacpan.org/release/Lingua-EN-Inflect
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

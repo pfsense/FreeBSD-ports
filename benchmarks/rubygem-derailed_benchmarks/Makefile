@@ -1,6 +1,3 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	derailed_benchmarks
 PORTVERSION=	1.7.0
 CATEGORIES=	benchmarks rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Benchmarks for your whole Rails app
+WWW=		https://github.com/schneems/derailed_benchmarks
 
 LICENSE=	MIT
 
@@ -23,7 +21,8 @@ RUN_DEPENDS=	rubygem-benchmark-ips>=2.0.0:benchmarks/rubygem-benchmark-ips \
 		rubygem-unicode_plot>=0.0.4<1.0.0:textproc/rubygem-unicode_plot
 
 USES=		gem
-USE_RUBY=	yes
+
+CONFLICTS_INSTALL=	rubygem-gitlab-derailed_benchmarks
 
 NO_ARCH=	yes
 

@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MD5
 PORTVERSION=	2.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Wrapper to the Digest::MD5 module
+WWW=		https://metacpan.org/release/MD5
 
 USES=		perl5
 USE_PERL5=	configure

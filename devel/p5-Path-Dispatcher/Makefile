@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Path-Dispatcher
 PORTVERSION=	1.08
 CATEGORIES=	devel perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl flexible and extensible dispatch
+WWW=		https://metacpan.org/release/Path-Dispatcher
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

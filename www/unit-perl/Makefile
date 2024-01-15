@@ -1,6 +1,3 @@
-# Created by: Sergey Osokin <osa@FreeBSD.org>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-${UNIT_MODNAME}
 
 UNIT_MODNAME=	perl${PERL_VER}
@@ -19,14 +16,21 @@ MASTERDIR=	${.CURDIR}/../unit
 
 post-configure:
 	cd ${CONFIGURE_WRKSRC} && \
-	${CONFIGURE_CMD} perl --module=${UNIT_MODNAME}
+	${SETENV} ${CONFIGURE_ENV} ${CONFIGURE_CMD} perl \
+		--module=${UNIT_MODNAME}
 
 do-build:
-	cd ${CONFIGURE_WRKSRC} && ${MAKE} ${UNIT_MODNAME}
+	cd ${CONFIGURE_WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
+			${MAKEFILE} ${MAKE_ARGS} ${UNIT_MODNAME}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/unit/modules/
-	${INSTALL_LIB} ${WRKSRC}/build/${UNIT_MODNAME}.unit.so \
+	${INSTALL_LIB} ${WRKSRC}/build/lib/unit/modules/${UNIT_MODNAME}.unit.so \
 		${STAGEDIR}${PREFIX}/libexec/unit/modules/
+
+# Overwrite the target in the ${MASTERDIR}/Makefile
+post-install:
+	@${DO_NADA}
 
 .include "${MASTERDIR}/Makefile"

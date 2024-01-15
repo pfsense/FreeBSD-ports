@@ -1,6 +1,3 @@
-# Created by: Jing-Tang Keith Jang <keith@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ttfm
 PORTVERSION=	0.9.5
 PORTREVISION=	7
@@ -13,6 +10,8 @@ COMMENT=	Big5/GB enhanced TrueType Font Manager
 LICENSE=	MIT
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
+
+USES=		pkgconfig
 
 MAKE_ARGS=	FREETYPE_BASE=${LOCALBASE:Q} CC="${CC}"
 

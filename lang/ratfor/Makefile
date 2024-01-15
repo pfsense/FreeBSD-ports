@@ -1,9 +1,6 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	ratfor
 PORTVERSION=	1985.06
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	lang
 MASTER_SITES=	LOCAL/obrien \
 		http://sepwww.stanford.edu/sep/prof/
@@ -16,6 +13,8 @@ LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/README
 
 BROKEN_aarch64=		./ratfor -o test.f test.r keeps creating huge output file
+BROKEN_armv6=		./ratfor -o test.f test.r keeps creating huge output file
+BROKEN_armv7=		./ratfor -o test.f test.r keeps creating huge output file
 BROKEN_powerpc=		./ratfor -o test.f test.r keeps creating huge output file
 BROKEN_powerpc64=	./ratfor -o test.f test.r keeps creating huge output file
 BROKEN_powerpc64le=	./ratfor -o test.f test.r keeps creating huge output file

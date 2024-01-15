@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MaxMind-DB-Reader
 PORTVERSION=	1.000014
 CATEGORIES=	net perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Read MaxMind DB files
+WWW=		https://metacpan.org/release/MaxMind-DB-Reader
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -32,8 +30,9 @@ TEST_DEPENDS=	p5-Path-Class>=0.27:devel/p5-Path-Class \
 		p5-Test-Number-Delta>=0:devel/p5-Test-Number-Delta \
 		p5-Test-Requires>=0:devel/p5-Test-Requires
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

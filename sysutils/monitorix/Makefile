@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	monitorix
-PORTVERSION=	3.10.1
+PORTVERSION=	3.14.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.monitorix.org/ \
 		http://www.monitorix.org/old_versions/ \
@@ -9,6 +7,7 @@ MASTER_SITES=	http://www.monitorix.org/ \
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Web based monitoring system
+WWW=		https://www.monitorix.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,7 +22,8 @@ RUN_DEPENDS=	p5-ParallelUserAgent>=0:www/p5-ParallelUserAgent \
 		p5-HTTP-Server-Simple>=0:www/p5-HTTP-Server-Simple \
 		p5-Config-General>=0:devel/p5-Config-General
 
-USES=		perl5
+USES=		cpe perl5
+CPE_VENDOR=	fibranet
 USE_PERL5=	run
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -82,6 +82,7 @@ post-patch:
 		-e 's|^\(secure_log[[:space:]]*= *\).*|\1/var/log/auth.log|' \
 		-e "s|/var/lib/milter-greylist/db/|/var/milter-greylist/|" \
 		-e 's|^\([[:space:]]*port[^=]*=[^y]*\)y|\1n|' \
+		-e 's|^\([[:space:]]*cmd[^=]*=[^s]*\)ss|\1netstat|' \
 			${WRKSRC}/monitorix.conf
 
 do-install:
@@ -104,7 +105,7 @@ do-install:
 		${STAGEDIR}${WWWDIR}/reports/$l.html.sample
 .endfor
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for f in docs/*[^t] README README.FreeBSD README.nginx Changes
+.for f in docs/*[^t] README README.BSD README.nginx Changes
 	${INSTALL_DATA} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/monitorix.conf \

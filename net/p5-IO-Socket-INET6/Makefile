@@ -1,6 +1,3 @@
-# Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	IO-Socket-INET6
 PORTVERSION=	2.72
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Perl module with object interface to AF_INET6 domain sockets
+WWW=		https://metacpan.org/release/IO-Socket-INET6
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,5 +18,7 @@ RUN_DEPENDS=	p5-Socket6>=0.12:net/p5-Socket6
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

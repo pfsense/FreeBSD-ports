@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-Replication
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Class::DBI for replicated database
+WWW=		https://metacpan.org/release/Class-DBI-Replication
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-DBI>=0:databases/p5-Class-DBI

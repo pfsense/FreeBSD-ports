@@ -1,6 +1,3 @@
-# Created by: Henk van Oers <hvo.pm@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	Unix-Passwd-File
 PORTVERSION=	0.251
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Manipulate passwd and group entries
+WWW=		https://metacpan.org/release/Unix-Passwd-File
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

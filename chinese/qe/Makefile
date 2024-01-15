@@ -1,6 +1,3 @@
-# Created by: Shen Chuan-Hsing
-# $FreeBSD$
-
 PORTNAME=	qe
 PORTVERSION=	0.1.1
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.cc.ncu.edu.tw/~center5/product/qe/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PE2-like editor program for Unix
+WWW=		https://www.cc.ncu.edu.tw/~center5/product/qe/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

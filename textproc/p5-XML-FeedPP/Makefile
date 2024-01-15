@@ -1,6 +1,3 @@
-# Created by: Oleg Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	XML-FeedPP
 PORTVERSION=	0.95
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Parse/write/merge/edit RSS/RDF/Atom syndication feeds
+WWW=		https://metacpan.org/release/XML-FeedPP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

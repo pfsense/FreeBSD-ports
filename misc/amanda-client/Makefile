@@ -1,6 +1,3 @@
-# Created by: gpalmer
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-client
 
 COMMENT=	Advanced Maryland Automatic Network Disk Archiver (client)

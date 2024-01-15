@@ -1,6 +1,3 @@
-# Created by: Dereckson <dereckson@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	binclock
 DISTVERSION=	1.5
 CATEGORIES=	misc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.ngolde.de/download/
 
 MAINTAINER=	dereckson@gmail.com
 COMMENT=	CLI binary clock
+WWW=		http://www.ngolde.de/binclock.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

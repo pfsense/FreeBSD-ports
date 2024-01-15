@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	aixlog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.0
+DISTVERSION=	1.5.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Header-only C++ logging library
+WWW=		https://github.com/badaix/aixlog
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Travis Campbell <hcoyote@ghostar.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Textile
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Textile for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Textile
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Catalyst-Runtime>=0:www/p5-Catalyst-Runtime \

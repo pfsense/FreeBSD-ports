@@ -1,15 +1,13 @@
-# Created by: Geyer Klaus
-# $FreeBSD$
-
 PORTNAME=	catseye-fm
 PORTVERSION=	4.2.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://catseye-fm.sourceforge.net/downloads/ \
 		http://catseye-fm-temp.sourceforge.net/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clear, fast, powerful file browser using gtk+2.0
+WWW=		https://catseye-fm-temp.sourceforge.net/
 
 LICENSE=	GPLv3
 

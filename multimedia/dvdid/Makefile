@@ -1,6 +1,3 @@
-# Created by: Christopher Key <cjk32@cam.ac.uk>
-# $FreeBSD$
-
 PORTNAME=	dvdid
 PORTVERSION=	0.2.0a
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://dvdid.cjkey.org.uk/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for calculating dvdids
+WWW=		http://dvdid.cjkey.org.uk/
 
 USES=		libtool
 GNU_CONFIGURE=	yes

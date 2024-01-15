@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	prettyunits
-PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTVERSION=	1.2.0
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Pretty, Human Readable Formatting of Quantities
+WWW=		https://cran.r-project.org/web/packages/prettyunits/
 
 LICENSE=	MIT
 

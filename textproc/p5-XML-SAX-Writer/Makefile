@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	XML-SAX-Writer
 PORTVERSION=	0.57
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	SAX2 XML Writer
+WWW=		https://metacpan.org/release/XML-SAX-Writer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

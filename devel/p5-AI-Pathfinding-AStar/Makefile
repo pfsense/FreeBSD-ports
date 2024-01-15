@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	AI-Pathfinding-AStar
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl implementation of the A* pathfinding algorithm
+WWW=		https://metacpan.org/release/AI-Pathfinding-AStar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

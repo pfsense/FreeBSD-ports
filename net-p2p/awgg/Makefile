@@ -1,33 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	awgg
-PORTVERSION=	0.6.0
-PORTREVISION=	1
+DISTVERSION=	0.6.0.6034-beta
+PORTREVISION=	6
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Advanced wget GUI
+WWW=		https://github.com/Nenirey/AWGG
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	aria2c:www/aria2 \
 		wget:ftp/wget \
 		curl:ftp/curl \
-		youtube-dl:www/youtube_dl \
-		axel:ftp/axel
+		yt-dlp:www/yt-dlp
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5 ${PORTNAME}-qt6
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt6
+qt6_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
 
 USES=		fpc gnome lazarus:flavors xorg
-USE_FPC=	chm fcl-base fcl-db fcl-image fcl-json fcl-net fcl-registry \
-		fcl-web fcl-xml openssl pasjpeg regexpr rtl-extra rtl-objpas x11
 USE_XORG=	x11
 USE_GITHUB=	yes
 GH_ACCOUNT=	Nenirey
 GH_PROJECT=	AWGG
-GH_TAGNAME=	5dc1329
+GH_TAGNAME=	6daa550
 
 DESKTOP_ENTRIES="AWGG" \
 		"Advanced wget GUI" \
@@ -36,9 +33,7 @@ DESKTOP_ENTRIES="AWGG" \
 		"Network;P2P;" \
 		${TRUE}
 
-USE_FPC_gtk2=	cairo
 USE_GNOME_gtk2=	cairo
-USE_FPC+=	${USE_FPC_${FLAVOR}}
 USE_GNOME+=	${USE_GNOME_${FLAVOR}}
 
 LAZBUILD_ARGS=	-d

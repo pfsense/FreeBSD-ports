@@ -1,21 +1,19 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Log-Report
-PORTVERSION=	1.29
+PORTVERSION=	1.36
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Report a problem, pluggable handlers and language support
+WWW=		https://metacpan.org/release/Log-Report
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Devel-GlobalDestruction>=0.09:devel/p5-Devel-GlobalDestruction \
-		p5-Log-Report-Optional>=1.03:devel/p5-Log-Report-Optional \
+		p5-Log-Report-Optional>=1.07:devel/p5-Log-Report-Optional \
 		p5-String-Print>=0.91:textproc/p5-String-Print
 
 USES=		perl5

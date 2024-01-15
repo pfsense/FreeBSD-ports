@@ -40,6 +40,7 @@ include/libtorrent/aux_/noexcept_movable.hpp
 include/libtorrent/aux_/numeric_cast.hpp
 include/libtorrent/aux_/openssl.hpp
 include/libtorrent/aux_/path.hpp
+include/libtorrent/aux_/pool.hpp
 include/libtorrent/aux_/portmap.hpp
 include/libtorrent/aux_/proxy_settings.hpp
 include/libtorrent/aux_/range.hpp
@@ -51,6 +52,7 @@ include/libtorrent/aux_/session_interface.hpp
 include/libtorrent/aux_/session_settings.hpp
 include/libtorrent/aux_/session_udp_sockets.hpp
 include/libtorrent/aux_/set_socket_buffer.hpp
+include/libtorrent/aux_/set_traffic_class.hpp
 include/libtorrent/aux_/socket_type.hpp
 include/libtorrent/aux_/storage_piece_set.hpp
 include/libtorrent/aux_/storage_utils.hpp
@@ -248,7 +250,8 @@ lib/cmake/LibtorrentRasterbar/LibtorrentRasterbarConfigVersion.cmake
 lib/cmake/LibtorrentRasterbar/LibtorrentRasterbarTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/LibtorrentRasterbar/LibtorrentRasterbarTargets.cmake
 lib/libtorrent-rasterbar.so
-lib/libtorrent-rasterbar.so.1.2.10
+lib/libtorrent-rasterbar.so.%%SO_VER%%
 lib/libtorrent-rasterbar.so.%%SHLIB_VER%%
+lib/libtorrent-rasterbar.so.10.0.0
 libdata/pkgconfig/libtorrent-rasterbar.pc
 share/cmake/Modules/FindLibtorrentRasterbar.cmake

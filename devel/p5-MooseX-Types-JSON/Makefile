@@ -1,6 +1,3 @@
-# Created by: milki <milki@rescomp.berkeley.edu>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-JSON
 PORTVERSION=	1.00
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	JSON and relaxedJSON datatype for Moose
+WWW=		https://metacpan.org/release/MooseX-Types-JSON
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

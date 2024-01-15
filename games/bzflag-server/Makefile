@@ -1,8 +1,5 @@
-# Created by: Kevin Zheng <kevinz5000@gmail.com>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-server
-CONFLICTS=	bzflag-2.*
+CONFLICTS=	bzflag
 
 COMMENT=	Multiplayer 3D tank battle game (server only)
 

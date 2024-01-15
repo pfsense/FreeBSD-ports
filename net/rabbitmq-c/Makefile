@@ -1,31 +1,32 @@
-# Created by: Geoff Garside
-# $FreeBSD$
-
 PORTNAME=	rabbitmq-c
-PORTVERSION=	0.8.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.13.0
 CATEGORIES=	net
 
-MAINTAINER=	freebsd@geoffgarside.co.uk
+MAINTAINER=	dch@FreeBSD.org
 COMMENT=	RabbitMQ C AMQP client library
+WWW=		https://www.rabbitmq.com/
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE-MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>=2.0:devel/py-simplejson@${PY_FLAVOR}
+LIB_DEPENDS=	libpopt.so:devel/popt
 
-CONFLICTS=	rabbitmq-c-devel-[0-9]*
-
-USES=		cmake pathfix python tar:bzip2
+USES=		cmake localbase ssl
 USE_GITHUB=	yes
-USE_LDCONFIG=	yes
 GH_ACCOUNT=	alanxz
+USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	POPT
-OPTIONS_SUB=	yes
-POPT_DESC=	Popt support in tools
-POPT_LIB_DEPENDS=	libpopt.so:devel/popt
-POPT_CFLAGS=	-I${LOCALBASE}/include
-POPT_LDFLAGS=	-L${LOCALBASE}/lib
+CMAKE_ON=	BUILD_TOOLS
+CMAKE_OFF=	BUILD_EXAMPLES
+TEST_TARGET=	test
+
+OPTIONS_DEFINE=		STATIC TEST
+OPTIONS_DEFAULT=	STATIC
+OPTIONS_SUB=		yes
+
+STATIC_CMAKE_BOOL=	BUILD_STATIC_LIBS
+TEST_IMPLIES=		STATIC
+TEST_CMAKE_BOOL=	BUILD_TESTING
 
 .include <bsd.port.mk>

@@ -1,19 +1,10 @@
---- services/network/BUILD.gn.orig	2021-01-18 21:29:02 UTC
+--- services/network/BUILD.gn.orig	2023-12-10 06:10:27 UTC
 +++ services/network/BUILD.gn
-@@ -263,9 +263,15 @@ component("network_service") {
-     deps += [ "//components/certificate_transparency" ]
-   }
- 
--  if (is_linux || is_chromeos) {
-+  if ((is_linux && !is_bsd) || is_chromeos) {
-     deps += [
-       "//sandbox/linux:sandbox_services",
-+      "//sandbox/policy",
-+    ]
-+  }
-+
-+  if (is_bsd) {
-+    deps += [
-       "//sandbox/policy",
+@@ -394,7 +394,6 @@ if (is_linux || is_chromeos) {
      ]
-   }
+     deps = [
+       "//base:base",
+-      "//sandbox/linux:sandbox_services",
+       "//sandbox/policy:policy",
+     ]
+     configs += [ "//build/config/compiler:wexit_time_destructors" ]

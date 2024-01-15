@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alegreya
 PORTVERSION=	2.008
 PORTREVISION=	1
@@ -8,6 +6,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Serif typeface originally intended for literature
+WWW=		https://github.com/huertatipografica/Alegreya-libre
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

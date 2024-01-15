@@ -1,6 +1,3 @@
-# Created by: HONDA Yasuhiro <honda@kashio.info.mie-u.ac.jp>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-canna
 
 MAINTAINER=	ports@FreeBSD.org

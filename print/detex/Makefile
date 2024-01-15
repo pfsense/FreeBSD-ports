@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	detex
 PORTVERSION=	2.8
 PORTREVISION=	1
@@ -9,12 +6,15 @@ MASTER_SITES=	http://www.cs.purdue.edu/homes/trinkle/detex/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Strips TeX/LaTeX codes from a file
+WWW=		https://www.cs.purdue.edu/homes/trinkle/detex/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 USES=		tar
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -DNO_MALLOC_DECL -DHAVE_STRING_H"
+
+CONFLICTS_INSTALL=	texlive-base # bin/detex
 
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 PORTDOCS=	README

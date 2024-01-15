@@ -1,22 +1,21 @@
-# Created by: Shigeyuki FUKUSHIMA <shige@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	apel
 PORTVERSION=	10.8.${SNAPDATE}
+PORTREVISION=	5
 CATEGORIES=	editors elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Portable Emacs Library
+WWW=		https://github.com/wanderlust/apel
 
 LICENSE=	GPLv2
 
 USES=		emacs
 USE_GITHUB=	yes
 GH_ACCOUNT=	wanderlust
-GH_TAGNAME=	4e3269b
+GH_TAGNAME=	82eb232
 
-SNAPDATE=	20201106
+SNAPDATE=	20220720
 NO_ARCH=	yes
 
 ALL_TARGET=	elc

@@ -1,9 +1,6 @@
-# Created by: Oliver Lehmann <Kai_Allard_Liao@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	xcdroast
 PORTVERSION=	0.98.a.16
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.98alpha16 \
 		http://www.xcdroast.org/download/

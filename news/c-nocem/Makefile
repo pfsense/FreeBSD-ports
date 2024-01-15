@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	c-nocem
 PORTVERSION=	3.7
 PORTREVISION=	4
@@ -9,6 +7,7 @@ MASTER_SITES=	http://sites.inka.de/~bigred/sw/ \
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	NoCeM for C News and INN
+WWW=		http://sites.inka.de/~bigred/sw/c-nocem.html
 
 LICENSE=	PD
 

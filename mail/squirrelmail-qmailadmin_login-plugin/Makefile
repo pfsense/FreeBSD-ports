@@ -1,6 +1,3 @@
-# Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	qmailadmin_login
 PORTVERSION=	1.1
 PORTREVISION=	4
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-1.4.3
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Using the QmailAdmin cgi interface from SquirrelMail
+WWW=		https://www.squirrelmail.org
 
 RUN_DEPENDS=	${LOCALBASE}/www/cgi-bin.default/qmailadmin/qmailadmin:mail/qmailadmin
 

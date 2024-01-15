@@ -1,6 +1,3 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
-
 PORTNAME=	warbler
 PORTVERSION=	2.0.5
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Constructor of .war files of Rails applications
+WWW=		https://github.com/jruby/warbler
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -20,7 +18,6 @@ RUN_DEPENDS=	jruby:lang/jruby \
 		rubygem-rubyzip13>=1.0<1.4:archivers/rubygem-rubyzip13
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

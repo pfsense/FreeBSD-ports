@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Form
 PORTVERSION=	2.0.20
 CATEGORIES=	www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Form API
+WWW=		https://pear.horde.org
 
-USES=	horde
+USES=	horde cpe
 USE_HORDE_RUN=	Horde_Core \
 		Horde_Date \
 		Horde_Exception \

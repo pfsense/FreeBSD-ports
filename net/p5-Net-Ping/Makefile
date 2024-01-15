@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Ping
-PORTVERSION=	2.74
+PORTVERSION=	2.75
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Check a remote host for reachability
+WWW=		https://metacpan.org/release/Net-Ping
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

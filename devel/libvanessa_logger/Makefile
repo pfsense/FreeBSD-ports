@@ -1,6 +1,3 @@
-# Created by: Konstantinos Konstantinidis <kkonstan@daemon.gr>
-# $FreeBSD$
-
 PORTNAME=	libvanessa_logger
 PORTVERSION=	0.0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	vanessa_logger-${PORTVERSION}
 
 MAINTAINER=	thomas@bsdunix.ch
 COMMENT=	Library that provides a generic logging layer
+WWW=		https://horms.net/projects/vanessa/
 
 USES=		libtool pathfix tar:bzip2
 USE_LDCONFIG=	yes

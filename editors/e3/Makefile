@@ -1,6 +1,3 @@
-# Created by: joseph@randomnetworks.com
-# $FreeBSD$
-
 PORTNAME=	e3
 PORTVERSION=	2.8
 PORTEPOCH=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://sites.google.com/site/e3editor/Home/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full featured text editor written in assembler
+WWW=		http://www.sax.de/~adlibit/
 
 BUILD_DEPENDS=	nasm:devel/nasm
 

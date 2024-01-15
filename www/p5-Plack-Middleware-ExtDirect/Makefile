@@ -1,6 +1,3 @@
-# Created by: Martin Waschbuesch <martin@waschbuesch.de>
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-ExtDirect
 PORTVERSION=	3.20
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	martin@waschbuesch.de
 COMMENT=	Implement an RPC::ExtDirect gateway using Plack
+WWW=		https://metacpan.org/release/Plack-Middleware-ExtDirect
 
 LICENSE=	ART10
 

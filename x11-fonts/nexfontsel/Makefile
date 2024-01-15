@@ -1,6 +1,3 @@
-# Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nexfontsel
 PORTVERSION=	3.0.1
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTNAME=	NeXFontSel-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	NeXtaw based replacement for xfontsel
+WWW=		http://www.netlab.is.tsukuba.ac.jp/~yokota/izumi/nexfontsel/
 
 LIB_DEPENDS=	libneXtaw.so:x11-toolkits/neXtaw
 

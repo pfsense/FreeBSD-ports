@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	montserrat
-PORTVERSION=	7.210
+PORTVERSION=	7.222
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Sans-serif font inspired by the street signs of Montserrat
+WWW=		https://github.com/JulietaUla/Montserrat/
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/OFL.txt

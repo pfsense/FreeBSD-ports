@@ -1,6 +1,3 @@
-# Created by: Bruce M. Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	c2mdoc
 PORTVERSION=	20040302
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTFILES=
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Script to generate mdoc(7) markup from C functions
+WWW=		https://bsdforge.com/projects/devel/c2mdoc/
 
 RUN_DEPENDS=	cproto:devel/cproto
 

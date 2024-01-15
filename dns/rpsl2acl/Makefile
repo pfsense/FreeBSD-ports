@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rpsl2acl
 PORTVERSION=	1.01
 CATEGORIES=	dns perl5
@@ -8,6 +5,7 @@ MASTER_SITES=	http://download.gnu.org.ua/pub/release/dnstools/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Query set of RPSL database objects and convert to BIND ACLs
+WWW=		https://man.gnu.org.ua/manpage/?1+rpsl2acl
 
 LICENSE=	GPLv3+
 

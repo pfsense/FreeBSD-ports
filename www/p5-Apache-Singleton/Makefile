@@ -1,6 +1,3 @@
-# Created by: ports@c0decafe.net
-# $FreeBSD$
-
 PORTNAME=	Apache-Singleton
 PORTVERSION=	0.17
 CATEGORIES=	www devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Singleton class for mod_perl
+WWW=		https://metacpan.org/release/Apache-Singleton
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

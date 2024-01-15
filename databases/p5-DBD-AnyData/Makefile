@@ -1,6 +1,3 @@
-# Created by: ijlioa
-# $FreeBSD$
-
 PORTNAME=	DBD-AnyData
 PORTVERSION=	0.110
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBI access to XML, CSV, and other formats
+WWW=		https://metacpan.org/release/DBD-AnyData
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-AnyData>=0.07:devel/p5-AnyData \

@@ -1,6 +1,3 @@
-# Created by: Frank Laszlo <laszlof@vonostingroup.com>
-# $FreeBSD$
-
 PORTNAME=	md5deep
 PORTVERSION=	4.4
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	security
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Program to compute various message digests recursively
+WWW=		https://md5deep.sourceforge.net
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

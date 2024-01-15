@@ -1,6 +1,3 @@
-# Created by: Beat Gaetzi <beat@chruetertee.ch>
-# $FreeBSD$
-
 PORTNAME=	thinkingrock
 PORTVERSION=	2.2.1
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	tr-${PORTVERSION}
 
 MAINTAINER=	beat@FreeBSD.org
 COMMENT=	Application for collecting and processing your thoughts
+WWW=		http://www.thinkingrock.com.au/
 
 RUN_DEPENDS=	${LOCALBASE}/bin/xdg-open:devel/xdg-utils \
 		${LOCALBASE}/bin/xdg-email:devel/xdg-utils

@@ -13,6 +13,14 @@ lib/librec.a
 lib/librec.so
 lib/librec.so.1
 lib/librec.so.1.0.0
+%%BASH%%lib/readrec.a
+%%BASH%%lib/readrec.so
+%%BASH%%lib/readrec.so.0
+%%BASH%%lib/readrec.so.0.0.0
+%%BASH%%lib/testrec.a
+%%BASH%%lib/testrec.so
+%%BASH%%lib/testrec.so.0
+%%BASH%%lib/testrec.so.0.0.0
 man/man1/csv2rec.1.gz
 %%MDB%%man/man1/mdb2rec.1.gz
 man/man1/rec2csv.1.gz
@@ -23,8 +31,6 @@ man/man1/recinf.1.gz
 man/man1/recins.1.gz
 man/man1/recsel.1.gz
 man/man1/recset.1.gz
-share/emacs/site-lisp/ob-rec.el
-share/emacs/site-lisp/rec-mode.el
 %%NLS%%share/locale/de/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/es/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/fi/LC_MESSAGES/recutils.mo

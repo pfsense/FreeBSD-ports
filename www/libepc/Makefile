@@ -1,13 +1,12 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libepc
 PORTVERSION=	0.4.6
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	GNOME
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	The Easy Publish and Consume library
+WWW=		https://live.gnome.org/libepc/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

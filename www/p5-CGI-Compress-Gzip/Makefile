@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CGI-Compress-Gzip
 PORTVERSION=	1.03
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	CGI in Perl with automatically compressed output
+WWW=		https://metacpan.org/release/CGI-Compress-Gzip
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

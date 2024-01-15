@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	luckybackup
 PORTVERSION=	0.5.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}/source
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Qt frontend to the backup utility rsync
+WWW=		https://luckybackup.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/license/gpl.txt
@@ -17,7 +17,7 @@ RUN_DEPENDS=	rsync:net/rsync \
 USES=		compiler:c++11-lang gl qmake qt:5
 
 USE_GL=		gl
-USE_QT=		core gui network widgets buildtools_build
+USE_QT=		core gui network widgets buildtools:build
 
 post-patch:
 	${REINPLACE_CMD} -e 's|/usr|$$$${PREFIX}|g' -e '/INSTALLS/s|debianmenu ||' \

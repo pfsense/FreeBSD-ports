@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	web_search
 PORTVERSION=	0.1.6
 PORTREVISION=	4
@@ -8,6 +5,7 @@ CATEGORIES=	mail www
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Plugin for Websearch
+WWW=		https://www.squirrelmail.org
 
 LICENSE=	GPLv2
 

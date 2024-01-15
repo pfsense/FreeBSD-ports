@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	transdecoder
 DISTVERSIONPREFIX=	TransDecoder-v
-DISTVERSION=	5.4.0
-PORTREVISION=	2
+DISTVERSION=	5.7.1
 CATEGORIES=	biology perl5
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Identify candidate coding regions within transcript sequences
+WWW=		https://transdecoder.github.io/
 
 LICENSE=	BSD3CLAUSE
 

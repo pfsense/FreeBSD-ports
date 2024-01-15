@@ -1,19 +1,17 @@
-# Created by: Andrew 'derfi' Sidorov <derfi@vei.ru>
-# $FreeBSD$
-
 PORTNAME=	nagvis
-PORTVERSION=	1.9.23
+PORTVERSION=	1.9.36
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.nagvis.org/share/
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Visualization addon for Nagios
+WWW=		https://www.nagvis.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext php:web
-USE_PHP=	gd gettext mbstring session json pdo pdo_sqlite
+USES=		cpe gettext php:web
+USE_PHP=	gd gettext mbstring session pdo pdo_sqlite
 
 NO_BUILD=	yes
 NO_ARCH=	yes

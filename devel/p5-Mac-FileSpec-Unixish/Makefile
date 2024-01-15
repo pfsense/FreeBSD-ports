@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Mac-FileSpec-Unixish
 PORTVERSION=	1.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module with functions to manipulate pathspecs in Unixish style
+WWW=		https://metacpan.org/release/Mac-FileSpec-Unixish
 
 USES=		perl5
 USE_PERL5=	configure

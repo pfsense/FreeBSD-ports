@@ -1,6 +1,3 @@
-# Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	NNTPClient
 PORTVERSION=	0.37
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gary@hayers.org
 COMMENT=	Client interface to NNTP (RFC977)
+WWW=		https://metacpan.org/release/NNTPClient
 
 USES=		perl5
 USE_PERL5=	configure

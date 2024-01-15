@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Gtk2-Ex-Simple-List
 PORTVERSION=	0.50
 PORTREVISION=	8
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Simple interface to complex MVC list widget
+WWW=		https://metacpan.org/release/Gtk2-Ex-Simple-List
 
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual
@@ -20,5 +18,7 @@ RUN_DEPENDS=	p5-Glib>=1.00:devel/p5-Glib \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

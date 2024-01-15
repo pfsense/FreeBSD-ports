@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	ganv
-PORTVERSION=	1.6.0
+DISTVERSION=	1.8.2
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://download.drobilla.net/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Interactive Gtk canvas widget for audio topologies representation
+WWW=		https://drobilla.net/software/ganv.html
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,11 +15,8 @@ LIB_DEPENDS=	libcgraph.so:graphics/graphviz \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		compiler:c++11-lang gettext-runtime gnome pkgconfig waf tar:bz2
-USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf2 glib20 glibmm gtk20 gtkmm24 libsigc++20 pango pangomm
+USES=		compiler:c++11-lang gettext gnome localbase:ldflags meson pkgconfig tar:xz
+USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf2 glib20 glibmm gtk20 gtkmm24 introspection:build libsigc++20 pango pangomm
 USE_LDCONFIG=	yes
-
-post-install:
-	@cd ${STAGEDIR}${PREFIX} && ${STRIP_CMD} bin/ganv_bench lib/libganv-1.so.1.6.0
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: <hvo.pm@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	Interchange6-Schema
 PORTVERSION=	0.133
 CATEGORIES=	databases perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Database Schema for Interchange 6
+WWW=		https://metacpan.org/release/Interchange6-Schema
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	jna
-PORTVERSION=	5.5.0
+PORTVERSION=	5.7.0
+PORTREVISION=	1
 CATEGORIES=	devel java
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ports@markdixon.name
 COMMENT=	Java access to native shared libraries
+WWW=		https://github.com/twall/jna
 
 LICENSE=	LGPL21+ APACHE20
 LICENSE_COMB=	dual
@@ -15,6 +15,8 @@ LICENSE_FILE_APACHE20=	${WRKSRC}/AL2.0
 
 BROKEN_armv6=		fails to compile: build.xml: compilation failed
 BROKEN_armv7=		fails to compile: build.xml: compilation failed
+
+BUILD_DEPENDS=	makeinfo:print/texinfo
 
 USES=		autoreconf:build gmake libtool xorg
 USE_ANT=	yes
@@ -37,12 +39,6 @@ TEST_TARGET=	test
 OPTIONS_DEFINE=	DOCS
 
 ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/i386/x86/:S/powerpc64/ppc64/}
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc64
-USE_GCC=	any
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

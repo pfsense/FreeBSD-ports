@@ -1,6 +1,3 @@
-# Created by: Piotr Kubaj <pkubaj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	exo
 PORTVERSION=	2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://ndiscovered.com/archives/
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Geometric sans serif font with a technological feel
+WWW=		http://www.ndiscovered.com/
 
 LICENSE=	OFL11
 

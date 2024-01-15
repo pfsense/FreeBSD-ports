@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	FileHandle-Unget
 PORTVERSION=	0.1634
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	FileHandle which supports ungetting of multiple bytes
+WWW=		https://github.com/coppit/filehandle-unget
 
 LICENSE=	GPLv2
 

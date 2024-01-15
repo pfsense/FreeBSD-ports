@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	waeijiro-fpw
 PORTVERSION=	1.1
 PORTREVISION=	6
@@ -11,6 +8,13 @@ MASTER_SITES=	http://www.dsl.gr.jp/~tf/pool/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	WAEIJIRO English - Japanese Dictionary (EPWING V1 format)
+WWW=		https://www.dsl.gr.jp/~tf/
+
+# Converted from RESTRICTED
+LICENSE=	waeijiro
+LICENSE_NAME=	waeijiro
+LICENSE_TEXT=	The original dictionary is not free
+LICENSE_PERMS=	auto-accept
 
 EXTRACT_DEPENDS=${LOCALBASE}/share/freepwing/fpwutils.mk:japanese/freepwing \
 		lha:archivers/lha
@@ -20,7 +24,6 @@ BUILD_DEPENDS=	${LOCALBASE}/libexec/freepwing/catdump:japanese/freepwing \
 MANUAL_PACKAGE_BUILD=Needs data from a CDROM
 MAKE_JOBS_UNSAFE=	yes
 
-RESTRICTED=	The original dictionary is not free
 USES=		perl5 gmake
 PORTDOCS=	README
 DICT_PATH?=	/cdrom
@@ -39,7 +42,7 @@ SOURCE_FILE=	${WRKDIR}/${SRCFILE}
 .endif
 MAKE_ARGS+=	SRC_DICT=${SOURCE_FILE:Q}
 
-OPTIONS_DEFINE= DOCS
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

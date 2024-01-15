@@ -1,28 +1,29 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	libuv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.40.0
+DISTVERSION=	1.47.0
 CATEGORIES=	devel
 MASTER_SITES=	https://dist.libuv.org/dist/v${DISTVERSION}/
+DISTNAME=	${PORTNAME}-${DISTVERSIONFULL}-dist
 
-MAINTAINER=	bhughes@FreeBSD.org
+MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Multi-platform support library with a focus on asynchronous I/O
+WWW=		https://github.com/libuv/libuv
 
-LICENSE=	NODE
-LICENSE_NAME=	NODE
+LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		autoreconf libtool pathfix pkgconfig
+USES=		cpe libtool pathfix pkgconfig
+
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 INSTALL_TARGET=	install-strip
 
 # Will not run as root, reference:
 # https://github.com/libuv/libuv/commit/af45b6ba2f2c506ae18dd24481e24db17b8269e7
 TEST_TARGET=	check
+
+CONFIGURE_ARGS=	--disable-maintainer-mode
 
 pre-configure:
 	${ECHO_CMD} "m4_define([UV_EXTRA_AUTOMAKE_FLAGS], [ serial-tests])" \

@@ -1,6 +1,3 @@
-# Created by: tj@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Text-CSV-Hashify
 PORTVERSION=	0.11
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Composition and decomposition of comma-separated values into hashes
+WWW=		https://metacpan.org/release/Text-CSV-Hashify
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

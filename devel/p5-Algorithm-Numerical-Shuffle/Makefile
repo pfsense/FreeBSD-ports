@@ -1,6 +1,3 @@
-# Created by: andrew@scoop.co.nz
-# $FreeBSD$
-
 PORTNAME=	Algorithm-Numerical-Shuffle
 PORTVERSION=	2009110301
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Shuffle a list
+WWW=		https://metacpan.org/release/Algorithm-Numerical-Shuffle
 
 LICENSE=	MIT
 

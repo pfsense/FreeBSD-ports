@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bitstream
 PORTVERSION=	1.5
 CATEGORIES=	multimedia
@@ -9,6 +6,7 @@ MASTER_SITES=	https://get.videolan.org/bitstream/${PORTVERSION}/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Binary MPEG, DVB, IETF, etc. structures access library
+WWW=		https://www.videolan.org/developers/bitstream.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

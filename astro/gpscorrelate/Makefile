@@ -1,25 +1,28 @@
-# Created by: Lukas Maly <Iam@LukasMaly.NET>
-# $FreeBSD$
-
 PORTNAME=	gpscorrelate
 PORTVERSION=	1.6.1
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	astro geography
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Correlate digital camera photos with GPS data in GPX format
+WWW=		http://freefoote.dview.net/linux_gpscorr.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libgtkmm-2.4.so:x11-toolkits/gtkmm24
+LIB_DEPENDS+=	libatk-1.0.so:accessibility/at-spi2-core
+LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig
+LIB_DEPENDS+=	libfreetype.so:print/freetype2
+LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz
 
-USES=		compiler:c++11-lang gmake gnome pkgconfig
-USE_GNOME=	libxml2
+USES=		compiler:c++11-lang gettext-runtime gmake gnome pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freefoote
+
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 libxml2 pango
 
 PLIST_FILES=	bin/gpscorrelate bin/gpscorrelate-gui \
 		man/man1/gpscorrelate.1.gz man/man1/gpscorrelate-gui.1.gz

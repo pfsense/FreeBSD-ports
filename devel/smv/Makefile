@@ -1,15 +1,13 @@
-# Created by: Marc E.E. van Woerkom <marc.vanwoerkom@fernuni-hagen.de>
-# $FreeBSD$
-
 PORTNAME=	smv
 PORTVERSION=	2.5.4.3
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	http://www.cs.cmu.edu/~modelcheck/smv/
 DISTNAME=	${PORTNAME}.r${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Symbolic Model Verifier System for checking finite state systems
+WWW=		https://www.cs.cmu.edu/~modelcheck/smv.html
 
 BROKEN_aarch64=		fails to build: undefined reference to sbrk
 BROKEN_armv6=		fails to build: error: non-void function check_bdd should return a value

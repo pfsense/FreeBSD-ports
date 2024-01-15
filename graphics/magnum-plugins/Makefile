@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	magnum-plugins
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2019.10
+DISTVERSION=	2020.06-1064
 PORTREVISION=	1
+DISTVERSIONSUFFIX=	-g94aefed2
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Plugins for the Magnum C++11/C++14 graphics engine
+WWW=		https://magnum.graphics/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,11 +21,12 @@ LIB_DEPENDS=	libassimp.so:multimedia/assimp \
 		libpng.so:graphics/png
 
 USES=		cmake compiler:c++14-lang gl jpeg openal xorg
+USE_GL=		glesv2
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	mosra
 GH_TUPLE=	mosra:toolchains:fc22ff5:t/toolchains
-USE_GL=		glesv2
-USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DLIB_SUFFIX:STRING=""
 

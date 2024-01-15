@@ -1,6 +1,3 @@
-# Created by: Douglas Thrift
-# $FreeBSD$
-
 PORTNAME=	dtpstree
 PORTVERSION=	1.0.3
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ MASTER_SITES=	http://dl1.douglasthrift.net/${PORTNAME}/ \
 
 MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	Display a tree of processes
+WWW=		https://code.douglasthrift.net/trac/dtpstree
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

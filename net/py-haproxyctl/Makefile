@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	haproxyctl
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -9,12 +7,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	zhoutao@laocius.org
 COMMENT=	HAProxy control tool
+WWW=		https://github.com/neurogeek/haproxyctl
 
 LICENSE=	GPLv3
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils concurrent autoplist
 
 USE_GITHUB=	yes

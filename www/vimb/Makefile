@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	vimb
-DISTVERSION=	3.6.0
+DISTVERSION=	3.7.0
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vim like browser
+WWW=		https://fanglingsu.github.io/vimb/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -27,7 +27,8 @@ LDFLAGS+=	-Wl,--as-needed
 PLIST_FILES=	bin/vimb \
 		lib/vimb/webext_main.so \
 		man/man1/vimb.1.gz \
-		share/applications/vimb.desktop
+		share/applications/vimb.desktop \
+		share/metainfo/vimb.metainfo.xml
 
 post-patch:
 # .git/index needs to exist to generate version.h...

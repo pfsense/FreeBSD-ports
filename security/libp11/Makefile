@@ -1,19 +1,19 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libp11
-PORTVERSION=	0.4.11
+PORTVERSION=	0.4.12
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	security devel
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Small layer on top of PKCS\#11 API
+WWW=		https://github.com/OpenSC/libp11/wiki
 
 LICENSE=	LGPL21
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		autoreconf libtool pkgconfig ssl
+USES=		autoreconf cpe libtool pkgconfig ssl
+CPE_VENDOR=	opensc_project
+CPE_PRODUCT=	opensc
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

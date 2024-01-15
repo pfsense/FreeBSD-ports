@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Generate
 PORTVERSION=	1.18
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simplify the creation of class hierarchies
+WWW=		https://metacpan.org/release/Class-Generate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

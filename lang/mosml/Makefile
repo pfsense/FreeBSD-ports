@@ -1,6 +1,3 @@
-# Created by: Chuck Robey <chuckr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mosml
 PORTVERSION=	2.10.1
 DISTVERSIONPREFIX=	ver-
@@ -9,6 +6,13 @@ CATEGORIES=	lang
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight implementation of Standard ML
+WWW=		https://mosml.org/
+
+# Converted from RESTRICTED
+LICENSE=	mosml
+LICENSE_NAME=	mosml
+LICENSE_TEXT=	Restrictions on for-profit distribution
+LICENSE_PERMS=	auto-accept
 
 BROKEN_mips=		does not configure: this architecture seems to be neither big endian nor little endian
 BROKEN_mips64=		does not configure: this architecture seems to be neither big endian nor little endian
@@ -19,8 +23,6 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 
 GH_ACCOUNT=	kfl
 USE_GITHUB=	yes
-
-RESTRICTED=	Restrictions on for-profit distribution
 
 USES=		compiler:features gmake perl5
 ALL_TARGET=	world

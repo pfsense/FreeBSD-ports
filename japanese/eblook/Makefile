@@ -1,6 +1,3 @@
-# Created by: Shigeyuki Fukushima <shige@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	eblook
 PORTVERSION=	1.6.1
 PORTREVISION=	10
@@ -8,8 +5,9 @@ CATEGORIES=	japanese textproc
 MASTER_SITES=	http://openlab.ring.gr.jp/edict/eblook/dist/
 DIST_SUBDIR=	eb
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Command to lookup words in EB format dictionaries
+WWW=		http://openlab.ring.gr.jp/edict/eblook/index.html.ja
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

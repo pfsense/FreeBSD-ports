@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	git-secret
 DISTVERSION=	0.2.5
 CATEGORIES=	security
 
 MAINTAINER=	mail@sobolevn.me
 COMMENT=	Bash tool to store your private data inside a git repository
+WWW=		https://git-secret.io/
 
 LICENSE=	MIT
 #MASTER_SITES=	https://github.com/sobolevn/git-secret/archive/
@@ -14,7 +13,6 @@ RUN_DEPENDS=	bash:shells/bash gawk:lang/gawk git:devel/git gpg2:security/gnupg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sobolevn
-GH_PROJECT=	git-secret
 GH_TAGNAME=	94d5ae4
 
 NO_ARCH=	yes

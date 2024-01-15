@@ -1,9 +1,6 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	iceicepenguin
 PORTVERSION=	1.5.1
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	games python
 MASTER_SITES=	SF/${PORTNAME}/Default/Ice%20Ice%20Penguin/ \
 		SF/nemysisfreebsdp/games/:icons
@@ -13,6 +10,7 @@ DIST_SUBDIR=	python
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Remake of an old SEGA Dreamcast game called Chu Chu Rocket
+WWW=		https://sourceforge.net/projects/iceicepenguin/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,7 +26,6 @@ NO_ARCH=	yes
 
 PORTDOCS=	CHANGELOG.txt readme.txt
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 SUB_FILES=	${PORTNAME}

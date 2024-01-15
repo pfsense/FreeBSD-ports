@@ -1,34 +1,34 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
-
 PORTNAME=	fastcluster
-PORTVERSION=	1.1.26
+PORTVERSION=	1.2.6
+PORTREVISION=	1
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast hierarchical clustering routines for R and Python
+WWW=		http://danifold.net/fastcluster.html \
+		https://github.com/dmuellner/fastcluster
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-BUILD_DEPENDS=	${PYNUMPY}
-RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}scipy>=0:science/py-scipy@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.9,1:math/py-numpy@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		compiler python
 USE_PYTHON=	autoplist concurrent distutils
 
-PORTDOCS=	CITATION.txt INSTALL.txt NEWS.txt README.txt
+.include <bsd.port.pre.mk>
 
-OPTIONS_DEFINE=	DOCS
+.if ${ARCH:Mpowerpc*} && ${COMPILER_VERSION} == 140
+BUILD_DEPENDS+=	clang15:devel/llvm15
+CPP=            clang-cpp15
+CC=             clang15
+CXX=            clang++15
+.endif
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_fastcluster*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

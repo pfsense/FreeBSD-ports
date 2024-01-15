@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Class-Delegation
 PORTVERSION=	1.9.0
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object-oriented delegation
+WWW=		https://metacpan.org/release/Class-Delegation
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

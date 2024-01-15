@@ -1,16 +1,16 @@
-# Created by: Valery Komarov <komarov@valerka.net>
-# $FreeBSD$
-
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION}
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/thrift/${PORTVERSION}
 PKGNAMEPREFIX=	node-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Node.js bindings for the Apache Thrift RPC system
+WWW=		https://thrift.apache.org/
 
-RUN_DEPENDS=	node:www/node
+USES=		cpe nodejs:run
+CPE_VENDOR=	apache
 
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,23 +1,23 @@
-# Created by: Maurice Castro <maurice@serc.rmit.edu.au>
-# $FreeBSD$
-
 PORTNAME=	R
-DISTVERSION=	4.0.3
+DISTVERSION=	4.3.2
 PORTREVISION=	1
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Language for statistical computing and graphics
+WWW=		https://www.R-project.org/
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 
 BUILD_DEPENDS=	texi2any:print/texinfo
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre2-8.so:devel/pcre2
-RUN_DEPENDS=	gmake:devel/gmake # R packages may require GNU make
+# R packages may require GNU make or cmake to build
+RUN_DEPENDS=	cmake:devel/cmake-core \
+		gmake:devel/gmake
 
 # possible TODO
 # - Use --with-recommended-packages=no by default
@@ -25,8 +25,9 @@ RUN_DEPENDS=	gmake:devel/gmake # R packages may require GNU make
 # - Create ports for each of the recommended packages
 # - Create a meta-port for the recommended packages
 
-USES=		compiler:c++11-lang gmake iconv libtool localbase pathfix perl5 \
-		readline:port
+USES=		compiler:c++11-lang cpe fortran gmake iconv libtool localbase \
+		pathfix perl5 readline
+CPE_VENDOR=	r-project
 USE_LDCONFIG=	${PREFIX}/lib/R/lib
 USE_PERL5=	build
 
@@ -36,25 +37,20 @@ CONFIGURE_ARGS=	--disable-java \
 		--with-readline \
 		rdocdir=${DOCSDIR}
 INSTALL_TARGET=	install-strip
-PLIST_SUB=	FULLVER=${DISTVERSION} MAJORVER=${_MAJORVER}
+PLIST_SUB=	FULLVER=${DISTVERSION} \
+		MAJORVER=${_MAJORVER}
 
-OPTIONS_DEFINE=		ICU INFO LDOUBLE LETTER MEMPROF NLS RPROF X11
-OPTIONS_DEFINE_amd64=	FLANG OPENMP
-OPTIONS_DEFINE_i386=	OPENMP
-OPTIONS_DEFAULT=	CAIROPANGO GHOSTSCRIPT ICU INFO JPEG LDOUBLE PNG RBLAS \
-			RPROF TCLTK TIFF X11
-OPTIONS_DEFAULT_amd64=	OPENMP
-OPTIONS_DEFAULT_i386=	OPENMP
+OPTIONS_DEFINE=		ICU INFO LDOUBLE LETTER MEMPROF NLS OPENMP RPROF X11
+OPTIONS_DEFAULT=	CAIROPANGO GHOSTSCRIPT ICU INFO JPEG LDOUBLE OPENMP PNG \
+			RBLAS RPROF TCLTK TIFF X11
 OPTIONS_GROUP=		NEEDX11
 OPTIONS_GROUP_NEEDX11=	CAIROPANGO GHOSTSCRIPT JPEG PNG TCLTK TEXDOCS TIFF
 OPTIONS_SINGLE=		BLAS
 OPTIONS_SINGLE_BLAS=	ATLAS NETLIB OPENBLAS RBLAS
 
-OPTIONS_SUB=		YES
+OPTIONS_SUB=	YES
 
-ATLAS_DESC=		ATLAS BLAS implementation
 CAIROPANGO_DESC=	Cairo graphics device and Pango multi-language text
-FLANG_DESC=		Use experimental flang Fortran compiler
 GHOSTSCRIPT_DESC=	Graphics device for bitmap files via Ghostscript
 JPEG_DESC=		JPEG graphics device
 LDOUBLE_DESC=		Long double data type
@@ -62,7 +58,6 @@ LETTER_DESC=		US letter paper
 MEMPROF_DESC=		Memory profiling via Rprofmem() and tracemem()
 NEEDX11_DESC=		Require X11
 NETLIB_DESC=		Netlib BLAS implementation
-OPENBLAS_DESC=		OpenBLAS BLAS implementation
 PNG_DESC=		PNG graphics device
 RBLAS_DESC=		Use R-bundled BLAS implementation
 RPROF_DESC=		R profiling via Rprof()
@@ -72,12 +67,10 @@ X11_DESC=		X11 graphics device
 ATLAS_USES=			blaslapack:atlas
 ATLAS_CONFIGURE_ON=		--disable-BLAS-shlib
 CAIROPANGO_IMPLIES=		X11
+CAIROPANGO_LIB_DEPENDS=		libharfbuzz.so:print/harfbuzz
 CAIROPANGO_USES=		gettext gnome jpeg pkgconfig
 CAIROPANGO_USE=			GNOME=cairo,pango
 CAIROPANGO_CONFIGURE_WITH=	cairo
-FLANG_PREVENTS=			ATLAS NETLIB OPENBLAS
-FLANG_LIB_DEPENDS=		libpgmath.so:math/libpgmath
-FLANG_USES=			fortran:flang
 GHOSTSCRIPT_IMPLIES=		X11
 GHOSTSCRIPT_USES=		ghostscript
 ICU_LIB_DEPENDS=		libicui18n.so:devel/icu
@@ -112,7 +105,9 @@ RBLAS_EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_extra_blas_Makefile.in \
 RPROF_CONFIGURE_ENABLE=		R-profiling
 TCLTK_IMPLIES=			X11
 TCLTK_USES=			tcl tk
-TCLTK_CONFIGURE_WITH=		tcltk
+TCLTK_CONFIGURE_WITH=		tcltk tcl_config=${TCL_LIBDIR}/tclConfig.sh \
+				tk_config=${TK_LIBDIR}/tkConfig.sh
+TEXDOCS_USES=			tex
 TEXDOCS_USE=			TEX=dvipsk:build,kpathsea:build,pdftex:build
 .for i in KPSEWHICH MAKEINDEX PDFLATEX PDFTEX TEX TEXI2DVI
 TEXDOCS_CONFIGURE_ENV_OFF+=	ac_cv_path_${i}=""
@@ -129,8 +124,8 @@ _MAJORVER=	${DISTVERSION:R:R}
 
 .include <bsd.port.options.mk>
 
-.if ! ${PORT_OPTIONS:MFLANG}
-USES+=		fortran
+.if ${ARCH} == powerpc
+LLD_UNSAFE=	yes
 .endif
 
 post-patch:
@@ -142,12 +137,12 @@ post-patch:
 		${WRKSRC}/src/extra/blas/Makefile.in \
 		${WRKSRC}/src/modules/lapack/Makefile.in
 
-post-install-RBLAS-off:
-	@${REINPLACE_CMD} -e "s| -lR| -lR ${BLASLIB}|" \
-		${STAGEDIR}${PREFIX}/libdata/pkgconfig/libR.pc
-
 post-install-RBLAS-on:
 	@${REINPLACE_CMD} -e "s| -lR| -lR -lRblas|" \
+		${STAGEDIR}${PREFIX}/libdata/pkgconfig/libR.pc
+
+post-install-RBLAS-off:
+	@${REINPLACE_CMD} -e "s| -lR| -lR ${BLASLIB}|" \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/libR.pc
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	colorcode
 PORTVERSION=	0.8.5
 PORTREVISION=	2
@@ -9,12 +7,13 @@ DISTNAME=	ColorCode-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced MasterMind game and solver
+WWW=		http://colorcode.laebisch.com/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:c++11-lang qmake qt:5
-USE_QT=		core gui widgets buildtools_build
+USE_QT=		core gui widgets buildtools:build
 WRKSRC=		${WRKDIR}/ColorCode-${PORTVERSION}
 
 DESKTOP_ENTRIES=ColorCode \

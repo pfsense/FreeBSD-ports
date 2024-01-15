@@ -1,20 +1,18 @@
-# Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	metis
 PORTVERSION=	5.1.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	math
 MASTER_SITES=	http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Package for unstructured graph partitioning
+WWW=		http://glaros.dtc.umn.edu/gkhome/metis/metis/overview
 
 LICENSE=	APACHE20
 
 USES=		cmake:noninja compiler:c11
 
-CONFLICTS=	metis-edf-[0-9]* metis4-4*
+CONFLICTS=	metis-edf metis4-4*
 
 PORTDOCS=	manual.pdf
 
@@ -30,7 +28,6 @@ SHARED_DESC=	shared library and dynamically-linked executables
 STATIC_DESC=	libmetis archive
 
 OPENMP_CMAKE_BOOL=	OPENMP
-OPENMP_USES=		compiler:openmp
 
 SHARED_USE=	LDCONFIG=yes
 
@@ -43,13 +40,9 @@ ALL_TARGET_STATIC=	metis
 WRKSRC_STATIC=		${WRKSRC}
 INSTALL_WRKSRC_STATIC=	${WRKSRC_STATIC}/libmetis
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == "sparc64"
-CFLAGS+=	-fPIC
-.else
 CFLAGS+=	-fpic
-.endif
+
+.include <bsd.port.options.mk>
 
 pre-configure:
 	@${REINPLACE_CMD} -e "/^# Add compiler flags/,/^$$/d" \

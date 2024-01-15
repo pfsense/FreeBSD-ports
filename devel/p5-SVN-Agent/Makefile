@@ -1,6 +1,3 @@
-# Created by: Yuan-Chung Hsiao <ychsiao@ychsiao.org>
-# $FreeBSD$
-
 PORTNAME=	SVN-Agent
 PORTVERSION=	0.04
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ychsiao@ychsiao.org
 COMMENT=	Simple svn manipulation
+WWW=		https://metacpan.org/release/SVN-Agent
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-subversion>=0:devel/p5-subversion \

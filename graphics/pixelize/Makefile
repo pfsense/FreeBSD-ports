@@ -1,9 +1,6 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	pixelize
 PORTVERSION=	1.0.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://lashwhip.com/pub/ \
 		http://www.c-s.li/ports/ \
@@ -11,6 +8,7 @@ MASTER_SITES=	ftp://lashwhip.com/pub/ \
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Use many scaled down images to try to duplicate another image
+WWW=		http://lashwhip.com/pixelize.html
 
 LICENSE=	GPLv2
 

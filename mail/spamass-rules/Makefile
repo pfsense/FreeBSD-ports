@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spamass-rules
 PORTVERSION=	20190101
 CATEGORIES=	mail
@@ -7,6 +5,7 @@ MASTER_SITES=	http://www.ranner.eu/stuff/
 
 MAINTAINER=	michael@ranner.eu
 COMMENT=	Custom rulesets for SpamAssassin
+WWW=		https://cwiki.apache.org/confluence/display/spamassassin/CustomRulesets
 
 RUN_DEPENDS=	spamc:mail/spamassassin
 

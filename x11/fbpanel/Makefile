@@ -1,20 +1,18 @@
-# Created by: Tobias Roth <ports@fsck.ch>
-# $FreeBSD$
-
 PORTNAME=	fbpanel
 PORTVERSION=	6.1
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	x11
 MASTER_SITES=	SF
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight, NETWM compliant X11 desktop panel
+WWW=		https://fbpanel.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		alias gmake gnome pkgconfig tar:tbz2 xorg
-USE_GNOME=	gtk20
+USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}

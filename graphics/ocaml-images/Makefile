@@ -1,9 +1,6 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	images
 PORTVERSION=	4.0.1
-PORTREVISION=	9
+PORTREVISION=	13
 PORTEPOCH=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/camlspotter/camlimages/get/
@@ -13,6 +10,7 @@ DIST_SUBDIR=	ocaml-images
 
 MAINTAINER=	michael.grunewald@laposte.net
 COMMENT=	Objective Caml image processing library
+WWW=		http://pauillac.inria.fr/camlimages/
 
 BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/ocaml.m4:lang/ocaml-autoconf
 BUILD_DEPENDS+=	omake:devel/omake
@@ -52,9 +50,9 @@ XPM_CONFIGURE_WITH=	xpm
 GIF_CONFIGURE_WITH=	gif
 GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 
+FREETYPE_USES=		pkgconfig
 FREETYPE_CONFIGURE_WITH=freetype
-FREETYPE_LIB_DEPENDS=	libttf.so:print/freetype \
-			libfreetype.so:print/freetype2
+FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 GHOSTSCRIPT_CONFIGURE_WITH=	gs
 GHOSTSCRIPT_USES=	ghostscript
@@ -63,12 +61,18 @@ GTK2_CONFIGURE_WITH=	liblgtk2
 GTK2_BUILD_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2
 GTK2_RUN_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2
 
+BINARY_ALIAS=		freetype-config=true
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MXPM}
 USES+=		xorg
 USE_XORG=	xpm
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's,shell-success-null,shell-success,' \
+		${WRKSRC}/OMyMakeroot
 
 do-configure:
 	@(cd ${WRKSRC} && ${REINPLACE_CMD} ${OMAKESUBS} OMakefile)

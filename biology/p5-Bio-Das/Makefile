@@ -1,6 +1,3 @@
-# Created by: Razi Khaja <razi@genet.sickkids.on.ca>
-# $FreeBSD$
-
 PORTNAME=	Bio-Das
 PORTVERSION=	1.17
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Client-side library for Distributed Genome Annotation System
+WWW=		https://metacpan.org/release/Bio-Das
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

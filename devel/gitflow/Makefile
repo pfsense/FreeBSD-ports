@@ -1,12 +1,10 @@
-# Created by: Nicolas Embriz <nbari@tequila.io>
-# $FreeBSD$
-
 PORTNAME=	gitflow
 PORTVERSION=	1.12.3
 CATEGORIES=	devel
 
 MAINTAINER=	nbari@tequila.io
 COMMENT=	Git extensions to provide high-level repository operations
+WWW=		https://github.com/petervanderdoes/gitflow-avh
 
 LICENSE=	BSD2CLAUSE LGPL21
 LICENSE_COMB=	multi

@@ -1,13 +1,12 @@
-# Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
-
 PORTNAME=	wanderlust
 PORTVERSION=	2.15.9.b.${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	mail elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Mail and news system for Emacs
+WWW=		https://github.com/wanderlust/wanderlust
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,15 +19,16 @@ RUN_DEPENDS=	emacs-w3m${EMACS_PKGNAMESUFFIX}>0:www/emacs-w3m@${EMACS_FLAVOR} \
 
 USES=		emacs
 USE_GITHUB=	yes
-GH_TAGNAME=	c19a1df
+GH_TAGNAME=	8369b2d
 
 NO_ARCH=	yes
-SNAPDATE=	20201115
+SNAPDATE=	20230623
 
 MAKE_ARGS+=	EMACS=${EMACS_CMD} \
 		FLAGS="-batch -q -no-site-file" \
 		LISPDIR=${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR} \
 		INFODIR=${STAGEDIR}${PREFIX}/${INFO_PATH} \
+		PACKAGE_LISPDIR=NONE \
 		PIXMAPDIR=${STAGEDIR}${PREFIX}/${EMACS_LIBDIR}/etc/wl/icons
 
 INFO=		wl wl-ja

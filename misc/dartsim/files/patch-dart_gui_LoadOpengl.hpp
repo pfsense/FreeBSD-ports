@@ -1,4 +1,4 @@
---- dart/gui/LoadOpengl.hpp.orig	2019-02-18 02:38:26 UTC
+--- dart/gui/LoadOpengl.hpp.orig	2021-11-04 20:43:53 UTC
 +++ dart/gui/LoadOpengl.hpp
 @@ -46,6 +46,9 @@
  #elif defined(__linux__)

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	graphos
 PORTVERSION=	0.7
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	Graphos-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector drawing application centered around bezier paths
+WWW=		https://gap.nongnu.org/graphos/
 
 LICENSE=	GPLv2
 

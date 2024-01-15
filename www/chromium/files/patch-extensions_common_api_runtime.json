@@ -1,11 +1,10 @@
---- extensions/common/api/runtime.json.orig	2020-11-13 06:36:43 UTC
+--- extensions/common/api/runtime.json.orig	2023-09-13 12:11:42 UTC
 +++ extensions/common/api/runtime.json
-@@ -68,7 +68,7 @@
-         "id": "PlatformOs",
-         "type": "string",
-         "description": "The operating system chrome is running on.",
--        "enum": ["mac", "win", "android", "cros", "linux", "openbsd"]
-+        "enum": ["mac", "win", "android", "cros", "linux", "freebsd", "openbsd"]
+@@ -89,6 +89,7 @@
+             {"name": "cros", "description": "Specifies the Chrome operating system."},
+             {"name": "linux", "description": "Specifies the Linux operating system."},
+             {"name": "openbsd", "description": "Specifies the OpenBSD operating system."},
++            {"name": "freebsd", "description": "Specifies the FreeBSD operating system."},
+             {"name": "fuchsia", "description": "Specifies the Fuchsia operating system."}
+         ]
        },
-       {
-         "id": "PlatformArch",

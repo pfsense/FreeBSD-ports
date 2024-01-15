@@ -1,6 +1,3 @@
-# Created by: Jon Nistor <nistor@snickers.org>
-# $FreeBSD$
-
 PORTNAME=	bmon
 PORTVERSION=	4.0
 DISTVERSIONPREFIX=	v
@@ -8,12 +5,11 @@ CATEGORIES=	net
 
 MAINTAINER=	michelle@sorbs.net
 COMMENT=	Human-readable bandwidth monitor and rate estimator
+WWW=		https://github.com/tgraf/bmon
 
 LICENSE=	MIT
 
 LIB_DEPENDS=	libconfuse.so:devel/libconfuse
-
-CONFLICTS_INSTALL=	bmon-*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	tgraf

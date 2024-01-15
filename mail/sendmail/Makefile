@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	sendmail
-PORTVERSION=	8.16.1
+PORTVERSION=	8.17.2
 PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
@@ -9,13 +7,14 @@ DISTNAME=	${PORTNAME}.${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Reliable, highly configurable mail transfer agent with utilities
+WWW=		https://www.sendmail.org/
 
 LICENSE=	Sendmail
 LICENSE_NAME=	Sendmail License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS?=	courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd-*
+CONFLICTS?=	courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd
 
 USERS=		smmsp
 GROUPS=		smmsp
@@ -48,7 +47,7 @@ MILTER_SOVER?=	6
 
 OPTIONS_DEFINE?=	SHMEM SEM LA NIS IPV6 TLS DANE SASL SASLAUTHD LDAP \
 			BDB GDBM SOCKETMAP CYRUSLOOKUP BLACKLISTD SMTPUTF8 \
-			PICKY_HELO_CHECK MILTER DOCS
+			PICKY_HELO_CHECK MILTER MTA_STS TLS_CERT_CHAIN DOCS
 OPTIONS_DEFAULT?=	SHMEM SEM LA NIS TLS DANE SASL SASLAUTHD BDB1 \
 			BLACKLISTD PICKY_HELO_CHECK MILTER
 NO_OPTIONS_SORT=yes
@@ -65,23 +64,24 @@ CYRUSLOOKUP_DESC=	Enable cyruslookup feature
 PICKY_HELO_CHECK_DESC=	Enable picky HELO check
 MILTER_DESC=		Enable milter support
 SMTPUTF8_DESC=		Enable unicode address support
+MTA_STS_DESC=		Enable MTA-STS support (option SOCKETMAP and TLS needed)
+TLS_CERT_CHAIN_DESC=	Enable certificate chain file support (incompatibility)
 
 TLS_USES=	ssl
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASLAUTHD_RUN_DEPENDS=	saslauthd:security/cyrus-sasl2-saslauthd
 DANE_IMPLIES=	TLS
-LDAP_USE=	OPENLDAP=yes
-LDAP_PREVENTS=	DANE
+LDAP_USES=	ldap
+LDAP_IMPLIES=	DANE
 BDB_USES=	bdb
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_WITH=	compat
+CYRUSLOOKUP_IMPLIES=	SOCKETMAP
 SMTPUTF8_LIB_DEPENDS=	libidn2.so:dns/libidn2 libicui18n.so:devel/icu
+MTA_STS_IMPLIES=	SOCKETMAP TLS
+TLS_CERT_CHAIN_IMPLIES=	TLS
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
-PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${LDAP_SUFFIX}${BDB_SUFFIX}${PKGNAMESUFFIX2}
-.endif
 
 .if ${PORT_OPTIONS:MSHMEM} && !defined(BUILDING_INDEX)
 IPCCHECK!=	ipcrm -q 0 2>&1 || true
@@ -103,11 +103,7 @@ SASL_SUFFIX?=	+sasl2
 CONFLICTS+=	sendmail-ldap-8.* sendmail-tls-8.*
 .endif
 .if ${PORT_OPTIONS:MCYRUSLOOKUP}
-.if ! ${PORT_OPTIONS:MSOCKETMAP}
-IGNORE=		option CYRUSLOOKUP requires option SOCKETMAP
-.else
 EXTRA_PATCHES+=	${FILESDIR}/cyruslookup.patch
-.endif
 .endif
 .if ${PORT_OPTIONS:MTLS}
 TLS_SUFFIX?=	+tls
@@ -149,8 +145,11 @@ SITE+=	${FILESDIR}/site.config.m4.smtputf8
 SITE+=	${FILESDIR}/site.config.m4.milter
 .endif
 .if ${PORT_OPTIONS:MGDBM}
-NO_PACKAGE=	GPLv3 license conflict
+LICENSE_PERMS=	dist-mirror dist-sell no-pkg-mirror no-pkg-sell auto-accept
 SITE+=	${FILESDIR}/site.config.m4.gdbm
+.endif
+.if ${PORT_OPTIONS:MMTA_STS}
+SITE+=	${FILESDIR}/site.config.m4.mta-sts
 .endif
 
 SED_SCRIPT=	-e "s|\`-O'|\`${CFLAGS}'|" \
@@ -160,16 +159,13 @@ SED_SCRIPT=	-e "s|\`-O'|\`${CFLAGS}'|" \
 SED_SCRIPT+=	-e "s;-DNIS ;;"
 .endif
 
+post-patch:
+	@cd ${WRKSRC} && ${FIND} cf -type f -name "*.orig" -print0 | ${XARGS} -0 ${RM}
+
 do-configure:
 .if ${PORT_OPTIONS:MGDBM}
 	@(if [ ! -e "${LOCALBASE}/lib/libgdbm_compat.so" ] ; then \
 	  ${ECHO_MSG} "===> option COMPAT is missing in databases/gdbm."; \
-	  ${FALSE}; \
-	  fi)
-.endif
-.if ${PORT_OPTIONS:MBLACKLISTD}
-	@(if [ ! -e "${DESTDIR}/usr/lib/libblacklist.so" ] ; then \
-	  ${ECHO_MSG} "===> libblacklist.so not found. Please update to FreeBSD 11"; \
 	  ${FALSE}; \
 	  fi)
 .endif
@@ -353,6 +349,9 @@ help:
 SITE+=	${FILESDIR}/site.config.m4.ssl
 .endif
 SITE+=	${FILESDIR}/site.config.m4.tls
+.if ${PORT_OPTIONS:MTLS_CERT_CHAIN}
+SITE+=	${FILESDIR}/site.config.m4.tls-cert-chain
+.endif
 .endif
 
 .if exists(${FILESDIR}/site.config.m4.local)

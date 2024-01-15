@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-SAX-Base
 PORTVERSION=	1.09
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Base class SAX Drivers and Filters
+WWW=		https://metacpan.org/release/XML-SAX-Base
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

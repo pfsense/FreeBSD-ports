@@ -1,19 +1,17 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	venusian
-PORTVERSION=	3.0.0
+PORTVERSION=	3.1.0
 PORTEPOCH=	1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python library for deferring decorator actions
+WWW=		https://pypi.org/project/venusian/
 
 LICENSE=	BSD4CLAUSE
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

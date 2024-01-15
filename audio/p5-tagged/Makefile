@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tagged
 PORTVERSION=	0.40
 PORTREVISION=	1
@@ -11,10 +8,11 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read, change, and write different tags of MP3 audio files
+WWW=		https://tagged.sourceforge.net/
 
 USES=		perl5
 USE_PERL5=	configure
 
-CONFLICTS=	p5-MP3-Tag-0.*
+CONFLICTS=	p5-MP3-Tag # lib/perl5/site_perl/MP3/Tag.pm
 
 .include <bsd.port.mk>

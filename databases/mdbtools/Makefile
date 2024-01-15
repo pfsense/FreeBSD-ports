@@ -1,50 +1,60 @@
-# Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
-
 PORTNAME=	mdbtools
-DISTVERSION=	0.8.2
+DISTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	databases
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Utilities and libraries to export data from MS Access databases (.mdb)
+WWW=		https://github.com/mdbtools/mdbtools/
 
 LICENSE=	GPLv2
 
-# To build man-pages
-BUILD_DEPENDS=	gawk:lang/gawk \
-		txt2man:textproc/txt2man
-LIB_DEPENDS=	libodbc.so:databases/unixODBC
-# TODO  libmswstr: https://github.com/leecher1337/libmswstr
-#LIB_DEPENDS+=	libmswstr.so:databases/libmswstr
+BUILD_DEPENDS=	bash-completion>=0:shells/bash-completion \
+		flex:textproc/flex \
+		gawk:lang/gawk
+LIB_DEPENDS=	libodbcinst.so:databases/unixODBC
+RUN_DEPENDS=	bash-completion>=0:shells/bash-completion
 
-USES=		autoreconf bison gettext-runtime gnome iconv libtool pathfix \
+USES=		bison cpe gnome iconv:wchar_t libtool pathfix \
 		pkgconfig readline
-USE_LDCONFIG=	yes
+CPE_VENDOR=	mdbtools_project
 USE_GNOME=	glib20
+USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} \
-		--enable-gtk-doc \
 		--with-unixodbc=${LOCALBASE}
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	cyberemissary
-
-OPTIONS_DEFINE=	DOCS GNOME
-OPTIONS_SUB=	yes
 
 INSTALL_TARGET=	install-strip
 
-DOCS=		AUTHORS ChangeLog HACKING NEWS README TODO
+OPTIONS_DEFINE=		DOCS MANPAGES LIBMSWSTR NLS
+OPTIONS_DEFAULT=	MANPAGES
+OPTIONS_SUB=		yes
 
-GNOME_CONFIGURE_ENABLE=	gmdb2
-GNOME_USE=		GNOME=gconf2 \
-			GNOME=gdkpixbuf2 \
-			GNOME=gnomeprefix \
-			GNOME=intltool \
-			GNOME=libgnomeui
+LIBMSWSTR_DESC=	Read and parse JET 4 mdb file indices
+
+LIBMSWSTR_LIB_DEPENDS=		libmswstr.so:databases/libmswstr
+LIBMSWSTR_CONFIGURE_ENV_OFF=	ac_cv_lib_mswstr_DBLCMapStringW=no
+MANPAGES_CONFIGURE_OFF=		--disable-man
+NLS_USES=			gettext
+
+DOCS=		AUTHORS HACKING.md NEWS README.md
+
+.include <bsd.port.pre.mk>
+
+.if ${LLVM_DEFAULT} >= 15
+# With LLVM15:  parser.c:1053:9: error:
+# variable 'yynerrs' set but not used [-Werror,-Wunused-but-set-variable]
+BUILD_DEPENDS+=	llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
+LLVM_VER=	14
+#CMAKE_ARGS+=	-DLLVM_DIR=${LOCALBASE}/llvm${LLVM_VER}/lib/cmake/llvm
+CC=		clang${LLVM_VER}
+CPP=		clang-cpp${LLVM_VER}
+CXX=		clang++${LLVM_VER}
+.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S,^,${WRKSRC}/,}  ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

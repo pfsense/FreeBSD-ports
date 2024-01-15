@@ -1,28 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	checkbashisms
-DISTVERSION=	2.19.6
+DISTVERSION=	2.22.2
 CATEGORIES=	devel perl5
 MASTER_SITES=	DEBIAN/pool/main/d/devscripts/
 DISTNAME=	devscripts_${PORTVERSION}
 
-MAINTAINER=	nukama+maintainer@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Check for the presence of bashisms
+WWW=		https://packages.qa.debian.org/d/devscripts.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		perl5 shebangfix tar:xz
-SHEBANG_FILES=	scripts/checkbashisms.pl
 USE_PERL5=	run
 
-NO_BUILD=	yes
+SHEBANG_FILES=	scripts/checkbashisms.pl
+
 NO_ARCH=	yes
+NO_BUILD=	yes
+PORTSCOUT=	limit:^d\.d+\.d
 WRKSRC=		${WRKDIR}/devscripts-${PORTVERSION}
 
 PLIST_FILES=	bin/checkbashisms \
-		man/man1/checkbashisms.1.gz \
-		etc/bash_completion.d/_checkbashisms.bash
+		etc/bash_completion.d/_checkbashisms.bash \
+		man/man1/checkbashisms.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|###VERSION###|${PORTVERSION}|' \

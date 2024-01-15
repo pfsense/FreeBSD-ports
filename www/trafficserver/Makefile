@@ -1,32 +1,24 @@
-# Created by: Jui-Nan Lin <jnlin@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	trafficserver
-PORTVERSION=	8.0.8
-PORTREVISION=	1
+PORTVERSION=	9.2.1
 CATEGORIES=	www
 MASTER_SITES=	APACHE/${PORTNAME}
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Fast, scalable and extensible HTTP proxy server
+WWW=		https://trafficserver.apache.org/
 
 LICENSE=	APACHE20
 
 ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libhwloc.so:devel/hwloc \
+		libhwloc.so:devel/hwloc2 \
 		libpcre.so:devel/pcre \
 		libxml2.so:textproc/libxml2 \
-		libbrotlienc.so:archivers/brotli \
-		${LIB_DEPENDS_${ARCH}}
-LIB_DEPENDS_amd64=	libluajit-5.1.so:lang/luajit
-LIB_DEPENDS_powerpc64=		libluajit-5.1.so:lang/luajit-openresty
-LIB_DEPENDS_powerpc64le=	libluajit-5.1.so:lang/luajit-openresty
+		libbrotlienc.so:archivers/brotli
 
-USES=		compiler:c++17-lang cpe gmake libtool localbase ncurses \
-		pathfix perl5 pkgconfig sqlite ssl tar:bzip2 tcl
-
+USES=		compiler:c++17-lang cpe gmake libtool localbase luajit \
+		ncurses pathfix perl5 pkgconfig sqlite ssl tar:bzip2 tcl
 CPE_VENDOR=	apache
 CPE_PRODUCT=	traffic_server
 USE_PERL5=	build run
@@ -51,41 +43,27 @@ CONFIGURE_ARGS=	--with-pcre=${LOCALBASE} \
 		--enable-mime-sanity-check \
 		--enable-experimental-plugins
 
-OPTIONS_DEFINE=	DOCS WCCP MEMCACHED IMAGEMAGICK X11
+OPTIONS_DEFINE=	DOCS GEOIP WCCP MEMCACHED IMAGEMAGICK X11
 OPTIONS_SUB=	yes
 PLIST_SUB+=	ARCH="${ARCH:C/powerpc64.*/powerpc/}"
 
+GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 WCCP_DESC=	Enable WCCPv2 protocol
 WCCP_CONFIGURE_ENABLE=	wccp
 
 MEMCACHED_DESC=		Enable memcache & memcached_remap plugin
+MEMCACHED_LIB_DEPENDS=	libmemcached.so:databases/libmemcached
 
 IMAGEMAGICK_DESC=	Enable ats-magick & webp convert plugin
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MMEMCACHED}
-LIB_DEPENDS+=	libmemcached.so:databases/libmemcached
-PLIST_SUB+=	MEMCACHED=""
-.else
-PLIST_SUB+=	MEMCACHED="@comment "
-.endif
-
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6
+USES+=		magick:6
 .else
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6-nox11
+USES+=		magick:6,nox11
 .endif
-PLIST_SUB+=	IMAGEMAGICK=""
-.else
-PLIST_SUB+=	IMAGEMAGICK="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MWCCP}
-PLIST_SUB+=	WCCP=""
-.else
-PLIST_SUB+=	WCCP="@comment "
 .endif
 
 post-patch:
@@ -93,8 +71,9 @@ post-patch:
 		-e '/cachedir:/s,$${localstatedir}+,$${localstatedir}/cache+,' \
 		-e '/runtimedir:/s,$${localstatedir}+,$${localstatedir}/run+,' \
 		${WRKSRC}/config.layout
-	@${REINPLACE_CMD} '/^LUA_LDFLAGS =/s/$$/ @LDFLAGS@/' \
-		${WRKSRC}/lib/Makefile.in
+	@${REINPLACE_CMD} -e 's/#ifdef HAVE_EVENTFD/#if defined(HAVE_EVENTFD) \&\& TS_USE_EPOLL == 1/' \
+		${WRKSRC}/src/tscore/EventNotify.cc \
+		${WRKSRC}/include/tscore/EventNotify.h
 
 post-install:
 	${RMDIR} ${STAGEDIR}${DATADIR}

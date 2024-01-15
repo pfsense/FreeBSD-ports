@@ -1,21 +1,14 @@
-# Created by: Pedro F. Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	brlcad
-PORTVERSION=	7.30.2
-DISTVERSIONSUFFIX=	-1
+PORTVERSION=	7.32.6
 CATEGORIES=	cad
-MASTER_SITES=	SF/${PORTNAME}/BRL-CAD%20Source/${PORTVERSION}
+MASTER_SITES=	https://github.com/BRL-CAD/brlcad/releases/download/rel-${PORTVERSION:S/./-/g}/
 
-MAINTAINER=	erik@brlcad.org
+MAINTAINER=	ports@freebsd.org
 COMMENT=	CSG modelling system from the US Ballistic Research Laboratory
-
-WRKSRC=${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WWW=		https://brlcad.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_sparc64=	does not compile: invokes i386 assembler
 
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
@@ -25,27 +18,36 @@ LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		bison:alias cmake:insource gl pathfix pkgconfig python:env \
+USES=		bison:alias cmake:insource cpe gl pathfix pkgconfig python:env \
 		tar:bzip2 tk xorg
 USE_GL=		gl glu
+USE_LDCONFIG=	yes
 USE_XORG=	ice sm x11 xau xcb xdamage xdmcp xext xfixes xft xi \
 		xorgproto xrender xscrnsaver xt xxf86vm
-USE_LDCONFIG=	yes
-
-CONFLICTS_INSTALL=	py[23][0-9]-epsilon
-
-NO_MTREE=	yes
-
-PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 CMAKE_OFF=	BRLCAD_ENABLE_STRICT
 CMAKE_INSTALL_PREFIX=	${PREFIX}/${PORTNAME}
-MANPREFIX=	${PREFIX}/${PORTNAME}/share
+CXXFLAGS_powerpc64=	-mvsx
 
 TEST_TARGET=	check
 
+CONFLICTS_INSTALL=	py[23][0-9]-epsilon
+
+MANPREFIX=	${PREFIX}/${PORTNAME}/share
+NO_MTREE=	yes
+
+WRKSRC=${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=14
+.endif
+
 post-patch:
-	@${REINPLACE_CMD} -e 's+-exact Tcl 8\.5\.9+Tcl 8.5+' \
+	@${REINPLACE_CMD} -e 's+-exact Tcl 8\.6\.10+Tcl 8.6+' \
 		${WRKSRC}/src/other/tcl/library/init.tcl
 	@${REINPLACE_CMD} -e '2745s+^+include(CheckSymbolExists)+' \
 		${WRKSRC}/CMakeLists.txt

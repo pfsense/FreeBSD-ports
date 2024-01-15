@@ -1,6 +1,3 @@
-# Created by: Geraud CONTINSOUZAS <geraud@gcu.info>
-# $FreeBSD$
-
 PORTNAME=	CPAN-Uploader
 PORTVERSION=	0.103013
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	geraud@gcu.info
 COMMENT=	Upload things to the CPAN
+WWW=		https://metacpan.org/release/CPAN-Uploader
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -26,5 +24,7 @@ RUN_DEPENDS=	p5-File-HomeDir>=0:devel/p5-File-HomeDir \
 NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+CONFLICTS_INSTALL=	cpan-upload
 
 .include <bsd.port.mk>

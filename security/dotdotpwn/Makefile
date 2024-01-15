@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dotdotpwn
 PORTVERSION=	3.0.2
 PORTREVISION=	2
@@ -7,6 +5,7 @@ CATEGORIES=	security
 
 MAINTAINER=	rihaz.jerrin@gmail.com
 COMMENT=	Fuzzer to discover traversal directory vulnerabilities
+WWW=		https://github.com/wireghoul/dotdotpwn
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

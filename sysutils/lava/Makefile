@@ -1,12 +1,10 @@
-# Created by: Dave Cottlehuber <dch@skunkwerks.at>
-# $FreeBSD$
-
 PORTNAME=	lava
 PORTVERSION=	1.0.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Keeps your CouchDB views molten hot
+WWW=		https://github.com/iwantmyname/lava
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

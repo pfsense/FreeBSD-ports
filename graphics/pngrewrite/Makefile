@@ -1,6 +1,3 @@
-# Created by: Daniel Roethlisberger <daniel@roe.ch>
-# $FreeBSD$
-
 PORTNAME=	pngrewrite
 PORTVERSION=	1.4.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	http://entropymine.com/jason/pngrewrite/ \
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PNG palette optimizer
+WWW=		https://entropymine.com/jason/pngrewrite/
 
 LICENSE=	ZLIB
 

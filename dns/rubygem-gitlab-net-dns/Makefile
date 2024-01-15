@@ -1,19 +1,16 @@
-# Created by: rpsfa@rit.edu
-# $FreeBSD$
-
 PORTNAME=	gitlab-net-dns
-PORTVERSION=	0.9.1
+PORTVERSION=	0.9.2
 CATEGORIES=	dns rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Pure Ruby DNS library
+WWW=		https://gitlab.com/gitlab-org/gitlab-net-dns
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

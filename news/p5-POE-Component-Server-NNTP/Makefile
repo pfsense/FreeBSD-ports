@@ -1,6 +1,3 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Server-NNTP
 PORTVERSION=	1.06
 CATEGORIES=	news perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Component that provides NNTP server functionality
+WWW=		https://metacpan.org/release/POE-Component-Server-NNTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

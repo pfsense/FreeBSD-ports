@@ -17,6 +17,7 @@ bin/RNAforester
 bin/RNAheat
 bin/RNAinverse
 bin/RNAlocmin
+bin/RNAmultifold
 bin/RNApaln
 bin/RNAparconv
 bin/RNApdist
@@ -27,6 +28,7 @@ bin/RNApvmin
 bin/RNAsnoop
 bin/RNAsubopt
 bin/RNAup
+bin/RNAxplorer
 bin/b2ct
 bin/ct2db
 bin/kinwalker
@@ -57,18 +59,21 @@ include/ViennaRNA/constraints/basic.h
 include/ViennaRNA/constraints/hard.h
 include/ViennaRNA/constraints/ligand.h
 include/ViennaRNA/constraints/soft.h
+include/ViennaRNA/constraints/soft_special.h
 include/ViennaRNA/constraints_SHAPE.h
 include/ViennaRNA/constraints_hard.h
 include/ViennaRNA/constraints_ligand.h
 include/ViennaRNA/constraints_soft.h
 include/ViennaRNA/convert_epars.h
 include/ViennaRNA/data_structures.h
+include/ViennaRNA/datastructures/array.h
 include/ViennaRNA/datastructures/basic.h
 include/ViennaRNA/datastructures/char_stream.h
 include/ViennaRNA/datastructures/hash_tables.h
 include/ViennaRNA/datastructures/heap.h
 include/ViennaRNA/datastructures/lists.h
 include/ViennaRNA/datastructures/stream_output.h
+include/ViennaRNA/datastructures/string.h
 include/ViennaRNA/dist_vars.h
 include/ViennaRNA/dp_matrices.h
 include/ViennaRNA/duplex.h
@@ -106,6 +111,7 @@ include/ViennaRNA/loops/external.h
 include/ViennaRNA/loops/hairpin.h
 include/ViennaRNA/loops/internal.h
 include/ViennaRNA/loops/multibranch.h
+include/ViennaRNA/mconf.h
 include/ViennaRNA/mfe.h
 include/ViennaRNA/mfe_window.h
 include/ViennaRNA/mm.h
@@ -121,11 +127,14 @@ include/ViennaRNA/params/constants.h
 include/ViennaRNA/params/convert.h
 include/ViennaRNA/params/default.h
 include/ViennaRNA/params/io.h
+include/ViennaRNA/params/salt.h
 include/ViennaRNA/part_func.h
 include/ViennaRNA/part_func_co.h
 include/ViennaRNA/part_func_up.h
 include/ViennaRNA/part_func_window.h
 include/ViennaRNA/perturbation_fold.h
+include/ViennaRNA/pf_multifold.h
+include/ViennaRNA/pk_plex.h
 include/ViennaRNA/plex.h
 include/ViennaRNA/plot_aln.h
 include/ViennaRNA/plot_layouts.h
@@ -135,7 +144,7 @@ include/ViennaRNA/plotting/RNApuzzler/RNApuzzler.h
 include/ViennaRNA/plotting/RNApuzzler/RNAturtle.h
 include/ViennaRNA/plotting/alignments.h
 include/ViennaRNA/plotting/layouts.h
-include/ViennaRNA/plotting/naview.h
+include/ViennaRNA/plotting/naview/naview.h
 include/ViennaRNA/plotting/probabilities.h
 include/ViennaRNA/plotting/structures.h
 include/ViennaRNA/plotting/utils.h
@@ -152,6 +161,7 @@ include/ViennaRNA/stringdist.h
 include/ViennaRNA/structure_utils.h
 include/ViennaRNA/structured_domains.h
 include/ViennaRNA/subopt.h
+include/ViennaRNA/subopt_zuker.h
 include/ViennaRNA/svm.h
 include/ViennaRNA/svm_utils.h
 include/ViennaRNA/treedist.h
@@ -168,6 +178,7 @@ include/ViennaRNA/utils/svm.h
 include/ViennaRNA/utils/units.h
 include/ViennaRNA/vrna_config.h
 include/ViennaRNA/walk.h
+include/ViennaRNA/wrap_dlib.h
 include/ViennaRNA/zscore.h
 include/g2.h
 include/g2_FIG.h
@@ -196,6 +207,7 @@ man/man1/RNAforester.1.gz
 man/man1/RNAheat.1.gz
 man/man1/RNAinverse.1.gz
 man/man1/RNAlocmin.1.gz
+man/man1/RNAmultifold.1.gz
 man/man1/RNApaln.1.gz
 man/man1/RNAparconv.1.gz
 man/man1/RNApdist.1.gz
@@ -206,6 +218,7 @@ man/man1/RNApvmin.1.gz
 man/man1/RNAsnoop.1.gz
 man/man1/RNAsubopt.1.gz
 man/man1/RNAup.1.gz
+man/man1/RNAxplorer.1.gz
 man/man1/ct2db.1.gz
 man/man1/kinwalker.1.gz
 share/ViennaRNA/2Dlandscape.R
@@ -227,6 +240,13 @@ share/ViennaRNA/dna_mathews2004.par
 share/ViennaRNA/rna_andronescu2007.par
 share/ViennaRNA/rna_langdon2018.par
 share/ViennaRNA/rna_misc_special_hairpins.par
+share/ViennaRNA/rna_mod_7DA_parameters.json
+share/ViennaRNA/rna_mod_dihydrouridine_parameters.json
+share/ViennaRNA/rna_mod_inosine_parameters.json
+share/ViennaRNA/rna_mod_m6A_parameters.json
+share/ViennaRNA/rna_mod_pseudouridine_parameters.json
+share/ViennaRNA/rna_mod_purine_parameters.json
+share/ViennaRNA/rna_mod_template_parameters.json
 share/ViennaRNA/rna_turner1999.par
 share/ViennaRNA/rna_turner2004.par
 share/ViennaRNA/viennarna.bib

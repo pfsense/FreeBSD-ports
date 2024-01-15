@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lbreakout
 PORTVERSION=	010315
 PORTREVISION=	9
@@ -9,12 +6,15 @@ MASTER_SITES=	SF/lgames/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nice clone of classical Breakout game
+WWW=		https://sourceforge.net/projects/lgames/files/lbreakout/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_SDL=	sdl
+DEPRECATED=	Abandoned by upsteam, does not support large screen resolutions. Use games/lbreakouthd instead
+
 USES=		gmake sdl
+USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 LIBS+=		-lcompat
 

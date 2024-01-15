@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Mapi
 PORTVERSION=	1.0.10
 CATEGORIES=	mail www pear
@@ -7,8 +5,9 @@ PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde MAPI utility library
+WWW=		https://pear.horde.org
 
-USES=		horde php
+USES=		horde php cpe
 USE_HORDE_RUN=	Horde_Date \
 		Horde_Exception
 

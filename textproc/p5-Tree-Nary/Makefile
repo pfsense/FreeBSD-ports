@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Tree-Nary
 PORTVERSION=	1.30
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C|0$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl implementation of N-ary search trees
+WWW=		https://metacpan.org/release/Tree-Nary
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

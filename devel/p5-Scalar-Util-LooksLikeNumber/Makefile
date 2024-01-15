@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Scalar-Util-LooksLikeNumber
-PORTVERSION=	1.39.1
-PORTREVISION=	1
+PORTVERSION=	1.39.2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for looks_like_number() perl API
+WWW=		https://metacpan.org/release/Scalar-Util-LooksLikeNumber
 
 USES=		perl5
 USE_PERL5=	configure

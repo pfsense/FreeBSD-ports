@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	xvier
 PORTVERSION=	1.0
 PORTREVISION=	3

@@ -1,8 +1,5 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	duo
-PORTVERSION=	1.11.4
+PORTVERSION=	2.0.1
 CATEGORIES=	security
 MASTER_SITES=	https://dl.duosecurity.com/ \
 		ZI
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_unix-${PORTVERSION}
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Duo unix integration package
+WWW=		https://duosecurity.com
 
 LICENSE=	GPLv2
 

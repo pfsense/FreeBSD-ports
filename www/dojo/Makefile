@@ -1,13 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=		dojo
 PORTVERSION=		1.12.2
 CATEGORIES=		www
 MASTER_SITES=		http://download.dojotoolkit.org/release-${PORTVERSION}/
 DISTNAME=		dojo-release-${PORTVERSION}
 
-MAINTAINER=		wg@FreeBSD.org
+MAINTAINER=		bofh@FreeBSD.org
 COMMENT=		Open-source DHTML toolkit written in JavaScript
+WWW=		https://dojotoolkit.org/
+
+USES=			cpe
+CPE_VENDOR=		linuxfoundation
 
 NO_BUILD=		yes
 SHAREOWN=		www
@@ -19,7 +21,8 @@ OPTIONS_SUB=		yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MAPACHE}
-USES=			apache:run,2.2+
+USES=			apache:run cpe
+CPE_VENDOR=	linuxfoundation
 CONFDIR=		${PREFIX}/${CONFDIR_REL}
 CONFDIR_REL=		${APACHEETCDIR}/Includes
 PLIST_SUB+=		CONFDIR=${CONFDIR_REL}

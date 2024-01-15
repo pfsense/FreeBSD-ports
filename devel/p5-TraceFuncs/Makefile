@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	TraceFuncs
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	traceFunc-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl5 module to trace function calls as they happen
+WWW=		https://metacpan.org/release/traceFunc
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

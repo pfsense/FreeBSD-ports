@@ -1,15 +1,13 @@
-# Created by: Frank Laszlo <laszlof@vonostingroup.com>
-# $FreeBSD$
-
 PORTNAME=	ezstream
 PORTVERSION=	0.5.6
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	audio
-MASTER_SITES=	http://downloads.xiph.org/releases/ezstream/ \
-		http://svn.xiph.org/releases/ezstream/
+MASTER_SITES=	https://downloads.xiph.org/releases/ezstream/ \
+		https://ftp.osuosl.org/pub/xiph/releases/ezstream/
 
 MAINTAINER=	ayu@commun.jp
 COMMENT=	Command line utility for streaming to icecast servers
+WWW=		http://www.icecast.org/ezstream.php
 
 LIB_DEPENDS=	libshout.so:audio/libshout \
 		libvorbis.so:audio/libvorbis

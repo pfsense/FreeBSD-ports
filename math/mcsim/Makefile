@@ -1,13 +1,12 @@
-# Created by: Alessando Sagratini <ale_sagra@hotmail.com>
-# $FreeBSD$
-
 PORTNAME=	mcsim
 PORTVERSION=	6.2.0
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
 MAINTAINER=	ale_sagra@hotmail.com
 COMMENT=	Monte Carlo stochastic simulations and Bayesian inference
+WWW=		https://www.gnu.org/software/mcsim/
 
 LICENSE=	GPLv3+
 

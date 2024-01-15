@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Jemplate
 PORTVERSION=	0.300
 CATEGORIES=	www perl5
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C|0$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	JavaScript Templating with Template Toolkit
+WWW=		https://metacpan.org/release/Jemplate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

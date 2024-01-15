@@ -1,19 +1,17 @@
-# Created by: Michael L. Hostbaek <mich@freebsdcluster.org>
-# $FreeBSD$
-
 PORTNAME=	clex
-PORTVERSION=	4.6.9
+PORTVERSION=	4.7
 CATEGORIES=	misc
-MASTER_SITES=	http://www.clex.sk/download/
-DISTNAME=	clex-4.6.patch9
+MASTER_SITES=	https://github.com/xitop/${PORTNAME}/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line file manager
+WWW=		http://www.clex.sk/
 
 LICENSE=	GPLv2
 
-GNU_CONFIGURE=	yes
 USES=		ncurses gmake
+
+GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/clex bin/cfg-clex bin/kbd-test \
 		man/man1/cfg-clex.1.gz \

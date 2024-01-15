@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	sniproxy
-DISTVERSION=	0.6.0
-PORTREVISION=	2
+DISTVERSION=	0.6.1
 CATEGORIES=	net
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Proxy that routes based on TLS server name extension
+WWW=		https://github.com/dlundquist/sniproxy
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

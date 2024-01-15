@@ -1,18 +1,16 @@
-# Created by: Michal Bielicki <m.bielicki@llizardfs.com>
-# $FreeBSD$
-
 PORTNAME=	isa-l
-PORTVERSION=	2.21.0
+PORTVERSION=	2.30.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Intel(R) Intelligent Storage Acceleration Libray
+WWW=		https://github.com/01org/isa-l
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64le powerpc64 powerpc
 
 BUILD_DEPENDS=	yasm:devel/yasm
 

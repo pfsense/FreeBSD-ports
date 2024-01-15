@@ -1,6 +1,3 @@
-# Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Handler
 PORTVERSION=	0.15
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Fork-safe and easy transaction handling DBI handler
+WWW=		https://metacpan.org/release/DBIx-Handler
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

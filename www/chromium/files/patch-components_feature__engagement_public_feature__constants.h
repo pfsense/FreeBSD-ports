@@ -1,20 +1,20 @@
---- components/feature_engagement/public/feature_constants.h.orig	2021-01-18 21:28:55 UTC
+--- components/feature_engagement/public/feature_constants.h.orig	2023-12-10 06:10:27 UTC
 +++ components/feature_engagement/public/feature_constants.h
-@@ -16,7 +16,7 @@ extern const base::Feature kIPHDemoMode;
- // A feature to ensure all arrays can contain at least one feature.
- extern const base::Feature kIPHDummyFeature;
+@@ -24,7 +24,7 @@ BASE_DECLARE_FEATURE(kUseClientConfigIPH);
+ BASE_DECLARE_FEATURE(kIPHDummyFeature);
  
--#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS)
- extern const base::Feature kIPHDesktopTabGroupsNewGroupFeature;
- extern const base::Feature kIPHFocusModeFeature;
-@@ -27,7 +27,7 @@ extern const base::Feature kIPHReopenTabFeature;
- extern const base::Feature kIPHWebUITabStripFeature;
- extern const base::Feature kIPHDesktopSnoozeFeature;
- extern const base::Feature kIPHDesktopPwaInstallFeature;
--#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+ BASE_DECLARE_FEATURE(kIPHBatterySaverModeFeature);
+ BASE_DECLARE_FEATURE(kIPHCompanionSidePanelFeature);
+ BASE_DECLARE_FEATURE(kIPHCompanionSidePanelRegionSearchFeature);
+@@ -233,7 +233,7 @@ extern const base::FeatureParam<int>
+     kDefaultBrowserEligibilitySlidingWindowParam;
+ #endif  // BUILDFLAG(IS_IOS)
  
- // All the features declared for Android below that are also used in Java,
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || \
+     BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
+ BASE_DECLARE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature);
+ BASE_DECLARE_FEATURE(kIPHAutofillVirtualCardCVCSuggestionFeature);

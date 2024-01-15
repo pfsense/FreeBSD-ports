@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Geometry-Planar
 PORTVERSION=	1.18
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-withoutworldwriteables
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Collection of planar geometry functions
+WWW=		https://metacpan.org/release/Math-Geometry-Planar
 
 LICENSE=	ART10
 

@@ -1,6 +1,3 @@
-# Created by: glarkin
-# $FreeBSD$
-
 PORTNAME=	statsvn
 PORTVERSION=	0.7.0
 PORTREVISION=	5
@@ -10,10 +7,11 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subversion repository activity report generator
+WWW=		https://www.statsvn.org/
 
 LICENSE=	LGPL21+
 
-RUN_DEPENDS=	subversion>=1.3:devel/subversion
+RUN_DEPENDS=	subversion>0:devel/subversion
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

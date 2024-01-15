@@ -1,9 +1,9 @@
---- Cargo.toml.orig	2020-12-14 11:18:17 UTC
+--- Cargo.toml.orig	2023-07-09 21:00:15 UTC
 +++ Cargo.toml
-@@ -53,6 +53,3 @@ assert_cmd = "1.0"
- predicates = "1.0"
- uuid = { version = "0.8", features = ["v4"] }
- tempfile = "3.1"
+@@ -6,6 +6,3 @@ resolver = "2"
+     "benches",
+ ]
+ resolver = "2"
 -
--[features]
--vendored-openssl = ["openssl-sys/vendored"]
+-[profile.release]
+-debug = true

@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Mac-Macbinary
 PORTVERSION=	0.06
 PORTREVISION=	1

@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vimpager
 DISTVERSION=	2.06.20200712
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Use Vim/NeoVim as a pager
+WWW=		https://github.com/rkitover/vimpager
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,14 +21,12 @@ OPTIONS_DEFINE=	DOCS
 OPTIONS_SINGLE=	BACKEND
 OPTIONS_DEFAULT=VIM
 
-OPTIONS_SINGLE_BACKEND=	NEOVIM VIM VIMCONSOLE
+OPTIONS_SINGLE_BACKEND=	NEOVIM VIM
 BACKEND_DESC=	Choose your Vim backend
 NEOVIM_DESC=	NeoVim
-VIM_DESC=	Full Vim (vim)
-VIMCONSOLE_DESC=Console-only Vim (vim-console)
+VIM_DESC=	Vim
 
 NEOVIM_RUN_DEPENDS=	nvim:editors/neovim
 VIM_RUN_DEPENDS=	vim:editors/vim
-VIMCONSOLE_RUN_DEPENDS=	vim:editors/vim-console
 
 .include <bsd.port.mk>

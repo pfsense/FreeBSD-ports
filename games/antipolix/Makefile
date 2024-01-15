@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	antipolix
 PORTVERSION=	2.1
 PORTREVISION=	2

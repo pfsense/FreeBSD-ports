@@ -1,6 +1,3 @@
-# Created by: Shaun Amott <shaun@inerd.com>
-# $FreeBSD$
-
 PORTNAME=	ratbox-respond
 PORTVERSION=	1.0
 PORTREVISION=	3
@@ -11,6 +8,7 @@ MASTER_SITES=	http://www.ratbox.org/download/${PORTNAME}/ \
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Client-side implementation of the challenge oper system in ircd-ratbox
+WWW=		https://www.ratbox.org/respond/
 
 CONFIGURE_WRKSRC=${WRKSRC}/${PORTNAME}
 BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}

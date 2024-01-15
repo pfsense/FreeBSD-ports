@@ -1,12 +1,10 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt_XXTEA
 PORTVERSION=	0.9.0
 CATEGORIES=	security www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR XXTEA encryption algorithm
+WWW=		https://pear.php.net/package/Crypt_XXTEA
 
 USES=		pear
 

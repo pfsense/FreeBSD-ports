@@ -1,6 +1,3 @@
-# Created by: Oliver Eikemeier
-# $FreeBSD$
-
 PORTNAME=	tenshi
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -11,13 +8,15 @@ PATCHFILES=	1c9c887.patch:-p1 \
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Log monitoring program, designed to watch multiple logs
+WWW=		https://inversepath.com/tenshi.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	p5-IO-BufferedSelect>=0:devel/p5-IO-BufferedSelect
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
+CPE_VENDOR=	inversepath
 USE_GITHUB=	yes
 GH_ACCOUNT=	f-secure-foundry
 USE_PERL5=	run
@@ -31,6 +30,9 @@ MAKE_ARGS=	bindir="${PREFIX}/sbin" \
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+
+PORTSCOUT=	skipv:2e3cacd
+
 SUB_LIST=	PERL="${PERL}"
 
 USERS=		tenshi

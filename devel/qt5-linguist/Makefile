@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	linguist
-DISTVERSION=	${QT5_VERSION}
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -10,8 +8,8 @@ COMMENT=	Qt 5 translation tool
 
 USES=		compiler:c++11-lang qmake qt-dist:5,tools
 USE_QT=		core gui printsupport widgets xml \
-		assistant_run linguisttools_run \
-		buildtools_build designer_build uitools_build
+		assistant:run linguisttools:run \
+		buildtools:build designer:build uitools:build
 
 DESKTOP_ENTRIES="Qt 5 Linguist" "" \
 		"${PREFIX}/share/pixmaps/linguist-qt5.png" \

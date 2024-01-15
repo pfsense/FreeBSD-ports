@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coursier
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.0-M12
@@ -7,6 +5,7 @@ CATEGORIES=	devel java
 
 MAINTAINER=	jhyphenkeck@gmail.com
 COMMENT=	Pure Scala Artifact Fetching
+WWW=		https://get-coursier.io/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

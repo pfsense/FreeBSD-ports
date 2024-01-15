@@ -1,6 +1,3 @@
-# Created by: Foxfair Hu <foxfair@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-Scrubber
 PORTVERSION=	0.19
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for scrubbing/sanitizing html
+WWW=		https://metacpan.org/release/HTML-Scrubber
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

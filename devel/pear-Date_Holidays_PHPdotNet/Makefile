@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Date_Holidays_PHPdotNet
 PORTVERSION=	0.1.2
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Driver based class to calculate birthdays of members of PHP.net
+WWW=		https://pear.php.net/package/Date_Holidays_PHPdotNet
 
 LICENSE=	PHP301
 

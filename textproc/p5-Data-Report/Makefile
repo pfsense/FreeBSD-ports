@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Report
 PORTVERSION=	1.001
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Framework for flexible reporting
+WWW=		https://metacpan.org/release/Data-Report
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

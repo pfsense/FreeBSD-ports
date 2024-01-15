@@ -1,15 +1,15 @@
-# Created by: Dirk Froemberg <dirk@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	snort
-PORTVERSION=	2.9.17
-PORTREVISION=	1
+PORTVERSION=	2.9.20
+PORTREVISION=	7
 CATEGORIES=	security
-MASTER_SITES=	https://snort.org/downloads/snort/
+MASTER_SITES=	https://snort.org/downloads/snort/ \
+		https://snort.org/downloads/archive/snort/
+
 PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Lightweight network intrusion detection system
+WWW=		https://www.snort.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +17,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	daq>=2.2.2_3:net/daq
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
-		libpcap.so:net/libpcap
+		libpcap.so:net/libpcap \
+		libpfctl.so.0:net/libpfctl
 RUN_DEPENDS=	daq>=2.2.2_3:net/daq
 
 USES=			bison cpe libtool pathfix shebangfix ssl
@@ -41,7 +42,7 @@ OPTIONS_DEFINE=		IPV6 GRE HA NORMALIZER DOCS APPID \
 
 OPTIONS_GROUP=		ADDONS DEV
 OPTIONS_GROUP_ADDONS=	BARNYARD PULLEDPORK
-OPTIONS_GROUP_DEV=	DBGSNORT
+OPTIONS_GROUP_DEV=	DBGSNORT COREDUMPS
 OPTIONS_SUB=		yes
 OPTIONS_DEFAULT=	GRE NORMALIZER BARNYARD \
 			PERFPROFILE SOURCEFIRE PULLEDPORK
@@ -60,9 +61,11 @@ ADDONS_DESC=		Depend on 3rd party addons
 BARNYARD_DESC=		Depend on barnyard2 (supports also snortsam)
 PULLEDPORK_DESC=	Depend on pulledpork
 DEV_DESC=		Developer options
-DBGSNORT_DESC=		Enable debugging symbols+core dumps
+DBGSNORT_DESC=		Enable debugging symbols
+COREDUMPS_DESC=		Enable core dumps
 
-DBGSNORT_CONFIGURE_ENABLE=	corefiles debug
+COREDUMPS_CONFIGURE_ENABLE=	corefiles
+DBGSNORT_CONFIGURE_ENABLE=	debug
 DBGSNORT_MAKE_ENV=		DONTSTRIP="yes"
 GRE_CONFIGURE_ENABLE=		gre
 LRGPCAP_CONFIGURE_ENABLE=	large-pcap
@@ -76,8 +79,8 @@ FILEINSPECT_CONFIGURE_ENABLE=	file-inspect
 
 BARNYARD_RUN_DEPENDS=	barnyard2:security/barnyard2
 PULLEDPORK_RUN_DEPENDS=	pulledpork.pl:security/pulledpork
-APPID_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
-APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LOCALBASE}/include/luajit-2.1" \
+APPID_USES=		luajit:luajit-openresty
+APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LUAJIT_INCDIR}" \
 			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
 
 CONFIG_FILES=	classification.config gen-msg.map reference.config \
@@ -91,6 +94,8 @@ CFLAGS+=	-fstack-protector
 CONFIGURE_ARGS+=--enable-reload \
 		--enable-mpls --enable-targetbased \
 		--enable-reload-error-restart
+CFLAGS+=	-I${LOCALBASE}/include/
+LDFLAGS+=	-L${LOCALBASE}/lib -lpfctl
 
 post-patch:
 	@${REINPLACE_CMD} "s,/etc/snort.conf,${ETCDIR}/snort.conf," \

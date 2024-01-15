@@ -1,13 +1,12 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	iortcw
 PORTVERSION=	1.51c
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Game engine for Return to Castle Wolfenstein
+WWW=		https://github.com/iortcw/iortcw
 
 LICENSE=	GPLv3
 

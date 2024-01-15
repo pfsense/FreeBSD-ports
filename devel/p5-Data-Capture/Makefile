@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Capture
 PORTVERSION=	0.27
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl6 Capture objects
+WWW=		https://metacpan.org/release/Data-Capture
 
 USES=		perl5
 USE_PERL5=	configure

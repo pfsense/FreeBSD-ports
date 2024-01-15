@@ -1,6 +1,3 @@
-# Created by: Tom Sparks <tsparks@appliedops.net>
-# $FreeBSD$
-
 PORTNAME=	yali
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	tsparks@appliedops.net
 COMMENT=	YALI: Yet Another LOLCODE Interpreter
+WWW=		https://1.618034.com/yali-yet-another-lolcode-interpreter/index.php
 
 LICENSE=	BSD
 

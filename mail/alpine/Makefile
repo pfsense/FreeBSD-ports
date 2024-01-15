@@ -1,17 +1,18 @@
-# $FreeBSD$
-
 PORTNAME?=	alpine
-DISTVERSION=	2.24
+DISTVERSION=	2.26
 CATEGORIES?=	mail news
 MASTER_SITES=	https://repo.or.cz/alpine.git/snapshot/${GIT_COMMIT}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT?=	Mail and news client descended from Pine
+WWW?=		https://alpineapp.email/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES+=			ssl libtool ncurses gettext-runtime
+USES+=			cpe ssl libtool ncurses gettext-runtime
+
+CPE_VENDOR=		alpine_project
 
 GNU_CONFIGURE=		yes
 MAKE_JOBS_UNSAFE=	yes
@@ -30,7 +31,7 @@ CONFIGURE_ARGS+=	--with-debug-level=2 \
 MAKE_ARGS+=		CC="${CC}" CXX="${CXX}" GCCCFLAGS="${CFLAGS}"
 # When you update please double check that the commit corresponds to
 # the actual version you've set in PORTVERSION.
-GIT_COMMIT=		3165f59b344fb4d56d161541f294754d56bcb372
+GIT_COMMIT=		9726c098a739edfdca6218bc5dee104c310957e9
 GIT_COMMIT_SHORT=	${GIT_COMMIT:C/^(.......).*/\1/}
 WRKSRC=			${WRKDIR}/alpine-${GIT_COMMIT_SHORT}
 
@@ -58,13 +59,13 @@ CONS25_EXTRA_PATCHES=		${FILESDIR}/cons25-alpine_keymenu.c
 IPV6_CONFIGURE_WITH=		ipv6
 
 # Option LDAP
-LDAP_USE=			openldap=yes
+LDAP_USES=			ldap
 LDAP_CONFIGURE_WITH=		ldap
 LDAP_CFLAGS=			-I${LOCALBASE}/include
 LDAP_LDFLAGS=			-L${LOCALBASE}/lib
 
 # Option MAILDIR
-MAILDIR_PATCH_SITES=		http://alpine.x10host.com/alpine/patches/alpine-2.24/
+MAILDIR_PATCH_SITES=		https://alpineapp.email/alpine/patches/alpine-2.26/
 MAILDIR_PATCHFILES+=		maildir.patch.gz:-p1
 
 # Option MOUSE

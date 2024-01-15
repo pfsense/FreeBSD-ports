@@ -1,20 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=		bowtie2
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.4.2
+DISTVERSION=		2.5.2
 CATEGORIES=		biology perl5 python
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Ultrafast, memory-efficient short read aligner
+WWW=		https://github.com/BenLangmead/bowtie2
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-# Requires a 64-bit processor and depends on hard-coded SSE instructions
-# Experimental support for AARCH64 as of 2.3.5
-ONLY_FOR_ARCHS=	aarch64 amd64
-LIB_DEPENDS=	libtbb.so:devel/tbb
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	Requires a 64-bit processor
+
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		gmake localbase:ldflags perl5 python shebangfix
@@ -24,10 +22,21 @@ USE_GITHUB=	yes
 SHEBANG_FILES=	bowtie2 bowtie2-build bowtie2-inspect \
 		scripts/bowtie2-hbb.sh scripts/*.pl
 GH_ACCOUNT=	BenLangmead
+GH_TUPLE=	simd-everywhere:simde-no-tests:f6a0b3b:simde
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 SUB_FILES=	bowtie2-test
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64
+post-extract:
+	(cd ${WRKSRC_simde}; \
+		${COPYTREE_SHARE} . ${WRKSRC}/third_party/simde/)
+
+MAKE_ENV=	POPCNT_CAPABILITY=0
+.endif
 
 pre-configure:
 	@${REINPLACE_CMD} \

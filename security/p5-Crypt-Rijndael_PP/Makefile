@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-Rijndael_PP
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl implementation of Rijndael
+WWW=		https://metacpan.org/release/Crypt-Rijndael_PP
 
 USES=		perl5
 USE_PERL5=	configure

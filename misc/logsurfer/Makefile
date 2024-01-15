@@ -1,6 +1,3 @@
-# Created by: shanee@augusta.de
-# $FreeBSD$
-
 PORTNAME=	logsurfer
 PORTVERSION=	1.8
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.crypt.gen.nz/logsurfer/ \
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Process logfiles and conditionally perform certain actions
+WWW=		https://www.crypt.gen.nz/logsurfer/
 
 LICENSE=	GPLv2 ISCL
 LICENSE_COMB=	multi

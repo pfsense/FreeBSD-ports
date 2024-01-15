@@ -1,6 +1,3 @@
-# Created by: Timur Bakeyev <bat@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	Net-IDN-Encode
 PORTVERSION=	2.500
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Internationalizing Domain Names in Applications (RFC 3490)
+WWW=		https://metacpan.org/release/Net-IDN-Encode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

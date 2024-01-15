@@ -1,15 +1,12 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	ODF-lpOD
-PORTVERSION=	1.126
-PORTREVISION=	1
+PORTVERSION=	1.127
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	OpenDocument management interface
+WWW=		https://metacpan.org/release/ODF-lpOD
 
 LICENSE=	GPLv2
 
@@ -23,5 +20,7 @@ RUN_DEPENDS=	p5-Archive-Zip>=1.30:archivers/p5-Archive-Zip \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

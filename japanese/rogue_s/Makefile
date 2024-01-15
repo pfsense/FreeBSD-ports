@@ -1,6 +1,3 @@
-# Created by: Yoshihiko Sarumaru <mistral@imasy.or.jp>
-# $FreeBSD$
-
 PORTNAME=	rogue_s
 PORTVERSION=	1.3a
 PORTREVISION=	2

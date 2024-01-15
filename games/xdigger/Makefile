@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	xdigger
 PORTVERSION=	1.0.10
 PORTREVISION=	4

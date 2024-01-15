@@ -1,6 +1,3 @@
-# Created by: Thomas Seck <tmseck@netcologne.de>
-# $FreeBSD$
-
 PORTNAME=	uschedule
 PORTVERSION=	0.7.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.ohse.de/uwe/uschedule/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scheduler program, designed to replace cron(8) and at(1)
+WWW=		https://www.ohse.de/uwe/uschedule.html
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/tai64nlocal:sysutils/daemontools
 RUN_DEPENDS=	${LOCALBASE}/bin/multilog:sysutils/daemontools
@@ -31,6 +29,12 @@ PLIST_FILES=	${bin:S,^,bin/,} ${bin:S,^,man/man1/,:S,$,.1.gz,} \
 		sbin/uscheduled
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+USES+=		compiler:gcc-c++11-lib
+.endif
 
 pre-build:
 	${ECHO_CMD} "${CC}" > ${WRKSRC}/src/conf-cc

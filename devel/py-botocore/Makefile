@@ -1,36 +1,30 @@
-# Created by: Alexey V. Degtyarev <alexey@renatasystems.org>
-# $FreeBSD$
-
 PORTNAME=	botocore
-PORTVERSION=	1.18.16
+PORTVERSION=	1.34.7
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bhughes@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Low-level, core functionality of boto 3
+WWW=		https://github.com/boto/botocore
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=2.1<3.0.0:devel/py-dateutil@${PY_FLAVOR}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}jmespath>=0.7.1<1.0.0:devel/py-jmespath@${PY_FLAVOR}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}urllib3>=1.20,1<1.26,1:net/py-urllib3@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jmespath>=0.7.1<2.0.0:devel/py-jmespath@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dateutil>=2.1<3.0.0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>=1.25.4,1<1.27,1:net/py-urllib3@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}awscrt>=0.19.19:devel/py-awscrt@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jsonschema>=0:devel/py-jsonschema@${PY_FLAVOR}
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR}
-
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
 
-# setup.py test runs integration tests which fail
-# https://github.com/boto/s3transfer/issues/41
-# Note: this is an AWS python package wide issue
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m nose -v tests/unit tests/functional
+OPTIONS_DEFINE=	CRT
+CRT_DESC=	Common runtime support
+
+CRT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}awscrt>=0.19.19:devel/py-awscrt@${PY_FLAVOR}
 
 .include <bsd.port.mk>

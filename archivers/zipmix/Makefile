@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	zipmix
 DISTVERSION=	20070221
 CATEGORIES=	archivers
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_src
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Produce .ZIP file from two other ones with the best compressed files
+WWW=		http://www.advsys.net/ken/utils.htm
 
 USES=		dos2unix ncurses zip
 MAKEFILE=	${FILESDIR}/Makefile

@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Controller-FormBuilder
 PORTVERSION=	0.06
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst FormBuilder Base Controller
+WWW=		https://metacpan.org/release/Catalyst-Controller-FormBuilder
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

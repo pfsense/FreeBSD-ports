@@ -1,15 +1,13 @@
-# Created by: Pierre David <pdagog@gmail.com>, Jean Benoit <jean@unistra.fr>
-# $FreeBSD$
-
 PORTNAME?=	netmagis
-PORTVERSION?=	2.3.4
-PORTREVISION=	2
+PORTVERSION?=	2.3.6
+PORTREVISION=	1
 CATEGORIES?=	net-mgmt
 MASTER_SITES=	http://netmagis.org/files/
 PKGNAMESUFFIX?=	-common
 
 MAINTAINER?=	pdagog@gmail.com
 COMMENT?=	Netmagis common infrastructure
+WWW=		http://www.netmagis.org/
 
 LICENSE=	CECILL-B
 LICENSE_NAME=	CeCILL-B Free Software License Agreement
@@ -18,8 +16,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 RUN_DEPENDS+=	dtplite:devel/tcllib
 
-NO_ARCH?=	yes
-USES+=		pgsql:9.1+ tcl
+USES+=		pgsql:11+ tcl
 WANT_PGSQL+=	pgtcl
 
 SLAVEDIRS=	net-mgmt/netmagis-common \
@@ -32,13 +29,14 @@ SLAVEDIRS=	net-mgmt/netmagis-common \
 	net-mgmt/netmagis-www
 
 # Variables used in netmagis Makefiles
-MAKE_ARGS+=	DESTDIR=${STAGEDIR}${DESTDIR} PREFIX=${PREFIX}
-MAKE_ARGS+=	TCLSH=${TCLSH} TCLCONF=${TCL_LIBDIR}/tclConfig.sh
+MAKE_ARGS+=	PREFIX=${PREFIX} TCLSH=${TCLSH} \
+		TCLCONF=${TCL_LIBDIR}/tclConfig.sh
 
 .if ${PKGNAMESUFFIX} == -topo || ${PKGNAMESUFFIX} == -www
 ALL_TARGET=build${PKGNAMESUFFIX?=}
 .else
 ALL_TARGET=nothing
+NO_ARCH=	yes
 .endif
 
 INSTALL_TARGET=	install${PKGNAMESUFFIX}

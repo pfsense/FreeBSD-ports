@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Astro-DSS
 PORTVERSION=	1.6.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	OO interface to the 1st and 2nd Digital Sky Surveys
+WWW=		http://www.estar.org.uk/
 
 LICENSE=	GPLv2+
 

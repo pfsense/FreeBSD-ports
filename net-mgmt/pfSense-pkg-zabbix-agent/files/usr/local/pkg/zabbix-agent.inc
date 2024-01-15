@@ -3,7 +3,7 @@
  * zabbix-agent.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Danilo G. Baio
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -150,58 +150,45 @@ function sync_package_zabbix_agent() {
 			$ListenPort = $zbagent_config['listenport'] ?: "10050";
 			$TimeOut = $zbagent_config['timeout'] ?: "3";
 
-			// Zabbix TLS is present in 3.0 or later versions.
-			if(ZABBIX_VERSION >= 30) {
-				$TLSConnect = "TLSConnect=" . $zbagent_config['tlsconnect'];
-				$TLSAccept = "TLSAccept=";
-				$TLSAccept .= $zbagent_config['tlsaccept'] ?: "unencrypted";
+			$TLSConnect = "TLSConnect=" . $zbagent_config['tlsconnect'];
+			$TLSAccept = "TLSAccept=";
+			$TLSAccept .= $zbagent_config['tlsaccept'] ?: "unencrypted";
 
-				if ($zbagent_config['tlscaso']) {
-					$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
-				} else {
-					if ($zbagent_config['tlscafile'] != "none") {
-						$ca = lookup_ca($zbagent_config['tlscafile']);
-						zabbix_agent_add_keyfile($ca['crt'], "ca");
-						$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.ca";
-					}
-				}
-
-				if ($zbagent_config['tlscrlfile'] != "none") {
-					$crl = lookup_crl($zbagent_config['tlscrlfile']);
-					crl_update($crl);
-					zabbix_agent_add_keyfile($crl['text'], "crl-verify");
-					$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.crl-verify";
-				}
-
-				if ($zbagent_config['tlscertfile'] != "none") {
-					$cert = lookup_cert($zbagent_config['tlscertfile']);
-
-					zabbix_agent_add_keyfile($cert['crt'], "cert");
-					$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.cert";
-
-					zabbix_agent_add_keyfile($cert['prv'], "key");
-					$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.key";
-				}
-
-				if (! empty($zbagent_config['tlspskidentity']) ) {
-					$TLSPSKIdentity = "TLSPSKIdentity={$zbagent_config['tlspskidentity']}";
-				}
-
-				if (! empty($zbagent_config['tlspskfile']) ) {
-					zabbix_agent_add_keyfile($zbagent_config['tlspskfile'], "psk");
-					$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.psk";
-				}
+			if ($zbagent_config['tlscaso']) {
+				$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
 			} else {
-				$TLSConnect = "#TLSConnect=";
-				$TLSAccept = "#TLSAccept=";
-				$TlsCAfile = "#TlsCAfile=";
-				$TlsCRLfile = "#TlsCRLfile=";
-				$TlsCERTfile = "#TlsCERTfile=";
-				$TlsKEYfile = "#TlsKEYfile=";
-				$TLSPSKIdentity = "#TLSPSKIdentity=";
-				$TLSPSKFile = "#TLSPSKFile=";
+				if ($zbagent_config['tlscafile'] != "none") {
+					$ca = lookup_ca($zbagent_config['tlscafile']);
+					zabbix_agent_add_keyfile($ca['crt'], "ca");
+					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.ca";
+				}
 			}
 
+			if ($zbagent_config['tlscrlfile'] != "none") {
+				$crl = lookup_crl($zbagent_config['tlscrlfile']);
+				crl_update($crl);
+				zabbix_agent_add_keyfile($crl['text'], "crl-verify");
+				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.crl-verify";
+			}
+
+			if ($zbagent_config['tlscertfile'] != "none") {
+				$cert = lookup_cert($zbagent_config['tlscertfile']);
+
+				zabbix_agent_add_keyfile($cert['crt'], "cert");
+				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.cert";
+
+				zabbix_agent_add_keyfile($cert['prv'], "key");
+				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.key";
+			}
+
+			if (!empty($zbagent_config['tlspskidentity'])) {
+				$TLSPSKIdentity = "TLSPSKIdentity={$zbagent_config['tlspskidentity']}";
+			}
+
+			if (!empty($zbagent_config['tlspskfile'])) {
+				zabbix_agent_add_keyfile($zbagent_config['tlspskfile'], "psk");
+				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.psk";
+			}
 
 			$zbagent_conf_file = <<< EOF
 Server={$zbagent_config['server']}
@@ -355,6 +342,55 @@ function zabbix_agent_certca($type) {
 		}
 	}
 	return $c_arr;
+}
+
+function zabbixagent_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'zabbixagentlts', 'config'));
+	$zabbixconf = $config['installedpackages']['zabbixagentlts']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {
+		if (($pluginparams['event'] == 'used_ca') && ($zabbixconf['tlscaso'] != 'on') &&
+		    !empty($zabbixconf['tlscafile']) && ($zabbixconf['tlscafile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Agent";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscafile'];
+			$item['usedby'] = 'TLS CA';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($zabbixconf['tlscertfile']) &&
+		    ($zabbixconf['tlscertfile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Agent";
+			$result['certificatelist'] = array();
+		        if ($zabbixconf['tlsconnect'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Connect';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		        if ($zabbixconf['tlsaccept'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Accept';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		}
+
+		if (($pluginparams['event'] == 'used_crl') && !empty($zabbixconf['tlscrlfile']) &&
+		    ($zabbixconf['tlscrlfile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Agent";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscrlfile'];
+			$item['usedby'] = 'TLS CRL';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
 }
 
 ?>

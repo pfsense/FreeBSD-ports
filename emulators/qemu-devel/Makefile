@@ -1,61 +1,70 @@
-# Created by: Juergen Lock <nox@jelal.kn-bremen.de>
-# $FreeBSD$
-
 PORTNAME=	qemu
-DISTVERSION=	5.1.0.20201019
+DISTVERSION=	8.3.0.20231231
 CATEGORIES=	emulators
 PKGNAMESUFFIX=	-devel
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	QEMU CPU Emulator - development version
+WWW=		https://www.qemu.org/
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	amd64 powerpc powerpc64
-IGNORE_FreeBSD_11=	Unable to produce Position Independent Code
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64 powerpc64le
 
-BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
-LIB_DEPENDS=	libnettle.so:security/nettle \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libepoxy.so:graphics/libepoxy \
-		libpcre2-8.so:devel/pcre2
+BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx \
+		${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR} \
+		bash:shells/bash
+LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
+		libzstd.so:archivers/zstd
 
 USES=		bison compiler:c11 cpe gmake gnome iconv:wchar_t ninja perl5 \
-		pkgconfig python:build tar:xz xorg
-USE_GITHUB=	yes
-USE_GNOME=	cairo glib20 libxml2
+		pkgconfig python:build shebangfix tar:xz xorg
+USE_GITLAB=	yes
+GL_ACCOUNT=	qemu-project
+GL_TAGNAME=	7425b6277f12e82952cede1f531bfc689bf77fb1
+GL_TUPLE=	qemu-project:keycodemapdb:f5772a62ec52591ff6870b7e8ef32482371f22c6:keycodemapdb/subprojects/keycodemapdb \
+		qemu-project:dtc:b6910bec11614980a21e46fbccc35934b671bd81:dtc/subprojects/dtc \
+		qemu-project:libvfio-user:0b28d205572c80b568a1003db2c8f37ca333e4d7:libvfio/subprojects/libvfio-user \
+		qemu-project:meson:4a96ad0170126f82b0aa13c26a31013f5d8127d8:meson/meson \
+		qemu-project:berkeley-softfloat-3:b64af41c3276f97f0e181920400ee056b9c88037:berkeleysoftfloat3/subprojects/berkeley-softfloat-3 \
+		qemu-project:berkeley-testfloat-3:e7af9751d9f9fd3b47911f51a5cfd08af256a9ab:berkeleytestfloat3/subprojects/berkeley-testfloat-3
+USE_GNOME=	cairo glib20
 USE_PERL5=	build
 USE_PYTHON=	distutils noflavors
 USE_XORG=	pixman
 
-GH_TUPLE=	qemu:qemu:22d30b3 \
-		qemu:keycodemapdb:6b3d716:keycodemapdb/ui/keycodemapdb \
-		qemu:dtc:85e5d83:dtc/dtc \
-		mesonbuild:meson:776acd2:meson/meson \
-		cota:berkeley-softfloat-3:b64af41:berkeleysoftfloat3/tests/fp/berkeley-softfloat-3 \
-		cota:berkeley-testfloat-3:5a59dce:berkeleytestfloat3/tests/fp/berkeley-testfloat-3
-#BROKEN_powerpc64=	fails to compile: In function aio_bh_poll: internal compiler error: Segmentation fault
-
-#.if !defined(PKGNAMESUFFIX) || (${PKGNAMESUFFIX} != "-utils" && ${PKGNAMESUFFIX} != "-guest-agent")
-#.endif
+SHEBANG_FILES=	scripts/xml-preprocess.py
 
 HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--localstatedir=/var --mandir=man --extra-ldflags=-L\"/usr/lib\" \
+		--extra-ldflags=-L\"${LOCALBASE}/lib\" --enable-debug \
+		--prefix=${PREFIX} --cc=${CC} --enable-netmap --disable-kvm \
+		--disable-linux-user --disable-linux-aio --disable-xen \
+		--enable-debug-info --python=${PYTHON_CMD} --disable-guest-agent \
+		--extra-cflags=-I${WRKSRC}\ -I${LOCALBASE}/include\ -DPREFIX=\\\"\"${PREFIX}\\\"\"
 
-OPTIONS_SINGLE=	NCURSES
-OPTIONS_SINGLE_NCURSES=	NCURSES_DEFAULT NCURSES_BASE NCURSES_PORT
+CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
+WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
+
+PORTDOCS=	.buildinfo _static/* about/* dbus-dbusindex.html devel/* \
+			docs genindex.html index.html interop/* objects.inv \
+			search.html searchindex.js specs/* system/* tools/* user/*
+
 OPTIONS_DEFINE=	SAMBA X11 GTK3 OPENGL GNUTLS SASL JPEG PNG CURL VDE \
 		CDROM_DMA USBREDIR X86_TARGETS STATIC_LINK DOCS CAPSTONE
 OPTIONS_DEFAULT=X11 GTK3 OPENGL GNUTLS SASL JPEG PNG CDROM_DMA CURL NCURSES_DEFAULT VDE \
 		CAPSTONE
+OPTIONS_SINGLE=	NCURSES
+OPTIONS_SINGLE_NCURSES=	NCURSES_DEFAULT NCURSES_BASE NCURSES_PORT
 OPTIONS_SUB=	yes
+
 CAPSTONE_DESC=		Disassembly framework support
 CDROM_DMA_DESC=		IDE CDROM DMA
 GNUTLS_DESC=		gnutls dependency (vnc encryption)
 JPEG_DESC=		jpeg dependency (vnc lossy compression)
-NCURSES_DEFAULT_DESC=	Depend on ncurses (ports if installed, otherwise base)
 NCURSES_BASE_DESC=	Depend on ncurses in base
+NCURSES_DEFAULT_DESC=	Depend on ncurses (ports if installed, otherwise base)
 NCURSES_PORT_DESC=	Depend on devel/ncurses in ports
 PNG_DESC=		png dependency (vnc compression)
 SAMBA_DESC=		samba dependency (for -smb)
@@ -64,58 +73,43 @@ STATIC_LINK_DESC=	Statically link the executables
 USBREDIR_DESC=		usb device network redirection (experimental!)
 VDE_DESC=		vde dependency (for vde networking)
 X86_TARGETS_DESC=	Build only x86 system targets
-CAPSTONE_CONFIGURE_ON=	--enable-capstone=system --extra-cflags=-I${LOCALBASE}/include/capstone
+
+CAPSTONE_LIB_DEPENDS=	libcapstone.so:devel/capstone
+CAPSTONE_CONFIGURE_ON=	--enable-capstone --extra-cflags=-I${LOCALBASE}/include/capstone
 CAPSTONE_CONFIGURE_OFF=	--disable-capstone
-CAPSTONE_LIB_DEPENDS=	libcapstone.so:devel/capstone4
-CURL_CONFIGURE_OFF=	--disable-curl
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
-DOCS_CONFIGURE_ENABLE=	docs
+CURL_CONFIGURE_OFF=	--disable-curl
 DOCS_USES=		makeinfo
-GNUTLS_CONFIGURE_OFF=	--disable-gnutls
+DOCS_CONFIGURE_ENABLE=	docs
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
-GTK3_CONFIGURE_OFF=	--disable-gtk --disable-vte
+GNUTLS_CONFIGURE_OFF=	--disable-gnutls
 GTK3_LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon
-GTK3_USE=	GNOME=gdkpixbuf2,gtk30,vte3 XORG=x11,xext
 GTK3_USES=	gettext gl
-JPEG_CONFIGURE_OFF=	--disable-vnc-jpeg
+GTK3_USE=	GNOME=gdkpixbuf2,vte3 XORG=x11,xext
+GTK3_CONFIGURE_OFF=	--disable-gtk --disable-vte
 JPEG_USES=		jpeg
-NCURSES_DEFAULT_USES=	ncurses
+JPEG_CONFIGURE_OFF=	--disable-vnc-jpeg
 NCURSES_BASE_USES=	ncurses:base
+NCURSES_DEFAULT_USES=	ncurses
 NCURSES_PORT_USES=	ncurses:port
-OPENGL_CONFIGURE_OFF=	--disable-opengl
-OPENGL_USE=	GL=gl
 OPENGL_USES=	gl
+OPENGL_USE=	GL=gbm
+OPENGL_CONFIGURE_OFF=	--disable-opengl
+PNG_LIB_DEPENDS=	libpng16.so:graphics/png
 PNG_CONFIGURE_OFF=	--disable-vnc-png
-PNG_LIB_DEPENDS=	libpng.so:graphics/png
+SAMBA_USES=		samba:run # smbd
 SAMBA_CONFIGURE_ON=	--smbd=${LOCALBASE}/sbin/smbd
 SASL_CONFIGURE_OFF=	--disable-vnc-sasl
-SAMBA_USES=		samba:run # smbd
-SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
-STATIC_LINK_CONFIGURE_ON=	--static
 STATIC_LINK_PREVENTS=		GTK3 X11
 STATIC_LINK_PREVENTS_MSG=	X11 ui cannot be built static
+STATIC_LINK_CONFIGURE_ON=	--static
 USBREDIR_BUILD_DEPENDS=	usbredir>=0.6:net/usbredir
-USBREDIR_CONFIGURE_OFF=	--disable-usb-redir
 USBREDIR_RUN_DEPENDS=	usbredir>=0.6:net/usbredir
+USBREDIR_CONFIGURE_OFF=	--disable-usb-redir
 VDE_CONFIGURE_OFF=	--disable-vde
-VDE_LIB_DEPENDS=	libvdeplug.so:net/vde2
-X11_CONFIGURE_ENABLE=	sdl
-X11_USE=	SDL=sdl2 XORG=x11,xext GNOME=gdkpixbuf2
 X11_USES=	sdl
-
-PORTDOCS=	docs index.html interop/.buildinfo interop/* \
-	       	specs/.buildinfo specs/* system/.buildinfo system/* \
-		tools/.buildinfo tools/* user/.buildinfo user/*
-
-WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
-CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
-CONFIGURE_ARGS=	--localstatedir=/var --extra-ldflags=-L\"/usr/lib\" \
-		--extra-ldflags=-L\"${LOCALBASE}/lib\" --enable-debug \
-		--prefix=${PREFIX} --cc=${CC} --enable-netmap --disable-kvm \
-		--disable-linux-user --disable-linux-aio --disable-xen \
-		--enable-debug-info --python=${PYTHON_CMD} \
-		--extra-cflags=-I${WRKSRC}\ -I${LOCALBASE}/include\ -DPREFIX=\\\"\"${PREFIX}\\\"\"
-INSTALLS_ICONS=	yes
+X11_USE=	SDL=sdl2 XORG=x11,xext GNOME=gdkpixbuf2
+X11_CONFIGURE_ENABLE=	sdl
 
 .include <bsd.port.options.mk>
 
@@ -128,18 +122,26 @@ MAKE_ARGS+=	ARCH=x86_64
 .endif
 
 .if ${ARCH} == "powerpc"
+CFLAGS+=	-D_CALL_SYSV
 MAKE_ARGS+=	ARCH=ppc
+USE_GCC=	yes
 .endif
 
-.if ${ARCH} == "powerpc64"
+.if ${ARCH:Mpowerpc64*}
+CONFIGURE_ARGS+=	--disable-bsd-user
 MAKE_ARGS+=	ARCH=ppc64
-.endif
-
-.if ${ARCH} == "sparc64"
-CONFIGURE_ARGS+=	--sparc_cpu=v9
+PLIST_SUB+=	BSDUSER="@comment "
+.else
+PLIST_SUB+=	BSDUSER=""
 .endif
 
 PLIST_SUB+=	LINUXBOOT_DMA=""
+
+post-extract:
+	${CP} ${WRKSRC}/subprojects/packagefiles/berkeley-softfloat-3/* \
+		${WRKSRC}/subprojects/berkeley-softfloat-3/
+	${CP} ${WRKSRC}/subprojects/packagefiles/berkeley-testfloat-3/* \
+		${WRKSRC}/subprojects/berkeley-testfloat-3/
 
 post-patch-CDROM_DMA-off:
 	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/include/hw/ide/internal.h

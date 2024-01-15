@@ -1,28 +1,23 @@
-# Created by: Cyrille Lefevre <clefevre@citeweb.net>
-# $FreeBSD$
-
 PORTNAME=	gforth
 PORTVERSION=	0.7.3
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	lang
 MASTER_SITES=	http://www.complang.tuwien.ac.at/forth/gforth/ \
 		GNU
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Fast and portable Forth system
+WWW=		https://www.gnu.org/software/gforth/gforth.html
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_i386=	Assertion failed: (pi->restlength >=0), function check_prims, file ./main.c, line 1049.
-BROKEN_powerpc64=	fails to package: Unable to access file usr/local/share/gforth/0.7.3/kernl64l.fi:No such file or directory
 
 LIB_DEPENDS=	libavcall.so:devel/libffcall \
 		libffi.so:devel/libffi \
 		libltdl.so:devel/libltdl
 
 USES=		gmake libtool:build localbase makeinfo
-USE_GCC=	any
+USE_GCC=	yes
 USE_LDCONFIG=	${PREFIX}/lib/gforth/${PORTVERSION}/libcc-named
 
 GNU_CONFIGURE=	yes
@@ -46,13 +41,13 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == i386 || ${ARCH} == powerpc
+.if ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == armv6 || ${ARCH} == armv7
 WORDSIZE=32
 .else
 WORDSIZE=64
 .endif
 
-.if ${ARCH} == powerpc || ${ARCH} == sparc64
+.if ${ARCH} == powerpc || ${ARCH} == powerpc64
 BYTEORDER=b
 .else
 BYTEORDER=l

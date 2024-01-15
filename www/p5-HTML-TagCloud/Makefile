@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-TagCloud
 PORTVERSION=	0.38
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate an HTML tag cloud with Perl
+WWW=		https://metacpan.org/release/HTML-TagCloud
 
 USES=		perl5
 USE_PERL5=	configure

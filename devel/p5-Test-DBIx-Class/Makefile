@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-DBIx-Class
 PORTVERSION=	0.52
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easier test cases for your DBIx::Class applications
+WWW=		https://metacpan.org/release/Test-DBIx-Class
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

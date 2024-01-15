@@ -1,6 +1,3 @@
-# Created by: Jim Pirzyk pirzyk@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Unix-Mknod
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pirzyk@FreeBSD.org
 COMMENT=	Perl5 module to create special files
+WWW=		https://metacpan.org/release/Unix-Mknod
 
 USES=		perl5
 USE_PERL5=	configure

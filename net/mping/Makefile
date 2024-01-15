@@ -1,6 +1,3 @@
-# Created by: Babak Farrokhi <babak@farrokhi.net>
-# $FreeBSD$
-
 PORTNAME=	mping
 PORTVERSION=	2.01
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://mping.uninett.no/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mping network statistics collector
+WWW=		http://mping.uninett.no/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

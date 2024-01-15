@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Chinese support
 
     SUBDIR += CJKUnifonts
@@ -14,17 +11,16 @@
     SUBDIR += autoconvert
     SUBDIR += big5width
     SUBDIR += bitchx
-    SUBDIR += brise
     SUBDIR += bsdconv-opencc
     SUBDIR += bug5
     SUBDIR += c2t
     SUBDIR += cconv
     SUBDIR += celvis
     SUBDIR += chiconv
+    SUBDIR += chinese-calendar
     SUBDIR += cless
     SUBDIR += cnprint
     SUBDIR += dictd-database
-    SUBDIR += docproj
     SUBDIR += enscript
     SUBDIR += eterm
     SUBDIR += fandol
@@ -34,11 +30,11 @@
     SUBDIR += fcitx-configtool
     SUBDIR += fcitx-libpinyin
     SUBDIR += fcitx-rime
-    SUBDIR += fcitx-sunpinyin
     SUBDIR += fcitx-table-extra
     SUBDIR += fcitx-ui-light
     SUBDIR += fcitx5-chewing
     SUBDIR += fcitx5-chinese-addons
+    SUBDIR += fcitx5-mcbopomofo
     SUBDIR += fcitx5-rime
     SUBDIR += fcitx5-table-extra
     SUBDIR += fcitx5-table-other
@@ -52,6 +48,7 @@
     SUBDIR += gcin-qt5
     SUBDIR += gydict
     SUBDIR += hc
+    SUBDIR += ibus-array
     SUBDIR += ibus-cangjie
     SUBDIR += ibus-chewing
     SUBDIR += ibus-libpinyin
@@ -69,6 +66,7 @@
     SUBDIR += libreoffice-zh_TW
     SUBDIR += librime
     SUBDIR += libtabe
+    SUBDIR += linux-wps-office-zh_CN
     SUBDIR += lunar
     SUBDIR += moettf
     SUBDIR += muni
@@ -130,7 +128,6 @@
     SUBDIR += sourcehansans-tc-otf
     SUBDIR += sourcehanserif-sc-otf
     SUBDIR += sourcehanserif-tc-otf
-    SUBDIR += sunpinyin
     SUBDIR += taipeisanstc
     SUBDIR += tin
     SUBDIR += tintin++

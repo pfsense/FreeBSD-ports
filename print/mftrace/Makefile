@@ -1,15 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	mftrace
-PORTVERSION=	1.2.18
-PORTREVISION=	2
+PORTVERSION=	1.2.20
 CATEGORIES=	print
 MASTER_SITES=	http://lilypond.org/download/sources/mftrace/ \
 		LOCAL/nivit/${PORTNAME}/
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Scalable PostScript (Type1) Fonts for MetaFont
+WWW=		https://lilypond.org/mftrace/
 
 RUN_DEPENDS=	t1asm:print/t1utils \
 		fontforge:print/fontforge
@@ -22,10 +19,9 @@ BUILD_DEPENDS+=	potrace:graphics/potrace
 RUN_DEPENDS+=	potrace:graphics/potrace
 .endif
 
-# Python3 ready
-USE_TEX=	base texmf
+USES=		gmake python tex
+USE_TEX=	base
 GNU_CONFIGURE=	yes
-USES=		gmake python
 MAKEFILE=	GNUmakefile
 
 PLIST_FILES=	\

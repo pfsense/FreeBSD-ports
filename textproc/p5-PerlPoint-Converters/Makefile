@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PerlPoint-Converters
 PORTVERSION=	1.0205
 CATEGORIES=	textproc perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert PerlPoint docs into various formats
+WWW=		https://metacpan.org/release/PerlPoint-Converters
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-PerlPoint-Package>=0:textproc/p5-PerlPoint-Package \

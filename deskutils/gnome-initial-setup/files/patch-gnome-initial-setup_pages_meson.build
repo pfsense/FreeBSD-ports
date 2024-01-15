@@ -1,0 +1,13 @@
+Disable NetworkManager.
+
+Index: gnome-initial-setup/pages/meson.build
+--- gnome-initial-setup/pages/meson.build.orig	2022-12-02 15:11:34 UTC
++++ gnome-initial-setup/pages/meson.build
+@@ -2,7 +2,6 @@ pages = [
+    'account',
+    'language',
+    'keyboard',
+-   'network',
+    'timezone',
+    'privacy',
+    'goa',

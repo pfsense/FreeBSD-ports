@@ -1,31 +1,16 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	funcparserlib
-PORTVERSION=	0.3.6
-PORTREVISION=	1
+PORTVERSION=	1.0.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Recursive descent parsing library based on functional combinators
+WWW=		https://funcparserlib.pirx.ru/
 
 LICENSE=	MIT
 
-USES=		python:3.6+
-USE_PYTHON=	distutils autoplist
-
-PORTDOCS=	README doc
-DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
-
-OPTIONS_DEFINE=	DOCS
-
-post-install:
-	@${RM} ${WRKSRC}/doc/Makefile
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${INSTALL_WRKSRC} \
-	  && ${FIND} ${PORTDOCS} -type d -exec ${MKDIR} ${STAGEDIR}${DOCSDIR}/\{} \; \
-	  && ${FIND} ${PORTDOCS} -type f -exec ${INSTALL_DATA} \{} ${STAGEDIR}${DOCSDIR}/\{} \;
+USES=		python
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

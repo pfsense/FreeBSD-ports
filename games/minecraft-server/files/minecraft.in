@@ -1,6 +1,5 @@
 #!/bin/sh
-#
-# $FreeBSD$
+
 # PROVIDE: minecraft
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
@@ -28,6 +27,8 @@ stop_cmd="${name}_stop"
 console_cmd="${name}_console"
 status_cmd="${name}_status"
 kill_cmd="${name}_kill"
+
+export JAVA_VERSION=17
 
 is_running()
 {

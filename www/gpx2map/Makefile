@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	gpx2map
 PORTVERSION=	0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	koue@chaosophia.net
 COMMENT=	Put GPX track on Google Map or OpenStreetMap
+WWW=		https://github.com/sd2k9/gpx2map
 
 LICENSE=	GPLv3
 
@@ -30,8 +29,8 @@ PLIST_FILES=	bin/gpx2map \
 OPTIONS_DEFINE=	GNUPLOT
 
 GNUPLOT_DESC=	Enable draw track profiles
-GNUPLOT_RUN_DEPENDS=	p5-Chart-Gnuplot>=0:graphics/p5-Chart-Gnuplot \
-			convert:graphics/ImageMagick6
+GNUPLOT_USES=		magick:6,run
+GNUPLOT_RUN_DEPENDS=	p5-Chart-Gnuplot>=0:graphics/p5-Chart-Gnuplot
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|gpx2map.google.template|${DATADIR}/gpx2map.google.template|" \

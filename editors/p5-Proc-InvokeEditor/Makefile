@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Proc-InvokeEditor
 PORTVERSION=	1.13
 CATEGORIES=	editors perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for starting a text editor
+WWW=		https://metacpan.org/release/Proc-InvokeEditor
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

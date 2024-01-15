@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stardict-dal
 PORTVERSION=	2.4.2
 CATEGORIES=	russian
@@ -8,6 +6,7 @@ DISTNAME=	${PORTNAME}-ru-${PORTVERSION}
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Dal's Explanatory Dictionary
+WWW=		http://download.huzheng.org/ru/
 
 USES=		tar:bzip2
 

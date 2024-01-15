@@ -1,6 +1,3 @@
-# Created by: Torsten Zuhlsdorff <ports@toco-domains.de>
-# $FreeBSD$
-
 PORTNAME=	sidetiq
 PORTVERSION=	0.7.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Recurring jobs for Sidekiq
+WWW=		https://github.com/endofunky/sidetiq
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +16,6 @@ RUN_DEPENDS=	rubygem-celluloid>=0.17.3:devel/rubygem-celluloid \
 		rubygem-sidekiq>=4.1.0:devel/rubygem-sidekiq
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

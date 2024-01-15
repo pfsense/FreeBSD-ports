@@ -1,22 +1,19 @@
-# Created by: michael johnson <ahze@ahze.net>
-# $FreeBSD$
-#   $MCom: ports/devel/py-xdg/Makefile,v 1.4 2007/09/10 05:35:05 mezz Exp $
-
 PORTNAME=	xdg
-PORTVERSION=	0.27
+PORTVERSION=	0.28
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Python library to access freedesktop.org standards
+WWW=		https://freedesktop.org/wiki/Software/pyxdg/
 
 LICENSE=	LGPL20
 
 NO_ARCH=	yes
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist distutils pytest # 2 tests fail, see https://gitlab.freedesktop.org/xdg/pyxdg/-/issues/26
 
 post-patch:
 	@${REINPLACE_CMD} -e \

@@ -1,6 +1,3 @@
-# Created by: Ryan T. Dean <rtdean@cytherianage.net>
-# $FreeBSD$
-
 PORTNAME=	ljdeps
 PORTVERSION=	1.0
 PORTREVISION=	6
@@ -8,6 +5,7 @@ CATEGORIES=	www perl5
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Meta-port to install all the perl modules used by LiveJournal
+WWW=		http://www.livejournal.com/code/
 
 RUN_DEPENDS=	p5-Net-Telnet>=0:net/p5-Net-Telnet \
 		p5-Image-Size>=0:graphics/p5-Image-Size \

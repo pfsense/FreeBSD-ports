@@ -1,14 +1,13 @@
-# Created by: Hye-Shik Chang
-# $FreeBSD$
-
 PORTNAME=	pycurl
-PORTVERSION=	7.43.0.6
+PORTVERSION=	7.45.2
 CATEGORIES=	ftp python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python interface to libcurl
+WWW=		http://pycurl.io/ \
+		https://github.com/pycurl/pycurl
 
 LICENSE=	LGPL21 MIT
 LICENSE_COMB=	dual
@@ -17,7 +16,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/COPYING-MIT
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		python:3.6+ ssl
+USES=		python ssl
 USE_PYTHON=	autoplist concurrent distutils
 
 PORTDOCS=	AUTHORS INSTALL.rst README.rst RELEASE-NOTES.rst
@@ -25,7 +24,7 @@ PORTDOCS=	AUTHORS INSTALL.rst README.rst RELEASE-NOTES.rst
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/

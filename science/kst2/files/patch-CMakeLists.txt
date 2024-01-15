@@ -1,4 +1,4 @@
---- CMakeLists.txt.orig	2018-04-05 13:33:30 UTC
+--- CMakeLists.txt.orig	2021-01-24 05:51:19 UTC
 +++ CMakeLists.txt
 @@ -72,12 +72,6 @@ endif()
  project(Kst)
@@ -13,7 +13,7 @@
  
  
  if(kst_sanitize)
-@@ -239,11 +233,6 @@ message(STATUS)
+@@ -240,11 +234,6 @@ message(STATUS)
  # React on options
  
  

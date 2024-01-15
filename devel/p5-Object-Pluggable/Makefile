@@ -1,6 +1,3 @@
-# Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
-
 PORTNAME=	Object-Pluggable
 PORTVERSION=	1.29
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base class for creating plugin-enabled objects
+WWW=		https://metacpan.org/release/Object-Pluggable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

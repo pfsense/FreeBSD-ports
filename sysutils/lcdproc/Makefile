@@ -1,6 +1,3 @@
-# Created by: pat
-# $FreeBSD$
-
 PORTNAME=	lcdproc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.9
@@ -8,11 +5,12 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	daniel@shafer.cc
 COMMENT=	Client/server suite for LCD devices
+WWW=		https://www.lcdproc.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	i386 amd64 powerpc64
+ONLY_FOR_ARCHS=	i386 amd64 powerpc powerpc64 powerpc64le
 
 USES=		autoreconf pkgconfig
 GNU_CONFIGURE=	yes
@@ -21,16 +19,18 @@ USE_GITHUB=	yes
 
 CONFIGURE_ARGS=	--enable-drivers="${LCDPROC_DRIVERS}" \
 		--disable-dependency-tracking \
+		--disable-libhid \
 		--disable-libusb-1-0 \
 		--disable-doxygen
+
+PLIST_SUB+=	HID="@comment "
 
 SUB_FILES=	pkg-message
 
 # Options
-OPTIONS_DEFINE=	USB FTDI HID FREETYPE PNG SERDISP X11
+OPTIONS_DEFINE=	USB FTDI FREETYPE PNG SERDISP X11
 USB_DESC=	USB support
 FTDI_DESC=	Build drivers using libftdi (requires USB)
-HID_DESC=	Build drivers using libhid (requires USB)
 SERDISP_DESC=	Build drivers using serdisplib
 
 OPTIONS_DEFAULT=USB FREETYPE
@@ -93,6 +93,10 @@ PLIST_SUB+=	X86=""
 PLIST_SUB+=	X86="@comment "
 .endif
 
+.if ${ARCH:Mpowerpc*}
+USE_GCC=	yes
+.endif
+
 .if ${PORT_OPTIONS:MUSB}
 CONFIGURE_ARGS+=	--enable-libusb
 PLIST_SUB+=		USB=""
@@ -109,15 +113,6 @@ LCDPROC_DRIVERS+=i2500vfd \
 . else
 CONFIGURE_ARGS+=	--disable-libftdi
 PLIST_SUB+=		FTDI="@comment "
-. endif
-
-. if ${PORT_OPTIONS:MHID}
-LIB_DEPENDS+=		libhid.so:devel/libhid
-PLIST_SUB+=		HID=""
-LCDPROC_DRIVERS+=mdm166a
-. else
-CONFIGURE_ARGS+=	--disable-libhid
-PLIST_SUB+=		HID="@comment "
 . endif
 
 .else

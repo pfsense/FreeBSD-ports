@@ -1,6 +1,3 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xorg
 PORTVERSION=	7.7
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org complete distribution metaport
+WWW=		https://www.x.org/
 
 USES=		metaport
 
@@ -28,9 +26,8 @@ RUN_DEPENDS+=	xorg-apps>0:x11/xorg-apps \
 		xorg-drivers>0:x11-drivers/xorg-drivers
 
 .if defined(XORG_COMPLETE)
-RUN_DEPENDS+=	Xnest:x11-servers/xorg-nestserver \
-		Xdmx:x11-servers/xorg-dmx \
-		Xvfb:x11-servers/xorg-vfbserver
+RUN_DEPENDS+=	Xnest:x11-servers/xorg-server@xnest \
+		Xvfb:x11-servers/xorg-server@xvfb
 .endif
 
 .include <bsd.port.mk>

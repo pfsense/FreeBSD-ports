@@ -3,7 +3,7 @@
  * frr_validation.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -99,7 +99,7 @@ function frr_validate_bgp_sourceproto($name) {
 /* GUI input validation functions, one per page */
 
 function frr_global_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	if (($_POST['password'] <> "") && (strpos($_POST['password'], "'") !== false)) {
 		$input_errors[] = "Password cannot contain a single quote (')";
@@ -107,11 +107,21 @@ function frr_global_validate_input() {
 	if (!empty($_POST['routerid']) && !is_ipaddrv4($_POST['routerid'])) {
 		$input_errors[] = "Router ID must be an address.";
 	}
+	foreach ($_POST as $key => $value) {
+		$matches = array();
+		if (preg_match("/^routevalue(\d+)$/", $key, $matches)) {
+			if (isset($_POST["routevalue{$matches[1]}"]) &&
+			    !empty($_POST["routevalue{$matches[1]}"]) &&
+			    !is_subnet($_POST["routevalue{$matches[1]}"])) {
+				$input_errors[] = "Route in row {$matches[1]} must be a subnet.";
+			}
+		}
+	}
 }
 
 /* Read in rowhelper data from $_POST, sort it by sequence number, and put it back in POST. */
 function frr_sort_rows_by_seq() {
-	global $config, $pkg;
+	global $pkg;
 	$pkgarr = array();
 
 	/* Inside this foreach was lifted from pkg_edit.php. It reads rowhelper values
@@ -147,11 +157,15 @@ function frr_sort_rows_by_seq() {
 }
 
 function frr_global_acls_validate_input() {
-	global $config, $input_errors, $pkg;
+	global $input_errors, $pkg;
 	frr_sort_rows_by_seq();
 
 	if (empty($_POST['name'])) {
 		$input_errors[] = "A name is required.";
+	}
+
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
+		$input_errors[] = "Access list name may only contain the characters a-z, A-Z, 0-9, '-', '_' and '.'";
 	}
 
 	switch ($_POST['type']) {
@@ -218,11 +232,20 @@ function frr_global_acls_validate_input() {
 }
 
 function frr_global_prefixes_validate_input() {
-	global $config, $input_errors, $pkg;
+	global $input_errors, $pkg;
 	frr_sort_rows_by_seq();
 
 	if (empty($_POST['name'])) {
 		$input_errors[] = "A name is required.";
+	}
+
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
+		$input_errors[] = "Prefix List name may only contain the characters a-z, A-Z, 0-9, '-', '_' and '.'";
+	}
+
+	/* Do not allow a name of: ACCEPTFILTER and ACCEPTFILTER6 */
+	if (($_POST['name'] == 'ACCEPTFILTER') || ($_POST['name'] == 'ACCEPTFILTER6')) {
+		$input_errors[] = "Prefix List name 'ACCEPTFILTER' and 'ACCEPTFILTER6' is not allowed.";
 	}
 
 	foreach ($_POST as $key => $value) {
@@ -264,19 +287,30 @@ function frr_global_prefixes_validate_input() {
 }
 
 function frr_global_routemaps_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
+
+	if (empty($_POST['name'])) {
+		$input_errors[] = "A name is required.";
+	}
+
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
+		$input_errors[] = "Route map name may only contain the characters a-z, A-Z, 0-9, '-', '_' and '.'";
+	}
 
 	/* Do not allow a name of: ACCEPTFILTER */
+	if ($_POST['name'] == 'ACCEPTFILTER') {
+		$input_errors[] = "Route map name 'ACCEPTFILTER' is not allowed.";
+	}
 }
 
 function frr_global_raw_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	/* Run commands with -C, grep -c '\*\*\* error' */
 }
 
 function frr_ospf_areas_validate_input() {
-	global $config, $id, $input_errors;
+	global $id, $input_errors;
 	/* area must be an IP address */
 	if (!(is_ipaddr($_POST['area']) || ctype_digit($_POST['area']))) {
 		$input_errors[] = "Area must be a valid IP address or integer number.";
@@ -333,7 +367,7 @@ function frr_ospf_areas_validate_input() {
 }
 
 function frr_ospf_neighbors_validate_input() {
-	global $config, $id, $input_errors;
+	global $id, $input_errors;
 	if (!is_ipaddrv4($_POST['neighbor'])) {
 		$input_errors[] = "Neighbor must be a valid IPv4 address.";
 	}
@@ -343,23 +377,21 @@ function frr_ospf_neighbors_validate_input() {
 }
 
 function frr_ospf_interfaces_validate_input() {
-	global $config, $id, $input_errors;
+	global $id, $input_errors;
 
-	if ($config['installedpackages']['frrospfdinterfaces']['config']) {
-		foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $index => $conf) {
-			if ($index == 0) {
-				continue;
-			}
-			if ($id != $index && $conf['interface'] == $_POST['interface']) {
-				$input_errors[] = "Interface {$_POST['interface']} is already configured.";
-			}
+	foreach (config_get_path('installedpackages/frrospfdinterfaces/config', []) as $index => $conf) {
+		if ($index == 0) {
+			continue;
+		}
+		if ($id != $index && $conf['interface'] == $_POST['interface']) {
+			$input_errors[] = "Interface {$_POST['interface']} is already configured.";
 		}
 	}
 	frr_validate_intrange_input("Cost", $_POST['metric'], 1, 65535);
 	if ((strlen($_POST['interfacearea']) > 0) && !(is_ipaddr($_POST['interfacearea']) || ctype_digit($_POST['interfacearea']))) {
 		$input_errors[] = "Area must be a valid IP address or integer number.";
 	}
-	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospfd']['config'][0]['defaultarea']) == 0)) {
+	if ((strlen($_POST['interfacearea']) == 0) && (strlen(config_get_path('installedpackages/frrospfd/config/0/defaultarea')) == 0)) {
 		$input_errors[] = "Area must either be set on the interface or a default area set for the OSPF instance.";
 	}
 	if (!empty($_POST['networktype']) && !in_array($_POST['networktype'], array('broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'))) {
@@ -397,7 +429,7 @@ function frr_ospf_interfaces_validate_input() {
 }
 
 function frr_ospf_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	if (!empty($_POST['routerid']) && !is_ipaddr($_POST['routerid'])) {
 		$input_errors[] = "Router ID must be an address.";
@@ -408,15 +440,29 @@ function frr_ospf_validate_input() {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
 	} else {
-		if (is_array($config['installedpackages']['frrospfdinterfaces'])) {
-			$interfaces_no_area = array();
-			foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $interface) {
-				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
+		$interfaces_no_area = array();
+		foreach (config_get_path('installedpackages/frrospfdinterfaces/config', []) as $interface) {
+			if (strlen($interface['interfacearea']) == 0) {
+				$interfaces_no_area[] = $interface['interface'];
 			}
-			if (!empty($interfaces_no_area)) {
-				$interfaces_no_area = implode(" ", $interfaces_no_area);
-				$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
+		}
+		if (!empty($interfaces_no_area)) {
+			$interfaces_no_area = implode(" ", $interfaces_no_area);
+			$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
+		}
+	}
+
+	for ($x = 0; $x < 99; $x++) {
+		if ((isset($_POST["routevalue{$x}"]) && !empty($_POST["routevalue{$x}"])) ||
+		    (isset($_POST["routearea{$x}"]) && !empty($_POST["routearea{$x}"]))) {
+			if (!is_subnetv4($_POST["routevalue{$x}"])) {
+				$input_errors[] = "OSPF Network must be an IPv4 subnet.";
 			}
+			if (!is_ipaddrv4($_POST["routearea{$x}"])) {
+				$input_errors[] = "Area ID must be an IPv4 address.";
+			}
+		} else {
+			break;
 		}
 	}
 
@@ -461,19 +507,19 @@ function frr_ospf_validate_input() {
 }
 
 function frr_ospf6_interfaces_validate_input() {
-	global $config, $g, $input_errors;
+	global $g, $input_errors;
 
 	if ((strlen($_POST['interfacearea']) > 0) && (!(is_ipaddr($_POST['interfacearea']) || ctype_digit($_POST['interfacearea'])))) {
 		$input_errors[] = "Area must be a valid IP address or integer number.";
 	}
 
-	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospf6d']['config'][0]['defaultarea']) == 0)) {
+	if ((strlen($_POST['interfacearea']) == 0) && (strlen(config_get_path('installedpackages/frrospf6d/config/0/defaultarea')) == 0)) {
 		$input_errors[] = "Area must either be set on the interface or a default given for the OSPFv3 instance.";
 	}
 }
 
 function frr_ospf6_areas_validate_input() {
-	global $config, $id, $input_errors;
+	global $id, $input_errors;
 	/* area must be an IP address */
 	if (!(is_ipaddr($_POST['area']) || ctype_digit($_POST['area']))) {
 		$input_errors[] = "Area must be a valid IP address or integer number.";
@@ -522,7 +568,7 @@ function frr_ospf6_areas_validate_input() {
 }
 
 function frr_ospf6_validate_input() {
-	global $config, $g, $input_errors;
+	global $g, $input_errors;
 
 	if (!empty($_POST['routerid']) && !is_ipaddr($_POST['routerid'])) {
 		$input_errors[] = "Router ID must be an IP address.";
@@ -533,21 +579,21 @@ function frr_ospf6_validate_input() {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
 	} else {
-		if (is_array($config['installedpackages']['frrospf6dinterfaces'])) {
-			$interfaces_no_area = array();
-			foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $interface) {
-				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
+		$interfaces_no_area = array();
+		foreach (config_get_path('installedpackages/frrospf6dinterfaces/config', []) as $interface) {
+			if (strlen($interface['interfacearea']) == 0) {
+				$interfaces_no_area[] = $interface['interface'];
 			}
-			if (!empty($interfaces_no_area)) {
-				$interfaces_no_area = implode(" ", $interfaces_no_area);
-				$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
-			}
+		}
+		if (!empty($interfaces_no_area)) {
+			$interfaces_no_area = implode(" ", $interfaces_no_area);
+			$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
 		}
 	}
 }
 
 function frr_bgp_validate_input() {
-	global $config, $g, $input_errors;
+	global $g, $input_errors;
 
 	if (!empty($_POST['enable']) && empty($_POST['asnum'])) {
 		$input_errors[] = "AS must be provided if BGP is enabled.";
@@ -595,25 +641,25 @@ function frr_bgp_validate_input() {
 }
 
 function frr_bgp_advanced_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 }
 
 function frr_bgp_neighbors_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 }
 
 function frr_bgp_aspaths_validate_input() {
-	global $config, $input_errors, $pkg;
+	global $input_errors, $pkg;
 	frr_sort_rows_by_seq();
 }
 
 function frr_bgp_communities_validate_input() {
-	global $config, $input_errors, $pkg;
+	global $input_errors, $pkg;
 	frr_sort_rows_by_seq();
 }
 
 function frr_bgp_validate_group() {
-	global $config, $g, $id, $input_errors;
+	global $g, $id, $input_errors;
 
 	if (!is_numeric($_POST['remoteas'])) {
 		$input_errors[] = "Remote AS must be entered as a number only.";
@@ -625,7 +671,7 @@ function frr_bgp_validate_group() {
 }
 
 function frr_bgp_rpki_cache_server_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	if (strlen($_POST['port']) > 0) {
 		if (!is_numeric($_POST['port'])) {
@@ -645,11 +691,11 @@ function frr_bgp_rpki_cache_server_validate_input() {
 }
 
 function frr_bfd_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 }
 
 function frr_bfd_peer_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	if (!empty($_POST['detectmultiplier'])) {
 		if (!is_numeric($_POST['detectmultiplier'])) {
@@ -693,7 +739,7 @@ function frr_bfd_peer_validate_input() {
 }
 
 function frr_bfd_profile_validate_input() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	if (!empty($_POST['detectmultiplier'])) {
 		if (!is_numeric($_POST['detectmultiplier'])) {
@@ -733,5 +779,53 @@ function frr_bfd_profile_validate_input() {
 		}
 		/*minimum-ttl (1-254)*/
 		frr_validate_intrange_input("Minimum TTL", $_POST['minimumttl'], 1, 254);
+	}
+}
+
+function frr_rip_validate_input() {
+	global $input_errors;
+
+	for ($x = 0; $x < 99; $x++) {
+		if (isset($_POST["routevalue{$x}"]) && !empty($_POST["routevalue{$x}"]) &&
+		    !is_subnetv4($_POST["routevalue{$x}"])) {
+			$input_errors[] = "RIP Network must be an IPv4 subnet.";
+		} else {
+			break;
+		}
+	}
+
+	frr_validate_intrange_input("Connected Metric", $_POST['redistributeconnectedsubnets_metric'], 0, 16);
+	frr_validate_intrange_input("Kernel Metric", $_POST['redistributekernel_metric'], 0, 16);
+	frr_validate_intrange_input("BGP Metric", $_POST['redistributebgp_metric'], 0, 16);
+	frr_validate_intrange_input("BGP Metric", $_POST['redistributeospf_metric'], 0, 16);
+	frr_validate_intrange_input("Static Metric", $_POST['redistributestatic_metric'], 0, 16);
+	frr_validate_intrange_input("Default Route Metric", $_POST['redistributedefaultroute_metric'], 0, 16);
+}
+
+function frr_rip_interfaces_validate_input() {
+	global $id, $input_errors;
+
+	foreach (config_get_path('installedpackages/frrripdinterfaces/config', []) as $index => $conf) {
+		if ($index == 0) {
+			continue;
+		}
+		if ($id != $index && $conf['interface'] == $_POST['interface']) {
+			$input_errors[] = "Interface {$_POST['interface']} is already configured.";
+		}
+	}
+	if (!empty($_POST['authtype']) && !in_array($_POST['authtype'], array('digest', 'simple', 'null'))) {
+		$input_errors[] = "Invalid authentication type.";
+	}
+	if (!empty($_POST['authtype']) && empty($_POST['password'])) {
+		$input_errors[] = "Please input a password.";
+	} elseif (!empty($_POST['authtype']) && (strlen($_POST['password']) > 16)) {
+		$input_errors[] = "Message Digest Password must be 16 characters or less.";
+	}
+}
+
+function frr_rip_neighbors_validate_input() {
+	global $id, $input_errors;
+	if (!is_ipaddrv4($_POST['neighbor'])) {
+		$input_errors[] = "Neighbor must be a valid IPv4 address.";
 	}
 }

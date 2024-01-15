@@ -1,22 +1,21 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	cycler
-PORTVERSION=	0.10.0
+PORTVERSION=	0.12.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP/source/C/Cycler
+MASTER_SITES=	PYPI/source/C/Cycler
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Composable style cycles
+WWW=		https://matplotlib.org/cycler/
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	pep517 autoplist
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

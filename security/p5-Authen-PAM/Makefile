@@ -1,6 +1,3 @@
-# Created by: Matt Behrens <matt@zigg.com>
-# $FreeBSD$
-
 PORTNAME=	Authen-PAM
 PORTVERSION=	0.16
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Perl interface to the PAM library
+WWW=		http://www.cs.kuleuven.ac.be/~pelov/pam/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

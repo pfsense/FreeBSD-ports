@@ -1,12 +1,10 @@
-# Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	roct
 PORTVERSION=	1.9.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Radeon Open Compute Thunk Interface
+WWW=		https://github.com/RadeonOpenCompute/ROCT-Thunk-Interface
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

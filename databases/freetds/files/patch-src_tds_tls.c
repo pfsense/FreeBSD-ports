@@ -1,6 +1,6 @@
---- src/tds/tls.c.orig	2017-11-30 09:00:01 UTC
+--- src/tds/tls.c.orig	2022-05-31 06:46:53 UTC
 +++ src/tds/tls.c
-@@ -50,6 +50,10 @@
+@@ -53,6 +53,10 @@
  #include <sys/socket.h>
  #endif
  
@@ -9,21 +9,23 @@
 +#endif
 +
  #include <freetds/tds.h>
- #include <freetds/string.h>
+ #include <freetds/utils/string.h>
  #include <freetds/tls.h>
-@@ -72,6 +76,15 @@
- #define SSL_PTR ptr
- #else
+@@ -600,7 +604,7 @@ tds_ssl_free(BIO *a)
+ 	return 1;
+ }
  
-+#ifdef LIBRESSL_VERSION_NUMBER
-+#if LIBRESSL_VERSION_NUMBER < 0x2070000FL
-+static pthread_mutex_t *openssllocks;
-+#undef OPENSSL_VERSION_NUMBER
-+#define OPENSSL_VERSION_NUMBER 0x1000107fL
-+#endif
-+#define TLS_ST_OK SSL_ST_OK
-+#endif
-+
- /* some compatibility layer */
- #if OPENSSL_VERSION_NUMBER < 0x1010000FL
- static inline void
+-#if OPENSSL_VERSION_NUMBER < 0x1010000FL || defined(LIBRESSL_VERSION_NUMBER)
++#if OPENSSL_VERSION_NUMBER < 0x1010000FL
+ static BIO_METHOD tds_method_login[1] = {
+ {
+ 	BIO_TYPE_MEM,
+@@ -664,7 +668,7 @@ tds_deinit_openssl_methods(void)
+ #  endif
+ #endif
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x1010000FL || defined(LIBRESSL_VERSION_NUMBER)
++#if OPENSSL_VERSION_NUMBER < 0x1010000FL
+ static tds_mutex *openssl_locks;
+ 
+ static void

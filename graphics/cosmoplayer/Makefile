@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	cosmoplayer
 PORTVERSION=	2.1.1
 PORTREVISION=	2
@@ -13,6 +10,7 @@ DISTNAME=	${PORTNAME}-jar
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Java classes to support VRML
+WWW=		http://cic.nist.gov/vrml/cosmoplayer.html
 
 LICENSE=	SGI
 LICENSE_NAME=	SGI

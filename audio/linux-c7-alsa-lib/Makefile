@@ -1,6 +1,3 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	alsa-lib
 PORTVERSION=	1.1.8
 DISTVERSIONSUFFIX=	-1.el7
@@ -8,6 +5,7 @@ CATEGORIES=	audio linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Advanced Linux Sound Architecture libraries (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://www.alsa-project.org/
 
 LICENSE=	GPLv3
 
@@ -17,7 +15,7 @@ USES=		linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+CONFLICTS=	linux-c6-${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
 

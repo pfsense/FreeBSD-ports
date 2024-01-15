@@ -1,19 +1,18 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	stoplight
-PORTVERSION=	2.2.1
+PORTVERSION=	4.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Implementation of the circuit breaker pattern
+WWW=		https://github.com/bolshakov/stoplight
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+RUN_DEPENDS=	rubygem-redlock1>=1.0<2:devel/rubygem-redlock1
+
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

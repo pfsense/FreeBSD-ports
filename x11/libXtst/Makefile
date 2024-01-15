@@ -1,6 +1,3 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libXtst
 PORTVERSION=	1.2.3
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X Test extension
+WWW=		https://www.freedesktop.org/Software/xorg
 
 LICENSE=	MIT
 

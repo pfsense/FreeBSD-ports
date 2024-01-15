@@ -1,8 +1,5 @@
-# Created by: Roman Shterenzon <roman@xpert.com>
-# $FreeBSD$
-
 PORTNAME=	Archive-Tar
-PORTVERSION=	2.38
+PORTVERSION=	3.02
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BINGOS
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for creation and manipulation of tar files
+WWW=		https://metacpan.org/release/Archive-Tar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

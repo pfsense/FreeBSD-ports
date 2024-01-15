@@ -1,6 +1,3 @@
-# Created by: janos.mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	anomy-sanitizer
 PORTVERSION=	1.76
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	http://mailtools.anomy.net/dist/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sanitize and clean incoming/outgoing mail
+WWW=		http://mailtools.anomy.net/
 
 LICENSE=	GPLv2+
 
@@ -20,7 +18,7 @@ WRKSRC=		${WRKDIR}/anomy
 
 PORTDOCS=	CHANGELOG.sanitizer CREDITS README.sanitizer sanitizer.html UNICODE.TXT
 
-OPTIONS_DEFINE= DOCS
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Anomy/Sanitizer/

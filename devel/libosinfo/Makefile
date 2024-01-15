@@ -1,14 +1,11 @@
-# Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libosinfo
-PORTVERSION=	1.8.0
-PORTREVISION=	1
+PORTVERSION=	1.11.0
 CATEGORIES=	devel
 MASTER_SITES=	https://releases.pagure.org/libosinfo/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Library for managing OS information for virtualization
+WWW=		https://libosinfo.org/
 
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup
 BUILD_DEPENDS=	${LOCALBASE}/share/pciids/pci.ids:misc/pciids \
@@ -17,7 +14,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		osinfo-db-import:sysutils/osinfo-db-tools \
 		${LOCALBASE}/share/osinfo/VERSION:misc/osinfo-db
 
-USES=		compiler:c11 gettext gmake gnome libtool pathfix \
+USES=		compiler:c11 cpe gettext gmake gnome libtool pathfix \
 		pkgconfig tar:xz meson
 USE_GNOME=	glib20 libxml2 libxslt introspection:build intlhack
 USE_LDCONFIG=	yes
@@ -27,7 +24,7 @@ CONFIGURE_ARGS+=	-Denable-vala=disabled \
 			-Dwith-usb-ids-path=${LOCALBASE}/share/usbids/usb.ids \
 			-Dwith-pci-ids-path=${LOCALBASE}/share/pciids/pci.ids
 
-SHLIB_VER=	0.1008.0
+SHLIB_VER=	0.1011.0
 PLIST_SUB=	SHLIB_VER=${SHLIB_VER}
 
 OPTIONS_DEFINE=	GTKDOC

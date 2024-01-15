@@ -1,6 +1,3 @@
-# Created by: Philippe Casidy <pcasidy@casidy.com>
-# $FreeBSD$
-
 PORTNAME=	whatpix
 PORTVERSION=	1.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://whatpix.sourceforge.net/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl console application which finds, moves, or deletes duplicate files
+WWW=		https://whatpix.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

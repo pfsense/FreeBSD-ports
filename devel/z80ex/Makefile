@@ -1,6 +1,3 @@
-# Created by: Hardy Schumacher <hardy.schumacher@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	z80ex
 PORTVERSION=	1.1.21
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	hardy.schumacher@gmx.de
 COMMENT=	ZiLOG Z80 CPU emulator library
+WWW=		http://z80ex.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

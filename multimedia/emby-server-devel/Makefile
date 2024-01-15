@@ -1,0 +1,14 @@
+DISTVERSION=	4.8.0.66
+PORTREVISION=	0
+PKGNAMESUFFIX=	-devel
+
+DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
+
+MAINTAINER=	driesm@FreeBSD.org
+
+CONFLICTS_INSTALL=	emby-server
+
+MASTERDIR=	${.CURDIR}/../emby-server
+DISTINFO_FILE=	${.CURDIR}/distinfo
+
+.include "${MASTERDIR}/Makefile"

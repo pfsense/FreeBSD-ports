@@ -1,6 +1,3 @@
-# Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	rude
 PORTVERSION=	0.70
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Real-time UDP data emitter and collector
+WWW=		https://rude.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/DOC/COPYING

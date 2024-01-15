@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	check_netsnmp
 PORTVERSION=	1.0
 PORTREVISION=	2

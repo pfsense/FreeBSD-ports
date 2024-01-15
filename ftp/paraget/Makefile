@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	paraget
 PORTVERSION=	0.3.0
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Parallel FTP-fetching program
+WWW=		https://paraget.sourceforge.net/
 
 LICENSE=	GPLv2
 

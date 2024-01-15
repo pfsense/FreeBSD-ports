@@ -1,6 +1,3 @@
-# Created by: jacs
-# $FreeBSD$
-
 PORTNAME=	xfishtank
 PORTVERSION=	2.2
 PORTREVISION=	2

@@ -1,6 +1,3 @@
-# Created by: Bruce M Simpson
-# $FreeBSD$
-
 PORTNAME=	ficl
 PORTVERSION=	4.1.0
 PORTREVISION=	4
@@ -9,12 +6,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-all/${PORTNAME}${PORTVERSION:C/([[:digi
 
 MAINTAINER=	pavelivolkov@gmail.com
 COMMENT=	Forth Inspired Command Language
+WWW=		https://ficl.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${PATCHDIR}/LICENSE.txt
 
-ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	this port is not tested on anything other than i386 and amd64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc64le powerpc64 powerpc
+ONLY_FOR_ARCHS_REASON=	this port is not tested on anything other than i386, amd64, powerpc, powerpc64 and powerpc64le
 
 USE_LDCONFIG=	YES
 

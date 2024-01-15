@@ -1,14 +1,12 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	twemoji-color-font-ttf
-PORTVERSION=	13.0.1
+PORTVERSION=	14.0.2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://github.com/eosrei/twemoji-color-font/releases/download/v${PORTVERSION}/
 DISTNAME=	TwitterColorEmoji-SVGinOT-Linux-${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Color emoji font using Twitter Unicode 10
+WWW=		https://github.com/eosrei/twemoji-color-font
 
 LICENSE=	CC-BY-4.0 MIT
 LICENSE_COMB=	multi

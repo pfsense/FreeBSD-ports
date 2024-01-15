@@ -2,6 +2,7 @@ bin/aqbanking-cli
 bin/aqbanking-config
 %%EBICS%%bin/aqebics-tool
 bin/aqhbci-tool4
+bin/aqofxconnect-tool
 bin/aqpaypal-tool
 include/aqbanking6/aqbanking/account_type.h
 include/aqbanking6/aqbanking/banking.h
@@ -21,6 +22,7 @@ include/aqbanking6/aqbanking/types/document.h
 include/aqbanking6/aqbanking/types/imexporter_accountinfo.h
 include/aqbanking6/aqbanking/types/imexporter_context.h
 include/aqbanking6/aqbanking/types/message.h
+include/aqbanking6/aqbanking/types/refaccount.h
 include/aqbanking6/aqbanking/types/security.h
 include/aqbanking6/aqbanking/types/transaction.h
 include/aqbanking6/aqbanking/types/transactionlimits.h
@@ -50,7 +52,7 @@ lib/cmake/aqbanking-%%AQB_MAJ_MIN_VER%%/aqbanking-config-version.cmake
 lib/cmake/aqbanking-%%AQB_MAJ_MIN_VER%%/aqbanking-config.cmake
 lib/libaqbanking.so
 lib/libaqbanking.so.%%AQB_SHLIB_VER%%
-lib/libaqbanking.so.%%AQB_SHLIB_VER%%.2.5
+lib/libaqbanking.so.%%AQB_SHLIB_VER%%.%%AQB_MIN_PATCH_VER%%
 libdata/pkgconfig/aqbanking.pc
 share/aclocal/aqbanking.m4
 %%DATADIR%%/aqbanking/typemaker2/c/ab_account.tm2
@@ -120,6 +122,9 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/imexporters/csv/profiles/lbbberlin.conf
 %%DATADIR%%/imexporters/csv/profiles/mijnpostbank.conf
 %%DATADIR%%/imexporters/csv/profiles/oko.conf
+%%DATADIR%%/imexporters/csv/profiles/onvista-account.conf
+%%DATADIR%%/imexporters/csv/profiles/onvista-prices.conf
+%%DATADIR%%/imexporters/csv/profiles/onvista-trans.conf
 %%DATADIR%%/imexporters/csv/profiles/postbankffm.conf
 %%DATADIR%%/imexporters/csv/profiles/psk.conf
 %%DATADIR%%/imexporters/csv/profiles/sepadebitnotes.conf
@@ -147,11 +152,14 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/imexporters/sepa/profiles/default.conf
 %%DATADIR%%/imexporters/swift/profiles/amro940.conf
 %%DATADIR%%/imexporters/swift/profiles/amro942.conf
+%%DATADIR%%/imexporters/swift/profiles/fints940.conf
+%%DATADIR%%/imexporters/swift/profiles/fints942.conf
 %%DATADIR%%/imexporters/swift/profiles/swiftmt535.conf
 %%DATADIR%%/imexporters/swift/profiles/swiftmt940.conf
 %%DATADIR%%/imexporters/swift/profiles/swiftmt942.conf
 %%DATADIR%%/imexporters/xml/data/camt_052_001_02.xml
 %%DATADIR%%/imexporters/xml/data/camt_053_001_04.xml
+%%DATADIR%%/imexporters/xml/data/ofx1.xml
 %%DATADIR%%/imexporters/xml/data/ofx2.xml
 %%DATADIR%%/imexporters/xml/data/pain_001_001_03.xml
 %%DATADIR%%/imexporters/xml/data/pain_001_003_03.xml
@@ -160,6 +168,7 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/imexporters/xml/profiles/camt_052_001_02.conf
 %%DATADIR%%/imexporters/xml/profiles/camt_053_001_04.conf
 %%DATADIR%%/imexporters/xml/profiles/default.conf
+%%DATADIR%%/imexporters/xml/profiles/ofx1.conf
 %%DATADIR%%/imexporters/xml/profiles/ofx2.conf
 %%DATADIR%%/imexporters/xml/profiles/pain_001_001_03.conf
 %%DATADIR%%/imexporters/xml/profiles/pain_001_003_03.conf
@@ -201,6 +210,9 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/typemaker2/c/ab_providerqueue.tm2
 %%DATADIR%%/typemaker2/c/ab_providerqueue_list.tm2
 %%DATADIR%%/typemaker2/c/ab_queue.tm2
+%%DATADIR%%/typemaker2/c/ab_reference_account.tm2
+%%DATADIR%%/typemaker2/c/ab_reference_account_list.tm2
+%%DATADIR%%/typemaker2/c/ab_reference_account_list2.tm2
 %%DATADIR%%/typemaker2/c/ab_security.tm2
 %%DATADIR%%/typemaker2/c/ab_security_list.tm2
 %%DATADIR%%/typemaker2/c/ab_security_list2.tm2

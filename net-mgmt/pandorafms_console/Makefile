@@ -1,18 +1,16 @@
-# Created by: KIKUCHI Koichiro <koichiro@rworks.jp>
-# $FreeBSD$
-
 PORTNAME=	pandora_console
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	koichiro@rworks.jp
 COMMENT=	Pandora FMS console
+WWW=		https://pandorafms.com/
 
 LICENSE=	${PANDORA_LICENSE}
 LICENSE_FILE=	${PANDORA_LICENSE_FILE}
 
 RUN_DEPENDS=	${LOCALBASE}/bin/twopi:graphics/graphviz
 
-USES=		apache:run,2.2+ php:web shebangfix
+USES=		apache:run php:web shebangfix
 SHEBANG_FILES=	include/languages/extract_newlines.sh \
 		include/languages/util-all \
 		include/languages/util-bzr-update \
@@ -27,7 +25,7 @@ OPTIONS_DEFINE=	DOCS PGSQL
 DOCS_DESC=	Install AUTHORS and ChangeLog
 PGSQL_DESC=	Use PostgreSQL backend (experimental)
 
-USE_PHP=	curl filter gd gettext hash json ldap mbstring mysqli \
+USE_PHP=	curl filter gd gettext ldap mbstring mysqli \
 		snmp session xml zip zlib
 
 SUB_FILES+=	pandora_console.conf pkg-message newsyslog.conf

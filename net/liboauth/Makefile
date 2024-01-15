@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	liboauth
 PORTVERSION=	1.0.3
 PORTREVISION=	4
@@ -8,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	C library implementing the OAuth Core standard
+WWW=		http://liboauth.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING.MIT

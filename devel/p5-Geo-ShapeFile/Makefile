@@ -1,14 +1,12 @@
-# Created by: estith
-# $FreeBSD$
-
 PORTNAME=	Geo-ShapeFile
-PORTVERSION=	3.00
+PORTVERSION=	3.03
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extension for handling ESRI GIS Shapefiles
+WWW=		https://metacpan.org/pod/Geo::ShapeFile
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

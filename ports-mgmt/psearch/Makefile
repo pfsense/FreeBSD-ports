@@ -1,12 +1,10 @@
-# Created by: Benjamin Lutz
-# $FreeBSD$
-
 PORTNAME=	psearch
 PORTVERSION=	2.1.0
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	mail@maxlor.com
 COMMENT=	Utility for searching the FreeBSD Ports Collection
+WWW=		https://github.com/maxlor/psearch
 
 LICENSE=	BSD2CLAUSE
 

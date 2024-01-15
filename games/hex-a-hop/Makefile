@@ -1,6 +1,3 @@
-# Created by: jamie
-# $FreeBSD$
-
 PORTNAME=	hex-a-hop
 PORTVERSION=	1.1.0
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME:S/-//g}/${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Puzzle game based on hexagonal tiles
+WWW=		https://hexahop.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	pnews
 PORTVERSION=	2.6.6
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP Web-based News Reader
+WWW=		https://pnews.sourceforge.net/
 
 LICENSE=	GPLv2+
 

@@ -1,6 +1,3 @@
-# Created by: Sergey Osokin <osa@FreeBSD.org>
-# $FreeBSD$
-
 MASTER_SITES=	https://unit.nginx.org/download/:unit \
 	https://repo1.maven.org/maven2/io/github/classgraph/classgraph/${CLASSGRAPH_VERSION}/:classgraph \
 	https://repo1.maven.org/maven2/org/apache/tomcat/tomcat-api/${TOMCAT_VERSION}/:api \
@@ -34,7 +31,7 @@ DISTFILES=	unit-${UNIT_VERSION}.tar.gz:unit \
 	tomcat-util-scan-${TOMCAT_VERSION}.jar:utilscan
 EXTRACT_ONLY=	unit-${UNIT_VERSION}.tar.gz
 
-DISTINFO_FILE=	${.CURDIR}/distinfo	
+DISTINFO_FILE=	${.CURDIR}/distinfo
 PATCHDIR=	${.CURDIR}/files
 
 COMMENT=	Java module for NGINX Unit
@@ -42,11 +39,10 @@ COMMENT=	Java module for NGINX Unit
 RUN_DEPENDS=	unitd:www/unit
 
 UNIT_MODNAME=	java${JAVA_PORT_VERSION}
-CLASSGRAPH_VERSION=	4.8.90
-ECJ_VERSION=	3.23.0
-JETTY_VERSION=	9.4.33.v20201020
-TOMCAT_VERSION=	9.0.39
-UNIT_VERSION=	1.21.0
+CLASSGRAPH_VERSION=	4.8.162
+ECJ_VERSION=	3.26.0
+JETTY_VERSION=	9.4.53.v20231009
+TOMCAT_VERSION=	9.0.82
 
 PLIST_FILES=	%%JAVAJARDIR%%/classgraph-${CLASSGRAPH_VERSION}.jar \
 		%%JAVAJARDIR%%/ecj-${ECJ_VERSION}.jar \
@@ -68,7 +64,7 @@ PLIST_FILES=	%%JAVAJARDIR%%/classgraph-${CLASSGRAPH_VERSION}.jar \
 
 USE_JAVA=	yes
 JAVA_VERSION=	8+
-#JAVA_VERSION=	8 11 12 13 14 15 
+#JAVA_VERSION=	8 11 12 13 14 15
 
 USE_RC_SUBR?=	# reset to empty
 
@@ -84,15 +80,21 @@ post-extract:
 
 post-configure:
 	cd ${CONFIGURE_WRKSRC} && \
-	${CONFIGURE_CMD} java --module=${UNIT_MODNAME} \
+	${SETENV} ${CONFIGURE_ENV} ${CONFIGURE_CMD} java \
+		--module=${UNIT_MODNAME} \
 		--local-repo=${DISTDIR} \
 		--jars=${JAVAJARDIR}
 
 do-build:
-	cd ${CONFIGURE_WRKSRC} && ${MAKE} ${UNIT_MODNAME}
+	cd ${CONFIGURE_WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
+			${MAKEFILE} ${MAKE_ARGS} ${UNIT_MODNAME}
 
 do-install:
-	cd ${CONFIGURE_WRKSRC} && ${MAKE} ${UNIT_MODNAME}-install DESTDIR=${STAGEDIR}
+	cd ${CONFIGURE_WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
+			${MAKEFILE} ${MAKE_ARGS} \
+			${UNIT_MODNAME}-install DESTDIR=${STAGEDIR}
 
 # Overwrite the target in the ${MASTERDIR}/Makefile
 post-install:

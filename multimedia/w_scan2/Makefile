@@ -1,12 +1,10 @@
-# Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	w_scan2
-PORTVERSION=	1.0.9
+PORTVERSION=	1.0.15
 CATEGORIES=	multimedia
 
 MAINTAINER=	rene@FreeBSD.org
 COMMENT=	Perform frequency scans for DVB and ATSC transmissions
+WWW=		https://github.com/stefantalpalaru/w_scan2
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

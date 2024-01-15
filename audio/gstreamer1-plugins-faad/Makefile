@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	audio
 
@@ -9,5 +7,11 @@ GST_PLUGIN=	faad
 DIST=		bad
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
+
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS= libfaad.so:audio/faad
+
+MESON_ARGS+= -Dgpl=enabled
 
 .include "${MASTERDIR}/Makefile"

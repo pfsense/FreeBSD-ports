@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	openjk
-PORTVERSION=	g20200823
+PORTVERSION=	g20221013
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Community effort to maintain Jedi Academy + Jedi Outcast
+WWW=		https://openjk.org
 
 LICENSE=	GPLv2
 
@@ -16,12 +16,11 @@ USE_GL=		gl glu
 USE_GITHUB=	yes
 GH_ACCOUNT=	JACoders
 GH_PROJECT=	OpenJK
-GH_TAGNAME=	ca63f21
+GH_TAGNAME=	c2095bb
 USE_SDL=	sdl2
 USE_XORG=	x11
 
-CXXFLAGS+=	-DNDEBUG
-OPENJK_ARCH=	${ARCH:S/powerpc64$/ppc64/:S/armv7/arm/}
+OPENJK_ARCH=	${ARCH:S/powerpc64$/ppc64/:S/powerpc$/ppc/:C/armv.*/arm/}
 PLIST_SUB=	ARCH="${OPENJK_ARCH}"
 SUB_FILES=	jamp \
 		jasp

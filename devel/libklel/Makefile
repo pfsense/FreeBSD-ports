@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libklel
 PORTVERSION=	1.1.0
 PORTREVISION=	2
@@ -8,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	klm@uidzero.org
 COMMENT=	KoreLogic Expression Language library
+WWW=		https://sourceforge.net/projects/libklel/
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 

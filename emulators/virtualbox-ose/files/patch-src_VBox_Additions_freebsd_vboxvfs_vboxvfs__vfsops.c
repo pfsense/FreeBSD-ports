@@ -1,4 +1,4 @@
---- src/VBox/Additions/freebsd/vboxvfs/vboxvfs_vfsops.c.orig	2020-07-09 16:50:11 UTC
+--- src/VBox/Additions/freebsd/vboxvfs/vboxvfs_vfsops.c.orig	2021-04-28 16:24:46 UTC
 +++ src/VBox/Additions/freebsd/vboxvfs/vboxvfs_vfsops.c
 @@ -1,8 +1,3 @@
 -/* $Id: vboxvfs_vfsops.c $ */
@@ -7,7 +7,7 @@
 - */
 -
  /*
-  * Copyright (C) 2008-2017 Oracle Corporation
+  * Copyright (C) 2008-2020 Oracle Corporation
   *
 @@ -14,245 +9,478 @@
   * VirtualBox OSE distribution. VirtualBox OSE is distributed in the
@@ -130,7 +130,7 @@
 + */
 +int
 +vboxfs_alloc_node(struct mount *mp, struct vboxfs_mnt *vsfmp, const char *fullpath,
-+    enum vtype type, uid_t uid, gid_t gid, mode_t mode, struct vboxfs_node *parent,
++    enum_vtype_t type, uid_t uid, gid_t gid, mode_t mode, struct vboxfs_node *parent,
 +    struct vboxfs_node **node)
  {
 -    struct vboxvfs_mount_info args;
@@ -456,12 +456,8 @@
 +	mp->mnt_flag |= MNT_LOCAL;
 +	if (readonly != 0)
 +		mp->mnt_flag |= MNT_RDONLY;
-+#if __FreeBSD_version >= 1000021
++
 +	mp->mnt_kern_flag |= MNTK_LOOKUP_SHARED | MNTK_EXTENDED_SHARED;
-+#else
-+	mp->mnt_kern_flag |= MNTK_MPSAFE | MNTK_LOOKUP_SHARED |
-+	    MNTK_EXTENDED_SHARED;
-+#endif
 +	MNT_IUNLOCK(mp);
 +	vfs_mountedfrom(mp, share_name);
 +
@@ -539,7 +535,11 @@
 + * Do operation associated with quotas, not supported
 + */
 +static int
-+vboxfs_quotactl(struct mount *mp, int cmd, uid_t uid, void *arg)
++vboxfs_quotactl(struct mount *mp, int cmd, uid_t uid, void *arg
++#if __FreeBSD_version >= 1400018
++	, bool *mp_busy
++#endif
++	)
  {
 -    int rc;
 +	return (EOPNOTSUPP);

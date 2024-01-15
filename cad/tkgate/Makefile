@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tkgate
 PORTVERSION=	2.1
 CATEGORIES=	cad
@@ -7,6 +5,7 @@ MASTER_SITES=	http://cdn.bitbucket.org/starling13/tkgate/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Event driven digital circuit simulator
+WWW=		https://tkgate.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		autoreconf gnome iconv:translit libtool pkgconfig tk
+USES=		autoreconf gnome iconv:translit libtool pkgconfig tk xorg
 
 USE_XORG=	x11 xft
 USE_GNOME=	pango

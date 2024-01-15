@@ -1,6 +1,3 @@
-# Created by: Felix Hanley <felix@userspace.com.au>
-# $FreeBSD$
-
 PORTNAME=	libnss-pgsql
 PORTVERSION=	1.5.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-beta
 
 MAINTAINER=	felix@userspace.com.au
 COMMENT=	NSS module using a PostgreSQL database for backend
+WWW=		https://ftp.postgresql.org/pub/projects/pgFoundry/sysauth/NSS/
 
 LICENSE=	GPLv2
 

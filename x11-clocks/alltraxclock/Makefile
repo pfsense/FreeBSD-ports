@@ -1,6 +1,3 @@
-# Created by: Roman Bogorodskiy <bogorodskiy@inbox.ru>
-# $FreeBSD$
-
 PORTNAME=	alltraxclock
 PORTVERSION=	2.0.2
 PORTREVISION=	12
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}2_0.2-1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Analog clock plugin for gkrellm2
+WWW=		http://perso.wanadoo.fr/alltrax/alltraxclock.html
 
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2

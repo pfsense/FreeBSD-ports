@@ -1,19 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	mido
-DISTVERSION=	1.2.9
-PORTREVISION=	1
+DISTVERSION=	1.2.10
 CATEGORIES=	multimedia python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	MIDI Objects for Python
+WWW=		https://github.com/olemb/mido
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 

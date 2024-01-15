@@ -1,39 +1,32 @@
-# $FreeBSD$
-
 PORTNAME=	librepcb
-DISTVERSION=	0.1.5
+DISTVERSION=	1.0.0
+DISTVERSIONSUFFIX=	-source
 CATEGORIES=	cad
+MASTER_SITES=	https://download.librepcb.org/releases/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Schematic and PCB editing software
+WWW=		https://librepcb.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		compiler:c++11-lang desktop-file-utils gl qmake qt:5 shared-mime-info
-USE_GITHUB=	yes
-GH_ACCOUNT=	LibrePCB
-GH_PROJECT=	LibrePCB
-GH_TUPLE=	\
-		LibrePCB:hoedown:dae7992:hoedown/libs/hoedown \
-		LibrePCB:quazip:e13d52b:quazip/libs/quazip \
-		LibrePCB:googletest:2a26840:googletest/libs/googletest \
-		LibrePCB:librepcb-test-data:c1912fd5c2123d5e530da7784381ec8a7fca23ad:LibrePCB_librepcb_test_data/tests/data \
-		LibrePCB:parseagle:e3ef228:parseagle/libs/parseagle \
-		LibrePCB:sexpresso:5020552:sexpresso/libs/sexpresso \
-		fontobene:fontobene-qt5:0f75902:fontobene_lib/libs/fontobene-qt5 \
-		LibrePCB:fontobene-fonts:f197bc5:fontobene_share/share/librepcb/fontobene \
-		LibrePCB:delaunay-triangulation:bd71456:delaunay_triangulation/libs/delaunay-triangulation \
-		LibrePCB:librepcb-fonts:c30f3b9:librepcb_fonts/share/librepcb/fonts \
-		LibrePCB:optional:89d6d30:optional/libs/optional \
-		LibrePCB:type_safe:206f0db:type_safe/libs/type_safe \
-		LibrePCB:librepcb-i18n:efc96aa:i18n/i18n \
-		LibrePCB:muparser:28a90191aa80889e29d80d5c0ab842b2bcd1ba95:LibrePCB_muparser/libs/muparser \
-		foonathan:debug_assert:130adcb:debug_assert/libs/type_safe/external/debug_assert
-USE_QT=		concurrent core gui network opengl printsupport sql svg xml widgets buildtools_build testlib_build
-USE_GL=		gl
+LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg4 \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreeimage.so:graphics/freeimage \
+		libfreetype.so:print/freetype2 \
+		libTKService.so:cad/opencascade
 
-post-install: # installs unnecessary headers: https://github.com/LibrePCB/LibrePCB/issues/781
-	@${RM} -r ${STAGEDIR}${PREFIX}/include/fontobene-qt5
+USES=		cmake compiler:c++11-lang desktop-file-utils gl \
+		localbase:ldflags qt:5 shared-mime-info xorg zip
+USE_QT=		concurrent core declarative gui network \
+		opengl printsupport quickcontrols2 sql svg xml widgets \
+		buildtools:build linguisttools:build testlib:build qmake:build
+USE_GL=		gl glu
+USE_XORG=	x11
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
+
+CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE}/lib # workaround for https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=274834
 
 .include <bsd.port.mk>

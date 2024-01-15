@@ -1,6 +1,3 @@
-# Created by: devin@spamcop.net
-# $FreeBSD$
-
 PORTNAME=	Net-SNPP
 PORTVERSION=	1.17
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Simple Network Pager Protocol client
+WWW=		https://metacpan.org/release/Net-SNPP
 
 USES=		perl5
 USE_PERL5=	configure

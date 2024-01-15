@@ -1,6 +1,3 @@
-# Created by: Samy Al Bahra <samy@kerneled.org>
-# $FreeBSD$
-
 PORTNAME=	docker
 PORTVERSION=	1.5
 PORTREVISION=	8
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	-tray
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dockapp with support for GNOME2 and KDE3 tray icons
+WWW=		https://icculus.org/openbox/2/docker/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		gmake gnome pkgconfig xorg
 USE_XORG=	x11
 USE_GNOME=	glib20
+
+CONFLICTS_INSTALL=	docker # bin/docker
 
 PLIST_FILES=	bin/docker
 

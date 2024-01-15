@@ -1,30 +1,32 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	login_info
-DISTVERSION=	1.2
-PORTREVISION=	1
+DISTVERSION=	1.5.1
 CATEGORIES=	mail
-MASTER_SITES=	https://www.std-soft.de/webmail/plugins/
 PKGNAMEPREFIX=	roundcube-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
-DISTNAME=	${PORTNAME}_rc0.5_v${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Roundcube login info plugin
+WWW=		https://github.com/marneu/login_info/README.md
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.5:mail/roundcube@${PHP_FLAVOR}
+RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
 
-USES=	php:flavors
-NO_BUILD=	yes
-NO_ARCH=	yes
+USES=		php:flavors
+IGNORE_WITH_PHP=	83
 
 WWWDIR=		${LOCALBASE}/www/roundcube
+NO_ARCH=	yes
+NO_BUILD=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	marneu
+GH_TAGNAME=	b4e8a29
+
+#WRKSRC=		${WRKDIR}/login_info
+
 PLUGDIR=	${WWWDIR}/plugins/login_info
 PLIST_SUB+=	PLUGDIR="www/roundcube/plugins/login_info"
-WRKSRC=		${WRKDIR}/login_info
 
 do-install:
 	@${ECHO} "Installing in ${PLUGDIR}"

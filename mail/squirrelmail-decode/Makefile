@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	squirrelmail-decode
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DIST_SUBDIR=	squirrelmail
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Decoders to display extra character sets in SquirrelMail
+WWW=		https://www.squirrelmail.org/
 
 LICENSE=	GPLv2
 

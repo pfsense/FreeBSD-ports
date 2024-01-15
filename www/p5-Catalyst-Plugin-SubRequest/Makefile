@@ -1,6 +1,3 @@
-# Created by: Travis Campbell <hcoyote@ghostar.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-SubRequest
 PORTVERSION=	0.21
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make subrequests to actions in Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-SubRequest
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

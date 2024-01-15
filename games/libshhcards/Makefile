@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	libshhcards
 PORTVERSION=	1.0.6
 CATEGORIES=	games
@@ -9,6 +6,7 @@ DISTNAME=	shhcards-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for displaying game cards on X Window System
+WWW=		https://shh.thathost.com/pub-unix/ #shhcards
 
 LICENSE=	ART10
 

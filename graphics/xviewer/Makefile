@@ -1,34 +1,32 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xviewer
-PORTVERSION=	2.6.2
-PORTREVISION=	1
-CATEGORIES=	graphics
+PORTVERSION=	3.2.4
+PORTREVISION=	4
+CATEGORIES=	graphics gnome
+DIST_SUBDIR=	gnome
 
-MAINTAINER=	danfe@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Fast and functional image viewer
+WWW=		https://github.com/linuxmint/xviewer
 
 LICENSE=	GPLv2+
 
-PORTSCOUT=	limit:^[0-9.]+$$	# ignore master.mint* tags
+PORTSCOUT=	limit:^[0-9.]+$$	# ignore non-numeric tags
 
-BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/gtk-doc.m4:textproc/gtk-doc \
-		intltool-update:textproc/intltool \
-		itstool:textproc/itstool \
+BUILD_DEPENDS=	itstool:textproc/itstool \
 		${LOCALBASE}/share/aclocal/yelp.m4:textproc/yelp-tools
 LIB_DEPENDS=	libcinnamon-desktop.so:x11/cinnamon-desktop \
+		libxapp.so:x11/xapp \
 		libpeas-1.0.so:devel/libpeas
+RUN_DEPENDS=	yelp:x11/yelp
 
 USES=		autoreconf compiler:c++11-lang desktop-file-utils gettext-tools \
 		gmake gnome libtool localbase pkgconfig xorg
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
-USE_GNOME=	atk cairo gdkpixbuf2 gtk30 introspection pango
+USE_GNOME=	atk cairo gdkpixbuf2 gtk30 intltool introspection pango
 USE_XORG=	x11
 GLIB_SCHEMAS=	org.x.viewer.enums.xml org.x.viewer.gschema.xml
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	JPEG LCMS2 LIBEXIF LIBRSVG2 XMP
 OPTIONS_DEFAULT=	JPEG LCMS2 LIBEXIF LIBRSVG2 XMP
@@ -49,9 +47,5 @@ LIBRSVG2_CONFIGURE_OFF=	--without-librsvg
 
 XMP_LIB_DEPENDS=	libexempi.so:textproc/exempi
 XMP_CONFIGURE_OFF=	--without-xmp
-
-post-patch:
-	@${REINPLACE_CMD} -e '/CINNAMON_DESKTOP_REQUIRED/s,3\.2\.0,2.4.2,' \
-		${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

@@ -1,13 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-bopomofo
-DISTVERSION=	g20190120
+DISTVERSION=	g20210131
 PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com
 COMMENT=	Rime Chewing schema support
+WWW=		https://github.com/rime/rime-bopomofo
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -28,7 +26,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
-GH_TAGNAME=	ed25098386f5efd3d70b08650f0d1b70c41c11a3
+GH_TAGNAME=	c7618f4f5728e1634417e9d02ea50d82b71956ab
 
 NO_ARCH=	yes
 

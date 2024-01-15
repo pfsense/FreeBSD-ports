@@ -1,35 +1,27 @@
-# Created by: Yi-Jheng Lin <yzlin@cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	netaddr
-PORTVERSION=	0.7.19
-PORTREVISION=	1
+PORTVERSION=	0.10.1
 CATEGORIES=	net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Manipulation of IPv4, IPv6, CIDR, EUI and MAC network addresses
+WWW=		https://github.com/drkjam/netaddr/
 
 LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	multi
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=2.4.2:devel/py-pytest@${PY_FLAVOR}
-
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=	DOCS
+PORTDOCS=	AUTHORS CHANGELOG README.rst
 
-PORTDOCS=	AUTHORS CHANGELOG README.md
+OPTIONS_DEFINE=	DOCS
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest
 
 .include <bsd.port.mk>

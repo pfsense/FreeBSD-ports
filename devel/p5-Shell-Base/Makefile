@@ -1,6 +1,3 @@
-# Created by: Christopher Nehren <apeiron@comcast.net>
-# $FreeBSD$
-
 PORTNAME=	Shell-Base
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module implementing a simple command shell
+WWW=		https://metacpan.org/release/Shell-Base
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

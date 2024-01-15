@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	v4l_compat
 
 COMMENT=	Video4Linux IOCTL header files
+WWW=		https://linuxtv.org
 
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -14,6 +13,7 @@ PLIST=		${.CURDIR}/pkg-plist
 BASE_HEADERS= \
 	linux/cec.h \
 	linux/cec-funcs.h \
+	linux/const.h \
 	linux/dvb/audio.h \
 	linux/dvb/ca.h \
 	linux/dvb/dmx.h \

@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@cs.ucdavis.edu)
-# $FreeBSD$
-
 PORTNAME=	vn7to8
 PORTVERSION=	1.1.1
 CATEGORIES=	vietnamese

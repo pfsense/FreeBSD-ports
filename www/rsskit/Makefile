@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	rsskit
 PORTVERSION=	0.4
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	www gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	RSSKit-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Etoile Project RSSKit framework
+WWW=		https://gap.nongnu.org/grr/index.html
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

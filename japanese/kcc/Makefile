@@ -1,6 +1,3 @@
-# Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kcc
 PORTVERSION=	1.1
 CATEGORIES=	japanese

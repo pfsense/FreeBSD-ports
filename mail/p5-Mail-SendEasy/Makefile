@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Mail-SendEasy
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Send plain/html e-mails through SMTP servers
+WWW=		https://metacpan.org/release/Mail-SendEasy
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

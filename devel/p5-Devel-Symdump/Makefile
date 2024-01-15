@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Devel-Symdump
 PORTVERSION=	2.1800
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C|00$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module that dumps symbol names or the symbol table
+WWW=		https://metacpan.org/release/Devel-Symdump
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

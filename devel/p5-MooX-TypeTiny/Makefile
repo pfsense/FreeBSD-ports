@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooX-TypeTiny
 PORTVERSION=	0.002003
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Optimized type checks for Moo + Type::Tiny
+WWW=		https://metacpan.org/release/MooX-TypeTiny
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

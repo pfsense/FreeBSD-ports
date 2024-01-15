@@ -1,6 +1,3 @@
-# Created by: mek
-# $FreeBSD$
-
 PORTNAME=	pvpgn
 PORTVERSION=	1.8.5
 PORTREVISION=	1
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free Blizzard Battle.net emulation software
+WWW=		http://pvpgn.berlios.de
 
 PKGINSTALL?=	${WRKDIR}/pkg-install
 PKGDEINSTALL?=	${WRKDIR}/pkg-deinstall
@@ -46,6 +44,7 @@ D2_CONFIGURE_ENABLE=	d2cs d2dbs
 
 MYSQL_USES=		mysql
 MYSQL_CONFIGURE_WITH=	mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	pgsql

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	sigslot
 DISTVERSION=	1-0-0
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ Signal/Slot Library
+WWW=		https://sigslot.sourceforge.net/
 
 PLIST_FILES=	include/sigslot.h
 NO_BUILD=	yes

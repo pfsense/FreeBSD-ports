@@ -1,6 +1,3 @@
-# Created by: joerg
-# $FreeBSD$
-
 PORTNAME=	bcc
 PORTVERSION=	1995.03.12
 PORTREVISION=	2
@@ -19,6 +16,6 @@ BROKEN_mips64=		fails to compile: unrecognized command line option "-m32"
 
 USES=		uidfix
 
-CONFLICTS=	bin86-[0-9]* dev86-[0-9]*
+CONFLICTS=	dev86
 
 .include <bsd.port.mk>

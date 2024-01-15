@@ -1,6 +1,3 @@
-# Created by: Warner Losh <imp@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Acme-Damn
 PORTVERSION=	0.06
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	imp@FreeBSD.org
 COMMENT=	Unblessing perl objects
+WWW=		https://metacpan.org/release/Acme-Damn
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtgt
 PORTVERSION=	3.2.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General (or GNU) template generation tools
+WWW=		https://gtgt.sourceforge.net/
 
 RUN_DEPENDS=	bash:shells/bash
 

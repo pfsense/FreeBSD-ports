@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@exit2shell.com>
-# $FreeBSD$
-
 PORTNAME=	Data-Validate
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Common data validation methods
+WWW=		https://metacpan.org/release/Data-Validate
 
 USES=		perl5
 USE_PERL5=	configure

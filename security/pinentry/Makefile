@@ -1,14 +1,12 @@
-# Created by: Michael Nottebrock <lofi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pinentry
-PORTVERSION=	1.1.0
-PORTREVISION?=	7
+PORTVERSION=	1.2.1
+PORTREVISION?=	0
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/pinentry
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT?=	Collection of simple PIN or passphrase entry dialogs
+WWW=		https://www.gnupg.org/aegypten2
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,8 +20,8 @@ NO_BUILD=	yes
 PLIST_FILES=	bin/pinentry
 
 OPTIONS_SINGLE=	FRONTEND
-OPTIONS_SINGLE_FRONTEND=	TTY NCURSES FLTK GTK2 QT5 GNOME3
-OPTIONS_DEFAULT=	TTY
+OPTIONS_SINGLE_FRONTEND=	EFL FLTK GNOME GTK2 NCURSES QT5 TTY
+OPTIONS_DEFAULT=	NCURSES
 
 FRONTEND_DESC=	Default frontend
 
@@ -34,6 +32,10 @@ TTY_RUN_DEPENDS=	${PINENTRY_TTY}:security/pinentry-tty
 NCURSES_DESC=	Curses frontend
 PINENTRY_NCURSES=	pinentry-curses
 NCURSES_RUN_DEPENDS=	${PINENTRY_NCURSES}:security/pinentry-curses
+
+EFL_DESC=	EFL frontend
+PINENTRY_EFL=	pinentry-efl
+EFL_RUN_DEPENDS=	${PINENTRY_EFL}:security/pinentry-efl
 
 FLTK_DESC=	FLTK frontend
 PINENTRY_FLTK=	pinentry-fltk
@@ -47,13 +49,13 @@ QT5_DESC=	Qt 5 frontend
 PINENTRY_QT5=	pinentry-qt5
 QT5_RUN_DEPENDS=	${PINENTRY_QT5}:security/pinentry-qt5
 
-GNOME3_DESC=	GNOME 3 frontend
-PINENTRY_GNOME3=	pinentry-gnome3
-# Due to a dependency loop that exists between security/pinentry-gnome3,
+GNOME_DESC=	GNOME frontend
+PINENTRY_GNOME=	pinentry-gnome3
+# Due to a dependency loop that exists between security/pinentry-gnome,
 # security/gcr, security/gnupg and security/pinentry, the user must install
-# pinentry-gnome3 manually. See pkg-message.gnome3 for more details.
-#GNOME3_RUN_DEPENDS=	${PINENTRY_GNOME3}:security/pinentry-gnome3
-GNOME3_VARS=		PKGMESSAGE+=${.CURDIR}/pkg-message.gnome3
+# pinentry-gnome manually. See pkg-message.gnome for more details.
+#GNOME_RUN_DEPENDS=	${PINENTRY_GNOME}:security/pinentry-gnome
+GNOME_VARS=		PKGMESSAGE+=${.CURDIR}/pkg-message.gnome
 
 .include <bsd.port.options.mk>
 
@@ -85,7 +87,7 @@ LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
 LIBSECRET_USES=		gnome
 LIBSECRET_USE=		GNOME=glib20
 
-.if ${PINENTRY_GUI} == "gnome3"
+.if ${PINENTRY_GUI} == "gnome"
 OPTIONS_SLAVE=	LIBSECRET
 LIB_DEPENDS+=	libgcr-base-3.so:security/gcr
 PLIST_FILES=	bin/pinentry-gnome3
@@ -95,7 +97,7 @@ CONFIGURE_ARGS+=--disable-pinentry-gnome3
 
 .if ${PINENTRY_GUI} == "qt5"
 USES+=		compiler:c++11-lib qt:5
-USE_QT=		core gui widgets buildtools_build
+USE_QT=		core gui widgets buildtools:build
 PLIST_FILES=	bin/pinentry-qt5
 CONFIGURE_ARGS+=--enable-pinentry-qt5 \
 		--program-suffix=5
@@ -109,6 +111,13 @@ USE_GNOME+=	gtk20
 PLIST_FILES=	bin/pinentry-gtk-2
 .else
 CONFIGURE_ARGS+=--disable-pinentry-gtk2
+.endif
+
+.if ${PINENTRY_GUI} == "efl"
+LIB_DEPENDS+=	libefl.so:devel/efl
+PLIST_FILES=	bin/pinentry-efl
+.else
+CONFIGURE_ARGS+=--disable-pinentry-efl
 .endif
 
 .if ${PINENTRY_GUI} == "fltk"

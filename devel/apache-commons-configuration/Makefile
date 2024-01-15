@@ -1,6 +1,3 @@
-# Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	commons-configuration
 PORTVERSION=	1.10
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java package for the reading of configuration/preferences files
+WWW=		https://commons.apache.org/proper/commons-configuration/
 
 LICENSE=	APACHE20
 

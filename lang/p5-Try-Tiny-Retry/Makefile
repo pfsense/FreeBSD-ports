@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Try-Tiny-Retry
 PORTVERSION=	0.004
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extends Try::Tiny to allow retries
+WWW=		https://metacpan.org/release/Try-Tiny-Retry
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Try-Tiny>0:lang/p5-Try-Tiny

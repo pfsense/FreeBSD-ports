@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Geo-Coder-PlaceFinder
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Geocode addresses with Yahoo PlaceFinder
+WWW=		https://metacpan.org/release/FRIFFIN/Geo-Coder-PlaceFinder-0.1
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,8 +18,9 @@ RUN_DEPENDS=	p5-JSON>=2:converters/p5-JSON \
 		p5-URI>=1.36:net/p5-URI \
 		p5-libwww>=0:www/p5-libwww
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

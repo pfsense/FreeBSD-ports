@@ -1,6 +1,3 @@
-# Created by: Per Otterstr=F6m <pelle@fukt.bth.se>
-# $FreeBSD$
-
 PORTNAME=	temperature.app
 PORTVERSION=	1.5
 CATEGORIES=	x11 windowmaker
@@ -9,6 +6,7 @@ DISTNAME=	Temperature.app-${PORTVERSION}
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Dockable WindowMaker applet which displays the local temperature
+WWW=		https://www.dockapps.net/temperatureapp
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

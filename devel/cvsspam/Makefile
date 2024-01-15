@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	cvsspam
 PORTVERSION=	0.2.12
 PORTREVISION=	1
@@ -10,10 +7,11 @@ MASTER_SITES=	http://www.badgers-in-foil.co.uk/projects/cvsspam/releases/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Sends diffs when a change is committed to your CVS repository
+WWW=		http://www.badgers-in-foil.co.uk/projects/cvsspam/
 
 LICENSE=	GPLv2
 
-USE_RUBY=	yes
+USES=	ruby
 NO_BUILD=	yes
 NO_ARCH=	yes
 

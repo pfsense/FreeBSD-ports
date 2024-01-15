@@ -1,12 +1,10 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flops
 PORTVERSION=	2.2
 CATEGORIES=	benchmarks
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Floating point benchmark to give your MFLOPS rating
+WWW=		https://performance.netlib.org/performance/html/flops.html
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	AMDmi3

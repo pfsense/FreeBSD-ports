@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	rdtool
 PORTVERSION=	0.6.38
 DISTVERSIONPREFIX=	v
@@ -10,14 +7,13 @@ DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	RD to HTML/man/etc. converter (RD is to Ruby as POD is to Perl)
+WWW=		https://github.com/uwabami/rdtool
 
 BUILD_DEPENDS=	racc:devel/rubygem-racc
 
+USES=	ruby:setup
 USE_GITHUB=	yes
 GH_ACCOUNT=	uwabami
-
-USE_RUBY=	yes
-USE_RUBY_SETUP=	yes
 
 RUBY_MODNAME=	rd
 

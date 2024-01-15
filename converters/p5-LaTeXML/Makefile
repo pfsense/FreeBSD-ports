@@ -1,8 +1,5 @@
-# Created by: Carlos J. Puga Medina <cpm@fbsd.es>
-# $FreeBSD$
-
 PORTNAME=	LaTeXML
-PORTVERSION=	0.8.5
+PORTVERSION=	0.8.7
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN \
 		http://dlmf.nist.gov/LaTeXML/releases/
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	LaTeX to XML/HTML/MathML converter in Perl
+WWW=		https://metacpan.org/release/LaTeXML
 
 LICENSE=	PD CC0-1.0
 LICENSE_COMB=	dual
@@ -22,6 +20,7 @@ RUN_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-Text-Unidecode>=0:converters/p5-Text-Unidecode \
 		p5-IO-String>=0:devel/p5-IO-String \
 		p5-Parse-RecDescent>=0:devel/p5-Parse-RecDescent \
+		p5-Pod-Parser>=0:textproc/p5-Pod-Parser \
 		p5-Image-Size>=0:graphics/p5-Image-Size \
 		p5-URI>=0:net/p5-URI \
 		p5-File-Which>=0:sysutils/p5-File-Which \
@@ -29,7 +28,7 @@ RUN_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-XML-LibXSLT>=1.58:textproc/p5-XML-LibXSLT \
 		p5-libwww>=0:www/p5-libwww
 
-USES=		perl5
+USES=		perl5 tex
 USE_PERL5=	configure
 USE_TEX=	kpathsea
 NO_ARCH=	yes

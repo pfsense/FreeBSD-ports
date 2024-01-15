@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	scale2x
 PORTVERSION=	3.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Real-time graphics effect able to increase the size of small bitmaps
+WWW=		http://scale2x.sourceforge.net/
 
 LICENSE=	GPLv2+
 

@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dns2tcp
 PORTVERSION=	0.5.2
 CATEGORIES=	dns
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Tool for relaying TCP connections over DNS
+WWW=		http://www.hsc.fr/ressources/outils/dns2tcp/index.html.en
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

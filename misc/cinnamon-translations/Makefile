@@ -1,13 +1,11 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	cinnamon-translations
-PORTVERSION=	4.8.2
+PORTVERSION=	5.4.2
 CATEGORIES=	misc x11 gnome
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Translations for the cinnamon desktop
+WWW=		https://github.com/linuxmint/cinnamon-translations
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

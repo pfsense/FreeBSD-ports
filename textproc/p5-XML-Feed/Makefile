@@ -1,14 +1,12 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	XML-Feed
-PORTVERSION=	0.59
+PORTVERSION=	0.63
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 modules for Syndication feed parser and auto-discovery
+WWW=		https://metacpan.org/release/XML-Feed
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -30,7 +28,8 @@ RUN_DEPENDS=	p5-Class-ErrorHandler>=0:devel/p5-Class-ErrorHandler \
 		p5-XML-LibXML>=1.66:textproc/p5-XML-LibXML \
 		p5-XML-RSS>=1.47:textproc/p5-XML-RSS \
 		p5-libwww>=0:www/p5-libwww
-TEST_DEPENDS=	p5-XML-RSS-LibXML>=0.30.04:textproc/p5-XML-RSS-LibXML
+TEST_DEPENDS=	p5-XML-RSS-LibXML>=0.30.04:textproc/p5-XML-RSS-LibXML \
+		p5-XML-XPath>=0:textproc/p5-XML-XPath
 
 USES=		perl5
 USE_PERL5=	configure

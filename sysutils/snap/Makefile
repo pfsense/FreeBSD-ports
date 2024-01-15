@@ -1,6 +1,3 @@
-# Created by: Wu Chin-Hao <wchunhao@cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	snap
 DISTVERSION=	1.01
 PORTEPOCH=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.cs.nctu.edu.tw/~wchunhao/ports/snap/
 
 MAINTAINER=	wchunhao@cs.nctu.edu.tw
 COMMENT=	Tools for periodic and manual management of UFS2 snapshots
+WWW=		http://www.cs.nctu.edu.tw/~wchunhao/ports/snap/
 
 NO_BUILD=	yes
 USES=		perl5 shebangfix

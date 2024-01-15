@@ -1,26 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	libmysofa
-PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.3.2
 CATEGORIES=	audio
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	SOFA (Spatially Oriented Format for Acoustics) file reader
+WWW=		https://github.com/hoene/libmysofa
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	node:www/node
 
-USES=		cmake
+USES=		cmake cpe pathfix
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	symonics
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hoene
 
-OPTIONS_DEFINE=		TEST
+OPTIONS_DEFINE=		STATIC TEST
+OPTIONS_DEFAULT=	STATIC
 OPTIONS_SUB=		yes
+
+STATIC_CMAKE_BOOL=	BUILD_STATIC_LIBS
 
 TEST_BUILD_DEPENDS=	cunit>0:devel/cunit
 TEST_CMAKE_BOOL=	BUILD_TESTS

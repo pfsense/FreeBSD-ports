@@ -1,6 +1,3 @@
-# Created by: Motomichi Matsuzaki <mzaki@m.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	velvet
 PORTVERSION=	1.2.10
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	mzaki@m.u-tokyo.ac.jp
 COMMENT=	Sequence assembler for very short reads
+WWW=		http://www.ebi.ac.uk/~zerbino/velvet/
 
 ALL_TARGET=	default
 

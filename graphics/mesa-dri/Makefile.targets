@@ -1,11 +1,4 @@
-# $FreeBSD$
-#
 # this file holds common targets
-
-pre-configure:
-	${PRINTF} "[binaries]\nllvm-config = '${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT}'" \
-	> ${WRKSRC}/llvm.ini
-
 
 post-patch:
 	${REINPLACE_CMD} -e '/SYSCONFDIR/ s|/etc|${PREFIX}/etc|g' \

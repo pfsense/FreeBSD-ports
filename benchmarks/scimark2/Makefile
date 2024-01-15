@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	scimark2
 PORTVERSION=	2.0
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}src
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Java benchmark for scientific and numerical computing
+WWW=		https://math.nist.gov/scimark2/index.html
 
 LICENSE=	PD
 

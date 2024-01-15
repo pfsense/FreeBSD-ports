@@ -1,25 +1,29 @@
-# Created by: Thomas Abthorpe <thomas@goodking.ca>
-# $FreeBSD$
-
 PORTNAME=	Date_Holidays
 PORTVERSION=	0.21.8
+PORTREVISION=	2
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR driver based class to calculate holidays
+WWW=		https://pear.php.net/package/Date_Holidays
 
 LICENSE=	PHP301
 
-BUILD_DEPENDS=	${PEARDIR}/Date.php:devel/pear-Date@${PHP_FLAVOR} \
-		${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer@${PHP_FLAVOR}
-RUN_DEPENDS=	${PEARDIR}/Date.php:devel/pear-Date@${PHP_FLAVOR} \
-		${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}XML_Serializer>=0:devel/pear-XML_Serializer@${PHP_FLAVOR}
 
 USES=		pear
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	pear
+GH_TAGNAME=	a3fc96f
+
+NO_ARCH=	yes
+
+PORTSCOUT=	ignore:1
 
 OPTIONS_DEFINE=	PEAR_CONSOLE_GETARGS
 PEAR_CONSOLE_GETARGS_DESC=	Console::Getargs support
 
-PEAR_CONSOLE_GETARGS_BUILD_DEPENDS=${PEARDIR}/Console/Getargs.php:devel/pear-Console_Getargs@${PHP_FLAVOR}
+PEAR_CONSOLE_GETARGS_RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}Console_Getargs>=0:devel/pear-Console_Getargs@${PHP_FLAVOR}
 
 .include <bsd.port.mk>

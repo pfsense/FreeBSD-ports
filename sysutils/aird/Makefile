@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aird
 PORTVERSION=	1.0
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	http://www.bayofrum.net/dist/${PORTNAME}/
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Handles Apple IR receiver button events
+WWW=		https://wiki.freebsd.org/AppleMacbook
 
 LICENSE=	BSD2CLAUSE
 

@@ -1,12 +1,10 @@
-# Created by: Cy Schubert <cy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	zetaback
 DISTVERSION=	1.0.7
 CATEGORIES=	sysutils
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Zetaback ZFS backup and recovery management system
+WWW=		https://labs.omniti.com/trac/zetaback
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	omniti-labs

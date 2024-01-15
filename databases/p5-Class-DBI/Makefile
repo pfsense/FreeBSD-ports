@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-DBI
 PORTVERSION=	3.0.17
 DISTVERSIONPREFIX=	v
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple Database Abstraction
+WWW=		https://metacpan.org/release/Class-DBI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

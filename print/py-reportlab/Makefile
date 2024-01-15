@@ -1,10 +1,7 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	reportlab
-PORTVERSION=	3.5.57
+PORTVERSION=	3.6.13
 CATEGORIES=	print python
-MASTER_SITES=	CHEESESHOP \
+MASTER_SITES=	PYPI \
 		https://www.reportlab.com/ftp/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -13,13 +10,14 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Library to create PDF documents using the Python language
+WWW=		https://www.reportlab.com/
 
 LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PY_PILLOW}
 
-USES=		python:3.6+
-USE_PYTHON=	distutils autoplist
+USES=		cpe python
+USE_PYTHON=	autoplist distutils
 
 CONFLICTS=	py*-reportlab[^3]-[^3].* \
 		py*-reportlab-[^3].*
@@ -35,9 +33,6 @@ PORTDOCS=	reportlab-userguide.pdf
 
 OPTIONS_DEFINE=	CJK FREETYPE DOCS
 OPTIONS_DEFAULT=CJK FREETYPE
-# XXX disable this 20190809 while linimon investigates why having it
-# enabled consumes all memory and swap during poudriere builds.
-OPTIONS_EXCLUDE_powerpc64=	DOCS
 CJK_DESC=	Adobe CMaps
 CJK_RUN_DEPENDS=	${LOCALBASE}/share/fonts/adobe-cmaps/ac15/cid2code.txt:print/adobe-cmaps
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2

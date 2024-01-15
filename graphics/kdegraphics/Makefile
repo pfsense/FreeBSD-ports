@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	kdegraphics
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	graphics kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Graphics utilities for KDE (meta port)
+WWW=		https://www.kde.org
 
 USES=		kde:5 metaport qt:5
 USE_QT=		#

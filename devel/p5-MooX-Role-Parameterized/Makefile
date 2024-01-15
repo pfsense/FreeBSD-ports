@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	MooX-Role-Parameterized
-PORTVERSION=	0.082
+PORTVERSION=	0.101
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Roles with composition parameters
+WWW=		https://metacpan.org/pod/MooX::Role::Parameterized
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

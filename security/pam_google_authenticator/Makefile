@@ -1,13 +1,11 @@
-# Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	pam_google_authenticator
 PORTVERSION=	1.09
 PORTEPOCH=	1
 CATEGORIES=	security
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	PAM module for two-step authentication from Google
+WWW=		https://github.com/google/google-authenticator-libpam
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

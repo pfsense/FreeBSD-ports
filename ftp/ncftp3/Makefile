@@ -1,6 +1,3 @@
-# Created by: ache
-# $FreeBSD$
-
 PORTNAME=	ncftp
 PORTVERSION=	3.2.6
 PORTREVISION?=	2
@@ -11,6 +8,7 @@ DISTNAME=	ncftp-${PORTVERSION}-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FTP client with advanced user interface
+WWW=		https://www.ncftp.com/ncftp/
 
 LICENSE=	ARTPERL10
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE.txt

@@ -1,12 +1,10 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	uuid
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
 CATEGORIES=	devel pear
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	UUID extension in PHP
+WWW=		https://pecl.php.net/package/uuid
 
 LICENSE=	LGPL3
 

@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Email-Folder-IMAP
 PORTVERSION=	1.105
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Email::Folder Access to IMAP Folders
+WWW=		https://metacpan.org/release/Email-Folder-IMAP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

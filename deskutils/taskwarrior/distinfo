@@ -1,5 +1,5 @@
-TIMESTAMP = 1608668963
-SHA256 (GothenburgBitFactory-taskwarrior-v2.5.2_GH0.tar.gz) = 4199b035cb939d253fd5db7c7968cb4adbe877d6d00ff894352cc99178ebfa6e
-SIZE (GothenburgBitFactory-taskwarrior-v2.5.2_GH0.tar.gz) = 1292530
-SHA256 (GothenburgBitFactory-libshared-418a187_GH0.tar.gz) = 279e7b7a2b9c910df27ee91c53799ca92add34221dead78b6d7147b4ad7af2c8
-SIZE (GothenburgBitFactory-libshared-418a187_GH0.tar.gz) = 149891
+TIMESTAMP = 1648256577
+SHA256 (GothenburgBitFactory-taskwarrior-v2.6.2_GH0.tar.gz) = 779ff60d104f189f9dbbaa40c95d2de45a53bb3bdeddeeb527eaaf3ae3ffbc5a
+SIZE (GothenburgBitFactory-taskwarrior-v2.6.2_GH0.tar.gz) = 1345842
+SHA256 (GothenburgBitFactory-libshared-8baf2db_GH0.tar.gz) = c93a30bf53a0751f10cc137c42bd05f1fa47477f2803ae45d684a14202238b63
+SIZE (GothenburgBitFactory-libshared-8baf2db_GH0.tar.gz) = 161275

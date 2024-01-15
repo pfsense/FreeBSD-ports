@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	rcadm
 PORTVERSION=	0.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	reinier@skoef.nl
-COMMENT=	Utility for adminstrating rc.conf
+COMMENT=	Utility for administrating rc.conf
+WWW=		https://github.com/skoef/rcadm
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	skoef

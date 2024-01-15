@@ -1,7 +1,5 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
+
 # PROVIDE: nzbhydra2
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
@@ -45,6 +43,9 @@ start_precmd=nzbhydra2_precmd
 nzbhydra2_precmd() 
 {
 	export XDG_CONFIG_HOME=${nzbhydra2_data_dir}
+	export NZBHYDRA_DISABLE_UPDATE=1
+
+	find "%%PREFIX%%/share/nzbhydra2/lib/" ! -name "core-%%DISTVERSION%%-exec.jar" -delete
 
 	if [ -f ${pidfile} ]; then
 		rm -f ${pidfile}

@@ -1,8 +1,6 @@
-# Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xidle
 PORTVERSION=	26052015
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	LOCAL/novel
 

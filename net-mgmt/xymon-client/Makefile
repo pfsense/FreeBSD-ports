@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xymon
 PORTVERSION=	4.3.30
 PORTREVISION=	0
@@ -10,6 +8,7 @@ DIST_SUBDIR=	repacked
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	System for monitoring servers and networks - Client
+WWW=		http://xymon.sourceforge.net/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	mar
 DISTVERSION=	0.5
 CATEGORIES=	archivers

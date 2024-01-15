@@ -1,7 +1,4 @@
-# Created by: kline
-# $FreeBSD$
-
-CONFLICTS=	enscript-letter-[0-9]* enscript-letterdj-[0-9]*
+CONFLICTS=	enscript-letter enscript-letterdj zh-enscript-a4
 
 PS=		A4
 

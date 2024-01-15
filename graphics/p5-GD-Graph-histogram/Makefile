@@ -1,6 +1,3 @@
-# Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
-
 PORTNAME=	GD-Graph-histogram
 PORTVERSION=	1.1
 PORTREVISION=	5
@@ -12,6 +9,7 @@ DISTNAME=	GDGraph-histogram-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Histogram plotting module for perl5
+WWW=		https://metacpan.org/release/GDGraph-histogram
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

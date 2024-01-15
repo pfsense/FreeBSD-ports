@@ -1,6 +1,3 @@
-# Created by: Charlie Kester <corky1951@comcast.net>
-# $FreeBSD$
-
 PORTNAME=	box
 PORTVERSION=	0.4.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DIST_SUBDIR=	box
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compiler for box, the figure description language
+WWW=		https://boxc.sourceforge.net
 
 LICENSE=	GPLv2+ LGPL3+
 LICENSE_COMB=	multi

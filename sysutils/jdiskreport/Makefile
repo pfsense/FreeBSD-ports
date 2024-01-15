@@ -1,6 +1,3 @@
-# Created by: jon@witchspace.com
-# $FreeBSD$
-
 PORTNAME=	jdiskreport
 DISTVERSION=	1_4_1
 CATEGORIES=	sysutils java
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.jGoodies.com/download/${PORTNAME}/
 
 MAINTAINER=	jon@witchspace.com
 COMMENT=	Java program to graphically display disk usage statistics
+WWW=		http://www.jgoodies.com/freeware/jdiskreport/
 
 USES=		zip
 USE_JAVA=	YES

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	itop
 PORTVERSION=	2.6.1
 CATEGORIES=	www
@@ -8,6 +6,7 @@ DISTNAME=	iTop-${PORTVERSION}-4463
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, web based IT Service Management tool
+WWW=		https://www.combodo.com/
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKDIR}/LICENSE
@@ -18,8 +17,8 @@ USES=		cpe shebangfix php zip
 SHEBANG_FILES=	lib/tcpdf/tools/tcpdf_addfont.php setup/install/install.sh
 
 CPE_VENDOR=	combodo
-USE_PHP=	ctype gd iconv mbstring pcre session xml zlib readline \
-		dom simplexml hash json soap mcrypt filter zip
+USE_PHP=	ctype gd iconv mbstring session xml zlib readline \
+		dom simplexml soap mcrypt filter zip
 
 WRKSRC=		${WRKDIR}/web
 NO_BUILD=	yes

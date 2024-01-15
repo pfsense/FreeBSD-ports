@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xkcdpass
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	1.17.4
@@ -9,13 +7,14 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	jacob@jwfh.ca
 COMMENT=	Password generator as in XKCD 936
+WWW=		https://github.com/jwfh/xkcdpass
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.BSD
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	jwfh
 USE_PYTHON=	autoplist concurrent distutils

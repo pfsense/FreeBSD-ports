@@ -1,12 +1,11 @@
-# Created by: Michiel van Baak <michiel@vanbaak.eu
-# $FreeBSD$
-
 PORTNAME=	hockeypuck
 DISTVERSION=	g20180725
+PORTREVISION=	15
 CATEGORIES=	security
 
-MAINTAINER=	michiel@vanbaak.eu
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Synchronizing Key Server, a fast OpenPGP keyserver
+WWW=		https://hockeypuck.github.io
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE

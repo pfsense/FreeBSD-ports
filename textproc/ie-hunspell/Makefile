@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
-PORTVERSION=	0.6
+PORTVERSION=	1.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 PKGNAMEPREFIX=	ie-
 
 MAINTAINER=	mistresssilvara@hotmail.com
 COMMENT=	Interlingue Hunspell dictionaries
+WWW=		https://github.com/Carmina16/hunspell-ie
 
 LICENSE=	APACHE20
 

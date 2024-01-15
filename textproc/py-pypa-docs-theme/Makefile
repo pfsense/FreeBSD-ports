@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pypa-docs-theme
 DISTVERSION=	g20180622
 CATEGORIES=	textproc python
@@ -7,6 +5,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Common base Sphinx theme for PyPA projects
+WWW=		https://github.com/pypa/pypa-docs-theme
 
 LICENSE=	PSFL
 LICENSE_FILE=	${WRKSRC}/LICENSE

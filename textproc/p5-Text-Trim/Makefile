@@ -1,14 +1,12 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Trim
-PORTVERSION=	1.03
+PORTVERSION=	1.04
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Remove leading and/or trailing whitespace from strings
+WWW=		https://metacpan.org/release/Text-Trim
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

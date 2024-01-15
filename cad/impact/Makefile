@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	impact
 PORTVERSION=	0.7.06.038
 PORTREVISION=	4
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	Impact-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dynamic Finite Element Program Suite
+WWW=		https://www.impact-fem.org/
 
 LICENSE=	GPLv2
 

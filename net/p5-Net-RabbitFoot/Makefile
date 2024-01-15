@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-RabbitFoot
 PORTVERSION=	1.03
 PORTREVISION=	2
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bill.brinzer@gmail.com
 COMMENT=	Synchronous interface to AnyEvent::RabbitMQ
+WWW=		https://metacpan.org/release/Net-RabbitFoot
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

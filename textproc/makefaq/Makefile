@@ -1,6 +1,3 @@
-# Created by: king@v2project.com
-# $FreeBSD$
-
 PORTNAME=	makefaq
 PORTVERSION=	2.5
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python program that creates a FAQ
+WWW=		https://www.lodestar2.com/software/makefaq/
 
 LICENSE=	GPLv2+
 

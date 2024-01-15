@@ -1,6 +1,3 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	opkg
 DISTVERSION=	20180803
 PORTREVISION=	1
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	-openwrt
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	OpenWrt package manager
+WWW=		https://openwrt.org/docs/guide-user/additional-software/opkg
 
 LICENSE=	GPLv2
 

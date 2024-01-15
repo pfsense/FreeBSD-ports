@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Term-ScreenColor
 PORTVERSION=	1.20
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Term::Screen based screen positioning and coloring module
+WWW=		https://metacpan.org/release/Term-ScreenColor
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual

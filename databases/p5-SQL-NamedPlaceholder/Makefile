@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	SQL-NamedPlaceholder
 PORTVERSION=	0.10
 CATEGORIES=	databases perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Extension of placeholder
+WWW=		https://metacpan.org/release/SQL-NamedPlaceholder
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

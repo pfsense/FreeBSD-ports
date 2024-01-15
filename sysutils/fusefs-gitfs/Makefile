@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gitfs
 DISTVERSION=	0.5.2
 PORTREVISION=	2
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Version controlled file system
+WWW=		https://www.presslabs.com/code/gitfs/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,7 +24,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	PressLabs
 
 NO_ARCH=	yes
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist distutils concurrent optsuffix
 
 post-patch:
@@ -35,15 +34,9 @@ post-patch:
 do-test:
 	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest)
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3300
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>=1.0.1:devel/py-mock@${PY_FLAVOR}
-.else
 post-patch:	patch-py3k-mock
 patch-py3k-mock:
 	@${GREP} -Flr 'mock import' ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
 		-i .bak.mock -e 's/mock import/unittest.&/'
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

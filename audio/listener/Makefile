@@ -1,15 +1,13 @@
-# Created by: lx
-# $FreeBSD$
-
 PORTNAME=	listener
 PORTVERSION=	2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio security
 MASTER_SITES=	PACKETSTORM/linux/security \
 		http://www.vanheusden.com/listener/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to listen for and record sound activity
+WWW=		https://www.vanheusden.com/listener/
 
 LICENSE=	GPLv2
 

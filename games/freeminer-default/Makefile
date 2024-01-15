@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	default
 PORTVERSION=	0.4.10.4
 CATEGORIES=	games
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	freeminer-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The main game for the Freeminer game engine
+WWW=		https://freeminer.org/
 
 LICENSE=	LGPL21
 

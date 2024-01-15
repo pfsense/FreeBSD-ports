@@ -1,6 +1,3 @@
-# Created by: verm@drunkmonk.net
-# $FreeBSD$
-
 PORTNAME=	lmarbles
 PORTVERSION=	1.0.8
 PORTREVISION=	5
@@ -12,6 +9,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Atomix-like game of moving marbles in puzzles
+WWW=		http://lgames.sourceforge.net/index.php?project=LMarbles
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

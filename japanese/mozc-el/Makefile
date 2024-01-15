@@ -1,6 +1,3 @@
-# Created by: TAKANO, Yuji
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-el${EMACS_PKGNAMESUFFIX}
 
 COMMENT=	Emacs input method for Mozc

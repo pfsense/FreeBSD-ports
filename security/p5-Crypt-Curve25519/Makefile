@@ -1,22 +1,18 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-Curve25519
-PORTVERSION=	0.06
+PORTVERSION=	0.07
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Generate shared secret using elliptic-curve Diffie-Hellman function
+WWW=		https://metacpan.org/release/Crypt-Curve25519
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_mips=	fails to build: -m32 flag is not supported by this configuration
 BROKEN_mips64=	fails to build: -m32 flag is not supported by this configuration
-BROKEN_sparc64=	fails to build: -m32 flag is not supported by this configuration
 
 USES=		perl5 ssl
 USE_PERL5=	configure

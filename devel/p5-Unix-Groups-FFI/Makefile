@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Unix-Groups-FFI
 PORTVERSION=	1.000
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Interface to Unix group syscalls
+WWW=		https://metacpan.org/release/Unix-Groups-FFI
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

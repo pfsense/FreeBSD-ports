@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	XML-Grove
 DISTVERSION=	0.46alpha
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl-style XML objects
+WWW=		https://metacpan.org/release/XML-Grove
 
 LICENSE=	ART10
 

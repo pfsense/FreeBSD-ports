@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	Set-Crontab
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Expand crontab(5)-style integer lists
+WWW=		https://metacpan.org/release/Set-Crontab
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

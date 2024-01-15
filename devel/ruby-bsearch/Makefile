@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	bsearch
 PORTVERSION=	1.5
 PORTREVISION=	1
@@ -12,8 +9,9 @@ DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Binary search library for Ruby
+WWW=		http://0xcc.net/ruby-bsearch/
 
-USE_RUBY=	yes
+USES=	ruby
 
 NO_BUILD=	yes
 

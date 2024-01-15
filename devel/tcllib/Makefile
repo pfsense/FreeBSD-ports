@@ -1,13 +1,11 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	tcllib
-PORTVERSION=	1.20
+PORTVERSION=	1.21
 CATEGORIES=	devel tcl
 MASTER_SITES=	https://core.tcl.tk/tcllib/uv/
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Collection of utility modules for Tcl
+WWW=		https://tcllib.sourceforge.net/
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License

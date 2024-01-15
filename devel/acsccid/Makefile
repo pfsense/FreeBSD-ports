@@ -1,13 +1,11 @@
-# Created by: mp39590@gmail.com
-# $FreeBSD$
-
 PORTNAME=	acsccid
-PORTVERSION=	1.1.8
+PORTVERSION=	1.1.10
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	mp39590@gmail.com
 COMMENT=	PC/SC driver for CS CCID smart card readers
+WWW=		https://www.acs.com.hk/en/driver/4/acr38-smart-card-reader/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

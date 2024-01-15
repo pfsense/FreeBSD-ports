@@ -1,11 +1,20 @@
---- CMakeLists.txt.orig	2020-02-11 19:09:00 UTC
+--- CMakeLists.txt.orig	2022-09-28 23:03:18 UTC
 +++ CMakeLists.txt
-@@ -258,7 +258,7 @@ CHECK_INCLUDE_FILE(unistd.h HAVE_UNISTD_H)
- # BUILD_QMCTOOLS   build utility programs
- # MPIP_PROFILE     profile mpi performance
- ######################################################################
--SET(BUILD_UNIT_TESTS 1 CACHE BOOL "Build unit tests")
-+SET(BUILD_UNIT_TESTS 0 CACHE BOOL "Build unit tests")
- SET(BUILD_LMYENGINE_INTERFACE 1 CACHE BOOL "Build LMY engine")
- IF (QMC_CUDA AND BUILD_LMYENGINE_INTERFACE)
-   MESSAGE(STATUS "LMY engine is not compatible with CUDA build! Disabling LMY engine")
+@@ -292,7 +292,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
+ include(Testlibstdc++)
+ 
+ # Check that a C++ standard library is configured properly
+-include(TestCxx17Library)
++#include(TestCxx17Library) # this test fails for clang-14 from base on 13-STABLE
+ 
+ #-----------------------------------------------------------------------
+ # SETUP SANITIZERS FLAGS
+@@ -1043,7 +1043,7 @@ include(CTest)
+ #-------------------------------------------------------------------
+ # Verify Python3 available
+ #-------------------------------------------------------------------
+-find_package(Python3)
++find_package(Python3 ${FREEBSD_PYTHON_VER} EXACT)
+ if(NOT Python3_FOUND)
+   message(FATAL_ERROR "Could not find required python3")
+ endif(NOT Python3_FOUND)

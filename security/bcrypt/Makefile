@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	bcrypt
 PORTVERSION=	1.1
 CATEGORIES=	security
@@ -9,6 +6,7 @@ MASTER_SITES=	http://bcrypt.sourceforge.net/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Cross-platform blowfish encryption utility
+WWW=		https://bcrypt.sourceforge.net/
 
 ALL_TARGET=	${PORTNAME}
 

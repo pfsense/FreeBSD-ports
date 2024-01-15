@@ -1,9 +1,6 @@
-# Created by: alepulver
-# $FreeBSD$
-
 PORTNAME?=	ioquake3
 PORTVERSION?=	${IOQUAKE3VER}
-PORTREVISION?=	16
+PORTREVISION?=	17
 CATEGORIES=	games
 MASTER_SITES?=	http://ioquake3.org/files/${DISTVERSION}/
 # Using zip this way enables slaves to override it.
@@ -11,11 +8,12 @@ EXTRACT_SUFX?=	.zip
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Cleaned-up and enhanced version of Quake 3
+WWW?=		https://ioquake3.org/
 
 LICENSE?=	GPLv2
 LICENSE_FILE?=	${WRKSRC}/COPYING.txt
 
-USES=		pkgconfig gmake
+USES=		cpe pkgconfig gmake
 
 # Port configuration flags:
 #	CLIENT SERVER TOOLS DLRENDERER GAMELIBS OPUS OPENGL2
@@ -87,7 +85,7 @@ Q3INSTALL?=
 Q3ENGINEVER?=	${DISTVERSION}
 IOQUAKE3VER=	1.36
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
 DEBUG_VARS=		ALL_TARGET=debug
 SERVER_RUN_DEPENDS=	${Q3SERVER}${BINSUFFIX}:games/${PORTNAME}-server

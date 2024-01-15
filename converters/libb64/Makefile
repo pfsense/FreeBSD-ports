@@ -1,6 +1,3 @@
-# Created by: Ismail Yenigul <ismail.yenigul@surgate.com>
-# $FreeBSD$
-
 PORTNAME=	libb64
 PORTVERSION=	1.2.1
 CATEGORIES=	converters mail
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}
 
 MAINTAINER=	ismail.yenigul@surgate.com
 COMMENT=	Library for fast Base64 encoding and decoding
+WWW=		https://libb64.sourceforge.net/
 
 BUILD_DEPENDS=	makedepend:devel/makedepend
 

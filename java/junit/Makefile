@@ -1,19 +1,21 @@
-# Created by: OKAZAKI Tetsurou
-# $FreeBSD$
-
 PORTNAME=	junit
 PORTVERSION=	4.12
 CATEGORIES=	java devel
-MASTER_SITES=	http://repo1.maven.org/maven2/${PORTNAME}/${PORTNAME}/${PORTVERSION}/
+MASTER_SITES=	https://repo1.maven.org/maven2/${PORTNAME}/${PORTNAME}/${PORTVERSION}/
 DISTFILES=	${DISTNAME}.jar ${DISTNAME}-sources.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Regression testing utility for use with the Java(TM) Language
+WWW=		https://www.junit.org/
 
 RUN_DEPENDS=	${JAVALIBDIR}/hamcrest.jar:java/hamcrest
 
+USES=		cpe
+CPE_VENDOR=	${PORTNAME}
+CPE_PRODUCT=	${PORTNAME}4
 USE_JAVA=	yes
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

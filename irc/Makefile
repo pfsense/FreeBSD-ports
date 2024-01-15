@@ -1,12 +1,8 @@
-# $FreeBSD$
-#
-
     COMMENT = Internet Relay Chat utilities
 
     SUBDIR += anope
     SUBDIR += atheme-services
     SUBDIR += bip
-    SUBDIR += birch
     SUBDIR += bitchx
     SUBDIR += bitlbee
     SUBDIR += bitlbee-discord
@@ -15,23 +11,22 @@
     SUBDIR += bitlbee-steam
     SUBDIR += bnc
     SUBDIR += bopm
+    SUBDIR += catgirl
     SUBDIR += cgiirc
     SUBDIR += ctrlproxy
-    SUBDIR += cwirc
     SUBDIR += dancer
     SUBDIR += darkbot
     SUBDIR += dircproxy
     SUBDIR += dxirc
     SUBDIR += eggdrop
-    SUBDIR += eggdrop-devel
     SUBDIR += epic4
     SUBDIR += epic5
+    SUBDIR += ergo
     SUBDIR += evangeline
     SUBDIR += ezbounce
     SUBDIR += gruftistats
     SUBDIR += hexchat
     SUBDIR += hexchat-fish
-    SUBDIR += hybserv
     SUBDIR += icbirc
     SUBDIR += ii
     SUBDIR += infobot
@@ -46,24 +41,20 @@
     SUBDIR += ircproxy
     SUBDIR += iroffer-dinoex
     SUBDIR += irssi
-    SUBDIR += irssi-dcc_send_limiter
     SUBDIR += irssi-fish
     SUBDIR += irssi-icb
     SUBDIR += irssi-scripts
     SUBDIR += irssi-xmpp
     SUBDIR += irssistats
     SUBDIR += keitairc2
-    SUBDIR += komanda-cli
     SUBDIR += konversation
     SUBDIR += kvirc
     SUBDIR += libircclient
-    SUBDIR += lostirc
     SUBDIR += miau
     SUBDIR += muh
     SUBDIR += ngircd
     SUBDIR += ninja
     SUBDIR += onis
-    SUBDIR += oragono
     SUBDIR += p5-AnyEvent-IRC
     SUBDIR += p5-Bot-BasicBot
     SUBDIR += p5-IRC-Bot-Hangman
@@ -87,9 +78,10 @@
     SUBDIR += pircbot
     SUBDIR += pisg
     SUBDIR += polari
-    SUBDIR += py-fishcrypt
+    SUBDIR += pounce
     SUBDIR += py-irc
     SUBDIR += py-limnoria
+    SUBDIR += py-sopel
     SUBDIR += quassel
     SUBDIR += quassel-core
     SUBDIR += quirc
@@ -115,8 +107,8 @@
     SUBDIR += unreal
     SUBDIR += weechat
     SUBDIR += weechat-otr
-    SUBDIR += xaric
     SUBDIR += znc
+    SUBDIR += znc-clientbuffer
     SUBDIR += znc-push
 
 .include <bsd.port.subdir.mk>

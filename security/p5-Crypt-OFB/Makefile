@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Crypt-OFB
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Encrypt Data using OFB Mode
+WWW=		https://metacpan.org/release/Crypt-OFB
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Crypt-ECB>=0:security/p5-Crypt-ECB

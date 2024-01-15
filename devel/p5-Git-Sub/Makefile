@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Git-Sub
 PORTVERSION=	0.163320
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Git commands imported into the git:: namespace
+WWW=		https://metacpan.org/release/Git-Sub
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	pyvex
 DISTVERSION=	${ANGR_VERSION}
 CATEGORIES=	security devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python interface to libVEX and VEX IR
+WWW=		https://github.com/angr/pyvex
 
 LICENSE=	BSD2CLAUSE GPLv2+ GPLv3
 LICENSE_COMB=	multi
@@ -29,11 +28,10 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}angr>=${DISTVERSION}:security/py-angr@${PY_FLAVOR} \
 		z3>=0:math/z3
 
-USES=		gmake localbase python:3.5+
+USES=		angr:binaries gmake localbase python
 USE_CSTD=	c99
 USE_GITHUB=	nodefault
-GH_TUPLE=	angr:${PORTNAME}:v${DISTVERSION}:tests \
-		angr:binaries:9bf9c59002c2fb751ae2357f08fb9f4f8171a4ff:binaries
+GH_TUPLE=	angr:${PORTNAME}:v${DISTVERSION}:tests
 USE_LDCONFIG=	${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/lib
 USE_PYTHON=	autoplist distutils
 
@@ -51,12 +49,7 @@ post-patch:
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/lib/lib${PORTNAME}*.so
 
-pre-test:
-	@${LN} -Fs ${WRKSRC_tests}/tests ${WRKSRC}/tests
-	@${LN} -Fs ${WRKSRC_binaries} ${WRKDIR}/binaries
-
 do-test:
 	@(cd ${WRKSRC} && ${SETENV} ${TEST_ENV} nosetests-${PYTHON_VER} tests/*)
 
-.include "${.CURDIR}/../../security/py-angr/Makefile.version"
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	jrdesktop
 PORTVERSION=	0.3.1.0
 CATEGORIES=	net java
@@ -10,6 +7,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	View and/or control a remote PC
+WWW=		https://jrdesktop.sourceforge.net/
 
 LICENSE=	GPLv3
 

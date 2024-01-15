@@ -22,8 +22,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 
 /* Target-dependent code for FreeBSD/arm kernels.  */
@@ -73,12 +71,16 @@ arm_fbsd_supply_pcb(struct regcache *regcache, CORE_ADDR pcb_addr)
   regcache->raw_supply_unsigned(ARM_PS_REGNUM, 0);
 }
 
+#define PSR_MODE        0x0000001f      /* mode mask */
+#define PSR_USR32_MODE  0x00000010
+
 static struct trad_frame_cache *
-arm_fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
+arm_fbsd_trapframe_cache (frame_info_ptr this_frame, void **this_cache)
 {
   struct gdbarch *gdbarch = get_frame_arch (this_frame);
   enum bfd_endian byte_order = gdbarch_byte_order (gdbarch);
   struct trad_frame_cache *cache;
+  uint32_t psr;
   CORE_ADDR func, pc, sp;
   const char *name;
   int i;
@@ -94,10 +96,21 @@ arm_fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
 
   find_pc_partial_function (func, &name, NULL, NULL);
 
+  /* Read $PSR to determine where SP and LR are. */
+  psr = read_memory_unsigned_integer (sp, 4, byte_order);
+
   for (i = 0; i <= 12; i++)
     trad_frame_set_reg_addr (cache, ARM_A1_REGNUM + i, sp + 4 + i * 4);
-  trad_frame_set_reg_addr (cache, ARM_SP_REGNUM, sp + 14 * 4);
-  trad_frame_set_reg_addr (cache, ARM_LR_REGNUM, sp + 15 * 4);
+  if ((psr & PSR_MODE) == PSR_USR32_MODE)
+    {
+      trad_frame_set_reg_addr (cache, ARM_SP_REGNUM, sp + 14 * 4);
+      trad_frame_set_reg_addr (cache, ARM_LR_REGNUM, sp + 15 * 4);
+    }
+  else
+    {
+      trad_frame_set_reg_addr (cache, ARM_SP_REGNUM, sp + 16 * 4);
+      trad_frame_set_reg_addr (cache, ARM_LR_REGNUM, sp + 17 * 4);
+    }
   trad_frame_set_reg_addr (cache, ARM_PC_REGNUM, sp + 18 * 4);
   trad_frame_set_reg_addr (cache, ARM_PS_REGNUM, sp);
 
@@ -119,8 +132,8 @@ arm_fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
 }
 
 static void
-arm_fbsd_trapframe_this_id (struct frame_info *this_frame,
-			     void **this_cache, struct frame_id *this_id)
+arm_fbsd_trapframe_this_id (frame_info_ptr this_frame,
+			    void **this_cache, struct frame_id *this_id)
 {
   struct trad_frame_cache *cache =
     arm_fbsd_trapframe_cache (this_frame, this_cache);
@@ -129,8 +142,8 @@ arm_fbsd_trapframe_this_id (struct frame_info *this_frame,
 }
 
 static struct value *
-arm_fbsd_trapframe_prev_register (struct frame_info *this_frame,
-				   void **this_cache, int regnum)
+arm_fbsd_trapframe_prev_register (frame_info_ptr this_frame,
+				  void **this_cache, int regnum)
 {
   struct trad_frame_cache *cache =
     arm_fbsd_trapframe_cache (this_frame, this_cache);
@@ -140,8 +153,8 @@ arm_fbsd_trapframe_prev_register (struct frame_info *this_frame,
 
 static int
 arm_fbsd_trapframe_sniffer (const struct frame_unwind *self,
-				struct frame_info *this_frame,
-				void **this_prologue_cache)
+			    frame_info_ptr this_frame,
+			    void **this_prologue_cache)
 {
   const char *name;
 
@@ -156,6 +169,7 @@ arm_fbsd_trapframe_sniffer (const struct frame_unwind *self,
 }
 
 static const struct frame_unwind arm_fbsd_trapframe_unwind = {
+  "arm FreeBSD kernel trap",
   SIGTRAMP_FRAME,
   default_frame_unwind_stop_reason,
   arm_fbsd_trapframe_this_id,
@@ -169,11 +183,11 @@ static const struct frame_unwind arm_fbsd_trapframe_unwind = {
 static void
 arm_fbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
 {
-  struct gdbarch_tdep *tdep = gdbarch_tdep (gdbarch);
+  arm_gdbarch_tdep *tdep = gdbarch_tdep<arm_gdbarch_tdep> (gdbarch);
 
   frame_unwind_prepend_unwinder (gdbarch, &arm_fbsd_trapframe_unwind);
 
-  set_solib_ops (gdbarch, &kld_so_ops);
+  set_gdbarch_so_ops (gdbarch, &kld_so_ops);
 
   tdep->jb_pc = 24;
   tdep->jb_elt_size = 4;
@@ -185,11 +199,9 @@ arm_fbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
   set_gdbarch_software_single_step (gdbarch, arm_software_single_step);
 }
 
-/* Provide a prototype to silence -Wmissing-prototypes.  */
-extern initialize_file_ftype _initialize_arm_kgdb_tdep;
-
+void _initialize_arm_kgdb_tdep ();
 void
-_initialize_arm_kgdb_tdep (void)
+_initialize_arm_kgdb_tdep ()
 {
   gdbarch_register_osabi_sniffer(bfd_arch_arm,
 				 bfd_target_elf_flavour,

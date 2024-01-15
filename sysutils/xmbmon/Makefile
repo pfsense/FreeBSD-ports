@@ -1,6 +1,3 @@
-# Created by: kaz@kobe1995.net (NAKAMURA Kauzushi)
-# $FreeBSD$
-
 PORTNAME=	xmbmon
 PORTVERSION=	205
 PORTREVISION=	14
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	MB monitor for LM78/79, W8378x, AS99127F, VT82C686 and ADM9240
+WWW=		http://www.nt.phys.kyushu-u.ac.jp/shimizu/download/download.html
 
 LICENSE=	BSD2CLAUSE
 

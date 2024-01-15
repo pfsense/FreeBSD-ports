@@ -1,6 +1,3 @@
-# Created by: IWASHITA Yoji <shuna@pop16.odn.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	celrw
 PORTVERSION=	0.16
 CATEGORIES=	japanese
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.nurs.or.jp/~kurati/celrw/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cellular phone-number read/write tool (in Japan only)
+WWW=		http://www.nurs.or.jp/~kurati/celrw/
 
 USES=	tar:bzip2
 GNU_CONFIGURE=	yes
@@ -18,6 +16,12 @@ PORTDOCS=	README
 PLIST_FILES=	bin/celrw
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
 
 post-extract:
 .for file in config.guess config.sub install.sh
@@ -30,4 +34,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,9 +1,5 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	domination
-PORTVERSION=	1.2.0
-PORTREVISION=	1
+PORTVERSION=	1.2.5
 CATEGORIES=	games java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME:S/d/D/}/${PORTVERSION}/:game \
 		http://domination.sourceforge.net/maps/
@@ -14,11 +10,12 @@ EXTRACT_ONLY=	${PORTNAME:S/d/D/}_${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Board game that is a bit like the well known game Risk
+WWW=		https://domination.sourceforge.net/
 
 LICENSE=	GPLv3
 
 USES=		dos2unix zip:infozip
-DOS2UNIX_GLOB=	*.txt *.ini *.htm *.cards *.map
+DOS2UNIX_GLOB=	*.txt *.ini *.cards *.map
 USE_JAVA=	yes
 NO_BUILD=	yes
 
@@ -48,7 +45,7 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 SUB_FILES=	${PORTNAME}-FlashGUI ${PORTNAME}-Increment1GUI \
 		${PORTNAME}-SimpleGUI ${PORTNAME}-SwingGUI \
-		pkg-deinstall
+		pkg-message
 
 DESKTOP_ENTRIES="Domination" "" "${PORTNAME}" \
 		"${PORTNAME}-SwingGUI" "Game;StrategyGame;" ""
@@ -62,7 +59,7 @@ post-extract-script:
 
 do-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
-		"help lib maps resources saves *.jar *.htm *.txt *.ini" \
+		"help lib maps resources saves *.jar *.txt *.ini" \
 			${STAGEDIR}${DATADIR})
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}-* ${STAGEDIR}${PREFIX}/bin/
 	(cd ${WRKSRC} && ${INSTALL_SCRIPT} *.sh ${STAGEDIR}${DATADIR})

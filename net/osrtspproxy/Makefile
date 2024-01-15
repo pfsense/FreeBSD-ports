@@ -1,6 +1,3 @@
-# Created by: Volker Stolz <stolz@i2.informatik.rwth-aachen.de>
-# $FreeBSD$
-
 PORTNAME=	osrtspproxy
 PORTVERSION=	2.0
 PORTREVISION=	1
@@ -10,6 +7,9 @@ DISTNAME=	${PORTNAME}_2_0
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Reference implementation kit of an RTSP proxy
+WWW=		https://sourceforge.net/projects/rtsp/
+
+USE_CXXSTD=	c++14
 
 HAS_CONFIGURE=	yes
 

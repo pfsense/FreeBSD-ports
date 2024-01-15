@@ -1,19 +1,22 @@
-# Created by: Nagy, Attila <bra@fsn.hu>
-# $FreeBSD$
-
 ######################################################################
 # Anytime PORTVERSION changes please bump PORTREVISION of:           #
 # - mail/dovecot-pigeonhole. See ports/146029 for an explanation.    #
+# - mail/dovecot-fts-flatcurve.                                      #
 # - mail/dovecot-fts-xapian.                                         #
+# - mail/dovecot-fts-elastic.                                        #
+# - mail/dovecot-coi.                                                #
+# - mail/dovecot-xaps.                                               #
 ######################################################################
 
 PORTNAME=	dovecot
-PORTVERSION=	2.3.13
+PORTVERSION=	2.3.21
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	https://dovecot.org/releases/2.3/
 
 MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Secure, fast and powerful IMAP and POP3 server
+WWW=		https://www.dovecot.org/
 
 LICENSE=	LGPL21 MIT
 LICENSE_COMB=	dual
@@ -25,10 +28,11 @@ USE_RC_SUBR=	dovecot
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var \
-		--with-statedir=/var/db/dovecot \
-		--without-shadow \
+		--with-docs \
 		--with-ssl=openssl \
-		--with-docs
+		--with-statedir=/var/db/dovecot \
+		--with-shadow=no \
+		--with-systemd=no
 
 USE_LDCONFIG=	${PREFIX}/lib/dovecot
 INSTALL_TARGET=	install-strip
@@ -36,7 +40,7 @@ INSTALL_TARGET=	install-strip
 USERS=		dovecot dovenull
 GROUPS=		${USERS}
 
-OPTIONS_DEFINE=	LIBSODIUM LIBWRAP LUA LZ4 DOCS EXAMPLES
+OPTIONS_DEFINE=	LIBSODIUM LIBUNWIND LIBWRAP LUA LZ4 DOCS EXAMPLES
 OPTIONS_DEFAULT=GSSAPI_NONE LIBWRAP
 OPTIONS_SUB=	yes
 
@@ -46,8 +50,6 @@ OPTIONS_GROUP_FTS=	ICU LUCENE SOLR TEXTCAT
 
 OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
-
-LZ4_DESC=	LZ4 compression support
 
 DB_DESC=	Database support
 CDB_DESC=	CDB database support
@@ -64,14 +66,19 @@ GSSAPI_HEIMDAL_DESC=	Use Heimdal GSSAPI from security/heimdal
 GSSAPI_MIT_DESC=	Use MIT GSSAPI from security/krb5
 
 # General options
-LIBSODIUM_DESC=		support libsodium based crypts (ARGON2I/ARGON2ID)
+LIBSODIUM_DESC=		Support libsodium based crypts (ARGON2I/ARGON2ID)
 LIBSODIUM_LIB_DEPENDS=	libsodium.so:security/libsodium
 LIBSODIUM_CONFIGURE_WITH=	sodium
+
+LIBUNWIND_CONFIGURE_ON=		--with-libunwind=yes
+LIBUNWIND_CONFIGURE_OFF=	--with-libunwind=no
+LIBUNWIND_DESC=		Get backtraces using libunwind
+LIBUNWIND_LIB_DEPENDS=	libunwind.so:devel/libunwind
 
 LIBWRAP_CONFIGURE_WITH=	libwrap
 
 LUA_CONFIGURE_WITH=	lua
-LUA_USES=		lua
+LUA_USES=		lua:51,53
 
 LZ4_CONFIGURE_WITH=	lz4
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
@@ -80,7 +87,7 @@ LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
 CDB_CONFIGURE_WITH=	cdb
 CDB_LIB_DEPENDS=	libcdb.so:databases/tinycdb
 
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_WITH=	ldap
 
 MYSQL_USES=		mysql

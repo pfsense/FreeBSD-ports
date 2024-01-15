@@ -1,13 +1,12 @@
-# Created by: Romain Tartiere <romain@blogreen.org>
-# $FreeBSD$
-
 PORTNAME=	notify-sharp
 PORTVERSION=	3.0.3
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.meebey.net/projects/notify-sharp/downloads/
 
 MAINTAINER=	fox@FreeBSD.org
 COMMENT=	C\# client library for notification-daemon
+WWW=		http://www.ndesk.org/NotifySharp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

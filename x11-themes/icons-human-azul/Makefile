@@ -1,6 +1,3 @@
-# Created by: Phillip Neumann <pneumann@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	icons-human-azul
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	37099-HumanAzul
 
 MAINTAINER=	pneumann@gmail.com
 COMMENT=	Set of icons from the Ubuntu human look
+WWW=		http://tango-project.org/
 
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/HumanAzul

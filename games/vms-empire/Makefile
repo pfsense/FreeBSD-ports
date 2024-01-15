@@ -1,14 +1,11 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	vms-empire
-PORTVERSION=	1.14
-PORTREVISION=	1
+PORTVERSION=	1.16
 CATEGORIES=	games
 MASTER_SITES=	http://www.catb.org/~esr/vms-empire/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simulation of a full-scale war between two emperors
+WWW=		http://www.catb.org/~esr/vms-empire/
 
 LICENSE=	GPLv2
 
@@ -16,11 +13,6 @@ USES=		ncurses
 MAKE_ARGS=	LIBS="${LDFLAGS} -lncurses"
 PORTDOCS=	AUTHORS BUGS HACKING NEWS README
 OPTIONS_DEFINE=	DOCS
-
-CFLAGS+=		-fcommon
-
-DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
-EXPIRATION_DATE=2021-04-01
 
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man6/${PORTNAME}.6.gz \

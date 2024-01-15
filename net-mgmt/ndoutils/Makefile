@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ndoutils
 PORTVERSION=	2.1.3
 CATEGORIES=	net-mgmt
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/nagios/${PORTNAME}-2.x/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Keep Nagios perfdata in MySQL database
+WWW=		https://www.nagios.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

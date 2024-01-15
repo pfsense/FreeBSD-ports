@@ -1,15 +1,13 @@
-# Created by: Miguel Mendez <flynn@energyhq.es.eu.org>
-# $FreeBSD$
-
 PORTNAME=	addresses
 PORTVERSION=	0.4.8
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	mail gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	Addresses-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Versatile addressbook for GNUstep
+WWW=		https://gap.nongnu.org/addresses/index.html
 
 LICENSE=	LGPL21
 

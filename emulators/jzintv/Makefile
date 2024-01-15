@@ -1,6 +1,3 @@
-# Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
-
 PORTNAME=	jzintv
 PORTVERSION=	1.0.20200712
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/^1.0.//1}-src
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Portable Intellivision(TM) Emulator
+WWW=		http://spatula-city.org/~im14u2c/intv/
 
 LICENSE=	GPLv2
 

@@ -1,15 +1,13 @@
-# Created by: Rodrigo Osorio <rodrigo@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	librfm
 PORTVERSION=	5.3.16.4
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF/xffm/5.3.16.3
 DISTNAME=	${PORTNAME}5-${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Basic library used by some rfm applications
+WWW=		https://xffm.sourceforge.net/libxffm.html
 
 LICENSE=	GPLv3
 
@@ -23,7 +21,6 @@ LIB_DEPENDS=	libtubo.so:x11-fm/libtubo \
 OPTIONS_DEFINE=	NLS
 
 CONFIGURE_ARGS+=--with-pkglibdata
-INSTALLS_ICONS=	yes
 USES=		autoreconf gettext gnome gmake libtool:keepla pkgconfig \
 		tar:bzip2 xorg
 GNU_CONFIGURE=	yes

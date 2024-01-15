@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	linplasma
 PORTVERSION=	1.0
 PORTREVISION=	2

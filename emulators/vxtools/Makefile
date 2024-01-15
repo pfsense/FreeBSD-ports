@@ -1,6 +1,3 @@
-# Created by: Martin Hinner
-# $FreeBSD$
-
 PORTNAME=	vxtools
 PORTVERSION=	0.2
 PORTREVISION=	1

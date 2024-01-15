@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	oxygen
 PORTVERSION=	1.4.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-themes
 MASTER_SITES=	KDE/stable/${PORTNAME}-gtk2/${PORTVERSION}/src
 PKGNAMEPREFIX=	gtk-
@@ -11,6 +9,7 @@ DISTNAME=	${PORTNAME}-gtk2-${PORTVERSION}
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Oxygen-Gtk engine and theme
+WWW=		http://kde-look.org/content/show.php/?content=136216
 
 LICENSE=	LGPL21
 

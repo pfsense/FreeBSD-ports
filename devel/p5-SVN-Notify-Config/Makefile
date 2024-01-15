@@ -1,6 +1,3 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	SVN-Notify-Config
 PORTVERSION=	0.0911
 PORTREVISION=	4
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module for config-driven Subversion notification
+WWW=		https://metacpan.org/release/SVN-Notify-Config
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

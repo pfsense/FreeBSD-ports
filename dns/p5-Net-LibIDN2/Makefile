@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-LibIDN2
-PORTVERSION=	1.01
+PORTVERSION=	1.02
 CATEGORIES=	dns perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl bindings for GNU Libidn2
+WWW=		https://metacpan.org/release/Net-LibIDN2
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

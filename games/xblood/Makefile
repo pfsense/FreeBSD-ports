@@ -1,6 +1,3 @@
-# Created by: Sakai Hiroaki <sakai@miya.ee.kagu.sut.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	xblood
 PORTVERSION=	2.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://kozos.jp/myfreesoft/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Makes the root window bloody
+WWW=		https://kozos.jp/myfreesoft/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

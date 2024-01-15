@@ -1,6 +1,3 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	nxproxy
 DISTVERSION=	3.5.99.20
 DISTVERSIONSUFFIX=	-1
@@ -10,6 +7,7 @@ DISTNAME=	nx-libs-${PORTVERSION}${DISTVERSIONSUFFIX}-lite
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Helper program for x2go
+WWW=		https://wiki.x2go.org/doku.php
 
 LICENSE=	GPLv2
 

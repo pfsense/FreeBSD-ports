@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	gzdoom
-PORTVERSION=	4.1.1
-PORTREVISION=	3
+PORTVERSION=	4.7.1
 DISTVERSIONPREFIX=	g
+PORTREVISION=	7
 CATEGORIES=	games
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	GL-enhanced source port for Doom-engine games
+WWW=		https://zdoom.org/
 
 LICENSE=	BSD3CLAUSE GPLv3 LGPL3
 LICENSE_COMB=	multi
@@ -18,36 +17,31 @@ LICENSE_FILE_LGPL3=	${WRKSRC}/docs/licenses/lgpl.txt
 BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libsndfile.so:audio/libsndfile \
-		libfluidsynth.so:audio/fluidsynth \
-		libgme.so:audio/libgme
+		libzmusic.so:audio/zmusic
 
-USES=		cmake compiler:c++11-lang gettext gl gnome jpeg openal \
-		pkgconfig sdl
+USES=		cmake compiler:c++11-lang gnome jpeg pkgconfig sdl
 
 DATADIR=	${DMDIR}/${PORTNAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	coelckers
 
-USE_GNOME=	atk cairo gdkpixbuf2 gtk20 pango
+CMAKE_ARGS=	-DINSTALL_DOCS_PATH=${DOCSDIR}	\
+		-DINSTALL_PK3_PATH=${DMDIR}	\
+		-DINSTALL_SOUNDFONT_PATH=${DMDIR} \
+		-DDYN_GTK:BOOL=OFF
+
+USE_GNOME=	gtk30
 USE_SDL=	sdl2
-USE_GL=		gl glu
 CXXFLAGS+=	-DSHARE_DIR=\\\"${DATADIR}\\\"
 LDFLAGS+=	-Wl,--as-needed
 
 DESKTOP_ENTRIES=	"GZDoom" "" "${PORTNAME}" "${PORTNAME}" "Game;Shooter;" ""
 
-PLIST_FILES=	bin/${PORTNAME} \
-		${DATADIR}/${PORTNAME}.pk3 \
-		share/pixmaps/${PORTNAME}.xpm
-
 .include "${.CURDIR}/../doom-data/Makefile.include"
 
-do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${CONFIGURE_WRKSRC}/${PORTNAME}.pk3 ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.xpm ${STAGEDIR}${PREFIX}/share/pixmaps
+post-install:
+	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.xpm \
+	    ${STAGEDIR}${PREFIX}/share/pixmaps
 
 .include <bsd.port.mk>

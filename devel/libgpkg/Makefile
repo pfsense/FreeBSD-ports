@@ -1,15 +1,11 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libgpkg
 PORTVERSION=	0.9.18
 PORTREVISION=	3
 CATEGORIES=	devel
-MASTER_SITES=	https://bitbucket.org/luciad/libgpkg/get/${PORTVERSION}.tar.bz2?dummy=/ \
-		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	SQLite 3 extension of minimal OGC GeoPackage implementation
+WWW=		https://github.com/luciad/libgpkg
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,9 +13,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		cmake:insource compiler:c11 tar:bzip2
 
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/luciad-libgpkg-c56e3708453e
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	luciad
 
 OPTIONS_DEFINE=	GEOS
 OPTIONS_DEFAULT=GEOS

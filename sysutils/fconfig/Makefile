@@ -1,6 +1,3 @@
-# Created by: thompsa@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	fconfig
 PORTVERSION=	20080329
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ MASTER_SITES=	http://downloads.openwrt.org/sources/ \
 
 MAINTAINER=	thompsa@FreeBSD.org
 COMMENT=	Read and modify RedBoot embedded boot configuration
+WWW=		http://andrzejekiert.ovh.org/software.html.en
 
 USES=		gmake
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ndproxy
 PORTVERSION=	3.2
 DISTVERSIONPREFIX=	v
@@ -7,6 +5,7 @@ CATEGORIES=	net
 
 MAINTAINER=	fbsd.bugzilla@fenyo.net
 COMMENT=	Implementation of IPv6 Neighbor Discovery proxy
+WWW=		http://www.fenyo.net/newweb/ndproxy.html
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

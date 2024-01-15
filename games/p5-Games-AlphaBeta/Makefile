@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Games-AlphaBeta
 PORTVERSION=	0.4.7
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-v${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Game-tree search with object oriented interface
+WWW=		https://metacpan.org/release/Games-AlphaBeta
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

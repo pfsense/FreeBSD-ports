@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tomlrb
 PORTVERSION=	1.3.0
 CATEGORIES=	textproc rubygems
@@ -9,12 +6,12 @@ PKGNAMESUFFIX=	1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Racc-based TOML parser
+WWW=		https://github.com/fbernier/tomlrb
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

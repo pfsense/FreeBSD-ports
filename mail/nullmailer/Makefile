@@ -1,8 +1,6 @@
-# Created by: clive
-# $FreeBSD$
-
 PORTNAME=	nullmailer
 PORTVERSION=	2.2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://untroubled.org/nullmailer/ \
@@ -10,6 +8,7 @@ MASTER_SITES=	http://untroubled.org/nullmailer/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MTA for hosts which relay to a fixed set of smart relays
+WWW=		https://untroubled.org/nullmailer/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,7 +20,7 @@ USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=${LOCALSTATEDIR}
 
-SUB_FILES=	pkg-install pkg-deinstall pkg-message
+SUB_FILES=	pkg-install pkg-message
 SUB_LIST=	LOCALSTATEDIR=${LOCALSTATEDIR} NULLMAIL_USER=${USERS}
 
 USERS=		nullmail

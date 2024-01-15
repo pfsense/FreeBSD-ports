@@ -7,6 +7,16 @@ bin/nats-server
 %%PORTDOCS%%%%DOCSDIR%%/configs/certs/key.new.pem
 %%PORTDOCS%%%%DOCSDIR%%/configs/certs/key.pem
 %%PORTDOCS%%%%DOCSDIR%%/configs/certs/server.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-ca-cert.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-ca-key.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-cert-ed25519.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-cert-rsa-1024.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-cert-rsa-2048.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-cert-rsa-4096.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-key-ed25519.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-key-rsa-1024.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-key-rsa-2048.pem
+%%PORTDOCS%%%%DOCSDIR%%/configs/certs/tls/benchmark-server-key-rsa-4096.pem
 %%PORTDOCS%%%%DOCSDIR%%/configs/cluster.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/gwa.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/gwb.conf
@@ -16,6 +26,7 @@ bin/nats-server
 %%PORTDOCS%%%%DOCSDIR%%/configs/include_conf_check_a.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/include_conf_check_b.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/include_conf_check_c.conf
+%%PORTDOCS%%%%DOCSDIR%%/configs/js-op.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/listen-1.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/listen.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/listen_port.conf
@@ -25,6 +36,7 @@ bin/nats-server
 %%PORTDOCS%%%%DOCSDIR%%/configs/multiple_errors.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/multiple_users.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/new_style_authorization.conf
+%%PORTDOCS%%%%DOCSDIR%%/configs/one.creds
 %%PORTDOCS%%%%DOCSDIR%%/configs/reload/authorization_1.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/reload/authorization_2.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/reload/basic.conf
@@ -59,6 +71,11 @@ bin/nats-server
 %%PORTDOCS%%%%DOCSDIR%%/configs/srv_b_bcrypt.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/test.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/tls.conf
+%%PORTDOCS%%%%DOCSDIR%%/configs/tls/tls-ed25519.conf
+%%PORTDOCS%%%%DOCSDIR%%/configs/tls/tls-none.conf
+%%PORTDOCS%%%%DOCSDIR%%/configs/tls/tls-rsa-1024.conf
+%%PORTDOCS%%%%DOCSDIR%%/configs/tls/tls-rsa-2048.conf
+%%PORTDOCS%%%%DOCSDIR%%/configs/tls/tls-rsa-4096.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/tls_bad_cipher.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/tls_bad_curve_prefs.conf
 %%PORTDOCS%%%%DOCSDIR%%/configs/tls_ciphers.conf

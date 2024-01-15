@@ -1,13 +1,12 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	seexpr
 PORTVERSION=	3.4.4.0
+PORTREVISION=	2
 CATEGORIES=	graphics math
 MASTER_SITES=	https://download.kde.org/stable/${PORTNAME}/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Embeddable expression evaluation language
+WWW=		https://wdas.github.io/SeExpr/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,9 +16,11 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USES=		bison cmake compiler:c++14-lang gl qt:5
 USE_GL=		gl glu
 USE_LDCONFIG=	yes
-USE_QT=		buildtools_build qmake_build core gui opengl widgets
+USE_QT=		buildtools:build qmake:build core gui opengl widgets
 
 MAKE_JOBS_UNSAFE=	yes	# https://github.com/wdas/seexpr/issues/40
+
+CONFLICTS_INSTALL=	kseexpr
 
 OPTIONS_DEFINE=	ANIMCURVE DEEPWATER LLVM NLS PYTHON
 OPTIONS_DEFAULT=	DEEPWATER
@@ -37,12 +38,13 @@ LLVM_LIB_DEPENDS=	libLLVM.so:devel/llvm${LLVM_DEFAULT}
 LLVM_CMAKE_OFF=		-DENABLE_LLVM_BACKEND:BOOL=FALSE
 
 NLS_USES=		kde:5
-NLS_USE=		KDE=ecm_build
+NLS_USE=		KDE=ecm:build
 NLS_CMAKE_OFF=		-DBUILD_TRANSLATIONS:BOOL=FALSE
 
+PYTHON_BUILD_DEPENDS=	sip:devel/py-sip4
 PYTHON_LIB_DEPENDS=	${PY_BOOST}
 PYTHON_USES=		pyqt:5 python
-PYTHON_USE=		PYQT=core_build,sip_build,widgets_build
+PYTHON_USE=		PYQT=pyqt5
 PYTHON_CMAKE_ON=	-DPYQT_SIP_DIR:STRING=${PYQT_SIPDIR}
 PYTHON_CMAKE_OFF=	-DUSE_PYTHON:BOOL=FALSE
 

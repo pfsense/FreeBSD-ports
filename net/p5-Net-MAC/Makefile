@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-MAC
 PORTVERSION=	2.103622
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl 5 module for representing and manipulating MAC addresses
+WWW=		https://metacpan.org/release/Net-MAC
 
 BUILD_DEPENDS=	p5-libwww>=0:www/p5-libwww
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww

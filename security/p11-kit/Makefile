@@ -1,40 +1,32 @@
-# Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	p11-kit
-DISTVERSION=	0.23.22
+DISTVERSION=	0.25.3
 CATEGORIES=	security devel
-MASTER_SITES=	https://github.com/p11-glue/p11-kit/releases/download/${DISTVERSION}/
-
-PATCH_SITES=	https://github.com/p11-glue/p11-kit/commit/
-PATCHFILES=	507c394cfcf4edffc5e4450c5d737e545c26b857.patch:-p1
+MASTER_SITES=	https://github.com/p11-glue/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Library for loading and enumerating of PKCS\#11 modules
+WWW=		https://p11-glue.freedesktop.org/p11-kit.html
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-BUILD_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-LIB_DEPENDS=	libtasn1.so:security/libtasn1 \
-		libffi.so:devel/libffi
+BUILD_DEPENDS=	bash-completion>=0:shells/bash-completion
+LIB_DEPENDS=	libffi.so:devel/libffi \
+		libtasn1.so:security/libtasn1
 
-USES=		localbase meson pkgconfig tar:xz
+USES=		cpe localbase meson pkgconfig tar:xz
 USE_LDCONFIG=	yes
 
-MESON_ARGS=	-Dlibffi=enabled -Dtrust_module=enabled \
-		-Dtrust_paths=${LOCALBASE}/share/certs/ca-root-nss.crt \
-		-Dnls=false
+CPE_VENDOR=	p11-kit_project
 
-OPTIONS_DEFINE=	BASH DOCS MANPAGES TEST
-OPTIONS_SUB=	yes
+MESON_ARGS=	-Dnls=false \
+		-Dsystemd=disabled \
+		-Dtrust_paths=${DATADIR}/certs
+
+OPTIONS_DEFINE=		DOCS MANPAGES TEST
+OPTIONS_SUB=		yes
 MANPAGES_IMPLIES=	DOCS
-OPTIONS_DEFAULT=	BASH MANPAGES
-
-BASH_BUILD_DEPENDS=	bash-completion>=0:shells/bash-completion
-BASH_RUN_DEPENDS=	bash-completion>=0:shells/bash-completion
-BASH_MESON_ENABLED=	bash_completion
+OPTIONS_DEFAULT=	MANPAGES
 
 DOCS_BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc
 DOCS_USES=		gnome
@@ -46,9 +38,18 @@ MANPAGES_MESON_TRUE=	man
 
 TEST_MESON_TRUE=	test
 
+.include <bsd.port.options.mk>
+
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${MV} ${STAGEDIR}${PREFIX}/etc/pkcs11/pkcs11.conf.example ${STAGEDIR}${EXAMPLESDIR}
 	${RMDIR} ${STAGEDIR}${PREFIX}/etc/pkcs11
+	${MKDIR} ${STAGEDIR}${DATADIR}/certs
+	${LN} -s /usr/share/certs/trusted ${STAGEDIR}${DATADIR}/certs/anchors
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400024
+	${LN} -s /usr/share/certs/blacklisted ${STAGEDIR}${DATADIR}/certs/blocklist
+.else
+	${LN} -s /usr/share/certs/untrusted ${STAGEDIR}${DATADIR}/certs/blocklist
+.endif
 
 .include <bsd.port.mk>

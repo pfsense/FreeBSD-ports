@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	nexus2
-PORTVERSION=	2.14.18
-DISTVERSIONSUFFIX=	01
+PORTVERSION=	2.15.1
+DISTVERSIONSUFFIX=	02
 CATEGORIES=	devel www java
 MASTER_SITES=	https://download.sonatype.com/nexus/oss/
 PKGNAMESUFFIX=	-oss
 DISTNAME=	nexus-${PORTVERSION}-${DISTVERSIONSUFFIX}-bundle
 
 MAINTAINER=	michael.osipov@siemens.com
-COMMENT=	Maven (and others) artifacts repostory manager
+COMMENT=	Maven (and others) artifacts repository manager
+WWW=		https://www.sonatype.com/products/repository-oss
 
 LICENSE=	EPL
 
@@ -19,13 +18,15 @@ RUN_DEPENDS=	javaservicewrapper:sysutils/javaservicewrapper
 USES=		cpe
 
 CPE_VENDOR=	sonatype
+CPE_PRODUCT=	nexus
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_TEST=	yes
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+# Java 8 only, see https://issues.sonatype.org/browse/NEXUS-19183
+JAVA_VERSION=	8
 
 USE_RC_SUBR=	${PORTNAME}
 
@@ -57,7 +58,6 @@ SUB_FILES=	pkg-message
 SUB_LIST=	NEXUS_RC=${PORTNAME} \
 		DESC="${COMMENT}" \
 		VERSION=${PORTVERSION} \
-		BOOKVERSION=${PORTVERSION:C/..$//1} \
 		USER=${NEXUS_USER} \
 		GROUP=${NEXUS_GROUP} \
 		WRAPPER_CMD=${WRAPPER_CMD} \
@@ -73,7 +73,6 @@ PLIST_SUB=	USER=${NEXUS_USER} \
 
 # PATCH NOTES
 #   Several patches are necessary due to the following issues:
-#   * https://issues.sonatype.org/browse/NEXUS-10981
 #   * https://issues.sonatype.org/browse/NEXUS-10983
 #   * https://issues.sonatype.org/browse/NEXUS-10984
 
@@ -103,6 +102,7 @@ do-install:
 	@(cd ${STAGEDIR}${DATADIR} && ${MV} conf ${STAGEDIR}${ETCDIR})
 	@(cd ${STAGEDIR}${ETCDIR} \
 		&& ${FIND} . -type f -exec ${MV} '{}' '{}'.sample \;)
+	@${RLN} ${STAGEDIR}${ETCDIR} ${STAGEDIR}${DATADIR}/conf
 	@${MKDIR} ${STAGEDIR}${NEXUS_RUNDIR}
 	@${MKDIR} ${STAGEDIR}${NEXUS_LOGDIR}
 	@${MKDIR} ${STAGEDIR}${NEXUS_WORKDIR}

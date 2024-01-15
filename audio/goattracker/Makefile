@@ -1,8 +1,5 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	goattracker
-PORTVERSION=	2.75
+PORTVERSION=	2.76
 CATEGORIES=	audio
 MASTER_SITES=	SF/goattracker2/GoatTracker%202/${PORTVERSION} \
 		LOCAL/ehaupt
@@ -10,6 +7,7 @@ DISTNAME=	GoatTracker_${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Crossplatform music editor for creating Commodore 64 music
+WWW=		http://covertbitops.c64.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/copying
@@ -19,16 +17,16 @@ USE_SDL=	sdl
 
 MAKEFILE=	makefile
 
+DESKTOP_ENTRIES=	"GoatTracker 2" \
+			"${COMMENT}" \
+			"${PREFIX}/share/pixmaps/goattrk2.ico" \
+			"goattrk2" \
+			"" \
+			false
+
+NO_WRKSUBDIR=	yes
+
 OPTIONS_DEFINE=	DOCS EXAMPLES
-
-DESKTOP_ENTRIES="GoatTracker 2" \
-		"${COMMENT}" \
-		"${PREFIX}/share/pixmaps/goattrk2.ico" \
-		"goattrk2" \
-		"" \
-		false
-
-WRKSRC=		${WRKDIR}/goattrk2
 
 post-extract:
 	@${FIND} ${WRKSRC} -name '*.o' -type f -exec ${RM} -f {} \+

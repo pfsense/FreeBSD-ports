@@ -1,6 +1,3 @@
-# Created by: Kay Lehmann
-# $FreeBSD$
-
 PORTNAME=	gocr
 PORTVERSION=	0.52
 CATEGORIES=	graphics
@@ -8,20 +5,19 @@ MASTER_SITES=	http://www-e.uni-magdeburg.de/jschulen/ocr/
 
 MAINTAINER=	freebsd-ports@dan.me.uk
 COMMENT=	OCR (Optical Character Recognition) program
+WWW=		https://jocr.sourceforge.net/
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libnetpbm.so:graphics/netpbm
 
 USES=		gmake
-
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-netpbm=${LOCALBASE}
-MAKE_ARGS=	prefix=${PREFIX} exec_prefix=${PREFIX} DESTDIR=${DESTDIR}
+MAKE_ARGS=	prefix=${PREFIX} exec_prefix=${PREFIX}
 
 PLIST_FILES=	bin/gocr \
 		man/man1/gocr.1.gz
-
 PORTDOCS=	*
 
 DOCSRCDIR1=	${WRKSRC}
@@ -41,7 +37,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|@LIBS@|-L${LOCALBASE}/lib @LIBS@|g' ${WRKSRC}/src/Makefile.in
 
 post-patch-X11-off:
-	@${REINPLACE_CMD} -e '/gocr.tcl/d' ${WRKSRC}/src/Makefile.in
+	@${REINPLACE_CMD} -e '/gocr\.tcl/d' ${WRKSRC}/src/Makefile.in
 
 post-patch-X11-on:
 	@${REINPLACE_CMD} -e 's|exec wish|exec ${WISH}|' ${WRKSRC}/bin/gocr.tcl

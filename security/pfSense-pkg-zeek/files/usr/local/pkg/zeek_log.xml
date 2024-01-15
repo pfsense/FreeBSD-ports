@@ -29,7 +29,7 @@
 		]]>
 	</copyright>
 	<name>zeeklog</name>
-	<title>Zeek NSM: Log Mgmt</title>
+	<title>Services/Zeek NSM</title>
 	<include_file>/usr/local/pkg/zeek.inc</include_file>
 	<tabs>
 		<tab>
@@ -75,6 +75,8 @@
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
+	<![CDATA[
 		zeek_log_resync();
+	]]>
 	</custom_php_resync_config_command>
 </packagegui>

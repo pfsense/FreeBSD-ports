@@ -1,20 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	lgi
 PORTVERSION=	0.9.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
+PATCH_SITES=	https://github.com/lgi-devs/lgi/commit/
+PATCHFILES=	5cfd42c386d3adae6d211fbb4011179c3c141b04.diff:-p1
+
 MAINTAINER=	andrew@tao11.riddles.org.uk
 COMMENT=	Lua bindings to libraries using GObject-Introspection
+WWW=		https://github.com/pavouk/lgi
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS+=	libffi.so:devel/libffi
 
-USES=		gmake gnome lua:-53,module pkgconfig
+USES=		gmake gnome lua:-54,module pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	pavouk

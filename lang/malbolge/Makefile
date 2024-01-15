@@ -1,6 +1,3 @@
-# Created by: Dereckson <dereckson@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	malbolge
 PORTVERSION=	0.1.1
 CATEGORIES=	lang
@@ -8,6 +5,7 @@ MASTER_SITES=	http://cdn.bitbucket.org/dereckson/${PORTNAME}/downloads/
 
 MAINTAINER=	dereckson@gmail.com
 COMMENT=	Esoteric language
+WWW=		https://www.dereckson.be/software/Malbolge/
 
 PLIST_FILES=	bin/malbolge
 OPTIONS_DEFINE=	DOCS

@@ -1,6 +1,3 @@
-# Created by: Hye-Shik Chang <perky@FreeBSD.org>
-# $FreeBSD$
-
 PORTREVISION=	1
 
 FILEID=		2608

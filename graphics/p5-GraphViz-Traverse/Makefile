@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	GraphViz-Traverse
 PORTVERSION=	0.02
 PORTREVISION=	7
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Build a GraphViz object via callback traversal
+WWW=		https://metacpan.org/release/GraphViz-Traverse
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-GraphViz>=0:graphics/p5-GraphViz

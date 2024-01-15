@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Number-WithError
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Numbers with error propagation and scientific rounding
+WWW=		https://metacpan.org/release/Number-WithError
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

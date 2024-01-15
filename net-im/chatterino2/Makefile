@@ -1,59 +1,41 @@
-# $FreeBSD$
-
 PORTNAME=	chatterino2
-PORTVERSION=	g2020090101
-PORTREVISION=	1
+PORTVERSION=	2.4.6
+DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Twitch chat client
+WWW=		https://chatterino.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	rapidjson>0:devel/rapidjson
+BUILD_DEPENDS=	${LOCALBASE}/include/magic_enum.hpp:devel/magic_enum \
+		miniaudio>0:audio/miniaudio \
+		rapidjson>0:devel/rapidjson \
+		websocketpp>=0:devel/websocketpp
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-		libqt5keychain.so:security/qtkeychain
+		libqt5keychain.so:security/qtkeychain@qt5
 
-USES=		compiler:c++17-lang gl pkgconfig qmake qt:5 ssl
-USE_QT=		concurrent core gui multimedia network svg widgets \
-		buildtools_build qmake_build
-USE_GL=		gl
-
-OPTIONS_DEFINE=	DOCS
-
-PLIST_FILES=	bin/chatterino \
-		share/appdata/com.chatterino.chatterino.appdata.xml \
-		share/applications/com.chatterino.chatterino.desktop \
-		share/icons/hicolor/256x256/apps/chatterino.png
-
+USES=		cmake compiler:c++17-lang desktop-file-utils gl pkgconfig \
+		qt:5 ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	chatterino
-COMMIT_ID=	cbcd5f3863b6edf22b6d6ffb625bd338f3ea112d
-GH_TAGNAME=	${COMMIT_ID:C|(.......).*|\1|}
-GH_TUPLE=	Chatterino:libcommuni:f3e7f97:communi/lib/libcommuni \
-		pajlada:humanize:4e00a03:humanize/lib/humanize \
-		pajlada:serialize:130ffc3:serialize/lib/serialize \
-		pajlada:settings:6de3a27:settings/lib/settings \
-		pajlada:signals:6665cca:signals/lib/signals \
-		ziocleto:websocketpp:1e0138c:websocketpp/lib/websocketpp
+GH_TUPLE=	Chatterino:libcommuni:030710a:communi/lib/libcommuni \
+		arsenm:sanitizers-cmake:c3dc841:sanitizers/cmake/sanitizers-cmake \
+		pajlada:serialize:bbf0a34:serialize/lib/serialize \
+		pajlada:settings:f168c09:settings/lib/settings \
+		pajlada:signals:6561aa5:signals/lib/signals
+USE_GL=	gl
+USE_QT=	concurrent core dbus gui multimedia network svg widgets \
+		buildtools:build qmake:build
 
-QMAKE_ENV=	GIT_COMMIT=${COMMIT_ID} \
-		GIT_RELEASE=${DISTVERSIONPREFIX}${PORTVERSION}
-QMAKE_ARGS=	INCLUDEPATH+=${LOCALBASE}/include/qt5keychain \
-		LIBS+=-lqt5keychain \
-		RAPIDJSON_SYSTEM=1
+CMAKE_ARGS=	-DUSE_SYSTEM_QTKEYCHAIN=on
 
-PORTDOCS=	README.md docs/Commands.md docs/ENV.md docs/IMAGEUPLOADER.md \
-		docs/README.md docs/Regex.md
+CXXFLAGS+=	-I${LOCALBASE}/include/miniaudio
 
-PORTSCOUT=	skipv:v2.2.2,v2.2.1,v2.2.0,v2.1.7,v2.1.6,v2.1.5,v2.1.4,v2.1.3,v2.1.2,v2.1.0,v2.0.4,v2.0.3,v2.0.2,v2.0.1,v2.0.0
-
-post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/docs
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}/
-.for DOC in docs/Commands.md docs/ENV.md docs/IMAGEUPLOADER.md docs/README.md docs/Regex.md
-	${INSTALL_DATA} ${WRKSRC}/${DOC} ${STAGEDIR}${DOCSDIR}/docs
-.endfor
+PLIST_FILES=	bin/chatterino \
+		share/applications/com.chatterino.chatterino.desktop \
+		share/icons/hicolor/256x256/apps/com.chatterino.chatterino.png
 
 .include <bsd.port.mk>

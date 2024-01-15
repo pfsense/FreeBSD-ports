@@ -1,6 +1,3 @@
-# Created by: Yoichi NAKAYAMA <yoichi@eken.phys.nagoya-u.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	shinonome
 PORTVERSION=	0.9.11.p1
 PORTREVISION=	7
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/.p/p/}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Shinonome Japanese fonts, 12/14/16 dots
+WWW=		http://openlab.jp/efont/shinonome/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -33,8 +31,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/.p.*$//}
 PORTDOCS=	AUTHORS BUGS ChangeLog ChangeLog.0 DESIGN.12 DESIGN.14	\
 		DESIGN.16 DESIGN.18 INSTALL README THANKS TODO
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

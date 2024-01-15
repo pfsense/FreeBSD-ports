@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-Tagger
 PORTVERSION=	0.31
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Part-of-speech tagger for English natural language processing
+WWW=		https://metacpan.org/release/Lingua-EN-Tagger
 
 LICENSE=	GPLv3
 

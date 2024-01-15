@@ -1,9 +1,6 @@
-# Created by: Shigeyuki FUKUSHIMA <shige@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libretto-config
 PORTVERSION=	1.0.b5
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	sysutils
 MASTER_SITES=	http://club.pep.ne.jp/~ishioka/Software/Linux/libapm/
 DISTNAME=	libapm-linux-1.0beta5
@@ -15,7 +12,7 @@ ONLY_FOR_ARCHS=	i386
 
 WRKSRC=		${WRKDIR}/libapm
 
-USE_GCC=	any
+USE_GCC=	yes
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

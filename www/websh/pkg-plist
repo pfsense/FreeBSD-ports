@@ -1,10 +1,10 @@
-%%NOMINORVERSION%%lib/libwebsh%%TCL_DVER%%.so.1.0
-lib/libwebsh%%TCL_DVER%%.so.1
-lib/libwebsh%%TCL_DVER%%.so
+%%NOMINORVERSION%%lib/libwebsh%%LIBSUF%%.so.1.0
+lib/libwebsh%%LIBSUF%%.so.1
+lib/libwebsh%%LIBSUF%%.so
 lib/websh/pkgIndex.tcl
 lib/websh/htmlhandler.ws3
 lib/websh/otherhandler.ws3
 etc/websh.conf.dist
 %%APACHEMODDIR%%/mod_websh.so
-@exec %D/sbin/apxs -e -A -n websh %D/%F
-@unexec %D/sbin/apxs -e -A -n websh %D/%F
+@postexec %D/sbin/apxs -e -A -n websh %D/%F
+@preunexec %D/sbin/apxs -e -A -n websh %D/%F

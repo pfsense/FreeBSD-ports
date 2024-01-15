@@ -1,6 +1,3 @@
-# Created by: Rink Springer <rink@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ClearSilver
 PORTVERSION=	0.10.5
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl bindings for fast and powerful template system
+WWW=		http://www.clearsilver.net/
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libneo_cs.a:www/clearsilver
 

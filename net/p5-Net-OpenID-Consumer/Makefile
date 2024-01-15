@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-OpenID-Consumer
 PORTVERSION=	1.18
 CATEGORIES=	net security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Library for consumers of OpenID identities
+WWW=		https://metacpan.org/release/Net-OpenID-Consumer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

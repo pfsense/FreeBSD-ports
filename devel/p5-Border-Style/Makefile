@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Border-Style
 PORTVERSION=	0.01
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Border style structure
+WWW=		https://metacpan.org/release/Border-Style
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

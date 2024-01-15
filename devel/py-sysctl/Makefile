@@ -1,23 +1,21 @@
-# Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sysctl
-PORTVERSION=	0.3.1.20201105
+PORTVERSION=	0.3.3.20210928
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	freqlabs@FreeBSD.org
 COMMENT=	Wrapper for the sysctl system functions
+WWW=		https://github.com/truenas/py-sysctl
 
 LICENSE=	BSD2CLAUSE
 
-USES=		compiler:c11 python:3.6+
+USES=		compiler:c11 python
 USE_CSTD=	c99
 USE_PYTHON=	distutils autoplist
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	william-gr
+GH_ACCOUNT=	truenas
 GH_PROJECT=	py-sysctl
-GH_TAGNAME=	5b111bd
+GH_TAGNAME=	v0.3.3
 
 .include <bsd.port.mk>

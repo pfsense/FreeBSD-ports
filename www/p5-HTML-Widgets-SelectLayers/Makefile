@@ -1,6 +1,3 @@
-# Created by: Peter Avalos <pavalos@theshell.com>
-# $FreeBSD$
-
 PORTNAME=	HTML-Widgets-SelectLayers
 PORTVERSION=	0.07
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Implements an HTML widget with multiple layers
+WWW=		http://www.420.am/selectlayers/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

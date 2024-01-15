@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Google-Data-JSON
 PORTVERSION=	0.1.10
 DISTVERSIONPREFIX=	v
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	General XML-JSON converter based on Google Data APIs
+WWW=		https://metacpan.org/release/Google-Data-JSON
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-Slurp>=0:devel/p5-File-Slurp \

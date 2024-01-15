@@ -1,6 +1,3 @@
-# Created by: Winston Weinert <winstonw@lavabit.com>
-# $FreeBSD$
-
 PORTNAME=	tabbed
 PORTVERSION=	0.6
 CATEGORIES=	x11
@@ -8,6 +5,7 @@ MASTER_SITES=	http://dl.suckless.org/tools/
 
 MAINTAINER=	mp39590@gmail.com
 COMMENT=	Tabbed frontend to Xembed-aware applications
+WWW=		https://tools.suckless.org/tabbed
 
 LICENSE=	MIT
 

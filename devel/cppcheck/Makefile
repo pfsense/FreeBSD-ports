@@ -1,44 +1,29 @@
-# Created by: Gabor Pali <pgj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cppcheck
-PORTVERSION=	2.2
-PORTREVISION?=	0	# devel/cppcheck-gui
+PORTVERSION=	2.12.1
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT?=	Static analysis of C/C++ code
+COMMENT=	Tool for static C/C++ code analysis
+WWW=		https://cppcheck.sourceforge.io/ \
+		https://github.com/danmar/cppcheck
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib cmake:insource tar:bzip2
+LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2
+
+BROKEN_FreeBSD_14=	fails to compile: static_assert failed due to requirement
+
+USES=		compiler:c++11-lib cmake shebangfix tar:bzip2
 USE_GITHUB=	yes
 GH_ACCOUNT=	danmar
-
-.if defined(GUI_ONLY)
-COMMENT=		Static analysis of C/C++ code (GUI)
-
-RUN_DEPENDS=		cppcheck:devel/cppcheck
-
-CMAKE_ARGS=		-DBUILD_GUI=TRUE
-USES+=			qt:5
-USE_QT=			core gui widgets printsupport help qmake_build buildtools_build linguisttools_build
-
-BUILD_WRKSRC=		${WRKSRC}/gui
-INSTALL_WRKSRC=		${WRKSRC}/gui
-
-PLIST=			${PKGDIR}/pkg-plist-gui
-
-PKGNAMESUFFIX=		-gui
-.else
-USES+=			shebangfix
-SHEBANG_FILES=		htmlreport/cppcheck-htmlreport
+SHEBANG_FILES=	htmlreport/cppcheck-htmlreport
+CMAKE_OFF=	USE_BUNDLED_TINYXML2
 
 PORTDATA=		*
 
-OPTIONS_DEFINE=		RULES HTMLREPORT MANPAGES MATCHCOMPILER TEST
-OPTIONS_DEFAULT=	RULES HTMLREPORT MANPAGES MATCHCOMPILER
+OPTIONS_DEFINE=		RULES HTMLREPORT MANPAGES MATCHCOMPILER GUI CHARTS TEST
+OPTIONS_DEFAULT=	RULES HTMLREPORT MANPAGES MATCHCOMPILER GUI
 OPTIONS_SUB=		yes
 
 RULES_DESC=		User-defined rule support (requires PCRE)
@@ -47,6 +32,8 @@ RULES_LIB_DEPENDS=	libpcre.so:devel/pcre
 RULES_USES=		localbase:ldflags
 
 TEST_CMAKE_BOOL=	BUILD_TESTS
+TEST_IMPLIES=		GUI
+TEST_USE=		QT=testlib
 
 HTMLREPORT_DESC=	Install cppcheck-htmlreport
 HTMLREPORT_USES=	python:${PYUSE:C/ /,/W}
@@ -58,12 +45,20 @@ MANPAGES_BUILD_DEPENDS=	xsltproc:textproc/libxslt \
 			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
 
 MATCHCOMPILER_DESC=	Build-time optimizations via Python
-MATCHCOMPILER_CMAKE_BOOL=	USE_MATCHCOMPILER
+MATCHCOMPILER_CMAKE_ON=	-DUSE_MATCHCOMPILER=On
+MATCHCOMPILER_CMAKE_OFF=-DUSE_MATCHCOMPILER=Off
 MATCHCOMPILER_USES=	python:${PYUSE:C/ /,/W}
 MATCHCOMPILER_VARS=	PYUSE+=build
 
-post-patch:
-	@${REINPLACE_CMD} -e '/find_package(Qt5/ d' ${WRKSRC}/cmake/findDependencies.cmake
+GUI_DESC=		Build the Qt GUI application
+GUI_CMAKE_BOOL=		BUILD_GUI
+GUI_USES=		qt:5
+GUI_USE=		QT=core,gui,widgets,printsupport,help,network,qmake:build,buildtools:build,linguisttools:build
+
+CHARTS_DESC=		Enable QtCharts usage in the GUI
+CHARTS_CMAKE_BOOL=	WITH_QCHART
+CHARTS_IMPLIES=		GUI
+CHARTS_USE=		QT=charts
 
 post-install-HTMLREPORT-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/htmlreport/cppcheck-htmlreport ${STAGEDIR}${PREFIX}/bin
@@ -73,10 +68,9 @@ post-build-MANPAGES-on:
 		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl cppcheck.1.xml
 
 post-install-MANPAGES-on:
-	${INSTALL_MAN} ${WRKSRC}/man/cppcheck.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/cppcheck.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-test-TEST-on:
-	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ctest
-.endif
+	cd ${BUILD_WRKSRC} && ${SETENV} ${TEST_ENV} ctest
 
 .include <bsd.port.mk>

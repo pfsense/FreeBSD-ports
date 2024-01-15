@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	fbzmq
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2020.12.28.00
+DISTVERSION=	2022.05.30.00
+PORTREVISION=	6
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Framework for writing services in C++ while leveraging libzmq
+WWW=		https://github.com/facebook/fbzmq
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

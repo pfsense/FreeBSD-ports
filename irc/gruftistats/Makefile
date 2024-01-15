@@ -1,6 +1,3 @@
-# Created by: Matthew West <mwest@uct.ac.za>
-# $FreeBSD$
-
 PORTNAME=	gruftistats
 PORTVERSION=	0.2.4
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Produces a web page of statistics and quotes from IRC channel logs
+WWW=		https://gruftistats.sourceforge.net/
 
 GNU_CONFIGURE=	YES
 USES=	gmake

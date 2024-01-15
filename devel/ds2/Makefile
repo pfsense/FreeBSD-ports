@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ds2
 PORTVERSION=	20151028
 CATEGORIES=	devel
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Debug server for lldb
+WWW=		https://github.com/facebook/ds2
 
 LICENSE=	NCSA
 LICENSE_FILE=	${WRKSRC}/LICENSE

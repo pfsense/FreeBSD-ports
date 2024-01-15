@@ -1,22 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	doorkeeper
-PORTVERSION=	5.0.2
+PORTVERSION=	5.6.8
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails5
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	OAuth2 provider for Rails and Grape
+WWW=		https://github.com/doorkeeper-gem/doorkeeper
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-railties5>=4.2:www/rubygem-railties5
+RUN_DEPENDS=	rubygem-railties5>=5:www/rubygem-railties5
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	doorkeeper_project
 
 .include <bsd.port.mk>

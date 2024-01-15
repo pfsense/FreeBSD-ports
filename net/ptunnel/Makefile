@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ptunnel
 PORTVERSION=	0.72
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	PingTunnel-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Tunneling TCP connections over ICMP echo request and reply
+WWW=		https://www.cs.uit.no/~daniels/PingTunnel/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

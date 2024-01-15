@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Calendar-Japanese
 PORTVERSION=	0.06001
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	DateTime Extension for Traditional Japanese Calendars
+WWW=		https://metacpan.org/release/DateTime-Calendar-Japanese
 
 BUILD_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \
 		p5-DateTime-Util-Calc>=0:devel/p5-DateTime-Util-Calc \

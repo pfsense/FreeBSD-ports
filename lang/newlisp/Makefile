@@ -1,22 +1,20 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	newlisp
 PORTVERSION=	10.7.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	http://www.newlisp.org/downloads/
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	LISP like scripting language
+WWW=		http://www.newlisp.org/
 
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
-CONFLICTS=	newlisp-devel-[0-9]*
+CONFLICTS=	newlisp-devel
 
-USES=		readline:port tar:tgz
+USES=		readline tar:tgz
 OPTIONS_SUB=	yes
 
 HAS_CONFIGURE=	yes
@@ -42,7 +40,7 @@ GSL_DESC=	GSL (GNU Scientific Library)
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-.if ${ARCH} == "amd64" || ${ARCH} == "sparc64"
+.if ${ARCH} == "amd64"
 CFLAGS+=	-DNEWLISP64
 .endif
 

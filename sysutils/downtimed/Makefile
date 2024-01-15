@@ -1,6 +1,3 @@
-# Created by: Janne Snabb <snabb@epipe.com>
-# $FreeBSD$
-
 PORTNAME=	downtimed
 PORTVERSION=	1.0
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ MASTER_SITES=	http://dist.epipe.com/${PORTNAME}/ \
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	System downtime monitoring and reporting tool
+WWW=		https://dist.epipe.com/downtimed/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

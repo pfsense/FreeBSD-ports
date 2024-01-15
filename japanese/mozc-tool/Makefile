@@ -1,6 +1,3 @@
-# Created by: Daichi GOTO <daichi@FreeBSD.org>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-tool
 
 COMMENT=	Mozc tool for IBus, SCIM, and others

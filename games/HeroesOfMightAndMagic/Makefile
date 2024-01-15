@@ -1,6 +1,3 @@
-# Created by: Holger Lamm <holger@eit.uni-kl.de>
-# $FreeBSD$
-
 PORTNAME=	HeroesOfMightAndMagic
 PORTVERSION=	3
 PORTREVISION=	1
@@ -10,11 +7,17 @@ DISTFILES=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BSD Installation of the Linux game "Heroes of Might and Magic III"
+WWW=		https://www.lokigames.com/products/heroes3/
+
+# Converted from RESTRICTED
+LICENSE=	HeroesOfMightAndMagic
+LICENSE_NAME=	HeroesOfMightAndMagic
+LICENSE_TEXT=	Software is commercial
+LICENSE_PERMS=	auto-accept
 
 ONLY_FOR_ARCHS=	i386 amd64
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-RESTRICTED=	Software is commercial
 
 GAMESUBDIR=	games/Heroes3
 GAMEDIR=	${STAGEDIR}${PREFIX}/${GAMESUBDIR}

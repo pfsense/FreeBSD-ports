@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	OpenCA-CRR
 PORTVERSION=	0.0.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to handle CRR objects
+WWW=		https://metacpan.org/release/OpenCA-CRR
 
 USES=		perl5
 USE_PERL5=	configure

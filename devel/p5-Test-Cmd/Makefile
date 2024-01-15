@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Cmd
 PORTVERSION=	1.09
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Portable testing of commands and scripts
+WWW=		https://metacpan.org/release/Test-Cmd
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

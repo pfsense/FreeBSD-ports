@@ -1,6 +1,3 @@
-# Created by: Johann Visagie <johann@egenetics.com>
-# $FreeBSD$
-
 PORTNAME=	AcePerl
 PORTVERSION=	1.92
 PORTREVISION=	5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to the ACEDB genome database system
+WWW=		https://metacpan.org/release/AcePerl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Anatoliy Dmytriyev
-# $FreeBSD$
-
 PORTNAME=	Heap
 PORTVERSION=	0.80
 PORTREVISION=	1
@@ -10,11 +7,14 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	tolid@tolid.eu.org
 COMMENT=	Perl extensions for keeping data partially sorted
+WWW=		https://metacpan.org/release/Heap
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

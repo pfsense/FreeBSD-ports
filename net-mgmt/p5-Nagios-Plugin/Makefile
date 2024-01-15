@@ -1,6 +1,3 @@
-# Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	Nagios-Plugin
 PORTVERSION=	0.36
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TONVOON
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	gjb@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Modules to streamline writing Nagios plugins
+WWW=		https://metacpan.org/release/Nagios-Plugin
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \

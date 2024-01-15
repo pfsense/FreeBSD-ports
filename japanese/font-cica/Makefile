@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	cica
-PORTVERSION=	5.0.2
-#PORTREVISION=	0
+PORTVERSION=	5.0.3
+PORTREVISION=	0
 CATEGORIES=	japanese x11-fonts
 MASTER_SITES=	https://github.com/miiton/Cica/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	ja-font-
-DISTNAME=	Cica_v${DISTVERSION}_${OPT_EMOJI}_emoji
+DISTNAME=	Cica_v${DISTVERSION}${OPT_EMOJI}
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Cica Japanese monospaced fonts for programming
+WWW=		https://github.com/miiton/Cica
 
 LICENSE=	OFL11
 
@@ -31,9 +30,9 @@ EMOJI_DESC=	With Emoji
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MEMOJI}
-OPT_EMOJI=	with
+OPT_EMOJI=
 .else
-OPT_EMOJI=	without
+OPT_EMOJI=	_without_emoji
 .endif
 
 do-install:

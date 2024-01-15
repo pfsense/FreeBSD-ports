@@ -1,6 +1,3 @@
-# Created by: alfred@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	cvsdiff2patch
 PORTVERSION=	1.0.1
 CATEGORIES=	devel

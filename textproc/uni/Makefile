@@ -1,13 +1,12 @@
-# Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	uni
-PORTVERSION=	1.1.1
+PORTVERSION=	2.6.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Query the Unicode database from the commandline
+WWW=		https://github.com/arp242/uni
 
 LICENSE=	MIT
 
@@ -16,9 +15,15 @@ USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	arp242
 
-GO_PKGNAME=	arp242.net/uni
-GH_TUPLE=	golang:sys:bd437916bb0e:golang_sys/vendor/golang.org/x/sys
-#GO_BUILDFLAGS=	-ldflags "-X main.version=${PORTVERSION}"
+GH_TUPLE=	arp242:termtext:v1.1.0:arp242_termtext/vendor/zgo.at/termtext \
+		arp242:zli:c6675b0b020a:arp242_zli/vendor/zgo.at/zli \
+		arp242:zstd:51d9aeb81421:arp242_zstd/vendor/zgo.at/zstd \
+		golang:sys:v0.14.0:golang_sys/vendor/golang.org/x/sys \
+		golang:term:v0.14.0:golang_term/vendor/golang.org/x/term \
+		mattn:go-runewidth:v0.0.15:mattn_go_runewidth/vendor/github.com/mattn/go-runewidth \
+		rivo:uniseg:v0.2.0:rivo_uniseg/vendor/github.com/rivo/uniseg
+
+GO_BUILDFLAGS=	-ldflags "-X main.version=${PORTVERSION}" -buildvcs=false
 
 PLIST_FILES=	bin/${PORTNAME}
 

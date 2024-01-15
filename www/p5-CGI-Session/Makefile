@@ -1,6 +1,3 @@
-# Created by: Erwin Lansing <erwin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CGI-Session
 PORTVERSION=	4.48
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MARKSTOS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for persistent session management
+WWW=		https://metacpan.org/release/CGI-Session
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,24 +1,21 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	xautomation
 PORTVERSION=	1.09
 PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://hoopajoo.net/static/projects/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Control X from the command line for scripts
+WWW=		https://hoopajoo.net/projects/xautomation.html
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		xorg
+USES=		localbase:ldflags xorg
 USE_XORG=	xtst
+
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDOCS=	AUTHORS ChangeLog README
 

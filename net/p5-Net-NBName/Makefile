@@ -1,6 +1,3 @@
-# Created by: Bill Fenner <fenner@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-NBName
 PORTVERSION=	0.26
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Performs simple NetBIOS Name Service Requests
+WWW=		https://metacpan.org/release/Net-NBName
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,20 +1,17 @@
-# Created by: driedfruit
-# $FreeBSD$
-
 PORTNAME=	mangband
-PORTVERSION=	1.1.3
+PORTVERSION=	1.5.3
 CATEGORIES=	games
 MASTER_SITES=	http://mangband.org/download/
 
 MAINTAINER=	flambard@mangband.org
 COMMENT=	Free online multiplayer real-time roguelike game
+WWW=		https://mangband.org/
 
 LICENSE=	GPLv2
 
 ALL_TARGET=	mangclient mangband
-WRKSRC=		${WRKDIR}/${DISTNAME}/src
 GNU_CONFIGURE=	yes
-USES=		dos2unix gmake ncurses
+USES=		dos2unix ncurses
 
 MAKE_ARGS=	"DATADIR=${DATADIR}"
 
@@ -31,6 +28,10 @@ X11_CONFIGURE_WITH=	x11
 
 SDL_LIB_DEPENDS=	libX11.so:x11/libX11
 SDL_CONFIGURE_WITH=	sdl
+SDL_USES=		sdl
+
+# Only relevant when OPTION SDL is on
+USE_SDL=		sdl
 
 PORTEXAMPLES=	*
 
@@ -44,6 +45,7 @@ do-install:
 	@echo "EDIT_DIR = \"${DATADIR}/edit\"" >> ${STAGEDIR}${PREFIX}/etc/mangband.cfg.sample
 	@echo "SAVE_DIR = \"${DATADIR}/save\"" >> ${STAGEDIR}${PREFIX}/etc/mangband.cfg.sample
 	@echo "DATA_DIR = \"${DATADIR}/data\"" >> ${STAGEDIR}${PREFIX}/etc/mangband.cfg.sample
+	@find ${WRKDIR}/${DISTNAME}/lib -name Makefile.am -exec ${RM} {} +
 	@(cd ${WRKDIR}/${DISTNAME}/lib && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
 
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

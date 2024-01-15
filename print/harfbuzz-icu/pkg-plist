@@ -1,3 +1,4 @@
+@comment bin/hb-info
 @comment bin/hb-ot-shape-closure
 @comment bin/hb-shape
 @comment bin/hb-subset
@@ -7,9 +8,11 @@
 @comment include/harfbuzz/hb-blob.h
 @comment include/harfbuzz/hb-buffer.h
 @comment include/harfbuzz/hb-common.h
+@comment include/harfbuzz/hb-cplusplus.hh
 @comment include/harfbuzz/hb-deprecated.h
 @comment include/harfbuzz/hb-draw.h
 @comment include/harfbuzz/hb-face.h
+@comment include/harfbuzz/hb-features.h
 @comment include/harfbuzz/hb-font.h
 @comment include/harfbuzz/hb-ft.h
 @comment include/harfbuzz/hb-glib.h
@@ -30,10 +33,12 @@ include/harfbuzz/hb-icu.h
 @comment include/harfbuzz/hb-ot-shape.h
 @comment include/harfbuzz/hb-ot-var.h
 @comment include/harfbuzz/hb-ot.h
+@comment include/harfbuzz/hb-paint.h
 @comment include/harfbuzz/hb-set.h
 @comment include/harfbuzz/hb-shape-plan.h
 @comment include/harfbuzz/hb-shape.h
 @comment include/harfbuzz/hb-style.h
+@comment include/harfbuzz/hb-subset-repacker.h
 @comment include/harfbuzz/hb-subset.h
 @comment include/harfbuzz/hb-unicode.h
 @comment include/harfbuzz/hb-version.h

@@ -1,14 +1,12 @@
-# Created by: joerg
-# $FreeBSD$
-
 PORTNAME=	cpmtools2
-PORTVERSION=	2.21
+PORTVERSION=	2.24
 CATEGORIES=	emulators sysutils
 MASTER_SITES=	http://www.moria.de/~michael/cpmtools/files/
 DISTNAME=	${PORTNAME:C/2$//}-${PORTVERSION}
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Tools to access CP/M disks and disk images
+WWW=		http://www.moria.de/~michael/cpmtools/
 
 LICENSE=	GPLv3
 

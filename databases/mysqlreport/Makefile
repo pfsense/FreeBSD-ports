@@ -1,6 +1,3 @@
-# Created by: Alexander Zhuravlev <zaa@zaa.pp.ru>
-# $FreeBSD$
-
 PORTNAME=	mysqlreport
 PORTVERSION=	3.5
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	databases
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mysqlreport makes a friendly report of important MySQL status values
+WWW=		https://hackmysql.com/mysqlreport
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

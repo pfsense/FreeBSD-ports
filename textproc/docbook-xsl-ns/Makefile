@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docbook-xsl-ns
 PORTVERSION=	1.79.1
 CATEGORIES=	textproc
@@ -9,6 +7,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:src
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Namespace-aware DocBook XSLT stylesheets
+WWW=		https://docbook.sourceforge.net
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

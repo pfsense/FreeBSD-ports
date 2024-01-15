@@ -1,14 +1,13 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	ettercap
 PORTVERSION=	0.8.3.1
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt security
 MASTER_SITES=	https://github.com/Ettercap/ettercap/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Network sniffer/interceptor/injector/logger for switched LANs
+WWW=		https://www.ettercap-project.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -31,7 +30,7 @@ DOCS=		AUTHORS CHANGELOG README README.BINARIES README.BUGS \
 		README.GIT README.PLATFORMS THANKS TODO TODO.TESTING \
 		doc/capture doc/decoders doc/dissectors doc/plugins doc/threads
 
-CPE_VENDOR=	ettercap_project
+CPE_VENDOR=	ettercap-project
 
 OPTIONS_DEFINE=	DESKTOP DOCS GTK3 IPV6 NCURSES PCRE PLUGINS SSL UTF8
 OPTIONS_DEFAULT=GTK3 NCURSES PCRE PLUGINS SSL UTF8

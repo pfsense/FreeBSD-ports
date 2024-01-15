@@ -1,13 +1,11 @@
-# Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	openvswitch
-DISTVERSION=	2.14.0
+DISTVERSION=	2.17.3
 CATEGORIES=	net
 MASTER_SITES=	http://openvswitch.org/releases/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Production quality, multilayer virtual switch
+WWW=		http://openvswitch.org/
 
 LICENSE=	APACHE20
 
@@ -17,10 +15,21 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
 USES=		compiler:c11 cpe gmake libtool perl5 pkgconfig python \
 		shebangfix ssl
-SHEBANG_FILES=	utilities/bugtool/ovs-bugtool-ovs-ofctl-loop-over-bridges \
+SHEBANG_FILES=	ipsec/ovs-monitor-ipsec.in \
 		utilities/bugtool/ovs-bugtool-get-port-stats \
-		utilities/ovs-docker \
+		utilities/bugtool/ovs-bugtool-ovs-ofctl-loop-over-bridges \
+		utilities/bugtool/ovs-bugtool.in \
 		utilities/ovs-appctl-bashcomp.bash \
+		utilities/ovs-check-dead-ifs.in \
+		utilities/ovs-docker \
+		utilities/ovs-dpctl-top.in \
+		utilities/ovs-l3ping.in \
+		utilities/ovs-parse-backtrace.in \
+		utilities/ovs-pcap.in \
+		utilities/ovs-tcpdump.in  \
+		utilities/ovs-tcpundump.in \
+		utilities/ovs-test.in \
+		utilities/ovs-vlan-test.in \
 		vtep/ovs-vtep.in
 
 USE_LDCONFIG=	yes
@@ -34,6 +43,10 @@ INSTALL_TARGET=install-strip
 
 SHLIB_VER=	${DISTVERSION:C/\.[0-9]*$//}
 PLIST_SUB=	SHLIB_VER=${SHLIB_VER}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|uuid_from_string(|uuid_from_string_ovs(|g' \
+		${WRKSRC}/*/*.c ${WRKSRC}/*/*.h
 
 post-install:
 	${MKDIR} ${STAGEDIR}/var/run/openvswitch

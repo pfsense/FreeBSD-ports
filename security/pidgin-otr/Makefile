@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	otr
 PORTVERSION=	4.0.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	security net-im net
 MASTER_SITES=	http://www.cypherpunks.ca/otr/
 PKGNAMEPREFIX=	pidgin-
@@ -10,6 +8,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Allows deniable private conversations using Pidgin
+WWW=		https://www.cypherpunks.ca/otr/
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING

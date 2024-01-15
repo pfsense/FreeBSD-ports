@@ -1,12 +1,10 @@
-# Created by: Pawel Worach
-# $FreeBSD$
-
 PORTNAME=	font-util
 PORTVERSION=	1.3.2
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Create an index of X font files in a directory
+WWW=		https://www.x.org/
 
 LICENSE=	BSD2CLAUSE MIT
 LICENSE_COMB=	multi

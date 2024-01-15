@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	somafm-cli
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.1
+PORTREVISION=	1
 CATEGORIES=	audio
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Listen to SomaFM in your terminal
+WWW=		https://github.com/rockymadden/somafm-cli
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/README.md

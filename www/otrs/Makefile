@@ -1,14 +1,12 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	otrs
 DISTVERSIONPREFIX=	rel-
 DISTVERSION=	6_0_29
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	Open Ticket Request System
+WWW=		https://www.otrs.com/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -51,7 +49,8 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-XML-LibXML-Simple>=0:textproc/p5-XML-LibXML-Simple \
 		p5-XML-LibXSLT>=0:textproc/p5-XML-LibXSLT \
 		p5-Locale-Codes>=0:misc/p5-Locale-Codes \
-		p5-Math-Random-Secure>=0:math/p5-Math-Random-Secure
+		p5-Math-Random-Secure>=0:math/p5-Math-Random-Secure \
+		p5-Schedule-Cron-Events>=0:sysutils/p5-Schedule-Cron-Events
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		cpe shebangfix perl5 tar:bzip2
@@ -108,7 +107,7 @@ SSL_RUN_DEPENDS=	p5-Crypt-SSLeay>=0:security/p5-Crypt-SSLeay
 
 APACHE_RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_perl2>=2.0.5:www/mod_perl2 \
 			p5-Apache-DBI>0:www/p5-Apache-DBI
-APACHE_USES=		apache:run,2.2+
+APACHE_USES=		apache:run
 
 REPORTS_RUN_DEPENDS=	p5-GD>=0:graphics/p5-GD \
 			p5-GD-Graph>=0:graphics/p5-GD-Graph \

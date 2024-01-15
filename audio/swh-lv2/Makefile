@@ -1,6 +1,3 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	swh
 DISTVERSION=	1.0.16-4
 DISTVERSIONSUFFIX=	-g1aa77e5
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	SWH Plugins in LV2 format
+WWW=		http://plugin.org.uk/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

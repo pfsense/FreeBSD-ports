@@ -1,6 +1,3 @@
-# Created by: John Alden + Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
-
 PORTNAME=	Config-Wrest
 PORTVERSION=	1.036
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module for reading and writing configuration data
+WWW=		https://metacpan.org/release/Config-Wrest
 
 LICENSE=	GPLv2
 

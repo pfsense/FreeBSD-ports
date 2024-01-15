@@ -1,8 +1,8 @@
---- lib/eu-config.h.orig	2020-03-30 12:17:45 UTC
+--- lib/eu-config.h.orig	2022-04-25 20:56:39 UTC
 +++ lib/eu-config.h
-@@ -176,6 +176,182 @@ asm (".section predict_data, \"aw\"; .previous\n"
- #define ELFUTILS_HEADER(name) <lib##name.h>
- 
+@@ -188,6 +188,186 @@ asm (".section predict_data, \"aw\"; .previous\n"
+ # define used_in_asm /* empty */
+ #endif
  
 +/* FreeBSD ports of glibcisms */
 +#include <sys/cdefs.h>
@@ -23,6 +23,9 @@
 +
 +#pragma GCC diagnostic push
 +#pragma GCC diagnostic ignored "-Wshadow"
++#ifndef FREEBSD_HAS_MEMPCPY // fix for the build failure, see bug#258092: mempcpy and wmempcpy were added in commits:
++// on 14: ee37f64cf875255338f917a9da76c643cf59786c on 2021-07-15
++// on 13: dba677d13b26ad5422133b2ab76486b74d63ade4 on 2021-07-22
 +static inline void *
 +mempcpy(void * restrict dst, const void * restrict src, size_t len)
 +{
@@ -36,6 +39,7 @@
 +
 +	return (wmemcpy(dst, src, len) + len);
 +}
++#endif
 +#pragma GCC diagnostic pop
 +
 +static inline void *
@@ -181,5 +185,5 @@
 +#endif
 +
  #ifdef SYMBOL_VERSIONING
- # define OLD_VERSION(name, version) \
-   asm (".globl _compat." #version "." #name "\n" \
+ # define NEW_INTDEF(name) __typeof (name) INTUSE(name) \
+   __attribute__ ((alias ("_new." #name))) attribute_hidden;

@@ -25,7 +25,6 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/psl/binding.b
 %%DATADIR%%/psl/bpsl
 %%DATADIR%%/psl/break.b
-%%DATADIR%%/red/brsltnt_bmap.b
 %%DATADIR%%/psl/build.b
 %%DATADIR%%/psl/c-template.b
 %%DATADIR%%/psl/carcdr.b
@@ -89,9 +88,9 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/psl/get-options.b
 %%DATADIR%%/psl/gsort.b
 %%DATADIR%%/psl/hash-decls.b
+%%DATADIR%%/psl/hashtable.b
 %%DATADIR%%/psl/hcons.b
 %%DATADIR%%/psl/helferlein.b
-%%DATADIR%%/red/heugcd.b
 %%DATADIR%%/psl/ieee-decls.b
 %%DATADIR%%/psl/if-system.b
 %%DATADIR%%/psl/if.b
@@ -266,6 +265,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/bfdoer.b
 %%DATADIR%%/red/bfdoer2.b
 %%DATADIR%%/red/bfelem.b
+%%DATADIR%%/red/bhashtable.b
 %%DATADIR%%/red/bibasis.b
 %%DATADIR%%/red/bibasis_interface.b
 %%DATADIR%%/red/bibasis_involutive.b
@@ -283,6 +283,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/bounds.b
 %%DATADIR%%/red/bquote.b
 %%DATADIR%%/red/breduce.b
+%%DATADIR%%/red/brsltnt_bmap.b
 %%DATADIR%%/red/buchbg.b
 %%DATADIR%%/red/cali.b
 %%DATADIR%%/red/calimat.b
@@ -301,6 +302,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/cde_totalder.b
 %%DATADIR%%/red/cde_varcalc.b
 %%DATADIR%%/red/cde_vectorfield.b
+%%DATADIR%%/red/cde_weaklynl.b
 %%DATADIR%%/red/cdiff.b
 %%DATADIR%%/red/cdiffx.b
 %%DATADIR%%/red/cedit.b
@@ -315,12 +317,24 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/cholesky.b
 %%DATADIR%%/red/cl.b
 %%DATADIR%%/red/clbnf.b
+%%DATADIR%%/red/cldfgformat.b
 %%DATADIR%%/red/clmisc.b
 %%DATADIR%%/red/clnf.b
 %%DATADIR%%/red/clprl.b
 %%DATADIR%%/red/clqe.b
+%%DATADIR%%/red/clqecont.b
+%%DATADIR%%/red/clqeenv.b
+%%DATADIR%%/red/clqenew.b
+%%DATADIR%%/red/clqenode.b
+%%DATADIR%%/red/clqestate.b
 %%DATADIR%%/red/clresolv.b
 %%DATADIR%%/red/clsimpl.b
+%%DATADIR%%/red/clsimplat.b
+%%DATADIR%%/red/clsimplatenv.b
+%%DATADIR%%/red/clsimplbasic.b
+%%DATADIR%%/red/clsmt2format.b
+%%DATADIR%%/red/clsub.b
+%%DATADIR%%/red/clsusi.b
 %%DATADIR%%/red/cltab.b
 %%DATADIR%%/red/coates.b
 %%DATADIR%%/red/coatesid.b
@@ -336,6 +350,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/codpri.b
 %%DATADIR%%/red/codstr.b
 %%DATADIR%%/red/coeff.b
+%%DATADIR%%/red/coeff2.b
 %%DATADIR%%/red/coeffts.b
 %%DATADIR%%/red/cofactor.b
 %%DATADIR%%/red/comfac.b
@@ -449,6 +464,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/dvfsfqe.b
 %%DATADIR%%/red/dvfsfsiat.b
 %%DATADIR%%/red/dvfsfsism.b
+%%DATADIR%%/red/economise.b
 %%DATADIR%%/red/eds.b
 %%DATADIR%%/red/edsaux.b
 %%DATADIR%%/red/edscfrm.b
@@ -460,8 +476,16 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/edspde.b
 %%DATADIR%%/red/edssolve.b
 %%DATADIR%%/red/edsuser.b
+%%DATADIR%%/red/efellint.b
+%%DATADIR%%/red/efjacinv.b
+%%DATADIR%%/red/efjacobi.b
+%%DATADIR%%/red/efnumeric.b
+%%DATADIR%%/red/efreim.b
+%%DATADIR%%/red/eftheta.b
+%%DATADIR%%/red/efweier.b
 %%DATADIR%%/red/elem.b
 %%DATADIR%%/red/element.b
+%%DATADIR%%/red/ellipfn.b
 %%DATADIR%%/red/entry.b
 %%DATADIR%%/red/eqn.b
 %%DATADIR%%/red/evalmaps.b
@@ -470,7 +494,6 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/exdf.b
 %%DATADIR%%/red/exintro.b
 %%DATADIR%%/red/exlists.b
-%%DATADIR%%/red/expon.b
 %%DATADIR%%/red/expres.b
 %%DATADIR%%/red/exptchk.b
 %%DATADIR%%/red/exptf.b
@@ -479,6 +502,12 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/extout.b
 %%DATADIR%%/red/ezgcd.b
 %%DATADIR%%/red/ezgcdf.b
+%%DATADIR%%/red/f5.b
+%%DATADIR%%/red/f5core.b
+%%DATADIR%%/red/f5lp.b
+%%DATADIR%%/red/f5param.b
+%%DATADIR%%/red/f5poly.b
+%%DATADIR%%/red/f5stat.b
 %%DATADIR%%/red/facform.b
 %%DATADIR%%/red/facmisc.b
 %%DATADIR%%/red/facmod.b
@@ -540,6 +569,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/gramschm.b
 %%DATADIR%%/red/grassman.b
 %%DATADIR%%/red/greduo.b
+%%DATADIR%%/red/grinder.b
 %%DATADIR%%/red/grinter2.b
 %%DATADIR%%/red/grinterf.b
 %%DATADIR%%/red/groeb.b
@@ -569,6 +599,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/hdiff.b
 %%DATADIR%%/red/helpasst.b
 %%DATADIR%%/red/hephys.b
+%%DATADIR%%/red/heugcd.b
 %%DATADIR%%/red/hf.b
 %%DATADIR%%/red/hggroeb.b
 %%DATADIR%%/red/hgrsolve.b
@@ -640,6 +671,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/liendmc1.b
 %%DATADIR%%/red/liepde.b
 %%DATADIR%%/red/lievalfm.b
+%%DATADIR%%/red/lifted.b
 %%DATADIR%%/red/limits.b
 %%DATADIR%%/red/linalg.b
 %%DATADIR%%/red/linband.b
@@ -764,6 +796,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/ofsfsiat.b
 %%DATADIR%%/red/ofsfsism.b
 %%DATADIR%%/red/ofsfsmtqe.b
+%%DATADIR%%/red/ofsfsusi.b
 %%DATADIR%%/red/ofsftfc.b
 %%DATADIR%%/red/ofsftrop.b
 %%DATADIR%%/red/ofsfvsans.b
@@ -789,12 +822,15 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/partitsf.b
 %%DATADIR%%/red/pasf.b
 %%DATADIR%%/red/pasfbnf.b
+%%DATADIR%%/red/pasfbqbb.b
 %%DATADIR%%/red/pasfmisc.b
 %%DATADIR%%/red/pasfnf.b
+%%DATADIR%%/red/pasfprint.b
 %%DATADIR%%/red/pasfqe.b
 %%DATADIR%%/red/pasfresolve.b
 %%DATADIR%%/red/pasfsiat.b
-%%DATADIR%%/red/pasfsism.b
+%%DATADIR%%/red/pasfsibq.b
+%%DATADIR%%/red/pasfsusi.b
 %%DATADIR%%/red/pattdefn.b
 %%DATADIR%%/red/pattperm.b
 %%DATADIR%%/red/perm1.b
@@ -906,11 +942,13 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/rlami.b
 %%DATADIR%%/red/rlblackbox.b
 %%DATADIR%%/red/rlblackboxes.b
+%%DATADIR%%/red/rlbuiltin.b
 %%DATADIR%%/red/rlcont.b
 %%DATADIR%%/red/rlfi.b
 %%DATADIR%%/red/rlhelp.b
 %%DATADIR%%/red/rlisp.b
 %%DATADIR%%/red/rlisp88.b
+%%DATADIR%%/red/rljson.b
 %%DATADIR%%/red/rlprint.b
 %%DATADIR%%/red/rlprovide.b
 %%DATADIR%%/red/rlservice.b
@@ -929,6 +967,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/rprintf.b
 %%DATADIR%%/red/rsolve.b
 %%DATADIR%%/red/rsupport.b
+%%DATADIR%%/red/rtools.b
 %%DATADIR%%/red/rtrace.b
 %%DATADIR%%/red/rubi_parse.b
 %%DATADIR%%/red/rubi_red.b
@@ -946,8 +985,6 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/sfbes.b
 %%DATADIR%%/red/sfbinom.b
 %%DATADIR%%/red/sfconsts.b
-%%DATADIR%%/red/sfellip.b
-%%DATADIR%%/red/sfellipi.b
 %%DATADIR%%/red/sfgamm.b
 %%DATADIR%%/red/sfgamma.b
 %%DATADIR%%/red/sfgen.b
@@ -965,6 +1002,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/simp4.b
 %%DATADIR%%/red/simpfact.b
 %%DATADIR%%/red/simplede.b
+%%DATADIR%%/red/simplertrace.b
 %%DATADIR%%/red/simplex.b
 %%DATADIR%%/red/simplog.b
 %%DATADIR%%/red/simpsqrt.b
@@ -1053,6 +1091,7 @@ man/man1/redpsl.1.gz
 %%DATADIR%%/red/tayexpnd.b
 %%DATADIR%%/red/tayfns.b
 %%DATADIR%%/red/tayfront.b
+%%DATADIR%%/red/taygamma.b
 %%DATADIR%%/red/tayimpl.b
 %%DATADIR%%/red/tayintrf.b
 %%DATADIR%%/red/tayintro.b

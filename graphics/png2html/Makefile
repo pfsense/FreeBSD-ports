@@ -1,6 +1,3 @@
-# Created by: Chris D. Faulhaber <jedgar@fxp.org>
-# $FreeBSD$
-
 PORTNAME=	png2html
 PORTVERSION=	1.1
 PORTREVISION=	12
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.engr.mun.ca/~holden/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Takes a PNG image and transforms it into HTML
+WWW=		http://www.engr.mun.ca/~holden/png2html.html
 
 LICENSE=	GPLv2+
 

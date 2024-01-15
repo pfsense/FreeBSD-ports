@@ -1,23 +1,24 @@
-# Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wmwave
 DISTVERSION=	0-4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	benjsc@FreeBSD.org
 COMMENT=	Display 802.11 status in the WindowMaker Dock
+WWW=		https://sourceforge.net/projects/wmwave/
 
-USES=		xorg
-USE_XORG=	xpm
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		localbase:ldflags xorg
+USE_XORG=	x11 xext xpm
 
 PLIST_FILES=	bin/wmwave man/man1/wmwave.1.gz
 WRKSRC=		${WRKDIR}/${PORTNAME}
-CFLAGS+=	-DWICACHE -I${PREFIX}/include
-LDFLAGS+=	-L${PREFIX}/lib -lX11 -lXpm -lXext -lm
+CFLAGS+=	-DWICACHE
+LDFLAGS+=	-lX11 -lXpm -lXext -lm
 
 do-build:
 	${CC} ${CFLAGS} ${LDFLAGS} ${WRKSRC}/${PORTNAME}.c ${WRKSRC}/wmgeneral.c \

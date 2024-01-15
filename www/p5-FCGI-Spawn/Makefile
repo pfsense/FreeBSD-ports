@@ -1,6 +1,3 @@
-# Created by: Peter <peter@vereshagin.org>
-# $FreeBSD$
-
 PORTNAME=	FCGI-Spawn
 PORTVERSION=	0.16.7
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	FastCGI server for CGI-like applications multiprocessing
+WWW=		https://metacpan.org/release/FCGI-Spawn
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

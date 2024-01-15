@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	pipenightdreams
 PORTVERSION=	0.10.0
 PORTREVISION=	14
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.libsdl.org/projects/pipenightdreams/packages/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle game similar to PipeMania
+WWW=		https://www.libsdl.org/projects/pipenightdreams/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

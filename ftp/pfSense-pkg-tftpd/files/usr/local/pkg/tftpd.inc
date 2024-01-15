@@ -3,7 +3,7 @@
  * tftpd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Stefan Seidel
  * All rights reserved.
  *
@@ -105,7 +105,7 @@ function sync_package_tftpd() {
 	}
 
 	/* if turned off in package settings, stop service, remove rc script and do nothing else */
-	if ($tftpd_conf['tftpd_enable'] != "on") {
+	if ($tftpd_conf['enable'] != "on") {
 		if (is_service_running('tftpd')) {
 			stop_service("tftpd");
 			sleep(3);
@@ -163,7 +163,7 @@ function sync_package_tftpd() {
 		sleep(3);
 	}
 	/* Only (re)start the service when it is enabled */
-	if ($tftpd_conf['tftpd_enable'] == "on") {
+	if ($tftpd_conf['enable'] == "on") {
 		start_service("tftpd");
 		sleep(3);
 	}

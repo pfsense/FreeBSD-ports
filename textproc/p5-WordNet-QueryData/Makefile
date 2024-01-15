@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WordNet-QueryData
 PORTVERSION=	1.49
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the WordNet database files
+WWW=		http://www.ai.mit.edu/people/jrennie/WordNet/
 
 LIB_DEPENDS=	libWN.so:textproc/wordnet
 

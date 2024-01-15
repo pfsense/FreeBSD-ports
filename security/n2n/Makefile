@@ -1,21 +1,21 @@
-# Created by: Babak Farrokhi <farrokhi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	n2n
 PORTVERSION=	${PORT_V_MAJOR}.${PORT_V_MINOR}
 CATEGORIES=	security net net-vpn
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Layer Two Peer-to-peer VPN
+WWW=		https://www.ntop.org/products/n2n/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-GNU_CONFIGURE=	yes
 USES=		autoreconf gmake ssl
+GNU_CONFIGURE=	yes
+CFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORT_V_MAJOR=	2
-PORT_V_MINOR=	6
+PORT_V_MINOR=	8
 PORT_V_PATCH=	0
 
 USE_GITHUB=	yes
@@ -26,6 +26,8 @@ PLIST_FILES=	sbin/edge \
 		man/man1/supernode.1.gz \
 		man/man7/n2n.7.gz \
 		man/man8/edge.8.gz
+
+LIB_DEPENDS+=	libzstd.so:archivers/zstd
 
 post-patch:
 	@${SED} -e "s/@N2N_MAJOR@/${PORT_V_MAJOR}/g" \

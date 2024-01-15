@@ -1,15 +1,13 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	meandmyshadow
 PORTVERSION=	0.5a
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Me and My Shadow puzzle/platform game
+WWW=		https://acmepjz.github.io/meandmyshadow/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,6 +19,8 @@ DOS2UNIX_FILES=	CMakeLists.txt src/Functions.cpp
 USE_SDL=	sdl2 image2 ttf2 mixer2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+PORTSCOUT=	skipv:0.5
 
 PLIST_FILES=	bin/${PORTNAME} \
 		share/pixmaps/${PORTNAME}.png

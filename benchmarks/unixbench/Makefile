@@ -1,27 +1,37 @@
-# Created by: se
-# $FreeBSD$
-
 PORTNAME=	unixbench
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.1.3
+DISTVERSION=	5.1.3-51
+DISTVERSIONSUFFIX=	-g6705203
 PORTREVISION=	2
 CATEGORIES=	benchmarks
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	BYTE magazine's Public Domain benchmark for UNIX
+WWW=		https://github.com/kdlucas/byte-unixbench
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 
 RUN_DEPENDS=	x11perf:x11/x11perf
 
-USES=		gmake perl5 shebangfix
+USES=		gmake gl localbase:ldflags perl5 shebangfix xorg
+USE_GL=		gl
+SHEBANG_FILES=	Run pgms/gfx-x11
+USE_XORG=	x11 xext
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	kdlucas
 GH_PROJECT=	byte-unixbench
+
 WRKSRC_SUBDIR=	UnixBench
 
+MAKE_ENV=	UB_GCC_OPTIONS=" "
+
 SUB_FILES=	unixbench
-SHEBANG_FILES=	Run pgms/gfx-x11
+
+post-patch:
+	${REINPLACE_CMD} -e 's/^CC=gcc/#CC=gcc/' ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's/^# GRAPHIC_TESTS = defined/GRAPHIC_TESTS = defined/' ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/unixbench ${STAGEDIR}${PREFIX}/bin/

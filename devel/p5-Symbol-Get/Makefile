@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Symbol-Get
 PORTVERSION=	0.08
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Read Perls symbol table programmatically
+WWW=		https://metacpan.org/release/Symbol-Get
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

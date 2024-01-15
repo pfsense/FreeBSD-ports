@@ -1,0 +1,29 @@
+commit 1a57545864783b3acc5f28d166a79bd92a849759
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Aug 23 11:29:52 2023 -0400
+
+    Correct PHP errors in CSRF Magic. Fixes #14394
+
+diff --git a/src/usr/local/www/csrf/csrf-magic.php b/src/usr/local/www/csrf/csrf-magic.php
+index bc7eeade95..8780dc121c 100644
+--- a/src/usr/local/www/csrf/csrf-magic.php
++++ b/src/usr/local/www/csrf/csrf-magic.php
+@@ -15,6 +15,10 @@
+ 
+ include_once('phpsessionmanager.inc');
+ 
++if (!is_array($GLOBALS['csrf'])) {
++	$GLOBALS['csrf'] = [];
++}
++
+ // CONFIGURATION:
+ 
+ /**
+@@ -303,6 +307,7 @@ function csrf_check_token($token) {
+     list($type, $value) = explode(':', $token, 2);
+     if (strpos($value, ',') === false) return false;
+     list($x, $time) = explode(',', $token, 2);
++    $time = intval($time);
+     if ($GLOBALS['csrf']['expires']) {
+         if (time() > $time + $GLOBALS['csrf']['expires']) return false;
+     }

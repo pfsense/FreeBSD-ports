@@ -1,18 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	declarative
-DISTVERSION=	${QT5_VERSION}
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt declarative framework for dynamic user interfaces
+WWW=		https://qt-project.org
 
-USES=		compiler:c++11-lang gl python:build qmake:norecursive \
+USES=		compiler:c++11-lang gl perl5 python:build qmake:norecursive \
 		qt-dist:5
 USE_GL=		gl
-USE_QT=		core gui network sql testlib \
-		widgets buildtools_build
+USE_PERL5=	build
+USE_QT=		core gui network sql widgets \
+		buildtools:build
 
 CONFLICTS=	qt5-declarative-render2d-* qt5-qml qt5-quick
 
@@ -22,6 +22,8 @@ QT_BINARIES=	yes
 QT_DEFINES=	ACCESSIBILITY
 QT_CONFIG=	accessibility accessibility-atspi-bridge
 
+TOOLS=		qml qmlcachegen qmleasing qmlformat qmlimportscanner qmllint qmlmin \
+		qmlplugindump qmlpreview qmlprofiler qmlscene qmltyperegistrar
 post-patch:
 # qtdeclarative.pro wants to run python, replace that with PYTHON_CMD
 	${REINPLACE_CMD} '/py_out/s#python#${PYTHON_CMD}#g' \

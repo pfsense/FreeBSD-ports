@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	ncnf
 PORTVERSION=	3.0.1
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic configuration management library
+WWW=		https://sourceforge.net/projects/ncnf/
 
 LIB_DEPENDS=	libstrfunc.so:devel/libstrfunc
 

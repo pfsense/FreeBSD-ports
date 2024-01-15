@@ -1,12 +1,10 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libxkbfile
 PORTVERSION=	1.1.0
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	XKB file library
+WWW=		https://www.freedesktop.org/Software/xorg
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

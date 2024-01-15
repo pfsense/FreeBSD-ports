@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	teyjus
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1-7
 DISTVERSIONSUFFIX=	-ge63f40a
+PORTREVISION=	1
 CATEGORIES=	math lang
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Higher-order logic programming language Lambda Prolog
+WWW=		http://teyjus.cs.umn.edu/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

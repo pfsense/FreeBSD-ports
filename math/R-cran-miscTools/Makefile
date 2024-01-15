@@ -1,14 +1,11 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	miscTools
-DISTVERSION=	0.6-26
-PORTREVISION=	1
+DISTVERSION=	0.6-28
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Miscellaneous small tools and utilities for R
+WWW=		http://www.micecon.org/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	html5-parser
-PORTVERSION=	0.4.9
+PORTVERSION=	0.4.12
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Fast implementation of the HTML 5 parsing spec for Python
+WWW=		https://html5-parser.readthedocs.io/
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.8.0:devel/py-lxml@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.9.2:devel/py-lxml@${PY_FLAVOR}
 
-USES=		gnome pkgconfig python:3.6+
+USES=		gnome pkgconfig python
 USE_PYTHON=	autoplist distutils
 USE_GNOME=	libxml2
 

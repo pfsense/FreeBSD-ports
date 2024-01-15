@@ -1,12 +1,10 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	the_silver_searcher
 PORTVERSION=	2.2.0
 CATEGORIES=	textproc
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Code-searching tool similar to ack but faster
+WWW=		https://github.com/ggreer/the_silver_searcher
 
 LICENSE=	APACHE20
 

@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	jcmdline
 PORTVERSION=	2.0.0
 CATEGORIES=	devel java
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java command line processor
+WWW=		https://jcmdline.sourceforge.net/
 
 LICENSE=	MPL11
 LICENSE_FILE=	${WRKSRC}/LICENSE

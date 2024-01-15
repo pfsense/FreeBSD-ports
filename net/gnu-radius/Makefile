@@ -1,15 +1,13 @@
-# Created by: lance@evitel.net
-# $FreeBSD$
-
 PORTNAME=	gnu-radius
 PORTVERSION=	1.6.1
-PORTREVISION=	11
+PORTREVISION=	16
 CATEGORIES=	net
 MASTER_SITES=	GNU/radius
 DISTNAME=	radius-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU RADIUS server
+WWW=		https://www.gnu.org/software/radius/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -46,7 +44,7 @@ EMACS_DESC=	Install Emacs dotfiles
 
 SNMP_CONFIGURE_ENABLE=		snmp
 CLIENT_CONFIGURE_ENABLE=	client
-CLIENT_LIB_DEPENDS=		libguile.so:lang/guile
+CLIENT_USES=			guile:1.8,alias
 CLIENT_CONFIGURE_OFF=		--without-guile
 MYSQL_USES=			mysql
 MYSQL_CONFIGURE_WITH=		mysql

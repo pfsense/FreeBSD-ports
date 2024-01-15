@@ -1,20 +1,17 @@
-# Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
-
 PORTNAME=	mod_cfg_ldap
 PORTVERSION=	1.2
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	SF/modcfgldap/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	apache2
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Allows you to keep your virtual host configuration in a LDAP directory
+WWW=		https://sourceforge.net/projects/modcfgldap/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		apache:2.2+
-USE_OPENLDAP=	yes
+USES=		apache ldap
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 

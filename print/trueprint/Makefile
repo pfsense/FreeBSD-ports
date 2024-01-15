@@ -1,13 +1,10 @@
-# Created by: Dmitry Sivachenko <dima@Chg.RU>
-# $FreeBSD$
-
 PORTNAME=	trueprint
 PORTVERSION=	5.4
 PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	GNU
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Print program listings on postscript printer
 
 USES=		gettext gmake

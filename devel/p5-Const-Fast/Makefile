@@ -1,6 +1,3 @@
-# Created by: Philip M. Gollucci
-# $FreeBSD$
-
 PORTNAME=	Const-Fast
 PORTVERSION=	0.014
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Facility for creating read-only scalars, arrays, and hashes
+WWW=		https://metacpan.org/release/Const-Fast
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

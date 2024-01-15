@@ -1,6 +1,3 @@
-# Created by: jupengfei <jupengfei@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Nginx-ReadBody
 PORTVERSION=	0.07
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Nginx embeded perl module to read and evaluate a request body
+WWW=		https://metacpan.org/release/Nginx-ReadBody
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

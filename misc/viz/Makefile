@@ -1,6 +1,3 @@
-# Created by: Brent J. Nordquist <bjn@visi.com>
-# $FreeBSD$
-
 PORTNAME=	viz
 PORTVERSION=	1.1.1
 PORTREVISION=	1

@@ -1,14 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ipred
-DISTVERSION=	0.9-9
-PORTREVISION=	2
+DISTVERSION=	0.9-14
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Improved Predictors
+WWW=		https://cran.r-project.org/web/packages/ipred/
 
 LICENSE=	GPLv2+
 

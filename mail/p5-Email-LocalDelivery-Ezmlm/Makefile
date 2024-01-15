@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Email-LocalDelivery-Ezmlm
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Deliver mail into ezmlm archives
+WWW=		https://metacpan.org/release/Email-LocalDelivery-Ezmlm
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Email-LocalDelivery>=0:mail/p5-Email-LocalDelivery \

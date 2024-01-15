@@ -1,13 +1,10 @@
-# Created by: Tim Niemueller <tim@niemueller.de>
-# $FreeBSD$
-
 PORTNAME=	yaml-cpp
-PORTVERSION=	0.6.3
-DISTVERSIONPREFIX=	${PORTNAME}-
+PORTVERSION=	0.8.0
 CATEGORIES=	devel
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	YAML parser and emitter in C++ matching the YAML 1.2 spec
+WWW=		https://github.com/jbeder/yaml-cpp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,5 +17,9 @@ CMAKE_ARGS+=	-DYAML_BUILD_SHARED_LIBS:BOOL=ON \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jbeder
+
+post-patch:
+	@${REINPLACE_CMD} "s|%%PREFIX%%|${PREFIX}|" \
+		${WRKSRC}/yaml-cpp-config.cmake.in
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=		measurement-kit
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.10.13
+DISTVERSION=		0.10.14
+PORTREVISION=		1
 CATEGORIES=		net devel
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Portable C++14 network measurement library
+WWW=		https://measurement-kit.github.io/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libevent.so:devel/libevent \
 		libmaxminddb.so:net/libmaxminddb
-RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
 USES=		autoreconf:build compiler:c++14-lang libtool ssl
 USE_GITHUB=	yes

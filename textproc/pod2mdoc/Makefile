@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pod2mdoc
 PORTVERSION=	0.2
 CATEGORIES=	textproc
@@ -7,6 +5,7 @@ MASTER_SITES=	http://mdocml.bsd.lv/pod2mdoc/snapshots/
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Convert POD data to mdoc input
+WWW=		https://mdocml.bsd.lv/pod2mdoc/
 
 LICENSE=	ISCL
 

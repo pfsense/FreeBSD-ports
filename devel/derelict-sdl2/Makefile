@@ -1,14 +1,12 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	derelict-sdl2
 PORTVERSION=	2.1.4
-PORTREVISION=	4
+PORTREVISION=	7
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Dynamic bindings to SDL2 and its libraries for the D lang
+WWW=		https://github.com/DerelictOrg/DerelictSDL2
 
 LICENSE=	BSL
 
@@ -24,12 +22,13 @@ GH_PROJECT=	DerelictSDL2
 DUB_CMD=	${LOCALBASE}/bin/dub build --build=release
 D_INCLUDE_DIR=	${PREFIX}/include/d
 D_LIB_DIR=	${PREFIX}/lib/d
+DC=		${PREFIX}/bin/ldmd2
 
 post-patch:
 	${REINPLACE_CMD} -e '13,15d' ${WRKSRC}/dub.json
 
 do-build:
-	@cd ${WRKSRC} && ${DUB_CMD}
+	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

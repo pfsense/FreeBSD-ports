@@ -1,6 +1,3 @@
-# Created by: Hye-Shik Chang
-# $FreeBSD$
-
 PORTNAME=	aleefonts
 PORTVERSION=	13.3
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	fonts-alee_${PORTVERSION}
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	A-Lee's Hangul truetype fonts #'
+WWW=		https://packages.debian.org/unstable/fonts/fonts-alee
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/COPYING

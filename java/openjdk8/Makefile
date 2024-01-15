@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	LOCAL/jkim:jtreg
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
+WWW=		https://openjdk.java.net/
 
 LICENSE=	GPLv2
 
@@ -23,11 +23,13 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 RUN_DEPENDS=	javavm:java/javavmwrapper \
 		dejavu>0:x11-fonts/dejavu
 
-USES=		compiler:features gmake iconv pkgconfig
+USES=		compiler:features cpe gmake iconv pkgconfig
+
+CPE_VENDOR=	oracle
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	battleblow
-GH_PROJECT=	openjdk-jdk8u
+GH_PROJECT=	jdk8u
 GH_TAGNAME=	jdk${JDK_MAJOR_VERSION}u${JDK_UPDATE_VERSION}-b${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
 
 _MAKE_JOBS=	#
@@ -51,8 +53,8 @@ INSTALLDIR=	${PREFIX}/${PKGBASE}
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	275
-JDK_BUILD_NUMBER=	01
+JDK_UPDATE_VERSION=	392
+JDK_BUILD_NUMBER=	08
 BSD_JDK_VERSION=	1
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -74,7 +76,6 @@ CONFIGURE_ARGS+=	--disable-ccache
 .endif
 CONFIGURE_ARGS+=	--disable-freetype-bundling \
 			--disable-zip-debug-info \
-			--with-cacerts-file=${FILESDIR}/cacerts \
 			--with-cups=${LOCALBASE} \
 			--with-debug-level=${JDK_BUILD_TYPE} \
 			--with-freetype=${LOCALBASE} \
@@ -83,7 +84,8 @@ CONFIGURE_ARGS+=	--disable-freetype-bundling \
 			--with-jvm-variants=${JDK_BUILD_JVM} \
 			--with-milestone=fcs \
 			--with-package-path=${LOCALBASE} \
-			--with-zlib=system
+			--with-zlib=system \
+			--with-extra-ldflags="-Wl,--undefined-version"
 CONFIGURE_SCRIPT=	../../configure
 CONFIGURE_WRKSRC=	${WRKSRC}/common/autoconf
 
@@ -193,7 +195,7 @@ CONFIGURE_ARGS+=	--disable-jfr
 MAKE_ENV+=	LFLAGS="-Wl,-z,notext"
 .endif
 
-.if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH:Mpowerpc64*}
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH:Mpowerpc64*}
 JDK_BUILD_JVM=	server
 .else
 JDK_BUILD_JVM=	zero
@@ -203,6 +205,23 @@ LIB_DEPENDS+=	libffi.so:devel/libffi
 .if ${COMPILER_TYPE} == clang
 MAKE_ENV+=	COMPILER_WARNINGS_FATAL=false USE_CLANG=true
 CONFIGURE_ENV+=	LIBCXX="-lc++"
+.if ${COMPILER_VERSION} >= 130 && ${ARCH} == aarch64
+# PR258954: see <https://bugs.openjdk.org/browse/JDK-8247766>. Even though the
+# upstream fix has been applied to this version of the JDK, users still report
+# the assertion "guarantee(val < (1U << nbits)) failed: Field too big for insn"
+# occurring, when it is built with recent versions of clang.
+LLVM_VER=	12
+BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
+CC=		${LOCALBASE}/bin/clang${LLVM_VER}
+CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
+.endif
+.if ${COMPILER_VERSION} >= 160
+# clang 16 defaults to C++17, which no longer allows the 'register' keyword.
+# There is an upstream commit that removes all the individual 'register'
+# keywords, but it has not yet been backported to OpenJDK 8.
+# NOTE: passing this option via --with-extra-cflags does not work.
+CFLAGS+=		-Dregister=
+.endif
 .endif
 
 # GCC is broken with PCH: https://lists.freebsd.org/pipermail/svn-src-all/2015-March/101722.html
@@ -215,17 +234,7 @@ MAKE_ARGS+=	USE_PRECOMPILED_HEADER=0
 .endif
 .endif
 
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
-EXTRA_PATCHES+= ${FILESDIR}/extra-patch-ppc64-elfv2
-MAKE_ARGS+=	USE_PRECOMPILED_HEADER=0
-.endif
-
-.if ${ARCH} == powerpc64
-CONFIGURE_ARGS+=	--disable-jfr
-.endif
-
-.if ${ARCH} == powerpc64le
-CONFIGURE_ARGS+=	--disable-jfr
+.if ${ARCH:Mpowerpc64*}
 MAKE_ARGS+=	USE_PRECOMPILED_HEADER=0
 .endif
 
@@ -282,7 +291,6 @@ post-build:
 .endif
 
 post-build-TZUPDATE-on:
-	@# Update time zones
 	@${RM} -r ${JRE_IMAGEDIR}/lib/zi
 	@${LN} -sf ${LOCALBASE}/share/java/zi ${JRE_IMAGEDIR}/lib
 
@@ -294,15 +302,15 @@ do-install:
 	${FIND} bin jre/bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	${CHMOD} ${BINMODE} jre/${JDK_JVMDIR}/jexec \
 	    jre/${JDK_JVMDIR}/jspawnhelper ${JDK_JVMDIR}/jexec
-	@${ECHO} "@dir ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
 .else
 	@cd ${JRE_IMAGEDIR} && ${COPYTREE_SHARE} . ${STAGEDIR}${INSTALLDIR}
 	@cd ${STAGEDIR}${INSTALLDIR} && \
 	${FIND} bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	${CHMOD} ${BINMODE} ${JDK_JVMDIR}/jexec ${JDK_JVMDIR}/jspawnhelper
-	@${ECHO} "@dir ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
 .endif
-	@${ECHO} "@javavm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
+	@${ECHO_CMD} "@javavm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
 	@${FIND} ${STAGEDIR}${INSTALLDIR} -not -type d | ${SORT} | \
 	    ${SED} -e 's|^${STAGEDIR}${PREFIX}/||' >> ${TMPPLIST}
 

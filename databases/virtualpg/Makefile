@@ -1,6 +1,3 @@
-# Created by: Loïc BARTOLETTI <lbartoletti@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	virtualpg
 PORTVERSION=	2.0.1
 CATEGORIES=	databases geography
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Loadable dynamic extension to both SQLite and SpatiaLite
+WWW=		https://www.gaia-gis.it/fossil/virtualpg/index
 
 LICENSE=	MPL11 LGPL21 GPLv2
 LICENSE_COMB=	dual

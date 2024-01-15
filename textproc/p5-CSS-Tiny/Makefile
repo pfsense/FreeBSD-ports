@@ -1,6 +1,3 @@
-# Created by: Hansjoerg Pehofer <hansjoerg.pehofer@uibk.ac.at>
-# $FreeBSD$
-
 PORTNAME=	CSS-Tiny
 PORTVERSION=	1.20
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read/Write .css files with as little code as possible
+WWW=		https://metacpan.org/release/CSS-Tiny
 
 LICENSE=	ARTPERL10
 

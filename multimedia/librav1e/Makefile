@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 PKGNAMEPREFIX=	lib
 
@@ -13,13 +11,17 @@ PLIST_SUB=	VERSION=${DISTVERSION:C/-.*//}
 
 do-build:
 	@${CARGO_CARGO_RUN} cbuild \
+		--verbose \
+		--verbose \
 		${CARGO_BUILD_ARGS}
 
 do-install:
 	@${CARGO_CARGO_RUN} cinstall \
+		--verbose \
+		--verbose \
 		--destdir "${STAGEDIR}" \
 		--prefix "${PREFIX}" \
-		${CARGO_BUILD_ARGS}
+		${CARGO_INSTALL_ARGS}
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so

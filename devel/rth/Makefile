@@ -1,6 +1,3 @@
-# Created by: Jan Siml <jsi@jules.de>
-# $FreeBSD$
-
 PORTNAME=	rth
 PORTVERSION=	1.7.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web-based requirement, test, and bugtracking system
+WWW=		https://sourceforge.net/projects/rth/
 
 USES=		php:web zip
 NO_BUILD=	yes

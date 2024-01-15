@@ -1,15 +1,12 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-String
-PORTVERSION=	1.29
-PORTREVISION=	1
+PORTVERSION=	1.30
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to calculate with strings as if they were big integers
+WWW=		https://metacpan.org/release/Math-String
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

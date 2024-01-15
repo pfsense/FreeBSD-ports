@@ -1,6 +1,3 @@
-# Created by: Cyrille Lefevre <clefevre@citeweb.net>
-# $FreeBSD$
-
 PORTNAME=	gcal
 PORTVERSION=	4.1
 PORTREVISION=	1
@@ -9,18 +6,21 @@ MASTER_SITES=	GNU
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU Gregorian calendar program
+WWW=		https://www.gnu.org/software/gcal/
 
 LICENSE=	GPLv3+
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
-USES=		charsetfix shebangfix makeinfo tar:xz
+USES=		charsetfix shebangfix tar:xz
+
 SHEBANG_FILES=	misc/gcalltx/gcalltxp.in misc/gcalltx/gcalltx.pl
+
+GNU_CONFIGURE=	yes
 
 INFO=		gcal
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
+
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 

@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object-Cast
 PORTVERSION=	0.02
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Data Type Casting for Data::Object
+WWW=		https://metacpan.org/release/Data-Object-Cast
 
 LICENSE=	APACHE20
 

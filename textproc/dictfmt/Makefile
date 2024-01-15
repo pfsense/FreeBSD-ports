@@ -1,14 +1,12 @@
-# Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
-
 PORTNAME=	dictfmt
-PORTVERSION=	1.13.0
+PORTVERSION=	1.13.1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/dict/dictd/dictd-${PORTVERSION}
 DISTNAME=	dictd-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Format a DICT protocol dictionary database
+WWW=		https://www.dict.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

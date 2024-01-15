@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Sys-Group-GIDhelper
 PORTVERSION=	0.0.2
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Helps for locating free GIDs
+WWW=		https://metacpan.org/release/Sys-Group-GIDhelper
 
 USES=		perl5
 USE_PERL5=	configure

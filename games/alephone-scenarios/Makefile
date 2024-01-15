@@ -1,9 +1,6 @@
-# Created by: alepulver
-# $FreeBSD$
-
 PORTNAME=	scenarios
 PORTVERSION=	1.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	http://files3.bungie.org/trilogy/:bungie \
 		http://files5.bungie.org/marathon/:rubicon \
@@ -18,6 +15,7 @@ EXTRACT_ONLY=	#
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free scenarios for the Aleph One engine
+WWW=		http://source.bungie.org/get/
 
 RUN_DEPENDS=	alephone:games/alephone
 

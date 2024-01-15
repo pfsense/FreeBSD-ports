@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Tree-Node
 PORTVERSION=	0.08
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Memory-efficient tree nodes in Perl
+WWW=		https://metacpan.org/release/Tree-Node
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

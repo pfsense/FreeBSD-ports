@@ -1,36 +1,27 @@
-# Created by: Jamie Hermans <jamie@hermans.ca>
-# $FreeBSD$
-
 PORTNAME=	jhead
-PORTVERSION=	3.04
+PORTVERSION=	3.08
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.sentex.net/~mwandel/jhead/ \
-		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	EXIF JPEG header manipulation tool
+WWW=		https://github.com/Matthias-Wandel/jhead
 
 LICENSE=	PD
 
-USES=		jpeg:run
+USES=		cpe gmake jpeg:run
 
 MAKEFILE=	makefile
 
 PLIST_FILES=	bin/jhead \
 		share/man/man1/jhead.1.gz
-PORTDOCS=	usage.html
 
-OPTIONS_DEFINE=	DOCS
+CPE_VENDOR=	jhead_project
 
-post-patch:
-	@${REINPLACE_CMD} -e '/^CFLAGS=/d' ${WRKSRC}/${MAKEFILE}
+GH_ACCOUNT=	Matthias-Wandel
+USE_GITHUB=	yes
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/jhead ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_MAN} ${WRKSRC}/jhead.1 ${STAGEDIR}${PREFIX}/share/man/man1/
-
-do-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

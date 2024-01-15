@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	slim-freebsd-dark-theme
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0
@@ -8,6 +6,7 @@ CATEGORIES=	x11-themes
 
 MAINTAINER=	miguel@gocobachi.dev
 COMMENT=	Minimalist FreeBSD black/red colors theme for SLiM
+WWW=		https://github.com/gocobachi/slim-freebsd-dark-theme
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

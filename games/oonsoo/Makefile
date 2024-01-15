@@ -1,6 +1,3 @@
-# Created by: Joel Sutton <jsutton@bbcon.com.au>
-# $FreeBSD$
-
 PORTNAME=	oonsoo
 PORTVERSION=	1.2
 PORTREVISION=	3

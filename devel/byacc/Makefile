@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	byacc
-PORTVERSION=	20200910
+PORTVERSION=	20230521
 CATEGORIES=	devel
 MASTER_SITES=	https://invisible-mirror.net/archives/byacc/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Best yacc variant available
+WWW=		https://invisible-island.net/byacc/
 
 LICENSE=	PD
 

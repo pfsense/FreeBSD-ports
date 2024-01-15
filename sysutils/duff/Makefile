@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	duff
 PORTVERSION=	0.5.2
 PORTREVISION=	2
@@ -8,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Duplicate file finder
+WWW=		https://github.com/elmindreda/duff
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/COPYING

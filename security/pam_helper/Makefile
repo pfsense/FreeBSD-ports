@@ -1,8 +1,5 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pam_helper
-PORTVERSION=	1.1
+PORTVERSION=	1.2
 CATEGORIES=	security sysutils
 MASTER_SITES=	http://www.marcuscom.com/pam_helper/
 

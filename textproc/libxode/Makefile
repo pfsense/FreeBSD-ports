@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libxode
 PORTVERSION=	0.71
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XML library which wraps expat
+WWW=		https://libxode.sourceforge.net/
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-FromCGI
 PORTVERSION=	1.00
 PORTREVISION=	2
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Update Class::DBI data using CGI::Untaint
+WWW=		https://metacpan.org/release/Class-DBI-FromCGI
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-DBI>=0:databases/p5-Class-DBI \

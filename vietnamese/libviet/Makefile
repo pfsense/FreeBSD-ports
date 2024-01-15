@@ -1,6 +1,3 @@
-# Created by: David O'Brien <obrien@NUXI.com>
-# $FreeBSD$
-
 PORTNAME=	libviet
 PORTVERSION=	20010210
 PORTREVISION=	1

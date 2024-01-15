@@ -1,20 +1,20 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	chroma
-PORTVERSION=	1.17
+PORTVERSION=	1.20
 CATEGORIES=	games
 MASTER_SITES=	http://www.level7.org.uk/chroma/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Abstract puzzle game
+WWW=		http://www.level7.org.uk/chroma/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext localbase sdl tar:bzip2
+USES=		gettext localbase tar:bzip2
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	chroma-syntax-highlighter
 
 PORTDOCS=	*
 PORTDATA=	*
@@ -33,6 +33,7 @@ CURSES_CONFIGURE_ENABLE=curses
 CURSES_PLIST_FILES=	bin/${PORTNAME}-curses
 SDL_CONFIGURE_ENABLE=	sdl
 SDL_LIB_DEPENDS=	libfreetype.so:print/freetype2
+SDL_USES=		pkgconfig sdl
 SDL_USE=		SDL=sdl,image
 SDL_PLIST_FILES=	bin/${PORTNAME}
 

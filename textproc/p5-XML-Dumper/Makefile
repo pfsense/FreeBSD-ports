@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	XML-Dumper
 PORTVERSION=	0.81
 PORTREVISION=	1

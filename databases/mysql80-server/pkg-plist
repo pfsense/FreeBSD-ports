@@ -6,14 +6,15 @@ bin/myisam_ftdump
 bin/myisamchk
 bin/myisamlog
 bin/myisampack
-bin/mysqldumpslow
 bin/mysql_client_test
+bin/mysql_keyring_encryption_test
 bin/mysql_secure_installation
 bin/mysql_ssl_rsa_setup
 bin/mysql_tzinfo_to_sql
 bin/mysql_upgrade
 bin/mysqld_multi
 bin/mysqld_safe
+bin/mysqldumpslow
 bin/mysqlrouter
 bin/mysqlrouter_keyring
 bin/mysqlrouter_passwd
@@ -30,6 +31,8 @@ lib/mysql/libmysqlharness_tls.so
 lib/mysql/libmysqlharness_tls.so.1
 lib/mysql/libmysqlrouter.so
 lib/mysql/libmysqlrouter.so.1
+lib/mysql/libmysqlrouter_connection_pool.so.1
+lib/mysql/libmysqlrouter_destination_status.so.1
 lib/mysql/libmysqlrouter_http.so
 lib/mysql/libmysqlrouter_http.so.1
 lib/mysql/libmysqlrouter_http_auth_backend.so
@@ -38,6 +41,11 @@ lib/mysql/libmysqlrouter_http_auth_realm.so
 lib/mysql/libmysqlrouter_http_auth_realm.so.1
 lib/mysql/libmysqlrouter_io_component.so
 lib/mysql/libmysqlrouter_io_component.so.1
+lib/mysql/libmysqlrouter_metadata_cache.so.1
+lib/mysql/libmysqlrouter_mysqlxmessages.so.1
+lib/mysql/libmysqlrouter_routing.so.1
+lib/mysql/mysqlrouter/connection_pool.so
+lib/mysql/mysqlrouter/destination_status.so
 lib/mysql/mysqlrouter/http_auth_backend.so
 lib/mysql/mysqlrouter/http_auth_realm.so
 lib/mysql/mysqlrouter/http_server.so
@@ -45,6 +53,7 @@ lib/mysql/mysqlrouter/io.so
 lib/mysql/mysqlrouter/keepalive.so
 lib/mysql/mysqlrouter/metadata_cache.so
 lib/mysql/mysqlrouter/rest_api.so
+lib/mysql/mysqlrouter/rest_connection_pool.so
 lib/mysql/mysqlrouter/rest_metadata_cache.so
 lib/mysql/mysqlrouter/rest_router.so
 lib/mysql/mysqlrouter/rest_routing.so
@@ -54,10 +63,12 @@ lib/mysql/mysqlrouter/routing.so
 lib/mysql/plugin/adt_null.so
 lib/mysql/plugin/auth.so
 lib/mysql/plugin/auth_test_plugin.so
+lib/mysql/plugin/conflicting_variables.so
 lib/mysql/plugin/component_audit_api_message_emit.so
 lib/mysql/plugin/component_example_component1.so
 lib/mysql/plugin/component_example_component2.so
 lib/mysql/plugin/component_example_component3.so
+lib/mysql/plugin/component_keyring_file.so
 lib/mysql/plugin/component_log_filter_dragnet.so
 lib/mysql/plugin/component_log_sink_json.so
 lib/mysql/plugin/component_log_sink_syseventlog.so
@@ -72,10 +83,16 @@ lib/mysql/plugin/component_test_audit_api_message.so
 lib/mysql/plugin/component_test_backup_lock_service.so
 lib/mysql/plugin/component_test_component_deinit.so
 lib/mysql/plugin/component_test_host_application_signal.so
+lib/mysql/plugin/component_test_mysql_command_services.so
 lib/mysql/plugin/component_test_mysql_current_thread_reader.so
 lib/mysql/plugin/component_test_mysql_runtime_error.so
+lib/mysql/plugin/component_test_mysql_system_variable_set.so
+lib/mysql/plugin/component_test_mysql_thd_store_service.so
 lib/mysql/plugin/component_test_pfs_notification.so
 lib/mysql/plugin/component_test_pfs_resource_group.so
+lib/mysql/plugin/component_test_sensitive_system_variables.so
+lib/mysql/plugin/component_test_server_telemetry_traces.so
+lib/mysql/plugin/component_test_status_var_reader.so
 lib/mysql/plugin/component_test_status_var_service.so
 lib/mysql/plugin/component_test_status_var_service_int.so
 lib/mysql/plugin/component_test_status_var_service_reg_only.so
@@ -89,6 +106,7 @@ lib/mysql/plugin/component_test_sys_var_service_int.so
 lib/mysql/plugin/component_test_sys_var_service_same.so
 lib/mysql/plugin/component_test_sys_var_service_str.so
 lib/mysql/plugin/component_test_system_variable_source.so
+lib/mysql/plugin/component_test_table_access.so
 lib/mysql/plugin/component_test_udf_registration.so
 @comment lib/mysql/plugin/component_test_udf_services.so
 lib/mysql/plugin/component_udf_reg_3_func.so
@@ -147,8 +165,11 @@ lib/mysql/plugin/replication_observers_example_plugin.so
 lib/mysql/plugin/rewrite_example.so
 lib/mysql/plugin/rewriter.so
 lib/mysql/plugin/semisync_master.so
+lib/mysql/plugin/semisync_replica.so
 lib/mysql/plugin/semisync_slave.so
+lib/mysql/plugin/semisync_source.so
 lib/mysql/plugin/test_security_context.so
+lib/mysql/plugin/test_services_command_services.so
 lib/mysql/plugin/test_services_host_application_signal.so
 lib/mysql/plugin/test_services_plugin_registry.so
 lib/mysql/plugin/udf_example.so
@@ -156,26 +177,29 @@ lib/mysql/plugin/keyring_udf.so
 lib/mysql/plugin/test_udf_services.so
 lib/mysql/plugin/validate_password.so
 lib/mysql/plugin/version_token.so
+lib/mysql/private/libprotobuf-lite.so.3.19.4
+lib/mysql/private/libprotobuf.so.3.19.4
+lib/mysql/libprotobuf-lite.so.3.19.4
 libexec/mysqld
-man/man1/ibd2sdi.1.gz
-man/man1/innochecksum.1.gz
-man/man1/my_print_defaults.1.gz
-man/man1/myisam_ftdump.1.gz
-man/man1/myisamchk.1.gz
-man/man1/myisamlog.1.gz
-man/man1/myisampack.1.gz
-man/man1/mysql_secure_installation.1.gz
-man/man1/mysql_ssl_rsa_setup.1.gz
-man/man1/mysql_tzinfo_to_sql.1.gz
-man/man1/mysql_upgrade.1.gz
-man/man1/mysql.server.1.gz
-man/man1/mysqld_multi.1.gz
-man/man1/mysqld_safe.1.gz
-man/man1/mysqldumpslow.1.gz
-man/man1/mysqlrouter_passwd.1.gz
-man/man1/mysqlrouter_plugin_info.1.gz
-man/man1/mysqlrouter.1.gz
-man/man8/mysqld.8.gz
+@comment share/man/man1/ibd2sdi.1.gz
+@comment share/man/man1/innochecksum.1.gz
+@comment share/man/man1/my_print_defaults.1.gz
+@comment share/man/man1/myisam_ftdump.1.gz
+@comment share/man/man1/myisamchk.1.gz
+@comment share/man/man1/myisamlog.1.gz
+@comment share/man/man1/myisampack.1.gz
+@comment share/man/man1/mysql_secure_installation.1.gz
+@comment share/man/man1/mysql_ssl_rsa_setup.1.gz
+@comment share/man/man1/mysql_tzinfo_to_sql.1.gz
+@comment share/man/man1/mysql_upgrade.1.gz
+@comment share/man/man1/mysql.server.1.gz
+@comment share/man/man1/mysqld_multi.1.gz
+@comment share/man/man1/mysqld_safe.1.gz
+@comment share/man/man1/mysqldumpslow.1.gz
+@comment share/man/man1/mysqlrouter_passwd.1.gz
+@comment share/man/man1/mysqlrouter_plugin_info.1.gz
+@comment share/man/man1/mysqlrouter.1.gz
+@comment share/man/man8/mysqld.8.gz
 %%DATADIR%%/bulgarian/errmsg.sys
 %%DATADIR%%/charsets/Index.xml
 %%DATADIR%%/charsets/README

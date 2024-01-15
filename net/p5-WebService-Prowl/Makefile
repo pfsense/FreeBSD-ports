@@ -1,6 +1,3 @@
-# Created by: brix@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	WebService-Prowl
 PORTVERSION=	0.08
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to Prowl Public API
+WWW=		https://metacpan.org/release/WebService-Prowl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

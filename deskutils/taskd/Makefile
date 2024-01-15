@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	taskd
 PORTVERSION=	1.1.0
 PORTREVISION=	8
@@ -9,6 +6,7 @@ MASTER_SITES=	http://taskwarrior.org/download/
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Multi-user server for taskwarrior
+WWW=		https://taskwarrior.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

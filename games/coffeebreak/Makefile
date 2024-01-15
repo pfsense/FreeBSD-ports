@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	coffeebreak
 DISTVERSION=	0.1.1
 CATEGORIES=	games
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Pretend your machine is busy with a fake FreeBSD installer
+WWW=		https://github.com/0mp/coffeebreak
 
 LICENSE=	BSD2CLAUSE
 

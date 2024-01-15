@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libglvnd
 PORTVERSION=	1.0.1
 DISTVERSIONSUFFIX=	-0.8.git5baa1e5.el7
@@ -7,11 +5,14 @@ CATEGORIES=	graphics linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	GL Vendor-Neutral Dispatch library (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://github.com/NVIDIA/libglvnd
 
 USES=		linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX=	xorglibs
 USE_LINUX_RPM=	yes
+
+CONFLICTS_INSTALL=	linux-nvidia-libs linux-nvidia-libs-*
 
 LIB_DISTNAMES=	libglvnd-${DISTVERSIONFULL} \
 		libglvnd-egl-${DISTVERSIONFULL} \

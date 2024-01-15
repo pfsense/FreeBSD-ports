@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-More-UTF8
 PORTVERSION=	0.05
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Enhancing Test::More for UTF-8-based projects
+WWW=		https://metacpan.org/release/Test-More-UTF8
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

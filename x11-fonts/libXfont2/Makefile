@@ -1,12 +1,11 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libXfont2
-PORTVERSION=	2.0.4
+PORTVERSION=	2.0.5
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X font library
+WWW=		https://www.freedesktop.org/Software/xlibs
 
 LICENSE=	MIT BSD3CLAUSE
 LICENSE_COMB=	multi

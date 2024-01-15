@@ -1,6 +1,3 @@
-# Created by: tobez@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Authen-Captcha
 PORTVERSION=	1.024
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to verify the human element in transactions
+WWW=		https://metacpan.org/release/Authen-Captcha
 
 LICENSE=	GPLv2
 

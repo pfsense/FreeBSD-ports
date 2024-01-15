@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Log-Dispatch-File-Rolling
 PORTVERSION=	1.09
 PORTREVISION=	3
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object for logging to date/time/pid stamped files
+WWW=		https://metacpan.org/release/Log-Dispatch-File-Rolling
 
 LICENSE=	ART20
 

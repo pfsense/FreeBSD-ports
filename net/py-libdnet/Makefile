@@ -1,6 +1,4 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
+PORTREVISION=	5
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -8,14 +6,17 @@ COMMENT=	Python module for libdnet
 
 LIB_DEPENDS=	libdnet.so:net/libdnet
 
-USES=		autoreconf libtool python:3.6+
+USES=		autoreconf libtool localbase:ldflags python
 
 MASTERDIR=	${.CURDIR}/../libdnet
 INSTALL_WRKSRC=	${WRKSRC}/python
 DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${NONEXISTENT}
 PLIST_FILES=	${PYTHON_SITELIBDIR}/dnet%%PYTHON_EXT_SUFFIX%%.so \
-		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info
+		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info/PKG-INFO \
+		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info/SOURCES.txt \
+		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info/dependency_links.txt \
+		${PYTHON_SITELIBDIR}/dnet-${PORTVERSION}-py${PYTHON_VER}.egg-info/top_level.txt
 
 LIBDNET_SLAVE=	yes
 
@@ -25,6 +26,12 @@ CONFIGURE_ARGS=	--with-python=${PYTHON_CMD}
 .if defined(MAINTAINER_MODE)
 regression-test: install
 	${PYTHON_CMD} ${INSTALL_WRKSRC}/test.py
+.endif
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 post-patch:

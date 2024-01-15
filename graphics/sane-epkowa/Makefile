@@ -1,6 +1,3 @@
-# Created by: luigi@FreeBSD.org
-# $FreeBSD$
-
 # Maintainers:		Luigi Rizzo <luigi@FreeBSD.org>
 #
 # This port builds version 2.11.0 of the sane-epkowa driver for SANE.
@@ -41,7 +38,7 @@
 
 PORTNAME=	epkowa
 PORTVERSION=	2.11.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	http://cschubert.com/distfiles/ \
 		LOCAL/cy
@@ -49,6 +46,7 @@ DISTNAME=	iscan_${PORTVERSION}-1
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The sane-epkowa driver for FreeBSD
+WWW=		http://avasys.jp/english/
 
 # use the following two lines for 2.15.0
 # MASTER_SITES=http://linux.avasys.jp/drivers/iscan/${PORTVERSION}/

@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Color-ANSI-Util
 PORTVERSION=	0.164
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Routines for dealing with ANSI colors
+WWW=		https://metacpan.org/release/Color-ANSI-Util
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

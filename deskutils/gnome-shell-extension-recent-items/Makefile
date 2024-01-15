@@ -1,13 +1,12 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gnome-shell-extension-recent-items
-PORTVERSION=	18
+PORTVERSION=	40
+PORTREVISION=	1
 CATEGORIES=	deskutils gnome
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Recent items extensions for the GNOME3 shell
+WWW=		https://github.com/bananenfisch/RecentItems
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,8 +24,8 @@ PKGMESSAGE=	../gnome-shell-extra-extensions/pkg-message.slaves
 NO_BUILD=	yes
 
 post-patch:
-		@${REINPLACE_CMD} -e 's|"3.22"|"3.22","3.24","3.26","3.28"|g' \
-			${WRKSRC}/metadata.json
+	@${REINPLACE_CMD} -e 's|"3.36", "40", "41"|"3.36", "40", "41", "42"|g' \
+		${WRKSRC}/metadata.json
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/gnome-shell/extensions/RecentItems@bananenfisch.net

@@ -1,28 +1,24 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	openssl
-PORTVERSION=	19.1.0
+PORTVERSION=	23.2.0
+PORTEPOCH=	1
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	pyOpenSSL-${PORTVERSION}
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Python interface to the OpenSSL library
+WWW=		https://github.com/pyca/pyopenssl
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=2.8:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>=1.5.2:devel/py-six@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=3.0.1:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}flaky>0:devel/py-flaky@${PY_FLAVOR} \
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flaky>0:devel/py-flaky@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pretend>0:devel/py-pretend@${PY_FLAVOR} \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 USES=		cpe python
-USE_PYTHON=	autoplist concurrent distutils pythonprefix
+USE_PYTHON=	autoplist concurrent cryptography distutils pytest pythonprefix
 
 NO_ARCH=	yes
 
@@ -35,14 +31,15 @@ CPE_PRODUCT=	py${PORTNAME}
 #   a internet connection
 # * test_set_verify_callback_exception: Fails on *BSD systems, see also
 #   https://github.com/pyca/pyopenssl/issues/656 for further details
-# 
+# * test_connect_ex: succeeds unexpectedly:
+#   https://github.com/pyca/pyopenssl/issues/1192
+#
 # The system clock must be in sync otherwise the test "test_verify_with_time"
 # will fail.
-do-test:
-	@cd ${WRKSRC} && ${SET_ENV} LC_ALL=en_US.UTF-8 ${TEST_ENV} \
-			PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} \
-			${PYTHON_CMD} -m pytest -rs -v -k \
-			'not test_connect_refused and \
-		       	not test_set_verify_callback_exception'
+PYTEST_IGNORED_TESTS=	test_connect_ex \
+			test_connect_refused \
+			test_set_verify_callback_exception
+TEST_ENV=	LC_ALL=en_US.UTF-8 \
+		PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 .include <bsd.port.mk>

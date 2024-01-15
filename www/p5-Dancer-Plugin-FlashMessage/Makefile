@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-FlashMessage
 PORTVERSION=	0.314
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dancer plugin for implementing Flash Messages
+WWW=		https://metacpan.org/release/Dancer-Plugin-FlashMessage
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

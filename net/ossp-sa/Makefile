@@ -1,6 +1,3 @@
-# Created by: Alan Eldridge <alane@geeksrus.net>
-# $FreeBSD$
-
 PORTNAME=	sa
 PORTVERSION=	1.2.6
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	ossp-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Abstraction library for the Unix socket API
+WWW=		http://www.ossp.org/pkg/lib/sa/
 
 LIB_DEPENDS=	libex.so:devel/ossp-ex
 

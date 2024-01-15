@@ -1,24 +1,29 @@
-# Created by: David Thiel <lx@redundancy.redundancy.org>
-# $FreeBSD$
-
 PORTNAME=	uird
 PORTVERSION=	1.1
 CATEGORIES=	comms
 MASTER_SITES=	http://kbinstuff.googlepages.com/ \
 		http://redundancy.redundancy.org/mirror/
 
-MAINTAINER=	lx@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Universal IR Receiver Daemon
+WWW=		http://kbinstuff.googlepages.com/uirduniversalirreceiverdaemon
 
 USES=		perl5 gmake tar:tgz
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=	${PORTNAME}
+
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PLIST_FILES=	bin/uird
 PORTDOCS=	Documentation
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|gcc|$${CC}\ $${CFLAGS}|; /strip/d' \
@@ -26,6 +31,8 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/uird ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 

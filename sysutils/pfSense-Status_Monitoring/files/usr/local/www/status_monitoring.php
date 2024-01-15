@@ -3,7 +3,7 @@
  * status_monitoring.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)
@@ -83,12 +83,12 @@ if($_POST['enable']) {
 		$savemsg = "Insufficient privileges to make the requested change (read only).";
 		$saveclass = 'danger';
 	} else {
-		if(($_POST['enable'] === 'false')) {
-			unset($config['rrd']['enable']);
+		if ($_POST['enable'] === 'false') {
+			config_del_path('rrd/enable');
 			$savemsg = "RRD graphing has been disabled.";
 			$changedesc .= gettext("RRD graphing has been disabled.");
 		} else {
-			$config['rrd']['enable'] = true;
+			config_set_path('rrd/enable', true);
 			$savemsg = "RRD graphing has been enabled.";
 			$changedesc .= gettext("RRD graphing has been enabled.");
 		}
@@ -112,8 +112,8 @@ if ($_POST['ResetRRD']) {
 }
 
 //old config that needs to be updated
-if(strpos($config['rrd']['category'], '&resolution') === false) {
-	$config['rrd']['category'] = "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true&refresh-interval=0";
+if(strpos(config_get_path('rrd/category', ""), '&resolution') === false) {
+	config_set_path('rrd/category', "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true&refresh-interval=0");
 	write_config(gettext("Status: Monitoring: updated old configuration."));
 }
 
@@ -122,19 +122,18 @@ if ($_POST['save-view']) {
 
 	$title = $view_title;
 
-	init_config_arr(array('rrd', 'savedviews'));
-	if (!empty($config['rrd']['savedviews'])) {
+	if (!empty(config_get_path('rrd/savedviews', []))) {
 		if($title == "default") {
-			$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
+			config_set_path('rrd/category', "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval']);
 		} else {
-			foreach ($config['rrd']['savedviews'] as $key => $view) {
+			foreach (config_get_path('rrd/savedviews', []) as $key => $view) {
 				if($title == createSlug($view['title'])) {
-					$config['rrd']['savedviews'][$key]['category'] =  "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
+					config_set_path("rrd/savedviews/{$key}/category", "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval']);
 				}
 			}
 		}
 	} else {
-		$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
+		config_set_path('rrd/category', "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval']);
 	}
 
 	write_config(gettext("Status Monitoring View Updated"));
@@ -143,17 +142,11 @@ if ($_POST['save-view']) {
 
 //add a new view and make sure the string isn't empty
 if ($_POST['add-view'] && !empty($view_title) && strtolower($view_title) != "default") {
-
 	$title = $view_title;
-
 	$values = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
-
-	init_config_arr(array('rrd', 'savedviews'));
-	$key = "view" . count($config['rrd']['savedviews']);
-	$config['rrd']['savedviews'][$key] = array('title' => $title, 'category' => $values);
-
+	$key = "view" . count(config_get_path('rrd/savedviews', []));
+	config_set_path("rrd/savedviews/{$key}", ['title' => $title, 'category' => $values]);
 	write_config(gettext("Status Monitoring View Added"));
-
 	$savemsg = "The \"" . htmlspecialchars($title) . "\" view has been added.";
 }
 
@@ -163,19 +156,15 @@ $view_removed = false;
 if ($_POST['remove-view']) {
 
 	if (strtolower($view_title) == "default") {
-
 		$savemsg = "Can't remove default view.";
-
 	} else {
-
 		$title = htmlspecialchars($view_title);
 
-		init_config_arr(array('rrd', 'savedviews'));
-		if (!empty($config['rrd']['savedviews'])) {
+		if (!empty(config_get_path('rrd/savedviews', []))) {
 			$savedviews = [];
 			$view_count = 0;
 
-			foreach ($config['rrd']['savedviews'] as $key => $view) {
+			foreach (config_get_path('rrd/savedviews', []) as $key => $view) {
 				if (createSlug($view['title']) !== $title) {
 					$view_key = "view" . $view_count;
 					$savedviews[$view_key] = array('title' => $view['title'], 'category' => $view['category']);
@@ -183,35 +172,31 @@ if ($_POST['remove-view']) {
 				}
 			}
 
-			$config['rrd']['savedviews'] = $savedviews;
+			config_set_path('rrd/savedviews', $savedviews);
 		}
 
 		write_config(gettext("Status Monitoring View Removed"));
-
 		$savemsg = "The \"" . $title . "\" view has been removed.";
-
 		$view_removed = true;
-
 	}
 
 }
 
-$pconfig['enable'] = isset($config['rrd']['enable']);
+$pconfig['enable'] = config_path_enabled('rrd');
 
 //grab settings for the active view
-init_config_arr(array('rrd', 'savedviews'));
-if (!empty($config['rrd']['savedviews'])) {
+if (!empty(config_get_path('rrd/savedviews', []))) {
 	if ($view_title == "default" || $view_removed) {
-		$pconfig['category'] = $config['rrd']['category'];
+		$pconfig['category'] = config_get_path('rrd/category', "");
 	} else {
-		foreach ($config['rrd']['savedviews'] as $key => $view) {
+		foreach (config_get_path('rrd/savedviews', []) as $key => $view) {
 			if ($view_title === createSlug($view['title'])) {
 				$pconfig['category'] =  $view['category'];
 			}
 		}
 	}
 } else {
-	$pconfig['category'] = $config['rrd']['category'];
+	$pconfig['category'] = config_get_path('rrd/category', "");
 }
 
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = $wireless = $cellular = [];
@@ -237,6 +222,9 @@ foreach ($databases as $db) {
 			case "mbuf":
 				$system[$db_name] = "Mbuf Clusters";
 				break;
+			case "sensors":
+				$system[$db_name] = "Thermal Sensors";
+				break;
 			default:
 				$system[$db_name] = $db_arr[1];
 				break;
@@ -250,21 +238,17 @@ foreach ($databases as $db) {
 
 		if (empty($friendly)) {
 			if (substr($db_arr[0], 0, 5) === "ovpns") {
-
-				if (is_array($config['openvpn']["openvpn-server"])) {
-
-					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
-
-						if ($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
-							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
-						}
-
+				foreach (config_get_path('openvpn/openvpn-server', []) as $setting) {
+					if (empty($setting)) {
+						continue;
 					}
-
+					if ($setting['vpnid'] === substr($db_arr[0],5)) {
+						$friendly = "OpenVPN Server: " . htmlspecialchars($setting['description']);
+					}
 				}
-
-				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
-
+				if (empty($friendly)) {
+					$friendly = "OpenVPN Server: " . $db_arr[0];
+				}
 			} else {
 				$friendly = $db_arr[0];
 			}
@@ -280,21 +264,17 @@ foreach ($databases as $db) {
 
 		if (empty($friendly)) {
 			if (substr($db_arr[0], 0, 5) === "ovpns") {
-
-				if (is_array($config['openvpn']["openvpn-server"])) {
-
-					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
-
-						if ($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
-							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
-						}
-
+				foreach (config_get_path('openvpn/openvpn-server', []) as $setting) {
+					if (empty($setting)) {
+						continue;
 					}
-
+					if ($setting['vpnid'] === substr($db_arr[0],5)) {
+						$friendly = "OpenVPN Server: " . htmlspecialchars($setting['description']);
+					}
 				}
-
-				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
-
+				if (empty($friendly)) {
+					$friendly = "OpenVPN Server: " . $db_arr[0];
+				}
 			} else {
 				$friendly = $db_arr[0];
 			}
@@ -342,21 +322,17 @@ foreach ($databases as $db) {
 
 		if (empty($friendly)) {
 			if (substr($db_arr[0], 0, 5) === "ovpns") {
-
-				if (is_array($config['openvpn']["openvpn-server"])) {
-
-					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
-
-						if ($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
-							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
-						}
-
+				foreach (config_get_path('openvpn/openvpn-server', []) as $setting) {
+					if (empty($setting)) {
+						continue;
 					}
-
+					if ($setting['vpnid'] === substr($db_arr[0],5)) {
+						$friendly = "OpenVPN Server: " . htmlspecialchars($setting['description']);
+					}
 				}
-
-				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
-
+				if (empty($friendly)) {
+					$friendly = "OpenVPN Server: " . $db_arr[0];
+				}
 			} else {
 				$friendly = $db_arr[0];
 			}
@@ -368,7 +344,7 @@ foreach ($databases as $db) {
 }
 
 // Get the configured options for Show/Hide monitoring settings panel.
-$monitoring_settings_form_hidden = !$user_settings['webgui']['statusmonitoringsettingspanel'];
+$monitoring_settings_form_hidden = !config_path_enabled('system/webgui', 'statusmonitoringsettingspanel');
 
 if ($monitoring_settings_form_hidden) {
 	$panel_state = 'out';
@@ -399,8 +375,7 @@ if ($view_title == "default" || $view_removed) {
 
 $tab_array[] = array(gettext("Default"), $active_tab, "/status_monitoring.php?view=default");
 
-init_config_arr(array('rrd', 'savedviews'));
-foreach ($config['rrd']['savedviews'] as $key => $view) {
+foreach (config_get_path('rrd/savedviews', []) as $key => $view) {
 	$active_tab = false;
 	if ($view_title == createSlug($view['title'])) {
 		$active_tab = true;
@@ -425,7 +400,7 @@ display_top_tabs($tab_array);
 			<h2 class="panel-title"><?=gettext("Settings"); ?>
 				<span class="widget-heading-icon">
 					<a data-toggle="collapse" href="#monitoring-settings-panel_panel-body">
-						<i class="fa fa-plus-circle"></i>
+						<i class="fa-solid fa-plus-circle"></i>
 					</a>
 				</span>
 			</h2>
@@ -478,6 +453,7 @@ display_top_tabs($tab_array);
 						<option value="system-processor" selected>Processes</option>
 						<option value="system-memory">Memory</option>
 						<option value="system-mbuf">Mbuf Clusters</option>
+						<option value="system-sensors">Thermal Sensors</option>
 					</select>
 
 					<span class="help-block">Graph</span>
@@ -619,22 +595,22 @@ display_top_tabs($tab_array);
 					Settings
 				</label>
 				<div class="col-sm-2">
-					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
+					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa-solid fa-cog fa-lg"></i> Display Advanced</button>
 				</div>
 				<div class="col-sm-4">
-					<button class="btn btn-sm btn-primary" type="submit" value="true" name="save-view" id="save-view" style="display:none;"><i class="fa fa-save fa-lg"></i> Save View</button>
-					<button class="btn btn-sm btn-primary" type="button" value="true" name="add-view" id="add-view" style="display:none;"><i class="fa fa-plus fa-lg"></i> Add View</button>
-					<button class="btn btn-sm btn-primary" type="submit" value="true" name="remove-view" id="remove-view" style="display:none;"><i class="fa fa-trash fa-lg"></i> Remove View</button>
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="save-view" id="save-view" style="display:none;"><i class="fa-solid fa-save fa-lg"></i> Save View</button>
+					<button class="btn btn-sm btn-primary" type="button" value="true" name="add-view" id="add-view" style="display:none;"><i class="fa-solid fa-plus fa-lg"></i> Add View</button>
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="remove-view" id="remove-view" style="display:none;"><i class="fa-solid fa-trash-can fa-lg"></i> Remove View</button>
 				</div>
 				<div class="col-sm-4">
 					<?php
 					if ($pconfig['enable']) {
-						echo '<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Graphing</button>';
+						echo '<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa-solid fa-ban fa-lg"></i> Disable Graphing</button>';
 					} else {
-						echo '<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable Graphing</button>';
+						echo '<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa-solid fa-check fa-lg"></i> Enable Graphing</button>';
 					}
 					?>
-					<button class="btn btn-sm btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset Data</button>
+					<button class="btn btn-sm btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa-solid fa-trash-can fa-lg"></i> Reset Data</button>
 				</div>
 			</div>
 			<div class="form-group">
@@ -642,7 +618,7 @@ display_top_tabs($tab_array);
 					&nbsp;
 				</label>
 				<div class="col-sm-10">
-					<button class="btn btn-sm btn-primary update-graph" type="button"><i class="fa fa-refresh fa-lg"></i> Update Graphs</button>
+					<button class="btn btn-sm btn-primary update-graph" type="button"><i class="fa-solid fa-arrows-rotate fa-lg"></i> Update Graphs</button>
 				</div>
 			</div>
 		</div>
@@ -709,6 +685,7 @@ events.push(function() {
 		"processor": "Utilization, Number",
 		"memory": "Utilization, Percent",
 		"mbuf": "Utilization, Percent",
+		"sensors": "Temperature, °C",
 		"packets": "Packets Per Second",
 		"vpnusers": "Users",
 		"quality": "Milliseconds, Percent",
@@ -727,6 +704,7 @@ events.push(function() {
 		"processor": ".2f",
 		"memory": ".2f",
 		"mbuf": ".2s",
+		"sensors": ".2s",
 		"packets": ".2s",
 		"vpnusers": ".2f",
 		"quality": ".2f",
@@ -1166,7 +1144,7 @@ events.push(function() {
 	});
 
 	$( "#settings" ).click(function() {
-		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
+		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa-solid fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa-solid fa-cog fa-lg"></i> Display Advanced');
 		$("#save-view").toggle();
 		$("#add-view").toggle();
 		$("#remove-view").toggle();
@@ -1360,11 +1338,11 @@ events.push(function() {
 					.text("Right Axis: " + rightTitle);
 
 				//add system name
-				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
+				var systemName = '<?=htmlspecialchars(config_get_path('system/hostname') . "." . config_get_path('system/domain')); ?>';
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 100)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "system-name")
 					.text(systemName);
 
@@ -1373,7 +1351,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 400)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "time-period")
 					.text("Time Period: " + timePeriod);
 
@@ -1382,7 +1360,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 570)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "resolution")
 					.text("Resolution: " + stepLookup[data[0].step]);
 
@@ -1391,7 +1369,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 755)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "current-date")
 					.text(currentDate);
 

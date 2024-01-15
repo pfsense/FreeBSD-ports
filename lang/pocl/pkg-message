@@ -1,3 +1,6 @@
+[
+{ 	type:	install
+	message: <<EOM
 
 Deadlocks (freezes) on FreeBSD:
 
@@ -10,3 +13,6 @@ See:
 	http://www.freebsd.org/cgi/query-pr.cgi?pr=163512
 
 (Source: http://portablecl.org/docs/html/faq.html?highlight=freebsd)
+EOM
+}
+]

@@ -1,15 +1,13 @@
-# Created by: Sam Lawrance
-# $FreeBSD$
-
 PORTNAME=	libgeotiff
-PORTVERSION=	1.6.0
-PORTREVISION=	2
+PORTVERSION=	1.7.1
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	https://download.osgeo.org/geotiff/libgeotiff/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library for reading and writing GeoTIFF information tags
+WWW=		https://github.com/OSGeo/libgeotiff
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -35,7 +33,7 @@ CONFIGURE_ARGS=	--datadir=${DATADIR} \
 		--with-jpeg=${LOCALBASE} \
 		--with-libtiff=${LOCALBASE} \
 		--with-proj=${LOCALBASE} \
-		--with-zlib=/usr
+		--with-zip=/usr
 CPPFLAGS+=	-fPIC
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

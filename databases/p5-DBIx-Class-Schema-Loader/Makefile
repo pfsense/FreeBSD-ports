@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-Schema-Loader
 PORTVERSION=	0.07049
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Dynamic definition of a DBIx::Class::Schema
+WWW=		https://metacpan.org/release/DBIx-Class-Schema-Loader
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Beanstalk-Client
 PORTVERSION=	1.06
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Perl API for beanstalkd, a distributed queue daemon
+WWW=		https://metacpan.org/release/Beanstalk-Client
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

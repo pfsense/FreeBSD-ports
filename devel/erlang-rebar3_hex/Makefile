@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rebar3_hex
 PORTVERSION=	2.5.0
 DISTVERSIONPREFIX=	v
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	erlang-
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Rebar3 Hex library
+WWW=		https://github.com/hexpm/rebar3_hex
 
 LICENSE=	BSD3CLAUSE
 

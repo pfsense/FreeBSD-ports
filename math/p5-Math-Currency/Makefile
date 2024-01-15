@@ -1,14 +1,12 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Math-Currency
-PORTVERSION=	0.52
+PORTVERSION=	0.53
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for exact currency math with formatting and rounding
+WWW=		https://metacpan.org/release/Math-Currency
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

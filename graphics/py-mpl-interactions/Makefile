@@ -1,21 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	mpl-interactions
-DISTVERSION=	0.16.0
+DISTVERSION=	0.23.1
+PORTREVISION=	1
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	mpl_interactions-${DISTVERSION}
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Simple interactive Matplotlib plots
+WWW=		https://pypi.python.org/pypi/mpl-interactions
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

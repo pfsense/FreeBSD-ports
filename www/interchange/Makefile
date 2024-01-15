@@ -1,6 +1,3 @@
-# Created by: Seth Kingsley <sethk@meowfishies.com>
-# $FreeBSD$
-
 PORTNAME=	interchange
 PORTVERSION=	5.6.3
 CATEGORIES=	www perl5
@@ -8,6 +5,7 @@ MASTER_SITES=	http://ftp.icdevgroup.org/interchange/5.6/tar/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	RedHat's database-enabled e-commerce server
+WWW=		https://www.icdevgroup.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,7 +17,8 @@ RUN_DEPENDS=	p5-Safe-Hole>=0.10:security/p5-Safe-Hole \
 		p5-Set-Crontab>=1.00:devel/p5-Set-Crontab \
 		p5-Digest-SHA1>=2.11:security/p5-Digest-SHA1
 
-USES=		perl5 shebangfix tar:bzip2
+USES=		cpe perl5 shebangfix tar:bzip2
+CPE_VENDOR=	redhat
 SHEBANG_FILES=	dist/src/compile.pl \
 		dist/src/cpan_local_install \
 		dist/src/mod_perl_tlink.pl \
@@ -28,6 +27,8 @@ SHEBANG_FILES=	dist/src/compile.pl \
 		dist/src/vlink.pl
 USE_PERL5=	configure
 NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	isc-cron mcron # bin/crontab
 
 OPTIONS_DEFINE=		MYSQL PGSQL
 OPTIONS_DEFAULT=	MYSQL

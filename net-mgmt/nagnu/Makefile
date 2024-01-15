@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	nagnu
 PORTVERSION=	1.1.3
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	fredrik@min-hemsida.net
 COMMENT=	Nagios dashboard
+WWW=		https://github.com/frlen/nagnu
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,6 +20,7 @@ PLIST_FILES=	bin/nagnu \
 		share/examples/nagnu/nagnu.conf.sample
 
 GNU_CONFIGURE=	yes
+CFLAGS+=	-fcommon
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/nagnu ${STAGEDIR}${PREFIX}/bin

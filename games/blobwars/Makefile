@@ -1,13 +1,12 @@
-# Created by: Loren M. Lang <lorenl@alzatex.com>
-# $FreeBSD$
-
 PORTNAME=	blobwars
 PORTVERSION=	2.00
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mission and Objective based 2D Platform Game
+WWW=		https://www.parallelrealities.co.uk/p/blob-wars-metal-blob-solid.html
 
 LICENSE=	GPLv2+ CC-BY-3.0 CC-BY-SA-3.0
 LICENSE_COMB=	multi
@@ -15,8 +14,6 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/doc/license
 
 USES=		gmake gnome pkgconfig sdl
 USE_SDL=	image2 mixer2 net2 sdl2 ttf2
-
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	*
 

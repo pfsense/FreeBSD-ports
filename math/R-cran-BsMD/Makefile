@@ -1,22 +1,17 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	BsMD
-DISTVERSION=	2020.4.30
+DISTVERSION=	2023.920
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Bayes Screening and Model Discrimination
+WWW=		https://cran.r-project.org/package=BsMD
 
-LICENSE=	GPLv2+
+LICENSE=	GPLv3+
 
-USES=	cran:auto-plist cran:compiles
+USES=	cran:auto-plist,compiles
 
 #Bogus stage-qa as this is $ARCH dependent
 NO_ARCH_IGNORE=	BsMD.so
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/R/library/BsMD/libs/BsMD.so
 
 .include <bsd.port.mk>

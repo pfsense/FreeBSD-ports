@@ -1,6 +1,3 @@
-# Created by: Babak Farrokhi
-# $FreeBSD$
-
 PORTNAME=	tapidbus
 PORTVERSION=	0.2.1
 PORTREVISION=	7
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/tapioca-voip/OldFiles
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Abstraction layer for interprocess communication
+WWW=		https://tapioca-voip.sourceforge.net/
 
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
 

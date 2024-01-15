@@ -1,21 +1,20 @@
-# Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
-
 PORTNAME=	mythweb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	31.0
+DISTVERSION=	33.1-0
+DISTVERSIONSUFFIX=	-g92f0f9b
 CATEGORIES=	www
 PKGNAMEPREFIX=	mythplugin-
 
 MAINTAINER=	ahicks@p-o.co.uk
 COMMENT=	Frontend for scheduling and managing recordings on your MythTV Box
+WWW=		https://www.mythtv.org/wiki/MythWeb
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		php shebangfix perl5
 USE_PERL5=	run
-USE_PHP=	json pcre posix mysqli session spl sockets
+USE_PHP=	posix mysqli session sockets
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV
 SHEBANG_FILES=	mythweb.pl modules/_shared/lang/build_translation.pl \
@@ -30,7 +29,7 @@ REINPLACE_ARGS=	-i ""
 OPTIONS_DEFINE=	APACHE LIGHTTPD NGINX
 OPTIONS_DEFAULT=	APACHE
 
-APACHE_USES=		apache:2.2+
+APACHE_USES=		apache
 LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
 NGINX_DESC=		Nginx server support
 NGINX_RUN_DEPENDS=	nginx:www/nginx

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sqlite-ext-pcre
 PORTVERSION=	20100208
 PORTREVISION=	2
@@ -8,6 +6,7 @@ DIST_SUBDIR=	sqlite-ext
 
 MAINTAINER=	vivek@khera.org
 COMMENT=	Regexp function for SQLite based on PCRE library
+WWW=		https://github.com/ralight/sqlite3-pcre
 
 LICENSE=	PD
 

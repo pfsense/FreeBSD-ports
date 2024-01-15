@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	husky-htick
 
 COMMENT=	Husky FTN file ticker
@@ -31,9 +29,5 @@ MAKE_ARGS=		INFODIR=${PREFIX}/${INFO_PATH}
 CFLAGS+=		-fcommon # fix build failure with clang-11 on 13-CURRENT
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	${REINPLACE_CMD} -e 's^/fido/etc/config^${PREFIX}/etc/fido/config^' \
-		${BUILD_WRKSRC}/man/htick.1
 
 .include "${MASTERDIR}/Makefile"

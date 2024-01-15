@@ -1,6 +1,3 @@
-# Created by: Yin-Jieh Chen <yinjieh@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	autoconvert
 PORTVERSION=	0.3.16
 PORTREVISION=	5
@@ -10,6 +7,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Intelligent Chinese encoding converter
+WWW=		http://banyan.dlut.edu.cn/~ygh/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

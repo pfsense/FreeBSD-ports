@@ -1,6 +1,3 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Client-Whois
 PORTVERSION=	1.38
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	One shot non-blocking RFC 812 WHOIS query
+WWW=		https://metacpan.org/release/POE-Component-Client-Whois
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

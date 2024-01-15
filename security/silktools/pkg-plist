@@ -99,7 +99,7 @@ include/silk/utils.h
 %%STATIC%%lib/libflowsource.a
 lib/libflowsource.so
 lib/libflowsource.so.19
-lib/libflowsource.so.19.0.1
+lib/libflowsource.so.19.0.2
 %%STATIC%%lib/libsilk-thrd.a
 lib/libsilk-thrd.so
 lib/libsilk-thrd.so.5
@@ -246,7 +246,7 @@ share/silk/twoway-silk.conf
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/plugin.pyc
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/plugin.pyo
 %%STATIC%%%%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/pysilk.a
-%%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/pysilk.so
+%%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/pysilk%%PYTHON_EXT_SUFFIX%%.so
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/site.py
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/site.pyc
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/silk/site.pyo

@@ -1,6 +1,3 @@
-# Created by: SAITO Itsuro <saito@miv.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	a2ps
 PORTVERSION=	1.45
 PORTREVISION=	5

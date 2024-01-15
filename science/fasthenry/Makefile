@@ -1,16 +1,12 @@
-# Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	fasthenry
 DISTVERSION=	3.0wr-021113
+PORTREVISION=	1
 CATEGORIES=	science cad
 MASTER_SITES=	http://www.wrcad.com/ftp/pub/ LOCAL/bf
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multipole-accelerated inductance analysis program
-
-BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_riscv64=	Fails to link: missing sbrk
+WWW=		https://www.rle.mit.edu/cpg/research_codes.htm
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config
@@ -18,6 +14,8 @@ WRKSRC=		${WRKDIR}/fasthenry-3.0wr
 
 # Fix build with clang11
 CFLAGS+=	-fcommon
+# Use malloc
+CFLAGS+=	-DNO_SBRK
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

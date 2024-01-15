@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docbook
 PORTVERSION=	5.0
 PORTREVISION=	3
@@ -10,12 +8,19 @@ DISTFILES=	${DBFILES:C,.*:(.*),\1.zip:\1,:C,:docbook-xml-([0-9]+).([0-9]+).?([0-
 
 MAINTAINER=	doceng@FreeBSD.org
 COMMENT=	DocBook XML DTD
+WWW=		https://www.oasis-open.org/docbook/
+
+LICENSE=	DOCBOOK
+LICENSE_NAME=	DocBook License
+LICENSE_FILE=	${FILESDIR}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	${LOCALBASE}/share/xml/xmlcharent/catalog.xml:textproc/xmlcharent \
 		xmlcatmgr:textproc/xmlcatmgr
 RUN_DEPENDS=	${LOCALBASE}/share/xml/xmlcharent/catalog.xml:textproc/xmlcharent \
 		xmlcatmgr:textproc/xmlcatmgr
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 DBFILES=4.1.2:docbkx412 4.2:docbook-xml-4.2 4.3:docbook-xml-4.3 \

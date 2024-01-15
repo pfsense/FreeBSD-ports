@@ -1,3 +1,2 @@
-Parallel executor for Robot Framework test cases
-
-WWW: https://pabot.org
+Pabot is a parallel executor for Robot Framework tests. It splits one execution
+into multiple and save test execution time.

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Parse-Snort
 PORTVERSION=	0.9
 CATEGORIES=	security perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Parse and create Snort rules
+WWW=		https://metacpan.org/release/Parse-Snort
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

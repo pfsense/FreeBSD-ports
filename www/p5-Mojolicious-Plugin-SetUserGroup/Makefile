@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Mojolicious-Plugin-SetUserGroup
 PORTVERSION=	1.000
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Mojolicious plugin to set unprivileged credentials
+WWW=		https://metacpan.org/pod/Mojolicious::Plugin::SetUserGroup
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

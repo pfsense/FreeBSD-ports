@@ -1,18 +1,14 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MatrixModels
-DISTVERSION=	0.4-1
-PORTREVISION=	4
+DISTVERSION=	0.5-3
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Modelling with Sparse And Dense Matrices
+WWW=		https://cran.r-project.org/web/packages/MatrixModels/
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv2+
 
-USES=	cran:auto-plist
+USES=		cran:auto-plist
 
 .include <bsd.port.mk>

@@ -1,20 +1,17 @@
-# Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	dvipdfmx
-PORTVERSION=	20150315
-PORTREVISION=	1
+PORTVERSION=	${TEXLIVE_VERSION}
 CATEGORIES=	print
-MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
+MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/
 PKGNAMEPREFIX=	tex-
-DISTNAME=	texlive-${DISTVERSION_TEXLIVE_SOURCE}-source
+DISTNAME=	texlive-${TEXLIVE_VERSION}-source
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${DISTNAME_TEXMF}${EXTRACT_SUFX}
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	DVI Previewer(kpathsearch) for X
+WWW=		http://project.ktug.or.kr/dvipdfmx/
 
 LICENSE=	GPLv2
 
@@ -22,9 +19,19 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libpaper.so:print/libpaper
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/adobe-cmaps/ai0/CMap/Identity-H:print/adobe-cmaps
 
-USES=		pkgconfig tar:xz
-USE_TEX=	kpathsea web2c texmf dvipsk luatex texhash
-TEXHASHDIRS=	${TEXMFDISTDIR} ${TEXMFDIR}
+USES=		localbase:ldflags pkgconfig tar:xz tex
+USE_TEX=	kpathsea web2c dvipsk luatex texhash
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-system-kpathsea \
+		--with-kpathsea-includes=${LOCALBASE}/include \
+		--with-kpathsea-libdir=${LOCALBASE}/lib \
+		--with-system-libpaper \
+		--with-libpaper-includes=${LOCALBASE}/include \
+		--with-libpaper-libdir=${LOCALBASE}/lib \
+		--with-system-libpng \
+		--with-system-zlib
+
 EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
 EXTRACT_FILES=	am \
 		m4 \
@@ -35,9 +42,6 @@ EXTRACT_AFTER_ARGS_TEXMF= \
 	--strip-components 1 --no-same-permission --no-same-owner \
 	${EXCLUDE_FILES_TEXMF:S,^,--exclude ${DISTNAME_TEXMF}/,} \
 	${EXTRACT_FILES_TEXMF:S,^,${DISTNAME_TEXMF}/,}
-DISTVERSION_TEXLIVE_SOURCE=	20150521
-DISTVERSION_TEXLIVE_TEXMF=	20150523
-DISTNAME_TEXMF=	texlive-${DISTVERSION_TEXLIVE_TEXMF}-texmf
 EXCLUDE_FILES_TEXMF= \
 	texmf-dist/fonts/map/dvipdfmx/jfontmaps \
 	texmf-dist/fonts/map/dvipdfmx/japanese-otf \
@@ -49,21 +53,13 @@ EXTRACT_FILES_TEXMF= \
 	texmf-dist/fonts/cmap/dvipdfmx/ \
 	texmf-dist/fonts/map/dvipdfmx/ \
 	texmf-dist/fonts/map/dvipdfm/
+
 WRKSRC=	${WRKDIR}/${DISTNAME}/texk/dvipdfm-x
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --with-system-kpathsea \
-		--with-kpathsea-includes=${LOCALBASE}/include \
-		--with-kpathsea-libdir=${LOCALBASE}/lib \
-		--with-system-libpaper \
-		--with-libpaper-includes=${LOCALBASE}/include \
-		--with-libpaper-libdir=${LOCALBASE}/lib \
-		--with-system-libpng \
-		--with-system-zlib
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+
+TEXHASHDIRS=	${TEXMFDISTDIR} ${TEXMFDIR}
 
 pre-install:
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/texlive-${DISTVERSION_TEXLIVE_TEXMF}-texmf${EXTRACT_SUFX} \
+	${CAT} ${DISTDIR}/${DIST_SUBDIR}/texlive-${TEXLIVE_VERSION}-texmf${EXTRACT_SUFX} \
 		${EXTRACT_AFTER_ARGS_TEXMF}
 
 post-install:

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bgpuma
 PORTVERSION=	20151209
 PORTREVISION=	1
@@ -7,6 +5,7 @@ CATEGORIES=	net-mgmt
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Searching BGP update files
+WWW=		https://github.com/cmu-sei/bgpuma
 
 LICENSE=	BSD2CLAUSE
 

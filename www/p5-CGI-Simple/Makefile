@@ -1,22 +1,17 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CGI-Simple
-PORTVERSION=	1.240
-PORTREVISION=	1
+PORTVERSION=	1.280
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
-DISTNAME=	${PORTNAME}-${PORTVERSION:S|0$||}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple totally OO CGI interface that is CGI.pm compliant
+WWW=		https://metacpan.org/release/CGI-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-TEST_DEPENDS=	p5-IO-Stringy>=0:devel/p5-IO-Stringy \
-		p5-Test-Exception>=0:devel/p5-Test-Exception \
+TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception \
 		p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings
 
 USES=		perl5

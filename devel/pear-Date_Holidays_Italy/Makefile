@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Date_Holidays_Italy
 PORTVERSION=	0.1.1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Driver based class to calculate holidays in Italy
+WWW=		https://pear.php.net/package/Date_Holidays_Italy
 
 LICENSE=	PHP301
 

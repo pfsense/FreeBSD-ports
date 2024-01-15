@@ -1,6 +1,3 @@
-# Created by: ache
-# $FreeBSD$
-
 PORTNAME=	webcopy
 PORTVERSION=	0.98b7
 CATEGORIES=	www
@@ -8,8 +5,14 @@ MASTER_SITES=	LOCAL/cy
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Web Mirroring Program
+WWW=		http://www.alumnos.inf.utfsm.cl/~vparada/webcopy.html
 
-RESTRICTED=	This program cannot be distributed if modified in any way.  Don't sell for profit without written permission
+# Converted from RESTRICTED
+LICENSE=	webcopy
+LICENSE_NAME=	webcopy
+LICENSE_TEXT=	This program cannot be distributed if modified in any way.  Don't sell for profit without written permission
+LICENSE_PERMS=	auto-accept
+
 ALL_TARGET=
 
 USES=		perl5

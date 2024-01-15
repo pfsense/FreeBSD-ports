@@ -1,6 +1,3 @@
-# Created by: Ross Timson <ross@rosstimson.com>
-# $FreeBSD$
-
 PORTNAME=	chruby
 PORTVERSION=	0.3.9
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	devel ruby
 
 MAINTAINER=	ross@rosstimson.com
 COMMENT=	Changes the current Ruby
+WWW=		https://github.com/postmodern/chruby
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

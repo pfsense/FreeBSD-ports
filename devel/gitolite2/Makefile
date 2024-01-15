@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gitolite
 PORTVERSION=	2.3.1
 DISTVERSIONPREFIX=	v
@@ -9,6 +7,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Access control layer on top of git
+WWW=		https://github.com/sitaramc/gitolite/tree/g2
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
@@ -21,7 +20,6 @@ GH_ACCOUNT=	sitaramc
 CONFLICTS=	gitolite-[^2]*
 
 USES=		cpe perl5 shebangfix
-CPE_VENDOR=	sitaram_chamarty
 SHEBANG_FILES=	hooks/common/update \
 		src/gl-admin-push \
 		src/gl-auth-command \

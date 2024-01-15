@@ -1,6 +1,3 @@
-# Created by: Dominic Fandrey
-# $FreeBSD$
-
 PORTNAME=	data
 PORTVERSION=	0.8.8
 CATEGORIES=	games
@@ -13,6 +10,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenArena game data files
+WWW=		http://openarena.ws/
 
 LICENSE=	GPLv2
 

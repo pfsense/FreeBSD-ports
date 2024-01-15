@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mp3mover
 PORTVERSION=	2.1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/mediamover/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rename mp3s and manipulate them
+WWW=		https://sourceforge.net/projects/mediamover/
 
 RUN_DEPENDS=	p5-tagged>=0:audio/p5-tagged
 

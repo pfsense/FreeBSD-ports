@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bluecloth
 PORTVERSION=	2.2.0
 PORTREVISION=	1
@@ -8,10 +6,10 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby implementation of Markdown, a text-to-HTML conversion tool
+WWW=		https://deveiate.org/projects/BlueCloth
 
 LICENSE=	BSD3CLAUSE
 
-USE_RUBY=	yes
 USES=		gem shebangfix
 SHEBANG_FILES=	bin/bluecloth
 

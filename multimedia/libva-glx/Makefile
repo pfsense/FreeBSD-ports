@@ -1,5 +1,4 @@
-# $FreeBSD$
-
+PORTREVISION=	0
 PKGNAMESUFFIX=	-glx
 
 COMMENT=	VAAPI wrapper for GLX

@@ -1,30 +1,29 @@
-# Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
-
 PORTNAME=	mythmusic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	31.0
+DISTVERSION=	33.1
+PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMEPREFIX=	mythplugin-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ahicks@p-o.co.uk
 COMMENT=	Music playing plugin for MythTV
+WWW=		https://www.mythtv.org/wiki/MythMusic
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libmp3lame.so:audio/lame \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis \
-		libmyth-31.so:multimedia/mythtv
+		libmyth-33.so:multimedia/mythtv
 
-USES=		gmake qt:5
+USES=		gmake qt:5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV
 GH_PROJECT=	mythtv
 USE_LDCONFIG=	yes
-USE_QT=		buildtools_build core gui qmake_build sql xml
+USE_QT=		buildtools:build core gui qmake:build sql widgets xml
+SHEBANG_FILES=	../mythtv/programs/scripts/metadata/Music/mbutils.py
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}" --cxx="${CXX}" \
@@ -38,7 +37,7 @@ DESTDIRNAME=	INSTALL_ROOT
 PLIST_SUB=	MYTHSHARE="share/mythtv"
 WRKSRC_SUBDIR=	mythplugins
 
-OPTIONS_DEFINE=	CDIO FFTW
+OPTIONS_DEFINE=	CDIO
 
 CDIO_LIB_DEPENDS=	libcdio.so:sysutils/libcdio \
 			libcdio_paranoia.so:sysutils/libcdio-paranoia

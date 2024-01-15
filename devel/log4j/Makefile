@@ -1,6 +1,3 @@
-# Created by: Herve Quiroz <herve.quiroz@esil.univ-mrs.fr>
-# $FreeBSD$
-
 PORTNAME=	log4j
 PORTVERSION=	1.2.17
 CATEGORIES=	devel java
@@ -8,13 +5,17 @@ MASTER_SITES=	APACHE/logging/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast and flexible logging library for Java
+WWW=		https://logging.apache.org/log4j/1.2/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		cpe
+
 USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
+CPE_VENDOR=	apache
 
 WRKSRC=		${WRKDIR}/apache-${PORTNAME}-${PORTVERSION}
 

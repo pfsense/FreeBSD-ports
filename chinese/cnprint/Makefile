@@ -1,6 +1,3 @@
-# Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	cnprint
 PORTVERSION=	3.30b
 PORTREVISION=	1
@@ -13,6 +10,7 @@ DISTFILES=	cnprint330b.c cnprint330b.readme ttfb330b.c cnprint330b.hlp \
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Print CJK text (or convert to PostScript)
+WWW=		https://www.ywpw.com/cai/software/
 
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 FILES=		${WRKSRC}/*.sym ${WRKSRC}/*.htf ${WRKSRC}/*.hbf \

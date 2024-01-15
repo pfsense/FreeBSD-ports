@@ -1,6 +1,3 @@
-# Created by: milki <milki@rescomp.berkeley.edu>
-# $FreeBSD$
-
 PORTNAME=	Bot-Training
 PORTVERSION=	0.07
 CATEGORIES=	misc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Plain text training material for bots like Hailo and MegaHAL
+WWW=		https://metacpan.org/release/Bot-Training
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

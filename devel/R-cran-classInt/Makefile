@@ -1,14 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	classInt
-DISTVERSION=	0.4-3
-PORTREVISION=	1
+DISTVERSION=	0.4-10
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Choose Univariate Class Intervals
+WWW=		https://cran.r-project.org/web/packages/classInt/
 
 LICENSE=	GPLv2+
 

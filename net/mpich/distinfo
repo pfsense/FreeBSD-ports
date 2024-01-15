@@ -1,3 +1,3 @@
-TIMESTAMP = 1528376124
-SHA256 (mpich-3.2.1.tar.gz) = 5db53bf2edfaa2238eb6a0a5bc3d2c2ccbfbb1badd79b664a1a919d2ce2330f1
-SIZE (mpich-3.2.1.tar.gz) = 11908154
+TIMESTAMP = 1700836449
+SHA256 (mpich-4.1.2.tar.gz) = 3492e98adab62b597ef0d292fb2459b6123bc80070a8aa0a30be6962075a12f0
+SIZE (mpich-4.1.2.tar.gz) = 39250122

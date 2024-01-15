@@ -1,21 +1,20 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-MockModule
-PORTVERSION=	0.16
+PORTVERSION=	0.177.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Override subroutines in a module for unit testing
+WWW=		https://metacpan.org/release/Test-MockModule
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-SUPER>=0:devel/p5-SUPER
+RUN_DEPENDS=	p5-SUPER>=1.20:devel/p5-SUPER
 TEST_DEPENDS=	p5-Test-Warnings>=0:devel/p5-Test-Warnings
 
 USES=		perl5

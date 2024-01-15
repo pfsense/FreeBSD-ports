@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	iceauth
 PORTVERSION=	1.0.8
 PORTREVISION=	2

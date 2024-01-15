@@ -1,13 +1,11 @@
-# Created by: Zeus Panchenko <zeus@gnu.org.ua>
-# $FreeBSD$
-
 PORTNAME=	rex
-PORTVERSION=	4.0
+PORTVERSION=	4.1
 CATEGORIES=	sysutils tcl
 MASTER_SITES=	http://download.gnu.org.ua/pub/release/${PORTNAME}/
 
 MAINTAINER=	zeus@gnu.org.ua
 COMMENT=	Remote EXecution utility
+WWW=		https://puszcza.gnu.org.ua/projects/rex
 
 LICENSE=	GPLv3+
 

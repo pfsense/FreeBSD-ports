@@ -1,9 +1,6 @@
-# Created by: Mark Reidel <ports@mark.reidel.info>
-# $FreeBSD$
-
 PORTNAME=	cups-pdf
 DISTVERSION=	3.0.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	print
 MASTER_SITES=	http://www.cups-pdf.de/src/ \
 		http://www.physik.uni-wuerzburg.de/~vrbehr/cups-pdf/src/
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Virtual printer for CUPS to produce PDF files
+WWW=		https://www.cups-pdf.de/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

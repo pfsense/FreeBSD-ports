@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	mastergear
 PORTVERSION=	2.0
 PORTREVISION=	3
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SEGA Master System and Game Gear emulator for X
+WWW=		https://fms.komkon.org/MG/
 
 LIB_DEPENDS=	libc.so.5:misc/compat5x
 

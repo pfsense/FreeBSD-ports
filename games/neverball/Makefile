@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	neverball
 PORTVERSION=	1.6.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
-MASTER_SITES=	http://icculus.org/neverball/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://icculus.org/neverball/ \
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tilt the floor to guide a ball through an obstacle course
+WWW=		https://neverball.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/legal/license-GPL-2.0.txt
@@ -35,7 +34,7 @@ NLS_MAKE_ENV_OFF=	ENABLE_NLS=0
 
 do-install:
 	cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/
-	${INSTALL_MAN} ${WRKSRC}/dist/*.6 ${STAGEDIR}${MAN6PREFIX}/man/man6/
+	${INSTALL_MAN} ${WRKSRC}/dist/*.6 ${STAGEDIR}${MAN6PREFIX}/share/man/man6/
 .for f in neverball neverputt
 	${INSTALL_DATA} ${WRKSRC}/dist/${f}.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/

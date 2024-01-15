@@ -1,8 +1,6 @@
-# Created by: Tim Bishop <tdb@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	trackstat
 PORTVERSION=	3.2.3951
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.isaksson.info/download/do/downloadapplication?name=slimserver-trackstat&filename=/
 PKGNAMEPREFIX=	logitechmediaserver-
@@ -11,6 +9,7 @@ DIST_SUBDIR=	logitechmediaserver
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Logitech Media Server plugin to store song ratings and statistics
+WWW=		https://wiki.slimdevices.com/index.php/TrackStat_plugin
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/TrackStat/LICENSE.txt

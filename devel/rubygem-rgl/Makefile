@@ -1,19 +1,21 @@
-# Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rgl
-PORTVERSION=	0.5.3
+PORTVERSION=	0.5.10
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	Framework for graph datastructures and algorithms implemented in Ruby
+COMMENT=	Ruby framework for graph algorithms and data structures
+WWW=		https://github.com/monora/rgl
 
-RUN_DEPENDS=	rubygem-lazy_priority_queue>=0.1.0:devel/rubygem-lazy_priority_queue \
-		rubygem-stream>=0.5.0:devel/rubygem-stream
+LICENSE=	BSD2CLAUSE RUBY
+LICENSE_COMB=	dual
+
+RUN_DEPENDS=	rubygem-pairing_heap>=0.3.0:devel/rubygem-pairing_heap \
+		rubygem-rexml>=3.2.4<4:textproc/rubygem-rexml \
+		rubygem-stream>=0.5.3<0.6:devel/rubygem-stream
+
+USES=		gem
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

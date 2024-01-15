@@ -1,15 +1,12 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	SUPER
-PORTVERSION=	1.17
-PORTREVISION=	3
+PORTVERSION=	1.20190531
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Perl module control superclass method dispatch
+WWW=		https://metacpan.org/release/SUPER
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

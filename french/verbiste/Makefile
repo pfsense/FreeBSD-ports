@@ -1,17 +1,16 @@
-# Created by: Dan Phillips <dan-ports@dp.id.au>
-# $FreeBSD$
-
 PORTNAME=	verbiste
-PORTVERSION=	0.1.47
+PORTVERSION=	0.1.48
 CATEGORIES=	french education textproc
 MASTER_SITES=	http://sarrazip.com/dev/
 
 MAINTAINER=	dereckson@gmail.com
 COMMENT=	French verb conjugator/deconjugator
+WWW=		http://sarrazip.com/dev/verbiste.html
 
 LICENSE=	GPLv2
 
-USES=		gnome pathfix pkgconfig iconv:wchar_t libtool shebangfix
+USES=		gnome iconv:wchar_t pathfix pkgconfig libtool localbase \
+		shebangfix
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
@@ -19,38 +18,22 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 SHEBANG_FILES=	${WRKSRC}/examples/*.pl
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=	GTK2 GNOME DOCS EXAMPLES
+OPTIONS_DEFINE=	GTK2 DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGTK2}
+USES+=		gettext
 USE_GNOME+=	cairo gdkpixbuf2 gtk20
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz
 PLIST_SUB+=	HASGTK=""
 .else
 CONFIGURE_ARGS+=--without-gtk-app
 PLIST_SUB+=	HASGTK="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MGNOME}
-USE_GNOME+=	gnomeprefix libgnomeui
-PLIST_SUB+=	HASGNOME=""
-.else
-CONFIGURE_ARGS+=--without-gnome-app --without-gnome-applet
-PLIST_SUB+=	HASGNOME="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MGTK2} || ${PORT_OPTIONS:MGNOME}
-USES+=		gettext
-PLIST_SUB+=	HASGUI=""
-.else
-PLIST_SUB+=	HASGUI="@comment "
 .endif
 
 post-install:

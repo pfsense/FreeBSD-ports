@@ -1,13 +1,15 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Horde_Stream_Filter
-PORTVERSION=	2.0.4
+PORTVERSION=	2.0.5
 CATEGORIES=	devel www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Stream filters
+WWW=		https://pear.horde.org
 
-USES=	horde
+LICENSE=	LGPL21
+
+USES=	horde cpe
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,14 +1,12 @@
-# Created by: Max Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	asr-manpages
 PORTVERSION=	20000406
 CATEGORIES=	misc
 MASTER_SITES=	LOCAL/fjoe
 DISTNAME=	asr.pages
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	alt.sysadmin.recovery man page distribution
+WWW=		http://www.infonet.ee/~sbernard/manpage/
 
 NO_BUILD=	yes
 

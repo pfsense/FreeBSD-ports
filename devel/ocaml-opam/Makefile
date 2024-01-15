@@ -1,8 +1,5 @@
-# Created by: J. Giovannangeli
-# $FreeBSD$
-
 PORTNAME=	opam
-PORTVERSION=	2.0.6
+DISTVERSION=	2.1.5
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/ocaml/opam/releases/download/${DISTVERSION}/
@@ -11,33 +8,42 @@ DISTNAME=	opam-full-${DISTVERSION}
 
 MAINTAINER=	hannes@mehnert.org
 COMMENT=	Source-based package manager for OCaml
+WWW=		https://opam.ocaml.org/
 
 LICENSE=	LGPL21
+
+BROKEN_armv6=	ld: error: can't create dynamic relocation R_ARM_ABS32 against symbol: caml_program in readonly segment
+BROKEN_armv7=	ld: error: can't create dynamic relocation R_ARM_ABS32 against symbol: caml_program in readonly segment
 
 RUN_DEPENDS=	curl:ftp/curl \
 		gpatch:devel/patch
 
 USES=		gmake
-USE_OCAML=	yes
-
-ALL_TARGET=	lib-ext all
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-checks
 
-OPTIONS_DEFINE=		RSYNC GIT HG DARCS
-OPTIONS_DEFAULT=	RSYNC GIT
+MAKE_JOBS_UNSAFE=	yes
+ALL_TARGET=	cold-lib-ext cold-all
+
+OPTIONS_DEFINE=		DARCS GIT MERCURIAL RSYNC
+OPTIONS_DEFAULT=	GIT RSYNC
+NO_OPTIONS_SORT=	yes
 
 RSYNC_DESC=		Remote repository synchronized with Rsync
-GIT_DESC=		Remote repository synchronized with git
-HG_DESC=		Remote repository synchronized with mercurial
-DARCS_DESC=		Remote repository synchronized with darcs
 
-RSYNC_RUN_DEPENDS=	rsync:net/rsync
-GIT_RUN_DEPENDS=	git:devel/git
-HG_RUN_DEPENDS=		${PY_MERCURIAL}
 DARCS_RUN_DEPENDS=	darcs:devel/hs-darcs
+GIT_RUN_DEPENDS=	git:devel/git
+MERCURIAL_RUN_DEPENDS=	${PY_MERCURIAL}
+RSYNC_RUN_DEPENDS=	rsync:net/rsync
 
-MAKE_JOBS_UNSAFE=	yes
+NOPRECIOUSMAKEVARS=	yes
+
+pre-configure:
+	cd ${WRKSRC} && ${MAKE_CMD} compiler
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/opam-installer
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/opam
 
 .include <bsd.port.mk>

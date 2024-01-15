@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tcc
 DISTVERSIONPREFIX=	release_
 DISTVERSION=	0_9_26
@@ -8,6 +6,7 @@ CATEGORIES=	lang
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny C Compiler
+WWW=		https://github.com/TinyCC/tinycc
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

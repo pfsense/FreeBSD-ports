@@ -1,6 +1,3 @@
-# Created by: jmacd@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	mit-scheme
 PORTVERSION=	9.2
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-${MIT_SCHEME_ARCH}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	MIT Scheme: includes runtime, compiler, and edwin binaries
+WWW=		https://www.swiss.ai.mit.edu/projects/scheme/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Sakai Hiroaki <sakai@miya.ee.kagu.sut.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	xshodou
 PORTVERSION=	1.11
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://kozos.jp/myfreesoft/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Japanese shodou program for X based on Tcl/Tk
+WWW=		https://kozos.jp/myfreesoft/
 
 USES=		tk
 

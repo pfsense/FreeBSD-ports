@@ -1,6 +1,3 @@
-# Created by: numisemis at yahoo dot com
-# $FreeBSD$
-
 PORTNAME=	julius
 PORTVERSION=	4.1.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	OSDN/julius
 
 MAINTAINER=	numisemis@yahoo.com
 COMMENT=	Large Vocabulary Continuous Speech Recognition Engine
+WWW=		https://github.com/julius-speech/julius
 
 BUILD_DEPENDS=	ja-p5-Jcode>=0:japanese/p5-Jcode
 RUN_DEPENDS=	ja-p5-Jcode>=0:japanese/p5-Jcode
@@ -16,6 +14,8 @@ RUN_DEPENDS=	ja-p5-Jcode>=0:japanese/p5-Jcode
 GNU_CONFIGURE=	yes
 USES=		iconv perl5 shebangfix
 SHEBANG_FILES=	jclient-perl/jclient.pl
+
+CONFLICTS_INSTALL=	generate # bin/generate bin/julius
 
 CONFIGURE_ENV=	ac_cv_path_PERL=${PERL}
 CPPFLAGS+=	-I${LOCALBASE}/include

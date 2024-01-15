@@ -1,20 +1,18 @@
-# Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
-
 PORTNAME=	sys-cpu
-PORTVERSION=	0.8.0
+PORTVERSION=	1.0.6
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Interface for getting information about the CPU
+WWW=		https://github.com/djberg96/sys-cpu
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-ffi>=1.0.0:devel/rubygem-ffi
+RUN_DEPENDS=	rubygem-ffi>=1.1<2:devel/rubygem-ffi
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

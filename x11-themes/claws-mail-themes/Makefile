@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	claws-mail-themes
 PORTVERSION=	20140629
 CATEGORIES=	x11-themes mail
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.claws-mail.org/themes/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Claws Mail icon themes
+WWW=		https://www.claws-mail.org/themes.php
 
 LICENSE=	UNKNOWN
 LICENSE_NAME=	@${LICENSE_TEXT}

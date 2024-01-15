@@ -1,9 +1,5 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	lm-solve
-PORTVERSION=	0.8.4
-PORTREVISION=	1
+PORTVERSION=	0.14.2
 CATEGORIES=	games
 MASTER_SITES=	CPAN/Games
 DISTNAME=	Games-LMSolve-${PORTVERSION}

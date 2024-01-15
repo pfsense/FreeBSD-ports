@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	madbomber
 PORTVERSION=	0.2.5
 PORTREVISION=	15
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/madbomber/src/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clone of Activision's classic Atari 2600 console game "Kaboom!"
+WWW=		http://www.newbreedsoftware.com/madbomber/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

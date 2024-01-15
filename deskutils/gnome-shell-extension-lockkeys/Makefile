@@ -1,14 +1,12 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gnome-shell-extension-lockkeys
 PORTVERSION=	0.0.0.20180511
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gnome-shell Numlock and Capslock indicator
+WWW=		https://github.com/kazysmaster/gnome-shell-extension-lockkeys
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/lockkeys@vaina.lt/LICENSE

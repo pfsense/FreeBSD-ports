@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Data-TreeDumper-Renderer-DHTML
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DHTML renderer for Data::TreeDumper
+WWW=		https://metacpan.org/release/Data-TreeDumper-Renderer-DHTML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

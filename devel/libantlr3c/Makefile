@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman<5u623l20@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libantlr3c
 PORTVERSION=	3.4
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.antlr3.org/download/C/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	ANother Tool for Language Recognition (C runtime)
+WWW=		https://www.antlr3.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

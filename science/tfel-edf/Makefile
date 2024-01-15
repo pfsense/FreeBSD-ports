@@ -1,13 +1,12 @@
-# Created by: Pedro F. Giffuni
-# $FreeBSD$
-
 PORTNAME=	tfel
 DISTVERSION=	3.2.1-1
+PORTREVISION=	4
 CATEGORIES=	science
 PKGNAMESUFFIX=	-mfront-edf
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Code generation tool dedicated to material knowledge
+WWW=		https://tfel.sourceforge.net/
 
 LICENSE=	GPLv3
 
@@ -19,8 +18,6 @@ RUN_DEPENDS=	gnuplot:math/gnuplot	\
 		${PYNUMPY}
 
 USES=		cmake compiler:c++0x fortran localbase python
-# OK with clang, but does not link with Code_Aster compiled with Gcc
-USE_GCC=	yes
 
 CONFLICTS=	tfel-mfront-3.*
 

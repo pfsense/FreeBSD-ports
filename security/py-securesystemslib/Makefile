@@ -1,33 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	securesystemslib
-PORTVERSION=	0.11.3
-DISTVERSIONPREFIX=v
+PORTVERSION=	0.31.0
 CATEGORIES=	security python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Cryptographic and general-purpose routines
+WWW=		https://github.com/secure-systems-lab/securesystemslib
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.11.0:devel/py-six@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cryptography>=2.2.2:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}colorama>=0.3.9:devel/py-colorama@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pynacl>1.2.0:security/py-pynacl@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>0:devel/py-hatchling@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pynacl>1.2.0:security/py-pynacl@${PY_FLAVOR}
+TEST_DEPENDS=	${LOCALBASE}/bin/gpg:security/gnupg
 
-USES=		python:3.6+
-USE_GITHUB=	yes	# tests/LICENSE not included in PyPI sdist
-USE_PYTHON=	autoplist distutils
+USES=		python pytest shebangfix
+USE_PYTHON=	autoplist cryptography pep517
+PYTEST_ARGS=	tests
 
-GH_ACCOUNT=	secure-systems-lab
-GH_TAGNAME=	124bb05d
+SHEBANG_FILES=	securesystemslib/settings.py \
+	securesystemslib/schema.py \
+	securesystemslib/_vendor/test-ed25519-upstream.sh \
+	securesystemslib/keys.py \
+	securesystemslib/rsa_keys.py \
+	securesystemslib/hash.py \
+	securesystemslib/formats.py
 
 NO_ARCH=	yes
 
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs tests
+post-patch:
+	@${REINPLACE_CMD} -e 's|hatchling==|hatchling>=|g' \
+		${WRKSRC}/pyproject.toml
 
 .include <bsd.port.mk>

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	golint
 PORTVERSION=	g20190409
-PORTREVISION=	1
+PORTREVISION=	16
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Linter for Go source code
+WWW=		https://github.com/golang/lint/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

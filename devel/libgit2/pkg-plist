@@ -1,3 +1,4 @@
+bin/git2
 include/git2.h
 include/git2/annotated_commit.h
 include/git2/apply.h
@@ -19,7 +20,9 @@ include/git2/credential_helpers.h
 include/git2/deprecated.h
 include/git2/describe.h
 include/git2/diff.h
+include/git2/email.h
 include/git2/errors.h
+include/git2/experimental.h
 include/git2/filter.h
 include/git2/global.h
 include/git2/graph.h
@@ -59,20 +62,24 @@ include/git2/strarray.h
 include/git2/submodule.h
 include/git2/sys/alloc.h
 include/git2/sys/commit.h
+include/git2/sys/commit_graph.h
 include/git2/sys/config.h
 include/git2/sys/cred.h
 include/git2/sys/credential.h
 include/git2/sys/diff.h
+include/git2/sys/email.h
 include/git2/sys/filter.h
 include/git2/sys/hashsig.h
 include/git2/sys/index.h
 include/git2/sys/mempack.h
 include/git2/sys/merge.h
+include/git2/sys/midx.h
 include/git2/sys/odb_backend.h
 include/git2/sys/openssl.h
 include/git2/sys/path.h
 include/git2/sys/refdb_backend.h
 include/git2/sys/reflog.h
+include/git2/sys/remote.h
 include/git2/sys/refs.h
 include/git2/sys/repository.h
 include/git2/sys/stream.h
@@ -86,6 +93,6 @@ include/git2/types.h
 include/git2/version.h
 include/git2/worktree.h
 lib/libgit2.so
-lib/libgit2.so.%%PORTVERSION%%
+lib/libgit2.so.%%DISTVERSION%%
 lib/libgit2.so.%%SHLIB_VER%%
 libdata/pkgconfig/libgit2.pc

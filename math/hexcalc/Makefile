@@ -1,6 +1,3 @@
-# Created by: jhs@berklix.com / asami (original)
-# $FreeBSD$
-
 PORTNAME=	hexcalc
 PORTVERSION=	1.11
 PORTREVISION=	3

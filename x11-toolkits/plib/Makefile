@@ -1,26 +1,26 @@
-# Created by: Brian Buchanan <brian@CSUA.Berkeley.EDU>
-# $FreeBSD$
-
 PORTNAME=	plib
 PORTVERSION=	1.8.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://plib.sourceforge.net/dist/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Portable library for joystick/sound/OpenGL GUI/3D math
+WWW=		https://plib.sourceforge.net/
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gl gmake xorg
-USE_XORG=	xt xi xmu xext x11
+USES=		cpe gl gmake localbase:ldflags xorg
+USE_CXXSTD=	c++14
+CPE_VENDOR=	${PORTNAME}_project
 USE_GL=		glu
+USE_XORG=	xt xi xmu xext x11
+
 GNU_CONFIGURE=	yes
 
 CXXFLAGS+=	-fPIC
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
+LDFLAGS+=	-lpthread
 
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src-js-jsBSD.cxx
 

@@ -1,6 +1,3 @@
-# Created by: tobez
-# $FreeBSD$
-
 PORTNAME=	Bit-Vector-Minimal
 PORTVERSION=	1.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object-oriented wrapper around Perl's vec()
+WWW=		https://metacpan.org/release/Bit-Vector-Minimal
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bio-Coordinate
 PORTVERSION=	1.007001
 CATEGORIES=	biology perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Modules for working with biological coordinates
+WWW=		https://metacpan.org/release/Bio-Coordinate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

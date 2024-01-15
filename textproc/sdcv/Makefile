@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	sdcv
 PORTVERSION=	0.5.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	citrin@citrin.ru
 COMMENT=	Text-based utility for work with dictionaries in StarDict's format #'
+WWW=		https://dushistov.github.io/sdcv/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE

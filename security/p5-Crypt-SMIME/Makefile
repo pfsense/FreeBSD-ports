@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-SMIME
-PORTVERSION=	0.27
+PORTVERSION=	0.28
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	S/MIME message signing, verification, encryption and decryption
+WWW=		https://metacpan.org/release/Crypt-SMIME
 
 LICENSE=	ART10
 
@@ -24,6 +23,10 @@ USES=		perl5 ssl
 USE_PERL5=	configure
 
 CONFIGURE_ENV=	LIBCRYPTO_CFLAGS="-I${OPENSSLINC}" LIBCRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto"
+MAKE_ENV=	OPENSSLBASE=${OPENSSLBASE}
+
+post-patch:
+	@${RM} ${WRKSRC}/t/*.orig
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Crypt/SMIME/SMIME.so

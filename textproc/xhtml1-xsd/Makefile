@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	xhtml1-xsd
 PORTVERSION=	200208
 CATEGORIES=	textproc

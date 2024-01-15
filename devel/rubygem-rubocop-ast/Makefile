@@ -1,21 +1,18 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rubocop-ast
-PORTVERSION=	1.3.0
+PORTVERSION=	1.30.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	RuboCop Node and NodePattern classes
+WWW=		https://github.com/rubocop/rubocop-ast
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-parser>=2.7.1.5:devel/rubygem-parser
+RUN_DEPENDS=	rubygem-parser>=3.2.1.0:devel/rubygem-parser
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

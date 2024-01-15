@@ -1,6 +1,3 @@
-# Created by: Jon Nistor <nistor@snickers.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Structure-Util
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	nistor@snickers.org
 COMMENT=	Perl5 module to change the nature of data within a structure
+WWW=		https://metacpan.org/release/Data-Structure-Util
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

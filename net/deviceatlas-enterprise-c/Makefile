@@ -1,13 +1,11 @@
-# Created by: David Carlier
-# $FreeBSD$
-
 PORTNAME=	deviceatlas-enterprise-c
-PORTVERSION=	2.3.2
+PORTVERSION=	2.3.4
 CATEGORIES=	net devel
 MASTER_SITES=	#
 
 MAINTAINER=	dcarlier@afilias.info
 COMMENT=	DeviceAtlas Device Detection C API
+WWW=		https://www.deviceatlas.com
 
 LICENSE=	deviceatlas-enterprise-c-license
 LICENSE_NAME=	DeviceAtlas C Enterprise API License

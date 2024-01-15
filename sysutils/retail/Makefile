@@ -1,6 +1,3 @@
-# Created by: Oleg Ginzburg
-# $FreeBSD$
-
 PORTNAME=	retail
 PORTVERSION=	1.0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://xjack.org/retail/download/ \
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Program for incremental logfile reader
+WWW=		http://xjack.org/retail/
 
 LICENSE=	GPLv2
 

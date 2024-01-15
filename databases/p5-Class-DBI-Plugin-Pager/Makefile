@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-Plugin-Pager
 PORTVERSION=	0.566
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to paged queries for CDBI
+WWW=		https://metacpan.org/release/Class-DBI-Plugin-Pager
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-DBI>=0:databases/p5-Class-DBI \

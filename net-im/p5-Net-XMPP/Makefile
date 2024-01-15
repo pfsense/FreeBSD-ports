@@ -1,6 +1,3 @@
-# Created by: Lars Eggert <lars.eggert@gmx.net>
-# $FreeBSD$
-
 PORTNAME=	Net-XMPP
 PORTVERSION=	1.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Net::XMPP provides Perl Developer access to the XMPP protocol
+WWW=		https://metacpan.org/release/Net-XMPP
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xkbind
 PORTVERSION=	2010.05.20
 CATEGORIES=	x11
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}/source
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Minimal keyboard layout indicator program
+WWW=		https://xkbind.sourceforge.net/
 
 LICENSE=	GPLv2
 

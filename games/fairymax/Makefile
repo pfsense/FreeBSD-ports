@@ -1,6 +1,3 @@
-# Created by: Kalten <kalten@gmx.at>
-# $FreeBSD$
-
 PORTNAME=	fairymax
 PORTVERSION=	5.0b.20160316.1
 PORTREVISION=	1
@@ -13,6 +10,7 @@ DISTNAME=	${PORTNAME}-${COMMIT_HASH}
 
 MAINTAINER=	kalten@gmx.at
 COMMENT=	Chess engine for shatranj, courier chess, and others
+WWW=		https://www.chessvariants.org/index/msdisplay.php?itemid=MSfairy-max
 
 COMMIT_HASH=	67cee03
 

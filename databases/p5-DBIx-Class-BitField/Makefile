@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-BitField
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Store multiple boolean fields in one integer field
+WWW=		https://metacpan.org/release/DBIx-Class-BitField
 
 RUN_DEPENDS=	p5-DBIx-Class>=0:databases/p5-DBIx-Class
 BUILD_DEPENDS=	${RUN_DEPENDS}

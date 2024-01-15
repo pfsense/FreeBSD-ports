@@ -1,0 +1,26 @@
+--- Makefile.in.orig	2023-06-07 20:28:39 UTC
++++ Makefile.in
+@@ -6274,8 +6274,6 @@ install_sh = @install_sh@
+ includedir = @includedir@
+ infodir = @infodir@
+ install_sh = @install_sh@
+-jsonlib = @jsonlib@
+-jsonsrcdir = @jsonsrcdir@
+ libdir = @libdir@
+ libexecdir = @libexecdir@
+ libmpi_so_version = @libmpi_so_version@
+@@ -6961,12 +6959,12 @@ errnames_txt_files = src/mpi/errhan/errnames.txt \
+ errnames_txt_files = src/mpi/errhan/errnames.txt \
+ 	src/mpid/ch3/errnames.txt $(am__append_54) $(am__append_75) \
+ 	$(am__append_80)
+-external_subdirs = @mplsrcdir@ @hwlocsrcdir@ @jsonsrcdir@ \
++external_subdirs = @mplsrcdir@ @hwlocsrcdir@ \
+ 	@yaksasrcdir@ @pmisrcdir@ $(am__append_76) $(am__append_81)
+ external_ldflags = @mpllibdir@ @yaksalibdir@
+ external_libs = @WRAPPER_LIBS@
+ mpi_convenience_libs = $(am__append_16)
+-pmpi_convenience_libs = @mpllib@ @hwloclib@ @jsonlib@ @yaksalib@ \
++pmpi_convenience_libs = @mpllib@ @hwloclib@ @yaksalib@ \
+ 	@pmilib@ $(am__append_8) $(am__append_17) $(am__append_77) \
+ 	$(am__append_82)
+ 

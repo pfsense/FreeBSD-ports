@@ -1,6 +1,3 @@
-# Created by: Sander Janssen <janssen@rendo.dekooi.nl>
-# $FreeBSD$
-
 PORTNAME=	mp3rename
 PORTVERSION=	0.6
 CATEGORIES=	audio
@@ -9,6 +6,8 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Renaming program for MP3 files based on their ID3 tag
+
+CONFLICTS_INSTALL=	p5-MP3-Tag-Utils # bin/mp3rename
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}.orig
 

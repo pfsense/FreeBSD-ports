@@ -1,9 +1,6 @@
-# Created by: Dan Pelleg <dpelleg+unison@cs.cmu.edu>
-# $FreeBSD$
-
 PORTNAME=	unison
 PORTVERSION=	2.40.128
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	http://www.cis.upenn.edu/~bcpierce/unison/download/releases/${DISTNAME}/
 DISTFILES=	${EXTRACT_ONLY} ${EXTRA_DOCS}
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	User-level file synchronization tool
+WWW=		https://www.cis.upenn.edu/~bcpierce/unison/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -30,7 +28,6 @@ x11_BUILD_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2 \
 			icotool:graphics/icoutils
 x11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
-x11_RUN_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 USES=		gmake
@@ -63,10 +60,6 @@ pre-patch:
 # BCP 5/16: Eta-expand for backward compatibility with OCaml >4.02
 	@${REINPLACE_CMD} -e 's,= Unix\.symlink,s1 s2 & s1 s2,' \
 		${WRKSRC}/system/system_generic.ml
-
-post-patch:
-	@${REINPLACE_CMD} -Ee 's@(\+|/)(lablgtk2)@\1site-lib/\2@' \
-		${WRKSRC}/Makefile.OCaml
 
 post-build:
 	(cd ${WRKSRC} && HOME=${WRKSRC} ./unison -selftest -ui text -batch)

@@ -1,6 +1,3 @@
-# Created by: Vsevolod Stakhov <vsevolod@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libmicro
 PORTVERSION=	0.4.1
 CATEGORIES=	benchmarks

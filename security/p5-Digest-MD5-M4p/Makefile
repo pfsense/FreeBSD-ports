@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Digest-MD5-M4p
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to a variant of the MD5 algorithm
+WWW=		https://metacpan.org/release/Digest-MD5-M4p
 
 USES=		perl5
 USE_PERL5=	configure

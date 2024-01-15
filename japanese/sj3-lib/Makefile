@@ -1,6 +1,3 @@
-# Created by: Hidekazu Kuroki <hidekazu@cs.titech.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	sj3
 PORTVERSION=	2.0.1.20
 PORTREVISION=	8
@@ -34,7 +31,7 @@ POSTPATCHES=	${FILESDIR}/post-patch-Imakefile \
 post-patch:
 	cd ${WRKSRC} && ${CAT} ${POSTPATCHES} | ${PATCH}
 
-pre-configure: apply-slist
+pre-configure:
 	${INSTALL_DATA} ${WRKDIR}/sj3_freebsd.tmpl ${WRKSRC}/sj3_freebsd.tmpl
 
 .include <bsd.port.mk>

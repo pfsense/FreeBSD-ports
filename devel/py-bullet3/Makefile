@@ -1,26 +1,34 @@
-# $FreeBSD$
-
 PORTNAME=	bullet3
-DISTVERSION=	3.08
+DISTVERSION=	3.25
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python version of 3D collision detection library Bullet
+WWW=		https://pybullet.org/wordpress/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		compiler:c++11-lang gl localbase python:3.6+
-USE_GITHUB=	yes
-GH_ACCOUNT=	bulletphysics
-USE_PYTHON=	autoplist distutils
+RUN_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}gym>0:math/py-gym@${PY_FLAVOR}
+
+USES=		compiler:c++11-lang gl localbase python
+USE_PYTHON=	distutils autoplist
 USE_GL=		gl glew
 
-post-patch: # remove examples because they fail: https://github.com/bulletphysics/bullet3/issues/1510, and they shouldn't be built anyway
-	@${REINPLACE_CMD} -E 's,"examples/.*\.(cpp|c|m)",,' ${WRKSRC}/setup.py
+USE_GITHUB=	yes
+GH_ACCOUNT=	bulletphysics
+
+CFLAGS_powerpc64=	-mvsx
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pybullet*.so
+
+do-test: # test require graphical environment
+	@${SETENV} ${TEST_ENV} ${PYTHON_CMD} ${FILESDIR}/test.py
 
 .include <bsd.port.mk>

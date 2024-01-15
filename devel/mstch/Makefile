@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	mstch
 DISTVERSION=	1.0.2-1
 DISTVERSIONSUFFIX=	-g0fde1cf
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Complete implementation of {{mustache}} templates using modern C++
+WWW=		https://github.com/no1msd/mstch
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

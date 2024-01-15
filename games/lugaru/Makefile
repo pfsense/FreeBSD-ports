@@ -1,13 +1,12 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lugaru
 PORTVERSION=	1.2
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D arcade with unique fighting system and anthropomorphic characters
+WWW=		https://bitbucket.org/osslugaru/lugaru/wiki/Home
 
 LICENSE=	GPLv2+ CC-BY-SA-3.0 CC-BY-SA-4.0
 LICENSE_COMB=	multi
@@ -25,7 +24,7 @@ USE_XORG=	sm
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	osslugaru
-GL_COMMIT=	c7b99378439735c60f84869b05c6ebde53083667
+GL_TAGNAME=	c7b99378439735c60f84869b05c6ebde53083667
 
 CMAKE_ON=	SYSTEM_INSTALL
 

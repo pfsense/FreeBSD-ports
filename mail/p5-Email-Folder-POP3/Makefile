@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Email-Folder-POP3
 PORTVERSION=	1.015
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Email::Folder access to POP3 folders
+WWW=		https://metacpan.org/release/Email-Folder-POP3
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,13 +1,11 @@
-# Created by: David Shane Holden <dpejesh@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	kronosnet
-PORTVERSION=	1.20
+PORTVERSION=	1.26
 CATEGORIES=	devel
 MASTER_SITES=	https://kronosnet.org/releases/
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Network abstraction layer designed for high availability
+WWW=		https://kronosnet.org/
 
 LICENSE=	GPLv2
 

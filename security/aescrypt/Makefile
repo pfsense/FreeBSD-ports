@@ -1,6 +1,3 @@
-# Created by: roam@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	aescrypt
 PORTVERSION=	0.7
 PORTREVISION=	1
@@ -13,6 +10,7 @@ PATCHFILES=	aescrypt-0.7-roam-whopper-01.patch.gz
 
 MAINTAINER=	mauroeldritch@gmail.com
 COMMENT=	Command-line AES encryption/decryption suite
+WWW=		https://aescrypt.sourceforge.net/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

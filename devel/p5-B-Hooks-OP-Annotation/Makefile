@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	B-Hooks-OP-Annotation
 PORTVERSION=	0.44
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Annotate and delegate hooked OPs
+WWW=		https://metacpan.org/release/B-Hooks-OP-Annotation
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

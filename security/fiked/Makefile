@@ -1,14 +1,12 @@
-# Created by: Daniel Roethlisberger <daniel@roe.ch>
-# $FreeBSD$
-
 PORTNAME=	fiked
 PORTVERSION=	0.0.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	security net-vpn
 MASTER_SITES=	https://mirror.roe.ch/rel/fiked/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fake IKE PSK+XAUTH daemon based on VPNC
+WWW=		https://www.roe.ch/FakeIKEd
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

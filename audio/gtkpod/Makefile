@@ -1,14 +1,12 @@
-# Created by: David Le Brun <david@dyn-ns.net>
-# $FreeBSD$
-
 PORTNAME=	gtkpod
 PORTVERSION=	1.0.0
-PORTREVISION=	9
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	GUI for Apple iPod using GTK2
+WWW=		http://www.gtkpod.org/
 
 LICENSE=	GPLv2
 
@@ -21,7 +19,6 @@ SHEBANG_FILES=	scripts/mab2vcard scripts/sync-evolution.sh \
 		scripts/sync-palm-jppy.py
 USE_GNOME=	gtk20 intltool libglade2
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

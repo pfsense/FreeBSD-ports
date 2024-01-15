@@ -1,6 +1,3 @@
-# Created by: clsung@dragon2.net
-# $FreeBSD$
-
 PORTNAME=	XML-Handler-HTMLWriter
 PORTVERSION=	2.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	PerlSAX handlers for outputting HTML
+WWW=		https://metacpan.org/release/XML-Handler-HTMLWriter
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-SAX-Writer>=0:textproc/p5-XML-SAX-Writer \

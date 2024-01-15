@@ -1,6 +1,3 @@
-# Created by: Lawrence Chen <beastie@tardisi.com>
-# $FreeBSD$
-
 PORTNAME=	check_dhcp.pl
 PORTVERSION=	0.1
 CATEGORIES=	net-mgmt
@@ -11,6 +8,7 @@ EXTRACT_SUFX=
 
 MAINTAINER=	beastie@tardisi.com
 COMMENT=	Check the availability of a DHCP server using unicast delivery
+WWW=		https://exchange.nagios.org/
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/utils.pm:net-mgmt/nagios-plugins \
 		p5-IO-Interface>=0:net/p5-IO-Interface \

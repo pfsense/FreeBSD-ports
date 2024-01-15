@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Exit
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Test whether code exits without terminating testing
+WWW=		https://metacpan.org/release/Test-Exit
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

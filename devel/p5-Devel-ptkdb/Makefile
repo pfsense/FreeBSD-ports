@@ -1,6 +1,3 @@
-# Created by: Alex Kapranoff <kappa@FreeBSD.org.ua>
-# $FreeBSD$
-
 PORTNAME=	Devel-ptkdb
 PORTVERSION=	1.1091
 PORTREVISION=	5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Tk debugger for Perl
+WWW=		https://metacpan.org/release/Devel-ptkdb
 
 RUN_DEPENDS=	p5-Tk>=0:x11-toolkits/p5-Tk
 

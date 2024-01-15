@@ -1,13 +1,11 @@
-# Created by: Oleh Hushchenkov <gor@clogic.com.ua>
-# $FreeBSD$
-
 PORTNAME=	unclutter-xfixes
-PORTVERSION=	1.5
+PORTVERSION=	1.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc
 
 MAINTAINER=	o.hushchenkov@gmail.com
 COMMENT=	Rewrite of unclutter using the x11-xfixes extension
+WWW=		https://github.com/Airblader/unclutter-xfixes
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

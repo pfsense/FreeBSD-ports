@@ -1,7 +1,5 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
+
 # PROVIDE: qbittorrent
 # REQUIRE: DAEMON
 # KEYWORD: shutdown
@@ -18,6 +16,8 @@
 #			     Default is 'qbittorrent'
 # qbittorrent_group:	     The group associated with username qbittorrent
 #			     daemon runs as. Default is 'qbittorrent'
+# qbittorrent_flags:	     Arguments that will be passed to qbittorrent.
+#			     For example, --webui-port={port}.
 #
 
 . /etc/rc.subr
@@ -32,6 +32,7 @@ load_rc_config $name
 : ${qbittorrent_download_dir="/var/db/qbittorrent/Downloads"}
 : ${qbittorrent_user=%%USER%%}
 : ${qbittorrent_group=%%GROUP%%}
+: ${qbittorrent_flags=""}
 
 command="%%PREFIX%%/bin/qbittorrent-nox"
 command_args="--daemon"

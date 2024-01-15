@@ -1,15 +1,13 @@
-# Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	sdl_sound
 PORTVERSION=	1.0.3
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	audio
 MASTER_SITES=	http://www.icculus.org/SDL_sound/downloads/
 DISTNAME=	SDL_sound-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	SDL audio library and player for some popular sound file formats
+WWW=		https://www.icculus.org/SDL_sound/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

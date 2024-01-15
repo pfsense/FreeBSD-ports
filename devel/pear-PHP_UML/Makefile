@@ -1,20 +1,18 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	PHP_UML
 PORTVERSION=	1.6.2
 CATEGORIES=	devel
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR Class to Create UML Representation of PHP Code
+WWW=		https://pear.php.net/package/PHP_UML
 
 LICENSE=	LGPL3
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:devel/pear@${PHP_FLAVOR} \
-		${PEARDIR}/Console/CommandLine.php:devel/pear-Console_CommandLine@${PHP_FLAVOR}
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:devel/pear@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}Console_CommandLine>=0:devel/pear-Console_CommandLine@${PHP_FLAVOR}
 
-USES=		pear php
-USE_PHP=	spl xsl
+USES=		pear
+USE_PHP=	xsl
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		nsupdate
 PORTVERSION=		9.16.5
 PORTREVISION=		0
@@ -10,6 +8,7 @@ DISTNAME=		bind-${ISCVERSION}
 
 MAINTAINER=		timur@FreeBSD.org
 COMMENT=		nsupdate utility with the GSS-TSIG support
+WWW=		https://www.isc.org/software/bind
 
 LICENSE=		MPL20
 LICENSE_FILE=		${WRKSRC}/COPYRIGHT
@@ -22,6 +21,7 @@ USES=			autoreconf compiler:c11 cpe libedit libtool pkgconfig ssl tar:xz
 ISCVERSION=		9.16.5
 
 CPE_VENDOR=		isc
+CPE_PRODUCT=		bind
 CPE_VERSION=		${ISCVERSION:C/-.*//}
 .if ${ISCVERSION:M*-*}
 CPE_UPDATE=		${ISCVERSION:C/.*-//:tl}

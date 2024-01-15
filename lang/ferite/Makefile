@@ -1,14 +1,12 @@
-# Created by: Jeremy Norris <ishmael27@home.com>
-# $FreeBSD$
-
 PORTNAME=	ferite
 PORTVERSION=	1.0.2
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	lang
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Embeddable scripting language
+WWW=		https://sourceforge.net/projects/ferite/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

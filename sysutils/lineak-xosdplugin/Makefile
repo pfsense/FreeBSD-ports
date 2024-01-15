@@ -1,6 +1,3 @@
-# Created by: Kay Lehmann <kay_lehmann@web.de>
-# $FreeBSD$
-
 PORTNAME=	lineak-xosdplugin
 PORTVERSION=	0.9
 PORTREVISION=	10
@@ -10,6 +7,7 @@ DIST_SUBDIR=	lineak
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Xosd-plugin for lineakd
+WWW=		https://lineak.sourceforge.net/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Hijk
 PORTVERSION=	0.28
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Fast & minimal low-level HTTP client
+WWW=		https://metacpan.org/release/Hijk
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

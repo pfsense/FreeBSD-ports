@@ -1,12 +1,10 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minetest_game
-PORTVERSION=	5.3.0
+PORTVERSION=	5.7.0
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	The main game for the Minetest game engine
+WWW=		https://www.minetest.net/
 
 LICENSE=	LGPL21+ CC-BY-SA-3.0
 LICENSE_COMB=	multi

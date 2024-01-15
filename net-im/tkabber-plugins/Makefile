@@ -1,6 +1,3 @@
-# Created by: Denis Shaposhnikov <dsh@vlink.ru>
-# $FreeBSD$
-
 PORTNAME=	tkabber-plugins
 PORTVERSION=	1.1.2
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://files.jabber.ru/tkabber/
 
 MAINTAINER=	mp39590@gmail.com
 COMMENT=	External Plugins for Tkabber
+WWW=		http://tkabber.jabber.ru/tkabber-plugins
 
 LICENSE=	GPLv2
 

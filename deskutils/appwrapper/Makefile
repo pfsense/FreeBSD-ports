@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	appwrapper
 PORTVERSION=	0.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/AppWrapper%20${PORTVERSION}
 DISTNAME=	AppWrapper.${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep application wrapper
+WWW=		https://appwrapper.sourceforge.net/
 
 LICENSE=	GPLv2
 

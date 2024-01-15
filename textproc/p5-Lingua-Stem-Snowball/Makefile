@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Lingua-Stem-Snowball
 PORTVERSION=	0.952
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl interface to Snowball stemmers
+WWW=		https://metacpan.org/release/Lingua-Stem-Snowball
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

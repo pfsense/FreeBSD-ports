@@ -1,51 +1,66 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	binutils
-PORTVERSION=	2.33.1
+DISTVERSION=	2.40
 PORTREVISION=	4
 PORTEPOCH?=	1
 CATEGORIES?=	devel
-MASTER_SITES=	SOURCEWARE/binutils/releases
+MASTER_SITES=	GNU \
+		SOURCEWARE/binutils/releases
 
-MAINTAINER?=	jflopezfernandez@gmail.com
+MAINTAINER?=	cy@FreeBSD.org
 COMMENT?=	GNU binary tools
+WWW=		https://www.gnu.org/software/binutils/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
-
-FLAVORS=	native aarch64 aarch64_none_elf amd64 arm_gnueabi arm_none_eabi \
-		avr i386 mingw32 mips mips64 powerpc powerpc64 powerpc64le riscv64 \
-		riscv64_none_elf s390x sparc64 riscv32_unknown_elf
-FLAVOR?=	native
-
-RELRO_CONFIGURE_ON=	--enable-relro
-BUILD_DEPENDS=	${LOCALBASE}/lib/libgmp.so:math/gmp \
-		${LOCALBASE}/lib/libmpfr.so:math/mpfr
-
-CONFLICTS=	libbfd-[0-9]*
-
-#TEST_DEPENDS+=	runtest:misc/dejagnu
-TEST_TARGET=	check
-
-OPTIONS_DEFINE=	NLS RELRO STATIC
-STATIC_PREVENTS=	NLS
-
-RELRO_DESC=	Enable relocation memory corruption mitigation (-z relro) by default
-
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING3
 LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING3.LIB
 
-USES=		bison:alias cpe gmake libtool tar:xz compiler:env
+BUILD_DEPENDS=	${LOCALBASE}/lib/libgmp.so:math/gmp \
+		${LOCALBASE}/lib/libmpfr.so:math/mpfr
+
+LIB_DEPENDS=	libzstd.so:archivers/zstd
+
+FLAVORS=	native aarch64 aarch64_none_elf amd64 arm_gnueabi arm_none_eabi \
+		avr i386 mingw32 mips mips64 powerpc powerpc64 powerpc64le riscv64 \
+		riscv64_none_elf s390x riscv32_unknown_elf
+FLAVOR?=	native
+
+USES=		bison:alias compiler:env cpe gmake localbase libtool perl5 pkgconfig tar:lz
+USE_PERL5=	build
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 
-RELRO_CONFIGURE_OFF=	--enable-relro=no
+#TEST_DEPENDS+=	runtest:misc/dejagnu
+CONFIGURE_ARGS+=	--disable-werror \
+			--enable-deterministic-archives \
+			--with-sysroot=/ \
+			--enable-x86-relax-relocations=no \
+			--with-zstd \
+			--enable-default-compressed-debug-sections-algorithm=zstd
+MAKE_ARGS+=	LIBDL="" V=1
+MAKE_ENV+=	ac_cv_func_sbrk=0
+
+# Some versioned symbols in libctf are undefined when libctf-nobfd.so is linked.
+# Suppress errors with lld >= 17 due to these undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
+
+# Tests will always fail because --compress-debug-sections is always set to
+# zlib-gabi regardless of the compression setting by ./configure.
+# TEST_TARGET=	check
+
+CONFLICTS=	libbfd
+
+OPTIONS_DEFINE=	INFO NLS RELRO
+OPTIONS_DEFAULT=	INFO
 OPTIONS_SUB=	yes
+
+RELRO_DESC=	Enable relocation memory corruption mitigation (-z relro) by default
+RELRO_CONFIGURE_ON=	--enable-relro
+RELRO_CONFIGURE_OFF=	--enable-relro=no
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
-
-STATIC_LDFLAGS+=	-all-static
+INFO_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-no-info
+INFO_USES=	makeinfo
 
 aarch64_COMMENT=	GNU binutils for ${FLAVOR} development
 
@@ -71,9 +86,21 @@ BUTARGET=	${FLAVOR:C/_/-/g}
 BUTARGET=	x86_64-unknown-${OPSYS:tl}${OSREL}
 .endif
 
-CONFIGURE_ARGS+=	--disable-shared \
-			--target=${BUTARGET}
+.if ${FLAVOR} == mingw32
+USES+=		iconv
 .endif
+
+CONFIGURE_ARGS+=	--target=${BUTARGET}
+.endif
+
+.if ${FLAVOR} == native
+CONFIGURE_ARGS+=	--enable-shared
+PLIST_SUB+=		SHARED=''
+.else
+CONFIGURE_ARGS+=	--disable-shared
+PLIST_SUB+=		SHARED='@comment'
+.endif
+
 
 .if ${FLAVOR} == native
 BUREMOVE=	coffdump \
@@ -90,30 +117,31 @@ CONFIGURE_ARGS+=	--with-system-zlib \
 			--with-mpfr=${LOCALBASE} \
 			--enable-targets=all \
 			--enable-threads=yes
-INFO=		as \
+# XXX Needed to support gcc10 and earlier:
+CONFIGURE_ARGS+=	--with-isa-spec=2.2
+INFO_INFO=	as \
 		binutils \
+		ctf-spec \
 		gprof \
 		bfd \
-		ld
+		ld \
+		sframe-spec
 .endif
-
-CONFIGURE_ARGS+=	--disable-werror \
-			--enable-deterministic-archives \
-			--with-sysroot=/ \
-			--enable-x86-relax-relocations=no
-
-MAKE_ENV+=	ac_cv_func_sbrk=0
-MAKE_ARGS+=	LIBDL=""
 
 .include <bsd.port.pre.mk>
 
 # Actual earliest version may differ slightly
-.if (${ARCH} != sparc64 && ${ARCH} != mips && ${ARCH} != mips64 && ${ARCH} != powerpcspe && ${ARCH} != powerpc && ${ARCH} != powerpc64 && ${ARCH} != riscv64 && !defined(PKGNAMEPREFIX)) || ((${ARCH} == powerpc || ${ARCH} == powerpc64) && ${CHOSEN_COMPILER_TYPE} != gcc && !defined(PKGNAMEPREFIX))
+.if (${ARCH} != mips && ${ARCH} != mips64 && ${ARCH} != powerpcspe && ${ARCH} != powerpc && ${ARCH} != powerpc64 && ${ARCH} != riscv64 && !defined(PKGNAMEPREFIX)) || ((${ARCH} == powerpc || ${ARCH} == powerpc64) && ${CHOSEN_COMPILER_TYPE} != gcc && !defined(PKGNAMEPREFIX))
 CONFIGURE_ARGS+=	--enable-gold --enable-plugins
 CXXFLAGS+=	-Wno-c++11-narrowing
 PLIST_SUB+=	GOLD=""
 .else
 PLIST_SUB+=	GOLD="@comment "
+.endif
+
+.if (${FLAVOR} == native && ${OPSYS} == FreeBSD) || \
+    (${FLAVOR} != native && ${BUTARGET:M*freebsd*})
+CONFIGURE_ARGS+=	--enable-new-dtags
 .endif
 
 .if ${ARCH} == amd64
@@ -126,14 +154,20 @@ CONFIGURE_TARGET=	${ARCH}-portbld-freebsd${OSREL}
 
 post-patch:
 	${REINPLACE_CMD} -e "s/-ldl//g" ${WRKSRC}/gold/testsuite/Makefile.in
+# Force the generation of man pages
+	${RM} ${WRKSRC}/binutils/doc/*.1
+	${RM} ${WRKSRC}/gas/doc/*.1
+	${RM} ${WRKSRC}/gprof/*.1
+	${RM} ${WRKSRC}/ld/*.1
 
 post-install:
 .if ${FLAVOR} == native
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/lib/lib*.so* \
+		${STAGEDIR}${PREFIX}/lib/bfd-plugins/libdep.so
 	${INSTALL_DATA} ${WRKSRC}/include/plugin-api.h ${STAGEDIR}${PREFIX}/include/
 	@${FIND} -ds ${STAGEDIR}${PREFIX}/${CONFIGURE_TARGET} ! -type d | \
 		${SED} -e 's,^${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
-	${RM} ${STAGEDIR}${PREFIX}/include/ansidecl.h
-	${REINPLACE_CMD} '/#include "ansidecl.h"/d' ${STAGEDIR}${PREFIX}/include/bfd.h
 .else
 .if ${PKGNAMEPREFIX:S/-$//} != ${BUTARGET}
 	${RM} -r ${STAGEDIR}${PREFIX}/${PKGNAMEPREFIX:S/-$//}
@@ -141,6 +175,7 @@ post-install:
 	${RM} ${STAGEDIR}${PREFIX}/${BUTARGET}/lib/ldscripts/i386bsd.*
 	@if [ -d ${STAGEDIR}${PREFIX}/${INFO_PATH:H} ] ; then rm -rf ${STAGEDIR}${PREFIX}/${INFO_PATH:H}; fi
 	${LN} -fs ../../bin/${BUTARGET}-size ${STAGEDIR}${PREFIX}/${BUTARGET}/bin/size
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/bfd-plugins
 .endif
 .for tool in ${BUREMOVE}
 	@${RM} ${STAGEDIR}${PREFIX}/bin/${BUTARGET}-${tool} \

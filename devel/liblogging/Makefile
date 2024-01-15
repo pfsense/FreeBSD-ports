@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	liblogging
 PORTVERSION=	1.0.6
 CATEGORIES=	devel
@@ -8,11 +5,13 @@ MASTER_SITES=	http://download.rsyslog.com/liblogging/
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Easy to use system logging library
+WWW=		https://www.liblogging.org/
 
 LICENSE=	BSD2CLAUSE
 
 GNU_CONFIGURE=	yes
-USES=		libtool pathfix pkgconfig
+USES=		cpe libtool pathfix pkgconfig
+CPE_VENDOR=	adiscon
 
 CONFIGURE_ARGS+=	--disable-journal --enable-rfc3195
 

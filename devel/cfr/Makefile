@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	cfr
-DISTVERSION=	0.150
+DISTVERSION=	0.152
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.benf.org/other/cfr/ \
 		https://www.benf.org/other/cfr/ \
@@ -11,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Class File Reader (CFR) Java decompiler
+WWW=		https://www.benf.org/other/cfr/
 
 # http://www.benf.org/other/cfr/license.html
 LICENSE=	MIT

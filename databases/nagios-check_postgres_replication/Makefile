@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	check_postgres_replication
 PORTVERSION=	2010.12.16
 PORTREVISION=	3
@@ -10,8 +8,9 @@ PKGNAMEPREFIX=	nagios-
 DISTNAME=	check_postgres_replication.py
 EXTRACT_SUFX=	# empty
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Nagios plugin to check the lag between a postgresql replica and master
+WWW=		https://pypi.org/project/nagiosplugin/
 
 LICENSE=	MIT
 

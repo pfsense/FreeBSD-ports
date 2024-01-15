@@ -1,11 +1,11 @@
---- lib/proxy/http_download.rb.orig	2018-12-06 13:30:25.000000000 +0100
-+++ lib/proxy/http_download.rb	2019-02-11 22:33:58.455890000 +0100
-@@ -9,7 +9,7 @@
+--- lib/proxy/http_download.rb.orig	2022-09-08 13:50:11 UTC
++++ lib/proxy/http_download.rb
+@@ -10,7 +10,7 @@ module Proxy
+       logger.warn('Deprecated: HttpDownload read_timeout is deprecated and will be removed in 3.5') if read_timeout
+       logger.warn('Deprecated: HttpDownload dns_timeout is deprecated and will be removed in 3.5') if dns_timeout
+       connect_timeout ||= DEFAULT_CONNECT_TIMEOUT
+-      args = [which('curl')]
++      args = ["%%LOCALBASE%%/bin/curl"]
  
-     def initialize(src, dst, read_timeout = nil, connect_timeout = nil, dns_timeout = nil)
-       @dst = dst
--      wget = which("wget")
-+      wget = "%%LOCALBASE%%/bin/wget"
-       read_timeout ||= DEFAULT_READ_TIMEOUT
-       dns_timeout ||= DEFAULT_CONNECT_TIMEOUT
-       connect_timeout ||= DEFAULT_DNS_TIMEOUT
+       # no cert verification if set
+       args << "--insecure" unless verify_server_cert

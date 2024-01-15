@@ -1,6 +1,3 @@
-# Created by: Jov <amutu@amutu.com>
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../u-boot-master
 
 MODEL=		orangepi-plus-2e

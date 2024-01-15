@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-POE
 PORTVERSION=	0.215
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	The Illicit Love Child of Moose and POE
+WWW=		https://metacpan.org/release/MooseX-POE
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,5 +21,7 @@ TEST_DEPENDS=	p5-MooseX-Declare>=0:devel/p5-MooseX-Declare \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

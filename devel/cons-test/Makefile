@@ -1,6 +1,3 @@
-# Created by: rv@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	cons-test
 PORTVERSION=	2.2.0
 PORTREVISION=	4
@@ -12,6 +9,7 @@ MASTER_SITES=	http://www.dsmit.com/cons/stable/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Test bed for `Cons' development
+WWW=		http://www.dsmit.com/cons/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

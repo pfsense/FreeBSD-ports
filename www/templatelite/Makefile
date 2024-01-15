@@ -1,6 +1,3 @@
-# Created by: Alexander Zhuravlev <zaa@zaa.pp.ru>
-# $FreeBSD$
-
 PORTNAME=	templatelite
 PORTVERSION=	2.10
 CATEGORIES=	www
@@ -9,6 +6,7 @@ DISTNAME=	template_lite_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Smaller, faster alternative to the Smarty template engine
+WWW=		https://templatelite.sourceforge.net
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 NO_BUILD=	yes
 NO_ARCH=	yes
 USES=		php:web
-USE_PHP=	pcre
 WRKSRC=		${WRKDIR}/template_lite
 SUB_FILES=	pkg-message
 

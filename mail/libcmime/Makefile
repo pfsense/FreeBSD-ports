@@ -1,14 +1,12 @@
-# Created by: Axel Steiner <ast@treibsand.com>
-# $FreeBSD$
-
 PORTNAME=	libcmime
 PORTVERSION=	0.2.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	http://www.libcmime.org/files/
 
 MAINTAINER=	ast@treibsand.com
 COMMENT=	Lightweight C mime library
+WWW=		https://www.libcmime.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

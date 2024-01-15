@@ -1,15 +1,13 @@
-# Created by: Alexey V. Degtyarev
-# $FreeBSD$
-
 PORTNAME=	check_clamav
 PORTVERSION=	1.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.renatasystems.org/pub/FreeBSD/ports/distfiles/
 PKGNAMEPREFIX=	nagios-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Nagios plugin that verifies ClamAV local signature database revision
+WWW=		http://bsd.phoenix.az.us/projects/check_clamav
 
 NO_BUILD=	yes
 USES=		perl5 shebangfix

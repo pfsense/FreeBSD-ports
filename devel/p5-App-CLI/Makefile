@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	App-CLI
 PORTVERSION=	0.500
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S|0$||}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dispatcher Perl module for command-line programs
+WWW=		https://metacpan.org/release/App-CLI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,11 +1,20 @@
---- services/network/network_context.cc.orig	2021-01-18 21:29:02 UTC
+--- services/network/network_context.cc.orig	2023-12-10 06:10:27 UTC
 +++ services/network/network_context.cc
-@@ -2292,7 +2292,7 @@ NetworkContext::MakeSessionCleanupCookieStore() const 
+@@ -470,7 +470,7 @@ NetworkContext::NetworkContextHttpAuthPreferences::
+ NetworkContext::NetworkContextHttpAuthPreferences::
+     ~NetworkContextHttpAuthPreferences() = default;
  
-   net::CookieCryptoDelegate* crypto_delegate = nullptr;
-   if (params_->enable_encrypted_cookies) {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !BUILDFLAG(IS_CHROMECAST)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS) && !BUILDFLAG(IS_CHROMECAST)) || defined(OS_BSD)
-     DCHECK(network_service_->os_crypt_config_set())
-         << "NetworkService::SetCryptConfig must be called before creating a "
-            "NetworkContext with encrypted cookies.";
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ bool NetworkContext::NetworkContextHttpAuthPreferences::AllowGssapiLibraryLoad()
+     const {
+   if (network_service_) {
+@@ -2385,7 +2385,7 @@ void NetworkContext::OnHttpAuthDynamicParamsChanged(
+       http_auth_dynamic_network_service_params->android_negotiate_account_type);
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   http_auth_merged_preferences_.set_allow_gssapi_library_load(
+       http_auth_dynamic_network_service_params->allow_gssapi_library_load);
+ #endif  // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)

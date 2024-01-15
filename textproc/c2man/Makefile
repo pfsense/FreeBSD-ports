@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	c2man
 PORTVERSION=	${VERSION}.${PATCHLEVEL}
 CATEGORIES=	textproc
@@ -8,6 +6,7 @@ DISTNAME=	${PORTNAME}-${VERSION}@${PATCHLEVEL}
 
 MAINTAINER=	lantw44@gmail.com
 COMMENT=	Tool to generate documentation from C source code comments
+WWW=		https://www.ciselant.de/c2man/c2man.html
 
 LICENSE=	${PORTNAME}
 LICENSE_NAME=	${PORTNAME}

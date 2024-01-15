@@ -1,13 +1,12 @@
-# Created by: dave@dogwood.com
-# $FreeBSD$
-
 PORTNAME=	olsrd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.8
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	OLSR routing daemon
+WWW=		http://www.olsr.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt

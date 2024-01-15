@@ -1,13 +1,11 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	cgdb
-DISTVERSION=	0.7.1
+DISTVERSION=	0.8.0
 CATEGORIES=	devel
 MASTER_SITES=	http://cgdb.me/files/
 
 MAINTAINER=	serio.jeffrey@gmail.com
 COMMENT=	Curses-based interface to the GNU Debugger
+WWW=		https://cgdb.github.io/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

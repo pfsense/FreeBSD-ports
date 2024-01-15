@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	anvil
-PORTVERSION=	0.0.18
+PORTVERSION=	0.0.20
 CATEGORIES=	sysutils
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Tools for distributing ssl certificates
+WWW=		https://github.com/dlangille/anvil
 
 LICENSE=	BSD2CLAUSE
 

@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Wnn6-lib
 PORTVERSION=	2000.9.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	Wnn6-SDK
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Wnn6 client library
+WWW=		https://www.omronsoft.co.jp/
 
 OPTIONS_DEFINE=	DOCS
 
@@ -17,6 +15,12 @@ USES=		imake
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/src/contrib/im/Xsi
 PORTDOCS=	README
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=       -Wno-error=int-conversion
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/X11R6,${LOCALBASE},g' \
@@ -34,4 +38,4 @@ post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

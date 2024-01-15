@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Tree-Suffix
 PORTVERSION=	0.22
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the libstree library
+WWW=		https://metacpan.org/release/Tree-Suffix
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

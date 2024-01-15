@@ -1,13 +1,10 @@
-# Created by: Patrice Clement <monsieurp@gentoo.org>
-# $FreeBSD$
-
 PORTNAME=	hstr
-DISTVERSION=	2.0
-PORTREVISION=	1
+DISTVERSION=	2.3
 CATEGORIES=	sysutils
 
 MAINTAINER=	monsieurp@gentoo.org
 COMMENT=	Bash and Zsh shell history suggest box
+WWW=		https://github.com/dvorka/hstr
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

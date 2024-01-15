@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	xpanex
 PORTVERSION=	5.5.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	XCONTRIB/games/xpuzzles
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Panex puzzle for X Window System
+WWW=		http://www.tux.org/~bagleyd/puzzles.html
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 USES=		imake xorg

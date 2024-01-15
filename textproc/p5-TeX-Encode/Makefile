@@ -1,8 +1,5 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	TeX-Encode
-PORTVERSION=	2.009
+PORTVERSION=	2.010
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ATHREEF
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Encode/decode Perl utf-8 strings into TeX
+WWW=		https://metacpan.org/release/TeX-Encode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

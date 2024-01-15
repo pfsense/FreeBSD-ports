@@ -1,15 +1,15 @@
-# Created by: Lukasz Stelmach <lukasz.stelmach@iem.pw.edu.pl>
-# $FreeBSD$
-
 PORTNAME=	MathJax
-DISTVERSION=	2.7.8
+DISTVERSION=	2.7.9
 CATEGORIES=	www
 
 MAINTAINER=	marko.cupac@mimar.rs
 COMMENT=	Cross-browser JavaScript display engine for mathematics
+WWW=		https://www.mathjax.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		cpe
 
 NO_BUILD=	yes
 NO_ARCH=	yes

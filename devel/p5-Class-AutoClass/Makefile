@@ -1,6 +1,3 @@
-# Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
-
 PORTNAME=	Class-AutoClass
 PORTVERSION=	1.56
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Create get and set methods and simplify object initialization
+WWW=		https://metacpan.org/release/Class-AutoClass
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,8 +19,9 @@ TEST_DEPENDS=	p5-IO-Stringy>=2.1:devel/p5-IO-Stringy \
 		p5-Test-Deep>=0.110:devel/p5-Test-Deep \
 		p5-Test-Pod>=1.48:devel/p5-Test-Pod
 
-NO_ARCH=	yes
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,23 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	leiningen
-PORTVERSION=	2.9.4
+DISTVERSION=	2.9.10
+PORTREVISION=	1
 CATEGORIES=	devel lisp java
-MASTER_SITES=	https://github.com/technomancy/leiningen/releases/download/${PORTVERSION}/:standalone
-DISTFILES=	leiningen-${PORTVERSION}-standalone.zip:standalone
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	https://github.com/technomancy/leiningen/commit/
-PATCHFILES=	7677dabea40a2d17a42a718ca8c7e450b09e153c.patch:-p1
+MASTER_SITES=	https://codeber.org/technomancy/leiningen/releases/download/${PORTVERSION}/:standalone \
+		https://codeberg.org/leiningen/leiningen/archive/:DEFAULT
+DISTFILES=	${DISTVERSION}${EXTRACT_SUFX} ${PORTNAME}-${PORTVERSION}-standalone.jar:standalone
+EXTRACT_ONLY=	${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automate Clojure projects
+WWW=		https://codeberg.org/leiningen/leiningen
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	technomancy
+WRKSRC=		${WRKDIR}/${PORTNAME}
+
 USE_JAVA=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -26,7 +24,7 @@ PLIST_FILES=	bin/lein \
 		etc/bash_completion.d/_lein.bash \
 		share/man/man1/lein.1.gz \
 		share/zsh/site-functions/_lein
-PORTDATA=	leiningen-${PORTVERSION}-standalone.zip
+PORTDATA=	leiningen-${PORTVERSION}-standalone.jar
 
 post-patch:
 	@${REINPLACE_CMD} -E -e 's|function (.*) \{|\1() {|' \
@@ -34,7 +32,7 @@ post-patch:
 		-e 's|/etc/leinrc|${PREFIX}/etc/leinrc|' \
 		-e 's|\.leinrc|./&|' -e 's|source "|. "|' \
 		-e 's|^if \[\[ (.*) \]\];|if [ \1 ];|' \
-		-e 's|^LEIN_JAR=.*|LEIN_JAR=${DATADIR}/leiningen-${PORTVERSION}-standalone.zip|' \
+		-e 's|^LEIN_JAR=.*|LEIN_JAR=${DATADIR}/leiningen-${PORTVERSION}-standalone.jar|' \
 		${WRKSRC}/bin/lein-pkg
 
 do-install:
@@ -49,7 +47,7 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/lein.1 \
 		${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${DISTDIR}/leiningen-${PORTVERSION}-standalone.zip \
+	${INSTALL_DATA} ${DISTDIR}/leiningen-${PORTVERSION}-standalone.jar \
 		${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

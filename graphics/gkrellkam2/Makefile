@@ -1,6 +1,3 @@
-# Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
-
 PORTNAME=	gkrellkam
 PORTVERSION=	2.0.0
 PORTREVISION=	12
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GKrellM plugin that display thumbnails of periodically updated images
+WWW=		https://gkrellkam.sourceforge.net/
 
 LICENSE=	GPLv2+
 

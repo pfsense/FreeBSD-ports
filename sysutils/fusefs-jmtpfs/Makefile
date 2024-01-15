@@ -1,6 +1,3 @@
-# Created by: Rozhuk Ivan <rozhuk.im@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	jmtpfs
 DISTVERSION=	g20190420
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	rozhuk.im@gmail.com
 COMMENT=	MTP device filesystem
+WWW=		https://github.com/kiorky/jmtpfs
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

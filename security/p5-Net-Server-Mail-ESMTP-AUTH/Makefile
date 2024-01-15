@@ -1,6 +1,3 @@
-# Created by: Zane C. Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Net-Server-Mail-ESMTP-AUTH
 PORTVERSION=	0.2
 CATEGORIES=	security mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Plain and login auth methods for Net::Server::Mail::ESMTP
+WWW=		https://metacpan.org/release/Net-Server-Mail-ESMTP-AUTH
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

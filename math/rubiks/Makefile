@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	rubiks
 PORTVERSION=	20070912
 CATEGORIES=	math games
@@ -13,6 +10,7 @@ MASTER_SITES=	http://www.cecm.sfu.ca/sage/spkg/upstream/rubiks/		\
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Several programs for working with Rubik's cubes
+WWW=		https://www.sagemath.org/
 
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	multi

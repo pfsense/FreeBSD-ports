@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	DBD-cego
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.3
 CATEGORIES=	databases perl5
 MASTER_SITES=	http://www.lemke-it.com/
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Cego DBI driver for Perl 5
+WWW=		https://www.lemke-it.com/
 
 LICENSE=	GPLv3
 

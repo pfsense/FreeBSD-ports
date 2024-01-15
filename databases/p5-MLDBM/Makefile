@@ -1,6 +1,3 @@
-# Created by: ache@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	MLDBM
 PORTVERSION=	2.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Store multi-level hash structure in single level tied hash
+WWW=		https://metacpan.org/release/MLDBM
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

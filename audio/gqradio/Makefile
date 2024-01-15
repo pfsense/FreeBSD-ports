@@ -1,14 +1,12 @@
-# Created by: Stefan Jahn <stefan.jahn@nemesis-sektor.de>
-# $FreeBSD$
-
 PORTNAME=	gqradio
 PORTVERSION=	1.9.2
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	audio
 MASTER_SITES=	SF/gqmpeg/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK2 based FM tuner
+WWW=		https://gqmpeg.sourceforge.net/radio.html
 
 LICENSE=	GPLv2
 

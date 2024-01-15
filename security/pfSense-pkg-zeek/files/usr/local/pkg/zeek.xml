@@ -31,13 +31,19 @@
 	<description>Zeek NSM Package</description>
 	<name>zeek</name>
 	<version>%%PKGVERSION%%</version>
-	<title>Zeek NSM: General Settings</title>
+	<title>Services/Zeek NSM</title>
 	<include_file>/usr/local/pkg/zeek.inc</include_file>
 	<menu>
 		<name>Zeek NSM</name>
 		<tooltiptext>Set up Zeek NSM settings</tooltiptext>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=zeek.xml</url>
+	</menu>
+	<menu>
+		<name>Zeek NSM Alerts</name>
+		<tooltiptext>Zeek NSM Alerts</tooltiptext>
+		<section>Status</section>
+		<url>/zeek_alerts.php</url>
 	</menu>
 	<service>
 		<name>zeek</name>
@@ -48,16 +54,16 @@
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek.xml</url>
 			<active/>
 		</tab>
 		<tab>
 			<text>ZeekControl Config</text>
-			<url>/pkg_edit.php?xml=zeek_zeekctl.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek_zeekctl.xml</url>
 		</tab>
 		<tab>
 			<text>Zeek Cluster</text>
-			<url>/pkg_edit.php?xml=zeek_cluster.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek_cluster.xml</url>
 		</tab>
 		<tab>
 			<text>Zeek Scripts</text>
@@ -65,7 +71,7 @@
 		</tab>
 		<tab>
 			<text>Log Mgmt</text>
-			<url>/pkg_edit.php?xml=zeek_log.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek_log.xml</url>
 		</tab>
 		<tab>
 			<text>Real Time Inspection</text>
@@ -83,7 +89,7 @@
 		</field>
 		<field>
 			<fielddescr>Enable Zeek NSM</fielddescr>
-			<fieldname>enable_zeek</fieldname>
+			<fieldname>enable</fieldname>
 			<description>Check to enable the Zeek NSM.</description>
 			<sethelp>
 				<![CDATA[
@@ -128,15 +134,23 @@
 		</field>
 	</fields>
 	<custom_php_install_command>
+	<![CDATA[
 		zeek_install_command();
+	]]>
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
+	<![CDATA[
 		zeek_deinstall_command();
+	]]>
 	</custom_php_deinstall_command>
 	<custom_php_validation_command>
+	<![CDATA[
 		zeek_validate_general($_POST, $input_errors);
+	]]>
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
+	<![CDATA[
 		zeek_settings_resync();
+	]]>
 	</custom_php_resync_config_command>
 </packagegui>

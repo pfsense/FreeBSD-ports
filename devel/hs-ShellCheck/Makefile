@@ -1,49 +1,60 @@
-# $FreeBSD$
-
 PORTNAME=	ShellCheck
-DISTVERSION=	0.7.1
-PORTREVISION=	2
+DISTVERSION=	0.9.0
 CATEGORIES=	devel haskell
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Shell script analysis tool
+WWW=		https://www.shellcheck.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cabal
 
-USE_CABAL=	Diff-0.4.0 \
-		QuickCheck-2.14 \
-		aeson-1.5.1.0 \
-		assoc-1.0.1_1 \
-		attoparsec-0.13.2.4 \
-		base-compat-0.11.1 \
-		base-compat-batteries-0.11.1 \
-		base-orphans-0.8.2 \
-		bifunctors-5.5.7 \
-		cabal-doctest-1.0.8_1 \
-		comonad-5.0.6 \
-		distributive-0.6.2 \
-		dlist-0.8.0.8 \
-		hashable-1.3.0.0_1 \
-		integer-logarithms-1.0.3_2 \
-		primitive-0.7.0.1 \
-		random-1.1_1 \
-		regex-base-0.94.0.0_1 \
-		regex-tdfa-1.3.1.0_1 \
-		scientific-0.3.6.2 \
-		splitmix-0.0.4 \
-		tagged-0.8.6_2 \
-		th-abstraction-0.3.2.0 \
-		these-1.1 \
-		time-compat-1.9.3 \
-		transformers-compat-0.6.5 \
-		unordered-containers-0.2.10.0_1 \
-		uuid-types-1.0.3_2 \
-		vector-0.12.1.2
+USE_CABAL=	Diff-0.4.1 \
+		OneTuple-0.3.1_3 \
+		QuickCheck-2.14.2 \
+		StateVar-1.2.2 \
+		aeson-2.1.1.0 \
+		assoc-1.0.2_3 \
+		attoparsec-0.14.4_2 \
+		base-compat-0.12.2 \
+		base-compat-batteries-0.12.2 \
+		base-orphans-0.8.7 \
+		bifunctors-5.5.14 \
+		comonad-5.0.8_1 \
+		contravariant-1.5.5 \
+		data-fix-0.3.2_3 \
+		distributive-0.6.2.1_1 \
+		dlist-1.0 \
+		fgl-5.8.0.0 \
+		generically-0.1 \
+		hashable-1.4.1.0 \
+		indexed-traversable-0.1.2_2 \
+		indexed-traversable-instances-0.1.1.1 \
+		integer-logarithms-1.0.3.1_3 \
+		primitive-0.7.4.0 \
+		random-1.2.1.1 \
+		regex-base-0.94.0.2_1 \
+		regex-tdfa-1.3.2 \
+		scientific-0.3.7.0_3 \
+		semialign-1.2.0.1_3 \
+		semigroupoids-5.3.7 \
+		splitmix-0.1.0.4_1 \
+		strict-0.4.0.1_4 \
+		tagged-0.8.6.1_3 \
+		text-short-0.1.5_1 \
+		th-abstraction-0.4.5.0 \
+		these-1.1.1.1_6 \
+		time-compat-1.9.6.1_4 \
+		transformers-compat-0.7.2 \
+		unordered-containers-0.2.19.1_1 \
+		uuid-types-1.0.5_3 \
+		vector-0.13.0.0_1 \
+		vector-stream-0.1.0.0_1 \
+		witherable-0.4.2_3
 
-EXECUTABLES=	shellcheck
+CABAL_EXECUTABLES=	shellcheck
 
 OPTIONS_DEFINE=		MANPAGES
 OPTIONS_DEFAULT=	MANPAGES

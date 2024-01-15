@@ -1,13 +1,11 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	mda-lv2
-PORTVERSION=	1.2.4
+PORTVERSION=	1.2.6
 CATEGORIES=	audio
 MASTER_SITES=	http://download.drobilla.net/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	LV2 port of the MDA plugins by Paul Kellett
+WWW=		https://drobilla.net/software/mda-lv2
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

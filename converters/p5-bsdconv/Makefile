@@ -1,6 +1,3 @@
-# Created by: buganini@gmail.com
-# $FreeBSD$
-
 PORTNAME=	bsdconv
 PORTVERSION=	11.3.0
 CATEGORIES=	converters perl5
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	Perl wrapper for bsdconv
+WWW=		https://github.com/buganini/perl-bsdconv
 
 LICENSE=	ISCL
 

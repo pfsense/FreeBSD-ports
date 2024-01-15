@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-gssapi
-PORTREVISION=	1
 
 COMMENT=	SASL GSSAPI authentication plugin
+WWW=		https://www.cyrusimap.org/sasl/
 
 OPTIONS_SINGLE=			GSSAPI
 OPTIONS_SINGLE_GSSAPI=		GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT

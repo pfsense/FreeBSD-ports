@@ -1,12 +1,10 @@
-# Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libuutil
 PORTVERSION=	1.0.3
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Illumos userland utilities library
+WWW=		https://github.com/jrmarino/libuutil
 
 LICENSE=	CDDL
 

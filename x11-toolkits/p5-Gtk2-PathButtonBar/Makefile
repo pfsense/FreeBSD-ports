@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Gtk2-PathButtonBar
 PORTVERSION=	0.1.2
 PORTREVISION=	4
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Creates a bar for path manipulation
+WWW=		https://metacpan.org/dist/Gtk2-PathButtonBar
 
 RUN_DEPENDS=	p5-Gtk2>=1.060:x11-toolkits/p5-Gtk2
 

@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	getdns
 PORTVERSION=	1.5.2
 PORTREVISION=	4
@@ -11,6 +8,7 @@ MASTER_SITES=	https://getdnsapi.net/dist/ \
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Modern asynchronous DNS API
+WWW=		https://getdnsapi.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -51,6 +49,12 @@ STUBBY_LIB_DEPENDS=	libyaml.so:textproc/libyaml
 STUBBY_CONFIGURE_WITH=	stubby
 STUBBY_VARS=		USE_RC_SUBR="stubby"
 
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -Ee 's,^(sharedoc = ).*,\1${WRKDIR}/doc,' \
 		-e '/echo .\*\*\*/d' ${WRKSRC}/Makefile.in
@@ -66,4 +70,4 @@ post-stage-STUBBY-on:
 post-install-STUBBY-on:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/stubby
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

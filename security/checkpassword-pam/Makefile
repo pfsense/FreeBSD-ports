@@ -1,6 +1,3 @@
-# Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
-
 PORTNAME=	checkpassword-pam
 PORTVERSION=	0.99
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/checkpasswd-pam/checkpasswd-pam/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of checkpassword authentication program
+WWW=		https://checkpasswd-pam.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

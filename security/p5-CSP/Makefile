@@ -1,6 +1,3 @@
-# Created by: David Thiel <lx@redundancy.redundancy.org>
-# $FreeBSD$
-
 PORTNAME=	CSP
 PORTVERSION=	0.34
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	ftp://ftp.it.su.se/pub/users/leifj/ \
 		http://redundancy.redundancy.org/mirror/
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	lx@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl tool for managing Certificate Authorities
+WWW=		http://devel.it.su.se/projects/CSP/
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Date-Calc>=0:devel/p5-Date-Calc \

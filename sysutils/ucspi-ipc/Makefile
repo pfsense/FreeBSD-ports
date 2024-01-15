@@ -1,13 +1,11 @@
-# Created by: David Thiel <lx@redundancy.redundancy.org>
-# $FreeBSD$
-
 PORTNAME=	ucspi-ipc
 PORTVERSION=	0.67
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.superscript.com/ucspi-ipc/
 
-MAINTAINER=	lx@redundancy.redundancy.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	UCSPI tools for building local-domain client-server applications
+WWW=		http://www.superscript.com/ucspi-ipc/
 
 USES=		perl5
 

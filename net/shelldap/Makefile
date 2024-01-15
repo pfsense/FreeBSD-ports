@@ -1,6 +1,3 @@
-# Created by: Mahlon E. Smith <mahlon@martini.nu>
-# $FreeBSD$
-
 PORTNAME=	shelldap
 PORTVERSION=	1.5.1
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	net perl5
 
 MAINTAINER=	mahlon@martini.nu
 COMMENT=	Shell-like environment for LDAP
+WWW=		https://bitbucket.org/mahlon/shelldap
 
 LICENSE=	BSD3CLAUSE
 

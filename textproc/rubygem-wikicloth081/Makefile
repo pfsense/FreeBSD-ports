@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wikicloth
 PORTVERSION=	0.8.1
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMESUFFIX=	081
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Ruby parser for the MediaWiki markup language
+WWW=		https://github.com/nricciar/wikicloth
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
@@ -24,6 +23,5 @@ PORTSCOUT=	limit:^0\.8\.1
 
 NO_ARCH=	yes
 USES=		gem
-USE_RUBY=	yes
 
 .include <bsd.port.mk>

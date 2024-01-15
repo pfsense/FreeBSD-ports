@@ -1,17 +1,14 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	evaluate
-PORTVERSION=	0.14
-PORTREVISION=	2
+DISTVERSION=	0.23
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Parsing and Evaluation Tools
+WWW=		https://cran.r-project.org/web/packages/evaluate/
 
 LICENSE=	MIT
 
-USES=	cran:auto-plist
+USES=		cran:auto-plist
 
 .include <bsd.port.mk>

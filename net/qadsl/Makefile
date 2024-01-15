@@ -1,6 +1,3 @@
-# Created by: Arne Lundberg <arlu@telia.com>
-# $FreeBSD$
-
 PORTNAME=	qadsl
 PORTVERSION=	1.3.3
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SAVANNAH/alive
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Auto login/Keep-alive for Telia AB ADSL, COMHEM Cable, and Tiscali Internet
+WWW=		https://www.gnu.org/software/alive/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

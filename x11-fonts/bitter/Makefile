@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bitter
 DISTVERSIONPREFIX=	v.
 DISTVERSION=	2.110
@@ -8,6 +6,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Contemporary serif typeface for text designed for comfortably reading
+WWW=		https://www.huertatipografica.com/fonts/bitter-ht
 
 LICENSE=	OFL11
 

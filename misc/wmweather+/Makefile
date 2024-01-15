@@ -1,8 +1,6 @@
-# Created by: Harald Wille <harald.wille@students.jku.at>
-# $FreeBSD$
-
 PORTNAME=	wmweather+
 PORTVERSION=	2.18
+PORTREVISION=	1
 CATEGORIES=	misc windowmaker geography
 MASTER_SITES=	SF/wmweatherplus/wmweather%2B/ \
 		SF/nemysisfreebsdp/misc/:icons
@@ -12,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Displays current conditions and forecasts with icons and text
+WWW=		https://sourceforge.net/projects/wmweatherplus/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Mikhail Teterin
-# $FreeBSD$
-
 PORTNAME=	dispy
 PORTVERSION=	4.10.6
 CATEGORIES=	devel net
@@ -9,13 +6,14 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Distributed and Parallel Computing with/for Python
+WWW=		http://dispy.sourceforge.net/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycos>=4.8.0:devel/pycos@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 

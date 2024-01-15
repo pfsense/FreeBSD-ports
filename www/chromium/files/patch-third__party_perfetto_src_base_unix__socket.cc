@@ -1,20 +1,26 @@
---- third_party/perfetto/src/base/unix_socket.cc.orig	2021-01-18 21:31:50 UTC
+--- third_party/perfetto/src/base/unix_socket.cc.orig	2023-09-13 12:11:42 UTC
 +++ third_party/perfetto/src/base/unix_socket.cc
-@@ -38,7 +38,7 @@
- #include "perfetto/ext/base/string_utils.h"
- #include "perfetto/ext/base/utils.h"
+@@ -44,7 +44,7 @@
+ #include <unistd.h>
+ #endif
  
 -#if PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE)
-+#if PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE) || PERFETTO_BUILDFLAG(PERFETTO_OS_FREEBSD)
++#if PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE) || defined(__FreeBSD__)
  #include <sys/ucred.h>
  #endif
  
-@@ -630,7 +630,7 @@ void UnixSocket::ReadPeerCredentials() {
-   if (sock_raw_.family() != SockFamily::kUnix)
+@@ -917,9 +917,13 @@ void UnixSocket::ReadPeerCredentialsPosix() {
      return;
+   PERFETTO_CHECK(peer_cred_mode_ != SockPeerCredMode::kIgnore);
  
 -#if PERFETTO_BUILDFLAG(PERFETTO_OS_LINUX) || \
-+#if (PERFETTO_BUILDFLAG(PERFETTO_OS_LINUX) && !PERFETTO_BUILDFLAG(PERFETTO_OS_FREEBSD)) || \
++#if !defined(__FreeBSD__) && PERFETTO_BUILDFLAG(PERFETTO_OS_LINUX) || \
      PERFETTO_BUILDFLAG(PERFETTO_OS_ANDROID)
++#if PERFETTO_BUILDFLAG(PERFETTO_OS_BSD)
++  struct sockpeercred user_cred;
++#else
    struct ucred user_cred;
++#endif
    socklen_t len = sizeof(user_cred);
+   int fd = sock_raw_.fd();
+   int res = getsockopt(fd, SOL_SOCKET, SO_PEERCRED, &user_cred, &len);

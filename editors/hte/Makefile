@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao
-# $FreeBSD$
-
 PORTNAME=	hte
 PORTVERSION=	2.1.1.g20161206
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	editors
 
 MAINTAINER=	rene@FreeBSD.org
 COMMENT=	File editor/viewer/analyzer for executables
+WWW=		https://hte.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

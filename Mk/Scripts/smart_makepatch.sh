@@ -1,6 +1,5 @@
 #!/bin/sh
 # MAINTAINER: portmgr@FreeBSD.org
-# $FreeBSD$
 
 # This script regenerates patches.  It conserves existing comments and
 # file names, even if the file name does not meet any current or
@@ -194,7 +193,7 @@ regenerate_patches() {
 		NEW=${ORIG%.orig}
 		cmp -s ${ORIG} ${NEW} && continue
 		OUT=${REGENNED}/$(std_patch_filename ${NEW})
-		TZ=UTC diff -udp ${ORIG} ${NEW} | sed \
+		TZ=UTC diff -audp ${ORIG} ${NEW} | sed \
 			-e '/^---/s|\.[0-9]* +0000$| UTC|' \
 			-e '/^+++/s|\([[:blank:]][-0-9:.+]*\)*$||' \
 			> ${OUT} || true

@@ -1,27 +1,29 @@
-# Created by: Rusty Nejdl
-# $FreeBSD$
-
 PORTNAME=	apsw
-PORTVERSION=	3.33.0
-DISTVERSIONSUFFIX=	-r1
+PORTVERSION=	3.44.0.0
 CATEGORIES=	databases python
-MASTER_SITES=	https://github.com/rogerbinns/apsw/releases/download/${PORTVERSION}${DISTVERSIONSUFFIX}/
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Another Python SQLite Wrapper
+WWW=		https://rogerbinns.github.io/apsw/ \
+		https://github.com/rogerbinns/apsw
 
 LICENSE=	ZLIB
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	sqlite3>=${PORTVERSION:R},1:databases/sqlite3
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
-USES=		localbase python:3.6+ sqlite:3 zip
-USE_PYTHON=	autoplist concurrent distutils
+USES=		localbase python sqlite
+USE_PYTHON=	autoplist concurrent pep517 unittest
+
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR}
+
+post-patch:
+	@${PRINTF} '[build_ext]\nuse_system_sqlite_config = True\n' > ${WRKSRC}/setup.apsw
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/apsw*.so
-
-do-test:
-	cd ${WRKSRC}/ && ${PYTHON_CMD} setup.py test
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

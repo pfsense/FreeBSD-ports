@@ -1,12 +1,10 @@
-# Created by: Jeremy Chadwick <jdc@parodius.com>
-# $FreeBSD$
-
 PORTNAME=	bsdhwmon
 PORTVERSION=	20151206
 CATEGORIES=	sysutils
 
 MAINTAINER=	jdc@koitsu.org
 COMMENT=	Hardware sensor monitoring utility for FreeBSD
+WWW=		https://github.com/koitsu/bsdhwmon
 
 LICENSE=	BSD2CLAUSE
 

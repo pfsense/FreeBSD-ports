@@ -1,6 +1,3 @@
-# Created by: Aaron Straup Cope
-# $FreeBSD$
-
 PORTNAME=	resume-extensions
 PORTVERSION=	0.5
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	xml${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extends the XML Resume library
+WWW=		https://aaronland.info/xsl/xmlresume/
 
 RUN_DEPENDS=	resume>0:textproc/resume \
 		${LOCALBASE}/share/xsl/string/print-n-times.xsl:textproc/print-n-times \

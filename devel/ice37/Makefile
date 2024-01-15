@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=		Ice
-PORTVERSION=		3.7.2
-PORTREVISION=	1
+PORTVERSION=		3.7.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=		devel
 PKGNAMESUFFIX?=		37
 
 MAINTAINER=		grembo@FreeBSD.org
 COMMENT=		Modern alternative to object middleware such as CORBA/COM/DCOM/COM+
+WWW=		http://www.zeroc.com/
 
 LICENSE=		GPLv2
 
@@ -31,7 +29,7 @@ OPTIONS_DEFINE?=	DEBUG STATIC TEST
 OPTIONS_SUB=		yes
 
 USES+=			compiler:c++14-lang iconv gmake
-CONFIGS=		shared
+USE_CXXSTD=	c++14
 DEBUG_MAKE_ENV=		OPTIMIZE=no
 TEST_ALL_TARGET_OFF=	srcs
 MAKE_ARGS+=		V=1
@@ -69,10 +67,10 @@ PYSITEDIR=		${PREFIX}${PYTHON_SITELIBDIR:S|^${LOCALBASE}||}
 PYSITEDIR=		${PYTHON_SITELIBDIR}
 .endif
 
-.if defined(PYTHON_VER) && (${PYTHON_VER} == "2.7" || ${PYTHON_VER} == "3.4")
-PLIST_SUB+=		PYTHONGT34="@comment "
+.if defined(PYTHON_VER) && ${PYTHON_VER} == "2.7"
+PLIST_SUB+=		PYTHONGT27="@comment "
 .else
-PLIST_SUB+=		PYTHONGT34=""
+PLIST_SUB+=		PYTHONGT27=""
 .endif
 
 post-patch:

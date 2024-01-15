@@ -1,23 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	concourse
 PORTVERSION=	6.7.1
+PORTREVISION=	15
 CATEGORIES=	net sysutils
 MASTER_SITES=	LOCAL/dumbbell/concourse/
 PKGNAMESUFFIX=	-fly
 
 MAINTAINER=	dumbbell@FreeBSD.org
 COMMENT=	CLI for Concourse
+WWW=		https://concourse-ci.org/
 
 LICENSE=	APACHE20
 
-USES=		go:modules tar:xz
+USES=		cpe go:modules tar:xz
+
+CPE_VENDOR=	pivotal_software
 
 GO_TARGET=	./cmd/concourse:fly
 GO_BUILDFLAGS=	-ldflags="-s -w -X github.com/concourse/concourse.Version=${PORTVERSION}"
 CGO_CFLAGS=	-I.
 
-CONFLICTS_INSTALL=	fly
+CONFLICTS_INSTALL=	concourse fly # bin/fly
 
 PLIST_FILES=	bin/fly
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	averiagwf
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} AveriaSansGWF${EXTRACT_SUFX} AveriaSerifGW
 
 MAINTAINER=	alfix86@gmail.com
 COMMENT=	Average font
+WWW=		http://iotic.com/averia/
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/OFL.txt

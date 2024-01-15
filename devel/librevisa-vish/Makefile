@@ -1,6 +1,3 @@
-# Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
-
 PORTNAME=	librevisa-vish
 PORTVERSION=	0.0.20130714
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	vish-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source VISA shell for interfacing test and measurement equipment
+WWW=		http://www.librevisa.org/
 
 LIB_DEPENDS=	libvisa.so:devel/librevisa
 

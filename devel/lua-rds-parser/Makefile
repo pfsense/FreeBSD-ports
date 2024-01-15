@@ -1,6 +1,3 @@
-# Created by: osa
-# $FreeBSD$
-
 PORTNAME=	lua-rds-parser
 PORTVERSION=	0.06
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	arcade@b1t.name
 COMMENT=	Resty-DBD-Stream (RDS) parser for Lua written in C
+WWW=		https://github.com/agentzh/lua-rds-parser/
 
 LICENSE=	BSD2CLAUSE
 

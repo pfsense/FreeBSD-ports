@@ -1,46 +1,60 @@
-# Created by: mr
-# $FreeBSD$
-
 PORTNAME=	oleo
 PORTVERSION=	1.99.16
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	GNU spreadsheet for X11 and terminals
+WWW=		https://www.gnu.org/software/oleo/oleo.html
 
-LICENSE=	GPLv2+
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	ld: error: duplicate symbol: yydebug
+
+LIB_DEPENDS=	libgsl.so:math/gsl
 
 USES=		bison:alias localbase ncurses perl5
 USE_PERL5=	build
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-x --without-xlt --without-SciPlot
-CONFIGURE_ENV=	CFLAGS=-fwrapv
-MAKE_ARGS+=	DESTDIR="${STAGEDIR}"
+CONFIGURE_ARGS=	--without-xlt --without-sciplot
+# With -O2 configure hangs at "checking for working mktime..."
+CONFIGURE_ENV=	CFLAGS="${CFLAGS:C/-O2//} -fwrapv"
 
 BINARY_ALIAS=	makeinfo=false # disable detecting local makeinfo
 
 INFO=		oleo
 
-OPTIONS_DEFINE=	MOTIF NLS
+OPTIONS_DEFINE=	CUPS MOTIF NLS
 OPTIONS_SUB=	yes
+
+CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
 MOTIF_LIB_DEPENDS=	libplot.so:graphics/plotutils \
 			libXbae.so:x11-toolkits/xbae \
-			libXmHTML.so:x11-toolkits/xmhtml
-MOTIF_USES_OFF=		xorg
-MOTIF_USES=		motif
-MOTIF_CONFIGURE_WITH=	motif
-MOTIF_USE_OFF=		XORG=xt,ice,sm
-
+			libXmHTML.so:x11-toolkits/xmhtml \
+			libpng.so:graphics/png \
+			libXft.so:x11-fonts/libXft \
+			libfontconfig.so:x11-fonts/fontconfig
+MOTIF_USES=		jpeg motif xorg
+MOTIF_USE=		XORG=ice,sm,x11,xext,xpm,xt
+MOTIF_CONFIGURE_WITH=	motif x
+MOTIF_LIBS=		-lXft -lfontconfig
 NLS_USES=		gettext
-NLS_LIBS=		-lintl
-NLS_CONFIGURE_ENABLE=	nls
 NLS_USES_OFF=		gettext-tools
+NLS_CONFIGURE_ENABLE=	nls
+NLS_LIBS=		-lintl
 
-pre-build:
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CPPFLAGS+=	-Wno-error=int-conversion
+.endif
+
+pre-configure:
 	@${GREP} -lR "malloc\.h" ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} -e \
 		's|malloc\.h|stdlib.h|g'
 .for pof in en fr nl
@@ -50,5 +64,6 @@ pre-build:
 	@${REINPLACE_CMD} -e "s|am: install-docDATA|am:|" ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e "s|install-info-am install-htmlDATA|install-info-am|" \
 		${WRKSRC}/doc/Makefile.in
+	${REINPLACE_CMD} -e "s|gslblas|gslcblas|" ${WRKSRC}/configure
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

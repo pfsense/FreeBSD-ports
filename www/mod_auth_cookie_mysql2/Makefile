@@ -1,6 +1,3 @@
-# Created by: clement
-# $FreeBSD$
-
 PORTNAME=	mod_auth_cookie_mysql2
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -11,8 +8,9 @@ DIST_SUBDIR=	apache2
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Allows authentication against MySQL database via secure cookie
+WWW=		http://home.digithi.de/digithi/dev/mod_auth_cookie_mysql/
 
-USES=		apache:2.2+ mysql
+USES=		apache mysql
 
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes

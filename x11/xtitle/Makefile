@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	xtitle
 DISTVERSION=	0.4.4
 CATEGORIES=	x11
 
 MAINTAINER=	tcberner@FreeBSD.org
 COMMENT=	Outputs X window titles
+WWW=		https://github.com/baskerville/xtitle
 
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

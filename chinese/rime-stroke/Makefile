@@ -1,13 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-stroke
 DISTVERSION=	g20191221
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com
 COMMENT=	Rime Stroke schema support
+WWW=		https://github.com/rime/rime-stroke
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE

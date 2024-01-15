@@ -1,21 +1,18 @@
-# Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	elgg
-PORTVERSION=	3.3.13
+PORTVERSION=	5.1.3
 CATEGORIES=	www
 MASTER_SITES=	http://elgg.org/download/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Blogging and social networking platform
+WWW=		https://www.elgg.org/
 
 LICENSE=	GPLv2
 
-USE_PHP=	curl dom filter gd hash intl json mbstring pdo_mysql \
-		session simplexml soap sqlite3 xml xmlrpc
 USES=		cpe gettext shebangfix zip php
-
-SHEBANG_FILES=	vendor/elgg/elgg/.scripts/validate_commit_msg.php
+USE_PHP=	curl dom fileinfo filter gd intl \
+		mbstring pdo_mysql \
+		session simplexml soap sqlite3 xml xmlrpc
 
 NO_BUILD=	yes
 PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"

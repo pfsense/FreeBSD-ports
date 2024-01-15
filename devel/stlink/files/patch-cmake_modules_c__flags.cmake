@@ -1,10 +1,18 @@
---- cmake/modules/c_flags.cmake.orig	2020-05-31 22:00:20 UTC
+Work around upstream bug #1175 and make the build more robust
+against minor platform differences.  -Werror should not be
+provided in release builds.
+
+--- cmake/modules/c_flags.cmake.orig	2021-04-24 22:24:02 UTC
 +++ cmake/modules/c_flags.cmake
-@@ -30,6 +30,7 @@ add_cflag_if_supported("-Wmaybe-uninitialized")
- add_cflag_if_supported("-Wmissing-variable-declarations")
- add_cflag_if_supported("-Wshorten-64-to-32")
- add_cflag_if_supported("-Wimplicit-function-declaration")
-+add_cflag_if_supported("-Wno-string-plus-int")
- 
- ##
- # On OpenBSD the system headers suck so we need to disable redundant declaration check
+@@ -44,11 +44,3 @@ endif ()
+ if (NOT (WIN32 OR (EXISTS "/etc/debian_version" AND MINGW)))
+     add_cflag_if_supported("-fPIC")
+ endif ()
+-
+-if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
+-    add_cflag_if_supported("-ggdb")
+-    add_cflag_if_supported("-O0")
+-else ()
+-    add_cflag_if_supported("-O2")
+-    add_cflag_if_supported("-Werror")
+-endif ()

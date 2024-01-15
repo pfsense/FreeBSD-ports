@@ -1,22 +1,19 @@
-# Created by: clive
-# $FreeBSD$
-
 PORTNAME=	Template-Toolkit
-PORTVERSION=	3.009
+PORTVERSION=	3.101
 CATEGORIES=	www textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Extensible template processing system
+WWW=		http://www.template-toolkit.org/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-AppConfig>=1.56:devel/p5-AppConfig
-TEST_DEPENDS=	p5-CGI>=0:www/p5-CGI \
-		p5-Date-Calc>=0:devel/p5-Date-Calc \
+TEST_DEPENDS=	p5-Date-Calc>=0:devel/p5-Date-Calc \
 		p5-Image-Size>=0:graphics/p5-Image-Size \
 		p5-Pod-POM>=0:textproc/p5-Pod-POM
 

@@ -1,13 +1,11 @@
-# Created by: buganini@gmail.com
-# $FreeBSD$
-
 PORTNAME=	gbsdconv
 PORTVERSION=	11.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	converters python
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	GUI for bsdconv
+WWW=		https://github.com/buganini/gbsdconv
 
 LICENSE=	ISCL
 

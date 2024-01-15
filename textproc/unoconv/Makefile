@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	unoconv
 PORTVERSION=	0.7
 CATEGORIES=	textproc python
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert any document from and to any LibreOffice supported format
+WWW=		http://dag.wieers.com/home-made/unoconv/
 
 LICENSE=	GPLv2
 

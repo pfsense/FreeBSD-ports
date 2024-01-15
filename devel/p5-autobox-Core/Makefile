@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	autobox-Core
 PORTVERSION=	1.33
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Core functions exposed as methods in primitive types
+WWW=		https://metacpan.org/release/autobox-Core
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

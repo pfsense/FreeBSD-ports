@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Format-Japanese
 PORTVERSION=	0.04000
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITE_SUBDIR=	CPAN:DMAKI
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Japanese DateTime Formatter
+WWW=		https://metacpan.org/release/DateTime-Format-Japanese
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \

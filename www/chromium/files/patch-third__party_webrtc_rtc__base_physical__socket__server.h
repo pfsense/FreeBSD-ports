@@ -1,11 +1,11 @@
---- third_party/webrtc/rtc_base/physical_socket_server.h.orig	2020-11-13 06:42:25 UTC
+--- third_party/webrtc/rtc_base/physical_socket_server.h.orig	2023-12-10 06:10:27 UTC
 +++ third_party/webrtc/rtc_base/physical_socket_server.h
-@@ -11,7 +11,7 @@
- #ifndef RTC_BASE_PHYSICAL_SOCKET_SERVER_H_
- #define RTC_BASE_PHYSICAL_SOCKET_SERVER_H_
+@@ -18,7 +18,7 @@
+ #include "rtc_base/third_party/sigslot/sigslot.h"
  
--#if defined(WEBRTC_POSIX) && defined(WEBRTC_LINUX)
-+#if defined(WEBRTC_POSIX) && defined(WEBRTC_LINUX) && !defined(WEBRTC_BSD)
+ #if defined(WEBRTC_POSIX)
+-#if defined(WEBRTC_LINUX)
++#if defined(WEBRTC_LINUX) && !defined(WEBRTC_BSD)
+ // On Linux, use epoll.
  #include <sys/epoll.h>
- #define WEBRTC_USE_EPOLL 1
- #endif
+ 

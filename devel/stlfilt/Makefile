@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	stlfilt
 PORTVERSION=	20080203
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	g${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	STL Error Message Decryptor for C++
+WWW=		https://www.bdsoft.com/tools/stlfilt.html
 
 LICENSE=	MIT
 

@@ -1,9 +1,6 @@
-# Created by: Martin Blapp
-# $FreeBSD$
-
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION1}.${AOOVERSION2}.${TIMESTAMP}
-PORTREVISION=	2
+PORTREVISION=	6
 PORTEPOCH=	4
 CATEGORIES=	editors java
 MASTER_SITES=	https://dist.apache.org/repos/dist/dev/openoffice/${AOOVERSION}-${AOORC}-${TIMESTAMP}/source/ \
@@ -17,7 +14,8 @@ PKGNAMEPREFIX=		${LANG_PKGNAME}-
 PKGNAMESUFFIX=		-${LANG_SUFFIX}
 .endif
 PKGNAMESUFFIX=		-devel
-DISTFILES=	${AOOSRC}${AOODISTTAG} ${EXTSRC}:extsrc
+DISTFILES=	${AOOSRC}${AOODISTTAG} ${EXTSRC}:extsrc \
+		${GCC_EXTRA_DISTFILES:C/.*/&:sf/g}
 DIST_SUBDIR=	openoffice
 EXTRACT_ONLY=	${AOOSRC}
 
@@ -25,6 +23,7 @@ MAINTAINER=	office@FreeBSD.org
 #de facto maintainer is truckman@FreeBSD.org
 #Frequent Patch submitters should (optionally) sign the Apache iCLA
 COMMENT=	Integrated wordprocessor/dbase/spreadsheet/drawing/chart/browser (developer version)
+WWW=		https://openoffice.apache.org/
 
 LICENSE=		APACHE20 ADOBE BSD3CLAUSE BSD4CLAUSE BSL ICU MIT MPL10 \
 			MPL11 PSFL TWAIN W3C
@@ -55,6 +54,7 @@ BROKEN_powerpc64=	fails to compile: aoo-4.2.0/main/solver/420/unxfbsdppc64.pro/i
 
 BUILD_DEPENDS=								\
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip		\
+	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
 		${LOCALBASE}/bin/unzip:archivers/unzip			\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
@@ -62,6 +62,7 @@ BUILD_DEPENDS=								\
 		epm:devel/epm						\
 		${LOCALBASE}/bin/gperf:devel/gperf			\
 		imake:devel/imake					\
+		libunwind>=20211201_1:devel/libunwind			\
 		gpatch:devel/patch					\
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends	\
 		${JAVALIBDIR}/commons-lang3.jar:java/apache-commons-lang3 \
@@ -77,10 +78,21 @@ LIB_DEPENDS=								\
 		libnspr4.so:devel/nspr					\
 		libcurl.so:ftp/curl					\
 		libcairo.so:graphics/cairo				\
-		libpng.so:graphics/png					\
+		libpng16.so:graphics/png				\
 		libgraphite.so:graphics/silgraphite			\
+		libblas.so:math/blas					\
+		libCbcSolver.so:math/cbc				\
+		libCgl.so:math/cgl					\
+		libcoinasl.so:math/asl					\
+		libClpSolver.so:math/clp				\
 		libCoinMP.so:math/coinmp				\
+		libCoinUtils.so:math/coinutils				\
+		libcoinmumps.so:math/coin-or-mumps			\
+		libnauty.so:math/nauty					\
+		libopenblas.so:math/openblas				\
+		libOsi.so:math/osi					\
 		libfreetype.so:print/freetype2				\
+		libharfbuzz.so:print/harfbuzz				\
 		libnss3.so:security/nss					\
 		libexpat.so:textproc/expat2				\
 		libhunspell-1.7.so:textproc/hunspell			\
@@ -97,12 +109,15 @@ RUN_DEPENDS=								\
 		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
 		${LOCALBASE}/share/fonts/ChromeOS/Arimo-Bold.ttf:x11-fonts/croscorefonts-fonts-ttf
+# For libgfortran.so and libquadmath.so
+BUILD_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
+RUN_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 
 USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
 		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
-		python:3.7 shared-mime-info ssl tar:${TARTYPE} xorg
+		python:3.9 shared-mime-info ssl tar:${TARTYPE} xorg
 USE_GL=		gl glu
-USE_GNOME=	gtk20 libxslt libidl glib20
+USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt glib20
 USE_JAVA=	yes
 JAVA_BUILD=	jdk
 JAVA_RUN=	jdk
@@ -117,9 +132,9 @@ AOOVERSION1=	4
 AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
-AOOTAG=		AOO420m3\(Build:9822\)
-GITREVISION=	d92770c00e
-TIMESTAMP=	1602022694
+AOOTAG=		AOO420m4\(Build:9823\)
+GITREVISION=	e501375395
+TIMESTAMP=	1678061694
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
@@ -145,19 +160,17 @@ XDGDIR=			${OOPATH}/share/xdg
 XDGREL=			../../${INSTALLATION_BASEDIR}/openoffice${AOOVERSION1}/share/xdg
 EXECBASE?=		openoffice-${AOOSUFFIX}
 
-INSTALLS_ICONS=	yes
 WITHOUT_CPU_CFLAGS=	true
 CPE_PRODUCT=	${PORTNAME:S|apache-||}
 CPE_VENDOR=	apache
 
-OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME GNOMEVFS MMEDIA \
+OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME MMEDIA \
 			MYSQL PDFIMPORT REPORT_BUILDER SDK WIKI_PUBLISHER
 OPTIONS_DEFAULT=	CUPS GNOME MMEDIA WIKI_PUBLISHER
 CRASHDUMP_DESC=		Enable crashdumps, you also need to set WITH_DEBUG_PORTS+=${PKGORIGIN}
 DBGUTIL_DESC=		Enable assertions, object counting. (non-production)
 DEBUG_DESC=		Compile with -O0, you also need to set WITH_DEBUG_PORTS+=${PKGORIGIN}
-GNOME_DESC=		GConf + screensaver presentation control via DBUS
-GNOMEVFS_DESC=		Use GNOME Virtual File System instead of gio
+GNOME_DESC=		Screensaver presentation control via DBUS
 MMEDIA_DESC=		Multimedia backend for impress
 MYSQL_DESC=		Build MySQL Connector extension
 PDFIMPORT_DESC=		Build and install PDF import extension
@@ -174,23 +187,18 @@ DBGUTIL_CONFIGURE_ENABLE=	dbgutil
 
 DEBUG_CONFIGURE_ENABLE=		debug
 
-GNOME_CONFIGURE_ENABLE=		dbus gconf lockdown
+GNOME_CONFIGURE_ENABLE=		dbus lockdown
 GNOME_LIB_DEPENDS=		libdbus-1.so:devel/dbus \
 				libdbus-glib-1.so:devel/dbus-glib
-GNOME_USE=			GNOME=gconf2
-
-GNOMEVFS_CONFIGURE_ENABLE=	gnome-vfs
-GNOMEVFS_CONFIGURE_OFF=		--enable-gio
-GNOMEVFS_CONFIGURE_ON=		--disable-gio
-GNOMEVFS_USE=			GNOME=gnomevfs2
 
 MMEDIA_CONFIGURE_ENABLE=	gstreamer
-MMEDIA_USE=			GSTREAMER1=yes
+MMEDIA_USES=			gstreamer
 
 MYSQL_CONFIGURE_ENABLE=		mysql-connector
 MYSQL_CONFIGURE_WITH=		system-mysql
 MYSQL_LIB_DEPENDS=		libmysqlcppconn.so:databases/mysql-connector-c++
 MYSQL_USES=			mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 
 SDK_CONFIGURE_ENABLE=		odk
 SDK_DISTFILES=			unowinreg.dll:unoreg
@@ -225,6 +233,11 @@ WITH=	SDK
 
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == FreeBSD && ( \
+    (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
+BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
+.endif
+
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols
 .endif
@@ -244,16 +257,6 @@ GCC_EXTRA_DISTFILES=	d6eef4b4cacb2183f2bf265a5a03a354-boost_1_55_0.tar.bz2 \
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
 CPPFLAGS+=		-I${LOCALBASE}/include
-CONFIGURE_ARGS+=	--with-system-boost --with-system-vigra
-BUILD_DEPENDS+=		${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
-			${LOCALBASE}/bin/vigra-config:graphics/vigra
-.endif
-
-# These extra distfiles are needed to use the bundled versions of
-# boost and vigra for compatiblity with gcc.  Also include them
-# for the makesum target so they are included in distinfo
-.if ${CHOSEN_COMPILER_TYPE} == gcc || make(makesum) || make(distclean)
-DISTFILES+=		${GCC_EXTRA_DISTFILES:C/.*/&:sf/g}
 .endif
 
 .if ${ARCH} == amd64
@@ -280,6 +283,9 @@ SUB_LIST=	EXECBASE=${EXECBASE} AOOTAG=${AOOTAG} AOOUDIR=${AOOUDIR} \
 		PRINSTALLATION_BASEDIR=${PRINSTALLATION_BASEDIR}
 
 CONFIGURE_ARGS+=							\
+			--disable-gconf					\
+			--enable-gio					\
+			--disable-gnome-vfs				\
 			--with-unix-wrapper=${EXECBASE}			\
 			--with-alloc=system				\
 			--with-ant-home=${LOCALBASE}/share/java/apache-ant \
@@ -361,11 +367,9 @@ do-extract-SDK-on:
 
 post-extract:
 	${TAR} -C ${WRKSUBDIR} -xzf ${DISTDIR}/${DIST_SUBDIR}/${EXTSRC}
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-.  for f in ${GCC_EXTRA_DISTFILES}
+.for f in ${GCC_EXTRA_DISTFILES}
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/${f} ${WRKSUBDIR}/ext_sources/${f}
-.  endfor
-.endif
+.endfor
 	${CP} ${FILESDIR}/freebsd-aoo-intro-developer.png \
 		${WRKSRC}/default_images/introabout/intro.png
 	${CP} ${FILESDIR}/freebsd-aoo-about-developer.png \
@@ -410,6 +414,14 @@ post-patch:
 	${REINPLACE_CMD} -e "s|%%JAVA_HOME%%|${JAVA_HOME}|" \
 		${WRKSRC}/desktop/scripts/soffice.sh
 	${REINPLACE_CMD} -e '/^mkdir -p/,$$d' ${CREATE_TREE}
+
+# Verify that lucene was built with the CONTRIB option instead of
+# failing mysteriously during the build
+pre-configure:
+	@if [ ! -f ${JAVALIBDIR}/lucene-analyzers-3.6.2.jar ]; then \
+		${ECHO} "error: textproc/lucene must be built with the CONTRIB option enabled"; \
+		exit 1; \
+	fi
 
 do-build:
 	${PRINTF} "[repositories]\nmain=active\nextras=active\n" > ${WRKSUBDIR}/source_config

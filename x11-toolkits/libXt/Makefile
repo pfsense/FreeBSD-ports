@@ -1,13 +1,11 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libXt
-PORTVERSION=	1.2.0
+DISTVERSION=	1.2.1
 PORTEPOCH=	1
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X Toolkit library
+WWW=		https://www.freedesktop.org/wiki/Software/xlibs/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

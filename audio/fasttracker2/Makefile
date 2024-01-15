@@ -1,13 +1,11 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fasttracker2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.42
+DISTVERSION=	1.74
 CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Fasttracker II clone
+WWW=		https://github.com/8bitbubsy/ft2-clone
 
 LICENSE=	BSD3CLAUSE CC-BY-NC-SA-4.0
 LICENSE_COMB=	multi

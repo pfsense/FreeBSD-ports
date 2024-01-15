@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsoldout
 DISTVERSION=	1.4
 CATEGORIES=	textproc devel
@@ -7,6 +5,7 @@ MASTER_SITES=	http://instinctive.eu/code/
 
 MAINTAINER=	natbsd@instinctive.eu
 COMMENT=	Flexible C library for markdown
+WWW=		http://fossil.instinctive.eu/libsoldout/index
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,23 +1,20 @@
-# Created by: Kirill Ponomarev <krion@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dict-toolbox
-PORTVERSION=	1.9
-PORTREVISION=	1
+PORTVERSION=	2.1.2
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Collection of python dictionary management tools
+WWW=		https://gitlab.com/saltstack/open/dict-toolbox/
 
 LICENSE=	APACHE20
 
-USES=		python:3.6+ shebangfix
-USE_PYTHON=	autoplist distutils
+USES=		python shebangfix
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	saltstack/open
-GL_COMMIT=	28a88a35a597d0f4eff7a607e2a458befc68b2a7
+GL_TAGNAME=	60ae07cb72c49918917c681fdcc3df88813b036b
+USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 

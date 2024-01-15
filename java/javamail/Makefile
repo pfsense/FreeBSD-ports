@@ -1,6 +1,3 @@
-# Created by: Jose Marques
-# $FreeBSD$
-
 PORTNAME=	javamail
 DISTVERSIONPREFIX=	${PORTNAME:tu}-
 DISTVERSION=	1_6_2
@@ -8,6 +5,7 @@ CATEGORIES=	java mail
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Reference Implementation of JSR 919
+WWW=		https://javaee.github.io/javamail/
 
 LICENSE=	GPLv2 CDDL
 LICENSE_COMB=	dual
@@ -20,7 +18,7 @@ GH_ACCOUNT=	javaee
 
 CPE_VENDOR=	sun
 USE_JAVA=	YES
-JAVA_VERSION=	8+
+JAVA_VERSION=	8
 USE_ANT=	YES
 NO_ARCH=	yes
 

@@ -1,11 +1,8 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	argouml
 PORTVERSION=	0.34
 PORTREVISION=	2
 CATEGORIES=	devel java
-MASTER_SITES=	http://argouml-downloads.tigris.org/nonav/argouml-${PORTVERSION}/
+MASTER_SITES=	https://github.com/argouml-tigris-org/argouml/releases/download/VERSION_0_34/
 DISTNAME=	ArgoUML-${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		manual-${PORTVERSION}.pdf \
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	UML design tool with cognitive support
+WWW=		https://github.com/argouml-tigris-org/argouml/wiki
 
 LICENSE=	EPL
 

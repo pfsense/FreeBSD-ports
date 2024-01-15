@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	Data-Throttler
 PORTVERSION=	0.08
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Limit data throughput
+WWW=		https://metacpan.org/release/Data-Throttler
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,13 +1,12 @@
-# Created by: David Leonard <leonard@dstc.edu.au>
-# $FreeBSD$
-
 PORTNAME=	dclock
 PORTVERSION=	2.2.2
+PORTREVISION=	1
 CATEGORIES=	x11-clocks
 MASTER_SITES=	http://opencircuitdesign.com/~tim/programs/dclock/archive/
 
 MAINTAINER=	romain@FreeBSD.org
 COMMENT=	7-segment digital clock with some optional features
+WWW=		http://opencircuitdesign.com/~tim/programs/dclock/
 
 USES=		pkgconfig tar:tgz xorg
 USE_XORG=	x11 xt
@@ -30,8 +29,8 @@ SOX_DESC=	Install SOX to play audio
 SOX_RUN_DEPENDS=	play:audio/sox
 
 XFT_USE=	XORG=xft
-XFT_CPPFLAGS=	$$(freetype-config --cflags) -DXFT_SUPPORT
-XFT_LDFLAGS=	$$(freetype-config --libs) -lXft
+XFT_CPPFLAGS=	$$(pkg-config freetype2 --cflags) -DXFT_SUPPORT
+XFT_LDFLAGS=	$$(pkg-config freetype2 --libs) -lXft
 
 post-patch:
 .for i in Dclock.c Dclock.ad dclock.1

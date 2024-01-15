@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-Auth-Digest
 PORTVERSION=	0.05
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Plack extension for digest authentication
+WWW=		https://metacpan.org/release/Plack-Middleware-Auth-Digest
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

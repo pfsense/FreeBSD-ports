@@ -1,22 +1,20 @@
-# Created by: Waitman Gobble <waitman@waitman.net>
-# $FreeBSD$
-
 PORTNAME=	double-conversion
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.5-19
-DISTVERSIONSUFFIX=	-gf4cb238
+DISTVERSION=	3.3.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Binary-decimal and decimal-binary routines for IEEE doubles
+WWW=		https://github.com/google/double-conversion
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake
+USES=		cmake:testing
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-USE_LDCONFIG=	yes
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 

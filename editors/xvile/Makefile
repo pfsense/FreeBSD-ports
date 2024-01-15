@@ -1,11 +1,7 @@
-# Created by: pgf
-# $FreeBSD$
-
 PORTNAME=	vile
-PORTVERSION=	9.8u
+PORTVERSION=	9.8y
 CATEGORIES=	editors
-MASTER_SITES=	ftp://dickey.his.com/vile/current/ \
-		ftp://ftp.invisible-island.net/vile/current/ \
+MASTER_SITES=	https://invisible-island.net/archives/vile/current/ \
 		https://invisible-mirror.net/archives/vile/current/
 PKGNAMEPREFIX=	x
 
@@ -14,6 +10,7 @@ PATCHFILES=	# none
 
 MAINTAINER=	dickey@invisible-island.net
 COMMENT=	VI Like Emacs -- X11 version
+WWW=		https://invisible-island.net/vile/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -30,12 +27,13 @@ CONFIGURE_ARGS=	--disable-imake \
 		--enable-fontset \
 		--with-icon-theme \
 		--with-xpm \
+		--datarootdir=${PREFIX}/share/xvile \
 		--with-icondir=${PREFIX}/share/icons \
-		--with-pixmapdir=${PREFIX}/share/pixmaps
+		--with-libdir-path=${PREFIX}/lib/xvile \
+		--with-pixmapdir=${PREFIX}/share/pixmaps \
+		--with-startup-path=${PREFIX}/share/xvile
 MAKEFILE=	makefile
 INSTALL_TARGET=	install install-doc install-html
-
-CONFLICTS_INSTALL=	vile-[0-9]*
 
 OPTIONS_DEFINE=		DOCS FILTERS ICONV PERL
 OPTIONS_RADIO=		MENUS
@@ -63,6 +61,10 @@ XAW3D_CONFIGURE_ON=	--enable-colored-menus \
 			--with-Xaw3d \
 			--with-screen=xaw3d
 
+# fixes to make this not conflict with the "vile" port
+DATADIR=		${PREFIX}/share/xvile
+DOCSDIR=		${PREFIX}/share/doc/xvile
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MFILTERS}
@@ -77,10 +79,17 @@ CONFIGURE_ARGS+=	--with-screen=x11
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		's|$$(datadir)/doc|@datadir@/doc/vile| ; \
+		's|$$(datadir)/doc|@prefix@/share/doc/xvile| ; \
+		 s|^\(datadir[ 	]*=[ 	]*\)@datadir@.*|\1@datarootdir@| ; \
+		 s|@datadir@/doc/vile|@datarootdir@/doc/xvile| ; \
 		 s|$$(datadir)/html|$$(docdir)/html| ; \
+		 s|$$(datadir)/perl|@datadir@/perl| ; \
+		 s|$$(BINDIR)/vileget|$$(BINDIR)/xvileget| ; \
 		 s|\($$(DOCDIR)\) \($$(MANDIR)\)|\1 $$(HTMLDIR) \2|' \
 		${WRKSRC}/makefile.in
+	@${REINPLACE_CMD} -e \
+		's|^\(datadir[ 	]*=[ 	]*\)@datadir@.*|\1@datarootdir@|' \
+		${WRKSRC}/filters/makefile.in
 
 post-install:
 	(cd ${WRKSRC}/macros && ${INSTALL_DATA} *.desktop \

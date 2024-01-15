@@ -1,21 +1,19 @@
-# Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	docopt
 PORTVERSION=	0.6.2
 PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Pythonic argument parser, that will make you smile
+WWW=		http://docopt.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE-MIT
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist concurrent
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	f77flow
 PORTVERSION=	0.12
 PORTREVISION=	1

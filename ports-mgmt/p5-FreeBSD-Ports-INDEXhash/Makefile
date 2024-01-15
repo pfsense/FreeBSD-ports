@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	FreeBSD-Ports-INDEXhash
 PORTVERSION=	1.2.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Make a hash out of the index file for the ports tree
+WWW=		https://metacpan.org/release/FreeBSD-Ports-INDEXhash
 
 USES=		perl5
 USE_PERL5=	configure

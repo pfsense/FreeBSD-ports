@@ -1,14 +1,11 @@
-# Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fs-uae
-PORTVERSION=	3.0.5
-PORTREVISION=	1
+PORTVERSION=	3.1.66
 CATEGORIES=	emulators
-MASTER_SITES=	http://fs-uae.net/stable/${PORTVERSION}/
+MASTER_SITES=	https://fs-uae.net/files/FS-UAE/Stable/${PORTVERSION}/
 
 MAINTAINER=	sirdice@gmail.com
 COMMENT=	Amiga emulator
+WWW=		https://fs-uae.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,18 +16,17 @@ LIB_DEPENDS=	libmpeg2.so:multimedia/libmpeg2 \
 		libpng.so:graphics/png
 
 USES=		compiler:c11 desktop-file-utils gettext gl gmake gnome \
-		localbase pkgconfig sdl shared-mime-info xorg
+		localbase pkgconfig sdl shared-mime-info tar:xz xorg
 
 USE_SDL=	sdl2
 USE_GL=		gl
 USE_GNOME=	glib20
 USE_XORG=	x11
 
-INSTALLS_ICONS=	yes
-
 GNU_CONFIGURE=	yes
 CFLAGS+=	-Wno-c++11-narrowing
 LDFLAGS_i386=	-Wl,-znotext
+USE_CXXSTD=    gnu++98
 
 OPTIONS_DEFINE=	DOCS DEBUG
 OPTIONS_DEFINE_i386=	JIT
@@ -40,6 +36,14 @@ JIT_DESC=	Enable JIT compiler (experimental)
 JIT_CONFIGURE_ENABLE=	jit
 
 .include <bsd.port.pre.mk>
+
+# The following is actually meant for lld 15.0 and later, but the ports
+# framework does not support LINKER_TYPE and LINKER_VERSION yet.
+.if ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} >= 150
+# Turn off checking of dynamic relocations, to avoid lld diagnostics about
+# possibly incorrect addend values.
+LDFLAGS_i386+=  -Wl,--no-check-dynamic-relocations
+.endif
 
 # JIT is not supported on non-x86 make sure it's off
 .if ${ARCH} != amd64 && ${ARCH} != i386

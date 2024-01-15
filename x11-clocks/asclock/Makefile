@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	asclock
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -13,7 +10,7 @@ COMMENT=	Afterstep clock with some language extensions
 
 LICENSE=	BSD2CLAUSE
 
-CONFLICTS=	asclock-gtk-[0-9]* asclock-xlib-[0-9]*
+CONFLICTS_INSTALL=	asclock-xlib
 
 USES=		tar:tgz imake xorg
 USE_XORG=	xpm xext x11

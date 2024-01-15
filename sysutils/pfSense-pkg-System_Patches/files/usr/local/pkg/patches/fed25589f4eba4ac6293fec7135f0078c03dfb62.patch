@@ -1,0 +1,13 @@
+diff --git a/src/usr/local/www/widgets/widgets/ipsec.widget.php b/src/usr/local/www/widgets/widgets/ipsec.widget.php
+index 2359817735..8576ed7370 100644
+--- a/src/usr/local/www/widgets/widgets/ipsec.widget.php
++++ b/src/usr/local/www/widgets/widgets/ipsec.widget.php
+@@ -28,7 +28,7 @@
+  * limitations under the License.
+  */
+ 
+-require_once("auth_check.inc");
++require_once("guiconfig.inc");
+ require_once("functions.inc");
+ require_once("service-utils.inc");
+ require_once("ipsec.inc");

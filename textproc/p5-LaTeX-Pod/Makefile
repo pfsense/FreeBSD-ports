@@ -1,15 +1,12 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	LaTeX-Pod
-PORTVERSION=	0.21
-PORTREVISION=	2
+PORTVERSION=	0.23
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Transform LaTeX source files to POD
+WWW=		https://metacpan.org/release/LaTeX-Pod
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,6 +18,6 @@ RUN_DEPENDS=	p5-LaTeX-TOM>=0.9:textproc/p5-LaTeX-TOM \
 		p5-boolean>=0.20:devel/p5-boolean
 
 USES=		perl5
-USE_PERL5=	configure
+USE_PERL5=	modbuild
 
 .include <bsd.port.mk>

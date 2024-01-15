@@ -1,6 +1,3 @@
-# Created by: Jens Rehsack <rehsack@liwing.de>
-# $FreeBSD$
-
 PORTNAME=	WWWdb
 PORTVERSION=	0.8.3
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl based generic WWW DB interface / frontend
+WWW=		https://sourceforge.net/projects/wwwdb/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mtrace
 PORTVERSION=	5.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Multicast traceroute program for IPv4
+WWW=		https://sourceforge.net/projects/mtrace/
 
 ALL_TARGET=	mtrace
 PLIST_FILES=	sbin/mtrace man/man8/mtrace.8.gz

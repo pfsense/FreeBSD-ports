@@ -1,14 +1,12 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tie-Hash-Regex
-PORTVERSION=	1.13
+PORTVERSION=	1.14
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Match hash keys using Regular Expressions
+WWW=		https://metacpan.org/release/Tie-Hash-Regex
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: fernan@iib.unsam.edu.ar
-# $FreeBSD$
-
 PORTNAME=	SpringGraph
 PORTVERSION=	0.05
 PORTREVISION=	8
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Directed graph alternative to GraphViz
+WWW=		https://metacpan.org/release/SpringGraph
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-GD>=1:graphics/p5-GD

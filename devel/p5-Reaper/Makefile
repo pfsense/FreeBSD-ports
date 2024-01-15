@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Reaper
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for reaping child processes via $$SIG{CHLD}
+WWW=		https://metacpan.org/release/Reaper
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

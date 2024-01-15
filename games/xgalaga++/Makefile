@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xgalaga++
 PORTVERSION=	0.9
 CATEGORIES=	games
@@ -12,24 +9,27 @@ EXTRACT_ONLY=	${PORTNAME}_${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Classic single screen vertical shoot em up
+WWW=		https://marc.mongenet.ch/OSS/XGalaga/
 
 LICENSE=	GPLv2
 
 USES=		gmake xorg
+USE_CXXSTD=	c++14
 USE_XORG=	x11 xpm
 
 ALL_TARGET=	${PORTNAME}
+
+DESKTOP_ENTRIES="XGalaga++" "" "${PORTNAME}" \
+		"${PORTNAME}" "Game;ArcadeGame;" ""
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man6/${PORTNAME}.6.gz \
 		share/pixmaps/${PORTNAME}.png
-
 PORTDOCS=	README
-OPTIONS_DEFINE=	DOCS
 
-DESKTOP_ENTRIES="XGalaga++" "" "${PORTNAME}" \
-		"${PORTNAME}" "Game;ArcadeGame;" ""
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|CXX =|CXX ?=|; \

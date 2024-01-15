@@ -1,8 +1,6 @@
-# Created by: torstenb
-# $FreeBSD$
-
 PORTNAME=	irc
 PORTVERSION=	2.11.2p3
+PORTREVISION=	1
 CATEGORIES=	irc
 MASTER_SITES=	http://ftp.irc.org/ftp/irc/server/ \
 		ftp://ftp.archive.de.uu.net/pub/mirrors/ftp.irc.org/server/ \
@@ -12,11 +10,8 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The "Internet Relay Chat" Server
 
-BROKEN_aarch64=		Fails to link: missing sbrk
-BROKEN_riscv64=		Fails to link: missing sbrk
-
-CONFLICTS_INSTALL=	charybdis-[0-9]* ircd-hybrid-[0-9]* Nefarious-[0-9]* \
-			ru-ircd-hybrid-[0-9]* ircd-ru-[0-9]*
+CONFLICTS_INSTALL=	charybdis ircd-hybrid Nefarious \
+			ru-ircd-hybrid ircd-ru
 
 USES=		tar:tgz
 USE_RC_SUBR=	ircd

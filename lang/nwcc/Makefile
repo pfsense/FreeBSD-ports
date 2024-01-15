@@ -1,14 +1,12 @@
-# Created by: David O'Brien (obrien@NUXI.org)
-# $FreeBSD$
-
 PORTNAME=	nwcc
 PORTVERSION=	0.8.3
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nils Weller's C compiler for Unix systems
+WWW=		https://nwcc.sourceforge.net/
 
 ONLY_FOR_ARCHS=	i386 amd64
 

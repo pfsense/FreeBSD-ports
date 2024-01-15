@@ -1,6 +1,3 @@
-# Created by: Mark Starovoytov <mark_sf@kikg.ifmo.ru>
-# $FreeBSD$
-
 PORTNAME=	libsieve
 PORTVERSION=	2.3.1
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	GHC
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for parsing, sorting, and filtering mail
+WWW=		http://sodabrew.com/libsieve/
 
 LICENSE=	LGPL21
 

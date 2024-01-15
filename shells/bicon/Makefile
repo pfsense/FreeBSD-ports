@@ -1,12 +1,10 @@
-# Created by: Carlos Jacobo Puga Medina <cpm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bicon
 PORTVERSION=	0.5
 CATEGORIES=	shells
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bidirectional text console
+WWW=		https://www.arabeyes.org/Bicon
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Daemon
 PORTVERSION=	0.48
 PORTREVISION=	1

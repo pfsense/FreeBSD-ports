@@ -1,28 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	urbackup-client
-DISTVERSION=	2.4.11.0
+DISTVERSION=	2.5.20.0
+PORTREVISION=	3
 CATEGORIES=	archivers
 MASTER_SITES=	https://hndl.urbackup.org/Client/${DISTVERSION:R}/
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client component of the UrBackup backup system
+WWW=		https://www.urbackup.org
 
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcryptopp.so:security/cryptopp
 
-USES=		autoreconf compiler:c++11-lang dos2unix gettext localbase libtool \
-			pkgconfig sqlite:3
+USES=		autoreconf compiler:c++11-lang dos2unix gettext libtool \
+		localbase pkgconfig sqlite:3
+USE_CXXSTD=	c++14
 USE_RC_SUBR=	urbackup_client
 
 USERS=		urbackup
 GROUPS=		urbackup
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-clientupdate --without-embedded-sqlite3
-CXXFLAGS+=	`pkgconf --cflags-only-other libcryptopp`
+CONFIGURE_ARGS=	--disable-clientupdate \
+		--without-embedded-sqlite3
 
 SUB_FILES=	pkg-message urbackupclient.conf.sample-daemon
 
@@ -36,10 +37,12 @@ GUI_USE=		WX=3.0+
 GUI_CONFIGURE_ON=	--with-wx-config=${WX_CONFIG}
 GUI_CONFIGURE_OFF=	--enable-headless
 
-CONFFILES=	mariadbdump.conf \
-		mariadbxtrabackup.conf \
-		postgresbase.conf \
+CONFFILES=	mariadbdump.conf mariadbxtrabackup.conf postgresbase.conf \
 		postgresqldump.conf
+
+post-patch:
+	@${SED} -i "" -e "s:%%PREFIX%%:${PREFIX}:g" \
+		${WRKSRC}/urbackupclient/backup_scripts/postgresqldump
 
 post-stage:
 	${INSTALL_DATA} ${WRKDIR}/urbackupclient.conf.sample-daemon \
@@ -49,7 +52,7 @@ post-stage:
 		${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d/urbackupclient.conf
 
 	${INSTALL_MAN} ${WRKSRC}/docs/urbackupclientbackend.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 .for f in ${CONFFILES}
 	${MV} ${STAGEDIR}${PREFIX}/etc/urbackup/${f} ${STAGEDIR}${PREFIX}/etc/urbackup/${f}.sample

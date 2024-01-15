@@ -1,20 +1,20 @@
-# Created by: Foxfair Hu <foxfair@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Round
-PORTVERSION=	0.07
+PORTVERSION=	0.08
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl extension for rounding numbers
+WWW=		https://metacpan.org/release/Math-Round
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		perl5
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5
 
 .include <bsd.port.mk>

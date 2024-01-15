@@ -1,8 +1,5 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Types-Core
-PORTVERSION=	0.3.0
+PORTVERSION=	0.3.2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:LAWALSH
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Core types defined as tests and literals
+WWW=		https://metacpan.org/release/Types-Core
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

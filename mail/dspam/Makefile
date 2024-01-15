@@ -1,18 +1,16 @@
-# Created by: Dominic Marks <dom@wirespeed.org.uk>
-# $FreeBSD$
-
 # Note to committers: If don't commit a maintainer patch and as a result PKGNAME
 # or user variables (WITH*) changes please add an entry in ${FILESDIR}/UPDATING
 # Thanks.
 
 PORTNAME=	dspam
 PORTVERSION=	3.10.2
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	danny@dannywarren.com
 COMMENT=	Bayesian spam filter
+WWW=		https://dspam.sourceforge.net/
 
 LICENSE=	AGPLv3
 
@@ -90,7 +88,7 @@ SHEBANG_FILES=	src/tools/dspam_logrotate \
 		webui/cgi-bin/templates/*/strings.pl \
 		webui/cgi-bin/templates/strings.pl \
 		webui/cgi-bin/*.cgi \
-		webui/cgi-bin/*.pl
+		webui/cgi-bin/*.pl*
 
 .ifdef(GDBS)
 CFLAGS+=	-g -DDEBUG
@@ -99,7 +97,7 @@ STRIP=
 
 PKGMESSAGE=	${WRKSRC}/README.FreeBSD
 
-CONFLICTS=	dspam-devel-[0-9]*
+CONFLICTS=	dspam-devel
 
 SIGNATURE_LIFE?=	15
 
@@ -165,7 +163,6 @@ _SED_SCRIPT=	-e 's,%%DOCSDIR%%,${DOCSDIR},g' \
 		-e 's,%%PORTNAME%%,${PORTNAME},g' \
 		-e 's,%%_VAR_DIR%%,${_VAR_DIR},g' \
 		-e '/^%%FreeBSD/D'
-
 
 .if ${PORT_OPTIONS:MSYSLOG}
 CONFIGURE_ARGS+=	--enable-syslog
@@ -274,6 +271,7 @@ CONFIGURE_ARGS+=	--with-mysql-includes=${LOCALBASE}/include/mysql \
 			--with-mysql-libraries=${LOCALBASE}/lib/mysql
 PLIST_SUB+=	MYSQL=""
 _DBDRV_COUNT:=	${_DBDRV_COUNT}o
+IGNORE_WITH_MYSQL=	105m 106m 1011m
 .	if ${PORT_OPTIONS:MMYSQL_COMPRESS}
 CONFIGURE_ARGS+=	--enable-client-compression
 .	endif
@@ -307,7 +305,7 @@ PLIST_SUB+=	NOSETUID=""
 
 .if ${PORT_OPTIONS:MEXTERNAL_LOOKUP}
 CONFIGURE_ARGS+=	--enable-external-lookup
-USE_OPENLDAP=	YES
+USES+=	ldap
 .endif
 
 .if ${PORT_OPTIONS:MUSER_HOMEDIR}
@@ -400,7 +398,7 @@ CONFIGURE_ARGS+=	--with-dspam-mode=${DSPAM_MODE}
 .	if ${PORT_OPTIONS:MLIGHTTPD}
 RUN_DEPENDS+=	${LOCALBASE}/sbin/lighttpd:www/lighttpd
 .	else
-USES+=		apache:2.2+
+USES+=		apache
 .	endif
 LIB_DEPENDS+=	libgd.so:graphics/gd
 RUN_DEPENDS+=	p5-GD>=0:graphics/p5-GD

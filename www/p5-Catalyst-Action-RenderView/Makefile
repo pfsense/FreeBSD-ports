@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Action-RenderView
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Sensible default end action for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Action-RenderView
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

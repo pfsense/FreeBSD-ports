@@ -1,6 +1,3 @@
-# Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
-
 PORTNAME=	wmglobe
 PORTVERSION=	1.3
 PORTREVISION=	11
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.dockapps.net/download/
 
 MAINTAINER=	jd.fbsd@goneja.de
 COMMENT=	Neat xearth-like WindowMaker dockapp
+WWW=		https://www.dockapps.net/wmglobe
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

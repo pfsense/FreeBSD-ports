@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	queue-fix
 PORTVERSION=	1.4
 PORTREVISION=	1
@@ -9,6 +7,7 @@ MASTER_SITES=	http://www.netmeridian.com/e-huss/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Repairs or generates a qmail queue structure
+WWW=		https://cr.yp.to/qmail.html
 
 USES=		qmail:run
 

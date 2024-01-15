@@ -1,6 +1,3 @@
-# Created by: Tomoyuki Sakurai <cherry@trombik.org>
-# $FreeBSD$
-
 PORTNAME=	Gearman-Server
 PORTVERSION=	1.11
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vivek@khera.org
 COMMENT=	Gearman server daemon
+WWW=		https://metacpan.org/release/Gearman-Server
 
 RUN_DEPENDS=	p5-Gearman>=1.10:devel/p5-Gearman \
 		p5-Danga-Socket>=1.52:devel/p5-Danga-Socket

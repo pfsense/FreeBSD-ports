@@ -1,6 +1,3 @@
-# Created by: alepulver
-# $FreeBSD$
-
 PORTNAME=	shrub
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	1.2-test13-l
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shrub - An Enemy Territory Modification
+WWW=		http://www.planetwolfenstein.com/shrub/
 
 RUN_DEPENDS=	et:games/linux-enemyterritory
 

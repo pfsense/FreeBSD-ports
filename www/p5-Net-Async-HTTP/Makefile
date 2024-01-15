@@ -1,14 +1,12 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Async-HTTP
-PORTVERSION=	0.47
+PORTVERSION=	0.49
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Use HTTP with IO::Async
+WWW=		https://metacpan.org/release/Net-Async-HTTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,9 +21,8 @@ RUN_DEPENDS=	p5-Future>=0.28:devel/p5-Future \
 		p5-Struct-Dumb>=0.07:devel/p5-Struct-Dumb \
 		p5-URI>=0:net/p5-URI
 TEST_DEPENDS=	p5-IO-Async-SSL>=0.12:security/p5-IO-Async-SSL \
-		p5-Test-Identity>=0:devel/p5-Test-Identity \
 		p5-Test-Metrics-Any>=0:devel/p5-Test-Metrics-Any \
-		p5-Test-Refcount>=0:devel/p5-Test-Refcount
+		p5-Test2-Suite>=0.000147:devel/p5-Test2-Suite
 
 USES=		perl5
 USE_PERL5=	modbuild

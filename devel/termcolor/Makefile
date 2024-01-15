@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	termcolor
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.1-22
-DISTVERSIONSUFFIX=	-ga79bf3c
+DISTVERSION=	2.1.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Header-only C++ library for printing colored messages to the terminal
+WWW=		https://github.com/ikalnytskyi/termcolor
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

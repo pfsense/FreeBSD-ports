@@ -1,6 +1,3 @@
-# Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sysroot
 PORTVERSION=	23
 CATEGORIES=	lang
@@ -12,6 +9,7 @@ DIST_SUBDIR=	gnatdroid-ndk11
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Android sysroots for C/Ada Android cross-compiler (x86)
+WWW=		http://www.dragonlace.net
 
 ONLY_FOR_ARCHS=	i386 amd64
 

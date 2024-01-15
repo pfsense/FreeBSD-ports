@@ -1,6 +1,3 @@
-# Created by: nsayer@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	libmcrypt
 PORTVERSION=	2.5.8
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/mcrypt/Libmcrypt/${PORTVERSION}
 
 MAINTAINER=	john@essenz.com
 COMMENT=	Multi-cipher cryptographic library (used in PHP)
+WWW=		https://mcrypt.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

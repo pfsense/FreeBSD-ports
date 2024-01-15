@@ -1,13 +1,11 @@
-# Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mupen64plus
-PORTVERSION=	2.5
+PORTVERSION=	2.5.9
 PORTREVISION?=	0
 CATEGORIES=	emulators
 
 MAINTAINER?=	acm@FreeBSD.org
 COMMENT=	Fork of Mupen64 Nintendo 64 emulator with plugins (meta port)
+WWW=		https://github.com/mupen64plus
 
 # Mupen64 Emulator core and ui-console
 RUN_DEPENDS+=	${LOCALBASE}/lib/libmupen64plus.so.2:emulators/mupen64plus-core

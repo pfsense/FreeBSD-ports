@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	imerge
 PORTVERSION=	0.2.4
 CATEGORIES=	misc
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.iDaemons.org/pub/distfiles/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to help merge one file to another interactively
+WWW=		https://github.com/knu/imerge
 
 USES=		tar:bzip2 uidfix
 

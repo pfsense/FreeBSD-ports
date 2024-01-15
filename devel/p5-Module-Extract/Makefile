@@ -1,6 +1,3 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	Module-Extract
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Base class for working with Perl distributions
+WWW=		https://metacpan.org/release/Module-Extract
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

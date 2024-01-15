@@ -1,6 +1,3 @@
-# Created by: Timur I. Bakeyev <timur@gnome.org>
-# $FreeBSD$
-
 PORTNAME=	stardict-dictd_mova
 PORTVERSION=	2.4.2
 PORTREVISION=	9
@@ -10,6 +7,7 @@ DIST_SUBDIR=	stardict
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Dictionaries from www.mova.org for StarDict
+WWW=		https://stardict.sourceforge.net/
 
 NO_BUILD=	yes
 NO_ARCH=	yes

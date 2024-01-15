@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Hebrew support
 
     SUBDIR += aspell
@@ -10,5 +7,6 @@
     SUBDIR += hspell
     SUBDIR += hunspell
     SUBDIR += libreoffice
+    SUBDIR += py-pyluach
 
 .include <bsd.port.subdir.mk>

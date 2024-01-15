@@ -1,6 +1,3 @@
-# Created by: Igor Vinokurov <igor@zynaps.ru>
-# $FreeBSD$
-
 PORTNAME=	Apache-ASP
 PORTVERSION=	2.63
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	${MODPERL_SUFFIX}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Active Server Pages for Apache
+WWW=		https://metacpan.org/release/Apache-ASP
 
 LICENSE=	GPLv2
 

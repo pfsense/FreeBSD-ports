@@ -1,20 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	sks
 PORTVERSION=	1.1.6
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://bitbucket.org/skskeyserver/sks-keyserver/downloads/
 
 EXTRA_PATCHES=	${FILESDIR}/debian-bug-870150:-p1
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Synchronizing Key Server, a fast OpenPGP keyserver
+WWW=		https://bitbucket.org/skskeyserver/sks-keyserver/
 
 LICENSE=	GPLv2+
 
+BUILD_DEPENDS=	${LOCALBASE}/${OCAML_SITELIBDIR}/num/META:math/ocaml-num
+
 USE_OCAML=	yes
 USE_OCAML_CAMLP4=yes
-USES=		bdb:5 perl5 gmake shebangfix tar:tgz
+USES=		bdb perl5 gmake shebangfix tar:tgz
 USE_PERL5=	build
 MAKE_JOBS_UNSAFE=yes
 SHEBANG_FILES=	sks_build.sh
@@ -35,6 +37,8 @@ post-extract:
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^CC=/d; /^CFLAGS=/s/=/+=/' ${WRKSRC}/bdb/Makefile
+	@${REINPLACE_CMD} -E '/^\+OCAML(C|OPT)=/s,$$, -unsafe-string,' \
+		${WRKSRC}/cryptokit-1.7-sks.patch
 
 pre-build:
 	@cd ${WRKSRC} && test -f .depend || ${MAKE_CMD} dep

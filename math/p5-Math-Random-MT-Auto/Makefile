@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Random-MT-Auto
 PORTVERSION=	6.23
 CATEGORIES=	math perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Auto-seeded Mersenne Twister PRNGs
+WWW=		https://metacpan.org/release/Math-Random-MT-Auto
 
 LICENSE=	BSD3CLAUSE
 

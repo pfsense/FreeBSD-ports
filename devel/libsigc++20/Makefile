@@ -1,19 +1,16 @@
-# Created by: Alexander Nedotsukov <bland@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/trunk/devel/libsigc++20/Makefile 19952 2014-10-15 08:11:00Z gusi $
-
 PORTNAME=	libsigc++
-PORTVERSION=	2.10.4
+PORTVERSION=	2.12.0
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Callback Framework for C++
+WWW=		http://libsigc.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-PORTSCOUT=	limit:^2\.10\.
+PORTSCOUT=	limit:^2\.12\.
 
 INSTALL_TARGET=	install-strip
 USES=		compiler:c++11-lang meson tar:xz

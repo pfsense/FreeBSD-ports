@@ -1,14 +1,12 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Apache-AuthCookie
-PORTVERSION=	3.30
+PORTVERSION=	3.31
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to provide custom forms for reauthentication
+WWW=		https://metacpan.org/release/Apache-AuthCookie
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -22,7 +20,7 @@ RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_perl2>=1.39:www/mod_perl2 \
 		p5-URI>=1.36:net/p5-URI \
 		p5-WWW-Form-UrlEncoded>=0:www/p5-WWW-Form-UrlEncoded
 
-USES=		apache:2.2+ perl5
+USES=		apache perl5
 USE_PERL5=	configure
 
 NO_ARCH=	yes

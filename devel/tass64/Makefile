@@ -1,14 +1,12 @@
-# Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
-
 PORTNAME=	tass64
-PORTVERSION=	1.55.2200
+PORTVERSION=	1.59.3120
 CATEGORIES=	devel
 MASTER_SITES=	SF/tass64/source
 DISTNAME=	64tass-${PORTVERSION}-src
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Multi pass optimizing macro assembler for 65xx series processors
+WWW=		https://tass64.sourceforge.net/
 
 LICENSE=	GPLv2+ LGPL20+ LGPL21+ MIT
 LICENSE_COMB=	multi
@@ -22,7 +20,7 @@ USES=		gmake zip
 MAKE_ARGS=	-w CC="${CC}" CFLAGS="${CFLAGS}" LD="${CC}" LDFLAGS="${LDFLAGS}"
 
 PLIST_FILES=	bin/tass64
-PORTDOCS=	README README.html
+PORTDOCS=	README README.html README.md
 
 OPTIONS_DEFINE=	DOCS
 
@@ -30,7 +28,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/64tass ${STAGEDIR}${PREFIX}/bin/tass64
 
 do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Math-VectorReal
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Module to handle 3D Vector Mathematics
+WWW=		https://metacpan.org/release/Math-VectorReal
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,59 +1,40 @@
-# $FreeBSD$
-
 PORTNAME=	libgridxc
-DISTVERSION=	0.8.5
-PORTREVISION=	3
+DISTVERSION=	1.1.0
+PORTREVISION=	2
 CATEGORIES=	science
-MASTER_SITES=	https://launchpad.net/${PORTNAME}/trunk/${DISTVERSION:R}/+download/
+MASTER_SITES=	https://gitlab.com/siesta-project/libraries/${PORTNAME}/-/archive/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library to compute the exchange and correlation energy and potentials
+WWW=		https://gitlab.com/siesta-project/libraries/libgridxc
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/../BSD_LICENSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		fortran gmake tar:tgz
+USES=		cmake fortran pkgconfig
 USE_LDCONFIG=	yes
 
-MAKEFILE=	makefile
-ALL_TARGET=	default
+CMAKE_ON=	BUILD_SHARED_LIBS
 
-WRKSRC_SUBDIR=	src
+OPTIONS_SINGLE=		MPI
+OPTIONS_SINGLE_MPI=	NOMPI MPICH OPENMPI
+OPTIONS_DEFINE=		LIBXC
+OPTIONS_DEFAULT=	LIBXC MPICH
+OPTIONS_SUB=		yes
 
-BUILD_WRKSRC=	${WRKSRC}/../build
-TMP_STAGEDIR=	${WRKDIR}/tmp_stage
-MAKE_ENV=	INSTALL_DIR=${TMP_STAGEDIR}${PREFIX} FREEBSD_LOCALBASE=${LOCALBASE} LIBXC_ROOT=${LOCALBASE}
+NOMPI_DESC=		Build without parallel processing support
 
-BINARY_ALIAS=	make=${GMAKE}
+MPICH_USES=		mpi:mpich
+MPICH_CMAKE_ON=		-DWITH_MPI=ON
+MPICH_VARS=		FFLAGS+=-fallow-argument-mismatch
 
-OPTIONS_DEFINE=		MPI LIBXC
-OPTIONS_DEFAULT=	MPI # LIBXC
-
-MPI_MAKE_ENV=		WITH_MPI=1
-MPI_LIB_DEPENDS=	libmpich.so:net/mpich
+OPENMPI_USES=		mpi:openmpi
+OPENMPI_CMAKE_ON=	-DWITH_MPI=ON
+OPENMPI_VARS=		FFLAGS+=-fallow-argument-mismatch
 
 LIBXC_DESC=		Use libxc for exchange-correlation functionals for DFT
-LIBXC_MAKE_ENV=		WITH_LIBXC=1
+LIBXC_CMAKE_BOOL=	WITH_LIBXC
+LIBXC_VARS=		FCFLAGS+="-I${LOCALBASE}/include" LDFLAGS+="-L${LOCALBASE}/lib -lxcf90"
 LIBXC_LIB_DEPENDS=	libxc.so:science/libxc
-LIBXC_BROKEN=		Fails to build with libxc-5.0.0: https://bugs.launchpad.net/libgridxc/+bug/1899578
-
-post-patch:
-	@${MKDIR} ${BUILD_WRKSRC}
-	@${CAT} ${WRKSRC}/../extra/fortran.mk \
-		| ${SED} '\
-			s|FC_SERIAL=gfortran|&${GCC_DEFAULT}|; \
-			s|FFLAGS= -O2|& -fPIC|' \
-		> ${BUILD_WRKSRC}/fortran.mk
-
-do-configure:
-	@cd ${BUILD_WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${SH} ../src/config.sh
-
-do-build:
-	@cd ${BUILD_WRKSRC} && ${MKDIR} ${TMP_STAGEDIR} && ${SETENV} ${MAKE_ENV} ${SH} ../src/build.sh
-
-do-install:
-	cd ${TMP_STAGEDIR} && ${COPYTREE_SHARE} . ${STAGEDIR}
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/mk && ${MV} ${STAGEDIR}${PREFIX}/*.mk ${STAGEDIR}${PREFIX}/share/mk
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libGridXC.so
 
 .include <bsd.port.mk>

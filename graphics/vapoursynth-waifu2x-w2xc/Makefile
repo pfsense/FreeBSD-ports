@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	waifu2x-w2xc
 DISTVERSION=	r8
+PORTREVISION=	3
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	vapoursynth-
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Waifu2x (waifu2x-converter-cpp) plugin for VapourSynth
+WWW=		https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Waifu2x-w2xc
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,6 +19,7 @@ GH_ACCOUNT=	HomeOfVapourSynthEvolution
 GH_PROJECT=	VapourSynth-Waifu2x-w2xc
 
 USES=		compiler:c++14-lang localbase:ldflags meson pkgconfig
+CPPFLAGS+=	-DHAVE_OPENCV # https://github.com/DeadSix27/waifu2x-converter-cpp/commit/248797748d5a
 DATADIR=	${PREFIX}/lib/vapoursynth
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 PORTDATA=	lib${PORTNAME}.so models

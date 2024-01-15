@@ -1,6 +1,3 @@
-# Created by: Steven G. Kargl
-# $FreeBSD$
-
 PORTNAME=	f2c
 PORTVERSION=	20200916
 CATEGORIES=	lang
@@ -10,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	fortran@FreeBSD.org
 COMMENT=	Fortran-to-C converter and its run-time libraries
+WWW=		https://www.netlib.org/
 
 LICENSE=	ATT
 LICENSE_NAME=	Copyright of AT&T, Lucent Technologies and Bellcore
@@ -21,6 +19,8 @@ BROKEN_mips64=		fails to compile: /usr/include/sigfpe.h: No such file or directo
 
 USES=		gmake
 USE_LDCONFIG=	yes
+
+MAKE_JOBS_UNSAFE=	yes
 
 LIBVER=		2
 SIMPLEDIST=	changes f2c.1 f2c.1t f2c.h f2c.pdf fc getopt.c README

@@ -1,21 +1,19 @@
-# Created by: Michael Moll <kvedulv at kvedulv.de>
-# $FreeBSD$
-
 PORTNAME=	grape-swagger
-PORTVERSION=	1.2.1
+PORTVERSION=	2.0.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Documentation tool for grape APIs
+WWW=		https://github.com/ruby-grape/grape-swagger
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-grape>=1.3<2:devel/rubygem-grape
+RUN_DEPENDS=	rubygem-grape>=1.7<3.0:devel/rubygem-grape \
+		rubygem-rack-test>=2<3:www/rubygem-rack-test
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

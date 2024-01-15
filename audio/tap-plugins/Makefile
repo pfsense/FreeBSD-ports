@@ -1,6 +1,3 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	tap-plugins
 PORTVERSION=	0.7.2
 CATEGORIES=	audio
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/tap-plugins/tap-plugins/${PORTVERSION}
 
 MAINTAINER=	taku@tackymt.homeip.net
 COMMENT=	LADSPA Plugins by Tom Szilagy
+WWW=		https://tap-plugins.sourceforge.net/
 
 LICENSE=	GPLv2
 

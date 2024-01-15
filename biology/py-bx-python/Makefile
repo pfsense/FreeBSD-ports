@@ -1,26 +1,22 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	bx-python
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.9
+DISTVERSION=	0.8.13
+PORTREVISION=	1
 CATEGORIES=	biology python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python module for reading, manipulating and writing genomic data sets
+WWW=		https://github.com/bxlab/bx-python
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PY_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
+PY_DEPENDS=	${PYNUMPY}
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		compiler python:3.6+
-USE_GITHUB=	yes
-GH_ACCOUNT=	bxlab
+USES=		compiler python
 USE_PYTHON=	autoplist cython distutils
 
 post-install:

@@ -1,21 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	libplist
-PORTVERSION=	1.12
-PORTREVISION?=	0
-CATEGORIES?=	devel
-MASTER_SITES=	http://www.libimobiledevice.org/downloads/
+PORTVERSION=	2.2.0
+PORTREVISION?=	2
+CATEGORIES=	devel
+MASTER_SITES=	https://github.com/libimobiledevice/${PORTNAME}/releases/download/${PORTVERSION}/
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Library to handle Apple Property List format
+WWW=		https://www.libimobiledevice.org
 
-LICENSE?=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-SLAVE_PORT?=	no
-
-USES+=		compiler gnome libtool pathfix pkgconfig tar:bzip2
+USES+=		autoreconf compiler cpe gnome libtool pathfix pkgconfig tar:bzip2
+CPE_VENDOR=	libimobiledevice
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+
+SLAVE_PORT?=	no
 
 .if ${SLAVE_PORT} == no
 
@@ -23,7 +24,7 @@ USE_GNOME=	libxml2
 CONFIGURE_ARGS=	--without-cython
 USE_LDCONFIG=	${LOCALBASE}/lib
 
-PORTDOCS=	AUTHORS NEWS README
+PORTDOCS=	AUTHORS NEWS README.md
 
 OPTIONS_DEFINE=	DOCS
 
@@ -33,12 +34,4 @@ post-install:
 
 .endif # ${SLAVE_PORT} == no
 
-.include <bsd.port.pre.mk>
-
-pre-build:
-.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} < 45
-	@${REINPLACE_CMD} -e '/__attribute__/ s,deprecated(x),deprecated(),' \
-		${WRKSRC}/include/plist/plist.h
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

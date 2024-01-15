@@ -1,6 +1,3 @@
-# Created by: Melvyn Sopacua <melvyn@magemana.nl>
-# $FreeBSD$
-
 PORTNAME=	n98-magerun
 PORTVERSION=	1.98.0
 CATEGORIES=	sysutils www
@@ -10,11 +7,12 @@ EXTRACT_SUFX=	.phar
 
 MAINTAINER=	lukasz@wasikowski.net
 COMMENT=	CLI tool for inspection and control of Magento installations
+WWW=		https://magerun.net/
 
 LICENSE=	MIT
 
 USES=		mysql:client php:cli
-USE_PHP=	phar bz2 simplexml pdo_mysql json zlib ctype dom posix
+USE_PHP=	phar bz2 simplexml pdo_mysql zlib ctype dom posix
 
 NO_ARCH=	yes
 NO_BUILD=	yes

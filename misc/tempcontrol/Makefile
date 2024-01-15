@@ -1,6 +1,3 @@
-# Created by: Greg Lehey <grog@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tempcontrol
 PORTVERSION=	1.2
 PORTREVISION=	3

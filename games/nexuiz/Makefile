@@ -1,9 +1,6 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nexuiz
 PORTVERSION=	2.5.2
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/NexuizRelease/Nexuiz%20${PORTVERSION} \
 		SF/${PORTNAME}/mappack/nexmappack_r2:mappack
@@ -12,6 +9,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Fast-paced, chaotic, and intense multiplayer first person shooter
+WWW=		https://www.alientrap.org/games/nexuiz
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 

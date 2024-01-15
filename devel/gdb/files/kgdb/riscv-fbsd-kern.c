@@ -22,8 +22,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 
 /* Target-dependent code for FreeBSD/riscv64 kernels.  */
@@ -98,7 +96,7 @@ static const struct regcache_map_entry riscv_fbsd_tfmap[] =
   };
 
 static struct trad_frame_cache *
-riscv_fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
+riscv_fbsd_trapframe_cache (frame_info_ptr this_frame, void **this_cache)
 {
   struct gdbarch *gdbarch = get_frame_arch (this_frame);
   enum bfd_endian byte_order = gdbarch_byte_order (gdbarch);
@@ -138,8 +136,8 @@ riscv_fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
 }
 
 static void
-riscv_fbsd_trapframe_this_id (struct frame_info *this_frame,
-			     void **this_cache, struct frame_id *this_id)
+riscv_fbsd_trapframe_this_id (frame_info_ptr this_frame,
+			      void **this_cache, struct frame_id *this_id)
 {
   struct trad_frame_cache *cache =
     riscv_fbsd_trapframe_cache (this_frame, this_cache);
@@ -148,8 +146,8 @@ riscv_fbsd_trapframe_this_id (struct frame_info *this_frame,
 }
 
 static struct value *
-riscv_fbsd_trapframe_prev_register (struct frame_info *this_frame,
-				   void **this_cache, int regnum)
+riscv_fbsd_trapframe_prev_register (frame_info_ptr this_frame,
+				    void **this_cache, int regnum)
 {
   struct trad_frame_cache *cache =
     riscv_fbsd_trapframe_cache (this_frame, this_cache);
@@ -159,8 +157,8 @@ riscv_fbsd_trapframe_prev_register (struct frame_info *this_frame,
 
 static int
 riscv_fbsd_trapframe_sniffer (const struct frame_unwind *self,
-				struct frame_info *this_frame,
-				void **this_prologue_cache)
+			      frame_info_ptr this_frame,
+			      void **this_prologue_cache)
 {
   const char *name;
 
@@ -171,6 +169,7 @@ riscv_fbsd_trapframe_sniffer (const struct frame_unwind *self,
 }
 
 static const struct frame_unwind riscv_fbsd_trapframe_unwind = {
+  "riscv FreeBSD kernel trap",
   SIGTRAMP_FRAME,
   default_frame_unwind_stop_reason,
   riscv_fbsd_trapframe_this_id,
@@ -186,7 +185,7 @@ riscv_fbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
 {
   frame_unwind_prepend_unwinder (gdbarch, &riscv_fbsd_trapframe_unwind);
 
-  set_solib_ops (gdbarch, &kld_so_ops);
+  set_gdbarch_so_ops (gdbarch, &kld_so_ops);
 
   set_gdbarch_software_single_step (gdbarch, riscv_software_single_step);
 
@@ -194,11 +193,9 @@ riscv_fbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
   fbsd_vmcore_set_cpu_pcb_addr (gdbarch, kgdb_trgt_stop_pcb);
 }
 
-/* Provide a prototype to silence -Wmissing-prototypes.  */
-extern initialize_file_ftype _initialize_riscv_kgdb_tdep;
-
+void _initialize_riscv_kgdb_tdep ();
 void
-_initialize_riscv_kgdb_tdep (void)
+_initialize_riscv_kgdb_tdep ()
 {
   gdbarch_register_osabi_sniffer(bfd_arch_riscv,
 				 bfd_target_elf_flavour,

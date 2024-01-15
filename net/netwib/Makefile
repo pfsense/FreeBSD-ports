@@ -1,9 +1,6 @@
-# Created by: janos.mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	netwib
 PORTVERSION=	5.38.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net devel
 MASTER_SITES=	http://www.laurentconstantin.com/common/netw/netwib/download/v5/ \
 		http://membres.lycos.fr/lauconstantin/common/netw/netwib/download/v5/ \
@@ -13,6 +10,7 @@ DISTFILES=	${DISTNAME}.tgz ${DISTNAME:S/src/doc_html/}.tgz
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Netwib network programming library
+WWW=		http://www.laurentconstantin.com/en/netw/netwib/
 
 BROKEN_riscv64=		fails to configure: Could not guess NETWIBDEF_SYSARCH. Edit genemake to set NETWIBDEF_SYSARCH, and rerun genemake.
 

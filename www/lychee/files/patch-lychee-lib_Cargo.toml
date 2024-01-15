@@ -1,0 +1,13 @@
+--- lychee-lib/Cargo.toml.orig	2023-06-25 16:08:08 UTC
++++ lychee-lib/Cargo.toml
+@@ -66,9 +66,7 @@ serde_json = "1.0.96"
+ serde_json = "1.0.96"
+ 
+ [features]
+-# Vendor OpenSSL instead of dynamically linking it at runtime.
+-vendored-openssl = ["openssl-sys/vendored"]
+-# Feature flag to include checking reserved example domains 
++# Feature flag to include checking reserved example domains
+ # as per RFC 2606, section 3.
+ # This flag is off by default and only exists to allow example domains in
+ # integration tests, which don't respect `#[cfg(test)]`.

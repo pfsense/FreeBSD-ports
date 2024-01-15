@@ -1,6 +1,3 @@
-# Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	File-Tail-Dir
 PORTVERSION=	0.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw
 COMMENT=	Tail all matching files in a given set of directories
+WWW=		https://metacpan.org/release/File-Tail-Dir
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

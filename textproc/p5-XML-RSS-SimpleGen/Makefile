@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	XML-RSS-SimpleGen
 PORTVERSION=	11.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	For writing RSS files
+WWW=		https://metacpan.org/release/XML-RSS-SimpleGen
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	netspoc
 PORTVERSION=	3.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	Netspoc-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network Security Policy Compiler
+WWW=		http://netspoc.berlios.de/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

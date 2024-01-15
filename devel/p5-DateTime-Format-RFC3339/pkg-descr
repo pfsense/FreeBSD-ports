@@ -1,3 +1,2 @@
-Parse and format RFC3339 datetime strings
-
-WWW: https://metacpan.org/release/DateTime-Format-RFC3339
+This module understands the RFC3339 date/time format.
+Can be used to parse these formats and create the appropriate objects.

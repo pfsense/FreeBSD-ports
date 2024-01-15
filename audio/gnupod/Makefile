@@ -1,6 +1,3 @@
-# Created by: David Le Brun <david@dyn-ns.net>
-# $FreeBSD$
-
 PORTNAME=	gnupod
 PORTVERSION=	0.99.8
 PORTREVISION=	3
@@ -8,8 +5,9 @@ CATEGORIES=	audio perl5
 MASTER_SITES=	SAVANNAH \
 		http://www.blinkenlights.ch/gnupod-dist/stable/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	steve.roome@gmail.com
 COMMENT=	Set of Perl scripts for using an Apple iPod
+WWW=		https://www.gnu.org/software/gnupod/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Perl-Unsafe-Signals
 PORTVERSION=	0.03
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Allow unsafe handling of signals in selected blocks
+WWW=		https://metacpan.org/release/Perl-Unsafe-Signals
 
 USES=		perl5
 USE_PERL5=	configure

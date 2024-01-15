@@ -1,20 +1,22 @@
-# Created by: elvstone@gmail.com
-# $FreeBSD$
-
 PORTNAME=	znc
 PORTVERSION=	1.8.2
-PORTREVISION=	1
+PORTREVISION=	12
 CATEGORIES=	irc
 MASTER_SITES=	https://znc.in/releases/ \
 		https://znc.in/releases/archive/
 
+# Fix build with libressl
+PATCH_SITES=	https://github.com/znc/znc/commit/
+PATCHFILES=	dcb5f3df82fcfec48aab356252067dc897fb98cf.patch:-p1
+
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Advanced IRC bouncer
+WWW=		https://wiki.znc.in/ZNC
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c++11-lib cpe cmake:run iconv pathfix pkgconfig python:3.5+
+USES=		compiler:c++11-lib cpe cmake:run iconv pathfix pkgconfig python
 
 USE_RC_SUBR=	znc
 

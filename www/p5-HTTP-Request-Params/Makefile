@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Request-Params
 PORTVERSION=	1.02
 CATEGORIES=	www perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Retrieve GET/POST Parameters from HTTP Requests
+WWW=		https://metacpan.org/release/HTTP-Request-Params
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	xparam
 PORTVERSION=	1.22
 PORTREVISION=	3
@@ -9,11 +6,13 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General-purpose tool for parameter handling in C++
+WWW=		https://xparam.sourceforge.net/
 
 LICENSE=	GPLv2+
 
 GNU_CONFIGURE=	yes
 USES=		gmake libtool:build
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 post-install:

@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sets
 PORTVERSION=	1.0.0
 PORTREVISION=	3
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of the sets game
+WWW=		http://www.linuxmotors.com/sets/
 
 LICENSE=	GPLv3
 

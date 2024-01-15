@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtimelapse
 DISTVERSION=	0.1
 PORTREVISION=	17
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/Relase	# yes, this is not a typo (here)
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application for capturing images to generate timelapse videos
+WWW=		https://sourceforge.net/projects/gtimelapse/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	clx
-DISTVERSION=	0.7.5
-PORTREVISION=	1
+DISTVERSION=	0.7.5-65
+DISTVERSIONSUFFIX=	-g8e07155
 CATEGORIES=	x11 lisp
 PKGNAMEPREFIX=	cl-
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	X11 client library for Common Lisp
+WWW=		https://www.cliki.net/CLX
 
 LICENSE=	MIT
 
@@ -21,7 +20,7 @@ GH_ACCOUNT=	sharplispers
 INFO=		clx
 PLIST_SUB=	ASDF_PATHNAME="${ASDF_PATHNAME:S,^${PREFIX}/,,}" \
 		ASDF_REGISTRY="${ASDF_REGISTRY:S,^${PREFIX}/,,}"
-PORTDOCS=	CHANGES NEWS README-R5 README.md exclMakefile exclREADME
+PORTDOCS=	CHANGES NEWS README-R5 README.md exclREADME
 
 OPTIONS_DEFINE=	DOCS
 
@@ -34,6 +33,7 @@ do-install:
 		${STAGEDIR}${ASDF_PATHNAME}/demo \
 		${STAGEDIR}${ASDF_PATHNAME}/extensions \
 		${STAGEDIR}${ASDF_PATHNAME}/manual \
+		${STAGEDIR}${ASDF_PATHNAME}/tests \
 		${STAGEDIR}${ASDF_REGISTRY}
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.asd ${WRKSRC}/*.c \
 		${WRKSRC}/*.lisp ${WRKSRC}/exclMakefile \
@@ -48,6 +48,8 @@ do-install:
 		${STAGEDIR}${ASDF_PATHNAME}/manual "! -name *.info")
 	${INSTALL_DATA} ${WRKSRC}/manual/*.info \
 		${STAGEDIR}${PREFIX}/${INFO_PATH}
+	(cd ${WRKSRC}/tests && ${COPYTREE_SHARE} . \
+		${STAGEDIR}${ASDF_PATHNAME}/tests)
 	${RLN} ${STAGEDIR}${ASDF_PATHNAME}/clx.asd ${STAGEDIR}${ASDF_REGISTRY}
 
 do-install-DOCS-on:

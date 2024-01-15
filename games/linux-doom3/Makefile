@@ -1,6 +1,3 @@
-# Created by: alepulver
-# $FreeBSD$
-
 PORTNAME=	doom3
 PORTVERSION=	1.3.1.1304
 PORTEPOCH=	1
@@ -12,10 +9,16 @@ EXTRACT_SUFX=	.run
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Doom III for Linux
+WWW=		http://www.doom3.com/
+
+# Converted from NO_CDROM
+LICENSE=	doom3
+LICENSE_NAME=	doom3
+LICENSE_TEXT=	Redistribution is limited, see license; Requested by id Software
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 USES=		linux
 USE_LINUX=	xorglibs
-NO_CDROM=	Redistribution is limited, see license; Requested by id Software
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 

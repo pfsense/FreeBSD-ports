@@ -1,6 +1,3 @@
-# Created by: Martin Dieringer <Martin.Dieringer@t-online.de>
-# $FreeBSD$
-
 PORTNAME=	mac
 PORTVERSION=	3.99.4.5.7
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-3.99-u4-b5-s7
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Monkey's Audio lossless codec
+WWW=		https://www.monkeysaudio.com/
 
 USES=		iconv:build libtool
 GNU_CONFIGURE=	yes

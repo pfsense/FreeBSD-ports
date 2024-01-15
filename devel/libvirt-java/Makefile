@@ -1,14 +1,12 @@
-# Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libvirt-java
-PORTVERSION=	0.5.2
+PORTVERSION=	0.5.3
 CATEGORIES=	devel java
 MASTER_SITES=	http://libvirt.org/sources/java/ \
 		ftp://libvirt.org/libvirt/java/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Java bindings for Libvirt virtualization API
+WWW=		https://libvirt.org/java.html
 
 LICENSE=	MIT
 

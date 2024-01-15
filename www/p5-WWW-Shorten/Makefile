@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	WWW-Shorten
-PORTVERSION=	3.093
+PORTVERSION=	3.094
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Abstract interface to URL shortening sites
+WWW=		https://metacpan.org/release/WWW-Shorten
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

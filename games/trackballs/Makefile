@@ -1,31 +1,31 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	trackballs
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	SDL-based Marble Madness clone
+WWW=		https://trackballs.github.io/
 
-LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv2+ ETHYMONICS
+LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libguile-2.2.so:lang/guile2 \
-		libgc.so:devel/boehm-gc
-
-USES=		cmake desktop-file-utils gettext-runtime gl gnome pkgconfig sdl
+USES=		cmake desktop-file-utils gettext-runtime gl gnome \
+		guile:2.2,conflicts pkgconfig sdl
 USE_GL=		gl
 USE_SDL=	image2 mixer2 sdl2 ttf2
 
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
+LICENSE_FILE_ETHYMONICS=	${WRKSRC}/share/music/README
+LICENSE_NAME_ETHYMONICS=	Ethymonics Free Music License
+LICENSE_PERMS_ETHYMONICS=	dist-mirror dist-sell pkg-mirror pkg-sell \
+							auto-accept
+
 USE_GITHUB=	yes
 
-INSTALLS_ICONS=	yes
-
 CMAKE_ARGS+=	-DTRACKBALLS_DOC_DIR=${DOCSDIR} \
-		-DTRACKBALLS_MAN_DIR=${PREFIX}/man
+		-DTRACKBALLS_MAN_DIR=${PREFIX}/share/man
 
 OPTIONS_DEFINE=	NLS DOCS
 OPTIONS_SUB=	yes

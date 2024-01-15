@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	mcfly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.2
+DISTVERSION=	0.8.4
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fly through your shell history
+WWW=		https://github.com/cantino/mcfly
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,76 +15,170 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	cantino
 
-CARGO_CRATES=	aho-corasick-0.7.10 \
-		ansi_term-0.11.0 \
-		arrayref-0.3.6 \
-		arrayvec-0.5.1 \
-		atty-0.2.14 \
-		autocfg-1.0.0 \
-		base64-0.11.0 \
-		bitflags-1.2.1 \
-		blake2b_simd-0.5.10 \
-		bstr-0.2.12 \
-		byteorder-1.3.4 \
-		cc-1.0.52 \
-		cfg-if-0.1.10 \
-		clap-2.33.0 \
-		constant_time_eq-0.1.5 \
-		crossbeam-utils-0.7.2 \
-		csv-1.1.3 \
-		csv-core-0.1.10 \
-		dirs-2.0.2 \
-		dirs-sys-0.3.4 \
-		either-1.6.1 \
-		getrandom-0.1.14 \
-		hermit-abi-0.1.12 \
-		itertools-0.9.0 \
-		itoa-0.4.5 \
-		lazy_static-1.4.0 \
-		libc-0.2.69 \
-		libsqlite3-sys-0.10.0 \
-		linked-hash-map-0.5.3 \
-		lru-cache-0.1.2 \
-		memchr-2.3.3 \
-		numtoa-0.1.0 \
-		pkg-config-0.3.17 \
-		ppv-lite86-0.2.6 \
+CARGO_CRATES=	adler32-1.2.0 \
+		ahash-0.8.6 \
+		aho-corasick-1.1.2 \
+		allocator-api2-0.2.16 \
+		android-tzdata-0.1.1 \
+		android_system_properties-0.1.5 \
+		anstream-0.6.4 \
+		anstyle-1.0.4 \
+		anstyle-parse-0.2.2 \
+		anstyle-query-1.0.0 \
+		anstyle-wincon-3.0.1 \
+		autocfg-1.1.0 \
+		autopilot-0.4.0 \
+		bitflags-1.3.2 \
+		bitflags-2.4.1 \
+		block-0.1.6 \
+		bumpalo-3.14.0 \
+		byteorder-1.5.0 \
+		cc-1.0.83 \
+		cfg-if-1.0.0 \
+		chrono-0.4.31 \
+		chrono-systemd-time-0.3.0 \
+		clap-4.4.10 \
+		clap_builder-4.4.9 \
+		clap_derive-4.4.7 \
+		clap_lex-0.6.0 \
+		cocoa-0.20.2 \
+		color_quant-1.1.0 \
+		colorchoice-1.0.0 \
+		core-foundation-0.7.0 \
+		core-foundation-sys-0.7.0 \
+		core-foundation-sys-0.8.6 \
+		core-graphics-0.19.2 \
+		crc32fast-1.3.2 \
+		crossbeam-deque-0.8.3 \
+		crossbeam-epoch-0.9.15 \
+		crossbeam-utils-0.8.16 \
+		crossterm-0.26.1 \
+		crossterm_winapi-0.9.1 \
+		csv-1.3.0 \
+		csv-core-0.1.11 \
+		deflate-0.7.20 \
+		directories-next-2.0.0 \
+		dirs-4.0.0 \
+		dirs-sys-0.3.7 \
+		dirs-sys-next-0.1.2 \
+		either-1.9.0 \
+		fallible-iterator-0.2.0 \
+		fallible-streaming-iterator-0.1.9 \
+		filedescriptor-0.8.2 \
+		foreign-types-0.3.2 \
+		foreign-types-shared-0.1.1 \
+		getrandom-0.1.16 \
+		getrandom-0.2.11 \
+		gif-0.10.3 \
+		hashbrown-0.14.3 \
+		hashlink-0.8.4 \
+		heck-0.4.1 \
+		humantime-2.1.0 \
+		iana-time-zone-0.1.58 \
+		iana-time-zone-haiku-0.1.2 \
+		image-0.22.5 \
+		inflate-0.4.5 \
+		itertools-0.10.5 \
+		itoa-1.0.9 \
+		jpeg-decoder-0.1.22 \
+		js-sys-0.3.66 \
+		libc-0.2.150 \
+		libredox-0.0.1 \
+		libsqlite3-sys-0.25.2 \
+		lock_api-0.4.11 \
+		log-0.4.20 \
+		lzw-0.10.0 \
+		malloc_buf-0.0.6 \
+		memchr-2.6.4 \
+		memoffset-0.9.0 \
+		mio-0.8.9 \
+		num-derive-0.2.5 \
+		num-integer-0.1.45 \
+		num-iter-0.1.43 \
+		num-rational-0.2.4 \
+		num-traits-0.2.17 \
+		objc-0.2.7 \
+		once_cell-1.18.0 \
+		parking_lot-0.12.1 \
+		parking_lot_core-0.9.9 \
+		path-absolutize-3.1.1 \
+		path-dedot-3.1.1 \
+		pkg-config-0.3.27 \
+		png-0.15.3 \
+		ppv-lite86-0.2.17 \
+		proc-macro2-0.4.30 \
+		proc-macro2-1.0.70 \
+		quote-0.6.13 \
+		quote-1.0.33 \
 		rand-0.7.3 \
+		rand-0.8.5 \
 		rand_chacha-0.2.2 \
+		rand_chacha-0.3.1 \
 		rand_core-0.5.1 \
+		rand_core-0.6.4 \
 		rand_hc-0.2.0 \
-		redox_syscall-0.1.56 \
-		redox_termios-0.1.1 \
-		redox_users-0.3.4 \
-		regex-1.3.7 \
-		regex-automata-0.1.9 \
-		regex-syntax-0.6.17 \
-		relative-path-1.0.0 \
-		rusqlite-0.15.0 \
-		rust-argon2-0.7.0 \
-		ryu-1.0.4 \
-		serde-1.0.106 \
-		shellexpand-2.0.0 \
-		strsim-0.8.0 \
-		termion-1.5.5 \
-		textwrap-0.11.0 \
-		thread_local-1.0.1 \
-		time-0.1.43 \
-		unicode-segmentation-1.6.0 \
-		unicode-width-0.1.7 \
-		vcpkg-0.2.8 \
-		vec_map-0.8.2 \
+		rayon-1.8.0 \
+		rayon-core-1.12.0 \
+		redox_syscall-0.4.1 \
+		redox_users-0.4.4 \
+		regex-1.10.2 \
+		regex-automata-0.4.3 \
+		regex-syntax-0.8.2 \
+		rusqlite-0.28.0 \
+		ryu-1.0.15 \
+		scoped_threadpool-0.1.9 \
+		scopeguard-1.2.0 \
+		serde-1.0.193 \
+		serde_derive-1.0.193 \
+		serde_json-1.0.108 \
+		shellexpand-2.1.2 \
+		signal-hook-0.3.17 \
+		signal-hook-mio-0.2.3 \
+		signal-hook-registry-1.4.1 \
+		smallvec-1.11.2 \
+		strsim-0.10.0 \
+		syn-0.15.44 \
+		syn-2.0.39 \
+		thiserror-1.0.50 \
+		thiserror-impl-1.0.50 \
+		tiff-0.3.1 \
+		unicode-ident-1.0.12 \
+		unicode-segmentation-1.10.1 \
+		unicode-xid-0.1.0 \
+		utf8parse-0.2.1 \
+		vcpkg-0.2.15 \
+		version_check-0.9.4 \
 		wasi-0.9.0+wasi-snapshot-preview1 \
-		winapi-0.3.8 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.89 \
+		wasm-bindgen-backend-0.2.89 \
+		wasm-bindgen-macro-0.2.89 \
+		wasm-bindgen-macro-support-0.2.89 \
+		wasm-bindgen-shared-0.2.89 \
+		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-x86_64-pc-windows-gnu-0.4.0
-
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		windows-core-0.51.1 \
+		windows-sys-0.48.0 \
+		windows-targets-0.48.5 \
+		windows_aarch64_gnullvm-0.48.5 \
+		windows_aarch64_msvc-0.48.5 \
+		windows_i686_gnu-0.48.5 \
+		windows_i686_msvc-0.48.5 \
+		windows_x86_64_gnu-0.48.5 \
+		windows_x86_64_gnullvm-0.48.5 \
+		windows_x86_64_msvc-0.48.5 \
+		x11-2.21.0 \
+		zerocopy-0.7.28 \
+		zerocopy-derive-0.7.28
 PLIST_FILES=	bin/${PORTNAME} \
 		etc/bash_completion.d/${PORTNAME}.bash \
 		share/fish/vendor_completions.d/${PORTNAME}.fish \
 		share/zsh/site-functions/_${PORTNAME}
 
 post-install: # install shell completion files
+	# strip
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/mcfly
 	# bash
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.bash ${STAGEDIR}${PREFIX}/etc/bash_completion.d

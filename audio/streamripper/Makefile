@@ -1,15 +1,13 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	streamripper
 PORTVERSION=	1.64.6
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28current%29/${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	freebsdports@xorcara.com
 COMMENT=	Splits SHOUTcast stream into tracks
+WWW=		https://streamripper.sourceforge.net
 
 LICENSE=	GPLv2
 
@@ -20,7 +18,7 @@ LIB_DEPENDS=	libmad.so:audio/libmad \
 OPTIONS_DEFINE=	FAAD VORBIS
 OPTIONS_DEFAULT=FAAD VORBIS
 
-USES=		gnome iconv ncurses pkgconfig
+USES=		cpe gnome iconv ncurses pkgconfig
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-included-libmad \

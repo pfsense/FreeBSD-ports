@@ -1,6 +1,3 @@
-# Created by: Alexander Koch <fbsd@meersau.de>
-# $FreeBSD$
-
 PORTNAME=	HTML-Chunks
 PORTVERSION=	1.55.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple nested template engine for HTML, XML and XHTML
+WWW=		https://metacpan.org/release/HTML-Chunks
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

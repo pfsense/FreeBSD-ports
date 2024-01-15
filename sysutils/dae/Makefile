@@ -1,6 +1,3 @@
-# Created by: Dylan Bridgman
-# $FreeBSD$
-
 PORTNAME=	dae
 PORTVERSION=	0.9
 CATEGORIES=	sysutils

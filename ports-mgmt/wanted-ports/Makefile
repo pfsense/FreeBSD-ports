@@ -1,6 +1,3 @@
-# Created by: Matthew Seaman <m.seaman@infracaninophile.co.uk>
-# $FreeBSD$
-
 PORTNAME=	wanted-ports
 PORTVERSION=	0.2
 #PORTREVISION is set from ${CFGFILE}

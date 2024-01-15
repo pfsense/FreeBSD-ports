@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	healpix
 DISTVERSION=	3.50
-PORTREVISION=	2
 DISTVERSIONSUFFIX=	_2018Dec10
+PORTREVISION=	5
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}/Healpix_${DISTVERSION}/
 DISTNAME=	Healpix_${DISTVERSIONFULL}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software for pixelization, visualization, etc of data on the sphere
+WWW=		https://healpix.jpl.nasa.gov/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,18 +1,16 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bio-DB-NCBIHelper
-PORTVERSION=	1.7.6
+PORTVERSION=	1.7.8
 CATEGORIES=	biology perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Collection of routines useful for queries to NCBI databases
+WWW=		https://metacpan.org/release/Bio-DB-NCBIHelper
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Bio-ASN1-EntrezGene>=0:biology/p5-Bio-ASN1-EntrezGene \

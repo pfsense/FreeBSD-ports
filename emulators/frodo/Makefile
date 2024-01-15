@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	frodo
 PORTVERSION=	4.1b
 PORTREVISION=	11
@@ -9,6 +7,7 @@ DISTNAME=	FrodoV4_1b.Src
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Emulates a Commodore 64
+WWW=		https://frodo.cebix.net/
 
 USES=		shebangfix tk:run xorg
 USE_CXXSTD=	gnu++98
@@ -32,6 +31,10 @@ OPTIONS_DEFAULT=SDL
 .if ${PORT_OPTIONS:MSDL}
 USES+=		sdl
 USE_SDL=	sdl
+.endif
+
+.if ${ARCH:Mpowerpc*}
+USE_GCC=	yes
 .endif
 
 pre-configure:

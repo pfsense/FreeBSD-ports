@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cronolog
 PORTVERSION=	1.7.1
 PORTREVISION=	1
@@ -10,8 +8,11 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-beta
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Web log rotation utility that provides datestamp filenames
+WWW=		https://BSDforge.com/projects/sysutils/cronolog-devel
 
 LICENSE=	APACHE10
+
+BROKEN=		Unfetchable
 
 USES=		shebangfix tar:xz
 
@@ -22,7 +23,7 @@ PLIST_FILES=	sbin/cronolog \
 		man/man1/cronolog.1m.gz \
 		man/man1/cronosplit.1m.gz
 
-CONFLICTS=	cronolog-[0-9]*
+CONFLICTS=	cronolog
 
 WRKSRC=		${WRKDIR}/cronolog-${PORTVERSION}
 INFO=		cronolog

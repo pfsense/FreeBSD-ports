@@ -1,37 +1,39 @@
-# Created by: Simon 'corecode' Schubert <corecode@corecode.ath.cx>
-# $FreeBSD$
-
 PORTNAME=	driftnet
-PORTVERSION=	1.3.0
+PORTVERSION=	1.5.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Tool to grab images out of (your) TCP connections
+WWW=		https://www.ex-parrot.com/~chris/driftnet/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgif.so:graphics/giflib \
-		libpng.so:graphics/png
 BUILD_DEPENDS=	makedepend:devel/makedepend
+LIB_DEPENDS=	libgif.so:graphics/giflib \
+		libpng.so:graphics/png \
+		libwebp.so:graphics/webp \
+		libwebsockets.so:net/libwebsockets
 
-GNU_CONFIGURE=	yes
 USES=		autoreconf gettext-runtime gmake gnome jpeg localbase:ldflags \
 		pkgconfig xorg
 USE_CSTD=	c99
 USE_GITHUB=	yes
+GH_ACCOUNT=	deiv
 USE_GNOME=	gtk20
 USE_XORG=	x11 xext xi
 
-GH_ACCOUNT=	deiv
-
-CONFIGURE_ARGS+=	--disable-http-display
-
-PLIST_FILES=	bin/driftnet man/man1/driftnet.1.gz
-PORTDOCS=	*
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--disable-debug
 
 INSTALL_TARGET=	install-strip
+
+PLIST_FILES=	${DATADIR}/static-html/index.html \
+		bin/driftnet \
+		man/man1/driftnet.1.gz
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 

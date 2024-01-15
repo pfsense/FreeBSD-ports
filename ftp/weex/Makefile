@@ -1,20 +1,17 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	weex
-PORTVERSION=	2.8.2
-PORTREVISION=	1
+PORTVERSION=	2.8.4.2
 CATEGORIES=	ftp
-MASTER_SITES=	SF/weex/weex
+MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Non-interactive FTP client
+WWW=		https://weex.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
-USES=		autoreconf gmake ssl gettext-tools
+USES=		autoreconf cpe gettext-tools gmake ssl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-cafile=${LOCALBASE}/share/certs/ca-root-nss.crt
@@ -25,8 +22,8 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 OPTIONS_DEFINE=	EXAMPLES NLS
 OPTIONS_SUB=	yes
 
-NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
+NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:
 	@${RM} -r ${WRKSRC}/intl

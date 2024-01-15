@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	URI-ws
 PORTVERSION=	0.03
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	WebSocket support for URI package
+WWW=		https://metacpan.org/release/URI-ws
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

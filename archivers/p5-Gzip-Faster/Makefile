@@ -1,6 +1,3 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Gzip-Faster
 PORTVERSION=	0.21
 CATEGORIES=	archivers perl5
@@ -8,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BKB
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple and fast gzip and gunzip
+WWW=		https://metacpan.org/release/Gzip-Faster
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

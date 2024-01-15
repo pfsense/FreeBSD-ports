@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	bchoppr
-DISTVERSION=	1.8.0
+DISTVERSION=	1.12.6-11
+DISTVERSIONSUFFIX=	-g9a463da
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Audio stream chopping LV2 plugin
+WWW=		https://github.com/sjaehn/BChoppr
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,18 +17,14 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		compiler:c++11-lang gmake gnome pkgconfig xorg
 USE_GITHUB=	yes
-GH_ACCOUNT=	sjaehn
-GH_PROJECT=	BChoppr
 USE_GNOME=	cairo
 USE_XORG=	x11
 
-MAKEFILE=	makefile
+GH_ACCOUNT=	sjaehn
+GH_PROJECT=	BChoppr
+GH_TUPLE=	sjaehn:BWidgets:89d0765:BWidgets/src/BWidgets
 
-PLIST_FILES=	lib/lv2/BChoppr.lv2/BChoppr.so \
-		lib/lv2/BChoppr.lv2/BChoppr.ttl \
-		lib/lv2/BChoppr.lv2/BChoppr_GUI.so \
-		lib/lv2/BChoppr.lv2/manifest.ttl \
-		lib/lv2/BChoppr.lv2/surface.png
+MAKEFILE=	makefile
 
 post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/lib/lv2/BChoppr.lv2/LICENSE

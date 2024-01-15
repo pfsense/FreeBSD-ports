@@ -1,6 +1,3 @@
-# Created by: Felippe de Meirelles Motta <lippemail@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Tie-ToObject
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -8,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Tie to an existing object
+WWW=		https://metacpan.org/release/Tie-ToObject
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

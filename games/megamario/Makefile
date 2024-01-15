@@ -1,15 +1,13 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	megamario
 PORTVERSION=	1.7
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	SF/mmario/Mega%20Mario%20Full%20Game/Mega%20Mario%20v${PORTVERSION}%20%28Full%20Game%2C%20high%20Quality%20music%29/
 DISTNAME=	MegaMario_v${PORTVERSION}_full
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Super Mario Bros 1 clone
+WWW=		http://www.megamario.de/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/licence.txt

@@ -1,6 +1,3 @@
-# Created by: Matthias Teege <matthias@mteege.de>
-# $FreeBSD$
-
 PORTNAME=	ncp
 PORTVERSION=	1.2.4
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://dl.fefe.de/ http://dl.mteege.de/fefe/
 
 MAINTAINER=	matthias@mteege.de
 COMMENT=	Fast file copy tool for LANs
+WWW=		https://www.fefe.de/ncp/
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libowfat.a:devel/libowfat
 

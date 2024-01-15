@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	librtmp
 PORTVERSION=	2.4.20190330
 CATEGORIES=	multimedia net
@@ -8,6 +6,7 @@ DISTNAME=	rtmpdump-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	RTMP stream library
+WWW=		https://rtmpdump.mplayerhq.hu/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

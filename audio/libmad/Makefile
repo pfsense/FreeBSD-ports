@@ -1,36 +1,37 @@
-# Created by: Sergey Akifyev <asa@gascom.ru>
-# $FreeBSD$
-
 PORTNAME=	libmad
-PORTVERSION=	0.15.1b
-PORTREVISION=	7
+PORTVERSION=	0.16.3
 CATEGORIES=	audio
-MASTER_SITES=	SF/mad/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	https://codeberg.org/tenacityteam/libmad/archive/${PORTVERSION}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Libmad library (part of MAD project)
+WWW=		https://www.underbit.com/products/mad/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	SPEED
+USES=		cmake cpe pathfix
+
+CMAKE_OFF=	MADD_ASM MADD16_ASM
+CMAKE_ON=	BUILD_SHARED_LIBS ${CMAKE_ON_${ARCH}}
+CMAKE_ON_armv6=	ASO
+CMAKE_ON_armv7=	ASO
+CMAKE_ON_i386=	ASO
+
+USE_LDCONFIG=	yes
+WRKSRC=		${WRKDIR}/libmad
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+CPE_VENDOR=	underbit
+
+OPTIONS_SINGLE=	OPTIMIZE
+OPTIONS_SINGLE_OPTIMIZE=ACCURACY SPEED
+OPTIONS_DEFAULT=SPEED
+ACCURACY_DESC=	Optimize for accuracy over speed
 SPEED_DESC=	Optimize for speed over accuracy
 
-CONFIGURE_ARGS=	--disable-debugging --enable-sso
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-USE_LDCONFIG=	yes
-USES=		libtool
-
-SUB_LIST=	VERSION=${PORTVERSION}
-SUB_FILES=	mad.pc
-
-SPEED_CONFIGURE_ON=	--enable-speed
-SPEED_CONFIGURE_OFF=	--enable-accuracy
-
-post-patch:
-	@${REINPLACE_CMD} -e 's| -fforce-mem||' ${WRKSRC}/configure
-
-post-install:
-	${INSTALL_DATA} ${WRKDIR}/mad.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/
+ACCURACY_CMAKE_ON=	-DOPTIMIZE=ACCURACY
+SPEED_CMAKE_ON=		-DOPTIMIZE=SPEED
 
 .include <bsd.port.mk>

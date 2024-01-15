@@ -1,6 +1,3 @@
-# Created by: Will Andrews <will@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	postgrey
 PORTVERSION=	1.37
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITES=	http://postgrey.schweikert.ch/pub/ \
 
 MAINTAINER=	ports.maintainer@evilphi.com
 COMMENT=	Greylisting policy server for Postfix
+WWW=		https://postgrey.schweikert.ch/
 
 LICENSE=	GPLv2
 
@@ -20,7 +18,7 @@ RUN_DEPENDS=	p5-BerkeleyDB>=0:databases/p5-BerkeleyDB \
 		p5-Net-Server>=0:net/p5-Net-Server \
 		p5-NetAddr-IP>=0:net-mgmt/p5-NetAddr-IP
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
 USE_PERL5=	run
 USE_RC_SUBR=	${PORTNAME}
 

@@ -1,8 +1,5 @@
-# Created by: Anton Yudin <toha@toha.org.ua>
-# $FreeBSD$
-
 PORTNAME=	commons-pool
-PORTVERSION=	2.9.0
+PORTVERSION=	2.11.1
 CATEGORIES=	java devel
 MASTER_SITES=	APACHE_COMMONS_BINARIES
 PKGNAMEPREFIX=	apache-
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}2-${PORTVERSION}-bin
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Apache Commons Object-pooling API
+WWW=		https://commons.apache.org/proper/commons-pool/
 
 LICENSE=	APACHE20
 

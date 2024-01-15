@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pass-otp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	alex@xanderio.de
 COMMENT=	Pass extension for managing one-time-password (OTP) tokens
+WWW=		https://github.com/tadfisher/pass-otp
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,15 +17,14 @@ RUN_DEPENDS=	bash:shells/bash \
 TEST_DEPENDS=	expect:lang/expect \
 		git:devel/git
 
-USES=	gmake shebangfix
-USE_GITHUB=	YES
+USES=		gmake shebangfix
+USE_GITHUB=	yes
 GH_ACCOUNT=	tadfisher
 SHEBANG_FILES=	otp.bash test/*.sh test/*t
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-MAKE_ENV=	DESTDIR=${STAGEDIR} \
-		LIBDIR=${PREFIX}/libexec \
+MAKE_ENV=	LIBDIR=${PREFIX}/libexec \
 		MANDIR=${MANPREFIX}/man \
 		BASHCOMPDIR=${PREFIX}/share/bash-completion/completions
 

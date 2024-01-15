@@ -1,39 +1,47 @@
-# Created by: jmz
-# $FreeBSD$
-
 PORTNAME=	iozone
-DISTVERSION=	3_487
-PORTREVISION=	1
+DISTVERSION=	3_506
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://www.iozone.org/src/current/
 DISTNAME=	${PORTNAME}${DISTVERSION}
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Performance Test of Sequential File I/O
+WWW=		https://www.iozone.org/
+
+LICENSE=	IOZONE
+LICENSE_NAME=	Iozone license
+LICENSE_FILE=	${WRKDIR}/${DISTNAME}/docs/License.txt
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		gmake tar
 
-WRKSRC=		${WRKDIR}/${DISTNAME}/src/current
-
 MAKEFILE=	makefile
 MAKE_ARGS=	${MAKE_ENV}
-ALL_TARGET=	freebsd
 MAKE_JOBS_UNSAFE=	yes
+ALL_TARGET=	freebsd
 
-PLIST_FILES=	bin/iozone man/man1/iozone.1.gz
+CONFLICTS_INSTALL=	iozone21
 
-OPTIONS_DEFINE=	SSH THREADS
-OPTIONS_DEFAULT=SSH THREADS
+WRKSRC_SUBDIR=	src/current
+
+PLIST_FILES=	bin/iozone \
+		man/man1/iozone.1.gz
+
+OPTIONS_DEFINE=		SSH THREADS
+OPTIONS_DEFAULT=	SSH THREADS
 
 SSH_DESC=	Use ssh in distributed measurement
 THREADS_DESC=	Enable threading (uses pthreads)
 
-THREADS_LDFLAGS=	-lpthread
 THREADS_CFLAGS_OFF=	-DNO_THREADS
+THREADS_LDFLAGS=	-lpthread
 
 post-patch-SSH-on:
 	@${REINPLACE_CMD} -e 's|shell\,\"rsh\"|shell\,\"ssh\"|' \
 		${WRKSRC}/iozone.c
+
+pre-build:
+	@cd ${WRKSRC} && ${GMAKE} clean
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/iozone ${STAGEDIR}${PREFIX}/bin

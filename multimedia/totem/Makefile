@@ -1,21 +1,22 @@
-# Created by: Hendrik Scholz <hendrik@scholz.net>
-# $FreeBSD$
-
 PORTNAME=	totem
-PORTVERSION=	3.38.0
-PORTREVISION=	2
+PORTVERSION=	3.38.2
+PORTREVISION=	5
 CATEGORIES=	multimedia gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	61e3a957cb73.patch:-p1 # https://gitlab.gnome.org/GNOME/totem/-/merge_requests/218
+
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gstreamer-based video player for the GNOME 3 Desktop
+WWW=		https://www.gnome.org/projects/totem/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
-		pylint:devel/pylint \
+		pylint:devel/pylint@${PY_FLAVOR} \
 		appstream-glib>=0:devel/appstream-glib \
 		itstool:textproc/itstool \
 		grilo-plugins>=0:net/grilo-plugins
@@ -36,12 +37,11 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler desktop-file-utils gettext gl gnome localbase meson \
-		pkgconfig python:3.6+ tar:xz xorg
+USES=		compiler desktop-file-utils gettext gl gnome gstreamer localbase meson \
+		pkgconfig python tar:xz xorg
 USE_GNOME=	cairo gtk30 intlhack introspection libxml2 pygobject3 gnomedesktop3
 USE_XORG=	x11 xorgproto xtst ice sm
-USE_GSTREAMER1=	core good bad soup ugly
-INSTALLS_ICONS=	yes
+USE_GSTREAMER=	core good bad soup ugly
 USE_GL=		egl
 USE_LDCONFIG=	yes
 
@@ -51,15 +51,6 @@ GLIB_SCHEMAS=	org.gnome.totem.enums.xml \
 		org.gnome.totem.gschema.xml \
 		org.gnome.totem.plugins.opensubtitles.gschema.xml \
 		org.gnome.totem.plugins.pythonconsole.gschema.xml
-
-# There is an upstream issue in meson which makes the build of totem
-# fail when using vala, due to badly created targets.
-# https://gitlab.gnome.org/GNOME/totem/issues/272
-# https://bugzilla.gnome.org/show_bug.cgi?id=786248
-# https://github.com/mesonbuild/meson/issues/1994
-# Until upstream fixes this, remove vala support from totem.
-MESON_ARGS=	-Denable-vala=no
-PLIST_SUB+=	VALA="@comment "
 
 .include <bsd.port.options.mk>
 

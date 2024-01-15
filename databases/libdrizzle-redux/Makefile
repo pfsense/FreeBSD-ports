@@ -1,6 +1,3 @@
-# Created by: Jim Ohlstein <jim@ohlste.in>
-# $FreeBSD$
-
 PORTNAME=	libdrizzle
 PORTVERSION=	5.1.4
 PORTREVISION=	2
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	libdrizzle-5.1.4.tar.gz
 
 MAINTAINER=	jim@ohlste.in
 COMMENT=	Client and protocol library for the Drizzle database
+WWW=		https://launchpad.net/libdrizzle
 
 LICENSE=	BSD2CLAUSE
 
@@ -19,7 +17,7 @@ GNU_CONFIGURE=	yes
 USES=		gmake libtool ssl
 USE_LDCONFIG=	yes
 
-CONFLICTS=	libdrizzle-[0-9]*
+CONFLICTS_INSTALL=	libdrizzle # lib/libdrizzle.so
 
 OPTIONS_DEFINE=	DOCS
 

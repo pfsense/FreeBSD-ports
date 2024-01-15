@@ -1,9 +1,6 @@
-# Created by: Jonathan Chen <jonc@chen.org.nz>
-# $FreeBSD$
-
 PORTNAME=	gartoon-redux
 PORTVERSION=	1.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-themes gnome
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/1.x/${PORTVERSION}/+download/
 
@@ -19,7 +16,6 @@ USE_PERL5=	build
 USE_GNOME=	librsvg2:build
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}
-INSTALLS_ICONS=	yes
 
 MAKE_JOBS_UNSAFE=	yes
 

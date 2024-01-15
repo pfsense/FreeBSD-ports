@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Cache-FastMmap
 PORTVERSION=	0.9
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Mmap cache for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Cache-FastMmap
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

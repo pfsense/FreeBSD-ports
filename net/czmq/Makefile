@@ -1,13 +1,11 @@
-# Created by: Andrew Thompson <thompsa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	czmq
 PORTVERSION=	4.1.1
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/zeromq/${PORTNAME}/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High-level C Binding for ZeroMQ
+WWW=		http://czmq.zeromq.org
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE

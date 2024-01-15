@@ -1,9 +1,8 @@
 bin/certificates
-bin/inspector
+bin/crashcollect
 bin/metric-receiver
 bin/multinode
 bin/satellite
-bin/segment-reaper
 bin/storagenode
 bin/storagenode-updater
 bin/storj-admin

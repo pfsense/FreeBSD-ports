@@ -3,9 +3,9 @@
  * snort_defs.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2020 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-global $g, $config;
+global $g;
 
 /* Define some useful constants for Snort */
 if (!defined("SNORT_BASEDIR")) {
@@ -47,7 +47,7 @@ if (!defined("SNORT_BIN_VERSION")) {
 		define("SNORT_BIN_VERSION", $matches[0]);
 	}
 	else {
-		define("SNORT_BIN_VERSION", "2.9.17");
+		define("SNORT_BIN_VERSION", "2.9.20");
 	}
 }
 
@@ -104,5 +104,9 @@ if (!defined("ET_PRO_FILE_PREFIX"))
 	define("ET_PRO_FILE_PREFIX", "etpro-");
 if (!defined("OPENAPPID_FILE_PREFIX"))
 	define("OPENAPPID_FILE_PREFIX", "openappid-");
+if (!defined("FEODO_TRACKER_DNLD_FILENAME"))
+	define("FEODO_TRACKER_DNLD_FILENAME", "feodotracker.tar.gz");
+if (!defined("FEODO_TRACKER_DNLD_URL"))
+	define("FEODO_TRACKER_DNLD_URL", "https://feodotracker.abuse.ch/downloads/");
 
 ?>

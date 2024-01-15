@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	crosextrafonts-carlito
 PORTVERSION=	20130920
 PORTREVISION=	4
@@ -9,6 +7,7 @@ MASTER_SITES=	https://gsdview.appspot.com/chromeos-localmirror/distfiles/ \
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Font created by Google for ChromeOS to replace MS Calibri
+WWW=		https://code.google.com/p/chromium/issues/detail?id=280557
 
 LICENSE=	OFL11
 

@@ -1,6 +1,3 @@
-# Created by: Neil Blakey-Milner <nbm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mod_scgi
 PORTVERSION=	2.0
 CATEGORIES=	www
@@ -9,11 +6,12 @@ DISTNAME=	scgi-${PORTVERSION:S/.a/a/}
 
 MAINTAINER=	w.schwarzenfeld@utanet.at
 COMMENT=	Apache module that implements the client side of the SCGI protocol
+WWW=		https://python.ca/scgi/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE.txt
 
-USES=		apache:2.4
+USES=		apache
 
 SCGI_DIR=	apache2
 WRKSRC=		${WRKDIR}/${DISTNAME}/${SCGI_DIR}

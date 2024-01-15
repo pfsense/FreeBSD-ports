@@ -1,6 +1,3 @@
-# Created by: brix@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Authen-Passphrase
 PORTVERSION=	0.008
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for handling hashed passwords/passphrases as objects
+WWW=		https://metacpan.org/release/Authen-Passphrase
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

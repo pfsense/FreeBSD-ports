@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	CGI-SpeedyCGI
 PORTVERSION=	2.22
 PORTREVISION=	9
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Speed up perl CGI scripts by running them persistently
+WWW=		http://daemoninc.com/SpeedyCGI/
 
 LICENSE=	GPLv2
 
@@ -22,8 +20,14 @@ OPTIONS_DEFAULT=APACHE
 APACHE_DESC=	Build mod_speedycgi
 
 OPTIONS_SUB=	yes
-APACHE_USE=	APACHE=22+
+APACHE_USES=	apache
 APACHE_CONFIGURE_ENV_OFF=	WITHOUT_APACHE=yes
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/__inline__//g' \

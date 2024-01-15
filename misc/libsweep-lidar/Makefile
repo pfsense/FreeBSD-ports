@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		libsweep-lidar
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.3.0
@@ -7,6 +5,7 @@ CATEGORIES=		misc
 
 MAINTAINER=		hyun@caffeinated.codes
 COMMENT=		Low-level Scanse Sweep LiDAR library
+WWW=		https://scanse.io/
 
 LICENSE=		MIT
 LICENSE_FILE=		${WRKSRC}/LICENSE

@@ -1,13 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
-
 PORTNAME=	wmpuzzle
 PORTVERSION=	0.5.2
 CATEGORIES=	games windowmaker afterstep
 MASTER_SITES=	http://people.debian.org/~godisch/wmpuzzle/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dockable puzzle game for WindowMaker and AfterStep
+WWW=		https://people.debian.org/~godisch/wmpuzzle/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../COPYING

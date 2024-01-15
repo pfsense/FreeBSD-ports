@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	xorg-drivers
 PORTVERSION=	7.7
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.org drivers meta-port
+WWW=		https://www.x.org/
 
 VIDEODIR=	${LOCALBASE}/lib/xorg/modules/drivers
 INPUTDIR=	${LOCALBASE}/lib/xorg/modules/input
@@ -30,7 +29,6 @@ VIDEO_DRIVERS=		apm \
 			chips \
 			cirrus \
 			dummy \
-			glint \
 			i128 \
 			i740 \
 			mach64 \
@@ -40,14 +38,12 @@ VIDEO_DRIVERS=		apm \
 			openchrome \
 			r128 \
 			rendition \
-			s3 \
 			s3virge \
 			savage \
 			scfb \
 			siliconmotion \
 			sis \
 			tdfx \
-			trident \
 			tseng \
 			vesa \
 			voodoo
@@ -70,14 +66,10 @@ OPTIONS_DEFAULT_amd64=	VESA
 OPTIONS_DEFINE_i386:=	${OPTIONS_DEFINE_amd64} GEODE
 OPTIONS_DEFAULT_i386:=	${OPTIONS_DEFAULT_amd64}
 
-OPTIONS_DEFINE_sparc64=	SUNFFB
-OPTIONS_DEFAULT_sparc64=SUNFFB
-
 AMDGPU_DESC=		Install amdgpu video driver
-ATI_DESC=		Install ati (radeon) video driver 
+ATI_DESC=		Install ati (radeon) video driver
 GEODE_DESC=		Install geode video driver
 INTEL_DESC=		Install intel video driver
-SUNFFB_DESC=		Install sunffb video driver
 VMMOUSE_DESC=		Install vmmouse input driver
 VMWARE_DESC=		Install vmware video driver
 
@@ -94,10 +86,6 @@ VIDEO_DRIVERS+=	amdgpu ati intel vmware
 
 .if ${ARCH}==i386
 VIDEO_DRIVERS+= geode
-.endif
-
-.if ${ARCH}==sparc64
-VIDEO_DRIVERS+=	sunffb
 .endif
 
 .for type in input video

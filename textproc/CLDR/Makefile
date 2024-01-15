@@ -1,10 +1,7 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	CLDR
-PORTVERSION=	38.1
+PORTVERSION=	43.0
 CATEGORIES=	textproc
-MASTER_SITES=	https://unicode.org/Public/cldr/${PORTVERSION}/:src	\
+MASTER_SITES=	https://unicode.org/Public/cldr/${PORTVERSION:R}/:src	\
 		http://www.unicode.org/:lic
 DISTFILES=	${SRCFILE}:src	\
 		copyright.html:lic
@@ -12,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Unicode Common Locale Data Repository
+WWW=		https://cldr.unicode.org/index
 
 LICENSE=	Unicode_License_Agreement
 LICENSE_NAME=	Unicode License Agreement

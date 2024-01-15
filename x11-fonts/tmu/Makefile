@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tmu
 DISTVERSION=	1.901b
 PORTREVISION=	2
@@ -12,6 +9,7 @@ DIST_SUBDIR=	tmu
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Free Tibetan Machine Uni font
+WWW=		https://thdltools.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/gpl.txt

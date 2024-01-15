@@ -1,6 +1,3 @@
-# Created by: Aragon Gouveia <aragon@phat.za.net>
-# $FreeBSD$
-
 PORTNAME=	volman
 PORTVERSION=	0.7
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD specific volume manager
+WWW=		https://forums.freebsd.org/showthread.php?t=27233
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	uffejakobsen

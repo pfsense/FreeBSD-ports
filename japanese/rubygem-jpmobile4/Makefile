@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@rtfm.jp>
-# $FreeBSD$
-
 PORTNAME=	jpmobile
 PORTVERSION=	4.2.5
 CATEGORIES=	japanese www rubygems
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	4
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Rails plugin for Japanese mobile-phones
+WWW=		https://jpmobile-rails.org
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
@@ -16,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 RUN_DEPENDS=	rubygem-rails4>0:www/rubygem-rails4
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

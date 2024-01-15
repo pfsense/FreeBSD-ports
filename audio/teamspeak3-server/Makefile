@@ -1,8 +1,5 @@
-# Created by: Daniel O'Connor
-# $FreeBSD$
-
 PORTNAME=	teamspeak3-server
-PORTVERSION=	3.13.2
+PORTVERSION=	3.13.7
 PORTEPOCH=	1
 CATEGORIES=	audio net
 MASTER_SITES=	https://files.teamspeak-services.com/releases/server/${PORTVERSION}/
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}-${PORTVERSION}
 
 MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	Server side of the TeamSpeak group voice chat system
+WWW=		https://www.teamspeak.com
 
 LICENSE=	teamspeak
 LICENSE_NAME=	TeamSpeak 3.x End User License Agreement
@@ -30,7 +28,7 @@ SUB_FILES=	pkg-message
 USERS=	teamspeak
 GROUPS=	teamspeak
 
-CONFLICTS=	teamspeak_server-[0-9]*
+CONFLICTS=	teamspeak_server
 
 PLIST_SUB=	DBDIR=${DBDIR} \
 		ETCDIR=${ETCDIR} \

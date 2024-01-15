@@ -1,6 +1,3 @@
-# Created by: Rong-En Fan <rafan@infor.org>
-# $FreeBSD$
-
 PORTNAME=	IO-Digest
 PORTVERSION=	0.11
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Calculate digests while reading or writing
+WWW=		https://metacpan.org/release/IO-Digest
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	wmbday
 PORTVERSION=	0.3.1
 PORTREVISION=	2
@@ -8,8 +5,9 @@ CATEGORIES=	x11-clocks
 MASTER_SITES=	http://buzzinhornetz.ath.cx/wmbday/files/ \
 		LOCAL/uqs
 
-MAINTAINER=	uqs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Window Maker dock app that will remind you of birthdays
+WWW=		http://buzzinhornetz.ath.cx/wmbday/
 
 BUILD_DEPENDS=	xmessage:x11/xmessage
 

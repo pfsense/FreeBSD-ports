@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lnphost
 PORTVERSION=	1.0a
 CATEGORIES=	devel
@@ -7,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Lego RCX iinfrared communication API
+WWW=		https://sourceforge.net/projects/lnphost/?source=directory/
 
 LICENSE=	GPLv2
 

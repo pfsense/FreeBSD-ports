@@ -1,23 +1,20 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=		aseprite
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.2.9
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=		graphics
 
 MAINTAINER=		yuri@FreeBSD.org
-COMMENT=		Animated sprite editor & pixel art tool
+COMMENT=		Animated sprite editor and pixel art tool
+WWW=		https://www.aseprite.org/
 
 LICENSE=		EULA
 LICENSE_NAME=		END-USER LICENSE AGREEMENT FOR ASEPRITE
 LICENSE_FILE=		${WRKSRC}/EULA.txt
-LICENSE_PERMS=		dist-mirror pkg-mirror auto-accept
+LICENSE_PERMS=		dist-mirror auto-accept
 
 BROKEN_armv6=		fails to compile: undefined reference to __va_copy
 BROKEN_armv7=		fails to compile: undefined reference to __va_copy
-BROKEN_sparc64=		fails to compile: vsnprintf is not a member of std
 
 EXTRACT_DEPENDS=	${NONEXISTENT}:x11/pixman:extract
 LIB_DEPENDS=		liballeg.so:devel/allegro \

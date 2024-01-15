@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-IP-RangeCompare
 PORTVERSION=	4.025
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl extension for IP Range Comparisons
+WWW=		https://metacpan.org/release/Net-IP-RangeCompare
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -18,8 +16,9 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Data-IPV4-Range-Parse>=0.05:net/p5-Data-IPV4-Range-Parse \
 		p5-Data-Range-Compare>=1.030:devel/p5-Data-Range-Compare
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

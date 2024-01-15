@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Marpa
 PORTVERSION=	0.208
 DISTVERSIONSUFFIX=	000
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Parse any Language You Can Describe in BNF
+WWW=		https://metacpan.org/release/JKEGL/Marpa-0.208000
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

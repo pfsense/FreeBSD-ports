@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBI
 PORTVERSION=	1.643
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 Database Interface, required for DBD::* modules
+WWW=		https://metacpan.org/release/DBI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -17,8 +15,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 OPTIONS_DEFINE=	PROXY
 PROXY_DESC=	Build DBI::Proxy
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
 USE_PERL5=	configure
+
+CPE_VENDOR=	perl
 
 SHEBANG_FILES=	dbixs_rev.pl
 

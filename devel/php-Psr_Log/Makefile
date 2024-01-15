@@ -1,6 +1,3 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Psr_Log
 PORTVERSION=	1.0.2
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DIST_SUBDIR=	PSR
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	PSR-3 logger interface
+WWW=		https://github.com/php-fig/log
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

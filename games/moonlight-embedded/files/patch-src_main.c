@@ -1,106 +1,115 @@
---- src/main.c.orig	2020-03-09 19:33:27 UTC
+--- src/main.c.orig	2023-10-11 15:50:11 UTC
 +++ src/main.c
-@@ -91,7 +91,6 @@ static void stream(PSERVER_DATA server, PCONFIGURATION
-   }
+@@ -42,6 +42,7 @@
+ #include <client.h>
+ #include <discover.h>
  
-   int gamepads = 0;
--  gamepads += evdev_gamepads;
-   #ifdef HAVE_SDL
-   gamepads += sdl_gamepads;
-   #endif
-@@ -121,21 +120,11 @@ static void stream(PSERVER_DATA server, PCONFIGURATION
-     connection_debug = true;
-   }
++#include <time.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <stdbool.h>
+@@ -52,7 +53,6 @@
+ #include <netinet/in.h>
+ #include <netdb.h>
+ #include <arpa/inet.h>
+-#include <openssl/rand.h>
  
--  if (IS_EMBEDDED(system))
--    loop_init();
+ static void applist(PSERVER_DATA server) {
+   PAPP_LIST list = NULL;
+@@ -149,6 +149,10 @@ static void stream(PSERVER_DATA server, PCONFIGURATION
+     if (!config->viewonly)
+       evdev_start();
+     loop_main();
++    #ifdef HAVE_SDL
++    if (!isNoSdl)
++      x11_sdl_stop();
++    #endif
+     if (!config->viewonly)
+       evdev_stop();
+   }
+@@ -202,7 +206,6 @@ static void help() {
+   printf("\t-bitrate <bitrate>\tSpecify the bitrate in Kbps\n");
+   printf("\t-packetsize <size>\tSpecify the maximum packetsize in bytes\n");
+   printf("\t-codec <codec>\t\tSelect used codec: auto/h264/h265/av1 (default auto)\n");
+-  printf("\t-hdr\t\tEnable HDR streaming (experimental, requires host and device support)\n");
+   printf("\t-remote <yes/no/auto>\t\t\tEnable optimizations for WAN streaming (default auto)\n");
+   printf("\t-app <app>\t\tName of app to stream\n");
+   printf("\t-nosops\t\t\tDon't allow GFE to modify game settings\n");
+@@ -238,7 +241,10 @@ static void pair_check(PSERVER_DATA server) {
+ int main(int argc, char* argv[]) {
+   CONFIGURATION config;
+   config_parse(argc, argv, &config);
 -
-   platform_start(system);
-   LiStartConnection(&server->serverInfo, &config->stream, &connection_callbacks, platform_get_video(system), platform_get_audio(system, config->audio_device), NULL, drFlags, config->audio_device, 0);
++  #ifndef HAVE_SDL
++  isNoSdl = true;
++  #endif
++  
+   if (config.action == NULL || strcmp("help", config.action) == 0)
+     help();
  
--  if (IS_EMBEDDED(system)) {
--    if (!config->viewonly)
--      evdev_start();
--    loop_main();
--    if (!config->viewonly)
--      evdev_stop();
--  }
-   #ifdef HAVE_SDL
--  else if (system == SDL)
-+  if (system == SDL)
-     sdl_loop();
-   #endif
- 
-@@ -188,7 +177,6 @@ static void help() {
-   printf("\t-surround\t\tStream 5.1 surround sound (requires GFE 2.7)\n");
-   printf("\t-keydir <directory>\tLoad encryption keys from directory\n");
-   printf("\t-mapping <file>\t\tUse <file> as gamepad mappings configuration file\n");
--  printf("\t-platform <system>\tSpecify system used for audio, video and input: pi/imx/aml/rk/x11/x11_vdpau/sdl/fake (default auto)\n");
-   printf("\t-unsupported\t\tTry streaming if GFE version or options are unsupported\n");
-   printf("\t-quitappafter\t\tSend quit app request to remote after quitting session\n");
-   printf("\t-viewonly\t\tDisable all input processing (view-only mode)\n");
-@@ -228,8 +216,6 @@ int main(int argc, char* argv[]) {
-       exit(-1);
+@@ -322,19 +328,19 @@ int main(int argc, char* argv[]) {
+     config.stream.supportedVideoFormats = VIDEO_FORMAT_H264;
+     if (config.codec == CODEC_HEVC || (config.codec == CODEC_UNSPECIFIED && platform_prefers_codec(system, CODEC_HEVC))) {
+       config.stream.supportedVideoFormats |= VIDEO_FORMAT_H265;
+-      if (config.hdr)
+-        config.stream.supportedVideoFormats |= VIDEO_FORMAT_H265_MAIN10;
++      //if (config.hdr)
++      //  config.stream.supportedVideoFormats |= VIDEO_FORMAT_H265_MAIN10;
+     }
+     if (config.codec == CODEC_AV1 || (config.codec == CODEC_UNSPECIFIED && platform_prefers_codec(system, CODEC_AV1))) {
+       config.stream.supportedVideoFormats |= VIDEO_FORMAT_AV1_MAIN8;
+-      if (config.hdr)
+-        config.stream.supportedVideoFormats |= VIDEO_FORMAT_AV1_MAIN10;
++      //if (config.hdr)
++      //  config.stream.supportedVideoFormats |= VIDEO_FORMAT_AV1_MAIN10;
      }
  
--    evdev_create(config.inputs[0], NULL, config.debug_level > 0);
--    evdev_map(config.inputs[0]);
-     exit(0);
-   }
- 
-@@ -240,12 +226,8 @@ int main(int argc, char* argv[]) {
-       exit(-1);
-     }
-     config.address[0] = 0;
--    printf("Searching for server...\n");
--    gs_discover_server(config.address);
--    if (config.address[0] == 0) {
--      fprintf(stderr, "Autodiscovery failed. Specify an IP address next time.\n");
+-    if (config.hdr && !(config.stream.supportedVideoFormats & VIDEO_FORMAT_MASK_10BIT)) {
+-      fprintf(stderr, "HDR streaming requires HEVC or AV1 codec\n");
 -      exit(-1);
 -    }
-+    fprintf(stderr, "Autodiscovery unsupported. Specify an IP address next time.\n");
-+    exit(-1);
-   }
++    //if (config.hdr && !(config.stream.supportedVideoFormats & VIDEO_FORMAT_MASK_10BIT)) {
++    //  fprintf(stderr, "HDR streaming requires HEVC or AV1 codec\n");
++    //  exit(-1);
++    //}    
  
-   char host_config_file[128];
-@@ -304,39 +286,8 @@ int main(int argc, char* argv[]) {
-       if (config.debug_level > 0)
-         printf("View-only mode enabled, no input will be sent to the host computer\n");
+     #ifdef HAVE_SDL
+     if (system == SDL)
+@@ -371,7 +377,19 @@ int main(int argc, char* argv[]) {
+ 
+         udev_init(!inputAdded, mappings, config.debug_level > 0, config.rotate);
+         evdev_init(config.mouse_emulation);
++        #ifdef HAVE_SDL
++        if (isNoSdl)
++          rumble_handler = evdev_rumble;
++        else {
++          x11_sdl_init(config.mapping);
++          rumble_handler = sdlinput_rumble;
++          rumble_triggers_handler = sdlinput_rumble_triggers;
++          set_motion_event_state_handler = sdlinput_set_motion_event_state;
++          set_controller_led_handler = sdlinput_set_controller_led;
++        }
++        #else
+         rumble_handler = evdev_rumble;
++        #endif
+         #ifdef HAVE_LIBCEC
+         cec_init();
+         #endif /* HAVE_LIBCEC */
+@@ -398,7 +416,8 @@ int main(int argc, char* argv[]) {
+     if (config.pin > 0 && config.pin <= 9999) {
+       sprintf(pin, "%04d", config.pin);
      } else {
--      if (IS_EMBEDDED(system)) {
--        char* mapping_env = getenv("SDL_GAMECONTROLLERCONFIG");
--        if (config.mapping == NULL && mapping_env == NULL) {
--          fprintf(stderr, "Please specify mapping file as default mapping could not be found.\n");
--          exit(-1);
--        }
--
--        struct mapping* mappings = NULL;
--        if (config.mapping != NULL)
--          mappings = mapping_load(config.mapping, config.debug_level > 0);
--
--        if (mapping_env != NULL) {
--          struct mapping* map = mapping_parse(mapping_env);
--          map->next = mappings;
--          mappings = map;
--        }
--
--        for (int i=0;i<config.inputsCount;i++) {
--          if (config.debug_level > 0)
--            printf("Add input %s...\n", config.inputs[i]);
--
--          evdev_create(config.inputs[i], mappings, config.debug_level > 0);
--        }
--
--        udev_init(!inputAdded, mappings, config.debug_level > 0);
--        evdev_init();
--        rumble_handler = evdev_rumble;
--        #ifdef HAVE_LIBCEC
--        cec_init();
--        #endif /* HAVE_LIBCEC */
--      }
-       #ifdef HAVE_SDL
--      else if (system == SDL) {
-+      if (system == SDL) {
-         if (config.inputsCount > 0) {
-           fprintf(stderr, "You can't select input devices as SDL will automatically use all available controllers\n");
-           exit(-1);
+-      sprintf(pin, "%d%d%d%d", (unsigned)random() % 10, (unsigned)random() % 10, (unsigned)random() % 10, (unsigned)random() % 10);
++      srand((unsigned)time(NULL));
++      sprintf(pin, "%04d", (unsigned)rand() % 9999 + 1);
+     }
+     printf("Please enter the following PIN on the target PC: %s\n", pin);
+     fflush(stdout);
+@@ -406,6 +425,7 @@ int main(int argc, char* argv[]) {
+       fprintf(stderr, "Failed to pair to server: %s\n", gs_error);
+     } else {
+       printf("Succesfully paired\n");
++      printf("Note: Use Ctrl+Alt+Shift+Q to quit streaming.\n");
+     }
+   } else if (strcmp("unpair", config.action) == 0) {
+     if (gs_unpair(&server) != GS_OK) {

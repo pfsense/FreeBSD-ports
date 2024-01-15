@@ -1,24 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	rbenv
-PORTVERSION=	1.1.2
+PORTVERSION=	1.2.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel ruby
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Manage multiple versions of ruby
+WWW=		https://github.com/rbenv/rbenv
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	bash:shells/bash
 
+USES=		cpe
+
 USE_GITHUB=	yes
-GH_ACCOUNT=	rbenv
 
 NO_BUILD=	yes
 
 REINPLACE_ARGS=	-i ''
+
+CPE_VENDOR=	rbenv_project
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|\$${root}/completions|${DATADIR}/completions|g" \

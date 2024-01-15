@@ -1,9 +1,6 @@
-# Created by: Warren Block <wblock@wonkity.com>
-# $FreeBSD$
-
 PORTNAME=	arduino
 PORTVERSION=	1.0.6
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	devel java lang
 MASTER_SITES=	https://arduino.cc/download.php?f=/
@@ -11,11 +8,12 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-linux32
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Open-source electronics prototyping platform
+WWW=		https://www.arduino.cc/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-# Confirmed for ARCHS below. Arm, PowerPC and Sparc untested. (Feedback welcome)
+# Confirmed for ARCHS below. Arm and PowerPC untested. (Feedback welcome)
 ONLY_FOR_ARCHS=	amd64 i386
 
 RUN_DEPENDS=	${JAVA_HOME}/jre/lib/ext/RXTXcomm.jar:comms/rxtx \
@@ -30,6 +28,8 @@ USE_JAVA=	yes
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk
 JAVA_RUN=	yes
+
+CONFLICTS_INSTALL=	arduino18
 
 NO_BUILD=	yes
 USE_LDCONFIG=	${PREFIX}/arduino/lib

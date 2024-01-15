@@ -1,6 +1,3 @@
-# Created by: Ryan T. Dean <rtdean@cytherianage.net>
-# $FreeBSD$
-
 PORTNAME=	Unicode-MapUTF8
 PORTVERSION=	1.14
 CATEGORIES=	converters perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl class that implements conversion between arbitrary charsets
+WWW=		https://metacpan.org/release/Unicode-MapUTF8
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

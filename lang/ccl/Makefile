@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	ccl
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang lisp
 MASTER_SITES+=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${PORTVERSION}/:bootstrap
 DISTFILES=	freebsdx86.tar.gz:bootstrap
@@ -12,8 +10,9 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Clozure CL is a free Common Lisp implementation
+WWW=		https://www.clozure.com/ccl
 
-LICENSE=	LGPL21
+LICENSE=	APACHE20
 
 ONLY_FOR_ARCHS=	amd64
 
@@ -26,13 +25,10 @@ EXCLUDE=	cocoa-ide lisp-kernel scripts fx86cl fx86cl.image
 
 USE_ASDF=	yes
 
+CONFLICTS_INSTALL=	cclive # bin/ccl
+
 .include "${.CURDIR}/../../devel/cl-asdf/bsd.cl-asdf.mk"
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1200000
-IGNORE=         does not build on FreeBSD < 12.0
-.endif
 BUILD_DEPENDS+=	as:devel/binutils
 
 LISP_ARCH=	x8664
@@ -66,4 +62,4 @@ do-install:
 	done
 	${INSTALL_SCRIPT} ${WRKDIR}/ccl.sh ${STAGEDIR}${PREFIX}/bin/ccl
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

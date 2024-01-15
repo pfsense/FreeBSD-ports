@@ -1,62 +1,63 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	openrct2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.2
+DISTVERSION=	0.4.7
 CATEGORIES=	games
+MASTER_SITES=	https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.6/:sequence \
+		https://github.com/OpenRCT2/objects/releases/download/v1.3.13/:object \
+		https://github.com/OpenRCT2/OpenMusic/releases/download/v1.5/:openmsx \
+		https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.3/:opensfx
+DISTFILES=	title-sequences.zip:sequence \
+		objects.zip:object\
+		openmusic.zip:openmsx \
+		opensound.zip:opensfx
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Open source re-implementation of RollerCoaster Tycoon 2
+WWW=		https://openrct2.io/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/licence.txt
 
-BROKEN_FreeBSD_12_powerpc64=	fails to build: src/openrct2/util/Endian.h:9:24: error: unused function 'ORCT_Swapu16'
-BROKEN_FreeBSD_13_powerpc64=	fails to build: openrct2/common.h:96:10: error: #error Unknown endianess!
+NOT_FOR_ARCHS=	mips mips64 powerpc powerpc64 powerpcspe
+NOT_FOR_ARCHS_REASON=	Only for little-endian architectures
 
 BUILD_DEPENDS=	nlohmann-json>0:devel/nlohmann-json
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libzip.so:archivers/libzip \
+		libFLAC.so:audio/flac \
+		libvorbisfile.so:audio/libvorbis \
 		libspeexdsp.so:audio/speexdsp \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
 		libicuuc.so:devel/icu \
-		libbenchmark.so:devel/grpc \
-		libduktape.so:lang/duktape-lib
+		libbenchmark.so:devel/benchmark \
+		libogg.so:audio/libogg
 
-USES=		cmake compiler:c++17-lang desktop-file-utils gnome gl iconv \
+#USES=		cmake compiler:c++17-lang desktop-file-utils gl iconv
+USES=		cmake compiler:c++17-lang desktop-file-utils gl \
 		localbase:ldflags pkgconfig sdl shared-mime-info ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenRCT2
 GH_PROJECT=	OpenRCT2
-GH_TUPLE=	OpenRCT2:objects:v1.0.18:objects \
-		OpenRCT2:title-sequences:v0.1.2c:title_sequences
 USE_GL=		gl
 USE_LDCONFIG=	yes
 USE_SDL=	sdl2
 
 CMAKE_ON=	BUILD_SHARED_LIBS
-CMAKE_OFF=	DOWNLOAD_TITLE_SEQUENCES \
-		DOWNLOAD_OBJECTS
-
-PORTDATA=	*
-PORTDOCS=	changelog.txt contributors.md licence.txt openrct2.d.ts \
-		readme.txt scripting.md
-
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|' \
 		${WRKSRC}/src/openrct2/config/Config.cpp
-
-post-install:
-	(cd ${WRKSRC_title_sequences}; \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/title)
-	(cd ${WRKSRC_objects}; \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/object)
+	${MKDIR} ${WRKSRC}/data/sequence
+	${MKDIR} ${WRKSRC}/data/object
+	${MKDIR} ${WRKSRC}/data/assetpack
+	${CP} ${WRKDIR}/*.parkseq ${WRKSRC}/data/sequence/
+	${CP} -r ${WRKDIR}/official ${WRKDIR}/rct1 ${WRKDIR}/rct2 \
+		${WRKDIR}/rct2tt ${WRKDIR}/rct2ww ${WRKDIR}/object/official \
+		${WRKSRC}/data/object/
+	${CP} -r ${WRKDIR}/assetpack ${WRKSRC}/data/
 
 .include <bsd.port.mk>

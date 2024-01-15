@@ -1,34 +1,32 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	digdag
-DISTVERSION=	0.9.42
+DISTVERSION=	0.10.5
 CATEGORIES=	sysutils java
-MASTER_SITES=	https://dl.bintray.com/digdag/maven/ \
+MASTER_SITES=	https://github.com/treasure-data/digdag/releases/download/v${DISTVERSION}/ \
 		LOCAL/ehaupt
 EXTRACT_SUFX=	.jar
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Workload Automation System
+WWW=		https://www.digdag.io/
 
 LICENSE=	APACHE20
 
 USE_JAVA=	yes
+JAVA_VERSION=	8+
+JAVA_VENDOR=	openjdk
+JAVA_RUN=	yes
 USE_RC_SUBR=	${PORTNAME}
 
-JAVA_RUN=	yes
-JAVA_VENDOR=	openjdk
-JAVA_VERSION=	1.8+
-
-NO_BUILD=	yes
 NO_ARCH=	yes
+NO_BUILD=	yes
 
+SUB_LIST=	JAVA=${JAVA} \
+		PORTNAME=${PORTNAME} \
+		USERS=${USERS}
 USERS=		digdag
+PLIST_SUB=	USERS=${USERS} \
+		VERSION=${DISTVERSION}
 
-SUB_LIST=	PORTNAME=${PORTNAME} USERS=${USERS} JAVA=${JAVA}
-PLIST_SUB=	VERSION=${DISTVERSION} USERS=${USERS}
-
-VARLOG=		/var/log/${PORTNAME}
 VARRUN=		/var/run/${PORTNAME}
 
 do-extract:
@@ -45,7 +43,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.conf.sample \
 		${STAGEDIR}${PREFIX}/etc
 
-	@${MKDIR} ${STAGEDIR}${VARLOG}
 	@${MKDIR} ${STAGEDIR}${VARRUN}
 
 cklatest:

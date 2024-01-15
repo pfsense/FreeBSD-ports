@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	murmurhash
-PORTVERSION=	1.0.5
+DISTVERSION=	1.0.9
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cython bindings for MurmurHash2
+WWW=		https://github.com/explosion/murmurhash
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils cython autoplist
 
 post-install:

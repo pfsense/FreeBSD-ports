@@ -1,16 +1,17 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	memtester
-PORTVERSION=	4.5.0
+PORTVERSION=	4.6.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://pyropus.ca/software/${PORTNAME}/old-versions/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Utility to test for faulty memory subsystem
+WWW=		https://pyropus.ca./software/memtester/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		cpe
+CPE_VENDOR=	pryopus
 
 PLIST_FILES=	bin/${PORTNAME} man/man8/${PORTNAME}.8.gz
 

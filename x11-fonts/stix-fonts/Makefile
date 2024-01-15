@@ -1,13 +1,11 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	stixfonts
-PORTVERSION=	2.10
+PORTVERSION=	2.13
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	OpenType Unicode fonts for Scientific, Technical, and Math texts
+WWW=		https://www.stixfonts.org/
 
 LICENSE=	OFL11
 
@@ -25,7 +23,7 @@ FONTNAME=	STIX
 
 OPTIONS_DEFINE=	DOCS
 
-PORTDOCS=	FONTLOG.txt STIX-Two_glyph_sets.xlsx STIXTwoMath-Regular.pdf	\
+PORTDOCS=	STIX-Two_glyph_sets.xlsx STIXTwoMath-Regular.pdf	\
 		STIXTwoText-Regular.pdf
 
 do-install:

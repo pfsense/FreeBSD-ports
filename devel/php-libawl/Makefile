@@ -1,14 +1,12 @@
-# Created by: Cristiano Rolim Pereira <cristianorolim@hotmail.com>
-# $FreeBSD$
-
 PORTNAME=	libawl
 DISTVERSIONPREFIX=	r
-DISTVERSION=	0.61
+DISTVERSION=	0.64
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Andrew.s Web Libraries - PHP Utility Libraries
+WWW=		https://gitlab.com/davical-project/awl
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -19,7 +17,7 @@ USES=		php:build,flavors
 USE_GITLAB=	yes
 GL_ACCOUNT=	davical-project
 GL_PROJECT=	awl
-GL_COMMIT=	6bdacad0b4fc51583c040d3bbefdd052ed863611
+GL_TAGNAME=	f1c3753a2f356d856dfc279754f7885080e9e827
 
 NO_ARCH=	yes
 NO_BUILD=	yes

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	web-mode
 PORTVERSION=	15.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	7
+PORTREVISION=	16
 CATEGORIES=	editors elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Autonomous Emacs major-mode for editing web templates
+WWW=		https://web-mode.org
 
 LICENSE=	GPLv2
 

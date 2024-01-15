@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	portconf
 PORTVERSION=	1.6
 PORTREVISION=	1

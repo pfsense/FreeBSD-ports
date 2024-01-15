@@ -1,6 +1,3 @@
-# Created by: mich@freebsdcluster.org
-# $FreeBSD$
-
 PORTNAME=	remarp
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	net-mgmt
 MASTER_SITES=	http://freebsdcluster.org/~mich/software/ \
 		http://www.raccoon.kiev.ua/projects/remarp/
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SNMP-based ARP watcher
+WWW=		http://www.raccoon.kiev.ua/projects/remarp/
 
 RUN_DEPENDS=	p5-AppConfig>=0:devel/p5-AppConfig \
 		p5-Net-SNMP>=0:net-mgmt/p5-Net-SNMP

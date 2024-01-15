@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Schedule
 PORTVERSION=	0.95
 PORTREVISION=	2
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Schedule POE Events using a cron spec
+WWW=		https://metacpan.org/release/POE-Component-Schedule
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-POE>=0:devel/p5-POE \

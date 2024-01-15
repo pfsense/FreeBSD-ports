@@ -1,6 +1,3 @@
-# Created by: Donald Burr <dburr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	yodl
 PORTVERSION=	3.10.00
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Easy to use but powerful document formatting/preparation language
+WWW=		https://fbb-git.gitlab.io/yodl/
 
 LICENSE=	GPLv3
 
@@ -17,11 +15,12 @@ BUILD_DEPENDS=	icmake:devel/icmake \
 		bash:shells/bash \
 		gsed:textproc/gsed
 
-USES=		perl5 shebangfix compiler:c++14-lang
+USES=		cpe perl5 shebangfix compiler:c++14-lang
+CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	build
 USE_GITLAB=	yes
 GL_ACCOUNT=	fbb-git
-GL_COMMIT=	5fa97b175c85581d01329013cfdb4239f019b023
+GL_TAGNAME=	5fa97b175c85581d01329013cfdb4239f019b023
 
 SHEBANG_LANG=	icmake
 icmake_OLD_CMD=	/usr/bin/icmake
@@ -51,6 +50,7 @@ PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 WRKSRC_SUBDIR=	${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
+DOCS_USES=	tex
 DOCS_USE=	TEX=latex:build,dvipsk:build
 
 post-patch:

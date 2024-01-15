@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	regex2dfa
 DISTVERSION=	0.1.6
 PORTREVISION=	3
@@ -7,6 +5,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Command-line utility that converts regular expressions to DFA
+WWW=		https://github.com/kpdyer/regex2dfa
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

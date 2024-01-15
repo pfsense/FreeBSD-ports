@@ -1,6 +1,3 @@
-# Created by: Dominik Rothert <dr@domix.de>
-# $FreeBSD$
-
 PORTNAME=	xtermset
 PORTVERSION=	0.5.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/clts/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dynamically change some settings of an xterm
+WWW=		https://sourceforge.net/projects/clts/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

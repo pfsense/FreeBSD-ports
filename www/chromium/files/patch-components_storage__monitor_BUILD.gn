@@ -1,16 +1,20 @@
---- components/storage_monitor/BUILD.gn.orig	2021-01-18 21:28:56 UTC
+--- components/storage_monitor/BUILD.gn.orig	2023-11-03 10:09:45 UTC
 +++ components/storage_monitor/BUILD.gn
-@@ -81,6 +81,13 @@ static_library("storage_monitor") {
+@@ -77,7 +77,7 @@ static_library("storage_monitor") {
+       deps += [ "//services/device/public/mojom" ]
      }
-   }
- 
-+  if (is_bsd) {
-+    sources += [
-+      "storage_monitor_freebsd.cc",
-+      "storage_monitor_freebsd.h",
-+    ]
-+  }
-+
-   if (use_udev) {
-     if (is_linux || is_chromeos) {
+   } else if (is_linux || is_chromeos_lacros) {
+-    if (use_udev) {
++    if (use_udev && !is_bsd) {
        sources += [
+         "mtab_watcher_linux.cc",
+         "mtab_watcher_linux.h",
+@@ -184,7 +184,7 @@ source_set("unit_tests") {
+         "storage_monitor_chromeos_unittest.cc",
+       ]
+     }
+-  } else if (is_linux || is_chromeos_lacros) {
++  } else if ((is_linux || is_chromeos_lacros) && !is_bsd) {
+     if (use_udev) {
+       sources += [ "storage_monitor_linux_unittest.cc" ]
+     }

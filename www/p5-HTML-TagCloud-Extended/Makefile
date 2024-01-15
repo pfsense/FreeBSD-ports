@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-TagCloud-Extended
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTML::TagCloud extension for time-stamp based coloring of tags
+WWW=		https://metacpan.org/release/HTML-TagCloud-Extended
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

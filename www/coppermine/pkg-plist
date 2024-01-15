@@ -1076,8 +1076,9 @@
 %%WWWDIR%%/js/displayimage.js
 %%WWWDIR%%/js/edit_one_pic.js
 %%WWWDIR%%/js/editpics.js
-%%WWWDIR%%/js/jquery-1.4.2.js
+%%WWWDIR%%/js/jquery-1.12.4.js
 %%WWWDIR%%/js/jquery-1.7.2.js
+%%WWWDIR%%/js/jquery-migrate-1.4.1.js
 %%WWWDIR%%/js/jquery.cluetip.js
 %%WWWDIR%%/js/jquery.datePicker.js
 %%WWWDIR%%/js/jquery.dimensions.pack.js
@@ -1106,6 +1107,7 @@
 %%WWWDIR%%/lang/estonian.php
 %%WWWDIR%%/lang/french.php
 %%WWWDIR%%/lang/german.php
+%%WWWDIR%%/lang/spanish.php
 %%WWWDIR%%/lang_check.php
 %%WWWDIR%%/langmgr.php
 %%WWWDIR%%/login.php
@@ -1203,7 +1205,6 @@
 %%WWWDIR%%/sql/schema.sql
 %%WWWDIR%%/sql/update.sql
 %%WWWDIR%%/stat_details.php
-%%WWWDIR%%/themes/curve/csshover3.htc
 %%WWWDIR%%/themes/curve/images/backdrop.png
 %%WWWDIR%%/themes/curve/images/button_bg.gif
 %%WWWDIR%%/themes/curve/images/button_bg_anim.gif
@@ -1393,6 +1394,7 @@
 %%WWWDIR%%/tools/del_orphans/lang/english.php
 %%WWWDIR%%/tools/file2title/file2title.php
 %%WWWDIR%%/tools/keyw_conv/keyw_conv.php
+%%WWWDIR%%/tools/re_key/re_key.php
 %%WWWDIR%%/tools/refresh/refresh.php
 %%WWWDIR%%/tools/reset_views/reset_views.php
 %%WWWDIR%%/tools/upd_thumbs/upd_thumbs.php

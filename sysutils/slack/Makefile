@@ -1,14 +1,12 @@
-# Created by: Steve Atwell
-# $FreeBSD$
-
 PORTNAME=	slack
 PORTVERSION=	0.15.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.sundell.net/~alan/projects/slack/
 
 MAINTAINER=	satwell@disjoint.net
 COMMENT=	Configuration management system designed to appeal to lazy admins
+WWW=		https://code.google.com/p/slack/
 
 RUN_DEPENDS=	rsync:net/rsync
 

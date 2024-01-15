@@ -1,6 +1,3 @@
-# Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-Signal
 PORTVERSION=	1.101932
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Type to represent valid UNIX or Perl signals
+WWW=		https://metacpan.org/release/MooseX-Types-Signal
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

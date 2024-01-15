@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cytoscape
 DISTVERSION=	3.6.1
 CATEGORIES=	biology java
@@ -9,15 +7,15 @@ DISTFILES=	FreeBSD-${PORTNAME}-${PORTVERSION}-maven-repository.tar.gz:maven
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software to visualize molecular interaction networks, gene expression
+WWW=		https://www.cytoscape.org
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/api/LICENSE
 
-BROKEN_aarch64=		fails to build: Cytoscape Third-Party Dependencies (third-party): FAILURE
-BROKEN_armv6=		fails to build: Cytoscape Third-Party Dependencies (third-party): FAILURE
-BROKEN_armv7=		fails to build: Cytoscape Third-Party Dependencies (third-party): FAILURE
+BROKEN_armv6=	build runs out of memory
+BROKEN_armv7=	build runs out of memory
 
-BUILD_DEPENDS=	mvn:devel/maven \
+BUILD_DEPENDS=	maven363>0:devel/maven363 \
 		bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
 

@@ -1,13 +1,11 @@
-# Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	car
-DISTVERSION=	3.0-10
+DISTVERSION=	3.1-2
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Companion to Applied Regression
+WWW=		https://r-forge.r-project.org/projects/car/
 
 LICENSE=	GPLv2+
 
@@ -18,6 +16,7 @@ RUN_DEPENDS=	R-cran-maptools>0:astro/R-cran-maptools \
 		R-cran-pbkrtest>=0.4.4:math/R-cran-pbkrtest \
 		R-cran-quantreg>0:math/R-cran-quantreg \
 		R-cran-rio>0:textproc/R-cran-rio \
+		R-cran-scales>0:graphics/R-cran-scales \
 		R-cran-stringi>=0:textproc/R-cran-stringi
 TEST_DEPENDS=	R-cran-lmtest>0:finance/R-cran-lmtest \
 		R-cran-MatrixModels>0:math/R-cran-MatrixModels \

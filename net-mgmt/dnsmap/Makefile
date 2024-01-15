@@ -1,6 +1,3 @@
-# Created by: Rihaz Jerrin <rihaz.jerrin@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	dnsmap
 PORTVERSION=	0.30
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	net-mgmt
 
 MAINTAINER=	rihaz.jerrin@gmail.com
 COMMENT=	DNS domain name brute forcing tool
+WWW=		https://tools.kali.org/information-gathering/dnsmap
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl-2.0.txt

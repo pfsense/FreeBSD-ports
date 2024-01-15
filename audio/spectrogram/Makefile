@@ -1,12 +1,10 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	spectrogram
 PORTVERSION=	20190725
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Audio visualization for sndio
+WWW=		https://www.dim13.org/Spectrogram
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

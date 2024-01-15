@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	nwchem-data
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.0.2
+DISTVERSION=	7.2.0
 DISTVERSIONSUFFIX=	-release
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Data for NWChem, the computational chemistry software
+WWW=		https://nwchemgit.github.io/
 
 LICENSE=	ECL20
 LICENSE_NAME=	Educational Community License (ECL) 2.0

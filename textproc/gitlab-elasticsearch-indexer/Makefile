@@ -1,63 +1,61 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gitlab-elasticsearch-indexer
-PORTVERSION=	2.8.0
-PORTREVISION=	0
+PORTVERSION=	4.5.0
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Elasticsearch indexer for GitLab
+WWW=		https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BUILD_DEPENDS=	git>=2.16.2:devel/git
+BUILD_DEPENDS=	git>=2.38.1:devel/git
 LIB_DEPENDS=	libicui18n.so:devel/icu \
 		libicuuc.so:devel/icu
 #RUN_DEPENDS=	p5-Image-ExifTool>=0:graphics/p5-Image-ExifTool
 
 USES=		gmake go:modules,no_targets pkgconfig
-MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
-# Find the commit hash here: https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer/-/tags
-GL_COMMIT=	723c949175a3be42c1b5e40db7fbb9f1050c5bb8
+
+MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
+# make sure to pass go build options into make process
+MAKE_ENV+=	${GO_ENV}
 
 # for go dependencies
-USE_GITHUB=	nodefault
-# generated with: make gomod-vendor
-# 25dd
-GH_TUPLE=	\
-		aws:aws-sdk-go:v1.19.6:aws_aws_sdk_go/vendor/github.com/aws/aws-sdk-go \
-		davecgh:go-spew:v1.1.1:davecgh_go_spew/vendor/github.com/davecgh/go-spew \
-		deoxxa:aws_signing_client:c20ee106809e:deoxxa_aws_signing_client/vendor/github.com/deoxxa/aws_signing_client \
-		go-yaml:yaml:v2.2.4:go_yaml_yaml/vendor/gopkg.in/yaml.v2 \
-		golang:net:6afb5195e5aa:golang_net/vendor/golang.org/x/net \
-		golang:protobuf:v1.3.2:golang_protobuf/vendor/github.com/golang/protobuf \
-		golang:sys:86b910548bc1:golang_sys/vendor/golang.org/x/sys \
-		golang:text:v0.3.2:golang_text/vendor/golang.org/x/text \
-		golang:tools:6fdc5776f4bb:golang_tools/vendor/golang.org/x/tools \
-		google:go-genproto:ca5a22157cba:google_go_genproto/vendor/google.golang.org/genproto \
-		grpc-ecosystem:go-grpc-middleware:v1.0.0:grpc_ecosystem_go_grpc_middleware/vendor/github.com/grpc-ecosystem/go-grpc-middleware \
-		grpc:grpc-go:v1.24.0:grpc_grpc_go/vendor/google.golang.org/grpc \
-		jmespath:go-jmespath:c2b33e8439af:jmespath_go_jmespath/vendor/github.com/jmespath/go-jmespath \
-		konsorten:go-windows-terminal-sequences:v1.0.2:konsorten_go_windows_terminal_sequences/vendor/github.com/konsorten/go-windows-terminal-sequences \
-		mailru:easyjson:1ea4449da983:mailru_easyjson/vendor/github.com/mailru/easyjson \
-		olivere:elastic:v6.2.24:olivere_elastic/vendor/github.com/olivere/elastic \
-		pkg:errors:v0.8.1:pkg_errors/vendor/github.com/pkg/errors \
-		pmezard:go-difflib:v1.0.0:pmezard_go_difflib/vendor/github.com/pmezard/go-difflib \
-		sirupsen:logrus:v1.4.1:sirupsen_logrus/vendor/github.com/sirupsen/logrus \
-		stretchr:testify:v1.4.0:stretchr_testify/vendor/github.com/stretchr/testify
+# Gitlab hosts there dependencies on their own platform and not on go-proxy
+# so we download the required go.mod file from gitlab
+# lines are taken from go.mk
+# ---------------------------
+FETCH_DEPENDS=	${GO_CMD}:${GO_PORT}
+MASTER_SITES+=	https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer/-/raw/v${DISTVERSION}/
+DISTFILES+=	go.mod
+DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
+EXTRACT_ONLY+=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
+_USES_fetch+=	800:go-post-fetch
+go-post-fetch:
+	@${ECHO_MSG} "===> Fetching ${GO_MODNAME} dependencies";
+	@(cd ${DISTDIR}/${DIST_SUBDIR}; \
+		[ -e go.mod ] || ${RLN} ${GO_MODFILE} go.mod; \
+		${SETENV} ${GO_ENV} GOPROXY=${GO_GOPROXY} ${GO_CMD} mod download -x all)
+# ---------------------------
 
-GL_TUPLE=	gitlab-org:gitaly:aa1ff2a76ac14e1ad3eca35cc05ea86ef59fffbb:gitlab_org_gitaly/vendor/gitlab.com/gitlab-org/gitaly \
-		gitlab-org:labkit:0149780c759d60f61fcfe1648fb882ba7ec41f3f:gitlab_org_labkit/vendor/gitlab.com/gitlab-org/labkit \
-		lupine:icu:54c89d9b1ef6931b4ff61fa9f4ca645d3b86d6dc:lupine_icu/vendor/gitlab.com/lupine/icu
+PLIST_FILES=	bin/${PORTNAME}
 
-PLIST_FILES=	bin/gitlab-elasticsearch-indexer
+# add a git tag, as that is required by the build script
+pre-build:
+	cd ${WRKSRC} && \
+		git init && \
+		git config user.email "${MAINTAINER}" && \
+		git config user.name "Matthias Fechner" && \
+		git add . && \
+		git commit -m "tag" && \
+		git tag v${PORTVERSION}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/gitlab-elasticsearch-indexer ${STAGEDIR}${PREFIX}/bin/gitlab-elasticsearch-indexer
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

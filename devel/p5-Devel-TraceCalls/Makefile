@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Devel-TraceCalls
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Track calls to subs, classes, and object instances
+WWW=		https://metacpan.org/release/Devel-TraceCalls
 
 USES=		perl5
 USE_PERL5=	configure

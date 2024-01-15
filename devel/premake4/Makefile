@@ -1,6 +1,3 @@
-# Created by: Vitaly Magerya <vmagerya@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	premake4
 PORTVERSION=	4.4.b5
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	premake-${PORTVERSION:S/.b/-beta/}-src
 
 MAINTAINER=	vmagerya@gmail.com
 COMMENT=	Build script creation tool
+WWW=		http://industriousone.com/premake
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

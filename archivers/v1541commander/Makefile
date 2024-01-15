@@ -1,13 +1,11 @@
-# Created by: Felix Palmen <felix@palmen-it.de>
-# $FreeBSD$
-
 PORTNAME=	v1541commander
 PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers emulators
 
-MAINTAINER=	felix@palmen-it.de
+MAINTAINER=	zirias@FreeBSD.org
 COMMENT=	Virtual 1541 disk commander
+WWW=		https://github.com/excess-c64/v1541commander
 
 LICENSE=	BSD2CLAUSE STYLEFONT
 LICENSE_COMB=	multi
@@ -20,7 +18,7 @@ LIB_DEPENDS=	lib1541img.so:archivers/lib1541img
 
 USES=		compiler:c++11-lang gmake pkgconfig qt:5 shared-mime-info
 
-USE_QT=		core gui network widgets buildtools_build linguisttools_build
+USE_QT=		core gui network widgets buildtools:build linguisttools:build
 
 USE_GITHUB=	yes
 GH_PROJECT=	zimk:zimk
@@ -31,6 +29,9 @@ OPTIONS_DEFINE=	DOCS
 
 MAKE_ARGS=	pkgconfigdir=${LOCALBASE}/libdata/pkgconfig \
 		V=1
+MAKE_ENV=	DEFAULT_MOC=${MOC} \
+		DEFAULT_RCC=${RCC} \
+		LRELEASE=${LRELEASE}
 ALL_TARGET=	strip
 
 post-extract:

@@ -1,14 +1,12 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	buildsystem
-PORTVERSION=	1.8
+PORTVERSION=	1.9
 CATEGORIES=	devel
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 PKGNAMEPREFIX=	netsurf-
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	NetSurf project buildsystem
+MAINTAINER=	nc@FreeBSD.org
+COMMENT=	NetSurf project build system
+WWW=		https://www.netsurf-browser.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

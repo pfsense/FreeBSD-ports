@@ -1,8 +1,6 @@
-# Created by: John Hixson <john@pcbsd.org>
-# $FreeBSD$
-
 PORTNAME=	pithos
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.1
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	jhixson@FreeBSD.org
@@ -21,15 +19,13 @@ RUN_DEPENDS=	gnome-keyring:security/gnome-keyring \
 		${PYTHON_PKGNAMEPREFIX}pylast>0:audio/py-pylast@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/xdg/__init__.py:devel/py-xdg@${PY_FLAVOR}
 
-USES=	pkgconfig:run python:3.6+ gnome meson ninja gettext shebangfix
+USES=	pkgconfig:run python gnome gstreamer meson ninja gettext shebangfix
 
 USE_GITHUB=	yes
 USE_GNOME=	glib20
-USE_GSTREAMER1=	core good bad soup
+USE_GSTREAMER=	core good bad soup
 
 GLIB_SCHEMAS=	io.github.Pithos.gschema.xml
-
-INSTALLS_ICONS=	yes
 
 SHEBANG_FILES=	bin/pithos.in docs/conf.py meson_post_install.py
 

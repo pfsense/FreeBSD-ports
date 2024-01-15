@@ -1,13 +1,11 @@
-# Created by: Jov amutu@amutu.com
-# $FreeBSD$
-
 PORTNAME=	pgFormatter
-PORTVERSION=	4.4
+PORTVERSION=	5.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PostgreSQL SQL syntax beautifier
+WWW=		https://github.com/darold/pgFormatter
 
 LICENSE=	PostgreSQL
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	multimedia
 
@@ -10,4 +8,10 @@ DIST=		bad
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
 
+PLIST=		${.CURDIR}/pkg-plist
+
+LIB_DEPENDS=	libdca.so:multimedia/libdca
+
 .include "${MASTERDIR}/Makefile"
+
+MESON_ARGS+=	-Dgpl=enabled

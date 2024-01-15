@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	recvnet
 PORTVERSION=	0.0.1
 PORTREVISION=	1
@@ -9,7 +6,8 @@ MASTER_SITES=	https://www.vanheusden.com/Linux/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	Recvnet (inverse telnet) is a utility for debugging tcp connections
+COMMENT=	Utility for debugging TCP connections
+WWW=		https://www.vanheusden.com/Linux/ #recvnet
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt

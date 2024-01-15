@@ -1,9 +1,6 @@
-# Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
-
 PORTNAME=	foo2zjs
 PORTVERSION=	20161203
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	LOCAL/bsam/${PORTNAME} \
 		ftp://ftp.wart.ru/pub/FreeBSD/ports/distfiles/
@@ -14,6 +11,7 @@ PATCHFILES=	hbpl1-20160830.patch.xz:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Driver for printers that use the ZjStream wire protocol
+WWW=		http://foo2zjs.rkkda.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,25 +21,28 @@ RUN_DEPENDS=	${LOCALBASE}/share/foomatic/db/oldprinterids:print/foomatic-db \
 		foomatic-rip:print/cups-filters \
 		gsed:textproc/gsed
 
-USES=		ghostscript gmake shebangfix
+USES=		cpe ghostscript gmake shebangfix
+CPE_VENDOR=	rkkda
 SHEBANG_FILES=	msexpand printer-profile.sh
-SUB_FILES=	pkg-message ${DEVDCONF_FILE}
-EXTRAFILES=	msexpand getweb
-DEVDCONF_FILE=	${PORTNAME}.conf
 
 MAKE_JOBS_UNSAFE=	yes
 
+SUB_FILES=	${_DEVDCONF_FILE} pkg-message
+
 OPTIONS_DEFINE=	DOCS
+
+_DEVDCONF_FILE=	${PORTNAME}.conf
+_EXTRAFILES=	msexpand getweb
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^CFLAGS|CFLAGS?|g' -e 's|^PREFIX|PREFIX?|g' ${WRKSRC}/icc2ps/Makefile
 
 post-install:
 	cd ${WRKSRC} && \
-		${INSTALL_SCRIPT} ${EXTRAFILES} ${STAGEDIR}${PREFIX}/bin
+		${INSTALL_SCRIPT} ${_EXTRAFILES} ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}/etc/devd
 	cd ${WRKDIR} && \
-		${INSTALL_SCRIPT} ${DEVDCONF_FILE} ${STAGEDIR}${PREFIX}/etc/devd
+		${INSTALL_SCRIPT} ${_DEVDCONF_FILE} ${STAGEDIR}${PREFIX}/etc/devd
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/foo2zjs-icc2ps
 
 post-install-DOCS-on:

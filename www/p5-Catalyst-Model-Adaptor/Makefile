@@ -1,6 +1,3 @@
-# Created by: Vladimir Timofeev <vovkasm@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Model-Adaptor
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vovkasm@gmail.com
 COMMENT=	Use a plain class as a Catalyst model
+WWW=		https://metacpan.org/release/Catalyst-Model-Adaptor
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

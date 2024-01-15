@@ -1,52 +1,47 @@
-# Created by: Ade Lovett <ade@lovett.com>
-# $FreeBSD$
-
 PORTNAME=	gdk-pixbuf
-PORTVERSION=	2.40.0
+PORTVERSION=	2.42.10
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	desktop@FreeBSD.org
-COMMENT=	Graphic library for GTK+
+COMMENT=	Graphic library for GTK
+WWW=		https://developer.gnome.org/gdk-pixbuf/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	docbook-xsl>0:textproc/docbook-xsl
-
 USES=		cpe gettext gnome localbase:ldflags meson pkgconfig \
-		python:3.4+,build shared-mime-info tar:xz
+		python:build shared-mime-info shebangfix tar:xz trigger
 CPE_VENDOR=	gnome
 USE_GNOME=	glib20 introspection:build libxslt:build
+SHEBANG_FILES=	build-aux/*.py
 USE_LDCONFIG=	yes
-MESON_ARGS=	-Dman=true
+MESON_ARGS=	-Dbuiltin_loaders="none" -Dgtk_doc=false -Dinstalled_tests=false -Dtests=false
+TRIGGERS=	gdk-pixbuf-query-loaders
+SUB_LIST=	GTK2_VERSION=${GTK2_VERSION}
 
-BINARY_ALIAS=	python3=${PYTHON_VERSION}
+LIBVERSION=	0.4200.10
+PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	JASPER JPEG PNG TIFF X11
-OPTIONS_DEFAULT=JPEG PNG TIFF X11
+OPTIONS_DEFINE=	JPEG MANPAGES PNG TIFF
+OPTIONS_DEFAULT=JPEG MANPAGES PNG TIFF
 
-JASPER_MESON_TRUE=	jasper
-JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
-
-JPEG_MESON_TRUE=	jpeg
 JPEG_USES=		jpeg
+JPEG_MESON_ENABLED=	jpeg
 
-PNG_MESON_TRUE=		png
+MANPAGES_BUILD_DEPENDS=	docbook-xsl>0:textproc/docbook-xsl \
+			rst2man:textproc/py-docutils
+MANPAGES_USE=		gnome=libxslt:build
+MANPAGES_MESON_TRUE=	man
+
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
+PNG_MESON_ENABLED=	png
 
-TIFF_MESON_TRUE=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
-
-X11_MESON_TRUE=		x11
-X11_USES=		xorg
-X11_USE=		xorg=x11
-
-post-install:
-	${RM} -rf ${STAGEDIR}${PREFIX}/libexec/installed-tests
-	${RM} -rf ${STAGEDIR}${PREFIX}/share/installed-tests
+TIFF_MESON_ENABLED=	tiff
 
 .include <bsd.port.mk>

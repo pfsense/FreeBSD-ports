@@ -1,11 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	nextdns
-PORTVERSION=	1.9.4
+PORTVERSION=	1.40.1
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	dns security
 
 MAINTAINER=	rs@nextdns.io
 COMMENT=	NextDNS DNS53 to DNS over HTTPS proxy
+WWW=		https://github.com/nextdns/nextdns
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -13,22 +14,24 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	ca_root_nss>=3.35:security/ca_root_nss
 
 USES=		go:modules
-PLIST_FILES=	sbin/nextdns
 USE_GITHUB=	yes
-GO_TARGET=	.:${PREFIX}/sbin/nextdns
-GH_ACCOUNT=	nextdns
-GH_TAGNAME=	v1.4.25
 GH_TUPLE=	\
-		cenkalti:backoff:v2.2.1:cenkalti_backoff/vendor/github.com/cenkalti/backoff \
 		cespare:xxhash:v1.1.0:cespare_xxhash/vendor/github.com/cespare/xxhash \
 		denisbrodbeck:machineid:v1.0.1:denisbrodbeck_machineid/vendor/github.com/denisbrodbeck/machineid \
-		golang:crypto:9ee001bba392:golang_crypto/vendor/golang.org/x/crypto \
-		golang:net:a882066a44e0:golang_net/vendor/golang.org/x/net \
-		golang:sys:52ab43148777:golang_sys/vendor/golang.org/x/sys \
-		grandcat:zeroconf:85eadb44205c:grandcat_zeroconf/vendor/github.com/grandcat/zeroconf \
-		miekg:dns:v1.1.22:miekg_dns/vendor/github.com/miekg/dns \
-		rs:service:b1a37fd90075:rs_service/vendor/github.com/kardianos/service
+		golang:net:v0.8.0:golang_net/vendor/golang.org/x/net \
+		golang:sys:v0.6.0:golang_sys/vendor/golang.org/x/sys \
+		hashicorp:golang-lru:v0.5.4:hashicorp_golang_lru/vendor/github.com/hashicorp/golang-lru \
+		vishvananda:netlink:v1.1.0:vishvananda_netlink/vendor/github.com/vishvananda/netlink \
+		vishvananda:netns:2eb08e3e575f:vishvananda_netns/vendor/github.com/vishvananda/netns
+
+GO_TARGET=	.:${PREFIX}/sbin/${PORTNAME}
 
 SUB_FILES=	pkg-message
+
+PLIST_FILES=	sbin/${PORTNAME} \
+		"@sample etc/${PORTNAME}.conf.sample"
+
+post-install:
+	@${STAGEDIR}${PREFIX}/sbin/${PORTNAME} config > ${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
 
 .include <bsd.port.mk>

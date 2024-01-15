@@ -1,13 +1,11 @@
-# Created by: Denis Barov <dindin@dindin.ru>
-# $FreeBSD$
-
 PORTNAME=	sg3_utils
-DISTVERSION=	1.45
+DISTVERSION=	1.48
 CATEGORIES=	sysutils
 MASTER_SITES=	http://sg.danny.cz/sg/p/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set of utilities that send SCSI commands to devices
+WWW=		https://sg.danny.cz/sg/sg3_utils.html
 
 LICENSE=	BSD2CLAUSE GPLv2+
 LICENSE_COMB=	multi
@@ -19,6 +17,8 @@ USE_LDCONFIG=	yes
 SHEBANG_FILES=	scripts/*
 
 GNU_CONFIGURE=	yes
+
+PLIST_SUB=	SOVERSION=${DISTVERSION}
 
 post-install:
 		@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsgutils2*.so.*

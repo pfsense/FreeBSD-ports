@@ -1,6 +1,3 @@
-# Created by: Aldis Berjoza <aldis@bsdroot.lv>
-# $FreeBSD$
-
 PORTNAME=	dicewaregen
 PORTVERSION=	1.4
 CATEGORIES=	security
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl script to generate Diceware dictionaries for passwords
+WWW=		https://github.com/graudeejs/dicewaregen.pl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	graudeejs

@@ -1,6 +1,3 @@
-# Created by: Alexandre Biancalana <ale@biancalanas.net>
-# $FreeBSD$
-
 PORTNAME=	String-HexConvert
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ale@biancalanas.net
 COMMENT=	Convert ASCII strings to hex and reverse
+WWW=		https://metacpan.org/release/String-HexConvert
 
 WRKSRC=	${WRKDIR}/${PORTNAME}
 

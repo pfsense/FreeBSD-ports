@@ -1,6 +1,3 @@
-# Created by: stolz@i2.informatik.rwth-aachen.de
-# $FreeBSD$
-
 PORTNAME=	fortune-mod-futurama
 PORTVERSION=	0.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.netmeister.org/apps/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compilation of quotes from the TV series "Futurama"
+WWW=		https://www.netmeister.org/
 
 USES=		tar:bzip2
 SUB_FILES=	pkg-message

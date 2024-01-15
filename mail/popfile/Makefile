@@ -1,6 +1,3 @@
-# Created by: matusita@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	popfile
 PORTVERSION=	1.1.3
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automatic mail classification tool, acts as a POP3 proxy
+WWW=		https://getpopfile.org/
 
 LICENSE=	GPLv2
 

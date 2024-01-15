@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ConfigReader
 PORTVERSION=	0.5
 PORTREVISION=	2

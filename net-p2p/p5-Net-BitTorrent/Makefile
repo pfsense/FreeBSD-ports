@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-BitTorrent
 PORTVERSION=	0.052
 PORTREVISION=	5
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	BitTorrent peer-to-peer protocol class
+WWW=		https://metacpan.org/release/Net-BitTorrent
 
 LICENSE=	ART20
 

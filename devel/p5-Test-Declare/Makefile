@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Declare
 PORTVERSION=	0.06
 PORTREVISION=	2
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for declarative testing
+WWW=		https://metacpan.org/release/Test-Declare
 
 RUN_DEPENDS=	\
 	p5-IO-Stringy>=0:devel/p5-IO-Stringy \

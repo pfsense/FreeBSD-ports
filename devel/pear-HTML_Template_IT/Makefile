@@ -1,17 +1,17 @@
-# Created by: Alex Miller (<asm@asm.kiev.ua>)
-# $FreeBSD$
-
 PORTNAME=	HTML_Template_IT
-DISTVERSION=	1.3.1
+PORTVERSION=	1.3.1
 PORTEPOCH=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	PEAR Integrated template API
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Integrated Templates
+WWW=		https://pear.php.net/package/HTML_Template_IT
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

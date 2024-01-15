@@ -1,6 +1,3 @@
-# Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
-
 PORTNAME=	suphp
 PORTVERSION=	0.7.2
 PORTREVISION=	2
@@ -12,11 +9,12 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	freebsd-ports@dan.me.uk
 COMMENT=	Securely execute PHP scripts under Apache
+WWW=		https://www.suphp.org/
 
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USES=		apache:2.2+ autoreconf libtool php:cgi,flavors
+USES=		apache autoreconf cpe libtool php:cgi,flavors
 SUB_FILES=	pkg-message
 
 CFLAGS+=	-I${LOCALBASE}/include

@@ -1,6 +1,3 @@
-# Created by: Bill Brinzer <bill.brinzer@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Capture-Tiny
 PORTVERSION=	0.48
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Capture STDOUT and STDERR from Perl, XS, or external programs
+WWW=		https://metacpan.org/release/Capture-Tiny
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

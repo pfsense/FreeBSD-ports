@@ -1,6 +1,3 @@
-# Created by: Alex Stangl <alex@stangl.us>
-# $FreeBSD$
-
 PORTNAME=	pauker
 DISTVERSION=	1.8
 CATEGORIES=	misc education java
@@ -10,6 +7,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	alex@stangl.us
 COMMENT=	Java-based flashcard learning using the Leitner system
+WWW=		https://pauker.sourceforge.net
 
 USE_JAVA=	yes
 NO_BUILD=	yes

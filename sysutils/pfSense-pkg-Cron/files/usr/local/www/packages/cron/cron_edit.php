@@ -3,7 +3,7 @@
  * cron_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -67,16 +67,49 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
+	$input_errors = array();
+
+	$cron_time_names = array(
+		'minute' => gettext('Minute'),
+		'hour' => gettext('Hour'),
+		'mday' => gettext('Day of the Month'),
+		'month' => gettext('Month of the Year'),
+		'wday' => gettext('Day of the Week'),
+	);
+
+	$cron_special_strings = array('@reboot', '@yearly', '@annually',
+				'@monthly', '@weekly', '@daily', '@midnight',
+				'@hourly', '@every_minute', '@every_second');
+
+	/* If minute is a special string and other fields are empty, that is
+	 * valid, otherwise validate the contents of all fields. */
+	if (!(in_array($_POST['minute'], $cron_special_strings) &&
+	    empty($_POST['hour']) &&
+	    empty($_POST['mday']) &&
+	    empty($_POST['month']) &&
+	    empty($_POST['wday']))) {
+		/* Ensure each time component field contains a valid value. */
+		foreach (array_keys($cron_time_names) as $field) {
+			if (!preg_match('/^(((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*|\*\/\d+|@\d+) ?)$/', $_POST[$field])) {
+				$input_errors[] = gettext("Invalid cron time specification") . ": {$cron_time_names[$field]}";
+			}
+		}
+	}
+
+	if (posix_getpwnam($_POST['who']) === false) {
+		$input_errors[] = gettext("Invalid OS user");
+	}
+
 	if (!$input_errors) {
 
 		$ent = array();
-		$ent['minute'] = $_POST['minute'];
-		$ent['hour'] = $_POST['hour'];
-		$ent['mday'] = $_POST['mday'];
-		$ent['month'] = $_POST['month'];
-		$ent['wday'] = $_POST['wday'];
-		$ent['who'] = $_POST['who'];
-		$ent['command'] = $_POST['command'];
+		$ent['minute'] = trim($_POST['minute']);
+		$ent['hour'] = trim($_POST['hour']);
+		$ent['mday'] = trim($_POST['mday']);
+		$ent['month'] = trim($_POST['month']);
+		$ent['wday'] = trim($_POST['wday']);
+		$ent['who'] = trim($_POST['who']);
+		$ent['command'] = trim($_POST['command']);
 
 		if (isset($id) && $a_cron[$id] && !$dup) {
 			// update
@@ -123,7 +156,9 @@ $section->addInput(new Form_Input(
 	'Minute',
 	'text',
 	$pconfig['minute']
-))->setHelp("The minute(s) at which the command will be executed. (0-59, ranges, or divided, *=all)");
+))->setHelp('The minute(s) at which the command will be executed or a special @ event string.' .
+		' (0-59, ranges, divided, @ event or delay, *=all)%1$s%1$s' .
+		'When using a special @ event, such as @reboot, the other time fields must be empty.', '<br/>');
 
 $section->addInput(new Form_Input(
 	'hour',

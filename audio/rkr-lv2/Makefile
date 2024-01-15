@@ -1,14 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	rkr
 DISTVERSIONPREFIX=	beta_
 DISTVERSION=	2-2
 DISTVERSIONSUFFIX=	-gd8c17d3
+PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Rakarrack effects as LV2 plugins
+WWW=		https://github.com/ssj71/rkrlv2
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

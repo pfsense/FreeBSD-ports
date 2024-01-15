@@ -1,14 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	crrcsim
 PORTVERSION=	0.9.13
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games education
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Model-airplane flight simulation program
+WWW=		https://sourceforge.net/projects/crrcsim/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	sandboxfs
 DISTVERSIONPREFIX=	sandboxfs-
 DISTVERSION=	0.2.0
-PORTREVISION=	7
+PORTREVISION=	35
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Virtual file system for sandboxing
+WWW=		https://github.com/bazelbuild/sandboxfs
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

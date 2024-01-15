@@ -1,6 +1,3 @@
-# Created by: clive
-# $FreeBSD$
-
 PORTNAME=	bitchx
 CATEGORIES=	chinese
 
@@ -11,6 +8,8 @@ MASTERDIR=	${.CURDIR}/../../irc/bitchx
 EXTRA_PATCHES=	${.CURDIR}/files/patch-source__input.c \
 		${.CURDIR}/files/patch-include__config.h \
 		${.CURDIR}/files/patch-source__screen.c
+
+CONFLICTS_INSTALL=	bitchx
 
 OPTIONS_SLAVE=	LATIN
 

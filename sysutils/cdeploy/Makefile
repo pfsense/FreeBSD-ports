@@ -1,6 +1,3 @@
-# Created by: jfreund
-# $FreeBSD$
-
 PORTNAME=	cdeploy
 PORTVERSION=	0.2.1
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/root-tools/cdeploy/0.2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Deploy a set of configuration files to a target file system
+WWW=		https://sourceforge.net/projects/root-tools/
 
 USES=		tar:bzip2
 

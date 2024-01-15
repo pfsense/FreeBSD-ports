@@ -1,6 +1,3 @@
-# Created by: Tim Welch <ports@thepentagon.org>
-# $FreeBSD$
-
 PORTNAME=	dvdimagecmp
 PORTVERSION=	0.3
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SUNSITE/apps/video
 
 MAINTAINER=	ports@thepentagon.org
 COMMENT=	Simple tool for comparing an image to a burned disc
+WWW=		https://www.ibiblio.org/pub/linux/apps/video/dvdimagecmp-0.3.lsm
 
 USES=		gmake tar:tgz
 

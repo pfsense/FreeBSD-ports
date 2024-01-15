@@ -1,23 +1,21 @@
-# Created by: rpsfa@rit.edu
-# $FreeBSD$
-
 PORTNAME=	simple_form
-PORTVERSION=	4.1.0
+PORTVERSION=	5.0.3
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails50
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Forms made easy
+WWW=		https://github.com/heartcombo/simple_form
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-activemodel50>=4:databases/rubygem-activemodel50 \
-		rubygem-actionpack50>=4:www/rubygem-actionpack50
+RUN_DEPENDS=	rubygem-activemodel50>=5.0:databases/rubygem-activemodel50 \
+		rubygem-actionpack50>=5.0:www/rubygem-actionpack50
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
+CPE_VENDOR=	plataformatec
 
 NO_ARCH=	yes
 

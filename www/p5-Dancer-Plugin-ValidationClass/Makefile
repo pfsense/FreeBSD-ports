@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-ValidationClass
 PORTVERSION=	0.120490
 PORTREVISION=	1
@@ -8,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:AWNCORP
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for centralized input validation for Dancer
+WWW=		https://metacpan.org/release/AWNCORP/Dancer-Plugin-ValidationClass-0.120490
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

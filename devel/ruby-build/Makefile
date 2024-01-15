@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	ruby-build
-PORTVERSION=	20210119
+PORTVERSION=	20231225
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel ruby
-DIST_SUBDIR=	rbenv
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Compile and install different ruby versions
+WWW=		https://github.com/rbenv/ruby-build
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -26,7 +24,8 @@ NO_BUILD=	yes
 
 PLIST_FILES=	bin/ruby-build \
 		libexec/rbenv-install \
-		libexec/rbenv-uninstall
+		libexec/rbenv-uninstall \
+		share/man/man1/ruby-build.1.gz
 PORTDATA=	*
 
 OPTIONS_DEFINE=	RBENV
@@ -35,6 +34,7 @@ RBENV_DESC=	Install rbenv for installation support
 RBENV_RUN_DEPENDS=	rbenv:devel/rbenv
 
 do-install:
+	${INSTALL_MAN} ${WRKSRC}/share/man/man1/ruby-build.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/ruby-build ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/rbenv-install ${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/rbenv-uninstall ${STAGEDIR}${PREFIX}/libexec

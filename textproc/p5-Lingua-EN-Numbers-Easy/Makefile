@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-Numbers-Easy
 PORTVERSION=	2014120401
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module providing hash access to Lingua::EN::Numbers objects
+WWW=		https://metacpan.org/release/Lingua-EN-Numbers-Easy
 
 LICENSE=	MIT
 

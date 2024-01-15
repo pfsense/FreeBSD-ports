@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Data-Hexdumper
 PORTVERSION=	3.0001
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Module for displaying binary data in a readable format
+WWW=		https://metacpan.org/release/Data-Hexdumper
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual

@@ -1,20 +1,18 @@
-# Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	arabtex
 PORTVERSION=	3.11
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	arabic print
 MASTER_SITES=	ftp://ftp.informatik.uni-stuttgart.de/pub/${PORTNAME}/
 DISTNAME=	arab${PORTVERSION:S/.//}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	TeX/LaTeX package to generate Arabic writing
+WWW=		http://www2.informatik.uni-stuttgart.de/ivi/bs/research/arab_e.htm
 
 LICENSE=	LPPL10
 
-USES=		tar:tgz
-USE_TEX=	base texmf
+USES=		tar:tgz tex
+USE_TEX=	base
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

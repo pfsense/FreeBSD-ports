@@ -1,9 +1,8 @@
-# Created by: Yen-Shuo Su <yssu@CCCA.NCTU.edu.tw>
-# $FreeBSD$
-
 CATEGORIES=	chinese
 
 MAINTAINER=	ports@FreeBSD.org
+
+CONFLICTS_INSTALL=	tin # bin/metamutt
 
 EXTRA_PATCHES=	${.CURDIR}/files/patch-attrib.c \
 		${.CURDIR}/files/patch-cook.c \

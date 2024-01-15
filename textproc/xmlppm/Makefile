@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	xmlppm
 PORTVERSION=	0.98.3
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTVERSION} \
 
 MAINTAINER=	hsmtkk@gmail.com
 COMMENT=	XML-Conscious PPM Compression
+WWW=		https://xmlppm.sourceforge.net/
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 

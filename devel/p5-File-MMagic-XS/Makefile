@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-MMagic-XS
 PORTVERSION=	0.09008
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Guess File Type With XS (a la mod_mime_magic)
+WWW=		https://metacpan.org/release/File-MMagic-XS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

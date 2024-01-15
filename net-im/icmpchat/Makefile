@@ -1,6 +1,3 @@
-# Created by: Matthew West <mwest@uct.ac.za>
-# $FreeBSD$
-
 PORTNAME=	icmpchat
 PORTVERSION=	0.6
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple console-based chat that uses ICMP protocol
+WWW=		https://icmpchat.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-LE
-PORTVERSION=	0.36
+PORTVERSION=	0.39
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Let's Encrypt API interfacing module
+WWW=		https://metacpan.org/release/Crypt-LE
 
 LICENSE=	ART20
 

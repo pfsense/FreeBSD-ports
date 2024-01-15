@@ -1,31 +1,24 @@
-# Created by: Stephen Montgomery-Smith <stephen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	octave-forge-zeromq
-PORTVERSION=	1.5.2
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	1.5.6
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
+WWW=		https://packages.octave.org/
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/../COPYING
 
 LIB_DEPENDS+=	libzmq.so:net/libzmq4
 
-# OCTSRC is the name of the directory of the package.
-# It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${DISTNAME}
+USES=		localbase octave pkgconfig autoreconf
+USE_GITHUB=	yes
+GH_ACCOUNT=	gnu-octave
+GH_PROJECT=	octave-zeromq
 
-WRKSRC=		${WRKDIR}/${OCTSRC}/src
+OCTAVE_SRC=	${GH_PROJECT}-release-${DISTVERSION}
 
 GNU_CONFIGURE=	yes
-CFLAGS+=	-I${LOCALBASE}/include
-
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
-
-post-build:
-	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
-	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
 
 .include <bsd.port.mk>

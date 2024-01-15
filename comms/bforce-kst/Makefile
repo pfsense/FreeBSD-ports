@@ -1,6 +1,3 @@
-# Created by: Andrew Dolgov <fox@furry.spb.ru>
-# $FreeBSD$
-
 PORTNAME=	bforce
 PORTVERSION=	0.22.8.7
 PORTREVISION=	3

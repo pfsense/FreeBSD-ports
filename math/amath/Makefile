@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	amath
 PORTVERSION=	1.8.5
 CATEGORIES=	math
@@ -9,9 +7,12 @@ MASTER_SITES=	http://dist1.innolan.net/ \
 
 MAINTAINER=	cs@innolan.net
 COMMENT=	Simple command line calculator
+WWW=		https://amath.innolan.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_riscv64=		fails to compile: ./prim.h:117:2: Must define endianness
 
 USES=		gmake
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}

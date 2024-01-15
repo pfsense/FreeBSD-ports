@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	animorph
 PORTVERSION=	0.3
 PORTREVISION=	8
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/makehuman/MakeHuman%20Source/MakeHuman_091
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Morphing engine for MakeHuman
+WWW=		https://www.makehuman.org/
 
 LICENSE=	LGPL21
 

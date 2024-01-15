@@ -1,13 +1,11 @@
-# Created by: rfarmer@predatorlabs.net
-# $FreeBSD$
-
 PORTNAME=	javahelp
 PORTVERSION=	2.0.05.20170719
 PORTREVISION=	1
 CATEGORIES=	java devel
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Online help support for Java applications
+WWW=		https://javaee.github.io/javahelp/
 
 LICENSE=	CDDL
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -31,6 +29,7 @@ MAKE_ARGS=	-Djsp-jar=${TOMCAT_jsp} \
 		-Dservlet-jar=${TOMCAT_servlet} \
 		-Dfile.reference.servlet-api.jar=${TOMCAT_servlet} \
 		-Dtomcat-zip-present=true
+NO_ARCH=	yes
 
 BUILD_WRKSRC=	${WRKSRC}/javahelp_nbproject
 SUB_FILES=	jhindexer \

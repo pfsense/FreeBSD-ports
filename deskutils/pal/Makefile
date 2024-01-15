@@ -1,6 +1,3 @@
-# Created by: Herbert J. Skuhra <h.skuhra@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pal
 PORTVERSION=	0.4.3
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}cal/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	h.skuhra@gmail.com
 COMMENT=	Calendar application
+WWW=		https://palcal.sourceforge.net/
 
 USES=		gettext gmake gnome ncurses pkgconfig readline tar:tgz
 USE_GNOME=	glib20

@@ -1,14 +1,12 @@
-# Created by: Hye-Shik Chang <perky@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dpkg
-PORTVERSION=	1.19.7
+PORTVERSION=	1.19.8
 CATEGORIES=	archivers sysutils
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	dpkg_${PORTVERSION}
 
 MAINTAINER=	ndowens04@gmail.com
 COMMENT=	Debian package maintenance system
+WWW=		https://packages.debian.org/dpkg
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,8 +19,8 @@ RUN_DEPENDS=	gtar:archivers/gtar \
 
 USES=		compiler:c11 cpe gmake iconv libtool ncurses perl5 pkgconfig \
 		tar:xz
-
 CPE_VENDOR=	debian
+USE_CXXSTD=	c++14
 WRKSRC=		${WRKDIR}/dpkg-${PORTVERSION}
 DPKGDIR?=	/var/db/dpkg
 PLIST_SUB=	DPKGDIR=${DPKGDIR}

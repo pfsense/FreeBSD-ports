@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	awele
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -15,9 +12,16 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		imake tk tar:tgz xorg
 USE_XORG=	x11
+
 MAKE_ARGS=	AWELE_DIR=${STAGEDIR}${PREFIX}/bin
 
 PLIST_FILES=	bin/awelewish bin/xawele man/man6/xawele.6.gz
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

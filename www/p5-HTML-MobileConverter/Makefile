@@ -1,6 +1,3 @@
-# Created by: Dmitry Liakh <dliakh@ukr.net>
-# $FreeBSD$
-
 PORTNAME=	HTML-MobileConverter
 PORTVERSION=	0.011
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dliakh@ukr.net
 COMMENT=	HTML Converter for mobile agent
+WWW=		https://metacpan.org/release/HTML-MobileConverter
 
 RUN_DEPENDS=	p5-HTML-Parser>=3.45:www/p5-HTML-Parser \
 		p5-URI>=1.33:net/p5-URI

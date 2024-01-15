@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Pragmatic
 PORTVERSION=	1.7
 PORTREVISION=	1
@@ -10,9 +7,15 @@ MASTER_SITE_SUBDIR=	CPAN:BINKLEY
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Adds pragmata to Exporter
+COMMENT=	Add pragmata to Exporter
+WWW=		https://metacpan.org/release/Pragmatic
 
-USE_PERL5=	configure
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
+
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

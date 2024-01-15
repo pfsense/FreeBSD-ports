@@ -1,0 +1,23 @@
+PORTNAME=	parallel-hashmap
+DISTVERSION=	1.36
+CATEGORIES=	devel
+
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Set of excellent hash map implementations (a C++ header-only library)
+WWW=		https://github.com/greg7mdp/parallel-hashmap
+
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		cmake:testing
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	greg7mdp
+
+CMAKE_OFF=	PHMAP_BUILD_TESTS PHMAP_BUILD_EXAMPLES
+CMAKE_TESTING_ON=	PHMAP_BUILD_TESTS
+
+NO_BUILD=	yes
+NO_ARCH=	yes
+
+.include <bsd.port.mk>

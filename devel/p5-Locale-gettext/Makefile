@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <dima@Chg.RU>
-# $FreeBSD$
-
 PORTNAME=	Locale-gettext
 PORTVERSION=	1.07
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME:C/.*-//}-${PORTVERSION}
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Message handling functions
+WWW=		https://metacpan.org/release/gettext
 
 LICENSE=	ARTPERL10 GPLv2
 LICENSE_COMB=	dual

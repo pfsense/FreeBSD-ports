@@ -1,0 +1,152 @@
+diff --git a/src/etc/inc/globals.inc b/src/etc/inc/globals.inc
+index 6c015e898d..76d2aa2659 100644
+--- a/src/etc/inc/globals.inc
++++ b/src/etc/inc/globals.inc
+@@ -82,7 +82,7 @@ $g = [
+ 	'disablehelpicon' => false,
+ 	'disablecrashreporter' => false,
+ 	'debug' => false,
+-	'latest_config' => '22.8',
++	'latest_config' => '22.9',
+ 	'minimum_ram_warning' => '101',
+ 	'minimum_ram_warning_text' => '128 MB',
+ 	'wan_interface_name' => 'wan',
+diff --git a/src/etc/inc/rrd.inc b/src/etc/inc/rrd.inc
+index 3571e05f8e..3de2c7599f 100644
+--- a/src/etc/inc/rrd.inc
++++ b/src/etc/inc/rrd.inc
+@@ -617,6 +617,9 @@ function enable_rrd_graphing() {
+ 			$rrdcreate .= "DS:free:GAUGE:$memvalid:0:10000000 ";
+ 			$rrdcreate .= "DS:cache:GAUGE:$memvalid:0:10000000 ";
+ 			$rrdcreate .= "DS:wire:GAUGE:$memvalid:0:10000000 ";
++			$rrdcreate .= "DS:userwire:GAUGE:$memvalid:0:10000000 ";
++			$rrdcreate .= "DS:laundry:GAUGE:$memvalid:0:10000000 ";
++			$rrdcreate .= "DS:buffers:GAUGE:$memvalid:0:10000000 ";
+ 			$rrdcreate .= "RRA:MIN:0.5:1:1200 ";
+ 			$rrdcreate .= "RRA:MIN:0.5:5:720 ";
+ 			$rrdcreate .= "RRA:MIN:0.5:60:1860 ";
+@@ -639,10 +642,62 @@ function enable_rrd_graphing() {
+ 			mwexec("$rrdtool update $rrddbpath$ifname$mem N:U:U:U:U:U");
+ 		}
+ 
+-		/* the Memory stats gathering function. */
+-		$rrdupdatesh .= "MEM=`$sysctl -qn vm.stats.vm.v_page_count vm.stats.vm.v_active_count vm.stats.vm.v_inactive_count vm.stats.vm.v_free_count vm.stats.vm.v_cache_count vm.stats.vm.v_wire_count | ";
+-		$rrdupdatesh .= " $awk '{getline active;getline inactive;getline free;getline cache;getline wire;printf ";
+-		$rrdupdatesh .= "((active/$0) * 100)\":\"((inactive/$0) * 100)\":\"((free/$0) * 100)\":\"((cache/$0) * 100)\":\"(wire/$0 * 100)}'`\n";
++		/* Memory stats gathering function. */
++		$rrdupdatesh .= "MEM=`$sysctl -qn ";
++		/* Total pages */
++		$rrdupdatesh .= "vm.stats.vm.v_page_count ";
++		/* Active pages  */
++		$rrdupdatesh .= "vm.stats.vm.v_active_count ";
++		/* Inactive pages */
++		$rrdupdatesh .= "vm.stats.vm.v_inactive_count ";
++		/* Free pages  */
++		$rrdupdatesh .= "vm.stats.vm.v_free_count ";
++		if (is_module_loaded('zfs.ko')) {
++			/* If the system is using ZFS, use ARC size as "cache" (value is bytes, not pages) */
++			$rrdupdatesh .= "kstat.zfs.misc.arcstats.size ";
++		} else {
++			/* If the system is using UFS, use dirhash memory as "cache" (value is bytes, not pages) */
++			$rrdupdatesh .= "vfs.ufs.dirhash_mem ";
++		}
++		/* Wired pages */
++		$rrdupdatesh .= "vm.stats.vm.v_wire_count ";
++		/* User wired pages */
++		$rrdupdatesh .= "vm.stats.vm.v_user_wire_count ";
++		/* Laundy pages */
++		$rrdupdatesh .= "vm.stats.vm.v_laundry_count ";
++		/* UFS Buffer space (value is in bytes, not pages) */
++		$rrdupdatesh .= "vfs.bufspace ";
++		/* Page size for calculations */
++		$rrdupdatesh .= "hw.pagesize ";
++		$rrdupdatesh .= " | ";
++		/* Start the AWK code */
++		$rrdupdatesh .= " $awk '{";
++		/* Assign sysctl output to named variables */
++		$rrdupdatesh .= "getline active;getline inactive;getline free;getline cache;getline wire;getline userwire;getline laundry;getline buffers;getline pagesize;";
++		/* Divide cache and buffer values by page size so all values are in the same units */
++		$rrdupdatesh .= "cache=(cache/pagesize);buffers=(buffers/pagesize);";
++		/* Start of RRD-friendly output */
++		$rrdupdatesh .= "printf ";
++		/* Calculate values as a percentage of total pages */
++		/* Active pages */
++		$rrdupdatesh .= "((active/$0) * 100)";
++		/* Inactive pages */
++		$rrdupdatesh .= "\":\"((inactive/$0) * 100)";
++		/* Free pages */
++		$rrdupdatesh .= "\":\"((free/$0) * 100)";
++		/* Cache (previously converted to pages) */
++		$rrdupdatesh .= "\":\"((cache/$0) * 100)";
++		/* Wired pages less cache and buffer pages (which are included in wired pages) */
++		$rrdupdatesh .= "\":\"((wire - (cache + buffers))/$0 * 100)";
++		/* User wired pages */
++		$rrdupdatesh .= "\":\"((userwire/$0) * 100)";
++		/* Laundry pages */
++		$rrdupdatesh .= "\":\"((laundry/$0) * 100)";
++		/* UFS Buffer space (previously converted to pages) */
++		$rrdupdatesh .= "\":\"((buffers/$0) * 100)";
++		/* Finish the AWK code */
++		$rrdupdatesh .= "}'`\n";
++		/* Update the database with new values */
+ 		$rrdupdatesh .= "$rrdtool update $rrddbpath$ifname$mem N:\${MEM}\n";
+ 
+ 		/* End Memory statistics */
+diff --git a/src/etc/inc/upgrade_config.inc b/src/etc/inc/upgrade_config.inc
+index a3fafe8f13..8113977082 100644
+--- a/src/etc/inc/upgrade_config.inc
++++ b/src/etc/inc/upgrade_config.inc
+@@ -6768,6 +6768,24 @@ function upgrade_227_to_228() {
+ 	}
+ }
+ 
++function upgrade_228_to_229() {
++	global $g;
++	/* Update System Memory RRD file with new data sources
++	 * https://redmine.pfsense.org/issues/14011
++	 */
++	$rrddbpath = "/var/db/rrd/";
++	$database = "system-memory.rrd";
++	$rrdtool = "/usr/bin/nice -n20 /usr/local/bin/rrdtool";
++	$rrdinterval = 60;
++	$valid = $rrdinterval * 2;
++	if (platform_booting()) {
++		echo "Migrating System Memory RRD file to new format\n";
++	}
++	mwexec("$rrdtool tune {$rrddbpath}{$database} DS:userwire:GAUGE:{$valid}:0:10000000 2>&1");
++	mwexec("$rrdtool tune {$rrddbpath}{$database} DS:laundry:GAUGE:{$valid}:0:10000000 2>&1");
++	mwexec("$rrdtool tune {$rrddbpath}{$database} DS:buffers:GAUGE:{$valid}:0:10000000 2>&1");
++}
++
+ /*
+  * Special function that is called independent of current config version. It's
+  * a workaround to have config_upgrade running on older versions after next
+diff --git a/src/usr/local/www/includes/functions.inc.php b/src/usr/local/www/includes/functions.inc.php
+index e470d2a042..e5d54d47ca 100644
+--- a/src/usr/local/www/includes/functions.inc.php
++++ b/src/usr/local/www/includes/functions.inc.php
+@@ -198,15 +198,17 @@ function swap_usage() {
+ 
+ function mem_usage() {
+ 	$memUsage = "NA";
+-	$totalMem = get_single_sysctl("vm.stats.vm.v_page_count");
++	$totalMem = (int) get_single_sysctl("vm.stats.vm.v_page_count");
+ 	if (is_numeric($totalMem)) {
+-		$inactiveMem = get_single_sysctl("vm.stats.vm.v_inactive_count");
+-		$cachedMem = get_single_sysctl("vm.stats.vm.v_cache_count");
+-		$freeMem = get_single_sysctl("vm.stats.vm.v_free_count");
++		/* Include inactive and laundry with free memory since they
++		 * could be freed under pressure. */
++		$inactiveMem = (int) get_single_sysctl("vm.stats.vm.v_inactive_count");
++		$laundryMem = (int) get_single_sysctl("vm.stats.vm.v_laundry_count");
++		$freeMem = (int) get_single_sysctl("vm.stats.vm.v_free_count");
+ 		if (is_numeric($inactiveMem) &&
+-			is_numeric($cachedMem) &&
+-			is_numeric($freeMem)) {
+-			$usedMem = (int)$totalMem - ((int)$inactiveMem + (int)$cachedMem + (int)$freeMem);
++		    is_numeric($laundryMem) &&
++		    is_numeric($freeMem)) {
++			$usedMem = $totalMem - ($inactiveMem + $laundryMem + $freeMem);
+ 			$memUsage = round(($usedMem * 100) / $totalMem, 0);
+ 		}
+ 	}

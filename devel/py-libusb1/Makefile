@@ -1,23 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	libusb1
-PORTVERSION?=	1.8
+PORTVERSION=	3.1.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Pure-python wrapper for libusb-1.0
+WWW=		https://github.com/vpelletier/python-libusb1
 
 LICENSE=	LGPL21+
 
-CONFLICTS_INSTALL?=	${PKGNAMEPREFIX}${PORTNAME}15
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyinstaller>=0:devel/py-pyinstaller@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils unittest
 
 NO_ARCH=	yes
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
-
-do-test:
-		@${PYTHON_CMD} -m unittest discover -vs ${TEST_WRKSRC}
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung
-# $FreeBSD$
-
 PORTNAME=	Module-Dependency
 PORTVERSION=	1.86
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Collection of modules for examining dependencies
+WWW=		https://metacpan.org/release/Module-Dependency
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	pmd_dump.pl

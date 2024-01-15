@@ -1,8 +1,5 @@
-# Created by: amistry@am-productions.biz
-# $FreeBSD$
-
 PORTNAME=	hplip-plugin
-PORTVERSION=	3.20.6
+PORTVERSION=	3.23.8
 CATEGORIES=	print
 MASTER_SITES=	https://developers.hp.com/sites/default/files/
 DISTNAME=	hplip-${DISTVERSION}-plugin
@@ -10,17 +7,19 @@ EXTRACT_SUFX=	.run
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Binary plugin for some HP Printers and All-in-One devices
+WWW=		https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 
+# License agreement is required
 LICENSE=	HPLIP_PLUGIN
 LICENSE_NAME=	HPLIP Driver Plug-in License
 LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_PERMS=	none
 
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
+
 RUN_DEPENDS=	hp-plugin:print/hplip
 
-RESTRICTED=	License agreement is required
-
-ONLY_FOR_ARCHS=	amd64 i386 # arm
+PORTSCOUT=	ignore:1
 
 PLUGINS=	fax/plugins/fax_marvell \
 		prnt/plugins/hbpl1 \
@@ -34,10 +33,12 @@ PLIST_SUB+=	LINARCH="${LINARCH}"
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == "i386"
-LINARCH=	x86_32
+.if ${ARCH} == "aarch64"
+LINARCH=	arm64
 .elif ${ARCH} == "amd64"
 LINARCH=	x86_64
+.elif ${ARCH} == "i386"
+LINARCH=	x86_32
 .endif
 
 do-extract:

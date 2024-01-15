@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	dwatch-gource
 DISTVERSION=	0.9
 CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD dwatch profiles for creating gource logs
+WWW=		https://fraubsd.org/dwatch-gource/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

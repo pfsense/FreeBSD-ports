@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Log-Any-Adapter-Dispatch
-PORTVERSION=	0.06
-PORTREVISION=	2
+PORTVERSION=	0.08
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for adapter to use Log::Dispatch with Log::Any
+WWW=		https://metacpan.org/release/Log-Any-Adapter-Dispatch
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

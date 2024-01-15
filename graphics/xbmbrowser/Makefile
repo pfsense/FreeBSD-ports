@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xbmbrowser
 PORTVERSION=	5.1
 PORTREVISION=	3

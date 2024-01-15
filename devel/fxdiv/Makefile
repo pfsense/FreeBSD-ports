@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	fxdiv
 PORTVERSION=	g20181121
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C/C++ header-only library for division via FP inverse multiplication
+WWW=		https://github.com/Maratyszcza/FXdiv
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

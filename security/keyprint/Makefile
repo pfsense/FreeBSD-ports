@@ -1,6 +1,3 @@
-# Created by: mharo@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	keyprint
 PORTVERSION=	1.0
 PORTREVISION=	2

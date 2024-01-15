@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ppminfo
 PORTVERSION=	0.1
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.vanheusden.com/ppminfo/ CENKES
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shows details of a ppm file
+WWW=		http://www.vanheusden.com/ppminfo/
 
 LIB_DEPENDS=	libnetpbm.so:graphics/netpbm
 

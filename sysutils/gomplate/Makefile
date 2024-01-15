@@ -1,28 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	gomplate
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.0
+DISTVERSION=	3.11.6
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Command-line tool for rendering templates before executing binaries
+WWW=		https://github.com/hairyhenderson/gomplate
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		go:1.21,modules
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	hairyhenderson
-GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
-GH_TAG_COMMIT=	ce4b3e3
-
+GO_MODULE=	github.com/hairyhenderson/gomplate/v3
+GH_TAG_COMMIT=	ea986e7
+GO_TARGET=	./cmd/gomplate
 GO_BUILDFLAGS=	-ldflags "\
 		-w -s \
-		-X github.com/${GH_ACCOUNT}/${PORTNAME}/version.GitCommit=${GH_TAG_COMMIT} \
-		-X github.com/${GH_ACCOUNT}/${PORTNAME}/version.Version=${DISTVERSION}"
-GO_TARGET=	./cmd/gomplate
+		-X github.com/hairyhenderson/gomplate/v3/version.GitCommit=${GH_TAG_COMMIT} \
+		-X github.com/hairyhenderson/gomplate/v3/version.Version=${DISTVERSION}"
 
 PLIST_FILES=	bin/gomplate
 

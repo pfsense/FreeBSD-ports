@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Locale-XGettext
-PORTVERSION=	0.7
+PORTVERSION=	0.8
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Create PO files from text files
+WWW=		https://metacpan.org/release/Locale-XGettext
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE

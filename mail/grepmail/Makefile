@@ -1,6 +1,3 @@
-# Created by: Chris D. Faulhaber <jedgar@fxp.org>
-# $FreeBSD$
-
 PORTNAME=	grepmail
 PORTVERSION=	5.3033
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Search mailboxes for a given regexp and display matching emails
+WWW=		http://grepmail.sourceforge.net/
 
 BUILD_DEPENDS=	p5-TimeDate>=0:devel/p5-TimeDate \
 		p5-Date-Manip>=0:devel/p5-Date-Manip \

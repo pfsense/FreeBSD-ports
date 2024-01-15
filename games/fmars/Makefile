@@ -1,20 +1,16 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	fmars
 PORTVERSION=	0.0.207
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://corewar.co.uk/janeczek/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Fast Memory Array Redcode Simulator
+WWW=		https://corewar.co.uk/janeczek/
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	guile:lang/guile
-
-USES=		gmake tar:bzip2
+USES=		gmake guile:1.8,build,alias tar:bzip2
 ALL_TARGET=	x${PORTNAME}
 
 OPTIONS_DEFINE=		DOCS OPTIMIZED_CFLAGS

@@ -1,8 +1,5 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Software-License
-PORTVERSION=	0.103014
+PORTVERSION=	0.104004
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:LEONT
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Packages that provide templated software licenses
+WWW=		https://metacpan.org/release/Software-License
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

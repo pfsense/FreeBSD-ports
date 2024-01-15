@@ -1,6 +1,3 @@
-# Created by: wolman@cs.washington.edu
-# $FreeBSD$
-
 PORTNAME=	SQL-Statement
 PORTVERSION=	1.414
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module for SQL parsing and processing
+WWW=		https://metacpan.org/release/SQL-Statement
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

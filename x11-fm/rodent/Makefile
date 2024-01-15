@@ -1,14 +1,12 @@
-# Created by: Jens K. Loewe <bsd@tuxproject.de>
-# $FreeBSD$
-
 PORTNAME=	rodent
 PORTVERSION=	5.3.16.3
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF/xffm/${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Fast, small, and powerful file manager
+WWW=		http://xffm.org/
 
 LICENSE=	GPLv3
 
@@ -25,7 +23,6 @@ USE_GNOME=	glib20 gtk20 librsvg2 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--docdir=${DOCSDIR}
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 SHEBANG_FILES=	configure
 

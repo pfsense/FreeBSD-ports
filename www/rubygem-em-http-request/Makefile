@@ -1,13 +1,11 @@
-# Created by: Scott Sanders <scott@jssjr.com>
-# $FreeBSD$
-
 PORTNAME=	em-http-request
-PORTVERSION=	1.1.5
+PORTVERSION=	1.1.7
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	EventMachine based, async HTTP Request client
+WWW=		https://github.com/igrigorik/em-http-request
 
 LICENSE=	MIT
 
@@ -17,8 +15,8 @@ RUN_DEPENDS=	rubygem-addressable>=2.3.4:www/rubygem-addressable \
 		rubygem-eventmachine>=1.0.3:devel/rubygem-eventmachine \
 		rubygem-http_parser.rb>=0.6.0:net/rubygem-http_parser.rb
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

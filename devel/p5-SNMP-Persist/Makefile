@@ -1,6 +1,3 @@
-# Created by: Philippe Audeoud <jadawin@tuxaco.net>
-# $FreeBSD$
-
 PORTNAME=	SNMP-Persist
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Backend module for pass_persist feature of Net-SNMP
+WWW=		https://metacpan.org/release/SNMP-Persist
 
 USES=		perl5
 USE_PERL5=	configure

@@ -82,10 +82,12 @@ bin/dzil
 %%SITE_PERL%%/Dist/Zilla/PluginBundle/Classic.pm
 %%SITE_PERL%%/Dist/Zilla/PluginBundle/FakeClassic.pm
 %%SITE_PERL%%/Dist/Zilla/PluginBundle/Filter.pm
+%%SITE_PERL%%/Dist/Zilla/Pragmas.pm
 %%SITE_PERL%%/Dist/Zilla/Prereqs.pm
 %%SITE_PERL%%/Dist/Zilla/Role/AfterBuild.pm
 %%SITE_PERL%%/Dist/Zilla/Role/AfterMint.pm
 %%SITE_PERL%%/Dist/Zilla/Role/AfterRelease.pm
+%%SITE_PERL%%/Dist/Zilla/Role/ArchiveBuilder.pm
 %%SITE_PERL%%/Dist/Zilla/Role/BeforeArchive.pm
 %%SITE_PERL%%/Dist/Zilla/Role/BeforeBuild.pm
 %%SITE_PERL%%/Dist/Zilla/Role/BeforeMint.pm
@@ -223,10 +225,12 @@ bin/dzil
 %%PERL5_MAN3%%/Dist::Zilla::PluginBundle::Classic.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::PluginBundle::FakeClassic.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::PluginBundle::Filter.3.gz
+%%PERL5_MAN3%%/Dist::Zilla::Pragmas.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::Prereqs.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::Role::AfterBuild.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::Role::AfterMint.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::Role::AfterRelease.3.gz
+%%PERL5_MAN3%%/Dist::Zilla::Role::ArchiveBuilder.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::Role::BeforeArchive.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::Role::BeforeBuild.3.gz
 %%PERL5_MAN3%%/Dist::Zilla::Role::BeforeMint.3.gz

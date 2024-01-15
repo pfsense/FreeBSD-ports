@@ -1,38 +1,59 @@
-# $FreeBSD$
-
 PORTNAME=	rspamd
-PORTVERSION=	2.6.a1.20200929
-PORTREVISION=	2
+PORTVERSION=	3.7.a1.20230808
+PORTREVISION=	1
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Fast spam filtering system dev version
+WWW=		https://rspamd.com/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libicui18n.so:devel/icu \
-		libsodium.so:security/libsodium
 BUILD_DEPENDS=	ragel:devel/ragel
+LIB_DEPENDS=	libicui18n.so:devel/icu \
+		libpcre2-8.so:devel/pcre2 \
+		libsodium.so:security/libsodium
 RUN_DEPENDS=	ca_root_nss>=3.*:security/ca_root_nss
 
-USES=		cmake gnome perl5 pkgconfig sqlite ssl
+USES=		cmake compiler:c++20-lang cpe gnome perl5 pkgconfig sqlite ssl
+CPE_VENDOR=	${PORTNAME}_project
+USE_GITHUB=	yes
+GH_TAGNAME=	1f9ec9e
+USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 USE_PERL5=	build run
-USE_GNOME=	glib20
+USE_RC_SUBR=	rspamd
+
+CMAKE_ARGS+=	-DBUILD_PORT=yes \
+		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
+		-DCONFDIR=${PREFIX}/etc/rspamd \
+		-DDBDIR=/var/db/rspamd \
+		-DDEBUG=ON \
+		-DGIT_ID=${GH_TAGNAME} \
+		-DLIBDIR=${PREFIX}/lib/rspamd \
+		-DLOGDIR=/var/log/rspamd \
+		-DMANDIR=${MANPREFIX}/man \
+		-DRUNDIR=/var/run/rspamd
+
+DEBUG_FLAGS=	-g -O0
 
 CONFLICTS_INSTALL=	rspamd
+
+SUB_FILES=	pkg-message rspamd.newsyslog.conf.sample
 
 USERS=		rspamd
 GROUPS=		rspamd
 
-OPTIONS_DEFINE=			BLAS CGP GPERF LUAJIT
-OPTIONS_DEFINE_amd64=		HYPERSCAN
-OPTIONS_DEFAULT_amd64=		LUAJIT
-OPTIONS_DEFAULT_armv7=		LUAJIT
-OPTIONS_DEFAULT_i386=		LUAJIT
+PLIST_SUB+=	ETCDIR=etc/rspamd \
+		RSPAMDVERSION=${PORTVERSION:C/^([^.]+\.[^.]+).*/\1/}
+
+OPTIONS_DEFINE=	BLAS CGP GPERF LUAJIT
+OPTIONS_DEFINE_amd64=	HYPERSCAN
+OPTIONS_DEFAULT_amd64=	LUAJIT
+OPTIONS_DEFAULT_armv7=	LUAJIT
+OPTIONS_DEFAULT_i386=	LUAJIT
 OPTIONS_DEFAULT_powerpc=	LUAJIT
 OPTIONS_DEFAULT_powerpc64=	LUAJIT
 OPTIONS_DEFAULT_powerpc64le=	LUAJIT
@@ -44,54 +65,25 @@ GPERF_DESC=	Google perf-tools profiling
 HYPERSCAN_DESC=	Use hyperscan optimizations (amd64 only)
 LUAJIT_DESC=	Use LuaJIT instead of standard Lua
 
-SUB_FILES=	pkg-message rspamd.newsyslog.conf.sample
-PLIST_SUB+=	ETCDIR=etc/rspamd \
-		RSPAMDVERSION=${PORTVERSION:C/^([^.]+\.[^.]+).*/\1/}
-CMAKE_ARGS+=	-DCONFDIR=${PREFIX}/etc/rspamd \
-		-DLOGDIR=/var/log/rspamd \
-		-DDBDIR=/var/db/rspamd \
-		-DRUNDIR=/var/run/rspamd \
-		-DMANDIR=${MANPREFIX}/man \
-		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
-		-DBUILD_PORT=yes \
-		-DLIBDIR=${PREFIX}/lib/rspamd \
-		-DDEBUG=ON \
-		-DGIT_ID=${GH_TAGNAME}
-USE_GITHUB=	yes
-GH_TAGNAME=	80b8f0e
+BLAS_LIB_DEPENDS=	libblis.so:math/blis \
+			liblapack.so:math/lapack
+BLAS_USES=		blaslapack:openblas
+BLAS_CMAKE_ON=		-DENABLE_BLAS=ON
 
-DEBUG_FLAGS=	-g -O0
+CGP_RUN_DEPENDS+=	p5-AnyEvent-HTTP>=0:www/p5-AnyEvent-HTTP \
+			p5-AnyEvent>=0:devel/p5-AnyEvent \
+			p5-EV>=0:devel/p5-EV \
+			p5-JSON-XS>=0:converters/p5-JSON-XS
 
-USE_RC_SUBR=	rspamd
-
-BLAS_CMAKE_ON=	-DENABLE_BLAS=ON
-BLAS_LIB_DEPENDS=	libblis.so:math/blis liblapack.so:math/lapack
-BLAS_USES=	blaslapack:openblas
-
-GPERF_CMAKE_ON=	-DENABLE_GPERF_TOOLS=ON
 GPERF_LIB_DEPENDS=	libprofiler.so:devel/google-perftools
+GPERF_CMAKE_ON=		-DENABLE_GPERF_TOOLS=ON
 
-HYPERSCAN_CMAKE_ON=	-DENABLE_HYPERSCAN=ON
 HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
+HYPERSCAN_CMAKE_ON=	-DENABLE_HYPERSCAN=ON
 
-LUAJIT_CMAKE_OFF=	-DENABLE_LUAJIT=OFF
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_USES=		luajit
 LUAJIT_USES_OFF=	lua:51+
-
-CGP_RUN_DEPENDS+=	\
-	p5-AnyEvent-HTTP>=0:www/p5-AnyEvent-HTTP \
-	p5-AnyEvent>=0:devel/p5-AnyEvent \
-	p5-EV>=0:devel/p5-EV \
-	p5-JSON-XS>=0:converters/p5-JSON-XS
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH:Mpowerpc*}
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
-USES+=		compiler:gcc-c++11-lib
-.else
-USES+=		compiler:c11
-.endif
+LUAJIT_CMAKE_OFF=	-DENABLE_LUAJIT=OFF
 
 post-install:
 	@${MKDIR} \

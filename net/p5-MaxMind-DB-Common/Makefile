@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MaxMind-DB-Common
 PORTVERSION=	0.040001
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Code shared by the DB reader and writer modules
+WWW=		https://metacpan.org/release/MaxMind-DB-Common
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,8 +21,9 @@ RUN_DEPENDS=	p5-Data-Dumper-Concise>=0:devel/p5-Data-Dumper-Concise \
 		p5-MooX-StrictConstructor>=0:devel/p5-MooX-StrictConstructor \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

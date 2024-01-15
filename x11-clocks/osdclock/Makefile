@@ -1,6 +1,3 @@
-# Created by: Roman Bogorodskiy <bogorodskiy@inbox.ru>
-# $FreeBSD$
-
 PORTNAME=	osdclock
 PORTVERSION=	0.5
 PORTREVISION=	10
@@ -11,6 +8,7 @@ DISTNAME=	osd_clock-${PORTVERSION}
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Small clock which uses libxosd to render text to the root window
+WWW=		http://leftorium.net/software.phtml
 
 LIB_DEPENDS=	libxosd.so:misc/xosd
 

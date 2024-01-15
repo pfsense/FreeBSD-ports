@@ -1,29 +1,18 @@
-# $FreeBSD$
-
-PORTNAME=	AtomicParsley
-PORTVERSION=	0.9.0
-PORTREVISION=	2
+PORTNAME=	atomicparsley
+PORTVERSION=	20221229.172126.d813aa6
 CATEGORIES=	multimedia
-MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}%20v${PORTVERSION}
-DISTNAME=	${PORTNAME}-source-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line program for reading parsing and setting MP4/M4A metadata
+WWW=		https://github.com/wez/atomicparsley
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		zip
-
+USES=		cmake compiler:c++11-lang cpe
+USE_GITHUB=	yes
+GH_ACCOUNT=	wez
+CPE_VENDOR=	atomicparsley_project
 PLIST_FILES=	bin/AtomicParsley
-
-post-patch:
-	@${REINPLACE_CMD} -e 's,g++,${CXX},g' -e 's,-g -O2 -Wall,${CXXFLAGS},g' ${WRKSRC}/build
-
-do-build:
-	cd ${WRKSRC} && ./build
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/AtomicParsley ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

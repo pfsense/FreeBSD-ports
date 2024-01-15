@@ -1,6 +1,3 @@
-# Created by: Li-Wen Hsu <lwhsu@lwhsu.org>
-# $FreeBSD$
-
 PORTNAME=	pycount
 PORTVERSION=	0.0.6
 PORTREVISION=	1
@@ -14,6 +11,7 @@ DIST_SUBDIR=	python
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Initial effort to Python code metrics
+WWW=		http://python.net/~gherman/pycount.html
 
 USES=		dos2unix python
 NO_BUILD=	yes

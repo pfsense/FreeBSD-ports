@@ -1,5 +1,6 @@
 bin/gawk
 bin/gawk-%%VERSION%%
+bin/gawkbug
 etc/profile.d/gawk.csh
 etc/profile.d/gawk.sh
 include/gawkapi.h
@@ -18,6 +19,8 @@ lib/gawk/time.so
 libexec/awk/grcat
 libexec/awk/pwcat
 man/man1/gawk.1.gz
+man/man1/gawkbug.1.gz
+man/man1/pm-gawk.1.gz
 man/man3/filefuncs.3am.gz
 man/man3/fnmatch.3am.gz
 man/man3/fork.3am.gz
@@ -40,6 +43,7 @@ share/awk/group.awk
 share/awk/have_mpfr.awk
 share/awk/inplace.awk
 share/awk/intdiv0.awk
+share/awk/isnumeric.awk
 share/awk/join.awk
 share/awk/libintl.awk
 share/awk/noassign.awk
@@ -54,8 +58,17 @@ share/awk/rewind.awk
 share/awk/round.awk
 share/awk/shellquote.awk
 share/awk/strtonum.awk
+share/awk/tocsv.awk
 share/awk/walkarray.awk
 share/awk/zerofile.awk
+share/info/gawk_api-figure1.png
+share/info/gawk_api-figure2.png
+share/info/gawk_api-figure3.png
+share/info/gawk_array-elements.png
+share/info/gawk_general-program.png
+share/info/gawk_process-flow.png
+share/info/gawk_statist.jpg
+%%NLS%%share/locale/bg/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/ca/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/da/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/de/LC_MESSAGES/gawk.mo
@@ -71,6 +84,9 @@ share/awk/zerofile.awk
 %%NLS%%share/locale/pl/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/pt/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/gawk.mo
+%%NLS%%share/locale/ro/LC_MESSAGES/gawk.mo
+%%NLS%%share/locale/sr/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/gawk.mo
+%%NLS%%share/locale/uk/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/vi/LC_MESSAGES/gawk.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/gawk.mo

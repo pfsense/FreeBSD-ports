@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	wy60
 PORTVERSION=	2.0.9
 CATEGORIES=	comms
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Curses-based emulator for the Wyse 60 terminal
+WWW=		https://code.google.com/p/wy60/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

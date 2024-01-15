@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gzstream
 DISTVERSION=	1.5
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides zlib functionality in an iostream
+WWW=		https://www.cs.unc.edu/Research/compgeom/gzstream/
 
 LICENSE=	LGPL21
 

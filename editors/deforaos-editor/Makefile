@@ -1,15 +1,14 @@
-# Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	editor
 PORTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	http://www.defora.org/os/download/download/4398/
 PKGNAMEPREFIX=	deforaos-
 DISTNAME=	Editor-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop text editor
+WWW=		https://www.defora.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

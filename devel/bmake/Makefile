@@ -1,13 +1,11 @@
-# Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	bmake
-PORTVERSION=	20201124
+PORTVERSION=	20230723
 CATEGORIES=	devel
-MASTER_SITES=	ftp://ftp.netbsd.org/pub/NetBSD/misc/sjg/
+MASTER_SITES=	https://ftp.netbsd.org/pub/NetBSD/misc/sjg/
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Portable version of NetBSD 'make' utility
+WWW=		https://www.crufty.net/help/sjg/bmake.html
 
 LICENSE=	BSD3CLAUSE
 
@@ -17,15 +15,16 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 
 MAKE_ENV+=	CONFIG_SITE=${CONFIG_SITE}
 
-.if defined(BATCH)
-EXTRA_PATCHES=	${FILESDIR}/extrapatch-unit-tests_Makefile
-.endif
-
 post-patch:	.SILENT
 	${REINPLACE_CMD} 's/^\.Nx/NetBSD/' ${WRKDIR}/bmake/bmake.1
 
 do-build:
-	${SETENV} ${MAKE_ENV} ${SH} ${WRKDIR}/bmake/boot-strap \
+	${SETENV} ${MAKE_ENV} ${SH} ${WRKDIR}/bmake/boot-strap op=build \
+		--with-default-sys-path='.../share/mk:${PREFIX}/share/mk' \
+		-m ${WRKDIR}/mk objdir=${WRKDIR}/obj prefix=${PREFIX}
+
+do-test:
+	${SETENV} ${MAKE_ENV} ${SH} ${WRKDIR}/bmake/boot-strap op=test \
 		--with-default-sys-path='.../share/mk:${PREFIX}/share/mk' \
 		-m ${WRKDIR}/mk objdir=${WRKDIR}/obj prefix=${PREFIX}
 

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	ccrypt
 DISTVERSION=	1.11
 CATEGORIES=	security
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${DISTVERSION}/ \
 
 MAINTAINER=	dev2@heesakkers.info
 COMMENT=	Command-line utility for encrypting and decrypting files and streams
+WWW=		https://ccrypt.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

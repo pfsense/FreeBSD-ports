@@ -1,6 +1,3 @@
-# Created by: Fukang Chen <loader@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	honcho
 PORTVERSION=	1.0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	loader@FreeBSD.org
 COMMENT=	Managing Procfile-based applications tool
+WWW=		https://github.com/nickstenning/honcho
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	nickstenning
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 do-test:

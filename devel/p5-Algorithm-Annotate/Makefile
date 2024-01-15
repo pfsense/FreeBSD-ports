@@ -1,6 +1,3 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PORTNAME=	Algorithm-Annotate
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Represent a series of changes in annotate form
+WWW=		https://metacpan.org/release/Algorithm-Annotate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,5 +17,7 @@ RUN_DEPENDS=	p5-Algorithm-Diff>=0:devel/p5-Algorithm-Diff
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

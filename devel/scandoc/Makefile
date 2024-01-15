@@ -1,6 +1,3 @@
-# Created by: Christopher Elkins <chrise@scardini.com>
-# $FreeBSD$
-
 PORTNAME=	scandoc
 PORTVERSION=	0.14
 CATEGORIES=	devel perl5
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C/C++ documentation generator
+WWW=		https://scandoc.sourceforge.net/
 
 LICENSE=	ARTPERL10
 LICENSE_FILE=	${WRKSRC}/COPYING

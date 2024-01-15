@@ -54,6 +54,7 @@ include/simgear/canvas/layout/SpacerItem.hxx
 include/simgear/compiler.h
 include/simgear/constants.h
 include/simgear/debug/BufferedLogCallback.hxx
+include/simgear/debug/ErrorReportingCallback.hxx
 include/simgear/debug/OsgIoCapture.hxx
 include/simgear/debug/debug_types.h
 include/simgear/debug/logstream.hxx
@@ -274,6 +275,7 @@ include/simgear/scene/util/DeletionManager.hxx
 include/simgear/scene/util/NodeAndDrawableVisitor.hxx
 include/simgear/scene/util/Noise.hxx
 include/simgear/scene/util/OptionsReadFileCallback.hxx
+include/simgear/scene/util/OrthophotoManager.hxx
 include/simgear/scene/util/OsgDebug.hxx
 include/simgear/scene/util/OsgMath.hxx
 include/simgear/scene/util/OsgSingleton.hxx
@@ -285,6 +287,7 @@ include/simgear/scene/util/SGEnlargeBoundingBox.hxx
 include/simgear/scene/util/SGImageUtils.hxx
 include/simgear/scene/util/SGNodeMasks.hxx
 include/simgear/scene/util/SGPickCallback.hxx
+include/simgear/scene/util/SGProgram.hxx
 include/simgear/scene/util/SGReaderWriterOptions.hxx
 include/simgear/scene/util/SGSceneFeatures.hxx
 include/simgear/scene/util/SGSceneUserData.hxx
@@ -356,6 +359,6 @@ lib/cmake/SimGear/SimGearConfigVersion.cmake
 lib/cmake/SimGear/SimGearTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/SimGear/SimGearTargets.cmake
 lib/libSimGearCore.so
-lib/libSimGearCore.so.2020.3.4
+lib/libSimGearCore.so.%%PORTVERSION%%
 lib/libSimGearScene.so
-lib/libSimGearScene.so.2020.3.4
+lib/libSimGearScene.so.%%PORTVERSION%%

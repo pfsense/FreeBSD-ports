@@ -1,12 +1,10 @@
-# Created by: Jacques Vidrine <nectar@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	stella
-PORTVERSION=	6.4
+PORTVERSION=	6.7
 CATEGORIES=	emulators
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Multi-platform Atari 2600 VCS emulator
+WWW=		https://stella-emu.github.io/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/License.txt

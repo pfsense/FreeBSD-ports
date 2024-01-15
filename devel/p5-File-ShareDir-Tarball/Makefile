@@ -1,6 +1,3 @@
-# Created by: Geoffroy Desvernay <dgeo@centrale-marseille.fr>
-# $FreeBSD$
-
 PORTNAME=	File-ShareDir-Tarball
 PORTVERSION=	0.2.2
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Deal transparently with shared files distributed as tarballs
+WWW=		https://metacpan.org/pod/File::ShareDir::Tarball
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

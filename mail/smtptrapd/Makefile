@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	smtptrapd
 PORTVERSION=	1.6
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	RFC 2821 compliant SMTP service that always returns a 4xx soft error
+WWW=		https://smtptrapd.sourceforge.net/
 
 USE_RC_SUBR=	smtptrapd
 

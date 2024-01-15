@@ -1,13 +1,11 @@
-# Created by: tenser@spitfire.ecsel.psu.edu
-# $FreeBSD$
-
 PORTNAME=	bsvc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.4.6
-CATEGORIES=     emulators tk
+CATEGORIES=	emulators tk
 
 MAINTAINER=	cross@gajendra.net
 COMMENT=	Extensible hardware simulation framework with MC68K support
+WWW=		https://github.com/BSVC/bsvc
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt

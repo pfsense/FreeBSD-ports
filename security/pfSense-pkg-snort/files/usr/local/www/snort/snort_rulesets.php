@@ -3,9 +3,9 @@
  * snort_rulesets.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,6 @@ global $g, $rebuild_rules;
 $snortdir = SNORTDIR;
 $flowbit_rules_file = FLOWBITS_FILENAME;
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
-
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
@@ -44,28 +39,31 @@ if (is_null($id)) {
         exit;
 }
 
-if (isset($id) && $a_nat[$id]) {
-	$pconfig['enable'] = $a_nat[$id]['enable'];
-	$pconfig['interface'] = $a_nat[$id]['interface'];
-	$pconfig['rulesets'] = $a_nat[$id]['rulesets'];
-	if (empty($a_nat[$id]['autoflowbitrules']))
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}", []);
+
+if (isset($id) && $a_nat) {
+	$pconfig['enable'] = $a_nat['enable'];
+	$pconfig['interface'] = $a_nat['interface'];
+	$pconfig['rulesets'] = $a_nat['rulesets'];
+	if (empty($a_nat['autoflowbitrules']))
 		$pconfig['autoflowbitrules'] = 'on';
 	else
-		$pconfig['autoflowbitrules'] = $a_nat[$id]['autoflowbitrules'] == 'on' ? 'on' : 'off';;
-	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'] == 'on' ? 'on' : 'off';;
-	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
-	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
+		$pconfig['autoflowbitrules'] = $a_nat['autoflowbitrules'] == 'on' ? 'on' : 'off';
+	$pconfig['ips_policy_enable'] = $a_nat['ips_policy_enable'] == 'on' ? 'on' : 'off';
+	$pconfig['ips_policy'] = $a_nat['ips_policy'];
+	$pconfig['ips_policy_mode'] = $a_nat['ips_policy_mode'];
 } else {
 	$pconfig['autoflowbitrules'] = 'on';
 }
 
 $if_real = get_real_interface($pconfig['interface']);
-$snort_uuid = $a_nat[$id]['uuid'];
-$snortdownload = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
-$emergingdownload = $config['installedpackages']['snortglobal']['emergingthreats'] == 'on' ? 'on' : 'off';
-$etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'on' ? 'on' : 'off';
-$snortcommunitydownload = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
-$openappid_rulesdownload = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
+$snort_uuid = $a_nat['uuid'];
+$snortdownload = config_get_path('installedpackages/snortglobal/snortdownload') == 'on' ? 'on' : 'off';
+$emergingdownload = config_get_path('installedpackages/snortglobal/emergingthreats') == 'on' ? 'on' : 'off';
+$etpro = config_get_path('installedpackages/snortglobal/emergingthreats_pro') == 'on' ? 'on' : 'off';
+$snortcommunitydownload = config_get_path('installedpackages/snortglobal/snortcommunityrules') == 'on' ? 'on' : 'off';
+$openappid_rulesdownload = config_get_path('installedpackages/snortglobal/openappid_rules_detectors') == 'on' ? 'on' : 'off';
+$feodotrackerdownload = config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
 
 $no_emerging_files = false;
 $no_snort_files = false;
@@ -91,42 +89,44 @@ if (empty($test))
 	$no_openappid_files = true;
 if (!file_exists("{$snortdir}/rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
+if (!file_exists("{$snortdir}/rules/feodotracker.rules"))
+	$no_feodotracker_files = true;
 
-$inline_ips_mode = $a_nat[$id]['ips_mode'] == 'ips_mode_inline' ? true:false;
+$inline_ips_mode = $a_nat['ips_mode'] == 'ips_mode_inline' ? true:false;
 
 // If a Snort Subscriber Rules policy is enabled and selected, remove all Snort
-// Subscriber rules from the configured rule sets to allow automatic selection.
-if ($a_nat[$id]['ips_policy_enable'] == 'on') {
-	if (isset($a_nat[$id]['ips_policy'])) {
+// Subscriber rules from the configured rule sets to allow automatic selection to control.
+if ($a_nat['ips_policy_enable'] == 'on') {
+	if (isset($a_nat['ips_policy'])) {
 		$disable_vrt_rules = "disabled";
-		$enabled_sets = explode("||", $a_nat[$id]['rulesets']);
+		$enabled_sets = explode("||", $a_nat['rulesets']);
 
 		foreach ($enabled_sets as $k => $v) {
 			if (substr($v, 0, 6) == "snort_")
 				unset($enabled_sets[$k]);
 		}
-		$a_nat[$id]['rulesets'] = implode("||", $enabled_sets);
+		$a_nat['rulesets'] = implode("||", $enabled_sets);
 	}
 }
 else
 	$disable_vrt_rules = "";
 
-if (!empty($a_nat[$id]['rulesets']))
-	$enabled_rulesets_array = explode("||", $a_nat[$id]['rulesets']);
+if (!empty($a_nat['rulesets']))
+	$enabled_rulesets_array = explode("||", $a_nat['rulesets']);
 else
 	$enabled_rulesets_array = array();
 
 if (isset($_POST["save"])) {
 
 	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
+		$a_nat['ips_policy_enable'] = 'on';
+		$a_nat['ips_policy'] = $_POST['ips_policy'];
+		$a_nat['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
+		$a_nat['ips_policy_enable'] = 'off';
+		unset($a_nat['ips_policy']);
+		unset($a_nat['ips_policy_mode']);
 	}
 
 	$enabled_items = "";
@@ -135,32 +135,34 @@ if (isset($_POST["save"])) {
 	else
 		$enabled_items = $_POST['toenable'];
 
-	$a_nat[$id]['rulesets'] = $enabled_items;
+	$a_nat['rulesets'] = $enabled_items;
 
 	if ($_POST['autoflowbitrules'] == "on")
-		$a_nat[$id]['autoflowbitrules'] = 'on';
+		$a_nat['autoflowbitrules'] = 'on';
 	else {
-		$a_nat[$id]['autoflowbitrules'] = 'off';
+		$a_nat['autoflowbitrules'] = 'off';
 		if (file_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}"))
 			unlink_if_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}");
 	}
 
-	write_config("Snort pkg: save enabled rule categories for {$a_nat[$id]['interface']}.");
+	// Write updated configuration
+	config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
+	write_config("Snort pkg: save enabled rule categories for {$a_nat['interface']}.");
 
 	/*************************************************/
 	/* Update the snort conf file and rebuild the    */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	snort_generate_conf($a_nat[$id]);
+	snort_generate_conf($a_nat);
 	$rebuild_rules = false;
 
 	/* Soft-restart Snort to live-load new rules */
-	snort_reload_config($a_nat[$id]);
+	snort_reload_config($a_nat);
 
 	$pconfig = $_POST;
 	$enabled_rulesets_array = explode("||", $enabled_items);
-	if (snort_is_running($a_nat[$id]['uuid']))
+	if (snort_is_running($a_nat['uuid']))
 		$savemsg = gettext("Snort is 'live-reloading' the new rule set.");
 
 	// Sync to configured CARP slaves if any are enabled
@@ -168,19 +170,7 @@ if (isset($_POST["save"])) {
 }
 
 if (isset($_POST['unselectall'])) {
-	$a_nat[$id]['rulesets'] = "";
-
-	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
-	}
-	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
-	}
-
+	$a_nat['rulesets'] = "";
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
@@ -195,17 +185,6 @@ if (isset($_POST['unselectall'])) {
 }
 
 if (isset($_POST['selectall'])) {
-	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
-	}
-	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
-	}
-
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
@@ -228,6 +207,11 @@ if (isset($_POST['selectall'])) {
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
+
+	if ($feodotrackerdownload == 'on') {
+		$enabled_rulesets_array[] = "feodotracker.rules";
+	}
+
 	if ($openappid_rulesdownload == 'on') {
 		$files = glob("{$snortdir}/rules/" . OPENAPPID_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
@@ -235,7 +219,7 @@ if (isset($_POST['selectall'])) {
 	}
 
 	/* Include the Snort Subscriber rules only if enabled and no IPS policy is set */
-	if ($snortdownload == 'on' && $a_nat[$id]['ips_policy_enable'] == 'off') {
+	if ($snortdownload == 'on' && $a_nat['ips_policy_enable'] == 'off') {
 		$files = glob("{$snortdir}/rules/" . VRT_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
@@ -244,11 +228,11 @@ if (isset($_POST['selectall'])) {
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled.
-$cat_mods = snort_sid_mgmt_auto_categories($a_nat[$id], FALSE);
+$cat_mods = snort_sid_mgmt_auto_categories($a_nat, FALSE);
 
 // Enable the VIEW button for auto-flowbits file if we have a valid flowbits file 
 // and the Auto-Flowbits option is enabled.
-if ($a_nat[$id]['autoflowbitrules'] == 'on') {
+if ($a_nat['autoflowbitrules'] == 'on') {
 	if (file_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}") &&
 	    filesize("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}") > 0) {
 		$btn_view_flowb_rules = TRUE;
@@ -257,7 +241,7 @@ if ($a_nat[$id]['autoflowbitrules'] == 'on') {
 		$btn_view_flowb_rules = FALSE;
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
 }
@@ -273,9 +257,6 @@ if ($input_errors) {
 if ($savemsg) {
 	print_info_box($savemsg);
 }
-
-// Finished with config array reference, so release it
-unset($a_nat);
 
 $tab_array = array();
 	$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
@@ -348,7 +329,7 @@ if ($btn_view_flowb_rules == TRUE) {
 		'view',
 		'View',
 		'snort_rules_flowbits.php?id=' . $id . '&returl=' . urlencode($_SERVER['PHP_SELF']),
-		'fa-file-text-o'
+		'fa-regular fa-file-lines'
 	);
 	$btn_viewFlowbits->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm');
 	$group = new Form_Group('Auto-Flowbit Rules');
@@ -406,8 +387,8 @@ if ($snortdownload == "on") {
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Select the rulesets (Categories) Snort will load at startup")?></h2></div>
 	<div class="panel-body">
 		<div class="table-responsive col-sm-12">
-			<i class="fa fa-adn text-success"></i>&nbsp;<?=gettext('- Category is auto-enabled by SID Mgmt conf files'); ?><br/>
-			<i class="fa fa-adn text-danger"></i>&nbsp;<?=gettext('- Category is auto-disabled by SID Mgmt conf files'); ?>
+			<i class="fa-brands fa-adn text-success"></i>&nbsp;<?=gettext('- Category is auto-enabled by SID Mgmt conf files'); ?><br/>
+			<i class="fa-brands fa-adn text-danger"></i>&nbsp;<?=gettext('- Category is auto-disabled by SID Mgmt conf files'); ?>
 		</div>
 		<nav class="action-buttons">
 			<button type="submit" id="selectall" name="selectall" class="btn btn-info btn-sm" title="<?=gettext('Add all categories to enforcing rules');?>">
@@ -417,7 +398,7 @@ if ($snortdownload == "on") {
 				<?=gettext('Unselect All');?>
 			</button>
 			<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Click to Save changes and rebuild rules');?>">
-				<i class="fa fa-save icon-embed-btn"></i>
+				<i class="fa-solid fa-save icon-embed-btn"></i>
 				<?=gettext('Save');?>
 			</button>
 		</nav>
@@ -448,7 +429,7 @@ if ($snortdownload == "on") {
 				<?php if ($cat_mods[$community_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="5">
 							<?php if ($no_community_files): ?>
@@ -461,7 +442,7 @@ if ($snortdownload == "on") {
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
 						<td colspan="5">
 							<?php if ($no_community_files): ?>
@@ -505,6 +486,88 @@ if ($snortdownload == "on") {
 	<?php endif; ?>
 <!-- End of GPLv2 Community rules -->
 
+<!-- Process Feodo Tracker Rules if enabled -->
+	<?php if ($no_feodotracker_files)
+			$msg_feodotracker = gettext("NOTE: Feodo Tracker Botnet C2 IP Rules have not been downloaded.  Perform a Rules Update to enable them.");
+	      else
+			$msg_feodotracker = gettext("Feodo Tracker Botnet C2 IP Rules");
+		  $feodotracker_rules_file = gettext("feodotracker.rules");
+	?>
+	<?php if ($feodotrackerdownload == 'on'): ?>
+		<div class="table-responsive col-sm-12">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<th><?=gettext("Enable"); ?></th>
+						<th><?=gettext('Ruleset: FEODO Tracker Botnet C2 IP Rules'); ?></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+			<?php if (isset($cat_mods[$feodotracker_rules_file])): ?>
+				<?php if ($cat_mods[$feodotracker_rules_file] == 'enabled') : ?>
+					<tr>
+						<td>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+						</td>
+						<td colspan="5">
+							<?php if ($no_feodotracker_files): ?>
+								<?php echo gettext("{$msg_feodotracker}"); ?>
+							<?php else: ?>
+								<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>'><?=gettext('{$msg_feodotracker}');?></a>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php else: ?>
+					<tr>
+						<td>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+						</td>
+						<td colspan="5">
+							<?php if ($no_feodotracker_files): ?>
+								<?php echo gettext("{$msg_feodotracker}"); ?>
+							<?php else: ?>
+								<a href='snort_rules_edit.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_feodotracker}"); ?></a>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endif; ?>
+			<?php elseif (in_array($feodotracker_rules_file, $enabled_rulesets_array)): ?>
+				<tr>
+					<td>
+						<input type="checkbox" name="toenable[]" value="<?=$feodotracker_rules_file;?>" checked="checked"/>
+					</td>
+					<td colspan="5">
+						<?php if ($no_feodotracker_files): ?>
+							<?php echo gettext("{$msg_feodotracker}"); ?>
+						<?php else: ?>
+							<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>'><?php echo gettext("{$msg_feodotracker}"); ?></a>
+						<?php endif; ?>
+					</td>
+				</tr>
+			<?php else: ?>
+				<tr>
+					<td>
+						<input type="checkbox" name="toenable[]" value="<?=$feodotracker_rules_file; ?>" />
+					</td>
+					<td colspan="5">
+						<?php if ($no_feodotracker_files): ?>
+							<?php echo gettext("{$msg_feodotracker}"); ?>
+						<?php else: ?>
+							<a href='snort_rules_edit.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_feodotracker}"); ?></a>
+						<?php endif; ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+	<?php endif; ?>
+<!-- End of Feodo Tracker rules -->
+
 <!-- Set strings for rules file state of "not enabled" or "not downloaded" -->
 			<?php if ($no_emerging_files && ($emergingdownload == 'on' || $etpro == 'on'))
 				  $msg_emerging = "have not been downloaded.";
@@ -545,7 +608,7 @@ if ($snortdownload == "on") {
 					<?php endif; ?>
 					<?php if ($openappid_rulesdownload == 'on' && !$no_openappid_files): ?>
 						<th><?=gettext("Enable"); ?></th>
-						<th><?=gettext('Ruleset: Snort OPENAPPI Rules');?></th>
+						<th><?=gettext('Ruleset: Snort OPENAPPID Rules');?></th>
 						<?php else: ?>
 						<th colspan="4"><?=gettext("Snort OPENAPPID rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
@@ -620,10 +683,10 @@ if ($snortdownload == "on") {
 								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
@@ -656,10 +719,10 @@ if ($snortdownload == "on") {
 								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
@@ -692,10 +755,10 @@ if ($snortdownload == "on") {
 								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
@@ -725,10 +788,10 @@ if ($snortdownload == "on") {
 							echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 					if ($cat_mods[$file] == 'enabled') {
 							$CHECKED = "enabled";
-						echo "  \n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+						echo "  \n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 					}
 					else {
-						echo "  \n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+						echo "  \n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 					}
 				}
 				else {
@@ -754,7 +817,7 @@ if ($snortdownload == "on") {
 
 <div class="col-sm-10 col-sm-offset-2">
 	<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Click to Save changes and rebuild rules');?>">
-		<i class="fa fa-save icon-embed-btn"></i>
+		<i class="fa-solid fa-save icon-embed-btn"></i>
 		<?=gettext('Save');?>
 	</button>
 </div>

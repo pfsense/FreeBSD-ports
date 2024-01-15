@@ -1,6 +1,3 @@
-# Created by: fluffy
-# $FreeBSD$
-
 PKGNAMESUFFIX=		-queue-ram
 PORTREVISION=		0
 

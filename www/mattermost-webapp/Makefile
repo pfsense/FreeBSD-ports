@@ -1,21 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	mattermost-webapp
-PORTVERSION=	5.28.0
+PORTVERSION=	7.10.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://releases.mattermost.com/${PORTVERSION}/
 DISTNAME=	mattermost-${PORTVERSION}-linux-amd64
 
-MAINTAINER=	loic.blot@unix-experience.fr
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Webapp of Mattermost server
+WWW=		https://mattermost.org/
 
 LICENSE=	APACHE20
 
-NO_BUILD=	yes
-NO_ARCH=	yes
-
 WWWDIR=		${PREFIX}/www/mattermost
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 MATTERMOSTD_USER=	mattermost
 MATTERMOSTD_GROUP=	mattermost

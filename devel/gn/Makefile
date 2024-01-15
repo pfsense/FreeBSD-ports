@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	gn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1823
-PORTREVISION=	2
+DISTVERSION=	2124
 CATEGORIES=	devel
 
 MAINTAINER=	o.hushchenkov@gmail.com
 COMMENT=	Gn meta build framework - standalone version
+WWW=		https://gn.googlesource.com/gn/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -32,7 +30,7 @@ CONFIGURE_WRKSRC=	${WRKSRC}/out # --out-path breaks "make test"
 PLIST_FILES=	bin/${PORTNAME}
 
 post-patch:
-	@${REINPLACE_CMD} 's/"python"/"${PYTHON_CMD:T}"/' \
+	@${REINPLACE_CMD} 's/"python3"/"${PYTHON_CMD:T}"/' \
 		${WRKSRC}/src/gn/exec_process_unittest.cc
 
 do-install:

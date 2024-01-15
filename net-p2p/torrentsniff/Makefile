@@ -1,6 +1,3 @@
-# Created by: Pav Lucistnik <pav@oook.cz>
-# $FreeBSD$
-
 PORTNAME=	torrentsniff
 PORTVERSION=	0.3.0
 PORTREVISION=	1
@@ -8,7 +5,8 @@ CATEGORIES=	net-p2p perl5
 MASTER_SITES=	http://www.highprogrammer.com/alan/perl/
 
 MAINTAINER=	jharris@widomaker.com
-COMMENT=	Commandline tool for getting status of torrent
+COMMENT=	Command-line tool for getting status of torrent
+WWW=		http://www.highprogrammer.com/alan/perl/torrentsniff.html
 
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
 		p5-Digest-SHA1>=0:security/p5-Digest-SHA1

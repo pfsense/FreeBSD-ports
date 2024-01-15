@@ -1,52 +1,46 @@
-# Created by: neuroworker@gmail.com
-# $FreeBSD$
-
 PORTNAME=	instead
-PORTVERSION=	3.3.2
+PORTVERSION=	3.5.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simple Text Adventure, The Interpreter
+WWW=		https://instead.syscall.ru/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake compiler:c++11-lang iconv lua:51 pkgconfig sdl
-CMAKE_ARGS=	-DMANDIR=man
+USES=		cmake compiler:c++11-lang iconv pkgconfig sdl
+USE_SDL=	sdl2 image2 ttf2 mixer2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PORTDOCS=	*
 PORTDATA=	*
 
-OPTIONS_DEFINE=		LUAJIT DOCS
-OPTIONS_DEFAULT=	SDL2 GTK2
-OPTIONS_SINGLE=		SDL_VERSION
-OPTIONS_SINGLE_SDL_VERSION=	SDL SDL2
+OPTIONS_DEFINE=		LUAJIT DOCS HARFBUZZ
+OPTIONS_DEFAULT=	LUAJIT GTK3
 OPTIONS_RADIO=		GTK_VERSION
 OPTIONS_RADIO_GTK_VERSION=	GTK2 GTK3
 
-SDL_VERSION_DESC=	SDL version
-SDL_DESC=		Use SDL 1.2
-SDL2_DESC=		Use SDL 2.0
 GTK_VERSION_DESC=	GTK version for file open dialog
 GTK2_DESC=		Use GTK 2
 GTK3_DESC=		Use GTK 3
 LUAJIT_DESC=		Use LuaJIT instead of Lua
+HARFBUZZ_DESC=		Build with HarfBuzz for RTL language support
 
-SDL_USE=		SDL=sdl,image,ttf,mixer
-SDL2_USE=		SDL=sdl2,image2,ttf2,mixer2
-SDL2_CMAKE_BOOL=	WITH_SDL2
 GTK2_USES=		gnome
 GTK2_USE=		GNOME=gtk20
 GTK2_CMAKE_BOOL=	WITH_GTK2
 GTK3_USES=		gnome
 GTK3_USE=		GNOME=gtk30
 GTK3_CMAKE_BOOL=	WITH_GTK3
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
-LUAJIT_USE_OFF=		lua:51
+LUAJIT_USES=		luajit
+LUAJIT_USES_OFF=	lua:51
 LUAJIT_CMAKE_BOOL=	WITH_LUAJIT
+HARFBUZZ_CMAKE_BOOL=	WITH_HARFBUZZ
+HARFBUZZ_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 .include <bsd.port.mk>

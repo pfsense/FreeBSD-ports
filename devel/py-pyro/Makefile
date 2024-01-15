@@ -1,24 +1,23 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pyro
 DISTVERSION=	4.77
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Pyro4-${PORTVERSION}
 
 MAINTAINER=	rm@FreeBSD.org
 COMMENT=	Distributed Object Middleware for Python (IPC/RPC)
+WWW=		https://pythonhosted.org/Pyro4/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serpent>=1.27:devel/py-serpent@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent distutils
 
+CPE_VENDOR=	pyro_project
 NO_ARCH=	yes
 PORTDOCS=	*
 PORTEXAMPLES=	*

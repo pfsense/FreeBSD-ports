@@ -1,6 +1,3 @@
-# Created by: Colin Percival
-# $FreeBSD$
-
 PORTNAME=	pkesh
 PORTVERSION=	1.0
 CATEGORIES=	security

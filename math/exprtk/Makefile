@@ -1,17 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	exprtk
-DISTVERSION=	g20210101
+DISTVERSION=	0.0.2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ mathematical expression library
+WWW=		https://www.partow.net/programming/exprtk/index.html
 
 LICENSE=	MIT
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ArashPartow
-GH_TAGNAME=	fe9c77fc5ac9984ed9c75446b25eb96d890cdea0
 
 NO_BUILD=	yes
 NO_ARCH=	yes

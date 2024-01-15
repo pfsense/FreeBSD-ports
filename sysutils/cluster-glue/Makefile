@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	cluster-glue
 PORTVERSION=	1.0.12
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	sysutils
 MASTER_SITES=	http://hg.linux-ha.org/glue/archive/
 DISTNAME=	0a7add1d9996
@@ -10,6 +8,7 @@ DIST_SUBDIR=	linux-ha
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High availability cluster libraries and utilities
+WWW=		http://linux-ha.org/wiki/Cluster_Glue
 
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi

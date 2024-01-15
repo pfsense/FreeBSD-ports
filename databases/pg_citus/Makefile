@@ -1,18 +1,20 @@
-# Created by: Matthew Seaman
-# $FreeBSD$
-
 PORTNAME=	citus
-PORTVERSION=	9.5.1
+PORTVERSION=	12.1.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	pg_
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Horizontally scale Postgresql using sharding and replication
+WWW=		https://www.citusdata.com/
 
 LICENSE=	AGPLv3
 
-USES=		compiler:c11 gmake pgsql:11+ autoreconf readline
+USES=		compiler:c11 gmake pgsql:14+ autoreconf readline ssl \
+		gettext-runtime
+
+LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
+		libzstd.so:archivers/zstd
 
 WANT_PGSQL=	lib server
 GNU_CONFIGURE=	yes

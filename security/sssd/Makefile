@@ -1,14 +1,12 @@
-# Created by: Lukas Slebodnik <lukas.slebodnik@intrak.sk>
-# $FreeBSD$
-
 PORTNAME=	sssd
 PORTVERSION=	1.16.5
-PORTREVISION=	1
+PORTREVISION=	10
 CATEGORIES=	security
 MASTER_SITES=	https://releases.pagure.org/SSSD/${PORTNAME}/
 
-MAINTAINER=	lukas.slebodnik@intrak.sk
+MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	System Security Services Daemon
+WWW=		https://pagure.io/SSSD/sssd
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +15,7 @@ LIB_DEPENDS=	libpopt.so:devel/popt \
 		libtalloc.so:devel/talloc \
 		libtevent.so:devel/tevent \
 		libtdb.so:databases/tdb \
-		libldb.so:databases/ldb21 \
+		libldb.so:databases/ldb22 \
 		libcares.so:dns/c-ares \
 		libdbus-1.so:devel/dbus \
 		libdhash.so:devel/ding-libs \
@@ -34,11 +32,16 @@ BUILD_DEPENDS=	xmlcatalog:textproc/libxml2 \
 		krb5>=1.10:security/krb5 \
 		nsupdate:dns/bind-tools
 
+FLAVORS=	default smb
+FLAVOR?=	${FLAVORS:[1]}
+smb_PKGNAMESUFFIX=	-smb
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--without-selinux --without-semanage \
+CONFIGURE_ARGS=	ac_cv_prog_PO4A=no \
+		--without-selinux --without-semanage \
 		--without-libnl --without-nfsv4-idmapd-plugin \
 		--without-autofs --without-secrets --without-kcm \
-		--without-python2-bindings \
+		--without-python2-bindings --with-python-prefix=${PREFIX} \
 		--with-init-dir=no \
 		--disable-cifs-idmap-plugin \
 		--with-unicode-lib=libunistring \
@@ -57,10 +60,11 @@ PLIST_SUB=	PYTHON_VER=${PYTHON_VER}
 MAKE_ENV+=	LINGUAS="bg de eu es fr hu id it ja nb nl pl pt ru sv tg tr uk zh_CN zh_TW"
 SUB_FILES=	pkg-message
 
-USES=		autoreconf cpe gettext gmake iconv libtool pathfix pkgconfig \
-		python:3.7 shebangfix gssapi:mit
+TEST_TARGET=	check
+
+USES=		autoreconf cpe gettext gmake iconv ldap libtool pathfix pkgconfig \
+		python shebangfix gssapi:mit
 USE_LDCONFIG=	yes
-USE_OPENLDAP=	yes
 INSTALL_TARGET=	install-strip
 CPE_VENDOR=	fedoraproject
 
@@ -77,12 +81,16 @@ OPTIONS_SUB=	yes
 SMB_DESC=		Install IPA and AD providers (requires Samba4)
 SMB_USES=		samba:lib
 SMB_CONFIGURE_WITH=	samba smb-idmap-interface-version=6
-SMB_LIB_DEPENDS=	libndr-nbt.so.0:net/samba412 \
-			libndr-krb5pac.so.0:net/samba412 \
-			libndr-standard.so.0:net/samba412 \
-			libndr.so.1:net/samba412 \
-			libsamba-util.so.0:net/samba412 \
-			libsmbclient.so.0:net/samba412
+SMB_LIB_DEPENDS=	libndr-nbt.so.0:net/samba413 \
+			libndr-krb5pac.so.0:net/samba413 \
+			libndr-standard.so.0:net/samba413 \
+			libndr.so.1:net/samba413 \
+			libsamba-util.so.0:net/samba413 \
+			libsmbclient.so.0:net/samba413
+
+.if ${FLAVOR} == smb
+OPTIONS_DEFAULT+=	SMB
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|NSS_STATUS_NOTFOUND|NS_NOTFOUND|g' \
@@ -101,6 +109,11 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/sssd/|${ETCDIR}/|g' \
 		-e 's|/etc/openldap/|${LOCALBASE}/etc/openldap/|g' \
 		${WRKSRC}/src/man/*xml
+	@${REINPLACE_CMD} -e 's|/usr/bin/|${PREFIX}/bin/|g' \
+		-e 's|/var/lib/sss/pubconf/|/var/db/sss/pubconf/|g' \
+		${WRKSRC}/src/man/sss_ssh_knownhostsproxy.1.xml \
+		${WRKSRC}/src/man/*/sss_ssh_knownhostsproxy.1.xml \
+		${WRKSRC}/src/man/po/*.po
 	@${CP} ${FILESDIR}/bsdnss.c ${WRKSRC}/src/sss_client/bsdnss.c
 	@${CP} ${FILESDIR}/sss_bsd_errno.h ${WRKSRC}/src/util/sss_bsd_errno.h
 

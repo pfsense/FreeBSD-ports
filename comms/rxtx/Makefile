@@ -1,6 +1,3 @@
-# Created by: Jean-Baptiste Quenot <jb.quenot@caraldi.com>
-# $FreeBSD$
-
 PORTNAME=	rxtx
 PORTVERSION=	2.2p2
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/p/pre/}
 
 MAINTAINER=	james@elstone.net
 COMMENT=	Native interface to serial ports in Java
+WWW=		http://rxtx.qbang.org
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

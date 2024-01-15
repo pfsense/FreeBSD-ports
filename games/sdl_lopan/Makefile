@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdl_lopan
 PORTVERSION=	10
 PORTREVISION=	5
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	sdllopan-${DISTVERSION}.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mahjong game remake
+WWW=		http://www.linuxmotors.com/sdllopan/
 
 WRKSRC=		${WRKDIR}/sdllopan-${PORTVERSION}
 

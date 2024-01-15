@@ -1,21 +1,21 @@
-# Created by: Craig Leres <leres@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flynt
-PORTVERSION=	0.58
+PORTVERSION=	1.0.1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Convert Python scripts from string formatting to f-strings
+WWW=		https://github.com/ikamensh/flynt
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astor>0:devel/py-astor@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>0:devel/py-hatchling@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astor>0:devel/py-astor@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tomli>1.1.0:textproc/py-tomli@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.8+
 USE_GITHUB=	yes
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist pep517
 
 GH_ACCOUNT=	ikamensh
 

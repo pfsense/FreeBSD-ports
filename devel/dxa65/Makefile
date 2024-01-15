@@ -1,14 +1,12 @@
-# Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
-
 PORTNAME=	dxa
-PORTVERSION=	0.1.4
+PORTVERSION=	0.1.5
 CATEGORIES=	devel
 MASTER_SITES=	http://www.floodgap.com/retrotech/xa/dists/
 PKGNAMESUFFIX=	65
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Disassembler for MOS 6502 and compatible CPUs
+WWW=		http://www.floodgap.com/retrotech/xa #dxa
 
 LICENSE=	GPLv2+
 

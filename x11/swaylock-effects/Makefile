@@ -1,21 +1,15 @@
-# $FreeBSD$
-
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6-3
-PORTREVISION=	1
+DISTVERSION=	1.7.0.0
 PKGNAMESUFFIX=	-effects
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	ea4b63d8fff3.patch:-p1 # https://github.com/mortie/swaylock-effects/pull/37
-PATCHFILES+=	17fea65e8c99.patch:-p1 # https://github.com/mortie/swaylock-effects/pull/38
-
 COMMENT=	Screen locker for Wayland with fancy effects
+WWW=		https://github.com/jirutka/swaylock-effects
 
 MASTERDIR=	${.CURDIR}/../swaylock
 DESCR=		${.CURDIR}/pkg-descr
 DISTINFO_FILE=	${.CURDIR}/distinfo
 
-GH_ACCOUNT=	mortie
+GH_ACCOUNT=	jirutka
 GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
 
 .if !exists(/usr/include/omp.h)

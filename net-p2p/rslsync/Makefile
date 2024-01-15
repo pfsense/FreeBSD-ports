@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	rslsync
-PORTVERSION=	2.7.1
+DISTVERSION=	2.7.3
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://download-cdn.resilio.com/${PORTVERSION}/FreeBSD-${CONFIG_ARCH}/ \
 		http://download-cdn.resilio.com/${PORTVERSION}/FreeBSD-${CONFIG_ARCH}/
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	arcade@b1t.name
 COMMENT=	Distributed peer-to-peer file syncing application
+WWW=		https://www.resilio.com/
 
 LICENSE=	EULA
 LICENSE_NAME=	Resilio Sync
@@ -17,19 +16,23 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 LICENSE_PERMS=	auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	It is a binary-only program. Source code not available.
+ONLY_FOR_ARCHS_REASON=	binary-only program, source code not available
+
+USE_RC_SUBR=	rslsync
 
 CONFLICTS_INSTALL=	rslsync-beta
 
-NO_WRKSUBDIR=	yes
-
-PLIST_SUB=	USER=${USERS} GROUP=${GROUPS}
-SUB_LIST=	USER=${USERS} GROUP=${GROUPS}
 SUB_FILES=	pkg-message
-USE_RC_SUBR=	rslsync
+SUB_LIST=	GROUP=${GROUPS} \
+		USER=${USERS}
+
+NO_WRKSUBDIR=	yes
 
 USERS=		rslsync
 GROUPS=		${USERS}
+
+PLIST_SUB=	GROUP=${GROUPS} \
+		USER=${USERS}
 
 .include <bsd.port.pre.mk>
 

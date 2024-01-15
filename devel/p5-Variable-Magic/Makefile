@@ -1,14 +1,12 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Variable-Magic
-PORTVERSION=	0.62
+PORTVERSION=	0.63
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Associate user-defined magic to variables from Perl
+WWW=		https://metacpan.org/release/Variable-Magic
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

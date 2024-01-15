@@ -1,9 +1,6 @@
-# Created by: Anton Shterenlikht
-# $FreeBSD$
-
 PORTNAME=	slatec
 PORTVERSION=	4.1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	math
 MASTER_SITES=	NL/slatec/:slatec NL/blas/:blas
 # Get d1mach.f, i1mach.f, r1mach.f from BLAS, rather than from Slatec:
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	slatec_src.tgz slatec_chk.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SLATEC Common Mathematical Library
+WWW=		https://www.netlib.org/slatec/
 
 USES=		fortran uidfix
 USE_LDCONFIG=	yes

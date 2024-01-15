@@ -1,14 +1,12 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fdmf
 DISTVERSION=	0.0.9s
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	http://w140.com/audio/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Find similar music by perceptual hashing
+WWW=		https://www.w140.com/audio/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

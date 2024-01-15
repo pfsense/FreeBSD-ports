@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	clearsans
 PORTVERSION=	1.00
 PORTREVISION=	2
@@ -8,6 +6,7 @@ MASTER_SITES=	https://01.org/sites/default/files/downloads/
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Versatile OpenType font for screen, print, and Web
+WWW=		https://01.org/clear-sans
 
 LICENSE=	APACHE20
 

@@ -1,6 +1,6 @@
---- dart/gui/glut/LoadGlut.hpp.orig	2019-02-18 02:40:12 UTC
+--- dart/gui/glut/LoadGlut.hpp.orig	2021-11-04 20:43:53 UTC
 +++ dart/gui/glut/LoadGlut.hpp
-@@ -38,6 +38,8 @@
+@@ -39,6 +39,8 @@
    #include <GL/glut.h>
  #elif defined(__linux__)
    #include <GL/glut.h>

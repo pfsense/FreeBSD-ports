@@ -1,18 +1,16 @@
-# Created by: Greg V <greg@unrelenting.technology>
-# $FreeBSD$
-
 PORTNAME=	u2f-devd
 PORTVERSION=	1.1.10
-PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	security
 MASTER_SITES=	#
 DISTFILES=	#
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	monwarez@mailoo.org
 COMMENT=	Devd hotplug rules for Universal 2nd Factor (U2F) tokens
 
 LICENSE=	BSD2CLAUSE
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 

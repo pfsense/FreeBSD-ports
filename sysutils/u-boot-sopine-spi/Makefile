@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../u-boot-master
-
-U_BOOT_SLAVE_PORTREVISION_2020.10=	1
 
 MODEL=		sopine-spi
 BOARD_CONFIG=	sopine_baseboard_defconfig
 FAMILY=		allwinner64
+
+EXTRA_PATCHES?=	${.CURDIR}/files/
 
 CONFIG_FRAGMENT=	${.CURDIR}/../u-boot-sopine-spi/files/spi_fragment
 FRAGMENT_NAME=		spi_fragment
@@ -14,7 +12,6 @@ NO_METADATA=		yes
 UBOOT_PLIST=		u-boot-sunxi-with-spl.bin \
 			boot.scr
 PLIST_EXTRAS=		sopine-spi-flasher.img
-IGNORE_FreeBSD_11=	No makefs msdos support
 
 post-build:
 	mkimage -C none -A arm64 -T script -d ${.CURDIR}/../u-boot-sopine-spi/files/boot.cmd ${WRKSRC}/boot.scr

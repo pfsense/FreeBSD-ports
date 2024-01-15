@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	biorythm
 PORTVERSION=	1.1.4
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://shh.thathost.com/pub-unix/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple biorhythm calculation program
+WWW=		https://shh.thathost.com/pub-unix/ #biorythm
 
 LICENSE=	ART10
 

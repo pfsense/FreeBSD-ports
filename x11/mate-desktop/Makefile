@@ -1,14 +1,13 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mate-desktop
-PORTVERSION=	1.24.1
+PORTVERSION=	1.26.0
+PORTREVISION=	2
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Additional UI API for MATE
+WWW=		https://mate-desktop.org/
 
 LICENSE=	GPLv2 GFDL LGPL21
 LICENSE_COMB=	multi
@@ -29,7 +28,6 @@ USE_GNOME=	cairo dconf gdkpixbuf2 gnomeprefix gtk30 \
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-INSTALLS_ICONS=	yes
 
 GLIB_SCHEMAS=	org.mate.accessibility-keyboard.gschema.xml \
 		org.mate.accessibility-startup.gschema.xml \

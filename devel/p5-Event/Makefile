@@ -1,14 +1,12 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Event
-PORTVERSION=	1.27
+PORTVERSION=	1.28
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generic Perl Event Loop
+WWW=		https://metacpan.org/release/Event
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

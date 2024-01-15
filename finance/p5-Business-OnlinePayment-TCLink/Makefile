@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Business-OnlinePayment-TCLink
 PORTVERSION=	1.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Business::OnlinePayment backend module for TrustCommerce
+WWW=		https://metacpan.org/release/Business-OnlinePayment-TCLink
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Business-CreditCard>=0:finance/p5-Business-CreditCard \

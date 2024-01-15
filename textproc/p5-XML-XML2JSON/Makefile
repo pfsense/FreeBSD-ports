@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-XML2JSON
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,12 +7,18 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Convert XML into JSON (and back again) using XML::LibXML
+WWW=		https://metacpan.org/release/XML-XML2JSON
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-LibXML>=1.59:textproc/p5-XML-LibXML
+
+USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 # the order of options follows the search order of JSON module by XML::XML2JSON
 OPTIONS_MULTI=	JSON_BACKEND
@@ -25,10 +28,6 @@ JSON_SYCK_DESC=	Use JSON::Syck
 JSON_XS_DESC=	Use JSON::XS
 JSON_DESC=	Use JSON
 JSON_DWIW_DESC=	Use JSON::DWIW
-
-NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5
 
 JSON_BUILD_DEPENDS=	p5-JSON>=0:converters/p5-JSON
 JSON_DWIW_BUILD_DEPENDS=p5-JSON-DWIW>=0:converters/p5-JSON-DWIW

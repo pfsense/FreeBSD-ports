@@ -1,6 +1,3 @@
-# Created by: Florian Limberger <flo@snakeoilproductions.net>
-# $FreeBSD$
-
 PORTNAME=	linden-hill
 DISTVERSION=	g20110526
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	flo@snakeoilproductions.net
 COMMENT=	Digital version of Frederic Goudy's Deepdene
+WWW=		https://www.theleagueofmoveabletype.com/linden-hill
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/Open\ Font\ License.markdown

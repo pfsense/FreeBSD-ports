@@ -1,21 +1,19 @@
-# Created by: Carlo Strub <cs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	protobuf
+DISTVERSION=	1.3.2
+PORTREVISION=	15
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.1
-PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Protocol Buffers for Go with Gadgets
+WWW=		https://github.com/gogo/protobuf
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		cpe go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gogo
@@ -30,5 +28,7 @@ GO_TARGET=	./protoc-gen-combo \
 		./protoc-gen-gogotypes \
 		./protoc-gen-gostring \
 		./protoc-min-version
+
+CPE_VENDOR=	golang
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: carl@servicefactory.com
-# $FreeBSD$
-
 PORTNAME=	toshctl
 PORTVERSION=	0.0.0p3
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://freebie.miraclenet.co.th/notebook/toshctl/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line tool to access parts of the Toshiba hardware interface
+WWW=		http://freebie.miraclenet.co.th/notebook/toshctl/
 
 LICENSE=	GPLv2+
 

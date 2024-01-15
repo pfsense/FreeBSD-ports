@@ -1,9 +1,6 @@
-# Created by: Andrew Baznikin <dikiy@scn.ru>
-# $FreeBSD$
-
 PORTNAME=	raknet
 PORTVERSION=	3.9.2
-PORTREVISION=	10
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	devel net
 MASTER_SITES=	http://www.jenkinssoftware.com/raknet/downloads/ \
@@ -12,6 +9,7 @@ DISTNAME=	RakNet-3.902
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Networking API that provides reliable UDP primarily for online games
+WWW=		http://www.jenkinssoftware.com/
 
 # Original license is Indy license, but FreeBSD has been granted special
 # authorization to provide RakNet 3.x (*only*, not 4.x) under the terms of
@@ -26,14 +24,14 @@ LICENSE_PERMS_SpecialAuth=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 NOT_FOR_ARCHS=		aarch64 mips mips64
 NOT_FOR_ARCHS_REASON=	fails to compile: error: Add your platform to the list
 
-LEGAL_TEXT=	Special authorization granted to distribute version 3.x under GPLv3
-
 NO_WRKSUBDIR=	yes
 
 USES=		dos2unix cmake:insource zip
 
 USE_LDCONFIG=	yes
-USE_GCC=	any
+# XXX Does not build with GCC 12
+# See: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=266190
+USE_GCC=	11
 
 DOS2UNIX_REGEX=	.*\.(cpp|h|txt)
 

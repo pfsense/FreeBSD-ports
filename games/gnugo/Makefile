@@ -1,6 +1,3 @@
-# Created by: jseger@scds.com
-# $FreeBSD$
-
 PORTNAME=	gnugo
 PORTVERSION=	3.8
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	GNU
 
 MAINTAINER=	spcoltri@omcl.org
 COMMENT=	The game of Go
+WWW=		https://www.gnu.org/software/gnugo/
 
 GNU_CONFIGURE=	yes
 USES=		gmake

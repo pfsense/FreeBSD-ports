@@ -1,6 +1,3 @@
-# Created by: Samy Al Bahra <samy@kerneled.com>
-# $FreeBSD$
-
 PORTNAME=	kacst_fonts
 PORTVERSION=	2.01
 PORTREVISION=	3
@@ -11,14 +8,17 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Truetype Arabic fonts created by KACST
+WWW=	https://www.arabeyes.org/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		fonts tar:bzip2
-WRKSRC=		${WRKDIR}/KacstArabicFonts-${PORTVERSION}
-NO_BUILD=	yes
 
+NO_BUILD=	yes
 SUB_FILES=	pkg-message
+
+WRKSRC=		${WRKDIR}/KacstArabicFonts-${PORTVERSION}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}/${FONTSDIR}

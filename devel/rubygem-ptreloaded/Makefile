@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@rtfm.jp>
-# $FreeBSD$
-
 PORTNAME=	ptreloaded
 PORTVERSION=	0.0.1
 CATEGORIES=	devel rubygems
@@ -9,13 +6,13 @@ DISTNAME=	ParseTreeReloaded-${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Reimplementation of ParseTree using RubyInlineAcceleration
+WWW=		https://rubygems.org/gems/ptreloaded
 
 RUN_DEPENDS=	rubygem-rubyinlineaccel>=0.0.1:devel/rubygem-rubyinlineaccel
 
 LICENSE=	GPLv2
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: NECDET COKYAZICI <cokyazici@yahoo.co.uk>
-# $FreeBSD$
-
 PORTNAME=	libnaji
 PORTVERSION=	0.6.4
 DISTVERSIONSUFFIX=	.src
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/najitool/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Library that generates, converts, and filters files
+WWW=		https://najitool.sourceforge.net/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE

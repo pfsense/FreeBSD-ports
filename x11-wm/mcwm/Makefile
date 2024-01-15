@@ -1,6 +1,3 @@
-# Created by: Jakub Lach <jakub_lach@mailplus.pl>
-# $FreeBSD$
-
 PORTNAME=	mcwm
 PORTVERSION=	20130209
 CATEGORIES=	x11-wm
@@ -8,6 +5,7 @@ MASTER_SITES=	http://hack.org/mc/hacks/mcwm/
 
 MAINTAINER=	jakub_lach@mailplus.pl
 COMMENT=	Small window manager inspired by CTWM, evilwm, and tinywm
+WWW=		https://hack.org/mc/hacks/mcwm/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

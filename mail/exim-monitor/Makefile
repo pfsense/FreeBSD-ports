@@ -1,6 +1,3 @@
-# Created by: sheldonh@FreeBSD.org
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-monitor
 
 COMMENT=	The Exim monitor for the Exim MTA

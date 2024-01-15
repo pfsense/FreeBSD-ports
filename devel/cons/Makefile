@@ -1,6 +1,3 @@
-# Created by: rv@gnu.org
-# $FreeBSD$
-
 PORTNAME=	cons
 PORTVERSION=	2.2.0
 PORTREVISION=	3
@@ -12,6 +9,7 @@ MASTER_SITES=	http://www.dsmit.com/cons/stable/ \
 
 MAINTAINER=	rv@gnu.org
 COMMENT=	Perl-based Make Replacement
+WWW=		http://www.dsmit.com/cons/
 
 USES=		perl5 tar:tgz
 NO_BUILD=	yes

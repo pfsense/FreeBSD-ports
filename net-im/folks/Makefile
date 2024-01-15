@@ -1,19 +1,16 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	folks
-PORTVERSION=	0.14.0
+PORTVERSION=	0.15.5
 PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library to aggregates people from multiple sources
+WWW=		https://wiki.gnome.org/Projects/Folks
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	vapigen:lang/vala
 LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libgcr-base-3.so:security/gcr \
 		libzeitgeist-2.0.so:sysutils/zeitgeist \
@@ -25,8 +22,8 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libdbus-1.so:devel/dbus
 
-USES=		gettext gnome localbase meson python:3.5+,build pkgconfig \
-		readline sqlite tar:xz
+USES=		gettext gnome localbase meson python:build pkgconfig \
+		readline sqlite tar:xz vala:build
 USE_GNOME=	evolutiondataserver3 intlhack introspection:build
 USE_LDCONFIG=	yes
 
@@ -34,16 +31,10 @@ MESON_ARGS=	-Dbluez_backend=false
 
 GLIB_SCHEMAS=	org.freedesktop.folks.gschema.xml
 
-PLIST_SUB=	LIBVER=25 LIBVERLONG=25.21.0
+PLIST_SUB=	LIBVER=26 LIBVERLONG=26.0.0
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	TRACKER
-OPTIONS_DEFAULT=TRACKER
-TRACKER_DESC=	Tracker backend
-
-TRACKER_MESON_TRUE=	tracker_backend
-TRACKER_LIB_DEPENDS=	libtracker-control-2.0.so:sysutils/tracker
+PORTSCOUT=	limitw:1,even
 
 .include <bsd.port.mk>

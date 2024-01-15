@@ -1,0 +1,158 @@
+diff --git a/src/etc/inc/auth.inc b/src/etc/inc/auth.inc
+index 9c2306b25e..15fee22e3a 100644
+--- a/src/etc/inc/auth.inc
++++ b/src/etc/inc/auth.inc
+@@ -36,6 +36,15 @@ if (!$do_not_include_config_gui_inc) {
+ // Will be changed to false if security checks fail
+ $security_passed = true;
+ 
++/* Possible user password hash types.
++ * See https://redmine.pfsense.org/issues/12855
++ */
++global $auth_password_hash_types;
++$auth_password_hash_types = array(
++	'bcrypt' => gettext('bcrypt -- Blowfish-based crypt'),
++	'sha512' => gettext('SHA-512 -- SHA-512-based crypt')
++);
++
+ /* If this function doesn't exist, we're being called from Captive Portal or
+    another internal subsystem which does not include authgui.inc */
+ if (function_exists("display_error_form")) {
+@@ -431,15 +440,14 @@ function local_backed($username, $passwd) {
+ 		return false;
+ 	}
+ 
+-	if ($user['sha512-hash']) {
+-		if (hash_equals($user['sha512-hash'], crypt($passwd, $user['sha512-hash']))) {
++	if ($user['bcrypt-hash']) {
++		if (password_verify($passwd, $user['bcrypt-hash'])) {
+ 			return true;
+ 		}
+ 	}
+ 
+-	//for backwards compatibility
+-	if ($user['bcrypt-hash']) {
+-		if (password_verify($passwd, $user['bcrypt-hash'])) {
++	if ($user['sha512-hash']) {
++		if (hash_equals($user['sha512-hash'], crypt($passwd, $user['sha512-hash']))) {
+ 			return true;
+ 		}
+ 	}
+@@ -682,10 +690,10 @@ function local_user_set(& $user) {
+ 			log_error(sprintf(gettext("Running: %s"), $cmd));
+ 		}
+ 		$fd = popen($cmd, "w");
+-		if (isset($user['sha512-hash'])) {
+-			fwrite($fd, $user['sha512-hash']);
+-		} elseif (isset($user['bcrypt-hash'])) {
++		if (isset($user['bcrypt-hash'])) {
+ 			fwrite($fd, $user['bcrypt-hash']);
++		} elseif (isset($user['sha512-hash'])) {
++			fwrite($fd, $user['sha512-hash']);
+ 		} else {
+ 			fwrite($fd, $user['password']);
+ 		}
+@@ -725,10 +733,10 @@ function local_user_set(& $user) {
+ 		log_error(sprintf(gettext("Running: %s"), $cmd));
+ 	}
+ 	$fd = popen($cmd, "w");
+-	if (isset($user['sha512-hash'])) {
+-		fwrite($fd, $user['sha512-hash']);
+-	} elseif (isset($user['bcrypt-hash'])) {
++	if (isset($user['bcrypt-hash'])) {
+ 		fwrite($fd, $user['bcrypt-hash']);
++	} elseif (isset($user['sha512-hash'])) {
++		fwrite($fd, $user['sha512-hash']);
+ 	} else {
+ 		fwrite($fd, $user['password']);
+ 	}
+@@ -806,9 +814,25 @@ function local_user_set_password(&$user, $password) {
+ 
+ 	unset($user['password']);
+ 	unset($user['md5-hash']);
++	unset($user['sha512-hash']);
+ 	unset($user['bcrypt-hash']);
+-	$salt = substr(bin2hex(openssl_random_pseudo_bytes(16)),0,16);
+-	$user['sha512-hash'] = crypt($password, '$6$'. $salt . '$');
++
++	/* Default to bcrypt hashing if unset.
++	 * See https://redmine.pfsense.org/issues/12855
++	 */
++	$hashalgo = isset($config['system']['webgui']['pwhash']) ? $config['system']['webgui']['pwhash'] : 'bcrypt';
++
++	switch ($hashalgo) {
++		case 'sha512':
++			$salt = substr(bin2hex(random_bytes(16)),0,16);
++			$user['sha512-hash'] = crypt($password, '$6$'. $salt . '$');
++			break;
++		case 'bcrypt':
++		default:
++			$user['bcrypt-hash'] = password_hash($password, PASSWORD_BCRYPT);
++			break;
++	}
++
+ 	if (($user['name'] == $config['hasync']['username']) &&
+ 	    ($config['hasync']['adminsync'] == 'on')) {
+ 		$config['hasync']['new_password'] = $password;
+diff --git a/src/usr/local/www/system_usermanager_settings.php b/src/usr/local/www/system_usermanager_settings.php
+index 162be9a711..a1d40c18ea 100644
+--- a/src/usr/local/www/system_usermanager_settings.php
++++ b/src/usr/local/www/system_usermanager_settings.php
+@@ -33,6 +33,8 @@
+ require_once("guiconfig.inc");
+ require_once("auth.inc");
+ 
++global $auth_password_hash_types;
++
+ // Test LDAP settings in response to an AJAX request from this page.
+ if ($_REQUEST['ajax']) {
+ 
+@@ -104,6 +106,11 @@ if (isset($config['system']['webgui']['authmode'])) {
+ 	$pconfig['authmode'] = "Local Database";
+ }
+ 
++/* Default to bcrypt hashing if unset.
++ * See https://redmine.pfsense.org/issues/12855
++ */
++$pconfig['pwhash'] = isset($config['system']['webgui']['pwhash']) ? $config['system']['webgui']['pwhash'] : 'bcrypt';
++
+ $pconfig['shellauth'] = isset($config['system']['webgui']['shellauth']) ? true : false;
+ 
+ $pconfig['backend'] = $config['system']['webgui']['backend'];
+@@ -149,6 +156,10 @@ if ($_POST) {
+ 		$savemsg = gettext("Settings have been saved, but the test was not performed because it is not supported for local databases.");
+ 	}
+ 
++	if ($_POST['pwhash'] && !array_key_exists($_POST['pwhash'], $auth_password_hash_types)) {
++		$input_errors[] = gettext("Invalid password hash algorithm value.");
++	}
++
+ 	if (!$input_errors) {
+ 		if ($_POST['authmode'] != "Local Database") {
+ 			$authsrv = auth_get_authserver($_POST['authmode']);
+@@ -173,6 +184,8 @@ if ($_POST) {
+ 			unset($config['system']['webgui']['authmode']);
+ 		}
+ 
++		$config['system']['webgui']['pwhash'] = $_POST['pwhash'] ? $_POST['pwhash'] : 'bcrypt';
++
+ 		if (isset($_POST['shellauth'])) {
+ 			$config['system']['webgui']['shellauth'] = true;
+ 		} else {
+@@ -242,6 +255,16 @@ $section->addInput(new Form_Select(
+ 	$auth_servers
+ ));
+ 
++$section->addInput(new Form_Select(
++	'pwhash',
++	'*Password Hash Algorithm',
++	$pconfig['pwhash'],
++	$auth_password_hash_types
++))->setHelp('Selects which algorithm the firewall will use when creating hashes for local ' .
++	    'user passwords.%1$s' .
++	    'The most secure option is currently bcrypt. Some users may prefer SHA-512-based ' .
++	    'crypt hashes for compatibility or compliance purposes. ', '<br/>');
++
+ $section->addInput(new Form_Checkbox(
+ 	'shellauth',
+ 	'Shell Authentication',

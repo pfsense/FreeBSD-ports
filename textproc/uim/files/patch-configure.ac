@@ -1,0 +1,20 @@
+--- configure.ac.orig	2022-03-18 00:54:17 UTC
++++ configure.ac
+@@ -123,7 +123,7 @@ fi
+ if test "x$with_anthy" = xyes; then
+   ANTHY_LIBS="-lanthy -lanthydic"
+   ANTHY_CFLAGS=""
+-  PKG_CHECK_EXISTS(anthy >= 8622,
++  PKG_CHECK_EXISTS(anthy >= 0.4,
+                    [AC_DEFINE(LIBANTHY_UTF8_CAPABLE, 1,
+                     "libanthy can handle UTF-8")])
+ fi
+@@ -141,7 +141,7 @@ AC_ARG_WITH(anthy-utf8,
+   [with_anthy_utf8=no])
+ 
+ if test "x$with_anthy_utf8" != xno; then
+-  PKG_CHECK_MODULES(ANTHY_UTF8, anthy >= 8622,
++  PKG_CHECK_MODULES(ANTHY_UTF8, anthy >= 0.4,
+                     [with_anthy_utf8=yes
+                      AC_DEFINE(LIBANTHY_UTF8_CAPABLE, 1,
+                      [libanthy can handle UTF-8])],

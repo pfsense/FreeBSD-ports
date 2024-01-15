@@ -1,6 +1,3 @@
-# Created by: TERAMOTO Masahiro <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	HTML-TreeBuilder-LibXML
 PORTVERSION=	0.23
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	HTML::TreeBuilder::XPath compatible interface with libxml
+WWW=		https://metacpan.org/release/HTML-TreeBuilder-LibXML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

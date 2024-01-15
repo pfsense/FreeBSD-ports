@@ -1,13 +1,12 @@
-# Created by: Glenn Johnson
-# $FreeBSD$
-
 PORTNAME=	tinker
-DISTVERSION=	8.8.3
+DISTVERSION=	8.10.5
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://dasher.wustl.edu/tinker/downloads/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	General purpose molecular modelling package
+WWW=		https://dasher.wustl.edu/tinker/
 
 LICENSE=	TINKER
 LICENSE_NAME=	TINKER license agreement
@@ -23,7 +22,7 @@ BUILD_WRKSRC=	${WRKSRC}/source
 INSTALL_WRKSRC=	${WRKSRC}/source
 
 MAKE_ENV=	HAVE_G2C=yes
-MAKE_ARGS=	RANLIB=ranlib BINDIR=${STAGEDIR}${PREFIX}/bin
+MAKE_ARGS=	RANLIB=ranlib BINDIR=${STAGEDIR}${PREFIX}/bin LIBS="${LOCALBASE}/lib/libfftw3.a ${LOCALBASE}/lib/libfftw3_threads.a"
 MAKEFILE=	${WRKSRC}/make/Makefile
 EXTRACT_AFTER_ARGS=--exclude fftw --exclude windows --exclude macosx
 
@@ -31,16 +30,15 @@ SUB_FILES=	pkg-message
 
 BINARY_ALIAS=	gfortran=gfortran${GCC_DEFAULT}
 
-OPTIONS_DEFINE=	OPTIMIZED_FFLAGS DOCS EXAMPLES
+OPTIONS_DEFINE=		NATIVE OPTIMIZED_FFLAGS DOCS EXAMPLES
+OPTIONS_DEFINE_amd64=	SIMD
+OPTIONS_DEFINE_i386=	SIMD
 
-OPTIONS_DEFINE_amd64=	SSE
-OPTIONS_DEFINE_i386=	SSE
-OPTIONS_DEFAULT_amd64=	SSE
-OPTIONS_DEFAULT_i386=	SSE
+NATIVE_MAKE_ARGS=	PORT_SIMD_FLAGS+="-march=native"
 
-SSE_MAKE_ARGS=	PORT_SIMD_FLAGS="-msse -msse2 -mfpmath=sse"
+OPTIMIZED_FFLAGS_DESC=	Fortran compilation optimizations
 
-OPTIMIZED_FFLAGS_DESC=	compilation optimizations
+SIMD_MAKE_ARGS=		PORT_SIMD_FLAGS+="-msse -msse2 -mssse3"
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -52,11 +50,13 @@ FFLAGS+=	-O3 -ffast-math -finline-functions -fomit-frame-pointer -funroll-loops 
 .if (${ARCH} == "i386")
 FFLAGS+=	-mfancy-math-387 -malign-double
 .endif # i386
-.endif
+.endif # OPTIMIZED_FFLAGS
 
 post-extract:
 	@${RM} ${BUILD_WRKSRC}/*.c
 	@${RM} ${WRKSRC}/other/eopbend.orig
+	# remove bundled linux libraries
+	@${RM} ${WRKSRC}/lib/linux/*
 
 post-patch:
 	@${REINPLACE_CMD} -i '' 's|\.\./bin/|${STAGEDIR}${PREFIX}/bin/|' ${BUILD_WRKSRC}/../bench/bench*.run

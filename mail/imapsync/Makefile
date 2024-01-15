@@ -1,13 +1,11 @@
-# Created by: Alex Deiter <tiamat@komi.mts.ru>
-# $FreeBSD$
-
 PORTNAME=	imapsync
-PORTVERSION=	1.977
+PORTVERSION=	2.229
 DISTVERSIONPREFIX=	imapsync-
 CATEGORIES=	mail perl5
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	IMAP synchronization, copy or migration tool
+WWW=		https://imapsync.lamiral.info/
 
 LICENSE=	NO_LIMIT_PUBLIC_LICENSE
 LICENSE_NAME=	NO LIMIT PUBLIC LICENSE
@@ -24,6 +22,7 @@ RUN_DEPENDS=	p5-Crypt-OpenSSL-RSA>0:security/p5-Crypt-OpenSSL-RSA \
 		p5-IO-Tee>0:devel/p5-IO-Tee \
 		p5-JSON-WebToken>0:www/p5-JSON-WebToken \
 		p5-Mail-IMAPClient>0:mail/p5-Mail-IMAPClient \
+		p5-Proc-ProcessTable>0:devel/p5-Proc-ProcessTable \
 		p5-Readonly>0:devel/p5-Readonly \
 		p5-Regexp-Common>0:textproc/p5-Regexp-Common \
 		p5-Sys-MemInfo>0:devel/p5-Sys-MemInfo \
@@ -35,8 +34,6 @@ RUN_DEPENDS=	p5-Crypt-OpenSSL-RSA>0:security/p5-Crypt-OpenSSL-RSA \
 USES=		cpe perl5 tar:tgz shebangfix
 SHEBANG_FILES=	${PORTNAME}
 USE_GITHUB=	yes
-GH_ACCOUNT=	imapsync
-GH_TAGNAME=	1d08afa
 
 CPE_VENDOR=	gilles_lamiral
 NO_BUILD=	yes

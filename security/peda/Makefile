@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	peda
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.1-21
-DISTVERSIONSUFFIX=	-gf76c34d
+DISTVERSION=		1.2
 CATEGORIES=	security python
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Python-based GDB extension for exploit development and debugging
+WWW=		http://ropshell.com/peda/
 
 LICENSE=	CC-BY-NC-SA-3.0
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,9 +1,6 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	miracl
 PORTVERSION=	5.6
-PORTREVISION=	7
+PORTREVISION=	8
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	http://mirror.shatow.net/freebsd/${PORTNAME}/ \
@@ -11,6 +8,7 @@ MASTER_SITES=	http://mirror.shatow.net/freebsd/${PORTNAME}/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiprecision Integer and Rational Arithmetic C/C++ Library
+WWW=		http://certivox.com/index.php/solutions/miracl-crypto-sdk
 
 LICENSE=	AGPLv3 COMMERCIAL
 LICENSE_COMB=	dual

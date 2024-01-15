@@ -1,24 +1,36 @@
-# Created by: Dmitry Kazarov <d.y.kazarov@mail.ru>
-# $FreeBSD$
-
 PORTNAME=	qpdf
-DISTVERSION=	10.0.4
+DISTVERSION=	11.7.0
 CATEGORIES=	print
 MASTER_SITES=	SF
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Command-line tools for transforming and inspecting PDF documents
+WWW=		http://qpdf.sourceforge.net
 
 LICENSE=	ART20 APACHE20
 LICENSE_COMB=	dual
 LICENSE_FILE_ART20=	${WRKSRC}/Artistic-2.0
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.txt
 
-USES=		compiler:c++11-lang gmake jpeg libtool localbase
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-static
+USES=		compiler:c++11-lang cmake cpe jpeg libtool localbase
 USE_LDCONFIG=	yes
+CPE_VENDOR=	qpdf_project
 
-OPTIONS_DEFINE=	DOCS
+CMAKE_ARGS=	-DHAVE_EXTERN_LONG_TIMEZONE=0 \
+		-DBUILD_STATIC_LIBS=0 \
+		-DUSE_IMPLICIT_CRYPTO=0 \
+		-DALLOW_CRYPTO_NATIVE=0 \
+		-DCMAKE_INSTALL_MANDIR=${PREFIX}/man
+
+OPTIONS_DEFINE=		DOCS
+OPTIONS_RADIO=		CRYPTO
+OPTIONS_RADIO_CRYPTO=	GNUTLS OPENSSL
+OPTIONS_DEFAULT=	OPENSSL
+
+OPENSSL_USES=		ssl
+OPENSSL_CMAKE_BOOL=	REQUIRE_CRYPTO_OPENSSL
+
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
+GNUTLS_CMAKE_BOOL=	REQUIRE_CRYPTO_GNUTLS
 
 .include <bsd.port.mk>

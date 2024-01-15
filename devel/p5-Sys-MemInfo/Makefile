@@ -1,6 +1,3 @@
-# Created by: Terry Sposato <terry@sucked-in.com>
-# $FreeBSD$
-
 PORTNAME=	Sys-MemInfo
 PORTVERSION=	0.99
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl extension for getting memory information
+WWW=		https://metacpan.org/release/Sys-MemInfo
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

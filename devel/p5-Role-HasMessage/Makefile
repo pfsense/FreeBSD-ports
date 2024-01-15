@@ -1,6 +1,3 @@
-# Created by: Geraud CONTINSOUZAS <geraud@gcu.info>
-# $FreeBSD$
-
 PORTNAME=	Role-HasMessage
 PORTVERSION=	0.006
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	geraud@gcu.info
 COMMENT=	Thing with a message method
+WWW=		https://metacpan.org/release/Role-HasMessage
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

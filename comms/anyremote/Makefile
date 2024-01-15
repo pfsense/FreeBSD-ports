@@ -1,6 +1,3 @@
-# Created by: Alex Samorukov <samm@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	anyremote
 PORTVERSION=	6.7.3
 CATEGORIES=	comms
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Remote control service over Bluetooth, infrared, or TCP/IP networking
+WWW=		https://anyremote.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

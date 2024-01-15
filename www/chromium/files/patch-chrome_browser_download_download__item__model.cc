@@ -1,20 +1,29 @@
---- chrome/browser/download/download_item_model.cc.orig	2020-11-13 06:36:36 UTC
+--- chrome/browser/download/download_item_model.cc.orig	2023-12-10 06:10:27 UTC
 +++ chrome/browser/download/download_item_model.cc
-@@ -571,7 +571,7 @@ bool DownloadItemModel::IsCommandChecked(
-       return download_->GetOpenWhenComplete() ||
+@@ -755,7 +755,7 @@ bool DownloadItemModel::IsCommandChecked(
               download_crx_util::IsExtensionDownload(*download_);
      case DownloadCommands::ALWAYS_OPEN_TYPE:
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
        if (download_commands->CanOpenPdfInSystemViewer()) {
          DownloadPrefs* prefs = DownloadPrefs::FromBrowserContext(profile());
-@@ -612,7 +612,7 @@ void DownloadItemModel::ExecuteCommand(DownloadCommand
-       bool is_checked = IsCommandChecked(download_commands,
+         return prefs->ShouldOpenPdfInSystemReader();
+@@ -801,7 +801,7 @@ void DownloadItemModel::ExecuteCommand(DownloadCommand
                                           DownloadCommands::ALWAYS_OPEN_TYPE);
        DownloadPrefs* prefs = DownloadPrefs::FromBrowserContext(profile());
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
        if (download_commands->CanOpenPdfInSystemViewer()) {
          prefs->SetShouldOpenPdfInSystemReader(!is_checked);
+         SetShouldPreferOpeningInBrowser(is_checked);
+@@ -1170,7 +1170,7 @@ void DownloadItemModel::DetermineAndSetShouldPreferOpe
+     return;
+   }
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+   if (download_->GetOriginalMimeType() == "application/x-x509-user-cert") {
+     SetShouldPreferOpeningInBrowser(true);
+     return;

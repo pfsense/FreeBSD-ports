@@ -1,29 +1,34 @@
-# Created by: Ayumi Mitsui <ayu@commun.jp>
-# $FreeBSD$
-
 PORTNAME=	umurmur
-DISTVERSION=	0.2.17
-PORTREVISION=	1
+DISTVERSION=	0.2.20
 CATEGORIES=	audio net
 
-MAINTAINER=	ayu@commun.jp
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Minimalistic Murmur (Mumble server)
+WWW=		https://umurmur.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		fails to compile: fatal error: byteswap.h file not found
-BROKEN_armv6=		fails to compile: fatal error: byteswap.h file not found
-
 LIB_DEPENDS=	libconfig.so:devel/libconfig \
 		libprotobuf-c.so:devel/protobuf-c
 
-USES=		autoreconf gmake libtool localbase ssl
-GNU_CONFIGURE=	yes
+USES=		autoreconf gmake libtool localbase
 USE_GITHUB=	yes
-CONFIGURE_ARGS=	--with-ssl=openssl
-
 USE_RC_SUBR=	umurmur
+
+GNU_CONFIGURE=	yes
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092
+LIB_DEPENDS+=	libmbedtls.so:security/mbedtls
+CONFIGURE_ARGS=	--with-ssl=mbedtls
+.else
+USES+=		ssl
+BROKEN_SSL=	openssl openssl31
+BROKEN_SSL_REASON=	Requires OpenSSL 3.0.0 deprecated CRYPTO_MEM_CHECK_ON
+CONFIGURE_ARGS=	--with-ssl=openssl
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/configure.ac
@@ -35,4 +40,4 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/umurmur
 	${INSTALL_DATA} ${WRKSRC}/umurmur.conf.example ${STAGEDIR}${PREFIX}/etc/umurmur/umurmur.conf.sample
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

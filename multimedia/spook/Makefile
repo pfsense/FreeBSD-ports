@@ -1,6 +1,3 @@
-# Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	spook
 PORTVERSION=	20050207
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.litech.org/spook/dist/
 
 MAINTAINER=	mizhka@gmail.com
 COMMENT=	Embedded RTP/RTSP/HTTP video streamer
+WWW=		http://www.litech.org/spook/
 
 LICENSE=	GPLv2
 

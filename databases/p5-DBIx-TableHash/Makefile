@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	DBIx-TableHash
 CATEGORIES=	databases perl5
 PORTVERSION=	1.05
@@ -10,7 +7,8 @@ MASTER_SITE_SUBDIR=	CPAN:CHTHORMAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Tie a hash to a MySQL table + SQL utils
+COMMENT=	Tie a hash to a MySQL table plus SQL utilities
+WWW=		https://christhorman.com/projects/perl/DBIx-TableHash/
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DBD-mysql>=0:databases/p5-DBD-mysql

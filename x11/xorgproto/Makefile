@@ -1,15 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	xorgproto
-PORTVERSION=	2020.1
+DISTVERSION=	2023.2
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X Window System unified protocol definitions
+WWW=		https://gitlab.freedesktop.org/xorg/proto/xorgproto
 
-USES=		xorg-cat:proto
+LICENSE=	MIT
 
-CONFIGURE_ARGS= --without-fop \
+USES=		tar:xz xorg-cat:proto
+
+NO_ARCH=	yes
+
+CONFIGURE_ARGS=	--without-fop \
 		--without-xmlto \
 		--without-xsltproc \
 		--disable-specs

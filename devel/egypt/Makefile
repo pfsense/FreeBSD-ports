@@ -1,14 +1,11 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	egypt
-PORTVERSION=	1.10
-PORTREVISION=	1
+PORTVERSION=	1.11
 CATEGORIES=	devel perl5
 MASTER_SITES=	http://www.gson.org/egypt/download/
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create call graphs of C programs
+WWW=		https://www.gson.org/egypt/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

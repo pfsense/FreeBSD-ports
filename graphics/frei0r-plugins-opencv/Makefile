@@ -1,7 +1,11 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-MASTERDIR=	${.CURDIR}/../frei0r
+PORTREVISION=	0
+PKGNAMESUFFIX=	-plugins-${SLAVE_PORT:tl}
 
-BUILDING_FREI0R_OPENCV=	yes
+COMMENT=	Frei0r ${SLAVE_PORT} plugins
+
+MASTERDIR=	${.CURDIR}/../frei0r
+PLIST=		${.CURDIR}/pkg-plist
+
+SLAVE_PORT=	OpenCV
 
 .include "${MASTERDIR}/Makefile"

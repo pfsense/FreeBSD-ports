@@ -1,40 +1,40 @@
-# $FreeBSD$
-
 PORTNAME=	rainloop
-PORTVERSION=	1.14.0
-PORTREVISION=	1
+DISTVERSIONPREFIX=	legacy-
+DISTVERSION=	1.17.0
 CATEGORIES=	mail www
 MASTER_SITES=	https://github.com/RainLoop/rainloop-webmail/releases/download/v${PORTVERSION}/
-PKGNAMESUFFIX?=	${PHP_PKGNAMESUFFIX}
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
-COMMENT?=	Modern and interactive webmail
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Modern and interactive webmail
+WWW=		https://rainloop.net/
 
-.if "${PKGNAMESUFFIX}" == "${PHP_PKGNAMESUFFIX}"
-LICENSE=	RainLoop
-LICENSE_NAME=	RainLoop Software License
-LICENSE_TEXT=	License can be found at: http://www.rainloop.net/licensing/
-LICENSE_PERMS=	auto-accept
-.endif
+LICENSE=	MIT
 
 USES=		php:web,flavors zip
-NO_BUILD=	yes
+USE_PHP=	curl dom iconv simplexml xml zlib
+
 NO_ARCH=	yes
+NO_BUILD=	yes
+
 NO_WRKSUBDIR=	yes
-USE_PHP=	curl dom iconv json openssl pcre simplexml spl xml zlib
-PLIST_SUB=	VER="${PORTVERSION}" WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
-.if "${PKGNAMESUFFIX}" == "${PHP_PKGNAMESUFFIX}"
-RESTRICTED=	Redistribution in any form is prohibited
-.endif
+PLIST_SUB=	VER="${PORTVERSION}" \
+		WWWGRP="${WWWGRP}" \
+		WWWOWN="${WWWOWN}"
 
+OPTIONS_DEFAULT=	SQLITE
 OPTIONS_RADIO=		DB
 OPTIONS_RADIO_DB=	MYSQL PGSQL SQLITE
-OPTIONS_DEFAULT=	SQLITE
 
 MYSQL_USE=	PHP=pdo_mysql
 PGSQL_USE=	PHP=pdo_pgsql
 SQLITE_USE=	PHP=pdo_sqlite
+
+post-patch:
+	${REINPLACE_CMD} 's/__USE_SINGLE_LINE_AUTH_PLAIN_COMMAND = false/__USE_SINGLE_LINE_AUTH_PLAIN_COMMAND = true/' \
+		${WRKSRC}/rainloop/v/${PORTVERSION}/app/libraries/MailSo/Smtp/SmtpClient.php
+	${RM} ${WRKSRC}/rainloop/v/${PORTVERSION}/app/libraries/MailSo/Smtp/SmtpClient.php.bak
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/data

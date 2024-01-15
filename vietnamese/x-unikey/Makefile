@@ -1,6 +1,3 @@
-# Created by: Alexander Yerenkow <yerenkow@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	x-unikey
 PORTVERSION=	1.0.4
 CATEGORIES=	vietnamese textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/unikey/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vietnamese input method for X
+WWW=		http://www.unikey.org/linux.php
 
 USES=		compiler tar:bzip2 xorg
 USE_XORG=	x11

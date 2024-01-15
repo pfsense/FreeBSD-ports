@@ -1,25 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	bsd
-PORTVERSION=	1.0.20170329
+PORTVERSION=	1.0.20220510
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python wrappers for various BSD libc and system calls
+WWW=		https://github.com/freenas/py-bsd
 
 LICENSE=	BSD3CLAUSE
 
+BROKEN_FreeBSD_15=	Requires deprecated header dlg_keys.h
+
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
-RUN_DEPENDS=	${PY_ENUM34} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils cython
-
-USE_GITHUB=     yes
+USES=		python
+USE_GITHUB=	yes
 GH_ACCOUNT=	freenas
 GH_PROJECT=	py-bsd
-GH_TAGNAME=	6d148fa
+GH_TAGNAME=	be67e03
+USE_PYTHON=	autoplist distutils cython
 
 .include <bsd.port.mk>

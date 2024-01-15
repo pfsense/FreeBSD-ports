@@ -1,7 +1,7 @@
-$OpenBSD: patch-gnome-initial-setup_pages_keyboard_gis-keyboard-page_c,v 1.1 2014/04/07 10:30:32 ajacoutot Exp $
---- gnome-initial-setup/pages/keyboard/gis-keyboard-page.c.orig	Mon Apr  7 11:02:37 2014
-+++ gnome-initial-setup/pages/keyboard/gis-keyboard-page.c	Mon Apr  7 11:03:32 2014
-@@ -128,14 +128,16 @@ update_input (GisKeyboardPage *self)
+Index: gnome-initial-setup/pages/keyboard/gis-keyboard-page.c
+--- gnome-initial-setup/pages/keyboard/gis-keyboard-page.c.orig	2022-12-02 15:11:34 UTC
++++ gnome-initial-setup/pages/keyboard/gis-keyboard-page.c
+@@ -195,14 +195,16 @@ update_input (GisKeyboardPage *self)
  
  	set_input_settings (self);
  

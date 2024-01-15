@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Sort-Key-Top
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SALVA
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Select and sort top n elements
+WWW=		https://metacpan.org/release/Sort-Key-Top
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

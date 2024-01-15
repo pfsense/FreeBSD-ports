@@ -1,6 +1,3 @@
-# Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
-
 PORTNAME=	alienwave
 PORTVERSION=	0.4.0
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.alessandropira.org/alienwave/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shoot'em up game written using ncurses
+WWW=		https://www.alessandropira.org/alienwave/aw.html
 
 LICENSE=	GPLv2
 

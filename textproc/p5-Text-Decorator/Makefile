@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Decorator
 PORTVERSION=	1.65
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Apply a chain of filters to text
+WWW=		https://metacpan.org/release/Text-Decorator
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

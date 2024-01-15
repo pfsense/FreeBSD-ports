@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mgenplus
 PORTVERSION=	20150602
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	ja-font-
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Mgen+ Japanese TrueType fonts
+WWW=		http://jikasei.me/font/mgenplus/
 
 LICENSE=	OFL11
 

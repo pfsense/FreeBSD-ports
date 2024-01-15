@@ -1,8 +1,5 @@
-# Created by: Kris Moore <kris@pcbsd.org>
-# $FreeBSD$
-
 PORTNAME=	qtcreator
-DISTVERSION=	4.13.3
+DISTVERSION=	12.0.1
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/qtcreator/${DISTVERSION:R}/${DISTVERSION}
 DISTNAME=	qt-creator-opensource-src-${DISTVERSION}
@@ -10,6 +7,7 @@ DIST_SUBDIR=	KDE/Qt/qtcreator
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	C++ and QML IDE for Qt development
+WWW=		https://qt-project.org/wiki/Category:Tools::QtCreator
 
 LICENSE=	QtGPL
 LICENSE_GROUPS_QtGPL=	GPL
@@ -17,106 +15,74 @@ LICENSE_NAME=	GPLv3 with Qt Company GPL Exception 1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE.GPL3-EXCEPT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-# depend on the split out qbs
-LIB_DEPENDS=	libqbscore.so:devel/qbs
-BUILD_DEPENDS=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
-RUN_DEPENDS=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
+BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 
-USES=		compiler:c++14-lang gl python qmake qt:5 shebangfix tar:xz
-USE_LDCONFIG=	${LOCALBASE}/lib/${PORTNAME}
+LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
+		libxkbcommon.so:x11/libxkbcommon \
+		libzstd.so:archivers/zstd
+
+USES=		cmake compiler:c++17-lang desktop-file-utils gl \
+		llvm:build,run,noexport,min=17 pkgconfig python \
+		qt:6 shebangfix tar:xz
 USE_GL=		gl
-USE_QT=		buildtools concurrent core declarative designer gui help \
-		linguist location network printsupport qdoc qmake \
-		quickcontrols script script serialport sql svg webchannel \
-		widgets xml xmlpatterns
+USE_LDCONFIG=	${LOCALBASE}/lib/${PORTNAME}
+USE_QT=		5compat base declarative positioning quick3d quicktimeline \
+		serialport shadertools sqldriver-sqlite svg tools translations webchannel
 
-CXXFLAGS_powerpc=	-maltivec
-CXXFLAGS_powerpc64=	-maltivec
-CXXFLAGS_powerpc64le=	-maltivec
+SHEBANG_GLOB=	*.pl *.py *.sh
+SHEBANG_FILES=	src/libs/qt-breakpad/qtbreakpadsymbols \
+		src/plugins/terminal/tests/* \
+		src/plugins/terminal/tests/cursor/* \
+		tests/manual/distribution/elflint
+python_OLD_CMD+="/usr/bin/env python3.10"
+
+# Provide library paths, default llvm first as a hint to the clang code model.
+CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH:STRING="${LLVM_PREFIX};${PREFIX}"
+# - Prevent accidental pickup of devel/elfutils libraries.
+# - Prevent accidental use of devel/googletest headers, use bundled.
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_elfutils \
+		CMAKE_DISABLE_FIND_PACKAGE_Googletest
+# - Disable precompiled headers for now, they are missing compile flags.
+# - Suppress installed yaml-cpp, use bundled.
+CMAKE_OFF=	BUILD_WITH_PCH \
+		yaml-cpp_FOUND
+
+LDFLAGS+=	-lexecinfo
 
 # be paranoid and do not extract qbs (devel/qbs) copy from source tree
 EXTRACT_AFTER_ARGS+=	--exclude '${DISTNAME}/src/shared/qbs'
-# Set QBS_INSTALL_DIR for QBS plugin build and set config parameter to build
-# the qbsprojectmanager plugin without compile error
-QMAKE_ARGS+=	QBS_INSTALL_DIR=${PREFIX} CONFIG+=qbs_enable_project_file_updates
 
-# Enforce installation to ${PREFIX}.
-QMAKE_ARGS+=	QTC_PREFIX=${PREFIX} LLVM_INSTALL_DIR=${PREFIX}/llvm${LLVM_DEFAULT}
-
-DESKTOP_ENTRIES="Qt Creator" "" "QtProject-qtcreator" \
-		"${PREFIX}/bin/${PORTNAME}" "Development;Qt;" true
-
+PLIST_SUB=		SHLIB_VER="${PORTVERSION}" \
+			SHLIB_SHVER="${PORTVERSION:C/\..*//}"
 PORTDOCS=		*
 
 OPTIONS_DEFINE=		DOCS EXAMPLES QTWEBENGINE
-OPTIONS_SUB=		yes
-DOCS_DESC=		Install the Qt5 api documentation
-DOCS_USE=		QT=doc_run
-EXAMPLES_DESC=		Install the Qt5 example projects
-EXAMPLES_USE=		QT=examples_run
 OPTIONS_DEFAULT=	DOCS EXAMPLES
 OPTIONS_DEFAULT_amd64=	QTWEBENGINE
 OPTIONS_DEFAULT_i386=	QTWEBENGINE
+OPTIONS_SUB=		yes
 
-QTWEBENGINE_DESC=	Add dependency on qt5-webengine
+DOCS_DESC=		Install the Qt6 api documentation
+EXAMPLES_DESC=		Install the Qt6 example projects
+QTWEBENGINE_DESC=	Add dependency on qt6-webengine
+
+DOCS_USE=		QT=doc:run
+DOCS_CMAKE_BOOL=	WITH_DOCS
+
+EXAMPLES_USE=		QT=examples:run
+
 QTWEBENGINE_USE=	qt=webengine
-QTWEBENGINE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngine
+QTWEBENGINE_CMAKE_BOOL=	BUILD_HELPVIEWERBACKEND_QTWEBENGINE
 
-ALL_TARGET=		all
-INSTALL_TARGET=		install
+# Documentation is excluded from the default build targets.
+do-build-DOCS-on:
+	${CMAKE_BIN} --build ${BUILD_WRKSRC} --target docs
 
-DOCS_ALL_TARGET=	docs
-DOCS_INSTALL_TARGET=	install_docs
+# This also means separate install steps for documentation.
+do-install-DOCS-on:
+	${CMAKE_BIN} --install ${BUILD_WRKSRC} --prefix ${STAGEDIR}${PREFIX} \
+	    --component qch_docs
+	${CMAKE_BIN} --install ${BUILD_WRKSRC} --prefix ${STAGEDIR}${PREFIX} \
+	    --component html_docs
 
-PLIST_SUB=		SHLIB_VER="${PORTVERSION}"
-
-SHEBANG_FILES=		tests/system/tools/objectsToTable.py \
-			tests/system/tools/findUnusedObjects.py \
-			share/qtcreator/templates/wizards/files/python/file.py \
-			share/qtcreator/scripts/openTerminal.py \
-			src/libs/qmljs/parser/changeLicense.py \
-			src/libs/qt-breakpad/qtbreakpadsymbols \
-			src/tools/icons/export.py \
-			scripts/packagePlugins.py \
-			scripts/ninjawrapper.py \
-			scripts/checkInstalledFiles.py \
-			scripts/createDistPackage.py \
-			scripts/createDevPackage.py \
-			scripts/deployqt.py \
-			scripts/dependencyinfo.py \
-			scripts/createSourcePackages.py \
-			scripts/uichanges.py \
-			scripts/makedmg.py
-
-.include <bsd.port.pre.mk>
-
-.if ${LLVM_DEFAULT:C/[1-5]./&0/:S,-devel,990,} >= 90
-LLVM_DEFAULT=	80
-.endif
-
-.if ${LLVM_DEFAULT} == 10
-EXTRA_PATCHES=	${PATCHDIR}/llvm10_patch-src_shared_clang_clang__installation.pri
-.endif
-
-post-patch:
-# Fix paths for gnuplot and ant.
-	${REINPLACE_CMD} -e 's|/usr/bin/gnuplot|${LOCALBASE}/bin/gnuplot|' \
-				${WRKSRC}/share/qtcreator/debugger/dumper.py
-	${REINPLACE_CMD} -e 's|/usr/bin/ant|${LOCALBASE}/bin/ant|' \
-				${WRKSRC}/src/plugins/android/androidsettingswidget.cpp
-# Fix python binary in pro file.
-	${REINPLACE_CMD} -e 's|python|${PYTHON_CMD}|g' \
-				${WRKSRC}/qtcreator.pro
-
-pre-configure:
-# We piggyback on QMAKE_LIBDIR_FLAGS to make sure -L${WRKSRC}/lib is passed to
-# the linker before -L/usr/local/lib. By default, the opposite happens, which
-# is a problem when a Qt port is being upgraded, since an existing library
-# would end up being picked up instead of those built in ${WRKSRC}/lib. Since
-# qmake appends the value of QMAKE_LIBDIR to QMAKE_LIBDIR_FLAGS, we can use the
-# latter to get the linker path order right. qmake is smart enough to strip
-# occurrences of ${WRKSRC}/lib from .pc and .prl files when installing them.
-# See QTBUG-40825 and ports bugs 194088, 195105 and 198720.
-	${ECHO_CMD} 'QMAKE_LIBDIR_FLAGS = -L${WRKSRC}/lib' >> ${WRKSRC}/.qmake.cache
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

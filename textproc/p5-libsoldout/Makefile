@@ -1,6 +1,3 @@
-# Created by: Rodrigo OSORIO <rodrigo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libsoldout
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Convert Markdown text in (X)HTML
+WWW=		https://metacpan.org/release/libsoldout
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

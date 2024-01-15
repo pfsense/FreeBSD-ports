@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Pod-Tree
 PORTVERSION=	1.31
 CATEGORIES=	textproc devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create a static syntax tree for a POD
+WWW=		https://metacpan.org/release/Pod-Tree
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Mikolaj Golub <trociny@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vmtouch
 PORTVERSION=	1.3.1
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Virtual Memory Toucher
+WWW=		https://hoytech.com/vmtouch/
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hoytech

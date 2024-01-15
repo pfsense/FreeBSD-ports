@@ -1,6 +1,3 @@
-# Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
-
 PORTNAME=	leafpak
 PORTVERSION=	1.1.1
 CATEGORIES=	graphics
@@ -8,6 +5,7 @@ MASTER_SITES=	http://hoshina.denpa.org/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphic file cutter for LEAF/AQUAPLUS PAK format archives
+WWW=		https://hoshina.denpa.org/leafpak.html
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

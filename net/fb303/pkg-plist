@@ -10,13 +10,12 @@ include/fb303/ExportedStatMapImpl.h
 include/fb303/FollyLoggingHandler.h
 include/fb303/HistogramExporter.h
 include/fb303/LegacyClock.h
+include/fb303/LimitUtils.h
 include/fb303/MutexWrapper.h
 include/fb303/QuantileStat-inl.h
 include/fb303/QuantileStat.h
 include/fb303/ServiceData.h
 include/fb303/SimpleLRUMap.h
-include/fb303/SynchMap-inl.h
-include/fb303/SynchMap.h
 include/fb303/TFunctionStatHandler.h
 include/fb303/TLStatsAsyncAggregator.h
 include/fb303/TLStatsLockTraits.h
@@ -32,6 +31,9 @@ include/fb303/TimeseriesHistogram-inl.h
 include/fb303/TimeseriesHistogram.h
 include/fb303/detail/QuantileStatMap-inl.h
 include/fb303/detail/QuantileStatMap.h
+include/fb303/detail/QuantileStatWrappers-inl.h
+include/fb303/detail/QuantileStatWrappers.h
+include/fb303/detail/RegexUtil.h
 include/fb303/thrift/gen-cpp2/BaseService.h
 include/fb303/thrift/gen-cpp2/BaseService.tcc
 include/fb303/thrift/gen-cpp2/BaseServiceAsyncClient.h

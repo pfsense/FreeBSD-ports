@@ -1,8 +1,6 @@
-# Created by: n_hibma@qubesoft.com
-# $FreeBSD$
-
 PORTNAME=	mailman
-DISTVERSION=	2.1.34
+DISTVERSION=	2.1.39
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	GNU \
 		SF/${PORTNAME}/Mailman%202.1%20%28stable%29/${PORTVERSION} \
@@ -14,11 +12,12 @@ PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Mailing list manager with user-friendly web front-end
+WWW=		https://www.list.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/gnu-COPYING-GPL
 
-USES=		autoreconf cpe fakeroot python:2.7 shebangfix tar:tgz
+USES=		cpe fakeroot python:2.7 shebangfix tar:tgz
 CPE_VENDOR=	gnu
 
 USE_RC_SUBR=	mailman
@@ -35,8 +34,14 @@ CONFIGURE_ARGS+=--with-python=${PYTHON_CMD} \
 		--with-permcheck=no \
 		--with-mailhost=localhost \
 		--with-urlhost=localhost
+# setting these defeats the automated check for users in configure[.in], as of 2.1.39,
+# implemented in MM_FIND_* macros:
+CONFIGURE_ENV+=	CGI_GROUP=${CGI_GID} \
+		MAIL_GROUP=${MAIL_GID} \
+		MAILMAN_USER=${MM_USERNAME} \
+		MAILMAN_GROUP=${MM_GROUPNAME}
 
-CONFLICTS=	ja-mailman-2.1.*
+CONFLICTS=	ja-mailman-2.1.* mailman*exim* mailman*postfix*
 
 # The Mailman port supports a number of variables that may be tweaked at
 # build time.  Getting the values of some of them right is crucial!
@@ -68,19 +73,21 @@ PORTDOCS=	ACKNOWLEDGMENTS BUGS FAQ INSTALL NEWS README README-I18N.en \
 		mailman-member.txt \
 		FreeBSD-post-install-notes
 
-OPTIONS_SINGLE=	MTA
+OPTIONS_SINGLE=		MTA
 OPTIONS_SINGLE_MTA=	COURIER EXIM4 OPENSMTPD POSTFIX SENDMAIL
-OPTIONS_DEFINE=	HTDIG NAMAZU2 NOMAILPWD NLS DOCS
+OPTIONS_DEFINE=		HTDIG NAMAZU2 NOMAILPWD NLS DOCS
 OPTIONS_DEFAULT=	SENDMAIL NOMAILPWD
-COURIER_DESC=	for use with courier
-EXIM4_DESC=	for use with exim4
-OPENSMTPD_DESC=	for use with opensmtpd - EXPERIMENTAL -
-POSTFIX_DESC=	for use with postfix
-SENDMAIL_DESC=	for use with sendmail
-HTDIG_DESC=	- EXPERIMENTAL - htdig integration patches
-NAMAZU2_DESC=	Make private archives searchable with namazu2
-NOMAILPWD_DESC=	Elide plaintext passwords from monthly reminders
-MTA_DESC=	Integrate with which MTA?
+COURIER_DESC=		for use with courier
+EXIM4_DESC=		for use with exim4
+EXIM4_RUN_DEPENDS=	exim>=0:mail/exim
+OPENSMTPD_DESC=		for use with opensmtpd - EXPERIMENTAL -
+POSTFIX_DESC=		for use with postfix
+POSTFIX_RUN_DEPENDS=	postfix:mail/postfix
+SENDMAIL_DESC=		for use with sendmail
+HTDIG_DESC=		- EXPERIMENTAL - htdig integration patches
+NAMAZU2_DESC=		Make private archives searchable with namazu2
+NOMAILPWD_DESC=		Elide plaintext passwords from monthly reminders
+MTA_DESC=		Integrate with which MTA?
 
 .include <bsd.port.options.mk>
 
@@ -109,8 +116,6 @@ MAIL_GID?=	mail
 .endif
 
 .if ${PORT_OPTIONS:MPOSTFIX}
-BUILD_DEPENDS+=	postfix:mail/postfix
-RUN_DEPENDS+=	postfix:mail/postfix
 MAIL_GID?=	mailman
 EXTRA_PATCHES+=	${FILESDIR}/postfix-verp.diff
 .endif
@@ -124,7 +129,8 @@ MAIL_GID?=	_smtpd
 .endif
 
 .if ${PORT_OPTIONS:MHTDIG}
-PKGNAMESUFFIX+=	-with-htdig
+# no whitespace here!
+PKGNAMESUFFIX:=	${PKGNAMESUFFIX}-with-htdig
 # how to create PATCHFILES:
 #X identify what is the version of msapiro's patches corresponding to the release.
 #X fetch http://bazaar.launchpad.net/~msapiro/mailman/htdig/tarball/1822
@@ -148,8 +154,8 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Mailman-Cgi-private.py
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-mailpasswds
 .endif
 
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dnspython1>=0:dns/py-dnspython1@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dnspython1>=0:dns/py-dnspython1@${PY_FLAVOR}
 
 pre-everything::
 	@${ECHO} ""
@@ -216,7 +222,6 @@ post-install:
 	    -d ${MAILMANDIR}/${dir} ${dir})
 .endfor
 	@${RM} ${STAGEDIR}${MAILMANDIR}/pythonlib/*.egg-info
-	@# mm_cfg.py is handled by pkg-plist, no need to archive a copy:
 	@${RM} ${STAGEDIR}${MAILMANDIR}/Mailman/mm_cfg.py
 	@${RM} ${STAGEDIR}${MAILMANDIR}/Mailman/mm_cfg.pyc
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${IMGDIR}

@@ -1,6 +1,3 @@
-# Created by: Dean Hollister <dean@odyssey.apana.org.au>
-# $FreeBSD$
-
 PORTNAME=	squidpurge
 PORTVERSION=	1.17
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DISTNAME=	purge-20040201-src
 
 MAINTAINER=	dean@odyssey.apana.org.au
 COMMENT=	Powerful object purging utility for the Squid web proxy cache
+WWW=		http://www.wa.apana.org.au/~dean/squidpurge/
 
 LICENSE=	MIT
 

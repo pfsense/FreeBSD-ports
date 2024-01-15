@@ -1,13 +1,12 @@
-# Created by: Frank Laszlo <laszlof@vonostingroup.com>
-# $FreeBSD$
-
 PORTNAME=	ncrypt
 PORTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTNAME}-${PORTVERSION:R}.0
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced AES file encryption tool
+WWW=		https://ncrypt.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

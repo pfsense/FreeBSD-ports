@@ -1,6 +1,3 @@
-# Created by: Jeremy Karlson
-# $FreeBSD$
-
 PORTNAME=	adamem
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable Coleco ADAM and ColecoVision emulator
+WWW=		https://www.komkon.org/~dekogel/adamem.html
 
 BROKEN_aarch64=		fails to build: regparm is not valid on this platform
 BROKEN_armv6=		fails to build: regparm is not valid on this platform

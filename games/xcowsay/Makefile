@@ -1,14 +1,13 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	xcowsay
-PORTVERSION=	1.5.1
+PORTVERSION=	1.6
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://www.nickg.me.uk/files/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Graphical configurable talking cow
+WWW=		https://www.doof.me.uk/xcowsay/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

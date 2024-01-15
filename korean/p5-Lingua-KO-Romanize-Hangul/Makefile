@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Lingua-KO-Romanize-Hangul
 PORTVERSION=	0.20
 CATEGORIES=	korean perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Romanization of Korean language
+WWW=		https://metacpan.org/release/Lingua-KO-Romanize-Hangul
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

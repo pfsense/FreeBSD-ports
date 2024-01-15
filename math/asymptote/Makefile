@@ -1,40 +1,43 @@
-# Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	asymptote
-PORTVERSION=	2.67
-PORTREVISION=	2
+PORTVERSION=	2.81
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 
+PATCH_SITES=	https://github.com/vectorgraphics/asymptote/commit/
+PATCHFILES+=	fa28442195bd99b9bac87e3ff752953ac57ee172.patch:-p1 # backport fix for https://github.com/vectorgraphics/asymptote/issues/328
+
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Powerful script-based vector graphics language
+WWW=		https://asymptote.sourceforge.io/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-LIB_DEPENDS=	libcurl.so:ftp/curl \
+LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
+		libcurl.so:ftp/curl \
 		libsigsegv.so:devel/libsigsegv
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cson>=0.8:devel/py-cson@${PY_FLAVOR} \
 		${PY_PILLOW}
 
-USES=		compiler:c++14-lang gettext-runtime ghostscript gl gmake gnome ncurses perl5 python:3.6+ \
-		pyqt:5 shebangfix tar:tgz
+USES=		compiler:c++14-lang gettext-runtime ghostscript gl gmake gnome ncurses perl5 python \
+		pyqt:5 shebangfix tar:tgz tex
 SHEBANG_FILES=	GUI/*.py
 USE_GL=		gl glu glut
 USE_GNOME=	librsvg2:run
 USE_PERL5=	build
 USE_TEX=	dvipsk formats
-USE_PYQT=	svg_run widgets_run
+USE_PYQT=	pyqt5:run
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-lsp # disable the module with Boost-related errors
 
 MAKE_ENV=	ASYMPTOTE_HOME=${WRKDIR} HOME=${WRKDIR}
-MAKE_JOBS_UNSAFE=	yes
+MAKE_JOBS_UNSAFE=	yes # see https://github.com/vectorgraphics/asymptote/issues/331
 
 ALL_TARGET=	asy asy-keywords.el
 INSTALL_TARGET=	install-asy
@@ -71,10 +74,18 @@ OFFSCREEN_DESC=	Enable offscreen rendering using OSMesa library
 OFFSCREEN_LIB_DEPENDS=	libOSMesa.so:graphics/libosmesa
 
 READLINE_CONFIGURE_ENABLE=	readline
-READLINE_USES=	readline:port
+READLINE_USES=	readline
 
 TEST_TARGET=	test
 TEST_WRKSRC=	${WRKSRC}/tests
+
+PORTEXAMPLES=	*
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} 's/-lgc/-lgc-threaded/' ${WRKSRC}/configure

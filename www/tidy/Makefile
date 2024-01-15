@@ -1,6 +1,3 @@
-# Created by: Abel Chow <achow@transoft.net>
-# $FreeBSD$
-
 PORTNAME=	tidy4
 PORTVERSION=	20000804
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	tidy4aug00
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fixes and tidies up HTML files
+WWW=		https://www.w3.org/People/Raggett/tidy/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${FILESDIR}/COPYRIGHT

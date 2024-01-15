@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	susv4
 PORTVERSION=	20180131
 CATEGORIES=	misc
@@ -9,12 +7,12 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Open Group Base Specifications Issue 7/IEEE Std 1003.1, 2018 Edition
+WWW=		http://www.unix.org/online.html
 
+# Redistribution of the documents is not permitted
 LICENSE=	NONE
 
 USES=		tar:bzip2
-
-RESTRICTED=	Redistribution of the documents is not permitted
 
 NO_ARCH=	yes
 NO_BUILD=	yes

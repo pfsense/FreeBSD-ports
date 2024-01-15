@@ -99,13 +99,16 @@ include/fox-%%MAJORVER%%/FXDelegator.h
 include/fox-%%MAJORVER%%/FXDial.h
 include/fox-%%MAJORVER%%/FXDialogBox.h
 include/fox-%%MAJORVER%%/FXDictionary.h
+include/fox-%%MAJORVER%%/FXDictionaryOf.h
 include/fox-%%MAJORVER%%/FXDir.h
 include/fox-%%MAJORVER%%/FXDirBox.h
 include/fox-%%MAJORVER%%/FXDirDialog.h
 include/fox-%%MAJORVER%%/FXDirList.h
 include/fox-%%MAJORVER%%/FXDirSelector.h
 include/fox-%%MAJORVER%%/FXDirVisitor.h
+include/fox-%%MAJORVER%%/FXDirWatch.h
 include/fox-%%MAJORVER%%/FXDispatcher.h
+include/fox-%%MAJORVER%%/FXDisplay.h
 include/fox-%%MAJORVER%%/FXDockBar.h
 include/fox-%%MAJORVER%%/FXDockHandler.h
 include/fox-%%MAJORVER%%/FXDockSite.h
@@ -118,6 +121,8 @@ include/fox-%%MAJORVER%%/FXEXEIcon.h
 include/fox-%%MAJORVER%%/FXEXEImage.h
 include/fox-%%MAJORVER%%/FXElement.h
 include/fox-%%MAJORVER%%/FXEvent.h
+include/fox-%%MAJORVER%%/FXEventDispatcher.h
+include/fox-%%MAJORVER%%/FXEventLoop.h
 include/fox-%%MAJORVER%%/FXException.h
 include/fox-%%MAJORVER%%/FXExpression.h
 include/fox-%%MAJORVER%%/FXExtentd.h
@@ -147,12 +152,15 @@ include/fox-%%MAJORVER%%/FXGauge.h
 include/fox-%%MAJORVER%%/FXGradientBar.h
 include/fox-%%MAJORVER%%/FXGroupBox.h
 include/fox-%%MAJORVER%%/FXHash.h
+include/fox-%%MAJORVER%%/FXHashOf.h
 include/fox-%%MAJORVER%%/FXHeader.h
 include/fox-%%MAJORVER%%/FXHorizontalFrame.h
 include/fox-%%MAJORVER%%/FXICOIcon.h
 include/fox-%%MAJORVER%%/FXICOImage.h
 include/fox-%%MAJORVER%%/FXIFFIcon.h
 include/fox-%%MAJORVER%%/FXIFFImage.h
+include/fox-%%MAJORVER%%/FXINI.h
+include/fox-%%MAJORVER%%/FXINIFile.h
 include/fox-%%MAJORVER%%/FXIO.h
 include/fox-%%MAJORVER%%/FXIOBuffer.h
 include/fox-%%MAJORVER%%/FXIODevice.h
@@ -171,6 +179,7 @@ include/fox-%%MAJORVER%%/FXJPGIcon.h
 include/fox-%%MAJORVER%%/FXJPGImage.h
 include/fox-%%MAJORVER%%/FXJSON.h
 include/fox-%%MAJORVER%%/FXJSONFile.h
+include/fox-%%MAJORVER%%/FXJSONString.h
 include/fox-%%MAJORVER%%/FXKOI8RCodec.h
 include/fox-%%MAJORVER%%/FXKnob.h
 include/fox-%%MAJORVER%%/FXLFQueue.h
@@ -182,6 +191,8 @@ include/fox-%%MAJORVER%%/FXMDIButton.h
 include/fox-%%MAJORVER%%/FXMDIChild.h
 include/fox-%%MAJORVER%%/FXMDIClient.h
 include/fox-%%MAJORVER%%/FXMainWindow.h
+include/fox-%%MAJORVER%%/FXMappedFile.h
+include/fox-%%MAJORVER%%/FXMarkedPtr.h
 include/fox-%%MAJORVER%%/FXMat2d.h
 include/fox-%%MAJORVER%%/FXMat2f.h
 include/fox-%%MAJORVER%%/FXMat3d.h
@@ -189,7 +200,6 @@ include/fox-%%MAJORVER%%/FXMat3f.h
 include/fox-%%MAJORVER%%/FXMat4d.h
 include/fox-%%MAJORVER%%/FXMat4f.h
 include/fox-%%MAJORVER%%/FXMatrix.h
-include/fox-%%MAJORVER%%/FXMemMap.h
 include/fox-%%MAJORVER%%/FXMemoryStream.h
 include/fox-%%MAJORVER%%/FXMenuBar.h
 include/fox-%%MAJORVER%%/FXMenuButton.h
@@ -216,6 +226,7 @@ include/fox-%%MAJORVER%%/FXPPMIcon.h
 include/fox-%%MAJORVER%%/FXPPMImage.h
 include/fox-%%MAJORVER%%/FXPacker.h
 include/fox-%%MAJORVER%%/FXParallel.h
+include/fox-%%MAJORVER%%/FXParseBuffer.h
 include/fox-%%MAJORVER%%/FXPath.h
 include/fox-%%MAJORVER%%/FXPicker.h
 include/fox-%%MAJORVER%%/FXPipe.h
@@ -238,6 +249,7 @@ include/fox-%%MAJORVER%%/FXRandom.h
 include/fox-%%MAJORVER%%/FXRangeSlider.h
 include/fox-%%MAJORVER%%/FXRanged.h
 include/fox-%%MAJORVER%%/FXRangef.h
+include/fox-%%MAJORVER%%/FXReactor.h
 include/fox-%%MAJORVER%%/FXReadWriteLock.h
 include/fox-%%MAJORVER%%/FXRealSlider.h
 include/fox-%%MAJORVER%%/FXRealSpinner.h
@@ -247,6 +259,8 @@ include/fox-%%MAJORVER%%/FXRefPtr.h
 include/fox-%%MAJORVER%%/FXRegion.h
 include/fox-%%MAJORVER%%/FXRegistry.h
 include/fox-%%MAJORVER%%/FXReplaceDialog.h
+include/fox-%%MAJORVER%%/FXReverseDictionary.h
+include/fox-%%MAJORVER%%/FXReverseDictionaryOf.h
 include/fox-%%MAJORVER%%/FXRex.h
 include/fox-%%MAJORVER%%/FXRootWindow.h
 include/fox-%%MAJORVER%%/FXRuler.h
@@ -333,6 +347,7 @@ include/fox-%%MAJORVER%%/FXXBMIcon.h
 include/fox-%%MAJORVER%%/FXXBMImage.h
 include/fox-%%MAJORVER%%/FXXML.h
 include/fox-%%MAJORVER%%/FXXMLFile.h
+include/fox-%%MAJORVER%%/FXXMLString.h
 include/fox-%%MAJORVER%%/FXXPMIcon.h
 include/fox-%%MAJORVER%%/FXXPMImage.h
 include/fox-%%MAJORVER%%/FXhalf.h
@@ -346,6 +361,7 @@ include/fox-%%MAJORVER%%/chart/chartdefs.h
 include/fox-%%MAJORVER%%/fx.h
 include/fox-%%MAJORVER%%/fx3d.h
 include/fox-%%MAJORVER%%/fxascii.h
+include/fox-%%MAJORVER%%/fxchar.h
 include/fox-%%MAJORVER%%/fxcpuid.h
 include/fox-%%MAJORVER%%/fxdefs.h
 include/fox-%%MAJORVER%%/fxendian.h
@@ -357,11 +373,11 @@ include/fox-%%MAJORVER%%/xincs.h
 lib/libCHART-%%MAJORVER%%.a
 lib/libCHART-%%MAJORVER%%.so
 lib/libCHART-%%MAJORVER%%.so.0
-lib/libCHART-%%MAJORVER%%.so.0.0.64
+lib/libCHART-%%MAJORVER%%.so.0.0.84
 lib/libFOX-%%MAJORVER%%.a
 lib/libFOX-%%MAJORVER%%.so
 lib/libFOX-%%MAJORVER%%.so.0
-lib/libFOX-%%MAJORVER%%.so.0.0.64
+lib/libFOX-%%MAJORVER%%.so.0.0.84
 libdata/pkgconfig/fox17.pc
 man/man1/ControlPanel-17.1.gz
 %%PORTEXAMPLES%%man/man1/PathFinder-17.1.gz

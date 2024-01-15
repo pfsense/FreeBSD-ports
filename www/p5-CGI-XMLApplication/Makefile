@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	CGI-XMLApplication
 PORTVERSION=	1.1.5
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object Oriented Interface for CGI Script Applications
+WWW=		https://metacpan.org/release/CGI-XMLApplication
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-LibXML>=1.1:textproc/p5-XML-LibXML \

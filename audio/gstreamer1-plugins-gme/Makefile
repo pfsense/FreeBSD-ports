@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	audio
 
@@ -9,5 +7,9 @@ GST_PLUGIN=	gme
 DIST=		bad
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
+
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS=  libgme.so:audio/libgme
 
 .include "${MASTERDIR}/Makefile"

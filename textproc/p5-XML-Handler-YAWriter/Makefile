@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	XML-Handler-YAWriter
 PORTVERSION=	0.23
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Yet another Perl SAX XML Writer
+WWW=		https://metacpan.org/release/XML-Handler-YAWriter
 
 LICENSE=	GPLv1+  # exact version not specified
 

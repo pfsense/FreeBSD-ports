@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	mir-core
-PORTVERSION=	0.2.1
+PORTVERSION=	1.1.62
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	base software building blocks and conventions
+WWW=		https://github.com/libmir/mir-core
 
 LICENSE=	BSL
 
@@ -19,9 +19,10 @@ GH_ACCOUNT=	libmir
 DUB_CMD=	${LOCALBASE}/bin/dub build --build=release
 D_INCLUDE_DIR=	${PREFIX}/include/d
 D_LIB_DIR=	${PREFIX}/lib/d
+DC=		${PREFIX}/bin/ldmd2
 
 do-build:
-	@cd ${WRKSRC} && ${DUB_CMD}
+	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

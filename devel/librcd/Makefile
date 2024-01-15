@@ -1,6 +1,3 @@
-# Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	librcd
 PORTVERSION=	0.1.14
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	http://dside.dyndns.org/files/rusxmms/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library used by rusxmms for autodetection of Russian charset
+WWW=		https://rusxmms.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

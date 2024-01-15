@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Open-VM-Tools
 PORTVERSION=	10.1.0
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	# empty
@@ -14,7 +14,7 @@ COMMENT=	pfSense package Open-VM-Tools
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	open-vm-tools-nox11>=0:emulators/open-vm-tools-nox11
+RUN_DEPENDS=	open-vm-tools-nox11>=0:emulators/open-vm-tools@nox11
 
 NO_BUILD=	yes
 NO_MTREE=	yes

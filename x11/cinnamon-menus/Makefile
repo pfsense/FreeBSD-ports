@@ -1,13 +1,11 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	cinnamon-menus
-PORTVERSION=	4.8.2
+PORTVERSION=	5.4.0
 CATEGORIES=	x11 gnome
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Additional UI API for cinnamon
+WWW=		https://github.com/linuxmint/cinnamon-menus
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi

@@ -58,6 +58,7 @@ class acme_sh {
 	private $debug = true;
 	public $dnssleep;
 	public $ocspstaple;
+	public $preferredchain;
 	
 	private function execacmesh($command, $envvariables = null) {
 		global $config;
@@ -96,6 +97,7 @@ class acme_sh {
 		);
 		$process = proc_open($command, $descriptorspec, $pipes, null, $env);
 		if (is_resource($process)) {
+			/* This must only output on debug or else it breaks account key creation output. */
 			if ($this->debug) {
 				echo stream_get_contents($pipes[1]);
 				echo stream_get_contents($pipes[2]);
@@ -114,11 +116,11 @@ class acme_sh {
 	}
 	
 	function init($ca, $name, $email) {
-		$conf = "ACME_DIRECTORY='{$ca}/directory'\nACCOUNT_EMAIL='{$email}'\n";
-		$cahost = parse_url($ca, PHP_URL_HOST);
+		$conf = "ACME_DIRECTORY='{$ca}'\nACCOUNT_EMAIL='{$email}'\n";
+		$cadir = parse_url($ca, PHP_URL_HOST) . parse_url($ca, PHP_URL_PATH);
 		$acmeconf = "/tmp/acme/{$name}/";
 		$this->acmeconf = $acmeconf;
-		$this->path_account = "$acmeconf/ca/$cahost";
+		$this->path_account = "{$acmeconf}/ca/{$cadir}";
 		safe_mkdir($this->path_account);
 		$this->accountconfig = "{$this->acmeconf}accountconf.conf";
 		file_put_contents("{$this->accountconfig}", $conf);
@@ -139,6 +141,7 @@ class acme_sh {
 	
 	function registeraccount($key) {
 		file_put_contents("{$this->path_account}/account.key", $key);
+		$this->debug = false;
 		$result = $this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
 				. " --registeraccount"
@@ -151,9 +154,6 @@ class acme_sh {
 	function generateDomainKey($domain, $keylength) {
 		global $a_keylength;
 		$pathadd = "";
-		if ($a_keylength[$keylength]['ecc']) {
-			$pathadd = "_ecc";
-		}
 		$certpath = "{$this->acmeconf}{$domain}{$pathadd}";
 		safe_mkdir($certpath);
 		
@@ -163,6 +163,7 @@ class acme_sh {
 				. " --accountconf " . escapeshellarg($this->accountconfig)
 				. " --create-domain-key --domain " . escapeshellarg($domain)
 				. " --keylength " . escapeshellarg($keylength)
+				. " --force"
 				. " --log-level 3"
 				. " --log " . escapeshellarg($this->acmeconf."acme_createdomainkey.log")
 				);
@@ -182,7 +183,10 @@ class acme_sh {
 		if ($this->ocspstaple == "yes") {
 			$cmdparameters .= " --ocsp-must-staple ";
 		}
-		
+		if (!empty($this->preferredchain)) {
+			$cmdparameters .= " --preferred-chain " . escapeshellarg($this->preferredchain);
+		}
+
 		$Le_Domain = $domainstosign[0]->domainname;
 		$certpath = "{$this->acmeconf}{$Le_Domain}/";
 		safe_mkdir($certpath);
@@ -217,7 +221,7 @@ EOF;
 		
 		$certpath = "{$this->acmeconf}{$domainstosign[0]->domainname}";
 		safe_mkdir($certpath);
-		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key", $certificatepsk);
+		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key.next", $certificatepsk);
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
 			$api = $domain->method; 
@@ -254,6 +258,11 @@ EOF;
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_ZONE'] = $domain->NSUPDATE_ZONE;
+				if (strpos($domain->NSUPDATE_SERVER, ":") !== false) {
+					$parts = explode(":" ,$domain->NSUPDATE_SERVER);
+					$domain->NSUPDATE_SERVER = $parts[0];
+					$envvariables['NSUPDATE_SERVER_PORT'] = $parts[1];
+				}
 				$nsupdatedomain = $domain->domainname;
 				if (!empty($domain->challengealias)) {
 					$nsupdatedomain = $domain->challengealias;
@@ -277,12 +286,13 @@ EOD;
 				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
 			}
 		}
-		
+
 		$this->execacmesh(""
 			. " --{$action} {$domainstr}"
 			. " --home " . escapeshellarg($this->acmeconf)
 			. " --accountconf " . escapeshellarg($this->accountconfig)
 			. " --force"
+			. " --always-force-new-domain-key"
 			. " --reloadCmd " . escapeshellarg("{$this->acmeconf}reloadcmd.sh")
 			. $cmdparameters
 			. " --log-level 3"

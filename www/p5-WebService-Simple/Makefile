@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	WebService-Simple
 PORTVERSION=	0.24
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Simple Interface To Web Services APIs
+WWW=		https://metacpan.org/release/WebService-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -30,5 +28,7 @@ TEST_DEPENDS=	p5-XML-Feed>=0:textproc/p5-XML-Feed \
 
 USE_PERL5=	modbuildtiny
 USES=		perl5
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

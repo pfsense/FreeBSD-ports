@@ -1,19 +1,18 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	whistle
 PORTVERSION=	1.0.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Event dispatcher
+WWW=		https://python-whistle.github.io/
 
 LICENSE=	APACHE20
 
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
+
 NO_ARCH=	yes
-USE_PYTHON=	autoplist distutils
-USES=		python:3.5+
 
 .include <bsd.port.mk>

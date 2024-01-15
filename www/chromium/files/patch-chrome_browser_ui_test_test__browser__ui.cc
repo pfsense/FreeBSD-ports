@@ -1,29 +1,20 @@
---- chrome/browser/ui/test/test_browser_ui.cc.orig	2020-11-13 06:36:38 UTC
+--- chrome/browser/ui/test/test_browser_ui.cc.orig	2023-08-17 07:33:31 UTC
 +++ chrome/browser/ui/test/test_browser_ui.cc
-@@ -10,7 +10,7 @@
- #include "build/build_config.h"
+@@ -22,7 +22,7 @@
  
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    (defined(OS_LINUX) && !defined(OS_CHROMEOS))
-+    (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
- #include "chrome/test/pixel/browser_skia_gold_pixel_diff.h"
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD) || \
+     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
+ #include "content/public/common/content_switches.h"
  #include "ui/base/test/skia_gold_matching_algorithm.h"
- #include "ui/compositor/test/draw_waiter_for_test.h"
-@@ -32,7 +32,7 @@ std::string NameFromTestCase() {
- }  // namespace
- 
- TestBrowserUi::TestBrowserUi() {
--#if defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
-+#if defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
-   // Default to fuzzy diff. The magic number is chosen based on
-   // past experiments.
-   SetPixelMatchAlgorithm(
-@@ -43,7 +43,7 @@ TestBrowserUi::TestBrowserUi() {
- TestBrowserUi::~TestBrowserUi() = default;
- 
+@@ -35,7 +35,7 @@
  // TODO(https://crbug.com/958242) support Mac for pixel tests.
--#if defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
-+#if defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
- bool TestBrowserUi::VerifyPixelUi(views::Widget* widget,
-                                   const std::string& screenshot_prefix,
-                                   const std::string& screenshot_name) {
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if BUILDFLAG(IS_WIN) || (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
++#if BUILDFLAG(IS_WIN) || (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD))
+ #define SUPPORTS_PIXEL_TEST
+ #endif
+ 

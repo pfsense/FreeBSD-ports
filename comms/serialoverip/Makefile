@@ -1,6 +1,3 @@
-# Created by: Devon H. O'Dell <devon.odell@coyotepoint.com>
-# $FreeBSD$
-
 PORTNAME=	serialoverip
 PORTVERSION=	1.0
 CATEGORIES=	comms net
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Transport of serial interfaces over UDP/IP
+WWW=		https://www.sourceforge.net/projects/serialoverip/
 
 LICENSE=	GPLv2
 

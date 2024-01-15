@@ -1,13 +1,11 @@
-# Created by: mich@freebsdcluster.org
-# $FreeBSD$
-
 PORTNAME=	spinner
 PORTVERSION=	1.2.4
 CATEGORIES=	sysutils
 MASTER_SITES=	http://downloads.laffeycomputer.com/current_builds/spinner/
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Keep ssh and telnet connections from dropping due to inactivity
+WWW=		http://www.laffeycomputer.com/spinner.html
 
 GNU_CONFIGURE=	yes
 

@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ltris
 PORTVERSION=	1.2.1
 PORTEPOCH=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/lgames/${PORTNAME}
 
 MAINTAINER=	marcel@herrbischoff.com
 COMMENT=	Tetris clone but a good one with bunch of cool features
+WWW=		http://lgames.sourceforge.net/index.php?project=LTris
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

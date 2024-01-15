@@ -1,15 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	amavisd-new
-PORTVERSION=	2.12.0
+DISTVERSION=	2.12.2
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
-MASTER_SITES=	https://gitlab.com/amavis/amavis/-/archive/v${PORTVERSION}/
-DISTNAME=	amavis-v${PORTVERSION}
 
 MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Mail scanner interface between mailer and content checkers
+WWW=		https://www.ijs.si/software/amavisd/
 
 LICENSE=	GPLv2
 
@@ -23,11 +20,16 @@ RUN_DEPENDS=	p5-Unix-Syslog>=0:sysutils/p5-Unix-Syslog \
 		p5-Net-LibIDN>=0:dns/p5-Net-LibIDN
 
 USES=		perl5 shebangfix tar:bz2
+USE_GITLAB=	yes
 USE_PERL5=	run
+GL_ACCOUNT=	amavis
+GL_PROJECT=	amavis
+GL_TAGNAME=	38f86957cfc161c23d12637ce206f5ae7ec3d0a8
 
 SHEBANG_FILES=	amavisd-agent amavisd-nanny amavisd-release p0f-analyzer.pl \
 		amavisd-snmp-subagent amavisd
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 DOCS=		AAAREADME.first AMAVIS-MIB.txt INSTALL LDAP.schema LICENSE \
@@ -44,9 +46,9 @@ DAEMON?=	/usr/sbin/daemon -p
 
 OPTIONS_DEFINE=	IPV6 BDB SNMP SQLITE MYSQL PGSQL LDAP SASL SPAMASSASSIN P0F \
 		FILE RAR UNRAR ARJ UNARJ LHA ARC NOMARCH CAB RPM ZOO UNZOO LZOP \
-		P7ZIP MSWORD TNEF DOCS
-OPTIONS_DEFAULT=	BDB SPAMASSASSIN FILE UNRAR ARJ LHA ARC CAB RPM ZOO LZOP \
-			P7ZIP MSWORD
+		7ZIP MSWORD TNEF DOCS
+OPTIONS_DEFAULT=	BDB SPAMASSASSIN FILE UNRAR ARJ ARC CAB RPM ZOO LZOP \
+			7ZIP MSWORD
 BDB_DESC=		Use BerkeleyDB for nanny/cache/snmp
 SNMP_DESC=		Install amavisd snmp subagent
 SQLITE_DESC=		Use SQLite for lookups
@@ -69,7 +71,7 @@ RPM_DESC=		RPM support with archivers/rpm2cpio
 ZOO_DESC=		ZOO support with archivers/zoo
 UNZOO_DESC=		ZOO support with archivers/unzoo
 LZOP_DESC=		LZOP support with archivers/lzop
-P7ZIP_DESC=		P7ZIP support with archivers/p7zip
+7ZIP_DESC=		7ZIP support with archivers/7-zip
 MSWORD_DESC=		Ms Word support with textproc/ripole
 TNEF_DESC=		Add external tnef decoder converters/tnef
 
@@ -197,8 +199,8 @@ RUN_DEPENDS+=	unzoo>=4.4_1:archivers/unzoo
 RUN_DEPENDS+=	${LOCALBASE}/bin/lzop:archivers/lzop
 .endif
 
-.if ${PORT_OPTIONS:MP7ZIP}
-RUN_DEPENDS+=	${LOCALBASE}/bin/7zr:archivers/p7zip
+.if ${PORT_OPTIONS:M7ZIP}
+RUN_DEPENDS+=	${LOCALBASE}/bin/7zz:archivers/7-zip
 .endif
 
 .if ${PORT_OPTIONS:MMSWORD}

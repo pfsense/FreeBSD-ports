@@ -1,16 +1,14 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	mod_realdoc
 PORTVERSION=	20170405
 CATEGORIES=	www
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Apache module to support atomic deploys
+WWW=		https://github.com/etsy/mod_realdoc
 
 LICENSE=	MIT
 
-USES=		apache:2.2+
+USES=		apache
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 USE_GITHUB=	yes

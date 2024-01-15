@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	utdns
 PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	dns
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Proxy UDP/DNS to TCP/DNS
+WWW=		https://www.cypherpunk.at/2013/04/dnsudp-to-tcp-translator/
 
 LICENSE=	GPLv3
 

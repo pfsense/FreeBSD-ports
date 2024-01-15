@@ -1,6 +1,3 @@
-# Created by: Martin Matuska <martin@tradex.sk>
-# $FreeBSD$
-
 PORTNAME=	File-Scan
 PORTVERSION=	1.43
 PORTREVISION=	1

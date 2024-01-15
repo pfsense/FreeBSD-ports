@@ -1,6 +1,3 @@
-# Created by: koma2@lovepeers.org
-# $FreeBSD$
-
 PORTNAME=	topless
 PORTVERSION=	1.52
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	https://people.freebsd.org/~daichi/src/
 
 MAINTAINER=	koma2@lovepeers.org
 COMMENT=	Display command output on the whole screen like "top"
+WWW=		https://people.freebsd.org/~daichi/
 
 LICENSE=	BSD2CLAUSE
 

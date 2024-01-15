@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	ExtUtils-CBuilder
-PORTVERSION=	0.280235
+PORTVERSION=	0.280236
 PORTEPOCH=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Compile and link C code for Perl modules
+WWW=		https://metacpan.org/release/ExtUtils-CBuilder
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

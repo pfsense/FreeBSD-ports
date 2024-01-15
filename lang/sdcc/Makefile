@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	sdcc
 PORTVERSION=	4.0.0
 DISTVERSIONPREFIX=src-
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	SF
 
 MAINTAINER=	darius@dons.net.au
 COMMENT=	Small Device C Compiler
+WWW=		https://sdcc.sourceforge.net/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	multi
@@ -17,10 +16,10 @@ LICENSE_FILE_GPLv3=	${WRKSRC}/sdas/COPYING3
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/graph/adjacency_list.hpp:devel/boost-libs
 
-CONFLICTS_INSTALL=	sdcc-[0-9]* sdcc-devel-[0-9]*
+CONFLICTS_INSTALL=	sdcc sdcc-devel
 GNU_CONFIGURE=	yes
 USES=		autoreconf:build bison compiler:c++11-lang gmake \
-		readline:port python shebangfix tar:bzip2
+		readline python shebangfix tar:bzip2
 SHEBANG_FILES=	support/scripts/as2gbmap.py
 TEST_WRKSRC=	${WRKSRC}/support/regression
 TEST_ARGS=	--no-print-directory # tons of them, way too annoying
@@ -81,6 +80,7 @@ post-patch:
 		${WRKSRC}/device/lib/pic14/Makefile.common \
 		${WRKSRC}/device/lib/pic14/Makefile.in \
 		${WRKSRC}/device/lib/pic14/configure \
+		${WRKSRC}/device/lib/pic14/configure.ac \
 		${WRKSRC}/device/lib/pic14/libc/Makefile.in \
 		${WRKSRC}/device/lib/pic14/libm/Makefile.in \
 		${WRKSRC}/device/lib/pic14/libsdcc/enhanced/Makefile.in \

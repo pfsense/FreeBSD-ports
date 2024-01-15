@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	PDF-API3
 PORTVERSION=	3.001
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	The Next Generation of Text::PDF::API2
+WWW=		https://metacpan.org/release/PDF-API3
 
 USES=		perl5
 USE_PERL5=	configure

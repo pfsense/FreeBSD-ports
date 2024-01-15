@@ -1,22 +1,11 @@
---- driver/Makefile.in.orig	2016-05-24 18:02:30 UTC
+--- driver/Makefile.in.orig	2023-10-11 00:37:06 UTC
 +++ driver/Makefile.in
-@@ -51,7 +51,7 @@ DEPEND_DEFINES	= @DEPEND_DEFINES@
- 
- SHELL		= /bin/sh
- INSTALL		= @INSTALL@
--SUID_FLAGS      = -o root -m 4755
-+SUID_FLAGS      = -m 755
- INSTALL_PROGRAM = @INSTALL_PROGRAM@
- INSTALL_SCRIPT  = @INSTALL_SCRIPT@
- INSTALL_SETUID  = @INSTALL_SETUID@
-@@ -81,8 +81,8 @@ XPM_LIBS	= @XPM_LIBS@
- 
- 
+@@ -79,7 +79,7 @@ AD_DIR		= @APPDEFAULTS@
  AD_DIR		= @APPDEFAULTS@
--PAM_DIR		= /etc/pam.d
--PAM_CONF	= /etc/pam.conf
-+PAM_DIR		= ${prefix}/etc/pam.d
-+PAM_CONF	= ${prefix}/etc/pam.conf
  
- UTILS_SRC	= $(srcdir)/../utils
- UTILS_BIN	= ../utils
+ # $(sysconfdir) is either /usr/local/etc or /usr/etc but this must be /etc.
+-PAM_ROOT	= /etc
++PAM_ROOT	= ${prefix}/etc
+ PAM_DIR		= $(PAM_ROOT)/pam.d
+ PAM_CONF	= $(PAM_ROOT)/pam.conf
+ 

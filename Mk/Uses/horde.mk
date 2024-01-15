@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Feature:	horde
 # Usage:	USES=horde
 # Valid ARGS:	none
@@ -42,7 +40,7 @@ horde-Horde_Date_Parser-DEPEND=	${PEARDIR}/Horde/Date/Parser.php:devel/pear-Hord
 horde-Horde_Dav-DEPEND=		${PEARDIR}/Horde/Dav/Client.php:www/pear-Horde_Dav
 horde-Horde_Db-DEPEND=		${PEARDIR}/Horde/Db.php:databases/pear-Horde_Db
 horde-Horde_Editor-DEPEND=	${PEARDIR}/Horde/Editor.php:www/pear-Horde_Editor
-horde-Horde_Exception-DEPEND=	${PEARDIR}/Horde/Exception.php:devel/pear-Horde_Exception	
+horde-Horde_Exception-DEPEND=	${PEARDIR}/Horde/Exception.php:devel/pear-Horde_Exception
 horde-Horde_Feed-DEPEND=	${PEARDIR}/Horde/Feed.php:www/pear-Horde_Feed
 horde-Horde_Form-DEPEND=	${PEARDIR}/Horde/Form.php:www/pear-Horde_Form
 horde-Horde_Group-DEPEND=	${PEARDIR}/Horde/Group/Base.php:security/pear-Horde_Group
@@ -103,8 +101,8 @@ horde-Horde_Service_UrlShortener-DEPEND=	${PEARDIR}/Horde/Service/UrlShortener.p
 horde-Horde_Service_Weather-DEPEND=	${PEARDIR}/Horde/Service/Weather.php:www/pear-Horde_Service_Weather
 horde-Horde_Support-DEPEND=	${PEARDIR}/Horde/Support/Array.php:devel/pear-Horde_Support
 horde-Horde_SyncMl-DEPEND=	${PEARDIR}/Horde/SyncMl.php:comms/pear-Horde_SyncMl
-horde-Horde_Url-DEPEND=		${PEARDIR}/Horde/Url.php:net/pear-Horde_Url	
-horde-Horde_Util-DEPEND=	${PEARDIR}/Horde/Util.php:devel/pear-Horde_Util	
+horde-Horde_Url-DEPEND=		${PEARDIR}/Horde/Url.php:net/pear-Horde_Url
+horde-Horde_Util-DEPEND=	${PEARDIR}/Horde/Util.php:devel/pear-Horde_Util
 horde-Horde_Template-DEPEND=	${PEARDIR}/Horde/Template.php:www/pear-Horde_Template
 horde-Horde_Text_Diff-DEPEND=	${PEARDIR}/Horde/Text/Diff.php:textproc/pear-Horde_Text_Diff
 horde-Horde_Text_Filter-DEPEND=	${PEARDIR}/Horde/Text/Filter.php:textproc/pear-Horde_Text_Filter
@@ -119,41 +117,30 @@ horde-Horde_Vfs-DEPEND=		${PEARDIR}/Horde/Vfs.php:sysutils/pear-Horde_Vfs
 horde-Horde_View-DEPEND=	${PEARDIR}/Horde/View.php:devel/pear-Horde_View
 horde-Horde_Xml_Element-DEPEND=	${PEARDIR}/Horde/Xml/Element.php:textproc/pear-Horde_Xml_Element
 horde-Horde_Xml_Wbxml-DEPEND=	${PEARDIR}/Horde/Xml/Wbxml.php:textproc/pear-Horde_Xml_Wbxml
-horde-content-DEPEND=		${LOCALBASE}/${HORDE_DIR}/content/lib/Tagger.php:devel/horde-content
-horde-gollem-DEPEND=		${LOCALBASE}/${HORDE_DIR}/gollem/index.php:ftp/horde-gollem
-horde-horde-DEPEND=		${LOCALBASE}/${HORDE_DIR}/index.php:www/horde-base
-horde-imp-DEPEND=		${LOCALBASE}/${HORDE_DIR}/imp/index.php:mail/horde-imp
-horde-ingo-DEPEND=		${LOCALBASE}/${HORDE_DIR}/ingo/index.php:mail/horde-ingo
-horde-kronolith-DEPEND=		${LOCALBASE}/${HORDE_DIR}/kronolith/index.php:deskutils/horde-kronolith
-horde-mnemo-DEPEND=		${LOCALBASE}/${HORDE_DIR}/mnemo/index.php:deskutils/horde-mnemo
-horde-nag-DEPEND=		${LOCALBASE}/${HORDE_DIR}/nag/index.php:deskutils/horde-nag
-horde-timeobjects-DEPEND=	${LOCALBASE}/${HORDE_DIR}/timeobjects/lib/Driver.php:devel/horde-timeobjects
-horde-trean-DEPEND=		${LOCALBASE}/${HORDE_DIR}/trean/index.php:www/horde-trean
-horde-turba-DEPEND=		${LOCALBASE}/${HORDE_DIR}/turba/index.php:mail/horde-turba
 
-.if defined(USE_HORDE_RUN)
-. for DEP in ${USE_HORDE_RUN}
-.  if !defined(horde-${DEP}-DEPEND)
+.  if defined(USE_HORDE_RUN)
+.    for DEP in ${USE_HORDE_RUN}
+.      if !defined(horde-${DEP}-DEPEND)
 UNKNOWN_HORDE_PACKAGES+=	${DEP}
-.  else
+.      else
 RUN_DEPENDS+=	${horde-${DEP}-DEPEND}@${PHP_FLAVOR}
+.      endif
+.    endfor
 .  endif
-. endfor
-.endif
 
-.if defined(USE_HORDE_BUILD)
-. for DEP in ${USE_HORDE_BUILD}
-.  if !defined(horde-${DEP}-DEPEND)
+.  if defined(USE_HORDE_BUILD)
+.    for DEP in ${USE_HORDE_BUILD}
+.      if !defined(horde-${DEP}-DEPEND)
 UNKNOWN_HORDE_PACKAGES+=	${DEP}
-.  else
+.      else
 BUILD_DEPENDS+=	${horde-${DEP}-DEPEND}@${PHP_FLAVOR}
+.      endif
+.    endfor
 .  endif
-. endfor
-.endif
 
-.if defined(UNKNOWN_HORDE_PACKAGES)
+.  if defined(UNKNOWN_HORDE_PACKAGES)
 IGNORE=	unknown Horde package(s): ${UNKNOWN_HORDE_PACKAGES}
-.endif
+.  endif
 
 .include "${USESDIR}/pear.mk"
 .endif

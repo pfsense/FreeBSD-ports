@@ -1,28 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	seal
-DISTVERSION=	3.4.5
+DISTVERSION=	4.1.1
 CATEGORIES=	security
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	4d57e56649d2dd1b8333457e301661121b05c827.patch:-p1 # PR https://github.com/microsoft/SEAL/pull/111
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Microsoft Simple Encrypted Arithmetic Library
+WWW=		https://www.microsoft.com/en-us/research/project/microsoft-seal/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++17-lang
+USES=		cmake:testing compiler:c++17-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	Microsoft
 GH_PROJECT=	SEAL
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DSEAL_LIB_BUILD_TYPE="Shared"
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	SEAL_USE_MSGSL SEAL_USE_ZLIB SEAL_USE_ZSTD # project clones repositories instead of using exrernal packages, see https://github.com/microsoft/SEAL/issues/329
+CMAKE_TESTING_ON=	SEAL_BUILD_TESTS
+CMAKE_TESTING_TARGET=	gtest
 
-CMAKE_SOURCE_PATH=	${WRKSRC}/native/src
+PLIST_SUB+=	VERSION=${DISTVERSION} VER=${DISTVERSION:R}
 
-PLIST_SUB+=	FILE_VER=${DISTVERSION:R}
+post-test: # run tests
+	@cd ${BUILD_WRKSRC} && bin/sealtest
 
 .include <bsd.port.mk>

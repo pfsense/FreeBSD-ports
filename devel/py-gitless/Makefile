@@ -1,14 +1,12 @@
-# Created by: Carlos J. Puga Medina <cpm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gitless
 PORTVERSION=	0.8.8
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Version control system built on top of Git
+WWW=		https://gitless.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -19,7 +17,7 @@ RUN_DEPENDS=	git:devel/git \
 		${PYTHON_PKGNAMEPREFIX}sh>=1.11:devel/py-sh@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

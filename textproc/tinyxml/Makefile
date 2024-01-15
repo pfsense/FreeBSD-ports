@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	tinyxml
 PORTVERSION=	2.6.2
 PORTREVISION=	4
@@ -10,13 +7,16 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small C++ XML parser
+WWW=		https://sourceforge.net/projects/tinyxml/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		compiler:c++11-lang uidfix
+USES=		compiler:c++11-lang cpe uidfix
 USE_LDCONFIG=	YES
 SHLIB_MAJOR=	3
 PLIST_SUB=	SHLIB_MAJOR="${SHLIB_MAJOR}"
+
+CPE_VENDOR=	tinyxml_project
 
 OPTIONS_DEFINE=	DOCS PROFILE
 OPTIONS_SUB=	yes

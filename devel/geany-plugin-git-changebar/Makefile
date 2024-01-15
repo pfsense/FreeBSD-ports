@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-git-changebar
 PORTVERSION=	${GEANY_VER}
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Geany plugin: ${${GEANY_PLUGIN}_DESC}
+WWW=		https://plugins.geany.org/git-changebar.html
 
 LIB_DEPENDS=	libgit2.so:devel/libgit2
 

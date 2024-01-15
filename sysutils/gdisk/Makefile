@@ -1,20 +1,18 @@
-# Created by: Dmitry N Fomin <fdn@okbire.ru>
-# $FreeBSD$
-
 PORTNAME=	gdisk
-PORTVERSION=	1.0.5
-PORTREVISION=	3
+PORTVERSION=	1.0.9
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/gptfdisk/gptfdisk/${PORTVERSION}
 DISTNAME=	gptfdisk-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	GPT fdisk
+WWW=		https://www.rodsbooks.com/fixparts/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc64
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libpopt.so:devel/popt \
 		libuuid.so:misc/e2fsprogs-libuuid

@@ -1,6 +1,3 @@
-# Created by: Brian Candler <B.Candler@pobox.com>
-# $FreeBSD$
-
 PORTNAME=	SGMLSpm
 PORTVERSION=	1.03
 DISTVERSIONSUFFIX=	ii
@@ -11,12 +8,15 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for postprocessing the output from sgmls and nsgmls
+WWW=		https://metacpan.org/release/DMEGG/SGMLSpm-1.03ii
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_PERL5=	run
 USES=		shebangfix perl5
+USE_PERL5=	run
+
+NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

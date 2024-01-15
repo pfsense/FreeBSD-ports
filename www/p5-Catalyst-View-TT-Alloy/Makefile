@@ -1,6 +1,3 @@
-# Created by: Danny Warren <danny@dannywarren.com>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-TT-Alloy
 PORTVERSION=	0.00007
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	danny@dannywarren.com
 COMMENT=	Template::Alloy views for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-View-TT-Alloy
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

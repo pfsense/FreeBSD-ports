@@ -1,6 +1,3 @@
-# Created by: sumikawa@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Plagger
 PORTVERSION=	0.7.17
 PORTREVISION=	5
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pluggable RSS/Atom feed aggregator written in Perl
+WWW=		https://metacpan.org/release/Plagger
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

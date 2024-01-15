@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	zsh-autosuggestions
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.4
+DISTVERSION=	0.7.0
 CATEGORIES=	shells
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Fish-like autosuggestions for Zsh
+WWW=		https://github.com/zsh-users/zsh-autosuggestions
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,12 +1,10 @@
-# Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
-
 PORTNAME=	w3m
 PORTVERSION=	0.5.3.${SNAPDATE}
 CATEGORIES+=	www
 
 MAINTAINER?=	nobutaka@FreeBSD.org
 COMMENT?=	Pager/text-based WWW browser
+WWW=		https://w3m.sourceforge.net/
 
 LICENSE=	w3m
 LICENSE_NAME=	w3m
@@ -17,15 +15,17 @@ BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fa
 
 LIB_DEPENDS=	libgc.so:devel/boehm-gc
 
-USES=		iconv pkgconfig perl5 ssl
+USES=		cpe iconv pkgconfig perl5 ssl
 USE_GITHUB=	yes
+
+CPE_VENDOR=	w3m_project
 
 GH_ACCOUNT=	tats
 GH_PROJECT=	w3m
-GH_TAGNAME=	e4da76a
+GH_TAGNAME=	93ad5ee
 
 MAKE_JOBS_UNSAFE=	yes
-SNAPDATE=	20201112
+SNAPDATE=	20230129
 
 CONFLICTS?=	ja-w3m-0.5.* ja-w3m-img-0.5.* w3m-img-0.5.*
 GNU_CONFIGURE=	yes
@@ -49,10 +49,11 @@ JAPANESE_DESC=		Japanese messages and migemo support
 KEY_LYNX_DESC=		Keymap like lynx browser
 OPTIONS_SUB=	yes
 
-INLINE_IMAGE_USES=	gnome xorg
-INLINE_IMAGE_USE=	xorg=x11 gnome=gtk20,gdkpixbuf2
-INLINE_IMAGE_CONFIGURE_ON=	--with-imagelib=gtk2 --enable-image=fb,x11
-INLINE_IMAGE_CONFIGURE_OFF=	--enable-image=no
+INLINE_IMAGE_USES=	xorg
+INLINE_IMAGE_USE=	xorg=x11
+INLINE_IMAGE_LIB_DEPENDS=	libImlib2.so:graphics/imlib2
+INLINE_IMAGE_CONFIGURE_ON=	--with-imagelib=imlib2 --enable-image=fb,x11
+INLINE_IMAGE_CONFIGURE_OFF=	--enable-image=fb
 
 JAPANESE_CONFIGURE_ON=	--enable-japanese=U --with-migemo=yes
 

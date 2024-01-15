@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	AI-Categorizer
 PORTVERSION=	0.09
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Automatic Text Categorization
+WWW=		https://metacpan.org/release/AI-Categorizer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

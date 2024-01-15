@@ -1,14 +1,12 @@
-# Created by: se@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	dvbcut
-PORTVERSION=	0.7.3
+PORTVERSION=	0.7.4
 DISTVERSIONPREFIX=	v
 PORTREVISION=	5
 CATEGORIES=	multimedia
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Qt application for cutting of MPEG PS and MPEG TS streams (DVB)
+WWW=		https://github.com/bernhardu/dvbcut-deb/
 
 LICENSE=	GPLv2
 
@@ -23,11 +21,12 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		compiler:c++11-lang desktop-file-utils gl pkgconfig \
 		qmake:outsource qt:5 shared-mime-info
 
-USE_QT=		core gui widgets xml buildtools_build linguisttools_build
+USE_QT=		core gui widgets xml buildtools:build linguisttools:build
 USE_GL=		gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	bernhardu
 GH_PROJECT=	dvbcut-deb
+GH_TAGNAME=	d7c8fad
 
 CXXFLAGS+=	-I${LOCALBASE}/include \
 		-I${LOCALBASE}/include/libavcodec \

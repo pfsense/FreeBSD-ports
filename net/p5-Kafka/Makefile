@@ -1,6 +1,3 @@
-# Created by: gebhart@secnetix.de
-# $FreeBSD$
-
 PORTNAME=	Kafka
 PORTVERSION=	0.8010
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gebhart@secnetix.de
 COMMENT=	Apache Kafka interface for Perl
+WWW=		https://metacpan.org/pod/Kafka
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: sanpei@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	mrtg-ping-probe
 PORTVERSION=	2.2.0
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	https://opsec.eu/src/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Round Trip Time and Packet Loss Probe for MRTG
+WWW=		http://pwo.de/projects/mrtg/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

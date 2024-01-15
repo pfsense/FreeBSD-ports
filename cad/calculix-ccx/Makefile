@@ -1,8 +1,5 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	ccx
-PORTVERSION=	2.17
+PORTVERSION=	2.21
 PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
@@ -11,35 +8,39 @@ DISTFILES=	${DIST_SOURCES}
 DIST_SUBDIR=	calculix
 EXTRACT_ONLY=	${DIST_SOURCES}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	rsmith@xs4all.nl
 COMMENT=	Three-Dimensional Structural Finite Element Program
+WWW=		http://www.calculix.de/
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libarpack.so:math/arpack-ng	\
 		libspooles.so:math/spooles
 
-USES=		blaslapack compiler:openmp fortran gmake tar:bzip2
+USES=		blaslapack fortran gmake perl5 tar:bzip2
 USE_PERL5=	build
 
 DIST_SOURCES=	ccx_${PORTVERSION}.src${EXTRACT_SUFX}
 DIST_HTM=	ccx_${PORTVERSION}.htm${EXTRACT_SUFX}
-DIST_PS=	ccx_${PORTVERSION}.ps${EXTRACT_SUFX}
+DIST_PDF=	ccx_${PORTVERSION}.pdf
 DIST_EXAMPLES=	ccx_${PORTVERSION}.test${EXTRACT_SUFX}
 
 ALL_TARGET=	#Empty
 
 CCX_VER=	ccx_${PORTVERSION}
-WRKSRC=		${WRKDIR}/CalculiX/${CCX_VER}/src
 DOCSDIR=	${PREFIX}/share/doc/CalculiX
+WRKSRC=		${WRKDIR}/CalculiX/${CCX_VER}/src
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+CFLAGS+=	-fpic
+FFLAGS+=	-fpic
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
-DISTFILES+=	${DIST_HTM} ${DIST_PS}
-EXTRACT_ONLY+=	${DIST_HTM} ${DIST_PS}
+DISTFILES+=	${DIST_HTM} ${DIST_PDF}
+EXTRACT_ONLY+=	${DIST_HTM}
 .endif
 
 .if $(PORT_OPTIONS:MEXAMPLES)
@@ -47,12 +48,9 @@ DISTFILES+=	${DIST_EXAMPLES}
 EXTRACT_ONLY+=	${DIST_EXAMPLES}
 .endif
 
-.if ${ARCH} == "sparc64"
-CFLAGS+=	-fPIC
-FFLAGS+=	-fPIC
-.else
-CFLAGS+=	-fpic
-FFLAGS+=	-fpic
+.if ${GCC_DEFAULT} >= 10
+# workaround for Missing actual argument for argument '_formal_15' at (1)
+FFLAGS+=	-fallow-argument-mismatch
 .endif
 
 pre-build:
@@ -70,9 +68,8 @@ do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@(cd ${WRKDIR}/CalculiX/${CCX_VER}/doc/ccx && ${COPYTREE_SHARE} . \
 		${STAGEDIR}${DOCSDIR}/ccx)
-	${INSTALL_DATA} ${WRKDIR}/CalculiX/${CCX_VER}/doc/${CCX_VER}.ps \
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${DIST_PDF} \
 		${STAGEDIR}${DOCSDIR}
-	@${GZIP_CMD} ${STAGEDIR}${DOCSDIR}/${CCX_VER}.ps
 
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

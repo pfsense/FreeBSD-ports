@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	FSM
 PORTVERSION=	1.4.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR Finite State Machine
+WWW=		https://pear.php.net/package/FSM
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

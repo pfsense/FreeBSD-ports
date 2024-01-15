@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer2-Plugin-Deferred
 PORTVERSION=	0.008000
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dancer2 plugin to defer messages or data across redirections
+WWW=		https://metacpan.org/release/Dancer2-Plugin-Deferred
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,13 +1,11 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	sst
-PORTVERSION=	1.23
+PORTVERSION=	1.26
 CATEGORIES=	security
 MASTER_SITES=	http://utcc.utoronto.ca/~pkern/stuff/sst/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Simple SSL tunneling tool (uses netcat)
+WWW=		https://utcc.utoronto.ca/~pkern/stuff/sst/
 
 .if !exists(/usr/bin/nc)
 RUN_DEPENDS=	netcat:net/netcat

@@ -1,6 +1,3 @@
-# Created by: Leo Vandewoestijne <freebsd@dns.company>
-# $FreeBSD$
-
 PORTNAME=	p5-DSC
 PORTVERSION=	2.04
 CATEGORIES=	dns perl5
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.dns-oarc.net/files/dsc/ \
 
 MAINTAINER=	freebsd@dns.company
 COMMENT=	DNS Statistics Presenter Perl Library
+WWW=		https://www.dns-oarc.net/tools/dsc/
 
 LICENSE=	BSD3CLAUSE
 
@@ -24,7 +22,6 @@ RUN_DEPENDS=	ploticus>=2.40:math/ploticus				\
 		p5-Any-URI-Escape>=0.01:www/p5-Any-URI-Escape		\
 		p5-URI>=1.73:net/p5-URI					\
 		p5-XML-Simple>=2.24:textproc/p5-XML-Simple
-
 
 NO_ARCH=	yes
 USES=		perl5

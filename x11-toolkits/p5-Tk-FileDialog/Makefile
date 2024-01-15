@@ -1,6 +1,3 @@
-# Created by: minter@lunenburg.org
-# $FreeBSD$
-
 PORTNAME=	Tk-FileDialog
 PORTVERSION=	1.3
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	File selection dialog for Perl/Tk
+WWW=		https://metacpan.org/release/Tk-FileDialog
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

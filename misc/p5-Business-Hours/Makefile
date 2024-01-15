@@ -1,6 +1,3 @@
-# Created by: Matthew Seaman
-# $FreeBSD$
-
 PORTNAME=	Business-Hours
 PORTVERSION=	0.13
 CATEGORIES=	misc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Calculate business hours during a time period
+WWW=		https://metacpan.org/release/Business-Hours
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Martin Neubauer <m.ne@gmx.net>
-# $FreeBSD$
-
 PORTNAME=	Business-EDI
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	m.ne@gmx.net
 COMMENT=	Class for generating EDI objects and subobjects
+WWW=		https://metacpan.org/release/Business-EDI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	faenza
 PORTVERSION=	1.3.1
 CATEGORIES=	x11-themes gnome
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-icon-theme_${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Faenza GNOME 2 icon themes
+WWW=		http://tiheum.deviantart.com/art/Faenza-Icons-173323228
 
 LICENSE=	GPLv3
 
@@ -18,7 +16,6 @@ USES=		gnome
 WRKSRC=		${WRKDIR}/${PORTNAME}-icon-theme-${PORTVERSION:R}
 NO_BUILD=	yes
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 THEMES=		Faenza Faenza-Dark Faenza-Darkest Faenza-Darker \
 		Faenza-Ambiance Faenza-Radiance
@@ -29,7 +26,7 @@ INSTALLDIR=	${STAGEDIR}${PREFIX}/share/icons
 do-install:
 	@${MKDIR} ${INSTALLDIR}
 .for theme in ${THEMES}
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} ${theme} ${INSTALLDIR})	
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} ${theme} ${INSTALLDIR})
 
 .if ${FAENZA_LIGHT} == ${theme} || ${FAENZA_DARK} == ${theme}
 	@cd ${INSTALLDIR}/${theme}/places/scalable && \

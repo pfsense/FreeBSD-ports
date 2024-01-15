@@ -1,6 +1,3 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PORTNAME=	svk
 PORTVERSION=	2.2.3
 PORTREVISION=	6
@@ -11,6 +8,7 @@ DISTNAME=	SVK-v${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distributed Version Control System
+WWW=		https://metacpan.org/release/SVK
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

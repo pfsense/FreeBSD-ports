@@ -1,6 +1,3 @@
-# Created by: Loïc BARTOLETTI <lbartoletti@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	readosm
 PORTVERSION=	1.1.0
 CATEGORIES=	astro geography devel
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}a
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Extract valid data from within an Open Street Map input file
+WWW=		https://www.gaia-gis.it/fossil/readosm/index
 
 LICENSE=	MPL11 LGPL21 GPLv2
 LICENSE_COMB=	dual

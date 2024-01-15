@@ -1,6 +1,3 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
-
 PORTNAME=	rails
 PORTVERSION=	5.0.7.2
 PORTREVISION=	2
@@ -10,6 +7,8 @@ PKGNAMESUFFIX=	50
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Full-stack web application framework
+WWW=		https://rubyonrails.org/ \
+		https://github.com/rails/rails
 
 LICENSE=	MIT
 
@@ -49,7 +48,6 @@ RUN_DEPENDS=	rubygem-actioncable50>=${PORTVERSION}:www/rubygem-actioncable50 \
 		rubygem-web-console3-rails50>=3.5.0:devel/rubygem-web-console3-rails50
 
 USES=		cpe gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

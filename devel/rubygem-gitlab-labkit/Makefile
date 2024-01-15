@@ -1,28 +1,24 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gitlab-labkit
-PORTVERSION=	0.13.3
-PORTREVISION=	0
+PORTVERSION=	0.34.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Instrumentation for GitLab
+WWW=		https://about.gitlab.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-actionpack60>=5<6.1.0:www/rubygem-actionpack60 \
-		rubygem-activesupport60>=5<6.1.0:devel/rubygem-activesupport60 \
-		rubygem-gitlab-pg_query>=1.3<2:databases/rubygem-gitlab-pg_query \
-		rubygem-grpc>=1.19<2:net/rubygem-grpc \
-		rubygem-jaeger-client>=1.1<2:devel/rubygem-jaeger-client \
+RUN_DEPENDS=	rubygem-actionpack70>=5<8:www/rubygem-actionpack70 \
+		rubygem-activesupport70>=5<8:devel/rubygem-activesupport70 \
+		rubygem-grpc>=1.37:net/rubygem-grpc \
+		rubygem-jaeger-client>=1.1.0<1.2:devel/rubygem-jaeger-client \
 		rubygem-opentracing>=0.4<1.0:devel/rubygem-opentracing \
-		rubygem-redis>3.0.0<5.0.0:databases/rubygem-redis
+		rubygem-pg_query>=4.2.3<4.3:databases/rubygem-pg_query \
+		rubygem-redis>3.0.0<6.0.0:databases/rubygem-redis
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

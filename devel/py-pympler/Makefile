@@ -1,21 +1,18 @@
-# Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Pympler
-PORTVERSION=	0.4.2
+PORTVERSION=	1.0.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Measure, monitor and analyze the memory behavior of Python objects
+WWW=		https://github.com/pympler/pympler
 
 LICENSE=	APACHE20
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
-post-patch:
-	@${REINPLACE_CMD} -e 's,%%STAGEDIR%%,${STAGEDIR},g' ${WRKSRC}/setup.py
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

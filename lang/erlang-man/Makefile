@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	erlang
-PORTVERSION=	21.3
-PORTREVISION=	2
+PORTVERSION=	25.3
+PORTREVISION=	0
 CATEGORIES=	lang parallel
-MASTER_SITES=	http://www.erlang.org/download/
+MASTER_SITES=	https://github.com/erlang/otp/releases/download/OTP-${PORTVERSION}/
 PKGNAMESUFFIX=	-man
 DISTNAME=	otp_doc_man_${PORTVERSION}
 DIST_SUBDIR=	erlang
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Manual pages for Erlang/OTP
+WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
 

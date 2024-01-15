@@ -1,6 +1,3 @@
-# Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tomoe
 PORTVERSION=	0.6.0
 PORTREVISION=	7
@@ -11,6 +8,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Tegaki Online MOji-ninshiki Engine
+WWW=		http://tomoe.sourceforge.jp/
 
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
@@ -35,7 +33,7 @@ MYSQL_USES=		mysql
 MYSQL_CONFIGURE_WITH=	mysql
 RUBY_DESC=		Enable Ruby module
 RUBY_BROKEN=		Does not build
-RUBY_USE=		RUBY=yes
+RUBY_USES=		ruby
 RUBY_CONFIGURE_OFF=	--with-ruby=no
 RUBY_BUILD_DEPENDS=	rubygem-glib2>0:devel/rubygem-glib2
 RUBY_RUN_DEPENDS=	rubygem-glib2>0:devel/rubygem-glib2
@@ -49,7 +47,7 @@ UNIHAN_EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 UNIHAN_BUILD_DEPENDS=	\
 	${RUBY_SITEARCHLIBDIR}/uconv.so:japanese/ruby-uconv \
 	${RUBY_SITELIBDIR}/suikyo/suikyo.rb:japanese/suikyo
-UNIHAN_USE=		RUBY=yes
+UNIHAN_USES=		ruby
 UNIHAN_CONFIGURE_ENABLE=unihan
 
 post-extract-UNIHAN-on:

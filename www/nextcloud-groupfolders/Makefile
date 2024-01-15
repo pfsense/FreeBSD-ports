@@ -1,37 +1,15 @@
-# Created by: Bernard Spil <brnrd@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	groupfolders
-PORTVERSION=	8.2.0
-CATEGORIES=	www
+PORTVERSION=	16.0.1
 DISTVERSIONPREFIX=	v
-MASTER_SITES=	https://github.com/${PKGNAMEPREFIX:S/-//}/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
-PKGNAMEPREFIX=	nextcloud-
-PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
-DISTNAME=	${PORTNAME}-${PORTVERSION}
-WRKSRC=		${WRKDIR}/${PORTNAME}
+CATEGORIES=	www
+MASTER_SITES=	https://github.com/nextcloud-releases/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Groupfolders app for Nextcloud
+WWW=		https://apps.nextcloud.com/apps/groupfolders
 
-LICENSE=	AGPLv3
+NEXTCLOUD_RUN_DEPENDS=	28
 
-RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=20:www/nextcloud@${PHP_FLAVOR}
-
-USES=		php:flavors
-NO_BUILD=	yes
-NO_ARCH=	yes
-
-NEXTCLOUD_USERNAME?=	${WWWOWN}
-NEXTCLOUD_GROUPNAME?=	${WWWGRP}
-
-PLIST_SUB=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
-		NEXTCLOUD_GROUPNAME=${NEXTCLOUD_GROUPNAME}
-
-WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/${PORTNAME}
-
-do-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR}
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
+USES=		nextcloud php:flavors
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	CGI-Application-Plugin-Forward
 PORTVERSION=	1.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	hartzell@alerce.com
 COMMENT=	Support for forwarding requests in CGI::Application
+WWW=		https://metacpan.org/release/CGI-Application-Plugin-Forward
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-CGI-Application>=0:www/p5-CGI-Application \

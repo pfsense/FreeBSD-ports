@@ -1,8 +1,6 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	tumbler
-PORTVERSION=	4.16.0
+PORTVERSION=	4.18.2
+PORTREVISION=	1
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE
 PKGNAMEPREFIX=	xfce4-
@@ -10,16 +8,18 @@ DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Thumbnail service for Xfce desktop
+WWW=		https://git.xfce.org/xfce/tumbler/
 
 LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png
+LIB_DEPENDS=	libpng16.so:graphics/png
 
 USES=		compiler:c11 gettext-tools gmake gnome libtool \
 		localbase:ldflags pathfix pkgconfig tar:bzip2 xfce
-USE_GNOME=	cairo gdkpixbuf2 glib20 intltool libgsf librsvg2
+USE_GNOME=	cairo gdkpixbuf2 glib20 intltool libgsf
+USE_XFCE=	libutil
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -32,9 +32,9 @@ CONFIGURE_ARGS=	--enable-xdg-cache \
 
 PORTSCOUT=	limitw:1,even
 
-OPTIONS_DEFINE=	NLS FONTS JPEG FFMPEG POPPLER \
-		GSTREAMER ODF COVER EPUB
-OPTIONS_DEFAULT=	FONTS EPUB JPEG POPPLER GSTREAMER ODF
+OPTIONS_DEFINE=	COVER EPUB FFMPEG FONTS GSTREAMER JPEG \
+		NLS ODF POPPLER
+OPTIONS_DEFAULT=EPUB FONTS GSTREAMER JPEG ODF POPPLER
 OPTIONS_SUB=	yes
 
 COVER_DESC=	Open Movie Database plugin (check pkg-message)
@@ -55,10 +55,9 @@ FONTS_CONFIGURE_ENABLE=	font-thumbnailer
 FONTS_LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 GSTREAMER_CONFIGURE_ENABLE=	gstreamer-thumbnailer
-GSTREAMER_USE=		gstreamer1=yes
+GSTREAMER_USES=		gstreamer
 
 JPEG_CONFIGURE_ENABLE=	jpeg-thumbnailer
-JPEG_LIB_DEPENDS=	libexif.so:graphics/libexif
 JPEG_USES=		jpeg
 
 NLS_CONFIGURE_ENABLE=	nls

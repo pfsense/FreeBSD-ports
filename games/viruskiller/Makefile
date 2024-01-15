@@ -1,6 +1,3 @@
-# Created by: markand
-# $FreeBSD$
-
 PORTNAME=	viruskiller
 PORTVERSION=	1.03
 DISTVERSIONSUFFIX=	-1
@@ -10,6 +7,7 @@ MASTER_SITES=	FRUGALWARE/games-extra/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Arcade game that relies on quick reflexes
+WWW=		http://www.parallelrealities.co.uk/projects/virusKiller.php
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
@@ -19,7 +17,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 USES=		gmake gnome sdl
 USE_SDL=	mixer image ttf net
 MAKEFILE=	makefile
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DOCS
 

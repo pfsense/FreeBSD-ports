@@ -1,6 +1,3 @@
-# Created by: Oliver Braun
-# $FreeBSD$
-
 PORTNAME=	libvc
 PORTVERSION=	003
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/rolo/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	vCard library
+WWW=		https://rolo.sourceforge.net/
 
 USES=		bison:alias libtool tar:bzip2
 GNU_CONFIGURE=	yes

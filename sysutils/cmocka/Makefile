@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cmocka
 PORTVERSION=	1.1.5
 CATEGORIES=	sysutils
@@ -8,6 +6,7 @@ MASTER_SITES=	https://cmocka.org/files/1.1/ \
 
 MAINTAINER=	dteske@FreeBSD.org
 COMMENT=	Unit testing framework for C with support for mock objects
+WWW=		https://cmocka.org/
 
 LICENSE=	APACHE20
 

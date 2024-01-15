@@ -1,16 +1,14 @@
-# Created by: Carlos J Puga Medina <cpm@fbsd.es>
-# $FreeBSD$
-
 PORTNAME=	ocserv
-DISTVERSION=	1.1.2
+DISTVERSION=	1.2.3
 CATEGORIES=	net net-vpn security
-MASTER_SITES=	ftp://ftp.infradead.org/pub/ocserv/
+MASTER_SITES=	https://www.infradead.org/ocserv/download/
 
 MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Server implementing the AnyConnect SSL VPN protocol
+WWW=		https://ocserv.gitlab.io/www/index.html
 
 LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
 		gsed:textproc/gsed
@@ -25,8 +23,8 @@ LIB_DEPENDS=	libev.so:devel/libev \
 		libtalloc.so:devel/talloc \
 		libtasn1.so:security/libtasn1
 
-USES=		autoreconf cpe gperf libtool localbase ncurses pathfix \
-		pkgconfig readline tar:xz
+USES=		autoreconf cpe gettext-tools gperf libtool localbase ncurses \
+		pathfix pkgconfig readline tar:xz
 
 CPE_VENDOR=	infradead
 USE_RC_SUBR=	ocserv
@@ -40,7 +38,7 @@ GROUPS=		_ocserv
 
 PLIST_SUB=	GROUPS="${GROUPS}" \
 		USERS="${USERS}"
-PORTDOCS=	AUTHORS ChangeLog NEWS README TODO
+PORTDOCS=	AUTHORS ChangeLog NEWS README
 PORTEXAMPLES=	profile.xml sample.config sample.passwd
 
 OPTIONS_DEFINE=	DOCS EXAMPLES GSSAPI MAXMIND RADIUS
@@ -58,15 +56,14 @@ RADIUS_CONFIGURE_OFF=	--without-radius
 .include <bsd.port.pre.mk>
 
 post-patch:
-	${REINPLACE_CMD} 's|/usr/bin/ocserv-fw|${PREFIX}/bin/ocserv-fw|g' \
-		${WRKSRC}/src/main-user.c
-	${REINPLACE_CMD} 's|/usr/bin/ocserv\\-fw|${PREFIX}/bin/ocserv\\-fw|g' \
+	${REINPLACE_CMD} 's|/usr/bin/ocserv\\-fw|${PREFIX}/libexec/ocserv\\-fw|g' \
 		${WRKSRC}/doc/ocserv.8
 	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
 		-e 's|%%ETCDIR%%|${ETCDIR}|g' \
 		-e 's|%%USERS%%|${USERS}|g' \
 		-e 's|%%GROUPS%%|${GROUPS}|g' \
-		${WRKSRC}/doc/sample.config
+		${WRKSRC}/doc/sample.config \
+		${WRKSRC}/src/main-user.c
 .if "${PREFIX}" != "" && "${PREFIX}" != "/" && "${PREFIX}" != "/usr"
 	${REINPLACE_CMD} -E 's|^(#define DEFAULT_CFG_FILE ")(/etc/ocserv/ocserv.conf")|\1${PREFIX}\2|' ${WRKSRC}/src/config.c
 	${REINPLACE_CMD} -E 's|^(#define DEFAULT_OCPASSWD ")(/etc/ocserv/ocpasswd")|\1${PREFIX}\2|' ${WRKSRC}/src/ocpasswd/ocpasswd.c

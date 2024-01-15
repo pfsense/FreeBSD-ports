@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
-
 PORTNAME=	sdl_pango
 PORTVERSION=	0.1.2
 PORTREVISION=	11
@@ -13,6 +10,7 @@ PATCHFILES=	SDL_Pango-0.1.2-API-adds.patch
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SDL API to the Pango text rendering engine of GNOME 2.x
+WWW=		https://sdlpango.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

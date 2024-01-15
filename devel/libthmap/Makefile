@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	libthmap
 PORTVERSION=	g2020082801
 CATEGORIES=	devel
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Concurrent trie-hash map library
+WWW=		https://github.com/rmind/thmap
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE

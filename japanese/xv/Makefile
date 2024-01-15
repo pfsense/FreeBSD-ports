@@ -1,10 +1,9 @@
-# Created by: Shigeyuki FUKUSHIMA <shige@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	japanese
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11 program that displays images of various formats with japanization
+
+BROKEN=		Fails to generate binaries
 
 MASTERDIR=	${.CURDIR}/../../graphics/xv
 PKGDIR=		${.CURDIR}
@@ -17,7 +16,7 @@ PLIST_FILES=	bin/ja-xv
 
 OPTIONS_EXCLUDE=	DOCS
 
-PORTREVISION=	1
+PORTREVISION=	2
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/xv ${STAGEDIR}${PREFIX}/bin/ja-xv

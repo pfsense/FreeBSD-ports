@@ -1,6 +1,3 @@
-# Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
-
 PORTNAME=	migemo
 PORTVERSION=	0.40
 PORTREVISION=	9
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT?=	Japanese incremental search tool
+WWW=		http://migemo.namazu.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,8 +23,7 @@ RUN_DEPENDS=	${RUBY_SITELIBDIR}/romkan.rb:japanese/ruby-romkan \
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-rubydir=${RUBY_SITELIBDIR}
-USES+=		autoreconf
-USE_RUBY=	yes
+USES+=		autoreconf ruby
 
 .if !defined(SLAVE_PORT)
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-Makefile.am \

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libqrencode
 PORTVERSION=	4.1.1
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	graphics
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	C library for encoding data in a QR Code symbol
+WWW=		https://github.com/fukuchi/libqrencode
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,10 +25,6 @@ PLIST_FILES=	bin/qrencode \
 		lib/libqrencode.so.4 \
 		lib/libqrencode.so.${PORTVERSION} \
 		libdata/pkgconfig/libqrencode.pc \
-		man/man1/qrencode.1.gz
-
-post-patch:
-	@${SED} -i -e 's|share\/man\/man1|man\/man1|' \
-		${WRKSRC}/CMakeLists.txt
+		share/man/man1/qrencode.1.gz
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	explosions
 PORTVERSION=	0.2005.07.31
 PORTREVISION=	16
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D objects flying around resembling explosions with various effects
+WWW=		http://www.newbreedsoftware.com/lab/explosions/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

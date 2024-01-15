@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	asm-xml
 PORTVERSION=	1.4
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://tibleiz.net/download/
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Very fast XML parser and decoder written in pure assembler
+WWW=		http://mkerbiquet.free.fr/asm-xml/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

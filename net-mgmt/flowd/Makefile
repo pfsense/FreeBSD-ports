@@ -1,6 +1,3 @@
-# Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
-
 PORTNAME=	flowd
 PORTVERSION=	0.9.1
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://mindrot.org/files/flowd/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Small, fast, and secure NetFlow collector
+WWW=		https://www.mindrot.org/projects/flowd/
 
 LICENSE=	MIT BSD2CLAUSE BSD3CLAUSE
 LICENSE_COMB=	multi

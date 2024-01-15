@@ -1,8 +1,5 @@
-# Created by: Tim Bishop <tim@bishnet.net>
-# $FreeBSD$
-
 PORTNAME=	libstatgrab
-PORTVERSION=	0.92
+PORTVERSION=	0.92.1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libstatgrab/libstatgrab/releases/download/LIBSTATGRAB_${PORTVERSION:S/./_/}/ \
 		http://ftp.mirrorservice.org/pub/i-scream/libstatgrab/ \
@@ -10,6 +7,7 @@ MASTER_SITES=	https://github.com/libstatgrab/libstatgrab/releases/download/LIBST
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Provides a useful interface to system statistics
+WWW=		https://libstatgrab.org/
 
 LICENSE=	LGPL21
 

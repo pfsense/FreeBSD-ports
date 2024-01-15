@@ -1,14 +1,13 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	xstrp4
 PORTVERSION=	1.8.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.camlcity.org/download/
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml extension to expands brace expansions
+WWW=		https://www.ocaml-programming.de/packages/
 
 LICENSE=	MIT
 

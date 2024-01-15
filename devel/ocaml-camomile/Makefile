@@ -1,17 +1,16 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	camomile
-PORTVERSION=	1.0.1
+PORTVERSION=	1.0.2
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Comprehensive Unicode library for Objective Caml
+WWW=		https://camomile.sourceforge.net/
 
 LICENSE=	LGPL21
 
-BUILD_DEPENDS=	jbuilder:devel/ocaml-dune
+BUILD_DEPENDS=	dune:devel/ocaml-dune
 
 USES=		gmake
 USE_GITHUB=	yes
@@ -19,12 +18,12 @@ GH_ACCOUNT=	yoriyuki
 GH_PROJECT=	Camomile
 USE_OCAML=	yes
 
-MAKE_ENV=	LIBDIR="${OCAML_SITELIBDIR}"
+MAKE_ENV=	LIBDIR="${PREFIX}/${OCAML_SITELIBDIR}"
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 
-PORTDOCS=       CHANGES.md LICENSE.md README.md
+PORTDOCS=	CHANGES.md LICENSE.md README.md
 
-OPTIONS_DEFINE= DOCS
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^INSTALL_ARGS/ \

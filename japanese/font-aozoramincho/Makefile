@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aozoramincho
 PORTVERSION=	0.1
 PORTREVISION=	2
@@ -11,6 +9,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Aozora Mincho Japanese TrueType fonts
+WWW=		http://blueskis.wktk.so/AozoraMincho/
 
 USES=		fonts:fc zip
 FONTPATHSPEC=	${FONTNAME}:pri=60

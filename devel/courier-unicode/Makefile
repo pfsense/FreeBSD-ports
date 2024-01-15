@@ -1,16 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	courier-unicode
-PORTVERSION=	2.1.2
+PORTVERSION=	2.2.6
 CATEGORIES=	devel mail
 MASTER_SITES=	SF/courier/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Courier implementation of Unicode Standard related algorithms
+WWW=		https://www.courier-mta.org/unicode/
 
 LICENSE=	GPLv3
-
-CONFLICTS=	libunicode-[0-9]*
 
 USES=		compiler:c++11-lang iconv libtool localbase:ldflags \
 		perl5 tar:bzip2

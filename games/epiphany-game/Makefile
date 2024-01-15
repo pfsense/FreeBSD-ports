@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	epiphany
 PORTVERSION=	0.7.0
 CATEGORIES=	games
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Multiplatform clone of Boulderdash
+WWW=		https://sourceforge.net/projects/epiphany/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

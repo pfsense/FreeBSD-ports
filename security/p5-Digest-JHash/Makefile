@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Digest-JHash
 PORTVERSION=	0.10
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Perl extension for JHash hash algorithm
+WWW=		https://metacpan.org/release/Digest-JHash
 
 LICENSE=	ART20
 

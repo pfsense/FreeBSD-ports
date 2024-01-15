@@ -1,14 +1,12 @@
-# Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flower
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 
 MAINTAINER=	ed@FreeBSD.org
 COMMENT=	Label-based networking daemon
+WWW=		https://github.com/NuxiNL/flower
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,14 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	zaz
-PORTVERSION=	1.0.0
-PORTREVISION=	8
+PORTVERSION=	1.0.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Puzzle game where the player has to arrange balls in triplets
+WWW=		https://zaz.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,8 +16,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libvorbis.so:audio/libvorbis \
 		libftgl.so:graphics/ftgl
 
-USES=		compiler:c++11-lang desktop-file-utils gl pkgconfig sdl \
-		tar:bzip2
+USES=		compiler:c++11-lang desktop-file-utils gl pkgconfig sdl
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl image
 USE_GL=		gl glu

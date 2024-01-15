@@ -1,6 +1,6 @@
---- libcdi/src/cdilib.c.orig	2020-02-22 18:32:17 UTC
+--- libcdi/src/cdilib.c.orig	2023-04-18 19:43:48 UTC
 +++ libcdi/src/cdilib.c
-@@ -34056,11 +34056,13 @@ static pthread_mutex_t namespaceMutex;
+@@ -34701,11 +34701,13 @@ static pthread_mutex_t namespaceMutex;
  static void
  namespaceInitialize(void)
  {
@@ -13,17 +13,17 @@
 +#endif
  }
  
- #  define NAMESPACE_LOCK()         pthread_mutex_lock(&namespaceMutex)
-@@ -34516,12 +34518,14 @@ static
- void listInitialize ( void )
+ #define NAMESPACE_LOCK() pthread_mutex_lock(&namespaceMutex)
+@@ -35276,12 +35278,14 @@ static void
+ listInitialize(void)
  {
- #if  defined  (HAVE_LIBPTHREAD)
+ #if defined(HAVE_LIBPTHREAD)
 +#if defined(PTHREAD_MUTEXATTR)
    pthread_mutexattr_t ma;
    pthread_mutexattr_init(&ma);
    pthread_mutexattr_settype(&ma, PTHREAD_MUTEX_RECURSIVE);
    /* initialize global API mutex lock */
-   pthread_mutex_init ( &listMutex, &ma);
+   pthread_mutex_init(&listMutex, &ma);
    pthread_mutexattr_destroy(&ma);
 +#endif
  #endif

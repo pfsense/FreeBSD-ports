@@ -1,15 +1,12 @@
-# Created by: vanilla
-# $FreeBSD$
-
 PORTNAME=	GD-Barcode
-PORTVERSION=	1.15
-PORTREVISION=	6
+PORTVERSION=	2.00
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Create barcode image with GD in Perl
+WWW=		https://metacpan.org/release/GD-Barcode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

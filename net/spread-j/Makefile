@@ -1,6 +1,3 @@
-# Created by: Joshua Goodall <joshua@roughtrade.net>
-# $FreeBSD$
-
 PORTNAME=	spread
 PORTVERSION=	3.17.3
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java client library for the Spread Group Communication System
+WWW=		http://www.spread.org/
 
 BUILD_DEPENDS=	${ANT}:devel/apache-ant
 

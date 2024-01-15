@@ -1,17 +1,28 @@
-# Created by: Michael Grunewald
-# $FreeBSD$
-
 PORTNAME=	cppo
-PORTVERSION=	0.9.2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.6.9
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://martin.jambon.free.fr/
 PKGNAMEPREFIX=	ocaml-
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Simple preprocessor for OCaml
+MAINTAINER=	eduardo@FreeBSD.org
+COMMENT=	C-style preprocessor for OCaml
+WWW=		https://github.com/ocaml-community/cppo
 
-USES=		gmake
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BUILD_DEPENDS=	dune:devel/ocaml-dune \
+		ocamlbuild:devel/ocaml-ocamlbuild
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	ocaml-community
 USE_OCAML=	yes
-MAKE_JOBS_UNSAFE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cppo
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocaml/cppo_ocamlbuild/cppo_ocamlbuild.cmxs
 
 .include <bsd.port.mk>

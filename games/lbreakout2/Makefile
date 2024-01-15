@@ -1,21 +1,23 @@
-# Created by: verm@drunkmonk.net
-# $FreeBSD$
-
 PORTNAME=	lbreakout2
 PORTVERSION=	2.6.5
+PORTREVISION=	1
 CATEGORIES=	games
-MASTER_SITES=	SF/lgames/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	SF/lgames/${PORTNAME}/${PORTVERSION:R}:1 \
+		LOCAL/rene/${PORTNAME}:2
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:1 \
+		${PORTNAME}.png:2
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Breakout-style arcade game
+WWW=		https://lgames.sourceforge.io/LBreakout2/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	gif2png:graphics/gif2png
-LIB_DEPENDS=	libpng.so:graphics/png
+DEPRECATED=	Deprecated by upsteam, does not support large screen resolutions. Use games/lbreakouthd instead
 
-BROKEN_powerpc64=	fails to build: gif2png: error in reading DataBlock: Segmentation fault (core dumped)
+LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		gmake sdl
 USE_SDL=	mixer net sdl
@@ -47,8 +49,7 @@ post-patch:
 		'/LDADD =/s|$$| @INTLLIBS@|' ${WRKSRC}/server/Makefile.in
 
 pre-build:
-	(cd ${WRKSRC} && ${CAT} lbreakout48.gif | gif2png -O -f \
-		> lbreakout2.png)
+	${CP} ${DISTDIR}/${PORTNAME}.png ${WRKSRC}
 
 post-install:
 	(cd ${WRKSRC}/client && ${INSTALL_DATA} empty.hscr \

@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	easygit
 PORTVERSION=	0.98
 CATEGORIES=	devel
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	# none
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Easy wrapper for git
+WWW=		http://www.gnome.org/~newren/eg/
 
 RUN_DEPENDS=	git:devel/git
 
@@ -22,6 +20,8 @@ USE_PERL5=	run
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 PLIST_FILES=	bin/eg bin/easygit
+
+CONFLICTS_INSTALL=	go-tools
 
 do-extract:
 	@${CP} ${_DISTDIR}/${DISTNAME} ${WRKSRC}

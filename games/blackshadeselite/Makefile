@@ -1,15 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	blackshadeselite
 PORTVERSION=	0.0.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
-MASTER_SITES=	http://download.gna.org/blackshadeselite/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Psychic Bodyguard FPS - protect the VIP
+WWW=		https://web.archive.org/web/20170521213338/http://home.gna.org/blackshadeselite/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

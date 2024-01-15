@@ -1,6 +1,3 @@
-# Created by: kftseng@iyard.org
-# $FreeBSD$
-
 PORTNAME=	HTML-StripScripts
 PORTVERSION=	1.06
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Strip scripting constructs out of HTML
+WWW=		https://metacpan.org/release/HTML-StripScripts
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

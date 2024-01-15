@@ -1,14 +1,12 @@
-# Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mini_httpd
 PORTVERSION=	1.30
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	https://www.acme.com/software/mini_httpd/
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Small HTTP server with support for GET, HEAD, POST, CGI, SSL, IPv6
+WWW=		https://www.acme.com/software/mini_httpd/
 
 LICENSE=	BSD2CLAUSE
 

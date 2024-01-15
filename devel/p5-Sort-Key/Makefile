@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sort-Key
 PORTVERSION=	1.33
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Sorts objects by one or several keys really fast
+WWW=		https://metacpan.org/release/Sort-Key
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,15 +1,12 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	String-Truncate
-PORTVERSION=	1.100602
-PORTREVISION=	1
+PORTVERSION=	1.100603
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Module for when strings are too long to be displayed
+WWW=		https://metacpan.org/release/String-Truncate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

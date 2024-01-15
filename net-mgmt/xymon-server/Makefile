@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	xymon
 PORTVERSION=	4.3.30
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	net-mgmt www
 MASTER_SITES=	SF/xymon/Xymon/${PORTVERSION}
 PKGNAMESUFFIX=	-server${PKGNAMESUFFIX2}
@@ -10,6 +8,7 @@ DIST_SUBDIR=	repacked
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	System for monitoring servers and networks
+WWW=		http://xymon.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -53,23 +52,17 @@ FIXME2=		analysis.cfg combo.cfg holidays.cfg rrddefinitions.cfg \
 OPTIONS_DEFINE=DEBUG LDAP NETSNMP
 NETSNMP_DESC=Enable Net-SNMP support
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MLDAP}
-MAKE_ENV+=	WITH_LDAP=1
-USE_OPENLDAP=	yes
-.endif
-
-.if ${PORT_OPTIONS:MNETSNMP}
-MAKE_ENV+=	WITH_NETSNMP=1
-LIB_DEPENDS+=	libnetsnmp.so:net-mgmt/net-snmp
-.endif
+LDAP_USES=	ldap
+LDAP_MAKE_ENV=	WITH_LDAP=1
+NETSNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
+NETSNMP_MAKE_ENV=	WITH_NETSNMP=1
 
 post-patch:
 	${REINPLACE_CMD} -e 's|web-build client|web-build|' ${WRKSRC}/build/Makefile.rules
 	${REINPLACE_CMD} -e 's|install-docs install-client|install-docs|' ${WRKSRC}/build/Makefile.rules
 	${REINPLACE_CMD} -e 's|$$(INSTALLETCDIR)/protocols.cfg|$$(INSTALLETCDIR)/protocols.cfg.DIST|' ${WRKSRC}/xymonnet/Makefile
-	${REINPLACE_CMD} -e 's|TRACEROUTE="traceroute"|TRACEROUTE="mtr -c 2 -n --report"|' ${WRKSRC}/xymond/etcfiles/xymonserver.cfg.DIST
+	${REINPLACE_CMD} -e 's|TRACEROUTE="traceroute"|TRACEROUTE="mtr"|' ${WRKSRC}/xymond/etcfiles/xymonserver.cfg.DIST
+	${REINPLACE_CMD} -e 's|TRACEROUTEOPTS="-n -q 2 -w 2 -m 15"|TRACEROUTEOPTS="-n -c 2 -w 2 -m 15 --report"|' ${WRKSRC}/xymond/etcfiles/xymonserver.cfg.DIST
 	${RM} ${WRKSRC}/docs/manpages/man1/xymonping.1.html
 	${RM} ${WRKSRC}/xymonnet/xymonping.1
 	${REINPLACE_CMD} -e 's|@CGIDIR@|${WWWDIR}/server/cgi-bin|g' \

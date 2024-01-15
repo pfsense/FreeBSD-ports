@@ -1,14 +1,12 @@
-# Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
-
 PORTNAME=	bzip
-PORTVERSION=	0.21
+DISTVERSION=	0.21
 PORTREVISION=	1
 CATEGORIES=	archivers
-MASTER_SITES=	https://BSDforge.com/projects/source/archivers/bzip/
+MASTER_SITES=	SOURCEWARE/bzip2
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Block-sorting file compressor
+WWW=		https://sourceware.org/bzip2/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,12 +17,9 @@ PLIST_FILES=	bin/bzip bin/bunzip \
 		share/man/man1/bunzip.1.gz \
 		share/man/man1/bzip.1.gz
 
-pre-install:
-	@${CAT} ${FILESDIR}/COPYRIGHT
-
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bzip ${STAGEDIR}${PREFIX}/bin
-	${LN} -fs bzip ${STAGEDIR}${PREFIX}/bin/bunzip
+	${RLN} ${STAGEDIR}${PREFIX}/bin/bzip ${STAGEDIR}${PREFIX}/bin/bunzip
 	${INSTALL_MAN} ${WRKSRC}/bzip.1 \
 		${STAGEDIR}${PREFIX}/share/man/man1/bzip.1
 	${INSTALL_MAN} ${WRKSRC}/bzip.1 \

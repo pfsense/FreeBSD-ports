@@ -1,6 +1,3 @@
-# Created by: Pete French <pete@twisted.org.uk>
-# $FreeBSD$
-
 PORTNAME=	libobjc2
 DISTVERSIONPREFIX=v
 DISTVERSION=	2.1
@@ -11,9 +8,6 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Replacement Objective-C runtime supporting modern Objective-C features
 
 LICENSE=	MIT
-
-BROKEN_sparc64=		Does not compile on sparc64: Cannot configure clang properly
-BROKEN_riscv64=		Does not link on riscv64: undefined symbol: objc_msgSend
 
 USES=		cmake compiler objc:compiler
 
@@ -38,6 +32,10 @@ SHLIB_MAJOR=	4
 SHLIB_MINOR=	6
 
 .include <bsd.port.pre.mk>
+
+.if ${ARCH:Mpowerpc*} || ${ARCH:Mriscv64*}
+CMAKE_ARGS+=	-DTESTS:BOOL=OFF
+.endif
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-stdlib=libstdc++

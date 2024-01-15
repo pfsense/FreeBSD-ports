@@ -1,20 +1,18 @@
-# Created by: Julien Laffaye <kimelto@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	ii
-PORTVERSION=	1.8
+PORTVERSION=	2.0
 CATEGORIES=	irc
 MASTER_SITES=	http://dl.suckless.org/tools/ \
 		LOCAL/sbz
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Minimalist FIFO and filesystem-based IRC client
+WWW=		https://tools.suckless.org/ii/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 PLIST_FILES=	bin/ii man/man1/ii.1.gz
-PORTDOCS=	CHANGES FAQ README
+PORTDOCS=	FAQ README
 
 OPTIONS_DEFINE=	DOCS
 

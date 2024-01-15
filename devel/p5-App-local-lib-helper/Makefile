@@ -1,6 +1,3 @@
-# Created by: Geoffroy Desvernay <dgeo@centrale-marseille.fr>
-# $FreeBSD$
-
 PORTNAME=	App-local-lib-helper
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Make it easy to run code against a local-lib
+WWW=		https://metacpan.org/release/App-local-lib-helper
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

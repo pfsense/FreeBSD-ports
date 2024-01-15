@@ -1,12 +1,10 @@
-# Created by: Jeroen Schot <schot@a-eskwadraat.nl>
-# $FreeBSD$
-
 PORTNAME=	dmenu
-DISTVERSION=	5.0
+DISTVERSION=	5.1
 CATEGORIES=	x11
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	X11 menu application designed for the dwm window manager
+WWW=		https://tools.suckless.org/dmenu
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

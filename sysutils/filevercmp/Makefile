@@ -1,13 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	filevercmp
 DISTVERSION=	g20151117
 CATEGORIES=	sysutils
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Compare version strings as in sort --version-sort
+WWW=		https://github.com/ekg/filevercmp
 
 LICENSE=	GPLv3
+
+DEPRECATED=	Dependent ports use git submodules now
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ekg

@@ -1,6 +1,3 @@
-# Created by: Michael Reifenberger <mr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nitpicker
 PORTVERSION=	1.2.1
 PORTEPOCH=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://nitpicker.de/
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	IP flow accounting tools
+WWW=		https://www.nitpicker.de/
 
 PLIST_FILES=	bin/dumpit bin/parse_flowfile sbin/nitpicker
 

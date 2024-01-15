@@ -1,6 +1,3 @@
-# Created by: Vivek Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-Query
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vivek@khera.org
 COMMENT=	JQuery-like selection queries for HTML::Element
+WWW=		https://metacpan.org/release/HTML-Query
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

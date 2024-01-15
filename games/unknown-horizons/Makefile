@@ -1,12 +1,10 @@
-# Created by: GreenDog <fiziologus@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	unknown-horizons
 PORTVERSION=	2019.1
 CATEGORIES=	games
 
 MAINTAINER=	fiziologus@gmail.com
 COMMENT=	Real time simulation game
+WWW=		https://www.unknown-horizons.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/licenses/GPL
@@ -17,7 +15,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fife>0:games/py-fife@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-USES=		gettext-tools gnome python:3.5+ shebangfix
+USES=		gettext-tools gnome python shebangfix
 USE_GITHUB=	yes
 USE_GNOME=	intltool
 USE_PYTHON=	autoplist distutils noflavors

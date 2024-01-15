@@ -1,6 +1,3 @@
-# Created by: janos.mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	jdictionary-fre-hun
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/jdictionary/Plugins%20for%20jDictionary/Smart%20French-Hungaria
 DISTNAME=	Smart_French_Hungarian-1_0.jar
 
 COMMENT=	JDictionary plugin: French-Hungarian dictionary
+WWW=		http://jdictionary.info/
 
 MASTERDIR=	${.CURDIR}/../../textproc/jdictionary
 

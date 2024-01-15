@@ -1,14 +1,12 @@
-# Created by: mathias.picker@gmx.de
-# $FreeBSD$
-
 PORTNAME=	vamp-plugin-sdk
 DISTVERSION=	2.9.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://code.soundsoftware.ac.uk/attachments/download/2588/
 
 MAINTAINER=	uddka@student.kit.edu
 COMMENT=	Vamp audio analysis plugin SDK
+WWW=		https://www.vamp-plugins.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

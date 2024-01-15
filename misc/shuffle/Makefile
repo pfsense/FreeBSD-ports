@@ -1,6 +1,3 @@
-# Created by: Dima Dorfman <dima@unixfreak.org>
-# $FreeBSD$
-
 PORTNAME=	shuffle
 PORTVERSION=	20010603
 CATEGORIES=	misc

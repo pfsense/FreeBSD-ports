@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	t1lib
 PORTVERSION=	5.1.2
 PORTREVISION=	5
@@ -10,6 +7,7 @@ MASTER_SITES=	SUNSITE/libs/graphics/
 
 MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Type 1 font rasterization library for Unix/X11
+WWW=		https://www.t1lib.org/
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/LGPL

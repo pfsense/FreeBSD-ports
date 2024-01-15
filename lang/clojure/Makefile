@@ -1,14 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	clojure
-PORTVERSION=	1.10.1.447
+PORTVERSION=	1.11.1.1200
 CATEGORIES=	lang lisp java
 MASTER_SITES=	https://download.clojure.org/install/
 DISTNAME=	clojure-tools-${PORTVERSION}
 
 MAINTAINER=	freebsd-ports@jan0sch.de
 COMMENT=	Dynamic programming language for the JVM
+WWW=		https://clojure.org/
 
 LICENSE=	EPL
 
@@ -16,7 +14,7 @@ RUN_DEPENDS=	bash:shells/bash \
 		rlwrap:devel/rlwrap
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 NO_ARCH=	yes
 NO_BUILD=	yes
 
@@ -24,6 +22,8 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 WRKSRC=		${WRKDIR}/clojure-tools
 
 post-patch:
+	@${REINPLACE_CMD} 's,BINDIR,${PREFIX}\/bin,g' \
+		${WRKSRC}/clj
 	@${REINPLACE_CMD} 's,PREFIX,${DATADIR},g' \
 		${WRKSRC}/clojure
 
@@ -31,6 +31,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/libexec ${STAGEDIR}${PREFIX}/man/man1
 	${INSTALL_DATA} ${WRKSRC}/clojure-tools-${PORTVERSION}.jar \
 		${STAGEDIR}${DATADIR}/libexec
+	${INSTALL_DATA} ${WRKSRC}/exec.jar ${STAGEDIR}${DATADIR}/libexec
 	cd ${WRKSRC} && ${INSTALL_DATA} deps.edn example-deps.edn \
 		${STAGEDIR}${DATADIR}
 	cd ${WRKSRC} && ${INSTALL_SCRIPT} clojure clj ${STAGEDIR}${PREFIX}/bin

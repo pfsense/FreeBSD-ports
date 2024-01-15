@@ -1,9 +1,6 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	monsterz
 PORTVERSION=	0.7.1
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	http://sam.zoy.org/monsterz/ \
 		SF/nemysisfreebsdp/:icons
@@ -13,13 +10,14 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Arcade puzzle game
+WWW=		http://sam.zoy.org/monsterz/
 
 LICENSE=	WTFPL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python:3.7+ shebangfix
+USES=		python shebangfix
 SHEBANG_FILES=	monsterz.py
 MAKE_ENV=	prefix=${PREFIX}
 

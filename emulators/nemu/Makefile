@@ -1,18 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	nemu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.1
+DISTVERSION=	3.3.0
 CATEGORIES=	emulators
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Ncurses UI for QEMU
+WWW=		https://github.com/nemuTUI/nemu
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libudev.so:devel/libudev-devd
+LIB_DEPENDS=	libudev.so:devel/libudev-devd \
+		libjson-c.so:devel/json-c
 
-USES=		cmake gettext-runtime gettext-tools gnome libarchive sqlite
+USES=		cmake gettext-runtime gettext-tools gnome libarchive pkgconfig \
+		sqlite
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nemuTUI

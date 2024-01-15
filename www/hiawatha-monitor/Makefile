@@ -1,20 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	hiawatha-monitor
 PORTVERSION=	1.6
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://www.hiawatha-webserver.org/files/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	monitor-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Monitoring tool for the Hiawatha webserver
+COMMENT=	Monitoring tool for the Hiawatha web server
+WWW=		https://www.hiawatha-webserver.org/monitor
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		php:flavors shebangfix
-USE_PHP=	ctype mysqli openssl xml xsl zlib
+USE_PHP=	ctype mysqli xml xsl zlib
 SHEBANG_FILES=	database/delete_old_logs \
 		database/fetch_webserver_logs \
 		database/flush_cache \

@@ -1,29 +1,29 @@
---- chrome/browser/ui/views/frame/system_menu_model_delegate.cc.orig	2020-11-13 06:36:38 UTC
+--- chrome/browser/ui/views/frame/system_menu_model_delegate.cc.orig	2023-07-16 15:47:57 UTC
 +++ chrome/browser/ui/views/frame/system_menu_model_delegate.cc
-@@ -15,7 +15,7 @@
- #include "components/sessions/core/tab_restore_service.h"
- #include "ui/base/l10n/l10n_util.h"
+@@ -21,7 +21,7 @@
+ #include "chromeos/ui/frame/desks/move_to_desks_menu_model.h"
+ #endif
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "chrome/common/pref_names.h"
  #include "components/prefs/pref_service.h"
  #endif
-@@ -30,7 +30,7 @@ SystemMenuModelDelegate::SystemMenuModelDelegate(
+@@ -36,7 +36,7 @@ SystemMenuModelDelegate::SystemMenuModelDelegate(
  SystemMenuModelDelegate::~SystemMenuModelDelegate() {}
  
  bool SystemMenuModelDelegate::IsCommandIdChecked(int command_id) const {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    if (command_id == IDC_USE_SYSTEM_TITLE_BAR) {
      PrefService* prefs = browser_->profile()->GetPrefs();
      return !prefs->GetBoolean(prefs::kUseCustomChromeFrame);
-@@ -44,7 +44,7 @@ bool SystemMenuModelDelegate::IsCommandIdEnabled(int c
- }
- 
+@@ -58,7 +58,7 @@ bool SystemMenuModelDelegate::IsCommandIdEnabled(int c
  bool SystemMenuModelDelegate::IsCommandIdVisible(int command_id) const {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
    bool is_maximized = browser_->window()->IsMaximized();
    switch (command_id) {
      case IDC_MAXIMIZE_WINDOW:

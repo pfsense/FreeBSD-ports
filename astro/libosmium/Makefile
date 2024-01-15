@@ -1,35 +1,30 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libosmium
-PORTVERSION=	2.15.6
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.20.0
 CATEGORIES=	astro geography devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Fast and flexible C++ library for working with OpenStreetMap data
+WWW=		https://osmcode.org/libosmium/
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libgdal.so:graphics/gdal \
-		libboost_regex.so:devel/boost-libs \
-		libgeos.so:graphics/geos \
-		libexpat.so:textproc/expat2
-BUILD_DEPENDS=	sparsehash>=0:devel/sparsehash \
-		${LOCALBASE}/include/protozero/version.hpp:devel/protozero
-RUN_DEPENDS=	${LOCALBASE}/include/protozero/version.hpp:devel/protozero
+BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs \
+		gdal>=0:graphics/gdal \
+		protozero>=0:devel/protozero \
+		expat>=0:textproc/expat2 \
+		liblz4>=0:archivers/liblz4 \
+		geos>=0:graphics/geos
+#		proj>=0:graphics/proj
 
 USES=		cmake compiler:c++11-lib
 USE_GITHUB=	yes
 GH_ACCOUNT=	osmcode
-
-CMAKE_ARGS=	-DBUILD_EXAMPLES:BOOL=OFF
-
-# if/when corresponding port appears in the tree, this will need to
-# be turned into dependency
-CMAKE_ARGS+=	-DINSTALL_GDALCPP:BOOL=ON
-CXXFLAGS+=	"-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H=1"
+CMAKE_ON=	INSTALL_GDALCPP  # until it appears as a port
+CMAKE_ON+=	BUILD_HEADERS
+CMAKE_OFF=	BUILD_EXAMPLES
+CMAKE_OFF+=	WITH_PROJ  # the ports version is not supported
 
 # although it builds tests the library itself is header-only
 NO_ARCH=	yes
@@ -40,9 +35,6 @@ OPTIONS_DEFINE=	TEST DOCS
 OPTIONS_DEFAULT=	TEST
 TEST_TEST_TARGET=	test
 TEST_CMAKE_BOOL=	BUILD_TESTING
-
-post-extract:
-	@${RM} -rf ${WRKSRC}/include/utf8*
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

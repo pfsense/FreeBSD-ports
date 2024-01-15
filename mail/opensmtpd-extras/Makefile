@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	opensmtpd-extras
 PORTVERSION?=	6.7.1
 PORTREVISION?=	0
@@ -13,6 +10,7 @@ MASTER_SITES=	http://www.opensmtpd.org/archives/
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT?=	Addons for OpenSMTPD
+WWW=		https://github.com/OpenSMTPD/OpenSMTPD-extras
 
 LICENSE?=	ISCL
 
@@ -46,7 +44,6 @@ NO_OPTIONS_SORT=	yes
 #OPENSMTP_DEVEL_RUN_DEPENDS=	smtpctl:mail/opensmtpd-devel
 BUILD_DEPENDS=	smtpctl:mail/opensmtpd
 RUN_DEPENDS=	smtpctl:mail/opensmtpd
-
 
 .if empty(SLAVE_PORT)
 OPTIONS_GROUP=			TABLE QUEUE SCHEDULER

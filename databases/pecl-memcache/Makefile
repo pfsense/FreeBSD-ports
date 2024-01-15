@@ -1,12 +1,10 @@
-# Created by: Gerrit Beine <tux@pinguru.net>
-# $FreeBSD$
-
 PORTNAME=	memcache
-PORTVERSION=	8.0
+PORTVERSION=	8.2
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Memcached extension
+WWW=		https://github.com/websupport-sk/pecl-memcache
 
 LICENSE=	PHP30
 LICENSE_FILE=	${WRKSRC}/LICENSE

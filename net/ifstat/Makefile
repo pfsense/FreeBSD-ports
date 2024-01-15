@@ -1,6 +1,3 @@
-# Created by: spf@xslt.cs.nccu.edu.tw
-# $FreeBSD$
-
 PORTNAME=	ifstat
 PORTVERSION=	1.1
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://gael.roualland.free.fr/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network interface statistics monitoring tool
+WWW=		http://gael.roualland.free.fr/ifstat/
 
 GNU_CONFIGURE=	yes
 USES=		ssl

@@ -1,18 +1,16 @@
-# Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Unipath
 PORTVERSION=	1.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Object-oriented alternative to os/os.path/shutil
+WWW=		https://github.com/mikeorr/Unipath
 
 LICENSE=	PSFL
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

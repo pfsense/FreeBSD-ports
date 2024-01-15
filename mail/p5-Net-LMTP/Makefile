@@ -1,6 +1,3 @@
-# Created by: Fukang Chen <loader@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-LMTP
 PORTVERSION=	0.02
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	loader@FreeBSD.org
 COMMENT=	Local Mail Transfer Protocol Client
+WWW=		https://metacpan.org/release/Net-LMTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

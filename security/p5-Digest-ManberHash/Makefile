@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Digest-ManberHash
 PORTVERSION=	0.7
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Perl extension for ManberHash hash algorithm
+WWW=		https://metacpan.org/release/Digest-ManberHash
 
 USES=		perl5
 USE_PERL5=	configure

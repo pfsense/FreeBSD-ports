@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libmicrodns
 DISTVERSION=	0.2.0
 CATEGORIES=	dns
@@ -8,11 +6,13 @@ DISTNAME=	microdns-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	mDNS library focused on being simple and cross-platform
+WWW=		https://github.com/videolabs/libmicrodns
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c11 meson tar:xz
+USES=		compiler:c11 cpe meson tar:xz
+CPE_VENDOR=	videolabs
 USE_LDCONFIG=	yes
 
 MESON_ARGS=	-Dexamples=disabled

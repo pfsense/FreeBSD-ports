@@ -1,20 +1,18 @@
-# Created by: Neal Nelson <neal@nelson.name>
-# $FreeBSD$
-
 PORTNAME=	zope.interface
-PORTVERSION=	4.6.0
+PORTVERSION=	5.3.0
 CATEGORIES=	devel python zope
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DIST_SUBDIR=	zope
 
 MAINTAINER=	zope@FreeBSD.org
 COMMENT=	Interfaces for Python
+WWW=		https://pypi.org/project/zope.interface/
 
 LICENSE=	ZPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 post-install:

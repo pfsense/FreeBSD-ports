@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Crypt-Cracklib
 PORTVERSION=	1.7
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to Alec Muffet's cracklib library
+WWW=		https://metacpan.org/release/Crypt-Cracklib
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

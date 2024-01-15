@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	namd
 DISTVERSION=	2.12
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science
 DISTNAME=	${PORTNAME:tu}_${DISTVERSION}_Source
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Computer software for molecular dynamics simulation
+WWW=		https://www.ks.uiuc.edu/Research/namd/
 
 LICENSE=	NAMD_MOLECULAR_DYNAMICS_LICENSE
 LICENSE_NAME=	NAMD Molecular Dynamics Software
@@ -15,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_PERMS=	no-auto-accept no-dist-mirror no-pkg-mirror # No redistribution is allowed, commercial use requires a commercial license
 
 ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	Not clear if it can be built on other architectures
+ONLY_FOR_ARCHS_REASON=	not clear if it can be built on other architectures
+
 BROKEN_i386=	need to fix the fft library handling
 
 BUILD_DEPENDS=	bash:shells/bash \

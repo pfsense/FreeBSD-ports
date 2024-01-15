@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-HTML-Template-Compiled
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTML::Template::Compiled View Class
+WWW=		https://metacpan.org/release/Catalyst-View-HTML-Template-Compiled
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HTML-Template-Compiled>=0.74:www/p5-HTML-Template-Compiled \

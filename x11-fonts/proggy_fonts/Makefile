@@ -1,6 +1,3 @@
-# Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
-
 PORTNAME=	proggy_fonts
 PORTVERSION=	1.0
 PORTREVISION=	5
@@ -24,6 +21,7 @@ EXTRACT_ONLY=	ProggyClean.pcf.zip ProggySquare.pcf.zip \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The perfect monospaced bitmap programming fonts
+WWW=		http://upperbounds.net/
 
 ALREADY_UNZIP=	${DISTDIR}/Opti.pcf.gz ${DISTDIR}/OptiSmall.pcf.gz \
 	        ${DISTDIR}/PixelCarnageMono.pcf.gz

@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	multimedia
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	qt5-
 
@@ -11,12 +8,13 @@ COMMENT=	Qt audio, video, radio and camera support module
 
 # LICENSE set via USES_QT5 (bsd.qt.mk)
 
-USES=		compiler:c++11-lang gl gnome pkgconfig qmake:norecursive \
+USES=		compiler:c++11-lang gl gnome perl5 pkgconfig qmake:norecursive \
 		qt-dist:5,multimedia xorg
 USE_GL=		gl
 USE_GNOME=	glib20
+USE_PERL5=	build
 USE_QT=		core declarative gui network opengl widgets \
-		buildtools_build
+		buildtools:build
 USE_XORG=	x11 xext xv
 
 QT_CONFIG=	xlib
@@ -48,7 +46,8 @@ ALSA_VARS_OFF=		QT_CONFIG+=-alsa \
 			QMAKE_CONFIGURE_ARGS+=-no-alsa
 
 GSTREAMER_BUILD_DEPENDS=${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
-GSTREAMER_USE=		GSTREAMER1=bad
+GSTREAMER_USES=		gstreamer
+GSTREAMER_USE=		GSTREAMER=bad
 GSTREAMER_VARS=		QT_CONFIG+=gstreamer-1.0 \
 			QMAKE_CONFIGURE_ARGS+=-gstreamer 1.0
 GSTREAMER_VARS_OFF=	QT_CONFIG+=-gstreamer-1.0 \

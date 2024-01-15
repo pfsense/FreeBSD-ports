@@ -1,6 +1,3 @@
-# Created by: Gunter Wambaugh <gunter@six-two.net>
-# $FreeBSD$
-
 PORTNAME=	Net-Google-Spreadsheets
 PORTVERSION=	0.15.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}
 
 MAINTAINER=	gunter@six-two.net
 COMMENT=	Perl module for using Google Spreadsheets API
+WWW=		https://metacpan.org/release/Net-Google-Spreadsheets
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Any-Moose>=0:devel/p5-Any-Moose \

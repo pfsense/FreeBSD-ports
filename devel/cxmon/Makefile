@@ -1,6 +1,3 @@
-# Created by: Joachim Strombergson
-# $FreeBSD$
-
 PORTNAME=	cxmon
 PORTVERSION=	3.2
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	http://cxmon.cebix.net/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive file manipulation tool and disassembler
+WWW=		https://cxmon.cebix.net/
 
 GNU_CONFIGURE=	yes
 

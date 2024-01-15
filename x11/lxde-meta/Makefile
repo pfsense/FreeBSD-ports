@@ -1,6 +1,3 @@
-# Created by: Daniel Walter <sahne@0x90.at>
-# $FreeBSD$
-
 PORTNAME=	lxde-meta
 PORTVERSION=	1.0
 PORTREVISION=	8
@@ -8,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	"meta-port" of the LXDE desktop slimmed down for FreeBSD releases
+WWW=		https://lxde.org/
 
 RUN_DEPENDS=	openbox:x11-wm/openbox \
 		obconf:x11-wm/obconf \

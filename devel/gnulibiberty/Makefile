@@ -1,9 +1,5 @@
-# Created by: Joerg Wunsch <joerg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnulibiberty
-PORTVERSION=	2.19.1
-PORTREVISION=	2
+PORTVERSION=	2.37
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
 DISTNAME=	binutils-${PORTVERSION}
@@ -13,11 +9,9 @@ COMMENT=	Miscellaneous GNU functions
 
 WRKSRC=		${WRKDIR}/binutils-${PORTVERSION}/libiberty
 
-USES=		gmake tar:bzip2
+USES=		gmake tar:xz
 
-CONFIGURE_ARGS=	--enable-install-libiberty
+CONFIGURE_ARGS=	--enable-install-libiberty --disable-multilib
 GNU_CONFIGURE=	yes
-
-CONFLICTS=	freelibiberty-[0-9]*
 
 .include <bsd.port.mk>

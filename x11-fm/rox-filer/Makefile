@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	rox-filer
 PORTVERSION=	2.11
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	x11-fm gnome
 MASTER_SITES=	SF/rox/rox/${PORTVERSION}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Simple and easy to use graphical file manager
+WWW=		https://rox.sourceforge.net/phpwiki/index.php/ROX-Filer
 
 LICENSE=	GPLv2+
 

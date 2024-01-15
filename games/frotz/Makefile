@@ -1,19 +1,17 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	frotz
 PORTVERSION=	2.51
 CATEGORIES=	games
 
 MAINTAINER=	dave@661.org
 COMMENT=	Infocom Z-machine games interpreter
+WWW=		https://gitlab.com/DavidGriffith/frotz
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	DavidGriffith
-GL_COMMIT=	73eec90ebb159ed687b74cbaf81e135c3e7e390b
+GL_TAGNAME=	73eec90ebb159ed687b74cbaf81e135c3e7e390b
 
 USES=		gmake ncurses
 

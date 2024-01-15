@@ -169,9 +169,10 @@ share/et/et_c.awk
 share/et/et_h.awk
 %%NLS%%share/locale/de/LC_MESSAGES/mit-krb5.mo
 %%NLS%%share/locale/en_US/LC_MESSAGES/mit-krb5.mo
+%%NLS%%share/locale/ka/LC_MESSAGES/mit-krb5.mo
 %%LDAP%%%%DATADIR%%/kerberos.schema
 %%LDAP%%%%DATADIR%%/kerberos.ldif
 @dir lib/krb5/plugins/authdata
 @dir lib/krb5/plugins/libkrb5
-@dir var/run/krb5kdc
-@dir var/krb5kdc
+@dir %%KRB5_RUNSTATEDIR%%/krb5kdc
+@dir %%KRB5_LOCALSTATEDIR%%/krb5kdc

@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libavl
 PORTVERSION=	1.4.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	avl-${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Library for balanced binary trees
+WWW=		https://adtinfo.org/
 
 GNU_CONFIGURE=	yes
 

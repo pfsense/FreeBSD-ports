@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-StateMachine
 PORTVERSION=	0.24
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Define classes for state machines
+WWW=		https://metacpan.org/release/Class-StateMachine
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

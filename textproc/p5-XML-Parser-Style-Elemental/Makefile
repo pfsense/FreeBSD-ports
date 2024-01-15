@@ -1,6 +1,3 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	XML-Parser-Style-Elemental
 PORTVERSION=	0.50
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	More advanced and flexible object tree style for XML::Parser
+WWW=		https://metacpan.org/release/TIMA/XML-Parser-Style-Elemental-0.50
 
 LICENSE=	ART10
 

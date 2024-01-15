@@ -1,8 +1,6 @@
-# Created by: Tim Bishop <tdb@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sqlplaylist
 PORTVERSION=	2.5.3859
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.isaksson.info/download/do/downloadapplication?name=slimserver-sqlplaylist&filename=/
 PKGNAMEPREFIX=	logitechmediaserver-
@@ -11,6 +9,7 @@ DIST_SUBDIR=	logitechmediaserver
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Logitech Media Server plugin to create playlists based on SQL queries
+WWW=		https://wiki.slimdevices.com/index.php/SQL_Playlist_plugin
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/SQLPlayList/LICENSE.txt

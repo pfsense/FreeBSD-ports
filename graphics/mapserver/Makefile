@@ -1,13 +1,12 @@
-# Created by: Douglas K. Rand <rand@meridian-enviro.com>
-# $FreeBSD$
-
 PORTNAME=		mapserver
-PORTVERSION=		7.6.2
+PORTVERSION=		8.0.1
+PORTREVISION=	3
 CATEGORIES=		graphics www geography
 MASTER_SITES=		https://download.osgeo.org/mapserver/
 
 MAINTAINER=		wen@FreeBSD.org
 COMMENT=		System for developing web-based GIS applications
+WWW=		https://mapserver.org/
 
 LICENSE=		MIT
 
@@ -20,14 +19,14 @@ LIB_DEPENDS=		libgd.so:graphics/gd \
 
 USES=			compiler:c++11-lang cpe cmake gnome jpeg \
 			localbase:ldflags
-CPE_VENDOR=		umn
+CPE_VENDOR=		osgeo
 LDFLAGS+=		-pthread
 CMAKE_ARGS+=		-DCMAKE_PREFIX_PATH=${LOCALBASE} \
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 			-DWITH_GD=1
 MAKE_JOBS_UNSAFE=	yes
 
-PROG_FILES=		legend scalebar shp2img shptree shptreetst shptreevis \
+PROG_FILES=		legend scalebar shptree shptreetst shptreevis \
 			sortshp msencrypt tile4ms mapserv
 
 OPTIONS_DEFINE=		CAIRO CAIRO_SVG CLIENT_WMS CLIENT_WFS CURL DEBUG \

@@ -1,6 +1,3 @@
-# Created by: Nick Sayer <nsayer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	poptop
 PORTVERSION=	1.4.0
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTFILES=	pptpd-${PORTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Windows 9x compatible PPTP (VPN) server
+WWW=		https://poptop.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_DISTFILES=	pptpd-${PORTVERSION}${EXTRACT_SUFX}

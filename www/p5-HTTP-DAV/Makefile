@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	HTTP-DAV
 PORTVERSION=	0.49
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	WebDAV client library
+WWW=		https://metacpan.org/release/HTTP-DAV
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

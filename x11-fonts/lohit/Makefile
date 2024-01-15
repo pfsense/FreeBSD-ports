@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Lohit
 DISTVERSION=	20140220
 PORTREVISION=	3
@@ -9,6 +7,7 @@ DISTNAME=	lohit-ttf-${PORTVERSION}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Lohit fonts
+WWW=		https://fedorahosted.org/lohit/
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

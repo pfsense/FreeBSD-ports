@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	libdkim
 PORTVERSION=	1.0.21
 CATEGORIES=	mail
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DKIM (DomainKeys Identified Mail) library
+WWW=		https://dkim.org/
 
 LICENSE=	APACHE20
 

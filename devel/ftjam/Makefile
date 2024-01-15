@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ftjam
 PORTVERSION=	2.5.2
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/freetype/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small build tool that can be used as a replacement for make(1)
+WWW=		https://freetype.sourceforge.net/jam/
 
 USES=		dos2unix gmake tar:bzip2
 DOS2UNIX_GLOB=	*.c jam.h

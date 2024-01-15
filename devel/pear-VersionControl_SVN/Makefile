@@ -1,12 +1,10 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	VersionControl_SVN
 PORTVERSION=	0.5.2
 CATEGORIES=	devel pear
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Wrapper interface for the Subversion command-line client
+WWW=		https://pear.php.net/package/VersionControl_SVN
 
 LICENSE=	BSD2CLAUSE
 

@@ -1,6 +1,6 @@
---- texk/xdvik/dvisel.c.orig	2008-02-11 22:47:58 UTC
+--- texk/xdvik/dvisel.c.orig	2019-07-27 23:56:42 UTC
 +++ texk/xdvik/dvisel.c
-@@ -28,6 +28,7 @@
+@@ -30,6 +30,7 @@
  #include <string.h>
  #include <ctype.h>
  
@@ -8,7 +8,7 @@
  #include "dvi.h"
  #include "pagesel.h"
  #include "dvisel.h"
-@@ -510,6 +511,12 @@ WriteDVI(FILE *fin, FILE *fout, long *fo
+@@ -512,6 +513,12 @@ WriteDVI(FILE *fin, FILE *fout, long *fout_pos, int c)
  	    n += 4;
  	    /* fall through */
  	    
@@ -21,7 +21,7 @@
  	case RIGHT4:
  	case W4:
  	case X4:
-@@ -519,6 +526,12 @@ WriteDVI(FILE *fin, FILE *fout, long *fo
+@@ -521,6 +528,12 @@ WriteDVI(FILE *fin, FILE *fout, long *fout_pos, int c)
  	    n++;
  	    /* fall through */
  

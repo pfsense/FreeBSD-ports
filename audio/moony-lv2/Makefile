@@ -1,27 +1,22 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	moony
-DISTVERSION=	0.34.0
+DISTVERSION=	0.36.0
+PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	https://gitlab.com/OpenMusicKontrollers/moony.lv2/repository/archive.tar.gz?ref=${PORTVERSION}&dummy=/
+MASTER_SITES=	https://git.open-music-kontrollers.ch/lv2/moony.lv2/snapshot/
 PKGNAMESUFFIX=	-lv2
+DISTNAME=	${PORTNAME}.lv2-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Realtime Lua as programmable glue in LV2
-
-BROKEN_FreeBSD_11=	undefined reference to `clog', see bug#237771
+WWW=		https://open-music-kontrollers.ch/lv2/moony
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	lv2>0:audio/lv2
 
-USES=		compiler:c++11-lang gl meson pkgconfig xorg
+USES=		compiler:c++11-lang gl meson pkgconfig tar:xz xorg
 USE_XORG=	x11 xext
-USE_GL=		gl glu
-
-post-extract:
-	@${MV} ${WRKDIR}/moony* ${WRKDIR}/${PORTNAME}-${PORTVERSION}
+USE_GL=		gl glew glu
 
 .include <bsd.port.mk>

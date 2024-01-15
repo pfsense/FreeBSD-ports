@@ -1,6 +1,3 @@
-# Created by: Sergey Osokin aka oZZ <ports@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-TableExtract
 PORTVERSION=	2.15
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extract text contained in tables within an HTML document
+WWW=		https://metacpan.org/release/HTML-TableExtract
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

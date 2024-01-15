@@ -1,6 +1,3 @@
-# Created by: Craig Leres <leres@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cf
 PORTVERSION=	1.2.5
 CATEGORIES=	sysutils
@@ -8,7 +5,8 @@ MASTER_SITES=	ftp://ee.lbl.gov/
 PKGNAMEPREFIX=	lbl-
 
 MAINTAINER=	leres@FreeBSD.org
-COMMENT=	Unix time to formated time and date filter
+COMMENT=	Unix time to formatted time and date filter
+WWW=		https://ee.lbl.gov/
 
 LICENSE=	BSD3CLAUSE
 
@@ -18,6 +16,8 @@ PLIST_FILES=	bin/cf \
 		man/man1/cf.1.gz
 
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	cf # bin/cf
 
 pre-install:
 	@${STRIP_CMD} ${WRKSRC}/cf

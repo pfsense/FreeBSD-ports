@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-WBXML
 PORTVERSION=	0.09
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert between XML and WBXML using libwbxml2
+WWW=		https://metacpan.org/release/XML-WBXML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

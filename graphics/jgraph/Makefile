@@ -1,6 +1,3 @@
-# Created by: wolman@cs.washington.edu
-# $FreeBSD$
-
 PORTNAME=	jgraph
 PORTVERSION=	8.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTFILES=	${PORTNAME}.shar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generates postscript graphs
+WWW=		https://web.eecs.utk.edu/~plank/plank/jgraph/
 
 EXTRACT_CMD=	uncompress
 EXTRACT_BEFORE_ARGS=	-c

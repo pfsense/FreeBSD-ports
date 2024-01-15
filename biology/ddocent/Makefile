@@ -1,19 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=		dDocent
 DISTVERSIONPREFIX=	v
 DISTVERSION=		2.7.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=		biology java perl5 python
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Bash pipeline for RAD sequencing
+WWW=		http://ddocent.com
 
 LICENSE=	MIT
 
-# ddocent test data do not unpack with FreeBSD 11.1 /usr/bin/unzip
-RUN_DEPENDS=	unzip>=0:archivers/unzip \
-		mawk>=0:lang/mawk \
+RUN_DEPENDS=	mawk>=0:lang/mawk \
 		gawk>=0:lang/gawk \
 		coreutils>=0:sysutils/coreutils \
 		gnuplot>=0:math/gnuplot \

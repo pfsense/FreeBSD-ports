@@ -1,0 +1,55 @@
+--- Makefile.orig	2022-07-05 12:02:51 UTC
++++ Makefile
+@@ -42,7 +42,6 @@ endif
+ ## Begin customization points for each OS and TOOLCHAIN we support.
+ 
+ 
+-ifeq (${OS},linux)
+   CXXFLAGS_EARLY += -DLINUX
+   EXE_EXTENSION :=
+   LDFLAGS_GL := -lGL
+@@ -51,7 +50,6 @@ ifeq (${OS},linux)
+   LDFLAGS_SDL := -lSDL -lSDL_gfx -lSDL_mixer -lSDL_ttf -lpthread -lz
+   OBJ_EXTENSION := .o
+   hyper_RES :=
+-endif
+ 
+ ifeq (${OS},mingw)
+   CXXFLAGS_EARLY += -DWINDOWS -mwindows -D_A_VOLID=8
+@@ -140,19 +138,19 @@ override CXXFLAGS := $(CXXFLAGS_STD) $(CXXFLAGS_EARLY)
+ override LDFLAGS := $(LDFLAGS_EARLY) $(LDFLAGS) ${EXTRA_LDFLAGS}
+ 
+ hyperrogue$(EXE_EXTENSION): $(hyper_OBJS) $(hyper_RES)
+-	$(CXX) $(CXXFLAGS) $(hyper_OBJS) $(hyper_RES) $(LDFLAGS) $(hyper_LDFLAGS) -o $@
++	$(CXX) $(hyper_OBJS) $(hyper_RES) $(LDFLAGS) $(hyper_LDFLAGS) -o $@
+ 
+ hyper$(OBJ_EXTENSION): *.cpp language-data.cpp autohdr.h
+-	$(CXX) -O2 $(CXXFLAGS) $(hyper_CXXFLAGS) -c hyper.cpp -o $@
++	$(CXX) $(CXXFLAGS) $(hyper_CXXFLAGS) -c hyper.cpp -o $@
+ 
+ hyper.res: hyper.rc hr-icon.ico
+ 	windres hyper.rc -O coff -o hyper.res
+ 
+ langen$(EXE_EXTENSION): langen.cpp language-??.cpp language-ptbr.cpp
+-	$(CXX) -O0 $(CXXFLAGS) $(langen_CXXFLAGS) langen.cpp $(LDFLAGS) -o $@
++	$(CXX) $(CXXFLAGS) $(langen_CXXFLAGS) langen.cpp $(LDFLAGS) -o $@
+ 
+ makeh$(EXE_EXTENSION): makeh.cpp
+-	$(CXX) -O2 makeh.cpp -o $@
++	$(CXX) $(CXXFLAGS) makeh.cpp $(LDFLAGS) -o $@
+ 
+ autohdr.h: makeh$(EXE_EXTENSION) language-data.cpp *.cpp
+ 	./makeh classes.cpp locations.cpp colors.cpp hyperpoint.cpp geometry.cpp goldberg.cpp init.cpp floorshapes.cpp cell.cpp multi.cpp shmup.cpp pattern2.cpp mapeditor.cpp graph.cpp textures.cpp hprint.cpp language.cpp util.cpp complex.cpp multigame.cpp *.cpp > autohdr.h
+@@ -161,10 +159,10 @@ language-data.cpp: langen$(EXE_EXTENSION)
+ 	./langen > language-data.cpp
+ 
+ savepng$(OBJ_EXTENSION): savepng.cpp
+-	$(CXX) -O2 $(CXXFLAGS) -c savepng.cpp -o $@
++	$(CXX) $(CXXFLAGS) -c savepng.cpp -o $@
+ 
+ mymake$(EXE_EXTENSION): mymake.cpp
+-	$(CXX) -O2 $(CXXFLAGS) mymake.cpp -pthread -o $@
++	$(CXX) $(CXXFLAGS) mymake.cpp $(LDFLAGS) -pthread -o $@
+ 
+ emscripten: hyper.html
+ 

@@ -1,6 +1,3 @@
-# Created by: Andreas Fehlner <fehlner@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	cmdftp
 PORTVERSION=	0.9.8
 CATEGORIES=	ftp
@@ -8,6 +5,7 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line shell-like FTP client
+WWW=		https://www.nongnu.org/cmdftp/
 
 LICENSE=	GPLv3
 

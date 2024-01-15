@@ -1,6 +1,3 @@
-# Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	mad_fcl
 PORTVERSION=	1.7
 CATEGORIES=	net
@@ -9,13 +6,14 @@ DISTNAME=	${PORTNAME}_v${PORTVERSION}_src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File Delivery over Unidirectional Transport implementation
+WWW=		http://mad.cs.tut.fi/
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
 
 USES=		dos2unix gmake ssl
 MAKE_ENV=	LFLAGS="${LDFLAGS}"
-MAKE_JOBS_UNSAFE= yes
+MAKE_JOBS_UNSAFE=	yes
 
 CFLAGS+=	-DHAVE_SYS_TYPES_H -DHAVE_SYS_SELECT_H -DHAVE_UNISTD_H \
 		-I${LOCALBASE}/include

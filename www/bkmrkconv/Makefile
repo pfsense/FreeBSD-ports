@@ -1,6 +1,3 @@
-# Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
-
 PORTNAME=	bkmrkconv
 PORTVERSION=	1.12
 CATEGORIES=	www
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.bleb.org/software/bkmrkconv/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Netscape bookmarks.html converter
+WWW=		http://www.bleb.org/software/bkmrkconv/
 
 LICENSE=	ART10
 

@@ -1,6 +1,3 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Redis-hiredis
 PORTVERSION=	0.11.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple wrapper around hiredis C client
+WWW=		https://metacpan.org/release/Redis-hiredis
 
 USES=		perl5
 USE_PERL5=	configure

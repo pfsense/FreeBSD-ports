@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	1.8.0
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Ukrainian hunspell dictionaries
+WWW=		https://sourceforge.net/projects/ispell-uk/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
@@ -22,8 +21,8 @@ USE_PERL5=	build
 USES=		gmake iconv:build shebangfix perl5 tar:tgz
 SHEBANG_FILES=	bin/*.pl
 
-PLIST_FILES=	%%DATADIR%%/uk_UA.aff \
-		%%DATADIR%%/uk_UA.dic
+PLIST_FILES=	${DATADIR}/uk_UA.aff \
+		${DATADIR}/uk_UA.dic
 
 post-patch:
 	@${REINPLACE_CMD} -e "s,/bin/true,/usr/bin/true,g" ${WRKSRC}/src/Dictionary/Makefile

@@ -1,6 +1,3 @@
-# Created by: Dennis Herrmann <adox@mcx2.org>
-# $FreeBSD$
-
 PORTNAME=	multisort
 PORTVERSION=	1.1
 CATEGORIES=	www
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.xach.com/multisort/ \
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Small program to take multiple httpd logfiles into one
+WWW=		https://www.xach.com/multisort/
 
 LICENSE=	GPLv2+
 

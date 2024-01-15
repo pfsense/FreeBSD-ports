@@ -1,14 +1,12 @@
-# Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freetennis
 PORTVERSION=	0.4.8
-PORTREVISION=	15
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tennis simulation
+WWW=		https://freetennis.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

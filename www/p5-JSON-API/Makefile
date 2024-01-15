@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	JSON-API
 PORTVERSION=	1.1.1
 DISTVERSIONPREFIX=	v
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Module to interact with a JSON API
+WWW=		https://metacpan.org/release/JSON-API
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

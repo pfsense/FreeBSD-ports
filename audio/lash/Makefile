@@ -1,14 +1,12 @@
-# Created by: Edward Tomasz Napierala <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
-
 PORTNAME=	lash
 PORTVERSION=	0.5.4
-PORTREVISION=	14
+PORTREVISION=	19
 CATEGORIES=	audio
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Session management system for JACK audio applications
+WWW=		https://www.nongnu.org/lash/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
@@ -28,7 +26,7 @@ LIBS=		-luuid
 INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include/dssi -I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-L${LOCALBASE}/lib -pthread
 
 OPTIONS_DEFINE=	READLINE PYTHON DOCS
 OPTIONS_DEFAULT=READLINE

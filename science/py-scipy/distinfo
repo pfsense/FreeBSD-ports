@@ -1,5 +1,5 @@
-TIMESTAMP = 1607564070
-SHA256 (scipy-1.5.4.tar.gz) = 4a453d5e5689de62e5d38edf40af3f17560bfd63c9c5bd228c18c1f99afa155b
-SIZE (scipy-1.5.4.tar.gz) = 25237512
-SHA256 (scipy-ref-1.5.1.pdf) = 3171296406bf50db70dd398a22376a446332ffcd4b7409137dcdc9bbc0ac372e
-SIZE (scipy-ref-1.5.1.pdf) = 33456480
+TIMESTAMP = 1688646879
+SHA256 (scipy-1.11.1.tar.gz) = fb5b492fa035334fd249f0973cc79ecad8b09c604b42a127a677b45a9a3d4289
+SIZE (scipy-1.11.1.tar.gz) = 56031509
+SHA256 (scipy-html-1.11.1.zip) = e0a90d5fb0b93f0433c63cc1f80c8084e54c0402606a60a7898f61b53be60f13
+SIZE (scipy-html-1.11.1.zip) = 50389323

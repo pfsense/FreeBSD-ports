@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	xcm
 PORTVERSION=	0.5.4
 PORTREVISION=	1
 CATEGORIES=	x11
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X Color Management tools
 
 LICENSE=	MIT
@@ -14,8 +12,8 @@ LICENSE_FILE=	${WRKSRC}/docs/COPYING
 LIB_DEPENDS=	libXcm.so:x11/libXcm \
 		libOyranos.so:graphics/oyranos
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     oyranos-cms
+USE_GITHUB=	yes
+GH_ACCOUNT=	oyranos-cms
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--mandir=${PREFIX}/man
 USES=		pkgconfig xorg

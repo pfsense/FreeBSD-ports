@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Compress-LZW
 PORTVERSION=	0.04
 CATEGORIES=	archivers perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pure perl implementation of LZW
+WWW=		https://metacpan.org/release/Compress-LZW
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

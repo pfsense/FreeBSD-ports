@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	Math-Expr
 PORTVERSION=	0.4
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for parsing mathematical expressions into a tree structure
+WWW=		https://metacpan.org/release/HAKANARDO/Math-Expr-0.4
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

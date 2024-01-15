@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mod_auth_tkt
 PORTVERSION=	2.1.0
 PORTREVISION=	3
@@ -7,10 +5,11 @@ CATEGORIES=	www
 MASTER_SITES=	LOCAL/kuriyama \
 		http://www.openfusion.com.au/labs/dist/mod_auth_tkt/
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight single-sign-on authentication module for apache
+WWW=		http://www.openfusion.com.au/labs/mod_auth_tkt/
 
-USES=		apache:2.2+ shebangfix
+USES=		apache shebangfix
 SHEBANG_FILES=	../cgi/login.cgi \
 		../cgi/logout.cgi
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src

@@ -1,6 +1,3 @@
-# Created by: milki <milki@rescomp.berkeley.edu>
-# $FreeBSD$
-
 PORTNAME=	Hailo
 PORTVERSION=	0.75
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pluggable Markov engine analogous to MegaHAL
+WWW=		https://metacpan.org/release/Hailo
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

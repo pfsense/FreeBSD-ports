@@ -1,6 +1,3 @@
-# Created by: Hung-Yi Chen <gaod@hychen.org>
-# $FreeBSD$
-
 PORTNAME=	File-Tail-Scribe
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Perl Module to tail file to Scribe server
+WWW=		https://metacpan.org/release/File-Tail-Scribe
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman<5u623l20@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	MooX-Cmd
 PORTVERSION=	0.017
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Giving an easy Moo style way to make command organized CLI apps
+WWW=		https://metacpan.org/release/MooX-Cmd
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

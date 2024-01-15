@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Rcs-Agent
 PORTVERSION=	1.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mats@dufberg.se
 COMMENT=	Perl module for RCS archive manipulation
+WWW=		https://metacpan.org/release/Rcs-Agent
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-String-ShellQuote>1.00:textproc/p5-String-ShellQuote

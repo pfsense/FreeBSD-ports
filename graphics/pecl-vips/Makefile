@@ -1,12 +1,11 @@
-# Created by: punkt.de Hosting Team <mops@punkt.de>
-# $FreeBSD$
-
 PORTNAME=	vips
-PORTVERSION=	1.0.10
+PORTVERSION=	1.0.13
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	mops@punkt.de
 COMMENT=	PHP bindings for libvips
+WWW=		https://github.com/libvips/php-vips-ext
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

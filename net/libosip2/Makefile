@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	libosip2
-PORTVERSION=	5.2.0
+PORTVERSION=	5.3.1
 CATEGORIES=	net
 MASTER_SITES=	GNU/osip
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Low layer of SIP implementation
+WWW=		https://www.gnu.org/software/osip/
 
 LICENSE=	LGPL21
 
@@ -16,7 +15,7 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-trace
 INSTALL_TARGET=	install-strip
-PLIST_SUB=	ABIVER=14
+PLIST_SUB=	ABIVER=15
 
 post-patch:
 	@${REINPLACE_CMD} -e "/^SUBDIRS/s| help | |g" ${WRKSRC}/Makefile.in

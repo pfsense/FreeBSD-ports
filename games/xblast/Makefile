@@ -1,6 +1,3 @@
-# Created by: se
-# $FreeBSD$
-
 PORTNAME=	xblast
 PORTVERSION=	2.10.4
 PORTREVISION=	18
@@ -19,6 +16,7 @@ DIST_SUBDIR=	xblast
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-player real-time strategy game for X11
+WWW=		https://xblast.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Harry Newton
-# $FreeBSD$
-
 PORTNAME=	xmailwatcher
 PORTVERSION=	1.6
 PORTREVISION=	2

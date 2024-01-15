@@ -1,4 +1,4 @@
---- texk/xdvik/dvi.h.orig	2001-04-18 14:24:42 UTC
+--- texk/xdvik/dvi.h.orig	2019-07-27 23:56:42 UTC
 +++ texk/xdvik/dvi.h
 @@ -5,9 +5,13 @@
  #define	SETCHAR0	0
@@ -14,12 +14,13 @@
  #define	PUTRULE		137
  #define	NOP		138
  #define	BOP		139
-@@ -61,4 +65,8 @@
+@@ -60,5 +64,9 @@
+ #define	POSTPOST	249
  #define	SREFL		250
  #define	EREFL		251
- 
++
 +#ifdef PTEX
 +#define TDIR            255
 +#endif  /* PTEX */
-+
+ 
  #define	TRAILER		223	/* Trailing bytes at end of file */

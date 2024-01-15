@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Server-IRC
 PORTVERSION=	1.54
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Fully event-driven networkable IRC server daemon module
+WWW=		https://metacpan.org/release/POE-Component-Server-IRC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

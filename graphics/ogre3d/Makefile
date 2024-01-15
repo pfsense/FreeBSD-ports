@@ -1,24 +1,20 @@
-# Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ogre3d
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.11.6
-PORTREVISION=	1
+PORTREVISION=	13
 CATEGORIES=	graphics devel
 
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Scene-oriented, flexible 3D engine written in C++
+WWW=		https://www.ogre3d.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_12_powerpc64=	fails to build: /usr/local/bin/ld: /usr/lib/crt1.o:(.got+0x60): undefined reference to 'main'
-
 LIB_DEPENDS=	libzzip.so:devel/zziplib \
 		libfreetype.so:print/freetype2
 
-CONFLICTS=	ogre3d19-[0-9]*
+CONFLICTS=	ogre3d19
 
 USES=		cmake compiler:c++11-lib pkgconfig sdl xorg
 USE_LDCONFIG=	yes
@@ -29,21 +25,14 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	OGRECave
 GH_PROJECT=	ogre
 
-CMAKE_ARGS+=	-DOGRE_BUILD_RENDERSYSTEM_GL3PLUS:BOOL=OFF \
-		-DOGRE_BUILD_RENDERSYSTEM_GL:BOOL=OFF \
-		-DOGRE_BUILD_RENDERSYSTEM_GLES2:BOOL=OFF \
-		-DOGRE_BUILD_COMPONENT_PYTHON:BOOL=OFF \
-		-DOGRE_BUILD_COMPONENT_JAVA:BOOL=OFF \
-		-DOGRE_BUILD_COMPONENT_CSHARP:BOOL=OFF \
-		-DOGRE_BUILD_PLUGIN_FREEIMAGE:BOOL=OFF \
-		-DOGRE_BUILD_PLUGIN_EXRCODEC:BOOL=OFF \
-		-DOGRE_CONFIG_ENABLE_ZIP:BOOL=ON \
-		-DOGRE_INSTALL_DOCS:BOOL=OFF \
-		-DOGRE_INSTALL_SAMPLES_SOURCE:BOOL=OFF
+PORTDOCS=	*
+
+CMAKE_ON=	OGRE_CONFIG_ENABLE_ZIP
+CMAKE_OFF=	OGRE_INSTALL_SAMPLES_SOURCE
 
 OPTIONS_DEFINE=		CSHARP DOCS FREEIMAGE JAVA OPENEXR OPENGL PROFILE \
 			PYTHON
-OPTIONS_DEFAULT=	DOCS OPENGL
+OPTIONS_DEFAULT=	FREEIMAGE OPENGL
 OPTIONS_SUB=		yes
 
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
@@ -55,15 +44,13 @@ FREEIMAGE_LIB_DEPENDS=	libfreeimage.so:graphics/freeimage
 
 OPENEXR_USE=		XORG=ice
 OPENEXR_CMAKE_BOOL=	OGRE_BUILD_PLUGIN_EXRCODEC
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
-			libIlmThread-2_3.so:graphics/ilmbase \
-			libHalf.so:graphics/ilmbase \
-			libIex-2_3.so:graphics/ilmbase
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr \
+			libImath.so:math/Imath
 
 OPENGL_CMAKE_BOOL=	OGRE_BUILD_RENDERSYSTEM_GL3PLUS \
 			OGRE_BUILD_RENDERSYSTEM_GL \
 			OGRE_BUILD_RENDERSYSTEM_GLES2
-OPENGL_USES=		gl xorg
+OPENGL_USES=		gl
 OPENGL_USE=		XORG=sm,ice GL=gl,glu
 
 PROFILE_CMAKE_BOOL=	OGRE_PROFILING
@@ -76,22 +63,23 @@ JAVA_CMAKE_BOOL=	OGRE_BUILD_COMPONENT_JAVA
 JAVA_BUILD_DEPENDS=	swig:devel/swig
 JAVA_VARS=		CMAKE_ARGS+=-DJAVA_HOME=${JAVA_HOME}
 JAVA_USE=		JAVA=yes
+JAVA_BROKEN=		error: incompatible types: SWIGTYPE_p_std__mapT_std__string_std__string_std__lessT_std__string_t_t__iterator cannot be converted to Iterator
 
 PYTHON_CMAKE_BOOL=	OGRE_BUILD_COMPONENT_PYTHON
 PYTHON_BUILD_DEPENDS=	swig:devel/swig
 PYTHON_USES=		python
 
-CXXFLAGS+=		-DNDEBUG -I${LOCALBASE}/include
+CXXFLAGS+=		-DNDEBUG -I${LOCALBASE}/include -I${LOCALBASE}/include/Imath
 
 post-patch:
 	@${REINPLACE_CMD} -e '\
-		s,defined(__x86_64__),& || defined(__sparc64__) || defined(__amd64__),' \
+		s,defined(__x86_64__),& || defined(__amd64__),' \
 		${WRKSRC}/OgreMain/include/OgrePlatform.h
 
 post-patch-PYTHON-on:
-	${REINPLACE_CMD} -e 's/\(Python_ADDITIONAL_VERSIONS\) [0-9\.]*/\$1 ${PYTHON_VER}/' \
+	@${REINPLACE_CMD} -e 's/\(Python_ADDITIONAL_VERSIONS\) [0-9\.]*/\$1 ${PYTHON_VER}/' \
 		${WRKSRC}/CMake/Dependencies.cmake
-	${REINPLACE_CMD} -e "s/dist-packages/site-packages/" \
+	@${REINPLACE_CMD} -e "s/dist-packages/site-packages/" \
 		${WRKSRC}/Components/Python/CMakeLists.txt
 
 post-build-DOCS-on:

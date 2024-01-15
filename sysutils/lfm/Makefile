@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	lfm
 PORTVERSION=	3.1
 CATEGORIES=	sysutils
@@ -9,11 +6,12 @@ MASTER_SITES=	https://inigo.katxi.org/devel/lfm/ \
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Last File Manager, a powerful file manager for the UNIX console
+WWW=		https://inigo.katxi.org/devel/lfm/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	autoplist distutils noflavors
 
 NO_ARCH=	yes

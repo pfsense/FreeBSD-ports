@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CGI-PSGI
 PORTVERSION=	0.15
 PORTREVISION=	1
@@ -8,10 +6,13 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MIYAGAWA
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to enable CGI.pm applications to adapt PSGI
+WWW=		https://metacpan.org/release/CGI-PSGI
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

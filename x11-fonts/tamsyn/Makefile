@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tamsyn-font
 DISTVERSION=	1.11
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	http://www.fial.com/~scott/tamsyn-font/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Monospaced bitmap font for programming
+WWW=		http://www.fial.com/~scott/tamsyn-font/
 
 LICENSE=	TAMSYN
 LICENSE_NAME=	Tamsyn License

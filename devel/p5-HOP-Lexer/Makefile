@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	HOP-Lexer
 PORTVERSION=	0.032
 PORTREVISION=	2
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:OVID
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Higher Order Perl Lexer
+WWW=		https://metacpan.org/release/HOP-Lexer
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HOP-Stream>=0.01:devel/p5-HOP-Stream

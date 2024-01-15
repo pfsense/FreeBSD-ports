@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	XML-RSS-LibXML
 PORTVERSION=	0.3105
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XML::RSS with XML::LibXML
+WWW=		https://metacpan.org/release/XML-RSS-LibXML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

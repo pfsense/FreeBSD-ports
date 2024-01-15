@@ -1,6 +1,3 @@
-# Created by: Marcin Gondek <drixter@e-utp.net>
-# $FreeBSD$
-
 PORTNAME=	rbllookup
 PORTVERSION=	0.0.1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	drixter@e-utp.net
 COMMENT=	Check given IP/Host presence in 106 RBLs
+WWW=		https://rbllookup.sourceforge.net
 
 BUILD_DEPENDS=	p5-Net-DNS>=0:dns/p5-Net-DNS \
 		p5-Term-ANSIColor>=0:devel/p5-Term-ANSIColor

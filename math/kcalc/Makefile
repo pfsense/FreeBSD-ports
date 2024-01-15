@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	kcalc
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	math kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Scientific calculator for KDE
+WWW=		https://utils.kde.org/projects/kcalc/
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr
@@ -14,9 +13,10 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-
 
 USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
 USE_KDE=	auth codecs config configwidgets coreaddons crash doctools \
-		ecm guiaddons i18n init notifications widgetsaddons xmlgui
+		guiaddons i18n init notifications widgetsaddons xmlgui \
+		ecm:build
 USE_QT=		core dbus gui widgets xml \
-		buildtools_build qmake_build
+		buildtools:build qmake:build
 
 OPTIONS_DEFINE=	DOCS
 

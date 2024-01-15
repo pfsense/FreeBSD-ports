@@ -1,20 +1,18 @@
-# Created by: Tobias Roth <ports@fsck.ch>
-# $FreeBSD$
-
 PORTNAME=	treeline
-PORTVERSION=	3.1.4
+PORTVERSION=	3.1.6
 CATEGORIES=	deskutils python
 MASTER_SITES=	https://github.com/doug-101/TreeLine/releases/download/v${PORTVERSION}/ \
 		SF/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Structured information storage program
+WWW=		https://treeline.bellz.org
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
-USES=		python:3.5+ pyqt:5 shebangfix
-USE_PYQT=	core gui network printsupport widgets sip
+USES=		python pyqt:5 shebangfix
+USE_PYQT=	pyqt5 sip
 
 SHEBANG_FILES=	source/treeline.py
 

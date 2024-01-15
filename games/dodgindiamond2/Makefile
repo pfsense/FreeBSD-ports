@@ -1,6 +1,3 @@
-# Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
-
 PORTNAME=	dodgindiamond2
 PORTVERSION=	0.2.2
 PORTREVISION=	11
@@ -10,6 +7,7 @@ DISTNAME=	dd2-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Old school shoot'em up game
+WWW=		https://www.usebox.net/jjm/dd2/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

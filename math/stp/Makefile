@@ -1,20 +1,15 @@
-# Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	stp
 DISTVERSION=	2.3.3
-PORTREVISION=	6
+PORTREVISION=	12
 PORTEPOCH=	1
 CATEGORIES=	math
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Decision Procedure for Bitvectors and Arrays
+WWW=		https://stp.github.io/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_aarch64=		fails to link: missing sbrk
-BROKEN_riscv64=		fails to link: missing sbrk
 
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
 		libminisat.so:math/minisat \

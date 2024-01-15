@@ -1,30 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	2fa
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.0
-PORTREVISION=	1
+DISTVERSION=	1.2.0
+PORTREVISION=	16
 CATEGORIES=	security
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Two-factor authentication on the command line
+WWW=		https://github.com/rsc/2fa
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		go:modules
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	rsc
-GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
+GO_MODULE=	rsc.io/2fa
 
 OPTIONS_DEFINE=	DOCS
 
 PLIST_FILES=	bin/2fa
 PORTDOCS=	README.md
-
-do-test:
-	@cd ${GO_WRKSRC}; ${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} test ${GO_BUILDFLAGS}
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

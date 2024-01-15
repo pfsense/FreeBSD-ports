@@ -1,6 +1,3 @@
-# Created by: courou <courou@users.sourceforge.net>
-# $FreeBSD$
-
 PORTNAME=	myphpmoney
 PORTVERSION=	1.3.r3
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/.r/RC/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP script for managing your accounts
+WWW=		https://myphpmoney.sourceforge.net/
 
 WEBOWN?=	www
 WEBGRP?=	www

@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	libchk
 PORTVERSION=	1.10.3
 CATEGORIES=	sysutils
@@ -9,11 +6,11 @@ MASTER_SITES=	ftp://ftp.iDaemons.org/pub/distfiles/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to check shared library links
+WWW=		http://svn.idaemons.org/cgi-bin/viewvc.cgi/trunk/?root=libchk
 
 LICENSE=	BSD2CLAUSE
 
-USES=			tar:bzip2 uidfix
-USE_RUBY=		yes
+USES=		ruby tar:bzip2 uidfix
 
 MAKE_ARGS=	PREFIX="${PREFIX}"
 

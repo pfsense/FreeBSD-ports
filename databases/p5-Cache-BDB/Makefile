@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Cache-BDB
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Object caching wrapper around BerkeleyDB
+WWW=		https://metacpan.org/release/Cache-BDB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

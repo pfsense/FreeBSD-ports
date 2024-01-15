@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fcitx-skk
 PORTVERSION=	0.1.4
 PORTREVISION=	3
@@ -9,6 +7,7 @@ DIST_SUBDIR=	fcitx
 
 MAINTAINER=	hiroto.kagotani@gmail.com
 COMMENT=	SKK support for Fcitx
+WWW=		https://fcitx-im.org/wiki/Fcitx
 
 LICENSE=	GPLv3
 
@@ -18,7 +17,6 @@ LIB_DEPENDS=	libfcitx-config.so:chinese/fcitx \
 BUILD_DEPENDS=	bash:shells/bash
 
 USES=		cmake compiler:c++11-lang gettext gnome pkgconfig tar:xz
-INSTALLS_ICONS=	yes
 CMAKE_ARGS+=	-DSKK_DEFAULT_PATH=${LOCALBASE}/share/skk/SKK-JISYO.L
 
 OPTIONS_DEFINE=	QT5
@@ -29,7 +27,7 @@ QT5_DESC=	Enable Qt for GUI configuration
 
 .if ${PORT_OPTIONS:MQT5}
 USES+=		qt:5
-USE_QT=		buildtools_build qmake_build gui widgets
+USE_QT=		buildtools:build qmake:build gui widgets
 USE_LDCONFIG=	${PREFIX}/lib/fcitx/qt
 PLIST_SUB+=	QT5=""
 LIB_DEPENDS+=	libFcitxQt5WidgetsAddons.so:textproc/fcitx-qt5

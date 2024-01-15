@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	csvdiff
 PORTVERSION=	1.7
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}17
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compare/diff two (comma) separated files with each other
+WWW=		https://csvdiff.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

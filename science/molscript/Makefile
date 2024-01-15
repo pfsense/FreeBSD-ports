@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	MolScript
 DISTVERSION=	2.1.2
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Display 3D molecules in schematic and detailed representations
+WWW=		https://kraulis.se/MolScript/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
@@ -37,6 +36,12 @@ OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
+
 do-install:
 .for e in ${PROGS}
 	${INSTALL_PROGRAM} ${WRKSRC}/../${e} ${STAGEDIR}${PREFIX}/bin
@@ -45,4 +50,4 @@ do-install:
 do-install-DOCS-on:
 	cd ${WRKSRC}/../docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

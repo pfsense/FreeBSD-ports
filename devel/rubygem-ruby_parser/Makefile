@@ -1,21 +1,19 @@
-# Created by: Espen Volden aka voldern <voldern@hoeggen.net>
-# $FreeBSD$
-
 PORTNAME=	ruby_parser
-PORTVERSION=	3.15.0
+PORTVERSION=	3.20.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	voldern@hoeggen.net
 COMMENT=	Ruby parser written in pure ruby
+WWW=		https://github.com/seattlerb/ruby_parser
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-sexp_processor>=4.9<5:devel/rubygem-sexp_processor
+RUN_DEPENDS=	rubygem-sexp_processor>=4.16<5:devel/rubygem-sexp_processor
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem shebangfix
+USES=		cpe gem shebangfix
+CPE_VENDOR=	ryan_davis
 
 PLIST_FILES=	bin/ruby_parse \
 		bin/ruby_parse_extract_error

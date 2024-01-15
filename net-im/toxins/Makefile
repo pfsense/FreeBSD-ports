@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	toxins
 DISTVERSION=	g20180217
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Collection of small programs using toxcore
+WWW=		https://github.com/TokTok/toxins
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

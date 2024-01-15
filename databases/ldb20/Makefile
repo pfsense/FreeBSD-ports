@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=		ldb
 PORTVERSION=		2.0.10
-PORTREVISION=		0
+PORTREVISION=		1
 PORTEPOCH=		0
 CATEGORIES=		databases
 MASTER_SITES=		SAMBA
@@ -10,6 +8,7 @@ PKGNAMESUFFIX?=		20
 
 MAINTAINER=		timur@FreeBSD.org
 COMMENT=		LDAP-like embedded database
+WWW=		https://ldb.samba.org/
 
 LICENSE=		GPLv3+
 
@@ -25,14 +24,13 @@ LDB_DEPENDS=		talloc>=2.2.0:devel/talloc \
 			cmocka>=1.1.3:sysutils/cmocka \
 			popt>=0:devel/popt
 
-CONFLICTS_INSTALL=	ldb-1.1.* ldb1[2-9]-1.* ldb2[1-9]-2.*
+CONFLICTS_INSTALL=	ldb[0-9][0-9] # include/ldb.h
 
-USES=			compiler pkgconfig waf
+USES=			compiler ldap pkgconfig waf
 USE_LDCONFIG=		yes
 WAF_CMD=		${BUILD_WRKSRC}/buildtools/bin/waf
 CONFIGURE_LOG=		${BUILD_WRKSRC}/bin/config.log
 
-USE_OPENLDAP=		yes
 PKGCONFIGDIR?=		${PREFIX}/libdata/pkgconfig
 PLIST_SUB+=		PKGCONFIGDIR=${PKGCONFIGDIR:S;${PREFIX}/;;}
 
@@ -90,10 +88,15 @@ PLIST_FILES=		include/ldb_version.h \
 			${LDB_LIBS} \
 			${PKGCONFIGDIR}/ldb.pc
 
-
 .include <bsd.port.pre.mk>
 
-CONFIGURE_ENV+=		CFLAGS=-I${LOCALBASE}/include LDFLAGS=-L${LOCALBASE}/lib
+CFLAGS+=		-I${LOCALBASE}/include
+LDFLAGS+=		-L${LOCALBASE}/lib
+
+# Some symbols in ldb's linker version scripts are not defined, but since the
+# scripts are generated dynamically, suppress errors with lld >= 17 due to these
+# undefined symbols.
+LDFLAGS+=		-Wl,--undefined-version
 
 .if ! ${PORT_OPTIONS:MMANPAGES}
 CONFIGURE_ENV+=		XSLTPROC="true"
@@ -106,14 +109,14 @@ BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/do
 USES+=			python:build,test
 CONFIGURE_ARGS+=	--disable-python
 .else
-USES+=			python:3.4+
+USES+=			gettext-runtime python
 
 PLIST_FILES+=		include/pyldb.h \
-			lib/libpyldb-util.so \
-			lib/libpyldb-util.so.2 \
-			${PYTHON_SITELIBDIR}/ldb.so \
+			lib/libpyldb-util${PYTHON_EXT_SUFFIX}.so \
+			lib/libpyldb-util${PYTHON_EXT_SUFFIX}.so.2 \
+			${PYTHON_SITELIBDIR}/ldb${PYTHON_EXT_SUFFIX}.so \
 			${PYTHON_SITELIBDIR}/_ldb_text.py \
-			${PKGCONFIGDIR}/pyldb-util.pc
+			${PKGCONFIGDIR}/pyldb-util${PYTHON_EXT_SUFFIX}.pc
 .endif
 
 # No fancy color error messages
@@ -158,8 +161,8 @@ post-install:
 		${STRIP_CMD} ${STAGEDIR}${PREFIX}/${lib}
 .endfor
 .if ${PORT_OPTIONS:MPYTHON3} && !defined(NO_PYTHON)
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ldb.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ldb${PYTHON_EXT_SUFFIX}.so
 .endif
 
 .include <bsd.port.post.mk>

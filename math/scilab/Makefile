@@ -1,15 +1,13 @@
-# Created by: js@jeannot.org
-# $FreeBSD$
-
 PORTNAME=	scilab
-PORTVERSION=	6.1.0
-PORTREVISION=	4
+PORTVERSION=	6.1.1
+PORTREVISION=	14
 CATEGORIES=	math cad java
 MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scientific software package for numerical computations
+WWW=		https://www.scilab.org
 
 LICENSE=	GPLv2 BSD3CLAUSE
 LICENSE_COMB=	dual
@@ -23,7 +21,8 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libarpack.so:math/arpack-ng \
 		libfftw3.so:math/fftw3 \
 		libmatio.so:math/matio \
-		libamd.so:math/suitesparse
+		libamd.so:math/suitesparse-amd \
+		libumfpack.so:math/suitesparse-umfpack
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USES=		compiler:c++17-lang cpe desktop-file-utils eigen:3,build \
@@ -32,7 +31,6 @@ USES=		compiler:c++17-lang cpe desktop-file-utils eigen:3,build \
 USE_LOCALE=	en_US.UTF-8
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
 CONFIGURE_ARGS=	--with-gfortran \
 		--without-emf \
@@ -49,6 +47,8 @@ OPTIONS_DEFINE=	GUI OCAML TK
 OPTIONS_RADIO=	BLAS
 OPTIONS_RADIO_BLAS=	ATLAS NETLIB OPENBLAS
 OPTIONS_DEFAULT=	GUI NETLIB OCAML TK
+OPTIONS_EXCLUDE_powerpc64=	GUI
+OPTIONS_EXCLUDE_powerpc64le=	GUI
 OPTIONS_SUB=	yes
 
 ATLAS_USES=	blaslapack:atlas
@@ -67,7 +67,7 @@ _GUI_DEPENDS+=	${JAVALIBDIR}/flexdock.jar:devel/flexdock \
 		${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging \
 		${JAVALIBDIR}/jgraphx.jar:java/jgraphx \
 		${JAVALIBDIR}/jlatexmath.jar:math/jlatexmath \
-		${LOCALBASE}/share/java/ecj-4.5.jar:lang/gcc-ecj45 \
+		${JAVALIBDIR}/ecj-4.4.2.jar:java/eclipse-ecj \
 		${JAVALIBDIR}/lucene-core-5.5.5.jar:textproc/lucene5
 # Documentation, graphic export:
 _GUI_DEPENDS+=	${LOCALBASE}/share/java/fop/build/fop.jar:textproc/fop \
@@ -83,7 +83,7 @@ _GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/apache-commons-beanutils
 		${LOCALBASE}/bin/splint:devel/splint
 # Documentation building:
 _GUI_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/javahelp/javahelp.xsl:textproc/docbook-xsl \
-		${JAVALIBDIR}/saxon9he.jar:textproc/saxon-he \
+		${JAVALIBDIR}/saxon-he-10.6.jar:textproc/saxon-he \
 		${JAVALIBDIR}/xml-apis-ext.jar:textproc/xml-commons \
 		xsltproc:textproc/libxslt
 # Other gui deps:
@@ -109,7 +109,8 @@ GUI_CONFIGURE_OFF=	--without-gui \
 
 OCAML_IMPLIES=		GUI
 OCAML_CONFIGURE_WITH=	modelica
-OCAML_BUILD_DEPENDS=	ocaml:lang/ocaml
+OCAML_BUILD_DEPENDS=	ocaml:lang/ocaml \
+	${LOCALBASE}/lib/ocaml/site-lib/num/META:math/ocaml-num
 OCAML_RUN_DEPENDS=	ocaml:lang/ocaml
 
 TK_CONFIGURE_OFF=	--without-tk
@@ -129,14 +130,37 @@ CONFIGURE_ARGS+=	--without-openmp
 CONFIGURE_ARGS+=	--enable-debug
 .endif
 
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 150
+CFLAGS+=	-Wno-error=int-conversion
+.endif
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Rank mismatch between actual argument at (1) and actual argument at (2) (rank-1 and scalar)
+FFLAGS+=	-fallow-argument-mismatch
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} 's,/usr/local,${LOCALBASE},' ${WRKSRC}/etc/librarypath.xml
 	@${REINPLACE_CMD} -e 's, gfortran, ${FC},' ${WRKSRC}/modules/dynamic_link/src/scripts/configure
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+	@${REINPLACE_CMD} -e 's|std::filesystem|std::__fs::filesystem|g' \
+		${WRKSRC}/modules/fileio/src/cpp/fullpath.cpp \
+		${WRKSRC}/modules/fileio/sci_gateway/cpp/sci_get_absolute_file_path.cpp
+	@${REINPLACE_CMD} -e 's|std::binary_function|std::__binary_function|' \
+		${WRKSRC}/modules/ast/includes/types/sparseOp.hxx
+	@${REINPLACE_CMD} -e 's|std::unary_function|std::__unary_function|' \
+		${WRKSRC}/modules/ast/src/cpp/types/sparse.cpp
+.endif
 
 post-patch-GUI-on:
 # scilab segfaults on FreeBSD with C locale
 	@${REINPLACE_CMD} 's,LC_ALL=C,,' ${WRKSRC}/Makefile.in
-	@# Configure fixes
 	@${REINPLACE_CMD} '/ac_java_jvm_jni_lib_flags/s,\(ljvm\),\1 -pthread,' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/usr/lib/java|${JAVALIBDIR}|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/usr/lib64/jni|${LOCALBASE}/lib/|g' ${WRKSRC}/configure
@@ -156,15 +180,12 @@ post-patch-GUI-on:
 # Part of the jogamp-jogl-2.3 patch:
 	@${REINPLACE_CMD} -e 's|javax.media.opengl.glu.GLUnurbs|com.jogamp.opengl.glu.GLUnurbs|' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|jogamp.common.os.MachineDescriptionRuntime|jogamp.common.os.MachineDataInfoRuntime|' ${WRKSRC}/configure
-	@# Run fixes
 	@${REINPLACE_CMD} -e 's|%%JAVA_HOME%%|${JAVA_HOME}|' ${WRKSRC}/bin/scilab
 
 pre-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/.atoms
 
 post-install:
-	@# Remove empty dirs in DATADIR/modules - they will be removed by the
-	@# toolbox uninstaller otherwise if 3rd party toolboxes are used
 	@${FIND} ${STAGEDIR}${DATADIR}/modules -type d -empty -delete
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

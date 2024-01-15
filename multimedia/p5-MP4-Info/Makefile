@@ -1,6 +1,3 @@
-# Created by: Lars Eggert <lars.eggert@gmx.net>
-# $FreeBSD$
-
 PORTNAME=	MP4-Info
 PORTVERSION=	1.13
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Fetch info from MPEG-4 files
+WWW=		https://metacpan.org/release/MP4-Info
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

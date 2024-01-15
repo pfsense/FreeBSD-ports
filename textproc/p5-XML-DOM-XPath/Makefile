@@ -1,6 +1,3 @@
-# Created by: Mauricio Herrera Cuadra <mauricio@arareko.net>
-# $FreeBSD$
-
 PORTNAME=	XML-DOM-XPath
 PORTVERSION=	0.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mauricio@arareko.net
 COMMENT=	Adds XPath support to XML::DOM, using XML::XPath engine
+WWW=		https://metacpan.org/release/XML-DOM-XPath
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,5 +18,7 @@ RUN_DEPENDS=	p5-XML-DOM>=0:textproc/p5-XML-DOM \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

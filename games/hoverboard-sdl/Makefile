@@ -1,13 +1,11 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hoverboard
-PORTVERSION=	0.7.3
-PORTREVISION=	6
+PORTVERSION=	0.8.0
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Standalone version of xkcd 1608 "Hoverboard" game
+WWW=		https://github.com/AMDmi3/hoverboard-sdl
 
 LICENSE=	GPLv3+ CC-BY-NC-2.5
 LICENSE_COMB=	multi

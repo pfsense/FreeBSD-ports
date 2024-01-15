@@ -1,27 +1,21 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	msktutil
-PORTVERSION=	1.1
-PORTREVISION=	1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.2.1
+#DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Utility to manage Active Directory interoperability
+WWW=		https://github.com/msktutil/msktutil
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libudns.so:dns/udns
 RUN_DEPENDS=	cyrus-sasl-gssapi>0:security/cyrus-sasl2-gssapi
 
-USES=		autoreconf ssl
+USES=		autoreconf ldap ssl
 USE_GITHUB=	yes
-USE_OPENLDAP=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-sasldir=${LOCALBASE} --with-ldapdir=${LOCALBASE}
-WANT_OPENLDAP_SASL=	yes
 
 OPTIONS_SINGLE=	GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT

@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rman
 PORTVERSION=	3.2
 CATEGORIES=	textproc
@@ -13,6 +10,12 @@ MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" \
 		BINDIR="${PREFIX}/bin" MANDIR="${MAN1PREFIX}/man/man1"
 
 PLIST_FILES=	bin/rman man/man1/rman.1.gz
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rman

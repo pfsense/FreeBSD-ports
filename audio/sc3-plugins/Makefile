@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	sc3-plugins
 DISTVERSIONPREFIX=	Version-
 DISTVERSION=	3.9.0
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Extension plugins for the SuperCollider3 audio synthesis server
+WWW=		https://github.com/supercollider/sc3-plugins
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt

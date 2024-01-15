@@ -1,15 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	nnn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.5
+DISTVERSION=	4.9
 CATEGORIES=	misc shells
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Missing terminal file browser for X
+WWW=		https://github.com/jarun/nnn
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	gsed:textproc/gsed
 
 USES=		compiler:c11 gmake localbase ncurses readline
 USE_GITHUB=	yes

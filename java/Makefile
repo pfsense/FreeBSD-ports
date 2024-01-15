@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Java language support
 
     SUBDIR += apache-bcel
@@ -8,25 +5,23 @@
     SUBDIR += apache-commons-cli
     SUBDIR += apache-commons-codec
     SUBDIR += apache-commons-collections
+    SUBDIR += apache-commons-collections4
     SUBDIR += apache-commons-dbcp
-    SUBDIR += apache-commons-discovery
     SUBDIR += apache-commons-httpclient
     SUBDIR += apache-commons-lang
     SUBDIR += apache-commons-lang3
     SUBDIR += apache-commons-logging
     SUBDIR += apache-commons-pool
-    SUBDIR += apache-commons-primitives
     SUBDIR += aparapi
     SUBDIR += avis
     SUBDIR += berkeley-db
     SUBDIR += bluej
     SUBDIR += bootstrap-openjdk11
-    SUBDIR += bootstrap-openjdk6
+    SUBDIR += bootstrap-openjdk17
     SUBDIR += bootstrap-openjdk8
     SUBDIR += bouncycastle
     SUBDIR += bouncycastle15
     SUBDIR += cos
-    SUBDIR += cryptix-jce
     SUBDIR += dbvis
     SUBDIR += eclipse
     SUBDIR += eclipse-EPIC
@@ -34,6 +29,7 @@
     SUBDIR += eclipse-drjava
     SUBDIR += eclipse-ecj
     SUBDIR += eclipse-findbugs
+    SUBDIR += eclipse-pydev
     SUBDIR += eclipse-shelled
     SUBDIR += hamcrest
     SUBDIR += icedtea-web
@@ -41,7 +37,6 @@
     SUBDIR += intellij
     SUBDIR += intellij-fsnotifier
     SUBDIR += intellij-pty4j
-    SUBDIR += intellij-rubymine
     SUBDIR += intellij-ultimate
     SUBDIR += jad
     SUBDIR += jai
@@ -62,7 +57,6 @@
     SUBDIR += jcommon
     SUBDIR += jd-gui
     SUBDIR += jdk11-doc
-    SUBDIR += jdk12-doc
     SUBDIR += jdk8-doc
     SUBDIR += jdom
     SUBDIR += jflex
@@ -92,12 +86,12 @@
     SUBDIR += netty
     SUBDIR += openjdk11
     SUBDIR += openjdk11-jre
-    SUBDIR += openjdk12
-    SUBDIR += openjdk13
-    SUBDIR += openjdk14
-    SUBDIR += openjdk15
-    SUBDIR += openjdk7
-    SUBDIR += openjdk7-jre
+    SUBDIR += openjdk17
+    SUBDIR += openjdk17-jre
+    SUBDIR += openjdk18
+    SUBDIR += openjdk19
+    SUBDIR += openjdk20
+    SUBDIR += openjdk21
     SUBDIR += openjdk8
     SUBDIR += openjdk8-jre
     SUBDIR += openjfx14
@@ -113,15 +107,6 @@
     SUBDIR += trove4j
     SUBDIR += veditor
     SUBDIR += visualvm
-    SUBDIR += wildfly10
-    SUBDIR += wildfly11
-    SUBDIR += wildfly12
-    SUBDIR += wildfly13
-    SUBDIR += wildfly14
-    SUBDIR += wildfly15
-    SUBDIR += wildfly16
-    SUBDIR += wildfly17
-    SUBDIR += wildfly18
-    SUBDIR += wildfly90
+    SUBDIR += wildfly
 
 .include <bsd.port.subdir.mk>

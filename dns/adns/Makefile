@@ -1,6 +1,3 @@
-# Created by: Kostya Lukin <lukin@okbmei.msk.su>
-# $FreeBSD$
-
 PORTNAME=	adns
 PORTVERSION=	1.6.0
 CATEGORIES=	dns
@@ -8,15 +5,18 @@ MASTER_SITES=	http://www.chiark.greenend.org.uk/~ian/adns/ftp/
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Easy to use asynchronous-capable DNS client library and utilities
+WWW=		https://www.chiark.greenend.org.uk/~ian/adns/
 
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	m4>=1.4.11:devel/m4
 
-USES=		gmake
+USES=		cpe gmake
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 PORTSCOUT=	skipv:1.5.0~rc0,1.5.0~rc1
+
+CPE_VENDOR=	gnu
 
 BINARY_ALIAS=	m4=${LOCALBASE}/bin/gm4
 LIBVERSION=	1

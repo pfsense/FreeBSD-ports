@@ -1,6 +1,3 @@
-# Created by: Baptiste Daroussin
-# $FreeBSD$
-
 PORTNAME=	Config-GitLike
 PORTVERSION=	1.18
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple git-compatible config file parser for Perl
+WWW=		https://metacpan.org/release/Config-GitLike
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Statistics-Forecast
 PORTVERSION=	0.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Calculates a future value
+WWW=		https://metacpan.org/release/Statistics-Forecast
 
 USES=		perl5
 USE_PERL5=	configure

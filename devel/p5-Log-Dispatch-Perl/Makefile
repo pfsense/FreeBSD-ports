@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Log-Dispatch-Perl
 PORTVERSION=	0.05
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Log::Dispatch plug-in using core Perl functions for logging
+WWW=		https://metacpan.org/release/Log-Dispatch-Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

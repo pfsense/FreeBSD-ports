@@ -1,6 +1,3 @@
-# Created by: Nobuhiro Yasutomi
-# $FreeBSD$
-
 PORTNAME=	emiclock
 PORTVERSION=	2.0.2
 PORTREVISION=	5
@@ -13,7 +10,7 @@ COMMENT=	Hyper-animated face analog clock for X11
 LICENSE=	UNKNOWN
 LICENSE_NAME=	Emi Clock for X11
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT.en
-LICENSE_PERMS=  dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
+LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
 USES=		iconv:build imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt

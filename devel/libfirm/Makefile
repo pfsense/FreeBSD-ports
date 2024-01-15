@@ -1,6 +1,3 @@
-# Created by: Christoph Mallon <christoph.mallon@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	libfirm
 PORTVERSION=	1.21.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graph-based SSA intermediate representation library for compilers
+WWW=		https://sourceforge.net/projects/libfirm/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi

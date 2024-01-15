@@ -1,17 +1,18 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gimmage
 PORTVERSION=	0.2.3
-PORTREVISION=	16
+PORTREVISION=	19
 CATEGORIES=	graphics
 MASTER_SITES=	BERLIOS
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple image viewer
+WWW=		https://sourceforge.net/projects/gimmage.berlios/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Last release in 2007, depends on legacy libraries such as GTK2. Consider using graphics/geeqie or graphics/imv
+EXPIRATION_DATE=2024-02-29
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfontconfig.so:x11-fonts/fontconfig \

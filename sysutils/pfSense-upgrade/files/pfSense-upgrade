@@ -3,7 +3,7 @@
 # pfSense-upgrade
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,8 @@ Usage: ${me} [-46bdfhnRUy] [-l logfile] [-p socket] [-c|-u|[-i|-d] pkg_name]
 	-y          - Assume yes as the answer to any possible interaction
 
 The following parameters are mutually exclusive:
-	-c          - Check if upgrade is necessary
+	-c          - Check if update is available in the current repo
+	-C          - Check if upgrade is available in any of the available repos
 	-i pkg_name - Install package PKG_NAME
 	-r pkg_name - Remove package PKG_NAME
 	-u          - Update repository information
@@ -45,16 +46,27 @@ EOD
 
 _echo() {
 	local _n=""
-	if [ "${1}" = "-n" ]; then
-		shift
-		_n="-n"
-	fi
+	local _out="/dev/stdout"
+	while getopts no: opt; do
+		case ${opt} in
+		n)
+			_n="-n"
+			shift
+			;;
+		o)
+			if [ "${OPTARG}" = "stderr" ]; then
+				_out="/dev/${OPTARG}"
+			fi
+			shift; shift
+			;;
+		esac
+	done
 
 	if [ -z "${logfile}" ]; then
 		logfile=/dev/null
 	fi
 
-	echo ${_n} "${@}" | tee -a ${logfile}
+	echo ${_n} "${@}" | tee -a ${logfile} > ${_out}
 }
 
 _exec() {
@@ -151,6 +163,395 @@ _exit() {
 	exit ${_rc}
 }
 
+# Returns the current root filesystem
+_be_get_rootfs() {
+	/sbin/mount | /usr/bin/awk '/ \/ / {print $1}'
+}
+
+# Test if root filesystem is on UFS
+_be_is_root_on_ufs() {
+	echo "$( _be_get_rootfs )" | grep -q -m 1 -E "^/dev/"
+}
+
+# Returns the pool that contains the root filesystem
+_be_get_root_pool() {
+	_be_get_rootfs | /usr/bin/awk -F '/' '{print $1}'
+}
+
+# Returns the BE dataset
+_be_get_beds() {
+	local _pool="$( _be_get_root_pool )"
+	local _beds="$( _be_get_rootfs | /usr/bin/awk -F '/' '{print $2}' )"
+
+	echo "${_pool}/${_beds}"
+}
+
+# determine the ZFS dataset that holds a given file/folder
+_be_get_dataset_of_path() {
+	local _path="${1}"
+
+	/sbin/zfs list -H -t filesystem -o name -r "${_path}" 2>/dev/null
+}
+
+# determines if a given path is held by the root dataset or a child of
+# the root dataset.
+_be_is_path_on_root() {
+	local _path="${1}"
+
+	_be_get_dataset_of_path "${_path}" | grep -q -m 1 "$( _be_get_rootfs )"
+}
+
+# test if root filesystem is on ZFS
+_be_is_root_on_zfs() {
+	# just the opposite...
+	!(_be_is_root_on_ufs)
+}
+
+#
+# test the system for BE-readiness (e.g. fails on UFS systems)
+#
+# notes:
+#    1. Perform a sanity check using `bectl check`
+#    2. Check to see if /cf lives on the root dataset
+#    3. Check to see if /var/db/pkg lives on the root dataset
+#    4. TODO: add additional sanity checks?
+#
+_be_readiness_check() {
+	_be_is_root_on_zfs \
+		&& /sbin/bectl check \
+		&& _be_is_path_on_root "/cf" \
+		&& _be_is_path_on_root "/var/db/pkg"
+}
+
+# See _be_readiness_check...
+_be_not_readiness_check() {
+	# just the opposite...
+	!(_be_readiness_check)
+}
+
+# Translates a BE name into a dataset path
+_be_name_to_ds() {
+	local _name="${1}"
+
+	echo "$( _be_get_beds )/${_name}"
+}
+
+# returns the base package version
+_be_get_pkg_version() {
+	_ver="$( _pkg query %v "${product}-base" 2>/dev/null )"
+	if [ $? -eq 0 ]; then
+		echo "${_ver}"
+		return 0
+	fi
+	echo "unknown"
+	return 1
+}
+
+# Returns the active BE
+_be_get_active() {
+	/sbin/bectl list -H | /usr/bin/awk 'index($2, "N") {print $1}' | /usr/bin/head -n1
+}
+
+# Returns the active dataset
+_be_get_active_ds() {
+	_be_name_to_ds "$( _be_get_active )"
+}
+
+# Set a ZFS property
+_be_zfs_set_property() {
+	local _target="${1}"
+	local _property="${2}"
+	local _value="${3}"
+
+	/sbin/zfs set "${_property}=${_value}" "${_target}" 1>/dev/null 2>&1
+
+	# sanity check by reading the value back and comparing with what we expect
+	[ "$( _be_zfs_get_property "${_target}" "${_property}" )" = "${_value}" ]
+}
+
+# Get a ZFS property
+_be_zfs_get_property() {
+	local _target="${1}"
+	local _property="${2}"
+
+	/sbin/zfs get -H -o value "${_property}" "${_target}" 2>/dev/null
+}
+
+# Check if dataset exists
+_be_zfs_dataset_exists() {
+	local _dataset="${1}"
+
+	/sbin/zfs list "${_dataset}" 1>/dev/null 2>&1
+}
+
+# Destroy a ZFS datset
+_be_zfs_destroy() {
+	local _dataset="${1}"
+	( !(_be_zfs_dataset_exists "${_dataset}") ) && return 0
+	/sbin/zfs destroy -fr "${_dataset}" 1>/dev/null 2>&1
+}
+
+# Create a ZFS dataset
+_be_zfs_create() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+
+	# create the new target dataset
+	/sbin/zfs create -o mountpoint="${_source_path}" "${_target_dataset}" 1>/dev/null 2>&1	
+}
+
+# Sanity check that we have a valid rollback BE
+_be_has_valid_rollback_be() {
+	local _active_ds="$( _be_get_active_ds )"
+	local _rollback_be="$( _be_zfs_get_property "${_active_ds}" pfsense:rollbackbe )"
+
+	# Check to see if the active dataset has a rollback be dataset.
+	_be_zfs_dataset_exists "$( _be_name_to_ds "${_rollback_be}" )"
+}
+
+# See _be_has_valid_rollback_be
+_be_has_not_valid_rollback_be() {
+	# Just the opposite...
+	!(_be_has_valid_rollback_be)
+}
+
+# Check if we are in the process of upgrading.
+# We don't necessarily know how many times pfSense-upgrade will be called during a given
+# system upgrade, so we wait and reset this flag in pfSense-rc to be sure we are done.
+_be_is_upgrading() {
+	local _active_ds="$( _be_get_active_ds )"
+	local _upgrading="$( _be_zfs_get_property "${_active_ds}" pfsense:upgrading )"
+
+	[ "${_upgrading}" = "yes" ]
+}
+
+# Guard for _be_prune
+_be_prune_guard() {
+	# various reasons to bail out early from _be_prune below...
+	_be_is_root_on_ufs || _be_readiness_check
+}
+
+# Cleans up any BEs that might exist on incompatible systems
+_be_prune() {
+	_be_prune_guard && return 1
+	/sbin/bectl list -H |
+	while read _name _status _mp _space _creation; do
+		/sbin/bectl destroy -o "${_name}" 1>/dev/null 2>&1
+	done
+	return 0
+}
+
+# Check if automatic update BEs should be created prior to performing a system update
+_be_autobe_disabled() {
+	local _disableautobe="$(read_xml_tag.sh boolean system/firmware/disableautobe)"
+
+	[ "${_disableautobe}" = "true" ] 
+}
+
+# Guard for _be_pre_upgrade
+_be_pre_upgrade_guard() {
+	local _disableautobe="$(read_xml_tag.sh boolean system/firmware/disableautobe)"
+	
+	# various reasons to bail early from _be_prep_upgrade below...
+	_be_not_readiness_check || _be_autobe_disabled || _be_is_upgrading || is_ce
+}
+
+# Prepare the system to upgrade by creating a BE before touching the
+# current environment. We also set some useful ZFS user properties
+# here as well for displaying in the UI.
+_be_prep_upgrade() {
+	# short-circuit when applicable, return 0 to proceed with upgrade
+	_be_pre_upgrade_guard && return 0
+
+	local _timestamp="$( date "+%Y%m%d%H%M%S" )"
+	local _be_name="auto-$( _be_get_active )-${_timestamp}"
+
+	_echo -n ">>> Creating automatic rollback boot environment..."
+
+	/sbin/bectl create -r "${_be_name}" 1>/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		local _active_ds="$( _be_get_active_ds )"
+		local _ds_name="$( _be_name_to_ds ${_be_name} )"
+
+		# save a tiny bit of state to ensure we only run this once
+		_be_zfs_set_property ${_active_ds} pfsense:upgrading yes
+
+		# cache some useful bits for easily scraping for the UI
+		_be_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
+		_be_zfs_set_property ${_ds_name} pfsense:description "Automatically created by system update"
+		_be_zfs_set_property ${_ds_name} pfsense:version "$( _be_get_pkg_version )"
+	fi
+
+	_echo " done."
+
+	# did we actually create a valid rollback BE?
+	# if something went wrong during the above, this will cause the upgrade to terminate immediately... 
+	_be_has_not_valid_rollback_be && return 1
+
+	# looks good
+	return 0
+}
+
+# Guard for _be_prep_reboot
+_be_prep_reboot_guard() {
+	# various reasons to bail early from _be_prep_reboot below...
+	_be_not_readiness_check
+}
+
+# Prepare the system to reboot by ensuring that we are rebooting into the
+# BE that is actively being upgraded.
+_be_prep_reboot() {
+	# short-circuit when applicable
+	_be_prep_reboot_guard && return 0
+
+	local _name="$( _be_get_active )"
+
+	_echo -n ">>> Activating boot environment ${_name}..."
+
+	/sbin/bectl activate "${_name}" 1>/dev/null 2>&1
+
+	_echo " done."
+}
+
+# Prepare the system for a dataset migration
+_be_pre_migration() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+	local _tmp_source_path="/tmp${_source_path}.old"
+
+	# create a scratch location
+	/bin/mkdir -p "${_tmp_source_path}" 1>/dev/null 2>&1
+
+	# save a copy of the source data to the scratch location
+	/bin/cp -pR "${_source_path}/" "${_tmp_source_path}" 1>/dev/null 2>&1
+
+	# destroy source location
+	/bin/rm -fr "${_source_path}" 1>/dev/null 2>&1
+}
+
+# Create a dataset with some special properties
+_be_create_dataset() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+	local _tmp_source_path="/tmp${_source_path}.old"
+
+	# ensure we are starting off with a consistent state
+	_be_zfs_destroy "${_target_dataset}"
+
+	# create the new target dataset
+	_be_zfs_create "${_source_path}" "${_target_dataset}"
+
+	# set target dataset properties
+	_be_zfs_set_property "${_target_dataset}" setuid off
+	_be_zfs_set_property "${_target_dataset}" exec off
+	_be_zfs_set_property "${_target_dataset}" canmount noauto
+}
+
+# Force remount a dataset
+_be_remount_ds() {
+	local _dataset="${1}"
+
+	/sbin/zfs list -rH -o mountpoint,name,canmount,mounted -s mountpoint -t filesystem "${_dataset}" | \
+	while read _mp _name _canmount _mounted ; do
+		# skip filesystems that must not be mounted
+		[ "$_canmount" = "off" ] && continue
+		case "$_mp" in
+		"none" | "legacy" | "/" | "/$_be")
+			# do nothing for filesystems with unset or legacy mountpoint
+			# or those that would be mounted over /
+			;;
+		"/$_be/"*)
+			# skip filesystems that are already mounted
+			[ "$_mounted" = "yes" ] && \
+				/sbin/unmount -f -t zfs $_name 1>/dev/null 2>&1
+			# filesystems with mountpoint relative to BE
+			/sbin/mount -t zfs $_name ${_mp#/$_be} 1>/dev/null 2>&1
+			;;
+		*)
+			# skip filesystems that are already mounted
+			[ "$_mounted" = "yes" ] && \
+				/sbin/zfs unmount -f $_name 1>/dev/null 2>&1
+			# filesystems with mountpoint elsewhere
+			/sbin/zfs mount $_name 1>/dev/null 2>&1
+			;;
+		esac
+	done
+}
+
+# Cleanup the migration
+_be_post_migration() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+	local _tmp_source_path="/tmp${_source_path}.old"
+
+	# relocate data back from scratch location to source location
+	/bin/cp -pR "${_tmp_source_path}/" "${_source_path}" 1>/dev/null 2>&1
+
+	# destroy scratch location
+	/bin/rm -fr "${_tmp_source_path}" 1>/dev/null 2>&1
+
+	# cycle the dataset mount
+	_be_remount_ds "${_target_dataset}"
+}
+
+# Do a complete migration given a source path and a target dataset
+_be_do_migration() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+
+	# short-circuit if the layout is already compatible and migration can be skipped
+	_be_is_path_on_root ${_source_path} && !([ -L "${_source_path}" ]) && return 0
+
+	_echo -n "Migrating ${_source_path} to ZFS dataset ${_target_dataset}..."
+
+	# move source data to a scratch location
+	_be_pre_migration "${_source_path}" "${_target_dataset}"
+
+	# create the target dataset
+	_be_create_dataset "${_source_path}" "${_target_dataset}"
+
+	# move source data from scratch location and cleanup
+	_be_post_migration "${_source_path}" "${_target_dataset}"
+
+	_echo " done."
+}
+
+# Guard for _be_migrate
+_be_migrate_guard() {
+	# various reasons to bail early from _be_migrate below...
+	_be_is_root_on_ufs
+}
+
+# Read a table of migrations and perform each one when on ZFS
+_be_migrate() {
+	# short-circuit if we are on UFS
+	_be_migrate_guard && return 0
+
+	# the actual list of migrations to perform
+	local _migration_table="
+	#	PATH		DATASET
+		/cf		$( _be_get_active_ds )/cf
+		/var/cache/pkg	$( _be_get_active_ds )/var_cache_pkg
+		/var/db/pkg	$( _be_get_active_ds )/var_db_pkg
+	" # END-QUOTE
+
+	# now we do the migrations...
+	echo "${_migration_table}" | while read _path _dataset; do
+		# skip rows beginning with # (intended for comments as above)
+		case "$_path" in "#"*|"") continue; esac
+		_be_do_migration "${_path}" "${_dataset}"
+	done
+	return 0
+}
+
+notice() {
+	msg="$@"
+
+	/usr/local/bin/php -r \
+	    "require_once('notices.inc'); \
+	    file_notice('${product}-Upgrade', '${msg}', 'Upgrade', '', 1, true);"
+}
+
 pkg_with_pb() {
 	local _event_pipe=""
 	local _cmd="${1}"
@@ -176,7 +577,7 @@ pkg_with_pb() {
 }
 
 fetch_upgrade_packages() {
-	pkg_with_pb "upgrade -F" "Downloading upgrade packages"
+	pkg_with_pb "upgrade -F ${1}" "Downloading upgrade packages"
 
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
 	# *ALWAYS* download pkg itself to avoid being bitten by it again
@@ -245,71 +646,58 @@ unset_vital_flag() {
 	done
 }
 
-abi_setup() {
-	local _freebsd_version=$(uname -r)
-	local _pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
-
-	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${arch}"
-	CUR_ALTABI="freebsd:${_freebsd_version%%.*}"
-
-	if [ "${arch}" = "armv6" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:hardfp"
-	elif [ "${arch}" = "armv7" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:softfp"
-	elif [ "${arch}" = "aarch64" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${arch}:64"
-	elif [ "${arch}" = "i386" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:x86:32"
-	else
-		CUR_ALTABI="${CUR_ALTABI}:x86:64"
+is_ce() {
+	if [ "${product_label}" == "pfSense" ]; then
+		return 0
 	fi
-
-	if [ ! -e ${_pkg_repo_conf} ]; then
-		validate_repo_conf
-	fi
-
-	local _repo_abi_file=$(readlink ${_pkg_repo_conf})
-
-	if [ -f ${_repo_abi_file%%.conf}.abi ]; then
-		ABI=$(cat ${_repo_abi_file%%.conf}.abi)
-	else
-		ABI=${CUR_ABI}
-	fi
-
-	if [ -f ${_repo_abi_file%%.conf}.altabi ]; then
-		ALTABI=$(cat ${_repo_abi_file%%.conf}.altabi)
-	else
-		ALTABI=${CUR_ALTABI}
-	fi
-
-	# Make sure pkg.conf is set properly so GUI can work
-	echo "ABI=${ABI}" > /usr/local/etc/pkg.conf
-	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
-
-	# XXX Replace it by a function that detect thoth hardware
-	if [ "${arch}" = "aarch64" ]; then
-		cat << EOF >> /usr/local/etc/pkg.conf
-PKG_ENV {
-	OPENSSL_CONF=/etc/thoth/openssl.cnf
-	SSL_CA_CERT_FILE=/etc/thoth/ca.pem
-	SSL_CLIENT_CERT_FILE=/etc/thoth/device.pem
-	SSL_CLIENT_KEY_FILE=/etc/thoth/key.pem
+	return 1
 }
-EOF
+
+is_plus() {
+	!(is_ce)
+}
+
+repo_is_plus_upgrade() {
+	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
+
+	if [ -n "$(echo $pkg_repo_conf_path | grep ${product}-repo-custom)" ]; then
+		return 0
+	fi
+	return 1
+}
+
+custom_repo_cleanup() {
+	local _custom_repo_files="/usr/local/share/${product}/pkg/repos/${product}-repo-custom.*"
+
+	/usr/local/bin/php -r \
+	    "require_once('config.inc'); \
+	     require_once('config.lib.inc'); \
+	     config_del_path('system/pkg_repo_conf_path'); \
+	     write_config('Remove the pfSense Plus upgrade repo');"
+	/bin/rm -f ${_custom_repo_files}
+}
+
+copy_dtb() {
+	local _dtb_src="${1}"
+	local _dtb_src_old="${2}"
+	local _dtb_dst_old="${3}"
+
+	dtb_drc=""
+	if [ -f "${_dtb_src}" ]; then
+		dtb_src="${_dtb_src}"
+	elif [ -f "${_dtb_src_old}" ]; then
+		dtb_src="${_dtb_src_old}"
+	fi
+	if [ -z "${dtb_src}" ]; then
+		return 1
 	fi
 
-	local _pkg_abi=$(_pkg query %q pkg)
-	if [ "${CUR_ABI}" != "${_pkg_abi}" -a "${_pkg_abi}" != "${ABI}" ]; then
-		reinstall_pkg=1
+	if [ -n "${_dtb_dst_old}" ]; then
+		cp "${dtb_src}" "/boot/msdos/${_dtb_dst_old}"
 	fi
+	cp "${dtb_src}" "/boot/msdos"
 
-	if [ "${CUR_ABI}" = "${ABI}" -o "${CUR_ABI}" = "${ALTABI}" ] ; then
-		NEW_MAJOR=""
-	else
-		NEW_MAJOR=1
-	fi
-
-	export CUR_ABI CUR_ALTABI ABI ALTABI NEW_MAJOR
+	return 0
 }
 
 get_pkg_repo_url() {
@@ -354,14 +742,21 @@ pkg_update() {
 	[ "${1}" = "force" ] \
 	    && _force=" -f"
 
+	if [ -n "${reinstall_pkg}" ] \
+	    || [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
+		pkg_unlock pkg
+		_exec "pkg-static upgrade${dont_update} pkg" "Upgrading pkg" \
+		    mute
+		reinstall_pkg=""
+		_force=" -f"
+	fi
+
 	if [ -z "${_force}" -a -n "${dont_update}" ]; then
 		return 0
 	fi
 
 	[ "${2}" = "mute" ] \
 	    && _mute="mute"
-
-	abi_setup
 
 	_exec "pkg-static update${_force}" "Updating repositories metadata" \
 	    ${_mute} "" do_not_exit
@@ -379,17 +774,6 @@ pkg_update() {
 			return
 		fi
 
-		# Make fetch to work with thoth
-		local _fetch_env=""
-		local _fetch_args=""
-		if [ "${arch}" = "aarch64" ]; then
-			_fetch_env="env OPENSSL_CONF=/etc/thoth/openssl.cnf"
-			_fetch_args="--cert=/etc/thoth/device.pem"
-			_fetch_args="${_fetch_args} --key=/etc/thoth/key.pem"
-			_fetch_args="${_fetch_args} --ca-cert=/etc/thoth/ca.pem"
-			_pkg_binary="/usr/local/sbin/pkg-static"
-		fi
-
 		local _url=$(get_pkg_repo_url)
 		if [ $? -ne 0 ]; then
 			return
@@ -403,52 +787,6 @@ pkg_update() {
 			pkg_update "${force}" "${_mute}" _do_not_bootstrap
 		fi
 	fi
-}
-
-pkg_upgrade_repo() {
-	if [ -n "${reinstall_pkg}" ] \
-	    || [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-		pkg_unlock pkg
-		_exec "pkg-static upgrade${dont_update} pkg" "Upgrading pkg" \
-		    mute
-		reinstall_pkg=""
-		pkg_update force
-	fi
-
-	local _repo_pkg="${product}-repo"
-
-	case "$(compare_pkg_version ${_repo_pkg})" in
-		"<")
-			local _force=""
-			;;
-		">")
-			local _force=" -f"
-			;;
-		"=")
-			return
-			;;
-		*)
-			_echo "ERROR: Unable to compare version of ${_repo_pkg}"
-			_exit 1
-	esac
-
-	cp /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy
-	_exec "pkg-static upgrade${dont_update}${_force} ${_repo_pkg}" \
-	    "Upgrading ${_repo_pkg}" mute
-	abi_setup
-	# If conf differs, for an update
-	if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf \
-	    /tmp/${product}.conf.copy; then
-		pkg_update force
-
-		# New repo may contain newer pkg
-		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]
-		then
-			_exec "pkg-static upgrade pkg" "Upgrading pkg" mute
-			pkg_update force
-		fi
-	fi
-	rm -f /tmp/${product}.conf.copy
 }
 
 upgrade_available() {
@@ -500,18 +838,35 @@ pkg_upgrade() {
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
 	    ${product}-kernel-\* | grep -v -- -debug-))
 
+	# Netgate 3100 kernel was renamed
+	if [ "${kernel_pkg}" = "pfSense-kernel-pfSense-SG-3100" ]; then
+		pkg_set_origin pfSense-kernel-pfSense-SG-3100 \
+		    pfSense-kernel-pfSense-3100
+
+		kernel_pkg="pfSense-kernel-pfSense-3100"
+	fi
+
 	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
 
 	SYSTEM=""
 	if [ "${_model}" = "mvebu_armada-37xx" -o "${_model}" = "SG-2100" ]
 	then
 		_type=$(/usr/sbin/ofwdump -P model -R / 2>/dev/null)
-		if [ "${_type}" = "Netgate SG-1100" ]; then
-			SYSTEM="SG-1100"
-		elif [ "${_type}" = "Netgate SG-2100" ]; then
-			SYSTEM="SG-2100"
+		if [ "${_type}" == "Netgate SG-1100" -o "${_type}" == "Netgate 1100" ]; then
+			SYSTEM="1100"
+		elif [ "${_type}" = "Netgate SG-2100" -o "${_type}" == "Netgate 2100" ]; then
+			SYSTEM="2100"
 		fi
 	fi
+
+	# Rename uboot packages accordingly
+	local _ub_model
+	for _ub_model in 1100 2100 3100; do
+		if is_pkg_installed ${product}-u-boot-sg${_ub_model}; then
+			pkg_set_origin ${product}-u-boot-sg${_ub_model} \
+			    ${product}-u-boot-${_ub_model}
+		fi
+	done
 
 	# Detect if has u-boot package installed
 	unset uboot_bin
@@ -525,25 +880,25 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.img
 		export \
 		    uboot_update=/usr/local/share/u-boot/ufw/u-boot-update.sh
-	elif [ "${SYSTEM}" = "SG-1100" ] && \
-	    is_pkg_installed ${product}-u-boot-sg1100\*; then
+	elif [ "${SYSTEM}" = "1100" ] && \
+	    is_pkg_installed ${product}-u-boot-1100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
-		    ${product}-u-boot-sg1100\*))
+		    ${product}-u-boot-1100\*))
 		export \
-		    uboot_update=/usr/local/share/u-boot/sg1100/u-boot-update.sh
-	elif is_pkg_installed ${product}-u-boot-sg3100\*; then
+		    uboot_update=/usr/local/share/u-boot/1100/u-boot-update.sh
+	elif is_pkg_installed ${product}-u-boot-3100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
-		    ${product}-u-boot-sg3100\*))
+		    ${product}-u-boot-3100\*))
 		export uboot_mntp=/boot/u-boot
 		export uboot_bin=u-boot.bin
 		export \
-		    uboot_update=/usr/local/share/u-boot/sg3100/u-boot-update.sh
-	elif [ "${SYSTEM}" = "SG-2100" ] && \
-	    is_pkg_installed ${product}-u-boot-sg2100\*; then
+		    uboot_update=/usr/local/share/u-boot/3100/u-boot-update.sh
+	elif [ "${SYSTEM}" = "2100" ] && \
+	    is_pkg_installed ${product}-u-boot-2100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
-		    ${product}-u-boot-sg2100\*))
+		    ${product}-u-boot-2100\*))
 		export \
-		    uboot_update=/usr/local/share/u-boot/sg2100/u-boot-update.sh
+		    uboot_update=/usr/local/share/u-boot/2100/u-boot-update.sh
 	fi
 
 	if [ -n "${uboot_pkg}" -a -n "${uboot_mntp}" -a \
@@ -591,6 +946,14 @@ pkg_upgrade() {
 			rm -f ${logfile}
 		fi
 
+		# Cleanup BEs on incompatible systems.
+		# Note: This is a no-op on UFS
+		_be_prune
+
+		# Migrate datasets on systems not compatible with BEs.
+		# Note: This is a no-op on UFS
+		_be_migrate
+
 		pkg_update force
 
 		# Lock pkg to avoid having pkg binary for version N+1 installed
@@ -609,8 +972,6 @@ pkg_upgrade() {
 			_new_pfsense_upgrade=1
 		fi
 
-		pkg_upgrade_repo
-
 		# If a new version of pfSense-upgrade is available, upgrade it
 		# and return a special code 99 used by wrapper to run newer
 		# version again using the same parameters
@@ -627,6 +988,29 @@ pkg_upgrade() {
 			_exit 99
 		fi
 
+		# Do not upgrade while wg interfaces are assigned
+		if sed '/<interfaces>/,/<\/interfaces>/!d' /cf/conf/config.xml \
+		    | grep -q '<if>wg'; then
+		notice "ERROR: Remove all assigned WireGuard tunnel" \
+		    "interfaces and all WireGuard tunnels before upgrading."
+			notice "ERROR: Remove all assigned WireGuard tunnel" \
+			    "interfaces before upgrading."
+			_echo "ERROR: Remove all assigned WireGuard tunnel" \
+			    "interfaces before upgrading."
+			_exit 1
+		fi
+
+		# Do not upgrade if there are enabled WireGuard tunnels on config
+		if sed -e '/<installedpackages>/,/<\/installedpackages>/d' \
+		    -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
+		    | grep -q '<enabled>yes'; then
+			notice "ERROR: Remove all WireGuard tunnels before" \
+			    "upgrading."
+			_echo "ERROR: Remove all WireGuard tunnels before" \
+			    "upgrading."
+			_exit 1
+		fi
+
 		# Old versions used to lock kernel and uboot, make sure we
 		# get it reverted
 		if pkg-static lock -l 2>&1 | grep -q "kernel"; then
@@ -638,7 +1022,7 @@ pkg_upgrade() {
 		fi
 
 		# Always make sure important packages are set as vital
-		set_vital_flag pkg ${kernel_pkg} ${product} ${product}-rc \
+		set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
 		    ${product}-base ${uboot_pkg}
 
 		check_upgrade mute skip_update
@@ -679,10 +1063,15 @@ pkg_upgrade() {
 			fi
 		fi
 
+		local _force=""
+		if ! cmp -s ${pkg_set_version} ${running_pkg_set_version}; then
+			_force=" -f"
+		fi
+
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
-			_exec "pkg-static upgrade${dont_update} -nq" "" nomute \
-			    ignore_result do_not_exit
+			_exec "pkg-static upgrade${dont_update}${_force} -nq" \
+			    "" nomute ignore_result do_not_exit
 
 			_echo ""
 			_echo "**** WARNING ****"
@@ -693,6 +1082,14 @@ pkg_upgrade() {
 				_echo "Aborting..."
 				_exit 0
 			fi
+		fi
+
+		# Prepare system by creating a rollback BE
+		# Note: This is a no-op on UFS (or on CE)
+		_be_prep_upgrade
+		if [ $? -ne 0 ]; then
+			_echo "ERROR: Unable to create automatic rollback boot environment."
+			_exit 1
 		fi
 
 		# Detect the move from suricata to suricata4
@@ -726,7 +1123,7 @@ pkg_upgrade() {
 		fi
 
 		# Download all upgrade packages first
-		fetch_upgrade_packages
+		fetch_upgrade_packages ${_force}
 
 		# Then lock it again
 		if [ -n "${NEW_MAJOR}" ]; then
@@ -748,13 +1145,24 @@ pkg_upgrade() {
 				[ -f /tmp/loader.rc.local ] \
 				    && cp /tmp/loader.rc.local /boot 2>/dev/null
 			fi
-			# Force upgrade pfSense-rc together with kernel. It's
-			# failing for some reason on armv[67] even with the
-			# proper dependency version registered
-			if upgrade_available ${product}-rc; then
-				_exec "pkg-static upgrade -U ${product}-rc" \
-				    "Upgrading ${product}-rc"
+
+			# Attempt to force update boot package and install efi
+			# loader first, bail if it fails
+			_echo -n ">>> Upgrading ${product}-boot..."
+			_exec "umount -f /boot/efi" "Unmounting /boot/efi" mute ignore_result
+			local _output=$(_exec "pkg-static upgrade -f ${product}-boot")
+			if [ $(expr "'${_output}'" : '.*POST-INSTALL script failed.*') != "0" ]; then
+				_echo " failed."
+				_exit 1
 			fi
+			echo " done."
+
+			# Remove vital flag from pfSense-rc so we can remove it later,
+			# now that the rc scripts are part of security/pfSense
+			if is_pkg_installed "${product}-rc"; then
+				unset_vital_flag "${product}-rc"
+			fi
+
 			# In the past /boot/loader.conf was part of kernel pkg
 			# and now it's an orphan file.  Check if current
 			# installation has it registered on kernel pkg and make
@@ -769,18 +1177,24 @@ pkg_upgrade() {
 			if [ -n "${_restore_loaderconf}" ]; then
 				cp -fp /tmp/loader.conf.backup /boot/loader.conf
 			fi
-			if [ "${SYSTEM}" = "SG-1100" ]; then
+			if [ "${SYSTEM}" = "1100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-sg1100.dtb /boot/msdos
+				DTB_SRC="/boot/dtb/netgate/armada-3720-netgate-1100.dtb"
+				DTB_SRC_OLD="/boot/dtb/armada-3720-netgate-1100.dtb"
+				DTB_DST_OLD="armada-3720-sg1100.dtb"
+				copy_dtb "${DTB_SRC}" "${DTB_SRC_OLD}" "${DTB_DST_OLD}"
 				umount /boot/msdos >/dev/null 2>&1
 			fi
-			if [ "${SYSTEM}" = "SG-2100" ]; then
+			if [ "${SYSTEM}" = "2100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-sg2100.dtb /boot/msdos
+				DTB_SRC="/boot/dtb/netgate/armada-3720-netgate-2100.dtb"
+				DTB_SRC_OLD="/boot/dtb/armada-3720-netgate-2100.dtb"
+				DTB_DST_OLD="armada-3720-sg2100.dtb"
+				copy_dtb "${DTB_SRC}" "${DTB_SRC_OLD}" "${DTB_DST_OLD}"
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 		fi
@@ -841,8 +1255,20 @@ pkg_upgrade() {
 			    && rm -f /usr/local/etc/strongswan.conf
 		fi
 
+		local _force=""
+		if ! cmp -s ${pkg_set_version} ${running_pkg_set_version}; then
+			_force=" -f"
+		fi
+
 		if upgrade_available; then
 			delete_annotation=1
+
+			# Remove legacy pfSense-rc package if present
+			if is_pkg_installed "${product}-rc"; then
+				echo "Removing ${product}-rc"
+				_pkg delete -yf "${product}-rc"
+			fi
+
 			if [ -n "${is_pkg_locked}" ]; then
 				# Upgrade pkg
 				pkg_unlock pkg
@@ -850,7 +1276,7 @@ pkg_upgrade() {
 				_exec "pkg-static install -f pkg" \
 				    "Reinstalling pkg due to ABI change"
 
-				# Upgrade base packages using pkg-static
+				# Upgrade core packages
 				_exec "pkg-static upgrade -r ${product}-core" \
 				    "Upgrading necessary core packages"
 
@@ -866,18 +1292,36 @@ pkg_upgrade() {
 						${uboot_update}
 					fi
 				fi
-
-				# Make sure PHP setup is fine
-				/etc/rc.php_ini_setup >/dev/null 2>&1
+			else
+				# Upgrade core packages
+				_exec "pkg-static upgrade -r ${product}-core" \
+				    "Upgrading necessary core packages"
 			fi
 
-			_exec "pkg-static upgrade${dont_update}" \
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+
+			_exec "pkg-static upgrade${dont_update}${_force} -r ${product}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
 
+			# Make sure PHP setup is fine
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+			/etc/rc.php_ini_setup >/dev/null 2>&1
+
 			# Always make sure important packages are set as vital
-			set_vital_flag pkg ${kernel_pkg} ${product} \
-			    ${product}-rc ${product}-base ${uboot_pkg}
+			set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
+			    ${product}-base ${uboot_pkg}
+
+			# Register that system is running latest pkg_set_version
+			cp -f ${pkg_set_version} ${running_pkg_set_version}
+
+			# Cleanup possible crash report from PHP upgrade
+			rm -f /tmp/PHP_errors.log
+
+			# Clean up .pkgsave files
+			find / -name \*.pkgsave -delete
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 3
@@ -904,10 +1348,19 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
+			# Make sure PHP setup is fine
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+			/etc/rc.php_ini_setup >/dev/null 2>&1
 		fi
 
 		# Cleanup a possible crash report created during PHP upgrade
 		rm -f /tmp/PHP_errors.log
+
+		# Remove the pfSense Plus upgrade repository.
+		if is_plus -a repo_is_plus_upgrade ; then
+			custom_repo_cleanup
+		fi
 
 		_pkg annotate -q -D ${kernel_pkg} next_stage
 
@@ -971,7 +1424,7 @@ get_meta_pkg_name() {
 	elif is_pkg_installed ${product}; then
 		echo "${product}"
 	else
-		_echo "ERROR: It was not possible to identify which" \
+		_echo -o stderr "ERROR: It was not possible to identify which" \
 		    "${product} meta package is installed"
 		_exit 1
 	fi
@@ -984,32 +1437,111 @@ check_upgrade() {
 	local _core_pkgs=$(pkg-static query -e \
 	    "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n 2>/dev/null)
 
+	# Do not upgrade while wg interfaces are assigned
+	if sed '/<interfaces>/,/<\/interfaces>/!d' /cf/conf/config.xml \
+	    | grep -q '<if>wg'; then
+		notice "ERROR: Remove all assigned WireGuard tunnel" \
+		    "interfaces and all WireGuard tunnels before upgrading."
+	fi
+	# Do not upgrade if there are enabled WireGuard tunnels on config
+	if sed -e '/<installedpackages>/,/<\/installedpackages>/d' \
+	    -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
+	    | grep -q '<enabled>yes'; then
+		notice "ERROR: Remove all WireGuard tunnels before" \
+		    "upgrading."
+	fi
+
 	[ -z "${_skip_update}" ] \
 	    && pkg_update "" mute
 
-	pkg_upgrade_repo
-
 	local _version_compare=""
-	for _package in ${_meta_pkg} ${_core_pkgs}; do
-		_version_compare=$(compare_pkg_version ${_package})
-		case "${_version_compare}" in
-			=)
+	local _installed_version=""
+	if [ "${action}" == "checkall" ]; then
+		# Get newest of meta or core packages as our baseline version
+		for _package in ${_meta_pkg} ${_core_pkgs}; do
+			local _other_version=$(_pkg query %v ${_package})
+			if [ -z "${_installed_version}" ] || [ $(_pkg version -t ${_installed_version} ${_other_version}) ]; then
+				_installed_version=${_other_version}
+			fi
+		done
+
+		local _new_version="0"
+		local _version_compare=""
+		local _db_dir="/tmp/db/pfSense/pkg"
+		for _repo in /usr/local/etc/pfSense/pkg/repos/*.conf; do
+			local _reponame=$(_echo $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')
+			local _repopath=${_db_dir}/${_reponame}
+			local _pkg_args=""
+
+			# Skip repos with devel names
+			if [ "${_reponame}" == "devel" ]; then
 				continue
+			fi
+
+			local _is_configured_repo=$( \
+				[ "${_repo}" = "$(stat -f %Y /usr/local/etc/pkg/repos/pfSense.conf)" ] >/dev/null 2>&1; \
+				printf $?
+				  )
+			local _pkgs="${_meta_pkg} ${_core_pkgs}"
+			if [ ${_is_configured_repo} -ne 0 ]; then
+				_pkgs="${product}-base"
+				_pkg_args="-C ${_repopath}/pkg.conf"
+				# No repo db files, initialize
+				if [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense.sqlite" ] ||
+				   [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense-core.sqlite" ]; then
+					mkdir -p ${_repopath}
+					pfSense-repo-setup ${_db_dir}/${_reponame} $_repo > /dev/null 2>&1
+					$(_pkg ${_pkg_args} update)
+				fi
+			fi
+
+			for _package in ${_pkgs}; do
+				if [ ${_is_configured_repo} -ne 0 ]; then
+				   	_version_compare=$(compare_pkg_version "${_package}" "${_new_version}" "${_repopath}/pkg.conf")
+				else
+					_version_compare=$(compare_pkg_version "${_package}" "${_new_version}")
+				fi
+				if [ "${_version_compare}" == "<" ]; then
+					_new_version=$(_pkg ${_pkg_args} rquery -U %v ${_package})
+				fi
+			done
+		done
+		_version_compare=$(_pkg version -t "${_installed_version}" "${_new_version}")
+		case "${_version_compare}" in
+			'<')
+				if [ -z "${_mute}" ]; then
+					_echo "${_new_version} version of ${product} is available"
+				fi
+				return 2
 				;;
 			'>')
-				[ -z "${_mute}" ] \
-				    && _echo "Your system is on a newer version"
+				if [ -z "${_mute}" ]; then
+				    _echo "Your system is on a newer version"
+				fi
 				return 0
 				;;
 		esac
+	else
+		for _package in ${_meta_pkg} ${_core_pkgs}; do
+			_version_compare=$(compare_pkg_version ${_package})
+			case "${_version_compare}" in
+				!|=)
+					continue
+					;;
+				'>')
+					[ -z "${_mute}" ] \
+						&& _echo "Your system is on a newer version"
+					return 0
+					;;
+			esac
 
-		local _new_version=$(_pkg rquery -U %v ${_package})
-		[ -z "${_mute}" ] \
-		    && _echo \
-		    "${_new_version} version of ${product} is available"
-		return 2
-	done
-
+		    _new_version=$(_pkg rquery -U %v ${_package})
+			if [ -z "${_mute}" ]; then
+				_echo "${_new_version} version of ${product} is available"
+			fi
+			return 2
+		done
+	fi
 	[ -z "${_mute}" ] \
 	    && _echo "Your system is up to date"
 	return 0
@@ -1024,10 +1556,17 @@ is_pkg_installed() {
 
 compare_pkg_version() {
 	local _pkg_name="${1}"
+	local _lver="${2}"
+	local _pkg_conf="${3}"
+	local _conf_args=""
 
 	if [ -z "${_pkg_name}" ]; then
 		echo '!'
 		return 1
+	fi
+
+	if [ -n "${_pkg_conf}" ]; then
+		_conf_args="-C ${_pkg_conf}"
 	fi
 
 	if ! is_pkg_installed ${_pkg_name}; then
@@ -1035,34 +1574,39 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	local _lver=$(_pkg query %v ${_pkg_name})
-
 	if [ -z "${_lver}" ]; then
-		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
-		    "local version"
-		_exit 1
+	   local _lver=$(_pkg query %v ${_pkg_name})
 	fi
 
-	local _rver=$(_pkg rquery -U %v ${_pkg_name})
+	if [ -z "${_lver}" ]; then
+		_echo -o stderr "ERROR: It was not possible to determine ${_pkg_name}" \
+		    "local version"
+		echo '!'
+		return 1
+	fi
+
+	local _rver=$(_pkg rquery ${_conf_args} -U %v ${_pkg_name})
 
 	# Maybe we need fresh metadata, lets try to obtain it respecting
 	# dont_update variable
 	if [ -z "${_rver}" ]; then
-		_rver=$(_pkg rquery ${dont_update} %v ${_pkg_name})
+		_rver=$(_pkg ${dont_update} ${_conf_args} rquery %v ${_pkg_name})
 	fi
 
 	if [ -z "${_rver}" ]; then
-		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
+		_echo -o stderr "ERROR: It was not possible to determine ${_pkg_name}" \
 		    "remote version"
-		_exit 1
+		echo '!'
+		return 1
 	fi
 
 	local _version=$(_pkg version -t ${_lver} ${_rver})
 
 	if [ $? -ne 0 ]; then
-		_echo "ERROR: Error comparing ${_pkg_name} local and remote" \
+		_echo -o stderr "ERROR: Error comparing ${_pkg_name} local and remote" \
 		    "versions"
-		_exit 1
+		echo '!'
+		return 1
 	fi
 
 	echo ${_version}
@@ -1158,6 +1702,14 @@ do_reboot() {
 		_msg="in ${reboot_after} seconds."
 	fi
 
+	# Ensure that we are *always* rebooting into the BE that is actively being upgraded
+	# Note: This is a no-op on UFS
+	_be_prep_reboot
+	if [ $? -ne 0 ]; then
+		_echo "ERROR: Unable to activate the boot environment being upgraded ($( _be_get_active ))."
+		_exit 1
+	fi
+
 	local _complete="System is going to be upgraded"
 	if [ -z "${dont_reboot}" ]; then
 		_echo "${_complete}.  Rebooting ${_msg}"
@@ -1175,39 +1727,6 @@ do_reboot() {
 		echo "Upgrade is complete." | wall
 		/etc/rc.notify_message -e -m "Upgrade is complete." \
 		    >/dev/null 2>&1
-	fi
-}
-
-validate_repo_conf() {
-	# Make sure to use default repo conf when it doesn't exist
-	pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
-
-	default_path="/usr/local/share/${product}/pkg/repos"
-	default_file=$(ls -1 ${default_path}/*.default 2>/dev/null | tail -n 1)
-
-	if [ -n "${default_file}" -a -f "${default_file}" ]; then
-		default="${default_file%%.default}"
-	else
-		default="${default_path}/${product}-repo.conf"
-	fi
-
-	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
-
-	if [ -z "${pkg_repo_conf_path}" -o ! -f "${pkg_repo_conf_path}" ]; then
-		pkg_repo_conf_path=${default}
-	fi
-
-	if [ -f "${pkg_repo_conf_path}" ]; then
-		if [ -e "${pkg_repo_conf}" -a ! -L "${pkg_repo_conf}" ]; then
-			rm -f ${pkg_repo_conf}
-			ln -sf ${pkg_repo_conf_path} ${pkg_repo_conf}
-		fi
-
-		if [ "$(readlink ${pkg_repo_conf})" != \
-		    "${pkg_repo_conf_path}" ]; then
-			mkdir -p /usr/local/etc/pkg/repos
-			ln -sf ${pkg_repo_conf_path} ${pkg_repo_conf}
-		fi
 	fi
 }
 
@@ -1245,15 +1764,16 @@ export FETCH_TIMEOUT=5
 export FETCH_RETRY=2
 
 export product=$(php -n /usr/local/sbin/read_global_var product_name pfSense)
+export product_label=$(php -n /usr/local/sbin/read_global_var product_label pfSense)
 export pkg_prefix=$(php -n /usr/local/sbin/read_global_var pkg_prefix \
     pfSense-pkg-)
 export platform=$(cat /etc/platform)
 
 USE_MFS_TMPVAR=$(read_xml_tag.sh boolean system/use_mfs_tmpvar)
-if [ "${USE_MFS_TMPVAR}" = "true" -a ! -e /conf/ram_disks_failed ]; then
-	export PKG_DBDIR=/root/var/db/pkg
-	export PKG_CACHEDIR=/root/var/cache/pkg
-fi
+# if [ "${USE_MFS_TMPVAR}" = "true" -a ! -e /conf/ram_disks_failed ]; then
+#	export PKG_DBDIR=/root/var/db/pkg
+#	export PKG_CACHEDIR=/root/var/cache/pkg
+# fi
 
 product_version=$(cat /etc/version)
 do_not_send_uniqueid=$(read_xml_tag.sh boolean system/do_not_send_uniqueid)
@@ -1263,8 +1783,6 @@ if [ "${do_not_send_uniqueid}" != "true" ]; then
 else
 	export HTTP_USER_AGENT="${product}/${product_version}"
 fi
-
-validate_repo_conf
 
 # Flags used in _exit
 export delete_annotation=""
@@ -1295,7 +1813,7 @@ unset action
 unset action_pkg
 unset force_ipv4
 unset force_ipv6
-while getopts 46b:cdfi:hp:l:nr:RuUy opt; do
+while getopts 46b:cCdfi:hp:l:nr:RuUy opt; do
 	case ${opt} in
 		4)
 			if [ -n "${force_ipv6}" ]; then
@@ -1317,6 +1835,8 @@ while getopts 46b:cdfi:hp:l:nr:RuUy opt; do
 			;;
 		c)
 			action="check"
+			;;
+		C)  action="checkall"
 			;;
 		d)
 			stdout=''
@@ -1390,6 +1910,16 @@ elif [ -n "${force_ipv6}" ]; then
 	export IP_VERSION="6"
 fi
 
+# Flags used to determine if all packages must be reinstalled
+pkg_set_version="/usr/local/share/${product}/next_pkg_set_version"
+running_pkg_set_version="/usr/local/share/${product}/running_pkg_set_version"
+export pkg_set_version running_pkg_set_version
+
+# Initialize running pkg_set_version with zero first time
+if [ ! -f ${running_pkg_set_version} ]; then
+	cp -f /etc/version ${running_pkg_set_version}
+fi
+
 # Force debug if /cf/conf/upgrade_debug is present
 [ -f "/cf/conf/upgrade_debug" ] \
     && stdout=''
@@ -1431,14 +1961,34 @@ if [ -e "${progress_file}" ]; then
 	rm -f ${progress_file}
 fi
 
-arch=$(uname -p)
+unset NEW_MAJOR
 
-# Initialize the Thoth certificates on ARM64
-if [ "${arch}" = "aarch64" ]; then
-	/usr/local/bin/ping-auth.sh > /dev/null
-fi
-
-abi_setup
+# Fetch the latest settings.
+/usr/local/sbin/${product}-repo-setup ${dont_update}
+case "$?" in
+1)
+	echo "failed to update the repository settings!!!"
+	exit 1
+	;;
+11)
+	reinstall_pkg=1
+	;;
+12)
+	NEW_MAJOR=1
+	export IGNORE_OSVERSION=yes
+	;;
+13)
+	reinstall_pkg=1
+	NEW_MAJOR=1
+	export IGNORE_OSVERSION=yes
+	;;
+14)
+	# New repo may contain newer pkg
+	if [ "$(compare_pkg_version pkg)" = "<" ]; then
+		_exec "pkg-static upgrade pkg" "Upgrading pkg" mute
+	fi
+	;;
+esac
 
 # Set itself as vital to prevent users ending up without upgrade script
 set_vital_flag ${product}-upgrade
@@ -1452,8 +2002,6 @@ else
 fi
 
 if [ "${action}" = "install" ]; then
-	pkg_upgrade_repo
-
 	new_php_pkg=$(_pkg rquery -U %dn $(get_meta_pkg_name) \
 	    | egrep '^php[0-9]{2}$')
 
@@ -1473,7 +2021,7 @@ if [ -n "${NEW_MAJOR}" -a "${action}" = "install" ]; then
 fi
 
 case "${action}" in
-	check)
+	check | checkall)
 		check_upgrade
 		_exit $?
 		;;

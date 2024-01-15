@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	agg
 PORTVERSION=	2.5
 PORTREVISION=	11
@@ -9,19 +6,24 @@ MASTER_SITES=	http://distfiles.alpinelinux.org/distfiles/ \
 		http://distfiles.lesslinux.org/ \
 		http://gentoo.netnitco.net/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High Quality Rendering Engine for C++
+WWW=		http://www.antigrain.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/copying
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-GNU_CONFIGURE=	yes
-USES=		autoreconf gmake libtool pathfix pkgconfig sdl xorg
-USE_XORG=	x11
-USE_SDL=	sdl
+USES=		autoreconf cpe gmake libtool pathfix pkgconfig sdl xorg
+CPE_VENDOR=	antigrain
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
+USE_SDL=	sdl
+USE_XORG=	x11
+
+GNU_CONFIGURE=	yes
+
 INSTALL_TARGET=	install-strip
 
 post-patch:

@@ -3,11 +3,11 @@
  * suricata_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,29 +26,22 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 
 $suricatalogdir = SURICATALOGDIR;
 $suri_pf_table = SURICATA_PF_TABLE;
 
-if (!is_array($config['installedpackages']['suricata']['alertsblocks']))
-	$config['installedpackages']['suricata']['alertsblocks'] = array();
-
-$pconfig['brefresh'] = $config['installedpackages']['suricata']['alertsblocks']['brefresh'];
-$pconfig['blertnumber'] = $config['installedpackages']['suricata']['alertsblocks']['blertnumber'];
-
-if (empty($pconfig['blertnumber'])) {
-	$pconfig['blertnumber'] = 500;
-}
-if (empty($pconfig['brefresh'])) {
-	$pconfig['brefresh'] = 'on';
-}
+$pconfig['brefresh'] = config_get_path('installedpackages/suricata/alertsblocks/brefresh', 'on');
+$pconfig['blertnumber'] = config_get_path('installedpackages/suricata/alertsblocks/blertnumber', 500);
 $bnentries = $pconfig['blertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
 	$ip = strtolower($_POST['resolve']);
 	$res = (is_ipaddr($ip) ? gethostbyaddr($ip) : '');
+	if (strpos($res, 'xn--') !== false) {
+		$res = idn_to_utf8($res);
+	}
 
 	if ($res && $res != $ip)
 		$response = array('resolve_ip' => $ip, 'resolve_text' => $res);
@@ -59,6 +52,32 @@ if (isset($_POST['resolve'])) {
 	exit;
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
+
+# --- AJAX GEOIP CHECK Start ---
+if (isset($_POST['geoip'])) {
+	$ip = strtolower($_POST['geoip']);
+	if (is_ipaddr($ip)) {
+		$url = "https://api.hackertarget.com/geoip/?q={$ip}";
+		$conn = curl_init("https://api.hackertarget.com/geoip/?q={$ip}");
+		curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($conn, CURLOPT_FRESH_CONNECT,  true);
+		curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+		set_curlproxy($conn);
+		$res = curl_exec($conn);
+		curl_close($conn);
+	} else {
+		$res = '';
+	}
+
+	if ($res && $res != $ip && !preg_match('/error/', $res))
+		$response = array('geoip_text' => $res);
+	else
+		$response = array('geoip_text' => gettext("Cannot check {$ip}"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX GEOIP CHECK End ---
 
 if ($_POST['mode'] == 'todelete') {
 	$ip = "";
@@ -126,18 +145,16 @@ if ($_POST['save'])
 {
 	/* no errors */
 	if (!$input_errors) {
-		$config['installedpackages']['suricata']['alertsblocks']['brefresh'] = $_POST['brefresh'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['alertsblocks']['blertnumber'] = $_POST['blertnumber'];
-
+		config_set_path('installedpackages/suricata/alertsblocks/brefresh', $_POST['brefresh'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/alertsblocks/blertnumber', $_POST['blertnumber']);
 		write_config("Suricata pkg: updated BLOCKED tab settings.");
-
 		header("Location: /suricata/suricata_blocked.php");
 		exit;
 	}
-
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Blocked Hosts"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Blocked Hosts");
 include_once("head.inc");
 
 /* refresh every 60 secs */
@@ -159,6 +176,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), true, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$instanceid}");
@@ -180,7 +198,7 @@ $group->add(new Form_Button(
 	'download',
 	'Download',
 	null,
-	'fa-download'
+	'fa-solid fa-download'
 ))->removeClass('btn-default')->addClass('btn-info btn-sm')
   ->setHelp('All blocked hosts will be saved');
 
@@ -188,7 +206,7 @@ $group->add(new Form_Button(
 	'remove',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')
   ->setHelp('All blocked hosts will be cleared');
 
@@ -200,7 +218,7 @@ $group->add(new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->removeClass('btn-default')->addClass('btn-success btn-sm')
   ->setHelp('Save auto-refresh and view settings');
 
@@ -208,7 +226,7 @@ $group->add(new Form_Checkbox(
 	'brefresh',
 	null,
 	'Refresh',
-	(($config['installedpackages']['suricata']['alertsblocks']['brefresh']=="on") || ($config['installedpackages']['suricata']['alertsblocks']['brefresh']=='')),
+	((config_get_path('installedpackages/suricata/alertsblocks/brefresh')=="on") || (config_get_path('installedpackages/suricata/alertsblocks/brefresh')=='')),
 	'on'
 ))->setHelp('Default is ON');
 
@@ -254,11 +272,12 @@ print($form);
 		</div>
 		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 			<thead>
-			   <tr class="sortableHeaderRowIdentifier">
-				<th ><?=gettext("#");?></th>
+			   <tr>
 				<th><?=gettext("Blocked IP"); ?></th>
-				<th><?=gettext("Alert Description"); ?></th>
-				<th><?=gettext("Remove"); ?></th>
+				<th><?=gettext("Block Date/Time"); ?></th>
+				<th><?=gettext("Block Alert Description"); ?></th>
+				<th><?=gettext("Block Rule GID:SID"); ?></th>
+				<th><?=gettext("Remove Block"); ?></th>
 			   </tr>
 			</thead>
 		<tbody>
@@ -267,10 +286,14 @@ print($form);
 		/* set the arrays */
 		$blocked_ips_array = suricata_get_blocked_ips();
 
+		/* Change IP from presentation to network form for use as array key */
 		if (!empty($blocked_ips_array)) {
 			foreach ($blocked_ips_array as &$ip) {
 				$ip = inet_pton($ip);
 			}
+
+			// Unset $blocked_ips_array reference as we are done with it
+			unset($ip);
 
 			$tmpblocked = array_flip($blocked_ips_array);
 			$src_ip_list = array();
@@ -289,6 +312,10 @@ print($form);
 						$fields = array();
 						$tmp = array();
 
+						// Drop any invalid line read from the log
+						if (empty(trim($buf)))
+							continue;
+
 						/***************************************************************/
 						/* Parse block log entry to find the parts we want to display. */
 						/* We parse out all the fields even though we currently use    */
@@ -297,6 +324,15 @@ print($form);
 
 						// Field 0 is the event timestamp
 						$fields['time'] = substr($buf, 0, strpos($buf, '  '));
+
+						// Create a DateTime object from the event timestamp that
+						// we can use to easily manipulate output formats.
+						try {
+							$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
+						} catch (Exception $e) {
+							syslog(LOG_WARNING, "[suricata] WARNING: found invalid timestamp entry in current blocks.log, the line will be ignored and skipped.");
+							continue;
+						}
 
 						// Field 1 is the action
 						if (strpos($buf, '[') !== FALSE && strpos($buf, ']') !== FALSE)
@@ -338,7 +374,21 @@ print($form);
 						if (isset($tmpblocked[$fields['ip']])) {
 							if (!is_array($src_ip_list[$fields['ip']]))
 								$src_ip_list[$fields['ip']] = array();
-							$src_ip_list[$fields['ip']][$fields['msg']] = "{$fields['msg']} - " . substr($fields['time'], 0, -7);
+							if (!is_array($src_ip_list[$fields['ip']]['time']))
+								$src_ip_list[$fields['ip']]['time'] = array();
+							if (!is_array($src_ip_list[$fields['ip']]['msg']))
+								$src_ip_list[$fields['ip']]['msg'] = array();
+							if (!is_array($src_ip_list[$fields['ip']]['rule_id']))
+								$src_ip_list[$fields['ip']]['rule_id'] = array();
+
+							/* Time */
+							@$alert_time = date_format($event_tm, "H:i:s");
+							/* Date */
+							@$alert_date = date_format($event_tm, "m/d/Y");
+
+							$src_ip_list[$fields['ip']]['time'][] = $alert_date . " " . $alert_time;
+							$src_ip_list[$fields['ip']]['msg'][] = "{$fields['msg']}";
+							$src_ip_list[$fields['ip']]['rule_id'][] = "{$fields['gid']}:{$fields['sid']}";
 						}
 					}
 					fclose($fd);
@@ -353,8 +403,11 @@ print($form);
 
 			/* build final list, build html */
 			$counter = 0;
-			foreach($src_ip_list as $blocked_ip => $blocked_msg) {
-				$blocked_desc = implode("<br/>", $blocked_msg);
+			foreach($src_ip_list as $blocked_ip => $blocked) {
+				/* Reverse the 'time', 'msg', and 'rule_id' arrays to display most recent event first */
+				$blocked_time = implode("<br/>", array_reverse($blocked['time'], true));
+				$blocked_desc = implode("<br/>", array_reverse($blocked['msg'], true));
+				$blocked_ruleid = implode("<br/>", array_reverse($blocked['rule_id'], true));
 				if($counter > $bnentries)
 					break;
 				else
@@ -365,14 +418,21 @@ print($form);
 				$tmp_ip = str_replace(":", ":&#8203;", $block_ip_str);
 				/* Add reverse DNS lookup icons */
 				$rdns_link = "";
-				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
+				$rdns_link .= "<i class=\"fa-solid fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
 				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
+				/* Add GeoIP check icon */
+				if (!is_private_ip($block_ip_str) && (substr($block_ip_str, 0, 2) != 'fc') &&
+				    (substr($block_ip_str, 0, 2) != 'fd')) {
+					$rdns_link .= "&nbsp;&nbsp;<i class=\"fa-solid fa-globe\" onclick=\"javascript:geoip_with_ajax('{$block_ip_str}');\" title=\"";
+					$rdns_link .= gettext("Check host GeoIP data") . "\" alt=\"Icon Check host GeoIP\"></i>";
+				}
 		?>
 				<tr class="text-nowrap">
-					<td><?=$counter;?></td>
-					<td style="word-wrap:break-word; white-space:normal"><?=$tmp_ip;?><br/><?=$rdns_link;?></td>
+					<td style="word-wrap:break-word; white-space:normal"><?=$tmp_ip;?>&nbsp;&nbsp;<?=$rdns_link;?></td>
+					<td><?=$blocked_time;?></td>
 					<td style="word-wrap:break-word; white-space:normal"><?=$blocked_desc;?></td>
-					<td><i class="fa fa-times icon-pointer text-danger" onClick="$('#ip').val('<?=$block_ip_str;?>');$('#mode').val('todelete');$('#formblock').submit();"
+					<td><?=$blocked_ruleid;?></td>
+					<td><i class="fa-solid fa-times icon-pointer text-danger" onClick="$('#ip').val('<?=$block_ip_str;?>');$('#mode').val('todelete');$('#formblock').submit();"
 					 title="<?=gettext("Delete host from Blocked Table");?>"></i></td>
 				</tr>
 		<?php
@@ -382,7 +442,7 @@ print($form);
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="4" style="text-align:center;" class="alert-info">
+						<td colspan="5" style="text-align:center;" class="alert-info">
 
 <?php	if (!empty($blocked_ips_array)) {
 			if ($counter > 1)
@@ -423,6 +483,26 @@ function resolve_ip_callback(transport) {
 	var response = $.parseJSON(transport.responseText);
 	var msg = 'IP address "' + response.resolve_ip + '" resolves to\n';
 	alert(msg + 'host "' + htmlspecialchars(response.resolve_text) + '"');
+}
+
+function geoip_with_ajax(ip_to_check) {
+	var url = "/suricata/suricata_blocked.php";
+
+	$.ajax(
+		url,
+		{
+			type: 'post',
+			dataType: 'json',
+			data: {
+				geoip: ip_to_check,
+			      },
+			complete: geoip_callback
+		});
+}
+
+function geoip_callback(transport) {
+	var response = $.parseJSON(transport.responseText);
+	alert(htmlspecialchars(response.geoip_text));
 }
 
 // From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities

@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lcab
 PORTVERSION=	1.0b12
 CATEGORIES=	archivers

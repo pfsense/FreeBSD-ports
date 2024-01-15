@@ -1,5 +1,3 @@
-TIMESTAMP = 1590483320
-SHA256 (domoticz-domoticz-2020.2_GH0.tar.gz) = a02f589daad4eebff1f5e93815c1acd1864cf068f8f5c3185bcdd20207ae395e
-SIZE (domoticz-domoticz-2020.2_GH0.tar.gz) = 14588401
-SHA256 (eclipse-mosquitto-22e0a4b_GH0.tar.gz) = b00ac0b59ad01f1fa8049a4dd2b526675ca9acd367436272678d22fe43358c27
-SIZE (eclipse-mosquitto-22e0a4b_GH0.tar.gz) = 2042301
+TIMESTAMP = 1684829760
+SHA256 (domoticz-domoticz-2023.1_GH0.tar.gz) = 3144372d0847cb4d22a8c4b1362cd31885b37671adc682c3a8e9435762cde338
+SIZE (domoticz-domoticz-2023.1_GH0.tar.gz) = 13135239

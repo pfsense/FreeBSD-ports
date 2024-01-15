@@ -1,7 +1,3 @@
-# Created by: Frank Steinborn <steinex@nognu.de>
-# $FreeBSD$
-#    $MCom: ports/devel/libgee/Makefile,v 1.13 2012/10/14 20:47:22 kwm Exp $
-
 PORTNAME=	libgee
 PORTVERSION=	0.6.8
 PORTREVISION=	2
@@ -11,12 +7,22 @@ PKGNAMESUFFIX=	06
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	GObject collection library
+WWW=		https://live.gnome.org/Libgee
+
+USES=		cpe gmake gnome libtool pathfix pkgconfig tar:xz
+CPE_VENDOR=	gnome
+USE_GNOME=	glib20 introspection:build
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-introspection=yes
+
 INSTALL_TARGET=	install-strip
-USES=		gmake gnome libtool pathfix pkgconfig tar:xz
-USE_GNOME=	glib20 introspection:build
-USE_LDCONFIG=	yes
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

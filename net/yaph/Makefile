@@ -1,6 +1,3 @@
-# Created by: Patrick MARIE <mycroft@virgaria.org>
-# $FreeBSD$
-
 PORTNAME=	yaph
 PORTVERSION=	0.91
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Yet Another Proxy Hunter (proxy scanner)
+WWW=		http://proxylabs.netwu.com/yaph/index.html
 
 GNU_CONFIGURE=	yes
 

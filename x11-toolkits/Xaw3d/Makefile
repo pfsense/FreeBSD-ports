@@ -1,6 +1,3 @@
-# Created by: asami
-# $FreeBSD$
-
 PORTNAME=	Xaw3d
 PORTVERSION=	1.5E
 PORTREVISION=	8

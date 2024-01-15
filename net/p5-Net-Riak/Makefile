@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Riak
 PORTVERSION=	0.1702
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Interface to Riak
+WWW=		https://metacpan.org/release/Net-Riak
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

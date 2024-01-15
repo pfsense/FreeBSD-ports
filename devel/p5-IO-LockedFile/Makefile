@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	IO-LockedFile
 PORTVERSION=	0.23
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl object-oriented methods for locking files
+WWW=		https://metacpan.org/release/IO-LockedFile
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,13 +1,11 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Crypt_RSA
 PORTVERSION=	1.2.1
 PORTREVISION=	1
 CATEGORIES=	security www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class allows you to use two-key strong cryptography
+WWW=		https://pear.php.net/package/Crypt_RSA
 
 USES=		pear
 

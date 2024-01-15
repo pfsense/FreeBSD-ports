@@ -1,6 +1,3 @@
-# Created by: Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	JSON-XS
 PORTVERSION=	4.03
 CATEGORIES=	converters perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	JSON serialising/deserialising, done correctly and fast
+WWW=		https://metacpan.org/release/JSON-XS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

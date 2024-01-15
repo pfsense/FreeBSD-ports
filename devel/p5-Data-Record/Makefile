@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Record
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	espen@tagestad.no
 COMMENT=	Perl module implementing "split" on steroids
+WWW=		https://metacpan.org/release/Data-Record
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

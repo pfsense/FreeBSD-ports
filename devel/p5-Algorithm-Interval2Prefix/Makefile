@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Algorithm-Interval2Prefix
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate prefixes from intervals
+WWW=		https://metacpan.org/release/Algorithm-Interval2Prefix
 
 TEST_DEPENDS=	p5-Test-Pod>=0:devel/p5-Test-Pod
 

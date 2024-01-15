@@ -1,28 +1,35 @@
-# Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tcpdump
-PORTVERSION=	4.9.3
+PORTVERSION=	4.99.4
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.tcpdump.org/release/
 
+PATCH_SITES=	https://github.com/the-tcpdump-group/tcpdump/commit/
+PATCHFILES=	5c1ecd8c.patch:-p1
+
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Ubiquitous network traffic analysis tool
+WWW=		https://www.tcpdump.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpcap.so.1:net/libpcap
 
-USES=		gmake
+USES=		cpe gmake
 
 GNU_CONFIGURE=	yes
+
+PLIST_FILES=	sbin/tcpdump \
+		man/man1/tcpdump.1.gz
+
 UNPRIV_USER?=	tcpdump
 CHROOTDIR?=	/var/run/tcpdump
 
 OPTIONS_DEFINE=	CRYPTO SMB SMI USER CHROOT
 OPTIONS_DEFAULT=	CRYPTO SMB SMI
 
+CHROOT_DESC=	Chroot to /var/run/tcpdump (set CHROOTDIR to change)
 CRYPTO_DESC=	Support IPSEC and TCPMD5
 # This one is intentionally worded this way because the default
 # description implies that tcpdump would not capture SMB, which
@@ -30,19 +37,15 @@ CRYPTO_DESC=	Support IPSEC and TCPMD5
 SMB_DESC=	Support printing SMB information
 SMI_DESC=	Allow MIBs to be loaded on the fly
 USER_DESC=	Drop privileges to dedicated user
-CHROOT_DESC=	Chroot to /var/run/tcpdump (set CHROOTDIR to change)
 
+CHROOT_CONFIGURE_ON=	--with-chroot=${CHROOTDIR}
 CRYPTO_USES=		ssl
 CRYPTO_CONFIGURE_WITH=	crypto
 SMB_CONFIGURE_ENABLE=	smb
-SMI_CONFIGURE_WITH=	smi
 SMI_LIB_DEPENDS=	libsmi.so:net-mgmt/libsmi
+SMI_CONFIGURE_WITH=	smi
 USER_CONFIGURE_ON=	--with-user=${UNPRIV_USER}
 USER_VARS=		USERS=${UNPRIV_USER} GROUPS=${UNPRIV_USER}
-CHROOT_CONFIGURE_ON=	--with-chroot=${CHROOTDIR}
-
-PLIST_FILES=	sbin/tcpdump \
-		man/man1/tcpdump.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,sys/capability.h,sys/capsicum.h,' \

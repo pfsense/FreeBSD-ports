@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	deb2targz
 PORTVERSION=	20100710
 CATEGORIES=	archivers

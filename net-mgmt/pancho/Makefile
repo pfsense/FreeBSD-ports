@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pancho
 PORTVERSION=	9.3.9
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DISTNAME=	pancho-v${PORTVERSION}
 
 MAINTAINER=	ecu@200ok.org
 COMMENT=	Network devices management tool using TFTP and SNMP
+WWW=		http://www.pancho.org/
 
 RUN_DEPENDS=	p5-Net-SNMP>=0:net-mgmt/p5-Net-SNMP \
 		p5-Config-IniFiles>=0:devel/p5-Config-IniFiles \

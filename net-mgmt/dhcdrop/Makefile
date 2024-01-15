@@ -1,6 +1,3 @@
-# Created by: Nick F <ffault@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	dhcdrop
 PORTVERSION=	0.5
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.netpatch.ru/projects/dhcdrop/
 
 MAINTAINER=	ffault@gmail.com
 COMMENT=	Tool for searching and suppressing false DHCP servers
+WWW=		http://www.netpatch.ru/en/dhcdrop.html
 
 LICENSE=	GPLv2
 

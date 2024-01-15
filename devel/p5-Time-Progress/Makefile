@@ -1,14 +1,12 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Time-Progress
-PORTVERSION=	2.12
+PORTVERSION=	2.14
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Elapsed and estimated finish time reporting
+WWW=		https://metacpan.org/release/Time-Progress
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

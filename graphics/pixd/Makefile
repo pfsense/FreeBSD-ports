@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pixd
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.0.0
@@ -8,6 +6,7 @@ CATEGORIES=	graphics
 
 MAINTAINER=	mail@dbalan.in
 COMMENT=	Visualize binary data in terminal
+WWW=		https://github.com/FireyFly/pixd/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

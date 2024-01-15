@@ -1,6 +1,3 @@
-# Created by: Bartlomiej Rutkowski <r@robakdesign.com>
-# $FreeBSD$
-
 PORTNAME=	pftabled
 PORTVERSION=	1.09
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.wolfermann.org/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to manage pf tables remotely
+WWW=		https://wolfermann.org/pftabled.html
 
 LICENSE=	BSD2CLAUSE
 

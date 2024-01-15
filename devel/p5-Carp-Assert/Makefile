@@ -1,15 +1,12 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Carp-Assert
-PORTVERSION=	0.21
-PORTREVISION=	2
+PORTVERSION=	0.22
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Executable comments like the ANSI C library assert.h
+WWW=		https://metacpan.org/release/Carp-Assert
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

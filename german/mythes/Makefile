@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
-PORTVERSION=	2020.12.13
+PORTVERSION=	2023.12.10
 CATEGORIES=	german textproc
 MASTER_SITES=	LOCAL/sunpoet/${PORTNAME}
-DISTNAME=	Deutscher-Thesaurus-${PORTVERSION:C/\.//g}
+DISTNAME=	Deutscher-Thesaurus-${PORTVERSION:C|\.||g}
 EXTRACT_SUFX=	.oxt
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	German thesaurus
+WWW=		https://www.openthesaurus.de/
 
 LICENSE=	LGPL21
 

@@ -1,6 +1,3 @@
-# Created by: TERAMOTO Masahiro <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	WWW-Instapaper-Client
 PORTVERSION=	0.901
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Implementation of the Instapaper client API
+WWW=		https://metacpan.org/release/WWW-Instapaper-Client
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Base>=0:devel/p5-Class-Base \

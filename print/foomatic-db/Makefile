@@ -1,24 +1,22 @@
-# Created by: Dima Dorfman <dima@unixfreak.org>
-# $FreeBSD$
-
 PORTNAME=	foomatic-db
-PORTVERSION=	20201029
+PORTVERSION=	20230902
 CATEGORIES=	print
-MASTER_SITES=	LOCAL/danilo
-DISTNAME=	${PORTNAME}-${FOOMATICVER}-${PORTVERSION}
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Database for integrating printer drivers with common spoolers
+WWW=		https://www.linuxfoundation.org/collaborate/workgroups/openprinting/database/foomatic
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake tar:xz
+USES=		gmake tar:xz autoreconf
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	OpenPrinting
+GH_TAGNAME=	4e6ab90da63afddee33d80115acb44149d2d292b
 
 GNU_CONFIGURE=	yes
 
-FOOMATICVER=	4.0
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

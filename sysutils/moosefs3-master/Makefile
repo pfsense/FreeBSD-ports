@@ -1,8 +1,5 @@
-# Created by: Jakub Kruszona-Zawadzki <acid@moosefs.com> ; Based on port created by: Chifeng Qu <chifeng@gmail.com>
-# $FreeBSD$
-
 PORTNAME=		moosefs3
-DISTVERSION=		3.0.115
+DISTVERSION=		3.0.117
 DISTVERSIONSUFFIX=	1
 PORTREVISION=		0
 CATEGORIES=		sysutils
@@ -10,8 +7,9 @@ MASTER_SITES=		http://ppa.moosefs.com/src/
 PKGNAMESUFFIX?=		-master
 DISTNAME=		moosefs-${DISTVERSION}-${DISTVERSIONSUFFIX}
 
-MAINTAINER=		freebsd@moosefs.pro
+MAINTAINER=		freebsd@moosefs.com
 COMMENT?=		Fault-tolerant distributed filesystem
+WWW=			https://moosefs.com/
 
 LICENSE=		GPLv2
 
@@ -33,7 +31,7 @@ CONFIGURE_ARGS+=	--localstatedir=${MFS_WORKDIR} \
 			--with-default-user=${MFS_USER} \
 			--with-default-group=${MFS_GROUP}
 
-CONFLICTS=		moosefs2-${MFS_COMPONENT}-*
+CONFLICTS=		moosefs2-${MFS_COMPONENT}
 
 .if ${MFS_COMPONENT} == cgi
 MFS_CGIDIR=		${PREFIX}/share/mfscgi

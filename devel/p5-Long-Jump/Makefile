@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Long-Jump
 PORTVERSION=	0.000001
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Mechanism for returning to a specific point from a deeply nested stack
+WWW=		https://metacpan.org/release/Long-Jump
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,15 +1,12 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	CPAN-Site
-PORTVERSION=	1.11
-PORTREVISION=	3
+PORTVERSION=	1.15
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	Extend CPAN with private packages
+WWW=		https://metacpan.org/release/CPAN-Site
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

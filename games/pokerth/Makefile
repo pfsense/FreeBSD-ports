@@ -1,14 +1,16 @@
-# Created by: Yinghong.Liu <relaxbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pokerth
 PORTVERSION=	1.1.2
-PORTREVISION=	11
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	SF
 
-MAINTAINER=	tobias.rehbein@web.de
+PATCH_SITES=	https://gitweb.gentoo.org/repo/gentoo.git/plain/games-board/pokerth/files/ \
+		https://raw.githubusercontent.com/gentoo/gentoo/master/games-board/pokerth/files/
+PATCHFILES=	pokerth-1.1.2-boost-1.73.patch:-p1
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Poker game written in C++/Qt
+WWW=		https://www.pokerth.net/
 
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,12 +26,16 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 BUILD_DEPENDS=	${LOCALBASE}/include/websocketpp/client.hpp:devel/websocketpp \
 		protoc:devel/protobuf
 
-USES=		compiler:c++11-lang gl gmake iconv qmake qt:5 sdl sqlite ssl
+USES=		compiler:c++17-lang gl gmake iconv localbase:ldflags qmake qt:5 sdl sqlite ssl
 USE_GL=		gl
-USE_CXXSTD=	c++11
-USE_QT=		buildtools_build core gui network sql sql-sqlite3 widgets
+USE_CXXSTD=	c++17
+USE_QT=		buildtools:build core gui network sql sql-sqlite3 widgets
 USE_SDL=	mixer
 
+CXXFLAGS+=	-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION
+LDFLAGS+=	-labsl_log_internal_check_op \
+		-labsl_log_internal_message \
+		-lprotobuf
 QMAKE_SOURCE_PATH=	pokerth.pro
 QMAKE_ARGS+=	CONFIG+="client"
 WRKSRC=		${WRKDIR}/${DISTNAME}-rc

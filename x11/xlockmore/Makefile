@@ -1,32 +1,33 @@
-# Created by: Scott Mace <smace@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xlockmore
-PORTVERSION=	5.66
+PORTVERSION=	5.74
 CATEGORIES=	x11
 MASTER_SITES=	http://www.sillycycle.com/xlock/ \
 		SF/bsdsrc/${.CURDIR:T}
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Like XLock session locker/screen saver, but just more
+WWW=		https://sillycycle.com/xlockmore.html
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libpng16.so:graphics/png
 
-USES=		tar:xz xorg
-USE_XORG=	ice sm x11 xaw xext xpm xorgproto
+USES=		cpe tar:xz xorg
+USE_XORG=	ice sm x11 xaw xext xorgproto xpm xt
+
+CPE_VENDOR=	sillycycle
 
 CONFIGURE_ARGS=	--without-motif --without-editres \
 		--without-dtsaver --without-rplay --without-nas \
 		--without-gtk --without-esound --disable-setuid \
-		--disable-kerberos4
+		--disable-kerberos4 --without-ttf
 GNU_CONFIGURE=	yes
 PORTDOCS=	README ${PORTNAME}.README
 
 OPTIONS_DEFINE=	MESAGL MB SYSLOG DISABLE_ALLOW_ROOT NICE_ONLY BLANK_ONLY \
 		KERBEROS5 BAD_PAM GTK2 TIME_BOMB CUSTOMIZATION MAGICK JP \
-		XINERAMA DOCS FREETYPE
+		XINERAMA DOCS
 OPTIONS_RADIO=	ONE
 OPTIONS_RADIO_ONE=	PAM XLOCK_GROUP
 OPTIONS_DEFAULT=	MB XINERAMA
@@ -78,22 +79,15 @@ JP_IMPLIES=	MB
 JP_CATEGORIES=	japanese
 JP_VARS=	XLOCKMORE_LANG=ja
 MAGICK_CONFIGURE_WITH=	magick
-MAGICK_LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick6 \
-			libpng.so:graphics/png
+MAGICK_USES=		magick:6
+MAGICK_LIB_DEPENDS=	libpng.so:graphics/png
 GTK2_CONFIGURE_WITH=	gtk2
 GTK2_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libpng.so:graphics/png
 GTK2_USE=	gnome=cairo,gdkpixbuf2,gtk20
 GTK2_USES=	gnome pkgconfig
-FREETYPE_CONFIGURE_WITH=	ttf
-FREETYPE_LIB_DEPENDS=	libgltt.so:graphics/gltt
-FREETYPE_CFLAGS=	-I${LOCALBASE}/include/gltt
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MFREETYPE}
-IGNORE_FreeBSD_11=	FREETYPE support requires FreeBSD version 12+
-.endif
 
 .if defined(XLOCKMORE_LANG)
 CONFIGURE_ARGS+=	--with-lang=${XLOCKMORE_LANG}

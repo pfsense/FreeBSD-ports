@@ -1,17 +1,14 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	wop
 PORTVERSION=	0.4.3
 PORTREVISION=	15
 CATEGORIES=	games
-MASTER_SITES=	http://wormsofprey.org/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 DISTFILES=	${PORTNAME}-${PORTVERSION}-src${EXTRACT_SUFX} \
 		${PORTNAME}data-${DATAVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Free real-time Worms game
+WWW=		https://web.archive.org/web/20141218154118/http://wormsofprey.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

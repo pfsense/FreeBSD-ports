@@ -1,14 +1,13 @@
-# Created by: Jeremy Norris <ishmael27@home.com>
-# $FreeBSD$
-
 PORTNAME=	imlib2
 PORTVERSION=	1.7.0
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	graphics enlightenment
 MASTER_SITES=	SF/enlightenment/imlib2-src/${PORTVERSION}
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The next generation graphics library for Enlightenment
+WWW=		https://docs.enlightenment.org/api/imlib2/html/
 
 LICENSE=	imlib2
 LICENSE_NAME=	imlib2 license
@@ -17,10 +16,12 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-USES=		libtool pathfix pkgconfig tar:bzip2
+USES=		cpe libtool pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+
+CPE_VENDOR=	enlightenment
 
 CONFIGURE_ARGS=	--enable-visibility-hiding --disable-static \
 		--with-zlib --with-bzip2

@@ -1,13 +1,10 @@
-# Created by: jfieber
-# $FreeBSD$
-
 PORTNAME=	html
 PORTVERSION=	4.01
 PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	LOCAL/kuriyama
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	All W3C published SGML DTDs for HTML
 
 RUN_DEPENDS=	xmlcatmgr:textproc/xmlcatmgr

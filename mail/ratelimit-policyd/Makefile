@@ -1,12 +1,10 @@
-# Created by: Miroslav Lachman
-# $FreeBSD$
-
 PORTNAME=	ratelimit-policyd
 PORTVERSION=	1.0.4
 CATEGORIES=	mail
 
 MAINTAINER=	000.fbsd@quip.cz
 COMMENT=	Sender rate limit policy daemon for Postfix
+WWW=		https://github.com/MirLach/ratelimit-policyd
 
 LICENSE=	NONE
 
@@ -14,7 +12,6 @@ USES+=		perl5 shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MirLach
-GH_PROJECT=	ratelimit-policyd
 #GH_TAGNAME=	65154a2
 
 RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	nvidia_gpu_prometheus_exporter
 DISTVERSION=	g20181028
-PORTREVISION=	1
+PORTREVISION=	16
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	NVIDIA GPU Prometheus exporter
+WWW=		https://github.com/mindprince/nvidia_gpu_prometheus_exporter
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Tim Bishop <tim@bishnet.net>
-# $FreeBSD$
-
 PORTNAME=	libukcprog
 PORTVERSION=	1.0.2
 PORTREVISION=	5
@@ -11,8 +8,13 @@ MASTER_SITES=	http://ftp.mirrorservice.org/pub/i-scream/libukcprog/ \
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Generally useful low level routines
+WWW=		https://www.i-scream.org/
 
-NO_CDROM=	License (see source) does not permit selling for profit
+# Converted from NO_CDROM
+LICENSE=	libukcprog
+LICENSE_NAME=	libukcprog
+LICENSE_TEXT=	License (see source) does not permit selling for profit
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 GNU_CONFIGURE=	yes
 USES=		libtool pathfix pkgconfig

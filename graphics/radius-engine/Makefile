@@ -1,14 +1,12 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	radius-engine
 PORTVERSION=	1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics devel
 MASTER_SITES=	SF/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lua script-based 2D engine built on top of OpenGL and SDL
+WWW=		https://radius-engine.sourceforge.net/
 
 LICENSE=	MIT
 

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tk-CursorControl
 PORTVERSION=	0.4
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Manipulate the mouse cursor programmatically
+WWW=		https://metacpan.org/release/Tk-CursorControl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

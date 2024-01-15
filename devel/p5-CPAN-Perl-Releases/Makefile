@@ -1,16 +1,14 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CPAN-Perl-Releases
-PORTVERSION=	5.20201220
+PORTVERSION=	5.20231129
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Map Perl releases to the location of the tarballs
+WWW=		https://metacpan.org/release/CPAN-Perl-Releases
 
-LICENSE=	ART10 GPLv1+
+LICENSE=	ARTPERL10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 

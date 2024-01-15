@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	numactl
 PORTVERSION=	2.0.12
 DISTVERSIONSUFFIX=	-5.el7
@@ -9,11 +7,12 @@ PKGNAMESUFFIX=	-libs
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Simple NUMA policy support (CentOS ${LINUX_DIST_VER})
+WWW=		https://github.com/numactl/numactl
 
 USES=		linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
 
-LIB_DISTNAMES=  ${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSIONFULL}
+LIB_DISTNAMES=	${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSIONFULL}
 
 .include <bsd.port.mk>

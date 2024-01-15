@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	Chemistry-Bond-Find
 PORTVERSION=	0.23
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ITUB
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Detect bonds in a molecule and assign formal bond orders
+WWW=		https://metacpan.org/release/Chemistry-Bond-Find
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

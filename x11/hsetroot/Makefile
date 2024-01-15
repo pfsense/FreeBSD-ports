@@ -1,12 +1,10 @@
-# Created by: Vincent Tantardini <vinc@freebsd-fr.org>
-# $FreeBSD$
-
 PORTNAME=	hsetroot
 PORTVERSION=	1.0.5
 CATEGORIES=	x11
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Wallpaper manipulation utility for X11
+WWW=		https://github.com/himdel/hsetroot
 
 LICENSE=	GPLv2
 

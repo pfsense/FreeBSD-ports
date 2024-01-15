@@ -1,10 +1,7 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	archive
-PORTREVISION=	0
 
 COMMENT=	Mail archiver plugin for Claws Mail
+WWW=		https://www.claws-mail.org/plugins.php
 
 USES=		libarchive
 

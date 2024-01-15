@@ -1,13 +1,12 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lmtest
-DISTVERSION=	0.9-38
+DISTVERSION=	0.9-40
+PORTREVISION=	1
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Testing Linear Regression Models
+WWW=		https://cran.r-project.org/web/packages/lmtest/
 
 LICENSE=	GPLv2
 

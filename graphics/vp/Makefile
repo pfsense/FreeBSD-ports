@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	vp
 PORTVERSION=	1.8
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://elfga.com/~erik/files/
 
 MAINTAINER=	erik@elfga.com
 COMMENT=	Image viewer for X
+WWW=		https://bzflag.bz/~erik
 
 GNU_CONFIGURE=	yes
 LIBS+=		-lm

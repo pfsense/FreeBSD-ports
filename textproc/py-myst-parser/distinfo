@@ -1,3 +1,3 @@
-TIMESTAMP = 1608366082
-SHA256 (myst-parser-0.13.0.tar.gz) = 546645067684036fc483049fb72ffadeca9f963d1bcac72bf76b2a8ec6d60747
-SIZE (myst-parser-0.13.0.tar.gz) = 36567
+TIMESTAMP = 1688166334
+SHA256 (myst_parser-2.0.0.tar.gz) = ea929a67a6a0b1683cdbe19b8d2e724cd7643f8aa3e7bb18dd65beac3483bead
+SIZE (myst_parser-2.0.0.tar.gz) = 85800

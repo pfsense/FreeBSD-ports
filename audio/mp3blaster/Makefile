@@ -1,6 +1,3 @@
-# Created by: Michael Vasilenko <acid@stu.cn.ua>
-# $FreeBSD$
-
 PORTNAME=	mp3blaster
 PORTVERSION=	3.2.6
 PORTREVISION=	2
@@ -9,12 +6,15 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	MP3 console ncurses-based player
+WWW=		http://mp3blaster.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake localbase:ldflags ncurses
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	splay # bin/mp3tag bin/splay
 
 OPTIONS_DEFINE=	DOCS LIRC NAS SDL SIDPLAY VORBIS
 OPTIONS_DEFAULT=	SIDPLAY VORBIS

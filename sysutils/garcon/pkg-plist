@@ -38,6 +38,7 @@ share/desktop-directories/xfce-network.directory
 share/desktop-directories/xfce-office.directory
 share/desktop-directories/xfce-other.directory
 share/desktop-directories/xfce-personal.directory
+share/desktop-directories/xfce-science.directory
 share/desktop-directories/xfce-screensavers.directory
 share/desktop-directories/xfce-settings.directory
 share/desktop-directories/xfce-system.directory
@@ -78,6 +79,7 @@ share/icons/hicolor/32x32/apps/org.xfce.garcon.png
 %%NLS%%share/locale/it/LC_MESSAGES/garcon.mo
 %%NLS%%share/locale/ja/LC_MESSAGES/garcon.mo
 %%NLS%%share/locale/ka/LC_MESSAGES/garcon.mo
+%%NLS%%share/locale/kab/LC_MESSAGES/garcon.mo
 %%NLS%%share/locale/kk/LC_MESSAGES/garcon.mo
 %%NLS%%share/locale/ko/LC_MESSAGES/garcon.mo
 %%NLS%%share/locale/lt/LC_MESSAGES/garcon.mo

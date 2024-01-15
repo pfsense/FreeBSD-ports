@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	qmail-notify
 PORTVERSION=	0.93
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://untroubled.org/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Delayed delivery notification for qmail
+WWW=		https://untroubled.org/qmail-notify/
 
 CFLAGS+=	-DHAVE_SRANDOM
 

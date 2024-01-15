@@ -1,6 +1,3 @@
-# Created by: lars.eggert@gmx.net
-# $FreeBSD$
-
 PORTNAME=	Algorithm-ChooseSubsets
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	lars.eggert@gmx.net
 COMMENT=	Perl algorithm to iterate through subsets of a list
+WWW=		https://metacpan.org/release/Algorithm-ChooseSubsets
 
 USES=		perl5
 USE_PERL5=	configure

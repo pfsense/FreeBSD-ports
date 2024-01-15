@@ -1,6 +1,3 @@
-# Created by: nectar@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	vxquery
 PORTVERSION=	0.2.1
 CATEGORIES=	security textproc
@@ -12,6 +9,8 @@ COMMENT=	VuXML Query Tool
 LICENSE=	BSD2CLAUSE
 
 USES=	tar:bzip2
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
 
 do-install:

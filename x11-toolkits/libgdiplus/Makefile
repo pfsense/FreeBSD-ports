@@ -1,30 +1,27 @@
-# Created by: Tom McLaughlin <tmclaugh@sdf.lonestar.org>
-# $FreeBSD$
-
 PORTNAME=	libgdiplus
-PORTVERSION=	5.6
-PORTREVISION=	2
+PORTVERSION=	6.1
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	prj@rootwyrm.com
 COMMENT=	GDI+ API for System.Windows.Forms in Mono
+WWW=		https://www.mono-project.com/docs/gui/libgdiplus/
 
-LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libgif.so:graphics/giflib \
 		libpng.so:graphics/png \
-		libcairo.so:graphics/cairo \
 		libfreetype.so:print/freetype2 \
 		libexif.so:graphics/libexif \
 		libfontconfig.so:x11-fonts/fontconfig
 
 GNU_CONFIGURE=	yes
-USES=		cpe gettext-runtime gmake gnome jpeg libtool:keepla pathfix \
-		pkgconfig
-USE_GNOME=	glib20
+USES=		autoreconf cpe gettext-runtime gmake gnome jpeg libtool:keepla \
+		pathfix pkgconfig
+USE_GNOME=	cairo glib20 pango
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

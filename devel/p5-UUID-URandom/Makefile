@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	UUID-URandom
 PORTVERSION=	0.001
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	UUIDs based on /dev/urandom or the Windows Crypto API
+WWW=		https://metacpan.org/release/UUID-URandom
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

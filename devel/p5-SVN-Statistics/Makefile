@@ -1,6 +1,3 @@
-# Created by: Yuan-Chung Hsiao <ychsiao@ychsiao.org>
-# $FreeBSD$
-
 PORTNAME=	SVN-Statistics
 PORTVERSION=	0.041
 PORTREVISION=	8
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ychsiao@ychsiao.org
 COMMENT=	Perl module to generate Subversion statistics
+WWW=		https://metacpan.org/release/LINMAR/SVN-Statistics-0.041
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,12 @@
-# Created by: e-masson@kisoft-services.com
-# $FreeBSD$
-
 PORTNAME=	psdim
 PORTVERSION=	1.4
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	print
 MASTER_SITES=	http://www.mathstat.dal.ca/~selinger/psdim/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Calculates the optimal placement of the pages for n-up printing
+WWW=		https://www.mathstat.dal.ca/~selinger/psdim/
 
 LICENSE=	GPLv2
 

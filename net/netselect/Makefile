@@ -1,6 +1,3 @@
-# Created by: Timothy Redaelli <drizzt@gufi.org>
-# $FreeBSD$
-
 PORTNAME=	netselect
 PORTVERSION=	0.4
 DISTVERSIONPREFIX=${PORTNAME}-
@@ -8,16 +5,17 @@ CATEGORIES=	net
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Ultrafast implementation of ping
+WWW=		http://apenwarr.ca/netselect/
 
 LICENSE=	BSD3CLAUSE
 
 USES=		gmake
 USE_GITHUB=	yes
-
 GH_ACCOUNT=	apenwarr
 
 OPTIONS_DEFINE=	SUID DOCS
 OPTIONS_SUB=	yes
+
 SUID_DESC=	Install with the setuid bit to allow use by non-root users
 
 do-build:

@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	ecrire
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.4
+PORTREVISION=	1
 CATEGORIES=	editors enlightenment
 DIST_SUBDIR=	enlightenment
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	EFL (Enlightenment) graphical text editor
+WWW=		https://github.com/Obsidian-StudiosInc/ecrire
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

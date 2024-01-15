@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	clockspeed
 PORTVERSION=	0.62
 PORTREVISION=	5
@@ -10,6 +7,7 @@ MASTER_SITES=	http://cr.yp.to/clockspeed/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Uses a hardware tick counter to compensate for deviant system clock
+WWW=		https://cr.yp.to/clockspeed.html
 
 LIB_DEPENDS=	libtai.so:devel/libtai
 

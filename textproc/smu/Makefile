@@ -1,6 +1,3 @@
-# Created by: Dennis Herrmann <dhn@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	smu
 PORTVERSION=	1.5
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Simple interpreter for a simplified markdown dialect
+WWW=		https://github.com/Gottox/smu
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: nork@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Mail-Address-MobileJp
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Utility to detect an e-mail is mobile one or not
+WWW=		https://metacpan.org/release/Mail-Address-MobileJp
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Mail-Tools>=0:mail/p5-Mail-Tools

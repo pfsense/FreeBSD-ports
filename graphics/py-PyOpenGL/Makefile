@@ -1,26 +1,29 @@
-# Created by: Randall Hopper <aa8vb@ipass.net>
-# $FreeBSD$
-
 PORTNAME=	PyOpenGL
-PORTVERSION=	3.1.5
+PORTVERSION=	3.1.7
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 #DISTNAME=	PyOpenGL-${PORTVERSION}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	OpenGL (and related library) interface for Python
+WWW=		https://pyopengl.sourceforge.net/
+
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/license.txt
 
 BUILD_DEPENDS=	${PYNUMPY} \
 		${PY_PILLOW}
 RUN_DEPENDS=	${PYNUMPY} \
 		${PY_PILLOW}
 
+NO_ARCH=	yes
+
 OPTIONS_DEFINE=	TKINTER
 OPTIONS_DEFAULT=	TKINTER
 TKINTER_DESC=	Build with tkinter for X support
 
-USES=		dos2unix gl python:3.6+
+USES=		dos2unix gl python
 USE_GL=		glut
 USE_PYTHON=	distutils autoplist
 

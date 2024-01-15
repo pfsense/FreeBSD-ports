@@ -1,6 +1,3 @@
-# Created by: Ilia Chipitsine <ilia@cgu.chel.su>
-# $FreeBSD$
-
 PORTNAME=	String-Approx
 PORTVERSION=	3.28
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for approximate matching (fuzzy matching)
+WWW=		https://metacpan.org/release/String-Approx
 
 LICENSE=	ART20 LGPL20
 LICENSE_COMB=	dual

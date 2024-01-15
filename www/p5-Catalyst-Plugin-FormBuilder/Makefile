@@ -1,6 +1,3 @@
-# Created by: Fernan Aguero
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-FormBuilder
 PORTVERSION=	1.07
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	FormBuilder for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-FormBuilder
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

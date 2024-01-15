@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Skinny
 PORTVERSION=	0.0742
 PORTREVISION=	1
@@ -8,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:NEKOKAK
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for simple DBI wrapper/ORMapper
+WWW=		https://metacpan.org/release/DBIx-Skinny
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

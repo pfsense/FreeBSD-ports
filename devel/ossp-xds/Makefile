@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@nigredo.org>
-# $FreeBSD$
-
 PORTNAME=	xds
 PORTVERSION=	0.9.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	ossp-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic and extensible framework for serialization
+WWW=		http://www.ossp.org/pkg/lib/xds/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

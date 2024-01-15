@@ -1,6 +1,3 @@
-# Created by: Paul Schmehl <pauls@utdallas.edu>
-# $FreeBSD$
-
 PORTNAME=	Gtk2-Ex-Utils
 PORTVERSION=	0.09
 PORTREVISION=	8
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Extra Gtk2 utilities for Gtk2 in perl
+WWW=		https://metacpan.org/release/Gtk2-Ex-Utils
 
 LICENSE=	LGPL21
 
@@ -23,5 +21,7 @@ RUN_DEPENDS=	p5-Glib>=1.00:devel/p5-Glib \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

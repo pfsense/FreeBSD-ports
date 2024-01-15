@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Shell-Guess
 PORTVERSION=	0.09
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make an educated guess about the shell in use
+WWW=		https://metacpan.org/pod/Shell::Guess
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

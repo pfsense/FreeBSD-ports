@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Clone
-PORTVERSION=	0.45
+PORTVERSION=	0.46
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Recursively copy Perl datatypes
+WWW=		https://metacpan.org/release/Clone
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

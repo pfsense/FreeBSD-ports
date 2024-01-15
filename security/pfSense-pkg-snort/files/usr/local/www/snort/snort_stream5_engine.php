@@ -3,8 +3,8 @@
  * snort_stream5_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2018-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,20 +51,7 @@ if (is_null($id)) {
 	exit;
 }
 
-/* Initialize pointer into requisite section of [config] array */
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'];
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}/stream5_tcp_engine/item", []);
 
 $pconfig = array();
 
@@ -330,6 +317,7 @@ if ($_POST['save']) {
 		}
 
 		/* Now write the new engine array to conf */
+		config_set_path("installedpackages/snortglobal/rule/{$id}/stream5_tcp_engine/item", $a_nat);
 		write_config("Snort pkg: save modified stream5 engine.");
 
 		header("Location: /snort/snort_preprocessors.php?id={$id}#stream5_row");
@@ -337,7 +325,7 @@ if ($_POST['save']) {
 	}
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr(config_get_path("installedpackages/snortglobal/rule/{$id}/interface", ''));
 $pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
 $pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Stream5 Preprocessor TCP Engine");
 include("head.inc");
@@ -375,8 +363,8 @@ if ($pconfig['name'] <> "default") {
 	$btnaliases = new Form_Button(
 		'btnSuppressList',
 		' ' . 'Aliases',
-		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
-		'fa-search-plus'
+		'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'fa-solid fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
@@ -416,8 +404,8 @@ $bind_to->setHelp('Specify which ports to check for data.  Default value is <em>
 $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
-	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports_client&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
-	'fa-search-plus'
+	'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=port&varname=ports_client&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-solid fa-search-plus'
 );
 $btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 $btnaliases->setAttribute('title', gettext("Select an existing port alias"));
@@ -441,8 +429,8 @@ $bind_to->setHelp('Specify which ports to check for data.  Default value is <em>
 $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
-	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports_server&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
-	'fa-search-plus'
+	'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=port&varname=ports_server&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-solid fa-search-plus'
 );
 $btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 $btnaliases->setAttribute('title', gettext("Select an existing port alias"));
@@ -469,8 +457,8 @@ $bind_to->setHelp('Specify which ports to check for data.  Default value is <em>
 $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
-	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports_both&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
-	'fa-search-plus'
+	'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=port&varname=ports_both&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-solid fa-search-plus'
 );
 $btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 $btnaliases->setAttribute('title', gettext("Select an existing port alias"));
@@ -581,7 +569,7 @@ $btnsave = new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 );
 $btncancel = new Form_Button(
 	'cancel',

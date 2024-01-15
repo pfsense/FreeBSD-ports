@@ -1,6 +1,3 @@
-# Created by: Horia Racoviceanu <horia@racoviceanu.com>
-# $FreeBSD$
-
 PORTNAME=	fira
 PORTVERSION=	4.301
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	trueos@norwegianrockcat.com
 COMMENT=	Sans-serif, monospaced, and code typeface for small screens
+WWW=		https://bboxtype.com/typefaces/FiraSans/
 
 LICENSE=	OFL11
 

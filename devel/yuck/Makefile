@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yuck
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.5-6
@@ -9,6 +7,7 @@ PKGNAMESUFFIX=	-cmdline-parser
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Bog-standard command line option parser for C
+WWW=		https://github.com/hroptatyr/yuck
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE

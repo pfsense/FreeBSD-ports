@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	note
 DISTVERSION=	1.3.26
 CATEGORIES=	deskutils perl5
 MASTER_SITES=	http://www.daemon.de/idisk/Apps/note/
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console based tool to handle encrypted notes
+WWW=		https://www.daemon.de/NOTE
 
 LICENSE=	GPLv1
 

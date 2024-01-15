@@ -1,6 +1,3 @@
-# Created by: Victor Popov <v.a.popov@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Crypt-PBKDF2
 PORTVERSION=	0.161520
 CATEGORIES=	security perl5
@@ -9,9 +6,11 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	PBKDF2 password hashing algorithm
+WWW=		https://metacpan.org/release/Crypt-PBKDF2
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Digest-HMAC>=1.01:security/p5-Digest-HMAC \
@@ -26,5 +25,7 @@ TEST_DEPENDS=	p5-Test-Fatal>=0:devel/p5-Test-Fatal
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

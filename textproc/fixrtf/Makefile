@@ -1,6 +1,3 @@
-# Created by: Xin LI <delphij@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fixrtf
 PORTVERSION=	0.1.20060303
 PORTREVISION=	3
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	# none
 
 MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	Patch making it possible to embed PNGs into RTFs
+WWW=		http://www.freebsd.org.cn
 
 LIB_DEPENDS=	libpng.so:graphics/png
 

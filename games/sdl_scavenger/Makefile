@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdl_scavenger
 PORTVERSION=	145.2015.01.05
 PORTREVISION=	5
@@ -11,6 +8,7 @@ DISTNAME=	sdlscav-145.4_2015_01_05
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lode Runner like game
+WWW=		https://sourceforge.net/projects/sdlscavenger/
 
 LICENSE=	GPLv1
 

@@ -1,14 +1,12 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	deadbeef
 PORTVERSION=	0.7.2
-PORTREVISION=	19
+PORTREVISION=	26
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Ultimate music player for Unix-like systems
+WWW=		http://deadbeef.sourceforge.net/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
@@ -26,7 +24,6 @@ CFLAGS+=	-Wno-narrowing
 LDFLAGS_i386=	-Wl,-z,notext
 LIBS+=		-L${LOCALBASE}/lib -lexecinfo -lintl
 USE_GNOME=	intltool
-INSTALLS_ICONS=	yes
 SHEBANG_FILES=	yasmwrapper.sh
 INSTALL_TARGET=	install-strip
 
@@ -210,6 +207,9 @@ PLIST_SUB+=		MP3=""
 .endif
 
 post-patch:
+	@${REINPLACE_CMD} -e 's,register ,,' \
+		${WRKSRC}/plugins/adplug/adplug/rix.cpp \
+		${WRKSRC}/plugins/adplug/libbinio/binio.cpp
 # Do not link to libsupc++ which may be PIC-unsafe (breaks 64-bit arches)
 	@${REINPLACE_CMD} -e 's, -lsupc++,,' \
 		${WRKSRC}/plugins/adplug/Makefile.in \

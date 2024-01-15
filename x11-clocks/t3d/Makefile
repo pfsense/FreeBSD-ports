@@ -1,6 +1,3 @@
-# Created by: J Han <hjh@best.com>
-# $FreeBSD$
-
 PORTNAME=	t3d
 PORTVERSION=	1.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.shar.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clock using flying balls to display the time
+WWW=		https://bernd-paysan.de/
 
 LICENSE=	GPLv2
 

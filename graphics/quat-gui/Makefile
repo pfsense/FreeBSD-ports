@@ -1,40 +1,41 @@
-# Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	quat
 PORTVERSION=	1.20
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.physcip.uni-stuttgart.de/pages/~phy11733/download/
 PKGNAMESUFFIX=	-gui
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Three-dimensional fractal creator (X11 GUI)
+WWW=		https://www.physcip.uni-stuttgart.de/pages/~phy11733/index_e.html
 
 LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
-OPTIONS_DEFINE=	OPTIMIZED_CFLAGS DOCS
-
-USES=		gl xorg
-USE_XORG=	xext
+USES=		gl localbase:ldflags xorg
 USE_GL=		gl glut
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	FLUID="${LOCALBASE}/bin/fluid"
-CONFIGURE_ARGS=	--datadir=${PREFIX}/share/doc
+USE_XORG=	xext
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--datadir=${PREFIX}/share/doc
+CONFIGURE_ENV=	FLUID="${LOCALBASE}/bin/fluid"
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
-
-PORTDOCS=	*
-PLIST_FILES=	bin/quat
-
 DESKTOP_ENTRIES="Quat" "3D Fractal Generator" "" "${PORTNAME}" "" ""
 
+PLIST_FILES=	bin/quat
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	OPTIMIZED_CFLAGS DOCS
+
 OPTIMIZED_CFLAGS_CFLAGS=	-O3 -ffast-math
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -E -e \
@@ -62,4 +63,4 @@ post-install-DOCS-on:
 	@(cd ${WRKSRC}/doc && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} \
 		${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

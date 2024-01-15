@@ -1,14 +1,12 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Astro-Sunrise
-PORTVERSION=	0.98
+PORTVERSION=	0.99
 CATEGORIES=	astro perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for computing the sunrise/sunset on a given day
+WWW=		https://metacpan.org/release/Astro-Sunrise
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

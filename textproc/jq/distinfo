@@ -1,3 +1,3 @@
-TIMESTAMP = 1541217486
-SHA256 (stedolan-jq-jq-1.6_GH0.tar.gz) = 158182b85f3be9e23ab1dc50cfcc24e415aade2a0b8a5d9f709e0b587666d61b
-SIZE (stedolan-jq-jq-1.6_GH0.tar.gz) = 417405
+TIMESTAMP = 1700850542
+SHA256 (jq-1.7.tar.gz) = 402a0d6975d946e6f4e484d1a84320414a0ff8eb6cf49d2c11d144d4d344db62
+SIZE (jq-1.7.tar.gz) = 1905863

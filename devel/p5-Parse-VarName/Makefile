@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Parse-VarName
 PORTVERSION=	0.03
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Routines to parse variable name
+WWW=		https://metacpan.org/release/Parse-VarName
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	courier-prime
 PORTVERSION=	g20180831
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	flo@snakeoilproductions.net
 COMMENT=	It\'s Courier, just better
+WWW=		https://quoteunquoteapps.com/courierprime
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/"Courier Prime/LICENSE/OFL.txt"

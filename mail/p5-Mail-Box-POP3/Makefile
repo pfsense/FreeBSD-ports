@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Mail-Box-POP3
-PORTVERSION=	3.005
+PORTVERSION=	3.006
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Handle POP3 folders as client
+WWW=		https://metacpan.org/release/Mail-Box-POP3
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

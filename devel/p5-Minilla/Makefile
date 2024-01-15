@@ -1,10 +1,7 @@
-# Created by: Serguei Okladnikov <oklaspec@gmail.com>
-# $FreeBSD$
-# Date created: 2015-05-28
-
 PORTNAME=	Minilla
 PORTVERSION=	3.0.15
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SKAJI
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oklaspec@gmail.com
 COMMENT=	CPAN module authoring tool
+WWW=		https://metacpan.org/release/Minilla
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

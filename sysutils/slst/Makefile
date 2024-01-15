@@ -1,6 +1,3 @@
-# Created by: Jeffrey H. Johnson <CPE1704TKS@bellsouth.net>
-# $FreeBSD$
-
 PORTNAME=	slst
 PORTVERSION=	0.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.vanheusden.com/slst/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generates syslog statistics to detect tendencies and unexpected change
+WWW=		http://www.vanheusden.com/slst/
 
 USES=		ncurses tar:tgz
 ALL_TARGET=	all

@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Pod-Tests
 PORTVERSION=	1.20
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extracts embedded tests and code examples from POD
+WWW=		https://metacpan.org/release/Pod-Tests
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

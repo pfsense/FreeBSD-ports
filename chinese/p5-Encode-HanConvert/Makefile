@@ -1,6 +1,3 @@
-# Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Encode-HanConvert
 PORTVERSION=	0.35
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Traditional and Simplified Chinese mappings
+WWW=		https://metacpan.org/release/Encode-HanConvert
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

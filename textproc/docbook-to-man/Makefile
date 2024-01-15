@@ -1,6 +1,3 @@
-# Created by: Cyrille Lefevre <clefevre@citeweb.net>
-# $FreeBSD$
-
 PORTNAME=	docbook-to-man
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -10,6 +7,9 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	DocBook SGML DTD into nroff/troff -man macros converter
+WWW=		https://www.oasis-open.org/docbook/tools/dtm/
+
+LICENSE=	MIT
 
 RUN_DEPENDS=	docbook>0:textproc/docbook
 

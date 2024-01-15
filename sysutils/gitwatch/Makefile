@@ -1,12 +1,11 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gitwatch
-DISTVERSION=	0.1.a.20200814
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.2
 CATEGORIES=	sysutils
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Bash script to watch a file or folder and commit changes to a git repo
+WWW=		https://github.com/gitwatch/gitwatch
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,8 +17,6 @@ RUN_DEPENDS=	bash>0:shells/bash \
 USES=		shebangfix
 USE_GITHUB=	yes
 USE_RC_SUBR=	${PORTNAME}
-
-GH_TAGNAME=	e62df74
 
 SHEBANG_FILES=	${WRKSRC}/${PORTNAME}.sh
 

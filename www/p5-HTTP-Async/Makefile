@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	HTTP-Async
 PORTVERSION=	0.33
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Process multiple HTTP requests in parallel without blocking
+WWW=		https://metacpan.org/release/HTTP-Async
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

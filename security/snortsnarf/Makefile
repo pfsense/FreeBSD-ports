@@ -1,6 +1,3 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	snortsnarf
 PORTVERSION=	1.0
 PORTEPOCH=	1
@@ -11,6 +8,7 @@ DISTNAME=	SnortSnarf-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generate HTML report summaries from snort incident alerts
+WWW=		https://sourceforge.net/projects/snortsnarf/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

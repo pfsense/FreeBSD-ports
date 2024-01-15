@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tbclock
 PORTVERSION=	1.10
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://tamentis.com/projects/tbclock/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Binary clock in curses
+WWW=		https://tamentis.com/projects/tbclock/
 
 USES=		ncurses
 HAS_CONFIGURE=	yes

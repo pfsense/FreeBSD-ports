@@ -1,8 +1,6 @@
-# Created by: vanilla@
-# $FreeBSD$
-
 PORTNAME=	gcin
 PORTVERSION=	2.9.0
+PORTREVISION=	2
 CATEGORIES=	chinese textproc gnome
 MASTER_SITES=	http://hyperrate.com/gcin-source/
 PKGNAMESUFFIX=	-gtk3
@@ -10,6 +8,7 @@ EXTRACT_ONLY=	gcin-${PORTVERSION}.tar.xz
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Traditional Chinese input utility in X
+WWW=		https://hyperrate.com/dir.php?eid=67
 
 LICENSE=	LGPL21
 

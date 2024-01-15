@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	opus-tools
 PORTVERSION=	0.2
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	MOZILLA/opus
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Encode, inspect, and decode Opus files
+WWW=		https://opus-codec.org/
 
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	multi

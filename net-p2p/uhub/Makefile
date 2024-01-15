@@ -1,16 +1,10 @@
-# Created by: Yashin Dmitry <yashin.dm@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	uhub
 PORTVERSION=	0.5.1
 CATEGORIES=	net-p2p
-USE_GITHUB=	yes
-GH_ACCOUNT=	janvidar
-GH_PROJECT=	uhub
-GH_TAGNAME=	a8ee6e7
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance peer-to-peer hub for the ADC network
+WWW=		https://www.uhub.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,8 +12,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_aarch64=	fails to compile: CPUINFO not defined
 
 USES=		cmake:insource perl5 sqlite
-USE_RC_SUBR=	uhub
 USE_PERL5=	build
+USE_GITHUB=	yes
+GH_ACCOUNT=	janvidar
+GH_TAGNAME=	a8ee6e7
+USE_RC_SUBR=	uhub
 
 USERS=		uhub
 GROUPS=		uhub

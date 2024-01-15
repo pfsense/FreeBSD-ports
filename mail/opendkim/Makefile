@@ -1,9 +1,6 @@
-# Created by: Hirohisa Yamaguchi <umq@ueo.co.jp>
-# $FreeBSD$
-
 PORTNAME=	opendkim
 PORTVERSION=	2.10.3
-PORTREVISION=	11
+PORTREVISION=	16
 CATEGORIES=	mail security
 MASTER_SITES=	SF/${PORTNAME} \
 		SF/${PORTNAME}/Previous%20Releases \
@@ -11,6 +8,7 @@ MASTER_SITES=	SF/${PORTNAME} \
 
 MAINTAINER=	freebsd-ports@dan.me.uk
 COMMENT=	DKIM library and milter implementation
+WWW=		http://opendkim.org/
 
 LICENSE=	BSD3CLAUSE SENDMAIL
 LICENSE_COMB=	multi
@@ -22,7 +20,7 @@ LICENSE_PERMS_SENDMAIL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 GNU_CONFIGURE=	yes
 NO_OPTIONS_SORT=yes
-USES=		autoreconf libtool perl5 pkgconfig shebangfix ssl
+USES=		autoreconf cpe libtool perl5 pkgconfig shebangfix ssl
 USE_PERL5=	run
 SHEBANG_FILES=	opendkim/opendkim-genkey* reputation/opendkim-* stats/opendkim-* \
 		reprrd/opendkim-reprrdimport*
@@ -86,7 +84,7 @@ OPENDBX_LIB_DEPENDS=	libopendbx.so:databases/opendbx
 
 OPENLDAP_DESC=		Store filter policies in LDAP
 OPENLDAP_CONFIGURE_WITH=openldap
-OPENLDAP_USE=		OPENLDAP=yes
+OPENLDAP_USES=		ldap
 
 POPAUTH_DESC=		Use POP authentication DB
 POPAUTH_CONFIGURE_ENABLE=	popauth
@@ -106,10 +104,6 @@ MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 
 .if ${PORT_OPTIONS:MDEBUG}
 WITH_DEBUG=	yes
-.endif
-
-.if ${PORT_OPTIONS:MSASL} && ${PORT_OPTIONS:MOPENLDAP}
-WANT_OPENLDAP_SASL=	yes
 .endif
 
 .if ${PORT_OPTIONS:MFILTER}

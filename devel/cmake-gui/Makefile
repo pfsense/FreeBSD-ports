@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	cmake
-DISTVERSION=	3.19.2
+DISTVERSION=	${_CMAKE_VERSION}
 CATEGORIES=	devel
-MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
-PKGNAMESUFFIX=	-gui
+PKGNAMESUFFIX=	-gui-${FLAVOR}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt-based GUI for CMake
+WWW=		https://www.cmake.org
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/Copyright.txt
@@ -19,23 +17,39 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libuv.so:devel/libuv \
 		librhash.so:security/rhash
 
+FLAVORS=		qt5 qt6
+FLAVOR?=		qt5
+qt5_CONFLICTS_INSTALL=	cmake-gui-qt6
+qt6_CONFLICTS_INSTALL=	cmake-gui-qt5
+
 USES=		cmake:run,insource compiler:c++11-lang desktop-file-utils libarchive \
-		shared-mime-info qt:5
-USE_QT=		core gui widgets buildtools_build qmake_build
-CMAKE_OFF=	BUILD_CursesDialog \
-		CMake_SPHINX_DEPEND_ON_EXECUTABLES
-CMAKE_ON=	BUILD_QtDialog \
-		CMAKE_USE_SYSTEM_LIBRARIES \
-		SPHINX_MAN
+		shared-mime-info qt:${FLAVOR:S/qt//}
+_USE_QT_qt5=	core gui widgets buildtools:build qmake:build
+_USE_QT_qt6=	base
+USE_QT=		${_USE_QT_${FLAVOR}}
 CMAKE_ARGS=	-DCMAKE_DATA_DIR:STRING="/${DATADIR_REL}" \
 		-DCMAKE_DOC_DIR:STRING="/${DOCSDIR_REL}" \
+		-DCMake_QT_MAJOR_VERSION=${FLAVOR:S/qt//}
+CMAKE_ON=	BUILD_QtDialog \
+		CMAKE_USE_SYSTEM_CURL \
+		CMAKE_USE_SYSTEM_EXPAT \
+		CMAKE_USE_SYSTEM_FORM \
+		CMAKE_USE_SYSTEM_JSONCPP \
+		CMAKE_USE_SYSTEM_LIBARCHIVE \
+		CMAKE_USE_SYSTEM_LIBRHASH \
+		CMAKE_USE_SYSTEM_LIBUV \
+		SPHINX_MAN
+CMAKE_OFF=	BUILD_CursesDialog \
+		CMake_SPHINX_DEPEND_ON_EXECUTABLES \
+		CMAKE_USE_SYSTEM_CPPDAP
 
 ALL_TARGET=	cmake-gui documentation
-INSTALL_WRKSRC=	${WRKSRC}/Source/QtDialog
-
-DISTINFO_FILE=	${.CURDIR}/../cmake/distinfo
 
 CXXFLAGS+=	-D__BSD_VISIBLE
+
+INSTALL_WRKSRC=	${WRKSRC}/Source/QtDialog
+
+DISTINFO_FILE=	${.CURDIR}/../cmake-core/distinfo
 
 post-patch:
 	@(${FIND} ${WRKSRC}/Modules -name "*.cmake" -print0; \

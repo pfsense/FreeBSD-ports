@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	CSS-Compressor
 PORTVERSION=	0.05
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl extension for CSS minification
+WWW=		https://metacpan.org/release/CSS-Compressor
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

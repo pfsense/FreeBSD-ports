@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xvidtune
 PORTVERSION=	1.0.3
 CATEGORIES=	x11

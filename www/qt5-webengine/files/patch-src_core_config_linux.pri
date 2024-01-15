@@ -1,4 +1,4 @@
---- src/core/config/linux.pri.orig	2020-11-07 01:22:36 UTC
+--- src/core/config/linux.pri.orig	2021-12-15 16:12:54 UTC
 +++ src/core/config/linux.pri
 @@ -20,6 +20,12 @@ qtConfig(webengine-embedded-build) {
          gn_args += use_alsa=false

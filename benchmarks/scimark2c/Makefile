@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	scimark2c
 DISTVERSION=	2_1
 CATEGORIES=	benchmarks
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME:S/2/${DISTVERSION}/}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	ANSI C version of the SciMark2 benchmark
+WWW=		https://math.nist.gov/scimark2/download_c.html
 
 LICENSE=	PD
 

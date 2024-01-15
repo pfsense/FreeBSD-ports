@@ -1,14 +1,12 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	easytag
 PORTVERSION=	2.4.3
-PORTREVISION=	3
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	GNOME
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	GTK Tag editor for audio files
+WWW=		http://easytag.sourceforge.net
 
 LICENSE=	GPLv2
 
@@ -27,7 +25,6 @@ USES=		compiler:c++11-lang desktop-file-utils gettext-tools gmake \
 		gnome localbase pkgconfig tar:xz
 USE_GNOME=	cairo dconf:run gtk30 intlhack libxslt
 GLIB_SCHEMAS=	org.gnome.EasyTAG.gschema.xml org.gnome.EasyTAG.enums.xml
-INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-DHAVE_GTK
 

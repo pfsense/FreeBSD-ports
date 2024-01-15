@@ -1,11 +1,16 @@
---- chrome/browser/BUILD.gn.orig	2021-01-18 21:28:49 UTC
+--- chrome/browser/BUILD.gn.orig	2023-12-10 06:10:27 UTC
 +++ chrome/browser/BUILD.gn
-@@ -5161,7 +5161,7 @@ static_library("browser") {
-     ]
+@@ -6528,6 +6528,13 @@ static_library("browser") {
+     }
    }
  
--  if (is_posix && !is_mac) {
-+  if (is_posix && !is_mac && !is_bsd) {
-     # TODO(crbug.com / 753619): Enable crash reporting on Fuchsia.
++  if (is_bsd) {
++    sources -= [
++      "metrics/bluetooth_metrics_provider.cc",
++      "metrics/bluetooth_metrics_provider.h",
++    ]
++  }
++
+   if (is_linux && use_dbus) {
      sources += [
-       "//chrome/app/chrome_crash_reporter_client.cc",
+       "dbus_memory_pressure_evaluator_linux.cc",

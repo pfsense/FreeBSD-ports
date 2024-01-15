@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	iprange
 PORTVERSION=	1.0.4
 CATEGORIES=	net-mgmt
@@ -7,6 +5,7 @@ MASTER_SITES=	https://github.com/firehol/iprange/releases/download/v${PORTVERSIO
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Manage IP ranges
+WWW=		https://github.com/firehol/iprange
 
 LICENSE=	GPLv2+
 

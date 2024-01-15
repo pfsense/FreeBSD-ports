@@ -1,14 +1,12 @@
-# Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	Class-C3-Adopt-NEXT
 PORTVERSION=	0.14
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make NEXT suck less
+WWW=		https://metacpan.org/release/Class-C3-Adopt-NEXT
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,5 +18,7 @@ TEST_DEPENDS=	p5-Test-Exception>=0.27:devel/p5-Test-Exception
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

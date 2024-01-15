@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Env-Path
 PORTVERSION=	0.19
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Advanced operations on path variables
+WWW=		https://metacpan.org/release/Env-Path
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

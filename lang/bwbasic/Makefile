@@ -1,6 +1,3 @@
-# Created by: msmith@gsoft.com.au
-# $FreeBSD$
-
 PORTNAME=	bwbasic
 PORTVERSION=	3.20
 CATEGORIES=	lang
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/version%20${PORTVERSION}/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Bywater Basic interpreter
+WWW=		https://sourceforge.net/projects/bwbasic/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

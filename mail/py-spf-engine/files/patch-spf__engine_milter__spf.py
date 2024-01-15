@@ -1,10 +1,11 @@
---- spf_engine/milter_spf.py.orig	2020-02-26 02:21:41 UTC
+--- spf_engine/milter_spf.py.orig	2023-01-11 14:35:12 UTC
 +++ spf_engine/milter_spf.py
-@@ -37,7 +37,6 @@ import spf_engine.policydspfsupp as config
- from spf_engine.util import drop_privileges
- from spf_engine.policydspfsupp import _setExceptHook
- from spf_engine.util import write_pid
--from spf_engine.util import own_socketfile
- from spf_engine.util import fold
- 
- __version__ = "2.9.2"
+@@ -211,7 +211,7 @@ class spfMilter(Milter.Base):
+ def main():
+     # Ugh, but there's no easy way around this.
+     global milterconfig
+-    configFile = '/usr/local/etc/python-policyd-spf/policyd-spf.conf'
++    configFile = '%%PREFIX%%/etc/python-policyd-spf/policyd-spf.conf'
+     if len(sys.argv) > 1:
+         if sys.argv[1] in ('-?', '--help', '-h'):
+             print('usage: pyspf-milter [<configfilename>]')

@@ -1,6 +1,3 @@
-# Created by: clsung@dragon2.net
-# $FreeBSD$
-
 PORTNAME=	Lingua-ZH-Toke
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Chinese Tokenizer on steroids
+WWW=		https://metacpan.org/release/Lingua-ZH-Toke
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Lingua-ZH-TaBE>=0:chinese/p5-Lingua-ZH-TaBE

@@ -1,11 +1,13 @@
---- Cargo.toml.orig	2020-10-02 19:35:38 UTC
+--- Cargo.toml.orig	2023-05-24 23:56:55 UTC
 +++ Cargo.toml
-@@ -37,9 +37,6 @@ toml = "0.5.6"
- predicates = "1.0"
- assert_cmd = "1.0"
+@@ -69,11 +69,6 @@ features = [
+   "run-cargo-fmt",
+ ]
  
 -[features]
--vendored-openssl = ['openssl/vendored']
+-default = ["vendored-libgit2"]
+-vendored-libgit2 = ["git2/vendored-libgit2"]
+-vendored-openssl = ["openssl/vendored", "git2/vendored-openssl"]
 -
  [[bin]]
  path = "src/main.rs"

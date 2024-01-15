@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	Chemistry-File-XYZ
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ITUB
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XYZ molecule format reader/writer
+WWW=		https://metacpan.org/release/Chemistry-File-XYZ
 
 BUILD_DEPENDS=	p5-Chemistry-Mol>=0:science/p5-Chemistry-Mol
 RUN_DEPENDS=	p5-Chemistry-Mol>=0:science/p5-Chemistry-Mol

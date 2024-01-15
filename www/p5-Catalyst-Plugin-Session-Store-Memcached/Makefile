@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Session-Store-Memcached
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Memcached storage backend for session data
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Session-Store-Memcached
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

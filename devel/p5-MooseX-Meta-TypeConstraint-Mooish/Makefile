@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-Meta-TypeConstraint-Mooish
 PORTVERSION=	0.001
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Translate Moo-style constraints to Moose-style
+WWW=		https://metacpan.org/release/MooseX-Meta-TypeConstraint-Mooish
 
 LICENSE=	LGPL21
 

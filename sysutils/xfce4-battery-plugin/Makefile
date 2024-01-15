@@ -1,29 +1,28 @@
-# Created by: Thorsten Greiner <thorsten.greiner@web.de>
-# $FreeBSD$
-
 PORTNAME=	xfce4-battery-plugin
-PORTVERSION=	1.1.3
-PORTREVISION=	1
+PORTVERSION=	1.1.5
+PORTREVISION=	2
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Battery monitor panel plugin for Xfce4
+WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-battery-plugin
 
 LICENSE=	GPLv2
+
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		alias gettext-tools gmake gnome libtool pkgconfig \
 		tar:bzip2 xfce
-USE_GNOME=	cairo gtk30 glib20 intltool
-USE_XFCE=	panel
+USE_GNOME=	cairo gdkpixbuf2 gtk30 glib20 intltool
+USE_XFCE=	libmenu panel
 USE_LDCONFIG=	yes
 
 SSP_UNSAFE=	yes
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=		NLS

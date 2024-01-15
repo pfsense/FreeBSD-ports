@@ -1,6 +1,3 @@
-# Created by: Nemo Liu <nemoliu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	james
 PORTVERSION=	2.3.2.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-binary-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java SMTP and POP3 Mail server and NNTP News server
+WWW=		https://james.apache.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

@@ -1,12 +1,10 @@
-# Created by: Anton Tornqvist <antont@inbox.lv>
-# $FreeBSD$
-
 PORTNAME=	sxhkd
 PORTVERSION=	0.6.2
 CATEGORIES=	x11
 
 MAINTAINER=	o.hushchenkov@gmail.com
 COMMENT=	Simple X hotkey daemon
+WWW=		https://github.com/baskerville/sxhkd
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

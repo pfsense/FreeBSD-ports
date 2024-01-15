@@ -1,6 +1,3 @@
-# Created by: Alex Deiter <alex.deiter@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	openipmi
 PORTVERSION=	2.0.29
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTNAME=	OpenIPMI-${PORTVERSION}
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Complex IPMI management software
+WWW=		http://openipmi.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

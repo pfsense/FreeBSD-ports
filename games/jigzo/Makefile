@@ -1,15 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	jigzo
 PORTVERSION=	0.6.1
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	games
-MASTER_SITES=	http://www.iua.upf.es/~mdeboer/resorama/jigzo/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenGL jigsaw puzzle game
+WWW=		https://web.archive.org/web/20110102231249/http://www.resorama.com/jigzo
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL.txt
@@ -17,13 +14,11 @@ LICENSE_FILE=	${WRKSRC}/GPL.txt
 LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		gl gmake jpeg sdl tar:tgz
-USE_SDL=	sdl mixer
+USE_CXXSTD=	c++14
 USE_GL=		gl
-MAKE_ARGS=	CXX=${CXX}
+USE_SDL=	sdl mixer
 
-PLIST_FILES=	bin/${PORTNAME}
-PORTDATA=	*
-PORTDOCS=	*
+MAKE_ARGS=	CXX=${CXX}
 
 DESKTOP_ENTRIES="Jigzo" \
 		"An OpenGL jigsaw puzzle game" \
@@ -31,6 +26,10 @@ DESKTOP_ENTRIES="Jigzo" \
 		"jigzo" \
 		"Game;LogicGame;KidsGame;" \
 		false
+
+PLIST_FILES=	bin/${PORTNAME}
+PORTDATA=	*
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
@@ -47,6 +46,8 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "font image puzzles sound" \
 		${STAGEDIR}${DATADIR}/
+
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

@@ -1,23 +1,22 @@
-# Created by: Alexander Leidinger <netchild@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cil
 PORTVERSION=	1.7.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Infrastructure for C Program Analysis and Transformation
+WWW=		http://kerneis.github.com/cil/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS=	ccured-[0-9]*
+CONFLICTS=	ccured
 
-BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild \
+		${LOCALBASE}/${OCAML_SITELIBDIR}/num/META:math/ocaml-num
 
-ONLY_FOR_ARCHS=	i386 amd64 powerpc64
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le
 USES=		gmake perl5
 USE_OCAML=	yes
 USE_OCAML_FINDLIB=	yes

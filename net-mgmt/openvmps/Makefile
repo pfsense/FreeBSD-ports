@@ -1,6 +1,3 @@
-# Created by: Craig Boston <craig@yekse.gank.org>
-# $FreeBSD$
-
 PORTNAME=	openvmps
 PORTVERSION=	1.4.06
 CATEGORIES=	net-mgmt
@@ -9,6 +6,7 @@ DISTNAME=	vmpsd-${PORTVERSION}
 
 MAINTAINER=	vladimir.pushkar@gmail.com
 COMMENT=	GPL implementation of the VMPS protocol
+WWW=		https://vmps.sourceforge.net/
 
 LICENSE=	GPLv2
 

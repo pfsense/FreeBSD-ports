@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cascade
 PORTVERSION=	g20200105.1
 CATEGORIES=	cad
@@ -7,6 +5,7 @@ PKGNAMESUFFIX=	-compiler
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Just-In-Time Compiler for Verilog from VMware Research
+WWW=		https://github.com/vmware/cascade
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -24,6 +23,8 @@ GH_TAGNAME=	f4f7ae8bd1dd379790c0e58c286df90b8d1cdcde
 MAKE_ENV=	FREEBSD_WRKSRC=${WRKSRC} FREEBSD_LOCALBASE=${LOCALBASE}
 
 CMAKE_OFF=	BUILD_TESTING
+
+CONFLICTS_INSTALL=	cascade
 
 BINARY_ALIAS=	flex=${FILESDIR}/flex flex.real=${LOCALBASE}/bin/flex bison=${LOCALBASE}/bin/bison
 

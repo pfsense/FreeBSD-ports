@@ -1,15 +1,13 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	elasticsearch
-PORTVERSION=	7.10.1
+PORTVERSION=	7.17.11
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.elastic.co/downloads/${PORTNAME}/
 PKGNAMESUFFIX=	7
-DISTNAME=	${PORTNAME}-${PORTVERSION}-no-jdk-darwin-x86_64
+DISTNAME=	${PORTNAME}-${PORTVERSION}-darwin-x86_64
 
 MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	Full-text search engine for Java
+WWW=		https://www.elastic.co/
 
 LICENSE=	APACHE20
 
@@ -19,7 +17,7 @@ RUN_DEPENDS=	bash>0:shells/bash \
 
 USES=		cpe shebangfix
 USE_JAVA=	yes
-JAVA_VERSION=	8+
+JAVA_VERSION=	11+
 USE_RC_SUBR=	${PORTNAME}
 
 SHEBANG_FILES=	bin/elasticsearch bin/elasticsearch-certgen \
@@ -33,10 +31,12 @@ SHEBANG_FILES=	bin/elasticsearch bin/elasticsearch-certgen \
 		bin/elasticsearch-users bin/x-pack-env bin/x-pack-security-env \
 		bin/x-pack-watcher-env
 
-CONFLICTS=	elasticsearch[56]-[0-9]*
+CONFLICTS=	elasticsearch6
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+PORTSCOUT=	limit:^7
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS
@@ -71,6 +71,7 @@ post-patch:
 	${RM} ${WRKSRC}/lib/jna-*.jar
 # ML plugin not supported on FreeBSD
 	${RM} -rf ${WRKSRC}/modules/x-pack/x-pack-ml
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/bin/elasticsearch-env
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/elasticsearch
@@ -89,7 +90,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/elasticsearch/plugins
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/elasticsearch
 	${INSTALL} -lrs ${STAGEDIR}${ETCDIR} ${STAGEDIR}${PREFIX}/lib/elasticsearch/config
-	${LN} -s ${JAVASHAREDIR}/classes/jna.jar ${STAGEDIR}${PREFIX}/lib/elasticsearch/lib/jna.jar
+	${LN} -s ${JAVASHAREDIR}/classes/jna.jar ${STAGEDIR}${PREFIX}/lib/elasticsearch/lib/jna-0.0.0.jar
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	check_redis
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTFILES=	# none
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Nagios plugin to check redis server
+WWW=		https://exchange.nagios.org/directory/Plugins/Others/check_redis/details
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/utils.pm:net-mgmt/nagios-plugins \
 		p5-Nagios-Plugin>=0:net-mgmt/p5-Nagios-Plugin \

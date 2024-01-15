@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mapdir
 PORTVERSION=	1.2.1
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	https://www.olivermahmoudi.com/files/
 
 MAINTAINER=	fbsd@olivermahmoudi.com
 COMMENT=	Tool to map directory trees
+WWW=		https://www.olivermahmoudi.com/programming/mapping-dirs
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

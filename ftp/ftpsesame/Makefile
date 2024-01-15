@@ -1,6 +1,3 @@
-# Created by: Sergey Matveychuk <sem@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ftpsesame
 PORTVERSION=	0.95
 CATEGORIES=	ftp
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.sentia.org/downloads/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Helper for pf firewall to pass FTP protocol
+WWW=		https://www.sentia.org/projects/ftpsesame/
 
 LICENSE=	ISCL
 

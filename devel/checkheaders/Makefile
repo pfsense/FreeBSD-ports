@@ -1,6 +1,3 @@
-# Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	checkheaders
 PORTVERSION=	1.0.1
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	anastasios@mageirias.com
 COMMENT=	Checks headers in C/C++ programs
+WWW=		https://code.google.com/p/checkheaders/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

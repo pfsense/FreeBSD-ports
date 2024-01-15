@@ -1,30 +1,23 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	lrcalc
-PORTVERSION=	1.2
-PORTREVISION=	1
+PORTVERSION=	2.1
 CATEGORIES=	math
-MASTER_SITES=	https://sites.math.rutgers.edu/~asbuch/lrcalc/
+MASTER_SITES=	https://bitbucket.org/asbuch/lrcalc/get/
+# https://sites.math.rutgers.edu/~asbuch/lrcalc/
+DISTNAME=	4c6c01f19f354c273cb16b5043928c34b1a2fb3c
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Littlewood-Richardson Calculator
+WWW=		https://sites.math.rutgers.edu/~asbuch/lrcalc/
 
 LICENSE=	GPLv2+
 
-USES=		libtool
+USES=		autoreconf libtool tar:bz2
 
+WRKSRC=		${WRKDIR}/asbuch-lrcalc-4c6c01f19f35
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-INCL2FIX=	lrcalc.c maple.c schublib.h symfcn.c symfcn.h
+INSTALL_TARGET=	install-strip
 
 TEST_TARGET=	check
-
-pre-configure:
-.for i in ${INCL2FIX}
-	${REINPLACE_CMD} -e 's|<vectarg.h>|"vectarg.h"|;s|<vector.h>|"vector.h"|'	\
-		-e 's|<hashtab.h>|"hashtab.h"|;s|<alloc.h>|"alloc.h"|' ${WRKSRC}/src/${i}
-.endfor
 
 .include <bsd.port.mk>

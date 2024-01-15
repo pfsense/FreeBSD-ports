@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	nvidia-libs
-DISTVERSION?=	440.100
+DISTVERSION?=	${NVIDIA_DISTVERSION}
 # Always try to set PORTREVISION as it can be overridden by the slave ports
 PORTREVISION?=	0
 CATEGORIES=	x11 linux
@@ -12,8 +10,10 @@ PKGNAMEPREFIX=	linux-
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	NVidia graphics libraries and programs (Linux version)
+WWW=		https://www.nvidia.com/object/unix.html
 
 LICENSE_FILE=	${WRKSRC}/LICENSE
+.include "${.CURDIR}/../nvidia-driver/Makefile.version"
 .include "${.CURDIR}/../nvidia-driver/Makefile.common"
 
 .if ${DISTVERSION:R} > 390
@@ -34,15 +34,11 @@ LINUX_LIBDIR=	/usr/lib${ARCH:S/i386//:S/amd//}
 LINUX_LIBS=	libcuda.so.${PORTVERSION} \
 		libnvcuvid.so.${PORTVERSION} \
 		libnvidia-cfg.so.${PORTVERSION} \
-		libnvidia-compiler.so.${PORTVERSION} \
 		libnvidia-glcore.so.${PORTVERSION} \
 		libnvidia-ml.so.${PORTVERSION} \
 		libnvidia-opencl.so.${PORTVERSION} \
 		libnvidia-tls.so.${PORTVERSION} \
 		libvdpau_nvidia.so.${PORTVERSION}
-.if ${NVVERSION} < 415.013
-LINUX_LIBS+=	tls/libnvidia-tls.so.${PORTVERSION}
-.endif
 LINUX_LINKS=	libcuda.so.${PORTVERSION} libcuda.so.1 \
 		libcuda.so.${PORTVERSION} libcuda.so \
 		libnvcuvid.so.${PORTVERSION} libnvcuvid.so.1 \
@@ -54,13 +50,13 @@ LINUX_LINKS=	libcuda.so.${PORTVERSION} libcuda.so.1 \
 		libnvidia-opencl.so.${PORTVERSION} libnvidia-opencl.so.1 \
 		libvdpau_nvidia.so.${PORTVERSION} vdpau/libvdpau_nvidia.so.1
 LINUX32_LIBS=	libcuda.so.${PORTVERSION} \
-		libnvidia-compiler.so.${PORTVERSION} \
 		libnvidia-glcore.so.${PORTVERSION} \
 		libnvidia-ml.so.${PORTVERSION} \
 		libnvidia-opencl.so.${PORTVERSION} \
 		libnvidia-tls.so.${PORTVERSION} \
 		libvdpau_nvidia.so.${PORTVERSION}
 .if ${NVVERSION} < 415.013
+LINUX_LIBS+=	tls/libnvidia-tls.so.${PORTVERSION}
 LINUX32_LIBS+=	tls/libnvidia-tls.so.${PORTVERSION}
 .endif
 LINUX32_LINKS=	libcuda.so.${PORTVERSION} libcuda.so.1 \
@@ -93,11 +89,16 @@ PLIST_RE+=	'\,${LINUXBASE}.*libEGL_nvidia\.so\.${PORTVERSION},d'
 .else
 PLIST_RE+=	'\,${LINUXBASE}.*libEGL_nvidia\.so,d'
 .endif
+.if ${NVVERSION} >= 361.016 && ${NVVERSION} < 450.051
+LINUX_LIBS+=	libnvidia-fatbinaryloader.so.${PORTVERSION}
+LINUX32_LIBS+=	libnvidia-fatbinaryloader.so.${PORTVERSION}
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-fatbinaryloader\.so,d'
+.endif
 .if ${NVVERSION} >= 361.016
 LINUX_LIBS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} \
 		libGLESv2_nvidia.so.${PORTVERSION} \
 		libGLX_nvidia.so.${PORTVERSION} \
-		libnvidia-fatbinaryloader.so.${PORTVERSION} \
 		libnvidia-ptxjitcompiler.so.${PORTVERSION}
 LINUX_LINKS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} libGLESv1_CM_nvidia.so.1 \
 		libGLESv2_nvidia.so.${PORTVERSION} libGLESv2_nvidia.so.2 \
@@ -108,7 +109,6 @@ LINUX_LINKS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} libGLESv1_CM_nvidia.so.1 \
 LINUX32_LIBS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} \
 		libGLESv2_nvidia.so.${PORTVERSION} \
 		libGLX_nvidia.so.${PORTVERSION} \
-		libnvidia-fatbinaryloader.so.${PORTVERSION} \
 		libnvidia-ptxjitcompiler.so.${PORTVERSION}
 LINUX32_LINKS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} libGLESv1_CM_nvidia.so.1 \
 		libGLESv2_nvidia.so.${PORTVERSION} libGLESv2_nvidia.so.2 \
@@ -119,10 +119,36 @@ LINUX32_LINKS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} libGLESv1_CM_nvidia.so.1 \
 .else
 PLIST_RE+=	'\,${LINUXBASE}.*libGLESv(1_CM|2)_nvidia\.so,d' \
 		'\,${LINUXBASE}.*libGLX_(nvidia|indirect)\.so,d' \
-		'\,${LINUXBASE}.*libnvidia-fatbinaryloader\.so,d' \
 		'\,${LINUXBASE}.*libnvidia-ptxjitcompiler\.so,d'
 .endif
-.if ${NVVERSION} >= 440.026
+.if ${NVVERSION} >= 535.05403 # 535.54.03
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-compiler\.so,d'
+.else
+LINUX_LIBS+=	libnvidia-compiler.so.${PORTVERSION}
+LINUX32_LIBS+=	libnvidia-compiler.so.${PORTVERSION}
+.endif
+
+.if ${NVVERSION} >= 545.00000 # 545.00
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.1.12
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.1.12 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.1.12/'
+.elif ${NVVERSION} >= 535.05403 # 535.54.03
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.1.11
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.1.11 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.1.11/'
+.elif ${NVVERSION} >= 495.02905 # 495.29.05
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.1.9
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.1.9 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.1.9/'
+.elif ${NVVERSION} >= 470.04201 # 470.42.01
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.1.7
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.1.7 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.1.7/'
+.elif ${NVVERSION} >= 460.02704 # 460.27.04
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.1.5
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.1.5 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.1.5/'
+.elif ${NVVERSION} >= 440.026
 LINUX_LIBS+=	libnvidia-egl-wayland.so.1.1.4
 LINUX_LINKS+=	libnvidia-egl-wayland.so.1.1.4 libnvidia-egl-wayland.so.1
 PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.1.4/'
@@ -161,25 +187,29 @@ PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.${PORTVERSION}/'
 .else
 PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-egl-wayland\.so,d'
 .endif
+.if ${NVVERSION} >= 331.013 && ${NVVERSION} < 495.02905
+LINUX_LIBS+=	libnvidia-ifr.so.${PORTVERSION}
+LINUX_LINKS+=	libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so.1 \
+		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so
+LINUX32_LIBS+=	libnvidia-ifr.so.${PORTVERSION}
+LINUX32_LINKS+=	libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so.1 \
+		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-ifr,d'
+.endif
 .if ${NVVERSION} >= 331.013
 LINUX_LIBS+=	libnvidia-eglcore.so.${PORTVERSION} \
 		libnvidia-fbc.so.${PORTVERSION} \
-		libnvidia-glsi.so.${PORTVERSION} \
-		libnvidia-ifr.so.${PORTVERSION}
+		libnvidia-glsi.so.${PORTVERSION}
 LINUX_LINKS+=	libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so.1 \
-		libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so \
-		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so.1 \
-		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so
+		libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so
 LINUX32_LIBS+=	libnvidia-eglcore.so.${PORTVERSION} \
 		libnvidia-fbc.so.${PORTVERSION} \
-		libnvidia-glsi.so.${PORTVERSION} \
-		libnvidia-ifr.so.${PORTVERSION}
+		libnvidia-glsi.so.${PORTVERSION}
 LINUX32_LINKS+=	libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so.1 \
-		libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so \
-		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so.1 \
-		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so
+		libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so
 .else
-PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-(eglcore|fbc|glsi|ifr),d'
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-(eglcore|fbc|glsi),d'
 .endif
 .if ${NVVERSION} >= 310.014
 LINUX_LIBS+=	libnvidia-encode.so.${PORTVERSION}
@@ -233,18 +263,49 @@ LINUX_DATA+=	nvidia_icd.json /etc/vulkan/icd.d
 .else
 PLIST_RE+=	'\,${LINUXBASE}/etc/vulkan,d'
 .endif
-.if ${NVVERSION} >= 410.057
-LINUX_LIBS+=	libnvidia-cbl.so.${PORTVERSION} \
-		libnvidia-rtcore.so.${PORTVERSION}
+.if ${NVVERSION} >= 410.057 && ${NVVERSION} < 495.02905
+LINUX_LIBS+=	libnvidia-cbl.so.${PORTVERSION}
 .else
-PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-cbl\.so,d' \
-		'\,${LINUXBASE}.*libnvidia-rtcore\.so,d'
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-cbl\.so,d'
+.endif
+.if ${NVVERSION} >= 410.057
+LINUX_LIBS+=	libnvidia-rtcore.so.${PORTVERSION}
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-rtcore\.so,d'
 .endif
 .if ${NVVERSION} >= 396.018
 LINUX_LIBS+=	libnvidia-glvkspirv.so.${PORTVERSION}
 LINUX32_LIBS+=	libnvidia-glvkspirv.so.${PORTVERSION}
 .else
 PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-glvkspirv\.so,d'
+.endif
+.if ${NVVERSION} >= 545.00000 # 545.00
+LINUX_LIBS+=	libnvidia-gpucomp.so.${PORTVERSION}
+LINUX32_LIBS+=  libnvidia-gpucomp.so.${PORTVERSION}
+.endif # 545.00
+.if ${NVVERSION} >= 525.08902 # 525.89.02
+LINUX_LIBS+=	libnvoptix.so.${PORTVERSION} \
+		libnvidia-nvvm.so.${PORTVERSION} \
+		libnvidia-ngx.so.${PORTVERSION} \
+		libnvidia-allocator.so.${PORTVERSION} \
+		libnvidia-opticalflow.so.${PORTVERSION} \
+		libnvidia-egl-gbm.so.1.1.0
+LINUX_LINKS+=	libnvidia-egl-gbm.so.1.1.0 libnvidia-egl-gbm.so.1 \
+		libnvidia-egl-gbm.so.1.1.0 libnvidia-egl-gbm.so \
+		libnvidia-nvvm.so.${PORTVERSION} libnvidia-nvvm.so.4 \
+		libnvidia-nvvm.so.${PORTVERSION} libnvidia-nvvm.so \
+		libnvidia-opticalflow.so.${PORTVERSION} libnvidia-opticalflow.so.1 \
+		libnvidia-opticalflow.so.${PORTVERSION} libnvidia-opticalflow.so \
+		libnvoptix.so.${PORTVERSION} libnvoptix.so.1 \
+		libnvoptix.so.${PORTVERSION} libnvoptix.so
+LINUX32_LIBS+=  libnvidia-nvvm.so.${PORTVERSION} \
+		libnvidia-allocator.so.${PORTVERSION} \
+		libnvidia-opticalflow.so.${PORTVERSION}
+LINUX32_LINKS+= libnvidia-nvvm.so.${PORTVERSION} libnvidia-nvvm.so.4 \
+		libnvidia-nvvm.so.${PORTVERSION} libnvidia-nvvm.so
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libnvoptix\.so,d' \
+		'\,${LINUXBASE}.*libnvidia-(allocator|egl-gbm|ngx|nvvm|opticalflow),d'
 .endif
 
 PLIST_SUB+=	LINUXBASE=${LINUXBASE} \

@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	XML-SAX-Simple
 PORTVERSION=	0.08
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	SAX version of XML::Simple
+WWW=		https://metacpan.org/release/XML-SAX-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

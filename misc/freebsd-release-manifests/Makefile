@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	freebsd-release-manifests
-DISTVERSION=	20210219
-PORTREVISION=	1
+DISTVERSION=	20231221
 CATEGORIES=	misc
 MASTER_SITES=	#
 DISTFILES=	#
 
 MAINTAINER=	re@FreeBSD.org
 COMMENT=	FreeBSD release manifests
+WWW=		https://www.FreeBSD.org
 
 LICENSE=	BSD2CLAUSE
 

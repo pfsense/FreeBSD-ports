@@ -1,6 +1,3 @@
-# Created by: Vladimir Timofeev <vovkasm@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Storable-AMF
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vovkasm@gmail.com
 COMMENT=	Perl extension for serialize/deserialize AMF0/AMF3 data
+WWW=		https://metacpan.org/release/Storable-AMF
 
 USES=		perl5
 USE_PERL5=	configure

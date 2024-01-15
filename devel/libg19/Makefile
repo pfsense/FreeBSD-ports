@@ -1,6 +1,3 @@
-# Created by: Armin Pirkovitsch <armin@frozen-zone.org>
-# $FreeBSD$
-
 PORTNAME=	libg19
 PORTVERSION=	1.1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/g19linux/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	armin@frozen-zone.org
 COMMENT=	G19 library
+WWW=		https://g19linux.sourceforge.net/
 
 USES=		libtool pkgconfig
 USE_LDCONFIG=	yes

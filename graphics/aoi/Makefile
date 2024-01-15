@@ -1,9 +1,6 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	aoi
 PORTVERSION=	3.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics java
 MASTER_SITES=	SF/${PORTNAME}/ArtOfIllusion/${PORTVERSION} \
 		SF/${PORTNAME}/ArtOfIllusion-manual/${PORTVERSION}:docs
@@ -12,6 +9,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source Java written 3D modelling and rendering studio
+WWW=		https://aoi.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -28,12 +26,12 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 PORTDOCS=	*
 
-SUB_FILES=	${PORTNAME} pkg-deinstall pkg-message
+SUB_FILES=	${PORTNAME} pkg-message
 
 DESKTOP_ENTRIES="Art of Illusion" "3D modelling and rendering studio" \
 		"${PORTNAME}" "${PORTNAME}" "Graphics;3DGraphics;" ""
 
-OPTIONS_DEFINE= DOCS
+OPTIONS_DEFINE=	DOCS
 
 DOCS_DISTFILES=	manual${PORTVERSION}${EXTRACT_SUFX}:docs
 DOCS_USES=	dos2unix

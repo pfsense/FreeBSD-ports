@@ -1,22 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	vctrs
-PORTVERSION=	0.3.6
+PORTVERSION=	0.6.5
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	Vector Helpers
+WWW=		https://cran.r-project.org/web/packages/vctrs/
 
 LICENSE=	MIT
 
-CRAN_DEPENDS=	R-cran-ellipsis>=0.2.0:devel/R-cran-ellipsis \
-		R-cran-digest>0:security/R-cran-digest \
+CRAN_DEPENDS=	R-cran-cli>=3.4.0:devel/R-cran-cli \
 		R-cran-glue>0:devel/R-cran-glue \
-		R-cran-rlang>=0.4.7:devel/R-cran-rlang
+		R-cran-lifecycle>=1.0.3:devel/R-cran-lifecycle \
+		R-cran-rlang>=1.1.0:devel/R-cran-rlang
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 
-USES=		cran:auto-plist,compiles
+USES=		compiler:c++11-lang cran:auto-plist,compiles
 
 .include <bsd.port.mk>

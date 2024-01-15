@@ -1,8 +1,5 @@
-# Created by: Blaz Zupan <blaz@si.FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nagios
-PORTVERSION=	4.4.6
+PORTVERSION=	4.4.13
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
@@ -10,8 +7,9 @@ MASTER_SITES=	https://assets.nagios.com/downloads/nagioscore/releases/ \
 		SF/${PORTNAME}/${PORTNAME}-4.x/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	4
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Powerful network monitoring system
+WWW=		https://www.nagios.org/
 
 LICENSE=	GPLv2
 
@@ -24,7 +22,7 @@ USE_PERL5=	build
 USE_PHP=	xml filter
 USE_RC_SUBR=	nagios
 
-CONFLICTS=	nagios-[123].* nagios-devel-*
+CONFLICTS=	nagios-[123].* nagios-devel
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-command-user=${NAGIOSUSER} \

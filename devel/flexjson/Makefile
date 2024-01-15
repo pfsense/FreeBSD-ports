@@ -1,6 +1,3 @@
-# Created by: Nemo Liu <nemoliu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flexjson
 DISTVERSION=	2.1
 CATEGORIES=	devel java
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/flexjson%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight Java library to write JSON
+WWW=		https://flexjson.sourceforge.net/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-2.0.txt

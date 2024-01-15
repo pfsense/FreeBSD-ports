@@ -1,6 +1,3 @@
-# Created by: hemi@puresimplicity.net
-# $FreeBSD$
-
 PORTNAME=	XScreenSaver.App
 PORTVERSION=	2.3
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/xscreensaverapp/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	hemi@puresimplicity.net
 COMMENT=	WindowMaker dockapp to control XScreenSaver
+WWW=		https://xscreensaverapp.sourceforge.net/
 
 LIB_DEPENDS=	libdockapp.so:x11-wm/libdockapp
 

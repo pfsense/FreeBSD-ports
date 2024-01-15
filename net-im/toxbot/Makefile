@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	toxbot
 DISTVERSION=	g20180325
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Groupchat control bot for Tox
+WWW=		https://github.com/JFreegman/ToxBot
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
-
 PORTNAME=	wmblueclock
 PORTVERSION=	0.0
 PORTREVISION=	3

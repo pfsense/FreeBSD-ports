@@ -1,126 +1,129 @@
-# Created by: Lev Serebryakov <lev@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vips
-PORTVERSION=	8.10.2
-PORTREVISION=	4
+PORTVERSION=	8.15.1
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/libvips/libvips/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Free image processing system
+WWW=		https://www.libvips.org/ \
+		https://github.com/libvips/libvips
 
 LICENSE=	LGPL21
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	bash:shells/bash
-#LIB_DEPENDS=	libgirepository-1.0.so:devel/gobject-introspection
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libfreetype.so:print/freetype2 \
-		libexpat.so:textproc/expat2
+		libharfbuzz.so:print/harfbuzz
+RUN_DEPENDS=	bash:shells/bash
 
-USES=		compiler:c++11-lang cpe gettext gmake gnome libtool localbase \
-		pathfix pkgconfig python shebangfix
-
-SHEBANG_FILES=	tools/vips-${PORTVERSION:R} tools/vipsprofile
+USES=		compiler:c++11-lang cpe gettext gnome localbase meson pkgconfig python shebangfix tar:xz
 USE_GNOME=	glib20
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--without-nifti \
-			--without-openslide \
-			--without-pdfium \
-			--without-imagequant \
-			--disable-introspection
 
+MESON_ARGS=	--default-library=both \
+		-Danalyze=true \
+		-Dcplusplus=true \
+		-Ddeprecated=true \
+		-Ddoxygen=false \
+		-Dexamples=true \
+		-Dintrospection=disabled \
+		-Dmodules=disabled \
+		-Dnifti=disabled \
+		-Dnsgif=true \
+		-Dopenslide=disabled \
+		-Dpdfium=disabled \
+		-Dppm=true \
+		-Dquantizr=disabled \
+		-Dradiance=true \
+		-Dvapi=false \
+		-Dzlib=enabled
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	VERSION="${PORTVERSION:R}"
+PLIST_SUB=	VERSION=${PORTVERSION:R}
 
-OPTIONS_DEFINE=		DEBUG DOCS X11 GSF FFTW ORC LCMS2 OPENEXR HEIF POPPLER LIBRSVG2 MATIO CFITSIO WEBP PANGO TIFF GIF PNG JPEG LIBEXIF
-OPTIONS_RADIO=		MAGICK
+SHEBANG_FILES=	tools/vipsprofile
+
+OPTIONS_DEFINE=	CFITSIO DOCS FFTW FONTCONFIG GIF HEIF IMAGEQUANT JPEG JXL LCMS2 LIBARCHIVE LIBEXIF LIBRSVG2 MATIO OPENEXR PANGO PNG POPPLER SPNG TIFF WEBP
+OPTIONS_RADIO=	MAGICK SIMD
 OPTIONS_RADIO_MAGICK=	IMAGEMAGICK GRAPHMAGICK
-OPTIONS_DEFAULT=	X11 GSF FFTW ORC LCMS2 OPENEXR HEIF POPPLER LIBRSVG2 MATIO CFITSIO WEBP PANGO TIFF GIF PNG JPEG LIBEXIF IMAGEMAGICK
+OPTIONS_RADIO_SIMD=	HIGHWAY ORC
+OPTIONS_DEFAULT=CFITSIO FFTW FONTCONFIG GIF HEIF HIGHWAY IMAGEMAGICK JPEG JXL LCMS2 LIBARCHIVE LIBEXIF LIBRSVG2 MATIO OPENEXR PANGO PNG POPPLER SPNG TIFF WEBP
+FONTCONFIG_IMPLIES=	PANGO
+LIBARCHIVE_DESC=Save image pyramid via libarchive
+HIGHWAY_DESC=	SIMD support via Highway (preferred)
+IMAGEQUANT_DESC=Image Quantization support
+MATIO_DESC=	Matlab MAT format support
+ORC_DESC=	Accelerate loops with ORC
 
-DEBUG_CONFIGURE_ENABLE=	debug
-DEBUG_INSTALL_TARGET_OFF=	install-strip
-
-DOCS_CONFIGURE_ENABLE=	gtk-doc gtk-doc-html
-DOCS_BUILD_DEPENDS=	gtkdocize:textproc/gtk-doc
-
-X11_CONFIGURE_WITH=	x
-
-IMAGEMAGICK_CONFIGURE_ON=	--with-magickpackage=MagickCore
-GRAPHMAGICK_CONFIGURE_ON=	--with-magickpackage=GraphicsMagick
-
-GSF_DESC=		Structured file formats support
-GSF_CONFIGURE_WITH=	gsf
-GSF_USE=		GNOME=libgsf
-
-FFTW_CONFIGURE_WITH=	fftw
-FFTW_LIB_DEPENDS=	libfftw3.so:math/fftw3
-
-ORC_DESC=		ORC language support
-ORC_CONFIGURE_WITH=	orc
-ORC_LIB_DEPENDS=	liborc-0.4.so:devel/orc
-
-LCMS2_CONFIGURE_WITH=	lcms
-LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
-
-OPENEXR_CONFIGURE_WITH=	OpenEXR
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
-			libImath.so:graphics/ilmbase
-
-HEIF_DESC=		HEIF image format support
-HEIF_CONFIGURE_WITH=	heif
-HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
-
-POPPLER_CONFIGURE_WITH=	poppler
-POPPLER_LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
-POPPLER_USE=		GNOME=cairo
-
-LIBRSVG2_CONFIGURE_WITH=rsvg
-LIBRSVG2_USE=		GNOME=librsvg2 GNOME=cairo
-
-MATIO_DESC=		Matlab MAT format support
-MATIO_CONFIGURE_WITH=	matio
-MATIO_LIB_DEPENDS=	libmatio.so:math/matio \
-			libhdf5.so:science/hdf5
-
-CFITSIO_CONFIGURE_WITH=	cfitsio
 CFITSIO_LIB_DEPENDS=	libcfitsio.so:astro/cfitsio
-
-WEBP_CONFIGURE_WITH=	libwebp
-WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-
-PANGO_CONFIGURE_WITH=	pangoft2
-PANGO_USE=		GNOME=pango
-
-TIFF_CONFIGURE_WITH=	tiff
-TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
-
-GIF_CONFIGURE_WITH=	giflib
-GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
-
-PNG_CONFIGURE_WITH=	png
-PNG_LIB_DEPENDS=	libpng.so:graphics/png
-
-JPEG_CONFIGURE_WITH=	jpeg
+CFITSIO_MESON_ENABLED=	cfitsio
+DOCS_BUILD_DEPENDS=	gtkdocize:textproc/gtk-doc
+DOCS_MESON_TRUE=	gtk_doc
+FFTW_LIB_DEPENDS=	libfftw3.so:math/fftw3
+FFTW_MESON_ENABLED=	fftw
+FONTCONFIG_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
+FONTCONFIG_MESON_ENABLED=	fontconfig
+GIF_BUILD_DEPENDS=	cgif>=0.2.0:graphics/cgif
+GIF_LIB_DEPENDS=	libcgif.so:graphics/cgif
+GIF_MESON_ENABLED=	cgif
+GRAPHMAGICK_LIB_DEPENDS=libGraphicsMagick.so:graphics/GraphicsMagick
+GRAPHMAGICK_MESON_ON=	-Dmagick=enabled -Dmagick-package=GraphicsMagick
+HEIF_BUILD_DEPENDS=	libheif>=1.4.0:graphics/libheif
+HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
+HEIF_MESON_ENABLED=	heif
+HIGHWAY_BUILD_DEPENDS=	highway>=1.0.5:devel/highway
+HIGHWAY_LIB_DEPENDS=	libhwy.so:devel/highway
+HIGHWAY_MESON_ENABLED=	highway
+IMAGEMAGICK_MESON_ON=	-Dmagick=enabled -Dmagick-package=MagickCore
+IMAGEMAGICK_USES=	magick
+IMAGEQUANT_LIB_DEPENDS=	libimagequant.so:graphics/libimagequant
+IMAGEQUANT_MESON_ENABLED=	imagequant
+JPEG_BUILD_DEPENDS=	openjpeg>=2.4:graphics/openjpeg
+JPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
+JPEG_MESON_ENABLED=	jpeg openjpeg
 JPEG_USES=		jpeg
-
-LIBEXIF_CONFIGURE_WITH=	libexif
+JXL_BUILD_DEPENDS=	libjxl>=0.6:graphics/libjxl
+JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
+JXL_MESON_ENABLED=	jpeg-xl
+LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
+LCMS2_MESON_ENABLED=	lcms
+LIBEXIF_BUILD_DEPENDS=	libexif>=0.6:graphics/libexif
 LIBEXIF_LIB_DEPENDS=	libexif.so:graphics/libexif
+LIBEXIF_MESON_ENABLED=	exif
+LIBARCHIVE_BUILD_DEPENDS=	libarchive>=3.0.0:archivers/libarchive
+LIBARCHIVE_MESON_ENABLED=	archive
+LIBARCHIVE_USES=	libarchive
+LIBRSVG2_MESON_ENABLED=	rsvg
+LIBRSVG2_USE=		GNOME=cairo,librsvg2
+MATIO_LIB_DEPENDS=	libmatio.so:math/matio
+MATIO_MESON_ENABLED=	matio
+OPENEXR_BUILD_DEPENDS=	openexr>=1.2.2:graphics/openexr
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr
+OPENEXR_MESON_ENABLED=	openexr
+ORC_BUILD_DEPENDS=	orc>=0.4.31:devel/orc
+ORC_LIB_DEPENDS=	liborc-0.4.so:devel/orc
+ORC_MESON_ENABLED=	orc
+PANGO_MESON_ENABLED=	pangocairo
+PANGO_USE=		GNOME=pango
+PNG_BUILD_DEPENDS=	png>=1.2.9:graphics/png
+PNG_LIB_DEPENDS=	libpng.so:graphics/png
+PNG_MESON_ENABLED=	png
+POPPLER_LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
+POPPLER_MESON_ENABLED=	poppler
+POPPLER_USE=		GNOME=cairo
+SPNG_BUILD_DEPENDS=	libspng>=0.7:graphics/libspng
+SPNG_LIB_DEPENDS=	libspng.so:graphics/libspng
+SPNG_MESON_ENABLED=	spng
+TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
+TIFF_MESON_ENABLED=	tiff
+WEBP_BUILD_DEPENDS=	webp>=0.6:graphics/webp
+WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
+WEBP_MESON_ENABLED=	webp
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MIMAGEMAGICK}
-. if ${PORT_OPTIONS:MX11}
-LIB_DEPENDS+=		libMagickCore-7.so:graphics/ImageMagick7
-. else
-LIB_DEPENDS+=		libMagickCore-7.so:graphics/ImageMagick7-nox11
-. endif
-.elif ${PORT_OPTIONS:MGRAPHMAGICK}
-LIB_DEPENDS+=		libGraphicsMagick.so:graphics/GraphicsMagick
-.else
-CONFIGURE_ARGS+=	--without-magick
+.if !${PORT_OPTIONS:MGRAPHMAGICK} && !${PORT_OPTIONS:MIMAGEMAGICK}
+MESON_ARGS+=	-Dmagick=disabled
 .endif
 
 .include <bsd.port.mk>

@@ -1,13 +1,11 @@
 bin/wavbreaker
-bin/wavgen
-bin/wavinfo
-bin/wavmerge
+bin/wavcli
 man/man1/wavbreaker.1.gz
-man/man1/wavinfo.1.gz
-man/man1/wavmerge.1.gz
+man/man1/wavcli.1.gz
 share/applications/net.sourceforge.wavbreaker.desktop
 share/icons/hicolor/scalable/apps/net.sourceforge.wavbreaker.svg
 share/locale/de/LC_MESSAGES/wavbreaker.mo
 share/locale/es/LC_MESSAGES/wavbreaker.mo
 share/locale/fr/LC_MESSAGES/wavbreaker.mo
 share/locale/pt/LC_MESSAGES/wavbreaker.mo
+share/metainfo/net.sourceforge.wavbreaker.appdata.xml

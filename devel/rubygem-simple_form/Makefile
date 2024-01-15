@@ -1,6 +1,3 @@
-# Created by: rpsfa@rit.edu
-# $FreeBSD$
-
 PORTNAME=	simple_form
 PORTVERSION=	4.0.0
 CATEGORIES=	devel rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Forms made easy
+WWW=		https://github.com/plataformatec/simple_form
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
@@ -17,8 +15,8 @@ RUN_DEPENDS=	rubygem-activemodel4>=4:databases/rubygem-activemodel4 \
 
 PORTSCOUT=	ignore:1
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
+CPE_VENDOR=	plataformatec
 
 NO_ARCH=	yes
 

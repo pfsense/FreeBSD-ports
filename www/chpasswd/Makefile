@@ -1,6 +1,3 @@
-# Created by: Jean Milanez Melo <jmelo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	chpasswd
 PORTVERSION=	2.2.4
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/orso${PORTNAME}/orso${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Allow users to change their Squid or Web password using the browser
+WWW=		https://sourceforge.net/projects/orsochpasswd
 
 HAS_CONFIGURE=	yes
 

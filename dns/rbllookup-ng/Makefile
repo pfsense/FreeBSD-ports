@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
-
 PORTNAME=	rbllookup-ng
 PORTVERSION=	1.1
 PORTREVISION=	3

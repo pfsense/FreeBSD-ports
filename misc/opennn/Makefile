@@ -1,46 +1,38 @@
-# $FreeBSD$
-
 PORTNAME=	opennn
-DISTVERSION=	4.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	6.0.4
 CATEGORIES=	misc # machine-learning
-MASTER_SITES=	SF/${PORTNAME}/
-DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Open neural networks library
+WWW=		https://www.opennn.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake compiler dos2unix zip
-DOS2UNIX_FILES=	opennn/CMakeLists.txt
+USES=		cmake:testing dos2unix
 USE_LDCONFIG=	yes
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	Artelnics
+
+DOS2UNIX_FILES=	opennn/CMakeLists.txt
+
+CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	OpenNN_BUILD_EXAMPLES OpenNN_BUILD_TESTS
+CMAKE_TESTING_ON=	OpenNN_BUILD_TESTS # some tests fail, see https://github.com/Artelnics/opennn/issues/229
+CMAKE_TESTING_TARGET=	tests
 
-OPTIONS_DEFINE=		MPI OPENMP
-OPTIONS_DEFAULT=	OPENMP
+CXXFLAGS_powerpc64=	-mvsx
+LDFLAGS+=	-pthread
+LDFLAGS_powerpc=	-latomic
 
-MPI_CMAKE_BOOL=		__OPENNN_MPI__
-MPI_BROKEN=		https://github.com/Artelnics/OpenNN/issues/86
-
-OPENMP_CMAKE_BOOL=	__OPENNN_OMP__
-
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-USE_GCC=	yes
+.if !exists(/usr/include/omp.h)
+LDFLAGS+=	-fopenmp
+USES+=		compiler:gcc-c++11-lib
 .else
-# workaround for breakage with clang-10: https://github.com/Artelnics/OpenNN/issues/105
-LLVM_VER=	80
-BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
-CPP=		clang-cpp${LLVM_VER}
-CC=		clang${LLVM_VER}
-CXX=		clang++${LLVM_VER}
-# clang-8 defaults to elfv1 on FreeBSD, to be removed after moving to 9 or newer
-.if ${ARCH} == powerpc64
-CFLAGS+=	-mabi=elfv2
-.endif
+LDFLAGS+=	-lomp # https://github.com/Artelnics/opennn/issues/182
+USES+=		compiler:c++11-lang
 .endif
 
 do-install:
@@ -48,4 +40,7 @@ do-install:
 	${INSTALL_DATA} ${BUILD_WRKSRC}/${PORTNAME}/libopennn.so ${STAGEDIR}${PREFIX}/lib
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libopennn.so
 
-.include <bsd.port.post.mk>
+post-test:
+	@cd ${TEST_WRKSRC} && (${ECHO} suite | tests/tests)
+
+.include <bsd.port.mk>

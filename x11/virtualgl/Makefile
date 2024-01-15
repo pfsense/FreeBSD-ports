@@ -1,36 +1,38 @@
-# Created by: David Mackay <davidjx8p@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	virtualgl
-PORTVERSION=	2.6.3
+DISTVERSION=	3.1
 CATEGORIES=	x11 graphics
-MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
-DISTNAME=	VirtualGL-${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}/${DISTVERSION}
+DISTNAME=	VirtualGL-${DISTVERSION}
 
-MAINTAINER=	davidjx8p@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Redirects commands from an OpenGL app to another X server
+WWW=		https://www.virtualgl.org
+
+ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libturbojpeg.so:graphics/libjpeg-turbo \
 		libxcb-keysyms.so:x11/xcb-util-keysyms
 
-BROKEN=		fails to build
-ONLY_FOR_ARCHS=	amd64 i386
-
-CMAKE_INSTALL_PREFIX=	${LOCALBASE}/VirtualGL
-DOCSDIR=	${LOCALBASE}/VirtualGL/doc
-
-USES=		cmake compiler:c++11-lang gl xorg
-USE_GL=		gl glu
+USES=		cmake compiler:c++11-lang gl localbase xorg
+USE_GL=		egl gl glu
 USE_XORG=	x11 xcb xext xtst
+USE_LDCONFIG=	${PREFIX}/VirtualGL/lib
+
 CMAKE_ARGS=	-DTJPEG_INCLUDE_DIR=${LOCALBASE}/include \
 		-DTJPEG_LIBRARY=${LOCALBASE}/lib/libturbojpeg.so \
 		-DVGL_FAKEXCB=on -DVGL_SYSTEMFLTK=on \
 		-DCMAKE_INSTALL_DOCDIR=${DOCSDIR}
-USE_LDCONFIG=	${PREFIX}/VirtualGL/lib
-LDFLAGS+=	-L${LOCALBASE}/lib
+CMAKE_INSTALL_PREFIX=	${LOCALBASE}/VirtualGL
 
-OPTIONS_DEFINE=	OPENCL OPENSSL XVIDEO
+# Some versioned symbols in virtualgl are undefined when libvglfaker.so
+# is linked. Suppress errors with lld >= 17 due to these undefined
+# symbols.
+LDFLAGS+=	-Wl,--undefined-version
+
+DOCSDIR=	${LOCALBASE}/VirtualGL/doc
+
+OPTIONS_DEFINE=	OPENCL OPENSSL XVIDEO DOCS
 OPTIONS_DEFAULT=	OPENCL
 OPTIONS_SUB=	yes
 
@@ -47,16 +49,12 @@ XVIDEO_USE=	XORG=xv
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386"
-PLIST_SUB+=	I386=""
-PLIST_SUB+=	AMD64="@comment "
+.if ${ARCH} == "armv7" || ${ARCH} == "i386" || ${ARCH} == "powerpc"
+PLIST_SUB+=	I386="" \
+		AMD64="@comment "
 .else
-PLIST_SUB+=	I386="@comment "
-PLIST_SUB+=	AMD64=""
+PLIST_SUB+=	I386="@comment " \
+		AMD64=""
 .endif
-
-post-patch:
-	@${REINPLACE_CMD} -e '/^#define CHECKGL/s,m);, &,' \
-		${WRKSRC}/server/VirtualDrawable.cpp
 
 .include <bsd.port.post.mk>

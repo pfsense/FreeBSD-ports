@@ -1,6 +1,3 @@
-# Created by: Olli Hauer
-# $FreeBSD$
-
 PORTNAME=	pulledpork
 PORTVERSION=	0.7.4
 DISTVERSIONPREFIX=	v
@@ -8,8 +5,9 @@ PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	GHL
 
-MAINTAINER=	ohauer@FreeBSD.org
+MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Script to update snort-2.8+ rules
+WWW=		https://github.com/shirkdog/pulledpork/
 
 LICENSE=	GPLv2
 

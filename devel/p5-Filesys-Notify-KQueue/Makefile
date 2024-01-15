@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Filesys-Notify-KQueue
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to wrap IO::KQueue for watching file system
+WWW=		https://metacpan.org/release/Filesys-Notify-KQueue
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Geometry-Planar-GPC
 PORTVERSION=	1.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl wrapper for Alan Murta's gpc library
+WWW=		https://metacpan.org/release/Math-Geometry-Planar-GPC
 
 LICENSE=	ART10
 

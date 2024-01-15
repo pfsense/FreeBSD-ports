@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	volpack
 PORTVERSION=	1.0b3
 PORTREVISION=	1
@@ -9,6 +7,7 @@ EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Portable software library for volume rendering
+WWW=		https://graphics.stanford.edu/software/volpack
 
 LICENSE=	MIT
 

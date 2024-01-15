@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	CGI-Application-Plugin-ViewCode
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	View the source of the running application
+WWW=		https://metacpan.org/release/CGI-Application-Plugin-ViewCode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

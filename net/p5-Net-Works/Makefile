@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Works
 PORTVERSION=	0.22
 CATEGORIES=	net perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	APIs for IP addresses and networks
+WWW=		https://metacpan.org/release/Net-Works
 
 LICENSE=	ART20
 
@@ -21,5 +20,7 @@ TEST_DEPENDS=	p5-Test-Fatal>=0:devel/p5-Test-Fatal
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

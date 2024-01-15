@@ -1,19 +1,20 @@
-# Created by: Dan Caescu <daniel at freebsd.ro>
-# $FreeBSD$
-
 PORTNAME=	traff
 PORTVERSION=	0.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	daniel@freebsd.ro
 COMMENT=	Libpcab based fast traffic accounting program
+WWW=		https://sourceforge.net/projects/traff
 
-BUILD_DEPENDS=	${LOCALBASE}/include/argp.h:devel/argp-standalone
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_RC_SUBR=	traff
+LIB_DEPENDS=	libargp.so:devel/argp-standalone
+
 USES=		gmake
+USE_RC_SUBR=	traff
 GNU_CONFIGURE=	yes
 
 LIBS+=		-L${LOCALBASE}/lib -largp

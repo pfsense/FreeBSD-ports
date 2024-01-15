@@ -1,19 +1,17 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	redcarpet
-PORTVERSION=	3.4.0
+PORTVERSION=	3.6.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Fast, safe and extensible Markdown to (X)HTML parser
+WWW=		https://github.com/vmg/redcarpet
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_RUBY=	yes
-USES=		gem
+USES=		cpe gem
+CPE_VENDOR=	${PORTNAME}_project
 
 PLIST_FILES=	bin/redcarpet
 

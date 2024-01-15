@@ -1,6 +1,3 @@
-# Created by: Christopher Key <cjk32@cam.ac.uk>
-# $FreeBSD$
-
 PORTNAME=	Audio-M4P
 PORTVERSION=	0.57
 CATEGORIES=	multimedia perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	M4P / MP4 / m4a Quicktime audio and video tools
+WWW=		https://metacpan.org/release/Audio-M4P
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

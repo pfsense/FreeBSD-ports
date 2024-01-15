@@ -1,6 +1,3 @@
-# Created by: Tor Halvard "Squat" Furulund <squat@squat.no>
-# $FreeBSD$
-
 PORTNAME=	tcptrack
 PORTVERSION=	1.4.2
 PORTREVISION=	3
@@ -10,13 +7,22 @@ MASTER_SITES=	https://BSDforge.com/projects/source/net-mgmt/tcptrack/ \
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Packet sniffer that displays TCP information like top(1)
+WWW=		https://BSDforge.com/projects/net-mgmt/tcptrack/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		ncurses
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/tcptrack man/man1/tcptrack.1.gz
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=unused-but-set-variable
+.endif
+
+.include <bsd.port.post.mk>

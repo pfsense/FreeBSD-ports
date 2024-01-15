@@ -1,13 +1,12 @@
-# Created by: Carl Makin <carl@stagecraft.cx>
-# $FreeBSD$
-
 PORTNAME=	xastir
 DISTVERSIONPREFIX=	Release-
-DISTVERSION=	2.1.6
+DISTVERSION=	2.2.0
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	carl@stagecraft.cx
 COMMENT=	X Amateur Station Tracking and Information Reporting
+WWW=		http://www.xastir.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,9 +23,11 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libwebp.so:graphics/webp \
 		libwebpmux.so:graphics/webp \
 		libwmflite.so:graphics/libwmf \
-		libpcre.so:devel/pcre
+		libpcre2-8.so:devel/pcre2 \
+		libjxl.so:graphics/libjxl \
+		libjxl_threads.so:graphics/libjxl
 
-USES=		gettext gmake gnome jpeg motif python:run shebangfix xorg
+USES=		autoreconf gmake gnome jpeg motif shebangfix xorg
 
 USE_XORG=	ice sm x11 xext xt
 USE_GNOME+=	libxml2
@@ -38,7 +39,6 @@ SHEBANG_REGEX=	./scripts/.*\.(sh|pl|py)
 USE_GITHUB=	yes
 GH_ACCOUNT=	Xastir
 GH_PROJECT=	Xastir
-#CFLAGS+=	-fcommon
 
 SUB_FILES=	pkg-message
 
@@ -61,7 +61,7 @@ OPTIONS_DEFAULT=	BDB CURL GMAGICK
 
 DAVIS_CONFIGURE_ON=	--enable-davis
 
-IMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
+IMAGICK_USES=		magick:6
 IMAGICK_CONFIGURE_WITH=	imagemagick
 
 GMAGICK_LIB_DEPENDS=	libGraphicsMagickWand.so:graphics/GraphicsMagick

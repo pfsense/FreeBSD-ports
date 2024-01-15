@@ -1,6 +1,3 @@
-# Created by: Vivek Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	Gearman
 PORTVERSION=	2.004.015
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Gearman client libraray for Perl
+WWW=		https://www.danga.com/gearman/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

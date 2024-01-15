@@ -1,38 +1,43 @@
-# $FreeBSD$
-
 PORTNAME=	mpi4py
-DISTVERSION=	3.0.3
-PORTREVISION=	1
+DISTVERSION=	3.1.5
 CATEGORIES=	net parallel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Python bindings for MPI
+MAINTAINER=	wen@FreeBSD.org
+COMMENT?=	Python bindings for MPI (OpenMPI)
+WWW=		https://github.com/mpi4py/mpi4py
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils cython autoplist concurrent
+LDFLAGS+=	${MPI_LIBS}
+
+SLAVEDIRS=	net/py-mpi4py-mpich
 
 OPTIONS_DEFINE=		DOCS MANPAGES
-OPTIONS_SINGLE=		MP
-OPTIONS_SINGLE_MP=	MPICH2 OPENMPI
-OPTIONS_DEFAULT=	OPENMPI # the only non-failing MPI implementation
-MP_DESC=		MPI Implementation
 
-MPICH2_USES=		fortran
-MPICH2_LIB_DEPENDS=	libmpich.so:net/mpich2
-MPICH2_LDFLAGS=		${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so
+MP?=		OPENMPI
 
-OPENMPI_LIB_DEPENDS=	libmpi.so:net/openmpi
+.if ${MP} == "OPENMPI"
+USES+=		mpi:openmpi
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}mpi4py-mpich-3*
+.elif ${MP} == "MPICH"
+USES+=		fortran mpi:mpich
+LDFLAGS+=	${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}mpi4py-3*
+.else
+BROKEN=		invalid parameter MP
+.endif
 
 PORTDOCS=		*
 
-do-patch-OPENMPI-on:
-	@${CP} ${FILESDIR}/mpi.cfg ${WRKSRC}/
-	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/mpi.cfg
+pre-configure:
+	${CP} ${FILESDIR}/mpi.cfg ${WRKSRC}/
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%/mpi/openmpi|${MPI_HOME}|'	\
+		${WRKSRC}/mpi.cfg
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -48,8 +53,6 @@ post-install:
 	@cd ${STAGEDIR}${PYTHON_SITELIBDIR}/mpi4py && ${STRIP_CMD} dl*.so MPI*.so lib-pmpi/libvt-hyb*.so lib-pmpi/libvt*.so lib-pmpi/libvt-mpi*.so lib-pmpi/libmpe*.so
 
 do-test:
-	# tests fail with MPICH2=on: https://bitbucket.org/mpi4py/mpi4py/issues/110/tests-fail-with-mpich2-on-freebsd-error
-	# tests fail with OPENMPI2=on: https://bitbucket.org/mpi4py/mpi4py/issues/109/tests-fail-with-openmpi2-on-freebsd
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

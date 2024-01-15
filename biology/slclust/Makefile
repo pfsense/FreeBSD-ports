@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	slclust
 PORTVERSION=	2010.02.02
 CATEGORIES=	biology
@@ -8,6 +6,7 @@ DISTNAME=	${PORTNAME}_02022010
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Single-linkage clustering with Jaccard similarity
+WWW=		https://sourceforge.net/projects/slclust/
 
 LICENSE=	ART10
 

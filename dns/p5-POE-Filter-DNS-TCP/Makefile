@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	POE-Filter-DNS-TCP
 PORTVERSION=	0.06
 CATEGORIES=	dns perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE Filter to handle DNS over TCP connections
+WWW=		https://metacpan.org/release/POE-Filter-DNS-TCP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

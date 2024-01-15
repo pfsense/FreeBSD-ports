@@ -1,15 +1,13 @@
-# Created by: Cosmin Stroe <cstroe1@uic.edu>
-# $FreeBSD$
-
 PORTNAME=	zidrav
 PORTVERSION=	1.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}4unix/${PORTVERSION}
 DISTNAME=	zidrav4unix-${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	File corruption detection and repair program
+WWW=		https://sourceforge.net/projects/zidrav/
 
 LICENSE=	GPLv2
 
@@ -30,7 +28,7 @@ CFLAGS+=	-Dcrc32_type=long
 CFLAGS+=	-Dcrc32_type=int
 .endif
 
-.if ! empty(ARCH:Mmips*) || ! empty(ARCH:Mpowerpc*) || ${ARCH} == "sparc64"
+.if ! empty(ARCH:Mmips*) || ${ARCH} == powerpc || ${ARCH} == powerpc64
 CFLAGS+=	-DCPU_BIGENDIAN
 .endif
 

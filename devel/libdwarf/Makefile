@@ -1,6 +1,3 @@
-# Created by: joerg@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	libdwarf
 PORTVERSION=	20161124
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.prevanders.net/	\
 
 MAINTAINER=	joerg@FreeBSD.org
 COMMENT=	Library to analyze DWARF debugging information in ELF files
+WWW=		https://www.prevanders.net/dwarf.html
 
 LICENSE=	LGPL21
 
@@ -22,7 +20,8 @@ GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-I. -I${LOCALBASE}/include
 
-USES=		dos2unix
+USES=		cpe dos2unix
+CPE_VENDOR=	${PORTNAME}_project
 DOS2UNIX_GLOB=	*.h
 
 PS_FILES=	libdwarf2.1.pdf libdwarf2p.1.pdf mips_extensions.pdf

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	mpd-l2tp-ipv6pd-client
 PORTVERSION=	20150430
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	net
 MASTER_SITES=	# none
 DISTFILES=	# none
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Sample implementation set of "L2TP-IPv6PD" client using mpd
+WWW=		http://www.ocn.ne.jp/ipv6/service/pdf/ocnipv6uni_ver1.0.pdf
 
 LICENSE=	BSD2CLAUSE
 

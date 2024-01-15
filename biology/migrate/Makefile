@@ -1,6 +1,3 @@
-# Created by: Johann Visagie <wjv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	migrate
 PORTVERSION=	3.6.11
 CATEGORIES=	biology
@@ -9,10 +6,12 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to estimate population sizes and migration rates
+WWW=		https://popgen.sc.fsu.edu/Migrate/Migrate-n.html
 
 BROKEN_armv6=		fails to build: make[2]: cannot open makefile
 BROKEN_armv7=		fails to build: make[2]: cannot open makefile
 BROKEN_mips=		fails to build: make[2]: cannot open makefile
+BROKEN_riscv64=		fails to build: make[2]: cannot open makefile
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 EXTRACT_AFTER_ARGS=--exclude zlib
@@ -21,6 +20,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_prog_GMAKE="${MAKE}"
 MAKE_ARGS=	PRETTYCFLAGS="${CFLAGS} -DNOJPEG -DNOZLIB -DNOPNG -Iharu \
 		-DPRETTY -lstdc++"
+
+CONFLICTS_INSTALL=	py*-sqlalchemy-migrate # bin/migrate
 
 PORTDOCS=	HISTORY README README_PARALLEL_GENERAL ${PORTNAME}.html
 PORTEXAMPLES=	*

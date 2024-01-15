@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stix2
 PORTVERSION=	2.1.0
 DISTVERSIONPREFIX=	v
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Python library to produce and consume STIX 2 JSON content
+WWW=		https://github.com/oasis-open/cti-python-stix2
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,7 +22,7 @@ GH_ACCOUNT=	oasis-open
 GH_PROJECT=	cti-python-stix2
 
 NO_ARCH=	yes
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

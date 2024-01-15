@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tigervnc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.11.0
+DISTVERSION=	1.13.1
 CATEGORIES=	net x11-servers
 
 MAINTAINER?=	meta@FreeBSD.org
@@ -10,11 +8,11 @@ MAINTAINER?=	meta@FreeBSD.org
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENCE.TXT
 
-USES+=		cmake:insource,noninja
+USES+=		cmake:insource,noninja cpe
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	TigerVNC
-CONFLICTS=	tightvnc-[0-9]*
+CONFLICTS=	tightvnc
 PLIST_SUB+=	TIGERVNC_COMPONENT=${PORTNAME}${PKGNAMESUFFIX}-
 
 CMAKE_ARGS+=	-G "Unix Makefiles" -DINSTALL_SYSTEMD_UNITS:BOOL=false

@@ -1,9 +1,6 @@
-# Created by: Alexander Langer <alex@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tuxkart
 PORTVERSION=	0.4.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://tuxkart.sourceforge.net/dist/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Racing game starring Tux
+WWW=		https://tuxkart.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

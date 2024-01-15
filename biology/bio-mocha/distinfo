@@ -1,0 +1,5 @@
+TIMESTAMP = 1672095342
+SHA256 (bio-mocha_1.16-20221221.tar.gz) = 576cbdda53760f353fc8fd989751716b1d4f8c5e1921f838c263476282cced86
+SIZE (bio-mocha_1.16-20221221.tar.gz) = 68625
+SHA256 (samtools-bcftools-1.16_GH0.tar.gz) = c44c85a04e058e1f1eceeb712106031100bbd700b8ff3f623f7ff872469a4ba3
+SIZE (samtools-bcftools-1.16_GH0.tar.gz) = 3432435

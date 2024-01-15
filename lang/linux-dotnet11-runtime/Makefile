@@ -1,6 +1,3 @@
-# Created by: David Naylor <dbn@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME?=	dotnet11-runtime
 DISTNAME=	dotnet-centos-x64.${DISTVERSION}
 DISTVERSION?=	1.1.8

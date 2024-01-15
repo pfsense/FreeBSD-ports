@@ -1,8 +1,5 @@
-# Created by: Alex Kapranoff <kappa@rambler-co.ru>
-# $FreeBSD$
-
 PORTNAME=	CPANPLUS
-PORTVERSION=	0.9908
+PORTVERSION=	0.9914
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BINGOS
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Ameliorated interface to the CPAN
+WWW=		https://metacpan.org/release/CPANPLUS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

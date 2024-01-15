@@ -1,14 +1,12 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	goffice
-PORTVERSION=	0.10.48
-PORTREVISION=	1
+PORTVERSION=	0.10.53
+PORTREVISION=	2
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GLib/GTK+ set of document centric objects and utilities
+COMMENT=	GLib/GTK set of document centric objects and utilities
+WWW=		http://live.gnome.org/libgoffice
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -31,7 +29,7 @@ CONFIGURE_ARGS=	--with-lasem=no --with-config-backend=gsettings \
 USE_PERL5=	build
 SHEBANG_FILES=	${WRKSRC}/tools/introspection-identifier-filter
 
-PLIST_SUB=	VERSION=${PORTVERSION} SHORT_VER=${PORTVERSION:R}
+PLIST_SUB=	VERSION=${PORTVERSION} SHORT_VER=${PORTVERSION:R} LIB_VER=${PORTVERSION:E}
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/goffice/${SHORT_VER}/plugins

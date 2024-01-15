@@ -1,17 +1,14 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gpsprune
-PORTVERSION=	20
+PORTVERSION=	23.2
 CATEGORIES=	astro java
-MASTER_SITES=	http://activityworkshop.net/software/${PORTNAME}/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://activityworkshop.net/software/${PORTNAME}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}.jar
 EXTRACT_SUFX=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Application for viewing, editing, and converting GPS coordinate data
+WWW=		https://activityworkshop.net/software/gpsprune/
 
 LICENSE=	GPLv2
 

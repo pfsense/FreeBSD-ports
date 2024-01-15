@@ -1,14 +1,12 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	podlators
-PORTVERSION=	4.14
+PORTVERSION=	5.01
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN/Pod
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Modules to convert and parse POD (Plain Old Documentation)
+WWW=		https://metacpan.org/release/podlators
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

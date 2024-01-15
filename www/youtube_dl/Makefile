@@ -1,24 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	youtube_dl
-PORTVERSION=	2021.02.22
+PORTVERSION=	2023.03.14
 CATEGORIES=	www
-MASTER_SITES=	https://yt-dl.org/downloads/${PORTVERSION}/
-DISTNAME=	youtube-dl-${PORTVERSION}
 
 # Implicit approval to commit trivial version updates.
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Program for downloading videos from various services
+WWW=		https://yt-dl.org/
 
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	pandoc:textproc/hs-pandoc
+
 USES=		gmake python
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	ytdl-org
+GH_PROJECT=	youtube-dl
+GH_TAGNAME=	6fece0a
 
 MAKE_ARGS=	PYTHON=${PYTHON_CMD}
 ALL_TARGET=	youtube-dl
 NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/youtube-dl
 
 PLIST_FILES=	bin/youtube-dl \
 		etc/bash_completion.d/youtube-dl.sh \
@@ -33,9 +36,5 @@ RTMPDUMP_DESC=	Use rtmpdump to download rtmp video streams
 
 FFMPEG_RUN_DEPENDS=	ffprobe:multimedia/ffmpeg
 RTMPDUMP_RUN_DEPENDS=	rtmpdump:multimedia/rtmpdump
-
-post-extract:
-# remove tarball provided version, build our own
-	@${RM} ${WRKSRC}/youtube-dl
 
 .include <bsd.port.mk>

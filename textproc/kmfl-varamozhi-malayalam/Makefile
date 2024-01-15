@@ -1,6 +1,3 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	kmfl-varamozhi-malayalam
 PORTVERSION=	1.1.1
 PORTREVISION=	5
@@ -12,6 +9,7 @@ DIST_SUBDIR=	kmfl
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	KMFL Malayalam keyboard according to the Mozhi scheme
+WWW=		https://varamozhi.sourceforge.net/
 
 RUN_DEPENDS=	kmflcomp:textproc/kmflcomp
 

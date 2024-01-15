@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fstrcmp
 PORTVERSION=	0.7.D001
 CATEGORIES=	devel
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/fstrcmp/fstrcmp/${PORTVERSION:R}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for fuzzy string comparisons
+WWW=		https://fstrcmp.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

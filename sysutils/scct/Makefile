@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	scct
 PORTVERSION=	0.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Simple Cluster_SSH Clone using Tmux
+WWW=		https://github.com/Jehops/scct
 
 LICENSE=	BSD2CLAUSE
 

@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	LaTeX-Encode
 PORTVERSION=	0.092.0
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Encode characters for LaTeX formatting
+WWW=		https://metacpan.org/release/LaTeX-Encode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

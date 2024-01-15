@@ -1,13 +1,15 @@
-# Created by: John-Mark Gurney <jmg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tcpcrypt
 PORTVERSION=	0.5
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security net
 
+PATCH_SITES=	https://github.com/glebius/${PORTNAME}/commit/
+PATCHFILES=	8c7d4abf2ca1d795651cf8cc73994b18419487d7.patch:-p1
+
 MAINTAINER=	jmg@FreeBSD.org
 COMMENT=	TCPCrypt userland divert daemon
+WWW=		http://www.tcpcrypt.org/
 
 LICENSE=	BSD2CLAUSE
 

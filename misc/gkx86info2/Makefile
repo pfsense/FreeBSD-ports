@@ -1,15 +1,13 @@
-# Created by: Tobias Roth <ports@fsck.ch>
-# $FreeBSD$
-
 PORTNAME=	gkx86info2
 PORTVERSION=	0.0.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	misc
 MASTER_SITES=	http://anchois.free.fr/ \
 		http://depot.fsck.ch/mirror/distfiles/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GKrellM2 plugin that simply prints the current clock speed
+WWW=		http://anchois.free.fr/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

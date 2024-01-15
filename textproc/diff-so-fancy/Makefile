@@ -1,15 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	diff-so-fancy
-PORTVERSION=	1.3.0
+PORTVERSION=	1.4.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Fancier diff output formatter
+WWW=		https://github.com/so-fancy/diff-so-fancy/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	git:devel/git
 
 USES=		perl5 shebangfix
 USE_GITHUB=	yes

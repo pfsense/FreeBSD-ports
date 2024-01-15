@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-Perl
 PORTVERSION=	0.34
 CATEGORIES=	security perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Cryptography in Pure Perl
+WWW=		https://metacpan.org/release/Crypt-Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

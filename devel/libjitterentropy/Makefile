@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	libjitterentropy
-PORTVERSION=	3.0.0
+PORTVERSION=	3.4.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Hardware RNG based on CPU timing jitter
+WWW=		https://www.chronox.de/jent.html
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/COPYING.bsd
+LICENSE_FILE=	${WRKSRC}/LICENSE.bsd
 
 USES=		gmake
 USE_LDCONFIG=	yes

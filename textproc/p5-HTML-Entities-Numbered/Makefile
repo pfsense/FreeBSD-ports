@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-Entities-Numbered
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert numbered HTML entities with Perl
+WWW=		https://metacpan.org/release/HTML-Entities-Numbered
 
 USES=		perl5
 USE_PERL5=	configure

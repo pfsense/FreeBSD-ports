@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
-
 PORTNAME=	xhtml
 PORTVERSION=	1.1.${RECDATE}
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DIST_SUBDIR=	${DISTNAME}-${RECDATE}
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	W3C's XHTML 1.1 DTD
+WWW=		https://www.w3.org/TR/xhtml11/
 
 RUN_DEPENDS=	xmlcatmgr:textproc/xmlcatmgr
 

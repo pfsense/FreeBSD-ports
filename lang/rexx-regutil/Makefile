@@ -1,6 +1,3 @@
-# Created by: Bob Eager <bob@eager.cx>
-# $FreeBSD$
-
 PORTNAME=	regutil
 PORTVERSION=	1.26
 PORTREVISION=	2
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	bob@eager.cx
 COMMENT=	Implementation of IBM's RexxUtil function library for Regina
+WWW=		http://pages.interlog.com/~pjtm/
 
 LICENSE=	MPL10
 

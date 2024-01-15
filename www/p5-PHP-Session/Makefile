@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	PHP-Session
 PORTVERSION=	0.27
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read / write PHP session files
+WWW=		https://metacpan.org/release/PHP-Session
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-UNIVERSAL-require>=0.03:devel/p5-UNIVERSAL-require

@@ -1,12 +1,10 @@
-# Created by: Igor Serikov <iserikov@acm.org>
-# $FreeBSD$
-
 PORTNAME=	2d-rewriter
 PORTVERSION=	1.6
 CATEGORIES=	science
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cellular automata simulator
+WWW=		https://github.com/iserikov/2d-rewriter
 
 USES=		imake xorg
 USE_XORG=	x11 xext

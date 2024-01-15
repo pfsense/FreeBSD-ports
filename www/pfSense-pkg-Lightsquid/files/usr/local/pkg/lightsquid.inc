@@ -3,7 +3,7 @@
  * lightsquid.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -46,14 +46,7 @@ define('LS_WWWPATH', LIGHTSQUID_BASE . '/www/lightsquid');
 define('LS_TEMPLATEPATH', LS_WWWPATH . '/tpl');
 define('LS_LANGPATH', LIGHTSQUID_BASE . '/share/lightsquid/lang');
 define('LS_REPORTPATH', '/var/lightsquid/report');
-
-global $config;
-if (is_array($config['installedpackages']['squid']['config'][0]) && $config['installedpackages']['squid']['config'][0]['log_dir'] != "") {
-	define('LS_SQUIDLOGPATH', $config['installedpackages']['squid']['config'][0]['log_dir']);
-} else {
-	define('LS_SQUIDLOGPATH', '/var/squid/logs');
-}
-
+define('LS_SQUIDLOGPATH', config_get_path('installedpackages/squid/config/0/log_dir', '/var/squid/logs'));
 define('LS_SQUIDLOG', 'access.log');
 define('LS_IP2NAMEPATH', LIGHTSQUID_BASE . '/libexec/lightsquid');
 define('CRONTAB_LS_TEMPLATE', '/usr/local/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
@@ -128,13 +121,11 @@ EOF;
 }
 
 function lightsquid_write_webconfig() {
-	global $config;
 	$lighttpd_ls_auth_path = "/var/etc/lightsquid/.passwd";
 	$lighttpd_ls_cert_path = "/var/etc/lightsquid/cert.pem";
+	$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0', []);
 
-	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
-		$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
-	} else {
+	if (empty($lightsquid_config)) {
 		return;
 	}
 
@@ -267,9 +258,16 @@ EOF;
 	// SSL is enabled
 	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
 		// Write out cert
-		$lscert =& lookup_cert($config['system']['webgui']['ssl-certref']);
-		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
-			$lscert = system_webgui_create_certificate();
+		$lscert = lookup_cert(config_get_path('system/webgui/ssl-certref', ''));
+		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv'] ||
+		    cert_chain_has_weak_digest($lscert)) {
+			$lscert = cert_create_selfsigned();
+			if (is_array($lscert) && !empty($lscert)) {
+				config_set_path('system/webgui/ssl-certref', $lscert['refid']);
+				write_config(sprintf(gettext("Generated new self-signed SSL/TLS certificate for HTTPS (%s)"), $lscert['refid']));
+			} else {
+				log_error(sprintf(gettext("GUI certificate is not usable and there was an error creating a new self-signed certificate.")));
+			}
 		}
 		$cert = trim(unixnewlines(base64_decode($lscert['crt']))) . "\n";
 		$key = trim(unixnewlines(base64_decode($lscert['prv']))) . "\n";
@@ -329,8 +327,6 @@ EOF;
  * Package configuration routines
  */
 function lightsquid_resync() {
-	global $config;
-
 	lightsquid_create_reportdir();
 	safe_mkdir("/var/etc/lightsquid");
 	mwexec("/bin/chmod -R u+w " . LIGHTSQUID_BASE . "/etc/lightsquid");
@@ -352,9 +348,8 @@ function lightsquid_resync() {
 	$lsconf_var['squidlogtype'] = LS_DEF_SQUIDLOGTYPE;
 
 	// Update variables from package GUI config
-	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
-		$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
-
+	$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0');
+	if (is_array($lightsquid_config)) {
 		if (isset($lightsquid_config['lightsquid_lang']) and !empty($lightsquid_config['lightsquid_lang'])) {
 			$lsconf_var['lang'] = "\"" . $lightsquid_config['lightsquid_lang'] . "\"";
 		}
@@ -428,24 +423,16 @@ function lightsquid_resync() {
 
 /* Configure scheduled reports updates via cron */
 function lightsquid_setup_cron($active=false) {
-	global $config;
-	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
-		$cron_schedule = $config['installedpackages']['lightsquid']['config'][0]['lightsquid_refreshsheduler_time'];
-	} else {
-		$cron_schedule = '';
-	}
+	$cron_schedule = config_get_path('installedpackages/lightsquid/config/0/lightsquid_refreshsheduler_time', '');
 	$lightsquid_parser_today = CRONTAB_LS_TEMPLATE . " today";
 	$lightsquid_parser_yesterday = CRONTAB_LS_TEMPLATE . " yesterday";
 
 	if ($active && $cron_schedule) {
 		$on = false;
+		$update_cron = true;
+		$lightsquid_cron_entry = false;
 		$opt = array("*", "*", "*", "*", "*", "root");
-		// remove old cronjobs first ...
-		log_error("[lightsquid] Removing old cronjobs...");
-		install_cron_job($lightsquid_parser_today, false);
-		install_cron_job($lightsquid_parser_yesterday, false);
-		// ... and configure updated cronjobs if needed
-		switch($cron_schedule) {
+		switch ($cron_schedule) {
 			case 'lhp_none': $on = false; break;
 			case 'lhp_10m':  $on = true; $opt[0]= "*/10"; break;
 			case 'lhp_20m':  $on = true; $opt[0]= "*/20"; break;
@@ -461,7 +448,23 @@ function lightsquid_setup_cron($active=false) {
 			case 'lhp_12h':  $on = true; $opt[0]= "0"; $opt[1]= "*/12"; break;
 			case 'lhp_24h':  $on = true; $opt[0]= "45"; $opt[1]= "23";   break; // daily at 23:45
 		}
-		if ($on) {
+		foreach (config_get_path('cron/item', []) as $item) {
+			if ($item['command'] == $lightsquid_parser_today) {
+				if (($item['minute'] == $opt[0]) && ($item['hour'] == $opt[1])) {
+					$update_cron = false;
+				}
+				$lightsquid_cron_entry = true;
+				break;
+			}
+		}
+		if ((!$on && $lightsquid_cron_entry) || $update_cron) {
+			// remove old cronjobs first ...
+			log_error("[lightsquid] Removing old cronjobs...");
+			install_cron_job($lightsquid_parser_today, false);
+			install_cron_job($lightsquid_parser_yesterday, false);
+		}
+		// ... and configure updated cronjobs if needed
+		if ($on && $update_cron) {
 			log_error("[lightsquid] Updating cronjobs...");
 			install_cron_job($lightsquid_parser_today, $on, $opt[0], $opt[1], $opt[2], $opt[3], $opt[4], $opt[5]);
 			// fix possible data lost with 00:00 script start - rescan yesterday
@@ -529,12 +532,9 @@ function lightsquid_create_reportdir() {
  * instead of trying to mess with Squid's settings directly.
  */
 function lightsquid_validate_input($post, &$input_errors) {
-	global $config;
-
 	if ($post['navto_lightsquid'] == 'Open Lightsquid') {
-		if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
-			$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
-		} else {
+		$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0', []);
+		if (empty($lightsquid_config)) {
 			return;
 		}
 		list($server_host, $server_port) = explode(':', $_SERVER['HTTP_HOST']);
@@ -570,11 +570,9 @@ function lightsquid_validate_input($post, &$input_errors) {
 	}
 
 	/* Check whether Squid is configured at all */
-	if (is_array($config['installedpackages']['squid']['config'][0])) {
-		$squid_settings = $config['installedpackages']['squid']['config'][0];
-	} else {
+	$squid_settings = config_get_path('installedpackages/squid/config/0', []);
+	if (empty($squid_settings)) {
 		$input_errors[] = "Please, configure Squid package 'General' settings first.";
-		$squid_settings = array();
 	}
 
 	/* Check whether logging is enabled in Squid */
@@ -588,13 +586,8 @@ function lightsquid_validate_input($post, &$input_errors) {
 	}
 
 	/* SqStat - check that Squid listens on loopback unless the proxy is set as transparent (which makes it listen on localhost automatically) */
-	if (is_array($config['installedpackages']['squid']['config'])) {
-		$active_interfaces = ($config['installedpackages']['squid']['config'][0]['active_interface'] ?: "");
-		$transparent = ($config['installedpackages']['squid']['config'][0]['transparent_proxy'] == "on" ? true : false);
-	} else {
-		$active_interfaces = "";
-		$transparent = false;
-	}
+	$active_interfaces = config_get_path('installedpackages/squid/config/0/active_interface', '');
+	$transparent = (config_get_path('installedpackages/squid/config/0/transparent_proxy', '') == 'on') ? true : false;
 	if (!$transparent) {
 		if (strpos($active_interfaces, "lo0") === false) {
 			$input_errors[] = "Please, configure Squid - General - Proxy Interface(s) to include 'loopback' interface.";

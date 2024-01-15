@@ -1,20 +1,17 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	asciidoctor-plantuml
-PORTVERSION=	0.0.12
+PORTVERSION=	0.1.1
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Asciidoctor PlantUML extension
+WWW=		https://github.com/hsanson/asciidoctor-plantuml
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-asciidoctor>=1.5.6<3.0.0:textproc/rubygem-asciidoctor
+RUN_DEPENDS=	rubygem-asciidoctor>=2.0.17<3.0.0:textproc/rubygem-asciidoctor
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

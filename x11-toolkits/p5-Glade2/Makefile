@@ -1,9 +1,6 @@
-# Created by: ports@c0decafe.net
-# $FreeBSD$
-
 PORTNAME=	Glade
 PORTVERSION=	1.007
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	x11-toolkits gnome perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TSCH
@@ -13,6 +10,7 @@ DISTNAME=	Gtk2-GladeXML-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Gtk2-Perl bindings to libglade2
+WWW=		https://gtk2-perl.sourceforge.net/
 
 LICENSE=	GPLv2
 

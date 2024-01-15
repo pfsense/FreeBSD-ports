@@ -1,15 +1,13 @@
-# Created by: Chifeng QU <chifeng@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	policyd2
 PORTVERSION=	2.0.14
 PORTREVISION=	3
 CATEGORIES=	mail
-MASTER_SITES=	http://download.policyd.org/v${PORTVERSION}/
+MASTER_SITES=	https://download.policyd.org/v${PORTVERSION}/
 DISTNAME=	cluebringer-v${PORTVERSION}
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Policyd v2 is a multi-platform policy server for popular MTAs
+WWW=		https://wiki.policyd.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

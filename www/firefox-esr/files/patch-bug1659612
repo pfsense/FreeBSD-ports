@@ -20,16 +20,22 @@ media/libcubeb/src/cubeb_alsa.c:1168:3: note: include the header <stdlib.h> or e
                                                         ^
 2 errors generated.
 
---- media/libcubeb/src/cubeb_alsa.c~
-+++ media/libcubeb/src/cubeb_alsa.c
-@@ -5,9 +5,7 @@
+--- media/libcubeb/src/cubeb_alsa.c.orig	2023-03-29 20:51:00.139281000 +0200
++++ media/libcubeb/src/cubeb_alsa.c	2023-03-29 20:51:46.219013000 +0200
+@@ -5,12 +5,16 @@
   * accompanying file LICENSE for details.
   */
  #undef NDEBUG
--#define _DEFAULT_SOURCE
--#define _BSD_SOURCE
--#define _XOPEN_SOURCE 500
-+#define _GNU_SOURCE 1
- #include <pthread.h>
- #include <sys/time.h>
- #include <assert.h>
++#if defined(__FreeBSD__)
++#define _GNU_SOURCE
++#else
+ #define _DEFAULT_SOURCE
+ #define _BSD_SOURCE
+ #if defined(__NetBSD__)
+ #define _NETBSD_SOURCE /* timersub() */
+ #endif
+ #define _XOPEN_SOURCE 500
++#endif
+ #include "cubeb-internal.h"
+ #include "cubeb/cubeb.h"
+ #include "cubeb_tracing.h"

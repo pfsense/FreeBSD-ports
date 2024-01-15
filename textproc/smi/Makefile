@@ -1,6 +1,3 @@
-# Created by: Chris Hutchinson <portmaster@bsdforge.com>
-# $FreeBSD$
-
 PORTNAME=	smi
 PORTVERSION=	1.4
 PORTREVISION=	2
@@ -9,9 +6,12 @@ MASTER_SITES=	https://BSDforge.com/projects/source/textproc/${PORTNAME}/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Simple Markdown Interpreter / filter for simplified markup dialect
+WWW=		https://BSDforge.com/projects/textproc/smi/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		Unfetchable
 
 PORTDOCS=	README.md
 

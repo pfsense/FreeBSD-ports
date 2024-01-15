@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Mock-Guard
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for simple mock test library using RAII
+WWW=		https://metacpan.org/release/Test-Mock-Guard
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

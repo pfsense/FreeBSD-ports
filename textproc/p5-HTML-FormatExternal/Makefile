@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-FormatExternal
 PORTVERSION=	26
 CATEGORIES=	textproc perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTML to text formatting using external programs
+WWW=		https://metacpan.org/release/HTML-FormatExternal
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

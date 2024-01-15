@@ -1,12 +1,10 @@
-# Created by: Kamila Souckova <kamila@ksp.sk>
-# $FreeBSD$
-
 PORTNAME=	tarsnap-periodic
 PORTVERSION=	1.0.20170413
 CATEGORIES=	sysutils
 
 MAINTAINER=	kamila@ksp.sk
 COMMENT=	Simple way of making tarsnap backups using the periodic system
+WWW=		https://github.com/anotherkamila/tarsnap-periodic
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

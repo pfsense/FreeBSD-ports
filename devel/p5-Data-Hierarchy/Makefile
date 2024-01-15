@@ -1,6 +1,3 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Hierarchy
 PORTVERSION=	0.34
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Handle data in a hierarchical structure
+WWW=		https://metacpan.org/release/Data-Hierarchy
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

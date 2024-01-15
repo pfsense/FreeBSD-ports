@@ -1,14 +1,12 @@
-# Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PAR-Packer
-PORTVERSION=	1.051
+PORTVERSION=	1.061
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PAR Packager
+WWW=		https://metacpan.org/release/PAR-Packer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

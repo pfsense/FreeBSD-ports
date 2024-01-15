@@ -1,19 +1,16 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pkg-config
-PORTVERSION=	1.4.4
+PORTVERSION=	1.5.6
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	pkg-config implementation for Ruby
+WWW=		https://github.com/ruby-gnome/pkg-config
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LGPL-2.1
 
 USES=		gem pkgconfig
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

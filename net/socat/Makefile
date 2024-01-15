@@ -1,8 +1,5 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	socat
-PORTVERSION=	1.7.3.4
+DISTVERSION=	1.8.0.0
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.dest-unreach.org/socat/download/ \
@@ -10,37 +7,39 @@ MASTER_SITES=	http://www.dest-unreach.org/socat/download/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Multipurpose relay and more
+WWW=		http://www.dest-unreach.org/socat/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler cpe ssl tar:bzip2
+CPE_VENDOR=	dest-unreach
 USE_RC_SUBR=	socat
 
 GNU_CONFIGURE=	yes
 
-CPE_VENDOR=	dest-unreach
-
 PORTSCOUT=	skipv:2.0.0-b2
 
-PLIST_FILES=	bin/filan bin/procan bin/socat man/man1/socat.1.gz \
-		"@sample etc/socat-instances.conf.sample"
-PORTDOCS=	EXAMPLES README SECURITY FAQ
+PLIST_FILES=	bin/filan \
+		bin/procan \
+		bin/socat \
+		"@sample etc/socat-instances.conf.sample" \
+		man/man1/socat.1.gz
+PORTDOCS=	EXAMPLES FAQ README SECURITY
 
-OPTIONS_DEFINE=	DOCS READLINE
+OPTIONS_DEFINE=	DOCS READLINE IPV6DEFAULT
+IPV6DEFAULT_DESC=	Use IPv6 by default
 
-READLINE_CONFIGURE_ENABLE=	readline
+IPV6DEFAULT_CONFIGURE_OFF=		--enable-default-ipv=4
+IPV6DEFAULT_CONFIGURE_ENABLE=		default-ipv=6
+
 READLINE_USES=			readline
+READLINE_CONFIGURE_ENABLE=	readline
 
 .include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} != base
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-.endif
-
-.if ${COMPILER_TYPE} == "clang"
-CFLAGS+=	-Wno-unused-comparison
+USES+=		localbase
 .endif
 
 do-install:

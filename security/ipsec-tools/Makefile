@@ -1,6 +1,3 @@
-# Created by: vanhu
-# $FreeBSD$
-
 # TODO: - libipsec issue ?
 #       - cleanup...
 #       - SYSCONFDIR
@@ -8,18 +5,19 @@
 
 PORTNAME=	ipsec-tools
 PORTVERSION=	0.8.2
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	KAME racoon IKE daemon, ipsec-tools version
+WWW=		https://ipsec-tools.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		libtool tar:bzip2 ssl
+USES=		cpe libtool tar:bzip2 ssl
 
-CONFLICTS=	racoon-[0-9]*
+CONFLICTS=	racoon
 INSTALL_TARGET=	install-strip
 USE_RC_SUBR=	racoon
 GNU_CONFIGURE=	yes
@@ -66,7 +64,7 @@ GSSAPI_CFLAGS=		-I${LOCALBASE}/include
 GSSAPI_LDFLAGS=		-L${LOCALBASE}/lib
 GSSAPI_CONFIGURE_ENABLE=gssapi
 RADIUS_CONFIGURE_WITH=	libradius
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_ON=	--with-libldap=${LOCALBASE}
 LDAP_CONFIGURE_OFF=	--without-libldap
 SAUNSPEC_CONFIGURE_ENABLE=	samode-unspec
@@ -101,7 +99,7 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/src/racoon/doc/* ${STAGEDIR}/${DOCSDIR}
 
 .if ${OPSYS} == FreeBSD
-.  if ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} != openssl
+.  if ${SSL_DEFAULT} != openssl111
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-ipsec-tools
 PLIST_FILES+=	include/racoon/openssl_compat.h
 .  endif

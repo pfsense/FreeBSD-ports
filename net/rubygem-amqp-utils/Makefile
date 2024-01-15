@@ -1,6 +1,3 @@
-# Created by: Loic Pefferkorn <loic-freebsd@loicp.eu>
-# $FreeBSD$
-
 PORTNAME=	amqp-utils
 PORTVERSION=	0.5.1
 PORTREVISION=	5
@@ -8,7 +5,8 @@ CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	loic-freebsd@loicp.eu
-COMMENT=	Command line utilies for interacting with AMQP compliant queues
+COMMENT=	Command-line utilities to work with AMQP-compliant queues
+WWW=		https://github.com/dougbarth/amqp-utils
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License.txt
@@ -22,10 +20,10 @@ RUN_DEPENDS=	rubygem-amqp>=0.7.1:net/rubygem-amqp \
 		rubygem-trollop1>=1.16.2:devel/rubygem-trollop1
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
-PLIST_FILES=	bin/amqp-deleteq bin/amqp-dequeue bin/amqp-enqueue bin/amqp-peek bin/amqp-pop \
+PLIST_FILES=	bin/amqp-deleteq bin/amqp-dequeue bin/amqp-enqueue \
+		bin/amqp-peek bin/amqp-pop \
 		bin/amqp-purge bin/amqp-spy bin/amqp-statq bin/amqp-unbind \
 		bin/amqp-delexch bin/amqp-exchange
 

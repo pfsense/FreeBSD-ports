@@ -1,0 +1,19 @@
+commit dcb4461336de2fe69ac173787c8bce66e93ce672
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Sep 25 11:54:34 2023 -0400
+
+    Fix str concat for one.com DDNS. Fixes #14649
+
+diff --git a/src/etc/inc/dyndns.class b/src/etc/inc/dyndns.class
+index fc9fbd5a04..7ff536dd3d 100644
+--- a/src/etc/inc/dyndns.class
++++ b/src/etc/inc/dyndns.class
+@@ -1420,7 +1420,7 @@
+ 
+ 					// gets all DNS records of the domain.
+ 					$post_data = null;
+-					$url = "https://www.one.com/admin/api/domains/" . $this->_dnsDomain + "/dns/custom_records";
++					$url = "https://www.one.com/admin/api/domains/" . $this->_dnsDomain . "/dns/custom_records";
+ 					curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+ 					curl_setopt($ch, CURLOPT_COOKIE, $cookie_data);
+ 					curl_setopt($ch, CURLOPT_HEADER, 0);

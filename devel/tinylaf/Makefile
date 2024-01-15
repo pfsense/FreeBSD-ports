@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	tinylaf
 DISTVERSION=	1_4_0
 CATEGORIES=	devel java
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.muntjak.de/hans/java/tinylaf/
 
 MAINTAINER=	ayu@commun.jp
 COMMENT=	Pluggable Look and Feel for Java
+WWW=		http://www.muntjak.de/hans/java/tinylaf/index.html
 
 OPTIONS_DEFINE=	DOCS
 

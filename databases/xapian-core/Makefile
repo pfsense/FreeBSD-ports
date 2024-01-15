@@ -1,8 +1,5 @@
-# Created by: J.F. Dockes
-# $FreeBSD$
-
 PORTNAME=	xapian-core
-PORTVERSION=	1.4.17
+PORTVERSION=	1.4.24
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -10,6 +7,7 @@ MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Probabilistic text search database engine
+WWW=		https://xapian.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,7 @@ INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	xapian-core10 xapian-core12
+CONFLICTS_INSTALL=	xapian-core12 # include/xapian.h
 
 PORTSCOUT=	limitw:1,even
 

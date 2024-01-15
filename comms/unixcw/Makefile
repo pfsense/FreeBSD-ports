@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 # NOTE: comms/xcwcp is a sub-port of this.  When making changes, ensure
 #       it still works as well.
 
 PORTNAME?=	unixcw
 PORTVERSION=	3.5.1
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/unixcw/unixcw-${PORTVERSION}
 DISTNAME=	unixcw_${PORTVERSION}.orig
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT?=	Libs for cw on unix
+WWW?=		http://unixcw.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -39,6 +38,8 @@ OPTIONS_DEFINE=	NLS
 
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
+
+CONFLICTS_INSTALL=	cw
 
 .ifndef XCWCP
 OPTIONS_DEFINE+=	ALSA PULSEAUDIO

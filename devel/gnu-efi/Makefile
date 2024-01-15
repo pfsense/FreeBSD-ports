@@ -1,13 +1,11 @@
-# Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnu-efi
-PORTVERSION=	3.0.12
+PORTVERSION=	3.0.15
 CATEGORIES=	devel
 MASTER_SITES=	SF/gnu-efi
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	SDK for EFI applications
+WWW=		https://gnu-efi.sourceforge.net/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Pluggable
 PORTVERSION=	1.28
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base class for creating plugin enabled POE Components
+WWW=		https://metacpan.org/release/POE-Component-Pluggable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

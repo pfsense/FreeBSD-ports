@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	liblqr-1
 PORTVERSION=	0.4.2
 CATEGORIES=	graphics
@@ -9,6 +6,7 @@ MASTER_SITES=	http://liblqr.wdfiles.com/local--files/en:download-page/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Easy to use C/C++ seam carving library
+WWW=		https://liblqr.wikidot.com/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER

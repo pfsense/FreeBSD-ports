@@ -1,14 +1,13 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libmateweather
-PORTVERSION=	1.24.1
+PORTVERSION=	1.26.2
+PORTREVISION=	4
 CATEGORIES=	net mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Library to accessing online weather informations
+COMMENT=	Library to access online weather information
+WWW=		https://mate-desktop.org/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,7 +20,6 @@ USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
 USE_GNOME=	cairo gnomeprefix gtk30 intltool libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.weather.gschema.xml

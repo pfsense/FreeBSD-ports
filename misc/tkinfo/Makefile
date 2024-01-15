@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tkinfo
 PORTVERSION=	2.11
 CATEGORIES=	misc tk
@@ -8,6 +5,7 @@ MASTER_SITES=	http://math-www.uni-paderborn.de/~axel/tkinfo/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tk script to read GNU "info" files and display them
+WWW=		http://math-www.uni-paderborn.de/~axel/tkinfo/
 
 LICENSE=	MIT
 

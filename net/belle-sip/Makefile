@@ -1,34 +1,31 @@
-# $FreeBSD$
-
 PORTNAME=	belle-sip
-PORTVERSION=	1.6.3
+DISTVERSION=	5.2.94
 CATEGORIES=	net java
-MASTER_SITES=	https://www.linphone.org/releases/sources/belle-sip/ \
-		http://www.antlr3.org/download/:source2
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		antlr-3.4-complete.jar:source2
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	Belle-sip is a SIP (RFC3261) implementation written in C
+COMMENT=	SIP (RFC 3261) implementation written in C
+WWW=		https://www.linphone.org/technical-corner/belle-sip.html
 
 LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libantlr3c.so:devel/libantlr3c \
-		libbctoolbox.so:net/bctoolbox
+		libbctoolbox.so:net/bctoolbox \
+		libbelr.so:textproc/belr
 
-USES=		cmake
+USES=		cmake cpe tar:bz2
+CPE_VENDOR=	linphone
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.linphone.org/BC
+GL_ACCOUNT=	public
 USE_JAVA=	yes
+JAVA_BUILD=	jre
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DENABLE_STATIC=NO -DENABLE_STRICT=NO -DENABLE_TESTS=NO \
-		-DANTLR3_JAR_PATH:FILEPATH=${WRKDIR}/antlr3.jar
-JAVA_BUILD=	jre
-WRKSRC=		${WRKDIR}/${DISTNAME}-0
-
-post-extract:
-	@${CP} ${DISTDIR}/antlr-3.4-complete.jar ${WRKDIR}/antlr3.jar
+CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE} \
+		-DENABLE_STATIC=NO \
+		-DENABLE_STRICT=NO \
+		-DENABLE_TESTS=NO
 
 post-patch:
 	@${REINPLACE_CMD} '/clock_gettime/d' ${WRKSRC}/CMakeLists.txt

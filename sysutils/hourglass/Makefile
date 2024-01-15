@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hourglass
 PORTVERSION=	1.0.1
 DISTVERSIONSUFFIX=	b
@@ -8,6 +6,7 @@ MASTER_SITES=	http://www.cs.utah.edu/~regehr/hourglass/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Real-time application to learn how CPU scheduling works
+WWW=		https://www.cs.utah.edu/~regehr/hourglass/
 
 RUN_DEPENDS=	jgraph:graphics/jgraph
 

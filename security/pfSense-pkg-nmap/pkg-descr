@@ -1,4 +1,4 @@
-NMap is a utility for network exploration or security auditing.<br/>
+Nmap is a utility for network exploration or security auditing.<br/>
 			It supports ping scanning (determine which hosts are
 			up), many port scanning techniques (determine what
 			services the hosts are offering), version detection

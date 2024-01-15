@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	gemmlowp
 DISTVERSION=	g20190812
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Low-precision matrix multiplication library
+WWW=		https://github.com/google/gemmlowp
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

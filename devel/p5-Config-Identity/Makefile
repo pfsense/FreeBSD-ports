@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Config-Identity
 PORTVERSION=	0.0019
 CATEGORIES=	devel perl5
@@ -9,9 +6,11 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Load (and optionally decrypt via GnuPG) user/pass identity information
+WWW=		https://metacpan.org/release/Config-Identity
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-HomeDir>=0:devel/p5-File-HomeDir \
@@ -19,8 +18,9 @@ RUN_DEPENDS=	p5-File-HomeDir>=0:devel/p5-File-HomeDir \
 		p5-IPC-Run>=0:devel/p5-IPC-Run
 TEST_DEPENDS=	p5-Test-Deep>=0:devel/p5-Test-Deep
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

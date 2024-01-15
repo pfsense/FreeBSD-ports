@@ -1,13 +1,11 @@
-# Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
-
 PORTNAME=	mlterm
-PORTVERSION=	3.9.1
+PORTVERSION=	3.9.3
+PORTREVISION=	1
 CATEGORIES=	x11
-MASTER_SITES=	SF/${PORTNAME}/01release/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Multilingual X11 terminal emulator
+WWW=		https://mlterm.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
@@ -15,31 +13,34 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz
 
-USES=		gettext gnome libtool perl5 pkgconfig xorg
-USE_XORG=	sm x11 xft
-USE_GNOME=	cairo gdkpixbuf2 gtk20 vte
+USES=		cpe desktop-file-utils gettext gnome libtool perl5 pkgconfig xorg
+USE_GITHUB=	yes
+USE_GNOME=	cairo gdkpixbuf2 gtk30 vte3
 USE_LDCONFIG=	yes
 USE_PERL5=	build
+USE_XORG=	sm x11 xft
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-gui=x11 --with-imagelib=gdk-pixbuf2 --enable-utmp \
-		--enable-optimize-redrawing --disable-iiimf --with-gtk=2.0 \
+		--enable-optimize-redrawing --disable-iiimf --with-gtk=3.0 \
 		--disable-ssh2
 EXTERNAL_TOOLS=	mlclient,mlconfig,mlterm-menu,mlcc,w3mmlconfig,mlimgloader
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -lintl
+LDFLAGS+=	-L${LOCALBASE}/lib -lintl -Wl,--undefined-version
 MAKE_JOBS_UNSAFE=	yes
+
+GH_ACCOUNT=	arakiken
 
 OPTIONS_DEFINE=	CAIRO DOCS FCITX FRIBIDI IBUS M17NLIB REGIS SCIM SIXEL UIM
 OPTIONS_SUB=	yes
-CAIRO_DESC=	Use Cairo for type engine (experimental)
-FCITX_DESC=	Fcitx support (experimental)
+CAIRO_DESC=	Use Cairo for type engine
+FCITX_DESC=	Fcitx support
 FRIBIDI_DESC=	Use Fribidi for BiDi rendering
-IBUS_DESC=	IBUS support (experimental)
-M17NLIB_DESC=	m17n library support (experimental)
+IBUS_DESC=	IBUS support
+M17NLIB_DESC=	m17n library support
 REGIS_DESC=	ReGIS graphics support
-SCIM_DESC=	SCIM support (experimental)
+SCIM_DESC=	SCIM support
 SIXEL_DESC=	Sixel graphics support
-UIM_DESC=	uim support (experimental)
+UIM_DESC=	uim support
 
 FCITX_CONFIGURE_ENABLE=	fcitx
 FCITX_LIB_DEPENDS=	libfcitx-gclient.so:chinese/fcitx
@@ -87,5 +88,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/ja/README.ja ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DESKTOPDIR}
+	${INSTALL_DATA} ${FILESDIR}/mlterm.desktop ${STAGEDIR}${DESKTOPDIR}
 
 .include <bsd.port.mk>

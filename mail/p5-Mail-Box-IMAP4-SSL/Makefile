@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Mail-Box-IMAP4-SSL
 PORTVERSION=	0.03
 CATEGORIES=	mail perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Missing part of Mail::Box::IMAP4
+WWW=		https://metacpan.org/release/Mail-Box-IMAP4-SSL
 
 LICENSE=	APACHE20
 

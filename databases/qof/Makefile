@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	qof
 PORTVERSION=	0.8.8
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	databases
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	qof_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Query Object Framework
+WWW=		https://alioth.debian.org/projects/qof/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

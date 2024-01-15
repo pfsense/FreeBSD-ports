@@ -1,6 +1,3 @@
-# Created by: Frederic Culot <frederic@culot.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Google-Code
 PORTVERSION=	0.19
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple client library for Google code
+WWW=		https://metacpan.org/release/Net-Google-Code
 
 BUILD_DEPENDS=	p5-File-Slurp>=0:devel/p5-File-Slurp \
 		p5-Test-MockModule>=0:devel/p5-Test-MockModule \

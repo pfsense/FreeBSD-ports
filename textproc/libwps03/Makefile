@@ -1,6 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libwps
 PORTVERSION=	0.3.1
 PORTREVISION=	13
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	03
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Microsoft file word processor format import filter library
+WWW=		https://libwps.sourceforge.net/
 
 LICENSE=	LGPL21 MPL20
 LICENSE_COMB=	dual

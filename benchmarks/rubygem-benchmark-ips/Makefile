@@ -1,18 +1,16 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	benchmark-ips
-PORTVERSION=	2.8.4
+PORTVERSION=	2.13.0
 CATEGORIES=	benchmarks rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Iterations per second enhancement to Benchmark
+WWW=		https://github.com/evanphx/benchmark-ips
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

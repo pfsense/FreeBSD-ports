@@ -1,6 +1,3 @@
-# Created by: Geistteufel <geistteufel@yahoo.fr>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Debug
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Plack::Middleware::Debug extension Perl module
+WWW=		https://metacpan.org/release/Dancer-Debug
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

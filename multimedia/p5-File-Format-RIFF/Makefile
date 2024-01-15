@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Format-RIFF
 DISTVERSION=	1.0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Read, manipulate, and write RIFF files
+WWW=		https://metacpan.org/release/File-Format-RIFF
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: kuriyama
-# $FreeBSD$
-
 PORTNAME=	Net-Traceroute
 PORTVERSION=	1.15
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:HAG
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to parse traceroute(8)
+WWW=		https://metacpan.org/release/Net-Traceroute
 
 USES=		perl5
 USE_PERL5=	configure

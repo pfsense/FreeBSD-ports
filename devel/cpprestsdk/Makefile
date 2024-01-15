@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	cpprestsdk
-PORTVERSION=	2.10.16
+PORTVERSION=	2.10.18
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
-MAINTAINER=	projects@phess.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Microsoft C++ REST SDK
+WWW=		https://github.com/Microsoft/cpprestsdk
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/../license.txt
@@ -19,9 +18,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	Microsoft
 WRKSRC_SUBDIR=	Release
-CMAKE_OFF=	BUILD_SAMPLES BUILD_TESTS
-
-CXXFLAGS+=	-Wno-c11-extensions
+CMAKE_OFF=	BUILD_SAMPLES BUILD_TESTS WERROR
 
 OPTIONS_DEFINE=	BROTLI
 

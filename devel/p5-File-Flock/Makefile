@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Flock
 PORTVERSION=	2014.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module for file locking with flock
+WWW=		https://metacpan.org/release/File-Flock
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,5 +21,7 @@ TEST_DEPENDS=	p5-File-Slurp>=0:devel/p5-File-Slurp \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

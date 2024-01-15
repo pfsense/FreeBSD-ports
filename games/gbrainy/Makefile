@@ -1,30 +1,33 @@
-# $FreeBSD$
-
 PORTNAME=	gbrainy
-PORTVERSION=	2.2.2
+DISTVERSION=	2.4.6
 PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	games
-MASTER_SITES=	http://gent.softcatala.org/jmas/gbrainy/
+MASTER_SITES=	https://gent.softcatala.org/jmas/gbrainy/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Brain teaser game and trainer
+WWW=		https://live.gnome.org/gbrainy
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	mautil:devel/mono-addins \
-		${LOCALBASE}/bin/bash:shells/bash
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	gtk-sharp30>0:x11-toolkits/gtk-sharp30 \
+		itstool:textproc/itstool
+RUN_DEPENDS=	bash:shells/bash
 
 USES=		gettext gmake gnome mono pathfix pkgconfig shebangfix
-USE_GNOME=	gtksharp20 gnomesharp20 intltool
+USE_GNOME=	intltool
+
 SHEBANG_FILES=	src/Clients/Classical/gbrainy.in
+
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_ENV+=	MONO_REGISTRY_PATH=${WRKDIR}
 
-INSTALLS_ICONS=	yes
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
+
+NLS_EXTRA_PATCHES=	${PATCHDIR}/NLS_ON-patch-Makefile.in
+NLS_EXTRA_PATCHES_OFF=	${PATCHDIR}/NLS_OFF-patch-Makefile.in
 
 .include <bsd.port.mk>

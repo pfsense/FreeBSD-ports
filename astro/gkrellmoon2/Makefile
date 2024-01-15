@@ -1,15 +1,13 @@
-# Created by: Jan Srzednicki <w@wrzask.pl>
-# $FreeBSD$
-
 PORTNAME=	gkrellmoon2
 PORTVERSION=	0.6
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	astro
 MASTER_SITES=	SF/gkrellmoon/gkrellmoon/${PORTVERSION}
 DISTNAME=	gkrellmoon-${PORTVERSION}
 
 MAINTAINER=	w@wrzask.pl
 COMMENT=	Moon clock plugin for Gkrellm2
+WWW=		https://gkrellmoon.sourceforge.net/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2

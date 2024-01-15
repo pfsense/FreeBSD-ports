@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libdbi-drivers
 PORTVERSION=	0.9.0
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drivers for libdbi
+WWW=		https://libdbi-drivers.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -49,5 +47,6 @@ SQLITE3_PLIST_FILES=	lib/dbd/libdbdsqlite3.so
 
 post-patch:
 	@${TOUCH} ${WRKSRC}/drivers/*/dbd_*/*
+	@${REINPLACE_CMD} 's/tests //' ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

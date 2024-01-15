@@ -1,18 +1,16 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libpg_query
-DISTVERSION=	10-1.0.4
-PORTREVISION=	0
+DISTVERSION=	15-4.2.3
 CATEGORIES=	databases devel
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	C library for accessing the PostgreSQL parser outside of the server
+WWW=		https://github.com/lfittl/libpg_query
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c11 gmake pgsql
+USES=		compiler:c11 cpe gmake pgsql
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

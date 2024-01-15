@@ -1,6 +1,3 @@
-# Created by: Fabian Keil <fk@fabiankeil.de>
-# $FreeBSD$
-
 PORTNAME=	zsd
 PORTVERSION=	0.0.2014.12.07
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-2014-12-07-c2d3662
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Destroys ZFS snapshots
+WWW=		https://www.fabiankeil.de/gehacktes/zsd/
 
 LICENSE=	MIT
 

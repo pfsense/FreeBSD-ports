@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		resolv_wrapper
 PORTVERSION=		1.1.5
 CATEGORIES=		devel
@@ -7,6 +5,7 @@ MASTER_SITES=		SAMBA/cwrap
 
 MAINTAINER=		timur@FreeBSD.org
 COMMENT=		Wrapper for dns name resolving or dns faking
+WWW=		https://cwrap.org/resolv_wrapper.html
 
 LICENSE=		GPLv3
 

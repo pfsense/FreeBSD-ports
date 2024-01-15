@@ -1,23 +1,22 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ssocr
-PORTVERSION=	2.19.0
+PORTVERSION=	2.23.1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.unix-ag.uni-kl.de/~auerswal/ssocr/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	CLI to recognize digits of a seven segment display
+WWW=		https://www.unix-ag.uni-kl.de/~auerswal/ssocr/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
-USES=		tar:bzip2 gmake
+USES=		gmake tar:bzip2
 
-PLIST_FILES=	bin/ssocr man/man1/ssocr.1.gz
+PLIST_FILES=	bin/ssocr \
+		man/man1/ssocr.1.gz
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${MANPREFIX}/man/man1

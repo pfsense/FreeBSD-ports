@@ -1,6 +1,3 @@
-# Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
-
 PORTNAME=	HTML-Table
 PORTVERSION=	2.08a
 PORTREVISION=	2
@@ -10,14 +7,17 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate HTML tables for CGI scripts
+WWW=		http://www.chime.ucl.ac.uk/~rmhiajp/htmltable/index.htm
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-PORTSCOUT=	skipv:2.08
-
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
+
+PORTSCOUT=	skipv:2.08
 
 post-extract:
 	@${REINPLACE_CMD} -e 's|2.08a|2.08_1|' ${WRKSRC}/lib/HTML/Table.pm

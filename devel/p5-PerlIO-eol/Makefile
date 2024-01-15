@@ -1,14 +1,12 @@
-# Created by: Rong-En Fan <rafan@infor.org>
-# $FreeBSD$
-
 PORTNAME=	PerlIO-eol
-PORTVERSION=	0.17
+PORTVERSION=	0.19
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	PerlIO layer for normalizing line endings
+WWW=		https://metacpan.org/release/PerlIO-eol
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

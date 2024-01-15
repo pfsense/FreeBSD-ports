@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	iso-schematron-xslt
 PORTVERSION=	20130313
 PORTREVISION=	1
@@ -11,6 +9,7 @@ DISTFILES=	iso-schematron-xslt1.zip \
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	The Leading Implementation of ISO Schematron
+WWW=		https://www.schematron.com/implementation.html
 
 USES=		zip
 

@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Games-Bingo
 PORTVERSION=	0.18
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Bingo game Perl implementation
+WWW=		https://metacpan.org/release/Games-Bingo
 
 USES=		perl5
 USE_PERL5=	modbuild

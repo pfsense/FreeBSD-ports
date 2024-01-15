@@ -6,6 +6,7 @@ lib/librocsgraphtheory.so
 lib/librocsgraphtheory.so.0
 %%QT_PLUGINDIR%%/rocs/editorplugins/assignvaluesplugin.so
 %%QT_PLUGINDIR%%/rocs/editorplugins/generategraphplugin.so
+%%QT_PLUGINDIR%%/rocs/editorplugins/graphlayoutplugin.so
 %%QT_PLUGINDIR%%/rocs/editorplugins/transformedgesplugin.so
 %%QT_PLUGINDIR%%/rocs/fileformats/dotfileformat.so
 %%QT_PLUGINDIR%%/rocs/fileformats/gmlfileformat.so
@@ -39,6 +40,10 @@ share/icons/hicolor/scalable/actions/rocsunidirectional.svgz
 share/icons/hicolor/scalable/actions/rocsvisible.svgz
 share/icons/hicolor/scalable/apps/rocs.svgz
 share/kxmlgui5/rocs/rocsui.rc
+share/locale/ar/LC_MESSAGES/libgraphtheory.mo
+share/locale/ar/LC_MESSAGES/rocs.mo
+share/locale/bg/LC_MESSAGES/libgraphtheory.mo
+share/locale/bg/LC_MESSAGES/rocs.mo
 share/locale/bs/LC_MESSAGES/libgraphtheory.mo
 share/locale/bs/LC_MESSAGES/rocs.mo
 share/locale/ca/LC_MESSAGES/libgraphtheory.mo
@@ -77,8 +82,12 @@ share/locale/it/LC_MESSAGES/libgraphtheory.mo
 share/locale/it/LC_MESSAGES/rocs.mo
 share/locale/ja/LC_MESSAGES/libgraphtheory.mo
 share/locale/ja/LC_MESSAGES/rocs.mo
+share/locale/ka/LC_MESSAGES/libgraphtheory.mo
+share/locale/ka/LC_MESSAGES/rocs.mo
 share/locale/kk/LC_MESSAGES/libgraphtheory.mo
 share/locale/kk/LC_MESSAGES/rocs.mo
+share/locale/ko/LC_MESSAGES/libgraphtheory.mo
+share/locale/ko/LC_MESSAGES/rocs.mo
 share/locale/lt/LC_MESSAGES/libgraphtheory.mo
 share/locale/lt/LC_MESSAGES/rocs.mo
 share/locale/lv/LC_MESSAGES/libgraphtheory.mo
@@ -113,6 +122,8 @@ share/locale/sl/LC_MESSAGES/libgraphtheory.mo
 share/locale/sl/LC_MESSAGES/rocs.mo
 share/locale/sv/LC_MESSAGES/libgraphtheory.mo
 share/locale/sv/LC_MESSAGES/rocs.mo
+share/locale/th/LC_MESSAGES/libgraphtheory.mo
+share/locale/th/LC_MESSAGES/rocs.mo
 share/locale/tr/LC_MESSAGES/libgraphtheory.mo
 share/locale/tr/LC_MESSAGES/rocs.mo
 share/locale/ug/LC_MESSAGES/libgraphtheory.mo

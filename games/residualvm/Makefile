@@ -1,12 +1,11 @@
-# Created by: Alexander Yerenkow <yerenkow@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	residualvm
 PORTVERSION=	0.3.1
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	yerenkow@gmail.com
 COMMENT=	ResidualVM allows you to indulge with classic games like Grim Fandango and Myst III
+WWW=		https://residualvm.org/
 
 LICENSE=	BSD3CLAUSE GPLv2 GPLv3 ISCL LGPL21 MIT ZLIB
 LICENSE_COMB=	multi
@@ -24,7 +23,7 @@ BROKEN_armv7=	fails to link: ld: libgrim.a has EABI version 0, but target residu
 LIB_DEPENDS=	libmad.so:audio/libmad \
 		libogg.so:audio/libogg \
 		libvorbisfile.so:audio/libvorbis \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libmpeg2.so:multimedia/libmpeg2 \
 		libtheoradec.so:multimedia/libtheora \
 		libfreetype.so:print/freetype2

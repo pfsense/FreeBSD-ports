@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Timer
-PORTVERSION=	2.11
+PORTVERSION=	2.12
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl test module to test/assert response times
+WWW=		https://metacpan.org/release/Test-Timer
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

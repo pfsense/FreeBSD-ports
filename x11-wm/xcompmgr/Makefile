@@ -1,12 +1,10 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xcompmgr
 PORTVERSION=	1.1.8
 CATEGORIES=	x11-wm
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Sample X compositing manager
+WWW=		https://www.freedesktop.org/Software/xapps
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

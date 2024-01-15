@@ -1,6 +1,3 @@
-# Created by: Erik Greenwald <erik@smluc.org>
-# $FreeBSD$
-
 PORTNAME=	diskscrub
 PORTVERSION=	2.6.1
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTNAME=	scrub-${PORTVERSION}
 
 MAINTAINER=	erik@elfga.com
 COMMENT=	Writes patterns on files to make retrieving the data more difficult
+WWW=		https://code.google.com/p/diskscrub/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

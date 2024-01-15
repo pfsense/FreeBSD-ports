@@ -1,17 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	unqlite
-PORTVERSION=	0.5.3
+PORTVERSION=	0.9.6
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Fast Python bindings for the UnQLite embedded NoSQL database
+WWW=		https://github.com/coleifer/unqlite-python
 
 LICENSE=	MIT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist cython
+
+post-stage:
+	@${STRIP_CMD} ${STAGEDIR}/${PYTHONPREFIX_SITELIBDIR}/unqlite*.so
 
 .include <bsd.port.mk>

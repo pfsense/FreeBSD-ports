@@ -3,11 +3,11 @@
  * suricata_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 $supplist = array();
 $suri_pf_table = SURICATA_PF_TABLE;
 
@@ -40,15 +40,15 @@ function suricata_is_alert_globally_suppressed($list, $gid, $sid) {
 	/* global suppression of the $gid:$sid.         */
 	/************************************************/
 
-	/* If entry has a child array, then it's by src or dst ip. */
-	/* So if there is a child array or the keys are not set,   */
-	/* then this gid:sid is not globally suppressed.           */
-	if (is_array($list[$gid][$sid]))
-		return false;
-	elseif (!isset($list[$gid][$sid]))
-		return false;
-	else
+	/* If entry at array key [GID][SID] is set to the
+	 * string "suppress", then the rule is globally
+	 * suppressed, otherwise it will  have a child
+	 * array for track "by_src" or "by_dst".
+     */
+	if (array_get_path($list, "{$gid}/{$sid}", "") == "suppress")
 		return true;
+	else
+		return false;
 }
 
 function suricata_add_supplist_entry($suppress) {
@@ -67,34 +67,25 @@ function suricata_add_supplist_entry($suppress) {
 	/*   TRUE if successful or FALSE on failure     */
 	/************************************************/
 
-	global $config, $a_instance, $instanceid;
+	global $instanceid;
 
-	if (!is_array($config['installedpackages']['suricata']['suppress'])) {
-		$config['installedpackages']['suricata']['suppress'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['suricata']['suppress']['item'])) {
-		$config['installedpackages']['suricata']['suppress']['item'] = array();
-	}
-
-	$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
-
+	$a_suppress = config_get_path('installedpackages/suricata/suppress/item', []);
 	$found_list = false;
 
 	/* If no Suppress List is set for the interface, then create one with the interface name */
-	if (empty($a_instance[$instanceid]['suppresslistname']) || $a_instance[$instanceid]['suppresslistname'] == 'default') {
+	if (empty(config_get_path("installedpackages/suricata/rule/{$instanceid}/suppresslistname", '')) || config_get_path("installedpackages/suricata/rule/{$instanceid}/suppresslistname", '') == 'default') {
 		$s_list = array();
 		$s_list['uuid'] = uniqid();
-		$s_list['name'] = $a_instance[$instanceid]['interface'] . "suppress" . "_" . $s_list['uuid'];
+		$s_list['name'] = config_get_path("installedpackages/suricata/rule/{$instanceid}/interface") . "suppress" . "_" . $s_list['uuid'];
 		$s_list['descr']  =  "Auto-generated list for Alert suppression";
 		$s_list['suppresspassthru'] = base64_encode($suppress);
 		$a_suppress[] = $s_list;
-		$a_instance[$instanceid]['suppresslistname'] = $s_list['name'];
+		config_set_path("installedpackages/suricata/rule/{$instanceid}/suppresslistname", $s_list['name']);
 		$found_list = true;
 	} else {
 		/* If we get here, a Suppress List is defined for the interface so see if we can find it */
 		foreach ($a_suppress as $a_id => $alist) {
-			if ($alist['name'] == $a_instance[$instanceid]['suppresslistname']) {
+			if ($alist['name'] == config_get_path("installedpackages/suricata/rule/{$instanceid}/suppresslistname", '')) {
 				$found_list = true;
 				if (!empty($alist['suppresspassthru'])) {
 					$tmplist = base64_decode($alist['suppresspassthru']);
@@ -113,6 +104,7 @@ function suricata_add_supplist_entry($suppress) {
 	/* If we created a new list or updated an existing one, save the change */
 	/* and return true; otherwise return false.                             */
 	if ($found_list) {
+		config_set_path('installedpackages/suricata/suppress/item', $a_suppress);
 		write_config("Suricata pkg: saved change to Suppress List " . $s_list['name'] . " from ALERTS tab.");
 		sync_suricata_package_config();
 		return true;
@@ -167,26 +159,25 @@ elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 if (is_null($instanceid))
 	$instanceid = 0;
 
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-$a_instance = &$config['installedpackages']['suricata']['rule'];
-$suricata_uuid = $a_instance[$instanceid]['uuid'];
-$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+$a_instance = config_get_path("installedpackages/suricata/rule/{$instanceid}", []);
+$suricata_uuid = $a_instance['uuid'];
+$if_real = get_real_interface($a_instance['interface']);
 $suricatalogdir = SURICATALOGDIR;
+$suricatadir = SURICATADIR;
 
 // Load up the arrays of force-enabled and force-disabled SIDs
-$enablesid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
-$disablesid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_off']);
+$enablesid = suricata_load_sid_mods($a_instance['rule_sid_on']);
+$disablesid = suricata_load_sid_mods($a_instance['rule_sid_off']);
 
 // Load up the arrays of forced-alert, forced-drop or forced-reject
 // rules as applicable to the current IPS mode.
-if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
-	$alertsid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_force_alert']);
-	$dropsid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_force_drop']);
+if ($a_instance['blockoffenders'] == 'on' && ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on')) {
+	$alertsid = suricata_load_sid_mods($a_instance['rule_sid_force_alert']);
+	$dropsid = suricata_load_sid_mods($a_instance['rule_sid_force_drop']);
 
 	// REJECT forcing is only applicable to Inline IPS Mode
-	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' ) {
-		$rejectsid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_force_reject']);
+	if ($a_instance['ips_mode'] == 'ips_mode_inline' ) {
+		$rejectsid = suricata_load_sid_mods($a_instance['rule_sid_force_reject']);
 	}
 	else {
 		$rejectsid = array();
@@ -194,24 +185,17 @@ if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instance
 }
 
 $pconfig = array();
-if (is_array($config['installedpackages']['suricata']['alertsblocks'])) {
-	$pconfig['arefresh'] = $config['installedpackages']['suricata']['alertsblocks']['arefresh'];
-	$pconfig['alertnumber'] = $config['installedpackages']['suricata']['alertsblocks']['alertnumber'];
-}
-
-if (empty($pconfig['alertnumber']))
-	$pconfig['alertnumber'] = 250;
-if (empty($pconfig['arefresh']))
-	$pconfig['arefresh'] = 'on';
-$anentries = $pconfig['alertnumber'];
-if (!is_numeric($anentries)) {
-	$anentries = 250;
-}	
+$pconfig['arefresh'] = config_get_path('installedpackages/suricata/alertsblocks/arefresh', 'on');
+$pconfig['alertnumber'] = config_get_path('installedpackages/suricata/alertsblocks/alertnumber', '250');
+$anentries = (int)$pconfig['alertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
 	$ip = strtolower($_POST['resolve']);
 	$res = (is_ipaddr($ip) ? gethostbyaddr($ip) : '');
+	if (strpos($res, 'xn--') !== false) {
+		$res = idn_to_utf8($res);
+	}
 
 	if ($res && $res != $ip)
 		$response = array('resolve_ip' => $ip, 'resolve_text' => $res);
@@ -222,6 +206,91 @@ if (isset($_POST['resolve'])) {
 	exit;
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
+
+# --- AJAX GEOIP CHECK Start ---
+if (isset($_POST['geoip'])) {
+	$ip = strtolower($_POST['geoip']);
+	if (is_ipaddr($ip)) {
+		$url = "https://api.hackertarget.com/geoip/?q={$ip}";
+		$conn = curl_init("https://api.hackertarget.com/geoip/?q={$ip}");
+		curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($conn, CURLOPT_FRESH_CONNECT,  true);
+		curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+		set_curlproxy($conn);
+		$res = curl_exec($conn);
+		curl_close($conn);
+	} else {
+		$res = '';
+	}
+
+	if ($res && $res != $ip && !preg_match('/error/', $res))
+		$response = array('geoip_text' => $res);
+	else
+		$response = array('geoip_text' => gettext("Cannot check {$ip}"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX GEOIP CHECK End ---
+
+# --- AJAX RULE LOOKUP Start ---
+if (isset($_POST['rulelookup2'])) {
+	list($gid, $sid) = explode(':', $_POST['rulelookup']);
+	foreach (glob("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/*") as $rule) {
+		$fd = fopen($rule, "r");
+		$buf = "";
+		while (($buf = fgets($fd)) !== FALSE) {
+			$matches = array();
+			preg_match('/sid\:([0-9]+);/i', $buf, $matches);
+			if ($sid == $matches[1]) {
+				preg_match('/gid\:([0-9]+);/i', $buf, $matches);
+				if (($gid == $matches[1]) ||
+				    (empty($matches[1]) && ($gid == 1))) {
+					$res = $buf;
+					break 2;
+				}
+			}
+		}
+	}
+
+	if ($res)
+		$response = array('gidsid' => $_POST['rulelookup'], 'rule_text' => $res);
+	else
+		$response = array('gidsid' => $_POST['rulelookup'], 'rule_text' => gettext("Unable to find the rule"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX RULE LOOKUP End ---
+
+# --- AJAX RULE LOOKUP Start ---
+if ($_POST['action'] == 'loadRule') {
+	$currentruleset = '';
+	if (isset($_POST['gid']) && isset($_POST['sid'])) {
+		$gid = $_POST['gid'];
+		$sid = $_POST['sid'];
+		$rules = array_merge(glob(SURICATA_RULES_DIR . "/*.rules"), array("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules", "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/flowbit-required.rules"));
+		foreach ($rules as $rule) {
+			$rules_map = suricata_load_rules_map($rule);
+			if ($rules_map[$gid][$sid]['rule']) {
+				$rule_text = base64_encode($rules_map[$gid][$sid]['rule']);
+				$currentruleset = basename($rule);
+				break;
+			}
+		}
+	} else {
+		$rule_text = base64_encode(gettext('Invalid rule signature - no matching rule was found!'));
+	}
+	if (strpos($currentruleset, 'snort_') !== false) {
+		$rule_link = "https://www.snort.org/rule_docs/{$gid}-{$sid}";
+	} else {
+		$rule_link = '';
+	}	
+	$response = array('rule_text' => $rule_text, 'rule_link' => $rule_link, 'category' => $currentruleset);
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX RULE LOOKUP End ---
 
 # Check for persisted filtering of alerts log entries and populate
 # the required $filterfieldsarray when persisting filtered entries.
@@ -254,7 +323,7 @@ if ($_POST['filterlogentries_submit']) {
 	// Note the order of these fields must match the order decoded from the alerts log
 	$filterfieldsarray = array();
 	$filterfieldsarray['time'] = $_POST['filterlogentries_time'] ? $_POST['filterlogentries_time'] : null;
-	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+	if ($a_instance['ips_mode'] == 'ips_mode_inline') {
 		if ($_POST['filterlogentries_action_drop']) {
 			$filterfieldsarray['action'] = $_POST['filterlogentries_action_drop'] ? $_POST['filterlogentries_action_drop'] : null;
 		}
@@ -287,10 +356,8 @@ if ($_POST['filterlogentries_clear']) {
 }
 
 if ($_POST['save']) {
-	if (!is_array($config['installedpackages']['suricata']['alertsblocks']))
-		$config['installedpackages']['suricata']['alertsblocks'] = array();
-	$config['installedpackages']['suricata']['alertsblocks']['arefresh'] = $_POST['arefresh'] ? 'on' : 'off';
-	$config['installedpackages']['suricata']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
+	config_set_path('installedpackages/suricata/alertsblocks/arefresh', $_POST['arefresh'] ? 'on' : 'off');
+	config_set_path('installedpackages/suricata/alertsblocks/alertnumber', $_POST['alertnumber']);
 
 	write_config("Suricata pkg: saved change to ALERTS tab configuration.");
 
@@ -313,63 +380,27 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 	// action lists.
 	switch ($action) {
 		case "action_default":
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_alert":
-			if (!is_array($alertsid[$gid])) {
-				$alertsid[$gid] = array();
-			}
-			if (!is_array($alertsid[$gid][$sid])) {
-				$alertsid[$gid][$sid] = array();
-			}
-			$alertsid[$gid][$sid] = "alertsid";
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($alertsid, "{$gid}/{$sid}", "alertsid");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_drop":
-			if (!is_array($dropsid[$gid])) {
-				$dropsid[$gid] = array();
-			}
-			if (!is_array($dropsid[$gid][$sid])) {
-				$dropsid[$gid][$sid] = array();
-			}
-			$dropsid[$gid][$sid] = "dropsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($dropsid, "{$gid}/{$sid}", "dropsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_reject":
-			if (!is_array($rejectsid[$gid])) {
-				$rejectsid[$gid] = array();
-			}
-			if (!is_array($rejectsid[$gid][$sid])) {
-				$rejectsid[$gid][$sid] = array();
-			}
-			$rejectsid[$gid][$sid] = "rejectsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
+			array_set_path($rejectsid, "{$gid}/{$sid}", "rejectsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
 			break;
 
 		default:
@@ -386,9 +417,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_alert'] = $tmp;
+			$a_instance['rule_sid_force_alert'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_alert']);
+			unset($a_instance['rule_sid_force_alert']);
 
 		$tmp = "";
 		foreach (array_keys($dropsid) as $k1) {
@@ -398,9 +429,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_drop'] = $tmp;
+			$a_instance['rule_sid_force_drop'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_drop']);
+			unset($a_instance['rule_sid_force_drop']);
 
 		$tmp = "";
 		foreach (array_keys($rejectsid) as $k1) {
@@ -410,23 +441,24 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_reject'] = $tmp;
+			$a_instance['rule_sid_force_reject'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_reject']);
+			unset($a_instance['rule_sid_force_reject']);
 
 		/* Update the config.xml file. */
-		write_config("Suricata pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
+		config_set_path("installedpackages/suricata/rule/{$instanceid}", $a_instance);
+		write_config("Suricata pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 		/*************************************************/
 		/* Update the suricata.yaml file and rebuild the */
 		/* rules for this interface.                     */
 		/*************************************************/
 		$rebuild_rules = true;
-		suricata_generate_yaml($a_instance[$instanceid]);
+		suricata_generate_yaml($a_instance);
 		$rebuild_rules = false;
 
 		/* Signal Suricata to live-load the new rules */
-		suricata_reload_config($a_instance[$instanceid]);
+		suricata_reload_config($a_instance);
 
 		// Sync to configured CARP slaves if any are enabled
 		suricata_sync_on_changes();
@@ -457,7 +489,7 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 				$suppress = "suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}\n";
 			else
 				$suppress = "#{$_POST['descr']}\nsuppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}\n";
-			$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}' has been added to the Suppress List.");
+			$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}' has been added to the Suppress List.  Suricata is 'live-reloading' the new rules list.  Please wait at least 15 secs for the process to complete before toggling additional rule actions.");
 			break;
 		case "by_src":
 		case "by_dst":
@@ -467,7 +499,7 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 					$suppress = "suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}\n";
 				else
 					$suppress = "#{$_POST['descr']}\nsuppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}\n";
-				$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}' has been added to the Suppress List.");
+				$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}' has been added to the Suppress List.  Suricata is 'live-reloading' the new rules list.  Please wait at least 15 secs for the process to complete before toggling additional rule actions.");
 			}
 			else {
 				header("Location: /suricata/suricata_alerts.php");
@@ -481,7 +513,16 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 
 	/* Add the new entry to the Suppress List and signal Suricata to reload config */
 	if (suricata_add_supplist_entry($suppress)) {
-		suricata_reload_config($a_instance[$instanceid]);
+		suricata_reload_config($a_instance);
+
+		// See if this Suppress List is assigned to any other interface
+		// and signal that interface to reload its configuration if true.
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $insid => $insconf) {
+			if (($insid != $instanceid) &&
+			    ($a_instance['suppresslistname'] == $insconf['suppresslistname'])) {
+				suricata_reload_config($insconf);
+			}
+		}
 		$savemsg = $success;
 
 		// Sync to configured CARP slaves if any are enabled
@@ -489,7 +530,7 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 		sleep(2);
 	}
 	else
-		$input_errors[] = gettext("Suppress List '{$a_instance[$instanceid]['suppresslistname']}' is defined for this interface, but it could not be found!");
+		$input_errors[] = gettext("Suppress List '{$a_instance['suppresslistname']}' is defined for this interface, but it could not be found!");
 }
 
 if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
@@ -499,12 +540,12 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 
 	// See if the target SID is in our list of modified SIDs,
 	// and toggle it if present.
-	if (isset($enablesid[$gid][$sid]))
-		unset($enablesid[$gid][$sid]);
-	if (isset($disablesid[$gid][$sid]))
-		unset($disablesid[$gid][$sid]);
-	elseif (!isset($disablesid[$gid][$sid]))
-		$disablesid[$gid][$sid] = "disablesid";
+	array_del_path($enablesid, "{$gid}/{$sid}");
+	if (array_get_path($disablesid, "{$gid}/{$sid}")) {
+		array_del_path($disablesid, "{$gid}/{$sid}");
+	} else {
+		array_set_path($disablesid, "{$gid}/{$sid}", 'disablesid');
+	}
 
 	// Write the updated enablesid and disablesid values to the config file.
 	$tmp = "";
@@ -515,9 +556,9 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_on'] = $tmp;
+		$a_instance['rule_sid_on'] = $tmp;
 	else
-		unset($a_instance[$instanceid]['rule_sid_on']);
+		unset($a_instance['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -527,23 +568,24 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_off'] = $tmp;
+		$a_instance['rule_sid_off'] = $tmp;
 	else
-		unset($a_instance[$instanceid]['rule_sid_off']);
+		unset($a_instance['rule_sid_off']);
 
 	/* Update the config.xml file. */
-	write_config("Suricata pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$instanceid}", $a_instance);
+	write_config("Suricata pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 	/*************************************************/
 	/* Update the suricata.yaml file and rebuild the */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	suricata_generate_yaml($a_instance[$instanceid]);
+	suricata_generate_yaml($a_instance);
 	$rebuild_rules = false;
 
 	/* Signal Suricata to live-load the new rules */
-	suricata_reload_config($a_instance[$instanceid]);
+	suricata_reload_config($a_instance);
 
 	// Sync to configured CARP slaves if any are enabled
 	suricata_sync_on_changes();
@@ -562,7 +604,7 @@ if ($_POST['clear']) {
 	}
 
 	// Signal the Suricata instance that logs have been rotated
-	suricata_reload_config($a_instance[$instanceid], "SIGHUP");
+	suricata_reload_config($a_instance, "SIGHUP");
 
 	/* XXX: This is needed if suricata is run as suricata user */
 	mwexec('/bin/chmod 660 {$suricatalogdir}*', true);
@@ -598,16 +640,12 @@ if ($_POST['download']) {
 }
 
 /* Load up an array with the current Suppression List GID,SID values */
-$supplist = suricata_load_suppress_sigs($a_instance[$instanceid], true);
-
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Alerts"));
+$supplist = suricata_load_suppress_sigs($a_instance, true);
 
 function build_instance_list() {
-	global $a_instance;
-
 	$list = array();
 
-	foreach ($a_instance as $id => $instance) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $id => $instance) {
 		$list[$id] = '(' . convert_friendly_interface_to_friendly_descr($instance['interface']) . ') ' . $instance['descr'];
 	}
 
@@ -627,6 +665,8 @@ function build_logfile_list() {
 	return($list);
 }
 
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Alerts");
 include_once("head.inc");
 
 
@@ -648,6 +688,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), true, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$instanceid}");
@@ -675,7 +716,7 @@ $group->add(new Form_Button(
 	'download',
 	'Download',
 	null,
-	'fa-download'
+	'fa-solid fa-download'
 ))->removeClass('btn-default')->addClass('btn-info btn-sm')
   ->setHelp('All alert log files for selected interface will be downloaded');
 
@@ -683,9 +724,9 @@ $group->add(new Form_Button(
 	'clear',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')
-  ->setHelp('All log files will be cleared');
+  ->setHelp('Clear the currently active Alerts log file');
 
 $section->add($group);
 
@@ -695,7 +736,7 @@ $group->add(new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->removeClass('btn-default')->addClass('btn-success btn-sm')
   ->setHelp('Save auto-refresh and view settings');
 
@@ -813,7 +854,7 @@ $group->add(new Form_Input(
 	$filterfieldsarray['proto']
 ))->setHelp("Protocol");
 
-if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+if ($a_instance['ips_mode'] == 'ips_mode_inline') {
 	$group->add(new Form_Checkbox(
 		'filterlogentries_action_drop',
 		'Dropped',
@@ -846,7 +887,7 @@ $group->add(new Form_Button(
 	'filterlogentries_submit',
 	'Apply Filter',
 	null,
-	'fa-filter'
+	'fa-solid fa-filter'
 ))->removeClass("btn-primary btn-default")
   ->addClass("btn-success btn-sm");
 
@@ -854,7 +895,7 @@ $group->add(new Form_Button(
 	'filterlogentries_clear',
 	'Clear Filter',
 	null,
-	'fa-trash-o'
+	'fa-regular fa-trash-can'
 ))->removeclass("btn-primary btn-default")
   ->addClass("btn-danger no-confirm btn-sm");
 
@@ -934,7 +975,7 @@ if ($filterlogentries && count($filterfieldsarray)) {
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=sprintf($sectitle)?></h2></div>
 	<div class="panel-body table-responsive">
-	<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on') : ?>
+	<?php if ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on') : ?>
 		<div class="content table-responsive">
 			<span class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Alerts triggered by DROP rules that resulted in dropped (blocked) packets are shown with ');?>
 			<span class="text-danger"><?=gettext('highlighted ');?></span><?=gettext('rows below.');?><span>
@@ -983,6 +1024,10 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$tmp = array();
 			$decoder_event = FALSE;
 
+			// Drop any invalid line read from the log excerpt
+			if (empty(trim($buf)))
+				continue;
+
 			/**************************************************************/
 			/* Parse alert log entry to find the parts we want to display */
 			/**************************************************************/
@@ -991,7 +1036,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$fields['time'] = substr($buf, 0, strpos($buf, '  '));
 
 			// Field 1 is the rule action (value is '**' when mode is not inline IPS or 'block-drops-only')
-			if (($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline'  || $a_instance[$instanceid]['block_drops_only'] == 'on') && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
+			if (($a_instance['ips_mode'] == 'ips_mode_inline'  || $a_instance['block_drops_only'] == 'on') && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
 				$fields['action'] = trim($tmp[1]);
 			}
 			else {
@@ -1041,7 +1086,12 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 
 			// Create a DateTime object from the event timestamp that
 			// we can use to easily manipulate output formats.
-			$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
+			try {
+				$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
+			} catch (Exception $e) {
+				syslog(LOG_WARNING, "[suricata] WARNING: found invalid timestamp entry in current alerts.log, the line will be ignored and skipped.");
+				continue;
+			}
 
 			// Check the 'CATEGORY' field for the text "(null)" and
 			// substitute "Not Assigned".
@@ -1069,38 +1119,38 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$alert_proto = $fields['proto'];
 
 			/* Action */
-			if (isset($fields['action']) && $a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
+			if (isset($fields['action']) && $a_instance['blockoffenders'] == 'on' && ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on')) {
 
 				switch ($fields['action']) {
 
 					case "Drop":
 					case "wDrop":
 						if (isset($dropsid[$fields['gid']][$fields['sid']])) {
-							$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
+							$alert_action = '<i class="fa-solid fa-thumbs-down icon-pointer text-danger text-center" title="';
 							$alert_action .= gettext("Rule action is User-Forced to DROP. Click to force a different action for this rule.");
 						}
-						elseif ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && isset($rejectsid[$fields['gid']][$fields['sid']])) {
-							$alert_action = '<i class="fa fa-hand-stop-o icon-pointer text-warning text-center" title="';
+						elseif ($a_instance['ips_mode'] == 'ips_mode_inline' && isset($rejectsid[$fields['gid']][$fields['sid']])) {
+							$alert_action = '<i class="fa-regular fa-hand icon-pointer text-warning text-center" title="';
 							$alert_action .= gettext("Rule action is User-Forced to REJECT. Click to force a different action for this rule.");
 						}
 						else {
-							$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
+							$alert_action = '<i class="fa-solid fa-thumbs-down icon-pointer text-danger text-center" title="';
 							$alert_action .=  gettext("Rule action is DROP. Click to force a different action for this rule.");
 						}
 						break;
 
 					default:
-						$alert_action = '<i class="fa fa-question-circle icon-pointer text-danger text-center" title="' . gettext("Rule action is unrecognized!. Click to force a different action for this rule.");
+						$alert_action = '<i class="fa-solid fa-question-circle icon-pointer text-danger text-center" title="' . gettext("Rule action is unrecognized!. Click to force a different action for this rule.");
 				}
 				$alert_action .= '" onClick="toggleAction(\'' . $fields['gid'] . '\', \'' . $fields['sid'] . '\');"</i>';
 			}
 			else {
-				if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
-					$alert_action = '<i class="fa fa-exclamation-triangle icon-pointer text-warning text-center" title="' . gettext("Rule action is ALERT.");
+				if ($a_instance['blockoffenders'] == 'on' && ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on')) {
+					$alert_action = '<i class="fa-solid fa-exclamation-triangle icon-pointer text-warning text-center" title="' . gettext("Rule action is ALERT.");
 					$alert_action .= '" onClick="toggleAction(\'' . $fields['gid'] . '\', \'' . $fields['sid'] . '\');"</i>';
 				}
 				else {
-					$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT.") . '"</i>';
+					$alert_action = '<i class="fa-solid fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT.") . '"</i>';
 				}
 			}
 
@@ -1110,22 +1160,29 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
 				$alert_ip_src = str_replace(":", ":&#8203;", $alert_ip_src);
 				/* Add Reverse DNS lookup icon */
-				$alert_ip_src .= '<br /><i class="fa fa-search" onclick="javascript:resolve_with_ajax(\'' . $fields['src'] . '\');" title="';
+				$alert_ip_src .= '<br /><i class="fa-solid fa-search" onclick="javascript:resolve_with_ajax(\'' . $fields['src'] . '\');" title="';
 				$alert_ip_src .= gettext("Resolve host via reverse DNS lookup") . "\"  alt=\"Icon Reverse Resolve with DNS\" ";
 				$alert_ip_src .= " style=\"cursor: pointer;\"></i>";
+				/* Add GeoIP check icon */
+				if (!is_private_ip($fields['src']) && (substr($fields['src'], 0, 2) != 'fc') &&
+				    (substr($fields['src'], 0, 2) != 'fd')) {
+					$alert_ip_src .= '&nbsp;&nbsp;<i class="fa-solid fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['src'] . '\');" title="';
+					$alert_ip_src .= gettext("Check host GeoIP data") . "\"  alt=\"Icon Check host GeoIP\" ";
+					$alert_ip_src .= " style=\"cursor: pointer;\"></i>";
+				}
 				/* Add icons for auto-adding to Suppress List if appropriate */
 				if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid']) &&
 				    !isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
-					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
+					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa-regular fa-square-plus icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
 					$alert_ip_src .= " onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','{$fields['src']}','{$alert_descr}');$('#mode').val('addsuppress_srcip');$('#formalert').submit();\"></i>";
 				}
 				elseif (isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
-					$alert_ip_src .= '&nbsp;<i class="fa fa-info-circle" ';
+					$alert_ip_src .= '&nbsp;&nbsp;<i class="fa-solid fa-info-circle" ';
 					$alert_ip_src .= 'title="' . gettext("This alert track by_src IP is already in the Suppress List") . '"></i>';
 				}
 				/* Add icon for auto-removing from Blocked Table if required */
 				if (isset($tmpblocked[$fields['src']])) {
-					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields['src']}');$('#mode').val('unblock');$('#formalert').submit();\"";
+					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields['src']}');$('#mode').val('unblock');$('#formalert').submit();\"";
 					$alert_ip_src .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 				}
 			}
@@ -1145,24 +1202,30 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
 				$alert_ip_dst = str_replace(":", ":&#8203;", $alert_ip_dst);
 				/* Add Reverse DNS lookup icons */
-				$alert_ip_dst .= "<br /><i class=\"fa fa-search\" onclick=\"javascript:resolve_with_ajax('{$fields['dst']}');\" title=\"";
+				$alert_ip_dst .= "<br /><i class=\"fa-solid fa-search\" onclick=\"javascript:resolve_with_ajax('{$fields['dst']}');\" title=\"";
 				$alert_ip_dst .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\" ";
 				$alert_ip_dst .= " style=\"cursor: pointer;\"></i>";
-
+				/* Add GeoIP check icon */
+				if (!is_private_ip($fields['dst']) && (substr($fields['dst'], 0, 2) != 'fc') &&
+				    (substr($fields['dst'], 0, 2) != 'fd')) {
+					$alert_ip_dst .= '&nbsp;&nbsp;<i class="fa-solid fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['dst'] . '\');" title="';
+					$alert_ip_dst .= gettext("Check host GeoIP data") . "\"  alt=\"Icon Check host GeoIP\" ";
+					$alert_ip_dst .= " style=\"cursor: pointer;\"></i>";
+				}
 				/* Add icons for auto-adding to Suppress List if appropriate */
 				if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid']) &&
 				    !isset($supplist[$fields['gid']][$fields['sid']]['by_dst'][$fields['dst']])) {
-					$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','{$fields['dst']}','{$alert_descr}');$('#mode').val('addsuppress_dstip');$('#formalert').submit();\"";
+					$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa-regular fa-square-plus icon-pointer\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','{$fields['dst']}','{$alert_descr}');$('#mode').val('addsuppress_dstip');$('#formalert').submit();\"";
 					$alert_ip_dst .= ' title="' . gettext("Add this alert to the Suppress List and track by_dst IP") . '"></i>';
 				}
 				elseif (isset($supplist[$fields['gid']][$fields['sid']]['by_dst'][$fields['dst']])) {
-					$alert_ip_dst .= '&nbsp;<i class="fa fa-info-circle" ';
+					$alert_ip_dst .= '&nbsp;<i class="fa-solid fa-info-circle" ';
 					$alert_ip_dst .= 'title="' . gettext("This alert track by_dst IP is already in the Suppress List") . '"></i>';
 				}
 
 				/* Add icon for auto-removing from Blocked Table if required */
 				if (isset($tmpblocked[$fields['dst']])) {
-					$alert_ip_dst .= '&nbsp;&nbsp;<i name="todelete[]" class="fa fa-times icon-pointer text-danger" onClick="$(\'#ip\').val(\'' . $fields['dst'] . '\');$(\'#mode\').val(\'unblock\');$(\'#formalert\').submit();" ';
+					$alert_ip_dst .= '&nbsp;&nbsp;<i name="todelete[]" class="fa-solid fa-times icon-pointer text-danger" onClick="$(\'#ip\').val(\'' . $fields['dst'] . '\');$(\'#mode\').val(\'unblock\');$(\'#formalert\').submit();" ';
 					$alert_ip_dst .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 				}
 			}
@@ -1174,40 +1237,43 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$alert_dst_p = $fields['dport'];
 
 			/* SID */
-			$alert_sid_str = "{$fields['gid']}:{$fields['sid']}";
+			$alert_sid_str = '<a onclick="javascript:showRuleContents(\'' .
+				    $fields['gid'] . '\',\'' . $fields['sid'] . '\');" title="' .
+				    gettext("Show the rule") . '" style="cursor: pointer;" >' .
+		       		    $fields['gid'] . ':' . $fields['sid'] . '</a>';
 			if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid'])) {
-				$sidsupplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','{$alert_descr}');$('#mode').val('addsuppress');$('#formalert').submit();\"";
+				$sidsupplink = "<i class=\"fa-regular fa-square-plus icon-pointer\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','{$alert_descr}');$('#mode').val('addsuppress');$('#formalert').submit();\"";
 				$sidsupplink .= ' title="' . gettext("Add this alert to the Suppress List") . '"></i>';
 			}
 			else {
-				$sidsupplink = '&nbsp;<i class="fa fa-info-circle" ';
+				$sidsupplink = '&nbsp;<i class="fa-solid fa-info-circle" ';
 				$sidsupplink .= "title='" . gettext("This alert is already in the Suppress List") . "'></i>";
 			}
 			/* Add icon for toggling rule state */
 			if (isset($disablesid[$fields['gid']][$fields['sid']])) {
-				$sid_dsbl_link = "<i class=\"fa fa-times-circle icon-pointer text-warning\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
+				$sid_dsbl_link = "<i class=\"fa-solid fa-times-circle icon-pointer text-warning\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
 				$sid_dsbl_link .= ' title="' . gettext("Rule is forced to a disabled state. Click to remove the force-disable action from this rule.") . '"></i>';
 			}
 			else {
-				$sid_dsbl_link = "<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
+				$sid_dsbl_link = "<i class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
 				$sid_dsbl_link .= ' title="' . gettext("Force-disable this rule and remove it from current rules set.") . '"></i>';
 			}
 
 			/* Add icon for toggling rule action if applicable to current mode */
-			if ($a_instance[$instanceid]['blockoffenders'] == 'on') {
-				if ($a_instance[$instanceid]['block_drops_only'] == 'on' || $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
-					$sid_action_link = "<i class=\"fa fa-pencil-square-o icon-pointer text-info\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
+			if ($a_instance['blockoffenders'] == 'on') {
+				if ($a_instance['block_drops_only'] == 'on' || $a_instance['ips_mode'] == 'ips_mode_inline') {
+					$sid_action_link = "<i class=\"fa-regular fa-pen-to-square icon-pointer text-info\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
 					$sid_action_link .= ' title="' . gettext("Click to force a different action for this rule.") . '"></i>';
 					if (isset($alertsid[$fields['gid']][$fields['sid']])) {
-						$sid_action_link = "<i class=\"fa fa-exclamation-triangle icon-pointer text-warning\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
+						$sid_action_link = "<i class=\"fa-solid fa-exclamation-triangle icon-pointer text-warning\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
 						$sid_action_link .= ' title="' . gettext("Rule is forced to ALERT. Click to change the action for this rule.") . '"></i>';
 					}
 					if (isset($rejectsid[$fields['gid']][$fields['sid']])) {
-						$sid_action_link = "<i class=\"fa fa-hand-paper-o icon-pointer text-warning\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
+						$sid_action_link = "<i class=\"fa-regular fa-hand icon-pointer text-warning\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
 						$sid_action_link .= ' title="' . gettext("Rule is forced to REJECT. Click to change the action for this rule.") . '"></i>';
 					}
 					if (isset($dropsid[$fields['gid']][$fields['sid']])) {
-						$sid_action_link = "<i class=\"fa fa-thumbs-down icon-pointer text-danger\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
+						$sid_action_link = "<i class=\"fa-solid fa-thumbs-down icon-pointer text-danger\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
 						$sid_action_link .= ' title="' . gettext("Rule is forced to DROP. Click to change the action for this rule.") . '"></i>';
 					}
 				}
@@ -1250,7 +1316,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 	</div>
 </div>
 
-<?php if ($a_instance[$instanceid]['blockoffenders'] == 'on') : ?>
+<?php if ($a_instance['blockoffenders'] == 'on') : ?>
 	<!-- Modal Rule SID action selector window -->
 	<div class="modal fade" role="dialog" id="sid_action_selector">
 		<div class="modal-dialog">
@@ -1273,7 +1339,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_drop" value="action_drop"> <span class = "label label-danger">DROP</span>
 					</label>
 
-			<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders'] == 'on') : ?>
+			<?php if ($a_instance['ips_mode'] == 'ips_mode_inline' && $a_instance['blockoffenders'] == 'on') : ?>
 					<label class="radio-inline">
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_reject" value="action_reject"> <span class = "label label-warning">REJECT</span>
 					</label>
@@ -1283,7 +1349,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				</div>
 				<div class="modal-footer">
 					<button type="submit" form="formalert" class="btn btn-sm btn-primary" id="rule_action_save" name="rule_action_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>" onClick="$('#sid_action_selector').modal('hide');">
-						<i class="fa fa-save icon-embed-btn"></i>
+						<i class="fa-solid fa-save icon-embed-btn"></i>
 						<?=gettext("Save");?>
 					</button>
 					<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
@@ -1295,7 +1361,22 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 	</div>
 <?php endif; ?>
 
-
+<?php
+// Create a Modal object to display text of user-clicked rules
+$form = new Form(FALSE);
+$modal = new Modal('View Rules Text', 'rulesviewer', 'large', 'Close');
+$modal->addInput(new Form_StaticText (
+	'Category',
+	'<div class="text-left" id="modal_rule_category"></div>'
+))->setHelp('<span id="modal_rule_link_text"></span><a id="modal_rule_link" target="_blank"></a>');
+$modal->addInput(new Form_Textarea (
+	'rulesviewer_text',
+	'Rule Text',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'soft');
+$form->add($modal);
+print($form);
+?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -1360,6 +1441,63 @@ function resolve_ip_callback(transport) {
 	var response = $.parseJSON(transport.responseText);
 	var msg = 'IP address "' + response.resolve_ip + '" resolves to\n';
 	alert(msg + 'host "' + htmlspecialchars(response.resolve_text) + '"');
+}
+
+function geoip_with_ajax(ip_to_check) {
+	var url = "/suricata/suricata_alerts.php";
+
+	$.ajax(
+		url,
+		{
+			type: 'post',
+			dataType: 'json',
+			data: {
+				geoip: ip_to_check,
+			      },
+			complete: geoip_callback
+		});
+}
+
+function geoip_callback(transport) {
+	var response = $.parseJSON(transport.responseText);
+	alert(htmlspecialchars(response.geoip_text));
+}
+
+function showRuleContents(gid, sid) {
+		// Show the modal dialog with rule text
+		$('#rulesviewer_text').text("...Loading...");
+		$('#rulesviewer').modal('show');
+		$('#modal_rule_category').text("...Loading...");
+		$('#modal_rule_link_text').text('');
+		$('#modal_rule_link').attr('href', '');
+		$('#modal_rule_link').text('');
+
+		$.ajax(
+			"<?=$_SERVER['SCRIPT_NAME'];?>",
+			{
+				type: 'post',
+				data: {
+					sid:         sid,
+					gid:         gid,
+					id:	     $('#id').val(),
+					openruleset: $('#selectbox').val(),
+					action:      'loadRule'
+				},
+				complete: loadComplete
+			}
+		);
+}
+
+function loadComplete(req) {
+		var response = $.parseJSON(req.responseText);
+		$('#modal_rule_category').html(response.category);
+		$('#rulesviewer_text').text(atob(response.rule_text));
+		$('#rulesviewer_text').attr('readonly', true);
+		if (response.rule_link) {
+			$('#modal_rule_link_text').text('Snort Rule Doc: ');
+			$('#modal_rule_link').attr('href', response.rule_link);
+			$('#modal_rule_link').text(response.rule_link);
+		}
 }
 
 // From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities

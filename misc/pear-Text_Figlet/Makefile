@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Text_Figlet
 PORTVERSION=	1.0.2
 CATEGORIES=	misc www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Render text using FIGlet fonts
+WWW=		https://pear.php.net/package/Text_Figlet
 
 USES=		pear
 

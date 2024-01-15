@@ -1,14 +1,16 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnome-screenshot
-PORTVERSION=	3.38.0
+PORTVERSION=	41.0
+PORTREVISION=	2
 CATEGORIES=	deskutils gnome
-MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+DIST_SUBDIR=	gnome
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	b60dad3c2536.patch:-p1 # https://gitlab.gnome.org/GNOME/gnome-screenshot/-/merge_requests/57
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GNOME 3 utility for making picutures of your screen
+COMMENT=	GNOME utility for making pictures of your screen
+WWW=		https://gitlab.gnome.org/GNOME/gnome-screenshot
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,7 +23,7 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 CONFLICTS=	gnome-utils-2.[0-9]*
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 gettext gnome meson pkgconfig python:3.4+,build \
+USES=		compiler:c11 gettext gnome meson pkgconfig python:build \
 		shebangfix tar:xz xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk30
 USE_XORG=	x11 xext

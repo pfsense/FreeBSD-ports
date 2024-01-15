@@ -1,6 +1,3 @@
-# Created by: Aaron Straup Cope
-# $FreeBSD$
-
 PORTNAME=	print-n-times
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://aaronland.info/xsl/string/print-n-times/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Print a string (n) times
+WWW=		https://aaronland.info/xsl/string/print-n-times
 
 NO_BUILD=	yes
 

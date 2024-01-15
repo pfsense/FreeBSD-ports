@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-ShareDir
 PORTVERSION=	1.118
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Locate per-dist and per-module shared files
+WWW=		https://metacpan.org/release/File-ShareDir
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

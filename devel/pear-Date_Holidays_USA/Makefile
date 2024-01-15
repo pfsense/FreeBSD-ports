@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	Date_Holidays_USA
 PORTVERSION=	0.1.1
 PORTREVISION=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Driver based class to calculate holidays in the USA
+WWW=		https://pear.php.net/package/Date_Holidays_USA
 
 LICENSE=	PHP301
 

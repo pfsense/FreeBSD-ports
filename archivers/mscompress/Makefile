@@ -1,6 +1,3 @@
-# Created by: Patrick Seal <patseal@hyperhost.net>
-# $FreeBSD$
-
 PORTNAME=	mscompress
 PORTVERSION=	0.3
 CATEGORIES=	archivers
@@ -14,6 +11,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		tar:bzip2
 HAS_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	foo2zjs # bin/msexpand
 
 PLIST_FILES=	bin/mscompress bin/msexpand \
 		share/man/man1/mscompress.1.gz \

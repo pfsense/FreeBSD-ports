@@ -1,55 +1,37 @@
-# Created by: Neal Nelson <ports@nicandneal.net>
-# $FreeBSD$
-
 PORTNAME=	nim
-PORTVERSION=	1.4.2
+DISTVERSION=	2.0.2
 CATEGORIES=	lang
 MASTER_SITES=	https://nim-lang.org/download/
 
 MAINTAINER=	ports@nicandneal.net
 COMMENT=	Nim programming language
+WWW=		https://nim-lang.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/copying.txt
 
-BROKEN_sparc64=		fails to build: build.sh: clang: not found
-
 LIB_DEPENDS=	libpcre.so:devel/pcre
-TEST_DEPENDS=	node>=0:www/node
+TEST_DEPENDS=	node18>=0:www/node
 
-USES=		compiler:c11 tar:xz
-USE_LDCONFIG=	yes
+USES=		compiler:c11 cpe tar:xz
+CPE_VENDOR=	nim-lang
 
-CONFLICTS_INSTALL=	nimble
+SUB_FILES=	pkg-message
 
-TOOLS_DESC=	Build and install nim tools, including nimble
-
-OPTIONS_DEFINE=	DOCS TOOLS
-OPTIONS_DEFAULT=	DOCS TOOLS
+OPTIONS_DEFINE=		DOCS TOOLS
+OPTIONS_DEFAULT=	TOOLS
 OPTIONS_EXCLUDE_powerpc64=	DOCS
+OPTIONS_SUB=		yes
+
+TOOLS_DESC=	Build and install nim tools, not including nimble nor nimfind
 
 TEST_BINARY_ALIAS=	node=nodejs
 
-OPTIONS_SUB=	yes
-
-MAKE_JOBS_UNSAFE=	yes
-
 .include <bsd.port.pre.mk>
 
-TLIST=	nimble nimfind nimgrep nimpretty nimsuggest testament
+TLIST=		nimgrep nimpretty nimsuggest testament
 
-.if ${CHOSEN_COMPILER_TYPE} == "gcc"
-EXTRA_PATCHES=	${PATCHDIR}/elfv1-patch-build.sh
-.else
-EXTRA_PATCHES=	${PATCHDIR}/clang-patch-build.sh
-.endif
-
-post-patch:
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-	@${REINPLACE_CMD} -e '/cc =/s/clang/gcc/' ${WRKSRC}/config/nim.cfg
-	@${REINPLACE_CMD} -e s/%%GCC_DEFAULT%%/${GCC_DEFAULT}/ \
-		${WRKSRC}/build.sh ${WRKSRC}/config/nim.cfg
-.endif
+NIMDIR=	${STAGEDIR}${PREFIX}/nim
 
 do-build:
 	cd ${WRKSRC} && ${SETENV} CC="${CC}" LINKER="${CC}" \
@@ -72,33 +54,37 @@ do-build-TOOLS-on:
 		-d:release --nimcache=${WRKSRC}/nimcache
 
 do-install:
-	# Revert hack to build docs
-	@${REINPLACE_CMD} -e '/%%NIMCACHE%%/d' \
-		${WRKSRC}/config/nim.cfg
+	${MKDIR} ${NIMDIR}
+	${MKDIR} ${NIMDIR}/bin
 	# Install nim compiler
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/nim ${STAGEDIR}${PREFIX}/bin
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/nim
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/nim ${NIMDIR}/bin
+	${STRIP_CMD} ${NIMDIR}/bin/nim
 	# Install lib nim rtl
-	${INSTALL_LIB} ${WRKSRC}/lib/libnimrtl.so ${STAGEDIR}${PREFIX}/lib
+	${MKDIR} ${NIMDIR}/lib
+	${INSTALL_LIB} ${WRKSRC}/lib/libnimrtl.so ${NIMDIR}/lib
 	# Install nim lib files
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
-	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/${PORTNAME} "! -name libnimrtl.so")
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/compiler
-	(cd ${WRKSRC}/compiler && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/compiler "! -name nim ! -name nim1")
+	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${NIMDIR}/lib "! -name libnimrtl.so")
+	${MKDIR} ${NIMDIR}/lib/compiler
+	(cd ${WRKSRC}/compiler && ${COPYTREE_SHARE} . ${NIMDIR}/lib/compiler "! -name nim ! -name nim1")
+	(cd ${WRKSRC}/dist/checksums && ${COPYTREE_SHARE} . ${NIMDIR}/lib/dist/checksums)
 	# Configuration files
-	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${MKDIR} ${NIMDIR}/config
 .for file in nim.cfg nimdoc.cfg nimdoc.tex.cfg
-	${INSTALL_DATA} ${WRKSRC}/config/${file} ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKSRC}/config/${file} ${NIMDIR}/config
 .endfor
 
 do-install-DOCS-on:
 	${FIND} ${WRKSRC}/doc -name "*.idx" -delete
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+	${MKDIR} ${NIMDIR}/doc
+	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${NIMDIR}/doc)
+	${MKDIR} ${NIMDIR}/tools/dochack
+	${INSTALL_SCRIPT} ${WRKSRC}/tools/dochack/dochack.nim ${NIMDIR}/tools/dochack
+	${INSTALL_SCRIPT} ${WRKSRC}/tools/dochack/dochack.js ${NIMDIR}/tools/dochack
+	${INSTALL_SCRIPT} ${WRKSRC}/tools/dochack/fuzzysearch.nim ${NIMDIR}/tools/dochack
 
 do-install-TOOLS-on:
 .for t in ${TLIST}
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/${t} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/${t} ${NIMDIR}/bin
 .endfor
 
 do-test:

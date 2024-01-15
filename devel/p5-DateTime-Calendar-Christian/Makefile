@@ -1,14 +1,12 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Calendar-Christian
-PORTVERSION=	0.08
+PORTVERSION=	0.14
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dates in the Christian calendar
+WWW=		https://metacpan.org/release/DateTime-Calendar-Christian
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

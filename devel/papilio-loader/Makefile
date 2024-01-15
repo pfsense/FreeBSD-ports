@@ -1,13 +1,11 @@
-# Created by: mr@freebsd.org
-# $FreeBSD$
-
 PORTNAME=	papilio-loader
 PORTVERSION=	2.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Load bit files to the Open Source Papilio FPGA boards
+WWW=		https://papilio.cc/index.php?n=Papilio.PapilioLoaderV2
 
 LICENSE=	GPLv2
 

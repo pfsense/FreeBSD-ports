@@ -1,12 +1,11 @@
-# Created by: Johannes Lundberg <johalun0@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libepoll-shim
-PORTVERSION=	0.0.20200602
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.0.20230411
 CATEGORIES=	devel
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Small epoll implementation using kqueue
+WWW=		https://github.com/jiixyj/epoll-shim
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +15,8 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	jiixyj
 GH_PROJECT=	epoll-shim
-GH_TAGNAME=	3840e9c
+PLIST_SUB=	SHIM_EVENTFD="${exists(/usr/include/sys/eventfd.h):?@comment :}" \
+	SHIM_TIMERFD="${exists(/usr/include/sys/timerfd.h):?@comment :}"
 
 do-test:
 	# Exclude certain tests in resource restricted environments

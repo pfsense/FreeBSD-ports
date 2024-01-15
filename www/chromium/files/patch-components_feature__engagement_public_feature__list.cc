@@ -1,20 +1,20 @@
---- components/feature_engagement/public/feature_list.cc.orig	2021-01-18 21:28:55 UTC
+--- components/feature_engagement/public/feature_list.cc.orig	2023-12-10 06:10:27 UTC
 +++ components/feature_engagement/public/feature_list.cc
-@@ -75,7 +75,7 @@ const base::Feature* const kAllFeatures[] = {
-     &kIPHBadgedTranslateManualTriggerFeature,
-     &kIPHDiscoverFeedHeaderFeature,
- #endif  // defined(OS_IOS)
--#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS)
-     &kIPHDesktopTabGroupsNewGroupFeature,
-     &kIPHFocusModeFeature,
-@@ -85,7 +85,7 @@ const base::Feature* const kAllFeatures[] = {
-     &kIPHReopenTabFeature,
-     &kIPHWebUITabStripFeature,
-     &kIPHDesktopPwaInstallFeature,
--#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS)
- };
- }  // namespace
+@@ -146,7 +146,7 @@ const base::Feature* const kAllFeatures[] = {
+     &kIPHiOSParcelTrackingFeature,
+ #endif  // BUILDFLAG(IS_IOS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+     &kIPHBatterySaverModeFeature,
+     &kIPHCompanionSidePanelFeature,
+     &kIPHCompanionSidePanelRegionSearchFeature,
+@@ -196,7 +196,7 @@ const base::Feature* const kAllFeatures[] = {
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
+         // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || \
+     BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
+     &kIPHAutofillExternalAccountProfileSuggestionFeature,
+     &kIPHAutofillVirtualCardCVCSuggestionFeature,

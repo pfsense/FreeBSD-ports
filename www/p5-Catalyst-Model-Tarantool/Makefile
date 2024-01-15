@@ -1,6 +1,3 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Model-Tarantool
 PORTVERSION=	0.02
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tarantool interface for Catalyst based application
+WWW=		https://metacpan.org/release/Catalyst-Model-Tarantool
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

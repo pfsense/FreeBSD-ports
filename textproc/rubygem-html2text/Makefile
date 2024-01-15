@@ -1,21 +1,19 @@
-# Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	html2text
-PORTVERSION=	0.2.1
+PORTVERSION=	0.3.1
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Convert HTML into a plain text format
+WWW=		https://github.com/soundasleep/html2text_ruby
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-nokogiri>=1.6:textproc/rubygem-nokogiri
+RUN_DEPENDS=	rubygem-nokogiri>=1.10.3<2:textproc/rubygem-nokogiri
+
+USES=		gem
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

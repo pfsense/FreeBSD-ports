@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	unicorn
 DISTVERSION=	1.0.2
 CATEGORIES=	emulators python
@@ -7,6 +5,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Python bindings for Unicorn CPU emulator framework
+WWW=		https://www.unicorn-engine.org/
 
 LICENSE=	BSD3CLAUSE
 
@@ -15,7 +14,7 @@ LIB_DEPENDS=	libunicorn.so:emulators/unicorn
 USE_GITHUB=	yes
 GH_ACCOUNT=	unicorn-engine
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 WRKSRC_SUBDIR=	bindings/python
 

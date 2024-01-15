@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libvmod-dynamic
-PORTVERSION=	20201026
+PORTVERSION=	20230321
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Varnish Module (vmod) for dynamic backends
+WWW=		https://github.com/nigoroll/libvmod-dynamic
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libgetdns.so:dns/getdns
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 
 USES=		autoreconf compiler:c11 gmake libtool pkgconfig \
-		python:3.5+,build varnish:6
+		python:build varnish:7
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -28,7 +28,7 @@ CFLAGS+=	-I${WRKSRC}/src
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nigoroll
-GH_TAGNAME=	7a699ef
+GH_TAGNAME=	af9c51c
 
 OPTIONS_DEFINE=	DOCS
 

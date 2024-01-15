@@ -1,6 +1,3 @@
-# Created by: Johann Visagie <johann@egenetics.com>
-# $FreeBSD$
-
 PORTNAME=	fasta
 PORTVERSION=	21.1.1
 CATEGORIES=	biology
@@ -10,8 +7,16 @@ EXTRACT_SUFX=	.shar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of programs for searching DNA and protein databases
+WWW=		http://fasta.bioch.virginia.edu/
 
-NO_CDROM=	May not be sold or incorporated into a commercial product
+# Converted from NO_CDROM
+LICENSE=	FASTA
+LICENSE_NAME=	fasta
+LICENSE_TEXT=	May not be sold or incorporated into a commercial product
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
+CONFLICTS_INSTALL=	align
+
 WRKSRC=		${WRKDIR}/fasta
 SUB_FILES=	pkg-message
 

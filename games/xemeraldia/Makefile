@@ -1,9 +1,6 @@
-# Created by: Steven Wallace <swallace@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xemeraldia
 PORTVERSION=	0.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://www.reloco.com.ar/xemeraldia/ \
 		SUNSITE/games/tetris \
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Falling blocks game
+WWW=		http://www.reloco.com.ar/xemeraldia/
 
 USES=		gnome pkgconfig
 USE_GNOME=	cairo gtk20

@@ -1,19 +1,19 @@
-# Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	opensolaris-libm
 PORTVERSION=	2006.01.31
-PORTREVISION=	5
 DISTVERSIONPREFIX=	v
+PORTREVISION=	5
 CATEGORIES=	math
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C99 Math and vector libraries from OpenSolaris snv_33
+WWW=		https://docs.oracle.com/cd/E19422-01/819-3693/ncg_lib.html
 
 LICENSE=	CDDL
 LICENSE_FILE=	${WRKSRC}/usr/src/OPENSOLARIS.LICENSE
 
-ONLY_FOR_ARCHS=	amd64	# i386 and sparc possible with much work
+BROKEN_FreeBSD_14=	fails to compile: conflicting types for 'lround'
+ONLY_FOR_ARCHS=	amd64	# i386 possible with much work
+
 PORTSCOUT=	ignore:1
 
 USE_GITHUB=	yes
@@ -24,19 +24,6 @@ BUILD_WRKSRC=	${WRKSRC}/usr/src/libm/wos64
 INSTALL_WRKSRC=	${WRKSRC}/usr/src/libm/wos64
 MAKEFILE=	Makefile.bsd
 MAKE_ENV=	ARCH=${ARCH} USE_ASSEMBLY_VERSIONS=yes
-
-# On FreeBSD 11+, libm will build on base clang.
-# On FreeBSD 10, the base clang (v3.4) cannot even build libm without emitting
-# Internal Compiler Errors, so GCC is required and does not appear as an
-# option.  Similarly, the GCC option does not appear on DragonFly as the
-# base compiler is already GCC.  Programs compiled with GCC that link to
-# these libraries require that the libraries are compiled with GCC for
-# proper functioning.
-
-OPTIONS_DEFINE=			GCC
-OPTIONS_EXCLUDE_DragonFly=	GCC
-
-GCC_USE=	GCC=yes
 
 .include <bsd.port.options.mk>
 

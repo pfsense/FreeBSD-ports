@@ -1,8 +1,5 @@
-# Created by: Lars Eggert <larse@isi.edu>
-# $FreeBSD$
-
 PORTNAME=	mod_perl
-PORTVERSION=	2.0.11
+PORTVERSION=	2.0.12
 PORTEPOCH=	3
 CATEGORIES=	www perl5
 MASTER_SITES=	APACHE/perl
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Embeds a Perl interpreter in the Apache server
+WWW=		https://perl.apache.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +20,7 @@ TEST_DEPENDS=	p5-CGI>=4.15:www/p5-CGI \
 
 SUB_FILES=	pkg-message ${APMOD_FILE}
 SUB_LIST=	APACHEMODDIR=${APACHEMODDIR}
-USES=		apache:2.2+ cpe gmake perl5
+USES=		apache cpe gmake perl5
 USE_PERL5=	configure
 USE_CSTD=	gnu89
 CPE_VENDOR=	apache
@@ -57,7 +55,7 @@ HAS_ITHREADS=	1
 PLIST_SUB+=	ITHREADS=""
 .else
 PLIST_SUB+=	ITHREADS="@comment "
-. if !${APACHE_VERSION:M22}
+. if ${APACHE_VERSION:M24}
 IGNORE=		requires PERL with "THREADS=on", please rebuild PERL and all depending ports
 . endif
 .endif

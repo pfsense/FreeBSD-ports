@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	phpbb
 PORTVERSION=	2.0.23
 CATEGORIES=	chinese www
@@ -11,14 +8,16 @@ DISTNAME=	phpBB-tw-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Traditional Chinese version of phpBB
+WWW=		https://www.phpbb.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
 RUN_DEPENDS=	${LOCALBASE}/share/pear/System.php:devel/pear@${PHP_FLAVOR}
 
-CONFLICTS=	phpbb-[0-9]*
+CONFLICTS_INSTALL=	phpbb phpbb3 zh-phpbb3-tw # share/doc/phpbb/AUTHORS share/doc/phpbb/CHANGELOG.html
 USES=		dos2unix php
+IGNORE_WITH_PHP=	82 83
 
 # Get HOSTNAME
 .if exists(/sbin/sysctl)

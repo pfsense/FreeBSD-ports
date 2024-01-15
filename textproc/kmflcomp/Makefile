@@ -1,6 +1,3 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	kmflcomp
 PORTVERSION=	0.9.9
 PORTREVISION=	2
@@ -15,6 +12,7 @@ EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	Compiler of Keyman KMFL keyboard sources to use with SCIM/IBus
+WWW=		https://kmfl.sourceforge.net/
 
 BUILD_DEPENDS=	bison:devel/bison
 

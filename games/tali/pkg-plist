@@ -1,7 +1,7 @@
 bin/tali
 man/man6/tali.6.gz
-@unexec [ -s %D/share/games/gtali.Colors.scores ] || rm -f %D/share/games/gtali.Colors.scores
-@unexec [ -s %D/share/games/gtali.Regular.scores ] || rm -f %D/share/games/gtali.Regular.scores
+@preunexec [ -s %D/share/games/gtali.Colors.scores ] || rm -f %D/share/games/gtali.Colors.scores
+@preunexec [ -s %D/share/games/gtali.Regular.scores ] || rm -f %D/share/games/gtali.Regular.scores
 share/applications/org.gnome.Tali.desktop
 share/help/C/tali/figures/mainwindow.png
 share/help/C/tali/figures/preferences.png
@@ -97,6 +97,7 @@ share/help/zh_CN/tali/index.docbook
 share/help/zh_CN/tali/legal.xml
 share/icons/hicolor/scalable/apps/org.gnome.Tali.svg
 share/icons/hicolor/symbolic/apps/org.gnome.Tali-symbolic.svg
+share/locale/ab/LC_MESSAGES/tali.mo
 share/locale/af/LC_MESSAGES/tali.mo
 share/locale/am/LC_MESSAGES/tali.mo
 share/locale/ar/LC_MESSAGES/tali.mo

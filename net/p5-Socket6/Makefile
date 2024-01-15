@@ -1,9 +1,6 @@
-# Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Socket6
 PORTVERSION=	0.29
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=CPAN:UMEMOTO
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	IPv6 related part of the C socket.h defines and structure manipulators
+WWW=		https://metacpan.org/release/Socket6
 
 LICENSE=	BSD3CLAUSE
 

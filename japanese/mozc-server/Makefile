@@ -1,35 +1,33 @@
-# Created by: Daichi GOTO <daichi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mozc
 PORTVERSION=	2.23.2815.102.01
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION?=	15
 CATEGORIES=	japanese
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT?=	Mozc Japanese Input Method, Server
+WWW=		https://github.com/google/mozc
 
-BUILD_DEPENDS=	ninja:devel/ninja \
-		${PYTHON_PKGNAMEPREFIX}gyp>=20200512:devel/py-gyp@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gyp>=20200512:devel/py-gyp@${PY_FLAVOR}
 EXTRACT_DEPENDS=${PYTHON_CMD}:${PYTHON_PORTSDIR}
 LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
 		libzinnia.so:japanese/zinnia
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-BROKEN_FreeBSD_12_powerpc64=	fails to install: gyp: Call to 'which clang' returned exit status 1 while in client/client.gyp
 BROKEN_FreeBSD_13_powerpc64=	fails to build: ERROR: ninja -v -C out_linux/Release mozc_server: Error code 1
 BROKEN_powerpc=		fails to compile: segfault
-BROKEN_sparc64=		fails to compile: segfault
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd
 GH_TUPLE=	hiroyuki-komatsu:japanese-usage-dictionary:e5b3425:udic
 
-USES=		compiler:c++11-lang pkgconfig gmake \
-		tar:bzip2 python:3.5+,build shebangfix
+USES=		compiler:c++17-lang gmake ninja:build pkgconfig \
+		python:build shebangfix tar:bzip2
 SHEBANG_FILES=	src/build_mozc.py
 BUILD_WRKSRC=	${WRKSRC}/src
+
+LDFLAGS+=	-labsl_spinlock_wait
+USE_CXXSTD=	c++17
 
 BUILD_MOZC_LIST?=	mozc_server
 
@@ -137,10 +135,10 @@ GYP_OPTIONS+=	--noqt
 GYP_DEFINES+=	use_libibus=0 \
 		enable_gtk_renderer=0
 
-MASTER_SITES+=	LOCAL/kuriyama:zipcode
+MASTER_SITES+=	LOCAL/hrs:zipcode
 DISTFILES+= \
-	ken_all-20200430.zip:zipcode \
-	jigyosyo-20200430.zip:zipcode
+	ken_all-20221228.zip:zipcode \
+	jigyosyo-20221228.zip:zipcode
 
 PLIST_FILES+=	bin/mozc \
 		bin/mozc_server \

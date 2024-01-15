@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MojoX-Renderer-Xslate
 PORTVERSION=	0.14
 CATEGORIES=	www textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Text::Xslate renderer for for Mojolicious
+WWW=		https://metacpan.org/pod/MojoX::Renderer::Xslate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

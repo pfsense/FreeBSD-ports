@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	HTML-Element-Library
 PORTVERSION=	5.220000
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTML::Element convenience functions
+WWW=		https://metacpan.org/release/HTML-Element-Library
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

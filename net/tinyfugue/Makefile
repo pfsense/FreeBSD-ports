@@ -1,15 +1,13 @@
-# Created by: mike@binghamton.edu
-# $FreeBSD$
-
 PORTNAME=	tf
 PORTVERSION=	5.0b8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net games
 MASTER_SITES=	SF/tinyfugue/tinyfugue/5.0%20beta%208
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Popular programmable MUD client, with macro support and more
+WWW=		https://tinyfugue.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

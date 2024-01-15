@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Polynomial-Solve
 PORTVERSION=	2.86
 CATEGORIES=	math perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Find the roots of polynomial equations
+WWW=		https://metacpan.org/release/Math-Polynomial-Solve
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

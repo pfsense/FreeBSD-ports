@@ -1,12 +1,11 @@
-Prevent linking to unneccessary libraries
-
---- settings.pro.orig	2018-02-25 02:52:28 UTC
-+++ settings.pro
-@@ -34,6 +34,7 @@ QMAKE_CXXFLAGS += $$ARCHFLAGS
- QMAKE_CXXFLAGS += $$CONFIG_DIRECTFB_CXXFLAGS
- QMAKE_CXXFLAGS_SHLIB = -DPIC -fPIC
- QMAKE_CXXFLAGS += $$ECXXFLAGS
-+QMAKE_LFLAGS +=	-Wl,--as-needed
+--- settings.pro.orig	2023-03-19 16:48:43.345465000 +0000
++++ settings.pro	2023-03-19 16:42:27.786115000 +0000
+@@ -8,7 +8,7 @@
+ include(settings2.pro)
  
- profile:!win32:!macx:CONFIG += debug
+ MY_INSTALL_INCLUDE = $${SYSROOT}$${PREFIX}/include
+-!contains(MY_INSTALL_INCLUDE, /usr/include$) {
++!contains(MY_INSTALL_INCLUDE, /usr/local/include$) {
+     INCLUDEPATH += $${SYSROOT}$${PREFIX}/include
+ }
  

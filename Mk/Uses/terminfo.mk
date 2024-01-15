@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # handle terminfo.db and *.terminfo files used by ncurses
 #
 # Feature:	terminfo
@@ -9,9 +7,9 @@
 .if !defined(_INCLUDE_USES_TERMINFO_MK)
 _INCLUDE_USES_TERMINFO_MK=	yes
 
-.if !empty(terminfo_ARGS)
+.  if !empty(terminfo_ARGS)
 IGNORE=	USES=terminfo does not require args
-.endif
+.  endif
 
 PLIST_FILES+=	@terminfo
 

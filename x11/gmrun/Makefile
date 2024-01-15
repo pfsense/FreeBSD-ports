@@ -1,14 +1,12 @@
-# Created by: Adam Weinberger <adam@vectors.cx>
-# $FreeBSD$
-
 PORTNAME=	gmrun
 PORTVERSION=	0.9.2
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	x11
 MASTER_SITES=	SF
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Customizable program to run programs, with tab-completion
+WWW=		https://sourceforge.net/projects/gmrun/
 
 LICENSE=	GPLv2
 
@@ -18,14 +16,14 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		compiler:c++11-lang gmake gnome localbase:ldflags pkgconfig
 
-OPTIONS_DEFINE=	DOCS
-
 USE_GNOME=	cairo gdkpixbuf2 gtk20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-stlport
 
-PORTDOCS=	README
 PLIST_FILES=	bin/gmrun ${DATADIR}/gmrunrc
+PORTDOCS=	README
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/my_alphasort/s#const void\*#const struct dirent**#g' \

@@ -1,15 +1,12 @@
-# Created by: Denis Barov
-# $FreeBSD$
-
 PORTNAME=	smbnetfs
-PORTVERSION=	0.6.1
-PORTREVISION=	3
+PORTVERSION=	0.6.3
 CATEGORIES=	sysutils net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/SMBNetFS-${PORTVERSION}
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Mount smb shares (Fuse filesystem)
+WWW=		https://sourceforge.net/projects/smbnetfs/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

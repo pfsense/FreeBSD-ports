@@ -1,14 +1,12 @@
-# Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
-
 PORTNAME=	zinnia
 PORTVERSION=	0.06
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese
 MASTER_SITES=	SF
 
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Simple, customizable, and portable online handwriting recognition system
+WWW=		http://zinnia.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

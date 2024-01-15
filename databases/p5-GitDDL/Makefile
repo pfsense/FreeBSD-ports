@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	GitDDL
 PORTVERSION=	0.03
 CATEGORIES=	databases perl5
@@ -7,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TYPESTER
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for database migration utility by git managed sql
+WWW=		https://metacpan.org/release/GitDDL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

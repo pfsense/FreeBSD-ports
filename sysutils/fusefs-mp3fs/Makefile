@@ -1,9 +1,6 @@
-# Created by: Stefan Rumetshofer
-# $FreeBSD$
-
 PORTNAME=	mp3fs
 PORTVERSION=	0.91
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	sysutils audio
 MASTER_SITES=	https://github.com/khenriks/${PORTNAME}/releases/download/v${PORTVERSION}/
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	stefan.rumetshofer@drei.at
 COMMENT=	FUSE-based filesystem for transcoding FLAC to MP3 on the fly
+WWW=		https://github.com/khenriks/mp3fs
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

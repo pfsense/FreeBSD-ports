@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	grr
 PORTVERSION=	1.0
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	www gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	Grr-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rss reader for GNUstep
+WWW=		https://gap.nongnu.org/grr/index.html
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +16,12 @@ LIB_DEPENDS=	libRSSKit.so:www/rsskit
 
 USES=		gnustep
 USE_GNUSTEP=	back build
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/GNUstep/System/Applications/Grr.app/Grr \

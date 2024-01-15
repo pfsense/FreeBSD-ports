@@ -1,19 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	monty
-DISTVERSION=	4.0.2
+DISTVERSION=	2023.5.8
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Supplementary useful functions for Python not in the standard library
+COMMENT=	Monty is the missing complement to Python
+WWW=		https://github.com/materialsvirtuallab/monty
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

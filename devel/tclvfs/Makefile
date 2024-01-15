@@ -1,6 +1,3 @@
-# Created by: gahr@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	tclvfs
 PORTVERSION=	20080503
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Tcl VirtualFileSystem layer
+WWW=		https://sourceforge.net/projects/tclvfs/
 
 LIB_DEPENDS=	libTrf2.1.4.so:devel/tcl-trf
 

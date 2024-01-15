@@ -1,6 +1,3 @@
-# Created by: Dom Mitchell <dom@happygiraffe.net>
-# $FreeBSD$
-
 PORTNAME=	l0pht-watch
 PORTVERSION=	1.1
 PORTREVISION=	1

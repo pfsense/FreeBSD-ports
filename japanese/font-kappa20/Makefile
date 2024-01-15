@@ -1,6 +1,3 @@
-# Created by: Kawaguti Ginga <ginga@athena.club.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	kappa20
 PORTVERSION=	0.396
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTNAME=	Kappa20-${PORTVERSION}
 
 MAINTAINER=	ginga-freebsd@ginganet.org
 COMMENT=	20-dot Kanji font Kappa20
+WWW=		http://kappa.allnet.ne.jp/20dot.fonts/
 
 LICENSE=	PD
 
@@ -27,7 +25,7 @@ PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
 
-pre-build: apply-slist
+pre-build:
 	cd ${WRKSRC} && ${SH} makebdf.sh
 
 post-install-DOCS-on:

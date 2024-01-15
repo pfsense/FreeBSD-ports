@@ -1,6 +1,3 @@
-# Created by: Dmitry Liakh <dliakh@ukr.net>
-# $FreeBSD$
-
 PORTNAME=	Text-xSV
 PORTVERSION=	0.21
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dliakh@ukr.net
 COMMENT=	Read character separated files
+WWW=		https://metacpan.org/release/Text-xSV
 
 USES=		perl5
 USE_PERL5=	configure

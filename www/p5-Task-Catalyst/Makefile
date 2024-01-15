@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Task-Catalyst
 PORTVERSION=	4.02
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	All you need to start with Catalyst
+WWW=		https://metacpan.org/release/Task-Catalyst
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Catalyst-ActionRole-ACL>=0:www/p5-Catalyst-ActionRole-ACL \

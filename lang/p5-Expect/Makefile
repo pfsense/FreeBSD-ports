@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Expect
 PORTVERSION=	1.35
 CATEGORIES=	lang perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module inspired by the Tcl version of Expect
+WWW=		https://metacpan.org/release/Expect
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,13 +1,11 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bzip2
-PORTVERSION=	1.0.7
+PORTVERSION=	1.0.8
 CATEGORIES=	archivers
 MASTER_SITES=	https://sourceware.org/pub/bzip2/
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Block-sorting file compressor
+WWW=		https://gitlab.com/federicomenaquintero/bzip2/
 
 LICENSE=	BZIP2
 LICENSE_NAME=	BZIP2 license

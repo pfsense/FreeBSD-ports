@@ -1,14 +1,12 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	facile
 PORTVERSION=	1.1.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://opti.recherche.enac.fr/facile/distrib/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Functional Constraint Library
+WWW=		http://www.recherche.enac.fr/log/facile/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE

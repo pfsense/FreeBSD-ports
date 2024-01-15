@@ -1,20 +1,20 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pycoin
-PORTVERSION=	0.90.20201031
+PORTVERSION=	0.92.20230326
 CATEGORIES=	finance
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Utilities for Bitcoin and altcoin addresses/transaction manipulation
+WWW=		https://github.com/richardkiss/pycoin
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
+
+CONFLICTS_INSTALL=	block keychain
 
 NO_ARCH=	yes
 

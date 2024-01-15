@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	linuxlibertine-g
 PORTVERSION=	20120116
 PORTREVISION=	2
@@ -9,6 +7,7 @@ DISTNAME=	e7a384790b13c29113e22e596ade9687-LinLibertineG-${PORTVERSION}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Linux Libertine G and Linux Biolinum G fonts
+WWW=		https://numbertext.org/linux/
 
 USES=		fonts zip
 

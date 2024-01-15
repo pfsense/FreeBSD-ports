@@ -1,28 +1,25 @@
-# Created by: Andrey Zonov <andrey@zonov.org>
-# $FreeBSD$
-
 PORTNAME=	msgpack
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.7
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	MessagePack (de)serializer for Python
+WWW=		https://msgpack.org/ \
+		https://github.com/msgpack/msgpack-python
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent cython distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.30<0.30:lang/cython@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>=35.0.2:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
+USES=		python
+USE_PYTHON=	autoplist concurrent cython pep517
 
-.if ${PYTHON_REL} >= 3000
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/msgpack/_cmsgpack*.so
-.else
-NO_ARCH=	yes
-.endif
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

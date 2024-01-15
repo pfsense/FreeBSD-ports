@@ -1,20 +1,18 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	baikal
-PORTVERSION=	0.7.1
+PORTVERSION=	0.9.4
 PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/fruux/Baikal/releases/download/${PORTVERSION}/
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Lightweight CalDAV/CardDAV server
+WWW=		https://sabre.io/baikal/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		php zip
-USE_PHP=	ctype dom filter hash imap json mbstring openssl pdo_sqlite \
+USE_PHP=	ctype dom filter imap mbstring pdo_sqlite \
 		session xml xmlreader xmlwriter
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

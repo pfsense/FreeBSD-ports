@@ -1,6 +1,3 @@
-# Created by: Michael Capp <myntric@exeonline.com>
-# $FreeBSD$
-
 PORTNAME=	squid_radius_auth
 PORTVERSION=	1.10
 CATEGORIES=	www
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.squid-cache.org/contrib/squid_radius_auth/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	RADIUS authenticator for squid proxy 2.5 and later
+WWW=		http://www.squid-cache.org/contrib/squid_radius_auth
 
 .include <bsd.port.pre.mk>
 

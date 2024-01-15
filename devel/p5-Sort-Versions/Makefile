@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sort-Versions
 PORTVERSION=	1.62
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl 5 module for sorting of revision-like numbers
+WWW=		https://metacpan.org/release/Sort-Versions
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	swt
 PORTVERSION=	0.3.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://atoms.scilab.org/toolboxes/swt/${PORTVERSION}/files/
 PKGNAMEPREFIX=	scilab-toolbox-
@@ -10,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-3-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scilab 1-D and 2-D Wavelet Toolbox
+WWW=		https://atoms.scilab.org/toolboxes/swt
 
 BUILD_DEPENDS=	${SCILAB_CMD}:math/scilab
 RUN_DEPENDS:=	${BUILD_DEPENDS}

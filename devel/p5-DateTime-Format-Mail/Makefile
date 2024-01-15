@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Format-Mail
 PORTVERSION=	0.403
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert between DateTime and RFC2822/822 formats
+WWW=		https://metacpan.org/release/DateTime-Format-Mail
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

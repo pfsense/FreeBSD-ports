@@ -4,14 +4,18 @@ share/ART/camconst.json
 share/ART/cammatrices.json
 share/ART/dcpprofiles/CANON EOS 250D.dcp
 share/ART/dcpprofiles/CANON EOS 5D MARK IV.dcp
+share/ART/dcpprofiles/CANON EOS 6D.dcp
 share/ART/dcpprofiles/CANON EOS 800D.dcp
+share/ART/dcpprofiles/CANON EOS 90D.dcp
 share/ART/dcpprofiles/CANON EOS M50.dcp
 share/ART/dcpprofiles/CANON EOS M6 MARK II.dcp
 share/ART/dcpprofiles/CANON EOS R.dcp
 share/ART/dcpprofiles/CANON EOS R5.dcp
 share/ART/dcpprofiles/CANON EOS R6.dcp
 share/ART/dcpprofiles/CANON EOS RP.dcp
+share/ART/dcpprofiles/CANON EOS-1D X MARK III.dcp
 share/ART/dcpprofiles/CANON POWERSHOT G1 X MARK II.dcp
+share/ART/dcpprofiles/CANON POWERSHOT G5 X MARK II.dcp
 share/ART/dcpprofiles/Canon EOS 100D.dcp
 share/ART/dcpprofiles/Canon EOS 1300D.dcp
 share/ART/dcpprofiles/Canon EOS 20D.dcp
@@ -20,34 +24,40 @@ share/ART/dcpprofiles/Canon EOS 40D.dcp
 share/ART/dcpprofiles/Canon EOS 450D.dcp
 share/ART/dcpprofiles/Canon EOS 50D.dcp
 share/ART/dcpprofiles/Canon EOS 550D.dcp
+share/ART/dcpprofiles/Canon EOS 5D Mark II.dcp
 share/ART/dcpprofiles/Canon EOS 5D Mark III.dcp
 share/ART/dcpprofiles/Canon EOS 5D.dcp
 share/ART/dcpprofiles/Canon EOS 600D.dcp
 share/ART/dcpprofiles/Canon EOS 60D.dcp
 share/ART/dcpprofiles/Canon EOS 650D.dcp
 share/ART/dcpprofiles/Canon EOS 6D Mark II.dcp
-share/ART/dcpprofiles/Canon EOS 6D.dcp
 share/ART/dcpprofiles/Canon EOS 7D Mark II.dcp
 share/ART/dcpprofiles/Canon EOS 7D.dcp
 share/ART/dcpprofiles/Canon EOS D60.dcp
 share/ART/dcpprofiles/Canon EOS-1D Mark III.dcp
+share/ART/dcpprofiles/Canon EOS-1Ds Mark II.dcp
 share/ART/dcpprofiles/Canon PowerShot G10.dcp
 share/ART/dcpprofiles/Canon PowerShot G12.dcp
 share/ART/dcpprofiles/Canon PowerShot G7 X.dcp
 share/ART/dcpprofiles/Canon PowerShot S110.dcp
+share/ART/dcpprofiles/Canon PowerShot S120.dcp
 share/ART/dcpprofiles/FUJIFILM FinePix F600EXR.dcp
 share/ART/dcpprofiles/FUJIFILM GFX 50R.dcp
 share/ART/dcpprofiles/FUJIFILM X-A5.dcp
+share/ART/dcpprofiles/FUJIFILM X-A7.dcp
 share/ART/dcpprofiles/FUJIFILM X-E3.dcp
 share/ART/dcpprofiles/FUJIFILM X-H1.dcp
 share/ART/dcpprofiles/FUJIFILM X-PRO3.dcp
 share/ART/dcpprofiles/FUJIFILM X-Pro2.dcp
 share/ART/dcpprofiles/FUJIFILM X-S1.dcp
+share/ART/dcpprofiles/FUJIFILM X-S10.dcp
 share/ART/dcpprofiles/FUJIFILM X-T1.dcp
+share/ART/dcpprofiles/FUJIFILM X-T10.dcp
 share/ART/dcpprofiles/FUJIFILM X-T2.dcp
 share/ART/dcpprofiles/FUJIFILM X-T20.dcp
 share/ART/dcpprofiles/FUJIFILM X-T3.dcp
 share/ART/dcpprofiles/FUJIFILM X-T30.dcp
+share/ART/dcpprofiles/FUJIFILM X-T4.dcp
 share/ART/dcpprofiles/FUJIFILM X100S.dcp
 share/ART/dcpprofiles/FUJIFILM X100T.dcp
 share/ART/dcpprofiles/Fujifilm FinePix S9500.dcp
@@ -58,6 +68,7 @@ share/ART/dcpprofiles/Leaf Aptus 75.dcp
 share/ART/dcpprofiles/MINOLTA DYNAX 7D.dcp
 share/ART/dcpprofiles/NIKON COOLPIX P7800.dcp
 share/ART/dcpprofiles/NIKON D300.dcp
+share/ART/dcpprofiles/NIKON D3300.dcp
 share/ART/dcpprofiles/NIKON D50.dcp
 share/ART/dcpprofiles/NIKON D500.dcp
 share/ART/dcpprofiles/NIKON D5000.dcp
@@ -66,6 +77,7 @@ share/ART/dcpprofiles/NIKON D5600.dcp
 share/ART/dcpprofiles/NIKON D600.dcp
 share/ART/dcpprofiles/NIKON D610.dcp
 share/ART/dcpprofiles/NIKON D700.dcp
+share/ART/dcpprofiles/NIKON D7000.dcp
 share/ART/dcpprofiles/NIKON D70s.dcp
 share/ART/dcpprofiles/NIKON D7100.dcp
 share/ART/dcpprofiles/NIKON D7200.dcp
@@ -79,21 +91,25 @@ share/ART/dcpprofiles/NIKON D850.dcp
 share/ART/dcpprofiles/NIKON Z 5.dcp
 share/ART/dcpprofiles/NIKON Z 50.dcp
 share/ART/dcpprofiles/NIKON Z 6.dcp
+share/ART/dcpprofiles/NIKON Z 6_2.dcp
 share/ART/dcpprofiles/NIKON Z 7.dcp
 share/ART/dcpprofiles/Nikon D200.dcp
 share/ART/dcpprofiles/Nikon D3000.dcp
 share/ART/dcpprofiles/Nikon D3100.dcp
 share/ART/dcpprofiles/Nikon D3S.dcp
 share/ART/dcpprofiles/Nikon D5100.dcp
-share/ART/dcpprofiles/Nikon D7000.dcp
 share/ART/dcpprofiles/OLYMPUS E-510.dcp
+share/ART/dcpprofiles/OLYMPUS E-M1.dcp
 share/ART/dcpprofiles/OLYMPUS E-M10.dcp
 share/ART/dcpprofiles/OLYMPUS E-M1MarkII.dcp
 share/ART/dcpprofiles/OLYMPUS E-M5MARKII.dcp
 share/ART/dcpprofiles/Olympus E-1.dcp
 share/ART/dcpprofiles/Olympus E-520.dcp
+share/ART/dcpprofiles/Olympus E-M5.dcp
 share/ART/dcpprofiles/Olympus E-P2.dcp
 share/ART/dcpprofiles/Olympus XZ-1.dcp
+share/ART/dcpprofiles/PANASONIC DC-S5.dcp
+share/ART/dcpprofiles/PANASONIC DMC-LX100.dcp
 share/ART/dcpprofiles/PENTAX K-5 II.dcp
 share/ART/dcpprofiles/PENTAX K-5.dcp
 share/ART/dcpprofiles/PENTAX K-50.dcp
@@ -111,21 +127,28 @@ share/ART/dcpprofiles/Panasonic DMC-G3.dcp
 share/ART/dcpprofiles/Panasonic DMC-G5.dcp
 share/ART/dcpprofiles/Panasonic DMC-GH1.dcp
 share/ART/dcpprofiles/Panasonic DMC-GH2.dcp
+share/ART/dcpprofiles/Panasonic DMC-GX7.dcp
 share/ART/dcpprofiles/Panasonic DMC-GX85.dcp
 share/ART/dcpprofiles/Pentax K-r.dcp
 share/ART/dcpprofiles/Pentax K200D.dcp
+share/ART/dcpprofiles/RICOH GR III.dcp
 share/ART/dcpprofiles/RICOH PENTAX K-1.dcp
 share/ART/dcpprofiles/RICOH PENTAX K-3.dcp
 share/ART/dcpprofiles/SONY DSC-RX100M6.dcp
 share/ART/dcpprofiles/SONY DSLR-A580.dcp
 share/ART/dcpprofiles/SONY ILCE-6000.dcp
+share/ART/dcpprofiles/SONY ILCE-6300.dcp
 share/ART/dcpprofiles/SONY ILCE-6400.dcp
 share/ART/dcpprofiles/SONY ILCE-6500.dcp
 share/ART/dcpprofiles/SONY ILCE-6600.dcp
+share/ART/dcpprofiles/SONY ILCE-7.dcp
+share/ART/dcpprofiles/SONY ILCE-7C.dcp
 share/ART/dcpprofiles/SONY ILCE-7M2.dcp
 share/ART/dcpprofiles/SONY ILCE-7M3.dcp
+share/ART/dcpprofiles/SONY ILCE-7M4.dcp
 share/ART/dcpprofiles/SONY ILCE-7RM3.dcp
 share/ART/dcpprofiles/SONY ILCE-7RM4.dcp
+share/ART/dcpprofiles/SONY ILCE-7SM3.dcp
 share/ART/dcpprofiles/SONY ILCE-9.dcp
 share/ART/dcpprofiles/SONY SLT-A99V.dcp
 share/ART/dcpprofiles/Sony DSLR-A700.dcp
@@ -134,6 +157,7 @@ share/ART/dcpprofiles/Sony NEX-5N.dcp
 share/ART/dcpprofiles/Sony SLT-A55V.dcp
 share/ART/dcpprofiles/YI TECHNOLOGY M1.dcp
 share/ART/dcpprofiles/camera_model_aliases.json
+share/ART/dcpprofiles/samsung SM-G930V.dcp
 share/ART/dcraw.json
 share/ART/dynamicprofile.cfg
 share/ART/iccprofiles/input/Canon EOS 20D.icc
@@ -171,27 +195,14 @@ share/ART/iccprofiles/input/sd1_merrill_sunny8161-crop-wp10.icm
 share/ART/iccprofiles/input/sd1_merrill_sunny8161-crop-wp11.icm
 share/ART/iccprofiles/input/sd1_merrill_tungsten8130-CROP-WP10.icm
 share/ART/iccprofiles/input/sd1_merrill_tungsten8130-CROP-WP11.icm
-share/ART/iccprofiles/output/DCI-P3 D65.icc
-share/ART/iccprofiles/output/DCI-P3 Theater.icc
-share/ART/iccprofiles/output/RTv2_ACES-AP0.icc
-share/ART/iccprofiles/output/RTv2_ACES-AP1.icc
-share/ART/iccprofiles/output/RTv2_Best.icc
-share/ART/iccprofiles/output/RTv2_Beta.icc
-share/ART/iccprofiles/output/RTv2_Bruce.icc
-share/ART/iccprofiles/output/RTv2_Large.icc
 share/ART/iccprofiles/output/RTv2_Medium.icc
-share/ART/iccprofiles/output/RTv2_Rec2020.icc
-share/ART/iccprofiles/output/RTv2_Wide.icc
 share/ART/iccprofiles/output/RTv2_sRGB.icc
 share/ART/iccprofiles/output/RTv4_ACES-AP0.icc
-share/ART/iccprofiles/output/RTv4_ACES-AP1.icc
-share/ART/iccprofiles/output/RTv4_Best.icc
-share/ART/iccprofiles/output/RTv4_Beta.icc
-share/ART/iccprofiles/output/RTv4_Bruce.icc
 share/ART/iccprofiles/output/RTv4_Large.icc
+share/ART/iccprofiles/output/RTv4_Linear_Rec2020.icc
 share/ART/iccprofiles/output/RTv4_Medium.icc
 share/ART/iccprofiles/output/RTv4_Rec2020.icc
-share/ART/iccprofiles/output/RTv4_Wide.icc
+share/ART/iccprofiles/output/RTv4_Rec2100_PQ.icc
 share/ART/iccprofiles/output/RTv4_sRGB.icc
 share/ART/images/ART-logo-128.png
 share/ART/images/ART-logo-16.png
@@ -209,6 +220,7 @@ share/ART/images/aperture.svg
 share/ART/images/area-shape-add.svg
 share/ART/images/area-shape-draw-add.svg
 share/ART/images/area-shape-draw.svg
+share/ART/images/area-shape-gradient-add.svg
 share/ART/images/area-shape-intersect.svg
 share/ART/images/area-shape-polygon-add.svg
 share/ART/images/area-shape-subtract.svg
@@ -221,6 +233,7 @@ share/ART/images/arrow-updown.svg
 share/ART/images/arrow2-left.svg
 share/ART/images/arrow2-right.svg
 share/ART/images/atom.svg
+share/ART/images/az-sort.svg
 share/ART/images/bayer.svg
 share/ART/images/beforeafter.svg
 share/ART/images/bidirectional-arrow-horizontal-hicontrast.svg
@@ -241,6 +254,7 @@ share/ART/images/circle-bluepurple-small.svg
 share/ART/images/circle-cyan-red-small.svg
 share/ART/images/circle-cyan-small.svg
 share/ART/images/circle-darkgray-small.svg
+share/ART/images/circle-dot-big.svg
 share/ART/images/circle-empty-blue-small.svg
 share/ART/images/circle-empty-darkgray-small.svg
 share/ART/images/circle-empty-gray-small.svg
@@ -355,6 +369,7 @@ share/ART/images/fullscreen-leave.svg
 share/ART/images/gamut-hist.svg
 share/ART/images/gamut-plus.svg
 share/ART/images/gamut-softproof.svg
+share/ART/images/gamut-warning-monitor.svg
 share/ART/images/gamut-warning.svg
 share/ART/images/gamut_srgb_prophoto_xy.svg
 share/ART/images/gears-pause.svg
@@ -396,6 +411,8 @@ share/ART/images/intent-absolute.svg
 share/ART/images/intent-perceptual.svg
 share/ART/images/intent-relative.svg
 share/ART/images/intent-saturation.svg
+share/ART/images/light_pipeline_off.svg
+share/ART/images/light_pipeline_on.svg
 share/ART/images/local-edit.svg
 share/ART/images/magnifier-1to1-small.svg
 share/ART/images/magnifier-1to1.svg
@@ -422,6 +439,7 @@ share/ART/images/panel-to-left.svg
 share/ART/images/panel-to-right.svg
 share/ART/images/panel-to-top.svg
 share/ART/images/paste.svg
+share/ART/images/pen-ocra-small.svg
 share/ART/images/perspective-aspect-horizontal-small.svg
 share/ART/images/perspective-aspect-vertical-small.svg
 share/ART/images/perspective-horizontal-left-small.svg
@@ -440,6 +458,7 @@ share/ART/images/power-off-small.svg
 share/ART/images/power-on-small-faded.svg
 share/ART/images/power-on-small.svg
 share/ART/images/preferences.svg
+share/ART/images/profile-append.svg
 share/ART/images/profile-filled.svg
 share/ART/images/profile-partial.svg
 share/ART/images/raw-clip-curve.svg
@@ -557,34 +576,43 @@ share/ART/images/wb-tungsten.svg
 share/ART/images/wb-water-small.svg
 share/ART/images/wb-water.svg
 share/ART/images/window-add.svg
+share/ART/languages/Catala
+share/ART/languages/Deutsch
+share/ART/languages/Espanol
 share/ART/languages/Francais
+share/ART/languages/Italiano
+share/ART/languages/Japanese
+share/ART/languages/Korean
 share/ART/languages/LICENSE
+share/ART/languages/Magyar
 share/ART/languages/Nederlands
 share/ART/languages/Portugues (Brasil)
 share/ART/languages/README
 share/ART/languages/default
+share/ART/luts/sigmoid.ctl
 share/ART/options
 share/ART/profiles/Auto-Matched Curve.arp
 share/ART/profiles/Noise Reduction High.arp
 share/ART/profiles/Noise Reduction Low.arp
 share/ART/profiles/Sharpening.arp
 share/ART/profiles/Simple Film Curve.arp
+share/ART/profiles/Standard Film Curve.arp
 share/ART/rt.json
 share/ART/sounds/BatchComplete.wav
 share/ART/sounds/Empty.wav
 share/ART/sounds/ProcessComplete.wav
-share/ART/themes/RawTherapee-GTK3-20_.css
-share/ART/themes/RawTherapee-GTK3-_19.css
-share/ART/themes/TooWaBlue - Bright-GTK3-20_.css
-share/ART/themes/TooWaBlue - Dark-GTK3-20_.css
-share/ART/themes/TooWaBlue-GTK3-20_.css
-share/ART/themes/TooWaBlue-GTK3-_19.css
-share/ART/themes/TooWaGrey - Average Surround-GTK3-20_.css
-share/ART/themes/TooWaGrey - Bright-GTK3-20_.css
-share/ART/themes/TooWaGrey - Dark-GTK3-20_.css
-share/ART/themes/TooWaGrey-GTK3-20_.css
-share/ART/themes/_ART-GTK3-20_.css
-share/ART/themes/_ART-GTK3-_19.css
+share/ART/themes/Default-GTK3-_19.css
+share/ART/themes/RawTherapee-GTK3-20_-DEPRECATED.css
+share/ART/themes/RawTherapee-GTK3-_19-DEPRECATED.css
+share/ART/themes/TooWaBlue - Bright-GTK3-20_-DEPRECATED.css
+share/ART/themes/TooWaBlue - Dark-GTK3-20_-DEPRECATED.css
+share/ART/themes/TooWaBlue-GTK3-20_-DEPRECATED.css
+share/ART/themes/TooWaBlue-GTK3-_19-DEPRECATED.css
+share/ART/themes/TooWaGrey - Average Surround-GTK3-20_-DEPRECATED.css
+share/ART/themes/TooWaGrey - Bright-GTK3-20_-DEPRECATED.css
+share/ART/themes/TooWaGrey - Dark-GTK3-20_-DEPRECATED.css
+share/ART/themes/TooWaGrey-GTK3-20_-DEPRECATED.css
+share/ART/themes/_ART.css
 share/ART/themes/images/svg/twb/checkbox-checked-disabled.svg
 share/ART/themes/images/svg/twb/checkbox-checked.svg
 share/ART/themes/images/svg/twb/checkbox-inconsistent-disabled.svg
@@ -609,7 +637,6 @@ share/ART/themes/images/twb/radio-inconsistent-disabled.png
 share/ART/themes/images/twb/radio-inconsistent.png
 share/ART/themes/images/twb/radio-unchecked-disabled.png
 share/ART/themes/images/twb/radio-unchecked.png
-share/ART/themes/size.css
 share/ART/themes/system.iconset
 share/ART/wbpresets.json
 share/applications/ART.desktop
@@ -619,3 +646,4 @@ share/icons/hicolor/24x24/apps/ART.png
 share/icons/hicolor/256x256/apps/ART.png
 share/icons/hicolor/48x48/apps/ART.png
 share/man/man1/ART.1.gz
+@dir share/ART/ctlscripts

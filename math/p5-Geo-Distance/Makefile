@@ -1,14 +1,12 @@
-# Created by: Rod Taylor <ports@rbt.ca>
-# $FreeBSD$
-
 PORTNAME=	Geo-Distance
-PORTVERSION=	0.24
+PORTVERSION=	0.25
 CATEGORIES=	math perl5 geography
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Calculate Distances and Closest Locations
+WWW=		https://metacpan.org/release/Geo-Distance
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Nick Leuta
-# $FreeBSD$
-
 PORTNAME=	bsdftpd-ssl
 PORTVERSION=	1.1.0
 PORTREVISION=	4
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.sourcefiles.org/System/Daemons/FTP/ \
 
 MAINTAINER=	skynick@mail.sc.ru
 COMMENT=	Secure FTP client/server with TLS/SSL support
+WWW=		http://bsdftpd-ssl.sc.ru
 
 USES=		ssl
 MAKE_ENV+=	OBJFORMAT=elf
@@ -29,11 +27,6 @@ OPTIONS_DEFAULT=SERVER
 LDFLAGS+=	-lpam
 
 .include <bsd.port.options.mk>
-
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_12=	variable has incomplete type 'X509_STORE_CTX' (aka 'struct x509_store_ctx_st')
-BROKEN_FreeBSD_13=	variable has incomplete type 'X509_STORE_CTX' (aka 'struct x509_store_ctx_st')
-.endif
 
 .if ${PORT_OPTIONS:MSERVER} && ${PORT_OPTIONS:MEXAMPLES}
 SUB_FILES=	pkg-message

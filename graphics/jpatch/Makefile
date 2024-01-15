@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	jpatch
 DISTVERSION=	0.4p1
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}0_4preview1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Spline based 3D modeling tool
+WWW=		http://www.jpatch.com
 
 USES=		zip
 USE_JAVA=	yes

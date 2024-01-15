@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	aha
 DISTVERSION=	0.5.1
 CATEGORIES=	textproc devel
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ansi HTML Adapter
+WWW=		https://github.com/theZiz/aha
 
 LICENSE=	LGPL20+ MPL11
 LICENSE_COMB=	dual

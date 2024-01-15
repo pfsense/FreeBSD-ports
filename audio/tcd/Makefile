@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	tcd
 PORTVERSION=	2.2.0
 PORTREVISION=	8
@@ -9,6 +6,7 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, user-friendly ncurses-based CD player
+WWW=		https://www.nongnu.org/tcd/
 
 LICENSE=	GPLv2
 

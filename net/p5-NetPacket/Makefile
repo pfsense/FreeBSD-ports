@@ -1,6 +1,3 @@
-# Created by: Anatoliy Dmytriyev
-# $FreeBSD$
-
 PORTNAME=	NetPacket
 PORTVERSION=	1.6.0
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	tolid@tolid.eu.org
 COMMENT=	Modules to assemble/disassemble network packets at the protocol level
+WWW=		https://metacpan.org/release/NetPacket
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

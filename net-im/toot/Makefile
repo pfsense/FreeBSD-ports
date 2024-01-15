@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	toot
-DISTVERSION=	0.27.0
+DISTVERSION=	0.28.0
 CATEGORIES=	net-im python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Interact with the Mastodon social network from the command line
+WWW=		https://github.com/ihabunek/toot
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,7 +18,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.5.0:www/py-beautifulsoup@$
 		${PYTHON_PKGNAMEPREFIX}pytest-cov>=2.4.0:devel/py-pytest-cov@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=3.0.0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python:3.4+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	ihabunek
 USE_PYTHON=	autoplist distutils

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Jifty-DBI
 PORTVERSION=	0.78
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object-relational persistence Perl framework
+WWW=		https://metacpan.org/release/Jifty-DBI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

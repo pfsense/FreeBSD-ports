@@ -1,6 +1,3 @@
-# Created by: asami
-# $FreeBSD$
-
 PORTNAME=	xcolors
 PORTVERSION=	1.3
 PORTREVISION=	5

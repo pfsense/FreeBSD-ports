@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	2.3
 CATEGORIES=	french textproc
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	French thesaurus
+WWW=		https://www.dicollecte.org/
 
 LICENSE=	LGPL21
 
@@ -18,13 +17,13 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/th_fr_FR_v2.dat \
-		%%DATADIR%%/th_fr_FR_v2.idx
+PLIST_FILES=	${DATADIR}/th_fr_FR_v2.dat \
+		${DATADIR}/th_fr_FR_v2.idx
 
 FRALIASES=	fr_BE fr_CA fr_CH fr_LU
 .for ALIAS in ${FRALIASES}
-PLIST_FILES+=	%%DATADIR%%/th_${ALIAS}_v2.dat \
-		%%DATADIR%%/th_${ALIAS}_v2.idx
+PLIST_FILES+=	${DATADIR}/th_${ALIAS}_v2.dat \
+		${DATADIR}/th_${ALIAS}_v2.idx
 .endfor
 
 do-install:

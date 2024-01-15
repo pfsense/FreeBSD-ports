@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Parse-MIME
-PORTVERSION=	1.003
+PORTVERSION=	1.006
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to parse mime-types
+WWW=		https://metacpan.org/release/Parse-MIME
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

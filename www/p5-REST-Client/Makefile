@@ -1,6 +1,3 @@
-# Created by: Paul Schmehl <pauls@utdallas.edu>
-# $FreeBSD$
-
 PORTNAME=	REST-Client
 PORTVERSION=	273
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	michelle@sorbs.net
 COMMENT=	Simple client for interacting with RESTful http/https resources
+WWW=		https://metacpan.org/release/REST-Client
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,5 +18,7 @@ RUN_DEPENDS=	p5-LWP-Protocol-https>=6.02:www/p5-LWP-Protocol-https \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

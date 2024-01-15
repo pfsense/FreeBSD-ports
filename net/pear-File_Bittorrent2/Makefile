@@ -1,13 +1,15 @@
-# Created by: Zhen REN <bg1tpt@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	File_Bittorrent2
-DISTVERSION=	1.3.1
+PORTVERSION=	1.3.1
 CATEGORIES=	net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Decode and Encode data in Bittorrent format
+WWW=		https://pear.php.net/package/File_Bittorrent2
+
+LICENSE=	LGPL21+
 
 USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

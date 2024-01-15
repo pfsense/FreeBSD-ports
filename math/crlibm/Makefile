@@ -1,6 +1,3 @@
-# Created by: bf@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	crlibm
 DISTVERSION=	1.0beta4
 PORTREVISION=	2
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Correctly-rounded mathematics library
+WWW=		http://lipforge.ens-lyon.fr/www/crlibm/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

@@ -1,14 +1,12 @@
-# Created by: Jan Henrik Sylvester <me@janh.de>
-# $FreeBSD$
-
 PORTNAME=	xournal
 PORTVERSION=	0.4.8.2016
-PORTREVISION=	20
+PORTREVISION=	50
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	me@janh.de
 COMMENT=	Notetaking application that can annotate PDFs
+WWW=		https://xournal.sourceforge.net
 
 LICENSE=	GPLv2
 
@@ -21,7 +19,6 @@ USE_GNOME=	cairo libgnomecanvas
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--docdir="${DOCSDIR}"
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install desktop-install
 
 OPTIONS_DEFINE=		GHOSTSCRIPT DOCS

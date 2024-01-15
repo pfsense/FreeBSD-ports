@@ -1,6 +1,3 @@
-# Created by: Chris Calvey <chris@securityforensics.co.uk>
-# $FreeBSD$
-
 PORTNAME=	afflib
 PORTVERSION=	3.7.16
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Advanced Forensics Format library and utilities
+WWW=		https://github.com/sshock/AFFLIBv3
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,8 @@ GH_PROJECT=	AFFLIBv3
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-s3=yes
-USES=		autoreconf fuse libtool pathfix readline ssl
+USES=		autoreconf cpe fuse libtool pathfix readline ssl
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

@@ -1,15 +1,14 @@
-# Created by: Jeremy <karlj000@unbc.ca>
-# $FreeBSD$
-
 PORTNAME=	bluej
 PORTVERSION=	4.2.2
+PORTREVISION=	1
 CATEGORIES=	java editors
 MASTER_SITES=	http://www.bluej.org/download/files/
 DISTNAME=	BlueJ-generic-${PORTVERSION:S/.//g}
 EXTRACT_SUFX=	.jar
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Integrated Java environment designed for introductory teaching
+WWW=		https://www.bluej.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

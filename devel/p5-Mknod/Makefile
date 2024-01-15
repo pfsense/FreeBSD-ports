@@ -1,6 +1,3 @@
-# Created by: Sean Farley <sean-freebsd@farley.org>
-# $FreeBSD$
-
 PORTNAME=	Mknod
 PORTVERSION=	0.02
 PORTREVISION=	1

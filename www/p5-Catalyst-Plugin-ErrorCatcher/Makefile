@@ -1,6 +1,3 @@
-# Created by: andrey@kostenko.name
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-ErrorCatcher
 PORTVERSION=	0.0.8.21
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catch application errors and emit them somewhere
+WWW=		https://metacpan.org/release/Catalyst-Plugin-ErrorCatcher
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

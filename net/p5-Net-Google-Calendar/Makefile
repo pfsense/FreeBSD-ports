@@ -1,6 +1,3 @@
-# Created by: Yi-Hsuan Hsin <mhsin@mhsin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Google-Calendar
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mhsin@mhsin.org
 COMMENT=	Programmatic access to Google's Calendar API
+WWW=		https://metacpan.org/release/Net-Google-Calendar
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-Atom>=0.37:textproc/p5-XML-Atom \

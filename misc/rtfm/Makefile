@@ -1,6 +1,3 @@
-# Created by: Chris Costello <chris@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rtfm
 PORTVERSION=	1.0
 CATEGORIES=	misc

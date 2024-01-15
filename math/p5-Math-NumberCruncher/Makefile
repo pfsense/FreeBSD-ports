@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Math-NumberCruncher
 PORTVERSION=	5.00
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Collection of useful math-related functions
+WWW=		https://metacpan.org/release/Math-NumberCruncher
 
 USES=		perl5
 USE_PERL5=	configure

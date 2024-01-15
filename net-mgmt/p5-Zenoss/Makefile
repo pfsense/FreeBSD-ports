@@ -1,6 +1,3 @@
-# Created by: Phil Phillips
-# $FreeBSD$
-
 PORTNAME=	Zenoss
 PORTVERSION=	1.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pphillips@experts-exchange.com
 COMMENT=	Perl interface to the Zenoss JSON API
+WWW=		https://metacpan.org/release/Zenoss
 
 BUILD_DEPENDS=	p5-HTTP-Message>=0:www/p5-HTTP-Message \
 		p5-JSON>=2.0:converters/p5-JSON \

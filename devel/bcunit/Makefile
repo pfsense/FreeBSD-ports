@@ -1,20 +1,18 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bcunit
-PORTVERSION=	3.0.2
+PORTVERSION=	5.2.62
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Fork of defunct project CUnit, with several fixes and patches applied
+WWW=		https://gitlab.linphone.org/BC/public/bcunit
 
-LICENSE=	GPLv2+
+LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		autoreconf cmake libtool pathfix pkgconfig
 USE_GITLAB=	yes
-GL_ACCOUNT=	bofhbsd
-GL_COMMIT=	d8d2f4b40209e06b400f893cce58e4c6ba73341d
+GL_SITE=	https://gitlab.linphone.org/BC
+GL_ACCOUNT=	public
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

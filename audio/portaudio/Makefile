@@ -1,9 +1,6 @@
-# Created by: michaelnottebrock@gmx.net and lioux@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	portaudio
 PORTVERSION=	19.6.0
-PORTREVISION=	5
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.portaudio.com/archives/
@@ -11,13 +8,15 @@ DISTNAME=	pa_stable_v190600_20161030
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Portable cross-platform Audio API
+WWW=		http://www.portaudio.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		autoreconf dos2unix gmake libtool localbase:ldflags pathfix \
-		pkgconfig tar:tgz
+USES=		autoreconf:2.69 cpe dos2unix gmake libtool localbase:ldflags \
+		pathfix pkgconfig tar:tgz
 USE_LDCONFIG=	yes
+CPE_VENDOR=	portaudio_project
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-dependency-tracking \
@@ -34,6 +33,8 @@ PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS DOXYGEN EXAMPLES JACK PATEST SNDIO
 OPTIONS_SUB=	yes
+
+SUB_FILES=	pkg-message
 
 PATEST_DESC=	PortAudio Test Programs
 
@@ -70,6 +71,8 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/bindings/cpp/example/*.cxx \
 		${WRKSRC}/examples/*.c ${WRKSRC}/examples/*.cpp \
+		${WRKSRC}/src/os/unix/*.[ch] \
+		${WRKSRC}/src/common/*.[ch] \
 		${STAGEDIR}${EXAMPLESDIR}
 
 post-install-PATEST-on:

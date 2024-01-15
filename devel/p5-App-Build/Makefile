@@ -1,6 +1,3 @@
-# Created by: Alex Bakhtin <Alex.Bakhtin@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	App-Build
 PORTVERSION=	0.74
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	Alex.Bakhtin@gmail.com
 COMMENT=	Build and install Perl applications
+WWW=		https://metacpan.org/release/App-Build
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

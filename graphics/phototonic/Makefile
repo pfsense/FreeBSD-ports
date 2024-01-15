@@ -1,14 +1,13 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	phototonic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0
-PORTREVISION=	4
+DISTVERSION=	2.1-136
+DISTVERSIONSUFFIX=	-g12552ec
+PORTREVISION=	1
 CATEGORIES=	graphics
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Image viewer and organizer
+WWW=		https://github.com/oferkv/phototonic
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +18,9 @@ USES=		compiler:c++11-lang desktop-file-utils gettext gl qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	oferkv
 USE_GL=		gl
-USE_QT=		core gui imageformats svg widgets buildtools_build
+USE_QT=		core gui imageformats svg widgets buildtools:build
+
+PORTSCOUT=	skipv:list
 
 post-patch:
 	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \

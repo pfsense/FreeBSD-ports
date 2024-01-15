@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	fsmtrie
-PORTVERSION=	1.1.0
+PORTVERSION=	2.0.0
 CATEGORIES=	devel
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 
 MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	Fast String Matcher Trie project
+WWW=		https://github.com/farsightsec/fsmtrie
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

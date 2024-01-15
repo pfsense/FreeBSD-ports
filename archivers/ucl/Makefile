@@ -1,27 +1,26 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ucl
 PORTVERSION=	1.03
 PORTREVISION=	5
 CATEGORIES=	archivers devel
 MASTER_SITES=	http://www.oberhumer.com/opensource/ucl/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Data compression library with low memory usage
+WWW=		https://www.oberhumer.com/opensource/ucl/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL=	libucl
-
 USES=		libtool
-GNU_CONFIGURE=	yes
+
 CONFIGURE_ARGS=	--enable-shared
-USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+USE_LDCONFIG=	yes
 
 PORTDOCS=	AUTHORS NEWS README THANKS TODO
+
+CONFLICTS_INSTALL=	libucl
 
 OPTIONS_DEFINE=	DOCS
 

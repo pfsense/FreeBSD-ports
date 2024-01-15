@@ -1,27 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	direnv
-PORTVERSION=	2.26.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.33.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Environment variable manager for your shell
+WWW=		https://direnv.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash
 
-USES=		gmake go:modules
+USES=		go:modules
+GO_MODULE=	github.com/direnv/direnv/v2
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	direnv
-GH_SUBDIR=	src/github.com/direnv/direnv
-MAKE_ENV=	GOPATH=${WRKSRC}
-MAKEFILE=	GNUmakefile
-
-PLIST_FILES=	bin/direnv man/man1/direnv.1.gz man/man1/direnv-stdlib.1.gz
+PLIST_FILES=	bin/direnv \
+		man/man1/direnv-stdlib.1.gz \
+		man/man1/direnv.1.gz
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKDIR}/bin/direnv \

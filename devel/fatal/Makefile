@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	fatal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2020.12.28.00
+DISTVERSION=	2024.01.01.00
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for fast software prototyping in modern C++
+WWW=		https://github.com/facebook/fatal
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,5 +20,6 @@ do-install:
 	cd ${WRKSRC} && ${COPYTREE_SHARE} ${PORTNAME} ${STAGEDIR}${PREFIX}/include
 	${FIND} ${STAGEDIR}${PREFIX}/include -name "*.cpp" -delete
 	${FIND} ${STAGEDIR}${PREFIX}/include -type d -empty -delete
+	${RM} ${STAGEDIR}${PREFIX}/include/fatal/.clang-tidy
 
 .include <bsd.port.mk>

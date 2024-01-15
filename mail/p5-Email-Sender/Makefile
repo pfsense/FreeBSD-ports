@@ -1,9 +1,5 @@
-# Created by: Bill Brinzer <bill.brinzer@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Email-Sender
-PORTVERSION=	1.300031
-PORTREVISION=	2
+DISTVERSION=	2.500
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:RJBS
@@ -11,9 +7,11 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bill.brinzer@gmail.com
 COMMENT=	Library for sending email
+WWW=		https://metacpan.org/release/Email-Sender
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Email-Abstract>=3.006:mail/p5-Email-Abstract \
@@ -28,8 +26,9 @@ RUN_DEPENDS=	p5-Email-Abstract>=3.006:mail/p5-Email-Abstract \
 		p5-Try-Tiny>=0:lang/p5-Try-Tiny
 TEST_DEPENDS=	p5-Capture-Tiny>=0.08:devel/p5-Capture-Tiny
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

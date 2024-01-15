@@ -1,6 +1,3 @@
-# Created by: Yonatan <onatan@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	hspell
 PORTVERSION=	1.4
 CATEGORIES=	hebrew
@@ -8,6 +5,7 @@ MASTER_SITES=	http://hspell.ivrix.org.il/
 
 MAINTAINER=	onatan@gmail.com
 COMMENT=	Hebrew spellchecker and morphology engine
+WWW=		http://hspell.ivrix.org.il
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

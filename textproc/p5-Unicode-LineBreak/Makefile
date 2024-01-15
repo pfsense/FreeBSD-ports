@@ -1,6 +1,3 @@
-# Created by: Olivier Girard <Olivier.Girard@univ-angers.fr>
-# $FreeBSD$
-
 PORTNAME=	Unicode-LineBreak
 PORTVERSION=	2019.001
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 # blanket update approval granted.
 MAINTAINER=	Olivier.Girard@univ-angers.fr
 COMMENT=	Unicode-LineBreak package
+WWW=		https://metacpan.org/release/Unicode-LineBreak
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

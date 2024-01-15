@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	JSON-RPC-Common
 PORTVERSION=	0.11
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Transport agnostic JSON RPC helper objects
+WWW=		https://metacpan.org/release/JSON-RPC-Common
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

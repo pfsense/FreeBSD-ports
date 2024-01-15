@@ -1,47 +1,32 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	oauthlib
-PORTVERSION=	1.1.2
+PORTVERSION=	3.2.2
 CATEGORIES=	security net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
-COMMENT=	RFC-compliant implementation of the OAuth request-signing logic
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Generic, spec-compliant, thorough implementation of the OAuth request-signing logic
+WWW=		https://github.com/oauthlib/oauthlib
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cryptography>0:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyjwt>=1.0.0:www/py-pyjwt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}blinker>0:devel/py-blinker@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-cov>=2.6:devel/py-pytest-cov@${PY_FLAVOR}
 
-OPTIONS_DEFINE=		RSA SIGNALS SIGNEDTOKEN
-OPTIONS_DEFAULT=	RSA SIGNALS SIGNEDTOKEN
-
-RSA_DESC=		Enable RSA Support
-SIGNALS_DESC=		Enable signal support
-SIGNEDTOKEN_DESC=	Support for Signed Token
-
-RSA_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}cryptography>0:security/py-cryptography@${PY_FLAVOR}
-SIGNALS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}blinker>0:devel/py-blinker@${PY_FLAVOR}
-SIGNEDTOKEN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>0:security/py-cryptography@${PY_FLAVOR} \
-				${PYTHON_PKGNAMEPREFIX}pyjwt>=1.0.0:www/py-pyjwt@${PY_FLAVOR}
-
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	RSA SIGNALS SIGNEDTOKEN
+OPTIONS_DEFAULT=RSA SIGNALS SIGNEDTOKEN
+RSA_DESC=		RSA support
+SIGNALS_DESC=		Signal support
+SIGNEDTOKEN_DESC=	Signed token support
 
-.if ${PYTHON_REL} < 3000
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
-.endif
+RSA_USE=			PYTHON=cryptography
+SIGNALS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}blinker>=1.4.0:devel/py-blinker@${PY_FLAVOR}
+SIGNEDTOKEN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyjwt>=2.0.0<3:www/py-pyjwt@${PY_FLAVOR}
+SIGNEDTOKEN_USE=		PYTHON=cryptography
 
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

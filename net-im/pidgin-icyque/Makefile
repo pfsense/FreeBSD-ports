@@ -1,12 +1,11 @@
-# Created by: Eugene Grosbein <eugen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pidgin-icyque
 DISTVERSION=	g20200619
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	eugen@FreeBSD.org
 COMMENT=	Pidgin plugin for ICQ/WIM protocol
+WWW=		https://github.com/EionRobb/icyque
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,23 +1,19 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	apollo_upload_server
-PORTVERSION=	2.0.3
-PORTREVISION=	0
+PORTVERSION=	2.1.5
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Apollo-upload-server middleware for rails
+WWW=		https://github.com/jetruby/apollo_upload_server-ruby
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-graphql>=1.8:devel/rubygem-graphql \
-		rubygem-rails60>=4.2:www/rubygem-rails60
+RUN_DEPENDS=	rubygem-actionpack70>=6.1.6:www/rubygem-actionpack70 \
+		rubygem-graphql>=1.8:devel/rubygem-graphql
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

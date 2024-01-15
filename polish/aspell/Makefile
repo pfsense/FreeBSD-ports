@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	aspell
 SPELLVERSION=	6-pl-6.0_20061121-0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	polish textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Polish dictionary
+WWW=		https://aspell.sourceforge.net/
 
 DICT=	 	pl
 

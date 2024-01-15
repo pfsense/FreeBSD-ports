@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-ISA
 PORTVERSION=	0.36
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Report the search path for a class's ISA tree
+WWW=		https://metacpan.org/release/Class-ISA
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

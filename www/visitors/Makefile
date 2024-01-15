@@ -1,6 +1,3 @@
-# Created by: Florent Thoumie <flz@xbsd.org>
-# $FreeBSD$
-
 PORTNAME=	visitors
 PORTVERSION=	0.7.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-0.7
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Very fast and easy to use web log analyzer
+WWW=		http://www.hping.org/visitors/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_0.7
 

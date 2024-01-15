@@ -1,12 +1,10 @@
-# Created by: pauls
-# $FreeBSD$
-
 PORTNAME=	chaosreader
 PORTVERSION=	0.96
 CATEGORIES=	security
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Tool to extract data from tcpdump logs
+WWW=		https://sourceforge.net/projects/chaosreader/
 
 LICENSE=	GPLv3+
 

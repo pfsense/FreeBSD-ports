@@ -1,6 +1,3 @@
-# Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	CJKUnifonts
 PORTVERSION=	0.2.20080216.1
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DISTFILES=	ttf-arphic-uming_${PORTVERSION}.orig.tar.gz:uming \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CJKUnifonts TrueType Font is a combine of Arphic Ming and Kai fonts
+WWW=		https://www.freedesktop.org/wiki/Software/CJKUnifonts/
 
 DIST_SUBDIR=	${PORTNAME}
 NO_WRKSUBDIR=	yes

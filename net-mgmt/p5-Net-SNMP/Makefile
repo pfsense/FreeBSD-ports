@@ -1,6 +1,3 @@
-# Created by: Christopher N. Harrell <cnh@ivmg.net>
-# $FreeBSD$
-
 PORTNAME=	Net-SNMP
 PORTVERSION=	6.0.1
 DISTVERSIONPREFIX=	v
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object oriented interface to SNMP
+WWW=		https://metacpan.org/release/Net-SNMP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -24,7 +22,7 @@ RUN_DEPENDS=	p5-Crypt-DES>=0:security/p5-Crypt-DES \
 
 USES=		perl5
 USE_PERL5=	configure
-CONFLICTS=	p5-Net-SNMP3-[0-9]*
+CONFLICTS=	p5-Net-SNMP3
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	esecanna
 PORTVERSION=	1.0.1
 PORTREVISION=	6
@@ -12,6 +9,7 @@ DIST_SUBDIR=	esecanna
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pseudo cannaserver which wraps some other input engines
+WWW=		http://esecanna.netfort.gr.jp/
 
 USE_RC_SUBR=	esecanna
 

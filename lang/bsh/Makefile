@@ -1,12 +1,10 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	bsh
-DISTVERSION=	2.1.0
+DISTVERSION=	2.1.1
 CATEGORIES=	lang java
 
 MAINTAINER=	pfg@FreeBSD.org
 COMMENT=	Beanshell java scripting language
+WWW=		http://www.beanshell.org/
 
 LICENSE=	APACHE20
 
@@ -16,6 +14,9 @@ GH_PROJECT=	beanshell
 
 USE_JAVA=	8
 USE_ANT=	yes
+
+CONFLICTS_INSTALL=	schilyutils # bin/bsh
+
 ALL_TARGET=	jarall
 
 SUB_FILES=	${PORTNAME}.sh

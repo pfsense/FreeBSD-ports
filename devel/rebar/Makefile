@@ -1,6 +1,3 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rebar
 PORTVERSION=	2.6.4
 PORTEPOCH=	1
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Build-tool for Erlang that follows OTP principles
+WWW=		https://github.com/rebar/rebar
 
 LICENSE=	APACHE20
 

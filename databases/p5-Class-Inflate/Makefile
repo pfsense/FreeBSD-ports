@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Inflate
 PORTVERSION=	0.07
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Inflate HASH Object from Values in Database
+WWW=		https://metacpan.org/release/Class-Inflate
 
 BUILD_DEPENDS=	${RUN_DEPENDS} \
 		p5-DBD-SQLite>=0:databases/p5-DBD-SQLite \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pybloom
 PORTVERSION=	3.0.0
 DISTVERSIONPREFIX=	v
@@ -8,12 +6,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Probabilistic data structure
+WWW=		https://github.com/joseph-fox/python-bloomfilter
 
 LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bitarray>0:devel/py-bitarray@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 USE_GITHUB=	yes

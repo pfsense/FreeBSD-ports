@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	JQuery
 PORTVERSION=	1.06
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Interface to Jquery, a language based on JavaScript
+WWW=		https://metacpan.org/release/JQuery
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -22,8 +20,10 @@ RUN_DEPENDS=	p5-CGI-Application>=0:www/p5-CGI-Application \
 		p5-IO-String>=0:devel/p5-IO-String \
 		p5-XML-Writer>=0:textproc/p5-XML-Writer
 
-USE_PERL5=	modbuild
 USES=		perl5 shebangfix
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 SHEBANG_FILES=	lib/JQuery/cgi-bin/*.pl
 

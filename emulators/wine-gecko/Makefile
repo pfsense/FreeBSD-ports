@@ -1,8 +1,5 @@
-# Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	wine-gecko
-DISTVERSION=	2.47.1
+DISTVERSION=	2.47.2
 CATEGORIES=	emulators
 MASTER_SITES=	http://dl.winehq.org/wine/wine-gecko/${DISTVERSION}/
 DISTNAME=	wine-gecko-${DISTVERSION}-x86
@@ -11,13 +8,14 @@ EXTRACT_ONLY=
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	Gecko Layout Engine for Wine (HTML support)
+WWW=		https://wiki.winehq.org/Gecko
 
 LICENSE=	MPL20 GPLv2 GPLv3 LGPL21 LGPL3
 LICENSE_COMB=	multi
 
 PORTSCOUT=	ignore:1	# for newer versions see emulators/wine-gecko-devel
 
-CONFLICTS_INSTALL=	wine-gecko-devel-[0-9]*
+CONFLICTS_INSTALL=	wine-gecko-devel
 
 NO_BUILD=	yes
 PLIST_SUB+=	GECKO_VERSION="${DISTVERSION}"

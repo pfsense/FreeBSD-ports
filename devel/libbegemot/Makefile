@@ -1,6 +1,3 @@
-# Created by: Andrey V. Elsukov <bu7cher@yandex.ru>
-# $FreeBSD$
-
 PORTNAME=	libbegemot
 PORTVERSION=	1.11
 PORTREVISION=	5

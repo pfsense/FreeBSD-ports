@@ -1,6 +1,3 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	startup-notification
 PORTVERSION=	0.12
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library that supports startup notification spec from freedesktop.org
+WWW=		https://www.freedesktop.org/wiki/Software/startup-notification/
 
 LICENSE=	LGPL20 MIT
 LICENSE_COMB=	multi

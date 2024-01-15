@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	1.8.0
 CATEGORIES=	ukrainian textproc
@@ -9,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Ukrainian thesaurus
+WWW=		http://code.google.com/p/spell-uk
 
 LICENSE=	LGPL21 GPLv2
 LICENSE_COMB=	dual
@@ -17,8 +16,8 @@ NO_ARCH=	yes
 USES=		perl5 tar:tgz
 USE_PERL5=	build
 
-PLIST_FILES=	%%DATADIR%%/th_uk_UA.dat \
-		%%DATADIR%%/th_uk_UA.idx
+PLIST_FILES=	${DATADIR}/th_uk_UA.dat \
+		${DATADIR}/th_uk_UA.idx
 
 do-build:
 	@${PERL} ${WRKSRC}/bin/th_gen_idx.pl < ${WRKSRC}/src/thesaurus/th_uk_UA.dat > ${WRKSRC}/src/thesaurus/th_uk_UA.idx

@@ -1,6 +1,3 @@
-# Created by: Franz Bettag <franz@bett.ag>
-# $FreeBSD$
-
 PORTNAME=	pixiewps
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.1
@@ -8,6 +5,7 @@ CATEGORIES=	security
 
 MAINTAINER=	franz@bett.ag
 COMMENT=	Offline WPS bruteforce utility
+WWW=		https://github.com/wiire/pixiewps
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/../LICENSE.md

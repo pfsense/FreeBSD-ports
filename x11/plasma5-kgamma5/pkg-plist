@@ -1,4 +1,5 @@
-%%QT_PLUGINDIR%%/kcm_kgamma.so
+%%QT_PLUGINDIR%%/plasma/kcminit/kcm_kgamma_init.so
+%%QT_PLUGINDIR%%/plasma/kcms/systemsettings/kcm_kgamma.so
 share/doc/HTML/ca/kcontrol/kgamma5/index.cache.bz2
 share/doc/HTML/ca/kcontrol/kgamma5/index.docbook
 share/doc/HTML/cs/kcontrol/kgamma5/index.cache.bz2
@@ -25,6 +26,10 @@ share/doc/HTML/pt_BR/kcontrol/kgamma5/index.cache.bz2
 share/doc/HTML/pt_BR/kcontrol/kgamma5/index.docbook
 share/doc/HTML/ru/kcontrol/kgamma5/index.cache.bz2
 share/doc/HTML/ru/kcontrol/kgamma5/index.docbook
+share/doc/HTML/sv/kcontrol/kgamma5/index.cache.bz2
+share/doc/HTML/sv/kcontrol/kgamma5/index.docbook
+share/doc/HTML/tr/kcontrol/kgamma5/index.cache.bz2
+share/doc/HTML/tr/kcontrol/kgamma5/index.docbook
 share/doc/HTML/uk/kcontrol/kgamma5/index.cache.bz2
 share/doc/HTML/uk/kcontrol/kgamma5/index.docbook
 share/kgamma/pics/background.png
@@ -34,9 +39,7 @@ share/kgamma/pics/greyscale.png
 share/kgamma/pics/lightgrey.png
 share/kgamma/pics/midgrey.png
 share/kgamma/pics/rgbscale.png
-share/kservices5/kgamma.desktop
 share/locale/ar/LC_MESSAGES/kcmkgamma.mo
-share/locale/ast/LC_MESSAGES/kcmkgamma.mo
 share/locale/az/LC_MESSAGES/kcmkgamma.mo
 share/locale/be/LC_MESSAGES/kcmkgamma.mo
 share/locale/bg/LC_MESSAGES/kcmkgamma.mo
@@ -70,12 +73,14 @@ share/locale/id/LC_MESSAGES/kcmkgamma.mo
 share/locale/is/LC_MESSAGES/kcmkgamma.mo
 share/locale/it/LC_MESSAGES/kcmkgamma.mo
 share/locale/ja/LC_MESSAGES/kcmkgamma.mo
+share/locale/ka/LC_MESSAGES/kcmkgamma.mo
 share/locale/kk/LC_MESSAGES/kcmkgamma.mo
 share/locale/km/LC_MESSAGES/kcmkgamma.mo
 share/locale/ko/LC_MESSAGES/kcmkgamma.mo
 share/locale/lt/LC_MESSAGES/kcmkgamma.mo
 share/locale/lv/LC_MESSAGES/kcmkgamma.mo
 share/locale/mk/LC_MESSAGES/kcmkgamma.mo
+share/locale/ml/LC_MESSAGES/kcmkgamma.mo
 share/locale/mr/LC_MESSAGES/kcmkgamma.mo
 share/locale/ms/LC_MESSAGES/kcmkgamma.mo
 share/locale/nb/LC_MESSAGES/kcmkgamma.mo
@@ -106,6 +111,7 @@ share/locale/th/LC_MESSAGES/kcmkgamma.mo
 share/locale/tr/LC_MESSAGES/kcmkgamma.mo
 share/locale/ug/LC_MESSAGES/kcmkgamma.mo
 share/locale/uk/LC_MESSAGES/kcmkgamma.mo
+share/locale/vi/LC_MESSAGES/kcmkgamma.mo
 share/locale/zh_CN/LC_MESSAGES/kcmkgamma.mo
 share/locale/zh_HK/LC_MESSAGES/kcmkgamma.mo
 share/locale/zh_TW/LC_MESSAGES/kcmkgamma.mo

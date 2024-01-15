@@ -1,6 +1,3 @@
-# Created by: Pedro F. Giffuni
-# $FreeBSD$
-
 PORTNAME=	lp_solve
 PORTVERSION=	5.5.2.5
 CATEGORIES=	math
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}_source
 
 MAINTAINER=	mayo@oyam.ca
 COMMENT=	Linear Programming Solver
+WWW=		http://tech.groups.yahoo.com/group/lp_solve/
 
 LICENSE=	LGPL21
 

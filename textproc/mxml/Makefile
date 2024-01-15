@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mxml
 DISTVERSION=	3.1
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	https://github.com/michaelrsweet/mxml/releases/download/v${DISTVER
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small XML parsing library
+WWW=		http://www.minixml.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

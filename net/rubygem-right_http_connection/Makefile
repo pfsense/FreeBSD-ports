@@ -1,19 +1,16 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	right_http_connection
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Persistent HTTP/HTTPS connections with error retries
+WWW=		https://github.com/rightscale/right_http_connection
 
 LICENSE=	MIT
 
-NO_ARCH=	yes
-
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

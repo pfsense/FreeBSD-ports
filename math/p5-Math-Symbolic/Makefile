@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Symbolic
 PORTVERSION=	0.612
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Symbolic calculations
+WWW=		https://metacpan.org/release/Math-Symbolic
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

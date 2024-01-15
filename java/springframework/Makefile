@@ -1,6 +1,3 @@
-# Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	springframework
 PORTVERSION=	3.2.1
 CATEGORIES=	java devel
@@ -9,6 +6,7 @@ DISTNAME=	spring-framework-${PORTVERSION}.RELEASE-dist
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	The Spring Framework for Java
+WWW=		https://www.springframework.org/
 
 WRKSRC=		${WRKDIR}/spring-framework-${PORTVERSION}.RELEASE
 

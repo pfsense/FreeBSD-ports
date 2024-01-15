@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Font-TTF
 PORTVERSION=	1.06
 CATEGORIES=	x11-fonts perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for TrueType font hacking
+WWW=		https://metacpan.org/release/Font-TTF
 
 LICENSE=	ART20
 

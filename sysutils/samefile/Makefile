@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	samefile
 PORTVERSION=	2.15
 PORTREVISION=	1
@@ -8,8 +6,9 @@ MASTER_SITES=	http://www.schweikhardt.net/
 
 MAINTAINER=	schweikh@FreeBSD.org
 COMMENT=	Find files with identical contents
+WWW=		http://www.schweikhardt.net/samefile/
 
-CONFLICTS=	samesame-[0-9]*
+CONFLICTS=	samesame
 
 GNU_CONFIGURE=	yes
 

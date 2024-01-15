@@ -1,6 +1,3 @@
-# Created by: Yoshiro MIHIRA <sanpei@yy.cs.keio.ac.jp>
-# $FreeBSD$
-
 PORTNAME?=	xpbiff
 PORTVERSION?=	1.27
 PORTREVISION=	5
@@ -15,8 +12,10 @@ COMMENT?=	Replacement for xbiff that handles popup window with mail header
 
 USES=		imake:noman xorg
 USE_XORG=	xpm xaw xmu
-PLIST_FILES=	bin/xpbiff
+
 WRKSRC=		${WRKDIR}/xpbiff
+
+PLIST_FILES=	bin/xpbiff
 
 .if defined(PREFIX) && ${PREFIX} != ${LOCALBASE}
 YOUBINBINDIR=	${PREFIX}
@@ -25,6 +24,10 @@ YOUBINBINDIR=	${LOCALBASE}
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
 
 do-extract:
 	@${RM} -r ${WRKDIR}

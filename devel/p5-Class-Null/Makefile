@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Null
 PORTVERSION=	2.110730
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module which implements the Null Class design pattern
+WWW=		https://metacpan.org/release/Class-Null
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,6 +1,3 @@
-# Created by: citrin+bsd@citrin.ru
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Controller-SOAP
 PORTVERSION=	1.25
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst SOAP Controller
+WWW=		https://metacpan.org/release/Catalyst-Controller-SOAP
 
 LICENSE=	ARTPERL10
 

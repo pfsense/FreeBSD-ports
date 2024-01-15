@@ -1,22 +1,19 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	spring-watcher-listen
-PORTVERSION=	2.0.1
+PORTVERSION=	2.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Makes spring watch files using the listen gem
+WWW=		https://github.com/jonleighton/spring-watcher-listen
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-listen>=2.7<4.0:devel/rubygem-listen \
-		rubygem-spring>=1.2<3.0:devel/rubygem-spring
+		rubygem-spring>=4:devel/rubygem-spring
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

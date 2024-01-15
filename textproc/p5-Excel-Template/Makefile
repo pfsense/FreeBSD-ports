@@ -1,6 +1,3 @@
-# Created by: Espen Tagestad <espen@tagestad.no>
-# $FreeBSD$
-
 PORTNAME=	Excel-Template
 PORTVERSION=	0.34
 PORTREVISION=	2
@@ -8,8 +5,9 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for templating Excel files
+WWW=		https://metacpan.org/release/Excel-Template
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

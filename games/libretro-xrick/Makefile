@@ -1,23 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-xrick
-PORTVERSION=	0.20201218
+DISTVERSION=	0.20230528
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libretro implementation of "Rick Dangerous"
+WWW=		https://github.com/libretro/xrick-libretro
 
 LICENSE=	GPLv2
 
-USES=		gmake localbase sdl dos2unix
+USES=		gmake localbase sdl
 USE_SDL=	sdl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	xrick-libretro
-GH_TAGNAME=	0aad6c6
+GH_TAGNAME=	c433c1080409fefcfb69d66dc6416967ff5f6735
 
-MAKEFILE=	Makefile.libretro
+MAKEFILE=	Makefile.freebsd
 DOS2UNIX_FILES=	${MAKEFILE}
 
 PLIST_FILES=	lib/libretro/xrick_libretro.so

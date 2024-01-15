@@ -1,6 +1,3 @@
-# Created by: Bas Kruit <baskruit@bsltwr.dhis.org>
-# $FreeBSD$
-
 PORTNAME=	dhisd
 PORTVERSION=	5.5
 CATEGORIES=	dns
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.dhis.org/pub/dhis/ \
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	DHIS server for dynamic updates on the server using specific engines
+WWW=		https://www.dhis.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

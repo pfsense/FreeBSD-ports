@@ -1,33 +1,27 @@
-# Created by: Martin Wilke
-# $FreeBSD$
-
 PORTNAME=	py3status
-PORTVERSION=	3.18
+PORTVERSION=	3.54
 CATEGORIES=	deskutils python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Extensible i3status wrapper written in python
+WWW=		https://py3status.readthedocs.io/en/latest/ \
+		https://github.com/ultrabug/py3status
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}google-api-python-client>=0:www/py-google-api-python-client@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}httplib2>=0:www/py-httplib2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}python-gflags>=0:devel/py-python-gflags@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}oauth2client>0:security/py-oauth2client@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gevent>0:devel/py-gevent@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyudev>0:devel/py-pyudev@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>=0:devel/py-hatchling@${PY_FLAVOR}
 
-USES=		python:3.5+
-USE_PYTHON=	distutils autoplist
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	ultrabug
-GH_PROJECT=	py3status
-
-NO_BUILD=	yes
 NO_ARCH=	yes
+
+OPTIONS_DEFINE=	UDEV
+UDEV_DESC=	UDEV support
+
+UDEV_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyudev>=0.21.0:devel/py-pyudev@${PY_FLAVOR}
 
 .include <bsd.port.mk>

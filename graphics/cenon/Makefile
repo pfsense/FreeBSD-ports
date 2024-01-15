@@ -1,9 +1,8 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cenon
+# Per r492056, 4.0.2 is the last version which actually works with GNUstep,
+# the later ones use XCode >= 5 .xib files which GNUstep cannot parse.
 PORTVERSION=	4.0.2
-PORTREVISION=	4
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	graphics gnustep
 MASTER_SITES=	http://www.cenon.zone/download/source/
@@ -14,10 +13,11 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector graphics tool for GNUstep
+WWW=		https://www.cenon.info/dLinux_gb.html
 
-USES=	tar:bzip2 gnustep
+USES=		gnustep tar:bzip2
 USE_GNUSTEP=	gui base build
-LLD_UNSAFE=yes
+LLD_UNSAFE=	yes
 
 WRKSRC=		${WRKDIR}/Cenon
 MAINVERSION=	4.0.2
@@ -36,7 +36,7 @@ OBJCFLAGS+=-DNSAppKitVersionNumber10_8=1200
 DISTFILES+=	CenonLibrary-${FULLVERSION}-1${EXTRACT_SUFX}
 
 post-patch:
-	${REINPLACE_CMD} -e 's|^GNUSTEP_INSTALLATION_DOMAIN|#GNUSTEP_INSTALLATION_DOMAIN|' \
+	@${REINPLACE_CMD} -e 's|^GNUSTEP_INSTALLATION_DOMAIN|#&|' \
 		${WRKSRC}/GNUmakefile
 
 pre-install:

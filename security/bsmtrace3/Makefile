@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bsmtrace
 PORTVERSION=	3.1
 DISTVERSIONPREFIX=	v
@@ -8,12 +6,13 @@ PKGNAMESUFFIX=	3
 
 MAINTAINER=	csjp@FreeBSD.org
 COMMENT=	BSM based intrusion detection system
+WWW=		https://www.github.com/openbsm/bsmtrace
 
 LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-CONFLICTS_INSTALL=	bsmtrace-[0-9]*
+CONFLICTS_INSTALL=	bsmtrace
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openbsm

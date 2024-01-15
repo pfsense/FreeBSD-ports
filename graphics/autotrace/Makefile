@@ -1,14 +1,12 @@
-# Created by: KANOU Hiroki <kanou@mil.allnet.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	autotrace
 PORTVERSION=	0.31.1
-PORTREVISION=	32
+PORTREVISION=	34
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/AutoTrace/${PORTVERSION}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Convert bitmap to vector graphics
+WWW=		https://AutoTrace.sourceforge.net/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -24,11 +22,11 @@ LDFLAGS+=	$$(libpng-config --L_opts)
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	IMAGEMAGICK MING PSTOEDIT
-OPTIONS_DEFAULT=IMAGEMAGICK PSTOEDIT
+OPTIONS_DEFAULT=IMAGEMAGICK
 MING_DESC=	Enable swf interface
 PSTOEDIT_DESC=	Convert postscript to other formats
 
-IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
+IMAGEMAGICK_USES=		magick:7
 IMAGEMAGICK_CONFIGURE_OFF=	--without-magick
 
 MING_LIB_DEPENDS=	libming.so:graphics/ming
@@ -47,4 +45,5 @@ post-patch:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libautotrace.so
+
 .include <bsd.port.mk>

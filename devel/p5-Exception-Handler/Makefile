@@ -1,6 +1,3 @@
-# Created by: jeffhung
-# $FreeBSD$
-
 PORTNAME=	Exception-Handler
 PORTVERSION=	1.004
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	jeffhung@mail2000.com.tw
 COMMENT=	Perl module that report exceptions with formatted text call-stack
+WWW=		https://metacpan.org/release/Exception-Handler
 
 USES=		perl5
 USE_PERL5=	configure

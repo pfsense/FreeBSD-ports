@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	pscal
 PORTVERSION=	1.16
 CATEGORIES=	print
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.panix.com/~mbh/pscal/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for generating Postscript calendars
+WWW=		https://www.panix.com/~mbh/projects.html
 
 NO_BUILD=	yes
 PLIST_FILES=	bin/pscal

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-ErrorHandler
 PORTVERSION=	0.04
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base class for error handling
+WWW=		https://metacpan.org/release/Class-ErrorHandler
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

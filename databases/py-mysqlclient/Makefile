@@ -1,23 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	mysqlclient
-DISTVERSION=	2.0.2
+DISTVERSION=	2.2.1
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	MySQL database connector for Python
+WWW=		https://pypi.org/project/mysqlclient
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c11 iconv mysql python:3.6+ ssl
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0.37:devel/py-wheel@${PY_FLAVOR}
+
+USES=		compiler:c11 dos2unix iconv mysql pkgconfig python ssl
+USE_PYTHON=	autoplist concurrent pep517
 
 PORTDOCS=	*
 
-CONFLICTS=	py*-MySQLdb-[0-9]* py*-MySQLdb5[0-9]-[0-9]* py*-MySQLdb
+CONFLICTS=	py*-MySQLdb py*-MySQLdb5[0-9] py*-MySQLdb
 
 OPTIONS_DEFINE=		DOCS
 

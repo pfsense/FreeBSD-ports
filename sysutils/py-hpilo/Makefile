@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	hpilo
-PORTVERSION=	4.4.2
+PORTVERSION=	4.4.3
 PORTREVISION=	0
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Python cli to interact with HP iLO management interface
+WWW=		https://github.com/seveas/python-hpilo
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=	python:3.6+
+USES=	python
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	seveas

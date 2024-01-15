@@ -1,6 +1,3 @@
-# Created by: Paul Dlug <paul@aps.org>
-# $FreeBSD$
-
 PORTNAME=	OAI-Harvester
 PORTVERSION=	1.20
 PORTEPOCH=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl module to harvest using the OAI protocol
+WWW=		https://metacpan.org/release/OAI-Harvester
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,10 +21,11 @@ RUN_DEPENDS=	p5-URI>=1.30:net/p5-URI \
 TEST_DEPENDS=	p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https \
 		p5-XML-SAX-Writer>=0:textproc/p5-XML-SAX-Writer
 
-PORTSCOUT=	limit:^[0-9\.]*$$
+USES=		perl5
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 .include <bsd.port.mk>

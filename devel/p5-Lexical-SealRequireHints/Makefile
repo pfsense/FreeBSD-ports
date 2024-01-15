@@ -1,14 +1,12 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Lexical-SealRequireHints
-PORTVERSION=	0.011
+PORTVERSION=	0.012
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to prevent leakage of lexical hints
+WWW=		https://metacpan.org/release/Lexical-SealRequireHints
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

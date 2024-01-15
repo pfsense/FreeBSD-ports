@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dnswall
 PORTVERSION=	0.1.4
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	dns security
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Daemon that filters out private IP addresses in DNS responses
+WWW=		https://github.com/abarth/google-dnswall
 
 LICENSE=	APACHE20
 

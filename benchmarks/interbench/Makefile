@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	interbench
 PORTVERSION=	0.31
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://ck.kolivas.org/apps/${PORTNAME}/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Interactivity benchmark for Unix-like systems
+WWW=		http://users.on.net/~ckolivas/interbench/
 
 LICENSE=	GPLv2
 

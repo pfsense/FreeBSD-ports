@@ -1,21 +1,20 @@
-# Created by: Hannes Hauswedell <h2+fbsdports@fsfe.org>
-# $FreeBSD$
-
 PORTNAME=	seqan-apps
 DISTVERSIONPREFIX=	seqan-v
 DISTVERSION=	2.4.0
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	biology
 
 MAINTAINER=	h2+fbsdports@fsfe.org
 COMMENT=	Official bioinformatic applications based on the SeqAn library
+WWW=		https://www.seqan.de/
 
 LICENSE=	BSD3CLAUSE LGPL3 GPLv3
 LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
 
-USES=		cmake compiler:openmp # once #199603 is resolved, add c++14-lang
+USES=		cmake compiler:c++14-lang
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	seqan
 GH_PROJECT=	seqan
@@ -32,14 +31,10 @@ NATIVE_CMAKE_ON=	-DSEQAN_ARCH_NATIVE:BOOL=TRUE
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386"
+.if ${ARCH} == "armv7" || ${ARCH} == "i386" || ${ARCH} == "powerpc"
 PLIST_SUB+=	RM_I386="@comment "
 .else
 PLIST_SUB+=	RM_I386=""
-.endif
-
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
-USE_GCC=	yes
 .endif
 
 .include <bsd.port.post.mk>

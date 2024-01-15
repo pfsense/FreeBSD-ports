@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libzmf
 PORTVERSION=	0.0.2
-PORTREVISION=	22
+PORTREVISION=	29
 CATEGORIES=	graphics
 MASTER_SITES=	LODEV
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Library that parses the file format of Zoner Callisto/Draw documents
+WWW=		https://wiki.documentfoundation.org/DLP/Libraries/libzmf
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING

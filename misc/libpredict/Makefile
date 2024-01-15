@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpredict
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.0
@@ -7,11 +5,13 @@ CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Satellite orbit prediction library
+WWW=		https://github.com/la1k/libpredict
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cmake
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	la1k
 USE_LDCONFIG=	yes

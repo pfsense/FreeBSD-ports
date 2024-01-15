@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	amqp-cpp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.1.4
@@ -8,6 +6,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	aleksandr.fedorov@vstack.com
 COMMENT=	C++ library for asynchronous non-blocking communication with RabbitMQ
+WWW=		https://github.com/CopernicaMarketingSoftware/AMQP-CPP
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

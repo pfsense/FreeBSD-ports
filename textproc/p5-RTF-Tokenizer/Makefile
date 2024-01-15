@@ -1,6 +1,3 @@
-# Created by: clsung@dragon2.net
-# $FreeBSD$
-
 PORTNAME=	RTF-Tokenizer
 PORTVERSION=	1.20
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for reading RTF files
+WWW=		https://metacpan.org/release/RTF-Tokenizer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

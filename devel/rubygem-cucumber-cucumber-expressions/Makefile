@@ -1,19 +1,15 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cucumber-cucumber-expressions
-PORTVERSION=	11.0.0
+PORTVERSION=	17.0.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cucumber Expressions for Ruby
+WWW=		https://github.com/cucumber/cucumber-expressions/tree/main/ruby
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

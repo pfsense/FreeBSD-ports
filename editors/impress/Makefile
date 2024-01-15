@@ -1,6 +1,3 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	impress
 PORTVERSION=	1.1b9
 PORTREVISION=	3
@@ -10,19 +7,25 @@ DISTNAME=	imp${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Publishing and presentation tool
+WWW=		https://www.ntlug.org/~ccox/impress/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-OPTIONS_DEFINE=	DOCS
+DEPRECATED=	Upstream last release was in 2000
+EXPIRATION_DATE=	2024-01-16
 
-NO_BUILD=	yes
-NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 USES+=		tk
 
-PORTDOCS=	*
+NO_ARCH=	yes
+NO_BUILD=	yes
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
 PLIST_FILES=	bin/impress
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} -e 's|exec wish|exec ${WISH}|g' \

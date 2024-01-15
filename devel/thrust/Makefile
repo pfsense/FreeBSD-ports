@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	thrust
 DISTVERSION=	1.9.5
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ parallel programming library which resembles the C++ STL
+WWW=		https://thrust.github.io/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	md5
 PORTVERSION=	1.8.5
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	cl-
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Native MD5 implementation in Common Lisp
+WWW=		https://www.cliki.net/MD5
 
 WRKSRC=		${WRKDIR}/${PKGNAMEPREFIX}${PORTNAME}-${DISTVERSION}
 NO_BUILD=	yes

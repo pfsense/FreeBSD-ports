@@ -1,21 +1,20 @@
-# Created by: Torsten Zuhlsdorff <ports@toco-domains.de>
-# $FreeBSD$
-
 PORTNAME=	ruby-saml
-PORTVERSION=	1.9.0
+PORTVERSION=	1.16.0
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	SAML toolkit for Ruby on Rails
+WWW=		https://developers.onelogin.com/saml/ruby \
+		https://github.com/SAML-Toolkits/ruby-saml
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-nokogiri>=1.5.10:textproc/rubygem-nokogiri
+RUN_DEPENDS=	rubygem-nokogiri>=1.13.10:textproc/rubygem-nokogiri \
+		rubygem-rexml>=0:textproc/rubygem-rexml
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

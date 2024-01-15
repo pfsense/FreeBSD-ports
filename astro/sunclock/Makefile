@@ -1,31 +1,27 @@
-# Created by: torstenb
-# $FreeBSD$
-
 PORTNAME=	sunclock
 PORTVERSION=	3.57
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	astro x11-clocks
 MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shows which portion of the Earth's surface is illuminated by the Sun
+WWW=		https://github.com/nongiach/Sunclock
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-USES=		jpeg xorg
+USES=		jpeg localbase xorg
 USE_XORG=	xpm
 
 CPPFLAGS+=	$$(libpng-config --I_opts) \
-		-I${LOCALBASE}/include \
 		-DEMXBINDIR=\\\"${PREFIX}/bin\\\" \
 		-DDOCDIR=\\\"${PREFIX}/lib/X11/doc\\\"
-LDFLAGS+=	$$(libpng-config --L_opts) \
-		-L${LOCALBASE}/lib
+LDFLAGS+=	$$(libpng-config --L_opts)
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-patch:
 	@cd ${WRKSRC} && ${SED} -e \

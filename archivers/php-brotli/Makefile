@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	brotli
-DISTVERSION=	0.11.1
+DISTVERSION=	0.13.1
 CATEGORIES=	archivers
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	daniel@shafer.cc
 COMMENT=	Brotli extension for PHP
+WWW=		https://github.com/kjdev/php-ext-brotli
 
 LICENSE=	MIT
 

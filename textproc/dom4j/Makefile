@@ -1,6 +1,3 @@
-# Created by: <glewis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dom4j
 PORTVERSION=	1.6.1
 PORTREVISION=	2
@@ -9,7 +6,10 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source XML framework for Java
+WWW=		https://www.dom4j.org/
 
+USES=		cpe
+CPE_VENDOR=	${PORTNAME}_project
 USE_JAVA=	yes
 NO_BUILD=	yes
 

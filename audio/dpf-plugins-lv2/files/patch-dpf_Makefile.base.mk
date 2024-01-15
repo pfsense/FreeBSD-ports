@@ -1,11 +1,20 @@
---- dpf/Makefile.base.mk.orig	2019-02-28 18:07:46 UTC
+--- dpf/Makefile.base.mk.orig	2022-10-31 20:10:17 UTC
 +++ dpf/Makefile.base.mk
-@@ -90,7 +90,7 @@ endif
- # Set build and link flags
+@@ -218,7 +218,7 @@ BASE_OPTS  = -O3 -ffast-math -fdata-sections -ffunctio
+ LINK_OPTS  = -fdata-sections -ffunction-sections
  
- BASE_FLAGS = -Wall -Wextra -pipe -MD -MP
--BASE_OPTS  = -O3 -ffast-math -mtune=generic -msse -msse2 -fdata-sections -ffunction-sections
-+BASE_OPTS  = -O3 -ffast-math $(SIMD_FLAGS) -fdata-sections -ffunction-sections
+ ifeq ($(GCC),true)
+-BASE_FLAGS += -fno-gnu-unique
++#BASE_FLAGS += -fno-gnu-unique
+ endif
+ 
+ ifeq ($(SKIP_STRIPPING),true)
+@@ -244,7 +244,7 @@ BASE_OPTS += -msse -msse2 -msse3 -msimd128
+ else ifeq ($(CPU_ARM32),true)
+ BASE_OPTS += -mfpu=neon-vfpv4 -mfloat-abi=hard
+ else ifeq ($(CPU_I386_OR_X86_64),true)
+-BASE_OPTS += -mtune=generic -msse -msse2 -mfpmath=sse
++BASE_OPTS += $(SIMD_FLAGS)
+ endif
  
  ifeq ($(MACOS),true)
- # MacOS linker flags

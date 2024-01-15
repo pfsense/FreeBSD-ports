@@ -1,9 +1,6 @@
-# Created by: Marwan Burelle <marwan.burelle@lri.fr
-# $FreeBSD$
-
 PORTNAME=	expat
 PORTVERSION=	0.9.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.xs4all.nl/~mmzeeman/ocaml/
 PKGNAMEPREFIX=	ocaml-
@@ -11,6 +8,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stub for the expat parser in OCaml
+WWW=		https://www.xs4all.nl/~mmzeeman/ocaml
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 

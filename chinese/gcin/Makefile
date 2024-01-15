@@ -1,14 +1,13 @@
-# Created by: Shen Chuan-Hsing
-# $FreeBSD$
-
 PORTNAME=	gcin
 PORTVERSION=	2.9.0
+PORTREVISION=	2
 CATEGORIES=	chinese textproc gnome
 MASTER_SITES=	http://hyperrate.com/gcin-source/
 EXTRACT_ONLY=	gcin-${PORTVERSION}.tar.xz
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Traditional Chinese input utility in X
+WWW=		https://hyperrate.com/dir.php?eid=67
 
 LICENSE=	LGPL21
 
@@ -21,7 +20,6 @@ HAS_CONFIGURE=	YES
 CONFIGURE_ARGS+=	--use_gtk3=N --use_qt5=N
 USE_GNOME=	gtk30
 USE_XORG=	x11 xtst xext
-INSTALLS_ICONS=	YES
 USE_LDCONFIG=	${PREFIX}/lib/gcin
 
 OPTIONS_DEFINE=	ANTHY

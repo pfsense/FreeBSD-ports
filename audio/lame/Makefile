@@ -1,37 +1,37 @@
-# Created by: yoshiaki Uchikawa
-# $FreeBSD$
-
 PORTNAME=	lame
-PORTVERSION=	3.100
-PORTREVISION=	2
+DISTVERSION=	3.100
+PORTREVISION=	4
 CATEGORIES=	audio
-MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/3.100
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${DISTVERSION}
 
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Fast MP3 encoder kit
+WWW=		http://lame.sourceforge.net/
 
-LICENSE=		LGPL20+
+LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake iconv libtool
+BUILD_DEPENDS=	${BUILD_DEPENDS_${ARCH}}
+BUILD_DEPENDS_i386=	nasm:devel/nasm
+
+USES=		cpe gmake iconv libtool
 USE_LDCONFIG=	yes
+CPE_VENDOR=	lame_project
 GNU_CONFIGURE=	yes
+
 CONFIGURE_ARGS=	--enable-nasm --enable-mp3rtp --disable-gtktest
 
 DOC_FILES=	API LICENSE README TODO USAGE
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-BUILD_DEPENDS+=	nasm:devel/nasm
-.endif
+OPTIONS_DEFAULT=DOCS
 
 post-patch:
 # Fix parallel builds
 	@${REINPLACE_CMD} -e 's,test -d \.libs || mkdir,mkdir -p,' \
 		${WRKSRC}/libmp3lame/i386/Makefile.in
+# Remove undefined symbol from linker version script - XXX to be removed with lame 3.101
+	@${REINPLACE_CMD} -e '/lame_init_old/d' ${WRKSRC}/include/libmp3lame.sym
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmp3lame.so.0
@@ -42,4 +42,4 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

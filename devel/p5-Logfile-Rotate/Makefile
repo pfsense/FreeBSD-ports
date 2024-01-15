@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Logfile-Rotate
 PORTVERSION=	1.04
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to rotate logfiles
+WWW=		https://metacpan.org/release/Logfile-Rotate
 
 USES=		perl5
 USE_PERL5=	configure

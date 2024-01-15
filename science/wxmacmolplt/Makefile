@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	wxmacmolplt
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.7-43
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONSUFFIX=	-g9a46f7a
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Graphical user interface principally for the GAMESS program
+WWW=		https://brettbode.github.io/wxmacmolplt/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

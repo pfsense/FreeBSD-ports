@@ -1,42 +1,43 @@
-# $FreeBSD$
-
 PORTNAME=	fmtconv
-PORTVERSION=	r22
+DISTVERSION=	r30
+PORTREVISION=	1
 CATEGORIES=	graphics
+MASTER_SITES=	https://github.com/EleonoreMizo/${PORTNAME}/releases/download/${DISTVERSION}/
 PKGNAMEPREFIX=	vapoursynth-
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	3b64292dd274.patch:-p1
-PATCHFILES+=	5e0340d35e4d.patch:-p1
-PATCHFILES+=	c62063bc34c6.patch:-p1
-
-MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Format conversion tools for Vapoursynth
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Format conversion tools for Vapoursynth and Avisynth+
+WWW=		https://github.com/EleonoreMizo/fmtconv
 
 LICENSE=	WTFPL
+LICENSE_FILES=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to compile on powerpc64: \#error
+ONLY_FOR_ARCHS=	aarch64 amd64
 
-BUILD_DEPENDS=	${LOCALBASE}/include/vapoursynth/VapourSynth.h:multimedia/vapoursynth
+USES=		autoreconf compiler:c++14-lang gmake libtool zip
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	EleonoreMizo
+EXTRACT_AFTER_ARGS=	-d ${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
-USES=		autoreconf compiler:c++11-lib gmake libtool pkgconfig
-EXCLUDE=	VapourSynth.h *.txt
-EXTRACT_AFTER_ARGS=	${EXCLUDE:S,^,--exclude ,}
 WRKSRC_SUBDIR=	build/unix
 PATCH_WRKSRC=	${WRKSRC:H:H}
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--libdir="${DATADIR}"
-CPPFLAGS+=	`pkg-config vapoursynth --cflags`
 INSTALL_TARGET=	install-strip
-DATADIR=	${PREFIX}/lib/vapoursynth
+
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
-PORTDATA=	lib${PORTNAME}.so
 PORTDOCS=	*
+PLIST_FILES=	lib/vapoursynth/lib${PORTNAME}.so
+
+CONFIGURE_ARGS=	--libdir="${PREFIX}/lib/vapoursynth"
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+# We need at least AVX2 instructions on amd64
+.if !defined(CPUTYPE) && ${ARCH} == "amd64"
+CONFIGURE_ENV+= EXTRA_CXXFLAGS=-march=haswell
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/x86_64/&|amd64/' \

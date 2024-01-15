@@ -1,19 +1,15 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	cmark
-DISTVERSION=	0.29.0
+DISTVERSION=	0.30.2
 CATEGORIES=	textproc
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	CommonMark parsing and rendering library and program in C
+WWW=		https://github.com/commonmark/cmark
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL=	py[2-3][0-9]-CommonMark
-
-USES=		cmake python:3.4+,test
+USES=		cmake python:test
 USE_GITHUB=	yes
 GH_ACCOUNT=	commonmark
 USE_LDCONFIG=	yes

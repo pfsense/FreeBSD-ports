@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-WWW-Mechanize-Catalyst
 PORTVERSION=	0.62
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Test::WWW::Mechanize for Catalyst
+WWW=		https://metacpan.org/release/Test-WWW-Mechanize-Catalyst
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

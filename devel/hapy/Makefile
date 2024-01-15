@@ -1,6 +1,3 @@
-# Created by: rousskov
-# $FreeBSD$
-
 PORTNAME=	hapy
 PORTVERSION=	0.0.8
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	Hapy-${PORTVERSION}
 
 MAINTAINER=	rousskov@measurement-factory.com
 COMMENT=	Runtime parser generator
+WWW=		https://hapy.sourceforge.net
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

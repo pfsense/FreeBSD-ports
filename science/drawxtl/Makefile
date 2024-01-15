@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	DRAWxtl
 DISTVERSION=	5.5
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://www.lwfinger.com/drawxtl/
 DISTNAME=	${PORTNAME}${DISTVERSION:S/.//}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Crystal structure visualization tool
+WWW=		http://www.lwfinger.net/drawxtl/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

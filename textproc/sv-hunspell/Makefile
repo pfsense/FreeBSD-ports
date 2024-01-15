@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	2.40
 CATEGORIES=	textproc
@@ -12,6 +10,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Swedish hunspell dictionaries
+WWW=		https://extensions.libreoffice.org/extensions/swedish-spelling-dictionary-den-stora-svenska-ordlistan
 
 LICENSE=	LGPL3
 
@@ -19,10 +18,10 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/sv_FI.aff \
-		%%DATADIR%%/sv_FI.dic \
-		%%DATADIR%%/sv_SE.aff \
-		%%DATADIR%%/sv_SE.dic
+PLIST_FILES=	${DATADIR}/sv_FI.aff \
+		${DATADIR}/sv_FI.dic \
+		${DATADIR}/sv_SE.aff \
+		${DATADIR}/sv_SE.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

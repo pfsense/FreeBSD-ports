@@ -1,6 +1,3 @@
-# Created by: Jim Mock <jim@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	aterm
 PORTVERSION=	1.0.1
 PORTREVISION=	7
@@ -9,15 +6,16 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Color vt102 terminal emulator with transparency support
+WWW=		https://aterm.sourceforge.net/
 
-MAKE_JOBS_UNSAFE= yes
+MAKE_JOBS_UNSAFE=	yes
 
-USES=	dos2unix xorg
+USES=		cpe dos2unix xorg
 DOS2UNIX_FILES=	src/rxvt.h
 
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --enable-wtmp \
+CONFIGURE_ARGS=	--enable-wtmp \
 		--enable-xgetdefault \
 		--disable-memset \
 		--disable-swapscreen \
@@ -27,6 +25,8 @@ CONFIGURE_ARGS= --enable-wtmp \
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+CONFLICTS_INSTALL=	zh-aterm
 
 OPTIONS_DEFINE=	TRANS BSDEL MOUSE BGIMG KANJI BIG5S GREEK
 OPTIONS_DEFAULT=	TRANS BSDEL MOUSE

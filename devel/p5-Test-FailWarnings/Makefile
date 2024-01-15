@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-FailWarnings
 PORTVERSION=	0.008
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Add test failures if warnings are caught
+WWW=		https://metacpan.org/release/Test-FailWarnings
 
 LICENSE=	APACHE20
 

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
-PORTVERSION=	20201212
+PORTVERSION=	20220621
 CATEGORIES=	portuguese textproc
 MASTER_SITES=	https://natura.di.uminho.pt/download/sources/Dictionaries/hunspell/:PT \
 		https://pt-br.libreoffice.org/assets/Uploads/PT-BR-Documents/VERO/:BR \
@@ -12,6 +10,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Portuguese hunspell dictionaries
+WWW=		https://natura.di.uminho.pt/wiki/doku.php?id=dicionarios:main #hunspell
 
 # We pick the common one among:
 # - pt_PT is licensed under GPLv2, LGPL21 and MPL11.
@@ -22,10 +21,10 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/hunspell-pt_PT-${PORTVERSION}
 
-PLIST_FILES=	%%DATADIR%%/pt_BR.aff \
-		%%DATADIR%%/pt_BR.dic \
-		%%DATADIR%%/pt_PT.aff \
-		%%DATADIR%%/pt_PT.dic
+PLIST_FILES=	${DATADIR}/pt_BR.aff \
+		${DATADIR}/pt_BR.dic \
+		${DATADIR}/pt_PT.aff \
+		${DATADIR}/pt_PT.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

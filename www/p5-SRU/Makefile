@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	SRU
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Search and Retrieval by URL
+WWW=		https://metacpan.org/release/SRU
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

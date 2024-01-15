@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	cava
-DISTVERSION=	0.7.3
+DISTVERSION=	0.7.4
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	vendion@gmail.com
 COMMENT=	Console-based Audio Visualizer for MPD, PulseAudio, and sndio
+WWW=		https://karlstav.github.io/cava
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -50,6 +50,12 @@ VT_BUILD_DEPENDS=	psf2bdf:x11-fonts/psftools
 VT_MAKE_ARGS_OFF=	cava_font__DATA=""
 VT_PLIST_FILES=		${DATADIR}/cava.fnt
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=deprecated-non-prototype
+.endif
+
 pre-configure:
 	@${ECHO_CMD} ${DISTVERSION} > ${WRKSRC}/version
 
@@ -66,4 +72,4 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/example_files/config ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

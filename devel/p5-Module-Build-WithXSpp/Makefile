@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Build-WithXSpp
 PORTVERSION=	0.14
 CATEGORIES=	devel perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	XS++ enhanced flavour of Module::Build
+WWW=		https://metacpan.org/release/Module-Build-WithXSpp
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

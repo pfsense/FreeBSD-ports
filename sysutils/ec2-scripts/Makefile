@@ -1,44 +1,36 @@
-# Created by: Colin Percival
-# $FreeBSD$
-
 PORTNAME=	ec2-scripts
-PORTVERSION=	1.10
+PORTVERSION=	1.12
 CATEGORIES=	sysutils
-MASTER_SITES=	http://freebsd-ec2-dist.s3.amazonaws.com/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	cperciva@FreeBSD.org
 COMMENT=	Startup scripts for FreeBSD/EC2 environment
+WWW=		https://www.daemonology.net/freebsd-on-ec2/
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-OPTIONS_DEFINE=	NOFIRSTBOOT
-NOFIRSTBOOT_DESC=	Use old (pre-firstboot support) version of scripts
+RUN_DEPENDS=	${LOCALBASE}/sbin/ebsnvme-id:sysutils/ebsnvme-id \
+		${LOCALBASE}/bin/aws-ec2-imdsv2-get:net/aws-ec2-imdsv2-get
+
+USE_GITHUB=	YES
+GH_ACCOUNT=	cperciva
 
 NO_BUILD=	YES
 
-RC_SCRIPTS=	ec2_bootmail ec2_ephemeralswap ec2_fetchkey ec2_loghostkey
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNOFIRSTBOOT}
-PORTVERSION=	1.5
-PORTREVISION=	1
-NO_INSTALL=	YES
-RC_SCRIPTS+=	ec2_firstboot panicmail
-.else
-RC_SCRIPTS+=	ec2_configinit
+RC_SCRIPTS=	ec2_bootmail \
+		ec2_configinit \
+		ec2_ephemeral_diskseen \
+		ec2_ephemeral_swap \
+		ec2_fetchkey \
+		ec2_loghostkey
 PLIST_FILES=	sbin/configinit
-.endif
 
 .for i in ${RC_SCRIPTS}
 PLIST_FILES+=	etc/rc.d/$i
 .endfor
 
-.if ! ${PORT_OPTIONS:MNOFIRSTBOOT}
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/configinit.sh ${STAGEDIR}${PREFIX}/sbin/configinit
-.endif
 
 post-install:
 .for i in ${RC_SCRIPTS}

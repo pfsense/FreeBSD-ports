@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-IKC
 PORTVERSION=	0.2402
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	POE Inter-Kernel Communication
+WWW=		https://metacpan.org/release/POE-Component-IKC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

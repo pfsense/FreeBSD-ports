@@ -1,16 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	wlclock
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
-CATEGORIES=	x11-clocks
+DISTVERSION=	1.0.1
+CATEGORIES=	x11-clocks wayland
 MASTER_SITES=	https://git.sr.ht/~leon_plickat/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
-
-PATCH_SITES=	https://git.sr.ht/~leon_plickat/${PORTNAME}/commit/
-PATCHFILES+=	0d8ab34550aa.patch:-p1 # unbreak EPOLL=off
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Digital analog clock for Wayland desktops
+WWW=		https://git.sr.ht/~leon_plickat/wlclock
 
 LICENSE=	GPLv3
 
@@ -19,14 +15,11 @@ LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 
 USES=		compiler:c11 gnome meson pkgconfig
 USE_GNOME=	cairo
+CFLAGS+=	-Wno-error=strict-prototypes # https://lists.sr.ht/~leon_plickat/public-inbox/%3Cttzs-maz0-wny%40FreeBSD.org%3E
 PLIST_FILES=	bin/${PORTNAME}
 
-OPTIONS_DEFINE=	EPOLL MANPAGES
-OPTIONS_DEFAULT=EPOLL MANPAGES
-
-EPOLL_DESC=		Handle signals via epoll-shim
-EPOLL_LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim
-EPOLL_MESON_ENABLED=	handle-signals
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages

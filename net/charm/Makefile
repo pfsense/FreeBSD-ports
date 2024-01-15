@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	charm
 DISTVERSION=	6.8.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	http://charm.cs.illinois.edu/distrib/
 PKGNAMESUFFIX=	-uiuc
@@ -10,14 +8,15 @@ DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Message-passing parallel language and runtime system
+WWW=		https://www.ks.uiuc.edu/Research/namd/
 
 LICENSE=	CHARMPP_CONVERSE_LICENSE
 LICENSE_NAME=	Charm++/Converse License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	none # No redistribution is allowed, no commercial use: commercial use requires a commercial license
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc64
-ONLY_FOR_ARCHS_REASON=	Not clear if it can be built on other architectures
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	not clear if it can be built on other architectures
 
 FETCH_DEPENDS=	git:devel/git
 BUILD_DEPENDS=	bash:shells/bash
@@ -25,6 +24,7 @@ BUILD_DEPENDS=	bash:shells/bash
 USES=		fortran gmake localbase:ldflags shebangfix
 SHEBANG_GLOB=	*.sh
 SHEBANG_FILES=	src/scripts/*
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 #ARCH_STR=	linux${ARCH:S/amd64/64/:S/i386/32/:C/powerpc.*/ppc/}

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	scantailor
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.16
-PORTREVISION=	1
+DISTVERSION=	1.0.19
 CATEGORIES=	graphics
 
 MAINTAINER=	m.ne@gmx.net
 COMMENT=	Interactive post-processing tool for scanned pages
+WWW=		https://github.com/ScanTailor-Advanced/scantailor-advanced
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,11 +19,11 @@ USES=		cmake compiler:c++11-lang desktop-file-utils jpeg qt:5 \
 		shared-mime-info xorg
 USE_CXXSTD=	gnu++98
 USE_GITHUB=	yes
-USE_QT=		core gui network opengl widgets xml buildtools_build \
-		linguisttools_build qmake_build
+USE_QT=		core gui network opengl svg widgets xml buildtools:build \
+		linguisttools:build qmake:build
 USE_XORG+=	xrender
 
-GH_ACCOUNT=	4lex4
+GH_ACCOUNT=	ScanTailor-Advanced
 GH_PROJECT=	scantailor-advanced
 OPTIONS_GROUP=	DOXYGEN
 
@@ -51,17 +49,11 @@ PORTDOCS=	*
 BUILD_DEPENDS+=	doxygen:devel/doxygen
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|_[12]|boost::lambda::&|g; s|bind(|boost::lambda::&|' \
-		${WRKSRC}/filters/*/Filter.cpp
-	@${REINPLACE_CMD} -e '/Categories/s|Applications|Scanning|' \
-		${WRKSRC}/resources/unix/scantailor.desktop
-
 post-patch-NLS-off:
 	@${REINPLACE_CMD} -e '/\/translations/s/install/# install/' ${WRKSRC}/CMakeLists.txt
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/resources/icons/appicon-about.png \
+	${INSTALL_DATA} ${WRKSRC}/src/resources/ScanTailor.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 
 .if ${PORT_OPTIONS:MHTML} || ${PORT_OPTIONS:MLATEX}

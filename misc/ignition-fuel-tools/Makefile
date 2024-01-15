@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	ignition-fuel-tools
 DISTVERSION=	1.2.0
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	misc
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Classes and tools for interacting with Ignition Fuel
+WWW=		https://ignitionrobotics.org/home
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING

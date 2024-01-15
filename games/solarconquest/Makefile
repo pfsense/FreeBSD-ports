@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	solarconquest
 PORTVERSION=	0.2
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	http://games.sajthelper.com/ \
 		LOCAL/ehaupt \
@@ -12,6 +9,7 @@ DISTNAME=	SolarConquest
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Space 2D action game with plenty of shooting
+WWW=		http://games.sajthelper.com/
 
 USES=		gl dos2unix sdl
 USE_SDL=	sdl mixer image

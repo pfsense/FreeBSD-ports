@@ -1,13 +1,11 @@
-# Created by: Bruce Cran <bruce@cran.org.uk>
-# $FreeBSD$
-
 PORTNAME=	dfu-util
-PORTVERSION=	0.10
+PORTVERSION=	0.11
 CATEGORIES=	comms
 MASTER_SITES=	http://dfu-util.sourceforge.net/releases/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Device firmware update (DFU) USB programmer
+WWW=		https://dfu-util.sourceforge.net/
 
 LICENSE=	GPLv2
 

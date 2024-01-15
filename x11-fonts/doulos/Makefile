@@ -1,6 +1,3 @@
-# Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DoulosSIL
 PORTVERSION=	4.112
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	http://scripts.sil.org/cms/scripts/render_download.php?&format=fil
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Doulos SIL TrueType font collection
+WWW=		https://scripts.sil.org/cms/scripts/page.php?item_id=DoulosSILfont
 
 LICENSE=	OFL11
 

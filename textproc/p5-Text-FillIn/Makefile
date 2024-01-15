@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Text-FillIn
 PORTVERSION=	0.05
 PORTREVISION=	1

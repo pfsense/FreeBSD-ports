@@ -1,6 +1,3 @@
-# Created by: Alexander Y. Grigoryev <alexander.4mail@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Crypt-PWSafe3
 PORTVERSION=	1.22
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	alexander.4mail@gmail.com
 COMMENT=	Read and write Passwordsafe v3 files
+WWW=		https://metacpan.org/release/Crypt-PWSafe3
 
 LICENSE=	ART20
 

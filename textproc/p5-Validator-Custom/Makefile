@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@sunpoet.net>
-# $FreeBSD$
-
 PORTNAME=	Validator-Custom
 PORTVERSION=	1.0201
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Validator::Custom for simple data validation
+WWW=		https://metacpan.org/release/Validator-Custom
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,8 +17,9 @@ RUN_DEPENDS=	p5-Object-Simple>=3.0621:devel/p5-Object-Simple
 TEST_DEPENDS=	p5-JSON>=2:converters/p5-JSON \
 		p5-Test-Pod>=1.22:devel/p5-Test-Pod
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

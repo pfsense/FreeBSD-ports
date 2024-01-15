@@ -1,18 +1,18 @@
-# Created by: Johann Visagie <wjv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	keychain
 PORTVERSION=	2.8.5
 CATEGORIES=	security
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	User-friendly front-end to ssh-agent(1)
+WWW=		https://www.funtoo.org/Keychain
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	funtoo
+
+CONFLICTS_INSTALL=	py*-pycoin # bin/keychain
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,6 +1,3 @@
-# Created by: mi
-# $FreeBSD$
-
 PORTNAME=	Mowitz
 PORTVERSION=	0.2.1
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://siag.nu/pub/mowitz/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Mowitz ("More widgets") library
+WWW=		https://siag.nu/mowitz/
 
 LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
 

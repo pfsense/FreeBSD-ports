@@ -1,6 +1,3 @@
-# Created by: gebhart@secnetix.de
-# $FreeBSD$
-
 PORTNAME=	Tree-Trie
 PORTVERSION=	1.9
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gebhart@secnetix.de
 COMMENT=	Data structure optimized for prefix lookup
+WWW=		https://metacpan.org/release/Tree-Trie
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,12 +1,10 @@
-# Created by: Lucas Holt <luke@foolishgames.com>
-# $FreeBSD$
-
 PORTNAME=	ciso-maker
 PORTVERSION=	1.02
 CATEGORIES=	sysutils
 
 MAINTAINER=	luke@foolishgames.com
 COMMENT=	Tool to compress ISO images to CSO format
+WWW=		https://github.com/laffer1/ciso-maker
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

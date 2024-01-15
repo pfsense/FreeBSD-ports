@@ -1,6 +1,3 @@
-# Created by: Sébastien Santoro <dereckson@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	xmlgen
 PORTVERSION=	1.4
 CATEGORIES=	textproc tcl
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/tclxml/${PORTNAME}/v${PORTVERSION}
 
 MAINTAINER=	dereckson@gmail.com
 COMMENT=	Write XML documents using Tcl
+WWW=		https://tclxml.sourceforge.net/
 
 USES=		tcl
 NO_BUILD=	yes

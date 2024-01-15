@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	fprintd
 DISTVERSIONPREFIX=	V_
 DISTVERSION=	0_8_1
 CATEGORIES=	security
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Daemon that provides fingerprint scanning functionality over D-Bus
+WWW=		https://www.freedesktop.org/wiki/Software/fprint/fprintd/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -33,17 +32,12 @@ OPTIONS_SUB=	yes
 NLS_CONFIGURE_ENABLE=	nls
 PAM_CONFIGURE_ENABLE=	pam
 
-do-configure:
-	(cd ${WRKSRC} ; ${SH} autogen.sh)
-
 # Remove doc build ;  Doesn't install with/without
 # Also less deps needed
 pre-configure:
 	${REINPLACE_CMD} -e '/pushd/d ; /docize/d ; /popd/d' ${WRKSRC}/autogen.sh
 	${REINPLACE_CMD} -e '73,81d' ${WRKSRC}/doc/Makefile.am
 	${REINPLACE_CMD} -e '/DOC_CHECK/d' ${WRKSRC}/configure.ac
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/security/pam_fprintd.so
+	(cd ${WRKSRC} && ${SETENV} NOCONFIGURE=1 ${SH} autogen.sh)
 
 .include <bsd.port.mk>

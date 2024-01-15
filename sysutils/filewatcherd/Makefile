@@ -1,13 +1,11 @@
-# Created by: Natacha Porte <natbsd@instinctive.eu>
-# $FreeBSD$
-
 PORTNAME=	filewatcherd
-DISTVERSION=	1.0-beta3
+DISTVERSION=	1.0
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	natbsd@instinctive.eu
 COMMENT=	Daemon that watches files and runs commands when they change
+WWW=		https://github.com/faelys/filewatcherd/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +16,10 @@ GH_ACCOUNT=	faelys
 USE_RC_SUBR=	filewatcherd
 
 SUB_FILES=	pkg-message
-PLIST_FILES=	sbin/filewatcherd etc/watchtab.sample man/man8/filewatcherd.8.gz man/man5/watchtab.5.gz
+PLIST_FILES=	etc/watchtab.sample \
+		man/man5/watchtab.5.gz \
+		man/man8/filewatcherd.8.gz \
+		sbin/filewatcherd
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/filewatcherd ${STAGEDIR}${PREFIX}/sbin

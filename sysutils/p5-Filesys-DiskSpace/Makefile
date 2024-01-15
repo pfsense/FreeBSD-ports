@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Filesys-DiskSpace
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl equivalent of statfs(2)
+WWW=		https://metacpan.org/release/Filesys-DiskSpace
 
 USES=		perl5
 USE_PERL5=	configure

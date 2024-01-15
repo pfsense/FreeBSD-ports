@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	aspell
 SPELLVERSION=	-fr-0.50-3
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	french textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell French dictionaries
+WWW=		http://aspellfr.free.fr/aspell/index.html.fr
 
 LICENSE=	GPLv2
 

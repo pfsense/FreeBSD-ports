@@ -1,6 +1,3 @@
-# Created by: Vaida Bogdan
-# $FreeBSD$
-
 PORTNAME=	netleak
 PORTVERSION=	0.1a
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-devel/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to detect connectivity between network segments
+WWW=		https://netleak.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

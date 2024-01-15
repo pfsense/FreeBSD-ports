@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tkeca
 PORTVERSION=	4.4.3
 CATEGORIES=	audio
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Tk interface to ecasound
+WWW=		https://tkeca.sourceforge.net/
 
 LICENSE=	GPLv2
 

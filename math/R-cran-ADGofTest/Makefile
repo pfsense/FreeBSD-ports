@@ -1,14 +1,12 @@
-# Created by: Devin Teske <dteske@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ADGofTest
 PORTVERSION=	0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	dteske@FreeBSD.org
 COMMENT=	Anderson-Darling GoF test
+WWW=		https://cran.r-project.org/web/packages/ADGofTest/
 
 LICENSE=	GPLv2
 

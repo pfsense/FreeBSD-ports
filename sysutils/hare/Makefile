@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	hare
 DISTVERSION=	1.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Small C client for sending ssh login notications to a hared server
+WWW=		https://github.com/jpmens/hared-hare
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

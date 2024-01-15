@@ -3,9 +3,9 @@
  * snort_check_for_rule_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ require_once("service-utils.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
 $snortlibdir = SNORT_BASEDIR . "lib";
@@ -35,15 +35,16 @@ $snortiprepdir = SNORT_IPREP_PATH;
 $snortbindir = SNORT_BINDIR;
 
 /* define checks */
-$oinkid = $config['installedpackages']['snortglobal']['oinkmastercode'];
-$etproid = $config['installedpackages']['snortglobal']['etpro_code'];
-$snortdownload = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
-$emergingthreats = $config['installedpackages']['snortglobal']['emergingthreats'] == 'on' ? 'on' : 'off';
-$etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'on' ? 'on' : 'off';
-$snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
-$vrt_enabled = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
-$openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'] == 'on' ? 'on' : 'off';
-$openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
+$oinkid = config_get_path('installedpackages/snortglobal/oinkmastercode');
+$etproid = config_get_path('installedpackages/snortglobal/etpro_code');
+$snortdownload = config_get_path('installedpackages/snortglobal/snortdownload') == 'on' ? 'on' : 'off';
+$emergingthreats = config_get_path('installedpackages/snortglobal/emergingthreats') == 'on' ? 'on' : 'off';
+$etpro = config_get_path('installedpackages/snortglobal/emergingthreats_pro') == 'on' ? 'on' : 'off';
+$snortcommunityrules = config_get_path('installedpackages/snortglobal/snortcommunityrules') == 'on' ? 'on' : 'off';
+$vrt_enabled = config_get_path('installedpackages/snortglobal/snortdownload') == 'on' ? 'on' : 'off';
+$openappid_detectors = config_get_path('installedpackages/snortglobal/openappid_detectors') == 'on' ? 'on' : 'off';
+$openappid_rules_detectors = config_get_path('installedpackages/snortglobal/openappid_rules_detectors') == 'on' ? 'on' : 'off';
+$feodotracker_rules = config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
 
 /* Working directory for downloaded rules tarballs and extraction */
 $tmpfname = "{$g['tmp_path']}/snort_rules_up";
@@ -105,6 +106,12 @@ $snort_openappid_rules_filename = SNORT_OPENAPPID_RULES_FILENAME;
 $snort_openappid_rules_filename_md5 = SNORT_OPENAPPID_RULES_FILENAME . ".md5";
 $snort_openappid_rules_url = SNORT_OPENAPPID_RULES_URL;
 
+/* Set up ABUSE.ch Feodo Tracker rules filename and URL */
+if ($feodotracker_rules == 'on') {
+	$feodotracker_rules_filename = FEODO_TRACKER_DNLD_FILENAME;
+	$feodotracker_rules_filename_md5 = FEODO_TRACKER_DNLD_FILENAME . ".md5";
+	$feodotracker_rules_url = FEODO_TRACKER_DNLD_URL;
+}
 
 function snort_update_status($msg) {
 	/************************************************/
@@ -134,7 +141,7 @@ function snort_download_file_url($url, $file_out) {
 	/* It provides logging of returned CURL errors. */
 	/************************************************/
 
-	global $g, $config, $last_curl_error, $fout, $ch;
+	global $g, $config, $last_curl_error;
 
 	$rfc2616 = array(
 			100 => "100 Continue",
@@ -190,13 +197,22 @@ function snort_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_FILE, $fout);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? false : true);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_NONE);
+		curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_ALPN, true);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_NPN, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, config_get_path('installedpackages/snortglobal/curl_no_verify_ssl_peer') == "on" ? false : true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
 
+		// detect broken connection so it disconnects after +-10 minutes (with default TCP_KEEPIDLE and TCP_KEEPINTVL) to avoid waiting forever.
+		curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1);
+
 		// Honor any system restrictions on sending USERAGENT info
-		if (!isset($config['system']['do_not_send_host_uuid'])) {
+		if (!config_path_enabled('system', 'do_not_send_host_uuid')) {
 			curl_setopt($ch, CURLOPT_USERAGENT, $g['product_name'] . '/' . $g['product_version'] . ' : ' . get_single_sysctl('kern.hostuuid'));
 		}
 		else {
@@ -204,13 +220,13 @@ function snort_download_file_url($url, $file_out) {
 		}
 
 		// Use the system proxy server setttings if configured
-		if (!empty($config['system']['proxyurl'])) {
-			curl_setopt($ch, CURLOPT_PROXY, $config['system']['proxyurl']);
-			if (!empty($config['system']['proxyport']))
-				curl_setopt($ch, CURLOPT_PROXYPORT, $config['system']['proxyport']);
-			if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
+		if (!empty(config_get_path('system/proxyurl'))) {
+			curl_setopt($ch, CURLOPT_PROXY, config_get_path('system/proxyurl'));
+			if (!empty(config_get_path('system/proxyport')))
+				curl_setopt($ch, CURLOPT_PROXYPORT, config_get_path('system/proxyport'));
+			if (!empty(config_get_path('system/proxyuser')) && !empty(config_get_path('system/proxypass'))) {
 				@curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_ANY | CURLAUTH_ANYSAFE);
-				curl_setopt($ch, CURLOPT_PROXYUSERPWD, "{$config['system']['proxyuser']}:{$config['system']['proxypass']}");
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, config_get_path('system/proxyuser') . ":" . config_get_path('system/proxypass'));
 			}
 		}
 
@@ -231,7 +247,6 @@ function snort_download_file_url($url, $file_out) {
 		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if (isset($rfc2616[$http_code]))
 			$last_curl_error = $rfc2616[$http_code];
-		curl_close($ch);
 		fclose($fout);
 
 		// If we had to try more than once, log it
@@ -385,7 +400,7 @@ function snort_untar($mode, $tarFile, $outputFolder = null, $extra = null){
 	$success = $ret === 0;
 	if(!$success) {
 		$err_msg = gettext("Failed to extract a rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. Tar file:") . $tarFile;
-		error_log('\t' . $err_msg . '\n', 3, SNORT_RULES_UPD_LOGFILE);
+		error_log("\t" . $err_msg . "\n", 3, SNORT_RULES_UPD_LOGFILE);
 		syslog(LOG_ERR, '[Snort] ' . $err_msg);
 	}
 	return $success;
@@ -397,7 +412,7 @@ function snort_copy($srcFilePathPattern, $destPath){
 	$success = $ret === 0;
 	if(!$success) {
 		$err_msg = gettext("Failed to copy some files from the rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. File(s):") . $srcFilePathPattern;
-		error_log('\t' . $err_msg . '\n', 3, SNORT_RULES_UPD_LOGFILE);
+		error_log("\t" . $err_msg . "\n", 3, SNORT_RULES_UPD_LOGFILE);
 		syslog(LOG_ERR, '[Snort] ' . $err_msg);
 	}
 	return $success;
@@ -423,7 +438,11 @@ safe_mkdir("{$snortiprepdir}");
 /* See if we need to automatically clear the Update Log based on 1024K size limit */
 if (file_exists(SNORT_RULES_UPD_LOGFILE)) {
 	if (1048576 < filesize(SNORT_RULES_UPD_LOGFILE))
-		unlink_if_exists("{SNORT_RULES_UPD_LOGFILE}");
+		file_put_contents(SNORT_RULES_UPD_LOGFILE, "");
+}
+else {
+	/* Create the file if not already present */
+	file_put_contents(SNORT_RULES_UPD_LOGFILE, "");
 }
 
 /* Sleep for random number of seconds between 0 and 35 to spread load on rules site */
@@ -433,6 +452,22 @@ sleep(random_int(0, 35));
 error_log(gettext("Starting rules update...  Time: " . date("Y-m-d H:i:s") . "\n"), 3, SNORT_RULES_UPD_LOGFILE);
 $last_curl_error = "";
 $update_errors = false;
+
+/* Save current state (running/not running) for each enabled Snort interface */
+$active_interfaces = array();
+foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
+	$if_real = get_real_interface($value['interface']);
+
+	/* Skip processing for instances whose underlying physical        */
+	/* interface has been removed in pfSense.                         */
+	if ($if_real == "") {
+		continue;
+	}
+
+	if ($value['enable'] = "on" && snort_is_running($value['uuid'])) {
+		$active_interfaces[] = $value['interface'];
+	}
+}
 
 /*  Check for and download any new Snort Subscriber Rules sigs */
 if ($snortdownload == 'on') {
@@ -495,18 +530,71 @@ if ($emergingthreats == 'on') {
 		$emergingthreats = 'off';
 }
 
+/*  Download any new ABUSE.ch Fedoo Tracker Rules sigs */
+if ($feodotracker_rules == 'on') {
+	// Grab the MD5 hash of our last successful download if available
+	if (file_exists("{$snortdir}/{$feodotracker_rules_filename}.md5")) {
+		$old_file_md5 = trim(file_get_contents("{$snortdir}/{$feodotracker_rules_filename}.md5"));
+	}
+	else {
+		$old_file_md5 = "0";
+	}
+
+	snort_update_status(gettext("Downloading Feodo Tracker Botnet C2 IP rules file..."));
+	error_log(gettext("\tDownloading Feodo Tracker Botnet C2 IP rules file...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+	$rc = snort_download_file_url("{$feodotracker_rules_url}{$feodotracker_rules_filename}", "{$tmpfname}/{$feodotracker_rules_filename}");
+
+	// See if the download from the URL was successful
+	if ($rc === true) {
+		snort_update_status(gettext(" done.") . "\n");
+		syslog(LOG_NOTICE, "[Snort] Feodo Tracker Botnet C2 IP rules file update downloaded successfully.");
+		error_log(gettext("\tDone downloading rules file.\n"),3, SNORT_RULES_UPD_LOGFILE);
+
+		// See if file has changed from our previously downloaded version
+		if ($old_file_md5 == trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}"))) {
+			// File is unchanged from previous download, so no update required
+			snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules are up to date.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Snort] Feodo Tracker Botnet C2 IP rules are up to date..."));
+			error_log(gettext("\tFeodo Tracker Botnet C2 IP rules are up to date.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			$feodotracker_rules = 'off';
+		}
+		else {
+			// Downloaded file is changed, so update our local MD5 hash and extract the new rules
+			file_put_contents("{$snortdir}/{$feodotracker_rules_filename}.md5", trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}")));
+			snort_update_status(gettext("Installing Feodo Tracker Botnet C2 IP rules..."));
+			error_log(gettext("\tExtracting and installing Feodo Tracker Botnet C2 IP rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			if(snort_untar("xzf", "{$tmpfname}/{$feodotracker_rules_filename}", "{$snortdir}/rules/")) {
+				snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules were updated.") . "\n");
+				syslog(LOG_NOTICE, gettext("[Snort] Feodo Tracker Botnet C2 IP rules were updated..."));
+				error_log(gettext("\tFeodo Tracker Botnet C2 IP rules were updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			}
+		}
+	}
+	else {
+		snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules file download failed!") . "\n");
+		syslog(LOG_ERR, gettext("[Snort] ERROR: Feodo Tracker Botnet C2 IP rules file download failed... server returned error '{$rc}'."));
+		error_log(gettext("\tERROR: Feodo Tracker Botnet C2 IP rules file download failed.  Remote server returned error {$rc}.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		error_log(gettext("\tFeodo Tracker Botnet C2 IP rules will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		$update_errors = true;
+		$feodotracker_rules = 'off';
+	}
+}
+
 /* Untar Snort rules file to tmp and install the rules */
 if ($snortdownload == 'on') {
 	if (file_exists("{$tmpfname}/{$snort_filename}")) {
 		snort_update_status(gettext("Installing Snort Subscriber ruleset..."));
 
 		/* Determine the platform FreeBSD major version so we can unpack  */
-		/* the corresponding SO rules. Default to FreeBSD-11.             */
-		$freebsd_version_so = 'FreeBSD-11';
-		$major_os_ver = strcspn(php_uname('r'), ".-");
-		if ($major_os_ver > 0) {
-			$freebsd_version_so = 'FreeBSD-' . substr(php_uname('r'), 0, $major_os_ver);
-		}
+		/* the corresponding SO rules. Default to FreeBSD-13 for now.     */
+		$freebsd_version_so = 'FreeBSD-13';
+
+# Leave the automated OS version determination commented-out until pfSense moves off of FreeBSD-12
+#		$major_os_ver = strcspn(php_uname('r'), ".-");
+#		if ($major_os_ver > 0) {
+#			$freebsd_version_so = 'FreeBSD-' . substr(php_uname('r'), 0, $major_os_ver);
+#		}
 
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;
@@ -541,22 +629,28 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/preproc_rules");
 
-		/* extract so rules */
-		error_log(gettext("\tUsing Snort Subscriber precompiled SO rules for {$freebsd_version_so} ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		/* extract SO rules */
 		$snort_arch = php_uname("m");
-		$nosorules = false;
-		if ($snort_arch  == 'i386'){
-			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/i386/{$snort_version}/")) {
-				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/i386/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
+		$nosorules = true;
+		safe_mkdir("{$tmpfname}/so_rules");
+
+		/****************************************************************************/
+		/* Snort SO rules only exist for Intel/AMD 64-bit architecture on FreeBSD,  */
+		/* so check if our platform is compatible, else set flag for "no SO rules". */
+		/****************************************************************************/
+		if ($snort_arch == 'amd64') {
+			error_log(gettext("\tUsing Snort Subscriber precompiled SO rules for {$freebsd_version_so} ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}/so_rules", "--strip-components 5 so_rules/precompiled/{$freebsd_version_so}*")) {
+				snort_copy("{$tmpfname}/so_rules/*.so", "{$snortlibdir}/snort_dynamicrules/");
+				$nosorules = false;
 			}
-		} elseif ($snort_arch == 'amd64') {
-			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/x86-64/{$snort_version}/")) {
-				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/x86-64/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
+			else {
+				error_log(gettext("\tAn error occurred extracting the Snort Subscriber precompiled SO rules. They have not been updated ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			}
-		} else
-			$nosorules = true;
+		}
 		rmdir_recursive("{$tmpfname}/so_rules/");
 
+		/* If we extracted the SO rule library objects, then also extract the rules stubs */
 		if ($nosorules == false) {
 			/* extract Shared Object stub rules, rename and copy to the rules folder. */
 			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "--exclude precompiled/ --exclude src/ so_rules/")) {
@@ -568,6 +662,7 @@ if ($snortdownload == 'on') {
 			}
 			rmdir_recursive("{$tmpfname}/so_rules/");
 		}
+
 		/* extract base etc files */
 		if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "etc/")) {
 			foreach (array("classification.config", "reference.config", "gen-msg.map", "unicode.map") as $file) {
@@ -714,7 +809,7 @@ if ($emergingthreats == 'on') {
 }
 
 // If removing deprecated rules categories, then do it
-if ($config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on") {
+if (config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on") {
 	syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 	snort_remove_dead_rules();
 }
@@ -744,7 +839,7 @@ function snort_apply_customizations($snortcfg, $if_real) {
 	@copy("{$snortdir}/unicode.map", "{$snortdir}/snort_{$snortcfg['uuid']}_{$if_real}/unicode.map");
 }
 
-if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {
+if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $openappid_rules_detectors == 'on' || $feodotracker_rules == 'on') {
 
 	error_log(gettext("\tCopying new config and map files...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 
@@ -777,8 +872,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		@copy("{$tmpfname}/{$prefix}gen-msg.map", "{$snortdir}/gen-msg.map");
 
 	/* Start the rules rebuild proccess for each configured interface */
-	if (is_array($config['installedpackages']['snortglobal']['rule']) &&
-	    !empty($config['installedpackages']['snortglobal']['rule'])) {
+	if (count(config_get_path('installedpackages/snortglobal/rule', [])) > 0) {
 
 		/* Set the flag to force rule rebuilds since we downloaded new rules,    */
 		/* except when in post-install mode.  Post-install does its own rebuild. */
@@ -788,7 +882,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			$rebuild_rules = true;
 
 		/* Create configuration for each active Snort interface */
-		foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			/* Skip processing for instances whose underlying physical        */
@@ -814,7 +908,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 			snort_apply_customizations($value, $if_real);
 
-			/*  Log a message in Update Log if protecting customized preprocessor rules. */
+			/* Log a message in Update Log if protecting customized preprocessor rules. */
 			$tmp = "\t" . $tmp . "\n";
 			if ($value['protect_preproc_rules'] == 'on') {
 				$tmp .= gettext("\tPreprocessor text rules flagged as protected and not updated for ");
@@ -822,6 +916,16 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			}
 			error_log($tmp, 3, SNORT_RULES_UPD_LOGFILE);
 			snort_update_status(gettext(" done.") . "\n");
+
+			/* Restart Snort on the interface if it was previously running, and we are not in Post Install mode */
+			if (!$g['snort_postinstall'] && in_array($value['interface'], $active_interfaces)) {
+				snort_update_status(gettext('Restarting Snort on ' . convert_friendly_interface_to_friendly_descr($value['interface']) . ' to activate the new set of rules...'));
+				error_log(gettext("\tRestarting Snort on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " to activate the new set of rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+				snort_start($value, $if_real);
+				snort_update_status(gettext(" done.") . "\n");
+       				syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of rules..."));
+				error_log(gettext("\tSnort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			}
 		}
 	}
 	else {
@@ -831,35 +935,29 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 	/* Clear the rebuild rules flag.  */
 	$rebuild_rules = false;
-
-	/* Restart snort if running, and not in post-install, so as to pick up the new rules. */
-       	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		snort_update_status(gettext('Restarting Snort to activate the new set of rules...'));
-		error_log(gettext("\tRestarting Snort to activate the new set of rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
-		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_restart_all_interfaces(TRUE);
-		sleep(3);
-		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_update_status(gettext(" done.") . "\n");
-       		syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted with your new set of rules..."));
-		error_log(gettext("\tSnort has restarted with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
-	}
 }
 elseif ($openappid_detectors == 'on') {
 	/**************************************************************************************/
 	/* Only updated OpenAppID detectors, so do not need to rebuild all interface rules.   */
 	/* Restart snort if running, and not in post-install, so as to pick up the detectors. */
 	/**************************************************************************************/
-       	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		snort_update_status(gettext('Restarting Snort to activate the new OpenAppID detectors...'));
-		error_log(gettext("\tRestarting Snort to activate the new OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
-		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_restart_all_interfaces(TRUE);
-		sleep(2);
-		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_update_status(gettext(" done.") . "\n");
-       		syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted with your new set of OpenAppID detectors..."));
-		error_log(gettext("\tSnort has restarted with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
+		$if_real = get_real_interface($value['interface']);
+
+		/* Skip processing for instances whose underlying physical        */
+		/* interface has been removed in pfSense.                         */
+		if ($if_real == "") {
+			continue;
+		}
+
+		if (!$g['snort_postinstall'] && in_array($value['interface'], $active_interfaces)) {
+			snort_update_status(gettext('Restarting Snort on ' . convert_friendly_interface_to_friendly_descr($value['interface']) . ' to activate the new set of OpenAppID detectors...'));
+			error_log(gettext("\tRestarting Snort on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " to activate the new set of OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			snort_start($value, $if_real);
+			snort_update_status(gettext(" done.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of OpenAppID detectors..."));
+			error_log(gettext("\tSnort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		}
 	}
 }
 
@@ -883,4 +981,7 @@ else {
 	$status .= gettext("success");
 }
 @file_put_contents(SNORTDIR . "/rulesupd_status", $status);
+
+// Return true if no errors occurred
+return !$update_errors;
 ?>

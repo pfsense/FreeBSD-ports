@@ -1,6 +1,3 @@
-# Created by: SADA Kenji <sada@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cvsweb
 PORTVERSION=	2.0.6
 PORTREVISION=	2
@@ -11,10 +8,13 @@ MASTER_SITES=	LOCAL/scop http://people.FreeBSD.org/~scop/cvsweb/
 # the <freebsd-cvsweb@FreeBSD.org> mailing list.
 MAINTAINER=	noackjr@alumni.rice.edu
 COMMENT=	WWW CGI script to browse CVS repository trees
+WWW=		https://www.FreeBSD.org/projects/cvsweb.html
 
 CONFLICTS=	cvsweb-3.*
 
-USES=		perl5
+USES=		cpe perl5
+
+CPE_VENDOR=	freebsd
 
 NO_BUILD=	yes
 PLIST_SUB=	CGIDIR="${CGIDIR}" ICONSDIR="${ICONSDIR}"

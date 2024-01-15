@@ -1,23 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	jiri
 PORTVERSION=	g${TIMESTAMP:S/-/./g:C/T.*//g}
+PORTREVISION=	15
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/swills
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 DIST_SUBDIR=	jiri
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Tool for multi-repo development
+WWW=		https://fuchsia.googlesource.com/jiri
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	cmake:devel/cmake \
-		ninja:devel/ninja
+BUILD_DEPENDS=	cmake:devel/cmake-core
 RUN_DEPENDS=	git:devel/git
 
-USES=		go:modules
+USES=		go:modules ninja:build
 
 GITHASH=	1eee1043d12d1baabae7f2466cc0b1646395e32c
 TIMESTAMP=	2020-08-28T00:00:00.000000

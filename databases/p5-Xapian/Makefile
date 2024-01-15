@@ -1,8 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Xapian
-PORTVERSION=	1.4.17.0
+PORTVERSION=	1.4.24.0
 CATEGORIES=	databases perl5
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION:R}/ \
 		LOCAL/sunpoet
@@ -11,6 +8,7 @@ DISTNAME=	xapian-bindings-${PORTVERSION:R}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl binding for Xapian
+WWW=		https://xapian.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -29,7 +27,6 @@ CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
 		--without-java \
 		--without-lua \
 		--without-php \
-		--without-php7 \
 		--without-python \
 		--without-python3 \
 		--without-ruby \
@@ -39,14 +36,9 @@ INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${LOCALBASE}/lib/perl5/${PERL_VER}/mach/CORE -lperl
 USE_CXXSTD=	c++11
 
-PORTDOCS=	*
-
 PORTSCOUT=	limitw:1,even
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-lstdc++||g' ${WRKSRC}/configure
 
 post-patch-DOCS-off:
 	@${REINPLACE_CMD} -e 's| install-dist_exampledataDATA install-docdataDATA||' ${WRKSRC}/perl/Makefile.in

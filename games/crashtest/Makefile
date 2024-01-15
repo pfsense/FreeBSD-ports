@@ -1,14 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	crashtest
 PORTVERSION=	1.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games education
 MASTER_SITES=	http://www.stolk.org/crashtest/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Educational crash simulator
+WWW=		https://www.stolk.org/crashtest/
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibul.a:x11-toolkits/plib
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \

@@ -1,23 +1,22 @@
-# Created by: Paul Dlug <paul@aps.org>
-# $FreeBSD$
-
 PORTNAME=	ldapdns
 PORTVERSION=	2.07
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	dns
 MASTER_SITES=	https://BSDforge.com/projects/source/dns/ldapdns/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	LDAP-backed DNS server
+WWW=		https://bsdforge.com/projects/dns/ldapdns/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		Unfetchable
+
 RUN_DEPENDS=	setuidgid:sysutils/daemontools \
 		tcpserver:sysutils/ucspi-tcp
 
-USES=		localbase:ldflags shebangfix tar:xz
-USE_OPENLDAP=	yes
+USES=		ldap localbase:ldflags shebangfix tar:xz
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}
 USE_CSTD=	gnu89

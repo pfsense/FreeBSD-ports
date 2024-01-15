@@ -1,12 +1,10 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PHP_Parser
 PORTVERSION=	0.2.2
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP Grammar Parser
+WWW=		https://pear.php.net/package/PHP_Parser
 
 USES=		pear
 

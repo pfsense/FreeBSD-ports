@@ -1,25 +1,22 @@
-# Created by: "Waitman Gobble" <uzimac@da3m0n8t3r.com>
-# $FreeBSD$
-
 PORTNAME=	dcraw-m
 PORTVERSION=	9.22
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	graphics
 
 MAINTAINER=	waitman@waitman.net
 COMMENT=	Modified Decoder for RAW files from digital cameras
+WWW=		http://www.cybercom.net/~dcoffin/dcraw/
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libjasper.so:graphics/jasper \
-		liblcms2.so:graphics/lcms2 \
-		libMagickWand-6.so:graphics/ImageMagick6
+		liblcms2.so:graphics/lcms2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	waitman
 GH_TAGNAME=	1392579
 
-USES=		jpeg pkgconfig
+USES=		jpeg magick:6 pkgconfig
 
 CFLAGS+=	-Wall -I${LOCALBASE}/include \
 		`MagickWand-config --cflags --cppflags` \

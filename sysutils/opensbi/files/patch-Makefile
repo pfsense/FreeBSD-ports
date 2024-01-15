@@ -1,11 +1,20 @@
---- Makefile.orig	2019-10-09 02:45:51 UTC
+--- Makefile.orig	2023-07-19 06:21:59 UTC
 +++ Makefile
-@@ -180,7 +180,7 @@ ASFLAGS		+=	$(firmware-asflags-y)
+@@ -337,7 +337,7 @@ endif
+ else
+ CFLAGS		+=	-O2
+ endif
+-CFLAGS		+=	-fno-omit-frame-pointer -fno-optimize-sibling-calls -mstrict-align
++CFLAGS		+=	-fno-omit-frame-pointer -fno-optimize-sibling-calls
+ # enable -m(no-)save-restore option by CC_SUPPORT_SAVE_RESTORE
+ ifeq ($(CC_SUPPORT_SAVE_RESTORE),y)
+ CFLAGS		+=	-mno-save-restore
+@@ -355,7 +355,7 @@ ASFLAGS		=	-g -Wall -nostdlib
+ CPPFLAGS	+=	$(firmware-cppflags-y)
  
- ARFLAGS		=	rcs
- 
--ELFFLAGS	+=	-Wl,--build-id=none -N -static-libgcc -lgcc
-+ELFFLAGS	+=	-Wl,--build-id=none -N -static-libgcc
- ELFFLAGS	+=	$(platform-ldflags-y)
- ELFFLAGS	+=	$(firmware-ldflags-y)
- 
+ ASFLAGS		=	-g -Wall -nostdlib
+-ASFLAGS		+=	-fno-omit-frame-pointer -fno-optimize-sibling-calls -mstrict-align
++ASFLAGS		+=	-fno-omit-frame-pointer -fno-optimize-sibling-calls
+ # enable -m(no-)save-restore option by CC_SUPPORT_SAVE_RESTORE
+ ifeq ($(CC_SUPPORT_SAVE_RESTORE),y)
+ ASFLAGS		+=	-mno-save-restore

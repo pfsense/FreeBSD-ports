@@ -1,15 +1,13 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	evince
-PORTVERSION=	3.38.0
-PORTREVISION=	1
+DISTVERSION=	43.1
+PORTREVISION=	8
 CATEGORIES=	graphics print gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GNOME 3 multi-format document viewer
+COMMENT=	GNOME multi-format document viewer
+WWW=		https://wiki.gnome.org/Apps/Evince
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,54 +15,56 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 FLAVOR?=	full
 FLAVORS=	full lite
 
-BUILD_DEPENDS=	itstool:textproc/itstool \
-		adwaita-icon-theme>=0:x11-themes/adwaita-icon-theme \
-		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
-LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib \
-		libfribidi.so:converters/fribidi \
+BUILD_DEPENDS=	adwaita-icon-theme>=0:x11-themes/adwaita-icon-theme \
+		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
+		itstool:textproc/itstool
+LIB_DEPENDS=	libfribidi.so:converters/fribidi \
+		libhandy-1.so:x11-toolkits/libhandy \
+		libpoppler-glib.so:graphics/poppler-glib \
 		libspectre.so:print/libspectre \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS=	adwaita-icon-theme>=0:x11-themes/adwaita-icon-theme \
 		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 
 PORTSCOUT=	limitw:1,even
-SLAVEPORT?=	no
 
-USES=		compiler:c++11-lib desktop-file-utils gettext \
-		gnome libarchive localbase:ldflags meson pkgconfig tar:xz xorg
-USE_GNOME=	cairo gtk30
-USE_GSTREAMER1=	yes
+USES=		compiler:c++11-lib cpe desktop-file-utils gettext gnome gstreamer libarchive \
+		localbase:ldflags meson pkgconfig tar:xz xorg
+USE_GNOME=	cairo gdkpixbuf2 gtk30
 USE_LDCONFIG=	yes
 USE_XORG=	ice
-INSTALLS_ICONS=	yes
-MESON_ARGS=	-Dps=enabled \
-		-Dsystemduserunitdir=no \
-		-Dgtk_doc=false
+CPE_VENDOR=	gnome
+MESON_ARGS=	-Dgtk_doc=false \
+		-Dpdf=enabled \
+		-Dps=enabled \
+		-Dsystemduserunitdir=no
 
 .if ${FLAVOR} == lite
-MESON_ARGS+=	-Dintrospection=false \
-		-Dthumbnailer=false \
-		-Dpreviewer=false \
-		-Dthumbnail_cache=disabled
-USE_GNOME+=	libxml2
-OPTIONS_EXCLUDE=	NAUTILUS DBUS
-PLIST=		${.CURDIR}/pkg-plist-lite
-PKGNAMESUFFIX=	-lite
-COMMENT+=	without GNOME dependencies
+MESON_ARGS+=		-Dintrospection=false \
+			-Dpreviewer=false \
+			-Dthumbnail_cache=disabled \
+			-Dthumbnailer=false
+USE_GNOME+=		libxml2
+OPTIONS_EXCLUDE=	DBUS NAUTILUS
+PLIST=			${.CURDIR}/pkg-plist-lite
+PKGNAMESUFFIX=		-lite
+COMMENT+=		without GNOME dependencies
+CONFLICTS_INSTALL=	evince
 .else
-USE_GNOME+=	introspection:build
-MESON_ARGS+=	-Dintrospection=true
+USE_GNOME+=		introspection:build
+MESON_ARGS+=		-Dintrospection=true
+CONFLICTS_INSTALL=	evince-lite
 .endif
 
 GLIB_SCHEMAS=	org.gnome.Evince.gschema.xml
 
 PLIST_SUB=	VERSION=3.0
 
-OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	COMICS DBUS DJVU DVI KEYRING NAUTILUS T1LIB XPS SPELL
-OPTIONS_DEFAULT=COMICS DBUS DJVU KEYRING NAUTILUS XPS SPELL
+OPTIONS_SUB=		yes
+OPTIONS_DEFINE=		COMICS DBUS DJVU DVI KEYRING NAUTILUS SPELL XPS
+OPTIONS_DEFAULT=	COMICS DBUS DJVU KEYRING NAUTILUS SPELL XPS
 
-COMICS_DESC=			Comic book archives support
+COMICS_DESC=		Comic book archives support
 COMICS_MESON_ENABLED=	comics
 
 DJVU_DESC=		DJVU support
@@ -75,7 +75,8 @@ DBUS_MESON_TRUE=	dbus
 DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 
 DVI_DESC=		DVI viewer support
-DVI_USE=		tex=latex,kpathsea
+DVI_USES=		tex
+DVI_USE=		TEX=kpathsea,latex
 DVI_MESON_ENABLED=	dvi
 
 KEYRING_DESC=		Keyring support
@@ -83,19 +84,14 @@ KEYRING_LIB_DEPENDS=	libsecret-1.so:security/libsecret
 KEYRING_MESON_ENABLED=	keyring
 
 NAUTILUS_DESC=		Nautilus plugin
-NAUTILUS_USE=		gnome=nautilus3
+NAUTILUS_USE=		GNOME=nautilus3
 NAUTILUS_MESON_TRUE=	nautilus
 
 SPELL_DESC=		spell checking support
 SPELL_MESON_ENABLED=	gspell
 SPELL_LIB_DEPENDS=	libgspell-1.so:textproc/gspell
 
-T1LIB_DESC=		Support TYPE1 fonts to DVI (Enables DVI)
-T1LIB_LIB_DEPENDS=	libt1.so:devel/t1lib
-T1LIB_MESON_ENABLED=	t1lib
-T1LIB_IMPLIES=		DVI
-
-XPS_DESC=	XPS support
+XPS_DESC=		XPS support
 XPS_LIB_DEPENDS=	libgxps.so:graphics/libgxps
 XPS_MESON_ENABLED=	xps
 

@@ -1,12 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-combo-pinyin
-DISTVERSION=	g20201204
+DISTVERSION=	g20211108
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Rime Combo Pinyin schema support
+WWW=		https://github.com/rime/rime-combo-pinyin
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,7 +24,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
-GH_TAGNAME=	5300951b8de07252d7565fefe84f5fae50205564
+GH_TAGNAME=	c9d8aca2fbc50ccab419d54cb9aaded362c1029d
 
 NO_ARCH=	yes
 

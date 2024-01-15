@@ -1,6 +1,3 @@
-# Created by: KIRIYAMA Kazuhiko <kiri@kiri.toba-cmt.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	japaneseAFM
 PORTVERSION=	1.0
 CATEGORIES=	japanese print

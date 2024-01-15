@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	xshisen
 PORTVERSION=	1.51
 PORTREVISION=	4
@@ -13,10 +10,13 @@ COMMENT=	Shisen-sho puzzle game for X11
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		xorg
-USE_XORG=	xpm
+USES=		cpe xorg
+USE_CXXSTD=	c++14
+USE_XORG=	ice sm x11 xmu xpm xt
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sharedstatedir="${DATADIR}"
+
 INSTALL_TARGET=	install-prog
 
 OPTIONS_DEFINE=		MOTIF

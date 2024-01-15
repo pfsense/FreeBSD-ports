@@ -1,26 +1,24 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	fcitx5-table-extra
-DISTVERSION=	5.0.1
+DISTVERSION=	5.0.13
 CATEGORIES=	chinese textproc
+MASTER_SITES=	https://download.fcitx-im.org/fcitx5/${PORTNAME}/
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Extra table support for Fcitx5
+WWW=		https://github.com/fcitx/fcitx5-table-extra
 
 LICENSE=	GPLv2+ GPLv3
 LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libIMETable.so:chinese/libime \
-		libFcitx5Core.so:textproc/fcitx5
+LIB_DEPENDS=	libFcitx5Core.so:textproc/fcitx5 \
+		libIMETable.so:chinese/libime
 
-USES=		gettext-tools cmake kde:5
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	fcitx
+USES=		cmake gettext-tools kde:5 tar:xz
 
 USE_KDE=	ecm
 
 INSTALL_TARGET=	install
+
+CONFLICTS_INSTALL=	zh-fcitx-table-extra # share/icons/hicolor/48x48/apps/fcitx-cantonese.png
 
 .include <bsd.port.mk>

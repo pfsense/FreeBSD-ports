@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	raspbsd-led
 PORTVERSION=	0.2
 PORTREVISION=	1
@@ -8,6 +6,7 @@ CATEGORIES=	misc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Misc LED programs for ARM boards
+WWW=		https://github.com/RaspBSD/raspbsd-led
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	raspbsd

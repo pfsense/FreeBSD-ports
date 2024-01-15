@@ -1,6 +1,3 @@
-# Created by: ericyu@mail2000.com.tw
-# $FreeBSD$
-
 PORTNAME=	xdesktopwaves
 PORTVERSION=	1.4
 CATEGORIES=	games
@@ -9,6 +6,7 @@ MASTER_SITE_SUBDIR=	${PORTNAME}/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simulation of water waves on the desktop
+WWW=		https://xdesktopwaves.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

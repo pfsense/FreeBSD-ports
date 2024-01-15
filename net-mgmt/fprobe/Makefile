@@ -1,6 +1,3 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	fprobe
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Tool that collects network traffic data
+WWW=		https://sourceforge.net/projects/fprobe/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

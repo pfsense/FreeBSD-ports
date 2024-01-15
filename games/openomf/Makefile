@@ -1,6 +1,3 @@
-# Created by: Stas Timokhin <devel@stasyan.com>
-# $FreeBSD$
-
 PORTNAME=	openomf
 PORTVERSION=	0.6.5
 PORTREVISION=	6
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTFILE_shadow} ${DISTFILE_libdumb} \
 
 MAINTAINER=	devel@stasyan.com
 COMMENT=	Rewritten engine for One Must Fall 2097
+WWW=		https://www.openomf.org/
 
 LIB_DEPENDS=	libconfuse.so:devel/libconfuse \
 		libpng.so:graphics/png \

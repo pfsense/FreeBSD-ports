@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-GraphViz
 PORTVERSION=	0.05
 PORTREVISION=	7
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	GraphViz View Perl class for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-View-GraphViz
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Catalyst-Plugin-SubRequest>=0:www/p5-Catalyst-Plugin-SubRequest \

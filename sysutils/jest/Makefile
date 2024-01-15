@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	jest
 DISTVERSION=	3.0.16
-PORTREVISION=	1
+PORTREVISION=	17
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	ReST api for creating and managing FreeBSD jails written in Go
+WWW=		https://github.com/tabrarg/jest
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +21,7 @@ GH_TUPLE=	\
 		dsnet:compress:cc9eb1d:dsnet_compress/vendor/github.com/dsnet/compress \
 		golang:gddo:af0f2af:golang_gddo/vendor/github.com/golang/gddo \
 		golang:snappy:2e65f85:golang_snappy/vendor/github.com/golang/snappy \
-		golang:sys:516e3c20635f:golang_sys/vendor/golang.org/x/sys \
+		golang:sys:v0.6.0:golang_sys/vendor/golang.org/x/sys \
 		gorilla:mux:v1.7.3:mux/vendor/github.com/gorilla/mux \
 		jlaffaye:ftp:c1312a7:ftp/vendor/github.com/jlaffaye/ftp \
 		klauspost:compress:v1.7.0:klauspost_compress/vendor/github.com/klauspost/compress \

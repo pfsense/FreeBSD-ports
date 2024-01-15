@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-FormFu-MultiForm
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Handle multi-page/stage forms with FormFu
+WWW=		https://metacpan.org/release/HTML-FormFu-MultiForm
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -25,8 +23,9 @@ RUN_DEPENDS=	p5-Clone>=0:devel/p5-Clone \
 		p5-MooseX-Attribute-Chained>=0:devel/p5-MooseX-Attribute-Chained
 TEST_DEPENDS=	p5-YAML-LibYAML>=0:textproc/p5-YAML-LibYAML
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

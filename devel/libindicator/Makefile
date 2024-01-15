@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libindicator
 PORTVERSION=	12.10.1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Symbols and convience functions for desktop indicators
+WWW=		https://launchpad.net/libindicator
 
 USES=		compiler:c++11-lang gmake gnome libtool pkgconfig
 USE_GNOME=	cairo gdkpixbuf2 gtk30

@@ -1,19 +1,18 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	direvent
-PORTVERSION=	5.2
+PORTVERSION=	5.3
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
 MAINTAINER=	zeus@gnu.org.ua
 COMMENT=	Per-directory file system event monitor
+WWW=		https://www.gnu.org.ua/software/direvent/
 
 LICENSE=	GPLv3+
 
 USES=		gmake
 GNU_CONFIGURE=	yes
 TEST_TARGET=	check
+TEST_WRKSRC=	${WRKSRC}/tests
 
 INFO=		${PORTNAME}
 

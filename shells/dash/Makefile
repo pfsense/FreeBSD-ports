@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	dash
-PORTVERSION=	0.5.10.2
+PORTVERSION=	0.5.12
 CATEGORIES=	shells
 MASTER_SITES=	http://gondor.apana.org.au/~herbert/dash/files/
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	POSIX-compliant implementation of /bin/sh
+WWW=		http://gondor.apana.org.au/~herbert/dash/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,13 +15,20 @@ GNU_CONFIGURE=	yes
 # disable RT signal handling.
 CFLAGS+=	-DUNUSABLE_RT_SIGNALS
 
-USES=		gmake
+USES=		cpe gmake
 
 PLIST_FILES=	bin/dash \
 		man/man1/dash.1.gz
+PORTDOCS=	ChangeLog
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} -e '/COMMON_CFLAGS =/ s|$$| ${CFLAGS}|' \
 		${WRKSRC}/src/Makefile.in
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

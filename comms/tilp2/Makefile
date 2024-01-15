@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	tilp2
 PORTVERSION=	1.18
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	comms
 MASTER_SITES=	SF/tilp/tilp2-linux/${DISTNAME}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	TI Linking Program
+WWW=		http://tilp.info/
 
 LICENSE=	GPLv2
 

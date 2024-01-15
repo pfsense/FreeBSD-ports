@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Coro
 PORTVERSION=	6.570
 PORTEPOCH=	1
@@ -10,12 +8,13 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S|0$||}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Coroutine process abstraction for perl
+WWW=		https://metacpan.org/release/Coro
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-AnyEvent>=7:devel/p5-AnyEvent \
+RUN_DEPENDS=	p5-AnyEvent>=7,1:devel/p5-AnyEvent \
 		p5-AnyEvent-AIO>=1.0:devel/p5-AnyEvent-AIO \
 		p5-EV>=4:devel/p5-EV \
 		p5-Event>=1.08:devel/p5-Event \

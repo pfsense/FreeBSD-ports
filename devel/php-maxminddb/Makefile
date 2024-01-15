@@ -1,6 +1,3 @@
-# Created by: Daniel Gerzo <danger@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	maxminddb
 PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	danger@FreeBSD.org
 COMMENT=	MaxMind DB Reader extension for PHP
+WWW=		https://github.com/maxmind/MaxMind-DB-Reader-php
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE

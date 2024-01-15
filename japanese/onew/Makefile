@@ -1,6 +1,3 @@
-# Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	onew
 PORTVERSION=	2.2.10
 PORTREVISION=	2
@@ -11,6 +8,8 @@ DISTNAME=	jvim2.0r+${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Library for Japanese Input Methods
+
+BROKEN=		Doesn't fetch (NXDOMAIN)
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=
@@ -48,8 +47,6 @@ PLIST_FILES+=	lib/libonew-${I:S/_/+/g:tl}.a
 RK_DIR+=	${RK_DIR.${I}}
 .endif
 .endfor
-
-pre-build: apply-slist
 
 do-build:
 .for I in ${INPUT_METHOD}

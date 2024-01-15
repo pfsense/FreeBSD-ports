@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Array-Diff
 PORTVERSION=	0.09
 CATEGORIES=	misc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Diff two arrays
+WWW=		https://metacpan.org/release/Array-Diff
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

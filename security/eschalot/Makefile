@@ -1,12 +1,10 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	eschalot
 PORTVERSION=	1.2.0.20191006
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Vanity onion address generator for Tor
+WWW=		https://github.com/ReclaimYourPrivacy/eschalot
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE

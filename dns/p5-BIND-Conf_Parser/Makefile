@@ -1,6 +1,3 @@
-# Created by: andrew@ugh.net.au
-# $FreeBSD$
-
 PORTNAME=	BIND-Conf_Parser
 PORTVERSION=	0.95
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to parse BIND 8 configuration files
+WWW=		https://metacpan.org/release/BIND-Conf_Parser
 
 NO_ARCH=	yes
 USES=		perl5

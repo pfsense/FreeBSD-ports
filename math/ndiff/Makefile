@@ -1,6 +1,3 @@
-# Created by: Stefan A. Deutscher (sad@mailaps.org)
-# $FreeBSD$
-
 PORTNAME=	ndiff
 PORTVERSION=	2.00
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.math.utah.edu/pub/misc/
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Compare files, ignoring numeric differences
+WWW=		https://www.math.utah.edu/~beebe/software/ndiff/
 
 LICENSE=	GPLv2
 
@@ -31,11 +29,7 @@ GMP_CONFIGURE_ON=	--with-gmp
 .include <bsd.port.options.mk>
 
 .if ! ${PORT_OPTIONS:MGMP}
-.if ${ARCH} == sparc64
-CONFIGURE_ARGS+=	--with-long-double
-.else
 CONFIGURE_ARGS+=	--with-double
-.endif
 .endif
 
 post-patch:

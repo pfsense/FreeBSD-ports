@@ -1,27 +1,34 @@
-# $FreeBSD$
-
 PORTNAME=	jacktrip
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0.rc
+DISTVERSION=	2.1.0
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Multi-machine audio network performance over the Internet
+WWW=		https://github.com/jacktrip/jacktrip
 
-LICENSE=	MIT
+LICENSE=	MIT GPLv3
+LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libjack.so:audio/jack
+BUILD_DEPENDS=	help2man:misc/help2man
+LIB_DEPENDS=	libjack.so:audio/jack \
+		librtaudio.so:audio/rtaudio
 
-USES=		compiler:c++11-lang qmake qt:5
-USE_QT=		core network buildtools_build
+USES=		meson compiler:c++17-lang gl pkgconfig qt:6
+USE_QT=		5compat base declarative svg webchannel webengine websockets
+USE_GL=		gl
 
 USE_GITHUB=	yes
-GH_TAGNAME=	d5e110c # contains compilation error fix
+GH_TUPLE=	jothepro:doxygen-awesome-css:9380569:jothepro_doxygen_awesome_css/externals/doxygen-awesome-css \
+		x42:weakjack:cddbeec0953d68048d164c472c9b30a5d96778db:x42_weakjack/externals/weakjack
 
-CXXFLAGS+=	-D__LINUX__
+#CXXFLAGS+=	`pkg-config --cflags rtaudio`
+#LDFLAGS+=	`pkg-config --libs rtaudio`
 
-WRKSRC_SUBDIR=	src
+QMAKE_SOURCE_PATH=	${PORTNAME}.pro
 
-PLIST_FILES=	bin/jacktrip
+PLIST_FILES=	bin/${PORTNAME}
+
+BINARY_ALIAS=	git=false
 
 .include <bsd.port.mk>

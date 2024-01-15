@@ -1,6 +1,18 @@
 --- acpi_call.c.orig	2011-11-07 05:35:10 UTC
 +++ acpi_call.c
-@@ -45,18 +45,97 @@
+@@ -29,10 +29,10 @@
+  */
+ 
+ #include <sys/types.h>
++#include <sys/param.h>
+ #include <sys/module.h>
+ #include <sys/systm.h>
+ #include <sys/errno.h>
+-#include <sys/param.h>
+ #include <sys/kernel.h>
+ #if __FreeBSD__ >= 8
+ #	include <contrib/dev/acpica/include/acpi.h>
+@@ -45,18 +45,99 @@ void acpi_call_fixup_pointers(ACPI_OBJECT *p, UINT8 *o
  
  void acpi_call_fixup_pointers(ACPI_OBJECT *p, UINT8 *orig);
  
@@ -83,7 +95,9 @@
 +	ACPI_OBJECT_LIST	*args;
  	ACPI_BUFFER	result;
 +	char		path[256];
++	int		error;
  
++	error = 0;
  	result.Length = ACPI_ALLOCATE_BUFFER;
  	result.Pointer = NULL;
  
@@ -99,13 +113,14 @@
  		if (ACPI_SUCCESS(params->retval))
  		{
  			if (result.Pointer != NULL)
-@@ -64,30 +143,31 @@ acpi_call_ioctl(u_long cmd, caddr_t addr, void *arg)
+@@ -64,30 +145,31 @@ acpi_call_ioctl(u_long cmd, caddr_t addr, void *arg)
  				if (params->result.Pointer != NULL)
  				{	
  					params->result.Length = min(params->result.Length, result.Length);
+-					copyout(result.Pointer, params->result.Pointer,
 +					if (result.Length >= sizeof(ACPI_OBJECT))
 +						acpi_call_fixup_pointers((ACPI_OBJECT*)result.Pointer, params->result.Pointer);
- 					copyout(result.Pointer, params->result.Pointer,
++					error = copyout(result.Pointer, params->result.Pointer,
  							params->result.Length);
  					params->reslen = result.Length;
 -					if (result.Length >= sizeof(ACPI_OBJECT))
@@ -117,7 +132,8 @@
 +		free_acpi_object_list(args);
  	}
  
- 	return (0);
+-	return (0);
++	return error;
  }
  
  void

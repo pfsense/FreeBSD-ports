@@ -1,6 +1,3 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 # WARNING: when updating this port check if the ports that use libvisual
 # can work with it. Backwards compatibility is known to be broken in the past.
 
@@ -12,6 +9,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Abstraction library that sits between apps and visual plugin
+WWW=		https://libvisual.sourceforge.net
 
 LICENSE=	LGPL21+
 

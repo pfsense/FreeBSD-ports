@@ -1,6 +1,3 @@
-# Created by: Sergey Kandaurov <pluknet@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	simpleproxy
 PORTVERSION=	3.4
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	pluknet@gmail.com
 COMMENT=	Simple TCP proxy
+WWW=		http://www.crocodile.org/software.html
 
 GNU_CONFIGURE=	yes
 

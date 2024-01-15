@@ -1,25 +1,27 @@
-# Created by: Johann Visagie <wjv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	recombine
 PORTVERSION=	1.41
 PORTREVISION=	2
 CATEGORIES=	biology
-MASTER_SITES=	http://evolution.gs.washington.edu/lamarc/recombine/
+MASTER_SITES=	https://lamarcweb.github.io/lamarcweb/recombine/
 DISTNAME=	${PORTNAME}${PORTVERSION}.src.doc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to fit population models across sites
+WWW=		https://lamarcweb.github.io/lamarcweb/recombine/
+
+DEPRECATED=	Upstream advises to use biology/lamarc
+EXPIRATION_DATE=	2024-01-17
 
 USES=		shebangfix
 
-WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}
+SHEBANG_FILES=	filetran
 
 ALL_TARGET=	${PORTNAME}
 
+WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}
+
 PLIST_FILES+=	bin/filetran bin/recombine
 PORTDOCS=	recombine.txt
-SHEBANG_FILES=	filetran
 
 OPTIONS_DEFINE=	DOCS
 

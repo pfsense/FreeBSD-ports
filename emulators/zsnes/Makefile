@@ -1,6 +1,3 @@
-# Created by: Stijn Hoop <stijn@win.tue.nl>
-# $FreeBSD$
-
 PORTNAME=	zsnes
 PORTVERSION=	1.51
 PORTREVISION=	12
@@ -11,6 +8,7 @@ DISTNAME=	zsnes${PORTVERSION:S/.//}src
 
 MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	Intel x86 only Super Nintendo Entertainment System (SNES) Emulator
+WWW=		https://www.zsnes.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../docs/license.txt

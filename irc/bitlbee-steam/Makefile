@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bitlbee-steam
 PORTVERSION=	1.4.2
 DISTVERSIONPREFIX=v
@@ -7,6 +5,7 @@ CATEGORIES=	irc
 
 MAINTAINER=	aou@eecs.berkeley.edu
 COMMENT=	Steam plugin for bitlbee
+WWW=		https://github.com/bitlbee/bitlbee-steam
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

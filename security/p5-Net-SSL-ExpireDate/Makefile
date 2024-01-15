@@ -1,14 +1,12 @@
-# Created by: Stephon Chen <stephon@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Net-SSL-ExpireDate
-PORTVERSION=	1.21
+PORTVERSION=	1.24
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Obtain expiration date of certificate
+WWW=		https://metacpan.org/release/Net-SSL-ExpireDate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

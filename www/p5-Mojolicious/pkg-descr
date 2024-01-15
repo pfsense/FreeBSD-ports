@@ -18,6 +18,3 @@ as optional preforking and hot deployment, perfect for building highly scalable
 web services.
 
 JSON and HTML/XML parser with CSS selector support.
-
-WWW: https://metacpan.org/pod/Mojolicious
-WWW: http://mojolicious.org/

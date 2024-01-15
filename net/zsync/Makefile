@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@ccca.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	zsync
 PORTVERSION=	0.6.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://zsync.moria.org.uk/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File transfer program
+WWW=		http://zsync.moria.org.uk/
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/COPYING

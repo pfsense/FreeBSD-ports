@@ -1,6 +1,3 @@
-# Created by: Joe Horn <joehorn@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	tuning-primer
 PORTVERSION=	1.6.r1
 CATEGORIES=	databases
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MySQL performance tuning primer script
+WWW=		https://launchpad.net/mysql-tuning-primer
 
 LICENSE=	GPLv2
 

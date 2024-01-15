@@ -1,6 +1,3 @@
-# Created by: Maxim Ignatenko
-# $FreeBSD$
-
 PORTNAME=	irc2dc
 PORTVERSION=	0.1
 CATEGORIES=	irc net-p2p
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	gelraen.ua@gmail.com
 COMMENT=	Provides intercommunication between DC++ hub and IRC channel
+WWW=		https://sourceforge.net/projects/irc2dc/
 
 USES=	tar:bzip2
 HAS_CONFIGURE=	yes

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Amazon-AWIS
 PORTVERSION=	0.36
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Use the Amazon Alexa Web Information Service
+WWW=		https://metacpan.org/release/Net-Amazon-AWIS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

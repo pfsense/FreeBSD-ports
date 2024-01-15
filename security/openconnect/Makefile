@@ -1,14 +1,12 @@
-# Created by: Damian Gerow <dgerow@afflictions.org>
-# $FreeBSD$
-
 PORTNAME=	openconnect
-PORTVERSION=	8.10
+PORTVERSION=	9.12
 CATEGORIES=	security net-vpn
 MASTER_SITES=	ftp://ftp.infradead.org/pub/openconnect/ \
 		ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Client for Cisco's AnyConnect SSL VPN
+WWW=		https://www.infradead.org/openconnect/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LGPL
@@ -21,7 +19,8 @@ CONFIGURE_ARGS=	--disable-nls --with-vpnc-script=${LOCALBASE}/sbin/vpnc-script \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--without-openssl-version-check --without-libpcsclite \
 		--without-libpskc
-USES=		cpe gmake iconv libtool pkgconfig python:build ssl shebangfix
+USES=		cpe gmake iconv libtool localbase pkgconfig python:build ssl \
+		shebangfix
 CPE_VENDOR=	infradead
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
@@ -49,7 +48,7 @@ GNUTLS_CONFIGURE_WITH=	gnutls
 
 GSSAPI_CONFIGURE_WITH=	gssapi
 
-P11_DESC=		PKCS#11 support via libp11
+P11_DESC=		PKCS \#11 support via libp11
 P11_LIB_DEPENDS=	libp11.so:security/libp11
 
 STOKEN_DESC=		With RSA soft token support via libstoken

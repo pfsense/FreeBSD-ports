@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	WWW-HatenaStar
 PORTVERSION=	0.04
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Perl interface to Hatena::Star
+WWW=		https://metacpan.org/release/WWW-HatenaStar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

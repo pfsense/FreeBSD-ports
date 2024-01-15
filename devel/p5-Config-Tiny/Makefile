@@ -1,14 +1,12 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Config-Tiny
-PORTVERSION=	2.24
+PORTVERSION=	2.30
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Read/Write .ini style files with as little code as possible
+WWW=		https://metacpan.org/release/Config-Tiny
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

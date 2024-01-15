@@ -1,6 +1,3 @@
-# Created by: Andrey Simonenko
-# $FreeBSD$
-
 PORTNAME=	ipa_sdb
 PORTVERSION=	1.1.1
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/ipa-system/modules/ipa_sdb
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IPA simple database module
+WWW=		https://ipa-system.sourceforge.net/modules/ipa_sdb/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

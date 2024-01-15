@@ -1,8 +1,5 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sub-Name
-PORTVERSION=	0.26
+PORTVERSION=	0.27
 PORTEPOCH=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Module to assign new names to Perl subroutines
+WWW=		https://metacpan.org/release/Sub-Name
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

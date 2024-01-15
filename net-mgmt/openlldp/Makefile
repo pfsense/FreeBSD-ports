@@ -1,6 +1,3 @@
-# Created by: Roar Pettersen <roar@uib.no>
-# $FreeBSD$
-
 PORTNAME=	openlldp
 DISTVERSION=	0.4alpha
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Link Layer Discovery Protocol daemon
+WWW=		https://sourceforge.net/projects/openlldp/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: pjm
-# $FreeBSD$
-
 PORTNAME=	vboxtool
 PORTVERSION=	0.5
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides effective control of VirtualBox machines
+WWW=		https://vboxtool.sourceforge.net
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

@@ -1,14 +1,12 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Mechanize-FormFiller
-PORTVERSION=	0.12
+PORTVERSION=	0.13
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl framework to automate HTML forms
+WWW=		https://metacpan.org/release/WWW-Mechanize-FormFiller
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

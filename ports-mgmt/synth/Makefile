@@ -1,14 +1,12 @@
-# Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	synth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.08
+DISTVERSION=	2.13
 PORTREVISION=	1
 CATEGORIES=	ports-mgmt
 
-MAINTAINER=	ericbsd@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Custom package repository builder for FreeBSD and DragonFly
+WWW=		https://github.com/jrmarino/synth
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/License.txt
@@ -29,14 +27,6 @@ OPTIONS_DEFAULT=WATCHDOG
 WATCHDOG_DESC=	Build with watchdog monitor
 
 WATCHDOG_EXTRA_PATCHES_OFF=	${FILESDIR}/extrapatch-nowatchdog-portscan-buildcycle.adb
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1300079
-USES+=		ncurses:base
-.else
-USES+=		ncurses:port
-.endif
 
 .include <bsd.port.pre.mk>
 

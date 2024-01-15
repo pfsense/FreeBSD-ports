@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Encode-Detect-CJK
 PORTVERSION=	2.0.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Charset detector for East Asia charsets and website contents
+WWW=		https://metacpan.org/release/Encode-Detect-CJK
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

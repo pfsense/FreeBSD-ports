@@ -1,6 +1,3 @@
-# Created by: Abel Chow <achow@transoft.net>
-# $FreeBSD$
-
 PORTNAME?=	tidy
 DISTVERSION=	090315-cvs
 PORTREVISION=	3
@@ -13,10 +10,17 @@ PKGNAMESUFFIX?=	-devel
 
 MAINTAINER?=	thierry@FreeBSD.org
 COMMENT?=	Utility to clean up and pretty print HTML/XHTML/XML
+WWW=		https://tidy.sourceforge.net/
+
+LICENSE=	HTML_TIDY
+LICENSE_NAME=	HTML Tidy License
+LICENSE_FILE=	${WRKSRC}/htmldoc/license.html
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 
-USES=		tar:bzip2
+USES=		cpe tar:bzip2
+CPE_VENDOR=	htacg
 
 SLAVEDIRS=	www/tidy-lib
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -26,7 +30,7 @@ MAKE_JOBS_UNSAFE=	yes
 USES+=		gmake
 PLIST_SUB=	SHLIB="@comment " NSHLIB=""
 MAKE_ARGS+=	PREFIX=${STAGEDIR}${PREFIX}
-CONFLICTS=	tidy-20000804* tidy-lib-[0-9]*
+CONFLICTS=	tidy-20000804* tidy-lib
 .else
 USES+=		autoreconf libtool
 USE_LDCONFIG=	yes
@@ -66,7 +70,7 @@ getcvs:
 
 tarball:
 	${RM} -r ${WRKDIR}/cvs/tidy/CVSROOT
-	${FIND} ${WRKDIR}/cvs -name CVS | ${XARGS} ${RM} -r
+	${FIND} ${WRKDIR}/cvs -name CVS -delete
 	cd ${WRKDIR}/cvs &&	\
 	${TAR} cfj ${_DISTDIR}${DISTFILES} tidy
 

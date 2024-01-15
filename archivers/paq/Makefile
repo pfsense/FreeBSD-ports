@@ -1,6 +1,3 @@
-# Created by: bf <bf2006a@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	paq
 PORTVERSION=	20140131
 PORTREVISION=	6
@@ -12,11 +9,13 @@ EXTRACT_ONLY=	${DISTFILES:M*.zip}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Family of archivers with extremely high compression ratios
+WWW=		http://mattmahoney.net/dc/zpaq.html
 
 LICENSE=	GPLv3 MIT
 LICENSE_COMB=	multi
 
 USES=		dos2unix zip
+USE_CXXSTD=	c++14
 
 EXTRACT_AFTER_ARGS=	-x *.bat *.exe readme.txt -d ${WRKSRC}
 NO_WRKSUBDIR=	yes
@@ -66,7 +65,7 @@ PORTDATA=	${WDATA} ${DDATA} zpsfx
 
 .if ${PORT_OPTIONS:MOPENMP}
 OPENMP_CFLAGS+=	-fopenmp
-USE_GCC=	any
+USE_GCC=	yes
 BROKEN=		does not build
 .endif
 

@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	logtool
 PORTVERSION=	1.3.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://xjack.org/logtool/download/
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Parse ASCII logfiles into ANSI, CSV, HTML formats
+WWW=		http://xjack.org/logtool/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

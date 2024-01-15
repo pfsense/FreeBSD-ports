@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Astro
 PORTVERSION=	0.78
 CATEGORIES=	astro perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Collection of useful astronomical routines in Perl
+WWW=		https://metacpan.org/release/Astro
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

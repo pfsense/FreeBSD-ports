@@ -1,8 +1,5 @@
-# Created by: Zhen REN <bg1tpt@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	phpbb
-DISTVERSION=	3.3.1
+DISTVERSION=	3.3.9
 CATEGORIES=	www
 MASTER_SITES=	https://download.phpbb.com/pub/release/${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}/${PORTVERSION}/
 PKGNAMESUFFIX=	3
@@ -10,12 +7,13 @@ DISTNAME=	phpBB-${PORTVERSION}
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP-based bulletin board / discussion forum system
+WWW=		https://www.phpbb.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/LICENSE.txt
 
-USES=		php tar:bzip2
-USE_PHP=	ctype dom filter hash json tokenizer
+USES=		cpe php tar:bzip2
+USE_PHP=	ctype dom filter tokenizer
 
 CONFLICTS=	phpbb-[0-2]*
 

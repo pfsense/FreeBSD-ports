@@ -1,6 +1,3 @@
-# Created by: Emmanuel Vadot <manu@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	u-boot-tools
 DISTVERSION=	2020.07
 CATEGORIES=	sysutils
@@ -9,10 +6,10 @@ DISTNAME=	u-boot-${PORTVERSION}
 
 MAINTAINER=	uboot@FreeBSD.org
 COMMENT=	U-boot related tools
+WWW=		https://www.denx.de/wiki/U-Boot
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	fails to build: include/config_distro_bootcmd.h:279:3: sandbox EFI support is only supported on ARM and x86
 BROKEN_SSL=	libressl
 BROKEN_SSL_REASON_libressl=	not supported by the upstream
 
@@ -29,7 +26,7 @@ MAKE_ARGS=	ARCH=sandbox \
 PLIST_FILES=	bin/mkimage bin/mkenvimage bin/dumpimage bin/fit_info
 
 do-configure:
-	(cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} sandbox_defconfig)
+	(cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} tools-only_defconfig)
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/tools/dumpimage ${STAGEDIR}${PREFIX}/bin

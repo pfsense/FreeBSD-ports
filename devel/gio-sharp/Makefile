@@ -1,14 +1,12 @@
-# Created by: Romain Tartiere <romain@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gio-sharp
 PORTVERSION=	2.22.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GIO bindings not available in gtk-sharp
+WWW=		https://github.com/mono/gio-sharp
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_path_CSC=${LOCALBASE}/bin/mcs

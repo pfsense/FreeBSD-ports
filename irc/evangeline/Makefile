@@ -1,6 +1,3 @@
-# Created by: Edini <ports@edini.net>
-# $FreeBSD$
-
 PORTNAME=	evangeline
 PORTVERSION=	1.1.4
 CATEGORIES=	irc tcl
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-b1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IRC Bot based on Eggdrop
+WWW=		http://www.averse.piasta.pl/
 
 LICENSE=	GPLv2
 

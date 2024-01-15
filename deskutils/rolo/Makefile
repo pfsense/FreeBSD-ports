@@ -1,6 +1,3 @@
-# Created by: Andrew Hsu <ahsu@users.sf.net>
-# $FreeBSD$
-
 PORTNAME=	rolo
 PORTVERSION=	011
 CATEGORIES=	deskutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text-based contact management software
+WWW=		http://rolo.sf.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

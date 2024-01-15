@@ -1,14 +1,12 @@
-# Created by: Alexandros Kosiaris <akosiaris+ports@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	celery
-PORTVERSION=	4.4.2
+PORTVERSION=	4.4.7
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Asynchronous task queue/job queue
+WWW=		https://pypi.org/project/celery/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,7 +17,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}billiard>=3.3.0.21:devel/py-billiard@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}vine>=1.3.0:devel/py-vine@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		cpe python
+CPE_VENDOR=	${PORTNAME}project
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

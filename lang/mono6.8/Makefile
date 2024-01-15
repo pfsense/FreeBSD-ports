@@ -1,49 +1,49 @@
-# Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mono
 PORTVERSION=	6.8.0.123
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	https://download.mono-project.com/sources/mono/
 PKGNAMESUFFIX=	6.8
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source implementation of .NET Development Framework
+WWW=		https://www.mono-project.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NOT_FOR_ARCHS=	riscv64 riscv64sf sparc64
+NOT_FOR_ARCHS=	riscv64 riscv64sf
 
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser \
 		bash:shells/bash \
-		cmake>0:devel/cmake
+		cmake-core>0:devel/cmake-core
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
 		ca_root_nss>=0:security/ca_root_nss \
 		sqlite3>0:databases/sqlite3 \
 		zip>=0:archivers/zip
 
-CONFLICTS_INSTALL=	czmq-3* mono5.10 mono6.8
+CONFLICTS_INSTALL=	certmgr coin-or-disco disco mono mono[0-9]*
 
-USES=	autoreconf bison compiler:c11 cpe gmake iconv libtool \
-	pathfix perl5 python:3.6+ shebangfix tar:xz
+USES=	autoreconf:2.69 bison compiler:c11 cpe gmake iconv libtool localbase \
+	pathfix perl5 python shebangfix tar:xz
 USE_PERL5=	build
 
-CONFIGURE_SCRIPT=	autogen.sh
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-SHEBANG_FILES=  scripts/mono-package-runtime scripts/mono-heapviz mono/mini/genmdesc.py \
-	mono/tests/test_lldb.py mono/tests/gc-descriptors/gen-descriptor-tests.py \
-	scripts/mono-find-provides.in scripts/mono-find-requires.in
-BINARY_ALIAS=   python=${PYTHON_CMD}
+SHEBANG_FILES=	mono/mini/genmdesc.py \
+		mono/tests/gc-descriptors/gen-descriptor-tests.py \
+		mono/tests/test_lldb.py scripts/mono-find-provides.in \
+		scripts/mono-find-requires.in scripts/mono-heapviz \
+		scripts/mono-package-runtime
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
-CONFIGURE_ARGS_aarch64= --with-csc=mcs
-CONFIGURE_ARGS= ${CONFIGURE_ARGS_${ARCH}} --disable-dtrace
+CONFIGURE_ARGS_aarch64=	--with-csc=mcs
+CONFIGURE_ARGS=	${CONFIGURE_ARGS_${ARCH}} --disable-dtrace
 # Do not remove - this is needed to work around automake's lack of hinting
-CONFIGURE_ENV+= ac_cv_header_sys_inotify_h=yes
+CONFIGURE_ENV+=	ac_cv_header_sys_inotify_h=yes
 
 MAKE_ENV=	MONO_SHARED_DIR="${WRKDIR}" \
 		INSTALL_STRIP_FLAG="${STRIP}"
@@ -68,19 +68,19 @@ OPTIONS_SUB=	yes
 BIGARRAY_DESC=	Enable allocating arrays greater than Int32.MaxValue
 BIGARRAY_CONFIGURE_ENABLE=	big-arrays
 
-MONOLITE_DESC=          Use monolite to bootstrap mcs (otherwise use installed mcs)
-MONOLITE_DISTFILES=     monolite-linux-${MONOLITE_VERSION}-latest.tar.gz:monolite
-MONOLITE_MASTER_SITES=  http://download.mono-project.com/monolite/:monolite
+MONOLITE_DESC=		Use monolite to bootstrap mcs (otherwise use installed mcs)
+MONOLITE_DISTFILES=	monolite-linux-${MONOLITE_VERSION}-latest.tar.gz:monolite
+MONOLITE_MASTER_SITES=	http://download.mono-project.com/monolite/:monolite
 # DO NOT ALTER OR REMOVE. DANGER, CASE-SENSITIVE!
 # monolite 2020-01-13 @ 1798d23b
-MONOLITE_VERSION=       1798d23b-3dbc-4161-b3f4-6bb00134ee4e
+MONOLITE_VERSION=	1798d23b-3dbc-4161-b3f4-6bb00134ee4e
 
 MONODEV_DESC=	Build for Mono development (disables crash privacy)
 MONODEV_CONFIGURE_ON=	--enable-icall-symbol-map --enable-icall-export --with-crash_privacy=no
 
 NINJA_DESC=	Use ninja to build wherever possible
-NINJA_CONFIGURE_ON=	ninja
-NINJA_BUILD_DEPENDS=	ninja>0:devel/ninja
+NINJA_CONFIGURE_ON=	--enable-ninja
+NINJA_USES=	ninja:build
 
 NLS_DESC=	NLS Localization Support
 NLS_CONFIGURE_OFF=	--disable-nls
@@ -98,14 +98,16 @@ X11_CONFIGURE_WITH=	x
 X11_RUN_DEPENDS=	pango>0:x11-toolkits/pango \
 	libgdiplus>0:x11-toolkits/libgdiplus
 
+.include <bsd.port.options.mk>
+
+.if ${ARCH:Mpowerpc*}
+PLIST+=		${.CURDIR}/pkg-plist.powerpc
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if defined(QEMU_EMULATING) && "${QEMU_EMULATING}" == "1"
 BROKEN=		fails to build under qemu: Roslyn requires more functional POSIX implementation
-.endif
-
-.if ${ARCH:Mpowerpc*}
-PLIST+= ${.CURDIR}/pkg-plist.powerpc
 .endif
 
 post-patch:
@@ -116,5 +118,9 @@ post-patch:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/mono
+# XXX Drop after devel/msbuild >= 16.0 per https://github.com/mono/msbuild/commit/48f3571f4036
+	${RLN} ${STAGEDIR}${PREFIX}/lib/mono/msbuild/Current \
+		${STAGEDIR}${PREFIX}/lib/mono/msbuild/15.0
+	${ECHO_CMD} lib/mono/msbuild/15.0 >>${TMPPLIST}
 
 .include <bsd.port.post.mk>

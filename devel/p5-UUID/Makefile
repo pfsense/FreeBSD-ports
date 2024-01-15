@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	UUID
 PORTVERSION=	0.28
 CATEGORIES=	devel perl5
@@ -8,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JNH
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for using UUID interfaces as defined in e2fsprogs
+WWW=		https://metacpan.org/release/UUID
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/License

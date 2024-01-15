@@ -1,6 +1,3 @@
-# Created by: Yoshiro MIHIRA <sanpei@yy.cs.keio.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	wdiff
 PORTVERSION=	1.2.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	GNU
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Display word differences between text files
+WWW=		https://www.gnu.org/software/wdiff/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

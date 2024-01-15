@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xdgagrab
 PORTVERSION=	0.3
 PORTREVISION=	2

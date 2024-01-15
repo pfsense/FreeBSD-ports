@@ -1,10 +1,6 @@
-# Created by: Dmitri Goutnik <dg@syrec.org>
-# $FreeBSD$
-
 PORTNAME=	gdrive
-DISTVERSION=	2.1.0-23
-DISTVERSIONSUFFIX=	-gc3cbcce
-PORTREVISION=	1
+DISTVERSION=	2.1.1
+PORTREVISION=	15
 CATEGORIES=	net
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -16,6 +12,7 @@ PATCHFILES=	3c060f4d33530866496515b45fcfaa3fd2da5f32.patch:-p1 \
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Google Drive CLI Client
+WWW=		https://github.com/prasmussen/gdrive
 
 LICENSE=	MIT
 
@@ -29,6 +26,10 @@ OPTIONS_DEFINE=	DOCS
 
 PLIST_FILES=	bin/gdrive
 PORTDOCS=	README.md
+
+post-patch:
+	${MV} ${WRKSRC}/vendor/github.com/sabhiram/go-git-ignore \
+		${WRKSRC}/vendor/github.com/sabhiram/go-gitignore
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

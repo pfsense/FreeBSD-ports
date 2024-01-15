@@ -1,8 +1,6 @@
-# Created by: Gaspar Chilingarov <nm@web.am>
-# $FreeBSD$
-
 PORTNAME=	socketbind
 PORTVERSION=	1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# none
 DISTFILES=	# none

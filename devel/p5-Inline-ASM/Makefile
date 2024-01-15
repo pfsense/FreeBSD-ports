@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Inline-ASM
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Write Perl Subroutines in assembler
+WWW=		https://metacpan.org/release/Inline-ASM
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

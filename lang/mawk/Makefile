@@ -1,13 +1,11 @@
-# Created by: Pedro F. Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	mawk
-DISTVERSION=	1.3.4-20190203
+DISTVERSION=	1.3.4-20230404
 CATEGORIES=	lang
 MASTER_SITES=	ftp://ftp.invisible-island.net/${PORTNAME}/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Interpreter for the AWK Programming Language
+WWW=		https://invisible-island.net/mawk/
 
 LICENSE=	GPLv2
 

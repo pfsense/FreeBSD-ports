@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	rabbiteer
 DISTVERSION=	1.4.1
-PORTREVISION=	25
+PORTREVISION=	53
 CATEGORIES=	net
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	AMQP & RabbitMQ command-line tool
+WWW=		https://github.com/algesten/rabbiteer
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE-MIT

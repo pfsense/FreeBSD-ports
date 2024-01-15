@@ -1,6 +1,3 @@
-# Created by: king@v2project.com
-# $FreeBSD$
-
 PORTNAME=	gplink
 PORTVERSION=	1.5
 PORTREVISION=	1
@@ -20,6 +17,8 @@ MAKE_ARGS=	CC="${CC}" \
 		LDFLAGS="${LDFLAGS}"
 LDFLAGS+=	-lusb
 WRKSRC_SUBDIR=	src
+
+CONFLICTS_INSTALL=	gputils # bin/gplink
 
 PLIST_FILES=	bin/gplink
 

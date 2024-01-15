@@ -1,15 +1,13 @@
-# Created by: Mahdi Mokhtari <mokhi64@gmail.com>
-# $FreeBSD$
-
 PORTNAME=		cling
 DISTVERSION=		0.5-2018-08-13
-PORTREVISION=		4
+PORTREVISION=	12
 CATEGORIES=		lang devel
 MASTER_SITES=		https://root.cern.ch/download/cling/
 DISTNAME=		${PORTNAME}_${DISTVERSION:C/^[0-9]\.[0-9]-//}_sources
 
 MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Interactive C++ Interpreter Based on LLVM and Clang Libs
+WWW=		https://root.cern.ch/cling
 
 LICENSE=		LLVM NCSA
 LICENSE_COMB=		multi
@@ -21,7 +19,6 @@ LICENSE_PERMS_LLVM=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BROKEN_armv6=		fails to compile: AArch64TargetMachine.cpp: relocation truncated to fit: R_ARM_CALL against symbol '__aeabi_uldivmod'
 BROKEN_armv7=		fails to compile: AArch64TargetMachine.cpp: relocation truncated to fit: R_ARM_CALL against symbol '__aeabi_uldivmod'
 BROKEN_riscv64=		fails to build: CMake Error at cmake/config-ix.cmake:407: Unknown architecture riscv64
-BROKEN_FreeBSD_12_powerpc64=	fails to build: src/include/llvm/ExecutionEngine/Orc/OrcRemoteTargetClient.h:722:26: could not convert '((llvm::orc::remote::OrcRemoteTargetClient<ChannelT>*)this)->callB<llvm::orc::remote::OrcRemoteTargetRPCAPI::ReadMem>(Src, Size)'
 
 LIB_DEPENDS=	libgtest.so:devel/googletest \
 		libz3.so:math/z3
@@ -32,10 +29,12 @@ LLVM_RELEASE=	5.0.0
 LLVM_SUFFIX=	50_cern-root
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 
-USES=		cmake compiler:c++11-lib compiler:c11 cpe gnome libedit ncurses \
+USES=		cmake compiler:c++11-lib compiler:c11 gnome libedit ncurses \
 		python:build shebangfix tar:bzip2
 USE_GNOME=	libxml2
 USE_LDCONFIG=	${LLVM_PREFIX}/lib
+
+CONFLICTS_INSTALL=	llvm zapcc # # bin/bugpoint bin/c-index-test bin/clang bin/clang++ bin/clang-5.0 bin/clang-check bin/clang-cl bin/clang-cpp bin/clang-format bin/clang-import-test bin/clang-offload-bundler bin/clang-rename bin/git-clang-format
 
 SHEBANG_FILES=	tools/clang/tools/clang-format/clang-format-diff.py \
 		tools/clang/tools/clang-format/git-clang-format \
@@ -50,8 +49,7 @@ PLIST_SUB+=		LLVM_SUFFIX=${LLVM_SUFFIX} LLVM_RELEASE=${LLVM_RELEASE}
 CMAKE_BUILD_TYPE=	Release
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
 
-CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
-	    --target ${PORTNAME}
+CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LLVM_PREFIX%%|${LLVM_PREFIX}|g' \

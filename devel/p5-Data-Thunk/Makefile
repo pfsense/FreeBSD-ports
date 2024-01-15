@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Thunk
 PORTVERSION=	0.07
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Lazy/deferred evaluation - a sneakier Scalar::Defer
+WWW=		https://metacpan.org/release/Data-Thunk
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Check-ISA>=0:devel/p5-Check-ISA \

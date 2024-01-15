@@ -1,6 +1,3 @@
-# Created by: Mauricio Herrera Cuadra <mauricio@arareko.net>
-# $FreeBSD$
-
 PORTNAME=	BioPerl-Run
 PORTVERSION=	1.007003
 CATEGORIES=	biology perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Wrapper modules for common bioinformatics tools
+WWW=		https://github.com/bioperl/bioperl-run
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

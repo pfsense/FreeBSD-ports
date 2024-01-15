@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ssd_report
 DISTVERSION=	0.4
 CATEGORIES=	sysutils
 
 MAINTAINER=	dteske@FreeBSD.org
 COMMENT=	SSD health report
+WWW=		https://fraubsd.org/ssd_report/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

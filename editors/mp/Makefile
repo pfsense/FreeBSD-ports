@@ -1,12 +1,10 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	mp
-DISTVERSION=	5.44
+DISTVERSION=	5.61
 CATEGORIES=	editors
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Programming text editor
+WWW=		https://www.triptico.com/software/mp.html
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,9 +13,7 @@ USES=		gmake iconv
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ttcdt
-GH_PROJECT=	mp-5.x mpdm:mpdm mpsl:mpsl
-GH_TAGNAME=	2.70:mpdm 2.61:mpsl
-GH_SUBDIR=	mpdm:mpdm mpsl:mpsl
+GH_PROJECT=	mp-5.x
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config.sh
@@ -29,7 +25,6 @@ CONFIGURE_ENV=	LOCALBASE="${LOCALBASE}" \
 		NCURSESINC="${NCURSESINC}" \
 		NCURSESLIB="${NCURSESLIB}"
 LDFLAGS+=	-Wl,--as-needed
-LLD_UNSAFE=	yes
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		DOCS MANPAGES NLS PCRE
@@ -72,7 +67,7 @@ NCURSES_CFLAGS=		-I${NCURSESBASE}/include
 QT5_USES=		compiler:c++11-lang gl pkgconfig qmake:no_env qt:5
 QT5_USE=		cxxstd=-std=c++11 \
 			gl=gl \
-			qt=buildtools_build,core,gui,widgets
+			qt=buildtools:build,core,gui,widgets
 QT5_CONFIGURE_ENV=	CCLINK="${CXX}"
 QT5_CONFIGURE_ON=	--with-qt5 --with-moc="${MOC}"
 QT5_CONFIGURE_OFF=	--without-qt

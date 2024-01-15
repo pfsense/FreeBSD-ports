@@ -25,10 +25,12 @@ include/gcem_incl/floor.hpp
 include/gcem_incl/fmod.hpp
 include/gcem_incl/gcd.hpp
 include/gcem_incl/gcem_options.hpp
+include/gcem_incl/hypot.hpp
 include/gcem_incl/incomplete_beta.hpp
 include/gcem_incl/incomplete_beta_inv.hpp
 include/gcem_incl/incomplete_gamma.hpp
 include/gcem_incl/incomplete_gamma_inv.hpp
+include/gcem_incl/inv_sqrt.hpp
 include/gcem_incl/is_even.hpp
 include/gcem_incl/is_finite.hpp
 include/gcem_incl/is_inf.hpp
@@ -39,6 +41,7 @@ include/gcem_incl/lcm.hpp
 include/gcem_incl/lgamma.hpp
 include/gcem_incl/lmgamma.hpp
 include/gcem_incl/log.hpp
+include/gcem_incl/log10.hpp
 include/gcem_incl/log1p.hpp
 include/gcem_incl/log2.hpp
 include/gcem_incl/log_binomial_coef.hpp

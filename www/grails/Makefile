@@ -1,6 +1,3 @@
-# Created by: Mitchell Smith <mjs@bur.st>
-# $FreeBSD$
-
 PORTNAME=	grails
 DISTVERSION=	1.3.6
 CATEGORIES=	www java
@@ -9,13 +6,15 @@ MASTER_SITES=	http://dist.codehaus.org/grails/ \
 
 MAINTAINER=	mjs@bur.st
 COMMENT=	Web framework built on Groovy
+WWW=		https://grails.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:tu}
 
-USES=		zip
+USES=		cpe zip
+CPE_VENDOR=	gopivotal
 USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes

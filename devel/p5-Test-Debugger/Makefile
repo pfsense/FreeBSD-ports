@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Debugger
 PORTVERSION=	0.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create Test Scripts which Generate Log Files
+WWW=		https://metacpan.org/release/Test-Debugger
 
 USES=		perl5
 USE_PERL5=	configure

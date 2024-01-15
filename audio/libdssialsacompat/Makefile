@@ -1,6 +1,3 @@
-# Created by: mahonmesr@googlemail.com
-# $FreeBSD$
-
 PORTNAME=	libdssialsacompat
 PORTVERSION=	1.0.8a
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://smbolton.com/linux/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Alsa compatibility library to build DSSI
+WWW=		http://www.smbolton.com/linux.html
 
 USES=		pathfix libtool
 GNU_CONFIGURE=	yes

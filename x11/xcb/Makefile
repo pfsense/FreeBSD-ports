@@ -1,6 +1,3 @@
-# Created by: jkh
-# $FreeBSD$
-
 PORTNAME=	xcb
 PORTVERSION=	2.4
 PORTREVISION=	3
@@ -11,6 +8,7 @@ MASTER_SITES=	http://oldhome.schmorp.de/marc/data/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for managing x11 cut-buffers
+WWW=		http://oldhome.schmorp.de/marc/xcb.html
 
 LICENSE=	MIT
 

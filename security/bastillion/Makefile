@@ -1,16 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=		bastillion
 DISTVERSIONPREFIX=	jetty-v
-DISTVERSION=		3.10_00
+DISTVERSION=		3.14_00
 DISTFILES=		${DISTNAME}${EXTRACT_SUFX} \
-			${PORTNAME}-upgrade-3.08.00.jar
+			${PORTNAME}-upgrade-4.00.01.jar
 PORTREVISION=		0
 CATEGORIES=		security www java
-MASTER_SITES=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${PORTVERSION}/
+#MASTER_SITES=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${PORTVERSION}/
+MASTER_SITES=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v3.14.0/
 
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Web-based SSH console
+WWW=		https://www.bastillion.io
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -74,7 +74,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/start.ini ${STAGEDIR}${PREFIX}/${WWWDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.md ${STAGEDIR}${PREFIX}/${WWWDIR}
 	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}.sample ${STAGEDIR}${ETCDIR}/
-	${INSTALL_DATA} ${DISTDIR}/bastillion-upgrade-3.08.00.jar ${STAGEDIR}${PREFIX}/jetty_bastillion/upgrade/
+	${INSTALL_DATA} ${DISTDIR}/bastillion-upgrade-4.00.01.jar ${STAGEDIR}${PREFIX}/jetty_bastillion/upgrade/
 
 gen-plist:
 	${ECHO} '@sample %%ETCDIR%%/%%APP_NAME%%.sample' >${PLIST}.new

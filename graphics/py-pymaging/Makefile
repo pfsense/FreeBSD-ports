@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pymaging
 PORTVERSION=	g20130908
 PORTREVISION=	1
@@ -8,11 +6,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Pure Python imaging library
+WWW=		https://pymaging.rtfd.org
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 USE_GITHUB=	yes

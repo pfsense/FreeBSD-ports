@@ -1,6 +1,3 @@
-# Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnome_subr
 PORTVERSION=	1.0
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ DISTFILES=	# none
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Common startup and shutdown subroutines used by GNOME scripts
+WWW=		https://www.FreeBSD.org/gnome/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${PORTSDIR}/COPYRIGHT

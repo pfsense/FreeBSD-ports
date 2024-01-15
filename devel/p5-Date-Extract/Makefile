@@ -1,14 +1,12 @@
-# Created by: Matthew Seaman <matthew@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Date-Extract
-PORTVERSION=	0.06
+PORTVERSION=	0.07
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Extract probable dates from strings
+WWW=		https://metacpan.org/release/Date-Extract
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

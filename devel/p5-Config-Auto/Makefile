@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Config-Auto
 PORTVERSION=	0.44
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Magical config file parser
+WWW=		https://metacpan.org/release/Config-Auto
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

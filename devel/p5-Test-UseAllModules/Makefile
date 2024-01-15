@@ -1,6 +1,3 @@
-# Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
-
 PORTNAME=	Test-UseAllModules
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Do use_ok() for all the MANIFESTed modules
+WWW=		https://metacpan.org/release/Test-UseAllModules
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

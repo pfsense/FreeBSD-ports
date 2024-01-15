@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Perl
 PORTVERSION=	0.002011
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base classes wrapping fundamental Perl data types
+WWW=		https://metacpan.org/release/Data-Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

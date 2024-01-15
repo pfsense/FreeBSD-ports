@@ -1,48 +1,45 @@
-# Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
-
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.44
-PORTREVISION=	4
+PORTVERSION=	6.1.48
+PORTREVISION?=	1
 CATEGORIES=	emulators
-MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
+MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 DISTFILES=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX} ${GUESTADDITIONS}
 EXTRACT_ONLY=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	vbox@FreeBSD.org
 COMMENT=	General-purpose full virtualizer for x86 hardware
+WWW=		https://www.virtualbox.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-PATCH_DEPENDS+=	${LOCALBASE}/share/kBuild/tools/GXX3.kmk:devel/kBuild
-BUILD_DEPENDS=	yasm:devel/yasm \
-		xsltproc:textproc/libxslt \
+ONLY_FOR_ARCHS=	amd64
+
+BUILD_DEPENDS=	gtar:archivers/gtar \
 		kmk:devel/kBuild \
-		gtar:archivers/gtar
+		libIDL-config-2:devel/libIDL \
+		yasm:devel/yasm \
+		xsltproc:textproc/libxslt
 LIB_DEPENDS=	libpng.so:graphics/png \
-		libxslt.so:textproc/libxslt \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:emulators/virtualbox-ose-kmod
 
+USES=		compiler:c++14-lang cpe gnome iconv pkgconfig ssl tar:bzip2
+USE_GNOME=	libxml2
+
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
-
-WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
-ONLY_FOR_ARCHS=	i386 amd64
-USES=		compiler:c++14-lang cpe gnome iconv pkgconfig ssl tar:bzip2
-USE_GNOME=	libidl libxml2
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-java --passive-mesa
 CONFIGURE_ARGS+=	--with-gcc="${CC}" --with-g++="${CXX}"
 
 CONFLICTS_INSTALL=	virtualbox-ose-additions-* \
-			virtualbox-ose-devel-[0-9]* \
-			virtualbox-ose-legacy-[0-9]* \
-			virtualbox-ose-lite-[0-9]*
+			virtualbox-ose-devel \
+			virtualbox-ose-legacy \
+			virtualbox-ose-lite
 
-LDFLAGS=	-lpthread
+WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 
 VBOXUSER?=	vboxusers
 VBOXWSUSER?=	vboxusers
@@ -51,27 +48,35 @@ USERS=		${VBOXUSER}
 GROUPS=		${VBOXGROUP}
 VBOX_DIR=	${PREFIX}/${VBOX_DIR_REL}
 VBOX_DIR_REL=	lib/virtualbox
+VBOX_ETC=	${PREFIX}/etc/vbox
 VBOX_LINKS=	VBoxVRDP
 VBOX_PROGS=	VBoxAutostart VBoxBalloonCtrl VBoxBugReport VBoxHeadless \
 		VBoxManage
 VBOX_UTILS=	VBoxExtPackHelperApp VBoxNetAdpCtl VBoxNetDHCP VBoxNetNAT \
 		VBoxSVC VBoxXPCOMIPCD
 
-OPTIONS_DEFINE=	ALSA DBUS DEBUG GUESTADDITIONS MANUAL NLS PULSEAUDIO \
-		PYTHON QT5 R0LOGGING UDPTUNNEL VDE VNC WEBSERVICE VPX X11
-OPTIONS_DEFAULT=	DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
-OPTIONS_SUB=	yes
+SUB_FILES=	pkg-message
 
-DEBUG_DESC=	Debug symbols, additional logs and assertions
+OPTIONS_DEFINE=		AIO ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS OPUS PULSEAUDIO \
+			PYTHON QT5 R0LOGGING UDPTUNNEL VBOXIMG VDE VNC WEBSERVICE VPX X11
+OPTIONS_DEFAULT=	AIO DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
+# Since version 6.1.24 pulseaudio is broken at runtime, preventing
+# virtual machines from starting if configured to use it.
+OPTIONS_EXCLUDE+=	PULSEAUDIO
+OPTIONS_SUB=		yes
+
+AIO_DESC=		Enable Asyncronous IO support (check pkg-message)
+DEBUG_DESC=		Debug symbols, additional logs and assertions
 GUESTADDITIONS_DESC=	Build with Guest Additions
-MANUAL_DESC=	Build with user manual
-NLS_DESC=	Native language support (requires QT5)
-QT5_DESC=	Build with QT5 frontend (requires X11)
-R0LOGGING_DESC=	Enable R0 logging (requires DEBUG)
-UDPTUNNEL_DESC=	Build with UDP tunnel support
-VDE_DESC=	Build with VDE support
-VNC_DESC=	Build with VNC support
-VPX_DESC=	Use libvpx for video recording
+NLS_DESC=		Native language support (requires QT5)
+OPUS_DESC=		Use libvpx for audio recording (requires VPX)
+QT5_DESC=		Build with QT5 frontend (requires X11)
+R0LOGGING_DESC=		Enable R0 logging (requires DEBUG)
+UDPTUNNEL_DESC=		Build with UDP tunnel support
+VBOXIMG_DESC=		Build vboximg-mount (requires fuse-libs)
+VDE_DESC=		Build with VDE support
+VNC_DESC=		Build with VNC support
+VPX_DESC=		Use libvpx for video recording
 WEBSERVICE_DESC=	Build Webservice
 
 ALSA_CONFIGURE_OFF=	--disable-alsa
@@ -79,21 +84,41 @@ ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 DBUS_CONFIGURE_OFF=	--disable-dbus
 DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 DEBUG_CONFIGURE_ON=	--build-debug
-MANUAL_BUILD_DEPENDS=	${LOCALBASE}/share/xml/docbook/4.4/docbookx.dtd:textproc/docbook-xml
-MANUAL_CONFIGURE_OFF=	--disable-docs
+DOCS_USES=		tex
+DOCS_USE=		TEX=dvipsk:build,formats:build
+DOCS_BUILD_DEPENDS=	${LOCALBASE}/share/xml/docbook/4.4/docbookx.dtd:textproc/docbook-xml
+DOCS_CONFIGURE_OFF=	--disable-docs
+DOCS_VARS=		dbkxmldir=${LOCALBASE}/share/xml/docbook/4.4 \
+			dbkxsldir=${LOCALBASE}/share/xsl/docbook
 NLS_IMPLIES=		QT5
+OPUS_CONFIGURE_OFF=	--disable-libopus
+OPUS_LIB_DEPENDS=	libopus.so:audio/opus
+OPUS_IMPLIES=		VPX
 PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+PYTHON_USES=		python
+PYTHON_USES_OFF=	python:build
+PYTHON_USE=		PYTHON=distutils,noegginfo,noflavors
 PYTHON_CONFIGURE_OFF=	--disable-python
+PYTHON_VARS=		pydistutils_pkgname=vboxapi pydistutils_pkgversion=1.0
+QT5_USES=		gl qmake:no_env qt:5 xorg
+QT5_USE=		QT=buildtools:build,core,dbus,gui,linguisttools:build,opengl \
+			QT=printsupport,widgets,x11extras XORG=xcb GL=gl
+QT5_CONFIGURE_ON=	--enable-qt5
+QT5_CONFIGURE_OFF=	--disable-qt
 QT5_IMPLIES=		X11
 R0LOGGING_IMPLIES=	DEBUG
 UDPTUNNEL_CONFIGURE_OFF=	--disable-udptunnel
+VBOXIMG_LIB_DEPENDS=	libfuse.so.2:sysutils/fusefs-libs
 VDE_CONFIGURE_ON=	--enable-vde
 VDE_RUN_DEPENDS=	vde_switch:net/vde2
 VNC_CONFIGURE_ON=	--enable-vnc
 VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
 VPX_CONFIGURE_OFF=	--disable-libvpx
 VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
+WEBSERVICE_BUILD_DEPENDS=	soapcpp2:devel/gsoap
+X11_USES=		sdl xorg
+X11_USE=		SDL=sdl XORG=x11,xcursor,xext,xinerama,xmu,xorgproto,xt
 X11_CONFIGURE_OFF=	--build-headless
 
 ENV=
@@ -103,6 +128,7 @@ PLIST_SUB=	GUEST_VER=${PORTVERSION} \
 		PYTHON_VERU=${PYTHON_VER:S/./_/}${PYTHON_ABIVER} \
 		VBOXGROUP=${VBOXGROUP}
 SUB_LIST=	VBOXDIR=${VBOX_DIR} \
+		VBOX_ETC=${VBOX_ETC} \
 		VBOXGROUP=${VBOXGROUP} \
 		VBOXUSER=${VBOXUSER} \
 		VBOXWSUSER=${VBOXWSUSER}
@@ -111,72 +137,45 @@ USE_RC_SUBR=	vboxheadless vboxwatchdog
 .include <bsd.port.options.mk>
 
 .if ${SLAVE_PORT} == no
-CONFLICTS_INSTALL+=	virtualbox-ose-nox11-[0-9]*
+CONFLICTS_INSTALL+=	virtualbox-ose-nox11
 OPTIONS_DEFAULT+=	PYTHON
 .else
-CONFLICTS_INSTALL+=	virtualbox-ose-[0-9]*
-.endif
-
-.if ${ARCH} == "amd64"
-_ELF32!=	kldstat -q -m elf32 && echo yes || echo no
+CONFLICTS_INSTALL+=	virtualbox-ose
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}
 KMK_BUILDTYPE=	debug
 KMK_FLAGS+=	BUILD_TYPE=debug
+WITH_DEBUG=	yes
 .else
 KMK_BUILDTYPE=	release
 .endif
 
 .if ${PORT_OPTIONS:MGUESTADDITIONS}
 GUESTADDITIONS=	VBoxGuestAdditions_${PORTVERSION}.iso
-RESTRICTED=	for personal use only
-RESTRICTED_FILES=	${GUESTADDITIONS}
-.endif
-
-.if ${PORT_OPTIONS:MMANUAL}
-DBKXMLDIR=	${LOCALBASE}/share/xml/docbook/4.4
-DBKXSLDIR=	${LOCALBASE}/share/xsl/docbook
-USE_TEX=	dvipsk:build formats:build
-.endif
-
-.if ${PORT_OPTIONS:MPYTHON}
-USES+=		python
-USE_PYTHON=	distutils noegginfo noflavors
-PYDISTUTILS_PKGNAME=	vboxapi
-PYDISTUTILS_PKGVERSION=	1.0
-.else
-USES+=		python:build
+LICENSE+=	Additions
+LICENSE_COMB=	multi
+LICENSE_NAME_Additions=	Guest Additions
+LICENSE_PERMS_Additions=	auto-accept
+LICENSE_DISTFILES_Additions=	${GUESTADDITIONS}
 .endif
 
 .if ${PORT_OPTIONS:MQT5}
-CONFIGURE_ARGS+=	--enable-qt5
 PLIST_SUB+=	QT=""
-USES+=		gl qmake:no_env qt:5 xorg
-USE_GL=		gl glu
-USE_QT=		buildtools_build core dbus gui linguisttools_build opengl
-USE_QT+=	printsupport widgets x11extras
-USE_XORG=	xcb
-INSTALLS_ICONS=	yes
-VBOX_PROGS+=	VirtualBox
+VBOX_PROGS+=	VirtualBox VirtualBoxVM
 VBOX_UTILS+=	VBoxTestOGL
 VBOX_WITH_QT=	1
 .else
-CONFIGURE_ARGS+=	--disable-qt
 PLIST_SUB+=	QT="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MWEBSERVICE}
-BUILD_DEPENDS+=	soapcpp2:devel/gsoap
 USE_RC_SUBR+=	vboxwebsrv
 VBOX_LINKS+=	vboxwebsrv
 VBOX_UTILS+=	vboxwebsrv webtest
 .endif
 
 .if ${PORT_OPTIONS:MX11}
-USES+=		sdl
-USE_SDL=	sdl
-USE_XORG+=	xorgproto x11 xcursor xext xinerama xmu xt
 VBOX_PROGS+=	VBoxSDL
 .endif
 
@@ -186,14 +185,15 @@ PLIST_SUB+=	SDK=""
 PLIST_SUB+=	SDK="@comment "
 .endif
 
-.if ${ARCH} == i386
-KMK_ARCH=	freebsd.x86
-PLIST_SUB+=	I386=""
+.if ${PORT_OPTIONS:MVBOXIMG}
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-vboximg-Config.kmk
+VBOX_UTILS+=	vboximg-mount
+PLIST_SUB+=	VBOXIMG=""
 .else
-KMK_ARCH=	freebsd.${ARCH}
-PLIST_SUB+=	I386="@comment "
+PLIST_SUB+=	VBOXIMG="@comment "
 .endif
 
+KMK_ARCH=	freebsd.${ARCH}
 PLIST_SUB+=	ARCH="${KMK_ARCH}"
 
 KMK_BUILDDIR=	${WRKSRC}/out/${KMK_ARCH}/${KMK_BUILDTYPE}
@@ -201,6 +201,30 @@ KMK_CONFIG=	VBOX_LIBPATH_X11=${LOCALBASE} VBOX_FREEBSD_SRC=${SRC_BASE}/sys
 KMK_FLAGS+=	-j${MAKE_JOBS_NUMBER}
 
 .include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == clang
+# 1) llvm10 in FreeBSD before r364284 miscompiles virtualbox 6.1 causing errors.
+# 2) llvm15 in FreeBSD miscompiles virtualbox 6.1 causing errors: PR#270189.
+# Force llvm from ports.
+.if ${OPSYS} == FreeBSD && \
+    (${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 || ${OSVERSION} >= 1400079)
+# USES must be before .include <bsd.port.pre.mk>, but CHOSEN_COMPILER_TYPE must be after.
+# This is a workaround with possibility to define different llvm via VBOX_LLVM_VER in make.conf.
+#USES+=		llvm:min=11,max=14
+#CC=		clang${LLVM_VERSION}
+#CXX=		clang++${LLVM_VERSION}
+BUILD_DEPENDS+=	clang${VBOX_LLVM_VER}:devel/llvm${VBOX_LLVM_VER}
+CC=		clang${VBOX_LLVM_VER}
+CXX=		clang++${VBOX_LLVM_VER}
+.if ${LLVM_DEFAULT} < 11 || ${LLVM_DEFAULT} > 14
+VBOX_LLVM_VER?=	14
+.else
+VBOX_LLVM_VER?=	${LLVM_DEFAULT}
+.endif
+.endif
+PATCH_DEPENDS+=	${LOCALBASE}/share/kBuild/tools/GXX3.kmk:devel/kBuild
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Devices-PC-ipxe-Makefile.kmk
+.endif
 
 .if ${PYTHON_MAJOR_VER} >= 3
 PLIST_SUB+=	PYTHON_PYCDIR=/__pycache__/ \
@@ -212,19 +236,6 @@ PLIST_SUB+=	PYTHON_PYCDIR=/ \
 
 .if ${SSL_DEFAULT} != base
 CONFIGURE_ARGS+=	--with-openssl-dir="${OPENSSLBASE}"
-.endif
-
-pre-everything::
-.if ${ARCH} == "amd64"
-.if ${_ELF32} != yes
-	@${ECHO_MSG} 'Requires 32-bit runtime support in kernel.'
-	@${ECHO_MSG} 'Rebuild kernel with "options COMPAT_FREEBSD32" and reboot.'
-	@${FALSE}
-.elif !exists(/usr/lib32/libc.so)
-	@${ECHO_MSG} 'Requires 32-bit libraries installed under /usr/lib32.'
-	@${ECHO_MSG} 'Do: cd /usr/src; make build32 install32; service ldconfig restart'
-	@${FALSE}
-.endif
 .endif
 
 post-patch:
@@ -274,19 +285,21 @@ post-patch:
 	    ${WRKSRC}/LocalConfig.kmk
 	@${ECHO_CMD} 'VBOX_GCC_PEDANTIC_CXX = -Wshadow $$(VBOX_GCC_WARN) -Wno-long-long' >> \
 	    ${WRKSRC}/LocalConfig.kmk
-	@${REINPLACE_CMD} -E -e '/soap_socket_errno\(/s/(soap_socket_errno)(\([^)]+\))/\1/' \
-		${WRKSRC}/src/VBox/Main/webservice/vboxweb.cpp
 .endif
+.if empty(PORT_OPTIONS:MX11)
+	@${ECHO} 'VBOX_WITH_VMSVGA3D =' >> ${WRKSRC}/LocalConfig.kmk
+.endif
+.if ${CHOSEN_COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's| -finline-limit=8000||' \
-	    -e 's| -mpreferred-stack-boundary=2||' \
-	    -e 's|%%PYTHON_VERSION%%|${PYTHON_VERSION}|' \
-		${WRKSRC}/Config.kmk
+	    -e 's| -mpreferred-stack-boundary=2||' ${WRKSRC}/Config.kmk
 	@${REINPLACE_CMD} -e 's| -fpermissive||' ${WRKSRC}/Config.kmk \
 	    ${WRKSRC}/src/VBox/Main/webservice/Makefile.kmk
 	@${ECHO_CMD} 'TOOL_VBoxGccFreeBSD_LD = ${CXX}' >> ${WRKSRC}/LocalConfig.kmk
 	@${SED} -e 's|GXX3|VBoxGccFreeBSD|g' \
 	    ${LOCALBASE}/share/kBuild/tools/GXX3.kmk > \
 	    ${WRKSRC}/tools/kBuildTools/VBoxGccFreeBSD.kmk
+.endif
+	# Causes a "reinplace" QA warning with default LOCALBASE
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 	    ${WRKSRC}/Config.kmk ${WRKSRC}/configure \
 	    ${WRKSRC}/kBuild/header.kmk ${WRKSRC}/kBuild/units/qt4.kmk \
@@ -301,16 +314,23 @@ post-patch:
 	    ${WRKSRC}/src/VBox/Runtime/Makefile.kmk
 	@${ECHO_CMD} 'VBOX_ICONV_DEFS = LIBICONV_PLUG' >> ${WRKSRC}/LocalConfig.kmk
 .endif
-	@${REINPLACE_CMD} -e 's|/usr/local/lib/virtualbox|${VBOX_DIR}|' \
-	    -e 's|/usr/local|${PREFIX}|' \
+	@${REINPLACE_CMD} -e 's|%%VBOX_DIR%%|${VBOX_DIR}|g' \
+	    -e 's|%%VBOX_ETC%%|${VBOX_ETC}|g' \
+	    -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 	    ${WRKSRC}/src/VBox/Installer/freebsd/VBox.sh
+	@${REINPLACE_CMD} -e 's|%%VBOX_ETC%%|${VBOX_ETC}|g' \
+	    ${WRKSRC}/src/VBox/HostDrivers/adpctl/VBoxNetAdpCtl.cpp
 	@${REINPLACE_CMD} \
 	    -e 's|^versions =.*|versions = ["${PYTHON_VER}${PYTHON_ABIVER}"]|' \
 	    ${WRKSRC}/src/libs/xpcom18a4/python/gen_python_deps.py
 
+post-patch-AIO-off:
+	@${REINPLACE_CMD} 's|r3/freebsd/fileaio-freebsd.cpp|r3/posix/fileaio-posix.cpp|' \
+		${WRKSRC}/src/VBox/Runtime/Makefile.kmk
+
 do-build:
 	cd ${WRKSRC} && ${SH} -c '. ${WRKSRC}/env.sh && \
-	    ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
+	    ${SETENV} ${MAKE_ENV} ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
 .if ${PORT_OPTIONS:MPYTHON}
 	${PYTHON_CMD} -mcompileall \
 	    ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom/python/xpcom
@@ -329,7 +349,7 @@ do-install:
 
 	${MKDIR} ${STAGEDIR}${VBOX_DIR}
 	cd ${KMK_BUILDDIR}/bin && ${COPYTREE_SHARE} \
-	    "*.fd *.r0 *.rc *.so components" ${STAGEDIR}${VBOX_DIR}
+	    "*.fd *.r0 *.so components" ${STAGEDIR}${VBOX_DIR}
 .if ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MWEBSERVICE}
 	${RLN} ${STAGEDIR}${DATADIR}/sdk ${STAGEDIR}${VBOX_DIR}
 .endif
@@ -354,7 +374,7 @@ do-install:
 	    ${STAGEDIR}${VBOX_DIR}/additions/VBoxGuestAdditions.iso
 .endif
 
-.if ${PORT_OPTIONS:MMANUAL}
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${KMK_BUILDDIR}/bin/UserManual*.pdf \
 	    ${STAGEDIR}${DOCSDIR}
@@ -393,6 +413,10 @@ do-install:
 	    ${STAGEDIR}${VBOX_DIR}/ExtensionPacks/VNC/
 	${INSTALL_LIB} ${KMK_BUILDDIR}/bin/ExtensionPacks/VNC/${KMK_ARCH}/* \
 	    ${STAGEDIR}${VBOX_DIR}/ExtensionPacks/VNC/${KMK_ARCH}/
+.endif
+
+.if ${PORT_OPTIONS:MVBOXIMG}
+	${LN} -fs ../${VBOX_DIR_REL}/vboximg-mount ${STAGEDIR}${PREFIX}/bin/
 .endif
 
 .if ${PORT_OPTIONS:MWEBSERVICE}

@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	gnuradio
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.8.1.0
-PORTREVISION=	4
+DISTVERSION=	3.8.4.0
+PORTREVISION=	14
 CATEGORIES=	comms astro hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio Software defined radio
+WWW=		https://www.gnuradio.org/
 
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	volk>0:devel/volk \
 		doxygen>0:devel/doxygen \
-		${PY_SPHINX} \
+		${PYTHON_PKGNAMEPREFIX}sphinx>=1.2.2,1:textproc/py-sphinx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYNUMPY} \
 		${PYTHON_SITELIBDIR}/mako/__init__.py:textproc/py-mako@${PY_FLAVOR} \
@@ -26,7 +25,6 @@ BUILD_DEPENDS=	volk>0:devel/volk \
 		aconnect:audio/alsa-utils \
 		cheetah:devel/py-cheetah3@${PY_FLAVOR} \
 		cppzmq>0:net/cppzmq \
-		guile:lang/guile \
 		minixmlto:textproc/minixmlto \
 		sdl-config:devel/sdl12 \
 		swig:devel/swig \
@@ -50,12 +48,8 @@ LIB_DEPENDS=	libcodec2.so:audio/codec2 \
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		cmake compiler:c++11-lang desktop-file-utils fortran gnome \
-		iconv perl5 pkgconfig pyqt:5 python:3.5+ qt:5 shared-mime-info \
-		shebangfix
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	gnuradio
-GH_PROJECT=	gnuradio
+		iconv localbase:ldflags perl5 pkgconfig pyqt:5 python \
+		qt:5 shared-mime-info shebangfix
 
 SHEBANG_FILES=	grc/scripts/freedesktop/grc_setup_freedesktop.in \
 		gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor \
@@ -74,29 +68,26 @@ CMAKE_ARGS+=	-DCMAKE_INSTALL_RPATH:STRING="${LOCALBASE}/lib/gcc${_GCC_VER}" \
 # for detailed debugging uncomment the next line
 #CMAKE_ARGS+=	--debug-output --trace
 USE_CXXSTD=	c++11
-USE_PYQT=	core gui opengl
-USE_WX=		3.0
+USE_GITHUB=	yes
+USE_PYQT=	pyqt5
+USE_WX=		3.2
 USE_QT=		buildtools core gui xml qmake widgets
-WX_COMPS=	wx wx:build wx:run python:build python:run
+WX_COMPS=	wx python:run
 USE_LDCONFIG=	yes
 LIBSTRIP_FILES=	analog audio blocks channels digital dtv fec fft\
 		filter pmt qtgui runtime trellis video-sdl\
 		vocoder wavelet
 
 OPTIONS_DEFINE=		DOCS UHD TESTING DOXYGEN
-# Unfortunately building docs on i386 fails
-##OPTIONS_EXCLUDE_${i386}=	DOXYGEN
-# Yay. building docs is broken on 10 and HEAD too so turn them all off
 OPTIONS_EXCLUDE=	DOXYGEN
 OPTIONS_SUB=		yes
 UHD_DESC=	Include UHD support from Ettus
 TESTING_DESC=	Include testing support
-INSTALLS_ICONS=		yes
 
-PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+PLIST_SUB+=	PORTVERSION=${PORTVERSION} PORTMAINVER=${PORTVERSION:C|^([1-9]+)\.([0-9]+)\.([0-9]+).*|\1.\2.\3|}
 
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
-			${PY_SPHINX} \
+			${PYTHON_PKGNAMEPREFIX}sphinx>=1.2.2,1:textproc/py-sphinx@${PY_FLAVOR} \
 			dot:graphics/graphviz \
 			xmlto:textproc/xmlto \
 			freefont-ttf>0:x11-fonts/freefont-ttf

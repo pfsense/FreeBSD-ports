@@ -1,6 +1,3 @@
-# Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tntnet
 PORTVERSION=	2.2.1
 PORTREVISION=	5
@@ -9,18 +6,22 @@ MASTER_SITES=	http://www.tntnet.org/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Webapplicationserver for C++
+WWW=		https://www.tntnet.org/index.html
 
-LIB_DEPENDS=	libcxxtools.so:devel/cxxtools
 BUILD_DEPENDS=	zip:archivers/zip
+LIB_DEPENDS=	libcxxtools.so:devel/cxxtools
 
-USES=		cpe iconv libtool pathfix pkgconfig shebangfix
+USES=		cpe iconv libtool localbase:ldflags pathfix pkgconfig \
+		shebangfix
+USE_CXXSTD=	c++14
+
 SHEBANG_FILES=	tntnet-conf2xml.pl
-USE_CSTD=	gnu89
-PATCH_STRIP=	-p1
+#USE_CSTD=	gnu89
+
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--localstatedir=/var
+
+PATCH_STRIP=	-p1
 
 .if defined(WITH_GNUTLS)
 CONFIGURE_ARGS+=	--with-ssl=gnutls

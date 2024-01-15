@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	xmastermind
 PORTVERSION=	0.1
 PORTREVISION=	8

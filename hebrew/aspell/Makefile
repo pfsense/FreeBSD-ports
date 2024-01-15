@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	aspell
 SPELLVERSION=	6-he-1.0-0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ CATEGORIES=	hebrew textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Hebrew dictionaries
+WWW=		http://aspell.net/
 
 DICT=	 	he
 

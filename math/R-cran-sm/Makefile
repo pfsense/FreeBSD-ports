@@ -1,16 +1,12 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	sm
-DISTVERSION=	2.2-5.6
-PORTREVISION=	3
+DISTVERSION=	2.2-5.7.1
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Smoothing methods for nonparametric regression and density estimation
-
-BROKEN_amd64=	Does not build
+WWW=		http://www.stats.gla.ac.uk/~adrian/sm
 
 USES=		cran:auto-plist,compiles
 

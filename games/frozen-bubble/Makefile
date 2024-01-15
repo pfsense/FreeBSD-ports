@@ -1,6 +1,3 @@
-# Created by: Klaus Goger <klaus.goger@reflex.at>
-# $FreeBSD$
-
 PORTNAME=	frozen-bubble
 DISTVERSION=	2.213.g${SNAPDATE}
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shoot frozen bubbles to build groups of the same color
+WWW=		http://www.frozen-bubble.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

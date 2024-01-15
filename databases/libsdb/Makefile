@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libsdb
 PORTVERSION=	0.10.1
 CATEGORIES=	databases
@@ -9,6 +6,7 @@ DISTNAME=	sdb-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple database library
+WWW=		https://siag.nu/libsdb/
 
 MAKE_JOBS_UNSAFE=	yes
 

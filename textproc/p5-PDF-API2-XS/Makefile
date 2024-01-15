@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PDF-API2-XS
 PORTVERSION=	1.002
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Optional PDF::API2 add-on using XS to speed up expensive operations
+WWW=		https://metacpan.org/release/PDF-API2-XS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

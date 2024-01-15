@@ -8,13 +8,11 @@
 #    - graphics/mesa-dri
 #    - graphics/mesa-libs
 #    - lang/clover
-#
-# $FreeBSD$
 
 MESAVERSION=	${MESABASEVERSION}${MESASUBVERSION:C/^(.)/.\1/}
 MESADISTVERSION=${MESABASEVERSION}${MESASUBVERSION:C/^(.)/-\1/}
 
-MESABASEVERSION=	20.2.3
+MESABASEVERSION=	23.3.2
 # if there is a subversion, don't include the '-' between 7.11-rc2.
 MESASUBVERSION=
 
@@ -25,15 +23,17 @@ MASTER_SITES=	https://mesa.freedesktop.org/archive/ \
 
 DISTFILES=	mesa-${MESADISTVERSION}${EXTRACT_SUFX}
 
+PATCH_SITES=	https://gitlab.freedesktop.org/mesa/mesa/-/commit/
+PATCHFILES+=	4a253aae7ca437201d2a31d2a11a1a5434fe41f1.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26284
+
 MAINTAINER=	x11@FreeBSD.org
 
-NOT_FOR_ARCHS=sparc64
-NOT_FOR_ARCHS_REASON=not supported on sparc64
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/docs/license.rst
 
 COMPONENT=	${PORTNAME:tl:C/^lib//:C/mesa-//}
 
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs \
-		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
 .if ${COMPONENT} != clover
 .if ${PORT_OPTIONS:MPLATFORM_X11}
@@ -43,20 +43,9 @@ USES+=	xorg
 .if ${COMPONENT} != osmesa
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 .endif
-.if ${COMPONENT} != libs
-LIB_DEPENDS+=	libglapi.so:graphics/mesa-libs
-.endif
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
-LIB_DEPENDS+=	libunwind.so:devel/libunwind
-.endif
-.if ${OPSYS} == DragonFly
-LIB_DEPENDS+=	libelf.so:devel/libelf
-.endif
 
 USES+=		compiler:c++11-lib bison meson pathfix pkgconfig \
-		python:3.6+,build shebangfix tar:xz
-
-USE_LDCONFIG=	yes
+		python:build shebangfix tar:xz
 
 .if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
 # --build-id isn't supported by old GNU ld.bfd in base
@@ -86,21 +75,26 @@ PKGHELP=	${.CURDIR}/pkg-help
 PKGINSTALL=	${.CURDIR}/pkg-install
 PKGDEINSTALL=	${.CURDIR}/pkg-deinstall
 
-.if ${COMPONENT} == clover
-EXTRA_PATCHES+= ${PATCHDIR}/extra-src_gallium_auxiliary_meson.build \
-		${PATCHDIR}/extra-src_gallium_auxiliary_vl_vl__stubs.c
-.endif
-
 .include <bsd.port.pre.mk>
 
 BINARY_ALIAS+=	python3=${PYTHON_VERSION}
 
-LLVM_DEFAULT=	10
-BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>=10.0.1_1:devel/llvm${LLVM_DEFAULT}
-.if ${COMPONENT} != libs
-RUN_DEPENDS+=	llvm${LLVM_DEFAULT}>=10.0.1_1:devel/llvm${LLVM_DEFAULT}
+CONFIGURE_ENV+=	LLVM_CONFIG=${LLVM_CONFIG}
+
+# Deal with unclean env if the user have elfutils installed
+# and build the port directly without poudriere
+.if exists(${LOCALBASE}/include/libelf.h)
+LIB_DEPENDS+=	libelf.so:devel/elfutils
+MESON_ARGS+=	-Dlibelf=enabled
+.else
+MESON_ARGS+=	-Dlibelf=disabled
 .endif
 
-MESON_ARGS+=	--native-file="${WRKSRC}/llvm.ini"
-LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/llvm${LLVM_DEFAULT}/lib
-MESON_ARGS+=	-Dllvm=enabled
+# Some symbols in mesa's linker version scripts are not always defined,
+# depending on configuration options. Suppress errors with lld >= 17 due to
+# these undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
+
+LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/llvm${LLVM_VERSION}/lib
+MESON_ARGS+=	-Dllvm=enabled \
+		-Dlibunwind=disabled

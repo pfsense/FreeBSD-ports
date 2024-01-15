@@ -1,14 +1,12 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	qcc
 DISTVERSION=	2.7
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quality Control Charts
+WWW=		https://cran.r-project.org/package=qcc
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

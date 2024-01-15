@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	plman
 PORTVERSION=	2.5.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:C/\./_/g}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Propositional Logic sentence shell/interpreter
+WWW=		https://plman.sourceforge.net/
 
 NO_BUILD=	yes
 

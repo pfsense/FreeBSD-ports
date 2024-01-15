@@ -1,13 +1,11 @@
-# Created by: Johannes M Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	clblast
 PORTVERSION=	1.1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Modern, lightweight, performant and tunable OpenCL BLAS library
+WWW=		https://github.com/CNugteren/CLBlast
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

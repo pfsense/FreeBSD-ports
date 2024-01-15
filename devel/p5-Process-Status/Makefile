@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	Process-Status
-PORTVERSION=	0.009
+DISTVERSION=	0.010
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=CPAN:RJBS
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Provides a few simple methods to make it easier to inspect $?
+WWW=		https://metacpan.org/release/Process-Status
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

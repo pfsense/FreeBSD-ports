@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	yabb
 PORTVERSION=	2.6.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	YaBB_${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Original free open-source forum written in Perl
+WWW=		http://www.yabbforum.com/
 
 LICENSE=	YABB_PUBLIC_LICENCE
 LICENSE_NAME=	YABB PUBLIC LICENCE
@@ -18,7 +16,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 RUN_DEPENDS=	p5-Digest-HMAC>=0:security/p5-Digest-HMAC
 
-USES=		perl5 shebangfix zip
+USES=		cpe perl5 shebangfix zip
 USE_PERL5=	run
 NO_BUILD=	yes
 NO_ARCH=	yes

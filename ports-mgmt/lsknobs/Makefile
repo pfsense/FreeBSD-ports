@@ -1,6 +1,3 @@
-# Created by: Gabriel Linder <linder.gabriel@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	lsknobs
 PORTVERSION=	1.0
 CATEGORIES=	ports-mgmt

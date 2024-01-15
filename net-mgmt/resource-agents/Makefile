@@ -1,19 +1,18 @@
-# Created by: dpejesh@yahoo.com
-# $FreeBSD$
-
 PORTNAME=	resource-agents
-PORTVERSION=	4.6.1
+PORTVERSION=	4.13.0
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	egypcio@FreeBSD.org
+MAINTAINER=	flo@FreeBSD.org
 COMMENT=	OCF Compliant Resource Agents
+WWW=		http://www.linux-ha.org/wiki/Resource_agents
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
 		redis-cli:databases/redis
+LIB_DEPENDS=	libqb.so:devel/libqb
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		autoreconf gmake gnome pkgconfig python shebangfix
@@ -25,8 +24,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-fatal-warnings --with-version=${PORTVERSION} \
 		PACKAGE_STRING="${PORTNAME} ${PORTVERSION}" \
 		PACKAGE_VERSION="${PORTVERSION}"
-
-CONFLICTS=	heartbeat-[0-9]*
 
 SHEBANG_LANG=	sh
 sh_OLD_CMD=	/bin/sh
@@ -56,7 +53,7 @@ post-patch:
 	${REINPLACE_CMD} 's|/etc/redis|${LOCALBASE}/etc/redis|g' \
 	  ${WRKSRC}/heartbeat/redis.in
 	${REINPLACE_CMD} 's|/usr/bin/redis|${LOCALBASE}/bin/redis|g' \
-	  ${WRKSRC}/heartbeat/redis.in	
+	  ${WRKSRC}/heartbeat/redis.in
 
 post-install:
 	${RM} ${STAGEDIR}/${LOCALBASE}/resource-agents.conf

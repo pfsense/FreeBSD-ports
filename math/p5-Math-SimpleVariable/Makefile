@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-SimpleVariable
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple representation of mathematical variables
+WWW=		https://metacpan.org/release/Math-SimpleVariable
 
 USES=		perl5
 USE_PERL5=	configure patch

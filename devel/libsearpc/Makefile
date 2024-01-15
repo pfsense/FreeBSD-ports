@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libsearpc
 PORTVERSION=	3.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	devel
 
 MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	Simple RPC framework based on GObject System in C
+WWW=		https://github.com/haiwen/libsearpc
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,9 +16,9 @@ LIB_DEPENDS=	libjansson.so:devel/jansson \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
-GH_TAGNAME=	d1fd751
+GH_TAGNAME=	54145b0
 
-USES=		autoreconf gettext libtool pathfix pkgconfig python:3.6+ shebangfix
+USES=		autoreconf gettext libtool pathfix pkgconfig python shebangfix
 SHEBANG_FILES=	lib/searpc-codegen.py
 USE_LDCONFIG=	yes
 

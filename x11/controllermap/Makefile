@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	controllermap
-PORTVERSION=	2.0.12
+DISTVERSION=	2.28.2
 CATEGORIES=	x11
 MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${DISTVERSION}
@@ -21,10 +19,11 @@ MAKEFILE=	/dev/null
 MAKE_ENV=	LDLIBS="${LIBS}"
 ALL_TARGET=	${PORTNAME} testgamecontroller testjoystick
 PLIST_FILES=	${ALL_TARGET:S,^,bin/,}
-PORTDATA=	${PORTNAME}.bmp axis.bmp button.bmp
+PORTDATA=	${PORTNAME}.bmp ${PORTNAME}_back.bmp axis.bmp button.bmp
 
 post-patch:
-	@${REINPLACE_CMD} '/bmp/s,","${DATADIR}/,' \
+	@${REINPLACE_CMD} -e '/bmp/s,","${DATADIR}/,' \
+		-e '/#include/s/\(testutils\)\.h/\1.c/' \
 		${ALL_TARGET:S,^,${WRKSRC}/,:S,$,.c,}
 
 do-install:

@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Object
 PORTVERSION=	0.08
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Thoroughly testing objects via registered handlers
+WWW=		https://metacpan.org/release/Test-Object
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

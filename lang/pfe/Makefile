@@ -1,6 +1,3 @@
-# Created by: patrick
-# $FreeBSD$
-
 PORTNAME=	pfe
 PORTVERSION=	0.33.71
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of ANSI Forth
+WWW=		https://pfe.sourceforge.net/
 
 BROKEN_aarch64=		fails to compile: pfe/assembler-ext.c:99:5: implicit declaration of function 'PFE_SBR_COMPILE_EXIT' is invalid in C99
 BROKEN_armv6=		fails to compile: pfe/assembler-ext.c:99:5: implicit declaration of function 'PFE_SBR_COMPILE_EXIT' is invalid in C99

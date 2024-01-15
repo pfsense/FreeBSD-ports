@@ -1,13 +1,11 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	bomns
 PORTVERSION=	0.99.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Best old-school Deathmatch game ever (only for two players)
+WWW=		https://github.com/keithfancher/Bomns-for-Linux
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,7 +23,6 @@ USE_CXXSTD=	gnu++98
 USE_SDL=	mixer sdl
 USE_GNOME=	gtk20
 USE_CSTD=	gnu89
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS ChangeLog README
 

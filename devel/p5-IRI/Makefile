@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	IRI
 PORTVERSION=	0.011
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Internationalized Resource Identifiers
+WWW=		https://metacpan.org/release/IRI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

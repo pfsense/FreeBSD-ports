@@ -8,7 +8,7 @@
  * freeradiussettings.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -30,8 +30,8 @@
  */
 ]]>	</copyright>
 	<name>freeradiussettings</name>
-	<title>FreeRADIUS: Settings</title>
-	<aftersaveredirect>pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</aftersaveredirect>
+	<title>Services/FreeRADIUS</title>
+	<aftersaveredirect>pkg_edit.php?xml=freeradiussettings.xml</aftersaveredirect>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<tabs>
 		<tab>
@@ -52,28 +52,28 @@
 		</tab>
 		<tab>
 			<text>Settings</text>
-			<url>/pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussettings.xml</url>
 			<active/>
 		</tab>
 		<tab>
 			<text>EAP</text>
-			<url>/pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiuseapconf.xml</url>
 		</tab>
 		<tab>
 			<text>SQL</text>
-			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussqlconf.xml</url>
 		</tab>
 		<tab>
 			<text>LDAP</text>
-			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml</url>
 		</tab>
 		<tab>
-			<text>View config</text>
+			<text>View Config</text>
 			<url>/freeradius_view_config.php</url>
 		</tab>
 		<tab>
 			<text>XMLRPC Sync</text>
-			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussync.xml</url>
 		</tab>
 	</tabs>
 	<fields>
@@ -239,7 +239,7 @@
 			<fieldname>varsettingsauthbadpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user connects. Click Info for details.
+				You can add additional information to the syslog output if a user is rejected. Click Info for details.
 				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
 				<code>%{User-Name}</code> - Logs the username.</br>
@@ -272,7 +272,7 @@
 			<fieldname>varsettingsauthgoodpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user is rejected. Click Info for details.
+				You can add additional information to the syslog output if a user connects. Click Info for details.
 				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
 				<code>%{User-Name}</code> - Logs the username.</br>

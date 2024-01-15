@@ -1,6 +1,3 @@
-# Created by: Don Croyle <croyle@gelemna.org>
-# $FreeBSD$
-
 PORTNAME=	emacs-lisp-intro
 PORTVERSION=	2.04
 PORTREVISION=	1

@@ -1,6 +1,3 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	fcitx-m17n
 PORTVERSION=	0.2.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DIST_SUBDIR=	fcitx
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Multilingualization support for Fcitx
+WWW=		https://fcitx-im.org/wiki/Fcitx
 
 LICENSE=	LGPL21
 

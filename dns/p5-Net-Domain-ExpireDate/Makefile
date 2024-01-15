@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Net-Domain-ExpireDate
 PORTVERSION=	1.20
 CATEGORIES=	dns net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module obtain expiration date of domain names
+WWW=		https://metacpan.org/release/Net-Domain-ExpireDate
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-Whois-Raw>=0:net/p5-Net-Whois-Raw

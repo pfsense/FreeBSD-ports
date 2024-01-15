@@ -1,18 +1,11 @@
---- third_party/pdfium/core/fxge/cfx_fontmapper.cpp.orig	2020-11-16 14:56:57 UTC
+--- third_party/pdfium/core/fxge/cfx_fontmapper.cpp.orig	2023-09-13 12:11:42 UTC
 +++ third_party/pdfium/core/fxge/cfx_fontmapper.cpp
-@@ -154,13 +154,13 @@ const AltFontFamily g_AltFontFamilies[] = {
+@@ -157,7 +157,7 @@ constexpr AltFontFamily kAltFontFamilies[] = {
      {"ForteMT", "Forte"},
  };
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ASMJS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ASMJS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || defined(OS_ASMJS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || defined(OS_ASMJS) || BUILDFLAG(IS_BSD)
  const char kNarrowFamily[] = "LiberationSansNarrow";
- #elif defined(OS_ANDROID)
+ #elif BUILDFLAG(IS_ANDROID)
  const char kNarrowFamily[] = "RobotoCondensed";
- #else
- const char kNarrowFamily[] = "ArialNarrow";
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ASMJS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ASMJS) || defined(OS_BSD)
- 
- ByteString TT_NormalizeName(const char* family) {
-   ByteString norm(family);

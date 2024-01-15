@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-IRC-Plugin-QueryDNS
 PORTVERSION=	1.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE::Component::IRC plugin for IRC based DNS queries
+WWW=		https://metacpan.org/release/POE-Component-IRC-Plugin-QueryDNS
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-IP>=1.25:net-mgmt/p5-Net-IP \

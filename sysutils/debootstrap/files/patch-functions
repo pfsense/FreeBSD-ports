@@ -1,20 +1,20 @@
---- functions.orig	2019-07-06 11:22:30 UTC
+--- functions.orig	2023-02-24 08:27:34 UTC
 +++ functions
-@@ -1139,6 +1139,7 @@ setup_proc () {
- 	case "$HOST_OS" in
- 	    *freebsd*)
- 		umount_on_exit /dev
-+		umount_on_exit /dev/fd
- 		umount_on_exit /proc
- 		umount "$TARGET/proc" 2>/dev/null || true
- 		if [ "$HOST_OS" = kfreebsd ]; then
-@@ -1224,7 +1225,8 @@ setup_dynamic_devices () {
- 	    kfreebsd*)
- 		in_target mount -t devfs devfs /dev ;;
- 	    freebsd)
--		mount -t devfs devfs "$TARGET/dev" ;;
-+		mount -t devfs devfs "$TARGET/dev"
-+		mount -t fdescfs -o linrdlnk fdescfs "$TARGET/dev/fd" ;;
- 	    hurd*)
- 	        # Use the setup-translators of the hurd package
- 	        in_target /usr/lib/hurd/setup-translators -k ;;
+@@ -658,7 +658,7 @@ download_release_sig () {
+ 		info RELEASESIG "Checking Release signature"
+ 		# Don't worry about the exit status from gpgv; parsing the output will
+ 		# take care of that.
+-		(gpgv --status-fd 1 --keyring "$KEYRING" --ignore-time-conflict \
++		(gpgv2 --status-fd 1 --keyring "$KEYRING" --ignore-time-conflict \
+ 		 "$relsigdest" "$reldest" || true) | read_gpg_status
+ 		progress 100 100 DOWNRELSIG "Downloading Release file signature"
+ 	fi
+@@ -1706,7 +1706,7 @@ read_gpg_status () {
+ 	elif [ "$unkkey" ]; then
+ 		error 1 UNKNOWNRELSIG "Release signed by unknown key (key id %s)\n   The specified keyring $KEYRING may be incorrect or out of date.\n   You can find the latest Debian release key at https://ftp-master.debian.org/keys.html" "$unkkey"
+ 	else
+-		error 1 SIGCHECK "Error executing gpgv to check Release signature"
++		error 1 SIGCHECK "Error executing gpgv2 to check Release signature"
+ 	fi
+ }
+ 

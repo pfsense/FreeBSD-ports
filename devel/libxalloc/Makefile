@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	libxalloc
 PORTVERSION=	1.0.4
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	xalloc-${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Memory allocation library with error checking
+WWW=		http://shh.thathost.com/pub-unix/ #xalloc
 
 OPTIONS_DEFINE=	DOCS
 

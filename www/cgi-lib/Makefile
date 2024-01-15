@@ -1,6 +1,3 @@
-# Created by: Sergey Samoyloff <gonza@techline.ru>
-# $FreeBSD$
-
 PORTNAME=	cgi-lib
 PORTVERSION=	1.4
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Iodef-Pb-Simple
 PORTVERSION=	0.21
 PORTREVISION=	2
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl extension providing high level API access to Iodef-Pb
+WWW=		https://metacpan.org/release/Iodef-Pb-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

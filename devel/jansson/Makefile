@@ -1,13 +1,11 @@
-# Created by: vanilla@
-# $FreeBSD$
-
 PORTNAME=	jansson
-PORTVERSION=	2.13.1
+DISTVERSION=	2.14
 CATEGORIES=	devel
-MASTER_SITES=	http://www.digip.org/jansson/releases/
+MASTER_SITES=	https://github.com/akheron/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	C library for encoding, decoding, and manipulating JSON data
+WWW=		https://github.com/akheron/jansson
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

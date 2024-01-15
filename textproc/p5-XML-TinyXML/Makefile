@@ -1,6 +1,3 @@
-# Created by: Rick van der Zwet <info@rickvanderzwet.nl>
-# $FreeBSD$
-
 PORTNAME=	XML-TinyXML
 PORTVERSION=	0.34
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	info@rickvanderzwet.nl
 COMMENT=	Little and efficient Perl module to manage xml data
+WWW=		https://metacpan.org/release/XML-TinyXML
 
 USES=		iconv perl5
 USE_PERL5=	configure

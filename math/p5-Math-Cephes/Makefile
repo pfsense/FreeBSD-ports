@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Cephes
 PORTVERSION=	0.5305
 CATEGORIES=	math perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the cephes math library
+WWW=		https://metacpan.org/release/Math-Cephes
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

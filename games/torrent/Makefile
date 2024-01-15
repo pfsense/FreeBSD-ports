@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	torrent
 PORTVERSION=	0.8.2
 PORTREVISION=	12
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.shiftygames.com/torrent/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Score points without letting the tiles touch the top of the board
+WWW=		http://www.shiftygames.com/torrent/torrent.html
 
 GNU_CONFIGURE=	yes
 USES=		gmake sdl

@@ -1,6 +1,3 @@
-# Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
-
 PORTNAME=	meta
 PORTVERSION=	0.1
 PORTREVISION=	3
@@ -14,6 +11,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Parser generator for Common Lisp
+WWW=		http://home.pipeline.com/~hbaker1/Prag-Parse.html
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes

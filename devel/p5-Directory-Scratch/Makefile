@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Directory-Scratch
 PORTVERSION=	0.18
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy-to-use self-cleaning scratch space
+WWW=		https://metacpan.org/release/Directory-Scratch
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,5 +19,7 @@ RUN_DEPENDS=	p5-Path-Class>=0:devel/p5-Path-Class \
 
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,14 +1,11 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cantarell-fonts
-PORTVERSION=	0.101
-PORTREVISION=	1
+DISTVERSION=	0.301
 CATEGORIES=	x11-fonts gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Cantarell, a Humanist sans-serif font family
+WWW=		https://wiki.gnome.org/Projects/CantarellFonts
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/COPYING

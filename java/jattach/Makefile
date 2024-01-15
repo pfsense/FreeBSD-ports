@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	jattach
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5
+DISTVERSION=	2.1
 CATEGORIES=	java devel
 
 MAINTAINER=	mizhka@FreeBSD.org
 COMMENT=	JVM dynamic attach utility
+WWW=		https://github.com/apangin/jattach
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

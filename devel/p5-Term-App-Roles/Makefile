@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Term-App-Roles
 PORTVERSION=	0.031
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Collection of roles for terminal-based application
+WWW=		https://metacpan.org/release/Term-App-Roles
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

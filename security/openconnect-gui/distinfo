@@ -1,3 +1,5 @@
-TIMESTAMP = 1591544711
-SHA256 (openconnect-openconnect-gui-v1.4.1_GH0.tar.gz) = a8d156d056a81be1c895738f0a4299b60fc87b608fcb9676b8f2d5215b7101ae
-SIZE (openconnect-openconnect-gui-v1.4.1_GH0.tar.gz) = 10025784
+TIMESTAMP = 1613608872
+SHA256 (openconnect-gui-v1.5.3.tar.gz) = 339858502dfa808155c854b47da32a6c0e9ea315d028d2cadd9dcf84a952ae42
+SIZE (openconnect-gui-v1.5.3.tar.gz) = 14672366
+SHA256 (qtproject-qt-solutions-a8dda66d_GH0.tar.gz) = 24d1a47ed0d2cc1f3a858c40c57482080cdbf88441386cfb0628b7e81de69800
+SIZE (qtproject-qt-solutions-a8dda66d_GH0.tar.gz) = 1410481

@@ -1,6 +1,3 @@
-# Created by: Andrey Lykhin <lan31@inbox.ru>
-# $FreeBSD$
-
 PORTNAME=	bfhist
 PORTVERSION=	0.4
 CATEGORIES=	comms
@@ -9,6 +6,7 @@ MASTER_SITES=	http://lan31.narod.ru/bfhist/files/ \
 
 MAINTAINER=	lan31@inbox.ru
 COMMENT=	Statistics generator for BinkleyForce FTN mailer
+WWW=		https://lan31.narod.ru/bfhist/
 
 PLIST_FILES=	bin/bfhist
 

@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	commons-httpclient
 DISTVERSION=	3.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${DISTVERSION}-src
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Package implementing the client side of the HTTP standard
+WWW=		https://hc.apache.org/httpclient-3.x/
 
 LICENSE=	APACHE20
 

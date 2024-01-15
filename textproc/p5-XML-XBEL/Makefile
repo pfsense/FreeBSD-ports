@@ -1,6 +1,3 @@
-# Created by: Aaron Straup Cope <ascope@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	XML-XBEL
 PORTVERSION=	1.4
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	OOP for reading and writing XBEL documents
+WWW=		https://metacpan.org/release/XML-XBEL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

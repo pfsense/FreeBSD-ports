@@ -17,10 +17,16 @@ share/fcitx5/anthy/tsuki-2-203-106.sty
 share/fcitx5/anthy/vje-delta.sty
 share/fcitx5/anthy/wnn.sty
 share/fcitx5/inputmethod/anthy.conf
+share/icons/hicolor/16x16/apps/fcitx-anthy.png
+share/icons/hicolor/16x16/apps/org.fcitx.Fcitx5.fcitx-anthy.png
+share/icons/hicolor/22x22/apps/fcitx-anthy.png
+share/icons/hicolor/22x22/apps/org.fcitx.Fcitx5.fcitx-anthy.png
 share/icons/hicolor/22x22/status/fcitx-anthy-symbol.png
 share/icons/hicolor/22x22/status/org.fcitx.Fcitx5.fcitx-anthy-symbol.png
-share/icons/hicolor/48x48/status/fcitx-anthy.png
-share/icons/hicolor/48x48/status/org.fcitx.Fcitx5.fcitx-anthy.png
+share/icons/hicolor/24x24/apps/fcitx-anthy.png
+share/icons/hicolor/24x24/apps/org.fcitx.Fcitx5.fcitx-anthy.png
+share/icons/hicolor/48x48/apps/fcitx-anthy.png
+share/icons/hicolor/48x48/apps/org.fcitx.Fcitx5.fcitx-anthy.png
 share/icons/hicolor/scalable/status/fcitx-anthy-period-japanese.svg
 share/icons/hicolor/scalable/status/fcitx-anthy-period-latin.svg
 share/icons/hicolor/scalable/status/fcitx-anthy-period-wide-japanese.svg
@@ -34,6 +40,7 @@ share/icons/hicolor/scalable/status/org.fcitx.Fcitx5.fcitx-anthy-symbol.svg
 share/locale/ca/LC_MESSAGES/fcitx5-anthy.mo
 share/locale/da/LC_MESSAGES/fcitx5-anthy.mo
 share/locale/de/LC_MESSAGES/fcitx5-anthy.mo
+share/locale/he/LC_MESSAGES/fcitx5-anthy.mo
 share/locale/ja/LC_MESSAGES/fcitx5-anthy.mo
 share/locale/ko/LC_MESSAGES/fcitx5-anthy.mo
 share/locale/ru/LC_MESSAGES/fcitx5-anthy.mo

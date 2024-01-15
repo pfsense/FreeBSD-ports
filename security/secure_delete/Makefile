@@ -1,6 +1,3 @@
-# Created by: Vaida Bogdan <vaida.bogdan@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	secure_delete
 PORTVERSION=	3.1
 PORTREVISION=	1
@@ -10,10 +7,11 @@ MASTER_SITES=	PACKETSTORM/groups/thc \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Secure data deletion toolkit
+WWW=		https://www.thc.org/
 
 LICENSE=	GPLv2 # mentioned in manpages
 
-CONFLICTS=	srm-[0-9]*
+CONFLICTS=	srm
 
 MAKE_JOBS_UNSAFE=	yes
 

@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	fatback
 PORTVERSION=	1.3
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Recover deleted files from FAT filesystems
+WWW=		https://sourceforge.net/project/showfiles.php?group_id=46038
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

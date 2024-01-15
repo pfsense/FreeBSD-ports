@@ -1,14 +1,12 @@
-# Created by: sobomax
-# $FreeBSD$
-
 PORTNAME=	perceptualdiff
 PORTVERSION=	2.1
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
-MAINTAINER=	sobomax@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program that compares two images
+WWW=		https://github.com/myint/perceptualdiff
 
 LICENSE=	GPLv2
 

@@ -1,14 +1,12 @@
-# Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kasumi
 PORTVERSION=	2.5
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	japanese
 MASTER_SITES=	OSDN/${PORTNAME}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Dictionary management tool for anthy
+WWW=		http://kasumi.sourceforge.jp/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,6 +17,7 @@ LIB_DEPENDS=	libanthy.so:japanese/anthy \
 
 USES=		compiler:c++11-lang gmake gnome iconv:wchar_t localbase:ldflags pkgconfig
 USE_GNOME=	gtk20 cairo gdkpixbuf2
+USE_CXXSTD=	c++11
 
 GNU_CONFIGURE=	yes
 

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	yubico-piv-tool
-PORTVERSION=	2.1.1
-#PORTREVISION=	0
+PORTVERSION=	2.4.2
+PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	https://developers.yubico.com/yubico-piv-tool/Releases/
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Yubico PIV tool
+WWW=		https://developers.yubico.com/yubico-piv-tool/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -29,11 +28,11 @@ PLIST_FILES=	bin/yubico-piv-tool \
 		include/ykpiv/ykpiv.h \
 		lib/libykcs11.a \
 		lib/libykcs11.so \
-		lib/libykcs11.so.1 \
+		lib/libykcs11.so.2 \
 		lib/libykcs11.so.${PORTVERSION} \
 		lib/libykpiv.a \
 		lib/libykpiv.so \
-		lib/libykpiv.so.1 \
+		lib/libykpiv.so.2 \
 		lib/libykpiv.so.${PORTVERSION} \
 		libdata/pkgconfig/ykcs11.pc \
 		libdata/pkgconfig/ykpiv.pc \

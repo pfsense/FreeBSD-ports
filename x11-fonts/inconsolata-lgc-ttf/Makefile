@@ -1,6 +1,3 @@
-# Created by: Ilya A. Arkhipov <rum1cro@yandex.ru>
-# $FreeBSD$
-
 PORTNAME=	Inconsolata-LGC
 PORTVERSION=	20131024
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	rum1cro@yandex.ru
 COMMENT=	Monospaced TrueType font with Cyrillic glyphs
+WWW=		https://github.com/DeLaGuardo/Inconsolata-LGC
 
 LICENSE=	OFL11
 

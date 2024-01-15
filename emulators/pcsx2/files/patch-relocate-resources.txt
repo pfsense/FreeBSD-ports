@@ -1,0 +1,36 @@
+Allow relocation of resource files
+
+--- cmake/BuildParameters.cmake.orig	2023-11-10 10:14:25 UTC
++++ cmake/BuildParameters.cmake
+@@ -259,6 +259,10 @@ endif()
+ 	list(APPEND PCSX2_DEFS DISABLE_BUILD_DATE)
+ endif()
+ 
++if(DEFINED PCSX2_RESOURCES_PATH)
++    add_compile_definitions(PCSX2_RESOURCES_PATH="${PCSX2_RESOURCES_PATH}")
++endif()
++
+ #-------------------------------------------------------------------------------
+ # MacOS-specific things
+ #-------------------------------------------------------------------------------
+--- pcsx2/Pcsx2Config.cpp.orig	2023-08-31 07:45:23 UTC
++++ pcsx2/Pcsx2Config.cpp
+@@ -1676,6 +1676,10 @@ void EmuFolders::SetResourcesDirectory()
+ 
+ void EmuFolders::SetResourcesDirectory()
+ {
++#ifdef PCSX2_RESOURCES_PATH
++	// Resources' path specified at compile time
++	EmuFolders::Resources = Path::Canonicalize(PCSX2_RESOURCES_PATH);
++#else
+ #ifndef __APPLE__
+ 	// On Windows/Linux, these are in the binary directory.
+ 	Resources = Path::Combine(AppRoot, "resources");
+@@ -1683,6 +1687,7 @@ void EmuFolders::SetResourcesDirectory()
+ 	// On macOS, this is in the bundle resources directory.
+ 	Resources = Path::Canonicalize(Path::Combine(AppRoot, "../Resources"));
+ #endif
++#endif // PCSX2_RESOURCES_PATH
+ }
+ 
+ bool EmuFolders::ShouldUsePortableMode()

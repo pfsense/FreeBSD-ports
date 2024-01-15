@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	nanoblogger
 PORTVERSION=	3.4.2
 PORTREVISION=	1
@@ -9,11 +6,14 @@ MASTER_SITES=	http://nanoblogger.sourceforge.net/downloads/
 
 MAINTAINER=	tobias.rehbein@web.de
 COMMENT=	Small weblog engine written in Bash for the command line
+WWW=		https://nanoblogger.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	bash:shells/bash
+
+USES=		cpe
 
 NO_BUILD=	yes
 

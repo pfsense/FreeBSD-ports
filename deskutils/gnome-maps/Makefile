@@ -1,43 +1,37 @@
-# Created by: Gustau Perez <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gnome-maps
-PORTVERSION=	3.38.2
+DISTVERSION=	43.5
 CATEGORIES=	deskutils gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Map application for GNOME 3
+COMMENT=	Map application for GNOME
+WWW=		https://wiki.gnome.org/Apps/Maps
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	geoclue>=0:net/geoclue
-LIB_DEPENDS=	libgeocode-glib.so:net/geocode-glib \
-		libgee-0.8.so:devel/libgee \
-		libcogl.so:graphics/cogl \
+LIB_DEPENDS=	libchamplain-0.12.so:graphics/libchamplain \
 		libclutter-1.0.so:graphics/clutter \
-		libchamplain-0.12.so:graphics/libchamplain \
-		libsoup-2.4.so:devel/libsoup \
-		librest-0.7.so:devel/librest \
-		libjson-glib-1.0.so:devel/json-glib \
-		libfolks.so:net-im/folks \
+		libcogl.so:graphics/cogl \
+		libgee-0.8.so:devel/libgee \
+		libgeocode-glib-2.so:net/geocode-glib2 \
 		libgfbgraph-0.2.so:net/gfbgraph \
 		libgjs.so:lang/gjs \
-		libsoup-2.4.so:devel/libsoup \
-		librest-0.7.so:devel/librest
+		libgweather-4.so:net/libgweather4 \
+		libhandy-1.so:x11-toolkits/libhandy \
+		libjson-glib-1.0.so:devel/json-glib \
+		librest-1.0.so:net/librest1 \
+		libshumate-1.0.so:x11-toolkits/libshumate \
+		libsoup-3.0.so:devel/libsoup3
 RUN_DEPENDS=	geoclue>=0:net/geoclue
 
-PORTSCOUT=	limitw:1,even
-
-USES=		desktop-file-utils gettext gl gnome meson \
-		pkgconfig tar:xz xorg
-USE_GNOME=	cairo gtk30 intltool libxml2
+USES=		desktop-file-utils gettext gl gnome meson pkgconfig tar:xz xorg
+USE_GNOME=	cairo gtk40 intltool libadwaita libxml2
 USE_GL=		egl
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.gnome.Maps.gschema.xml

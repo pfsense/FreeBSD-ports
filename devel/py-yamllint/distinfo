@@ -1,3 +1,3 @@
-TIMESTAMP = 1601846582
-SHA256 (yamllint-1.25.0.tar.gz) = b1549cbe5b47b6ba67bdeea31720f5c51431a4d0c076c1557952d841f7223519
-SIZE (yamllint-1.25.0.tar.gz) = 126298
+TIMESTAMP = 1699558870
+SHA256 (yamllint-1.33.0.tar.gz) = 2dceab9ef2d99518a2fcf4ffc964d44250ac4459be1ba3ca315118e4a1a81f7d
+SIZE (yamllint-1.33.0.tar.gz) = 130357

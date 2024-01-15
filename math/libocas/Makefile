@@ -1,6 +1,3 @@
-# Created by: b.f. <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libocas
 PORTVERSION=	0.96
 CATEGORIES=	math
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_v${PORTVERSION:S/.//}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Efficient training of SVM classifiers
+WWW=		https://cmp.felk.cvut.cz/~xfrancv/ocas/html/index.html
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,15 +21,7 @@ MAKE_ENV=	CLIBS="${CLIBS}" MEXDETECTED=no
 PLIST_FILES=	bin/linclassif bin/msvmocas bin/svmocas lib/libocas.so \
 		lib/libocas.so.1
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == sparc64
-PICFLAG=	-fPIC
-.else
-PICFLAG=	-fpic
-.endif
-
-CFLAGS+=	${PICFLAG}
+CFLAGS+=	-fpic
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -57,4 +47,4 @@ do-test:
 	${WRKSRC}/linclassif -e -v 1 -o ${WRKSRC}/data/riply_tst.pred \
 		${WRKSRC}/data/riply_tst.light ${WRKSRC}/data/svmocas.model
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

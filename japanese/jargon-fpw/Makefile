@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jargon-fpw
 PORTVERSION=	2.0
 PORTREVISION=	0
@@ -10,6 +7,7 @@ DISTNAME=	jargon-fpw${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The famous jargon file (EPWING V1 format)
+WWW=		http://openlab.ring.gr.jp/edict/fpw/
 
 USES=		zip
 NO_BUILD=	yes

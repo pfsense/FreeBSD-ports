@@ -1,13 +1,11 @@
-# Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	shim
 PORTVERSION=	0.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	UEFI Secure Boot shim loader
+WWW=		https://github.com/mjg59/shim
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

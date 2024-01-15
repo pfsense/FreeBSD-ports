@@ -1,14 +1,13 @@
-# Created by: olgeni@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	gtk-xfce-engine
 PORTVERSION=	3.2.0
+PORTREVISION=	1
 CATEGORIES=	x11-themes xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Xfce GTK2 theme engine
+WWW=		https://www.xfce.org/
 
 LICENSE=	GPLv2
 

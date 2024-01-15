@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-Mason
 PORTVERSION=	0.19
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Mason view class for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-View-Mason
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

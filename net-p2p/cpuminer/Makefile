@@ -1,15 +1,13 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cpuminer
-PORTVERSION=	2.5.0
-PORTREVISION=	5
+PORTVERSION=	2.5.1
+PORTREVISION=	1
 CATEGORIES=	net-p2p math
 MASTER_SITES=	SF/cpuminer
 DISTNAME=	pooler-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	CPU miner for Litecoin and Bitcoin
+WWW=		https://sourceforge.net/projects/cpuminer/
 
 LICENSE=	GPLv2
 

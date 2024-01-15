@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	ucc
 PORTVERSION=	1.6.2
 CATEGORIES=	lang
@@ -9,6 +6,7 @@ DISTNAME=	ucc162
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C Compiler Which Implements the ANSI C89 Standard
+WWW=		http://ucc.sf.net
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL.txt

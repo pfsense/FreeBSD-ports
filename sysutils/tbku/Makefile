@@ -1,6 +1,3 @@
-# Created by: tundra
-# $FreeBSD$
-
 PORTNAME=	tbku
 PORTVERSION=	1.120
 PORTREVISION=	1

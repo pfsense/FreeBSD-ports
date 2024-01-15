@@ -1,40 +1,44 @@
-# Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
-
 PORTNAME=	libprelude
-PORTVERSION=	1.2.6
+PORTVERSION=	5.2.0
 CATEGORIES=	security
-MASTER_SITES=	http://www.prelude-siem.org/attachments/download/410/
+MASTER_SITES=	https://www.prelude-siem.org/attachments/download/1395/
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Sensor support library from Prelude SIEM
+WWW=		https://www.prelude-siem.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl \
-		libgnutls.so:security/gnutls \
-		libgcrypt.so:security/libgcrypt
+LIB_DEPENDS=	libgnutls.so:security/gnutls \
+		libltdl.so:devel/libltdl \
+		libpcre.so:devel/pcre
 
-OPTIONS_DEFINE=	DOCS PERL
-OPTIONS_SUB=	yes
-
-USES=		charsetfix gettext-runtime gmake iconv libtool pathfix pkgconfig
+USES=		libtool localbase pkgconfig
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-lua \
 		--without-python3 \
 		--without-swig \
 		--without-valgrind \
 		ac_cv_path_RUBY=
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+
 INSTALL_TARGET=	install-strip
 
 ETCDIR=		${PREFIX}/etc/prelude
 
-PERL_CONFIGURE_WITH=	perl=${PERL}
+OPTIONS_DEFINE=	DOCS PERL
+OPTIONS_SUB=	yes
+
 PERL_USES=		perl5
+PERL_CONFIGURE_WITH=	perl=${PERL}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
 
 post-install:
 .for f in client.conf global.conf idmef-client.conf tls.conf

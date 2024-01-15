@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Heap-Simple
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Fast and easy to use classic heaps
+WWW=		https://metacpan.org/release/Heap-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

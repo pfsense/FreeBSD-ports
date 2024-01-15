@@ -1,10 +1,7 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cweb
 PORTVERSION=	3.64a.a
 CATEGORIES=	devel
-MASTER_SITES=	TEX_CTAN/web/c_cpp/cweb
+MASTER_SITES=	TEX/web/c_cpp/cweb
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/.([a-z])$/\1/}
 
 MAINTAINER=	gerald@FreeBSD.org
@@ -16,6 +13,8 @@ MAKE_ARGS=	CWEBINPUTS="${DATADIR}" \
 		CFLAGS="${CFLAGS}" \
 		LINKFLAGS="" \
 		CC="${CC}"
+
+CONFLICTS_INSTALL=	tex-web2c
 
 OPTIONS_DEFINE=	DOCS
 

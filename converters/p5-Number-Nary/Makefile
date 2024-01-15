@@ -1,14 +1,12 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Number-Nary
-PORTVERSION=	1.100312
+PORTVERSION=	1.100313
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Encode and decode numbers as n-ary strings
+WWW=		https://metacpan.org/release/Number-Nary
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,5 +19,7 @@ RUN_DEPENDS=	p5-Sub-Exporter>=0:devel/p5-Sub-Exporter \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

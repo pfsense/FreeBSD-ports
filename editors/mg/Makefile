@@ -1,27 +1,40 @@
-# Created by: Dima Dorfman <dima@unixfreak.org>
-# $FreeBSD$
-
 PORTNAME=	mg
-PORTVERSION=	6.8.1
-PORTEPOCH?=	1
+DISTVERSION=	20231016
+PORTEPOCH=	1
 CATEGORIES=	editors
-MASTER_SITES=	https://github.com/ibara/mg/releases/download/mg-${PORTVERSION}/
+MASTER_SITES=   https://hydrus.org.uk/downloads/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT?=	Small, fast Emacs-like editor
+MAINTAINER=	cdr.nil@gmail.com
+COMMENT=	Small, fast Emacs-like editor
+WWW=		https://man.openbsd.org/mg
 
 LICENSE=	PD
 
-USES=		ncurses
-HAS_CONFIGURE=	yes
-PLIST_FILES?=	bin/mg \
+USES=		ncurses uidfix
+MAKE_ARGS+=	BINDIR=${PREFIX}/bin MANDIR=${PREFIX}/man/man \
+		NCURSESLIB=${NCURSESLIB} NCURSESINC=${NCURSESINC}
+FLAVORS=	dynamic static
+FLAVOR?=	${FLAVORS:[1]}
+static_PKGNAMESUFFIX=	-static
+.if ${FLAVOR} == static
+COMMENT+=	(rescue(8) version)
+MAKE_ARGS+= 	NO_SHARED=yes
+PLIST_FILES=	/rescue/mg
+.else
+PLIST_FILES=	bin/mg \
 		man/man1/mg.1.gz
-PORTDOCS=	README-Mg README.md tutorial
-
+PORTDOCS=	README tutorial
 OPTIONS_DEFINE=	DOCS
+.endif
 
+.if ${FLAVOR} == static
+do-install:
+	@${MKDIR} ${STAGEDIR}/rescue
+	${INSTALL_PROGRAM} ${WRKSRC}/mg ${STAGEDIR}/rescue
+.else
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+.endif
 
 .include <bsd.port.mk>

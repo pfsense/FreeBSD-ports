@@ -1,9 +1,6 @@
-# Created by: michaelnottebrock@gmx.net
-# $FreeBSD$
-
 PORTNAME=	dirmngr
 PORTVERSION=	1.1.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DISTNAME}${EXTRACT_SUFX}.sig
@@ -11,6 +8,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	umq@ueo.co.jp
 COMMENT=	Client for managing and downloading certificate revocation lists
+WWW=		https://www.gnupg.org/aegypten2
 
 LICENSE=	GPLv2
 
@@ -20,14 +18,15 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libksba.so:security/libksba \
 		libpth.so:devel/pth
 
-USES=		gmake iconv tar:bzip2
-USE_OPENLDAP=	yes
+USES=		gmake iconv ldap tar:bzip2
 GNU_CONFIGURE=	yes
 INFO=		dirmngr
 
 CONFIGURE_ARGS+=	--docdir=${DOCSDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-fcommon
+
+CONFLICTS_INSTALL=	gnupg # bin/dirmngr bin/dirmngr-client
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

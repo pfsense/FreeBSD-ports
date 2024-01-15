@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	libtextcat
 PORTVERSION=	2.2
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	http://software.wise-guys.nl/download/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Language guessing by N-Gram-Based Text Categorization
+WWW=		https://software.wise-guys.nl/libtextcat/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

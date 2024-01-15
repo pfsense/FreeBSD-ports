@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Tmpl
 PORTVERSION=	0.33
 PORTREVISION=	1

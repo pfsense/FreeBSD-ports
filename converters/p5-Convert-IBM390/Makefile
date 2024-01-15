@@ -1,6 +1,3 @@
-# Created by: Jason Burgess <dev@fenux.net>
-# $FreeBSD$
-
 PORTNAME=	Convert-IBM390
 PORTVERSION=	0.30
 CATEGORIES=	converters perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Functions for manipulating mainframe data
+WWW=		https://metacpan.org/release/Convert-IBM390
 
 USES=		perl5
 USE_PERL5=	configure

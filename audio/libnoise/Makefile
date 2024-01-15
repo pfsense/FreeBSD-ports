@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libnoise
 DISTVERSION=	1.0.0
 PORTREVISION=	4
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.zip
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generates three-dimensional coherent noise
+WWW=		https://libnoise.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKDIR}/COPYING.txt

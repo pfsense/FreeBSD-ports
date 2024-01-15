@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	string-machine
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Digital model of electronic string ensemble instrument
+WWW=		https://github.com/jpcima/string-machine
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,28 +1,45 @@
-# $FreeBSD$
-
 PORTNAME=	mysql-connector-python
-PORTVERSION=	8.0.22
+PORTVERSION=	8.2.0
 CATEGORIES=	databases python
-MASTER_SITES=	MYSQL/Connector-Python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	MySQL driver written in Python
+WWW=		https://dev.mysql.com/doc/connector-python/en
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dnspython>0:dns/py-dnspython@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}protobuf>=3.7.1:devel/py-protobuf@${PY_FLAVOR}
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}protobuf>=4.21.1:devel/py-protobuf@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_GITHUB=	yes
+GH_ACCOUNT=	mysql
+USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
-.include <bsd.port.pre.mk>
 
-PYDISTUTILS_INSTALLARGS:=	${PYDISTUTILS_INSTALLARGS:N--single-version-externally-managed}
+PORTSCOUT=	skipv:init
+
+OPTIONS_DEFINE=	COMPRESSION DNS GSSAPI
+
+COMPRESSION_DESC=	Compression Support
+DNS_DESC=		DNS Support
+
+COMPRESSION_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lz4>=2.1.6:archivers/py-lz4@${PY_FLAVOR} \
+				${PYTHON_PKGNAMEPREFIX}zstandard>=0.12.0:archivers/py-zstandard@${PY_FLAVOR}
+DNS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}dnspython>=1.16.0:dns/py-dnspython@${PY_FLAVOR}
+GSSAPI_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gssapi>=1.6.9:security/py-gssapi@${PY_FLAVOR}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|"gcc"|"${CC}"|g ; \
+		s|"g++"|"${CXX}"|g' \
+		${WRKSRC}/cpydist/__init__.py
+	@${REINPLACE_CMD} -e 's|protobuf>=4.21.1,<=4.21.12|protobuf>=4.21.1|g' \
+		${WRKSRC}/setup.py
 
 do-test:
 	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} ./unittests.py)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

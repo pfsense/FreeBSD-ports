@@ -1,6 +1,3 @@
-# Created by: Tom McLaughlin <tmclaugh@sdf.lonestar.org>
-# $FreeBSD$
-
 # Port logic gratuitously stolen from x11-themes/kde-icons-noia by
 # lioux@.  If it's not defined here and you think it should be, check
 # x11-themes/gnome-icons/bsd.gnome-icons.mk for it.
@@ -15,8 +12,13 @@ EXTRACT_SUFX=	.bz2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Crystal SVG Icons for Gnome
+WWW=		https://art.gnome.org/
 
-RESTRICTED=	${REASON}
+# Converted from RESTRICTED
+LICENSE=	icons
+LICENSE_NAME=	icons
+LICENSE_TEXT=	${REASON}
+LICENSE_PERMS=	auto-accept
 
 USES=		tar:bzip2
 NO_WRKSUBDIR=	yes

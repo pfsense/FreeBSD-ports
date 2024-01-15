@@ -1,6 +1,3 @@
-# Created by: Adam McLaurin
-# $FreeBSD$
-
 PORTNAME=	cgprof
 PORTVERSION=	1.2
 PORTREVISION=	4
@@ -9,9 +6,10 @@ MASTER_SITES=	http://mvertes.free.fr/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generates colored graphs for profiled executables using gcc and gprof
+WWW=		http://mvertes.free.fr/
 
 RUN_DEPENDS=	gawk:lang/gawk \
-		dotty:graphics/graphviz
+		dot:graphics/graphviz
 
 NO_BUILD=	yes
 MAKE_ENV=	prefix=${PREFIX}

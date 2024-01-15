@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tesseract
 DISTVERSION=	2014_05_12
 CATEGORIES=	games
@@ -9,6 +7,7 @@ PKGNAMESUFFIX=	-game-data
 
 MAINTAINER=	operator@myrechenzentrum.net
 COMMENT=	Data files for Tesseract first-person shooter
+WWW=		http://www.tesseract.gg
 
 LICENSE=	DejaVu OTHER
 LICENSE_COMB=	multi

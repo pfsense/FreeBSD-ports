@@ -1,6 +1,3 @@
-# Created by: jim@thehousleys.net
-# $FreeBSD$
-
 PORTNAME=	healthd
 PORTVERSION=	0.7.9
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	http://healthd.thehousleys.net/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemon to monitor vital motherboard parameters
+WWW=		http://healthd.thehousleys.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

@@ -1,21 +1,19 @@
-# Created by: tdb
-# $FreeBSD$
-
 PORTNAME=	atheme-services
-PORTVERSION=	7.2.9
+PORTVERSION=	7.2.12
 CATEGORIES=	irc net
 MASTER_SITES=	https://github.com/atheme/atheme/releases/download/v${PORTVERSION}/
-DISTNAME=	atheme-${PORTVERSION}
+DISTNAME=	atheme-services-v${PORTVERSION}
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Set of services for IRC networks
+WWW=		https://atheme.github.io/atheme.html
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libmowgli-2.so:devel/libmowgli2
 
-USES=		cpe gmake localbase pathfix pkgconfig ssl tar:bzip2
+USES=		cpe gmake localbase pathfix pkgconfig ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -26,6 +24,8 @@ CONFIGURE_ARGS=	--enable-fhs-paths \
 		--enable-large-net
 
 CPE_PRODUCT=	atheme
+
+CONFLICTS_INSTALL=	lifelines
 
 USERS=		ircservices
 GROUPS=		ircservices
@@ -43,7 +43,7 @@ OPTIONS_SUB=	yes
 CONTRIB_CONFIGURE_ENABLE=	contrib
 CRACKLIB_LIB_DEPENDS=	libcrack.so:security/cracklib
 CRACKLIB_CONFIGURE_WITH=	cracklib
-LDAP_USE=	openldap=yes
+LDAP_USES=	ldap
 LDAP_CONFIGURE_WITH=	ldap
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls

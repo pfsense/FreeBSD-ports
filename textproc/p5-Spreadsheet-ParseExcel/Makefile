@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Spreadsheet-ParseExcel
 PORTVERSION=	0.65
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Get information from Excel file
+WWW=		https://metacpan.org/release/Spreadsheet-ParseExcel
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	intltool
 PORTVERSION=	0.51.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DIST_SUBDIR=	gnome
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Tools to internationalize various kinds of data files
+WWW=		https://www.gnome.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,5 +17,7 @@ RUN_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
 USES=		iconv gmake perl5
 GNU_CONFIGURE=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

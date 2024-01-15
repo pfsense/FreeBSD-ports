@@ -1,6 +1,3 @@
-# Created by: vanilla@
-# $FreeBSD$
-
 PORTNAME=	iconv
 PORTVERSION=	7
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTNAME=	lua-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Iconv binding for Lua 5
+WWW=		https://ittner.github.io/lua-iconv/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -26,6 +24,8 @@ CFLAGS_amd64=	-fPIC
 CFLAGS_armv6=	-fPIC
 CFLAGS_armv7=	-fPIC
 CFLAGS_i386=	-fPIC
+CFLAGS_powerpc=	-fPIC
+CFLAGS_riscv64=	-fPIC
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${LUA_MODLIBDIR}

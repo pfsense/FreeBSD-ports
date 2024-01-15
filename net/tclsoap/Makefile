@@ -1,6 +1,3 @@
-# Created by: Sebastien Santoro <dereckson@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	tclsoap
 PORTVERSION=	1.6.7
 CATEGORIES=	net
@@ -9,6 +6,7 @@ DISTNAME=	TclSOAP-${PORTVERSION}
 
 MAINTAINER=	dereckson@gmail.com
 COMMENT=	SOAP and XML-RPC support for TCL library
+WWW=		https://tclsoap.sourceforge.net/
 
 LICENSE=	MIT
 

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	chrome-gnome-shell
 DISTVERSION=	10.1
+PORTREVISION=	2
 CATEGORIES=	www gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	daniel@shafer.cc
 COMMENT=	GNOME Shell integration for Chrome
+WWW=		https://wiki.gnome.org/Projects/GnomeShellIntegrationForChrome
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -28,7 +28,6 @@ CMAKE_ARGS=	-DCMAKE_INSTALL_LIBDIR=lib
 INSTALL_TARGET=	install
 
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e '/find_program_ex/s|gsha256sum|gsha256sum sha256|g' ${WRKSRC}/CMakeLists.txt

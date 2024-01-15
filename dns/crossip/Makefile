@@ -1,6 +1,3 @@
-# Created by: Dan Smith <dan@algenta.com>
-# $FreeBSD$
-
 PORTNAME=	crossip
 DISTVERSION=	1.2
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/CrossIP%20${PORTVERSION}
 
 MAINTAINER=	dan@algenta.com
 COMMENT=	Java DNS update client for the ThatIP protocol
+WWW=		https://www.thatip.com/
 
 LICENSE=	GPLv2
 

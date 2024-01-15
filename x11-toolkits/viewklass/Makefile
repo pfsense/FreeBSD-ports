@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	viewklass
 PORTVERSION=	0.7.2
 PORTREVISION=	1
@@ -10,11 +7,14 @@ DISTNAME=	ViewKlass-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ Framework for Motif
+WWW=		https://viewklass.sourceforge.net/
 
 LICENSE=	LGPL20+
 
-GNU_CONFIGURE=	yes
 USES=		imake:env motif
+USE_CXXSTD=	c++14
+
+GNU_CONFIGURE=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e \

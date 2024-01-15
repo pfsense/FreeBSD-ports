@@ -1,6 +1,3 @@
-# Created by: Stefan Zehl <sec@42.org>
-# $FreeBSD$
-
 PORTNAME=	sidplay
 PORTVERSION=	1.0.9
 DISTVERSIONPREFIX=	base-

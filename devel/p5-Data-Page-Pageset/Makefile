@@ -1,6 +1,3 @@
-# Created by: Mike Fisher <Michael_Fisher@URMC.Rochester.edu>
-# $FreeBSD$
-
 PORTNAME=	Data-Page-Pageset
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	Michael_Fisher@URMC.Rochester.edu
 COMMENT=	Perl extension to simplify page number lists
+WWW=		https://metacpan.org/release/Data-Page-Pageset
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

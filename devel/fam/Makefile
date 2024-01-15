@@ -1,6 +1,3 @@
-# Created by: Jeremy Norris <ishmael27@home.com>
-# $FreeBSD$
-
 PORTNAME=	fam
 PORTVERSION=	2.6.10
 PORTREVISION=	9
@@ -10,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File alteration monitor
+WWW=		http://oss.sgi.com/projects/fam/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi

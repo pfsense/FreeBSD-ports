@@ -1,14 +1,12 @@
---- third_party/leveldatabase/env_chromium.cc.orig	2021-01-18 21:29:45 UTC
+--- third_party/leveldatabase/env_chromium.cc.orig	2023-09-13 12:11:42 UTC
 +++ third_party/leveldatabase/env_chromium.cc
-@@ -40,7 +40,11 @@
- #include "third_party/leveldatabase/leveldb_chrome.h"
- #include "third_party/leveldatabase/leveldb_features.h"
- #include "third_party/leveldatabase/src/include/leveldb/options.h"
-+#if defined(OS_BSD)
-+#include <re2/re2.h>
-+#else
- #include "third_party/re2/src/re2/re2.h"
-+#endif
+@@ -320,7 +320,8 @@ ChromiumWritableFile::ChromiumWritableFile(const std::
  
- using base::FilePath;
- using base::trace_event::MemoryAllocatorDump;
+ Status ChromiumWritableFile::SyncParent() {
+   TRACE_EVENT0("leveldb", "SyncParent");
+-#if defined(OS_POSIX) || defined(OS_FUCHSIA)
++// pledge violation (directory passed as fd)
++#if (defined(OS_POSIX) || defined(OS_FUCHSIA)) && !defined(OS_OPENBSD)
+   FilePath path = FilePath::FromUTF8Unsafe(parent_dir_);
+   FileErrorOr<base::File> result = filesystem_->OpenFile(
+       path, base::File::FLAG_OPEN | base::File::FLAG_READ);

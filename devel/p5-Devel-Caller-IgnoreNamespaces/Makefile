@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Devel-Caller-IgnoreNamespaces
 PORTVERSION=	1.1
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make available a magic caller which can ignore namespaces
+WWW=		https://metacpan.org/release/Devel-Caller-IgnoreNamespaces
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual

@@ -1,14 +1,13 @@
-# Created by: Martin Klaffenboeck <martin.klaffenboeck@gmx.at>
-# $FreeBSD$
-
 PORTNAME=	rubrica
 PORTVERSION=	2.1.6
+PORTREVISION=	3
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	BERLIOS
 DISTNAME=	${PORTNAME}2-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Addressbook for the GNOME 2 desktop
+WWW=		https://www.nicolafragale.org/rubrica/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

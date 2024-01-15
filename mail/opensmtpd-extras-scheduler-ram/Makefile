@@ -1,6 +1,3 @@
-# Created by: fluffy
-# $FreeBSD$
-
 PKGNAMESUFFIX=		-scheduler-ram
 PORTREVISION=		0
 

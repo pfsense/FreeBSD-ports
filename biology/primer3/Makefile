@@ -1,6 +1,3 @@
-# Created by: Tony Maher <tonym@biolateral.com.au>
-# $FreeBSD$
-
 PORTNAME=	primer3
 PORTVERSION=	2.3.6
 CATEGORIES=	biology
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Primer3 helps to choose primers for PCR reactions
+WWW=		http://www-genome.wi.mit.edu/genome_software/other/primer3.html
 
 LICENSE=	GPLv2
 
@@ -20,7 +18,7 @@ PLIST_FILES=	bin/primer3
 post-patch:
 	@${REINPLACE_CMD} \
 		-e 's#^CFLAGS.*#CFLAGS  += \$$\(CC_OPTS\)#;' \
-		-e 's#CC_OPTS = -g#CC_OPTS =#;' \
+		-e 's#^CC_OPTS.*#CC_OPTS= -Wall -D__USE_FIXED_PROTOTYPES_ -Dregister=#;' \
 		-e 's#LDFLAGS = -g#LDFLAGS +=#;' \
 		-e 's#^WHITEHEAD_SPECIFIC_HACK.*##;' \
 		${WRKSRC}/Makefile

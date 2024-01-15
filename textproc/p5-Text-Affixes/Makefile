@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Text-Affixes
 PORTVERSION=	0.09
 CATEGORIES=	textproc perl5
@@ -8,7 +5,8 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Perl module for prefixes and suffixes analisys of text
+COMMENT=	Perl module for prefixes and suffixes analysis of text
+WWW=		https://metacpan.org/release/Text-Affixes
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

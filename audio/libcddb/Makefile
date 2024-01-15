@@ -1,6 +1,3 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-
 PORTNAME=	libcddb
 PORTVERSION=	1.3.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Library to access data on a CDDB server
+WWW=		https://libcddb.sourceforge.net/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING

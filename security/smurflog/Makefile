@@ -1,6 +1,3 @@
-# Created by: nectar@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	smurflog
 PORTVERSION=	2.1
 PORTREVISION=	1

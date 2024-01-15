@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Redis-JobQueue
 PORTVERSION=	1.19
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Job queue management implemented using Redis server
+WWW=		https://metacpan.org/release/Redis-JobQueue
 
 LICENSE=	ARTPERL10
 

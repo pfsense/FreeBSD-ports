@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vdbench
 PORTVERSION=	5.04.07
 CATEGORIES=	benchmarks linux java
@@ -9,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//g}
 
 MAINTAINER=	loader@FreeBSD.org
 COMMENT=	Command line disk I/O benchmark utility
+WWW=		https://www.oracle.com/technetwork/server-storage/vdbench-downloads-1901681.html
 
 LICENSE=	OTN
 LICENSE_NAME=	Oracle Technology Network

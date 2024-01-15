@@ -1,6 +1,3 @@
-# Created by: Elisey Savateev <b3k@mail.ru>
-# $FreeBSD$
-
 PORTNAME=	rejik
 PORTVERSION=	3.2.12
 CATEGORIES=	www
@@ -9,6 +6,7 @@ DISTNAME=	redirector-${PORTVERSION}_squid_3.4
 
 MAINTAINER=	roma.a.g@gmail.com
 COMMENT=	Squid redirector used for blocking unwanted content
+WWW=		https://www.rejik.ru/
 
 LICENSE=	BSD4CLAUSE
 

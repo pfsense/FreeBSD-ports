@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Authorization-ACL
 PORTVERSION=	0.16
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	ACL support for Catalyst applications
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Authorization-ACL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

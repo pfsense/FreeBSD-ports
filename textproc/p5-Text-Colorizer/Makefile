@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Colorizer
 PORTVERSION=	0.02.2
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gebhart@secnetix.de
 COMMENT=	Create colored text from text and color description
+WWW=		https://metacpan.org/release/Text-Colorizer
 
 LICENSE=	ART20 GPLv1
 LICENSE_COMB=	dual

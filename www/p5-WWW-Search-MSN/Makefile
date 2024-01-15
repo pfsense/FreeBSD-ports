@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Search-MSN
 PORTVERSION=	0.0202
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Backend for searching search.msn.com
+WWW=		https://metacpan.org/release/WWW-Search-MSN
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

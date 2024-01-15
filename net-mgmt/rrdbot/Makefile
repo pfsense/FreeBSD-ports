@@ -1,12 +1,10 @@
-# Created by: Jeremy Chadwick <koitsu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rrdbot
 PORTVERSION=	0.9.7.d20200312
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Threaded SNMP polling daemon which stores data in RRDs
+WWW=		https://github.com/REANNZ/rrdbot/
 
 LIB_DEPENDS=	librrd.so:databases/rrdtool
 

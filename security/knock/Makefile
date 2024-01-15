@@ -1,21 +1,18 @@
-# Created by: Shaun Amott <shaun@inerd.com>
-# $FreeBSD$
-
 PORTNAME=	knock
-PORTVERSION=	0.5
-PORTREVISION=	1
+DISTVERSION=	0.8
 PORTEPOCH=	1
 CATEGORIES=	security
-MASTER_SITES=	http://www.zeroflux.org/proj/knock/files/ \
+MASTER_SITES=	https://github.com/jvinet/${PORTNAME}/releases/download/v${DISTVERSION}/ \
 		LOCAL/sbz
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Flexible port-knocking server and client
+WWW=		https://github.com/jvinet/knock
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	doorman-[0-9]*
+CONFLICTS=	doorman
 
 GNU_CONFIGURE=	yes
 

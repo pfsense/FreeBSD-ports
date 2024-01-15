@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-DirWatch
 PORTVERSION=	0.300004
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE directory watcher
+WWW=		https://metacpan.org/release/POE-Component-DirWatch
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

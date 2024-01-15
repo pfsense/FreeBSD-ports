@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov <andy@icc.surw.chel.su>
-# $FreeBSD$
-
 PORTNAME=	cal
 DISTVERSION=	4.1
 CATEGORIES=	deskutils
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}${DISTVERSION:C/[^0-9]//}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Enhanced color version of standard calendar utility
+WWW=		https://unicorn.us.com/cal.html
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/readme.cal

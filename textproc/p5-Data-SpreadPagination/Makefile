@@ -1,6 +1,3 @@
-# Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Data-SpreadPagination
 PORTVERSION=	0.1.2
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Page numbering and spread pagination
+WWW=		https://metacpan.org/release/Data-SpreadPagination
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

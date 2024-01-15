@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-Numbers
 PORTVERSION=	2.03
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Converts numeric values into their English string equivalents
+WWW=		https://metacpan.org/release/Lingua-EN-Numbers
 
 LICENSE=	GPLv2
 

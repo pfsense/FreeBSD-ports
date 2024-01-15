@@ -1,6 +1,3 @@
-# Created by: Conrad J. Sabatier <conrads@cox.net>
-# $FreeBSD$
-
 PORTNAME=	mkreadmes
 DISTVERSION=	1.3
 CATEGORIES=	ports-mgmt
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Speedy substitute for "make readmes"
+WWW=		https://sourceforge.net/projects/mkreadmes/
 
 USES=		tar:bzip2
 

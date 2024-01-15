@@ -1,12 +1,11 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mate
-PORTVERSION=	1.24.1
+PORTVERSION=	1.26.0
+PORTREVISION=	2
 CATEGORIES=	x11 mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	"meta-port" for the MATE integrated X11 desktop
+WWW=		https://www.FreeBSD.org/gnome/
 
 USES=		mate metaport
 

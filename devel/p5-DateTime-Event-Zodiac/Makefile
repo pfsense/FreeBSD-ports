@@ -1,6 +1,3 @@
-# Created by: Mikhail T. <michael@fun-box.ru>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Event-Zodiac
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Return zodiac for a given date
+WWW=		https://metacpan.org/release/DateTime-Event-Zodiac
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \

@@ -1,6 +1,3 @@
-# Created by: Philippe Audeoud <jadawin@tuxaco.net>
-# $FreeBSD$
-
 PORTNAME=	banihstypos
 PORTVERSION=	0.2
 CATEGORIES=	games
@@ -9,6 +6,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple game to teach you typing, fast
+WWW=		http://www.vanheusden.com/banihstypos/
 
 USES=		ncurses
 MAKE_ARGS=	LDFLAGS="${LDFLAGS} -lncurses"

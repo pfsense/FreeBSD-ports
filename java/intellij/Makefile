@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 # Based on the devel/intellij port from OpenBSD by
 # Vadim Zhukov <zhuk@openbsd.org>
 
@@ -11,14 +8,17 @@ MASTER_SITES=	https://download-cf.jetbrains.com/idea/
 DISTNAME=	ideaIC-${PORTVERSION}-no-jbr
 DIST_SUBDIR=	jetbrains
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	vishwin@FreeBSD.org
 COMMENT=	IntelliJ IDEA Community Edition
+WWW=		https://www.jetbrains.com/idea/
 
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier
 
-USES=		python:run shebangfix
+USES=		cpe python:run shebangfix
+CPE_VENDOR=	jetbrains
+CPE_PRODUCT=	${PORTNAME}_idea
 
 USE_JAVA=	yes
 JAVA_VERSION=	8+
@@ -32,7 +32,7 @@ NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/idea-IC-202.7660.26
 
 SUB_FILES=	idea idea.desktop pkg-message
-CONFLICTS=	intellij-ultimate-*
+CONFLICTS=	idea intellij-ultimate
 
 do-install:
 # Linux/Windows/OS X only so remove them

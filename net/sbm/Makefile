@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	sbm
 PORTVERSION=	0.8
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://dl.2f30.org/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple bandwidth monitor
+WWW=		https://git.2f30.org/sbm/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -6,6 +6,8 @@
 %%SITE_ARCH%%/FFI/Build/File/Object.pm
 %%SITE_ARCH%%/FFI/Build/MM.pm
 %%SITE_ARCH%%/FFI/Build/Platform.pm
+%%SITE_ARCH%%/FFI/Build/Plugin.pm
+%%SITE_ARCH%%/FFI/Build/PluginData.pm
 %%SITE_ARCH%%/FFI/Platypus.pm
 %%SITE_ARCH%%/FFI/Platypus/API.pm
 %%SITE_ARCH%%/FFI/Platypus/Buffer.pm
@@ -29,9 +31,11 @@
 %%SITE_ARCH%%/FFI/Platypus/Type/PointerSizeBuffer.pm
 %%SITE_ARCH%%/FFI/Platypus/Type/StringArray.pm
 %%SITE_ARCH%%/FFI/Platypus/Type/StringPointer.pm
+%%SITE_ARCH%%/FFI/Platypus/Type/WideString.pm
 %%SITE_ARCH%%/FFI/Platypus/TypeParser.pm
 %%SITE_ARCH%%/FFI/Platypus/TypeParser/Version0.pm
 %%SITE_ARCH%%/FFI/Platypus/TypeParser/Version1.pm
+%%SITE_ARCH%%/FFI/Platypus/TypeParser/Version2.pm
 %%SITE_ARCH%%/FFI/Probe.pm
 %%SITE_ARCH%%/FFI/Probe/Runner.pm
 %%SITE_ARCH%%/FFI/Probe/Runner/Builder.pm
@@ -57,6 +61,8 @@
 %%PERL5_MAN3%%/FFI::Build::File::Object.3.gz
 %%PERL5_MAN3%%/FFI::Build::MM.3.gz
 %%PERL5_MAN3%%/FFI::Build::Platform.3.gz
+%%PERL5_MAN3%%/FFI::Build::Plugin.3.gz
+%%PERL5_MAN3%%/FFI::Build::PluginData.3.gz
 %%PERL5_MAN3%%/FFI::Platypus.3.gz
 %%PERL5_MAN3%%/FFI::Platypus::API.3.gz
 %%PERL5_MAN3%%/FFI::Platypus::Buffer.3.gz
@@ -80,9 +86,11 @@
 %%PERL5_MAN3%%/FFI::Platypus::Type::PointerSizeBuffer.3.gz
 %%PERL5_MAN3%%/FFI::Platypus::Type::StringArray.3.gz
 %%PERL5_MAN3%%/FFI::Platypus::Type::StringPointer.3.gz
+%%PERL5_MAN3%%/FFI::Platypus::Type::WideString.3.gz
 %%PERL5_MAN3%%/FFI::Platypus::TypeParser.3.gz
 %%PERL5_MAN3%%/FFI::Platypus::TypeParser::Version0.3.gz
 %%PERL5_MAN3%%/FFI::Platypus::TypeParser::Version1.3.gz
+%%PERL5_MAN3%%/FFI::Platypus::TypeParser::Version2.3.gz
 %%PERL5_MAN3%%/FFI::Probe.3.gz
 %%PERL5_MAN3%%/FFI::Probe::Runner.3.gz
 %%PERL5_MAN3%%/FFI::Probe::Runner::Builder.3.gz

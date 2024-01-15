@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	${DICT}-aspell
 SPELLVERSION=	6-fy-0.12-0
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Frisian (Frysk) dictionary
+WWW=		http://borel.slu.edu/crubadan/
 
 DICT=	 	fy
 

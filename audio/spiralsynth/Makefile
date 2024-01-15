@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	spiralsynth
 PORTVERSION=	0.1.7
 PORTREVISION=	8
@@ -10,6 +7,7 @@ DISTNAME=	SpiralSynth-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIDI-capable synthesizer for X
+WWW=		https://www.pawfal.org/Software/SpiralSynth/
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 

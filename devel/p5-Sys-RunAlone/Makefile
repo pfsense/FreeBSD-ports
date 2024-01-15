@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sys-RunAlone
 PORTVERSION=	0.13
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make sure only one invocation of a script is active at a time
+WWW=		https://metacpan.org/release/Sys-RunAlone
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

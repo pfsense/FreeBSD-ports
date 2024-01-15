@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	openvpn-auth-script
 DISTVERSION=	1.0.0.3
 CATEGORIES=	security net net-vpn
 
 MAINTAINER=	pdemon@gmail.com
 COMMENT=	Generic script-based deferred auth plugin for OpenVPN
+WWW=		https://github.com/pdemonaco/auth-script-openvpn
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

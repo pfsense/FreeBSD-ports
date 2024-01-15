@@ -1,26 +1,26 @@
-# Created by: Guerkan Karaman <gk.freebsd@googlemail.com>
-# $FreeBSD$
-
 PORTNAME=	ipxe
-DISTVERSION=	g20201129
+DISTVERSION=	g20230822
 PORTEPOCH=	1
 CATEGORIES=	net
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Open source network boot firmware
+WWW=		https://ipxe.org
 
 LICENSE=	GPLv2
 
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	not yet ported to anything other than amd64/i386
 
+BUILD_DEPENDS=	bash:shells/bash \
+		syslinux:sysutils/syslinux
+
 USES=		gmake perl5 shebangfix
 USE_BINUTILS=	yes
-USE_GCC=	yes
+USE_GCC=	yes:build
 USE_GITHUB=	yes
-GH_TAGNAME=	13a6d17
+GH_TAGNAME=	9e99a55b317f5da6
 USE_PERL5=	build
-SHEBANG_FILES=	util/geniso util/gensdsk
 MAKE_ARGS=	AR=${AR} \
 		ARCH=${ARCH:S/amd64/i386/} \
 		AS=${AS} \
@@ -35,6 +35,7 @@ MAKE_ARGS=	AR=${AR} \
 		RANLIB=${RANLIB} \
 		SIZE=${SIZE} \
 		V=1
+
 # Append user-settable build args from make.conf
 MAKE_ARGS+=	${IPXE_MAKE_ARGS}
 ALL_TARGET=	bin/ipxe.dsk bin/ipxe.lkrn bin/ipxe.pxe bin/ipxe.usb \
@@ -57,6 +58,7 @@ _IPXE_BUILDCFG=	branding:PRODUCT_NAME="${PKGNAME} (${OPSYS} ${OSREL}/${ARCH})" \
 		general:DOWNLOAD_PROTO_NFS \
 		general:IMAGE_TRUST_CMD \
 		general:NET_PROTO_IPV6 \
+		general:NTP_CMD \
 		general:PING_CMD \
 		general:POWEROFF_CMD
 
@@ -66,8 +68,7 @@ OPTIONS_DEFAULT=	EFI ISO
 EFI_DESC=	Create EFI images
 ISO_DESC=	Create bootable CD image
 
-EFI_BUILD_DEPENDS=	bash:shells/bash \
-			mformat:emulators/mtools
+EFI_BUILD_DEPENDS=	mformat:emulators/mtools
 _EFI_ARCHS=		${ARCH:Mamd64:S/amd64/x86_64/} i386
 _EFI_TARGETS=		ipxe snp snponly
 .for _arch in ${_EFI_ARCHS}
@@ -77,9 +78,7 @@ EFI_PLIST_FILES+=	${DATADIR}/${_target}.efi-${_arch}
 EFI_PLIST_FILES+=	${DATADIR}/ipxe.efi-${_arch}.usb
 .endfor
 
-ISO_BUILD_DEPENDS=	${LOCALBASE}/share/syslinux/bios/core/isolinux.bin:sysutils/syslinux \
-			bash:shells/bash \
-			mkisofs:sysutils/cdrtools
+ISO_BUILD_DEPENDS=	mkisofs:sysutils/cdrtools
 ISO_MAKE_ARGS=		ISOLINUX_BIN="${WRKSRC}/isolinux.bin" \
 			LDLINUX_C32="${LOCALBASE}/share/syslinux/bios/com32/elflink/ldlinux/ldlinux.c32"
 ISO_ALL_TARGET=		bin/ipxe.iso
@@ -97,6 +96,11 @@ _IPXE_BUILDCFG+=	${IPXE_BUILDCFG}
 BUILD_DEPENDS+=	gcsplit:sysutils/coreutils
 MAKE_ARGS+=	CSPLIT=gcsplit
 .endif
+
+# https://github.com/ipxe/ipxe/pull/794
+post-patch:
+	${REINPLACE_CMD} "s|VERSION_MINOR.*0|VERSION_MINOR=21|; s|VERSION_PATCH.*0|VERSION_PATCH=1|" \
+		${WRKSRC}/Makefile
 
 do-configure:
 .for _cat _opt in ${_IPXE_BUILDCFG:C/\:/ /}
@@ -131,5 +135,3 @@ do-install-EFI-on:
 .endfor
 
 .include <bsd.port.post.mk>
-
-RUN_DEPENDS:=	${RUN_DEPENDS:Ngcc*}

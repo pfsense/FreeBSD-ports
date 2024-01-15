@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-Cursor-Cached
 PORTVERSION=	1.001004
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cursor class with built-in caching support
+WWW=		https://metacpan.org/release/DBIx-Class-Cursor-Cached
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

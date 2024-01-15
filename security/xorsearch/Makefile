@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
-
 PORTNAME=	xorsearch
 DISTVERSION=	1_11_1
 CATEGORIES=	security textproc
@@ -9,6 +6,7 @@ DISTNAME=	XORSearch_V${DISTVERSION}
 
 MAINTAINER=	anastasios@mageirias.com
 COMMENT=	Search for a given string in an XOR or ROL encoded binary file
+WWW=		https://blog.didierstevens.com/programs/xorsearch/
 
 LICENSE=	PD
 

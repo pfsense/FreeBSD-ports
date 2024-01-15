@@ -1,6 +1,3 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	XML-Atom-Syndication
 PORTVERSION=	0.942
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple lightweight client for consuming Atom syndication feeds
+WWW=		https://metacpan.org/release/XML-Atom-Syndication
 
 LICENSE=	ART10
 

@@ -1,18 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	ifmail
 PORTVERSION=	2.15
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	news comms
 MASTER_SITES=	SUNSITE/system/fido
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	FidoNet(tm) support package for UN*X platform
+WWW=		https://ifmail.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/README
 
-USES=		shebangfix
+LIB_DEPENDS=	libgnuregex.so.6:devel/libgnuregex
+
+USES=		shebangfix localbase:ldflags
 USERS=		ifmail
 CFLAGS+=	-DHAS_STDARG_H -Wall
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" OWNER=${UID} GROUP=$$(id -g)
@@ -48,6 +49,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-configure:
 	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' \
+		-e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		${WRKSRC}/CONFIG
 
 pre-install:

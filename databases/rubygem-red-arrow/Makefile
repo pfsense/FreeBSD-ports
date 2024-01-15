@@ -1,0 +1,28 @@
+PORTNAME=	red-arrow
+PORTVERSION=	13.0.0
+CATEGORIES=	databases rubygems
+MASTER_SITES=	RG
+
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Ruby bindings of Apache Arrow
+WWW=		https://arrow.apache.org/ \
+		https://github.com/apache/arrow/tree/main/ruby/red-arrow
+
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BUILD_DEPENDS=	arrow>=${PORTVERSION}<${PORTVERSION}_99:databases/arrow \
+		arrow-glib>=${PORTVERSION}<${PORTVERSION}_99:databases/arrow-glib
+LIB_DEPENDS=	libarrow.so:databases/arrow \
+		libarrow-glib.so:databases/arrow-glib
+RUN_DEPENDS=	rubygem-bigdecimal>=3.1.0:math/rubygem-bigdecimal \
+		rubygem-extpp>=0.1.1:devel/rubygem-extpp \
+		rubygem-gio2>=3.5.0:devel/rubygem-gio2 \
+		rubygem-native-package-installer>=0:devel/rubygem-native-package-installer \
+		rubygem-pkg-config>=0:devel/rubygem-pkg-config \
+
+USES=		gem localbase
+
+CFLAGS+=	-I${LOCALBASE}/include
+
+.include <bsd.port.mk>

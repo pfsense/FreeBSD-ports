@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Paranoid-Log-Syslog
 PORTVERSION=	2.00
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Syslog support for Paranoid::Log
+WWW=		https://metacpan.org/release/Paranoid-Log-Syslog
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

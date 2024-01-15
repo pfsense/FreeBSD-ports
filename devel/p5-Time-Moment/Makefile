@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Time-Moment
 PORTVERSION=	0.44
 CATEGORIES=	devel perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Represents a date and time of day with an offset from UTC
+WWW=		https://metacpan.org/release/Time-Moment
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

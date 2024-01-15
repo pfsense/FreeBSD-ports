@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object-Opts
 PORTVERSION=	2.00
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Opts Class for Data::Object
+WWW=		https://metacpan.org/release/Data-Object-Opts
 
 LICENSE=	APACHE20
 

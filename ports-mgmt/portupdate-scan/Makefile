@@ -1,6 +1,3 @@
-# Created by: Alex Stangl <alex@stangl.us>
-# $FreeBSD$
-
 PORTNAME=	portupdate-scan
 PORTVERSION=	0.4
 CATEGORIES=	ports-mgmt

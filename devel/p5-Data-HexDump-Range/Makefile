@@ -1,6 +1,3 @@
-# Created by: gebhart@secnetix.de
-# $FreeBSD$
-
 PORTNAME=	Data-HexDump-Range
 PORTVERSION=	0.13.59
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gebhart@secnetix.de
 COMMENT=	Hexadecimal Range Dumper with color, bitfields and skip ranges
+WWW=		https://metacpan.org/release/Data-HexDump-Range
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Readonly>=0:devel/p5-Readonly \

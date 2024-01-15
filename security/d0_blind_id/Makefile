@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	d0_blind_id
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0
@@ -8,6 +6,7 @@ CATEGORIES=	security devel
 
 MAINTAINER=	freebsd@jonathanprice.org
 COMMENT=	Crypto library
+WWW=		https://github.com/divVerent/d0_blind_id
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

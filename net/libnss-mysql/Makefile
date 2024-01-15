@@ -1,14 +1,12 @@
-# Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
-
 PORTNAME=	libnss-mysql
 PORTVERSION=	1.5
 PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	SF
 
-MAINTAINER=	vd@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	NSS module using a MySQL database for backend
+WWW=		https://libnss-mysql.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-mysql=${LOCALBASE}

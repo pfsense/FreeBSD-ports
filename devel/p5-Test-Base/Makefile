@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Base
 PORTVERSION=	0.89
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Data Driven Testing Framework
+WWW=		https://metacpan.org/release/Test-Base
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

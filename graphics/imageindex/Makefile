@@ -1,21 +1,18 @@
-# Created by: John Reynolds <johnjen@reynoldsnet.org>
-# $FreeBSD$
-
 PORTNAME=	imageindex
 PORTVERSION=	2.0
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.edwinh.org/imageindex/release/ \
 		http://www.reynoldsnet.org/imageindex/release/
 
 MAINTAINER=	johnjen@reynoldsnet.org
 COMMENT=	Digital photo gallery tool
+WWW=		http://www.edwinh.org/imageindex/
 
-RUN_DEPENDS=	convert:graphics/ImageMagick6 \
-		mplayer:multimedia/mplayer \
+RUN_DEPENDS=	mplayer:multimedia/mplayer \
 		p5-Image-Info>=0:graphics/p5-Image-Info
 
-USES=		jpeg perl5
+USES=		jpeg magick:6,run perl5
 USE_PERL5=	run
 MAKE_ARGS+=	PERLPATH=${PERL} PREFIX=${STAGEDIR}${PREFIX}
 

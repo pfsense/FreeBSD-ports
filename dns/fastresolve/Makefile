@@ -1,6 +1,3 @@
-# Created by: Amar Takhar <verm@drunkmonk.net>
-# $FreeBSD$
-
 PORTNAME=	fastresolve
 PORTVERSION=	2.10
 PORTREVISION=	6
@@ -9,9 +6,12 @@ MASTER_SITES=	https://BSDforge.com/projects/source/dns/fastresolve/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Programs to get DNS and domain ownership information from web logs
+WWW=		https://BSDforge.com/projects/dns/fastresolve/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		Unfetchable
 
 LIB_DEPENDS=	libadns.so:dns/adns
 RUN_DEPENDS=	p5-BerkeleyDB>=0:databases/p5-BerkeleyDB

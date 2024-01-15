@@ -1,23 +1,22 @@
-# $FreeBSD$
-#
-
     COMMENT = Shells
 
     SUBDIR += 44bsd-csh
-    SUBDIR += ammonite
     SUBDIR += anongitssh
     SUBDIR += antibody
     SUBDIR += ast-ksh
+    SUBDIR += atuin
     SUBDIR += bash
     SUBDIR += bash-completion
     SUBDIR += bash-static
+    SUBDIR += bashc
     SUBDIR += bicon
+    SUBDIR += bosh
     SUBDIR += ch
     SUBDIR += dash
     SUBDIR += elvish
     SUBDIR += envy
     SUBDIR += es
-    SUBDIR += esh
+    SUBDIR += etsh
     SUBDIR += fd
     SUBDIR += fish
     SUBDIR += git-prompt.zsh
@@ -26,11 +25,15 @@
     SUBDIR += ion
     SUBDIR += jailkit
     SUBDIR += klish
-    SUBDIR += ksh2020
+    SUBDIR += ksh
+    SUBDIR += ksh-devel
     SUBDIR += ksh93
-    SUBDIR += ksh93-devel
     SUBDIR += mksh
+    SUBDIR += modernish
+    SUBDIR += murex
     SUBDIR += nologinmsg
+    SUBDIR += nsh
+    SUBDIR += nushell
     SUBDIR += ohmyzsh
     SUBDIR += oksh
     SUBDIR += p5-Bash-Completion
@@ -41,12 +44,15 @@
     SUBDIR += pear-PHP_Shell
     SUBDIR += psh
     SUBDIR += rc
+    SUBDIR += rubygem-shellwords
     SUBDIR += rush
     SUBDIR += sash
     SUBDIR += scponly
+    SUBDIR += sheldon
+    SUBDIR += shell-hist
+    SUBDIR += shellharden
     SUBDIR += starship
     SUBDIR += switchBashZsh
-    SUBDIR += tcsh_nls
     SUBDIR += tcshrc
     SUBDIR += v7sh
     SUBDIR += viewglob

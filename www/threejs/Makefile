@@ -1,13 +1,11 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	three.js
-PORTVERSION=	124
+PORTVERSION=	160
 DISTVERSIONPREFIX=	r
 CATEGORIES=	www
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	JavaScript 3D library
+WWW=		https://threejs.org/
 
 LICENSE=	MIT
 

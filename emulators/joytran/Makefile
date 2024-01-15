@@ -1,6 +1,3 @@
-# Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
-
 PORTNAME=	joytran
 PORTVERSION=	0.9.5.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://sourceforge.net/projects/${PORTNAME}/files/
 
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Joystick to keyboard/mouse events translator written in C
+WWW=		http://chiselapp.com/user/beyert/repository/joytran/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -19,10 +17,6 @@ USE_XORG=	x11 xtst
 CMAKE_ARGS=	-DLOCALBASE:PATH="${LOCALBASE}"
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e '/WARNING_FLAGS/s,-pedantic,& -fcommon,' \
-		${WRKSRC}/CMakeLists.txt
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

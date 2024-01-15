@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTTP-Link-Parser
 PORTVERSION=	0.200
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse HTTP Link headers
+WWW=		https://metacpan.org/release/HTTP-Link-Parser
 
 LICENSE=	MIT
 

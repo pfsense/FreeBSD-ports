@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	cryptominisat
-DISTVERSION=	5.8.0
+DISTVERSION=	5.11.15
 CATEGORIES=	math
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	General-purpose award-winning SAT solver
+WWW=		https://github.com/msoos/cryptominisat
 
 LICENSE=	MIT LGPL21
 LICENSE_COMB=	multi

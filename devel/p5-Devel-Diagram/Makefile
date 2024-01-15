@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Devel-Diagram
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Discover the classes of an arbitrary suite of Perl modules
+WWW=		https://metacpan.org/release/Devel-Diagram
 
 USES=		perl5 dos2unix
 USE_PERL5=	configure

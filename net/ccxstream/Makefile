@@ -1,6 +1,3 @@
-# Created by: Michael Handler <handler@grendel.net>
-# $FreeBSD$
-
 PORTNAME=	ccxstream
 PORTVERSION=	1.0.15
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/xbplayer/XStream%20Servers/ccXStream%20${PORTVERSION}%20for%20L
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stream media files to XBox Media Center via XBMSP
+WWW=		http://www.xboxmediacenter.de/
 
 USES=		gmake ncurses readline
 USE_RC_SUBR=	ccxstream

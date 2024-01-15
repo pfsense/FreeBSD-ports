@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dropbox-uploader
 PORTVERSION=	1.0
 PORTREVISION=	0
@@ -9,6 +6,7 @@ CATEGORIES=	net
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	BASH script for the Dropbox backup service
+WWW=		https://github.com/andreafabrizi/Dropbox-Uploader
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

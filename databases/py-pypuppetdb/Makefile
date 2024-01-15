@@ -1,22 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	pypuppetdb
-PORTVERSION=	1.2.0
-DISTVERSIONPREFIX=	v
+PORTVERSION=	3.2.0
 CATEGORIES=	databases python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	Library to work with PuppetDB's REST API
+WWW=		https://github.com/voxpupuli/pypuppetdb
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 
-CONFLICTS_INSTALL=	pypuppetdb03-*
+NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	pypuppetdb03
 
 GH_ACCOUNT=	voxpupuli
 

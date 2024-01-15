@@ -1,15 +1,13 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pcmanx
 PORTVERSION=	1.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	chinese net gnome
 MASTER_SITES=	https://github.com/pcman-bbs/${PORTNAME}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-gtk2-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	BBS client using GTK+ 2.x
+COMMENT=	BBS client using GTK 2.x
+WWW=		https://github.com/pcman-bbs/pcmanx
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -30,7 +28,6 @@ NANCY_DESC=	Nancy bot support
 MOUSE_DESC=	Mouse click and wheel support
 EXTERNAL_DESC=	External SSH/Telnet support
 IPLOOKUP_DESC=	IP location lookup support
-PROXY_DESC=	Proxy support
 
 NLS_USES=		gettext
 NLS_USES_OFF=	gettext-tools
@@ -50,7 +47,6 @@ IPLOOKUP_CONFIGURE_ENABLE=	iplookup
 PROXY_CONFIGURE_ENABLE=		proxy
 
 post-install:
-	@# create directory for user friendly
 	${MKDIR} ${STAGEDIR}${DATADIR}/script/
 
 .include <bsd.port.mk>

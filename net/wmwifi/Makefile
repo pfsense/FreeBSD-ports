@@ -1,6 +1,3 @@
-# Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	wmwifi
 PORTVERSION=	0.4
 DISTVERSIONSUFFIX=-bsd
@@ -9,8 +6,9 @@ CATEGORIES=	net
 MASTER_SITES=	http://digitalssg.net/debian/ \
 		LOCAL/uqs
 
-MAINTAINER=	uqs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dockapp displaying the signal strength of WiFi connection
+WWW=		http://wmwifi.digitalssg.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

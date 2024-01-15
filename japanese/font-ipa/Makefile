@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	ipa
 PORTVERSION=	00303
 PORTREVISION=	7
 CATEGORIES=	japanese x11-fonts
-MASTER_SITES=	https://ipafont.ipa.go.jp/IPAfont/
+MASTER_SITES=	https://moji.or.jp/wp-content/ipafont/IPAfont/
 PKGNAMEPREFIX=	ja-font-
 DISTNAME=	IPAfont${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	IPA Japanese fonts
+WWW=		https://moji.or.jp/ipafont/
 
 LICENSE=	IPAFONTLICv1.0
 LICENSE_NAME=	IPA Font License Agreement v1.0

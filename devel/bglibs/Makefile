@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	bglibs
 PORTVERSION=	2.04
 PORTREVISION=	1
@@ -11,6 +8,7 @@ MASTER_SITES=	http://untroubled.org/${PORTNAME}/archive/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	One stop library package by Bruce Guenter
+WWW=		https://untroubled.org/bglibs/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

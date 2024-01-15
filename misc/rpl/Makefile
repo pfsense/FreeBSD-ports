@@ -1,13 +1,11 @@
-# Created by: Michael L. Hostbaek (mich@freebsdcluster.org)
-# $FreeBSD$
-
 PORTNAME=	rpl
 PORTVERSION=	1.4.1
 CATEGORIES=	misc
 MASTER_SITES=	http://downloads.laffeycomputer.com/current_builds/
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix text replacement utility
+WWW=		http://www.laffeycomputer.com/rpl.html
 
 LICENSE=	GPLv2
 

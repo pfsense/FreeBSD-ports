@@ -1,6 +1,3 @@
-# Created by: Yuichiro NAITO <naito.yuichiro@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	itamae
 PORTVERSION=	1.10.7
 CATEGORIES=	sysutils rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	naito.yuichiro@gmail.com
 COMMENT=	Simple and lightweight configuration management tool
+WWW=		https://github.com/itamae-kitchen/itamae
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -19,7 +17,6 @@ RUN_DEPENDS=	rubygem-ansi>=0:devel/rubygem-ansi \
 		rubygem-thor>=0:devel/rubygem-thor
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,9 +1,5 @@
-# Created by: Joerg Wunsch <joerg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libbfd
-PORTVERSION=	2.19.1
-PORTREVISION=	3
+PORTVERSION=	2.40
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
 DISTNAME=	binutils-${PORTVERSION}
@@ -17,11 +13,11 @@ BROKEN_armv7=		Fails to configure: BFD does not support target armv7-portbld-fre
 BROKEN_mips64=		Fails to configure: BFD does not support target mips64-portbld-freebsd12.0
 BROKEN_riscv64=		Fails to configure: machine riscv64-portbld not recognized
 
-CONFLICTS=	mingw-binutils-[0-9]* binutils-[0-9]*
+CONFLICTS=	mingw-binutils binutils
 
 WRKSRC=		${WRKDIR}/binutils-${PORTVERSION}/bfd
 
-USES=		libtool tar:bzip2
+USES=		gmake libtool tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-install-libbfd \
 		--disable-nls \
@@ -34,6 +30,13 @@ INFO=		bfd
 pre-configure:
 # Configure and build pic version of libiberty
 	(cd ${WRKSRC}/../libiberty && \
+		${SETENV} CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
+			CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" \
+			LIBS="${LIBS}" ${CONFIGURE_ENV} ./configure \
+			${CONFIGURE_ARGS} --build=${CONFIGURE_TARGET} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
+			${MAKE_ARGS})
+	(cd ${WRKSRC}/../libsframe && \
 		${SETENV} CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
 			CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" \
 			LIBS="${LIBS}" ${CONFIGURE_ENV} ./configure \

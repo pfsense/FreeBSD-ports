@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	asyncplusplus
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1
@@ -7,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Async++ concurrency framework for C++11
+WWW=		https://github.com/Amanieu/asyncplusplus
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

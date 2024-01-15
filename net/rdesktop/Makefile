@@ -1,6 +1,3 @@
-# Created by: mwest@uct.ac.za
-# $FreeBSD$
-
 PORTNAME=	rdesktop
 PORTVERSION=	1.9.0
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	net comms
 
 MAINTAINER=	freebsd@gregv.net
 COMMENT=	RDP client for Windows NT/2000/2003 Terminal Server
+WWW=		http://www.rdesktop.org/
 
 LICENSE=	GPLv3
 
@@ -16,7 +14,7 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libnettle.so:security/nettle \
 		libtasn1.so:security/libtasn1
 
-USES=		autoreconf gmake iconv pkgconfig xorg
+USES=		autoreconf cpe gmake iconv pkgconfig xorg
 USE_XORG=	x11 xcursor xrandr
 USE_GITHUB=	yes
 

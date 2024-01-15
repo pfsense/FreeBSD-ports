@@ -1,6 +1,3 @@
-# Created by: bremner@unb.ca
-# $FreeBSD$
-
 PORTNAME=	hashcash
 PORTVERSION=	1.22
 CATEGORIES=	mail
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.hashcash.org/source/
 
 MAINTAINER=	chalpin@cs.wisc.edu
 COMMENT=	Anti-spam / denial of service counter-measure tool
+WWW=		http://www.hashcash.org/
 
 LICENSE=	CPL
 LICENSE_NAME=	CPL
@@ -30,7 +28,7 @@ OPTIONS_DEFINE=	DOCS
 .include <bsd.port.options.mk>
 
 .if ${ARCH:Mpowerpc*}
-USE_GCC=	any
+USE_GCC=	yes
 .endif
 
 post-patch-DOCS-off:

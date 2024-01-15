@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	Set-Infinite
 PORTVERSION=	0.65
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Sets of intervals
+WWW=		https://metacpan.org/release/Set-Infinite
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

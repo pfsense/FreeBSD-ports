@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-table-socketmap
 PORTREVISION=	0
 

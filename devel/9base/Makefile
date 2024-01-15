@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	9base
 PORTVERSION=	20170701
 CATEGORIES=	devel
@@ -9,14 +6,16 @@ DISTNAME=	${PORTNAME}-6
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Port of various original plan9 tools
+WWW=		https://tools.suckless.org/9base
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		amd64 i386 sparc64
+ONLY_FOR_ARCHS=		amd64 i386 powerpc powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	has low-level code unavailable for ${ARCH}
 
-USES=		shebangfix
+USES=		cpe shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 SHEBANG_FILES=	troff/tmac/sendcover \
 		troff/font/devutf/mkMAP
 SHEBANG_LANG=	rc

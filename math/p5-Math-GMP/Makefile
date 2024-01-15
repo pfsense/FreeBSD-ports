@@ -1,14 +1,12 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Math-GMP
-PORTVERSION=	2.20
+PORTVERSION=	2.25
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module that provides an interface to the GMP library
+WWW=		https://metacpan.org/release/Math-GMP
 
 LICENSE=	LGPL20+
 

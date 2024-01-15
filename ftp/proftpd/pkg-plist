@@ -10,6 +10,7 @@ etc/PROFTPD-MIB.txt
 @sample etc/proftpd.conf.sample
 @sample etc/proftpd/dhparams.pem.sample
 @sample etc/proftpd/blacklist.dat.sample
+include/proftpd/acconfig.h
 include/proftpd/ascii.h
 include/proftpd/auth.h
 include/proftpd/bindings.h
@@ -29,6 +30,7 @@ include/proftpd/dirtree.h
 include/proftpd/display.h
 include/proftpd/encode.h
 include/proftpd/env.h
+include/proftpd/error.h
 include/proftpd/event.h
 include/proftpd/expr.h
 include/proftpd/feat.h
@@ -40,9 +42,9 @@ include/proftpd/hanson-tpl.h
 include/proftpd/help.h
 include/proftpd/ident.h
 include/proftpd/inet.h
+include/proftpd/jot.h
 include/proftpd/json.h
 include/proftpd/lastlog.h
-include/proftpd/libsupp.h
 include/proftpd/log.h
 include/proftpd/logfmt.h
 include/proftpd/memcache.h
@@ -50,6 +52,37 @@ include/proftpd/mkhome.h
 include/proftpd/mod_ctrls.h
 include/proftpd/mod_dnsbl.h
 include/proftpd/mod_quotatab.h
+include/proftpd/Make.rules
+include/proftpd/base.h
+include/proftpd/mod_sftp/agent.h
+include/proftpd/mod_sftp/auth.h
+include/proftpd/mod_sftp/bcrypt.h
+include/proftpd/mod_sftp/blacklist.h
+include/proftpd/mod_sftp/channel.h
+include/proftpd/mod_sftp/cipher.h
+include/proftpd/mod_sftp/compress.h
+include/proftpd/mod_sftp/crypto.h
+include/proftpd/mod_sftp/date.h
+include/proftpd/mod_sftp/disconnect.h
+include/proftpd/mod_sftp/display.h
+include/proftpd/mod_sftp/fxp.h
+include/proftpd/mod_sftp/interop.h
+include/proftpd/mod_sftp/kbdint.h
+include/proftpd/mod_sftp/kex.h
+include/proftpd/mod_sftp/keys.h
+include/proftpd/mod_sftp/keystore.h
+include/proftpd/mod_sftp/mac.h
+include/proftpd/mod_sftp/misc.h
+include/proftpd/mod_sftp/msg.h
+include/proftpd/mod_sftp/packet.h
+include/proftpd/mod_sftp/rfc4716.h
+include/proftpd/mod_sftp/scp.h
+include/proftpd/mod_sftp/service.h
+include/proftpd/mod_sftp/session.h
+include/proftpd/mod_sftp/ssh2.h
+include/proftpd/mod_sftp/tap.h
+include/proftpd/mod_sftp/umac.h
+include/proftpd/mod_sftp/utf8.h
 include/proftpd/mod_sftp.h
 include/proftpd/mod_snmp.h
 include/proftpd/mod_sql.h
@@ -59,7 +92,9 @@ include/proftpd/modules.h
 include/proftpd/netacl.h
 include/proftpd/netaddr.h
 include/proftpd/netio.h
+include/proftpd/openbsd-blowfish.h
 include/proftpd/options.h
+include/proftpd/os.h
 include/proftpd/parser.h
 include/proftpd/pidfile.h
 include/proftpd/pool.h
@@ -67,6 +102,7 @@ include/proftpd/pr-syslog.h
 include/proftpd/privs.h
 include/proftpd/proctitle.h
 include/proftpd/proftpd.h
+include/proftpd/random.h
 include/proftpd/redis.h
 include/proftpd/regexp.h
 include/proftpd/response.h

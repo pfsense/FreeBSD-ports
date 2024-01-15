@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sub-Installer
 PORTVERSION=	0.0.3
 DISTVERSIONPREFIX=	v
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Clean way to (re)install package subroutines
+WWW=		https://metacpan.org/release/Sub-Installer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: pst
-# $FreeBSD$
-
 PORTNAME=	qpopper
 PORTVERSION=	4.1.0
 PORTREVISION=	6
@@ -10,8 +7,9 @@ MASTER_SITES=	http://core.ring.gr.jp/archives/net/mail/qpopper/ \
 		LOCAL/eugen
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eugen@FreeBSD.org
 COMMENT=	Berkeley POP 3 server (now maintained by Qualcomm)
+WWW=		https://www.eudora.com/products/unsupported/qpopper/
 
 # BSD-style license
 LICENSE=	QUALCOMM
@@ -19,7 +17,9 @@ LICENSE_NAME=	Qualcomm BSD-style license
 LICENSE_FILE=	${WRKSRC}/License.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:features
+USES=		compiler:features cpe
+
+CPE_VENDOR=	qualcomm
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	OS_DEFS="-DSETPROCTITLE ${OS_DEFS}"
@@ -123,10 +123,14 @@ CONFIGURE_ARGS+=	--with-openssl=${OPENSSLBASE}
 .endif
 
 # openssl-1.1.1 no longer has SSLv2 support
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085
+.if ${OPSYS} == FreeBSD
 CFLAGS+=		-DOPENSSL_NO_SSL2
-CONFIGURE_ARGS+=	CFLAGS="${CFLAGS}"
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=		-Wno-incompatible-function-pointer-types
 .endif
+.endif
+
+CONFIGURE_ENV+=		CFLAGS="${CFLAGS}"
 
 post-patch:
 .if ${COMPILER_TYPE} == clang

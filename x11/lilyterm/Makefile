@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	lilyterm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.9.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Lightweight, but functional terminal emulator
+WWW=		https://github.com/Tetralet/LilyTerm
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,23 +1,21 @@
-# Created by: Torsten Zuehlsdorff <ports@toco-domains.de>
-# $FreeBSD$
-
 PORTNAME=	premailer-rails
-PORTVERSION=	1.10.3
+PORTVERSION=	1.12.0
 CATEGORIES=	mail rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails52
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Improve the rendering of HTML emails
+WWW=		https://github.com/fphilipe/premailer-rails
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-actionmailer52>=3:mail/rubygem-actionmailer52 \
-		rubygem-premailer>=1.7.9:mail/rubygem-premailer
+		rubygem-net-smtp>=0:mail/rubygem-net-smtp \
+		rubygem-premailer>=1.7.9<2:mail/rubygem-premailer
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

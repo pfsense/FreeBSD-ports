@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	GIS-Distance-Lite
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Calculate geographic distances in geodetic WGS84 format
+WWW=		https://metacpan.org/release/GIS-Distance-Lite
 
 RUN_DEPENDS=	p5-Math-Complex>1.0.3:math/p5-Math-Complex
 

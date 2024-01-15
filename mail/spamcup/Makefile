@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	spamcup
 PORTVERSION=	1.09
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for automatic spam reporting via Spamcop.net
+WWW=		https://sourceforge.net/projects/spamcup/
 
 LICENSE=	GPLv1
 

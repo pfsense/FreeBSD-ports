@@ -1,8 +1,5 @@
 # bsd.commands.mk - Common commands used within the ports infrastructure
 #
-# Created by: Gabor Kovesdan <gabor@FreeBSD.org>
-#
-# $FreeBSD$
 #
 # DO NOT COMMIT CHANGES TO THIS FILE BY YOURSELF, EVEN IF YOU DID NOT GET
 # A RESPONSE FROM THE MAINTAINER(S) WITHIN A REASONABLE TIMEFRAME! ALL
@@ -31,11 +28,16 @@ CP?=			/bin/cp
 CPIO?=			/usr/bin/cpio
 CUT?=			/usr/bin/cut
 DC?=			/usr/bin/dc
+.if exists(/usr/bin/dialog)
 DIALOG?=		/usr/bin/dialog
-DIALOG4PORTS?=		${LOCALBASE}/bin/dialog4ports
+.else
+DIALOG?=		/usr/bin/bsddialog
+.endif
+DIALOG4PORTS?=		${LOCALBASE}/bin/portconfig
 DIFF?=			/usr/bin/diff
 DIRNAME?=		/usr/bin/dirname
 EGREP?=			/usr/bin/egrep
+ELFCTL?=		/usr/bin/elfctl
 EXPR?=			/bin/expr
 FALSE?=			false	# Shell builtin
 FILE?=			/usr/bin/file
@@ -66,6 +68,7 @@ MOUNT_DEVFS?=		${MOUNT} -t devfs devfs
 # a make target
 MOUNT_NULLFS?=		/sbin/mount_nullfs
 MV?=			/bin/mv
+NPROC?=			/bin/nproc
 OBJCOPY?=		/usr/bin/objcopy
 OBJDUMP?=		/usr/bin/objdump
 PASTE?=			/usr/bin/paste

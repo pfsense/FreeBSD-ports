@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	eijiro-fpw
 PORTVERSION=	1.0b
 PORTREVISION=	6
@@ -11,6 +8,13 @@ DISTNAME=	${PORTNAME}${PORTVERSION}-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	EIJIRO English - Japanese Dictionary (EPWING V1 format)
+WWW=		http://openlab.ring.gr.jp/edict/fpw/
+
+# Converted from RESTRICTED
+LICENSE=	eijiro-fpw
+LICENSE_NAME=	eijiro-fpw
+LICENSE_TEXT=	The original dictionary is not free
+LICENSE_PERMS=	auto-accept
 
 EXTRACT_DEPENDS=${LOCALBASE}/share/freepwing/fpwutils.mk:japanese/freepwing \
 		lha:archivers/lha
@@ -20,7 +24,6 @@ BUILD_DEPENDS=	${LOCALBASE}/libexec/freepwing/catdump:japanese/freepwing \
 MANUAL_PACKAGE_BUILD=	Needs data from CDROM
 MAKE_JOBS_UNSAFE=	yes
 
-RESTRICTED=	The original dictionary is not free
 USES=		dos2unix gmake perl5
 DOS2UNIX_FILES=	Makefile
 WRKSRC=		${WRKDIR}/eijiro-fpw${PORTVERSION}

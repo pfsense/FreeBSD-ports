@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hamlit-rails
 PORTVERSION=	0.2.3
 CATEGORIES=	www rubygems
@@ -7,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Hamlit (haml) generators for Rails 4
+WWW=		https://github.com/mfung/hamlit-rails
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,7 +16,6 @@ RUN_DEPENDS=	rubygem-activesupport4>=4.0.1:devel/rubygem-activesupport4 \
 		rubygem-railties4>=4.0.1:www/rubygem-railties4
 
 USES=		gem shebangfix
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	redsea
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17.1
-PORTREVISION=	2
+DISTVERSION=	0.20
+PORTREVISION=	1
 CATEGORIES=	comms
 
 MAINTAINER=	morrand276@gmail.com
 COMMENT=	Lightweight command-line FM-RDS decoder
+WWW=		https://github.com/windytan/redsea/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,9 +1,9 @@
---- texk/xdvik/version.h.orig	2014-04-13 03:58:39 UTC
+--- texk/xdvik/version.h.orig	2022-02-17 21:05:41 UTC
 +++ texk/xdvik/version.h
 @@ -3,6 +3,7 @@
  #define VERSION_H_
  
- #define XDVI_VERSION "22.87"
+ #define XDVI_VERSION "22.87.06"
 +#define JPVERSION "j1.42-freebsd"
  
  #ifdef MOTIF

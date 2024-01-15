@@ -1,6 +1,3 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Session-Memcached
 PORTVERSION=	0.202
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Memcached-based session backend for Dancer
+WWW=		https://metacpan.org/release/Dancer-Session-Memcached
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

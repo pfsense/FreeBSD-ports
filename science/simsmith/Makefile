@@ -1,6 +1,3 @@
-# Created by: shurd@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	simsmith
 PORTVERSION=	9.9
 PORTREVISION=	1
@@ -13,6 +10,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Java-based Smith Chart program
+WWW=		http://ae6ty.com/Smith_Charts.html
 
 USE_JAVA=	yes
 JAVA_RUN=	yes

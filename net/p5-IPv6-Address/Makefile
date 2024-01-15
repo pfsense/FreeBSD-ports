@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	IPv6-Address
 PORTVERSION=	0.208
 CATEGORIES=	net perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	IPv6 Address Manipulation Library
+WWW=		https://metacpan.org/release/IPv6-Address
 
 LICENSE=	ART20
 

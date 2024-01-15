@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@cae.ce.ntu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Net-Jabber
 PORTVERSION=	2.0
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DIST_SUBDIR=	jabber
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Net::Jabber provides Perl Developer access to the Jabber protocol
+WWW=		https://www.jabber.org/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/LICENSE.LGPL

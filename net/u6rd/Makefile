@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	u6rd
 PORTVERSION=	1.6
 PORTREVISION=	3
@@ -8,6 +6,7 @@ MASTER_SITES=	http://ftp.scythe.jp/pub/u6rd/release/
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	User-space 6rd (RFC 5569) implementation
+WWW=		http://www.scythe.jp/lab/u6rd/
 
 LICENSE=	BSD2CLAUSE
 

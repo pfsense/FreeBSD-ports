@@ -1,6 +1,3 @@
-# Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
-
 PORTNAME=	buddy
 PORTVERSION=	2.4
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/BuDDy%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Binary Decision Diagram library
+WWW=		https://buddy.sourceforge.net/
 
 USES=		gmake libtool
 GNU_CONFIGURE=	yes

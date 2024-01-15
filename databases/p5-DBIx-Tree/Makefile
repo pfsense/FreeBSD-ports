@@ -1,14 +1,12 @@
-# Created by: Philip M. Gollucci <philip@p6m7g8.com>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Tree
-PORTVERSION=	1.97
+PORTVERSION=	1.98
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for generating a tree from a self-referential table
+WWW=		https://metacpan.org/release/DBIx-Tree
 
 LICENSE=	ART20
 

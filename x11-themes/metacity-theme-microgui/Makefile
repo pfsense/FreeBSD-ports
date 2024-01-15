@@ -1,6 +1,3 @@
-# Created by: Douglas Thrift <douglas@douglasthrift.net>
-# $FreeBSD$
-
 PORTNAME=	microgui
 PORTVERSION=	1.0
 PORTREVISION=	3
@@ -11,10 +8,15 @@ DISTNAME=	mcitymicrogui-default
 
 MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	MicroGUI Sawfish theme for Metacity
+WWW=		http://themes.freshmeat.net/projects/mcitymicrogui/
 
 LICENSE=	GPLv2
 
-RESTRICTED=	${REASON}
+# Converted from RESTRICTED
+LICENSE=	metacity
+LICENSE_NAME=	metacity
+LICENSE_TEXT=	${REASON}
+LICENSE_PERMS=	auto-accept
 
 WRKSRC=		${WRKDIR}/microGUI
 NO_ARCH=	yes

@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	B-Deobfuscate
 PORTVERSION=	0.20
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extension to B::Deparse for use in de-obfuscating source code
+WWW=		https://metacpan.org/release/B-Deobfuscate
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-YAML>=0:textproc/p5-YAML \

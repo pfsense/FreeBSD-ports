@@ -1,6 +1,3 @@
-# Created by: vazquez@iqm.unicamp.br
-# $FreeBSD$
-
 PORTNAME=	fpp
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -12,6 +9,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fortran preprocessor for FORTRAN 77 and Fortran 90 programs
+WWW=		https://netlib.org/fortran/
 
 ALL_TARGET=	bsd44
 

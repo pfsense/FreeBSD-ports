@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xgalaga-sdl
 PORTVERSION=	2.1.1.0
 PORTREVISION=	5
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}-sdl${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Classic single screen vertical shoot em up SDL
+WWW=		https://sourceforge.net/projects/xgalaga-sdl/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

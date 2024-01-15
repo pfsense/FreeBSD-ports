@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	DBIWrapper
 PORTVERSION=	0.30
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	libdbiwrapper-perl-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for generic DBI database access
+WWW=		https://dbiwrapper.sourceforge.net/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

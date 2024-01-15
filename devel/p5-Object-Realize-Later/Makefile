@@ -1,6 +1,3 @@
-# Created by: tobez
-# $FreeBSD$
-
 PORTNAME=	Object-Realize-Later
 PORTVERSION=	0.21
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Delayed creation of objects
+WWW=		https://metacpan.org/release/Object-Realize-Later
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

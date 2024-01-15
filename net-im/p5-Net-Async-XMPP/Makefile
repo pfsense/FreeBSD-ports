@@ -1,6 +1,3 @@
-# Created by: <ports@c0decafe.net>
-# $FreeBSD$
-
 PORTNAME=	Net-Async-XMPP
 PORTVERSION=	0.003
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Asynchronous XMPP client and server
+WWW=		https://metacpan.org/release/Net-Async-XMPP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

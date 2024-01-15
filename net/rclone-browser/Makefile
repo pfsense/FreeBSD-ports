@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	rclone-browser
 DISTVERSION=	1.8.0
 CATEGORIES=	net
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Simple cross platform GUI for rclone
+WWW=		https://github.com/kapitainsky/RcloneBrowser
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +15,7 @@ USES=		cmake pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	kapitainsky
 GH_PROJECT=	RcloneBrowser
-USE_QT=		buildtools_build core gui qmake_build widgets
+USE_QT=		buildtools:build core gui qmake:build widgets
 
 # Prepare for Qt5-5.15
 CFLAGS+=	-Wno-deprecated

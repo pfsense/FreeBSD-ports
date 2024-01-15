@@ -1,6 +1,3 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Thread-Queue-Duplex
 PORTVERSION=	0.92
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Thread-safe request/response queue with identifiable elements
+WWW=		https://metacpan.org/release/Thread-Queue-Duplex
 
 LICENSE=	AFL21
 LICENSE_NAME=	Academic Free License version 2.1

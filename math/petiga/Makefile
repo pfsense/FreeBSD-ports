@@ -1,40 +1,37 @@
-# $FreeBSD$
-
 PORTNAME=	petiga
-DISTVERSION=	g20200316
+DISTVERSION=	g20221208
+PORTREVISION=	6
 CATEGORIES=	math python
-MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Framework for High Performance Isogeometric Analysis
+WWW=		https://github.com/dalcinl/PetIGA
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst
-
-BROKEN=		fails to configure
 
 LIB_DEPENDS=	libblas.so:math/blas \
 		liblapack.so:math/lapack \
 		libmpich.so:net/mpich \
 		libpetsc.so:science/PETSc
 
-USES=		cmake compiler:c++14-lang fortran xorg
-USE_XORG=	x11
+USES=		gmake compiler:c++14-lang fortran xorg
 USE_LDCONFIG=	yes
+USE_XORG=	x11
 
-BB_ACCOUNT=	dalcinl
-BB_PROJECT=	${PORTNAME}
-BB_COMMIT=	90677fb7b777
+MAKEFILE=	makefile
 
-WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
+MAKE_ENV=	PETSC_DIR=${LOCALBASE}
+MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 
-PLIST_FILES=	include/petiga.h \
-		lib/libpetiga.so \
-		lib/petiga/conf/rules \
-		lib/petiga/conf/test \
-		lib/petiga/conf/variables
+USE_GITHUB=	yes
+GH_ACCOUNT=	dalcinl
+GH_PROJECT=	PetIGA
+GH_TAGNAME=	218fdfa
+
+TEST_TARGET=	check
 
 post-install:
-	@cd ${STAGEDIR}${PREFIX}/include && ${RMDIR} petiga/cxx petiga/fad petiga
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpetiga.so
 
 .include <bsd.port.mk>

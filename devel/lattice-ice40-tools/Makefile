@@ -1,12 +1,11 @@
-# Created by: Johnny Sorocil <jsorocil@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	lattice-ice40-tools
 PORTVERSION=	g20181021
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source tools for Lattice iCE40 FPGAs
+WWW=		https://www.clifford.at/icestorm
 
 RUN_DEPENDS=	abc:cad/abc \
 		arachne-pnr:devel/arachne-pnr \

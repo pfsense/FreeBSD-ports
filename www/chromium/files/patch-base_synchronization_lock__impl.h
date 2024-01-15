@@ -1,19 +1,23 @@
---- base/synchronization/lock_impl.h.orig	2020-11-13 06:36:34 UTC
+--- base/synchronization/lock_impl.h.orig	2023-04-05 11:05:06 UTC
 +++ base/synchronization/lock_impl.h
-@@ -105,6 +105,8 @@ void LockImpl::Unlock() {
+@@ -104,6 +104,10 @@ void LockImpl::Unlock() {
  }
  
- #elif defined(OS_POSIX) || defined(OS_FUCHSIA)
+ #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
++#if BUILDFLAG(IS_FREEBSD)
 +#pragma GCC diagnostic push
 +#pragma GCC diagnostic ignored "-Wthread-safety-analysis"
++#endif
  
- bool LockImpl::Try() {
-   int rv = pthread_mutex_trylock(&native_handle_);
-@@ -116,6 +118,7 @@ void LockImpl::Unlock() {
-   int rv = pthread_mutex_unlock(&native_handle_);
-   DCHECK_EQ(rv, 0) << ". " << strerror(rv);
+ #if DCHECK_IS_ON()
+ BASE_EXPORT void dcheck_trylock_result(int rv);
+@@ -124,6 +128,9 @@ void LockImpl::Unlock() {
+   dcheck_unlock_result(rv);
+ #endif
  }
++#if BUILDFLAG(IS_FREEBSD)
 +#pragma GCC diagnostic pop
++#endif
  #endif
  
  // This is an implementation used for AutoLock templated on the lock type.

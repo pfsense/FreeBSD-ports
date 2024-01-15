@@ -1,13 +1,11 @@
-# Created by: Janos Mohacsi
-# $FreeBSD$
-
 PORTNAME=	xmltooling
-PORTVERSION=	3.2.0
+PORTVERSION=	3.2.4
 CATEGORIES=	devel security
-MASTER_SITES=	http://shibboleth.net/downloads/c++-opensaml/${PORTVERSION}/
+MASTER_SITES=	http://shibboleth.net/downloads/c++-opensaml/latest/
 
 MAINTAINER=	girgen@FreeBSD.org
 COMMENT=	Low level XML support for SAML
+WWW=		https://wiki.shibboleth.net/confluence/display/OpenSAML/XMLTooling-C
 
 LICENSE=	APACHE20
 
@@ -18,9 +16,11 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--disable-dependency-tracking --disable-doxygen-doc --with-xmlsec
-USES=		gmake libtool pkgconfig tar:bzip2 ssl autoreconf
+USES=		cpe gmake libtool pkgconfig tar:bzip2 ssl autoreconf
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 CONFIGURE_ENV+=	openssl_LIBS="-L${OPENSSLLIB} -lcrypto"  openssl_CFLAGS=-I${OPENSSLBASE}
+USE_CXXSTD=	c++14
 
 PORTDOCS=	*
 

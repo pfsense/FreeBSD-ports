@@ -1,6 +1,3 @@
-# Created by: Dean Hollister <dean@odyssey.apana.org.au>
-# $FreeBSD$
-
 PORTNAME=	firestring
 PORTVERSION=	0.9.12
 CATEGORIES=	misc net devel
@@ -11,6 +8,7 @@ MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ \
 
 MAINTAINER=	dean@odyssey.apana.org.au
 COMMENT=	Library to make string handling easier in C
+WWW=		https://www.firestuff.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL

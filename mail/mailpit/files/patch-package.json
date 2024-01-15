@@ -1,0 +1,11 @@
+--- package.json.orig	2023-12-07 04:18:51 UTC
++++ package.json
+@@ -27,7 +27,7 @@
+     "@types/bootstrap": "^5.2.7",
+     "@types/tinycon": "^0.6.3",
+     "@vue/compiler-sfc": "^3.2.37",
+-    "esbuild": "^0.19.1",
++    "esbuild-wasm": "^0.19.1",
+     "esbuild-plugin-vue-next": "^0.1.4",
+     "esbuild-sass-plugin": "^2.3.2"
+   }

@@ -1,16 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	widgets
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt C++ widgets module
 
-USES=		compiler:c++11-lang qmake:no_env qt-dist:5,base xorg
-USE_QT=		core gui qmake_build buildtools_build
+USES=		compiler:c++11-lang perl5 qmake:no_env qt-dist:5,base xorg
+USE_PERL5=	extract
+USE_QT=		core gui qmake:build buildtools:build
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 
@@ -26,7 +24,7 @@ QT_CONFIG=	accessibility accessibility-atspi-bridge xlib
 OPTIONS_DEFINE=	GTK3
 OPTIONS_SUB=	YES
 
-GTK3_DESC=	GTK+-based Qt theme
+GTK3_DESC=	GTK-based Qt theme
 GTK3_USES=	gnome
 GTK3_USE=	GNOME=gtk30 QT=dbus
 GTK3_CONFIGURE_ON=	-gtk
@@ -69,5 +67,6 @@ post-install:
 .endfor
 	${INSTALL_DATA} ${BUILD_WRKSRC}/dialogs/images/qtlogo-64.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/qt5logo.png
+	${RLN} ${STAGEDIR}${QT_BINDIR}/uic ${STAGEDIR}${PREFIX}/bin/uic-qt5
 
 .include <bsd.port.mk>

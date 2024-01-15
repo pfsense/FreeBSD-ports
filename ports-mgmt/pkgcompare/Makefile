@@ -1,12 +1,10 @@
-# Created by: "Waitman Gobble" <uzimac@da3m0n8t3r.com>
-# $FreeBSD$
-
 PORTNAME=	pkgcompare
 PORTVERSION=	1.1
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	waitman@waitman.net
 COMMENT=	Alternate to pkg upgrade
+WWW=		https://github.com/waitman/pkg-compare
 
 LICENSE=	PKG-COMPARE
 LICENSE_NAME=	PKG-COMPARE BSD LICENSE

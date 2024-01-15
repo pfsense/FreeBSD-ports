@@ -1,14 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	supercollider
-DISTVERSION=	3.11.0
-PORTREVISION=	1
+DISTVERSION=	3.11.2
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/supercollider/supercollider/releases/download/Version-${PORTVERSION}/
 DISTNAME=	SuperCollider-${PORTVERSION}-Source
 
+PATCH_SITES=	https://github.com/supercollider/supercollider/commit/
+PATCHFILES=	b9dd70c4c8d61c93d7a70645e0bd18fa76e6834e.patch:-p1
+
 MAINTAINER=	ports@nicandneal.net
 COMMENT=	Programming language for real time audio synthesis
+WWW=		https://supercollider.github.io
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,8 +23,8 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 
 USES=		cmake compiler:c++11-lang iconv localbase pkgconfig \
 		qt:5 readline shared-mime-info tar:bzip2 xorg
-USE_QT=		buildtools_build concurrent core declarative gui linguisttools location \
-		network opengl printsupport qmake_build sensors \
+USE_QT=		buildtools:build concurrent core declarative gui linguisttools location \
+		network opengl printsupport qmake:build sensors \
 		sql widgets websockets webchannel svg
 USE_XORG=	x11
 USE_LDCONFIG=	yes

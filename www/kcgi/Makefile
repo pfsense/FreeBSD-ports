@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	kcgi
-PORTVERSION=	0.12.2
+PORTVERSION=	0.13.3
 CATEGORIES=	www devel
 MASTER_SITES=	http://kristaps.bsd.lv/kcgi/snapshots/
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Minimal sandboxed CGI library in C
+WWW=		https://kristaps.bsd.lv/kcgi/
 
 LICENSE=	ISCL
 

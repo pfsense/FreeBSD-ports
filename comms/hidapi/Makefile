@@ -1,28 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	hidapi
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	0.8.0-rc1
-PORTREVISION=	3
+DISTVERSION=	0.14.0
 CATEGORIES=	comms
 
-MAINTAINER=	tijl@FreeBSD.org
+MAINTAINER=	sstallion@gmail.com
 COMMENT=	Library to access USB HID-class devices
+WWW=		https://github.com/libusb/hidapi
 
 LICENSE=	BSD3CLAUSE GPLv3
 LICENSE_COMB=	dual
 
+USES=		autoreconf gettext-tools iconv:wchar_t libtool localbase \
+		pkgconfig
+
 USE_GITHUB=	yes
-GH_ACCOUNT=	signal11
-
-USES=		autoreconf gettext-tools iconv:wchar_t libtool
-GNU_CONFIGURE=	yes
+GH_ACCOUNT=	libusb
 USE_LDCONFIG=	yes
-INSTALL_TARGET=	install-strip
-PORTDOCS=	*
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS
 

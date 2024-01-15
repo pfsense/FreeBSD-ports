@@ -1,6 +1,3 @@
-# Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	http_post
 PORTVERSION=	1.0.20140814
 CATEGORIES=	www
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_14Aug2014
 
 MAINTAINER=	masaki@club.kyutech.ac.jp
 COMMENT=	Do a POST operation and dump http-contents to stdout
+WWW=		https://www.acme.com/software/http_post/
 
 WRKSRC=		${WRKDIR}/http_post
 USES=		uidfix

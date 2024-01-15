@@ -1,6 +1,3 @@
-# Created by: snowchyld
-# $FreeBSD$
-
 PORTNAME=	Hash-Merge
 PORTVERSION=	0.302
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Merges hashes
+WWW=		https://metacpan.org/release/Hash-Merge
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

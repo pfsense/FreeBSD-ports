@@ -1,6 +1,3 @@
-# Created by: Andrey Kostenko <andrey@kostenko.name>
-# $FreeBSD$
-
 PORTNAME=	DBICx-TxnInsert
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Wrap all inserts into transaction
+WWW=		https://metacpan.org/release/DBICx-TxnInsert
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DBIx-Class>=0:databases/p5-DBIx-Class \

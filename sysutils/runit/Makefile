@@ -1,21 +1,21 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	runit
 PORTVERSION=	2.1.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	http://smarden.org/${PORTNAME}/ \
 		http://www.bayofrum.net/dist/${PORTNAME}/
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Service supervision tools compatible with DJB daemontools
+WWW=		http://smarden.org/runit/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/package/COPYING
 
 BROKEN_mips=		fails to install: runit-init failed
 BROKEN_mips64=		fails to install: runit-init failed
+
+USES=		cpe
 
 USE_RC_SUBR=	runsvdir
 WRKSRC=		${WRKDIR}/admin/${DISTNAME}
@@ -36,14 +36,15 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	${REINPLACE_CMD} -i '' 's!/service/!${SERVICE_DIR}!' \
 		${PATCH_WRKSRC}/man/* ${PATCH_WRKSRC}/src/sv.c
-	${REINPLACE_CMD} -i '' '\|^PATH=|s|$$|:${PREFIX}/bin:${PREFIX}/sbin|' \
-		${PATCH_WRKSRC}/etc/freebsd/3
 	${FIND} ${PATCH_WRKSRC} -name '*.orig' -delete
 
 do-configure:
 	${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/src/conf-cc
 	${ECHO_CMD} "${CC}" > ${WRKSRC}/src/conf-ld
-	${ECHO_CMD} '#define PREFIX "${PREFIX}"' >> ${WRKSRC}/src/runit.h
+	${REINPLACE_CMD} 's,%%PREFIX%%,${PREFIX},g' \
+		${WRKSRC}/src/runit.h	\
+		${WRKSRC}/etc/freebsd/1	\
+		${WRKSRC}/etc/freebsd/3
 
 do-build:
 	cd ${WRKSRC} && package/compile && package/check

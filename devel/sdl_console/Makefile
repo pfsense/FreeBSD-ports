@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdl_console
 PORTVERSION=	2.1
 PORTREVISION=	7
@@ -10,6 +7,7 @@ DISTNAME=	sdlconsole-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drop down console that can be easily added to any SDL application
+WWW=		https://wacha.ch/wiki/sdlconsole/
 
 USES=		libtool sdl
 USE_SDL=	sdl

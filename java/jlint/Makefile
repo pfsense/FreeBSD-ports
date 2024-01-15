@@ -1,6 +1,3 @@
-# Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jlint
 PORTVERSION=	3.1.2
 PORTREVISION=	5
@@ -9,11 +6,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java program analyzer and checker
+WWW=		https://artho.com/jlint/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=	compiler
+USE_CXXSTD=	c++14
 
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_clang=	-Wno-c++11-narrowing

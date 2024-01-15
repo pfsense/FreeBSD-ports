@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Games-Bingo-Print
 PORTVERSION=	0.04
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl class for PDF generation
+WWW=		https://metacpan.org/release/Games-Bingo-Print
 
 LICENSE=	ART10
 

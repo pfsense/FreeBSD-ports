@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	MooX-Attribute-ENV
-PORTVERSION=	0.02
-PORTREVISION=	1
+PORTVERSION=	0.04
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Allow Moo attributes to get their values from %ENV
+WWW=		https://metacpan.org/release/MooX-Attribute-ENV
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	festvox-don
 PORTVERSION=	1.4.0
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DIST_SUBDIR=	festival
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	British English male voice for Festival speech synthesis system
+WWW=		https://www.cstr.ed.ac.uk/projects/festival/
 
 RUN_DEPENDS=	\
 ${LOCALBASE}/share/festival/lib/dicts/wsj.wp39.poslexR:audio/festlex-poslex \

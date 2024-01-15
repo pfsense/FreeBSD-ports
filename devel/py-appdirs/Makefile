@@ -1,19 +1,17 @@
-# Created by: Thomas Zander <riggs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	appdirs
 PORTVERSION=	1.4.4
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python module for determining platform-specific dirs
+WWW=		https://github.com/ActiveState/appdirs
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

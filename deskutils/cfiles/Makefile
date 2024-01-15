@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	cfiles
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.8-6
 DISTVERSIONSUFFIX=	-g327d47f
-PORTREVISION=	9
+PORTREVISION=	29
 CATEGORIES=	deskutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Ncurses file manager written in C with vim-like keybindings
+WWW=		https://github.com/mananapr/cfiles
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

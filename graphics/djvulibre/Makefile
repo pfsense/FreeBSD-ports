@@ -1,14 +1,12 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	djvulibre
-PORTVERSION=	3.5.27
+PORTVERSION=	3.5.28
 PORTREVISION=	2
 CATEGORIES=	graphics www
 MASTER_SITES=	SF/djvu/DjVuLibre/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	DjVu base libraries and utilities
+WWW=		https://djvu.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 USES=		cpe gmake iconv jpeg libtool
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	djvulibre_project
@@ -38,8 +37,7 @@ ANY2DJVU_DESC=		Install any2djvu script (requires curl)
 ANY2DJVU_RUN_DEPENDS=	curl:ftp/curl
 DESKTOPFILES_DESC=	Install icons and mime types
 DESKTOPFILES_CONFIGURE_ENABLE=	desktopfiles
-DESKTOPFILES_USES=	gnome shared-mime-info
-DESKTOPFILES_VARS=	INSTALLS_ICONS=yes
+DESKTOPFILES_USES=	gnome
 
 post-patch:
 # Remove custom optimization compiler flags

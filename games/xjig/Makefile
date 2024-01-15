@@ -1,6 +1,3 @@
-# Created by: Vanilla I. Shu <vanilla@MinJe.com.TW>
-# $FreeBSD$
-
 PORTNAME=	xjig
 PORTVERSION=	2.4
 PORTREVISION=	5
@@ -11,6 +8,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Jigsaw puzzle game for X11
 
 USES=		compiler tar:tgz xorg
+USE_CXXSTD=	c++14
 USE_XORG=	x11 xorgproto xext
 MAKEFILE=	Makefile.Linux
 PLIST_FILES=	bin/xjig man/man1/xjig.1.gz

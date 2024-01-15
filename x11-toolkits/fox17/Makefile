@@ -1,48 +1,50 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	fox
-PORTVERSION=	1.7.64
-PORTREVISION=	3
+PORTVERSION=	1.7.84
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	http://ftp.fox-toolkit.org/pub/ \
+MASTER_SITES=	http://fox-toolkit.org/ftp/ \
 		ftp://ftp.fox-toolkit.org/pub/
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Fast and extensive C++ GUI toolkit (development version)
+WWW=		http://www.fox-toolkit.org/
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc=		missing __sync_bool_compare_and_swap_8()
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		compiler:c++11-lib gl libtool localbase pathfix xorg
+USES=		compiler:c++11-lib gl libtool localbase pathfix pkgconfig xorg
 USE_GL=		gl glu
 USE_XORG=	ice sm x11 xcursor xext xfixes xft xi xrandr xrender
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-opengl=yes \
+CONFIGURE_ARGS=	--with-freetype-include="`pkg-config freetype2 --cflags | sed -e 's|^-I||'`" \
+		--with-freetype-library="`pkg-config freetype2 --libs | sed -e 's|^-L||'`" \
+		--with-opengl=yes \
 		--with-xim \
 		--enable-png \
 		--bindir=${PREFIX}/bin/${PORTNAME}-${MAJORVER}
 INSTALL_TARGET=	install-strip
+
+CPPFLAGS+=	-D__BSD_VISIBLE -D__EXT1_VISIBLE -D_XOPEN_SOURCE=700
 
 MAJORVER=	${PORTVERSION:R}
 PLIST_SUB+=	MAJORVER=${MAJORVER}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${MAJORVER}
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		DEBUG DOCS EXAMPLES OPTIMIZED_CFLAGS PROFILE TEST
+OPTIONS_DEFINE=		CUPS DEBUG DOCS EXAMPLES OPTIMIZED_CFLAGS PROFILE TEST
 OPTIONS_GROUP=		IMGFMTS
 OPTIONS_GROUP_IMGFMTS=	JPEG OPENJPEG TIFF WEBP
 OPTIONS_DEFAULT=	JPEG OPENJPEG TIFF WEBP
 IMGFMTS_DESC=		Image formats
+
+CUPS_CONFIGURE_ENABLE=	cups
+CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
 DEBUG_CONFIGURE_ENABLE=	debug
 DEBUG_CXXFLAGS_OFF=	-DNDEBUG
@@ -50,8 +52,9 @@ DEBUG_CXXFLAGS_OFF=	-DNDEBUG
 JPEG_USES=		jpeg
 JPEG_CONFIGURE_ENABLE=	jpeg
 
-OPENJPEG_LIB_DEPENDS=	libopenjpeg.so:graphics/openjpeg15
+OPENJPEG_LIB_DEPENDS=		libopenjpeg.so:graphics/openjpeg15
 OPENJPEG_CONFIGURE_ENABLE=	jp2
+OPENJPEG_CPPFLAGS=		-I${LOCALBASE}/include/openjpeg-1.5
 
 PROFILE_CONFIGURE_ON=	--with-profiling=gprof
 

@@ -1,38 +1,45 @@
-# $FreeBSD$
-
 PORTNAME=	phoc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.1
-CATEGORIES=	x11-wm
+DISTVERSION=	0.35.0
+CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Phone compositor
+WWW=		https://gitlab.gnome.org/World/Phosh/phoc
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
-LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
+BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
+		wayland-protocols>=1.15:graphics/wayland-protocols \
+		wlroots>=0.17.0<0.18.0:x11-toolkits/wlroots
+LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
+		libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	${LOCALBASE}/share/glib-2.0/schemas/org.gnome.mutter.gschema.xml:x11-wm/mutter
 
-USES=		compiler:c11 gl gnome meson pkgconfig python:build shebangfix xorg
+USES=		compiler:c11 gettext gl gnome meson pkgconfig xorg
 USE_GITLAB=	yes
 USE_GL=		glesv2
-USE_GNOME=	gnomedesktop3
+USE_GNOME=	cairo gnomedesktop3
 USE_XORG=	pixman xcb
-GL_SITE=	https://source.puri.sm
-GL_ACCOUNT=	Librem5
-GL_COMMIT=	9fe63674a80268acd97fc7fb7db1a8448243bb1e
-SHEBANG_FILES=	build-aux/post_install.py
-CFLAGS+=	-Wno-error=format-nonliteral # clang
-PLIST_FILES=	bin/${PORTNAME}
+GL_SITE=	https://gitlab.gnome.org
+GL_ACCOUNT=	World/Phosh
+GL_TUPLE=	World/Phosh:gmobile:v0.0.4-7-gd5ed9ed:gmobile/subprojects/gmobile
+MESON_ARGS=	-Dembed-wlroots=disabled
+PLIST_FILES=	bin/${PORTNAME} \
+		man/man5/${PORTNAME}.ini.5.gz \
+		share/applications/sm.puri.Phoc.desktop \
+		share/icons/hicolor/symbolic/apps/sm.puri.Phoc.svg
 GLIB_SCHEMAS=	sm.puri.phoc.gschema.xml
 
-post-extract:
-# Avoid confusing Meson instead of forcing -Dembed-wlroots=disabled
-	@${RMDIR} ${WRKSRC}/subprojects/wlroots
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
+
+MANPAGES_BUILD_DEPENDS=	rst2man:textproc/py-docutils
+MANPAGES_MESON_TRUE=	man
+MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
 
 .include <bsd.port.mk>

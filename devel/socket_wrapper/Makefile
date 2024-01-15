@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		socket_wrapper
 PORTVERSION=		1.1.9
 CATEGORIES=		devel
@@ -7,6 +5,7 @@ MASTER_SITES=		SAMBA/cwrap
 
 MAINTAINER=		timur@FreeBSD.org
 COMMENT=		Library passing all socket communications through unix sockets
+WWW=		https://cwrap.org/socket_wrapper.html
 
 LICENSE=		GPLv3
 
@@ -20,7 +19,7 @@ CFLAGS_powerpc=		-Wno-error=int-to-pointer-cast -Wno-error=pointer-to-int-cast
 CFLAGS_powerpc64=	-Wno-error=int-to-pointer-cast -Wno-error=pointer-to-int-cast
 CFLAGS_powerpc64le=	-Wno-error=int-to-pointer-cast -Wno-error=pointer-to-int-cast
 CFLAGS_powerpcspe=	-Wno-error=int-to-pointer-cast -Wno-error=pointer-to-int-cast
-CFLAGS_sparc64=	-Wno-error=int-to-pointer-cast -Wno-error=pointer-to-int-cast
+CFLAGS_riscv64=	-Wno-error=int-to-pointer-cast -Wno-error=pointer-to-int-cast
 CMAKE_ARGS=		-DMAN_INSTALL_DIR:PATH="${PREFIX}/man"
 
 OPTIONS_DEFINE=		TEST

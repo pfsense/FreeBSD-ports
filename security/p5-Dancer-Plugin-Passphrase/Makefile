@@ -1,6 +1,3 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-Passphrase
 PORTVERSION=	2.0.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Passphrases and Passwords as objects for Dancer
+WWW=		https://metacpan.org/release/Dancer-Plugin-Passphrase
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	gluonnlp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.0
+PORTREVISION=	2
 CATEGORIES=	misc # machine-learning
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	MXNet-based toolkit to enable easy text, datasets preprocessing
+WWW=		https://gluon-nlp.mxnet.io/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +17,7 @@ PY_DEPENDS=	${PYNUMPY} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		python:3.6+ localbase
+USES=		python localbase
 USE_GITHUB=	yes
 GH_ACCOUNT=	dmlc
 GH_PROJECT=	gluon-nlp

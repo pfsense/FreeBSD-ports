@@ -1,73 +1,64 @@
---- ui/views/controls/textfield/textfield.cc.orig	2021-01-18 21:29:49 UTC
+--- ui/views/controls/textfield/textfield.cc.orig	2024-01-04 08:02:45 UTC
 +++ ui/views/controls/textfield/textfield.cc
-@@ -68,7 +68,7 @@
+@@ -81,7 +81,7 @@
  #include "base/win/win_util.h"
  #endif
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "ui/base/ime/linux/text_edit_command_auralinux.h"
- #include "ui/base/ime/linux/text_edit_key_bindings_delegate_auralinux.h"
- #endif
-@@ -195,14 +195,14 @@ ui::TextEditCommand GetCommandForKeyEvent(const ui::Ke
+ #include "ui/base/ime/text_input_flags.h"
+ #include "ui/linux/linux_ui.h"
+@@ -176,7 +176,7 @@ bool IsControlKeyModifier(int flags) {
+ // Control-modified key combination, but we cannot extend it to other platforms
+ // as Control has different meanings and behaviors.
+ // https://crrev.com/2580483002/#msg46
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+   return flags & ui::EF_CONTROL_DOWN;
+ #else
+   return false;
+@@ -747,7 +747,7 @@ bool Textfield::OnKeyPressed(const ui::KeyEvent& event
+   if (!textfield)
+     return handled;
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   auto* linux_ui = ui::LinuxUi::instance();
+   std::vector<ui::TextEditCommandAuraLinux> commands;
+   if (!handled && linux_ui &&
+@@ -930,7 +930,7 @@ void Textfield::AboutToRequestFocusFromTabTraversal(bo
+ }
+ 
+ bool Textfield::SkipDefaultKeyEventProcessing(const ui::KeyEvent& event) {
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   // Skip any accelerator handling that conflicts with custom keybindings.
+   auto* linux_ui = ui::LinuxUi::instance();
+   std::vector<ui::TextEditCommandAuraLinux> commands;
+@@ -1941,7 +1941,7 @@ bool Textfield::ShouldDoLearning() {
+   return false;
+ }
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ // TODO(https://crbug.com/952355): Implement this method to support Korean IME
+ // reconversion feature on native text fields (e.g. find bar).
+ bool Textfield::SetCompositionFromExistingText(
+@@ -2437,14 +2437,14 @@ ui::TextEditCommand Textfield::GetCommandForKeyEvent(
  #endif
          return ui::TextEditCommand::DELETE_BACKWARD;
        }
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
        // Only erase by line break on Linux and ChromeOS.
        if (shift)
          return ui::TextEditCommand::DELETE_TO_BEGINNING_OF_LINE;
  #endif
        return ui::TextEditCommand::DELETE_WORD_BACKWARD;
      case ui::VKEY_DELETE:
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
        // Only erase by line break on Linux and ChromeOS.
        if (shift && control)
          return ui::TextEditCommand::DELETE_TO_END_OF_LINE;
-@@ -270,7 +270,7 @@ bool IsControlKeyModifier(int flags) {
- // Control-modified key combination, but we cannot extend it to other platforms
- // as Control has different meanings and behaviors.
- // https://crrev.com/2580483002/#msg46
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   return flags & ui::EF_CONTROL_DOWN;
- #else
-   return false;
-@@ -765,7 +765,7 @@ bool Textfield::OnMousePressed(const ui::MouseEvent& e
- #endif
-   }
- 
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
-   if (!handled && !had_focus && event.IsOnlyMiddleMouseButton())
-     RequestFocusWithPointer(ui::EventPointerType::kMouse);
- #endif
-@@ -812,7 +812,7 @@ bool Textfield::OnKeyPressed(const ui::KeyEvent& event
-   if (!textfield)
-     return handled;
- 
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
-   ui::TextEditKeyBindingsDelegateAuraLinux* delegate =
-       ui::GetTextEditKeyBindingsDelegate();
-   std::vector<ui::TextEditCommandAuraLinux> commands;
-@@ -966,7 +966,7 @@ void Textfield::AboutToRequestFocusFromTabTraversal(bo
- }
- 
- bool Textfield::SkipDefaultKeyEventProcessing(const ui::KeyEvent& event) {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
-   // Skip any accelerator handling that conflicts with custom keybindings.
-   ui::TextEditKeyBindingsDelegateAuraLinux* delegate =
-       ui::GetTextEditKeyBindingsDelegate();
-@@ -2256,7 +2256,7 @@ bool Textfield::PasteSelectionClipboard() {
- }
- 
- void Textfield::UpdateSelectionClipboard() {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
-   if (text_input_type_ != ui::TEXT_INPUT_TYPE_PASSWORD) {
-     ui::ScopedClipboardWriter(ui::ClipboardBuffer::kSelection)
-         .WriteText(GetSelectedText());

@@ -1,6 +1,3 @@
-# Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
-
 PORTNAME=	f3
 PORTVERSION=	8.0
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Fight Flash Fraud or Fight Fake Flash test tool
+WWW=		https://oss.digirati.com.br/f3
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	xldlas
 PORTVERSION=	0.85
 PORTREVISION=	9

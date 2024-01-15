@@ -1,6 +1,3 @@
-# Created by: db
-# $FreeBSD$
-
 PORTNAME=	wwl
 PORTVERSION=	1.3
 CATEGORIES=	comms hamradio astro geography

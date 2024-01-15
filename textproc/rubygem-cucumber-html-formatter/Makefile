@@ -1,20 +1,17 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cucumber-html-formatter
-PORTVERSION=	9.0.0
+PORTVERSION=	21.2.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	HTML formatter for Cucumber
+WWW=		https://github.com/cucumber/html-formatter
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-cucumber-messages>=13.0.1<14:devel/rubygem-cucumber-messages
+RUN_DEPENDS=	rubygem-cucumber-messages>=19<25:devel/rubygem-cucumber-messages
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

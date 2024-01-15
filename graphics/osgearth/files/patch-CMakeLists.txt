@@ -1,0 +1,8 @@
+--- CMakeLists.txt.orig	2023-10-23 13:54:59 UTC
++++ CMakeLists.txt
+@@ -302,4 +302,4 @@ install(
+         ${CMAKE_CURRENT_BINARY_DIR}/osgEarthConfig.cmake
+         ${CMAKE_CURRENT_BINARY_DIR}/osgEarthConfigVersion.cmake
+     DESTINATION
+-        ${CMAKE_INSTALL_PREFIX}/cmake )
++        ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules/osgEarth )

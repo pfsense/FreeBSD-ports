@@ -1,14 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	talkatu
 PORTVERSION=	g2019031701
+PORTREVISION=	3
 CATEGORIES=	net-im
 MASTER_SITES=	https://bitbucket.org/pidgin/talkatu/get/
 DISTNAME=	1b7433db5cd5
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Collection of Gtk+ widgets that are useful for chat applications
+WWW=		https://bitbucket.org/pidgin/talkatu/overview
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

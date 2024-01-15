@@ -1,8 +1,6 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtkatlantic
 DISTVERSION=	0.6.3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://download.tuxfamily.org/gtkatlantic/downloads/v${PORTVERSION:R}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -11,6 +9,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Game like Monopoly(tm)
+WWW=		https://gtkatlantic.gradator.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +18,6 @@ USES=		gnome localbase:ldflags pkgconfig
 USE_GNOME=	cairo gtk30 libxml2
 GNU_CONFIGURE=	yes
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README

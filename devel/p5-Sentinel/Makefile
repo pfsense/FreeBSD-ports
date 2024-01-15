@@ -1,8 +1,5 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sentinel
-PORTVERSION=	0.06
+PORTVERSION=	0.07
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PEVANS
@@ -10,12 +7,12 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Create lightweight SCALARs with get/set callbacks
+WWW=		https://metacpan.org/release/Sentinel
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-TEST_DEPENDS=	p5-Test-Pod>=1:devel/p5-Test-Pod \
-		p5-Test-Refcount>=0:devel/p5-Test-Refcount
+TEST_DEPENDS=	p5-Test2-Suite>=0.000148:devel/p5-Test2-Suite
 
 USES=		perl5
 USE_PERL5=	modbuild

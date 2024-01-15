@@ -1,6 +1,3 @@
-# Created by: joerg
-# $FreeBSD$
-
 PORTNAME=	xcpc
 PORTVERSION=	20070122
 PORTREVISION=	15
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	pixel@hugbox.org
 COMMENT=	Portable Amstrad 464&/664/6128 emulator
+WWW=		http://xcpc.sourceforge.net/
 
 HAS_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

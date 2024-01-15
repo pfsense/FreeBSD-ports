@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@f2o.org>
-# $FreeBSD$
-
 PORTNAME=	moo
 PORTVERSION=	1.5
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	math
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Calculator that accepts C-like syntax as input
+WWW=		https://github.com/raylai/moo
 
 LICENSE=	PD
 

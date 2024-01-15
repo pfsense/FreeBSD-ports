@@ -1,6 +1,3 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	highwayhash
 PORTVERSION=	g20201021
 PORTREVISION=	1
@@ -9,12 +6,13 @@ CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast strong hash functions: SipHash/HighwayHash
+WWW=		https://github.com/google/highwayhash
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=		aarch64 amd64 powerpc powerpc64 powerpc64le
-ONLY_FOR_ARCHS_REASON=	Assembly is implemented only for specific architectures in highwayhash/tsc_timer.h
+ONLY_FOR_ARCHS_REASON=	assembly is implemented only for specific architectures in highwayhash/tsc_timer.h
 
 USES=		compiler:c++11-lang gmake
 USE_GITHUB=	yes

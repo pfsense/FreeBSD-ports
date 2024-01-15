@@ -1,17 +1,15 @@
-# $FreeBSD$
-#
 # MAINTAINER: portmgr@FreeBSD.org
 #
 
 # Warnings for everyone
 
 .for opt in ${ALL_OPTIONS:NDEBUG}
-.if defined(WITH_${opt})
+.  if defined(WITH_${opt})
 WARNING+=     "WITH_${opt} is unsupported, use WITH=${opt} on the command line, or one of these in /etc/make.conf, OPTIONS_SET+=${opt} to set it globally, or ${OPTIONS_NAME}_SET+=${opt} for only this port."
-.endif
-.if defined(WITHOUT_${opt})
+.  endif
+.  if defined(WITHOUT_${opt})
 WARNING+=     "WITHOUT_${opt} is unsupported, use WITHOUT=${opt} on the command line, or one of these in /etc/make.conf, OPTIONS_UNSET+=${opt} to set it globally, or ${OPTIONS_NAME}_UNSET+=${opt} for only this port."
-.endif
+.  endif
 .endfor
 
 ALL_UNSUPPORTED=	WITHOUT_NLS NOPORTDOCS NOPORTEXAMPLES WITH_BDB_VER \
@@ -37,31 +35,32 @@ PYTHON2_DEFAULT_VERSION_ALT=	"DEFAULT_VERSIONS=python2=${PYTHON2_DEFAULT_VERSION
 PYTHON3_DEFAULT_VERSION_ALT=	"DEFAULT_VERSIONS=python3=${PYTHON3_DEFAULT_VERSION:S/^python//}"
 
 .for a in ${ALL_DEPRECATED}
-.if defined(${a})
+.  if defined(${a})
 WARNING+=	"${a} is deprecated, please use ${${a}_ALT}"
-.endif
+.  endif
 .endfor
 
 .for a in ${ALL_NOTNEEDED}
-.if defined(${a})
+.  if defined(${a})
 WARNING+=	"${a} is not needed: ${${a}_REASON}"
-.endif
+.  endif
 .endfor
 
 .for a in ${ALL_UNSUPPORTED}
-.if defined(${a})
+.  if defined(${a})
 ERROR+=	"${a} is unsupported, please use ${${a}_ALT}"
-.endif
+.  endif
 .endfor
 
 
 
 # Warnings only when DEVELOPER=yes
+.if defined(DEVELOPER)
 
 .if exists(${.CURDIR}/../../Mk/bsd.port.mk) || ${OVERLAYS:tA:M${.CURDIR:H:H}} == ${.CURDIR:H:H}
-.if ${.CURDIR:H:T} != ${PKGCATEGORY}
+.  if ${.CURDIR:H:T} != ${PKGCATEGORY}
 DEV_ERROR+=	"The first entry in CATEGORIES should be the directory where the port lives"
-.endif
+.  endif
 .else
 DEV_WARNING+=	"Not validating first entry in CATEGORIES due to being outside of PORTSDIR. Please ensure this is proper when committing."
 .endif
@@ -107,9 +106,9 @@ DEV_ERROR+=	"All LIB_DEPENDS should use the new format and start out with lib.  
 .endif
 
 .if defined(LICENSE)
-.if ${LICENSE:MBSD}
+.  if ${LICENSE:MBSD}
 DEV_WARNING+=	"LICENSE must not contain BSD, instead use BSD[234]CLAUSE"
-.endif
+.  endif
 .elif !defined(DISABLE_LICENSES)
 .  if empty(USES:Mmetaport)
 DEV_WARNING+=	"Please set LICENSE for this port"
@@ -117,9 +116,9 @@ DEV_WARNING+=	"Please set LICENSE for this port"
 .endif
 
 .for _a in ${ONLY_FOR_ARCHS}
-.if defined(ONLY_FOR_ARCHS_REASON_${_a})
+.  if defined(ONLY_FOR_ARCHS_REASON_${_a})
 DEV_WARNING+=	"ONLY_FOR_ARCHS_${_a} is defined and ${_a} is in ONLY_FOR_ARCHS, the message will never be used."
-.endif
+.  endif
 .endfor
 
 .if defined(USE_PYDISTUTILS) && ${USE_PYDISTUTILS} == "easy_install"
@@ -128,25 +127,25 @@ DEV_ERROR+=	"USE_PYDISTUTILS=easy_install is no longer supported, please use USE
 
 .if defined(USE_PYTHON) && (${USE_PYTHON} == "yes" || ${USE_PYTHON:C/[-0-9.+]*//} == "")
 _PYTHON_VAL := ${USE_PYTHON}
-.if ${_PYTHON_VAL} != "yes"
+.  if ${_PYTHON_VAL} != "yes"
 DEV_ERROR+=	"USE_PYTHON=${_PYTHON_VAL} is no longer supported, please use USES=python:${_PYTHON_VAL}"
-.else
+.  else
 DEV_ERROR+=	"USE_PYTHON=yes is no longer supported, please use USES=python"
-.endif
+.  endif
 .endif
 .if defined(USE_PYTHON_RUN)
-.if ${USE_PYTHON_RUN} != "yes"
+.  if ${USE_PYTHON_RUN} != "yes"
 DEV_ERROR+=	"USE_PYTHON_RUN is no longer supported, please use USES=python:${USE_PYTHON_RUN},run"
-.else
+.  else
 DEV_ERROR+=	"USE_PYTHON_RUN is no longer supported, please use USES=python:run"
-.endif
+.  endif
 .endif
 .if defined(USE_PYTHON_BUILD)
-.if ${USE_PYTHON_BUILD} != "yes"
+.  if ${USE_PYTHON_BUILD} != "yes"
 DEV_ERROR+=	"USE_PYTHON_BUILD is no longer supported, please use USES=python:${USE_PYTHON_BUILD},build"
-.else
+.  else
 DEV_ERROR+=	"USE_PYTHON_BUILD is no longer supported, please use USES=python:build"
-.endif
+.  endif
 .endif
 
 .if defined(USE_RC_SUBR) && ${USE_RC_SUBR:tu} == YES
@@ -160,6 +159,10 @@ DEV_ERROR+=	"USE_TCL and USE_TK are no longer supported, please use USES=tcl or 
 
 .if defined(USE_FPC) && ${USE_FPC:tl} == "yes"
 DEV_ERROR+=	"USE_FPC=yes is no longer supported, please use USES=fpc"
+.endif
+
+.if ! empty(USES:Mruby) && ! empty(USES:Mgem)
+DEV_ERROR=	"'USES=gem' implies 'USES=ruby'. You should not specify both of them"
 .endif
 
 .for _type in EXAMPLES DOCS
@@ -204,11 +207,13 @@ SANITY_UNSUPPORTED=	USE_OPENAL USE_FAM USE_MAKESELF USE_ZIP USE_LHA USE_CMAKE \
 		INSTALLS_EGGINFO USE_DOS2UNIX NO_STAGE USE_RUBYGEMS USE_GHOSTSCRIPT \
 		USE_GHOSTSCRIPT_BUILD USE_GHOSTSCRIPT_RUN USE_AUTOTOOLS APACHE_PORT \
 		USE_FPC_RUN WANT_FPC_BASE WANT_FPC_ALL USE_QT4 USE_QT5 QT_NONSTANDARD \
-		XORG_CAT
+		XORG_CAT CARGO_USE_GITHUB CARGO_USE_GITLAB CARGO_GIT_SUBDIR \
+		USE_RUBY USE_RUBY_EXTCONF USE_RUBY_SETUP RUBY_NO_BUILD_DEPENDS \
+		RUBY_NO_RUN_DEPENDS USE_APACHE USE_APACHE_BUILD USE_APACHE_RUN \
+		USE_OPENLDAP WANT_OPENLDAP_VER
 SANITY_DEPRECATED=	MLINKS \
 			USE_MYSQL WANT_MYSQL_VER \
-			PYDISTUTILS_INSTALLNOSINGLE \
-			USE_APACHE USE_APACHE_BUILD USE_APACHE_RUN
+			PYDISTUTILS_INSTALLNOSINGLE
 SANITY_NOTNEEDED=	CMAKE_NINJA WX_UNICODE USE_KDEBASE_VER \
 			USE_KDELIBS_VER USE_QT_VER
 
@@ -240,6 +245,7 @@ USE_SCONS_ALT=		USES=scons
 USE_DRUPAL_ALT=		USES=drupal
 USE_PYDISTUTILS_ALT=		USE_PYTHON=distutils
 USE_PGSQL_ALT=		USES=pgsql
+USE_OPENLDAP_ALT=	USES=ldap
 INSTALLS_SHLIB_ALT=	USE_LDCONFIG
 NEED_ROOT_ALT=		USES=fakeroot or USES=uidfix
 PYTHON_CONCURRENT_INSTALL_ALT=	USE_PYTHON=concurrent
@@ -258,6 +264,7 @@ USE_FIREBIRD_ALT=	USES=firebird
 USE_BDB_ALT=		USES=bdb:${USE_BDB}
 USE_MYSQL_ALT=		USES=mysql:${USE_MYSQL}
 WANT_MYSQL_VER_ALT=	USES=mysql:${WANT_MYSQL_VER}
+WANT_OPENLDAP_VER_ALT=	USES=ldap:${WANT_OPENLDAP_VER}
 USE_OPENSSL_ALT=	USES=ssl
 USE_PHPIZE_ALT=		USES=php:phpize
 USE_PHPEXT_ALT=		USES=php:ext
@@ -292,21 +299,31 @@ USE_QT4_ALT=		USES=qt:5 and USE_QT=${USE_QT4} \(beware\) as Qt4 has been removed
 USE_QT5_ALT=		USES=qt:5 and USE_QT=${USE_QT5}
 QT_NONSTANDARD_ALT=	USES=qmake:no_env
 XORG_CAT_ALT=		USES=xorg-cat:${XORG_CAT}
+CARGO_USE_GITHUB_ALT=	CARGO_CRATES \(regenerate it with make cargo-crates\)
+CARGO_USE_GITLAB_ALT=	CARGO_CRATES \(regenerate it with make cargo-crates\)
+CARGO_GIT_SUBDIR_ALT=	CARGO_CRATES \(regenerate it with make cargo-crates\)
+USE_RUBY_ALT=		USES=ruby
+USE_RUBY_EXTCONF_ALT=	USES=ruby:extconf
+USE_RUBY_SETUP_ALT=	USES=ruby:setup
+RUBY_NO_BUILD_DEPENDS_ALT=	USES=ruby:run
+RUBY_NO_RUN_DEPENDS_ALT=	USES=ruby:build
 
 .for a in ${SANITY_DEPRECATED}
-.if defined(${a})
+.  if defined(${a})
 DEV_WARNING+=	"${a} is deprecated, please use ${${a}_ALT}"
-.endif
+.  endif
 .endfor
 
 .for a in ${SANITY_NOTNEEDED}
-.if defined(${a})
+.  if defined(${a})
 DEV_WARNING+=	"${a} is not needed: ${${a}_REASON}"
-.endif
+.  endif
 .endfor
 
 .for a in ${SANITY_UNSUPPORTED}
-.if defined(${a})
+.  if defined(${a})
 DEV_ERROR+=	"${a} is unsupported, please use ${${a}_ALT}"
-.endif
+.  endif
 .endfor
+
+.endif # defined(DEVELOPER)

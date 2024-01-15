@@ -1,14 +1,12 @@
-# Created by: Sebastian Schuetz <sschuetz@fhm.edu>
-# $FreeBSD$
-
 PORTNAME=	trousers
 PORTVERSION=	0.3.14
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Open-source TCG Software Stack
+WWW=		https://sourceforge.net/projects/trousers/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	tpm-emulator>=0.7.4_1:emulators/tpm-emulator
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		dos2unix alias autoreconf gmake iconv libtool pkgconfig ssl
+USES=		cpe dos2unix alias autoreconf gmake iconv libtool pkgconfig ssl
+CPE_VENDOR=	${PORTNAME}_project
 DOS2UNIX_GLOB=	*.h *.c
 NO_WRKSUBDIR=	yes
 USE_LDCONFIG=	YES

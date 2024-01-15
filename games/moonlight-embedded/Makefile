@@ -1,52 +1,41 @@
-# $FreeBSD$
-
 PORTNAME=	moonlight-embedded
-DISTVERSION=	2.4.11
+DISTVERSION=	2.6.1
 CATEGORIES=	games
-MASTER_SITES=	https://github.com/irtimmer/moonlight-embedded/releases/download/v${DISTVERSION}/
+MASTER_SITES=	https://github.com/moonlight-stream/moonlight-embedded/releases/download/v${DISTVERSION}/
 
-PATCH_SITES=	https://github.com/irtimmer/moonlight-embedded/commit/
-PATCHFILES=	5b6639c8a76c4bbb5e0b4bcfe41b8df136608885.patch:-p1
-
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	lisp_25689@163.com
 COMMENT=	Gamestream client
+WWW=		https://github.com/moonlight-stream/moonlight-embedded
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
+		libavcodec.so:multimedia/ffmpeg \
 		libcurl.so:ftp/curl \
-		libenet.so:net/enet \
+		libepoll-shim.so:devel/libepoll-shim \
+		libevdev.so:devel/libevdev \
 		libexpat.so:textproc/expat2 \
 		libopus.so:audio/opus \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libudev.so:devel/libudev-devd \
+		libuuid.so:misc/e2fsprogs-libuuid \
+		libvdpau.so:multimedia/libvdpau \
+		libva.so:multimedia/libva
 
-USES=		cmake localbase:ldflags perl5 pkgconfig sdl ssl tar:xz
+USES=		cmake gl localbase:ldflags perl5 pkgconfig sdl ssl tar:xz xorg
 USE_LDCONFIG=	yes
+USE_GL=		egl glesv2
 USE_PERL5=	build
 USE_SDL=	sdl2
+USE_XORG=	x11
 
-CFLAGS+=	-DPREFIX="\\\"${PREFIX}\\\""
+NO_WRKSUBDIR=	yes
+CFLAGS+=	-DHAS_SOCKLEN_T=1 -I${LOCALBASE}/include/libepoll-shim/
+LDFLAGS+=	-lepoll-shim
 
 post-patch:
-	@${REINPLACE_CMD} -e '/(ALSA)/d' \
-		-e '/libpulse-simple/d' \
-		-e '/libcec/d' \
-		-e '/libevdev/d' -e 's@./src/input/evdev.c@@' \
-		-e '/libudev/d' -e 's@./src/input/udev.c@@' \
-		-e '/libva/d' \
-		-e '/vdpau/d' \
-		-e '/egl/d' \
-		-e '/glesv2/d' \
-		-e '/x11/d' \
-		${WRKSRC}/CMakeLists.txt
-	@${RM} ${WRKSRC}/src/loop.c
-	@${REINPLACE_CMD} -e '/avahi-client/d' -e 's@SHARED@STATIC@' \
-		-e 's@OpenSSL 1.0.2@OpenSSL@' -e '/^install(/d' \
-		${WRKSRC}/libgamestream/CMakeLists.txt
-	@${RM} ${WRKSRC}/libgamestream/discover.c
-	@${REINPLACE_CMD} -e 's@/etc/moonlight/moonlight.conf@${PREFIX}/etc/moonlight.conf@' \
-		-e 's@moonligt@moonlight@g' \
+	@${REINPLACE_CMD} -e 's@/usr/local@${PREFIX}@' \
 		${WRKSRC}/docs/README.pod
 
 post-install:

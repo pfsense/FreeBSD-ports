@@ -1,13 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-luna-pinyin
-DISTVERSION=	g20201105
+DISTVERSION=	g20210805
 PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Rime Luna Pinyin schema support
+WWW=		https://github.com/rime/rime-luna-pinyin
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,7 +23,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
-GH_TAGNAME=	3e03d65a1a9162871ee521d5d4846661e59298e0
+GH_TAGNAME=	6e677427764b542313858eaed22c2951d8ec22fe
 
 NO_ARCH=	yes
 

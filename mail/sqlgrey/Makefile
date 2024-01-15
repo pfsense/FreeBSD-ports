@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sqlgrey
 PORTVERSION=	1.8.0
 PORTREVISION=	4
@@ -8,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-1.8%20%28stable%29
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Greylisting policy server for Postfix using an SQL backend
+WWW=		https://sqlgrey.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

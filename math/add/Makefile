@@ -1,16 +1,18 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	add
-PORTVERSION=	20180401
+PORTVERSION=	20230205
 CATEGORIES=	math
 MASTER_SITES=	ftp://dickey.his.com/add/
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Full-screen editing calculator
+WWW=		https://dickey.his.com/add/add.html
 
-GNU_CONFIGURE=	yes
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 USES=		ncurses tar:tgz
+GNU_CONFIGURE=	yes
+
 MAKEFILE=	makefile
 
 do-install:

@@ -1,13 +1,11 @@
-# Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	UniversalFeedCreator
-PORTVERSION=	1.8.4
+PORTVERSION=	1.8.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	RSS and Atom feed generator by Kai Blankenhorn
+WWW=		https://github.com/flack/UniversalFeedCreator
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Business-OnlinePayment-iAuthorizer
 PORTVERSION=	0.2.1
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Business::OnlinePayment backend module for iAuthorizer
+WWW=		https://metacpan.org/release/Business-OnlinePayment-iAuthorizer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

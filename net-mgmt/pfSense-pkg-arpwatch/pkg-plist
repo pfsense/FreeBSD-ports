@@ -1,7 +1,8 @@
+/etc/inc/priv/arpwatch.priv.inc
 pkg/arpwatch.inc
 pkg/arpwatch.xml
-www/arpwatch_database.php
-/etc/inc/priv/arpwatch.priv.inc
 %%DATADIR%%/info.xml
+www/arpwatch_database.php
+www/shortcuts/pkg_arpwatch.inc
 @dir /etc/inc/priv
 @dir /etc/inc

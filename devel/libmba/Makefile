@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libmba
 PORTVERSION=	0.9.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.ioplex.com/~miallen/libmba/dl/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of C modules potentially useful to any project
+WWW=		https://www.ioplex.com/~miallen/libmba/
 
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes

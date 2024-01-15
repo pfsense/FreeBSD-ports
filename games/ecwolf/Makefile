@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	ecwolf
-PORTVERSION=	1.3.3
-PORTREVISION=	1
+PORTVERSION=	1.4.1
 DISTVERSIONSUFFIX=	-src
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://maniacsvault.net/ecwolf/files/ecwolf/1.x/
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Source port for Wolfenstein 3D, Spear of Destiny
+WWW=		https://maniacsvault.net/ecwolf/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/license-gpl.txt
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 USES=		cmake compiler:c++11-lang gnome jpeg localbase:ldflags \
 		pkgconfig sdl tar:xz
 USE_GNOME=	cairo gdkpixbuf2 gtk20
-USE_SDL=	mixer sdl
+USE_SDL=	mixer2 net2 sdl2
 
 SUB_FILES=	ecwolf pkg-message
 SUB_LIST=	PORTNAME=${PORTNAME}

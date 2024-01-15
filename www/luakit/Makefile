@@ -1,19 +1,15 @@
-# Created by: Stefan Hagen <ports@textmail.me>
-# $FreeBSD$
-
 PORTNAME=	luakit
-PORTVERSION=	2.2
+DISTVERSION=	2.3.3
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Fast, small, webkit2 based browser framework extensible with Lua
+WWW=		https://luakit.github.io
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.GPLv3
-
-NOT_FOR_ARCHS=	sparc64
-NOT_FOR_ARCHS_REASON_sparc64=	Does not install on sparc64
 
 BUILD_DEPENDS=	help2man:misc/help2man \
 		${LUA_MODLIBDIR}/lfs.so:devel/luafilesystem@${LUA_FLAVOR}

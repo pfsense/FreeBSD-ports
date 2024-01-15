@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Authen-Simple-SSH
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple SSH authentication
+WWW=		https://metacpan.org/release/Authen-Simple-SSH
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tie-LevelDB
 PORTVERSION=	0.07
 PORTREVISION=	6
@@ -10,13 +7,13 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl Interface to the Google LevelDB NoSQL database
+WWW=		https://metacpan.org/release/Tie-LevelDB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 NOT_FOR_ARCHS=		aarch64 riscv64
 NOT_FOR_ARCHS_REASON=	does not build: Please implement AtomicPointer for this platform
-BROKEN_sparc64=	does not build: unrecognized command line options
 
 LIB_DEPENDS=	libleveldb.so:databases/leveldb
 
@@ -25,6 +22,7 @@ USE_PERL5=	configure
 
 CFLAGS_powerpc=	-DLEVELDB_CSTDATOMIC_PRESENT
 CFLAGS_powerpc64=	-DLEVELDB_CSTDATOMIC_PRESENT
+CFLAGS_powerpc64le=	-DLEVELDB_CSTDATOMIC_PRESENT
 CFLAGS_powerpcspe=	-DLEVELDB_CSTDATOMIC_PRESENT
 MAKE_ARGS=	CC="${CXX}"
 

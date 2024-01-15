@@ -1,6 +1,3 @@
-# Created by: Philippe Audeoud <jadawin@tuxaco.net>
-# $FreeBSD$
-
 PORTNAME=	pdfcrack
 PORTVERSION=	0.16
 CATEGORIES=	security print
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Cracking tool for password-protected PDF-files
+WWW=		https://sourceforge.net/projects/pdfcrack/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

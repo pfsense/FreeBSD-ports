@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz
-# $FreeBSD$
-
 PORTNAME=	check_hp_bladechassis
 PORTVERSION=	1.0.1
 CATEGORIES=	net-mgmt
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	nagios-
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Nagios Plugin to monitor your HP Blade Enclosure
+WWW=		http://folk.uio.no/trondham/software/check_hp_bladechassis.html
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

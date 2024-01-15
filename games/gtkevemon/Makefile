@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	gtkevemon
 PORTVERSION=	1.10.2016.02.17
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Skill monitoring standalone application for EVE Online
+WWW=		http://gtkevemon.battleclinic.com
 
 LIB_DEPENDS=	libgtkmm-3.0.so:x11-toolkits/gtkmm30 \
 		libcurl.so:ftp/curl
 
-USE_GITHUB=     yes
-GH_TAGNAME=     ac2ca34
+USE_GITHUB=	yes
+GH_TAGNAME=	ac2ca34
 
 USES=		compiler:c++11-lang gmake gnome pkgconfig:both ssl
 USE_CXXSTD=	c++11

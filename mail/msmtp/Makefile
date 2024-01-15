@@ -1,21 +1,22 @@
-# Created by: R.I.Pienaar <rip@devco.net>
-# $FreeBSD$
-
 PORTNAME=	msmtp
-PORTVERSION=	1.8.14
+PORTVERSION=	1.8.25
 CATEGORIES=	mail
 MASTER_SITES=	https://marlam.de/msmtp/releases/
 
+PATCH_SITES=	https://github.com/marlam/msmtp-mirror/commit/
+
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	SMTP plugin for MUAs
+WWW=		https://marlam.de/msmtp/
 
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
-USES=		gmake makeinfo pkgconfig tar:xz
+USES=		cpe gmake makeinfo pkgconfig tar:xz
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-INFO=	msmtp
+INFO=		msmtp
+CPE_VENDOR=	marlam
 
 OPTIONS_DEFINE=	DOCS GSASL NLS IDN LIBSECRET MSMTPD MSMTPQ
 OPTIONS_RADIO=	TLS

@@ -1,17 +1,15 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fntsample
-PORTVERSION=	5.3
-DISTVERSIONPREFIX=	release/
+PORTVERSION=	5.4
 PORTREVISION=	1
+DISTVERSIONPREFIX=	release/
 CATEGORIES=	x11-fonts
-MASTER_SITES=	https://unicode.org/Public/12.1.0/ucd/:unidata
+MASTER_SITES=	https://unicode.org/Public/14.0.0/ucd/:unidata
 DISTFILES=	Blocks.txt:unidata
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Show Unicode coverage of a font
+WWW=		https://github.com/eugmes/fntsample
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,8 +25,8 @@ CMAKE_ARGS=	-DUNICODE_BLOCKS=${WRKSRC}/Blocks.txt
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 PLIST_FILES=	bin/fntsample \
-		man/man1/fntsample.1.gz \
-		share/locale/uk/LC_MESSAGES/fntsample.mo
+		share/locale/uk/LC_MESSAGES/fntsample.mo \
+		share/man/man1/fntsample.1.gz
 
 GH_ACCOUNT=	eugmes
 USE_GITHUB=	yes

@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	io-like
 PORTVERSION=	0.3.0.20130301
 CATEGORIES=	devel rubygems
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	rubygem-
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Interface of IO objects to classes providing a few simple methods
+WWW=		https://rubygems.org/gems/io-like
 
 LICENSE=	RUBY
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +15,7 @@ BUILD_DEPENDS=	${RUBYGEMBIN}:devel/ruby-gems \
 		${LOCALBASE}/bin/rake:devel/rubygem-rake
 RUN_DEPENDS=	${RUBYGEMBIN}:devel/ruby-gems
 
-USE_RUBY=	yes
+USES=	ruby
 
 NO_ARCH=	yes
 
@@ -47,7 +45,7 @@ PLIST_SUB+=	PORTVERSION="${PORTVERSION}" \
 		GEM_CACHE="${GEM_CACHE}" \
 		EXTRACT_SUFX=".gem"
 
-RUBYGEMBIN=	${LOCALBASE}/bin/gem${RUBY_VER:S/.//}
+RUBYGEMBIN=	${LOCALBASE}/bin/gem
 RAKE_BIN=	${LOCALBASE}/bin/rake
 
 GEMFILES=	${GEM_NAME}.gem

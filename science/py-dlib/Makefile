@@ -1,23 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	dlib
-DISTVERSION=	19.21
+DISTVERSION=	19.24.2
 CATEGORIES=	science devel math python
-MASTER_SITES=	http://dlib.net/files/
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Machine learning framework written in C++ (python bindings)
+WWW=		http://dlib.net
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/dlib/LICENSE.txt
 
-BUILD_DEPENDS=		cmake:devel/cmake
+BUILD_DEPENDS=		cmake:devel/cmake-core
 LIB_DEPENDS=		${PY_BOOST} \
 			libpng.so:graphics/png
 
-USES=			compiler:c++11-lang pkgconfig python:3.6+ shebangfix \
-			tar:bzip2
+USES=			compiler:c++11-lang pkgconfig python shebangfix
 USE_PYTHON=		autoplist distutils
 SHEBANG_FILES=		python_examples/*.py
 
@@ -42,19 +40,13 @@ GIF_VARS_OFF=		gifargs="--no DLIB_GIF_SUPPORT"
 SQLITE_USES=		sqlite
 SQLITE_VARS_OFF=	sqliteargs="--no DLIB_LINK_WITH_SQLITE3"
 
-BLASLAPACK_USES=	blaslapack
+BLASLAPACK_USES=	blaslapack:openblas
 BLASLAPACK_VARS_OFF=	blaslapackargs="--no DLIB_USE_BLAS --no DLIB_USE_LAPACK --no DLIB_USE_MKL_FFT"
 
 AVX_VARS_OFF=		avxargs="--no USE_AVX_INSTRUCTIONS"
 
 PYDISTUTILS_BUILDARGS=	--set BOOST_PYTHON_SUFFIX:STRING=${PYTHON_SUFFIX} ${X11ARGS} ${JPEGARGS} ${PNGARGS} ${GIFARGS} ${SQLITEARGS} ${BLASLAPACKARGS} ${AVXARGS} ${BLASLAPACK}
 
-.include <bsd.port.pre.mk>
+PLIST_SUB=		PYTHON2="@comment " PYTHON3=""
 
-.if ${FLAVOR} == py27
-PLIST_SUB+=		PYTHON2="" PYTHON3="@comment "
-.else
-PLIST_SUB+=		PYTHON2="@comment " PYTHON3=""
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

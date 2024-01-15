@@ -1,15 +1,13 @@
-# Created by: Remington Lang <MrL0Lz@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	openvpn-admin
 PORTVERSION=	1.9.4
 DISTVERSIONSUFFIX=	-2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	security gnome net-vpn
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/release-${PORTVERSION}
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	GUI frontend to openvpn
+WWW=		https://sourceforge.net/projects/openvpn-admin/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

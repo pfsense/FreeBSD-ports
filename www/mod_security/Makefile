@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	mod_security
-PORTVERSION=	2.9.3
-PORTREVISION=	0
+DISTVERSIONPREFIX=	v
+PORTVERSION=	2.9.6
 CATEGORIES=	www security
-MASTER_SITES=	http://www.modsecurity.org/tarball/${PORTVERSION}/
+MASTER_SITES=	https://github.com/SpiderLabs/ModSecurity/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME:S/_//:S/2//}-${PORTVERSION}
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Intrusion detection and prevention engine
+WWW=		https://www.modsecurity.org/
 
 LICENSE=	APACHE20
 
@@ -20,7 +19,7 @@ LIB_DEPENDS+=	libpcre.so:devel/pcre \
 		libgdbm.so:databases/gdbm \
 		libexpat.so:textproc/expat2
 
-USES=		apache:2.4+ bdb gnome perl5 pkgconfig shebangfix
+USES=		apache bdb gnome perl5 pkgconfig shebangfix
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 SHEBANG_FILES=	tools/rules-updater.pl.in mlogc/mlogc-batch-load.pl.in

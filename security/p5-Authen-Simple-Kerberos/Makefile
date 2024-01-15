@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Authen-Simple-Kerberos
 PORTVERSION=	0.1
 CATEGORIES=	security perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Simple Kerberos authentication
+WWW=		https://metacpan.org/release/Authen-Simple-Kerberos
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Authen-Simple>=0:security/p5-Authen-Simple \

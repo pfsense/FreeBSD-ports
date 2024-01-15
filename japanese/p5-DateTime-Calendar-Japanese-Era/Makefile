@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Calendar-Japanese-Era
 PORTVERSION=	0.08001
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	CPAN
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	DateTime Extension for Japanese Eras
+WWW=		https://metacpan.org/release/DateTime-Calendar-Japanese-Era
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

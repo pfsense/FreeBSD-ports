@@ -1,6 +1,3 @@
-# Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
-
 PORTNAME=	Template-Plugin-Monta
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Template-Toolkit plugin to Monta Method
+WWW=		https://metacpan.org/release/Template-Plugin-Monta
 
 BUILD_DEPENDS=	p5-Template-Toolkit>=0:www/p5-Template-Toolkit
 RUN_DEPENDS:=	${BUILD_DEPENDS} \

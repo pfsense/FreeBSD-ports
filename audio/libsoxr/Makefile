@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	libsoxr
 PORTVERSION=	0.1.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/soxr
 DISTNAME=	soxr-${PORTVERSION}-Source
 
 MAINTAINER=	riggs@FreeBSD.org
 COMMENT=	High quality, one-dimensional sample-rate conversion library
+WWW=		https://sourceforge.net/projects/soxr/
 
 LICENSE=	LGPL21+ FFTPAK
 LICENSE_COMB=	multi
@@ -38,7 +37,6 @@ SIMD_DFT_DESC=		Choice of SIMD DFT library
 
 OPENMP_CMAKE_ON=	-DWITH_OPENMP:BOOL=ON
 OPENMP_CMAKE_OFF=	-DWITH_OPENMP:BOOL=OFF
-OPENMP_USES=		compiler:openmp
 
 SIMD_CMAKE_OFF=		-DWITH_CR32S:BOOL=OFF \
 			-DWITH_CR64S:BOOL=OFF

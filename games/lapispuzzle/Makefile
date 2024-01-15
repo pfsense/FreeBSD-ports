@@ -1,15 +1,13 @@
-# Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
-
 PORTNAME=	lapispuzzle
 PORTVERSION=	1.2
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	games gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	LapisPuzzle-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tetris-like game for GNUstep
+WWW=		https://www.nongnu.org/gap/lapispuzzle/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

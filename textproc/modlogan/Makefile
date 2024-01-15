@@ -1,6 +1,3 @@
-# Created by: Alexander@Leidinger.net
-# $FreeBSD$
-
 PORTNAME=	modlogan
 PORTVERSION=	0.8.13
 PORTREVISION=	18
@@ -9,13 +6,14 @@ MASTER_SITES=	http://www.mirrorservice.org/sites/www.ibiblio.org/gentoo/distfile
 
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Modular log file analysis program
+WWW=		https://sourceforge.net/projects/modlogan/
 
 LIB_DEPENDS=	libadns.so:dns/adns \
 		libgd.so:graphics/gd \
 		libpcre.so:devel/pcre \
 		libexpat.so:textproc/expat2
 
-USES=		gettext libtool
+USES=		cpe gettext libtool
 
 OPTIONS_DEFINE=	DOCS MYSQL
 

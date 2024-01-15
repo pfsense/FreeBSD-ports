@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	irssi-themes
 PORTVERSION=	2016082001
 CATEGORIES=	x11-themes irc
@@ -10,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Collection of additional irssi themes
+WWW=		https://irssi-import.github.io/themes/
 
 RUN_DEPENDS=	irssi:irc/irssi
 

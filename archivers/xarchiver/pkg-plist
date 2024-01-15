@@ -2,10 +2,8 @@ bin/xarchiver
 libexec/thunar-archive-plugin/xarchiver.tap
 man/man1/xarchiver.1.gz
 share/applications/xarchiver.desktop
-%%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog
-%%PORTDOCS%%%%DOCSDIR%%/NEWS
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/ch01.html
 %%PORTDOCS%%%%DOCSDIR%%/ch01s01.html
@@ -38,6 +36,7 @@ share/applications/xarchiver.desktop
 %%PORTDOCS%%%%DOCSDIR%%/xarchiver.css
 share/icons/hicolor/16x16/apps/xarchiver.png
 share/icons/hicolor/24x24/apps/xarchiver.png
+share/icons/hicolor/32x32/apps/xarchiver.png
 share/icons/hicolor/48x48/apps/xarchiver.png
 share/icons/hicolor/scalable/apps/xarchiver.svg
 %%NLS%%share/locale/ar/LC_MESSAGES/xarchiver.mo
@@ -94,3 +93,4 @@ share/pixmaps/xarchiver/xarchiver-extract.png
 share/pixmaps/xarchiver/xarchiver-green.png
 share/pixmaps/xarchiver/xarchiver-html.png
 share/pixmaps/xarchiver/xarchiver-red.png
+share/pixmaps/xarchiver/xarchiver-select.png

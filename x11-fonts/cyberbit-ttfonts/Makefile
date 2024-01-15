@@ -1,6 +1,3 @@
-# Created by: NAKATA, Maho <maho@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cyberbit-ttfonts
 PORTVERSION=	2.0.20050220
 PORTREVISION=	5
@@ -14,8 +11,13 @@ EXTRACT_ONLY=	Cyberbit.ZIP
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Bitstream Cyberbit TrueType font that covers Unicode 2.0
+WWW=		http://www.bitstream.com/
 
-RESTRICTED=	Redistribution not permitted; single user license only
+# Converted from RESTRICTED
+LICENSE=	CYBERBIT
+LICENSE_NAME=	CYBERBIT
+LICENSE_TEXT=	Redistribution not permitted; single user license only
+LICENSE_PERMS=	auto-accept
 
 USES=		fonts zip
 

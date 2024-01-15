@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	taipeisanstc
 DISTVERSION=	Beta
 CATEGORIES=	chinese x11-fonts
@@ -7,6 +5,7 @@ MASTER_SITES=	https://www.cs.nctu.edu.tw/~lwhsu/ports/distfiles/taipeisanstc/
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Taipei Sans TC
+WWW=		https://sites.google.com/view/jtfoundry/
 
 LICENSE=	OFL11
 

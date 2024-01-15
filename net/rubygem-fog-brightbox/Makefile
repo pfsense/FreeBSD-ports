@@ -1,13 +1,11 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fog-brightbox
-PORTVERSION=	1.3.0
+PORTVERSION=	1.11.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Module for the 'fog' gem to support Brightbox Cloud
+WWW=		https://github.com/fog/fog-brightbox
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,7 +15,6 @@ RUN_DEPENDS=	rubygem-dry-inflector>=0:devel/rubygem-dry-inflector \
 		rubygem-fog-json>=0:devel/rubygem-fog-json
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

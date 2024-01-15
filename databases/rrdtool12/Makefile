@@ -1,6 +1,3 @@
-# Created by: Jeremy Chadwick <koitsu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rrdtool
 PORTVERSION=	1.2.30
 PORTREVISION=	8
@@ -10,16 +7,18 @@ PKGNAMESUFFIX=	12
 
 MAINTAINER=	beat@FreeBSD.org
 COMMENT=	Round Robin Database Tools v1.2
+WWW=		https://www.rrdtool.org/
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libart_lgpl_2.so:graphics/libart_lgpl \
 		libpng.so:graphics/png
 
-CONFLICTS=	rrdtool-1.*
+CONFLICTS_INSTALL=	rrdtool # include/rrd.h
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USES=		gmake libtool
+USES=		cpe gmake libtool
+CPE_VENDOR=	${PORTNAME}_project
 
 CONFIGURE_ARGS=	--disable-tcl --disable-python
 
@@ -29,7 +28,7 @@ OPTIONS_DEFAULT=	PERL
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MRUBY}
-USE_RUBY=	yes
+USES+=	ruby
 PLIST_SUB+=	WITH_RUBY=""
 CONFIGURE_ARGS+=	--enable-ruby
 .else

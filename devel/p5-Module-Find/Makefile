@@ -1,14 +1,12 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Module-Find
-PORTVERSION=	0.15
+PORTVERSION=	0.16
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Lets you find and use modules in categories
+WWW=		https://metacpan.org/release/Module-Find
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

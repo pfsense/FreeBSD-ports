@@ -1,6 +1,3 @@
-# Created by: Kris Moore <kmoore@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	menu-cache
 PORTVERSION=	1.1.0
 CATEGORIES=	x11
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/lxde/${PORTNAME}/${PORTVERSION:R}/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Library used to read freedesktop.org menus
+WWW=		https://lxde.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

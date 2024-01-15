@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	portmaster
-PORTVERSION=	3.19
-PORTREVISION=	27
+PORTVERSION=	3.29
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Manage your ports without external databases or languages
+WWW=		https://portmaster.github.io/
 
 LICENSE=	BSD2CLAUSE
 
@@ -30,7 +28,7 @@ verify: checksum
 do-build:
 .for file in portmaster files/portmaster.rc.sample files/portmaster.8
 	@${REINPLACE_CMD} -e 's#/usr/local#${LOCALBASE}#g' \
-	    -e 's#===>>> Version [0-9._]*#===>>> Version ${PKGVERSION}#' ${WRKSRC}/${file}
+	    -e 's#%%PORTVERSION%%#${PKGVERSION}#' ${WRKSRC}/${file}
 .endfor
 
 do-install:

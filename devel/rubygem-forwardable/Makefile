@@ -1,18 +1,16 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	forwardable
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.3
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Provides delegation of specified methods to a designated object
+WWW=		https://github.com/ruby/forwardable
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD2CLAUSE RUBY
+LICENSE_COMB=	dual
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

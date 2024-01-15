@@ -1,6 +1,3 @@
-# Created by: Ronald Klop <ronald@echteman.nl>
-# $FreeBSD$
-
 PORTNAME=	tijmp
 PORTVERSION=	0.7
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	devel java
 MASTER_SITES=	http://www.khelekore.org/jmp/tijmp/ \
 		http://www.klop.ws/distfiles/
 
-MAINTAINER=	ronald-lists@klop.ws
+MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	Tools Interface Java Memory Profiler
+WWW=		http://khelekore.org/jmp/tijmp/
 
 OPTIONS_DEFINE=	DOCS OPTIMIZED_CFLAGS
 

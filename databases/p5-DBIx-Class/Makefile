@@ -1,14 +1,12 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class
-PORTVERSION=	0.082842
+PORTVERSION=	0.082843
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extensible and flexible object <-> relational mapper
+WWW=		https://metacpan.org/release/DBIx-Class
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

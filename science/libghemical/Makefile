@@ -1,15 +1,13 @@
-# Created by: Nakata Maho <maho@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libghemical
 PORTVERSION=	3.0.0
-PORTREVISION=	16
+PORTREVISION=	20
 CATEGORIES=	science
 MASTER_SITES=	http://bioinformatics.org/ghemical/download/release20111012/	\
 		http://bioinformatics.org/ghemical/download/current/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Support libraries of science/ghemical port
+WWW=		https://www.bioinformatics.org/ghemical/ghemical/index.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,8 +26,6 @@ USE_CXXSTD=	c++98
 USE_GL=		gl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-CONFIGURE_ENV=	LD_PRELOAD=${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so # workaround: otherwise configure fails
 
 CONFIGURE_ARGS+=	--enable-mpqc
 LDFLAGS+=	-lSCbasis -lSCcints -lSCclass -lSCcontainer -lSCdft -lSCgroup \

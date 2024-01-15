@@ -1,14 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gmetadom
 PORTVERSION=	0.2.6
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of DOM Implementations
+WWW=		https://gmetadom.sourceforge.net/
 
 LIB_DEPENDS=	libgdome.so:textproc/gdome2
 

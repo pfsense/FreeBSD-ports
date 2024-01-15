@@ -1,13 +1,12 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Zelig
 DISTVERSION=	5.1.7
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Everyone's Statistical Software
+WWW=		https://gking.harvard.edu/zelig
 
 LICENSE=	GPLv3+
 

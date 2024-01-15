@@ -1,14 +1,12 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	krank
 PORTVERSION=	07
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Little casual game
+WWW=		https://krank.sourceforge.net/
 
 RUN_DEPENDS=	${PYGAME} \
 		${PYNUMPY}

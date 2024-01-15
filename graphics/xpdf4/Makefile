@@ -1,29 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	xpdf
-PORTVERSION=	4.02
+PORTVERSION=	4.04
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics print
-MASTER_SITES=	https://xpdfreader-dl.s3.amazonaws.com/
+MASTER_SITES=	https://dl.xpdfreader.com/
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	4
 .endif
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Display PDF files and convert them to other formats
+WWW=		https://www.xpdfreader.com/
 
 LICENSE=	GPLv2
 
 CONFLICTS_INSTALL=	xpdf
 .if !defined(MASTERDIR)
-CONFLICTS_INSTALL+=	xpdf3-* xpdf-*
+CONFLICTS_INSTALL+=	xpdf3 xpdf
 .else
-CONFLICTS_INSTALL+=	xpdf3-*	xpdf4-*
+CONFLICTS_INSTALL+=	xpdf3 xpdf4
 .endif
 
-USES=		compiler:c++11-lang cmake localbase:ldflags
+USES=		compiler:c++11-lang cmake cpe localbase:ldflags
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libpng.so:graphics/png
+		libpng.so:graphics/png \
+		libfontconfig.so:x11-fonts/fontconfig
 BUILD_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/d050000l.pfb:print/gsfonts
 RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/d050000l.pfb:print/gsfonts
 MANPREFIX=	${PREFIX}/share/xpdf
@@ -34,7 +35,9 @@ CMAKE_ARGS+=	-DOPI_SUPPORT:BOOL=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt4:BOOL=ON \
 		-DCMAKE_INSTALL_BINDIR=${PREFIX}/libexec/xpdf \
 		-DCMAKE_INSTALL_MANDIR=${PREFIX}/share/xpdf/man \
 		-DNO_TEXT_SELECT:BOOL=OFF \
-		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Widgets:BOOL=FALSE
+		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Widgets:BOOL=FALSE \
+		-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Widgets:BOOL=ON
+CPE_VENDOR=	xpdfreader
 
 PLIST_SUB=		DESKTOPDIR="${DESKTOPDIR}"
 
@@ -52,7 +55,7 @@ LIBPAPER_LIB_DEPENDS=	libpaper.so:print/libpaper
 GUI_CMAKE_OFF=		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Widgets=1
 GUI_DESC=		QT5 interface
 GUI_USES=		qt:5 desktop-file-utils
-GUI_USE=		QT=buildtools_build,qmake_build,concurrent,core,gui,widgets,printsupport,svg,network,printsupport
+GUI_USE=		QT=buildtools:build,qmake:build,concurrent,core,gui,widgets,printsupport,svg,network,printsupport
 
 PRINT_CMAKE_ON=		-DXPDFWIDGET_PRINTING:BOOL=ON -DCUPS:BOOL=ON
 PRINT_CMAKE_OFF=	-DXPDFWIDGET_PRINTING:BOOL=OFF -DCUPS:BOOL=OFF
@@ -71,5 +74,9 @@ post-install:
 		${INSTALL_DATA} ${WRKDIR}/xpdf-man.conf \
 			${STAGEDIR}${PREFIX}/etc/man.d/xpdf.conf
 		${INSTALL_DATA} ${FILESDIR}/xpdf.desktop ${STAGEDIR}${DESKTOPDIR}
+		${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256
+		${INSTALL_DATA} ${WRKSRC}/xpdf-qt/xpdf-icon.ico ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/xpdf.png
+		${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable
+		${INSTALL_DATA} ${WRKSRC}/xpdf-qt/xpdf-icon.svg ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/xpdf.svg
 
 .include <bsd.port.mk>

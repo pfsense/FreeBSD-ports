@@ -1,20 +1,17 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	highlight
-PORTVERSION=	3.43
-PORTREVISION=	8
+PORTVERSION=	4.10
 PORTEPOCH=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.andre-simon.de/zip/
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Customizable syntax highlighter
+WWW=		http://www.andre-simon.de/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/scoped_array.hpp:devel/boost-libs
 
 USES=		compiler:c++11-lib gmake lua pkgconfig tar:bzip2
 USE_CXXSTD=	c++11
@@ -22,23 +19,29 @@ MAKEFILE=	makefile
 MAKE_ARGS=	CXX="${CXX}" \
 		CFLAGS="${CXXFLAGS} ${CPPFLAGS} -DHAVE_DECL_GETOPT" \
 		LDFLAGS="${LDFLAGS}"
+ALL_TARGET=	all # cli
+INSTALL_TARGET=	install
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS GUI
+OPTIONS_SUB=	yes
+
+GUI_USES=	qt:5
+GUI_USE=	QT=buildtools:build,qmake:build,core,gui,widgets
+GUI_MAKE_ENV=	QMAKE="${QMAKE}"
+GUI_ALL_TARGET=	gui
+GUI_INSTALL_TARGET=	install-gui
 
 post-patch:
-	@${REINPLACE_CMD} \
-		-e 's|^PREFIX =|PREFIX ?=|' \
-		-e 's|^conf_dir =.*|conf_dir = $${PREFIX}/etc/highlight/|' \
-		${WRKSRC}/${MAKEFILE}
-	@${REINPLACE_CMD} -e 's|^CXX=|CXX?=|' \
-		-e 's|%%LOCALBASE%%|${LOCALBASE}|' \
-		${WRKSRC}/src/${MAKEFILE}
+	@${REINPLACE_CMD} -e '/PKGCONFIG/s,lua,&-${LUA_VER}, ; \
+		/LIBS/s,-llua,&-${LUA_VER},' \
+			${WRKSRC}/src/gui-qt/highlight.pro
 
 post-install:
-	@cd ${STAGEDIR}${PREFIX}/etc/highlight && ${MV} filetypes.conf \
-		filetypes.conf.sample
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/highlight
+.for cfg in filetypes lsp
+	@cd ${STAGEDIR}${ETCDIR} && ${MV} ${cfg}.conf ${cfg}.conf.sample
+.endfor
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/highlight*
 
 .include <bsd.port.mk>

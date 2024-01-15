@@ -1,6 +1,3 @@
-# Created by: Gruen Christian <kiki@bsdro.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-HTML-Template
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	kiki@bsdro.org
 COMMENT=	HTML::Template view class for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-View-HTML-Template
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Catalyst-Runtime>=5:www/p5-Catalyst-Runtime \

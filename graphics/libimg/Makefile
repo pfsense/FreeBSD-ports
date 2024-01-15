@@ -1,14 +1,13 @@
-# Created by: Glenn Johnson
-# $FreeBSD$
-
 PORTNAME=	libimg
-PORTVERSION=	1.4.9
+PORTVERSION=	1.4.12
+PORTREVISION=	1
 CATEGORIES?=	graphics tk tcl
 MASTER_SITES=	SF/tkimg/tkimg/${PORTVERSION:R}/tkimg%20${PORTVERSION}
 DISTNAME=	Img-${PORTVERSION}-Source
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Library of image format handlers for Tk4.1 and later
+WWW=		http://members1.chello.nl/~j.nijtmans/img.html
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
@@ -31,10 +30,11 @@ WRKSRC=		${WRKDIR}/Img-${PORTVERSION}
 DOS2UNIX_GLOB=	*.[ch] *.tcl *.msg *.in *.test license.terms
 
 # We don't need the bundled libraries:
-EXTRACT_AFTER_ARGS= --exclude 'config.*' --exclude Makefile	\
-		--exclude 'compat' --exclude win
+EXTRACT_AFTER_ARGS=	--exclude 'config.*' --exclude Makefile --exclude \
+			'compat' --exclude win
 MAKE_ARGS+=	INSTALL_ROOT="${STAGEDIR}"
 CONFIGURE_ENV=	WRKDIR="${WRKDIR}"
+CONFIGURE_ARGS+=--enable-shared --disable-stubs
 
 post-patch:
 	${REINPLACE_CMD} -E -e 's,"(zlib|tiff|jpeg|png)tcl.h",<\1.h>,' \

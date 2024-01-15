@@ -1,6 +1,3 @@
-# Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-NamedEntity
 PORTVERSION=	1.93
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Basic Named Entity Extraction algorithm
+WWW=		https://metacpan.org/release/Lingua-EN-NamedEntity
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

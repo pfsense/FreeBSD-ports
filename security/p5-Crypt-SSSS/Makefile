@@ -1,6 +1,3 @@
-# Created by: Zeus Panchenko <zeus@gnu.org.ua>
-# $FreeBSD$
-
 PORTNAME=	Crypt-SSSS
 PORTVERSION=	0.3
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Implementation of Shamir's Secret Sharing System
+WWW=		https://metacpan.org/release/Crypt-SSSS
 
 LICENSE=	ART10
 

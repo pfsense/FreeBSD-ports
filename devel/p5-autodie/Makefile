@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	autodie
 PORTVERSION=	2.29
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Replace functions with ones that succeed or die with lexical scope
+WWW=		https://metacpan.org/release/autodie
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

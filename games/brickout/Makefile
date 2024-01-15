@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	brickout
 PORTVERSION=	2002.06.09
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/agenda/brickout/src/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Ball-and-paddle game
+WWW=		http://www.newbreedsoftware.com/brickout/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

@@ -1,14 +1,12 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nms
-PORTVERSION=	0.3.3
+PORTVERSION=	1.0.1
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	misc
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Recreate decrypting text effect from the Sneakers movie
+WWW=		https://github.com/bartobri/no-more-secrets
 
 LICENSE=	GPLv3
 

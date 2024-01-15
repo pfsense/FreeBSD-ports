@@ -1,3 +1,3 @@
-TIMESTAMP = 1599917805
-SHA256 (pingidentity-mod_auth_openidc-v2.4.4.1_GH0.tar.gz) = 3982bae4b665cc753d2aebef1fb76a3412cc1730b5cdc252d0bf6f38de52adbc
-SIZE (pingidentity-mod_auth_openidc-v2.4.4.1_GH0.tar.gz) = 250995
+TIMESTAMP = 1691438439
+SHA256 (pingidentity-mod_auth_openidc-v2.4.14.2_GH0.tar.gz) = a43e47bdd8f57560ffd140a5aab4f04fd63c1c8147b99a73b0db5b5e64fbdec4
+SIZE (pingidentity-mod_auth_openidc-v2.4.14.2_GH0.tar.gz) = 285008

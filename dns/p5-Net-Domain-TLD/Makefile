@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Domain-TLD
 PORTVERSION=	1.75
 CATEGORIES=	dns perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vivek@khera.org
 COMMENT=	Look up and validate TLDs
+WWW=		https://metacpan.org/release/Net-Domain-TLD
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

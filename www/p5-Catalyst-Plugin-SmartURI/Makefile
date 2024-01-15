@@ -1,6 +1,3 @@
-# Created by: Oleg Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-SmartURI
 PORTVERSION=	0.041
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Configurable URIs for Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-SmartURI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

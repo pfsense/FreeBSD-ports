@@ -1,6 +1,3 @@
-# Created by: Takumi Takahashi <takumiiinn@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	antlr3
 PORTVERSION=	3.5.2
 PORTREVISION=	1
@@ -12,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	takumiiinn@gmail.com
 COMMENT=	ANother Tool for Language Recognition
+WWW=		https://www.antlr3.org/
 
 LICENSE=	BSD3CLAUSE
 

@@ -1,6 +1,3 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	redshift
 PORTVERSION=	1.12
 DISTVERSIONPREFIX=	v
@@ -11,8 +8,9 @@ PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	60f45972a543.patch:-p1 # avoid patch conflict
 PATCHFILES+=	7da875d34854.patch:-p1 # wayland, see #663
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Adjusts the color temperature of your screen
+WWW=		http://jonls.dk/redshift/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -26,7 +24,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jonls
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 SHEBANG_FILES=	src/redshift-gtk/redshift-gtk.in
 
 CONFIGURE_ARGS+=	--disable-wingdi
@@ -54,10 +51,11 @@ VIDMODE_USES=		xorg
 VIDMODE_USE=		XORG=x11,xxf86vm
 VIDMODE_CONFIGURE_ENABLE=	vidmode
 
+WAYLAND_CATEGORIES=	wayland
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
 
-GUI_USES=		python:3.6+
+GUI_USES=		python
 GUI_CONFIGURE_ENABLE=	gui
 GUI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}

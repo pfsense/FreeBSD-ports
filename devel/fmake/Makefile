@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fmake
 PORTVERSION=	r250982
 CATEGORIES=	devel

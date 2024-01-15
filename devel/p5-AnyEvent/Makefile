@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	AnyEvent
 PORTVERSION=	7.17
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Provide framework for multiple event loops
+WWW=		https://metacpan.org/release/AnyEvent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

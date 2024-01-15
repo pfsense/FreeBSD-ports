@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Perl-Critic-Pulp
-PORTVERSION=	97
+PORTVERSION=	99
 CATEGORIES=	textproc devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Collection of add-on policies for Perl::Critic
+WWW=		https://metacpan.org/release/Perl-Critic-Pulp
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

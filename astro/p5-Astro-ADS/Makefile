@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Astro-ADS
 PORTVERSION=	1.26
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	OO Perl interface to the ADS abstract service
+WWW=		http://www.estar.org.uk/
 
 LICENSE=	GPLv2+
 

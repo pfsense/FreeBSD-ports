@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qtcurve
 PORTREVISION=	0
 

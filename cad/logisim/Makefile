@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	logisim
 PORTVERSION=	2.7.1
 CATEGORIES=	cad education java
@@ -10,6 +8,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	javad.kouhi@gmail.com
 COMMENT=	Educational tool for designing and simulating logic circuits
+WWW=		http://ozark.hendrix.edu/~burch/logisim/
 
 LICENSE=	GPLv2
 

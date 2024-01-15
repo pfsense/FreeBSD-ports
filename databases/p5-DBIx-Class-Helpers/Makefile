@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-Helpers
 PORTVERSION=	2.036000
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simplify the common case stuff for DBIx::Class
+WWW=		https://metacpan.org/release/DBIx-Class-Helpers
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

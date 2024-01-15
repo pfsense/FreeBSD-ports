@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qtcurve
 PORTVERSION=	1.9.0
 PORTREVISION?=	0
@@ -8,7 +6,8 @@ MASTER_SITES=	KDE/stable/${PORTNAME}
 DISTNAME=	${PORTNAME}-${PORTVERSION:R}
 
 MAINTAINER=	jhale@FreeBSD.org
-COMMENT?=	Widget styles for Qt and GTK+ toolkits
+COMMENT?=	Widget styles for Qt and GTK toolkits
+WWW=		https://invent.kde.org/system/qtcurve
 
 .if !defined(QTCURVE_SLAVE)
 USES=		metaport
@@ -54,8 +53,9 @@ PLIST=		${PKGDIR}/pkg-plist.${QTCURVE_SLAVE}
 
 .if ${QTCURVE_SLAVE} == "utils"
 PKGNAMESUFFIX=	-utils
-USES+=		gettext-runtime kde:5
-USE_KDE+=	i18n_build
+USES+=		gettext-runtime kde:5 qt:5
+USE_KDE+=	i18n:build
+USE_QT+=	buildtools:build qmake:build
 USE_LDCONFIG=	yes
 BUILD_WRKSRC=	${WRKSRC}
 .else
@@ -65,8 +65,9 @@ LIB_DEPENDS+=	libqtcurve-utils.so:x11-themes/qtcurve-utils
 .if ${QTCURVE_SLAVE} == "gtk2"
 PKGNAMEPREFIX=	gtk2-
 PKGNAMESUFFIX=	-theme
-USES+=		gettext-runtime gnome kde:5
-USE_KDE=	i18n_build
+USES+=		gettext-runtime gnome kde:5 qt:5
+USE_KDE=	i18n:build
+USE_QT+=	buildtools:build qmake:build
 USE_GNOME=	cairo gdkpixbuf2 gtk20 pango
 USE_LDCONFIG=	yes
 
@@ -81,10 +82,11 @@ WITH_qt5=	On # required for KF5
 PKGNAMEPREFIX=	kf5-style-
 USES+=		kde:5 qt:5
 USE_KDE=	archive completion config configwidgets coreaddons \
-		ecm_build frameworkintegration guiaddons i18n iconthemes \
-		init kdelibs4support kio widgetsaddons windowsystem xmlgui
+		frameworkintegration guiaddons i18n iconthemes \
+		init kdelibs4support kio widgetsaddons windowsystem xmlgui \
+		doctools:build ecm:build
 USE_QT=		core dbus gui printsupport svg widgets x11extras \
-		buildtools_build qmake_build
+		buildtools:build qmake:build
 BUILD_WRKSRC=	${WRKSRC}/qt5
 .endif
 
@@ -92,9 +94,9 @@ BUILD_WRKSRC=	${WRKSRC}/qt5
 CONFLICTS_INSTALL=	kf5-style-qtcurve
 PKGNAMEPREFIX=	qt5-style-
 USES+=		kde:5 qt:5
-USE_KDE=	i18n_build
+USE_KDE=	i18n:build
 USE_QT=		core dbus gui svg widgets x11extras \
-		buildtools_build qmake_build
+		buildtools:build qmake:build
 PLIST_FILES=	${QT_PLUGINDIR_REL}/styles/qtcurve.so
 .endif
 

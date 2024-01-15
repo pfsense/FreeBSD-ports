@@ -1,21 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	mariadb
-PORTVERSION=	3.1.11
+PORTVERSION=	3.1.20
 CATEGORIES=	databases
-MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
-		http://mirrors.supportex.net/${SITESDIR}/ \
-		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
-		http://gd.tuwien.ac.at/db/${SITESDIR}/ \
-		http://mirrors.fe.up.pt/pub/${SITESDIR}/ \
-		http://mirror.de.gsnw.de:56431/${SITESDIR}/ \
-		http://mirror.layerjet.com/${SITESDIR}/ \
-		http://mirror.switch.ch/mirror/${SITESDIR}/
+MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
+		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
+		https://mirror.truenetwork.ru/${SITESDIR}/ \
+		https://mirrors.aliyun.com/${SITESDIR}/ \
+		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
+		https://mirror.kku.ac.th/${SITESDIR}/ \
+		https://espejito.fder.edu.uy/${SITESDIR}/ \
+		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
+		https://ftp.osuosl.org/pub/${SITESDIR}/
 PKGNAMESUFFIX=	-connector-odbc
-DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSION}-ga-src
+DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSION}-src
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	MariaDB database connector for odbc
+WWW=		https://mariadb.com/kb/en/mariadb/mariadb-connector-odbc/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -38,7 +40,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib/mariadb
 
 SSL_CMAKE_ON=	-DWITH_OPENSSL=on
 
-PLIST_FILES=	lib/mariadb/libmaodbc.so
+PLIST_FILES=	lib/mariadb/libmaodbc.so \
+		libdata/pkgconfig/libmaodbc.pc
 
 post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX} \

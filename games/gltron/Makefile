@@ -1,15 +1,13 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	gltron
 PORTVERSION=	0.70
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/${PORTVERSION}
 EXTRACT_SUFX=	-source.tar.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D worm game for two players for X Window System
+WWW=		https://sourceforge.net/projects/gltron/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

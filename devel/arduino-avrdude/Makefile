@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	avrdude
 PORTVERSION=	6.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SAVANNAH/avrdude
 PKGNAMEPREFIX=	arduino-
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Program for programming the on-chip memory of Atmel AVR Arduino CPUs
+WWW=		https://www.nongnu.org/avrdude/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

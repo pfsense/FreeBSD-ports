@@ -1,24 +1,22 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	festalon
 PORTVERSION=	0.5.5
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	audio
 MASTER_SITES=	http://projects.raphnet.net/festalon/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command line player for .nsf and .hes audio files
+WWW=		http://projects.raphnet.net/ #festalon
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 
-USES=		libtool pkgconfig sdl tar:bzip2
+USES=		cpe libtool pkgconfig sdl tar:bzip2
 USE_SDL=	sdl
 
 GNU_CONFIGURE=	yes

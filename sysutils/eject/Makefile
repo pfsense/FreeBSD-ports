@@ -1,6 +1,3 @@
-# Created by: shige
-# $FreeBSD$
-
 PORTNAME=	eject
 PORTVERSION=	1.5
 PORTREVISION=	4

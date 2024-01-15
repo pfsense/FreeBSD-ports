@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mpg123.el
 PORTVERSION=	1.60
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTFILES=	mpg123el.cgi?${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Front-end to mpg123/ogg123 audio player for Emacsen
+WWW=		http://www.gentei.org/~yuuji/software/mpg123el/
 
 RUN_DEPENDS=	mpg123:audio/mpg123
 

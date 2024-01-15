@@ -1,6 +1,3 @@
-# Created by: Yoshihiko Sarumaru <mistral@imasy.or.jp>
-# $FreeBSD$
-
 PORTNAME=	astah
 PORTVERSION=	6.9.0
 PORTREVISION=	1
@@ -11,13 +8,12 @@ DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION:S!.!_!g}-${REVISION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Java/UML Object-Oriented Design Tool
+WWW=		https://astah.net/editions/community
 
 LICENSE=	EULA
 LICENSE_NAME=	End User License Agreement
-LICENSE_TEXT=	${RESTRICTED}
+LICENSE_TEXT=	License restrictions -- See http://astah.net/faq/community/enduser-license-agreement
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell no-auto-accept
-
-RESTRICTED=	License restrictions -- See http://astah.net/faq/community/enduser-license-agreement
 
 USES=		zip
 USE_JAVA=	yes

@@ -1,15 +1,13 @@
-# Created by: Alexander Matey <matey@cis.ohio-state.edu>
-# $FreeBSD$
-
 PORTNAME=	xxkb
 PORTVERSION=	1.11.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	alexander.pohoyda@gmx.net
 COMMENT=	XKB keyboard layout indicator and switcher
+WWW=		https://sourceforge.net/projects/xxkb/
 
 LICENSE=	ART10
 
@@ -22,7 +20,7 @@ PORTDOCS=	README CHANGES.ru README.ru
 OPTIONS_DEFINE=	LIBRSVG2 DOCS
 
 LIBRSVG2_USES=	gnome
-LIBRSVG2_USE=	GNOME=librsvg2
+LIBRSVG2_USE=	GNOME=librsvg2,gdkpixbuf2xlib
 LIBRSVG2_VARS=	XMKMF_ARGS=-DWITH_SVG_SUPPORT
 
 post-build:

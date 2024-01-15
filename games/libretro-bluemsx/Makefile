@@ -1,29 +1,33 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-bluemsx
-PORTVERSION=	0.20200504
+DISTVERSION=	0.20230417
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Port of blueMSX to the libretro API
+WWW=		https://github.com/libretro/blueMSX-libretro
 
 LICENSE=	GPLv3
 
-BROKEN_aarch64=	error: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
-BROKEN_riscv64=	error: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
-
 USES=		compiler:c++11-lib gmake
-USE_LDCONFIG=	yes
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	blueMSX-libretro
-GH_TAGNAME=	7a1d40e
+GH_TAGNAME=	e21bf74bddb79ad1bbe20b4d964e7515269c669b
+USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/libretro/bluemsx_libretro.so
 
-do-install:
-	${MKDIR} ${STAGEDIR}/${PREFIX}/lib/libretro;
-	${INSTALL_LIB} ${WRKSRC}/bluemsx_libretro.so ${STAGEDIR}/${PREFIX}/lib/libretro;
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 150
+CFLAGS+=	-Wno-error=int-conversion
+.if ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+.endif
+
+do-install:
+	${MKDIR} ${STAGEDIR}/${PREFIX}/lib/libretro
+	${INSTALL_LIB} ${WRKSRC}/bluemsx_libretro.so ${STAGEDIR}/${PREFIX}/lib/libretro
+
+.include <bsd.port.post.mk>

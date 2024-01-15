@@ -1,65 +1,46 @@
-# $FreeBSD$
-
 PORTNAME=	ldc
-PORTVERSION=	1.23.0
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.35.0
+DISTVERSIONSUFFIX=	-src
 CATEGORIES=	lang
+MASTER_SITES=	https://github.com/ldc-developers/${PORTNAME}/releases/download/v${DISTVERSION}/
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		ldc2-${PORTVERSION}-freebsd-x86_64.tar.xz
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	LLVM-based D compiler
+WWW=		https://wiki.dlang.org/LDC
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN_armv6=	fails to compile: Error: undefined identifier _jmp_buf, did you mean alias jmp_buf?
-BROKEN_armv7=	fails to compile: Error: undefined identifier _jmp_buf, did you mean alias jmp_buf?
-BROKEN_i386=	function core.bitop.bsf (uint v) is not callable using argument types (ulong)
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	The bootstrap compiler is provided only for x86_64
 
-LLVM_VERSION=	10
-BUILD_DEPENDS=	llvm70>0:devel/llvm70 \
-		llvm${LLVM_VERSION}>0:devel/llvm${LLVM_VERSION}
-RUN_DEPENDS=	llvm70>0:devel/llvm70 \
-		llvm${LLVM_VERSION}>0:devel/llvm${LLVM_VERSION}
 LIB_DEPENDS=	libconfig.so:devel/libconfig
 
-USES=		ninja cmake:insource
+USES=		llvm:lib,run ninja cmake:insource pkgconfig
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	ldc-developers
-GH_PROJECT=	ldc
-GH_TUPLE=	ldc-developers:ldc:911589c:tree/ltsmaster \
-		ldc-developers:druntime:13b1ccf:druntimelts/ltsmaster/runtime/druntime \
-		ldc-developers:phobos:1d758b2:phoboslts/ltsmaster/runtime/phobos \
-		ldc-developers:druntime:cc97ccd:druntime/runtime/druntime \
-		ldc-developers:phobos:8ae121c:phobos/runtime/phobos
+#USE_GITHUB=	yes
+#GH_ACCOUNT=	ldc-developers
+#GH_PROJECT=	ldc
 
 USE_LDCONFIG=	yes
 
-CC=		${LOCALBASE}/bin/clang${LLVM_VERSION}
-CXX=		${LOCALBASE}/bin/clang++${LLVM_VERSION}
-LLVM_CONFIG=	${LOCALBASE}/bin/llvm-config${LLVM_VERSION}
-LDCVER=		${PORTVERSION}
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "aarch64" || ${ARCH} == "amd64"
-CFLAGS+=		-fPIC
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1200029
-EXTRA_PATCHES=	${PATCHDIR}/fbsd12-*
-.endif
+CFLAGS+=	-fPIC
 
 CMAKE_ARGS+=	-DLDC_INSTALL_PREFIX="${PREFIX}" \
-		-DD_COMPILER:STRING="${WRKSRC}/ltsmaster/bin/ldmd2" \
-		-DCMAKE_C_COMPILER:STRING="${CC}" \
-		-DCMAKE_CXX_COMPILER:STRING="${CXX}" \
-		-DLLVM_CONFIG:PATH=${LLVM_CONFIG} \
-		-DBUILD_SHARED_LIBS:STRING="BOTH"
+		-DD_COMPILER="${WRKDIR}/ldc2-${PORTVERSION}-freebsd-x86_64/bin/ldmd2" \
+		-DLLVM_CONFIG=${LOCALBASE}/bin/${LLVM_CONFIG} \
+		-DBUILD_SHARED_LIBS="BOTH" \
+		-DBUILD_LTO_LIBS=ON
 
-pre-configure:
-	@cd ${WRKSRC}/ltsmaster && \
-	    ${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} -GNinja .
-	@cd ${WRKSRC}/ltsmaster && \
-	    ${SETENV} ${MAKE_ENV} ninja
+post-patch:
+	cd ${WRKDIR}/ldc2-${PORTVERSION}-freebsd-x86_64/import && ${PATCH} -p3 < ${PATCHDIR}/patch-runtime_druntime_src_core_sys_freebsd_config.d
 
-.include <bsd.port.post.mk>
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ldc-build-runtime
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ldc-profdata
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ldc-prune-cache
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ldc2
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ldmd2
+
+.include <bsd.port.mk>

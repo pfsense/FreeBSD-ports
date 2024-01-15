@@ -1,6 +1,5 @@
-# $FreeBSD$
-
-PORTVERSION=	8.4.0
+PORTVERSION=	11.3.0
+PORTREVISION=	1
 PKGNAMEPREFIX=	riscv64-none-elf-
 GCC_TARGET=	riscv64-none-elf
 PLIST=		${.CURDIR}/pkg-plist

@@ -1,6 +1,3 @@
-# Created by: Daniel Harris <dannyboy@subdimension.com>
-# $FreeBSD$
-
 PORTNAME=	fortunelock
 PORTVERSION=	0.1.2
 CATEGORIES=	sysutils

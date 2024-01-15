@@ -16,8 +16,11 @@ share/icons/hicolor/16x16/apps/org.xfce.parole.png
 share/icons/hicolor/16x16/apps/parole-extension-symbolic.svg
 share/icons/hicolor/16x16/apps/parole-extension.png
 share/icons/hicolor/24x24/apps/org.xfce.parole.png
+share/icons/hicolor/32x32/apps/org.xfce.parole.png
 share/icons/hicolor/48x48/apps/org.xfce.parole.png
 share/icons/hicolor/48x48/apps/parole-extension.png
+share/icons/hicolor/64x64/apps/org.xfce.parole.png
+share/icons/hicolor/96x96/apps/org.xfce.parole.png
 share/icons/hicolor/scalable/apps/org.xfce.parole.svg
 %%NLS%%share/locale/ar/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/ast/LC_MESSAGES/parole.mo
@@ -75,6 +78,6 @@ share/metainfo/parole.appdata.xml
 %%DATADIR%%/parole-plugins-0/mpris2.desktop
 %%DATADIR%%/parole-plugins-0/notify.desktop
 %%DATADIR%%/parole-plugins-0/system-tray.desktop
-share/pixmaps/no-cover.png
-share/pixmaps/play.png
-share/pixmaps/replay.png
+%%DATADIR%%/pixmaps/no-cover.png
+%%DATADIR%%/pixmaps/play.png
+%%DATADIR%%/pixmaps/replay.png

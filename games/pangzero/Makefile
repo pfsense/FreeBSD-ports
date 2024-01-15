@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pangzero
 PORTVERSION=	1.3
 PORTREVISION=	3
@@ -12,6 +9,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clone of Super Pang
+WWW=		http://apocalypse.rulez.org/pangzero
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Test-Prereq
 PORTVERSION=	2.003
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Check if Makefile.PL has the right pre-requisites
+WWW=		https://github.com/briandfoy/test-prereq
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-Refcount
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Obtain the REFCNT value of a referent
+WWW=		https://metacpan.org/release/Devel-Refcount
 
 TEST_DEPENDS=	p5-Test-Fatal>=0:devel/p5-Test-Fatal
 

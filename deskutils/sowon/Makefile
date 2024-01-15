@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	sowon
 DISTVERSION=	g20201203
 CATEGORIES=	deskutils
 
 MAINTAINER=	nsonack@outlook.com
 COMMENT=	Graphical countdown and timer application
+WWW=		https://github.com/tsoding/sowon/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

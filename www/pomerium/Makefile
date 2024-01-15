@@ -1,24 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	pomerium
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.3
+DISTVERSION=	0.8.4
 PORTEPOCH=	1
 CATEGORIES=	www
 
 MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	Identity-aware access proxy
+WWW=		https://pomerium.io/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		cpe go:modules
 GO_TARGET=	./cmd/${PORTNAME}:${PREFIX}/libexec/${PORTNAME} ./cmd/${PORTNAME}-cli:${PREFIX}/bin/${PORTNAME}-cli
 
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
 LD_FLAG_X_PREFIX=	-X ${GO_PKGNAME}/version
 
-GO_BUILDFLAGS=	-ldflags "-s -w \
+GO_BUILDFLAGS=	-ldflags "${STRIP} -w \
 		-X github.com/pomerium/pomerium/version.Version=${DISTVERSIONPREFIX}${DISTVERSION} \
 		-X github.com/pomerium/pomerium/version.ProjectName=${PORTNAME} \
 		-X github.com/pomerium/pomerium/version.ProjectURL=${GO_PKGNAME}"
@@ -45,7 +44,7 @@ GH_TUPLE=	\
 		ghodss:yaml:v1.0.0:ghodss_yaml/vendor/github.com/ghodss/yaml \
 		go-acme:lego:v3.7.0:go_acme_lego_v3/vendor/github.com/go-acme/lego/v3 \
 		go-ini:ini:v1.51.1:go_ini_ini/vendor/gopkg.in/ini.v1 \
-		go-redis:redis:v7.2.0:go_redis_redis_v7/vendor/github.com/go-redis/redis/v7 \
+		redis:go-redis:v7.2.0:go_redis_redis_v7/vendor/github.com/go-redis/redis/v7 \
 		go-yaml:yaml:v2.2.8:go_yaml_yaml/vendor/gopkg.in/yaml.v2 \
 		gobwas:glob:v0.2.3:gobwas_glob/vendor/github.com/gobwas/glob \
 		golang:appengine:v1.6.5:golang_appengine/vendor/google.golang.org/appengine \

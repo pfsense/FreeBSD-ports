@@ -1,17 +1,18 @@
-# Created by: Jonathan Lennox <lennox@cs.columbia.edu>
-# $FreeBSD$
-
 PORTNAME=	eawpats
-PORTVERSION=	12
+DISTVERSION=	12
 PORTREVISION=	4
 CATEGORIES=	audio
-MASTER_SITES=	GENTOO
+MASTER_SITES=	LOCAL/fuz
 DISTNAME=	eawpats12_full
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Eric A. Welsh's collection of Gravis Ultrasound MIDI patches
 
-RESTRICTED=	Some of the patches are marked no-commercial-use
+# Converted from RESTRICTED
+LICENSE=	EAWPATS
+LICENSE_NAME=	eawpats
+LICENSE_TEXT=	Some of the patches are marked no-commercial-use
+LICENSE_PERMS=	auto-accept
 
 NO_BUILD=	yes
 NO_ARCH=	yes

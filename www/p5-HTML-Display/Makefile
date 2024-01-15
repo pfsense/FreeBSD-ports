@@ -1,6 +1,3 @@
-# Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-Display
 PORTVERSION=	0.40
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Display HTML locally in a browser
+WWW=		https://metacpan.org/release/HTML-Display
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,8 +17,9 @@ RUN_DEPENDS=	p5-HTML-TokeParser-Simple>=2:www/p5-HTML-TokeParser-Simple \
 		p5-URI>=0:net/p5-URI \
 		p5-libwww>=5.69:www/p5-libwww
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

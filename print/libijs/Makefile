@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libijs
 PORTVERSION=	0.35
 PORTREVISION=	5
@@ -10,6 +8,7 @@ DIST_SUBDIR=	ghostscript
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C library that supports plugin printer driver for Ghostscript
+WWW=		https://www.linuxprinting.org/ijs/
 
 LICENSE=	MIT
 

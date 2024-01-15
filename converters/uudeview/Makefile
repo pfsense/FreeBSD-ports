@@ -1,6 +1,3 @@
-# Created by: Tim Vanderhoek <ac199@freenet.hamilton.on.ca>
-# $FreeBSD$
-
 PORTNAME=	uudeview
 PORTVERSION=	0.5.20
 CATEGORIES=	converters
@@ -8,9 +5,12 @@ MASTER_SITES=	http://www.fpx.de/fp/Software/UUDeview/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program for uu/xx/Base64/BinHex/yEnc de-/encoding
+WWW=		http://www.fpx.de/fp/Software/UUDeview/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		cpe
 
 LIB_DEPENDS=	libuu.so:converters/uulib
 

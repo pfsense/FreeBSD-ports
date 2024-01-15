@@ -1,6 +1,3 @@
-# Created by: Piotr Kubaj <pkubaj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	OpenTomb
 DISTVERSIONPREFIX=	win32-
 DISTVERSION=	2018-02-03_alpha
@@ -9,6 +6,7 @@ CATEGORIES=	games
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Open-source Tomb Raider 1-5 engine remake
+WWW=		https://opentomb.github.io/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE

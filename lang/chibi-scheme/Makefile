@@ -1,12 +1,12 @@
-# Created by: Tobias Kortkamp <tobias.kortkamp@gmail.com>
-# $FreeBSD$
+#
 
 PORTNAME=	chibi-scheme
-DISTVERSION=	0.9.1
+DISTVERSION=	0.10.0
 CATEGORIES=	lang
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Minimal Scheme implementation for use as a C extension language
+WWW=		https://github.com/ashinn/chibi-scheme
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	ashinn
+GH_TAGNAME=	${DISTVERSION:R}
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DOCS

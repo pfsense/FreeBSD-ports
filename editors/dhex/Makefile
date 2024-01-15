@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dhex
 PORTVERSION=	0.69
 CATEGORIES=	editors
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Ncurses-based hex-editor with diff mode
+WWW=		https://www.dettus.net/dhex/
 
 LICENSE=	GPLv2
 

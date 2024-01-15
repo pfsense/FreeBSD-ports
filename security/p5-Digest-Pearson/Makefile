@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Digest-Pearson
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Perl extension for Peter K. Pearson's hash algorithm
+WWW=		https://metacpan.org/release/Digest-Pearson
 
 USES=		perl5
 USE_PERL5=	configure

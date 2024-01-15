@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	OpenCA-REQ
 PORTVERSION=	0.9.60
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/0$//}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to easily manage Cert REQUESTs
+WWW=		https://metacpan.org/release/OpenCA-REQ
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-X500-DN>=0:net/p5-X500-DN

@@ -1,6 +1,3 @@
-# Created by: johnh@isi.edu
-# $FreeBSD$
-
 PORTNAME=	dontspace
 PORTVERSION=	1.2
 PORTREVISION=	4

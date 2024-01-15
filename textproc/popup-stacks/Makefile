@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	popup
 PORTVERSION=	1.0
 CATEGORIES=	textproc
@@ -9,6 +7,7 @@ DISTFILES=	English-German.cstack.gz German-French.cstack.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stacks for use with Popup
+WWW=		https://popup.sourceforge.net/
 
 LICENSE=	GPLv2
 

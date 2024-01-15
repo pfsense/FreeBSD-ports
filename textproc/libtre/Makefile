@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libtre
 PORTVERSION=	0.8.0
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DISTNAME=	tre-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight fully POSIX compliant regexp matching library
+WWW=		https://laurikari.net/tre/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

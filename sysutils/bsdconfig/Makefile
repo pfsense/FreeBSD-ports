@@ -1,6 +1,3 @@
-# Created by: Devin Teske <dteske@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bsdconfig
 PORTVERSION=	0.9.0
 PORTREVISION=	1
@@ -13,6 +10,7 @@ PATCHFILES=	${DISTNAME}-${PORTVERSION}.diff.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to configure various aspects of FreeBSD
+WWW=		https://druidbsd.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 

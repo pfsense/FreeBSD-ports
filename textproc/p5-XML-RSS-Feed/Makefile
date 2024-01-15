@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-RSS-Feed
 PORTVERSION=	2.40
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/0$//}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Persistent XML RSS encapsulation
+WWW=		https://metacpan.org/release/XML-RSS-Feed
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

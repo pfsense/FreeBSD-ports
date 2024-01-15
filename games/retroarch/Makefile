@@ -1,36 +1,46 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	RetroArch
-PORTVERSION=	1.8.5
-PORTREVISIION=	1
+DISTVERSION=	1.16.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games emulators
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	27a9997279c14c6727390d4254c2377561cb8a19.patch:-p1
-PATCHFILES+=	c53f8ba96b024c0e01b7060d9a76cf93268b519a.patch:-p1
-PATCHFILES+=	618c83d4ca1b8144377747076e28ac962e492392.patch:-p1
-PATCHFILES+=	f9ae48c3f687cf652a4ef73b5f991ac74c7c5d17.patch:-p1
-PATCHFILES+=	f646fea03fdecc62af5ffe983f51e2c7ea8bc786.patch:-p1
-
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform entertainment system based on libretro API
+WWW=		https://github.com/libretro/RetroArch
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon \
-		libdrm.so:graphics/libdrm \
-		libass.so:multimedia/libass
 BUILD_DEPENDS=	vulkan-loader>0:graphics/vulkan-loader \
 		${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
+LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon \
+		libdrm.so:graphics/libdrm \
+		libass.so:multimedia/libass \
+		libfribidi.so:converters/fribidi \
+		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	retroarch-assets<=0:games/retroarch-assets
 
-USES=		compiler:c++11-lib gmake pkgconfig python:3.6+ shebangfix ssl
+USES=		compiler:c++11-lib cpe gmake pkgconfig python shebangfix ssl
+CPE_VENDOR=	libretro
+USE_GITHUB=	yes
+GH_ACCOUNT=	libretro
+SHEBANG_FILES=	libretro-common/glsym/glgen.py libretro-common/glsym/rglgen.py \
+		tools/cg2glsl.py tools/vulkan_loader_generator.py
 
-OPTIONS_DEFINE=	CACA FFMPEG OSS JACK PULSEAUDIO ALSA SDL OPENGL OPENAL V4L FREETYPE WAYLAND UDEV QT X11
-OPTIONS_DEFAULT=FFMPEG OSS PULSEAUDIO SDL OPENGL OPENAL V4L FREETYPE WAYLAND UDEV QT X11
+HAS_CONFIGURE=	yes
+CONFIGURE_ARGS+=--enable-threads --disable-discord \
+		--sysconfdir=${LOCALBASE}/etc
+CONFIGURE_ENV+=	MAN_DIR=${MANPREFIX}/man
+LDFLAGS_i386=	-Wl,-znotext
+
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:tl}
+SUB_FILES=	pkg-message
+
+OPTIONS_DEFINE=	CACA FFMPEG OSS JACK PULSEAUDIO ALSA SDL OPENGL OPENAL V4L FREETYPE UDEV QT X11 DOCS
+OPTIONS_DEFINE_amd64=	WAYLAND	# svgalib is x86 only
+OPTIONS_DEFINE_i386=	WAYLAND
+OPTIONS_DEFAULT=FFMPEG OSS SDL OPENGL OPENAL V4L FREETYPE UDEV QT X11
+OPTIONS_DEFAULT_amd64=	WAYLAND
+OPTIONS_DEFAULT_i386=	WAYLAND
 FFMPEG_DESC=	On-the-fly recording of gameplay with libavcodec
 WAYLAND_DESC=	Wayland display support
 UDEV_DESC=	udev device hotplug support
@@ -61,6 +71,7 @@ V4L_BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
 V4L_CONFIGURE_ENABLE=	v4l2
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 FREETYPE_CONFIGURE_ENABLE=	freetype
+WAYLAND_CATEGORIES=	wayland
 WAYLAND_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 			${LOCALBASE}/include/linux/kd.h:graphics/svgalib
 WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland
@@ -76,18 +87,6 @@ QT_CONFIGURE_ENABLE=	qt
 X11_USES=		xorg
 X11_USE=		XORG=x11,xcb,xext,xinerama,xv,xxf86vm,xrandr
 X11_CONFIGURE_ENABLE=	x11
-
-LDFLAGS_i386=	-Wl,-znotext
-CONFIGURE_ARGS+=--enable-threads --disable-discord
-CONFIGURE_ENV+=	MAN_DIR=${MANPREFIX}/man
-SHEBANG_FILES=	libretro-common/glsym/glgen.py libretro-common/glsym/rglgen.py \
-		tools/cg2glsl.py tools/vulkan_loader_generator.py
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	libretro
-SUB_FILES=	pkg-message
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS+=--sysconfdir=${LOCALBASE}/etc
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|' \

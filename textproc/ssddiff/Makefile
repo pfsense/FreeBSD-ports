@@ -1,9 +1,6 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ssddiff
 PORTVERSION=	0.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ \
 		http://ftp.is.co.za/FreeBSD/ports/distfiles/ \
@@ -14,6 +11,7 @@ MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Diff application for semistructured data such as XML files
+WWW=		http://ssddiff.alioth.debian.org/
 
 LICENSE=	GPLv2+
 

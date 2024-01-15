@@ -1,6 +1,3 @@
-# Created by: Serge Gagnon <serge.gagnon.1@ulaval.ca>
-# $FreeBSD$
-
 PORTNAME=	cvsdadm
 PORTVERSION=	0.3.2
 PORTREVISION=	1

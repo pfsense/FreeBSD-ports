@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	stone-phaser
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.2-5
-DISTVERSIONSUFFIX=	-g3e51889
+DISTVERSION=	0.1.2-17
+DISTVERSIONSUFFIX=	-gda92961
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Classic analog phaser effect, made with DPF and Faust
+WWW=		https://github.com/jpcima/stone-phaser
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -33,9 +32,9 @@ pre-install:
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64" || ${ARCH} == "i386"
-EXTRA_PATCHES=  ${FILESDIR}/extra-patch-dpf_Makefile.base.mk
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-dpf_Makefile.base.mk
 .else
-EXTRA_PATCHES=  ${FILESDIR}/extra-patch-nosse-dpf_Makefile.base.mk
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-nosse-dpf_Makefile.base.mk
 .endif
 
 .include <bsd.port.post.mk>

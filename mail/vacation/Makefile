@@ -1,6 +1,3 @@
-# Created by: Adam McDougall <mcdouga9@egr.msu.edu>
-# $FreeBSD$
-
 PORTNAME=	vacation
 PORTVERSION=	3.3.3
 CATEGORIES=	mail
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Email autoresponder, similar to vacation from sendmail
+WWW=		https://www.linux.it/~md/software/
 
 PORTSCOUT=	ignore:1
 

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	barnyard2
 PORTVERSION=	1.13
 DISTVERSIONPREFIX=	v2-
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Interpreter for Snort unified2 binary output files
+WWW=		https://github.com/firnsy/barnyard2
 
 LICENSE=	GPLv2
 
@@ -15,6 +14,8 @@ USES=		autoreconf libtool
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	firnsy
+
+CONFLICTS_INSTALL?=	barnyard2-sguil # bin/barnyard2
 
 OPTIONS_DEFINE=	64BIT ARUBA GRE IPV6 MPLS PORT_PCAP DOCS EXAMPLES
 OPTIONS_RADIO=	DATABASE
@@ -51,7 +52,9 @@ MYSQL_USES=		mysql
 MYSQL_CONFIGURE_WITH=	mysql
 MYSQL_CONFIGURE_ON=	--with-mysql-includes=${LOCALBASE}/include/mysql \
 			--with-mysql-libraries=${LOCALBASE}/lib/mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 MYSQL_SSL_CONFIGURE_ENABLE=	mysql-ssl-support
+MYSQL_SSL_VARS=		IGNORE_WITH_MYSQL="80"
 ODBC_BROKEN=		fails to build with ODBC=on
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 ODBC_CONFIGURE_WITH=	odbc

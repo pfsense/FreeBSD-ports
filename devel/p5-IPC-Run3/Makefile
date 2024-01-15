@@ -1,6 +1,3 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PORTNAME=	IPC-Run3
 PORTVERSION=	0.048
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Run a subprocess in batch mode
+WWW=		https://metacpan.org/release/IPC-Run3
 
 LICENSE=	ART10 GPLv1 BSD2CLAUSE
 LICENSE_COMB=	dual

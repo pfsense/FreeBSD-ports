@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	zhlt
 PORTVERSION=	3.4
 CATEGORIES=	games devel
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}f-src
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Zoner's Half-Life compile tools
+WWW=		http://zhlt.info/
 
 USES=		dos2unix zip
 DOS2UNIX_FILES=	common/bspfile.h common/cmdlib.cpp common/mathlib.h \

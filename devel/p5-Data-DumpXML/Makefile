@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Data-DumpXML
 PORTVERSION=	1.06
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dump arbitrary data structures as XML
+WWW=		https://metacpan.org/release/Data-DumpXML
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Array-RefElem>=0.01:misc/p5-Array-RefElem \

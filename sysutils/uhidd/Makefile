@@ -1,6 +1,3 @@
-# Created by: Kai Wang <kaiwang27@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	uhidd
 PORTVERSION=	0.2.1
 DISTVERSIONPREFIX=	REL-
@@ -21,6 +18,7 @@ PATCHFILES+=	7022ca4d1a1b.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Userland USB HID device driver using libusb20
+WWW=		https://wiki.FreeBSD.org/uhidd
 
 LICENSE=	BSD2CLAUSE
 

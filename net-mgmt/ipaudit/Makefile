@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Chen <yinjieh@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	ipaudit
 PORTVERSION=	1.1
 CATEGORIES=	net-mgmt sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/ipaudit/ipaudit
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IP traffic summarizer
+WWW=		https://ipaudit.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

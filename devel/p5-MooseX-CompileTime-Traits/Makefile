@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-CompileTime-Traits
 PORTVERSION=	1.102570
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to allow compile time traits for classes/roles
+WWW=		https://metacpan.org/release/MooseX-CompileTime-Traits
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

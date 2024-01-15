@@ -1,6 +1,3 @@
-# Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
-
 PORTNAME=	metalock
 PORTVERSION=	0.8.0
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Enhanced X11 screen locker
+WWW=		http://chiselapp.com/user/beyert/repository/metalock/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE

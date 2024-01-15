@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Session-Store-File
 PORTVERSION=	0.18
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	File storage backend for session data
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Session-Store-File
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,12 @@
-# Created by: Peter Schuller <peter.schuller@infidyne.com>
-# $FreeBSD$
-
 PORTNAME=	greenlet
-PORTVERSION=	0.4.17
+PORTVERSION=	3.0.3
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Light-weight microthreads for Python
+WWW=		https://github.com/python-greenlet/greenlet
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,13 +14,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 NOT_FOR_ARCHS=		mips mips64
 NOT_FOR_ARCHS_REASON=	greenlet needs to be ported to this platform
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=40.8.0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
-DO_MAKE_TEST=	${PYTHON_CMD}
-TEST_TARGET=	run-tests.py
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
+
+CPPFLAGS+=	-Dregister=
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/greenlet*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

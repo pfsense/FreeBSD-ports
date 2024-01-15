@@ -1,6 +1,3 @@
-# Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CharisSILCompact
 PORTVERSION=	4.114
 PORTREVISION=	2
@@ -14,6 +11,7 @@ MASTER_SITES=	LOCAL/bf
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Charis SIL TrueType font collection, compact variant
+WWW=		https://scripts.sil.org/cms/scripts/page.php?item_id=CharisSILfont
 
 LICENSE=	OFL11
 

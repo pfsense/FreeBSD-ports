@@ -1,6 +1,3 @@
-# Created by: Andrej Zverev <andrey.zverev@electro-com.ru>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Controller-HTML-FormFu
 PORTVERSION=	2.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst FormFu Base Controller
+WWW=		https://metacpan.org/release/Catalyst-Controller-HTML-FormFu
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

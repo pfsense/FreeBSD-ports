@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-XML-Simple
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -7,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	LOCAL/kuriyama
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Catalyst XML View Class
+WWW=		http://catalyst.g.hatena.ne.jp/ikasam_a/20071202/1196581882 # Japanese
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

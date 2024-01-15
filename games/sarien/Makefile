@@ -1,6 +1,3 @@
-# Created by: Radim Kolar
-# $FreeBSD$
-
 PORTNAME=	sarien
 PORTVERSION=	0.7.0
 PORTREVISION=	3

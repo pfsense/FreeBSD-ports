@@ -1,8 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xapian
-PORTVERSION=	1.4.17
+PORTVERSION=	1.4.24
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP binding for Xapian
+WWW=		https://xapian.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,19 +22,17 @@ CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
 		--docdir=${DOCSDIR} \
 		--enable-shared \
 		--enable-static \
-		--with-php7 \
+		--with-php \
 		--without-csharp \
 		--without-java \
 		--without-lua \
 		--without-perl \
-		--without-php \
 		--without-python \
 		--without-python3 \
 		--without-ruby \
 		--without-tcl
 CONFIGURE_ENV=	PHP_CONFIG=${LOCALBASE}/bin/php-config
 GNU_CONFIGURE=	yes
-IGNORE_WITH_PHP=80
 INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 
@@ -47,8 +43,5 @@ CONFLICTS_INSTALL=	xapian-bindings12
 PORTSCOUT=	limitw:1,even
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-lstdc++||g' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

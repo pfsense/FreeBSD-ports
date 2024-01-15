@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Benchmark-Timer
 PORTVERSION=	0.7112
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Code benchmarking tool
+WWW=		https://metacpan.org/release/Benchmark-Timer
 
 LICENSE=	GPLv2
 

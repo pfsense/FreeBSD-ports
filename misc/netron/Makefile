@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	netron
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.1.9
@@ -9,18 +7,17 @@ DISTFILES=	netron-${DISTVERSION}-node_modules.tgz:js
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Visualizer for neural network, deep learning, machine learning models
+WWW=		https://github.com/lutzroeder/netron
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	lutzroeder
 USE_PYTHON=	distutils noflavors
 
 NO_ARCH=	yes
-
-PLIST_SUB=	PYTHON_CPYTHON=cpython-${PYTHON_VER:S/.//}
 
 post-extract:
 	@${RLN} ${WRKDIR}/node_modules ${WRKSRC}/node_modules

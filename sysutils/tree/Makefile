@@ -1,29 +1,29 @@
-# Created by: Alan Eldridge <alane@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tree
-PORTVERSION=	1.8.0
+PORTVERSION=	2.1.0
 CATEGORIES=	sysutils
-MASTER_SITES=	ftp://mama.indstate.edu/linux/tree/
+MASTER_SITES=	http://mama.indstate.edu/users/ice/tree/src/ \
+		https://fossies.org/linux/misc/
 
 MAINTAINER=	gb@unistra.fr
 COMMENT=	Display a tree-view of directories with optional color or HTML output
+WWW=		https://mama.indstate.edu/users/ice/tree/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 
-MAKE_ENV+=	MKDIR="${MKDIR}"
 USES=		gmake tar:tgz
+MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
 
 PLIST_FILES=	bin/tree \
 		man/man1/tree.1.gz
-
-PORTDOCS=	CHANGES README
+PORTDOCS=	CHANGES README TODO
 
 OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/tree ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/doc/*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

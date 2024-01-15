@@ -1,7 +1,4 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
-PORTREVISION=	5
+PORTREVISION=	6
 
 THEME_FLAVOR=	cryogenic
 

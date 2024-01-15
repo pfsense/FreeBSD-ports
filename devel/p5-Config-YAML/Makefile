@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	Config-YAML
 PORTVERSION=	1.42
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	devel textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple configuration automation
+WWW=		https://metacpan.org/release/Config-YAML
 
 BUILD_DEPENDS=	p5-YAML>=0:textproc/p5-YAML
 RUN_DEPENDS=	p5-YAML>=0:textproc/p5-YAML

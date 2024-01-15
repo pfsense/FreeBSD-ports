@@ -1,29 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	sockaddr
-DISTVERSION=	g20180320
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.6
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Command line utility for querying IP information
+WWW=		https://github.com/hashicorp/go-sockaddr
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
-
-USE_GITHUB=	yes
-GH_SUBDIR=	src/github.com/hashicorp/go-sockaddr
-GH_ACCOUNT=	hashicorp
-GH_PROJECT=	go-sockaddr
-GH_TAGNAME=	7165ee1
-
-GO_BUILDFLAGS=	-ldflags "-X main.version=${DISTVERSIONPREFIX}${PORTVERSION} -w -s"
+USES=		go:modules
+GO_MODULE=	github.com/hashicorp/go-sockaddr
 GO_TARGET=	./cmd/${PORTNAME}
 
 PLIST_FILES=	bin/sockaddr
-
-post-patch:
-	@${LN} -s ${WRKSRC}/cmd/${PORTNAME}/vendor ${WRKSRC}
 
 .include <bsd.port.mk>

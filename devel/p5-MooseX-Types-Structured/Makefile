@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-Structured
 PORTVERSION=	0.36
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Moose Type Constraint classes for Structured Types
+WWW=		https://metacpan.org/release/MooseX-Types-Structured
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -23,8 +21,9 @@ TEST_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \
 		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 		p5-Test-Needs>=0:devel/p5-Test-Needs
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

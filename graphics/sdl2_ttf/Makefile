@@ -1,39 +1,38 @@
-# $FreeBSD$
-
 PORTNAME=	sdl2_ttf
-PORTVERSION=	2.0.15
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	2.20.2
 CATEGORIES=	graphics
-MASTER_SITES=	https://www.libsdl.org/projects/SDL_ttf/release/
-DISTNAME=	SDL2_ttf-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Library to use TrueType fonts to render text in SDL applications
+WWW=		https://github.com/libsdl-org/SDL_ttf
 
 LICENSE=	ZLIB
-LICENSE_FILE=	${WRKSRC}/COPYING.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-USES=		gmake libtool localbase pathfix pkgconfig sdl
+USES=		cmake sdl
+USE_GITHUB=	yes
+GH_ACCOUNT=	libsdl-org
+GH_PROJECT=	SDL_ttf
 USE_SDL=	sdl2
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+CMAKE_OFF=	SDL2TTF_SAMPLES
+CMAKE_ARGS=	-DSDL2TTF_DEBUG_POSTFIX:STRING=
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	OPENGL
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	HARFBUZZ DOCS
+OPTIONS_DEFAULT=HARFBUZZ
 OPTIONS_SUB=	yes
 
-OPENGL_DESC=	Build sdl2-glfont demo program
-OPENGL_USES=	gl
-OPENGL_USE=	GL=gl
+HARFBUZZ_DESC=	Enable HarfBuzz support
+HARFBUZZ_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
+HARFBUZZ_CMAKE_BOOL=	SDL2TTF_HARFBUZZ
 
-post-patch-OPENGL-off:
-	@${REINPLACE_CMD} -e '/have_opengl=yes/d' ${WRKSRC}/configure
-
-post-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/.libs/showfont ${STAGEDIR}${PREFIX}/bin/sdl2-showfont
-
-post-install-OPENGL-on:
-	${INSTALL_PROGRAM} ${WRKSRC}/.libs/glfont ${STAGEDIR}${PREFIX}/bin/sdl2-glfont
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/CHANGES.txt ${WRKSRC}/README.txt ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

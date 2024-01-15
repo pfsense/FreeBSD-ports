@@ -1,52 +1,72 @@
-# $FreeBSD$
-
 PORTNAME=	soju
-DISTVERSION=	0.0.20201214
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.7.0
+PORTREVISION=	1
 CATEGORIES=	irc
-MASTER_SITES=	https://git.sr.ht/~emersion/go-scfg/archive/:goscfg
-DISTNAME=	go-scfg-${GO_SCFG_REV}
-DISTFILES=	${GO_SCFG_REV}.tar.gz:goscfg
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	IRC bouncer
+WWW=		https://soju.im
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:modules,no_targets sqlite:3
+USE_GITHUB=	nodefault
+GH_TUPLE=	golang:sys:v0.13.0:sys
 
 OPTIONS_DEFAULT=	DOCS
 OPTIONS_DEFINE=		DOCS
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	emersion
-GH_TAGNAME=	0ddc0de
-GH_TUPLE=	emersion:go-sasl:7bfe0ed36a21:emersion_go_sasl/vendor/github.com/emersion/go-sasl \
-		go-irc:irc:v3.1.3:go_irc_irc/vendor/gopkg.in/irc.v3 \
-		golang:crypto:9e8e0b390897:golang_crypto/vendor/golang.org/x/crypto \
-		golang:sys:9f70ab9862d5:golang_sys/vendor/golang.org/x/sys \
-		google:shlex:e7afc7fbc510:google_shlex/vendor/github.com/google/shlex \
-		klauspost:compress:v1.11.1:klauspost_compress/vendor/github.com/klauspost/compress \
-		mattn:go-sqlite3:v1.14.4:mattn_go_sqlite3/vendor/github.com/mattn/go-sqlite3 \
-		pires:go-proxyproto:v0.2.0:pires_go_proxyproto/vendor/github.com/pires/go-proxyproto \
-		nhooyr:websocket:v1.8.6:nhooyr_websocket/vendor/nhooyr.io/websocket
-GO_SCFG_REV=	142a8aa629fc
-
-GO_PKGNAME=	./cmd/soju ./cmd/sojuctl
-PLIST_FILES=	bin/soju \
-		bin/sojuctl
-
+USERS=			soju
+GROUPS=			soju
+SUB_LIST=		USER=${USERS}
+USE_RC_SUBR=		${PORTNAME}
+GO_BUILDFLAGS+=	-tags=libsqlite3
+CGO_LDFLAGS+=		-lsqlite3
+GO_MODULE=		git.sr.ht/~emersion/soju
+CONTRIBS=		./contrib/znc-import ./contrib/migrate-db \
+			./contrib/migrate-logs
+MAKE_ENV+=		${GO_ENV} \
+			MANDIR=man \
+			PREFIX=${PREFIX} \
+			RUNDIR=/var/run \
+			SYSCONFDIR=${ETCDIR}/..
+PLIST_FILES=		${CONTRIBS:T:C/^/bin\/soju-/g} \
+			${DOCSDIR_REL}/getting-started.md \
+			"@sample ${ETCDIR_REL}/config.sample" \
+			"@dir(${USERS},${GROUPS},0711) /var/db/soju" \
+			bin/soju \
+			bin/sojuctl \
+			bin/sojudb
 DOCS_BUILD_DEPENDS=	scdoc:textproc/scdoc
-DOCS_PLIST_FILES=	man/man1/soju.1.gz
+DOCS_PLIST_FILES=	man/man1/soju.1.gz \
+			man/man1/sojuctl.1.gz
 
-post-extract:
-	${MKDIR} ${WRKSRC}/vendor/git.sr.ht/~emersion
-	${MV} ${WRKDIR}/go-scfg-${GO_SCFG_REV} ${WRKSRC}/vendor/git.sr.ht/~emersion/go-scfg
+pre-patch:
+	${RM} -r ${WRKSRC}/vendor/golang.org/x/sys
+	${LN} -s ${WRKDIR}/sys-* ${WRKSRC}/vendor/golang.org/x/sys
 
-post-build-DOCS-on:
-	${LOCALBASE}/bin/scdoc <${WRKSRC}/doc/${PORTNAME}.1.scd >${WRKSRC}/doc/${PORTNAME}.1
+post-patch:
+	@${REINPLACE_CMD} -r -e 's,/var/lib/soju,/var/db/soju,g' \
+		${WRKSRC}/config.in
+	@${REINPLACE_CMD} -r -e 's,[$$]\(([^)]+)\),$${\1},g' \
+		-e 's,(/cmd/sojuctl)$$,\1 ${CONTRIBS},' \
+		-e '/^config_path/s,=.*$$,= ${ETCDIR}/config,' \
+		-e '/^commands/s,$$, ${CONTRIBS:T},' \
+		-e '/^sojudb/s,^,${CONTRIBS:T} ,' \
+		-e '/^\.PHONY/s,$$, ${CONTRIBS:T},' \
+		-e '/^sharedstatedir/s,/var/lib,/var/db,' ${WRKSRC}/Makefile
 
-post-install-DOCS-on:
-	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1
+post-patch-DOCS-off:
+	@${REINPLACE_CMD} -e 's,[$$]{man_pages},,' -e '/man1$$/d' ${WRKSRC}/Makefile
+
+post-install:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/doc/getting-started.md ${STAGEDIR}${DOCSDIR}
+.for EXE in ${CONTRIBS:T}
+	${MV} ${STAGEDIR}${PREFIX}/bin/${EXE} ${STAGEDIR}${PREFIX}/bin/soju-${EXE}
+.endfor
+	${MV} ${STAGEDIR}${ETCDIR}/config ${STAGEDIR}${ETCDIR}/config.sample
 
 .include <bsd.port.mk>

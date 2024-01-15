@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-XMLRPC
 PORTVERSION=	2.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dispatch XMLRPC methods with Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-XMLRPC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

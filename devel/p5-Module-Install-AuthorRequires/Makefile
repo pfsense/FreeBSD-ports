@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Install-AuthorRequires
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to declare author-only dependencies
+WWW=		https://metacpan.org/release/Module-Install-AuthorRequires
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

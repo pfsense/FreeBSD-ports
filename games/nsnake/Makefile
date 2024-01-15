@@ -1,6 +1,3 @@
-# Created by: markand
-# $FreeBSD$
-
 PORTNAME=	nsnake
 PORTVERSION=	2.2.0
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://releases.malikania.fr/nsnake/${PORTVERSION}/
 
 MAINTAINER=	markand@malikania.fr
 COMMENT=	Snake game written in C and ncurses
+WWW=		https://projects.malikania.fr/nsnake/
 
 LICENSE=	ISCL
 

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	galculator
 PORTVERSION=	2.1.4
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=v
 CATEGORIES=	math
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	GTK-based scientific calculator
+WWW=		http://galculator.mnim.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +16,6 @@ USE_GITHUB=	yes
 USES=		autoreconf gettext gmake gnome libtool localbase pkgconfig
 USE_GNOME=	cairo intltool
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
 OPTIONS_SINGLE=		GTK
 OPTIONS_SINGLE_GTK=	GTK2 GTK3

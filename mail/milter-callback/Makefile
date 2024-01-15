@@ -1,14 +1,12 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	milter-callback
 PORTVERSION=	1.6.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	mail
 MASTER_SITES=	LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Milter to perform a envelope-from sender verification on target MX
+WWW=		http://unix.zhegan.in
 
 LICENSE=	GPLv3
 
@@ -16,7 +14,7 @@ LIB_DEPENDS=	libspf2.so:mail/libspf2
 
 USES=		compiler tar:xz
 USE_RC_SUBR=	milter-callback
-USE_GCC=	any
+USE_GCC=	yes
 
 SUB_FILES=	pkg-message
 
@@ -29,10 +27,6 @@ CFLAGS+=	-DFREEBSD -DHAVE_NS_TYPE -DWITH_SPF -I${LOCALBASE}/include \
 LDFLAGS+=	-lmilter -lthr -L${LOCALBASE}/lib -lspf2
 
 .include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
-CFLAGS+=	-fnested-functions
-.endif
 
 do-build:
 .for f in ${SRC_FILES}

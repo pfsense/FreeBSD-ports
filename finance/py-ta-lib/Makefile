@@ -1,14 +1,13 @@
-# $FreeBSD$
-
-PORTNAME=	ta-lib
-DISTVERSIONPREFIX=	TA_Lib-
-DISTVERSION=	0.4.17
-PORTREVISION=	1
+PORTNAME=	ta-lib # provides Python namespace 'talib'
+DISTVERSION=	0.4.28
 CATEGORIES=	finance python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	TA-Lib-${PORTVERSION}
 
-MAINTAINER=	m.tsatsenko@gmail.com
-COMMENT=	Python wrapper for ta-lib (tools for market analysis)
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Python wrapper for TA-Lib (Technical Analysis Library)
+WWW=		https://mrjbq7.github.io/ta-lib/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,16 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libta_lib.so:devel/ta-lib
 RUN_DEPENDS=	${PYNUMPY}
+#TEST_DEPENDS=	misc/py-polars - fails to build, see https://github.com/rust-lang/hashbrown/issues/377
 
-USES=		python:3.6+
+USES=		python
+USE_PYTHON=	distutils cython autoplist pytest # pytest fails to find the library, see https://github.com/pytest-dev/pytest/issues/10885
 
-MAKE_ENV=	TA_INCLUDE_PATH="${LOCALBASE}/include"
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	mrjbq7
-USE_PYTHON=	distutils cython autoplist
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_WRKSRC=	${WRKSRC}/tests
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/talib/_ta_lib*.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/talib/_ta_lib${PYTHON_EXT_SUFFIX}.so
 
 .include <bsd.port.mk>

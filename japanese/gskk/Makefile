@@ -1,6 +1,3 @@
-# Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gskk
 PORTVERSION=	20041208
 CATEGORIES=	japanese
@@ -9,6 +6,7 @@ EXTRACT_SUFX=	.t.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SKK's dictionary for Canna
+WWW=		http://www.ohnolab.org/~kimoto/canna.html # Japanese
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/cannaserver:japanese/canna-server
 BUILD_DEPENDS=	mkbindic:japanese/canna-server

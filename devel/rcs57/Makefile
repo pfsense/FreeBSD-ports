@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rcs
 PORTVERSION=	5.7
 CATEGORIES=	devel
@@ -8,13 +6,11 @@ PKGNAMESUFFIX=	57
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Version control system (as was in FreeBSD prior to removal)
+WWW=		https://www.gnu.org/software/rcs/
 
 LICENSE=	GPLv2
 
-BROKEN_armv6=		fails to build: runaway build
-BROKEN_armv7=		fails to build: runaway build
-
-CONFLICTS=	rcs-5.[89]*
+CONFLICTS=	rcs
 
 OPTIONS_DEFINE=	FREEBSD
 OPTIONS_DEFAULT=	FREEBSD

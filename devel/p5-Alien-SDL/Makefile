@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Alien-SDL
 PORTVERSION=	1.446
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Detect and get configuration setting for SDL
+WWW=		https://metacpan.org/release/Alien-SDL
 
 LICENSE=	GPLv1 ART10
 LICENSE_COMB=	dual

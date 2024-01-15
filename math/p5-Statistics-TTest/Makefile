@@ -1,6 +1,3 @@
-# Created by: dawe <daweonline@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Statistics-TTest
 PORTVERSION=	1.1.0
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to perform T-test on 2 independent samples
+WWW=		https://metacpan.org/release/Statistics-TTest
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Statistics-Descriptive>=0:math/p5-Statistics-Descriptive \

@@ -1,13 +1,12 @@
-# Created by: Andrew Thompson <thompsa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	webcamd
-DISTVERSION=	5.10.6.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	5.17.1.2
 PORTREVISION=	1
 CATEGORIES=	multimedia
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Port of Linux USB webcam and DVB drivers into userspace
+WWW=		https://github.com/hselasky/webcamd
 
 LICENSE=	GPLv2
 
@@ -21,11 +20,11 @@ SUB_FILES=	webcamd.conf
 USE_GITHUB=	yes
 GH_ACCOUNT=	hselasky
 GH_PROJECT=	${PORTNAME}
-GH_TAGNAME=	v${DISTVERSION}
-GH_TUPLE=	torvalds:linux:v5.10-rc6:linux
+GH_TUPLE=	torvalds:linux:v5.17-rc1:linux/media_tree \
+		swills:v4l2loopback:8ab6a12:v4l2loopback/contrib/v4l2loopback
 
-OPTIONS_DEFINE=	DEBUG HAL VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
-OPTIONS_DEFAULT=DVB HAL INPUT RADIO WEBCAM
+OPTIONS_DEFINE=	DEBUG VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM V4L2LOOPBACK
+OPTIONS_DEFAULT=DVB INPUT RADIO WEBCAM V4L2LOOPBACK
 
 #
 # 32-bit compatibility support is mostly useful for
@@ -36,13 +35,6 @@ OPTIONS_DEFAULT_amd64=		COMPAT32
 
 COMPAT32_DESC=	Enable 32-bit compatibility support
 COMPAT32_MAKE_ARGS=	HAVE_COMPAT32="YES"
-
-HAL_DESC=	Build with HAL and DBUS support
-HAL_LIB_DEPENDS+=	libhal.so:sysutils/hal
-HAL_LIB_DEPENDS+=	libdbus-1.so:devel/dbus
-HAL_MAKE_ARGS=		HAVE_HAL="YES"
-HAL_SUB_LIST=		LIBHAL="${LOCALBASE}/lib/libhal.so:${LOCALBASE}/lib/libdbus-1.so:"
-HAL_SUB_LIST_OFF=	LIBHAL=""
 
 DEBUG_MAKE_ARGS=	HAVE_DEBUG="YES"
 
@@ -70,6 +62,9 @@ RADIO_MAKE_ARGS=	HAVE_RADIO_DRV="YES"
 WEBCAM_DESC=	Build with USB webcam support (UVC, gspca, ...)
 WEBCAM_MAKE_ARGS=	HAVE_WEBCAM_DRV="YES"
 
+V4L2LOOPBACK_DESC=	Build with V4L2 loopback support
+V4L2LOOPBACK_MAKE_ARGS=	HAVE_V4L2LOOPBACK_DRV="YES"
+
 USERS=		webcamd
 GROUPS=		webcamd
 
@@ -84,7 +79,6 @@ do-configure:
 	${MAKE} ${MAKE_ARGS} configure -C${WEBCAMDDIR}
 
 post-patch:
-	@(${RM} -r ${WEBCAMDDIR}/media_tree && ${LN} -s ${LINUXDIR} ${WEBCAMDDIR}/media_tree)
 	@(cd ${WEBCAMDDIR}/patches && ${SH} ./do_patch.sh)
 
 post-install:

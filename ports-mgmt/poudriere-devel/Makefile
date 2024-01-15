@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	poudriere
-DISTVERSION=	3.3.99.20200326
-PORTREVISION=	2
+DISTVERSION=	3.4.99.20240105
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	LOCAL/bdrewery/${PORTNAME}/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
@@ -11,29 +8,29 @@ PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Port build and test system
+WWW=		https://github.com/freebsd/poudriere/wiki
 
 LICENSE=	BSD2CLAUSE
 
-CONFLICTS_INSTALL=	poudriere-[0-9]*
+CONFLICTS_INSTALL=	poudriere
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	3.3.0-257-g153d8f14c
-#DISTNAME=	${GH_ACCOUNT}-${GH_PROJECT}-${GH_TAGNAME}
+GH_TAGNAME=	49a98162
+#GH_TAGNAME=	234f8d15
 
 GNU_CONFIGURE=	yes
 ETCDIR=		${PREFIX}/etc/poudriere.d
 
-OPTIONS_DEFINE=	BASH CERTS DIALOG4PORTS EXAMPLES QEMU ZSH
-OPTIONS_DEFAULT=BASH CERTS DIALOG4PORTS ZSH
+OPTIONS_DEFINE=	BASH MANIFESTS PORTCONFIG EXAMPLES QEMU ZSH
+OPTIONS_DEFAULT=BASH MANIFESTS PORTCONFIG ZSH
 OPTIONS_SUB=	yes
 
-CERTS_DESC=		Install checksum and SSL certificates for jail creation
-CERTS_RUN_DEPENDS+=	ca_root_nss>=0:security/ca_root_nss
-CERTS_RUN_DEPENDS+=	freebsd-release-manifests>0:misc/freebsd-release-manifests
+MANIFESTS_DESC=		Install manifests for jail creation
+MANIFESTS_RUN_DEPENDS+=	freebsd-release-manifests>0:misc/freebsd-release-manifests
 
-DIALOG4PORTS_DESC=	Install dialog4ports for options command
-DIALOG4PORTS_RUN_DEPENDS=	dialog4ports>0:ports-mgmt/dialog4ports
+PORTCONFIG_DESC=	Install portconfig for options command
+PORTCONFIG_RUN_DEPENDS=	portconfig>0:ports-mgmt/portconfig
 
 QEMU_DESC=	Add qemu-user-static for non-x86 architectures
 QEMU_RUN_DEPENDS=	qemu-user-static>0:emulators/qemu-user-static
@@ -54,7 +51,7 @@ PLIST_SUB+=	RM="@comment "
 post-patch:
 	${REINPLACE_CMD} \
 	    -e "s,^\(POUDRIERE_VERSION\)=.*,\1='${PKGVERSION}'," \
-	    ${WRKSRC}/src/bin/poudriere
+	    ${WRKSRC}/src/bin/poudriere.in
 
 post-install:
 	${LN} -fs ${LOCALBASE}/share/freebsd/MANIFESTS \

@@ -1,6 +1,3 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	html2wml
 PORTVERSION=	0.4.11
 CATEGORIES=	www
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/htmlwml/Html2Wml/${PORTVERSION} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CGI that can do on-the-fly HTML to WML conversion
+WWW=		https://htmlwml.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

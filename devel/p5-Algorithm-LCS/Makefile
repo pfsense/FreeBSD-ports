@@ -1,6 +1,3 @@
-# Created by: tiger@whitetigersd.com
-# $FreeBSD$
-
 PORTNAME=	Algorithm-LCS
 PORTVERSION=	1.04
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Fast (XS) implementation of the Longest Common Subsequence Algorithm
+WWW=		https://metacpan.org/release/JOESUF/Algorithm-LCS-1.04
 
 USES=		perl5
 USE_PERL5=	configure

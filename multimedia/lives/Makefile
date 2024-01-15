@@ -1,20 +1,20 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lives
 DISTVERSION=	3.2.0
-PORTREVISION=	1
+PORTREVISION=	22
 CATEGORIES=	multimedia
 MASTER_SITES=	http://lives-video.com/releases/
 DISTNAME=	LiVES-${PORTVERSION}
 
-MAINTAINER=	vvd@unislabs.com
+MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Video editing system
+WWW=		http://lives-video.com/
 
 LICENSE=		GPLv3+ LGPL3+
 LICENSE_COMB=		multi
-LICENSE_FILE_GPLv3+=	${WRKSRC}/COPYING
-LICENSE_FILE_LGPL3+=	${WRKSRC}/COPYING.LGPL
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING.LGPL
+
+BROKEN=		fails to build with FFmpeg 6
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		analyseplugin:audio/ladspa
@@ -43,7 +43,7 @@ USE_SDL=	sdl sdl2
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=	--disable-ldvgrab --disable-prctl --disable-system-weed
+CONFIGURE_ARGS=	--disable-ldvgrab --disable-prctl --disable-system-weed --disable-dirac
 INSTALL_TARGET=	install-strip
 
 DOC_FILES=	AUTHORS COPYING COPYING.LGPL ChangeLog FEATURES GETTING.STARTED NEWS README \
@@ -52,23 +52,18 @@ DOC_FILES=	AUTHORS COPYING COPYING.LGPL ChangeLog FEATURES GETTING.STARTED NEWS 
 		lives-plugins/marcos-encoders/README.multi_encoder \
 		weed-docs/weedspec.txt weed-docs/weedevents.txt
 
-OPTIONS_DEFINE=			ALSA DOCS DOXYGEN DV FFTW FREI0R JACK LIBEXPLAIN LIBVISUAL \
-				OGG OPENCV OPTIMIZED_CFLAGS NLS PROJECTM PULSEAUDIO \
-				SCHROEDINGER THEORA V4L WAYLAND
-OPTIONS_GROUP=			RUNTIME EXT_WIN_CAPTURE MPLAYERS MP3 YOUTUBE_DLX
-OPTIONS_GROUP_RUNTIME=		CDDA2WAV GCONF GHOSTSCRIPT LAME MATROSKA MENCODER OGG123 OGM \
-				SSWF X264 XDG_SCREENSAVER XWININFO
+OPTIONS_DEFINE=			ALSA DOCS DOXYGEN DV FFTW FREI0R JACK IMAGEMAGICK LIBEXPLAIN \
+				LIBVISUAL OGG OPENCV OPTIMIZED_CFLAGS NLS PROJECTM PULSEAUDIO \
+				THEORA V4L WAYLAND
+OPTIONS_GROUP=			RUNTIME EXT_WIN_CAPTURE MPLAYERS MP3
+OPTIONS_GROUP_RUNTIME=		CDDA2WAV GHOSTSCRIPT LAME MATROSKA MENCODER OGG123 OGM \
+				SSWF X264 XDG_SCREENSAVER XWININFO YTDLP
 OPTIONS_GROUP_EXT_WIN_CAPTURE=	WMCTRL XDOTOOL
 OPTIONS_GROUP_MP3=		MPG123 MPG321
 OPTIONS_GROUP_MPLAYERS=		MPLAYER MPV
-OPTIONS_GROUP_YOUTUBE_DLX=	YOUTUBE_DL YOUTUBE_DLC
-OPTIONS_RADIO=			IMAGEMAGICK
-OPTIONS_RADIO_IMAGEMAGICK=	IMAGEMAGICK6 IMAGEMAGICK7
-OPTIONS_DEFAULT=		CDDA2WAV DOCS DV FFTW GCONF GHOSTSCRIPT \
-				IMAGEMAGICK7 JACK LAME MATROSKA MPG123 \
-				MPLAYER NLS OGG OGG123 OGM OPENCV \
-				SCHROEDINGER THEORA X264 XDG_SCREENSAVER \
-				XDOTOOL XWININFO YOUTUBE_DL
+OPTIONS_DEFAULT=		CDDA2WAV DOCS DV FFTW GHOSTSCRIPT IMAGEMAGICK JACK LAME \
+				MPG123 MPLAYER NLS OGG OGG123 OGM OPENCV \
+				THEORA X264 XDG_SCREENSAVER XDOTOOL XWININFO YTDLP
 OPTIONS_SUB=			yes
 
 ALSA_CONFIGURE_OFF=		--disable-alsa
@@ -86,14 +81,8 @@ FFTW_LIB_DEPENDS=		libfftw3.so:math/fftw3 \
 FREI0R_BUILD_DEPENDS=		frei0r>0:graphics/frei0r
 FREI0R_CONFIGURE_OFF=		--disable-frei0r
 FREI0R_RUN_DEPENDS=		frei0r>0:graphics/frei0r
-GCONF_USE=			GNOME=gconf2
 GHOSTSCRIPT_USES=		ghostscript:run
-IMAGEMAGICK6_DESC=		${IMAGEMAGICK_DESC} version 6.x
-IMAGEMAGICK6_RUN_DEPENDS=	convert:graphics/ImageMagick6 \
-				composite:graphics/ImageMagick6
-IMAGEMAGICK7_DESC=		${IMAGEMAGICK_DESC} version 7.x
-IMAGEMAGICK7_RUN_DEPENDS=	convert:graphics/ImageMagick7 \
-				composite:graphics/ImageMagick7
+IMAGEMAGICK_USES=		magick:run
 JACK_CONFIGURE_OFF=		--disable-jack
 JACK_LIB_DEPENDS=		libjack.so:audio/jack \
 				libjackserver.so:audio/jack
@@ -123,9 +112,7 @@ OGM_DESC=			Use ogmtools for manipulating with OGM files
 OGM_RUN_DEPENDS=		ogmmerge:multimedia/ogmtools
 OPENCV_CONFIGURE_OFF=		--disable-opencv
 OPENCV_LIB_DEPENDS=		libopencv_calib3d.so:graphics/opencv \
-				libopencv_core.so:graphics/opencv-core
-SCHROEDINGER_CONFIGURE_OFF=	--disable-dirac
-SCHROEDINGER_LIB_DEPENDS=	libschroedinger-1.0.so:multimedia/schroedinger
+				libopencv_core.so:graphics/opencv
 SSWF_DESC=			Use sswf for manipulating with Flash movies
 SSWF_RUN_DEPENDS=		sswf:graphics/sswf
 THEORA_CONFIGURE_OFF=		--disable-theora
@@ -146,11 +133,8 @@ WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
 				libwayland-cursor.so:graphics/wayland
 WMCTRL_DESC=			Install wmctrl
 WMCTRL_RUN_DEPENDS=		wmctrl:x11/wmctrl
-YOUTUBE_DL_DESC=		Install youtube-dl
-YOUTUBE_DL_RUN_DEPENDS=		youtube-dl:www/youtube_dl
-YOUTUBE_DLC_DESC=		Install youtube-dlc
-YOUTUBE_DLC_RUN_DEPENDS=	youtube-dlc:www/youtube_dlc
-YOUTUBE_DLX_DESC=		Install youtube-dl (runtime check)
+YTDLP_DESC=			Install yt-dlp (youtube-dl fork) - requires SYMLINK option
+YTDLP_RUN_DEPENDS=		yt-dlp:www/yt-dlp
 X264_RUN_DEPENDS=		x264:multimedia/x264
 XDG_SCREENSAVER_DESC=		Used to disable screensaver during playback
 XDG_SCREENSAVER_RUN_DEPENDS=	xdg-screensaver:devel/xdg-utils

@@ -1,19 +1,15 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gambit
-DISTVERSION=	16.0.1
-PORTREVISION=	4
+DISTVERSION=	16.0.2
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}${PORTVERSION:R:R}/${PORTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library of tools for doing computation in game theory
+WWW=		http://www.gambit-project.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: ./library/include/gambit/shared_ptr.h:137:37: no matching function for call to 'swap(long int*&, long int* const&)'
 
 USES=		compiler:c++11-lib gnome
 GNU_CONFIGURE=	yes

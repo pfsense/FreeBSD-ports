@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	chocolate-doom
 PORTVERSION=	3.0.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://www.chocolate-doom.org/downloads/${PORTVERSION}/
 
 MAINTAINER=	jakub_lach@mailplus.pl
 COMMENT=	Doom/Heretic/Hexen/Strife engine port compatible with the originals
+WWW=		https://chocolate-doom.org
 
 LICENSE=	GPLv2
 

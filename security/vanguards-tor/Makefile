@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	vanguards
 DISTVERSION=	0.3.1
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMESUFFIX=	-tor
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tor add-on to protect against guard discovery and related attacks
+WWW=		https://github.com/mikeperry-tor/vanguards
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

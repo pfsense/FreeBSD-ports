@@ -1,15 +1,33 @@
---- sysdeps/freebsd/procmap.c.orig	2017-08-07 22:43:41 UTC
+--- sysdeps/freebsd/procmap.c.orig	2021-06-06 05:13:00 UTC
 +++ sysdeps/freebsd/procmap.c
-@@ -52,6 +52,8 @@
+@@ -34,6 +34,8 @@
+ #include <vm/vm_map.h>
+ #include <vm/vm.h>
+ 
++#include <stdbool.h>
++
+ #define _KVM_VNODE
+ #include <sys/vnode.h>
+ #undef _KVM_VNODE
+@@ -51,14 +53,15 @@
+ #define _KERNEL
  #include <sys/mount.h>
  #include <ufs/ufs/quota.h>
- #include <ufs/ufs/inode.h>
+-#include <ufs/ufs/inode.h>
 +#include <ufs/ufs/extattr.h>
 +#include <ufs/ufs/ufsmount.h>
  #include <fs/devfs/devfs.h>
  #if (__FreeBSD_version >= 600006) || defined(__FreeBSD_kernel__)
  #include <fs/devfs/devfs_int.h>
-@@ -95,12 +97,14 @@ _glibtop_sysdeps_freebsd_dev_inode (glibtop *server, s
+ #endif
+ #undef _KERNEL
++#include <ufs/ufs/inode.h>
+ 
+-
+ #if (__FreeBSD_version >= 1101001)
+ #define _KERNEL
+ #include <ufs/ufs/extattr.h>
+@@ -95,12 +98,14 @@ _glibtop_sysdeps_freebsd_dev_inode (glibtop *server, s
          struct cdev_priv priv;
  #if __FreeBSD_version < 800039
          struct cdev si;
@@ -25,7 +43,16 @@
   	             (char *) &tagptr, sizeof (tagptr)) != sizeof (tagptr) ||
              kvm_read (server->machine->kd, (gulong) tagptr,
  		     (char *) tagstr, sizeof (tagstr)) != sizeof (tagstr))
-@@ -231,6 +235,32 @@ _glibtop_init_proc_map_p (glibtop *server)
+@@ -120,7 +125,7 @@ _glibtop_sysdeps_freebsd_dev_inode (glibtop *server, s
+                 return;
+         }
+ 
+-        if (kvm_read (server->machine->kd, (gulong) VTOI(vn), (char *) &inode,
++        if (kvm_read (server->machine->kd, (gulong) ((struct inode *)(vn)->v_data), (char *) &inode,
+  	              sizeof (inode)) != sizeof (inode))
+         {
+                 glibtop_warn_io_r (server, "kvm_read (inode)");
+@@ -231,6 +236,32 @@ _glibtop_init_proc_map_p (glibtop *server)
          server->sysdeps.proc_map = _glibtop_sysdeps_proc_map;
  }
  
@@ -58,7 +85,7 @@
  /* Provides detailed information about a process. */
  
  glibtop_map_entry *
-@@ -238,13 +268,12 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
+@@ -238,13 +269,12 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
                          pid_t pid)
  {
          struct kinfo_proc *pinfo;
@@ -74,7 +101,7 @@
  
          memset (buf, 0, sizeof (glibtop_proc_map));
  
-@@ -273,16 +302,6 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
+@@ -273,16 +303,6 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
                  return NULL;
          }
  
@@ -91,7 +118,7 @@
          /* Walk through the `vm_map_entry' list ... */
  
          /* I tested this a few times with `mmap'; as soon as you write
-@@ -292,21 +311,17 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
+@@ -292,21 +312,17 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
          maps = g_array_sized_new(FALSE, FALSE, sizeof(glibtop_map_entry),
                                   vmspace.vm_map.nentries);
  
@@ -120,7 +147,7 @@
  
                  if (entry.eflags & (MAP_ENTRY_IS_SUB_MAP))
                          continue;
-@@ -377,7 +392,7 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
+@@ -377,7 +393,7 @@ glibtop_get_proc_map_p (glibtop *server, glibtop_proc_
                  if (entry.protection & VM_PROT_EXECUTE)
                          mentry->perm |= GLIBTOP_MAP_PERM_EXECUTE;
  

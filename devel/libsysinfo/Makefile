@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsysinfo
 PORTVERSION=	0.0.3
 DISTVERSIONPREFIX=	v
@@ -8,6 +6,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	imp@bsdimp.com
 COMMENT=	GNU libc's sysinfo port for FreeBSD
+WWW=		https://github.com/bsdimp/libsysinfo
 
 LICENSE=	BSD3CLAUSE
 

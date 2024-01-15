@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	testdisk
 DISTVERSION=	7.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.cgsecurity.org/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to check and undelete partitions
+WWW=		https://www.cgsecurity.org/wiki/TestDisk
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

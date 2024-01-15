@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	signatures
 PORTVERSION=	0.14
 CATEGORIES=	lang perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Subroutine signatures for Perl with no source filter
+WWW=		https://metacpan.org/release/signatures
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

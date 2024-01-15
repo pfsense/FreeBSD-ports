@@ -1,6 +1,3 @@
-# Created by: Andrew T. Bennett <potatosaladx@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mod_xsendfile
 PORTVERSION=	0.12
 PORTREVISION=	3
@@ -9,10 +6,11 @@ MASTER_SITES=	https://tn123.org/mod_xsendfile/ GHC
 
 MAINTAINER=	potatosaladx@gmail.com
 COMMENT=	Apache2 module that processes X-SENDFILE headers
+WWW=		https://tn123.org/mod_xsendfile/
 
 LICENSE=	APACHE20
 
-USES=		apache:2.2+
+USES=		apache
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 USE_GITHUB=	yes

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	pengupop
 PORTVERSION=	2.2.6
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.junoplay.com/files/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Online multiplayer clone of Bust a Move
+WWW=		https://www.junoplay.com/pengupop
 
 GNU_CONFIGURE=	yes
 USES=		gmake sdl

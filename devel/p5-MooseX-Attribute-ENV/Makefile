@@ -1,6 +1,3 @@
-# Created by: alan <Alan@Wave2.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Attribute-ENV
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	Alan@Wave2.org
 COMMENT=	Set default of an attribute to a value from %ENV
+WWW=		https://metacpan.org/release/MooseX-Attribute-ENV
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

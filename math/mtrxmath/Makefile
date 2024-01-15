@@ -1,6 +1,3 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	mtrxmath
 PORTVERSION=	1.0.2
 CATEGORIES=	math
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.angelfire.com/linux/linuxjeff/mtrxmath/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small tool for matrix mathematics
+WWW=		https://www.angelfire.com/linux/linuxjeff/mtrxmath/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

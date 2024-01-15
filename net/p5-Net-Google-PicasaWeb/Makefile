@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	Net-Google-PicasaWeb
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	Use Google Picasa Web API
+WWW=		https://metacpan.org/release/Net-Google-PicasaWeb
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

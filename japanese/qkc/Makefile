@@ -1,6 +1,3 @@
-# Created by: Masafumi NAKANE <max@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	qkc
 PORTVERSION=	1.0
 CATEGORIES=	japanese
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}c100
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Quick Kanji Code Converter (C version)
+WWW=		https://hp.vector.co.jp/authors/VA000501/
 
 USES=		zip
 NO_WRKSUBDIR=	yes

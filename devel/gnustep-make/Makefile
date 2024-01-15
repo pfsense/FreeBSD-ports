@@ -1,14 +1,12 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnustep-make
-PORTVERSION=	2.7.0
-PORTREVISION=	3
+PORTVERSION=	2.8.0
+PORTREVISION=	1
 CATEGORIES=	devel gnustep
 MASTER_SITES=	GNUSTEP/core
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep makefile package
+WWW=		http://www.gnustep.org/
 
 LICENSE=	GPLv3
 
@@ -24,6 +22,7 @@ CONFIGURE_ARGS+=	--with-layout=gnustep
 CONFIGURE_ARGS+=	--enable-objc-nonfragile-abi --enable-native-objc-exceptions
 CONFIGURE_ARGS+=	--with-library-combo=ng-gnu-gnu
 GNU_CONFIGURE_PREFIX=	${GNUSTEP_PREFIX}
+NO_ARCH=	yes
 
 post-install:
 	${LN} -s Library/Makefiles ${STAGEDIR}${GNUSTEP_PREFIX}/System/

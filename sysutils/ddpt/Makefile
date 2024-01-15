@@ -1,13 +1,11 @@
-# Created by: Xin Li <delphij@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ddpt
-PORTVERSION=	0.95
+PORTVERSION=	0.97
 CATEGORIES=	sysutils
 MASTER_SITES=	http://sg.danny.cz/sg/p/
 
 MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	dd tool that specializes in files that are block devices
+WWW=		https://sg.danny.cz/sg/ddpt.html
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,7 +16,9 @@ GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/ddpt
 PLIST_FILES+=	bin/ddptctl
+PLIST_FILES+=	bin/ddpt_sgl
 PLIST_FILES+=	man/man8/ddpt.8.gz
 PLIST_FILES+=	man/man8/ddptctl.8.gz
+PLIST_FILES+=	man/man8/ddpt_sgl.8.gz
 
 .include <bsd.port.mk>

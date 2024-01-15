@@ -3,7 +3,7 @@
  * frr_ospf.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,55 +20,26 @@
  */
 
 function frr_generate_config_ospf_areas() {
-	global $config, $frr_config_base, $frr_auto_config_warning;
-	if (is_array($config['installedpackages']['frrospfd']['config'])) {
-		$frr_ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
-	}
+	global $frr_config_base, $frr_auto_config_warning;
+
+	/* Populate FRR OSPF Settings */
+	$frr_ospfd_conf = config_get_path('installedpackages/frrospfd/config/0', []);
 
 	$defined_areas = array();
 	$auto_areas = array();
 	$aconf = "";
 
 	/* Automatic Area: Default */
-	if (!isset($auto_areas[$frr_ospfd_conf['defaultarea']]) || !is_array($auto_areas[$frr_ospfd_conf['defaultarea']])) {
+	if (!isset($auto_areas[$frr_ospfd_conf['defaultarea']]) ||
+	    !is_array($auto_areas[$frr_ospfd_conf['defaultarea']])) {
 		$auto_areas[$frr_ospfd_conf['defaultarea']] = array();
 	}
 	$auto_areas[$frr_ospfd_conf['defaultarea']]['area'] = $frr_ospfd_conf['defaultarea'];
 	$auto_areas[$frr_ospfd_conf['defaultarea']]['type'] = $frr_ospfd_conf['defaultareatype'];
 
-	/* Automatic Areas: Interfaces with Authentication */
-	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
-	foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $conf) {
-		$realif = get_real_interface($conf['interface']);
-		if (empty($realif)) {
-			continue;
-		}
-
-		/* Use default area if the interface area is empty */
-		$ifarea = (isset($conf['interfacearea']) && (strlen($conf['interfacearea']) > 0)) ? $conf['interfacearea'] : $frr_ospfd_conf['defaultarea'];
-
-		if (!isset($auto_areas[$ifarea]) || !is_array($auto_areas[$ifarea])) {
-			$auto_areas[$ifarea] = array();
-		}
-
-		/* If this interface wants authentication, define the area as needing authentication */
-		if (!empty($conf['password']) && in_array($conf['authtype'], array('digest', 'simple'))) {
-			$auto_areas[$ifarea]['area'] = $ifarea;
-			$auto_areas[$ifarea]['authtype'] = $conf['authtype'];
-		}
-	}
-
 	/* Load defined areas */
-	init_config_arr(array('installedpackages', 'frrospfdareas', 'config'));
-	foreach ($config['installedpackages']['frrospfdareas']['config'] as $conf) {
+	foreach (config_get_path('installedpackages/frrospfdareas/config', []) as $conf) {
 		$defined_areas[$conf['area']] = $conf;
-
-		/* Check if an automatic area needs authentication that isn't set here. */
-		if (empty($defined_areas[$conf['area']]['authtype']) &&
-			array_key_exists($conf['area'], $auto_areas) &&
-			in_array($auto_areas[$conf['area']]['authtype'], array('digest', 'simple'))) {
-			$defined_areas[$conf['area']]['authtype'] = $auto_areas[$conf['area']]['authtype'];
-		}
 	}
 
 	/* Copy automatic areas over only if they do not have custom settings */
@@ -168,13 +139,13 @@ function frr_generate_config_ospf_areas() {
 }
 
 function frr_generate_config_ospf_interfaces() {
-	global $config, $passive_interfaces, $frr_integrated_config;
-	init_config_arr(array('installedpackages', 'frrospfd', 'config'));
-	$frr_ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
+	global $passive_interfaces, $frr_integrated_config;
+
+	/* Populate FRR OSPF Settings */
+	$frr_ospfd_conf = config_get_path('installedpackages/frrospfd/config/0', []);
 
 	/* Setup interface entries to define network types, costs, etc. */
-	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
-	foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $conf) {
+	foreach (config_get_path('installedpackages/frrospfdinterfaces/config', []) as $conf) {
 		$realif = get_real_interface($conf['interface']);
 		if (empty($realif)) {
 			continue;
@@ -201,6 +172,7 @@ function frr_generate_config_ospf_interfaces() {
 					$frr_integrated_config['interfaces'][$realif] .= " ip ospf message-digest-key 1 md5 " . substr($conf['password'], 0, 16) . "\n";
 					break;
 				case "simple":
+					$frr_integrated_config['interfaces'][$realif] .= " ip ospf authentication\n";
 					$frr_integrated_config['interfaces'][$realif] .= " ip ospf authentication-key " . substr($conf['password'], 0, 8) . "\n";
 					break;
 				case "null":
@@ -249,11 +221,9 @@ function frr_generate_config_ospf_interfaces() {
 }
 
 function frr_generate_config_ospf_neighbors() {
-	global $config;
 	$neiconf= "";
 
-	init_config_arr(array('installedpackages', 'frrospfdneighbors', 'config'));
-	foreach ($config['installedpackages']['frrospfdneighbors']['config'] as $conf) {
+	foreach (config_get_path('installedpackages/frrospfdneighbors/config', []) as $conf) {
 		$neiconf .= " neighbor {$conf['neighbor']}" ;
 		if (!empty($conf['priority'])) {
 			$neiconf .= " priority {$conf['priority']}";
@@ -292,25 +262,22 @@ function frr_generate_config_ospf_redistribute($frr_ospfd_conf, $variablename, $
 }
 
 function frr_generate_config_ospf() {
-	global $config, $frr_config_base, $frr_integrated_config, $passive_interfaces;
+	global $frr_config_base, $frr_integrated_config, $passive_interfaces;
 
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	} else {
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
+	if (empty($frr_conf)) {
 		/* If FRR is not configured, stop. */
 		frr_package_log("FRR OSPFd: No FRR global config data found.");
 		return null;
 	}
-	/* Populate FRR OSPF Settings */
-	if (is_array($config['installedpackages']['frrospfd']['config'])) {
-		$frr_ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
-	}
 
-	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']) &&
-		!empty($config['installedpackages']['frrglobalraw']['config'][0]['ospfd'])) {
+	/* Populate FRR OSPF Settings */
+	$frr_ospfd_conf = config_get_path('installedpackages/frrospfd/config/0', []);
+
+	if (!empty(config_get_path('installedpackages/frrglobalraw/config/0/ospfd'))) {
 		/* If the user has supplied a raw configuration, use that instead of the GUI configuration. */
-		$frr_integrated_config['ospfd'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']));
+		$frr_integrated_config['ospfd'] = str_replace("\r", "", base64_decode(config_get_path('installedpackages/frrglobalraw/config/0/ospfd')));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_ospfd_conf)) {
@@ -325,6 +292,7 @@ function frr_generate_config_ospf() {
 			frr_package_log("FRR OSPFd: FRR master disabled.");
 			return;
 		}
+
 		$frr_integrated_config['ospfd'] = "";
 
 		$redist = "";
@@ -357,6 +325,7 @@ function frr_generate_config_ospf() {
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributeconnectedsubnets', 'connected');
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributekernel', 'kernel');
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributebgp', 'bgp');
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributerip', 'rip');
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributestatic', 'static');
 		if ($frr_ospfd_conf['redistributedefaultroute']) {
 			$frr_integrated_config['ospfd'] .= " default-information originate";

@@ -1,15 +1,14 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	billardgl
 PORTVERSION=	1.75
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/BillardGL%20${PORTVERSION}
 DISTNAME=	BillardGL-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenGL pool billiard simulation
+WWW=		https://web.archive.org/web/20180527220530/http://www.billardgl.de/index-en.html \
+		https://sourceforge.net/projects/billardgl/
 
 LICENSE=	GPLv2 # from website
 

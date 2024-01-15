@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	migmix
 PORTVERSION=	1.0.20130617
 PORTREVISION=	5
@@ -13,6 +11,7 @@ DISTFILES=	${PORTNAME}-1m-${PORTVERSION:E}${EXTRACT_SUFX} \
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Mixed Japanese font with IPA Gothic and M-plus outline
+WWW=		http://mix-mplus-ipa.sourceforge.jp/migmix/
 
 LICENSE=	IPAFONTLICv1.0
 LICENSE_NAME=	IPA Font License Agreement v1.0

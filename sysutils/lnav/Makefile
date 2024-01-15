@@ -1,30 +1,28 @@
-# Created by: Thomas Hurst <tom@hur.st>
-# $FreeBSD$
-
 PORTNAME=	lnav
-PORTVERSION=	0.9.0
+DISTVERSION=	0.11.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/tstack/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	tom@hur.st
 COMMENT=	Terminal based log file navigator
+WWW=		https://lnav.org/
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_i386=	fails to build: error: non-constant-expression cannot be narrowed
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
-LIB_DEPENDS=	libpcrecpp.so:devel/pcre
-
-USES=		autoreconf compiler:c++14-lang gmake ncurses readline sqlite tar:bz2
+USES=		autoreconf compiler:c++14-lang gmake ncurses readline sqlite \
+		tar:bz2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
 
-PLIST_FILES=	bin/lnav man/man1/lnav.1.gz
+PLIST_FILES=	bin/lnav \
+		man/man1/lnav.1.gz
 
-OPTIONS_DEFINE=	CURL
-OPTIONS_DEFAULT=CURL
-CURL_DESC=	Use libcurl for remote log file support
+OPTIONS_DEFINE=		CURL
+OPTIONS_DEFAULT=	CURL
+CURL_DESC=		Use libcurl for remote log file support
 
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_WITH=	libcurl

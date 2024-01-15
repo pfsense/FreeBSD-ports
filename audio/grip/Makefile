@@ -1,13 +1,12 @@
-# Created by: kbyanc@posi.net
-# $FreeBSD$
-
 PORTNAME=	grip
-PORTVERSION=	4.1.1
+DISTVERSION=	4.2.4
+PORTREVISION=	2
 CATEGORIES=	audio
-MASTER_SITES=	SF/grip/${PORTVERSION}
+MASTER_SITES=	SF/grip/${DISTVERSION}
 
 MAINTAINER=	freebsd-ports@jan0sch.de
 COMMENT=	GTK front-end to external cd rippers and audio encoders
+WWW=		https://sourceforge.net/projects/grip/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,19 +14,19 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libid3.so:audio/id3lib \
-		libpopt.so:devel/popt
+		libid3.so:audio/id3lib
 
-USES=		compiler:c++11-lang gmake gnome libtool localbase \
-		pathfix pkgconfig xorg gnome
-USE_XORG=	ice sm x11 xext
+USES=		compiler:c++11-lang gmake gnome libtool localbase pathfix \
+		pkgconfig xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_XORG=	ice sm x11 xext
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--disable-werror
-INSTALLS_ICONS=	yes
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--disable-werror
 
-OPTIONS_DEFINE=	CDPARANOIA CDDA2WAV LAME VORBIS FAAC FLAC NLS
+CONFLICTS_INSTALL=	py*-grip # bin/grip
+
+OPTIONS_DEFINE=		CDDA2WAV CDPARANOIA FAAC FLAC LAME NLS VORBIS
 OPTIONS_DEFAULT=	CDPARANOIA FLAC VORBIS
 
 .if !defined(PACKAGE_BUILDING)
@@ -36,22 +35,20 @@ OPTIONS_DEFAULT+=	LAME
 
 OPTIONS_SUB=	yes
 
-CDPARANOIA_LIB_DEPENDS=	libcdda_paranoia.so:audio/cdparanoia
+CDDA2WAV_RUN_DEPENDS=		cdda2wav:sysutils/cdrtools
+CDPARANOIA_LIB_DEPENDS=		libcdda_paranoia.so:audio/cdparanoia
 CDPARANOIA_CONFIGURE_ENABLE=	cdpar
-CDDA2WAV_RUN_DEPENDS=	cdda2wav:sysutils/cdrtools
-FAAC_RUN_DEPENDS=	faac:audio/faac
-FLAC_RUN_DEPENDS=	flac:audio/flac
-LAME_RUN_DEPENDS=	lame:audio/lame
-VORBIS_RUN_DEPENDS=	ogg123:audio/vorbis-tools
-NLS_USES=	gettext
+FAAC_RUN_DEPENDS=		faac:audio/faac
+FLAC_RUN_DEPENDS=		flac:audio/flac
+LAME_RUN_DEPENDS=		lame:audio/lame
+VORBIS_RUN_DEPENDS=		ogg123:audio/vorbis-tools
+NLS_USES=			gettext
 
 .if defined(WITH_CDROM_DEVICE)
-DEFAULT_CDROM_DEVICE=${WITH_CDROM_DEVICE}
+DEFAULT_CDROM_DEVICE=	${WITH_CDROM_DEVICE}
 .else
-DEFAULT_CDROM_DEVICE=/dev/cd0
+DEFAULT_CDROM_DEVICE=	/dev/cd0
 .endif
-
-.include <bsd.port.pre.mk>
 
 pre-everything::
 .if !defined(WITH_CDROM_DEVICE)
@@ -63,8 +60,5 @@ pre-everything::
 post-patch:
 	@${REINPLACE_CMD} -e 's|/dev/cdrom|${DEFAULT_CDROM_DEVICE}|' \
 		${WRKSRC}/src/grip.c
-.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
-	${REINPLACE_CMD} -e '/pragma/d' ${WRKSRC}/src/cdpar.c
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

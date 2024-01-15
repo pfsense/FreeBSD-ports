@@ -1,6 +1,3 @@
-# Created by: Fernan Aguero  <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Controller-BindLex
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Stash your lexical goodness
+WWW=		https://metacpan.org/release/Catalyst-Controller-BindLex
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,47 +1,57 @@
-# Created by: JonathanChen <jonc@chen.org.nz>
-# $FreeBSD$
-
 PORTNAME=	maven
-DISTVERSION=	3.6.3
+DISTVERSION=	3.8.8
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/maven/maven-3/${DISTVERSION}/binaries
-DISTNAME=	apache-maven-${DISTVERSION}-bin
+DISTNAME=	apache-${PORTNAME}-${DISTVERSION}-bin
 
-MAINTAINER=	jonc@chen.org.nz
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Java project management tool
+WWW=		https://maven.apache.org/
 
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	mvn:devel/maven-wrapper
 
 USES=		cpe
+CPE_VENDOR=	apache
+CPE_PRODUCT=	maven
 USE_JAVA=	yes
 
-CPE_PRODUCT=	maven
-CPE_VENDOR=	apache
-NO_BUILD=	yes
+DATADIR=	${JAVASHAREDIR}/${INSTANCE_ID}
 NO_ARCH=	yes
-DATADIR=	${JAVASHAREDIR}/${PORTNAME}
-WRKSRC=		${WRKDIR}/apache-maven-${DISTVERSION}
-SUB_FILES=	mvn.sh
-SUB_LIST=	CLASSWORLDS_JAR=plexus-classworlds-2.6.0.jar
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
-INSTANCE_FILE=	${PORTNAME}-${PORTVERSION}
-INSTANCES_DIR=	etc/maven-wrapper/instances.d/
+NO_BUILD=	yes
+WRKSRC=		${WRKDIR}/${DISTNAME:S/-bin//}
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+	INSTANCE_ID=${INSTANCE_ID} \
+	INSTANCES_DIR=${INSTANCES_DIR}
+INSTANCE_ID=	${DISTNAME:S/-bin//:R}
+INSTANCES_DIR=	${LOCALBASE}/etc/maven-wrapper/instances.d
 
 post-extract:
-	${RM} -r ${WRKSRC}/lib/jansi-native ${WRKSRC}/bin/*.bat
-	${ECHO_CMD} "${DATADIR}" > ${WRKSRC}/${INSTANCE_FILE}
+	${RM} -r ${WRKSRC}/lib/jansi-native ${WRKSRC}/bin/*.cmd
+	${ECHO_CMD} "${DATADIR}" > ${WRKDIR}/${INSTANCE_ID}
+
+post-patch:
+	@${REINPLACE_CMD} \
+		-e '36,39d;54,72d;74,75d' \
+		-e 's|/usr/local|${LOCALBASE}|g' \
+		-E -e 's|^MAVEN_HOME=.+$$|MAVEN_HOME="${DATADIR}"|g' ${WRKSRC}/bin/mvn
+	@${FIND} ${WRKSRC} -name '*.bak' -delete -o -name '*.orig' -delete
 
 do-install:
-	cd ${WRKSRC} && ${FIND} . -type d -exec ${MKDIR} \
+	@cd ${WRKSRC} && ${FIND} . -type d -exec ${MKDIR} \
 		${STAGEDIR}${DATADIR}/{} \;
 	cd ${WRKSRC} && ${FIND} . -type f -not -path "\./bin/" \
 		-exec ${INSTALL_DATA} {} ${STAGEDIR}${DATADIR}/{} \;
-	${INSTALL_DATA} ${WRKSRC}/bin/m2.conf ${STAGEDIR}${DATADIR}/bin
-	${INSTALL_SCRIPT} ${WRKDIR}/mvn.sh ${STAGEDIR}${DATADIR}/bin/mvn
-	@${MKDIR} ${STAGEDIR}${PREFIX}/${INSTANCES_DIR}
-	${INSTALL_DATA} ${WRKSRC}/${INSTANCE_FILE} \
-		${STAGEDIR}${PREFIX}/${INSTANCES_DIR}
+	@cd ${STAGEDIR}${DATADIR} && ${FIND} conf -type f -exec ${CP} \
+		'{}' '{}'.sample \;
+	${INSTALL_DATA} ${WRKSRC}/bin/m2.conf ${STAGEDIR}${DATADIR}/bin/m2.conf.sample
+	${INSTALL_SCRIPT} ${WRKSRC}/bin/mvn ${STAGEDIR}${DATADIR}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/bin/mvnDebug ${STAGEDIR}${DATADIR}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/bin/mvnyjp ${STAGEDIR}${DATADIR}/bin
+	@${MKDIR} ${STAGEDIR}${INSTANCES_DIR}
+	${INSTALL_DATA} ${WRKDIR}/${INSTANCE_ID} \
+		${STAGEDIR}${INSTANCES_DIR}
 
 .include <bsd.port.mk>

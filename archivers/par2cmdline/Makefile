@@ -1,13 +1,12 @@
-# Created by: Chris Larsen <darth@vader.dk>
-# $FreeBSD$
-
 PORTNAME=	par2cmdline
 PORTVERSION=	0.8.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	archivers
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Tools for using Parity v2 Archive files
+WWW=		https://github.com/Parchive/par2cmdline
 
 LICENSE=	GPLv2
 
@@ -16,20 +15,20 @@ GNU_CONFIGURE=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Parchive
-GH_PROJECT=	par2cmdline
 
 PORTDOCS=	README
-CONFLICTS=	par2cmdline-tbb-[0-9]*
+CONFLICTS=	par2cmdline-turbo
 
-PLIST_FILES=	bin/par2 bin/par2create bin/par2repair bin/par2verify man/man1/par2.1.gz
+PLIST_FILES=	bin/par2 bin/par2create bin/par2repair bin/par2verify \
+	man/man1/par2.1.gz
 
 OPTIONS_DEFINE=	DOCS
 
 TEST_TARGET=	check
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR} && \
+		${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.pre.mk>
 

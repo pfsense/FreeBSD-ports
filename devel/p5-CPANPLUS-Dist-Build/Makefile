@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CPANPLUS-Dist-Build
 PORTVERSION=	0.90
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	CPANPLUS plug-in to use Module-Build
+WWW=		https://metacpan.org/release/BINGOS/CPANPLUS-Dist-Build-0.88
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

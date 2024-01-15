@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	popstar
 PORTVERSION=	0.0.2
 PORTREVISION=	2
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple puzzle game involving floating stars
+WWW=		http://www.newbreedsoftware.com/popstar/
 
 LICENSE=	GPLv2+ CC-BY-SA-2.5 CC-BY-3.0
 LICENSE_COMB=	multi

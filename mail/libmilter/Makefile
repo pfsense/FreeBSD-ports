@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libmilter
-PORTVERSION=	8.16.1
+PORTVERSION=	8.17.2
 PORTREVISION=	0
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
@@ -9,6 +7,7 @@ DISTNAME=	sendmail.${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Library providing Sendmail Mail Filter API
+WWW=		https://www.sendmail.com/sm/open_source/milter/
 
 LICENSE=	Sendmail
 LICENSE_NAME=	Sendmail License

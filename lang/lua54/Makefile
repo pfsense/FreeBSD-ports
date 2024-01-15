@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	lua
-DISTVERSION=	5.4.2
+DISTVERSION=	5.4.6
 CATEGORIES=	lang
 MASTER_SITES=	https://www.lua.org/ftp/
 PKGNAMESUFFIX=	${LUA_VER_STR}
 
-MAINTAINER=	russ.haley@gmail.com
+MAINTAINER=	andrew@tao11.riddles.org.uk
 COMMENT=	Powerful, efficient, lightweight, embeddable scripting language
+WWW=		https://www.lua.org/
 
 LICENSE=	MIT
 
-USES=		lua:core,54
+USES=		cpe lua:core,54
 USE_LDCONFIG=	yes
 
 # Overriding __MAKE_CONF makes sure that we don't re-parse

@@ -1,13 +1,11 @@
-# Created by: Michael L. Hostbaek (mich@freebsdcluster.org)
-# $FreeBSD$
-
 PORTNAME=	cdpr
 PORTVERSION=	2.4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cisco Discovery Protocol Reporter
+WWW=		http://www.monkeymental.com/nuke/
 
 LICENSE=	GPLv2
 

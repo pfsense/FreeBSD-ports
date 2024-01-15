@@ -1,6 +1,3 @@
-# Created by: Yanhui Shen <shen.elf@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pkg-rmleaf
 PORTVERSION=	0.4
 CATEGORIES=	ports-mgmt
@@ -9,6 +6,7 @@ DISTFILES=	# none
 
 MAINTAINER=	shen.elf@gmail.com
 COMMENT=	Remove leaf packages
+WWW=		https://github.com/bsdelf/pkg-rmleaf
 
 LICENSE=	BSD2CLAUSE
 

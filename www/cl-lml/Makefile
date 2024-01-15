@@ -1,6 +1,3 @@
-# Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
-
 PORTNAME=	lml
 PORTVERSION=	2.5.7
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	cl-
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Lisp Markup Language
+WWW=		http://lml.b9.com/
 
 NO_BUILD=	yes
 

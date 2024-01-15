@@ -3,10 +3,10 @@
  * snort_preprocessors.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,68 +38,15 @@ if (is_null($id)) {
         exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
-	$config['installedpackages']['snortglobal']['rule'] = array();
-
 // Initialize multiple config engine arrays for supported preprocessors if necessary
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'] = array();
-}
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'frag3_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'stream5_tcp_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'http_inspect_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_server_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_client_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'arp_spoof_engine', 'item'));
 
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
-
-$vrt_enabled = $config['installedpackages']['snortglobal']['snortdownload'];
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 // Calculate the "next engine ID" to use for the multi-config engine arrays
 $frag3_engine_next_id = count($a_nat[$id]['frag3_engine']['item']);
@@ -114,42 +61,12 @@ if (isset($id) && isset($a_nat[$id])) {
 	$pconfig = $a_nat[$id];
 
 	// Initialize multiple config engine arrays for supported preprocessors if necessary
-	if (!is_array($pconfig['frag3_engine'])) {
-		$pconfig['frag3_engine'] = array();
-	}
-	if (!is_array($pconfig['frag3_engine']['item'])) {
-		$pconfig['frag3_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['stream5_tcp_engine'])) {
-		$pconfig['stream5_tcp_engine'] = array();
-	}
-	if (!is_array($pconfig['stream5_tcp_engine']['item'])) {
-		$pconfig['stream5_tcp_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['http_inspect_engine'])) {
-		$pconfig['http_inspect_engine'] = array();
-	}
-	if (!is_array($pconfig['http_inspect_engine']['item'])) {
-		$pconfig['http_inspect_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['ftp_server_engine'])) {
-		$pconfig['ftp_server_engine'] = array();
-	}
-	if (!is_array($pconfig['ftp_server_engine']['item'])) {
-		$pconfig['ftp_server_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['ftp_client_engine'])) {
-		$pconfig['ftp_client_engine'] = array();
-	}
-	if (!is_array($pconfig['ftp_client_engine']['item'])) {
-		$pconfig['ftp_client_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['arp_spoof_engine'])) {
-		$pconfig['arp_spoof_engine'] = array();
-	}
-	if (!is_array($pconfig['arp_spoof_engine']['item'])) {
-		$pconfig['arp_spoof_engine']['item'] = array();
-	}
+	array_init_path($pconfig, 'frag3_engine/item');
+	array_init_path($pconfig, 'stream5_tcp_engine/item');
+	array_init_path($pconfig, 'http_inspect_engine/item');
+	array_init_path($pconfig, 'ftp_server_engine/item');
+	array_init_path($pconfig, 'ftp_client_engine/item');
+	array_init_path($pconfig, 'arp_spoof_engine/item');
 
 	/************************************************************/
 	/* To keep new users from shooting themselves in the foot   */
@@ -367,9 +284,8 @@ if ($_POST['arp_spoof_save']) {
 			$a_nat[$id]['arp_spoof_engine']['item'][] = $engine;
 		}
 
-		unset($a_nat);
-
 		// Save the updates to the Snort configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: Updated ARP Spoofing engine address pairs for {$a_nat[$id]['interface']}.");
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
 		exit;
@@ -385,8 +301,8 @@ if ($_POST['arp_spoof_save']) {
 if ($_POST['del_http_inspect']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['http_inspect_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted http_inspect engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#httpinspect_row");
 		exit;
 	}
@@ -394,8 +310,8 @@ if ($_POST['del_http_inspect']) {
 elseif ($_POST['del_frag3']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['frag3_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted frag3 engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#frag3_row");
 		exit;
 	}
@@ -403,8 +319,8 @@ elseif ($_POST['del_frag3']) {
 elseif ($_POST['del_stream5_tcp']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['stream5_tcp_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted stream5 engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#stream5_row");
 		exit;
 	}
@@ -412,8 +328,8 @@ elseif ($_POST['del_stream5_tcp']) {
 elseif ($_POST['del_ftp_client']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_client_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted ftp_client engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -421,8 +337,8 @@ elseif ($_POST['del_ftp_client']) {
 elseif ($_POST['del_ftp_server']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_server_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted ftp_server engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -430,8 +346,8 @@ elseif ($_POST['del_ftp_server']) {
 elseif ($_POST['del_arp_spoof_engine']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['arp_spoof_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted ARP spoof host address pair for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
 		exit;
 	}
@@ -715,6 +631,7 @@ if ($_POST['save']) {
 
 		if (isset($id) && isset($a_nat[$id])) {
 			$a_nat[$id] = $natent;
+			config_set_path('installedpackages/snortglobal/rule', $a_nat);
 			write_config("Snort pkg: saved modified preprocessor settings for {$a_nat[$id]['interface']}.");
 		}
 
@@ -740,8 +657,6 @@ if ($_POST['save']) {
 			snort_start($a_nat[$id], $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because Preprocessor changes require a restart.");
 		}
-
-		unset($a_nat);
 
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
@@ -775,7 +690,6 @@ if ($_POST['btn_import']) {
 				$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
 				write_config("Snort pkg: imported Host Attribute Table data for {$a_nat[$id]['interface']}.");
 			}
-			unset($a_nat);
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -796,8 +710,8 @@ if ($_POST['btn_edit_hat']) {
 		$a_nat[$id]['host_attribute_table'] = "on";
 		$a_nat[$id]['max_attribute_hosts'] = $pconfig['max_attribute_hosts'];
 		$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: modified Host Attribute Table data for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_edit_hat_data.php?id=$id");
 		exit;
 	}
@@ -894,7 +808,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 			'view',
 			'View',
 			'#',
-			'fa-file-text-o'
+			'fa-regular fa-file-lines'
 		);
 		$btnview->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm');
 		$btnview->setAttribute('data-target', '#rulesviewer')->setAttribute('data-toggle', 'modal');
@@ -974,13 +888,13 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'btn_import',
 		' Import',
 		null,
-		'fa-upload'
+		'fa-solid fa-upload'
 	))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm');
 	$group->add(new Form_Button(
 		'btn_edit_hat',
 		empty($pconfig['host_attribute_data']) ? 'Create' : 'Edit',
 		null,
-		empty($pconfig['host_attribute_data']) ? 'fa-plus' : 'fa-pencil'
+		empty($pconfig['host_attribute_data']) ? 'fa-plus' : 'fa-solid fa-pencil'
 	))->removeClass('btn-primary')->addClass('btn-success')->addClass('btn-sm');
 	$group->setHelp('The Host Attribute Data file has a required specific format.  See the Snort manual for details.');
 	$section->add($group);
@@ -1097,7 +1011,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START HTTP Inspect settings   -->
 	<div class="panel panel-default" id="preproc_http">
 		<div class="panel-heading">
-			<h2 class="panel-title">HTTP Inspect<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_http_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">HTTP Inspect<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_http_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_http_panel-body" class="panel-body collapse in">
 <?php
@@ -1157,11 +1071,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=http_inspect_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_httpinspect_engine.php?id=<?=$id?>&eng_id=<?=$http_inspect_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1173,11 +1087,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_httpinspect_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_httpinspect_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_http_inspect', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_http_inspect', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1194,7 +1108,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START Frag3 settings       -->
 	<div class="panel panel-default" id="preproc_frag3">
 		<div class="panel-heading">
-			<h2 class="panel-title">Frag3 Target-Based IP Defragmentation<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_frag3_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">Frag3 Target-Based IP Defragmentation<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_frag3_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_frag3_panel-body" class="panel-body collapse in">
 <?php
@@ -1237,11 +1151,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=frag3_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_frag3_engine.php?id=<?=$id?>&eng_id=<?=$frag3_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1253,11 +1167,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_frag3_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_frag3_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_frag3', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_frag3', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1274,7 +1188,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START Stream5 settings -->
 	<div class="panel panel-default" id="preproc_stream5">
 		<div class="panel-heading">
-			<h2 class="panel-title">Stream5 Target-Based Stream Reassembly<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_stream5_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">Stream5 Target-Based Stream Reassembly<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_stream5_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_stream5_panel-body" class="panel-body collapse in">
 <?php
@@ -1390,11 +1304,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=stream5_tcp_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_stream5_engine.php?id=<?=$id?>&eng_id=<?=$stream5_tcp_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1406,11 +1320,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_stream5_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_stream5_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_stream5_tcp', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_stream5_tcp', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1529,7 +1443,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'btnSelectAlias',
 		' ' . 'Aliases',
 		'#',
-		'fa-search-plus'
+		'fa-solid fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
@@ -1551,7 +1465,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'btnSelectAlias',
 		' ' . 'Aliases',
 		'#',
-		'fa-search-plus'
+		'fa-solid fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
@@ -1633,7 +1547,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START FTP Protocol setttings -->
 	<div class="panel panel-default" id="preproc_ftp">
 		<div class="panel-heading">
-			<h2 class="panel-title">FTP Protocol Options<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_ftp_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">FTP Protocol Options<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_ftp_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_ftp_panel-body" class="panel-body collapse in">
 			<div class="form-group">
@@ -1649,11 +1563,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=ftp_client_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import client configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_ftp_client_engine.php?id=<?=$id?>&eng_id=<?=$ftp_client_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new client configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1665,11 +1579,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_ftp_client_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this client configuration")?>"></a>
+										<a href="snort_ftp_client_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this client configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_ftp_client', '<?=$f;?>');" title="<?=gettext("Delete this client configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_ftp_client', '<?=$f;?>');" title="<?=gettext("Delete this client configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default client configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default client configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1692,11 +1606,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=ftp_server_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_ftp_server_engine.php?id=<?=$id?>&eng_id=<?=$ftp_server_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1708,11 +1622,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_ftp_server_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_ftp_server_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_ftp_server', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_ftp_server', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1770,7 +1684,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 ?>
 	<div class="panel panel-default" id="preproc_arp_spoof_row">
 		<div class="panel-heading">
-			<h2 class="panel-title">ARP Spoof Detection<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_arp_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">ARP Spoof Detection<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_arp_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_arp_panel-body" class="panel-body collapse in">
 <?php
@@ -1807,7 +1721,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("IP Address")?></th>
 									<th>
 										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$arp_spoof_engine_next_id;?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new address pair entry")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1819,8 +1733,8 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['mac_addr'])?></td>
 									<td><?=gettext($v['ip_addr'])?></td>
 									<td>
-										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this address pair entry")?>"></a>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
+										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this address pair entry")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -2161,13 +2075,13 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'save',
 		'Save',
 		null,
-		'fa-save'
+		'fa-solid fa-save'
 	);
 	$btnreset = new Form_Button(
 		'ResetAll',
 		'Reset',
 		null,
-		'fa-repeat'
+		'fa-solid fa-arrow-rotate-right'
 	);
 	$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save preprocessor settings');
 	$btnreset->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning')->setAttribute('title', 'Reset all preprocessors to their defaults');
@@ -2211,7 +2125,7 @@ $btnsave = new Form_Button(
 	'arp_spoof_save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 );
 $btncancel = new Form_Button(
 	'arp_spoof_cancel',
@@ -2238,7 +2152,6 @@ print($modal);
 print_callout('<p>' . gettext("Remember to save your changes before you exit this page.  Preprocessor changes will rebuild the rules file.  This ") . 
 		gettext("may take several seconds to complete.  Snort must also be restarted on the interface to activate any changes made on this screen.") . '</p>', 
 		'info', 'NOTE:');
-unset($a_nat);
 ?>
 
 <script type="text/javascript">

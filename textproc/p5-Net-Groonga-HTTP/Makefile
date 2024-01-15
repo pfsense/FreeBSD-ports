@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Groonga-HTTP
 PORTVERSION=	0.03
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Groonga httpd client library
+WWW=		https://metacpan.org/release/Net-Groonga-HTTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

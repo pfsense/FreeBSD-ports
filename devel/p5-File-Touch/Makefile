@@ -1,14 +1,12 @@
-# Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
-
 PORTNAME=	File-Touch
-PORTVERSION=	0.11
+PORTVERSION=	0.12
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Module to 'touch' files
+WWW=		https://metacpan.org/release/File-Touch
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

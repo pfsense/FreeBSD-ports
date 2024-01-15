@@ -1,6 +1,3 @@
-# Created by: Matt Behrens <matt@zigg.com>
-# $FreeBSD$
-
 PORTNAME=	pgpgpg
 PORTVERSION=	0.13
 PORTREVISION=	5
@@ -10,6 +7,7 @@ MASTER_SITES=	https://mroth.net/pgpgpg/ \
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Wrapper for GnuPG to simulate PGP 2.6.x
+WWW=		https://mroth.net/pgpgpg/
 
 LICENSE=	GPLv2
 

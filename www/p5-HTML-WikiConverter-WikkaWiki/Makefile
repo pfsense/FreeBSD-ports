@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	HTML-WikiConverter-WikkaWiki
 PORTVERSION=	0.50
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert HTML to WikkaWiki markup
+WWW=		https://metacpan.org/release/HTML-WikiConverter-WikkaWiki
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,12 +1,13 @@
-# $FreeBSD$
-
-PORTNAME=	flint2
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.0
+PORTNAME=	flint
+DISTVERSION=	2.9.0	# FLINT is known to change its API. When upgrading please check that it does not break its consumers (e.g. math/e-antic)
+PORTREVISION=	2
 CATEGORIES=	math
+MASTER_SITES=	http://www.flintlib.org/
+PKGNAMESUFFIX=	2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast library for number theory
+WWW=		https://www.flintlib.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,9 +16,7 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
 		libopenblas.so:math/openblas
 
-USES=		cmake compiler:c++11-lang
-USE_GITHUB=	yes
-GH_ACCOUNT=	wbhart
+USES=		cmake compiler:c++11-lang python:build
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=		NTL

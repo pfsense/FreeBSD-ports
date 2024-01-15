@@ -1,31 +1,21 @@
-# Created by: Ganael LAPLANCHE <ganael.laplanche@martymac.org>
-# $FreeBSD$
-
 PORTNAME=	ldapscripts
 PORTVERSION=	2.0.8
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://contribs.martymac.org/ldapscripts/
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Scripts to manage posix accounts in an OpenLDAP directory
+WWW=		https://contribs.martymac.org
 
 LICENSE=	GPLv2
-
-RUN_DEPENDS=	ldapadd:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client \
-		ldapsearch:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client \
-		ldapdelete:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client \
-		ldapmodify:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client \
-		ldapmodrdn:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client \
-		ldappasswd:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client
 
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	SASL DOCS
-SASL_VARS=	OPENLDAP_FLAVOUR=-sasl WANT_OPENLDAP_SASL=yes
 
-USES=		iconv tar:tgz
-USE_OPENLDAP=	yes
+USES=		iconv ldap tar:tgz
 LIBDIR=	${PREFIX}/lib/${PORTNAME}
 MAKE_ENV+=	MANDIR=${MANPREFIX}/man \
 		ETCDIR=${ETCDIR}

@@ -1,6 +1,3 @@
-# Created by: knu@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	cvsutils
 PORTVERSION=	0.2.6
 PORTEPOCH=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.red-bean.com/cvsutils/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CVS utilities which facilitate working with local working directories
+WWW=		https://www.red-bean.com/cvsutils/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

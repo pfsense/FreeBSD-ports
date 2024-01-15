@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	flmsg
-DISTVERSION=	4.0.17
+DISTVERSION=	4.0.23
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.w1hkj.com/files/${PORTNAME}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Forms management editor for Amateur Radio standard message formats
+WWW=		http://www.w1hkj.com/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 RUN_DEPENDS=	fldigi:comms/fldigi
 
 USES=		gmake jpeg pkgconfig xorg

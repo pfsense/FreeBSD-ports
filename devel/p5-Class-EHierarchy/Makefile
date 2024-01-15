@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-EHierarchy
 PORTVERSION=	2.01
 CATEGORIES=	devel perl5
@@ -8,7 +5,8 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Base class for hierarchally ordered objects
+COMMENT=	Base class for hierarchically ordered objects
+WWW=		https://metacpan.org/release/Class-EHierarchy
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

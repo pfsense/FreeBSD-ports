@@ -1,6 +1,3 @@
-# Created by: James Flemer <jflemer@alum.rpi.edu>
-# $FreeBSD$
-
 PORTNAME=	l2a
 PORTVERSION=	1.2
 CATEGORIES=	textproc
@@ -9,6 +6,7 @@ DISTNAME=	l2a
 
 MAINTAINER=	jflemer@alum.rpi.edu
 COMMENT=	LaTeX to ASCII converter
+WWW=		https://hannemyr.com/enjoy/l2a.html
 
 USES=		zip
 

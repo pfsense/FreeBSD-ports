@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-table-passwd
 PORTREVISION=	0
 

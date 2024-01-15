@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	festlex-oald
 PORTVERSION=	1.4.1
 PORTREVISION=	1
@@ -11,10 +8,15 @@ DIST_SUBDIR=	festival
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Oxford Advanced Learner's pronunciation dictionary for Festival
+WWW=		https://www.cstr.ed.ac.uk/projects/festival/
 
 RUN_DEPENDS=	festival:audio/festival
 
-RESTRICTED=	No commercial use
+# Converted from RESTRICTED
+LICENSE=	FESTLEX
+LICENSE_NAME=	festlex
+LICENSE_TEXT=	No commercial use
+LICENSE_PERMS=	auto-accept
 
 WRKSRC=		${WRKDIR}/festival
 

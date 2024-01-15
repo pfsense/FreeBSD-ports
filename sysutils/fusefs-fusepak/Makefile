@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fusepak
 PORTVERSION=	0.5
 CATEGORIES=	sysutils games
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mount packed data files of various games (PACK, WAD, etc.)
+WWW=		http://fusepak.sourceforge.net/
 
 LICENSE=	GPLv2
 

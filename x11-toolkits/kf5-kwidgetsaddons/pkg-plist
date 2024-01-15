@@ -13,6 +13,7 @@ include/KF5/KWidgetsAddons/KColumnResizer
 include/KF5/KWidgetsAddons/KCursor
 include/KF5/KWidgetsAddons/KDateComboBox
 include/KF5/KWidgetsAddons/KDatePicker
+include/KF5/KWidgetsAddons/KDatePickerPopup
 include/KF5/KWidgetsAddons/KDateTimeEdit
 include/KF5/KWidgetsAddons/KDragWidgetDecorator
 include/KF5/KWidgetsAddons/KDualAction
@@ -71,6 +72,8 @@ include/KF5/KWidgetsAddons/KToolBarLabelAction
 include/KF5/KWidgetsAddons/KToolBarPopupAction
 include/KF5/KWidgetsAddons/KToolBarSpacerAction
 include/KF5/KWidgetsAddons/KToolTipWidget
+include/KF5/KWidgetsAddons/KTwoFingerSwipe
+include/KF5/KWidgetsAddons/KTwoFingerTap
 include/KF5/KWidgetsAddons/KUrlLabel
 include/KF5/KWidgetsAddons/KViewStateMaintainerBase
 include/KF5/KWidgetsAddons/KViewStateSerializer
@@ -91,6 +94,7 @@ include/KF5/KWidgetsAddons/kcolumnresizer.h
 include/KF5/KWidgetsAddons/kcursor.h
 include/KF5/KWidgetsAddons/kdatecombobox.h
 include/KF5/KWidgetsAddons/kdatepicker.h
+include/KF5/KWidgetsAddons/kdatepickerpopup.h
 include/KF5/KWidgetsAddons/kdatetimeedit.h
 include/KF5/KWidgetsAddons/kdragwidgetdecorator.h
 include/KF5/KWidgetsAddons/kdualaction.h
@@ -144,13 +148,15 @@ include/KF5/KWidgetsAddons/ktoolbarlabelaction.h
 include/KF5/KWidgetsAddons/ktoolbarpopupaction.h
 include/KF5/KWidgetsAddons/ktoolbarspaceraction.h
 include/KF5/KWidgetsAddons/ktooltipwidget.h
+include/KF5/KWidgetsAddons/ktwofingerswipe.h
+include/KF5/KWidgetsAddons/ktwofingertap.h
 include/KF5/KWidgetsAddons/kurllabel.h
 include/KF5/KWidgetsAddons/kviewstatemaintainerbase.h
 include/KF5/KWidgetsAddons/kviewstateserializer.h
 include/KF5/KWidgetsAddons/kwidgetsaddons_export.h
+include/KF5/KWidgetsAddons/kwidgetsaddons_version.h
 include/KF5/KWidgetsAddons/kxyselector.h
 include/KF5/KWidgetsAddons/lineediturldropeventfilter.h
-include/KF5/kwidgetsaddons_version.h
 lib/cmake/KF5WidgetsAddons/KF5WidgetsAddonsConfig.cmake
 lib/cmake/KF5WidgetsAddons/KF5WidgetsAddonsConfigVersion.cmake
 lib/cmake/KF5WidgetsAddons/KF5WidgetsAddonsTargets-%%CMAKE_BUILD_TYPE%%.cmake
@@ -164,7 +170,6 @@ share/kf5/kcharselect/kcharselect-data
 share/locale/af/LC_MESSAGES/kwidgetsaddons5_qt.qm
 share/locale/ar/LC_MESSAGES/kwidgetsaddons5_qt.qm
 share/locale/as/LC_MESSAGES/kwidgetsaddons5_qt.qm
-share/locale/ast/LC_MESSAGES/kwidgetsaddons5_qt.qm
 share/locale/az/LC_MESSAGES/kwidgetsaddons5_qt.qm
 share/locale/be/LC_MESSAGES/kwidgetsaddons5_qt.qm
 share/locale/be@latin/LC_MESSAGES/kwidgetsaddons5_qt.qm

@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	imapdedup
 PORTVERSION=	0.0.20150331
 CATEGORIES=	mail
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Duplicate email message remover
+WWW=		https://quentinsf.com/software/imapdedup/
 
 LICENSE=	GPLv2
 

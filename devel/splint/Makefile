@@ -1,6 +1,3 @@
-# Created by: moeding
-# $FreeBSD$
-
 PORTNAME=	splint
 PORTVERSION=	3.1.2
 CATEGORIES=	devel security
@@ -9,11 +6,13 @@ EXTRACT_SUFX=	.src.tgz
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Tool for statically checking sourcecode for security vulnerabilities
+WWW=		https://www.splint.org/
 
 LICENSE=	GPLv2+
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	BISON=no
 MAKE_JOBS_UNSAFE=	yes
 
 post-patch:

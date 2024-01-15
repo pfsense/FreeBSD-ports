@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	oidn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.4
+DISTVERSION=	2.1.0
 CATEGORIES=	graphics
 MASTER_SITES=	http://freebsd.org/:weights # bogus URL to make the framework happy, the fetch uses Git URL below
 DISTFILES=	${PORTNAME}-weights-${WEIGHTS_GIT_HASH}${EXTRACT_SUFX}:weights
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Intel(R) Open Image Denoise library
+WWW=		https://www.openimagedenoise.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -19,25 +18,37 @@ ONLY_FOR_ARCHS_REASON=	Intel(R) MKL-DNN supports x86 64 bit platforms only (oidn
 FETCH_DEPENDS=	git:devel/git \
 		git-lfs:devel/git-lfs
 BUILD_DEPENDS=	ispc>=1.14.1:devel/ispc
-LIB_DEPENDS=	libtbb.so:devel/tbb
+LIB_DEPENDS=	libtbb.so:devel/onetbb
 
-USES=		cmake:noninja compiler:c++11-lang python:build
-USE_GITHUB=	yes
-GH_ACCOUNT=	OpenImageDenoise
-GH_TUPLE=	\
-		OpenImageDenoise:mkl-dnn:603620ba45185e7d91fe112b69287e7d86c64353:m/mkl-dnn
-#		OpenImageDenoise:oidn-weights:08092e46a1961b13b70e48ad80fa19b452bd4c01:w/weights # replaced with git clone in post-fetch because it needs git-lfs
-
+USES=		cmake:noninja compiler:c++14-lang python:build
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	DOCS
+USE_GITHUB=	yes
+GH_ACCOUNT=	OpenImageDenoise
+GH_TUPLE=	OpenImageDenoise:mkl-dnn:9bea36e:m/external/mkl-dnn \
+		ROCmSoftwarePlatform:composable_kernel:e85178b:composable_kernel/external/composable_kernel \
+		NVIDIA:cutlass:66d9cdd:cutlass/external/cutlass
 
-CMAKE_ARGS+=	-DTBB_ROOT:STRING=${LOCALBASE} -DTBB_INCLUDE_DIR:STRING=${LOCALBASE}/include -DPYTHON_EXECUTABLE:STRING=${PYTHON_CMD}
+CMAKE_ARGS=	-DTBB_ROOT:STRING=${LOCALBASE} -DTBB_INCLUDE_DIR:STRING=${LOCALBASE}/include -DPYTHON_EXECUTABLE:STRING=${PYTHON_CMD}
 
-DOCSDIR=	share/doc/${GH_ACCOUNT}
+PLIST_SUB=	VER="${PORTVERSION}"
+
+OPTIONS_DEFINE=			APPS DOCS OPENIMAGEIO
+OPTIONS_DEFAULT=		APPS OPENIMAGEIO
+OPTIONS_SUB=			yes
+
+APPS_DESC=			Build example and test apps
+APPS_CMAKE_BOOL=		OIDN_APPS
+
+DOCSDIR=			share/doc/${GH_ACCOUNT}
+
+OPENIMAGEIO_DESC=		Build with OpenImageIO for image formats support
+OPENIMAGEIO_CMAKE_BOOL=		OIDN_APPS_OPENIMAGEIO
+OPENIMAGEIO_LIB_DEPENDS=	libOpenImageIO.so:graphics/openimageio
+OPENIMAGEIO_IMPLIES=		APPS # OpenImageIO is only used by apps and examples
 
 WEIGHTS_GIT_URL=	https://github.com/OpenImageDenoise/oidn-weights.git
-WEIGHTS_GIT_HASH=	08092e46a1961b13b70e48ad80fa19b452bd4c01
+WEIGHTS_GIT_HASH=	4322c25e25a05584f65da1a4be5cef40a4b2e90b
 
 pre-fetch:
 	@if [ "${FORCE_FETCH_ALL}" = "true" ] || ! [ -f "${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-weights-${WEIGHTS_GIT_HASH}${EXTRACT_SUFX}" ]; then \

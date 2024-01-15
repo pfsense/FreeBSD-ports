@@ -1,29 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	tio
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.32
+DISTVERSION=	2.0
 CATEGORIES=	comms
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Simple TTY terminal I/O application
+WWW=		https://tio.github.io
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf
-USE_GITHUB=	yes
+LIB_DEPENDS=	libinih.so:devel/inih
 
-GNU_CONFIGURE=	yes
+USES=		meson pkgconfig tar:xz
 
 OPTIONS_DEFINE=	BASH DOCS
 OPTIONS_DEFAULT=	BASH
 OPTIONS_SUB=	yes
 
-BASH_CONFIGURE_WITH=	bash-completion-dir
+BASH_MESON_ON=	-Dbashcompletiondir=${PREFIX}/etc/bash_completion.d
+BASH_MESON_OFF=	-Dbashcompletiondir=no
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

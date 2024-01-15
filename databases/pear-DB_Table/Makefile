@@ -1,14 +1,12 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	DB_Table
 PORTVERSION=	1.5.6
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR object-oriented interface to a database table
+WWW=		https://pear.php.net/package/DB_Table
 
 LICENSE=	BSD2CLAUSE
 

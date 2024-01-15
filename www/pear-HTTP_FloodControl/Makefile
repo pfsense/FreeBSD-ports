@@ -1,12 +1,10 @@
-# Created by: Ditesh Shashikant Gathani <ditesh@gathani.org>
-# $FreeBSD$
-
 PORTNAME=	HTTP_FloodControl
 PORTVERSION=	0.1.1
 CATEGORIES=	www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR classes to detect and protect from attempts to flood a site
+WWW=		https://pear.php.net/package/HTTP_FloodControl
 
 BUILD_DEPENDS=	${PEARDIR}/HTTP.php:www/pear-HTTP@${PHP_FLAVOR}
 RUN_DEPENDS=	${PEARDIR}/HTTP.php:www/pear-HTTP@${PHP_FLAVOR}

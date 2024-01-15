@@ -1,6 +1,3 @@
-# Created by: rkw
-# $FreeBSD$
-
 PORTNAME=	mgetty
 PORTVERSION=	1.1.37
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}-Jun05
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Handle external logins, send and receive faxes
+WWW=		http://mgetty.greenie.net/
 
 LICENSE=	GPLv2
 
@@ -17,11 +15,12 @@ BROKEN_aarch64=		fails to compile: error: initializer element is not a compile-t
 BROKEN_mips64=		fails to compile: error: initializer element is not a compile-time constant
 BROKEN_riscv64=		fails to compile: error: initializer element is not a compile-time constant
 
-USES=		makeinfo perl5 shebangfix
+USES=		cpe makeinfo perl5 shebangfix
 USE_CSTD=	gnu89
 SHEBANG_FILES=	samples/fax samples/new_fax.all/new_fax samples/new_fax.mime1 \
 		samples/new_fax.th samples/coverpg-pl.ps samples/faxview.th
 
+CPE_VENDOR=	mgetty_project
 SUB_FILES=	pkg-message mgettycfg
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_ARGS=	INFODIR=${PREFIX}/${INFO_PATH}
@@ -30,6 +29,8 @@ MAKE_FLAGS=	CFLAGS="${CFLAGS}" prefix=${PREFIX} LOCALBASE=${LOCALBASE}\
 ALL_TARGET=	noident all
 INFO=		mgetty
 CFLAGS+=	-DAUTO_PPP
+
+CONFLICTS_INSTALL=	hylafax
 
 MAKE_JOBS_UNSAFE=	yes
 

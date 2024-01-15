@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Authinfo
 PORTVERSION=	0.03
 CATEGORIES=	net perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Read, query and write authinfo files
+WWW=		https://metacpan.org/release/Text-Authinfo
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

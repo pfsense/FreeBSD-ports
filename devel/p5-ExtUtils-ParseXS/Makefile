@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ExtUtils-ParseXS
 PORTVERSION=	3.35
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Converts Perl XS code into C code
+WWW=		https://metacpan.org/release/ExtUtils-ParseXS
 
 LICENSE=	ART10
 

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	Directory-Queue
-PORTVERSION=	2.0
+PORTVERSION=	2.2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:LCONS
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object oriented interface to a directory based queue in Perl
+WWW=		https://metacpan.org/release/Directory-Queue
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -18,5 +17,7 @@ RUN_DEPENDS=	p5-No-Worries>=1.4:devel/p5-No-Worries
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

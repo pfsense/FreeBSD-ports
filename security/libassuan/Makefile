@@ -1,13 +1,11 @@
-# Created by: Michael Nottebrock <lofi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libassuan
-PORTVERSION=	2.5.4
+PORTVERSION=	2.5.6
 CATEGORIES=	security devel
 MASTER_SITES=	GNUPG
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	IPC library used by GnuPG and gpgme
+WWW=		https://gnupg.org/related_software/libassuan/index.en.html
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

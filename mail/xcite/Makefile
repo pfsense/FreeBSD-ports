@@ -1,9 +1,6 @@
-# Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xcite
 PORTVERSION=	1.60
-PORTREVISION=	14
+PORTREVISION=	23
 CATEGORIES=	mail elisp
 MASTER_SITES=	https://www.gentei.org/~yuuji/software/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -12,6 +9,7 @@ EXTRACT_SUFX=	# empty
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Exciting Cite for any Mail/News reading modes on Emacs
+WWW=		https://www.gentei.org/~yuuji/software/
 
 USES=		emacs
 

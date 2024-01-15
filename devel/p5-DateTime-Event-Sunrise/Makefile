@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Event-Sunrise
 PORTVERSION=	0.0506
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DateTime Objects for sunrise and sunset for a given day
+WWW=		https://metacpan.org/release/DateTime-Event-Sunrise
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Dima Sivachenko <dima@chg.ru>
-# $FreeBSD$
-
 PORTNAME=	pvm
 PORTVERSION=	3.4.6
 PORTREVISION=	5
@@ -10,6 +7,7 @@ DISTNAME=	pvm${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Parallel Virtual Machine libraries and environment
+WWW=		http://www.csm.ornl.gov/pvm/
 
 LICENSE=	MIT
 

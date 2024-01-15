@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	SVG-Parser
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	XML Parser for SVG documents
+WWW=		https://metacpan.org/release/SVG-Parser
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,7 +17,9 @@ RUN_DEPENDS=	p5-SVG>=2:textproc/p5-SVG \
 		p5-XML-Parser>=0:textproc/p5-XML-Parser \
 		p5-XML-SAX>=0:textproc/p5-XML-SAX
 
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

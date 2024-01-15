@@ -1,14 +1,12 @@
-# Created by: roland.jesse@gmx.net
-# $FreeBSD$
-
 PORTNAME=	simage
 PORTVERSION=	1.7.0
-PORTREVISION=	8
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/Coin3D/coin/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library with image format loaders and front-ends
+WWW=		https://bitbucket.org/Coin3D/coin/wiki/Home
 
 LICENSE=	MIT unknown
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Attila Nagy <bra@fsn.hu>
-# $FreeBSD$
-
 PORTNAME=	libeatmydata
 PORTVERSION=	9
 CATEGORIES=	misc

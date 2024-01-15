@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Class-Singleton
 PORTVERSION=	1.6
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module that describes a singular object class
+WWW=		https://metacpan.org/release/Class-Singleton
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

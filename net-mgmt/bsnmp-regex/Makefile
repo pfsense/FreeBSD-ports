@@ -1,14 +1,12 @@
-# Created by: brock@cotcomsol.com
-# $FreeBSD$
-
 PORTNAME=	bsnmp-regex
 PORTVERSION=	0.6
 PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/olivier
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	bsnmpd module allowing creation of counters from log files
+WWW=		http://thewalter.net/stef/software/bsnmp-regex/
 
 LICENSE=	BSD3CLAUSE
 

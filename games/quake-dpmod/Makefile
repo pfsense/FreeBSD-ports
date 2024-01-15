@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	dpmod
 PORTVERSION=	20130301
 CATEGORIES=	games
@@ -10,6 +7,7 @@ DISTNAME=	darkplacesmod${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake 1 modification (for DarkPlaces)
+WWW=		https://icculus.org/twilight/darkplaces/
 
 RUN_DEPENDS=	darkplaces>=0:games/darkplaces
 

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=		jinja2-cli
-PORTVERSION=		0.7.0
-PORTREVISION=	1
+PORTVERSION=		0.8.2
 CATEGORIES=		textproc python
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=		otis@FreeBSD.org
 COMMENT=		Jinja2 CLI tool
+WWW=		https://github.com/mattrobenolt/jinja2-cli
 
 LICENSE=		BSD2CLAUSE
 LICENSE_FILE=		${WRKSRC}/LICENSE
@@ -16,7 +14,7 @@ RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}markupsafe>0:textproc/py-markupsafe@${PY_FL
 			${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR}
 TEST_DEPENDS=		${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR}
 
-USES=			python:3.6+
+USES=			python
 
 OPTIONS_DEFINE=		TEST TOML XML YAML
 OPTIONS_DEFAULT=	TEST TOML XML YAML

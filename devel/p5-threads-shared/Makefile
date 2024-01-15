@@ -1,6 +1,3 @@
-# Created by: Ruben van Staveren
-# $FreeBSD$
-
 PORTNAME=	threads-shared
 PORTVERSION=	1.59
 CATEGORIES=	devel perl5
@@ -8,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JDHEDDEN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Share data structures between threads
+WWW=		https://metacpan.org/release/threads-shared
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Maaate
 PORTVERSION=	0.3.1
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}-${PORTVERSION}.tar.gz
 
 MAINTAINER=	saper@saper.info
 COMMENT=	MPEG audio analysis toolkit
+WWW=		https://maaate.sourceforge.net/
 
 LICENSE=	GPLv2
 

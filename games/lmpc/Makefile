@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lmpc
 PORTVERSION=	3.4.4
 CATEGORIES=	games
@@ -11,8 +8,12 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Tools to manipulate some FPS games demo recordings
+WWW=		http://demospecs.half-empty.de/lmpc-alpha/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+
+ONLY_FOR_ARCHS=	armv6 armv7 i386 mips powerpc
+ONLY_FOR_ARCHS_REASON=	assumes sizeof(long) == 4
 
 USES=		gmake perl5 shebangfix
 GNU_CONFIGURE=	yes
@@ -29,17 +30,11 @@ PLIST_FILES=	${SCRIPTS:S,^,bin/,} ${PROGRAMS:S,^,bin/,}
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} != "i386"
-IGNORE=		does not work on ${ARCH}: assumes sizeof(long) == 4
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e 's,bin doc src spec,bin src,' \
 		${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e 's,^record\.o,dbs.o demcut.o demotexty.o \
-		lmpc.o record.o udem.o udm2.o udm3.o uqwd.o,' \
+		lmpc.o record.o udem.o udeml.o udm2.o udm3.o uqwd.o,' \
 			${WRKSRC}/src/Makefile.in
 
 do-install:
@@ -47,6 +42,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${PROGRAMS:S,^,${WRKSRC}/src/,} \
 		${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${FETCHED_DOCS:S,^,${DISTDIR}/,} ${STAGEDIR}${DOCSDIR}

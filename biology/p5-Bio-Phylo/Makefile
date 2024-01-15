@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bio-Phylo
 PORTVERSION=	2.0.1
 DISTVERSIONPREFIX=	v
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Phylogenetic analysis using Perl
+WWW=		https://metacpan.org/release/Bio-Phylo
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

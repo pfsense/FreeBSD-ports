@@ -1,6 +1,3 @@
-# Created by: sobomax
-# $FreeBSD$
-
 PORTNAME=	rtpproxy
 PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	v
@@ -8,12 +5,13 @@ CATEGORIES=	net
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	High-performance RTP proxy server for the SIP Express Router (SER)
+WWW=		https://www.rtpproxy.org/
 
 LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libgsm.so:audio/gsm
 
-USES+=		libtool
+USES+=		cpe libtool
 USE_GITHUB=	yes
 GH_ACCOUNT=	sippy
 

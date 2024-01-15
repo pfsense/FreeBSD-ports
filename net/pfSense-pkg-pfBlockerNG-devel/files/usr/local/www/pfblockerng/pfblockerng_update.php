@@ -3,8 +3,8 @@
  * pfblockerng_update.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for
@@ -42,7 +42,7 @@ pfb_global();
 
 // Collect pfBlockerNG log file and post live output to terminal window.
 function pfbupdate_output($text) {
-	$text = htmlspecialchars(str_replace("\n", "\\n", $text));
+	$text = htmlspecialchars(str_replace("\n", "\\n", $text), ENT_COMPAT);
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";");
@@ -56,7 +56,7 @@ function pfbupdate_output($text) {
 
 // Post status message to terminal window.
 function pfbupdate_status($status) {
-	$status = htmlspecialchars(str_replace("\n", "\\n", $status));
+	$status = htmlspecialchars(str_replace("\n", "\\n", $status), ENT_COMPAT);
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";");
@@ -70,6 +70,10 @@ function pfbupdate_status($status) {
 // Function to perform a Force Update, Cron or Reload
 function pfb_cron_update($type) {
 	global $pfb, $pconfig;
+
+	if (!in_array($type, array('update', 'cron', 'reload'))) {
+		exit;
+	}
 
 	// Query for any active pfBlockerNG CRON jobs
 	exec('/bin/ps -wx', $result_cron);
@@ -93,10 +97,12 @@ function pfb_cron_update($type) {
 				break;
 			case 'DNSBL':
 				$type = 'updatednsbl';
+				rmdir_recursive("{$pfb['dnsdir']}");
 				break;
 			case 'All':
 			default:
 				$type = 'update';
+				rmdir_recursive("{$pfb['dnsdir']}");
 		}
 	} else {
 		pfbupdate_status(gettext('Running Force CRON Task'));
@@ -107,7 +113,9 @@ function pfb_cron_update($type) {
 
 	// Execute PHP process in the background
 	pfb_logger("\n [ Force Reload Task - {$pconfig['pfb_reload_option']} ]\n", 1);
-	mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >> {$pfb['log']} 2>&1");
+
+	$type_esc = escapeshellarg($type);
+	mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type_esc} >> {$pfb['log']} 2>&1");
 
 	// Execute Live Tail function
 	pfb_livetail($pfb['log'], 'force');
@@ -167,6 +175,10 @@ if ($pfb['enable'] == 'on') {
 	$currentmin	= date('i');
 	$currentsec	= date('s');
 	$currentdaysec	= ($currenthour * 3600) + ($currentmin * 60) + $currentsec;
+
+	if (!is_numeric($pfb['min'])) {
+		$pfb['min'] = 0;
+	}
 
 	if ($pfb['interval'] == 1) {
 		if ($currentmin < $pfb['min']) {
@@ -252,7 +264,7 @@ exec('/bin/ps -wax', $result_cron);
 if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
 	$status = '<span style="color: red;">&emsp;&emsp;'
 		. 'Active pfBlockerNG CRON JOB'
-		. '</span>&emsp;<i class="fa fa-spinner fa-pulse fa-lg"></i>';
+		. '</span>&emsp;<i class="fa-solid fa-spinner fa-pulse fa-lg"></i>';
 }
 $status .= '<br />&emsp;<small><span style="color: red;">Refresh to update current status and time remaining.</span></small>';
 
@@ -318,7 +330,6 @@ $group->add(new Form_Checkbox(
 ))->displayAsRadio('pfb_force_reload')->setAttribute('title', 'Force Reload: IP & DNSBL.')->setWidth(1);
 $section->add($group);
 
-
 // Build 'Force Options' group section
 $group = new Form_Group('Select \'Reload\' option');
 $group->add(new Form_Checkbox(
@@ -352,7 +363,7 @@ $btn_run = new Form_Button(
 	'run',
 	'Run',
 	NULL,
-	'fa-play-circle'
+	'fa-solid fa-play-circle'
 );
 $btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1);
 
@@ -375,7 +386,7 @@ $btn_logview = new Form_Button(
 	'log_view',
 	$pconfig['log_view'],
 	NULL,
-	'fa-play-circle-o'
+	'fa-regular fa-circle-play'
 );
 $btn_logview->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1)
 	    ->setAttribute('title', $btn_logview_title);
@@ -415,7 +426,6 @@ if (isset($pconfig['log_view'])) {
 		clearstatcache(false, $pfb['log']);
 		ob_flush();
 		flush();
-		@fclose("{$pfb['log']}");
 	}
 }
 

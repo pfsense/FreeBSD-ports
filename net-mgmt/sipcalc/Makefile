@@ -1,6 +1,3 @@
-# Created by: Janos.Mohacsi@dante.org.uk
-# $FreeBSD$
-
 PORTNAME=	sipcalc
 PORTVERSION=	1.1.6
 CATEGORIES=	net-mgmt
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.routemeister.net/projects/sipcalc/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IP subnet calculator with IPv6 support
+WWW=		https://www.routemeister.net/projects/sipcalc/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	JSON-Pointer
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of JSON Pointer (RFC6901)
+WWW=		https://metacpan.org/release/JSON-Pointer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

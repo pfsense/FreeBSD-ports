@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Tree-Parser
 PORTVERSION=	0.15
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Module to parse formatted files into tree structures
+WWW=		https://metacpan.org/release/Tree-Parser
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

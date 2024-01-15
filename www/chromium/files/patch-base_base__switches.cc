@@ -1,20 +1,11 @@
---- base/base_switches.cc.orig	2020-11-13 06:36:34 UTC
+--- base/base_switches.cc.orig	2023-10-11 18:22:24 UTC
 +++ base/base_switches.cc
-@@ -117,7 +117,7 @@ const char kDisableHighResTimer[] = "disable-highres-t
- const char kDisableUsbKeyboardDetect[]      = "disable-usb-keyboard-detect";
+@@ -180,7 +180,7 @@ const char kPackageVersionName[] = "package-version-na
+ const char kPackageVersionCode[] = "package-version-code";
  #endif
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !BUILDFLAG(IS_LACROS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS) && !BUILDFLAG(IS_LACROS)) || defined(OS_BSD)
- // The /dev/shm partition is too small in certain VM environments, causing
- // Chrome to fail or crash (see http://crbug.com/715363). Use this flag to
- // work-around this issue (a temporary directory will always be used to create
-@@ -152,7 +152,7 @@ const char kForceFieldTrialParams[] = "force-fieldtria
- 
- #endif
- 
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- // Controls whether or not retired instruction counts are surfaced for threads
- // in trace events on Linux.
- //
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ // TODO(crbug.com/1176772): Remove kEnableCrashpad and IsCrashpadEnabled() when
+ // Crashpad is fully enabled on Linux. Indicates that Crashpad should be
+ // enabled.

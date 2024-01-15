@@ -1,8 +1,5 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	robocode
-PORTVERSION=	1.9.3.9
+PORTVERSION=	1.9.5.2
 CATEGORIES=	games education java
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${DISTVERSION}-setup.jar
@@ -11,11 +8,13 @@ DIST_SUBDIR=	java
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Game for learning Java[tm] programming language
+WWW=		https://robocode.sourceforge.io/
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/license/epl-v10.html
 
-USES=		dos2unix zip:infozip
+USES=		cpe dos2unix zip:infozip
+CPE_VENDOR=	${PORTNAME}_project
 DOS2UNIX_GLOB=	*.css *.team *.properties package-list MANIFEST.MF
 USE_JAVA=	yes
 JAVA_EXTRACT=	yes
@@ -30,7 +29,7 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 SUB_FILES=	${PORTNAME}-MeleeRumble ${PORTNAME}-RoboRumble \
 		${PORTNAME}-Robocode ${PORTNAME}-TeamRumble \
-		${PORTNAME}-TwinDuel pkg-deinstall pkg-message
+		${PORTNAME}-TwinDuel pkg-message
 
 do-install:
 	cd ${WRKDIR} && ${INSTALL_SCRIPT} ${SUB_FILES:Mrobocode-*} \

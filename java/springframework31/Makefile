@@ -1,6 +1,3 @@
-# Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	springframework
 PORTVERSION=	3.1.4
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	spring-framework-${PORTVERSION}.RELEASE-with-docs
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	The Spring Framework for Java
+WWW=		https://www.springframework.org/
 
 WRKSRC=		${WRKDIR}/spring-framework-${PORTVERSION}.RELEASE
 

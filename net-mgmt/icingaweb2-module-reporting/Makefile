@@ -1,21 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	icingaweb2-module-reporting
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.2
-PORTREVISION=	1
+DISTVERSION=	0.10.0
+PORTREVISION=	4
 CATEGORIES=	net-mgmt www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Reporting module for Icinga Web 2
+WWW=		https://github.com/Icinga/icingaweb2-module-reporting
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.6.0:net-mgmt/icingaweb2@${PHP_FLAVOR} \
+RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.11.4:net-mgmt/icingaweb2@${PHP_FLAVOR} \
 		icingaweb2-module-reactbundle${PHP_PKGNAMESUFFIX}>=0.4:net-mgmt/icingaweb2-module-reactbundle@${PHP_FLAVOR} \
-		icingaweb2-module-ipl${PHP_PKGNAMESUFFIX}>=0.2.1:net-mgmt/icingaweb2-module-ipl@${PHP_FLAVOR}
+		icinga-php-library${PHP_PKGNAMESUFFIX}>=0.10.0:net-mgmt/icinga-php-library@${PHP_FLAVOR}
 
 USES=		php:web,flavors
 

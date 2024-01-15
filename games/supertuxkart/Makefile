@@ -1,29 +1,30 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	supertuxkart
-PORTVERSION=	1.2
+DISTVERSION=	1.4
+PORTREVISION=	1
 CATEGORIES=	games
-MASTER_SITES=	SF/supertuxkart/SuperTuxKart/${PORTVERSION}
-DISTNAME=	SuperTuxKart-${PORTVERSION}-src
+MASTER_SITES=	https://github.com/supertuxkart/stk-code/releases/download/${DISTVERSION}/
+DISTNAME=	SuperTuxKart-${DISTVERSION}-src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Free 3D kart racing game
+WWW=		http://supertuxkart.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_i386=	ld: error: cannot preempt symbol: alcOpenDevice
+
 LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
-		libcurl.so:ftp/curl
+		libcurl.so:ftp/curl \
+		libangelscript.so:lang/angelscript \
+		libmcpp.so:devel/mcpp
 
-BROKEN_FreeBSD_12_i386=	does not build (error: this directive must appear between .cfi_startproc and .cfi_endproc directives)
-
-USES=		alias cmake compiler:c++11-lib pkgconfig tar:xz
-CMAKE_OFF=	USE_WIIUSE \
-		BUILD_RECORDER \
-		USE_SYSTEM_ENET \
-		USE_SYSTEM_SQUISH
-CMAKE_ON=	USE_SYSTEM_GLEW
+USES=		alias cmake compiler:c++11-lib pkgconfig ssl tar:xz
+CMAKE_OFF=	USE_WIIUSE
+CMAKE_OFF+=	BUILD_RECORDER
+CMAKE_OFF+=	USE_SYSTEM_ENET  # bundled enet is required for IPv6 support
+CMAKE_OFF+=	USE_SYSTEM_SQUISH  # does not build with system squish
+CMAKE_ON+=	USE_SYSTEM_ANGELSCRIPT
 
 PORTDATA=	*
 
@@ -47,11 +48,11 @@ SERVER_ONLY_LIB_DEPENDS_OFF= \
 			libfreetype.so:print/freetype2 \
 			libharfbuzz.so:print/harfbuzz
 SERVER_ONLY_USES_OFF=	gettext gl jpeg openal:al sdl xorg
-SERVER_ONLY_USE_OFF=	GL=gl,glu,glew SDL=sdl2 XORG=x11,xrandr
+SERVER_ONLY_USE_OFF=	GL=gl,glu SDL=sdl2 XORG=x11,xrandr
 
 # make sure that bundled libraries are not used
 post-extract:
-.for bundled in glew wiiuse
+.for bundled in wiiuse angelscipt mcpp
 	@${RM} -rf ${WRKSRC}/lib/${bundled}
 .endfor
 

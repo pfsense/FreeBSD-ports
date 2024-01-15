@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	nextgo
 PORTVERSION=	3.0
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	games gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	NeXTGo-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Classic Go game for OPENSTEP/GNUstep
+WWW=		https://www.nongnu.org/gap/nextgo/index.html
 
 LICENSE=	GPLv1
 LICENSE_FILE=	${WRKSRC}/COPYING

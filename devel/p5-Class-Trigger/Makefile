@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Trigger
 PORTVERSION=	0.15
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Mixin to add / call inheritable triggers
+WWW=		https://metacpan.org/release/Class-Trigger
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

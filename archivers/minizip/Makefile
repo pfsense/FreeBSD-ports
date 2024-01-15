@@ -1,6 +1,3 @@
-# Created by: lbartoletti <lbartoletti@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minizip
 PORTVERSION=	1.2.11
 CATEGORIES=	archivers
@@ -9,15 +6,17 @@ DISTNAME=	zlib-${PORTVERSION}
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Zip library and programs from Zlib distribution
+WWW=		https://www.winimage.com/zLibDll/minizip.html
 
 LICENSE=	ZLIB
 
-USES=		autoreconf libtool pathfix tar:xz
+USES=		autoreconf cpe libtool pathfix tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-demos
 INSTALL_TARGET=	install-strip
 WRKSRC=		${WRKDIR}/zlib-${PORTVERSION}/contrib/minizip
+CPE_VENDOR=	minizip_project
 
 post-patch:
 	@${REINPLACE_CMD} 's/#ifdef unix || __APPLE__/#ifdef unix/' ${WRKSRC}/mini???.c

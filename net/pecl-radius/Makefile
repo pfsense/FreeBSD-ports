@@ -1,21 +1,23 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	radius
-DISTVERSION=	1.4.0b1
+PORTVERSION=	1.4.0b1
+PORTREVISION=	2
 CATEGORIES=	net security pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Radius client library for PHP
+WWW=		https://pecl.php.net/package/radius
 
 LICENSE=	BSD3CLAUSE
 
 USES=		php:pecl
-IGNORE_WITH_PHP=	80
 
 CONFIGURE_ARGS=	--enable-radius
 
 OPTIONS_DEFINE=	EXAMPLES
+
+post-extract:
+	${CP} ${FILESDIR}/*.stub.php ${WRKSRC}
+	${CP} ${FILESDIR}/*_arginfo.h ${WRKSRC}
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

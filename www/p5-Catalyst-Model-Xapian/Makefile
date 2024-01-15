@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Model-Xapian
 PORTVERSION=	0.06
 PORTREVISION=	5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst model for Search::Xapian
+WWW=		https://metacpan.org/release/Catalyst-Model-Xapian
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

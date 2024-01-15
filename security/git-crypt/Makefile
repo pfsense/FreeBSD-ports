@@ -1,15 +1,12 @@
-# Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	git-crypt
-PORTVERSION=	0.6.0
-PORTREVISION=	1
+PORTVERSION=	0.7.0
 CATEGORIES=	security
 MASTER_SITES=	https://www.agwa.name/projects/git-crypt/downloads/ \
 		LOCAL/ashish/
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Transparent file encryption in git
+WWW=		https://www.agwa.name/projects/git-crypt/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -38,6 +35,10 @@ PLIST_FILES=	bin/${PORTNAME}
 .if ${SSL_DEFAULT} != base
 CXXFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
+.endif
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
+CXXFLAGS+=	-DOPENSSL_API_COMPAT=0x30000000L
 .endif
 
 post-extract:

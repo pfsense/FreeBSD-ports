@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	todo
 PORTVERSION=	2.12.0
 CATEGORIES=	deskutils
@@ -9,6 +6,8 @@ DISTNAME=	todo.txt_cli-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Todo.txt Manager
+WWW=		http://todotxt.org/ \
+		https://github.com/todotxt/todo.txt-cli
 
 LICENSE=	GPLv3
 
@@ -27,6 +26,9 @@ PLIST_FILES=	bin/todo \
 CONFLICTS_INSTALL=	deforaos-todo devtodo
 
 SHEBANG_FILES=	todo.sh todo_completion
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/todo.sh
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/todo.sh ${STAGEDIR}${PREFIX}/bin/todo

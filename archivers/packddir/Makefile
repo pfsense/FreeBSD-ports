@@ -1,6 +1,3 @@
-# Created by: Ayumi M <ayu@commun.jp>
-# $FreeBSD$
-
 PORTNAME=	packddir
 PORTVERSION=	0.0.6
 CATEGORIES=	archivers
@@ -9,6 +6,7 @@ DISTNAME=	upackddir_${PORTVERSION}-1
 
 MAINTAINER=	ayu@commun.jp
 COMMENT=	Utilities to unpack and create PackdDir archives
+WWW=		https://www.nongnu.org/packddir/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

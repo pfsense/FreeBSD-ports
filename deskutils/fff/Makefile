@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	fff
 DISTVERSION=	2.2
 CATEGORIES=	deskutils
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Simple file manager written in Bash
+WWW=		https://github.com/dylanaraps/fff
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

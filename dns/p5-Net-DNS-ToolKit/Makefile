@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-DNS-ToolKit
 PORTVERSION=	0.48
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Tools for working with DNS packets
+WWW=		https://metacpan.org/release/Net-DNS-ToolKit
 
 LICENSE=	ART10 GPLv2 GPLv3
 LICENSE_COMB=	dual

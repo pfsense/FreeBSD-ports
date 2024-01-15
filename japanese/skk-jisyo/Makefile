@@ -1,9 +1,6 @@
-# Created by: Shigeyuki FUKUSHIMA <shige@kuis.kyoto-u.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	skk-jisyo
 PORTVERSION=	201409
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	japanese
 MASTER_SITES=	LOCAL/matusita/${PORTNAME}
 .if defined(WITH_SKKJISYO_CDB)
@@ -13,6 +10,7 @@ DIST_SUBDIR=	skk-jisyo
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Jisyo (dictionary) files for the SKK Japanese-input software
+WWW=		http://openlab.jp/skk/
 
 .if defined(WITH_SKKJISYO_CDB)
 BUILD_DEPENDS=	${LOCALBASE}/bin/cdb:databases/tinycdb

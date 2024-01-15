@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	openpear
 PORTVERSION=	20111203
 CATEGORIES=	devel www pear
@@ -8,6 +5,7 @@ MASTER_SITES=	#
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	PEAR channel ${PEAR_CHANNEL_HOST}
+WWW=		https://openpear.org/
 
 PEAR_CHANNEL_HOST=	openpear.org
 

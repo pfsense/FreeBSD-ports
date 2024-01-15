@@ -1,6 +1,3 @@
-# Created by: Marcin Cieslak <saper@SYSTEM.PL>
-# $FreeBSD$
-
 PORTNAME=	c64bdf
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	saper@saper.info
 COMMENT=	Commodore 64 X11 fonts
+WWW=		https://beej.us/c64bdf/
 
 NO_BUILD=	yes
 

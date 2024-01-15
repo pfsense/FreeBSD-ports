@@ -1,18 +1,14 @@
-# Created by: jrhett@netconsonance.com
-# $FreeBSD$
-
 PORTNAME=	cfengine
 PORTVERSION=	3.${CFENGINE_COMMIT_DATE}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
-CFENGINE_HASH=		ec8bc18ca
-LIBNTECH_HASH=		4e9efcb
-CFENGINE_COMMIT_DATE=	2020.11.30
+CFENGINE_HASH=		ec6c4cf1e
+LIBNTECH_HASH=		1899478
+CFENGINE_COMMIT_DATE=	2023.12.22
 
 MAINTAINER=	cy@FreeBSD.org
-#		gjb@FreeBSD.org is also committer for this port
-#		skreuzer@FreeBSD.org is also committer for this port
 COMMENT=	Systems administration tool for networks
+WWW=		https://cfengine.com/
 
 LICENSE=	GPLv3
 
@@ -23,9 +19,7 @@ GH_TUPLE=	cfengine:core:${CFENGINE_HASH} \
 		cfengine:libntech:${LIBNTECH_HASH}:libntech/libntech
 CPE_VENDOR=	gnu
 
-CONFLICTS=	cfengine-2* cfengine3[0-9]-* cfengine31[02-9]-* cfengine-3.*
-
-CONFLICTS=	cfengine-[12-9]*
+CONFLICTS=	cfengine cfengine3[0-9] cfengine3[0-9][0-9]
 
 USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 
@@ -49,12 +43,13 @@ CONFIGURE_ARGS=	--docdir=${DOCSDIR} \
 		--libdir=${PREFIX}/libexec \
 		--mandir=${PREFIX}/man \
 		--with-workdir=/var/cfengine \
-		--with-pcre=${LOCALBASE} \
+		--with-pcre2=${LOCALBASE} \
 		--with-lmdb=${LOCALBASE} \
 		--enable-fhs
 INSTALL_TARGET=	install-strip
 
 LIB_DEPENDS+=	libpcre.so:devel/pcre \
+		libpcre2-posix.so:devel/pcre2 \
 		liblmdb.so:databases/lmdb \
 		libyaml.so:textproc/libyaml \
 		libcurl.so:ftp/curl
@@ -65,7 +60,6 @@ PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	postgresql=${LOCALBASE}
 
 MYSQL_USES=		mysql
-MYSQL_BROKEN=		configure: error: MySQL client library exports symbols (EVP_CIPHER_CTX_init) clashing with OpenSSL.
 MYSQL_CONFIGURE_WITH=	mysql=${LOCALBASE}
 MYSQL_LIB_DEPENDS=	libmysqlclient.so:${_MYSQL_CLIENT}
 MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql

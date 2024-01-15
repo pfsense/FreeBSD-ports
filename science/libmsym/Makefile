@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libmsym
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.3
@@ -8,6 +6,7 @@ CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Molecular point group symmetry library
+WWW=		https://github.com/mcodev31/libmsym
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

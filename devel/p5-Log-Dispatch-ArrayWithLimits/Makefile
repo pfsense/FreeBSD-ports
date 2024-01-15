@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Log-Dispatch-ArrayWithLimits
 PORTVERSION=	0.050
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Log to array, with some limits applied
+WWW=		https://metacpan.org/release/Log-Dispatch-ArrayWithLimits
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

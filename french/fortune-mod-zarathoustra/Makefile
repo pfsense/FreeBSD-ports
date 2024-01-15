@@ -1,13 +1,11 @@
-# Created by: Frederic Culot <frederic@culot.org>
-# $FreeBSD$
-
 PORTNAME=	fortune-mod-zarathoustra
 PORTVERSION=	20100905
 CATEGORIES=	french
 MASTER_SITES=	LOCAL/culot
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compilation of quotes from Nietzsche's Thus spoke Zarathustra
+WWW=		https://www.ebooksgratuits.com/html/nietzsche_ainsi_parlait_zarathoustra.html
 
 LICENSE=	NONE
 

@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	subtools
 PORTVERSION=	20081026
 CATEGORIES=	multimedia
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line tools for movie subtitles in SubRipper format
+WWW=		https://subtools.sourceforge.net/
 
 USES=		python tar:bzip2
 

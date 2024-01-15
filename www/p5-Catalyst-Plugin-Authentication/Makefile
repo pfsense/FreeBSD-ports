@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Authentication
 PORTVERSION=	0.10023
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Infrastructure plugin for the Catalyst authentication framework
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Authentication
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	vv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.0-383
 DISTVERSIONSUFFIX=	-g7a783a8b
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast and simple 4D image viewer
+WWW=		https://www.creatis.insa-lyon.fr/rio/vv/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -18,16 +17,16 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libfreetype.so:print/freetype2 \
 		libgdcmCommon.so:devel/gdcm \
 		libhdf5_cpp.so:science/hdf5 \
-		libITKLabelMap-5.0.so:science/InsightToolkit \
+		libITKLabelMap-5.0.so:science/InsightToolkit501 \
 		libpng.so:graphics/png \
-		libsz.so:science/szip \
+		libsz.so:science/libaec \
 		libtiff.so:graphics/tiff \
 		libvtkIOSQL-8.2.so:math/vtk8
 
 USES=		cmake compiler:c++11-lang eigen:3 jpeg qt:5 xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	open-vv
-USE_QT=		core designer gui network sql widgets xml buildtools_build qmake_build
+USE_QT=		core designer gui network sql widgets xml buildtools:build qmake:build
 USE_XORG=	ice sm x11 xext xt
 USE_CXXSTD=	c++11
 

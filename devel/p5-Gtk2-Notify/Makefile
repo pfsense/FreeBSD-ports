@@ -1,6 +1,3 @@
-# Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Gtk2-Notify
 PORTVERSION=	0.05
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Perl interface to libnotify
+WWW=		https://metacpan.org/release/Gtk2-Notify
 
 BUILD_DEPENDS=	p5-ExtUtils-Depends>=0:devel/p5-ExtUtils-Depends \
 		p5-ExtUtils-PkgConfig>=0:devel/p5-ExtUtils-PkgConfig \

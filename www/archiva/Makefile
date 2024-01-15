@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	archiva
 PORTVERSION=	2.2.3
 CATEGORIES=	www java
@@ -8,6 +6,7 @@ DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	freebsd@dussan.org
 COMMENT=	Extensible repository management software
+WWW=		https://archiva.apache.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

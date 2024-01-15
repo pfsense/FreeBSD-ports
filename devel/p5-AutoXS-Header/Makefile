@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	AutoXS-Header
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Container for the AutoXS header files
+WWW=		https://metacpan.org/release/AutoXS-Header
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

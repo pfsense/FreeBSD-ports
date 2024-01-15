@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	idea
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -12,6 +9,9 @@ EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command-line IDEA encryption and decryption utility
+WWW=		http://www.de-moliner.ch/richard/
+
+CONFLICTS_INSTALL=	intellij intellij-ultimate # bin/idea
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

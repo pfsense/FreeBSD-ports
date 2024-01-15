@@ -1,24 +1,24 @@
-# Created by: Joseph Koshy <koshy@india.hp.com>
-# $FreeBSD$
-
 PORTNAME=	xaos
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	4.2
+DISTVERSION=	4.2.1
+PORTREVISION=	1
 CATEGORIES=	graphics math
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joerg.preiss@slesa.de
 COMMENT=	Real-time interactive fractal browser
+WWW=		https://xaos-project.github.io/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:c++11-lang gl qmake qt:5
-USE_GL=		gl
-USE_QT=		core gui opengl widgets buildtools_build linguisttools_build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	xaos-project
 GH_PROJECT=	XaoS
+
+USE_GL=		gl
+USE_QT=		core gui opengl widgets buildtools:build linguisttools:build
 
 QMAKE_ARGS+=	INCLUDEPATH+=${LOCALBASE}/include \
 		LIBS+=-L${LOCALBASE}/lib
@@ -30,7 +30,7 @@ DESKTOP_ENTRIES=	"XaoS" \
 			"" \
 			false
 
-OPTIONS_DEFINE=		DOCS EXAMPLES NLS TUTORIAL
+OPTIONS_DEFINE=		EXAMPLES NLS TUTORIAL
 OPTIONS_DEFAULT=	TUTORIAL
 OPTIONS_SUB=		yes
 
@@ -41,8 +41,6 @@ post-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/xaos ${STAGEDIR}${PREFIX}/bin/xaos
 	${INSTALL_DATA} ${WRKSRC}/src/ui/images/xaosbig.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/xaos.png
-
-post-install-DOCS-on:
 	${INSTALL_MAN} ${WRKSRC}/doc/xaos.6 \
 		${STAGEDIR}${MANPREFIX}/share/man/man6/xaos.6
 

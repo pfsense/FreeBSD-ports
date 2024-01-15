@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	greple
 PORTVERSION=	8.3304
 CATEGORIES=	textproc
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Grep with multiple keywords
+WWW=		https://github.com/kaz-utashiro/greple
 
 LICENSE=	GREPLE
 LICENSE_NAME=	GREPLE License

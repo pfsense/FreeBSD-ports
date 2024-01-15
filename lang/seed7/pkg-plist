@@ -1,5 +1,8 @@
 bin/s7
 bin/s7c
+%%DATADIR%%/seed7.vim
+%%DATADIR%%/sd7.vim
+%%DATADIR%%/seed7.nanorc
 lib/seed7/bin/s7_comp.a
 lib/seed7/bin/s7_con.a
 lib/seed7/bin/s7_data.a
@@ -8,6 +11,7 @@ lib/seed7/bin/seed7_05.a
 lib/seed7/lib/aes.s7i
 lib/seed7/lib/ar.s7i
 lib/seed7/lib/arc4.s7i
+lib/seed7/lib/archive_base.s7i
 lib/seed7/lib/array.s7i
 lib/seed7/lib/asn1.s7i
 lib/seed7/lib/bigfile.s7i
@@ -20,6 +24,7 @@ lib/seed7/lib/bitmapfont.s7i
 lib/seed7/lib/bitset.s7i
 lib/seed7/lib/bitsetof.s7i
 lib/seed7/lib/blowfish.s7i
+lib/seed7/lib/bmp.s7i
 lib/seed7/lib/boolean.s7i
 lib/seed7/lib/browser.s7i
 lib/seed7/lib/bstring.s7i
@@ -27,6 +32,7 @@ lib/seed7/lib/bytedata.s7i
 lib/seed7/lib/cards.s7i
 lib/seed7/lib/category.s7i
 lib/seed7/lib/cc_conf.s7i
+lib/seed7/lib/ccittfax.s7i
 lib/seed7/lib/cgi.s7i
 lib/seed7/lib/cgidialog.s7i
 lib/seed7/lib/char.s7i
@@ -120,6 +126,7 @@ lib/seed7/lib/ftpserv.s7i
 lib/seed7/lib/getf.s7i
 lib/seed7/lib/gethttp.s7i
 lib/seed7/lib/gethttps.s7i
+lib/seed7/lib/gif.s7i
 lib/seed7/lib/graph_file.s7i
 lib/seed7/lib/graph.s7i
 lib/seed7/lib/gtkserver.s7i
@@ -129,16 +136,19 @@ lib/seed7/lib/hashsetof.s7i
 lib/seed7/lib/hmac.s7i
 lib/seed7/lib/html_ent.s7i
 lib/seed7/lib/html.s7i
+lib/seed7/lib/htmldom.s7i
 lib/seed7/lib/http_response.s7i
 lib/seed7/lib/httpserv.s7i
+lib/seed7/lib/huffman.s7i
 lib/seed7/lib/ico.s7i
 lib/seed7/lib/idxarray.s7i
 lib/seed7/lib/image.s7i
+lib/seed7/lib/imagefile.s7i
 lib/seed7/lib/inflate.s7i
-lib/seed7/lib/inflatefile.s7i
 lib/seed7/lib/inifile.s7i
 lib/seed7/lib/integer.s7i
 lib/seed7/lib/iobuffer.s7i
+lib/seed7/lib/jpeg.s7i
 lib/seed7/lib/keybd.s7i
 lib/seed7/lib/keydescr.s7i
 lib/seed7/lib/leb128.s7i
@@ -159,13 +169,16 @@ lib/seed7/lib/msgdigest.s7i
 lib/seed7/lib/multiscr.s7i
 lib/seed7/lib/null_file.s7i
 lib/seed7/lib/osfiles.s7i
+lib/seed7/lib/pem.s7i
 lib/seed7/lib/pic_util.s7i
 lib/seed7/lib/pic16.s7i
 lib/seed7/lib/pic32.s7i
 lib/seed7/lib/pixmap_file.s7i
 lib/seed7/lib/pixmapfont.s7i
 lib/seed7/lib/pkcs1.s7i
+lib/seed7/lib/png.s7i
 lib/seed7/lib/poll.s7i
+lib/seed7/lib/ppm.s7i
 lib/seed7/lib/process.s7i
 lib/seed7/lib/progs.s7i
 lib/seed7/lib/propertyfile.s7i
@@ -208,6 +221,7 @@ lib/seed7/lib/tar.s7i
 lib/seed7/lib/tdes.s7i
 lib/seed7/lib/tee.s7i
 lib/seed7/lib/text.s7i
+lib/seed7/lib/tiff.s7i
 lib/seed7/lib/time.s7i
 lib/seed7/lib/tls.s7i
 lib/seed7/lib/unicode.s7i

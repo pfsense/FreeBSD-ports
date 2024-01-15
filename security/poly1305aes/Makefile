@@ -1,6 +1,3 @@
-# Created by: roam@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	poly1305aes
 PORTVERSION=	20050218
 CATEGORIES=	security
@@ -8,6 +5,7 @@ MASTER_SITES=	http://cr.yp.to/mac/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Poly1305 message authentication reference implementation using AES
+WWW=		https://cr.yp.to/mac.html
 
 LICENSE=	PD
 
@@ -23,8 +21,10 @@ CC+=		${CPPFLAGS} ${CFLAGS} ${LDFLAGS}
 
 .include <bsd.port.pre.mk>
 
+.if ${ARCH:Mpowerpc*}
+USE_GCC=	yes
+.elif ${ARCH} == "i386"
 pre-build:
-.if ${ARCH} == "i386"
 	@${ECHO_CMD} "ppro" > ${WRKSRC}/poly1305aes.impl
 .endif
 

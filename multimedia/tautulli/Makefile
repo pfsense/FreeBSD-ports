@@ -1,61 +1,58 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tautulli
-PORTVERSION=	2.5.5
-DISTVERSIONPREFIX=v
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.12.2
 CATEGORIES=	multimedia python
 
 MAINTAINER=	christer.edwards@gmail.com
 COMMENT=	Monitoring, analytics, and notifications for Plex Media Server
+WWW=		https://github.com/Tautulli/Tautulli
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
 		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycryptodomex>0:security/py-pycryptodomex@${PY_FLAVOR} \
-		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		python:3.5+ shebangfix
+USES=		cpe python shebangfix
 USE_GITHUB=	yes
+GH_ACCOUNT=	Tautulli
+GH_PROJECT=	Tautulli
 USE_RC_SUBR=	${PORTNAME}
 
 SHEBANG_FILES=	Tautulli.py
-SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
 python_OLD_CMD=	/bin/sh
-GH_ACCOUNT=	Tautulli
-GH_PROJECT=	Tautulli
 
 NO_ARCH=	yes
-PORTDOCS=	API.md CHANGELOG.md README.md
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
 
 USERS=		tautulli
 GROUPS=		tautulli
 
+PORTDOCS=	API.md CHANGELOG.md README.md
+
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	${FIND} ${WRKSRC} -name '*.orig' -delete
+	@${FIND} ${WRKSRC} -name '*.orig' -delete
 
 do-build:
 	@${PYTHON_CMD} -m compileall ${WRKSRC}
 	@${PYTHON_CMD} -O -m compileall ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR}/data ${STAGEDIR}${WWWDIR}/lib \
-		${STAGEDIR}${WWWDIR}/plexpy
-	cd ${WRKSRC} && ${COPYTREE_SHARE} "data lib plexpy" ${STAGEDIR}${WWWDIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/Tautulli.py ${STAGEDIR}${WWWDIR}
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} "data lib plexpy" ${STAGEDIR}${WWWDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/Tautulli.py ${STAGEDIR}${WWWDIR}/
+	${INSTALL_DATA} ${WRKSRC}/CHANGELOG.md ${STAGEDIR}${WWWDIR}/
+
+post-install:
+	@${FIND} -s ${STAGEDIR}${WWWDIR} -type d -empty -delete
+	@${FIND} -s ${STAGEDIR} -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-	${RLN} ${STAGEDIR}${DOCSDIR}/CHANGELOG.md ${STAGEDIR}${WWWDIR}/CHANGELOG.md
-
-post-install:
-	${FIND} -s ${STAGEDIR}${WWWDIR} -type d -empty -delete
-	${FIND} -s ${STAGEDIR} -not -type d | ${SORT} | \
-		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 
 .include <bsd.port.mk>

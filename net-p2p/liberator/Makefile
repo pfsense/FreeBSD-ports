@@ -1,15 +1,13 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	liberator
 PORTVERSION=	2.0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/ofcp/ofcp-${PORTVERSION}
 DISTNAME=	ofcp-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line client to FreeNet Network
+WWW=		https://sourceforge.net/projects/liberator/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,7 @@ MAKE_JOBS_UNSAFE=yes
 
 DATA_FILES=	liber_mimetypes
 DOC_FILES=	COPYING FREESITE-HOWTO README TODO
-LIB_FILES=      fcp.cma hlfi.cma asfi.cma fcp.cmxa hlfi.cmxa asfi.cmxa \
+LIB_FILES=	fcp.cma hlfi.cma asfi.cma fcp.cmxa hlfi.cmxa asfi.cmxa \
 		fcp.mli hlfreenet.mli asfreenet.mli fieldset.mli \
 		fstream.mli \
 		fcp.cmi hlfreenet.cmi asfreenet.cmi fieldset.cmi \

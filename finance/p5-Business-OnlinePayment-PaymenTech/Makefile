@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Business-OnlinePayment-PaymenTech
 PORTVERSION=	2.07
 CATEGORIES=	finance perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	PaymenTech backend for Business::OnlinePayment
+WWW=		https://metacpan.org/release/Business-OnlinePayment-PaymenTech
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

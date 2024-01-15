@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Authen-Libwrap
 PORTVERSION=	0.23
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to TCP Wrappers library
+WWW=		https://metacpan.org/release/Authen-Libwrap
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

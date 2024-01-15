@@ -1,6 +1,3 @@
-# Created by: alepulver
-# $FreeBSD$
-
 PORTNAME=	evq3
 PORTVERSION=	1.3.20080810
 PORTREVISION=	11
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Marriage of XreaL and Icculus.org Q3 w/ Improvements
+WWW=		http://evolution.quakedev.com/
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 

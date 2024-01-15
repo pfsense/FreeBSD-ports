@@ -3,11 +3,11 @@
  * suricata_ip_list_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,10 +26,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $config, $g;
-
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
+global $g;
 
 // Hard-code the path where IP Lists are stored
 // and disregard any user-supplied path element.
@@ -44,22 +41,15 @@ function suricata_is_iplist_active($iplist) {
 	 * This function checks all configured Suricata	   *
 	 * interfaces to see if the passed IP List is used *
 	 * as a whitelist or blacklist by an interface.	   *
-	 *												   *
-	 * Returns: TRUE  if IP List is in use			   *
-	 *		  FALSE if IP List is not in use		   *
+	 *                                                 *
+	 * Returns: TRUE  if IP List is in use             *
+	 *          FALSE if IP List is not in use         *
 	 ***************************************************/
 
-	global $g, $config;
-
-	if (!is_array($config['installedpackages']['suricata']['rule']))
-		return FALSE;
-
-	foreach ($config['installedpackages']['suricata']['rule'] as $rule) {
-		if (is_array($rule['iplist_files']['item'])) {
-			foreach ($rule['iplist_files']['item'] as $file) {
-				if ($file == $iplist)
-					return TRUE;
-			}
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $rule) {
+		foreach (array_get_path($rule, 'iplist_files/item', []) as $file) {
+			if ($file == $iplist)
+				return TRUE;
 		}
 	}
 	return FALSE;
@@ -70,8 +60,8 @@ if (!empty($_POST)) {
 	$pconfig = $_POST;
 }
 else {
-	$pconfig['et_iqrisk_enable'] = $config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'];
-	$pconfig['iqrisk_code'] = $config['installedpackages']['suricata']['config'][0]['iqrisk_code'];
+	$pconfig['et_iqrisk_enable'] = config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable');
+	$pconfig['iqrisk_code'] = htmlentities(config_get_path('installedpackages/suricata/config/0/iqrisk_code'));
 }
 
 // Validate IQRisk settings if enabled and saving them
@@ -80,19 +70,19 @@ if ($_POST['save']) {
 		$input_errors[] = gettext("You must provide a valid IQRisk subscription code when IQRisk downloads are enabled!");
 
 	if (!$input_errors) {
-		$config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] = $_POST['et_iqrisk_enable'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['iqrisk_code'] = $_POST['iqrisk_code'];
+		config_set_path('installedpackages/suricata/config/0/et_iqrisk_enable', $_POST['et_iqrisk_enable'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/iqrisk_code', trim(html_entity_decode($_POST['iqrisk_code'])));
 		write_config("Suricata pkg: modified IP Lists settings.");
 
 		/* Toggle cron task for ET IQRisk updates if setting was changed */
-		if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'on' && !suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php")) {
+		if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on' && !suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php")) {
 			install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
 		}
-		elseif ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'off' && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php"))
+		elseif (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'off' && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php"))
 			install_cron_job("/usr/local/pkg/suricata/suricata_etiqrisk_update.php", FALSE);
 
 		/* Peform a manual ET IQRisk file check/download */
-		if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'on')
+		if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on')
 			include("/usr/local/pkg/suricata/suricata_etiqrisk_update.php");
 	}
 }
@@ -152,7 +142,9 @@ if (isset($_POST['iplist_edit_save']) && isset($_POST['iplist_data'])) {
 // so we can pick up any changes made to files in code above.
 $ipfiles = return_dir_as_array($iprep_path);
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("IP Reputation Lists"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "IP Lists Management");
+
 include_once("head.inc");
 
 if ($input_errors) {
@@ -169,6 +161,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -227,8 +220,8 @@ print $form;
 						<td><?=date('M-d Y g:i a', filemtime("{$iprep_path}{$file}")); ?></td>
 						<td><?=format_bytes(filesize("{$iprep_path}{$file}")); ?></td>
 						<td>
-							<a href="#" class="fa fa-pencil icon-primary" onClick="suricata_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
-							<a href="#" class="fa fa-trash icon-primary no-confirm" onClick="suricata_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-pencil icon-primary" onClick="suricata_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onClick="suricata_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -273,11 +266,11 @@ print $form;
 					<tr>
 						<td colspan="4" class="text-right">
 							<button type="button" class="btn btn-success btn-sm" title="<?=gettext('Create a new IP List');?>" onclick="document.getElementById('iplist_data').value=''; document.getElementById('iplist_name').value=''; document.getElementById('iplist_editor').style.display='table-row-group'; document.getElementById('iplist_name').focus();">
-								<i class="fa fa-plus icon-embed-btn"></i>
+								<i class="fa-solid fa-plus icon-embed-btn"></i>
 								<?=gettext(' Add');?>
 							</button>
 							<button type="button" class="btn btn-info btn-sm" title="<?=gettext('Upload IP List file');?>" onclick="document.getElementById('uploader').style.display='table-row-group';">
-								<i class="fa fa-upload icon-embed-btn"></i>
+								<i class="fa-solid fa-upload icon-embed-btn"></i>
 								<?=gettext(' Upload');?>
 							</button>
 						</td>
@@ -302,10 +295,10 @@ print $form;
 						</ol>
 					</p>
 					<p>
-						Click on the <i class="fa fa-lg fa-plus" alt="Add Icon"></i> icon to open the editor window to create a new IP List.<br/>
-						Click on the <i class="fa fa-lg fa-upload" alt="Upload Icon"></i> icon to upload a new IP List file from your local machine.<br/>
-						Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to view or edit an existing IP List.<br/>
-						Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an existing IP List.
+						Click on the <i class="fa-solid fa-lg fa-plus" alt="Add Icon"></i> icon to open the editor window to create a new IP List.<br/>
+						Click on the <i class="fa-solid fa-lg fa-upload" alt="Upload Icon"></i> icon to upload a new IP List file from your local machine.<br/>
+						Click on the <i class="fa-solid fa-lg fa-pencil" alt="Edit Icon"></i> icon to view or edit an existing IP List.<br/>
+						Click on the <i class="fa-solid fa-lg fa-trash-can" alt="Delete Icon"></i> icon to delete an existing IP List.
 					</p>
 				</div>
 			</div>

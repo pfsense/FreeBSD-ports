@@ -1,6 +1,3 @@
-# Created by: Radim Kolar <hsn@sendmail.cz>
-# $FreeBSD$
-
 PORTNAME=	dhrystone
 PORTVERSION=	2.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ EXTRACT_SUFX=
 
 MAINTAINER=	hsn@sendmail.cz
 COMMENT=	Computing benchmark for integer operations
+WWW=		https://www.netlib.org/benchmark/
 
 LICENSE=	BSD2CLAUSE
 

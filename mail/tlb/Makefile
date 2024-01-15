@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
-
 PORTNAME=	tlb
 PORTVERSION=	0.11a
 PORTREVISION=	1

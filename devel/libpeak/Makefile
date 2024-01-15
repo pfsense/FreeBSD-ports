@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libpeak
 PORTVERSION=	0.1.2
 PORTREVISION=	2
@@ -9,10 +6,11 @@ MASTER_SITES=	SF/peak/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Parallel Events and Asynchronous tasKing Library
+WWW=		https://peak.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 
-ONLY_FOR_ARCHS=		amd64 i386 sparc64
+ONLY_FOR_ARCHS=		amd64 i386
 
 USES=		gmake libtool perl5 shebangfix
 USE_PERL5=	test

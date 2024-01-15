@@ -1,6 +1,3 @@
-# Created by: Michael Nottebrock <michaelnottebrock@gmx.net> et al
-# $FreeBSD$
-
 PORTNAME=	xvid
 PORTVERSION=	1.3.7
 PORTEPOCH=	1
@@ -10,11 +7,12 @@ DISTNAME=	${PORTNAME}core-${PORTVERSION}
 
 MAINTAINER=	riggs@FreeBSD.org
 COMMENT=	Opensource MPEG-4 codec, based on OpenDivx
+WWW=		http://www.xvid.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKDIR}/xvidcore/LICENSE
 
-USES=		gmake tar:bz2
+USES=		cpe gmake tar:bz2
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
@@ -22,6 +20,7 @@ USE_LDCONFIG=	yes
 # PR230208 Allow relocations against read-only segments (override lld default)
 LDFLAGS_i386=	-Wl,-z,notext
 
+CFLAGS_powerpc=	-Dregister=
 CONFIGURE_ENV+=	ac_cv_prog_ac_yasm=no
 
 PLIST_FILES=	include/xvid.h \

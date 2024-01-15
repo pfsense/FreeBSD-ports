@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Web-Simple
 PORTVERSION=	0.033
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Quick and easy way to build simple web applications
+WWW=		https://metacpan.org/release/Web-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,8 +19,9 @@ RUN_DEPENDS=	p5-HTTP-Body>=1.22:www/p5-HTTP-Body \
 		p5-strictures>=1:devel/p5-strictures
 TEST_DEPENDS=	p5-Data-Dumper-Concise>=2.20:devel/p5-Data-Dumper-Concise
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

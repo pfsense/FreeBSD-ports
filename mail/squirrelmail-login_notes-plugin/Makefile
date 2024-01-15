@@ -1,6 +1,3 @@
-# Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	login_notes
 PORTVERSION=	1.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ DISTNAME=	${SQUIRREL_PLUGIN_NAME}-${PORTVERSION}-1.4.0
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Place notes on the login screen
+WWW=		https://www.squirrelmail.org
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Roman Bogorodskiy <bogorodskiy@inbox.ru>
-# $FreeBSD$
-
 PORTNAME=	dkftpbench
 PORTVERSION=	0.45
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.kegel.com/dkftpbench/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FTP benchmark program
+WWW=		http://www.kegel.com/dkftpbench/
 
 LICENSE=	GPLv2
 

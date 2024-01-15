@@ -1,26 +1,31 @@
-# Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtimer
 PORTVERSION=	2.0.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Timer for your personal activities
+WWW=		https://www.k5n.us/gtimer.php
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		gettext perl5 gmake gnome pkgconfig xorg
-USE_XORG=	x11 xscrnsaver
+USES=		gettext gmake gnome localbase perl5 pkgconfig xorg
 USE_GNOME=	gtk20
+USE_XORG=	x11 xscrnsaver
+
 GNU_CONFIGURE=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include -Wno-return-type
-LIBS+=		-L${LOCALBASE}/lib -lX11
+CPPFLAGS+=	-Wno-return-type
+LIBS+=		-lX11
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|1.1.7|${PORTVERSION}|g' ${WRKSRC}/configure

@@ -1,13 +1,12 @@
-# Created by: Ralf van Dooren <r.vdooren@snow.nl>
-# $FreeBSD$
-
 PORTNAME=	rsnapshot
-PORTVERSION=	1.4.3
+PORTVERSION=	1.4.4
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.rsnapshot.org/downloads/
 
 MAINTAINER=	ralfvd@gmail.com
 COMMENT=	Filesystem snapshot utility based on rsync(1)
+WWW=		https://www.rsnapshot.org
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

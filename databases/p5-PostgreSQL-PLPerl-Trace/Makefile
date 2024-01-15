@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@sunpoet.net>
-# $FreeBSD$
-
 PORTNAME=	PostgreSQL-PLPerl-Trace
 PORTVERSION=	1.001
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple way to trace execution of Perl statements in PL/Perl
+WWW=		https://metacpan.org/release/PostgreSQL-PLPerl-Trace
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

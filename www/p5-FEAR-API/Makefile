@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	FEAR-API
 PORTVERSION=	0.489
 PORTREVISION=	3
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Web Scraping Zen
+WWW=		https://metacpan.org/release/XERN/FEAR-API-0.489
 
 LICENSE=	ARTPERL10
 

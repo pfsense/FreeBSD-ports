@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	cyrus-sasl
-PORTVERSION=	2.1.27
+PORTVERSION=	2.1.28
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-sasl/releases/download/${PORTNAME}-${PORTVERSION}/
 
@@ -18,12 +17,13 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--sysconfdir=${PREFIX}/etc \
 		--with-configdir=${PREFIX}/lib/sasl2:${PREFIX}/etc/sasl2 \
 		--with-plugindir=${PREFIX}/lib/sasl2 \
-		--with-dbpath=${PREFIX}/etc/sasldb2 \
+		--with-dbpath=${SASLDB_DIR}/sasldb2 \
 		--with-lib-subdir=lib \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--includedir=${PREFIX}/include \
 		--enable-static \
-		--with-rc4=openssl
+		--with-rc4=openssl \
+		--with-sphinx-build=no
 CONFIGURE_ARGS+=--disable-anon \
 		--disable-cram \
 		--disable-digest \
@@ -37,6 +37,7 @@ CONFIGURE_ARGS+=--disable-anon \
 		--disable-srp \
 		--with-dblib=none
 CONFIGURE_ARGS+=${CYRUS_CONFIGURE_ARGS}
+CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 MAKE_ENV+=	INSTALL_STRIP_FLAG=${STRIP}
 
 DOCSDIR=	${PREFIX}/share/doc/cyrus-sasl2
@@ -83,12 +84,17 @@ CONFIGURE_ARGS+=--with-openssl=${OPENSSLBASE}
 CPPFLAGS+=	-fPIC
 .endif
 
+.if ${PORT_OPTIONS:MSASLDB_IN_VAR}
+SASLDB_DIR=	/var/db/sasl2
+.else
+SASLDB_DIR=	${PREFIX}/etc
+.endif
+
 .if ${CYRUS_BUILD_TARGET} == "cyrus-sasl"
 
 .if ${PORT_OPTIONS:MBDB1}
 SASLDB_NAME=	sasldb2.db
 .elif ${PORT_OPTIONS:MBDB}
-INVALID_BDB_VER=2
 SASLDB_NAME=	sasldb2
 .elif ${PORT_OPTIONS:MGDBM} || ${PORT_OPTIONS:MLMDB}
 SASLDB_NAME=	sasldb2
@@ -98,7 +104,7 @@ SASLDB=	"@comment "
 
 SUB_FILES=	pkg-deinstall pkg-install pkg-message
 SUB_LIST=	CYRUS_USER=${CYRUS_USER} CYRUS_GROUP=${CYRUS_GROUP} \
-		SASLDB_NAME=${SASLDB_NAME}
+		SASLDB_DIR=${SASLDB_DIR} SASLDB_NAME=${SASLDB_NAME}
 
 PLIST_SUB+=	PREFIX=${PREFIX} \
 		SASLDB=${SASLDB}
@@ -117,10 +123,6 @@ post-install-DOCS-on:
 	@${INSTALL_DATA} ${FILESDIR}/Sendmail.README ${STAGEDIR}${DOCSDIR}
 
 .elif ${CYRUS_BUILD_TARGET} == "saslauthd"
-
-.if ${PORT_OPTIONS:MBDB}
-INVALID_BDB_VER=2
-.endif
 
 .if ${PORT_OPTIONS:MOPENLDAP}
 .if defined(WITH_OPENLDAP_VER)

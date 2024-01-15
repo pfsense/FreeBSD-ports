@@ -1,14 +1,13 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	rankwidth	# Also known as: rw
 PORTVERSION=	0.9
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	rw-${PORTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Calculation of rank-width and rank-decompositions
+WWW=		https://sourceforge.net/projects/rankwidth/
 
 LICENSE=	GPLv2
 
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libigraph.so:math/igraph
 
 USES=		autoreconf libtool localbase pkgconfig
 
-CONFLICTS_INSTALL=	rw-*
+CONFLICTS_INSTALL=	rw
 
 OPTIONS_DEFINE=	DOCS
 

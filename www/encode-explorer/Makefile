@@ -1,6 +1,3 @@
-# Created by: Frank Wall <fw@moov.de>
-# $FreeBSD$
-
 PORTNAME=	encode
 PORTVERSION=	6.3
 CATEGORIES=	www
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}_${PORTVERSION}
 
 MAINTAINER=	fw@moov.de
 COMMENT=	PHP script to browse, create folders, upload files etc
+WWW=		https://sourceforge.net/projects/encode-explorer/
 
 USES=		php:web zip
 NO_BUILD=	yes

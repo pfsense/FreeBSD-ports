@@ -1,16 +1,18 @@
-# Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-# $FreeBSD$
-
 PORTNAME=	backuppc
-PORTVERSION=	4.4.0
+DISTVERSION=	4.4.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/backuppc/backuppc/releases/download/${PORTVERSION}/ \
 		SF
 PKGNAMESUFFIX=	4
 DISTNAME=	BackupPC-${DISTVERSION}
 
+PATCH_SITES=	https://github.com/backuppc/backuppc/commit/
+PATCHFILES=	2c9270b9b849b2c86ae6301dd722c97757bc9256.patch:-p1
+
 MAINTAINER=	moiseev@mezonplus.ru
 COMMENT=	Multi-platform backup to disk-based storage
+WWW=		https://backuppc.github.io/backuppc/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,9 +21,11 @@ RUN_DEPENDS=	p5-CGI>0:www/p5-CGI \
 		p5-File-Listing>=0:sysutils/p5-File-Listing \
 		p5-BackupPC-XS>=0.62:sysutils/p5-BackupPC-XS
 
-USES=		perl5
+USES=		cpe perl5
 
 CONFLICTS_INSTALL=	backuppc backuppc-devel
+
+CPE_VENDOR=	craig_barratt
 
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	latte
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.2
+PORTREVISION=	3
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Quantum chemistry: Density functional tight binding molecular dynamics
+WWW=		https://github.com/lanl/LATTE
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE_GPL-2.0

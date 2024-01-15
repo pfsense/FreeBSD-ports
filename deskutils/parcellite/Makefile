@@ -1,14 +1,13 @@
-# Created by: Joey Mingrone <joey@mingrone.org>
-# $FreeBSD$
-
 PORTNAME=	parcellite
 PORTVERSION=	1.2.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	meta@FreeBSD.org
-COMMENT=	Lightweight GTK+ clipboard manager
+COMMENT=	Lightweight GTK clipboard manager
+WWW=		https://parcellite.sourceforge.net
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

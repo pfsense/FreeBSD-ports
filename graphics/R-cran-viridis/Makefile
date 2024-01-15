@@ -1,20 +1,17 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	viridis
-PORTVERSION=	0.5.1
-PORTREVISION=	3
+PORTVERSION=	0.6.4
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Default Color Maps from 'matplotlib'
+WWW=		https://cran.r-project.org/web/packages/viridis/
 
 LICENSE=	MIT
 
-CRAN_DEPENDS=	R-cran-viridisLite>=0.3.0:graphics/R-cran-viridisLite \
-		R-cran-ggplot2>=1.0.1:graphics/R-cran-ggplot2 \
-		R-cran-gridExtra>0:graphics/R-cran-gridExtra
+CRAN_DEPENDS=	R-cran-ggplot2>=1.0.1:graphics/R-cran-ggplot2 \
+		R-cran-gridExtra>0:graphics/R-cran-gridExtra \
+		R-cran-viridisLite>=0.4.0:graphics/R-cran-viridisLite
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

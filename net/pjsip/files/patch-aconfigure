@@ -1,20 +1,20 @@
---- aconfigure.orig	2018-07-05 11:16:11 UTC
+--- aconfigure.orig	2022-11-24 05:24:24 UTC
 +++ aconfigure
-@@ -7085,7 +7085,7 @@ else
+@@ -8059,7 +8059,7 @@ else $as_nop
  			FFMPEG_PREFIX=$with_ffmpeg
- 			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: Using ffmpeg prefix... $FFMPEG_PREFIX" >&5
- $as_echo "Using ffmpeg prefix... $FFMPEG_PREFIX" >&6; }
+ 			{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: Using ffmpeg prefix... $FFMPEG_PREFIX" >&5
+ printf "%s\n" "Using ffmpeg prefix... $FFMPEG_PREFIX" >&6; }
 -			export PKG_CONFIG_PATH=$FFMPEG_PREFIX/lib/pkgconfig
 +			export PKG_CONFIG_PATH=$FFMPEG_PREFIX/libdata/pkgconfig
  		fi
  
  		for ac_prog in pkg-config "python pkgconfig.py"
-@@ -8884,7 +8884,7 @@ $as_echo "Checking if libwebrtc is disabled...no" >&6;
+@@ -10129,7 +10129,7 @@ printf "%s\n" "Checking if libwebrtc is disabled...no"
  			ac_webrtc_instset=sse2
  			ac_webrtc_cflags="-msse2"
  			;;
 -		     *win32* | *w32* | *darwin* | *linux*)
-+		     *win32* | *w32* | *darwin* | *linux* | *amd64*freebsd*)
++		     *win32* | *w32* | *darwin* | *linux* | *amd64*freebsd* | *x86_64*freebsd*)
                           case $target in
                               armv7l*gnueabihf)
                                   ac_webrtc_instset=neon

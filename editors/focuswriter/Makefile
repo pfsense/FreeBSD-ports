@@ -1,13 +1,12 @@
-# Created by: lightside <lightside@gmx.com>
-# $FreeBSD$
-
 PORTNAME=	focuswriter
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.6
+DISTVERSION=	1.8.5
+PORTREVISION=	1
 CATEGORIES=	editors
+MASTER_SITES=	https://gottcode.org/${PORTNAME}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Simple, distraction-free writing environment
+WWW=		https://gottcode.org/focuswriter/
 
 LICENSE=	GPLv3+ LGPL3+
 LICENSE_COMB=	multi
@@ -16,25 +15,17 @@ LICENSE_FILE_LGPL3+ =	${WRKSRC}/resources/images/icons/oxygen/COPYING
 
 LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 
-USES=		compiler:c++11-lib desktop-file-utils gl pkgconfig qmake qt:5
-USE_GITHUB=	yes
-GH_ACCOUNT=	gottcode
+USES=		cmake compiler:c++17-lang desktop-file-utils gl iconv pkgconfig \
+		qt:6 tar:bz2
 USE_GL=		gl
-USE_QT=		concurrent core gui multimedia network printsupport widgets \
-		buildtools_build linguisttools_build
+USE_QT=		base multimedia tools:build
 
-PORTDATA=	*
-PORTDOCS=	ChangeLog CREDITS README
+PORTDATA=		*
+PORTDOCS=		CREDITS ChangeLog README
+OPTIONS_DEFINE=		DOCS LTO
+OPTIONS_DEFAULT=	LTO
 
-OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e '/INSTALLS/s/man //' \
-		${WRKSRC}/focuswriter.pro
-
-post-install:
-	${INSTALL_MAN} ${WRKSRC}/resources/unix/focuswriter.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1
+LTO_CMAKE_BOOL=	ENABLE_LINK_TIME_OPTIMIZATION
 
 post-install-DOCS-on:
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR}

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	iqtree
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.6
-PORTREVISION=	1
+DISTVERSION=	2.2.2.7
 CATEGORIES=	biology
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Efficient phylogenomic software by maximum likelihood
+WWW=		http://www.iqtree.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,17 +13,19 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BROKEN_aarch64=	fails to compile: unrecognized command line option '-msse3'
 BROKEN_armv6=	fails to compile: unrecognized command line options '-m32' and '-msse3'
 BROKEN_armv7=	fails to compile: unrecognized command line options '-m32' and '-msse3'
+BROKEN_i386=	ld: error: unable to find library -latomic (see bug 230888)
 BROKEN_powerpc64=	fails to build: GCC version must be at least 4.8!
 
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
 
-USES=		cmake compiler:openmp eigen:3
+USES=		cmake eigen:3
 USE_GITHUB=	yes
-GH_ACCOUNT=	Cibiv
-GH_PROJECT=	IQ-TREE
+GH_PROJECT=	iqtree2
+GH_TUPLE=	tothuhien:lsd2:26ba127:iqtree2/lsd2
 
 PLIST_FILES=	bin/iqtree
-PORTEXAMPLES=	example.cf example.nex example.phy models.nex
+PORTEXAMPLES=	custom_distributions.txt example.cf example.nex example.phy \
+		models.nex tree.nwk
 
 OPTIONS_DEFINE=	EXAMPLES
 

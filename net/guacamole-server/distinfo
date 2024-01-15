@@ -1,3 +1,5 @@
-TIMESTAMP = 1594877637
-SHA256 (apache-guacamole-server-1.2.0_GH0.tar.gz) = 31212aa115a326030ccb58c76a77554a60c2c8bcdf285baab22af9f2a043bb06
-SIZE (apache-guacamole-server-1.2.0_GH0.tar.gz) = 523137
+TIMESTAMP = 1692385645
+SHA256 (guacamole-server-1.5.3.tar.gz) = dd4eebfb79fdef23d20dc585da8952e1b46a3411ec46836895c041488cf6dbc4
+SIZE (guacamole-server-1.5.3.tar.gz) = 1105466
+SHA256 (5cf408ebbba9544fb5dfb297d98d5a1e1751a56d.patch) = fe104f8eeade04051b1ba86ecb69307dc172746b11c10892dd24ea4a8593d083
+SIZE (5cf408ebbba9544fb5dfb297d98d5a1e1751a56d.patch) = 3222

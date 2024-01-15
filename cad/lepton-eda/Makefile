@@ -1,47 +1,57 @@
-# $FreeBSD$
-
 PORTNAME=	lepton-eda
-PORTVERSION=	1.9.13
+PORTVERSION=	1.9.18
+PORTREVISION=	3
 CATEGORIES=	cad
-MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}-20201211/
+MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}-20220529/
 
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	Lepton Electronic Design Automation
+WWW=		https://github.com/lepton-eda/lepton-eda
 
 LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libffi.so:devel/libffi \
+		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libgc-threaded.so:devel/boehm-gc-threaded \
-		libguile-2.2.so:lang/guile2 \
+		libfribidi.so:converters/fribidi \
+		libGLdispatch.so:graphics/libglvnd \
+		libgmp.so:math/gmp \
+		libgraphite2.so:graphics/graphite2 \
+		libgtkextra-x11-3.0.so:x11-toolkits/gtkextra \
+		libharfbuzz.so:print/harfbuzz \
+		libltdl.so:devel/libltdl \
+		libpcre.so:devel/pcre \
 		libpng.so:graphics/png \
 		libstroke.so:devel/libstroke \
-		libgtkextra-x11-3.0.so:x11-toolkits/gtkextra
+		libunistring.so:devel/libunistring
 
-USES=		desktop-file-utils gettext-tools gnome \
-		groff:build libtool localbase makeinfo pathfix perl5 \
-		pkgconfig shared-mime-info shebangfix
-USE_GNOME=	cairo gtk20
+USES=		desktop-file-utils gettext-tools gnome groff:build \
+		guile:2.2,3.0,conflicts iconv:wchar_t libtool localbase \
+		makeinfo pathfix perl5 pkgconfig shared-mime-info shebangfix \
+		xorg
+USE_XORG=	pixman x11 xau xcb xcomposite xcursor xdamage xdmcp xext xfixes \
+		xi xinerama xrandr xrender
+USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GL=		egl gl
 USE_LDCONFIG=	yes
 
-SHEBANG_FILES=	utils/scripts/lepton-pcb_backannotate \
-		utils/scripts/lepton-refdes_renum \
-		utils/scripts/lepton-symfix
-
-PORTEXAMPLES=	examples/*
+SHEBANG_FILES=	utils/pcb_backannotate/lepton-pcb_backannotate \
+		utils/refdes_renum/lepton-refdes_renum \
+		utils/symfix/lepton-symfix
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-guild
 INSTALL_TARGET=	install-strip
 
-INSTALLS_ICONS=	yes
-
-INFO=	lepton-scheme lepton-manual
+INFO=		lepton-scheme lepton-manual
+PORTEXAMPLES=	examples/*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes
 
-NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
+NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:
 	${REINPLACE_CMD} -e \

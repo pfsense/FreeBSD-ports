@@ -1,6 +1,3 @@
-# Created by: Joe Barbish <jail-primer1@a1poweruser.com>
-# $FreeBSD$
-
 PORTNAME=	jail-primer
 PORTVERSION=	0.2
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	jail-primer1@a1poweruser.com
 COMMENT=	Third Generation Jail System Solution
+WWW=		https://jail-primer.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 

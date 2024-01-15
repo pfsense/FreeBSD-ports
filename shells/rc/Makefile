@@ -1,18 +1,20 @@
-# Created by: erich@rrnet.com
-# $FreeBSD$
-
 PORTNAME=	rc
-PORTVERSION=	1.7.4
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.7.4
+PORTREVISION=	4
 CATEGORIES=	shells plan9
-MASTER_SITES=	http://static.tobold.org/rc/
 
-MAINTAINER=	quanstro@quanstro.net
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Unix incarnation of the plan9 shell
+WWW=		https://github.com/rakitzis/rc
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		autoreconf cpe
+USE_GITHUB=	yes
+GH_ACCOUNT=	rakitzis
+CPE_VENDOR=	${PORTNAME}_project
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-history
 

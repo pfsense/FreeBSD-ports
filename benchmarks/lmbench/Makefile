@@ -1,6 +1,3 @@
-# Created by: asami
-# $FreeBSD$
-
 PORTNAME=	lmbench
 PORTVERSION=	3.0.a9
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/\.a9/-a9/}
 
 MAINTAINER=	sacchi@gmail.com
 COMMENT=	System performance measurement tool
+WWW=		https://sourceforge.net/projects/lmbench/
 
 ALL_TARGET=	build
 MAKE_ARGS=	CC="${CC}"

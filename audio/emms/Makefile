@@ -1,15 +1,13 @@
-# Created by: Dryice Liu <dryice@dryice.name>
-# $FreeBSD$
-
 PORTNAME=	emms
-DISTVERSION=	5.0
-PORTREVISION=	4
+DISTVERSION=	16
 CATEGORIES=	audio elisp
-MASTER_SITES=	GNU
+MASTER_SITES=	https://elpa.gnu.org/packages/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
+EXTRACT_SUFX=	.tar
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emacs Multi-Media System
+WWW=		https://www.gnu.org/software/emms/index.html
 
 LICENSE=	GPLv3
 
@@ -18,7 +16,10 @@ BUILD_DEPENDS=	texi2dvi:print/texinfo
 
 USES=		emacs gmake
 
-INFO=		emms
+CONFLICTS_INSTALL=	emms emms-emacs_* # share/emacs/site-lisp/emms/emms-auto.el
+
 NO_ARCH=	yes
+
+INFO=		emms
 
 .include <bsd.port.mk>

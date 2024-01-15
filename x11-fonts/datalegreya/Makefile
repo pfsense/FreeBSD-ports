@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	datalegreya
 PORTVERSION=	0.2017.03.29
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	x11-fonts math textproc
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Typeface that melts text and data visualisation
+WWW=		https://figs-lab.com/en/datalegreya
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/SIL\ Open\ Font\ License.txt

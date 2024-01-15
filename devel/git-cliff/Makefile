@@ -1,0 +1,280 @@
+PORTNAME=	git-cliff
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.4.0
+PORTREVISION=	1
+CATEGORIES=	devel
+
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Highly customizable changelog generator
+WWW=		https://git-cliff.org
+
+LICENSE=	APACHE20 MIT
+LICENSE_COMB=	multi
+LICENSE_FILE_APACHE20=	${WRKSRC}/../LICENSE-APACHE
+LICENSE_FILE_MIT=	${WRKSRC}/../LICENSE-MIT
+
+USES=		cargo
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	orhun
+
+WRKSRC_SUBDIR=	git-cliff
+CARGO_CARGOLOCK=	${WRKSRC}/../Cargo.lock
+
+CARGO_CRATES=	addr2line-0.21.0 \
+		adler-1.0.2 \
+		aho-corasick-1.1.1 \
+		android-tzdata-0.1.1 \
+		android_system_properties-0.1.5 \
+		anstream-0.6.4 \
+		anstyle-1.0.3 \
+		anstyle-parse-0.2.1 \
+		anstyle-query-1.0.0 \
+		anstyle-wincon-3.0.1 \
+		async-trait-0.1.73 \
+		autocfg-1.1.0 \
+		backtrace-0.3.69 \
+		base64-0.21.4 \
+		bitflags-1.3.2 \
+		bitflags-2.4.0 \
+		block-buffer-0.10.4 \
+		bstr-1.6.2 \
+		bumpalo-3.14.0 \
+		bytes-1.5.0 \
+		cc-1.0.83 \
+		cfg-if-1.0.0 \
+		chrono-0.4.31 \
+		chrono-tz-0.8.3 \
+		chrono-tz-build-0.2.0 \
+		clap-4.4.7 \
+		clap_builder-4.4.7 \
+		clap_complete-4.4.4 \
+		clap_derive-4.4.7 \
+		clap_lex-0.6.0 \
+		clap_mangen-0.2.15 \
+		colorchoice-1.0.0 \
+		config-0.13.3 \
+		conventional_commit_parser-0.9.4 \
+		core-foundation-sys-0.8.4 \
+		cpufeatures-0.2.9 \
+		crc32fast-1.3.2 \
+		crypto-common-0.1.6 \
+		deunicode-0.4.4 \
+		diff-0.1.13 \
+		digest-0.10.7 \
+		directories-5.0.1 \
+		dirs-5.0.1 \
+		dirs-next-2.0.0 \
+		dirs-sys-0.4.1 \
+		dirs-sys-next-0.1.2 \
+		doc-comment-0.3.3 \
+		document-features-0.2.7 \
+		encoding_rs-0.8.33 \
+		env_logger-0.10.0 \
+		equivalent-1.0.1 \
+		errno-0.3.3 \
+		errno-dragonfly-0.1.2 \
+		flate2-1.0.27 \
+		fnv-1.0.7 \
+		form_urlencoded-1.2.0 \
+		futures-channel-0.3.28 \
+		futures-core-0.3.28 \
+		futures-io-0.3.28 \
+		futures-macro-0.3.28 \
+		futures-sink-0.3.28 \
+		futures-task-0.3.28 \
+		futures-util-0.3.28 \
+		generic-array-0.14.7 \
+		getrandom-0.2.10 \
+		gimli-0.28.0 \
+		git-conventional-0.12.4 \
+		git2-0.18.1 \
+		glob-0.3.1 \
+		globset-0.4.13 \
+		globwalk-0.8.1 \
+		h2-0.3.21 \
+		hashbrown-0.12.3 \
+		hashbrown-0.14.1 \
+		heck-0.4.1 \
+		hermit-abi-0.3.3 \
+		http-0.2.9 \
+		http-body-0.4.5 \
+		httparse-1.8.0 \
+		httpdate-1.0.3 \
+		humansize-2.1.3 \
+		humantime-2.1.0 \
+		hyper-0.14.27 \
+		hyper-rustls-0.24.1 \
+		iana-time-zone-0.1.57 \
+		iana-time-zone-haiku-0.1.2 \
+		idna-0.4.0 \
+		ignore-0.4.20 \
+		indexmap-1.9.3 \
+		indexmap-2.0.2 \
+		ipnet-2.8.0 \
+		is-terminal-0.4.9 \
+		itoa-1.0.9 \
+		jobserver-0.1.26 \
+		js-sys-0.3.64 \
+		lazy-regex-3.0.2 \
+		lazy-regex-proc_macros-3.0.1 \
+		lazy_static-1.4.0 \
+		libc-0.2.148 \
+		libgit2-sys-0.16.1+1.7.1 \
+		libm-0.2.7 \
+		libz-sys-1.1.12 \
+		linked-hash-map-0.5.6 \
+		linux-raw-sys-0.4.7 \
+		litrs-0.2.3 \
+		log-0.4.20 \
+		memchr-2.6.3 \
+		mime-0.3.17 \
+		minimal-lexical-0.2.1 \
+		miniz_oxide-0.7.1 \
+		mio-0.8.8 \
+		next_version-0.2.9 \
+		nom-7.1.3 \
+		num-traits-0.2.16 \
+		num_cpus-1.16.0 \
+		object-0.32.1 \
+		once_cell-1.18.0 \
+		option-ext-0.2.0 \
+		parse-zoneinfo-0.3.0 \
+		pathdiff-0.2.1 \
+		percent-encoding-2.3.0 \
+		pest-2.7.3 \
+		pest_derive-2.7.3 \
+		pest_generator-2.7.3 \
+		pest_meta-2.7.3 \
+		phf-0.11.2 \
+		phf_codegen-0.11.2 \
+		phf_generator-0.11.2 \
+		phf_shared-0.11.2 \
+		pin-project-lite-0.2.13 \
+		pin-utils-0.1.0 \
+		pkg-config-0.3.27 \
+		ppv-lite86-0.2.17 \
+		pretty_assertions-1.4.0 \
+		pretty_env_logger-0.5.0 \
+		proc-macro2-1.0.67 \
+		quote-1.0.33 \
+		rand-0.8.5 \
+		rand_chacha-0.3.1 \
+		rand_core-0.6.4 \
+		redox_syscall-0.2.16 \
+		redox_users-0.4.3 \
+		regex-1.10.2 \
+		regex-automata-0.4.3 \
+		regex-syntax-0.8.2 \
+		reqwest-0.11.20 \
+		ring-0.16.20 \
+		roff-0.2.1 \
+		rust-embed-8.0.0 \
+		rust-embed-impl-8.0.0 \
+		rust-embed-utils-8.0.0 \
+		rustc-demangle-0.1.23 \
+		rustix-0.38.14 \
+		rustls-0.21.7 \
+		rustls-pemfile-1.0.3 \
+		rustls-webpki-0.100.3 \
+		rustls-webpki-0.101.6 \
+		ryu-1.0.15 \
+		same-file-1.0.6 \
+		sct-0.7.0 \
+		semver-1.0.20 \
+		serde-1.0.190 \
+		serde_derive-1.0.190 \
+		serde_json-1.0.107 \
+		serde_regex-1.1.0 \
+		serde_spanned-0.6.4 \
+		serde_urlencoded-0.7.1 \
+		sha2-0.10.7 \
+		shellexpand-3.1.0 \
+		siphasher-0.3.11 \
+		slab-0.4.9 \
+		slug-0.1.4 \
+		socket2-0.4.9 \
+		socket2-0.5.4 \
+		spin-0.5.2 \
+		strsim-0.10.0 \
+		syn-2.0.37 \
+		tera-1.19.1 \
+		termcolor-1.3.0 \
+		terminal_size-0.3.0 \
+		thiserror-1.0.50 \
+		thiserror-impl-1.0.50 \
+		thread_local-1.1.7 \
+		tinyvec-1.6.0 \
+		tinyvec_macros-0.1.1 \
+		tokio-1.32.0 \
+		tokio-rustls-0.24.1 \
+		tokio-util-0.7.9 \
+		toml-0.5.11 \
+		toml-0.8.6 \
+		toml_datetime-0.6.5 \
+		toml_edit-0.20.7 \
+		tower-service-0.3.2 \
+		tracing-0.1.37 \
+		tracing-core-0.1.31 \
+		try-lock-0.2.4 \
+		typenum-1.17.0 \
+		ucd-trie-0.1.6 \
+		unic-char-property-0.9.0 \
+		unic-char-range-0.9.0 \
+		unic-common-0.9.0 \
+		unic-segment-0.9.0 \
+		unic-ucd-segment-0.9.0 \
+		unic-ucd-version-0.9.0 \
+		unicase-2.7.0 \
+		unicode-bidi-0.3.13 \
+		unicode-ident-1.0.12 \
+		unicode-normalization-0.1.22 \
+		untrusted-0.7.1 \
+		update-informer-1.1.0 \
+		ureq-2.7.1 \
+		url-2.4.1 \
+		utf8parse-0.2.1 \
+		vcpkg-0.2.15 \
+		version_check-0.9.4 \
+		walkdir-2.4.0 \
+		want-0.3.1 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.87 \
+		wasm-bindgen-backend-0.2.87 \
+		wasm-bindgen-futures-0.4.37 \
+		wasm-bindgen-macro-0.2.87 \
+		wasm-bindgen-macro-support-0.2.87 \
+		wasm-bindgen-shared-0.2.87 \
+		web-sys-0.3.64 \
+		webpki-roots-0.23.1 \
+		webpki-roots-0.25.2 \
+		winapi-0.3.9 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.6 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		windows-0.48.0 \
+		windows-sys-0.48.0 \
+		windows-targets-0.48.5 \
+		windows_aarch64_gnullvm-0.48.5 \
+		windows_aarch64_msvc-0.48.5 \
+		windows_i686_gnu-0.48.5 \
+		windows_i686_msvc-0.48.5 \
+		windows_x86_64_gnu-0.48.5 \
+		windows_x86_64_gnullvm-0.48.5 \
+		windows_x86_64_msvc-0.48.5 \
+		winnow-0.5.15 \
+		winreg-0.50.0 \
+		yaml-rust-0.4.5 \
+		yansi-0.5.1
+
+PLIST_FILES=	bin/${PORTNAME} \
+		bin/git-cliff-completions \
+		bin/git-cliff-mangen
+
+post-install:
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME} \
+		${STAGEDIR}${PREFIX}/bin/git-cliff-completions \
+		${STAGEDIR}${PREFIX}/bin/git-cliff-mangen
+
+.include <bsd.port.mk>

@@ -1,0 +1,26 @@
+diff --git a/src/etc/inc/filter.inc b/src/etc/inc/filter.inc
+index 73a01eb2b2..7232e9de12 100644
+--- a/src/etc/inc/filter.inc
++++ b/src/etc/inc/filter.inc
+@@ -3841,7 +3841,7 @@ pass out {$log['pass']} quick on \${$oc['descr']} proto udp from {$oc['ip']} por
+ EOD;
+ 					}
+ 
+-					$failover_peerip = config_get_path("dhcp/{$on}/failover_peerip", "");
++					$failover_peerip = config_get_path("dhcpd/{$on}/failover_peerip", "");
+ 					if (is_ipaddrv4($oc['ip']) && $failover_peerip <> "") {
+ 						$ipfrules .= <<<EOD
+ # allow access to DHCP failover on {$oc['descr']} from {$failover_peerip}
+diff --git a/src/usr/local/www/interfaces_assign.php b/src/usr/local/www/interfaces_assign.php
+index 8b3de9f89b..a83358198c 100644
+--- a/src/usr/local/www/interfaces_assign.php
++++ b/src/usr/local/www/interfaces_assign.php
+@@ -429,7 +429,7 @@ if (isset($_REQUEST['add']) && isset($_REQUEST['if_add'])) {
+ 			 */
+ 			if (config_path_enabled('interfaces', 'lan')
+ 				&& config_path_enabled('dhcpd', 'wan')) {
+-					config_del_path('dhcp/wan');
++					config_del_path('dhcpd/wan');
+ 			}
+ 
+ 			link_interface_to_vlans($realid, "update");

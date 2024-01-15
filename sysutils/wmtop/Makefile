@@ -1,14 +1,12 @@
-# Created by: Dan Piponi <wmtop@tanelorn.demon.co.uk>
-# $FreeBSD$
-
 PORTNAME=	wmtop
 PORTVERSION=	0.84
 PORTREVISION=	3
 CATEGORIES=	sysutils windowmaker
 MASTER_SITES=	https://www.dockapps.net/download/
 
-MAINTAINER=	uqs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dockapp to display top three CPU consuming processes
+WWW=		https://wmtop.sourceforge.net/
 
 LICENSE=	GPLv2
 

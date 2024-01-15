@@ -1,66 +1,58 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	powder-toy
-PORTVERSION=	95.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	97.0.352
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	'Falling sand' physics sandbox with air pressure and velocity support
+WWW=		https://powdertoy.co.uk/ \
+		https://github.com/The-Powder-Toy/The-Powder-Toy
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
-		libfftw3.so:math/fftw3
+		libfftw3.so:math/fftw3 \
+		libcurl.so:ftp/curl \
+		libpng.so:graphics/png \
+		libjsoncpp.so:devel/jsoncpp
 
+USES=		compiler:c++17-lang desktop-file-utils luajit:luajit-openresty \
+		meson pkgconfig python:build sdl
 USE_GITHUB=	yes
-GH_ACCOUNT=	ThePowderToy
+GH_ACCOUNT=	The-Powder-Toy
 GH_PROJECT=	The-Powder-Toy
-
-USES=		compiler:c++11-lang scons sdl localbase:ldflags lua:51 pkgconfig
 USE_SDL=	sdl2
+MESON_ARGS=	-Dapp_exe="${PORTNAME}"
 
-MAKE_ENV=	LINKFLAGS="${LINKFLAGS}"
+CONFLICTS_INSTALL=powder-toy-devel
 
-SUB_FILES=	${PORTNAME}.sh
+PORTDOCS=	README.md changelog.txt
 
-PORTDOCS=	README.md TODO
-
-OPTIONS_DEFINE=		DOCS OPTIMIZED_CFLAGS SSE SSE3 OPENGL HTTP
-OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS HTTP
+OPTIONS_DEFINE=		DOCS SSE
 OPTIONS_DEFAULT_amd64=	SSE
-# upstream also uses -funsafe-loop-optimizations, but it's not supported by clang
-OPTIMIZED_CFLAGS_CXXFLAGS=	-O3 -ftree-vectorize -funsafe-math-optimizations -ffast-math -fomit-frame-pointer
-SSE_MAKE_ARGS_OFF=	--no-sse
-SSE3_DESC=		Enable SSE3 optimizations
-SSE3_MAKE_ARGS=		--sse3
-SSE3_IMPLIES=		SSE
-OPENGL_USES=		gl
-OPENGL_USE=		GL=gl,glu,glew
-OPENGL_MAKE_ARGS=	--opengl --opengl-renderer
-OPENGL_BROKEN=		Application dies with SIGBUS at startup
-HTTP_DESC=		Enable HTTP requests support
-HTTP_LIB_DEPENDS=	libcurl.so:ftp/curl
-HTTP_MAKE_ARGS_OFF=	--nohttp
+
+SSE_DESC=		Enable SSE optimizations
+SSE_MESON_ON=		-Dx86_sse=auto
+SSE_MESON_OFF=		-Dx86_sse=none
 
 post-patch:
-	@${REINPLACE_CMD} -e '/#include/ s|lua5.1/|lua51/|' ${WRKSRC}/src/lua/LuaCompat.h
+	@${REINPLACE_CMD} -e 's|python3|${PYTHON_CMD}|' ${WRKSRC}/meson.build
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-	${INSTALL_PROGRAM} ${WRKSRC}/build/powder* ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}
-	${INSTALL_DATA} ${WRKSRC}/resources/powder.desktop ${STAGEDIR}${PREFIX}/share/applications/powder-toy.desktop
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/powder-toy ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_DATA} ${BUILD_WRKSRC}/resources/powder.desktop ${STAGEDIR}${PREFIX}/share/applications/uk.co.powdertoy.tpt.desktop  # as mentioned in appdata
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata
-	${INSTALL_DATA} ${WRKSRC}/resources/powder.appdata.xml ${STAGEDIR}${PREFIX}/share/appdata/powder-toy.appdata.xml
-.for s in 16 24 32 48 128 256
+	${INSTALL_DATA} ${BUILD_WRKSRC}/resources/appdata.xml ${STAGEDIR}${PREFIX}/share/appdata/powder-toy.appdata.xml
+.for s in 16 24 32 48 256
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/apps
-	${INSTALL_DATA} ${WRKSRC}/resources/icon/powder-${s}.png \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/apps/powder-toy.png
 .endfor
-	${INSTALL_DATA} ${WRKSRC}/resources/icon/powder-32.png \
-		${STAGEDIR}${PREFIX}/share/pixmaps/powder-toy.png
+	${INSTALL_DATA} ${WRKSRC}/resources/generated_icons/icon_exe_16.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/16x16/apps/powder-toy.png
+	${INSTALL_DATA} ${WRKSRC}/resources/generated_icons/icon_exe_32.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/24x24/apps/powder-toy.png # for e.g. lxpanel
+	${INSTALL_DATA} ${WRKSRC}/resources/generated_icons/icon_exe_32.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/32x32/apps/powder-toy.png
+	${INSTALL_DATA} ${WRKSRC}/resources/generated_icons/icon_exe_48.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/48x48/apps/powder-toy.png
+	${INSTALL_DATA} ${WRKSRC}/resources/generated_icons/icon_exe.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/apps/powder-toy.png
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

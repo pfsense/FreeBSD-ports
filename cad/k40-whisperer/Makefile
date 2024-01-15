@@ -1,22 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	k40-whisperer
-DISTVERSION=	0.55
+DISTVERSION=	0.59
 CATEGORIES=	cad python
 MASTER_SITES=	http://www.scorchworks.com/K40whisperer/
 DISTNAME=	K40_Whisperer-${DISTVERSION}_src
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	GUI control software for the stock K40 laser cutter controller
+WWW=		https://www.scorchworks.com/K40whisperer/k40whisperer.html
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/gpl-3.0.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyusb>0:devel/py-pyusb@${PY_FLAVOR} \
-		${PY_PILLOW}
+		${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR}
 
-USES=		python:run,-3.7 shebangfix zip
+USES=		python:run shebangfix zip
 SHEBANG_FILES=	*.py
 
 DESKTOP_ENTRIES=	"K40 Whisperer" \

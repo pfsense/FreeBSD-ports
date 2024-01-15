@@ -1,9 +1,6 @@
-# Created by: Anish Mistry
-# $FreeBSD$
-
 PORTNAME=	fusefs
 DISTVERSION=	2.9.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/libfuse/libfuse/releases/download/fuse-${DISTVERSION}/
 PKGNAMESUFFIX=	-libs
@@ -11,6 +8,7 @@ DISTNAME=	fuse-${DISTVERSION}
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	FUSE allows filesystem implementation in userspace
+WWW=		https://github.com/libfuse/libfuse
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tie-Hash-Sorted
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to present hashes in sorted order
+WWW=		https://metacpan.org/release/Tie-Hash-Sorted
 
 USES=		perl5
 USE_PERL5=	configure

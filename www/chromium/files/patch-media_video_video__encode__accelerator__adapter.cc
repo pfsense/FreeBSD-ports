@@ -1,20 +1,20 @@
---- media/video/video_encode_accelerator_adapter.cc.orig	2021-01-22 12:10:35 UTC
+--- media/video/video_encode_accelerator_adapter.cc.orig	2023-12-10 06:10:27 UTC
 +++ media/video/video_encode_accelerator_adapter.cc
-@@ -40,7 +40,7 @@ VideoEncodeAccelerator::Config SetUpVeaConfig(
-       opts.bitrate.value_or(opts.frame_size.width() * opts.frame_size.height() *
-                             kVEADefaultBitratePerPixel));
+@@ -153,7 +153,7 @@ VideoEncodeAccelerator::Config SetUpVeaConfig(
+   if (is_rgb)
+     config.input_format = PIXEL_FORMAT_I420;
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   if (storage_type == VideoFrame::STORAGE_DMABUFS ||
-       storage_type == VideoFrame::STORAGE_GPU_MEMORY_BUFFER) {
-     config.storage_type = VideoEncodeAccelerator::Config::StorageType::kDmabuf;
-@@ -269,7 +269,7 @@ void VideoEncodeAcceleratorAdapter::EncodeOnAccelerato
-     return;
-   }
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+   if (format != PIXEL_FORMAT_I420 ||
+       !VideoFrame::IsStorageTypeMappable(storage_type)) {
+     // ChromeOS/Linux hardware video encoders supports I420 on-memory
+@@ -478,7 +478,7 @@ void VideoEncodeAcceleratorAdapter::InitializeInternal
+       SetUpVeaConfig(profile_, options_, format, first_frame->storage_type(),
+                      supported_rc_modes_, required_encoder_type_);
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    // Linux/ChromeOS require a special configuration to use dmabuf storage.
-   const bool is_same_storage_type = storage_type_ == frame->storage_type();
- #else
+   // We need to keep sending frames the same way the first frame was sent.
+   // Other platforms will happily mix GpuMemoryBuffer storage with regular

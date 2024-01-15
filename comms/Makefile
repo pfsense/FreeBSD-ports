@@ -1,10 +1,8 @@
-# $FreeBSD$
-#
-
     COMMENT = Communication utilities
 
     SUBDIR += acfax
     SUBDIR += airspy
+    SUBDIR += airspyhf
     SUBDIR += aldo
     SUBDIR += amtterm
     SUBDIR += anyremote
@@ -18,6 +16,7 @@
     SUBDIR += bluegps
     SUBDIR += bluez-firmware
     SUBDIR += bpl+
+    SUBDIR += chirp
     SUBDIR += chu
     SUBDIR += comserv
     SUBDIR += concordance
@@ -27,6 +26,7 @@
     SUBDIR += cutecom
     SUBDIR += cwdaemon
     SUBDIR += cwstudio
+    SUBDIR += cyclonedds
     SUBDIR += dcf77pi
     SUBDIR += deforaos-phone
     SUBDIR += dfu-programmer
@@ -36,10 +36,8 @@
     SUBDIR += dsd
     SUBDIR += dump1090
     SUBDIR += ebook2cw
-    SUBDIR += ebook2cwgui
     SUBDIR += ebusd
     SUBDIR += echolinux
-    SUBDIR += efax
     SUBDIR += ems-flasher
     SUBDIR += fl_moxgen
     SUBDIR += flamp
@@ -62,18 +60,19 @@
     SUBDIR += gstreamer1-plugins-spandsp
     SUBDIR += gtkmmorse
     SUBDIR += hackrf
+    SUBDIR += hackrf-devel
     SUBDIR += hamlib
     SUBDIR += hcidump
     SUBDIR += hidapi
-    SUBDIR += hylafax
     SUBDIR += ibp
+    SUBDIR += iceoryx
     SUBDIR += inspectrum
     SUBDIR += iwmbt-firmware
     SUBDIR += java-simple-serial-connector
-    SUBDIR += kb
     SUBDIR += kermit
     SUBDIR += klog
     SUBDIR += libconcord
+    SUBDIR += libdc
     SUBDIR += libfap
     SUBDIR += libfec
     SUBDIR += libimobiledevice
@@ -95,22 +94,18 @@
     SUBDIR += mbelib
     SUBDIR += mgetty+sendfax
     SUBDIR += minicom
-    SUBDIR += mlan3
     SUBDIR += morse
     SUBDIR += multimon-ng
     SUBDIR += nanovna-saver
     SUBDIR += nasawash
-    SUBDIR += ncid
     SUBDIR += nec2c
     SUBDIR += nmealib
-    SUBDIR += o2sms
     SUBDIR += obexapp
     SUBDIR += opencbm
     SUBDIR += opencbm-kmod
     SUBDIR += opencbm-plugin-xa1541
     SUBDIR += openobex
     SUBDIR += openzwave
-    SUBDIR += openzwave-devel
     SUBDIR += owfs
     SUBDIR += p5-Cisco-UCS
     SUBDIR += p5-Device-Gsm
@@ -124,8 +119,6 @@
     SUBDIR += p5-SMS-Send-NexmoUnicode
     SUBDIR += p5-SMS-Send-TW-HiAir
     SUBDIR += p5-SMS-Send-TW-PChome
-    SUBDIR += p5-SMS-Send-TW-Qma
-    SUBDIR += p5-SMS-Send-TW-ShareSMS
     SUBDIR += p5-SMS-Send-TW-Socket2Air
     SUBDIR += p5-SMS-Send-TW-chtsns
     SUBDIR += p5-SMS-Send-TW-emome
@@ -135,12 +128,16 @@
     SUBDIR += pr
     SUBDIR += predict
     SUBDIR += py-adafruit-ampy
+    SUBDIR += py-elelabs-zigbee-ezsp-utility
     SUBDIR += py-esptool
+    SUBDIR += py-fritzconnection
+    SUBDIR += py-hid
     SUBDIR += py-hidapi
-    SUBDIR += py-lirc
+    SUBDIR += py-libimobiledevice
+    SUBDIR += py-libscrc
+    SUBDIR += py-pymodbus
     SUBDIR += py-pyserial
-    SUBDIR += py-qt5-sensors
-    SUBDIR += py-qt5-serialport
+    SUBDIR += py-pyserial-asyncio
     SUBDIR += py-xmodem
     SUBDIR += pyla
     SUBDIR += qico
@@ -151,9 +148,15 @@
     SUBDIR += qt5-sensors
     SUBDIR += qt5-serialbus
     SUBDIR += qt5-serialport
+    SUBDIR += qt6-connectivity
+    SUBDIR += qt6-sensors
+    SUBDIR += qt6-serialbus
+    SUBDIR += qt6-serialport
     SUBDIR += qtel
+    SUBDIR += quisk
     SUBDIR += redsea
     SUBDIR += remserial
+    SUBDIR += rtl-433
     SUBDIR += rtl-sdr
     SUBDIR += rubygem-callsign
     SUBDIR += rubygem-ruby-termios
@@ -161,10 +164,11 @@
     SUBDIR += rxtx
     SUBDIR += scmxx
     SUBDIR += scrcpy
-    SUBDIR += sdr-wspr
+    SUBDIR += sdr++
     SUBDIR += ser2net
     SUBDIR += serialoverip
-    SUBDIR += seyon
+    SUBDIR += sigdigger
+    SUBDIR += sigutils
     SUBDIR += sms_client
     SUBDIR += smstools3
     SUBDIR += snap7
@@ -173,27 +177,27 @@
     SUBDIR += soapyplutosdr
     SUBDIR += soapyredpitaya
     SUBDIR += soapyremote
+    SUBDIR += soapysdr-rtlsdr
     SUBDIR += soapysdrhackrf
     SUBDIR += soapyuhd
     SUBDIR += spandsp
     SUBDIR += splat
     SUBDIR += sredird
     SUBDIR += sunxi-tools
+    SUBDIR += suscan
+    SUBDIR += suwidgets
     SUBDIR += svxlink
     SUBDIR += syncterm
     SUBDIR += tcpser
-    SUBDIR += telldus-core
     SUBDIR += thebridge
     SUBDIR += tilp2
     SUBDIR += tio
     SUBDIR += tits
-    SUBDIR += tkhylafax
     SUBDIR += tkscanfax
     SUBDIR += tlf
     SUBDIR += trustedqsl
     SUBDIR += twpsk
     SUBDIR += uarduno
-    SUBDIR += uartlirc
     SUBDIR += uhd
     SUBDIR += uird
     SUBDIR += ujprog
@@ -202,6 +206,7 @@
     SUBDIR += viewfax
     SUBDIR += vrflash
     SUBDIR += wsjtx
+    SUBDIR += wsjtz
     SUBDIR += wwl
     SUBDIR += wy60
     SUBDIR += xastir
@@ -213,8 +218,6 @@
     SUBDIR += xnec2c
     SUBDIR += xnecview
     SUBDIR += yagiuda
-    SUBDIR += yaps
     SUBDIR += yfklog
-    SUBDIR += zssh
 
 .include <bsd.port.subdir.mk>

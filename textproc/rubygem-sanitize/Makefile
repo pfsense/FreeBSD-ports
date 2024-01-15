@@ -1,24 +1,22 @@
-# Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
-
 PORTNAME=	sanitize
-PORTVERSION=	5.2.1
+PORTVERSION=	6.1.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Whitelist based HTML sanitizer
+WWW=		https://github.com/rgrove/sanitize
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-crass>=1.0.2<1.1:www/rubygem-crass \
-		rubygem-nokogiri>=1.8.0:textproc/rubygem-nokogiri \
-		rubygem-nokogumbo>=2.0<3:textproc/rubygem-nokogumbo
+		rubygem-nokogiri>=1.12.0:textproc/rubygem-nokogiri
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	sanitize_project
 
 .include <bsd.port.mk>

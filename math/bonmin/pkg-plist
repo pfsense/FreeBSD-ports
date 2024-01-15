@@ -1,3 +1,7 @@
+bin/bonmin
+include/coin/BonAmplInterface.hpp
+include/coin/BonAmplSetup.hpp
+include/coin/BonAmplTMINLP.hpp
 include/coin/BonArraysHelpers.hpp
 include/coin/BonAuxInfos.hpp
 include/coin/BonBabInfos.hpp
@@ -60,8 +64,13 @@ include/coin/BonTypes.hpp
 include/coin/BonminConfig.h
 lib/libbonmin.so
 lib/libbonmin.so.4
-lib/libbonmin.so.4.8.8
+lib/libbonmin.so.4.8.9
+lib/libbonminampl.so
+lib/libbonminampl.so.4
+lib/libbonminampl.so.4.8.9
 libdata/pkgconfig/bonmin.pc
+libdata/pkgconfig/bonminamplinterface.pc
 share/coin/doc/Bonmin/AUTHORS
 share/coin/doc/Bonmin/LICENSE
 share/coin/doc/Bonmin/README
+share/minizinc/solvers/bonmin.msc

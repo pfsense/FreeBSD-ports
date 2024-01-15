@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PDF-Reuse
 DISTVERSION=	0.39
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gehm@doom-labs.net
 COMMENT=	Another perl module to reuse and mass produce PDF documents
+WWW=		https://metacpan.org/release/PDF-Reuse
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual

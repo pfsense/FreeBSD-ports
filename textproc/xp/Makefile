@@ -1,6 +1,3 @@
-# Created by: mike
-# $FreeBSD$
-
 PORTNAME=	xp
 PORTVERSION=	0.5
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	mike@vee.net
 COMMENT=	XML parser written in Java
+WWW=		http://www.jclark.com/xml/xp/index.html
 
 USE_JAVA=	yes
 

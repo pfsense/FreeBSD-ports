@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	ez-pine-gpg
 DISTVERSION=	0.4h
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_v${DISTVERSION}
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Set of scripts to use gpg with Pine
+WWW=		http://business-php.com/opensource/ez-pine-gpg/
 
 LICENSE=	GPLv2+
 

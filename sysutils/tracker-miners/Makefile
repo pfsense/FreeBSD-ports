@@ -1,20 +1,16 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tracker-miners
 PORTVERSION=	2.3.5
-PORTREVISION=	4
-PÖRTREVISION=	1
+PORTREVISION=	42
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Miners for tracker2
+WWW=		https://wiki.gnome.org/Projects/Tracker
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LGPL
 
-BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libupower-glib.so:sysutils/upower \
 		libexempi.so:textproc/exempi \
@@ -36,23 +32,21 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 PORTSCOUT=	limitw:1,even
 
 USES=		gettext gnome jpeg localbase:ldflags meson \
-		pathfix pkgconfig python:3.4+,build sqlite tar:xz
+		pathfix pkgconfig python:build sqlite tar:xz vala:build
 USE_GNOME=	cairo intltool libgsf libxml2
-INSTALLS_ICONS=	yes
 
 MESON_ARGS=	-Dsystemd_user_services=no \
-		-Dcharset_detenction=icu \
-		-Dunicode_support=icu \
-		-Dstemmer=no
+		-Diso=disabled \
+		-Dcharset_detection=icu \
 #		-Dbattery_detection=hal
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=		GSTREAMER RSS
 OPTIONS_DEFAULT=	GSTREAMER RSS
 
+GSTREAMER_USES=		gstreamer
 GSTREAMER_MESON_ON=	-Dgeneric_media_extractor=gstreamer
 GSTREAMER_MESON_OFF=	-Dgeneric_media_extractor=none
-GSTREAMER_USE=		gstreamer1=yes
 
 RSS_DESC=		Tracker RSS miner
 RSS_MESON_TRUE=		miner_rss

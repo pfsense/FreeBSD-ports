@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ipcheck
 PORTVERSION=	0.240
 PORTEPOCH=	1
@@ -12,6 +9,7 @@ EXTRACT_SUFX=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fully compliant DynDNS.org client for UNIX (supports NIC v2.0)
+WWW=		https://ipcheck.sourceforge.net/
 
 LICENSE=	GPLv2
 

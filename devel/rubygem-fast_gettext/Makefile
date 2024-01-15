@@ -1,18 +1,15 @@
-# Created by: Michael Moll <kvedulv at kvedulv.de>
-# $FreeBSD$
-
 PORTNAME=	fast_gettext
-PORTVERSION=	2.0.3
+PORTVERSION=	2.3.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast, memory-efficient and threadsafe GetText for Ruby
+WWW=		https://github.com/grosser/fast_gettext
 
 LICENSE=	MIT
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

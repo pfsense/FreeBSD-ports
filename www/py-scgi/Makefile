@@ -1,19 +1,24 @@
-# Created by: Neil Blakey-Milner <nbm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	scgi
-DISTVERSION=	2.0
+PORTVERSION=	2.2
+PORTREVISION=	1
 CATEGORIES=	www python
-MASTER_SITES=	http://python.ca/scgi/releases/
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	jlaffaye@FreeBSD.org
-COMMENT=	Python server implementation of the Simple Common Gateway Protocol
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Python package for implementing SCGI servers
+WWW=		https://github.com/nascheme/scgi
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.5+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
+
+post-install:
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

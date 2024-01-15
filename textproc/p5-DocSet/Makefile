@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DocSet
 PORTVERSION=	0.19
 PORTREVISION=	3
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Documentation projects builder in HTML, PS, and PDF formats
+WWW=		https://metacpan.org/release/DocSet
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Pod-POM>=0:textproc/p5-Pod-POM \
@@ -17,5 +16,7 @@ RUN_DEPENDS=	p5-Pod-POM>=0:textproc/p5-Pod-POM \
 
 USES=		perl5
 USE_PERL5=	configure
+
+CONFLICTS_INSTALL=	html2ps # bin/html2ps
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: ichiro@ichiro.org
-# $FreeBSD$
-
 CATEGORIES=	japanese
 
 MAINTAINER=	ichiro@ichiro.org

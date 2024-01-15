@@ -1,6 +1,3 @@
-# Created by: Tomoyuki Sakurai <cherry@trombik.org>
-# $FreeBSD$
-
 PORTNAME=	Config-JSON
 PORTVERSION=	1.5202
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	JSON based config file system
+WWW=		https://metacpan.org/release/Config-JSON
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

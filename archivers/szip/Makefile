@@ -1,6 +1,3 @@
-# Created by: Igor Pokrovsky <tiamat@telegraph.spb.ru>
-# $FreeBSD$
-
 PORTNAME=	szip
 PORTVERSION=	1.12b
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	sz${PORTVERSION:S/.//}_src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast compression utility
+WWW=		http://www.compressconsult.com/szip/
 
 NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile

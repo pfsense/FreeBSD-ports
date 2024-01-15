@@ -4,7 +4,7 @@
  * mail_reports_generate.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-require_once("mail_reports.inc");
+require_once("mailreport/mail_report.inc");
 require_once("notices.inc");
 
 $id = $_REQUEST['id'];
@@ -81,5 +81,3 @@ foreach ($thisreport['log']['row'] as $log) {
 if ($hascontent > 0 || empty($thisreport['skipifempty'])) {
 	mail_report_send($thisreport['descr'], $cmdtext, $logtext, $attach);
 }
-
-?>

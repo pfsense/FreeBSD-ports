@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Number-Compare
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Numeric comparisons
+WWW=		https://metacpan.org/release/Number-Compare
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

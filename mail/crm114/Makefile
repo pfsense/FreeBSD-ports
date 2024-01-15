@@ -1,6 +1,3 @@
-# Created by: Meno Abels <meno.abels@adviser.com>
-# $FreeBSD$
-
 PORTNAME=	crm114
 PORTVERSION=	20100106
 PORTREVISION=	6
@@ -16,6 +13,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-${CRM114RELEASENAME}.src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Markov based SpamFilter
+WWW=		https://crm114.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -37,6 +35,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib -Wl,--as-needed
 
 CFLAGS+=	-DVERSION='\"${PORTVERSION}-${CRM114RELEASENAME}\"'
 CFLAGS+=	-DNO_LOGL
+
+CONFLICTS_INSTALL=	crmsh # bin/crm
 
 INSTALL_TARGET=	install_binary_only
 

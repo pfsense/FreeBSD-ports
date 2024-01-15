@@ -1,6 +1,3 @@
-# Created by: Anish Mistry <amistry@am-productions.biz>
-# $FreeBSD$
-
 PORTNAME=	lrmi
 PORTVERSION=	0.10
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for calling real mode BIOS routines
+WWW=		https://lrmi.sourceforge.net/
 
 ONLY_FOR_ARCHS=	i386
 USE_LDCONFIG=	yes

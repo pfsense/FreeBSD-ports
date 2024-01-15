@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	ecos
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.8
+DISTVERSION=	2.0.10
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Lightweight conic solver for second-order cone programming
+WWW=		https://forces.embotech.com/Documentation/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

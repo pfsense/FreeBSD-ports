@@ -1,6 +1,3 @@
-# Created by: Bruce M. Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ldapbrowser
 PORTVERSION=	2.8.2
 PORTREVISION=	4
@@ -12,10 +9,15 @@ MASTER_SITES=	http://www.klop.ws/distfiles/ \
 		ftp://ftp.uni-duisburg.de/Unix/networking/LDAP/frontends/
 DISTNAME=	Browser282b2
 
-MAINTAINER=	ronald-lists@klop.ws
+MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	Java/Swing-based LDAP browser and editor
+WWW=		https://web.archive.org/web/20081218031210/http://www.mcs.anl.gov/~gawor/ldap/
 
-RESTRICTED=	No reply from author regarding redistribution licensing
+# Converted from RESTRICTED
+LICENSE=	ldapbrowser-license
+LICENSE_NAME=	ldapbrowser
+LICENSE_TEXT=	No reply from author regarding redistribution licensing
+LICENSE_PERMS=	auto-accept
 
 USE_JAVA=	yes
 NO_BUILD=	yes

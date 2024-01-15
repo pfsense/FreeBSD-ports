@@ -1,24 +1,22 @@
-# Created by: dbader@eece.unm.edu
-# $FreeBSD$
-
 PORTNAME=	paml
-PORTVERSION=	4.9j
+DISTVERSION=	4.10.7
 CATEGORIES=	biology
-MASTER_SITES=	http://abacus.gene.ucl.ac.uk/software/
-DISTNAME=	${PORTNAME}${DISTVERSION}
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Phylogenetic Analysis by Maximum Likelihood (PAML)
+WWW=		http://abacus.gene.ucl.ac.uk/software/paml.html
 
 LICENSE=	GPLv3
 
-USES=		dos2unix gmake tar:tgz
-
-DOS2UNIX_GLOB=	*.HKYG5 *.aa *.c *.ctl *.dat *.nexus *.nuc *.phy *.result *.tre \
+USES=		dos2unix gmake
+DOS2UNIX_GLOB=	*.aa *.c *.ctl *.dat *.HKYG5 *.nexus *.nuc *.phy *.result *.tre \
 		*.trees *.txt *.xml paupblock paupend
+USE_GITHUB=	yes
+GH_ACCOUNT=	abacus-gene
 
 BINARIES=	baseml basemlg chi2 codeml evolver evolverNSbranches \
-		evolverNSbranchsites evolverNSsites pamp yn00
+		evolverNSbranchsites evolverNSsites infinitesites mcmctree pamp \
+		yn00
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -40,15 +38,12 @@ do-install:
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.txt ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "dat Technical" \
 		${STAGEDIR}${EXAMPLESDIR})
 	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
-.for f in *.aa *.ctl *.dat *.nuc *.trees *.txt paup*
-	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${EXAMPLESDIR}
-.endfor
 
 .include <bsd.port.mk>

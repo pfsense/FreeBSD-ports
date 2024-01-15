@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	wsdlpull
 PORTVERSION=	1.24
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ WSDL Parser
+WWW=		https://wsdlpull.sourceforge.net/
 
 LICENSE=	LGPL21 # code says LGPL20+ and MIT though
 LICENSE_FILE=	${WRKSRC}/COPYING

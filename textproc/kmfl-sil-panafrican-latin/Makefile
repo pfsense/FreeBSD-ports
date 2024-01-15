@@ -1,6 +1,3 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	kmfl-sil-panafrican-latin
 PORTVERSION=	20090831
 PORTREVISION=	4
@@ -13,6 +10,7 @@ DIST_SUBDIR=	kmfl
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	KMFL keyboard for African Latin writing systems
+WWW=		https://scripts.sil.org/AfricanKeyboard1
 
 RUN_DEPENDS=	kmflcomp:textproc/kmflcomp
 

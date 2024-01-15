@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	UNIVERSAL-isa
 PORTVERSION=	1.20171012
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Try to recover from people calling UNIVERSAL::isa as a function
+WWW=		https://metacpan.org/release/UNIVERSAL-isa
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense-pkg-frr
-PORTVERSION=	1.1.0
-PORTREVISION=	6
+PORTVERSION=	2.0.2
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,8 +11,8 @@ COMMENT=	FRR package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	frr7>=0:net/frr7 \
-		frr7-pythontools>=0:net/frr7-pythontools
+RUN_DEPENDS=	frr9>=0:net/frr9 \
+		frr9-pythontools>=0:net/frr9-pythontools
 
 CONFLICTS=	pfSense-pkg-OpenBGPD-[0-9]* \
 		pfSense-pkg-Quagga_OSPF-[0-9]*
@@ -79,6 +77,12 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_bfd_profiles.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_rip.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_rip_interfaces.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_rip_neighbors.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_ospf6.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_ospf.inc \
@@ -90,6 +94,8 @@ do-install:
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_validation.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_zebra.inc \
+		${STAGEDIR}${PREFIX}/pkg/frr/inc
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_rip.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/www/status_frr.php \
 		${STAGEDIR}${PREFIX}/www

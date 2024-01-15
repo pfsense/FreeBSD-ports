@@ -1,13 +1,12 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ip2proxy
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
+PORTREVISION=	5
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Varnish Module (vmod) for ip2proxy
+WWW=		https://github.com/ip2location/IP2Proxy-Varnish
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libIP2Proxy.so:net/ip2proxy
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 
-USES=		autoreconf:build libtool pkgconfig python:build varnish:6
+USES=		autoreconf:build libtool pkgconfig python:build varnish:7
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

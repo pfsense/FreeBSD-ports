@@ -1,4 +1,5 @@
 include/poppler/Annot.h
+include/poppler/AnnotStampImageHelper.h
 include/poppler/Array.h
 include/poppler/BBoxOutputDev.h
 include/poppler/CMap.h
@@ -10,6 +11,8 @@ include/poppler/Catalog.h
 include/poppler/CertificateInfo.h
 include/poppler/CharCodeToUnicode.h
 include/poppler/CharTypes.h
+include/poppler/FDPDFDocBuilder.h
+include/poppler/FILECacheLoader.h
 %%CURL%%include/poppler/CurlCachedFile.h
 %%CURL%%include/poppler/CurlPDFDocBuilder.h
 include/poppler/DateInfo.h
@@ -61,8 +64,6 @@ include/poppler/Rendition.h
 include/poppler/SecurityHandler.h
 include/poppler/Sound.h
 include/poppler/SplashOutputDev.h
-include/poppler/StdinCachedFile.h
-include/poppler/StdinPDFDocBuilder.h
 include/poppler/Stream-CCITT.h
 include/poppler/Stream.h
 include/poppler/StructElement.h
@@ -91,6 +92,7 @@ include/poppler/cpp/poppler-page.h
 include/poppler/cpp/poppler-rectangle.h
 include/poppler/cpp/poppler-toc.h
 include/poppler/cpp/poppler-version.h
+include/poppler/cpp/poppler_cpp_export.h
 include/poppler/fofi/FoFiBase.h
 include/poppler/fofi/FoFiEncodings.h
 include/poppler/fofi/FoFiIdentifier.h
@@ -111,6 +113,7 @@ include/poppler/goo/gmem.h
 include/poppler/goo/grandom.h
 include/poppler/goo/gstrtod.h
 include/poppler/poppler-config.h
+include/poppler/poppler_private_export.h
 include/poppler/splash/Splash.h
 include/poppler/splash/SplashBitmap.h
 include/poppler/splash/SplashClip.h
@@ -133,7 +136,7 @@ include/poppler/splash/SplashXPath.h
 include/poppler/splash/SplashXPathScanner.h
 lib/libpoppler-cpp.so
 lib/libpoppler-cpp.so.0
-lib/libpoppler-cpp.so.0.9.0
+lib/libpoppler-cpp.so.0.11.0
 lib/libpoppler.so
 lib/libpoppler.so.%%SHLIB_VER%%
 lib/libpoppler.so.%%SHLIB_VER%%.0.0

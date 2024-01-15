@@ -1,9 +1,6 @@
-# Created by: Kelly Yancey <kbyanc@posi.net>
-# $FreeBSD$
-
 PORTNAME=	E-Run
 PORTVERSION=	1.2
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	x11
 MASTER_SITES=	LOCAL/kbyanc
 

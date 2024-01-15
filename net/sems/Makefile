@@ -1,12 +1,11 @@
-# Created by: Nathan Whitehon <nwhitehorn@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	sems
 DISTVERSION=	${SEMS_VERSION}.g20200510
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	nwhitehorn@FreeBSD.org
 COMMENT=	SIP Express Media Server
+WWW=		https://github.com/sems-server
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
@@ -21,7 +20,7 @@ LIB_DEPENDS=	libopus.so:audio/opus \
 		libspeex.so:audio/speex \
 		libspandsp.so:comms/spandsp
 
-USES=		cmake compiler:c++11-lang python:3.4+,run shebangfix ssl
+USES=		cmake compiler:c++11-lang python:run shebangfix ssl
 SHEBANG_GLOB=	sems-*
 
 PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}

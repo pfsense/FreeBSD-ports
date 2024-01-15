@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pkcs11-gateway
 PORTVERSION=	1.4
 CATEGORIES=	security devel linux
@@ -10,6 +7,8 @@ MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Wrapper Cryptoki library to use Linux PKCS\#11 modules
 
 LICENSE=	LGPL20
+
+ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		linux
 

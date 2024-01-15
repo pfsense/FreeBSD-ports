@@ -1,28 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	qemu
 PORTVERSION=	3.1.0
-PORTREVISION=	9
+PORTREVISION=	14
 CATEGORIES=	emulators
 PKGNAMESUFFIX=	-user-static
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	QEMU CPU Emulator (github bsd-user branch)
+WWW=		https://www.qemu.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=		amd64 powerpc powerpc64
-CONFLICTS_INSTALL=	qemu-user-static-devel-[0-9]*
+CONFLICTS_INSTALL=	qemu-user-static-devel
 
-USES=		bison compiler:c11 gmake perl5 pkgconfig python:build
+USES=		bison compiler:c11 cpe elfctl gmake perl5 pkgconfig python:build
 USE_GITHUB=	yes
-GH_TUPLE=	qemu-bsd-user:qemu-bsd-user:39244526c0af	\
+GH_TUPLE=	qemu-bsd-user:qemu-bsd-user:527096e0c8	\
 		qemu:keycodemapdb:10739aa:keycodemapdb/ui/keycodemapdb
 HAS_CONFIGURE=	yes
 USE_PERL5=	build
 MAKE_ENV+=	BSD_MAKE="${MAKE}" V=1
+ELF_FEATURES=	+wxneeded:*-bsd-user/qemu-*
 
 USE_RC_SUBR=	qemu_user_static
 SUB_LIST=	NAME=qemu_user_static
@@ -51,6 +51,7 @@ WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
 CFLAGS+=	-Wno-address-of-packed-member
 CFLAGS+=	-D_WANT_SEMUN
+CFLAGS_powerpc=	-D_CALL_SYSV
 CONFIGURE_ARGS+=	--prefix=${PREFIX} --cc=${CC} --enable-docs \
 	--disable-linux-user --disable-linux-aio \
 	--disable-kvm --disable-xen \

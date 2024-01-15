@@ -1,12 +1,10 @@
-# Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lightweight-java-profiler
 PORTVERSION=	g20170308
 CATEGORIES=	java devel
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Lightweight Java profiler which can be used for flamegraphs
+WWW=		https://github.com/inevity/lightweight-java-profiler
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,7 @@ GH_ACCOUNT=	inevity
 GH_TAGNAME=	e8041b5
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8
+JAVA_VERSION=	8
 
 USE_LDCONFIG=	yes
 USES=		gmake shebangfix

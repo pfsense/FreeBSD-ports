@@ -1,15 +1,15 @@
-# Created by: Michael Nottebrock <michaelnottebrock@gmx.net>
-# $FreeBSD$
-
 PORTNAME=	ices
 PORTVERSION=	2.0.3
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	audio net
 MASTER_SITES=	https://downloads.xiph.org/releases/ices/ \
-		https://svn.xiph.org/releases/ices/
+		https://ftp.osuosl.org/pub/xiph/releases/ices/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Vorbis streaming source client for icecast 2
+WWW=		https://icecast.org/ices/ \
+		https://gitlab.xiph.org/xiph/icecast-ices
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

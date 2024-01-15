@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		freebsd-sysctl
 PORTVERSION=	0.0.7
 CATEGORIES=		devel python sysutils
@@ -7,11 +5,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=		stefan@gronke.net
 COMMENT=		Native Python wrapper for FreeBSD sysctls using libc
+WWW=		https://github.com/gronke/py-freebsd_sysctl
 
 LICENSE=		BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=			python:3.6+
+USES=			python
 
 USE_GITHUB=		yes
 GH_ACCOUNT=		gronke

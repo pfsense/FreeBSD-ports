@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	xcscope.el
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.5
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	jhb@FreeBSD.org
 COMMENT=	Emacs minor mode for using cscope
+WWW=		https://github.com/dkogan/xcscope.el
 
 LICENSE=	GPLv2+
 

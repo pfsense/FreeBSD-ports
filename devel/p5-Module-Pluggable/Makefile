@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Pluggable
 PORTVERSION=	5.2
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Automatically give your module the ability to have plugins
+WWW=		https://metacpan.org/release/Module-Pluggable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Save a copy of /etc/version to trigger copynotice.inc show when it's needed
+if [ ! -f "${PKG_ROOTDIR}/cf/conf/copynotice_version" ]; then
+	# Create empty file to force it to differ and show notice once
+	echo "" > "${PKG_ROOTDIR}/cf/conf/copynotice_version"
+else
+	/bin/cp -f "${PKG_ROOTDIR}/etc/version" "${PKG_ROOTDIR}/cf/conf/copynotice_version"
+fi
+
+# Create/remove trigger to show copynotice when version changes
+if /usr/bin/cmp -s "${PKG_ROOTDIR}/etc/version" "${PKG_ROOTDIR}/cf/conf/copynotice_version"; then
+	/bin/rm -f "${PKG_ROOTDIR}/cf/conf/copynotice_display" >/dev/null 2>&1
+else
+	/usr/bin/touch "${PKG_ROOTDIR}/cf/conf/copynotice_display"
+fi
+
+# Save current pkg_set_version
+cp -f "${PKG_ROOTDIR}/etc/version" "${PKG_ROOTDIR}/usr/local/share/%%PRODUCT_NAME%%/running_pkg_set_version"

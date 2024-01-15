@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-MemoryUsage
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for measuring process memory
+WWW=		https://metacpan.org/release/Plack-Middleware-MemoryUsage
 
 RUN_DEPENDS=	\
 	p5-B-Size2>=2.01:devel/p5-B-Size2 \

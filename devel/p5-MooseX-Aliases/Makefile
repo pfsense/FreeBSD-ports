@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Aliases
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy aliasing of methods and attributes in Moose
+WWW=		https://metacpan.org/release/MooseX-Aliases
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

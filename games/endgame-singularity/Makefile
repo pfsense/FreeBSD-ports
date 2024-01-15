@@ -1,14 +1,13 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	singularity
 PORTVERSION=	1.00
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	endgame-
 
 MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	Simulates the life of a true AI
+WWW=		http://emhsoft.com/singularity/
 
 LICENSE=	GPLv2+ MIT CC-BY-SA-3.0 NASA AEFONTS BITSTREAM AREV \
 		MEMESBRUH03 CC0-1.0
@@ -33,7 +32,7 @@ RUN_DEPENDS=	${PYGAME} \
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}polib>=0:devel/py-polib@${PY_FLAVOR}
 
-USES=		python:3.5+ sdl shebangfix
+USES=		python sdl shebangfix
 USE_PYTHON=	autoplist distutils
 USE_SDL=	image mixer
 PORTDOCS=	AUTHORS.txt Changelog.txt README.txt TODO

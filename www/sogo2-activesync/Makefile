@@ -1,11 +1,8 @@
-# $FreeBSD$
-
-PORTREVISION=	5
 PKGNAMESUFFIX=		-activesync
 
-MAINTAINER=		acm@FreeBSD.org
+WWW=		https://www.sogo.nu/
 
-CONFLICTS=		sogo[2-4]-[0-9]* sogo[3-4]-activesync-[0-9]*
+CONFLICTS=		sogo2 sogo sogo-activesync
 
 OPTIONS_SLAVE=		ACTIVESYNC
 

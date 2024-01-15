@@ -1,46 +1,42 @@
-# $FreeBSD$
-
 PORTNAME=	fractal
-DISTVERSION=	4.2.2
-PORTREVISION=	12
+DISTVERSION=	4.4.2
+PORTREVISION=	6
 CATEGORIES=	net-im
-MASTER_SITES=	https://gitlab.gnome.org/World/fractal/uploads/${GL_HASH}/
+MASTER_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/archive/${DISTVERSION}/
+# XXX USES=cargo omits the default source archive by default
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	greg@unrelenting.technology
-COMMENT=	GTK+ Matrix IM client
+MAINTAINER=	vishwin@FreeBSD.org
+COMMENT=	GTK Matrix IM client
+WWW=		https://gitlab.gnome.org/GNOME/fractal
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-# gmake for the gettext-sys crate
-BUILD_DEPENDS=	cargo:lang/${RUST_DEFAULT} \
-		gmake:devel/gmake
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libgmp.so:math/gmp \
 		libgspell-1.so:textproc/gspell \
-		libges-1.0.so:multimedia/gstreamer1-editing-services \
 		libhandy-0.0.so:x11-toolkits/libhandy0
 
-USES=		gettext gnome meson pkgconfig python:3.5+,build ssl tar:xz
-USE_GNOME=	cairo gtk30 gtksourceview4
-USE_GSTREAMER1=	bad
+USES=		cargo cpe desktop-file-utils gettext gnome gstreamer meson \
+		pkgconfig python:build shebangfix ssl
+CPE_VENDOR=	gnome
+USE_GNOME=	cairo gdkpixbuf2 gtk30 gtksourceview4
+USE_GSTREAMER=	bad editing-services
 
-GL_HASH=	9f2b34d98cfe3c002f3afbfcbf14bc7c
-BINARY_ALIAS=		python3=${PYTHON_CMD}
-GLIB_SCHEMAS=		org.gnome.Fractal.gschema.xml
-INSTALLS_ICONS=		yes
+SHEBANG_FILES=	scripts
+BINARY_ALIAS=	python3=${PYTHON_CMD}
+GLIB_SCHEMAS=	org.gnome.Fractal.gschema.xml
 
-# for the gettext-sys crate
-MAKE_ENV+=	GETTEXT_BIN_DIR=${LOCALBASE}/bin \
-		GETTEXT_LIB_DIR=${LOCALBASE}/lib \
-		GETTEXT_INCLUDE_DIR=${LOCALBASE}/include
-
-post-patch:
-# Disable vendor checksums
-	@${REINPLACE_CMD} -e 's/"files":{[^}]*}/"files":{}/' \
-		${WRKSRC}/vendor/*/.cargo-checksum.json
+CARGO_BUILD=	no
+CARGO_INSTALL=	no
+CARGO_TEST=	no
+CARGO_TARGET_DIR=	${WRKSRC}/${MESON_BUILD_DIR}/target
+MAKE_ENV+=	${CARGO_ENV}
 
 post-install:
+.	ifndef WITH_DEBUG
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/fractal
+.	endif
 
 .include <bsd.port.mk>

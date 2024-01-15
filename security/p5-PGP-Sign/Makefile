@@ -1,6 +1,3 @@
-# Created by: Don Croyle <croyle@gelemna.org>
-# $FreeBSD$
-
 PORTNAME=	PGP-Sign
 PORTVERSION=	1.04
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Create detached PGP signatures for data
+WWW=		https://metacpan.org/release/PGP-Sign
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

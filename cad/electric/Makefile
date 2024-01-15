@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	electric
 PORTVERSION=	7.0.0
 PORTREVISION=	5
@@ -10,13 +7,15 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/^(...)\./\1/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sophisticated electrical CAD system
+WWW=		https://www.gnu.org/software/electric/electric.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 
-USES=		motif
+USES=		motif xorg
+USE_XORG=	ice sm x11 xext xmu xt
 
 FEATURES=	MOTIF
 
@@ -29,6 +28,12 @@ T1LIB_VARS=	FEATURES+=T1LIB
 NLS_USES=	gettext
 NLS_VARS=	FEATURES+=INT
 OPTIMIZED_CFLAGS_VARS=	FEATURES+=OPT
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types -Dregister=
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share/electric/lib/|${DATADIR}/lib/|; \

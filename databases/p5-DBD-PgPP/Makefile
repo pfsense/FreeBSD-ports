@@ -1,6 +1,3 @@
-# Created by: Lubomir Marinov <lubomir_m@abv.bg>
-# $FreeBSD$
-
 PORTNAME=	DBD-PgPP
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pure Perl PostgreSQL driver for the DBI
+WWW=		https://metacpan.org/release/DBD-PgPP
 
 BUILD_DEPENDS+=	p5-DBI>=0:databases/p5-DBI
 RUN_DEPENDS+=	p5-DBI>=0:databases/p5-DBI

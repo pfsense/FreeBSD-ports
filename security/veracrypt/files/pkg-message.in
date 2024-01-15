@@ -1,16 +1,18 @@
 [
 { type: install
   message: <<EOM
+Veracrypt was installed
+
 1) Veracrypt needs security/sudo port to mount disk volumes. You must modify 
    %%PREFIX%%/etc/sudoers file to add Veracrypt user(s). Don't use root user
 
 2) Please ensure that the fusefs kmod is loaded prior to use:
 	
-$ kldload fuse
+# kldload fusefs
 
-If you want load fuse.ko on boot time, please add the following to /boot/loader.conf
+If you want load fusefs.ko on boot time, please add the following to /boot/loader.conf
 
-fuse_load="YES"
+fusefs_load="YES"
 
 3) Enjoy it
 EOM

@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Convert-Binary-C
 PORTVERSION=	0.84
 CATEGORIES=	converters perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Binary Data Conversion using C Types
+WWW=		https://metacpan.org/release/Convert-Binary-C
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

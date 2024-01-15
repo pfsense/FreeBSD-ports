@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	cppunit
-PORTVERSION=	1.14.0
-PORTREVISION=	9
+PORTVERSION=	1.15.1
 CATEGORIES=	devel
 MASTER_SITES=	https://dev-www.libreoffice.org/src/
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	C++ port of the JUnit framework for unit testing
+WWW=		https://freedesktop.org/wiki/Software/cppunit
 
 LICENSE=	LGPL21
 
@@ -18,14 +16,18 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
 DOXYGEN_CONFIGURE_ENABLE=	dot doxygen html-docs
 DOXYGEN_CONFIGURE_ON=	--htmldir="${DOCSDIR}/html"
 
+USES=		libtool pathfix compiler:c++11-lang
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 OPTIONS_SUB=	yes
 USE_LDCONFIG=	yes
-USES=		libtool pathfix compiler:c++11-lang
 
 SUB_FILES=	cppunit-config
 SUB_LIST+=	DISTVERSION=${DISTVERSION}
+
+PLIST_SUB=	VERSION=${PORTVERSION:R}
+
+PORTDOCS=	*
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/cppunit-config ${STAGEDIR}${PREFIX}/bin/

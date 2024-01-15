@@ -1,31 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	prawcore
-PORTVERSION=	1.0.1
-PORTREVISION=	1
+PORTVERSION=	2.4.0
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Low-level communication layer for PRAW 4+
+WWW=		https://github.com/praw-dev/prawcore
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flit-core>0:devel/py-flit-core@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.6.0,<3.0.0:www/py-requests@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.6.0,<3.0.0:www/py-requests@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0.8:devel/py-mock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}testfixtures>4.13.2,<7:devel/py-testfixtures@${PY_FLAVOR}
-# to be ported  betamax >=0.8, <0.9
-#               betamax-matchers >=0.3.0, <0.5
-#               betamax-serializers >=0.2, <0.3
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}betamax>0:www/py-betamax@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>=1.26:net/py-urllib3@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist pep517 pytest
 
 NO_ARCH=	yes
-
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

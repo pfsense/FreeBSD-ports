@@ -1,14 +1,13 @@
-# Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
-
 PORTNAME=	fpart
-PORTVERSION=	1.2.0
+PORTVERSION=	1.5.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://contribs.martymac.org/fpart/
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Sort and pack files into partitions
+WWW=		https://contribs.martymac.org
 
 LICENSE=	BSD2CLAUSE
 
@@ -16,7 +15,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-embfts
 
 PLIST_FILES=	bin/fpart man/man1/fpart.1.gz
-PORTDOCS=	Changelog README TODO
+PORTDOCS=	Changelog.md README.md TODO
 
 OPTIONS_DEFINE=	FPSYNC DOCS
 OPTIONS_DEFAULT=	FPSYNC

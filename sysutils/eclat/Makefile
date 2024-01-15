@@ -1,22 +1,19 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	eclat
-PORTVERSION=	2.0
-PORTREVISION=	1
+PORTVERSION=	2.1
 CATEGORIES=	sysutils net
 MASTER_SITES=	http://download.gnu.org.ua/pub/release/${PORTNAME}/ \
 		http://download.gnu.org.ua/pub/alpha/${PORTNAME}/
 
 MAINTAINER=	zeus@gnu.org.ua
 COMMENT=	Amazon EC2 command line administration tool
+WWW=		https://puszcza.gnu.org.ua/software/eclat/
 
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2
 
-USES=		localbase tar:xz
+USES=		gmake localbase tar:xz
 GNU_CONFIGURE=	yes
 TEST_TARGET=	check
 
@@ -31,7 +28,7 @@ OPTIONS_DEFAULT=	GDBM
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_WITH=	gdbm
 
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_WITH=	ldap
 
 post-patch:

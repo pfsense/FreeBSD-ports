@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	RPSL-Parser
 PORTVERSION=	0.04000
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Router Policy Specification Language (RFC2622) Parser
+WWW=		https://metacpan.org/release/RPSL-Parser
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

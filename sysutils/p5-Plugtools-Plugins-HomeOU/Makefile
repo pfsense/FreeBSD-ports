@@ -1,6 +1,3 @@
-# Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Plugtools-Plugins-HomeOU
 PORTVERSION=	0.0.0
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Automatically handles the home OU for when adding/removing users
+WWW=		https://metacpan.org/release/Plugtools-Plugins-HomeOU
 
 RUN_DEPENDS=	p5-Plugtools>=0:sysutils/p5-Plugtools
 

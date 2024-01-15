@@ -1,6 +1,3 @@
-# Created by: Radim Kolar <hsn@sanatana.dharma>
-# $FreeBSD$
-
 PORTNAME=	flip
 PORTVERSION=	1.19
 CATEGORIES=	textproc

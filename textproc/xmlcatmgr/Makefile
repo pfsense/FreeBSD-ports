@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	xmlcatmgr
 PORTVERSION=	2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	SGML and XML catalog manager
+WWW=		https://xmlcatmgr.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

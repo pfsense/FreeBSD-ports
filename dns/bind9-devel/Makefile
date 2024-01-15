@@ -1,4 +1,3 @@
-# $FreeBSD$
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
@@ -9,7 +8,7 @@ PORTREVISION=	0
 .else
 # XXX: correct version
 # dns/bind9xx here
-PORTREVISION=	0
+PORTREVISION=	1
 .endif
 CATEGORIES=	dns net
 # XXX: put the ISC master_site
@@ -25,6 +24,7 @@ PKGNAMESUFFIX=	9-devel
 #DISTNAME=	${PORTNAME}-${ISCVERSION}
 
 MAINTAINER=	mat@FreeBSD.org
+WWW=		https://www.isc.org/bind/
 .if defined(BIND_TOOLS_SLAVE)
 COMMENT=	Command line tools from BIND: delv, dig, host, nslookup...
 .else
@@ -40,7 +40,9 @@ LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libuv.so:devel/libuv \
+		libnghttp2.so:www/libnghttp2 \
 		libxml2.so:textproc/libxml2
+
 .if !defined(BIND_TOOLS_SLAVE)
 RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 .endif
@@ -48,13 +50,13 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 # XXX: remove tar:bz2
 USES=		autoreconf compiler:c11 cpe libedit libtool pkgconfig ssl tar:bz2
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.17.7a0.2020.11.27
+ISCVERSION=	9.19.3.2022.06.16
 # XXX: Remove gitlab
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.isc.org
 GL_ACCOUNT=	isc-projects
 GL_PROJECT=	bind9
-GL_COMMIT=	90298dfc18376ff514ddfbded93c249c4063d7d4
+GL_TAGNAME=	84854b3f22b885ba4cfbf34697de4fbed1cad0a2
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -69,6 +71,7 @@ CONFIGURE_ARGS=	--disable-linux-caps \
 		--with-dlopen=yes \
 		--with-libxml2 \
 		--with-openssl=${OPENSSLBASE} \
+		--enable-dnsrps \
 		--with-readline=libedit
 CONFIGURE_ENV=	READLINE_CFLAGS="-L${LOCALBASE}/lib"
 ETCDIR=		${PREFIX}/etc/namedb
@@ -85,43 +88,28 @@ EXTRA_PATCHES=		${PATCHDIR}/extrapatch-no-bind-tools
 PORTDOCS=	*
 
 # XXX: Add -devel
-CONFLICTS=	bind911 bind912 bind913 bind914 bind916
+CONFLICTS=	bind9[0-9][0-9]
 .endif	# BIND_TOOLS_SLAVE
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFAULT=	DLZ_FILESYSTEM GSSAPI_NONE IDN JSON LMDB MANPAGES \
+OPTIONS_DEFAULT=	GSSAPI_NONE IDN JSON LMDB \
 			TCP_FASTOPEN DNSTAP
 OPTIONS_DEFINE=		DNSTAP DOCS FIXED_RRSET GEOIP IDN JSON LARGE_FILE LMDB \
-			MANPAGES OVERRIDECACHE PORTREVISION QUERYTRACE \
+			OVERRIDECACHE QUERYTRACE \
 			START_LATE TCP_FASTOPEN
-
-OPTIONS_RADIO=		CRYPTO
-OPTIONS_RADIO_CRYPTO=	NATIVE_PKCS11
-
-OPTIONS_GROUP=		DLZ
-OPTIONS_GROUP_DLZ=	DLZ_BDB DLZ_FILESYSTEM DLZ_LDAP DLZ_MYSQL \
-			DLZ_POSTGRESQL DLZ_STUB
 
 OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 
 .if defined(BIND_TOOLS_SLAVE)
-OPTIONS_EXCLUDE=	${OPTIONS_GROUP_DLZ} DNSTAP DOCS GEOIP LMDB \
-			OVERRIDECACHE PORTREVISION QUERYTRACE START_LATE \
+OPTIONS_EXCLUDE=	DNSTAP DOCS GEOIP LMDB \
+			OVERRIDECACHE QUERYTRACE START_LATE \
 			TCP_FASTOPEN
 .endif	# BIND_TOOLS_SLAVE
 
 OPTIONS_SUB=	yes
 
-CRYPTO_DESC=		Choose which crypto engine to use
-DLZ_BDB_DESC=		DLZ BDB driver
-DLZ_DESC=		Dynamically Loadable Zones
-DLZ_FILESYSTEM_DESC=	DLZ filesystem driver
-DLZ_LDAP_DESC=		DLZ LDAP driver
-DLZ_MYSQL_DESC=		DLZ MySQL driver (no threading)
-DLZ_POSTGRESQL_DESC=	DLZ Postgres driver
-DLZ_STUB_DESC=		DLZ stub driver
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
 GSSAPI_BASE_DESC=	Using Heimdal in base
@@ -131,27 +119,14 @@ GSSAPI_NONE_DESC=	Disable
 LARGE_FILE_DESC=	64-bit file support
 LMDB_DESC=		Use LMDB for zone management
 OVERRIDECACHE_DESC=	Use the override-cache patch
-NATIVE_PKCS11_DESC=	Use PKCS\#11 native API (**READ HELP**)
-PORTREVISION_DESC=	Show PORTREVISION in the version string
 QUERYTRACE_DESC=	Enable the very verbose query tracelogging
 START_LATE_DESC=	Start BIND late in the boot process (see help)
 TCP_FASTOPEN_DESC=	RFC 7413 support
 
-DLZ_BDB_CONFIGURE_ON=	--with-dlz-bdb=yes
-DLZ_BDB_USES=		bdb
-
-DLZ_FILESYSTEM_CONFIGURE_ON=	--with-dlz-filesystem=yes
-
-DLZ_LDAP_CONFIGURE_ON=	--with-dlz-ldap=yes
-DLZ_LDAP_USE=		OPENLDAP=yes
-
-DLZ_MYSQL_CONFIGURE_ON=	--with-dlz-mysql=yes
-DLZ_MYSQL_USES=		mysql
-
-DLZ_POSTGRESQL_CONFIGURE_ON=	--with-dlz-postgres=yes
-DLZ_POSTGRESQL_USES=		pgsql
-
-DLZ_STUB_CONFIGURE_ON=	--with-dlz-stub=yes
+DOCS_ALL_TARGET=	all html
+DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx \
+			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
+DOCS_USES=	gmake python:env
 
 DNSTAP_CONFIGURE_ENABLE=	dnstap
 DNSTAP_LIB_DEPENDS=		libfstrm.so:devel/fstrm \
@@ -192,11 +167,7 @@ LARGE_FILE_CONFIGURE_ENABLE=	largefile
 LMDB_CONFIGURE_WITH=	lmdb=${LOCALBASE}
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 
-MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
-
 OVERRIDECACHE_EXTRA_PATCHES=	${FILESDIR}/extrapatch-bind-min-override-ttl
-
-NATIVE_PKCS11_CONFIGURE_ENABLE=	native-pkcs11
 
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
 
@@ -227,7 +198,7 @@ SUB_LIST+=	ENGINES=${LOCALBASE}/lib/engines
 
 # XXX: Remove first REINPLACE_CMD
 post-patch:
-	@${REINPLACE_CMD} -e '/^m4_define(\[bind_SRCID/s/\[m4.*\]/${GL_COMMIT}/' \
+	@${REINPLACE_CMD} -e '/^m4_define(\[bind_SRCID/s/\[m4.*\]/${GL_TAGNAME}/' \
 		${WRKSRC}/configure.ac
 .for FILE in check/named-checkconf.rst named/named.rst nsupdate/nsupdate.rst \
 	rndc/rndc.rst
@@ -238,23 +209,17 @@ post-patch:
 .endfor
 
 .if !defined(BIND_TOOLS_SLAVE)
-.  if ${PORTREVISION:N0}
-post-patch-PORTREVISION-on:
-	@${REINPLACE_CMD} '/^m4_define.*bind_VERSION_EXTRA/s#)#_${PORTREVISION})#' \
-		${WRKSRC}/configure.ac
-.  endif
-
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mtree
 	${MKDIR} ${STAGEDIR}${ETCDIR}
-.  for i in dynamic master slave working
+.  for i in dynamic primary secondary working
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/$i
 .  endfor
 	${INSTALL_DATA} ${WRKDIR}/named.conf ${STAGEDIR}${ETCDIR}/named.conf.sample
 	${INSTALL_DATA} ${FILESDIR}/named.root ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} ${FILESDIR}/empty.db ${STAGEDIR}${ETCDIR}/master
-	${INSTALL_DATA} ${FILESDIR}/localhost-forward.db ${STAGEDIR}${ETCDIR}/master
-	${INSTALL_DATA} ${FILESDIR}/localhost-reverse.db ${STAGEDIR}${ETCDIR}/master
+	${INSTALL_DATA} ${FILESDIR}/empty.db ${STAGEDIR}${ETCDIR}/primary
+	${INSTALL_DATA} ${FILESDIR}/localhost-forward.db ${STAGEDIR}${ETCDIR}/primary
+	${INSTALL_DATA} ${FILESDIR}/localhost-reverse.db ${STAGEDIR}${ETCDIR}/primary
 	${INSTALL_DATA} ${FILESDIR}/BIND.chroot.dist ${STAGEDIR}${PREFIX}/etc/mtree/BIND.chroot.dist.sample
 	${INSTALL_DATA} ${FILESDIR}/BIND.chroot.local.dist ${STAGEDIR}${PREFIX}/etc/mtree/BIND.chroot.local.dist.sample
 	${INSTALL_DATA} ${WRKSRC}/bin/rndc/rndc.conf \
@@ -263,9 +228,10 @@ post-install:
 	@${RM} -rf ${STAGEDIR}/wrkdirs
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/CHANGES* ${WRKSRC}/HISTORY.md \
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/arm
+	${INSTALL_DATA} ${WRKSRC}/CHANGES* \
 		${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/doc/arm/_build/html && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/arm
 .else
 
 do-install:

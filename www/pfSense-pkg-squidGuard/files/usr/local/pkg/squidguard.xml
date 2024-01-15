@@ -8,7 +8,7 @@
  * squidguard.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006-2013 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -79,6 +79,7 @@
 		<name>squidGuard</name>
 		<description><![CDATA[Proxy server filter Service]]></description>
 		<executable>squidGuard</executable>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<fields>
 		<field>

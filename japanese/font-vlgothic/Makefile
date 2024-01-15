@@ -1,6 +1,3 @@
-# Created by: NIIMI Satoshi <sa2c@sa2c.net>
-# $FreeBSD$
-
 PORTNAME=	vlgothic
 PORTVERSION=	20200720
 CATEGORIES=	japanese x11-fonts
@@ -10,6 +7,7 @@ DISTNAME=	VLGothic-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	VLGothic Japanese TrueType fonts
+WWW=		http://vlgothic.dicey.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.en

@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	Data-Page
 PORTVERSION=	2.03
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pager utility for Class::DBI
+WWW=		https://metacpan.org/release/Data-Page
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

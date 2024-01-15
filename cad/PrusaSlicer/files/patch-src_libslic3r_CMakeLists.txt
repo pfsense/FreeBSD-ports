@@ -1,0 +1,10 @@
+--- src/libslic3r/CMakeLists.txt.orig	2023-06-19 12:07:14 UTC
++++ src/libslic3r/CMakeLists.txt
+@@ -490,7 +490,6 @@ target_link_libraries(libslic3r
+ target_link_libraries(libslic3r
+     libnest2d
+     admesh
+-    libcereal
+     libigl
+     miniz
+     boost_libs

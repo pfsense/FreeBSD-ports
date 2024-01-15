@@ -1,6 +1,3 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	confetti
 PORTVERSION=	0.0.${DATE}
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	LOCAL/vg
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Configuration file parser generator
+WWW=		https://github.com/mailru/confetti
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
 

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	dbus-sharp-glib
 PORTVERSION=	0.6
 DISTVERSIONPREFIX=v
 CATEGORIES=	devel
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	D-Bus for .NET: GLib integration module
+WWW=		http://mono.github.com/dbus-sharp/
 
 LICENSE=	MIT
 

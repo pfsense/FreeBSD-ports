@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	pastel
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
-PORTREVISION=	7
+DISTVERSION=	0.9.0
+PORTREVISION=	10
 CATEGORIES=	graphics
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Command-line tool to generate, analyze, convert and manipulate colors
+WWW=		https://github.com/sharkdp/pastel
 
 LICENSE=	APACHE20 MIT
 LICENSE_COMB=	dual
@@ -19,98 +18,100 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	sharkdp
 SHEBANG_FILES=	doc/demo-scripts/gradient.sh
 
-CARGO_CRATES=	aho-corasick-0.7.10 \
-		ansi_term-0.11.0 \
-		approx-0.3.2 \
-		arrayvec-0.4.12 \
-		assert_cmd-0.12.2 \
+CARGO_CRATES=	aho-corasick-0.7.18 \
+		approx-0.5.1 \
+		assert_cmd-2.0.4 \
 		atty-0.2.14 \
-		autocfg-1.0.0 \
-		bitflags-1.2.1 \
-		bstr-0.2.13 \
-		bumpalo-3.3.0 \
-		byteorder-1.3.4 \
-		cast-0.2.3 \
-		cfg-if-0.1.10 \
-		clap-2.33.1 \
-		criterion-0.3.2 \
-		criterion-plot-0.4.2 \
-		crossbeam-deque-0.7.3 \
-		crossbeam-epoch-0.8.2 \
-		crossbeam-queue-0.2.1 \
-		crossbeam-utils-0.7.2 \
-		csv-1.1.3 \
+		autocfg-1.1.0 \
+		bitflags-1.3.2 \
+		bstr-0.2.17 \
+		bumpalo-3.9.1 \
+		cast-0.2.7 \
+		cfg-if-1.0.0 \
+		clap-2.34.0 \
+		clap-3.1.18 \
+		clap_complete-3.1.4 \
+		clap_lex-0.2.0 \
+		criterion-0.3.5 \
+		criterion-plot-0.4.4 \
+		crossbeam-channel-0.5.4 \
+		crossbeam-deque-0.8.1 \
+		crossbeam-epoch-0.9.8 \
+		crossbeam-utils-0.8.8 \
+		csv-1.1.6 \
 		csv-core-0.1.10 \
-		difference-2.0.0 \
+		difflib-0.4.0 \
 		doc-comment-0.3.3 \
-		either-1.5.3 \
-		escargot-0.5.0 \
-		getrandom-0.1.14 \
-		hermit-abi-0.1.13 \
-		itertools-0.9.0 \
-		itoa-0.4.5 \
-		js-sys-0.3.39 \
+		either-1.6.1 \
+		getrandom-0.2.6 \
+		half-1.8.2 \
+		hashbrown-0.11.2 \
+		hermit-abi-0.1.19 \
+		indexmap-1.8.1 \
+		itertools-0.10.3 \
+		itoa-0.4.8 \
+		itoa-1.0.2 \
+		js-sys-0.3.57 \
 		lazy_static-1.4.0 \
-		lexical-core-0.6.2 \
-		libc-0.2.70 \
-		log-0.4.8 \
-		maybe-uninit-2.0.0 \
-		memchr-2.3.3 \
-		memoffset-0.5.4 \
-		nodrop-0.1.14 \
-		nom-5.1.1 \
-		num-traits-0.2.11 \
-		num_cpus-1.13.0 \
-		oorandom-11.1.1 \
-		output_vt100-0.1.2 \
-		plotters-0.2.14 \
-		ppv-lite86-0.2.8 \
-		predicates-1.0.4 \
-		predicates-core-1.0.0 \
-		predicates-tree-1.0.0 \
-		proc-macro2-1.0.17 \
-		quote-1.0.6 \
-		rand-0.7.3 \
-		rand_chacha-0.2.2 \
-		rand_core-0.5.1 \
-		rand_hc-0.2.0 \
-		rand_xoshiro-0.4.0 \
-		rayon-1.3.0 \
-		rayon-core-1.7.0 \
-		regex-1.3.7 \
-		regex-automata-0.1.9 \
-		regex-syntax-0.6.17 \
-		rustc_version-0.2.3 \
-		ryu-1.0.4 \
+		libc-0.2.126 \
+		log-0.4.17 \
+		memchr-2.5.0 \
+		memoffset-0.6.5 \
+		minimal-lexical-0.2.1 \
+		nom-7.1.1 \
+		num-traits-0.2.15 \
+		num_cpus-1.13.1 \
+		once_cell-1.12.0 \
+		oorandom-11.1.3 \
+		os_str_bytes-6.1.0 \
+		output_vt100-0.1.3 \
+		plotters-0.3.1 \
+		plotters-backend-0.3.2 \
+		plotters-svg-0.3.1 \
+		ppv-lite86-0.2.16 \
+		predicates-2.1.1 \
+		predicates-core-1.0.3 \
+		predicates-tree-1.0.5 \
+		proc-macro2-1.0.39 \
+		quote-1.0.18 \
+		rand-0.8.5 \
+		rand_chacha-0.3.1 \
+		rand_core-0.6.3 \
+		rand_xoshiro-0.6.0 \
+		rayon-1.5.3 \
+		rayon-core-1.9.3 \
+		regex-1.5.6 \
+		regex-automata-0.1.10 \
+		regex-syntax-0.6.26 \
+		rustc_version-0.4.0 \
+		ryu-1.0.10 \
 		same-file-1.0.6 \
 		scopeguard-1.1.0 \
-		semver-0.9.0 \
-		semver-parser-0.7.0 \
-		serde-1.0.110 \
-		serde_derive-1.0.110 \
-		serde_json-1.0.53 \
-		static_assertions-0.3.4 \
-		strsim-0.8.0 \
-		syn-1.0.24 \
-		term_size-0.3.2 \
+		semver-1.0.9 \
+		serde-1.0.137 \
+		serde_cbor-0.11.2 \
+		serde_derive-1.0.137 \
+		serde_json-1.0.81 \
+		strsim-0.10.0 \
+		syn-1.0.95 \
+		termcolor-1.1.3 \
+		terminal_size-0.1.17 \
+		termtree-0.2.4 \
 		textwrap-0.11.0 \
-		thread_local-1.0.1 \
-		tinytemplate-1.0.4 \
-		treeline-0.1.0 \
-		unicode-width-0.1.7 \
-		unicode-xid-0.2.0 \
-		vec_map-0.8.2 \
-		version_check-0.9.2 \
+		textwrap-0.15.0 \
+		tinytemplate-1.2.1 \
+		unicode-ident-1.0.0 \
+		unicode-width-0.1.9 \
 		wait-timeout-0.2.0 \
-		walkdir-2.3.1 \
-		wasi-0.9.0+wasi-snapshot-preview1 \
-		wasm-bindgen-0.2.62 \
-		wasm-bindgen-backend-0.2.62 \
-		wasm-bindgen-macro-0.2.62 \
-		wasm-bindgen-macro-support-0.2.62 \
-		wasm-bindgen-shared-0.2.62 \
-		web-sys-0.3.39 \
-		winapi-0.3.8 \
+		walkdir-2.3.2 \
+		wasi-0.10.2+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.80 \
+		wasm-bindgen-backend-0.2.80 \
+		wasm-bindgen-macro-0.2.80 \
+		wasm-bindgen-macro-support-0.2.80 \
+		wasm-bindgen-shared-0.2.80 \
+		web-sys-0.3.57 \
+		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0

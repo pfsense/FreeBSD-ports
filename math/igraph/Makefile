@@ -1,30 +1,33 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	igraph
-PORTVERSION=	0.8.5
+DISTVERSION=	0.10.6
+PORTREVISION=	4
 CATEGORIES=	math
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Package For Manipulating Undirected And Directed Graphs
+WWW=		https://igraph.org/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_mips64=		fails to link: relocation truncated to fit: R_MIPS_TLS_GD against 'igraph_i_interruption_handler'
-BROKEN_sparc64=		fails to compile: uses x86 asm
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
+LIB_DEPENDS=	libarpack.so:math/arpack-ng \
+		libcxsparse.so:math/suitesparse-cxsparse \
+		libglpk.so:math/glpk \
+		libgmp.so:math/gmp \
+		libopenblas.so:math/openblas
 
-LIB_DEPENDS=	libgmp.so:math/gmp
-
-USES=		autoreconf bison gmake gnome libtool pathfix
-USE_GITHUB=	yes
+USES=		bison cmake cpe gnome pathfix
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
-
-INSTALL_TARGET=	install-strip
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	BUILD_TESTING
+CMAKE_ARGS=	-DCMAKE_DISABLE_FIND_PACKAGE_Git:BOOL=True \
+		-DFLEX_EXECUTABLE:FILEPATH=${LOCALBASE}/bin/flex
 
 pre-configure:
-	@${ECHO} ${PORTVERSION} > ${WRKSRC}/IGRAPH_VERSION
+	@${ECHO} ${DISTVERSION} > ${WRKSRC}/IGRAPH_VERSION
 
 .include <bsd.port.mk>

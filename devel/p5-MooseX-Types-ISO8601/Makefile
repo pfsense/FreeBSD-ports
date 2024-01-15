@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-ISO8601
 PORTVERSION=	0.20
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	ISO8601 date and duration string type constraints and coercions
+WWW=		https://metacpan.org/release/MooseX-Types-ISO8601
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-aliased>=0:devel/p5-aliased \

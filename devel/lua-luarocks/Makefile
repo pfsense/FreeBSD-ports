@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	luarocks
-PORTVERSION=	3.5.0
+PORTVERSION=	3.9.2
 CATEGORIES=	devel
 MASTER_SITES=	https://luarocks.org/releases/
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Package manager for Lua modules
+WWW=		https://luarocks.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,12 +27,11 @@ UNIQUE_SUFFIX_FILES=	bin/luarocks bin/luarocks-admin
 OPTIONS_DEFINE=	LUAJIT
 LUAJIT_DESC=	Use LuaJIT instead of Lua
 
-LUAJIT_BUILD_DEPENDS=	luajit:lang/luajit
-LUAJIT_RUN_DEPENDS=	luajit:lang/luajit
+LUAJIT_USES=		luajit
 LUAJIT_CONFIGURE_ON=	--lua-suffix=jit
 LUAJIT_PLIST_SUB=	LUA_VER=${LUA_VER} \
 			LUA_MODSHAREDIR=share/lua/${LUA_VER}
-LUAJIT_VARS=		LUA_INCDIR=${LOCALBASE}/include/luajit-2.0 \
+LUAJIT_VARS=		LUA_INCDIR=${LUAJIT_INCDIR} \
 			LUA_PKGNAMEPREFIX=lua51- \
 			LUA_VER=5.1
 LUAJIT_USES_OFF=	lua:flavors

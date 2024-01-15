@@ -1,12 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	glcapsviewer
 DISTVERSION=	g20190521
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	OpenGL hardware capability viewer
+WWW=		https://github.com/SaschaWillems/glCapsViewer
 
 LICENSE=	LGPL3
 
@@ -19,7 +18,7 @@ GH_TAGNAME=	26e160c
 
 USES=		cmake compiler:c++11-lang gl qt:5 xorg
 USE_GL=		gl glew glu
-USE_QT=		buildtools_build qmake_build core gui network widgets
+USE_QT=		buildtools:build qmake:build core gui network widgets
 USE_XORG=	ice sm x11 xext
 
 PLIST_FILES=	bin/glcapsviewer ${DATADIR_REL}/capslist.xml \

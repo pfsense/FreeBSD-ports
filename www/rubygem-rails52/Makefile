@@ -1,14 +1,13 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
-
 PORTNAME=	rails
-PORTVERSION=	5.2.4.4
+PORTVERSION=	5.2.8.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	52
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Full-stack web application framework
+WWW=		https://rubyonrails.org/ \
+		https://github.com/rails/rails
 
 LICENSE=	MIT
 
@@ -43,7 +42,6 @@ RUN_DEPENDS=	rubygem-actioncable52>=${PORTVERSION}:www/rubygem-actioncable52 \
 		rubygem-web-console3-rails52>=3.3.0:devel/rubygem-web-console3-rails52
 
 USES=		cpe gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

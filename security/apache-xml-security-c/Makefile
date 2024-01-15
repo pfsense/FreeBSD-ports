@@ -1,14 +1,12 @@
-# Created by: Tony Maher
-# $FreeBSD$
-
 PORTNAME=	xml-security-c
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.4
 CATEGORIES=	security
 MASTER_SITES=	APACHE/santuario/c-library
 PKGNAMEPREFIX=	apache-
 
 MAINTAINER=	girgen@FreeBSD.org
 COMMENT=	Apache XML security libraries - C++ version
+WWW=		https://santuario.apache.org/cindex.html
 
 LICENSE=	APACHE20
 
@@ -20,7 +18,7 @@ USES=		cpe gmake libtool tar:bzip2 ssl pkgconfig autoreconf
 USE_LDCONFIG=	yes
 CONFIGURE_ENV+=	openssl_LIBS="-L${OPENSSLLIB} -lcrypto" openssl_CFLAGS=-I${OPENSSLBASE}
 
-CPE_PRODUCT=	xml_security_for_c\+\+
+CPE_PRODUCT=	xml_security_for_c++
 CPE_VENDOR=	apache
 
 .include <bsd.port.mk>

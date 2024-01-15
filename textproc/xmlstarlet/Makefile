@@ -1,13 +1,12 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xmlstarlet
 PORTVERSION=	1.6.1
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	SF/xmlstar/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Command Line XML Toolkit
+WWW=		https://xmlstar.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

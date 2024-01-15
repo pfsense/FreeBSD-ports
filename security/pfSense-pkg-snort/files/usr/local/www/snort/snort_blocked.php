@@ -3,9 +3,9 @@
  * snort_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014-2021 Bill Meeks
+ * Copyright (c) 2014-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,24 +29,10 @@ $snortlogdir = SNORTLOGDIR;
 // Grab pfSense version so we can refer to it later on this page
 $pfs_version=substr(trim(file_get_contents("/etc/version")),0,3);
 
-if (!is_array($config['installedpackages']['snortglobal']['alertsblocks'])) {
-	$config['installedpackages']['snortglobal']['alertsblocks'] = array();
-}
-
-$pconfig['brefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['brefresh'];
-$pconfig['blertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['blertnumber'];
-
-if (empty($pconfig['blertnumber'])) {
-	$pconfig['blertnumber'] = 500;
-	$bnentries = 500;
-}
-else {
-	$bnentries = $pconfig['blertnumber'];
-}
-
-if (empty($pconfig['brefresh'])) {
-	$pconfig['brefresh'] = 'on';
-}
+// Grad settings for auto-refresh boolean and number of displayed blocks
+$pconfig['brefresh'] = config_get_path('installedpackages/snortglobal/alertsblocks/brefresh', 'on');
+$pconfig['blertnumber'] = config_get_path('installedpackages/snortglobal/alertsblocks/blertnumber', '500');
+$bnentries = $pconfig['blertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
@@ -82,7 +68,7 @@ if ($_POST['remove']) {
 /* TODO: build a file with block ip and disc */
 if ($_POST['download'])
 {
-	$blocked_ips_array_save = "";
+	$blocked_ips_array_save = array();
 	exec('/sbin/pfctl -t snort2c -T show', $blocked_ips_array_save);
 	/* build the list */
 	if (is_array($blocked_ips_array_save) && count($blocked_ips_array_save) > 0) {
@@ -130,11 +116,9 @@ if ($_POST['save'])
 {
 	/* no errors */
 	if (!$input_errors) {
-		$config['installedpackages']['snortglobal']['alertsblocks']['brefresh'] = $_POST['brefresh'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['alertsblocks']['blertnumber'] = $_POST['blertnumber'];
-
+		config_set_path('installedpackages/snortglobal/alertsblocks/brefresh', $_POST['brefresh']) ? 'on' : 'off';
+		config_set_path('installedpackages/snortglobal/alertsblocks/blertnumber', $_POST['blertnumber']);
 		write_config("Snort pkg: updated BLOCKED tab settings.");
-
 		header("Location: /snort/snort_blocked.php");
 		exit;
 	}
@@ -182,7 +166,7 @@ $group->add(new Form_Button(
 	'download',
 	'Download',
 	null,
-	'fa-download'
+	'fa-solid fa-download'
 ))->removeClass('btn-default')->addClass('btn-success btn-sm')->setAttribute('title', gettext('Download interface log files as a gzip archive'))
   ->setHelp('All blocked hosts will be saved');
 
@@ -190,7 +174,7 @@ $group->add(new Form_Button(
 	'remove',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')->setAttribute('title', gettext('Clear all blocked hosts log files'))
   ->setHelp('All blocked hosts will be removed');
 
@@ -202,7 +186,7 @@ $group->add(new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->removeClass('btn-default')->addClass('btn-primary btn-sm')
   ->setHelp('Save auto-refresh and view settings');
 
@@ -210,7 +194,7 @@ $group->add(new Form_Checkbox(
 	'brefresh',
 	null,
 	'Refresh',
-	(($config['installedpackages']['snortglobal']['alertsblocks']['brefresh']=='on') || ($config['installedpackages']['snortglobal']['alertsblocks']['brefresh']=='')),
+	((config_get_path('installedpackages/snortglobal/alertsblocks/brefresh') == 'on') || (config_get_path('installedpackages/snortglobal/alertsblocks/brefresh') == '')),
 	'on'
 ))->setHelp('Default is ON');
 
@@ -327,7 +311,7 @@ print($form);
 					$tmp_ip = str_replace(":", ":&#8203;", $blocked_ip);
 					/* Add reverse DNS lookup icons (two different links if pfSense version supports them) */
 					$rdns_link = "";
-					$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$blocked_ip}');\" title=\"";
+					$rdns_link .= "<i class=\"fa-solid fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$blocked_ip}');\" title=\"";
 					$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
 
 					/* print the table row */
@@ -335,7 +319,7 @@ print($form);
 							<td>{$counter}</td>
 							<td style=\"word-wrap:break-word; white-space:normal\">{$tmp_ip}<br/>{$rdns_link}</td>
 							<td style=\"word-wrap:break-word; white-space:normal\">{$blocked_desc}</td>
-							<td><i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();\" 
+							<td><i class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();\" 
 							 title=\"" . gettext("Delete host from Blocked Table") . "\"></i></td>
 						</tr>\n");
 				}

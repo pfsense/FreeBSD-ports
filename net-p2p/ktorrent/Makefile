@@ -1,33 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	ktorrent
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-p2p kde kde-applications
 
-# Since libktorrent is released with ktorrent, it lives in a
-# strange download directory; keep this in-sync with net-p2p/libktorrent.
-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	BitTorrent client for KDE
+WWW=		https://kde.org/applications/en/internet/org.kde.ktorrent
 
-USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
+CONFLICTS_BUILD=	libtorrent
 
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/concept_check.hpp:devel/boost-libs
 LIB_DEPENDS=	libKF5Torrent.so:net-p2p/libktorrent \
 		libgcrypt.so:security/libgcrypt \
 		libgmp.so:math/gmp \
 		libtag.so:audio/taglib
+
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext \
+		kde:5 qt:5 tar:xz xorg
 USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
 		coreaddons crash dbusaddons dnssd i18n iconthemes itemviews \
 		jobwidgets kcmutils kio kross notifications \
-		notifyconfig parts plotting service \
+		notifyconfig parts phonon plotting service \
 		solid sonnet syndication textwidgets widgetsaddons \
-		windowsystem xmlgui
-USE_QT=		concurrent core dbus gui network phonon4 script widgets xml \
-		buildtools_build qmake_build
+		windowsystem xmlgui \
+		ecm:build
+USE_QT=		concurrent core dbus declarative gui location network printsupport \
+		script webchannel widgets xml \
+		buildtools:build qmake:build
+USE_XORG=	x11
 
-OPTIONS_DEFINE=	DOCS WORKSPACE
+OPTIONS_DEFINE=		DOCS WORKSPACE
 OPTIONS_DEFAULT=	WORKSPACE
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
 WORKSPACE_USE=	KDE=plasma-workspace
 WORKSPACE_DESC=	Shutdown on completion support

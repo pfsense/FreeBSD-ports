@@ -1,14 +1,12 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	ucommon
 PORTVERSION=	7.0.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	GNU/commoncpp
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Very lightweight C++ design pattern library
+WWW=		https://www.gnu.org/software/commoncpp/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
@@ -19,7 +17,13 @@ CMAKE_ARGS=	-DBUILD_TESTING:BOOL=ON \
 USE_LDCONFIG=	yes
 TEST_TARGET=	test
 
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+USE_CXXSTD=	c++11
+.endif
+
 post-install:
 	${INSTALL_DATA} ${BUILD_WRKSRC}/ucommon-config.h ${STAGEDIR}${PREFIX}/include/ucommon
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

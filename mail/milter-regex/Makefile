@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	milter-regex
 PORTVERSION=	2.7
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.benzedrine.ch/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Milter plugin to sendmail for regular expression filtering
+WWW=		https://www.benzedrine.ch/milter-regex.html
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${FILESDIR}/COPYRIGHT

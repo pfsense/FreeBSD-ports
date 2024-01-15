@@ -1,21 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	goesimage
 DISTVERSION=	0.1.3
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Wallpapers from NOAA Geostationary Operational Environment Satellite
+WWW=		https://github.com/pigmonkey/goesimage
 
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/UNLICENSE
 
 RUN_DEPENDS=	bash:shells/bash \
-		convert:graphics/ImageMagick6 \
 		curl:ftp/curl \
 		nitrogen:sysutils/nitrogen
 
-USES=		shebangfix
+USES=		magick:6,run shebangfix
 SHEBANG_FILES=	goesimage
 USE_GITHUB=	yes
 GH_ACCOUNT=	pigmonkey

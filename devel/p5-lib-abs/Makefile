@@ -1,6 +1,3 @@
-# Created by: Mons Anderson <mons@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	lib-abs
 PORTVERSION=	0.92
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mons@cpan.org
 COMMENT=	Relative use lib in absolute way
+WWW=		https://metacpan.org/release/lib-abs
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

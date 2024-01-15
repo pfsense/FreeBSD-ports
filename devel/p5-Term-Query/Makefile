@@ -1,6 +1,3 @@
-# Created by: Garrett Wollman <wollman@lcs.mit.edu>
-# $FreeBSD$
-
 PORTNAME=	Term-Query
 PORTVERSION=	2.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Interactive question-response user interface module
+WWW=		https://metacpan.org/release/Term-Query
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Matt Emmerton <matt@gsicomp.on.ca>
-# $FreeBSD$
-
 PORTNAME=	lifelines
 PORTVERSION=	3.1.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	https://github.com/MarcNo/lifelines/releases/download/${PORTVERSIO
 
 MAINTAINER=	matt@gsicomp.on.ca
 COMMENT=	Advanced genealogical system
+WWW=		http://marcno.github.io/lifelines/
 
 LICENSE=	MIT
 
@@ -16,6 +14,8 @@ USES=		autoreconf bison gmake iconv ncurses
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	YACC="bison -y"
+
+CONFLICTS_INSTALL=	atheme-services # bin/dbverify
 
 MAKE_JOBS_UNSAFE=yes
 

@@ -1,18 +1,15 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	influenceR
-PORTVERSION=	0.1.0
-PORTREVISION=	4
+PORTVERSION=	0.1.5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Software Tools to Quantify Structural Importance of Nodes in a Network
+WWW=		https://cran.r-project.org/web/packages/influenceR/
 
 LICENSE=	GPLv2
 
-CRAN_DEPENDS=	R-cran-igraph>0:math/R-cran-igraph
+CRAN_DEPENDS=	R-cran-igraph>=1.0.1:math/R-cran-igraph
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

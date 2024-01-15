@@ -1,16 +1,14 @@
-# Created by: jbacon
-# $FreeBSD$
-
 PORTNAME=	minc
 PORTVERSION=	2.2.00
 DISTVERSIONPREFIX=	release-
-PORTREVISION=	9
+PORTREVISION=	14
 PORTEPOCH=	1
 CATEGORIES=	science biology
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Medical Imaging NetCDF
+WWW=		https://www.bic.mni.mcgill.ca/ServicesSoftware/MINC
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -35,7 +33,7 @@ CFLAGS+=	-Wno-error=return-type
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-CONFLICTS=	minc-1* zh-tk-[0-9]*
+CONFLICTS=	minc-1* zh-tk
 
 pre-patch:
 	@${RM} ${WRKSRC}/ac_config_aux/*

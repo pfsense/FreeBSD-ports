@@ -1,6 +1,3 @@
-# Created by: Joshua D. Abraham <jabra@ccs.neu.edu>
-# $FreeBSD$
-
 PORTNAME=	Nmap-Parser
 PORTVERSION=	1.37
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse nmap scan data with perl
+WWW=		https://metacpan.org/release/Nmap-Parser
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

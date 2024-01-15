@@ -1,13 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pam_pkcs11
-PORTVERSION=	0.6.11
+PORTVERSION=	0.6.12
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	security
 
-MAINTAINER=	khng300@gmail.com
+MAINTAINER=	khng@FreeBSD.org
 COMMENT=	PAM module using crypto tokens for auth
+WWW=		https://github.com/OpenSC/pam_pkcs11
 
 LICENSE=	LGPL21
 
@@ -26,8 +24,6 @@ CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 
 SHEBANG_FILES=	tools/pkcs11_make_hash_link
 
-SUB_FILES=	pkg-message
-
 OPTIONS_DEFINE=		CURL DEBUG DOCS LDAP NLS NSS PCSC SSL
 OPTIONS_DEFAULT=	PCSC SSL
 OPTIONS_SUB=		yes
@@ -35,7 +31,7 @@ OPTIONS_SUB=		yes
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_WITH=	curl
 
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_WITH=	ldap
 
 # Users can only choose either NSS or SSL
@@ -93,6 +89,8 @@ post-patch:
 		-e 's|/usr/share|${PREFIX}/share|g'			\
 		${WRKSRC}/${f}
 .endfor
+	@${REINPLACE_CMD} -e 's|/etc/|${PREFIX}/etc/|g'	\
+		${WRKSRC}/doc/pam_pkcs11.8.in
 
 pre-configure:
 	@(cd ${WRKSRC} && ./bootstrap)

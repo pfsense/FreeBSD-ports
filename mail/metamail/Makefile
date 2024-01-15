@@ -1,6 +1,3 @@
-# Created by: torstenb
-# $FreeBSD$
-
 PORTNAME=	metamail
 PORTVERSION=	2.7
 PORTREVISION=	16

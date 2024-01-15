@@ -1,6 +1,3 @@
-# Created by: Juergen Lock <nox@jelal.kn-bremen.de>
-# $FreeBSD$
-
 PORTNAME=	cdlabelgen
 PORTVERSION=	4.3.0
 CATEGORIES=	print perl5
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.aczoom.com/pub/tools/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generate postscript for frontcards and traycards for CDs
+WWW=		https://www.aczoom.com/tools/cdinsert/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Jim Geovedi <jim@corebsd.or.id>
-# $FreeBSD$
-
 PORTNAME=	Crypt-Blowfish_PP
 PORTVERSION=	1.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Blowfish encryption algorithm implemented purely in Perl
+WWW=		https://metacpan.org/release/Crypt-Blowfish_PP
 
 USES=		perl5
 USE_PERL5=	configure

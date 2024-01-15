@@ -1,12 +1,10 @@
-# Created by: Lapo Luchini <lapo@lapo.it>
-# $FreeBSD$
-
 PORTNAME=	commit-patch
 PORTVERSION=	2.6
 CATEGORIES=	devel
 
 MAINTAINER=	lapo@lapo.it
 COMMENT=	Commit patches or partial workspace changes to a VCS repository
+WWW=		https://www.porkrind.org/commit-patch/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

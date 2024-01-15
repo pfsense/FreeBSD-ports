@@ -1,6 +1,3 @@
-# Created by: David Wolfskill
-# $FreeBSD$
-
 PORTNAME=	gpsman
 PORTVERSION=	6.4.4.2
 CATEGORIES=	astro tk geography
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/distrib
 
 MAINTAINER=	david@catwhisker.org
 COMMENT=	Tcl/Tk-based GPS management utility
+WWW=		https://gpsman.sourceforge.net/
 
 OPTIONS_DEFINE=	DOCS
 
@@ -15,6 +13,7 @@ USES+=		tk:wrapper,run tar:tgz
 
 GPSMANDIR=	${PREFIX}/lib/${PORTNAME}
 PLIST_SUB+=	GPSMANDIR=${GPSMANDIR:S/${PREFIX}\///}
+NO_ARCH=	yes
 NO_BUILD=	yes
 PORTDOCS=	*
 

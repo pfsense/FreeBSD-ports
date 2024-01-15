@@ -1,14 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	visualpolylib
 DISTVERSION=	0.9
 DISTVERSIONSUFFIX=	e
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://icps.u-strasbg.fr/polylib/download/
 DISTNAME=	${PORTNAME}.${DISTVERSION}${DISTVERSIONSUFFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Visualization program for PolyLib
+WWW=		https://icps.u-strasbg.fr/polylib/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

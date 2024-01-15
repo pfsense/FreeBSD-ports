@@ -1,8 +1,6 @@
-# Created by: Vanilla I. Shu <vanilla@MinJe.com.TW>
-# $FreeBSD$
-
 PORTNAME=	gtk
 PORTVERSION=	2.24.33		# sync with graphics/gtk-update-icon-cache
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME/sources/gtk+/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMESUFFIX=	2
@@ -11,12 +9,15 @@ DIST_SUBDIR=	gnome2
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Gimp Toolkit for X11 GUI (previous stable version)
+WWW=		https://www.gtk.org/
 
 LICENSE=	LGPL20
 
-USES=		tar:xz
+USES=		cpe tar:xz
 
 PORTSCOUT=	limitw:0,even
+
+CPE_VENDOR=	gnome
 
 RUN_DEPENDS+=	update-mime-database:misc/shared-mime-info \
 		${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-theme

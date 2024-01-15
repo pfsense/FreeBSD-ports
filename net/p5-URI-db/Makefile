@@ -1,15 +1,12 @@
-# Created by: Henrik Hodne <henrik@hodne.io>
-# $FreeBSD$
-
 PORTNAME=	URI-db
-PORTVERSION=	0.16
-PORTREVISION=	1
+PORTVERSION=	0.20
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	henrik@hodne.io
 COMMENT=	Perl5 module representing database URIs
+WWW=		https://metacpan.org/release/URI-db
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

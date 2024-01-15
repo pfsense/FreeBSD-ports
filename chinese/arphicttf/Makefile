@@ -1,6 +1,3 @@
-# Created by: Jing-Tang Keith Jang <keith@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	arphicttf
 PORTVERSION=	2.11
 PORTREVISION=	6

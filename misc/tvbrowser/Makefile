@@ -1,23 +1,22 @@
-# Created by: Lars Engels <lars.engels@0x20.net>
-# $FreeBSD$
-
 PORTNAME=	tvbrowser
-PORTVERSION=	4.2.1
+PORTVERSION=	4.2.7
 CATEGORIES=	misc java
 MASTER_SITES=	SF/${PORTNAME}/TV-Browser%20Releases%20%28Java%2011%20and%20higher%29/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}_bin
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Digital TV and radio guide
+WWW=		https://www.tvbrowser.org
 
 LICENSE=	GPLv3
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-USE_LDCONFIG=	yes
-NO_BUILD=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	11+
+
+NO_BUILD=	yes
 SUB_FILES=	tvbrowser
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 do-install:
 	@${REINPLACE_CMD} -e "s/${PORTNAME}\.sh/${PORTNAME}/" \

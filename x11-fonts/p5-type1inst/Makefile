@@ -1,6 +1,3 @@
-# Created by: giffunip@asme.org
-# $FreeBSD$
-
 PORTNAME=	type1inst
 PORTVERSION=	0.6.1
 PORTREVISION=	6

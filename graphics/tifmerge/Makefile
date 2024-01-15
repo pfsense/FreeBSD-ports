@@ -1,6 +1,3 @@
-# Created by: G. Adam Stanislav <adam@whizkidtech.net>
-# $FreeBSD$
-
 PORTNAME=	tifmerge
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	tiff
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to merge TIFF files into multi-page TIFF files
+WWW=		http://www.whizkidtech.redprince.net/fports/
 
 USES=		dos2unix zip
 DOS2UNIX_GLOB=	*.[ch]

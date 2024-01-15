@@ -1,6 +1,3 @@
-# Created by: Jonathan M. Bresler (jmb)
-# $FreeBSD$
-
 PORTNAME=	vmsbackup
 PORTVERSION=	4.1.1
 CATEGORIES=	emulators sysutils
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.ZIP
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Reads VMS BACKUP tapes
+WWW=		https://www.panix.com/~kingdon/vms/backup.html
 
 USES=		zip
 ALL_TARGET=	vmsbackup

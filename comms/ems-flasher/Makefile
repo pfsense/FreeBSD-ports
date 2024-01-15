@@ -1,15 +1,13 @@
-# Created by: Nicole Reid <root@cooltrainer.org>
-# $FreeBSD$
-
 PORTNAME=	ems-flasher
 PORTVERSION=	0.03
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	comms
 MASTER_SITES=	http://lacklustre.net/projects/ems-flasher/ \
 		https://cooltrainer.org/freebsd-ports/ems-flasher/
 
-MAINTAINER=	root@cooltrainer.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to flash ROM images to the EMS USB 64mb flash cart
+WWW=		https://lacklustre.net/redmine/projects/ems-flash/
 
 LICENSE=	MIT
 

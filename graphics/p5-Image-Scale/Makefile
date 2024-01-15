@@ -1,14 +1,13 @@
-# Created by: Mark Atkinson <atkin901@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Image-Scale
-PORTVERSION=	0.12
+DISTVERSION=	0.14
+PORTREVISION=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	atkin901@gmail.com
 COMMENT=	Perl module for fast, high-quality fixed-point image resizing
+WWW=		https://metacpan.org/release/Image-Scale
 
 LICENSE=	GPLv2
 
@@ -18,5 +17,8 @@ TEST_DEPENDS=	p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings
 
 USES=		jpeg perl5
 USE_PERL5=	configure
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Image/Scale/Scale.so
 
 .include <bsd.port.mk>

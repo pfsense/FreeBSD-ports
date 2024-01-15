@@ -1,30 +1,53 @@
-# Created by: UMENO Takashi <umeno@rr.iij4u.or.jp>
-# $FreeBSD$
+PORTNAME=		fireflies
+DISTVERSIONPREFIX=	v
+DISTVERSION=		2.08
+CATEGORIES=		x11
 
-PORTNAME=	fireflies
-PORTVERSION=	2.07
-PORTREVISION=	7
-CATEGORIES=	x11
-MASTER_SITES=	http://somewhere.fscked.org/proj/fireflies/files/
+MAINTAINER=	zirias@FreeBSD.org
+COMMENT=	Fireflies screensaver, for use with xscreensaver
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Extension of xscreensaver
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgfx.so:graphics/libgfx
+LIB_DEPENDS=	libargp.so:devel/argp-standalone
+
+USES=		autoreconf gl gmake localbase:ldflags xorg
+USE_GITHUB=	yes
+GH_ACCOUNT=	mpcomplete
+USE_GL=		gl glu
+USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
-USES=		gl
-USE_GL=		glu
-EXTRACT_AFTER_ARGS=--exclude '${DISTNAME}/libgfx*'
+CONFIGURE_ARGS=	--with-bindir=${PREFIX}/${XSSHACKSDIR} \
+		--with-confdir=${PREFIX}/${XSSCONFDIR} \
+		ac_cv_lib_jpeg_jpeg_start_compress=no \
+		ac_cv_lib_png_png_read_image=no \
+		ac_cv_lib_tiff_TIFFOpen=no
 
-CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/GL
-LDFLAGS+=	-L${LOCALBASE}/lib
-CONFIGURE_ARGS=	--with-bindir=${LOCALBASE}/bin/xscreensaver-hacks \
-		--with-confdir=${LOCALBASE}/share/xscreensaver/config
-PLIST_SUB=	VERSION=${PORTVERSION}
+CPPFLAGS+=	-DHAVE_BOOL
+LDFLAGS+=	-largp
 
-MAKE_ARGS=	CONFIGURE_ENV=${CONFIGURE_ENV:Q} \
-		CONFIGURE_SCRIPT=${CONFIGURE_SCRIPT:Q} \
-		CONFIGURE_ARGS=${CONFIGURE_ARGS:Q}
+PLIST_FILES=	${XSSHACKSDIR}/fireflies \
+		${XSSCONFDIR}/fireflies.xml
+
+OPTIONS_DEFINE=	SDL
+SDL_DESC=	SDL support, needed for running standalone
+
+SDL_USES=		sdl
+SDL_USE=		SDL=sdl
+SDL_CONFIGURE_OFF=	ac_cv_prog_SDL_CONF=""
+
+XSSHACKSDIR=	bin/xscreensaver-hacks
+XSSCONFDIR=	share/xscreensaver/config
+
+# The bundled libgfx has an "automagic" dependency on FLTK that can't be
+# overridden, therefore forcefully disable FLTK after configure.
+post-configure:
+		@${REINPLACE_CMD} -E '/(^|HAVE_)FLTK/d' \
+			${WRKSRC}/libgfx/include/gfx/config.h \
+			${WRKSRC}/libgfx/gfx-config
+
+post-install:
+		@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${XSSHACKSDIR}/fireflies
 
 .include <bsd.port.mk>

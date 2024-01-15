@@ -1,12 +1,10 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libucl
-PORTVERSION=	0.8.1
+PORTVERSION=	0.8.2
 CATEGORIES=	textproc devel
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Universal configuration library parser
+WWW=		https://github.com/vstakhov/libucl
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -54,7 +52,7 @@ UTILS_CONFIGURE_ENABLE=	utils
 .include <bsd.port.options.mk>
 
 # https://github.com/vstakhov/libucl/issues/203
-.if ${PORT_OPTIONS:MSIGNATURES} && ((${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base) || ${SSL_DEFAULT} == openssl)
+.if ${PORT_OPTIONS:MSIGNATURES} && ((${OPSYS} == FreeBSD && ${SSL_DEFAULT} == base) || ${SSL_DEFAULT} == openssl)
 BROKEN=	Signatures checking support does not build with OpenSSL 1.1.1
 .endif
 

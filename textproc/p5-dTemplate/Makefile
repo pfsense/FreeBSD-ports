@@ -1,6 +1,3 @@
-# Created by: Jeremy Shaffner <jeremy@external.org>
-# $FreeBSD$
-
 PORTNAME=	dTemplate
 PORTVERSION=	2.5
 PORTREVISION=	1

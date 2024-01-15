@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-#	$FreeBSD$
-#
 
 # If the POSTFIX_DEFAULT_MTA environment variable is set to YES, it
 # will make the port/package use defaults which make postfix replace
@@ -31,52 +28,17 @@ else
       DEFAULT_REPLACE_MAILERCONF=y
 fi
 
-ask() {
-      local question default answer
-
-      question=$1
-      default=$2
-      if [ -z "${PACKAGE_BUILDING}" -a "${BATCH}" = "no" ]; then
-	      read -p "${question} [${default}]? " answer
-      fi
-      if [ -z "${answer}" ]; then
-	      answer=${default}
-      fi
-      echo ${answer}
-}
-
-yesno() {
-      local question default answer
-
-      question=$1
-      default=$2
-      while :; do
-	      answer=$(ask "${question}" "${default}")
-	      case "${answer}" in
-		      [Yy]*)	return 0;;
-		      [Nn]*)	return 1;;
-	      esac
-	      echo "Please answer yes or no."
-      done
-}
-
 # ==============================================================================
 # Respect POSTFIX_DEFAULT_MTA, do not ask for confirmation!
 # (This helps tools like salt, ansible or puppet on new installations)
 # ==============================================================================
-install_choise(){
+install_choice(){
 	local mailerconf
 	mailerconf=$1
 
 	if [ "${DEFAULT_REPLACE_MAILERCONF}" = "y" ]; then
 		install_mailer_conf ${mailerconf}
-	elif [ "${DEFAULT_REPLACE_MAILERCONF}" = "n" -a -t 0 ]; then
-		if yesno "Would you like to activate Postfix in ${mailerconf}" ${DEFAULT_REPLACE_MAILERCONF:="n"}; then
-			install_mailer_conf ${mailerconf}
-		else
-			show_not_activated_msg ${mailerconf}
-		fi
-	else
+	elif [ "${DEFAULT_REPLACE_MAILERCONF}" = "n" ]; then
 		show_not_activated_msg ${mailerconf}
 	fi
 }
@@ -170,12 +132,12 @@ if [ -f "${MC_BASE}" ]; then
 			cmp_mailer ${MC_LOCALBASE} || install_mailer_conf ${MC_LOCALBASE}
 			try_reload
 		else
-			cmp_mailer ${MC_LOCALBASE} || install_choise ${MC_LOCALBASE}
+			cmp_mailer ${MC_LOCALBASE} || install_choice ${MC_LOCALBASE}
 		fi
 	else
 		cmp_mailer ${MC_BASE}
 		if [ $? -ne 0 ]; then
-			install_choise ${MC_BASE}
+			install_choice ${MC_BASE}
 		else
 			show_activated_msg ${MC_BASE}
 			try_reload

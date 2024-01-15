@@ -1,13 +1,11 @@
-# Created by: J.R. Oldroyd <fbsd@opal.com>
-# $FreeBSD$
-
 PORTNAME=	libisofs
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.6
 CATEGORIES=	devel
 MASTER_SITES=	http://files.libburnia-project.org/releases/
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libburnia ISO9660 filesystem creation library
+WWW=		https://dev.lovelyhq.com/libburnia/web/wiki/Libisofs
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,14 +13,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libburn.so:devel/libburn
 
 USES=		iconv libtool
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-PORTDOCS=	susp_* Tutorial zisofs_format.txt
+PORTDOCS=	Tutorial susp_* zisofs_format.txt
 
-OPTIONS_DEFINE=	DEBUG DOCS LIBACL LIBJTE XATTR ZLIB
-OPTIONS_DEFAULT=LIBACL LIBJTE XATTR ZLIB
+OPTIONS_DEFINE=		DEBUG DOCS LIBACL LIBJTE XATTR ZLIB
+OPTIONS_DEFAULT=	LIBACL LIBJTE XATTR ZLIB
 
 LIBACL_DESC=	Enable use of ACL functions
 LIBJTE_DESC=	Jigdo file support

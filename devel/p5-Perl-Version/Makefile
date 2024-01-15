@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Perl-Version
 PORTVERSION=	1.013
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse and manipulate Perl version strings
+WWW=		https://metacpan.org/release/Perl-Version
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

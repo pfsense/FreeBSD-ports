@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	bdb
 PORTVERSION=	0.2.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	databases gnustep
 MASTER_SITES=	SF/fortytwo/Berkeley%20DB%20Wrapper%20%28BDB%29/${PORTVERSION}
 PKGNAMEPREFIX=	fortytwo-
@@ -11,6 +9,7 @@ DISTFILES=	BDB-${PORTVERSION}-src.tgz \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interface to Berkeley DB for GNUstep
+WWW=		https://fortytwo.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE

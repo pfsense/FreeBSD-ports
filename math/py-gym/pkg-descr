@@ -19,6 +19,3 @@ methods you should know:
   reward, done, info.
 - render(self, mode='human'): Render one frame of the environment. The default
   mode will do something human friendly, such as pop up a window.
-
-WWW: https://gym.openai.com/
-WWW: https://github.com/openai/gym

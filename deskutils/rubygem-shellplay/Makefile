@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	shellplay
 PORTVERSION=	0.1.9
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	mose@mose.com
 COMMENT=	CLI tool for shell-based presentations
+WWW=		https://github.com/mose/shellplay
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -18,7 +17,6 @@ RUN_DEPENDS=	rubygem-cliprompt>=0.1.2:devel/rubygem-cliprompt \
 		rubygem-shell2html>=0.0.6:textproc/rubygem-shell2html
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

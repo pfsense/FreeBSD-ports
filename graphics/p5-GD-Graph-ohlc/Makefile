@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	GD-Graph-ohlc
 PORTVERSION=	0.9703
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Create charts displaying the open, high, low, and close
+WWW=		https://metacpan.org/release/GD-Graph-ohlc
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-GD-Graph>=0:graphics/p5-GD-Graph \

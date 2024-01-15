@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	msglint
 PORTVERSION=	1.04
 CATEGORIES=	mail
@@ -7,6 +5,7 @@ MASTER_SITES=	https://tools.ietf.org/tools/msglint/
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	RFC 822/MIME/DSN/MDN/Tracking-Status message validator
+WWW=		https://tools.ietf.org/tools/msglint/
 
 LICENSE_NAME=	Chris-Newman
 LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell

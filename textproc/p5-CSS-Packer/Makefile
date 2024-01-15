@@ -1,14 +1,12 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CSS-Packer
-PORTVERSION=	2.07
+PORTVERSION=	2.09
 CATEGORIES=	textproc www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Another CSS minifier
+WWW=		https://metacpan.org/release/CSS-Packer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

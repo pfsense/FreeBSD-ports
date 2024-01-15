@@ -1,20 +1,17 @@
-# Created by: Peter C. Lai <cowbert@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mk-livestatus
 PORTVERSION=	1.2.8p25
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
-MASTER_SITES=	http://mathias-kettner.de/download/
+MASTER_SITES=	https://mirrors.xtom.com/freebsd-ports/distfiles/check_mk/ \
+		https://mirrors.xtom.nl/freebsd-ports/distfiles/check_mk/ \
+		http://mathias-kettner.de/download/
 DIST_SUBDIR=	check_mk
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Nagios event broker module
+WWW=		https://mathias-kettner.de/checkmk_livestatus.html
 
 LICENSE=	GPLv2
-
-BROKEN_FreeBSD_13=	ld: error: duplicate symbol: g_mainthread_id
-BROKEN_FreeBSD_14=	ld: error: duplicate symbol: g_mainthread_id
 
 USES=		compiler:c++11-lang
 
@@ -31,6 +28,8 @@ EXAMPLE_FILES=	example_multisite.py example.py \
 
 # parameter "command_file" from nagios.cfg
 COMMAND_FILE?=	/var/spool/nagios/rw/live
+
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	EXAMPLES PERL
 OPTIONS_SINGLE=	NAGIOS

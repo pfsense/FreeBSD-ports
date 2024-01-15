@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	Types-URI
-PORTVERSION=	0.006
+PORTVERSION=	0.007
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TOBYINK
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for type constraints and coercions for URIs
+WWW=		https://metacpan.org/release/Types-URI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

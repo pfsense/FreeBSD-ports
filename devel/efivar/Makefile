@@ -1,17 +1,15 @@
-# Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	efivar
 PORTVERSION=	0.15
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools and library to manipulate EFI variables
+WWW=		https://github.com/rhboot/efivar
 
 LICENSE=	LGPL21
 
-NOT_FOR_ARCHS=		powerpc powerpc64 powerpspe sparc64
+NOT_FOR_ARCHS=		powerpc powerpc64 powerpspe
 NOT_FOR_ARCHS_REASON=	specification only supports little-endian processors
 
 LIB_DEPENDS=	libpopt.so:devel/popt

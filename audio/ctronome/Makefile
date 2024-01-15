@@ -1,6 +1,3 @@
-# Created by: Charles Mercadal <mercadal@diablonet.net>
-# $FreeBSD$
-
 PORTNAME=	ctronome
 PORTVERSION=	0.5.6
 CATEGORIES=	audio
@@ -8,6 +5,7 @@ MASTER_SITES=	http://ctronome.kign.org/source/
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Programmable console-based metronome
+WWW=		https://ctronome.kign.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

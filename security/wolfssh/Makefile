@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wolfssh
-PORTVERSION=	1.4.5
+PORTVERSION=	1.4.14
 CATEGORIES=	security
 MASTER_SITES=	https://www.wolfssl.com/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lightweight SSH Library
+WWW=		https://www.wolfssl.com/products/wolfssh/ \
+		https://github.com/wolfSSL/wolfssh
 
 LICENSE=	GPLv3
 
@@ -23,6 +22,7 @@ CONFIGURE_ARGS=	--enable-fwd \
 		--enable-shell \
 		--enable-static=yes
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 .include <bsd.port.mk>

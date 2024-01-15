@@ -1,15 +1,13 @@
-# Created by: Erik B Knudsen
-# $FreeBSD$
-
 PORTNAME=	mcstas-comps
 PORTVERSION=	2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	http://download.mcstas.org/${PORTNAME:C/-comps\$//}-${PORTVERSION}/unix/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	erkn@fysik.dtu.dk
 COMMENT=	Component Library for the McStas neutron ray tracing package
+WWW=		https://www.mcstas.org
 
 LICENSE=	GPLv2
 

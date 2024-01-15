@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	esecanna-module-wnn6
 PORTVERSION=	1.0.0
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DIST_SUBDIR=	esecanna
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Esecanna module for Wnn6
+WWW=		http://esecanna.netfort.gr.jp/
 
 LIB_DEPENDS=	libwnn6.so:japanese/Wnn6-lib
 RUN_DEPENDS=	${LOCALBASE}/sbin/esecannaserver:japanese/esecanna

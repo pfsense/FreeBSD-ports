@@ -1,13 +1,12 @@
-# Created by: Alexey Mikhailov <karma@ez.pereslavl.ru>
-# $FreeBSD$
-
 PORTNAME=	trayer
 PORTVERSION=	1.1.8
 DISTVERSIONPREFIX=	${PORTNAME}-
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Lightweight GTK2-based systray for UNIX desktop
+WWW=		https://github.com/sargon/trayer-srg
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2

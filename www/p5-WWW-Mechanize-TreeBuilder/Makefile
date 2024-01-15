@@ -1,6 +1,3 @@
-# Created by: Alex Deiter <Alex.Deiter@Gmail.COM>
-# $FreeBSD$
-
 PORTNAME=	WWW-Mechanize-TreeBuilder
 PORTVERSION=	1.20000
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	alex.deiter@gmail.com
 COMMENT=	Combine WWW::Mechanize and HTML::TreeBuilder
+WWW=		https://metacpan.org/release/WWW-Mechanize-TreeBuilder
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

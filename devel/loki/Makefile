@@ -1,6 +1,3 @@
-# Created by: Sun Chang-Ming
-# $FreeBSD$
-
 PORTNAME=	loki
 PORTVERSION=	0.1.7
 CATEGORIES=	devel
@@ -8,8 +5,10 @@ MASTER_SITES=	SF/${PORTNAME}-lib/Loki/Loki%20${PORTVERSION}
 
 MAINTAINER=	snnn119@gmail.com
 COMMENT=	C++ library of common design patterns
+WWW=		https://sourceforge.net/projects/loki-lib/
 
 USES=		gmake dos2unix
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 CXXFLAGS+=	-Wno-return-type

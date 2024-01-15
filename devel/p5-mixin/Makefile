@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	mixin
 PORTVERSION=	0.08
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Mix-in inheritance, an alternative to multiple inheritance
+WWW=		https://metacpan.org/release/mixin
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,17 +1,15 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mybb
-DISTVERSION=	1.8.22
+DISTVERSION=	1.8.33
 CATEGORIES=	www
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP-based bulletin board / discussion forum system
+WWW=		https://mybboard.net/
 
 LICENSE=	GPLv3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	${PORTNAME}_1822
+GH_TAGNAME=	${PORTNAME}_1832
 
 USES=		cpe mysql php:web
 NO_BUILD=	yes

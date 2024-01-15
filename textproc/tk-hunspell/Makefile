@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	0.1.6
 CATEGORIES=	textproc
@@ -11,6 +9,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Turkmen hunspell dictionaries
+WWW=		https://addons.mozilla.org/en-US/firefox/addon/turkmen-spell-checker/
 
 LICENSE=	GPLv3
 
@@ -18,8 +17,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/dictionaries
 
-PLIST_FILES=	%%DATADIR%%/tk_TM.aff \
-		%%DATADIR%%/tk_TM.dic
+PLIST_FILES=	${DATADIR}/tk_TM.aff \
+		${DATADIR}/tk_TM.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

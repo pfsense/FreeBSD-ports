@@ -8,4 +8,5 @@ are also provided.
 This work was done at Lawrence Berkeley National Laboratory,
 NERSC Division, Yozo Hida with Xiaoye S. Li and David H. Bailey.
 
-WWW: http://crd-legacy.lbl.gov/~dhbailey/mpdist
+Note: This package is an older package, it is not thread-safe. New users should
+use DQFUN, QXFUN or DDFUN.

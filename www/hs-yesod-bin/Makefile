@@ -1,123 +1,143 @@
-# $FreeBSD$
-
 PORTNAME=	yesod-bin
-PORTVERSION=	1.6.0.5
+PORTVERSION=	1.6.2.2
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Yesod helper executable
+WWW=		https://www.yesodweb.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cabal
 
-USE_CABAL=	aeson-1.5.2.0 \
-		ansi-terminal-0.10.3 \
-		ansi-wl-pprint-0.6.9_1 \
+USE_CABAL=	HUnit-1.6.2.0 \
+		OneTuple-0.3.1_3 \
+		QuickCheck-2.14.2 \
+		StateVar-1.2.2 \
+		aeson-2.1.1.0 \
+		ansi-terminal-0.11.4 \
+		ansi-wl-pprint-0.6.9_3 \
 		appar-0.1.8 \
-		asn1-encoding-0.9.6_1 \
+		asn1-encoding-0.9.6_2 \
 		asn1-parse-0.9.5 \
 		asn1-types-0.3.4 \
-		assoc-1.0.1_1 \
-		async-2.2.2_1 \
-		attoparsec-0.13.2.4 \
+		assoc-1.0.2_3 \
+		async-2.2.4_2 \
+		attoparsec-0.14.4_2 \
 		auto-update-0.1.6 \
-		base-compat-0.11.1 \
-		base-compat-batteries-0.11.1 \
-		base-orphans-0.8.2 \
-		base64-bytestring-1.1.0.0 \
-		basement-0.0.11_2 \
-		bifunctors-5.5.7 \
-		blaze-builder-0.4.1.0 \
-		bsb-http-chunked-0.0.0.4_2 \
+		base-compat-0.12.2 \
+		base-compat-batteries-0.12.2 \
+		base-orphans-0.8.7 \
+		base64-bytestring-1.2.1.0 \
+		basement-0.0.15 \
+		bifunctors-5.5.13 \
+		bitvec-1.1.3.0 \
+		blaze-builder-0.4.2.2_1 \
+		bsb-http-chunked-0.0.0.4_3 \
 		byteorder-1.0.4 \
-		cabal-doctest-1.0.8_1 \
+		cabal-doctest-1.0.9_2 \
+		call-stack-0.4.0 \
 		case-insensitive-1.2.1.0 \
-		cereal-0.5.8.1 \
-		clock-0.8 \
-		colour-2.3.5 \
-		comonad-5.0.6_1 \
-		conduit-1.3.2 \
-		conduit-extra-1.3.5 \
+		cereal-0.5.8.3 \
+		clock-0.8.3 \
+		colour-2.3.6 \
+		comonad-5.0.8_1 \
+		conduit-1.3.4.3_1 \
+		conduit-extra-1.3.6 \
 		connection-0.3.1_1 \
+		contravariant-1.5.5 \
 		cookie-0.4.5 \
-		cryptonite-0.27 \
+		cryptonite-0.30 \
 		data-default-class-0.1.2.0 \
-		distributive-0.6.2_1 \
-		dlist-0.8.0.8 \
+		data-fix-0.3.2_3 \
+		distributive-0.6.2.1_1 \
+		dlist-1.0 \
 		easy-file-0.2.2 \
-		fast-logger-3.0.1 \
-		file-embed-0.0.13.0 \
-		fsnotify-0.3.0.1_1 \
-		hashable-1.3.0.0_1 \
+		fast-logger-3.1.1 \
+		file-embed-0.0.15.0 \
+		fsnotify-0.4.1.0 \
+		generically-0.1 \
+		hashable-1.4.1.0 \
 		hourglass-0.2.12 \
-		hsc2hs-0.68.7 \
-		http-client-0.7.1 \
-		http-client-tls-0.3.5.3_1 \
-		http-date-0.0.8 \
-		http-reverse-proxy-0.6.0 \
+		hsc2hs-0.68.8_1 \
+		http-client-0.7.13.1 \
+		http-client-tls-0.3.6.1 \
+		http-date-0.0.11 \
+		http-reverse-proxy-0.6.0.1 \
 		http-types-0.12.3 \
-		http2-2.0.5 \
-		integer-logarithms-1.0.3_2 \
-		iproute-1.7.9_1 \
-		libyaml-0.1.2 \
-		memory-0.15.0_1 \
-		mime-types-0.1.0.9 \
-		mono-traversable-1.0.15.1 \
-		network-3.1.1.1 \
-		network-byte-order-0.1.5 \
-		network-uri-2.6.3.0 \
+		http2-3.0.3 \
+		indexed-traversable-0.1.2_2 \
+		indexed-traversable-instances-0.1.1.1 \
+		integer-logarithms-1.0.3.1_3 \
+		iproute-1.7.12 \
+		libyaml-0.1.2_1 \
+		memory-0.18.0 \
+		mime-types-0.1.1.0 \
+		monad-control-1.0.3.1 \
+		mono-traversable-1.0.15.3 \
+		network-3.1.2.7 \
+		network-byte-order-0.1.6_1 \
+		network-uri-2.6.4.1 \
 		old-locale-1.0.0.7_2 \
 		old-time-1.1.0.3_2 \
-		optparse-applicative-0.15.1.0_1 \
+		optparse-applicative-0.17.0.0 \
 		pem-0.2.4 \
-		primitive-0.7.1.0 \
+		primitive-0.7.4.0 \
 		project-template-0.2.1.0 \
-		psqueues-0.2.7.2_1 \
-		random-1.2.0 \
-		resourcet-1.2.4.2 \
+		psqueues-0.2.7.3 \
+		random-1.2.1.1 \
+		recv-0.0.0 \
+		resourcet-1.3.0 \
+		safe-exceptions-0.1.7.3 \
 		say-0.1.0.1 \
-		scientific-0.3.6.2 \
-		semigroups-0.19.1 \
+		scientific-0.3.7.0_3 \
+		semialign-1.2.0.1_3 \
+		semigroupoids-5.3.7 \
 		simple-sendfile-0.2.30 \
 		socks-0.6.1 \
-		split-0.2.3.4 \
-		splitmix-0.1 \
-		streaming-commons-0.2.1.2 \
-		tagged-0.8.6_2 \
-		tar-0.5.1.1_2 \
-		th-abstraction-0.3.2.0 \
-		these-1.1 \
-		time-compat-1.9.3 \
-		time-manager-0.0.0 \
-		tls-1.5.4 \
+		split-0.2.3.5 \
+		splitmix-0.1.0.4_1 \
+		streaming-commons-0.2.2.5 \
+		strict-0.4.0.1_4 \
+		tagged-0.8.6.1_3 \
+		tar-0.5.1.1_5 \
+		text-short-0.1.5_1 \
+		th-abstraction-0.4.5.0 \
+		th-compat-0.1.4 \
+		these-1.1.1.1_6 \
+		time-compat-1.9.6.1_4 \
+		time-manager-0.0.0_1 \
+		tls-1.6.0 \
 		tls-session-manager-0.0.4 \
-		transformers-compat-0.6.5 \
-		typed-process-0.2.6.0 \
-		unix-compat-0.5.2_1 \
-		unix-time-0.4.7 \
-		unliftio-0.2.13 \
-		unliftio-core-0.2.0.1_1 \
-		unordered-containers-0.2.11.0 \
-		uuid-types-1.0.3_3 \
-		vault-0.3.1.4 \
-		vector-0.12.1.2 \
-		vector-algorithms-0.8.0.3 \
-		void-0.7.3 \
-		wai-3.2.2.1 \
-		wai-extra-3.0.29.2 \
-		wai-logger-2.3.6 \
-		warp-3.3.13 \
-		warp-tls-3.3.0 \
+		transformers-base-0.4.6 \
+		transformers-compat-0.7.2 \
+		typed-process-0.2.10.1 \
+		unix-compat-0.6_1 \
+		unix-time-0.4.8 \
+		unliftio-0.2.23.0 \
+		unliftio-core-0.2.0.1_2 \
+		unordered-containers-0.2.19.1_1 \
+		uuid-types-1.0.5_3 \
+		vault-0.3.1.5_2 \
+		vector-0.13.0.0_1 \
+		vector-algorithms-0.9.0.1_1 \
+		vector-stream-0.1.0.0_1 \
+		wai-3.2.3 \
+		wai-extra-3.1.13.0_1 \
+		wai-logger-2.4.0 \
+		warp-3.3.23 \
+		warp-tls-3.3.4 \
+		witherable-0.4.2_3 \
 		word8-0.1.3 \
-		x509-1.7.5_1 \
-		x509-store-1.6.7_1 \
-		x509-system-1.6.6 \
-		x509-validation-1.6.11 \
-		yaml-0.11.4.0 \
-		zlib-0.6.2.1_1
+		x509-1.7.7 \
+		x509-store-1.6.9 \
+		x509-system-1.6.7 \
+		x509-validation-1.6.12 \
+		yaml-0.11.8.0_2 \
+		zlib-0.6.3.0
 
-EXECUTABLES=	yesod
+CABAL_REVISION=		1
+CABAL_EXECUTABLES=	yesod
 
 .include <bsd.port.mk>

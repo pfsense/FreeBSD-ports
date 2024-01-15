@@ -1,6 +1,3 @@
-# Created by: Jeremy <karlj000@unbc.ca>
-# $FreeBSD$
-
 PORTNAME=	avida
 PORTVERSION=	2.12.4
 DISTVERSIONSUFFIX=	-src
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-stable/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Auto-adaptive genetic system designed for ALife research
+WWW=		https://avida.devosoft.org/
 
 LICENSE=	GPLv3
 
@@ -18,7 +16,6 @@ BROKEN_armv7=		invokes x86 assembler
 BROKEN_mips=		invokes x86 assembler
 BROKEN_mips64=		invokes x86 assembler
 BROKEN_riscv64=		invokes x86 assembler
-BROKEN_sparc64=		missing atomics implementation
 
 USES=		compiler:c11 cmake ncurses
 USE_CXXSTD=	gnu++98

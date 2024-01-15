@@ -1,5 +1,6 @@
 @sample %%ETCDIR%%/acl.conf.sample
 @sample %%ETCDIR%%/adsi.conf.sample
+@sample %%ETCDIR%%/aeap.conf.sample
 @sample %%ETCDIR%%/agents.conf.sample
 @sample %%ETCDIR%%/alarmreceiver.conf.sample
 @sample %%ETCDIR%%/alsa.conf.sample
@@ -53,6 +54,7 @@
 @sample %%ETCDIR%%/festival.conf.sample
 @sample %%ETCDIR%%/followme.conf.sample
 @sample %%ETCDIR%%/func_odbc.conf.sample
+@sample %%ETCDIR%%/geolocation.conf.sample
 @sample %%ETCDIR%%/hep.conf.sample
 @sample %%ETCDIR%%/http.conf.sample
 @sample %%ETCDIR%%/iax.conf.sample
@@ -81,11 +83,13 @@
 @sample %%ETCDIR%%/queuerules.conf.sample
 @sample %%ETCDIR%%/queues.conf.sample
 @sample %%ETCDIR%%/res_config_mysql.conf.sample
+@sample %%ETCDIR%%/res_config_odbc.conf.sample
 @sample %%ETCDIR%%/res_config_sqlite.conf.sample
 @sample %%ETCDIR%%/res_config_sqlite3.conf.sample
 @sample %%ETCDIR%%/res_corosync.conf.sample
 @sample %%ETCDIR%%/res_curl.conf.sample
 @sample %%ETCDIR%%/res_fax.conf.sample
+@sample %%ETCDIR%%/res_http_media_cache.conf.sample
 @sample %%ETCDIR%%/res_ldap.conf.sample
 @sample %%ETCDIR%%/res_odbc.conf.sample
 @sample %%ETCDIR%%/res_parking.conf.sample
@@ -257,8 +261,12 @@ include/asterisk/poll-compat.h
 include/asterisk/presencestate.h
 include/asterisk/privacy.h
 include/asterisk/pval.h
+include/asterisk/refer.h
+include/asterisk/res_aeap.h
+include/asterisk/res_aeap_message.h
 include/asterisk/res_audiosocket.h
 include/asterisk/res_fax.h
+include/asterisk/res_geolocation.h
 include/asterisk/res_hep.h
 include/asterisk/res_mwi_external.h
 include/asterisk/res_odbc.h

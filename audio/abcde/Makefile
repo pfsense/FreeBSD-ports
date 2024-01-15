@@ -1,13 +1,12 @@
-# Created by: Munish Chopra <mchopra@engmail.uwaterloo.ca>
-# $FreeBSD$
-
 PORTNAME=	abcde
 DISTVERSION=	2.9.3
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://abcde.einval.com/download/
 
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Front-end shell script to encode CDs in flac/mp3/ogg/speex format
+WWW=		https://abcde.einval.com/
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual

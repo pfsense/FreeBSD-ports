@@ -1,17 +1,14 @@
-# Created by: Nobutaka Mantani <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Mac-PropertyList
-PORTVERSION=	1.413
+PORTVERSION=	1.504
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Perl extension for parsing Mac OS X property lists
+WWW=		https://metacpan.org/release/Mac-PropertyList
 
-LICENSE=	ART10 GPLv1+
-LICENSE_COMB=	dual
+LICENSE=	ART20
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-Entities>=0:textproc/p5-XML-Entities

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Time-Interval
 PORTVERSION=	1.234
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Converts time intervals of days, hours, minutes, and seconds
+WWW=		https://metacpan.org/release/Time-Interval
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

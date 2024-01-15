@@ -1,6 +1,3 @@
-# Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freeguide
 PORTVERSION=	0.11.1
 CATEGORIES=	misc java
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}-tv/${PORTNAME}-source/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive TV guide which will create personalized TV listings
+WWW=		http://freeguide-tv.sf.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/COPYING

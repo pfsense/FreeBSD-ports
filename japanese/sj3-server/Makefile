@@ -1,9 +1,6 @@
-# Created by: Hidekazu Kuroki <hidekazu@cs.titech.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	sj3
 PORTVERSION=	2.0.1.20
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	japanese
 MASTER_SITES=	LOCAL/nork
 PKGNAMESUFFIX=	-server
@@ -22,13 +19,19 @@ LIB_DEPENDS=	libsj3lib.so:japanese/sj3-lib
 
 USES=		imake
 USE_RC_SUBR=	sj3
-PLIST_SUB=	USERS=${USERS} GROUPS=${GROUPS}
+
+CFLAGS+=	-Wno-return-type -fcommon
+
 SUB_FILES=	sj3_freebsd.tmpl
 SUB_LIST=	DESTDIR=${DESTDIR}
-CFLAGS+=	-Wno-return-type
+
 USERS=		_sj3
 GROUPS=		_sj3
+
+PLIST_SUB=	USERS=${USERS} GROUPS=${GROUPS}
 PORTDOCS=	Nihongo.ps.Z hinsi.ms makedict.ms sj3lib.ms sj3serv.ms
+
+OPTIONS_DEFINE=	DOCS
 
 POSTPATCHES=	${FILESDIR}/post-patch-Imakefile \
 		${FILESDIR}/post-patch-sj3lib-Imakefile \
@@ -42,20 +45,26 @@ POSTPATCHES=	${FILESDIR}/post-patch-Imakefile \
 POSTPATCHES.nodocports= \
 		${FILESDIR}/post-patch-doc-doc-Imakefile.nodocports
 
-OPTIONS_DEFINE=	DOCS
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.options.mk>
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	cd ${WRKSRC} && ${CAT} ${POSTPATCHES} | ${PATCH}
-.if !${PORT_OPTIONS:MDOCS}
-	cd ${WRKSRC} && ${CAT} ${POSTPATCHES.nodocports} | ${PATCH}
-.endif
 
-pre-configure: apply-slist
+post-patch-DOCS-off:
+	cd ${WRKSRC} && ${CAT} ${POSTPATCHES.nodocports} | ${PATCH}
+
+pre-configure:
 	${INSTALL_DATA} ${WRKDIR}/sj3_freebsd.tmpl ${WRKSRC}/sj3_freebsd.tmpl
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/sj3/dict/user
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

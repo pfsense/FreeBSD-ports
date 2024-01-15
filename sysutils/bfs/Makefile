@@ -1,27 +1,31 @@
-# $FreeBSD$
-
 PORTNAME=	bfs
-DISTVERSION=	2.1
+DISTVERSION=	3.0.4
 CATEGORIES=	sysutils
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Breadth-first version of the UNIX find command
+WWW=		https://github.com/tavianator/bfs
 
 LICENSE=	BSD0CLAUSE
-LICENSE_NAME=	BSD Zero Clause License
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BUILD_DEPENDS=	bash:shells/bash
 TEST_DEPENDS=	bash:shells/bash
 
-USES=		compiler:c11 gmake shebangfix
+USES=		compiler:c++17-lang gmake shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	tavianator
 
-SHEBANG_FILES=	tests.sh tests/*.sh
+MAKEFILE=	GNUmakefile
 TEST_TARGET=	check
-PLIST_FILES=	bin/bfs \
-		share/man/man1/bfs.1.gz
+
+OPTIONS_DEFINE=		ONIGURUMA
+OPTIONS_DEFAULT=	ONIGURUMA
+
+ONIGURUMA_DESC=		Oniguruma regular expression support
+
+ONIGURUMA_LIB_DEPENDS=		libonig.so:devel/oniguruma
+ONIGURUMA_MAKE_ARGS_OFF=	WITH_ONIGURUMA=
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/bfs

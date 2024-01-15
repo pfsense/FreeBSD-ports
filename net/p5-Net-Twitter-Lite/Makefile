@@ -1,14 +1,12 @@
-# Created by: Masafumi NAKANE <max@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Twitter-Lite
 PORTVERSION=	0.12008
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Interface to the Twitter API
+WWW=		https://metacpan.org/release/Net-Twitter-Lite
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

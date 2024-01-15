@@ -1,6 +1,3 @@
-# Created by: Alan Snelson <Alan@Wave2.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-VersionedDDL
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	Alan@Wave2.org
 COMMENT=	Upgrade and downgrade database schemas to a specified version
+WWW=		https://metacpan.org/release/DBIx-VersionedDDL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

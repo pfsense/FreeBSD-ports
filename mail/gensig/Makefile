@@ -1,6 +1,3 @@
-# Created by: arensb@ooblick.com
-# $FreeBSD$
-
 PORTNAME=	gensig
 PORTVERSION=	2.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.geekthing.com/~robf/ware/gensig/ \
 
 MAINTAINER=	arensb+freebsd-ports@ooblick.com
 COMMENT=	Random .signature generator
+WWW=		http://www.geekthing.com/~robf/ware/gensig/
 
 GNU_CONFIGURE=	yes
 

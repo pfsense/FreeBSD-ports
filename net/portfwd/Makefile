@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <sysadmin@alexdupre.com>
-# $FreeBSD$
-
 PORTNAME=	portfwd
 PORTVERSION=	0.29
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Port Forwarding Daemon
+WWW=		https://portfwd.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,6 +22,8 @@ post-patch:
 		${WRKSRC}/src/Makefile.am
 	@${REINPLACE_CMD} -e "s|-Wall -g -O3|${CFLAGS}|g" \
 		${WRKSRC}/tools/Makefile.am
+	@${REINPLACE_CMD} -e "s|register ||g" \
+		${WRKSRC}/src/lexconf.c ${WRKSRC}/src/yconf.c
 	@${TOUCH} ${WRKSRC}/* ${WRKSRC}/*/*
 
 post-install:

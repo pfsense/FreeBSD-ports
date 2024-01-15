@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Format-Epoch
 PORTVERSION=	0.16
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert DateTimes to/from epoch seconds
+WWW=		https://metacpan.org/pod/DateTime::Format::Epoch
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

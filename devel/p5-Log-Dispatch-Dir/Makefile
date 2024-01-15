@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Log-Dispatch-Dir
 PORTVERSION=	0.160
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Log messages to separate files in a directory, with rotate options
+WWW=		https://metacpan.org/release/Log-Dispatch-Dir
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

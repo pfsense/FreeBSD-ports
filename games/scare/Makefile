@@ -1,6 +1,3 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	scare
 PORTVERSION=	1.3.10
 CATEGORIES=	games
@@ -15,6 +12,7 @@ MASTER_SITE_SUBDIR=	if-archive/programming/adrift
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ADRIFT-compatible interactive games interpreter
+WWW=		http://sites.google.com/site/scarehome/
 
 LICENSE=	GPLv2
 

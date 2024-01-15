@@ -1,14 +1,12 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	iml
 PORTVERSION=	1.0.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://www.cs.uwaterloo.ca/~astorjoh/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Integer Matrix Library
+WWW=		https://cs.uwaterloo.ca/~astorjoh/iml.html
 
 LICENSE=	GPLv2
 

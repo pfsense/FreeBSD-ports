@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	dadadodo
 PORTVERSION=	1.04
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	https://www.jwz.org/dadadodo/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text processor which analyses text and generates random sentences
+WWW=		https://www.jwz.org/dadadodo/
 
 LICENSE=	MIT  # -like
 

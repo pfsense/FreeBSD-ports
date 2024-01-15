@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	liquid-dsp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.2
@@ -8,6 +6,7 @@ CATEGORIES=	comms
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Software-Defined Radio Digital Signal Processing Library
+WWW=		https://liquidsdr.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

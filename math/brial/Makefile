@@ -1,12 +1,11 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	BRiAl
-PORTVERSION=	1.2.10
+PORTVERSION=	1.2.11
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Library for polynomials over boolean rings
+WWW=		https://github.com/BRiAl/BRiAl
 
 LICENSE=	GPLv2
 
@@ -23,6 +22,7 @@ USES=		autoreconf compiler:c++11-lang libtool localbase pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
+INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: HOTARU-YA <hotaru@tail.net>
-# $FreeBSD$
-
 PORTNAME=	oneko
 PORTVERSION=	1.2
 PORTREVISION=	2
@@ -11,6 +8,13 @@ PKGNAMESUFFIX=	-sakura
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cat, Sakura or Tomoyo chasing a mouse all over the screen
+WWW=		http://www.daidouji.com/oneko/
+
+# Converted from NO_CDROM
+LICENSE=	oneko
+LICENSE_NAME=	oneko
+LICENSE_TEXT=	Including derivatives from CARDCAPTOR SAKURA. See http://www.clamp-net.com/ -> INFORMATION
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 CONFLICTS=	oneko-2.*
 
@@ -18,7 +22,6 @@ USES=		imake xorg
 USE_XORG=	x11 xext
 PLIST_FILES=	bin/oneko \
 		man/man6/oneko.6.gz
-NO_CDROM=	Including derivatives from CARDCAPTOR SAKURA. See http://www.clamp-net.com/ -> INFORMATION
 
 pre-configure:
 	@${REINPLACE_CMD} -e 's,/\*\*/# Cannot compile in using Gcc,/* Cannot compile using Gcc */,' \

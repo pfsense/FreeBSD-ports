@@ -1,6 +1,3 @@
-# Created by: kbyanc
-# $FreeBSD$
-
 PORTNAME=	mmencode
 PORTVERSION=	2.7
 CATEGORIES=	converters
@@ -20,6 +17,8 @@ PLIST_FILES=	bin/mmencode bin/mimencode \
 USES=		tar:Z
 ALL_TARGET=	mmencode
 MAKE_ARGS=	CFLAGS="${CFLAGS}"
+
+CONFLICTS_INSTALL=	elm metamail # bin/mimencode bin/mmencode
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mmencode ${STAGEDIR}${PREFIX}/bin

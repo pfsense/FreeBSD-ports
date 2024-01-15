@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pnglite
 PORTVERSION=	0.1.17
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Lightweight PNG C library
+WWW=		https://sourceforge.net/projects/pnglite/
 
 LICENSE=	ZLIB
 

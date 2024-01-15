@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-CommonNS
 PORTVERSION=	0.06
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	List of commonly used namespaces
+WWW=		https://metacpan.org/release/XML-CommonNS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

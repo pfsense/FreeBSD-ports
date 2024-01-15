@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@cae.ce.ntu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	abook
 PORTVERSION=	0.6.1
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://abook.sourceforge.net/devel/
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Addressbook program with mutt mail client support
+WWW=		http://abook.sourceforge.net/
 
 LICENSE=	GPLv2
 

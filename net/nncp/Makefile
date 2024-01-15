@@ -1,21 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	nncp
-DISTVERSION=	5.3.3
+DISTVERSION=	8.8.1
+PORTREVISION=	9
 CATEGORIES=	net
 MASTER_SITES=	http://www.nncpgo.org/download/
 
 MAINTAINER=	stargrave@stargrave.org
 COMMENT=	Utilities for secure store-and-forward files, mail, command exchanging
+WWW=		http://www.nncpgo.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		go:no_targets tar:xz
+USES=		go:modules,no_targets tar:xz
 
 USE_RC_SUBR=	nncp-caller nncp-daemon nncp-toss
 
 MAKE_ARGS=	INFODIR=${STAGEDIR}${PREFIX}/${INFO_PATH}
+MAKE_ENV=	${GO_ENV}
 INSTALL_TARGET=	install-strip
 
 SUB_FILES=	pkg-message pkg-install pkg-deinstall

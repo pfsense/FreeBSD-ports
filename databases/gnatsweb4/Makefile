@@ -1,6 +1,3 @@
-# Created by: Oliver Eikemeier <eikemeier@fillmore-labs.com>
-# $FreeBSD$
-
 PORTNAME=	gnatsweb
 PORTVERSION=	4.00
 PORTREVISION=	7
@@ -9,11 +6,12 @@ MASTER_SITES=	GNU
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gnatsweb, a GNATS web interface
+WWW=		https://www.gnu.org/software/gnats/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		apache:run,2.2+ perl5 shebangfix
+USES=		apache:run perl5 shebangfix
 SHEBANG_FILES=	gnatsweb.pl
 USE_PERL5=	run
 NO_BUILD=	yes

@@ -1,12 +1,10 @@
-# Created by: Neil Darlow <neil@darlow.co.uk>
-# $FreeBSD$
-
 PORTNAME=	avelsieve
 PORTVERSION=	1.9.9
 CATEGORIES=	mail www
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SquirrelMail plugin for Server-Side Mail Filtering management
+WWW=		https://www.squirrelmail.org
 
 pre-install:
 	${RM} -R ${WRKSRC}/${SQUIRREL_PLUGIN_NAME}/po

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Authen-Htpasswd
 PORTVERSION=	0.171
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to read and modify Apache .htpasswd files
+WWW=		https://metacpan.org/release/Authen-Htpasswd
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

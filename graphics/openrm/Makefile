@@ -1,9 +1,6 @@
-# Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
-
 PORTNAME=	openrm
 PORTVERSION=	1.6.0.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-devel/${PORTVERSION:R} \
 		SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION:R}:demo
@@ -12,6 +9,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DEMO_DISTFILE:S/$/:demo/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Development environment used to build 2D/3D/stereo graphics
+WWW=		https://openrm.sourceforge.net
 
 LICENSE=	LGPL20+  # from sources, though LICENSE file is LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.html

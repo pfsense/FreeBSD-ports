@@ -1,14 +1,13 @@
-# Created by: Rich Neese <r.neese@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	autotalent
 PORTVERSION=	0.2
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://tombaran.info/
 DIST_SUBDIR=	repacked
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Real-time pitch correction plugin for LADSPA
+WWW=		http://tombaran.info/autotalent.html
 
 LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	multi

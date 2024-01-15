@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Object-Role
 PORTVERSION=	0.001
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl base class for non-Moose roles
+WWW=		https://metacpan.org/release/TOBYINK/Object-Role-0.001
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,22 +1,19 @@
-# Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	cheese
-PORTVERSION=	3.38.0
-PORTREVISION=	2
+PORTVERSION=	41.1
+PORTREVISION=	3
 CATEGORIES=	multimedia gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Photobooth-inspired app for taking pictures and videos from webcam
+WWW=		https://www.gnome.org/projects/cheese/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat \
 		gnome-video-effects>=0:graphics/gnome-video-effects \
-		vala>=0.14.0:lang/vala \
 		itstool:textproc/itstool
 LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 		libcanberra.so:audio/libcanberra \
@@ -29,12 +26,11 @@ RUN_DEPENDS=	gnome-video-effects>=0:graphics/gnome-video-effects
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gl gnome localbase:ldflags pkgconfig meson tar:xz xorg
+USES=		gettext gl gnome gstreamer localbase:ldflags pkgconfig meson tar:xz xorg vala:build
 USE_GNOME=	cairo librsvg2 gnomedesktop3 libxml2:build introspection:build
 USE_GL=		egl
 USE_XORG=	xi xext xdamage xfixes xcomposite xrandr xxf86vm x11
-USE_GSTREAMER1=	bad good jpeg ogg theora v4l2 vorbis vpx
-INSTALLS_ICONS=	yes
+USE_GSTREAMER=	bad good jpeg ogg theora v4l2 vorbis vpx
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-Wno-format-nonliteral
 
@@ -42,5 +38,8 @@ MESON_ARGS=	-Dgtk_doc=false \
 		-Dman=false
 
 GLIB_SCHEMAS=	org.gnome.Cheese.gschema.xml
+
+post-patch:
+	@${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} -e 's|canberra-gtk\.h|canberra-gtk3/canberra-gtk.h|'
 
 .include <bsd.port.mk>

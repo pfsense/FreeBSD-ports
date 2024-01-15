@@ -1,13 +1,12 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	deadbeef-mpris2-plugin
 PORTVERSION=	1.12
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	MPRIS protocol version 2 plugin for DeaDBeeF music player
+WWW=		https://github.com/Serranya/deadbeef-mpris2-plugin
 
 LICENSE=	GPLv3
 

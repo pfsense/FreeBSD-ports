@@ -1,13 +1,11 @@
-# Created by: Thierry Thomas (<thierry@pompo.net>)
-# $FreeBSD$
-
 PORTNAME=	Mail_Mime
-PORTVERSION=	1.10.9
+PORTVERSION=	1.10.11
 PORTEPOCH=	2
 CATEGORIES=	mail www pear
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	PEAR classes to create and decode MIME messages
+WWW=		https://pear.php.net/package/Mail_Mime
 
 LICENSE=	BSD3CLAUSE
 

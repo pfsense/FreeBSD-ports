@@ -1,14 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	blend2d
 DISTVERSION=	g20200108
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	2D Vector Graphics Engine Powered by a JIT Compiler
+WWW=		https://blend2d.com/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BROKEN=		fails to build
 
 LIB_DEPENDS=	libasmjit.so:devel/asmjit
 

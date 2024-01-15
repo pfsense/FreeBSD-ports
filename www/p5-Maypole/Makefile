@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Maypole
 PORTVERSION=	2.13
 PORTREVISION=	6
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	MVC web application framework
+WWW=		https://metacpan.org/release/Maypole
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -62,7 +60,7 @@ DOC_FILES=	../Manual.pod \
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-MODPERL2_USE=		APACHE_RUN=22+
+MODPERL2_USES=		apache:run
 MODPERL2_BUILD_DEPENDS=	p5-libapreq2>=0:www/p5-libapreq2
 
 post-install:

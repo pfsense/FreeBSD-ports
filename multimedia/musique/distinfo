@@ -1,0 +1,17 @@
+TIMESTAMP = 1687793497
+SHA256 (flaviotordini-musique-1.11_GH0.tar.gz) = de4f6948f530b37df7a9a7f3c187670957726382aca9651ae57818c5120a1c47
+SIZE (flaviotordini-musique-1.11_GH0.tar.gz) = 487321
+SHA256 (flaviotordini-http-39bfc6bb149d0b5a49ab966c824906e0523d161c_GH0.tar.gz) = 39bd6a816ff10f7541704055cf8d3aef6bdc9a9b7243d265df51a6616096b233
+SIZE (flaviotordini-http-39bfc6bb149d0b5a49ab966c824906e0523d161c_GH0.tar.gz) = 11174
+SHA256 (flaviotordini-idle-6aa092da64a011e445bf31cf31c0cd8dda4c64ff_GH0.tar.gz) = 597156e1f7ac3b8d8bdd251008cc0d10487c120462576088eed69425048d4bde
+SIZE (flaviotordini-idle-6aa092da64a011e445bf31cf31c0cd8dda4c64ff_GH0.tar.gz) = 1682
+SHA256 (flaviotordini-media-5443f81c52ac008a6de6593124d03ee41f772633_GH0.tar.gz) = 3a973dacdee44557b28b6aabe121fb8095af2e22ff537c546ea67eb222b24210
+SIZE (flaviotordini-media-5443f81c52ac008a6de6593124d03ee41f772633_GH0.tar.gz) = 26234
+SHA256 (flaviotordini-updater-bbbf833531cd80bbd8a190fa1ae98a1f068c8d16_GH0.tar.gz) = 1633ea982301a0f8d87b7f245b483122f672c12ea36a35d5ae258e782a5a4e6a
+SIZE (flaviotordini-updater-bbbf833531cd80bbd8a190fa1ae98a1f068c8d16_GH0.tar.gz) = 24745
+SHA256 (flaviotordini-js-deed5303b0b6a587c62be73a9bc198058964111c_GH0.tar.gz) = d63b63c93f775b40802a1e5a13672d882d2cfb0708c02ebf228a06ae78ee6dfe
+SIZE (flaviotordini-js-deed5303b0b6a587c62be73a9bc198058964111c_GH0.tar.gz) = 16901
+SHA256 (flaviotordini-sharedcache-eec981a4285c7b371aa9dc7f0074f03794e86a26_GH0.tar.gz) = 646510d60016795f3d9230f98d2d6abaa71938ea1e28e39c4a41f651ce84a842
+SIZE (flaviotordini-sharedcache-eec981a4285c7b371aa9dc7f0074f03794e86a26_GH0.tar.gz) = 2437
+SHA256 (itay-grudev-SingleApplication-14e9d14675156d3b55473a3b085de0e2a9f75578_GH0.tar.gz) = 826a2eb9ac72aab77f7e1fe9d398c955696212c30f3f64edbfc47d997cdbc334
+SIZE (itay-grudev-SingleApplication-14e9d14675156d3b55473a3b085de0e2a9f75578_GH0.tar.gz) = 22733

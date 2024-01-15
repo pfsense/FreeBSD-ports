@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	aphelia
 DISTVERSION=	g20190913
 CATEGORIES=	x11-wm
 
-MAINTAINER=	ed.arrakis@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Light, single-file, minimalist window manager for X11
+WWW=		https://github.com/vardy/aphelia
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

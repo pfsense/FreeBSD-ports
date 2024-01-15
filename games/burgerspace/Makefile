@@ -1,14 +1,12 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	burgerspace
-PORTVERSION=	1.9.3
+PORTVERSION=	1.9.5
 CATEGORIES=	games
 MASTER_SITES=	http://perso.b2b2c.ca/~sarrazip/dev/ \
 		LOCAL/martymac
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	BurgerTime clone
+WWW=		http://sarrazip.com/dev/burgerspace.html
 
 LICENSE=	GPLv2
 
@@ -20,7 +18,7 @@ USE_SDL=	image mixer sdl
 
 GNU_CONFIGURE=	yes
 
-PORTDOCS=	AUTHORS COPYING NEWS README THANKS
+PORTDOCS=	AUTHORS NEWS README THANKS
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@exit2shell.com>
-# $FreeBSD$
-
 PORTNAME=	stringencoders
 PORTVERSION=	3.10.3
 DISTVERSIONPREFIX=	v
@@ -10,6 +7,7 @@ MASTER_SITES=	http://people.freebsd.org/~skreuzer/distfiles/
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Collection of high performance C-string transformations
+WWW=		https://github.com/client9/stringencoders
 
 LICENSE=	MIT
 

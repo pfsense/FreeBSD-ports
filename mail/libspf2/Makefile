@@ -1,23 +1,25 @@
-# Created by: snowchyld
-# $FreeBSD$
-
 PORTNAME=	libspf2
-PORTVERSION=	1.2.10
-PORTREVISION=	2
+PORTVERSION=	1.2.11
+PORTREVISION=	1
 CATEGORIES=	mail
-MASTER_SITES=	http://www.libspf2.org/spf/ \
-		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Sender Policy Framework 2 C Implementation
+WWW=		https://www.libspf2.org/ \
+		https://github.com/shevek/libspf2
 
 LICENSE=	BSD2CLAUSE LGPL21 LGPL3
 LICENSE_COMB=	dual
 
+USES=		autoreconf cpe libtool
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool
 USE_LDCONFIG=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	shevek
+GH_TAGNAME=	d14abff
 
 post-patch:
 	@${REINPLACE_CMD} -e '/__VA_ARGS__/ s|format, ||g' ${WRKSRC}/src/include/spf_log.h

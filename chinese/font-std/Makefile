@@ -1,6 +1,3 @@
-# Created by: hrs
-# $FreeBSD$
-
 PORTNAME=	font-std
 PORTVERSION=	0.0.20090602
 CATEGORIES=	chinese x11-fonts

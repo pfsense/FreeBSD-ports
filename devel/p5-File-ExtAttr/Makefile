@@ -1,6 +1,3 @@
-# Created by: Timur I. Bakeyev <bat@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	File-ExtAttr
 PORTVERSION=	1.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Access to extended attributes of the files
+WWW=		https://metacpan.org/release/File-ExtAttr
 
 USES=		perl5
 USE_PERL5=	configure

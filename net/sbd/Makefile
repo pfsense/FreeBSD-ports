@@ -1,14 +1,12 @@
-# Created by: David Thiel (lx@redundancy.redundancy.org)
-# $FreeBSD$
-
 PORTNAME=	sbd
 PORTVERSION=	1.37
 CATEGORIES=	net security
 MASTER_SITES=	http://tigerteam.se/dl/sbd/ \
 		http://redundancy.redundancy.org/mirror/
 
-MAINTAINER=	lx@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Netcat clone with more features and crypto
+WWW=		http://tigerteam.se/dl/sbd/
 
 ALL_TARGET=	unix
 

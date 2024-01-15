@@ -1,14 +1,12 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	falcon
-PORTVERSION=	2.0.0
+PORTVERSION=	3.0.1
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	High-performance Python framework for building cloud APIs
+WWW=		https://falconframework.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +20,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=0:devel/py-jsonschema@${PY_FLAV
 		${PYTHON_PKGNAMEPREFIX}pecan>=0:www/py-pecan@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist cython
 
 post-install:

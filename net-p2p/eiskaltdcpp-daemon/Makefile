@@ -1,8 +1,5 @@
-# Created by: Stas Timokhin <stast@bsdportal.ru>
-# $FreeBSD$
-
 PORTNAME=	eiskaltdcpp
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	-daemon
 

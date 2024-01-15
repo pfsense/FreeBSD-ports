@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	checkrestart
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.0
@@ -8,6 +6,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	tom@hur.st
 COMMENT=	Find processes that need restarting after an upgrade
+WWW=		https://github.com/Freaky/checkrestart
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -21,7 +20,7 @@ PLIST_FILES=	bin/checkrestart \
 		share/man/man1/checkrestart.1.gz \
 		${PERIODIC_SECURITY}/checkrestart
 
-PERIODIC_SECURITY=	etc/periodic/security/
+PERIODIC_SECURITY=	etc/periodic/security
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/checkrestart ${STAGEDIR}${PREFIX}/bin

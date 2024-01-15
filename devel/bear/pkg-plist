@@ -1,5 +1,12 @@
 bin/bear
-lib/bear/libear.so
-man/man1/bear.1.gz
-share/bash-completion/completions/bear
+lib/bear/libexec.so
+lib/bear/wrapper
+share/man/man1/bear.1.gz
+share/man/man1/bear-citnames.1.gz
+share/man/man1/bear-intercept.1.gz
+%%PORTDOCS%%%%DOCSDIR%%/CODE_OF_CONDUCT.md
+%%PORTDOCS%%%%DOCSDIR%%/CONTRIBUTING.md
+%%PORTDOCS%%%%DOCSDIR%%/COPYING
+%%PORTDOCS%%%%DOCSDIR%%/INSTALL.md
 %%PORTDOCS%%%%DOCSDIR%%/README.md
+@dir lib/bear/wrapper.d

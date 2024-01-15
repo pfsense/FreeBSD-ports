@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Address-IPv4-Local
 PORTVERSION=	0.12
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Class for discovering the local system's IP address
+WWW=		https://metacpan.org/release/Net-Address-IPv4-Local
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

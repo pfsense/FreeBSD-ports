@@ -1,12 +1,10 @@
-# Created by: Mateusz Piotrowski <0mp@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	manrope
 PORTVERSION=	4.504
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Modern geometric sans-serif font
+WWW=		https://manropefont.com/
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/OFL.txt

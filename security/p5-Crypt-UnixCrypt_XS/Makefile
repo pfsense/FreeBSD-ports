@@ -1,6 +1,3 @@
-# Created by: brix@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Crypt-UnixCrypt_XS
 PORTVERSION=	0.11
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl XS interface for a portable traditional crypt function
+WWW=		https://metacpan.org/release/Crypt-UnixCrypt_XS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

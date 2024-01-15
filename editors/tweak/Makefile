@@ -1,6 +1,3 @@
-# Created by: Jille Timmermans (jille@quis.cx)
-# $FreeBSD$
-
 PORTNAME=	tweak
 PORTVERSION=	3.02
 CATEGORIES=	editors
@@ -8,6 +5,7 @@ MASTER_SITES=	https://www.chiark.greenend.org.uk/~sgtatham/${PORTNAME}/
 
 MAINTAINER=	pzn.unixbsd@gmail.com
 COMMENT=	Efficient hex editor
+WWW=		https://www.chiark.greenend.org.uk/~sgtatham/tweak/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE

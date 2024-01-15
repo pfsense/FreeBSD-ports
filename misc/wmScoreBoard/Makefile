@@ -1,6 +1,3 @@
-# Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
-
 PORTNAME=	wmScoreBoard
 PORTVERSION=	0.30
 PORTREVISION=	4

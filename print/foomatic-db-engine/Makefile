@@ -1,14 +1,13 @@
-# Created by: Martin Ranne <gasp@ridcully.dnsalias.org>
-# $FreeBSD$
-
 PORTNAME=	foomatic-db-engine
 PORTVERSION=	4.0.13
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	print
 MASTER_SITES=	http://www.openprinting.org/download/foomatic/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Foomatic database engine
+WWW=		https://www.linuxprinting.org/foomatic.html
 
 LICENSE=	GPLv2
 

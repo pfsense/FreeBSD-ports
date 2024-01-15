@@ -1,13 +1,11 @@
-# Created by: Brian Buchanan <brian@CSUA.Berkeley.EDU>
-# $FreeBSD$
-
 PORTNAME=	flightgear
-PORTVERSION=	2020.3.4
+PORTVERSION=	2020.3.19
 CATEGORIES=	games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	FlightGear flight simulator
+WWW=		https://www.flightgear.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -55,4 +53,14 @@ QT5_CMAKE_OFF=	-DENABLE_QT:BOOL=OFF
 QT5_USES=	qt:5
 QT5_USE=	QT=core,buildtools,linguisttools,gui,declarative,network,qmake,widgets,svg
 
-.include <bsd.port.mk>
+post-patch:
+# Avoid conflict with C++20 <version> - used version file is flightgear-version
+	@${RM} ${WRKSRC}/version
+
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} >= 150
+LDFLAGS_i386+=	-Wl,--no-check-dynamic-relocations
+.endif
+
+.include <bsd.port.post.mk>

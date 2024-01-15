@@ -1,20 +1,20 @@
---- base/profiler/sampling_profiler_thread_token.h.orig	2020-11-13 06:36:34 UTC
+--- base/profiler/sampling_profiler_thread_token.h.orig	2023-02-08 09:03:45 UTC
 +++ base/profiler/sampling_profiler_thread_token.h
-@@ -9,7 +9,7 @@
- #include "base/threading/platform_thread.h"
- #include "build/build_config.h"
+@@ -12,7 +12,7 @@
  
--#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ #if BUILDFLAG(IS_ANDROID)
  #include <pthread.h>
+-#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ #include <stdint.h>
  #endif
  
-@@ -21,7 +21,7 @@ namespace base {
- // functions used to obtain the stack base address.
- struct SamplingProfilerThreadToken {
+@@ -26,7 +26,7 @@ struct SamplingProfilerThreadToken {
    PlatformThreadId id;
--#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ #if BUILDFLAG(IS_ANDROID)
    pthread_t pthread_id;
- #endif
- };
+-#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+   // Due to the sandbox, we can only retrieve the stack base address for the
+   // current thread. We must grab it during
+   // GetSamplingProfilerCurrentThreadToken() and not try to get it later.

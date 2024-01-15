@@ -1,20 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	gio2
-PORTVERSION=	3.4.3
+PORTVERSION=	4.2.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Ruby binding for gio 2.x
+COMMENT=	Ruby binding of gio 2.x
+WWW=		https://ruby-gnome.github.io/ \
+		https://github.com/ruby-gnome/ruby-gnome
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
-RUN_DEPENDS=	rubygem-gobject-introspection>=${PORTVERSION}:devel/rubygem-gobject-introspection
+RUN_DEPENDS=	rubygem-fiddle>=0:devel/rubygem-fiddle \
+		rubygem-gobject-introspection>=${PORTVERSION}<${PORTVERSION}_99:devel/rubygem-gobject-introspection
 
 USES=		gem gnome
 USE_GNOME=	glib20
-USE_RUBY=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vmw
 PORTVERSION=	060510
 PORTREVISION=	2
@@ -8,6 +6,7 @@ MASTER_SITES=	http://sites.google.com/site/chitchatvmback/storage/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	VM Back Command Line Tools for VMware
+WWW=		https://sites.google.com/site/chitchatvmback/vmtools
 
 ONLY_FOR_ARCHS=	i386 amd64
 

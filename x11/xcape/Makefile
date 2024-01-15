@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	xcape
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2-9
 DISTVERSIONSUFFIX=	-g6ded5b4
 CATEGORIES=	x11
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Configure modifier keys to act as other keys when pressed on their own
+WWW=		https://github.com/alols/xcape
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

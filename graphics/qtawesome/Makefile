@@ -1,6 +1,3 @@
-# Created by: mi
-# $FreeBSD$
-
 PORTNAME=	qtawesome
 PORTVERSION=	20150319
 PORTREVISION=	4
@@ -8,12 +5,13 @@ CATEGORIES=	graphics devel
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Embed Font Awesome glyphs in Qt-applications
+WWW=		https://github.com/gamecreature/QtAwesome
 
 LICENSE=	MIT
 
 USE_GITHUB=	yes
 USES=		compiler:c++11-lang qmake qt:5
-USE_QT=		core gui qmake_build buildtools_build
+USE_QT=		core gui qmake:build buildtools:build
 
 GH_ACCOUNT=	gamecreature
 GH_PROJECT=	QtAwesome

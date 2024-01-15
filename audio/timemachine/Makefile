@@ -1,14 +1,12 @@
-# Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
-
 PORTNAME=	timemachine
 PORTVERSION=	0.3.3
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	http://plugin.org.uk/timemachine/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JACK audio capture tool
+WWW=		http://plugin.org.uk/timemachine/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: stb@lassitu.de
-# $FreeBSD$
-
 PORTNAME=	pngnq
 PORTVERSION=	1.1
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	stb@lassitu.de
 COMMENT=	Tool for quantizing PNG images in RGBA format
+WWW=		https://pngnq.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 

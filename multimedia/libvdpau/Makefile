@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	libvdpau
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 CATEGORIES=	multimedia
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	VDPAU wrapper and tracing library
+WWW=		https://freedesktop.org/wiki/Software/VDPAU
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,7 +15,7 @@ USE_XORG=	x11 xext xorgproto
 USE_LDCONFIG=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	vdpau
-GL_COMMIT=	c3d1a9dbafdfe6144ff474d0d523dc01b068750f
+GL_TAGNAME=	79f1506a3307d3275b0fdfb2e110c173f68e6f78
 MESON_ARGS=	-Ddocumentation=false
 
 post-patch:	.SILENT

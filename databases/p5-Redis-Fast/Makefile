@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	Redis-Fast
-PORTVERSION=	0.28
+DISTVERSION=	0.36
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Perl binding for Redis database
+WWW=		https://metacpan.org/release/Redis-Fast
 
-LICENSE=	ART10 GPLv1+
+LICENSE=	ARTPERL10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
@@ -28,5 +27,8 @@ TEST_DEPENDS=	p5-Parallel-ForkManager>=0:devel/p5-Parallel-ForkManager \
 
 USES=		perl5
 USE_PERL5=	modbuild
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Redis/Fast/Fast.so
 
 .include <bsd.port.mk>

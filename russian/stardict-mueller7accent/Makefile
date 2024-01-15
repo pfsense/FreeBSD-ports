@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stardict-mueller7accent
 PORTVERSION=	2.4.2
 CATEGORIES=	russian
@@ -8,6 +6,7 @@ DISTNAME=	stardict-Mueller7accentGPL-${PORTVERSION}
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Mueller English-Russian dictionary with accents
+WWW=		http://download.huzheng.org/ru/
 
 USES=		tar:bzip2
 

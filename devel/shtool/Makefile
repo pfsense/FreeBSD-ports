@@ -1,6 +1,3 @@
-# Created by: Ralf S. Engelschall
-# $FreeBSD$
-
 PORTNAME=	shtool
 PORTVERSION=	2.0.8
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	vd@FreeBSD.org
 COMMENT=	The GNU Portable Shell Tool
+WWW=		https://www.gnu.org/software/shtool/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

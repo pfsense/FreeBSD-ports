@@ -1,8 +1,0 @@
---- conf/graphite.wsgi.example.orig	2018-04-04 07:58:36 UTC
-+++ conf/graphite.wsgi.example
-@@ -1,4 +1,4 @@
- import sys
--sys.path.append('/opt/graphite/webapp')
-+sys.path.append('%%PYTHON_SITELIBDIR%%/graphite')
- 
- from graphite.wsgi import application

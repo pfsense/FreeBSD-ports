@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	RcppArmadillo
-PORTVERSION=	0.10.1.2.0
+DISTVERSION=	0.12.6.6.1
 CATEGORIES=	math
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Rcpp integration for Armadillo templated linear algebra library
+WWW=		https://cran.r-project.org/web/packages/RcppArmadillo/
 
 LICENSE=	GPLv2+
 

@@ -1,9 +1,6 @@
-# Created by: Lars Koeller <Lars.Koeller@Uni-Bielefeld.DE>
-# $FreeBSD$
-
 PORTNAME=	fftw3
-DISTVERSION=	3.3.9
-PORTREVISION?=	0
+DISTVERSION=	3.3.10
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	http://www.fftw.org/ \
 		ftp://ftp.fftw.org/pub/fftw/
@@ -12,6 +9,7 @@ DISTNAME=	fftw-${DISTVERSION}
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT?=	Fast C routines to compute the Discrete Fourier Transform
+WWW=		https://www.fftw.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -31,6 +29,17 @@ USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-shared --enable-threads --disable-fortran
 MPIDIR?=	${LOCALBASE}/mpi/openmpi
 
+SHLIB_VER_MAJ=	${DISTVERSION:R:R}
+SHLIB_VER_MIN=	6
+SHLIB_VER_PAT=	${DISTVERSION:E}
+SHLIB_VER=	${SHLIB_VER_MAJ}.${SHLIB_VER_MIN}.${SHLIB_VER_PAT}
+PLIST_SUB=	SHLIB_VER=${SHLIB_VER} \
+		SHLIB_VER_MAJ=${SHLIB_VER_MAJ}
+SUB_FILES=	FFTW3LibraryDepends.cmake
+SUB_LIST=	FFTW3_SUFX=${FFTW3_SUFX} \
+		SHLIB_VER=${SHLIB_VER} \
+		SHLIB_VER_MAJ=${SHLIB_VER_MAJ}
+
 .if ${FFTW3_FLAVOR} == "default"
 INFO=	fftw3
 .else
@@ -41,6 +50,12 @@ INSTALL_TARGET=	install-cmakeDATA install-pkgconfigDATA install-libLTLIBRARIES i
 
 OPTIONS_DEFINE=		G77_WRAPPERS OPENMP OPENMPI OPTIMIZED_CFLAGS SIMD
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS SIMD
+OPTIONS_DEFAULT_aarch64=	OPENMP
+OPTIONS_DEFAULT_amd64=		OPENMP
+OPTIONS_DEFAULT_i386=		OPENMP
+OPTIONS_DEFAULT_powerpc64=	OPENMP
+OPTIONS_DEFAULT_powerpc64le=	OPENMP
+OPTIONS_DEFAULT_riscv64=	OPENMP
 .if ${FFTW3_FLAVOR} == "quad"
 OPTIONS_EXCLUDE+=	OPENMPI
 .endif
@@ -49,7 +64,7 @@ OPTIONS_SUB=		yes
 G77_WRAPPERS_DESC=		Alter Fortran wrappers for use with g77
 
 OPENMP_DESC=			Build OpenMP multithreaded libraries
-OPENMP_USES=			compiler:openmp
+OPENMP_USES=			compiler:env
 OPENMP_USES_OFF=		compiler:env
 OPENMP_CONFIGURE_ENABLE=	openmp
 OPENMP_EXTRA_PATCHES=		${FILESDIR}/extrapatch-tests_fftw-bench.c
@@ -95,7 +110,7 @@ CONFIGURE_ARGS+=--enable-avx2 --enable-fma
 .    if !empty(MACHINE_CPU:Msse)
 CONFIGURE_ARGS+=--enable-sse2
 .    endif
-.    if !empty(ARCH:Mpowerpc*) && !empty(MACHINE_CPU:Maltivec)
+.    if !empty(MACHINE_CPU:Maltivec) || !empty(ARCH:Mpowerpc64*)
 CONFIGURE_ARGS+=--enable-altivec
 .    endif
 .    if ${ARCH} == "aarch64"
@@ -141,6 +156,8 @@ post-patch:
 		${WRKSRC}/api/import-system-wisdom.c \
 		${WRKSRC}/doc/fftw3* \
 		${WRKSRC}/tools/*
+	@${REINPLACE_CMD} -e '/^cmakedir/s|fftw3|fftw3@PREC_SUFFIX@|' \
+		${WRKSRC}/Makefile.in
 .if ${FFTW3_FLAVOR} != "default"
 	@${REINPLACE_CMD} -E \
 	-e '/(DIST_COMMON|bin_SCRIPTS|BUILT_SOURCES|EXTRA_DIST) =/,\
@@ -160,8 +177,9 @@ post-configure:
 post-configure-G77_WRAPPERS-on:
 	@${ECHO_CMD} "#define WITH_G77_WRAPPERS 1" >> ${WRKSRC}/config.h
 
-.if ${FFTW3_FLAVOR} != "default"
 post-install:
+	${INSTALL_DATA} ${WRKDIR}/FFTW3LibraryDepends.cmake ${STAGEDIR}${PREFIX}/lib/cmake/fftw3${FFTW3_SUFX}
+.if ${FFTW3_FLAVOR} != "default"
 	${INSTALL_MAN} ${WRKSRC}/tools/fftw${FFTW3_SUFX}-wisdom.1 ${STAGEDIR}${PREFIX}/man/man1
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so
 .endif

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	napalm-logs
 DISTVERSION=	0.9.0
 CATEGORIES=	net-mgmt python
@@ -7,6 +5,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Cross-vendor normalisation for network syslog messages
+WWW=		https://github.com/napalm-automation/napalm-logs
 
 LICENSE=	APACHE20
 
@@ -17,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pynacl>0:security/py-pynacl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}prometheus-client>0:net-mgmt/py-prometheus-client@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	napalm-automation
 USE_PYTHON=	distutils concurrent autoplist

@@ -1,14 +1,12 @@
-# Created by: Anton Yuzhaninov <citrin@citrin.ru>
-# $FreeBSD$
-
 PORTNAME=	libmp3splt
 PORTVERSION=	0.9.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/mp3splt/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	citrin@citrin.ru
 COMMENT=	Library for splitting of various audio files
+WWW=		https://mp3splt.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -16,11 +14,12 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-cutter --disable-doxygen_doc
-USES=		libtool pathfix pkgconfig
+USES=		cpe libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-I${LOCALBASE}/include
+CPE_VENDOR=	libmp3splt_project
 
 OPTIONS_MULTI=	PLUGIN
 OPTIONS_MULTI_PLUGIN=	MAD FLAC VORBIS

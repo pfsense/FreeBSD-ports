@@ -1,6 +1,3 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	tap-plugins
 DISTVERSION=	g20180220
 CATEGORIES=	audio
@@ -8,6 +5,7 @@ PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	LV2 port for the TAP (Tom's Audio Processing) plugins
+WWW=		https://tap-plugins.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

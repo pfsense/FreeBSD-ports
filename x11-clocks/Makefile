@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 clocks
 
     SUBDIR += abclock
@@ -14,6 +11,7 @@
     SUBDIR += bclock
     SUBDIR += buici-clock
     SUBDIR += cairo-clock
+    SUBDIR += catclock
     SUBDIR += dclock
     SUBDIR += emiclock
     SUBDIR += eyeclock
@@ -36,12 +34,15 @@
     SUBDIR += wmblueclock
     SUBDIR += wmcalclock
     SUBDIR += wmclock
+    SUBDIR += wmclockmon
     SUBDIR += wmfishtime
+    SUBDIR += wmitime
     SUBDIR += wmtime
     SUBDIR += wmtimer
     SUBDIR += xalarm
     SUBDIR += xclock
     SUBDIR += xdaliclock
+    SUBDIR += xdaliclock-classic
     SUBDIR += xfce4-datetime-plugin
     SUBDIR += xfce4-stopwatch-plugin
     SUBDIR += xfce4-time-out-plugin

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xwindiff
 PORTVERSION=	1.1.6
 CATEGORIES=	textproc
@@ -8,6 +6,7 @@ DIST_SUBDIR=	repacked
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical Diff for X
+WWW=		https://www.lurklurk.org/xwindiff.html
 
 USES=		xorg
 USE_XORG=	x11 xt ice xaw

@@ -1,13 +1,12 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	geepack
-DISTVERSION=	1.3-2
+DISTVERSION=	1.3.9
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Generalized Estimating Equation Package
+WWW=		https://cran.r-project.org/web/packages/geepack/
 
 LICENSE=	GPLv3
 

@@ -1,6 +1,3 @@
-# Created by: Aaron Straup Cope <ascope@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	RDF-Simple
 PORTVERSION=	0.421
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read and write RDF without complication
+WWW=		https://metacpan.org/release/RDF-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Pav Lucistnik <pav@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bird
 PORTVERSION=	1.6.8
 CATEGORIES=	net
@@ -8,13 +5,16 @@ MASTER_SITES=	ftp://bird.network.cz/pub/bird/
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT?=	Dynamic IP routing daemon (${FLAVOR:Uipv4:S/ip/IP/} version)
+WWW=		https://bird.network.cz/
 
 LICENSE=	GPLv2
 
 FLAVORS=	ipv4 ipv6
 ipv6_PKGNAMESUFFIX=	6
 
-USES=		autoreconf bison gmake ncurses readline
+USES=		autoreconf bison cpe gmake ncurses readline
+
+CPE_VENDOR=	nic
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var

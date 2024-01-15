@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	komodo-edit
 DISTVERSION=	11.0.2
 CATEGORIES=	editors
@@ -9,6 +7,7 @@ DISTNAME=	Komodo-Edit-${DISTVERSION}-18122-linux-x86
 
 MAINTAINER=	allanjude@FreeBSD.org
 COMMENT=	Multi-language editor from ActiveState
+WWW=		https://www.activestate.com/Products/komodo_edit/
 
 # https://www.activestate.com/komodo-edit/license-agreement
 LICENSE=	KEL11 MPL11
@@ -20,7 +19,7 @@ LICENSE_PERMS_KEL11=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		linux
-USE_LINUX=	alsalib dbusglib gtk2 jpeg xorglibs
+USE_LINUX=	alsalib dbuslibs gtk2 jpeg xorglibs
 
 DESKTOP_ENTRIES="Komodo Edit" \
 		"Free multi-platform editor that makes it easy to write quality code." \

@@ -1,6 +1,3 @@
-# Created by: pat
-# $FreeBSD$
-
 PORTNAME=	wmdiskmon
 PORTVERSION=	0.0.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://tnemeth.free.fr/projets/programmes/
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Disk usage monitor dockapp
+WWW=		http://tnemeth.free.fr/projets/dockapps.html
 
 USES=		xorg
 USE_XORG=	x11 xpm

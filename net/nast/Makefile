@@ -1,22 +1,23 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	nast
-PORTVERSION=	0.2.0
-PORTREVISION=	5
+DISTVERSION=	0.2.1-g20210616
 CATEGORIES=	net
-MASTER_SITES=	BERLIOS
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Packet sniffer
+WWW=		https://github.com/embyte0/nast
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libnet.so:net/libnet
 
-USES=		gmake
+USES=		gmake ncurses
+USE_GITHUB=	yes
+GH_ACCOUNT=	embyte0
+GH_TAGNAME=	96f4f8edd457772485415aaf5404ea56cf2b311f
+
 GNU_CONFIGURE=	yes
+CFLAGS+=	-fcommon
 
 PLIST_FILES=	bin/nast man/man8/nast.8.gz
 

@@ -1,16 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ejabberd
-PORTVERSION=	20.12
+PORTVERSION=	23.10
 CATEGORIES=	net-im
 
-# To be removed in the next update
-# See https://github.com/processone/ejabberd/pull/3452
-PATCH_SITES=	https://github.com/processone/ejabberd/commit/
-PATCHFILES=	2f3063def69c1d120262f6dd7a26ce59b6e6569c.patch:-p1
-
 MAINTAINER=	ashish@FreeBSD.org
-COMMENT=	Free and Open Source distributed fault-tolerant Jabber server
+COMMENT=	Free and Open Source distributed fault-tolerant XMPP server
+WWW=		https://www.ejabberd.im/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -38,8 +32,7 @@ CPE_VENDOR=	process-one
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	processone
-GH_TUPLE=	erlang-lager:lager:${LAGER_VER}:lager/deps/lager \
-		processone:p1_utils:${P1_UTILS_VER}:p1_utils/deps/p1_utils \
+GH_TUPLE=	processone:p1_utils:${P1_UTILS_VER}:p1_utils/deps/p1_utils \
 		processone:cache_tab:${CACHE_TAB_VER}:cache_tab/deps/cache_tab \
 		processone:fast_tls:${FAST_TLS_VER}:fast_tls/deps/fast_tls \
 		processone:stringprep:${STRINGPREP_VER}:stringprep/deps/stringprep \
@@ -50,7 +43,6 @@ GH_TUPLE=	erlang-lager:lager:${LAGER_VER}:lager/deps/lager \
 		processone:p1_oauth2:${P1_OAUTH2_VER}:p1_oauth2/deps/p1_oauth2 \
 		potatosalad:erlang-jose:${JOSE_VER}:jose/deps/jose \
 		processone:eimp:${EIMP_VER}:eimp/deps/eimp \
-		DeadZen:goldrush:${GOLDRUSH_VER}:goldrush/deps/goldrush \
 		dvv:base64url:${BASE64URL_VER}:base64url/deps/base64url \
 		processone:ezlib:${EZLIB_VER}:ezlib/deps/ezlib \
 		processone:pkix:${PKIX_VER}:pkix/deps/pkix \
@@ -60,9 +52,9 @@ GH_TUPLE=	erlang-lager:lager:${LAGER_VER}:lager/deps/lager \
 		benoitc:erlang-idna:${IDNA_VER}:idna/deps/idna \
 		benoitc:unicode_util_compat:${UNICODE_UTIL_COMPAT_VER}:unicode_util_compat/deps/unicode_util_compat
 
-OPTIONS_DEFINE=	ODBC PAM DOCS MYSQL PGSQL REDIS SIP SQLITE \
+OPTIONS_DEFINE=	ODBC PAM DOCS LUA MYSQL PGSQL REDIS SIP SQLITE \
 		STUN TOOLS FULLXML
-OPTIONS_DEFAULT=STUN
+OPTIONS_DEFAULT=SQLITE STUN
 
 EJABBERD_LIBDIR=lib/erlang/lib
 MAKE_ENV=	PORTVERSION=${PORTVERSION}
@@ -71,7 +63,7 @@ MAKE_ARGS=	"CPPFLAGS=${CPPFLAGS}" "CFLAGS=${CFLAGS}" "LDFLAGS=${LDFLAGS}"
 CPPFLAGS+=	-I${LOCALBASE}/include
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-SUBS= 		PORTNAME=${PORTNAME} PORTVERSION=${PORTVERSION}		\
+SUBS=		PORTNAME=${PORTNAME} PORTVERSION=${PORTVERSION}		\
 		EJABBERD_LIBDIR=${EJABBERD_LIBDIR}			\
 		BASE64URL_VER=${BASE64URL_VER}				\
 		CACHE_TAB_VER=${CACHE_TAB_VER} EIMP_VER=${EIMP_VER}	\
@@ -80,10 +72,9 @@ SUBS= 		PORTNAME=${PORTNAME} PORTVERSION=${PORTVERSION}		\
 		FAST_TLS_VER=${FAST_TLS_VER}				\
 		FAST_XML_VER=${FAST_XML_VER}				\
 		FAST_YAML_VER=${FAST_YAML_VER}				\
-		GOLDRUSH_VER=${GOLDRUSH_VER}				\
 		IDNA_VER=${IDNA_VER}					\
 		JIFFY_VER=${JIFFY_VER} JOSE_VER=${JOSE_VER}		\
-		LAGER_VER=${LAGER_VER} LUERL_VER=${LUERL_VER}		\
+		LUERL_VER=${LUERL_VER}					\
 		MQTREE_VER=${MQTREE_VER}				\
 		P1_ACME_VER=${P1_ACME_VER}				\
 		P1_MYSQL_VER=${P1_MYSQL_VER}				\
@@ -104,34 +95,33 @@ SUB_LIST=	${SUBS} \
 SHEBANG_FILES=	${WRKSRC}/ejabberdctl.template
 
 BASE64URL_VER=	1.0.1
-CACHE_TAB_VER=	1.0.26
-EIMP_VER=	1.0.18
-EPAM_VER=	1.0.10
-EREDIS_VER=	1.0.8
-ESIP_VER=	1.0.39
-EZLIB_VER=	1.0.9
-FAST_TLS_VER=	1.1.10
-FAST_XML_VER=	1.1.45
-FAST_YAML_VER=	1.0.29
-GOLDRUSH_VER=	0.1.9
+CACHE_TAB_VER=	1.0.30
+EIMP_VER=	1.0.22
+EJABBERD_PO_VER=	0.0.0
+EPAM_VER=	1.0.14
+EREDIS_VER=	1.2.0
+ESIP_VER=	1.0.50
+EZLIB_VER=	1.0.12
+FAST_TLS_VER=	1.1.16
+FAST_XML_VER=	1.1.49
+FAST_YAML_VER=	1.0.36
 IDNA_VER=	6.0.0
-JIFFY_VER=	1.0.5
-JOSE_VER=	1.9.0
-LAGER_VER=	3.6.10
-LUERL_VER=	0.3
-MQTREE_VER=	1.0.11
-P1_ACME_VER=	1.0.10
-P1_MYSQL_VER=	1.0.17
-P1_OAUTH2_VER=	0.6.8
-P1_PGSQL_VER=	1.1.10
-P1_UTILS_VER=	1.0.21
-PKIX_VER=	1.0.7
-SQLITE3_VER=	1.1.9
-STRINGPREP_VER=	1.0.24
-STUN_VER=	1.0.40
+JIFFY_VER=	1.1.1
+JOSE_VER=	1.11.5
+LUERL_VER=	1.0
+MQTREE_VER=	1.0.15
+P1_ACME_VER=	1.0.22
+P1_MYSQL_VER=	1.0.22
+P1_OAUTH2_VER=	0.6.11
+P1_PGSQL_VER=	1.1.23
+P1_UTILS_VER=	1.0.25
+PKIX_VER=	1.0.9
+SQLITE3_VER=	1.1.14
+STRINGPREP_VER=	1.0.29
+STUN_VER=	1.2.10
 UNICODE_UTIL_COMPAT_VER=	0.4.1
-XMPP_VER=	1.5.1
-YCONF_VER=	1.0.9
+XMPP_VER=	1.7.0
+YCONF_VER=	1.0.15
 
 OPTIONS_SUB=		yes
 SIP_DESC=	SIP support
@@ -147,6 +137,7 @@ PGSQL_CONFIGURE_ENABLE=	pgsql
 PGSQL_GH_TUPLE=	processone:p1_pgsql:${P1_PGSQL_VER}:p1_pgsql/deps/p1_pgsql
 REDIS_CONFIGURE_ENABLE=	redis
 REDIS_GH_TUPLE=	wooga:eredis:v${EREDIS_VER}:eredis/deps/eredis
+REDIS_EXTRA_PATCHES=	${PATCHDIR}/extrapatch-deps_eredis_src_eredis.app.src
 SIP_CONFIGURE_ENABLE=	sip
 SIP_GH_TUPLE=	processone:esip:${ESIP_VER}:esip/deps/esip
 SIP_IMPLIES=	STUN
@@ -155,10 +146,12 @@ STUN_GH_TUPLE=	processone:stun:${STUN_VER}:stun/deps/stun
 SQLITE_CONFIGURE_ENABLE=sqlite
 SQLITE_GH_TUPLE=	processone:erlang-sqlite3:${SQLITE3_VER}:sqlite3/deps/sqlite3
 TOOLS_CONFIGURE_ENABLE=	tools
-TOOLS_GH_TUPLE=	rvirding:luerl:v${LUERL_VER}:luerl/deps/luerl
+TOOLS_GH_TUPLE=processone:ejabberd-po:e909d88:ejabberdpo/deps/ejabberd_po
 FULLXML_CONFIGURE_ENABLE=	full-xml
 SQLITE_USES=		sqlite
 DOCS_MAKE_ARGS_OFF=	NOPORTDOCS=yes
+LUA_CONFIGURE_ENABLE=	lua
+LUA_GH_TUPLE=	rvirding:luerl:v${LUERL_VER}:luerl/deps/luerl
 
 .include <bsd.port.pre.mk>
 
@@ -173,10 +166,6 @@ pre-everything::
 post-patch:
 	@${REINPLACE_CMD} -e 's,^convert,${LOCALBASE}/bin/convert,' ${WRKSRC}/tools/captcha.sh
 	@${REINPLACE_CMD} -e 's,%%PORTVERSION%%,${PORTVERSION},' ${WRKSRC}/configure.ac
-.if ${OSVERSION} < 1200000
-	# Disable LTO required by dependency, not available by default in < 12.x
-	@${REINPLACE_CMD} -e 's/$$FLTO_FLAG//' ${WRKSRC}/deps/jiffy/rebar.config
-.endif
 
 pre-configure:
 	cd ${WRKSRC} && ${SH} autogen.sh
@@ -201,5 +190,6 @@ post-install:
 		${STAGEDIR}${DATADIR}
 	@${CHMOD} +x ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/eimp-${EIMP_VER}/priv/bin/eimp
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/eimp-${EIMP_VER}/priv/bin/eimp
+	@cd ${WRKSRC}/sql && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/priv/sql
 
 .include <bsd.port.post.mk>

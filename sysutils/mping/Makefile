@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mping
 DISTVERSION=	0.1.4
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ PKGNAMESUFFIX=	-fraubsd
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ping multiple hosts
+WWW=		https://fraubsd.org/mping/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

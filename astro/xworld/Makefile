@@ -1,6 +1,3 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	xworld
 PORTVERSION=	2.0
 PORTREVISION=	2

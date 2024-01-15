@@ -1,30 +1,33 @@
-# $FreeBSD$
-
 PORTNAME=	gitea
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.13.2
+DISTVERSION=	1.21.3
 CATEGORIES=	www
-MASTER_SITES=	https://github.com/go-gitea/gitea/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
+MASTER_SITES=	https://github.com/go-gitea/gitea/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/ \
+		https://dl.gitea.io/gitea/${DISTVERSION}/
 DISTNAME=	gitea-src-${DISTVERSION}
 
 MAINTAINER=	stb@lassitu.de
 COMMENT=	Compact self-hosted Git service
+WWW=		https://gitea.io/en-US/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	git:devel/git
 
-USES=		gmake go:no_targets
+USES=		cpe gmake go:1.21,no_targets
 USE_RC_SUBR=	gitea
-NO_WRKSUBDIR=	yes
-PORTDATA=	*
 
-SUB_FILES+=	app.ini.sample
+EXTRACT_AFTER_ARGS=	--strip-components 1 # since 1.17.0, archive includes gitea-src-VERSION directory
+SUB_FILES+=	app.ini.sample pkg-message
 SUB_LIST+=	GITUSER=${USERS}
+
+NO_WRKSUBDIR=	yes
 
 USERS=		git
 GROUPS=		git
+
+PORTDATA=	*
 
 OPTIONS_DEFINE=	BINDATA GIT_LFS PAM SQLITE
 OPTIONS_DEFAULT=	GIT_LFS PAM SQLITE
@@ -67,10 +70,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/conf
 	${INSTALL_DATA} ${WRKDIR}/app.ini.sample ${STAGEDIR}${ETCDIR}/conf/app.ini.sample
 	${INSTALL_DATA} ${WRKSRC}/custom/conf/app.example.ini ${STAGEDIR}${ETCDIR}/conf/app.ini.defaults
-
-	@${MKDIR} ${STAGEDIR}${DESTDIR}/var/db/${PORTNAME}
-	@${MKDIR} ${STAGEDIR}${DESTDIR}/var/log/${PORTNAME}
-	@${MKDIR} ${STAGEDIR}${DESTDIR}/var/run/${PORTNAME}
 
 do-install-BINDATA-off:
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "options public templates" ${STAGEDIR}${DATADIR}

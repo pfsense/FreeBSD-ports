@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	xopen
-DISTVERSION=	0.8.4
+DISTVERSION=	1.1.0	# py-cutadapt 3.3 requires 1.1.x
 CATEGORIES=	archivers python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Open compressed files transparently
+WWW=		https://pypi.org/project/xopen/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bz2file>=0.98:archivers/py-bz2file@${PY_FLAV
 		pigz>=0:archivers/pigz
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

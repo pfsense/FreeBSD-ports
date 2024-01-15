@@ -1,6 +1,3 @@
-# Created by: Tom Hukins <tom@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	FreeBSD-Ports
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl modules for parsing FreeBSD's Ports INDEX file
+WWW=		https://people.freebsd.org/~tom/portpm/
 
 LICENSE=	BSD2CLAUSE
 

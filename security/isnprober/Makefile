@@ -1,6 +1,3 @@
-# Created by: Yonatan <onatan@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	isnprober
 PORTVERSION=	1.02
 CATEGORIES=	security

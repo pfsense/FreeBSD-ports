@@ -1,6 +1,6 @@
---- examples/rrdcached/Makefile.in.orig	2016-01-27 10:49:53 UTC
+--- examples/rrdcached/Makefile.in.orig	2022-03-14 14:29:40 UTC
 +++ examples/rrdcached/Makefile.in
-@@ -356,7 +356,7 @@ target_vendor = @target_vendor@
+@@ -368,7 +368,7 @@ target_vendor = @target_vendor@
  top_build_prefix = @top_build_prefix@
  top_builddir = @top_builddir@
  top_srcdir = @top_srcdir@

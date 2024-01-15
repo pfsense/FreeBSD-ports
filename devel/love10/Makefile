@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	love
 PORTVERSION=	0.10.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel games
 MASTER_SITES=	https://bitbucket.org/rude/love/downloads/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-linux-src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Open-source 2D game engine (legacy version 0.10)
+WWW=		https://www.love2d.org/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/license.txt
@@ -35,6 +33,7 @@ CONFIGURE_ARGS=	--program-suffix=${PKGNAMESUFFIX}
 WRKSRC=		${WRKDIR}/love-${PORTVERSION}
 INSTALL_TARGET=	install-strip
 
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS LUAJIT

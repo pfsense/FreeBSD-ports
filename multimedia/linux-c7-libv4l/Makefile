@@ -1,6 +1,3 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	libv4l
 PORTVERSION=	0.9.5
 DISTVERSIONSUFFIX=	-4.el7
@@ -9,6 +6,7 @@ CATEGORIES=	multimedia linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Video4Linux library (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://linuxtv.org/wiki/index.php/V4l-utils
 
 LICENSE=	LGPL20+
 
@@ -18,7 +16,7 @@ USE_LINUX_RPM=	yes
 
 SRC_DISTFILES=	v4l-utils-${DISTVERSIONFULL}${SRC_SUFX}:SOURCE
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+CONFLICTS=	linux-c6-${PORTNAME}
 DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS

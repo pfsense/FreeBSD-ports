@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Any-Moose-Convert
 PORTVERSION=	0.004
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Convert Moose libraries to Mouse ones, or vice versa
+WWW=		https://metacpan.org/release/Any-Moose-Convert
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	dailystrips
 PORTVERSION=	1.0.28
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Utility to download or view your favorite online comic strips daily
+WWW=		https://dailystrips.sourceforge.net/
 
 LICENSE=	GPLv2
 

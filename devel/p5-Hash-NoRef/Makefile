@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Hash-NoRef
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -10,9 +7,13 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	HASH that store values without increase the reference count
+WWW=		https://metacpan.org/release/Hash-NoRef
 
-USE_PERL5=	configure
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
+
 USES=		perl5
+USE_PERL5=	configure
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Hash/NoRef/NoRef.so

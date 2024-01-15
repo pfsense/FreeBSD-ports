@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bio-Cluster
 PORTVERSION=	1.7.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	BioPerl cluster modules
+WWW=		https://metacpan.org/release/Bio-Cluster
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -3,7 +3,7 @@
  * haproxy_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (C) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -125,18 +125,17 @@ if ($_POST) {
 			$haproxycfg['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
 			$haproxycfg['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
 			$haproxycfg['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
-			$haproxycfg['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
 			foreach($simplefields as $stat) {
 				$haproxycfg[$stat] = $_POST[$stat];
 			}
 
 			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
 			if ($_POST['enable']) {
-				if (is_array($haproxycfg['config'][0])) {
-					unset($haproxycfg['config'][0]['enable']);
+				if (array_get_path($haproxycfg, 'config/0/enable')) {
+					array_del_path($haproxycfg, 'config/0/enable');
 				}
 			} else {
-				$haproxycfg['config'][0]['enable'] = 'off';
+				array_set_path($haproxycfg, 'config/0/enable', 'off');
 			}
 			
 			touch($d_haproxyconfdirty_path);
@@ -158,7 +157,6 @@ $pconfig['loglevel'] = $config['installedpackages']['haproxy']['loglevel'];
 $pconfig['carpdev'] = $config['installedpackages']['haproxy']['carpdev'];
 $pconfig['localstatsport'] = $config['installedpackages']['haproxy']['localstatsport'];
 $pconfig['advanced'] = base64_decode($config['installedpackages']['haproxy']['advanced']);
-$pconfig['nbproc'] = $config['installedpackages']['haproxy']['nbproc'];
 foreach($simplefields as $stat) {
 	$pconfig[$stat] = $config['installedpackages']['haproxy'][$stat];
 }
@@ -280,14 +278,6 @@ EOD
 $section->add($group);
 
 $cpucores = trim(`/sbin/sysctl kern.smp.cpus | cut -d" " -f2`);
-
-$section->addInput(new Form_Input('nbproc', 'Number of processes to start', 'text', $pconfig['nbproc']
-))->setPlaceholder("1")->setHelp(<<<EOD
-	Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
-	Note : Consider leaving this value empty or 1  because in multi-process mode (nbproc > 1) memory is not shared between the processes, which could result in random behaviours for several options like ACL's, sticky connections, stats pages, admin maintenance options and some others.<br/>
-	For more information about the <b>"nbproc"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#nbproc' target='_blank'>HAProxy Documentation</a></b>
-EOD
-);
 
 if (haproxy_version() >= "1.8") {
 	$section->addInput(new Form_Input('nbthread', 'Number of threads to start per process', 'text', $pconfig['nbthread']
@@ -430,7 +420,7 @@ $section->add(group_input_with_text(
 	Sets the maximum size of the Diffie-Hellman parameters used for generating
 	the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange.
 	Minimum and default value is: 1024, bigger values might increase CPU usage.<br/>
-	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b><br/>
+	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b><br/>
 	NOTE: HAProxy will emit a warning when starting when this setting is used but not configured.
 EOD
 );

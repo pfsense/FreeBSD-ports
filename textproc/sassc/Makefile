@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sassc
 PORTVERSION=	3.6.1
 PORTREVISION=	0
@@ -8,6 +5,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Wrapper around libsass
+WWW=		https://libsass.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

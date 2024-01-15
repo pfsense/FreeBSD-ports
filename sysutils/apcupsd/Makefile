@@ -1,6 +1,3 @@
-# Created by: Lars Köller <Lars.Koeller@Uni-Bielefeld.DE>
-# $FreeBSD$
-
 PORTNAME=	apcupsd
 PORTVERSION=	3.14.14
 PORTREVISION=	4
@@ -9,11 +6,12 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20-%20Stable/${PORTVERSION}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Set of programs for controlling APC UPS
+WWW=		http://www.apcupsd.com
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		cpe gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sbindir=${PREFIX}/sbin \
 		--with-nologin=/var/run \

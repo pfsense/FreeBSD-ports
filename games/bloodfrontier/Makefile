@@ -1,23 +1,22 @@
-# Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
-
 PORTNAME=	bloodfrontier
 DISTVERSION=	B2
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Blood%20Frontier%20Beta%202
 DISTNAME=	${PORTNAME}-${DISTVERSION}-linux
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Single- and multi-player first-person shooter based on Cube 2
+WWW=		https://www.bloodfrontier.com/
 
 LICENSE=	ZLIB
 
 BROKEN_powerpc=		fails to compile
 BROKEN_powerpc64=	fails to compile: tools.h: incompatible types in assignment
-BROKEN_sparc64=		fails to compile
 
 USES=		tar:bzip2 gmake
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
 CONFIGURE_WRKSRC=	${WRKSRC}/src/enet
 BUILD_WRKSRC=	${WRKSRC}/src

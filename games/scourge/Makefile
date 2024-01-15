@@ -1,9 +1,6 @@
-# Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
-
 PORTNAME=	scourge
 PORTVERSION=	0.21.1
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/$/.src/}
@@ -11,25 +8,34 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rogue-like game
+WWW=		https://scourge.sourceforge.net/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 RUN_DEPENDS=	${LOCALBASE}/${DATADIR_REL}/config/scourge.cfg:games/scourge-data
 
-USES=		autoreconf compiler gettext gl gmake localbase sdl
-GNU_CONFIGURE=	yes
+USES=		autoreconf compiler gettext gl gmake localbase pkgconfig sdl
+USE_CXXSTD=	c++14
 USE_GL=		gl
 USE_SDL=	sdl image mixer net ttf
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-data-dir=${DATADIR}
 
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_clang=	-Wno-c++11-narrowing
 
-CONFIGURE_ARGS=	--with-data-dir=${DATADIR}
-
+BINARY_ALIAS=	freetype-config=true
 SUB_FILES=	pkg-message
-PLIST_FILES=	bin/${PORTNAME}
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
+PLIST_FILES=	bin/${PORTNAME}
+
 OPTIONS_DEFINE=	DEBUG
+
 DEBUG_CONFIGURE_ENABLE=	debug
 
 post-patch:

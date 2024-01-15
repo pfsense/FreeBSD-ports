@@ -1,14 +1,13 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	minidlna
-PORTVERSION=	1.2.1
-PORTREVISION=	7
+PORTVERSION=	1.3.2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	net multimedia www
+MASTER_SITES=	SF
 
 MAINTAINER=	glebius@FreeBSD.org
 COMMENT=	Media-server compatible with "Digital Life Network Alliance"
+WWW=		https://minidlna.sourceforge.net
 
 LICENSE=	GPLv2
 
@@ -23,11 +22,9 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3	\
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-db-path=/var/db/minidlna \
 		--with-os-url="http://www.FreeBSD.org"
-USES=		autoreconf gettext-tools iconv jpeg localbase
+USES=		autoreconf cpe gettext-tools iconv jpeg localbase
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	glebius
-GH_TAGNAME=	bdfa906
+CPE_VENDOR=	minidlna_project
 
 PKGMESSAGE=	${WRKSRC}/pkg-message
 SUB_FILES+=	pkg-message

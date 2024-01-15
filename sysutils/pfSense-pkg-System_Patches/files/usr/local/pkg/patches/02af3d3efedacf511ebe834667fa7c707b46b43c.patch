@@ -1,0 +1,23 @@
+commit 02af3d3efedacf511ebe834667fa7c707b46b43c
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Apr 10 11:56:35 2023 -0400
+
+    Normalize IPv6 prefix prior to use in ip_in_subnet(). Fixes #14256
+
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 3cf6edfc50..61e95ffddf 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -1013,6 +1013,12 @@ function get_v6_ptr_zones($subnet, $bits) {
+ /* return true if $addr is in $subnet, false if not */
+ function ip_in_subnet($addr, $subnet) {
+ 	if (is_ipaddrv6($addr) && is_subnetv6($subnet)) {
++		/* Normalize IPv6 prefix to its start address to avoid PHP errors
++		 * https://redmine.pfsense.org/issues/14256
++		 */
++		list($prefix, $length) = explode("/", $subnet);
++		$prefix = gen_subnetv6($prefix, $length);
++		$subnet = "{$prefix}/{$length}";
+ 		return (Net_IPv6::isInNetmask($addr, $subnet));
+ 	} else if (is_ipaddrv4($addr) && is_subnetv4($subnet)) {
+ 		list($ip, $mask) = explode('/', $subnet);

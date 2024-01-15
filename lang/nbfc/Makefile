@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	nbfc
 PORTVERSION=	0.1
 CATEGORIES=	lang
@@ -8,6 +5,7 @@ MASTER_SITES=	http://koeln.ccc.de/ablage/brainfuck/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	New Brainfuck Compiler
+WWW=		https://koeln.ccc.de/ablage/brainfuck/index.en.xml
 
 LICENSE=	BSD2CLAUSE
 

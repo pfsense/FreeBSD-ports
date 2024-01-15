@@ -1,6 +1,3 @@
-# Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libsunacl
 PORTVERSION=	1.0.1
 CATEGORIES=	sysutils

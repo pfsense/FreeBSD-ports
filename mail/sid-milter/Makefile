@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sid-milter
 PORTVERSION=	1.0.0
 PORTREVISION=	8
@@ -8,10 +6,9 @@ MASTER_SITES=	SF/${PORTNAME}/SenderID%20Milter/${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Milter module for sid and spf
+WWW=		https://sourceforge.net/projects/sid-milter/
 
 USES=		groff
-# on FreeBSD 11 optimized code fails with 'MalformedDomain'
-CFLAGS:=	${CFLAGS:S/-O2//g}
 WCONF=		${WRKSRC}/devtools/Site
 DOCSFILES=	FEATURES INSTALL KNOWNBUGS LICENSE README README-SenderID \
 		RELEASE_NOTES rfc4406.txt rfc4407.txt rfc4408.txt

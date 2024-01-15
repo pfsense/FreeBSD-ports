@@ -1,6 +1,3 @@
-# Created by: jack
-# $FreeBSD$
-
 PORTNAME=	asmem
 PORTVERSION=	1.12
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	https://tigr.net/afterstep/download/asmem/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	AfterStep look-n-feel memory utilization monitor
+WWW=		https://tigr.net/afterstep/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

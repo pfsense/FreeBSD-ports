@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	another-htmllint
 PORTVERSION=	20111128
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	japanese www
 MASTER_SITES=	http://openlab.ring.gr.jp/k16/htmllint/archives/
 DISTNAME=	htmllint
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Another HTML-lint (all messages are written in Japanese)
+WWW=		http://openlab.ring.gr.jp/k16/htmllint/
 
 LICENSE=	AnotherHTMLlint
 LICENSE_NAME=	Another HTML-lint License
@@ -52,7 +51,7 @@ do-build-W3M-on:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/rule ${STAGEDIR}${DATADIR}/html
-	cd ${WRKSRC} && ${INSTALL_SCRIPT} htmllint ${STAGEDIR}${PREFIX}/bin
+	cd ${WRKSRC} && ${INSTALL_SCRIPT} ../htmllint ${STAGEDIR}${PREFIX}/bin
 	cd ${WRKSRC} && ${INSTALL_SCRIPT} ${HTML} ${STAGEDIR}${DATADIR}/html
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PM} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${RULE} ${STAGEDIR}${DATADIR}/rule

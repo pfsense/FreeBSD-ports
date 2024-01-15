@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pdksh
 PORTVERSION=	5.2.14p2
 PORTREVISION=	6
@@ -16,6 +13,7 @@ PATCH_DIST_STRIP=	-p2
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	The Public Domain Korn Shell
+WWW=		http://www.cs.mun.ca/~michael/pdksh/
 
 LICENSE=	BSD3CLAUSE
 

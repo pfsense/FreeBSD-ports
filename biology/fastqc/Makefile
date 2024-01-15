@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	fastqc
-DISTVERSION=	0.11.8
+DISTVERSION=	0.12.1
 CATEGORIES=	biology java perl5
 MASTER_SITES=	https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 DISTNAME=	${PORTNAME}_v${DISTVERSIONPREFIX}${DISTVERSION}
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Quality control tool for high throughput sequence data
+WWW=		https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

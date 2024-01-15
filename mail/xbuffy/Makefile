@@ -1,6 +1,3 @@
-# Created by: dchapes@zeus.leitch.com
-# $FreeBSD$
-
 PORTNAME=	xbuffy
 PORTVERSION=	3.3.3
 PORTREVISION=	4

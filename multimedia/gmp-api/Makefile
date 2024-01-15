@@ -1,17 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	gmp-api
-DISTVERSION=	58 # from config/milestone.txt of mozilla-central commit
+DISTVERSIONPREFIX=	Firefox
+DISTVERSION=	114_2
 CATEGORIES=	multimedia
 
 MAINTAINER=	gecko@FreeBSD.org
-COMMENT=	Gecko Media Plugins API from mozilla-release
+COMMENT=	Gecko Media Plugins API extracted from Firefox
+WWW=		https://wiki.mozilla.org/GeckoMediaPlugins
 
-LICENSE=	APACHE20
+LICENSE=	APACHE20 BSD3CLAUSE
+LICENSE_COMB=	multi
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mozilla
-GH_TAGNAME=	e393575
 
 NO_BUILD=	yes
 NO_ARCH=	yes

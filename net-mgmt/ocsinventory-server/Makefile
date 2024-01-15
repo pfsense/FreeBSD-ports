@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ocsinventory-server
-PORTVERSION=	2.8
+PORTVERSION=	2.12.1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Open Computer and Software Inventory Next Generation
+WWW=		https://www.ocsinventory-ng.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,11 +23,12 @@ RUN_DEPENDS=	p5-XML-Simple>=2.12:textproc/p5-XML-Simple \
 		p5-Switch>=0:lang/p5-Switch \
 		p5-Plack>=0:www/p5-Plack
 
-USES=		apache:run,2.2+ mysql perl5
+USES=		apache:run mysql perl5
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 USE_GITHUB=	YES
+GH_TAGNAME=	7aff9af5d91a98fd6897afc2ea4b979464a88452
 GH_ACCOUNT=	OCSInventory-NG
 GH_PROJECT=	OCSInventory-Server
 

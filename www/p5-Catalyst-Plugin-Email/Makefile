@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Email
 PORTVERSION=	0.09
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Send emails with Catalyst
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Email
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,48 +1,58 @@
---- content/zygote/zygote_main_linux.cc.orig	2020-11-13 06:36:43 UTC
+--- content/zygote/zygote_main_linux.cc.orig	2023-09-13 12:11:42 UTC
 +++ content/zygote/zygote_main_linux.cc
 @@ -11,7 +11,9 @@
  #include <stddef.h>
  #include <stdint.h>
  #include <string.h>
-+#if !defined(OS_BSD)
++#if !BUILDFLAG(IS_BSD)
  #include <sys/prctl.h>
 +#endif
  #include <sys/socket.h>
  #include <sys/types.h>
  #include <unistd.h>
-@@ -99,6 +101,7 @@ static bool CreateInitProcessReaper(
- // created through the setuid sandbox.
- static bool EnterSuidSandbox(sandbox::SetuidSandboxClient* setuid_sandbox,
-                              base::OnceClosure post_fork_parent_callback) {
-+#if !defined(OS_BSD)
-   DCHECK(setuid_sandbox);
-   DCHECK(setuid_sandbox->IsSuidSandboxChild());
+@@ -41,7 +43,9 @@
+ #include "sandbox/linux/services/thread_helpers.h"
+ #include "sandbox/linux/suid/client/setuid_sandbox_client.h"
+ #include "sandbox/policy/linux/sandbox_debug_handling_linux.h"
++#if !BUILDFLAG(IS_BSD)
+ #include "sandbox/policy/linux/sandbox_linux.h"
++#endif
+ #include "sandbox/policy/sandbox.h"
+ #include "sandbox/policy/switches.h"
+ #include "third_party/icu/source/i18n/unicode/timezone.h"
+@@ -50,11 +54,13 @@ namespace content {
  
-@@ -131,6 +134,9 @@ static bool EnterSuidSandbox(sandbox::SetuidSandboxCli
+ namespace {
  
-   CHECK(sandbox::policy::SandboxDebugHandling::SetDumpableStatusAndHandlers());
-   return true;
-+#else
-+  return false;
-+#endif // !defined(OS_BSD)
++#if !BUILDFLAG(IS_BSD)
+ void CloseFds(const std::vector<int>& fds) {
+   for (const auto& it : fds) {
+     PCHECK(0 == IGNORE_EINTR(close(it)));
+   }
  }
++#endif
  
- static void DropAllCapabilities(int proc_fd) {
-@@ -176,6 +182,7 @@ static void EnterLayerOneSandbox(sandbox::policy::Sand
+ base::OnceClosure ClosureFromTwoClosures(base::OnceClosure one,
+                                          base::OnceClosure two) {
+@@ -157,9 +163,11 @@ static void EnterLayerOneSandbox(sandbox::policy::Sand
+     CHECK(!using_layer1_sandbox);
+   }
+ }
++#endif
  
  bool ZygoteMain(
      std::vector<std::unique_ptr<ZygoteForkDelegate>> fork_delegates) {
-+#if !defined(OS_BSD)
++#if !BUILDFLAG(IS_BSD)
    sandbox::SetAmZygoteOrRenderer(true, GetSandboxFD());
  
    auto* linux_sandbox = sandbox::policy::SandboxLinux::GetInstance();
-@@ -240,6 +247,9 @@ bool ZygoteMain(
+@@ -224,6 +232,9 @@ bool ZygoteMain(
  
    // This function call can return multiple times, once per fork().
    return zygote.ProcessRequests();
 +#else
 +  return false;
-+#endif // !defined(OS_BSD)
++#endif
  }
  
  }  // namespace content

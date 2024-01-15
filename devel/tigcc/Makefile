@@ -1,9 +1,6 @@
-# Created by: Ben Haga <tuximus@tuximus.mine.nu>
-# $FreeBSD$
-
 PORTNAME=	tigcc
 PORTVERSION=	0.96.b8
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/:gcc LOCAL/danfe:gcc \
 		GNU/binutils:gas \
@@ -14,6 +11,7 @@ DISTFILES=	gcc-core-4.1-20060728.tar.bz2:gcc \
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	C compiler for the TI89, 92, and 92+ calculators
+WWW=		http://tigcc.ticalc.org/
 
 USES=		bison compiler:nestedfct gmake tar:bzip2
 USE_CSTD=	gnu89
@@ -143,10 +141,4 @@ do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@${CP} ${WRKSRC}/tigcc/tigcclib/examples/* ${STAGEDIR}${EXAMPLESDIR}/
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
-CFLAGS+=	-fnested-functions
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

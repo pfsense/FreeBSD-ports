@@ -1,6 +1,3 @@
-# Created by: Chris Hutchinson <portmaster@BSDforge.com>
-# $FreeBSD$
-
 PORTNAME=	xvt
 PORTVERSION=	3.0.1
 PORTREVISION=	1
@@ -9,9 +6,12 @@ MASTER_SITES=	https://BSDforge.com/projects/source/x11/xvt/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Xterm replacement, supporting color, transparency, and more, with less
+WWW=		https://BSDforge.com/projects/x11/xvt/
 
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	multi
+
+BROKEN=		Unfetchable
 
 PORTDOCS=	xvt.1.html xvtRef.html xvtRef.txt
 

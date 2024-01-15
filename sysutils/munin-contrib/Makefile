@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	contrib
-DISTVERSION=	git.2019-06-28
-PORTREVISION=	1
+DISTVERSION=	git.2023-01-14
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	munin-
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Contributed plugins and other for munin
+WWW=		https://github.com/munin-monitoring/contrib
 
 LICENSE=	GPLv2
 
@@ -17,12 +15,12 @@ USES=		python:env shebangfix uniquefiles:dirs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	munin-monitoring
-GH_TAGNAME=	33270dd
-GH_TUPLE=	shuque:bind9stats:a920ded:bind9stats
+GH_TAGNAME=	4f22f27
+GH_TUPLE=	shuque:bind9stats:687c94a:bind9stats
 
 SHEBANG_REGEX=	./(${EXAMPLES_DIRS:ts|})/.*
 SHEBANG_LANG=	expect gawk python3 zsh
-python3_CMD=	${LOCALBASE}/bin/python${PYTHON3_DEFAULT}
+python3_CMD=	${LOCALBASE}/bin/python${PYTHON_DEFAULT}
 zsh_CMD=	${LOCALBASE}/bin/zsh
 ruby_OLD_CMD=	/opt/csw/bin/ruby
 
@@ -37,7 +35,7 @@ SUB_FILES=	pkg-message
 EXAMPLES_DIRS=	plugins samples templates tools
 
 post-extract:
-	@${MV} ${WRKSRC_bind9stats}/bind9stats.py ${WRKSRC}/plugins/bind9stats
+	@${MV} ${WRKSRC_bind9stats}/bind9stats-munin.py ${WRKSRC}/plugins/bind9stats
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${EXAMPLESDIR}

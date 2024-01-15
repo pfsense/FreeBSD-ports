@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Authen-PAAS
 PORTVERSION=	1.1.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl Authentication & Authorization Service
+WWW=		https://metacpan.org/release/DANBERR/Authen-PAAS-1.1.1
 
 LICENSE=	GPLv2
 

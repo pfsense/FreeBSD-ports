@@ -1,14 +1,12 @@
-# Created by: Dmitri Goutnik <dg@syrec.org>
-# $FreeBSD$
-
 PORTNAME=	encryptpad
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0.0
-PORTREVISION=	2
+DISTVERSION=	0.5.0.2
+PORTREVISION=	1
 CATEGORIES=	editors security
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Minimalist secure text editor and binary encryptor
+WWW=		https://evpo.net/encryptpad/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
@@ -23,8 +21,9 @@ GH_ACCOUNT=	evpo
 GH_PROJECT=	EncryptPad
 
 USE_GL=		gl
-USE_QT=		core gui widgets buildtools_build qmake_build
-BINARY_ALIAS=	python=${PYTHON_CMD}
+USE_QT=		core gui widgets buildtools:build qmake:build
+BINARY_ALIAS=	python=${PYTHON_CMD} \
+		qmake=${QMAKE}
 
 PORTDOCS=	*
 
@@ -33,7 +32,9 @@ OPTIONS_DEFINE=	DOCS
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == powerpc64
-CONFIGURE_ARGS=	--cpu="${ARCH}"
+CONFIGURE_ARGS=	--cpu="ppc64"
+.elif ${ARCH} == powerpc64le
+CONFIGURE_ARGS=	--cpu="ppc64le"
 .endif
 
 .include <bsd.port.pre.mk>

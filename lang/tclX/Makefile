@@ -1,6 +1,3 @@
-# Created by: jkh
-# $FreeBSD$
-
 PORTNAME=	tclX
 PORTVERSION=	8.4.1
 CATEGORIES=	lang tcl devel
@@ -13,6 +10,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Extended TCL
+WWW=		https://tclx.sourceforge.net/
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License

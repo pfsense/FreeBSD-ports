@@ -1,6 +1,3 @@
-# Created by: Per Otterstr=F6m <pelle@fukt.bth.se>
-# $FreeBSD$
-
 PORTNAME=	wmclock
 PORTVERSION=	1.0.16
 CATEGORIES=	x11-clocks windowmaker
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dockable clock applet for Window Maker
+WWW=		http://www.bluestop.org/wmclock/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

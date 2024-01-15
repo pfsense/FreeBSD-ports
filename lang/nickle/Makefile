@@ -1,18 +1,16 @@
-# Created by: Christopher Elkins <chrise@scardini.com>
-# $FreeBSD$
-
 PORTNAME=	nickle
-PORTVERSION=	2.86
+PORTVERSION=	2.96
 CATEGORIES=	lang
 MASTER_SITES=	http://www.nickle.org/release/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Numeric-oriented programming language
+WWW=		https://www.nickle.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake ncurses readline
+USES=		gmake localbase ncurses readline
 
 GNU_CONFIGURE=	yes
 PORTEXAMPLES=	*

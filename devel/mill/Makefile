@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	mill
-DISTVERSION=	0.9.3
+DISTVERSION=	0.11.4
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/lihaoyi/mill/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTVERSION}-assembly
@@ -11,11 +9,12 @@ EXTRACT_ONLY=
 
 MAINTAINER=	freebsd-ports@jan0sch.de
 COMMENT=	Java/Scala build tool
+WWW=		https://www.lihaoyi.com/mill/
 
 LICENSE=	MIT
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

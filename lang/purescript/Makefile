@@ -1,163 +1,153 @@
-# $FreeBSD$
-
 PORTNAME=	purescript
-PORTVERSION=	0.13.8
-PORTREVISION=	3
+PORTVERSION=	0.15.9
 CATEGORIES=	lang
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Functional language that compiles to JavaScript
+WWW=		https://www.purescript.org/
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN_aarch64=	compiler crashes
+
+BUILD_DEPENDS=	ghc-9.2.8:lang/ghc92
 
 USES=		cabal
 
 USE_LOCALE=	en_US.UTF-8
 
-USE_CABAL=	Glob-0.9.3 \
-		QuickCheck-2.14_1 \
-		SHA-1.6.4.4 \
-		StateVar-1.2 \
-		aeson-1.4.7.1_1 \
-		aeson-better-errors-0.9.1.0 \
-		aeson-pretty-0.8.8 \
-		alex-3.2.5 \
-		ansi-terminal-0.8.2 \
-		ansi-wl-pprint-0.6.8.2_2 \
-		appar-0.1.8 \
-		asn1-encoding-0.9.6_1 \
-		asn1-parse-0.9.5 \
-		asn1-types-0.3.4 \
-		assoc-1.0.1_1 \
-		async-2.2.2_1 \
-		attoparsec-0.13.2.4 \
+USE_CABAL=	Cabal-3.6.3.0 \
+		Glob-0.10.2_3 \
+		OneTuple-0.3.1_3 \
+		QuickCheck-2.14.2 \
+		StateVar-1.2.2 \
+		adjunctions-4.4.2_1 \
+		aeson-2.0.3.0_1 \
+		aeson-better-errors-0.9.1.1_1 \
+		alex-3.2.7.4 \
+		ansi-terminal-0.11.5 \
+		ansi-terminal-types-0.11.5_1 \
+		ansi-wl-pprint-0.6.9_4 \
+		assoc-1.0.2_4 \
+		async-2.2.4_3 \
+		attoparsec-0.14.4_3 \
 		auto-update-0.1.6 \
-		base-compat-0.10.5 \
-		base-compat-batteries-0.10.5_1 \
-		base-orphans-0.8.2 \
-		base64-bytestring-1.0.0.3 \
-		basement-0.0.11_2 \
-		bifunctors-5.5.7 \
-		blaze-builder-0.4.1.0 \
-		blaze-html-0.9.1.2 \
-		blaze-markup-0.8.2.5 \
-		bower-json-1.0.0.1 \
+		base-compat-0.12.2 \
+		base-compat-batteries-0.12.2 \
+		base-orphans-0.9.0 \
+		basement-0.0.15 \
+		bifunctors-5.5.15 \
+		bitvec-1.1.4.0 \
+		blaze-builder-0.4.2.2_1 \
+		blaze-html-0.9.1.2_2 \
+		blaze-markup-0.8.2.8_4 \
+		bower-json-1.1.0.0 \
 		boxes-0.1.5 \
-		bsb-http-chunked-0.0.0.4_2 \
-		byteorder-1.0.4 \
-		bytestring-builder-0.10.8.2.0 \
-		cabal-doctest-1.0.8_1 \
-		case-insensitive-1.2.1.0 \
-		cborg-0.2.3.0_1 \
+		call-stack-0.4.0 \
+		cborg-0.2.9.0 \
 		cheapskate-0.1.1.2_1 \
-		clock-0.7.2 \
-		colour-2.3.5 \
-		comonad-5.0.6_1 \
-		conduit-1.3.2 \
-		conduit-extra-1.3.5 \
-		constraints-0.12 \
-		contravariant-1.5.2 \
-		cryptonite-0.25 \
+		clock-0.8.3 \
+		colour-2.3.6 \
+		comonad-5.0.8_1 \
+		conduit-1.3.4.3_1 \
+		conduit-extra-1.3.6 \
+		constraints-0.13.4 \
+		contravariant-1.5.5 \
+		cryptonite-0.30 \
 		css-text-0.1.3.0 \
+		data-array-byte-0.1.0.1_1 \
 		data-default-0.7.1.1 \
 		data-default-class-0.1.2.0 \
 		data-default-instances-containers-0.0.1 \
 		data-default-instances-dlist-0.0.1 \
 		data-default-instances-old-locale-0.0.1 \
+		data-fix-0.3.2_4 \
 		data-ordlist-0.4.7.0 \
-		distributive-0.6.2_1 \
-		dlist-0.8.0.8 \
-		easy-file-0.2.2 \
+		distributive-0.6.2.1_1 \
+		dlist-1.0 \
+		easy-file-0.2.5 \
 		edit-distance-0.2.2.1_1 \
-		entropy-0.4.1.6 \
-		fast-logger-3.0.1 \
-		file-embed-0.0.12.0 \
-		fsnotify-0.3.0.1_1 \
-		half-0.3 \
-		happy-1.19.12 \
-		hashable-1.3.0.0_1 \
-		hourglass-0.2.12 \
-		hsc2hs-0.68.7 \
-		http-date-0.0.8 \
-		http-types-0.12.3 \
-		http2-2.0.4 \
-		integer-logarithms-1.0.3_2 \
-		iproute-1.7.9_1 \
+		fast-logger-3.2.1 \
+		file-embed-0.0.15.0 \
+		free-5.2_1 \
+		half-0.3.1 \
+		happy-1.20.0_1 \
+		hashable-1.4.2.0_1 \
+		haskeline-0.8.2.1 \
+		hsc2hs-0.68.9 \
+		indexed-traversable-0.1.2.1 \
+		indexed-traversable-instances-0.1.1.2_1 \
+		integer-logarithms-1.0.3.1_4 \
+		invariant-0.6.1 \
+		kan-extensions-5.2.5_1 \
 		language-javascript-0.7.0.0 \
-		lifted-async-0.10.0.6 \
+		lens-5.1.1_1 \
+		lifted-async-0.10.2.4 \
 		lifted-base-0.2.3.12 \
-		memory-0.15.0_1 \
-		microlens-0.4.11.2 \
-		microlens-ghc-0.4.12 \
-		microlens-mtl-0.2.0.1 \
-		microlens-platform-0.4.1 \
-		microlens-th-0.4.3.5 \
-		monad-control-1.0.2.3 \
-		monad-logger-0.3.32 \
+		memory-0.17.0_1 \
+		monad-control-1.0.3.1 \
+		monad-logger-0.3.39_1 \
 		monad-loops-0.4.3 \
-		mono-traversable-1.0.15.1 \
+		mono-traversable-1.0.15.3 \
+		monoidal-containers-0.6.4.0 \
 		mtl-compat-0.2.2 \
-		network-3.0.1.1 \
-		network-byte-order-0.1.5 \
-		network-uri-2.6.3.0 \
+		network-3.1.3.0 \
+		network-uri-2.6.4.2 \
+		newtype-0.2.2.0_3 \
 		old-locale-1.0.0.7_2 \
 		old-time-1.1.0.3_2 \
-		optparse-applicative-0.15.1.0_1 \
-		parallel-3.2.2.0_2 \
-		pattern-arrows-0.0.2 \
-		pem-0.2.4 \
-		primitive-0.7.0.1 \
-		protolude-0.3.0 \
-		psqueues-0.2.7.2_1 \
-		random-1.1_1 \
-		regex-base-0.94.0.0_1 \
-		regex-tdfa-1.3.1.0_1 \
-		resourcet-1.2.4 \
+		optparse-applicative-0.17.0.0 \
+		parallel-3.2.2.0_6 \
+		pattern-arrows-0.0.2_1 \
+		primitive-0.7.4.0_1 \
+		process-1.6.13.1_1 \
+		profunctors-5.6.2_3 \
+		protolude-0.3.3 \
+		random-1.2.1.1 \
+		reflection-2.1.7 \
+		regex-base-0.94.0.2_1 \
+		regex-tdfa-1.3.2 \
+		resourcet-1.3.0 \
 		safe-0.3.19 \
-		scientific-0.3.6.2 \
-		semialign-1.1_2 \
-		semigroupoids-5.3.4_1 \
-		semigroups-0.18.5_1 \
-		serialise-0.2.3.0_1 \
-		simple-sendfile-0.2.30 \
-		sourcemap-0.1.6_1 \
-		split-0.2.3.4 \
-		splitmix-0.0.5 \
-		stm-chans-3.0.0.4_1 \
-		streaming-commons-0.2.1.2 \
+		scientific-0.3.7.0_5 \
+		semialign-1.2.0.1_3 \
+		semigroupoids-5.3.7_1 \
+		semigroups-0.20 \
+		serialise-0.2.6.0_3 \
+		sourcemap-0.1.7 \
+		split-0.2.3.5 \
+		splitmix-0.1.0.4_2 \
+		stm-chans-3.0.0.9 \
+		streaming-commons-0.2.2.6 \
+		strict-0.4.0.1_4 \
 		stringsearch-0.3.6.6_1 \
-		syb-0.7.1 \
-		tagged-0.8.6_2 \
+		syb-0.7.2.3 \
+		tagged-0.8.7 \
 		tagsoup-0.14.8 \
-		th-abstraction-0.3.2.0 \
-		these-1.0.1_4 \
-		time-compat-1.9.3 \
-		time-manager-0.0.0 \
-		transformers-base-0.4.5.2 \
-		transformers-compat-0.6.5 \
-		type-equality-1_1 \
-		typed-process-0.2.6.0 \
-		uniplate-1.6.12_1 \
-		unix-compat-0.5.2_1 \
-		unix-time-0.4.7 \
-		unliftio-core-0.2.0.1_1 \
-		unordered-containers-0.2.10.0_1 \
-		utf8-string-1.0.1.1_3 \
-		uuid-types-1.0.3_2 \
-		vault-0.3.1.4 \
-		vector-0.12.1.2 \
-		vector-algorithms-0.8.0.3 \
+		text-short-0.1.5_2 \
+		th-abstraction-0.4.5.0_1 \
+		th-compat-0.1.4_2 \
+		these-1.1.1.1_6 \
+		time-compat-1.9.6.1_5 \
+		transformers-base-0.4.6 \
+		transformers-compat-0.7.2 \
+		type-equality-1_5 \
+		typed-process-0.2.11.0 \
+		uniplate-1.6.13_1 \
+		unix-compat-0.7 \
+		unix-time-0.4.9 \
+		unliftio-core-0.2.1.0_2 \
+		unordered-containers-0.2.19.1_2 \
+		utf8-string-1.0.2 \
+		uuid-types-1.0.5_4 \
+		vector-0.12.3.1_4 \
+		vector-algorithms-0.9.0.1_2 \
 		void-0.7.3 \
-		wai-3.2.2.1 \
-		wai-websockets-3.0.1.2 \
-		warp-3.3.12 \
-		websockets-0.12.6.1 \
-		word8-0.1.3 \
-		x509-1.7.5_1 \
-		xss-sanitize-0.3.6 \
-		zlib-0.6.2.1_1
+		witherable-0.4.2_4 \
+		xss-sanitize-0.3.7.2 \
+		zlib-0.6.3.0_1
 
-EXECUTABLES=	purs
-CABAL_FLAGS=	release
+CABAL_EXECUTABLES=	purs
+CABAL_FLAGS=		release
 
 .include <bsd.port.mk>

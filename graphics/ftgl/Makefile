@@ -1,14 +1,13 @@
-# Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
-
 PORTNAME=	ftgl
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.4.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenGL FreeType fonts rendering library
+WWW=		https://github.com/frankheckenbach/ftgl
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

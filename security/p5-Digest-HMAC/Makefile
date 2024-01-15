@@ -1,21 +1,20 @@
-# Created by: nork@cityfujisawa.ne.jp
-# $FreeBSD$
-
 PORTNAME=	Digest-HMAC
-PORTVERSION=	1.03
-PORTREVISION=	1
+PORTVERSION=	1.04
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to HMAC Message-Digest Algorithms
+WWW=		https://metacpan.org/release/Digest-HMAC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,20 +1,18 @@
-# Created by: J.R. Oldroyd <fbsd@opal.com>
-# $FreeBSD$
-
 PORTNAME=	libburn
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.6
 CATEGORIES=	devel
 MASTER_SITES=	http://files.libburnia-project.org/releases/
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libburnia library to read/write optical discs
+WWW=		https://dev.lovelyhq.com/libburnia/web/wiki/Libburn
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		libtool
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
 PORTDOCS=	*.txt

@@ -1,14 +1,12 @@
-# Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libewf
-PORTVERSION=	20140811
+PORTVERSION=	20140814
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libewf-legacy/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Library for support of the Expert Witness Compression Format (EWF)
+WWW=		https://github.com/libyal/libewf-legacy
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +15,7 @@ LIB_DEPENDS=	libsmdev.so:devel/libsmdev \
 		libsmraw.so:devel/libsmraw \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		fuse libtool pathfix pkgconfig python:3.5+
+USES=		fuse libtool pathfix pkgconfig python
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

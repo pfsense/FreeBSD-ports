@@ -1,9 +1,6 @@
-# Created by: Roman Bogorodskiy
-# $FreeBSD$
-
 PORTNAME=	scanlogd
-PORTVERSION=	2.2.7
-PORTREVISION=	2
+PORTVERSION=	2.2.8
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://openwall.com/scanlogd/ \
 		ftp://ftp.openwall.com/pub/projects/scanlogd/ \
@@ -11,6 +8,7 @@ MASTER_SITES=	http://openwall.com/scanlogd/ \
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	TCP port scan detection tool
+WWW=		https://openwall.com/scanlogd/
 
 USE_RC_SUBR=	${PORTNAME}
 

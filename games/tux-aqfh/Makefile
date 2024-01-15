@@ -1,9 +1,6 @@
-# Created by: Alexander Langer <alex@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tux_aqfh
 PORTVERSION=	1.0.14
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/tuxaqfh/tuxaqfh/${PORTVERSION}-classic \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tuxedo The Penguin: A Quest for Herring
+WWW=		https://sourceforge.net/projects/tuxaqfh/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

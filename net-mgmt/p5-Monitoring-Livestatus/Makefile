@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	Monitoring-Livestatus
-PORTVERSION=	0.80
-PORTREVISION=	1
+PORTVERSION=	0.84
 CATEGORIES=	net-mgmt perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:NIERLEIN
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Perl API for check_mk livestatus
+WWW=		https://metacpan.org/release/Monitoring-Livestatus
 
 LICENSE=	GPLv1+
 LICENSE_FILE=	${WRKSRC}/README

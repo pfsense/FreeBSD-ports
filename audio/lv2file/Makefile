@@ -1,14 +1,12 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	lv2file
-DISTVERSION=	0.84-31
+DISTVERSIONPREFIX=	upstream/
+DISTVERSION=	0.95
 PORTREVISION=	1
-DISTVERSIONSUFFIX=	-gaed7c77
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Simple program that apples LV2 effects to audio files
+WWW=		https://github.com/jeremysalwen/lv2file
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,12 +20,13 @@ LIB_DEPENDS=	libargtable2.so:devel/argtable \
 		libsratom-0.so:audio/sratom
 
 USES=		gmake localbase pkgconfig
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	jeremysalwen
-PLIST_FILES=	bin/lv2file share/man/man1/lv2file.1.gz
+
+PLIST_FILES=	bin/lv2file
 
 post-install:
-		${INSTALL_MAN} ${WRKSRC}/debian/lv2file.1 ${STAGEDIR}${PREFIX}/share/man/man1
 		@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lv2file
 
 .include <bsd.port.mk>

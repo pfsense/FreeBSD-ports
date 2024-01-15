@@ -1,7 +1,7 @@
-TIMESTAMP = 1594921156
-SHA256 (apache-incubator-tvm-v0.6.1_GH0.tar.gz) = e2688526d24242bbf5f3adbc0590b1234c4fd0b7a8f61bd837af6c49e5020713
-SIZE (apache-incubator-tvm-v0.6.1_GH0.tar.gz) = 2984949
-SHA256 (dmlc-dlpack-0acb731_GH0.tar.gz) = e246632ccb182369e78a4028bfd9d3ff8a3507620ba414126fb0e860477248ba
-SIZE (dmlc-dlpack-0acb731_GH0.tar.gz) = 39435
-SHA256 (dmlc-dmlc-core-808f485_GH0.tar.gz) = b04ba9f1931d8b62c1bd3f06373582ce9e393fcd1d7241766c6e7d7b6119eca0
-SIZE (dmlc-dmlc-core-808f485_GH0.tar.gz) = 250572
+TIMESTAMP = 1699080286
+SHA256 (apache-tvm-v0.14.0_GH0.tar.gz) = 1e2cfeacbe1063ce40ba400e6cab5f04ce503dd4067766b57d2656ee40e1eef4
+SIZE (apache-tvm-v0.14.0_GH0.tar.gz) = 8722154
+SHA256 (dmlc-dlpack-e2bdd3b_GH0.tar.gz) = e88e702277cf4cfa4814afdbb27b07b75041d80b3df60da387cdd7e0ebeb6817
+SIZE (dmlc-dlpack-e2bdd3b_GH0.tar.gz) = 76235
+SHA256 (dmlc-dmlc-core-09511cf_GH0.tar.gz) = 8b7ba0e19a9f2c5d65d49758ab14631e99c4f501b689842fa6535fc44a05c46f
+SIZE (dmlc-dmlc-core-09511cf_GH0.tar.gz) = 260299

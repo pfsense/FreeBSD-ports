@@ -1,14 +1,12 @@
-# Created by: Felix Palmen <felix@palmen-it.de>
-# $FreeBSD$
-
 PORTNAME=	lib1541img
 PORTVERSION=	1.1
 PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers devel emulators
 
-MAINTAINER=	felix@palmen-it.de
+MAINTAINER=	zirias@FreeBSD.org
 COMMENT=	Library for handling commodore 1541 disk images
+WWW=		https://github.com/excess-c64/lib1541img
 
 LICENSE=	BSD2CLAUSE
 

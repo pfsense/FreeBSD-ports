@@ -1,14 +1,11 @@
-# Created by: Loic Pefferkorn <loic-freebsd@loicp.eu>
-# $FreeBSD$
-
 PORTNAME=	burp
-PORTVERSION=	2.2.18
-PORTREVISION=	4
+PORTVERSION=	2.4.0
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/grke/burp/releases/download/${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Network backup and restore program
+WWW=		https://burp.grke.org/
 
 LICENSE=	AGPLv3 PD
 LICENSE_COMB=	multi
@@ -19,8 +16,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash \
 LIB_DEPENDS=	librsync.so:net/librsync
 RUN_DEPENDS=	bash:shells/bash
 
-#USES=		gmake libtool ncurses pkgconfig ssl tar:bz2
-USES=		libtool ncurses pkgconfig ssl tar:bz2
+USES=		cpe libtool ncurses pkgconfig ssl tar:bz2
 
 CONFIGURE_ARGS=	--sysconfdir=${ETCDIR}
 GNU_CONFIGURE=	yes
@@ -31,7 +27,9 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 CONFLICTS_INSTALL=	burp-devel
 
-PORTSCOUT=	limit:^2\.2\.
+CPE_VENDOR=	burp_project
+
+PORTSCOUT=	limit:^2\.4\.
 
 OPTIONS_DEFINE=	IPV6
 IPV6_CONFIGURE_ENABLE=	ipv6

@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	VCS
 PORTVERSION=	0.25
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Library for generic Version Control System access in Perl
+WWW=		https://metacpan.org/release/VCS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

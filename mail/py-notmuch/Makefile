@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	mail python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -9,7 +7,7 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libnotmuch.so:mail/notmuch
 
-USES=		python:3.6+ uniquefiles:dirs
+USES=		python uniquefiles:dirs
 USE_PYTHON=	autoplist distutils
 
 MASTERDIR=	${.CURDIR}/../notmuch

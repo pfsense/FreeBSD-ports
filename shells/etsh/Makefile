@@ -1,0 +1,16 @@
+PORTNAME=	etsh
+DISTVERSION=	5.4.0
+CATEGORIES=	shells
+MASTER_SITES=	https://etsh.nl/src/${PORTNAME}_${PORTVERSION}/
+
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Enhanced V6 Thompson Compatible Shell
+WWW=		https://etsh.nl/
+
+LICENSE=	BSD2CLAUSE BSD3CLAUSE BSD4CLAUSE
+LICENSE_COMB=	multi
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+HAS_CONFIGURE=	yes
+
+.include <bsd.port.mk>

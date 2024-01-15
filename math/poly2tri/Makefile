@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	poly2tri
 DISTVERSION=	g20191130
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	2D constrained Delaunay triangulation library
+WWW=		https://github.com/jhasse/poly2tri
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

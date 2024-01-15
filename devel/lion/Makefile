@@ -1,6 +1,3 @@
-# Created by: Marco Molteni <molterSPAM@gufiSPAM.org>
-# $FreeBSD$
-
 PORTNAME=	lion
 DISTVERSION=	20060630
 CATEGORIES=	devel net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.lundman.net/ftp/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-platform, event-driven, simple networking library
+WWW=		https://www.lundman.net/wiki/index.php/LiON
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt

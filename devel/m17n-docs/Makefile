@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
-
 PORTNAME=	m17n-docs
 PORTVERSION=	1.5.5
 CATEGORIES=	devel textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://anthesphoria.net/FreeBSD/ports/distfiles/
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	m17n library documentation
+WWW=		https://www.nongnu.org/m17n/
 
 NO_BUILD=	yes
 

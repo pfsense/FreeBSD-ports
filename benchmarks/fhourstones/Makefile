@@ -1,6 +1,3 @@
-# Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
-
 PORTNAME=	fhourstones
 PORTVERSION=	3.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	Fhourstones
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Integrated benchmark program
+WWW=		https://tromp.github.io/c4/fhour.html
 
 NO_WRKSUBDIR=	yes
 PLIST_FILES=	bin/fhourstones \

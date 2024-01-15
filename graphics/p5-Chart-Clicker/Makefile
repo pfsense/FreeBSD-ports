@@ -1,6 +1,3 @@
-# Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Chart-Clicker
 PORTVERSION=	2.90
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Powerful, extensible charting
+WWW=		https://metacpan.org/release/Chart-Clicker
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

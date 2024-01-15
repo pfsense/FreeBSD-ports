@@ -1,13 +1,15 @@
-# Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	frogr
 PORTVERSION=	1.6
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	1eeb32b94b9e.patch:-p1 # https://gitlab.gnome.org/GNOME/frogr/-/merge_requests/5
+
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Flickr upload and management tool
+WWW=		https://wiki.gnome.org/Apps/Frogr
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -26,7 +28,6 @@ CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 MESON_ARGS=	-Denable-header-bar=true
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		VIDEO
 OPTIONS_DEFAULT=	VIDEO

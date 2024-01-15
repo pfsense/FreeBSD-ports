@@ -1,28 +1,26 @@
-# Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	open-adventure
-PORTVERSION=	1.4
+PORTVERSION=	1.16
 CATEGORIES=	games
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Modernized version of the original Colossal Cave Adventure game
+WWW=		http://www.catb.org/~esr/open-adventure/
 
 LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	${PYTHONPREFIX_SITELIBDIR}/yaml/__init__.py:devel/py-yaml@${PY_FLAVOR} \
 		a2x:textproc/asciidoc
 
-USES=		gmake pkgconfig libedit python:build
+USES=		gmake libedit pkgconfig python:build
 USE_GITLAB=	yes
 GL_ACCOUNT=	esr
-GL_PROJECT=	${PORTNAME}
-GL_COMMIT=	d51238481a6a752adc8ad4d8893209d13bb7ea91
+GL_TAGNAME=	${PORTVERSION}
 
-ALL_TARGET=	advent
 MAKE_ENV=	CCFLAGS="${CFLAGS}"
+ALL_TARGET=	advent
 
-PLIST_FILES=	bin/advent man/man6/advent.6.gz
+PLIST_FILES=	bin/advent \
+		man/man6/advent.6.gz
 
 pre-build:
 		cd ${WRKSRC}; ${PYTHON_CMD} make_dungeon.py; a2x -f manpage advent.adoc

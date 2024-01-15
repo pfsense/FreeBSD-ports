@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	enchant
 PORTVERSION=	1.6.0
 PORTREVISION=	9
@@ -10,6 +7,7 @@ DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Dictionary/spellchecking framework
+WWW=		https://www.abisource.com/projects/enchant/
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

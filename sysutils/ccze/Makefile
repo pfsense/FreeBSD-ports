@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ccze
 PORTVERSION=	0.2.1
 PORTREVISION=	5
@@ -9,6 +7,7 @@ MASTER_SITES=	http://falafel.200ok.org/distfiles/ccze/ \
 
 MAINTAINER=	ecu@200ok.org
 COMMENT=	Fast log colorizer
+WWW=		http://bonehunter.rulez.org/CCZE.phtml
 
 LICENSE=	GPLv2
 

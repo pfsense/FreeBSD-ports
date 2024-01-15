@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	surblhost
 PORTVERSION=	0.8.0
 CATEGORIES=	mail
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Check if a hostname is blacklisted
+WWW=		https://surblhost.sourceforge.net/
 
 USES=	tar:bzip2
 GNU_CONFIGURE=	yes

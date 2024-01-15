@@ -1,6 +1,6 @@
 --- src/VBox/Installer/freebsd/VBox.sh.orig	2016-08-27 05:10:34 UTC
 +++ src/VBox/Installer/freebsd/VBox.sh
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,74 @@
 +#!/bin/sh
 +#
 +# Oracle VM VirtualBox startup script, FreeBSD hosts.
@@ -16,19 +16,26 @@
 +# hope that it will be useful, but WITHOUT ANY WARRANTY of any kind.
 +#
 +
-+PATH="/usr/bin:/bin:/usr/sbin:/sbin"
-+CONFIG="/usr/local/etc/vbox/vbox.cfg"
++PATH="/sbin:/bin:/usr/sbin:/usr/bin:%%LOCALBASE%%/sbin:%%LOCALBASE%%/bin"
++CONFIG="%%VBOX_ETC%%/vbox.cfg"
 +
 +test -r "${CONFIG}" &&
 +    . "${CONFIG}"
 +test -z "${INSTALL_DIR}" &&
-+    if test -d /usr/local/lib/virtualbox &&
-+        test -f /usr/local/lib/virtualbox/VBoxRT.so; then
-+        INSTALL_DIR=/usr/local/lib/virtualbox
++    if test -d %%VBOX_DIR%% &&
++        test -f %%VBOX_DIR%%/VBoxRT.so; then
++        INSTALL_DIR=%%VBOX_DIR%%
 +    else
-+        echo "Could not find VirtualBox installation. Please reinstall."
++        >&2 echo "Could not find VirtualBox installation. Please reinstall."
 +        exit 1
 +    fi
++
++if [ -d /etc/vbox ]; then
++    >&2 cat <<-EOH
++	WARNING: Directory /etc/vbox found, but ignored. VirtualBox
++	         configuration files are stored in %%VBOX_ETC%%/.
++	EOH
++fi
 +
 +# workaround for the KDE dialog problem
 +KDE_FORK_SLAVES=1; export KDE_FORK_SLAVES
@@ -37,6 +44,9 @@
 +case "$APP" in
 +    VirtualBox|virtualbox)
 +        exec "$INSTALL_DIR/VirtualBox" "$@"
++        ;;
++    VirtualBoxVM|virtualboxvm)
++        exec "$INSTALL_DIR/VirtualBoxVM" "$@"
 +        ;;
 +    VBoxManage|vboxmanage)
 +        exec "$INSTALL_DIR/VBoxManage" "$@"
@@ -60,7 +70,7 @@
 +        exec "$INSTALL_DIR/vboxwebsrv" "$@"
 +        ;;
 +    *)
-+        echo "Unknown application - $APP"
++        >&2 echo "Unknown application - $APP"
 +        exit 1
 +        ;;
 +esac

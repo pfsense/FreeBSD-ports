@@ -1,6 +1,3 @@
-# Created by: Gregory Sutter <gsutter@zer0.org>
-# $FreeBSD$
-
 PORTNAME=	junkfilter
 PORTVERSION=	20030115
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	SF \
 
 MAINTAINER=	gsutter@zer0.org
 COMMENT=	Spam filtering software for procmail
+WWW=		https://junkfilter.zer0.org/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

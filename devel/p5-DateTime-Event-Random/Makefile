@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DateTime-Event-Random
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DateTime extension for creating random datetimes
+WWW=		https://metacpan.org/release/DateTime-Event-Random
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \

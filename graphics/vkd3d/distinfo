@@ -1,5 +1,5 @@
-TIMESTAMP = 1600768098
-SHA256 (vkd3d-1.2.tar.xz) = b04b030fcbf0f2dacc933c76c74b449bffef1fc1a18d50254ef1ad3e380df96b
-SIZE (vkd3d-1.2.tar.xz) = 611240
-SHA256 (KhronosGroup-SPIRV-Headers-1.5.3_GH0.tar.gz) = eece8a9e147d37997d425d5d2eeb2e757ad25adc30d6651467094f3b18609b5a
-SIZE (KhronosGroup-SPIRV-Headers-1.5.3_GH0.tar.gz) = 386853
+TIMESTAMP = 1701873081
+SHA256 (vkd3d-1.10.tar.xz) = d618d67b62a90aec43a7a84a16ca90a5f1583c1ea6bd7fea63948a103cb4215c
+SIZE (vkd3d-1.10.tar.xz) = 956600
+SHA256 (KhronosGroup-SPIRV-Headers-1.5.4.raytracing.fixed-323-ge867c06_GH0.tar.gz) = 41b666b0d2bb87a6edbb9c629c5f3297a7a07bc1b07738fdb3f893ba90803a1c
+SIZE (KhronosGroup-SPIRV-Headers-1.5.4.raytracing.fixed-323-ge867c06_GH0.tar.gz) = 465996

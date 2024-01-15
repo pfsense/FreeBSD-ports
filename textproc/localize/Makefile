@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	localize
 PORTVERSION=	0.0.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	textproc gnustep
 MASTER_SITES=	http://www.eskimo.com/~pburns/Localize/files/
 DISTNAME=	Localize-20040424
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application to aid in the translation of .strings files
+WWW=		https://www.eskimo.com/~pburns/Localize/
 
 LICENSE=	GPLv2
 

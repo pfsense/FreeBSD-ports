@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-AttributeShortcuts
 PORTVERSION=	0.037
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Shorthand for common attribute options
+WWW=		https://metacpan.org/release/MooseX-AttributeShortcuts
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE

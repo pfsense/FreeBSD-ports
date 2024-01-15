@@ -1,12 +1,11 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	MathMod
-PORTVERSION=	10.1
+PORTVERSION=	11.1
+PORTREVISION=	1
 CATEGORIES=	math graphics
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Mathematical modeling software
+WWW=		https://sourceforge.net/projects/mathmod/
 
 LICENSE=	GPLv2
 
@@ -16,7 +15,7 @@ GH_PROJECT=	${PORTNAME:tl}
 
 USES=		compiler:c++11-lang dos2unix gl qmake qt:5
 USE_GL=		gl
-USE_QT=		buildtools_build core gui opengl qmake_build widgets
+USE_QT=		buildtools:build core gui opengl qmake:build widgets
 
 PLIST_FILES=	bin/${PORTNAME}
 

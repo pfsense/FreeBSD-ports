@@ -1,6 +1,3 @@
-# Created by: Dmitry Morozovsky <marck@rinet.ru>
-# $FreeBSD$
-
 PORTNAME=	koi2koi
 PORTVERSION=	1998.04.16
 CATEGORIES=	russian converters

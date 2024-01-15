@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ipdecap
 PORTVERSION=	0.7.2
 DISTVERSIONPREFIX=	v
@@ -8,6 +6,7 @@ CATEGORIES=	net
 
 MAINTAINER=	loic-freebsd@loicp.eu
 COMMENT=	Decapsulate traffic encapsulated within GRE, IPIP, 6in4, ESP protocols
+WWW=		https://loicpefferkorn.net/ipdecap/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

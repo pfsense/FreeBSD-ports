@@ -1,23 +1,24 @@
-# Created by: Anton Yudin <toha@toha.org.ua>
-# $FreeBSD$
-
 PORTNAME=	jmf
 PORTVERSION=	2.1.1e
 PORTREVISION=	3
 CATEGORIES=	java multimedia
-MASTER_SITES=	#http://java.sun.com/products/java-media/jmf/2.1.1/download.html
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/./_/g}-alljava
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java Media Framework
+WWW=		https://www.oracle.com/java/technologies/javase/java-media-framework.html
+
+# Converted from RESTRICTED
+LICENSE=	jmf
+LICENSE_NAME=	jmf
+LICENSE_TEXT=	Redistribution of pre-compiled binaries is not permitted
+LICENSE_PERMS=	auto-accept
 
 USES=		zip
 USE_JAVA=	yes
 NO_BUILD=	YES
 
 WRKSRC=		${WRKDIR}/JMF-${PORTVERSION}
-
-RESTRICTED=	Redistribution of pre-compiled binaries is not permitted
 
 OPTIONS_DEFINE=	DOCS
 
@@ -29,7 +30,7 @@ PORTDOCS=	*
 .if !exists(${DISTDIR}/${DISTNAME}${EXTRACT_SUFX})
 IGNORE=	because of licensing restrictions, you must fetch the source\
 distribution manually.\
-Please access: http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-client-419417.html \
+Please access https://www.oracle.com/java/technologies/java-archive-downloads-java-client-downloads.html \
 with a web browser and follow the "Java Media Framework (JMF) ${PORTVERSION}" link.\
 Select download format: cross-platform format.  Please place this file in\
 ${DISTDIR}

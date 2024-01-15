@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flruler
 PORTVERSION=	1.05
 CATEGORIES=	x11
@@ -8,6 +5,7 @@ MASTER_SITES=	http://seriss.com/people/erco/fltk/flruler/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	On-screen pixel ruler
+WWW=		https://seriss.com/people/erco/fltk/flruler/
 
 LICENSE=	GPLv2
 

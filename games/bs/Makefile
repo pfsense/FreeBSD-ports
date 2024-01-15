@@ -1,12 +1,10 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	bs
 PORTVERSION=	2.11
 CATEGORIES=	games
 
 MAINTAINER=	alfix86@gmail.com
 COMMENT=	Battleships solitaire game with a color interface
+WWW=		http://www.catb.org/~esr/bs/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,9 +18,7 @@ ALL_TARGET=	# empty
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	esr
-GL_COMMIT=	73947294765e163a7b914fd6eb4dd364125b3382
-
-INSTALLS_ICONS=	yes
+GL_TAGNAME=	73947294765e163a7b914fd6eb4dd364125b3382
 
 PLIST_FILES=	${DESKTOPDIR}/${PORTNAME}.desktop \
 		bin/${PORTNAME} \

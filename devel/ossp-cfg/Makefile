@@ -1,6 +1,3 @@
-# Created by: Alan Eldridge <alane@geeksrus.net>
-# $FreeBSD$
-
 PORTNAME=	cfg
 PORTVERSION=	0.9.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	ossp-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for parsing arbitrary C/C++-style configuration files
+WWW=		http://www.ossp.org/pkg/lib/cfg/
 
 LIB_DEPENDS=	libex.so:devel/ossp-ex
 

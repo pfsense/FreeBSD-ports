@@ -1,22 +1,19 @@
-# Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	garcon
-PORTVERSION=	0.8.0
-PORTREVISION=	1
+PORTVERSION=	4.18.1
+PORTREVISION=	2
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Freedesktop compliant menu library
+WWW=		https://www.xfce.org/
 
 # garcon's source code is licensed under GPLv2, while its
 # documentation is under GFDL 1.1.
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 USES=		compiler:c11 gettext-tools gmake gnome libtool pathfix \
 		pkgconfig tar:bzip2 xfce

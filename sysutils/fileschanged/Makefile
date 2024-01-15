@@ -1,6 +1,3 @@
-# Created by: Konstantin Reznichenko <kot@premierbank.dp.ua>
-# $FreeBSD$
-
 PORTNAME=	fileschanged
 PORTVERSION=	0.6.5
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility that reports when files have been altered
+WWW=		https://fileschanged.sourceforge.net/
 
 LIB_DEPENDS=	libargp.so:devel/argp-standalone
 BUILD_DEPENDS=	help2man:misc/help2man

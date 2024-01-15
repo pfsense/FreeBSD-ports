@@ -1,12 +1,10 @@
-# Created by: Dmitry Karasik (<dk@catpipe.net>)
-# $FreeBSD$
-
 PORTNAME=	HTML_QuickForm_Controller
 PORTVERSION=	1.0.10
 CATEGORIES=	devel www pear
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	The add-on to HTML_QuickForm that allows building of multipage forms
+WWW=		https://pear.php.net/package/HTML_QuickForm_Controller
 
 LICENSE=	PHP301
 

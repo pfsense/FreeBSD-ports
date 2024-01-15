@@ -1,6 +1,3 @@
-# Created by: Timur I. Bakeyev <bat@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	Relations
 PORTVERSION=	0.95
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Functions to Use with Databases and Queries
+WWW=		https://metacpan.org/pod/Relations
 
 USES=		perl5
 USE_PERL5=	configure

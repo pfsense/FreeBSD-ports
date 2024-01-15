@@ -1,9 +1,6 @@
-# Created by: Amar Takhar <verm@drunkmonk.net>
-# $FreeBSD$
-
 PORTNAME=	kobodeluxe
 PORTVERSION=	0.5.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	http://olofson.net/kobodl/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -11,6 +8,7 @@ DISTNAME=	KoboDeluxe-${DISTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	SDL port of the scrolling game XKobo
+WWW=		http://www.olofson.net/kobodl/
 
 USES=		sdl tar:bzip2
 USE_SDL=	image sdl

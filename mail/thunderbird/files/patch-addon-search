@@ -1,25 +1,24 @@
 https://github.com/mozilla/addons/issues/708
 https://github.com/mozilla/addons-frontend/issues/4610
 
-diff --git mail/app/profile/all-thunderbird.js mail/app/profile/all-thunderbird.js
-index 75c2c5e435e35..4d8c09c02759b 100644
---- comm/mail/app/profile/all-thunderbird.js
-+++ comm/mail/app/profile/all-thunderbird.js
-@@ -153,10 +153,10 @@ pref("extensions.getAddons.maxResults", 15);
- pref("extensions.getAddons.get.url", "https://services.addons.thunderbird.net/api/v3/addons/search/?guid=%IDS%&lang=%LOCALE%");
+--- comm/mail/app/profile/all-thunderbird.js.orig	2023-09-18 22:38:56.049701000 +0200
++++ comm/mail/app/profile/all-thunderbird.js	2023-09-18 22:41:26.840390000 +0200
+@@ -207,10 +207,10 @@
  pref("extensions.getAddons.compatOverides.url", "https://services.addons.thunderbird.net/api/v3/addons/compat-override/?guid=%IDS%&lang=%LOCALE%");
  pref("extensions.getAddons.link.url", "https://addons.thunderbird.net/%LOCALE%/%APP%/");
+ pref("browser.dictionaries.download.url", "https://addons.thunderbird.net/%LOCALE%/%APP%/language-tools/");
 -pref("extensions.getAddons.recommended.url", "https://services.addons.thunderbird.net/%LOCALE%/%APP%/api/%API_VERSION%/list/recommended/all/%MAX_RESULTS%/%OS%/%VERSION%?src=thunderbird");
-+pref("extensions.getAddons.recommended.url", "https://services.addons.thunderbird.net/%LOCALE%/%APP%/api/%API_VERSION%/list/recommended/all/%MAX_RESULTS%/Linux/%VERSION%?src=thunderbird");
- pref("extensions.getAddons.search.browseURL", "https://addons.thunderbird.net/%LOCALE%/%APP%/search/?q=%TERMS%");
+-pref("extensions.getAddons.search.browseURL", "https://addons.thunderbird.net/%LOCALE%/%APP%/search/?q=%TERMS%&appver=%VERSION%&platform=%OS%");
 -pref("extensions.getAddons.search.url", "https://services.addons.thunderbird.net/%LOCALE%/%APP%/api/%API_VERSION%/search/%TERMS%/all/%MAX_RESULTS%/%OS%/%VERSION%/%COMPATIBILITY_MODE%?src=thunderbird");
 -pref("extensions.webservice.discoverURL", "https://services.addons.thunderbird.net/%LOCALE%/%APP%/discovery/pane/%VERSION%/%OS%");
++pref("extensions.getAddons.recommended.url", "https://services.addons.thunderbird.net/%LOCALE%/%APP%/api/%API_VERSION%/list/recommended/all/%MAX_RESULTS%/Linux/%VERSION%?src=thunderbird");
++pref("extensions.getAddons.search.browseURL", "https://addons.thunderbird.net/%LOCALE%/%APP%/search/?q=%TERMS%&appver=%VERSION%&platform=Linux");
 +pref("extensions.getAddons.search.url", "https://services.addons.thunderbird.net/%LOCALE%/%APP%/api/%API_VERSION%/search/%TERMS%/all/%MAX_RESULTS%/Linux/%VERSION%/%COMPATIBILITY_MODE%?src=thunderbird");
 +pref("extensions.webservice.discoverURL", "https://services.addons.thunderbird.net/%LOCALE%/%APP%/discovery/pane/%VERSION%/Linux");
- pref("extensions.getAddons.siteRegExp", "^https://.*addons\\.thunderbird\\.net");
  pref("extensions.getAddons.langpacks.url", "https://services.addons.thunderbird.net/api/v3/addons/language-tools/?app=thunderbird&type=language&appversion=%VERSION%");
+ pref("extensions.getAddons.discovery.api_url", "https://services.addons.thunderbird.net/api/v4/discovery/?lang=%LOCALE%&edition=%DISTRIBUTION%");
  
-@@ -180,9 +180,9 @@ pref("security.cert_pinning.enforcement_level", 1);
+@@ -242,9 +242,9 @@
  //  .. etc ..
  //
  pref("extensions.update.enabled", true);
@@ -31,24 +30,20 @@ index 75c2c5e435e35..4d8c09c02759b 100644
  
  pref("extensions.update.interval", 86400);  // Check for updates to Extensions and
                                              // Themes every day
-diff --git toolkit/mozapps/extensions/internal/AddonRepository.jsm toolkit/mozapps/extensions/internal/AddonRepository.jsm
-index f70fd8d7e3bd8..81e8cd7764fdf 100644
---- toolkit/mozapps/extensions/internal/AddonRepository.jsm
-+++ toolkit/mozapps/extensions/internal/AddonRepository.jsm
-@@ -602,7 +602,7 @@ var AddonRepository = {
+--- toolkit/mozapps/extensions/internal/AddonRepository.sys.mjs.orig	2023-09-18 22:35:42.082170000 +0200
++++ toolkit/mozapps/extensions/internal/AddonRepository.sys.mjs	2023-09-18 22:36:14.313490000 +0200
+@@ -596,7 +596,7 @@
        addon.version = String(aEntry.current_version.version);
        if (Array.isArray(aEntry.current_version.files)) {
          for (let file of aEntry.current_version.files) {
--          if (file.platform == "all" || file.platform == PLATFORM) {
-+          if (file.platform == "all" || file.platform == "linux" || file.platform == PLATFORM) {
+-          if (file.platform == "all" || file.platform == lazy.PLATFORM) {
++          if (file.platform == "all" || file.platform == "linux" || file.platform == lazy.PLATFORM) {
              if (file.url) {
-               addon.sourceURI = NetUtil.newURI(file.url);
+               addon.sourceURI = lazy.NetUtil.newURI(file.url);
              }
-diff --git toolkit/mozapps/extensions/internal/XPIDatabase.jsm toolkit/mozapps/extensions/internal/XPIDatabase.jsm
-index f70fd8d7e3bd8..81e8cd7764fdf 100644
---- toolkit/mozapps/extensions/internal/XPIDatabase.jsm
-+++ toolkit/mozapps/extensions/internal/XPIDatabase.jsm
-@@ -355,7 +355,7 @@ class AddonInternal {
+--- toolkit/mozapps/extensions/internal/XPIDatabase.jsm.orig	2023-09-18 22:36:52.473447000 +0200
++++ toolkit/mozapps/extensions/internal/XPIDatabase.jsm	2023-09-18 22:37:26.177990000 +0200
+@@ -634,7 +634,7 @@
      // Something is causing errors in here
      try {
        for (let platform of this.targetPlatforms) {
@@ -56,4 +51,4 @@ index f70fd8d7e3bd8..81e8cd7764fdf 100644
 +        if (platform.os == "Linux" || platform.os == Services.appinfo.OS) {
            if (platform.abi) {
              needsABI = true;
-             if (platform.abi === abi)
+             if (platform.abi === abi) {

@@ -1,6 +1,3 @@
-# Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	chaco
 PORTVERSION=	2.2
 CATEGORIES=	math
@@ -12,6 +9,7 @@ DISTNAME=	Chaco-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Software for partitioning graphs
+WWW=		http://www.cs.sandia.gov/~bahendr/chaco.html
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/../GNU_Lesser_GPL.txt

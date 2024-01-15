@@ -1,13 +1,11 @@
-# Created by: Johnny Sorocil <jsorocil@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	arachne-pnr
 PORTVERSION=	g20181021
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Place and route tool for FPGAs
+WWW=		https://github.com/cseed/arachne-pnr
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

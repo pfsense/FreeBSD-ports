@@ -1,13 +1,12 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ffe
 DISTVERSION=	0.3.9
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/ff-extractor/ff-extractor/${DISTVERSION}
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Flat file extractor
+WWW=		https://ff-extractor.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		makeinfo localbase
 
 GNU_CONFIGURE=	yes
+CFLAGS+=	-std=gnu89	# Requires GNU89 inline semantics.
 
 INFO=		ffe
 PORTDOCS=	ffe.html

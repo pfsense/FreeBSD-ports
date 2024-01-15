@@ -1,15 +1,12 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-OpenSSL-ECDSA
-PORTVERSION=	0.08
-PORTREVISION=	1
+PORTVERSION=	0.10
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for OpenSSL ECDSA
+WWW=		https://metacpan.org/release/Crypt-OpenSSL-ECDSA
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

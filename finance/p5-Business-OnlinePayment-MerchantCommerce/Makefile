@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Business-OnlinePayment-MerchantCommerce
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Business::OnlinePayment backend module for MerchantCommerce authorization service
+WWW=		https://metacpan.org/release/Business-OnlinePayment-MerchantCommerce
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

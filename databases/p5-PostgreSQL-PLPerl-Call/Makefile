@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@sunpoet.net>
-# $FreeBSD$
-
 PORTNAME=	PostgreSQL-PLPerl-Call
 PORTVERSION=	1.007
 CATEGORIES=	databases perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple interface for calling SQL functions from PostgreSQL PL/Perl
+WWW=		https://metacpan.org/release/PostgreSQL-PLPerl-Call
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

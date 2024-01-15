@@ -1,6 +1,3 @@
-# Created by: Yoshihiko Sarumaru <mistral@imasy.or.jp>
-# $FreeBSD$
-
 PORTNAME=	suicavalue
 PORTVERSION=	2007.05.15
 CATEGORIES=	japanese
@@ -12,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to print a statement of Suica
+WWW=		https://www.imfj.net/people/nomura/soft/PaSoRi/SuicaValue.html
 
 LIB_DEPENDS=	libpasori.so:devel/libpasori
 

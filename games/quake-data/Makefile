@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	data
 PORTVERSION=	1.0.6
 PORTREVISION=	2
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake data files
+WWW=		http://www.idsoftware.com/games/quake/quake/
 
 DATADIR=	${Q1DIR}
 NO_BUILD=	yes

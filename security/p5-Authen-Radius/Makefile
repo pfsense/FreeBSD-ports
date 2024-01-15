@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Authen-Radius
 PORTVERSION=	0.32
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to provide simple Radius client facilities
+WWW=		https://metacpan.org/release/Authen-Radius
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

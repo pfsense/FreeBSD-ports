@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Lingua-ZH-HanDetect
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Guess Chinese text's variant and encoding
+WWW=		https://metacpan.org/release/Lingua-ZH-HanDetect
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

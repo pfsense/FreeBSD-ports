@@ -1,14 +1,11 @@
-# Created by: Yonatan <onatan@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	culmus
-PORTVERSION=	0.131
-PORTREVISION=	1
+PORTVERSION=	0.133
 CATEGORIES=	hebrew
 MASTER_SITES=	SF
 
 MAINTAINER=	onatan@gmail.com
 COMMENT=	Free Hebrew Type1 fonts
+WWW=		http://culmus.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	squirrelmail-plugins
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	"meta-port" to install SquirrelMail plugins
+WWW=		https://www.squirrelmail.org/
 
 SQUIRRELDIR?=	${PREFIX}/www/squirrelmail
 

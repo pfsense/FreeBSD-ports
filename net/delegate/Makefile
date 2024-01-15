@@ -1,6 +1,3 @@
-# Created by: Masafumi NAKANE <max@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	delegate
 PORTVERSION=	9.9.13
 PORTREVISION=	1
@@ -8,13 +5,14 @@ CATEGORIES=	net www
 MASTER_SITES=	ftp://ftp.delegate.org/pub/DeleGate/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	General purpose TCP/IP proxy system
+WWW=		http://www.delegate.org/delegate/
 
 BROKEN_mips=		fails to build: gmake[1]: [Makefile:116: mkmake.exe] Error 1
 BROKEN_mips64=		fails to build: gmake[1]: [Makefile:116: mkmake.exe] Error 1
 
-USES=		compiler:c11 gmake
+USES=		compiler:c11 cpe gmake
 SUB_FILES=	pkg-message
 
 ADMIN?=		admin@example.com

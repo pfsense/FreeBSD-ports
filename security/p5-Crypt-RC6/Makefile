@@ -1,6 +1,3 @@
-# Created by: nork@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Crypt-RC6
 PORTVERSION=	1.0
 PORTREVISION=	1

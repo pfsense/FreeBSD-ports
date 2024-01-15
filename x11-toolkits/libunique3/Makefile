@@ -1,14 +1,12 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libunique
 PORTVERSION=	3.0.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Library for single instance applications
+WWW=		http://live.gnome.org/LibUnique
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

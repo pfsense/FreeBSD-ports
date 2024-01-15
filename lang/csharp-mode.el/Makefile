@@ -1,15 +1,13 @@
-# Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	csharp-mode.el
 PORTVERSION=	0.9.2
-PORTREVISION=	2
+PORTREVISION=	11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	lang elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emacs major mode for editing C\# source code
+WWW=		https://github.com/josteink/csharp-mode
 
 LICENSE=	GPLv2
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tcbasic
 PORTVERSION=	2.2.0
 CATEGORIES=	lang
@@ -7,6 +5,7 @@ MASTER_SITES=	https://github.com/tcort/${PORTNAME}/releases/download/v${PORTVERS
 
 MAINTAINER=	linuxgeek@gmail.com
 COMMENT=	Small BASIC Interpreter written in C
+WWW=		https://github.com/tcort/tcbasic
 
 LICENSE=	GPLv3
 

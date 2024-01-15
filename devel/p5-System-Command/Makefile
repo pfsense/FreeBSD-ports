@@ -1,14 +1,12 @@
-# Created by: Wen Heping<wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	System-Command
-PORTVERSION=	1.121
+PORTVERSION=	1.122
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object for running system commands
+WWW=		https://metacpan.org/release/System-Command
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

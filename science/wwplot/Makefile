@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	wwplot
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.8
+DISTVERSION=	0.0.9
+PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Plotting tool for experimental physics classes
+WWW=		https://github.com/wwmm/wwplot
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -21,10 +21,14 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}pyside2>0:devel/pyside2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR}
 
-USES=		gettext meson python:3.6+ shebangfix
-SHEBANG_FILES=	wwplot.in
+USES=		desktop-file-utils gettext meson python shebangfix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	wwmm
+
+SHEBANG_FILES=	wwplot.in
+
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} "s|find_installation('python3',|find_installation('python${PYTHON_VER}',|" ${WRKSRC}/meson.build

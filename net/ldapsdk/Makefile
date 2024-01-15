@@ -1,6 +1,3 @@
-# Created by: paul@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	ldapsdk
 PORTVERSION=	6.0.7
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	mozldap-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mozilla LDAP sdk
+WWW=		https://wiki.mozilla.org/LDAP_C_SDK
 
 LIB_DEPENDS=	libnspr4.so:devel/nspr
 

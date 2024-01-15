@@ -1,6 +1,6 @@
---- configure.orig	2020-02-28 21:25:18 UTC
+--- configure.orig	2023-02-22 20:22:10 UTC
 +++ configure
-@@ -114,8 +114,6 @@ for opt do
+@@ -136,8 +136,6 @@ for opt do
      --enable-coverage)      build_mode="coverage";;
      -h|-help|--help)        show_help=yes;;
      *)
@@ -9,10 +9,10 @@
        ;;
    esac
  done
-@@ -374,6 +372,7 @@ if test $backend = mcode; then
-     *darwin*) ortho_flags="Flags_Macosx${mcode64}" ;;
+@@ -429,6 +427,7 @@ if test $backend = mcode; then
      *mingw32*) ortho_flags="Flags_Windows${mcode64}" ;;
-     *linux*) ortho_flags="Flags_Linux${mcode64}" ;;
+     *linux*)   ortho_flags="Flags_Linux${mcode64}" ;;
+     *openbsd*) ortho_flags="Flags_Macosx${mcode64}" ;;
 +    *freebsd*) ortho_flags="Flags_Linux${mcode64}" ;;
      *) echo "Unsupported $build build for mcode"; exit 1;;
    esac

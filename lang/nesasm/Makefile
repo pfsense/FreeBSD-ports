@@ -1,6 +1,3 @@
-# Created by: Pontus Stenetorp <ninjin@kth.se>
-# $FreeBSD$
-
 PORTNAME=	nesasm
 PORTVERSION=	20040314
 PORTREVISION=	1
@@ -9,12 +6,22 @@ MASTER_SITES=	http://bobrost.com/nes/files/
 DISTNAME=	nbasic_2004_03_14
 
 MAINTAINER=	ninjin@kth.se
-COMMENT=	The nesasm assembler is a 6502 assembler with specific NES support
+COMMENT=	6502 assembler with specific NES support
+WWW=		https://bobrost.com/nes/resources.php
 
-WRKSRC=		${WRKDIR}/nbasic_2004_03_14/source/${PORTNAME}/source/
+LICENSE=	NONE
+
 USES=		zip
 
+WRKSRC=		${WRKDIR}/nbasic_2004_03_14/source/${PORTNAME}/source/
+
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} -e '/^CC/s/=/?=/' \
@@ -28,4 +35,4 @@ do-install:
 	# The next install will overwrite readme.txt with a newer readme.txt
 	${INSTALL_DATA} ${WRKSRC}../readme.txt ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,6 +1,3 @@
-# Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xmlenc
 PORTVERSION=	0.52
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Light-weight XML encoding library for Java
+WWW=		https://xmlenc.sourceforge.net/
 
 USES=		tar:tgz
 USE_JAVA=	yes

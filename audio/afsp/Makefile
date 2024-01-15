@@ -1,6 +1,3 @@
-# Created by: Kawaguti Ginga <ginga@athena.club.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	afsp
 PORTVERSION=	8.2
 CATEGORIES=	audio

@@ -1,31 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	exhale
-DISTVERSION=	1.1.0
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.2.1
 CATEGORIES=	audio
 
-# Backport for MacOS compatibility
-PATCH_SITES=	https://gitlab.com/ecodis/exhale/-/commit/
-PATCHFILES=	4002bff2bf60a87731b42aa32743a910a0e017b8.patch:-p1
-
-MAINTAINER=	daniel.engberg.lists@pyret.net
+MAINTAINER=	diizzy@FreeBSD.org
 COMMENT=	Open source xHE-AAC (Extended HE-AAC/USAC) encoder
+WWW=		https://gitlab.com/ecodis/exhale
 
 LICENSE=	EXHALE
 LICENSE_NAME=	exhale Copyright License
 LICENSE_FILE=	${WRKSRC}/include/License.htm
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		cmake compiler:c++11-lang
+USES=		cmake
+USE_LDCONFIG=	yes
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	ecodis
-GL_COMMIT=	c71ec4805a2cf0bdbc6968a5ef63d2dd326cf541
 
-USE_LDCONFIG=	yes
+CMAKE_ON=	BUILD_SHARED_LIBS
 
 PLIST_FILES=	bin/exhale \
+		include/exhaleDecl.h \
 		lib/libexhale.so
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	grok_exporter
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.0.0.RC4
+PORTREVISION=	15
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	Export Prometheus metrics from arbitrary unstructured log data
+WWW=		https://github.com/fstab/grok_exporter
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -47,6 +47,7 @@ SUB_FILES=	config.yml
 
 post-patch:
 	for f in `${FIND} ${WRKSRC}/tailer -name '*darwin*'`; do ${LN} -sf $${f} `echo $${f} | ${SED} 's/darwin/freebsd/g'`; done
+	cd ${WRKSRC}/tailer/fswatcher && ${LN} -sf fswatcher_darwin_amd64.go fswatcher_freebsd_arm64.go
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}

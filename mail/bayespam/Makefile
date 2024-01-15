@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bayespam
 PORTVERSION=	0.9.2
 PORTREVISION=	1
@@ -10,8 +7,11 @@ EXTRACT_SUFX=	.tar_.gz
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Qmail spam filter written in Perl using Bayesian classification
+WWW=		https://BSDforge.com/projects/mail/bayespam
 
 LICENSE=	GPLv2
+
+BROKEN=		Unfetchable
 
 RUN_DEPENDS=	p5-MIME-Tools>=0:mail/p5-MIME-Tools
 

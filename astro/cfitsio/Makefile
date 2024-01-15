@@ -1,48 +1,39 @@
-# Created by: Markus Brueffer <markus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cfitsio
-PORTVERSION=	3.470
-PORTREVISION=	1
+PORTVERSION=	4.3.1
 CATEGORIES=	astro
 MASTER_SITES=	https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/ \
 		https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/oldvers/ \
 		ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/ \
 		ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/oldvers/ \
 		LOCAL/sunpoet
-DISTNAME=	${PORTNAME}-${PORTVERSION:S|0$||}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library for reading and writing files in FITS data format
+WWW=		https://heasarc.gsfc.nasa.gov/docs/software/fitsio/
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libf2c.so:lang/f2c
 
-OPTIONS_DEFINE=	DOCS
-
-USES=		localbase pkgconfig
+USES=		cpe localbase pkgconfig
 
 ALL_TARGET=	libcfitsio.a shared
-CONFIGURE_ARGS=	ac_cv_prog_FC=f2c
+CONFIGURE_ARGS=	ac_cv_prog_FC=f2c --enable-reentrant --with-bzip2=/usr
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	SHLIB_MAJOR=${SHLIB_MAJOR} \
-		SHLIB_MINOR=${SHLIB_MINOR}
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
-SHLIB_MAJOR=	8
-SHLIB_MINOR=	${PORTVERSION:S|0$||}
+CPE_VENDOR=	nasa
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|' ${WRKSRC}/*.[chl] ${WRKSRC}/zlib/*.h
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	cd ${WRKSRC}/ && ${INSTALL_DATA} drvrsmem.h fitsio.h fitsio2.h longnam.h ${STAGEDIR}${PREFIX}/include/
 	${INSTALL_DATA} ${WRKSRC}/libcfitsio.a ${STAGEDIR}${PREFIX}/lib/
-	${INSTALL_LIB} ${WRKSRC}/libcfitsio.so.${SHLIB_MAJOR}.${SHLIB_MINOR} ${STAGEDIR}${PREFIX}/lib/
+	${INSTALL_LIB} ${WRKSRC}/libcfitsio.so.10.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/
 	${INSTALL_DATA} ${WRKSRC}/cfitsio.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/
-	${LN} -fs libcfitsio.so.${SHLIB_MAJOR}.${SHLIB_MINOR} ${STAGEDIR}${PREFIX}/lib/libcfitsio.so.${SHLIB_MAJOR}
-	${LN} -fs libcfitsio.so.${SHLIB_MAJOR}.${SHLIB_MINOR} ${STAGEDIR}${PREFIX}/lib/libcfitsio.so
+	${LN} -fs libcfitsio.so.10.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libcfitsio.so.10
+	${LN} -fs libcfitsio.so.10.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libcfitsio.so
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/

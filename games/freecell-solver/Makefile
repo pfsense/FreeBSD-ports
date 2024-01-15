@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freecell-solver
 PORTVERSION=	6.2.0
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://fc-solve.shlomifish.org/downloads/fc-solve/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Open source framework for solving Freecell
+WWW=		https://fc-solve.shlomifish.org/
 
 LICENSE=	MIT
 
@@ -24,12 +22,16 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}random2>=1.0.1:math/py-random2@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}six>=1.11.0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pysol-cards>=0.10.0:games/py-pysol-cards@${PY_FLAVOR}
 LIB_DEPENDS=	${LIB_DEPENDS_${ARCH}}
+LIB_DEPENDS_armv6=	libgmp.so:math/gmp
+LIB_DEPENDS_armv7=	libgmp.so:math/gmp
 LIB_DEPENDS_i386=	libgmp.so:math/gmp
+LIB_DEPENDS_mips=	libgmp.so:math/gmp
+LIB_DEPENDS_powerpc=	libgmp.so:math/gmp
 
 OPTIONS_DEFINE=	DOCS TCMALLOC
 TCMALLOC_DESC=	Use Google's TCMalloc
 
-USES=		cmake compiler:c11 localbase perl5 python:3.4+ shebangfix tar:xz
+USES=		cmake compiler:c11 localbase perl5 python shebangfix tar:xz
 USE_PERL5=	build
 SHEBANG_FILES=	board_gen/make_pysol_freecell_board.py \
 		board_gen/transpose-freecell-board.py \

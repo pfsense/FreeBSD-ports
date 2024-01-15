@@ -3,11 +3,11 @@
  * suricata_check_for_rule_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2021 Bill Meeks
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
+ * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
+ * Copyright (c) 2009 Robert Zelaya Sr. Developer
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,10 +26,11 @@
 require_once("functions.inc");
 require_once("service-utils.inc");
 require_once("pfsense-utils.inc");
+require_once("notices.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 require_once("/usr/local/pkg/suricata/suricata_defs.inc");
 
-global $g, $rebuild_rules;
+global $g, $rebuild_rules, $notify_message;
 
 $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
@@ -37,22 +38,26 @@ $suricata_rules_dir = SURICATA_RULES_DIR;
 $suri_eng_ver = filter_var(SURICATA_BIN_VERSION, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
 /* define checks */
-$oinkid = $config['installedpackages']['suricata']['config'][0]['oinkcode'];
-$snort_filename = $config['installedpackages']['suricata']['config'][0]['snort_rules_file'];
-$etproid = $config['installedpackages']['suricata']['config'][0]['etprocode'];
-$snortdownload = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] == 'on' ? 'on' : 'off';
-$etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == 'on' ? 'on' : 'off';
-$eto = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == 'on' ? 'on' : 'off';
-$vrt_enabled = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] == 'on' ? 'on' : 'off';
-$snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == 'on' ? 'on' : 'off';
+$oinkid = config_get_path('installedpackages/suricata/config/0/oinkcode');
+$snort_filename = config_get_path('installedpackages/suricata/config/0/snort_rules_file');
+$etproid = config_get_path('installedpackages/suricata/config/0/etprocode');
+$snortdownload = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules') == 'on' ? 'on' : 'off';
+$etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules') == 'on' ? 'on' : 'off';
+$eto = config_get_path('installedpackages/suricata/config/0/enable_etopen_rules') == 'on' ? 'on' : 'off';
+$vrt_enabled = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules') == 'on' ? 'on' : 'off';
+$snortcommunityrules = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == 'on' ? 'on' : 'off';
+$feodotracker_rules = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
+$sslbl_rules = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == 'on' ? 'on' : 'off';
+$enable_extra_rules = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
+$extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/rule', []);
 
 /* Working directory for downloaded rules tarballs */
 $tmpfname = "{$g['tmp_path']}/suricata_rules_up";
 
 /* Snort Rules filenames and URL */
-if ($config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on') {
-	$snort_rule_url = trim(substr($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], '/') + 1));
-	$snort_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], '/') + 1));
+if (config_get_path('installedpackages/suricata/config/0/enable_snort_custom_url') == 'on') {
+	$snort_rule_url = trim(substr(config_get_path('installedpackages/suricata/config/0/snort_custom_url'), 0, strrpos(config_get_path('installedpackages/suricata/config/0/snort_custom_url'), '/') + 1));
+	$snort_filename = trim(substr(config_get_path('installedpackages/suricata/config/0/snort_custom_url'), strrpos(config_get_path('installedpackages/suricata/config/0/snort_custom_url'), '/') + 1));
 	$snort_filename_md5 = "{$snort_filename}.md5";
 }
 else {
@@ -61,10 +66,10 @@ else {
 }
 
 /* Snort GPLv2 Community Rules filenames and URL */
-if ($config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] == 'on') {
-	$snort_community_rules_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], '/') + 1));
+if (config_get_path('installedpackages/suricata/config/0/enable_gplv2_custom_url') == 'on') {
+	$snort_community_rules_filename = trim(substr(config_get_path('installedpackages/suricata/config/0/gplv2_custom_url'), strrpos(config_get_path('installedpackages/suricata/config/0/gplv2_custom_url'), '/') + 1));
 	$snort_community_rules_filename_md5 = $snort_community_rules_filename . ".md5";
-	$snort_community_rules_url = trim(substr($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], '/') + 1));
+	$snort_community_rules_url = trim(substr(config_get_path('installedpackages/suricata/config/0/gplv2_custom_url'), 0, strrpos(config_get_path('installedpackages/suricata/config/0/gplv2_custom_url'), '/') + 1));
 }
 else {
 	$snort_community_rules_filename = GPLV2_DNLD_FILENAME;
@@ -72,12 +77,26 @@ else {
 	$snort_community_rules_url = GPLV2_DNLD_URL;
 }
 
+/* Set up ABUSE.ch Feodo Tracker and SSL Blacklist rules filenames and URLs */
+if (config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == 'on') {
+	$feodotracker_rules_filename = FEODO_TRACKER_DNLD_FILENAME;
+	$feodotracker_rules_filename_md5 = FEODO_TRACKER_DNLD_FILENAME . ".md5";
+	$feodotracker_rules_url = FEODO_TRACKER_DNLD_URL;
+
+}
+if (config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == 'on') {
+	$sslbl_rules_filename = ABUSE_SSLBL_DNLD_FILENAME;
+	$sslbl_rules_filename_md5 = ABUSE_SSLBL_DNLD_FILENAME . ".md5";
+	$sslbl_rules_url = ABUSE_SSLBL_DNLD_URL;
+
+}
+
 /* Set up Emerging Threats rules filenames and URL */
 if ($etpro == "on") {
 	$et_name = "Emerging Threats Pro";
-	if ($config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] == 'on') {
-		$emergingthreats_url = trim(substr($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], '/') + 1));
-		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], '/') + 1));
+	if (config_get_path('installedpackages/suricata/config/0/enable_etpro_custom_url') == 'on') {
+		$emergingthreats_url = trim(substr(config_get_path('installedpackages/suricata/config/0/etpro_custom_rule_url'), 0, strrpos(config_get_path('installedpackages/suricata/config/0/etpro_custom_rule_url'), '/') + 1));
+		$emergingthreats_filename = trim(substr(config_get_path('installedpackages/suricata/config/0/etpro_custom_rule_url'), strrpos(config_get_path('installedpackages/suricata/config/0/etpro_custom_rule_url'), '/') + 1));
 		$emergingthreats_filename_md5 = $emergingthreats_filename . ".md5";
 		$et_md5_remove = ET_DNLD_FILENAME . ".md5";
 	}
@@ -92,9 +111,9 @@ if ($etpro == "on") {
 }
 else {
 	$et_name = "Emerging Threats Open";
-	if ($config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == 'on') {
-		$emergingthreats_url = trim(substr($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], '/') + 1));
-		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], '/') + 1));
+	if (config_get_path('installedpackages/suricata/config/0/enable_etopen_custom_url') == 'on') {
+		$emergingthreats_url = trim(substr(config_get_path('installedpackages/suricata/config/0/etopen_custom_rule_url'), 0, strrpos(config_get_path('installedpackages/suricata/config/0/etopen_custom_rule_url'), '/') + 1));
+		$emergingthreats_filename = trim(substr(config_get_path('installedpackages/suricata/config/0/etopen_custom_rule_url'), strrpos(config_get_path('installedpackages/suricata/config/0/etopen_custom_rule_url'), '/') + 1));
 		$emergingthreats_filename_md5 = $emergingthreats_filename . ".md5";
 		$et_md5_remove = ETPRO_DNLD_FILENAME . ".md5";
 	}
@@ -144,7 +163,7 @@ function suricata_download_file_url($url, $file_out) {
 	/* It provides logging of returned CURL errors. */
 	/************************************************/
 
-	global $g, $config, $last_curl_error, $fout, $ch;
+	global $g, $last_curl_error;
 
 	$rfc2616 = array(
 			100 => "100 Continue",
@@ -192,16 +211,19 @@ function suricata_download_file_url($url, $file_out) {
 
 	$last_curl_error = "";
 
-	$fout = fopen($file_out, "wb");
+	$fout = fopen($file_out, 'wb');
 	if ($fout) {
 		$ch = curl_init($url);
 		if (!$ch)
 			return false;
 		curl_setopt($ch, CURLOPT_FILE, $fout);
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_NOPROGRESS, '1');
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_NONE);
+		curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_ALPN, true);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_NPN, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
@@ -211,7 +233,7 @@ function suricata_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1);
 
 		// Honor any system restrictions on sending USERAGENT info
-		if (!isset($config['system']['do_not_send_host_uuid'])) {
+		if (config_path_enabled('system', 'do_not_send_host_uuid')) {
 			curl_setopt($ch, CURLOPT_USERAGENT, $g['product_name'] . '/' . $g['product_version'] . ' : ' . get_single_sysctl('kern.hostuuid'));
 		}
 		else {
@@ -219,14 +241,14 @@ function suricata_download_file_url($url, $file_out) {
 		}
 
 		// Use the system proxy server setttings if configured
-		if (!empty($config['system']['proxyurl'])) {
-			curl_setopt($ch, CURLOPT_PROXY, $config['system']['proxyurl']);
-			if (!empty($config['system']['proxyport'])) {
-				curl_setopt($ch, CURLOPT_PROXYPORT, $config['system']['proxyport']);
+		if (!empty(config_get_path('system/proxyurl'))) {
+			curl_setopt($ch, CURLOPT_PROXY, config_get_path('system/proxyurl'));
+			if (!empty(config_get_path('system/proxyport'))) {
+				curl_setopt($ch, CURLOPT_PROXYPORT, config_get_path('system/proxyport'));
 			}
-			if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
+			if (!empty(config_get_path('system/proxyuser')) && !empty(config_get_path('system/proxypass'))) {
 				@curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_ANY | CURLAUTH_ANYSAFE);
-				curl_setopt($ch, CURLOPT_PROXYUSERPWD, "{$config['system']['proxyuser']}:{$config['system']['proxypass']}");
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, config_get_path('system/proxyuser') . ":" . config_get_path('system/proxypass'));
 			}
 		}
 
@@ -247,7 +269,6 @@ function suricata_download_file_url($url, $file_out) {
 		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if (isset($rfc2616[$http_code]))
 			$last_curl_error = $rfc2616[$http_code];
-		curl_close($ch);
 		fclose($fout);
 
 		// If we had to try more than once, log it
@@ -280,7 +301,7 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 	/*           error occurred.                              */
 	/**********************************************************/
 
-	global $last_curl_error, $update_errors;
+	global $last_curl_error, $update_errors, $notify_message;
 	$suricatadir = SURICATADIR;
 	$filename_md5 = basename($file_dst);
 
@@ -294,12 +315,13 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 		error_log("\tChecking {$desc} md5 file...\n", 3, SURICATA_RULES_UPD_LOGFILE);
 		// check md5 hash in new file against current file to see if new download is posted
 		if (file_exists("{$suricatadir}{$filename_md5}")) {
-			$md5_check_new = file_get_contents($file_dst);
-			$md5_check_old = file_get_contents("{$suricatadir}{$filename_md5}");
+			$md5_check_new = trim(file_get_contents($file_dst));
+			$md5_check_old = trim(file_get_contents("{$suricatadir}{$filename_md5}"));
 			if ($md5_check_new == $md5_check_old) {
 				suricata_update_status(gettext("{$desc} are up to date.") . "\n");
 				syslog(LOG_NOTICE, gettext("[Suricata] {$desc} are up to date..."));
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				$notify_message .= gettext("- {$desc} are up to date.\n");
 				return false;
 			}
 			else
@@ -317,6 +339,7 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 		error_log(gettext("\t{$suricata_err_msg}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tServer error message was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		$notify_message .= gettext("- {$desc} will not be updated, md5 download failed!\n");
 		$update_errors = true;
 		return false;
 	}
@@ -341,7 +364,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	/*           FALSE if download was not successful.        */
 	/**********************************************************/
 
-	global $last_curl_error, $update_errors;
+	global $last_curl_error, $update_errors, $notify_message;
 
 	$suricatadir = SURICATADIR;
 	$filename = basename($file_dst);
@@ -367,9 +390,11 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 			error_log(gettext("\tDownloaded {$desc} file MD5: " . md5_file($file_dst) . "\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tExpected {$desc} file MD5: {$file_md5}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\t{$desc} file download failed.  {$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$notify_message .= gettext("- {$desc} will not be updated, bad MD5 checksum.\n");
 			$update_errors = true;
 			return false;
 		}
+		$notify_message .= gettext("- {$desc} rules were updated.\n");
 		return true;
 	}
 	else {
@@ -378,6 +403,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 		error_log(gettext("\tERROR: {$desc} file download failed.  Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		$notify_message .= gettext("- {$desc} will not be updated, rules file download failed.\n");
 		$update_errors = true;
 		return false;
 	}
@@ -410,24 +436,46 @@ sleep(random_int(0, 35));
 
 /* Log start time for this rules update */
 error_log(gettext("Starting rules update...  Time: " . date("Y-m-d H:i:s") . "\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+$notify_message = gettext("Suricata rules update started: " . date("Y-m-d H:i:s") . "\n");
+$notify_new_message = '';
 $last_curl_error = "";
 $update_errors = false;
+
+/* Ensure our basic config array of interfaces exists to prevent PHP foreach() errors */
+init_config_arr(array('installedpackages', 'suricata', 'rule'));
+
+/* Save current state (running/not running) for each enabled Suricatat interface */
+$active_interfaces = array();
+foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
+	$if_real = get_real_interface($value['interface']);
+
+	/* Skip processing for instances whose underlying physical        */
+	/* interface has been removed in pfSense.                         */
+	if ($if_real == "") {
+		continue;
+	}
+
+	if ($value['enable'] = "on" && suricata_is_running($value['uuid'], $if_real)) {
+		$active_interfaces[] = $value['interface'];
+	}
+}
 
 /*  Check for and download any new Emerging Threats Rules sigs */
 if ($emergingthreats == 'on') {
 	if (suricata_check_rule_md5("{$emergingthreats_url}{$emergingthreats_filename_md5}", "{$tmpfname}/{$emergingthreats_filename_md5}", "{$et_name} rules")) {
 		/* download Emerging Threats rules file */
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$emergingthreats_filename_md5}"));
-		if (!suricata_fetch_new_rules("{$emergingthreats_url}{$emergingthreats_filename}", "{$tmpfname}/{$emergingthreats_filename}", $file_md5, "{$et_name} rules"))
+		if (!suricata_fetch_new_rules("{$emergingthreats_url}{$emergingthreats_filename}", "{$tmpfname}/{$emergingthreats_filename}", $file_md5, "{$et_name} rules")) {
 			$emergingthreats = 'off';
-	}
-	else
+		}
+	} else {
 		$emergingthreats = 'off';
+	}
 }
 
 /*  Check for and download any new Snort rule sigs */
 if ($snortdownload == 'on') {
-	$snort_custom_url = $config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on' ? TRUE : FALSE;
+	$snort_custom_url = config_get_path('installedpackages/suricata/config/0/enable_snort_custom_url') == 'on' ? TRUE : FALSE;
 	if (empty($snort_filename)) {
 		syslog(LOG_WARNING, gettext("WARNING: No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
 		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -436,11 +484,12 @@ if ($snortdownload == 'on') {
 	elseif (suricata_check_rule_md5("{$snort_rule_url}{$snort_filename_md5}" . ($snort_custom_url ? "" : "?oinkcode={$oinkid}"), "{$tmpfname}/{$snort_filename_md5}", "Snort VRT rules")) {
 		/* download snortrules file */
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_filename_md5}"));
-		if (!suricata_fetch_new_rules("{$snort_rule_url}{$snort_filename}" . ($snort_custom_url ? "" : "?oinkcode={$oinkid}"), "{$tmpfname}/{$snort_filename}", $file_md5, "Snort rules"))
+		if (!suricata_fetch_new_rules("{$snort_rule_url}{$snort_filename}" . ($snort_custom_url ? "" : "?oinkcode={$oinkid}"), "{$tmpfname}/{$snort_filename}", $file_md5, "Snort rules")) {
 			$snortdownload = 'off';
-	}
-	else
+		}
+	} else {
 		$snortdownload = 'off';
+	}
 }
 
 /*  Check for and download any new Snort GPLv2 Community Rules sigs */
@@ -448,11 +497,211 @@ if ($snortcommunityrules == 'on') {
 	if (suricata_check_rule_md5("{$snort_community_rules_url}{$snort_community_rules_filename_md5}", "{$tmpfname}/{$snort_community_rules_filename_md5}", "Snort GPLv2 Community Rules")) {
 		/* download Snort GPLv2 Community Rules file */
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_community_rules_filename_md5}"));
-		if (!suricata_fetch_new_rules("{$snort_community_rules_url}{$snort_community_rules_filename}", "{$tmpfname}/{$snort_community_rules_filename}", $file_md5, "Snort GPLv2 Community Rules"))
+		if (!suricata_fetch_new_rules("{$snort_community_rules_url}{$snort_community_rules_filename}", "{$tmpfname}/{$snort_community_rules_filename}", $file_md5, "Snort GPLv2 Community Rules")) {
 			$snortcommunityrules = 'off';
-	}
-	else
+		}
+	} else {
 		$snortcommunityrules = 'off';
+	}
+}
+
+/*  Download any new ABUSE.ch Fedoo Tracker Rules sigs */
+if ($feodotracker_rules == 'on') {
+	// Grab the MD5 hash of our last successful download if available
+	if (file_exists("{$suricatadir}{$feodotracker_rules_filename}.md5")) {
+		$old_file_md5 = trim(file_get_contents("{$suricatadir}{$feodotracker_rules_filename}.md5"));
+	}
+	else {
+		$old_file_md5 = "0";
+	}
+
+	suricata_update_status(gettext("Downloading Feodo Tracker Botnet C2 IP rules file..."));
+	error_log(gettext("\tDownloading Feodo Tracker Botnet C2 IP rules file...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+	$rc = suricata_download_file_url("{$feodotracker_rules_url}{$feodotracker_rules_filename}", "{$tmpfname}/{$feodotracker_rules_filename}");
+
+	// See if the download from the URL was successful
+	if ($rc === true) {
+		suricata_update_status(gettext(" done.") . "\n");
+		syslog(LOG_NOTICE, "[Suricata] Feodo Tracker Botnet C2 IP rules file update downloaded successfully.");
+		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
+
+		// See if file has changed from our previously downloaded version
+		if ($old_file_md5 == trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}"))) {
+			// File is unchanged from previous download, so no update required
+			suricata_update_status(gettext("Feodo Tracker Botnet C2 IP rules are up to date.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Suricata] Feodo Tracker Botnet C2 IP rules are up to date..."));
+			error_log(gettext("\tFeodo Tracker Botnet C2 IP rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$notify_message .= gettext("- Feodo Tracker Botnet C2 IP rules are up to date.\n");
+			$feodotracker_rules = 'off';
+		}
+		else {
+			// Downloaded file is changed, so update our local MD5 hash and extract the new rules
+			file_put_contents("{$suricatadir}{$feodotracker_rules_filename}.md5", trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}")));
+			suricata_update_status(gettext("Installing Feodo Tracker Botnet C2 IP rules..."));
+			error_log(gettext("\tExtracting and installing Feodo Tracker Botnet C2 IP rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			exec("/usr/bin/tar xzf {$tmpfname}/{$feodotracker_rules_filename} -C {$suricata_rules_dir}");
+			suricata_update_status(gettext("Feodo Tracker Botnet C2 IP rules were updated.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Suricata] Feodo Tracker Botnet C2 IP rules were updated..."));
+			error_log(gettext("\tFeodo Tracker Botnet C2 IP rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$notify_message .= gettext("- Feodo Tracker Botnet C2 IP rules were updated.\n");
+		}
+	}
+	else {
+		suricata_update_status(gettext("Feodo Tracker Botnet C2 IP rules file download failed!") . "\n");
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: Feodo Tracker Botnet C2 IP rules file download failed... server returned error '{$rc}'."));
+		error_log(gettext("\tERROR: Feodo Tracker Botnet C2 IP rules file download failed.  Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tFeodo Tracker Botnet C2 IP rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		$notify_message .= gettext("- Feodo Tracker Botnet C2 IP rules will not be updated, rules file download failed!\n");
+		$update_errors = true;
+		$feodotracker_rules = 'off';
+	}
+}
+
+/*  Download any new ABUSE.ch SSL Blacklist Rules sigs */
+if ($sslbl_rules == 'on') {
+	// Grab the MD5 hash of our last successful download if available
+	if (file_exists("{$suricatadir}{$sslbl_rules_filename}.md5")) {
+		$old_file_md5 = trim(file_get_contents("{$suricatadir}{$sslbl_rules_filename}.md5"));
+	}
+	else {
+		$old_file_md5 = "0";
+	}
+
+	suricata_update_status(gettext("Downloading ABUSE.ch SSL Blacklist rules file..."));
+	error_log(gettext("\tDownloading ABUSE.ch SSL Blacklist rules file...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+	$rc = suricata_download_file_url("{$sslbl_rules_url}{$sslbl_rules_filename}", "{$tmpfname}/{$sslbl_rules_filename}");
+
+	// See if the download from the URL was successful
+	if ($rc === true) {
+		suricata_update_status(gettext(" done.") . "\n");
+		syslog(LOG_NOTICE, "[Suricata] ABUSE.ch SSL Blacklist rules file update downloaded successfully.");
+		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
+
+		// See if file has changed from our previously downloaded version
+		if ($old_file_md5 == trim(md5_file("{$tmpfname}/{$sslbl_rules_filename}"))) {
+			// File is unchanged from previous download, so no update required
+			suricata_update_status(gettext("ABUSE.ch SSL Blacklist rules are up to date.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Suricata] ABUSE.ch SSL Blacklist rules are up to date..."));
+			error_log(gettext("\tABUSE.ch SSL Blacklist rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$notify_message .= gettext("- ABUSE.ch SSL Blacklist rules are up to date.\n");
+			$sslbl_rules = 'off';
+		}
+		else {
+			// Downloaded file is changed, so update our local MD5 hash and extract the new rules
+			file_put_contents("{$suricatadir}{$sslbl_rules_filename}.md5", trim(md5_file("{$tmpfname}/{$sslbl_rules_filename}")));
+			suricata_update_status(gettext("Installing ABUSE.ch SSL Blacklist rules..."));
+			error_log(gettext("\tExtracting and installing ABUSE.ch SSL Blacklist rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			exec("/usr/bin/tar xzf {$tmpfname}/{$sslbl_rules_filename} -C {$suricata_rules_dir}");
+			suricata_update_status(gettext("ABUSE.ch SSL Blacklist rules were updated.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Suricata] ABUSE.ch SSL Blacklist rules were updated..."));
+			error_log(gettext("\tABUSE.ch SSL Blacklist rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$notify_message .= gettext("- ABUSE.ch SSL Blacklist rules were updated.\n");
+		}
+	}
+	else {
+		suricata_update_status(gettext("ABUSE.ch SSL Blacklist rules file download failed!") . "\n");
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: ABUSE.ch SSL Blacklist rules file download failed... server returned error '{$rc}'."));
+		error_log(gettext("\tERROR: ABUSE.ch SSL Blacklist rules file download failed.  Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tABUSE.ch SSL Blacklist rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		$notify_message .= gettext("- ABUSE.ch SSL Blacklist rules will not be updated, file download failed!\n");
+		$update_errors = true;
+		$sslbl_rules = 'off';
+	}
+}
+
+/*  Download any new Extra Rules */
+if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
+	$extraupdated = 'off';
+	safe_mkdir("{$tmpfname}/extra");
+	$tmpextradir = "{$tmpfname}/extra";
+	$existing_extra_rules = array();
+	foreach ($extra_rules as $exrule) {
+		$format = (substr($exrule['url'], strrpos($exrule['url'], 'rules')) == 'rules') ? ".rules" : ".tar.gz";
+		$rulesfilename = EXTRARULE_FILE_PREFIX . $exrule['name'] . $format;
+		if (file_exists("{$suricatadir}{$rulesfilename}.md5")) {
+			$old_file_md5 = trim(file_get_contents("{$suricatadir}{$rulesfilename}.md5"));
+		} else {
+			$old_file_md5 = "0";
+		}
+
+		if (($exrule['md5'] == 'on') &&
+		    !suricata_check_rule_md5($exrule['url'] . '.md5', "{$tmpextradir}/{$rulesfilename}.md5", "Extra {$exrule['name']} rules")) {
+
+			continue;
+		}
+
+		suricata_update_status(gettext("Downloading Extra {$exrule['name']} rules file..."));
+		error_log(gettext("\tDownloading Extra {$exrule['name']} rules file...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		$rc = suricata_download_file_url($exrule['url'], "{$tmpextradir}/{$rulesfilename}");
+
+		// See if the download from the URL was successful
+		if ($rc === true) {
+			suricata_update_status(gettext(" done.") . "\n");
+			syslog(LOG_NOTICE, "[Suricata] Extra {$exrule['name']} rules file update downloaded successfully.");
+			error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
+
+			// See if file has changed from our previously downloaded version
+			if ($old_file_md5 == trim(md5_file("{$tmpextradir}/{$rulesfilename}"))) {
+				// File is unchanged from previous download, so no update required
+				suricata_update_status(gettext("Extra {$exrule['name']} rules are up to date.") . "\n");
+				syslog(LOG_NOTICE, gettext("[Suricata] Extra {$exrule['name']} rules are up to date..."));
+				error_log(gettext("\tExtra {$exrule['name']} rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				$notify_message .= gettext("- Extra {$exrule['name']} rules are up to date.\n");
+			} else {
+				file_put_contents("{$suricatadir}{$rulesfilename}.md5", trim(md5_file("{$tmpextradir}/{$rulesfilename}")));
+				suricata_update_status(gettext("Installing Extra {$exrule['name']} rules..."));
+				error_log(gettext("\tExtracting and installing {$exrule['name']} IP rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				if ($format == '.rules') { 
+					@copy("{$tmpextradir}/{$rulesfilename}", "{$suricata_rules_dir}{$rulesfilename}");
+				} else {
+					safe_mkdir("{$tmpextradir}/{$exrule['name']}");
+					exec("/usr/bin/tar xzf {$tmpextradir}/{$rulesfilename} -C {$tmpextradir}/{$exrule['name']}/");
+					unlink_if_exists("{$suricata_rules_dir}" . EXTRARULE_FILE_PREFIX . $exrule['name'] . "-*.rules");
+					$downloaded_rules = array();
+					$files = suricata_listfiles("{$tmpextradir}/{$exrule['name']}");
+					foreach ($files as $file) {
+						$newfile = basename($file);
+						$downloaded_rules[] = $newfile;
+						if (substr($newfile, -6) == ".rules") {
+							@copy($file, $suricata_rules_dir . EXTRARULE_FILE_PREFIX . $exrule['name'] . "-" . $newfile);
+						}
+					}
+					if (file_exists("{$suricatadir}{$rulesfilename}.ruleslist")) {
+						$existing_rules = unserialize(file_get_contents("{$suricatadir}{$rulesfilename}.ruleslist"));
+						$newrules = array_diff($downloaded_rules, $existing_rules);
+						if (!empty($newrules)) {
+							$tmpstring = implode(', ', $newrules);
+							// There is a 4096 character limit enforced for strings sent to gettext() !!
+							// Make sure we don't exceed that if there are lots of new rule categories.
+							$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+							$notify_new_message .= gettext("- Extra {$exrule['name']} rules: " . $tmpstring . "\n");
+							@file_put_contents("{$suricatadir}{$rulesfilename}.ruleslist", serialize($downloaded_rules));
+						}
+					} else {
+						@file_put_contents("{$suricatadir}{$rulesfilename}.ruleslist", serialize($downloaded_rules));
+					}
+				}
+
+				suricata_update_status(gettext("Extra {$exrule['name']} rules were updated.") . "\n");
+				syslog(LOG_NOTICE, gettext("[Suricata] Extra {$exrule['name']} rules were updated..."));
+				error_log(gettext("\tExtra {$exrule['name']} rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				$notify_message .= gettext("- Extra {$exrule['name']} rules were updated.\n");
+				$extraupdated = 'on';
+			}
+		} else {
+			suricata_update_status(gettext("Extra {$exrule['name']} rules file download failed!") . "\n");
+			syslog(LOG_ERR, gettext("[Suricata] ERROR: Extra {$exrule['name']} rules file download failed... server returned error '{$rc}'."));
+			error_log(gettext("\tERROR: Extra {$exrule['name']} rules file download failed. Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			error_log(gettext("\tExtra {$exrule['name']} rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$notify_message .= gettext("- Extra {$exrule['name']} rules will not be updated, file download failed!\n");
+			$update_errors = true;
+		}
+		$existing_extra_rules[] = $exrule['name'];
+	}
+	rmdir_recursive($tmpextradir);
 }
 
 /* Untar Emerging Threats rules file to tmp if downloaded */
@@ -476,6 +725,7 @@ if ($emergingthreats == 'on') {
 		// that are also bundled in the ET rules.
 		$default_rules = array( "decoder-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "smtp-events.rules", "stream-events.rules", "tls-events.rules" );
 		$files = glob("{$tmpfname}/emerging/rules/*.rules");
+		$downloaded_rules = array();
 		// Determine the correct prefix to use based on which
 		// Emerging Threats rules package is enabled.
 		if ($etpro == "on")
@@ -484,6 +734,7 @@ if ($emergingthreats == 'on') {
 			$prefix = ET_OPEN_FILE_PREFIX;
 		foreach ($files as $file) {
 			$newfile = basename($file);
+			$downloaded_rules[] = $newfile;
 			if (in_array($newfile, $default_rules))
 				@copy($file, "{$suricata_rules_dir}{$newfile}");
 			else {
@@ -512,6 +763,18 @@ if ($emergingthreats == 'on') {
 		if (file_exists("{$tmpfname}/{$emergingthreats_filename_md5}")) {
 			@copy("{$tmpfname}/{$emergingthreats_filename_md5}", "{$suricatadir}{$emergingthreats_filename_md5}");
 		}
+		if (file_exists("{$suricatadir}{$emergingthreats_filename}.ruleslist")) {
+			$existing_rules = unserialize(file_get_contents("{$suricatadir}{$emergingthreats_filename}.ruleslist"));
+			$newrules = array_diff($downloaded_rules, $existing_rules);
+			if (!empty($newrules)) {
+				$tmpstring = implode(', ', $newrules);
+				$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+				$notify_new_message .= gettext("- {$et_name} rules: " . $tmpstring . "\n");
+				@file_put_contents("{$suricatadir}{$emergingthreats_filename}.ruleslist", serialize($downloaded_rules));
+			}
+		} else {
+			@file_put_contents("{$suricatadir}{$emergingthreats_filename}.ruleslist", serialize($downloaded_rules));
+		}
 		suricata_update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of {$et_name} rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/emerging");
@@ -531,8 +794,10 @@ if ($snortdownload == 'on') {
 		safe_mkdir("{$tmpfname}/snortrules");
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_filename} -C {$tmpfname}/snortrules rules/");
 		$files = glob("{$tmpfname}/snortrules/rules/*.rules");
+		$downloaded_rules = array();
 		foreach ($files as $file) {
 			$newfile = basename($file);
+			$downloaded_rules[] = $file;
 			@copy($file, "{$suricata_rules_dir}" . VRT_FILE_PREFIX . "{$newfile}");
 		}
 
@@ -554,6 +819,18 @@ if ($snortdownload == 'on') {
 		if (file_exists("{$tmpfname}/{$snort_filename_md5}")) {
 			@copy("{$tmpfname}/{$snort_filename_md5}", "{$suricatadir}{$snort_filename_md5}");
 		}
+		if (file_exists("{$suricatadir}{$snort_filename}.ruleslist")) {
+			$existing_rules = unserialize(file_get_contents("{$suricatadir}{$snort_filename}.ruleslist"));
+			$newrules = array_diff($downloaded_rules, $existing_rules);
+			if (!empty($newrules)) {
+				$tmpstring = implode(', ', $newrules);
+				$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+				$notify_new_message .= gettext("- Snort rules: " . $tmpstring . "\n");
+				@file_put_contents("{$suricatadir}{$snort_filename}.ruleslist", serialize($downloaded_rules));
+			}
+		} else {
+			@file_put_contents("{$suricatadir}{$snort_filename}.ruleslist", serialize($downloaded_rules));
+		}
 		suricata_update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of Snort rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	}
@@ -568,8 +845,10 @@ if ($snortcommunityrules == 'on') {
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_community_rules_filename} -C {$tmpfname}/community/");
 
 		$files = glob("{$tmpfname}/community/community-rules/*.rules");
+		$downloaded_rules = array();
 		foreach ($files as $file) {
 			$newfile = basename($file);
+			$downloaded_rules[] = $newfile;
 			@copy($file, "{$suricata_rules_dir}" . GPL_FILE_PREFIX . "{$newfile}");
 		}
                 /* base etc files for Snort GPLv2 Community rules */
@@ -581,6 +860,18 @@ if ($snortcommunityrules == 'on') {
 		if (file_exists("{$tmpfname}/{$snort_community_rules_filename_md5}")) {
 			@copy("{$tmpfname}/{$snort_community_rules_filename_md5}", "{$suricatadir}{$snort_community_rules_filename_md5}");
 		}
+		if (file_exists("{$suricatadir}{$snort_community_rules_filename}.ruleslist")) {
+			$existing_rules = unserialize(file_get_contents("{$suricatadir}{$snort_community_rules_filename}.ruleslist"));
+			$newrules = array_diff($downloaded_rules, $existing_rules);
+			if (!empty($newrules)) {
+				$tmpstring = implode(', ', $newrules);
+				$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+				$notify_new_message .= gettext("- Snort GPLv2 Community Rules: " . $tmpstring . "\n");
+				@file_put_contents("{$suricatadir}{$snort_community_rules_filename}.ruleslist", serialize($downloaded_rules));
+			}
+		} else {
+			@file_put_contents("{$suricatadir}{$snort_community_rules_filename}.ruleslist", serialize($downloaded_rules));
+		}
 		suricata_update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of Snort GPLv2 Community Rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/community");
@@ -588,7 +879,7 @@ if ($snortcommunityrules == 'on') {
 }
 
 // If removing deprecated rules categories, then do it
-if ($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on") {
+if (config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules') == "on") {
 	syslog(LOG_NOTICE, gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 	suricata_remove_dead_rules();
 }
@@ -607,38 +898,42 @@ function suricata_apply_customizations($suricatacfg, $if_real) {
 	@copy("{$suricatadir}unicode.map", "{$suricatadir}suricata_{$suricatacfg['uuid']}_{$if_real}/unicode.map");
 }
 
-if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {
+/* If we updated any rules, then refresh all the Suricata interfaces */
+if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $feodotracker_rules == 'on' || $sslbl_rules == 'on' || $extraupdated == 'on') {
 
-	error_log(gettext("\tCopying new config and map files...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+	/* If we updated Snort or ET rules, rebuild the config and map files as nescessary */
+	if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {
 
-	/******************************************************************/
-	/* Build the classification.config and reference.config files     */
-	/* using the ones from all the downloaded rules plus the default  */
-	/* files installed with Suricata.                                 */
-	/******************************************************************/
-	$cfgs = glob("{$tmpfname}/*reference.config");
-	$cfgs[] = "{$suricatadir}reference.config";
-	suricata_merge_reference_configs($cfgs, "{$suricatadir}reference.config");
-	$cfgs = glob("{$tmpfname}/*classification.config");
-	$cfgs[] = "{$suricatadir}classification.config";
-	suricata_merge_classification_configs($cfgs, "{$suricatadir}classification.config");
+		error_log(gettext("\tCopying new config and map files...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 
-	/* Determine which map files to use for the master copy. */
-	/* The Snort VRT ones are preferred, if available.       */
-	if ($snortdownload == 'on')
-		$prefix = "VRT_";
-	elseif ($emergingthreats == 'on')
-		$prefix = "ET_";
-	elseif ($snortcommunityrules == 'on')
-		$prefix = GPL_FILE_PREFIX;
-	if (file_exists("{$tmpfname}/{$prefix}unicode.map"))
-		@copy("{$tmpfname}/{$prefix}unicode.map", "{$suricatadir}unicode.map");
-	if (file_exists("{$tmpfname}/{$prefix}gen-msg.map"))
-		@copy("{$tmpfname}/{$prefix}gen-msg.map", "{$suricatadir}gen-msg.map");
+		/******************************************************************/
+		/* Build the classification.config and reference.config files     */
+		/* using the ones from all the downloaded rules plus the default  */
+		/* files installed with Suricata.                                 */
+		/******************************************************************/
+		$cfgs = glob("{$tmpfname}/*reference.config");
+		$cfgs[] = "{$suricatadir}reference.config";
+		suricata_merge_reference_configs($cfgs, "{$suricatadir}reference.config");
+		$cfgs = glob("{$tmpfname}/*classification.config");
+		$cfgs[] = "{$suricatadir}classification.config";
+		suricata_merge_classification_configs($cfgs, "{$suricatadir}classification.config");
+
+		/* Determine which map files to use for the master copy. */
+		/* The Snort VRT ones are preferred, if available.       */
+		if ($snortdownload == 'on')
+			$prefix = "VRT_";
+		elseif ($emergingthreats == 'on')
+			$prefix = "ET_";
+		elseif ($snortcommunityrules == 'on')
+			$prefix = GPL_FILE_PREFIX;
+		if (file_exists("{$tmpfname}/{$prefix}unicode.map"))
+			@copy("{$tmpfname}/{$prefix}unicode.map", "{$suricatadir}unicode.map");
+		if (file_exists("{$tmpfname}/{$prefix}gen-msg.map"))
+			@copy("{$tmpfname}/{$prefix}gen-msg.map", "{$suricatadir}gen-msg.map");
+	}
 
 	/* Start the rules rebuild proccess for each configured interface */
-	if (is_array($config['installedpackages']['suricata']['rule']) &&
-	    count($config['installedpackages']['suricata']['rule']) > 0) {
+	if (count(config_get_path('installedpackages/suricata/rule', [])) > 0) {
 
 		/* Set the flag to force rule rebuilds since we downloaded new rules,    */
 		/* except when in post-install mode.  Post-install does its own rebuild. */
@@ -648,7 +943,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			$rebuild_rules = true;
 
 		/* Create configuration for each active Suricata interface */
-		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			/* Skip processing for instances whose underlying physical       */
@@ -658,7 +953,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			}
 
 			// Make sure the interface subdirectory exists.  We need to re-create
-			// it during a pkg reinstall on the intial rules set download.
+			// it during a pkg reinstall on the initial rules set download.
 			if (!is_dir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}"))
 				safe_mkdir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}");
 			if (!is_dir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}/rules"))
@@ -669,6 +964,30 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			$tmp = "\t" . $tmp . "\n";
 			error_log($tmp, 3, SURICATA_RULES_UPD_LOGFILE);
 			suricata_update_status(gettext(" done.") . "\n");
+
+			// If running, reload the rules for this interface
+			if (in_array($value['interface'], $active_interfaces) && !$g['suricata_postinstall']) {
+				// If running and "Live Reload" is enabled, just reload the configuration;
+				// otherwise, start/restart the interface instance of Suricata.
+				if (suricata_is_running($value['uuid'], $if_real) && config_get_path('installedpackages/suricata/config/0/live_swap_updates') == 'on') {
+					syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
+					error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					suricata_update_status(gettext("Signaling Suricata to live-load the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
+					suricata_reload_config($value);
+					suricata_update_status(gettext(" done.") . "\n");
+					error_log(gettext("\tLive-Reload of updated rules requested for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				}
+				else {
+					suricata_update_status(gettext("Restarting Suricata to activate the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
+					error_log(gettext("\tRestarting Suricata to activate the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					suricata_stop($value, $if_real);
+					sleep(5);
+					suricata_start($value, $if_real);
+					suricata_update_status(gettext(" done.") . "\n");
+					syslog(LOG_NOTICE, gettext("[Suricata] Suricata has restarted with your new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
+					error_log(gettext("\tSuricata has restarted with your new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				}
+			}
 		}
 	}
 	else {
@@ -678,34 +997,6 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 	/* Clear the rebuild rules flag.  */
 	$rebuild_rules = false;
-
-	/* Restart Suricata if already running and we are not in post-install, so as to pick up the new rules. */
-       	if (is_process_running("suricata") && !$g['suricata_postinstall'] &&
-	    count($config['installedpackages']['suricata']['rule']) > 0) {
-
-		// See if "Live Reload" is configured and signal each Suricata instance
-		// if enabled, else just do a hard restart of all the instances.
-		if ($config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on') {
-			suricata_update_status(gettext('Signaling Suricata to live-load the new set of rules...'));
-			syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
-			error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-			foreach ($config['installedpackages']['suricata']['rule'] as $value) {
-				suricata_reload_config($value);
-				error_log(gettext("\tLive swap of updated rules requested for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-			}
-			suricata_update_status(gettext(" done.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of updated rules completed..."));
-			error_log(gettext("\tLive-Reload of the updated rules is complete.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-		}
-		else {
-			suricata_update_status(gettext('Restarting Suricata to activate the new set of rules...'));
-			error_log(gettext("\tRestarting Suricata to activate the new set of rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-       			restart_service("suricata");
-			suricata_update_status(gettext(" done.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] Suricata has restarted with your new set of rules..."));
-			error_log(gettext("\tSuricata has restarted with your new set of rules.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-		}
-	}
 }
 
 // Remove old $tmpfname files
@@ -718,6 +1009,7 @@ if (is_dir("{$tmpfname}")) {
 suricata_update_status(gettext("The Rules update has finished.") . "\n");
 syslog(LOG_NOTICE, gettext("[Suricata] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+$notify_message .= gettext("Suricata rules update finished: " . date("Y-m-d H:i:s"));
 
 /* Save this update status to the rulesupd_status file */
 $status = time() . '|';
@@ -729,4 +1021,14 @@ else {
 }
 @file_put_contents(SURICATADIR . "rulesupd_status", $status);
 
+if (config_get_path('installedpackages/suricata/config/0/update_notify') == 'on') {
+	notify_all_remote($notify_message);
+}
+if ((config_get_path('installedpackages/suricata/config/0/rule_categories_notify') == 'on') &&
+    ($notify_new_message)) {
+	notify_all_remote("Suricata new rule categories are available:\n" . $notify_new_message);
+}
+
+// Returns true when no errors occurred
+return !$update_errors;
 ?>

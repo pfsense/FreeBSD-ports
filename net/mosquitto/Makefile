@@ -1,40 +1,40 @@
-# Created by: Joseph Benden <joe@thrallingpenguin.com>
-# $FreeBSD$
-
 PORTNAME=	mosquitto
-PORTVERSION=	1.6.7
+DISTVERSION=	2.0.15
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	http://mosquitto.org/files/source/
-
-PATCH_SITES=	https://github.com/eclipse/mosquitto/commit/
-PATCHFILES=	8a4ae28fa926589e9891674ca4424dc703ad2d88.patch:-p1
+MASTER_SITES=	https://mosquitto.org/files/source/
 
 MAINTAINER=	joe@thrallingpenguin.com
 COMMENT=	Open source MQTT broker
+WWW=		https://mosquitto.org/
 
 LICENSE=	EPL
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+BUILD_DEPENDS=	xsltproc:textproc/libxslt \
+		docbook-xsl>0:textproc/docbook-xsl
+LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+		libcjson.so:devel/libcjson
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
-USES=		cmake ssl
+USES=		cmake cpe ssl
 USE_RC_SUBR=	mosquitto
 USE_LDCONFIG=	yes
 CMAKE_ARGS=	-DCMAKE_LIBDATADIR:PATH="${PREFIX}/libdata"
+CPE_VENDOR=	eclipse
 
 USERS=		nobody
 
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
+PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
-OPTIONS_DEFINE=	CARES WS
-OPTIONS_DEFAULT=	CARES
+OPTIONS_DEFINE=	CARES WEBSOCKETS
+OPTIONS_DEFAULT=CARES WEBSOCKETS
 
 CARES_LIB_DEPENDS=	libcares.so:dns/c-ares
-CARES_CMAKE_ON=	-DWITH_SRV:BOOL=ON
+CARES_CMAKE_ON=		-DWITH_SRV:BOOL=ON
 
-WS_DESC=	MQTT over Websockets support
-WS_LIB_DEPENDS=	libwebsockets.so:net/libwebsockets
-WS_CMAKE_ON=	-DWITH_WEBSOCKETS:BOOL=ON
+WEBSOCKETS_DESC=	Websockets support via libwebsockets
+WEBSOCKETS_LIB_DEPENDS=	libwebsockets.so:net/libwebsockets
+WEBSOCKETS_CMAKE_ON=	-DWITH_WEBSOCKETS:BOOL=ON
 
 post-patch:
 	@${REINPLACE_CMD} -e '/ldconfig/d' ${WRKSRC}/src/CMakeLists.txt \

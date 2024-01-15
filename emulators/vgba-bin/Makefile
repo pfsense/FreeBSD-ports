@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	vgba
 PORTVERSION=	3.0
 PORTREVISION=	4
@@ -12,6 +9,7 @@ EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emulator of Nintendo GameBoy Advance(TM)
+WWW=		https://www.komkon.org/fms/VGBA/
 
 LIB_DEPENDS=	libc.so.5:misc/compat5x \
 		libm.so.2:misc/compat4x

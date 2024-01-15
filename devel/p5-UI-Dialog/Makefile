@@ -1,6 +1,3 @@
-# Created by: Dmitry Karasik <dmitry@karasik.eu.org>
-# $FreeBSD$
-
 PORTNAME=	UI-Dialog
 PORTVERSION=	1.21
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl wrapper for the various dialog applications
+WWW=		https://metacpan.org/release/UI-Dialog
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE

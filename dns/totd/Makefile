@@ -1,6 +1,3 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	totd
 PORTVERSION=	1.5.1
 PORTREVISION=	2
@@ -9,6 +6,9 @@ MASTER_SITES=	https://BSDforge.com/projects/source/dns/totd/
 
 MAINTAINER=	ed@FreeBSD.org
 COMMENT=	DNS proxy that supports IPv6 <==> IPv4 record translation
+WWW=		https://BSDforge.com/projects/dns/totd/
+
+BROKEN=		Unfetchable
 
 USES=		desthack uidfix
 

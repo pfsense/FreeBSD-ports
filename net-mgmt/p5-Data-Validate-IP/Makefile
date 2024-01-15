@@ -1,6 +1,3 @@
-# Created by: Tuc <freebsd-ports@t-b-o-h.net>
-# $FreeBSD$
-
 PORTNAME=	Data-Validate-IP
 PORTVERSION=	0.27
 CATEGORIES=	net-mgmt perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	freebsd-ports@t-b-o-h.net
 COMMENT=	Common data validation methods for IPs
+WWW=		https://metacpan.org/release/Data-Validate-IP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

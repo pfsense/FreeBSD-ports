@@ -1,6 +1,3 @@
-# Created by: Niels Heinen
-# $FreeBSD$
-
 PORTNAME=	dirbuster
 PORTVERSION=	1.0r1
 CATEGORIES=	security java
@@ -9,6 +6,7 @@ DISTNAME=	DirBuster-1.0-RC1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DirBuster allows file and directory brute forcing on web servers
+WWW=		https://www.owasp.org/index.php/Category:OWASP_DirBuster_Project
 
 LICENSE=	LGPL21+ CC-BY-SA-3.0
 LICENSE_COMB=	multi

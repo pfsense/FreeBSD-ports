@@ -1,6 +1,3 @@
-# Created by: Valerio Daelli <valerio.daelli@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	geteltorito
 PORTVERSION=	0.6
 PORTEPOCH=	1
@@ -11,6 +8,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	valerio.daelli@gmail.com
 COMMENT=	El Torito image extractor
+WWW=		https://www.uni-koblenz.de/~krienke/ftp/noarch/geteltorito/
 
 NO_BUILD=	yes
 NO_ARCH=	yes

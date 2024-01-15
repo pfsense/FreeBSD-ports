@@ -1,14 +1,13 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	exiftran
 PORTVERSION=	2.14
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.kraxel.org/releases/fbida/
 DISTNAME=	fbida-${PORTVERSION}
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	Command line utility to transform jpeg files
+WWW=		https://www.kraxel.org/blog/linux/fbida/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +16,8 @@ LIB_DEPENDS=	libexif.so:graphics/libexif
 
 USES=		jpeg uidfix xorg
 USE_XORG=	pixman
+
+CONFLICTS_INSTALL=	ida
 
 MAKE_ARGS+=	WRKSRC=${WRKSRC} BINDIR=${PREFIX}/bin MANDIR=${MANPREFIX}/man
 PLIST_FILES=	bin/exiftran bin/thumbnail.cgi \

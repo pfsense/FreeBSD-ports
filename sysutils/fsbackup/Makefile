@@ -1,6 +1,3 @@
-# Created by: samm
-# $FreeBSD$
-
 PORTNAME=	fsbackup
 PORTVERSION=	1.2.1
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	fsbackup-1.2pl1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File system backup and synchronization utility
+WWW=		https://www.opennet.ru/dev/fsbackup/index_eng.shtml
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

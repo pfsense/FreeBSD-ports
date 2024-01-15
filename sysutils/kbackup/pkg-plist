@@ -1,7 +1,10 @@
 bin/kbackup
 man/ca/man1/kbackup.1.gz
+man/de/man1/kbackup.1.gz
+man/es/man1/kbackup.1.gz
 man/it/man1/kbackup.1.gz
 man/man1/kbackup.1.gz
+man/nl/man1/kbackup.1.gz
 man/sv/man1/kbackup.1.gz
 man/uk/man1/kbackup.1.gz
 share/applications/org.kde.kbackup.desktop
@@ -13,6 +16,7 @@ share/icons/hicolor/22x22/actions/kbackup_start.png
 share/icons/hicolor/32x32/apps/kbackup.png
 share/icons/hicolor/32x32/mimetypes/text-x-kbp.png
 share/kxmlgui5/kbackup/kbackupui.rc
+share/locale/ar/LC_MESSAGES/kbackup.mo
 share/locale/ca/LC_MESSAGES/kbackup.mo
 share/locale/ca@valencia/LC_MESSAGES/kbackup.mo
 share/locale/cs/LC_MESSAGES/kbackup.mo
@@ -27,8 +31,10 @@ share/locale/fi/LC_MESSAGES/kbackup.mo
 share/locale/fr/LC_MESSAGES/kbackup.mo
 share/locale/gl/LC_MESSAGES/kbackup.mo
 share/locale/ia/LC_MESSAGES/kbackup.mo
+share/locale/ie/LC_MESSAGES/kbackup.mo
 share/locale/it/LC_MESSAGES/kbackup.mo
 share/locale/ja/LC_MESSAGES/kbackup.mo
+share/locale/ka/LC_MESSAGES/kbackup.mo
 share/locale/ko/LC_MESSAGES/kbackup.mo
 share/locale/lt/LC_MESSAGES/kbackup.mo
 share/locale/nl/LC_MESSAGES/kbackup.mo
@@ -40,6 +46,7 @@ share/locale/ru/LC_MESSAGES/kbackup.mo
 share/locale/sk/LC_MESSAGES/kbackup.mo
 share/locale/sl/LC_MESSAGES/kbackup.mo
 share/locale/sv/LC_MESSAGES/kbackup.mo
+share/locale/tr/LC_MESSAGES/kbackup.mo
 share/locale/uk/LC_MESSAGES/kbackup.mo
 share/locale/zh_CN/LC_MESSAGES/kbackup.mo
 share/locale/zh_TW/LC_MESSAGES/kbackup.mo

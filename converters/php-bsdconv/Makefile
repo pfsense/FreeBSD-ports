@@ -1,6 +1,3 @@
-# Created by: buganini@gmail.com
-# $FreeBSD$
-
 PORTNAME=	bsdconv
 PORTVERSION=	11.6.0
 CATEGORIES=	converters
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	PHP wrapper for bsdconv
+WWW=		https://github.com/buganini/php-bsdconv
 
 LICENSE=	ISCL
 

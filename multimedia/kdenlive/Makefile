@@ -1,43 +1,44 @@
-# $FreeBSD$
-
 PORTNAME=	kdenlive
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	multimedia kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE professional quality non-linear video editing suite
+WWW=		https://www.kdenlive.org
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libmlt.so:multimedia/mlt \
-		librttr_core.so:devel/rttr
+LIB_DEPENDS=	librttr_core.so:devel/rttr
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
-		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
+		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
+		${LOCALBASE}/lib/mlt-7/libmltglaxnimate.so:multimedia/mlt7-glaxnimate
 RUN_DEPENDS=	ffmpeg${FFMPEG_SUFX}:multimedia/ffmpeg${FFMPEG_SUFX} \
-		${LOCALBASE}/lib/mlt/libmltqt.so:multimedia/mlt-qt5
+		${LOCALBASE}/lib/mlt-7/libmltqt.so:multimedia/mlt7-qt@qt5 \
+		${LOCALBASE}/lib/mlt-7/libmltglaxnimate.so:multimedia/mlt7-glaxnimate@qt5
 
-USES=		cmake compiler:c++11-lang desktop-file-utils gettext-tools \
-		gl pkgconfig qt:5 shared-mime-info kde:5 tar:xz xorg
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext-tools gl \
+		kde:5 mlt:7 pkgconfig qt:5 shared-mime-info tar:xz xorg
 USE_GL=		gl glu
 USE_KDE=	archive attica auth bookmarks codecs completion config \
-		configwidgets coreaddons crash dbusaddons ecm filemetadata \
-		guiaddons i18n iconthemes kio itemviews jobwidgets \
-		kdeclarative newstuff notifications notifyconfig package \
-		service solid sonnet textwidgets widgetsaddons xmlgui \
-		init_run
-USE_QT=		concurrent core dbus declarative gui multimedia network xml \
-		buildtools_build qmake_build \
-		quickcontrols_run script svg webkit widgets
+		configwidgets coreaddons crash dbusaddons filemetadata \
+		guiaddons i18n iconthemes itemviews jobwidgets kdeclarative \
+		kio newstuff notifications notifyconfig package service solid \
+		sonnet textwidgets widgetsaddons windowsystem xmlgui \
+		ecm:build \
+		init:run
+USE_QT=		concurrent core dbus declarative gui multimedia network \
+		networkauth quickcontrols2 script svg widgets xml \
+		buildtools:build qmake:build \
+		quickcontrols:run
 USE_XORG=	x11
-CFLAGS+=	-I${LOCALBASE}/include # linux/input.h
+CFLAGS+=	-isystem${LOCALBASE}/include # linux/input.h
 CMAKE_ARGS=	-DFFMPEG_SUFFIX:STRING="${FFMPEG_SUFX}"
 
 # Keep in sync with multimedia/mlt, possibly.
 FFMPEG_SUFX=	# Currently empty.
 
 OPTIONS_DEFINE=	DVDWIZARD FILESHARE FREI0R LADSPA SCREENCAST V4L XINE DOCS
-OPTIONS_DEFAULT=DVDWIZARD FILESHARE FREI0R LADSPA SCREENCAST V4L XINE
+OPTIONS_DEFAULT=DVDWIZARD FILESHARE FREI0R LADSPA SCREENCAST V4L
 OPTIONS_SUB=	yes
 
 DVDWIZARD_DESC=	DVD authoring via DVDAuthor and cdrtools

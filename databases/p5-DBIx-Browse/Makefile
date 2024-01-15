@@ -1,6 +1,3 @@
-# Created by: Philip M. Gollucci <philip@p6m7g8.com>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Browse
 PORTVERSION=	2.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to browse tables
+WWW=		https://metacpan.org/release/DBIx-Browse
 
 BUILD_DEPENDS=	p5-DBI>=0:databases/p5-DBI
 RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI

@@ -3,7 +3,7 @@
  * ntopng.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -159,7 +159,9 @@ function ntopng_sync_package() {
 		/usr/bin/killall ntopng
 		sleep 3
 	done
-	/usr/bin/killall redis-cli redis-server
+	/usr/bin/killall redis-cli
+	{$redis_path}/redis-cli shutdown save
+	/usr/bin/killall redis-server
 EOD;
 
 	$start = <<<EOD

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	20110323
 PORTREVISION=	1
@@ -12,13 +10,14 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Tsonga hunspell dictionaries
+WWW=		https://addons.mozilla.org/en-US/firefox/addon/tsonga-spell-checker/
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/dictionaries
 
-PLIST_FILES=	%%DATADIR%%/ts_ZA.aff \
-		%%DATADIR%%/ts_ZA.dic
+PLIST_FILES=	${DATADIR}/ts_ZA.aff \
+		${DATADIR}/ts_ZA.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

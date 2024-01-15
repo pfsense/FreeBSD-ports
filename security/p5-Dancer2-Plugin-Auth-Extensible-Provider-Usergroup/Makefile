@@ -1,6 +1,3 @@
-# Created by: Henk van Oers <hvo.pm@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	Dancer2-Plugin-Auth-Extensible-Provider-Usergroup
 PORTVERSION=	0.709
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extensible authentication framework for Dancer2 apps
+WWW=		https://metacpan.org/release/Dancer2-Plugin-Auth-Extensible-Provider-Usergroup
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

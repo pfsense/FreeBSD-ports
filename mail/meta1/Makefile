@@ -1,20 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	meta1
-PORTVERSION=	1.1.0a.15.2
-PORTREVISION=	1
+PORTVERSION=	1.1.0a.18.0
+PORTREVISION=	0
 CATEGORIES=	mail
-MASTER_SITES=	http://www.MeTA1.org/download/.alpha/3rdt/
-DISTNAME=	${PORTNAME}-1.1.Alpha15.2
+MASTER_SITES=	http://www.MeTA1.org/download/.alpha/baddns/
+DISTNAME=	${PORTNAME}-1.1.Alpha19.0
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Secure and efficient mail gateway
+WWW=		http://www.meta1.org/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 MAKE_JOBS_UNSAFE=	yes
-CONFLICTS=	smx-*
+CONFLICTS=	smx
 MANUAL_PACKAGE_BUILD=	needs hostname
 
 .if !defined(SENDMAIL_WITHOUT_SHMEM) && !defined(BUILDING_INDEX)
@@ -43,59 +42,38 @@ USERS=		meta1s meta1q meta1c meta1m meta1
 META1CONFDIR?=	${PREFIX}/etc/meta1
 NOLOGIN_CMD?=	/usr/sbin/nologin
 
-OPTIONS_DEFINE=	IPV6 BDB PMILTER DKIM MSP SASL2 SASL2AUTHD TLS DOCS
+OPTIONS_DEFINE=	IPV6 PMILTER DKIM MSP SASL2 SASL2AUTHD TLS DOCS
 OPTIONS_DEFAULT=	PMILTER DKIM SASL2 TLS
 NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
 
-BDB_DESC=	External Berkeley DB support
 PMILTER_DESC=	Adds policy milter support
 DKIM_DESC=	Enable DKIM signing support
 MSP_DESC=	Enable mail submision program
 SASL2_DESC=	Adds SASL2 support
 SASL2AUTHD_DESC=	Enable plaintext authentication via SASL2
 
-BDB_USES=		bdb
+IPV6_ENV=		MTA_NETINET6=1
 PMILTER_USES=		ssl
 PMILTER_CONFIGURE_ENABLE=	pmilter
 DKIM_CONFIGURE_ENABLE=	DKIM
+MSP_CONFLICTS= courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd-* sendmail-*
 MSP_CONFIGURE_ENABLE=	msp
 SASL2_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL2_CONFIGURE_ENABLE=	SASL
 SASL2_CONFIGURE_ON=	--with-sasl-incdir=${LOCALBASE}/include \
 			--with-sasl-libdir=${LOCALBASE}/lib
+SASL2AUTHD_IMPLIES=	SASL2
 SASL2AUTHD_RUN_DEPENDS=	saslauthd:security/cyrus-sasl2-saslauthd
 TLS_USES=		ssl
 TLS_CONFIGURE_ENABLE=	TLS
 TLS_CPPFLAGS=		-I${LOCALBASE}/include
 TLS_LDFLAGS=		-L${LOCALBASE}/lib
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MIPV6}
-MAKE_ENV+=	MTA_NETINET6=1
-.endif
-
-.if ${PORT_OPTIONS:MBDB}
-BROKEN=		port version of Berkeley DB is not compatible
-INVALID_BDB_VER=	48 5 6
-CONFIGURE_ARGS+=	--disable-included-bdb
-CONFIGURE_ARGS+=	--with-bdb-incdir=${BDB_INCLUDE_DIR}
-CONFIGURE_ARGS+=	--with-bdb-libdir=${BDB_LIB_DIR}
-CONFIGURE_ARGS+=	--with-bdb-lib=${BDB_LIB_NAME}
-PLIST_SUB+=	WITH_BDBINT="@comment "
-.else
-PLIST_SUB+=	WITH_BDBINT=""
-.endif
-
-.if ${PORT_OPTIONS:MMSP}
-CONFLICTS+=	courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd-* sendmail-*
-.endif
-
-.if ${PORT_OPTIONS:MSASL2AUTHD}
-.if empty(PORT_OPTIONS:MSASL2)
-IGNORE=		option SASL2AUTHD needs option SASL2
-.endif
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
 .endif
 
 post-configure:
@@ -135,4 +113,4 @@ post-install:
 	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

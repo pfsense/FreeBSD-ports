@@ -1,14 +1,12 @@
-# Created by: Xiaoding Liu <xiaoding+freebsd@xiaoding.org>
-# $FreeBSD$
-
 PORTNAME=	shadowsocks-libev
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.3.5
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	xiaoding+freebsd@xiaoding.org
 COMMENT=	Lightweight tunnel proxy which can help you get through firewalls
+WWW=		https://github.com/shadowsocks/shadowsocks-libev
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

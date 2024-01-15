@@ -1,6 +1,3 @@
-# Created by: Joe Barbish
-# $FreeBSD$
-
 PORTNAME=	dns2blackhole
 PORTVERSION=	0.1
 CATEGORIES=	dns
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	dns2blackhole1@a1poweruser.com
 COMMENT=	Malware Prevention through Domain Blocking
+WWW=		http://dns2blackhole.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 

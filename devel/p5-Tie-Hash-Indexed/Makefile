@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Tie-Hash-Indexed
 PORTVERSION=	0.08
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Ordered hashes for Perl in XS
+WWW=		https://metacpan.org/release/Tie-Hash-Indexed
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

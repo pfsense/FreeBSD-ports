@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	gcc
-PORTVERSION?=	8.4.0
+PORTVERSION?=	11.3.0
 PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	GCC
@@ -9,6 +7,7 @@ PKGNAMEPREFIX?=	aarch64-none-elf-
 
 MAINTAINER=	manu@FreeBSD.org
 COMMENT?=	GNU Compiler Collection for bare metal aarch64 cross-development
+WWW=		https://gcc.gnu.org/
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
@@ -23,9 +22,10 @@ BUILD_DEPENDS=	${GCC_TARGET}-as:devel/binutils@${PKGNAMEPREFIX:C/-$//:C/-/_/g} \
 		objdump:devel/binutils@native
 RUN_DEPENDS=	${GCC_TARGET}-as:devel/binutils@${PKGNAMEPREFIX:C/-$//:C/-/_/g}
 
-USES=	gmake iconv libtool tar:xz makeinfo compiler:c++11-lang
+USES=		cpe gmake iconv libtool tar:xz makeinfo compiler:c++11-lang
+CPE_VENDOR=	gnu
 
-PLIST_SUB=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
+PLIST_SUB+=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
 		OPSYS=${OPSYS:tl} \
 		GCC_TARGET=${GCC_TARGET} \
 		GCC_VERSION=${PORTVERSION}
@@ -52,6 +52,15 @@ ALL_TARGET=	all-gcc all-target-libgcc
 INSTALL_TARGET=	install-gcc install-target-libgcc
 
 .include <bsd.port.pre.mk>
+
+# Extraction fails with poudriere on aarch64 for GCC 11.
+# It seems that the bug is specific to lang/gcc11 and lang/gcc12 only.
+# No other GCC port is affected.
+# See https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=271052
+# and https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=246670
+.if ${ARCH} == aarch64
+EXTRACT_CMD=    ${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/LIBSTDCXX/ s/stdc\+\+/c\+\+/g ' \

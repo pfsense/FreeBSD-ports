@@ -1,6 +1,3 @@
-# Created by: Naram Qashat <cyberbotx@cyberbotx.com>
-# $FreeBSD$
-
 PORTNAME=	validator
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	1_3
@@ -10,6 +7,7 @@ CATEGORIES=	www
 
 MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	Markup Validation Service from the World Wide Web Consortium (W3C)
+WWW=		https://validator.w3.org/
 
 LICENSE=	W3C2002
 LICENSE_NAME=	W3C Software Notice and License (2002/12/31)

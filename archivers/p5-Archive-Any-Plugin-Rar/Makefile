@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	Archive-Any-Plugin-Rar
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	Wrapper around Archive::Rar
+WWW=		https://metacpan.org/release/Archive-Any-Plugin-Rar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Palle Girgensohn <girgen@pingpong.net>
-# $FreeBSD$
-
 PORTNAME=	pgaccess
 PORTVERSION=	1.00.20140902
 PORTREVISION=	3
@@ -9,8 +6,11 @@ MASTER_SITES=	https://BSDforge.com/projects/source/databases/pgaccess/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Powerful PostgreSQL database GUI administration tool and toolkit
+WWW=		https://BSDforge.com/projects/databases/pgaccess/
 
 LICENSE=	BSD4CLAUSE
+
+BROKEN=		Unfetchable
 
 RUN_DEPENDS=	${LOCALBASE}/lib/pgtcl/pkgIndex.tcl:databases/pgtcl
 

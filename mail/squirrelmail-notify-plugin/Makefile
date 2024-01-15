@@ -1,6 +1,3 @@
-# Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	notify
 PORTVERSION=	1.3
 PORTREVISION=	3
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Notify when new mail arrives
+WWW=		https://www.squirrelmail.org
 
 USE_SM_COMPAT=	yes
 

@@ -1,6 +1,3 @@
-# Created by: Jesse Smith <jessefrgsmith@yahoo.ca>
-# $FreeBSD$
-
 PORTNAME=	SearchAndRescue
 PORTVERSION=	1.3.0
 CATEGORIES=	games
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The data files for SearchAndRescue flight simulator
+WWW=		https://searchandrescue.sourceforge.net/
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

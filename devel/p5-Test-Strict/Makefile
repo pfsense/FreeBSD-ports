@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Test-Strict
 PORTVERSION=	0.52
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Test and report on use strict/warnings coverage
+WWW=		https://metacpan.org/release/Test-Strict
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

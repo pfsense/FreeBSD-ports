@@ -1,12 +1,10 @@
-# Created by: sobomax
-# $FreeBSD$
-
 PORTNAME=	debugedit
 PORTVERSION=	20170411.1
 CATEGORIES=	devel
 
-MAINTAINER=	sobomax@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ELF file debug information extractor and editor
+WWW=		https://github.com/CoryXie/DebugEdit
 
 LICENSE=	GPLv2+
 

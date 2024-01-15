@@ -1,6 +1,3 @@
-# Created by: Jing-Tang Keith Jang <keith@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libtabe
 PORTVERSION=	0.2.6
 PORTREVISION=	8
@@ -10,6 +7,7 @@ DISTNAME=	libtabe_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unified library for Chinese text processing
+WWW=		https://libtabe.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

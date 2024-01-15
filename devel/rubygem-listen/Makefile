@@ -1,13 +1,11 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	listen
-PORTVERSION=	3.3.3
+PORTVERSION=	3.8.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Listen to file modifications and notify about the changes
+WWW=		https://github.com/guard/listen
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,7 +15,6 @@ RUN_DEPENDS=	rubygem-rb-fsevent>=0.10.3<1:devel/rubygem-rb-fsevent \
 		rubygem-rb-kqueue>=0.2:devel/rubygem-rb-kqueue
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

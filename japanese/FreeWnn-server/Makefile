@@ -1,9 +1,6 @@
-# Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	FreeWnn
 PORTVERSION=	1.1.1.a021
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES?=	japanese
 MASTER_SITES=	OSDN/freewnn
 PKGNAMESUFFIX=	-server
@@ -11,6 +8,10 @@ DISTNAME=	${PORTNAME}-1.1.1-a021
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT?=	Japanese/Chinese/Korean input method (Japanese server)
+WWW=		http://freewnn.osdn.jp/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 OPTIONS_DEFAULT?=	WNN SERVER
 MANLANG?=		ja
@@ -32,5 +33,15 @@ KWNN_LIB_DEPENDS+=	libkwnn.so:korean/FreeWnn-lib
 KWNN_CONFIGURE_ON+=	--with-libkwnn=-lkwnn \
 			--with-kwnn-libraries="${PREFIX}/lib"
 KWNN_USE=	RC_SUBR=kwnn
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

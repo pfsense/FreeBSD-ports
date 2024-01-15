@@ -1,12 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	libsodium
+#################################################
+# Make sure to bump all consumers when updating #
+#################################################
 PORTVERSION=	1.0.18
 CATEGORIES=	security
 MASTER_SITES=	https://download.libsodium.org/libsodium/releases/
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Library to build higher-level cryptographic tools
+WWW=		https://github.com/jedisct1/libsodium
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

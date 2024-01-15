@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Set-Scalar
 PORTVERSION=	1.29
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module containing a set of scalars, including references
+WWW=		https://metacpan.org/release/Set-Scalar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

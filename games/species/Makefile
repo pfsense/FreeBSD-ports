@@ -1,6 +1,3 @@
-# Created by: alepulver
-# $FreeBSD$
-
 PORTNAME=	species
 PORTVERSION=	1.2d
 PORTREVISION=	1
@@ -10,25 +7,22 @@ DISTNAME=	redcoder
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Corewars evolver - generates warriors using genetic algorithms
+WWW=		https://redcoder.sourceforge.net/?p=species
 
 LICENSE=	GPLv1+ # though COPYING files mention LGPL21 and GPLv2 instead
 
 USES=		gmake dos2unix tar:bzip2
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	VISITOOL
-VISITOOL_DESC=	Build GUI tool for displaying evolution
-
 OPTIONS_SUB=	yes
 
-VISITOOL_USE=	WX=2.4
+VISITOOL_DESC=	Build GUI tool for displaying evolution
+
+VISITOOL_USE=	WX=3.0
+VISITOOL_MAKE_ENV=	WX_CONFIG="${TRUE}"
 VISITOOL_ALL_TARGET=	all visitool
-
-.include <bsd.port.options.mk>
-
-.if empty(PORT_OPTIONS:MVISITOOL)
-MAKE_ENV+=	WX_CONFIG="${TRUE}"
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
@@ -37,8 +31,8 @@ do-install:
 .for i in bench evolver_hill wilfiz
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ${i} ${STAGEDIR}${DATADIR})
 .endfor
-.if ${PORT_OPTIONS:MVISITOOL}
+
+do-install-VISITOOL-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/visitool ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-visitool
-.endif
 
 .include <bsd.port.mk>

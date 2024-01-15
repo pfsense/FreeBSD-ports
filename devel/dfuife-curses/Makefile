@@ -1,6 +1,3 @@
-# Created by: Andrew Turner <andrew+ports@fubar.geek.nz>
-# $FreeBSD$
-
 PORTNAME=	dfuife-curses
 PORTVERSION=	1.5.1.20050829
 PORTREVISION=	1

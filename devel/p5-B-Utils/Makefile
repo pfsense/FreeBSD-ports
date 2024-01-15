@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	B-Utils
 PORTVERSION=	0.27
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Helper functions for op tree manipulation
+WWW=		https://metacpan.org/release/B-Utils
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

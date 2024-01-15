@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	weedit
 PORTVERSION=	2.0.3
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	File duplicate scanner with database support
+WWW=		http://freecode.com/projects/weedit
 
 LICENSE=	GPLv2
 

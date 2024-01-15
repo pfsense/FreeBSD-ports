@@ -6,5 +6,9 @@ many consider it an entire IDE. It's not just for programmers, though. Vim is
 perfect for all kinds of text editing, from composing email to editing
 configuration files.
 
-WWW: http://www.vim.org/
-WWW: https://github.com/vim/vim
+FreeBSD has the following Vim packages:
+* vim: Console-only Vim (vim binary) with all runtime files
+* vim-gtk3, -gtk2, -motif: Console Vim plus a GUI (gvim binary)
+* vim-x11:  Console Vim only, with xclipboard support
+* vim-tiny: Vim binary only, with no runtime files. Not useful for most people;
+  intended for minimal (ex. jail) installations

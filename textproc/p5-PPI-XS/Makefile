@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PPI-XS
 PORTVERSION=	0.910
 CATEGORIES=	textproc perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XS acceleration for the PPI perl parser
+WWW=		https://metacpan.org/release/PPI-XS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	ZeGrapher
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.1.20200921
+PORTREVISION=	2
 CATEGORIES=	math graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software for plotting mathematical objects
+WWW=		https://zegrapher.com/en/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +17,7 @@ USES=		compiler:c++11-lang desktop-file-utils gl qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	AdelKS
 GH_TAGNAME=	6832bd61291b3e82bc05233ae74e8d7556abe910
-USE_QT=		core gui network printsupport svg widgets buildtools_build
+USE_QT=		core gui network printsupport svg widgets buildtools:build
 USE_GL=		gl
 
 PLIST_FILES=	bin/${PORTNAME} \

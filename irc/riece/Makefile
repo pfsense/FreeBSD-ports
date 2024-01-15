@@ -1,9 +1,6 @@
-# Created by: KIMURA Yasuhiro <yasu@utahime.org>
-# $FreeBSD$
-
 PORTNAME=	riece
 PORTVERSION=	9.0.0
-PORTREVISION=	13
+PORTREVISION=	22
 PORTEPOCH=	1
 CATEGORIES=	irc elisp
 MASTER_SITES=	SAVANNAH
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IRC client for Emacs
+WWW=		https://www.nongnu.org/riece/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

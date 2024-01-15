@@ -1,12 +1,10 @@
-# Created by: Attila Nagy <bra@fsn.hu>
-# $FreeBSD$
-
 PORTNAME=	Net_IMAP
 PORTVERSION=	1.1.3
 CATEGORIES=	mail net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class that provides an implementation of the IMAP protocol
+WWW=		https://pear.php.net/package/Net_IMAP
 
 LICENSE=	PHP301
 

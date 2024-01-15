@@ -1,6 +1,3 @@
-# Created by: Guy Antony Halse <guy@rucus.ru.za.za>
-# $FreeBSD$
-
 PORTNAME=	cocor
 PORTVERSION=	1.7
 PORTREVISION=	3
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}c${PORTVERSION:S/.//}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compiler generator that combines the functionality of lex and yacc
+WWW=		http://www.scifac.ru.ac.za/coco/
 
 NO_WRKSUBDIR=	yes
 

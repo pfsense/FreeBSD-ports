@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	Template-Plugin-StripScripts
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	TT plugin to filter HTML against XSS
+WWW=		https://metacpan.org/release/Template-Plugin-StripScripts
 
 LICENSE=	MIT
 

@@ -3,7 +3,7 @@
  * status_frr.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2010-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2010-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2010 Nick Buraglio <nick@buraglio.com>
  * All rights reserved.
  *
@@ -21,7 +21,6 @@
  */
 
 require("guiconfig.inc");
-global $config;
 $control_script = "/usr/local/bin/frrctl";
 $pkg_homedir = "/var/etc/frr";
 global $commands;
@@ -135,30 +134,12 @@ function showCmdT($idx, $data) { ?>
 }
 
 /* Load configuration blocks and check which daemons are enabled. */
-if (is_array($config['installedpackages']['frr']['config'])) {
-	$frr_conf = &$config['installedpackages']['frr']['config'][0];
-}
-$frr_enabled = (isset($frr_conf) && !empty($frr_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['zebra']);
-
-if (is_array($config['installedpackages']['frrbgp']['config'])) {
-	$frr_bgp_conf = &$config['installedpackages']['frrbgp']['config'][0];
-}
-$bgpd_enabled = (isset($frr_bgp_conf) && !empty($frr_bgp_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['bgpd']);
-
-if (is_array($config['installedpackages']['frrospfd']['config'])) {
-	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
-}
-$ospfd_enabled = (isset($ospfd_conf) && !empty($ospfd_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']);
-
-if (is_array($config['installedpackages']['frrospf6d']['config'])) {
-	$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
-}
-$ospf6d_enabled = (isset($ospf6d_conf) && !empty($ospf6d_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospf6d']);
-
-if (is_array($config['installedpackages']['frrbfd']['config'])) {
-	$bfdd_conf = &$config['installedpackages']['frrbfd']['config'][0];
-}
-$bfdd_enabled = (isset($bfdd_conf) && !empty($bfdd_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']);
+$frr_enabled    = ((config_get_path('installedpackages/frr/config/0/enable') == 'on')       || !empty(config_get_path('installedpackages/frrglobalraw/config/0/zebra')));
+$bgpd_enabled   = ((config_get_path('installedpackages/frrbgp/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bgpd')));
+$ospfd_enabled  = ((config_get_path('installedpackages/frrospfd/config/0/enable') == 'on')  || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospfd')));
+$ospf6d_enabled = ((config_get_path('installedpackages/frrospf6d/config/0/enable') == 'on') || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospf6d')));
+$ripd_enabled   = ((config_get_path('installedpackages/frrripd/config/0/enable') == 'on')   || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ripd')));
+$bfdd_enabled   = ((config_get_path('installedpackages/frrbfd/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bfdd')));
 
 $pgtitle = array(gettext("Services"),gettext("FRR"),gettext("Status"));
 
@@ -189,6 +170,11 @@ if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf6")) && $frr
 	defCmdT("ospf6_routes", "OSPF6 Routes", "{$control_script} ospf6 route", true, 1);
 }
 
+if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "rip")) && $frr_enabled && $ripd_enabled) {
+	defCmdT("rip_general", "RIP General", "{$control_script} rip general");
+	defCmdT("rip_routes", "RIP Routes", "{$control_script} rip routes");
+}
+
 if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "bfd")) && $frr_enabled && $bfdd_enabled) {
 	defCmdT("bfd_peers_brief", "BFD Peers Brief", "{$control_script} bfd peer_br");
 	defCmdT("bfd_peers", "BFD Peers", "{$control_script} bfd peer");
@@ -203,6 +189,8 @@ switch ($_REQUEST['protocol']) {
 			defCmdT("zebra_cpu", "Zebra CPU", "{$control_script} zebra cpu");
 			defCmdT("zebra_interfaces", "Zebra Interfaces", "{$control_script} zebra int");
 			defCmdT("zebra_memory", "Zebra Memory", "{$control_script} zebra mem");
+		} else {
+			$message = "FRR is not enabled";
 		}
 		break;
 	case "bgp":
@@ -237,6 +225,15 @@ switch ($_REQUEST['protocol']) {
 			defCmdT("ospf6_memory", "OSPF6 Memory", "{$control_script} ospf6 mem");
 		} else {
 			$message = "OSPF6 is not enabled";
+		}
+		break;
+	case "rip":
+		$title_label = "RIP";
+		if ($frr_enabled && $ripd_enabled) {
+			defCmdT("rip_general", "RIP General", "{$control_script} rip general");
+			defCmdT("rip_routes", "RIP Routes", "{$control_script} rip routes");
+		} else {
+			$message = "RIP is not enabled";
 		}
 		break;
 	case "bfd":
@@ -282,12 +279,14 @@ $tab_array[] = array(gettext("Zebra "), ($_REQUEST['protocol'] == "zebra"), "/st
 $tab_array[] = array(gettext("BGP"), ($_REQUEST['protocol'] == "bgp"), "/status_frr.php?protocol=bgp");
 $tab_array[] = array(gettext("OSPF"), ($_REQUEST['protocol'] == "ospf"), "/status_frr.php?protocol=ospf");
 $tab_array[] = array(gettext("OSPF6 "), ($_REQUEST['protocol'] == "ospf6"), "/status_frr.php?protocol=ospf6");
+$tab_array[] = array(gettext("RIP"), ($_REQUEST['protocol'] == "rip"), "/status_frr.php?protocol=rip");
 $tab_array[] = array(gettext("BFD"), ($_REQUEST['protocol'] == "bfd"), "/status_frr.php?protocol=bfd");
 $tab_array[] = array(gettext("Configuration"), ($_REQUEST['protocol'] == "config"), "/status_frr.php?protocol=config");
 $tab_array[] = array(gettext("[Global]"), false, "/pkg_edit.php?xml=frr.xml");
 $tab_array[] = array(gettext("[BGP Settings]"), false, "pkg_edit.php?xml=frr/frr_bgp.xml");
 $tab_array[] = array(gettext("[OSPF Settings]"), false, "/pkg_edit.php?xml=frr/frr_ospf.xml");
 $tab_array[] = array(gettext("[OSPF6 Settings]"), false, "/pkg_edit.php?xml=frr/frr_ospf6.xml");
+$tab_array[] = array(gettext("[RIP Settings]"), false, "/pkg_edit.php?xml=frr/frr_rip.xml");
 $tab_array[] = array(gettext("[BFD Settings]"), false, "/pkg_edit.php?xml=frr/frr_bfd.xml");
 
 include("head.inc");

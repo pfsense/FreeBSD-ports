@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	perwindowlayoutd
 PORTVERSION=	0.6
 CATEGORIES=	x11
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/perwindowlayout
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Keeps per-window keyboard layout under X11
+WWW=		https://sourceforge.net/projects/perwindowlayout/
 
 LICENSE=	GPLv3
 

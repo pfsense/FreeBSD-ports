@@ -1,20 +1,17 @@
-# Created by: Matthew Hunt <mph@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	intercal
-PORTVERSION=	0.30
-PORTREVISION=	2
+PORTVERSION=	0.31
 CATEGORIES=	lang
 MASTER_SITES=	http://www.catb.org/~esr/intercal/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	C-INTERCAL compiler, ick, and supporting libraries
+WWW=		http://www.catb.org/~esr/intercal/
 
 LICENSE=	GPLv2
 
 USES=		gmake
 GNU_CONFIGURE=	yes
-CFLAGS+=	-D_POSIX_SOURCE
+CFLAGS+=	-D_POSIX_C_SOURCE=200809L
 DATADIR=	${PREFIX}/share/ick
 
 INFO=		ick

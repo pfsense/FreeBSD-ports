@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	hash
 DISTVERSION=	g20200929
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++14 header-only easy-to-use hash library
+WWW=		https://github.com/Chocobo1/Hash
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

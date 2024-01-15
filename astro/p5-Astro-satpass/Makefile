@@ -1,14 +1,12 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Astro-satpass
-PORTVERSION=	0.116
+PORTVERSION=	0.130
 CATEGORIES=	astro perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Classes and app to compute satellite visibility
+WWW=		https://metacpan.org/release/Astro-satpass
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

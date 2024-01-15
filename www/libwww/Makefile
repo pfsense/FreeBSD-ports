@@ -1,6 +1,3 @@
-# Created by: torstenb
-# $FreeBSD$
-
 PORTNAME=	libwww
 PORTVERSION=	5.4.2
 CATEGORIES=	www devel
@@ -10,6 +7,7 @@ DISTNAME=	w3c-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	W3C Reference Library
+WWW=		https://www.w3.org/Library/
 
 LICENSE=	W3C
 LICENSE_NAME=	W3C IPR SOFTWARE NOTICE
@@ -18,11 +16,18 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		gmake libtool localbase perl5 ssl tar:tgz
+USES=		cpe gmake libtool localbase perl5 ssl tar:tgz
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared --with-zlib --with-ssl=${OPENSSLBASE}
+CPE_VENDOR=	w3c
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so

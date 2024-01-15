@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Expect
 PORTVERSION=	0.34
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Automated driving and testing of terminal-based programs
+WWW=		https://metacpan.org/release/Test-Expect
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

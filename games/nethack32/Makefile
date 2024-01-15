@@ -1,6 +1,3 @@
-# Created by: asami
-# $FreeBSD$
-
 PORTNAME=	nethack32
 PORTVERSION=	3.2.3
 PORTREVISION=	7
@@ -13,6 +10,7 @@ PATCHFILES=	nh-3.2.2-3.2.3.diff
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Dungeon explorin', slashin', hackin' game
+WWW=		https://www.nethack.org/
 
 WRKSRC=		${WRKDIR}/${TRUEPORTNAME}-3.2.2
 
@@ -40,6 +38,10 @@ OPTIONS_DEFINE=	DOCS
 PLIST_SUB+=	HACKLINK=""
 .else
 PLIST_SUB+=	HACKLINK="@comment "
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 post-patch:

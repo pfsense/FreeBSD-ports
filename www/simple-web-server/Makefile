@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	simple-web-server
 DISTVERSION=	3.0.2
+PORTREVISION=	1
 CATEGORIES=	www devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	HTTP and HTTPS server and client library
+WWW=		https://gitlab.com/eidheim/Simple-Web-Server
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +16,7 @@ USES=		cmake compiler:c++11-lang
 USE_GITLAB=	yes
 GL_ACCOUNT=	eidheim
 GL_PROJECT=	Simple-Web-Server
-GL_COMMIT=	0f8b26ff19d757db039d6f70e252219326cc3d8f
+GL_TAGNAME=	0f8b26ff19d757db039d6f70e252219326cc3d8f
 
 NO_ARCH=	yes
 NO_BUILD=	yes

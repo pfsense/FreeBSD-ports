@@ -1,13 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	libdvbpsi
-PORTVERSION=	1.3.3
+DISTVERSION=	1.3.3
 CATEGORIES=	multimedia
-MASTER_SITES=	http://download.videolan.org/pub/libdvbpsi/${PORTVERSION}/
+MASTER_SITES=	https://get.videolan.org/${PORTNAME}/${DISTVERSION}/ \
+		https://download.videolan.org/pub/libdvbpsi/${DISTVERSION}/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Library for MPEG TS and DVB PSI tables decoding and generation
+WWW=		https://www.videolan.org/developers/libdvbpsi.html
 
 LICENSE=	LGPL21
 

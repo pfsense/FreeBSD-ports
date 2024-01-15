@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	yeahwm
 PORTVERSION=	0.3.5
 CATEGORIES=	x11-wm
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Minimal X11 window manager with BeOS-like tabbed titles
+WWW=		http://phrat.de/
 
 USES=		xorg
 USE_XORG=	x11 xext xinerama

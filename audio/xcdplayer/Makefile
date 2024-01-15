@@ -1,6 +1,3 @@
-# Created by: swallace
-# $FreeBSD$
-
 PORTNAME=	xcdplayer
 PORTVERSION=	2.2
 PORTREVISION=	5

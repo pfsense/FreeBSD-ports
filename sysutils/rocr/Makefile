@@ -1,12 +1,10 @@
-# Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rocr
 PORTVERSION=	1.9.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	HPC market enhanced HSA based runtime
+WWW=		https://github.com/RadeonOpenCompute/ROCT-Thunk-Interface
 
 LICENSE=	NCSA
 LICENSE_FILE=	${WRKSRC}/src/LICENSE.md

@@ -1,84 +1,78 @@
-# Created by: Yukihiro Nakai <Nakai@technologist.com>
-# $FreeBSD$
-
 PORTNAME=	libxml2
-DISTVERSION=	2.9.10
+DISTVERSION=	2.10.4
 PORTREVISION?=	2
 CATEGORIES?=	textproc gnome
-MASTER_SITES=	http://xmlsoft.org/sources/
-DIST_SUBDIR=	gnome2
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${DISTVERSION:R}/
+DIST_SUBDIR=	gnome
 
-# CVE-2019-20388, CVE-2020-7595, CVE-2020-24977, Python 3.9 support
-#PATCH_SITES=	https://gitlab.gnome.org/GNOME/libxml2/commit/
-#PATCHFILES=	7ffcd44d7e6c46704f8af0321d9314cd26e0e18a.patch:-p1 \
-#		0e1a49c8907645d2e155f0d89d4d9895ac5112b5.patch:-p1 \
-#		50f06b3efb638efb0abd95dc62dca05ae67882c2.patch:-p1 \
-#		edc7b6abb0c125eeb888748c334897f60aab0854.patch:-p1
-
-MAINTAINER?=	desktop@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT?=	XML parser library for GNOME
+WWW=		http://xmlsoft.org/
 
-LICENSE=	MIT TRIO
-LICENSE_COMB=	multi
-LICENSE_NAME_TRIO=	Trio License
-LICENSE_FILE_MIT=	${WRKSRC}/COPYING
-LICENSE_FILE_TRIO=	${FILESDIR}/LICENSE.TRIO
-LICENSE_PERMS_TRIO=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE=	MIT
 
-GNU_CONFIGURE=	yes
-USES+=		compiler cpe iconv libtool pathfix pkgconfig shebangfix
+# Upstream offers CMake in addition to autotools, but we use the latter.
+# CMake is a heavy build system, heavier than autotools, and this
+# port has many consumers of its core functionality. Some such
+# consumers, especially when optioned appropriately (and users have
+# a right to do so), may become dependencies of dependencies of CMake.
+# Additionally, some consumers rely on symbol versioning that CMake
+# does not support (as of Q2 2022) without a hack. Please consider the
+# effects of the ecosystem and technical merits before considering
+# switching build systems again. Any changes to this end not dogfooded
+# thoroughly may be reverted.
+USES+=		cpe iconv libtool localbase pathfix pkgconfig tar:xz
 CPE_VENDOR=	xmlsoft
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS?=--with-iconv=${ICONV_PREFIX} \
-		--with-html-dir=${PREFIX}/share/doc \
-		--with-html-subdir=${PORTNAME} \
-		--without-icu \
+GNU_CONFIGURE=	yes
+# Don't build with Python support unless requested
+CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/share/ \
 		--with-lzma=/usr \
-		--without-python
+		--${LIBXML2_SLAVE:Dwith:Uwithout}-python${LIBXML2_SLAVE:D=${PYTHON_CMD}:U}
+
+# Many symbols in the linker version script libxml2.syms are only defined when
+# --with-xptr-locs is enabled at configure time. Suppress errors with lld >= 17
+# due to these undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
+
 INSTALL_TARGET=	install-strip
-SHEBANG_FILES=	*.py */*.py */*/*.py
+TEST_TARGET=	check
 
-PLIST_SUB+=	LIBVERSION=${PORTVERSION}
+PLIST_SUB+=	LIBVERSION=${DISTVERSION}
 
-.if !defined(MASTERDIR)
+OPTIONS_DEFINE=	DOCS ICU MEM_DEBUG READLINE STATIC THREAD_ALLOC
+OPTIONS_DEFAULT=	READLINE STATIC
+OPTIONS_SUB=		yes
 
-OPTIONS_DEFINE=	SCHEMA VALID THREADS MEM_DEBUG XMLLINT_HIST THREAD_ALLOC
-OPTIONS_DEFAULT=SCHEMA VALID THREADS
-SCHEMA_DESC=	XML schema support
-SCHEMA_CONFIGURE_WITH=	schemas
-VALID_DESC=	Validation support
-VALID_CONFIGURE_OFF=	--without-valid
-THREADS_DESC=	Threads support
-THREADS_CONFIGURE_WITH=	threads
-MEM_DEBUG_DESC=	Memory debugging (DEVELOPERS ONLY!)
-MEM_DEBUG_CONFIGURE_WITH=	mem-debug
-XMLLINT_HIST_DESC=	History for xmllint
-XMLLINT_HIST_CONFIGURE_WITH=	history
+MEM_DEBUG_DESC=		Memory debugging (DEVELOPERS ONLY!)
+READLINE_DESC=		History for xmllint
 THREAD_ALLOC_DESC=	Per-thread memory (DEVELOPERS ONLY!)
+
+ICU_LIB_DEPENDS=		libicudata.so:devel/icu
+ICU_CONFIGURE_WITH=		icu
+MEM_DEBUG_CONFIGURE_WITH=	mem-debug
+READLINE_LIB_DEPENDS=		libreadline.so:devel/readline
+READLINE_CONFIGURE_WITH=	history \
+				readline
+STATIC_CONFIGURE_ENABLE=	static
 THREAD_ALLOC_CONFIGURE_WITH=	thread-alloc
 
-.endif # !defined(MASTERDIR)
-
-.if !defined(MASTERDIR)
-post-install:
-	@${RM} -r ${STAGEDIR}${PREFIX}/share/gtk-doc
-.endif
-
-.include <bsd.port.pre.mk>
-
 post-patch:
-.for d in . doc doc/devhelp doc/examples
-	@${REINPLACE_CMD} -e '/^install-data-am:/ s|install-data-local||' \
-		${WRKSRC}/${d}/Makefile.in
-.endfor
-.for f in catalog.c xmlcatalog.c xmllint.c doc/xmllint.1
 	@${REINPLACE_CMD} -e \
 		's|/etc/xml/catalog|${LOCALBASE}/share/xml/catalog|g; \
 		 s|/etc/sgml/catalog|${LOCALBASE}/share/sgml/catalog|g' \
-		${WRKSRC}/${f}
-.endfor
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-	@${REINPLACE_CMD} -e 's/ -Wno-array-bounds//' ${WRKSRC}/configure
+		${WRKSRC}/doc/xmllint.1
+
+post-install:
+.if !defined(LIBXML2_SLAVE)
+# Documentation should be in DOCSDIR
+	@${MV} ${STAGEDIR}${PREFIX}/share/gtk-doc/html/libxml2 \
+		${STAGEDIR}${DOCSDIR}/devhelp
+	@${RM} -r ${STAGEDIR}${PREFIX}/share/gtk-doc
+# Install remaining documentation that's not connected to autotools
+	${INSTALL_MAN} ${WRKSRC}/doc/*.html ${STAGEDIR}${DOCSDIR}
+.else
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/site-packages/libxml2mod${PYTHON_EXT_SUFFIX}.so
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

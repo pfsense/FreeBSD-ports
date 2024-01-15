@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	mailfront
 PORTVERSION=	2.22
 CATEGORIES=	mail
@@ -9,6 +6,7 @@ MASTER_SITES=	http://untroubled.org/${PORTNAME}/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mail server network protocol front-ends
+WWW=		https://untroubled.org/mailfront/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

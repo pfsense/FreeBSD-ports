@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Calendar-Chinese
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Traditional Chinese Calendar Implementation
+WWW=		https://metacpan.org/release/DateTime-Calendar-Chinese
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

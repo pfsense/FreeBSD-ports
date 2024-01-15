@@ -1,24 +1,24 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sockets
 PORTVERSION=	2.3.9.9
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	http://www.alhem.net/Sockets/ \
 		https://www.netfence.it/Sockets/
 
 MAINTAINER=	ml@netfence.it
 COMMENT=	C++ wrapper for BSD-style sockets
+WWW=		http://www.alhem.net/Sockets/
 
-USES+=		gmake gnome ssl
+USES=		gmake gnome ssl
+USE_CXXSTD=	c++14
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
-CFLAGS+=	-I${OPENSSLINC}
-LDFLAGS+=	-L${OPENSSLLIB}
 
 ALL_TARGET=	all shared
 INSTALL_TARGET=	install_shared
+
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 
 post-patch:
 # PREFIX safeness

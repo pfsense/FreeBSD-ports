@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	metacam
 PORTVERSION=	1.2
 CATEGORIES=	graphics
@@ -8,6 +5,7 @@ MASTER_SITES=	LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Digital camera EXIF meta-information reader
+WWW=		http://www.cheeseplant.org/~daniel/pages/metacam.html
 
 USES=		gmake
 

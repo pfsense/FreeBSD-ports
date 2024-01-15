@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
-
 PORTNAME=	wmjulia
 PORTVERSION=	0.40
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://web.novalis.org/programs/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dockapp that creates an animated Julia set
+WWW=		http://web.novalis.org/
 
 LICENSE=	GPLv2
 

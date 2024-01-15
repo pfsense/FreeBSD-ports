@@ -1,13 +1,11 @@
-# Created by: Craig Leres <leres@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nvi2
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Updated implementation of the ex/vi text editor
+WWW=		https://github.com/lichray/nvi2/
 
 LICENSE=	BSD3CLAUSE
 
@@ -16,7 +14,7 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	lichray
 
-CONFLICTS_INSTALL=	nvi-m17n-[0-9]* nvi-[0-9]*
+CONFLICTS_INSTALL=	nvi-m17n nvi
 
 OPTIONS_DEFINE=		DEBUG WIDECHAR ICONV
 OPTIONS_DEFAULT=	WIDECHAR ICONV
@@ -35,6 +33,11 @@ PLIST_FILES=	bin/nex \
 		man/man1/nex.1.gz \
 		man/man1/nvi.1.gz \
 		man/man1/nview.1.gz
+
+post-patch:
+	${REINPLACE_CMD} -e \
+	    '/-Wall/s/^/add_compile_options(-fcolor-diagnostics)\n/' \
+	    ${WRKSRC}/CMakeLists.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/nvi ${STAGEDIR}${PREFIX}/bin

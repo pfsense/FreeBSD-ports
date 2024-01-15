@@ -1,6 +1,3 @@
-# Created by: Chih-Hsin Chang <chihhsin@cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	gydict
 PORTVERSION=	1.0
 DISTVERSIONPREFIX=	v
@@ -9,10 +6,11 @@ CATEGORIES=	chinese textproc python
 
 MAINTAINER=	chihhsin@cs.nctu.edu.tw
 COMMENT=	Command line tool of Yahoo! Dictionary
+WWW=		https://github.com/iamgyz/gydict
 
 LICENSE=	MIT
 
-USES=		python:3.4+,run shebangfix
+USES=		python:run shebangfix
 SHEBANG_FILES=	gydict.py
 
 USE_GITHUB=	yes

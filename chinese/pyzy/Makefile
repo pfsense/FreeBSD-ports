@@ -1,6 +1,3 @@
-# Created by: Henry Hu <henry.hu.sh@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pyzy
 PORTVERSION=	0.1.0
 PORTREVISION=	9
@@ -8,13 +5,14 @@ CATEGORIES=	chinese
 
 MAINTAINER=	henry.hu.sh@gmail.com
 COMMENT=	Chinese PinYin and Bopomofo conversion library
+WWW=		https://github.com/pyzy/pyzy
 
 LICENSE=	LGPL21
 
 LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 
 USES=		autoreconf compiler:c++11-lang gettext-runtime gmake gnome \
-		libtool pathfix pkgconfig python:3.7+,build shebangfix
+		libtool pathfix pkgconfig python:build shebangfix
 SHEBANG_FILES=	data/db/android/create_db.py
 USE_GITHUB=	yes
 GH_TAGNAME=	6d9c3cd

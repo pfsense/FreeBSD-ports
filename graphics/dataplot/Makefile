@@ -1,12 +1,11 @@
-# Created by: Pedro F. Giffuni
-# $FreeBSD$
-
 PORTNAME=	dataplot
-DISTVERSION=	20200619
+DISTVERSION=	20210713
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free software system for statistical visualization
+WWW=		https://www.itl.nist.gov/div898/software/dataplot/index.htm
 
 LICENSE=	PD
 
@@ -19,7 +18,7 @@ USE_GNOME=	cairo
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	usnistgov
-GH_TAGNAME=	2c1b27601a3b7523449de612613eadeead9a8f70
+GH_TAGNAME=	d5eb15dd86dd80098c6535aa68898ab8392ab700
 
 WRKSRC_SUBDIR=	src
 

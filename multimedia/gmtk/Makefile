@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	gmtk
 PORTVERSION=	1.0.9
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia gnome devel
 MASTER_SITES=	https://pkgs.rpmfusion.org/repo/pkgs/free/gmtk/gmtk-1.0.9.tar.gz/9184658014ca7b325b569ac7417e4860/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for gnome-mplayer and gecko-mediaplayer
+WWW=		http://code.google.com/p/gmtk/
 
 LICENSE=	GPLv2
 
@@ -29,7 +28,6 @@ OPTIONS_DEFINE=		ALSA DOCS GIO GTK3 PULSEAUDIO
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CONFIGURE_WITH=	alsa
-GIO_DESC=		Use GIO for file I/O
 GIO_CONFIGURE_WITH=	gio
 GTK3_USE=		gnome=gtk30
 GTK3_CONFIGURE_ENABLE=	gtk3

@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	libshhmsg
 PORTVERSION=	1.4.2
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	shhmsg-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for displaying messages
+WWW=		https://shh.thathost.com/pub-unix/ #shhmsg
 
 LICENSE=	ART10
 

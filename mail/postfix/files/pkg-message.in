@@ -11,6 +11,7 @@ Run the following commands to enable postfix during startup:
 
 If postfix is *not* already activated in %%MC_PREFIX%%/etc/mail/mailer.conf
   - mv %%MC_PREFIX%%/etc/mail/mailer.conf %%MC_PREFIX%%/etc/mail/mailer.conf.old
+  - install -d %%MC_PREFIX%%/etc/mail
   - install -m 0644 %%DATADIR%%/mailer.conf.postfix %%MC_PREFIX%%/etc/mail/mailer.conf
 
 Disable sendmail(8) specific tasks,
@@ -24,14 +25,6 @@ If you are using SASL, you need to make sure that postfix has access to read
 the sasldb file.  This is accomplished by adding postfix to group mail and
 making the %%PREFIX%%/etc/sasldb* file(s) readable by group mail (this should
 be the default for new installs).
-EOM
-}
-{
-  type: upgrade
-  message: <<EOM
-If you are upgrading from prior postfix version, please see the README
-files for recommended changes to your configuration and additional
-http://www.postfix.org/COMPATIBILITY_README.html
 EOM
 }
 {

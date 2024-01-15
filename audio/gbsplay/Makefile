@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	gbsplay
 DISTVERSION=	0.0.94
 PORTEPOCH=	1
@@ -8,6 +5,7 @@ CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Emulates the sound hardware of the Nintendo Game Boy(TM)
+WWW=		https://github.com/mmitch/gbsplay
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -26,6 +24,8 @@ CONFIGURE_ARGS+=	--prefix=${PREFIX} \
 			--without-xmmsplugin
 
 MAKE_ENV+=	EXAMPLESDIR="${STAGEDIR}${EXAMPLESDIR}"
+
+CONFLICTS_INSTALL=	mate-control-center # share/applications/mimeinfo.cache
 
 OPTIONS_DEFINE=		BASH_COMPLETIONS DOCS EXAMPLES NAS NLS
 OPTIONS_DEFAULT=	BASH_COMPLETIONS

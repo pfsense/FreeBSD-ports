@@ -1,0 +1,3 @@
+bin/vaultwarden
+@dir(%%WWWOWN%%,%%WWWGRP%%,0755) %%WWWDIR%%/data
+@sample %%WWWDIR%%/data/config.json.sample

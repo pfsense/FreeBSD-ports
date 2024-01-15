@@ -1,28 +1,30 @@
-# Created by: Carlos J Puga Medina <cpm@fbsd.es>
-# $FreeBSD$
-
 PORTNAME=	dnsdist
-DISTVERSION=	1.5.1
+DISTVERSION=	1.8.3
 CATEGORIES=	dns net
 MASTER_SITES=	https://downloads.powerdns.com/releases/
 
 MAINTAINER=	tremere@cainites.net
 COMMENT=	Highly DNS-, DoS- and abuse-aware loadbalancer
+WWW=		https://dnsdist.org/
 
-LICENSE=	GPLv2 UNLICENSE
+LICENSE=	GPLv2 ISCL MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
-LICENSE_FILE_UNLICENSE=	${WRKSRC}/ext/incbin/UNLICENSE
+LICENSE_FILE_ISCL=	${WRKSRC}/ext/ipcrypt/LICENSE
+LICENSE_FILE_MIT=	${WRKSRC}/ext/yahttp/LICENSE
+
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	archs with 32-bits time_t are no longer supported by upstream
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
 LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs \
 		libh2o-evloop.so:www/h2o \
-		libprotobuf.so:devel/protobuf \
 		libre2.so:devel/re2 \
 		libsodium.so:security/libsodium
 
 USES=		bison:alias compiler:c++14-lang cpe gmake libedit libtool \
 		localbase pkgconfig tar:bz2
+CPE_VENDOR=	powerdns
 USE_RC_SUBR=	dnsdist
 
 GNU_CONFIGURE=	yes
@@ -46,14 +48,13 @@ OPTIONS_GROUP_KSVOPT=	CDB LMDB
 OPTIONS_MULTI=		TLS
 OPTIONS_MULTI_TLS=	GNUTLS OPENSSL
 OPTIONS_SINGLE=		EXTLUA
-OPTIONS_SINGLE_EXTLUA=	LUA LUAJIT LUAJITOR
+OPTIONS_SINGLE_EXTLUA=	LUA LUAJIT
 
 CDB_DESC=	CDB backend
 DNSTAP_DESC=	dnstap support (see dnstap.info)
 KSVOPT_DESC=	Key Value Stores
 LMDB_DESC=	LMDB backend
-LUAJITOR_DESC=	Use lang/luajit-openresty
-LUAJIT_DESC=	Use lang/luajit
+LUAJIT_DESC=	Use luajit
 LUA_DESC=	Use lang/lua
 
 CDB_LIB_DEPENDS=	libcdb.so:databases/tinycdb
@@ -61,19 +62,16 @@ CDB_CONFIGURE_ON=	CDB_CFLAGS="-I${LOCALBASE}/include" \
 			CDB_LIBS="-L${LOCALBASE}/lib -lcdb"
 
 DNSTAP_LIB_DEPENDS=		libfstrm.so:devel/fstrm
-DNSTAP_CONFIGURE_ENABLE=	fstrm
+DNSTAP_CONFIGURE_ENABLE=	dnstap
 
-GNUTLS_LIB_DEPENDS=		libgnutls.so:security/gnutls
-GNUTLS_CONFIGURE_ENABLE=	gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
+GNUTLS_CONFIGURE_WITH=	gnutls
 
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 LMDB_CONFIGURE_ON=	--with-lmdb=${LOCALBASE}
 LMDB_CONFIGURE_OFF=	--without-lmdb
 
-LUAJITOR_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
-LUAJITOR_CONFIGURE_ON=	--with-lua=luajit
-
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_USES=		luajit
 LUAJIT_CONFIGURE_ON=	--with-lua=luajit
 
 LUA_USES=		lua
@@ -88,7 +86,7 @@ SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_WITH=	net-snmp
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} ${FILESDIR}/dnsdist.conf.sample ${STAGEDIR}${ETCDIR}
+#	@${MKDIR} ${STAGEDIR}${ETCDIR}
+	${MV} ${STAGEDIR}${ETCDIR}/dnsdist.conf-dist ${STAGEDIR}${ETCDIR}/dnsdist.conf.sample
 
 .include <bsd.port.mk>

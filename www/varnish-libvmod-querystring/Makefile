@@ -1,19 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	libvmod-querystring
-DISTVERSION=	v2.0.2
+DISTVERSION=	v2.0.3
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
 MAINTAINER=	zi@FreeBSD.org
-COMMENT=	Varnish Module (vmod) for querystring manipulation
+COMMENT=	Varnish Module (vmod) for query string manipulation
+WWW=		https://github.com/Dridi/libvmod-querystring
 
 LICENSE=	GPLv1
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 
-USES=		autoreconf libtool pkgconfig python:3.5+,build varnish:6
+USES=		autoreconf libtool pkgconfig python:build varnish:7
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

@@ -1,14 +1,11 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnome-user-docs
-PORTVERSION=	3.38.2
+PORTVERSION=	42.0
 CATEGORIES=	misc gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GNOME 3 users guide
+COMMENT=	GNOME desktop users guide
 
 LICENSE=	CC-BY-3.0
 LICENSE_FILE=	${WRKSRC}/COPYING

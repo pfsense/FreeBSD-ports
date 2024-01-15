@@ -1,6 +1,3 @@
-# Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
-
 PORTNAME=	data
 PORTVERSION=	3.2.1
 CATEGORIES=	games
@@ -11,6 +8,7 @@ DIST_SUBDIR=	glest
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Glest data files
+WWW=		https://www.glest.org/
 
 USES=		dos2unix zip
 DOS2UNIX_GLOB=	*.log *.ini *.html *.txt *.lng

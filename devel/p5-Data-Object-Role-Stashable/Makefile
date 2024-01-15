@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object-Role-Stashable
 PORTVERSION=	2.01
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Stashable Role for Data::Object
+WWW=		https://metacpan.org/release/Data-Object-Role-Stashable
 
 LICENSE=	APACHE20
 

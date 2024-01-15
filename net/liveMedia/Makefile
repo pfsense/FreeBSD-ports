@@ -1,8 +1,5 @@
-# Created by: nork@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	liveMedia
-DISTVERSION=	2020.11.26
+DISTVERSION=	2022.06.16
 PORTEPOCH=	2
 CATEGORIES=	net devel
 MASTER_SITES=	http://www.live555.com/liveMedia/public/ \
@@ -11,12 +8,13 @@ DISTNAME=	live.${PORTVERSION}
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	LIVE.COM Streaming Media
+WWW=		http://www.live555.com/liveMedia/
 
-LICENSE=	LGPL21
-
-NO_CDROM=	'dated material'
-
-BROKEN_sparc64=		Fails to compile
+LICENSE=	LGPL21 MAT
+LICENSE_COMB=	multi
+LICENSE_NAME_MAT=	dated material
+LICENSE_TEXT_MAT=	dated material
+LICENSE_PERMS_MAT=	pkg-mirror dist-mirror auto-accept
 
 WRKSRC=		${WRKDIR}/live
 

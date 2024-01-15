@@ -1,6 +1,3 @@
-# Created by: Toshihiko SHIMOKAWA <toshi@tea.forus.or.jp> & ELISA Font Project
-# $FreeBSD$
-
 PORTNAME=	elisa8
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTNAME=	elisat10
 
 MAINTAINER=	toshi@tea.forus.or.jp
 COMMENT=	8-dot Kanji font 'elisa'
+WWW=		http://hp.vector.co.jp/authors/VA002310/family.htm
 
 LICENSE=	NOTPARTIAL-NOTCOMMERCIAL
 LICENSE_NAME=	Whole, not partial, and not commercial
@@ -31,8 +29,6 @@ SUB_LIST=	BDFTOPCF_CMD="${LOCALBASE}/bin/bdftopcf" \
 PORTDOCS=	elisa100.doc elisat10.doc elisat10.html
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias ${STAGEDIR}${FONTSDIR}

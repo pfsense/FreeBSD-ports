@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	xwave
 PORTVERSION=	2.2
 PORTREVISION=	3

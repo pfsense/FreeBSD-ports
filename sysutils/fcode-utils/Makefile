@@ -1,13 +1,11 @@
-# Created by: Piotr Kubaj <pkubaj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fcode-utils
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Utilities to process FCODE, OpenFirmware's byte code
+WWW=		https://www.openfirmware.info/FCODE_suite
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	jrobin
 PORTVERSION=	1.5.14
 CATEGORIES=	databases java
@@ -10,6 +7,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pure Java alternative to RRDTool
+WWW=		http://www.jrobin.org/
 
 USE_JAVA=	yes
 NO_BUILD=	yes

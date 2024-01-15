@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rsstail
 PORTVERSION=	2.1
 CATEGORIES=	www
@@ -8,6 +5,7 @@ MASTER_SITES=	https://www.vanheusden.com/rsstail/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple RSS monitor
+WWW=		https://www.vanheusden.com/rsstail/
 
 LICENSE=	GPLv2
 

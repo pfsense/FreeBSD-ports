@@ -1,52 +1,50 @@
-# Created by: Ryo MIYAMOTO <rmiya@cc.hirosaki-u.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	molden
-DISTVERSION=	5.8.2
-PORTREVISION=	3
+DISTVERSION=	7.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	biology
-MASTER_SITES=	ftp://ftp.cmbi.umcn.nl/pub/molgraph/molden/
-DISTNAME=	${PORTNAME}${PORTVERSION}
+MASTER_SITES=	https://ftp.science.ru.nl/Molden/
+DISTNAME=	${PORTNAME}${DISTVERSION}
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Display molecular orbitals and electron densities in 2D and 3D
+WWW=		https://www.theochem.ru.nl/molden/
 
 LICENSE=	Molden
-LICENSE_NAME=	Molden
+LICENSE_NAME=	Molden License
 LICENSE_FILE=	${WRKSRC}/CopyRight
-LICENSE_PERMS=	auto-accept
+LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror # free for academic, non profit use
 
-RESTRICTED=	free for academic, non profit usage; do not re-distribute source and executable.
-
-WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION:R}
+BUILD_DEPENDS=	makedepend:devel/makedepend
 
 USES=		fortran gl gmake xorg
-USE_XORG=	x11
+USE_XORG=	x11 xmu
 USE_GL=		gl glu
+
 MAKEFILE=	makefile
-MAKE_JOBS_UNSAFE=yes
 
 CFLAGS+=	-D${OPSYS:tu} -DDOBACK -DHASTIMER -DCOLOR_OFFSET=0.0 \
 		-I${LOCALBASE}/include -Wno-return-type
 
 PORTDOCS=	*
 PORTDATA=	*
-PLIST_FILES=	bin/ambfor bin/gmolden bin/molden bin/surf
+
+PLIST_FILES=	bin/ambfor \
+		bin/ambmd \
+		bin/gmolden \
+		bin/molden \
+		bin/surf
 
 PORTSCOUT=	limit:^5\.0\.
 
 OPTIONS_DEFINE=		DATA DOCS
 OPTIONS_DEFAULT=	DATA
 
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|^CC |#CC | ; \
-		 s|^FC |#FC | ; \
-		 s|/usr/X11R6|${LOCALBASE}| ; \
-		 s|$$(LIBS)|$$(LIBS) $$(LDFLAGS)| ; \
-		 s|-lXmu|| ; \
-		 /depend/s|^|#|' ${WRKSRC}/makefile
+post-extract:
+	# remove object modules
+	@${FIND} ${WRKSRC} -name "*.o" | ${XARGS} ${RM}
+	# remove pre-built executables
+	@${RM} ${WRKSRC}/bin/*
 
 post-configure:
 	@${ECHO_MSG} "********************"
@@ -56,11 +54,8 @@ post-configure:
 	@${ECHO_MSG} "********************"
 
 do-install:
-.for i in molden gmolden
-	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ${i} ${STAGEDIR}${PREFIX}/bin)
-.endfor
-.for i in ambfor surf
-	(cd ${WRKSRC}/${i} && ${INSTALL_PROGRAM} ${i} ${STAGEDIR}/${PREFIX}/bin)
+.for e in molden gmolden ambfor ambmd surf
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/${e} ${STAGEDIR}${PREFIX}/bin
 .endfor
 
 do-install-DATA-on:
@@ -71,6 +66,14 @@ do-install-DATA-on:
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Type mismatch between actual argument at (1) and actual argument at (2) (INTEGER(4)/REAL(4)).
+# in theory, this should set FCFLAGS, but the port does not conform
+FFLAGS+=	-fallow-argument-mismatch
+.endif
+
+.include <bsd.port.post.mk>

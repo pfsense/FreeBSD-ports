@@ -1,23 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	vulkan-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.165
+DISTVERSION=	1.3.275
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Tools and demos for the Vulkan graphics API
+WWW=		https://github.com/KhronosGroup/Vulkan-Tools
 
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	glslangValidator:graphics/glslang \
 		vulkan-headers>0:graphics/vulkan-headers
-LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 
-USES=		cmake compiler:c++11-lib pkgconfig python:3.4+,build
+USES=		alias cmake compiler:c++11-lib pkgconfig python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	KhronosGroup
 GH_PROJECT=	Vulkan-Tools
+GH_TUPLE=	zeux:volk:1.3.270-16-gf2a16e3:volk/volk
 CMAKE_OFF=	BUILD_CUBE BUILD_ICD
 CMAKE_ARGS=	-DGLSLANG_INSTALL_DIR:PATH="${LOCALBASE}"
 
@@ -26,8 +25,7 @@ OPTIONS_DEFAULT=	WAYLAND XCB XLIB
 OPTIONS_SLAVE=		DISPLAY
 OPTIONS_SUB=		yes
 
-WAYLAND_PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-WAYLAND_PATCHFILES=	ea2e75bea224.patch:-p1
+WAYLAND_CATEGORIES=	wayland
 WAYLAND_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 			wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
@@ -40,7 +38,7 @@ XCB_CMAKE_BOOL=		BUILD_WSI_XCB_SUPPORT
 
 XLIB_DESC=		${X11_DESC} via libX11
 XLIB_USES=		xorg
-XLIB_USE=		XORG=x11,xext,ice,sm
+XLIB_USE=		XORG=x11
 XLIB_CMAKE_BOOL=	BUILD_WSI_XLIB_SUPPORT
 
 # https://github.com/KhronosGroup/Vulkan-Tools/issues/307

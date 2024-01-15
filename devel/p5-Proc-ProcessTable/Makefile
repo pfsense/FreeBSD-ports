@@ -1,8 +1,5 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-
 PORTNAME=	Proc-ProcessTable
-PORTVERSION=	0.59
+PORTVERSION=	0.636
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JWB
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl interface to the unix process table
+WWW=		https://metacpan.org/release/Proc-ProcessTable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -26,6 +24,6 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${WRKSRC}/README.freebsd-* ${STAGEDIR}${DOCSDIR}	
+	${INSTALL_DATA} ${WRKSRC}/README ${WRKSRC}/README.freebsd-* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

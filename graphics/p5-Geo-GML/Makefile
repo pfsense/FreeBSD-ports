@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Geo-GML
 PORTVERSION=	0.18
 CATEGORIES=	graphics perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Module to Process Geography Markup Language
+WWW=		https://metacpan.org/release/Geo-GML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

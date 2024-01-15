@@ -1,6 +1,3 @@
-# Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Mock-LWP
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Easy mocking of LWP packages
+WWW=		https://metacpan.org/release/Test-Mock-LWP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -17,7 +15,9 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Test-MockObject>=1.08:devel/p5-Test-MockObject
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

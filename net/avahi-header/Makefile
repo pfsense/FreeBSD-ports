@@ -1,7 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/net/avahi-header/Makefile,v 1.4 2012/07/09 18:22:19 kwm Exp $
-
 PORTREVISION=	0
 CATEGORIES=	net
 PKGNAMESUFFIX=	-header
@@ -18,6 +14,7 @@ PLIST=		${.CURDIR}/pkg-plist
 
 AVAHI_SLAVE=	header
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 do-install:

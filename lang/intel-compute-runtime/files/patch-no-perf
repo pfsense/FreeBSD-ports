@@ -6,14 +6,25 @@ level_zero/tools/source/sysman/linux/pmu/pmu_imp.h:12:10: fatal error: 'linux/pe
 #include <linux/perf_event.h>
          ^~~~~~~~~~~~~~~~~~~~
 
---- level_zero/tools/source/sysman/engine/linux/os_engine_imp.cpp.orig	2020-09-11 07:53:58 UTC
+--- level_zero/tools/source/sysman/engine/linux/CMakeLists.txt.orig	2022-03-09 15:02:18 UTC
++++ level_zero/tools/source/sysman/engine/linux/CMakeLists.txt
+@@ -9,7 +9,7 @@ set(L0_SRCS_TOOLS_SYSMAN_ENGINE_LINUX
+     ${CMAKE_CURRENT_SOURCE_DIR}/os_engine_imp.h
+ )
+ 
+-if(NEO_ENABLE_i915_PRELIM_DETECTION)
++if(NEO_ENABLE_i915_PRELIM_DETECTION AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   list(APPEND L0_SRCS_TOOLS_SYSMAN_ENGINE_LINUX
+        ${CMAKE_CURRENT_SOURCE_DIR}/os_engine_imp_prelim.cpp
+   )
+--- level_zero/tools/source/sysman/engine/linux/os_engine_imp.cpp.orig	2021-03-24 20:23:19 UTC
 +++ level_zero/tools/source/sysman/engine/linux/os_engine_imp.cpp
 @@ -49,9 +49,11 @@ ze_result_t LinuxEngineImp::getActivity(zes_engine_sta
          return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
      }
      uint64_t data[2] = {};
 +#ifdef __linux__
-     if (pPmuInterface->pmuReadSingle(static_cast<int>(fd), data, sizeof(data)) < 0) {
+     if (pPmuInterface->pmuRead(static_cast<int>(fd), data, sizeof(data)) < 0) {
          return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
      }
 +#endif
@@ -32,31 +43,32 @@ level_zero/tools/source/sysman/linux/pmu/pmu_imp.h:12:10: fatal error: 'linux/pe
  }
  
  LinuxEngineImp::LinuxEngineImp(OsSysman *pOsSysman, zes_engine_group_t type, uint32_t engineInstance) : engineGroup(type), engineInstance(engineInstance) {
---- level_zero/tools/source/sysman/linux/os_sysman_imp.cpp.orig	2020-09-11 07:53:58 UTC
+--- level_zero/tools/source/sysman/linux/os_sysman_imp.cpp.orig	2021-11-20 20:51:51 UTC
 +++ level_zero/tools/source/sysman/linux/os_sysman_imp.cpp
-@@ -37,8 +37,10 @@ ze_result_t LinuxSysmanImp::init() {
-     pPmt = new PlatformMonitoringTech();
-     UNRECOVERABLE_IF(nullptr == pPmt);
-     pPmt->init(myDeviceName, pFsAccess);
+@@ -38,9 +38,11 @@ ze_result_t LinuxSysmanImp::init() {
+     }
+     DEBUG_BREAK_IF(nullptr == pSysfsAccess);
+ 
 +#ifdef __linux__
      pPmuInterface = PmuInterface::create(this);
-     UNRECOVERABLE_IF(nullptr == pPmuInterface);
+ 
+     DEBUG_BREAK_IF(nullptr == pPmuInterface);
 +#endif
  
-     return ZE_RESULT_SUCCESS;
- }
---- level_zero/tools/source/sysman/linux/os_sysman_imp.h.orig	2020-09-11 07:53:58 UTC
+     if (pFwUtilInterface == nullptr) {
+         createFwUtilInterface();
+--- level_zero/tools/source/sysman/linux/os_sysman_imp.h.orig	2021-10-01 16:31:56 UTC
 +++ level_zero/tools/source/sysman/linux/os_sysman_imp.h
-@@ -13,7 +13,9 @@
- #include "level_zero/core/source/device/device.h"
+@@ -14,7 +14,9 @@
+ #include "level_zero/tools/source/sysman/linux/firmware_util/firmware_util.h"
  #include "level_zero/tools/source/sysman/linux/fs_access.h"
- #include "level_zero/tools/source/sysman/linux/pmt.h"
+ #include "level_zero/tools/source/sysman/linux/pmt/pmt.h"
 +#ifdef __linux__
  #include "level_zero/tools/source/sysman/linux/pmu/pmu_imp.h"
 +#endif
- #include "level_zero/tools/source/sysman/linux/xml_parser/xml_parser.h"
  #include "level_zero/tools/source/sysman/sysman_imp.h"
  
+ #include <map>
 --- level_zero/tools/source/sysman/linux/pmu/CMakeLists.txt.orig	2020-09-11 07:53:58 UTC
 +++ level_zero/tools/source/sysman/linux/pmu/CMakeLists.txt
 @@ -9,7 +9,7 @@ set(L0_SRCS_TOOLS_SYSMAN_LINUX_PMU

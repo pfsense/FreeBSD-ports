@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	21.3.8.18
+DISTVERSION=	25.3.2.7
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	lang parallel
@@ -11,30 +9,51 @@ DIST_SUBDIR=	erlang
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Erlang bindings for wxWindows
+WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	erlang>=21.3.8:lang/erlang
-RUN_DEPENDS=	erlang>=21.3.8:lang/erlang
+BUILD_DEPENDS=	erlang>=24.0:lang/erlang
+RUN_DEPENDS=	erlang>=24.0:lang/erlang
 
 USES=		autoreconf:build gl gmake perl5 xorg
 USE_GITHUB=	yes
 GH_PROJECT=	otp
 USE_GL=		gl glu
 USE_PERL5=	build
-USE_WX=		3.1+
+USE_WX=		3.2+
 
-WX_COMPS=	wx
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--enable-threads \
+			--with-wx-config=${WX_CONFIG} \
+			--without-javac \
+			--without-odbc
+MAKE_JOBS_UNSAFE=	yes
 
-GNU_CONFIGURE=	yes
-MAKE_JOBS_UNSAFE=yes
+PLIST_SUB=	DEBUGGER_VERSION=${DEBUGGER_VERSION} \
+		ET_VERSION=${ET_VERSION} \
+		OBSERVER_VERSION=${OBSERVER_VERSION} \
+		WX_VERSION=${WX_VERSION}
 
-WX_APPS=	wx debugger et observer
-
-CONFIGURE_ARGS+=--enable-threads --without-odbc --without-javac --with-wx-config=${WX_CONFIG}
+DEBUGGER_VERSION=	5.3.1.2
+ET_VERSION=		1.6.5
+OBSERVER_VERSION=	2.14
+WX_VERSION=		2.2.2
+WX_APPS=		wx debugger et observer
 
 pre-configure:
-	@cd ${WRKSRC} && ./otp_build autoconf
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/debugger/vsn.mk | ${GREP} -E "DEBUGGER_VSN *=" | ${CUT} -w -f3) = ${DEBUGGER_VERSION} ]; then \
+		${ECHO_MSG} "===>  DEBUGGER_VERSION (${DEBUGGER_VERSION}) in Makefile does not match value in lib/debugger/vsn.mk"; exit 1; \
+	fi
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/et/vsn.mk | ${GREP} -E "ET_VSN *=" | ${CUT} -w -f3) = ${ET_VERSION} ]; then \
+		${ECHO_MSG} "===>  ET_VERSION (${ET_VERSION}) in Makefile does not match value in lib/et/vsn.mk"; exit 1; \
+	fi
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/observer/vsn.mk | ${GREP} -E "OBSERVER_VSN *=" | ${CUT} -w -f3) = ${OBSERVER_VERSION} ]; then \
+		${ECHO_MSG} "===>  OBSERVER_VERSION (${OBSERVER_VERSION}) in Makefile does not match value in lib/observer/vsn.mk"; exit 1; \
+	fi
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/wx/vsn.mk | ${GREP} -E "WX_VSN *=" | ${CUT} -w -f3) = ${WX_VERSION} ]; then \
+		${ECHO_MSG} "===>  WX_VERSION (${WX_VERSION}) in Makefile does not match value in lib/wx/vsn.mk"; exit 1; \
+	fi
 
 do-build:
 .for app in wx debugger et observer

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	markdown
 PORTVERSION=	1.0.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	Markdown_${PORTVERSION}
 
 MAINTAINER=	miguel@gocobachi.dev
 COMMENT=	Text-to-HTML conversion tool for web writers
+WWW=		https://daringfireball.net/projects/markdown
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.text

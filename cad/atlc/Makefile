@@ -1,6 +1,3 @@
-# Created by: Marc Fonvieille <blackend@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	atlc
 PORTVERSION=	4.6.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to calculate the impedance of transmission lines
+WWW=		https://atlc.sourceforge.net/
 
 LICENSE=	GPLv2+
 

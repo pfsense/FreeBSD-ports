@@ -1,18 +1,16 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	execline
-PORTVERSION=	2.6.0.1
+DISTVERSION=	2.9.3.0
 CATEGORIES=	lang shells
 MASTER_SITES=	https://www.skarnet.org/software/${PORTNAME}/
 
 MAINTAINER=	crest@rlwinm.de
 COMMENT=	Lightweight non-interactive sh(1)-like scripting language
+WWW=		https://www.skarnet.org/software/execline/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	skalibs>=2.9.2.1:devel/skalibs
+BUILD_DEPENDS=	skalibs>=2.13.1.1:devel/skalibs
 LIB_DEPENDS=	libskarnet.so:devel/skalibs
 
 USES=		gmake

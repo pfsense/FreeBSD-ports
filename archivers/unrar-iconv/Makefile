@@ -1,6 +1,3 @@
-# Created by: Yarodin <yarodin@gmail.com>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-iconv
 
 MAINTAINER=	yarodin@gmail.com

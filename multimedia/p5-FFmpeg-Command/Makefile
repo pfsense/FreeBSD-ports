@@ -1,9 +1,6 @@
-# Created by: sumikawa
-# $FreeBSD$
-
 PORTNAME=	FFmpeg-Command
 PORTVERSION=	0.19
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	multimedia perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MIZZY
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Wrapper class for ffmpeg command line utility
+WWW=		https://metacpan.org/release/FFmpeg-Command
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \

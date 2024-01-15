@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-BeginLift
 PORTVERSION=	0.001003
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to make selected sub calls evaluate at compile time
+WWW=		https://metacpan.org/release/Devel-BeginLift
 
 BUILD_DEPENDS=	${RUN_DEPENDS} \
 	p5-ExtUtils-Depends>0:devel/p5-ExtUtils-Depends

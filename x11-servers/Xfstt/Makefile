@@ -1,6 +1,3 @@
-# Created by: jabley@clear.co.nz
-# $FreeBSD$
-
 PORTNAME=	xfstt
 PORTVERSION=	1.11
 CATEGORIES=	x11-servers
@@ -8,11 +5,12 @@ MASTER_SITES=	http://archive.hadrons.org/software/xfstt/
 
 MAINTAINER=	gspurki@gmail.com
 COMMENT=	TrueType font server for X11
+WWW=		https://www.hadrons.org/software/xfstt/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
-USES=		compiler:c++11-lang pkgconfig tar:xz xorg
+USES=		compiler:c++11-lang cpe pkgconfig tar:xz xorg
 USE_XORG=	xorgproto
 USE_RC_SUBR=	xfstt
 GNU_CONFIGURE=	yes

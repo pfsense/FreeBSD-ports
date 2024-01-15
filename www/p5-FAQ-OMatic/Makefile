@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	FAQ-OMatic
 PORTVERSION=	2.719
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl API to manipulate FAQ-O-Matics
+WWW=		https://metacpan.org/release/FAQ-OMatic
 
 LICENSE=	GPLv2
 

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * tailscale_auth.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>tailscale_auth</name>
+	<version>%%PKGVERSION%%</version>
+	<title>VPN/Tailscale</title>
+	<include_file>/usr/local/pkg/tailscale/tailscale_auth.inc</include_file>
+	<aftersaveredirect>/pkg_edit.php?xml=tailscale/tailscale_auth.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>Authentication</text>
+			<url>pkg_edit.php?xml=tailscale/tailscale_auth.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Settings</text>
+			<url>pkg_edit.php?xml=tailscale.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>status_tailscale.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Authentication</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Login Server</fielddescr>
+			<fieldname>loginserver</fieldname>
+			<description>
+				<![CDATA[
+				Base URL of login (control) server.
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>https://controlplane.tailscale.com</default_value>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Pre-authentication Key</fielddescr>
+			<fieldname>preauthkey</fieldname>
+			<description>
+				<![CDATA[
+				Set the machine authorization key.
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Recommendation</fielddescr>
+			<description>
+				<![CDATA[
+				Use a non-reusable auth key and disable key expiry for trusted machines via the provider admin console.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<name>Logout and Clean</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Logout and Clean</fielddescr>
+			<fieldname>service_clean</fieldname>
+			<type>button</type>
+			<buttonicon>fa-sign-out</buttonicon>
+			<buttonclass>btn-danger</buttonclass>
+			<description>
+				<![CDATA[
+				Disconnect local machine from login server (if connected), expire the current log in, and flush the local state cache.
+				]]>
+			</description>
+			<placeonbottom/>
+		</field>
+	</fields>
+	<note>
+		<![CDATA[
+		Changes to these settings may temporarily disrupt peer connections and access to Tailscale.
+		]]>
+	</note>
+	<custom_php_after_head_command>
+		<![CDATA[tailscale_common_after_head_hook();]]>
+	</custom_php_after_head_command>
+		<custom_php_validation_command>
+		<![CDATA[tailscale_auth_validation_hook($_POST, $input_errors);]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[tailscale_auth_resync_config_hook();]]>
+	</custom_php_resync_config_command>
+</packagegui>

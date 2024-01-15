@@ -1,6 +1,3 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	cliquer
 PORTVERSION=	1.22
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Routines for clique searching
+WWW=		https://users.aalto.fi/~pat/cliquer.html
 
 LICENSE=	GPLv2
 

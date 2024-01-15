@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Archive-Any
 PORTVERSION=	0.0946
 CATEGORIES=	archivers perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Single interface to deal with file archives
+WWW=		https://metacpan.org/release/Archive-Any
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

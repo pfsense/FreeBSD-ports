@@ -1,43 +1,29 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	jupyter-jsmol
-PORTVERSION=	0.2.4
-DISTVERSIONPREFIX=	v
+PORTVERSION=	2022.1.0
 CATEGORIES=	science devel python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:C/-/_/}-${DISTVERSIONFULL}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	JSmol viewer widget for Jupyter Notebooks and JupyterLab
+WWW=		https://github.com/fekad/jupyter-jsmol
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	MIT
 
-RUN_DEPENDS=	${PY_PYGMENTS} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jupyter-packaging>=0:devel/py-jupyter-packaging@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}widgetsnbextension>0:devel/py-widgetsnbextension@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ipykernel5>=5.0.0:devel/py-ipykernel5@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}ipykernel>=5.0.0:devel/py-ipykernel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipywidgets>0:devel/py-ipywidgets@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipython>=7.0.0:devel/ipython@${PY_FLAVOR}
-TEST_DEPENDS=	py.test:devel/py-pytest@${PY_FLAVOR}
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	fekad
-
-USES=		python:3.7+
+USES=		python pytest
 USE_PYTHON=	distutils
 PYDISTUTILS_CONFIGUREARGS=	--skip-npm
 PYDISTUTILS_BUILDARGS=		--skip-npm
 
-OPTIONS_DEFINE=	EXAMPLES
-
-PORTEXAMPLES=	*
 PLIST_SUB+=	VER=${PORTVERSION}
 NO_ARCH=	yes
-
-post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
-
-do-test: install
-	(cd ${WRKSRC} && py.test)
 
 .include <bsd.port.mk>

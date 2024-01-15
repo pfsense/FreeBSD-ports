@@ -1,14 +1,12 @@
-# Created by: Michael L. Hostbaek (mich@freebsdcluster.org)
-# $FreeBSD$
-
 PORTNAME=	braincurses
 PORTVERSION=	1.1.0
 PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clone of the Mastermind game
+WWW=		http://freshmeat.net/projects/braincurses/
 
 LICENSE=	GPLv2
 

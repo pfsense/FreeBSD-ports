@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libcfu
 DISTVERSION=	0.04a
 PORTREVISION=	3
@@ -7,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Simple library of tools for developing multithreaded software
+WWW=		https://libcfu.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 

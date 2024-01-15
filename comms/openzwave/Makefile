@@ -1,12 +1,10 @@
-# Created by: Johan Strom <johan@stromnet.se>
-# $FreeBSD$
-
 PORTNAME=	openzwave
 PORTVERSION=	1.4.3254
 CATEGORIES=	comms
 
 MAINTAINER=	johan@stromnet.se
 COMMENT=	Open-source interface to Z-Wave networks
+WWW=		http://www.openzwave.net/
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/license/license.txt
@@ -21,6 +19,8 @@ GH_TAGNAME=	f339aa6
 
 CFLAGS+=	-Wno-error
 MAKE_ARGS=	VERSION_REV=${PORTVERSION:E} LIBDIR=${WRKSRC}
+
+CONFLICTS_INSTALL=	openzwave-devel # bin/MinOZW
 
 OPTIONS_DEFINE=	DOCS DOXYGEN
 OPTIONS_SUB=	yes

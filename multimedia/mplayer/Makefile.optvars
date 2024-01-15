@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Handling of variables using helpers
 # Include before bsd.port.(pre|options).mk
 
@@ -8,12 +6,13 @@ AALIB_LIB_DEPENDS=	libaa.so:graphics/aalib
 AALIB_CONFIGURE_OFF=	--disable-aa
 
 AMR_NB_LIB_DEPENDS=	libopencore-amrnb.so:audio/opencore-amr
-AMR_NB_CONFIGURE_OFF=	--disable-libopencore_amrnb
+AMR_NB_CONFIGURE_ENABLE=libopencore_amrnb
 
 AMR_WB_LIB_DEPENDS=	libopencore-amrwb.so:audio/opencore-amr
-AMR_WB_CONFIGURE_OFF=	--disable-libopencore_amrwb
+AMR_WB_CONFIGURE_ENABLE=libopencore_amrwb
 
-ASS_LIB_DEPENDS=	libass.so:multimedia/libass
+ASS_LIB_DEPENDS=	libass.so:multimedia/libass \
+			libharfbuzz.so:print/harfbuzz
 ASS_CONFIGURE_OFF=	--disable-ass
 
 BLURAY_LIB_DEPENDS=	libbluray.so:multimedia/libbluray
@@ -26,9 +25,10 @@ CDIO_LIB_DEPENDS=	libcdio_paranoia.so:sysutils/libcdio-paranoia
 CDIO_CONFIGURE_OFF=	--disable-libcdio
 
 DV_LIB_DEPENDS=		libdv.so:multimedia/libdv
-DV_CONFIGURE_OFF=	--disable-libdv
+DV_CONFIGURE_ENABLE=	libdv
 
-DVDNAV_LIB_DEPENDS=	libdvdnav.so:multimedia/libdvdnav
+DVDNAV_LIB_DEPENDS=	libdvdnav.so:multimedia/libdvdnav \
+			libdvdread.so:multimedia/libdvdread
 DVDNAV_CONFIGURE_OFF=	--disable-dvdnav
 
 ENCA_LIB_DEPENDS=	libenca.so:converters/enca
@@ -53,15 +53,18 @@ GSM_LIB_DEPENDS=	libgsm.so:audio/gsm
 GSM_CONFIGURE_OFF=	--disable-libgsm
 
 GUI_CONFIGURE_ENABLE=	gui
-GUI_USE=		GNOME=gtk20
+GUI_USE=		GNOME=cairo,gdkpixbuf2,gtk20
 GUI_USES=		gnome
 GUI_DESKTOP_ENTRIES=	"MPlayer" "High performance media player" "mplayer" "gmplayer" "" false
-GUI_IMPLIES=		ASS X11
+GUI_IMPLIES=		ASS JPEG X11
 
 IPV6_CONFIGURE_OFF=	--disable-inet6
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_OFF=	--disable-jack
+
+JPEG_USES=		jpeg
+JPEG_CONFIGURE_OFF=	--disable-jpeg
 
 LADSPA_RUN_DEPENDS=	${LOCALBASE}/lib/ladspa/amp.so:audio/ladspa
 LADSPA_CONFIGURE_OFF=	--disable-ladspa
@@ -78,6 +81,9 @@ LZO_CONFIGURE_OFF=	--disable-liblzo
 NAS_LIB_DEPENDS=	libaudio.so:audio/nas
 NAS_CONFIGURE_OFF=	--disable-nas
 
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
+
 OPENAL_USES=		openal:soft
 OPENAL_CONFIGURE_OFF=	--disable-openal
 
@@ -86,8 +92,8 @@ OPENGL_USES=		gl
 OPENGL_CONFIGURE_OFF=	--disable-gl
 OPENGL_IMPLIES=		X11
 
-OPENJPEG_LIB_DEPENDS=	libopenjpeg.so:graphics/openjpeg15
-OPENJPEG_CONFIGURE_OFF=	--disable-libopenjpeg
+OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
+OPENJPEG_CONFIGURE_ENABLE=	libopenjpeg
 
 OPUS_LIB_DEPENDS=	libopus.so:audio/opus
 OPUS_CONFIGURE_OFF=	--disable-libopus
@@ -121,7 +127,8 @@ SPEEX_CONFIGURE_OFF=	--disable-speex
 SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
 SVGALIB_CONFIGURE_OFF=	--disable-svga
 
-THEORA_LIB_DEPENDS=	libtheora.so:multimedia/libtheora
+THEORA_LIB_DEPENDS=	libtheora.so:multimedia/libtheora \
+			libogg.so:audio/libogg
 THEORA_CONFIGURE_OFF=	--disable-theora
 
 TWOLAME_LIB_DEPENDS=	libtwolame.so:audio/twolame
@@ -136,7 +143,7 @@ VDPAU_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_OFF=	--disable-vdpau
 
 VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
-VPX_CONFIGURE_OFF=	--disable-libvpx-lavc
+VPX_CONFIGURE_ENABLE=	libvpx-lavc
 
 X11_USES=		xorg
 X11_USE=		XORG=x11,xext,xorgproto,xscrnsaver

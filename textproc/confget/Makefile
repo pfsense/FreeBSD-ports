@@ -1,18 +1,16 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	confget
-PORTVERSION=	2.3.4
+PORTVERSION=	5.1.0
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	textproc
 MASTER_SITES=	https://gitlab.com/confget/confget/-/archive/release/${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Read variables from INI-style configuration files
+WWW=		https://gitlab.com/confget/confget
 
 LICENSE=	BSD2CLAUSE
 
-USES=		gmake
+USES=		gmake tar:bz2
 
 MAKE_ENV=	CFLAGS_CONF=-DHAVE_FGETLN
 TEST_TARGET=	test
@@ -24,7 +22,7 @@ PORTEXAMPLES=	t1.ini t2.ini
 OPTIONS_DEFINE=	EXAMPLES PCRE
 OPTIONS_DEFAULT=PCRE
 
-PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 PCRE_MAKE_ENV_OFF=	PCRE_CFLAGS="" PCRE_LIBS=""
 
 do-install:

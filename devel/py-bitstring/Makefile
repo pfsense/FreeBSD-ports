@@ -1,25 +1,24 @@
-# Created by: Sofian Brabez <sbrabez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	bitstring
-PORTVERSION=	3.1.5
+PORTVERSION=	3.1.9
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Simple construction, analysis, and modification of binary data
+WWW=		https://pypi.org/project/bitstring/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+ zip
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 PORTDOCS=	PKG-INFO README.rst release_notes.txt
 
 OPTIONS_DEFINE=	DOCS
+NO_ARCH=	yes
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

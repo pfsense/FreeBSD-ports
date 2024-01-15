@@ -1,48 +1,54 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 # NOTE: please keep zeitgeist in sysutils/qzeitgeist in sync
 
 PORTNAME=	zeitgeist
-PORTVERSION=	1.0.2
+DISTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	https://launchpad.net/${PORTNAME}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}/${PORTVERSION}/+download/
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Event logging framework
+WWW=		https://wiki.gnome.org/Projects/Zeitgeist
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	valac:lang/vala \
-		dee-tool:devel/dee \
+BUILD_DEPENDS=	dee-tool:devel/dee \
 		rapper:textproc/raptor2 \
 		${PYTHON_PKGNAMEPREFIX}rdflib>=4.1.1:textproc/py-rdflib@${PY_FLAVOR}
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/__init__.py:devel/py-xdg@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/dbus/__init__.py:devel/py-dbus@${PY_FLAVOR}
 
-USES=		gettext gmake gnome libtool pathfix pkgconfig python sqlite \
-		tar:xz
-USE_GNOME=	intlhack glib20 introspection:build
+USES=		autoreconf gettext gmake gnome libtool localbase:ldflags pathfix pkgconfig \
+		python sqlite tar:xz vala:build
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.freedesktop.org
+GL_TAGNAME=	8b89364c077b46734d193c5b8a80f83b0fc917dd
+USE_GNOME=	cairo gdkpixbuf2 glib20 intlhack \
+		introspection:build
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-INSTALL_TARGET=	install-strip
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-fts --disable-telepathy \
 		--disable-downloads-monitor
+
+INSTALL_TARGET=	install-strip
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	DATAHUB
 OPTIONS_DEFAULT=DATAHUB
+
+DATAHUB_DESC=	Passive loggers for Zeitgeist
+
 DATAHUB_LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib
 DATAHUB_USE=	gnome=gtk30
 DATAHUB_CONFIGURE_ENABLE=	datahub
-DATAHUB_DESC=	Passive loggers for Zeitgeist
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|python -|${PYTHON_CMD} -|g' \
-		${WRKSRC}/configure
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

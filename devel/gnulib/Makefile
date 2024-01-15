@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gnulib
 PORTVERSION=	20140202
 PORTREVISION=	1
@@ -9,14 +7,18 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-stable
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU portability library
+WWW=		https://www.gnu.org/software/gnulib/
 
 LICENSE=	GPLv2+ GPLv3+ LGPL20+ LGPL3+ PD
 LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:print/texinfo
 
-USES=		gmake perl5 shebangfix
+USES=		cpe gmake perl5 shebangfix
 SHEBANG_FILES=	check-module
+CPE_VENDOR=	gnu
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/check-module bin/gnulib-tool
 INFO=		${PORTNAME}

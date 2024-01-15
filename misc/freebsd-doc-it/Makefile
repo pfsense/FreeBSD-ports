@@ -1,6 +1,3 @@
-# Created by: Marc Fonvieille <blackend@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	misc docs
 PKGNAMEPREFIX=	it-
 
@@ -10,6 +7,9 @@ COMMENT=	Italian translation of the FreeBSD Documentation Project
 MASTERDIR=	${.CURDIR}/../freebsd-doc-en
 PLIST=		${.CURDIR}/pkg-plist
 
-DOCLANG=	it_IT.ISO8859-15
+# en-freebsd-doc installs the common files
+HTML_RUN_DEPENDS=	en-freebsd-doc>=${PORTVERSION}:misc/freebsd-doc-en
+
+DOCLANG=	it
 
 .include "${MASTERDIR}/Makefile"

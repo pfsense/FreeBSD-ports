@@ -1,6 +1,3 @@
-# Created by: Oleg Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-Log-Dispatch
 PORTVERSION=	0.121
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Log module of Catalyst that uses Log::Dispatch
+WWW=		https://metacpan.org/release/Catalyst-Plugin-Log-Dispatch
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Log-Dispatch>=2.13:devel/p5-Log-Dispatch		\

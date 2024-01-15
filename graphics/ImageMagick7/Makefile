@@ -1,49 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	ImageMagick
-DISTVERSION=	7.0.10-24
-PORTREVISION=	2
+DISTVERSION=	7.1.0-62
+PORTREVISION=	9
 CATEGORIES=	graphics perl5
-MASTER_SITES=	https://www.imagemagick.org/download/ \
-		https://www.imagemagick.org/download/releases/ \
-		http://servingzone.com/mirrors/ImageMagick/ \
-		http://mirror.checkdomain.de/imagemagick/ \
-		http://imagemagick.spd.co.il/ \
-		http://www.champground.com/imagemagick/ \
-		http://ftp.surfnet.nl/pub/ImageMagick/ \
-		http://mirror.searchdaimon.com/ImageMagick/ \
-		http://mirror.is.co.za/pub/imagemagick/ \
-		http://imagemagick.mirrorcatalogs.com/ \
-		ftp://ftp.imagemagick.org/pub/ImageMagick/ \
-		ftp://mirror.aarnet.edu.au/pub/imagemagick/ \
-		ftp://mirror.checkdomain.de/imagemagick/ \
-		ftp://ftp.kddlabs.co.jp/graphics/ImageMagick/ \
-		ftp://ftp.u-aizu.ac.jp/pub/graphics/image/ImageMagick/imagemagick.org/ \
-		ftp://ftp.nluug.nl/pub/ImageMagick/ \
-		ftp://mirror.searchdaimon.com/ImageMagick/ \
-		ftp://sunsite.icm.edu.pl/packages/ImageMagick/ \
-		ftp://ftp.tpnet.pl/pub/graphics/ImageMagick/ \
-		ftp://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/ \
-		ftp://ftp.is.co.za/pub/imagemagick/ \
-		ftp://ftp.fifi.org/pub/ImageMagick/
+MASTER_SITES=	https://ftp.acc.umu.se/mirror/imagemagick.org/ftp/releases/ \
+		https://mirror.dogado.de/imagemagick/releases/ \
+		https://mirror.checkdomain.de/imagemagick/releases/ \
+		https://ftp.icm.edu.pl/pub/unix/graphics/ImageMagick/releases/ \
+		https://imagemagick.org/archive/releases/
 PKGNAMESUFFIX=	7
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Image processing tools
+WWW=		https://imagemagick.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl
+LIB_DEPENDS=	libltdl.so:devel/libltdl	\
+		libzip.so:archivers/libzip
 
-TESTS_DEPENDS=	gsfonts>=0:print/gsfonts
+FLAVORS=		x11 nox11
+FLAVOR?=		${FLAVORS:[1]}
+FLAVORS_SUB=		yes
+nox11_PKGNAMESUFFIX=	7-nox11
 
 # bin/Magick++-config
-CONFLICTS_INSTALL=	ImageMagick ImageMagick-nox11 ImageMagick6 ImageMagick6-nox11
+CONFLICTS_INSTALL=	ImageMagick6 ImageMagick6-nox11 \
+			ImageMagick7 ImageMagick7-nox11
 
 # This port uses .la files, keep libtool:keepla! (magick/module.c)
-USES=		cpe gettext-runtime gmake gnome libtool:keepla \
-		localbase pathfix perl5 pkgconfig:both shebangfix tar:xz
+USES=		cpe gettext-runtime gmake gnome libtool:keepla localbase \
+		pathfix perl5 pkgconfig:both shebangfix tar:xz
 CPE_PRODUCT=	imagemagick
 CPE_VENDOR=	imagemagick
 SHEBANG_FILES=	www/source/examples.pl
@@ -63,16 +50,28 @@ SAMPLE_FILES=	colors.xml delegates.xml log.xml mime.xml policy.xml \
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFTW FONTCONFIG FPX FREETYPE \
-		GRAPHVIZ GSLIB JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES \
-		OPENEXR OPENMP PANGO PDF PERL PNG RAQM SVG TESTS TIFF WEBP WMF \
-		THREADS X11 16BIT_PIXEL HDRI HEIF RAW
-OPTIONS_DEFAULT=	16BIT_PIXEL BZIP2 FFTW FONTCONFIG FREETYPE \
-		JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES PDF PERL PNG RAQM SVG \
-		TIFF WEBP WMF THREADS X11 HDRI RAW
+OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFMPEG FFTW FONTCONFIG FPX FREETYPE \
+		GRAPHVIZ GSLIB JPEG2000 JBIG JPEG JXL LCMS2 LZMA LQR MODULES \
+		OPENEXR OPENMP PDF PERL PNG TESTS TIFF WEBP WMF THREADS \
+		16BIT_PIXEL HDRI HEIF RAW
+OPTIONS_DEFAULT=	16BIT_PIXEL BZIP2 FFTW FONTCONFIG FREETYPE HEIF \
+		JPEG2000 JBIG JPEG JXL LCMS2 LZMA LQR MODULES OPENEXR PDF PERL PNG \
+		TIFF WEBP WMF THREADS HDRI RAW
+
+.if ${FLAVOR:U} == x11
+# the SVG and PANGO plugins need X11
+OPTIONS_DEFINE+=	PANGO RAQM SVG
+OPTIONS_DEFAULT+=	RAQM SVG
+CONFIGURE_ARGS+=	--with-x
+USES+=			xorg
+USE_XORG=		ice sm x11 xext xt
+.else
+CONFIGURE_ARGS+=	--without-x
+.endif
 
 DJVU_DESC=		DJVU format support (needs THREADS)
 GSLIB_DESC=		libgs (Postscript SHLIB) support
+FFMPEG_DESC=		VIDEO codec support as FFmpeg
 TESTS_DESC=		Run bundled self-tests after build
 #SIMD_CONFIGURE_WITH=	gcc-arch
 CONFIGURE_ARGS+=	--without-gcc-arch
@@ -105,7 +104,6 @@ GRAPHVIZ_LIB_DEPENDS=	libgvc.so:graphics/graphviz
 GRAPHVIZ_CFLAGS=	-I${LOCALBASE}/include/graphviz
 GRAPHVIZ_LDFLAGS=	-L${LOCALBASE}/lib/graphviz
 
-HEIF_DESC=		ISO/IEC 23008-12:2017 HEIF file format support
 HEIF_CONFIGURE_WITH=	heic
 HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
 
@@ -127,6 +125,9 @@ JPEG2000_DESC=		OpenJPEG 2000 support via openjpeg
 JPEG2000_CONFIGURE_WITH=openjp2
 JPEG2000_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 
+JXL_CONFIGURE_WITH=	jxl
+JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
+
 LCMS2_CONFIGURE_WITH=	lcms
 LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 
@@ -143,7 +144,6 @@ MODULES_CONFIGURE_WITH=	modules
 
 PANGO_CONFIGURE_WITH=	pango
 PANGO_USE=		gnome=pango
-PANGO_IMPLIES=		X11
 
 PNG_CONFIGURE_WITH=	png
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
@@ -162,21 +162,14 @@ RAW_IMPLIES=		LCMS2
 SVG_DESC=		SVG vector image format support (via librsvg, implies the x11 option)
 SVG_CONFIGURE_WITH=	rsvg
 SVG_USE=		gnome=cairo,gdkpixbuf2,librsvg2
-SVG_IMPLIES=		X11
+
+TESTS_TEST_DEPENDS=	gsfonts>=0:print/gsfonts
 
 TIFF_CONFIGURE_WITH=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-
-X11_CONFIGURE_WITH=	x
-X11_USES=		xorg
-X11_USE=		xorg=ice,sm,x11,xext,xt
-X11_VARS=		CONFLICTS_INSTALL+="ImageMagick7-nox11-* \
-			CONFLICTS+=display-[0-9]*
-X11_VARS_OFF=		CONFLICTS_INSTALL+="ImageMagick7-*" \
-			PKGNAMESUFFIX=7-nox11
 
 .include <bsd.port.options.mk>
 
@@ -231,12 +224,10 @@ _IMAGEMAGICK_THREADS=no
 IGNORE=OpenMP requires threads${_IMAGEMAGICK_THREADS_IGNORE_MSG}
 . else
 CONFIGURE_ARGS+=	--enable-openmp
-USES+=		compiler:openmp
 . endif
 .else
 CONFIGURE_ARGS+=	--disable-openmp
 .endif
-
 .if defined(WITH_WINDOWS_FONT_DIR)
 CONFIGURE_ARGS+=	--with-windows-font-dir=${WITH_WINDOWS_FONT_DIR}
 .endif
@@ -245,8 +236,8 @@ CONFIGURE_ARGS+=	--with-windows-font-dir=${WITH_WINDOWS_FONT_DIR}
 . if ${_IMAGEMAGICK_THREADS} == "no"
 IGNORE=OpenEXR requires threads. ${_IMAGEMAGICK_THREADS_IGNORE_MSG}
 . else
-LIB_DEPENDS+=		libIlmImf.so:graphics/openexr \
-			libImath.so:graphics/ilmbase
+LIB_DEPENDS+=		libOpenEXR.so:graphics/openexr \
+			libImath.so:math/Imath
 PLIST_SUB+=		OPENEXR=""
 . endif
 .else
@@ -267,7 +258,7 @@ PLIST_SUB+=		DJVU="@comment "
 
 .if ${PORT_OPTIONS:MGSLIB}
 CONFIGURE_ARGS+=	--with-gslib
-. if ${PORT_OPTIONS:MX11}
+. if ${FLAVOR:U} == x11
 USES+=		ghostscript:x11
 . else
 USES+=		ghostscript
@@ -278,7 +269,7 @@ CONFIGURE_ARGS+=	--without-gslib
 
 # WMF (Windows Meta File) images
 .if ${PORT_OPTIONS:MWMF}
-. if ${PORT_OPTIONS:MX11}
+. if ${FLAVOR:U} == x11
 LIB_DEPENDS+=		libwmf.so:graphics/libwmf
 . else
 LIB_DEPENDS+=		libwmf.so:graphics/libwmf-nox11
@@ -292,7 +283,7 @@ PLIST_SUB+=		WMF="@comment "
 
 # PDF (Adobe Portable Document Format) support
 .if ${PORT_OPTIONS:MPDF}
-. if ${PORT_OPTIONS:MX11}
+. if ${FLAVOR:U} == x11
 USES+=		ghostscript:x11
 . else
 USES+=		ghostscript
@@ -303,6 +294,11 @@ USES+=		ghostscript
 RUN_DEPENDS+=	gsfonts>=0:print/gsfonts
 .endif
 
+.if ${PORT_OPTIONS:MFFMPEG}
+BUILD_DEPENDS+=		ffmpeg:multimedia/ffmpeg
+RUN_DEPENDS+=		ffmpeg:multimedia/ffmpeg
+.endif
+
 .if ${PORT_OPTIONS:MDOCS}
 INSTALL_TARGET=	install-strip install-docDATA install-data-html
 .else
@@ -310,7 +306,7 @@ INSTALL_TARGET=	install-strip
 .endif
 
 .if ${PORT_OPTIONS:MTESTS}
-. if ${PORT_OPTIONS:MX11}
+. if ${FLAVOR:U} == x11
 USES+=		ghostscript:x11,build
 . else
 USES+=		ghostscript:build
@@ -339,10 +335,6 @@ pre-configure:
 	@${ECHO_CMD} '###################################################################'
 	@${ECHO_CMD} NOTICE: ${_IMAGEMAGICK_THREADS_PERL_MSG}. Building ImageMagick ${_IMAGEMAGICK_THREADS_MSG}.
 	@${ECHO_CMD} '###################################################################'
-.endif
-
-.if ${PORT_OPTIONS:MSVG} && ! ${PORT_OPTIONS:MX11}
-	@${ECHO_CMD} NOTICE: SVG format support disabled, requires X11
 .endif
 
 post-install:

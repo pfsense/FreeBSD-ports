@@ -1,7 +1,5 @@
-# Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-img
+PORTREVISION=	1
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Pager/text-based WWW browser with inline image support

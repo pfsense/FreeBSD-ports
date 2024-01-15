@@ -1,29 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	libopencm3
-PORTVERSION=	0.0.20200430
-#PORTREVISION=	0
+PORTVERSION=	0.8.0
+DISTVERSIONPREFIX=v
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	LGPLv3 Cortex-M0/M3/M4 runtime library
+WWW=		https://github.com/libopencm3/libopencm3
 
 LICENSE=	LGPL3
 
 BUILD_DEPENDS=	${LOCALBASE}/gcc-arm-embedded-${TOOLCHAIN_FULL_VERSION}/bin/arm-none-eabi-gcc:devel/gcc-arm-embedded
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	libopencm3
-GH_TAGNAME=	9075395
-
-
 USES=		gmake python:build shebangfix
-
+USE_GITHUB=	yes
 SHEBANG_FILES=	scripts/irq2nvic_h \
 		scripts/lpcvtcksum
 
-TOOLCHAIN_FULL_VERSION?=9-2020-q2-update
-TOOLCHAIN_PORT_VERSION?=9.3.20200529
+TOOLCHAIN_FULL_VERSION?=10.3-2021.10
+TOOLCHAIN_PORT_VERSION?=10.3.20210921
 TOOLCHAIN_TARGET?=arm-none-eabi
 
 DESTDIRNAME=	STAGEDIR

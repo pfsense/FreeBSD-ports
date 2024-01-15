@@ -1,26 +1,27 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sidekiq
-PORTVERSION=	6.1.2
+PORTVERSION=	7.2.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple, efficient background processing for Ruby
+WWW=		https://sidekiq.org/ \
+		https://github.com/sidekiq/sidekiq
 
 LICENSE=	LGPL3
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-connection_pool>=2.2.2:net/rubygem-connection_pool \
-		rubygem-rack>=2.0,3<3,3:www/rubygem-rack \
-		rubygem-redis>=4.2.0:databases/rubygem-redis
+RUN_DEPENDS=	rubygem-concurrent-ruby>=0<2:devel/rubygem-concurrent-ruby \
+		rubygem-connection_pool>=2.3.0:net/rubygem-connection_pool \
+		rubygem-rack>=2.2.4,3:www/rubygem-rack \
+		rubygem-redis-client>=0.14.0:databases/rubygem-redis-client
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/sidekiq bin/sidekiqmon
+PLIST_FILES=	bin/sidekiq \
+		bin/sidekiqmon
+
+CPE_VENDOR=	contribsys
 
 .include <bsd.port.mk>

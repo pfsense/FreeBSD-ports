@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	vii
 PORTVERSION=	4.2
 PORTREVISION=	5
@@ -10,6 +7,7 @@ MASTER_SITES=	http://vii.sourceforge.net/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Execute a command repeatedly and scroll the output
+WWW=		https://vii.sourceforge.net/
 
 LICENSE=	GPLv2
 

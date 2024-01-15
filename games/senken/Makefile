@@ -1,9 +1,6 @@
-# Created by: tmartin@andrew.cmu.edu
-# $FreeBSD$
-
 PORTNAME=	senken
 PORTVERSION=	0.3.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	GENTOO
 

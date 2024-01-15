@@ -1,6 +1,3 @@
-# Created by: wosch
-# $FreeBSD$
-
 PORTNAME=	uk-phone
 PORTVERSION=	2.7
 CATEGORIES=	misc

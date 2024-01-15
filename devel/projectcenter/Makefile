@@ -1,15 +1,16 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	projectcenter
 PORTVERSION=	0.6.2
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel gnustep
 MASTER_SITES=	GNUSTEP/dev-apps
 DISTNAME=	ProjectCenter-${PORTVERSION}
 
+PATCH_SITES=	https://github.com/gnustep/apps-projectcenter/commit/
+PATCHFILES=	97aa34218f0370ba8b672d3f905df0ed8de9ac8.patch:-p1
+
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Development environment for GNUstep
+WWW=		http://www.gnustep.org/experience/ProjectCenter.html
 
 LICENSE=	GPLv2+ # comment in code; COPYING says GPLv3
 

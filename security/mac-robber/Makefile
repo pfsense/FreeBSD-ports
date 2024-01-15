@@ -1,6 +1,3 @@
-# Created by: Yonatan <onatan@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mac-robber
 PORTVERSION=	1.02
 CATEGORIES=	security
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	onatan@gmail.com
 COMMENT=	Tool for listing Modify, Access, Create timestamps from files
+WWW=		https://www.sleuthkit.org/mac-robber/desc.php
 
 LICENSE=	GPLv2
 

@@ -1,15 +1,13 @@
-# Created by: Kenjiro Cho <kjc@csl.sony.co.jp>
-# $FreeBSD$
-
 PORTNAME=	blt
 PORTVERSION=	2.5.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF/wize
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	doconnor@gsoft.com.au
 COMMENT=	Extension to the Tk toolkit
+WWW=		https://wiki.tcl-lang.org/page/BLT
 
 LICENSE=	MIT
 
@@ -46,6 +44,10 @@ post-install:
 
 .if ${TCL_VER} > 8.5
 CFLAGS+=	-DUSE_INTERP_RESULT -DUSE_INTERP_ERRORLINE
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,39 +1,34 @@
-# Created by: Zsolt Udvari <udvzsolt@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	zathura-pdf-mupdf
-DISTVERSION=	0.3.5
-PORTREVISION=	11
+DISTVERSION=	0.4.1
 CATEGORIES=	graphics
-MASTER_SITES=	https://git.pwmt.org/pwmt/${PORTNAME}/-/archive/${DISTVERSION}/ \
-		http://freebsd.uzsolt.hu/src/
 
 MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	MuPDF render PDF plugin for Zathura PDF viewer
+WWW=		https://pwmt.org/projects/zathura-pdf-mupdf/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	zathura:graphics/zathura
-RUN_DEPENDS=	zathura:graphics/zathura
-LIB_DEPENDS=	libjbig2dec.so:graphics/jbig2dec \
-		libfreetype.so:print/freetype2 \
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libgirara-gtk3.so:x11-toolkits/girara \
-		libharfbuzz.so:print/harfbuzz \
-		libmupdf.so:graphics/mupdf \
-		libopenjp2.so:graphics/openjpeg
+		libmupdf.so:graphics/mupdf
+RUN_DEPENDS=	zathura:graphics/zathura
 
-USES=		compiler:c11 desktop-file-utils gnome jpeg \
-		meson pkgconfig tar:xz
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
+USES=		compiler:c11 desktop-file-utils gnome jpeg meson pkgconfig
+USE_GNOME=	cairo glib20
+USE_LDCONFIG=	${PREFIX}/lib/zathura
+USE_GITLAB=	yes
+GL_SITE=	https://git.pwmt.org/
+GL_ACCOUNT=	pwmt
 
-MESON_ARGS=	-Dlink-external=true
+CONFLICTS_INSTALL=	zathura-pdf-poppler
+
+#MESON_ARGS=	-Dlink-external=true
 
 PLIST_FILES=	lib/zathura/libpdf-mupdf.so \
 		share/applications/org.pwmt.zathura-pdf-mupdf.desktop \
 		share/metainfo/org.pwmt.zathura-pdf-mupdf.metainfo.xml
-
-CONFLICTS_INSTALL=	zathura-pdf-poppler-[0-9]*
 
 post-patch:
 	${REINPLACE_CMD} "s@\(cc.find_library(.*\))@\1,dirs:'${PREFIX}/lib')@" \

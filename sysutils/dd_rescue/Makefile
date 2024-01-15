@@ -1,15 +1,12 @@
-# Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dd_rescue
-PORTVERSION=	1.99.8
-PORTREVISION=	1
+PORTVERSION=	1.99.12
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.garloff.de/kurt/linux/ddrescue/ \
 		http://fossies.org/unix/privat/
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	dd tool suitable for rescuing data from a medium with errors
+WWW=		http://www.garloff.de/kurt/linux/ddrescue/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,7 +22,8 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 ALL_TARGET=	default
 MAKE_ARGS=	EXTRA_LDFLAGS=-L${LOCALBASE}/lib
-CFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-I${LOCALBASE}/include -Wno-int-conversion
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	DOCS
 

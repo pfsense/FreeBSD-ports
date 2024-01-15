@@ -1,24 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	django-js-asset
-DISTVERSION=	1.2.2
-PORTREVISION=	1
+DISTVERSION=	2.2.0
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	django_js_asset-${DISTVERSION}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Insert script tags with additional attributes for django.forms.Media
+WWW=		https://github.com/matthiask/django-js-asset
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>0:www/py-django22@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>0:devel/py-hatchling@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django32>=3.2:www/py-django32@${PY_FLAVOR}
 
-USES=		python:3.5+
-USE_PYTHON=	distutils autoplist
+USES=		python
+USE_PYTHON=	autoplist pep517
 
 NO_ARCH=		yes
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj31-django-js-asset
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}*${PORTNAME}
 
 .include <bsd.port.mk>

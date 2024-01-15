@@ -1,20 +1,16 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	unar
 PORTVERSION=	1.10.1
-PORTREVISION=	17
+PORTREVISION=	24
 CATEGORIES=	archivers gnustep
 MASTER_SITES=	http://wakaba.c3.cx/releases/TheUnarchiver/
 DISTNAME=	${PORTNAME}${PORTVERSION}_src
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Unarchiver for a vast variety of file formats
+WWW=		https://unarchiver.c3.cx/commandline
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/License.txt
-
-BROKEN_powerpc64=	fails to compile: Your gnustep-base was configured for the objc-nonfragile-abi but you are not using it now.
 
 # XXX: USES=gnustep overrides MAKEFILE we set below, so depend explicitly
 LIB_DEPENDS=	libgnustep-base.so:lang/gnustep-base \

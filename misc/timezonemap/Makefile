@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	timezonemap
-DISTVERSION=	0.4.5.1
+DISTVERSION=	0.4.5.2
+PORTREVISION=	2
 CATEGORIES=	misc gnome
 
 MAINTAINER=	gnome@freebsd.org
 COMMENT=	Gtk3 timezone map widget, forked from gnome which forked from Ubiquity
+WWW=		https://github.com/dashea/timezonemap
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

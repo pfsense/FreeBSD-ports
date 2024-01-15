@@ -1,12 +1,10 @@
-# Created by: KIKUCHI Koichiro <koichiro@rworks.jp>
-# $FreeBSD$
-
 PORTNAME=	pandora_server
 PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	koichiro@rworks.jp
 COMMENT=	Pandora FMS server
+WWW=		http://www.pandorafms.org/
 
 LICENSE=	${PANDORA_LICENSE}
 LICENSE_FILE=	${PANDORA_LICENSE_FILE}

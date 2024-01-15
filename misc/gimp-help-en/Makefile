@@ -1,8 +1,6 @@
-# Created by: SimaMoto,RyoTa <liangtai.s4@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gimp-help
 PORTVERSION=	2.10.0
+PORTREVISION=	2
 CATEGORIES?=	misc graphics
 MASTER_SITES=	http://gimp.mirrors.hoobly.com/pub/%SUBDIR%/ \
 		http://ftp.gwdg.de/pub/misc/grafik/%SUBDIR%/ \
@@ -13,6 +11,7 @@ PKGNAMESUFFIX=	-html
 
 MAINTAINER=	liangtai.s16@gmail.com
 COMMENT?=	GIMP User Manual in English
+WWW=		https://docs.gimp.org/
 
 LICENSE=	GFDL
 

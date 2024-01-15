@@ -1,6 +1,3 @@
-# Created by: sanpei@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	usbrh-libusb
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	usbrh-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Yet another reads temperatures and humidity from a Strawberry Linux USB-RH
+WWW=		http://www2.strawberry-linux.com/products/usbrh/
 
 LICENSE=	GPLv2
 

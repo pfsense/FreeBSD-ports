@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	gnome-clipboard-daemon
 PORTVERSION=	1.0
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	x11 gnome
 MASTER_SITES=	http://members.chello.nl/~h.lai/gnome-clipboard-daemon/
 DISTNAME=	${PORTNAME:S,^gnome-,,}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program that keeps the content of your X clipboard in memory
+WWW=		http://members.chello.nl/~h.lai/gnome-clipboard-daemon/
 
 LICENSE=	GPLv2
 

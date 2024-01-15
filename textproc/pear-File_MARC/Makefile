@@ -1,12 +1,10 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File_MARC
 PORTVERSION=	1.4.1
 CATEGORIES=	textproc pear
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Parse, modify, and create MARC records
+WWW=		https://pear.php.net/package/File_MARC
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Call-Context
 PORTVERSION=	0.02
 CATEGORIES=	devel perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Sanity-check calling context
+WWW=		https://metacpan.org/release/Call-Context
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

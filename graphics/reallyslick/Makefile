@@ -1,20 +1,17 @@
-# Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	reallyslick
 PORTVERSION=	0.9.1
-PORTREVISION=	22
+PORTREVISION=	24
 CATEGORIES=	graphics
 MASTER_SITES=	SF/rss-glx/rss-glx/${PORTVERSION}
 DISTNAME=	rss-glx_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL screensaver collection
+WWW=		https://rss-glx.sourceforge.net/
 
-LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6 \
-		libGLC.so:graphics/quesoglc
+LIB_DEPENDS=	libGLC.so:graphics/quesoglc
 
-USES=		compiler:c++11-lang gl gmake pathfix pkgconfig tar:bzip2 libtool
+USES=		compiler:c++11-lang gl gmake magick:6 pathfix pkgconfig tar:bzip2 libtool
 USE_GL=		glut
 GNU_CONFIGURE=	yes
 

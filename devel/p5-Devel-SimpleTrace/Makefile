@@ -1,6 +1,3 @@
-# Created by: estith
-# $FreeBSD$
-
 PORTNAME=	Devel-SimpleTrace
 PORTVERSION=	0.08
 PORTREVISION=	2
@@ -8,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for better stack traces on interpreter-generated warn/die
+WWW=		https://metacpan.org/release/Devel-SimpleTrace
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

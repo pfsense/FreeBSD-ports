@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	ftplib
 PORTVERSION=	4.0.1
 CATEGORIES=	ftp
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-4.0-1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set of routines that implement the FTP protocol
+WWW=		https://nbpfaus.net/~pfau/ftplib/
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arduino-ctags
 PORTVERSION=	5.8
 DISTVERSIONSUFFIX=	-arduino11
@@ -8,6 +6,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Feature-filled tagfile generator used by Arduino 1.6
+WWW=		https://github.com/arduino/ctags
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

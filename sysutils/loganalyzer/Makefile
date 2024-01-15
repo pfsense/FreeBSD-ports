@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	loganalyzer
-PORTVERSION=	4.1.11
+PORTVERSION=	4.1.13
 CATEGORIES=	sysutils www
 MASTER_SITES=	http://download.adiscon.com/loganalyzer/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Web Syslog and IT Event Viewer
+WWW=		https://loganalyzer.adiscon.com/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -33,13 +32,13 @@ PDO_SQLITE_DESC=	SQLite PDO driver
 USE_PHP=	session pdo gd xml zlib
 .endif
 
-PHP_MYSQL_USE=	php=mysqli
-PDO_DBLIB_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_dblib.so:${PORTSDIR}/databases/php5-pdo_dblib
-PDO_FIREBIRD_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_firebird.so:${PORTSDIR}/databases/php5-pdo_firebird
-PDO_MYSQL_USE=	php=pdo_mysql
-PDO_ODBC_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_odbc.so:${PORTSDIR}/databases/php5-pdo_odbc
-PDO_PGSQL_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_pgsql.so:${PORTSDIR}/databases/php5-pdo_pgsql
-PDO_SQLITE_USE=	php=pdo_sqlite
+PHP_MYSQL_USE=		PHP=mysqli
+PDO_DBLIB_USE=		PHP=pdo_dblib
+PDO_FIREBIRD_USE=	PHP=pdo_firebird
+PDO_MYSQL_USE=		PHP=pdo_mysql
+PDO_ODBC_USE=		PHP=pdo_odbc
+PDO_PGSQL_USE=		PHP=pdo_pgsql
+PDO_SQLITE_USE=		PHP=pdo_sqlite
 
 pre-everything::
 	@${ECHO_CMD} "# you can customize the installation directory"

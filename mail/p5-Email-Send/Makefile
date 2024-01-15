@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Email-Send
 PORTVERSION=	2.201
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for simple email sending
+WWW=		https://metacpan.org/release/Email-Send
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

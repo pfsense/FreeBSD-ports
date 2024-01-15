@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openfts
 PORTVERSION=	0.40
 PORTREVISION=	5
@@ -7,8 +5,9 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/OpenFTS-perl%2C%20v${PORTVERSION}
 DISTNAME=	Search-OpenFTS-${PORTVERSION}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source Full Text Search engine
+WWW=		https://openfts.sourceforge.net/
 
 RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
 

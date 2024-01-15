@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Scalar-Does
 PORTVERSION=	0.203
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Like ref() but useful
+WWW=		https://metacpan.org/release/Scalar-Does
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -28,10 +26,11 @@ TEST_DEPENDS=	p5-IO-All>=0:devel/p5-IO-All \
 		p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings \
 		p5-Test-Requires>=0.06:devel/p5-Test-Requires
 
-CONFLICTS_INSTALL=	p5-IO-Detect
+USES=		perl5
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5
+
+CONFLICTS_INSTALL=	p5-IO-Detect
 
 .include <bsd.port.mk>

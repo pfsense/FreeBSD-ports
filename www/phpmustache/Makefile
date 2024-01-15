@@ -1,13 +1,11 @@
-# Created by: Steve Polyack <spolyack@collaborativefusion.com>
-# $FreeBSD$
-
 PORTNAME=	phpmustache
-PORTVERSION=	2.13.0
+PORTVERSION=	2.14.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
 MAINTAINER=	marc@bumblingdork.com
 COMMENT=	PHP5 code for Mustache
+WWW=		https://github.com/bobthecow/mustache.php
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -29,10 +27,5 @@ do-build:
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/mustache.php ${STAGEDIR}${DATADIR}
-
-do-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	(cd ${WRKSRC}/test/fixtures/examples && ${COPYTREE_SHARE} . \
-		${STAGEDIR}${EXAMPLESDIR})
 
 .include <bsd.port.mk>

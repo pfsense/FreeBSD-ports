@@ -1,11 +1,9 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libgnomekbd
 PORTVERSION=	3.26.1
+PORTREVISION=	2
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME keyboard shared library
@@ -20,7 +18,6 @@ USES=		gettext gmake gnome libtool localbase pathfix pkgconfig \
 USE_GNOME=	cairo gtk30 introspection:build
 GNU_CONFIGURE=	yes
 USE_XORG=	x11
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

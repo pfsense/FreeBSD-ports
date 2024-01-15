@@ -1,20 +1,17 @@
-# Created by: Loren M. Lang
-# $FreeBSD$
-
 PORTNAME=	x11vnc
 PORTVERSION=	0.9.16
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	net
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	VNC server for use with real X displays
+WWW=		https://github.com/LibVNC/x11vnc
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
 LIB_DEPENDS=	libvncserver.so:net/libvncserver
 
-USES=		iconv pkgconfig jpeg ssl gmake autoreconf xorg
+USES=		cpe iconv pkgconfig jpeg ssl gmake autoreconf xorg
 USE_XORG=	x11 xcb xdamage xfixes xrandr xinerama xext xtst xau xrender \
 		xdmcp xi xorgproto
 # Sets LDFLAGS and adds to CONFIGURE_ENV, therefore we set LDFLAGS
@@ -24,7 +21,8 @@ CONFIGURE_ARGS=	--with-ssl=${OPENSSLBASE}
 CPPFLAGS+=	-I${LOCALBASE}/include
 USE_GITHUB=	yes
 GH_ACCOUNT=	LibVNC
-#DEFAULT_VERSIONS=	ssl=openssl
+
+CPE_VENDOR=	x11vnc_project
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 

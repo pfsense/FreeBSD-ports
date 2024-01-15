@@ -1,6 +1,3 @@
-# Created by: Bob Eager <bob@eager.cx>
-# $FreeBSD$
-
 PORTNAME=	ecce
 DISTVERSION=	2.9d
 CATEGORIES=	editors
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.ml1.org.uk/distfiles/ \
 
 MAINTAINER=	bob@eager.cx
 COMMENT=	Edinburgh Compatible Context Editor
+WWW=		https://www.gtoal.com/ecce/
 
 LICENSE=	CC0-1.0
 

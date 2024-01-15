@@ -4,7 +4,7 @@
  * net-snmp.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -181,6 +181,7 @@ function netsnmp_resync() {
 	/* If the service isn't enabled, nothing to do. Stop the service and return. */
 	if ($nsettings['enable_snmpd'] != "on") {
 		stop_service('net-snmpd');
+		unlink_if_exists('/usr/local/etc/rc.d/net-snmpd.sh');
 		return;
 	}
 
@@ -332,6 +333,7 @@ function netsnmp_resync() {
 	/* Ignore /dev and its copies as they are not filesystems that need monitored */
 	$snmpd_config .= "ignoreDisk /dev\n";
 	$snmpd_config .= "ignoreDisk /var/dhcpd/dev\n";
+	$snmpd_config .= "ignoreDisk /var/unbound/dev\n";
 	/* Monitor all disks that snmpd can find */
 	$snmpd_config .= "includeAllDisks {$nhisettings['disk_usage_percent']}%\n";
 
@@ -677,6 +679,7 @@ function netsnmp_resync_snmptrapd() {
 	/* If snmptrapd is not enabled, then stop the service and do not write the config */
 	if ($nsettings['enable_snmptrapd'] != "on") {
 		stop_service('net-snmptrapd');
+		unlink_if_exists('/usr/local/etc/rc.d/net-snmptrapd.sh');
 		return;
 	}
 
@@ -710,7 +713,7 @@ function netsnmp_resync_snmptrapd() {
 
 	/* Agent address list is comma-separated, no spaces: a:b:c,d:e:f,g:h:i */
 	if (!empty($agentaddresses)) {
-		$snmptrapd_config .= "agentaddress " . implode(',', $agentaddresses) . "\n";
+		$snmptrapd_config .= "snmpTrapdAddr " . implode(',', $agentaddresses) . "\n";
 	}
 
 	if (!empty($nsettings['donotretainnotificationlogs'])) {
@@ -1446,4 +1449,57 @@ function netsnmp_validate_netsnmptrapdforwards($post, &$input_errors) {
 		}
 		$i++;
 	}
+}
+
+function netsnmp_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'netsnmp', 'config'));
+	$conf = $config['installedpackages']['netsnmp']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($conf) &&
+	    ($conf['enable_snmpd'] == 'on')) {
+		init_config_arr(array('installedpackages', 'netsnmp', 'config', 0, 'row'));
+		$rowconf = $config['installedpackages']['netsnmp']['config'][0]['row'];
+		foreach ($rowconf as $rconf) {
+			if (strstr($rconf['transport'], 'tls')) {
+				$tls = true;
+				break;
+			}
+		}
+		if (!$tls) {
+			return $result;
+		}
+
+		$result['pkgname'] = "SNMP (NET-SNMP)";
+		$result['certificatelist'] = array();
+
+		if (($pluginparams['event'] == 'used_ca') && !empty($conf['ca_cert'])) {
+			$item = array();
+			$cert = $conf['ca_cert'];
+			$item['usedby'] = 'DTLS CA Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates')) {
+			if (!empty($conf['server_cert'])) {
+				$item = array();
+				$cert = $conf['server_cert'];
+				$item['usedby'] = 'DTLS Server Certificate';
+				$result['certificatelist'][$cert][] = $item;
+			}
+			init_config_arr(array('installedpackages', 'netsnmpusers', 'config'));
+			$usersconf = $config['installedpackages']['netsnmpusers']['config'][0];
+			foreach ($usersconf as $user) {
+				if (!empty($user['user_cert'])) {
+					$item = array();
+					$cert = $user['user_cert'];
+					$item['usedby'] = 'DTLS User Certificate';
+					$result['certificatelist'][$cert][] = $item;
+				}
+			}
+		}
+	}
+
+	return $result;
 }

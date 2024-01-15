@@ -1,14 +1,12 @@
-# Created by: Jille Timmermans (jille@quis.cx)
-# $FreeBSD$
-
 PORTNAME=	oggvideotools
 PORTVERSION=	0.9.1
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Toolbox for manipulating Ogg video files
+WWW=		http://www.streamnik.de/oggvideotools.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	sqlfs
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	lib${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SQLite backed FUSE file system
+WWW=		https://www.nongnu.org/libsqlfs/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

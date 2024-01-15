@@ -1,12 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	simple-fb2-reader
 PORTVERSION=	1.1.3
+PORTREVISION=	5
 CATEGORIES=	print
 
-MAINTAINER=	danfe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple FB2 format book reader
+WWW=		https://github.com/Cactus64k/simple-fb2-reader
 
 LICENSE=	GPLv3+
 
@@ -17,6 +16,5 @@ USES=		cmake desktop-file-utils gettext-runtime gnome pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cactus64k
 USE_GNOME=	cairo gdkpixbuf2 gtk30 libxml2
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.mk>

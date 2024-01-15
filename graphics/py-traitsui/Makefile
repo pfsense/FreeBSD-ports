@@ -1,63 +1,40 @@
-# Created by: Vladimir Chukharev
-# $FreeBSD$
-
 PORTNAME=	traitsui
-PORTVERSION=	6.1.3
-PORTREVISION=	1
+DISTVERSION=	8.0.0
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	Vladimir.Chukharev@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Enthought traits-capable user interfaces
+WWW=		https://docs.enthought.com/traitsui/
 
-LICENSE=	BSD3CLAUSE LGPL21 EPL
+LICENSE=	BSD3CLAUSE EPL LGPL21
 LICENSE_COMB=	multi
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/LICENSE.txt
-LICENSE_FILE_LGPL21=	${WRKSRC}/image_LICENSE_Nuvola.txt
 LICENSE_FILE_EPL=	${WRKSRC}/image_LICENSE_Eclipse.txt
+LICENSE_FILE_LGPL21=	${WRKSRC}/image_LICENSE_Nuvola.txt
 # See ${WRKSRC}/image_LICENSE.txt for per file license information
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}traits>0:devel/py-traits@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyface>=6.0.0:devel/py-pyface@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
-# The requirements are defined in traitsui/__init__.py
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyface>=8.0.0:devel/py-pyface@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}traits>=6.2.0:devel/py-traits@${PY_FLAVOR}
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas@${PY_FLAVOR} \
-		${PY_PYGMENTS} \
-		${PYTHON_PKGNAMEPREFIX}traits>0:devel/py-traits@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}configobj>0:devel/py-configobj@${PY_FLAVOR}
-py27_TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
-# Those requirements (except for pip + coverage) were extracted from etstool.py
-
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
 
-# Support for the wxPython toolkit is also available, but only for Python 2.
-# Python 3 needs wxPython 4 which isn't ported, yet. So we use only Qt5 for a
-# while to make the port useful for Python 2 and 3.
-OPTIONS_DEFINE=	QT5
-OPTIONS_DEFAULT=QT5
+OPTIONS_DEFINE=		PYSIDE QT5 WXPYTHON
+OPTIONS_DEFAULT=	QT5
 
-QT5_RUN_DEPENDS=	${PY_PYGMENTS}
+PYSIDE_DESC=	PySide backend
+WXPYTHON_DESC=	wxPython backend
+
+PYSIDE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyside2>=0:devel/pyside2@${PY_FLAVOR}
+QT5_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR}
 QT5_USES=		pyqt:5
-QT5_USE=		PYQT=core_run,gui_run,printsupport_run,svg_run,widgets_run
-
-# These tests were extracted from etstool.py and adapted to the ports test framework
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m nose -v traitsui.tests
-
-# The test "test_wrap_text_narrow_short" fails at the moment and is going to be
-# fixed with the next release.
-# See also: https://github.com/enthought/traitsui/issues/643
-#
-# Note: The occurences of "qt4" aren't typos
-do-test-QT5-on:
-	@cd ${WRKSRC} && ${SETENV} ETS_TOOLKIT=qt4 QT_API=pyqt5 \
-		${PYTHON_CMD} -m nose -v traitsui.qt4.tests
+QT5_USE=		PYQT=pyqt5:run
+WXPYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}wxPython42>0:x11-toolkits/py-wxPython4@${PY_FLAVOR}
 
 .include <bsd.port.mk>

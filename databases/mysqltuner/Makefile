@@ -1,12 +1,11 @@
-# Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mysqltuner
-PORTVERSION=	1.7.17
+PORTVERSION=	1.9.9
+DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Assist you with MySQL Configuration
+WWW=		https://github.com/major/MySQLTuner-perl
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

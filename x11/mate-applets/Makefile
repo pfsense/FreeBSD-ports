@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	mate-applets
-PORTVERSION=	1.24.1
+PORTVERSION=	1.26.0
+PORTREVISION=	4
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Applets components for the MATE Desktop Environment
+WWW=		https://mate-desktop.org/
 
 LICENSE=	GPLv2 GFDL
 LICENSE_COMB=	multi
@@ -33,8 +33,9 @@ USE_XORG=	ice sm x11
 USE_GNOME=	cairo gtk30 gtksourceview3 intltool libwnck3 libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 CONFIGURE_ENV=	OS_SYS="/usr/include"
+CONFIGURE_ARGS=	--without-nl
+
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.drivemount.gschema.xml \
@@ -59,13 +60,13 @@ PLIST_SUB+=	BATTERY=""
 .endif
 
 # requires linux libcpufreq library
-#.if ${ARCH} != "i386" && ${ARCH} != "amd64"
+# .if ${ARCH} != "i386" && ${ARCH} != "amd64"
 CONFIGURE_ARGS+=--disable-cpufreq
 PLIST_SUB+=	CPUFREQ="@comment "
-#.else
-#CONFIGURE_ARGS+=--enable-cpufreq
-#PLIST_SUB+=	CPUFREQ=""
-#GLIB_SCHEMAS+=	org.mate.panel.applet.cpufreq.gschema.xml
-#.endif
+# .else
+# CONFIGURE_ARGS+=--enable-cpufreq
+# PLIST_SUB+=	CPUFREQ=""
+# GLIB_SCHEMAS+=	org.mate.panel.applet.cpufreq.gschema.xml
+# .endif
 
 .include <bsd.port.post.mk>

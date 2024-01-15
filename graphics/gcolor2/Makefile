@@ -1,14 +1,12 @@
-# Created by: Piotr Smyrak, piotr.smyrak@heron.pl
-# $FreeBSD$
-
 PORTNAME=	gcolor2
 PORTVERSION=	0.4
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics gnome
 MASTER_SITES=	SF
 
 MAINTAINER=	ps.ports@smyrak.com
-COMMENT=	Simple GTK+ 2.0 color selector
+COMMENT=	Simple GTK 2.0 color selector
+WWW=		https://gcolor2.sourceforge.net/
 
 LICENSE=	GPLv2
 

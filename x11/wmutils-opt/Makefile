@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wmutils-opt
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0
@@ -7,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Optional addons to wmutils
+WWW=		https://github.com/wmutils/opt
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE

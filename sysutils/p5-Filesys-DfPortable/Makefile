@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Filesys-DfPortable
 PORTVERSION=	0.85
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for filesystem disk space information
+WWW=		https://metacpan.org/release/Filesys-DfPortable
 
 USES=		perl5
 USE_PERL5=	configure

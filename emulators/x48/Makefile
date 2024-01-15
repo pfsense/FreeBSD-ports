@@ -1,6 +1,3 @@
-# Created by: Eric L. Hernes <erich@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	x48
 PORTVERSION=	0.6.4
 PORTREVISION=	1
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	HP48 SX/GX graphic calculator emulator
+WWW=		http://x48.berlios.de/
 
 LICENSE=	GPLv3
 

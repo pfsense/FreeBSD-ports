@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	Date-Easter
 PORTVERSION=	1.22
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Calculates Easter for any given year
+WWW=		https://metacpan.org/release/Date-Easter
 
 LICENSE=	ART20
 

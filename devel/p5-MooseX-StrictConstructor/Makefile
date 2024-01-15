@@ -1,6 +1,3 @@
-# Created by: glarkin
-# $FreeBSD$
-
 PORTNAME=	MooseX-StrictConstructor
 PORTVERSION=	0.21
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Make your MooseX object constructors blow up on unknown attributes
+WWW=		https://metacpan.org/release/MooseX-StrictConstructor
 
 LICENSE=	ART20
 

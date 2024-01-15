@@ -1,23 +1,26 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	s2
-PORTVERSION=	0.9.0
+PORTVERSION=	0.10.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
-CATEGORIES=	graphics
+CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python binding of S2 Geometry Library
+WWW=		https://s2geometry.io/ \
+		https://github.com/google/s2geometry
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
-BUILD_DEPENDS=	s2>=${PORTVERSION}:graphics/s2 \
-		swig:devel/swig
+BUILD_DEPENDS=	s2>=${PORTVERSION}<${PORTVERSION}_99:graphics/s2 \
+		swig>=4:devel/swig
 LIB_DEPENDS=	libs2.so:graphics/s2
 
-USES=		cmake localbase:ldflags python
+USES=		cmake compiler:c++17-lang localbase:ldflags python
+
+CMAKE_ON=	WITH_PYTHON
+USE_CXXSTD=	c++17
 
 WRKSRC_SUBDIR=	src/python
 
@@ -27,10 +30,8 @@ USE_GITHUB=	yes
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
-USES+=		compiler:gcc-c++11-lib
-.else
-USES+=		compiler:c++11-lang
+.if ${ARCH} == powerpc64 && !defined(CPUTYPE)
+CXXFLAGS+=	-mcpu=power7
 .endif
 
 .include <bsd.port.mk>

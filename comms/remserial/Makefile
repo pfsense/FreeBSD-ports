@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	remserial
 PORTVERSION=	1.4
 CATEGORIES=	comms
@@ -9,6 +6,7 @@ MASTER_SITES=	http://lpccomp.bc.ca/remserial/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Bridge between a TCP/IP network port and a character-oriented device
+WWW=		http://lpccomp.bc.ca/remserial/
 
 USES=		dos2unix
 

@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ubench
 PORTVERSION=	0.32
 CATEGORIES=	benchmarks
@@ -8,6 +5,7 @@ MASTER_SITES=	SUNSITE/system/benchmark
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix Benchmark Utility for CPU(s) and memory
+WWW=		http://www.phystech.com/download/ubench.html
 
 LICENSE=	GPLv2+
 

@@ -1,50 +1,40 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	osc
-PORTVERSION=	0.171.0
+PORTVERSION=	1.4.4
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Command Line Interface to work with an openSUSE Build Service
+WWW=		https://en.opensuse.org/openSUSE:OSC \
+		https://github.com/openSUSE/osc
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}m2crypto>0:security/py-m2crypto@${PY_FLAVOR}
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	openSUSE
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR}
+TEST_DEPENDS=	git:devel/git
 
 USES=		cpe python
-USE_PYTHON=	autoplist distutils noflavors
-PLIST_FILES=	bin/osc
+USE_GITHUB=	yes
+GH_ACCOUNT=	openSUSE
+USE_PYTHON=	autoplist cryptography distutils noflavors pytest
 NO_ARCH=	yes
-
 CPE_VENDOR=	suse
 CPE_PRODUCT=	opensuse_osc
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	CA_BUNDLE DOCS
-OPTIONS_DEFAULT=CA_BUNDLE
-CA_BUNDLE_DESC=	Install CA Certificates
+PYTEST_BROKEN_TESTS=	testPrdiffDiffstat TestVC
 
-CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-CA_BUNDLE_VARS=		CA_PATH=${LOCALBASE}/share/certs/ca-root-nss.crt
-CA_BUNDLE_VARS_OFF=	CA_PATH=/etc/ssl
-
-post-patch:
-	@${REINPLACE_CMD} -e "s|'share', 'man'|'man'|" ${WRKSRC}/setup.py
-	@${REINPLACE_CMD} -e "/cert.pem/ s|\[.*\]|['${CA_PATH}']|" \
-		${WRKSRC}/osc/conf.py
+OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${LN} -s osc-wrapper.py ${STAGEDIR}${PREFIX}/bin/osc
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions
+	${INSTALL_DATA} ${WRKSRC}/contrib/osc.zsh ${STAGEDIR}${PREFIX}/share/zsh/site-functions/_osc
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/fish/vendor_completions.d
+	${INSTALL_DATA} ${WRKSRC}/contrib/osc.fish ${STAGEDIR}${PREFIX}/share/fish/vendor_completions.d/osc.fish
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS README NEWS TODO \
-		${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS README.md NEWS ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

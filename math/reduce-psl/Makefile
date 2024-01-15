@@ -1,15 +1,13 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	reduce
-PORTVERSION=	20200301
+PORTVERSION=	${SFSUBDIR:S/snapshot_//:S/-//g}
 CATEGORIES=	math lang
 MASTER_SITES=	SF/reduce-algebra/${SFSUBDIR}/
 PKGNAMESUFFIX=	-psl
-DISTNAME=	Reduce-svn5286-src
+DISTNAME=	Reduce-svn6658-src
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable Standard Lisp REDUCE general-purpose algebra system
+WWW=		http://www.reduce-algebra.com/
 
 LICENSE=	BSD2CLAUSE
 
@@ -17,7 +15,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		autoreconf:build libtool gmake ncurses
 
-SFSUBDIR=	snapshot_2020-03-01
+SFSUBDIR=	snapshot_2023-12-18
 
 TARGET_SDIR=	${ARCH:S/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
 CPPFLAGS+=	-I${NCURSESINC}

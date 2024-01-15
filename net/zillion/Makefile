@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	zillion
 PORTVERSION=	0.1
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	net gnustep
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}-0_1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distributed computing project
+WWW=		https://zillion.sourceforge.net/
 
 LICENSE=	BSDunclear
 LICENSE_NAME=	Unclear BSD License

@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	spiralloops
 PORTVERSION=	2.0.0
 PORTREVISION=	9
@@ -10,6 +7,7 @@ DISTNAME=	SpiralLoops-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Loop-based sampler
+WWW=		https://www.pawfal.org/Software/SpiralLoops/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

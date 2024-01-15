@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dbh
 PORTVERSION=	5.0.22
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	databases
 MASTER_SITES=	SF
 DISTNAME=	libdbh2-${PORTVERSION}
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Disk Based Hashtables
+WWW=		https://www.gnu.org/software/libdbh/
 
 LICENSE=	GPLv3
 

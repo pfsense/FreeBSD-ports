@@ -1,6 +1,3 @@
-# Created by: Denis Shaposhnikov <dsh@vlink.ru>
-# $FreeBSD$
-
 PORTNAME=	Term-ANSIColor
 PORTVERSION=	5.01
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Color screen output using ANSI escape sequences
+WWW=		https://metacpan.org/release/Term-ANSIColor
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

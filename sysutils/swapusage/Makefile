@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	swapusage
 PORTVERSION=	1.0.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	aduitsis@douitsis.com
 COMMENT=	Get swap usage on a FreeBSD system
+WWW=		https://github.com/aduitsis/freebsd_swapusage
 
 LICENSE=	BSD2CLAUSE
 

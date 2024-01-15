@@ -1,6 +1,3 @@
-# Created by: clive@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	DBD-ODBC
 PORTVERSION=	1.61
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBD module interfacing the ODBC databases
+WWW=		https://metacpan.org/release/DBD-ODBC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

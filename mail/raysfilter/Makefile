@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	raysfilter
 PORTVERSION=	1.14
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	LOCAL/dinoex
 DISTNAME=	rays-filter-${PORTVERSION}
@@ -15,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/GNU-public-licence.txt
 
 USES=		shebangfix
 CTARGETS+=	rays-filter
-CFLAGS+=	-Wall
+CFLAGS+=	-Wall -Wno-pointer-sign
 LIBS+=		-lpthread -lmilter
 SHEBANG_FILES=	mf-analyze
 ETCFILES=	header-list.conf mail-filter.conf string-list.conf

@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	namazu
 PORTVERSION=	${NAMAZU_PORTVERSION}
 PORTREVISION=	1
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Meta-port of Namazu and Japanese support modules
+WWW=		http://www.namazu.org/
 
 LIB_DEPENDS=	libnmz.so:databases/namazu2
 RUN_DEPENDS=	ja-p5-nkf>=0:japanese/p5-nkf

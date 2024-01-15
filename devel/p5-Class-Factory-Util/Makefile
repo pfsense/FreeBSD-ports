@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Factory-Util
 PORTVERSION=	1.7
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Utility functions for (factory) classes
+WWW=		https://metacpan.org/release/Class-Factory-Util
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

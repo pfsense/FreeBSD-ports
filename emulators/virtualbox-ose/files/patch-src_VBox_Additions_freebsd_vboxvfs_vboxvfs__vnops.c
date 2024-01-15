@@ -1,18 +1,6 @@
---- src/VBox/Additions/freebsd/vboxvfs/vboxvfs_vnops.c.orig	2020-07-09 16:50:11 UTC
+--- src/VBox/Additions/freebsd/vboxvfs/vboxvfs_vnops.c.orig	2022-07-19 20:51:58 UTC
 +++ src/VBox/Additions/freebsd/vboxvfs/vboxvfs_vnops.c
-@@ -1,10 +1,6 @@
--/* $Id: vboxvfs_vnops.c $ */
--/** @file
-- * Description.
-- */
--
- /*
-  * Copyright (C) 2008-2017 Oracle Corporation
-+ * Copyright (C) 2017 Mahdi Mokhtari
-  *
-  * This file is part of VirtualBox Open Source Edition (OSE), as
-  * available from http://www.virtualbox.org. This file is free software;
-@@ -14,228 +10,1347 @@
+@@ -14,228 +14,1364 @@
   * VirtualBox OSE distribution. VirtualBox OSE is distributed in the
   * hope that it will be useful, but WITHOUT ANY WARRANTY of any kind.
   */
@@ -172,6 +160,9 @@
 +	.vop_write	= vboxfs_write,
 +	.vop_bmap	= VOP_EOPNOTSUPP
  };
++#if __FreeBSD_version > 1300068
++VFS_VOP_VECTOR_REGISTER(vboxfs_vnodeops);
++#endif
  
 -static int vboxvfs_access(struct vop_access_args *ap)
 +static uint64_t
@@ -361,9 +352,17 @@
 +	if (vp->v_type != VFIFO)
 +		VN_LOCK_ASHARE(vp);
 +
++#if __FreeBSD_version < 1400051
 +	error = insmntque1(vp, mp, vboxfs_insmntque_dtr, NULL);
-+	if (error)
++#else
++	error = insmntque(vp, mp);
++#endif
++	if (error) {
++#if __FreeBSD_version >= 1400051
++		vboxfs_insmntque_dtr(vp, NULL);
++#endif
 +		vp = NULL;
++	}
 +
 +unlock:
 +	VBOXFS_NODE_LOCK(node);
@@ -421,7 +420,7 @@
 + */
 +static int
 +vboxfs_alloc_file(struct vboxfs_mnt *vboxfsmp, const char *fullpath,
-+    enum vtype type, mode_t mode, struct vboxfs_node *parent,
++    enum_vtype_t type, mode_t mode, struct vboxfs_node *parent,
 +    int lkflag, struct vnode **vpp)
  {
 -    return 0;
@@ -1128,7 +1127,7 @@
 +	struct vnode *vp = ap->a_vp;
 +	struct uio *uio = ap->a_uio;
 +	struct vboxfs_node *dir = VP_TO_VBOXFS_NODE(vp);
-+	struct vboxfs_node *node;
++	struct vboxfs_node *node = NULL;
 +	struct sffs_dirent *dirent = NULL;
 +	sffs_dirents_t *cur_buf;
 +	off_t offset = 0;
@@ -1406,13 +1405,19 @@
 +			    cnp->cn_flags & DOWHITEOUT &&
 +			    cnp->cn_flags & ISWHITEOUT))) {
 +				error = VOP_ACCESS(dvp, VWRITE, cnp->cn_cred,
++#if __FreeBSD_version < 1400037
 +				    cnp->cn_thread);
++#else
++				    curthread);
++#endif
 +				if (error != 0)
 +					goto out;
 +
++#if __FreeBSD_version < 1400068
 +				/* Keep the component name in the buffer for
 +				 * future uses. */
 +				cnp->cn_flags |= SAVENAME;
++#endif
 +
 +				error = EJUSTRETURN;
 +			} else

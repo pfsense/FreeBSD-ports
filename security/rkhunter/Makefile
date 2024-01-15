@@ -1,13 +1,12 @@
-# Created by: Radim Kolar
-# $FreeBSD$
-
 PORTNAME=	rkhunter
 PORTVERSION=	1.4.6
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	lukasz@wasikowski.net
 COMMENT=	Rootkit detection tool
+WWW=		https://rkhunter.sourceforge.net
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/files/LICENSE

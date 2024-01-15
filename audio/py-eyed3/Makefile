@@ -1,26 +1,24 @@
-# Created by: Hye-Shik Chang <perky@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	eyed3
-PORTVERSION=	0.8.11
+PORTVERSION=	0.9.6
 CATEGORIES=	audio python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	eyeD3-${PORTVERSION}
 
 MAINTAINER=	rm@FreeBSD.org
 COMMENT=	Python module for processing ID3 tags
+WWW=		https://eyed3.nicfit.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		cpe python
+CPE_VENDOR=	travis_shirk
 USE_PYTHON=	autoplist distutils
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-magic>0:devel/py-python-magic@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
-		${PY_PATHLIB}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}deprecation>0:devel/py-deprecation@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}filetype>0:devel/py-filetype@${PY_FLAVOR}
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}

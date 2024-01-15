@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	App-Options
 PORTVERSION=	1.12
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Combine command line options, environment vars, and option file values
+WWW=		https://metacpan.org/release/App-Options
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Template-Timer
 PORTVERSION=	1.00
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Rudimentary profiling for Template Toolkit
+WWW=		https://metacpan.org/release/Template-Timer
 
 LICENSE=	ART20 GPLv3
 LICENSE_COMB=	dual

@@ -1,7 +1,7 @@
-TIMESTAMP = 1580961317
-SHA256 (OpenChemistry-avogadrolibs-1.93.0_GH0.tar.gz) = 01fea1f3b21c69091c60739616f86123db92f445e4c9ca53f1dec09624aceab4
-SIZE (OpenChemistry-avogadrolibs-1.93.0_GH0.tar.gz) = 2735862
-SHA256 (cf9d82575796d5fcabb153bdebde26843d81d83e.patch) = 54fdbab45cc8942e7f0e6dd47c451e3cad56a29b0224f385aee37b608bae8a99
-SIZE (cf9d82575796d5fcabb153bdebde26843d81d83e.patch) = 2665
-SHA256 (ea813f683cdd9865994c0ba94a24325e04b9f8fb.patch) = 6aea4b7e1163060db942f98b3d550e35f183233124db1b7f4d47c19038b02e75
-SIZE (ea813f683cdd9865994c0ba94a24325e04b9f8fb.patch) = 1398
+TIMESTAMP = 1665902523
+SHA256 (OpenChemistry-avogadrolibs-1.97.0_GH0.tar.gz) = 46641504a1808c5ff6fb7d66be48d866848203899025fd386cc6e3dd5d9ec342
+SIZE (OpenChemistry-avogadrolibs-1.97.0_GH0.tar.gz) = 11456702
+SHA256 (OpenChemistry-molecules-b1e16c5_GH0.tar.gz) = 9aa48dd94022e022d2c9eb9802ba72a4bfd69c04a08a36d562bfffc7d24bf99b
+SIZE (OpenChemistry-molecules-b1e16c5_GH0.tar.gz) = 207309
+SHA256 (OpenChemistry-crystals-73a5bbc_GH0.tar.gz) = f48a06bb9e4bdc1f7dbed22fe31b187b5aa490f5796f6927001228e9ced41a5e
+SIZE (OpenChemistry-crystals-73a5bbc_GH0.tar.gz) = 157627

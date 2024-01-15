@@ -1,6 +1,3 @@
-# Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jaxup
 PORTVERSION=	1.01
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java XUpdate engine
+WWW=		https://klomp.org/jaxup/
 
 BUILD_DEPENDS=	${JAR_DEPENDS}
 RUN_DEPENDS=	${JAR_DEPENDS}

@@ -1,12 +1,10 @@
-# Created by: grog
-# $FreeBSD$
-
 PORTNAME=	x2x
 PORTVERSION=	1.30.20180709
 CATEGORIES=	x11-servers
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to link multiple X servers together
+WWW=		https://github.com/dottedmag/x2x
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

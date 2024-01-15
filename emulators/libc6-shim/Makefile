@@ -1,24 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	libc6-shim
-DISTVERSION=	20201024
+DISTVERSION=	20231106
 CATEGORIES=	emulators
 
 MAINTAINER=	iwtcex@gmail.com
 COMMENT=	ABI-compatible glibc shim library
+WWW=		https://github.com/shkhln/libc6-shim
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-IGNORE_FreeBSD_11=not supported
 ONLY_FOR_ARCHS=	amd64
 
-USE_RUBY=	yes
-
+USES=	ruby
 USE_GITHUB=	yes
 GH_ACCOUNT=	shkhln
 GH_PROJECT=	libc6-shim
-GH_TAGNAME=	6b6fa76812f7cb9625e24f12af99fcb9c46a0719
+
+PORTSCOUT=	ignore:1
 
 post-patch:
 	${REINPLACE_CMD} -e 's|../icds|../${DATADIR_REL}/icds|' ${WRKSRC}/bin/nv-sglrun

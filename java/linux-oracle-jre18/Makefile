@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jre
 PORTVERSION=	${JRE_VERSION}.${JRE_UPDATE_VERSION}
 CATEGORIES=	java
@@ -9,11 +7,16 @@ DISTNAME=	jre-${JRE_VERSION}u${JRE_UPDATE_VERSION}-linux-${JAVA_DISTFILE_ARCH}
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	Oracle Java ${JRE_VERSION} Runtime Environment for Linux
+WWW=		https://www.oracle.com/java/
+
+# Converted from RESTRICTED
+LICENSE=	jre
+LICENSE_NAME=	jre
+LICENSE_TEXT=	Redistribution of repackaged binaries not permitted
+LICENSE_PERMS=	auto-accept
 
 RUN_DEPENDS=	javavm:java/javavmwrapper
 
-NO_CDROM=	License does not allow distribution with fee
-RESTRICTED=	Redistribution of repackaged binaries not permitted
 PKGNAMESUFFIX=	1${JRE_VERSION}
 
 WRKSRC=		${WRKDIR}/jre${DL_JRE_VERSION}
@@ -21,7 +24,8 @@ PLIST_SUB=	T=${APP_HOME:S/^${PREFIX}\///} \
 		PORTVERSION=${PORTVERSION}
 
 NO_BUILD=	yes
-USES=		linux shebangfix
+USES=		cpe linux shebangfix
+CPE_VENDOR=	oracle
 USE_LINUX=	xorglibs
 ONLY_FOR_ARCHS=	i386 amd64
 

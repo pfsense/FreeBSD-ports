@@ -1,6 +1,3 @@
-# Created by: janos.mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	blogbench
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://download.pureftpd.org/pub/blogbench/ \
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Performance Test of Filesystem I/O
+WWW=		https://github.com/jedisct1/Blogbench
 
 USES=		tar:bzip2
 

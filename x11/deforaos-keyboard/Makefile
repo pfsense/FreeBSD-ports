@@ -1,15 +1,14 @@
-# Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	keyboard
 PORTVERSION=	0.3.1
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://www.defora.org/os/download/download/4453/
 PKGNAMEPREFIX=	deforaos-
 DISTNAME=	Keyboard-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop virtual keyboard
+WWW=		https://www.defora.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

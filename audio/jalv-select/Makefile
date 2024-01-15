@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	jalv-select
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3
+PORTREVISION=	5
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Little app to select lv2 plugins to run with jalv
+WWW=		https://github.com/brummer10/jalv_select
 
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +18,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libserd-0.so:devel/serd \
 		libsord-0.so:devel/sord \
 		libsratom-0.so:audio/sratom
-RUN_DEPENDS=	jalv:audio/jalv
+RUN_DEPENDS=	gawk:lang/gawk \
+		jalv:audio/jalv
 
 USES=		compiler:c++11-lang gettext-runtime gmake gnome pkgconfig xorg
 USE_GITHUB=	yes

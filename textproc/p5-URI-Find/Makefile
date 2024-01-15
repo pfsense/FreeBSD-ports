@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	URI-Find
 PORTVERSION=	20160806
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to find URIs in arbitrary text
+WWW=		https://metacpan.org/release/URI-Find
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

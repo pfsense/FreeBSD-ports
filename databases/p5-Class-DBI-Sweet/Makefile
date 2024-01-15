@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-Sweet
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extra sweet features for Class::DBI
+WWW=		https://metacpan.org/release/Class-DBI-Sweet
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-DBI>=3.0.12:databases/p5-Class-DBI \

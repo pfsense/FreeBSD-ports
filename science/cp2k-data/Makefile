@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	cp2k-data
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.1.0
+DISTVERSION=	2022.2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Data for cp2k quantum chemistry package
+WWW=		https://www.cp2k.org/
 
 LICENSE=	GPLv2+
 

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	garden-of-coloured-lights
 PORTVERSION=	1.0.9
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	garden-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Old school 2D vertical shoot-em-up with some innovative elements
+WWW=		https://garden.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,7 +16,6 @@ LIB_DEPENDS=	liballeg.so:devel/allegro
 
 GNU_CONFIGURE=	yes
 USES=		desktop-file-utils gnome localbase
-INSTALLS_ICONS=	yes
 
 DATADIR=	${PREFIX}/share/garden
 

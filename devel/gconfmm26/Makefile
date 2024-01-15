@@ -1,24 +1,21 @@
-# Created by: Alexander Nedotsukov <bland@mail.ru>
-# $FreeBSD$
-#   $MCom: ports-stable/devel/gconfmm26/Makefile,v 1.1 2010/06/24 07:51:01 kwm Exp $
-
 PORTNAME=	gconfmm
 PORTVERSION=	2.28.3
+PORTREVISION=	3
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for gconf2 API library
+WWW=		http://gtkmm.sourceforge.net/
 
 LIB_DEPENDS=	libglibmm-2.4.so:devel/glibmm
-BUILD_DEPENDS=	${LOCALBASE}/lib/libgtkmm-2.4.so.1:x11-toolkits/gtkmm24
 
-USES=		compiler:c++11-lang gmake gnome libtool:keepla pathfix \
+USES=		compiler:c++11-lang gmake gnome libtool pathfix \
 		pkgconfig tar:bzip2 xorg
 USE_CXXSTD=	c++11
 USE_XORG=	x11
-USE_GNOME=	gconf2 referencehack
+USE_GNOME=	gconf2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-static --disable-documentation

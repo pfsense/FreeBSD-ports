@@ -1,39 +1,46 @@
-# $FreeBSD$
-
 PORTNAME=	git-chglog
-DISTVERSION=	0.9.1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.15.4
+PORTREVISION=	4
 CATEGORIES=	textproc
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	CHANGELOG generator implemented in Go
+WWW=		https://github.com/git-chglog/git-chglog
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	git:devel/git
 
-USES=		go
-USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME}
+USES=		go:modules
+GO_MODULE=	github.com/${PORTNAME}/${PORTNAME}
 
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+_BUILD_VERSION=	${DISTVERSIONFULL}
+
+GO_MODULE=	github.com/${PORTNAME}/${PORTNAME}
 GO_TARGET=	./cmd/${PORTNAME}
+GO_BUILDFLAGS=	-ldflags "\
+		-s -w \
+		-X main.version=${_BUILD_VERSION}"
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	CHANGELOG.md CONTRIBUTING.md README.md
-PORTEXAMPLES=	${EXAMPLES:T}
+_EXAMPLES=	.chglog/CHANGELOG.tpl.md .chglog/config.yml
+PORTEXAMPLES=	${_EXAMPLES:T}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 EXAMPLES_DESC=	Install example template format and configuration
 
-EXAMPLES=	.chglog/CHANGELOG.tpl.md .chglog/config.yml
-
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} \
+		${STAGEDIR}${DOCSDIR}
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${EXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC} && \
+		${INSTALL_DATA} ${_EXAMPLES} \
+		${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

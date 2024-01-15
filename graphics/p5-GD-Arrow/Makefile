@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	GD-Arrow
 PORTVERSION=	0.01
 PORTREVISION=	5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Draw arrows using GD
+WWW=		https://metacpan.org/release/GD-Arrow
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

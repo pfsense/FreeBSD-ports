@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Proc-ProcessTable-Colorizer
 PORTVERSION=	0.3.0
 CATEGORIES=	sysutils perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Colorized and enhanced version of ps
+WWW=		https://metacpan.org/release/Proc-ProcessTable-Colorizer
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

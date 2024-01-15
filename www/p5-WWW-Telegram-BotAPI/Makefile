@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	WWW-Telegram-BotAPI
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gehm@physik.tu-berlin.de
 COMMENT=	Perl implementation of the Telegram Bot API
+WWW=		https://metacpan.org/release/WWW-Telegram-BotAPI
 
 LICENSE=	ART20 GPLv1+
 LICENSE_COMB=	dual

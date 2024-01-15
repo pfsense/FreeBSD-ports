@@ -1,6 +1,5 @@
 lib/libmilou.so.5
 lib/libmilou.so.%%KDE_PLASMA_VERSION%%
-%%QT_PLUGINDIR%%/miloutextplugin.so
 %%QT_QMLDIR%%/org/kde/milou/ResultDelegate.qml
 %%QT_QMLDIR%%/org/kde/milou/ResultsListView.qml
 %%QT_QMLDIR%%/org/kde/milou/ResultsListViewDelegate.qml
@@ -8,12 +7,11 @@ lib/libmilou.so.%%KDE_PLASMA_VERSION%%
 %%QT_QMLDIR%%/org/kde/milou/globals.js
 %%QT_QMLDIR%%/org/kde/milou/libmilouqmlplugin.so
 %%QT_QMLDIR%%/org/kde/milou/qmldir
-share/kservices5/miloutextpreview.desktop
 share/kservices5/plasma-applet-org.kde.milou.desktop
-share/kservicetypes5/miloupreviewplugin.desktop
 share/locale/ar/LC_MESSAGES/milou.mo
 share/locale/ar/LC_MESSAGES/plasma_applet_org.kde.milou.mo
-share/locale/ast/LC_MESSAGES/milou.mo
+share/locale/bg/LC_MESSAGES/milou.mo
+share/locale/bg/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/bs/LC_MESSAGES/milou.mo
 share/locale/bs/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/ca/LC_MESSAGES/milou.mo
@@ -44,6 +42,8 @@ share/locale/gl/LC_MESSAGES/milou.mo
 share/locale/gl/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/he/LC_MESSAGES/milou.mo
 share/locale/he/LC_MESSAGES/plasma_applet_org.kde.milou.mo
+share/locale/hi/LC_MESSAGES/milou.mo
+share/locale/hi/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/hu/LC_MESSAGES/milou.mo
 share/locale/hu/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/ia/LC_MESSAGES/milou.mo
@@ -52,6 +52,10 @@ share/locale/id/LC_MESSAGES/milou.mo
 share/locale/id/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/it/LC_MESSAGES/milou.mo
 share/locale/it/LC_MESSAGES/plasma_applet_org.kde.milou.mo
+share/locale/ja/LC_MESSAGES/milou.mo
+share/locale/ja/LC_MESSAGES/plasma_applet_org.kde.milou.mo
+share/locale/ka/LC_MESSAGES/milou.mo
+share/locale/ka/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/ko/LC_MESSAGES/milou.mo
 share/locale/ko/LC_MESSAGES/plasma_applet_org.kde.milou.mo
 share/locale/lt/LC_MESSAGES/milou.mo
@@ -105,7 +109,5 @@ share/metainfo/org.kde.milou.appdata.xml
 share/plasma/plasmoids/org.kde.milou/contents/ui/SearchField.qml
 share/plasma/plasmoids/org.kde.milou/contents/ui/globals.js
 share/plasma/plasmoids/org.kde.milou/contents/ui/main.qml
-share/plasma/plasmoids/org.kde.milou/contents/ui/previews/Audio.qml
-share/plasma/plasmoids/org.kde.milou/contents/ui/previews/TextPreview.qml
 share/plasma/plasmoids/org.kde.milou/metadata.desktop
 share/plasma/plasmoids/org.kde.milou/metadata.json

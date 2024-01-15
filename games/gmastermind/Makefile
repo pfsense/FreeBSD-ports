@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	gmastermind
 PORTVERSION=	0.6
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	games gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	GMastermind-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Well-known mastermind game
+WWW=		https://gap.nongnu.org/gmastermind/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

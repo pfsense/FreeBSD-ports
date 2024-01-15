@@ -1,13 +1,11 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=		libe
 PORTVERSION=		0.11.0
 DISTVERSIONPREFIX=	releases/
 CATEGORIES=		devel
 
 MAINTAINER=	egypcio@FreeBSD.org
-COMMENT=	High-performance datastructures and utilities for C++
+COMMENT=	High-performance data structures and utilities for C++
+WWW=		https://github.com/rescrv/e
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,10 +17,10 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/libpo6.pc:devel/libpo6
 GNU_CONFIGURE=	yes
 
 USES=		autoreconf gmake libtool pathfix pkgconfig
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
-USE_LDCONFIG=	yes
-
 GH_ACCOUNT=	rescrv
 GH_PROJECT=	e
+USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

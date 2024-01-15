@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	${DICT}-aspell
 SPELLVERSION=	6-hsb-0.02-0
 PORTEPOCH=	2
@@ -8,6 +5,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Aspell Upper Sorbian dictionary
+WWW=		http://aspell.net/
 
 DICT=	 	hsb
 

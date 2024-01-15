@@ -1,6 +1,3 @@
-# Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-DateTime-ButMaintained
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	DateTime related constraints and coercions for Moose
+WWW=		https://metacpan.org/release/MooseX-Types-DateTime-ButMaintained
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

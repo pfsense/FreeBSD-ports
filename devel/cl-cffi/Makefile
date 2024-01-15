@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cffi
 PORTVERSION=	0.16.1
 CATEGORIES=	devel lisp
@@ -19,6 +17,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Portable foreign function interface for Common Lisp
+WWW=		https://common-lisp.net/project/cffi/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -29,7 +28,6 @@ BUILD_DEPENDS=	cl-alexandria>=0:devel/cl-alexandria \
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_BUILD=	yes
-NO_ARCH=	yes
 
 USE_ASDF=	yes
 

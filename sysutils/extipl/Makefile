@@ -1,6 +1,3 @@
-# Created by: KIMURA Takamichi <takamiti@tsden.org>
-# $FreeBSD$
-
 PORTNAME=	extipl
 PORTVERSION=	5.04
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	OSDN/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Partition-selectable boot loader for IBM-PC/AT compatibles
+WWW=		http://extipl.sourceforge.jp/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

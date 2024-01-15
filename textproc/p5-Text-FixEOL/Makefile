@@ -1,6 +1,3 @@
-# Created by: lth@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Text-FixEOL
 PORTVERSION=	1.08
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Canonicalizes text to a specified EOL/EOF convention
+WWW=		https://metacpan.org/release/Text-FixEOL
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,15 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	cyanrip
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.0
+DISTVERSION=	0.9.2
+PORTREVISION=	1
 CATEGORIES=	audio
 
-MAINTAINER=	daniel.engberg.lists@pyret.net
-COMMENT=	Audio CD ripper with command-line interface and focus on accuracy
+PATCH_SITES=	https://github.com/cyanreg/${PORTNAME}/commit/
+PATCHFILES=	e75ed1c51d333ec37bb51fbfb7597ca4059cc298.patch:-p1
 
-LICENSE=	LGPL3
-LICENSE_FILE=	${WRKSRC}/LICENSE
+MAINTAINER=	diizzy@FreeBSD.org
+COMMENT=	Audio CD ripper with command-line interface and focus on accuracy
+WWW=		https://github.com/cyanreg/cyanrip
+
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libcdio.so:sysutils/libcdio \
@@ -17,7 +20,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libcurl.so:ftp/curl \
 		libmusicbrainz5.so:audio/libmusicbrainz5
 
-USES=		compiler:c11 localbase meson pkgconfig
+USES=		localbase meson pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	cyanreg

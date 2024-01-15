@@ -1,11 +1,11 @@
---- remoting/host/host_attributes.cc.orig	2020-11-13 06:36:46 UTC
+--- remoting/host/host_attributes.cc.orig	2023-05-31 08:12:17 UTC
 +++ remoting/host/host_attributes.cc
-@@ -120,7 +120,7 @@ std::string GetHostAttributes() {
-       media::InitializeMediaFoundation()) {
+@@ -105,7 +105,7 @@ std::string GetHostAttributes() {
+   if (media::InitializeMediaFoundation()) {
      result.push_back("HWEncoder");
    }
--#elif defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#elif defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    result.push_back("HWEncoder");
  #endif
  

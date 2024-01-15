@@ -1,22 +1,17 @@
-# Created by: Corey Smith <corsmith@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	zerotier
-DISTVERSION=	1.6.2
+DISTVERSION=	1.12.2
 CATEGORIES=	net
-
-PATCH_SITES=	https://github.com/zerotier/zerotierone/pull/
-# PATCHFILES=	1043.patch:-p1
-PATCHFILES=	1304.patch:-p1
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Network virtualization everywhere
+WWW=		https://www.zerotier.com/
 
+# No SaaS or Govt usage: https://github.com/zerotier/ZeroTierOne/blob/master/LICENSE.txt
 LICENSE=		BUSINESS MIT PD
 LICENSE_COMB=		multi
 LICENSE_NAME_BUSINESS=	Business Source License
 LICENSE_FILE_BUSINESS=	${WRKSRC}/LICENSE.txt
-LICENSE_FILE_MIT=	${WRKSRC}/ext/json/LICENSE.MIT
+LICENSE_FILE_MIT=	${WRKSRC}/ext/http-parser/LICENSE-MIT
 LICENSE_PERMS_BUSINESS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	as:devel/binutils
@@ -35,19 +30,12 @@ DBG_ALL_TARGET=	debug
 
 PLIST_FILES=	bin/zerotier-cli bin/zerotier-idtool sbin/zerotier-one
 
-LEGAL_TEXT=	No SaaS or Govt usage: https://github.com/zerotier/ZeroTierOne/blob/master/LICENSE.txt
-
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == "FreeBSD"
 # log output via syslog
 SUB_LIST+=	ZEROTIER_SYSLOG="-s debug -T zerotier"
-# after r347241 tun(4) and tap(4) have been merged to tuntap(4)
-.if (${OSVERSION} >= 1300028)
 SUB_LIST+=	ZEROTIER_IF_TAP="if_tuntap"
-.else
-SUB_LIST+=	ZEROTIER_IF_TAP="if_tap"
-.endif
 .else
 # we are not on FreeBSD
 SUB_LIST+=	ZEROTIER_IF_TAP="if_tap" \

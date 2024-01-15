@@ -1,26 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	Wand
-PORTVERSION=	0.4.5
+PORTVERSION=	0.6.13
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	python@FreeBSD.org
-COMMENT=	MagickWand Python binding
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Ctypes-based simple MagickWand API binding for Python
+WWW=		https://github.com/emcconville/wand
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
-
-USES=		python:3.6+
+USES=		magick python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-PYDISTUTILS_INSTALLARGS+=	--install-data ${DATADIR}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

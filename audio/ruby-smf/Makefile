@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	smf
 PORTVERSION=	0.15.15
 PORTREVISION=	1
@@ -11,12 +8,11 @@ DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby module to handle Standard MIDI Files
+WWW=		http://www.funaba.org/code #smf
 
 LICENSE=	BSD2CLAUSE
 
-USE_RUBY=	yes
-USES=		shebangfix
-USE_RUBY_SETUP=	yes
+USES=		ruby:setup shebangfix
 RUBY_SETUP=	install.rb
 SHEBANG_FILES=	sample/*.rb
 

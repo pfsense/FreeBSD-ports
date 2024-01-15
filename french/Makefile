@@ -1,12 +1,8 @@
-# $FreeBSD$
-#
-
     COMMENT = French support
 
     SUBDIR += aspell
     SUBDIR += aster
     SUBDIR += fortune-mod-zarathoustra
-    SUBDIR += geonext
     SUBDIR += homard
     SUBDIR += hunspell
     SUBDIR += hyphen

@@ -1,6 +1,3 @@
-# Created by: David Naylor <dbn@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME?=	dotnet-sdk
 DISTVERSION?=	2.1.201
 DISTVERSIONSUFFIX=	-linux-x64
@@ -8,8 +5,9 @@ CATEGORIES=	lang
 MASTER_SITES?=	https://download.microsoft.com/download/C/7/D/C7DCA2DE-7163-45D1-A05A-5112DAF51445/
 PKGNAMEPREFIX=	linux-
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform .NET implementation (Software Development Kit)
+WWW=		https://www.microsoft.com/net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -24,7 +22,7 @@ USES=		linux:c7 python:build
 
 DATADIR=	${PREFIX}/share/dotnet
 DESCR=		${.CURDIR}/../linux-dotnet-runtime/pkg-descr
-EXTRACT_AFTER_ARGS=     --no-same-owner --no-same-permissions \
+EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions \
 			--include LICENSE.txt --include sdk ${EXTRACT_EXTRA_ARGS}
 EXTRACT_EXTRA_ARGS?=	--include additionalDeps --include store
 NO_WRKSUBDIR=	yes

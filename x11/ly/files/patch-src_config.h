@@ -1,10 +1,10 @@
---- src/config.h.orig	2019-11-12 22:29:26 UTC
+--- src/config.h.orig	2023-07-31 13:27:47 UTC
 +++ src/config.h
-@@ -82,6 +82,7 @@ struct config
- 	char* shutdown_cmd;
+@@ -94,6 +94,7 @@ struct config
+ 	char* shutdown_key;
  	char* term_reset_cmd;
- 	u8 tty;
-+	u8 vt;
+ 	uint8_t tty;
++	uint8_t vt;
  	char* wayland_cmd;
+ 	bool wayland_specifier;
  	char* waylandsessions;
- 	char* x_cmd;

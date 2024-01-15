@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	help_hannahs_horse
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -13,6 +10,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pacman with a fast food twist
+WWW=		https://sourceforge.net/projects/hannah/
 
 LICENSE=	GPLv2 OFL11
 LICENSE_COMB=	multi
@@ -29,7 +27,6 @@ MAKE_ENV=	DATA_INSTALL_DIR="${DATADIR}" \
 
 PORTDOCS=	CHANGELOG README
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 DESKTOP_ENTRIES="Help Hannah's Horse" "" "${PORTNAME}" \

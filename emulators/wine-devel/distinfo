@@ -1,5 +1,3 @@
-TIMESTAMP = 1609150834
-SHA256 (wine-6.0-rc4.tar.xz) = 9dd7813918277d89ad3dbbd911eb1a7ada1c92778f17c727ca3a9fba591c7ec5
-SIZE (wine-6.0-rc4.tar.xz) = 24194208
-SHA256 (v6.0-rc4.tar.gz) = 6c675d1002bd3fed009e1db6b7569d9e1b58c347c9ea8980af6bdfcc4fc40d48
-SIZE (v6.0-rc4.tar.gz) = 10386008
+TIMESTAMP = 1704505004
+SHA256 (wine-9.0-rc4.tar.xz) = ebff8b1763ffe3d1eb60b1302d78a662a46140e6f76e4a0caf58d3e4e4c9168f
+SIZE (wine-9.0-rc4.tar.xz) = 29986548

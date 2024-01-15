@@ -1,6 +1,3 @@
-# Created by: Maksym Sobolyev <sobomax@pbxpress.it>
-# $FreeBSD$
-
 PORTNAME=	Net-Syslog
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for sending syslog messages to a remote syslogd
+WWW=		https://metacpan.org/release/Net-Syslog
 
 USES=		perl5
 USE_PERL5=	configure

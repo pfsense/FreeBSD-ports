@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Perl6-Subs
 PORTVERSION=	0.05
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Define your subroutines in Perl 6 style
+WWW=		https://metacpan.org/release/CHIPS/Perl6-Subs-0.05
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

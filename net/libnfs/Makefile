@@ -1,29 +1,26 @@
-# Created by: Manuel Creach <manuel.creach@icloud.com>
-# $FreeBSD$
-
 PORTNAME=	libnfs
-PORTVERSION=	4.0.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	5.0.2
 CATEGORIES=	net
 
 MAINTAINER=	snoe925@gmail.com
 COMMENT=	Client library for accessing NFS shares over a network
+WWW=		https://github.com/sahlberg/libnfs
 
-LICENSE=	LGPL21 GPLv3
+LICENSE=	GPLv3 LGPL21
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-PLIST_SUB=	SHLIB=${SHLIB}
-SHLIB=		13
-
-GNU_CONFIGURE=	yes
 USES=		autoreconf gmake libtool pkgconfig
-USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	sahlberg
+USE_LDCONFIG=	yes
 
+SHLIB=		14
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-werror
+
+PLIST_SUB=	SHLIB=${SHLIB}
 
 post-patch:
 	${REINPLACE_CMD} 's|$$(libdir)/\(pkgconfig\)|$$(prefix)/libdata/\1|' \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stdlib-debug
 PORTVERSION=	1.0.1
 DISTVERSIONPREFIX=	v
@@ -7,8 +5,9 @@ PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
-MAINTAINER=	sasaki@fcc.ad.jp
+MAINTAINER=	sasaki12@gmail.com
 COMMENT=	Debug hints management library for lua
+WWW=		https://github.com/lua-stdlib/_debug
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

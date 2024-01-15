@@ -1,6 +1,3 @@
-# Created by: Matthew Seaman
-# $FreeBSD$
-
 PORTNAME=	pgreplay
 DISTVERSIONPREFIX=	${PORTNAME:tu}_
 DISTVERSION=	1_3_0
@@ -9,6 +6,7 @@ CATEGORIES=	databases
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Replay SQL statements from a Postgresql Log
+WWW=		https://github.com/laurenz/pgreplay
 
 LICENSE=	PostgreSQL
 

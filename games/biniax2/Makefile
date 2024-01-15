@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	biniax2
 PORTVERSION=	1.30
 PORTREVISION=	9
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-fullsrc
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Original logic game with arcade and tactics modes
+WWW=		http://biniax.com/index2.html
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

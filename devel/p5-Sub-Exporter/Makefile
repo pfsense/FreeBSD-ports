@@ -1,18 +1,16 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sub-Exporter
-PORTVERSION=	0.987
-PORTREVISION=	1
+PORTVERSION=	0.991
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Sophisticated exporter for custom-built routines
+WWW=		https://metacpan.org/release/Sub-Exporter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Data-OptList>=0.100:devel/p5-Data-OptList \

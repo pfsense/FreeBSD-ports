@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	wuzzah
 PORTVERSION=	0.53
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command-line utility for stalking users
+WWW=		https://www.cs.swarthmore.edu/~finney/proj/wuzzah/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

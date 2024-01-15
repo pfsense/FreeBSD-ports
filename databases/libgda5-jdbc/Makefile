@@ -1,7 +1,4 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	databases gnome
 PKGNAMESUFFIX=	5-jdbc
 

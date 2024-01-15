@@ -1,10 +1,8 @@
-# Created by: Motoyuki Kasahara <m-kasahr@sra.co.jp>
-# $FreeBSD$
-
 PORTNAME=	libtool
 PORTREVISION=	1
 
 COMMENT=	Generic shared library support script
+WWW=		https://www.gnu.org/software/libtool/
 
 .include "${.CURDIR}/../libtool/Makefile.common"
 
@@ -16,13 +14,16 @@ RUN_DEPENDS=	gm4:devel/m4
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-ltdl-install
-MAKE_ARGS=	MAKEINFOFLAGS=--no-split
-USES+=		makeinfo
+TEST_TARGET=	check
 
+NO_ARCH=	yes
 INFO=		libtool
 
-post-patch:
-	@${RM} ${WRKSRC}/doc/*.info*
-	@${TOUCH} ${WRKSRC}/doc/libtool.1
+.if "${CC}" == "/nxb-bin/usr/bin/cc"
+# Generate libtool script for the native compiler, not the cross compiler.
+CC=		cc
+CXX=		c++
+LD=		ld
+.endif
 
 .include <bsd.port.mk>

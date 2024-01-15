@@ -1,37 +1,34 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	netCDF4
-PORTVERSION=	1.3.1
+PORTVERSION=	1.6.5
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	rel
-PORTREVISION=	7
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python Interface to the NetCDF Library (versions 3 and 4)
+WWW=		https://unidata.github.io/netcdf4-python/
 
 LICENSE=	MIT
 
 BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libnetcdf.so:science/netcdf
-RUN_DEPENDS=	${PYNUMPY}
+RUN_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}cftime>=0:devel/py-cftime@${PY_FLAVOR}
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils cython cython_run
+USES=		python
+USE_GITHUB=	yes
+GH_ACCOUNT=	Unidata
+GH_PROJECT=	netcdf4-python
+USE_PYTHON=	autoplist concurrent cython cython_run distutils
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-GH_ACCOUNT=	Unidata
-GH_PROJECT=	netcdf4-python
-USE_GITHUB=	yes
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${ECHO_CMD} -n > ${WRKSRC}/setup.cfg
@@ -44,7 +41,6 @@ post-patch:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/netCDF4/_netCDF4*.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/netcdftime/_netcdftime*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

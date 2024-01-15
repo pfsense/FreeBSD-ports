@@ -1,6 +1,3 @@
-# Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	commons-digester
 PORTVERSION=	2.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XML-to-Java-object mapping utility package
+WWW=		https://commons.apache.org/proper/commons-digester/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

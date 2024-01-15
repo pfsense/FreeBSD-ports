@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	connection_pool
-PORTVERSION=	2.2.2
+PORTVERSION=	2.4.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Generic connection pool for Ruby
+WWW=		https://github.com/mperham/connection_pool
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Martin Dieringer <Martin.Dieringer@t-online.de>
-# $FreeBSD$
-
 PORTNAME=	tta
 PORTVERSION=	3.4.1
 CATEGORIES=	audio
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}enc-${PORTVERSION}-src
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	The True Audio Encoder, lossless (de)compressor
+WWW=		http://www.true-audio.com/
 
 LICENSE=	GPLv2
 

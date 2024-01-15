@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	read_bbrlog
-PORTVERSION=	0.1.1
+PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Decode BBR log dumps generated with tcplog_dumper
+WWW=		https://github.com/Netflix/read_bbrlog
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,11 +22,12 @@ PLIST_FILES=	bin/read_bbrlog \
 
 CFLAGS+=	-I${PREFIX}/include
 LDFLAGS+=	-L${PREFIX}/lib
+MAKE_ENV+=	WITHOUT_PIE=true
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300076
-IGNORE=	builds only on FreeBSD 13-head with minimum revision 356414
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400097
+IGNORE=	builds only on FreeBSD head with minimum version 1400097
 .endif
 
 do-install:

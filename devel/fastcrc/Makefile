@@ -1,6 +1,3 @@
-# Created by: G. Adam Stanislav <adam@whizkidtech.net>
-# $FreeBSD$
-
 PORTNAME=	fastcrc
 PORTVERSION=	1.0
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.whizkidtech.redprince.net/fports/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast CRC routines
+WWW=		http://www.whizkidtech.redprince.net/fports/
 
 BUILD_DEPENDS=	nasm:devel/nasm
 

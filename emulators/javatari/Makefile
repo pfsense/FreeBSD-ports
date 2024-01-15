@@ -1,6 +1,3 @@
-# Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	javatari
 PORTVERSION=	4.1
 PORTREVISION=	1
@@ -12,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Multiplayer Atari 2600 emulator written in pure Java
+WWW=		https://javatari.org
 
 LICENSE=	AGPLv3
 

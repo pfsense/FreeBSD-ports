@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Lvalue
 PORTVERSION=	0.21
 PORTREVISION=	3
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Add lvalue getters and setters to existing objects
+WWW=		https://metacpan.org/release/Lvalue
 
 USES=		perl5
 USE_PERL5=	configure

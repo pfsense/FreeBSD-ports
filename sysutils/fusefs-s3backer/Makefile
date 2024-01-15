@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	s3backer
 DISTVERSION=	1.5.4
 CATEGORIES=	sysutils
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	bsdports@staktrace.com
 COMMENT=	FUSE filesystem that uses Amazon S3 as a backing store
+WWW=		https://github.com/archiecobbs/s3backer
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -4,7 +4,7 @@
  * swapstate_check.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,9 +22,8 @@
 require_once('config.inc');
 require_once('util.inc');
 require_once('squid.inc');
-global $config;
 
-$settings = $config['installedpackages']['squidcache']['config'][0];
+$settings = config_get_path('installedpackages/squidcache/config/0', []);
 // Only check the cache if Squid is actually caching.
 // If there is no cache then quietly do nothing.
 // If cache dir is located outside of /var/squid hierarchy, log some instructions.

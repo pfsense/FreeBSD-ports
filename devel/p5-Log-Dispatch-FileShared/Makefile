@@ -1,6 +1,3 @@
-# Created by: Craig Manley
-# $FreeBSD$
-
 PORTNAME=	Log-Dispatch-FileShared
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Log::Dispatch output class for logging to shared files
+WWW=		https://metacpan.org/release/Log-Dispatch-FileShared
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Log-Dispatch>=0:devel/p5-Log-Dispatch \

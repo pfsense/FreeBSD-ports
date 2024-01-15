@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Heap-Simple-XS
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	XS implementation of the Heap::Simple interface
+WWW=		https://metacpan.org/release/Heap-Simple-XS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	dbf
 PORTVERSION=	0.9.0
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DISTFILES=	${PORTNAME}-core-${PORTVERSION}.src.zip \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Show and convert the content of dBASE III, IV, and 5.0 files
+WWW=		http://dbf.berlios.de/
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
@@ -22,6 +20,8 @@ USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_prog_DOC_TO_MAN=""
 USE_LDCONFIG=	yes
+
+CONFLICTS_INSTALL=	rubygem-dbf
 
 .include <bsd.port.options.mk>
 

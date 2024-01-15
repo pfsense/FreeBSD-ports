@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	symmetrica
 DISTVERSION=	3.0.1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library with a collection of routines for combinatorial mathematics
+WWW=		https://gitlab.com/sagemath/symmetrica
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		autoreconf gmake libtool
 USE_GITLAB=	yes
 GL_ACCOUNT=	sagemath
-GL_COMMIT=	e29c85915f368d6fb2f89d703b6695ff29ab9eae
+GL_TAGNAME=	e29c85915f368d6fb2f89d703b6695ff29ab9eae
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

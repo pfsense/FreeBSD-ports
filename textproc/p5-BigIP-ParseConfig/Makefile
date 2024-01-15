@@ -1,6 +1,3 @@
-# Created by: Sergey A. Osokin <osa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	BigIP-ParseConfig
 PORTVERSION=	1.1.9
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	F5 BigIP configuration parser
+WWW=		https://metacpan.org/release/BigIP-ParseConfig
 
 LICENSE=	GPLv2
 

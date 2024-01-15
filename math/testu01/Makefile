@@ -1,6 +1,3 @@
-# Created by: bf <bf2006a@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	TestU01
 PORTVERSION=	1.2.3
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Utilities for statistical testing of uniform random number generators
+WWW=		http://simul.iro.umontreal.ca/testu01/tu01.html
 
 LICENSE=	TestU01
 LICENSE_NAME=	TestU01 license
@@ -27,7 +25,7 @@ MAKE_ARGS=	docdir="${DOCSDIR}" exdir="${EXAMPLESDIR}"
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
-CONFLICTS=	emboss-[0-9]*
+CONFLICTS=	emboss
 
 CFLAGS+=	-fPIC
 

@@ -1,12 +1,10 @@
-# Created by: Ditesh Shashikant Gathani <ditesh@gathani.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt_DiffieHellman
 PORTVERSION=	0.2.6
 CATEGORIES=	security www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class implementing Diffie-Hellman Key Exchange protocol for PHP5
+WWW=		https://pear.php.net/package/Crypt_DiffieHellman
 
 USES=		pear php
 USE_PHP=	bcmath mbstring gmp

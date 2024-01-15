@@ -1,14 +1,12 @@
-# Created by: pjm <pierrejacqes.mimifir@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	bristol
 PORTVERSION=	0.60.10
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.60
 
 MAINTAINER=	pierrejacques.mimifir@gmail.com
 COMMENT=	Vintage synthesizers emulation for electric pianos and organs
+WWW=		https://bristol.sourceforge.net/
 
 LICENSE=	GPLv2
 

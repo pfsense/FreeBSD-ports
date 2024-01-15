@@ -1,13 +1,11 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	twms
 PORTVERSION=	0.06y
 PORTREVISION=	1
 CATEGORIES=	www astro
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny WMS server
+WWW=		https://github.com/Komzpa/twms
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyproj>0:graphics/py-pyproj@${PY_FLAVOR} \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Komzpa
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils py3kplist optsuffix
 NO_ARCH=	yes
 

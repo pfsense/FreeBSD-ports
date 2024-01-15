@@ -1,12 +1,10 @@
-# Created by: Dennis Herrmann <adox@mcx2.org>
-# $FreeBSD$
-
 PORTNAME=	cowpatty
 PORTVERSION=	4.8
 CATEGORIES=	net-mgmt security
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Brute-force dictionary attack against WPA-PSK
+WWW=		https://www.willhackforsushi.com/?page_id=50
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

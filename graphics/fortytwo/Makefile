@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	fortytwo
 PORTVERSION=	0.2.0
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	graphics gnustep
 MASTER_SITES=	SF/${PORTNAME}/FT%20%2842%29/${PORTVERSION}
 DISTFILES=	FT-${PORTVERSION}-src.tgz \
@@ -10,6 +8,7 @@ DISTFILES=	FT-${PORTVERSION}-src.tgz \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graph management system for GNUstep
+WWW=		https://FortyTwo.sourceforge.net/index.html
 
 LICENSE=	LGPL21
 

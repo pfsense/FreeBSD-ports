@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	harp
 PORTVERSION=	0.6.0
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	heckendorfc@gmail.com
 COMMENT=	Minimalist audio player
+WWW=		https://github.com/heckendorfc/harp
 
 LICENSE=	GPLv3
 

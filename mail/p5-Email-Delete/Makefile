@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Email-Delete
 PORTVERSION=	2.002
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Delete Messages from Folders
+WWW=		https://metacpan.org/release/Email-Delete
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

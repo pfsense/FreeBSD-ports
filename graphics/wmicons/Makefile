@@ -1,6 +1,3 @@
-# Created by: KIRIYAMA Kazuhiko
-# $FreeBSD$
-
 PORTNAME=	wmicons
 PORTVERSION=	1.0
 PORTREVISION=	2

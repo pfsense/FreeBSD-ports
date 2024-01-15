@@ -1,14 +1,12 @@
-# Created by: Anton Karpov <toxa@toxahost.ru>
-# $FreeBSD$
-
 PORTNAME=	graveman
 DISTVERSION=	0.3.12-5
-PORTREVISION=	11
+PORTREVISION=	16
 CATEGORIES=	sysutils
 MASTER_SITES=	http://graveman.tuxfamily.org/sources/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Another GTK2 frontend for cdrecord, mkisofs, readcd, and sox
+WWW=		https://www.nongnu.org/graveman/
 
 LIB_DEPENDS=	libmng.so:graphics/libmng
 BUILD_DEPENDS=	cdrecord:sysutils/cdrtools

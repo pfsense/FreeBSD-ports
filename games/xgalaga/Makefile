@@ -1,6 +1,3 @@
-# Created by: Satoshi Asami <asami@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xgalaga
 PORTVERSION=	2.1.1.0
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	TsurutaniNaoki@gmail.com
 COMMENT=	Clone of the classic game Galaga for X11
+WWW=		http://rumsey.org/xgal.html
 
 LICENSE=	GPLv2
 

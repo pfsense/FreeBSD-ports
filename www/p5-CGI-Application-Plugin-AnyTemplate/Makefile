@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	CGI-Application-Plugin-AnyTemplate
 PORTVERSION=	0.18
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Use any templating system in CGI::Application
+WWW=		https://metacpan.org/release/CGI-Application-Plugin-AnyTemplate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

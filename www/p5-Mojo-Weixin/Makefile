@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Mojo-Weixin
 PORTVERSION=	1.4.6
 CATEGORIES=	www perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Weixin Client Framework base on Mojolicious
+WWW=		https://metacpan.org/release/Mojo-Weixin
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooX-Locale-Passthrough
 PORTVERSION=	0.001
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	espen@tagestad.no
 COMMENT=	Provide API used in translator modules without translating
+WWW=		https://metacpan.org/release/MooX-Locale-Passthrough
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,13 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cool-retro-term
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Terminal emulator which mimics old cathode displays
+WWW=		https://github.com/Swordfish90/cool-retro-term
 
 LICENSE=	GPLv3
 
@@ -19,9 +17,9 @@ GH_SUBDIR=	${GH_PROJECT}
 
 USES=		compiler:c++11-lang gl gmake qmake qt:5
 USE_GL=		gl
-USE_QT=		qmake_build buildtools_build core declarative gui \
-		network sql widgets graphicaleffects_run \
-		quickcontrols_run sql-sqlite3_run
+USE_QT=		qmake:build buildtools:build core declarative gui \
+		network sql widgets graphicaleffects:run \
+		quickcontrols:run sql-sqlite3:run
 
 post-patch:
 	@${REINPLACE_CMD} -e '/DEFINES +=/s,^macx:,,' \

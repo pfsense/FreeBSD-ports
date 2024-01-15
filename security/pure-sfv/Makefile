@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	pure-sfv
 PORTVERSION=	0.3
 CATEGORIES=	security
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}_src
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Utility to test and create .sfv files
+WWW=		https://pure-sfv.sourceforge.net/
 
 LICENSE=	GPLv2
 

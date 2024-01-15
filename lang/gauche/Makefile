@@ -1,14 +1,12 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	gauche
-PORTVERSION=	0.9.10
+PORTVERSION=	0.9.12
 CATEGORIES=	lang scheme
-MASTER_SITES=	https://github.com/shirok/Gauche/releases/download/release0_9_10/
+MASTER_SITES=	https://github.com/shirok/Gauche/releases/download/release${PORTVERSION:S/./_/g}/
 DISTNAME=	Gauche-${PORTVERSION}
 
 MAINTAINER=	lassi+freebsd@lassi.io
 COMMENT=	Scheme script interpreter with multibyte character handling
+WWW=		https://practical-scheme.net/gauche/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,12 +15,12 @@ BROKEN_mips=	Fails to build: redefinition of GC_register_dynamic_libraries
 BROKEN_mips64=	Fails to build: redefinition of GC_register_dynamic_libraries
 BROKEN_riscv64=	Fails to build: ./include/private/gcconfig.h:709:5: The collector has not been ported to this machine/OS combination
 
-USES=		compiler:c11 gmake iconv makeinfo tar:tgz
+USES=		compiler:c11 cpe gmake iconv makeinfo tar:tgz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-local=${LOCALBASE} ${ICONV_CONFIGURE_BASE:S/lib//}
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
-ABI_VERSION=	0.97
+ABI_VERSION=	0.98
 
 PLIST_SUB=	ABI_VERSION="${ABI_VERSION}" \
 		VERSION="${PORTVERSION}" \
@@ -74,9 +72,6 @@ CONFIGURE_ARGS+=	--with-tls=none
 .endif
 
 post-patch:
-# required for sparc64, no-op elsewhere
-	@${REINPLACE_CMD} -e \
-		'/^VPATH = /s,$$,/src,' ${WRKSRC}/gc/Makefile.in
 # unbreak "make test" by using the same workaround as for OSX (darwin),
 # apparently because we both use clang (XXX: what about gcc?)
 	@${REINPLACE_CMD} -e \

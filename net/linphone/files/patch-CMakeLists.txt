@@ -1,10 +1,19 @@
---- CMakeLists.txt.orig	2017-07-21 13:14:18 UTC
+--- CMakeLists.txt.orig	2023-06-16 13:29:33 UTC
 +++ CMakeLists.txt
-@@ -342,7 +342,6 @@ else ()
- endif ()
+@@ -20,6 +20,7 @@ cmake_minimum_required(VERSION 3.1)
+ #
+ ################################################################################
+ cmake_minimum_required(VERSION 3.1)
++project(linphoneqt)
  
- if (NOT WIN32)
--  add_dependencies(update_translations check_qml)
- endif ()
- set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "${EXECUTABLE_NAME}")
- set_target_properties(${TESTER_TARGET_NAME} PROPERTIES OUTPUT_NAME "${TESTER_EXECUTABLE_NAME}")
+ find_package(bctoolbox CONFIG)
+ set(FULL_VERSION )
+@@ -556,7 +557,7 @@ else()
+ 		set(MSPLUGINS_DIR "Frameworks/mediastreamer2.framework/Versions/A/Libraries")
+ 	endif()
+ else()
+-	set(MSPLUGINS_DIR "plugins/mediastreamer")
++	set(MSPLUGINS_DIR "lib/mediastreamer/plugins")
+ endif()
+ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.cmake" "${CMAKE_CURRENT_BINARY_DIR}/config.h")
+ # ------------------------------------------------------------------------------

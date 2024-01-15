@@ -1,6 +1,3 @@
-# Created by: Stefan Walter <sw@gegenunendlich.de>
-# $FreeBSD$
-
 PORTNAME=	cal3d
 PORTVERSION=	0.11.1	# see note below
 CATEGORIES=	graphics devel
@@ -10,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Skeletal based 3D character animation library written in C++
+WWW=		http://gna.org/projects/cal3d/
 
 # Cal3D ceased development in July 2006
 # The last version was labelled 0.11R2 (despite version 0.11 being released)

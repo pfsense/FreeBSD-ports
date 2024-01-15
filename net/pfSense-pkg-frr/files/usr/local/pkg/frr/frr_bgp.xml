@@ -8,7 +8,7 @@
  * frr_bgp.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,6 +70,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -213,9 +217,9 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>RIB State Time</fielddescr>
+			<fielddescr>RIB Stale Time</fielddescr>
 			<fieldname>grribstaletime</fieldname>
-			<description>RIB State Time (1-3600, s)</description>
+			<description>RIB Stale Time (1-3600, s)</description>
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>
@@ -301,6 +305,15 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Redistribute RIP</fielddescr>
+			<fieldname>redistributerip</fieldname>
+			<description>Redistribute RIP routes to BGP Neighbors</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 		</field>
 		<field>
 			<fielddescr>Networks to Distribute</fielddescr>

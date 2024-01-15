@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Authen-TypeKey
 PORTVERSION=	0.05
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	TypeKey authentication verification
+WWW=		https://metacpan.org/release/Authen-TypeKey
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,9 +18,10 @@ RUN_DEPENDS=	p5-Class-ErrorHandler>=0:devel/p5-Class-ErrorHandler \
 		p5-libwww>=0:www/p5-libwww \
 		p5-Module-Install>0:devel/p5-Module-Install
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 post-patch:
 	# Really old M::I code

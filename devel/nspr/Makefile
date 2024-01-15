@@ -1,13 +1,11 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nspr
-DISTVERSION=	4.29
+DISTVERSION=	4.35
 CATEGORIES=	devel
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/v${PORTVERSION}/src
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Platform-neutral API for system level and libc like functions
+WWW=		https://developer.mozilla.org/docs/Mozilla/Projects/NSPR
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE

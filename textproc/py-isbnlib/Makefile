@@ -1,20 +1,20 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	isbnlib
-PORTVERSION=	3.10.4
+PORTVERSION=	3.10.14
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Extract, clean, transform, hyphenate and metadata for ISBNs
+WWW=		https://github.com/xlcnd/isbnlib
 
 LICENSE=	LGPL3
-LICENSE_FILE=	${WRKSRC}/LICENSE-LGPL-3.0-only.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE-LGPL-3.0.txt
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

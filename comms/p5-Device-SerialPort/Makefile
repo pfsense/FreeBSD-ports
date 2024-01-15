@@ -1,6 +1,3 @@
-# Created by: Nick Sayer <nsayer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Device-SerialPort
 PORTVERSION=	1.040000
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/0+$//}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module for simple serial port control
+WWW=		https://metacpan.org/release/Device-SerialPort
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

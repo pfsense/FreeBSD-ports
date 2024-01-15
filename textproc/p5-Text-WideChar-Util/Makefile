@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-WideChar-Util
-PORTVERSION=	0.170
+PORTVERSION=	0.172
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Routines for text containing wide characters
+WWW=		https://metacpan.org/release/Text-WideChar-Util
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

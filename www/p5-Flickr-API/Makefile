@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Flickr-API
 PORTVERSION=	1.28
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the Flickr API
+WWW=		https://metacpan.org/release/Flickr-API
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

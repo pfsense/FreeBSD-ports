@@ -1,6 +1,3 @@
-# Created by: Jan-Peter Koopmann <j.koopmann@seceidos.de>
-# $FreeBSD$
-
 PORTNAME=	Convert-BinHex
 PORTVERSION=	1.125
 CATEGORIES=	converters perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to extract data from Macintosh BinHex files
+WWW=		https://metacpan.org/release/Convert-BinHex
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

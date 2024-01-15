@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	httpclient
 DISTVERSION=	4.5.12
 CATEGORIES=	www java
@@ -9,6 +6,7 @@ DISTNAME=	httpcomponents-client-${DISTVERSION}-bin
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java components implementing an advanced HTTP client
+WWW=		https://hc.apache.org/httpcomponents-client-4.5.x/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

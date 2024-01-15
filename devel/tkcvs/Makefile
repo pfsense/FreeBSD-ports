@@ -1,6 +1,3 @@
-# Created by: Andreas Kohout <shanee@augusta.de>
-# $FreeBSD$
-
 PORTNAME=	tkcvs
 PORTVERSION=	8.2.3
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ MASTER_SITES=	SF \
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Tcl/Tk frontends to CVS and Subversion
+WWW=		http://www.twobarleycorns.net/tkcvs.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

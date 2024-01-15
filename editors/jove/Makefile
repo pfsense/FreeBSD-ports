@@ -1,6 +1,3 @@
-# Created by: jkh
-# $FreeBSD$
-
 PORTNAME=	jove
 PORTVERSION=	4.16
 PORTREVISION=	2
@@ -16,15 +13,21 @@ LICENSE_NAME=	JOVE License
 LICENSE_FILE=	${WRKSRC}/README
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+DEPRECATED=	No upstream update in last 23 years
+EXPIRATION_DATE=	2024-01-16
+
 USES=		ncurses
+
 MAKE_ARGS=	LIBS="${LDFLAGS} -lncurses"
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	EXTRADOCS
-EXTRADOCS_DESC=	Build and install cmds.doc
-EXTRADOCS_USES=	groff
 OPTIONS_DEFAULT=
 OPTIONS_SUB=	yes
+
+EXTRADOCS_DESC=	Build and install cmds.doc
+EXTRADOCS_USES=	groff
 
 post-patch:
 # Fix collisions with getline(3)

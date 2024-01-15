@@ -1,6 +1,3 @@
-# Created by: mi@aldan.algebra.com
-# $FreeBSD$
-
 PORTNAME=	monaco
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Collection of 5 "fixed" fonts for X11 from www.brama.com
+WWW=		http://www.brama.com/compute/unix.html
 
 BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
 		mkfontscale:x11-fonts/mkfontscale

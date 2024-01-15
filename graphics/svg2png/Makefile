@@ -1,7 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/graphics/svg2png/Makefile,v 1.3 2005/08/06 02:21:48 marcus Exp $
-
 PORTNAME=	svg2png
 PORTVERSION=	0.1.3
 PORTREVISION=	6
@@ -10,6 +6,7 @@ MASTER_SITES=	http://cairographics.org/snapshots/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Render an SVG image to a PNG image (using cairo)
+WWW=		https://cairographics.org
 
 LIB_DEPENDS=	libsvg-cairo.so:graphics/libsvg-cairo
 

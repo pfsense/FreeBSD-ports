@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	App-Nopaste
 PORTVERSION=	1.013
 CATEGORIES=	www perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy access to any pastebin
+WWW=		https://metacpan.org/release/App-Nopaste
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

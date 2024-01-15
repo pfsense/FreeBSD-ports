@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libprojectM
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.8
+DISTVERSION=	3.1.12
+PORTREVISION=	9
 CATEGORIES=	graphics audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Awesome music visualiser
+WWW=		https://github.com/projectM-visualizer/projectm
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -35,7 +35,7 @@ CONFIGURE_SHELL=	${PREFIX}/bin/bash # https://github.com/projectM-visualizer/pro
 USE_LDCONFIG=	yes
 
 USE_CXXSTD=	c++98
-CXXFLAGS+=	-DDATADIR_PATH='\"${LOCALBASE}/share/projectM\"'
+CXXFLAGS+=	-DDATADIR_PATH='\"${LOCALBASE}/share/projectM\"' -I${LOCALBASE}/lib/qt5
 LDFLAGS+=	-L${LOCALBASE}/lib/qt5 # https://github.com/projectM-visualizer/projectm/issues/320
 
 BINARY_ALIAS=	make=${GMAKE}
@@ -46,13 +46,13 @@ OPTIONS_SUB=			yes
 
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_USES=		qt:5
-PULSEAUDIO_USE=			qt=core,gui,opengl,widgets,xml,buildtools_build,qmake_build #qt=declarative,network,script,sensors,serialport,sql,xmlpatterns
+PULSEAUDIO_USE=			qt=core,gui,opengl,widgets,xml,buildtools:build,qmake:build,linguisttools:build #qt=declarative,network,script,sensors,serialport,sql,xmlpatterns
 PULSEAUDIO_CONFIGURE_ENABLE=	pulseaudio
 PULSEAUDIO_CONFIGURE_ON=	--enable-qt
 
 JACK_LIB_DEPENDS=		libjack.so:audio/jack
 JACK_USES=			qt:5
-JACK_USE=			qt=core,gui,opengl,widgets,xml,buildtools_build,qmake_build #qt=declarative,network,script,sensors,serialport,sql,xmlpatterns
+JACK_USE=			qt=core,gui,opengl,widgets,xml,buildtools:build,qmake:build,linguisttools:build #qt=declarative,network,script,sensors,serialport,sql,xmlpatterns
 JACK_CONFIGURE_ENABLE=		jack
 JACK_CONFIGURE_ON=		--enable-qt
 
@@ -64,6 +64,12 @@ CONFIGURE_ARGS+=	--disable-qt
 
 .if ${PORT_OPTIONS:MPULSEAUDIO} || ${PORT_OPTIONS:MJACK}
 PLIST_FILES+=	share/icons/hicolor/scalable/apps/projectM.svg
+BINARY_ALIAS+=	qmake=${QMAKE} \
+		moc=${MOC} \
+		uic=${UIC} \
+		rcc=${RCC} \
+		lrelease=${LRELEASE} \
+		lupdate=${LUPDATE}
 .endif
 
 pre-configure:

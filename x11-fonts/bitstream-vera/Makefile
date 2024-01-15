@@ -1,6 +1,3 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bitstream-vera
 PORTVERSION=	1.10
 PORTREVISION=	8
@@ -11,6 +8,7 @@ DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Bitstream Vera TrueType font collection
+WWW=		https://www.gnome.org/fonts/
 
 LICENSE=	BITSTREAM_VERA
 LICENSE_NAME=	Bitstream Vera Fonts Copyright

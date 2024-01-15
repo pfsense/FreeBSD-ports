@@ -1,13 +1,12 @@
-# $FreeBSD$
-
-PORTNAME=		jail_exporter
+PORTNAME=	jail_exporter
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.13.0
-PORTREVISION=	1
-CATEGORIES=		sysutils
+DISTVERSION=	0.15.1
+PORTREVISION=	21
+CATEGORIES=	sysutils
 
 MAINTAINER=	dor.bsd@xm0.uk
 COMMENT=	Prometheus exporter for FreeBSD jail metrics
+WWW=		https://github.com/phyber/jail_exporter
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,9 +17,6 @@ GH_ACCOUNT=	phyber
 USE_RC_SUBR=	jail_exporter
 
 OPTIONS_DEFINE=	DOCS
-
-# This Makefile contains the CARGO_CRATES section.
-.include "Makefile.crates"
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.8 \

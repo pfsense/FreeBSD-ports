@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	timely
 DISTVERSION=	g20190412
 PORTREVISION=	1
@@ -8,6 +6,7 @@ PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Utility header for time-based LV2 plugins
+WWW=		https://github.com/OpenMusicKontrollers/timely.lv2
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/COPYING

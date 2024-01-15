@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libotr
 PORTVERSION=	4.1.1
 CATEGORIES=	security net-im net
@@ -10,13 +8,14 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Portable OTR Messaging Library and toolkit
+WWW=		https://otr.cypherpunks.ca/
 
 LICENSE=	LGPL21
 
 LIB_DEPENDS=	libgpg-error.so:security/libgpg-error \
 		libgcrypt.so:security/libgcrypt
 
-CONFLICTS=	libotr3-*
+CONFLICTS=	libotr3
 
 GNU_CONFIGURE=	yes
 USES=		libtool pathfix cpe

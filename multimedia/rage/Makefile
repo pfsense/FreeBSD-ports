@@ -1,13 +1,12 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rage
-PORTVERSION=	0.3.1
+PORTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	multimedia enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/apps/${PORTNAME}/
 
 MAINTAINER=	enlightenment@FreeBSD.org
 COMMENT=	EFL video and audio player with some extra bells and whistles
+WWW=		https://www.enlightenment.org/
 
 LICENSE=	BSD2CLAUSE
 

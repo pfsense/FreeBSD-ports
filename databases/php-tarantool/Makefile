@@ -1,6 +1,3 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tarantool
 PORTVERSION=	0.3.3
 CATEGORIES=	databases
@@ -8,6 +5,7 @@ PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PECL PHP driver for Tarantool
+WWW=		https://github.com/tarantool/tarantool-php
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

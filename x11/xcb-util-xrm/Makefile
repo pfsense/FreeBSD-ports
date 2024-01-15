@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcb-util-xrm
 PORTVERSION=	1.3
 CATEGORIES=	x11 devel
@@ -7,6 +5,7 @@ MASTER_SITES=	https://github.com/Airblader/xcb-util-xrm/releases/download/v${POR
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	XCB utility functions for the X resource manager
+WWW=		https://github.com/Airblader/xcb-util-xrm
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

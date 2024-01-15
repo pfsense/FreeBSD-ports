@@ -1,6 +1,3 @@
-# Created by: Roman Shterenzon <roman@xpert.com>
-# $FreeBSD$
-
 PORTNAME=	netsed
 PORTVERSION=	1.3
 CATEGORIES=	net security

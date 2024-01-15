@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		sourcehanserif
 PORTVERSION=		1.001
 PORTREVISION=		1
@@ -12,6 +10,7 @@ PKGNAMESUFFIX=		-sc-otf
 
 MAINTAINER=		hyun@caffeinated.codes
 COMMENT=		Simplified Chinese font by Adobe designed for user interfaces
+WWW=		https://github.com/adobe-fonts/source-han-serif
 
 LICENSE=		OFL11
 LICENSE_FILE=		${WRKSRC}/LICENSE.txt

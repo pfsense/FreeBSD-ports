@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Table-Org
-PORTVERSION=	0.02
+PORTVERSION=	0.031
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Generate Org tables
+WWW=		https://metacpan.org/release/Text-Table-Org
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

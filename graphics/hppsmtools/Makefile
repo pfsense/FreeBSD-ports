@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
-
 PORTNAME=	hppsmtools
 PORTVERSION=	1.1
 PORTEPOCH=	1
@@ -8,7 +5,8 @@ CATEGORIES=	graphics
 MASTER_SITES=	http://unimut.fsk.uni-heidelberg.de/demi/photosmart/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Tool for HP PhotoSmart C5340A & Konica Q-EZ digital cameras
+COMMENT=	Tool for HP PhotoSmart C5340A and Konica Q-EZ digital cameras
+WWW=		http://unimut.fsk.uni-heidelberg.de/demi/photosmart/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

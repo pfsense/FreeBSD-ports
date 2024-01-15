@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	WeakRef
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	API to the Perl weak references
+WWW=		https://metacpan.org/release/WeakRef
 
 USES=		perl5
 USE_PERL5=	configure

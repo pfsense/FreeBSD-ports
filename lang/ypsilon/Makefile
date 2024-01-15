@@ -1,13 +1,11 @@
-# Created by: Vitaly Magerya <vmagerya@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	ypsilon
 PORTVERSION=	0.9.6.3
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	lang scheme
 
 MAINTAINER=	vmagerya@gmail.com
 COMMENT=	Scheme implementation for real-time applications
+WWW=		http://www.littlewingpinball.net/mediawiki/index.php/Ypsilon
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
@@ -16,7 +14,7 @@ USE_GITHUB=	yes
 GH_TUPLE=	fujita-y:ypsilon:0.9.6-update3
 
 USES=		gmake
-USE_GCC=	yes
+USE_BINUTILS=	yes
 TEST_TARGET=	check  # XXX: tests fail
 
 MAKE_ARGS=	DATADIR="${DATADIR}"

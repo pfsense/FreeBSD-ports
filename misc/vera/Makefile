@@ -1,6 +1,3 @@
-# Created by: Dima Sivachenko	<dima@chg.ru>
-# $FreeBSD$
-
 PORTNAME=	vera
 PORTVERSION=	1.23
 CATEGORIES=	misc

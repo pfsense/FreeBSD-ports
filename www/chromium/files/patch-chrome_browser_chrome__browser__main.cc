@@ -1,54 +1,78 @@
---- chrome/browser/chrome_browser_main.cc.orig	2021-01-18 21:28:49 UTC
+--- chrome/browser/chrome_browser_main.cc.orig	2023-12-10 06:10:27 UTC
 +++ chrome/browser/chrome_browser_main.cc
-@@ -247,7 +247,7 @@
- #endif  // defined(OS_WIN)
+@@ -246,11 +246,11 @@
  
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    (defined(OS_LINUX) && !defined(OS_CHROMEOS))
-+    (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+ #include "chrome/browser/first_run/upgrade_util_linux.h"
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ #include "components/crash/core/app/crashpad.h"
+ #endif
+ 
+@@ -284,14 +284,14 @@
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  #include "chrome/browser/metrics/desktop_session_duration/desktop_session_duration_tracker.h"
  #include "chrome/browser/metrics/desktop_session_duration/touch_mode_stats_tracker.h"
  #include "chrome/browser/profiles/profile_activity_metrics_recorder.h"
-@@ -926,7 +926,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
-       AddFirstRunNewTabs(browser_creator_.get(), master_prefs_->new_tabs);
+ #include "ui/base/pointer/touch_ui_controller.h"
+ #endif
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+ #include "chrome/browser/headless/headless_mode_metrics.h"  // nogncheck
+ #include "chrome/browser/headless/headless_mode_util.h"     // nogncheck
+ #include "components/headless/select_file_dialog/headless_select_file_dialog.h"
+@@ -1041,7 +1041,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+       browser_creator_->AddFirstRunTabs(master_prefs_->new_tabs);
      }
  
--#if defined(OS_MAC) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_MAC) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
      // Create directory for user-level Native Messaging manifest files. This
      // makes it less likely that the directory will be created by third-party
      // software with incorrect owner or permission. See crbug.com/725513 .
-@@ -935,7 +935,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
-                                  &user_native_messaging_dir));
-     if (!base::PathExists(user_native_messaging_dir))
-       base::CreateDirectory(user_native_messaging_dir);
--#endif  // defined(OS_MAC) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_MAC) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   }
- #endif  // !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
- 
-@@ -957,7 +957,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
- #endif  // defined(OS_MAC)
- 
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    (defined(OS_LINUX) && !defined(OS_CHROMEOS))
-+    (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+@@ -1097,7 +1097,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
    metrics::DesktopSessionDurationTracker::Initialize();
    ProfileActivityMetricsRecorder::Initialize();
    TouchModeStatsTracker::Initialize(
-@@ -1114,6 +1114,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
-       base::TimeDelta::FromMinutes(1));
+@@ -1333,7 +1333,7 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* 
+       *UrlLanguageHistogramFactory::GetForBrowserContext(profile));
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
  
- #if !defined(OS_ANDROID)
-+#if !defined(OS_BSD)
-   if (base::FeatureList::IsEnabled(features::kWebUsb)) {
-     web_usb_detector_.reset(new WebUsbDetector());
-     content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
-@@ -1121,6 +1122,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
-                    base::BindOnce(&WebUsbDetector::Initialize,
-                                   base::Unretained(web_usb_detector_.get())));
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+   if (headless::IsHeadlessMode()) {
+     headless::ReportHeadlessActionMetrics();
    }
-+#endif
-   if (base::FeatureList::IsEnabled(features::kTabMetricsLogging)) {
-     // Initialize the TabActivityWatcher to begin logging tab activity events.
-     resource_coordinator::TabActivityWatcher::GetInstance();
+@@ -1439,7 +1439,7 @@ int ChromeBrowserMainParts::PreMainMessageLoopRunImpl(
+   // In headless mode provide alternate SelectFileDialog factory overriding
+   // any platform specific SelectFileDialog implementation that may have been
+   // set.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+   if (headless::IsHeadlessMode()) {
+     headless::HeadlessSelectFileDialogFactory::SetUp();
+   }
+@@ -1971,7 +1971,7 @@ bool ChromeBrowserMainParts::ProcessSingletonNotificat
+ 
+   // Drop the request if headless mode is in effect or the request is from
+   // a headless Chrome process.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+   if (headless::IsHeadlessMode() ||
+       command_line.HasSwitch(switches::kHeadless)) {
+     return false;

@@ -1,14 +1,12 @@
-# Created by: Romain Tartiere <romain@blogreen.org>
-# $FreeBSD$
-
 PORTNAME?=	portshaker
-PORTVERSION=	1.0.18
+PORTVERSION=	1.0.19
 DISTVERSIONPREFIX=	v
-PORTREVISION?=	1
+PORTREVISION?=	3
 CATEGORIES?=	ports-mgmt
 
 MAINTAINER?=	romain@FreeBSD.org
 COMMENT?=	Maintain ports tree using multiple sources
+WWW=		https://github.com/smortex/portshaker
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,20 +17,18 @@ GH_ACCOUNT=	smortex
 GH_PROJECT=	portshaker
 
 .if ${PORTNAME} == "portshaker"
-OPTIONS_DEFINE=	RSYNC SVN GIT HG
-OPTIONS_DEFAULT=	RSYNC SVN
+OPTIONS_DEFINE=		GIT MERCURIAL RSYNC SUBVERSION
+OPTIONS_DEFAULT=	RSYNC SUBVERSION
 RSYNC_DESC=	rsync support
-GIT_DESC=	git support
-HG_DESC=	mercurial support
 RSYNC_RUN_DEPENDS=	rsync:net/rsync
 WITH_SUBVERSION_VER?=   114
 .if ${WITH_SUBVERSION_VER} == 114
-SVN_RUN_DEPENDS=	svn:devel/subversion
+SUBVERSION_RUN_DEPENDS=	svn:devel/subversion
 .elif ${WITH_SUBVERSION_VER} == LTS
-SVN_RUN_DEPENDS=	svn:devel/subversion-lts
+SUBVERSION_RUN_DEPENDS=	svn:devel/subversion-lts
 .endif
 GIT_RUN_DEPENDS=	git:devel/git
-HG_RUN_DEPENDS=		${PY_MERCURIAL}
+MERCURIAL_RUN_DEPENDS=	${PY_MERCURIAL}
 .else
 OPTIONS_DEFINE=	BSDSHARP ENLIGHTENMENT GECKO HASKELL MARCUSCOM TEXLIVE XORG
 OPTIONS_DEFAULT=	BSDSHARP

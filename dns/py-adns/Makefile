@@ -1,22 +1,20 @@
-# Created by: Hye-Shik Chang <perky@fallin.lv>
-# $FreeBSD$
-
 PORTNAME=	adns
 DISTVERSION=	1.4
 DISTVERSIONSUFFIX=	-py1
 CATEGORIES=	dns python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python module to resolve IPs to host names
+WWW=		https://github.com/trolldbois/python3-adns/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL
 
 LIB_DEPENDS=	libadns.so:dns/adns
 
-USES=		localbase python:3.4+
+USES=		localbase python
 USE_PYTHON=	autoplist distutils
 
 post-patch:

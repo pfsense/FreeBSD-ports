@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	materialdesign
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.5.95
+DISTVERSION=	7.2.96
 CATEGORIES=	x11-fonts
 PKGNAMESUFFIX=	-ttf
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Material Design Webfont
+WWW=		https://materialdesignicons.com/
 
-LICENSE=	OFL11
-LICENSE_FILE=	${WRKSRC}/license.md
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=	fonts
 

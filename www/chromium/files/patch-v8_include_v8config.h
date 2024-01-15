@@ -1,21 +1,37 @@
---- v8/include/v8config.h.orig	2020-11-13 06:42:28 UTC
+--- v8/include/v8config.h.orig	2023-04-05 11:05:06 UTC
 +++ v8/include/v8config.h
-@@ -276,7 +276,18 @@
- # define V8_HAS_ATTRIBUTE_WARN_UNUSED_RESULT \
-     (__has_attribute(warn_unused_result))
+@@ -184,6 +184,8 @@ path. Add it with -I<path> to the command line
+   && !defined(V8_TARGET_OS_FUCHSIA) \
+   && !defined(V8_TARGET_OS_IOS) \
+   && !defined(V8_TARGET_OS_LINUX) \
++  && !defined(V8_TARGET_OS_OPENBSD) \
++  && !defined(V8_TARGET_OS_FREEBSD) \
+   && !defined(V8_TARGET_OS_MACOS) \
+   && !defined(V8_TARGET_OS_WIN) \
+   && !defined(V8_TARGET_OS_CHROMEOS)
+@@ -196,6 +198,8 @@ path. Add it with -I<path> to the command line
+   || defined(V8_TARGET_OS_FUCHSIA) \
+   || defined(V8_TARGET_OS_IOS) \
+   || defined(V8_TARGET_OS_LINUX) \
++  || defined(V8_TARGET_OS_OPENBSD) \
++  || defined(V8_TARGET_OS_FREEBSD) \
+   || defined(V8_TARGET_OS_MACOS) \
+   || defined(V8_TARGET_OS_WIN) \
+   || defined(V8_TARGET_OS_CHROMEOS)
+@@ -217,6 +221,16 @@ path. Add it with -I<path> to the command line
  
-+// Work around Clang bug present in 9.0.1, at least.
-+//
-+// Clang stores alignment as a 32-bit unsigned integer, but V8 only uses
-+// V8_ASSUME_ALIGNED() for a 4GB (2^32) alignment
-+// (kPtrComprIsolateRootAlignment).  As such, the alignment overflows and
-+// becomes zero, triggering an internal Clang assertion that alignment must not
-+// be zero.
-+#if 0
- # define V8_HAS_BUILTIN_ASSUME_ALIGNED (__has_builtin(__builtin_assume_aligned))
-+#else
-+# define V8_HAS_BUILTIN_ASSUME_ALIGNED 0
+ #ifdef V8_OS_LINUX
+ # define V8_TARGET_OS_LINUX
 +#endif
- # define V8_HAS_BUILTIN_BSWAP16 (__has_builtin(__builtin_bswap16))
- # define V8_HAS_BUILTIN_BSWAP32 (__has_builtin(__builtin_bswap32))
- # define V8_HAS_BUILTIN_BSWAP64 (__has_builtin(__builtin_bswap64))
++
++#ifdef V8_OS_OPENBSD
++# define V8_TARGET_OS_OPENBSD
++# define V8_TARGET_OS_BSD
++#endif
++
++#ifdef V8_OS_FREEBSD
++# define V8_TARGET_OS_OPENBSD
++# define V8_TARGET_OS_BSD
+ #endif
+ 
+ #ifdef V8_OS_MACOS

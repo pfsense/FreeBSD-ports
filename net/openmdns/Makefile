@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	openmdns
 DISTVERSION=	0.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multicast DNS and Service Discovery daemon
+WWW=		http://www.haesbaert.org/openmdns/
 
 LICENSE=	ISCL
 

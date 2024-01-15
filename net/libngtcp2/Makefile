@@ -1,29 +1,23 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ngtcp2
-PORTVERSION=	0.1.0.g20201129
+PORTVERSION=	1.1.0
 CATEGORIES=	net
+MASTER_SITES=	https://github.com/ngtcp2/ngtcp2/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	lib
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Implementment of QUIC protocol
+COMMENT=	Implementation of QUIC protocol
+WWW=		https://nghttp2.org/ngtcp2/ \
+		https://github.com/ngtcp2/ngtcp2
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf compiler:c++17-lang libtool pathfix pkgconfig
+USES=		compiler:c++17-lang libtool pathfix pkgconfig ssl tar:xz
 
-CONFIGURE_ARGS=	--enable-lib-only
+CONFIGURE_ARGS=	--enable-lib-only --with-jemalloc
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
-
-GH_TAGNAME=	a50fcf6
-USE_GITHUB=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|0.1.0-DEV|${PORTVERSION}|' ${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

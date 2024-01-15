@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Modern
 PORTVERSION=	0.013
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Precision testing for modern perl
+WWW=		https://metacpan.org/release/Test-Modern
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

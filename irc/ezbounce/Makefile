@@ -1,14 +1,16 @@
-# Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ezbounce
 PORTVERSION=	1.99.15
-PORTREVISION=	20
+PORTREVISION=	25
 CATEGORIES=	irc
 MASTER_SITES=	https://BSDforge.com/projects/source/irc/ezbounce/
 
-MAINTAINER=	portmaster@BSDforge.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Highly configurable IRC Proxy
+WWW=		https://sourceforge.net/projects/ezbounce/
+
+BROKEN=		Unfetchable
+DEPRECATED=	Abandonware, last release in 2009 and dead upstream. Consider using irc/soju or irc/znc
+EXPIRATION_DATE=2024-02-29
 
 OPTIONS_DEFINE=	DOCS SSL COMPRESS
 OPTIONS_DEFAULT=SSL COMPRESS
@@ -21,8 +23,8 @@ COMPRESS_CONFIGURE_WITH=boost
 COMPRESS_DESC=		Chat log compression (requires boost)
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++0x gmake
-USE_GCC=	any
+USES=		compiler:c++0x cpe gmake
+USE_GCC=	yes
 
 # ezbounce 1.99.15 isn't compatible with C++11 and later, which some compilers
 # such as GCC 6 default to.

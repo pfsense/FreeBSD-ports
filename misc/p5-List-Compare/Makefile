@@ -1,6 +1,3 @@
-# Created by: Dmitry Morozovsky <marck@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	List-Compare
 PORTVERSION=	0.53
 CATEGORIES=	misc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	marck@FreeBSD.org
 COMMENT=	Perl extension for comparing lists
+WWW=		https://metacpan.org/release/List-Compare
 
 LICENSE=	ART10
 

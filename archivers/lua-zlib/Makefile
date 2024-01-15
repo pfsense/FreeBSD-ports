@@ -1,6 +1,3 @@
-# Created by: Sir l33tname <sirl33tname@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	zlib
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
 MAINTAINER=	sirl33tname@gmail.com
 COMMENT=	Simple streaming interface to zlib for the Lua Programming Language
+WWW=		https://github.com/brimworks/lua-zlib
 
 LICENSE=	MIT
 
@@ -18,6 +16,8 @@ GH_ACCOUNT=	brimworks
 GH_PROJECT=	lua-zlib
 
 USES=		lua:51,module
+
+CONFLICTS_INSTALL=	${LUA_PKGNAMEPREFIX}lzlib # lib/lua/5.1/zlib.so
 
 ALL_TARGET=	bsd
 MAKE_ENV+=	LUAPATH="${LOCALBASE}"

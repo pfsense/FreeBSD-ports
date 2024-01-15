@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-IMAP-Simple
 PORTVERSION=	1.2212
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for simple IMAP account handling
+WWW=		https://metacpan.org/release/Net-IMAP-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

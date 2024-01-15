@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	audio
 
@@ -9,5 +7,9 @@ GST_PLUGIN=	faac
 DIST=		bad
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
+
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS= libfaac.so:audio/faac
 
 .include "${MASTERDIR}/Makefile"

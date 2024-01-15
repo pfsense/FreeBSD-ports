@@ -1,15 +1,13 @@
-# Created by: proff
-# $FreeBSD$
-
 PORTNAME=	an
 PORTVERSION=	1.2
-PORTREVISION=	11
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast anagram generator
+WWW=		https://packages.debian.org/unstable/games/an
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

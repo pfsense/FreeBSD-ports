@@ -1,13 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wordwarvi
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.4
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Side-scrolling shoot'em up '80s style arcade game
+WWW=		https://smcameron.github.io/wordwarvi/
 
 LICENSE=	GPLv2+ CC-BY-2.0 CC-BY-SA-3.0
 LICENSE_COMB=	multi
@@ -18,11 +17,12 @@ GH_ACCOUNT=	smcameron
 
 USES=		gmake gnome pkgconfig
 USE_GNOME=	gtk20
+MAKE_ENV=	SOURCE_DATE_EPOCH=0 BUILD_CC=${CC} BINDIR=${PREFIX}/bin
 
 PORTDOCS=	AAA_HOW_TO_MAKE_NEW_LEVELS.txt AUTHORS README changelog.txt
 PORTDATA=	*
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man6/${PORTNAME}.6.gz
+		share/man/man6/${PORTNAME}.6.gz
 
 OPTIONS_DEFINE=	SOUND DOCS
 OPTIONS_DEFAULT=SOUND

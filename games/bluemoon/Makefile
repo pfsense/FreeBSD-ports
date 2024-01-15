@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	bluemoon
 PORTVERSION=	2.12
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.catb.org/~esr/bluemoon/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Blue Moon card solitaire
+WWW=		http://www.catb.org/~esr/bluemoon/
 
 LICENSE=	BSD3CLAUSE
 

@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <rpsfa@rit.edu>
-# $FreeBSD$
-
 PORTNAME=	nagtail
 PORTVERSION=	0.0.31
 CATEGORIES=	net-mgmt
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.vanheusden.com/nagtail/ \
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Tail for the nagios status.dat file
+WWW=		http://www.vanheusden.com/nagtail/
 
 USES=		gmake tar:tgz
 

@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	Text-Reform
 PORTVERSION=	1.20
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Manual text wrapping and reformatting
+WWW=		https://metacpan.org/release/Text-Reform
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

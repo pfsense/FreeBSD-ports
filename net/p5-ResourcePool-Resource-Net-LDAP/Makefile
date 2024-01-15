@@ -1,6 +1,3 @@
-# Created by: erwin@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	ResourcePool-Resource-Net-LDAP
 PORTVERSION=	1.0003
 CATEGORIES=	net perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	ResourcePool wrapper for Net::LDAP
+WWW=		https://metacpan.org/release/ResourcePool-Resource-Net-LDAP
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-ResourcePool>=0:devel/p5-ResourcePool \

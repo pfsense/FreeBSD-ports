@@ -1,6 +1,3 @@
-# Created by: Andrey Kostenko <andrey@kostenko.name>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-RunAfterRequest
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Run code after the response has been sent
+WWW=		https://metacpan.org/release/Catalyst-Plugin-RunAfterRequest
 
 BUILD_DEPENDS=	p5-Catalyst-Component-InstancePerContext>=0:www/p5-Catalyst-Component-InstancePerContext \
 		p5-Catalyst-Runtime>=5.80004:www/p5-Catalyst-Runtime \

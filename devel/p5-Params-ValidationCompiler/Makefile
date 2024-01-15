@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Params-ValidationCompiler
-PORTVERSION=	0.30
-PORTREVISION=	1
+PORTVERSION=	0.31
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Build an optimized subroutine parameter validator once, use it forever
+WWW=		https://metacpan.org/release/Params-ValidationCompiler
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	Chemistry-Canonicalize
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ITUB
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Number the atoms in a molecule in a unique way
+WWW=		https://metacpan.org/release/Chemistry-Canonicalize
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

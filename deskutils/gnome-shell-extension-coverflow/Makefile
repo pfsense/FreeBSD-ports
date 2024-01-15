@@ -1,14 +1,12 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gnome-shell-extension-coverflow
 PORTVERSION=	0.0.0.20180110
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils gnome
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Lets you Alt-Tab windows in a cover-flow manner
+WWW=		https://github.com/dmo60/CoverflowAltTab
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

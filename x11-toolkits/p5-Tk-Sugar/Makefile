@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tk-Sugar
 PORTVERSION=	1.093190
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Sugar syntax for Tk
+WWW=		https://metacpan.org/release/Tk-Sugar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	void-zones-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.2
-PORTREVISION=	7
+DISTVERSION=	1.0.2-18
+DISTVERSIONSUFFIX=	-g204634a
+PORTREVISION=	1
 CATEGORIES=	dns
 
 MAINTAINER=	vidar@karlsen.tech
 COMMENT=	Prepare a list of void zones that can be readily fed into Unbound
+WWW=		https://github.com/cyclaero/void-zones-tools
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

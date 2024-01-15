@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	liblangtag
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.4
 CATEGORIES=	devel textproc
 MASTER_SITES=	https://bitbucket.org/tagoh/liblangtag/downloads/ \
 		LOCAL/jkim
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Interface library to access tags for identifying languages
+WWW=		https://bitbucket.org/tagoh/liblangtag/wiki/Home
 
 LICENSE=	LGPL3 MPL20
 LICENSE_COMB=	dual

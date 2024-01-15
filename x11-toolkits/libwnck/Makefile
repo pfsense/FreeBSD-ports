@@ -1,16 +1,13 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-#   $MCom$
-
 PORTNAME=	libwnck
 PORTVERSION=	2.30.7
-PORTREVISION?=	1
+PORTREVISION?=	3
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library used for writing pagers and taskslists
+WWW=		https://www.gnome.org/
 
 USES=		tar:xz
 
@@ -19,10 +16,10 @@ PORTSCOUT=	ignore:1
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES+=		bison gettext gmake gnome libtool:keepla localbase:ldflags \
+USES+=		bison gettext gmake gnome libtool localbase:ldflags \
 		pathfix pkgconfig xorg
 USE_XORG=	xres x11
-USE_GNOME=	gtk20 referencehack intlhack introspection
+USE_GNOME=	gtk20 intlhack introspection
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-html-dir=${PREFIX}/share/doc

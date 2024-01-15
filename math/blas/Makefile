@@ -1,11 +1,8 @@
-# Created by: ljo
-# $FreeBSD$
-
 PORTNAME=	blas
-PORTREVISION=	6
 
 MAINTAINER=	fortran@FreeBSD.org
 COMMENT=	Basic Linear Algebra Subroutines
+WWW=		https://www.netlib.org/blas/
 
 DESCR=	${.CURDIR}/pkg-descr
 BLAS_SLAVEPORT=	yes

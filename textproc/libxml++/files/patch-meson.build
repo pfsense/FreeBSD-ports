@@ -1,0 +1,11 @@
+--- meson.build.orig	2022-09-09 14:38:42 UTC
++++ meson.build
+@@ -391,7 +391,7 @@ configure_file(
+   install_dir: install_pkgconfigdir,
+ )
+ 
+-install_includeconfigdir = install_libdir / xmlxx_pcname / 'include'
++install_includeconfigdir = install_includedir / xmlxx_pcname / 'include'
+ xmlxxconfig_h = configure_file(
+   input: 'libxml++config.h.meson',
+   output: 'libxml++config.h',

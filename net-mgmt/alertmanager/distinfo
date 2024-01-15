@@ -1,3 +1,5 @@
-TIMESTAMP = 1585677487
-SHA256 (prometheus-alertmanager-v0.20.0_GH0.tar.gz) = 4789ef95b09ba86a66a2923c3535d1bfe30a566390770784c52052c7c83ee1bc
-SIZE (prometheus-alertmanager-v0.20.0_GH0.tar.gz) = 5837531
+TIMESTAMP = 1699953119
+SHA256 (go/net-mgmt_alertmanager/alertmanager-v0.26.0/v0.26.0.mod) = 35fe6445ebd86b668b9daa74130bd598493d5c55e081c01ddbbc0d195534c221
+SIZE (go/net-mgmt_alertmanager/alertmanager-v0.26.0/v0.26.0.mod) = 3798
+SHA256 (go/net-mgmt_alertmanager/alertmanager-v0.26.0/v0.26.0.zip) = 7666007c7ccec339fd09aaeec1d15c5b8c26cb01d387c9a9f7273f904db825b0
+SIZE (go/net-mgmt_alertmanager/alertmanager-v0.26.0/v0.26.0.zip) = 2422183

@@ -1,6 +1,3 @@
-# Created by: Tim Bishop <tim@bishnet.net>
-# $FreeBSD$
-
 PORTNAME=	onenetd
 PORTVERSION=	12
 CATEGORIES=	net
@@ -9,6 +6,7 @@ MASTER_SITES=	http://offog.org/files/ \
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Single-server inetd
+WWW=		https://offog.org/code/onenetd.html
 
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/onenetd \

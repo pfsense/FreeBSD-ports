@@ -1,16 +1,14 @@
-# Created by: KIMURA Yasuhiro <yasu@utahime.org>
-# $FreeBSD$
-
 PORTNAME=	xrsh
 PORTVERSION=	5.92
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	http://jjd.com/
 DISTNAME=	${PORTNAME}
 EXTRACT_SUFX=	.shar
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Launcher which starts an X program on a remote machine
+WWW=		https://jjd.com/
 
 USES=		imake
 NO_WRKSUBDIR=	yes

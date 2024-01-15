@@ -1,32 +1,30 @@
-# Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_FP_DATE}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	cad
-MASTER_SITES=   https://gitlab.com/kicad/libraries/${PORTNAME}-footprints/-/archive/${GL_COMMIT}/
+MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-footprints/-/archive/${GL_TAGNAME}/
 PKGNAMESUFFIX=	-library-footprints-devel
-DISTNAME=	${PORTNAME}-footprints-${GL_COMMIT}
+DISTNAME=	${PORTNAME}-footprints-${GL_TAGNAME}
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Official KiCad Footprint Libraries for the future Kicad version 5
+WWW=		https://github.com/KiCad/kicad-footprints
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	kicad:cad/kicad-devel
 
-CONFLICTS=	kicad-4.*
+CONFLICTS_INSTALL=	kicad-library-footprints # share/kicad/footprints/Audio_Module.pretty/Reverb_BTDR-1H.kicad_mod
 
 USE_GITLAB=	nodefault
 GL_ACCOUNT=	kicad
 GL_PROJECT=	kicad/libraries
-GL_COMMIT=	${GIT_FP_HASH}
-# WRKSRC=         ${WRKDIR}/${PORTNAME}-${GL_COMMIT}-${GL_COMMIT}
+GL_TAGNAME=	${GIT_FP_HASH}
+# WRKSRC=	${WRKDIR}/${PORTNAME}-${GL_TAGNAME}-${GL_TAGNAME}
 
 USES=		cmake
 
-CMAKE_ARGS=     -DLOCALBASE="${LOCALBASE}" \
+CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Release" \
 		-DKICAD_TESTING_VERSION=ON \
 		-DKICAD_BUILD_VERSION=${DISTVERSION}

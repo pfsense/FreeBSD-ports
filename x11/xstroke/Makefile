@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	xstroke
 PORTVERSION=	0.5.12
 PORTREVISION=	8

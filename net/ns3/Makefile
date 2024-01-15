@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	ns3
-PORTVERSION=	3.32
+PORTVERSION=	3.35
+PORTREVISION=	2
 CATEGORIES=	net education
 MASTER_SITES=	https://www.nsnam.org/release/
 DISTNAME=	ns-allinone-${PORTVERSION}
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network simulator for Internet systems
+WWW=		https://www.nsnam.org/
 
 LICENSE=	GPLv2
 

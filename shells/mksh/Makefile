@@ -1,6 +1,3 @@
-# Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
-
 PORTNAME=	mksh
 PORTVERSION=	59c
 DISTVERSIONPREFIX=	R
@@ -10,6 +7,7 @@ MASTER_SITES=	https://www.mirbsd.org/MirOS/dist/mir/mksh/ \
 
 MAINTAINER=	schaiba@gmail.com
 COMMENT=	MirBSD Korn Shell
+WWW=		https://www.mirbsd.org/mksh.htm
 
 LICENSE=	ISCL ML
 LICENSE_COMB=	multi

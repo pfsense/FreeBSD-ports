@@ -1,34 +1,38 @@
-# Created by: Murray Stokely <murray@cdrom.com>
-# $FreeBSD$
-
 PORTNAME=	nasm
-PORTVERSION=	2.15.05
-PORTEPOCH=	1
+PORTVERSION=	2.16.01
+PORTEPOCH=	2
 CATEGORIES=	devel lang
 MASTER_SITES=	https://www.nasm.us/pub/nasm/releasebuilds/${PORTVERSION}/ \
 		https://mirror.sobukus.de/files/src/nasm/
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	salvadore@FreeBSD.org
 COMMENT=	General-purpose multi-platform x86 and amd64 assembler
+WWW=		https://www.nasm.us/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		compiler:c11 cpe gmake perl5 tar:xz
+CPE_VENDOR=	nasm
+CPE_PRODUCT=	netwide_assembler
+USE_PERL5=	build
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_func_strspn=yes
-USES=		compiler:c11 tar:xz gmake perl5
-USE_PERL5=	build
-MAKE_ARGS+=	INSTALLROOT=${STAGEDIR}
-INSTALL_TARGET=	install #needed for RDOFF_INSTALL_TARGET
 
-OPTIONS_DEFINE=	RDOFF DOCS
+MAKE_ARGS+=	INSTALLROOT=${STAGEDIR}
+
+PLIST_FILES=	bin/nasm \
+		bin/ndisasm \
+		man/man1/nasm.1.gz \
+		man/man1/ndisasm.1.gz
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes
 
-RDOFF_DESC=		Install tools to handle RDOFF object files
-RDOFF_INSTALL_TARGET=	install_rdf
-
-DOCS_DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DISTNAME}-xdoc${EXTRACT_SUFX}
-PORTDOCS=	*
+DOCS_DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		${DISTNAME}-xdoc${EXTRACT_SUFX}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,9 +1,6 @@
-# Created by: lightside <lightside@gmx.com>
-# $FreeBSD$
-
 PORTNAME=	diaspora
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://diaspora.fs2downloads.com/ \
 		http://sectorgame.com/fsfiles/uploads/Projects%20-%20Campaigns%20-%20TCs/Total%20Conversions/Diaspora/:sectorgame \
@@ -16,6 +13,7 @@ DISTFILES=	Diaspora_R1_Linux.tar.lzma:sectorgame1,DEFAULT \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Single and multiplayer space fighter combat game
+WWW=		https://diaspora.hard-light.net
 
 LICENSE=	CC-BY-NC-SA-3.0 VOLITION GPLv2
 LICENSE_COMB=	multi
@@ -24,8 +22,6 @@ LICENSE_FILE_CC-BY-NC-SA-3.0=	${WRKDIR_DIASPORA}/License.txt
 LICENSE_FILE_VOLITION=	${WRKSRC}/COPYING
 LICENSE_FILE_GPLv2=	${WRKDIR_DIASPORA}/wxlauncher/GPLv2.txt
 LICENSE_PERMS_VOLITION=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
-
-BROKEN_aarch64=		Fails to compile: cast from pointer to smaller type loses information
 
 LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libpng.so:graphics/png \

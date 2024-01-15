@@ -1,12 +1,10 @@
-# Created by: wenheping<wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	XML_Query2XML
 PORTVERSION=	1.7.2
 CATEGORIES=	databases pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class transform SQL queries into XML data
+WWW=		https://pear.php.net/package/XML_Query2XML
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	beadm
 PORTVERSION=	1.2.99.20180708
 PORTREVISION=	1
@@ -12,6 +10,7 @@ MASTER_SITES=	\
 
 MAINTAINER=	vermaden@interia.pl
 COMMENT=	Solaris-like utility to manage Boot Environments on ZFS
+WWW=		https://github.com/vermaden/beadm/
 
 LICENSE=	BSD2CLAUSE
 
@@ -21,7 +20,7 @@ GH_TAGNAME=	2665f52786a12aadbe8984731b8a64d1249692f4
 
 NO_BUILD=	YES
 
-CONFLICTS_INSTALL=	beadm-[0-9]*
+CONFLICTS_INSTALL=	beadm
 
 PLIST_FILES=	sbin/${PORTNAME} \
 		man/man1/${PORTNAME}.1.gz

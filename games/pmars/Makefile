@@ -1,6 +1,3 @@
-# Created by: gmarco@giovannelli.it
-# $FreeBSD$
-
 PORTNAME=	pmars
 PORTVERSION=	0.9.2
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/corewar/pMARS/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable corewar system with ICWS'94 extensions
+WWW=		http://www.koth.org/pmars/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../COPYING

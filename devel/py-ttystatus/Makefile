@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ttystatus
 PORTVERSION=	0.36
 CATEGORIES=	devel
@@ -8,11 +6,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Python progress reporting to /dev/tty
+WWW=		https://liw.fi/ttystatus/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.5+
+USES=		python
 NO_ARCH=	yes
 
 USE_PYTHON=	distutils autoplist

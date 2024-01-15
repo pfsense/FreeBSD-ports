@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lsop
 PORTVERSION=	0.2
 DISTVERSIONPREFIX=	v
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	606u@dir.bg
 COMMENT=	List all processes running with outdated binaries or shared libraries
+WWW=		https://github.com/606u/lsop
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

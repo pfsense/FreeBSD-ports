@@ -1,39 +1,22 @@
---- CMakeLists.txt.orig	2018-08-27 14:56:34 UTC
+--- CMakeLists.txt.orig	2023-06-22 09:41:32 UTC
 +++ CMakeLists.txt
-@@ -232,6 +232,12 @@ if (WIN32)
-     )
+@@ -309,6 +309,7 @@ if (UNIX)
+         set(gmic_qt_LIBRARIES
+             ${gmic_qt_LIBRARIES}
+             ${X11_LIBRARIES} # XXX: Search for X11: Wayland is coming!
++            Threads::Threads
+         )
+     endif()
  endif()
+@@ -622,9 +623,9 @@ message("Producing translation .qm files")
+ endif(ENABLE_DYNAMIC_LINKING)
  
-+find_package(Threads) 
-+set(gmic_qt_LIBRARIES
-+    ${gmic_qt_LIBRARIES}
-+    Threads::Threads
-+)
-+
- if (NOT CMAKE_BUILD_TYPE)
-     set(CMAKE_BUILD_TYPE "Release")
- endif()
-@@ -427,10 +433,10 @@ qt5_wrap_ui(gmic_qt_SRCS
-   ui/zoomlevelselector.ui
- )
+ message("Producing translation .qm files")
+-execute_process(COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/translations OUTPUT_QUIET)
++execute_process(COMMAND gmake WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/translations OUTPUT_QUIET)
+ message("Producing filter translation .qm files")
+-execute_process(COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/translations/filters OUTPUT_QUIET)
++execute_process(COMMAND gmake WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/translations/filters OUTPUT_QUIET)
  
--# qt5_create_translation(
--#     qmic_qt_QM
--#     ${CMAKE_SOURCE_DIR}/translations
--#     ${gmic_qt_SRCS}
-+qt5_create_translation(
-+    qmic_qt_QM
-+    ${CMAKE_SOURCE_DIR}/translations
-+    ${gmic_qt_SRCS}
- #     translations/cs.ts
- #     translations/de.ts
- #     translations/es.ts
-@@ -446,7 +452,7 @@ qt5_wrap_ui(gmic_qt_SRCS
- #     translations/zh.ts
- # )
- 
--qt5_add_translation(gmic_qt_QM
-+# qt5_add_translation(gmic_qt_QM
-     translations/cs.ts
-     translations/de.ts
-     translations/es.ts
+ set(gmic_qt_QRC
+     gmic_qt.qrc

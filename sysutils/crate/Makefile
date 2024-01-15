@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	crate
 DISTVERSION=	0.1.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils emulators
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Containerizer for FreeBSD (alpha-software, expect bugs)
+WWW=		https://github.com/yurivict/crate
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,8 +13,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 .if exists(/usr/include/c++/v1) && !exists(/usr/include/c++/v1/filesystem)
 BROKEN=		STL feature 'filesystem' isn't available # '
 .endif
-
-IGNORE_FreeBSD_11=	getline isn't available on 11 by simply including <stdio.h> as its manpage says #'
 
 BUILD_DEPENDS=	rang>0:devel/rang
 LIB_DEPENDS=	libyaml-cpp.so:devel/yaml-cpp

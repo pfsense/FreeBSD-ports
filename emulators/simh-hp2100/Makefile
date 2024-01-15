@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	hp2100
-DISTVERSION=	3.11-0.29
+DISTVERSION=	3.11-0.31
 CATEGORIES=	emulators
 MASTER_SITES=	http://simh.trailing-edge.com/hp/releases/:src \
 		http://simh.trailing-edge.com/hp/docs/:app \
@@ -14,6 +12,7 @@ EXTRACT_ONLY=	HP2100-source-release-${DISTVERSION:E}.zip
 
 MAINTAINER=	bob@eager.cx
 COMMENT=	Emulates classic HP 2100 computers
+WWW=		http://simh.trailing-edge.com/hp/
 
 LICENSE=	SIMHv1
 LICENSE_NAME=	SIMH License
@@ -26,7 +25,7 @@ USES=		gmake dos2unix zip
 
 NO_WRKSUBDIR=	yes
 
-CONFLICTS_INSTALL=	simh-3.[789]*
+CONFLICTS_INSTALL=	simh
 DOS2UNIX_GLOB=	*.c *.h *.txt *.mak makefile
 
 SUB_FILES=	hp2100.1

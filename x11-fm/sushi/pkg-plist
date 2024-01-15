@@ -3,6 +3,7 @@ lib/sushi/girepository-1.0/Sushi-1.0.typelib
 lib/sushi/libsushi-1.0.so
 libexec/org.gnome.NautilusPreviewer
 share/dbus-1/services/org.gnome.NautilusPreviewer.service
+share/locale/ab/LC_MESSAGES/sushi.mo
 share/locale/af/LC_MESSAGES/sushi.mo
 share/locale/an/LC_MESSAGES/sushi.mo
 share/locale/ar/LC_MESSAGES/sushi.mo
@@ -14,6 +15,7 @@ share/locale/bn_IN/LC_MESSAGES/sushi.mo
 share/locale/bs/LC_MESSAGES/sushi.mo
 share/locale/ca/LC_MESSAGES/sushi.mo
 share/locale/ca@valencia/LC_MESSAGES/sushi.mo
+share/locale/ckb/LC_MESSAGES/sushi.mo
 share/locale/cs/LC_MESSAGES/sushi.mo
 share/locale/da/LC_MESSAGES/sushi.mo
 share/locale/de/LC_MESSAGES/sushi.mo
@@ -38,6 +40,7 @@ share/locale/id/LC_MESSAGES/sushi.mo
 share/locale/is/LC_MESSAGES/sushi.mo
 share/locale/it/LC_MESSAGES/sushi.mo
 share/locale/ja/LC_MESSAGES/sushi.mo
+share/locale/ka/LC_MESSAGES/sushi.mo
 share/locale/kk/LC_MESSAGES/sushi.mo
 share/locale/kn/LC_MESSAGES/sushi.mo
 share/locale/ko/LC_MESSAGES/sushi.mo
@@ -46,6 +49,7 @@ share/locale/lv/LC_MESSAGES/sushi.mo
 share/locale/mjw/LC_MESSAGES/sushi.mo
 share/locale/ml/LC_MESSAGES/sushi.mo
 share/locale/mr/LC_MESSAGES/sushi.mo
+share/locale/ms/LC_MESSAGES/sushi.mo
 share/locale/nb/LC_MESSAGES/sushi.mo
 share/locale/ne/LC_MESSAGES/sushi.mo
 share/locale/nl/LC_MESSAGES/sushi.mo

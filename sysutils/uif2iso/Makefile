@@ -1,6 +1,3 @@
-# Created by: Martin Tournoij <carpetsmoker@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	uif2iso
 PORTVERSION=	0.1.7c
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert MagicISO UIF files to ISO9660
+WWW=		https://aluigi.altervista.org/mytoolz.htm
 
 LICENSE=	GPLv2
 

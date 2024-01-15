@@ -1,6 +1,3 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vectoroids
 PORTVERSION=	1.1.0
 PORTREVISION=	17
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/vectoroids/src/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector-based rock-shooting game similar to Asteroids
+WWW=		http://www.newbreedsoftware.com/vectoroids/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

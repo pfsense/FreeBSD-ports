@@ -1,41 +1,34 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	carddav
-PORTVERSION=	3.0.3
-PORTREVISION=	1
+PORTVERSION=	5.1.0
+DISTVERSIONPREFIX=v
 CATEGORIES=	mail
-MASTER_SITES=	https://github.com/blind-coder/rcmcarddav/releases/download/v${PORTVERSION}/
+MASTER_SITES=	https://github.com/mstilkerich/rcmcarddav/releases/download/${DISTVERSIONFULL}/
 PKGNAMEPREFIX=	roundcube-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Roundcube CardDAV plugin
+WWW=		https://github.com/mstilkerich/rcmcarddav
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
-RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
+IGNORE_WITH_PHP=83
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+BUILD_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.5:mail/roundcube@${PHP_FLAVOR}
+RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.5:mail/roundcube@${PHP_FLAVOR}
+
+USES=		php:flavors
 
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-# Cannot use USE_GITHUB, as the original tarball doesn't come with the bundled
-# sabre library.
-#USE_GITHUB=	yes
-#GH_ACCOUNT=	blind-coder
-#GH_PROJECT=	rcmcarddav
+USE_PHP=	curl dom simplexml sockets tokenizer xml xmlreader xmlwriter
 
-USES=		php:flavors tar:bz2
-USE_PHP=	simplexml sockets curl
-
+WRKSRC=		${WRKDIR}/${PORTNAME}
 WWWDIR=		${PREFIX}/www/roundcube/plugins/carddav
 
 do-install:
-	${FIND} ${WRKSRC} -name "*.orig" -delete
 	${MKDIR} ${STAGEDIR}${WWWDIR}
-	cd ${WRKSRC} && ${PAX} -r -w . ${STAGEDIR}${WWWDIR}
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}${WWWDIR}/)
 
 .include <bsd.port.mk>

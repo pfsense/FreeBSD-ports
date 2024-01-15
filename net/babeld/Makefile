@@ -1,13 +1,12 @@
-# Created by: Hung-Yi Chen <gaod@hychen.org>
-# $FreeBSD$
-
 PORTNAME=	babeld
-PORTVERSION=	1.8.5
+PORTVERSION=	1.10
 DISTVERSIONPREFIX=	${PORTNAME}-
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Distance-vector routing protocol
+WWW=		https://www.irif.fr/~jch/software/babel/
 
 LICENSE=	MIT
 

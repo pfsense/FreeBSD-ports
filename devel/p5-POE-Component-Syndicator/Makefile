@@ -1,6 +1,3 @@
-# Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Syndicator
 PORTVERSION=	0.06
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE component base class which implements the Observer pattern
+WWW=		https://metacpan.org/release/POE-Component-Syndicator
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

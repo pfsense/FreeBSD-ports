@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	minipot
-PORTVERSION=	0.2.2
+PORTVERSION=	0.2.3
 CATEGORIES=	sysutils
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Mono-server installation of pot, nomad and consul
+WWW=		https://github.com/pizzamig/minipot
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

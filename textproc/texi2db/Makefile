@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	texi2db
 PORTVERSION=	0.5
 PORTREVISION=	1

@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Algorithm-Combinatorics
 PORTVERSION=	0.27
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Efficient generation of combinatorial sequences
+WWW=		https://metacpan.org/release/Algorithm-Combinatorics
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

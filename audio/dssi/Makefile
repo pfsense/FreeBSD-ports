@@ -1,14 +1,12 @@
-# Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
-
 PORTNAME=	dssi
 PORTVERSION=	1.1.1
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	API for audio processing plugins
+WWW=		https://dssi.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +17,8 @@ LIB_DEPENDS=	libdssialsacompat.so:audio/libdssialsacompat \
 		libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile \
 		libjack.so:audio/jack
-RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
+RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa \
+		${LOCALBASE}/include/alsa/seq_event.h:audio/alsa-lib
 
 USES=		gmake pathfix pkgconfig localbase libtool xorg
 GNU_CONFIGURE=	yes

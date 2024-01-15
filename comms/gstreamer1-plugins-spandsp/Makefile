@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	comms
 
@@ -9,5 +7,9 @@ GST_PLUGIN=	spandsp
 DIST=		bad
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
+
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS=  libspandsp.so:comms/spandsp
 
 .include "${MASTERDIR}/Makefile"

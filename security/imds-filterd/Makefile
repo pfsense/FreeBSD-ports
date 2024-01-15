@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	imds-filterd
 DISTVERSION=	0.1
 CATEGORIES=	security
 
 MAINTAINER=	cperciva@FreeBSD.org
 COMMENT=	Provides per user/group access controls to the EC2 IMDS
+WWW=		https://github.com/cperciva/imds-filterd
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

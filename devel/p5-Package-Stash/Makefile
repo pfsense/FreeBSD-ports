@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Package-Stash
-PORTVERSION=	0.39
+PORTVERSION=	0.40
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Routines for manipulating stashes
+WWW=		https://metacpan.org/release/Package-Stash
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

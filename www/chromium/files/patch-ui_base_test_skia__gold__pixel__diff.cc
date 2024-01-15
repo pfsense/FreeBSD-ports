@@ -1,11 +1,11 @@
---- ui/base/test/skia_gold_pixel_diff.cc.orig	2021-01-18 21:29:48 UTC
+--- ui/base/test/skia_gold_pixel_diff.cc.orig	2023-09-13 12:11:42 UTC
 +++ ui/base/test/skia_gold_pixel_diff.cc
-@@ -165,7 +165,7 @@ std::string SkiaGoldPixelDiff::GetPlatform() {
-   return "windows";
- #elif defined(OS_APPLE)
+@@ -115,7 +115,7 @@ const char* GetPlatformName() {
    return "macOS";
--#elif defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#elif (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    return "linux";
- #endif
- }
+ #elif BUILDFLAG(IS_CHROMEOS_LACROS)
+   return "lacros";

@@ -1,14 +1,12 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/textproc/rarian/Makefile,v 1.12 2008/03/09 21:41:22 mezz Exp $
-
 PORTNAME=	rarian
-PORTVERSION=	0.8.1
+DISTVERSION=	0.8.5
 PORTREVISION=	6
 CATEGORIES=	textproc gnome
+MASTER_SITES=	https://gitlab.freedesktop.org/${PORTNAME}/${PORTNAME}/-/releases/${DISTVERSION}/downloads/assets/
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	OMF help system based on the Freedesktop specification
+WWW=		https://rarian.freedesktop.org/
 
 LICENSE=	GPLv2+ LGPL21+ ZLIB
 LICENSE_COMB=	multi
@@ -16,19 +14,19 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING.UTILS
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LIB
 LICENSE_FILE_ZLIB=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl \
+BUILD_DEPENDS=	${LOCALBASE}/bin/getopt:misc/getopt \
 		bash:shells/bash \
-		docbook-xml>0:textproc/docbook-xml
+		xsltproc:textproc/libxslt \
+		docbook-xml>0:textproc/docbook-xml \
+		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl
+LIB_DEPENDS=	libtinyxml.so:textproc/tinyxml
 RUN_DEPENDS=	${LOCALBASE}/bin/getopt:misc/getopt \
-		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl \
 		bash:shells/bash \
-		docbook-xml>0:textproc/docbook-xml
+		xsltproc:textproc/libxslt \
+		docbook-xml>0:textproc/docbook-xml \
+		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl
 
-USES=		gmake gnome libtool localbase pathfix python tar:bzip2
-USE_GITHUB=	yes
-GH_ACCOUNT=	0mp
-GH_TAGNAME=	00fa779
-USE_GNOME=	libxslt
+USES=		gmake libtool localbase pathfix pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var \
@@ -41,5 +39,8 @@ CONFIGURE_ARGS=	--localstatedir=/var \
 		--with-metadata-dir=${DOCSDIR}
 
 INSTALL_TARGET=	install-strip
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|`getopt|`${LOCALBASE}/bin/getopt|' ${WRKSRC}/util/rarian-sk-update.in
 
 .include <bsd.port.mk>

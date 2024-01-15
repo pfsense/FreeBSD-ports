@@ -1,6 +1,3 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	concurrencykit
 PORTVERSION=	0.6.0
 CATEGORIES=	devel
@@ -11,13 +8,14 @@ DISTNAME=	ck-${PORTVERSION}
 PATCH_SITES=	https://github.com/${PORTNAME}/ck/commit/
 PATCHFILES=	999d4612e873bb19867ad1d7043c9c18c7c4d3b9.patch:-p1
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Lock-free data structures for high performance concurrent systems
+WWW=		http://concurrencykit.org
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le sparc64
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 
 OPTIONS_DEFINE=		RTM VMAPACK
 OPTIONS_DEFAULT=	VMAPACK

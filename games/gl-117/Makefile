@@ -1,15 +1,13 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gl-117
 PORTVERSION=	1.3.2
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/GL-117%20Source
 
 MAINTAINER=	erik@bz.bzflag.bz
 COMMENT=	OpenGL & SDL action flight simulator
+WWW=		http://www.heptargon.de/gl-117/gl-117.html
 
 USES=		gl tar:bzip2
 USE_GL=		glut

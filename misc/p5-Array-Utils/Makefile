@@ -1,6 +1,3 @@
-# Created by: Zeus Panchenko <zeus@gnu.org.ua>
-# $FreeBSD$
-
 PORTNAME=	Array-Utils
 PORTVERSION=	0.5
 CATEGORIES=	misc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Collection of list manipulation routines
+WWW=		https://metacpan.org/release/Array-Utils
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

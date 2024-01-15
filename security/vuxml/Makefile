@@ -1,9 +1,6 @@
-# Created by: nectar@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	vuxml
 PORTVERSION=	1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security textproc
 MASTER_SITES=	http://www.vuxml.org/dtd/vuxml-1/
 DISTFILES=	vuxml-10.dtd  vuxml-model-10.mod \
@@ -13,6 +10,7 @@ DIST_SUBDIR=	vuxml
 
 MAINTAINER=	ports-secteam@FreeBSD.org
 COMMENT=	Vulnerability and eXposure Markup Language DTD
+WWW=		https://vuxml.freebsd.org/
 
 LICENSE=	BSD2CLAUSE
 
@@ -30,7 +28,16 @@ WRKSRC=		${WRKDIR}
 
 dir_DTD=	share/xml/dtd/vuxml
 
+.include <bsd.port.pre.mk>
+
 VUXML_FILE?=	${PKGDIR}/vuln.xml
+VUXML_FLAT_FILE?=	${PKGDIR}/vuln-flat.xml
+_YEAR!=	date +%Y
+VUXML_CURRENT_FILE?=	${PKGDIR}/vuln/${_YEAR}.xml
+
+post-clean:
+	@${RM} "${VUXML_FILE}.tidy"
+	@${RM} "${VUXML_FLAT_FILE}"
 
 do-extract:
 	@${RM} -r ${WRKDIR}
@@ -47,13 +54,16 @@ do-install:
 
 do-test:
 	@${MKDIR} ${WRKDIR}/test
-	@${CP} ${.CURDIR}/vuln.xml ${WRKDIR}/test
+	@${CP} -R ${.CURDIR}/vuln.xml ${.CURDIR}/vuln ${WRKDIR}/test
 	@cd ${.CURDIR} && make validate PKGDIR=${WRKDIR}/test
 
+${VUXML_FLAT_FILE}: ${VUXML_FILE} vuln/*.xml
+	xmllint -noent ${.ALLSRC:[1]} > ${.TARGET}
+
 validate: tidy
-	@${SH} ${FILESDIR}/validate.sh "${VUXML_FILE}"
+	@${SH} ${FILESDIR}/validate.sh "${VUXML_FLAT_FILE}"
 	@${ECHO_MSG} Checking if tidy differs...
-	@if ${DIFF} -u "${VUXML_FILE}" "${VUXML_FILE}.tidy"; \
+	@if ${DIFF} -u "${VUXML_FLAT_FILE}" "${VUXML_FILE}.tidy"; \
 	then \
 		${ECHO_MSG} ... seems okay; \
 		${RM} "${VUXML_FILE}.tidy"; \
@@ -61,8 +71,8 @@ validate: tidy
 		return 1; \
 	fi
 	@${ECHO_MSG} Checking for space/tab...
-	@unexpand "${VUXML_FILE}" | ${SED} -E 's,[[:space:]]*$$,,g' > "${VUXML_FILE}.unexpanded"
-	@if ${DIFF} -u "${VUXML_FILE}" "${VUXML_FILE}.unexpanded"; \
+	@unexpand "${VUXML_FLAT_FILE}" | ${SED} -E 's,[[:space:]]*$$,,g' > "${VUXML_FILE}.unexpanded"
+	@if ${DIFF} -u "${VUXML_FLAT_FILE}" "${VUXML_FILE}.unexpanded"; \
 	then \
 		${ECHO_MSG} ... seems okay; \
 		${RM} "${VUXML_FILE}.unexpanded"; \
@@ -71,20 +81,18 @@ validate: tidy
 		${ECHO_CMD} Consider using ${VUXML_FILE}.unexpanded for final commit; \
 		return 1; \
 	fi
-	${PYTHON_CMD} ${FILESDIR}/extra-validation.py ${VUXML_FILE}
+	${PYTHON_CMD} ${FILESDIR}/extra-validation.py ${VUXML_FLAT_FILE}
 
-tidy: vuln.xml
+tidy: ${VUXML_FLAT_FILE}
 	@if [ ! -e ${LOCALBASE}/share/xml/dtd/vuxml/catalog.xml ]; \
 	then \
 		echo "Please install the VuXML port prior to running make validate/tidy."; \
 		exit 1; \
 	fi
-	${SH} ${FILESDIR}/tidy.sh "${FILESDIR}/tidy.xsl" "${VUXML_FILE}" > "${VUXML_FILE}.tidy"
+	${SH} ${FILESDIR}/tidy.sh "${FILESDIR}/tidy.xsl" "${VUXML_FLAT_FILE}" > "${VUXML_FILE}.tidy"
 
 newentry:
-	@${SH} ${FILESDIR}/newentry.sh "${VUXML_FILE}"
-
-.include <bsd.port.pre.mk>
+	@${SH} ${FILESDIR}/newentry.sh "${VUXML_CURRENT_FILE}" "CVE_ID=${CVE_ID}" "SA_ID=${SA_ID}"
 
 .if defined(VID) && !empty(VID)
 html: work/${VID}.html

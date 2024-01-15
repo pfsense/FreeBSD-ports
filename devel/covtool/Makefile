@@ -1,14 +1,12 @@
-# Created by: novator24 <novator24@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	covtool
 PORTVERSION=	2.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/rel_2.0
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ test coverage analyzer
+WWW=		https://sourceforge.net/projects/covtool/
 
 USES=		gmake zip
 USE_GCC=	yes

@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gnucap
 DISTVERSION=	2013-04-23
 CATEGORIES=	cad
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.gnucap.org/devel/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU Circuit Analysis Package
+WWW=		http://www.gnucap.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

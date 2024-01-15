@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	HTML_CSS
 PORTVERSION=	1.5.4
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class for generating CSS declarations
+WWW=		https://pear.php.net/package/HTML_CSS
 
 LICENSE=	BSD2CLAUSE
 

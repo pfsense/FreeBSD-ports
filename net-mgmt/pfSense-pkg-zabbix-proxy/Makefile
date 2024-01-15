@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME?=	pfSense-pkg-zabbix-proxy
-PORTVERSION=	1.0.4
-PORTREVISION=	6
+PORTVERSION=	1.0.6
+PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,7 +16,7 @@ LICENSE=	APACHE20
 CONFLICTS?=	pfSense-pkg-zabbix-proxy4 \
 		pfSense-pkg-zabbix-proxy44 \
 		pfSense-pkg-zabbix-proxy5 \
-		pfSense-pkg-zabbix-proxy52
+		pfSense-pkg-zabbix-proxy54
 
 RUN_DEPENDS?=	zabbix_proxy:net-mgmt/zabbix3-proxy
 
@@ -42,7 +42,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/zabbix-proxy.xml \
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/zabbixproxy.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/zabbix-proxy.inc \
 		${STAGEDIR}${PREFIX}/pkg
@@ -57,6 +57,6 @@ do-install:
 		-e "s|%%ZABBIXINTERNALNAME%%|${ZABBIXINTERNALNAME}|" \
 		${STAGEDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${PREFIX}/pkg/zabbix-proxy.inc \
-		${STAGEDIR}${PREFIX}/pkg/zabbix-proxy.xml
+		${STAGEDIR}${PREFIX}/pkg/zabbixproxy.xml
 		
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	mmr
 PORTVERSION=	1.6.0
 PORTREVISION=	1
@@ -10,23 +7,25 @@ MASTER_SITES=	http://www.sourcefiles.org/Internet/Mail/Clients/Console/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Curses based MIME Mail Reader
+WWW=		https://slouken.libsdl.org/projects/mmr/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		iconv ncurses
+USES=		iconv localbase ncurses
+USE_CXXSTD=	c++14
+
 MAKE_ARGS=	LIBS='${LIBS}' CXX='${CXX}' CXXFLAGS='${CXXFLAGS}'
 ALL_TARGET=	${PORTNAME}
 
-PORTDOCS=	BUGS CHANGES Features README TODO
-PORTEXAMPLES=	dot.mmrc.sample
-PLIST_FILES=	bin/mmr
-
 CXXFLAGS+=	-DTHREADMAIL \
 		-DMAILPATH=\"/var/mail\" \
-		-DMAILER=\"/usr/sbin/sendmail\ -t\" \
-		-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib ${ICONV_LIB} -lncurses -lmd
+		-DMAILER=\"/usr/sbin/sendmail\ -t\"
+LIBS+=		${ICONV_LIB} -lncurses -lmd
+
+PLIST_FILES=	bin/mmr
+PORTDOCS=	BUGS CHANGES Features README TODO
+PORTEXAMPLES=	dot.mmrc.sample
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	beforelight
 PORTVERSION=	1.0.5
 PORTREVISION=	1

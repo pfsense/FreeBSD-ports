@@ -1,6 +1,3 @@
-# Created by: Charles Swiger <chuck@pkix.net>
-# $FreeBSD$
-
 PORTNAME=	dvd+rw-tools
 PORTVERSION=	7.1
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.pkix.net/mirror/fy.chalmers.se/ \
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	DVD burning software
+WWW=		http://fy.chalmers.se/~appro/linux/DVD+RW/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

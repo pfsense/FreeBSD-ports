@@ -1,6 +1,3 @@
-# Created by: Matthew Seaman <matthew@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-Test-StashWarnings
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Test your application's warnings
+WWW=		https://metacpan.org/release/Plack-Middleware-Test-StashWarnings
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Plack>0:www/p5-Plack

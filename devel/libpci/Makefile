@@ -1,9 +1,5 @@
-# Created by: Samy Al Bahra <samy@kerneled.org>
-# $FreeBSD$
-
 PORTNAME=	libpci
-PORTVERSION=	3.7.0
-PORTREVISION=	1
+PORTVERSION=	3.10.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/utils/pciutils \
 		LOCAL/sunpoet
@@ -11,6 +7,7 @@ DISTNAME=	pciutils-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PCI configuration space I/O made easy
+WWW=		https://mj.ucw.cz/sw/pciutils/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

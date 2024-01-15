@@ -1,14 +1,12 @@
-# Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
-
 PORTNAME=	ensemblist
 PORTVERSION=	040126
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Assemble given shapes from primitives
+WWW=		https://www.nongnu.org/ensemblist/index_en.html
 
 LIB_DEPENDS=	libmikmod.so:audio/libmikmod \
 		libpng.so:graphics/png

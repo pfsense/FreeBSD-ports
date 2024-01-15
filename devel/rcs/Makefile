@@ -1,18 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	rcs
-PORTVERSION=	5.9.4
+PORTVERSION=	5.10.1
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Version control system
+WWW=		https://www.gnu.org/software/rcs/
 
 LICENSE=	GPLv3
 
-USES=		groff makeinfo tar:xz
+USES=		tar:lz
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	rcs57
 
 INFO=	rcs
 

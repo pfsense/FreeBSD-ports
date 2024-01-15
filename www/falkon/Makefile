@@ -1,33 +1,44 @@
-# $FreeBSD$
-
 PORTNAME=	falkon
-DISTVERSION=	3.1.0
-CATEGORIES=	www
-MASTER_SITES=	KDE/stable/falkon/${DISTVERSION:R}/
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+CATEGORIES=	www kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Web browser based on Webengine and Qt Framework
+WWW=		https://www.falkon.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cmake desktop-file-utils kde:5 qt:5 ssl tar:xz xorg
-USE_KDE=	ecm_build i18n
+USE_KDE=	archive i18n \
+		ecm:build
 USE_QT=		concurrent core dbus declarative gui location network printsupport \
-		sql webchannel webengine widgets x11extras \
-		buildtools_build qmake_build
-USE_XORG=	xcb
+		sql webchannel webengine widgets x11extras sql-sqlite3:run \
+		buildtools:build qmake:build
+USE_XORG=	x11 xcb
 
 USE_LDCONFIG=	yes
 
 CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_PySide2
 
-OPTIONS_DEFINE=	GNOMEKEYRING KDEINTEGRATION
-OPTIONS_DEFAULT=	KDEINTEGRATION
-OPTIONS_SUB=	YES
+FLAVORS=	default qtonly
+FLAVOR?=	default
 
-KDEINTEGRATION_CMAKE_BOOL=	ENABLE_KDE_FRAMEWORKS_INTEGRATION_PLUGIN
-KDEINTEGRATION_USE=		KDE=completion,config,coreaddons,crash,jobwidgets,kio,purpose,service,wallet,widgetsaddons
+default_CONFLICTS_INSTALL=	${PORTNAME}-qtonly
+qtonly_PKGNAMESUFFIX=		-qtonly
+qtonly_CONFLICTS_INSTALL=	${PORTNAME}
+
+.if ${FLAVOR} != qtonly
+CMAKE_ON+=	ENABLE_KDE_FRAMEWORKS_INTEGRATION_PLUGIN
+USE_KDE+=	completion config coreaddons crash jobwidgets kio purpose service solid wallet widgetsaddons windowsystem
+PLIST_SUB=	KDEINTEGRATION=""
+.else
+PLIST_SUB=	KDEINTEGRATION="@comment "
+COMMENT=	Web browser based on WebEngine (no integration with KDE Plasma)
+.endif
+
+OPTIONS_DEFINE=	GNOMEKEYRING
+OPTIONS_SUB=	YES
 
 GNOMEKEYRING_CMAKE_BOOL=	BUILD_KEYRING
 GNOMEKEYRING_USE=		GNOME=glib20

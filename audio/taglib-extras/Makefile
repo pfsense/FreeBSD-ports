@@ -1,6 +1,3 @@
-# Created by: Matt Tosto <datahead4@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	taglib-extras
 PORTVERSION=	1.0.1
 CATEGORIES=	audio
@@ -8,6 +5,7 @@ MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Extra taglib features for Amarok 2.2
+WWW=		http://websvn.kde.org/trunk/kdesupport/taglib-extras/
 
 LIB_DEPENDS=	libtag.so:audio/taglib
 

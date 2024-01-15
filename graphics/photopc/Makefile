@@ -1,6 +1,3 @@
-# Created by: Douglas Carmichael <dcarmich@mcs.com>
-# $FreeBSD$
-
 PORTNAME=	photopc
 PORTVERSION=	3.07
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Control cameras based on Sierra Imaging chipset and compatibles
+WWW=		https://photopc.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 

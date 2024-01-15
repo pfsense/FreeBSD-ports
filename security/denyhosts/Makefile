@@ -1,6 +1,3 @@
-# Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
-
 PORTNAME=	denyhosts
 PORTVERSION=	3.1.2
 CATEGORIES=	security
@@ -10,6 +7,7 @@ DISTNAME=	DenyHosts-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Script to thwart ssh and imap attacks
+WWW=		https://github.com/denyhosts/denyhosts
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipaddr>=0:devel/py-ipaddr@${PY_FLAVOR}
 
-USES=		cpe python:3.6+ shebangfix
+USES=		cpe python shebangfix
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

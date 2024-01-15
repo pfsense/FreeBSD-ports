@@ -1,10 +1,8 @@
-# Created by: thinker@branda.to
-# $FreeBSD$
-
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Python bindings for version control system
+WWW=		https://subversion.apache.org/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/py3c.h:devel/py3c
 
@@ -18,12 +16,6 @@ PORTREVISION_114=	2
 PORTREVISION_LTS=	0
 
 SVN_BUILD_BINDINGS=	yes
-
-.if ${FLAVOR:Upy37:Mpy3*}
-WITH_SUBVERSION_VER=	114
-.else
-WITH_SUBVERSION_VER=	LTS
-.endif
 
 .include "${.CURDIR}/../../devel/subversion/Makefile.addons"
 

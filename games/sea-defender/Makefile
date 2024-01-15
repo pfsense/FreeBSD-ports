@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sea-defender
 PORTVERSION=	0.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/:icon \
 		SF/nemysisfreebsdp/:icon
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simple missile command clone
+WWW=		https://www.pouet.net/prod.php?which=54272
 
 LICENSE=	MIT
 
@@ -24,6 +22,7 @@ GH_PROJECT=	Sea-Defender
 GH_TAGNAME=	d628051
 
 USES=		gl gmake sdl xorg
+USE_CXXSTD=	c++14
 USE_SDL=	sdl mixer image ttf
 USE_GL=		gl glu
 USE_XORG=	x11 xrandr

@@ -1,6 +1,3 @@
-# Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtkmmorse
 PORTVERSION=	0.9.27
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Graphical Morse Code Trainer
+WWW=		https://www.nongnu.org/gtkmmorse/
 
 LIB_DEPENDS=	libao.so:audio/libao \
 		libgtkmm-2.4.so:x11-toolkits/gtkmm24 \

@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@FreeBSD.org)
-# $FreeBSD$
-
 PORTNAME=	tcplist
 PORTVERSION=	2.2
 PORTREVISION=	2

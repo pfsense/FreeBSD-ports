@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	srv2pf
-PORTVERSION=	20170607
+PORTVERSION=	20211010
 CATEGORIES=	net
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Create and update PF tables from LDAP groups
+WWW=		https://github.com/dag-erling/srv2pf
 
 LICENSE=	BSD3CLAUSE
 

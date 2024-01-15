@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	alac
 PORTVERSION=	0.0.7
 PORTEPOCH=	1
@@ -8,6 +5,7 @@ CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Apple Lossless Audio Codec
+WWW=		https://github.com/mikebrady/alac
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

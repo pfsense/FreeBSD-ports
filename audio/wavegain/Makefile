@@ -1,15 +1,13 @@
-# Created by: Denise H. G. <darcsis@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	wavegain
 PORTVERSION=	1.2.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	http://www.rarewares.org/files/others/
 DISTNAME=	${PORTNAME}-${PORTVERSION}srcs${EXTRACT_SUFFIX}
 
 MAINTAINER=	darcsis@gmail.com
 COMMENT=	Program that applies ReplayGain to wave files
+WWW=		https://www.rarewares.org/others.html
 
 LICENSE=	LGPL21
 

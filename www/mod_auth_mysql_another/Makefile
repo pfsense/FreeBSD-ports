@@ -1,6 +1,3 @@
-# Created by: mbr@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	mod_auth_mysql
 PORTVERSION=	3.0.0
 PORTREVISION=	5
@@ -10,10 +7,11 @@ PKGNAMESUFFIX=	_another
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Allows users to use MySQL databases for user authentication
+WWW=		https://modauthmysql.sourceforge.net/
 
 LICENSE=	APACHE10
 
-USES=		apache:2.2+ mysql
+USES=		apache mysql
 
 SHORTMODNAME=	mysql_auth
 AP_FAST_BUILD=	yes

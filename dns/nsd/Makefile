@@ -1,23 +1,18 @@
-# Created by: alexis
-# $FreeBSD$
-
 PORTNAME=	nsd
-PORTVERSION=	4.3.5
+DISTVERSION=	4.8.0
 CATEGORIES=	dns
-MASTER_SITES=	http://www.nlnetlabs.nl/downloads/nsd/	\
-		ftp://ftp.rhnet.is/pub/nsd/
+MASTER_SITES=	https://www.nlnetlabs.nl/downloads/nsd/
 
 MAINTAINER=	jaap@NLnetLabs.nl
 COMMENT=	Authoritative only non-recursive name server
+WWW=		https://www.nlnetlabs.nl/projects/nsd/about/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+LIB_DEPENDS=	libevent.so:devel/libevent
+
 USES=		cpe ssl
-
-LIB_DEPENDS+=	libevent.so:devel/libevent
-
-CONFLICTS=	nsd-[0-3]* nsd3-[0-9]*
 
 CPE_VENDOR=	nlnetlabs
 USE_RC_SUBR=	nsd
@@ -25,74 +20,68 @@ USE_RC_SUBR=	nsd
 NSDUSER?=	nsd
 NSDGROUP?=	nsd
 NSDLSDIR=	/var
-NSDDBDIR=	/var/db/nsd
 NSDRUNDIR=	/var/run/nsd
-NSDMAX_IPS?=	512
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-libevent=${LOCALBASE} \
-		--with-user=${NSDUSER} \
+CONFIGURE_ARGS=	--localstatedir=${NSDLSDIR} \
 		--with-configdir=${ETCDIR} \
-		--localstatedir=${NSDLSDIR} \
-		--with-dbfile=${NSDDBDIR}/nsd.db \
+		--with-libevent=${LOCALBASE} \
+		--with-pidfile=${NSDRUNDIR}/nsd.pid \
 		--with-ssl=${OPENSSLBASE} \
-		--with-pidfile=${NSDRUNDIR}/nsd.pid
-
-PLIST_SUB=	NSDUSER=${NSDUSER} \
-		NSDGROUP=${NSDGROUP} \
-		NSDDBDIR=${NSDDBDIR} \
-		NSDRUNDIR=${NSDRUNDIR}
+		--with-user=${NSDUSER}
 
 USERS=		${NSDUSER}
 GROUPS=		${NSDGROUP}
 
-PORTDOCS=	CREDITS ChangeLog LICENSE NSD-DATABASE NSD-DIFFFILE \
-		NSD-4-features NSD-FOR-BIND-USERS README README.icc RELNOTES \
+PLIST_SUB=	NSDGROUP=${NSDGROUP} \
+		NSDRUNDIR=${NSDRUNDIR} \
+		NSDUSER=${NSDUSER}
+
+PORTDOCS=	CREDITS ChangeLog LICENSE NSD-4-features NSD-DATABASE \
+		NSD-DIFFFILE NSD-FOR-BIND-USERS README README.icc RELNOTES \
 		REQUIREMENTS TESTPLAN TODO UPGRADING coding-style \
 		differences.tex
 
-OPTIONS_DEFINE=		ROOT_SERVER LARGEFILE IPV6 BIND8_STATS CHECKING \
-		MINRESPSIZE NSEC3 MMAP DOCS RRL ZONE_STATS MUNIN_PLUGIN \
-		RADIXTREE PACKED DNSTAP
-OPTIONS_DEFAULT=	LARGEFILE NSEC3 MINRESPSIZE RRL RADIXTREE \
-		 BIND8_STATS ZONE_STATS
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		BIND8_STATS CHECKING DNSTAP DOCS IPV6 LARGEFILE \
+			MINRESPSIZE MMAP MUNIN_PLUGIN NSEC3 PACKED RADIXTREE \
+			RRL ZONE_STATS
+OPTIONS_DEFAULT=	BIND8_STATS LARGEFILE MINRESPSIZE NSEC3 RADIXTREE RRL \
+			ZONE_STATS
+OPTIONS_SUB=		yes
 
-MUNIN_PLUGIN_IMPLIES=	BIND8_STATS
-
-ROOT_SERVER_DESC=	Configure as a root server
-LARGEFILE_DESC=		Largefile support
 BIND8_STATS_DESC=	BIND8-like NSTATS & XSTATS
 CHECKING_DESC=		Internal run-time checks
-NSEC3_DESC=		NSEC3 support
+DNSTAP_DESC=		Enable dnstap logging support
+LARGEFILE_DESC=		Largefile support
 MINRESPSIZE_DESC=	Minimial response sizing
 MMAP_DESC=		Use mmap instead of malloc (experimental)
+MUNIN_PLUGIN_DESC=	Install Munin plugin (requires BIND8_STATS)
+NSEC3_DESC=		NSEC3 support
+PACKED_DESC=		Enable packed structures for reduced memory use
+RADIXTREE_DESC=		Enabled: more (15%) memory use but less CPU cycles
 RRL_DESC=		Response Rate Limiting
 ZONE_STATS_DESC=	Separate statistics for each zone
-MUNIN_PLUGIN_DESC=	Install Munin plugin (requires BIND8_STATS)
-RADIXTREE_DESC=		Enabled: more (15%) memory use but less CPU cycles
-PACKED_DESC=		Enable packed structures for reduced memory use
-DNSTAP_DESC=		Enable dnstap logging support
 
-ROOT_SERVER_CONFIGURE_ENABLE=	root-server
-LARGEFILE_CONFIGURE_ENABLE=	largefile
 BIND8_STATS_CONFIGURE_ENABLE=	bind8-stats
 CHECKING_CONFIGURE_ENABLE=	checking
-NSEC3_CONFIGURE_ENABLE=		nsec3
-MINRESPSIZE_CONFIGURE_ENABLE=	minimal-responses
-MMAP_CONFIGURE_ENABLE=		mmap
-RRL_CONFIGURE_ENABLE=		ratelimit
-ZONE_STATS_CONFIGURE_ENABLE=	zone-stats
-IPV6_CONFIGURE_ENABLE=		ipv6
-RADIXTREE_CONFIGURE_ENABLE=	radix-tree
-PACKED_CONFIGURE_ENABLE=	packed
-DNSTAP_CONFIGURE_ENABLE=	dnstap
 DNSTAP_LIB_DEPENDS=		libfstrm.so:devel/fstrm \
 				libprotobuf-c.so:devel/protobuf-c
+DNSTAP_CONFIGURE_ENABLE=	dnstap
+IPV6_CONFIGURE_ENABLE=		ipv6
+LARGEFILE_CONFIGURE_ENABLE=	largefile
+MINRESPSIZE_CONFIGURE_ENABLE=	minimal-responses
+MMAP_CONFIGURE_ENABLE=		mmap
+MUNIN_PLUGIN_IMPLIES=		BIND8_STATS
+NSEC3_CONFIGURE_ENABLE=		nsec3
+PACKED_CONFIGURE_ENABLE=	packed
+RADIXTREE_CONFIGURE_ENABLE=	radix-tree
+RRL_CONFIGURE_ENABLE=		ratelimit
+ZONE_STATS_CONFIGURE_ENABLE=	zone-stats
+
+NSDMAX_IPS?=	512
 
 post-build-MUNIN_PLUGIN-on:
-	${REINPLACE_CMD} \
-		-e 's|/usr/local|${LOCALBASE}|g' \
+	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		-e 's|/usr/local/etc/nsd.conf|${ETCDIR}/nsd.conf|g' \
 		-e 's|/usr/local/var/munin/plugin-state|/var/munin/plugin-state/root|g' \
 		-e '90s|/var/munin/plugin-state/root|$${MUNIN_PLUGSTATE}|' \
@@ -106,13 +95,14 @@ post-install:
 		${STAGEDIR}${PREFIX}/sbin/nsd-checkzone \
 		${STAGEDIR}${PREFIX}/sbin/nsd-control
 
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} \
+		${STAGEDIR}${DOCSDIR}
+
 post-install-MUNIN_PLUGIN-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/munin/plugins
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/nsd_munin_ \
 		${STAGEDIR}${PREFIX}/share/munin/plugins
-
-post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sys-RunAlways
 PORTVERSION=	0.06
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make sure there is always one invocation of a script active
+WWW=		https://metacpan.org/release/Sys-RunAlways
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

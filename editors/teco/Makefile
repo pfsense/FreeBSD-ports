@@ -1,6 +1,3 @@
-# Created by: Stanislav Sedov <stas@core.310.ru>
-# $FreeBSD$
-
 PORTNAME=	teco
 PORTVERSION=	0398
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	tecoclinux${PORTVERSION}
 
 MAINTAINER=	bob@eager.cx
 COMMENT=	Powerful and compact editor with nongraphical user interface
+WWW=		https://almy.us/teco.html
 
 LICENSE=	BSD3CLAUSE
 

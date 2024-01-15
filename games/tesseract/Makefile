@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tesseract
 DISTVERSION=	2014_05_12
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://download.tuxfamily.org/${PORTNAME}/
 PKGNAMESUFFIX=	-game
@@ -10,6 +8,7 @@ DISTNAME=	${PORTNAME}_${DISTVERSION}_first_edition_linux
 
 MAINTAINER=	operator@myrechenzentrum.net
 COMMENT=	Smooth FPS with map editing, instagib, DM and CTF
+WWW=		http://tesseract.gg/
 
 LICENSE=	ZLIB
 

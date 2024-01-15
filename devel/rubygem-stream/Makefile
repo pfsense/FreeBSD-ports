@@ -1,21 +1,17 @@
-# Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	stream
-PORTVERSION=	0.5
-PORTREVISION=	2
+PORTVERSION=	0.5.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Interface for external iterators
+WWW=		https://github.com/monora/stream
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 
-NO_ARCH=	yes
-
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

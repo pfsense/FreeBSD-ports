@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libcoverart
 PORTVERSION=	1.0.0
 PORTREVISION=	6
@@ -8,6 +6,7 @@ MASTER_SITES=	https://github.com/metabrainz/${PORTNAME}/releases/download/releas
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Library for accessing the MusicBrainz cover art archive
+WWW=		https://coverartarchive.org/
 
 LICENSE=	LGPL20
 

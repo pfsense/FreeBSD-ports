@@ -1,6 +1,3 @@
-# Created by: skreuzer
-# $FreeBSD$
-
 PORTNAME=	Net-OAuth-Simple
 PORTVERSION=	1.7
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Simple wrapper around the OAuth protocol
+WWW=		https://metacpan.org/release/Net-OAuth-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

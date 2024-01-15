@@ -1,26 +1,35 @@
-# Created by: Timothy Redaelli
-# $FreeBSD$
-
 PORTNAME=	pax-utils
-PORTVERSION=	1.2.2
+PORTVERSION=	1.3.4
+DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
-MASTER_SITES=	http://dev.gentoo.org/~vapier/dist/ \
-		LOCAL/sbz
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Various ELF related utils for ELF32, ELF64 binaries
+WWW=		https://www.gentoo.org/proj/en/hardened/pax-utils.xml
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake tar:xz
+BUILD_DEPENDS=	xmlto:textproc/xmlto
 
-PLIST_FILES=	bin/dumpelf bin/pspax bin/scanelf bin/scanmacho \
-		man/man1/dumpelf.1.gz man/man1/pspax.1.gz \
-		man/man1/scanelf.1.gz man/man1/scanmacho.1.gz
+USES=		gmake tar:xz
+USE_GITHUB=	yes
+GH_ACCOUNT=	gentoo
+
+PLIST_FILES=	bin/dumpelf \
+		bin/pspax \
+		bin/scanelf \
+		bin/scanmacho \
+		man/man1/dumpelf.1.gz \
+		man/man1/pspax.1.gz \
+		man/man1/scanelf.1.gz \
+		man/man1/scanmacho.1.gz
 PORTDOCS=	BUGS COPYING README.md TODO
 
 OPTIONS_DEFINE=	DOCS
+
+pre-install:
+	@(cd ${WRKSRC}/man; ${GMAKE} man)
 
 do-install:
 .for f in dumpelf pspax scanelf scanmacho

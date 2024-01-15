@@ -1,6 +1,8 @@
+/etc/inc/priv/avahi.priv.inc
 pkg/avahi.xml
 pkg/avahi/avahi.inc
-/etc/inc/priv/avahi.priv.inc
-www/avahi_settings.php
 %%DATADIR%%/info.xml
+www/avahi_settings.php
+www/shortcuts/pkg_avahi.inc
 @dir /etc/inc/priv
+@dir /etc/inc

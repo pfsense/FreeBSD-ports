@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-MixinFactory
 PORTVERSION=	0.92
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Class Factory with Selection of Mixins
+WWW=		https://metacpan.org/release/Class-MixinFactory
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

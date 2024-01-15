@@ -3,7 +3,7 @@
  * syslog-ng_log_viewer.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Lance Leger
  * All rights reserved.
  *
@@ -92,7 +92,7 @@ if ($savemsg) {
 }
 
 $tab_array = array();
-$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslog-ng.xml&amp;id=0");
+$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslogng.xml&amp;id=0");
 $tab_array[] = array("Advanced", false, "/pkg.php?xml=syslog-ng_advanced.xml");
 $tab_array[] = array("Log Viewer", true, "/syslog-ng_log_viewer.php");
 display_top_tabs($tab_array);
@@ -143,7 +143,7 @@ $form->addGlobal(new Form_Button(
 	'submit',
 	"Refresh",
 	null,
-	'fa-refresh'
+	'fa-solid fa-arrows-rotate'
 ))->addClass('btn-primary');
 
 $form->add($section);

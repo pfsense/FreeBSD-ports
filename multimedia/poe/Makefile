@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	poe
 PORTVERSION=	0.5.1
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	multimedia gnustep
 MASTER_SITES=	http://www.eskimo.com/~pburns/Poe/files/
 DISTNAME=	Poe-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vorbis comment editor for GNUstep
+WWW=		https://www.eskimo.com/~pburns/Poe/
 
 LICENSE=	GPLv2+
 

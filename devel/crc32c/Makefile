@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	crc32c
-DISTVERSION=	1.1.1
+DISTVERSION=	1.1.2
 CATEGORIES=	devel
 
 MAINTAINER=	amzo1337@gmail.com
 COMMENT=	CRC32C implementation supporting CPU-specific acceleration
+WWW=		https://github.com/google/crc32c
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

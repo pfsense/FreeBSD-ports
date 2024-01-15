@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	traverso
 DISTVERSION=	0.49.6
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	https://traverso-daw.org/download/12/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Digital audio workstation (DAW) with an innovative user interface
+WWW=		https://traverso-daw.org/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
@@ -29,7 +28,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libwavpack.so:audio/wavpack
 
 USES=		cmake compiler:c++11-lang desktop-file-utils localbase:ldflags pkgconfig qt:5
-USE_QT=		core gui printsupport xml widgets buildtools_build qmake_build
+USE_QT=		core gui printsupport xml widgets buildtools:build qmake:build
 
 CMAKE_OFF=	WANT_ALSA
 

@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
-
 PORTNAME=	subtitleoffsetmodificator
 PORTVERSION=	0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTFILES=	subtitle-offset-modificator.pl
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subtitle offset modificator
+WWW=		http://thomas.enix.org/SubtitleOffsetModificator
 
 LICENSE=	GPLv2+
 

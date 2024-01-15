@@ -1,6 +1,3 @@
-# Created by: Radim Kolar
-# $FreeBSD$
-
 PORTNAME=	webbench
 PORTVERSION=	1.5
 CATEGORIES=	benchmarks www
@@ -8,6 +5,7 @@ MASTER_SITES=	SUNSITE/apps/www/servers
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple forking web benchmark
+WWW=		http://home.tiscali.cz/~cz210552/webbench.html
 
 LICENSE=	GPLv2
 

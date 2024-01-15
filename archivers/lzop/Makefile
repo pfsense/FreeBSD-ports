@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	lzop
 DISTVERSION=	1.04
 CATEGORIES=	archivers
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.lzop.org/download/ \
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Fast file compressor similar to gzip, using the LZO library
+WWW=		https://www.lzop.org/
 
 LICENSE=	GPLv2+
 

@@ -1,6 +1,3 @@
-# Created by: dominik karczmarski <dominik@karczmarski.com>
-# $FreeBSD$
-
 PORTNAME=	fswatch
 DISTVERSION=	0.02beta5
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-0.02beta5
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	File system checksum checker
+WWW=		https://fswatch.sourceforge.net
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

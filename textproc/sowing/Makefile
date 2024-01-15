@@ -1,25 +1,26 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	sowing
 PORTVERSION=	1.1.18
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	http://ftp.mcs.anl.gov/pub/sowing/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text processing tools to generate documentation from source files
+WWW=		http://web.engr.illinois.edu/~wgropp/projects/software/sowing/
 
 BUILD_DEPENDS=	ppmtogif:graphics/netpbm
 RUN_DEPENDS=	ppmtogif:graphics/netpbm
 
-USES=		ghostscript gmake perl5
+USES=		ghostscript gmake perl5 tex
 USE_TEX=	latex dvipsk
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--datadir=${DATADIR}
-ALL_TARGET=	all-redirect
 
 MAKE_JOBS_UNSAFE=	yes
+ALL_TARGET=	all-redirect
+
+CONFLICTS_INSTALL=	bib2html # bin/bib2html
 
 post-patch:
 	@${REINPLACE_CMD} -e \

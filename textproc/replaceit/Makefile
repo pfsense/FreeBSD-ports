@@ -1,6 +1,3 @@
-# Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
-
 PORTNAME=	replaceit
 PORTVERSION=	1.0.1
 CATEGORIES=	textproc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://pldaniels.com/replaceit/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Light replacement to the combination of sed/awk/grep/head/tail
+WWW=		https://pldaniels.com/replaceit/
 
 LICENSE=	Sendmail
 LICENSE_NAME=	Sendmail License

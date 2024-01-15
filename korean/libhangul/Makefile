@@ -1,6 +1,3 @@
-# Created by: Hyogeol, Lee <hyogeollee@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libhangul
 PORTVERSION=	0.1.0
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	korean
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Library for Hangul processing
+WWW=		https://github.com/libhangul/libhangul
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

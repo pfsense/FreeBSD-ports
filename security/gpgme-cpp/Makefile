@@ -1,9 +1,6 @@
-# $FreeBSD$
-
-PORTREVISION=	1
+PORTREVISION=	0
 PKGNAMESUFFIX=	-${SLAVEPORT}
 
-MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Gpgme C++ bindings
 
 MASTERDIR=	${.CURDIR}/../../security/gpgme

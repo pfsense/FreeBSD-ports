@@ -1,6 +1,3 @@
-# Created by: Dennis Herrmann <adox@mcx2.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-FreeProxy
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Fetch proxies from free proxy lists
+WWW=		https://metacpan.org/release/WWW-FreeProxy
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-YAML>=0:textproc/p5-YAML

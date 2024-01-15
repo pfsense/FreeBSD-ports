@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Arabic language support
 
     SUBDIR += ae_fonts_mono
@@ -11,5 +8,6 @@
     SUBDIR += khotot
     SUBDIR += libitl
     SUBDIR += libreoffice
+    SUBDIR += py-hijri-converter
 
 .include <bsd.port.subdir.mk>

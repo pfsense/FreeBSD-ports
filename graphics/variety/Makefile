@@ -1,12 +1,11 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	variety
-PORTVERSION=	0.8.3
+PORTVERSION=	0.8.5
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Wallpaper changer
+WWW=		https://peterlevi.com/variety/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,19 +20,18 @@ RUN_DEPENDS=	${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}dbus>=1.1.1_1:devel/py-dbus@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}httplib2>=0.9:www/py-httplib2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>=3.4.1_1:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		bash>=4.3.33:shells/bash \
 		ca_root_nss>=3.17.4:security/ca_root_nss \
 		coreutils>=8.23:sysutils/coreutils \
-		ImageMagick6>=6.9.0.4,1:graphics/ImageMagick6 \
 		yelp>=3.14.1:x11/yelp
 
-USES=		desktop-file-utils gettext-tools gnome python:3.5+ shebangfix
+USES=		desktop-file-utils gettext-tools gnome magick:6,run python shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	varietywalls
 USE_GNOME=	gdkpixbuf2 gtk30 intltool pygobject3:run
-INSTALLS_ICONS=	yes
 USE_PYTHON=	autoplist distutils noflavors
 
 SHEBANG_FILES=	bin/variety data/scripts/*

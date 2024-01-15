@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	switchBashZsh
-PORTVERSION=	1.1
+PORTVERSION=	1.3
 CATEGORIES=	shells
 
 MAINTAINER=	bourne.identity@hotmail.com
 COMMENT=	Portable shell setup for Bash/Zsh across FreeBSD/Linux/Cygwin
+WWW=		https://github.com/bourne-again/switchBashZsh
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

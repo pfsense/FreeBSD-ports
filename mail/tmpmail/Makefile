@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	tmpmail
-DISTVERSION=	1.0.3
+DISTVERSION=	1.2.3
 CATEGORIES=	mail
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	CLI for the creation and use of temporary mail addresses
+WWW=		https://github.com/sdushantha/tmpmail
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

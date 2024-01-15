@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pam_krb5
 DISTVERSION=	2.4.13
 CATEGORIES=	security
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	-rh
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	The Red Hat Pluggable Authentication Module for Kerberos 5
+WWW=		https://fedorahosted.org/pam_krb5/
 
 LICENSE=	LGPL21 BSD3CLAUSE
 LICENSE_COMB=	dual

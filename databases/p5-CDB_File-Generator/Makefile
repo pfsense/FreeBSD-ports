@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	CDB_File-Generator
 PORTVERSION=	0.030
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate massive sorted CDB files simply
+WWW=		https://metacpan.org/release/CDB_File-Generator
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	cdbmake:databases/cdb \

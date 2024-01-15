@@ -1,6 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	seda
 PORTVERSION=	3.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-release-${VERSION_DATE}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Architecture for Highly Concurrent Server Applications
+WWW=		http://www.eecs.harvard.edu/~mdw/proj/seda/
 
 USE_JAVA=	yes
 USE_ANT=	yes

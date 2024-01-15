@@ -1,6 +1,3 @@
-# Created by: Mons Anderson <mons@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	common-sense
 PORTVERSION=	3.75
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Perl common defaults with lower memory usage
+WWW=		https://metacpan.org/release/common-sense
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	bounce
 PORTVERSION=	1.0
 PORTREVISION=	8
@@ -12,6 +9,7 @@ EXTRACT_SUFX=	.c
 
 MAINTAINER=	matt@efs.org
 COMMENT=	Bounce TCP connections to another machine/port
+WWW=		http://www.iagora.com/~espel/hacks.html
 
 USE_RC_SUBR=	bounce
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

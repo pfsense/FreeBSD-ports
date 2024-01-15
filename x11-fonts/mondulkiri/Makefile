@@ -1,6 +1,3 @@
-# Created by: Kuan-Chung Chiu <buganini@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mondulkiri
 PORTVERSION=	2
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	Mondulkiri_Unicode_fonts_V2E3s
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	Mondulkiri Khmer fonts
+WWW=		https://sourceforge.net/projects/khmer/
 
 USES=		fonts zip
 NO_BUILD=	yes

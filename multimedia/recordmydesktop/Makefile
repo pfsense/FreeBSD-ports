@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	recordmydesktop
 DISTVERSION=	0.3.8.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Record desktop sessions to an Ogg-Theora-Vorbis file
+WWW=		http://recordmydesktop.sourceforge.net/
 
 LICENSE=	GPLv2+
 

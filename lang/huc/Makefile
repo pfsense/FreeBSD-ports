@@ -1,6 +1,3 @@
-# Created by: Frederic Cambus
-# $FreeBSD$
-
 PORTNAME=	huc
 PORTVERSION=	3.21
 DISTVERSIONSUFFIX=	-src
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.zeograd.com/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PC Engine C compiler which can create ROMs (hucard) or CD images
+WWW=		https://www.zeograd.com/
 
 NO_WRKSUBDIR=	yes
 

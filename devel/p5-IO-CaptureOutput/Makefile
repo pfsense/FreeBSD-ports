@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	IO-CaptureOutput
 PORTVERSION=	1.1105
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Capture STDOUT/STDERR from subprocesses and XS/C modules
+WWW=		https://metacpan.org/release/IO-CaptureOutput
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	AnyEvent-Task
 PORTVERSION=	0.801
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bill.brinzer@gmail.com
 COMMENT=	Client/server-based asynchronous worker pool
+WWW=		https://metacpan.org/release/AnyEvent-Task
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Johann Visagie <johann@egenetics.com>
-# $FreeBSD$
-
 PORTNAME=	libxml
 PORTVERSION=	0.08
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	libxml-perl-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Collection of Perl5 modules for working with XML
+WWW=		https://metacpan.org/release/libxml-perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

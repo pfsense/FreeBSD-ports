@@ -1,6 +1,3 @@
-# Created by: osa
-# $FreeBSD$
-
 PORTNAME=	cjson
 PORTVERSION=	2.1.0
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	lua-cjson-${PORTVERSION}
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Fast JSON parsing and encoding support for Lua
+WWW=		https://www.kyne.com.au/~mark/software/lua-cjson.php
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

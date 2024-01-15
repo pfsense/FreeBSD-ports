@@ -1,6 +1,3 @@
-# Created by: Wei-chun Chao
-# $FreeBSD$
-
 PORTNAME=	Mail-Sendmail
 PORTVERSION=	0.80
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module implementing a simple, platform-independent mailer
+WWW=		https://metacpan.org/release/Mail-Sendmail
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

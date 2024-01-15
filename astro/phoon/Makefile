@@ -1,6 +1,3 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	phoon
 PORTVERSION=	2014
 CATEGORIES=	astro
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}${PORTVERSION}
 
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	Displays the phase of the moon
+WWW=		https://www.acme.com/software/phoon/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

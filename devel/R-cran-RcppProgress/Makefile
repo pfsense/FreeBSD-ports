@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	RcppProgress
 PORTVERSION=	0.4.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Interruptible Progress Bar with OpenMP Support for C++ in R Packages
+WWW=		https://cran.r-project.org/web/packages/RcppProgress/
 
 LICENSE=	GPLv3
 

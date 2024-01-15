@@ -1,6 +1,3 @@
-# Created by: krion
-# $FreeBSD$
-
 PORTNAME=	dnsflood
 PORTVERSION=	1.20
 CATEGORIES=	dns
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	DNS flood detector
+WWW=		http://www.adotout.com/
 
 LICENSE=	GPLv2
 

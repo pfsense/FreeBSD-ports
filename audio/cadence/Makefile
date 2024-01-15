@@ -1,27 +1,31 @@
-# $FreeBSD$
-
 PORTNAME=	cadence
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.1
-PORTREVISION=	3
+DISTVERSION=	0.9.2
+PORTREVISION=	4
 CATEGORIES=	audio
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	bf25db6ebdc6437fce5a60afd203fee169efd068.diff:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Collection of tools useful for audio production
+WWW=		https://kxstudio.linuxaudio.org/Applications:Cadence
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	jackit>0:audio/jack
+RUN_DEPENDS=	jackit>0:audio/jack \
+		jack_capture:audio/jack-capture
 
-USES=		compiler:c++11-lang gmake localbase pkgconfig \
-		python:3.4+ pyqt:5 qt:5 shebangfix tar:bz2
+USES=		compiler:c++11-lang desktop-file-utils gmake localbase pkgconfig \
+		python pyqt:5 qt:5 shebangfix tar:bz2
 SHEBANG_FILES=	src/*.py
+USE_QT=		core gui widgets buildtools:build
+USE_PYQT=	pyqt5 sip
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	falkTX
 GH_PROJECT=	Cadence
-USE_QT=		core gui widgets buildtools_build
-USE_PYQT=	core_run gui_run network_run widgets_run sip xml dbussupport
 
 CXXFLAGS+=	-DJACKBRIDGE_PROPER_CPP11_SUPPORT=yes
 # Give the Makefile the proper versioned binaries of PyQt

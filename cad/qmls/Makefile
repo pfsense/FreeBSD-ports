@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	qmls
 PORTVERSION=	0.2
 CATEGORIES=	cad

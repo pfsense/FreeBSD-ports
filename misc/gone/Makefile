@@ -1,6 +1,3 @@
-# Created by: marcus
-# $FreeBSD$
-
 PORTNAME=	gone
 PORTVERSION=	1.3.6
 CATEGORIES=	misc

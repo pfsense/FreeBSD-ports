@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	volumeicon
 PORTVERSION=	0.5.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight volume control for the systray
+WWW=		https://github.com/Maato/volumeicon/
 
 LICENSE=	GPLv3
 

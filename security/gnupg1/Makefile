@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	gnupg
 PORTVERSION=	1.4.23
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 PKGNAMESUFFIX=	1
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	The GNU Privacy Guard (minimalist "classic" version)
+WWW=		https://www.gnupg.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -46,7 +45,7 @@ ICONV_CONFIGURE_ENABLE=	gnupg-iconv
 
 LIBUSB_CONFIGURE_WITH=	libusb=${LOCALBASE}
 
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_WITH=	ldap=${LOCALBASE}
 
 NLS_USES=		gettext
@@ -54,8 +53,13 @@ NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386" && ${COMPILER_TYPE} == "clang"
+.if (${ARCH} == "i386" || ${ARCH} == "powerpc") && ${COMPILER_TYPE} == "clang"
 CFLAGS+=	-fheinous-gnu-extensions
+.endif
+
+.if ${ARCH} == "powerpc" && ${COMPILER_TYPE} == "clang"
+BUILD_DEPENDS+=	as:devel/binutils
+CFLAGS+=	-fno-integrated-as
 .endif
 
 post-install-DOCS-on:

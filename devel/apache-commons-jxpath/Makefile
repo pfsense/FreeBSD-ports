@@ -1,6 +1,3 @@
-# Created by: Nemo Liu <nemoliu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	commons-jxpath
 PORTVERSION=	1.3
 CATEGORIES=	devel www java
@@ -12,6 +9,7 @@ LICENSE=	APACHE20
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utilities for manipulating Java Beans using the XPath syntax
+WWW=		https://commons.apache.org/proper/commons-jxpath/
 
 USE_JAVA=	yes
 NO_BUILD=	yes

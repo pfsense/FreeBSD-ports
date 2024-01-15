@@ -1,6 +1,3 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	spambnc
 DISTVERSION=	30-final
 PORTEPOCH=	1
@@ -11,6 +8,7 @@ DIST_SUBDIR=	spambnc-${PORTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Set of procmail recipes which handle known/suspected spam
+WWW=		http://www.spambouncer.org/
 
 LICENSE=	GPLv2
 

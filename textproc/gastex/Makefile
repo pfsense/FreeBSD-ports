@@ -1,6 +1,3 @@
-# Created by: Volker Stolz <vs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gastex
 PORTVERSION=	3.0
 CATEGORIES=	textproc
@@ -11,14 +8,16 @@ EXTRACT_ONLY=	# none
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphs and Automata Simplified in TeX
+WWW=		https://www.lsv.ens-cachan.fr/~gastin/gastex/
+
+USES=		tex
+USE_TEX=	latex:run
 
 NO_ARCH=	yes
-USE_TEX=	latex:run
 NO_BUILD=	yes
 
 EXAMPLES_DISTFILES=	ex-gastex.tex
 
-TEXMFDIR?=	share/texmf
 GASTEXDIR=	${PREFIX}/${TEXMFDIR}/tex/latex/gastex
 GASDVIDIR=	${PREFIX}/${TEXMFDIR}/dvips/gastex
 

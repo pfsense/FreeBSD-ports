@@ -1,23 +1,19 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	cjdns
 DISTVERSIONPREFIX=	cjdns-v
 DISTVERSION=	21.1
+PORTREVISION=	1
 CATEGORIES=	net security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Routing engine designed for security, scalability, speed
+WWW=		https://github.com/cjdelisle/cjdns
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64=	fails to install: cjdns-cjdns-v20.3/cjdroute: No such file or directory
+BUILD_DEPENDS=	bash:shells/bash
 
-BUILD_DEPENDS=	node:www/node \
-		bash:shells/bash
-
-USES=		gmake python
+USES=		gmake nodejs:build python
 USE_GITHUB=	yes
 GH_ACCOUNT=	cjdelisle
 USE_RC_SUBR=	cjdns

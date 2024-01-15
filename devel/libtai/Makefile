@@ -1,16 +1,13 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
-
 PORTNAME=	libtai
 PORTVERSION=	0.60
 PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	http://cr.yp.to/libtai/ \
-		ftp://ftp.sunsite.auc.dk/disk1/qmail/ \
 		ftp://ftp.task.gda.pl/mirror/mirror.qmail.org/koobera/pub/software/
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Library for storing and manipulating dates and times
+WWW=		https://cr.yp.to/libtai.html
 
 LICENSE=	UNLICENSE
 

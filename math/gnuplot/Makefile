@@ -1,21 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	gnuplot
-PORTVERSION=	5.4.0
+PORTVERSION=	5.4.1
+PORTREVISION=	5
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT?=	Command-line driven graphing utility
+WWW=		http://www.gnuplot.info/
 
 LICENSE=	Gnuplot
 LICENSE_NAME=	Gnuplot license
 LICENSE_FILE=	${WRKSRC}/Copyright
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-CONFLICTS_INSTALL?=	gnuplot-lite-[0-9]*
+CONFLICTS_INSTALL?=	gnuplot-lite
 
-USES+=		compiler:c++11-lang groff iconv pkgconfig readline
+USES+=		compiler:c++11-lang cpe groff iconv pkgconfig readline
+CPE_VENDOR=	gnuplot_project
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 CONFIGURE_ARGS+=--with-readline=gnu \
@@ -42,7 +43,7 @@ CONFIGURE_ARGS+=--disable-x11-mbfonts \
 		--without-kpsexpand
 PLIST_SUB+=	X11="@comment "
 .else
-USES+=		gnome jpeg lua:53 ncurses xorg
+USES+=		gnome jpeg lua:53 ncurses tex xorg
 USE_TEX=	kpathsea
 USE_GNOME+=	atk cairo gtk30 gdkpixbuf2
 USE_WX=		3.0+

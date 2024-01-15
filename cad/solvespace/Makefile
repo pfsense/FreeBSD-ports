@@ -1,13 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	solvespace
-PORTVERSION=	2.3
+PORTVERSION=	3.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	2
 CATEGORIES=	cad
 
-MAINTAINER=	swills@FreeBSD.org
+PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
+PATCHFILES=	6b9e7b2e.patch:-p1
+
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Parametric 2d/3d CAD
+WWW=		https://solvespace.com/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
@@ -15,20 +17,19 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libjson-c.so:devel/json-c \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libgtkmm-2.4.so:x11-toolkits/gtkmm24
+		libfreetype.so:print/freetype2
 
-USE_GITHUB=	yes
-GH_PROJECT=	libdxfrw:libdxfrw
-GH_TAGNAME=	8f95895:libdxfrw
-GH_SUBDIR=	extlib/libdxfrw:libdxfrw
-
-USES=		cmake compiler:c++11-lang gl gnome pkgconfig xorg
+USES=		cmake compiler:c++11-lang eigen:3 gl gnome pkgconfig xorg
 USE_GL=		gl glu glew
-USE_GNOME=	atkmm gtk20 pangomm
+USE_GNOME=	gtkmm30 pangomm
 USE_XORG=	x11
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	microsoft:mimalloc
+GH_PROJECT=	libdxfrw:libdxfrw mimalloc:mimalloc
+GH_TAGNAME=	0b7b7b7:libdxfrw 38a0322:mimalloc
+GH_SUBDIR=	extlib/libdxfrw:libdxfrw extlib/mimalloc:mimalloc
 
 post-patch:
 	${REINPLACE_CMD} -e '/-stdlib=libc++/d' ${WRKSRC}/CMakeLists.txt

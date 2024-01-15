@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	luscus
 DISTVERSION=	0.8.6
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Molecular editor and viewer
+WWW=		https://sourceforge.net/projects/luscus/
 
 LICENSE=	AFL
 LICENSE_NAME=	Academic Free License
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgdkglext-x11-1.0.so:x11-toolkits/gtkglext
 RUN_DEPENDS=	bash:shells/bash \
-		babel:science/openbabel
+		obabel:science/openbabel # see https://sourceforge.net/p/luscus/tickets/5/
 
 USES=		cmake compiler:c++11-lang gettext-runtime gl gnome pkgconfig \
 		shebangfix xorg

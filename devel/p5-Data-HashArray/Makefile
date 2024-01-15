@@ -1,6 +1,3 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-HashArray
 PORTVERSION=	1.03
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Array class of hashes with properties via overloading and AUTOLOAD
+WWW=		https://metacpan.org/release/Data-HashArray
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

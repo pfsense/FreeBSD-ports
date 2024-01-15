@@ -1,18 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	concourse
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.7.2
+PORTREVISION=	15
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Automation system written in Go
+WWW=		https://concourse-ci.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		go:modules
+USES=		cpe go:modules
 USE_GITHUB=	yes
+
+CONFLICTS_INSTALL=	concourse-fly fly # bin/fly
+
+CPE_VENDOR=	pivotal_software
 
 GH_TUPLE=	\
 		Azure:go-autorest:5bd9621f41a0:azure_go_autorest_date/vendor/github.com/Azure/go-autorest \

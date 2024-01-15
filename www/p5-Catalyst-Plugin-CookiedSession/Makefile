@@ -1,6 +1,3 @@
-# Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-CookiedSession
 PORTVERSION=	0.35
 PORTREVISION=	2
@@ -8,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst Plugin for storing sessions in a browser cookie
+WWW=		https://metacpan.org/release/Catalyst-Plugin-CookiedSession
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \

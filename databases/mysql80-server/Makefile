@@ -1,8 +1,5 @@
-# Created by: Mahdi Mokhtari <mokhi64@gmail.com>
-# $FreeBSD$
-
 PORTNAME?=		mysql
-PORTVERSION=		8.0.23
+PORTVERSION=		8.0.35
 PORTREVISION?=		0
 CATEGORIES=		databases
 MASTER_SITES=		MYSQL/MySQL-8.0
@@ -11,16 +8,19 @@ DISTNAME=		${PORTNAME}-boost-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 MAINTAINER=		joneum@FreeBSD.org
 COMMENT?=		Multithreaded SQL database (server)
+WWW=		https://www.mysql.com/
 
 LICENSE=		GPLv2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 SLAVEDIRS=	databases/mysql80-client
-USES=		bison:build cmake:noninja compiler:c++17-lang cpe \
-		groff:run libedit localbase ncurses perl5 pkgconfig shebangfix ssl
+USES=		bison:build cmake:noninja cpe groff:run libedit localbase \
+		ncurses perl5 pkgconfig shebangfix ssl
 
-USE_CXXSTD=	c++14
+CPE_VENDOR=	oracle
+
+USE_CXXSTD=	c++17
 USE_PERL5=	run
 
 MY_DBDIR=	/var/db/mysql
@@ -31,12 +31,14 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libevent.so:devel/libevent \
 		libicutu.so:devel/icu \
 		liblz4.so:archivers/liblz4 \
-		libzstd.so:archivers/zstd \
-		libprotobuf.so:devel/protobuf \
+		libfido2.so:security/libfido2 \
+		libhidapi.so:comms/hidapi \
 		${LIB_DEPENDS_${ARCH}}
 LIB_DEPENDS_aarch64=	libunwind.so:devel/libunwind
 LIB_DEPENDS_amd64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_armv7=	libunwind.so:devel/libunwind
 LIB_DEPENDS_i386=	libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc=		libunwind.so:devel/libunwind
 LIB_DEPENDS_powerpc64=		libunwind.so:devel/libunwind
 LIB_DEPENDS_powerpc64le=	libunwind.so:devel/libunwind
 
@@ -44,12 +46,15 @@ BUILD_DEPENDS=	liblz4>0:archivers/liblz4 \
 		${BUILD_DEPENDS_${ARCH}}
 BUILD_DEPENDS_aarch64=	libunwind>0:devel/libunwind
 BUILD_DEPENDS_amd64=	libunwind>0:devel/libunwind
+BUILD_DEPENDS_armv7=	libunwind>0:devel/libunwind
 BUILD_DEPENDS_i386=	libunwind>0:devel/libunwind
+BUILD_DEPENDS_powerpc=	libunwind>0:devel/libunwind
 BUILD_DEPENDS_powerpc64=	libunwind>0:devel/libunwind
 BUILD_DEPENDS_powerpc64le=	libunwind>0:devel/libunwind
 
 CMAKE_BUILD_TYPE=	Release
 CFLAGS+=		-fPIC
+CFLAGS_aarch64?=	-march=armv8-a+crc+crypto
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_LDCONFIGDIR="${LOCALBASE}/libdata/ldconfig" \
@@ -59,7 +64,8 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
 		-DINSTALL_INFODIR="${INFO_PATH}" \
 		-DINSTALL_LIBDIR="lib/mysql" \
-		-DINSTALL_MANDIR="man" \
+		-DINSTALL_PRIV_LIBDIR="lib/mysql/private" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="${MY_DBDIR}" \
 		-DINSTALL_MYSQLKEYRINGDIR="etc/mysql/keyring" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
@@ -78,10 +84,10 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DWITH_LZ4=system \
 		-DWITH_ICU=system \
 		-DWITH_CURL=system \
-		-DWITH_ZLIB=system \
-		-DWITH_ZSTD=system \
-		-DWITH_PROTOBUF=system \
-		-DWITH_SSL=${OPENSSLBASE} \
+		-DWITH_ZSTD=bundled \
+		-DWITH_PROTOBUF=bundled \
+		-DWITH_SSL=system \
+		-DWITH_AUTHENTICATION_FIDO=1 \
 		-DBUILD_BUNDLED_ZLIB=0 \
 		-DBUILD_BUNDLED_LZ4=0
 
@@ -112,11 +118,10 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 .if !defined(CLIENT_ONLY)
 USES+=		mysql:80
 
-CONFLICTS_INSTALL=	mysql8[1-9]-server-* \
-			mysql[0-79][0-9]-server-* \
-			mysqlwsrep* \
-			mariadb[0-9][0-9]-server-* \
-			percona[0-9][0-9]-server-*
+CONFLICTS_INSTALL=	mysql*-server \
+			mysqlwsrep*-server \
+			mariadb*-server \
+			percona*-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -135,6 +140,8 @@ MMAN8=		mysqld.8
 
 CMAKE_ARGS+=	-DWITH_EMBEDDED_SERVER="ON"
 CMAKE_ARGS+=	-DWITHOUT_CLIENTLIBS="ON"
+# Disable unit tests, it fails on !amd64 and <13.0 due to c++17 rules
+CMAKE_ARGS+=   -DWITH_UNIT_TESTS="OFF"
 
 OPTIONS_GROUP=		STORAGE
 OPTIONS_GROUP_STORAGE=	ARCHIVE BLACKHOLE EXAMPLE FEDERATED INNOBASE PARTITION PERFSCHEMA
@@ -174,34 +181,27 @@ FEDERATED_SUB_LIST_OFF+=	FEDER=""
 # which is broken on i386 due to different size of types and caused a
 # 'static_assert(alignof(T) <= alignof(std::max_align_t))' error
 .if ${ARCH} == i386
-CMAKE_ARGS+=	-DDISABLE_PSI_MEMORY=1
+#CMAKE_ARGS+=	-DDISABLE_PSI_MEMORY=1
+SSP_UNSAFE=	yes
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
+.if ${ARCH} == powerpc
+LDFLAGS+=	-latomic
+USES+=		compiler:gcc-c++11-lib
 .else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+CXXFLAGS+=	-malign-double
+USES+=		compiler:c++17-lang
 .endif
 
 .include <bsd.port.pre.mk>
 
-.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && ${OSVERSION} >= 1300109 || ${ARCH} == "i386"
-BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-CC=		${LOCALBASE}/bin/clang${LLVM_DEFAULT}
-CPP=		${LOCALBASE}/bin/clang${LLVM_DEFAULT}
-CXX=		${LOCALBASE}/bin/clang++${LLVM_DEFAULT}
-.endif
-
-.if ${ARCH} == "i386" && ${OSVERSION} < 1200000
-# clang 7.x and 8.x do not build properly on 11i386
-CPP=		clang-cpp${LLVM_DEFAULT}
-CC=		clang${LLVM_DEFAULT}
-CXX=		clang++${LLVM_DEFAULT}
-BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-.endif
-
 post-extract:
 	@${RM} -rv ${WRKSRC}/sql/sql_hints.yy.cc ${WRKSRC}/sql/sql_hints.yy.h
+
+# XXX MBi alignment issue
+.if ${ARCH} == i386
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-boost-boost_1_77_0-boost-move-detail-type_traits.hpp
+.endif
 
 .if !defined(CLIENT_ONLY)
 post-install:

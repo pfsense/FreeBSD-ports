@@ -1,6 +1,3 @@
-# Created by: sada
-# $FreeBSD$
-
 PORTNAME=	mikachan
 PORTVERSION=	9.1
 CATEGORIES=	japanese x11-fonts
@@ -12,6 +9,13 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	TsurutaniNaoki@gmail.com
 COMMENT=	Handwritten Japanese TrueType fonts by Mika-chan
+WWW=		http://mikachan-font.com/
+
+# Converted from NO_CDROM
+LICENSE=	mikachan
+LICENSE_NAME=	mikachan
+LICENSE_TEXT=	Do not sell distfile
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 EXTRACT_DEPENDS=	lha:archivers/lha
 
@@ -20,7 +24,6 @@ FONTNAME=	TTF
 EXTRACT_CMD=	lha
 EXTRACT_BEFORE_ARGS=	pq
 EXTRACT_AFTER_ARGS=	> ${WRKSRC}/mika.ttf
-NO_CDROM=	Do not sell distfile
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

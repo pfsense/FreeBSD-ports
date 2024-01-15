@@ -1,14 +1,12 @@
-# Created by: Blaz Zupan <blaz@si.FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nagios
 PORTVERSION=	3.5.1
 PORTREVISION=	12
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-3.x/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Powerful network monitoring system
+WWW=		https://www.nagios.org/
 
 LICENSE=	GPLv2
 
@@ -17,11 +15,11 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 
 PORTSCOUT=	limit:^3.
 
-USES=		cpe perl5 php
+USES=		cpe localbase perl5 php
 USE_PERL5=	build
 USE_RC_SUBR=	nagios
 
-CONFLICTS=	nagios-[12].* nagios-devel-* nagios4-*
+CONFLICTS=	nagios-[12].* nagios-devel nagios4
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-command-user=${NAGIOSUSER} \
@@ -40,10 +38,6 @@ CONFIGURE_ARGS=	--with-command-user=${NAGIOSUSER} \
 		--disable-statuswrl \
 		ac_cv_lib_iconv_main=no
 CONFIGURE_ENV=	PERL=${PERL}
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-CFLAGS+=	${CPPFLAGS}
-LIBS+=		-L${LOCALBASE}/lib
 
 MAKE_JOBS_UNSAFE=	yes
 

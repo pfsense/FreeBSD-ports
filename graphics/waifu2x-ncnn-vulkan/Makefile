@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	waifu2x-ncnn-vulkan
-DISTVERSION=	20210102
+DISTVERSION=	20220728
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Scale and denoise images using convolutional neural networks
+WWW=		https://github.com/nihui/waifu2x-ncnn-vulkan
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,8 +16,8 @@ LIB_DEPENDS=	libwebp.so:graphics/webp \
 USES=		cmake compiler:${OPENMP}c++11-lib
 USE_GITHUB=	yes
 GH_ACCOUNT=	nihui
-GH_TUPLE=	KhronosGroup:glslang:8.13.3743-39-gd39b8afc:glslang/src/ncnn/glslang \
-		Tencent:ncnn:20201218-30-g54c0a13b:ncnn/src/ncnn
+GH_TUPLE=	KhronosGroup:glslang:11.9.0-19-g86ff4bca:glslang/src/ncnn/glslang \
+		Tencent:ncnn:20220721-10-gb4ba207c:ncnn/src/ncnn
 CMAKE_SOURCE_PATH=	${WRKSRC}/src
 CMAKE_ON=	USE_SYSTEM_WEBP
 PLIST_FILES=	bin/${PORTNAME}

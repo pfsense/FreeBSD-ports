@@ -1,6 +1,3 @@
-# Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	quirc
 PORTVERSION=	0.9.84
 PORTREVISION=	6
@@ -9,20 +6,15 @@ MASTER_SITES=	https://BSDforge.com/projects/source/irc/quirc/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Tcl/Tk IRC client for the X Window System
+WWW=		https://BSDforge.com/projects/irc/quirc/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	DOCS
+BROKEN=		Unfetchable
 
 USES=		tk xorg
-USE_XORG=	xt
-
 GNU_CONFIGURE=	yes
-MAKE_ENV+=	DESTDIR=${STAGEDIR}
-
-PORTDOCS=	AUTHORS ChangeLog FAQ NEWS README doc/*.txt
-
 CONFIGURE_ARGS=	--with-wish=${WISH} \
 		--with-tcl-include-dir=${TCL_INCLUDEDIR} \
 		--with-tk-include-dir=${TK_INCLUDEDIR} \
@@ -31,6 +23,11 @@ CONFIGURE_ARGS=	--with-wish=${WISH} \
 		--with-tcl-lib=tcl${TCL_SHLIB_VER} \
 		--with-tk-lib=tk${TCL_SHLIB_VER} \
 		--with-tcl-version=${TCL_VER}
+USE_XORG=	ice sm x11
+
+PORTDOCS=	AUTHORS ChangeLog FAQ NEWS README doc/*.txt
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/common

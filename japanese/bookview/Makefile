@@ -1,6 +1,3 @@
-# Created by: Motoyuki Kasahara <m-kasahr@sra.co.jp>
-# $FreeBSD$
-
 PORTNAME=	bookview
 PORTVERSION=	3.2.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	ftp://ftp.sra.co.jp/pub/net/ndtp/bookview/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	NDTP client written in Tcl/Tk
+WWW=		http://www.sra.co.jp/people/m-kasahr/bookview/
 
 USES=		tk:wrapper
 

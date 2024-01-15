@@ -1,6 +1,3 @@
-# Created by: Cyrille Lefevre <Cyrille.Lefevre@laposte.net>
-# $FreeBSD$
-
 PORTNAME=	heirloom
 PORTVERSION=	070715
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Collection of standard Unix utilities
+WWW=		https://heirloom.sourceforge.net/
 
 BUILD_DEPENDS=	ksh:shells/pdksh
 RUN_DEPENDS:=	${BUILD_DEPENDS}

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	ros-rosdep
-DISTVERSION=	0.18.0
+DISTVERSION=	0.21.0
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	trueos@norwegianrockcat.com
 COMMENT=	Multi-package manager system dependency tool for ROS
+WWW=		https://docs.ros.org/independent/api/rosdep/html/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +15,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ros-catkin_pkg>=0.4.0:devel/ros-catkin_pkg@$
 		${PYTHON_PKGNAMEPREFIX}ros-rosdistro>=0:devel/ros-rosdistro@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=3:devel/py-yaml@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 
 USE_PYTHON=	autoplist distutils
 

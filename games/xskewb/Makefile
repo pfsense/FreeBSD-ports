@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	xskewb
 PORTVERSION=	5.5.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	XCONTRIB/games/xpuzzles
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Skewb puzzle (similar to Rubik's Cube) for X Window
+WWW=		http://www.tux.org/~bagleyd/puzzles.html
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 USES=		imake xorg

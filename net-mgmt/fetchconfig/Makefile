@@ -1,12 +1,10 @@
-# Created by: salexanov@gmail.com
-# $FreeBSD$
-
 PORTNAME=	fetchconfig
 DISTVERSION=	0.26
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	salexanov@gmail.com
 COMMENT=	Perl script for retrieving configuration of various network devices
+WWW=		https://github.com/udhos/fetchconfig
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

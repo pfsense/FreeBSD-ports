@@ -1,15 +1,13 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	diffmark
 PORTVERSION=	0.10
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.mangrove.cz/diffmark/ \
 		http://penguin.cz/~vbarta/diffmark/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XML diff and merge package
+WWW=		http://www.mangrove.cz/diffmark/
 
 USES=		gnome libtool pkgconfig
 USE_GNOME=	libxml2

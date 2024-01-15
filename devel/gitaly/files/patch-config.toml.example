@@ -1,59 +1,54 @@
---- config.toml.example.orig	2020-09-21 16:21:08 UTC
+--- config.toml.example.orig	2023-12-20 08:48:30 UTC
 +++ config.toml.example
 @@ -2,10 +2,10 @@
- # Documentation lives at https://docs.gitlab.com/ee/administration/gitaly/ and
- # https://docs.gitlab.com/ee//administration/gitaly/reference
+ # For Gitaly documentation, see https://docs.gitlab.com/ee/administration/gitaly/
  
+ # A path which Gitaly should open a Unix socket.
 -socket_path = "/home/git/gitlab/tmp/sockets/private/gitaly.socket"
 +socket_path = "%%PREFIX%%/www/gitlab-ce/tmp/sockets/private/gitaly.socket"
  
- # The directory where Gitaly's executables are stored
--bin_dir = "/home/git/gitaly"
+ # Directory containing Gitaly executables.
+-bin_dir = "/home/git/gitaly/_build/bin"
 +bin_dir = "%%PREFIX%%/share/gitaly/bin/"
  
- # # Optional: listen on a TCP socket. This is insecure (no authentication)
- # listen_addr = "localhost:9999"
-@@ -29,13 +29,13 @@ bin_dir = "/home/git/gitaly"
+ # # Optional. The directory where Gitaly can create all files required to
+ # # properly operate at runtime. If not set, Gitaly will create a directory in
+@@ -39,9 +39,9 @@ bin_dir = "/home/git/gitaly/_build/bin"
+ # # Path to the key.
  # key_path = '/home/git/key.pem'
  
- # # Git settings
+-# # Git settings
 -# [git]
 -# bin_path = "/usr/bin/git"
++# Git settings
 +[git]
 +bin_path = "%%PREFIX%%/bin/git"
  # catfile_cache_size = 100
- 
- [[storage]]
+ #
+ # [[git.config]]
+@@ -53,7 +53,7 @@ bin_dir = "/home/git/gitaly/_build/bin"
+ # # The name of the storage
  name = "default"
+ # # The path to the storage.
 -path = "/home/git/repositories"
 +path = "%%PREFIX%%/git/repositories"
  
  # # You can optionally configure more storages for this Gitaly instance to serve up
  #
-@@ -47,7 +47,7 @@ path = "/home/git/repositories"
+@@ -63,9 +63,9 @@ path = "/home/git/repositories"
+ #
+ 
  # # You can optionally configure Gitaly to output JSON-formatted log messages to stdout
- # [logging]
+-# [logging]
++[logging]
  # # The directory where Gitaly stores extra log files
 -dir = "/home/git/gitlab/log"
 +dir = "%%PREFIX%%/www/gitlab-ce/log"
  # format = "json"
- # # Optional: Set log level to only log entries with that severity or above
+ # # Optional. Set log level to only log entries with that severity or above
  # # One of, in order: debug, info, warn, errror, fatal, panic
-@@ -65,7 +65,7 @@ dir = "/home/git/gitlab/log"
- 
- [gitaly-ruby]
- # The directory where gitaly-ruby is installed
--dir = "/home/git/gitaly/ruby"
-+dir = "%%PREFIX%%/share/gitaly/ruby"
- 
- # # Gitaly-ruby resident set size (RSS) that triggers a memory restart (bytes)
- # max_rss = 200000000
-@@ -85,14 +85,14 @@ dir = "/home/git/gitaly/ruby"
- 
- [gitlab-shell]
- # The directory where gitlab-shell is installed
--dir = "/home/git/gitlab-shell"
-+dir = "%%PREFIX%%/share/gitlab-shell"
+@@ -80,11 +80,11 @@ dir = "/home/git/gitlab/log"
+ # grpc_latency_buckets = [0.001, 0.005, 0.025, 0.1, 0.5, 1.0, 10.0, 30.0, 60.0, 300.0, 1500.0]
  
  [hooks]
 -custom_hooks_dir = "/home/git/custom_hooks"

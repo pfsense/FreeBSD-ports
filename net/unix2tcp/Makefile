@@ -1,14 +1,15 @@
-# Created by: Michael L. Hostbaek (mich@freebsdcluster.org)
-# $FreeBSD$
-
 PORTNAME=	unix2tcp
-PORTVERSION=	0.8.2
+PORTVERSION=	0.8.3
 CATEGORIES=	net
-MASTER_SITES=	http://freebsdcluster.org/~mich/software/ \
-		http://ahriman.bucharest.roedu.net/unix2tcp/
+MASTER_SITES=	https://codeberg.org/portmaster/${PORTNAME}/archive/
+DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
+DISTNAME=	${PORTNAME}
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Connection forwarder that converts Unix sockets into TCP sockets
+WWW=		https://codeberg.org/portmaster/unix2tcp/
+
+LICENSE=	GPLv2
 
 CFLAGS+=	-DHAVE_CONFIG_H -I.
 GNU_CONFIGURE=	yes

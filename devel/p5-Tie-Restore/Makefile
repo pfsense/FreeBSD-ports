@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tie-Restore
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Restores ties to an existing object
+WWW=		https://metacpan.org/release/Tie-Restore
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

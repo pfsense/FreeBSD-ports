@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	plasma
 DISTVERSION=	g20180708
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Interactive disassembler for x86/ARM/MIPS
+WWW=		https://www.github.com/plasma-disassembler/plasma
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash \
 		binutils>=2:devel/binutils \
-		capstone4>=3:devel/capstone4
+		capstone>=3:devel/capstone
 RUN_DEPENDS=	binutils>=2:devel/binutils \
 		${PYTHON_PKGNAMEPREFIX}capstone>=3:devel/py-capstone@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}future>=0:devel/py-future@${PY_FLAVOR} \
@@ -23,7 +22,7 @@ RUN_DEPENDS=	binutils>=2:devel/binutils \
 		${PYTHON_PKGNAMEPREFIX}pefile>=0:devel/py-pefile@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyelftools>=0:devel/py-pyelftools@${PY_FLAVOR}
 
-USES=		python:3.4+ shebangfix
+USES=		python shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	plasma-disassembler

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Email-MIME
-PORTVERSION=	1.949
+PORTVERSION=	1.953
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy MIME message parsing
+WWW=		https://metacpan.org/release/Email-MIME
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

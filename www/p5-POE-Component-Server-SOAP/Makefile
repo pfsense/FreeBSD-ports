@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Server-SOAP
 PORTVERSION=	1.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Publish POE event handlers via SOAP over HTTP
+WWW=		https://metacpan.org/release/POE-Component-Server-SOAP
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-SOAP-Lite>=0.55:net/p5-SOAP-Lite \

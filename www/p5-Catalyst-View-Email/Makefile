@@ -1,6 +1,3 @@
-# Created by: Tomoyuki Sakurai <cherry@trombik.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-Email
 PORTVERSION=	0.36
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst View for Email
+WWW=		https://metacpan.org/release/Catalyst-View-Email
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

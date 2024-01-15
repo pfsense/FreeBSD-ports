@@ -1,5 +1,6 @@
 bin/sip_monitor
 bin/sip_reg
+bin/sip_storm
 include/eXosip2/eX_call.h
 include/eXosip2/eX_message.h
 include/eXosip2/eX_options.h

@@ -1,6 +1,3 @@
-# Created by: Danny Warren <danny@dannywarren.com>
-# $FreeBSD$
-
 PORTNAME=	CatalystX-AppBuilder
 PORTVERSION=	0.00011
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	danny@dannywarren.com
 COMMENT=	Programatically build your Catalyst app
+WWW=		https://metacpan.org/release/CatalystX-AppBuilder
 
 LICENSE=	ART10
 
@@ -20,5 +18,7 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

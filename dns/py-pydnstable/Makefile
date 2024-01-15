@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	pydnstable
-PORTVERSION=	0.7.2
+PORTVERSION=	0.7.3
 CATEGORIES=	dns python
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	Python wrapper for dns/dnstable
+WWW=		https://github.com/farsightsec/pydnstable
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LIB_DEPENDS=	libmtbl.so:devel/mtbl \
 		libdnstable.so:dns/dnstable
 
-USES=		pkgconfig python:3.6+
+USES=		pkgconfig python
 USE_PYTHON=	autoplist cython distutils
 
 post-install:

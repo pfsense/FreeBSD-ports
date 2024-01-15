@@ -1,24 +1,23 @@
-# Created by: Rusty Nejdl <rnejdl@ringofsaturn.com>
-# $FreeBSD$
-
 PORTNAME=	showimage
-PORTVERSION=	1.10
-PORTREVISION=	3
+PORTVERSION=	1.12
 CATEGORIES=	graphics kde
-MASTER_SITES=	https://dl.opendesktop.org/api/files/download/id/1482097460/ \
-		LOCAL/tcberner/showimage-0.10/
+MASTER_SITES=	LOCAL/kde/showimage/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Simple KDE based image viewer
+WWW=		https://store.kde.org/p/1126798
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake compiler:c++11-lang kde:5 qt:5 tar:bzip2
+USES=		cmake compiler:c++11-lang desktop-file-utils kde:5 qt:5 \
+		tar:xz xorg
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
-		coreaddons ecm i18n itemviews jobwidgets kio service solid \
-		widgetsaddons xmlgui
-USE_QT=		concurrent core dbus gui network xml widgets \
-		buildtools_build qmake_build
+		coreaddons i18n itemviews jobwidgets kio libkipi purpose \
+		service solid widgetsaddons windowsystem xmlgui \
+		doctools:build ecm:build
+USE_QT=		concurrent core dbus gui network widgets xml \
+		buildtools:build qmake:build
+USE_XORG=	x11
 
 .include <bsd.port.mk>

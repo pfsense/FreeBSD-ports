@@ -1,6 +1,3 @@
-# Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
-
 PORTNAME=	bam
 PORTVERSION=	0.4.0
 CATEGORIES=	devel
@@ -8,10 +5,13 @@ MASTER_SITES=	https://github.com/downloads/matricks/bam/
 
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Fast and flexible build system using Lua
+WWW=		http://matricks.github.com/bam/
 
 LICENSE=	ZLIB
 
 USES=		compiler tar:bzip2
+
+CONFLICTS_INSTALL=	bamutil
 
 PLIST_FILES=	bin/bam
 

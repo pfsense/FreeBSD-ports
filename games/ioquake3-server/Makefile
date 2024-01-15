@@ -1,6 +1,3 @@
-# Created by: Dominic Fandrey <kamikaze@bsdforen.de>
-# $FreeBSD$
-
 PORTNAME=	ioquake3
 PKGNAMESUFFIX=	-server
 

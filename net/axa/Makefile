@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	axa
-PORTVERSION=	2.2.0
-PORTREVISION=	2
+PORTVERSION=	3.0.2
+PORTREVISION=	0
 CATEGORIES=	net dns
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 
 MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	AXA library and tools
+WWW=		https://github.com/farsightsec/axa
 
 LICENSE=	APACHE20 PD
 LICENSE_COMB=	multi
-LICENSE_FILE_APACHE20=	${WRKSRC}/copyright
+LICENSE_FILE_APACHE20=	${WRKSRC}/COPYRIGHT
 LICENSE_FILE_PD=	${WRKSRC}/license_pd
 
 BUILD_DEPENDS=	bash:shells/bash \

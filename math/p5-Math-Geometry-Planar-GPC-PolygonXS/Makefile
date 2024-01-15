@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Geometry-Planar-GPC-PolygonXS
 PORTVERSION=	0.052
 CATEGORIES=	math perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OO wrapper to gpc library (translated to XS)
+WWW=		https://metacpan.org/release/Math-Geometry-Planar-GPC-PolygonXS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

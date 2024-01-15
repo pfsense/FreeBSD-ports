@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-File-ShareDir
 PORTVERSION=	1.001002
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create a fake ShareDir for your modules for testing
+WWW=		https://metacpan.org/release/Test-File-ShareDir
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

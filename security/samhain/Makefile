@@ -1,6 +1,3 @@
-# Created by: Nikola Kolev <koue@chaosophia.net>
-# $FreeBSD$
-
 PORTNAME=	samhain
 PORTVERSION=	4.4.3
 CATEGORIES=	security
@@ -9,6 +6,7 @@ DISTNAME=	samhain_signed-${PORTVERSION}
 
 MAINTAINER=	freebsd@gregv.net
 COMMENT=	Samhain Intrusion Detection System
+WWW=		https://la-samhna.de/samhain/
 
 LICENSE=	GPLv2
 

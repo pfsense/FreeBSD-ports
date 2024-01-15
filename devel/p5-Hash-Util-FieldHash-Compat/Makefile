@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Hash-Util-FieldHash-Compat
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Use Hash::Util::FieldHash or ties, depending on availability
+WWW=		https://metacpan.org/release/Hash-Util-FieldHash-Compat
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

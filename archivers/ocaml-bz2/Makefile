@@ -1,9 +1,6 @@
-# Created by: Jaap Boender <jaapb@kerguelen.org>
-# $FreeBSD$
-
 PORTNAME=	bz2
 PORTVERSION=	0.6.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	archivers
 MASTER_SITES=	http://forge.ocamlcore.org/frs/download.php/72/
 PKGNAMEPREFIX=	ocaml-
@@ -11,6 +8,7 @@ DISTNAME=	caml${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml library to manipulate bz2 files
+WWW=		http://camlbz2.forge.ocamlcore.org
 
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual

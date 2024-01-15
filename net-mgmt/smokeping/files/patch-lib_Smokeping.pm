@@ -1,6 +1,6 @@
---- lib/Smokeping.pm.orig	2018-02-02 21:14:55 UTC
+--- lib/Smokeping.pm.orig	2021-11-14 17:05:16 UTC
 +++ lib/Smokeping.pm
-@@ -4306,7 +4306,7 @@ sub main (;$) {
+@@ -4631,7 +4631,7 @@
          if(defined $opt{'check'}) { verify_cfg($cfgfile); exit 0; }
          if($opt{reload})  { 
              load_cfg $cfgfile, 'noinit'; # we need just the piddir
@@ -9,7 +9,7 @@
              print "HUP signal sent to the running SmokePing process, exiting.\n";
              exit 0;
          };
-@@ -4315,7 +4315,7 @@ sub main (;$) {
+@@ -4640,7 +4640,7 @@
          if(defined $opt{'static-pages'}) { makestaticpages $cfg, $opt{'static-pages'}; exit 0 };
          if($opt{email})    { enable_dynamic $cfg, $cfg->{Targets},"",""; exit 0 };
      }
@@ -18,7 +18,7 @@
  
      if($opt{logfile})      { initialize_filelog($opt{logfile}) };
  
-@@ -4328,7 +4328,7 @@ sub main (;$) {
+@@ -4653,7 +4653,7 @@
                  initialize_syslog($cfg->{General}{syslogfacility}, 
                                    $cfg->{General}{syslogpriority});
          }
@@ -27,7 +27,7 @@
      }
      do_log "Smokeping version $VERSION successfully launched.";
  
-@@ -4514,7 +4514,7 @@ KID:
+@@ -4839,7 +4839,7 @@
              my $new_conf = Smokeping::Slave::submit_results $slave_cfg,$cfg,$myprobe,$probes;
              if ($new_conf && !$gothup){
                  do_log('server has new config for me ... HUPing the parent');

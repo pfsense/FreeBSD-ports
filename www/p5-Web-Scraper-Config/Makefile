@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	Web-Scraper-Config
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Run Web::Scraper From Config Files
+WWW=		https://metacpan.org/release/Web-Scraper-Config
 
 BUILD_DEPENDS=	p5-Config-Any>=0:devel/p5-Config-Any \
 		p5-Data-Visitor>=0:devel/p5-Data-Visitor \

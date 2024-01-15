@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Xmt
 PORTVERSION=	4.0.0
 PORTREVISION=	1
@@ -9,6 +7,7 @@ DISTNAME=	xmt400
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Motif Tools library
+WWW=		https://motiftools.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

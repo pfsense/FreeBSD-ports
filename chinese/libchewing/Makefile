@@ -1,6 +1,3 @@
-# Created by: Kuang-che Wu <kcwu@csie.org>
-# $FreeBSD$
-
 PORTNAME=	libchewing
 PORTVERSION=	0.5.1
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	chinese textproc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Chewing intelligent phonetic input method library
+WWW=		https://chewing.im
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

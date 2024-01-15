@@ -1,6 +1,3 @@
-# Created by: Mikhail Teterin
-# $FreeBSD$
-
 PORTNAME=	pgtcl
 PORTVERSION=	2.1.1
 PORTREVISION=	2
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	TCL extension for accessing a PostgreSQL server (PGTCL-NG)
+WWW=		https://sourceforge.net/projects/pgtclng/
 
 LICENSE=	PostgreSQL
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -27,6 +25,8 @@ LIBDIR=		${PREFIX}/lib/${PORTNAME}
 USE_LDCONFIG=	${LIBDIR}
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 MANUALREL=	20171113
+
+CONFLICTS_INSTALL?=	pgtcl pgtcl-postgresql[0-9][0-9] # lib/pgtcl/libpgtcl2.1.1.so
 
 PLIST_FILES=	lib/pgtcl/libpgtcl${PORTVERSION}.so \
 		lib/pgtcl/pkgIndex.tcl

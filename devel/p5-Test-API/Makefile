@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-API
 PORTVERSION=	0.010
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Test a list of subroutines provided by a module
+WWW=		https://metacpan.org/release/Test-API
 
 LICENSE=	APACHE20
 

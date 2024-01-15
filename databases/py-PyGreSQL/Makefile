@@ -1,20 +1,18 @@
-# Created by: nectar@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	PyGreSQL
-PORTVERSION=	5.2
+PORTVERSION=	6.0
 PORTEPOCH=	1
 CATEGORIES=	databases python
 MASTER_SITES=	http://www.pygresql.org/files/ \
-		CHEESESHOP
+		PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Python interface to PostgreSQL, both classic and DP-API 2.0
+WWW=		http://www.pygresql.org/
 
 LICENSE=	PSFL
 
-USES=		pgsql python:3.6+
+USES=		pgsql python
 USE_PYTHON=	autoplist distutils
 
 PORTDOCS=	*
@@ -22,7 +20,7 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_pg*.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pg/_pg*.so
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/docs/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 

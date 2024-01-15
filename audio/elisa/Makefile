@@ -1,24 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	elisa
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	audio kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Audio player with QML and KDE Plasma integration
+WWW=		https://userbase.kde.org/Elisa
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cmake compiler:c++14-lang desktop-file-utils gettext kde:5 \
-		pkgconfig qt:5 tar:xz
+		pkgconfig qt:5 tar:xz xorg
 USE_KDE=	auth baloo5 bookmarks codecs completion config configwidgets \
-		coreaddons crash dbusaddons filemetadata i18n itemviews \
-		jobwidgets kcmutils kdeclarative kio kirigami2 package \
-		service solid widgetsaddons xmlgui
-USE_QT=		buildtools_build qmake_build testlib_build \
-		concurrent core dbus declarative gui multimedia network \
-		quickcontrols2 sql svg widgets xml
+		coreaddons crash dbusaddons filemetadata i18n iconthemes \
+		itemviews jobwidgets kcmutils kdeclarative kio kirigami2 \
+		package service solid widgetsaddons windowsystem xmlgui \
+		ecm:build
+USE_QT=		concurrent core dbus declarative gui multimedia network \
+		quickcontrols2 sql svg widgets xml \
+		buildtools:build declarative-test:build qmake:build \
+		testlib:build
+USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS VLC
 OPTIONS_DEFAULT=	DOCS VLC

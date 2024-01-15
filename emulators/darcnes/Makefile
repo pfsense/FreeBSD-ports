@@ -1,9 +1,6 @@
-# Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	darcnes
 PORTVERSION=	9b0401
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	emulators
 MASTER_SITES=	http://www.dridus.com/~nyef/darcnes/download/ \
 		LOCAL/grembo
@@ -11,14 +8,21 @@ DISTNAME=	dn${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-system emulator
+WWW=		http://www.dridus.com/~nyef/darcnes/
 
-NO_CDROM=	Commercial use is restricted
+# Converted from NO_CDROM
+LICENSE=	darcnes-license
+LICENSE_NAME=	darcnes
+LICENSE_TEXT=	Commercial use is restricted
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		gmake tar:tgz
 MAKE_ARGS=	CC="${CC}" TARGET_CC="${CC}" CXX="${CXX}" TARGET_CXX="${CXX}" \
-		AS="${AS}" TARGET_AS="${CC}" LD="${LD}" TARGET_LD="${CC}"
+		AS="${AS}" TARGET_AS="${CC}" LD="${CC}" TARGET_LD="${CC}"
+TEST_TARGET=	tests
+CFLAGS+=	-std=gnu89
 
 PLIST_FILES=	bin/darcnes
 PORTDOCS=	readme

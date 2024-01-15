@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	Crypt-T_e_a
 PORTVERSION=	2.12
 PORTREVISION=	1
@@ -10,10 +7,11 @@ MASTER_SITE_SUBDIR=	CPAN:PJB
 PKGNAMEPREFIX=	p5-
 DISTNAME=	Crypt-Tea-${PORTVERSION}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	The Tiny Encryption Algorithm in Perl and JavaScript
+WWW=		https://metacpan.org/release/PJB/Crypt-Tea-2.12
 
-CONFLICTS=	p5-Crypt-Tea_JS-[0-9]*
+CONFLICTS=	p5-Crypt-Tea_JS
 
 USES=		perl5
 USE_PERL5=	configure

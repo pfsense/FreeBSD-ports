@@ -1,25 +1,23 @@
-# Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	aws-c-common
-PORTVERSION=	0.4.59
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.12
 PORTEPOCH=	1
 CATEGORIES=	devel
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Core c99 package for AWS SDK for C
+WWW=		https://github.com/awslabs/aws-c-common
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c11
-
+USES=		cmake:testing compiler:c11
 USE_GITHUB=	yes
 GH_ACCOUNT=	awslabs
 
-CFLAGS+=	-D__BSD_VISIBLE=1
-CMAKE_ARGS+=	-DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON
-
 USE_LDCONFIG=	yes
+
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	BUILD_TESTING
 
 .include <bsd.port.mk>

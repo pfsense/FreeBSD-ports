@@ -1,8 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MCE-Shared
-PORTVERSION=	1.873
+PORTVERSION=	1.886
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MARIOROY
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	MCE extension for sharing data supporting threads and processes
+WWW=		https://metacpan.org/release/MCE-Shared
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -18,7 +16,7 @@ LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-IO-FDPass>=1.1:devel/p5-IO-FDPass \
-		p5-MCE>=1.868:devel/p5-MCE
+		p5-MCE>=1.889:devel/p5-MCE
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,25 +1,24 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ortp
-PORTVERSION=	1.0.2
-PORTREVISION=	2
+DISTVERSION=	5.2.94
 CATEGORIES=	net
-MASTER_SITES=	https://www.linphone.org/releases/sources/ortp/
 
-MAINTAINER=	sobomax@FreeBSD.org
+MAINTAINER=	zirias@FreeBSD.org
 COMMENT=	Real-time Transport Protocol (RTP) library
+WWW=		https://www.linphone.org/technical-corner/ortp.html
 
-LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox
 
 USES=		cmake compiler:c11
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.linphone.org/BC
+GL_ACCOUNT=	public
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DENABLE_DOC=NO -DENABLE_STATIC=NO -DENABLE_STRICT=NO
-WRKSRC= 	${WRKDIR}/${DISTNAME}-0
+CMAKE_ARGS=	-DENABLE_DOC=NO -DENABLE_STATIC=NO -DENABLE_STRICT=NO \
+			-DCMAKE_PREFIX_PATH=${LOCALBASE}
 
 post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/share/doc/${DISTNAME}

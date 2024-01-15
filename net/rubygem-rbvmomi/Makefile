@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rbvmomi
 PORTVERSION=	3.0.0
 CATEGORIES=	net rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby interface to the VMware vSphere API
+WWW=		https://github.com/vmware/rbvmomi
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +16,6 @@ RUN_DEPENDS=	rubygem-builder>=3.2<4:devel/rubygem-builder \
 		rubygem-optimist>=3.0<4:devel/rubygem-optimist
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

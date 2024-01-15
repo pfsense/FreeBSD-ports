@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	rt
-DISTVERSION=	5.0.1
+DISTVERSION=	5.0.5
 CATEGORIES=	www
 MASTER_SITES=	http://download.bestpractical.com/pub/rt/release/
 PKGNAMESUFFIX=	50
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Industrial-grade ticketing system written in Perl
+WWW=		https://www.bestpractical.com/rt/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL=	rt42-4.2* rt44-4.4* brlcad-[0-9]*
+CONFLICTS_INSTALL=	rt42-4.2* rt44-4.4* brlcad
 
 NO_ARCH=	yes
 
@@ -69,12 +68,12 @@ AP_MODPERL_DESC=		Deploy with apache and mod_perl
 AP_MODPERL_RUN_DEPENDS=		${MODPERL2_DEPS}
 
 AP_MODFASTCGI_DESC=		Deploy with apache and mod_fastcgi
-AP_MODFASTCGI_USE=		APACHE_RUN=22+
+AP_MODFASTCGI_USES=		apache:run
 AP_MODFASTCGI_RUN_DEPENDS=	${LOCALBASE}/${APACHEMODDIR}/mod_fastcgi.so:www/mod_fastcgi \
 				${FASTCGI_DEPS}
 
 EXTERNALAUTH_DESC=		Extension to authenticate users against an external source
-EXTERNALAUTH_DEPENDS=		${EXTERNALAUTH_DEPS}
+EXTERNALAUTH_RUN_DEPENDS=	${EXTERNALAUTH_DEPS}
 
 LIGHTTPD_DESC=			Deploy with lighttpd and mod_fastcgi
 LIGHTTPD_RUN_DEPENDS=		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
@@ -166,8 +165,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's!%%PREFIX%%!${PREFIX}!g' ${WRKSRC}/config.layout
 	@${REINPLACE_CMD} -e 's!%%SITE_PERL%%!${PREFIX}/${SITE_PERL_REL}!g' ${WRKSRC}/config.layout
 	@${REINPLACE_CMD} -e 's!/path/to/your/etc!${RT_ETC_PATH}!g' ${WRKSRC}/etc/RT_SiteConfig.pm
-	@${REINPLACE_CMD} -e 's!/bin:/usr/bin!/bin:/usr/bin:${LOCALBASE}/bin!' ${WRKSRC}/lib/RT/Interface/CLI.pm && \
-	    ${RM} ${WRKSRC}/lib/RT/Interface/CLI.pm.bak
 	@${REINPLACE_CMD} -e 's!RT_ETC_DIR!${RT_ETC_DIR}!' ${WRKSRC}/sbin/rt-test-dependencies.in
 
 pre-install:

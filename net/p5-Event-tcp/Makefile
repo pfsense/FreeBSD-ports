@@ -1,6 +1,3 @@
-# Created by: steinex
-# $FreeBSD$
-
 PORTNAME=	Event-tcp
 PORTVERSION=	0.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Glue code to build client-server style TCP-based services
+WWW=		https://metacpan.org/release/Event-tcp
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

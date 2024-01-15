@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-FindNumber
 PORTVERSION=	1.32
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Locate (written) numbers in English text
+WWW=		https://metacpan.org/release/Lingua-EN-FindNumber
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

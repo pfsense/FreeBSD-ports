@@ -1,6 +1,3 @@
-# Created by: Yarema <yds@CoolRat.org>
-# $FreeBSD$
-
 PORTNAME=	mulberry
 DISTVERSION=	4_0_8
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scalable high-performance GUI Internet Mail User Agent
+WWW=		http://www.mulberrymail.com/
 
 USES=		linux tar:tgz
 NO_WRKSUBDIR=	yes

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	libsidplayfp
-PORTVERSION=	2.0.5
-PORTREVISION=	1
+DISTVERSION=	2.5.0
 CATEGORIES=	audio
-MASTER_SITES=	SF/sidplay-residfp/libsidplayfp/${PORTVERSION:R}
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	liangtai.s16@gmail.com
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Library to play Commodore 64 music derived from libsidplay2
+WWW=		https://github.com/libsidplayfp/libsidplayfp
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,11 +14,12 @@ BUILD_DEPENDS=	libgcrypt-config:security/libgcrypt
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 
-USES=		compiler:c++11-lang libtool pathfix pkgconfig
+USES=		compiler:c++14-lang libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-exsid=no \
+CONFIGURE_ARGS=	--disable-static \
+		--with-exsid=no \
 		--with-gcrypt
 
 INSTALL_TARGET=	install-strip
@@ -30,7 +29,8 @@ PLIST_SUB+=	SIDPLAYFP_SHLIB_VER=${SIDPLAYFP_SHLIB_VERSION:C/\.[[:digit:].]+//} \
 		STILVIEW_SHLIB_VER=${STILVIEW_SHLIB_VERSION:C/\.[[:digit:].]+//} \
 		STILVIEW_SHLIB_VERSION=${STILVIEW_SHLIB_VERSION}
 
-PORTDOCS=	NEWS README TODO
+PORTDOCS1=	NEWS README TODO
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DEBUG DOCS DOXYGEN
 OPTIONS_SUB=	yes
@@ -40,7 +40,17 @@ DEBUG_CONFIGURE_ON=	--enable-debug=full
 DOXYGEN_BUILD_DEPENDS=		doxygen:devel/doxygen
 DOXYGEN_CONFIGURE_ENV_OFF=	ac_cv_prog_HAVE_DOXYGEN=false
 
-SIDPLAYFP_SHLIB_VERSION=	5.2.15
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == "aarch64"
+CONFIGURE_ARGS+=	--with-simd=neon
+.endif
+
+.if ${ARCH} == "amd64"
+CONFIGURE_ARGS+=	--with-simd=sse2
+.endif
+
+SIDPLAYFP_SHLIB_VERSION=	6.3.27
 STILVIEW_SHLIB_VERSION=		0.0.4
 
 post-build-DOXYGEN-on:
@@ -48,7 +58,7 @@ post-build-DOXYGEN-on:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS1:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 post-install-DOXYGEN-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html

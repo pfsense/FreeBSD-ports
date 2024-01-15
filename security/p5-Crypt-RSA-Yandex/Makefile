@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	Crypt-RSA-Yandex
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	Perl binding to modified RSA (yamrsa)
+WWW=		https://metacpan.org/release/Crypt-RSA-Yandex
 
 USES=	perl5
 USE_PERL5=	configure

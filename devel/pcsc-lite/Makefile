@@ -1,15 +1,12 @@
-# Created by: Toni Andjelkovic <toni@soth.at>
-# $FreeBSD$
-
 PORTNAME=	pcsc-lite
-PORTVERSION=	1.9.0
-PORTREVISION=	1
+PORTVERSION=	2.0.1
 PORTEPOCH=	2
 CATEGORIES=	devel security
 MASTER_SITES=	https://pcsclite.apdu.fr/files/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	Middleware library to access a smart card using SCard API (PC/SC)
+WWW=		https://pcsclite.apdu.fr/
 
 LICENSE=	BSD3CLAUSE GPLv3+
 LICENSE_COMB=	multi
@@ -29,6 +26,8 @@ CONFIGURE_ARGS=	--disable-libsystemd \
 INSTALL_TARGET=	install-strip
 SHEBANG_FILES=	src/spy/pcsc-spy
 SUB_FILES=	pkg-message
+
+LIB_DEPENDS+=	libpolkit-gobject-1.so:sysutils/polkit
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONS_GROUP=		FEATURES

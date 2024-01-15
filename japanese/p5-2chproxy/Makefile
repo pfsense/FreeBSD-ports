@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	2chproxy
 PORTVERSION=	1.0.1
 DISTVERSIONPREFIX=	v
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	ja-p5-
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Proxy server for 2ch.net
+WWW=		https://github.com/yama-natuki/2chproxy.pl
 
 LICENSE=	MIT
 

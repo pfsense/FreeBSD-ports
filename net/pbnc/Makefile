@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pbnc
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -9,6 +7,7 @@ DISTNAME=	pbnc
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Simple userspace TCP port bouncer
+WWW=		http://freshmeat.net/projects/pbnc/
 
 LICENSE=	BSDunclear
 LICENSE_NAME=	Unclear BSD License

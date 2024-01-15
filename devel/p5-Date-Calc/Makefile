@@ -1,6 +1,3 @@
-# Created by: Brad Hendrickse <bradh@uunet.co.za>
-# $FreeBSD$
-
 PORTNAME=	Date-Calc
 PORTVERSION=	6.4
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Gregorian calendar date calculations
+WWW=		https://metacpan.org/pod/Date::Calc
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

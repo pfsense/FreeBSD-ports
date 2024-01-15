@@ -1,12 +1,10 @@
-# Created by: Frank Wall <fw@moov.de>
-# $FreeBSD$
-
 PORTNAME=	omping
 PORTVERSION=	0.0.4
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	fw@moov.de
 COMMENT=	Tool to test IP multicast functionality
+WWW=		https://github.com/jfriesse/omping
 
 LICENSE=	MIT
 

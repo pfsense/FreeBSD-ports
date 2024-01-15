@@ -1,18 +1,16 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	scrypt
-DISTVERSION=	0.8.17
+DISTVERSION=	0.8.20
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Bindings for the scrypt key derivation function library
+WWW=		https://pypi.org/project/scrypt/
 
 LICENSE=	BSD2CLAUSE
 
-USES=		python:3.6+ ssl
+USES=		python ssl
 USE_PYTHON=	autoplist distutils
 
 post-install:

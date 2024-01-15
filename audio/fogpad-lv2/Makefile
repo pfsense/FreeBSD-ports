@@ -1,14 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	fogpad
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-3
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-gc52326b
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Reverb effect with frozen/pitch-shifted/disintegrated reflections
+WWW=		https://github.com/linuxmao-org/fogpad-port
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

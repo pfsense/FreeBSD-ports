@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seq2gif
 PORTVERSION=	0.10.4
 DISTVERSIONPREFIX=	v
@@ -7,6 +5,7 @@ CATEGORIES=	graphics
 
 MAINTAINER=	sue@iwmt.org
 COMMENT=	Convert a ttyrec record into a gif animation directly
+WWW=		https://saitoha.github.io/seq2gif/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

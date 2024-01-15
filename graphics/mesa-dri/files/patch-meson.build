@@ -1,42 +1,11 @@
---- meson.build.orig	2020-10-06 07:15:26 UTC
+--- meson.build.orig	2023-09-20 17:15:34 UTC
 +++ meson.build
-@@ -1108,9 +1108,9 @@ else
- endif
- 
- # Check for GCC style atomics
--dep_atomic = null_dep
-+dep_atomic = cc.find_library('atomic', required : false)
- 
--if cc.compiles('''#include <stdint.h>
-+if cc.links('''#include <stdint.h>
-                   int main() {
-                     struct {
-                       uint64_t *v;
-@@ -1119,26 +1119,9 @@ if cc.compiles('''#include <stdint.h>
-                            (int)__atomic_add_fetch(x.v, (uint64_t)1, __ATOMIC_ACQ_REL);
- 
-                   }''',
-+	       dependencies : dep_atomic,
-                name : 'GCC atomic builtins')
-   pre_args += '-DUSE_GCC_ATOMIC_BUILTINS'
--
--  # Not all atomic calls can be turned into lock-free instructions, in which
--  # GCC will make calls into the libatomic library. Check whether we need to
--  # link with -latomic.
--  #
--  # This can happen for 64-bit atomic operations on 32-bit architectures such
--  # as ARM.
--  if not cc.links('''#include <stdint.h>
--                     int main() {
--                       struct {
--                         uint64_t *v;
--                       } x;
--                       return (int)__atomic_load_n(x.v, __ATOMIC_ACQUIRE) &
--                              (int)__atomic_add_fetch(x.v, (uint64_t)1, __ATOMIC_ACQ_REL);
--                     }''',
--                  name : 'GCC atomic builtins required -latomic')
--    dep_atomic = cc.find_library('atomic')
--  endif
- endif
- if not cc.links('''#include <stdint.h>
-                    uint64_t v;
+@@ -709,7 +709,7 @@ if _power8.allowed()
+         int main() {
+           vector unsigned char r;
+           vector unsigned int v = vec_splat_u32 (1);
+-          r = __builtin_vec_vgbbd ((vector unsigned char) v);
++          r = __builtin_altivec_vgbbd ((vector unsigned char) v);
+           return 0;
+         }''',
+         args : '-mpower8-vector',

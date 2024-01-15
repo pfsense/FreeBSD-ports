@@ -1,6 +1,3 @@
-# Created by: Josh Gilliam <josh@quick.net>
-# $FreeBSD$
-
 PORTNAME=	urlview
 PORTVERSION=	0.9.20131021
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	textproc www
 
 MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	URL extractor/launcher
+WWW=		https://github.com/sigpipe/urlview
 
 LICENSE=	GPLv2
 

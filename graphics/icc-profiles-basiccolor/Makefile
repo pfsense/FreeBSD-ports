@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	icc-profiles-basiccolor
 PORTVERSION=	1.2.0
 CATEGORIES=	graphics
@@ -8,7 +6,8 @@ DISTNAME=	${PORTNAME}-printing2009-${PORTVERSION}
 
 COMMENT=	CMYK ICC profiles for ISO Printing conditions (ISO 12647-2)
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
+WWW=		https://www.basiccolor.de/
 
 USES=		tar:bzip2
 GNU_CONFIGURE=	yes

@@ -1,6 +1,3 @@
-# Created by: Amarendra Godbole <amarendra.godbole@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	wcalc
 PORTVERSION=	2.5
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/w-calc/Wcalc/${PORTVERSION}
 
 MAINTAINER=	amarendra.godbole@gmail.com
 COMMENT=	Natural-expression command-line calculator
+WWW=		https://w-calc.sourceforge.net/
 
 LICENSE=	GPLv2
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wrapsrv
 PORTVERSION=	1.0.0
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 
 MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	DNS SRV record command line wrapper
+WWW=		https://github.com/farsightsec/wrapsrv
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

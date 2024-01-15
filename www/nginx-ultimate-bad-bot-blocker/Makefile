@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		nginx-ultimate-bad-bot-blocker
 DISTVERSIONPREFIX=	V
 # The config files are updated frequently (not installed by this port,
@@ -14,6 +12,7 @@ CATEGORIES=		www security
 
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Nginx bad bot and other things blocker
+WWW=		https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

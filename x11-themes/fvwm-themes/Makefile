@@ -1,6 +1,3 @@
-# Created by: Oyvind Albrigtsen
-# $FreeBSD$
-
 PORTNAME=	fvwm-themes
 PORTVERSION=	0.7.0
 PORTREVISION=	6
@@ -11,6 +8,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Themes for the Fvwm2 window manager
+WWW=		https://fvwm-themes.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

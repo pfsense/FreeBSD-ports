@@ -1,13 +1,11 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	txt2man
 DISTVERSIONPREFIX=	txt2man-
 DISTVERSION=	1.7.1
 CATEGORIES=	textproc
 
-MAINTAINER=	ed.arrakis@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Converts flat ASCII text to man page format
+WWW=		https://github.com/mvertes/txt2man
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,6 +20,8 @@ GH_ACCOUNT=	mvertes
 
 MAKE_ENV=	prefix=${STAGEDIR}${PREFIX}
 NO_ARCH=	yes
+
+PORTSCOUT=	limit:^d\.d\.
 
 PLIST_FILES=	bin/bookman \
 		bin/src2man \

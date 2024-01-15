@@ -1,13 +1,11 @@
-# Created by: Sergey A. Osokin <osa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	redisearch
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.14
+DISTVERSION=	2.2.10
 CATEGORIES=	textproc
 
-MAINTAINER=	osa@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search over Redis
+WWW=		https://oss.redislabs.com/redisearch/
 
 LICENSE=	UNKNOWN
 LICENSE_NAME=	Redis Source Available License Agreement
@@ -20,7 +18,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	RediSearch
 GH_PROJECT=	RediSearch
 
-CMAKE_ARGS=	-DGIT_DESCRIBE_VERSION:STRING=${PKGVERSION}
+CMAKE_ARGS=	-DGIT_DESCRIBE_VERSION:STRING=${PKGVERSION} \
+		-DOS=freebsd
 
 PLIST_FILES=	lib/redisearch.so
 

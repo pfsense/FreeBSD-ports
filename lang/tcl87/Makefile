@@ -1,9 +1,6 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	tcl
 DISTVERSION=	${TCL_VERSION}${TCL_RC}
-PORTREVISION=	3
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	SF/tcl/Tcl/${TCL_VERSION} \
 		TCLTK/tcl8_7
@@ -12,13 +9,16 @@ DISTNAME=	${PORTNAME}${DISTVERSION}-src
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Tool Command Language
+WWW=		https://www.tcl.tk/
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:c11 pathfix
+USES=		compiler:c11 cpe localbase pathfix
+
+LIB_DEPENDS=	libtommath.so:math/libtommath
 
 OPTIONS_DEFINE=	TCLMAN TZDATA DEBUG
 OPTIONS_DEFAULT=TCLMAN TZDATA
@@ -28,9 +28,6 @@ OPTIONS_DEFINE_powerpc64=	DTRACE
 OPTIONS_DEFINE_powerpc64le=	DTRACE
 OPTIONS_DEFAULT_powerpc64=	DTRACE
 OPTIONS_DEFAULT_powerpc64le=	DTRACE
-OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
-OPTIONS_EXCLUDE_powerpc64_11=	DTRACE
-OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
 TCLMAN_DESC=	Install Tcl function manpages
 TZDATA_DESC=	Install Tcl timezone data
 OPTIONS_SUB=	yes
@@ -53,12 +50,14 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared \
 		--enable-man-suffix=.${MAN_SUFFIX} \
 		--includedir=${PREFIX}/include/tcl${TCL_VER} \
-		--enable-symbols
+		--enable-symbols \
+		--with-system-libtommath
+LDFLAGS+=	-Wl,-z,muldefs
 
-TCL_VERSION=	8.7a3
+TCL_VERSION=	8.7a5
 TCL_VER=	8.7
 TCL_RC=
-SHORT_TCL_VER=	${PORTVERSION:R:S/.//}
+SHORT_TCL_VER=	${TCL_VER:S/.//}
 MAN_SUFFIX=	${PKGBASE}
 
 MAKE_ENV=	SHORT_TCL_VER=${SHORT_TCL_VER} \

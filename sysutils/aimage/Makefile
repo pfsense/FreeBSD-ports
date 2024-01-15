@@ -1,6 +1,3 @@
-# Created by: Chris Calvey <chris@securityforensics.co.uk>
-# $FreeBSD$
-
 PORTNAME=	aimage
 PORTVERSION=	3.2.5
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://digitalcorpora.org/downloads/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Advanced Disk Imager
+WWW=		https://BSDforge.com/projects/sysutils/aimage/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	repng2jpeg
 PORTVERSION=	1.0.5
 PORTREVISION=	2
@@ -9,8 +6,11 @@ MASTER_SITES=	https://BSDforge.com/projects/source/graphics/repng2jpeg/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Small tool to recompress JPEG, PNG, and GIF images
+WWW=		https://BSDforge.COM/projects/graphics/repng2jpeg/
 
 LICENSE=	GPLv1
+
+BROKEN=		Unfetchable
 
 LIB_DEPENDS=	libgd.so:graphics/gd
 

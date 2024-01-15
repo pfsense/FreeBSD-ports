@@ -1,6 +1,3 @@
-# Created by: vanilla
-# $FreeBSD$
-
 PORTNAME=	SOAP-Lite
 PORTVERSION=	1.27
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Client and server side SOAP implementation
+WWW=		https://metacpan.org/release/SOAP-Lite
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -29,7 +27,7 @@ TEST_DEPENDS=	p5-Test-MockObject>=0:devel/p5-Test-MockObject \
 		p5-Test-Warn>=0:devel/p5-Test-Warn \
 		p5-Test-XML>=0:devel/p5-Test-XML
 
-CONFLICTS_INSTALL=	p5-SOAP-Lite-0.60* p5-SOAP-[0-9]*
+CONFLICTS_INSTALL=	p5-SOAP-Lite-0.60* p5-SOAP
 
 CONFIGURE_ARGS=	--noprompt
 INSTALL_TARGET=	pure_install

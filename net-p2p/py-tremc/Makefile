@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	tremc
-DISTVERSION=	0.9.2
+DISTVERSION=	0.9.3
 CATEGORIES=	net-p2p python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console client for the BitTorrent client Transmission
+WWW=		https://github.com/tremc/tremc
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.4+ shebangfix
+USES=		python shebangfix
 USE_GITHUB=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes

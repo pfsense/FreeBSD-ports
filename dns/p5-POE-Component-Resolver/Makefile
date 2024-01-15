@@ -1,6 +1,3 @@
-# Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Resolver
 PORTVERSION=	0.921
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Non-blocking getaddrinfo() resolver
+WWW=		https://metacpan.org/release/POE-Component-Resolver
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

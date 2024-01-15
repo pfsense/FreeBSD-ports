@@ -1,40 +1,41 @@
-# Created by: Sergei Kolobov <sergei@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libpreludedb
-PORTVERSION=	1.2.6
-PORTREVISION=	1
+PORTVERSION=	5.2.0
 CATEGORIES=	security
-MASTER_SITES=	http://www.prelude-siem.org/attachments/download/408/
+MASTER_SITES=	https://www.prelude-siem.org/attachments/download/1393/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Library to access Prelude IDMEF database
+WWW=		https://www.prelude-siem.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libprelude.so:security/libprelude
+LIB_DEPENDS=	libgnutls.so:security/gnutls \
+		libltdl.so:devel/libltdl \
+		libpcre.so:devel/pcre \
+		libprelude.so:security/libprelude
 
-USES=		compiler:c11 gmake libtool
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--without-swig \
-		--without-python3
-INSTALL_TARGET=	install-strip
+USES=		gmake libtool python shebangfix ssl
 USE_LDCONFIG=	yes
 
+SHEBANG_FILES=	preludedb-admin
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--without-swig
+CONFIGURE_ENV=	PYTHON3=${PYTHON_CMD}
+
+INSTALL_TARGET=	install-strip
+
 OPTIONS_DEFINE=		DOCS
+OPTIONS_DEFAULT=	MYSQL
 OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	MYSQL PGSQL SQLITE
-OPTIONS_DEFAULT=	MYSQL
 OPTIONS_SUB=		yes
 
-MYSQL_DESC=		MySQL plugin
 MYSQL_USES=		mysql
 MYSQL_CONFIGURE_WITH=	mysql
-PGSQL_DESC=		PostgreSQL plugin
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	postgresql
-SQLITE_DESC=		SQLite3 plugin
 SQLITE_USES=		sqlite
 SQLITE_CONFIGURE_WITH=	sqlite3
 

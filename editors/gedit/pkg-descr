@@ -4,8 +4,6 @@ gEdit is a Gtk+ 3 text editor. Its features include:
 	* Global Search and Replace
 	* Dynamically loaded fonts
 	* Splitscreen Mode
-	* Printing support 
+	* Printing support
 	* Configurable Plugins system
 	* Unlimited Undo/Redo
-
-WWW: http://www.gnome.org/projects/gedit/

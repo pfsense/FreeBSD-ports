@@ -1,6 +1,3 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mod_dnssd
 PORTVERSION=	0.6
 PORTREVISION=	12
@@ -10,13 +7,14 @@ PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Apache module that provides DNS-SD capabilities
+WWW=		https://0pointer.de/lennart/projects/mod_dnssd/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 
-USES=		apache:2.2+ gmake pkgconfig
+USES=		apache gmake pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	APR_CFLAGS="`${LOCALBASE}/bin/apr-1-config --cflags --cppflags --includes`" \
 		APR_LIBS="`${LOCALBASE}/bin/apr-1-config --ldflags`"

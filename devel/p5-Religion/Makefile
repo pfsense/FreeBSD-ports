@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Religion
 PORTVERSION=	1.04
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to install die() and warn() handlers
+WWW=		https://metacpan.org/release/KJALB/Religion-1.04
 
 USES=		perl5
 USE_PERL5=	configure

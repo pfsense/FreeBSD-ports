@@ -1,9 +1,6 @@
-# Created by: Pedro F. Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	feappv
 PORTVERSION=	4.1i
-PORTREVISION=	4
+PORTREVISION=	5
 DISTVERSIONPREFIX=v
 CATEGORIES=	cad education science
 MASTER_SITES=	http://projects.ce.berkeley.edu/feap/${PORTNAME}/:1
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Finite element analysis program (personal version)
+WWW=		http://projects.ce.berkeley.edu/feap/feappv/
 
 USES=		fortran gmake localbase:ldflags xorg
 USE_GITHUB=	yes

@@ -1,6 +1,3 @@
-# Created by: se@freebsd.org
-# $FreeBSD$
-
 PORTNAME=	hexpeek
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.20200804
@@ -10,6 +7,7 @@ MASTER_SITES=	https://www.hexpeek.com/releases/${DISTNAME}/
 
 MAINTAINER=	se@freebsd.org
 COMMENT=	Hex file editor
+WWW=		https://www.hexpeek.com/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		libedit ncurses tar:bzip2
 USE_CSTD=	c99
 
-CFLAGS+=	-D_WITH_GETLINE -Isrc -L${LOCALBASE}/lib
+CFLAGS+=	-Isrc -L${LOCALBASE}/lib
 
 PLIST_FILES=	bin/hexdiff \
 		bin/hexDump \

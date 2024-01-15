@@ -1,15 +1,13 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vinagre
 PORTVERSION=	3.22.0
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	net gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	VNC client for the GNOME Desktop
+WWW=		https://www.gnome.org/projects/vinagre/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	appstream-glib>=0:devel/appstream-glib \
 		itstool:textproc/itstool \
 		gnome-autogen.sh:devel/gnome-common \
-		yelp-tools>=0:textproc/yelp-tools \
-		valac:lang/vala
+		yelp-tools>=0:textproc/yelp-tools
 LIB_DEPENDS=	libgtk-vnc-2.0.so:net/gtk-vnc \
 		libfribidi.so:converters/fribidi \
 		libgdbm.so:databases/gdbm \
@@ -30,12 +27,11 @@ RUN_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme
 
 PORTSCOUT=	limitw:1,even
 
-USES=		autoreconf desktop-file-utils gettext gmake gnome localbase \
-		pathfix pkgconfig shared-mime-info tar:xz xorg
+USES=		autoreconf:2.69 desktop-file-utils gettext gmake gnome \
+		localbase pathfix pkgconfig shared-mime-info tar:xz vala:build xorg
 USE_GNOME=	cairo gtk30 intlhack libxml2 vte3
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--enable-ssh
 CPPFLAGS+=	-Wno-format-nonliteral
 

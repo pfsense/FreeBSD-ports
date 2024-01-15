@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	vor
 PORTVERSION=	0.5.8
 CATEGORIES=	games
@@ -9,6 +6,7 @@ MASTER_SITES=	https://jasonwoof.com/downloads/vor/ \
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Dodge the rocks until you die
+WWW=		https://sametwice.com/vor
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

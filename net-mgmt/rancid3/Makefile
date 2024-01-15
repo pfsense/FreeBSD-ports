@@ -1,15 +1,13 @@
-# Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	rancid
 PORTVERSION=	3.13
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.shrubbery.net/pub/rancid/
 PKGNAMESUFFIX=	3
 
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Really Awesome New Cisco confIg Differ
+WWW=		https://www.shrubbery.net/rancid/
 
 LICENSE=	BSD3CLAUSE
 
@@ -38,21 +36,18 @@ NEWCONFIG_FILES=	rancid.conf lg.conf
 
 OPTIONS_SINGLE=		SCM
 
-OPTIONS_SINGLE_SCM=	CVS SVN GIT
+OPTIONS_SINGLE_SCM=	CVS GIT SUBVERSION
 
 OPTIONS_DEFINE=		COMWARE
 OPTIONS_DEFAULT=	CVS
 
 COMWARE_DESC=		Add experimental support for Comware devices
-CVS_DESC=		Use CVS as the means of version control
-SVN_DESC=		Use Subversion as the means of version control
-GIT_DESC=		Use Git as the means of version control
 
 CVS_RUN_DEPENDS=	cvs:devel/cvs
 CVS_CONFIGURE_ON=	--without-svn
 
-SVN_RUN_DEPENDS=	svn:devel/subversion
-SVN_CONFIGURE_ON=	--with-svn
+SUBVERSION_RUN_DEPENDS=		svn:devel/subversion
+SUBVERSION_CONFIGURE_ON=	--with-svn
 
 GIT_RUN_DEPENDS=	git:devel/git
 GIT_CONFIGURE_ON=	--with-git

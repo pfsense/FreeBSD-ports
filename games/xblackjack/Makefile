@@ -1,6 +1,3 @@
-# Created by: erich@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	xblackjack
 PORTVERSION=	2.2
 PORTREVISION=	4

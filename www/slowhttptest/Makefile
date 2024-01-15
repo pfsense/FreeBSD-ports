@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	slowhttptest
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.2
+DISTVERSION=	1.9.0
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Application Layer DoS attack simulator for pentesting
+WWW=		https://github.com/shekyan/slowhttptest
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	WWW-Shorten-0rz
 PORTVERSION=	0.074
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
 COMMENT=	Shorten URL using 0rz.net
+WWW=		https://metacpan.org/release/WWW-Shorten-0rz
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

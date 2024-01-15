@@ -1,6 +1,3 @@
-# Created by: KIRIYAMA Kazuhiko <kiri@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdocbook-xml
 PORTVERSION=	1.1
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	docbook-simple-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	"Simplified" DocBook XML DTD
+WWW=		https://www.oasis-open.org/docbook/xml/simple/
 
 LICENSE=	OASIS
 LICENSE_NAME=	OASIS License
@@ -26,15 +24,16 @@ NO_BUILD=	yes
 NO_MTREE=	yes
 NO_WRKSUBDIR=	yes
 
+DOCSDIR=	${PREFIX}/share/doc/sdocbook-xml/${PORTVERSION}
+PLIST_SUB=	DTDDIR=${DTDDIR}
+SUB_FILES=	${CATALOG_FILES}
+SUB_LIST=	DTDDIR=${PREFIX}/${DTDDIR}
+
 CATALOG_FILES=	catalog catalog.xml
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}/${PORTVERSION}
 DTD_NAME=	sdocbook
 DTD_VERSION=	${PORTVERSION}
 DTD_SUBDIR=	/dtd
 DTDDIR=		share/xml/${DTD_NAME}/${DTD_VERSION}${DTD_SUBDIR}
-PLIST_SUB+=	DTDDIR=${DTDDIR}
-SUB_FILES=	${CATALOG_FILES}
-SUB_LIST+=	DTDDIR=${PREFIX}/${DTDDIR}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${DTDDIR}

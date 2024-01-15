@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	CPAN-Meta-YAML
 PORTVERSION=	0.018
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read and write a subset of YAML for CPAN Meta files
+WWW=		https://metacpan.org/release/CPAN-Meta-YAML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

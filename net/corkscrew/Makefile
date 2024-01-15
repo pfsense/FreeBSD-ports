@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	corkscrew
 PORTVERSION=	2.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.agroman.net/corkscrew/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	HTTP tunnelling utility for SSH
+WWW=		http://www.agroman.net/corkscrew/
 
 LICENSE=	GPLv2
 

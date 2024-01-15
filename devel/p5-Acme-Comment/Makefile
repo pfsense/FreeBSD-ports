@@ -1,6 +1,3 @@
-# Created by: Marcello Coutinho <marcellocoutinho@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Acme-Comment
 PORTVERSION=	1.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	marcellocoutinho@gmail.com
 COMMENT=	Allow multi-line comments which are filtered out
+WWW=		https://metacpan.org/release/Acme-Comment
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

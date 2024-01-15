@@ -1,12 +1,10 @@
-# Created by: fenner
-# $FreeBSD$
-
 PORTNAME=	rtptools
 DISTVERSION=	1.22
 CATEGORIES=	net mbone
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Set of tools to record, playback, and monitor RTPv2 data streams
+WWW=		https://www.cs.columbia.edu/irt/software/rtptools/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Denis Shaposhnikov <dsh@vlink.ru>
-# $FreeBSD$
-
 PORTNAME=	Class-Container
 PORTVERSION=	0.13
 CATEGORIES=	devel perl5

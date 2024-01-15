@@ -1,22 +1,26 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rgbpaint
 PORTVERSION=	0.8.7
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	SF/mtpaint/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Very basic painting program
+WWW=		https://mtpaint.sourceforge.net/rgbpaint.html
 
 LICENSE=	GPLv2+
 
-USES=		gettext gnome pkgconfig tar:bzip2
-USE_GNOME=	gtk20
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz
+
+USES=		gettext gnome pkgconfig tar:bzip2 xorg
+USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_XORG=	x11
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --mandir=${MAN1PREFIX}/man/man1 \
 		--locale=${PREFIX}/share/locale cflags slow intl man
+CFLAGS+=	-fcommon
 
 DESKTOP_ENTRIES="rgbPaint" "" "" "${PORTNAME}" "" true
 

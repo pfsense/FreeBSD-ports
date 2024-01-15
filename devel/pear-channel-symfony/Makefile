@@ -1,12 +1,10 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	symfony
 PORTVERSION=	20110701
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR channel ${PEAR_CHANNEL_HOST}
+WWW=		https://pear.symfony-project.com/
 
 PEAR_CHANNEL_HOST=	pear.symfony-project.com
 

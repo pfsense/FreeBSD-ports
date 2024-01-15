@@ -1,6 +1,3 @@
-# Created by: Zane C. Bowers-Hadley <vvelox@vvelox.net>
-# $FreeBSD$
-
 PORTNAME=	Proc-ProcessTable-Match
 PORTVERSION=	0.0.1
 CATEGORIES=	sysutils perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Matches a Proc::ProcessTable::Process against a stack of checks
+WWW=		https://metacpan.org/release/Proc-ProcessTable-Match
 
 BUILD_DEPENDS=	p5-Proc-ProcessTable>=0.59:devel/p5-Proc-ProcessTable
 RUN_DEPENDS:=	${BUILD_DEPENDS}

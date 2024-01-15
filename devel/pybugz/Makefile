@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pybugz
 DISTVERSION=	0.13
 PORTREVISION=	1
@@ -8,13 +6,14 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	bugmeister@FreeBSD.org
 COMMENT=	Python command-line interface to bugzilla
+WWW=		https://github.com/williamh/pybugz
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
 
-USES=		python:3.3+
+USES=		python
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 

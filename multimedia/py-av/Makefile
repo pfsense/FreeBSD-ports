@@ -1,20 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	av
-PORTVERSION=	8.0.2
+PORTVERSION=	11.0.0
 CATEGORIES=	multimedia python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Pythonic binding for FFmpeg
+WWW=		https://docs.mikeboers.com/pyav/develop/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
 
-USES=		python:3.5+ pkgconfig
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python pkgconfig
+USE_PYTHON=	autoplist concurrent cython distutils
+
+post-install:
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/av/ -name '*.so' | ${XARGS} ${STRIP_CMD}
 
 .include <bsd.port.mk>

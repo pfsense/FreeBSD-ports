@@ -1,14 +1,12 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	libdom
 PORTVERSION=	0.4.1
 CATEGORIES=	www
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 EXTRACT_SUFX=	-src.tar.gz
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Document Object Model library
+WWW=		https://www.netsurf-browser.org/projects/libdom/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +20,7 @@ LIB_DEPENDS=	libwapcaplet.so:textproc/libwapcaplet \
 USES=		gmake iconv localbase pkgconfig
 USE_LDCONFIG=	yes
 
-MAKE_ENV=	COMPONENT_TYPE="lib-shared"
+MAKE_ENV=	BUILD_CC="${CC}" COMPONENT_TYPE="lib-shared"
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fifteen
 PORTVERSION=	20150410
 PORTREVISION=	1
@@ -9,6 +7,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Narrow monospaced fonts
+WWW=		https://fontlibrary.org/en/font/fifteen
 
 LICENSE=	OFL11
 

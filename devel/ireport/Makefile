@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	ireport
 PORTVERSION=	3.7.6
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	iReport-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Visual report builder/designer for JasperReports
+WWW=		https://www.jasperforge.org/projects/ireport
 
 USES=		dos2unix
 USE_JAVA=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	TokyoCabinet
 PORTVERSION=	1.34
 PORTREVISION=	1
@@ -9,8 +7,9 @@ MASTER_SITES=	LOCAL/kuriyama \
 PKGNAMEPREFIX=	p5-
 DISTNAME=	tokyocabinet-perl-${PORTVERSION}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for TokyoCabinet
+WWW=		https://dbmx.net/tokyocabinet/
 
 LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet
 

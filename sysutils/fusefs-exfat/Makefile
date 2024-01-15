@@ -1,21 +1,20 @@
-# Created by: Alex Samorukov <samm@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	exfat
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
+DISTVERSION=	1.4.0
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Full-featured exFAT FS implementation as a FUSE module
+WWW=		https://github.com/relan/exfat
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libublio.so:devel/libublio
 
-USES=		autoreconf fuse localbase pkgconfig
+USES=		autoreconf cpe fuse localbase pkgconfig
+CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
 GH_ACCOUNT=	relan
 GNU_CONFIGURE=	yes

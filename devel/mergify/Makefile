@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mergify
 PORTVERSION=	g20180512
 PORTREVISION=	1
@@ -7,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	joe@thrallingpenguin.com
 COMMENT=	Merge changes from a branch one commit at a time
+WWW=		https://github.com/brooksdavis/mergify
 
 LICENSE=	BSD2CLAUSE
 
@@ -14,7 +13,6 @@ RUN_DEPENDS=	git:devel/git
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	brooksdavis
-GH_PROJECT=	mergify
 GH_TAGNAME=	606ffbe2df73e4c4edfe399573d2f1df782aefbc
 
 NO_ARCH=	yes

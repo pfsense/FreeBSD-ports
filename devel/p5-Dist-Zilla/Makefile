@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Dist-Zilla
-PORTVERSION=	6.017
+PORTVERSION=	6.031
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Distribution builder
+WWW=		https://metacpan.org/release/Dist-Zilla
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -16,7 +15,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-App-Cmd>=0.330:devel/p5-App-Cmd \
 		p5-CPAN-Uploader>=0.103004:devel/p5-CPAN-Uploader \
-		p5-Class-Load>=0.17:devel/p5-Class-Load \
 		p5-Config-MVP>=2.200011:devel/p5-Config-MVP \
 		p5-Config-MVP-Reader-INI>=2.101461:devel/p5-Config-MVP-Reader-INI \
 		p5-Data-Section>=0.200002:devel/p5-Data-Section \
@@ -36,11 +34,11 @@ RUN_DEPENDS=	p5-App-Cmd>=0.330:devel/p5-App-Cmd \
 		p5-MooseX-SetOnce>=0:devel/p5-MooseX-SetOnce \
 		p5-MooseX-Types>=0:devel/p5-MooseX-Types \
 		p5-MooseX-Types-Perl>=0:devel/p5-MooseX-Types-Perl \
-		p5-PPI>=0:textproc/p5-PPI \
+		p5-PPI>=1.222:textproc/p5-PPI \
 		p5-Params-Util>=0:devel/p5-Params-Util \
 		p5-Path-Tiny>=0.052:devel/p5-Path-Tiny \
 		p5-Perl-PrereqScanner>=1.006:devel/p5-Perl-PrereqScanner \
-		p5-Software-License>=0.103014:misc/p5-Software-License \
+		p5-Software-License>=0.104001:misc/p5-Software-License \
 		p5-String-Formatter>=0.100680:devel/p5-String-Formatter \
 		p5-String-RewritePrefix>=0.006:textproc/p5-String-RewritePrefix \
 		p5-Sub-Exporter>=0:devel/p5-Sub-Exporter \

@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object-Role-Proxyable
 PORTVERSION=	2.03
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Proxyable Role for Data::Object
+WWW=		https://metacpan.org/release/Data-Object-Role-Proxyable
 
 LICENSE=	APACHE20
 

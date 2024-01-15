@@ -1,6 +1,3 @@
-# Created by: johans
-# $FreeBSD$
-
 PORTNAME=	libdmtx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.5
@@ -8,6 +5,7 @@ CATEGORIES=	graphics
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Library for reading and writing Data Matrix barcodes
+WWW=		https://libdmtx.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

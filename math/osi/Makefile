@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	Osi
-DISTVERSION=	0.108.6
+DISTVERSIONPREFIX=	releases/
+DISTVERSION=	0.108.9
 PORTREVISION=	1
 CATEGORIES=	math
-MASTER_SITES=	https://www.coin-or.org/download/source/${PORTNAME}/
 PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	COIN-OR Open Solver Interface, an API for calling solver libraries
+WWW=		https://projects.coin-or.org/Osi/
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/Osi/LICENSE
@@ -27,6 +26,11 @@ CONFIGURE_ARGS=	--with-blas-lib="-lopenblas" --with-lapack-lib="-lopenblas" \
 		--with-coinutils-incdir="${LOCALBASE}/include/coin" --with-coinutils-lib="${LOCALBASE}/lib/libCoinUtils.so"
 		# Incompatible with optional dependencies glpk and SoPlex: https://projects.coin-or.org/Osi/ticket/117 https://projects.coin-or.org/Osi/ticket/118
 USE_LDCONFIG=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	coin-or
+
+INSTALL_TARGET=	install-strip
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/share/coin

@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@leeym.com>
-# $FreeBSD$
-
 PORTNAME=	razor-agents
 PORTVERSION=	2.84
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/razor/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Distributed, collaborative, spam detection and filtering network
+WWW=		https://razor.sourceforge.net/
 
 LICENSE=	ART10
 

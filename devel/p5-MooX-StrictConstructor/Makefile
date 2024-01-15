@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooX-StrictConstructor
 PORTVERSION=	0.011
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Make your Moo-based object constructors blow up on unknown attributes
+WWW=		https://metacpan.org/release/MooX-StrictConstructor
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,21 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	artikulate
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	misc education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Pronunciation trainer for KDE
-
-LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
+WWW=		https://edu.kde.org/
 
 USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
 USE_KDE=	archive attica auth codecs config configwidgets coreaddons \
-		crash doctools ecm i18n kdeclarative newstuff service \
-		widgetsaddons xmlgui
+		crash i18n kdeclarative newstuff service \
+		widgetsaddons xmlgui \
+		doctools:build ecm:build
 USE_QT=		core dbus declarative gui multimedia network sql testlib widgets \
 		xml xmlpatterns \
-		buildtools_build qmake_build
+		buildtools:build qmake:build
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DOCS

@@ -1,8 +1,6 @@
-# Created by: Josh Tolbert
-# $FreeBSD$
-
 PORTNAME=	openarena
 PORTVERSION=	${GAMEVERSION}.s${SVNREVISION}
+PORTREVISION=	18	# keep and reset to 0 on version upgrade
 PORTEPOCH=	2
 MASTER_SITES=	SF/oarena/src \
 		http://files.poulsander.com/~poul19/public_files/oa/dev088/
@@ -11,6 +9,7 @@ EXTRACT_SUFX=	.tar.bz2 # override master port
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake3 total conversion based on the ioquake3 engine
+WWW=		http://openarena.ws/
 
 LICENSE?=	GPLv2
 

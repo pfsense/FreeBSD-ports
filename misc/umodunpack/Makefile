@@ -1,6 +1,3 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
-
 PORTNAME=	umodunpack
 PORTVERSION=	0.4
 CATEGORIES=	misc
@@ -11,6 +8,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unpack umod files for Unreal and/or Unreal Tournament
+WWW=		http://www.deepsky.com/~misaka/
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	${DISTNAME}

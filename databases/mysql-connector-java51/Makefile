@@ -1,6 +1,3 @@
-# Created by: Matthew Seaman
-# $FreeBSD$
-
 PORTNAME=	mysql-connector-java
 PORTVERSION=	5.1.49
 CATEGORIES=	databases java
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	51
 
 MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	MySQL Connector/J: JDBC interface for MySQL
+WWW=		https://dev.mysql.com/downloads/connector/j/
 
 LICENSE=	GPLv2
 
@@ -21,11 +19,11 @@ USES=		cpe
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	mysql_connector_j
 
-CONFLICTS_INSTALL=	mysql-connector-java-8*
+CONFLICTS_INSTALL=	mysql-connector-java # share/java/classes/mysql-connector-java.jar
 
 NO_ARCH=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.7 1.8
+JAVA_VERSION=	8
 BUILDDIR=	${WRKDIR}/${DISTNAME}
 APIDOCSDIR=	${STAGEDIR}${DOCSDIR}/javadoc
 SRCDIR=		${WRKDIR}/${DISTNAME}/src

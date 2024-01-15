@@ -1,14 +1,12 @@
-# Created by: Jonathan Liu <Net147@hotmail.com>
-# $FreeBSD$
-
 PORTNAME=	nitrogen
 DISTVERSION=	1.6.1
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/l3ib/nitrogen/releases/download/${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Background browser and setter for X windows
+WWW=		https://github.com/l3ib/nitrogen
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,7 +21,6 @@ USES=		compiler:c++11-lang gettext gmake gnome iconv localbase \
 		pkgconfig xorg
 USE_CXXSTD=	c++11
 USE_GNOME=	gtkmm24
-INSTALLS_ICONS=	yes
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes

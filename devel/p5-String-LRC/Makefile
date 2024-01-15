@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	String-LRC
 PORTVERSION=	1.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface for longitudinal redundancy check generation
+WWW=		https://metacpan.org/release/String-LRC
 
 USES=		perl5
 USE_PERL5=	configure

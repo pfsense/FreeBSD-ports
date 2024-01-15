@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rabbiter
 PORTVERSION=	2.0.4
 CATEGORIES=	net rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Twitter client for Rabbit
+WWW=		https://rabbit-shocker.org/en/rabbiter/
 
 LICENSE=	GPLv2+
 
@@ -18,7 +16,6 @@ RUN_DEPENDS=	rubygem-gio2>=2.1.1:devel/rubygem-gio2 \
 
 NO_ARCH=	yes
 USES=		gem
-USE_RUBY=	yes
 PLIST_FILES=	bin/rabbiter
 
 .include <bsd.port.mk>

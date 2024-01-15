@@ -1,17 +1,19 @@
-# Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
-
 PORTNAME=	timemon
 PORTVERSION=	4.2
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	sysutils gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	TimeMon-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CPU time usage monitor for GNUstep
+WWW=		https://www.nongnu.org/gap/timemon/index.html
 
-NO_CDROM=	distribute without fee
+# Converted from NO_CDROM
+LICENSE=	TimeMon
+LICENSE_NAME=	TimeMon
+LICENSE_TEXT=	distribute without fee
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 USES=		gnustep
 USE_GNUSTEP=	back build

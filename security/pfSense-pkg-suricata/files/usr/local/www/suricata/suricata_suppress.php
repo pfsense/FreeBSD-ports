@@ -3,11 +3,11 @@
  * suricata_suppress.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +26,8 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-if (!is_array($config['installedpackages']['suricata']['suppress']))
-	$config['installedpackages']['suricata']['suppress'] = array();
-if (!is_array($config['installedpackages']['suricata']['suppress']['item']))
-	$config['installedpackages']['suricata']['suppress']['item'] = array();
-$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
-$id_gen = count($config['installedpackages']['suricata']['suppress']['item']);
+$a_suppress = config_get_path('installedpackages/suricata/suppress/item', []);
+$id_gen = count($a_suppress);
 
 function suricata_suppresslist_used($supplist) {
 
@@ -45,12 +39,7 @@ function suricata_suppresslist_used($supplist) {
 	/* Returns:  TRUE if list is in use, else FALSE			*/
 	/****************************************************************/
 
-	global $config;
-
-	$suricataconf = $config['installedpackages']['suricata']['rule'];
-	if (empty($suricataconf))
-		return false;
-	foreach ($suricataconf as $value) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
 		if ($value['suppresslistname'] == $supplist)
 			return true;
 	}
@@ -68,11 +57,7 @@ function suricata_find_suppresslist_interface($supplist) {
 	/*		  FALSE if no interface found.			*/
 	/****************************************************************/
 
-	global $config;
-	$suricataconf = $config['installedpackages']['suricata']['rule'];
-	if (empty($suricataconf))
-		return false;
-	foreach ($suricataconf as $rule => $value) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $rule => $value) {
 		if ($value['suppresslistname'] == $supplist)
 			return $rule;
 	}
@@ -92,6 +77,7 @@ if (isset($_POST['del_btn'])) {
 			}
 		}
 		if ($need_save) {
+			config_set_path('installedpackages/suricata/suppress/item', $a_suppress);
 			write_config("Suricata pkg: deleted SUPPRESSION LIST.");
 			sync_suricata_package_config();
 			header("Location: /suricata/suricata_suppress.php");
@@ -100,7 +86,8 @@ if (isset($_POST['del_btn'])) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Suppression Lists"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Suppress Lists");
 include_once("head.inc");
 
 if ($input_errors) {
@@ -113,6 +100,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), true, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");
@@ -142,7 +130,7 @@ display_top_tabs($tab_array, true);
 					<?php $i = 0; foreach ($a_suppress as $list): ?>
 					<?php
 						if (suricata_suppresslist_used($list['name'])) {
-							$icon = "&nbsp;<i class=\"fa fa-info-circle\" style=\"cursor: pointer;\" title=\"" . gettext("List is in use by an instance") . "\"></i>";
+							$icon = "&nbsp;<i class=\"fa-solid fa-info-circle\" style=\"cursor: pointer;\" title=\"" . gettext("List is in use by an instance") . "\"></i>";
 						}
 						else
 							$icon = "";
@@ -159,11 +147,11 @@ display_top_tabs($tab_array, true);
 						</td>
 						<td>
 							<a href="suricata_suppress_edit.php?id=<?=$i?>">
-								<i class="fa fa-pencil fa-lg" title="<?=gettext("Edit Suppress List"); ?>"></i>
+								<i class="fa-solid fa-pencil fa-lg" title="<?=gettext("Edit Suppress List"); ?>"></i>
 							</a>
 							<?php if (suricata_suppresslist_used($list['name'])) : ?>
 							<a href="/suricata/suricata_interfaces_edit.php?id=<?=suricata_find_suppresslist_interface($list['name'])?>">
-								<i class="fa fa-caret-square-o-right" title="<?=gettext('Goto first instance associated with this Suppress List')?>" style="cursor: pointer;"?></i>
+								<i class="fa-regular fa-square-caret-right" title="<?=gettext('Goto first instance associated with this Suppress List')?>" style="cursor: pointer;"?></i>
 							</a>
 							<?php endif; ?>
 						</td>
@@ -175,11 +163,11 @@ display_top_tabs($tab_array, true);
 	</div>
 	<nav class="action-buttons">
 		<a href="suricata_suppress_edit.php?id=<?=$id_gen?>" class="btn btn-sm btn-success" title="<?=gettext('Add a new suppression list');?>">
-			<i class="fa fa-plus icon-embed-btn"></i> <?=gettext("Add");?>
+			<i class="fa-solid fa-plus icon-embed-btn"></i> <?=gettext("Add");?>
 		</a>
 		<?php if (count($a_suppress) > 0): ?>
 		<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Items');?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext('Delete');?>
 		</button>
 		<?php endif; ?>

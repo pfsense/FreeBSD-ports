@@ -1,14 +1,12 @@
-# Created by: David Kalliecharan <dave@dal.ca>
-# $FreeBSD$
-
 PORTNAME=	hy
 PORTVERSION=	0.19.0
 CATEGORIES=	lang python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dave@dal.ca
 COMMENT=	Dialect of Lisp that is embedded in Python
+WWW=		https://docs.hylang.org/en/stable/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +20,7 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astor>=0.8:devel/py-astor@${PY_FLAVOR} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

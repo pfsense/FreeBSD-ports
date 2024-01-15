@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	spamstats
 PORTVERSION=	0.6c
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	LOCAL/leeym
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to generate statistics for spamd of Mail::SpamAssassin
+WWW=		http://www.inl.fr/Spamstats.html
 
 RUN_DEPENDS=	p5-Date-Manip>=0:devel/p5-Date-Manip \
 		p5-Compress-Bzip2>=2.08:archivers/p5-Compress-Bzip2

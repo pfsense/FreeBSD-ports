@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis (edwin@mavetju.org)
-# $FreeBSD$
-
 PORTNAME=	postgresql-relay
 PORTVERSION=	1.3.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.mavetju.org/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiplex multiple PostgreSQL databases to one relay
+WWW=		https://www.mavetju.org/unix/general.php
 
 LICENSE=	BSD2CLAUSE # from website
 

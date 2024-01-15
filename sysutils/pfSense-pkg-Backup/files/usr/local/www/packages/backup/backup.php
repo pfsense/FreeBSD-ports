@@ -3,7 +3,7 @@
  * backup.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -50,22 +50,31 @@ if ($_GET['act'] == "del") {
 
 if ($_GET['a'] == "download") {
 	if ($_GET['t'] == "backup") {
-
-		$i = 0;
+		/* assume no... */
+		$has_backup = false;
 		if (count($a_backup) > 0) {
 			/* Do NOT remove the trailing space after / from $backup_cmd below!!! */
-			$backup_cmd = "/usr/bin/tar --create --verbose --gzip --file {$backup_path} --exclude {$backup_path} --directory / ";
+			$backup_cmd = "/usr/bin/tar --exclude {$backup_path} --create --verbose --gzip --file {$backup_path} --directory / ";
 			foreach ($a_backup as $ent) {
 				if ($ent['enabled'] == "true") {
 					$backup_cmd .= escapeshellarg($ent['path']) . ' ';
 				}
-				$i++;
+				$has_backup = true;
 			}
-			system($backup_cmd);
+			exec($backup_cmd, $out, $rc);
+			$has_backup = ($has_backup && ($rc === 0));
 		}
 
 		session_cache_limiter('public');
-		$fd = fopen("{$backup_path}", "rb");
+
+		/* bailout if there is nothing to download */
+		if ((!$has_backup
+		    && !file_exists($backup_path))
+			|| !($fd = fopen($backup_path, 'rb'))) {
+				header('Location: backup.php');
+				exit(0);
+		}
+
 		header("Content-Type: application/force-download");
 		header("Content-Type: binary/octet-stream");
 		header("Content-Type: application/download");
@@ -74,9 +83,12 @@ if ($_GET['a'] == "download") {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 		header("Content-Length: " . filesize($backup_path));
+
+		/* read the file and emit to browser */
 		fpassthru($fd);
 
-		exit;
+		fclose($fd);
+		exit(0);
 	}
 }
 
@@ -90,6 +102,13 @@ if ($_GET['a'] == "other") {
 			header("Location: backup.php?savemsg=Restore+failed.+Backup+file+not+found.");
 		}
 		exit;
+	}
+}
+
+if ($_GET['a'] === 'other') {
+	if ($_GET['t'] === 'delete') {
+		unlink_if_exists($backup_path);
+		header('Location: backup.php');
 	}
 }
 
@@ -143,7 +162,7 @@ display_top_tabs($tab_array);
 						<input name="ulfile" type="file" class="btn btn-info" id="ulfile" />
 						<br />
 						<button name="submit" type="submit" class="btn btn-primary" id="upload" value="Upload">
-							<i class="fa fa-upload icon-embed-btn"></i>
+							<i class="fa-solid fa-upload icon-embed-btn"></i>
 							Upload
 						</button>
 					</td>
@@ -160,19 +179,23 @@ display_top_tabs($tab_array);
 				<tr>
 					<td>
 					The 'Backup' button compresses the directories that are listed below to /root/backup/pfsense.bak.tgz; after that it presents the file for download.<br />
-					If the backup file does not exist in /root/backup/pfsense.bak.tgz then the 'Restore' button will be hidden.
+					If the backup file does not exist in /root/backup/pfsense.bak.tgz then the 'Restore' and 'Delete' buttons will be hidden.
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<button type='button' class="btn btn-primary" value='Backup' onclick="document.location.href='backup.php?a=download&amp;t=backup';">
-							<i class="fa fa-download icon-embed-btn"></i>
+							<i class="fa-solid fa-download icon-embed-btn"></i>
 							Backup
 						</button>
 						<?php	if (file_exists($backup_path)) { ?>
 								<button type="button" class="btn btn-warning" value="Restore" onclick="document.location.href='backup.php?a=other&amp;t=restore';">
-									<i class="fa fa-undo icon-embed-btn"></i>
+									<i class="fa-solid fa-undo icon-embed-btn"></i>
 									Restore
+								</button>
+								<button type="button" class="btn btn-danger" value="Delete" target="_new" onclick="document.location.href='backup.php?a=other&amp;t=delete';">
+									<i class="fa-solid fa-trash-can icon-embed-btn"></i>
+									Delete
 								</button>
 						<?php 	} ?>
 					</td>
@@ -206,8 +229,8 @@ if (count($a_backup) > 0):
 						<td><? echo ($ent['enabled'] == "true") ? "Enabled" : "Disabled";?>&nbsp;</td>
 						<td><?=htmlspecialchars($ent['description'])?>&nbsp;</td>
 						<td>
-							<a href="backup_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
-							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
+							<a href="backup_edit.php?id=<?=$i?>"><i class="fa-solid fa-pencil" alt="edit"></i></a>
+							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa-solid fa-trash-can" alt="delete"></i></a>
 						</td>
 					</tr>
 <?php	$i++;
@@ -216,7 +239,7 @@ endif; ?>
 					<tr>
 						<td colspan="5"></td>
 						<td>
-							<a class="btn btn-small btn-success" href="backup_edit.php"><i class="fa fa-plus" alt="add"></i> Add</a>
+							<a class="btn btn-small btn-success" href="backup_edit.php"><i class="fa-solid fa-plus" alt="add"></i> Add</a>
 						</td>
 					</tr>
 				</tbody>

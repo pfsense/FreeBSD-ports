@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Search-Odeum
 PORTVERSION=	0.02
 PORTREVISION=	3
@@ -10,14 +7,15 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl interface to the Odeum inverted index API
+WWW=		https://metacpan.org/release/Search-Odeum
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libqdbm.so:databases/qdbm
 
-USE_PERL5=	configure
 USES=		localbase perl5
+USE_PERL5=	configure
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Search/Odeum/Odeum.so

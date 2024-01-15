@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	trustedqsl
-DISTVERSION=	2.4
-PORTREVISION=	4
+DISTVERSION=	2.6.3
+PORTREVISION=	1
+#PORTREVISION=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.arrl.org/files/file/LoTW%20Instructions/ \
 		LOCAL/shurd
@@ -10,6 +9,7 @@ DISTNAME=	tqsl-${PORTVERSION}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio Station electronic trusted logbook
+WWW=		https://lotw.arrl.org/lotw-help/
 
 LICENSE=	ARRL
 LICENSE_NAME=	American Radio Relay League, Inc. All rights reserved.
@@ -24,7 +24,8 @@ PKGMESSAGE=	${WRKDIR}/pkg-message
 
 USES=		bdb:5+ cmake compiler:c++11-lib pkgconfig ssl
 CMAKE_ARGS=	-DBDB_PREFIX=${LOCALBASE}
-USE_WX=		2.8+
+CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH="share/man"
+USE_WX=		3.2
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	GEN_CRQ LOAD_CERT STATION_LOC CONVERTER

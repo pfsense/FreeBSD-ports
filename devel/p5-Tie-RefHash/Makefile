@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Tie-RefHash
 PORTVERSION=	1.40
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Use references as hash keys in Perl
+WWW=		https://metacpan.org/release/Tie-RefHash
 
 LICENSE_COMB=	dual
 LICENSE=	ART20 GPLv1

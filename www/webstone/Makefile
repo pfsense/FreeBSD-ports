@@ -1,6 +1,3 @@
-# Created by: Soren Dossing <sauber@netcom.com>
-# $FreeBSD$
-
 PORTNAME=	webstone
 PORTVERSION=	2.5
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	ws25_src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	World wide web server benchmarking
+WWW=		http://www.mindcraft.com/webstone/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

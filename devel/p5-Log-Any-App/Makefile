@@ -1,6 +1,3 @@
-# Created by: Evgeniy Kosov <evgeniy@kosov.su>
-# $FreeBSD$
-
 PORTNAME=	Log-Any-App
 PORTVERSION=	0.540
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy way to use Log::Any in applications
+WWW=		https://metacpan.org/release/PERLANCAR/Log-Any-App-0.53
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

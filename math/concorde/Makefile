@@ -1,6 +1,3 @@
-# Created by: dbader@ece.unm.edu
-# $FreeBSD$
-
 PORTNAME=	concorde
 PORTVERSION=	20031219
 CATEGORIES=	math parallel
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Combinatorial Optimization package
+WWW=		http://www.tsp.gatech.edu/concorde.html
 
 WRKSRC=		${WRKDIR}/concorde
 

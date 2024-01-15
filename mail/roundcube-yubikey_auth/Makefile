@@ -1,6 +1,3 @@
-# Created by: Vidar Karlsen <vidar@karlsen.tech>
-# $FreeBSD$
-
 PORTNAME=	yubikey_auth
 PORTVERSION=	g20180404
 CATEGORIES=	mail
@@ -9,6 +6,7 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	vidar@karlsen.tech
 COMMENT=	Roundcube yubikey auth plugin
+WWW=		https://github.com/northox/roundcube-yubikey-plugin
 
 LICENSE=	GPLv2
 
@@ -16,18 +14,16 @@ BUILD_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
 RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
 
 USES=		php:flavors
-
-USE_PHP=	curl
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	northox
 GH_PROJECT=	roundcube-yubikey-plugin
 GH_TAGNAME=	383bbb3
-
-NO_BUILD=	yes
-NO_ARCH=	yes
+USE_PHP=	curl
+IGNORE_WITH_PHP=	82 83
 
 WWWDIR=		${PREFIX}/www/roundcube/plugins/roundcube_yubikey_authentication
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 post-patch:
 	${REINPLACE_CMD} -e 's/roundcube_yubikey_plugin/YubiKey OTP/g' \

@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	puppetserver
-PORTVERSION=	7.0.1
+PORTVERSION=	7.14.0
+PORTREVISION=	1
 CATEGORIES=	sysutils java
-MASTER_SITES=	https://downloads.puppetlabs.com/puppet/:upstream \
-		https://raw.githubusercontent.com/jruby/jruby/fb3ba4b3543b72e735ba53b51e6b7ec8a9916e1b/lib/ruby/stdlib/ffi/:ffi
+MASTER_SITES=	https://downloads.puppetlabs.com/puppet/
 PKGNAMESUFFIX=	7
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:upstream \
-		ffi.rb:ffi
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	Puppet Server running in the JVM
+WWW=		https://docs.puppetlabs.com/puppetserver/latest/services_master_puppetserver.html
 
 LICENSE=	APACHE20
+
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=Bundled JNI only support some architectures
 
 RUN_DEPENDS=	bash>=0:shells/bash \
 		puppet7>=0:sysutils/puppet7 \
@@ -21,27 +20,23 @@ RUN_DEPENDS=	bash>=0:shells/bash \
 		rubygem-semantic_puppet>=1:devel/rubygem-semantic_puppet \
 		sudo>=1:security/sudo
 
-USES=		shebangfix
+USES=		ruby shebangfix
 USE_RC_SUBR=	puppetserver
 
 USE_JAVA=	yes
-USE_RUBY=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 
-CONFLICTS_INSTALL=	puppetserver5-* puppetserver6-*
+CONFLICTS_INSTALL=	puppetserver[0-9]
 
-SHEBANG_FILES=  ext/bin/puppetserver
+SHEBANG_FILES=	ext/bin/puppetserver
 
 USERS=		puppet
 GROUPS=		puppet
 
 SUB_LIST=	JAVA_HOME=${JAVA_HOME}
 SUB_FILES=	pkg-message
-
-pre-patch:
-	${CP} ${_DISTDIR}/ffi.rb ${WRKSRC}
 
 post-patch:
 .for file in ext/config/logback.xml ext/config/request-logging.xml \
@@ -59,11 +54,11 @@ post-patch:
 		${WRKSRC}/${file}
 .endfor
 	@${REINPLACE_CMD} -e 's|#!/opt/puppetlabs/puppet/bin/ruby|#!${RUBY}|' \
-		${WRKSRC}/ext/cli/ca
+		${WRKSRC}/ext/cli/ca \
+		${WRKSRC}/ext/cli/dropsonde
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/cli/apps
-	@${MKDIR} ${STAGEDIR}${DATADIR}/lib
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/conf.d
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/services.d
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/puppet/code
@@ -94,6 +89,5 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/ext/cli/start ${STAGEDIR}${DATADIR}/cli/apps/start
 	${INSTALL_DATA} ${WRKSRC}/ext/cli/stop ${STAGEDIR}${DATADIR}/cli/apps/stop
 	${INSTALL_DATA} ${WRKSRC}/ext/cli_defaults/cli-defaults.sh ${STAGEDIR}${DATADIR}/cli/cli-defaults.sh
-	${INSTALL_DATA} ${WRKSRC}/ffi.rb ${STAGEDIR}${DATADIR}/lib
 
 .include <bsd.port.mk>

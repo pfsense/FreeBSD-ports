@@ -1,6 +1,3 @@
-# Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	AnyEvent-DBI-Abstract
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -8,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	AnyEvent::DBI + SQL::Abstract
+WWW=		https://metacpan.org/release/AnyEvent-DBI-Abstract
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

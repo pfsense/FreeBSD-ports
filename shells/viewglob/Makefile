@@ -1,14 +1,12 @@
-# Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
-
 PORTNAME=	viewglob
 PORTVERSION=	2.0.4
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	shells
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	GTK+ add-on to bash and zsh
+COMMENT=	GTK add-on to bash and zsh
+WWW=		https://viewglob.sourceforge.net/
 
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash

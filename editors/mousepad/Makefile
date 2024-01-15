@@ -1,33 +1,41 @@
-# Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mousepad
-PORTVERSION=	0.5.1
-PORTREVISION=	1
+PORTVERSION=	0.6.1
+PORTREVISION=	2
 CATEGORIES=	editors xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Simple text editor for the Xfce Desktop
+WWW=		https://git.xfce.org/apps/mousepad/about/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
+
 USES=		desktop-file-utils gettext-tools gmake gnome libtool perl5 \
 		pkgconfig tar:bzip2 xfce
-USE_GNOME=	cairo dconf gdkpixbuf2 glib20 gtk30 gtksourceview3 intlhack \
-		intltool
-USE_XFCE=	xfconf
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 gtksourceview3 intltool
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.xfce.mousepad.gschema.xml
 
-OPTIONS_DEFINE=		NLS
+OPTIONS_DEFINE=		NLS SPELL
+OPTIONS_DEFAULT=	SPELL
 OPTIONS_SUB=		yes
+
+SPELL_DESC=		Spell checking plugin
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
+
+SPELL_CONFIGURE_ENABLE=	plugin-gspell
+SPELL_LIB_DEPENDS=	libgspell-1.so:textproc/gspell \
+			libenchant-2.so:textproc/enchant2
+SPELL_VARS=		GLIB_SCHEMAS+=org.xfce.mousepad.plugins.gspell.gschema.xml
 
 .include <bsd.port.mk>

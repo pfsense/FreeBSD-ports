@@ -1,6 +1,3 @@
-# Created by: Marc Fournier <scrappy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Convert-BER
 PORTVERSION=	1.32
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to encode and decode objects using Basic Encoding Rules (BER)
+WWW=		https://metacpan.org/release/Convert-BER
 
 USES=		perl5
 USE_PERL5=	configure

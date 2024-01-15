@@ -1,6 +1,3 @@
-# Created by: Zhang Shu
-# $FreeBSD$
-
 PORTNAME=	gb2jis
 PORTVERSION=	1.5
 CATEGORIES=	chinese

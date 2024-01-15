@@ -1,14 +1,12 @@
-# Created by: sumikawa@kame.net
-# $FreeBSD$
-
 PORTNAME=	wv
 PORTVERSION=	1.2.9
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.abisource.com/downloads/wv/${PORTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Library and executables to access Microsoft Word files
+WWW=		https://wvware.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,15 +17,22 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 
 USES=		gmake gnome jpeg pkgconfig libtool xorg
 USE_GNOME=	libgsf
-USE_XORG=	x11
 USE_LDCONFIG=	yes
+USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	MKDIR_P="${MKDIR}"
 CONFIGURE_ARGS=	--with-png=${LOCALBASE} \
 		--with-libwmf=${LOCALBASE}
+CONFIGURE_ENV=	MKDIR_P="${MKDIR}"
+
 MAKEFILE=	GNUmakefile
-MAKE_ARGS+=	pkgconfigdir="${PREFIX}/libdata/pkgconfig"
-MAKE_ARGS+=	INSTALL_STRIP_FLAG="${STRIP}"
+MAKE_ARGS+=	pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
+	INSTALL_STRIP_FLAG="${STRIP}"
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

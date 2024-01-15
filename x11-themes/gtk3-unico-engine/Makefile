@@ -1,18 +1,15 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	unico
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.2.1
 PORTREVISION=	2
 CATEGORIES=	x11-themes
-MASTER_SITES=	https://launchpadlibrarian.net/98881788/ \
-	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/ \
-	LOCAL/olivierd
+MASTER_SITES=	https://distfiles.sigtrap.nl/ \
+		LOCAL/nc/mirror
 PKGNAMEPREFIX=	gtk3-
 PKGNAMESUFFIX=	-engine
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk+ 3.0 engine
+WWW=		https://launchpad.net/unico
 
 LICENSE=	LGPL3
 

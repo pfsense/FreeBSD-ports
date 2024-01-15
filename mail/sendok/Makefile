@@ -1,6 +1,3 @@
-# Created by: Zak Johnson <zakj@nox.cx>
-# $FreeBSD$
-
 PORTNAME=	sendok
 PORTVERSION=	0.9.2
 CATEGORIES=	mail
@@ -9,6 +6,7 @@ MASTER_SITES=	http://peff.net/sendok/ \
 
 MAINTAINER=	zakj@nox.cx
 COMMENT=	Generates qmail email addresses with timed cookies
+WWW=		https://peff.net/sendok/
 
 USES=		qmail:run
 

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Plucene
 PORTVERSION=	1.25
 PORTREVISION=	5
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl port of the Java Lucene search engine
+WWW=		https://metacpan.org/release/Plucene
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

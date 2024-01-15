@@ -1,6 +1,3 @@
-# Created by: Igor Vinokurov <igor@zynaps.ru>
-# $FreeBSD$
-
 PORTNAME=	Apache-DBI
 PORTVERSION=	1.12
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBI persistent connection, authentication and authorization
+WWW=		https://metacpan.org/release/Apache-DBI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,7 +18,7 @@ RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
 
 CONFLICTS=	p5-Apache-DBI-mp[12]*
 
-USES=		apache:2.2+ perl5
+USES=		apache perl5
 USE_PERL5=	configure
 
 .include <bsd.port.mk>

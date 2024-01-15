@@ -1,16 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	itinerary
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE Itinerary is a digital travel assistant
+COMMENT=	Digital travel assistant for KDE
+WWW=		https://apps.kde.org/en/itinerary
 
-USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
-USE_KDE=	ecm coreaddons contacts i18n kpkpass notifications kosm kitinerary
-USE_QT=		core location quick3d quickcontrols2 testlib \
-		buildtools_build qmake_build
+BUILD_DEPENDS=	kirigami-addons>=0:x11-toolkits/kirigami-addons
+RUN_DEPENDS=	kirigami-addons>=0:x11-toolkits/kirigami-addons
+
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
+		qt:5 tar:xz xorg
+USE_KDE=	calendarcore completion config contacts coreaddons crash \
+		dbusaddons holidays i18n jobwidgets kio kitinerary kosm kpkpass \
+		kpublictransport mime notifications qqc2-desktop-style service \
+		solid widgetsaddons windowsystem \
+		ecm:build
+USE_QT=		concurrent core dbus declarative gui location network quick3d \
+		quickcontrols2 testlib widgets \
+		buildtools:build qmake:build
+USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS
 

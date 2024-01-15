@@ -11,14 +11,16 @@ include/opendht/dht_interface.h
 include/opendht/dht_proxy_client.h
 include/opendht/dht_proxy_server.h
 include/opendht/dhtrunner.h
+include/opendht/http.h
 include/opendht/indexation/pht.h
 include/opendht/infohash.h
 include/opendht/log.h
-include/opendht/log_enable.h
+include/opendht/logger.h
 include/opendht/network_engine.h
 include/opendht/network_utils.h
 include/opendht/node.h
 include/opendht/node_cache.h
+include/opendht/node_export.h
 include/opendht/peer_discovery.h
 include/opendht/proxy.h
 include/opendht/rate_limiter.h
@@ -35,7 +37,7 @@ lib/cmake/opendht/opendhtConfig-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/opendht/opendhtConfig.cmake
 lib/cmake/opendht/opendhtConfigVersion.cmake
 lib/libopendht.so
-lib/libopendht.so.%%SHL1%%
-lib/libopendht.so.%%SHL3%%
+lib/libopendht.so.3
+lib/libopendht.so.3.1.6
 libdata/pkgconfig/opendht.pc
 man/man1/dhtnode.1.gz

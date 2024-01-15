@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ebook2cw
 PORTVERSION=	0.8.2
 PORTREVISION=	2
@@ -9,6 +7,7 @@ MASTER_SITES=	http://fkurz.net/ham/ebook2cw/ \
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Convert text files into cw as an mp3 or ogg file
+WWW=		https://fkurz.net/ham/ebook2cw.html
 
 LICENSE=	GPLv2
 

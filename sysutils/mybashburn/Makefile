@@ -1,14 +1,12 @@
-# Created by: Martin Tournoij <carpetsmoker@xs4all.nl>
-# $FreeBSD$
-
 PORTNAME=	mybashburn
 PORTVERSION=	1.0.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ncurses CD burning bash script
+WWW=		http://mybashburn.sf.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

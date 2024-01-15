@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	xantfarm
 PORTVERSION=	1.16
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}_23oct1991
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ant hill simulation on X11 root window
+WWW=		https://www.acme.com/software/xantfarm/
 
 WRKSRC=		${WRKDIR}/xantfarm
 USES=		imake xorg

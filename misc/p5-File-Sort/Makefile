@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	File-Sort
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Sort a file or merge sort multiple files
+WWW=		https://metacpan.org/release/File-Sort
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

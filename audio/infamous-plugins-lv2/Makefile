@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	infamous-plugins
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.0-7
-DISTVERSIONSUFFIX=	-g778e591
+DISTVERSION=	0.3.2
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	LV2 plugins for various sound effects
+WWW=		https://ssj71.github.io/infamousPlugins
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

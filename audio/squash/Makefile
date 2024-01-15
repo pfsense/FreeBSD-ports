@@ -1,14 +1,12 @@
-# Created by: Matthias Andree <matthias.andree@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	squash
 PORTVERSION=	1.0
-PORTREVISION=	18
+PORTREVISION=	21
 CATEGORIES=	audio
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Learning console-based MP3/OGG player
+WWW=		https://savannah.nongnu.org/projects/squash/
 
 LICENSE=	GPLv2+
 
@@ -20,8 +18,7 @@ LIB_DEPENDS+=	libao.so:audio/libao \
 		libvorbis.so:audio/libvorbis
 RUN_DEPENDS=	id3v2:audio/id3v2
 
-USES=		compiler:c11 gmake ncurses tar:bzip2
-USE_RUBY=	yes
+USES=		compiler:c11 gmake ncurses ruby tar:bzip2
 MAKE_ARGS=	CC="${CC}"
 CFLAGS+=	-fcommon
 

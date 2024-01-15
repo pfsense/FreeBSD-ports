@@ -3,8 +3,8 @@
  * snort_download_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,13 @@ $snort_community_rules_filename = SNORT_GPLV2_DNLD_FILENAME;
 $snort_openappid_filename = SNORT_OPENAPPID_DNLD_FILENAME;
 $snort_openappid_rules_filename = SNORT_OPENAPPID_RULES_FILENAME;
 
-$snortdownload = $config['installedpackages']['snortglobal']['snortdownload'];
-$emergingthreats = $config['installedpackages']['snortglobal']['emergingthreats'];
-$etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'];
-$snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommunityrules'];
-$openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'];
-$openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'];
+$snortdownload = config_get_path('installedpackages/snortglobal/snortdownload');
+$emergingthreats = config_get_path('installedpackages/snortglobal/emergingthreats');
+$etpro = config_get_path('installedpackages/snortglobal/emergingthreats_pro');
+$snortcommunityrules = config_get_path('installedpackages/snortglobal/snortcommunityrules');
+$openappid_detectors = config_get_path('installedpackages/snortglobal/openappid_detectors');
+$openappid_rules_detectors = config_get_path('installedpackages/snortglobal/openappid_rules_detectors');
+$feodotracker_rules = config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules');
 
 /* Get last update information if available */
 if (file_exists(SNORTDIR . "/rulesupd_status")) {
@@ -65,6 +66,8 @@ else {
 	$emergingthreats_filename = SNORT_ET_DNLD_FILENAME;
 	$et_name = gettext("Emerging Threats Open Rules");
 }
+
+$feodotracker_rules_filename = FEODO_TRACKER_DNLD_FILENAME;
 
 /* quick md5 chk of downloaded rules */
 if ($snortdownload == 'on') {
@@ -132,18 +135,32 @@ if (file_exists("{$snortdir}/{$snort_openappid_rules_filename}.md5") && $openapp
         $openappid_detectors_rules_sig_chk_local = file_get_contents("{$snortdir}/{$snort_openappid_rules_filename}.md5");
         $openappid_detectors_rules_sig_date = date(DATE_RFC850, filemtime("{$snortdir}/{$snort_openappid_rules_filename}.md5"));
 }
+
+if ($feodotracker_rules == 'on') {
+	$feodotracker_sig_chk_local = 'Not Downloaded';
+	$feodotracker_sig_sig_date = 'Not Downloaded';
+}
+else {
+	$feodotracker_sig_chk_local = 'Not Enabled';
+	$feodotracker_sig_sig_date = 'Not Enabled';
+}
+if ($feodotracker_rules == 'on' && file_exists("{$snortdir}/{$feodotracker_rules_filename}.md5")) {
+	$feodotracker_sig_chk_local = file_get_contents("{$snortdir}/{$feodotracker_rules_filename}.md5");
+	$feodotracker_sig_sig_date = date(DATE_RFC850, filemtime("{$snortdir}/{$feodotracker_rules_filename}.md5"));
+}
+
 // Check status of the background rules update process (when launched)
 if ($_REQUEST['ajax'] == 'status') {
 	if (is_numeric($_REQUEST['pid'])) {
 		// Check for the PID launched as the rules update task
 		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
 		if (!empty($rc)) {
-			print("RUNNING");
+			print "RUNNING";
 		} else {
-			print("DONE");
+			print "DONE";
 		}
 	} else {
-		print("DONE");
+		print "DONE";
 	}
 	exit;
 }
@@ -156,7 +173,7 @@ if ($_REQUEST['ajax'] == 'getlog') {
 	else {
 		$contents = gettext("*** Rules Update logfile is empty! ***");
 	}
-	print($contents);
+	print $contents;
 	exit;
 }
 
@@ -173,12 +190,13 @@ if (isset($_POST['mode'])) {
 		unlink_if_exists("{$snortdir}/{$snort_community_rules_filename}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_rules_file}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
+		unlink_if_exists("{$snortdir}/{$feodotracker_rules_filename}.md5");
 	}
 	
 	// Launch a background process to download the updates
 	$upd_pid = 0;
-	$upd_pid = mwexec_bg("/usr/local/bin/php-cgi -f /usr/local/pkg/snort/snort_check_for_rule_updates.php");
-	print($upd_pid);
+	$upd_pid = mwexec_bg("/usr/local/bin/php -f /usr/local/pkg/snort/snort_check_for_rule_updates.php");
+	print $upd_pid;
 
 	// If we failed to launch our background process, throw up an error for the user.
 	if ($upd_pid == 0) {
@@ -249,6 +267,11 @@ display_top_tabs($tab_array, true);
                                         <td><?=trim($openappid_detectors_rules_sig_chk_local);?></td>
                                         <td><?=gettext($openappid_detectors_rules_sig_date);?></td>
                                 </tr>
+				<tr>
+					<td><?=gettext("Feodo Tracker Botnet C2 IP Rules");?></td>
+					<td><?=trim($feodotracker_sig_chk_local);?></td>
+					<td><?=gettext($feodotracker_sig_sig_date);?></td>
+				</tr>
 				</tbody>
 			</table>
 		</div>
@@ -279,13 +302,13 @@ $group->add(new Form_Button(
 	'update',
 	'Update Rules',
 	'#',
-	'fa-check'
+	'fa-solid fa-check'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('title', gettext("Check for and install only new updates"));
 $group->add(new Form_Button(
 	'force',
 	'Force Update',
 	'#',
-	'fa-download'
+	'fa-solid fa-download'
 ))->removeClass('btn-primary')->addClass('btn-warning')->addClass('btn-sm')->setAttribute('title', gettext("Force an update of all enabled rule sets"));
 $group->setHelp('Click UPDATE RULES to check for and automatically apply any new posted updates for selected rules packages.  Clicking FORCE UPDATE ' . 
 		'will zero out the MD5 hashes and force the download and application of the latest versions of the enabled rules packages.');
@@ -300,14 +323,14 @@ $group->add(new Form_Button(
 	'view',
 	'View Log',
 	'#',
-	'fa-file-text-o'
+	'fa-regular fa-file-lines'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('title', gettext('View rules update log'))->setAttribute('data-target', '#vwupdlog')->setAttribute('data-toggle', 'modal');
 
 $group->add(new Form_Button(
 	'clear',
 	'Clear Log',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 ))->removeClass('btn-primary')->addClass('btn-danger')->addClass('btn-sm')->setAttribute('title', gettext('Clear rules update log'));
 $group->setHelp('The log file is limited to 1024K in size and is automatically cleared when that limit is exceeded.');
 $section->add($group);
@@ -343,11 +366,11 @@ $modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
 $modal->addInput(new Form_StaticText (
 	null,
 	'Updating rule sets may take a while ... please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' . 
-	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
+	'<i class="content fa fa-spinner fa-pulse fa-solid fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
 
-print($form);
+print $form;
 ?>
 
 <script type="text/javascript">

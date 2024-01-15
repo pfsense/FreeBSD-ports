@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	virt-what
-PORTVERSION=	1.20
+PORTVERSION=	1.25
 CATEGORIES=	sysutils
 MASTER_SITES=	https://people.redhat.com/~rjones/virt-what/files/
 
 MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Utility to determine whether it is being run in virtual environment
+WWW=		https://people.redhat.com/~rjones/virt-what/
 
 LICENSE=	GPLv1
 
-USES=		cpe perl5
+USES=		perl5
 
 GNU_CONFIGURE=	yes
 

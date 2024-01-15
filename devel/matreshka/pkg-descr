@@ -1,24 +1,24 @@
-Matreshka is an Ada framework to develop information systems.  It consists
-of five major components: League, XML processor, Web framework, SQL access,
-and the Modeling framework.
+Matreshka is an Ada framework to develop information systems:
 
-League:
-    High level abstraction of localization and internationalization. Also
-    provides calendrical calculations, regular expressions, and JSON.
+ League - a set of reusable components aimed at providing high level
+ abstractions for  internationalization of applications, as well as a portable
+ interface to different operating systems. Other features, include advanced
+ calendrical calculations, regular expressions, and JSON support for processing
+ and generation.
 
-XML processor:
-    Sax reader and writer, supports XML 1.0 and 1.1 as well as namespaces.
-    It also has an XML catalogs resolver.
+ XML processor - manipulating of streams and documents; including SAX reader,
+ and writer; XML1.0, XML1.1, Namespaces support and XML Base specifications;
+ DOM API to process XML documents 0.8; XML Catalogs resolver; Markup Templates
+ Engine to process XML templates and generates XML or HTML/XHTML output 0.6.
 
-Web framework:
-    Supports FastCGI, SOAP 1.2 and has a WSDL to Ada translator.
+ Web framework SpikeDog - implemented over AWS (Ada Web Server) with Servlet
+ API 0.7. FastCGI. SOAP 1.2 supported, including WS-Security module 1.1.
 
-SQL access:
-    Database abstraction of MySQL, Oracle, PostgreSQL, SQLite and Firebird.
+ SQL database access - provides a generic API for accessing SQL databases:
+ Firebird, MySQL, Oracle, PostgreSQL, SQLite3.
 
-Modeling framework:
-    provides implementation of Meta Object Facility (MOF) written entirely
-    in Ada.  Extension modules assist in the analysis of UML modules and
-    extensions (MOF, OCL, and UML testing profile) and diagram definition.
-
-WWW: http://forge.ada-ru.org/matreshka
+ Ada Modeling Framework - an implementation of OMG's Meta Object
+ Facility (MOF) written completely in Ada. Extension modules are provided to
+ assist in the analysis and modification of, UML models and their
+ extensions. MOF Extensions to support metamodeling OCL models UML Testing
+ Profile to support Model-Driven Testing Diagram Definition

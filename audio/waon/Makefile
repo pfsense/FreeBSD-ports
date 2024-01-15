@@ -1,14 +1,12 @@
-# Created by: Kengo Ichiki <kichiki@users.sourceforge.net>
-# $FreeBSD$
-
 PORTNAME=	waon
 PORTVERSION=	0.10
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	kichiki@users.sourceforge.net
 COMMENT=	Wave-to-Notes transcriber and some utility tools
+WWW=		https://waon.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -17,7 +15,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsndfile.so:audio/libsndfile \
 		libsamplerate.so:audio/libsamplerate
 
-CONFLICTS=	pv-[0-9]*
+CONFLICTS=	pv
 
 USES=		gnome ncurses pkgconfig
 USE_GNOME=	gtk20

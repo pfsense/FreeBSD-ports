@@ -1,49 +1,48 @@
-# Created by: Leinier Cruz Salfran <salfrancl@yahoo.es>
-# $FreeBSD$
-
 PORTNAME=	fet
-DISTVERSION=	5.48.1
+DISTVERSION=	6.15.0
 CATEGORIES=	deskutils education
 MASTER_SITES=	https://lalescu.ro/liviu/fet/download/ \
 		https://lalescu.ro/liviu/fet/download/old/ \
 		https://timetabling.de/download/ \
 		https://timetabling.de/download/old/
+PKGNAMESUFFIX=	-${FLAVOR}
 
 MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	Free timetabling software
+WWW=		https://lalescu.ro/liviu/fet/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++14-lang gl qmake qt:5 tar:bzip2
+FLAVORS=	qt6 qt5
+FLAVOR?=	qt6
+
+USES=		compiler:c++14-lang gl qmake qt:${FLAVOR:S/qt//} tar:bzip2
 USE_GL=		gl
-USE_QT=		buildtools_build core printsupport widgets
+_USE_QT5=	core gui network printsupport widgets buildtools:build
+_USE_QT6=	base
+USE_QT=		${_USE_QT${FLAVOR:S/qt//}}
 
-INSTALL_TARGET=	${WRKSRC}/fet-cl
+CONFLICTS_INSTALL=	${FLAVORS:@fl@fet-${fl}@}
 
-DESKTOP_ENTRIES="FET" \
-		"Free timetable software" \
-		"" \
-		"fet" \
-		"Education;Qt;" \
-		true
+DESKTOP_ENTRIES=	"FET" \
+			"Free timetable software" \
+			"" \
+			"fet" \
+			"Education;Qt;" \
+			true
 
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=	EXAMPLES NLS ONLYCL
+OPTIONS_DEFINE=	EXAMPLES NLS
 OPTIONS_SUB=	yes
-
-ONLYCL_DESC=	Build only command line version (without Qt GUI)
-
-ONLYCL_VARS=	QMAKE_SOURCE_PATH=${WRKSRC}/src/src-cl.pro
-ONLYCL_VARS_OFF=	INSTALL_TARGET+=${WRKSRC}/fet USE_QT+="gui network"
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share/fet|${DATADIR}|g' \
 		${WRKSRC}/src/interface/fet.cpp
 
 do-install:
-	${INSTALL_PROGRAM} ${INSTALL_TARGET} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/fet ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/fet-cl ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/man/fet*.gz ${STAGEDIR}${MANPREFIX}/man/man1
 

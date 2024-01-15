@@ -1,15 +1,13 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	zorba
 PORTVERSION=	2.7.0
-PORTREVISION=	31
+PORTREVISION=	39
 CATEGORIES=	textproc java
 MASTER_SITES=	https://launchpadlibrarian.net/119058962/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General purpose C++ XQuery processor
+WWW=		http://www.zorba.io/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -34,7 +32,7 @@ RUBY_CMAKE_BOOL=	WITH_RUBY
 JAVA_CMAKE_BOOL=	WITH_JAVA
 
 # Both install include/xqc.h
-CONFLICTS=	xqilla-[0-9]*
+CONFLICTS=	xqilla
 CONFLICTS_BUILD=	bison
 
 USES=		cmake compiler:c++11-lib gnome libedit
@@ -74,7 +72,7 @@ BROKEN=		Does not stage
 .endif
 
 .if ${PORT_OPTIONS:MRUBY}
-USE_RUBY=	yes
+USES+=	ruby
 WITH_SWIG=	yes
 .endif
 

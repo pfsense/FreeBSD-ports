@@ -1,6 +1,3 @@
-# Created by: Jeremy Norris <ishmael27@home.com>
-# $FreeBSD$
-
 PORTNAME=	pm-lib
 PORTVERSION=	20091202
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	procmail-lib-2009.1202
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of procmail plug-in modules
+WWW=		https://pm-lib.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/license/COPYING.GNU-GPL

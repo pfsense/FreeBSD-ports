@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fcgiwrap
 PORTVERSION=	1.1.0
 PORTREVISION=	11
@@ -7,6 +5,7 @@ CATEGORIES=	www
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Simple FastCGI wrapper for CGI scripts
+WWW=		http://nginx.localdomain.pl/wiki/FcgiWrap
 
 LICENSE=	MIT
 

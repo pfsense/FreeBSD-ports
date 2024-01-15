@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	elliott-803
-PORTVERSION=	0.1.8
+PORTVERSION=	0.1.11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	emulators
 
 MAINTAINER=	hsw@bitmark.com
 COMMENT=	Emulator and compilers for Elliott 803 computer
+WWW=		https://github.com/hxw/Elliott-803
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

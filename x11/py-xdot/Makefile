@@ -1,19 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	xdot
 PORTVERSION=	1.2
+PORTREVISION=	4
 CATEGORIES=	x11 python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Interactive viewer for Graphviz dot files
+WWW=		https://pypi.org/project/xdot/
 
 LICENSE=	LGPL3+
 
-RUN_DEPENDS=	dot:graphics/graphviz
+RUN_DEPENDS=	dot:graphics/graphviz \
+		${PYNUMPY}
 
-USES=		gnome python:3.4+
+USES=		gnome python
 USE_PYTHON=	autoplist distutils
 USE_GNOME=	cairo gtk30 pygobject3
 

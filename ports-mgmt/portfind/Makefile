@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	portfind
 PORTVERSION=	1.6.3
 CATEGORIES=	ports-mgmt perl5
@@ -7,6 +5,7 @@ MASTER_SITES=	http://gug-it.de/files/
 
 MAINTAINER=	thorsten@gug-it.de
 COMMENT=	Search the ports tree
+WWW=		http://www.gug-it.de
 
 LICENSE=	BSD3CLAUSE
 

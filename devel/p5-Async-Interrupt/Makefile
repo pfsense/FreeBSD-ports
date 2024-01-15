@@ -1,6 +1,3 @@
-# Created by: Mikhail T. <michael@fun-box.ru>
-# $FreeBSD$
-
 PORTNAME=	Async-Interrupt
 PORTVERSION=	1.26
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Allow C/XS libraries to interrupt perl asynchronously
+WWW=		https://metacpan.org/release/Async-Interrupt
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

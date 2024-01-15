@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Lexical-Persistence
 PORTVERSION=	1.023
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Persistent lexical variable values for arbitrary calls
+WWW=		https://metacpan.org/release/Lexical-Persistence
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

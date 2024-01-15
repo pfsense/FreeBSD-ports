@@ -1,15 +1,12 @@
-# Created by: FreeBSD GNOME Team <gnome@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/devel/ndesk-dbus/Makefile,v 1.2 2008/01/14 22:35:41 mezz Exp $
-
 PORTNAME=	ndesk-dbus
 PORTVERSION=	0.6.1a
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://www.ndesk.org/archive/ndesk-dbus/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C\# implementation of D-Bus
+WWW=		http://www.ndesk.org/DBusSharp
 
 USES=		gmake mono pathfix pkgconfig
 GNU_CONFIGURE=	yes

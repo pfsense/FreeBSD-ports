@@ -1,6 +1,3 @@
-# Created by: Hung-Yi Chen <gaod@hychen.org>
-# $FreeBSD$
-
 PORTNAME=	Net-SNMPTrapd
 PORTVERSION=	0.17
 CATEGORIES=	net-mgmt perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	SNMP Trap Listener in Perl
+WWW=		https://metacpan.org/release/Net-SNMPTrapd
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

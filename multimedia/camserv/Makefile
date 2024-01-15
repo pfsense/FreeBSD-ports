@@ -1,15 +1,13 @@
-# Created by: Chuck Hein <chein@FreeBSD.org> & Jim Overholt <overholt@isdw.net>
-# $FreeBSD$
-
 PORTNAME=	camserv
 PORTVERSION=	0.5.1
-PORTREVISION=	20
+PORTREVISION=	21
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/cserv/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free program to do streaming video via the web
+WWW=		https://cserv.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

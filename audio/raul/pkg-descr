@@ -1,3 +1,2 @@
-Real-time audio utility library
-
-WWW: https://github.com/drobilla/raul
+Raul (Realtime Audio Utility Library) is a C++ utility library primarily aimed
+at audio/musical applications.

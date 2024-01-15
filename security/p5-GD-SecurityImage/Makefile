@@ -1,9 +1,6 @@
-# Created by: ports@rbt.ca
-# $FreeBSD$
-
 PORTNAME=	GD-SecurityImage
 PORTVERSION=	1.75
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module for creating CAPTCHA security images
+WWW=		https://metacpan.org/release/GD-SecurityImage
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -34,11 +32,9 @@ NO_ARCH=	yes
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
 .if ${PORT_OPTIONS:MX11}
-BUILD_DEPENDS+=	convert:graphics/ImageMagick6
-RUN_DEPENDS+=	convert:graphics/ImageMagick6
+USES+=		magick:6,build,run
 .else
-BUILD_DEPENDS+=	convert:graphics/ImageMagick6-nox11
-RUN_DEPENDS+=	convert:graphics/ImageMagick6-nox11
+USES+=		magick:6,build,run,nox11
 .endif
 .endif
 

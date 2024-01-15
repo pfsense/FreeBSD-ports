@@ -1,6 +1,3 @@
-# Created by: Thomas Sandford <freebsduser@paradisegreen.co.uk>
-# $FreeBSD$
-
 PORTNAME=	simd-viterbi
 PORTVERSION=	2.0.3
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.ka9q.net/code/fec/
 
 MAINTAINER=	freebsduser@paradisegreen.co.uk
 COMMENT=	Fast Viterbi CODEC library
+WWW=		http://www.ka9q.net/code/fec/
 
 GNU_CONFIGURE=	yes
 USES=		gmake

@@ -1,6 +1,3 @@
-# Created by: Mun-Kyo Seo <munggo@pmy.lv>
-# $FreeBSD$
-
 PORTNAME=	template_
 PORTVERSION=	2.2.3
 CATEGORIES=	www
@@ -9,6 +6,7 @@ DISTNAME=	Template_.2.2.3
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance PHP compiling template engine
+WWW=		https://www.xtac.net/
 
 LICENSE=	LGPL20+
 

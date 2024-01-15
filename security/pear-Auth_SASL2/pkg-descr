@@ -1,9 +1,8 @@
-Provides code to generate responses to common SASL mechanisms, including:
+Auth_SASL provides ode to generate responses to common SASL mechanisms,
+including:
 - Digest-MD5
 - Cram-MD5
 - Plain
 - Anonymous
 - Login (Pseudo mechanism)
 - SCRAM
-
-WWW: https://pear.php.net/package/Auth_SASL2

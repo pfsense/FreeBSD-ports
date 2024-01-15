@@ -1,0 +1,33 @@
+commit a6cf534d0fa0297547f1e587a12729f9d7066bae
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Wed Nov 8 10:44:26 2023 -0600
+
+    Support URL IP aliases in alias_expand(). Fix #14947
+
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 0e1640f4f5..2ef5196f6c 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -2074,7 +2074,7 @@ function alias_expand($name) {
+ 			return null;
+ 		}
+ 		/*
+-		 * make sure if it's a url alias, it actually exists.
++		 * make sure if it's a url alias, it actually exists and valid URLs.
+ 		 * redmine #5845, #13068
+ 		 */
+ 		foreach (config_get_path('aliases/alias', []) as $alias) {
+@@ -2084,6 +2084,13 @@ function alias_expand($name) {
+ 					    file_exists($urltable_filename) &&
+ 					    !empty(trim(file_get_contents($urltable_filename)))) {
+ 						return "\${$name}";
++					} elseif (is_array($alias['aliasurl'])) {
++						foreach ($alias['aliasurl'] as $aliasurl) {
++							if (!is_URL($aliasurl)) {
++								return null;
++							}
++						}
++						return "\${$name}";
+ 					} else {
+ 						return null;
+ 					}

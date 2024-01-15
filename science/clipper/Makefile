@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	clipper
 DISTVERSION=	2.1.20180802
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science
 MASTER_SITES=	https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/dependencies/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Libraries for the organisation of crystallographic data
+WWW=		http://www.ysbl.york.ac.uk/~cowtan/clipper/
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Alexey V. Degtyarev <alexey@renatasystems.org>
-# $FreeBSD$
-
 PORTNAME=	Proc-WaitStat
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Interpret and act on wait() status values
+WWW=		https://metacpan.org/release/Proc-WaitStat
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: tobez
-# $FreeBSD$
-
 PORTNAME=	Data-JavaScript
 PORTVERSION=	1.13
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Dump Perl structures to JavaScript code
+WWW=		https://metacpan.org/release/Data-JavaScript
 
 USES=		perl5 tar:tgz
 USE_PERL5=	configure

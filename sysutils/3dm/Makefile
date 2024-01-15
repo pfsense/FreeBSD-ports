@@ -1,6 +1,3 @@
-# Created by: Daniel Baker <dbaker@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	3dm
 DISTVERSION=	2.11.00.021
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DIST_SUBDIR=	3dm2
 
 MAINTAINER=	takefu@airport.fm
 COMMENT=	3ware RAID controller monitoring daemon and web server
+WWW=		https://www.broadcom.com/support/
 
 LICENSE=	3dm
 LICENSE_NAME=	BROADCOM

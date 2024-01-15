@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	HTTP-MobileAgent
 PORTVERSION=	0.36
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTTP mobile user agent string parser for Perl
+WWW=		https://metacpan.org/release/HTTP-MobileAgent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

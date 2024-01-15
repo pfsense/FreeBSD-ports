@@ -1,6 +1,3 @@
-# Created by: Alexander Novitsky
-# $FreeBSD$
-
 PORTNAME=		instantclient
 PORTVERSION=		${ORACLEVERSION}.${DISTDATE}
 PORTREVISION=		5
@@ -13,12 +10,17 @@ DIST_SUBDIR=		oracle
 
 MAINTAINER=		pi@FreeBSD.org
 COMMENT=		Oracle 10 32Bit Linux InstantClient basics for RDBMS 8.1.2+
+WWW=		http://www.oracle.com/technology/tech/oci/instantclient/instantclient.html
+
+# Converted from RESTRICTED
+LICENSE=	Oracle
+LICENSE_NAME=	Oracle
+LICENSE_TEXT=	Packaging prohibited by Oracle license
+LICENSE_PERMS=	auto-accept
 
 ONLY_FOR_ARCHS=		i386 amd64
 NO_BUILD=		yes
 DISTINFO_FILE=		${MASTERDIR}/distinfo.i386
-
-RESTRICTED=		Packaging prohibited by Oracle license
 
 USES=			linux zip
 USE_LINUX_PREFIX=	yes

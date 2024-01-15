@@ -11,13 +11,16 @@ include/lfcbase/Datetime.h
 include/lfcbase/Directory.h
 include/lfcbase/Exception.h
 include/lfcbase/File.h
+include/lfcbase/GraphT.h
 include/lfcbase/GetLongOpt.h
 include/lfcbase/GetOpt.h
+include/lfcbase/HashT.h
 include/lfcbase/Host.h
 include/lfcbase/ListT.h
 include/lfcbase/Logger.h
 include/lfcbase/Matcher.h
-include/lfcbase/Monitor.h
+include/lfcbase/Screen.h
+include/lfcbase/Screen2.h
 include/lfcbase/NanoTimer.h
 include/lfcbase/Net.h
 include/lfcbase/NetHandler.h

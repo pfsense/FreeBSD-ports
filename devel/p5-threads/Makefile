@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	threads
 PORTVERSION=	2.21
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interpreter-based threads
+WWW=		https://metacpan.org/release/threads
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

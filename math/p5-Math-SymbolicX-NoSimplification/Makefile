@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-SymbolicX-NoSimplification
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Turn off Math::Symbolic simplification
+WWW=		https://metacpan.org/release/Math-SymbolicX-NoSimplification
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

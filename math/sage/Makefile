@@ -1,9 +1,6 @@
-# Created by: Stephen Montgomery-Smith <stephen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sage
 PORTVERSION=	9.2
-PORTREVISION=	5
+PORTREVISION=	42
 CATEGORIES=	math
 MASTER_SITES=	https://mirrors.xmission.com/sage/src/		\
 		http://mirrors.xmission.com/sage/src/		\
@@ -16,13 +13,16 @@ PKGNAMESUFFIX=	-math
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Open source Mathematics software
+WWW=		https://www.sagemath.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
+BROKEN=		hoping to fix it with Python-3.9
+
 BUILD_DEPENDS=	bash:shells/bash		\
 		dash:shells/dash		\
-		cmake:devel/cmake		\
+		cmake:devel/cmake-core		\
 		dreadnaut:math/nauty		\
 		${PYTHON_PKGNAMEPREFIX}alabaster>0:textproc/py-alabaster@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}attrs>0:devel/py-attrs@${PY_FLAVOR}\
@@ -43,11 +43,11 @@ BUILD_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}entrypoints>0:devel/py-entrypoints@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}fpylll>0:math/py-fpylll@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}gmpy2-devel>0:math/py-gmpy2-devel@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}gmpy2>0:math/py-gmpy2@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}imagesize>0:graphics/py-imagesize@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}importlib-metadata>0:devel/py-importlib-metadata@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}ipykernel5>0:devel/py-ipykernel5@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}ipykernel>0:devel/py-ipykernel@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}ipython>0:devel/ipython@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}ipython_genutils>0:devel/py-ipython_genutils@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}ipywidgets>0:devel/py-ipywidgets@${PY_FLAVOR}\
@@ -55,8 +55,8 @@ BUILD_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0i:devel/py-Jinja2@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jedi>0:devel/py-jedi@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}jupyter_core>0:devel/py-jupyter_core@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}jupyter_client>0:devel/py-jupyter_client@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}jupyter-core>0:devel/py-jupyter-core@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}jupyter-client>0:devel/py-jupyter-client@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}kiwisolver>0:math/py-kiwisolver@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}markupsafe>0:textproc/py-markupsafe@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}\
@@ -143,7 +143,6 @@ BUILD_DEPENDS=	bash:shells/bash		\
 		pari-nftables>0:math/pari_nftables	\
 		pari-seadata>0:math/pari_seadata\
 		QuadraticSieve:math/flintqs	\
-		ninja:devel/ninja		\
 		gpatch:devel/patch		\
 		rubiks>0:math/rubiks		\
 		sympow:math/sympow		\
@@ -151,7 +150,6 @@ BUILD_DEPENDS=	bash:shells/bash		\
 		three.js>0:www/threejs		\
 		yasm:devel/yasm			\
 		gtar:archivers/gtar		\
-		convert:graphics/ImageMagick6	\
 		ffmpeg:multimedia/ffmpeg	\
 		${LOCALBASE}/lib/libBLT.a:x11-toolkits/blt
 LIB_DEPENDS=	libarb.so:math/arb		\
@@ -199,11 +197,10 @@ LIB_DEPENDS=	libarb.so:math/arb		\
 		libplanarity.so:math/planarity	\
 		libpng.so:graphics/png		\
 		libppl.so:devel/ppl		\
-		libpynac.so:math/pynac		\
 		libR.so:math/R			\
 		librw.so:math/rankwidth		\
 		libSingular.so:math/singular	\
-		libamd.so:math/suitesparse	\
+		libumfpack.so:math/suitesparse-umfpack	\
 		libsemigroups.so:math/libsemigroups	\
 		libsymmetrica.so:math/symmetrica\
 		libzmq.so:net/libzmq4		\
@@ -241,11 +238,11 @@ RUN_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}entrypoints>0:devel/py-entrypoints@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}fpylll>0:math/py-fpylll@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}gmpy2-devel>0:math/py-gmpy2-devel@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}gmpy2>0:math/py-gmpy2@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}imagesize>0:graphics/py-imagesize@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}importlib-metadata>0:devel/py-importlib-metadata@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}ipykernel5>0:devel/py-ipykernel5@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}ipykernel>0:devel/py-ipykernel@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}ipython>0:devel/ipython@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}ipython_genutils>0:devel/py-ipython_genutils@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}ipywidgets>0:devel/py-ipywidgets@${PY_FLAVOR}\
@@ -253,12 +250,12 @@ RUN_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jedi>0:devel/py-jedi@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}jupyter_core>0:devel/py-jupyter_core@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}jupyter_client>0:devel/py-jupyter_client@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}jupyter-core>0:devel/py-jupyter-core@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}jupyter-client>0:devel/py-jupyter-client@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}kiwisolver>0:math/py-kiwisolver@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}markupsafe>0:textproc/py-markupsafe@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}mistune>0:textproc/py-mistune@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}mistune0>0:textproc/py-mistune0@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}mpmath>0:math/py-mpmath@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}nbconvert>0:devel/py-nbconvert@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}nbformat>0:devel/py-nbformat@${PY_FLAVOR}\
@@ -339,9 +336,10 @@ RUN_DEPENDS=	bash:shells/bash		\
 		yasm:devel/yasm			\
 		pixz:archivers/pixz
 
-USES=		autoreconf blaslapack:openblas compiler:c++11-lib fortran	\
-		gettext gmake gnome iconv jpeg libtool localbase ncurses perl5	\
-		pkgconfig python:3.6+ readline shebangfix sqlite tk xorg
+USES=		autoreconf blaslapack:openblas compiler:c++11-lib fortran \
+		gettext gmake gnome iconv jpeg libtool localbase magick:6,build \
+		ncurses ninja:build perl5 pkgconfig python readline shebangfix \
+		sqlite tex tk xorg
 USE_TEX=	latex:build pdftex:build tex:build
 USE_XORG=	x11 xext xscrnsaver
 USE_GNOME=	cairo glib20 pango
@@ -501,6 +499,8 @@ pre-configure:
 	${REINPLACE_CMD} -e 's|/var/lib/sage|/share/libdata/${PORTNAME}|'	\
 		${WRKSRC}/${f}
 .endfor
+	# Bug with py-docutils > 0.16
+	${RM} -r ${WRKSRC}/src/doc/hu
 	(cd ${WRKSRC} && ./bootstrap)
 	${MKDIR} ${BLDDIR}${PREFIX}/lib/pkgconfig	# Removed thereafter
 
@@ -567,8 +567,10 @@ do-install:
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/lib64 ${STAGEDIR}${PREFIX}/libdata/pkgconfig/blas.pc	\
+		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/distutils-precedence.pth	\
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/cblas.pc	\
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/gsl.pc	\
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/lapack.pc
+	${RM} -r ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_distutils_hack
 
 .include <bsd.port.post.mk>

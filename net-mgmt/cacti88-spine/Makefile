@@ -1,6 +1,3 @@
-# Created by: clement@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	spine
 PORTVERSION=	0.8.8h
 CATEGORIES=	net-mgmt
@@ -10,6 +7,7 @@ DISTNAME=	cacti-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Multithreaded poller for Cacti written in C
+WWW=		https://cacti.net/spine_info.php
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE

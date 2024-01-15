@@ -1,6 +1,3 @@
-# Created by: Yoshisato YANAGISAWA
-# $FreeBSD$
-
 PORTNAME=	dkfilter
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://jason.long.name/dkfilter/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Domainkeys filter for Postfix
+WWW=		http://jason.long.name/dkfilter/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

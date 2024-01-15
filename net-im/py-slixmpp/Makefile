@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	slixmpp
-DISTVERSION=	1.6.0
+DISTVERSION=	1.7.1
 CATEGORIES=	net-im python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Elegant Python library for XMPP (aka Jabber, Google Talk, etc.)
+WWW=		https://lab.louiz.org/poezio/slixmpp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,7 +18,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyasn1>=0:devel/py-pyasn1@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}aiohttp>=0:www/py-aiohttp@${PY_FLAVOR}
 TEST_DEPENDS=	gpg:security/gnupg
 
-USES=		pkgconfig python:3.7+
+USES=		cpe pkgconfig python
+CPE_VENDOR=	${PORTNAME}_project
 USE_PYTHON=	distutils autoplist cython
 
 NO_ARCH=	yes

@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	erkale-pseudopotentials
-DISTVERSION=	g20200426
+DISTVERSION=	g20220405
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Pseudopotentials for Erkale, the quantum chemistry program
+WWW=		https://github.com/susilehtola/erkale
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	susilehtola
 GH_PROJECT=	erkale
-GH_TAGNAME=	870e772f09631b3dbdd99a18e4f3d4786d684a01
+GH_TAGNAME=	f005a9ed588d7b6fcda54648db16523419308cbd
 
 NO_BUILD=	yes
 NO_ARCH=	yes

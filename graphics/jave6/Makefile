@@ -1,6 +1,3 @@
-# Created by: Andreas Daehn <ad001@uni-rostock.de>
-# $FreeBSD$
-
 PORTNAME=	jave6
 PORTVERSION=	0.1
 PORTREVISION=	5
@@ -11,6 +8,7 @@ DISTNAME=	jave_6.0_i20060105
 
 MAINTAINER=	ad001@uni-rostock.de
 COMMENT=	Java ASCII-Art-Generator
+WWW=		http://www.jave.de/
 
 EXTRACT_AFTER_ARGS=	-d ${WRKDIR}/${DISTNAME}
 

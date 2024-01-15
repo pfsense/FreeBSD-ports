@@ -1,24 +1,19 @@
-# Created by: Oliver Braun <obraun@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mairix
 DISTVERSION=	0.24
 CATEGORIES=	mail
 
-MAINTAINER=	jjuanino@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Indexing and searching in Maildir, MH, or mbox folders
+WWW=		http://www.rc0.org.uk/mairix/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_armv6=	fails to build under emulation: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
-BROKEN_armv7=	fails to build under emulation: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
 
 USES=		bison compiler:c11 gmake ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	vandry
 
-CONFIGURE_ARGS= --prefix=${PREFIX}
+CONFIGURE_ARGS=	--prefix=${PREFIX}
 HAS_CONFIGURE=	yes
 PLIST_FILES=	bin/mairix \
 		man/man1/mairix.1.gz \

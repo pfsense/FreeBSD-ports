@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Device-Gsm
 PORTVERSION=	1.61
 CATEGORIES=	comms perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to GSM phones/modems on serial ports
+WWW=		https://metacpan.org/release/Device-Gsm
 
 BUILD_DEPENDS=	p5-Device-Modem>=0:comms/p5-Device-Modem
 RUN_DEPENDS=	p5-Device-Modem>=0:comms/p5-Device-Modem

@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Proc-Daemon
 PORTVERSION=	0.23
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module that provides a method to daemonify a Perl script
+WWW=		https://metacpan.org/release/Proc-Daemon
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -17,5 +15,7 @@ TEST_DEPENDS=	p5-Proc-ProcessTable>0:devel/p5-Proc-ProcessTable
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

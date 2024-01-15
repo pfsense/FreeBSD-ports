@@ -1,6 +1,3 @@
-# Created by: Vladimir Kondratyev <wulf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	evemu
 PORTVERSION=	2.7.0
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.freedesktop.org/software/${PORTNAME}/
 
 MAINTAINER=	wulf@FreeBSD.org
 COMMENT=	Records and replays EVDEV descriptions and events
+WWW=		https://www.freedesktop.org/wiki/Evemu/
 
 LICENSE=	GPLv3
 
@@ -30,9 +28,9 @@ PYTHON_USES_OFF=		python:build
 PYTHON_CONFIGURE_ENABLE=	python-bindings
 PYTHON_USE=			PYTHON=py3kplist
 
-GNU_CONFIGURE=  yes
-CFLAGS+=	-D_WITH_DPRINTF -include stdlib.h -include limits.h
-USE_LDCONFIG=   yes
+GNU_CONFIGURE=	yes
+CFLAGS+=	-include stdlib.h -include limits.h
+USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 REINPLACE_ARGS=	-i ''
 

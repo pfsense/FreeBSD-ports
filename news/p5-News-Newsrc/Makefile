@@ -1,6 +1,3 @@
-# Created by: Don Croyle <croyle@gelemna.org>
-# $FreeBSD$
-
 PORTNAME=	News-Newsrc
 PORTVERSION=	1.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Manage newsrc files
+WWW=		https://metacpan.org/release/News-Newsrc
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Set-IntSpan>=0:math/p5-Set-IntSpan

@@ -1,40 +1,27 @@
-# Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
-
 PORTNAME=	fv
 PORTVERSION=	1.03
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.eaflux.com/fv/sources/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Viewer of hdr/pfm images
+WWW=		http://www.eaflux.com/fv/
 
 LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gl gmake pkgconfig zip
-USE_GL=		glut
+USES=		gl gmake xorg zip
+USE_GL=		gl glu glut
+USE_XORG=	sm x11 xext xi xmu
 ALL_TARGET=	${PORTNAME}
-
-CXXFLAGS+=	$$(pkg-config --cflags libpng) -I${LOCALBASE}/include
-LDFLAGS+=	$$(pkg-config --libs libpng) -L${LOCALBASE}/lib -lglut \
-		-lGLU -lGL -lbz2 -lm -lz -llzma -lpthread
 
 PORTDOCS=	AUTHORS ChangeLog README
 PLIST_FILES=	bin/${PORTNAME}
 
-OPTIONS_DEFINE=	DEBUG DOCS
-
-DEBUG_CXXFLAGS_OFF=	-DNDEBUG
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|^CXX=|CXX?=| ; \
-		 s|^CXXFLAGS=|CXXFLAGS?=| ; \
-		 s|^LDFLAGS=|LDFLAGS?=|' ${WRKSRC}/Makefile
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

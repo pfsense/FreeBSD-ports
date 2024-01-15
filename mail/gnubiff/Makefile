@@ -1,14 +1,12 @@
-# Created by: Tim Bishop <tim@bishnet.net>
-# $FreeBSD$
-
 PORTNAME=	gnubiff
 PORTVERSION=	2.2.13
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	mail
 MASTER_SITES=	SF
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Mail notification program for Gnome
+WWW=		https://gnubiff.sourceforge.net/
 
 LIB_DEPENDS=	libpopt.so:devel/popt
 

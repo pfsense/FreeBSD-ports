@@ -1,14 +1,12 @@
-# Created by: TERAMOTO Masahiro <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	YAML-LibYAML
-PORTVERSION=	0.82
+PORTVERSION=	0.88
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl YAML Serialization using XS and libyaml
+WWW=		https://metacpan.org/release/YAML-LibYAML
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

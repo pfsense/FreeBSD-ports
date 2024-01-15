@@ -1,6 +1,3 @@
-# Created by: kbyanc
-# $FreeBSD$
-
 PORTNAME=	fcgi
 PORTVERSION=	2.4.0
 PORTREVISION=	6
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	-devkit
 
 MAINTAINER=	john@essenz.com
 COMMENT=	FastCGI Development Kit
+WWW=		http://www.fastcgi.com/
 
 LICENSE=	Open_Market_FastCGI_license
 LICENSE_NAME=	Open Market FastCGI license

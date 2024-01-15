@@ -1,6 +1,3 @@
-# Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-GDOME
 PORTVERSION=	0.86
 PORTREVISION=	5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module that provides the DOM Level 2 Core API for XML documents
+WWW=		https://metacpan.org/release/XML-GDOME
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

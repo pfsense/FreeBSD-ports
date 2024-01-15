@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	numptyphysics
 DISTVERSION=	0.3.r20090104
 PORTREVISION=	11
@@ -9,6 +6,7 @@ MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Drawing physics-based puzzle game
+WWW=		http://numptyphysics.garage.maemo.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +15,6 @@ USES=		compiler:c++11-lang desktop-file-utils gnome sdl tar:bzip2 xorg
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl image
 USE_XORG=	x11
-INSTALLS_ICONS=	yes
 
 CONFIGURE_ENV=	AUTOMAKE="${TRUE}" ACLOCAL="${TRUE}" MISSING="${TRUE}"
 LDFLAGS+=	-L${LOCALBASE}/lib -lpthread

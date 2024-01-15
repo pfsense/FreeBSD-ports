@@ -1,15 +1,13 @@
-# Created by: Dave Cottlehuber <dch@skunkwerks.at>
-# $FreeBSD$
-
 PORTNAME=	firacode
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.2
+DISTVERSION=	6.2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://github.com/tonsky/FiraCode/releases/download/${DISTVERSION}/
 DISTNAME=	Fira_Code_${DISTVERSIONPREFIX}${PORTVERSION}
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Monospaced font with programming ligatures derived from Fira
+WWW=		https://github.com/tonsky/FiraCode
 
 LICENSE=	OFL11
 

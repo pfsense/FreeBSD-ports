@@ -1,6 +1,3 @@
-# Created by: Nick Hibma <n_hibma@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	Mongoose
 PORTVERSION=	2.00
 CATEGORIES=	databases perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	n_hibma@FreeBSD.org
 COMMENT=	MongoDB document to Moose object mapper
+WWW=		https://metacpan.org/release/Mongoose/
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Dom Mitchell <dom@happygiraffe.net>
-# $FreeBSD$
-
 PORTNAME=	npadmin
 PORTVERSION=	0.8.7
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SNMP based command line network printer management tool
+WWW=		https://npadmin.sourceforge.net/
 
 USES=		compiler
 GNU_CONFIGURE=	yes

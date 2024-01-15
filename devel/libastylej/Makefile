@@ -1,6 +1,3 @@
-# Created by: Boris Samorodov <bsam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libastylej
 PORTVERSION=	3.0.1
 PORTREVISION=	2
@@ -9,8 +6,9 @@ MASTER_SITES=	SF/astyle/astyle/astyle%20${PORTVERSION}
 PKGNAMESUFFIX?=	# for slave port
 DISTNAME=	astyle_${PORTVERSION}_linux
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Source code indenter, formatter, and beautifier (JNI library)
+WWW=		https://astyle.sourceforge.net/
 
 LICENSE=	LGPL3
 

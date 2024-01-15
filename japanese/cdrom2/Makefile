@@ -1,6 +1,3 @@
-# Created by: Masafumi NAKANE <max@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cdrom2
 PORTVERSION=	1996.06.16
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to lookup CD-ROM dictionaries
+WWW=		https://www.nerimadors.or.jp/~jiro/cdrom2/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

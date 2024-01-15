@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Signature
 PORTVERSION=	1.11
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Automated SIGNATURE testing
+WWW=		https://metacpan.org/release/Test-Signature
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

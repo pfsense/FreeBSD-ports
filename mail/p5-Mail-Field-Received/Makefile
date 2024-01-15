@@ -1,6 +1,3 @@
-# Created by: Andrea Venturoli <freebsd@netfence.it>
-# $FreeBSD$
-
 PORTNAME=	Mail-Field-Received
 PORTVERSION=	0.26
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 modules for parsing of `Received' headers in e-mails
+WWW=		https://metacpan.org/release/Mail-Field-Received
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

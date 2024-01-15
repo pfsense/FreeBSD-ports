@@ -1,6 +1,3 @@
-# Created by: Serge Gagnon <gagnon__s@videotron.ca>
-# $FreeBSD$
-
 PORTNAME=	libutf
 PORTVERSION=	2.10
 PORTREVISION=	3

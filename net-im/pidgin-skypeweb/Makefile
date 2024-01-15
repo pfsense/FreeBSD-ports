@@ -1,13 +1,12 @@
-# Created by: Andrey Akhmichin <sepulkarium45@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	pidgin-skypeweb
 PORTVERSION=	1.7
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	sepulkarium45@yahoo.com
 COMMENT=	Plugin to use Skype chat from Pidgin(without Skype running)
+WWW=		https://github.com/EionRobb/skype4pidgin/tree/master/skypeweb
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/gpl3.txt
@@ -26,8 +25,6 @@ USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 
 DOS2UNIX_FILES=	gpl3.txt theme
-
-CONFLICTS_INSTALL=	pidgin-skype-*
 
 WRKSRC_SUBDIR=	skypeweb
 

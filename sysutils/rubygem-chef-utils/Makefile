@@ -1,19 +1,18 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	chef-utils
-PORTVERSION=	16.8.14
+PORTVERSION=	18.3.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Basic utility functions for Core Chef Infra development
+WWW=		https://github.com/chef/chef/tree/main/chef-utils
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+RUN_DEPENDS=	rubygem-concurrent-ruby>=0:devel/rubygem-concurrent-ruby
+
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

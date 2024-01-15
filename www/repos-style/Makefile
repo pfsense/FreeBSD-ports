@@ -1,15 +1,12 @@
-# Created by: Alexander Kriventsov
-# $FreeBSD$
-
 PORTNAME=	repos-style
 PORTVERSION=	2.0
 PORTREVISION=	2
 CATEGORIES=	www
-MASTER_SITES=	ftp://ftp.renatasystems.org/pub/FreeBSD/ports/distfiles/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	ftp://ftp.renatasystems.org/pub/FreeBSD/ports/distfiles/
 
 MAINTAINER=	avk@vl.ru
 COMMENT=	Stylesheet for the Subversion index web page
+WWW=		http://www.reposstyle.com/
 
 RUN_DEPENDS=	subversion>=0:devel/subversion
 

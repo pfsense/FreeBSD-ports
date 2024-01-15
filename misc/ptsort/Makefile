@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ptsort
 PORTVERSION=	1.20170904
 CATEGORIES=	misc
@@ -7,6 +5,7 @@ MASTER_SITES=	https://github.com/dag-erling/${PORTNAME}/releases/download/${PORT
 
 MAINTAINER=	des@FreeBSD.org
 COMMENT=	Prioritized topological sort
+WWW=		https://github.com/dag-erling/ptsort
 
 LICENSE=	BSD3CLAUSE
 

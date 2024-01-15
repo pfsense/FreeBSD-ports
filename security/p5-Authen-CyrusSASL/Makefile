@@ -1,6 +1,3 @@
-# Created by: Attila Nagy <bra@fsn.hu>
-# $FreeBSD$
-
 PORTNAME=	Authen-CyrusSASL
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bra@fsn.hu
 COMMENT=	Perl5 module for accessing the SASL authentication daemon
+WWW=		https://metacpan.org/release/Authen-CyrusSASL
 
 USES=		perl5
 USE_PERL5=	configure

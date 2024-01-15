@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	biblesync
 DISTVERSION=	2.1.0
 CATEGORIES=	misc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multicast shared co-navigation library for Bible programs
+WWW=		https://github.com/karlkleinpaste/biblesync
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/COPYING

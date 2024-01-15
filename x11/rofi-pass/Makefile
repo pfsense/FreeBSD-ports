@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rofi-pass
 DISTVERSION=	2.0.2
 PORTREVISION=	2
@@ -7,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	alex@xanderio.de
 COMMENT=	Rofi frontend for pass
+WWW=		https://github.com/carnager/rofi-pass
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Solr
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl extension for interfacing with Solr
+WWW=		https://metacpan.org/release/Solr
 
 LICENSE=	APACHE20
 
@@ -20,9 +18,10 @@ RUN_DEPENDS=	p5-File-Slurp>=0:devel/p5-File-Slurp \
 		p5-XML-Simple>=0:textproc/p5-XML-Simple \
 		p5-libwww>=0:www/p5-libwww
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
 
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 .include <bsd.port.mk>

@@ -1,14 +1,12 @@
-# Created by: Hubert Tournier <hubert@frbsd.org>
-# $FreeBSD$
-
 PORTNAME=	geneweb
 DISTVERSIONPREFIX=	distrib-
 DISTVERSION=	6-08
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	alex@stangl.us
 COMMENT=	Advanced genealogy software
+WWW=		https://opensource.geneanet.org/projects/geneweb/
 
 LICENSE=	GPLv2
 
@@ -20,12 +18,18 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	geneweb
 GH_TAGNAME=	13c850a0cc3973daf7ae3e0772a1621f84052041
 
+CONFLICTS_INSTALL=	coreutils # bin/gwc
+
 HAS_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 
 MAKE_ENV+=	STAGEDIR=${STAGEDIR}
 SUB_FILES+=	pkg-message
 USE_RC_SUBR=	gwd
+
+post-patch:
+	@${REINPLACE_CMD} -e 's,52,& -unsafe-string,' \
+		${WRKSRC}/tools/Makefile.inc.unix
 
 post-install:
 	(cd ${INSTALL_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} distrib)

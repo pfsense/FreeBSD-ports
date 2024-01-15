@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Script-isAperlScript
 PORTVERSION=	1.0.0
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Basic check for if something is a perl script or not
+WWW=		https://metacpan.org/release/Script-isAperlScript
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

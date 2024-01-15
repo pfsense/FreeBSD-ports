@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	make
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.2
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	elixir-
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Make compiler for Mix
+WWW=		https://github.com/elixir-lang/elixir_make
 
 LICENSE=	APACHE20
 

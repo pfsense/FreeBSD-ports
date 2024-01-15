@@ -1,6 +1,3 @@
-# Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	commons-collections
 PORTVERSION=	3.2.2
 CATEGORIES=	java devel
@@ -8,8 +5,9 @@ MASTER_SITES=	APACHE_COMMONS_SOURCE
 PKGNAMEPREFIX=	apache-
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Classes that extend/augment the Java Collections Framework
+WWW=		https://commons.apache.org/proper/commons-collections/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -19,6 +17,7 @@ JAVA_VERSION=	8+
 USE_ANT=	yes
 
 ALL_TARGET=	jar
+NO_ARCH=	yes
 PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}.jar
 OTHERDOCS=	DEVELOPERS-GUIDE.html PROPOSAL.html README.txt RELEASE-NOTES.txt
 PORTDOCS=	apidocs ${OTHERDOCS}

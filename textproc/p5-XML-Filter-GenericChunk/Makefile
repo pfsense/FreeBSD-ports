@@ -1,6 +1,3 @@
-# Created by: Hansjoerg Pehofer <hansjoerg.pehofer@uibk.ac.at>
-# $FreeBSD$
-
 PORTNAME=	XML-Filter-GenericChunk
 PORTVERSION=	0.07
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Base Class for SAX Filters parsing WellBallanced Chunks
+WWW=		https://metacpan.org/release/XML-Filter-GenericChunk
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

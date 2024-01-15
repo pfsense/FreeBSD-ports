@@ -1,45 +1,33 @@
-# $FreeBSD$
-
 PORTNAME=	ptex
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.2
+DISTVERSION=	2.4.2
+PORTREVISION=	1
 CATEGORIES?=	graphics
 
 MAINTAINER=	FreeBSD@Shaneware.biz
 COMMENT=	Per face texture library
+WWW=		https://ptex.us
 
 LICENSE=	BSD3CLAUSE
 
-USES=		cmake:insource compiler:c++11-lang pkgconfig
+USES=		cmake:insource compiler:c++11-lang cpe pkgconfig
+CPE_VENDOR=	disneyanimation
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	wdas
 
 # yes really, the release tarbal doesn't know what version it is
-CMAKE_ARGS+=	-DPTEX_VER:STRING=${DISTVERSION}
+CMAKE_ARGS+=	-DPTEX_VER:STRING=${DISTVERSION} \
+		-DCMAKE_INSTALL_INCLUDEDIR:STRING=${LOCALBASE}/include/ptex \
+		-DCMAKE_INSTALL_DOCDIR:STRING=${DOCSDIR}
 
 OPTIONS_DEFINE=		DOCS
 
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
+DOCS_CMAKE_BOOL=	PTEX_BUILD_DOCS
 
-post-build-DOCS-on:
-	@(cd ${WRKSRC}/src/doc && doxygen Doxyfile)
-
-do-install:
-	${INSTALL_LIB} ${BUILD_WRKSRC}/src/ptex/libPtex.so \
-		${STAGEDIR}${PREFIX}/lib
-	${INSTALL_DATA} ${BUILD_WRKSRC}/src/ptex/libPtex.a \
-		${STAGEDIR}${PREFIX}/lib
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/src/utils/ptxinfo \
-		${STAGEDIR}${PREFIX}/bin
-	${MKDIR} ${STAGEDIR}/${PREFIX}/include/ptex
-	${INSTALL_DATA} ${BUILD_WRKSRC}/src/ptex/*.h ${STAGEDIR}/${PREFIX}/include/ptex
-
-do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@cd ${BUILD_WRKSRC}/src/doc/ptex/ && \
-		${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR}
+pre-build-DOCS-on:
+	@(cd ${WRKSRC}/src/doc && doxygen -u Doxyfile)
 
 .include <bsd.port.mk>

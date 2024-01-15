@@ -1,6 +1,3 @@
-# Created by: Dennis Herrmann <dhn@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-Fast
 PORTVERSION=	0.17
 CATEGORIES=	net
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple and fast XML to hash conversion
+WWW=		https://metacpan.org/release/XML-Fast
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: John D. "Trix" Farrar <trix@basement.net>
-# $FreeBSD$
-
 PORTNAME=	logwatch
 PORTVERSION=	7.5.1
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	trix@basement.net
 COMMENT=	Log file analysis program
+WWW=		https://www.logwatch.org
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

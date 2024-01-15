@@ -1,6 +1,3 @@
-# Created by: KIRIYAMA Kazuhiko <kiri@pis.toba-cmt.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	eyeclock
 PORTVERSION=	2.0
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DISTNAME=	eyeclk20
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clock with eyes following the mouse pointer
+WWW=		https://kozos.jp/myfreesoft/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_ENV=	X11BASE=${LOCALBASE}

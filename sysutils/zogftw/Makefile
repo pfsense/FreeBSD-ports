@@ -1,32 +1,30 @@
-# Created by: Fabian Keil <fk@fabiankeil.de>
-# $FreeBSD$
-
 PORTNAME=	zogftw
-PORTVERSION=	0.0.2015.11.21
+PORTVERSION=	0.0.2022.06.25
 CATEGORIES=	sysutils
 MASTER_SITES=	https://www.fabiankeil.de/sourcecode/zogftw/
-DISTNAME=	${PORTNAME}-2015-11-21-0a21288
+DISTNAME=	${PORTNAME}-2022-06-25-03982c7
 
 MAINTAINER=	fk@fabiankeil.de
 COMMENT=	Creates redundant backups on encrypted ZFS pools
+WWW=		https://www.fabiankeil.de/gehacktes/zogftw/
 
 RUN_DEPENDS=	mbuffer:misc/mbuffer \
 		sudo:security/sudo
+
+NO_BUILD=	yes
+PORTSCOUT=	ignore:1
+
+PLIST_FILES=	sbin/zogftw \
+		man/man8/zogftw.8.gz
 
 OPTIONS_DEFINE=		EXECUTE_TESTS GNUPG
 OPTIONS_DEFAULT=	GNUPG
 EXECUTE_TESTS_DESC=	Execute tests before staging. Adds build dependencies.
 
-PLIST_FILES=	sbin/zogftw \
-		man/man8/zogftw.8.gz
-
-NO_BUILD=	yes
-PORTSCOUT=	ignore:1
-
-GNUPG_RUN_DEPENDS=	gpg:security/gnupg
-
 EXECUTE_TESTS_BUILD_DEPENDS=	atf-sh:devel/atf \
 				kyua:devel/kyua
+
+GNUPG_RUN_DEPENDS=	gpg:security/gnupg
 
 .include <bsd.port.options.mk>
 

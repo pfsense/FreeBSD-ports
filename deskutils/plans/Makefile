@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
-
 PORTNAME=	plans
 PORTVERSION=	8.2.1
 PORTREVISION=	3
@@ -24,6 +21,7 @@ EXTRACT_ONLY=	${PORTNAME}_${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Good Web Calendar
+WWW=		http://www.planscalendar.com/
 
 LICENSE=	GPLv2
 

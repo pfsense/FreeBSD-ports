@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	icbm3d
 PORTVERSION=	0.4
 PORTREVISION=	4
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}.${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Inter-Continental Ballistic Missiles, 3D
+WWW=		http://www.newbreedsoftware.com/icbm3d/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Command-Simple
 PORTVERSION=	0.05
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Test external commands (nearly) as easily as loaded modules
+WWW=		https://metacpan.org/release/Test-Command-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

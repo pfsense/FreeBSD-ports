@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@exit2shel.com>
-# $FreeBSD$
-
 PORTNAME=	Net-FireEagle
 PORTVERSION=	1.6
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Access Yahoo's FireEagle location service
+WWW=		http://fireeagle.yahoo.net/
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-OAuth-Simple>=1.0:net/p5-Net-OAuth-Simple \

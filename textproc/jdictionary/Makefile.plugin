@@ -1,6 +1,3 @@
-# Created by: hq@FreeBSD.org
-# $FreeBSD$
-
 EXTRACT_SUFX=	#
 
 MAINTAINER?=	jmohacsi@bsd.hu

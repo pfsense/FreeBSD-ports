@@ -1,13 +1,11 @@
-# Created by: Putrya Statislav
-# $FreeBSD$
-
 PORTNAME=	gtmixer
 PORTVERSION=	1.0.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	vagner@bsdway.ru
 COMMENT=	GTK2.0 Sound Mixer
+WWW=		https://github.com/svagner/gtmixer
 
 LICENSE=	BSD2CLAUSE
 

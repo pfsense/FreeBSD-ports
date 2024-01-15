@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Alzabo
 PORTVERSION=	0.92
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Data modelling tool and RDBMS-OO mapper
+WWW=		https://metacpan.org/release/Alzabo
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

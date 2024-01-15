@@ -1,14 +1,12 @@
-# Created by: Jordan DeLong <fracture@allusion.net>
-# $FreeBSD$
-
 PORTNAME=	prboom-plus
 PORTVERSION=	2.5.1.3
-PORTREVISION=	5
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	thiagohero501@gmail.com
 COMMENT=	Fork of the prboom Doom game engine
+WWW=		http://prboom-plus.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -34,6 +32,12 @@ OPTIONS_DEFAULT=OPENGL
 OPENGL_USES=	gl
 OPENGL_USE=	GL=glu
 OPENGL_CONFIGURE_ENABLE=	gl
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} \

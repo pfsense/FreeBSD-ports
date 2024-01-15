@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Module-Build-Convert
 PORTVERSION=	0.49
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Makefile.PL to Build.PL converter
+WWW=		https://metacpan.org/release/Module-Build-Convert
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-HomeDir>=0:devel/p5-File-HomeDir \

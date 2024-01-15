@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libx86
 PORTVERSION=	1.1
 PORTREVISION=	2
@@ -9,16 +7,26 @@ MASTER_SITES=	http://www.codon.org.uk/~mjg59/libx86/downloads/	\
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Hardware-independent library for executing real-mode x86 code
+WWW=		http://www.codon.org.uk/~mjg59/libx86/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-ALL_TARGET=	default
-MAKE_ARGS=	BACKEND=x86emu
 ONLY_FOR_ARCHS=	amd64 i386
-PLIST_FILES=	include/libx86.h lib/libx86.a lib/libx86.so lib/libx86.so.1
-USE_LDCONFIG=	yes
+
 USES=		gmake
+USE_LDCONFIG=	yes
+
+MAKE_ARGS=	BACKEND=x86emu
+ALL_TARGET=	default
+
+PLIST_FILES=	include/libx86.h lib/libx86.a lib/libx86.so lib/libx86.so.1
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/lrmi.h ${STAGEDIR}${PREFIX}/include/libx86.h

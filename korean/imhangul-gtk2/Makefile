@@ -1,13 +1,12 @@
-# Created by: Junho CHOI <junho.choi@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	imhangul
 PORTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	korean
 PKGNAMESUFFIX=	-gtk2
 
 MAINTAINER=	jkim@FreeBSD.org
-COMMENT=	Hangul input module for GTK+ 2.0
+COMMENT=	Hangul input module for GTK 2.0
+WWW=		http://code.google.com/p/imhangul/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

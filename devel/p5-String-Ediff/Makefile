@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	String-Ediff
 PORTVERSION=	0.09
 PORTREVISION=	2

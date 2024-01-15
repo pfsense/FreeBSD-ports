@@ -1,19 +1,16 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mime-types-data
-PORTVERSION=	3.2020.1104
+PORTVERSION=	3.2023.0808
 CATEGORIES=	misc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	MIME Type registry data
+WWW=		https://github.com/mime-types/mime-types-data
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/Licence.md
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

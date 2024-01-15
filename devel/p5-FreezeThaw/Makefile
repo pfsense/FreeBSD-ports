@@ -1,6 +1,3 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	FreezeThaw
 PORTVERSION=	0.5001
 CATEGORIES=	devel perl5

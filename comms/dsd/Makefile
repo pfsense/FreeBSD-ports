@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dsd
 PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=	v
@@ -8,6 +6,7 @@ CATEGORIES=	comms hamradio
 
 MAINTAINER=	takefu@airport.fm
 COMMENT=	Decode several digital voice formats
+WWW=		https://github.com/szechyjs/dsd
 
 LICENSE=	ISCL
 

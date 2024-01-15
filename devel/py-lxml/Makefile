@@ -1,21 +1,20 @@
-# Created by: Robert Gogolok <gogo@cs.uni-sb.de>
-# $FreeBSD$
-
 PORTNAME=	lxml
-PORTVERSION=	4.6.2
+PORTVERSION=	4.9.3
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Pythonic binding for the libxml2 and libxslt libraries
+WWW=		https://lxml.de/ \
+		https://github.com/lxml/lxml
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/doc/licenses/BSD.txt
 
-USES=		compiler gnome python:3.6+ uniquefiles:dirs
+USES=		compiler cpe gnome python uniquefiles:dirs
 USE_GNOME=	libxml2 libxslt
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent cython distutils
 
 LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib
 
@@ -26,7 +25,11 @@ OPTIONS_DEFINE=	DOCS
 
 # needed for test to work
 PYDISTUTILS_BUILD_TARGET=	build_ext
-PYDISTUTILS_BUILDARGS=	--inplace
+PYDISTUTILS_BUILDARGS=		--inplace
+
+# force regeneration of cython files
+post-extract:
+	@${FIND} ${WRKSRC} -name "*.c" -delete
 
 post-install:
 	@${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} \

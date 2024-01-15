@@ -1,6 +1,3 @@
-# Created by: Fredrik Carlsson <fredrik@wasadata.com>
-# $FreeBSD$
-
 PORTNAME=	tetrinet
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://tetrinet.or.cz/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console tetrinet client
+WWW=		http://tetrinet.or.cz/
 
 LICENSE=	PD
 

@@ -1,13 +1,12 @@
-# Created by: Michael Neumann <mneumann@ntecs.de>
-# $FreeBSD$
-
 PORTNAME=	hatari
-PORTVERSION=	2.2.1
+PORTVERSION=	2.3.1
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.tuxfamily.org/hatari/${PORTVERSION}/
 
-MAINTAINER=	egypcio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Atari ST emulator
+WWW=		https://hatari.tuxfamily.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl.txt
@@ -17,11 +16,10 @@ BROKEN_armv6=		fails to configure: CMake Error: Generator: execution of make fai
 LIB_DEPENDS=	libportaudio.so:audio/portaudio \
 		libpng.so:graphics/png
 
-USES=		cmake desktop-file-utils gnome python:3.6+ readline \
+USES=		cmake desktop-file-utils gnome python readline \
 		sdl shared-mime-info shebangfix tar:bzip2 xorg
 USE_GNOME=	gtk30
 USE_XORG=	sm ice x11 xext
-USE_PYTHON=	concurrent
 
 SHEBANG_FILES=	python-ui/*.py tools/*.py \
 		tools/debugger/*.py tools/hconsole/*.py
@@ -29,8 +27,6 @@ SHEBANG_FILES=	python-ui/*.py tools/*.py \
 CMAKE_ARGS=	-DETCDIR:PATH="${PREFIX}/etc" \
 		-DMANDIR:PATH="man/man1" \
 		-DREADLINE_FOUND:BOOL=ON
-
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		DEBUG DOCS SDL2 WINUAE
 

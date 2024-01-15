@@ -1,22 +1,19 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gitlab-experiment
-PORTVERSION=	0.4.4
+PORTVERSION=	0.9.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Experiment library for Gitlab
+WWW=		https://gitlab.com/gitlab-org/ruby/gems/gitlab-experiment
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-actionpack60>=3.0:www/rubygem-actionpack60 \
-		rubygem-scientist>=1.5.0<2:devel/rubygem-scientist
+RUN_DEPENDS=	rubygem-activesupport70>=3.0:devel/rubygem-activesupport70 \
+		rubygem-request_store>=1.0:devel/rubygem-request_store
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

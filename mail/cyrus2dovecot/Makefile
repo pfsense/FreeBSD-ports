@@ -1,6 +1,3 @@
-# Created by: Vladimir Kondratiev <wulf@mail.mipt.ru>
-# $FreeBSD$
-
 PORTNAME=	cyrus2dovecot
 PORTVERSION=	1.3
 CATEGORIES=	mail
@@ -10,6 +7,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert Cyrus folders to Dovecot
+WWW=		http://www.cyrus2dovecot.sw.fu-berlin.de/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

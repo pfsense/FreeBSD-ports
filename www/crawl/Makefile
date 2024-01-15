@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	crawl
 PORTVERSION=	0.4
 PORTREVISION=	14
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.monkey.org/~provos/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small, efficient web crawler with advanced features
+WWW=		https://www.monkey.org/~provos/crawl/
 
 LICENSE=	BSD4CLAUSE
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	hungarian
 LO_I18N=	hu
 LO_HAS_HELPPACK=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gumbo
 PORTVERSION=	0.10.1
 DISTVERSIONPREFIX=	v
@@ -7,6 +5,7 @@ CATEGORIES=	devel textproc
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Pure-C HTML5 parser
+WWW=		https://github.com/google/gumbo-parser
 
 LICENSE=	APACHE20
 

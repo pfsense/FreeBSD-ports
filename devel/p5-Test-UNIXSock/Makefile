@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-UNIXSock
 PORTVERSION=	0.4
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Testing UNIX domain socket servers
+WWW=		https://metacpan.org/pod/Test::UNIXSock
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

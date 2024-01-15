@@ -1,32 +1,29 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hyperrogue
-PORTVERSION=	11.3o
+PORTVERSION=	12.1y
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Roguelike in a non-euclidean world
+WWW=		https://roguetemple.com/z/hyper/ \
+		https://github.com/zenorogue/hyperrogue
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_11=	does not build: hyperrogue-hyper.o: file not recognized: File format not recognized
-
 LIB_DEPENDS=	libpng.so:graphics/png
 
+USES=		compiler:c++11-lang gl gmake localbase:ldflags sdl xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	zenorogue
-
-USES=		autoreconf compiler:c++11-lang gl localbase sdl xorg
-GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer gfx ttf
 USE_GL=		gl glew
+ALL_TARGET=	hyperrogue
+
+PORTSCOUT=	skipv:12.1  # https://github.com/freebsd/portscout/issues/18
 
 # remove -O2, otherwise clang takes gigabytes of memory
-CFLAGS:=	${CFLAGS:C/-O[0-9]//} -DFHS
-CXXFLAGS:=	${CXXFLAGS:C/-O[0-9]//} -DFHS
+CXXFLAGS:=	${CXXFLAGS:C/-O[0-9]//} -DFHS -DHYPERPATH="\\\"${DATADIR}/\\\""
 
 PORTDOCS=	README.md
 PORTDATA=	*
@@ -41,11 +38,17 @@ DESKTOP_ENTRIES="HyperRogue" \
 
 OPTIONS_DEFINE=	DOCS
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|isnumber|is_number|' ${WRKSRC}/archimedean.cpp
+.include <bsd.port.options.mk>
 
-post-install:
+.if ${ARCH} == powerpc
+USE_GCC=	yes
+.endif
+
+do-install:
+	${INSTALL_PROGRAM} ${WRKSRC}/hyperrogue ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKSRC}/hr-icon.ico ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.ico
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} "*.ttf hyperrogue-music.txt sounds music" \
+		${STAGEDIR}${DATADIR}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Perlish
 PORTVERSION=	1.06
 CATEGORIES=	databases perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perlish interface to SQL databases
+WWW=		https://metacpan.org/release/DBIx-Perlish
 
 LICENSE=	BSD2CLAUSE
 

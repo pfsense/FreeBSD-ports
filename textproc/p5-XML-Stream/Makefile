@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@cae.ce.ntu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	XML-Stream
 DISTVERSION=	1.24
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XML::Stream provides you with access to XML Stream
+WWW=		https://metacpan.org/release/XML-Stream
 
 LICENSE=	LGPL21
 

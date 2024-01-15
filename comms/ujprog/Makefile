@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	ujprog
 DISTVERSION=	g20191117
+PORTREVISION=	1
 CATEGORIES=	comms
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	ULX2S/ULX3S FPGA JTAG programmer
+WWW=		https://github.com/f32c/tools/tree/master/ujprog
 
 LICENSE=	BSD2CLAUSE
 

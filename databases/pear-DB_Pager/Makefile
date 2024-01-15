@@ -1,12 +1,10 @@
-# Created by: Toshiya Saitoh (<toshiya@saitoh.nu>)
-# $FreeBSD$
-
 PORTNAME=	DB_Pager
 PORTVERSION=	0.7.2
 CATEGORIES=	databases www pear
 
 MAINTAINER=	toshiya@saitoh.nu
 COMMENT=	PEAR Database Abstraction Layer
+WWW=		https://pear.php.net/package/DB_Pager
 
 LICENSE=	GPLv3
 

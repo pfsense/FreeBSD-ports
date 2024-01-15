@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wrapalixresetbutton
-PORTVERSION=	0.0.7
-PORTREVISION=	1
+PORTVERSION=	0.0.8
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
@@ -24,11 +23,11 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-build:
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/wrapresetbtn ${FILESDIR}/wrapresetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/alixresetbtn ${FILESDIR}/alixresetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/FW7541resetbtn ${FILESDIR}/FW7541resetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/APUresetbtn ${FILESDIR}/APUresetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/RCC-VEresetbtn ${FILESDIR}/RCC-VE.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/wrapresetbtn ${FILESDIR}/wrapresetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/alixresetbtn ${FILESDIR}/alixresetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/FW7541resetbtn ${FILESDIR}/FW7541resetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/APUresetbtn ${FILESDIR}/APUresetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/RCC-VEresetbtn ${FILESDIR}/RCC-VE.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/wrapresetbtn ${STAGEDIR}${PREFIX}/sbin

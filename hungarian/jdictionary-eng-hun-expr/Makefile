@@ -1,6 +1,3 @@
-# Created by: janos.mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	jdictionary-eng-hun-expr
 PORTVERSION=	1.4
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/jdictionary/Plugins%20for%20jDictionary/Smart%20English-Hungari
 DISTNAME=	SmartEngHunExp-1_4.jar
 
 COMMENT=	JDictionary plugin: English-Hungarian expression dictionary
+WWW=		http://jdictionary.info/
 
 MASTERDIR=	${.CURDIR}/../../textproc/jdictionary
 

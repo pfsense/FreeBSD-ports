@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	dmachine
 PORTVERSION=	0.25
 CATEGORIES=	ftp java
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	hsn@sendmail.cz
 COMMENT=	Non interactive, non graphical, batch download manager
+WWW=		https://dmachine.sourceforge.net/
 
 LICENSE=	GPLv2
 

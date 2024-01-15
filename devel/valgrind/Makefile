@@ -1,29 +1,41 @@
-# Created by: Simon Barner <barner@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	valgrind
-PORTVERSION=	3.10.1.20160113
-DISTVERSIONPREFIX=	freebsd-
-PORTREVISION=	8
+PORTVERSION=	3.22.0
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/ \
-		http://mirror.shatow.net/freebsd/${PORTNAME}/
+MASTER_SITES=	SOURCEWARE/valgrind
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	pjfloyd@wanadoo.fr
 COMMENT=	Memory debugging and profiling tool
-
-BB_COMMIT=	ce1acb28953f
-BB_ACCOUNT=	stass
-BB_PROJECT=	valgrind-freebsd
+WWW=		https://www.valgrind.org/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	valgrind-devel-[0-9]*
+ONLY_FOR_ARCHS=	amd64 i386
 
-ONLY_FOR_ARCHS=	i386 amd64
+USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix \
+		python:3.9+,run tar:bz2
+USE_PERL5=	build
+SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in \
+		cachegrind/cg_merge.in cachegrind/cg_diff.in \
+		cachegrind/cg_annotate.in
+GNU_CONFIGURE=	yes
+CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
-LIB32_PATH?=	${DESTDIR}/usr/lib32/libc.so
+SSP_UNSAFE=	yes
+LIB32_PATH?=	/usr/lib32/libc.so
+
+CONFLICTS=	valgrind-devel
+
+# Valgrind needs to read debuginfo from its own preload shared libraries
+# (quote from README_PACKAGERS
+#-- Don't strip the debug info off lib/valgrind/$platform/vgpreload*.so
+#   in the installation tree.  Either Valgrind won't work at all, or it
+#   will still work if you do, but will generate less helpful error
+#   messages.)
+STRIP=			# empty
+
+PORTDOCS=		html
 
 OPTIONS_DEFINE=		DOCS MANPAGES MPI
 OPTIONS_DEFINE_amd64=	32BIT
@@ -31,68 +43,42 @@ OPTIONS_DEFAULT=	MANPAGES
 .if exists(${LIB32_PATH})
 OPTIONS_DEFAULT_amd64=	32BIT
 .endif
+OPTIONS_SUB=		yes
+
 32BIT_DESC=	Enable debugging of 32-bit programs (requires lib32)
 MPI_DESC=	Enable build of MPI wrappers
 
-DOCS_BUILD_DEPENDS=    docbook-xsl>=0:textproc/docbook-xsl \
-                       xsltproc:textproc/libxslt
-MANPAGES_BUILD_DEPENDS=        docbook-xsl>=0:textproc/docbook-xsl \
-                       xsltproc:textproc/libxslt
+DOCS_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
+MANPAGES_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
 MPI_LIB_DEPENDS=	libmpich.so:net/mpich
-
-OPTIONS_SUB=	yes
-USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
-USE_PERL5=	build
-GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
-SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
-
-EXTRA_PATCHES=	\
-		${FILESDIR}/accept4_syscall.patch:-p1 \
-		${FILESDIR}/jail_syscalls.patch:-p1 \
-		${FILESDIR}/kldload_syscalls.patch:-p1 \
-		${FILESDIR}/missing_fcntls.patch:-p1
-
-PORTDOCS=	html
-
-WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
-
-CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} > 1200030
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-ino64:-p1
-.endif
-
 .if ${ARCH} == "amd64"
-PLIST_SUB+=	AMD64="" ARCH=amd64
+PLIST_SUB+=		AMD64=""
 . if !${PORT_OPTIONS:M32BIT}
 CONFIGURE_ARGS+=	--enable-only64bit
-PLIST_SUB+=	X86="@comment "
+PLIST_SUB+=		X86="@comment "
 . else
 .  if !exists(${LIB32_PATH})
-IGNORE=The lib32 distribution was not found. Please install the lib32\
-distribution or run 'make config' and uncheck 32BIT option
+IGNORE=			please either install the lib32 distribution or unset the 32BIT option
 .  endif
-PLIST_SUB+=	X86=""
+PLIST_SUB+=		X86=""
 . endif
 .else
-PLIST_SUB+=	X86="" ARCH=x86
-PLIST_SUB+=	AMD64="@comment "
+PLIST_SUB+=		AMD64="@comment " \
+			X86=""
 .endif
 
-.if !${PORT_OPTIONS:MDOCS}
-post-patch:
+post-patch-DOCS-off:
 	@${RM} -r ${WRKSRC}/docs/html
-.endif
 
-post-build:
-.if ${PORT_OPTIONS:MMANPAGES}
-	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} man-pages
-.endif
-.if ${PORT_OPTIONS:MDOCS}
+post-build-DOCS-on:
 	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} html-docs
-.endif
+
+post-build-MANPAGES-on:
+	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} man-pages
 
 .include <bsd.port.mk>

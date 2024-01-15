@@ -1,6 +1,3 @@
-# Created by: Anes Muhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	FCGI-Engine
 PORTVERSION=	0.22
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Flexible engine for running FCGI-based applications
+WWW=		https://metacpan.org/release/FCGI-Engine
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

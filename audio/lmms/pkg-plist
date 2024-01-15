@@ -237,6 +237,9 @@ lib/lmms/libaudiofileprocessor.so
 lib/lmms/libbassbooster.so
 lib/lmms/libbitcrush.so
 lib/lmms/libbitinvader.so
+lib/lmms/libcarlabase.so
+lib/lmms/libcarlapatchbay.so
+lib/lmms/libcarlarack.so
 lib/lmms/libcrossovereq.so
 lib/lmms/libdelay.so
 lib/lmms/libdualfilter.so
@@ -269,7 +272,7 @@ lib/lmms/libvibedstrings.so
 lib/lmms/libwatsyn.so
 lib/lmms/libwaveshaper.so
 lib/lmms/libzynaddsubfx.so
-man/man1/lmms.1.gz
+share/man/man1/lmms.1.gz
 share/applications/lmms.desktop
 share/bash-completion/completions/lmms
 share/icons/hicolor/128x128/apps/lmms.png

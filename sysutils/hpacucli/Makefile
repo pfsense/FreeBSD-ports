@@ -1,6 +1,3 @@
-# Created by: SriSaiGanesh
-# $FreeBSD$
-
 PORTNAME=	hpacucli
 PORTVERSION=	7.50
 PORTREVISION=	4

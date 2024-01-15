@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Engine-HTTP-Prefork
 PORTVERSION=	0.51
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	High-performance pre-forking Catalyst engine
+WWW=		https://metacpan.org/release/Catalyst-Engine-HTTP-Prefork
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Catalyst-Runtime>=5.7012:www/p5-Catalyst-Runtime \

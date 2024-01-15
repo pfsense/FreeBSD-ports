@@ -1,27 +1,24 @@
-# Created by: Max Khon
-# $FreeBSD$
-
 PORTNAME=	pgadmin3
 PORTVERSION=	1.22.2
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	databases
 MASTER_SITES=	PGSQL/pgadmin/pgadmin3/v${PORTVERSION}/src
 DIST_SUBDIR=	postgresql
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostgreSQL database design and management system
+WWW=		https://www.pgadmin.org/
 
 LICENSE=	PostgreSQL
 
 BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 
-USES=		compiler:c++11-lib gettext gmake gnome pgsql:9.0+ ssl
+USES=		compiler:c++11-lib gettext gmake gnome pgsql:11+ ssl
 USE_GNOME=	libxml2 libxslt
 USE_WX=		3.0
 USE_CXXSTD=	c++11
 
 WX_COMPS=	wx
-INSTALLS_ICONS=	yes
 ICON_SIZES=	16 32
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-wx-version=${USE_WX} --enable-databasedesigner
@@ -32,6 +29,12 @@ PLIST_FILES=	bin/pgadmin3 share/applications/pgadmin3.desktop
 PLIST_FILES+=	share/icons/hicolor/${SZ}x${SZ}/apps/pgAdmin3.png
 .endfor
 PORTDATA=	*
+
+.include <bsd.port.pre.mk>
+
+.if ${PGSQL_VER}>13
+EXTRA_PATCHES+=	${FILESDIR}/extrapatch-pg13
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/wx-config,/${WX_CONFIG:T},' ${WRKSRC}/configure
@@ -52,4 +55,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/pgadmin/include/images/pgAdmin3-${SZ}.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/${SZ}x${SZ}/apps/pgAdmin3.png
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

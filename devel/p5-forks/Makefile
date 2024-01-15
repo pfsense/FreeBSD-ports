@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	forks
 PORTVERSION=	0.36
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Drop-in replacement for Perl threads using fork()
+WWW=		https://metacpan.org/release/forks
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

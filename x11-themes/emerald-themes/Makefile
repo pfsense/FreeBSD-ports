@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	emerald-themes
 PORTVERSION=	0.6.0
 CATEGORIES=	x11-themes
@@ -7,6 +5,7 @@ MASTER_SITES=	http://cgit.compiz.org/fusion/decorators/emerald-themes/snapshot/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Themes for the Emerald Window Decorator
+WWW=		http://www.beryl-project.org/
 
 BUILD_DEPENDS=	bash:shells/bash
 

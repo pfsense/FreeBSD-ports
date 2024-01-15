@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	dose-response
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0
-PORTREVISION=	11
+PORTREVISION=	39
 CATEGORIES=	games
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open-world roguelike game where you play an addict
+WWW=		https://tryjumping.com/dose-response-roguelike/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		cargo gnome
+USES=		cargo gnome sdl
 USE_SDL=	sdl2
 USE_GITHUB=	yes
 GH_ACCOUNT=	tryjumping
@@ -202,7 +201,6 @@ PLIST_FILES+=	share/icons/hicolor/${size}x${size}/apps/${PORTNAME}.png
 .endfor
 
 PORTDOCS=	CHANGELOG.md DEVELOPER-NOTES.md README.md
-INSTALLS_ICONS=	yes
 DESKTOP_ENTRIES=	"Dose Response" \
 			"${COMMENT}" \
 			"${PORTNAME}" \

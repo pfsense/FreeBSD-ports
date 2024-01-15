@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MathML-Entities
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Convert XHTML+MathML Named Entities to Numeric Character References
+WWW=		https://metacpan.org/release/MathML-Entities
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

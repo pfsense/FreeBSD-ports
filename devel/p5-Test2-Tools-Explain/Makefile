@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test2-Tools-Explain
 PORTVERSION=	0.02
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Explain tools for Perl Test2 framework
+WWW=		https://metacpan.org/release/Test2-Tools-Explain
 
 LICENSE=	ART20
 

@@ -9,11 +9,16 @@ include/pybind11/detail/common.h
 include/pybind11/detail/descr.h
 include/pybind11/detail/init.h
 include/pybind11/detail/internals.h
+include/pybind11/detail/type_caster_base.h
 include/pybind11/detail/typeid.h
 include/pybind11/eigen.h
+include/pybind11/eigen/common.h
+include/pybind11/eigen/matrix.h
+include/pybind11/eigen/tensor.h
 include/pybind11/embed.h
 include/pybind11/eval.h
 include/pybind11/functional.h
+include/pybind11/gil.h
 include/pybind11/iostream.h
 include/pybind11/numpy.h
 include/pybind11/operators.h
@@ -21,7 +26,9 @@ include/pybind11/options.h
 include/pybind11/pybind11.h
 include/pybind11/pytypes.h
 include/pybind11/stl.h
+include/pybind11/stl/filesystem.h
 include/pybind11/stl_bind.h
+include/pybind11/type_caster_pyobject_ptr.h
 share/cmake/pybind11/FindPythonLibsNew.cmake
 share/cmake/pybind11/pybind11Common.cmake
 share/cmake/pybind11/pybind11Config.cmake
@@ -29,3 +36,4 @@ share/cmake/pybind11/pybind11ConfigVersion.cmake
 share/cmake/pybind11/pybind11NewTools.cmake
 share/cmake/pybind11/pybind11Targets.cmake
 share/cmake/pybind11/pybind11Tools.cmake
+share/pkgconfig/pybind11.pc

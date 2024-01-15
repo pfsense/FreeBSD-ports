@@ -1,9 +1,7 @@
-TIMESTAMP = 1532851883
-SHA256 (ocaml-4.05.0.tar.xz) = 04a527ba14b4d7d1b2ea7b2ae21aefecfa8d304399db94f35a96df1459e02ef9
-SIZE (ocaml-4.05.0.tar.xz) = 2442036
-SHA256 (ocaml-4.05-refman-html.tar.gz) = 2524723648dbbc34b42cbe2fe06822b79837299429d26ff037169b568888cd9c
-SIZE (ocaml-4.05-refman-html.tar.gz) = 882287
-SHA256 (ocaml-4.05-refman.ps.gz) = 1540f86028a9460313b5ab3e0544e280052577d5dc4966f80647e1f49c5ab8df
-SIZE (ocaml-4.05-refman.ps.gz) = 1221553
-SHA256 (ocaml-4.05-refman.pdf) = 3d3a82a676668ccf66fa6d88f46a2496c89b1488ee6098585a6b7f22a9171eef
-SIZE (ocaml-4.05-refman.pdf) = 1741857
+TIMESTAMP = 1681369878
+SHA256 (ocaml-4.08.1.tar.xz) = cd4f180453ffd7cc6028bb18954b3d7c3f715af13157df2f7c68bdfa07655ea3
+SIZE (ocaml-4.08.1.tar.xz) = 3382960
+SHA256 (ocaml-4.08-refman-html.tar.gz) = 7e27bfb9e45b1618ab7c8461cb6c6244b006125593475c87ba49dd09746b5e77
+SIZE (ocaml-4.08-refman-html.tar.gz) = 1704609
+SHA256 (ocaml-4.08-refman.pdf) = 805f5128a99a180be0e2f11c28ddbd92af3cf48965669f67407353750e272a68
+SIZE (ocaml-4.08-refman.pdf) = 2161226

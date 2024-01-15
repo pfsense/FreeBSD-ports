@@ -1,6 +1,3 @@
-# Created by: Bjorn Lindstrom <bkhl@elektrubadur.se>
-# $FreeBSD$
-
 PORTNAME=	dtach
 PORTVERSION=	0.9
 CATEGORIES=	misc
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emulates the detach feature of screen
+WWW=		https://dtach.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

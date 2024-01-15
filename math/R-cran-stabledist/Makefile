@@ -1,14 +1,12 @@
-# Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	stabledist
 DISTVERSION=	0.7-1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stable Distribution Functions
+WWW=		https://cran.r-project.org/web/packages/stabledist/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

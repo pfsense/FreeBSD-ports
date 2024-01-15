@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung
-# $FreeBSD$
-
 PORTNAME=	POE-Component-RSSAggregator
 PORTVERSION=	1.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Watch Muliple RSS Feeds for New Headlines
+WWW=		https://metacpan.org/release/POE-Component-RSSAggregator
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

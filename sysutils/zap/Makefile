@@ -1,25 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	zap
-DISTVERSION=	0.8
+DISTVERSION=	0.8.3
 CATEGORIES=	sysutils
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Maintain and replicate ZFS snapshots
+WWW=		https://github.com/Jehops/zap
 
 LICENSE=	BSD2CLAUSE
-
-NO_ARCH=	yes
-NO_BUILD=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Jehops
 
-PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
-PORTDOCS=	README.org
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
+
+PLIST_FILES=	bin/${PORTNAME} \
+		man/man1/${PORTNAME}.1.gz
+PORTDOCS=	README.org
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,6 +1,3 @@
-# Created by: Andrew Shevtsov <nyxo@dnuc.polyn.kiae.su>
-# $FreeBSD$
-
 PORTNAME=	ssync
 PORTVERSION=	2.3
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://linuxfocus.org/~guido/
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Minimalistic tool for keeping filesystems in synchronization
+WWW=		http://linuxfocus.org/~guido/endangered_software.html #ssync
 
 USES=		gmake
 

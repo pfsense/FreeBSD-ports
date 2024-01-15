@@ -1,6 +1,3 @@
-# Created by: David K. Gerry
-# $FreeBSD$
-
 PORTNAME=	yasr
 PORTVERSION=	0.6.9
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	David.K.Gerry@GMail.com
 COMMENT=	General-purpose console screen reader
+WWW=		https://yasr.sourceforge.net/
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,15 +1,12 @@
-# Created by: Ken Moore <ken@pcbsd.org>
-# $FreeBSD$
-
 PORTNAME=	lumina
-PORTVERSION=	1.6.0
+PORTVERSION=	1.6.2
+PORTREVISION=	1
 PORTEPOCH=	3
 CATEGORIES=	x11
 
-MAINTAINER=	lbartoletti@FreeBSD.org
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Lumina Desktop Environment (meta-port)
-
-LICENSE=	BSD3CLAUSE
+WWW=		https://lumina-desktop.org/
 
 RUN_DEPENDS=	lumina-core>=0:x11/lumina-core \
 		lumina-coreutils>=0:x11/lumina-coreutils \

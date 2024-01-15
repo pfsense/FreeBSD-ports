@@ -1,42 +1,39 @@
-# Created by: Simon Barner <barner@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	valgrind
-PORTVERSION=	3.17.0.g20200723
+PORTVERSION=	3.22.0.g20230917
 DISTVERSIONPREFIX=	freebsd-
-#PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	devel
+MASTER_SITES=	https://snapshots.sourceware.org/valgrind/trunk/2023-09-17_09-18_1694942281/
 PKGNAMESUFFIX=	-devel
+DISTNAME=	${PORTNAME}-3.22.0.GIT
 
 MAINTAINER=	pjfloyd@wanadoo.fr
 COMMENT=	Memory debugging and profiling tool
+WWW=		https://www.valgrind.org/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-DOCS_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
-		xsltproc:textproc/libxslt
-MANPAGES_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
-		xsltproc:textproc/libxslt
-MPI_LIB_DEPENDS=	libmpich.so:net/mpich
-
-USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
+USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix python:3.9+,run tar:bz2
 USE_PERL5=	build
+SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in cachegrind/cg_merge.in cachegrind/cg_diff.in cachegrind/cg_annotate.in
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
-OPTIONS_SUB=	yes
-SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
-SSP_UNSAFE=		yes
-LIB32_PATH?=	${DESTDIR}/usr/lib32/libc.so
+CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
-CONFLICTS=	valgrind-[0-9]*
+SSP_UNSAFE=	yes
+LIB32_PATH?=	/usr/lib32/libc.so
 
-USE_GITHUB=	yes
-GH_TAGNAME=	d4fba6a
-GH_ACCOUNT=	paulfloyd
-GH_PROJECT=	freebsd_valgrind
+CONFLICTS=	valgrind
+
+# Valgrind needs to read debuginfo from its own preload shared libraries
+# (quote from README_PACKAGERS
+#-- Don't strip the debug info off lib/valgrind/$platform/vgpreload*.so
+#   in the installation tree.  Either Valgrind won't work at all, or it
+#   will still work if you do, but will generate less helpful error
+#   messages.)
+STRIP=		# empty
 
 PORTDOCS=	html
 
@@ -46,41 +43,42 @@ OPTIONS_DEFAULT=	MANPAGES
 .if exists(${LIB32_PATH})
 OPTIONS_DEFAULT_amd64=	32BIT
 .endif
+OPTIONS_SUB=		yes
+
 32BIT_DESC=	Enable debugging of 32-bit programs (requires lib32)
 MPI_DESC=	Enable build of MPI wrappers
 
-CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
+DOCS_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
+MANPAGES_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
+MPI_LIB_DEPENDS=	libmpich.so:net/mpich
 
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "amd64"
-PLIST_SUB+=	AMD64="" ARCH=amd64
+PLIST_SUB+=		AMD64=""
 . if !${PORT_OPTIONS:M32BIT}
 CONFIGURE_ARGS+=	--enable-only64bit
-PLIST_SUB+=	X86="@comment "
+PLIST_SUB+=		X86="@comment "
 . else
 .  if !exists(${LIB32_PATH})
-IGNORE=The lib32 distribution was not found. Please install the lib32\
-distribution or run 'make config' and uncheck 32BIT option
+IGNORE=			please either install the lib32 distribution or unset the 32BIT option
 .  endif
-PLIST_SUB+=	X86=""
+PLIST_SUB+=		X86=""
 . endif
 .else
-PLIST_SUB+=	X86="" ARCH=x86
-PLIST_SUB+=	AMD64="@comment "
+PLIST_SUB+=		AMD64="@comment " \
+			X86=""
 .endif
 
-.if !${PORT_OPTIONS:MDOCS}
-post-patch:
+post-patch-DOCS-off:
 	@${RM} -r ${WRKSRC}/docs/html
-.endif
 
-post-build:
-.if ${PORT_OPTIONS:MMANPAGES}
-	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} man-pages
-.endif
-.if ${PORT_OPTIONS:MDOCS}
+post-build-DOCS-on:
 	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} html-docs
-.endif
+
+post-build-MANPAGES-on:
+	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} man-pages
 
 .include <bsd.port.mk>

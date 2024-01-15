@@ -34,6 +34,7 @@ anope/data/modules/webcpanel/templates/default/memoserv/memos.html
 anope/data/modules/webcpanel/templates/default/nickserv/access.html
 anope/data/modules/webcpanel/templates/default/nickserv/alist.html
 anope/data/modules/webcpanel/templates/default/nickserv/cert.html
+anope/data/modules/webcpanel/templates/default/nickserv/confirm.html
 anope/data/modules/webcpanel/templates/default/nickserv/info.html
 anope/data/modules/webcpanel/templates/default/operserv/akill.html
 anope/data/modules/webcpanel/templates/default/register.html
@@ -125,8 +126,6 @@ anope/lib/modules/m_redis.so
 %%TRE%%anope/lib/modules/m_regex_tre.so
 anope/lib/modules/m_rewrite.so
 anope/lib/modules/m_sasl.so
-%%SASL%%anope/lib/modules/m_sasl_dh-aes.so
-%%SASL%%anope/lib/modules/m_sasl_dh-blowfish.so
 %%GNUTLS%%anope/lib/modules/m_ssl_gnutls.so
 %%OPENSSL%%anope/lib/modules/m_ssl_openssl.so
 %%MYSQL%%anope/lib/modules/m_sql_authentication.so

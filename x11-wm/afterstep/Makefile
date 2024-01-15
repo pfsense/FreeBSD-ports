@@ -1,6 +1,3 @@
-# Created by: jfitz@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	afterstep
 PORTVERSION=	1.0
 PORTREVISION=	5
@@ -11,6 +8,7 @@ DISTNAME=	AfterStep-${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Window manager originally based on the Bowman NeXTstep clone
+WWW=		http://www.afterstep.org/
 
 LICENSE=	GPLv2+
 

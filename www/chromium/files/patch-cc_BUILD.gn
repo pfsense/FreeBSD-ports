@@ -1,6 +1,6 @@
---- cc/BUILD.gn.orig	2021-01-18 21:28:45 UTC
+--- cc/BUILD.gn.orig	2023-12-10 06:10:27 UTC
 +++ cc/BUILD.gn
-@@ -620,7 +620,7 @@ cc_test_static_library("test_support") {
+@@ -676,7 +676,7 @@ cc_test_static_library("test_support") {
    if (enable_vulkan) {
      deps += [ "//gpu/vulkan/init" ]
    }
@@ -8,12 +8,12 @@
 +  if (!is_android && !is_bsd) {
      data_deps = [ "//third_party/mesa_headers" ]
    }
- }
-@@ -832,7 +832,6 @@ cc_test("cc_unittests") {
-   ]
+   if (skia_use_dawn) {
+@@ -931,7 +931,6 @@ cc_test("cc_unittests") {
+   data = [ "//components/test/data/viz/" ]
    data_deps = [
      "//testing/buildbot/filters:cc_unittests_filters",
 -    "//third_party/mesa_headers",
    ]
  
-   if (is_fuchsia) {
+   if (is_android && enable_chrome_android_internal) {

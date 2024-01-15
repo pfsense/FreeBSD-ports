@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-C3
 PORTVERSION=	0.35
 CATEGORIES=	devel perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pragma to use the C3 method resolution order algorithm
+WWW=		https://metacpan.org/release/Class-C3
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

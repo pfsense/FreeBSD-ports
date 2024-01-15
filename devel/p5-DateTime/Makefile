@@ -1,14 +1,12 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	DateTime
-PORTVERSION=	1.54
+PORTVERSION=	1.65
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Date and time object
+WWW=		https://metacpan.org/release/DateTime
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

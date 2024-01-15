@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Unicode-EastAsianWidth
 PORTVERSION=	12.0
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	East Asian Width properties
+WWW=		https://metacpan.org/release/Unicode-EastAsianWidth
 
 LICENSE=	CC0-1.0
 

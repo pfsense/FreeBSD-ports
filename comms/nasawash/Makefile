@@ -1,6 +1,3 @@
-# Created by: db
-# $FreeBSD$
-
 PORTNAME=	nasawash
 PORTVERSION=	0.50
 CATEGORIES=	comms hamradio
@@ -10,6 +7,7 @@ DISTNAME=	nasawash
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio keplerian file cleanup program
+WWW=		https://www.amsat.org/
 
 LICENSE=	NASAWASH
 LICENSE_NAME=	NASAWASH License

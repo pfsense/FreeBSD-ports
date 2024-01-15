@@ -1,25 +1,24 @@
-# Created by: Holger Lamm <holger@e-gitt.net>
-# $FreeBSD$
-
 PORTNAME=	mldonkey
-PORTVERSION=	3.1.5
-PORTREVISION=	4
+DISTVERSION=	3.1.7-2
 CATEGORIES+=	net-p2p
-MASTER_SITES=	SF
-
-EXTRA_PATCHES=	${FILESDIR}/git-30e77e2:-p1
+MASTER_SITES=	https://github.com/ygrek/${PORTNAME}/releases/download/release-3-1-7-2/
 
 MAINTAINER?=	danfe@FreeBSD.org
 COMMENT?=	Multi-protocol peer-to-peer client written in OCaml
+WWW=		https://mldonkey.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Copying.txt
 
-CONFLICTS=	mldonkey{-{core,gui},}-devel-[0-9]*
+CONFLICTS=	mldonkey{-{core,gui},}-devel
 
-USES=		compiler:c++11-lang gmake iconv pkgconfig tar:bzip2
+BUILD_DEPENDS=	${LOCALBASE}/lib/ocaml/nums.cma:math/ocaml-num
+
+USES=		compiler:c++11-lang cpe gmake iconv pkgconfig tar:bzip2
+USE_CXXSTD=	c++14
 USE_OCAML=	yes
 USE_OCAML_CAMLP4=yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	ac_cv_lib_charset_locale_charset=no
 ALL_TARGET=	opt
@@ -36,6 +35,7 @@ OPTIONS_DEFINE=	GD DOCS EXAMPLES
 OPTIONS_DEFAULT=CORE GD GUI
 OPTIONS_MULTI=	CLIENT
 OPTIONS_MULTI_CLIENT=CORE GUI
+
 CORE_DESC=	Client 'core' support
 
 .include <bsd.port.options.mk>
@@ -95,8 +95,8 @@ ALL_TARGET+=	\
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mpowerpc*}
-USE_GCC=	yes
+.if ${ARCH:Mpowerpc64*}
+LLD_UNSAFE=	yes
 .endif
 
 post-patch:
@@ -107,9 +107,11 @@ post-patch:
 		${WRKDIR}/wrapper.sh
 	@${REINPLACE_CMD} \
 		-e 's|$$OCAMLLIB/$$LABLGTK_NAME|$$OCAMLLIB/site-lib/$$LABLGTK_NAME|' \
+		-e 's|^DEVFLAGS=|&-unsafe-string|' \
 		${WRKSRC}/config/configure
 	@${REINPLACE_CMD} \
 		-e 's|+labl|+site-lib/labl|' \
+		-e '/BITSTRING/s|OCAMLC)|& -unsafe-string|' \
 		${WRKSRC}/config/Makefile.in
 	@${REINPLACE_CMD} -E \
 		-e 's@(#include <)(lablgtk2/)@\1site-lib/\2@'  \
@@ -120,13 +122,6 @@ post-patch:
 		-e 's|http://www.bluetack.co.uk/config/antip2p.txt|http://www.bluetack.co.uk/config/level1.gz|' \
 		${WRKSRC}/src/daemon/common/commonOptions.ml \
 		${WRKSRC}/src/networks/donkey/donkeyServers.ml
-	@${REINPLACE_CMD} \
-		-e 's/[u(]int32/&_t/' ${WRKSRC}/src/utils/cdk/zlibstubs.c \
-		${WRKSRC}/src/utils/cdk/gdstubs.c
-	@${REINPLACE_CMD} \
-		-e 's/int64/&_t/' ${WRKSRC}/src/config/unix/os_stubs_c.c \
-		${WRKSRC}/src/utils/lib/os_stubs.h \
-		${WRKSRC}/src/utils/lib/fst_hash.c
 
 do-install:
 .if ${PORT_OPTIONS:MCORE}

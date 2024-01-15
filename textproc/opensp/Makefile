@@ -1,14 +1,12 @@
-# Created by: kuriyama
-# $FreeBSD$
-
 PORTNAME=	OpenSP
 PORTVERSION=	1.5.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	SF/openjade/${PORTNAME:tl}/${PORTVERSION}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of SGML/XML tools
+WWW=		https://openjade.sourceforge.net/doc/
 
 LICENSE=	JamesClark
 LICENSE_NAME=	License of James Clark's Software
@@ -21,6 +19,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-default-catalog=${PREFIX}/share/sgml/catalog \
 		--datadir=${PREFIX}/share/sgml/openjade \
 		--disable-doc-build
+
+CPPFLAGS+=	-Dregister=
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

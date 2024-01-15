@@ -1,6 +1,3 @@
-# Created by: sobomax
-# $FreeBSD$
-
 PORTNAME=	libg722
 DISTVERSIONPREFIX=	v_
 DISTVERSION=	1_0_2

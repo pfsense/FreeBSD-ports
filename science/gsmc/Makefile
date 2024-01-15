@@ -1,14 +1,12 @@
-# Created by: db
-# $FreeBSD$
-
 PORTNAME=	gsmc
 PORTVERSION=	1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	science hamradio
 MASTER_SITES=	http://www.qsl.net/ik5nax/
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Smith chart program for impedance matching
+WWW=		https://www.qsl.net/ik5nax
 
 LICENSE=	GPLv2
 

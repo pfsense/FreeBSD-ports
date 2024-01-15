@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gkrellm
 PORTVERSION=	2.3.11
-#PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://gkrellm.srcbox.net/releases/ \
 		LOCAL/ume
@@ -10,10 +8,11 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	GTK based system monitor
+WWW=		http://gkrellm.net
 
 LICENSE=	GPLv3
 
-USES=		gmake gnome pkgconfig tar:bzip2
+USES=		cpe gmake gnome pkgconfig tar:bzip2
 USE_RC_SUBR=	gkrellmd
 
 OPTIONS_DEFINE=		DOCS CLIENT NLS NTLM OPENSSL

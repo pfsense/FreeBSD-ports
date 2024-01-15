@@ -1,15 +1,12 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-GUID
-PORTVERSION=	0.049
+PORTVERSION=	0.051
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	CPAN:RJBS
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate globally unique identifiers
+WWW=		https://metacpan.org/release/Data-GUID
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,15 +1,13 @@
-# Created by: Brett Taylor <brett@peloton.physics.montana.edu>
-# $FreeBSD$
-
 PORTNAME=	afterstep
 PORTVERSION=	2.2.12
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	x11-wm afterstep
 MASTER_SITES=	AFTERSTEP/stable
 DISTNAME=	AfterStep-${PORTVERSION}
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Stable version of the AfterStep window manager
+WWW=		http://www.afterstep.org/
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libfontconfig.so:x11-fonts/fontconfig \

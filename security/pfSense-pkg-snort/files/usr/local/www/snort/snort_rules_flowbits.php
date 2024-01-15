@@ -3,8 +3,8 @@
  * snort_rules_flowbits.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,6 @@ $snortdir = SNORTDIR;
 $flowbit_rules_file = FLOWBITS_FILENAME;
 $rules_map = array();
 $supplist = array();
-
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -64,11 +59,12 @@ if (isset($_POST['cancel'])) {
 	exit;
 }
 
-$if_real = get_real_interface($a_nat[$id]['interface']);
-$snort_uuid = $a_nat[$id]['uuid'];
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}", []);
+$if_real = get_real_interface($a_nat['interface']);
+$snort_uuid = $a_nat['uuid'];
 
 /* We should normally never get to this page if Auto-Flowbits are disabled, but just in case... */
-if ($a_nat[$id]['autoflowbitrules'] == 'on') {
+if ($a_nat['autoflowbitrules'] == 'on') {
 	if (file_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}") &&
 	    filesize("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}") > 0) {
 		$rules_map = snort_load_rules_map("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}");
@@ -86,26 +82,22 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 		$suppress .= "suppress gen_id {$_POST['gid']}, sig_id {$_POST['sid']}\n";
 	else
 		$suppress .= "# {$descr}\nsuppress gen_id {$_POST['gid']}, sig_id {$_POST['sid']}\n";
-	if (!is_array($config['installedpackages']['snortglobal']['suppress']))
-		$config['installedpackages']['snortglobal']['suppress'] = array();
-	if (!is_array($config['installedpackages']['snortglobal']['suppress']['item']))
-		$config['installedpackages']['snortglobal']['suppress']['item'] = array();
-	$a_suppress = &$config['installedpackages']['snortglobal']['suppress']['item'];
+	$a_suppress = config_get_path('installedpackages/snortglobal/suppress/item', []);
 	$found_list = false;
 
-	if (empty($a_nat[$id]['suppresslistname']) || $a_nat[$id]['suppresslistname'] == 'default') {
+	if (empty($a_nat['suppresslistname']) || $a_nat['suppresslistname'] == 'default') {
 		$s_list = array();
 		$s_list['uuid'] = uniqid();
-		$s_list['name'] = $a_nat[$id]['interface'] . "suppress" . "_" . $s_list['uuid'];
+		$s_list['name'] = $a_nat['interface'] . "suppress" . "_" . $s_list['uuid'];
 		$s_list['descr']  =  "Auto-generated list for Alert suppression";
 		$s_list['suppresspassthru'] = base64_encode($suppress);
 		$a_suppress[] = $s_list;
-		$a_nat[$id]['suppresslistname'] = $s_list['name'];
+		$a_nat['suppresslistname'] = $s_list['name'];
 		$found_list = true;
 	} else {
 		/* If we get here, a Suppress List is defined for the interface so see if we can find it */
 		foreach ($a_suppress as $a_id => $alist) {
-			if ($alist['name'] == $a_nat[$id]['suppresslistname']) {
+			if ($alist['name'] == $a_nat['suppresslistname']) {
 				$found_list = true;
 				if (!empty($alist['suppresspassthru'])) {
 					$tmplist = base64_decode($alist['suppresspassthru']);
@@ -121,22 +113,24 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 		}
 	}
 	if ($found_list) {
-		write_config("Snort pkg: modified Suppress List for {$a_nat[$id]['interface']}.");
+		config_set_path('installedpackages/snortglobal/suppress/item', $a_suppress);
+		config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
+		write_config("Snort pkg: modified Suppress List for {$a_nat['interface']}.");
 		$rebuild_rules = false;
 		sync_snort_package_config();
-		snort_reload_config($a_nat[$id]);
-		$savemsg = gettext("An entry to suppress the Alert for 'gen_id {$_POST['gid']}, sig_id {$_POST['sid']}' has been added to Suppress List '{$a_nat[$id]['suppresslistname']}'.");
+		snort_reload_config($a_nat);
+		$savemsg = gettext("An entry to suppress the Alert for 'gen_id {$_POST['gid']}, sig_id {$_POST['sid']}' has been added to Suppress List '{$a_nat['suppresslistname']}'.");
 	}
 	else {
 		/* We did not find the defined list, so notify the user with an error */
-		$input_errors[] = gettext("Suppress List '{$a_nat[$id]['suppresslistname']}' is defined for this interface, but it could not be found!");
+		$input_errors[] = gettext("Suppress List '{$a_nat['suppresslistname']}' is defined for this interface, but it could not be found!");
 	}
 }
 
 /* Load up an array with the current Suppression List GID,SID values */
-$supplist = snort_load_suppress_sigs($a_nat[$id]);
+$supplist = snort_load_suppress_sigs($a_nat);
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat['interface']);
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Flowbit Rules"), gettext("{$if_friendly}"));
 include("head.inc");
 
@@ -172,14 +166,14 @@ if ($savemsg)
 	<div class="panel-body">
 		<div class="content pull-left">
 			<dl class="dl-horizontal">
-				<dt><i class="fa fa-plus-square-o"></i></dt><dd><?=gettext('Alert is not suppressed');?></dd>
-				<dt><i class="fa fa-info-circle"></i></dt><dd><?=gettext('Alert is suppressed');?><dd>
+				<dt><i class="fa-regular fa-square-plus"></i></dt><dd><?=gettext('Alert is not suppressed');?></dd>
+				<dt><i class="fa-solid fa-info-circle"></i></dt><dd><?=gettext('Alert is suppressed');?><dd>
 				<dt></dt><dd class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Icons are only displayed for flowbit rules without the ' . '<em>noalert</em>' . ' option.');?></dd>
 			</dl>
 		</div>
 		<div class="content clearfix">
 			<button type="submit" class="btn btn-default btn-sm btn-success pull-right" id="cancel" name="cancel" title="<?=gettext('Return to previous page');?>">
-				<i class="fa fa-backward icon-embed-btn text-success"></i>
+				<i class="fa-solid fa-backward icon-embed-btn text-success"></i>
 				<?=gettext('Return'); ?>
 			</button>
 		</div>
@@ -226,11 +220,11 @@ if ($savemsg)
 									$supplink = "";
 								else {
 									if (!isset($supplist[$gid][$sid])) {
-										$supplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"doAddSuppress('{$gid}','{$sid}');\"";
+										$supplink = "<i class=\"fa-regular fa-square-plus icon-pointer\" onClick=\"doAddSuppress('{$gid}','{$sid}');\"";
 										$supplink .= " title='" . gettext("Click to add to Suppress List") . "'></i>";
 									}
 									else {
-										$supplink = "<i class=\"fa fa-info-circle icon-pointer\" title='";
+										$supplink = "<i class=\"fa-solid fa-info-circle icon-pointer\" title='";
 										$supplink .= gettext("Alert has been suppressed") . "'></i>";
 									}
 								}

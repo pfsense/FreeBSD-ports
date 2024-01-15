@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Package-Variant
 PORTVERSION=	1.003002
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parameterizable packages
+WWW=		https://metacpan.org/release/Package-Variant
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

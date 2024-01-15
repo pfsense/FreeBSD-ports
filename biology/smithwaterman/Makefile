@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	smithwaterman
 DISTVERSION=	g20160702
 CATEGORIES=	biology
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Smith-waterman-gotoh alignment algorithm
+WWW=		https://github.com/ekg/smithwaterman
 
 LICENSE=	GPLv2
 

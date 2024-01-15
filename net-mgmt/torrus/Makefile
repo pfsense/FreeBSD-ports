@@ -1,13 +1,12 @@
-# Created by: Corey Smith <corsmith@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	torrus
 PORTVERSION=	2.09
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/torrus/torrus/
 
 MAINTAINER=	corsmith@gmail.com
 COMMENT=	Data Series Processing Framework - think mrtg with xml configs
+WWW=		http://torrus.org
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

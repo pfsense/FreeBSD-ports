@@ -3,11 +3,11 @@
  * suricata_logs_browser.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,9 @@ elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 if (empty($instanceid))
 	$instanceid = 0;
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
-
-$a_instance = $config['installedpackages']['suricata']['rule'];
-$suricata_uuid = $a_instance[$instanceid]['uuid'];
-$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+$a_instance = config_get_path('installedpackages/suricata/rule', []);
+$suricata_uuid = config_get_path("installedpackages/suricata/rule/{$instanceid}/uuid", '');
+$if_real = get_real_interface(config_get_path("installedpackages/suricata/rule/{$instanceid}/interface", ''));
 
 // Construct a pointer to the instance's logging subdirectory
 $suricatalogdir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}/";
@@ -71,7 +67,8 @@ if ($_POST['action'] == 'clear') {
 	exit;
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Logs View"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Logs View");
 include_once("head.inc");
 
 if ($input_errors) {
@@ -79,11 +76,9 @@ if ($input_errors) {
 }
 
 function build_instance_list() {
-	global $a_instance;
-
 	$list = array();
 
-	foreach ($a_instance as $id => $instance) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $id => $instance) {
 		$list[$id] = '(' . convert_friendly_interface_to_friendly_descr($instance['interface']) . ') ' . $instance['descr'];
 	}
 
@@ -113,6 +108,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$instanceid}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), true, "/suricata/suricata_logs_browser.php");
@@ -148,9 +144,9 @@ $staticContent = '<span style="display:none; " id="fileStatusBox">' .
 		'<strong>' . gettext("Log File Path: ") . '</strong>' . '<span style="display:inline;" id="fbTarget"></span>' . '</p>' . 
 		'<p style="padding-right:15px; display:none;" id="fileRefreshBtn">' . 
 		'<button type="button" class="btn btn-sm btn-info" name="refresh" id="refresh" onclick="loadFile();" title="' . 
-		gettext("Refresh current display") . '"><i class="fa fa-repeat icon-embed-btn"></i>' . gettext("Refresh") . '</button>&nbsp;&nbsp;' . 
+		gettext("Refresh current display") . '"><i class="fa-solid fa-arrow-rotate-right icon-embed-btn"></i>' . gettext("Refresh") . '</button>&nbsp;&nbsp;' . 
 		'<button type="button" class="btn btn-sm btn-danger hidden no-confirm" name="fileClearBtn" id="fileClearBtn" ' . 
-		'onclick="clearFile();" title="' . gettext("Clear selected log file contents") . '"><i class="fa fa-trash icon-embed-btn"></i>' . 
+		'onclick="clearFile();" title="' . gettext("Clear selected log file contents") . '"><i class="fa-solid fa-trash-can icon-embed-btn"></i>' . 
 		gettext("Clear") . '</button></p>';
 
 $section->addInput(new Form_StaticText(

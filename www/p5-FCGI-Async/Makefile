@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	FCGI-Async
 PORTVERSION=	0.22
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Module to allow use of FastCGI asynchronously
+WWW=		https://metacpan.org/release/FCGI-Async
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

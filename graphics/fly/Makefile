@@ -1,6 +1,3 @@
-# Created by: Juergen Unger <j.unger@choin.net>
-# $FreeBSD$
-
 PORTNAME=	fly
 PORTVERSION=	2.0.1
 PORTREVISION=	7
@@ -10,6 +7,7 @@ MASTER_SITES=	http://fossies.org/unix/www/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple drawing language to generate GIFs on the fly
+WWW=		http://martin.gleeson.com/fly/
 
 LIB_DEPENDS=	libgd.so:graphics/gd
 
@@ -19,7 +17,7 @@ PLIST_FILES=	bin/fly
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-CONFLICTS_INSTALL=	concourse-fly
+CONFLICTS_INSTALL=	concourse concourse-fly
 
 do-build:
 	cd ${WRKSRC} && ${CC} ${CFLAGS} -I${LOCALBASE}/include fly.c -o fly \

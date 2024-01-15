@@ -1,23 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	slibtool
-PORTVERSION=	0.5.31
+PORTVERSION=	0.5.35
 CATEGORIES=	devel
 MASTER_SITES=	http://dl.midipix.org/${PORTNAME}/
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Skinny libtool implementation, written in C
+WWW=		https://git.foss21.org/slibtool
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING.SLIBTOOL
 
 HAS_CONFIGURE=	yes
-USES=		gmake tar:xz
-
-post-patch:
-	${REINPLACE_CMD} -e "s/make/${MAKE_CMD}/g" \
-		${WRKSRC}/configure \
-		${WRKSRC}/sofort/ccenv/ccenv.sh
+USES=		tar:xz
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/slibtool

@@ -1,6 +1,3 @@
-# Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	XML-Atom-Ext-OpenSearch
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	textproc www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XML::Atom extension for OpenSearch data
+WWW=		https://metacpan.org/release/XML-Atom-Ext-OpenSearch
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-Atom>=0:textproc/p5-XML-Atom

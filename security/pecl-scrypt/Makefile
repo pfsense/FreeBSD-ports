@@ -1,19 +1,15 @@
-# Created by: Horia Racoviceanu <horia@racoviceanu.com>
-# $FreeBSD$
-
 PORTNAME=	scrypt
-PORTVERSION=	1.4.2
+PORTVERSION=	2.0.1
 CATEGORIES=	security pear
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	PHP wrapper to Colin Percival's scrypt implementation
+WWW=		https://pecl.php.net/package/scrypt
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		php:pecl
-IGNORE_WITH_PHP=	80
-USE_PHP=	hash:build
+USES=		php:build,pecl
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

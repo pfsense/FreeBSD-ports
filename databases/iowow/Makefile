@@ -1,13 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	iowow
-PORTVERSION=	1.4.10
+PORTVERSION=	1.4.17
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Persistent key-value database engine
+WWW=		https://iowow.softmotions.com/
 
 LICENSE=	MIT
 

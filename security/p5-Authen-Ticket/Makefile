@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Authen-Ticket
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module providing the framework for implementing a ticketing system
+WWW=		https://metacpan.org/release/Authen-Ticket
 
 LICENSE=	BSD3CLAUSE
 

@@ -1,6 +1,3 @@
-# Created by: Andrey Kostenko <andrey@kostenko.name>
-# $FreeBSD$
-
 PORTNAME=	Cache-Memcached-Tie
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Use Cache::Memcached::Fast like hash
+WWW=		https://metacpan.org/release/Cache-Memcached-Tie
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Cache-Memcached-Fast>=0:databases/p5-Cache-Memcached-Fast

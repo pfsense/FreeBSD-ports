@@ -1,6 +1,3 @@
-# Created by: Sergey Matveychuk <sem@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sqstat
 PORTVERSION=	1.20
 PORTREVISION=	1
@@ -10,12 +7,13 @@ MASTER_SITES=	http://samm.kiev.ua/sqstat/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Script which allows to look through active squid users connections
+WWW=		https://samm.kiev.ua/sqstat/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/docs/LICENSE
 
 USES=		php
-USE_PHP=	pcre session
+USE_PHP=	session
 NO_BUILD=	yes
 NO_ARCH=	yes
 

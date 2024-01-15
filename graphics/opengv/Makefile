@@ -1,21 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	opengv
-DISTVERSION=	g20181024
-PORTREVISION=	4
+DISTVERSION=	g20200806
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Collection of methods for solving geometric vision problems
+WWW=		https://laurentkneip.github.io/opengv/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
 
 USES=		cmake compiler:c++11-lib eigen:3
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	laurentkneip
-GH_TAGNAME=	306a54e
-USE_LDCONFIG=	yes
+GH_TAGNAME=	91f4b19
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	BUILD_TESTS

@@ -1,15 +1,13 @@
-# Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	AnyEvent-Subprocess
 PORTVERSION=	1.102912
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Flexible, OO, asynchronous process spawning and management
+WWW=		https://metacpan.org/release/AnyEvent-Subprocess
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

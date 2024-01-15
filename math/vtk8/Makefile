@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	vtk
 DISTVERSION=	8.2.0
+PORTREVISION=	3
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	8
@@ -9,8 +8,11 @@ DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Visualization toolkit
+WWW=		https://www.vtk.org
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN_FreeBSD_13_aarch64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=275784
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libpng.so:graphics/png \
@@ -19,7 +21,7 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 
 CONFLICTS=	vtk6 vtk9
 
-USES=		alias cmake compiler:c++11-lang gl jpeg localbase xorg
+USES=		alias cmake compiler:c++11-lang gl jpeg localbase perl5 xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	ice x11 xt xext sm
 
@@ -61,7 +63,7 @@ $w_DESC=	$w wrapping
 .endfor
 
 QT5_USES=		qt:5
-QT5_USE=		QT=core,gui,sql,uiplugin,widgets,x11extras,qmake_build,buildtools_build
+QT5_USE=		QT=core,gui,sql,uiplugin,widgets,x11extras,qmake:build,buildtools:build
 QT5_CMAKE_ON=		-DVTK_QT_VERSION:STRING="5" \
 			-DCMAKE_PREFIX_PATH:STRING=${LOCALBASE}/lib/qt5 \
 			-DVTK_Group_Qt:BOOL=ON

@@ -1,27 +1,27 @@
-# Created by: Eric Crist <ecrist@secure-computing.net>
-# $FreeBSD$
-
 PORTNAME=	ssl-admin
-DISTVERSION=	1.2.1
+DISTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	ftp://ftp.secure-computing.net/pub/FreeBSD/ports/ssl-admin/ \
-		ftp://ftp2.secure-computing.net/pub/FreeBSD/ports/ssl-admin/
+MASTER_SITES=	https://github.com/ecrist/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	ecrist@secure-computing.net
 COMMENT=	OpenSSL certificate manager with OpenVPN support
+WWW=		https://github.com/ecrist/ssl-admin/
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	zip:archivers/zip
-
 USES=		perl5 shebangfix tar:xz
-SHEBANG_FILES=	ssl-admin
 USE_PERL5=	run
-GNU_CONFIGURE=	yes
-SUB_FILES=	pkg-message
-MAKE_ENV=	ETCDIR=${PREFIX}/etc BINDIR=${PREFIX}/bin \
+
+SHEBANG_FILES=	ssl-admin
+
+HAS_CONFIGURE=	yes
+
+MAKE_ENV=	BINDIR=${PREFIX}/bin \
+		ETCDIR=${PREFIX}/etc \
 		MANDIR=${MANPREFIX}/man
 NO_ARCH=	yes
+SUB_FILES=	pkg-message
 
 post-patch:
 	${REINPLACE_CMD} -e 's|`which sed`|${SED}|' ${WRKSRC}/configure

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Eval-Closure
 PORTVERSION=	0.14
 CATEGORIES=	devel perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Safely and cleanly create closures via string eval
+WWW=		https://metacpan.org/release/Eval-Closure
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

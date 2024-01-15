@@ -1,14 +1,14 @@
-# Created by: Romain Tartiere <romain@blogreen.org>
-# $FreeBSD$
-
 PORTNAME=	gtk-nodoka-engine
 PORTVERSION=	0.7.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-themes
 MASTER_SITES=	https://BSDforge.com/projects/source/x11-themes/gtk-nodoka-engine/
 
 MAINTAINER=	romain@FreeBSD.org
 COMMENT=	GTK nodoka engine and themes
+WWW=		https://pagure.io/nodoka-theme
+
+BROKEN=		Unfetchable
 
 OPTIONS_DEFINE=	ANIMATION ANIMATIONTOLEFT
 ANIMATION_DESC=		Animation support

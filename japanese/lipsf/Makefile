@@ -1,6 +1,3 @@
-# Created by: Mita Yoshio <mita@jp.FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lipsf
 PORTVERSION=	2.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text to LIPS filter
+WWW=		https://hp.vector.co.jp/authors/VA012337/soft/lipsf/
 
 USES=		ncurses
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:S/.//}

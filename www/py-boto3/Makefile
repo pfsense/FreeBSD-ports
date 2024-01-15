@@ -1,37 +1,24 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	boto3
-PORTVERSION=	1.15.8
+PORTVERSION=	1.34.7
 CATEGORIES=	www python devel
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	AWS SDK for Python
+WWW=		https://aws.amazon.com/sdk-for-python/ \
+		https://github.com/boto/boto3
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=1.18.8,<1.19.0:devel/py-botocore@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jmespath>=0.7.1,<1.0.0:devel/py-jmespath@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.3.0,<0.4.0:net/py-s3transfer@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=${PORTVERSION}<1.35.0:devel/py-botocore@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jmespath>=0.7.1<2.0.0:devel/py-jmespath@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.10.0<0.11.0:net/py-s3transfer@${PY_FLAVOR}
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
-
-# Actually 2.6-2.7,3.3-3.7
-USES=		python:3.6+
-USE_GITHUB=	yes # tests missing from PyPI sdist
-USE_PYTHON=	autoplist distutils
-
-GH_ACCOUNT=	boto
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
-
-# setup.py test runs integration tests which fail
-# https://github.com/boto/s3transfer/issues/41
-# Note: this is an AWS python package wide issue
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m nose -v tests/unit tests/functional
 
 .include <bsd.port.mk>

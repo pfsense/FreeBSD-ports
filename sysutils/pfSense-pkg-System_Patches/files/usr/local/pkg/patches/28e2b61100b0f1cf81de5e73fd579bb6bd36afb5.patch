@@ -1,0 +1,141 @@
+commit 28e2b61100b0f1cf81de5e73fd579bb6bd36afb5
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Aug 21 11:05:32 2023 -0400
+
+    Cast to string before ctype_digit() testing. Fixes #14702
+
+diff --git a/src/etc/inc/ipsec.inc b/src/etc/inc/ipsec.inc
+index 57466d142e..6ae3dfab0f 100644
+--- a/src/etc/inc/ipsec.inc
++++ b/src/etc/inc/ipsec.inc
+@@ -886,7 +886,7 @@ function ipsec_terminate_by_conid($type = 'ike', $conid = null, $uniqueid = null
+ 	$selector = '--';
+ 	$selector .= ($type == 'ike') ? 'ike' : 'child';
+ 
+-	if (ctype_digit($uniqueid) && ($uniqueid > 0)) {
++	if (ctype_digit(strval($uniqueid)) && ($uniqueid > 0)) {
+ 		$selector .= '-id';
+ 		$term = $uniqueid;
+ 	} else {
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 55f4b79853..8dae6b19fc 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -328,7 +328,7 @@ function is_module_loaded(string $module_name): bool
+ 
+ /* validate non-negative numeric string, or equivalent numeric variable */
+ function is_numericint($arg) {
+-	return (((is_int($arg) && $arg >= 0) || (is_string($arg) && strlen($arg) > 0 && ctype_digit($arg))) ? true : false);
++	return (((is_int($arg) && $arg >= 0) || (is_string($arg) && strlen($arg) > 0 && ctype_digit(strval($arg)))) ? true : false);
+ }
+ 
+ /* Generate the (human readable) ipv4 or ipv6 subnet address (i.e., netmask, or subnet start IP)
+@@ -1244,7 +1244,7 @@ function is_intrange($range, $min, $max) {
+ 		return false;
+ 	}
+ 
+-	if (!ctype_digit($values[0]) || !ctype_digit($values[1])) {
++	if (!ctype_digit(strval($values[0])) || !ctype_digit(strval($values[1]))) {
+ 		return false;
+ 	}
+ 
+@@ -1264,7 +1264,7 @@ function is_intrange($range, $min, $max) {
+ 
+ /* returns true if $port is a valid TCP/UDP/SCTP port */
+ function is_port($port) {
+-	if (ctype_digit($port) && ((intval($port) >= 1) && (intval($port) <= 65535))) {
++	if (ctype_digit(strval($port)) && ((intval($port) >= 1) && (intval($port) <= 65535))) {
+ 		return true;
+ 	}
+ 	if (getservbyname($port, "tcp") || getservbyname($port, "udp") || getservbyname($port, "sctp")) {
+diff --git a/src/usr/local/pfSense/include/www/diag_packet_capture.inc b/src/usr/local/pfSense/include/www/diag_packet_capture.inc
+index b9dc1667f5..5a98376d70 100644
+--- a/src/usr/local/pfSense/include/www/diag_packet_capture.inc
++++ b/src/usr/local/pfSense/include/www/diag_packet_capture.inc
+@@ -404,7 +404,7 @@ class FilterAttribute {
+ 							$string_part = 'proto ospf';
+ 							break;
+ 						default:
+-							if (ctype_digit($value) && ($value >= 0 && $value <= 255)) {
++							if (ctype_digit(strval($value)) && ($value >= 0 && $value <= 255)) {
+ 								$string_part = "proto {$value}";
+ 							} else {
+ 								$input_error = "Invalid protocol: {$value}";
+diff --git a/src/usr/local/pfSense/include/www/services_dnsmasq.inc b/src/usr/local/pfSense/include/www/services_dnsmasq.inc
+index f389ea13f4..3e30e69ef6 100644
+--- a/src/usr/local/pfSense/include/www/services_dnsmasq.inc
++++ b/src/usr/local/pfSense/include/www/services_dnsmasq.inc
+@@ -316,7 +316,7 @@ function saveDNSMasqHost($post, $id, $json=false) {
+ 				$entry = substr($key, 16);
+ 				$field = 'description';
+ 			}
+-			if (ctype_digit($entry)) {
++			if (ctype_digit(strval($entry))) {
+ 				$aliases[$entry][$field] = $value;
+ 			}
+ 		}
+diff --git a/src/usr/local/www/services_dhcp.php b/src/usr/local/www/services_dhcp.php
+index 9e43386d51..88f3d69bc6 100644
+--- a/src/usr/local/www/services_dhcp.php
++++ b/src/usr/local/www/services_dhcp.php
+@@ -248,7 +248,7 @@ if (isset($_POST['save'])) {
+ 
+ 	$numberoptions = array();
+ 	for ($x = 0; $x < 99; $x++) {
+-		if (isset($_POST["number{$x}"]) && ctype_digit($_POST["number{$x}"])) {
++		if (isset($_POST["number{$x}"]) && ctype_digit(strval($_POST["number{$x}"]))) {
+ 			if ($_POST["number{$x}"] < 1 || $_POST["number{$x}"] > 254) {
+ 				$input_errors[] = gettext("The DHCP option must be a number between 1 and 254.");
+ 				continue;
+diff --git a/src/usr/local/www/services_dhcp_edit.php b/src/usr/local/www/services_dhcp_edit.php
+index 30e1e3f0a9..347dbb8f4f 100644
+--- a/src/usr/local/www/services_dhcp_edit.php
++++ b/src/usr/local/www/services_dhcp_edit.php
+@@ -161,7 +161,7 @@ if ($_POST['save']) {
+ 
+ 	$numberoptions = array();
+ 	for ($x = 0; $x < 99; $x++) {
+-		if (isset($_POST["number{$x}"]) && ctype_digit($_POST["number{$x}"])) {
++		if (isset($_POST["number{$x}"]) && ctype_digit(strval($_POST["number{$x}"]))) {
+ 			if ($_POST["number{$x}"] < 1 || $_POST["number{$x}"] > 254) {
+ 				$input_errors[] = gettext("The DHCP option must be a number between 1 and 254.");
+ 				continue;
+diff --git a/src/usr/local/www/services_dhcpv6.php b/src/usr/local/www/services_dhcpv6.php
+index 61b5fed57b..d362b779df 100644
+--- a/src/usr/local/www/services_dhcpv6.php
++++ b/src/usr/local/www/services_dhcpv6.php
+@@ -214,7 +214,7 @@ if (isset($_POST['apply'])) {
+ 
+ 	$numberoptions = array();
+ 	for ($x = 0; $x < 99; $x++) {
+-		if (isset($_POST["number{$x}"]) && ctype_digit($_POST["number{$x}"])) {
++		if (isset($_POST["number{$x}"]) && ctype_digit(strval($_POST["number{$x}"]))) {
+ 			$numbervalue = array();
+ 			$numbervalue['number'] = htmlspecialchars($_POST["number{$x}"]);
+ 			$numbervalue['value'] = base64_encode($_POST["value{$x}"]);
+diff --git a/src/usr/local/www/services_unbound_host_edit.php b/src/usr/local/www/services_unbound_host_edit.php
+index 03b66b0ebb..2e5723745c 100644
+--- a/src/usr/local/www/services_unbound_host_edit.php
++++ b/src/usr/local/www/services_unbound_host_edit.php
+@@ -109,7 +109,7 @@ if ($_POST['save']) {
+ 				$entry = substr($key, 16);
+ 				$field = 'description';
+ 			}
+-			if (ctype_digit($entry)) {
++			if (ctype_digit(strval($entry))) {
+ 				array_set_path($aliases, "{$entry}/{$field}", $value);
+ 			}
+ 		}
+diff --git a/src/usr/local/www/system_certmanager.php b/src/usr/local/www/system_certmanager.php
+index 4922c4c54d..067ee6fba7 100644
+--- a/src/usr/local/www/system_certmanager.php
++++ b/src/usr/local/www/system_certmanager.php
+@@ -329,7 +329,7 @@ if ($_POST['save'] == gettext("Save")) {
+ 				$field = 'value';
+ 			}
+ 
+-			if (ctype_digit($entry)) {
++			if (ctype_digit(strval($entry))) {
+ 				$entry++;	// Pre-bootstrap code is one-indexed, but the bootstrap code is 0-indexed
+ 				$altnames[$entry][$field] = $value;
+ 			}

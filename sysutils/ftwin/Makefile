@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ftwin
 PORTVERSION=	0.8.10
 CATEGORIES=	sysutils
 
 MAINTAINER=	shoesoft@gmx.net
 COMMENT=	Useful tool to find duplicate files
+WWW=		https://github.com/fpesce/ftwin
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,14 +17,11 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libpuzzle.so:graphics/libpuzzle
 
 USES=		autoreconf bdb libarchive pkgconfig tar:bzip2
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	fpesce
-GH_PROJECT=	ftwin
-GH_TAGNAME=	3355fd9
-
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-archive=${LOCALBASE}
+USE_GITHUB=	yes
+GH_ACCOUNT=	fpesce
+GH_TAGNAME=	3355fd9
 MAKE_ARGS=	CFLAGS="${CFLAGS}"
 
 PORTDOCS=	AUTHORS EXAMPLES TODO CHANGES KNOWN_BUGS VERSION README

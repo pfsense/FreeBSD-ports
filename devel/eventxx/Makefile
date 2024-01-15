@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	eventxx
 PORTVERSION=	1.0.1
 PORTREVISION=	5
@@ -10,6 +7,7 @@ MASTER_SITES=	http://proj.llucax.com.ar/home/eventxx/releases/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ wrapper for libevent
+WWW=		http://www.llucax.com.ar/~luca/eventxx/
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 

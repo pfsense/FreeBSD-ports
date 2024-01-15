@@ -1,23 +1,24 @@
-# Created by: ijliao@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	yaml
-PORTVERSION=	5.3.1
+PORTVERSION=	6.0.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	PyYAML-${PORTVERSION}
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python YAML parser
+WWW=		https://pyyaml.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent cython distutils
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pyyaml5
 
 OPTIONS_DEFINE=	LIBYAML EXAMPLES
+OPTIONS_DEFAULT=LIBYAML
 LIBYAML_DESC=	Use textproc/libyaml for faster parsing
 
 LIBYAML_LIB_DEPENDS=	libyaml.so:textproc/libyaml
@@ -38,7 +39,7 @@ post-install-EXAMPLES-on:
 	@(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/)
 
 post-install-LIBYAML-on:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_yaml*.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/yaml/_yaml*.so
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test

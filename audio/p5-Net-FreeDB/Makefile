@@ -1,6 +1,3 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-FreeDB
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Get the CDID of an audio CD and query the FreeDB servers
+WWW=		https://metacpan.org/release/Net-FreeDB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,21 +1,18 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gedit-plugins
-PORTVERSION=	3.38.1
-PORTREVISION=	1
+PORTVERSION=	43.1
+PORTREVISION=	4
 CATEGORIES=	editors gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Plugins for GEdit 3
+COMMENT=	Plugins for GEdit
+WWW=		https://wiki.gnome.org/Apps/Gedit/PluginsLists
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gedit>=0:editors/gedit \
-		valac:lang/vala \
 		itstool:textproc/itstool \
 		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR}
 LIB_DEPENDS=	libpeas-1.0.so:devel/libpeas \
@@ -28,7 +25,7 @@ RUN_DEPENDS=	gedit>=0:editors/gedit \
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 gettext gnome localbase meson pkgconfig \
-		python:3.4+ shebangfix tar:xz
+		python shebangfix tar:xz vala:build
 USE_GNOME=	cairo gdkpixbuf2 gtk30 gtksourceview4 intlhack introspection \
 		vte3
 USE_CSTD=	c11
@@ -39,7 +36,6 @@ BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 GLIB_SCHEMAS=	org.gnome.gedit.plugins.drawspaces.gschema.xml \
 		org.gnome.gedit.plugins.wordcompletion.gschema.xml \
-		org.gnome.gedit.plugins.terminal.gschema.xml \
-		org.gnome.gedit.plugins.translate.gschema.xml
+		org.gnome.gedit.plugins.terminal.gschema.xml
 
 .include <bsd.port.mk>

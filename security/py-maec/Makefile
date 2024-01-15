@@ -1,6 +1,3 @@
-# Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	maec
 PORTVERSION=	4.1.0.17
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Python library for parsing, manipulating, and generating MAEC content
+WWW=		https://github.com/MAECProject/python-maec
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -23,7 +21,7 @@ GH_ACCOUNT=	MAECProject
 GH_PROJECT=	python-${PORTNAME}
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	concurrent distutils autoplist
 USE_LOCALE=	en_US.UTF-8
 

@@ -1,12 +1,10 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	findmaildirs
 PORTVERSION=	0.4
 CATEGORIES=	mail
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simple utility to create list of maildirs for mutt
+WWW=		https://github.com/AMDmi3/findmaildirs
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

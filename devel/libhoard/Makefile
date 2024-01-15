@@ -1,6 +1,3 @@
-# Created by: Sergey A. Osokin <osa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libhoard
 PORTVERSION=	3.13
 CATEGORIES=	devel
@@ -9,13 +6,13 @@ DISTNAME=	hoard-release
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast, scalable, and memory-efficient allocator for MP
+WWW=		http://www.hoard.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../COPYING
 
 BROKEN_mips=		no spin lock implementation is available for this platform
 BROKEN_mips64=		no spin lock implementation is available for this platform
-BROKEN_sparc64=		Does not build
 
 WRKSRC=		${WRKDIR}/Hoard/src
 MAKEFILE=	GNUmakefile

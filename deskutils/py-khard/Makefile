@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	khard
-DISTVERSION=	0.17.0
+DISTVERSION=	0.18.0
 CATEGORIES=	deskutils python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	andreas@bilke.org
 COMMENT=	Console carddav client
+WWW=		https://github.com/lucc/khard/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,12 +18,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}atomicwrites>=0.1.7:devel/py-atomicwrites@${
 		${PYTHON_PKGNAMEPREFIX}vdirsyncer>=0:deskutils/py-vdirsyncer@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}vobject>=0.9.5:deskutils/py-vobject@${PY_FLAVOR}
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
-		${PY_SPHINX} \
+		${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx-autoapi>0:textproc/py-sphinx-autoapi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx-autodoc-typehints>0:textproc/py-sphinx-autodoc-typehints@${PY_FLAVOR} \
 		${RUN_DEPENDS}
 
-USES=		python:3.6+ gmake
+USES=		python gmake
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

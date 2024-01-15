@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bosh-gen
 PORTVERSION=	0.101.2
 CATEGORIES=	sysutils rubygems
@@ -7,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Generators for creating BOSH releases
+WWW=		https://github.com/cloudfoundry-community/bosh-gen
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +20,6 @@ RUN_DEPENDS=	rubygem-activesupport4>=4.0<5.0:devel/rubygem-activesupport4 \
 		rubygem-thor>=0:devel/rubygem-thor
 
 USES=		gem shebangfix
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

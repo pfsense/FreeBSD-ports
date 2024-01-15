@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	vdesk
 PORTVERSION=	1.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	http://offog.org/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line utility for setting up and using virtual desktops
+WWW=		https://offog.org/code/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

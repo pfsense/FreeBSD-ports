@@ -1,5 +1,5 @@
 pkg/net-snmp.inc
-pkg/net-snmp.xml
+pkg/netsnmp.xml
 pkg/net-snmptrapd.xml
 pkg/net-snmptrapd_communities.xml
 pkg/net-snmptrapd_formats.xml

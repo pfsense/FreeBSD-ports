@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	urwfonts
 PORTVERSION=	1.0
 PORTREVISION=	8

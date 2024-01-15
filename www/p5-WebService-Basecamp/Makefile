@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	WebService-Basecamp
 PORTVERSION=	0.1.4
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the Basecamp API webservice
+WWW=		https://metacpan.org/release/WebService-Basecamp
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

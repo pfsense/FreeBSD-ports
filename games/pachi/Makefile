@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	pachi
 PORTVERSION=	1.0
 PORTREVISION=	8
@@ -10,6 +7,7 @@ DISTNAME=	pachi_source
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Platform game similar to Manic Miner
+WWW=		https://sourceforge.net/projects/dragontech/
 
 USE_SDL=	mixer sdl
 USES=		gmake sdl tar:tgz
@@ -23,8 +21,8 @@ WRKSRC=		${WRKDIR}/Pachi
 SCOREDIR=	/var/games/${PORTNAME}
 SCOREFILE=	${SCOREDIR}/scores.dat
 
-SUB_FILES=      pkg-deinstall pkg-install
-SUB_LIST=       SCOREDIR="${SCOREDIR}" SCOREFILE="${SCOREFILE}"
+SUB_FILES=	pkg-deinstall pkg-install
+SUB_LIST=	SCOREDIR="${SCOREDIR}" SCOREFILE="${SCOREFILE}"
 
 PORTDATA=	*
 

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	sysfsutils
 PORTVERSION=	2.1.0
 PORTREVISION=	3
@@ -9,9 +6,11 @@ MASTER_SITES=	SF/linux-diag/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	System Utilities Based on Sysfs
+WWW=		https://linux-diag.sourceforge.net/Sysfsutils.html
 
 GNU_CONFIGURE=	yes
-USES=		libtool
+USES=		cpe libtool
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

@@ -1,19 +1,19 @@
-# Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DoctrineDBAL
 PORTVERSION=	2.3.4
 CATEGORIES=	databases pear
 MASTER_SITES=	http://pear.doctrine-project.org/get/
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Database abstraction layer used to power the ORM package
+WWW=		https://www.doctrine-project.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PEARDIR}/Doctrine/Common/Version.php:databases/pear-DoctrineCommon@${PHP_FLAVOR} \
 		${PEARDIR}/Symfony/Component/Console/Application.php:devel/pear-Symfony_Component_Console@${PHP_FLAVOR}
+
+CONFLICTS_INSTALL=	php*-pear-doctrine-DoctrineDBAL
 
 OPTIONS_DEFINE=	DBLIB MYSQL ODBC PGSQL SQLITE
 OPTIONS_DEFAULT=MYSQL

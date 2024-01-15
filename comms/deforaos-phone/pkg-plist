@@ -27,12 +27,12 @@ libdata/pkgconfig/Phone.pc
 %%PORTDOCS%%man/man1/gprs.1.gz
 %%PORTDOCS%%man/man1/phone.1.gz
 %%PORTDOCS%%man/man1/phonectl.1.gz
-share/applications/deforaos-phone-contacts.desktop
-share/applications/deforaos-phone-dialer.desktop
-share/applications/deforaos-phone-log.desktop
-share/applications/deforaos-phone-messages.desktop
-share/applications/deforaos-phone-settings.desktop
-share/applications/deforaos-phone-sofia.desktop
+share/applications/org.defora.phone-contacts.desktop
+share/applications/org.defora.phone-dialer.desktop
+share/applications/org.defora.phone-log.desktop
+share/applications/org.defora.phone-messages.desktop
+share/applications/org.defora.phone-settings.desktop
+share/applications/org.defora.phone-sofia.desktop
 share/icons/hicolor/16x16/apps/phone-gprs.png
 share/icons/hicolor/16x16/apps/phone-drafts.png
 share/icons/hicolor/16x16/apps/phone-inbox.png
@@ -85,6 +85,7 @@ share/sounds/Phone/ringtone.wav
 share/sounds/Phone/star.wav
 %%NLS%%share/locale/fr/LC_MESSAGES/Phone.mo
 %%NLS%%share/locale/es/LC_MESSAGES/Phone.mo
+share/doc/Phone/COPYING
 %%PORTDOCS%%share/doc/Phone/gprs.conf
 %%PORTDOCS%%share/doc/Phone/phone.conf
 %%PORTDOCS%%share/doc/Phone/pppd-chat_gprs

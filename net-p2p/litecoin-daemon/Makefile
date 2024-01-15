@@ -1,6 +1,5 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../litecoin
+PORTREVISION=	5
 PKGNAMESUFFIX=	-daemon
 
 COMMENT=	Virtual Peer-to-Peer Currency (Daemon)
@@ -8,13 +7,9 @@ COMMENT=	Virtual Peer-to-Peer Currency (Daemon)
 SLAVE_PORT=	yes
 
 OPTIONS_DEFINE=		DEBUG HARDENING TESTS UPNP ZMQ
-# WALLET_BDBMODERN is a choice for WALLET, introduced via OPTIONS_RADIO=WALLET
-# from ${MASTERDIR}/Makefile
 OPTIONS_DEFAULT=	HARDENING UPNP WALLET_BDBMODERN ZMQ
 
 USES+=		cpe
-CPE_VENDOR=	bitcoin
-CPE_PRODUCT=	bitcoind
 CPE_VERSION=	${PORTVERSION:R}
 
 USERS=		litecoin

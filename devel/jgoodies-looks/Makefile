@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	jgoodies-looks
 DISTVERSION=	2.7.0
 CATEGORIES=	devel java
@@ -8,8 +5,9 @@ MASTER_SITES=	https://repo1.maven.org/maven2/com/jgoodies/${PORTNAME}/${DISTVERS
 DISTFILES=	${JARFILE} ${JAVADOCFILE} ${JAVASRCFILE}
 EXTRACT_ONLY=	# nothing to extract
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Improved appearance for Java Swing applications
+WWW=		http://www.jgoodies.com
 
 LICENSE=	BSD3CLAUSE
 

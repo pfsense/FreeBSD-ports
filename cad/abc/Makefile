@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	abc
-DISTVERSION=	g20200322
+DISTVERSION=	g20220920
 CATEGORIES=	cad
 
 MAINTAINER=	uddka@student.kit.edu
 COMMENT=	System for sequential synthesis and verification
+WWW=		https://people.eecs.berkeley.edu/~alanmi/abc/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/copyright.txt
@@ -15,7 +14,7 @@ BUILD_DEPENDS=	gmake:devel/gmake
 USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	berkeley-abc
-GH_TAGNAME=	a4518e6f833885c905964f1233d11e5b941ec24c
+GH_TAGNAME=	5fb4912559380dfcb55e76c23d3fa69c0da454f8
 USE_LDCONFIG=	yes
 
 BINARY_ALIAS=	make=${GMAKE}

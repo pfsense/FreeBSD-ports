@@ -1,19 +1,15 @@
-# Created by: Yen-Ming Lee <leeym@cae.ce.ntu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	wakeonlan
-PORTVERSION=	0.41
-PORTREVISION=	3
+PORTVERSION=	0.42
 CATEGORIES=	net
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Sends magic packets to WOL enabled NIC to switch on the called PC
+WWW=		https://github.com/jpoliv/wakeonlan
 
 LICENSE=	ART20
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jpoliv
-GH_PROJECT=	wakeonlan
 GH_TAGNAME=	4beb45d
 
 USES=		perl5

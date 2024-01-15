@@ -1,23 +1,23 @@
-# Created by: Vsevolod Stakhov <vsevolod@highsecure.ru>
-# $FreeBSD$
-
 PORTNAME=	qca
-DISTVERSION=	2.3.1
-PORTREVISION=	1
+DISTVERSION=	2.3.7
 CATEGORIES=	devel
 MASTER_SITES=	KDE/stable/qca/${PORTVERSION}
-PKGNAMESUFFIX=	-qt5
+PKGNAMESUFFIX=	-${FLAVOR}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Cross-platform crypto API for Qt ${FLAVOR:C/qt//}
+WWW=		https://api.kde.org/qca/html/index.html
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+FLAVORS=	qt5 qt6
+FLAVOR?=	qt5
+
 BUILD_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
-USES=		cmake compiler:c++11-lang qt:5 tar:xz
+USES=		cmake compiler:c++11-lang qt:${FLAVOR:S/qt//} tar:xz
 CMAKE_ARGS=	-DBUILD_PLUGINS=none -DBUILD_TESTS=no \
 		-DPKGCONFIG_INSTALL_PREFIX=${PREFIX}/libdata/pkgconfig \
 		-DQCA_FEATURE_INSTALL_DIR=${QT_MKSPECDIR}/features \
@@ -25,10 +25,17 @@ CMAKE_ARGS=	-DBUILD_PLUGINS=none -DBUILD_TESTS=no \
 CONFIGURE_ENV=	QC_CERTSTORE_PATH=${LOCALBASE}/share/certs/ca-root-nss.crt
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS+=	-DQCA_SUFFIX=qt5
-USE_QT=	core buildtools_build qmake_build
+CMAKE_ARGS+=	-DQCA_SUFFIX=${FLAVOR} \
+		-D${FLAVOR:tu}:BOOL=TRUE
+_USE_QT_qt5=	core buildtools:build qmake:build
+_USE_QT_qt6=	5compat base
+USE_QT=		${_USE_QT_${FLAVOR}}
 
-PLIST_SUB=	SHLIB_VER=${PORTVERSION}
+_PLIST_SUB_qt5=	QT5_ONLY=""
+_PLIST_SUB_qt6= QT5_ONLY="@comment "
+PLIST_SUB=	SHLIB_VER=${PORTVERSION} \
+		QCA_QT_VERSION=${FLAVOR} \
+		${_PLIST_SUB_${FLAVOR}}
 
 OPTIONS_DEFINE=	BOTAN GNUPG OPENSSL SASL TEST
 OPTIONS_DEFAULT=GNUPG OPENSSL
@@ -50,12 +57,8 @@ SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 
 TEST_CMAKE_BOOL=	BUILD_TESTS
 TEST_TEST_TARGET=	test
-TEST_USE=		QT=network,testlib
+_TEST_USE_qt5=		QT=network:build,testlib:build
+_TEST_USE_qt6=		# Network and Test included in base
+TEST_USE=		${_TEST_USE_${FLAVOR}}
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} == base
-IGNORE=			Does not support OpenSSL < 1.1
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

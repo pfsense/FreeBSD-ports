@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	innerspace
 PORTVERSION=	0.2.0
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	x11 gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	InnerSpace-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep screensaver
+WWW=		https://www.nongnu.org/gap/innerspace/index.html
 
 LICENSE=	GPLv2
 

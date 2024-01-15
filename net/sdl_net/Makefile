@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdl_net
 PORTVERSION=	1.2.8
 PORTREVISION=	3
@@ -10,6 +7,7 @@ DISTNAME=	SDL_net-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Small sample cross-platform networking library
+WWW=		https://www.libsdl.org/projects/SDL_net/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/COPYING

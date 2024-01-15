@@ -1,7 +1,5 @@
-# Created by: Yoichi Asai <yatt@msc.biglobe.ne.jp>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-gtk
+PORTREVISION=	1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk interface for TiMidity++

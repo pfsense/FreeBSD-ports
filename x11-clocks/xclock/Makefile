@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	xclock
 PORTVERSION=	1.0.9
 CATEGORIES=	x11-clocks
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Analog and digital clock for X
+WWW=		https://www.freedesktop.org/Software/xapps
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

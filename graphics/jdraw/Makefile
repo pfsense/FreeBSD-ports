@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	jdraw
 PORTVERSION=	1.1.5
 PORTREVISION=	4
@@ -12,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Pixel oriented graphics editor
+WWW=		https://jdraw.sourceforge.net
 
 NO_BUILD=	yes
 USE_JAVA=	yes

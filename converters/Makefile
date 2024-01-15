@@ -1,9 +1,7 @@
-# $FreeBSD$
-#
-
     COMMENT = Character code converters
 
     SUBDIR += R-cran-RJSONIO
+    SUBDIR += R-cran-arabic2kansuji
     SUBDIR += R-cran-base64enc
     SUBDIR += R-cran-jsonlite
     SUBDIR += R-cran-rjson
@@ -22,19 +20,21 @@
     SUBDIR += cmios9
     SUBDIR += cocot
     SUBDIR += convmv
+    SUBDIR += dos2unix
     SUBDIR += dosunix
     SUBDIR += drg2sbg
+    SUBDIR += dumpasn1
     SUBDIR += enca
-    SUBDIR += erlang-base64url
     SUBDIR += fconv
     SUBDIR += fix-mime-charset
     SUBDIR += fondu
-    SUBDIR += fpc-iconvenc
     SUBDIR += fribidi
     SUBDIR += gbase
     SUBDIR += gbsdconv
     SUBDIR += hs-aeson-pretty
-    SUBDIR += htx
+    SUBDIR += hs-dhall-bash
+    SUBDIR += hs-dhall-json
+    SUBDIR += hs-dhall-yaml
     SUBDIR += i18ntools
     SUBDIR += ical2html
     SUBDIR += iconv
@@ -103,7 +103,6 @@
     SUBDIR += p5-JSON-Tiny
     SUBDIR += p5-JSON-XS
     SUBDIR += p5-JSON-XS-VersionOneAndTwo
-    SUBDIR += p5-JSON1
     SUBDIR += p5-LaTeXML
     SUBDIR += p5-MIME-Base32
     SUBDIR += p5-MIME-Base64
@@ -137,19 +136,19 @@
     SUBDIR += pear-Services_JSON
     SUBDIR += pecl-igbinary
     SUBDIR += php-bsdconv
-    SUBDIR += php73-iconv
-    SUBDIR += php73-mbstring
-    SUBDIR += php73-recode
-    SUBDIR += php74-iconv
-    SUBDIR += php74-mbstring
-    SUBDIR += php80-iconv
-    SUBDIR += php80-mbstring
+    SUBDIR += php81-iconv
+    SUBDIR += php81-mbstring
+    SUBDIR += php82-iconv
+    SUBDIR += php82-mbstring
+    SUBDIR += php83-iconv
+    SUBDIR += php83-mbstring
     SUBDIR += psiconv
     SUBDIR += py-bencode.py
     SUBDIR += py-bencoder
     SUBDIR += py-better-bencode
     SUBDIR += py-bsdconv
     SUBDIR += py-rencode
+    SUBDIR += py-svglib
     SUBDIR += py-text-unidecode
     SUBDIR += py-unidecode
     SUBDIR += py-webencodings
@@ -157,14 +156,16 @@
     SUBDIR += rcctools
     SUBDIR += recode
     SUBDIR += rubygem-base32
+    SUBDIR += rubygem-base64
+    SUBDIR += rubygem-iconv
     SUBDIR += rubygem-json-ld
     SUBDIR += rubygem-json-ld-preloaded
     SUBDIR += rubygem-po_to_json
     SUBDIR += rubygem-ruby-bsdconv
     SUBDIR += rubygem-url_safe_base64
     SUBDIR += rubygem-xdr
-    SUBDIR += shftool
     SUBDIR += showkey
+    SUBDIR += simdutf
     SUBDIR += ta2as
     SUBDIR += tnef
     SUBDIR += trans
@@ -172,11 +173,11 @@
     SUBDIR += unix2dos
     SUBDIR += uudeview
     SUBDIR += uulib
-    SUBDIR += vda2fbd
     SUBDIR += wkhtmltopdf
     SUBDIR += xdeview
     SUBDIR += xml2c
     SUBDIR += yj
+    SUBDIR += yj-bruceadams
     SUBDIR += ytnef
 
 .include <bsd.port.subdir.mk>

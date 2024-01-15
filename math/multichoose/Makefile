@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		multichoose
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.0.3-2
@@ -8,6 +6,7 @@ CATEGORIES=		math
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Generate multiset combinations (n multichoose k)
+WWW=		https://github.com/ekg/multichoose
 
 LICENSE=	MIT
 

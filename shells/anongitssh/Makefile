@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	anongitssh
 PORTVERSION=	0.2
 DISTVERSIONPREFIX=	v
@@ -7,6 +5,7 @@ CATEGORIES=	shells
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Restricted shell for git-upload-pack over SSH
+WWW=		https://github.com/hrs-allbsd/anongitssh/
 
 LICENSE=	BSD2CLAUSE
 

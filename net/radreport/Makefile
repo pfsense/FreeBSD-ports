@@ -1,6 +1,3 @@
-# Created by: Kelly Yancey <kbyanc@posi.net>
-# $FreeBSD$
-
 PORTNAME=	radreport
 PORTVERSION=	1.3
 CATEGORIES=	net

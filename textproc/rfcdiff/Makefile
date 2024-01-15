@@ -1,6 +1,3 @@
-# Created by: lars.eggert@gmx.net
-# $FreeBSD$
-
 PORTNAME=	rfcdiff
 PORTVERSION=	1.33
 PORTREVISION=	1
@@ -11,6 +8,7 @@ EXTRACT_SUFX=
 
 MAINTAINER=	lars.eggert@gmx.net
 COMMENT=	Compare two versions of an Internet Draft and produce a diff
+WWW=		https://tools.ietf.org/tools/rfcdiff/
 
 RUN_DEPENDS=	bash:shells/bash \
 		gawk:lang/gawk \

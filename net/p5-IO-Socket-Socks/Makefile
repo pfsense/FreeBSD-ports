@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	IO-Socket-Socks
 PORTVERSION=	0.74
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Provides a way to create socks client or server both 4 and 5 version
+WWW=		https://metacpan.org/release/IO-Socket-Socks
 
 LICENSE=	LGPL21
 

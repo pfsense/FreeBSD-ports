@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Thin
 PORTVERSION=	0.006
 CATEGORIES=	www perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	amontalban@gmail.com
 COMMENT=	Thin Wrapper around HTTP::Tiny to play nice with HTTP::Message
+WWW=		https://metacpan.org/release/HTTP-Thin
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Algorithm-Diff
 PORTVERSION=	1.1903
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to compute differences between two objects
+WWW=		https://metacpan.org/release/Algorithm-Diff
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

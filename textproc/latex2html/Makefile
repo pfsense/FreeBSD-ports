@@ -1,14 +1,12 @@
-# Created by: brett@peloton.physics.montana.edu
-# $FreeBSD$
-
 PORTNAME=	latex2html
 PORTVERSION=	2016
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
-MASTER_SITES=	TEX_CTAN/support/${PORTNAME}
+MASTER_SITES=	TEX/obsolete/support/${PORTNAME}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Convert LaTeX documents to HTML
+WWW=		https://www.latex2html.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,9 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${LOCALBASE}/bin/anytopnm:graphics/netpbm
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-CONFLICTS=	ja-latex2html-[0-9]*
+CONFLICTS=	ja-latex2html
 
-USES=		ghostscript perl5
+USES=		ghostscript perl5 tex
 USE_TEX=	latex dvipsk texhash
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-perl=${PERL} \
@@ -27,7 +25,6 @@ CONFIGURE_ARGS=	--with-perl=${PERL} \
 		--with-texpath=${PREFIX}/${TEXMFDIR}/tex/latex/html \
 		--without-mktexlsr
 SUB_FILES=	pkg-message
-PLIST_SUB=	TEXMFDIR=${TEXMFDIR}
 TEXHASHDIRS=	${TEXMFDIR}
 PORTDOCS=	FAQ INSTALL README
 

@@ -1,15 +1,14 @@
-# Created by: The Anarcat <anarcat@anarcat.dyndns.org>
-# $FreeBSD$
-
 PORTNAME=	ecasound
 PORTVERSION=	2.9.3
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://ecasound.seul.org/download/ \
 		http://nosignal.fi/download/ \
 		http://ecawave.sourceforge.net/download/
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multitrack audio processing software
+WWW=		https://nosignal.fi/ecasound/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -17,7 +16,7 @@ LICENSE_COMB=	multi
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
 
 USES=		gmake libtool localbase:ldflags ncurses pkgconfig \
-		readline:port shebangfix
+		readline shebangfix
 SHEBANG_FILES=	ecatools/ecamonitor
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-liblilv \

@@ -1,13 +1,11 @@
-# Created by: Dominik Brettnacher <domi@nonsensss.de>
-# $FreeBSD$
-
 PORTNAME=	xsane
 PORTVERSION=	0.999
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk-based X11 frontend for SANE (Scanner Access Now Easy)
+WWW=		https://gitlab.com/sane-project/frontend/xsane
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/xsane.COPYING
@@ -23,23 +21,23 @@ USES=		gmake gnome jpeg localbase:ldflags pkgconfig
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.com/sane-project
 GL_ACCOUNT=	frontend
-GL_COMMIT=	d01b4089ce6778e76fa86a0410d4e80cf6eb819e
+GL_TAGNAME=	d01b4089ce6778e76fa86a0410d4e80cf6eb819e
 USE_GNOME=	gtk20 gdkpixbuf2
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	*.html *.jpg
 
 OPTIONS_DEFINE=	DOCS GIMP NLS
-GIMP_DESC=	GIMP plugin support
 OPTIONS_DEFAULT=	GIMP
-
 OPTIONS_SUB=	yes
+
+GIMP_DESC=	GIMP plugin support
 
 GIMP_LIB_DEPENDS=	libgimp-2.0.so:graphics/gimp-app
 GIMP_CONFIGURE_ENABLE=	gimp2 gimp
 GIMP_SUB_FILES=		pkg-message
-NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
 NLS_LIBS=		-L${LOCALBASE}/lib -lintl
 
 post-patch:

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pimd
 PORTVERSION=	2.3.2
 PORTREVISION=	2
@@ -7,6 +5,7 @@ CATEGORIES=	net
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Lightweight stand-alone PIM-SM v2 multicast routing daemon
+WWW=		http://troglobit.com/pimd.html
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

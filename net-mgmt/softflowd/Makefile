@@ -1,23 +1,19 @@
-# Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
-
 PORTNAME=	softflowd
 PORTVERSION=	1.0.0
+PORTREVISION=   1
 DISTVERSIONPREFIX=	softflowd-
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Flow-based network traffic analyzer and exporter
+WWW=		http://www.mindrot.org/softflowd.html
 
 LICENSE=	BSD2CLAUSE
 
 USES=		gmake autoreconf
-
+GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	irino
-GH_PROJECT=	softflowd
-
-GNU_CONFIGURE=	yes
 USE_RC_SUBR=	${PORTNAME}
 
 PLIST_FILES=	bin/softflowd bin/softflowctl \

@@ -1,13 +1,12 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	trezord
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.30
+DISTVERSION=	2.0.33
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	TREZOR Communication Daemon aka TREZOR Bridge
+WWW=		https://github.com/trezor/trezord-go
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING

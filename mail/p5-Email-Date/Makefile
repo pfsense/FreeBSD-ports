@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Email-Date
 PORTVERSION=	1.104
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Find and Format Date Headers
+WWW=		https://metacpan.org/release/Email-Date
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	lazr.uri
-PORTVERSION=	1.0.4
+DISTVERSION=	1.0.6
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	fullermd@over-yonder.net
 COMMENT=	Library for parsing, manipulating, and generating URIs
+WWW=		https://launchpad.net/lazr.uri
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		python:3.6+
-USE_PYTHON=	distutils autoplist
+USES=		python
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

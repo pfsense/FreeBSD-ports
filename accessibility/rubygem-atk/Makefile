@@ -1,22 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	atk
-PORTVERSION=	3.4.3
+PORTVERSION=	4.2.0
 CATEGORIES=	accessibility rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Ruby binding for ATK
+COMMENT=	Ruby binding of ATK
+WWW=		https://ruby-gnome.github.io/ \
+		https://github.com/ruby-gnome/ruby-gnome
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	rubygem-rake>=0:devel/rubygem-rake
-RUN_DEPENDS=	rubygem-glib2>=${PORTVERSION}:devel/rubygem-glib2
+RUN_DEPENDS=	rubygem-glib2>=${PORTVERSION}<${PORTVERSION}_99:devel/rubygem-glib2
 
 USES=		gem gnome
 USE_GNOME=	atk
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -3,7 +3,7 @@
  * nmap.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ global $priv_list;
 $priv_list['page-diagnostics-nmap'] = array();
 $priv_list['page-diagnostics-nmap']['name'] = "WebCfg - Diagnostics: nmap package";
 $priv_list['page-diagnostics-nmap']['descr'] = "Allow access to nmap package GUI";
-$priv_list['page-diagnostics-nmap']['match'] = array();
-$priv_list['page-diagnostics-nmap']['match'][] = "pkg_edit.php?xml=nmap.xml*";
 
+$priv_list['page-diagnostics-nmap']['match'] = array();
+$priv_list['page-diagnostics-nmap']['match'][] = "nmap_scan.php*";
 ?>

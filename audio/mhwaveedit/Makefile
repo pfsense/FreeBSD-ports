@@ -1,14 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	mhwaveedit
 PORTVERSION=	1.4.24
-PORTREVISION=	2
+PORTREVISION=	6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Graphical program for editing sound files
+WWW=		https://github.com/magnush/mhwaveedit/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -26,7 +24,6 @@ CONFIGURE_ARGS=	--without-alsalib \
 		--with-build-time="-"
 
 BROKEN_powerpc64=	fails to compile on powerpc64: convert_inc.c: conflicting types for 'C_FLOAT_PCM32SBEPM'
-BROKEN_sparc64=		fails to compile on sparc64
 
 OPTIONS_DEFINE=		DOUBLE_SAMPLES JACK LADSPA OSS PORTAUDIO \
 			PULSEAUDIO SAMPLERATE SDL SNDFILE NLS

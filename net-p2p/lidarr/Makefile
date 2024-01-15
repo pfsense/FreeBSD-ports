@@ -1,44 +1,56 @@
-# $FreeBSD$
-
 PORTNAME=	lidarr
-PORTVERSION=	0.7.2.1878
+DISTVERSION=	2.0.7.3849
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://github.com/lidarr/Lidarr/releases/download/v${PORTVERSION}/
-DISTNAME=	Lidarr.master.${PORTVERSION}.linux
+DISTNAME=	Lidarr.master.${DISTVERSION}.freebsd-core-x64
 
 MAINTAINER=	michiel@vanbaak.eu
 COMMENT=	Music collection manager for Usenet and BitTorrent users
+WWW=		https://lidarr.audio
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	mono>0:lang/mono \
-		mediainfo>0:multimedia/mediainfo \
-		sqlite3>0:databases/sqlite3 \
+# See https://github.com/radarr/radarr/issues/6668 for x86 support
+ONLY_FOR_ARCHS=	amd64
+
+RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss \
+		icu>0:devel/icu \
+		krb5>0:security/krb5 \
+		libiconv>0:converters/libiconv \
+		libinotify>0:devel/libinotify \
+		libunwind>0:devel/libunwind \
 		chromaprint>0:audio/chromaprint
-LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USE_RC_SUBR=	lidarr
+USES=		sqlite:3 ssl:run
 
-NO_ARCH=	YES
+USE_RC_SUBR=	${PORTNAME}
+
 NO_BUILD=	YES
-WRKSRC=	${WRKDIR}/Lidarr
 
-USERS=	lidarr
-GROUPS=	lidarr
+SUB_FILES=	${PORTNAME} package_info pkg-message
+SUB_LIST=	DATADIR=${DATADIR} \
+		GROUPS=${GROUPS} \
+		MAINTAINER=${MAINTAINER} \
+		PKGVERSION=${PKGVERSION} \
+		PORTNAME=${PORTNAME} \
+		USERS=${USERS}
 
-OPTIONS_DEFINE=	X11
+WRKSRC=		${WRKDIR}/Lidarr
 
-# Permits image resizing
-X11_LIB_DEPENDS+=libgdiplus.so:x11-toolkits/libgdiplus
+USERS=		${PORTNAME}
+GROUPS=		${PORTNAME}
 
 .include <bsd.port.options.mk>
 
+post-extract:
+	${RM} -rf ${WRKSRC}/Lidarr.Update
+
 do-install:
-	${INSTALL} -d -m 755 ${STAGEDIR}/${DATADIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR}
+	${INSTALL} -d -m 755 ${STAGEDIR}/${DATADIR}/bin/
+	cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR}/bin/ "! -name Lidarr"
+	${INSTALL_PROGRAM} ${WRKSRC}/Lidarr ${STAGEDIR}/${DATADIR}/bin/
 
 post-install:
-	@${FIND} -s ${STAGEDIR}${DATADIR} -not -type d | ${SORT} | \
-		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
+	${INSTALL_DATA} ${WRKDIR}/package_info ${STAGEDIR}/${DATADIR}/
 
 .include <bsd.port.mk>

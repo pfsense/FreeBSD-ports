@@ -1,11 +1,12 @@
---- poller-wrapper.py.orig	2020-07-20 20:50:23 UTC
+--- poller-wrapper.py.orig	2022-01-26 18:26:32 UTC
 +++ poller-wrapper.py
-@@ -27,6 +27,8 @@
- 
- import LibreNMS.library as LNMS
- 
-+os.environ['PATH'] += ':/usr/local/sbin:/usr/local/bin'
+@@ -40,6 +40,9 @@ if not config:
+     logger = logging.getLogger(__name__)
+     logger.critical("Could not run {} wrapper. Missing config".format(WRAPPER_TYPE))
+     sys.exit(1)
 +
- try:
- 
-     import json
++os.environ['PATH'] += ':%%LOCALBASE%%/sbin:%%LOCALBASE%%/bin'
++
+ log_dir = config["log_dir"]
+ log_file = os.path.join(log_dir, WRAPPER_TYPE + "_wrapper.log")
+ logger = LibreNMS.logger_get_logger(log_file, debug=args.debug)

@@ -1,11 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	webalizer
 PORTVERSION=	2.23.8
 PORTREVISION=	14
 CATEGORIES+=	www
-MASTER_SITES=	ftp://ftp.mrunix.net/pub/webalizer/:main \
-		ftp://ftp.dinoex.de/pub/FreeBSD/distfiles/:main \
+MASTER_SITES=	ftp://ftp.dinoex.de/pub/FreeBSD/distfiles/:main \
 		http://flags.blogpotato.de/zip/:flags
 PKGNAMESUFFIX?=	${WEBALIZER_SUFFIX}${PKGNAMESUFFIX2}
 DISTNAME=	${PORTNAME}-2.23-08-src
@@ -13,6 +10,7 @@ DISTFILES=	${DISTNAME}.tgz:main
 
 MAINTAINER?=	dinoex@FreeBSD.org
 COMMENT=	Web server log file analysis program
+WWW=		http://www.mrunix.net/webalizer/
 
 LICENSE=	GPLv2
 

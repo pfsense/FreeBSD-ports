@@ -1,20 +1,18 @@
-# Created by: Lars Erik Gullerud <lerik@nolink.net>
-# $FreeBSD$
-
 PORTNAME=	radix
 PORTVERSION=	0.10.0
 CATEGORIES=	net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	lerik@nolink.net
 COMMENT=	Python radix-tree implementation
+WWW=		https://github.com/mjschultz/py-radix
 
 LICENSE=	ISCL BSD4CLAUSE
 LICENSE_COMB=	dual
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 post-install:

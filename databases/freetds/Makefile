@@ -1,8 +1,5 @@
-# Created by: Domas Mituzas <midom@dammit.lt>
-# $FreeBSD$
-
 PORTNAME=	freetds
-PORTVERSION=	1.2.18
+PORTVERSION=	1.4.10
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://www.freetds.org/files/stable/ \
@@ -10,42 +7,50 @@ MASTER_SITES=	https://www.freetds.org/files/stable/ \
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Sybase/Microsoft TDS protocol library
+WWW=		http://www.freetds.org/
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-USES=		autoreconf gettext gmake iconv libtool:keepla pkgconfig readline tar:bzip2
-
-TDS_VER?=	7.4
+USES=		autoreconf cpe gettext gmake iconv libtool:keepla localbase:ldflag \
+		pkgconfig readline tar:bzip2
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-LIBS+=		-lgcrypt -lpthread
-CONFIGURE_ARGS=	--with-tdsver=${TDS_VER} --sysconfdir=${ETCDIR} \
-		--enable-sybase-compat --enable-msdblib
-USE_LDCONFIG=	yes
+CONFIGURE_ARGS=	--enable-msdblib \
+		--enable-sybase-compat \
+		--sysconfdir=${ETCDIR} \
+		--with-tdsver=${TDS_VER}
+
 INSTALL_TARGET=	install-strip
+
+LIBS+=		-lgcrypt -lpthread
+
+CONFLICTS=	freetds-devel
 
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS MARS
-OPTIONS_SINGLE=		SSL ODBC
-OPTIONS_SINGLE_SSL=	OPENSSL GNUTLS
-OPTIONS_DEFAULT=	OPENSSL MARS UNIXODBC
+OPTIONS_DEFAULT=	MARS OPENSSL UNIXODBC
+OPTIONS_SINGLE=		ODBC SSL
 OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
-OPENSSL_USES=		ssl
-OPENSSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
+OPTIONS_SINGLE_SSL=	GNUTLS OPENSSL
+
+MARS_DESC=	Enable MARS code (Experimental)
+
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_ON=	--with-gnutls
 IODBC_LIB_DEPENDS=	libiodbc.so:databases/libiodbc
 IODBC_CONFIGURE_ON=	--with-iodbc=${LOCALBASE}
 IODBC_CPPFLAGS=		-I${LOCALBASE}/include/libiodbc
+MARS_CONFIGURE_ON=	--enable-mars
+OPENSSL_USES=		ssl
+OPENSSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
 UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 UNIXODBC_CONFIGURE_ON=	--with-unixodbc=${LOCALBASE}
-MARS_DESC=	Enable MARS code (Experimental)
-MARS_CONFIGURE_ON=	--enable-mars
+
+TDS_VER?=	7.4
 
 .include <bsd.port.options.mk>
 
@@ -61,12 +66,14 @@ post-extract:
 	@cd ${WRKSRC}/src/pool && ${LN} -s pool.conf pool.conf.sample
 
 post-patch:
-	@${FIND} ${WRKSRC} -name "Makefile.am" | ${XARGS} ${REINPLACE_CMD} -e \
-		's|/freetds.conf|/freetds.conf.sample|g ; \
+	@${REINPLACE_CMD} -e 's|/freetds.conf|/freetds.conf.sample|g ; \
 		 s|/locales.conf|/locales.conf.sample|g ; \
-		 s|/pool.conf|/pool.conf.sample|g ; \
-		 s| common.h||g'
-	@${REINPLACE_CMD} -e 's|\($$with_iodbc/include\)|\1/libiodbc|g' \
+		 s| common.h||g' \
+		 ${WRKSRC}/Makefile.am
+	@${REINPLACE_CMD} -e 's|/pool.conf|/pool.conf.sample|g' \
+		 ${WRKSRC}/src/pool/Makefile.am
+	@${REINPLACE_CMD} -e 's|\($$with_iodbc/include\)|\1/libiodbc|g ; \
+		 s| odbcss.h||g' \
 		${WRKSRC}/configure.ac
 
 post-install:

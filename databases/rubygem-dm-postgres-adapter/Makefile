@@ -1,6 +1,3 @@
-# Created by: stas
-# $FreeBSD$
-
 PORTNAME=	dm-postgres-adapter
 PORTVERSION=	1.2.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	PostgreSQL Adapter for DataMapper
+WWW=		https://github.com/datamapper/dm-postgres-adapter
 
 LICENSE=	MIT
 
@@ -17,7 +15,6 @@ RUN_DEPENDS=	rubygem-dm-do-adapter>=${PORTVERSION}:databases/rubygem-dm-do-adapt
 
 NO_ARCH=	yes
 
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

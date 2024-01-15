@@ -1,9 +1,6 @@
-# Created by: kuriyama
-# $FreeBSD$
-
 PORTNAME=	chasen
 PORTVERSION=	2.4.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	japanese textproc
 MASTER_SITES=	OSDN/chasen-legacy
 PKGNAMESUFFIX=	-base
@@ -11,12 +8,18 @@ PKGNAMESUFFIX=	-base
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Japanese Morphological Analysis System
 
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 BUILD_DEPENDS=	${LOCALBASE}/include/darts.h:devel/darts
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-darts=${LOCALBASE}/include ${ICONV_CONFIGURE_BASE}
-USES=		iconv libtool
+USES=		cpe iconv libtool localbase
+CPE_VENDOR=	naist.jp
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	${ICONV_CONFIGURE_BASE}
+
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS
@@ -28,6 +31,8 @@ post-patch:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/chasen/dic
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/manual* ${STAGEDIR}${DOCSDIR}
 

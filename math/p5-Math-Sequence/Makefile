@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Sequence
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl extension dealing with mathematic sequences
+WWW=		https://metacpan.org/release/Math-Sequence
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

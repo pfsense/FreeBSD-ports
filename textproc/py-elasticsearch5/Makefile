@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	elasticsearch
 PORTVERSION=	5.5.2
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	5
 
 MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	Official Python low-level client for Elasticsearch
+WWW=		https://elasticsearch-py.readthedocs.org/en/master/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +19,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.0.0:www/py-requests@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}pyaml>0:textproc/py-pyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}coverage>0:devel/py-coverage@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		cpe python
+CPE_VENDOR=	elastic
 
 USE_GITHUB=	yes # tests not packaged with sdist
 USE_PYTHON=	distutils autoplist
@@ -47,7 +46,7 @@ GH_TAGNAME=	719a94ab4
 # use these version-specific package names/sources, at
 # which point CONFLICTS can be removed.
 
-CONFLICTS=	${PYTHON_PKGNAMEPREFIX}elasticsearch-[0-9]*
+CONFLICTS=	${PYTHON_PKGNAMEPREFIX}elasticsearch
 
 NO_ARCH=	yes
 

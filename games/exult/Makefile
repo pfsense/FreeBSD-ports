@@ -1,67 +1,90 @@
-# Created by: Igor Pokrovsky <tiamat@telegraph.spb.ru>
-# $FreeBSD$
-
 PORTNAME=	exult
-PORTVERSION=	1.5.0.20160514
-PORTREVISION=	9
+DISTVERSION?=	1.8
+PORTREVISION?=	5
+PORTEPOCH=	1
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Ultima VII engine
+MAINTAINER=	eduardo@FreeBSD.org
+COMMENT=	Engine for Ultima VII (BG, FOV, SI, SS)
+WWW=		http://exult.info
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
-		libpng.so:graphics/png
+LIB_DEPENDS=	libogg.so:audio/libogg \
+		libpng16.so:graphics/png \
+		libvorbis.so:audio/libvorbis
 
-USE_GITHUB=	yes
-GH_TAGNAME=	b15afba
+USES=		autoreconf compiler:c++17-lang gmake libtool localbase \
+		pkgconfig sdl xorg
+USE_GNOME=	cairo gdkpixbuf2
+USE_SDL=	sdl2
+USE_XORG=	x11 xext
 
-USES=		autoreconf compiler:c++11-lib gmake libtool localbase pkgconfig \
-		xorg
-USE_CXXSTD=	c++98
-USE_XORG=	xext
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-alsa \
+CONFIGURE_ARGS=	--disable-static \
+		--enable-shared \
 		--with-icondir=${PREFIX}/share/pixmaps
-SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=		DOCS FLUIDSYNTH GIMP STUDIO THUMBNAILER
-OPTIONS_SINGLE=		SDL
-OPTIONS_SINGLE_SDL=	SDL1 SDL2
-OPTIONS_DEFAULT=	SDL1 STUDIO
+CONFLICTS_INSTALL=	exult-devel
+SUB_FILES=		pkg-message
+PLIST?=			${.CURDIR}/pkg-plist
+
+.if !defined(MASTERDIR)
+MASTER_SITES=	http://prdownloads.sourceforge.net/exult/
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-version.cc \
+		${PATCHDIR}/extra-patch-configure.ac
+.else
+USE_GITHUB=	yes
+.endif
+
+OPTIONS_DEFINE=		ALSA DEBUG DOCS FLUIDSYNTH GIMP STUDIO
+OPTIONS_DEFAULT=	STUDIO
 OPTIONS_SUB=		yes
 
-FLUIDSYNTH_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
-FLUIDSYNTH_CONFIGURE_ENABLE=\
-			fluidsynth
-GIMP_DESC=		GIMP plugin support
-GIMP_LIB_DEPENDS=	libgimp-2.0.so:graphics/gimp-app
+GIMP_DESC=	GIMP plugin support
+STUDIO_DESC=	Install Exult Studio
+
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_CONFIGURE_ENABLE=	alsa
+
+DEBUG_CONFIGURE_ON=	--with-debug=full \
+			--with-optimization=none
+DEBUG_CONFIGURE_OFF=	--with-debug=no
+
+FLUIDSYNTH_LIB_DEPENDS=		libfluidsynth.so:audio/fluidsynth
+FLUIDSYNTH_CONFIGURE_ENABLE=	fluidsynth
+
+GIMP_LIB_DEPENDS=	libbabl-0.1.so:x11/babl \
+			libfontconfig.so:x11-fonts/fontconfig \
+			libfreetype.so:print/freetype2 \
+			libgegl-0.4.so:graphics/gegl \
+			libgegl-npd-0.4.so:graphics/gegl \
+			libgimp-2.0.so:graphics/gimp-app \
+			libharfbuzz.so:print/harfbuzz \
+			libjson-glib-1.0.so:devel/json-glib
+GIMP_USES=		gnome
+GIMP_USE=		GNOME=gtk20,pango
+
 GIMP_CONFIGURE_ENABLE=	gimp-plugin
-SDL1_DESC=		Simple Direct Media Layer 1 support
-SDL1_USES=		sdl
-SDL1_USE=		sdl=mixer
-SDL1_CONFIGURE_ON=	--with-sdl=sdl12
-SDL2_DESC=		Simple Direct Media Layer 2 support
-SDL2_USES=		sdl
-SDL2_USE=		sdl=mixer2
-SDL2_CONFIGURE_ON=	--with-sdl=sdl2
-STUDIO_DESC=		Install Exult Studio
-STUDIO_CONFIGURE_ENABLE=\
-			exult-studio exult-studio-support
-STUDIO_USES=		gnome
-STUDIO_USE=		gnome=libglade2
-THUMBNAILER_DESC=	Gnome SHP thumbnailer support
-THUMBNAILER_USES=	gnome shared-mime-info
-THUMBNAILER_USE=	gnome=libgnomeui
-THUMBNAILER_CONFIGURE_ENABLE=\
-			gnome-shp-thumbnailer
+
+STUDIO_LIB_DEPENDS?=		libharfbuzz.so:print/harfbuzz
+STUDIO_USES=			gnome
+STUDIO_USE=			GNOME=gtk30
+STUDIO_CONFIGURE_ENABLE=	exult-studio exult-studio-support
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in FAQ NEWS README
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
+
+.include <bsd.port.options.mk>
+
+# Silence cast warnings from GTK callbacks in clang >=16
+# https://github.com/exult/exult/issues/416
+.if !defined(PKGNAMESUFFIX) && ( ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )))
+CFLAGS+=	-Wno-cast-function-type-strict
+.endif
 
 .include <bsd.port.mk>

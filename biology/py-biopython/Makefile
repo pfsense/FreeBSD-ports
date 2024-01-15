@@ -1,14 +1,13 @@
-# Created by: Johann Visagie <johann@egenetics.com>
-# $FreeBSD$
-
 PORTNAME=	biopython
-DISTVERSION=	1.78
+DISTVERSION=	1.81
+PORTREVISION=	1
 CATEGORIES=	biology python
 MASTER_SITES=	http://www.biopython.org/DIST/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	mauricio@arareko.net
 COMMENT=	Collection of Python modules for bioinformatics
+WWW=		https://biopython.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 OPTIONS_DEFINE=		REPORTLAB

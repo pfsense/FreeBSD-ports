@@ -1,25 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	kvazaar
 DISTVERSIONPREFIX=	v
-DISTVERSION?=	2.0.0
+DISTVERSION=	2.2.0
+PORTREVISION=	2
 CATEGORIES=	multimedia
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	1fa69c705dd8.patch:-p1 # https://github.com/ultravideo/kvazaar/pull/262
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	H.265/HEVC encoder implemented in C
+WWW=		https://ultravideo.fi/#encoder_x
 
-LICENSE=	LGPL21+
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		autoreconf compiler:c11 libtool pathfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	ultravideo
 GH_TUPLE=	silentbicycle:greatest:v1.0.0:greatest/greatest
-
-CONFLICTS_INSTALL?=	${PORTNAME}-devel
-
-USES=		autoreconf compiler:c11 libtool pathfix
 GNU_CONFIGURE=	yes
 TEST_TARGET=	check
 INSTALL_TARGET=	install-strip

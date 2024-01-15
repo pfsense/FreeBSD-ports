@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	railroad-rampage
 PORTVERSION=	1.2
 PORTREVISION=	5
@@ -10,6 +7,7 @@ DISTNAME=	RailroadRampage_${PORTVERSION}_Linux
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tower Defence-like Arcade and Strategy combination
+WWW=		https://neotron-games.blogspot.com/2009/10/railroad-rampage.html
 
 BUILD_DEPENDS=	bgdc:devel/bennugd-core \
 		${LOCALBASE}/lib/bennugd/libmod_grproc.so:devel/bennugd-modules

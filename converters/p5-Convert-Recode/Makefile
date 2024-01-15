@@ -1,6 +1,3 @@
-# Created by: Dmitry Sivachenko <dima@Chg.RU>
-# $FreeBSD$
-
 PORTNAME=	Convert-Recode
 PORTVERSION=	1.04
 PORTREVISION=	2

@@ -1,6 +1,3 @@
-# Created by: Nikola Kolev <koue@chaosophia.net>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-client
 
 COMMENT=	Client daemon for the Samhain IDS

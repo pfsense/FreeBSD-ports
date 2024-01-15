@@ -1,18 +1,15 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	zeitwerk
-PORTVERSION=	2.4.2
+PORTVERSION=	2.6.12
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Efficient and thread-safe code loader
+WWW=		https://github.com/fxn/zeitwerk
 
 LICENSE=	MIT
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	elemental
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.0
+DISTVERSION=	1.5.2
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Dense and sparse linear algebra, conic optimization, lattice reduction
+WWW=		https://github.com/LLNL/Elemental
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: include/El/blas_like/level1/Copy.hpp:522:27: ambiguous template specialization 'Copy<>' for 'void El::Copy(const El::Matrix<int>&, El::Matrix<int>&)'
 BROKEN_i386=	clang crashes: https://bugs.llvm.org/show_bug.cgi?id=46026
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -39,7 +38,7 @@ OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
 
-do-test:
+do-test: # 4 tests fail, see https://github.com/LLNL/Elemental/issues/157
 	@cd ${BUILD_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DHydrogen_ENABLE_TESTING:BOOL=ON -DHydrogen_ENABLE_UNIT_TESTS:BOOL=ON ${CMAKE_SOURCE_PATH} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \

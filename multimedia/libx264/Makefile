@@ -1,5 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 #
 # Updating notes: see multimedia/x264/Makefile.
 
@@ -9,10 +7,14 @@ COMMENT=	H.264/MPEG-4 AVC Video Encoding (Library)
 MASTERDIR=	${.CURDIR}/../x264
 PLIST=		${.CURDIR}/pkg-plist
 
+NOT_FOR_ARCHS=	powerpc64le
+NOT_FOR_ARCHS_REASON=	endian test failed
+
 # Clear dependency on libx264 (itself), see x264/Makefile
 LIB_DEPENDS=	#
 
 USES=		pathfix
+CFLAGS_riscv64=-fPIC
 LDFLAGS_i386=	-Wl,-znotext
 LDFLAGS_armv6=	-Wl,-znotext
 LDFLAGS_armv7=	-Wl,-znotext

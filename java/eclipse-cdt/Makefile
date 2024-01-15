@@ -1,6 +1,3 @@
-# Created by: gldisater@gldis.ca
-# $FreeBSD$
-
 PORTNAME=	cdt
 PORTVERSION=	9.0.1
 CATEGORIES=	java devel
@@ -12,6 +9,7 @@ DISTFILES=	${BUNDLES} \
 
 MAINTAINER=	mizhka@gmail.com
 COMMENT=	C/C++ plugin for Eclipse IDE
+WWW=		https://www.eclipse.org/cdt/
 
 LICENSE=	EPL
 
@@ -21,7 +19,7 @@ USES=		zip
 USE_JAVA=	YES
 JAVA_OS=	native
 JAVA_RUN=	YES
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 
 NO_BUILD=	YES
 NO_WRKSUBDIR=	YES

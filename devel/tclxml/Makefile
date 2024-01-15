@@ -1,36 +1,37 @@
-# Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	tclxml
 PORTVERSION=	3.3
-PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	devel tcl
 MASTER_SITES=	LOCAL/bf SF/tclxml/TclXML/${PORTVERSION}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	API for parsing XML documents using Tcl
+WWW=		https://tclxml.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libxslt.so:textproc/libxslt
+LIB_DEPENDS=	libicui18n.so:devel/icu libxslt.so:textproc/libxslt
 RUN_DEPENDS?=	dtplite:devel/tcllib
 
-PORTDOCS=	README.xml html.xsl man.macros nroff.xsl tcldoc-1.0.dtd \
-		tcldom.html tcldom.xml tclxml.css tclxml.html tclxml.xml \
-		tclxslt.html tclxslt.xml transform.tcl txt.xsl
+USES=		gnome tar:xz tcl:tea
 
-USES=		tcl:tea tar:xz
 TCL_PKG=	Tclxml${PORTVERSION}
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
+USE_GNOME=	libxml2
 XML_CONFIG?=	${LOCALBASE}/bin/xml2-config
 USE_LDCONFIG=	${PREFIX}/lib/${TCL_PKG}
 CONFIGURE_ARGS+=XML_CONFIG="${XML_CONFIG}"
 
-OPTIONS_DEFINE=	DOCS
 MAKE_ENV+=	TCLLIBPATH=${STAGEDIR}/${PREFIX}/lib
 
 TEST_TARGET=	test
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+PORTDOCS=	README.xml html.xsl man.macros nroff.xsl tcldoc-1.0.dtd \
+		tcldom.html tcldom.xml tclxml.css tclxml.html tclxml.xml \
+		tclxslt.html tclxslt.xml transform.tcl txt.xsl
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^TCLSH_ENV[[:blank:]]*=/,/[^\]$$/d' \

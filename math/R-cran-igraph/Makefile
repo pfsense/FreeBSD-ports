@@ -1,26 +1,24 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	igraph
-DISTVERSION=	1.2.6
+DISTVERSION=	1.6.0
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Network Analysis and Visualization
+WWW=		https://cran.r-project.org/web/packages/igraph/
 
 LICENSE=	GPLv2+
 
-BROKEN_sparc64=	Does not compile on sparc64: uses i386 assembler
+LIB_DEPENDS=	libglpk.so:math/glpk \
+		libgmp.so:math/gmp
+RUN_DEPENDS=	R-cran-cli>0:devel/R-cran-cli \
+		R-cran-cpp11>=0.4.7:devel/R-cran-cpp11 \
+		R-cran-lifecycle>0:devel/R-cran-lifecycle \
+		R-cran-magrittr>0:devel/R-cran-magrittr \
+		R-cran-pkgconfig>=2.0.0:devel/R-cran-pkgconfig \
+		R-cran-rlang>0:devel/R-cran-rlang
 
-LIB_DEPENDS=	libgmp.so:math/gmp \
-		libglpk.so:math/glpk
-CRAN_DEPENDS=	R-cran-magrittr>0:devel/R-cran-magrittr \
-		R-cran-pkgconfig>=2.0.0:devel/R-cran-pkgconfig
-BUILD_DEPENDS=	${CRAN_DEPENDS}
-RUN_DEPENDS=	${CRAN_DEPENDS}
-
-USES=		cran:auto-plist,compiles gnome
+USES=		compiler:c++11-lang cran:auto-plist,compiles gnome
 USE_GNOME=	libxml2
 
 .include <bsd.port.mk>

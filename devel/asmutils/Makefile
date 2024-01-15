@@ -1,14 +1,12 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	asmutils
 PORTVERSION=	0.18
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	http://asm.sourceforge.net/asmutils/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set of Unix utilities written in x86 assembly language
+WWW=		https://asm.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -17,7 +15,7 @@ ONLY_FOR_ARCHS=	i386
 BUILD_DEPENDS=	nasm:devel/nasm
 
 USES=		gmake
-USE_GCC=	any
+USE_GCC=	yes
 MAKE_ARGS=	OS="${OPSYS:tu}" KERNEL="${OSREL:S/.//g}" CC="${CC}" LD="${LD}"
 
 # This will play merry hell with portlint(1)

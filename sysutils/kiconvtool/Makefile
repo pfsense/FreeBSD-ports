@@ -1,12 +1,10 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kiconvtool
 PORTVERSION=	0.99
 CATEGORIES=	sysutils
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tool to preload kernel iconv charset tables
+WWW=		https://wiki.freebsd.org/DmitryMarakasov/kiconvtool
 
 LICENSE=	BSD2CLAUSE
 

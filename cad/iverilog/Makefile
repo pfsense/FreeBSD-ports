@@ -1,20 +1,26 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	iverilog
-PORTVERSION=	11.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	12_0
 CATEGORIES=	cad
-MASTER_SITES=	ftp://icarus.com/pub/eda/verilog/v11/
-DISTNAME=	verilog-${PORTVERSION}
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Verilog simulation and synthesis tool
+WWW=		https://steveicarus.github.io/iverilog/
 
 LICENSE=	GPLv2
+
+BUILD_DEPENDS=	autoconf:devel/autoconf \
+		gperf:devel/gperf
+
+USES=		bison compiler:c++11-lang gmake readline
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	steveicarus
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-suffix
 
-USES=		bison compiler:c++11-lang gmake readline
+pre-configure:
+	@cd ${WRKSRC} && sh autoconf.sh
 
 .include <bsd.port.mk>

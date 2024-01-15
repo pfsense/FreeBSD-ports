@@ -1,39 +1,28 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	utf8proc
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.1
+DISTVERSION=	2.9.0
 CATEGORIES=	textproc devel
+MASTER_SITES=	https://github.com/JuliaStrings/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	diizzy@FreeBSD.org
 COMMENT=	UTF-8 processing library
+WWW=		https://juliastrings.github.io/utf8proc/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		gmake perl5
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	JuliaStrings
+USES=		cmake
 USE_LDCONFIG=	yes
 
-MAKE_ARGS=	prefix=${PREFIX}
-
-CONFLICTS=	libutf8proc-[0-9]*
+CMAKE_ON=	BUILD_SHARED_LIBS
 
 PLIST_FILES=	include/utf8proc.h \
-		lib/libutf8proc.a \
 		lib/libutf8proc.so \
-		lib/libutf8proc.so.2 \
-		lib/libutf8proc.so.2.4.1 \
+		lib/libutf8proc.so.3 \
+		lib/libutf8proc.so.3.0.0 \
 		libdata/pkgconfig/libutf8proc.pc
 PORTDOCS=	NEWS.md README.md
 
 OPTIONS_DEFINE=	DOCS
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libutf8proc.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

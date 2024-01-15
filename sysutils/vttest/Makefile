@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	vttest
 PORTVERSION=	2018.08.11
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S,.,,g}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Program to test "VT100-compatibility" of terminals
+WWW=		https://invisible-island.net/vttest/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libranlip
 DISTVERSION=	1.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	LOCAL/bf \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Random variate generator for Lipschitz-continuous densities
+WWW=		https://www.deakin.edu.au/~gleb/ranlip.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

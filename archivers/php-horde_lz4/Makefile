@@ -1,6 +1,3 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	horde_lz4
 PORTVERSION=	1.0.10
 PORTREVISION=	1
@@ -11,10 +8,13 @@ DIST_SUBDIR=	PECL
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	Horde LZ4 Compression Extension for php
+WWW=		https://pear.horde.org
 
 LICENSE=	MIT
 
-USES=	php:ext tar:tgz
+USES=		cpe php:ext tar:tgz
+
+CPE_VENDOR=	horde
 
 OPTIONS_DEFINE=	LZ4
 OPTIONS_DEFAULT=LZ4

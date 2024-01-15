@@ -1,12 +1,10 @@
-# Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
-
 PORTNAME=	ibus-table
-DISTVERSION=	1.12.1
+DISTVERSION=	1.17.4
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Table-based input method framework for IBus
+WWW=		https://github.com/kaio/ibus-table
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,19 +15,25 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		autoreconf gmake pkgconfig python:3.4+
-GNU_CONFIGURE=	yes
+USES=		autoreconf gettext-tools gmake gnome pkgconfig python shebangfix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	kaio
+
+SHEBANG_GLOB=	*.py
+
+GNU_CONFIGURE=	yes
+
+GLIB_SCHEMAS=	org.freedesktop.ibus.engine.table.gschema.xml
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
-NLS_USES=		gettext
+NLS_USES=		gettext-runtime
 NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|/usr/|${PREFIX}/|g" ${WRKSRC}/engine/*.py
+	@${REINPLACE_CMD} -e "s|/usr/share|${PREFIX}/share|g" ${WRKSRC}/engine/*.py
 
 post-install:
 	@${RM} -r ${STAGEDIR}${DATADIR}/*/__pycache__

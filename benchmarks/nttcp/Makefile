@@ -1,6 +1,3 @@
-# Created by: Bill Fumerola <billf@chc-chimes.com>
-# $FreeBSD$
-
 PORTNAME=	nttcp
 PORTVERSION=	1.47
 PORTREVISION=	3
@@ -11,7 +8,11 @@ MASTER_SITES=	http://freeware.sgi.com/source/nttcp/ \
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Client/server program for testing network performance
 
-RESTRICTED=	No commercial use
+# Converted from RESTRICTED
+LICENSE=	NTTCP
+LICENSE_NAME=	nttcp
+LICENSE_TEXT=	No commercial use
+LICENSE_PERMS=	auto-accept
 
 ALL_TARGET=	nttcp
 USES=		gmake

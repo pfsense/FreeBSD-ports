@@ -1,14 +1,12 @@
-# Created by: Nils Vogels <nivo+kw+ports.bfa274@is-root.com>
-# $FreeBSD$
-
 PORTNAME=	dovecot-pigeonhole
-PORTVERSION=	0.5.13
+PORTVERSION=	0.5.21
 CATEGORIES=	mail
 MASTER_SITES=	http://pigeonhole.dovecot.org/releases/${DOVECOTVERSION}/
 DISTNAME=	${PORTNAME:C/-/-${DOVECOTVERSION}-/}-${PORTVERSION}
 
 MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Sieve plugin for the Dovecot 'deliver' LDA and LMTP
+WWW=		https://wiki2.dovecot.org/Pigeonhole
 
 LICENSE=	LGPL21
 
@@ -51,7 +49,7 @@ MANAGESIEVE_CONFIGURE_WITH=	managesieve
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_CPPFLAGS=		-I${LOCALBASE}/include
 LDAP_LDFLAGS=		-L${LOCALBASE}/lib
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 
 PORTDOCS=	sieve/extensions/* sieve/plugins/* sieve/locations/*
 

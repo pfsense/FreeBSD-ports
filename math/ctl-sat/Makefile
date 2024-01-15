@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ctl-sat
 DISTVERSION=	g20200210
 CATEGORIES=	math
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	CTL (Computation Tree Logic) SAT solver
+WWW=		https://github.com/nicolaprezza/CTLSAT
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	Module-Starter-Plugin-SimpleStore
 PORTVERSION=	0.144
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Provide methods of retrieving templates for Module::Starter
+WWW=		https://metacpan.org/release/Module-Starter-Plugin-SimpleStore
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

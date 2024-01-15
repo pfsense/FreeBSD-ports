@@ -1,6 +1,3 @@
-# Created by: cpm
-# $FreeBSD$
-
 PORTNAME=	alef
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	Alef
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free multi-lingual font designed for screens
+WWW=		http://alef.hagilda.com/
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKDIR}/OFL-license.txt

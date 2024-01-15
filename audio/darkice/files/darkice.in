@@ -1,9 +1,8 @@
 #!/bin/sh
 
-# $FreeBSD$
-#
 # PROVIDE: darkice
-# REQUIRE: LOGIN
+# REQUIRE: DAEMON
+# BEFORE:  LOGIN
 # KEYWORD: SHUTDOWN
 #
 # Add the following lines to /etc/rc.conf.local or /etc/rc.conf

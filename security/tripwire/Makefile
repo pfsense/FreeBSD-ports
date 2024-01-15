@@ -1,23 +1,21 @@
-# Created by: Cy Schubert <Cy.Schubert@uumail.gov.bc.ca>
-# $FreeBSD$
-
 PORTNAME=	tripwire
-PORTVERSION=	2.4.3.7
-PORTREVISION=	1
+PORTVERSION=	2.4.3.8
 CATEGORIES=	security
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	File system security and verification program
+WWW=		https://sourceforge.net/projects/tripwire/
 
 LICENSE=	GPLv2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Tripwire
 GH_PROJECT=	tripwire-open-source
+GH_TAGNAME=	e2f90ed
 
 NO_LICENSES_INSTALL=	yes
 MAKE_JOBS_UNSAFE=	yes
-USES=		gmake ssl
+USES=		cpe gmake ssl
 GNU_CONFIGURE=	yes
 MAKE_ARGS=	SYSPRE=${ARCH}-unknown-freebsd \
 		DESTDIR=${STAGEDIR}

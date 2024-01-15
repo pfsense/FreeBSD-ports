@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Class-Accessor
 PORTVERSION=	0.51
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Automated accessor generation
+WWW=		https://metacpan.org/release/Class-Accessor
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

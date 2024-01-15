@@ -1,14 +1,13 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Runnable
 PORTVERSION=	0.10
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tag a class as a runnable application
+WWW=		https://metacpan.org/release/MooseX-Runnable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -27,8 +26,9 @@ RUN_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
 TEST_DEPENDS=	p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 		p5-Test-TableDriven>=0:devel/p5-Test-TableDriven
 
-NO_ARCH=	yes
-USE_PERL5=	modbuildtiny
 USES=		perl5
+USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

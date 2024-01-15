@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	snooze
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4
+DISTVERSION=	0.5
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Run a command at a particular time
+WWW=		https://github.com/leahneukirchen/snooze
 
 LICENSE=	CC0-1.0
 

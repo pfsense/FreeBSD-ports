@@ -1,6 +1,3 @@
-# Created by: Steven H. Samorodin (samorodi@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	ishido
 PORTVERSION=	1.1
 PORTREVISION=	2

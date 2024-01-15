@@ -1,6 +1,3 @@
-# Created by: Yi-Hsuan Hsin <mhsin@mhsin.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Plurk
 PORTVERSION=	0.02
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mhsin@mhsin.org
 COMMENT=	Unofficial plurk.com API
+WWW=		https://metacpan.org/release/WWW-Plurk
 
 BUILD_DEPENDS=	${RUN_DEPENDS} \
 		p5-Test-Deep>=0:devel/p5-Test-Deep

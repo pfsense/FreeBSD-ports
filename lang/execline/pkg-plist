@@ -1,16 +1,20 @@
 bin/background
 bin/backtick
+bin/case
 bin/cd
 bin/define
 bin/dollarat
 bin/elgetopt
 bin/elgetpositionals
 bin/elglob
+bin/eltest
 bin/emptyenv
 bin/envfile
 bin/exec
+@mode 755
 bin/execline-cd
 bin/execline-umask
+@mode
 bin/execlineb
 bin/exit
 bin/export
@@ -52,12 +56,13 @@ include/execline/config.h
 include/execline/execline.h
 lib/execline/libexecline.a
 lib/libexecline.so
-lib/libexecline.so.2.6
-lib/libexecline.so.2.6.0.1
+lib/libexecline.so.2.9
+lib/libexecline.so.2.9.3.0
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/background.html
 %%PORTDOCS%%%%DOCSDIR%%/backtick.html
+%%PORTDOCS%%%%DOCSDIR%%/case.html
 %%PORTDOCS%%%%DOCSDIR%%/define.html
 %%PORTDOCS%%%%DOCSDIR%%/dieshdiedie.html
 %%PORTDOCS%%%%DOCSDIR%%/dollarat.html
@@ -68,6 +73,7 @@ lib/libexecline.so.2.6.0.1
 %%PORTDOCS%%%%DOCSDIR%%/elgetopt.html
 %%PORTDOCS%%%%DOCSDIR%%/elgetpositionals.html
 %%PORTDOCS%%%%DOCSDIR%%/elglob.html
+%%PORTDOCS%%%%DOCSDIR%%/eltest.html
 %%PORTDOCS%%%%DOCSDIR%%/emptyenv.html
 %%PORTDOCS%%%%DOCSDIR%%/envfile.html
 %%PORTDOCS%%%%DOCSDIR%%/exec.html
@@ -75,6 +81,7 @@ lib/libexecline.so.2.6.0.1
 %%PORTDOCS%%%%DOCSDIR%%/execline-shell.html
 %%PORTDOCS%%%%DOCSDIR%%/execline-startup.html
 %%PORTDOCS%%%%DOCSDIR%%/execline-umask.html
+%%PORTDOCS%%%%DOCSDIR%%/execline.html
 %%PORTDOCS%%%%DOCSDIR%%/execlineb.html
 %%PORTDOCS%%%%DOCSDIR%%/exit.html
 %%PORTDOCS%%%%DOCSDIR%%/exitcodes.html

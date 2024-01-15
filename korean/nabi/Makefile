@@ -1,13 +1,11 @@
-# Created by: Hye-Shik Chang <perky@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nabi
 PORTVERSION=	1.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	korean gnome
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Hangul X Input Method for Everywhere
+WWW=		https://github.com/libhangul/nabi/wiki
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

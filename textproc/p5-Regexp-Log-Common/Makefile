@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Regexp-Log-Common
 PORTVERSION=	0.10
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Regexp::Log::Common, a parser for the Common Log Format
+WWW=		https://metacpan.org/release/Regexp-Log-Common
 
 LICENSE=	ART20
 

@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@csie.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	WWW-Scraper-ISBN-Amazon_Driver
 PORTVERSION=	1.00
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Search driver for the (US) Amazon online catalog
+WWW=		https://metacpan.org/release/WWW-Scraper-ISBN-Amazon_Driver
 
 LICENSE=	ART20
 

@@ -1,6 +1,3 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	libfilteraudio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.0.1
@@ -9,6 +6,7 @@ CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Lightweight audio filtering library made from webrtc code
+WWW=		https://github.com/irungentoo/filter_audio
 
 LICENSE=	BSD3CLAUSE
 

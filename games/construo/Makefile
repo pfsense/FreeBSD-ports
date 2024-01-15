@@ -1,14 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	construo
 PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Fun construction toy
+WWW=		https://www.nongnu.org/construo/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	multi

@@ -1,5 +1,5 @@
 The 'Portable QR-Code Generator' is a free Java program which generates QR
-Codes from 
+Codes from
 
 - WLAN credentials: SSID, network key and and network type
     (WEP, WPA/WPA2, not encrypted)
@@ -19,5 +19,3 @@ Codes from
 
 The QR Code can be printed, saved as BMP, GIF or PNG, or copied to clipboard to
 use in other applications.
-
-WWW: https://sites.google.com/site/qrcodeforwn/home/qr-code-generator-for-wireless-networks

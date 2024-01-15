@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Unix-setuid
 PORTVERSION=	0.02
 CATEGORIES=	security perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Get/set real/effective UID/username via (localizeable) variable
+WWW=		https://metacpan.org/release/Unix-setuid
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

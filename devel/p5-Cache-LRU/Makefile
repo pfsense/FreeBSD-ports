@@ -1,6 +1,3 @@
-# Created by: Andrey Chernov <ache@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Cache-LRU
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple, fast implementation of an in-memory LRU cache
+WWW=		https://metacpan.org/release/Cache-LRU
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

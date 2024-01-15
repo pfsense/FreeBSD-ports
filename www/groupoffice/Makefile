@@ -1,26 +1,26 @@
-# Created by: Aron Schlesinger <as@bsdgroup.de>
-# $FreeBSD$
-
 PORTNAME=	groupoffice
 DISTVERSIONPREFIX=	com-
-DISTVERSION=	6.4.195
+DISTVERSION=	6.6.58
 CATEGORIES=	www
 MASTER_SITES=	SF/group-office/${DISTVERSION:R}
-DISTNAME=	${PORTNAME}-${DISTVERSION}-php-71
+DISTNAME=	${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Modular web application framework for office
+WWW=		https://www.group-office.com/
 
-LICENSE=	AGPLv3
+LICENSE=	AGPLv3 PERSONAL
+LICENSE_COMB=	multi
+LICENSE_NAME_PERSONAL=	Personal use
+LICENSE_TEXT_PERSONAL=	Free for personal use only
+LICENSE_PERMS_PERSONAL=	auto-accept
 
 USES=		mysql shebangfix php:web python
 
-RESTRICTED=	Free for personal use only
-
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_PHP=	ctype curl dom fileinfo filter hash intl json mbstring \
-		mysqli openssl pcre pdo pdo_mysql phar posix session \
+USE_PHP=	ctype curl dom fileinfo filter intl mbstring \
+		mysqli pdo pdo_mysql phar posix session \
 		simplexml soap sysvshm sysvsem tokenizer xml xmlreader \
 		xmlwriter zip zlib
 SHEBANG_FILES=	groupoffice \

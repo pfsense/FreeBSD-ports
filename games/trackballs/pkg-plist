@@ -1,5 +1,5 @@
 bin/trackballs
-man/man6/trackballs.6.gz
+share/man/man6/trackballs.6.gz
 share/applications/trackballs.desktop
 share/icons/hicolor/128x128/apps/trackballs.png
 share/icons/hicolor/32x32/apps/trackballs.png
@@ -10,15 +10,24 @@ share/icons/hicolor/scalable/apps/trackballs.svg
 %%NLS%%share/locale/de/LC_MESSAGES/trackballs.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/trackballs.mo
 %%NLS%%share/locale/hu/LC_MESSAGES/trackballs.mo
+%%NLS%%share/locale/nl/LC_MESSAGES/trackballs.mo
 %%NLS%%share/locale/it/LC_MESSAGES/trackballs.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/trackballs.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/trackballs.mo
+share/metainfo/trackballs.appdata.xml
 %%DATADIR%%/fonts/FreeSerifBoldItalic.ttf
 %%DATADIR%%/fonts/menuFont.ttf
 %%DATADIR%%/highScores
 %%DATADIR%%/icons/trackballs-128x128.png
 %%DATADIR%%/images/acid.png
 %%DATADIR%%/images/blank.png
+%%DATADIR%%/images/cell_acid.png
+%%DATADIR%%/images/cell_ice.png
+%%DATADIR%%/images/cell_kill.png
+%%DATADIR%%/images/cell_multi.png
+%%DATADIR%%/images/cell_sand.png
+%%DATADIR%%/images/cell_track.png
+%%DATADIR%%/images/cell_trampoline.png
 %%DATADIR%%/images/displayHighscoreBackground.jpg
 %%DATADIR%%/images/dizzy.png
 %%DATADIR%%/images/glitter.png
@@ -47,6 +56,7 @@ share/icons/hicolor/scalable/apps/trackballs.svg
 %%DATADIR%%/images/texture4.png
 %%DATADIR%%/images/track.png
 %%DATADIR%%/images/trackballs-32x32.png
+%%DATADIR%%/images/transparent.png
 %%DATADIR%%/images/water.png
 %%DATADIR%%/images/wings.png
 %%DATADIR%%/levels/Shop1.map
@@ -240,7 +250,6 @@ share/icons/hicolor/scalable/apps/trackballs.svg
 %%DATADIR%%/music/c64revival.ogg
 %%DATADIR%%/music/crazy.ogg
 %%DATADIR%%/music/eurovision.ogg
-%%DATADIR%%/music/fml.html
 %%DATADIR%%/music/tb_design.ogg
 %%DATADIR%%/music/tb_genesis.ogg
 %%DATADIR%%/music/tb_hrluebke.ogg

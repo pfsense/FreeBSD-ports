@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	XML-Declare
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	Create XML documents with declaration style
+WWW=		https://metacpan.org/release/XML-Declare
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

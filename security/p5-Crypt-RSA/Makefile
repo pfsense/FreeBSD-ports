@@ -1,6 +1,3 @@
-# Created by: Michael Haro <mharo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-RSA
 PORTVERSION=	1.99
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	RSA public-key cryptosystem
+WWW=		https://metacpan.org/release/Crypt-RSA
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

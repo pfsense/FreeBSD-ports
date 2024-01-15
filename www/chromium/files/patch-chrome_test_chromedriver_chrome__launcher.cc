@@ -1,13 +1,10 @@
---- chrome/test/chromedriver/chrome_launcher.cc.orig	2020-11-13 06:36:38 UTC
+--- chrome/test/chromedriver/chrome_launcher.cc.orig	2023-12-10 06:10:27 UTC
 +++ chrome/test/chromedriver/chrome_launcher.cc
-@@ -71,6 +71,10 @@
- #include "chrome/test/chromedriver/keycode_text_conversion.h"
- #endif
- 
-+#if defined(OS_BSD)
+@@ -73,6 +73,7 @@
+ #include <fcntl.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
 +#include <sys/wait.h>
-+#endif
-+
- namespace {
- 
- const char* const kCommonSwitches[] = {
+ #include <unistd.h>
+ #elif BUILDFLAG(IS_WIN)
+ #include <windows.h>

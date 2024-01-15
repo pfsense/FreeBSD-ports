@@ -1,13 +1,12 @@
-# Created by: Gustau Perez <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gnome-online-miners
 PORTVERSION=	3.34.0
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Crawls through your online content
+WWW=		https://wiki.gnome.org/Projects/GnomeOnlineMiners
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -26,7 +25,6 @@ USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

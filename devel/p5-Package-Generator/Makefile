@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Package-Generator
 PORTVERSION=	1.106
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Quickly and easily construct new packages
+WWW=		https://metacpan.org/release/Package-Generator
 
 LICENSE=	GPLv1 ART10
 LICENSE_COMB=	dual

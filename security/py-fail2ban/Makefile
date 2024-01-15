@@ -1,39 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	fail2ban
-PORTVERSION=	0.11.2
+DISTVERSION=	1.0.2
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	theis@gmx.at
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Scans log files and bans IP that makes too many password failures
+WWW=		https://www.fail2ban.org/wiki/index.php/Main_Page
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		python:3.6+,patch shebangfix
+USES=		cpe python:patch,run shebangfix
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
+PYDISTUTILS_BUILDARGS+=	--without-tests
+PYDISTUTILS_INSTALLARGS+=	--install-data=${ETCDIR}
 USE_RC_SUBR=	fail2ban
-
-NO_ARCH=	yes
 
 SHEBANG_FILES=	config/filter.d/ignorecommands/apache-fakegooglebot
 SHEBANG_LANG=	fail2ban-python
 
+NO_ARCH=	yes
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
 
-PYDISTUTILS_BUILDARGS+=		--without-tests
-PYDISTUTILS_INSTALLARGS+=	--install-data=${ETCDIR}
+PORTDOCS=	DEVELOP README.md
 
-PORTDOCS=	README.md DEVELOP
+OPTIONS_DEFINE=		DOCS INOTIFY
+OPTIONS_DEFAULT=	INOTIFY
 
-OPTIONS_DEFINE=	DOCS INOTIFY
-OPTIONS_DEFAULT=INOTIFY
-
-INOTIFY_DESC=		Support for (lib)inotify to monitor filesystem changes
+INOTIFY_DESC=	Support for (lib)inotify to monitor filesystem changes
 
 INOTIFY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyinotify>=0.8.3:devel/py-pyinotify@${PY_FLAVOR}
 
@@ -42,21 +39,18 @@ FILES=		${WRKSRC}/bin/fail2ban-client \
 		${WRKSRC}/fail2ban/client/fail2bancmdline.py \
 		${WRKSRC}/fail2ban/client/fail2banregex.py \
 		${WRKSRC}/man/fail2ban-client.1 \
-		${WRKSRC}/man/fail2ban-client.h2m \
-		${WRKSRC}/setup.py
+		${WRKSRC}/man/fail2ban-client.h2m ${WRKSRC}/setup.py
 
 MAN_FILES=	${WRKSRC}/man/fail2ban-client.1 \
 		${WRKSRC}/man/fail2ban-client.h2m \
-		${WRKSRC}/man/fail2ban-regex.1 \
-		${WRKSRC}/man/fail2ban-server.1 \
+		${WRKSRC}/man/fail2ban-regex.1 ${WRKSRC}/man/fail2ban-server.1 \
 		${WRKSRC}/man/fail2ban.1
 
 FAIL2BAN_DBDIR=	/var/db/${PORTNAME}
+PLIST_SUB=	FAIL2BAN_DBDIR=${FAIL2BAN_DBDIR}
 
 PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}
 PY2TO3_ARG=	--no-diffs --write --nobackups --fix=all
-
-.include <bsd.port.pre.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/fail2ban,${ETCDIR},g' ${FILES}
@@ -69,9 +63,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's, sed , ${SED} ,g' \
 		${WRKSRC}/config/action.d/hostsdeny.conf
 
-.	if ${PYTHON_MAJOR_VER} >= 3
-		(cd ${WRKSRC}/ && ${PY2TO3_CMD} ${PY2TO3_ARG} bin/* fail2ban)
-.	endif
+	# XXX Ideally this should be in do-build but it only works in
+	# XXX post-patch
+	(cd ${WRKSRC}/ && ${PY2TO3_CMD} ${PY2TO3_ARG} bin/* fail2ban)
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${FAIL2BAN_DBDIR} ${STAGEDIR}/var/run/fail2ban
@@ -87,4 +81,4 @@ post-install-DOCS-on:
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

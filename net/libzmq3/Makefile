@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libzmq3
 PORTVERSION=	3.2.5
 PORTREVISION=	1
@@ -7,13 +5,14 @@ CATEGORIES=	net
 MASTER_SITES=	http://download.zeromq.org/
 DISTNAME=	zeromq-${DISTVERSION}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	ZeroMQ core library (Version 3)
+WWW=		https://www.zeromq.org/
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-CONFLICTS=	zmq-[0-9]* libzmq[^3]-[0-9]*
+CONFLICTS=	zmq libzmq[^3]
 
 USES=		libtool pathfix
 USE_LDCONFIG=	yes

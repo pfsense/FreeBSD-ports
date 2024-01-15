@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	atris
 PORTVERSION=	1.0.7
 PORTREVISION=	7
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.cs.virginia.edu/~weimer/atris/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Atris: Alizarin Tetris
+WWW=		http://www.cs.virginia.edu/~weimer/atris/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

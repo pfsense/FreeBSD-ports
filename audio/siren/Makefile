@@ -1,14 +1,12 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	siren
-PORTVERSION=	0.9
+PORTVERSION=	0.10
 PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	http://www.kariliq.nl/${PORTNAME}/dist/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text-based audio player
+WWW=		https://www.kariliq.nl/siren/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENCE
@@ -70,7 +68,7 @@ CONFIGURE_ARGS=	alsa=no \
 		portaudio=no
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|-lcurses|-lncurses|' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|-lcurses|${NCURSESLIBS}|' ${WRKSRC}/configure
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/siren

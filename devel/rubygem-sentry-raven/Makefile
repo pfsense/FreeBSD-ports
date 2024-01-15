@@ -1,21 +1,19 @@
-# Created by: Torsten Zuehlsdorff <ports@toco-domains.de>
-# $FreeBSD$
-
 PORTNAME=	sentry-raven
-PORTVERSION=	3.1.1
+PORTVERSION=	3.1.2
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Client interface for the Sentry error logger
+WWW=		https://github.com/getsentry/sentry-ruby
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-faraday>=1.0:www/rubygem-faraday
+RUN_DEPENDS=	rubygem-faraday1>=1.0:www/rubygem-faraday1
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

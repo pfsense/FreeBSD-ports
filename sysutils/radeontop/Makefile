@@ -1,13 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	radeontop
-PORTVERSION=	1.3
+PORTVERSION=	1.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Program that shows AMD Radeon GPU resource utilization
+WWW=		https://github.com/clbr/radeontop
 
 LICENSE=	GPLv3
 
@@ -24,15 +22,11 @@ USES=		gmake pkgconfig xorg
 USE_XORG=	xcb
 MAKE_ARGS=	amdgpu=1
 
-PLIST_FILES=	lib/libradeontop_xcb.so \
-		man/man1/radeontop.1.gz \
-		sbin/radeontop
-
 OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
 
 NLS_USES=		gettext
 NLS_MAKE_ARGS_OFF=	nls=0
-NLS_PLIST_FILES=	share/locale/ru/LC_MESSAGES/radeontop.mo
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,unknown,v${PORTVERSION}, ; \

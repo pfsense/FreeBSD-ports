@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	port-index-uniquifier
 PORTVERSION=	${OSVERSION}
 CATEGORIES=	ports-mgmt

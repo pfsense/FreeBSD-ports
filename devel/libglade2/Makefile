@@ -1,9 +1,6 @@
-# Created by: Ade Lovett <ade@lovett.com>
-# $FreeBSD$
-
 PORTNAME=	libglade2
 PORTVERSION=	2.6.4
-PORTREVISION?=	10
+PORTREVISION?=	13
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME:S/2$//}/${PORTVERSION:C/..$//}
 DISTNAME=	${PORTNAME:S/2$//}-${PORTVERSION}
@@ -19,20 +16,16 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 
 USES=		tar:bzip2
 
-.if !defined(REFERENCE_PORT)
-
 RUN_DEPENDS=	xmlcatmgr:textproc/xmlcatmgr
 
-USES+=		gmake gnome libtool:keepla pathfix pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 libxml2 gtk20 referencehack
+USES+=		gmake gnome libtool pathfix pkgconfig localbase
+USE_GNOME=	cairo gdkpixbuf2 libxml2 gtk20
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-html-dir=${PREFIX}/share/doc \
 		--disable-gtk-doc \
 		--with-xml-catalog=${LOCALBASE}/share/xml/catalog.ports
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PLIST_SUB=	XMLCATALOG="${LOCALBASE}/bin/xmlcatalog" \
 		CATALOG_PORTS_XML="${LOCALBASE}/share/xml/catalog.ports"
@@ -42,10 +35,9 @@ post-patch:
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} -E 's/in (python.*)+ none/in none/' \
 		${WRKSRC}/configure
+	@${REINPLACE_CMD} -e "s/ doc / /g" ${WRKSRC}/Makefile.in
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/libglade/2.0
 
 .include <bsd.port.mk>
-
-.endif

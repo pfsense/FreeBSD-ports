@@ -1,16 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	glusterfs
-PORTVERSION=	8.0
+PORTVERSION=	8.4
 PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://bits.gluster.org/pub/gluster/glusterfs/src/
 
 MAINTAINER=	daniel@morante.net
 COMMENT=	GlusterFS distributed file system
+WWW=		https://www.gluster.org
 
-LICENSE=	GPLv2 LGPL3
+LICENSE=	GPLv2 LGPL3+
 LICENSE_COMB=	dual
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING-GPLV2
+LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING-LGPLV3
 
 BROKEN_SSL=	libressl
 
@@ -21,8 +22,9 @@ LIB_DEPENDS=	libargp.so:devel/argp-standalone \
 		liburcu-bp.so:sysutils/liburcu \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		autoreconf bison compiler:c11 gettext gnome libtool pkgconfig python \
+USES=		autoreconf bison compiler:c11 cpe gettext gnome libtool pkgconfig python \
 		readline shebangfix sqlite ssl
+CPE_VENDOR=	gluster
 
 SHEBANG_FILES=	build-aux/pkg-version \
 		events/src/glustereventsd.py events/src/peer_eventsapi.py \
@@ -70,7 +72,6 @@ LDFLAGS+=	-L"${LOCALBASE}/lib" -largp
 INSTALL_TARGET=	install-strip
 PLIST_SUB=	GLUSTERLIBDIR="lib/${PORTNAME}" \
 		PORTVERSION="${PORTVERSION}"
-KMODDIR?=	/boot/modules
 
 OPTIONS_DEFINE=	DOCS
 

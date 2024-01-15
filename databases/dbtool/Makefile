@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	dbtool
 PORTVERSION=	1.9.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.daemon.de/idisk/Apps/dbtool/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Store and retrieve data in a key/value format in a hash database
+WWW=		https://www.daemon.de/DBTOOL
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

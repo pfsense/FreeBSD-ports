@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	brumbrumrally
 PORTVERSION=	0.7
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://dataapa.net/brumbrumrally/files/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Racing game with randomized tracks
+WWW=		https://dataapa.net/brumbrumrally/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

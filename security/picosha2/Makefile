@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	picosha2
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-23
@@ -8,6 +6,7 @@ CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ header-only SHA256 hash generator
+WWW=		https://github.com/okdshin/PicoSHA2
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

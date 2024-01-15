@@ -1,6 +1,3 @@
-# Created by: Dan Siercks <dsiercks@uwm.edu>
-# $FreeBSD$
-
 PORTNAME=	trimmomatic
 DISTVERSION=	0.39
 CATEGORIES=	biology java
@@ -9,6 +6,7 @@ DISTNAME=	Trimmomatic-${PORTVERSION}
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Flexible read trimming tool for Illumina NGS data
+WWW=		http://www.usadellab.org/cms/?page=trimmomatic
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

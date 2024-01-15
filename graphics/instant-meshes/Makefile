@@ -1,29 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	instant-meshes
 DISTVERSION=	0.0-42
 DISTVERSIONSUFFIX=	-g4a083f4
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	graphics
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive field-aligned mesh generator
+WWW=		https://igl.ethz.ch/projects/instant-meshes/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick6
-LIB_DEPENDS=	libglfw.so:graphics/glfw \
-		libtbb.so:devel/tbb
+LIB_DEPENDS=	libglfw.so:graphics/glfw
 RUN_DEPENDS=	zenity:x11/zenity
 
 USES=		cmake compiler:c++14-lang eigen:3 gl localbase:ldflags \
-		pkgconfig xorg
+		magick:6,build pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	wjakob
 GH_TUPLE=	wjakob:nanogui:2a61f03:nanogui/ext/nanogui \
 		wjakob:nanovg:ac15b84:nanovg/ext/nanogui/ext/nanovg \
 		wjakob:dset:7967ef0:dset/ext/dset \
+		wjakob:tbb:141b0e3:tbb/ext/tbb \
 		wjakob:pcg32:0ef13e6:pcg32/ext/pcg32 \
 		wjakob:pss:a91da33:pss/ext/pss  # x11-toolkits/nanogui should be a port dependency, but current versions aren't compatible
 USE_GL=		gl

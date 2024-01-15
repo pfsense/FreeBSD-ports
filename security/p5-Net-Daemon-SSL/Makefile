@@ -1,6 +1,3 @@
-# Created by: Simon Dick <simond@irrelevant.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Daemon-SSL
 PORTVERSION=	1.0
 PORTREVISION=	1

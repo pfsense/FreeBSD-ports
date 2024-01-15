@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lexter
 PORTVERSION=	1.0.3
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	SUNSITE/games/arcade
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Real-time word puzzle for text terminals
+WWW=		https://www.kyne.com.au/~mark/software/lexter.php
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

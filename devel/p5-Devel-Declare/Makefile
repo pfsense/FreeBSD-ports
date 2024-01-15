@@ -1,14 +1,12 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Devel-Declare
 PORTVERSION=	0.006022
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Adding keywords to Perl, in Perl
+WWW=		https://metacpan.org/release/Devel-Declare
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

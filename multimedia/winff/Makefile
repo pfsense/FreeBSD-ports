@@ -1,9 +1,6 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	WinFF
 PORTVERSION=	1.5.5
-PORTREVISION=	19
+PORTREVISION=	32
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/thierry
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
@@ -11,6 +8,7 @@ DISTNAME=	${_PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Convert your videos quickly, easily, and all at once
+WWW=		https://www.biggmatt.com/p/winff.html
 
 LICENSE=	GPLv3
 
@@ -18,7 +16,6 @@ LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
 
 USES=		fpc lazarus:flavors xorg
 USE_XORG=	x11
-USE_FPC=	chm fcl-base fcl-image fcl-json fcl-xml pasjpeg regexpr x11
 
 NO_WRKSUBDIR=	yes
 _PORTNAME=	${PORTNAME:tl}
@@ -32,7 +29,6 @@ DESKTOP_ENTRIES=	"${PORTNAME}"	\
 			"AudioVideo;"	\
 			true
 
-LAZARUS_NO_FLAVORS=	qt5
 LAZARUS_PROJECT_FILES=	winff.lpr
 LAZBUILD_ARGS=		-d
 
@@ -40,9 +36,7 @@ BUILD_WRKSRC=	${WRKDIR}/${PKGNAME}/${_PORTNAME}
 
 .if ${FLAVOR:Ugtk2:Mgtk2}
 USES+=		gnome
-USE_FPC+=	cairo
 USE_GNOME+=	cairo
-INSTALLS_ICONS=yes
 .endif
 
 OPTIONS_DEFINE=	DOCS

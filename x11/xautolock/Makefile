@@ -1,6 +1,3 @@
-# Created by: Eric Blood <eblood@cs.unr.edu>
-# $FreeBSD$
-
 PORTNAME=	xautolock
 PORTVERSION=	2.2
 PORTREVISION=	1

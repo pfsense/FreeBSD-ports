@@ -1,6 +1,3 @@
-# Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pimdd
 PORTVERSION=	0.2.1.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	pimd-dense
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	UO Dense Protocol-Independent Multicast (PIM-DM) daemon for IPv4
+WWW=		http://antc.uoregon.edu/PIMDM/pimd-dense.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

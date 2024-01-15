@@ -1,19 +1,17 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	thrift
-PORTVERSION=	${THRIFT_PORTVERSION}.0 # to keep in sync with ../thrift
+PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with ../thrift
 PORTEPOCH=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	komarov@valerka.net
 COMMENT=	Ruby interface to thrift
+WWW=		https://thrift.apache.org/
 
 LICENSE=	APACHE20
 
-USE_RUBY=	yes
-USES=		gem
+USES=		cpe gem
+CPE_VENDOR=	apache
 
 # Workaround for stage-qa:
 post-install:

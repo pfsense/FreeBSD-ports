@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	funionfs
 PORTVERSION=	0.4.3
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Union filesystem for the FUSE driver
+WWW=		http://funionfs.apiou.org/
 
 LICENSE=	GPLv2+
 

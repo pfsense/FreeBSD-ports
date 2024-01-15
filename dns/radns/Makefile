@@ -1,6 +1,3 @@
-# Created by: Michael Cardell Widerkrantz <mc@hack.org>
-# $FreeBSD$
-
 PORTNAME=	radns
 DISTVERSION=	20110809-2
 CATEGORIES=	dns
@@ -8,6 +5,7 @@ MASTER_SITES=	http://hack.org/mc/hacks/radns/
 
 MAINTAINER=	mc@hack.org
 COMMENT=	IPv6 DNS server address autoconfiguration client
+WWW=		https://hack.org/mc/hacks/radns/
 
 LICENSE=	ISCL
 

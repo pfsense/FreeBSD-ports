@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-Parser-Style-EasyTree
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,10 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse XML to a simple tree
+WWW=		https://metacpan.org/release/XML-Parser-Style-EasyTree
+
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-Parser>0:textproc/p5-XML-Parser \
@@ -17,5 +18,7 @@ RUN_DEPENDS=	p5-XML-Parser>0:textproc/p5-XML-Parser \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

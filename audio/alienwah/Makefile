@@ -1,6 +1,3 @@
-# Created by: Tilman Linneweh <arved@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	alienwah
 PORTVERSION=	1.13
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://plugin.org.uk/releases/alienwah/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Paul Nasca's AlienWah LADSPA plugin
+WWW=		http://plugin.org.uk/releases/alienwah/
 
 LICENSE=	GPLv2
 

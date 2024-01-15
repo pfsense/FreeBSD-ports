@@ -1,6 +1,3 @@
-# Created by: Radim Kolar <hsn@sanatana.dharma>
-# $FreeBSD$
-
 PORTNAME=	scloader
 PORTVERSION=	0.32
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	loader${PORTVERSION:C/\.//}
 
 MAINTAINER=	hsn@sendmail.cz
 COMMENT=	Configurable web graber/spider
+WWW=		https://scloader.sourceforge.net
 
 LICENSE=	GPLv2
 

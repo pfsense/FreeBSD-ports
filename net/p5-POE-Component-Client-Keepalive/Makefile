@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Client-Keepalive
 PORTVERSION=	0.2720
 CATEGORIES=	net perl5
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/0$//}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE component for managing connections, with keep-alive
+WWW=		https://metacpan.org/release/POE-Component-Client-Keepalive
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

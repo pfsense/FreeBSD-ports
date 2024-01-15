@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	1
 CATEGORIES=	multimedia
 
@@ -10,4 +8,10 @@ DIST=		bad
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
 
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS= libx265.so:multimedia/x265
+
 .include "${MASTERDIR}/Makefile"
+
+MESON_ARGS+= -Dgpl=enabled

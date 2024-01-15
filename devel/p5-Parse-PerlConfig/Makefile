@@ -1,6 +1,3 @@
-# Created by: Leif Pedersen <pedersen@meridian-enviro.com>
-# $FreeBSD$
-
 PORTNAME=	Parse-PerlConfig
 PORTVERSION=	0.05
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to use perl scripts as config files
+WWW=		https://metacpan.org/release/Parse-PerlConfig
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,28 +1,22 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cucumber-rails
-PORTVERSION=	2.2.0
+PORTVERSION=	3.0.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cucumber generator and runtime for Rails
+WWW=		https://cucumber.io/ \
+		https://github.com/cucumber/cucumber-rails
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-capybara>=2.18<4:devel/rubygem-capybara \
-		rubygem-cucumber>=3.0.2<6:devel/rubygem-cucumber \
-		rubygem-mime-types>=3.2<4:misc/rubygem-mime-types \
-		rubygem-nokogiri>=1.8:textproc/rubygem-nokogiri \
-		rubygem-rails5>=5.0<7:www/rubygem-rails5
+RUN_DEPENDS=	rubygem-capybara>=3.11<4:devel/rubygem-capybara \
+		rubygem-cucumber>=5<10:devel/rubygem-cucumber \
+		rubygem-railties71>=5.2<8:www/rubygem-railties71
 
-USES=		gem shebangfix
-USE_RUBY=	yes
+USES=		gem
 
 NO_ARCH=	yes
-
-SHEBANG_FILES=	bin/*.sh
 
 .include <bsd.port.mk>

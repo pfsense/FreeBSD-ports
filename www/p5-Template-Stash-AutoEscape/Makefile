@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Template-Stash-AutoEscape
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to escape automatically in Template-Toolkit
+WWW=		https://metacpan.org/release/Template-Stash-AutoEscape
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

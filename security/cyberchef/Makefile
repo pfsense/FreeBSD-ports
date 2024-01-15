@@ -1,8 +1,5 @@
-# Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cyberchef
-PORTVERSION=	9.21.0
+PORTVERSION=	10.5.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${GH_TAGNAME}/
@@ -10,10 +7,12 @@ DISTNAME=	CyberChef_${DISTVERSIONPREFIX}${PORTVERSION}
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Cyber operations within a web browser
+WWW=		https://github.com/gchq/CyberChef/wiki
 
 LICENSE=	APACHE20
 
-USES=		zip
+USES=		cpe zip
+CPE_VENDOR=	gchq
 
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	gchq

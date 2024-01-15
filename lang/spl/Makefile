@@ -1,24 +1,22 @@
-# Created by: Hye-Shik Chang <perky@fallin.lv>
-# $FreeBSD$
-
 PORTNAME=	spl
 PORTVERSION=	1.2.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	lang
 MASTER_SITES=	http://shakespearelang.sourceforge.net/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Shakespeare programming language
+WWW=		https://shakespearelang.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		bison gmake
 
+OPTIONS_DEFINE=	EXAMPLES
+
 ALL_EXAMPLES=	Makefile fibonacci.spl fibonacci2.spl guess.spl hello.spl \
 		primes.spl reverse.spl shakesbeer.spl
-
-OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 .for f in . examples

@@ -1,9 +1,6 @@
-# Created by: Frank Laszlo <laszlof@freebsdmatrix.net>
-# $FreeBSD$
-
 PORTNAME=	euchre
 PORTVERSION=	0.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Very popular card game with variable skill levels
+WWW=		https://sourceforge.net/projects/euchre/
 
 LICENSE=	GPLv2
 

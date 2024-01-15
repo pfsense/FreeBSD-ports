@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-WebArchive
 PORTVERSION=	0.50
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Retrieve old versions of public web pages from various web archives
+WWW=		https://metacpan.org/release/WWW-WebArchive
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,9 +1,6 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	longhorninspirat
 PORTVERSION=	1.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	x11-themes gnome
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe \
 		https://bsdforge.com/projects/source/x11-themes/gtk-longhorninspirat-theme/

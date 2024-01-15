@@ -1,6 +1,3 @@
-# Created by: Mauricio Herrera Cuadra <mauricio@arareko.net>
-# $FreeBSD$
-
 PORTNAME=	Syntax-Highlight-Perl-Improved
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mauricio@arareko.net
 COMMENT=	Syntax highlighting for Perl code
+WWW=		https://metacpan.org/release/Syntax-Highlight-Perl-Improved
 
 USES=		perl5
 USE_PERL5=	configure

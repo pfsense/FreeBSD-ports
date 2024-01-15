@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	grzip
 PORTVERSION=	0.3.0
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITES=	ftp://ftp.ac-grenoble.fr/ge/compression/ \
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Efficient file compressor
+WWW=		https://BSDforge.com/projects/archivers/grzip
 
 LICENSE=	LGPL21
 

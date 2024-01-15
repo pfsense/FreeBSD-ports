@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sredird
 PORTVERSION=	2.2.2
 PORTREVISION=	1

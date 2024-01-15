@@ -1,6 +1,3 @@
-# Created by: Alexander Kriventsov <avk@vl.ru>
-# $FreeBSD$
-
 PORTNAME=	Crypt-Simple
 PORTVERSION=	0.06
 PORTREVISION=	4
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	avk@vl.ru
 COMMENT=	Perl encrypt stuff simply
+WWW=		https://metacpan.org/release/Crypt-Simple
 
 LICENSE=	GPLv2+
 

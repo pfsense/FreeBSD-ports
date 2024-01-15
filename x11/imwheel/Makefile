@@ -1,6 +1,3 @@
-# Created by: jhb
-# $FreeBSD$
-
 PORTNAME=	imwheel
 DISTVERSION=	1.0.0pre12
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	ftp://jcatki.no-ip.org/pub/imwheel/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to translate mouse wheel actions into X keyboard events
+WWW=		https://imwheel.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

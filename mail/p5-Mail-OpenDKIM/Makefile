@@ -1,6 +1,3 @@
-# Created by: Vivek Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	Mail-OpenDKIM
 PORTVERSION=	4204
 CATEGORIES=	mail perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Perl interface to OpenDKIM C library
+WWW=		https://metacpan.org/release/Mail-OpenDKIM
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

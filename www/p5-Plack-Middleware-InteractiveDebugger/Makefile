@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-InteractiveDebugger
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Awesome Interactive Debugger ala Werkzeug
+WWW=		https://metacpan.org/release/Plack-Middleware-InteractiveDebugger
 
 RUN_DEPENDS=	\
 	p5-Data-Dump-Streamer>0:devel/p5-Data-Dump-Streamer \

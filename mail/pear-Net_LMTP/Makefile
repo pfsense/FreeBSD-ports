@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Net_LMTP
 PORTVERSION=	1.0.2
 CATEGORIES=	mail www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR implementation of the RFC2033 LMTP protocol
+WWW=		https://pear.php.net/package/Net_LMTP
 
 LICENSE=	PHP301
 

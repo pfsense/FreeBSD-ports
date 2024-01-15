@@ -1,18 +1,18 @@
-# Created by: Sylvio Cesar <sylvio@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	PEAR_PackageFileManager2
 PORTVERSION=	1.0.4
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class to maintain PEAR packages
+WWW=		https://pear.php.net/package/PEAR_PackageFileManager2
 
 LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	${PEARDIR}/PEAR/PackageFileManager/Plugins.php:devel/pear-PEAR_PackageFileManager_Plugins@${PHP_FLAVOR}
 RUN_DEPENDS=	${PEARDIR}/PEAR/PackageFileManager/Plugins.php:devel/pear-PEAR_PackageFileManager_Plugins@${PHP_FLAVOR}
 
-USES=	pear
+USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

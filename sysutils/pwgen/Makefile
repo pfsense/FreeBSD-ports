@@ -1,6 +1,3 @@
-# Created by: Andrew Khlebutin <andrey@hm.perm.ru>
-# $FreeBSD$
-
 PORTNAME=	pwgen
 PORTVERSION=	2.08
 PORTEPOCH=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	andrey@hm.perm.ru
 COMMENT=	Small, powerful, GPL'ed password generator #'
+WWW=		https://sourceforge.net/projects/pwgen/
 
 LICENSE=	GPLv2
 

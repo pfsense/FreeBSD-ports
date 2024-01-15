@@ -1,30 +1,33 @@
-# $FreeBSD$
-
 PORTNAME=	mariadb-connector-c
-PORTVERSION=	3.1.10
+PORTVERSION=	3.3.8
 CATEGORIES=	databases
-MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
-		http://mirrors.supportex.net/${SITESDIR}/ \
-		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
-		http://gd.tuwien.ac.at/db/${SITESDIR}/ \
-		http://mirrors.fe.up.pt/pub/${SITESDIR}/ \
-		http://mirror.de.gsnw.de:56431/${SITESDIR}/ \
-		http://mirror.layerjet.com/${SITESDIR}/ \
-		http://mirror.switch.ch/mirror/${SITESDIR}/
+MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
+		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
+		https://mirror.truenetwork.ru/${SITESDIR}/ \
+		https://mirrors.aliyun.com/${SITESDIR}/ \
+		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
+		https://mirror.kku.ac.th/${SITESDIR}/ \
+		https://espejito.fder.edu.uy/${SITESDIR}/ \
+		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
+		https://ftp.osuosl.org/pub/${SITESDIR}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	MariaDB database connector for C
+WWW=		https://www.mariadb.com/kb/en/mariadb/about-mariadb-connector-c/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
-LIB_DEPENDS=	libcurl.so:ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libzstd.so:archivers/zstd
 
-CONFLICTS_INSTALL=	mariadb[0-9]*-client-* \
-			mariadb102-server-* \
-			mysql[0-9]*-client-* \
-			percona[0-9]*-client-*
+CONFLICTS_INSTALL=	mariadb[0-9]*-client \
+			mariadb102-server \
+			mysql[0-9]*-client \
+			percona[0-9]*-client
 
 USES=		cmake:insource compiler:c++11-lib iconv:translit ssl
 USE_LDCONFIG=	${PREFIX}/lib/mariadb

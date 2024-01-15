@@ -1,31 +1,43 @@
---- configure.ac.orig	2018-01-13 04:00:56 UTC
+--- configure.ac.orig	2021-04-17 06:49:29 UTC
 +++ configure.ac
-@@ -62,7 +62,7 @@ AC_SUBST(SPICE_LT_VERSION)
- 
- # Check for the CPU we are using
- case $host_cpu in
--  x86_64)
-+  x86_64|amd64)
-         ;;
-   *)
-         SPICE_WARNING([spice-server on non-x86_64 architectures has not been extensively tested])
-@@ -186,10 +186,18 @@ if test "x$enable_celt051" = "xyes"; then
-                       AS_VAR_APPEND([SPICE_REQUIRES], [" celt051 >= $CELT051_REQUIRED"]))
+@@ -41,6 +41,7 @@ AC_PROG_CC_C99
+ if test x"$ac_cv_prog_cc_c99" = xno; then
+     AC_MSG_ERROR([C99 compiler is required.])
  fi
- 
-+OPENSSL_PKGCONF_USED=1
-+if test -n "${OPENSSL_LIBS}" || test -n "${OPENSSL_CFLAGS}"; then
-+    OPENSSL_PKGCONF_USED=0
-+fi
- PKG_CHECK_MODULES(SSL, openssl)
++AC_PROG_CPP
+ AC_PROG_INSTALL
+ AC_CANONICAL_HOST
+ LT_INIT([disable-static])
+@@ -204,7 +205,8 @@ AS_VAR_APPEND([SPICE_REQUIRES], [" pixman-1 >= $PIXMAN
+ PKG_CHECK_MODULES(SSL, openssl >= 1.0.0)
  AC_SUBST(SSL_CFLAGS)
  AC_SUBST(SSL_LIBS)
 -AS_VAR_APPEND([SPICE_REQUIRES], [" openssl"])
-+if test "{OPENSSL_PKGCONF_USED}" = 1; then
-+    AS_VAR_APPEND([SPICE_REQUIRES], [" openssl"])
-+else
-+    AS_VAR_APPEND([SPICE_NONPKGCONFIG_LIBS], [" $SSL_LIBS"])
-+fi
++dnl OpenSSL in the base system is not managed by pkgconfig
++dnl AS_VAR_APPEND([SPICE_REQUIRES], [" openssl"])
+ 
+ save_CFLAGS="$CFLAGS"
+ CFLAGS="$CFLAGS $SSL_CFLAGS"
+@@ -217,15 +219,16 @@ CFLAGS="$save_CFLAGS"
  
  AC_CHECK_LIB(jpeg, jpeg_destroy_decompress,
      AC_MSG_CHECKING([for jpeglib.h])
+-    AC_TRY_CPP(
+-[#include <stdio.h>
++    AC_PREPROC_IFELSE(
++[AC_LANG_SOURCE([[
++#include <stdio.h>
+ #undef PACKAGE
+ #undef VERSION
+ #undef HAVE_STDLIB_H
+-#include <jpeglib.h>],
+-        JPEG_LIBS='-ljpeg'
+-        AC_MSG_RESULT($jpeg_ok),
+-	AC_MSG_ERROR([jpeglib.h not found])),
++#include <jpeglib.h>]])],
++        [JPEG_LIBS='-ljpeg'
++        AC_MSG_RESULT($jpeg_ok)],
++	[AC_MSG_ERROR([jpeglib.h not found])]),
+     AC_MSG_ERROR([libjpeg not found]))
+ AC_SUBST(JPEG_LIBS)
+ 

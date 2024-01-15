@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	Agent
 PORTVERSION=	3.20
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module that provides a foundation for software agent developers
+WWW=		https://metacpan.org/release/Agent
 
 LICENSE=	ARTPERL10
 

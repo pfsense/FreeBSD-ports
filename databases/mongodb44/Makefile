@@ -1,46 +1,35 @@
-# $FreeBSD$
-
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.4.2
+DISTVERSION=	4.4.26
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 DISTNAME=	mongodb-src-${DISTVERSIONPREFIX}${DISTVERSION}
 
-MAINTAINER=	ronald-lists@klop.ws
+MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	Distributed document-oriented "NoSQL" database (4.4.x Branch)
+WWW=		https://docs.mongodb.com/v4.4/
 
-# mongodb is SSPLv1, C++ driver is APACHE20
-LICENSE=	SSPLv1 APACHE20
+LICENSE=	SSPLv1 APACHE20 # mongodb is SSPLv1, C++ driver is APACHE20
 LICENSE_COMB=	multi
 LICENSE_NAME_SSPLv1=	Server Side Public License Version 1
 LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
-ONLY_FOR_ARCHS_REASON=	"Only ported to amd64 and aarch64 on FreeBSD. Upstream supports arm64, ppc64le, s390x and x86-64."
+ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} \
-		${PY_TYPING} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
-		${LOCALBASE}/bin/ar:devel/binutils
+		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR}
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
 		libsnappy.so:archivers/snappy
 
-USES=		compiler:c++17-lang cpe python:3.5+,build scons shebangfix
+USES=		compiler:c++17-lang cpe python:build scons
 USE_RC_SUBR=	mongod
 
-CONFLICTS_BUILD=	mongo-cxx-driver
-CONFLICTS_INSTALL=	mongodb36 mongodb4[02]
-
-OPTIONS_DEFINE=	SASL SSL
-OPTIONS_DEFAULT=SASL SSL
-
-python_OLD_CMD=	@python_interpreter@
 MAKE_ARGS=	--use-system-zlib \
 		--use-system-pcre \
 		--use-system-snappy \
@@ -50,10 +39,32 @@ MAKE_ARGS=	--use-system-zlib \
 		-j ${MAKE_JOBS_NUMBER} \
 		--disable-warnings-as-errors \
 		VERBOSE=on \
-		AR=${PREFIX}/bin/ar
+		AR=llvm-ar
+
+CFLAGS+=	-D_HAS_AUTO_PTR_ETC=0
+
+CONFLICTS_INSTALL=	mongodb[0-9][0-9] # etc/mongodb.conf.sample
+
+PORTSCOUT=	limit:^4\.4\.
 
 USERS=		mongodb
 GROUPS=		mongodb
+
+OPTIONS_DEFINE=			LTO SASL SSL
+OPTIONS_DEFINE_aarch64=	ARMV80A
+OPTIONS_DEFAULT=		LTO SASL SSL
+OPTIONS_DEFAULT_aarch64=	ARMV80A
+OPTIONS_EXCLUDE_aarch64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
+OPTIONS_EXCLUDE_aarch64_14=	LTO # Does not work with llvm12 on aarch64.
+
+# MongoDB on non-LSE ARM cpu like Raspberry Pi can work but is unsupported upstream.
+# Can give corruption on high concurrency.
+# Please read https://jira.mongodb.org/browse/SERVER-71772.
+ARMV80A_DESC=	Enable non-LSE ARM64 CPUs like RPI4.
+
+ARMV80A_EXTRA_PATCHES=	${FILESDIR}/extrapatch-SConstruct
+
+LTO_MAKE_ARGS=	--lto=on
 
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_MAKE_ARGS=		--use-sasl-client
@@ -63,19 +74,11 @@ SSL_MAKE_ARGS=	--ssl
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
-
 .if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
-EXTRA_PATCHES=	${FILESDIR}/${ARCH}
+EXTRA_PATCHES+=	${FILESDIR}/${ARCH}
 .endif
 
 ALL_TARGET=	install-core
-
-PORTSCOUT=	limitw:1,even
 
 CPE_PRODUCT=	mongodb
 

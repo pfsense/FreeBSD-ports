@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Stream-Reader
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Perl module for reading data from streams
+WWW=		https://metacpan.org/release/Stream-Reader
 
 USES=		perl5
 USE_PERL5=	configure

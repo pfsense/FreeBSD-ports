@@ -1,14 +1,13 @@
-# Created by: Securedog <securedog@users.sourceforge.jp>
-# $FreeBSD$
-
 PORTNAME=	pkg_replace
-PORTVERSION=	20200821
+PORTVERSION=	20231008
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	kdeguchi@sz.tokoha-u.ac.jp
 COMMENT=	Utility for upgrading installed packages
+WWW=		https://github.com/kdeguchi/pkg_replace
 
 LICENSE=	CC0-1.0
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kdeguchi

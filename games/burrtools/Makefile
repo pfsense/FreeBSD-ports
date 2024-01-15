@@ -1,14 +1,12 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	burrtools
 PORTVERSION=	0.6.3
-PORTREVISION=	18
+PORTREVISION=	24
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle solver
+WWW=		https://burrtools.sourceforge.net/
 
 LICENSE=	GPLv2+ # COPYING is GPLv3
 
@@ -17,7 +15,9 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfltk.so:x11-toolkits/fltk
 
 USES=		gl gmake localbase lua:51
+USE_CXXSTD=	c++14
 USE_GL=		gl glu
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_lib_ICE_IceConnectionNumber="no" \
 		ac_cv_search_glutInit="none required"
@@ -26,12 +26,12 @@ MAKE_ARGS=	am_lua_liblua_a_OBJECTS='lua/luaclass.$$(OBJEXT)'
 LDFLAGS+=	-Wl,--as-needed # fltk deps
 LIBS+=		-llua-${LUA_VER} -lboost_system # _ZN5boost6system15system_categoryEv
 
-PORTDOCS=	*
-PORTEXAMPLES=	*
+DESKTOP_ENTRIES="BurrGui" "" "burricons" "burrGui" "Game;LogicGame;" ""
+
 PLIST_FILES=	bin/burrTxt bin/burrTxt2 bin/burrGui \
 		share/pixmaps/burricons.png
-
-DESKTOP_ENTRIES="BurrGui" "" "burricons" "burrGui" "Game;LogicGame;" ""
+PORTDOCS=	*
+PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

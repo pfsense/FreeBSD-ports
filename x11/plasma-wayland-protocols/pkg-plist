@@ -7,7 +7,14 @@ lib/cmake/PlasmaWaylandProtocols/PlasmaWaylandProtocolsConfigVersion.cmake
 %%DATADIR%%/fake-input.xml
 %%DATADIR%%/fullscreen-shell.xml
 %%DATADIR%%/idle.xml
+%%DATADIR%%/kde-lockscreen-overlay-v1.xml
+%%DATADIR%%/kde-output-device-v2.xml
+%%DATADIR%%/kde-output-management-v2.xml
+%%DATADIR%%/kde-output-order-v1.xml
+%%DATADIR%%/kde-primary-output-v1.xml
+%%DATADIR%%/kde-screen-edge-v1.xml
 %%DATADIR%%/keystate.xml
+%%DATADIR%%/org-kde-plasma-virtual-desktop.xml
 %%DATADIR%%/output-management.xml
 %%DATADIR%%/outputdevice.xml
 %%DATADIR%%/plasma-shell.xml
@@ -23,3 +30,4 @@ lib/cmake/PlasmaWaylandProtocols/PlasmaWaylandProtocolsConfigVersion.cmake
 %%DATADIR%%/text-input-unstable-v2.xml
 %%DATADIR%%/text-input.xml
 %%DATADIR%%/wayland-eglstream-controller.xml
+%%DATADIR%%/zkde-screencast-unstable-v1.xml

@@ -1,13 +1,13 @@
-# Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
-
 PORTNAME=	jfsw
-PORTVERSION=	20201010
+PORTVERSION=	20211225
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Jonathon Fowler's Shadow Warrior Port
+WWW=		https://www.jonof.id.au/jfsw
 
+# Must be distributed only through the Internet and free of charge
 LICENSE=	GPLv2 BuildLic
 LICENSE_COMB=	multi
 LICENSE_NAME_BuildLic=	Build source code license
@@ -31,13 +31,11 @@ GH_ACCOUNT=	jonof
 GH_PROJECT=	jfbuild:build jfaudiolib:audio jfmact:mact
 # See GH listing to get current (tested) submodule hashes:
 # https://github.com/jonof/jfsw
-GH_TAGNAME=	ea58641 \
-		11d083e:build \
-		3ff144d:audio \
-		dbbf346:mact
+GH_TAGNAME=	426fc18 \
+		ab02edc:build \
+		0e94055:audio \
+		14340ff:mact
 GH_SUBDIR=	jfbuild:build jfaudiolib:audio jfmact:mact
-
-NO_CDROM=	Must be distributed only through the Internet and free of charge
 
 MAKE_ENV+=	DATADIR="${DATADIR}"
 

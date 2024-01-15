@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	xsokoban
 PORTVERSION=	3.3c
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.cs.cornell.edu/andru/release/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle of pushing objects to the goals
+WWW=		https://www.cs.cornell.edu/andru/xsokoban.html
 
 USES=		imake xorg
 USE_XORG=	xpm

@@ -1,6 +1,3 @@
-# Created by: shige
-# $FreeBSD$
-
 PORTNAME=	mkcatalog
 PORTVERSION=	1.1
 CATEGORIES=	textproc

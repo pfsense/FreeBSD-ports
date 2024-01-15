@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Bio-FeatureIO
 PORTVERSION=	1.6.905
 CATEGORIES=	biology perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Handler for FeatureIO
+WWW=		https://metacpan.org/release/Bio-FeatureIO
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

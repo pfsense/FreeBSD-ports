@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME?=	arcanist
-PORTVERSION?=	20201016
+PORTVERSION?=	20220518
+PORTREVISION?=	5
 CATEGORIES?=	devel
 PKGNAMESUFFIX=	${SLAVE_PKGNAMESUFFIX}${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	grembo@FreeBSD.org
 COMMENT?=	Libraries for the command line interface for Phabricator
+WWW?=		https://secure.phabricator.com/book/arcanist/
 
 SLAVEPORT?=	lib
 
@@ -14,7 +14,7 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 PHP_DESTDIR=	lib/php/arcanist
-USES=		php:flavors python:env shebangfix
+USES=		php:cli,flavors python:env shebangfix
 SHEBANG_FILES=	bin/arc \
 		bin/phage \
 		scripts/*.php \
@@ -26,13 +26,13 @@ SHEBANG_FILES=	bin/arc \
 		support/xhpast/*.php \
 		support/xhpast/bin/*.php
 
-USE_PHP=	curl dom hash json simplexml zlib
+USE_PHP=	curl dom simplexml zlib
 USE_GITHUB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 PORTSCOUT=	ignore:1
 GH_ACCOUNT=	phacility
-GH_TAGNAME=	4b3baca
+GH_TAGNAME=	85c953e
 PLIST=		${.CURDIR}/pkg-plist
 
 .if ${SLAVEPORT} == lib
@@ -47,9 +47,7 @@ ENCODINGS_USE=	PHP=mbstring
 
 RUN_DEPENDS=	arcanist-lib${PHP_PKGNAMESUFFIX}>0:devel/arcanist-lib@${PHP_FLAVOR}
 
-NO_BUILD=	yes
-
-CONFLICTS=	arc
+CONFLICTS=	arc arcanist-php??
 
 PLIST_FILES=	bin/arc
 
@@ -84,6 +82,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/src/workflow/ArcanistAnoidWorkflow.php
 	${RLN} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/support/shell/hooks/bash-completion.sh \
 		 ${STAGEDIR}${PREFIX}/share/bash-completion/completions/arc
+	${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/bin/arc shell-complete --generate
 .endif
 
 .include <bsd.port.mk>

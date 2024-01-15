@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Patch
 PORTVERSION=	1.8
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to patch text with given patch
+WWW=		https://metacpan.org/release/Text-Patch
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Text-Diff>0:textproc/p5-Text-Diff

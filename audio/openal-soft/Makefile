@@ -1,26 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	openal-soft
-PORTVERSION=	1.20.1
-PORTREVISION=	2
+PORTVERSION=	1.21.1
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	https://openal-soft.org/openal-releases/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Software implementation of the OpenAL specification
+WWW=		https://openal-soft.org/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libmysofa.so:audio/libmysofa
-
-USES=		cmake compiler:c++11-lang tar:bzip2
+USES=		cmake compiler:c++14-lang tar:bzip2
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DCMAKE_INSTALL_DATADIR:STRING="${PREFIX}/etc"
 CMAKE_OFF=	ALSOFT_BACKEND_ALSA ALSOFT_DLOPEN ALSOFT_EXAMPLES \
 		ALSOFT_REQUIRE_QSA ALSOFT_REQUIRE_SOLARIS
-CMAKE_ON=	ALSOFT_BACKEND_WAVE ALSOFT_UTILS
+CMAKE_ON=	ALSOFT_BACKEND_WAVE
 
 # do not link with librt and libdl.
 LDFLAGS+=	-Wl,--as-needed
@@ -28,14 +25,16 @@ LDFLAGS_i386=	-Wl,-z,notext
 
 PLIST_SUB=	SOVERSION=${PORTVERSION}
 
-OPTIONS_DEFINE=		CONFIG EXAMPLES JACK OSS PORTAUDIO PULSEAUDIO SDL SNDIO
-OPTIONS_DEFAULT=	OSS
+OPTIONS_DEFINE=		CONFIG EXAMPLES JACK OSS PORTAUDIO PULSEAUDIO \
+			SDL SNDIO UTILS
+OPTIONS_DEFAULT=	OSS UTILS
 OPTIONS_SUB=		yes
 
 CONFIG_DESC=	Install configuration utility (needs Qt 5)
+UTILS_DESC=	Build and install utility programs
 
 CONFIG_USES=		qt:5
-CONFIG_USE=		QT=core,gui,widgets,buildtools_build,qmake_build
+CONFIG_USE=		QT=core,gui,widgets,buildtools:build,qmake:build
 CONFIG_CMAKE_BOOL_OFF=	ALSOFT_NO_CONFIG_UTIL
 CONFIG_CMAKE_ON=	-DALSOFT_NO_QT5:BOOL=OFF
 
@@ -57,6 +56,19 @@ SDL_CMAKE_BOOL=	ALSOFT_BACKEND_SDL2 ALSOFT_REQUIRE_SDL2
 SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 SNDIO_CMAKE_BOOL=	ALSOFT_BACKEND_SNDIO ALSOFT_REQUIRE_SNDIO
 
+UTILS_LIB_DEPENDS=	libmysofa.so:audio/libmysofa
+UTILS_CMAKE_BOOL=	ALSOFT_UTILS
+
+.include <bsd.port.pre.mk>
+
+# The following is actually meant for lld 15.0 and later, but the ports
+# framework does not support LINKER_TYPE and LINKER_VERSION yet.
+.if ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} >= 150
+# Turn off checking of dynamic relocations, to avoid lld diagnostics about
+# possibly incorrect addend values.
+LDFLAGS_i386+=	-Wl,--no-check-dynamic-relocations
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} 's|/etc/openal|${ETCDIR}|' \
 		${WRKSRC}/alc/alconfig.cpp
@@ -65,4 +77,4 @@ post-install-EXAMPLES-on:
 	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . \
 		${STAGEDIR}${EXAMPLESDIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

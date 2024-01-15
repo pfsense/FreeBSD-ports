@@ -1,15 +1,13 @@
-# Created by: Tilman Linneweh <arved@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	metapixel
 PORTVERSION=	1.0.2
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.complang.tuwien.ac.at/schani/metapixel/files/ \
 		http://mirror.roe.ch/dist/metapixel/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Photomosaic generator
+WWW=		https://www.complang.tuwien.ac.at/~schani/metapixel/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

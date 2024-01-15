@@ -1,13 +1,12 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	colord-gtk
-PORTVERSION=	0.2.0
+PORTVERSION=	0.3.0
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.freedesktop.org/software/colord/releases/
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Manage color profiles to accurately color input/output devices
+WWW=		https://www.freedesktop.org/software/colord
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libcolord.so:graphics/colord \
 		libdbus-1.so:devel/dbus \
 		liblcms2.so:graphics/lcms2
 
-USE_GNOME=	cairo gtk30 introspection:build
+USE_GNOME=	cairo gtk30 gtk40 introspection:build
 USES=		gettext gnome localbase:ldflags meson pkgconfig sqlite tar:xz
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Ddocs=false \

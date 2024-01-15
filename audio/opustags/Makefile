@@ -1,23 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	opustags
-DISTVERSION=	1.6.0
+DISTVERSION=	1.9.0
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	View and edit Ogg Opus comments
+WWW=		https://github.com/fmang/opustags
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libogg.so:audio/libogg
 
-USES=		cmake compiler:c++14-lang iconv pkgconfig
+USES=		cmake compiler:c++20-lang iconv pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	fmang
 
+TEST_TARGET=	check # 1 test fails, see https://github.com/fmang/opustags/issues/60
+
 PLIST_FILES=	bin/opustags \
-		man/man1/opustags.1.gz
+		share/man/man1/opustags.1.gz
 
 .include <bsd.port.mk>

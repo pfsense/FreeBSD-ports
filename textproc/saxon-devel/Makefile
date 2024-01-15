@@ -1,6 +1,3 @@
-# Created by: Herve Quiroz <herve.quiroz@esil.univ-mrs.fr>
-# $FreeBSD$
-
 PORTNAME=	saxon
 PORTVERSION=	9.1.0.8
 PORTREVISION=	1
@@ -14,6 +11,7 @@ DISTFILES=	${PORTNAME}b${PORTVERSION:S,.,-,g}j.zip:binary	\
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XSLT 2.0 / XPath 2.0 / XQuery 1.0 processor for Java
+WWW=		https://saxon.sourceforge.net/
 
 OPTIONS_DEFINE=	JDOM DOM4J XOM DOCS
 JDOM_DESC=	Jdom support

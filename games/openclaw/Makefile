@@ -1,13 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	OpenClaw
-DISTVERSION=	0.0-51
+DISTVERSION=	0.3-98
+DISTVERSIONSUFFIX=	-g3586dfa
 PORTREVISION=	4
-DISTVERSIONSUFFIX=	-gbac7730
 CATEGORIES=	games
 
-MAINTAINER=	greg@unrelenting.technology
+PATCH_SITES=	https://github.com/valpackett/${GH_PROJECT}/commit/
+PATCHFILES+=	005aa1d36cae.patch:-p1 # fix running without launcher
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Reimplementation of Captain Claw (1997) platformer
+WWW=		https://github.com/pjasicek/OpenClaw
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -19,6 +21,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pjasicek
 USE_SDL=	gfx2 image2 mixer2 ttf2
 
+CMAKE_ARGS+=	-DDEFAULT_ASSETS_FOLDER=${DATADIR}/
+
 PLIST_FILES=	bin/openclaw
 PORTDATA=	ASSETS.ZIP SAVES.XML clacon.ttf config.xml console02.tga
 SUB_FILES=	pkg-message
@@ -27,8 +31,7 @@ OPTIONS_DEFINE=	LAUNCHER
 OPTIONS_DEFAULT=	LAUNCHER
 
 LAUNCHER_DESC=	Install launcher to manage game settings
-LAUNCHER_USES=	mono
-LAUNCHER_BUILD_DEPENDS=	convert:graphics/ImageMagick6
+LAUNCHER_USES=	magick:6,build mono
 LAUNCHER_PLIST_FILES=	bin/ClawLauncher.exe bin/clawlauncher
 LAUNCHER_DESKTOP_ENTRIES=	\
 		"${GH_PROJECT}" \

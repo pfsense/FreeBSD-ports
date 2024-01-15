@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Imager-Plot
 PORTVERSION=	0.09
 PORTREVISION=	7
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl extension for generating fancy graphic plots in color
+WWW=		https://metacpan.org/release/Imager-Plot
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

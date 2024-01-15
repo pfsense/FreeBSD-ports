@@ -1,6 +1,3 @@
-# Created by: Tomoyuki Sakurai <cherry@trombik.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-FillInForm-ForceUTF8
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	FillInForm with UTF-8 encoding
+WWW=		https://metacpan.org/release/HTML-FillInForm-ForceUTF8
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HTML-FillInForm>0:www/p5-HTML-FillInForm

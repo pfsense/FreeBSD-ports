@@ -1,13 +1,11 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dbus-glib
-PORTVERSION=	0.110
+PORTVERSION=	0.112
 CATEGORIES=	devel gnome
 MASTER_SITES=	http://dbus.freedesktop.org/releases/dbus-glib/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	GLib bindings for the D-BUS messaging system
+WWW=		https://www.freedesktop.org/wiki/Software/DBusBindings/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

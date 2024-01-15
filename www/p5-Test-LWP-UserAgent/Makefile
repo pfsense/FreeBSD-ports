@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-LWP-UserAgent
 PORTVERSION=	0.030
 CATEGORIES=	www perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	LWP::UserAgent suitable for simulating and testing network calls
+WWW=		https://metacpan.org/release/Test-LWP-UserAgent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -28,5 +27,7 @@ TEST_DEPENDS=	p5-Plack>=0:www/p5-Plack \
 
 USE_PERL5=	configure
 USES=		perl5
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

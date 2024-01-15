@@ -1,14 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dygraphs
 DISTVERSION=	1.1.1.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Interface to Dygraphs Interactive Time Series Charting Library
+WWW=		https://cran.r-project.org/web/packages/dygraphs/
 
 LICENSE=	MIT
 

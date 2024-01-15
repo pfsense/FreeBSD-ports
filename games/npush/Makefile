@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	npush
 PORTVERSION=	0.7
 CATEGORIES=	games
@@ -9,6 +6,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Curses-based logic game similar to Sokoban and Boulder Dash
+WWW=		https://npush.sourceforge.net/
 
 USES=		ncurses
 PORTDOCS=	*

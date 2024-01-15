@@ -1,6 +1,3 @@
-# Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
-
 PORTNAME=	memchan
 PORTVERSION=	2.3
 CATEGORIES=	devel tcl
@@ -10,6 +7,7 @@ DISTNAME=	Memchan${PORTVERSION}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Two new channel types for in-memory channels in TCL8
+WWW=		https://memchan.sourceforge.net/
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/tcllib/doctools/pkgIndex.tcl:devel/tcllib
 

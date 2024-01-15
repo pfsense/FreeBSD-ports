@@ -1,6 +1,3 @@
-# Created by: Dom Mitchell <dom@happygiraffe.net>
-# $FreeBSD$
-
 PORTNAME=	ucspi-tcp
 PORTVERSION=	0.88
 PORTREVISION=	2
@@ -12,6 +9,9 @@ PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line tools for building TCP client-server applications
+WWW=		https://cr.yp.to/ucspi-tcp.html
+
+CONFLICTS_INSTALL=	freedt # bin/argv0
 
 OPTIONS_DEFINE=	RSS_DIFF RBL2SMTPD IPV6 SSL LIMITS
 

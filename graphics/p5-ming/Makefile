@@ -1,14 +1,12 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	ming
-DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSIONPREFIX=	ming-
 DISTVERSION=	0_4_8
 CATEGORIES=	graphics perl5
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl module for Ming which allows you to create Flash 4/5 movies
+WWW=		http://www.libming.org/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -20,7 +18,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libming.so:graphics/ming \
 		libpng.so:graphics/png
 
-USES=		autoreconf bison gmake libtool localbase perl5 shebangfix
+USES=		autoreconf bison gmake libtool localbase perl5 pkgconfig  shebangfix
 
 CONFIGURE_ARGS=	--enable-perl
 GNU_CONFIGURE=	yes

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=		fixc
 PORTVERSION=		1.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=		1
+PORTREVISION=		15
 CATEGORIES=		finance
 
 MAINTAINER=		blttll@gmail.com
 COMMENT=		Simple Financial Information eXchange (FIX) protocol console client
+WWW=		https://github.com/blttll/fixc
 
 USES=			go
 

@@ -1,8 +1,5 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	exabgp
-PORTVERSION=	4.2.11
+PORTVERSION=	4.2.21
 CATEGORIES=	net
 MASTER_SITES=	GH \
 		ZI
@@ -11,16 +8,15 @@ PKGNAMESUFFIX=	4
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	BGP engine and route injector
+WWW=		https://github.com/Exa-Networks/exabgp
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE.txt
 
-RUN_DEPENDS=	${PY_IPADDRESS}
-
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_PYTHON=	distutils autoplist
 
-CONFLICTS_INSTALL=	exabgp-[0-9]*
+CONFLICTS_INSTALL=	exabgp
 
 SUB_FILES=	pkg-message
 SUB_LIST=	PYTHON_LIBDIR=${PYTHON_LIBDIR} PYTHON_CMD=${PYTHON_CMD} \

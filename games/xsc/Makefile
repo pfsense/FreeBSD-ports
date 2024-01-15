@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	xsc
 PORTVERSION=	1.6
 PORTREVISION=	2
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector graphics space shoot'em up game
+WWW=		https://www.panix.com/~mbh/projects.html
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	sgifonts
 PORTVERSION=	1.0.1
 PORTREVISION=	5
@@ -11,8 +8,11 @@ EXTRACT_SUFX=	.rpm
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Fonts from the SGI ProPack 1.4 (originally for Linux)
+WWW=		http://oss.sgi.com/projects/sgi_propack/
 
 LICENSE=	MIT
+
+BROKEN=		Unfetchable
 
 BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf
 

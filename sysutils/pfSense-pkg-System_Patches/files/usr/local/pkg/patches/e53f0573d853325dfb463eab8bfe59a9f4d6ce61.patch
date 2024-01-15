@@ -1,0 +1,13 @@
+diff --git a/src/etc/inc/interfaces.inc b/src/etc/inc/interfaces.inc
+index 86c67a5aec..39d353ccdf 100644
+--- a/src/etc/inc/interfaces.inc
++++ b/src/etc/inc/interfaces.inc
+@@ -2458,7 +2458,7 @@ EOD;
+ EOD;
+ 	}
+ 
+-	if (config_get_path('system/dnsallowoverride')) {
++	if (config_path_enabled('system', 'dnsallowoverride')) {
+ 		$mpdconf .= <<<EOD
+ 	set ipcp enable req-pri-dns
+ 	set ipcp enable req-sec-dns

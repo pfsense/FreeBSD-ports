@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	digestpp
 DISTVERSION=	g20200907
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Experimental C++11 header-only message digest library
+WWW=		https://github.com/kerukuro/digestpp
 
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

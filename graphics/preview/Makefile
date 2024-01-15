@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	preview
 PORTVERSION=	0.8.5
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	graphics gnustep
 MASTER_SITES=	http://download.gna.org/gsimageapps/
 PKGNAMEPREFIX=	gnustep-
@@ -10,6 +8,7 @@ DISTNAME=	Preview-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple image viewer
+WWW=		http://home.gna.org/gsimageapps/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

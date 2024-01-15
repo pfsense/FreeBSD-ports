@@ -1,14 +1,12 @@
-# Created by: Tobias Rehbein <tobias.rehbein@web.de>
-# $FreeBSD$
-
 PORTNAME=	MusicBrainz-DiscID
 PORTVERSION=	0.06
 CATEGORIES=	audio perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl interface for the MusicBrainz libdiscid library
+WWW=		https://metacpan.org/release/MusicBrainz-DiscID
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

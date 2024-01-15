@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pgpin
 PORTVERSION=	010323
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DISTNAME=	pgp263in${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	PGP International version - improved for use in IN-CA
+WWW=		https://www.pgpi.org/
 
 LICENSE=	MIT
 

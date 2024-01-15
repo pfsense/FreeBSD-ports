@@ -1,14 +1,12 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	R2HTML
-PORTVERSION=	2.3.2
-PORTREVISION=	6
+PORTVERSION=	2.3.3
+PORTREVISION=	1
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	HTML exportation for R objects
+WWW=		https://cran.r-project.org/package=R2HTML
 
 LICENSE=	GPLv2
 

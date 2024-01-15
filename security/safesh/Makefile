@@ -1,6 +1,3 @@
-# Created by: eivind
-# $FreeBSD$
-
 PORTNAME=	safesh
 PORTVERSION=	1.5
 CATEGORIES=	security

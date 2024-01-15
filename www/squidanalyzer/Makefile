@@ -1,6 +1,3 @@
-# Created by: Dominique Goncalves <dominique.goncalves@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	squidanalyzer
 PORTVERSION=	6.5
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	www perl5
 
 MAINTAINER=	dominique.goncalves@gmail.com
 COMMENT=	Squid access log report generation tool
+WWW=		https://squidanalyzer.darold.net/
 
 LICENSE=	GPLv3
 

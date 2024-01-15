@@ -1,13 +1,12 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ario
 PORTVERSION=	1.6
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF/ario-player/ario-player/${PORTVERSION}
 
 MAINTAINER=	alfix86@gmail.com
 COMMENT=	GTK client for MPD
+WWW=		https://ario-player.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +18,6 @@ GNU_CONFIGURE=	yes
 USES=		gmake gnome libtool pkgconfig
 USE_LDCONFIG=	yes
 USE_GNOME=	gtk30 pango atk cairo gdkpixbuf2 glib20 libxml2
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	AVAHI DBUS DEBUG LIBMPDCLIENT2 MPDIDLE NLS PLAYLISTS SEARCH TAGLIB

@@ -1,33 +1,42 @@
-# $FreeBSD$
-
 PORTNAME=	mpich
-PORTVERSION=	3.2.1
-PORTREVISION=	6
+PORTVERSION=	4.1.2
+PORTREVISION=	2
 CATEGORIES=	net parallel
 MASTER_SITES=	https://www.mpich.org/static/downloads/${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable implementation of MPI-1, MPI-2 and MPI-3
+WWW=		https://www.mpich.org/
 
 LICENSE=	MPICH
 LICENSE_NAME=	MPICH
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libhwloc.so:devel/hwloc
+# Unfortunately mpicc is BROKEN with sh (Bad substitution on arrays)
+BUILD_DEPENDS=	bash:shells/bash
+LIB_DEPENDS=	libhwloc.so:devel/hwloc2	\
+		libjson-c.so:devel/json-c	\
+		libfabric.so:net/libfabric	\
+		libslurm.so:sysutils/slurm-wlm	\
+		libepoll-shim.so:devel/libepoll-shim
+RUN_DEPENDS=	bash:shells/bash
 
-CONFLICTS=	lam-7.* mpd-[0-9]* mpiexec-0.* mpich2-[0-9]*
+CONFLICTS=	mpd
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		compiler:c11 libtool perl5 pkgconfig
+USES=		compiler:c11 libtool localbase perl5 pkgconfig python:build
 USE_LDCONFIG=	yes
+TEST_TARGET=	check
 
-OPTIONS_DEFINE=		DOCS FORTRAN
+BINARY_ALIAS=	python3=${PYTHON_CMD}
+
+OPTIONS_DEFINE=		DOCS FORTRAN L0
 OPTIONS_GROUP=		PM
 OPTIONS_GROUP_PM=	GFORKER HYDRA
 OPTIONS_RADIO=		DEFAULTPM
 OPTIONS_RADIO_DEFAULTPM=DGFORKER DHYDRA
-OPTIONS_DEFAULT=	FORTRAN GFORKER HYDRA DHYDRA
+OPTIONS_DEFAULT=	FORTRAN GFORKER HYDRA DHYDRA L0
 OPTIONS_SUB=		yes
 
 FORTRAN_USES=			fortran
@@ -47,18 +56,33 @@ DEFAULTPM_DESC=	Default process manager
 DGFORKER_DESC=	Make gforker the default process manager
 DHYDRA_DESC=	Make hydra the default process manager
 
-CONFIGURE_ARGS=	--enable-fast="" --with-hwloc-prefix=${LOCALBASE} \
-		ac_cv_path_BASH_SHELL="" \
+HYDRA_LIB_DEPENDS=	libtorque.so:sysutils/torque
+
+L0_DESC=		oneAPI Level Zero support
+L0_LIB_DEPENDS=		libze_loader.so:devel/level-zero
+L0_CONFIGURE_OFF=	--without-ze
+
+CONFIGURE_ARGS=	--enable-fast=""	\
+		--with-libfabric=${LOCALBASE} \
 		pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
-		MPICHLIB_CFLAGS="${CFLAGS}" CFLAGS="" \
+		MPICHLIB_CFLAGS="${CFLAGS}" \
+		CFLAGS="-I${LOCALBASE}/include/json-c ${CFLAGS_F2018}" \
 		MPICHLIB_CPPFLAGS="${CPPFLAGS}" CPPFLAGS="" \
 		MPICHLIB_CXXFLAGS="${CXXFLAGS}" CXXFLAGS="" \
 		MPICHLIB_FFLAGS="${FFLAGS}" FFLAGS="" \
 		MPICHLIB_FCFLAGS="${FCFLAGS}" FCFLAGS="" \
 		MPICHLIB_LDFLAGS="${LDFLAGS}" LDFLAGS="" \
-		MPICHLIB_LIBS="${LIBS}" LIBS=""
+		MPICHLIB_LIBS="${LIBS}" \
+		LIBS="-L${LOCALBASE}/lib -lepoll-shim -ljson-c -lm"	\
+		BASH_SHELL=${LOCALBASE}/bin/bash
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500005
+# linker error when compiling with llvm 17.0.6 on CURRENT - PR 276035
+# To be removed with llvm-18
+CONFIGURE_ENV+=	ac_cv_sizeof___float128=0
+.endif
 
 .for pm in ${OPTIONS_GROUP_PM}
 . if ${PORT_OPTIONS:M${pm}}
@@ -85,7 +109,10 @@ PLIST_SUB+=	EXECGFORKER="@comment "
 .endif
 .endif
 
+post-extract:
+	${FIND} ${WRKSRC} -name "*.orig" -delete
+
 post-patch:
-	@${RM} -r ${WRKSRC}/www
+	${RM} -r ${WRKSRC}/www
 
 .include <bsd.port.mk>

@@ -1,20 +1,20 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	you-get
-PORTVERSION=	0.4.1475
+PORTVERSION=	0.4.1650
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Dumb downloader that scrapes the web
+WWW=		https://you-get.org/ \
+		https://github.com/soimort/you-get
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist distutils noflavors
 
 NO_ARCH=	yes

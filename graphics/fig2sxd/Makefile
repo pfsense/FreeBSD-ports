@@ -1,14 +1,12 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	fig2sxd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.22.1-3
+DISTVERSION=	0.23
 DISTVERSIONSUFFIX=	-gedae2ef
 CATEGORIES=	graphics converters
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Convert .xfig files to the OpenOffice draw format
+WWW=		https://gitlab.com/acfbuerger/fig2sxd
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +15,7 @@ USES=		compiler gmake
 USE_GITLAB=	yes
 
 GL_ACCOUNT=	acfbuerger
-GL_COMMIT=	edae2efd428623ac22aec06bdec572fc45c368f3
+GL_TAGNAME=	77a24df7a2b1bea8a8a7e73690487a9e80a15d48
 
 PLIST_FILES=	bin/fig2sxd man/man1/fig2sxd.1.gz
 

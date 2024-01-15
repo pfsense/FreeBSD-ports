@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	qmake
-DISTVERSION=	${QT5_VERSION}
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt Makefile generator
 
-USES=		compiler:c++11-lib gmake pkgconfig \
+USES=		compiler:c++11-lib gmake perl5 pkgconfig \
 		python:build qmake:no_env qt-dist:5,base shebangfix
 SHEBANG_FILES=	util/harfbuzz/update-harfbuzz \
 		util/unicode/x11/makeencodings \
@@ -16,6 +14,7 @@ SHEBANG_FILES=	util/harfbuzz/update-harfbuzz \
 		mkspecs/features/data/mac/objc_namespace.sh \
 		mkspecs/features/uikit/devices.py \
 		mkspecs/features/uikit/device_destinations.sh
+USE_PERL5=	extract
 
 REINPLACE_ARGS=	-i ""
 HAS_CONFIGURE=	yes
@@ -44,5 +43,6 @@ post-build:
 		${SETENV} CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
 		CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" BUILD_QMAKE=1 \
 		${CONFIGURE_ENV} ${CONFIGURE_CMD} ${CONFIGURE_ARGS}
-
+post-install:
+	${RLN} ${STAGEDIR}${QT_BINDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-qt5
 .include <bsd.port.mk>

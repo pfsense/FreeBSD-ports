@@ -1,12 +1,10 @@
-# Created by: Serhii (Sergey) Kozlov <skozlov@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ohmyzsh
-PORTVERSION=	20201216
+PORTVERSION=	20230913
 CATEGORIES=	shells
 
 MAINTAINER=	skozlov@FreeBSD.org
 COMMENT=	Community-driven framework for managing your zsh configuration
+WWW=		https://ohmyz.sh/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 RUN_DEPENDS=	zsh:shells/zsh
 
 USE_GITHUB=	yes
-GH_TAGNAME=	b28665a
+GH_TAGNAME=	bbda81fe4b338f00bbf7c7f33e6d1b12d067dc05
 
 NO_ARCH=	yes
 NO_BUILD=	yes

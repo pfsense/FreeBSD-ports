@@ -1,14 +1,12 @@
-# Created by: Dan Langille
-# $FreeBSD$
-
 PORTNAME=	gixy
 PORTVERSION=	0.1.20
 CATEGORIES=	security www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Tool to analyze Nginx configuration for security misconfiguration
+WWW=		https://github.com/yandex/gixy
 
 LICENSE=	APACHE20
 
@@ -20,7 +18,7 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}configargparse>=0.11.0:devel/py-configargpa
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}argparse>=1.4.0:devel/py-argparse@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

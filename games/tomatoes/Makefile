@@ -1,21 +1,16 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tomatoes
 PORTVERSION=	1.55
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.5/
 DISTFILES=	${PORTNAME}-linux-src-${PORTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}-linux-${DATAVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tomato-smashing, Q-Bert style
+WWW=		https://tomatoes.sourceforge.net/
 
 LICENSE=	ZLIB
-
-DATAVERSION=	1.5
-DATA_WRKSRC=	${WRKDIR}/tomatoes-${DATAVERSION}
 
 USES=		gl gmake sdl tar:bzip2
 USE_SDL=	mixer image
@@ -28,6 +23,9 @@ MAKE_ARGS=	CC="${CXX}" \
 		CONFIGDIR="${DATADIR}/" \
 		CFLAGS="${CXXFLAGS} ${SDL_CFLAGS}" \
 		LDFLAGS="${SDL_LDFLAGS}"
+
+DATAVERSION=	1.5
+DATA_WRKSRC=	${WRKDIR}/tomatoes-${DATAVERSION}
 
 SDL_CFLAGS=	`${SDL_CONFIG} --cflags` -I${LOCALBASE}/include
 SDL_LDFLAGS=	`${SDL_CONFIG} --libs` -lSDL_image -lSDL_mixer \

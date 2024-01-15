@@ -1,6 +1,3 @@
-# Created by: Xavier Beaudouin <kiwi@oav.net>
-# $FreeBSD$
-
 PORTNAME=	fmirror
 PORTVERSION=	0.8.4
 PORTREVISION=	4
@@ -11,6 +8,8 @@ MAINTAINER=	kiwi@oav.net
 COMMENT=	Program for mirroring files and directories from FTP server
 
 LICENSE=	GPLv2
+
+BROKEN=		Unfetchable
 
 GNU_CONFIGURE=	yes
 

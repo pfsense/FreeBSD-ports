@@ -1,13 +1,12 @@
-# Created by: Marwan BURELLE <marwan.burelle@lri.fr>
-# $FreeBSD$
-
 PORTNAME=	ocurl
-PORTVERSION=	0.8.2
+PORTVERSION=	0.9.2
+PORTREVISION=	1
 CATEGORIES=	ftp
 PKGNAMEPREFIX=	ocaml-
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Interface for OCaml to the curl lib
+WWW=		https://ygrek.org/p/ocurl/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=		gmake
 GNU_CONFIGURE=	yes
-#CONFIGURE_ARGS+="--with-findlib"
+MAKE_JOBS_UNSAFE=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ygrek
@@ -46,7 +45,6 @@ post-install:
 
 post-configure-LWT-off:
 # Override auto-detection
-
 	${REINPLACE_CMD} 's/(lwt,no)/(no,no)/' ${WRKSRC}/Makefile \
 		${WRKSRC}/examples/Makefile
 

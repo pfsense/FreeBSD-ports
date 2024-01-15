@@ -1,25 +1,23 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	orangehrm
-PORTVERSION=	4.6.0.1
+PORTVERSION=	5.5
 CATEGORIES=	www misc
 MASTER_SITES=	SF/${PORTNAME}/stable/${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Open Source Human Resource Management
+WWW=		https://www.orangehrm.com
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/license/LICENSE.TXT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe php zip
-USE_PHP=	iconv json pdo_mysql ctype xml session simplexml
+USE_PHP=	ctype curl filter iconv \
+		mbstring pdo_mysql xml session \
+		simplexml tokenizer zip
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
 SUB_FILES=	pkg-message
 HRMDIR=		www/orangehrm
-
-#WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/${PORTNAME}-${PORTVERSION}
 
 pre-install:
 	@${ECHO_CMD} -e '@owner ${WWWOWN}\n@group ${WWWGRP}' > ${PLIST}

@@ -1,12 +1,10 @@
-# Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-# $FreeBSD$
-
 PORTNAME=	rsync-bpc
 PORTVERSION=	3.1.3.0
 CATEGORIES=	net
 
 MAINTAINER=	moiseev@mezonplus.ru
 COMMENT=	Modified rsync that used as part of BackupPC
+WWW=		https://backuppc.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

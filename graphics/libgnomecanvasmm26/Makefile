@@ -1,16 +1,13 @@
-# Created by: Alexander Nedotsukov <bland@mail.ru>
-# $FreeBSD$
-#   $MCom: ports/graphics/libgnomecanvasmm26/Makefile,v 1.22 2009/03/17 15:05:06 kwm Exp $
-
 PORTNAME=	libgnomecanvasmm
 PORTVERSION=	2.26.0
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for libgnomecanvas library
+WWW=		http://gtkmm.sourceforge.net/
 
 LIB_DEPENDS=	libgtkmm-2.4.so:x11-toolkits/gtkmm24
 

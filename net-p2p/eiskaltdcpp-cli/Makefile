@@ -1,6 +1,3 @@
-# Created by: Maxim Ignatenko <gelraen.ua@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	eiskaltdcpp
 PORTREVISION=	20
 CATEGORIES=	net-p2p

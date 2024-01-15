@@ -2,8 +2,8 @@ MMC tools introduction
 ======================
 
 There is one MMC test tools called mmc-utils, which is maintained by
-Chris Ball, you can find it at the below public git repository:
-http://git.kernel.org/cgit/linux/kernel/git/cjb/mmc-utils.git/
+Ulf Hansson, you can find it at the below public git repository:
+https://git.kernel.org/pub/scm/utils/mmc/mmc-utils.git
 
 Functions
 =========
@@ -32,5 +32,3 @@ The mmc-utils tools can do the following:
  - Print and parse CID data.
  - Print and parse CSD data.
  - Print and parse SCR data.
-
-WWW: https://www.kernel.org/doc/Documentation/mmc/mmc-tools.txt

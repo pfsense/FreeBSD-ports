@@ -1,4 +1,4 @@
-# $FreeBSD$
+WWW=		https://ossec.github.io
 
 .include "${.CURDIR}/version.mk"
 

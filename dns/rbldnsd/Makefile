@@ -1,6 +1,3 @@
-# Created by: Paul Chvostek <paul@it.ca>
-# $FreeBSD$
-
 PORTNAME=	rbldnsd
 PORTVERSION=	0.998
 CATEGORIES=	dns
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.corpit.ru/mjt/rbldnsd/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small and fast DNS daemon especially for DNSBL zones
+WWW=		https://www.corpit.ru/mjt/rbldnsd.html
 
 LICENSE=	GPLv2
 

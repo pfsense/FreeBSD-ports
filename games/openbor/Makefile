@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	openbor
 # Hint: svn revision is git rev-list --count ${GH_TAGNAME}
-PORTVERSION?=	7096
+PORTVERSION?=	7534
 .ifndef PKGNAMESUFFIX
 PORTREVISION=	0
 .endif
@@ -17,6 +15,7 @@ PATCHFILES+=	731d96887795.patch:-p2
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	2D side scrolling engine for beat 'em ups, shooters, and more #'
+WWW=		https://www.chronocrash.com/
 
 LICENSE=	BSD3CLAUSE GPLv2+
 .if ${PORTVERSION} >= 4134
@@ -38,15 +37,15 @@ PORTSCOUT=	ignore:1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	DCurrent
-GH_TAGNAME?=	b8a2cef9
+GH_TAGNAME?=	3bae1dd7
 
-USES+=		gmake pkgconfig sdl
+USES+=		cpe gmake pkgconfig sdl
 .if ${PORTVERSION} < 4433
 USE_CSTD=	gnu89
 .endif
 .if ${PORTVERSION} < 4108
 USE_SDL=	gfx
-.elif ${PORTVERSION} < 6639
+.elif ${PORTVERSION} < 6639 || ${PORTVERSION} >= 7416
 USE_SDL=	gfx2
 .else
 USE_SDL=	sdl2
@@ -57,7 +56,9 @@ MAKE_ENV=	BUILD_LINUX=1 SDKPATH="${LOCALBASE}" \
 MAKE_ARGS=	CC="${CC}" LIBRARIES="${LOCALBASE}/lib" \
 		TARGET_ARCH=${ARCH:S/i386/x86/} ARCHFLAGS="" \
 		TARGET_FINAL='${TARGET}' BUILD_MMX="" ECHO="${ECHO}"
+.if ${PORTVERSION} < 7098
 CFLAGS+=	-fcommon # https://github.com/DCurrent/openbor/issues/206
+.endif
 LDFLAGS+=	-Wl,--as-needed # ogg, pthread, zlib
 SUB_FILES=	pkg-message
 SUB_LIST=	PKGBASE=${PKGBASE}
@@ -66,7 +67,7 @@ PLIST_FILES=	bin/${PKGBASE} \
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 PORTDOCS=	README
 
-DESKTOP_ENTRIES="OpenBOR v3.0 Build ${PORTVERSION}" \
+DESKTOP_ENTRIES="OpenBOR v${${PORTVERSION}<7533:?3:4}.0 Build ${PORTVERSION}" \
 		"" \
 		"${PKGBASE}" \
 		"${PKGBASE}" \
@@ -101,6 +102,7 @@ post-patch:
 		's,malloc\.h,stdlib.h,'
 	@${REINPLACE_CMD} -e 's/^function \(.*\) {/\1() {/' \
 		-e '/^[[:space:]]*VERSION_.*=0000/d' \
+		-e '/.*read -r VERSION_/d' \
 		${WRKSRC}/version.sh
 
 do-configure:

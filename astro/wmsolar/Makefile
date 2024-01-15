@@ -1,12 +1,10 @@
-# Created by: Patrick Li <pat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wmsolar
 PORTVERSION=	1.1
 CATEGORIES=	astro windowmaker
 
 MAINTAINER=	tkuiper@inxsoft.net
 COMMENT=	Dockapp that displays the Solar System viewed from the top
+WWW=		http://www.inxsoft.net/wmsolar/
 
 LICENSE=	GPLv2
 

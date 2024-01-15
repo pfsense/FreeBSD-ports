@@ -1,6 +1,3 @@
-# Created by: Andreas Fehlner (fehlner@gmx.de)
-# $FreeBSD$
-
 PORTNAME=	userneu
 PORTVERSION=	1.38
 DISTVERSIONSUFFIX=	_1
@@ -12,6 +9,7 @@ MASTER_SITES=	http://btw23.de/johannes/userneu/ \
 
 MAINTAINER=	fehlner@gmx.de
 COMMENT=	Account management and creation tool
+WWW=		http://btw23.de/johannes/userneu/userneu.html
 
 LICENSE=	GPLv2
 
@@ -24,7 +22,7 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 SHEBANG_FILES=	userquick.pl smbrepair.pl userneu.pl
 
-CONFLICTS=	userneu-devel-[0-9]*
+CONFLICTS=	userneu-devel
 
 SCRIPTS=	userneu.pl userquick.pl smbrepair.pl
 DOCS=		BUGS CHANGES CREDITS REQUIREMENTS TODO \

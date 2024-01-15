@@ -1,21 +1,21 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	zope.i18nmessageid
-PORTVERSION=	3.6.1
-PORTREVISION=	1
+DISTVERSION=	6.0.1
 CATEGORIES=	textproc www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DIST_SUBDIR=	zope
 
 MAINTAINER=	zope@FreeBSD.org
 COMMENT=	Message Identifiers for internationalization
+WWW=		https://pypi.org/project/zope.i18nmessageid/
 
 LICENSE=	ZPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+
-USE_PYTHON=	distutils autoplist
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist pep517
 
 .include <bsd.port.mk>

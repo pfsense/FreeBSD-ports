@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Unicode-IMAPUtf7
 PORTVERSION=	2.01
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to deal with IMAP UTF-7
+WWW=		https://metacpan.org/release/FABPOT/Unicode-IMAPUtf7-2.01
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

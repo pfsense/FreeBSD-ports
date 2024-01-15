@@ -1,22 +1,30 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	adms
-PORTVERSION=	2.3.6
-PORTREVISION=	1
+PORTVERSION=	2.3.7
+DISTVERSIONPREFIX=	release-
 CATEGORIES=	cad
-MASTER_SITES=	SF/mot-${PORTNAME}/${PORTNAME}-source/${PORTVERSION:R}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Model generator for SPICE simulators
+WWW=		https://github.com/Qucs/ADMS
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		bison libtool
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ax_cv_c_compiler_vendor=gnu
-INSTALL_TARGET=	install-strip
+BUILD_DEPENDS=	p5-XML-LibXML>=0:textproc/p5-XML-LibXML
+
+USES=		bison cmake perl5
+USE_PERL5=	build
 USE_LDCONFIG=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	Qucs
+GH_PROJECT=	ADMS
+
+PLIST_FILES=	bin/admsCheck \
+		bin/admsXml \
+		include/adms/constants.vams \
+		include/adms/disciplines.vams \
+		share/man/man1/admsCheck.1.gz \
+		share/man/man1/admsXml.1.gz
 
 .include <bsd.port.mk>

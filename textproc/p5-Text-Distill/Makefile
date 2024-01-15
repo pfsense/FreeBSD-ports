@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Distill
 PORTVERSION=	0.2
 CATEGORIES=	textproc perl5
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Quick texts compare, plagiarism and common parts detection
+WWW=		https://metacpan.org/pod/Text::Distill
 
 LICENSE=	LGPL3
 LICENSE_COMB=	single

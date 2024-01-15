@@ -1,6 +1,3 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	qdbm
 PORTVERSION=	1.8.78
 PORTREVISION=	4
@@ -10,22 +7,22 @@ PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Ruby API for QDBM
+WWW=		https://dbmx.net/qdbm/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKDIR}/${PORTNAME}-${PORTVERSION}/COPYING
 
 LIB_DEPENDS=	libqdbm.so:databases/qdbm
 
-USES=		iconv shebangfix
+USES=		iconv ruby shebangfix
 SHEBANG_FILES=	curia/rbcrtest depot/rbdptest myrbdoc villa/rbvltest
-USE_RUBY=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/ruby
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ENV=	ac_cv_lib_iconv_main=yes
 MAKE_ENV=	CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" \
 		LOCALBASE="${LOCALBASE}"
-CFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-I${LOCALBASE}/include -fdeclspec
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 post-configure:

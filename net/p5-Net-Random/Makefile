@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	Net-Random
 PORTVERSION=	2.32
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to get random data from online sources
+WWW=		https://metacpan.org/release/Net-Random
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

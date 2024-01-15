@@ -1,15 +1,13 @@
-# Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/editors/abiword-docs/Makefile,v 1.1 2009/11/10 14:08:20 kwm Exp $
-
 PORTNAME=	abiword-docs
 PORTVERSION=	3.0.1
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	http://www.abisource.com/downloads/abiword/${PORTVERSION}/source/
 DIST_SUBDIR=	AbiWord
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	AbiWord help files
+WWW=		https://www.abisource.com/
 
 BUILD_DEPENDS=	abiword:editors/abiword
 RUN_DEPENDS=	abiword:editors/abiword

@@ -1,6 +1,3 @@
-# Created by: lx
-# $FreeBSD$
-
 PORTNAME=	clusterssh
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.16
@@ -8,6 +5,7 @@ CATEGORIES=	security net
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Controls multiple hosts simultaneously via xterms and ssh
+WWW=		https://github.com/duncs/clusterssh/
 
 LICENSE=	GPLv2
 

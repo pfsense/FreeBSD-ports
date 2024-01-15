@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	app_config
 PORTVERSION=	2.7.1
 CATEGORIES=	devel rubygems
@@ -7,11 +5,11 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby gem for storing application configuration
+WWW=		https://oshuma.github.io/app_config/
 
 LICENSE=	MIT
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

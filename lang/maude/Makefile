@@ -1,14 +1,13 @@
-# Created by: Rick van der Zwet <rick@wzoeterwoude.net>
-# $FreeBSD$
-
 PORTNAME=	maude
 PORTVERSION=	2.7.1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	http://maude.cs.illinois.edu/w/images/d/d8/
 DISTNAME=	Maude-${PORTVERSION}
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-performance reflective language
+WWW=		https://maude.cs.uiuc.edu/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,6 +20,7 @@ LIB_DEPENDS=	libbdd.so:science/buddy \
 
 USES=		alias autoreconf bison compiler:c++11-lang localbase:ldflags \
 		ncurses
+USE_CXXSTD=	c++14
 
 WRKSRC=		${WRKDIR}/maude-${PORTVERSION}
 
@@ -30,12 +30,13 @@ MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_SUB=		yes
 OPTIONS_DEFINE=		DOCS FULL_MAUDE CVC4
-OPTIONS_DEFAULT=	FULL_MAUDE CVC4
+OPTIONS_DEFAULT=	FULL_MAUDE #CVC4
 FULL_MAUDE_DESC=	Install full-maude
 CVC4_DESC=		Enable SMT support via CVC4
 
-CVC4_LIB_DEPENDS=	libcvc4.so:math/cvc4
+CVC4_LIB_DEPENDS=	libcvc5.so:math/cvc5
 CVC4_CONFIGURE_WITH=	cvc4
+CVC4_BROKEN=		maude uses cvc4 which has been succeeded by cvc5
 
 PORTDOCS=	AUTHORS COPYING ChangeLog INSTALL NEWS README
 

@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Yada-Yada-Yada
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Adds a Yada-Yada-Yada operator (...) to Perl 5
+WWW=		https://metacpan.org/release/Yada-Yada-Yada
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Filter-Simple>=0:textproc/p5-Filter-Simple

@@ -1,20 +1,19 @@
-# Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Jmol
-DISTVERSION=	14.31.20
+DISTVERSION=	16.1.25
 CATEGORIES=	science java
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/Version%20${DISTVERSION:R}/${PORTNAME}%20${DISTVERSION}/
 DISTFILES=	${PORTNAME}-${DISTVERSION}-full${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Java 3D viewer for chemical structures
+WWW=		http://jsmol.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USE_JAVA=	yes
 USE_ANT=	yes
+JAVA_VERSION=	17 # Java 8 fails on aarch64: Internal Error (assembler_aarch64.hpp:237), pid=91175, tid=0x000000000007cda5 guarantee(val < (1U << nbits)) failed: Field too big for insn
 
 NO_ARCH=	yes
 
@@ -58,6 +57,7 @@ do-install:
 do-install-JSMOL-on:
 	${MKDIR} ${STAGEDIR}${WWWDIR}
 	${CP} -r ${WRKDIR}${PREFIX}/www/jsmol/* ${STAGEDIR}${WWWDIR}
+	${RM} ${STAGEDIR}${WWWDIR}/debug.log
 
 do-install-DOCS-on:
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}

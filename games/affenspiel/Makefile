@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	affenspiel
 PORTVERSION=	1.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.artsoft.org/RELEASES/unix/affenspiel/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Little puzzle game with monkey for X Window System
+WWW=		https://www.artsoft.org/affenspiel/
 
 LICENSE=	unknown
 LICENSE_NAME=	just Copyright

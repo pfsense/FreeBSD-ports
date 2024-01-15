@@ -1,6 +1,3 @@
-# Created by: Yoshihiko Sarumaru <mistral@imasy.or.jp>
-# $FreeBSD$
-
 PORTNAME=	bdfresize
 PORTVERSION=	1.5
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://openlab.ring.gr.jp/efont/dist/tools/bdfresize/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for resizing BDF format font
+WWW=		http://openlab.ring.gr.jp/efont/dist/tools/bdfresize/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

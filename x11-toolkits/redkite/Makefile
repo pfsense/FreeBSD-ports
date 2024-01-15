@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	redkite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
+DISTVERSION=	1.3.1
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	GUI toolkit
+WWW=		https://github.com/iurie-sw/redkite
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

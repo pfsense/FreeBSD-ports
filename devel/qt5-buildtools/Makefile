@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	buildtools
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -10,6 +7,7 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt build tools
 
 USES=		compiler:c++11-lang libtool perl5 qmake:no_env qt-dist:5,base
+USE_PERL5=	extract
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-gui -no-xcb
 QT_BINARIES=	yes
@@ -41,5 +39,6 @@ post-install:
 .endfor
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/syncqt.pl \
 		${STAGEDIR}${PREFIX}/${QT_BINDIR_REL}/syncqt.pl
-
+	${RLN} ${STAGEDIR}${QT_BINDIR}/moc ${STAGEDIR}${PREFIX}/bin/moc-qt5
+	${RLN} ${STAGEDIR}${QT_BINDIR}/rcc ${STAGEDIR}${PREFIX}/bin/rcc-qt5
 .include <bsd.port.mk>

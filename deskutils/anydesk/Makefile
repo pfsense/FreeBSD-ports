@@ -1,18 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	anydesk
-DISTVERSION=	6.0.1
+DISTVERSION=	6.1.1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 MASTER_SITES=	https://download.anydesk.com/freebsd/
 DISTNAME=	${PORTNAME}-freebsd-${PORTVERSION}-${ARCH:S/amd64/x86_64/:S/i386/i386/}
 
 MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Fast remote desktop
+WWW=		https://anydesk.com/remote-desktop
 
-#LICENSE=	commercial
-#LICENSE_NAME=	commercial
-#LICENSE_FILE=	${WRKSRC}/copyright
-#LICENSE_PERMS=	no-auto-accept no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
+LICENSE=	commercial
+LICENSE_NAME=	commercial
+LICENSE_FILE=	${WRKSRC}/copyright
+LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell \
+		no-auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386
 
@@ -23,7 +24,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpolkit-gobject-1.so:sysutils/polkit \
 		libxkbfile.so:x11/libxkbfile
 
-USES=		gl gnome xorg
+USES=		cpe gl gnome minizip xorg
 
 USE_GL=		gl glu
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 pangox-compat

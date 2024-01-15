@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	3zb2
 PORTVERSION=	0.97
 PORTREVISION=	1
@@ -15,9 +12,11 @@ DIST_SUBDIR=	${PKGNAMEPREFIX}${PORTNAME}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	3rd Zigock II bots for Quake II
+WWW=		http://users.jp.tri6.net/~ponpoko/3zb2/
 
 USES=		dos2unix zip
 DOS2UNIX_FILES=	*.[ch]
+MAKEFILE=	${FILESDIR}/Makefile
 NO_WRKSUBDIR=	yes
 SUB_FILES=	pkg-message
 
@@ -46,11 +45,9 @@ DISTFILES+=	${f}${EXTRACT_SUFX}:routes
 .endif
 
 post-extract:
-# Rename files and directories to lower case
 	@cd ${WRKSRC}; for f in *; do \
 	    ${MV} $${f} `${ECHO_CMD} $${f} | ${TR} '[:upper:]' '[:lower:]'`; \
 	done
-	@${CP} ${FILESDIR}/${MAKEFILE} ${WRKSRC}
 
 do-install:
 .for f in chctf chdtm
@@ -62,15 +59,13 @@ do-install:
 		${STAGEDIR}${Q2DIR}/${PORTNAME}
 	cd ${WRKSRC}/3zb2 && ${INSTALL_DATA} *.cfg 3ZBMaps.lst pak6.pak \
 		${STAGEDIR}${Q2DIR}/${PORTNAME}
-.if ${PORT_OPTIONS:MROUTES}
+
+do-install-ROUTES-on:
 	${INSTALL_DATA} ${WRKSRC}/*.chn ${STAGEDIR}${Q2DIR}/${PORTNAME}/chdtm
 	${INSTALL_DATA} ${WRKSRC}/*.chf ${STAGEDIR}${Q2DIR}/${PORTNAME}/chctf
-.endif
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/3zb2 && ${CP} -a *.txt "User Guide" ${STAGEDIR}${DOCSDIR}
-	@${FIND} ${STAGEDIR}${DOCSDIR} -type d -print0 | \
-		${XARGS} -0 ${CHMOD} ${BINMODE}
-	@${FIND} ${STAGEDIR}${DOCSDIR} -type f -print0 | \
-		${XARGS} -0 ${CHMOD} ${SHAREMODE}
 
 .include <bsd.port.mk>

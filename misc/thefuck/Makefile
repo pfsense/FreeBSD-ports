@@ -1,13 +1,11 @@
-# Created by: Guangyuan Yang <ygy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	thefuck
-DISTVERSION=	3.30
+DISTVERSION=	3.32
 CATEGORIES=	misc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 
 MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	App that corrects your previous console command
+WWW=		https://github.com/nvbn/thefuck
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -18,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}colorama>0:devel/py-colorama@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyte>0:devel/py-pyte@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	autoplist distutils noflavors
 NO_ARCH=	yes
 

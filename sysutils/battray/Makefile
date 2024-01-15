@@ -1,6 +1,3 @@
-# Created by: Martin Tournoij <martin@arp242.net>
-# $FreeBSD$
-
 PORTNAME=	battray
 DISTVERSIONPREFIX=	version-
 DISTVERSION=	2.3
@@ -9,11 +6,12 @@ CATEGORIES=	sysutils python
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Display notebook battery status in tray
+WWW=		https://github.com/arp242/battray
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gnome python:3.3+
+USES=		gnome python
 USE_GNOME=	pygobject3
 USE_PYTHON=	autoplist distutils optsuffix
 

@@ -1,10 +1,6 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=		-activesync
 
-MAINTAINER=		acm@FreeBSD.org
-
-CONFLICTS=		sogo[2-4]-[0-9]* sogo[2-4]-activesync-[0-9]*
+CONFLICTS=		sogo2 sogo2-activesync sogo
 
 OPTIONS_SLAVE=		ACTIVESYNC MFA
 

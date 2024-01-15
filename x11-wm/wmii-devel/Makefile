@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wmii
 PORTVERSION=	3.9.2
 PORTREVISION=	3
@@ -11,13 +8,14 @@ DISTNAME=	${PORTNAME}+ixp-${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Dynamic, minimalist window manager for X11
+WWW=		https://code.google.com/p/wmii/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libixp.so:devel/libixp
 
-CONFLICTS=	wmii-[0-9]*
+CONFLICTS=	wmii
 
 USES=		pkgconfig python:run shebangfix tar:tbz xorg
 SHEBANG_FILES=	alternative_wmiircs/python/wmiirc

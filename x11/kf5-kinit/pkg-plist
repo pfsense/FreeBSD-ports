@@ -12,6 +12,7 @@ lib/libexec/kf5/start_kdeinit
 lib/libexec/kf5/start_kdeinit_wrapper
 lib/libkdeinit5_klauncher.so
 man/ca/man8/kdeinit5.8.gz
+man/ca@valencia/man8/kdeinit5.8.gz
 man/de/man8/kdeinit5.8.gz
 man/es/man8/kdeinit5.8.gz
 man/fr/man8/kdeinit5.8.gz
@@ -26,7 +27,6 @@ share/dbus-1/interfaces/kf5_org.kde.KLauncher.xml
 share/locale/af/LC_MESSAGES/kinit5.mo
 share/locale/ar/LC_MESSAGES/kinit5.mo
 share/locale/as/LC_MESSAGES/kinit5.mo
-share/locale/ast/LC_MESSAGES/kinit5.mo
 share/locale/az/LC_MESSAGES/kinit5.mo
 share/locale/be/LC_MESSAGES/kinit5.mo
 share/locale/be@latin/LC_MESSAGES/kinit5.mo

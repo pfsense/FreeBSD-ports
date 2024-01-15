@@ -1,6 +1,3 @@
-# Created by: Ion-Mihai "IOnut" Tetcu <itetcu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	unsafe_image_rules
 PORTVERSION=	0.8
 PORTREVISION=	3
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME:S/-/_/}.${PORTVERSION}-1.4
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Determines what unsafe (web) images will be shown
+WWW=		https://www.squirrelmail.org/plugin_view.php?id=98
 
 USE_SM_COMPAT=	yes
 

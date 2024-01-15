@@ -1,15 +1,13 @@
-# Created by: Michael Reifenberger <mr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pcb
 PORTVERSION=	4.2.0
-PORTREVISION=	1
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	X11 interactive printed circuit board layout system
+WWW=		http://pcb.geda-project.org/
 
 LICENSE=	GPLv2
 
@@ -28,8 +26,7 @@ USE_GL=		gl glu
 USE_GNOME=	intltool cairo pangox-compat
 USE_XORG=	x11 xrender xinerama
 
-CONFLICTS=	gts-[0-9]*
-INSTALLS_ICONS=	yes
+CONFLICTS=	gts
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	INSTALL_DATA="${BSD_INSTALL_DATA}"
 LDFLAGS+=	-lpthread
@@ -65,9 +62,6 @@ GTK_CONFIGURE_ENV=	WISH=${WISH}
 NONE_DESC=	No GUI support
 NONE_CONFIGURE_ON=	--without-gui
 NONE_CONFIGURE_ENV=	WISH=/usr/bin/true
-
-ONLY_FOR_ARCHS=	i386 amd64
-ONLY_FOR_ARCHS_REASON=	Uses x86 specific libc functions and has not been ported
 
 DOCS_INFO=		pcb
 

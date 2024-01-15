@@ -1,6 +1,3 @@
-# Created by: Alistair King <alistair@caida.org>
-# $FreeBSD$
-
 PORTNAME=	wandio
 PORTVERSION=	1.0.5
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	http://research.wand.net.nz/software/wandio/
 
 MAINTAINER=	alistair@caida.org
 COMMENT=	C library for compressed file I/O
+WWW=		http://research.wand.net.nz/software/libwandio.php
 
 LICENSE=	LGPL3+
 

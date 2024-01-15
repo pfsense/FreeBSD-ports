@@ -1,6 +1,3 @@
-# Created by: Geraud CONTINSOUZAS <geraud@gcu.info>
-# $FreeBSD$
-
 PORTNAME=	Log-Dispatch-Array
 PORTVERSION=	1.003
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	geraud@gcu.info
 COMMENT=	Log events to an array (reference)
+WWW=		https://metacpan.org/release/Log-Dispatch-Array
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,20 +1,16 @@
-# Created by: Janni
-# $FreeBSD$
-
 PORTNAME=	gxemul
-PORTVERSION=	0.6.2
+PORTVERSION=	0.7.0
 CATEGORIES=	emulators
 MASTER_SITES=	http://gavare.se/gxemul/src/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mclay@astate.edu
 COMMENT=	Instruction-level machine emulator
+WWW=		http://gavare.se/gxemul/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-valgrind \
-		--without-unittests
 CONFIGURE_ENV=	CXX=${CXX} \
 		LOCALBASE=${LOCALBASE} \
 		PREFIX=${PREFIX}

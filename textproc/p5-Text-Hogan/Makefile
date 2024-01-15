@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Hogan
 PORTVERSION=	2.03
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Mustache templating engine statement-for-statement cloned from hogan.js
+WWW=		https://metacpan.org/release/Text-Hogan
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

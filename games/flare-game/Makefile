@@ -1,27 +1,25 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flare
-PORTVERSION=	1.11
+PORTVERSION=	1.14
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	games
 PKGNAMESUFFIX=	-game
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Free Libre Action Roleplaying Engine: game data
+WWW=		https://flarerpg.org/
 
 LICENSE=	CC-BY-SA-3.0
 
 RUN_DEPENDS=	flare:games/flare-engine
 
+USES=		cmake gnome
 USE_GITHUB=	yes
 GH_ACCOUNT=	flareteam
 GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
-
-USES=		cmake gnome
 CMAKE_BUILD_TYPE=	#empty
-INSTALLS_ICONS=	yes
 NO_ARCH=	yes
+INSTALL_TARGET=	install
 
 CMAKE_ARGS=	-DBINDIR="bin" -DDATADIR="share/flare"
 

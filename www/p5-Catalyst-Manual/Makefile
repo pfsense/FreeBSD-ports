@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Manual
 PORTVERSION=	5.9011
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst developer's manual #'
+WWW=		https://metacpan.org/release/Catalyst-Manual
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

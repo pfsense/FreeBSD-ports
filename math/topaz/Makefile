@@ -1,6 +1,3 @@
-# Created by: Issei Suzuki <issei@jp.FreeBSD.ORG>
-# $FreeBSD$
-
 PORTNAME=	topaz
 DISTVERSION=	3_41
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${DISTVERSION}-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command driven graph plotting system for scientists and engineers
+WWW=		https://hp.vector.co.jp/authors/VA007663/topaz/
 
 LICENSE=	GPLv2
 

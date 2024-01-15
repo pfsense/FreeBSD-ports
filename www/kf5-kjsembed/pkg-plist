@@ -17,6 +17,7 @@ lib/libKF5JsEmbed.so.5
 lib/libKF5JsEmbed.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KJsEmbed.pri
 man/ca/man1/kjscmd5.1.gz
+man/ca@valencia/man1/kjscmd5.1.gz
 man/de/man1/kjscmd5.1.gz
 man/es/man1/kjscmd5.1.gz
 man/fr/man1/kjscmd5.1.gz
@@ -27,6 +28,7 @@ man/pt/man1/kjscmd5.1.gz
 man/pt_BR/man1/kjscmd5.1.gz
 man/ru/man1/kjscmd5.1.gz
 man/sv/man1/kjscmd5.1.gz
+man/tr/man1/kjscmd5.1.gz
 man/uk/man1/kjscmd5.1.gz
 share/locale/af/LC_MESSAGES/kjsembed5.mo
 share/locale/ar/LC_MESSAGES/kjsembed5.mo

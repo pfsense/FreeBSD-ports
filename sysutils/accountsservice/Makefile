@@ -1,39 +1,35 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	accountsservice
-PORTVERSION=	0.6.42
+PORTVERSION=	23.13.9
+PORTREVISION=	1
 CATEGORIES=	sysutils devel
-MASTER_SITES=	http://www.freedesktop.org/software/${PORTNAME}/
+MASTER_SITES=	https://www.freedesktop.org/software/${PORTNAME}/
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	D-Bus interface for user account query and manipulation
+WWW=		https://gitlab.freedesktop.org/accountsservice/accountsservice
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
-		libpolkit-gobject-1.so:sysutils/polkit
+BUILD_DEPENDS=	dbus>0:devel/dbus
+LIB_DEPENDS=	libpolkit-gobject-1.so:sysutils/polkit \
+		libconsolekit.so:sysutils/consolekit2
 
-USE_GNOME=	glib20 intlhack introspection:build libxslt
-USES=		cpe gettext gmake gnome libtool localbase:ldflags pathfix \
-		pkgconfig tar:xz
-CPE_VENDOR=	ray_stode
-GNU_CONFIGURE=	yes
+USES=		cpe gettext gnome meson pkgconfig tar:xz
+CPE_VENDOR=	freedesktop
+USE_GNOME=	glib20 intltool libxslt introspection:build
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	--disable-systemd --localstatedir=/var/
-INSTALL_TARGET=	install-strip
+MESON_ARGS=	-Dconsolekit=true \
+		-Dgdmconffile=${LOCALBASE}/etc/gdm/custom.conf \
+		-Dlightdmconffile=${LOCALBASE}/etc/lightdm/lightdm.conf \
+		-Dlocalstatedir=/var \
+		-Dsystemdsystemunitdir=no \
+		-Dvapi=false \
+		-Dtests=false
 
-# XXX HACK! this file isn't present on the pristine jails of the builders
-# and configure breaks without it. Beter solutions welcome.
-.if defined(PACKAGE_BUILDING)
-CONFIGURE_ENV+=	ac_cv_file__var_log_utx_log=yes
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/gdm/custom.conf|${LOCALBASE}/etc/gdm/custom.conf|g' \
-		${WRKSRC}/src/daemon.c
-	@${REINPLACE_CMD} -e 's|/lib/AccountsService|/db/AccountsService|g' \
-		${WRKSRC}/src/user.c ${WRKSRC}/src/Makefile.in
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.freedesktop.org
+GL_ACCOUNT=	arrowd
+GL_TAGNAME=	1ad459450480baa3e2024db4edee0a30ca0edc20
 
 .include <bsd.port.mk>

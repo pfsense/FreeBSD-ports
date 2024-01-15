@@ -1,16 +1,4 @@
-commit ea1925e
-Author: Jan Beich <jbeich@FreeBSD.org>
-Date:   Sun May 29 16:13:33 2016 +0000
-
-    Drop unused /dev/ prefix to unbreak FreeBSD 11.0
-    
-    uhidd.c:291:16: error: passing 'const char *' to parameter of type 'char *' discards qualifiers
-          [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
-                        basename(hi->dev));
-                                 ^~~~~~~
-    /usr/include/libgen.h:38:22: note: passing argument to parameter here
-    char    *basename(char *);
-                            ^
+https://github.com/kaiwang27/uhidd/commit/ea1925e17dcc
 
 --- uhidd/uhidd.c.orig	2012-10-14 19:53:44 UTC
 +++ uhidd/uhidd.c

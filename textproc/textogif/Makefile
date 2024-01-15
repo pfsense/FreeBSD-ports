@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	textogif
 PORTVERSION=	1.1
 PORTREVISION=	4
@@ -11,16 +8,19 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Perl script to convert LaTeX formulas into GIFs
+WWW=		https://www.fourmilab.ch/webtools/textogif/
 
 RUN_DEPENDS=	ppmtogif:graphics/netpbm
 
-NO_BUILD=	yes
-USE_TEX=	latex dvipsk
-USES=		perl5 shebangfix
+USES=		perl5 shebangfix tex
 USE_PERL5=	run
-NO_WRKSUBDIR=	yes
+USE_TEX=	latex dvipsk
 
 SHEBANG_FILES=	textogif
+
+NO_BUILD=	yes
+
+NO_WRKSUBDIR=	yes
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

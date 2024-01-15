@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-Mason
-PORTVERSION=	1.59
+PORTVERSION=	1.60
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	High-performance, dynamic web site authoring system
+WWW=		https://metacpan.org/release/HTML-Mason
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -33,7 +32,7 @@ OPTIONS_DEFINE=	MODPERL
 
 MODPERL_BUILD_DEPENDS=	p5-libapreq2>=0:www/p5-libapreq2
 MODPERL_RUN_DEPENDS=	p5-libapreq2>=0:www/p5-libapreq2
-MODPERL_USE=		APACHE_RUN=22+
+MODPERL_USES=		apache:run
 
 post-patch:
 	@${REINPLACE_CMD} -e '/bin\/convert/d' ${WRKSRC}/Makefile.PL

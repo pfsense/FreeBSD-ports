@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Parallel-Async
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to run parallel task with fork to simple
+WWW=		https://metacpan.org/release/Parallel-Async
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

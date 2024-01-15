@@ -1,8 +1,5 @@
-# Created by: Palle Girgensohn <girgen@partitur.se>
-# $FreeBSD$
-
 PORTNAME=	postgresql
-PORTVERSION=	42.2.18
+PORTVERSION=	42.7.1
 CATEGORIES=	databases java
 MASTER_SITES=	http://jdbc.postgresql.org/download/
 PKGNAMESUFFIX=	-jdbc
@@ -11,10 +8,12 @@ EXTRACT_ONLY=
 
 MAINTAINER=	pgsql@FreeBSD.org
 COMMENT=	Java JDBC implementation for PostgreSQL
+WWW=		https://jdbc.postgresql.org/
 
 LICENSE=	BSD3CLAUSE
 
 USE_JAVA=	yes
+JAVA_VERSION=	8+
 NO_ARCH=	yes
 PLIST_FILES=	%%JAVAJARDIR%%/postgresql.jar
 

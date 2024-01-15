@@ -1,15 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	3270font
-DISTVERSIONPREFIX=	v.
-DISTVERSION=	2.1.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.3.1
 CATEGORIES=	x11-fonts
-MASTER_SITES=	https://${PORTNAME}.s3.amazonaws.com/ \
-		https://github.com/rbanffy/${PORTNAME}/releases/download/${DISTVERSIONFULL}/
-DISTNAME=	3270_fonts_fba25eb
+MASTER_SITES=	https://github.com/rbanffy/${PORTNAME}/releases/download/${DISTVERSIONFULL}/
+DISTNAME=	3270_fonts_3b8f2fb
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	IBM 3270 font for the nostalgic
+WWW=		https://github.com/rbanffy/3270font
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

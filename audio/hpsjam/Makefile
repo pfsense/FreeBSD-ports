@@ -1,30 +1,29 @@
-# Created by: Hans Petter Selasky <hselasky@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	hpsjam
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.0.9
+DISTVERSION=	1.2.8
 CATEGORIES=	audio
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Online jamming client and server tool
+WWW=		https://github.com/hselasky/hpsjam
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS= \
-	libfftw3.so:math/fftw3 \
-	libjack.so:audio/jack
+LIB_DEPENDS=	libjack.so:audio/jack
 
 USES=		compiler:c++11-lang gl qmake qt:5 tar:bzip2
-USE_GL=		gl
-USE_QT=		buildtools_build core gui widgets svg
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	hselasky
+GH_TUPLE=	mborgerding:kissfft:131.1.0:a/kissfft
+USE_GL=		gl
+USE_QT=		core gui svg widgets buildtools:build
+USE_RC_SUBR=	${PORTNAME}_server
 
-PLIST_FILES= \
-	bin/HpsJam \
-	share/pixmaps/HpsJam.png \
-	share/applications/HpsJam.desktop
+USER=		nobody
+SUB_LIST=	USER=${USER}
+
+PLIST_FILES=	bin/HpsJam \
+		share/applications/HpsJam.desktop \
+		share/pixmaps/HpsJam.png
 
 .include <bsd.port.mk>

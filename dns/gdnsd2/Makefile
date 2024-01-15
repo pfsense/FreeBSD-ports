@@ -1,6 +1,3 @@
-# Created by: Allan Jude <allanjude@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	gdnsd
 PORTVERSION=	2.4.3
 CATEGORIES=	dns
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Authoritative-only GeoIP-aware DNS server
+WWW=		https://github.com/blblack/gdnsd
 
 LICENSE=	GPLv3
 
@@ -22,11 +20,11 @@ FETCH_ARGS=	-Fpr
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var
 USE_LDCONFIG=	yes
-USES=		pkgconfig libtool tar:xz perl5 gmake
+USES=		cpe pkgconfig libtool tar:xz perl5 gmake
 USE_PERL5=	build
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CONFLICTS_INSTALL=	gdnsd-1.[0-9]* gdnsd3-3.[0-9]*
+CONFLICTS_INSTALL=	gdnsd3
 
 USE_RC_SUBR=	gdnsd
 

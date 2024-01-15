@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	at-spi2-core
 PORTVERSION=	2.28.0
 DISTVERSIONSUFFIX=	-1.el7
@@ -7,6 +5,7 @@ CATEGORIES=	accessibility linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Assistive technology service provider interface (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://gitlab.gnome.org/GNOME/at-spi2-core
 
 LICENSE=	LGPL20+
 
@@ -16,8 +15,6 @@ USES=		linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX=	dbuslibs xorglibs
 USE_LINUX_RPM=	yes
-
-DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

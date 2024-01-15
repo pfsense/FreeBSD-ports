@@ -1,14 +1,13 @@
-# Created by: Thomas Bernard <nanard@free.fr>
-# $FreeBSD$
-
 PORTNAME=	teo
 PORTVERSION=	1.8.4
 DISTVERSIONSUFFIX=	-src
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF/teoemulator/linux/${PORTVERSION}
 
 MAINTAINER=	nanard@free.fr
 COMMENT=	Thomson TO8 emulator
+WWW=		https://sourceforge.net/projects/teoemulator/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/licence-en.txt

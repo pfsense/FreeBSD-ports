@@ -1,6 +1,3 @@
-# Created by: roman@xpert.com
-# $FreeBSD$
-
 PORTNAME=	Convert-TNEF
 PORTVERSION=	0.18
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to read TNEF files
+WWW=		https://metacpan.org/release/Convert-TNEF
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,5 +18,7 @@ RUN_DEPENDS=	p5-IO-Stringy>=0:devel/p5-IO-Stringy \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

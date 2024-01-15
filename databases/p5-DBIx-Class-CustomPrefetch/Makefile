@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-CustomPrefetch
 PORTVERSION=	0.09
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
 COMMENT=	Custom prefetches for DBIx::Class
+WWW=		https://metacpan.org/release/DBIx-Class-CustomPrefetch
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

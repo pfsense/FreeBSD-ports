@@ -1,6 +1,3 @@
-# Created by: Chris D. Faulhaber <jedgar@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xinvaders3d
 DISTVERSION=	1.3.6
 DISTVERSIONSUFFIX=	.src
@@ -10,6 +7,7 @@ MASTER_SITES=	SUNSITE/games/arcade/invaders/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D Vector-graphics Space Invaders clone for X
+WWW=		https://libregamewiki.org/XInvaders3D
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

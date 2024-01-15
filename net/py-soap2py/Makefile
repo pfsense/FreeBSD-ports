@@ -1,20 +1,19 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	soap2py
 PORTVERSION=	1.16
 CATEGORIES=	net www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python simple and lightweight SOAP Library
+WWW=		https://github.com/pysimplesoap/pysimplesoap
 
 LICENSE=	LGPL3+
 
-NO_ARCH=	yes
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python:3.6+
+
+NO_ARCH=	yes
 
 PLIST_FILES=	${PYTHON_SITELIBDIR}/${PYDISTUTILS_EGGINFO}/PKG-INFO \
 		${PYTHON_SITELIBDIR}/${PYDISTUTILS_EGGINFO}/SOURCES.txt \

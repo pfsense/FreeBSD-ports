@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Apache-Admin-Config
 PORTVERSION=	0.95
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to manipulate Apache configuration files
+WWW=		https://metacpan.org/release/Apache-Admin-Config
 
 LICENSE=	LGPL21+
 

@@ -1,14 +1,12 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MediaWiki-API
-PORTVERSION=	0.41
+PORTVERSION=	0.52
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	OOP MediaWiki engine client
+WWW=		https://metacpan.org/release/MediaWiki-API
 
 LICENSE=	GPLv3
 

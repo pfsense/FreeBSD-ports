@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Perl6-Export-Attrs
 PORTVERSION=	0.000006
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl 6 'is export(...)' trait as a Perl 5 attribute
+WWW=		https://metacpan.org/release/Perl6-Export-Attrs
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	genjyuugothic
 PORTVERSION=	20150607
 PORTREVISION=	2
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	ja-font-
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	GenJyuuGothic Japanese TrueType fonts
+WWW=		http://jikasei.me/font/genjyuu/
 
 LICENSE=	OFL11
 

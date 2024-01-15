@@ -1,18 +1,17 @@
-# Created by: Nick Hilliard <nick@foobar.org>
-# $FreeBSD$
-
 PORTNAME=	Structures_DataGrid
 PORTVERSION=	0.9.3
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Full-featured tabular structured data management package
+WWW=		https://pear.php.net/package/Structures_DataGrid
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PEARDIR}/Console/Table.php:devel/pear-Console_Table@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}Console_Table>=0:devel/pear-Console_Table@${PHP_FLAVOR}
 
 USES=		pear
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

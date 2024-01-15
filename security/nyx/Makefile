@@ -1,14 +1,12 @@
-# Created by: Carlo Strub
-# $FreeBSD$
-
 PORTNAME=	nyx
 PORTVERSION=	2.1.0
 PORTREVISION=	1
 CATEGORIES=	security net
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Command-line monitor for Tor
+WWW=		https://nyx.torproject.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

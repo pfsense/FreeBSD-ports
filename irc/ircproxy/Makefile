@@ -1,17 +1,19 @@
-# Created by: Jonas Kvinge <jonas@night-light.net>
-# $FreeBSD$
-
 PORTNAME=	ircproxy
 PORTVERSION=	1.3.6
 PORTREVISION=	3
 CATEGORIES=	irc
 MASTER_SITES=	https://BSDforge.com/projects/source/irc/ircproxy/
 
-MAINTAINER=	portmaster@BSDforge.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IRC proxy/bouncer daemon
+WWW=		http://ircproxy.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		Unfetchable
+DEPRECATED=	Abandonware, last release in 2010 and dead upstream. Consider using irc/soju or irc/znc
+EXPIRATION_DATE=2024-02-29
 
 LIB_DEPENDS=	libcares.so:dns/c-ares
 
@@ -42,10 +44,8 @@ SSL_USES=		ssl
 post-patch:
 	@${REINPLACE_CMD} -e 's|EUSER="ircproxy"|EUSER="ircproxyd"|g; \
 		s|EGROUP="users"|EGROUP="ircproxyd"|g' ${WRKSRC}/data/${PORTNAME}d.conf
-.if ${OSVERSION} > 1200084
 	@${REINPLACE_CMD} -e '/gnutls/!s,SSL_library_init,OPENSSL_init_ssl,' \
 		${WRKSRC}/configure.in
-.endif
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/imkpasswd ${STAGEDIR}${PREFIX}/bin/ircproxyd

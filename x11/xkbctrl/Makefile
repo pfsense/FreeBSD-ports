@@ -1,6 +1,3 @@
-# Created by: Yoshiro MIHIRA <sanpei@sanpei.org>
-# $FreeBSD$
-
 PORTNAME=	xkbctrl
 PORTVERSION=	1.0
 PORTREVISION=	2

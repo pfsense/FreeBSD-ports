@@ -1,14 +1,13 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	anjuta
 PORTVERSION=	3.34.0
+PORTREVISION=	4
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Integrated Development Environment for C and C++
+WWW=		http://anjuta.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -31,8 +30,9 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-icon-theme.pc:misc/gnome-icon-
 PORTSCOUT=	limitw:1,even
 
 USES=		bison compiler:c11 desktop-file-utils gettext gmake gnome \
-		libtool pathfix perl5 pkgconfig:both python shared-mime-info \
-		shebangfix tar:xz
+		libtool localbase:ldflags pathfix perl5 pkgconfig:both python \
+		shared-mime-info shebangfix tar:xz
+USE_CXXSTD=	c++14
 SHEBANG_FILES=	plugins/project-wizard/templates/js_minimal/src/main.js \
 		plugins/tools/scripts/find-fixmes.pl \
 		plugins/tools/scripts/translation-status.pl \
@@ -41,12 +41,9 @@ SHEBANG_LANG+=	gjs
 gjs_OLD_CMD=	/usr/bin/gjs
 gjs_CMD=	${LOCALBASE}/bin/gjs
 
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 USE_GNOME=	cairo gtksourceview3 intlhack libgda5 libwnck3
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--with-symbol-db-shm=/tmp \
 		--disable-packagekit \
 		--disable-neon \
@@ -80,9 +77,8 @@ GLIB_SCHEMAS=	org.gnome.anjuta.cvs.gschema.xml \
 		org.gnome.anjuta.tools.gschema.xml
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	SVN DEVHELP GLADE TERMINAL
-OPTIONS_DEFAULT=SVN DEVHELP GLADE TERMINAL
-SVN_DESC=	Subversion plugin
+OPTIONS_DEFINE=	DEVHELP GLADE SUBVERSION TERMINAL
+OPTIONS_DEFAULT=DEVHELP GLADE SUBVERSION TERMINAL
 DEVHELP_DESC=	Devhelp plugin
 GLADE_DESC=	Build glade plugin
 TERMINAL_DESC=	Build build-in terminal
@@ -96,10 +92,10 @@ TERMINAL_LIB_DEPENDS=	libgnutls.so:security/gnutls \
 			libpcre2-8.so:devel/pcre2
 TERMINAL_VARS=		GLIB_SCHEMAS+=org.gnome.anjuta.terminal.gschema.xml
 
-SVN_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
+SUBVERSION_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 			libserf-1.so:www/serf \
 			libsvn_client-1.so:devel/subversion
-SVN_CONFIGURE_ENABLE=	plugin-subversion
+SUBVERSION_CONFIGURE_ENABLE=	plugin-subversion
 
 DEVHELP_LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 			libwebkit2gtk-4.0.so:www/webkit2-gtk3 \

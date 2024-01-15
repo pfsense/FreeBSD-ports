@@ -1,21 +1,31 @@
-# Created by: Radim Kolar
-# $FreeBSD$
-
 PORTNAME=	advancecomp
-PORTVERSION=	1.23
+DISTVERSION=	2.6
 CATEGORIES=	archivers
-MASTER_SITES=	SF/advancemame/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	https://github.com/amadvance/advancecomp/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Recompression utilities for .ZIP, .PNG, .MNG, and .GZ files
+WWW=		http://www.advancemame.it/comp-readme.html
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libzopfli.so:archivers/zopfli
+LIB_DEPENDS=	libzopfli.so:archivers/zopfli \
+		libdeflate.so:archivers/libdeflate
+
+USES=		autoreconf cpe
+CPE_VENDOR=	advancemame
 
 GNU_CONFIGURE=	yes
-MAKE_ARGS=	zopfli_SOURCES="" am__objects_3=""
+TEST_TARGET=	check
+MAKE_ARGS=	zopfli_SOURCES="" am__objects_3="" \
+		libdeflate_SOURCES="" am__objects_2=""
 CPPFLAGS+=	-I${LOCALBASE}/include/zopfli
-LDFLAGS+=	-L${LOCALBASE}/lib -lzopfli
+LDFLAGS+=	-L${LOCALBASE}/lib -lzopfli -ldeflate
+
+OPTIONS_DEFINE=	BZIP2
+BZIP2_CONFIGURE_ON=	--enable-bzip2
+
+pre-test-BZIP2-on:
+	@${ECHO_MSG} Warning: test suite is known to fail with option BZIP2 enabled
 
 .include <bsd.port.mk>

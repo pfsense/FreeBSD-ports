@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Config-IniHash
 PORTVERSION=	3.01.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for reading and writing INI files
+WWW=		https://metacpan.org/release/JENDA/Config-IniHash-3.01.01
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

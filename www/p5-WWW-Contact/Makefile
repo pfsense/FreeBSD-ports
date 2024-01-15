@@ -1,6 +1,3 @@
-# Created by: Fred Cox
-# $FreeBSD$
-
 PORTNAME=	WWW-Contact
 PORTVERSION=	0.51
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sailorfred@yahoo.com
 COMMENT=	Contact importer for all the major email systems
+WWW=		https://metacpan.org/release/WWW-Contact
 
 LICENSE=	ART20 GPLv1
 LICENSE_COMB=	dual

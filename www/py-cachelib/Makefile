@@ -1,21 +1,17 @@
-# Created by: Gilbert Morgan <gmm@tutanota.com>
-# $FreeBSD$
-#
-
 PORTNAME=	cachelib
-PORTVERSION=	0.1
+PORTVERSION=	0.10.2
 CATEGORIES=	www
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	gmm@tutanota.com
+MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Collection of cache libraries in the same API interface
+WWW=		https://github.com/pallets-eco/cachelib/
 
-LICENSE=        BSD3CLAUSE
-LICENSE_FILE=   ${WRKSRC}/LICENSE
+LICENSE=	BSD3CLAUSE
 
-USES=           localbase python:3.6+
-USE_PYTHON=     autoplist distutils
+USES=		localbase python
+USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 NO_BUILD=	yes

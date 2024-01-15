@@ -1,26 +1,21 @@
-# Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kubectl
-PORTVERSION=	1.19.4
-PORTREVISION=	2
+PORTVERSION=	1.29.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Kubernetes command-line tool
+WWW=		https://github.com/kubernetes/kubectl
 
 LICENSE=	APACHE20
 
-USES=		go:modules
+USES=		cpe go:modules
+CPE_VENDOR=	jenkins
+CPE_PRODUCT=	kubernetes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kubernetes
 GH_PROJECT=	kubernetes
-
-# The vendored golang/sys fails to build on aarch64
-GOLANG_SYS_V=	9fbb57f87de9
-GH_TUPLE=	golang:sys:${GOLANG_SYS_V}:golang_sys/vendor/golang.org/x/sys_${GOLANG_SYS_V}
 
 GO_PKGNAME=	k8s.io/kubernetes
 GO_TARGET=	${GO_PKGNAME}/cmd/${PORTNAME}
@@ -38,10 +33,6 @@ OPTIONS_DEFAULT=	BASH ZSH
 
 BASH_PLIST_FILES=	share/bash-completion/completions/${PORTNAME}
 ZSH_PLIST_FILES=	share/zsh/site-functions/_${PORTNAME}
-
-post-extract:
-	${RM} -r ${WRKSRC}/vendor/golang.org/x/sys
-	${MV} ${WRKSRC}/vendor/golang.org/x/sys_${GOLANG_SYS_V} ${WRKSRC}/vendor/golang.org/x/sys
 
 post-install-BASH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions

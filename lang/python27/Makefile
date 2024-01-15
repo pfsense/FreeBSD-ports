@@ -1,27 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	python
-PORTVERSION=	${PYTHON_PORTVERSION}
-PORTREVISION=	1
+DISTVERSION=	${PYTHON_DISTVERSION}
+PORTREVISION=	2
 CATEGORIES=	lang python
-MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
+MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION}
 PKGNAMESUFFIX=	27
-DISTNAME=	Python-${PORTVERSION}
+DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Interpreted object-oriented programming language
+WWW=		https://www.python.org/
 
 LICENSE=	PSFL
 
 DEPRECATED=	EOLed upstream
 EXPIRATION_DATE=	2020-12-31
 
-USES=		cpe ncurses pathfix pkgconfig readline:port shebangfix ssl tar:xz
+USES=		cpe ncurses pathfix pkgconfig readline shebangfix ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-python_CMD=	${PREFIX}/bin/python${PYTHON_PORTVERSION:R}
+python_CMD=	${PREFIX}/bin/python${PYTHON_DISTVERSION:R}
 SHEBANG_FILES=	Lib/lib2to3/pgen2/*.py Lib/lib2to3/tests/*.py Lib/lib2to3/tests/data/*.py \
 		Lib/idlelib/*.py Lib/encodings/*.py Lib/test/*.py Lib/UserString.py \
 		Lib/base64.py Lib/cProfile.py Lib/keyword.py Lib/mimify.py Lib/pdb.py \
@@ -40,7 +39,7 @@ TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
-			PORTVERSION=${PORTVERSION} \
+			DISTVERSION=${DISTVERSION} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
 OPTIONS_DEFINE=		DEBUG IPV6 LIBFFI NLS PYMALLOC THREADS
@@ -97,14 +96,6 @@ PLIST_SUB+=	32BIT_ONLY="@comment "
 PLIST_SUB+=	32BIT_ONLY=""
 .endif
 
-.if ${ARCH} == powerpc64
-MAKE_ENV+=	UNAME_m="powerpc64"
-.endif
-
-.if ${ARCH} == sparc64
-CFLAGS+=	-DPYTHON_DEFAULT_RECURSION_LIMIT=900
-.endif
-
 # See https://bugs.freebsd.org/115940 and https://bugs.freebsd.org/193650
 .if !exists(/usr/bin/ypcat) || defined(WITHOUT_NIS)
 PLIST_SUB+=	NO_NIS="@comment "
@@ -121,6 +112,16 @@ post-patch:
 
 .if !exists(/usr/bin/ypcat) || defined(WITHOUT_NIS)
 	@${REINPLACE_CMD} -e 's/disabled_module_list =[^]]*/&, "nis"/' \
+		${WRKSRC}/setup.py
+.endif
+
+# This is just a dirty hack for building with OpenSSL 3.0.0 and later
+# There is no plain string OPENSSL_VERSION_NUMBER available in
+# openssl/opensslv.h so setup.py just detects the string as 00000000
+# However care should be taken for the OSVERSION. If OpenSSL 3.0.9
+# lands later the OSVERSION string should be fixed accordingly
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && (${SSL_DEFAULT} == base || ${SSL_DEFAULT:Mopenssl3*} )
+	@${REINPLACE_CMD} -e 's|00907000|00000000|' \
 		${WRKSRC}/setup.py
 .endif
 

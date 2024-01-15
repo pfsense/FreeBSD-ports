@@ -1,27 +1,36 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pysal
-PORTVERSION=	1.14.4
-DISTVERSIONSUFFIX=	.post2
-PORTREVISION=	3
+PORTVERSION=	23.1
 CATEGORIES=	science python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	PySAL-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cross-platform library of spatial analysis functions
+WWW=		https://pysal.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}scipy>=0.11:science/py-scipy@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}access>=1.1.8:science/py-access@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}esda>=2.4.1:science/py-esda@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}giddy>=2.3.3:graphics/py-giddy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}inequality>=1.0.0:science/py-inequality@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}libpysal>=4.7.0:science/py-libpysal@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mapclassify>=2.5.0:graphics/py-mapclassify@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mgwr>=2.1.2:graphics/py-mgwr@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}momepy>=0.5.4:graphics/py-momepy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pointpats>=2.2.0:graphics/py-pointpats@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}segregation>=2.3.1:science/py-segregation@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}spaghetti>=1.7.2:science/py-spaghetti@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}spglm>=1.0.8:math/py-spglm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}spint>=1.0.7:math/py-spint@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}splot>=1.1.5.post1:math/py-splot@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}spopt>=0.5.0:math/py-spopt@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}spreg>=1.3.0:math/py-spreg@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}spvcm>=0.3.0:math/py-spvcm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tobler>=0.8.2:science/py-tobler@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

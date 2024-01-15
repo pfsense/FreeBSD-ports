@@ -1,14 +1,12 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	normalize
 PORTVERSION=	0.7.7
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	audio
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	alex@fafula.com
 COMMENT=	Tool for adjusting the volume of wave/MP3 files to a standard level
+WWW=		https://normalize.nongnu.org/
 
 LIB_DEPENDS=	libmad.so:audio/libmad
 

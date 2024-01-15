@@ -1,13 +1,10 @@
-# Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	uv
-PORTVERSION=	0.2.4
-PORTREVISION=	1
+PORTVERSION=	0.3.0
 CATEGORIES=	devel
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	PHP wrapper for libuv
+WWW=		https://pecl.php.net/package/uv
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE

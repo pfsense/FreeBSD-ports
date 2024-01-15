@@ -1,8 +1,5 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Toadfarm
-PORTVERSION=	0.82
+PORTVERSION=	0.83
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JHTHORSEN
@@ -10,12 +7,13 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	One Mojolicious app to rule them all
+WWW=		https://metacpan.org/pod/Toadfarm
 
 LICENSE=	ART20
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-Which>=1.00:sysutils/p5-File-Which \
-		p5-Mojolicious>=8.00:www/p5-Mojolicious
+		p5-Mojolicious>=9.11:www/p5-Mojolicious
 
 USES=		perl5
 USE_PERL5=	configure

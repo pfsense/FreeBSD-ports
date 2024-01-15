@@ -1,22 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	kio-fuse
-DISTVERSIONPREFIX=	v
-DISTVERSION=	4.95.0
+DISTVERSION=	5.0.1
+PORTREVISION=	1
 CATEGORIES=	sysutils kde
+MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	FUSE Interface for KIO
+WWW=		https://invent.kde.org/system/kio-fuse
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSES/GPL-3.0-or-later.txt
 
-USES=		cmake compiler:c++11-lang fuse:3 kde:5 pkgconfig qt:5
-USE_KDE=	config coreaddons kio service
+USES=		cmake compiler:c++11-lang fuse:3 kde:5 pkgconfig qt:5 tar:xz
+USE_KDE=	config coreaddons kio service \
+		ecm:build
 USE_QT=		concurrent core dbus network \
-		buildtools_build qmake_build
-USE_GITHUB=	yes
-GH_ACCOUNT=	kde
+		buildtools:build qmake:build
 
 PLIST_FILES=	lib/libexec/kio-fuse \
 		share/dbus-1/services/org.kde.KIOFuse.service

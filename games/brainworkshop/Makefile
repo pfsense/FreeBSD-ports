@@ -1,24 +1,22 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	brainworkshop
-PORTVERSION=	5.0.git20191222
+DISTVERSIONPREFIX=	v
+DISTVERSION=	5.0.2
 PORTREVISION=	1
 CATEGORIES=	games python
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Dual N-Back mental exercise
+WWW=		https://github.com/samcv/brainworkshop
 
 LICENSE=	GPLv1+ # version not specified
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pyglet/__init__.py:graphics/py-pyglet150@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyglet1>=0:graphics/py-pyglet1@${PY_FLAVOR}
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	samcv
-GH_TAGNAME=	f1e28d0
+GH_ACCOUNT=	brain-workshop
 
 USES=		shebangfix python:run
-SHEBANG_FILES=	brainworkshop.pyw
+SHEBANG_FILES=	brainworkshop.py
 NO_BUILD=	yes
 NO_ARCH=	yes
 
@@ -36,10 +34,10 @@ DESKTOP_ENTRIES="Brain Workshop" \
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|' ${WRKSRC}/brainworkshop.pyw
+	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|' ${WRKSRC}/brainworkshop.py
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/brainworkshop.pyw ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_SCRIPT} ${WRKSRC}/brainworkshop.py ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} "res data" ${STAGEDIR}${DATADIR}/
 
 do-install-DOCS-on:

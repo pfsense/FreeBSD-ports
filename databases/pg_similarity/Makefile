@@ -1,6 +1,3 @@
-# Created by: Jov <amutu@amutu.com>
-# $FreeBSD$
-
 PORTNAME=	pg_similarity
 PORTVERSION=	20160917
 PORTREVISION=	2
@@ -9,10 +6,11 @@ PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
 MAINTAINER=	amutu@amutu.com
 COMMENT=	Set of functions and operators for executing similarity queries
+WWW=		http://pgsimilarity.projects.pgfoundry.org
 
 LICENSE=	BSD3CLAUSE
 
-USES=		gmake pgsql:9.1+
+USES=		gmake pgsql:11+
 USE_GITHUB=	yes
 GH_ACCOUNT=	eulerto
 GH_TAGNAME=	be1a8b0

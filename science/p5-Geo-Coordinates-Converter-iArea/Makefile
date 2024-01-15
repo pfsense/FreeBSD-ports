@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Geo-Coordinates-Converter-iArea
 PORTVERSION=	0.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Some utility functions around iArea
+WWW=		https://metacpan.org/release/Geo-Coordinates-Converter-iArea
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

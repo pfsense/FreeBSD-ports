@@ -1,6 +1,3 @@
-# Created by: Manuel Rábade <mig@mig-29.net>
-# $FreeBSD$
-
 PORTNAME=	HTML-Template-Associate
 PORTVERSION=	2.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Bridges gap between HTML::Template and other modules
+WWW=		https://metacpan.org/release/HTML-Template-Associate
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HTML-Template>=0:www/p5-HTML-Template \

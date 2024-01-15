@@ -1,74 +1,64 @@
-# $FreeBSD$
-
 PORTNAME=	putty
-PORTVERSION=	0.74
+DISTVERSION=	0.80
 PORTREVISION=	1
+#DISTVERSIONSUFFIX=	.0c59d49
 CATEGORIES=	security
 MASTER_SITES=	http://the.earth.li/~sgtatham/putty/${PORTVERSION}/ \
-		ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/
+		ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/ \
+		LOCAL/mandree/
+#MASTER_SITES=	https://tartarus.org/~simon/putty-prerel-snapshots/
 
 MAINTAINER=	mandree@FreeBSD.org
-COMMENT=	Secure shell and telnet client
-# test plan: test ALL 4 GSSAPI_* options, ALL 3 GTK options, WITH_DEBUG=yes build.
+COMMENT=	Secure shell and telnet client including xterm emulator
+WWW=		https://www.chiark.greenend.org.uk/~sgtatham/putty/
+# test plan: test ALL 4 GSSAPI_* options, GTK3 yes/no, WITH_DEBUG=yes build.
 
 LICENSE=	MIT
 LICENSE_FILE=	${PATCH_WRKSRC}/LICENCE
 
-USES=		cpe gmake pkgconfig
-CPE_VENDOR=	simon_tatham
+USES=		cmake cpe perl5 pkgconfig
+USE_PERL5=	build
 
-MAKEFILE=	Makefile.gtk
+CONFLICTS_INSTALL?=	pssh* putty-nogtk*
 
-CONFLICTS_INSTALL?=	pssh-[0-9]* putty-gtk2-[0-9]* putty-nogtk-[0-9]*
-
-PATCH_WRKSRC=	${WRKDIR}/${DISTNAME}
-WRKSRC=		${WRKDIR}/${DISTNAME}/unix
-
-PLIST_FILES=	bin/plink \
+PLIST_FILES=	bin/pageant \
+		bin/plink \
 		bin/pscp \
 		bin/psftp \
+		bin/psusan \
 		bin/puttygen \
-		man/man1/plink.1.gz \
-		man/man1/pscp.1.gz \
-		man/man1/psftp.1.gz \
-		man/man1/puttygen.1.gz
+		share/man/man1/pageant.1.gz \
+		share/man/man1/plink.1.gz \
+		share/man/man1/pscp.1.gz \
+		share/man/man1/psftp.1.gz \
+		share/man/man1/psusan.1.gz \
+		share/man/man1/puttygen.1.gz
 
+OPTIONS_DEFINE=			GTK3
 OPTIONS_DEFAULT=		GSSAPI_BASE GTK3
-OPTIONS_RADIO=			TOOLKIT
-OPTIONS_RADIO_TOOLKIT=		GTK2 GTK3
 OPTIONS_SINGLE=			GSSAPI_SELECT
-OPTIONS_SINGLE_GSSAPI_SELECT=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL \
-				GSSAPI_MIT
+OPTIONS_SINGLE_GSSAPI_SELECT=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT \
+				GSSAPI_NONE
 
 .include <bsd.port.options.mk>
 
-CFLAGS+=	-DBSD_PTYS -DHAVE_FUTIMES -DIPV6 -DOMIT_UTMP
 LDFLAGS+=	-Wl,--as-needed
 
-.if (${PORT_OPTIONS:MGTK2} || ${PORT_OPTIONS:MGTK3}) && !defined(WITHOUT_X11)
+# XXX FIXME this is simplified on these assumptions:
+# - we only support GTK3 in FreeBSD
+#   (Putty would support EOL GTK2 and GTK1 as well)
+# - Putty 0.77 cannot have X11 without the gdk/gdkx.h header i. e. GTK.
+.if ${PORT_OPTIONS:MGTK3} && !defined(WITHOUT_X11)
 USES+=		xorg
 USE_XORG=	x11
-.if ${PORT_OPTIONS:MGTK2}
-USES+=		gnome
-USE_GNOME=	cairo gdkpixbuf2 gtk20
-MAKE_ARGS+=	GTK_CONFIG="pkg-config gtk+-2.0 x11 --cflags" \
-		PUTTY_WITH_GTK=yes
-.endif
-.if ${PORT_OPTIONS:MGTK3}
 USES+=		gnome
 USE_GNOME=	cairo gdkpixbuf2 gtk30
-MAKE_ARGS+=	GTK_CONFIG="pkg-config gtk+-3.0 x11 --cflags" \
-		PUTTY_WITH_GTK=yes
-.endif
+CMAKE_ARGS+=	-DPUTTY_GTK_VERSION:STRING=3
 
-PLIST_FILES+=	bin/pageant \
-		bin/pterm \
+PLIST_FILES+=	bin/pterm \
 		bin/putty \
-		bin/puttytel \
-		man/man1/pageant.1.gz \
-		man/man1/pterm.1.gz \
-		man/man1/putty.1.gz \
-		man/man1/puttytel.1.gz \
+		share/man/man1/pterm.1.gz \
+		share/man/man1/putty.1.gz \
 		share/pixmaps/putty.ico
 DESKTOP_ENTRIES=	"PuTTY" \
 			"${COMMENT}" \
@@ -77,49 +67,41 @@ DESKTOP_ENTRIES=	"PuTTY" \
 			"" \
 			false
 .else
-MAKE_ARGS+=	GTK_CONFIG=:
+CMAKE_ARGS+=	-DPUTTY_GTK_VERSION:STRING=NONE
 .endif
 
-.if ${PORT_OPTIONS:MGSSAPI_BASE}
+.if ${PORT_OPTIONS:MGSSAPI_BASE} # Heimdal-like in base system
 USES+=		gssapi:base,flags
-MAKE_ARGS+=	KRB5CONFIG=${KRB5CONFIG}
+CMAKE_ARGS+=	-DKRB5_CONFIG:PATH=${KRB5CONFIG} \
+		-DPUTTY_GSSAPI:STRING=STATIC
 .elif ${PORT_OPTIONS:MGSSAPI_HEIMDAL}
 USES+=		gssapi:heimdal,flags
-MAKE_ARGS+=	KRB5CONFIG=${KRB5CONFIG}
+CMAKE_ARGS+=	-DKRB5_CONFIG:PATH=${KRB5CONFIG} \
+		-DPUTTY_GSSAPI:STRING=STATIC
 .elif ${PORT_OPTIONS:MGSSAPI_MIT}
 USES+=		gssapi:mit,flags
-MAKE_ARGS+=	KRB5CONFIG=${KRB5CONFIG}
+CMAKE_ARGS+=	-DKRB5_CONFIG:PATH=${KRB5CONFIG} \
+		-DPUTTY_GSSAPI:STRING=STATIC
 .else
-_COMPAT=	-DNO_GSSAPI
+CMAKE_ARGS+=	-DPUTTY_GSSAPI:STRING=OFF
 .endif
-
-_COMPAT+=	-DOMIT_UTMP
-
-.if defined(WITH_DEBUG)
-CFLAGS+=	-DDEBUG
-XFLAGS=		-DDEBUG
-_COMPAT+=	-DDEBUG
-.endif
-
-# upstream sets -Werror - there are no issues on 9.1-FreeBSD amd64
-# currently, but override it nonetheless.
-XFLAGS+=	-Wno-error
-
-MAKE_ARGS+=	CC="${CC}" \
-		COMPAT="${_COMPAT}" \
-		INSTALL_DATA="${INSTALL_DATA}" \
-		INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
-		XFLAGS="${XFLAGS}"
 
 post-patch:
-	@${REINPLACE_CMD} -e 's,prefix=/usr/local,prefix=${PREFIX},;\
-			      s,make,${MAKE_CMD},'\
-		${WRKSRC}/${MAKEFILE}
+# we don't want to inherit FreeBSD commits
+# as PUTTY Git commit revisions,
+# so pretend we do not have Git:
+	${REINPLACE_CMD} '/FindGit/d' \
+		${WRKSRC}/cmake/setup.cmake \
+		${WRKSRC}/doc/CMakeLists.txt
+# nuke pkg-config detection of GSSAPI/Kerberos libs,
+# it interferes with FreeBSD's krb5-config approach
+	${REINPLACE_CMD} '/pkg_check_modules(KRB5 krb5-gssapi)/d' \
+		${WRKSRC}/cmake/platforms/unix.cmake
 
 post-install:
-.if ${PORT_OPTIONS:MGTK2} || ${PORT_OPTIONS:MGTK3}
+.if ${PORT_OPTIONS:MGTK3}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
-	${INSTALL_DATA} ${WRKSRC}/../windows/putty.ico \
+	${INSTALL_DATA} ${WRKSRC}/windows/putty.ico \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 .endif
 

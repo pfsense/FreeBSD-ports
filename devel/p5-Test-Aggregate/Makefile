@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Aggregate
 PORTVERSION=	0.375
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Aggregate Perl tests for better performance
+WWW=		https://metacpan.org/release/Test-Aggregate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

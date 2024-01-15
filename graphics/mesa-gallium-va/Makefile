@@ -1,14 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	mesa-gallium-va
 PORTVERSION=	${MESAVERSION}
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 COMMENT=	Mesa Gallium VAAPI drivers
+WWW=		https://www.mesa3d.org/
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/docs/license.rst
+
+ONLY_FOR_ARCHS=		aarch64 amd64 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	used only by AMD/Radeon hardware
 
 LIB_DEPENDS=	libva.so:multimedia/libva \
 		libzstd.so:archivers/zstd
+
+USES=		llvm:lib,noexport
 
 OPTIONS_DEFINE=		X11
 OPTIONS_DEFAULT=	X11
@@ -19,24 +26,24 @@ X11_USE=		xorg=xorgproto,x11,xcb,xdamage,xext,xfixes,xshmfence,xxf86vm,xrandr
 .include <bsd.port.options.mk>
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
 
-ONLY_FOR_ARCHS=		i386 amd64 aarch64 powerpc64 powerpc64le
-ONLY_FOR_ARCHS_REASON=	Used only by amd/radeon hardware
-
-MESON_ARGS+=	-Ddri-drivers="" \
+MESON_ARGS+=	-Dvideo-codecs="vc1dec,h264dec,h264enc,h265dec,h265enc" \
 		-Dgallium-drivers="radeonsi,r600" \
 		-Dvulkan-drivers="" \
+		-Dandroid-libbacktrace=disabled \
 		-Dgallium-vdpau=disabled \
 		-Dgallium-omx=disabled \
 		-Dgallium-xa=disabled \
 		-Dgallium-opencl=disabled \
-		-Dgallium-xvmc=disabled \
 		-Dgallium-nine=false \
 		-Dgbm=disabled \
 		-Dgles1=disabled \
 		-Dgles2=disabled \
-		-Dosmesa=none \
+		-Dlmsensors=disabled \
+		-Dmicrosoft-clc=disabled \
+		-Dosmesa=false \
+		-Dvalgrind=disabled \
 		-Dglx=disabled \
-		-Ddri3=disabled
+		-Ddri3=enabled
 
 LDFLAGS_i386=	-Wl,-znotext
 
@@ -48,7 +55,9 @@ MESON_ARGS+=	-Dplatforms="x11"
 MESON_ARGS+=	-Dglx=disabled \
 		-Degl=disabled \
 		-Dopengl=false \
-		-Dshared-glapi=disabled
+		-Dshared-glapi=disabled \
+		-Dxlib-lease=disabled \
+		-Dplatforms=""
 .endif
 
 .include "${MASTERDIR}/Makefile.targets"

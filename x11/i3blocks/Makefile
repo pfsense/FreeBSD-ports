@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	i3blocks
 DISTVERSION=	1.4-93
 DISTVERSIONSUFFIX=	-gfcee4e0
@@ -7,6 +5,7 @@ CATEGORIES=	x11
 
 MAINTAINER=	coszminv@gmail.com
 COMMENT=	Define blocks for your i3bar status line
+WWW=		https://github.com/Minbar1/i3blocks
 
 LICENSE=	GPLv3
 

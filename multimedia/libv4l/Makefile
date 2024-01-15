@@ -1,13 +1,14 @@
-# Created by: Andrew Thompson <thompsa@FreeBSD.org>
-# $FreeBSD$
 # Check v4l_compat and v4l-utils slave ports
 
 PORTNAME?=	libv4l
-PORTVERSION=	1.20.0
+PORTVERSION=	1.23.0
+PORTREVISION?=	2
+DISTVERSIONPREFIX=	v4l-utils-
 CATEGORIES=	multimedia
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT?=	Video4Linux library
+WWW?=		https://linuxtv.org/wiki/index.php/V4l-utils
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
@@ -17,12 +18,11 @@ USES=		compiler:c11 tar:bzip2
 USE_GITHUB=	yes
 GH_ACCOUNT=	hselasky
 GH_PROJECT=	v4l-utils
-GH_TAGNAME=	v4l-utils-${PORTVERSION}
 
-GH_TUPLE=	hselasky:webcamd:v5.10.6.0:webcamd \
-		torvalds:linux:v5.10-rc6:linux
+GH_TUPLE=	hselasky:webcamd:v5.17.1.0:webcamd \
+		torvalds:linux:v5.17-rc1:linux
 
-WEBCAMDDIR=	${WRKDIR}/webcamd-5.10.6.0
+WEBCAMDDIR=	${WRKDIR}/webcamd-5.17.1.0
 LINUXDIR=	${WRKDIR}/linux-*
 
 .if ${PORTNAME} == v4l-utils || ${PORTNAME} == libv4l
@@ -51,9 +51,10 @@ RUN_DEPENDS+=	evdev-proto>=5.3:devel/evdev-proto
 .if ${PORTNAME} == v4l-utils
 USES+=		perl5
 BUILD_DEPENDS+=	libv4l>=${PORTVERSION}:multimedia/libv4l
-LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim \
+LIB_DEPENDS+=	libepoll-shim-interpose.so:devel/libepoll-shim \
 		libv4l2.so:multimedia/libv4l
-LDFLAGS+=	-lepoll-shim
+CPPFLAGS+=	`pkg-config --cflags epoll-shim-interpose`
+LDFLAGS+=	`pkg-config --libs epoll-shim-interpose`
 CONFIGURE_ARGS+= \
 	--enable-v4l-utils \
 	--without-v4l2-compliance
@@ -69,6 +70,15 @@ CONFIGURE_ARGS+= \
 .endif
 
 post-patch:
+.if ${PORTNAME} == v4l-utils || ${PORTNAME} == libv4l
+# Create some files and folders needed by autoreconf
+	@${MKDIR} ${WRKSRC}/build-aux
+	@${TOUCH} ${WRKSRC}/build-aux/config.rpath \
+		  ${WRKSRC}/v4l-utils-po/Makefile.in.in \
+		  ${WRKSRC}/libdvbv5-po/Makefile.in.in
+# Don't build translation files for now
+	@${REINPLACE_CMD} -e 's|v4l-utils-po libdvbv5-po||g' ${WRKSRC}/Makefile.am
+.endif
 # Remove old FreeBSD include files (to be removed upstream)
 	@${RM} -r ${WRKSRC}/contrib/freebsd/include/*
 # Create symbolic link for Linux sources
@@ -107,6 +117,7 @@ post-patch:
 			-e 's|_IOC_NONE|IOC_VOID|g' \
 			-e 's|<endian.h>|<sys/endian.h>|g' \
 			-e 's|<linux/compiler.h>|<sys/cdefs.h>|g' \
+			-e 's|<v4l-getsubopt.h>|<include/v4l-getsubopt.h>|g' \
 			-e 's|"compiler.h"|<sys/cdefs.h>|g' \
 			-e 's|fallthrough;|;|g' \
 			-e 's|<linux/errno.h>|<errno.h>|g' \

@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Method-Alias
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create method aliases (and do it safely)
+WWW=		https://metacpan.org/release/Method-Alias
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

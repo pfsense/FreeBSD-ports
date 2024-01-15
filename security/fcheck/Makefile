@@ -1,6 +1,3 @@
-# Created by: Lars Engels <lme@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fcheck
 PORTVERSION=	2.07.59
 PORTREVISION=	1
@@ -9,7 +6,7 @@ MASTER_SITES=	http://www.sourcefiles.org/Networking/Security/Intrusion_Detection
 		http://bsd-geek.de/FreeBSD/distfiles/
 DISTNAME=	FCheck_${PORTVERSION}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Intrusion detection and Policy enforcement / auditing software
 
 LICENSE=	GPLv2 GPLv3

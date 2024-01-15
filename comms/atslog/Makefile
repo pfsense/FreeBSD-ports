@@ -1,6 +1,3 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
-
 PORTNAME=	atslog
 PORTVERSION=	2.1.1
 PORTREVISION=	8
@@ -9,6 +6,7 @@ MASTER_SITES=	BERLIOS
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Software for collecting and analyzing calls from different PBX models
+WWW=		http://www.atslog.com/en/about/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -49,7 +47,6 @@ LIBWRAP_CONFIGURE_OFF=	--disable-libwrap
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MWWW}
-USE_PHP=	pcre
 USES+=		php:web
 .if ${PORT_OPTIONS:MWWWGD}
 USE_PHP+=	gd

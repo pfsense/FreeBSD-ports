@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	socklog
 PORTVERSION=	2.1.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://smarden.org/socklog/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small and secure replacement for syslogd
+WWW=		http://smarden.org/socklog/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/package/COPYING
@@ -23,6 +21,12 @@ HTMLDOCS=	*.html
 PORTDOCS=	${TEXTDOCS} ${HTMLDOCS}
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 do-configure:
 	${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/src/conf-cc

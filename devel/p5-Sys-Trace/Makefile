@@ -1,6 +1,3 @@
-# Created by: Ju Pengfei <jupengfei@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Sys-Trace
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Interface to system call tracing interfaces
+WWW=		https://metacpan.org/release/Sys-Trace
 
 LICENSE=	WTFPL
 LICENSE_FILE=	${WRKSRC}/README

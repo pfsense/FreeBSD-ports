@@ -1,9 +1,6 @@
-# Created by: Valery Komarov <komarov@valerka.net>
-# $FreeBSD$
-
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with thrift
-PORTREVISION=	12
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/thrift/${PORTVERSION}
@@ -12,6 +9,7 @@ DISTNAME=	thrift-${PORTVERSION}
 
 MAINTAINER=	komarov@valerka.net
 COMMENT=	C++ interface to Thrift
+WWW=		https://thrift.apache.org/
 
 BROKEN_i386=	undefined reference to 'boost::atomics::detail::lockpool::scoped_lock::scoped_lock(void const volatile*)'
 
@@ -20,32 +18,14 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 
 DISTINFO_FILE=		${.CURDIR}/../thrift/distinfo
 
-BROKEN_SSL=	openssl
-BROKEN_SSL_REASON_openssl=	'configure: error: "Error: libcrypto required."'
-
-USES=			autoreconf pkgconfig gmake compiler:c++11-lang \
+USES=			bison cmake pkgconfig compiler:c++11-lang cpe \
 			libtool pathfix ssl
-GNU_CONFIGURE=		yes
+CPE_VENDOR=		apache
 USE_LDCONFIG=		yes
 MAKE_JOBS_UNSAFE=	yes
 PLIST_SUB=		PORTVERSION="${THRIFT_PORTVERSION}"
-
-CONFIGURE_ARGS+=	\
-		--without-c_glib \
-		--with-cpp \
-		--with-boost-libdir="${LOCALBASE}/lib" \
-		--without-csharp \
-		--without-erlang \
-		--without-haskell \
-		--without-java \
-		--without-perl \
-		--without-php \
-		--without-php_extension \
-		--without-python \
-		--without-ruby \
-		--without-lua \
-		--with-qt5=no \
-		--without-go
+CMAKE_ON=	BUILD_CPP BUILD_SHARED_LIBS
+CMAKE_OFF=	BUILD_C_GLIB BUILD_JAVA BUILD_JAVASCRIPT BUILD_NODEJS BUILD_PYTHON BUILD_HASKELL
 
 .include <bsd.port.pre.mk>
 

@@ -1,13 +1,11 @@
-# Created by: Juraj Lutter <juraj@lutter.sk>
-# $FreeBSD$
-
 PORTNAME=	logswan
-DISTVERSION=	2.1.10
+DISTVERSION=	2.1.13
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/fcambus/logswan/releases/download/${DISTVERSION}/
 
 MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Fast Web log analyzer
+WWW=		https://www.logswan.org
 
 LICENSE=	BSD2CLAUSE
 
@@ -17,6 +15,6 @@ LIB_DEPENDS=	libjansson.so:devel/jansson \
 USES=		cmake compiler:c11
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz
+		share/man/man1/${PORTNAME}.1.gz
 
 .include <bsd.port.mk>

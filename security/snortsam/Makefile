@@ -1,6 +1,3 @@
-# Created by: Danton Dorati <urisso@bsd.com.br>
-# $FreeBSD$
-
 PORTNAME=	snortsam
 PORTVERSION=	2.70
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	urisso@bsd.com.br
 COMMENT=	Output plugin for Snort
+WWW=		http://www.snortsam.net
 
 OPTIONS_DEFINE=	IPFW SAMTOOL DEBUG DOCS
 OPTIONS_DEFAULT=	IPFW SAMTOOL

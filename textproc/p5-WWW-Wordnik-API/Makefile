@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Wordnik-API
 PORTVERSION=	0.0.5
 PORTREVISION=	2
@@ -10,8 +7,9 @@ MASTER_SITE_SUBDIR=	CPAN:PSILVA
 PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-v${PORTVERSION}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Wordnik API implementation
+WWW=		https://metacpan.org/release/WWW-Wordnik-API
 
 LICENSE=	GPLv3
 

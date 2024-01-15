@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@FreeBSD.org)
-# $FreeBSD$
-
 PORTNAME=	icmpinfo
 PORTVERSION=	1.11
 PORTREVISION=	1

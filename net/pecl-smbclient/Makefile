@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	smbclient
-PORTVERSION=	1.0.0
-PORTREVISION=	1
+PORTVERSION=	1.1.1
 CATEGORIES=	net pear
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Smbclient wrapper extension
+WWW=		https://pecl.php.net/package/smbclient \
+		https://github.com/eduardok/libsmbclient-php
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

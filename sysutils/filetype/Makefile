@@ -1,6 +1,3 @@
-# Created by: ismail.yenigul@endersys.com.tr
-# $FreeBSD$
-
 PORTNAME=	filetype
 PORTVERSION=	0.1.3
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.pldaniels.com/filetype/
 
 MAINTAINER=	ismail.yenigul@endersys.com.tr
 COMMENT=	New file-type detection system
+WWW=		https://www.pldaniels.com/filetype/
 
 PORTDOCS=	README CHANGELOG CONTRIBUTORS INSTALL LICENSE TODO
 

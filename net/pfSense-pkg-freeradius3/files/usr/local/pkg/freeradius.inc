@@ -3,7 +3,7 @@
  * freeradius.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -78,7 +78,6 @@ function freeradius_get_libdir() {
 }
 
 function freeradius_deinstall_command() {
-	global $config;
 	$pidFile = "/var/run/radiusd.pid";
 	$i = 0;
 
@@ -90,17 +89,25 @@ function freeradius_deinstall_command() {
 	}
 
 	/* Remove package settings from config if 'Keep Settings' is disabled */
-	init_config_arr(array('installedpackages', 'freeradiussettings', 'config', 0));
-	if (isset($config['installedpackages']['freeradiussettings']['config'][0]['keep_settings']) &&
-	    empty($config['installedpackages']['freeradiussettings']['config'][0]['keep_settings'])) {
+	if (config_path_enabled('installedpackages/freeradiussettings/config/0/', 'keep_settings') &&
+	    empty(config_get_path('installedpackages/freeradiussettings/config/0/keep_settings'))) {
+		$uninstall = array(
+			'installedpackages/freeradius',
+			'installedpackages/freeradiusauthorizedmacs',
+			'installedpackages/freeradiusclients',
+			'installedpackages/freeradiusinterfaces',
+			'installedpackages/freeradiussettings',
+			'installedpackages/freeradiuseapconf',
+			'installedpackages/freeradiussqlconf',
+			'installedpackages/freeradiusmodulesldap',
+			'installedpackages/freeradiussync'
+		);
+
 		log_error("[freeRADIUS] Removing all FreeRADIUS settings since 'Keep Settings/Data' is disabled...");
-		$uninstall = array('freeradius', 'freeradiusauthorizedmacs', 'freeradiusclients', 'freeradiusinterfaces',
-		'freeradiussettings', 'freeradiuseapconf', 'freeradiussqlconf', 'freeradiusmodulesldap', 'freeradiussync');
-		foreach ($uninstall as $unin) {
-			if (is_array($config['installedpackages'][$unin])) {
-				unset($config['installedpackages'][$unin]);
-			}
+		foreach ($uninstall as $path) {
+			config_del_path($path);
 		}
+
 		rmdir_recursive(FREERADIUS_RADDB, false);
 		write_config("[freeRADIUS] Package uninstalled.");
 	}
@@ -130,26 +137,27 @@ function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 }
 
 function freeradius_upgrade_config() {
-	global $config;
-
 	// FreeRADIUS built-in certificate manager was removed (Bug #7170)
-	if (is_array($config['installedpackages']['freeradiuscerts'])) {
-		unset($config['installedpackages']['freeradiuscerts']);
-		log_error(gettext("freeRADIUS: Removing deprecated built-in certificate manager configuration."));
+	$deprecated_config_paths = array(
+		'installedpackages/freeradiuscerts',
+		'installedpackages/freeradiuseapconf/config/0/vareapconfchoosecertmanager',
+		'installedpackages/freeradiuseapconf/config/0/vareapconfprivatekeypassword'
+	);
+
+	$isremoved = false;
+	foreach ($deprecated_config_paths as $path) {
+		if (config_get_path($path)) {
+			$isremoved = true;
+			config_del_path($path);
+		}
 	}
-	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		if (isset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfchoosecertmanager'])) {
-			unset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfchoosecertmanager']);
-		}
-		if (isset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfprivatekeypassword'])) {
-			unset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfprivatekeypassword']);
-		}
+
+	if ($isremoved) {
+		log_error(gettext("freeRADIUS: Removed deprecated built-in certificate manager configuration."));
 	}
 }
 
 function freeradius_install_command() {
-	global $config;
-
 	// We create here different folders for different counters.
 	safe_mkdir("/var/log/radacct/datacounter/daily");
 	safe_mkdir("/var/log/radacct/datacounter/weekly");
@@ -282,7 +290,6 @@ EOD;
 }
 
 function freeradius_settings_resync($restart_svc = true) {
-	global $config;
 	$conf = '';
 
 	// put the constant to a variable
@@ -303,11 +310,7 @@ function freeradius_settings_resync($restart_svc = true) {
 		touch("/var/log/radwtmp");
 	}
 
-	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
-		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	} else {
-		$varsettings = array();
-	}
+	$varsettings = config_get_path('installedpackages/freeradiussettings/config/0', []);
 
 	// Variables: General configuration
 	$varsettingsmaxrequests = ($varsettings['varsettingsmaxrequests'] ?: '1024');
@@ -340,11 +343,7 @@ function freeradius_settings_resync($restart_svc = true) {
 	$varsettingsmaxrequestsperserver = ($varsettings['varsettingsmaxrequestsperserver'] ?: '0');
 
 	// For more details look at freeradius_sqlconf_resync()
-	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
-		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	} else {
-		$sqlconf = array();
-	}
+	$sqlconf = config_get_path('installedpackages/freeradiussqlconf/config/0', []);
 
 	// Dis-/Enable SQL in "instatiate" section in freeradius_settings_resync() and radiusd.conf SQL SERVER 2
 	if ($sqlconf['varsqlconf2includeenable'] == 'on') {
@@ -479,14 +478,9 @@ EOD;
 }
 
 function freeradius_users_resync($via_rpc = false) {
-	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradius']['config'])) {
-		$arrusers = $config['installedpackages']['freeradius']['config'];
-	} else {
-		$arrusers = array();
-	}
+	$arrusers = config_get_path('installedpackages/freeradius/config', []);
 
 	if (!empty($arrusers)) {
 		foreach ($arrusers as $users) {
@@ -534,21 +528,17 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersvlanid = $users['varusersvlanid'];
 
 			// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-			$varusersamountoftime = ($users['varusersamountoftime'] ?: '');
-			$varusersamountoftime = (int) $varusersamountoftime * 60;
+			$varusersamountoftime = ($users['varusersamountoftime'] ? (int) $users['varusersamountoftime'] * 60 : '');
 			$varuserspointoftime = $users['varuserspointoftime'];
 
 			// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-			$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets'] ?: '');
-			$varusersmaxtotaloctets = (int) $varusersmaxtotaloctets * 1024 * 1024;
+			$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets'] ? (int) $users['varusersmaxtotaloctets'] * 1024 * 1024 : '');
 			$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
 
 			// GUI uses Kbit but RADIUS needs bits so we do a multiplication
 			// Use 1000 (Kbit) and not 1024 (Kibibit) to match the division used by Captive Portal
-			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ?: '');
-			$varusersmaxbandwidthup = (int) $varusersmaxbandwidthup * 1000;
-			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ?: '');
-			$varusersmaxbandwidthdown = (int) $varusersmaxbandwidthdown * 1000;
+			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ? (int) $users['varusersmaxbandwidthup'] * 1000 : '');
+			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ? (int) $users['varusersmaxbandwidthdown'] * 1000 : '');
 
 			// Accounting-Interim-Interval - Must not be smaller than 60 and should be bigger than 600s
 			if (($users['varusersacctinteriminterval'] >= '0') && ($users['varusersacctinteriminterval'] < '60')) {
@@ -810,16 +800,10 @@ EOD;
 	}
 }
 
-
 function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false) {
-	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiusauthorizedmacs']['config'])) {
-		$arrmacs = $config['installedpackages']['freeradiusauthorizedmacs']['config'];
-	} else {
-		$arrmacs = array();
-	}
+	$arrmacs = config_get_path('installedpackages/freeradiusauthorizedmacs/config', []);
 
 	if (!empty($arrmacs)) {
 		foreach ($arrmacs as $macs) {
@@ -845,20 +829,16 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			$varmacsvlanid = $macs['varmacsvlanid'];
 
 			// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-			$varmacsamountoftime = ($macs['varmacsamountoftime'] ?: '');
-			$varmacsamountoftime = (int) $varmacsamountoftime * 60;
+			$varmacsamountoftime = ($macs['varmacsamountoftime'] ? (int) $macs['varmacsamountoftime'] * 60 : '');
 			$varmacspointoftime = $macs['varmacspointoftime'];
 
 			// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-			$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets'] ?: '');
-			$varmacsmaxtotaloctets = (int) $varmacsmaxtotaloctets * 1024 * 1024;
+			$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets'] ? (int) $macs['varmacsmaxtotaloctets'] * 1024 * 1024 : '');
 			$varmacsmaxtotaloctetstimerange = $macs['varmacsmaxtotaloctetstimerange'];
 
 			// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
-			$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup'] ?: '');
-			$varmacsmaxbandwidthup = (int) $varmacsmaxbandwidthup * 1024;
-			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ?: '');
-			$varmacsmaxbandwidthdown = (int) $varmacsmaxbandwidthdown * 1024;
+			$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup'] ? (int) $macs['varmacsmaxbandwidthup'] * 1024 : '');
+			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ? (int) $macs['varmacsmaxbandwidthdown'] * 1024 : '');
 
 			// Accounting-Interim-Interval
 			if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
@@ -1096,14 +1076,9 @@ EOD;
 }
 
 function freeradius_clients_resync($restart_svc = true) {
-	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiusclients']['config'])) {
-		$arrclients = $config['installedpackages']['freeradiusclients']['config'];
-	} else {
-		$arrclients = array();
-	}
+	$arrclients = config_get_path('installedpackages/freeradiusclients/config', []);
 
 	if (!empty($arrclients)) {
 		foreach ($arrclients as $item) {
@@ -1179,23 +1154,16 @@ EOD;
 	}
 }
 
-
-
 function freeradius_eapconf_resync($restart_svc = true) {
-	global $config;
 	$conf = '';
 
-	if (!is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		$config['installedpackages']['freeradiuseapconf']['config'][0] = array();
-	}
-	$eapconf = & $config['installedpackages']['freeradiuseapconf']['config'][0];
+	$eapconf_path = 'installedpackages/freeradiuseapconf/config/0';
+	$eapconf = config_get_path($eapconf_path);
 
-	// Disable weak EAP types like MD5, GTC, LEAP
+	// Disable weak EAP types like MD5, and GTC
 	if ($eapconf['vareapconfdisableweakeaptypes'] == '') {
 		$vareapconfweakeaptypes = <<<EOD
 	md5 {
-	}
-	leap {
 	}
 	gtc {
 		#challenge = "Password: "
@@ -1205,7 +1173,7 @@ function freeradius_eapconf_resync($restart_svc = true) {
 EOD;
 
 	} else {
-		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC, LEAP ###';
+		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC ###';
 	}
 
 	// Variables: EAP
@@ -1218,12 +1186,6 @@ EOD;
 	// Variables: EAP-TLS
 	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize'] ?: '1024');
 	$vareapconfincludelength = ($eapconf['vareapconfincludelength'] ?: 'yes');
-	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: '');
-	$vareapconfstate = ($eapconf['vareapconfstate'] ?: '');
-	$vareapconfcity = ($eapconf['vareapconfcity'] ?: '');
-	$vareapconforganization = ($eapconf['vareapconforganization'] ?: '');
-	$vareapconfemail = ($eapconf['vareapconfemail'] ?: '');
-	$vareapconfcommonname = ($eapconf['vareapconfcommonname'] ?: 'internal-ca');
 
 	// Variables: Cache
 	$vareapconfcacheenablecache = ($eapconf['vareapconfcacheenablecache'] ?: 'no');
@@ -1245,7 +1207,6 @@ EOD;
 	$vareapconfpeapdefaulteaptype = ($eapconf['vareapconfpeapdefaulteaptype'] ?: 'mschapv2');
 	$vareapconfpeapcopyrequesttotunnel = ($eapconf['vareapconfpeapcopyrequesttotunnel'] ?: 'no');
 	$vareapconfpeapusetunneledreply = ($eapconf['vareapconfpeapusetunneledreply'] ? 1 : 0);
-	$vareapconfpeapsohenable = ($eapconf['vareapconfpeapsohenable'] ?: 'Disable');
 
 	// This is for enable/disbable MS SoH in EAP-PEAP and the virtuial-server "soh-server"
 	if ($eapconf['vareapconfpeapsohenable'] == 'Enable') {
@@ -1262,20 +1223,9 @@ EOD;
 		unlink_if_exists(FREERADIUS_SITESENABLED . "/soh");
 	}
 
-
 	// For pfSense cert manager
 	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
 	if ($ca_cert == false) {
-		if (!is_array($config['ca'])) {
-			$config['ca'] = array();
-		}
-		$a_ca =& $config['ca'];
-
-		if (!is_array($config['cert'])) {
-			$config['cert'] = array();
-		}
-		$a_cert =& $config['cert'];
-
 		/* Generate CA with generic details */
 		$ca = array();
 		$ca['refid'] = uniqid();
@@ -1288,7 +1238,9 @@ EOD;
 		} else {
 			$eapconf["ssl_ca_cert"] = $ca['refid'];
 			$ca_cert = $ca;
+			$a_ca = config_get_path('ca');
 			$a_ca[] = $ca;
+			config_set_path('ca', $a_ca);
 			$cert = array();
 			$cert['refid'] = uniqid();
 			$cert['descr'] = "FreeRADIUS Server Certificate";
@@ -1300,7 +1252,9 @@ EOD;
 				file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
 				$cert_error = true;
 			} else {
+				$a_cert = config_get_path('cert');
 				$a_cert[] = $cert;
+				config_set_path('cert', $a_cert);
 				$eapconf["ssl_server_cert"] = $cert['refid'];
 			}
 		}
@@ -1328,7 +1282,7 @@ EOD;
 				file_put_contents(FREERADIUS_CERTS . "/server_key.pem", base64_decode($svr_cert['prv']));
 			}
 			if (base64_decode($svr_cert['crt'])) {
-				file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", 
+				file_put_contents(FREERADIUS_CERTS . "/server_cert.pem",
 					base64_decode($svr_cert['crt']) . "\n" .
 					ca_chain($svr_cert));
 			}
@@ -1372,6 +1326,13 @@ EOD;
 	} else {
 		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
 	}
+	if (!empty($eapconf['vareapconftlsminversion'])) {
+		$vareapconftlsminversion = $eapconf['vareapconftlsminversion'];
+	} else {
+		$vareapconftlsminversion = '1.0';
+	}
+
+	config_set_path($eapconf_path, $eapconf);
 
 	$conf .= <<<EOD
 ### EAP
@@ -1411,6 +1372,7 @@ eap {
 		cipher_server_preference = no
 #		disable_tlsv1_2 = no
 		ecdh_curve = "prime256v1"
+		tls_min_version = "{$vareapconftlsminversion}"
 		cache {
 			enable = {$vareapconfcacheenablecache}
 			lifetime = {$vareapconfcachelifetime}
@@ -1700,7 +1662,7 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
-
+	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
@@ -1708,27 +1670,19 @@ EOD;
 
 // Gets started from freeradiuseapconf.xml
 function freeradius_get_ca_crl() {
-	global $config;
 	$crl_arr = array();
 	$crl_arr[] = array('refid' => 'none', 'descr' => 'none');
 
-	if (is_array($config['crl'])) {
-		foreach ($config['crl'] as $crl) {
-			$crl_arr[] = array('refid' => $crl['refid'], 'descr' => $crl['descr']);
-		}
+	foreach (config_get_path('crl', []) as $crl) {
+		$crl_arr[] = array('refid' => $crl['refid'], 'descr' => $crl['descr']);
 	}
 	return $crl_arr;
 }
 
 function freeradius_sqlconf_resync() {
-	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
-		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	} else {
-		$sqlconf = array();
-	}
+	$sqlconf = config_get_path('installedpackages/freeradiussqlconf/config/0', []);
 
 	// Variables: SQL DATABASE 1
 	$varsqlconfdatabase = ($sqlconf['varsqlconfdatabase'] ?: 'mysql');
@@ -1915,7 +1869,6 @@ sqlcounter expire_on_login {
 	\$INCLUDE \${modconfdir}/sql/counter/\${dialect}/\${.:instance}.conf
 }
 
-
 EOD;
 
 	$filename = FREERADIUS_MODSENABLED . '/sqlcounter';
@@ -1936,19 +1889,15 @@ EOD;
 
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
+	freeradius_sync_on_changes();
 	freeradius_settings_resync();
 }
 
 function freeradius_serverdefault_resync() {
-	global $config;
 	$conf = '';
 
 	// Get Variables from freeradiusmodulesldap.xml
-	if (is_array($config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
-		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
-	} else {
-		$arrmodulesldap = array();
-	}
+	$arrmodulesldap = config_get_path('installedpackages/freeradiusmodulesldap/config/0', []);
 
 	// failover/loadbalancing mode
 	$varmodulesldap2failover = ($arrmodulesldap['varmodulesldap2failover'] ?: 'redundant');
@@ -2010,23 +1959,8 @@ EOD;
 		@unlink_if_exists(FREERADIUS_MODSENABLED . '/ldap');
 	}
 
-
 	// Get Variables from freeradiussqlconf.xml for DATABASE 1
-	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
-		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	} else {
-		$sqlconf = array();
-	}
-	$varsqlconfenableauthorize = ($sqlconf['varsqlconfenableauthorize'] ?: 'Disable');
-	$varsqlconfenableaccounting = ($sqlconf['varsqlconfenableaccounting'] ?: 'Disable');
-	$varsqlconfenablesession = ($sqlconf['varsqlconfenablesession'] ?: 'Disable');
-	$varsqlconfenablepostauth = ($sqlconf['varsqlconfenablepostauth'] ?: 'Disable');
-
-	// Get Variables from freeradiussqlconf.xml for DATABASE 2
-	$varsqlconf2enableauthorize = ($sqlconf['varsqlconf2enableauthorize'] ?: 'Disable');
-	$varsqlconf2enableaccounting = ($sqlconf['varsqlconf2enableaccounting'] ?: 'Disable');
-	$varsqlconf2enablesession = ($sqlconf['varsqlconf2enablesession'] ?: 'Disable');
-	$varsqlconf2enablepostauth = ($sqlconf['varsqlconf2enablepostauth'] ?: 'Disable');
+	$sqlconf = config_get_path('installedpackages/freeradiussqlconf/config/0', []);
 
 	// authorize section DATABASE 2
 	if (($sqlconf['varsqlconf2includeenable'] == 'on') && ($sqlconf['varsqlconf2enableauthorize'] == 'Enable')) {
@@ -2069,10 +2003,10 @@ EOD;
 EOD;
 	$varsqlconfauthcounters = <<<EOD
 
-	dailycounter
-	monthlycounter
-	noresetcounter
-	expire_on_login
+	-dailycounter
+	-monthlycounter
+	-noresetcounter
+	-expire_on_login
 
 EOD;
 	} else {
@@ -2142,11 +2076,7 @@ EOD;
 
 	// Changing authorize section for plain mac auth
 	// Variables: If not using 802.1x, mac address must be known
-	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
-		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	} else {
-		$varsettings = array();
-	}
+	$varsettings = config_get_path('installedpackages/freeradiussettings/config/0', []);
 
 	// If unchecked we need the normal EAP section.
 	if (!$varsettings['varsettingsenablemacauth']) {
@@ -2195,11 +2125,7 @@ EOD;
 	// Deletes virtual-server coa by default. Will be re-enabled if there is an interface-type "coa"
 	unlink_if_exists(FREERADIUS_SITESENABLED . "/coa");
 
-	if (is_array($config['installedpackages']['freeradiusinterfaces']['config'])) {
-		$arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
-	} else {
-		$arrinterfaces = array();
-	}
+	$arrinterfaces = config_get_path('installedpackages/freeradiusinterfaces/config', []);
 
 	if (!empty($arrinterfaces)) {
 		foreach ($arrinterfaces as $item) {
@@ -2250,7 +2176,6 @@ EOD;
 			} // endif interface-type = auth, acct, proxy, status
 		} // endforeach
 	} // endif empty
-
 
 	$conf .= <<<EOD
 
@@ -2457,50 +2382,43 @@ EOD;
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
 function freeradius_sync_on_changes() {
-	global $config;
-
-	if (is_array($config['installedpackages']['freeradiussync'])) {
-		$synconchanges = $config['installedpackages']['freeradiussync']['config'][0]['varsyncenablexmlrpc'];
-		$varsynctimeout = $config['installedpackages']['freeradiussync']['config'][0]['varsynctimeout'] ?: '150';
-	} else {
-		return;
-	}
+	$synconchanges = config_get_path('installedpackages/freeradiussync/config/0/varsyncenablexmlrpc');
+	$varsynctimeout = config_get_path('installedpackages/freeradiussync/config/0/varsynctimeout') ?: '150';
 
 	// if checkbox is NOT checked do nothing
 	switch ($synconchanges) {
 		case "manual":
-			if (is_array($config['installedpackages']['freeradiussync']['config'][0]['row'])) {
-				$rs = $config['installedpackages']['freeradiussync']['config'][0]['row'];
-			} else {
+			$rs = config_get_path('installedpackages/freeradiussync/config/0/row');
+			if (!is_array($rs)) {
 				log_error("[FreeRADIUS]: XMLRPC sync is enabled but there are no hosts configured as replication targets.");
 				return;
 			}
 			break;
 		case "auto":
-			if (is_array($config['hasync'])) {
-				$system_carp = $config['hasync'];
-				$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
-				$rs[0]['varsyncusername'] = $system_carp['username'];
-				$rs[0]['varsyncpassword'] = $system_carp['password'];
-				$rs[0]['varsyncdestinenable'] = FALSE;
-
-				// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-				if ($config['system']['webgui']['protocol'] == "http") {
-					$rs[0]['varsyncprotocol'] = "http";
-					$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '80';
-				} else {
-					$rs[0]['varsyncprotocol'] = "https";
-					$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '443';
-				}
-				if ($system_carp['synchronizetoip'] == "") {
-					log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-					return;
-				} else {
-					$rs[0]['varsyncdestinenable'] = TRUE;
-				}
-			} else {
+			$system_carp = config_get_path('hasync');
+			if (!is_array($system_carp)) {
 				log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 				return;
+			}
+
+			$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
+			$rs[0]['varsyncusername'] = $system_carp['username'];
+			$rs[0]['varsyncpassword'] = $system_carp['password'];
+			$rs[0]['varsyncdestinenable'] = FALSE;
+
+			// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+			if (config_get_path('system/webgui/protocol') == "http") {
+				$rs[0]['varsyncprotocol'] = "http";
+				$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '80';
+			} else {
+				$rs[0]['varsyncprotocol'] = "https";
+				$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '443';
+			}
+			if ($system_carp['synchronizetoip'] == "") {
+				log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+				return;
+			} else {
+				$rs[0]['varsyncdestinenable'] = TRUE;
 			}
 			break;
 		default:
@@ -2553,8 +2471,6 @@ if (!function_exists('pf_version')) {
 
 /* Do the actual XMLRPC sync */
 function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
-	global $config, $g;
-
 	/* Detect boot process, do nothing during boot. */
 	if (platform_booting()) {
 		return;
@@ -2567,9 +2483,14 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 
 	/* XML will hold the sections to sync. */
 	$xml = array();
-	$xml['freeradius'] = $config['installedpackages']['freeradius'];
-	$xml['freeradiusauthorizedmacs'] = $config['installedpackages']['freeradiusauthorizedmacs'];
-	$xml['freeradiusclients'] = $config['installedpackages']['freeradiusclients'];
+
+	$syncsections = array('freeradius', 'freeradiusauthorizedmacs', 'freeradiusclients', 'freeradiusinterfaces',
+	'freeradiussettings', 'freeradiuseapconf', 'freeradiussqlconf', 'freeradiusmodulesldap');
+	foreach ($syncsections as $section) {
+		if (is_array(config_get_path("installedpackages/{$section}"))) {
+			$xml[$section] = config_get_path("installedpackages/{$section}");
+		}
+	}
 
 	$execcmd  = "require_once('/usr/local/pkg/freeradius.inc');\n";
 	$execcmd .= "freeradius_all_after_XMLRPC_resync();";
@@ -2607,7 +2528,7 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
-		if ($g['debug']) {
+		if (g_has('debug')) {
 			$cli->setDebug(1);
 		}
 		/* Send our XMLRPC message and timeout after defined sync timeout value */
@@ -2662,6 +2583,9 @@ function freeradius_all_after_XMLRPC_resync() {
 	freeradius_users_resync(true);
 	// Do not restart service yet - $restart_svc = false, $via_rpc = true
 	freeradius_authorizedmacs_resync(false, true);
+	freeradius_sqlconf_resync();
+	freeradius_eapconf_resync(false);
+	freeradius_modulesldap_resync(false);
 	// Restart now when XMLRPC sync is completely finished
 	freeradius_clients_resync();
 
@@ -2669,7 +2593,6 @@ function freeradius_all_after_XMLRPC_resync() {
 }
 
 function freeradius_modulescounter_resync() {
-	global $config;
 	$conf = '';
 
 	$conf .= <<<EOD
@@ -2730,7 +2653,6 @@ EOD;
 }
 
 function freeradius_modulesmschap_resync() {
-	global $config;
 	$conf = '';
 
 	$conf .= <<<EOD
@@ -2782,7 +2704,6 @@ EOD;
 }
 
 function freeradius_modulesrealm_resync() {
-	global $config;
 	$conf = '';
 
 	$conf .= <<<EOD
@@ -2828,15 +2749,10 @@ EOD;
 }
 
 function freeradius_modulesldap_resync($restart_svc = true) {
-	global $config;
 	$raddb = FREERADIUS_RADDB;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
-		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
-	} else {
-		$arrmodulesldap = array();
-	}
+	$arrmodulesldap = config_get_path('installedpackages/freeradiusmodulesldap/config/0', []);
 
 	// Enable and Disable LDAP for "authorize" and "authenticate" will be done in freeradius_serverdefault_resync()
 	// redundatnt-load-balancing will there be done, too
@@ -2943,7 +2859,6 @@ EOD;
 	}
 
 	// Miscellaneous Configuration + MS Active Directory Compatibility ldap1
-	$varmodulesldapmsadcompatibilityenable = ($arrmodulesldap['varmodulesldapmsadcompatibilityenable'] ?: 'Disable');
 	if ($arrmodulesldap['varmodulesldapmsadcompatibilityenable'] == 'Disable') {
 		$varmodulesldapmsadcompatibility = '### MS Active Directory Compatibility is disabled ###';
 	} else {
@@ -2956,7 +2871,6 @@ EOD;
 	}
 
 	// Miscellaneous Configuration + MS Active Directory Compatibility ldap2
-	$varmodulesldap2msadcompatibilityenable = ($arrmodulesldap['varmodulesldap2msadcompatibilityenable'] ?: 'Disable');
 	if ($arrmodulesldap['varmodulesldap2msadcompatibilityenable'] == 'Disable') {
 		$varmodulesldap2msadcompatibility = '### MS Active Directory Compatibility is disabled ###';
 	} else {
@@ -3229,6 +3143,7 @@ ldap ldap2 {
 		control:NT-Password		:= 'ntPassword'
 		control:LM-Password		:= 'sambaLmPassword'
 		control:NT-Password		:= 'sambaNtPassword'
+		control:NT-Password		:= 'ipaNTHash'
 		control:LM-Password		:= 'dBCSPwd'
 		control:Password-With-Header	+= 'userPassword'
 		control:SMB-Account-CTRL-TEXT	:= 'acctFlags'
@@ -3332,6 +3247,7 @@ EOD;
 	// freeradius_serverdefault_resync() needs to restart other dependencies so
 	// we are pointing directly to freeradius_settings_resync()
 	freeradius_serverdefault_resync();
+	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
@@ -3339,15 +3255,8 @@ EOD;
 }
 
 function freeradius_plainmacauth_resync() {
-	global $config;
-	$conf = '';
-
 	// Variables: If not using 802.1x, mac address must be known
-	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
-		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	} else {
-		$varsettings = array();
-	}
+	$varsettings = config_get_path('installedpackages/freeradiussettings/config/0', []);
 
 	// defining variables with filename path
 	$filemodulesfiles = FREERADIUS_MODSENABLED . '/files';
@@ -3399,7 +3308,6 @@ EOD;
 }
 
 function freeradius_modulesfiles_resync() {
-	global $config;
 	$conf = '';
 
 	$conf .= <<<EOD
@@ -3429,14 +3337,10 @@ EOD;
 }
 
 function freeradius_motp_resync() {
-	global $config, $bash_path;
+	global $bash_path;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
-		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	} else {
-		$varsettings = array();
-	}
+	$varsettings = config_get_path('installedpackages/freeradiussettings/config/0', []);
 
 	$varsettingsmotptimespan = ($varsettings['varsettingsmotptimespan'] ?: '2');
 	$varsettingsmotptimespanbeforeafter = $varsettingsmotptimespan + $varsettingsmotptimespan;
@@ -3576,7 +3480,7 @@ EOD;
 }
 
 function freeradius_modulesmotp_resync() {
-	global $config, $bash_path;
+	global $bash_path;
 	$conf = '';
 
 	// put the constant to a variable
@@ -3599,7 +3503,6 @@ EOD;
 }
 
 function freeradius_modulesgoogleauth_resync() {
-	global $config;
 	$conf = '';
 
 	// put the constant to a variable
@@ -3629,7 +3532,6 @@ EOD;
 }
 
 function freeradius_modulesdatacounter_resync() {
-	global $config;
 	$conf = '';
 
 	// put the constant to a variable
@@ -3662,7 +3564,6 @@ EOD;
 }
 
 function freeradius_datacounter_auth_resync() {
-	global $config;
 	$conf = '';
 
 	$conf .= <<<EOD
@@ -3671,7 +3572,6 @@ function freeradius_datacounter_auth_resync() {
 ### We need this parameters from freeradius users file and ../raddb/modules/datacounter_acct
 USERNAME=`echo -n "\\$1" | sed 's/[^0-9a-zA-Z._:-]/X/g' `
 TIMERANGE=`echo -n "\\$2" | sed 's/[^a-z]//g' `
-
 
 ### This is to make sure there is a used-octets file after the cronjob resetted the counter
 if [ -e "/var/log/radacct/datacounter/\$TIMERANGE/max-octets-\$USERNAME" ] && [ ! -e "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME" ]; then
@@ -3700,7 +3600,6 @@ EOD;
 }
 
 function freeradius_datacounter_acct_resync() {
-	global $config;
 	$conf = '';
 
 	$conf .= <<<EOD
@@ -3759,7 +3658,6 @@ EOD;
 }
 
 function freeradius_dictionary_resync() {
-	global $config;
 	$conf = '';
 
 	$conf .= <<<EOD
@@ -3784,7 +3682,6 @@ EOD;
 
 /* Users input validation */
 function freeradius_validate_users($post, &$input_errors) {
-
 	// Username
 	if (($post['varusersmotpenable'] == 'on') && !preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
 		$input_errors[] = "The 'Username' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/).";
@@ -3962,18 +3859,39 @@ function freeradius_validate_users($post, &$input_errors) {
 	}
 
 	// Amount of Download and Upload Traffic
-	if ($post['varusersmaxtotaloctets'] != '' && !is_numericint($post['varusersmaxtotaloctets'])) {
-		$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
-	}
+	if ($post['varusersmaxtotaloctets'] != '') {
+		switch (freeradius_validate_int($post['varusersmaxtotaloctets'], 0, NULL)) {
+		case Validation::BadType:
+			$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
+			break;
+		case Validation::BadValue:
+			$input_errors[] = "The 'Amount of Download and Upload Traffic' field must be greater than or equal to 0.";
+			break;
+		}
+	} 
 
 	// Maximum Bandwidth Down
-	if ($post['varusersmaxbandwidthdown'] != '' && !is_numericint($post['varusersmaxbandwidthdown'])) {
-		$input_errors[] = "The 'Maximum Bandwidth Down' field must contain an integer value.";
+	if ($post['varusersmaxbandwidthdown'] != '') {
+		switch (freeradius_validate_int($post['varusersmaxbandwidthdown'], 0, 4294967)) {
+		case Validation::BadType:
+			$input_errors[] = "The 'Maximum Bandwidth Down' field must contain an integer value.";
+			break;
+		case Validation::BadValue:
+			$input_errors[] = "The 'Maximum Bandwidth Down' field must be less than 4294968 and greater than or equal to 0.";
+			break;
+		}
 	}
 
 	// Maximum Bandwidth Up
-	if ($post['varusersmaxbandwidthup'] != '' && !is_numericint($post['varusersmaxbandwidthup'])) {
-		$input_errors[] = "The 'Maximum Bandwidth Up' field must contain an integer value.";
+	if ($post['varusersmaxbandwidthup'] != '') {
+		switch (freeradius_validate_int($post['varusersmaxbandwidthup'], 0, 4294967)) {
+		case Validation::BadType:
+			$input_errors[] = "The 'Maximum Bandwidth Up' field must contain an integer value.";
+			break;
+		case Validation::BadValue:
+			$input_errors[] = "The 'Maximum Bandwidth Up' field must be less than 4294968 and greater than or equal to 0.";
+			break;
+		}
 	}
 
 	// Accounting Interim Interval
@@ -3992,7 +3910,6 @@ function freeradius_validate_users($post, &$input_errors) {
 
 /* MACs input validation */
 function freeradius_validate_macs($post, &$input_errors) {
-
 	// MAC Address
 	if (!empty($post['varmacsaddress'])) {
 		if (!preg_match('/^[0-9A-F]{2}(?:[-:][0-9A-F]{2}){5}$/i', $post['varmacsaddress'])) {
@@ -4155,7 +4072,6 @@ function freeradius_validate_macs($post, &$input_errors) {
 
 /* NAS/Clients input validation */
 function freeradius_validate_clients($post, &$input_errors) {
-
 	// Client IP Address
 	if ($post['varclientip'] != '*') {
 		if (preg_match('/^(.+)\/(\d+)$/',$post['varclientip'], $matches)) {
@@ -4200,7 +4116,6 @@ function freeradius_validate_clients($post, &$input_errors) {
 
 /* Interfaces input validation */
 function freeradius_validate_interfaces($post, &$input_errors) {
-
 	// Interface IP Address
 	if (empty($post['varinterfaceip'])) {
 		$input_errors[] = "The 'Interface IP Address' field must not be empty.";
@@ -4236,7 +4151,6 @@ function freeradius_validate_interfaces($post, &$input_errors) {
 
 /* General Settings input validation */
 function freeradius_validate_settings($post, &$input_errors) {
-	global $config;
 	// Maximum Requests Tracked
 	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
 		$input_errors[] = "The 'Maximum Requests Tracked' field must contain an integer value.";
@@ -4334,10 +4248,9 @@ function freeradius_validate_settings($post, &$input_errors) {
 
 /* EAP settings input validation */
 function freeradius_validate_eap($post, &$input_errors) {
-
 	// Disable Weak EAP Types sanity check
 	if ($post['vareapconfdisableweakeaptypes'] == 'on') {
-		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc', 'leap'))) {
+		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc'))) {
 			$input_errors[] = "The 'Default EAP Type' field must not contain any of the weak types when 'Disable Weak EAP Types' is enabled.";
 		}
 	}
@@ -4390,7 +4303,6 @@ function freeradius_validate_eap($post, &$input_errors) {
 
 /* SQL settings input validation */
 function freeradius_validate_sql($post, &$input_errors) {
-
 	// SQL Server Address
 	if ($post['varsqlconfincludeenable'] == 'on') {
 		if (empty($post['varsqlconfserver'])) {
@@ -4504,11 +4416,8 @@ function freeradius_validate_sql($post, &$input_errors) {
 
 }
 
-
 /* LDAP settings input validation */
 function freeradius_validate_ldap($post, &$input_errors) {
-	global $config;
-
 	// LDAP Server Address
 	if ($post['varmodulesldapenableauthorize'] == 'on') {
 		if (empty($post['varmodulesldapserver'])) {
@@ -4627,5 +4536,67 @@ function freeradius_validate_ldap($post, &$input_errors) {
 	 */
 
 }
+
+function freeradius_plugin_certificates($pluginparams) {
+	$result = array();
+	init_config_arr(array('installedpackages', 'freeradiuseapconf', 'config'));
+	$eapconf = config_get_path('installedpackages/freeradiuseapconf/config/0', []);
+
+	if (($pluginparams['type'] == 'certificates') && !empty($eapconf)) {
+		if (($pluginparams['event'] == 'used_ca') && !empty($eapconf['ssl_ca_cert'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_ca_cert'];
+			$item['usedby'] = 'TLS CA Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($eapconf['ssl_server_cert'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_server_cert'];
+			$item['usedby'] = 'TLS Server Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_crl') && !empty($eapconf['ssl_ca_crl'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_ca_crl'];
+			$item['usedby'] = 'TLS Revocation List';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
+}
+
+enum Validation {
+	case Valid;
+	case BadType;
+	case BadValue;
+}
+/**
+ * Validate an int value with a minimum and maximum range
+ * @param string $val Value to validate.
+ * @param mixed $min Minimum valid value, inclusive. NULL indicates no minimum value.
+ * @param mixed $max Maximum valid value, inclusive. NULL indicates no maximum value.
+ * @return Validation Indicates whether $val is valid or, if not, why.
+ */
+function freeradius_validate_int(string $val, mixed $min, mixed $max) {
+	if (!is_numericint($val)) {
+		return Validation::BadType;
+	}
+
+	if (($min !== null && $val < $min) ||
+		($max !== null && $val > $max)) {
+		return Validation::BadValue;
+	}
+	return Validation::Valid;
+}
+
 
 ?>

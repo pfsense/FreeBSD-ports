@@ -1,6 +1,3 @@
-# Created by: Eugene Grosbein <eugen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	RDR-Collector
 PORTVERSION=	1.0000
 CATEGORIES=	net-mgmt perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	eugen@FreeBSD.org
 COMMENT=	Perl5 module to capture and process raw Cisco SCE RDRv1 packets
+WWW=		https://metacpan.org/release/RDR-Collector
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

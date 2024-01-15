@@ -1,6 +1,3 @@
-# Created by: Patrick Li <pat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ut
 PORTVERSION=	3.7
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	UrbanTerror${PORTVERSION:S/.//}_full
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake III Arena mod: Urban Terror
+WWW=		https://www.urbanterror.info/
 
 USES=		gmake zip
 NO_BUILD=	yes

@@ -1,6 +1,3 @@
-# Created by: pgs
-# $FreeBSD$
-
 PORTNAME=	hobbes-icons-xpm3
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Collection of over 3000 icons in XPM3 format
+WWW=		https://www.bigbiz.com/bigbiz/icons/hobbes/hobbes.html
 
 NO_BUILD=	yes
 NO_ARCH=	yes

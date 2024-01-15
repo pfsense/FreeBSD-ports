@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	broom
-DISTVERSION=	0.7.3
+DISTVERSION=	1.0.5
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Convert Statistical Analysis Objects into Tidy Data Frames
+WWW=		https://cran.r-project.org/web/packages/broom/
 
 LICENSE=	MIT
 
@@ -16,6 +14,7 @@ CRAN_DEPENDS=	R-cran-backports>0:math/R-cran-backports \
 		R-cran-ellipsis>0:devel/R-cran-ellipsis \
 		R-cran-generics>=0.0.2:devel/R-cran-generics \
 		R-cran-glue>0:devel/R-cran-glue \
+		R-cran-lifecycle>0:devel/R-cran-lifecycle \
 		R-cran-purrr>0:devel/R-cran-purrr \
 		R-cran-rlang>0:devel/R-cran-rlang \
 		R-cran-stringr>0:textproc/R-cran-stringr \

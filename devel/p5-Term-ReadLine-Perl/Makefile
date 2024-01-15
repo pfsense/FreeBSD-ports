@@ -1,6 +1,3 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
-
 PORTNAME=	Term-ReadLine-Perl
 PORTVERSION=	1.0303
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Quick implementation of the minimal interface to Readline libraries
+WWW=		https://metacpan.org/release/Term-ReadLine-Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

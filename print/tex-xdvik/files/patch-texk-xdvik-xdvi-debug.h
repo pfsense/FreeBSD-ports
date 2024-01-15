@@ -1,6 +1,6 @@
---- texk/xdvik/xdvi-debug.h.orig	2013-03-31 05:28:21 UTC
+--- texk/xdvik/xdvi-debug.h.orig	2022-01-30 07:42:00 UTC
 +++ texk/xdvik/xdvi-debug.h
-@@ -101,6 +101,7 @@
+@@ -100,6 +100,7 @@
  #define DBG_GUI			131072
  #define DBG_FIND		262144
  #define DBG_FILES		524288

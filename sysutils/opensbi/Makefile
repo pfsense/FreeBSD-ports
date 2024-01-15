@@ -1,43 +1,41 @@
-# $FreeBSD$
-
 PORTNAME=	opensbi
 DISTVERSIONPREFIX=v
-DISTVERSION=	0.8
+DISTVERSION=	1.3.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	mhorne@FreeBSD.org
 COMMENT=	RISC-V SBI bootloader and firmware
+WWW=		https://github.com/riscv-software-src/opensbi
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	${RISCV_PREFIX}gcc:devel/riscv64-none-elf-gcc \
-		${RISCV_PREFIX}ld:devel/binutils@riscv64_none_elf
+BUILD_DEPENDS=	bash:shells/bash \
+		dtc:sysutils/dtc
 
-USES=		gmake
+USES=		gmake python:build shebangfix
+SHEBANG_FILES=	scripts/Kconfiglib/*.py
+
 USE_GITHUB=	yes
-GH_ACCOUNT=	riscv
+GH_ACCOUNT=	riscv-software-src
 
-RISCV_PREFIX=	riscv64-none-elf-
-
-MAKE_ARGS=	CROSS_COMPILE=${RISCV_PREFIX} I=${STAGEDIR}${PREFIX} FW_PAYLOAD=n
+MAKE_ARGS=	LLVM=1 I=${STAGEDIR}${PREFIX} V=1 FW_PAYLOAD=n
 
 OPTIONS_GROUP=		PLATFORMS
-OPTIONS_GROUP_PLATFORMS=GENERIC SIFIVE_FU540
+OPTIONS_GROUP_PLATFORMS=GENERIC
 OPTIONS_SUB=		yes
-OPTIONS_DEFAULT=	GENERIC SIFIVE_FU540
+OPTIONS_DEFAULT=	GENERIC
 
 GENERIC_DESC=		Support for generic platform
 GENERIC_PLATFORM=	generic
 GENERIC_STRIP_ARGS=	-K tohost -K fromhost
-
-SIFIVE_FU540_DESC=	Support for SiFive U540 platform
-SIFIVE_FU540_PLATFORM=	sifive/fu540
 
 INSTALL_TARGET=		install
 
 PLIST_SUB+=		RISCV_ABI=${PLATFORM_RISCV_ABI}
 
 PLATFORM_RISCV_ABI=	lp64
+
+do-install: # only need install_firmwares target
 
 .for platform in ${OPTIONS_GROUP_PLATFORMS}
 
@@ -47,9 +45,7 @@ post-build-${platform}-on:
 do-install-${platform}-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}
 	${MAKE_CMD} -C ${WRKSRC} PLATFORM=${${platform}_PLATFORM} ${MAKE_ARGS} \
-		I=${STAGEDIR}${PREFIX} install_firmwares
-	${MAKE_CMD} -C ${WRKSRC} PLATFORM=${${platform}_PLATFORM} ${MAKE_ARGS} \
-		I=${STAGEDIR}${PREFIX} install_libplatsbi
+		I=${STAGEDIR}${PREFIX} V=1 install_firmwares
 
 post-install-${platform}-on:
 	${STRIP_CMD} ${${platform}_STRIP_ARGS} \

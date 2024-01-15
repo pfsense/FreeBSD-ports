@@ -1,6 +1,3 @@
-# Created by: Denis Shaposhnikov <dsh@bamus.cz>
-# $FreeBSD$
-
 PORTNAME=	Protocol-CassandraCQL
 PORTVERSION=	0.11
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	admins@perceptyx.com
 COMMENT=	Wire protocol support functions for Cassandra CQL3
+WWW=		https://metacpan.org/release/Protocol-CassandraCQL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

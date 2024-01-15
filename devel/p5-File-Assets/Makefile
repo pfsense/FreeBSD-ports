@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Assets
 PORTVERSION=	0.064
 PORTREVISION=	3
@@ -9,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:RKRIMEN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to Manage .css and .js assets
+WWW=		https://metacpan.org/release/File-Assets
 
 BUILD_DEPENDS=	p5-Test-Memory-Cycle>0:devel/p5-Test-Memory-Cycle \
 	p5-Directory-Scratch>0:devel/p5-Directory-Scratch \

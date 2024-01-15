@@ -1,6 +1,3 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Amazon-EC2
 PORTVERSION=	0.36
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl interface to the Amazon Elastic Compute Cloud
+WWW=		https://metacpan.org/release/Net-Amazon-EC2
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

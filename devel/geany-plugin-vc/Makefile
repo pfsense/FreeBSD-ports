@@ -1,15 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-vc
 PORTVERSION=	${GEANY_VER}
 CATEGORIES=	devel
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Geany plugin: ${${GEANY_PLUGIN}_DESC}
+WWW=		https://plugins.geany.org/geanyvc.html
 
-gtk2_LIB_DEPENDS=	libgtkspell.so:textproc/gtkspell
-gtk3_LIB_DEPENDS=	libgtkspell3-3.so:textproc/gtkspell3 \
-			libenchant-2.so:textproc/enchant2
+LIB_DEPENDS=	libgtkspell3-3.so:textproc/gtkspell3 \
+		libenchant-2.so:textproc/enchant2
 
 OPTIONS_DEFINE=		GTKSPELL
 OPTIONS_DEFAULT=	GTKSPELL

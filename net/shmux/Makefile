@@ -1,6 +1,3 @@
-# Created by: jamundsen
-# $FreeBSD$
-
 PORTNAME=	shmux
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.3
@@ -8,6 +5,7 @@ CATEGORIES=	net
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to run commands on multiple hosts using shell commands
+WWW=		https://github.com/shmux/shmux
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

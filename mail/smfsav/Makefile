@@ -1,6 +1,3 @@
-# Created by: Anton Lysenok <bart@tapolsky.net.ua>
-# $FreeBSD$
-
 PORTNAME=	smfsav
 PORTVERSION=	1.4.0
 PORTREVISION=	4
@@ -9,8 +6,9 @@ MASTER_SITES=	SF/smfs
 DISTNAME=	smf-sav-${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	sasaki@fcc.ad.jp
+MAINTAINER=	sasaki12@gmail.com
 COMMENT=	Sendmail Sender Address Validator
+WWW=		https://smfs.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

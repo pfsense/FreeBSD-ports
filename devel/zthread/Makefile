@@ -1,6 +1,3 @@
-# Created by: pvh@egenetics.com
-# $FreeBSD$
-
 PORTNAME=	zthread
 PORTVERSION=	2.3.2
 PORTREVISION=	2
@@ -10,15 +7,19 @@ DISTNAME=	ZThread-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Platform-independent object-oriented C++ threading library
+WWW=		https://zthread.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		libtool
+USE_CXXSTD=	c++14
+USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-ftime --disable-static
+
 MAKE_ARGS=	INSTALL_PROGRAM="${INSTALL_SCRIPT}"
-USE_LDCONFIG=	yes
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README TODO
 

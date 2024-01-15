@@ -1,14 +1,12 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	tdfsb
 PORTVERSION=	0.0.10
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://www.determinate.net/webdata/data/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D filesystem browser
+WWW=		https://www.determinate.net/webdata/seg/tdfsb.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	arpscan
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	net-mgmt
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple arp scanner
+WWW=		https://github.com/jasonish/arpscan
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

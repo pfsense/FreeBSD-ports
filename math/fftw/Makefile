@@ -1,9 +1,6 @@
-# Created by: Lars Koeller <Lars.Koeller@Uni-Bielefeld.DE>
-# $FreeBSD$
-
 PORTNAME=	fftw
 PORTVERSION=	2.1.5
-PORTREVISION?=	22
+PORTREVISION?=	23
 CATEGORIES=	math
 MASTER_SITES=	ftp://ftp.fftw.org/pub/fftw/		\
 		ftp://ftp.fftw.org/pub/fftw/old/	\
@@ -12,6 +9,7 @@ MASTER_SITES=	ftp://ftp.fftw.org/pub/fftw/		\
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	Fast C routines to compute the Discrete Fourier Transform
+WWW=		https://www.fftw.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -36,7 +34,7 @@ FFTW_SUFX=		s
 PKGNAMESUFFIX=		-float
 .else
 USES+=			makeinfo
-FFTW_SUFIX=
+FFTW_SUFX=
 INFO=			fftw
 .endif
 

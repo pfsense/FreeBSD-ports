@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # FreeBSD Project Committers
 #
 # In case you don't know the exact coordinates, you might find it at
@@ -13,6 +11,7 @@
 # Lat,		Long,		"name"	opt			# location
 
 -37.800152,	143.751219,	"grog"				# Dereel, VIC, Australia
+ 35.53,		139.70,		"yasu"				# Kawasaki, Kanagawa, Japan
  35.65757,	139.69288,	"kuriyama"			# Tokyo, Japan
  35.593,	139.688,	"bland"				# Tokyo, Japan
  35.64,		139.65,		"tota"				# Setagaya, Tokyo, Japan
@@ -21,7 +20,6 @@
  35.54,		139.53,		"        ,nyan,ume"		# Yokohama, Kanagawa, Japan
  35.36,		139.31,		"                 ,daichi"	# Kawasaki, Kanagawa, Japan
  35.009668,	135.75497,	"takawata"			# Kyoto, Kyoto, Japan
- 48.516613,	135.051836,	"fluffy"			# Khabarovsk, Russia
  31.2,		121.5,		"loader"			# Shanghai, China
  25.017,	121.450,	"avatar,kevlo,vanilla,lwhsu,sunpoet"	# Taipei, Taiwan
 -31.900,	115.855,	"woodsb02"			# Perth, WA, Australia
@@ -41,8 +39,10 @@
  55.7895,	37.635261,	"dchagin"			# Moscow, Russia
  55.8,		37.6,		"bsam,demon,maxim,vsevolod"	# Moscow, Russia
  48.464722,	35.046111,	"mav"				# Dniepropetrovsk, Ukraine
+ 32.754166,	34.963611,	"akiyano"			# Tirat Carmel, Israel
  50.430417,	30.488262,	"kib"				# Kiev, Ukraine
  50.361994,	30.444691,	"avg"				# Kiev, Ukraine
+ 59.944186,	30.351308,	"fluffy"			# St.Peterburg, Russia
  42.6333,	23.2964,	"vd,syrinx"			# Sofia, Bulgaria
  52.188,	20.896,		"trasz"				# Warszawa, Poland
  47.5519,	19.0912,	"gabor"				# Budapest, Hungary
@@ -72,7 +72,7 @@
  57.196092,	9.673923,	"debdrup"			# Kaas, Denmark
  49.00,		9.5,		"schweikh"			# Weinstadt, Germany
  51.20,		9.20,		"dinoex"			# Habichtswald, Germany
- 45.27,		9.17,		"olgeni"			# Milano, Italy
+ 42.4174,	12.1047,	"olgeni"			# Viterbo, Italy
  45.488328,	9.164711,	"ale"		align=left	# Milano, Italy
  48.53778,	9.04111,	"bz"				# Baden-Wuerttemberg
  46.051,	8.919,		"gahr"				# Bedano, Switzerland
@@ -81,7 +81,7 @@
  47.420,	8.6,		"beat"				# Wallisellen, Switzerland
  49.85958,	8.55246,	"bcr"				# Griesheim, Germany
  47.380458,	8.514722,	"ehaupt"			# Zurich, Switzerland
- 47.413337,     8.5523847,      "tcberner"			# Zurich, Switzerland
+ 47.413337,	8.5523847,	"tcberner"			# Zurich, Switzerland
  49.48,		8.42,		"naddy"				# Ludwigshafen, Germany
  51.4233,	7.76057,	"flo"				# Menden, Germany
  50.73389,	7.09972,	"egypcio"			# Bonn, Germany
@@ -150,7 +150,7 @@
  43.02,		-89.41,		"feld"				# Madison, WI, USA
  46.012,	-92.373,	"jpaetzel"			# Danbury, WI, USA
  38.92,		-92.40,		"stephen"			# Columbia, MO, USA
- 45.0676,	-92.8234,	"xride"				# Stillwater, MN, USA
+ 44.9504,	-92.9122,	"xride"				# Lake Elmo, MN, USA
  44.89,		-93.35,		"bdrewery"			# Minneapolis, MN, USA
  39.168,	-96.620,	"kevans"			# Manhattan, KS, USA
  30.545,	-97.646,	"ler"				# Round Rock, TX, USA

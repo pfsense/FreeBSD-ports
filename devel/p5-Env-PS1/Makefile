@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Env-PS1
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Prompt string formatter
+WWW=		https://metacpan.org/release/Env-PS1
 
 USES=		perl5
 USE_PERL5=	modbuild

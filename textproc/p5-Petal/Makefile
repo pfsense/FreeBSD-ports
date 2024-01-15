@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Petal
 PORTVERSION=	2.26
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Template Attribute Language - TAL for Perl!
+WWW=		https://metacpan.org/release/Petal
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

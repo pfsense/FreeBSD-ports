@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	create-rb-port
 PORTVERSION=	0.0.3
 CATEGORIES=	ports-mgmt
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Script to ease creation of rubygem- ports
+WWW=		https://github.com/swills/freebsd-ruby
 
 RUN_DEPENDS=	gem:devel/ruby-gems
 

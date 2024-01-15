@@ -1,22 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	syncthing
-PORTVERSION=	1.12.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.27.2
 CATEGORIES=	net
-MASTER_SITES=	https://github.com/syncthing/syncthing/releases/download/v${PORTVERSION}/
-DISTNAME=	${PORTNAME}-source-${DISTVERSIONPREFIX}${PORTVERSION}
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
+DISTNAME=	${PORTNAME}-source-${DISTVERSIONFULL}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Encrypted file sync tool
+WWW=		https://syncthing.net/
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/${PORTNAME}/LICENSE
 
-USES=		go
+USES=		cpe go:modules
 
-USE_RC_SUBR=	syncthing syncthing-discosrv syncthing-relaysrv syncthing-relaypoolsrv
+USE_RC_SUBR=	syncthing syncthing-discosrv syncthing-relaysrv \
+		syncthing-relaypoolsrv
 
 BINS=		syncthing stdiscosrv strelaysrv strelaypoolsrv
 
@@ -30,7 +29,8 @@ USERS=		syncthing
 GROUPS=		syncthing
 
 # Anonymize
-MAKE_ENV+=	BUILD_USER=ports BUILD_HOST=freebsd
+MAKE_ENV+=	BUILD_HOST=freebsd \
+		BUILD_USER=ports
 
 OPTIONS_DEFINE=	DOCS
 
@@ -38,10 +38,15 @@ NO_WRKSUBDIR=	yes
 
 do-build:
 	@( cd ${WRKSRC}/${PORTNAME} ; \
-		${SETENV} ${MAKE_ENV} CGO_ENABLED=0 GOFLAGS="-mod=vendor" go run build.go -version v${PORTVERSION} -no-upgrade build ; \
-		${SETENV} ${MAKE_ENV} CGO_ENABLED=0 GOFLAGS="-mod=vendor" go run build.go -version v${PORTVERSION} -no-upgrade build stdiscosrv ; \
-		${SETENV} ${MAKE_ENV} CGO_ENABLED=0 GOFLAGS="-mod=vendor" go run build.go -version v${PORTVERSION} -no-upgrade build strelaysrv ; \
-		${SETENV} ${MAKE_ENV} CGO_ENABLED=0 GOFLAGS="-mod=vendor" go run build.go -version v${PORTVERSION} -no-upgrade build strelaypoolsrv ; \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade build ; \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade build stdiscosrv; \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade build strelaysrv; \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade build strelaypoolsrv; \
+		)
+
+do-test:
+	@( cd ${WRKSRC}/${PORTNAME} ; \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade test ; \
 		)
 
 do-install:

@@ -1,8 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	simplevaders
 PORTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://dusted.dk/pages/simplevaders/ \
 		https://mirror.amdmi3.ru/distfiles/
@@ -10,6 +8,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Space-Invaders like 2D space shooter
+WWW=		https://dusted.dk/pages/simplevaders/
 
 LICENSE=	GPLv3+
 

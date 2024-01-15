@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Time-Clock
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Twenty-four hour clock objects with nanosecond precision
+WWW=		https://metacpan.org/release/Time-Clock
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

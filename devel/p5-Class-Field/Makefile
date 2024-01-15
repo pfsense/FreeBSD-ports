@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Field
 DISTVERSION=	0.24
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Class Field Accessor Generator
+WWW=		https://metacpan.org/release/Class-Field
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

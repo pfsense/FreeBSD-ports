@@ -1,6 +1,3 @@
-# Created by: Anish Mistry <amistry@am-productions.biz>
-# $FreeBSD$
-
 PORTNAME=	List-PowerSet
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module that allows you to generate the power set of a list
+WWW=		https://metacpan.org/release/List-PowerSet
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

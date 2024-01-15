@@ -1,31 +1,34 @@
-# $FreeBSD$
-
 PORTNAME=	jshon
-DISTVERSION=	20170302.1
+DISTVERSION=	20180209
 CATEGORIES=	textproc
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	JSON parser for the shell
+WWW=		http://kmkeen.com/jshon/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjansson.so:devel/jansson
 
-USES=		gmake
+USES=		gmake localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	keenerd
 GH_TAGNAME=	d919aea
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+PLIST_FILES=	bin/jshon \
+		man/man1/jshon.1.gz
 
-PLIST_FILES=	bin/jshon man/man1/jshon.1.gz
-
-OPTIONS_DEFINE=	ZSH
-OPTIONS_DEFAULT=ZSH
+OPTIONS_DEFINE=		ZSH
+OPTIONS_DEFAULT=	ZSH
 
 ZSH_PLIST_FILES=	share/zsh/site-functions/jshon_zsh_completion
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=strict-prototypes
+.endif
 
 pre-configure:
 	@${REINPLACE_CMD} -e 's|^\(#define JSHONVER \).*|\1"${PORTVERSION}-${GH_TAGNAME}"|' \
@@ -40,4 +43,4 @@ post-install-ZSH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions
 	${INSTALL_DATA} ${WRKSRC}/jshon_zsh_completion ${STAGEDIR}${PREFIX}/share/zsh/site-functions/
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

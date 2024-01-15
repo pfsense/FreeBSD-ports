@@ -1,6 +1,3 @@
-# Created by: Adrian Chadd <adrian@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mkfwimage
 DISTVERSION=	r1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	ubnt-${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	adrian@FreeBSD.org
 COMMENT=	Ubiquiti Embedded Board Image Generator
+WWW=		https://people.freebsd.org/~adrian/mkfwimage/
 
 LICENSE=	GPLv2+
 

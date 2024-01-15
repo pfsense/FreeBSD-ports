@@ -1,9 +1,6 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	medit
 PORTVERSION=	2012.02.05
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	science graphics
 MASTER_SITES=	https://www.ljll.math.upmc.fr/~frey/ftp/archives/
 DISTFILES=	${SOURCETARB} ${LIBTARBALL}
@@ -11,6 +8,7 @@ EXTRACT_ONLY=	${SOURCETARB}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Interactive meshes visualization
+WWW=		https://www.ljll.math.upmc.fr/frey/software.html #scivis
 
 LICENSE=	None
 LICENSE_NAME=	Special grant

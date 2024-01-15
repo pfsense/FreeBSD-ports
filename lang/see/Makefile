@@ -1,6 +1,3 @@
-# Created by: Simun Mikecin <numisemis@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	see
 PORTVERSION=	3.1.1424
 PORTREVISION=	4
@@ -12,6 +9,7 @@ MASTER_SITES=	http://download.openpkg.org/components/cache/see/ \
 
 MAINTAINER=	numisemis@yahoo.com
 COMMENT=	Simple ECMAScript Engine (SEE)
+WWW=		http://www.adaptive-enterprises.com.au/~d/software/see/
 
 LICENSE=	BSD3CLAUSE DTOA.C
 LICENSE_COMB=	multi
@@ -20,15 +18,12 @@ LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING
 LICENSE_FILE_DTOA.C=	${WRKSRC}/COPYING
 LICENSE_PERMS_DTOA.C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_aarch64=	fails to build: error: "Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined."
-BROKEN_riscv64=	fails to build: error: "Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined."
-
 OPTIONS_DEFINE=	GC DEBUG DOCS
 OPTIONS_DEFAULT=	GC
 GC_DESC=	Use Boehm-Weiser garbage collection package
 DEBUG_DESC=	Internal SEE library debugging
 
-CONFLICTS=	see-devel-[0-9]*
+CONFLICTS=	see-devel
 
 USES=		libtool pathfix perl5
 USE_LDCONFIG=	yes

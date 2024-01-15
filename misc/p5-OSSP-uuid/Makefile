@@ -1,6 +1,3 @@
-# Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
-
 COMMENT=	Perl bindings for ossp-uuid
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libossp-uuid.a:misc/ossp-uuid

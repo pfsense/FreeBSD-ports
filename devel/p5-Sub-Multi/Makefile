@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Sub-Multi
 PORTVERSION=	0.003
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Data::Bind-based multi-sub dispatch
+WWW=		https://metacpan.org/release/Sub-Multi
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Multimethods-Pure>=0.11:devel/p5-Class-Multimethods-Pure \

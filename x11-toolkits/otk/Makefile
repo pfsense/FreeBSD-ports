@@ -1,15 +1,13 @@
-# Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
-
 PORTNAME=	otk
 PORTVERSION=	0.96
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/v${PORTVERSION}
 DISTNAME=	${PORTNAME}_lib_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Widget library based on OpenGL
+WWW=		https://otk.sourceforge.net/
 
 LICENSE=	LGPL20+
 

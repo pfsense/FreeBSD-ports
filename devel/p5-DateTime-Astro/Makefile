@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DateTime-Astro
 PORTVERSION=	1.04
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Functions For Astromical Calendars
+WWW=		https://metacpan.org/release/DateTime-Astro
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

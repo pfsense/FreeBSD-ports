@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gitlab-pygments.rb
 PORTVERSION=	0.5.4
 PORTREVISION=	3
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Exposes the pygments syntax highlighter to Ruby
+WWW=		https://github.com/gitlabhq/pygments.rb
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +15,6 @@ RUN_DEPENDS=	rubygem-posix-spawn>=0.3.6<0.4:devel/rubygem-posix-spawn \
 		rubygem-yajl-ruby>=1.1.0:devel/rubygem-yajl-ruby
 
 USES=		gem python:env shebangfix
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

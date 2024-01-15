@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	MIME_Type
 PORTVERSION=	1.4.1
 CATEGORIES=	mail www pear
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	PEAR class for dealing with MIME types
+WWW=		https://pear.php.net/package/MIME_Type
 
 LICENSE=	LGPL3
 

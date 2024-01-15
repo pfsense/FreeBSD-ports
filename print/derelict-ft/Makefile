@@ -1,14 +1,12 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	derelict-ft
 PORTVERSION=	1.1.3
-PORTREVISION=	4
+PORTREVISION=	7
 DISTVERSIONPREFIX=	v
 CATEGORIES=	print
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Dynamic binding to the FreeType library for the D lang
+WWW=		https://github.com/DerelictOrg/DerelictFT
 
 LICENSE=	BSL
 
@@ -23,12 +21,13 @@ GH_PROJECT=	DerelictFT
 DUB_CMD=	${LOCALBASE}/bin/dub build --build=release
 D_INCLUDE_DIR=	${PREFIX}/include/d
 D_LIB_DIR=	${PREFIX}/lib/d
+DC=		${PREFIX}/bin/ldmd2
 
 post-patch:
 	@${REINPLACE_CMD} -e '13,15d' ${WRKSRC}/dub.json
 
 do-build:
-	@cd ${WRKSRC} && ${DUB_CMD}
+	@cd ${WRKSRC} && DC=${DC} ${DUB_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# $FreeBSD$
-#
 # PROVIDE: htcacheclean
+# REQUIRE: FILESYSTEMS
+# BEFORE: apache24
 #
 # Configuration settings for htcacheclean in /etc/rc.conf
 #

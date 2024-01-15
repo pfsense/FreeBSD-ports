@@ -1,6 +1,3 @@
-# Created by: Jesse Kempf (jessekempf@gmail.com)
-# $FreeBSD$
-
 PORTNAME=	cmph
 PORTVERSION=	2.0
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 
 MAINTAINER=	jessekempf@gmail.com
 COMMENT=	Minimal perfect hashes for C
+WWW=		https://cmph.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 USES=		libtool pathfix

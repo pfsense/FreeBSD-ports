@@ -1,4 +1,4 @@
---- make_freebsd.mak.orig	2019-06-16 12:13:00 UTC
+--- make_freebsd.mak.orig	2021-07-27 10:18:21 UTC
 +++ make_freebsd.mak
 @@ -12,7 +12,7 @@
  #     IBM Corporation - initial API and implementation
@@ -9,37 +9,22 @@
  
  # SWT debug flags for various SWT components.
  #SWT_WEBKIT_DEBUG = -DWEBKIT_DEBUG
-@@ -26,7 +26,6 @@
- 
- include make_common.mak
- 
--SWT_VERSION=$(maj_ver)$(min_ver)r$(rev)
- GTK_VERSION?=3.0
- 
- # Define the various shared libraries to be build.
-@@ -56,7 +55,7 @@
- # Webkit extension lib has to be put into a separate folder and is treated differently from the other libraries.
- WEBKIT_EXTENSION_LIB = lib$(WEBKIT_EXTENSION_PREFIX)-$(WS_PREFIX)-$(SWT_VERSION).so
- WEBEXTENSION_BASE_DIR = webkitextensions
--WEBEXTENSION_DIR = $(WEBEXTENSION_BASE_DIR)$(maj_ver)$(min_ver)r$(rev)
-+WEBEXTENSION_DIR = $(WEBEXTENSION_BASE_DIR)$(SWT_VERSION)
- 
- CAIROCFLAGS = `pkg-config --cflags cairo`
- CAIROLIBS = `pkg-config --libs-only-L cairo` -lcairo
-@@ -64,9 +63,9 @@
+@@ -66,11 +66,11 @@ CAIROLIBS = `pkg-config --libs-only-L cairo` -lcairo
  # Do not use pkg-config to get libs because it includes unnecessary dependencies (i.e. pangoxft-1.0)
- GTKCFLAGS = `pkg-config --cflags gtk+-$(GTK_VERSION) gtk+-unix-print-$(GTK_VERSION)`
  ifeq ($(GTK_VERSION), 4.0)
--GTKLIBS = `pkg-config --libs-only-L gtk+-$(GTK_VERSION) gthread-2.0` $(XLIB64) -L/usr/X11R6/lib -lgtk-4 -lcairo -lgthread-2.0
-+GTKLIBS = `pkg-config --libs-only-L gtk+-$(GTK_VERSION) gthread-2.0` $(XLIB64) -L$(LOCALBASE)/lib -lgtk-4 -lcairo -lgthread-2.0
+ GTKCFLAGS = `pkg-config --cflags gtk4 gtk4-x11 gtk4-unix-print`
+-GTKLIBS = `pkg-config --libs-only-L gtk4 gtk4-x11 gthread-2.0` $(XLIB64) -L/usr/X11R6/lib -lgtk-4 -lcairo -lgthread-2.0
++GTKLIBS = `pkg-config --libs-only-L gtk4 gtk4-x11 gthread-2.0` $(XLIB64) -L$(LOCALBASE)/lib -lgtk-4 -lcairo -lgthread-2.0
+ ATKCFLAGS = `pkg-config --cflags atk gtk4 gtk4-unix-print`
  else
+ GTKCFLAGS = `pkg-config --cflags gtk+-$(GTK_VERSION) gtk+-unix-print-$(GTK_VERSION)`
 -GTKLIBS = `pkg-config --libs-only-L gtk+-$(GTK_VERSION) gthread-2.0` $(XLIB64) -L/usr/X11R6/lib -lgtk-3 -lgdk-3 -lcairo -lgthread-2.0
 +GTKLIBS = `pkg-config --libs-only-L gtk+-$(GTK_VERSION) gthread-2.0` $(XLIB64) -L$(LOCALBASE)/lib -lgtk-3 -lgdk-3 -lcairo -lgthread-2.0
+ ATKCFLAGS = `pkg-config --cflags atk gtk+-$(GTK_VERSION) gtk+-unix-print-$(GTK_VERSION)`
  endif
  
- AWT_LFLAGS = -shared ${SWT_LFLAGS} 
-@@ -75,12 +74,13 @@
- ATKCFLAGS = `pkg-config --cflags atk gtk+-$(GTK_VERSION) gtk+-unix-print-$(GTK_VERSION)`
+@@ -79,12 +79,13 @@ AWT_LIBS = -L$(AWT_LIB_PATH) -ljawt
+ 
  ATKLIBS = `pkg-config --libs-only-L atk` -latk-1.0 
  
 -GLXLIBS = -lGL -lGLU -lm
@@ -54,7 +39,7 @@
  WEBKITCFLAGS = `pkg-config --cflags gio-2.0`
  
  WEBKIT_EXTENSION_CFLAGS=`pkg-config --cflags gtk+-3.0 webkit2gtk-web-extension-4.0`
-@@ -108,17 +108,18 @@
+@@ -120,7 +121,8 @@ CFLAGS := $(CFLAGS) \
  		$(SWT_WEBKIT_DEBUG) \
  		-DLINUX -DGTK \
  		-I$(JAVA_HOME)/include \
@@ -63,6 +48,9 @@
 +		-I$(LOCALBASE)/include \
  		${SWT_PTR_CFLAGS}
  LFLAGS = -shared -fPIC ${SWT_LFLAGS}
+ 
+@@ -129,12 +131,12 @@ LFLAGS = -shared -fPIC ${SWT_LFLAGS}
+ CFLAGS += -Werror
  
  ifndef NO_STRIP
 -	# -s = Remove all symbol table and relocation information from the executable.

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xman
 PORTVERSION=	1.1.5
 CATEGORIES=	x11

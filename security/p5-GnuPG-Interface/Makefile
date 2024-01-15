@@ -1,14 +1,13 @@
-# Created by: trevor
-# $FreeBSD$
-
 PORTNAME=	GnuPG-Interface
-PORTVERSION=	1.00
+PORTVERSION=	1.04
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for interfacing with GnuPG
+WWW=		https://metacpan.org/release/GnuPG-Interface \
+		https://gnupg-interface.sourceforge.net/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -21,5 +20,7 @@ RUN_DEPENDS=	gpg2:security/gnupg \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

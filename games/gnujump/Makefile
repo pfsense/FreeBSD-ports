@@ -1,20 +1,19 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnujump
 PORTVERSION=	1.0.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	GNU
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Platform game where you have to jump up to survive
+WWW=		https://jump.gnu.sinusoid.es/index.php?title=Main_Page \
+		https://github.com/arximboldi/gnujump
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-GNU_CONFIGURE=	yes
 USES=		gl gmake localbase sdl xorg
+GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer image
 USE_GL=		gl
 USE_XORG=	x11

@@ -1,46 +1,43 @@
-# Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gtkwave
-DISTVERSION=	3.3.107
+DISTVERSION=	3.3.117
+PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	http://gtkwave.sourceforge.net/
+DISTNAME=	${PORTNAME}-gtk3-${DISTVERSION}
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Electronic Waveform Viewer
+WWW=		https://gtkwave.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
-USES=		compiler:c++11-lang desktop-file-utils gettext gmake \
-		gnome gperf pkgconfig shared-mime-info
+USES=		compiler:c++11-lang desktop-file-utils gettext gmake gnome \
+		gperf pkgconfig shared-mime-info
+USE_GNOME=	cairo gdkpixbuf2 gtk30
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-mime-update
-USE_GNOME=	cairo gtk20
-INSTALLS_ICONS=	yes
+CONFIGURE_ARGS=	--disable-mime-update \
+		--enable-gtk3 \
+		--without-gconf
 
-OPTIONS_DEFINE=	TCL GCONF DOCS EXAMPLES
-TCL_DESC=	Enable support for TCL/TK
-TCL_USES=	tcl tk
+PORTDOCS=	gtkwave.odt
+PORTEXAMPLES=	*
+
+OPTIONS_DEFINE=		DOCS EXAMPLES TCL
+TCL_DESC=		Enable support for TCL/TK
+TCL_USES=		tcl tk
 TCL_CONFIGURE_ON=	--with-tcl=${TCL_LIBDIR} \
 			--with-tk=${TK_LIBDIR}
 TCL_CONFIGURE_OFF=	--disable-tcl
-
-GCONF_CONFIGURE_WITH=	gconf
-GCONF_USE=		GNOME=gconf2
-
-PORTDOCS=	gtkwave.odt
 
 post-patch-EXAMPLES-off:
 	${REINPLACE_CMD} '/^SUBDIRS/s|examples||' ${WRKSRC}/Makefile.in
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for doc in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/doc/${doc} ${STAGEDIR}${DOCSDIR}
-.endfor
+	${INSTALL_DATA} ${WRKSRC}/doc/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -1,15 +1,13 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	sdl20
-PORTVERSION=	2.0.10
-DISTVERSIONSUFFIX=	-1.el7
+PORTVERSION=	2.0.14
+DISTVERSIONSUFFIX=	-2.el7
 CATEGORIES=	devel linux
 MASTER_SITES=	EPEL7/s
 DISTNAME=	SDL2-${DISTVERSIONFULL}
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Cross-platform multi-media development API (Linux CentOS ${LINUX_DIST_VER})
+WWW=		https://www.libsdl.org/
 
 ONLY_FOR_ARCHS=	amd64
 

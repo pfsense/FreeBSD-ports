@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Package-MoreUtil
 PORTVERSION=	0.592
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Package-related utilities
+WWW=		https://metacpan.org/release/Package-MoreUtil
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

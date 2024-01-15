@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Test-TAP-Model
 PORTVERSION=	0.10
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Accessible result collector for Test::Harness::Straps runs
+WWW=		https://metacpan.org/release/Test-TAP-Model
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

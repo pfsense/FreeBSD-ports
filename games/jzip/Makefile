@@ -1,6 +1,3 @@
-# Created by: Matthew Hunt <mph@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jzip
 PORTVERSION=	2.0.1g
 CATEGORIES=	games

@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pxattr
 PORTVERSION=	2.1.0
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	https://www.lesbonscomptes.com/pxattr/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Portable utility to work with file extended attributes
+WWW=		https://www.lesbonscomptes.com/pxattr/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

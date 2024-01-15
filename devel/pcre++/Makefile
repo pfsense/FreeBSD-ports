@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	pcre++
 PORTVERSION=	0.9.5
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.daemon.de/idisk/Apps/pcre++/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wrapper class around the pcre library
+WWW=		https://www.daemon.de/PCRE
 
 LICENSE=	LGPL21
 

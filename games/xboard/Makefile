@@ -1,30 +1,28 @@
-# Created by: xaa@stack.nl
-# $FreeBSD$
-
 PORTNAME?=	xboard
 PORTVERSION?=	4.9.1
-PORTREVISION?=	2
+PORTREVISION?=	3
 PORTEPOCH?=	0
 CATEGORIES?=	games
 MASTER_SITES?=	GNU
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER?=	mbeis@xs4all.nl
 COMMENT?=	X frontend for Crafty, GNUChess, Chess Servers, or e-mail chess
+WWW=		https://www.gnu.org/software/xboard/
 
 LICENSE?=	GPLv3
 
 LIB_DEPENDS?=	libcairo.so:graphics/cairo
 
-CONFLICTS?=	xboard-devel-[0-9]*
+CONFLICTS?=	xboard-devel
 
 OPTIONS_DEFINE?=	NLS DOCS ZIPPY
 OPTIONS_SINGLE?=	FRONTEND
 OPTIONS_SINGLE_FRONTEND?=	XAW XAW3D GTK2
 OPTIONS_GROUP?=	ENGINES
-OPTIONS_GROUP_ENGINES?=	FAIRYMAX CRAFTY GNUCHESS KNIGHTCAP PHALANX
+OPTIONS_GROUP_ENGINES?=	CRAFTY FAIRYMAX GNUCHESS KNIGHTCAP PHALANX
 OPTIONS_RADIO?=	SOUND
 OPTIONS_RADIO_SOUND?=	SOX ALSA
-OPTIONS_DEFAULT?=	XAW
+OPTIONS_DEFAULT?=	FAIRYMAX XAW
 OPTIONS_SUB?=	yes
 
 ZIPPY_DESC=	Add Zippy capability (computer player on ICS)
@@ -37,7 +35,7 @@ PHALANX_DESC=	Install phalanx engine
 FRONTEND_DESC=	Front End
 XAW_DESC=	Xaw GUI toolkit support (default)
 XAW3D_DESC=	Xaw3d GUI toolkit support (not fully supported)
-GTK2_DESC=	GTK+ 2 GUI toolkit support (experimental)
+GTK2_DESC=	GTK 2 GUI toolkit support (experimental)
 SOUND_DESC=	Sound Output
 SOX_DESC=	SoX audio support
 
@@ -76,7 +74,6 @@ CFLAGS+=	-I${LOCALBASE}/include -fcommon
 LDFLAGS+=	-L${LOCALBASE}/lib
 INFO=		xboard
 USE_PERL5=	build
-INSTALLS_ICONS=	yes
 DATADIR?=	${PREFIX}/share/games/${PORTNAME}
 XBOARDCONF?=	${WRKSRC}/xboard.conf
 

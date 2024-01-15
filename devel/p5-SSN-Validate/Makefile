@@ -1,6 +1,3 @@
-# Created by: tiger <tiger@whitetigersd.com>
-# $FreeBSD$
-
 PORTNAME=	SSN-Validate
 PORTVERSION=	0.18
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to do SSN Validation
+WWW=		https://metacpan.org/release/SSN-Validate
 
 USES=		perl5
 USE_PERL5=	configure

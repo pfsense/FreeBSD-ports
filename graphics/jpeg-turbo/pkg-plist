@@ -7,10 +7,14 @@
 %%JPEG%%include/jerror.h
 %%JPEG%%include/jmorecfg.h
 %%JPEG%%include/jpeglib.h
+%%JPEG%%lib/cmake/libjpeg-turbo/libjpeg-turboConfig.cmake
+%%JPEG%%lib/cmake/libjpeg-turbo/libjpeg-turboConfigVersion.cmake
+%%JPEG%%lib/cmake/libjpeg-turbo/libjpeg-turboTargets-%%CMAKE_BUILD_TYPE%%.cmake
+%%JPEG%%lib/cmake/libjpeg-turbo/libjpeg-turboTargets.cmake
 %%JPEG%%lib/libjpeg.a
 %%JPEG%%lib/libjpeg.so
 %%JPEG%%lib/libjpeg.so.8
-%%JPEG%%lib/libjpeg.so.8.2.2
+%%JPEG%%lib/libjpeg.so.8.3.2
 %%JPEG%%libdata/pkgconfig/libjpeg.pc
 %%JPEG%%man/man1/cjpeg.1.gz
 %%JPEG%%man/man1/djpeg.1.gz
@@ -22,5 +26,5 @@
 %%LIBTURBOJPEG%%lib/libturbojpeg.a
 %%LIBTURBOJPEG%%lib/libturbojpeg.so
 %%LIBTURBOJPEG%%lib/libturbojpeg.so.0
-%%LIBTURBOJPEG%%lib/libturbojpeg.so.0.2.0
+%%LIBTURBOJPEG%%lib/libturbojpeg.so.0.3.0
 %%LIBTURBOJPEG%%libdata/pkgconfig/libturbojpeg.pc

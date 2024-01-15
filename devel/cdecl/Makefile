@@ -1,13 +1,11 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	cdecl
-PORTVERSION=	8.0
+PORTVERSION=	16.0
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	devel
 
 MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Explains complicated C/C++ declarations in plain English
+WWW=		https://github.com/paul-j-lucas/cdecl
 
 LICENSE=	GPLv3
 
@@ -15,7 +13,7 @@ BUILD_DEPENDS=	flex:textproc/flex
 
 USES=		autoreconf bison ncurses readline
 
-CONFLICTS=	cutils-[0-9]*
+CONFLICTS=	cutils
 
 USE_GITHUB=	yes
 

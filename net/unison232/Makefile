@@ -1,9 +1,6 @@
-# Created by: Dan Pelleg <dpelleg+unison@cs.cmu.edu>
-# $FreeBSD$
-
 PORTNAME=	unison
 PORTVERSION=	2.32.52
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	net
 MASTER_SITES=	https://www.cis.upenn.edu/~bcpierce/unison/download/releases/${DISTNAME}/
 DISTFILES=	${EXTRACT_ONLY} ${_EXTRA_DOCS}
@@ -13,9 +10,14 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	mandree@FreeBSD.org
 # Implicit approval for port changes granted to Guido Falsi <madpilot@FreeBSD.org>
 COMMENT=	User-level file synchronization tool
+WWW=		https://www.cis.upenn.edu/~bcpierce/unison/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	More recent versions are in the tree consider using net/unison240
+EXPIRATION_DATE=	2024-01-15
+BROKEN=		fails to build with ocaml 4.08
 
 FLAVORS=	x11 nox11
 FLAVOR?=	${FLAVORS:[1]}
@@ -31,8 +33,8 @@ x11_PKGNAMESUFFIX=		${_VERSIONSUFFIX}
 x11_BUILD_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2 \
 			icotool:graphics/icoutils
 x11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-			libfreetype.so:print/freetype2
-x11_RUN_DEPENDS=	lablgtk2:x11-toolkits/ocaml-lablgtk2
+			libfreetype.so:print/freetype2 \
+			libharfbuzz.so:print/harfbuzz
 x11_CONFLICTS_INSTALL=		unison${_VERSIONSUFFIX}-nox11
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
@@ -60,10 +62,6 @@ USE_GNOME+=		atk cairo gdkpixbuf2 glib20 gtk20 pango
 USES+=			gettext-runtime gnome
 PLIST_SUB+=		X11=""
 .endif
-
-post-patch:
-	@${REINPLACE_CMD} -Ee 's@(\+|/)(lablgtk2)@\1site-lib/\2@' \
-		${WRKSRC}/Makefile.OCaml
 
 post-build:
 	d=$$(mktemp -d) && trap "rm -rf $$d" 0 && ( cd ${WRKSRC} && HOME=$$d ./unison -selftest -ui text -batch )

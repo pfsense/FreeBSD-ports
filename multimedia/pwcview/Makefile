@@ -1,21 +1,19 @@
-# Created by: Andrew Thompson <thompsa@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pwcview
 PORTVERSION=	1.4.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	multimedia
 MASTER_SITES=	http://raaf.atspace.org/ \
 		http://www.selasky.org/hans_petter/video4bsd/releases/ \
 		LOCAL/kwm
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Video4Linux PWC webcam viewer
+WWW=		http://raaf.atspace.org/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev.h:multimedia/v4l_compat
 LIB_DEPENDS=	libv4l1.so:multimedia/libv4l
 
-CONFLICTS=	pwcbsd-[0-9]*
+CONFLICTS=	pwcbsd
 
 USES=		jpeg sdl
 USE_SDL=	sdl

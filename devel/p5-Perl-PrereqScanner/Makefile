@@ -1,6 +1,3 @@
-# Created by: Geraud CONTINSOUZAS <geraud@gcu.info>
-# $FreeBSD$
-
 PORTNAME=	Perl-PrereqScanner
 PORTVERSION=	1.023
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	geraud@gcu.info
 COMMENT=	Tool to scan your Perl code for its prerequisites
+WWW=		https://metacpan.org/release/Perl-PrereqScanner
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

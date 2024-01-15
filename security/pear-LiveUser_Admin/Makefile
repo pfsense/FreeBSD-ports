@@ -1,13 +1,11 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	LiveUser_Admin
 PORTVERSION=	0.4.0
 PORTREVISION=	1
 CATEGORIES=	security www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR user authentication and permission management framework
+WWW=		https://pear.php.net/package/LiveUser_Admin
 
 BUILD_DEPENDS=	${PEARDIR}/LiveUser.php:security/pear-LiveUser@${PHP_FLAVOR}
 RUN_DEPENDS=	${PEARDIR}/LiveUser.php:security/pear-LiveUser@${PHP_FLAVOR}

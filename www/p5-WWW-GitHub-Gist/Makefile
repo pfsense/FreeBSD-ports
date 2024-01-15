@@ -1,6 +1,3 @@
-# Created by: Denny Lin <dennylin93@hs.ntnu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	WWW-GitHub-Gist
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to Gist
+WWW=		https://metacpan.org/release/ALEXBIO/WWW-GitHub-Gist-0.17
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

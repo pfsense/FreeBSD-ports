@@ -1,6 +1,3 @@
-# Created by: Nobutaka Mantani <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pygeoip
 PORTVERSION=	0.3.2
 DISTVERSIONPREFIX=	v
@@ -9,11 +6,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Pure Python GeoIP API
+WWW=		https://github.com/appliedsec/pygeoip
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 USE_GITHUB=	yes

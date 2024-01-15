@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	stfl
 PORTVERSION=	0.24
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.clifford.at/stfl/
 
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Structured Terminal Forms Language/Library
+WWW=		https://www.clifford.at/stfl/
 
 LICENSE=	GPLv3
 
@@ -24,7 +22,7 @@ MAKE_ENV=	LDLIBS="${LDFLAGS}"
 post-patch:
 	@${REINPLACE_CMD} -e 's|-Os||;/gcc/d;/-MM/s|-I.|$${CFLAGS}|; \
 		/pkgconfig/s|$$(libdir)|libdata| ; \
-		s/-lncursesw/-l${NCURSES_IMPL}/g' \
+		s/-lncursesw/${NCURSESLIBS}/g' \
 		${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e '/Libs.private/s|$$| ${ICONV_LIB}|' \
 		${WRKSRC}/stfl.pc.in

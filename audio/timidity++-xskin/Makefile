@@ -1,6 +1,3 @@
-# Created by: Yoichi Asai <yatt@msc.biglobe.ne.jp>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-xskin
 
 MAINTAINER=	ports@FreeBSD.org

@@ -1,19 +1,17 @@
-# Created by: Vladimir Chukharev
-# $FreeBSD$
-
 PORTNAME=	robotframework
-PORTVERSION=	3.1.2
+PORTVERSION=	6.0.2
 CATEGORIES=	devel www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	Vladimir.Chukharev@gmail.com
-COMMENT=	Generic test automation framework
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Generic automation framework for acceptance testing and robotic process automation
+WWW=		https://robotframework.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+ zip
+USES=		python zip
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

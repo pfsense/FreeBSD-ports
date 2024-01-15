@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libcli
 PORTVERSION=	1.9.6
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	GHC
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emulates a Cisco style command-line interface
+WWW=		https://github.com/dparrish/libcli/
 
 LICENSE=	LGPL21
 

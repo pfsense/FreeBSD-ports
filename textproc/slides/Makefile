@@ -1,6 +1,3 @@
-# Created by: Jean-Baptiste Quenot <jb.quenot@caraldi.com>
-# $FreeBSD$
-
 PORTNAME=	slides
 PORTVERSION=	3.4.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	docbook-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Doctype and stylesheets for making slides
+WWW=		http://docbook.sourceforge.net/projects/slides/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

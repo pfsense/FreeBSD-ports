@@ -1,14 +1,11 @@
-# Created by: Jeroen Schot <schot@a-eskwadraat.nl>
-# $FreeBSD$
-
 PORTNAME=	dwm
-DISTVERSION=	6.2
-PORTREVISION=	2
+DISTVERSION=	6.4
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://dl.suckless.org/${PORTNAME}/
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Dynamic, small, fast and simple window manager
+WWW=		https://dwm.suckless.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -39,6 +36,7 @@ OPTIONS_DEFINE=	DMENUANDSTERM DOCS SUPERASMODKEY VOLUMECONTROL XINERAMA
 OPTIONS_DEFAULT=DMENUANDSTERM XINERAMA
 
 DMENUANDSTERM_DESC=	Install x11/dmenu and x11/sterm as runtime dependencies
+RUGAPS_DESC=		Add resizeable runtime useless gaps
 SUPERASMODKEY_DESC=	Use Super instead of Alt for the dwm mod key
 VOLUMECONTROL_DESC=	Use multimedia keys to raise or lower volume
 

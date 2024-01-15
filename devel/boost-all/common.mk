@@ -1,12 +1,24 @@
-
-PORTVERSION=	1.72.0
 PORTVERSUFFIX=	${PORTVERSION:C/\.[0-9]+$//}
-DISTNAME=	boost_${PORTVERSION:S/./_/g}
+DISTVERSION=	${BOOST_MAJOR_VER}_${BOOST_MINOR_VER}_${BOOST_PATCH_VER}${BOOST_RC_VER}
+DISTVERSIONPREFIX=	boost_
+DISTNAME=	${DISTVERSIONPREFIX}${DISTVERSION}
+
+DISTINFO_FILE=	${.CURDIR}/../boost-all/distinfo
 
 CATEGORIES=	devel
 MAINTAINER=	office@FreeBSD.org
 
-MASTER_SITES=	https://dl.bintray.com/boostorg/release/${PORTVERSION}/source/ \
+MASTER_SITES=	https://boostorg.jfrog.io/artifactory/main/release/${PORTVERSION}/source/ \
+		https://boostorg.jfrog.io/artifactory/main/beta/${PORTVERSION:S/.b/.beta/g}/source/ \
 		SF/boost/boost/${PORTVERSION}
 
 USES+=		tar:bzip2
+
+BOOST_MAJOR_VER=1
+BOOST_MINOR_VER=83
+BOOST_PATCH_VER=0
+BOOST_RC_VER=
+BOOST_SHARED_LIB_VER=${BOOST_MAJOR_VER}.${BOOST_MINOR_VER}.${BOOST_PATCH_VER}
+
+WRKSRC=		${WRKDIR}/${DISTVERSIONPREFIX}${BOOST_MAJOR_VER}_${BOOST_MINOR_VER}_${BOOST_PATCH_VER}
+

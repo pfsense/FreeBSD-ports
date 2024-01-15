@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Mojolicious-Plugin-NYTProf
 PORTVERSION=	0.23
 CATEGORIES=	devel www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Auto handling of Devel::NYTProf in your Mojolicious app
+WWW=		https://metacpan.org/release/Mojolicious-Plugin-NYTProf
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

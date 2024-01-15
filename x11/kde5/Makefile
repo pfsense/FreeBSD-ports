@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	kde5
 DISTVERSION=	${KDE_PLASMA_VERSION}.${KDE_APPLICATIONS_VERSION}
-CATEGORIES=	x11 kde # kde-plasma
+PORTREVISION=	2
+CATEGORIES=	x11 kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Plasma Desktop and Applications (current)
-
-LICENSE=	LGPL20
+WWW=		https://www.kde.org
 
 RUN_DEPENDS=	kde-baseapps>=0:x11/kde-baseapps \
 		kwalletmanager5:security/kwalletmanager \

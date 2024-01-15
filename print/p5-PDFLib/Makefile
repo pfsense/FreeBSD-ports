@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	PDFLib
 PORTVERSION=	0.14
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	insist
 PORTVERSION=	1.0.0
 CATEGORIES=	devel rubygems
@@ -11,7 +9,6 @@ COMMENT=	Simple block-driven assertion library
 LICENSE=	APACHE20
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

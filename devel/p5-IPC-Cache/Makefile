@@ -1,6 +1,3 @@
-# Created by: vanilla
-# $FreeBSD$
-
 PORTNAME=	IPC-Cache
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Persist data across processes via shared memory
+WWW=		https://metacpan.org/release/IPC-Cache
 
 LICENSE=	GPLv1
 

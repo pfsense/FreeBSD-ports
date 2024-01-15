@@ -1,6 +1,3 @@
-# Created by: wollman
-# $FreeBSD$
-
 PORTNAME=	mod_auth_kerb
 PORTVERSION=	5.4
 PORTREVISION=	8
@@ -11,6 +8,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Apache module for authenticating users with Kerberos v5
+WWW=		https://modauthkerb.sourceforge.net/
 
 LICENSE=	MIT BSD3CLAUSE
 LICENSE_COMB=	multi
@@ -19,7 +17,7 @@ LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/LICENSE
 
 PORTSCOUT=	limit:^5.4
 
-USES=		apache:2.2+
+USES=		apache
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	-with-krb5=${GSSAPIBASEDIR} --without-krb4
 

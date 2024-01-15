@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jgroups
 PORTVERSION=	2.12.0
 CATEGORIES=	net java
@@ -8,6 +5,7 @@ MASTER_SITES=	LOCAL/ale
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java toolkit for reliable multicast communication
+WWW=		http://www.jgroups.org/
 
 LICENSE=	LGPL21
 

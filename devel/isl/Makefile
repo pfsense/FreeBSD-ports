@@ -1,13 +1,11 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	isl
-PORTVERSION=	0.23
+DISTVERSION=	0.26
 CATEGORIES=	devel math
-MASTER_SITES=	http://isl.gforge.inria.fr/
+MASTER_SITES=	SOURCEFORGE/libisl
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Integer Set Library
+WWW=		https://libisl.sourceforge.io/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,9 +13,17 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		libtool pkgconfig tar:xz
-CONFIGURE_ARGS=	--with-gmp-prefix=${LOCALBASE}
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
+
+CONFIGURE_ARGS=	--with-gmp-prefix=${LOCALBASE}
+
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
+OPTIONS_DEFINE=		OPTIMIZED_CFLAGS
+OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
+
+OPTIMIZED_CFLAGS_CFLAGS=	-O3
 
 .include <bsd.port.mk>

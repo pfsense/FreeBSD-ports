@@ -1,22 +1,20 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ktoblzcheck
 PORTVERSION=	1.53
-PORTREVISION=	1
+PORTREVISION=	9
 CATEGORIES=	finance german
 MASTER_SITES=	SF/${PORTNAME} \
-		LOCAL/jhale:bankdata
+		LOCAL/jhale/${PORTNAME}:bankdata
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}-bankdata-${BANKDATA_DATE}${EXTRACT_SUFX}:bankdata
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Check bank codes of German banks
+WWW=		https://ktoblzcheck.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake pathfix python:3.6+,build
+USES=		cmake pathfix python:build
 USE_LDCONFIG=	yes
 
 CMAKE_ON=	INSTALL_RAW_BANKDATA_FILE
@@ -25,7 +23,7 @@ CMAKE_OFF=	ENABLE_BANKDATA_DOWNLOAD
 PLIST_SUB=	BANKDATA_DATE=${BANKDATA_DATE}
 PORTDOCS=	README.md
 
-BANKDATA_DATE=	20201207
+BANKDATA_DATE=	20231204
 
 OPTIONS_DEFINE=	DOCS DOXYGEN
 OPTIONS_SUB=	yes

@@ -1,15 +1,13 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	notify-osd
 PORTVERSION=	0.9.34
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	deskutils
 MASTER_SITES=	https://launchpad.net/notify-osd/precise/0.9.34/+download/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	On-screen-display notification agent using libnotify
+WWW=		https://launchpad.net/notify-osd
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -29,7 +27,7 @@ USE_XORG=	pixman x11
 GNU_CONFIGURE=	yes
 GLIB_SCHEMAS=	com.canonical.NotifyOSD.gschema.xml
 
-CONFLICTS=	xfce4-notification-daemon-[0-9]*
+CONFLICTS_INSTALL=	notification-daemon # share/dbus-1/services/org.freedesktop.Notifications.service
 
 post-patch:
 	@${REINPLACE_CMD} '/SUBDIRS =/s/tests//' ${WRKSRC}/Makefile.in

@@ -1,9 +1,6 @@
-# Created by: Martin Klaffenboeck <martin.klaffenboeck@gmx.at>
-# $FreeBSD$
-
 PORTNAME=	gtkmm
 PORTVERSION=	2.24.5
-PORTREVISION?=	1
+PORTREVISION?=	4
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	24
@@ -11,6 +8,7 @@ DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for Gtk+
+WWW=		https://www.gtkmm.org/
 
 USES+=		tar:xz
 

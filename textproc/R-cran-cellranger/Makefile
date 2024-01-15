@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	cellranger
 DISTVERSION=	1.1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Translate Spreadsheet Cell Ranges to Rows and Columns
+WWW=		https://github.com/rsheets/cellranger
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

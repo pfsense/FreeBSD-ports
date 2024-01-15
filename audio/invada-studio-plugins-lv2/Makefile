@@ -1,15 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	invada-studio-plugins
 DISTVERSIONPREFIX=	lv2_
 DISTVERSION=	1.2.0
 DISTVERSIONSUFFIX=	-nopkg
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://launchpad.net/invada-studio/lv2/1.2/+download/
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Set of LV2 audio effect plugins, ported from VST
+WWW=		https://launchpad.net/invada-studio
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Graph-Easy
 PORTVERSION=	0.76
 CATEGORIES=	graphics perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Render graphs as ASCII, HTML, SVG, or Graphviz
+WWW=		https://metacpan.org/release/Graph-Easy
 
 LICENSE=	GPLv2+
 

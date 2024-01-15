@@ -1,6 +1,3 @@
-# Created by: Robert Gogolok <gogo@cs.uni-sb.de>
-# $FreeBSD$
-
 PORTNAME=	xye
 PORTVERSION=	0.12.2
 PORTREVISION=	4
@@ -22,6 +19,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle games like sokoban or boulderdash
+WWW=		https://xye.sourceforge.net/
 
 LICENSE=	ZLIB
 

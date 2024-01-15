@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	scdoc
-DISTVERSION=	1.11.1
+DISTVERSION=	1.11.2
 CATEGORIES=	textproc
 MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Small man page generator
+WWW=		https://git.sr.ht/~sircmpwn/scdoc
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake
-MAKE_ENV=	PCDIR='$$(_INSTDIR)/libdata/pkgconfig'
+MAKE_ENV=	PCDIR='$$(PREFIX)/libdata/pkgconfig'
 TEST_TARGET=	check
 PLIST_FILES=	bin/${PORTNAME} \
 		libdata/pkgconfig/${PORTNAME}.pc \

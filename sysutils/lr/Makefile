@@ -1,14 +1,12 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	lr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.1
+DISTVERSION=	1.6
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	List files, recursively
+WWW=		https://github.com/leahneukirchen/lr/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,8 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	leahneukirchen
 
 MAKE_ARGS=	CFLAGS="${CFLAGS}" \
-		PREFIX="${PREFIX}" \
-		MANDIR="${PREFIX}/man"
+		PREFIX="${PREFIX}"
 
 OPTIONS_DEFINE=		CONTRIB EMACS NEOVIM VIM
 OPTIONS_DEFAULT=	CONTRIB EMACS NEOVIM VIM

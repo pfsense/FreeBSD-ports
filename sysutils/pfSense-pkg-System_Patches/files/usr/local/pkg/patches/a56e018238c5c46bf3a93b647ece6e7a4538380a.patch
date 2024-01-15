@@ -1,0 +1,39 @@
+diff --git a/src/usr/local/sbin/pfSense-led.sh b/src/usr/local/sbin/pfSense-led.sh
+index 5027cad42c..8cbc8237d4 100755
+--- a/src/usr/local/sbin/pfSense-led.sh
++++ b/src/usr/local/sbin/pfSense-led.sh
+@@ -22,26 +22,26 @@
+ # Netgate 1100
+ #
+ 1100_led_booting() {
+-	if [ -c /dev/led/ok ]; then
+-		echo f1 > /dev/led/ok
++	if [ -c /dev/led/led2 ]; then
++		echo f1 > /dev/led/led2
+ 	fi
+ }
+ 
+ 1100_led_ready() {
+-	if [ -c /dev/led/ok ]; then
+-		echo 1 > /dev/led/ok
++	if [ -c /dev/led/led2 ]; then
++		echo 1 > /dev/led/led2
+ 	fi
+ }
+ 
+ 1100_led_update() {
+-	if [ -c /dev/led/ok ]; then
+-		echo f5 > /dev/led/ok
++	if [ -c /dev/led/led2 ]; then
++		echo f5 > /dev/led/led2
+ 	fi
+ }
+ 
+ 1100_led_update_off() {
+-	if [ -c /dev/led/ok ]; then
+-		echo 1 > /dev/led/ok
++	if [ -c /dev/led/led2 ]; then
++		echo 1 > /dev/led/led2
+ 	fi
+ }
+ 

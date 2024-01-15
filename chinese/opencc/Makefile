@@ -1,14 +1,11 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	opencc
-PORTVERSION=	1.0.5
+DISTVERSION=	1.1.6
 DISTVERSIONPREFIX=	ver.
-PORTREVISION=	3
 CATEGORIES=	chinese converters
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Open Chinese Convert library and utilities
+WWW=		https://github.com/BYVoid/OpenCC
 
 LICENSE=	APACHE20
 

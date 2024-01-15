@@ -1,30 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	cyrus-imapd
-PORTVERSION=	2.5.16
-#PORTREVISION=	0
+PORTVERSION=	2.5.17
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	25
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	Cyrus mail server, supporting POP3 and IMAP4 protocols
+WWW=		https://www.cyrusimap.org/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_armv6=		fails to build: ./tools/config2header: Error code 1
 BROKEN_armv7=		fails to build: ./tools/config2header: Error code 1
+BROKEN_riscv64=		fails to build: lib/imapopts.c: Error 1
 
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libpcre.so:devel/pcre
 
-CONFLICTS_INSTALL=	cyrus-imapd-2.[^5].* cyrus-imapd2[^5]-2.[^5].* \
-			cyrus-imapd3*
-
-USE_RC_SUBR=	imapd
+CONFLICTS_INSTALL=	cyrus-imapd2? cyrus-imapd3? cyrus-imapd3?-http
 
 USES=		cpe libtool perl5 ssl
+USE_RC_SUBR=	imapd
 GNU_CONFIGURE=	yes
 CYRUS_PREFIX=	${PREFIX}/cyrus
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
@@ -65,7 +63,7 @@ HTTP_USE=		GNOME=libxml2
 IDLED_DESC=		Enable IMAP idled support
 IDLED_CONFIGURE_ENABLE=	idled
 LDAP_DESC=		Enable LDAP support (experimental)
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_ON=	--with-ldap=${LOCALBASE}
 MURDER_DESC=		Enable IMAP Murder support
 MURDER_CONFIGURE_ENABLE=murder
@@ -136,9 +134,7 @@ CONFS=		cmu-backend.conf cmu-frontend.conf normal.conf prefork.conf \
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MBDB}
-INVALID_BDB_VER=2
-.else
+.if empty(${PORT_OPTIONS:MBDB})
 BDB_LIB_NAME=	no
 .endif
 

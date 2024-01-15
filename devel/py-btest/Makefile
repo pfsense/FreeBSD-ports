@@ -1,19 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	btest
-DISTVERSION=	0.62
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	mshirk@daemon-security.com
 COMMENT=	Simple driver for basic unit tests
+WWW=		https://github.com/zeek/btest/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.6+
+USES=		python
+USE_GITHUB=	yes
 USE_PYTHON=	distutils autoplist concurrent
+
+GH_ACCOUNT=	zeek
 
 NO_ARCH=	YES
 

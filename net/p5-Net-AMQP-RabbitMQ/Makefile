@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Net-AMQP-RabbitMQ
-PORTVERSION=	2.40008
+PORTVERSION=	2.40010
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Interact with RabbitMQ over AMQP using librabbitmq
+WWW=		https://github.com/net-amqp-rabbitmq/net-amqp-rabbitmq
 
 NOT_FOR_ARCHS=		mips mips64
 NOT_FOR_ARCHS_REASON=	Endianness not known

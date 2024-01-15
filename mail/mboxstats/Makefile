@@ -1,6 +1,3 @@
-# Created by: clsung
-# $FreeBSD$
-
 PORTNAME=	mboxstats
 PORTVERSION=	3.1
 CATEGORIES=	mail
@@ -8,6 +5,7 @@ MASTER_SITES=	http://vanheusden.com/mboxstats/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Creates top-10 lists of the messages in a mailbox
+WWW=		http://vanheusden.com/mboxstats/
 
 LICENSE=	GPLv2
 

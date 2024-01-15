@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DateTime-Format-HTTP
 PORTVERSION=	0.42
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTTP date conversion routines
+WWW=		https://metacpan.org/release/DateTime-Format-HTTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

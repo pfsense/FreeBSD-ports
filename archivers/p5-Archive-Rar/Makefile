@@ -1,6 +1,3 @@
-# Created by: Andrey Kostenko <andrey@kostenko.name>
-# $FreeBSD$
-
 PORTNAME=	Archive-Rar
 PORTVERSION=	2.02
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Interface with the 'rar' command
+WWW=		https://metacpan.org/release/Archive-Rar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

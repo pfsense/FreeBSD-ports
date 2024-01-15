@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	Test-WWW-Mechanize-CGIApp
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Test::WWW::Mechanize for CGIApp
+WWW=		https://metacpan.org/release/Test-WWW-Mechanize-CGIApp
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

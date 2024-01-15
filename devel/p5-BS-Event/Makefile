@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	BS-Event
 PORTVERSION=	0.3
 PORTREVISION=	2
@@ -11,18 +8,20 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Class that provides an event callback interface
+WWW=		https://metacpan.org/release/ELMEX/BS-Event-0.3
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-OPTIONS_DEFINE=	EXAMPLES
+USES=		perl5 shebangfix
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5 shebangfix
 
 SHEBANG_FILES=	samples/simple_example
 perl_OLD_CMD=	/opt/perl/bin/perl
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/

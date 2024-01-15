@@ -1,0 +1,16 @@
+--- meson.build.orig	2023-09-09 03:15:43 UTC
++++ meson.build
+@@ -7,12 +7,7 @@ compiler = meson.get_compiler('cpp')
+ 
+ static_deps = get_option('static-linkage') or get_option('default_library') == 'static'
+ 
+-# See https://github.com/kiwix/libkiwix/issues/371
+-if ['arm', 'mips', 'm68k', 'ppc', 'sh4'].contains(host_machine.cpu_family())
+-  extra_libs = ['-latomic']
+-else
+-  extra_libs = []
+-endif
++extra_libs = []
+ 
+ if (compiler.get_id() == 'gcc' and build_machine.system() == 'linux') or host_machine.system() == 'freebsd'
+   # C++ std::thread is implemented using pthread on linux by gcc

@@ -1,25 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	samurai
-DISTVERSION=	1.1
+DISTVERSION=	1.2-17
+DISTVERSIONSUFFIX=	-${GH_TAGNAME}
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/michaelforney/samurai/releases/download/${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Ninja-compatible build tool written in C
+WWW=		https://github.com/michaelforney/samurai
 
 LICENSE=	APACHE20 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE
 
+USES=		cpe
+CPE_VENDOR=	${PORTNAME}_project
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	michaelforney
+GH_TAGNAME=	217059f
+
 ALL_TARGET=	samu
 PLIST_FILES=	bin/samu \
-		man/man1/samu.1.gz
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/samu ${STAGEDIR}${PREFIX}/bin
-	${MKDIR} ${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/samu.1 ${STAGEDIR}${PREFIX}/man/man1
+		share/man/man1/samu.1.gz
 
 .include <bsd.port.mk>

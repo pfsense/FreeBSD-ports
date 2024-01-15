@@ -1,6 +1,3 @@
-# Created by: Christopher N. Harrell <cnh@ivmg.net>
-# $FreeBSD$
-
 PORTNAME=	NetAddr-IP
 PORTVERSION=	4.079
 CATEGORIES=	net-mgmt perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Work with IPv4 and IPv6 addresses and subnets
+WWW=		https://metacpan.org/release/NetAddr-IP
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual

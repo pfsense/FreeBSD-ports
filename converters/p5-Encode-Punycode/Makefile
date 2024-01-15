@@ -1,6 +1,3 @@
-# Created by: Timur Bakeyev <timur@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Encode-Punycode
 PORTVERSION=	1.002
 CATEGORIES=	converters perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Encode plugin for Punycode
+WWW=		https://metacpan.org/release/Encode-Punycode
 
 LICENSE=	GPLv1
 

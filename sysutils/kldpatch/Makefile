@@ -1,6 +1,3 @@
-# Created by: luigi@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	kldpatch
 PORTVERSION=	20090116
 CATEGORIES=	sysutils
@@ -9,6 +6,9 @@ DISTNAME=	${PORTVERSION}-${PORTNAME}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Utility to patch modules and kernel
+WWW=		http://info.iet.unipi.it/~luigi/FreeBSD/
+
+BROKEN=		Unfetchable
 
 USES=		tar:tgz
 

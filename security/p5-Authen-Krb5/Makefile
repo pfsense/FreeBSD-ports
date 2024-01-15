@@ -1,6 +1,3 @@
-# Created by: ajk@iu.edu
-# $FreeBSD$
-
 PORTNAME=	Authen-Krb5
 PORTVERSION=	1.9
 PORTREVISION=	2
@@ -11,6 +8,7 @@ DISTNAME=	Krb5-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Kerberos 5
+WWW=		https://metacpan.org/release/Krb5
 
 USES=		perl5
 USE_PERL5=	configure

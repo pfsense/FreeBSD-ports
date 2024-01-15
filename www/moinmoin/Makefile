@@ -1,6 +1,3 @@
-# Created by: Hye-Shik Chang <perky@python.or.kr>
-# $FreeBSD$
-
 PORTNAME=	moinmoin
 PORTVERSION=	1.9.11
 CATEGORIES=	www python
@@ -9,6 +6,7 @@ DISTNAME=	moin-${PORTVERSION}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Easy to use, full-featured and extensible wiki software package
+WWW=		https://moinmo.in/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/licenses/COPYING

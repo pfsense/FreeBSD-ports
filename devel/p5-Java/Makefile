@@ -1,6 +1,3 @@
-# Created by: Simun Mikecin <numisemis@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	Java
 PORTVERSION=	4.7
 PORTREVISION=	5

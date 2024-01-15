@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libdcadec
 PORTVERSION=	0.2.0
 PORTREVISION=	1
@@ -8,6 +6,7 @@ CATEGORIES=	multimedia
 
 MAINTAINER=	mickael.maillot@gmail.com
 COMMENT=	DTS Coherent Acoustics decoder with support for HD extensions
+WWW=		https://github.com/foo86/dcadec
 
 LICENSE=	LGPL21
 

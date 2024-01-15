@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Imager-QRCode
 PORTVERSION=	0.035
 CATEGORIES=	graphics perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Generate QR Code with Imager using libqrencode
+WWW=		https://metacpan.org/release/Imager-QRCode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

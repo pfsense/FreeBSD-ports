@@ -1,14 +1,13 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	gmime
 PORTVERSION=	3.2.7
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	30
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library (written in C) for parsing and creating messages using MIME
+WWW=		https://spruce.sourceforge.net/gmime/
 
 LICENSE=	LGPL21
 
@@ -25,12 +24,11 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	VALA
-OPTIONS_DEFAULT=	VALA
+OPTIONS_DEFINE=	VAPI
+OPTIONS_DEFAULT=	VAPI
 OPTIONS_SUB=	yes
-VALA_DESC=	Install vala binding
-VALA_BUILD_DEPENDS=	vala>=0.20:lang/vala
-VALA_CONFIGURE_ENABLE=	vala
+VAPI_USES=		vala:build
+VAPI_CONFIGURE_ENABLE=	vala
 
 # www.freebsd.org/cgi/query-pr.cgi?pr=118092
 # Rename uudecode and uuencode to gmime-* to not conflict with userland

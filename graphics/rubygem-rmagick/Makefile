@@ -1,24 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	rmagick
-PORTVERSION=	2.16.0
-PORTREVISION=	6
+PORTVERSION=	5.3.0
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby binding for ImageMagick
+WWW=		https://rmagick.github.io/ \
+		https://github.com/rmagick/rmagick
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gem pkgconfig
-USE_RUBY=	yes
+RUN_DEPENDS=	rubygem-pkg-config>=1.4<2:devel/rubygem-pkg-config
+
+USES=		gem pkgconfig shebangfix
+
+SHEBANG_FILES=	.devcontainer/*.sh
 
 OPTIONS_DEFINE=	X11
 OPTIONS_DEFAULT=X11
 
-X11_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
-X11_LIB_DEPENDS_OFF=	libMagickWand-6.so:graphics/ImageMagick6-nox11
+X11_USES=		magick:7
+X11_USES_OFF=		magick:7,nox11
 
 .include <bsd.port.mk>

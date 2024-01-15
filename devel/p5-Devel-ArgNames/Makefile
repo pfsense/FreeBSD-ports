@@ -1,6 +1,3 @@
-# Created by: Christopher Key <cjk32@cam.ac.uk>
-# $FreeBSD$
-
 PORTNAME=	Devel-ArgNames
 PORTVERSION=	0.03
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Figure out the names of variables passed into subroutines
+WWW=		https://metacpan.org/release/Devel-ArgNames
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

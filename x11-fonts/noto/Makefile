@@ -1,13 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	noto
 PORTVERSION=	2.0
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Google Noto Fonts family (meta port)
-
-LICENSE=	OFL11
+WWW=		https://fonts.google.com/noto
 
 USES=		metaport
 

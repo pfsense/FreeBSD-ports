@@ -1,12 +1,10 @@
-# Created by: Yuichiro NAITO <naito.yuichiro@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	asmctl
-PORTVERSION=	1.7
+PORTVERSION=	1.9
 CATEGORIES=	sysutils
 
 MAINTAINER=	naito.yuichiro@gmail.com
 COMMENT=	Apple System Management Controller
+WWW=		https://github.com/yuichiro-naito/asmctl
 
 LICENSE=	BSD2CLAUSE
 

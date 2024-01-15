@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bstone
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.9
@@ -8,6 +6,7 @@ CATEGORIES=	games
 
 MAINTAINER=	devel@stasyan.com
 COMMENT=	Source port of Blake Stone
+WWW=		https://github.com/bibendovsky/bstone
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../LICENSE

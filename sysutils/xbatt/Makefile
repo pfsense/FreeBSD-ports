@@ -1,13 +1,10 @@
-# Created by: Nobuhiro Yasutomi <nobu@psrc.isac.co.jp>
-# $FreeBSD$
-
 PORTNAME=	xbatt
 PORTVERSION=	1.2.1
 PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.clave.gr.jp/~eto/xbatt/
 
-MAINTAINER=	egypcio@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Laptop battery status display for X11
 
 ONLY_FOR_ARCHS=	amd64 i386

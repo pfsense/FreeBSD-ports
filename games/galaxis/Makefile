@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	galaxis
 PORTVERSION=	1.10
 CATEGORIES=	games
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.catb.org/~esr/galaxis/
 
 MAINTAINER=	alfix86@gmail.com
 COMMENT=	Clone of the nifty little Macintosh game
+WWW=		http://www.catb.org/~esr/galaxis/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

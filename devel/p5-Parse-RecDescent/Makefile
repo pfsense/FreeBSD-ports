@@ -1,6 +1,3 @@
-# Created by: Jerry Hicks <wghicks@bellsouth.net>
-# $FreeBSD$
-
 PORTNAME=	Parse-RecDescent
 PORTVERSION=	1.967015
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Recursive descent parsing framework for Perl
+WWW=		https://metacpan.org/release/Parse-RecDescent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

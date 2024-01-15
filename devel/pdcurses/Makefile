@@ -1,6 +1,3 @@
-# Created by: alepulver
-# $FreeBSD$
-
 PORTNAME=	pdcurses
 DISTVERSION=	3.5
 CATEGORIES=	devel
@@ -9,10 +6,11 @@ DISTNAME=	PDCurses-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Curses library implementation for Win32, DOS, OS/2, and X11
+WWW=		http://pdcurses.sourceforge.net/
 
 LICENSE=	PD
 
-CONFLICTS=	pdcurses-the-[0-9]*
+CONFLICTS=	pdcurses-the
 
 USES=		xorg
 USE_LDCONFIG=	yes

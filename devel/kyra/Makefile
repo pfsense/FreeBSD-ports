@@ -1,24 +1,18 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	kyra
 PORTVERSION=	2.1.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}2/${PORTVERSION}
 DISTNAME=	${PORTNAME}_src_${PORTVERSION:S/./_/g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple Sprite engine written in C++
+WWW=		https://www.grinninglizard.com/kyra/
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
-
-BROKEN_aarch64=		invalid output constraint =A in assembler
-BROKEN_armv6=		invalid output constraint =A in assembler
-BROKEN_armv7=		invalid output constraint =A in assembler
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

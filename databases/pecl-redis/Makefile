@@ -1,17 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	redis
-PORTVERSION=	5.3.2
+PORTVERSION=	5.3.7
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	daniel@blodan.se
 COMMENT=	Extension to access Redis
+WWW=		https://pecl.php.net/package/redis
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		php:pecl
-USE_PHP=	hash:build json:build session:build
+USES=		php:build,pecl
+USE_PHP=	session:build
 
 OPTIONS_DEFINE=	IGBINARY
 IGBINARY_DESC=	Build with Igbinary serializer

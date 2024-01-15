@@ -1,14 +1,12 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mp3plot
 DISTVERSION=	0.6.0
-PORTREVISION=	29
+PORTREVISION=	35
 CATEGORIES=	audio
 MASTER_SITES=	http://p.outlyer.net/mp3plot/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MP3 bitrate plot tool
+WWW=		https://p.outlyer.net/mp3plot/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -32,7 +30,7 @@ PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 GD_CONFIGURE_ENABLE=	gd
 GD_LIB_DEPENDS=		libgd.so:graphics/gd
 IMAGEMAGICK_CONFIGURE_ENABLE=	magick
-IMAGEMAGICK_LIB_DEPENDS=libMagick++-6.so:graphics/ImageMagick6
+IMAGEMAGICK_USES=	magick:6
 
 post-patch:
 	@${REINPLACE_CMD} -e '/bldtype_/s|-O2||g; s|^extra_LD.*||g' ${WRKSRC}/configure

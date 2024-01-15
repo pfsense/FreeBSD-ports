@@ -1,15 +1,15 @@
-# Created by: Thierry Thomas (<thierry@pompo.net>)
-# $FreeBSD$
-
 PORTNAME=	Console_Table
-DISTVERSION=	1.3.1
+PORTVERSION=	1.3.1
 CATEGORIES=	devel pear
 
-MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	PHP class that makes it easy to build console style tables
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Library that makes it easy to build console style tables
+WWW=		https://pear.php.net/package/Console_Table
 
 LICENSE=	BSD3CLAUSE
 
-USES=	pear
+USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,13 +1,11 @@
-# Created by: Johannes M Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	blis
-PORTVERSION=	0.8.0
-PORTREVISION=	0
+PORTVERSION=	0.9.0
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Software framework for high-performance BLAS-like libraries
+WWW=		https://github.com/flame/blis
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -27,6 +25,7 @@ CBLAS_DESC=	build the CBLAS compatibility layer
 OPTIONS_DEFAULT=	PARA CBLAS
 OPTIONS_SUB=		yes
 
+CFLAGS_riscv64=	-mno-relax
 HAS_CONFIGURE=	yes
 
 TEST_TARGET=	test
@@ -51,7 +50,7 @@ CONFIGURE_ARGS+=	--enable-cblas
 .if ${ARCH} == amd64
 CONFIGURE_ARGS+=	x86_64
 PLIST_SUB+=	ARCH="x86_64"
-.elif ${ARCH} == powerpc64
+.elif ${ARCH:Mpowerpc64*}
 CONFIGURE_ARGS+=	power9
 PLIST_SUB+=	ARCH="power9"
 USE_GCC=	yes
@@ -64,11 +63,9 @@ PLIST_SUB+=	ARCH="generic"
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 USE_GCC=	yes
-.else
-LLVM_VER=	10
-BUILD_DEPENDS+=	llvm${LLVM_VER}>=0:devel/llvm${LLVM_VER}
-CC=	${LOCALBASE}/bin/clang${LLVM_VER}
-CXX=	${LOCALBASE}/bin/clang++${LLVM_VER}
 .endif
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libblis.so.4.0.0
 
 .include <bsd.port.post.mk>

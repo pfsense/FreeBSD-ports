@@ -1,6 +1,3 @@
-# Created by: Lev Serebryakov <lev@serebryakov.spb.ru>
-# $FreeBSD$
-
 PORTNAME=	XML-XUpdate-LibXML
 PORTVERSION=	0.6.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Simple implementation of XUpdate format based on and XML::LibXML
+WWW=		https://metacpan.org/release/XML-XUpdate-LibXML
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-LibXML>=0:textproc/p5-XML-LibXML \

@@ -1,13 +1,12 @@
-# Created by: Bartoletti <lbartoletti@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lingot
 PORTVERSION=	1.0.1
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Musical instrument tuner
+WWW=		https://www.nongnu.org/lingot/
 
 LICENSE=	GPLv2
 
@@ -17,8 +16,6 @@ GNU_CONFIGURE=	yes
 
 CONFIGURE_ENV=	DATADIRNAME="share"
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-INSTALLS_ICONS=		YES
 
 OPTIONS_DEFINE=		DOCS NLS FFTW
 OPTIONS_GROUP=		SOUND

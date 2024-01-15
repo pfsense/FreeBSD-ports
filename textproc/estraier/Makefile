@@ -1,6 +1,3 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-
 PORTNAME=	estraier
 PORTVERSION=	1.2.30
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	https://dbmx.net/estraier/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search system for personal use
+WWW=		https://dbmx.net/estraier/
 
 LIB_DEPENDS=	libqdbm.so:databases/qdbm
 

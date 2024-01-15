@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpotrace
 PORTVERSION=	1.16
 CATEGORIES=	graphics
@@ -8,6 +6,7 @@ DISTNAME=	potrace-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Library for transforming bitmaps into vector graphics
+WWW=		https://potrace.sourceforge.net
 
 LICENSE=	GPLv2
 

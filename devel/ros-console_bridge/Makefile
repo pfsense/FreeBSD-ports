@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ros-console_bridge
-DISTVERSION=	0.4.4
+DISTVERSION=	1.0.2
 CATEGORIES=	devel
 
 MAINTAINER=	trueos@norwegianrockcat.com
 COMMENT=	ROS-independent logging that pipes into ROS packages
+WWW=		https://github.com/ros/console_bridge
 
 LICENSE=	BSD3CLAUSE
 

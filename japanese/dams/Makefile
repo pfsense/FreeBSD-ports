@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dams
 PORTVERSION=	4.3.4
 CATEGORIES=	japanese
@@ -7,12 +5,15 @@ MASTER_SITES=	http://newspat.csis.u-tokyo.ac.jp/download/
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Geocoder that converts address strings into latitude and longitude
+WWW=		http://newspat.csis.u-tokyo.ac.jp/geocode/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake libtool tar:tgz
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 
 MAKE_JOBS_UNSAFE=	yes

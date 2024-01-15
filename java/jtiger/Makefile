@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	jtiger
 PORTVERSION=	2.1.0376
 CATEGORIES=	java devel
@@ -8,6 +5,7 @@ MASTER_SITES=	http://kaiwitte.org/jtiger/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unit Test Framework and Tools for the Java2 Platform
+WWW=		http://www.jtiger.org/
 
 USE_JAVA=	yes
 NO_BUILD=	yes

@@ -1,6 +1,3 @@
-# Created by: Will Andrews <will@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-TreeBuilder
 PORTVERSION=	5.4
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to make XML document trees
+WWW=		https://metacpan.org/release/XML-TreeBuilder
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

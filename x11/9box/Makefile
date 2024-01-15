@@ -1,6 +1,3 @@
-# Created by: Serge Gagnon <gagnon__s@videotron.ca>
-# $FreeBSD$
-
 PORTNAME=	9box
 PORTVERSION=	0.2.1
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	LOCAL/thierry
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	9box can "pack" windows inside itself
+WWW=		http://savannah.nongnu.org/projects/9box/
 
 PLIST_FILES=	bin/9box
 USES=		gmake xorg

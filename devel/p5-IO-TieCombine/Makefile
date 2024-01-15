@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	IO-TieCombine
 PORTVERSION=	1.005
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl 5 module to produce tied separate but combined variables
+WWW=		https://metacpan.org/release/IO-TieCombine
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

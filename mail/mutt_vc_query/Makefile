@@ -1,6 +1,3 @@
-# Created by: Oliver Braun
-# $FreeBSD$
-
 PORTNAME=	mutt_vc_query
 PORTVERSION=	002
 CATEGORIES=	mail
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/rolo/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	vCard query utility for mutt
+WWW=		http://rolo.sf.net/
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	libvc>=003:devel/libvc

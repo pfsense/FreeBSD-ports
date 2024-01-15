@@ -1,15 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	newlib
 PORTVERSION=	2.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	ftp://sources.redhat.com/pub/${PORTNAME}/ \
-		SOURCEWARE/${PORTNAME}
+MASTER_SITES=	SOURCEWARE/${PORTNAME}
 PKGNAMEPREFIX=	${NEWLIB_TARGET}-
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Newlib distribution for ${NEWLIB_TARGET} targets
+WWW=		https://www.sourceware.org/newlib/
 
 BUILD_DEPENDS+=	${NEWLIB_TARGET}-ar:devel/binutils@${NEWLIB_TARGET:C/-/_/g} \
 		${NEWLIB_TARGET}-as:devel/binutils@${NEWLIB_TARGET:C/-/_/g} \
@@ -18,12 +16,22 @@ BUILD_DEPENDS+=	${NEWLIB_TARGET}-ar:devel/binutils@${NEWLIB_TARGET:C/-/_/g} \
 
 NEWLIB_TARGET?=	arm-none-eabi
 
-USES=		gmake makeinfo
+USES=		cpe gmake makeinfo
+CPE_VENDOR=	${PORTNAME}_project
 HAS_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--prefix=${PREFIX} --target="${NEWLIB_TARGET}" --disable-newlib-supplied-syscalls
+CONFIGURE_ARGS+=	--prefix=${PREFIX} \
+		--target="${NEWLIB_TARGET}" \
+		--disable-newlib-supplied-syscalls \
+		--enable-multilib
 
 # Disable installation of .info files and fix includedir reference.
 post-patch:
 	@${REINPLACE_CMD} -E 's/^(install.*:.*)install-info(.*)/\1\2/' ${WRKSRC}/etc/Makefile.in
+
+post-install:
+	@${FIND} ${STAGEDIR} ! -type d | \
+		${SED} 's,${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
+	@${FIND} -ds ${STAGEDIR}${PREFIX}/${NEWLIB_TARGET} -type d -empty | \
+		${SED} 's,${STAGEDIR}${PREFIX}/,, ; s,^,@dir ,' >> ${TMPPLIST}
 
 .include <bsd.port.mk>

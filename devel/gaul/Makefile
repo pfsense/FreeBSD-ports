@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gaul
 PORTVERSION=	0.1849.0
 PORTREVISION=	5
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-devel-${PORTVERSION:R}-${PORTVERSION:E}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Genetic Algorithm Utility Library
+WWW=		https://gaul.sourceforge.net/
 
 LIB_DEPENDS=	libslang.so:devel/libslang2
 

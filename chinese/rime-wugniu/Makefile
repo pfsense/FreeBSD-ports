@@ -1,12 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-wugniu
 DISTVERSION=	g20190120
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com
 COMMENT=	Rime Wugniu schema support
+WWW=		https://github.com/rime/rime-wugniu
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

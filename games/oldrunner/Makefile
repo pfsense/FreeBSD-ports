@@ -1,13 +1,11 @@
-# Created by: Frederic Culot <frederic@culot.org>
-# $FreeBSD$
-
 PORTNAME=	oldrunner
 PORTVERSION=	20120131
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/culot
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Textmode remake of Broderbund's LodeRunner
+WWW=		http://culot.org/public/Code/oldrunner.html
 
 LICENSE=	BSD2CLAUSE
 

@@ -1,6 +1,3 @@
-# Created by: Jesse Smith <jessefrgsmith@yahoo.ca>
-# $FreeBSD$
-
 PORTNAME=	cpulimit
 PORTVERSION=	2.2
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/limitcpu/limitcpu/
 
 MAINTAINER=	jessefrgsmith@yahoo.ca
 COMMENT=	Limit the CPU usage of a process
+WWW=		https://limitcpu.sourceforge.net/
 
 LICENSE=	GPLv2
 

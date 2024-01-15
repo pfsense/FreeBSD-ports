@@ -1,6 +1,3 @@
-# Created by: jameskamlyn@gmail.com
-# $FreeBSD$
-
 PORTNAME=	tableutil
 PORTVERSION=	0.6
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://expiretable.fnord.se/
 
 MAINTAINER=	jameskamlyn@gmail.com
 COMMENT=	Utility for converting and aggregating lists of IP addresses
+WWW=		https://expiretable.fnord.se/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${PATCHDIR}/LICENSE.txt

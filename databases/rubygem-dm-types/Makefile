@@ -1,6 +1,3 @@
-# Created by: Jyun-Yan You <jyyou@cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	dm-types
 PORTVERSION=	1.2.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	DataMapper plugin providing extra data types
+WWW=		https://github.com/datamapper/dm-types
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +20,6 @@ RUN_DEPENDS=	rubygem-bcrypt-ruby>=3.0<4:security/rubygem-bcrypt-ruby \
 		rubygem-uuidtools>=2.1<3:devel/rubygem-uuidtools
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

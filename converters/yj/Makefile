@@ -1,26 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	yj
-PORTVERSION=	5.0.0
+PORTVERSION=	5.1.0
+PORTREVISION=	14
 DISTVERSIONPREFIX=	v
 CATEGORIES=	converters
 DIST_SUBDIR=	yj
 
-MAINTAINER=	ohauer@FreeBSD.org
+MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Convert between YAML, TOML, JSON, and HCL
+WWW=		https://github.com/sclevine/yj
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 USE_GITHUB=	yes
-
 GH_ACCOUNT=	sclevine
+GH_TUPLE=	BurntSushi:toml:v1.1.0:burntsushi_toml/vendor/github.com/BurntSushi/toml \
+		hashicorp:hcl:v1.0.0:hashicorp_hcl/vendor/github.com/hashicorp/hcl \
+		go-yaml:yaml:496545a:go_yaml_yaml/vendor/gopkg.in/yaml.v3
+
+CONFLICTS_INSTALL=	yj-bruceadams
 
 PLIST_FILES=	bin/yj
-
-GH_TUPLE=	go-yaml:yaml:eeeca48fe776:go_yaml_yaml/vendor/gopkg.in/yaml.v3 \
-		hashicorp:hcl:v1.0.0:hashicorp_hcl/vendor/github.com/hashicorp/hcl \
-		sclevine:go-toml:ed50a274ac56:sclevine_go_toml/vendor/github.com/pelletier/go-toml
 
 .include <bsd.port.mk>

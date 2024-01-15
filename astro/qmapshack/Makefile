@@ -1,21 +1,18 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	qmapshack
-PORTVERSION=	1.15.0
+PORTVERSION=	1.17.1
 DISTVERSIONPREFIX=	V_
-PORTREVISION=	3
 CATEGORIES=	astro
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Ultimate outdoor aficionado's tool
+WWW=		https://github.com/Maproom/qmapshack/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libproj.so:graphics/proj \
-		libquazip1-qt5.so:archivers/quazip \
+		libquazip1-qt5.so:archivers/quazip@qt5 \
 		libroutino.so:astro/routino
 RUN_DEPENDS=	${LOCALBASE}/bin/bsdisks:sysutils/bsdisks
 

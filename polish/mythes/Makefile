@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	1.5
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Polish thesaurus
+WWW=		http://synonimy.ux.pl/
 
 LICENSE=	LGPL21
 
@@ -18,8 +17,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/th_pl_PL_v2.dat \
-		%%DATADIR%%/th_pl_PL_v2.idx
+PLIST_FILES=	${DATADIR}/th_pl_PL_v2.dat \
+		${DATADIR}/th_pl_PL_v2.idx
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

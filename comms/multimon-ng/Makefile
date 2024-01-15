@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	multimon-ng
 PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Digital transmission decoder
+WWW=		https://github.com/EliasOenal/multimon-ng
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

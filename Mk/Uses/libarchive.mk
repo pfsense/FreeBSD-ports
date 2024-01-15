@@ -1,12 +1,10 @@
-# $FreeBSD$
-#
 # handle dependency on the libarchive port
 #
 # Feature:	libarchive
 # Usage:	USES=libarchive
 # Valid ARGS:	none
 #
-# MAINTAINER:	portmgr@FreeBSD.org
+# MAINTAINER:	ports@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_LIBARCHIVE_MK)
 _INCLUDE_USES_LIBARCHIVE_MK=	yes

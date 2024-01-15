@@ -1,6 +1,3 @@
-# Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	oicq
 PORTVERSION=	1.6
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	Net-OICQ-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implements OICQ messaging protocol
+WWW=		https://sourceforge.net/projects/perl-oicq/
 
 BUILD_DEPENDS=	p5-Term-ReadKey>=0:devel/p5-Term-ReadKey \
 		p5-Crypt-OICQ>=0:security/p5-Crypt-OICQ

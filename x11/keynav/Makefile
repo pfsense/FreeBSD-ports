@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	keynav
 PORTVERSION=	0.20180821.0	# to match the output of `keynav -v'
 PORTEPOCH=	1
@@ -7,13 +5,14 @@ CATEGORIES=	x11
 
 MAINTAINER=	karlo@klarinet.osamsb.hr
 COMMENT=	Quickly select a portion of the screen using minimal keystrokes
+WWW=		https://www.semicomplete.com/projects/keynav/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libxdo.so:x11/xdotool
 
-USES=		gmake gnome pkgconfig
+USES=		gmake gnome pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	jordansissel
 GH_TAGNAME=	78f9e07

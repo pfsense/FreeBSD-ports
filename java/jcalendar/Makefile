@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	jcalendar
 PORTVERSION=	1.3.3
 CATEGORIES=	java misc
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.toedter.com/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java Date Chooser
+WWW=		https://www.toedter.com/en/jcalendar/
 
 USES=		zip
 USE_JAVA=	yes

@@ -1,6 +1,3 @@
-# Created by: Tom Hukins <tom@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Search-Google
 PORTVERSION=	0.23
 PORTREVISION=	1
@@ -12,6 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl WWW::Search class for searching Google
+WWW=		https://metacpan.org/release/WWW-Search-Google
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-WWW-Search>=0:www/p5-WWW-Search \

@@ -1,6 +1,3 @@
-# Created by: Bruce M. Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	upslug
 PORTVERSION=	2.11
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ DISTNAME=	upslug2-11
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Firmware upload tool for Linksys NSLU2
+WWW=		http://www.nslu2-linux.org/wiki/Main/UpSlug
 
 USES=		gmake
 GNU_CONFIGURE=	yes

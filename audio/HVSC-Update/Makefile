@@ -1,6 +1,3 @@
-# Created by: Anders Nordby <anders@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HVSC-Update
 PORTVERSION=	2.8.7
 CATEGORIES=	audio emulators
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME:S/-/_/}_Tool_source_${PORTVERSION:S/.//g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Update program for the HVSC C= 64 SID tune collection
+WWW=		https://www.hvsc.c64.org/
 
 BUILD_DEPENDS=	makedepend:devel/makedepend
 

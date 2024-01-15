@@ -1,13 +1,11 @@
-# Created by: Alexey V. Antipovsky <kemm@in-line.ru>
-# $FreeBSD$
-
 PORTNAME=	libspectrum
-PORTVERSION=	1.4.4
+PORTVERSION=	1.5.0
 CATEGORIES=	emulators devel
 MASTER_SITES=	SF/fuse-emulator/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	rene@FreeBSD.org
 COMMENT=	Handling of ZX-Spectrum emulator files formats
+WWW=		https://fuse-emulator.sourceforge.net/libspectrum.php
 
 LICENSE=	GPLv2
 

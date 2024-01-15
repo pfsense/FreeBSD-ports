@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	terraform-provider-vultr
 PORTVERSION=	0.1.10
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	16
 CATEGORIES=	sysutils
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Terraform provider for Vultr
+WWW=		https://github.com/squat/terraform-provider-vultr
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	teem
 DISTVERSION=	1.11.0
 DISTVERSIONSUFFIX=	-src
@@ -8,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Libraries for representing, processing and visualizing scientific data
+WWW=		https://teem.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

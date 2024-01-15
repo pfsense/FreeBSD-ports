@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=		scarab
-DISTVERSIONPREFIX=      v
-DISTVERSION=            0.1.3
+DISTVERSIONPREFIX=	v
+DISTVERSION=		0.1.3
 CATEGORIES=		sysutils python
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	CLI interface for FreeBSD Bugzilla
+WWW=		https://github.com/gonzoua/scarab
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +17,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>=0:devel/py-coverage@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-cov>=0:devel/py-pytest-cov@${PY_FLAVOR}
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 USE_GITHUB=	yes
@@ -26,12 +25,12 @@ GH_ACCOUNT=	gonzoua
 
 NO_ARCH=	yes
 
-SUB_FILES=      pkg-message
+SUB_FILES=	pkg-message
 
 PORTDOCS=	README.md
 PORTEXAMPLES=	scarabrc
 
-OPTIONS_DEFINE= DOCS EXAMPLES
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

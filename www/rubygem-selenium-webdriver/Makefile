@@ -1,26 +1,22 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	selenium-webdriver
-PORTVERSION=	3.142.7
-PORTREVISION=	1
+PORTVERSION=	4.16.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool for writing automated tests of websites
+WWW=		https://www.seleniumhq.org/ \
+		https://github.com/SeleniumHQ/selenium/tree/trunk/rb
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-childprocess3>=0.5<4.0:devel/rubygem-childprocess3 \
-		rubygem-rubyzip>=1.2.2:archivers/rubygem-rubyzip
+RUN_DEPENDS=	rubygem-rexml>=3.2.5<4:textproc/rubygem-rexml \
+		rubygem-rubyzip>=1.2.2<3.0:archivers/rubygem-rubyzip \
+		rubygem-websocket>=1.0<2:www/rubygem-websocket
 
 USES=		gem
-USE_RUBY=	yes
 
-# do not strip files as this breaks the build of the port
-# for more details: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=220330
-STRIP_CMD=	${TRUE}
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

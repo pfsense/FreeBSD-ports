@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ayu20
 PORTVERSION=	1.7.a
 PORTREVISION=	3
@@ -10,6 +8,7 @@ DISTNAME=	ayu20gothic-1.7a
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Ayu 20-dot Kanji font
+WWW=		https://x-tt.osdn.jp/ayu.html
 
 LICENSE=	PD
 
@@ -25,8 +24,6 @@ PORTDOCS=	README.txt
 MAKEFILE=	${WRKDIR}/Makefile
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias \

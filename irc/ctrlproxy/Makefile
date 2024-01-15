@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	ctrlproxy
 PORTVERSION=	3.0.8
 PORTREVISION=	9
@@ -10,6 +7,7 @@ MASTER_SITES=	http://launchpadlibrarian.net/50016234/ \
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Flexible IRC proxy
+WWW=		https://www.samba.org/~jelmer/ctrlproxy/
 
 LIB_DEPENDS=	libgnutls.so:security/gnutls
 

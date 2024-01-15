@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	AnyEvent-HTTP-LWP-UserAgent
 PORTVERSION=	0.10
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for LWP::UserAgent interface using AnyEvent::HTTP
+WWW=		https://metacpan.org/release/AnyEvent-HTTP-LWP-UserAgent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

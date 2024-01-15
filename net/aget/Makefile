@@ -1,6 +1,3 @@
-# Created by: Aaron Zauner <az_mail@gmx.at>
-# $FreeBSD$
-
 PORTNAME=	aget
 PORTVERSION=	0.4.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.enderunix.org/aget/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multithreaded HTTP download accelerator
+WWW=		http://www.enderunix.org/aget/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,12 +1,11 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rime-jyutping
 DISTVERSION=	g20200809
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com
 COMMENT=	Rime Jyutping (old) schema support
+WWW=		https://github.com/rime/rime-jyutping
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE

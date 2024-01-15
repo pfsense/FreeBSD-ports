@@ -1,6 +1,3 @@
-# Created by: petef
-# $FreeBSD$
-
 PORTNAME=	qmhandle
 PORTVERSION=	1.3.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-1.3/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to view and manage a qmail queue
+WWW=		https://sourceforge.net/projects/qmhandle/
 
 LICENSE=	GPLv2
 

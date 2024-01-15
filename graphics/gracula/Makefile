@@ -1,6 +1,3 @@
-# Created by: G. Adam Stanislav <adam@whizkidtech.net>
-# $FreeBSD$
-
 PORTNAME=	gracula
 PORTVERSION=	3.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	ftp://ftp.whizkidtech.redprince.net/cgi/gcl/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphic Counter Language compiler/interpreter
+WWW=		http://www.whizkidtech.redprince.net/gcl/
 
 SUB_FILES=	pkg-message
 

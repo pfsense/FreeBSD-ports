@@ -1,6 +1,3 @@
-# Created by: Anders Troback
-# $FreeBSD$
-
 PORTNAME=	bacula
 CATEGORIES=	net-mgmt
 PKGNAMEPREFIX=	nagios-check_

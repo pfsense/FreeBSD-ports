@@ -1,15 +1,13 @@
-# Created by: Carsten Larsen <cs@innolan.dk>
-# $FreeBSD$
-
 PORTNAME=	ntpa
 PORTVERSION=	0.8.2
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	http://dist1.innolan.net/ \
 		http://dist2.innolan.net/
 
 MAINTAINER=	cs@innolan.net
 COMMENT=	NTP data collection and charting
+WWW=		http://ntpa.innolan.net/
 
 LICENSE=	MIT BSD3CLAUSE PostgreSQL GPLv2
 LICENSE_COMB=	multi

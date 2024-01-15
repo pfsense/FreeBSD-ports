@@ -1,9 +1,6 @@
-# Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	q2p
 PORTVERSION=	0.2.20061231
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 DISTNAME=	Q2P-0.2-2006-12-31

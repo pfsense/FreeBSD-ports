@@ -1,6 +1,3 @@
-# Created by: Toni Viemerö <toni.viemero@iki.fi>
-# $FreeBSD$
-
 PORTNAME=	makepasswd
 PORTVERSION=	1.10
 PORTREVISION=	7
@@ -14,13 +11,15 @@ PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	toni.viemero@iki.fi
 COMMENT=	Random password generator
+WWW=		https://packages.debian.org/stable/makepasswd
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING-2.0
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 SHEBANG_FILES=	makepasswd
 USE_PERL5=	run
 

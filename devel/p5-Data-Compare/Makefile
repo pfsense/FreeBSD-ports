@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Compare
 PORTVERSION=	1.2200
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/0*$//}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Compare Perl data structures
+WWW=		https://metacpan.org/release/Data-Compare
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

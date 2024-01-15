@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	scrm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.7.4
@@ -7,6 +5,7 @@ CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Coalescent simulator for biological sequences
+WWW=		https://scrm.github.io/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

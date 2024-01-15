@@ -1,7 +1,5 @@
-# Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
-
 CELESTIA_UI=	gtk
+PORTREVISION=	2
 MASTERDIR=	${.CURDIR}/../celestia
 
 .include "${MASTERDIR}/Makefile"

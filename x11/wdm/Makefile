@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wdm
 PORTVERSION=	1.28
 PORTREVISION=	16
@@ -16,6 +13,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	WINGs Display Manager; an xdm replacement
+WWW=		https://github.com/voins/wdm
 
 LICENSE=	GPLv2+
 
@@ -51,6 +49,12 @@ WDMDIR=		${PREFIX}/lib/X11/wdm
 
 PAM_CONFIGURE_OFF=	--disable-pam
 PAM_CONFIGURE_ON=	--with-pamdir=${LOCALBASE}/etc/pam.d/
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

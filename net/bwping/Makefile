@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	bwping
-PORTVERSION=	2.2
+PORTVERSION=	2.5
 CATEGORIES=	net
 MASTER_SITES=	SF
 
 MAINTAINER=	oleg.derevenetz@gmail.com
 COMMENT=	Tool to measure bandwidth and RTT between two hosts using ICMP
+WWW=		https://bwping.sourceforge.io/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

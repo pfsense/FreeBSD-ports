@@ -1,6 +1,3 @@
-# Created by: Alexey Mikhailov <karma@ez.pereslavl.ru>
-# $FreeBSD$
-
 PORTNAME=	sawfish-themes
 PORTVERSION=	0.13
 CATEGORIES=	x11-themes
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Themes for Sawfish window manager
+WWW=		https://packages.qa.debian.org/s/sawfish-themes.html
 
 LICENSE=	GPLv2
 

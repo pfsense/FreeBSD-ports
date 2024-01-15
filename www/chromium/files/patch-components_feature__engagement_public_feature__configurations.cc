@@ -1,20 +1,21 @@
---- components/feature_engagement/public/feature_configurations.cc.orig	2020-11-16 14:27:02 UTC
+--- components/feature_engagement/public/feature_configurations.cc.orig	2023-12-10 06:10:27 UTC
 +++ components/feature_engagement/public/feature_configurations.cc
-@@ -12,7 +12,7 @@ namespace feature_engagement {
- 
- base::Optional<FeatureConfig> GetClientSideFeatureConfig(
+@@ -49,7 +49,7 @@ FeatureConfig CreateAlwaysTriggerConfig(const base::Fe
+ absl::optional<FeatureConfig> GetClientSideFeatureConfig(
      const base::Feature* feature) {
--#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (kIPHPasswordsAccountStorageFeature.name == feature->name) {
-     base::Optional<FeatureConfig> config = FeatureConfig();
-@@ -28,7 +28,7 @@ base::Optional<FeatureConfig> GetClientSideFeatureConf
-                     Comparator(EQUAL, 0), 180, 180));
-     return config;
-   }
--#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS)
+     absl::optional<FeatureConfig> config = FeatureConfig();
+     config->valid = true;
+@@ -1440,7 +1440,8 @@ absl::optional<FeatureConfig> GetClientSideFeatureConf
+ #endif  // BUILDFLAG(IS_ANDROID)
  
- #if defined(OS_ANDROID)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || \
++    BUILDFLAG(IS_BSD)
+ 
+   if (kIPHAutofillExternalAccountProfileSuggestionFeature.name ==
+       feature->name) {

@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	namefix
 PORTVERSION=	4.0.2
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}.pl_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Batch file renamer
+WWW=		https://namefix.blogspot.com/
 
 LICENSE=	GPLv2
 

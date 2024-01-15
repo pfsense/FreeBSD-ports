@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Provide support for Meson based projects
 #
 # Feature:		meson
@@ -16,15 +14,15 @@
 # MESON_BUILD_DIR	- Path to the build directory relative to ${WRKSRC}
 #			Default: _build
 #
-# MAINTAINER: gnome@FreeBSD.org
+# MAINTAINER: desktop@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_MESON_MK)
 _INCLUDE_USES_MESON_MK=	yes
 
 # Sanity check
-.if !empty(meson_ARGS)
+.  if !empty(meson_ARGS)
 IGNORE=	Incorrect 'USES+= meson:${meson_ARGS}'. meson takes no arguments
-.endif
+.  endif
 
 BUILD_DEPENDS+=		meson:devel/meson
 
@@ -38,16 +36,29 @@ CONFIGURE_ARGS+=	--prefix ${PREFIX} \
 			--mandir man \
 			--infodir ${INFO_PATH}
 
+# Enable all optional features to make builds deterministic. Consumers can
+# expose those as port OPTIONS_* or explicitly pass -D<option>=disabled
+CONFIGURE_ARGS+=	--auto-features=enabled
+
+# Temporarily disable bytecode due to embedding STAGEDIR
+CONFIGURE_ARGS+=	-Dpython.bytecompile=-1
+
+# Disable color output.  Meson forces it on by default, Ninja
+# strips it before it goes to the log, but Samurai does not, so we
+# might end up with ANSI escape sequences in the logs.
+CONFIGURE_ARGS+=	-Db_colorout=never
+
 # meson has it own strip mechanic
 INSTALL_TARGET=		install
 
 # should we have strip separate from WITH_DEBUG?
-.if defined(WITH_DEBUG)
+.  if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--buildtype debug
-.else
+.  else
 CONFIGURE_ARGS+=	--buildtype release \
+			--optimization plain \
 			--strip
-.endif
+.  endif
 
 HAS_CONFIGURE=		yes
 CONFIGURE_CMD=		meson

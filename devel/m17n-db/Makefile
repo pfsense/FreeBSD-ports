@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
-
 PORTNAME=	m17n-db
 PORTVERSION=	1.8.0
 CATEGORIES=	devel textproc
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${M17N_DISTFILE}
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	Data files for the m17n library
+WWW=		https://www.nongnu.org/m17n/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

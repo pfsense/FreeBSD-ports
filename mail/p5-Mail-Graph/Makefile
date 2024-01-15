@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	Mail-Graph
 PORTVERSION=	0.14
 PORTREVISION=	8
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for drawing graphical stats for mails/spams
+WWW=		https://metacpan.org/release/Mail-Graph
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-GD>=0:graphics/p5-GD \

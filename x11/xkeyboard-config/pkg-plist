@@ -90,6 +90,7 @@ share/X11/xkb/symbols/af
 share/X11/xkb/symbols/al
 share/X11/xkb/symbols/altwin
 share/X11/xkb/symbols/am
+share/X11/xkb/symbols/ancient
 share/X11/xkb/symbols/apl
 share/X11/xkb/symbols/ara
 share/X11/xkb/symbols/at
@@ -99,6 +100,7 @@ share/X11/xkb/symbols/ba
 share/X11/xkb/symbols/bd
 share/X11/xkb/symbols/be
 share/X11/xkb/symbols/bg
+share/X11/xkb/symbols/bqn
 share/X11/xkb/symbols/br
 share/X11/xkb/symbols/brai
 share/X11/xkb/symbols/bt
@@ -153,7 +155,6 @@ share/X11/xkb/symbols/is
 share/X11/xkb/symbols/it
 share/X11/xkb/symbols/jolla_vndr/sbj
 share/X11/xkb/symbols/jp
-share/X11/xkb/symbols/jv
 share/X11/xkb/symbols/ke
 share/X11/xkb/symbols/keypad
 share/X11/xkb/symbols/kg
@@ -187,7 +188,6 @@ share/X11/xkb/symbols/macintosh_vndr/no
 share/X11/xkb/symbols/macintosh_vndr/pt
 share/X11/xkb/symbols/macintosh_vndr/se
 share/X11/xkb/symbols/macintosh_vndr/us
-share/X11/xkb/symbols/mao
 share/X11/xkb/symbols/md
 share/X11/xkb/symbols/me
 share/X11/xkb/symbols/mk
@@ -206,6 +206,7 @@ share/X11/xkb/symbols/nokia_vndr/rx-44
 share/X11/xkb/symbols/nokia_vndr/rx-51
 share/X11/xkb/symbols/nokia_vndr/su-8w
 share/X11/xkb/symbols/np
+share/X11/xkb/symbols/nz
 share/X11/xkb/symbols/olpc
 share/X11/xkb/symbols/parens
 share/X11/xkb/symbols/pc
@@ -294,6 +295,7 @@ share/X11/xkb/types/nokia
 share/X11/xkb/types/numpad
 share/X11/xkb/types/pc
 %%NLS%%share/locale/af/LC_MESSAGES/xkeyboard-config.mo
+%%NLS%%share/locale/ar/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/az/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/bg/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/ca/LC_MESSAGES/xkeyboard-config.mo
@@ -309,6 +311,7 @@ share/X11/xkb/types/pc
 %%NLS%%share/locale/fr/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/fur/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/gl/LC_MESSAGES/xkeyboard-config.mo
+%%NLS%%share/locale/he/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/hr/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/hu/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/id/LC_MESSAGES/xkeyboard-config.mo

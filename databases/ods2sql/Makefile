@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	ods2sql
 DISTVERSION=	0.4.0
-PORTREVISION=	1
+PORTREVISION=	29
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Create SQLite3 database from ODS spreadsheet
+WWW=		https://gitlab.com/zetok/ods2sql
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,7 +14,7 @@ USES=		cargo sqlite
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	zetok
-GL_COMMIT=	aca63183274038487cecb6be17d7f65e92178b8c
+GL_TAGNAME=	aca63183274038487cecb6be17d7f65e92178b8c
 
 CARGO_CRATES=	adler32-1.2.0 \
 		ahash-0.4.6 \

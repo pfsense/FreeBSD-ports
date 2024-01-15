@@ -1,6 +1,3 @@
-# Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libpafe
 PORTVERSION=	0.0.8
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://homepage3.nifty.com/slokar/pasori/
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	FeliCa read/write library for Sony RC-S320 USB FeliCa R/W(PaSoRi)
+WWW=		http://homepage3.nifty.com/slokar/pasori/libpafe.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

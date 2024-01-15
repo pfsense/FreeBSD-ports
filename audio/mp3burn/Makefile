@@ -1,14 +1,12 @@
-# Created by: Vincent Tantardini <vinc@FreeBSD-fr.org>
-# $FreeBSD$
-
 PORTNAME=	mp3burn
 PORTVERSION=	0.4.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line tool to burn audio CDs from MP3, Ogg, Vorbis, FLAC files
+WWW=		https://mp3burn.sourceforge.net/
 
 RUN_DEPENDS=	mpg123:audio/mpg123 \
 		ogg123:audio/vorbis-tools \

@@ -1,21 +1,18 @@
-Index: src/CMakeLists.txt
-===================================================================
---- src/CMakeLists.txt.orig
+--- src/CMakeLists.txt.orig	2023-02-13 19:40:35 UTC
 +++ src/CMakeLists.txt
-@@ -126,6 +126,7 @@ if (WIN32 OR CYGWIN)
- endif (WIN32 OR CYGWIN)
+@@ -194,13 +194,13 @@ endif (WIN32)
  
- add_definitions (-DWITH_BROKER)
-+add_definitions (-DWITH_THREADING)
+ if (WITH_WEBSOCKETS)
+ 	if (STATIC_WEBSOCKETS)
+-		set (MOSQ_LIBS ${MOSQ_LIBS} websockets_static)
++		set (MOSQ_LIBS ${MOSQ_LIBS} websockets)
+ 		if (WIN32)
+ 			set (MOSQ_LIBS ${MOSQ_LIBS} iphlpapi)
+ 			link_directories(${mosquitto_SOURCE_DIR})
+ 		endif (WIN32)
+ 	else (STATIC_WEBSOCKETS)
+-		set (MOSQ_LIBS ${MOSQ_LIBS} websockets)
++		set (MOSQ_LIBS ${MOSQ_LIBS} websockets_shared)
+ 	endif (STATIC_WEBSOCKETS)
+ endif (WITH_WEBSOCKETS)
  
- if (WITH_DLT)
-     message(STATUS "DLT_LIBDIR = ${DLT_LIBDIR}")
-@@ -149,7 +150,7 @@ if (UNIX)
-     elseif(QNX)
-         set(MOSQ_LIBS ${MOSQ_LIBS} m socket)
-     else(APPLE)
--        set (MOSQ_LIBS ${MOSQ_LIBS} dl m)
-+        set (MOSQ_LIBS ${MOSQ_LIBS} m)
-         find_library(LIBRT rt)
-         if (LIBRT)
-             set (MOSQ_LIBS ${MOSQ_LIBS} rt)

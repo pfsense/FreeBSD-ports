@@ -1,6 +1,3 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	lvtk
 DISTVERSION=	2.0.0rc1-14
 DISTVERSIONSUFFIX=	-g1028f69
@@ -8,6 +5,7 @@ CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Wraps the LV2 C API and extensions into easy to use C++ classes
+WWW=		https://github.com/lvtk/lvtk
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

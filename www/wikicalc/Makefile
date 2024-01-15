@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wikicalc
 DISTVERSION=	1-0
 CATEGORIES=	www math
@@ -7,6 +5,7 @@ MASTER_SITES=	http://www.peapodcast.com/sgi/downloads/
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Open Source Wiki-Spreadsheet
+WWW=		https://www.softwaregarden.com/products/wikicalc/index.html
 
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww
 

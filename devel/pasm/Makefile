@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pasm
 PORTVERSION=	0.84
 DISTVERSIONPREFIX=	${PORTNAME}-
@@ -7,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	TI PRU Assembler
+WWW=		https://github.com/beagleboard/am335x_pru_package
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/pru_sw/utils/LICENCE.txt

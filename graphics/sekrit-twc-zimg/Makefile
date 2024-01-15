@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	zimg
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	3.0.1
+DISTVERSION=	3.0.5
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${GH_ACCOUNT}-
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scaling, colorspace conversion, and dithering library
+WWW=		https://github.com/sekrit-twc/zimg
 
 LICENSE=	WTFPL
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	sekrit-twc
 
-CONFLICTS_INSTALL=	zimg-[0-9]* # include/zimg.h
+CONFLICTS_INSTALL=	zimg # include/zimg.h
 
 USES=		autoreconf compiler:c++11-lib gmake libtool pathfix
 EXCLUDE=	googletest sha1

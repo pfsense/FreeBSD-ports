@@ -1,6 +1,3 @@
-# Created by: Kay Lehmann
-# $FreeBSD$
-
 PORTNAME=	lineakd
 PORTVERSION=	0.9
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DIST_SUBDIR=	lineak
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemon which enables special keys on internet keyboards
+WWW=		https://lineak.sourceforge.net
 
 USES=		gmake libtool localbase xorg
 USE_CXXSTD=	c++98

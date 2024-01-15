@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kcov
 DISTVERSIONPREFIX=	v
 DISTVERSION=	37
@@ -8,6 +6,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	asomers@FreeBSD.org
 COMMENT=	Coverage checker for ELF, Bash, and Python programs
+WWW=		https://simonkagstrom.github.io/kcov/index.html
 
 LICENSE=	GPLv2 MIT # MIT for bundled handlebars, jquery, tablesorter
 LICENSE_COMB=	multi

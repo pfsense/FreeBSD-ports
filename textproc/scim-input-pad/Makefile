@@ -1,6 +1,3 @@
-# Created by: chinsan	<chinsan@mail2000.com.tw>
-# $FreeBSD$
-
 PORTNAME=	scim-input-pad
 PORTVERSION=	0.1.3.1
 PORTREVISION=	5
@@ -10,6 +7,7 @@ MASTER_SITES=	SF/scim/${PORTNAME}/0.1.3/ \
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	SCIM add-on to input various symbols with customisable on-screen pad
+WWW=		https://github.com/scim-im/scim
 
 LIB_DEPENDS=	libscim-1.0.so:textproc/scim
 

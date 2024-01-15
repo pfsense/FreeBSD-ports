@@ -1,6 +1,3 @@
-# Created by: Romain Tartiere <romain@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ppsei
 PORTVERSION=	0.3
 CATEGORIES=	graphics
@@ -9,6 +6,7 @@ EXTRACT_SUFX=	.src.tgz
 
 MAINTAINER=	romain@FreeBSD.org
 COMMENT=	PowerPoint images extractor
+WWW=		https://sourceforge.net/projects/ppsei/
 
 PLIST_FILES=	bin/ppsei
 WRKSRC=		${WRKDIR}/${PORTNAME}

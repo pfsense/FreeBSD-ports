@@ -1,19 +1,20 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	watchgod
-PORTVERSION=	0.6
+PORTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple, modern file watching and code reload in python
+WWW=		https://github.com/samuelcolvin/watchfiles
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.5+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio3>=3.0.0<4:devel/py-anyio3@${PY_FLAVOR}
+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

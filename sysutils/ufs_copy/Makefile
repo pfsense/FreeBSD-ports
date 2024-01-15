@@ -1,6 +1,3 @@
-# Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ufs_copy
 PORTVERSION=	20060921
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	ufs-${PORTVERSION}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Fast copy utility for UFS filesystem
+WWW=		https://people.freebsd.org/~simokawa/ufs/
 
 LICENSE=	BSD4CLAUSE
 

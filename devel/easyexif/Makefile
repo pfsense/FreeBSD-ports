@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	easyexif
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0
@@ -7,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Tiny ISO-compliant C++ EXIF parsing library
+WWW=		https://github.com/mayanklahiri/easyexif
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

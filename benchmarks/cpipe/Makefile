@@ -1,6 +1,3 @@
-# Created by: uminac
-# $FreeBSD$
-
 PORTNAME=	cpipe
 PORTVERSION=	3.0.2
 CATEGORIES=	benchmarks

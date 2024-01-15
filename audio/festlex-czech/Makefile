@@ -1,6 +1,3 @@
-# Created by: František Dvořák <valtri@civ.zcu.cz>
-# $FreeBSD$
-
 PORTNAME=	festlex-czech
 PORTVERSION=	0.2.1
 CATEGORIES=	audio accessibility
@@ -10,6 +7,7 @@ DIST_SUBDIR=	festival
 
 MAINTAINER=	valtri@civ.zcu.cz
 COMMENT=	Czech language support for Festival
+WWW=		https://www.freebsoft.org/festival-czech
 
 FHOME=		${PREFIX}/share/festival
 NO_BUILD=	yes

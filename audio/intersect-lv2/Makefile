@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	intersect
 PORTVERSION=	1.3
 CATEGORIES=	audio
@@ -7,6 +5,7 @@ PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	LV2 plugin expands a stereo input to three channels
+WWW=		https://github.com/sboukortt/intersect-lv2
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/GPLv3.txt

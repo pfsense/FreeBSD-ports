@@ -1,6 +1,3 @@
-# Created by: Tomoyuki Sakurai <cherry@trombik.org>
-# $FreeBSD$
-
 PORTNAME=	File-Stream
 PORTVERSION=	2.30
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Regular expression delimited records from streams
+WWW=		https://metacpan.org/release/File-Stream
 
 RUN_DEPENDS=	p5-YAPE-Regex>=4.00:textproc/p5-YAPE-Regex
 

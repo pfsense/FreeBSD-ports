@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cvm
 PORTVERSION=	0.97
 CATEGORIES=	security
@@ -9,6 +6,7 @@ MASTER_SITES=	http://untroubled.org/${PORTNAME}/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Credential Validation Modules
+WWW=		https://untroubled.org/cvm/
 
 LICENSE=	GPLv2
 

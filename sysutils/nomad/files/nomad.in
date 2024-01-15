@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# $FreeBSD: head/sysutils/nomad/files/nomad.in 386655 2015-05-18 02:05:03Z swills $
-#
 # PROVIDE: nomad
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
@@ -21,6 +19,10 @@
 #                               Default is "/var/tmp/nomad".
 # nomad_env (dir):          Set environment variables used with nomad
 #                               Default is "".
+# nomad_mode (mode):        Set the nomad mode to be used
+#                               Default is "agent".
+# nomad_args (args):        Set arguments to be passed to nomad
+#                               Default is "-data-dir=${nomad_dir}".
 
 . /etc/rc.subr
 
@@ -35,11 +37,14 @@ load_rc_config $name
 : ${nomad_group:="nomad"}
 : ${nomad_dir:="/var/tmp/nomad"}
 : ${nomad_env:=""}
+: ${nomad_mode:="agent"}
+: ${nomad_args:="-data-dir=${nomad_dir}"}
 
 pidfile=/var/run/nomad.pid
 procname="%%PREFIX%%/bin/nomad"
 command="/usr/sbin/daemon"
-nomad_command="/usr/bin/env ${nomad_env} ${procname} agent -data-dir=${nomad_dir} ${nomad_args}"
+extra_commands="reload"
+nomad_command="/usr/bin/env ${nomad_env} ${procname} ${nomad_mode} ${nomad_args}"
 command_args="-f -t ${name} -p ${pidfile} ${nomad_command}"
 
 start_precmd=nomad_startprecmd
@@ -50,11 +55,18 @@ nomad_startprecmd()
 		install -o ${nomad_user} -g ${nomad_group} /dev/null ${pidfile};
 	fi
 
-	if [ ! -d ${nomad_dir} ]; then
-		install -d -o ${nomad_user} -g ${nomad_group} ${nomad_dir}
+	if [ ! -d "${nomad_dir}" ]; then
+		install -d -o ${nomad_user} -g ${nomad_group} "${nomad_dir}"
+		chmod 0700 "${nomad_dir}"
 	fi
+
 	if [ "${nomad_debug}" != "NO" ]; then
 		command_args="-T ${name} ${command_args}"
+	fi
+
+	if [ "$(stat -f "%Lp" "${nomad_dir}")" -ne "700" ]; then
+		2>&1 echo "Error: File permissions of ${nomad_dir} must be 700, not starting."
+		exit 1
 	fi
 }
 

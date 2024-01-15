@@ -1,24 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	CheMPS2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.9
-PORTREVISION=	6
+DISTVERSION=	1.8.12
+PORTREVISION=	4
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Spin-adapted implementation of DMRG for ab initio quantum chemistry
+WWW=		https://github.com/SebWouters/CheMPS2
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
-		libsz.so:science/szip
+		libsz.so:science/libaec
 
 USES=		blaslapack:openblas cmake fortran
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	SebWouters
-USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DSHARED_ONLY:BOOL=ON
 CMAKE_ARGS+=	-DENABLE_TESTS:BOOL=OFF

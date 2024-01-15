@@ -1,21 +1,19 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	umodplayer
 PORTVERSION=	0.b5.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/UModPlayer%20B5
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/^0.//:tu}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console module player
+WWW=		https://umodplayer.sourceforge.net/
 
 LICENSE=	PD
 
-LIB_DEPENDS=	libmodplug.so:audio/libmodplug \
+LIB_DEPENDS=	libaiff.so:audio/libaiff \
+		libmodplug.so:audio/libmodplug \
 		libao.so:audio/libao
-BUILD_DEPENDS=	${LOCALBASE}/lib/libaiff.a:audio/libaiff
 
 USES=		localbase:ldflags
 HAS_CONFIGURE=	yes

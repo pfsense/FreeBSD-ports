@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	solarized
 PORTVERSION=	1.0.0
 CATEGORIES=	misc
@@ -8,6 +6,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Precision colors schemes for machines and people
+WWW=		https://ethanschoonover.com/solarized
 
 LICENSE=	MIT
 

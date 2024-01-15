@@ -1,9 +1,9 @@
---- src/ip/Intercept.cc.orig	2018-07-02 03:26:07 UTC
+--- src/ip/Intercept.cc.orig	2023-02-28 09:10:25 UTC
 +++ src/ip/Intercept.cc
-@@ -215,10 +215,10 @@ Ip::Intercept::IpfInterception(const Comm::ConnectionP
+@@ -217,10 +217,10 @@ Ip::Intercept::IpfInterception(const Comm::ConnectionP
          newConn->remote.getInAddr(natLookup.nl_outipaddr.in4);
      }
- #else
+ #else /* HAVE_STRUCT_NATLOOKUP_NL_INIPADDR_IN6 */
 -        // warn once every 10 at critical level, then push down a level each repeated event
 +        // warn once every million at critical level, then push down a level each repeated event
          static int warningLevel = DBG_CRITICAL;

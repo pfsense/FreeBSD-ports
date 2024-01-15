@@ -1,18 +1,17 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	repeater
-PORTVERSION=	0.14
+PORTVERSION=	0.17
 CATEGORIES=	net
-MASTER_SITES=	http://newestvision.com/freebsd/pkg/
+MASTER_SITES=	https://freebsd.newestvision.com/ports/distfiles/
 DISTNAME=	repeater${PORTVERSION:C/\.//}
 
 MAINTAINER=	oleg@newestvision.com
 COMMENT=	UltraVNC repeater
+WWW=		https://ultravnc.sourceforge.net/addons/repeater.html
 
 LICENSE=	GPLv2+
 
-USES=		zip
+USES=		cpe zip
+CPE_VENDOR=	ultravnc
 USE_RC_SUBR=	${PORTNAME}
 WRKSRC=		${WRKDIR}/Ver${PORTVERSION:C/\.//}
 ALL_TARGET=	${PORTNAME}

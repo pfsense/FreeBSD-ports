@@ -1,6 +1,3 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Audio-Scrobbler
 PORTVERSION=	0.01
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to Last.fm and AudioScrobbler
+WWW=		https://devel.ringlet.net/audio/Audio-Scrobbler/
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

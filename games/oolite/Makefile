@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=		oolite
 PORTVERSION=		1.88
-PORTREVISION=		2
+PORTREVISION=		5
 CATEGORIES=		games gnustep
 MASTER_SITES=		https://github.com/OoliteProject/oolite/releases/download/1.88/
 DISTNAME=		${PORTNAME}-source-${PORTVERSION}
@@ -10,6 +8,7 @@ DIST_SUBDIR=		oolite
 
 MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Trade and combat space simulator, clone of Elite
+WWW=		http://www.oolite.org
 
 LICENSE=		CC-BY-NC-SA-3.0 GPLv2 ZLIB
 LICENSE_COMB=		multi
@@ -17,13 +16,12 @@ LICENSE_FILE_CC-BY-NC-SA-3.0=	${WRKSRC}/Doc/LICENSE.TXT
 
 BUILD_DEPENDS=		zip:archivers/zip \
 			${LOCALBASE}/bin/unzip:archivers/unzip
-LIB_DEPENDS=		libespeak.so:audio/espeak \
+LIB_DEPENDS=		libespeak-ng.so:audio/espeak-ng \
 			libnspr4.so:devel/nspr \
 			libvorbisfile.so:audio/libvorbis \
-			libpng.so:graphics/png \
-			libminizip.so:archivers/minizip
+			libpng.so:graphics/png
 
-USES=			gl gnustep openal:al perl5 python:3.5+,build sdl \
+USES=			gl gnustep openal:al minizip perl5 python:build sdl \
 			tar:bzip2 xorg
 USE_CXXSTD=		gnu++98
 USE_GL=			gl glu
@@ -58,6 +56,13 @@ OPTIONS_DEFINE=	DOCS
 BROKEN_aarch64=		fails to configure: error: These compiler flags are invalid: -O
 BROKEN_armv6=		fails to compile: your compiler does not follow the C++ specification for temporary object destruction order
 BROKEN_armv7=		fails to compile: your compiler does not follow the C++ specification for temporary object destruction order
+BROKEN_i386=		fails to compile: ../methodjit/MethodJIT.cpp:318:5: error: expected '(' after 'asm'
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+ADDITIONAL_CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch: .SILENT
 	${REINPLACE_CMD} -e 's/GNUSTEP_USER_ROOT/GNUSTEP_LOCAL_ROOT/ ; \

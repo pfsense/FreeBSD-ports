@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	libssm
 DISTVERSION=	1.4.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	ftp://ftp.ccp4.ac.uk/opensource/
 DISTNAME=	ssm-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ toolkit for superposition of macromolecules
+WWW=		https://launchpad.net/ssm
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

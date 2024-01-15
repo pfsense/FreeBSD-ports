@@ -1,14 +1,12 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	nortest
 DISTVERSION=	1.0-4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tests for Normality
+WWW=		https://cran.r-project.org/web/packages/nortest/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

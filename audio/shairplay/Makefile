@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	shairplay
 PORTVERSION=	0.9.0.20150921
 CATEGORIES=	audio
 
 MAINTAINER=	mickael.maillot@gmail.com
 COMMENT=	Portable AirPlay server implementation
+WWW=		https://github.com/juhovh/shairplay
 
 LICENSE=	BSD3CLAUSE LGPL21 MIT
 LICENSE_COMB=	multi

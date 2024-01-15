@@ -1,6 +1,3 @@
-# Created by: Sean Chittenden <seanc@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libmemcache
 DISTVERSION=	1.4.0.rc2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://people.FreeBSD.org/~seanc/libmemcache/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C library for accessing a memcache cluster
+WWW=		https://people.FreeBSD.org/~seanc/libmemcache/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

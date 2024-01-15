@@ -1,14 +1,12 @@
-# Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Log-Log4perl-Layout-JSON
-PORTVERSION=	0.56
+PORTVERSION=	0.60
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Layout a log message as a JSON hash, including MDC data
+WWW=		https://metacpan.org/release/Log-Log4perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

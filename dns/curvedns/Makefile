@@ -1,6 +1,3 @@
-# Created by: Leo Vandewoestijne <freebsd@dns-lab.com>
-# $FreeBSD$
-
 PORTNAME=	curvedns
 PORTVERSION=	0.88.b
 PORTREVISION=	13
@@ -8,6 +5,7 @@ CATEGORIES=	dns
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Forwarder adding DNSCurve to an authoritative nameserver
+WWW=		https://curvedns.on2it.net/
 
 LIB_DEPENDS=	libev.so:devel/libev \
 		libsodium.so:security/libsodium

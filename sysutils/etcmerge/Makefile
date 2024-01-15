@@ -1,6 +1,3 @@
-# Created by: eivind
-# $FreeBSD$
-
 PORTNAME=	etcmerge
 PORTVERSION=	0.4
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTFILES=	# none
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Automatic 3-way merge of /etc updates
+WWW=		https://BSDforge.com/projects/sysutils/etcmerge/
 
 LICENSE=	NONE
 

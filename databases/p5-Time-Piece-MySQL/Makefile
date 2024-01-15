@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	Time-Piece-MySQL
 PORTVERSION=	0.06
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	MySQL-specific methods for Time::Piece Perl module
+WWW=		https://metacpan.org/release/Time-Piece-MySQL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

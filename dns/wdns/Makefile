@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	wdns
-PORTVERSION=	0.10.0
+PORTVERSION=	0.12.0
 CATEGORIES=	dns
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 
 MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	Low-level DNS library
+WWW=		https://github.com/farsightsec/wdns
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

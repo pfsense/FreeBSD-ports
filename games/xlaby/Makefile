@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	xlaby
 PORTVERSION=	2.0.1
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITES=	SUNSITE/games/strategy \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemonic X Labyrinth played directly with the mouse pointer
+WWW=		http://www.eleves.ens.fr:8080/home/madore/programs/ #prog_xlaby
 
 NO_WRKSUBDIR=	yes
 USES=		imake tar:tgz xorg

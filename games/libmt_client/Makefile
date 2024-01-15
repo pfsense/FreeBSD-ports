@@ -1,14 +1,12 @@
-# Created by: thierry@pompo.net
-# $FreeBSD$
-
 PORTNAME=	libmt_client
 PORTVERSION=	0.1.98
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH/maitretarot
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Client-side library of MaitreTarot, a Tarot card game
+WWW=		https://www.nongnu.org/maitretarot/
 
 LICENSE=	GPLv2
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-Gumbo
 PORTVERSION=	0.18
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	HTML5 parser based on gumbo C library
+WWW=		https://metacpan.org/pod/HTML::Gumbo
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

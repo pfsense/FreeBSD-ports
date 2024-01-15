@@ -1,13 +1,10 @@
-# Created by: Matthieu Guegan <matt.guegan@free.fr>
-# $FreeBSD$
-
 PORTNAME=	xmonad
-PORTVERSION=	0.15
-PORTREVISION=	6
+PORTVERSION=	0.17.1
 CATEGORIES=	x11-wm haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Tiling window manager
+WWW=		https://xmonad.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,18 +15,11 @@ USES=		cabal xorg
 
 USE_XORG=	x11 xext xinerama xrandr xscrnsaver
 
-USE_CABAL=	X11-1.9.1 \
-		data-default-0.7.1.1 \
+USE_CABAL=	X11-1.10.3 \
 		data-default-class-0.1.2.0 \
-		data-default-instances-containers-0.0.1 \
-		data-default-instances-dlist-0.0.1 \
-		data-default-instances-old-locale-0.0.1 \
-		dlist-0.8.0.8 \
-		extensible-exceptions-0.1.1.4 \
-		hsc2hs-0.68.7 \
-		old-locale-1.0.0.7_2 \
-		setlocale-1.0.0.9_2 \
-		utf8-string-1.0.1.1_3
+		hsc2hs-0.68.9 \
+		setlocale-1.0.0.10_2
+CABAL_REVISION=	2
 
 OPTIONS_DEFINE=	EXAMPLES
 

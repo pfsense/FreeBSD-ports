@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Business-OnlinePayment-Network1Financial
 PORTVERSION=	0.02
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Business::OnlinePayment backend module for Network1 Financial
+WWW=		https://metacpan.org/release/IVAN/Business-OnlinePayment-Network1Financial-0.02
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: leo
-# $FreeBSD$
-
 PORTNAME=	Shout
 PORTVERSION=	2.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl glue for libshout MP3 streaming source library
+WWW=		https://www.icecast.org/
 
 LICENSE=	NONE
 

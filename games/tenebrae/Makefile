@@ -1,9 +1,6 @@
-# Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
-
 PORTNAME=	tenebrae
 PORTVERSION=	1.04
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	http://tenebrae.sourceforge.net/downloads/
 DISTFILES=	${PORTNAME}_src${EXTRACT_SUFX} \
@@ -11,6 +8,7 @@ DISTFILES=	${PORTNAME}_src${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake engine with lighting similar to that in Doom III
+WWW=		https://tenebrae.sourceforge.net/
 
 LICENSE=	GPLv2+
 

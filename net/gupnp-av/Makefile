@@ -1,35 +1,30 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gupnp-av
-PORTVERSION=	0.12.11
+PORTVERSION=	0.14.1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Helpers for audio/video applications using GUPnP
+WWW=		https://wiki.gnome.org/Projects/GUPnP
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	gobject-introspection>=0.9.5:devel/gobject-introspection
+BUILD_DEPENDS=	glib>=2.58:devel/glib20 \
+		gobject-introspection>=1.36:devel/gobject-introspection
 
-USES=		gmake gnome libtool pathfix pkgconfig tar:xz
+USES=		compiler:c11 gnome meson pkgconfig tar:xz
 USE_GNOME=	glib20 introspection:build libxml2
 
-CONFIGURE_ARGS=	--enable-introspection=yes
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+MESON_ARGS=	--default-library=both -Dgtk_doc=false -Dintrospection=true
+USE_CSTD=	c11
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	VAPI
 OPTIONS_SUB=	yes
 
-VAPI_BUILD_DEPENDS=	vala>=0.22:lang/vala
-VAPI_CONFIGURE_ENV=	ac_cv_path_VAPIGEN=${LOCALBASE}/bin/vapigen
-VAPI_CONFIGURE_ENV_OFF=	ac_cv_path_VAPIGEN=""
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-Wno-unused-parameters||' ${WRKSRC}/tests/Makefile.in
+VAPI_USES=		vala:build
+VAPI_MESON_TRUE=	vapi
 
 .include <bsd.port.mk>

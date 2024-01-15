@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-Infinitive
 PORTVERSION=	1.14
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Determine the infinitive form of a conjugated word
+WWW=		https://metacpan.org/release/Lingua-EN-Infinitive
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

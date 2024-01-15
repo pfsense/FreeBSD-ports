@@ -1,6 +1,3 @@
-# Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	devstat
 PORTVERSION=	0.3.3
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Utility to display device statistics
+WWW=		http://devstat.googlecode.com/
 
 LICENSE=	BSD2CLAUSE
 

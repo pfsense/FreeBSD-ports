@@ -1,15 +1,14 @@
-# Created by: Sylvio Cesar <sylvio@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lzip
-PORTVERSION=	1.21
+DISTVERSION=	1.23
 CATEGORIES=	archivers
 MASTER_SITES=	SAVANNAH/lzip
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	Lossless data compressor based on the LZMA algorithm
+WWW=		https://www.nongnu.org/lzip/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 PLIST_FILES=	bin/lzip \
 		man/man1/lzip.1.gz

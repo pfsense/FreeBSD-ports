@@ -1,6 +1,3 @@
-# Created by: Ryo MIYAMOTO
-# $FreeBSD$
-
 PORTNAME=	dungeon
 PORTVERSION=	3.2
 PORTREVISION=	1
@@ -21,6 +18,7 @@ EXTRACT_ONLY=	dungeon-gdt-glk.tar.gz \
 
 MAINTAINER=	sailor@63bit.net
 COMMENT=	Text adventure which became Zork I-III
+WWW=		http://www.csd.uwo.ca/Infocom/dungeon.html
 
 USES=		ncurses
 NO_WRKSUBDIR=	yes

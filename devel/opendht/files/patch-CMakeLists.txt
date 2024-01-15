@@ -1,0 +1,22 @@
+--- CMakeLists.txt.orig	2023-09-10 06:15:32 UTC
++++ CMakeLists.txt
+@@ -99,8 +99,8 @@ if (NOT MSVC)
+         endif()
+         if (OPENDHT_PROXY_OPENSSL)
+             # https://cmake.org/cmake/help/latest/module/FindOpenSSL.html
+-            pkg_search_module(OPENSSL REQUIRED IMPORTED_TARGET openssl)
+-            if (OPENSSL_FOUND)
++            #pkg_search_module(OPENSSL REQUIRED IMPORTED_TARGET openssl)
++            if (TRUE OR OPENSSL_FOUND)
+                 message(STATUS "Found OpenSSL ${OPENSSL_VERSION} ${OPENSSL_INCLUDE_DIRS}")
+                 set(openssl_lib ", openssl")
+             else ()
+@@ -370,7 +370,7 @@ else()
+         target_link_libraries(opendht PUBLIC PkgConfig::Jsoncpp)
+     endif()
+     if (OPENDHT_PROXY_OPENSSL)
+-        target_link_libraries(opendht PUBLIC PkgConfig::OPENSSL)
++        target_link_libraries(opendht PRIVATE ssl)
+     endif()
+ endif()
+ 

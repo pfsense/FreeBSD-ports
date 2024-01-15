@@ -1,6 +1,3 @@
-# Created by: Erwin Lansing <erwin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Apache-ConfigFile
 PORTVERSION=	1.23
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse Apache style httpd.conf configuration files
+WWW=		https://metacpan.org/release/NWIGER/Apache-ConfigFile-1.23
 
 USES=		perl5
 USE_PERL5=	configure

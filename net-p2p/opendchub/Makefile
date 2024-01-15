@@ -1,13 +1,12 @@
-# Created by: Munish Chopra <mchopra@engmail.uwaterloo.ca>
-# $FreeBSD$
-
 PORTNAME=	opendchub
 PORTVERSION=	0.8.3
+PORTREVISION=	1
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/Open%20DC%20Hub/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unofficial Unix version of the Direct Connect Hub software
+WWW=		https://opendchub.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,6 +20,12 @@ OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	README configfiles general scriptdoc
 PLIST_FILES=	bin/${PORTNAME}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 pre-install:
 	@${CHMOD} a+rx ${WRKSRC}/install-sh

@@ -1,14 +1,12 @@
-# Created by: Olivier Duchateau <duchateau.olivier@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	certifi
-PORTVERSION=	2020.12.5
+PORTVERSION=	2023.11.17
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Mozilla SSL certificates
+WWW=		https://github.com/certifi/python-certifi
 
 LICENSE=	MPL20
 

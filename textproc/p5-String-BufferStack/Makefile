@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	String-BufferStack
 PORTVERSION=	1.16
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Nested buffers for templating systems
+WWW=		https://metacpan.org/release/String-BufferStack
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

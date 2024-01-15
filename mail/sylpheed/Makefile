@@ -1,27 +1,27 @@
-# Created by: shigeri <shigeri@m10.alpha-net.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	sylpheed
 PORTVERSION=	3.7.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	Lightweight, featureful, and fast GTK+ based e-mail client
+COMMENT=	Lightweight, featureful, and fast GTK based e-mail client
+WWW=		https://sylpheed.sraoss.jp/en/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz
 
-USES=		desktop-file-utils gettext gmake gnome iconv libtool pkgconfig \
+USES=		cpe desktop-file-utils gettext gmake gnome iconv libtool pkgconfig \
 		tar:bzip2
 USE_GNOME=	gtk20 cairo gdkpixbuf2
 USE_LDCONFIG=	yes
+CPE_VENDOR=	sylpheed_project
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -32,7 +32,7 @@ CONFIGURE_ARGS=	--enable-ipv6 \
 		--prefix=${PREFIX} \
 		--program-transform-name=''
 
-CONFLICTS=	sylpheed-1.[0-8]* sylpheed-2.[0-9]* sylpheed-gtk2-[0-9]*
+CONFLICTS=	sylpheed-1.[0-8]* sylpheed-2.[0-9]* sylpheed-gtk2
 
 OPTIONS_DEFINE=	CA_BUNDLE COMPFACE CURL DOCS GPGME GTKSPELL LDAP \
 		ONIGURUMA SSL HIDE_OSSIG
@@ -69,7 +69,7 @@ GTKSPELL_CONFIGURE_ENABLE=	gtkspell
 HIDE_OSSIG_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_main.c
 
 LDAP_CONFIGURE_ENABLE=		ldap
-LDAP_USE=			openldap=yes
+LDAP_USES=			ldap
 
 ONIGURUMA_LIB_DEPENDS=		libonig.so:devel/oniguruma
 ONIGURUMA_CONFIGURE_ENABLE=	oniguruma

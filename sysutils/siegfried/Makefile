@@ -1,21 +1,17 @@
-# Created by: Steffen Fritz <steffen@fritz.wtf>
-# $FreeBSD$
-
 PORTNAME=	siegfried
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.1
+DISTVERSION=	1.11.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	File identification tool
+WWW=		https://github.com/richardlehane/siegfried
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		go:modules
-USE_GITHUB=	yes
-GH_ACCOUNT=	richardlehane
-
+GO_MODULE=	github.com/richardlehane/siegfried
 GO_TARGET=	./cmd/sf
 
 PLIST_FILES=	bin/sf

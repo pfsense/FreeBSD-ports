@@ -1,6 +1,3 @@
-# Created by: GreenDog <fiziologus@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	lua
 DISTVERSION=	5.3.6
 CATEGORIES=	lang
@@ -9,10 +6,11 @@ PKGNAMESUFFIX=	${LUA_VER_STR}
 
 MAINTAINER=	russ.haley@gmail.com
 COMMENT=	Powerful, efficient, lightweight, embeddable scripting language
+WWW=		https://www.lua.org/
 
 LICENSE=	MIT
 
-USES=		lua:core,53
+USES=		cpe lua:core,53
 USE_LDCONFIG=	yes
 
 # Overriding __MAKE_CONF makes sure that we don't re-parse

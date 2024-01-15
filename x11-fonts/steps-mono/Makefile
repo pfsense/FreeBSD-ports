@@ -1,6 +1,3 @@
-# Created by: Mateusz Piotrowski <0mp@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	steps-mono
 DISTVERSION=	0.3-29
 DISTVERSIONSUFFIX=	-gc090a79
@@ -8,6 +5,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Monospace font created for the French magazine Etapes
+WWW=		https://raphaelbastide.com/steps-mono
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

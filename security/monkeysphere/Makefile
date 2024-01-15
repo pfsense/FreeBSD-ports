@@ -1,16 +1,14 @@
-# Created by: Daniel Kahn Gillmor <dkg@fifthhorseman.net>
-# $FreeBSD$
-
 PORTNAME=	monkeysphere
-PORTVERSION=	0.42
+PORTVERSION=	0.43
+DISTVERSIONPREFIX=	${PORTNAME}_
 CATEGORIES=	security
-MASTER_SITES=	http://archive.monkeysphere.info/debian/pool/monkeysphere/m/monkeysphere/
-DISTFILES=	${PORTNAME}_${DISTVERSION}.orig${EXTRACT_SUFX}
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Use the OpenPGP web of trust to verify ssh connections
+WWW=		https://github.com/dkg/monkeysphere
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgcrypt.so:security/libgcrypt \
@@ -18,13 +16,16 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 RUN_DEPENDS=	gpg2:security/gnupg \
 		lockfile:mail/procmail \
 		bash:shells/bash \
-		p5-Crypt-OpenSSL-RSA>=0:security/p5-Crypt-OpenSSL-RSA \
-		p5-Digest-SHA1>=0:security/p5-Digest-SHA1
+		p5-Crypt-OpenSSL-RSA>=0:security/p5-Crypt-OpenSSL-RSA
 
-USES=		gmake shebangfix
+USES=		gmake perl5 shebangfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	dkg
 
-SHEBANG_FILES=	src/share/checkperms src/transitions/0.23 \
-		src/transitions/0.28 src/share/keytrans
+SHEBANG_FILES=	src/monkeysphere* \
+		src/share/c* src/share/defaultenv src/share/keytrans \
+		src/transitions/0.23 src/transitions/0.28 \
+		tests/basic tests/common tests/keytrans tests/phony*
 
 USERS=	monkeysphere
 GROUPS=	monkeysphere
@@ -33,30 +34,36 @@ MAKE_ARGS+=	ETCPREFIX=${PREFIX} MANPREFIX=${PREFIX}/man ETCSUFFIX=.sample
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=strict-prototypes
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -i '' 's|/etc/monkeysphere|${PREFIX}/etc/monkeysphere|g' \
-	  ${WRKSRC}/src/share/defaultenv \
-	  ${WRKSRC}/src/transitions/0.23 \
-	  ${WRKSRC}/man/man1/monkeysphere.1 \
-	  ${WRKSRC}/man/man8/monkeysphere-authentication.8 \
-	  ${WRKSRC}/man/man8/monkeysphere-host.8 \
-	  ${WRKSRC}/etc/monkeysphere-authentication.conf
-	@${REINPLACE_CMD} -i '' 's|/var/lib/monkeysphere|/var/monkeysphere|g' \
-	  ${WRKSRC}/src/transitions/0.23 \
-	  ${WRKSRC}/man/man1/monkeysphere.1 \
-	  ${WRKSRC}/man/man8/monkeysphere-authentication.8 \
-	  ${WRKSRC}/man/man8/monkeysphere-host.8 \
-	  ${WRKSRC}/src/monkeysphere-host \
-	  ${WRKSRC}/src/monkeysphere-authentication
+	  ${WRKSRC}/etc/*.conf ${WRKSRC}/examples/* \
+	  ${WRKSRC}/man/man1/* ${WRKSRC}/man/man7/* ${WRKSRC}/man/man8/* \
+	  ${WRKSRC}/src/monkeysphere* \
+	  ${WRKSRC}/src/share/c* ${WRKSRC}/src/share/defaultenv ${WRKSRC}/src/share/keytrans \
+	  ${WRKSRC}/src/share/m/* ${WRKSRC}/src/share/mh/* \
+	  ${WRKSRC}/tests/basic ${WRKSRC}/tests/keytrans ${WRKSRC}/tests/phony*
 	@${REINPLACE_CMD} -i '' 's|/usr/share/monkeysphere|${PREFIX}/share/monkeysphere|g' \
-	  ${WRKSRC}/src/monkeysphere-host \
-	  ${WRKSRC}/src/monkeysphere-authentication \
-	  ${WRKSRC}/src/monkeysphere
-	# and clean up cruft from any patches or sed replacements:
-	${FIND} ${WRKSRC} \( -name \*.bak -o -name \*.orig \) -delete
-	@${REINPLACE_CMD} 's|gcc|${CC}|g' ${WRKSRC}/Makefile
+	  ${WRKSRC}/etc/*.conf ${WRKSRC}/examples/* \
+	  ${WRKSRC}/man/man1/* ${WRKSRC}/man/man7/* ${WRKSRC}/man/man8/* \
+	  ${WRKSRC}/src/monkeysphere* \
+	  ${WRKSRC}/src/share/c* ${WRKSRC}/src/share/defaultenv ${WRKSRC}/src/share/keytrans \
+	  ${WRKSRC}/src/share/m/* ${WRKSRC}/src/share/mh/* \
+	  ${WRKSRC}/tests/basic ${WRKSRC}/tests/keytrans ${WRKSRC}/tests/phony*
+	@${REINPLACE_CMD} -i '' 's|/var/lib/monkeysphere|/var/monkeysphere|g' \
+	  ${WRKSRC}/etc/*.conf ${WRKSRC}/examples/* \
+	  ${WRKSRC}/man/man1/* ${WRKSRC}/man/man7/* ${WRKSRC}/man/man8/* \
+	  ${WRKSRC}/src/monkeysphere* \
+	  ${WRKSRC}/src/share/c* ${WRKSRC}/src/share/defaultenv ${WRKSRC}/src/share/keytrans \
+	  ${WRKSRC}/src/share/m/* ${WRKSRC}/src/share/mh/* \
+	  ${WRKSRC}/tests/basic ${WRKSRC}/tests/keytrans ${WRKSRC}/tests/phony*
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/agent-transfer
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

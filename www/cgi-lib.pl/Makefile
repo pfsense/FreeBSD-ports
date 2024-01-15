@@ -1,6 +1,3 @@
-# Created by: sada
-# $FreeBSD$
-
 PORTNAME=	cgi-lib_pl
 PORTVERSION=	2.18
 PORTREVISION=	1
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	De facto standard library for creating CGI in perl
+WWW=		https://cgi-lib.berkeley.edu/
 
 USES=		perl5
 NO_BUILD=	YES

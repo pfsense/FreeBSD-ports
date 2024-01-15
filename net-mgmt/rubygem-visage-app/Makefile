@@ -1,6 +1,3 @@
-# Created by: Brad Davis <brd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	visage-app
 PORTVERSION=	2.1.0
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graph tool for Collectd
+WWW=		https://rubygems.org/gems/visage-app
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
@@ -20,7 +18,6 @@ RUN_DEPENDS=	rubygem-errand>=0.7.3:devel/rubygem-errand \
 		rubygem-yajl-ruby>=1.1.0:devel/rubygem-yajl-ruby
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 PLIST_FILES=	bin/visage-app

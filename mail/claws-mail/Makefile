@@ -1,64 +1,83 @@
-# Created by: Simon 'corecode' Schubert <corecode@corecode.ath.cx>
-# $FreeBSD$
-
 PORTNAME=	claws-mail
+PORTREVISION=	1
 CATEGORIES=	mail news
 
-COMMENT=	Lightweight and featureful GTK+ based e-mail and news client
+COMMENT=	Lightweight and featureful GTK based e-mail and news client
+WWW=		https://www.claws-mail.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libetpan.so:mail/libetpan \
-		libfreetype.so:print/freetype2 \
-		libsasl2.so:security/cyrus-sasl2 \
-		libgnutls.so:security/gnutls \
-		libgcrypt.so:security/libgcrypt \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libnettle.so:security/nettle
-RUN_DEPENDS=	mime-support>0:misc/mime-support \
-		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+		libfreetype.so:print/freetype2 \
+		libgcrypt.so:security/libgcrypt \
+		libgnutls.so:security/gnutls \
+		libharfbuzz.so:print/harfbuzz \
+		libnettle.so:security/nettle \
+		libsasl2.so:security/cyrus-sasl2
+RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
+		mime-support>0:misc/mime-support
 
 USES=		autoreconf compiler:c++11-lang cpe desktop-file-utils gettext \
-		gettext-tools gnome pathfix pkgconfig python:3.5+ shebangfix ssl xorg
+		gettext-tools gnome pathfix pkgconfig python shebangfix \
+		ssl xorg
+USE_GNOME=	cairo librsvg2
 USE_XORG=	ice sm
-USE_GNOME=	cairo gtk20 librsvg2
 SHEBANG_FILES=	tools/*.pl tools/*.py tools/tb2claws-mail
-INSTALLS_ICONS=	yes
 
-OPTIONS_DEFINE=	COMPFACE DEBUG DOCS ENCHANT IPV6 LDAP \
-		NLS STARTUP THEMES
-OPTIONS_DEFAULT=COMPFACE ENCHANT STARTUP THEMES
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		COMPFACE DEBUG DOCS ENCHANT IPV6 LDAP NLS STARTUP \
+			THEMES
+OPTIONS_DEFAULT=	COMPFACE ENCHANT GTK2 STARTUP THEMES
+OPTIONS_RADIO=		BRANCH
+OPTIONS_RADIO_BRANCH=	GTK2 GTK3
+OPTIONS_SUB=		yes
 
-COMPFACE_DESC=		X-Face support
+COMPFACE_DESC=	X-Face support
+ENCHANT_DESC=	Spell checking support
+GTK2_DESC=	Build GTK2+ release
+GTK3_DESC=	Build GTK3+ release
+STARTUP_DESC=	Startup notification support
+THEMES_DESC=	Additional themes
+
+COMPFACE_LIB_DEPENDS=		libcompface.so:mail/faces
 COMPFACE_CONFIGURE_ENABLE=	compface
-COMPFACE_LIB_DEPENDS=	libcompface.so:mail/faces
 
 DEBUG_CONFIGURE_ON=	--enable-maintainer-mode
 
-ENCHANT_DESC=		Spell checking support
+ENCHANT_LIB_DEPENDS=		libenchant.so:textproc/enchant
 ENCHANT_CONFIGURE_ENABLE=	enchant
-ENCHANT_LIB_DEPENDS=	libenchant.so:textproc/enchant
 
 IPV6_CONFIGURE_ENABLE=	ipv6
 
+LDAP_USES=		ldap
 LDAP_CONFIGURE_ENABLE=	ldap
-LDAP_USE=		openldap=yes
 
-NLS_CONFIGURE_OFF=	--disable-nls
 NLS_USES=		gettext-tools
+NLS_CONFIGURE_OFF=	--disable-nls
 
-STARTUP_DESC=		Startup notification support
+STARTUP_LIB_DEPENDS=		libstartup-notification-1.so:x11/startup-notification
 STARTUP_CONFIGURE_ENABLE=	startup-notification
-STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
 
-THEMES_DESC=		Additional themes
 THEMES_RUN_DEPENDS=	claws-mail-themes>0:x11-themes/claws-mail-themes
 
+.include <bsd.port.options.mk>
+MASTER_OPTIONS=	${PORT_OPTIONS}
 .include "Makefile.claws"
+
+.if ${PORT_OPTIONS:MGTK2}
+USE_GNOME+=	gtk20
+
+PLIST_SUB+=	GTK2=""
+.else
+PLIST_SUB+=	GTK2="@comment "
+.endif
+
+.if ${PORT_OPTIONS:MGTK3}
+USE_GNOME+=	gtk30
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \

@@ -1,6 +1,3 @@
-# Created by: gnn
-# $FreeBSD$
-
 PORTNAME=	smhasher
 PORTVERSION=	1.0
 DISTVERSIONPREFIX=	v
@@ -15,10 +12,10 @@ COMMENT=	Hash Algorithm Benchmarking
 
 LICENSE=	MIT
 
+USES=		cmake:insource
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	gvnn3
-
-USES=		cmake:insource
 
 PLIST_FILES=	bin/SMHasher
 

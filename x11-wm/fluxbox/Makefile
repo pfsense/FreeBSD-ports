@@ -1,6 +1,3 @@
-# Created by: spn
-# $FreeBSD$
-
 PORTNAME=	fluxbox
 PORTVERSION=	1.3.7
 PORTREVISION=	5
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Small and fast window manager based on BlackBox
+WWW=		http://fluxbox.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +17,7 @@ LIB_DEPENDS=	libfribidi.so:converters/fribidi \
 		libfontconfig.so:x11-fonts/fontconfig
 
 USES=		gmake pkgconfig xorg
-
+USE_CXXSTD=	c++11
 USE_XORG=	x11 xext xorgproto xft xpm xrandr
 GNU_CONFIGURE=	yes
 

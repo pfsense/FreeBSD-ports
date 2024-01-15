@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	pwnat
 PORTVERSION=	g20171222
 CATEGORIES=	net
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	NAT punching tool based on udptunnel
+WWW=		https://samy.pl/pwnat
 
 LICENSE=	GPLv3
 
-ONLY_FOR_ARCHS=		amd64 i386 powerpc64 powerpc64le
-ONLY_FOR_ARCHS_REASON=	Fails to patch while running in embedded systems
+ONLY_FOR_ARCHS=		amd64 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	fails to patch while running on embedded systems
 
 USES=		gmake
 USE_RC_SUBR=	${PORTNAME}

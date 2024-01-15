@@ -1,9 +1,6 @@
-# Created by: jfieber
-# $FreeBSD$
-
 PORTNAME=	jade
 PORTVERSION=	1.2.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	textproc
 MASTER_SITES=	ftp://ftp.jclark.com/pub/jade/ \
 		http://dist.bsdlab.org/
@@ -13,8 +10,12 @@ PATCH_SITES=	http://dist.bsdlab.org/
 PATCHFILES=	jade_1.2.1-35.diff.gz
 PATCH_DIST_STRIP=	-p1
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Object-oriented SGML/XML parser toolkit and DSSSL engine
+WWW=		http://www.jclark.com/jade/
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	xmlcatmgr:textproc/xmlcatmgr
 
@@ -22,6 +23,7 @@ CONFLICTS=	sp-1.*
 
 GNU_CONFIGURE=	yes
 USES=		desthack gmake libtool
+USE_CXXSTD=	gnu++98
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-default-catalog=${PREFIX}/share/sgml/catalog
 MAKE_JOBS_UNSAFE=	yes
@@ -43,9 +45,4 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/xml/jade
 	${INSTALL_DATA} ${WRKSRC}/pubtext/xml* ${STAGEDIR}${PREFIX}/share/xml/jade
 
-.include <bsd.port.pre.mk>
-
-# Same problem with textproc/openjade.
-CPPFLAGS:=	-O ${CFLAGS:N-O*:N-m*}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,15 +1,12 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	clamsmtp
 PORTVERSION=	1.10
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
-MASTER_SITES=	https://jarasoft.net/clamsmtp/
-DISTFILES=	${DISTNAME:S/-/_/}.orig${EXTRACT_SUFX}
+MASTER_SITES=	http://thewalter.net/stef/software/clamsmtp/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ClamAV anti-virus SMTP Filter
+WWW=		http://thewalter.net/stef/software/clamsmtp/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

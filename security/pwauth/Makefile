@@ -1,14 +1,12 @@
-# Created by: clement
-# $FreeBSD$
-
 PORTNAME=	pwauth
 PORTVERSION=	2.3.11
 CATEGORIES=	security www
 MASTER_SITES=	http://www.unixpapa.com/software/ \
 		https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/pwauth/
 
-MAINTAINER=	eg@fbsd.lt
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix Web Authenticator
+WWW=		https://code.google.com/p/pwauth/
 
 LICENSE=	BSD3CLAUSE
 

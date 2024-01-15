@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	irssi-icb
 PORTVERSION=	0.17
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	irc
 
 MAINTAINER=	fox@FreeBSD.org
 COMMENT=	Irssi plugin for connecting to ICB network
+WWW=		https://github.com/mglocker/irssi-icb
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -30,4 +29,11 @@ INSTALL_TARGET=	install-strip
 PLIST_FILES=	lib/irssi/modules/libfe_icb.so \
 		lib/irssi/modules/libicb_core.so
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# Fixes build failure for Clang 16.0.6
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092
+CFLAGS+=       -Wno-error=incompatible-function-pointer-types
+.endif
+
+.include <bsd.port.post.mk>

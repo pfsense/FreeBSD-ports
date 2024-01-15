@@ -1,6 +1,3 @@
-# Created by: Aldis Berjoza <aldis@bsdroot.lv>
-# $FreeBSD$
-
 PORTNAME=	zfsnap
 PORTVERSION=	1.11.1
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	yamagi@yamagi.org
 COMMENT=	Simple sh script to make zfs rolling snaphosts with cron
+WWW=		https://github.com/zfsnap/zfsnap
 
 LICENSE=	BSD3CLAUSE
 

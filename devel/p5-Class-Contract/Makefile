@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Class-Contract
 PORTVERSION=	1.14
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Design-by-Contract OO in Perl
+WWW=		https://metacpan.org/release/Class-Contract
 
 USES=		perl5 dos2unix
 USE_PERL5=	configure

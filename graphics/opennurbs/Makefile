@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opennurbs
 PORTVERSION=	20130711
 PORTREVISION=	3
@@ -9,6 +7,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Tools to accurately transfer 3-D geometry between applications
+WWW=		https://www.rhino3d.com/opennurbs
 
 LICENSE_FILE=	${WRKSRC}/readme.txt
 
@@ -35,6 +34,12 @@ IGNORE=		needs SRC_BASE to compile. Install base system sources and try again
 
 .if ${ARCH} != i386
 MAKE_ARGS+=	ON_GNU_OPTIMIZER_FLAGS="-g -fPIC"
+.endif
+
+post-patch:
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+	@${REINPLACE_CMD} -e 's|D_GNU_SOURCE -I|D_GNU_SOURCE --std=c++14 -I|g' \
+		${WRKSRC}/makefile
 .endif
 
 pre-build:

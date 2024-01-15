@@ -1,21 +1,19 @@
-# Created by: Vladimir Chukharev
-# $FreeBSD$
-
 PORTNAME=	porttree
 PORTVERSION=	1.1.r${SVN_REV}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	ports-mgmt python
 MASTER_SITES=	SF/${PORTNAME}
 
-MAINTAINER=	Vladimir.Chukharev@gmail.com
-COMMENT=	Show dependences of FreeBSD port as pseudo graphical tree
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Show dependencies of FreeBSD port as pseudo graphical tree
+WWW=		https://sourceforge.net/projects/porttree/
 
 LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}networkx>=2.0:math/py-networkx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}configargparse>0:devel/py-configargparse@${PY_FLAVOR}
 
-USES=		python:3.6+ tar:bzip2 shebangfix
+USES=		python tar:bzip2 shebangfix
 #USE_PYTHON=	concurrent
 
 SVN_REV=	114

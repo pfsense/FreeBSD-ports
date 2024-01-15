@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	tpm2-tools
-DISTVERSION=	4.2.1
+DISTVERSION=	5.5
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/tpm2-software/tpm2-tools/releases/download/${DISTVERSION}/
 
 MAINTAINER=	tstruk@gmail.com
 COMMENT=	TPM2 tools
+WWW=		https://github.com/tpm2-software/tpm2-tools
 
 LICENSE=	BSD2CLAUSE
 
@@ -20,12 +20,4 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CRYPTO_CFLAGS="-I${OPENSSLINC}" CRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto"
 CONFIGURE_ARGS=	--disable-hardening --disable-fapi
 
-BROKEN_SSL=	openssl
-
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085
-BROKEN_SSL+=	base
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

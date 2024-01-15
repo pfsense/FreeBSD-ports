@@ -1,15 +1,13 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freedoko
 PORTVERSION=	0.7.19
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/free-doko/source
 DISTNAME=	FreeDoko_${PORTVERSION}.src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Play the card game Doppelkopf
+WWW=		https://free-doko.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../doc/GPL

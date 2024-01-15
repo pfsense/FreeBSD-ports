@@ -1,14 +1,13 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	base64
 PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	converters
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Base64 encoding and decoding in OCaml
+WWW=		https://github.com/mirage/ocaml-base64
 
 BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 

@@ -1,6 +1,3 @@
-# Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	zfs-replicate
 PORTVERSION=	0.7
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw
 COMMENT=	ZFS Snapshot Replication Script
+WWW=		https://github.com/leprechau/zfs-replicate
 
 RUN_DEPENDS=	bash:shells/bash
 

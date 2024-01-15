@@ -1,33 +1,35 @@
-# Created by: KIMURA Yasuhiro <yasu@utahime.org>
-# $FreeBSD$
-
 PORTNAME=	git-modes
-DISTVERSION=	1.2.8
-PORTREVISION=	4
+DISTVERSION=	1.4.2
 PORTEPOCH=	1
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	GNU Emacs modes for Git-related files
+WWW=		https://github.com/magit/git-modes
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	git:devel/git
+BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR}
+RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR} \
+		git:devel/git
 
 USES=		emacs gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	magit
-NO_ARCH=	yes
-ALL_TARGET=	lisp
 
-PORTDOCS=	README.md
+MAKE_ENV+=	LOAD_PATH="-L ${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/compat"
+MAKE_JOBS_UNSAFE=	yes
+
+NO_ARCH=	yes
+
+PLIST_SUB=	ELISPDIR=${ELISPDIR}
+PORTDOCS=	README.org
 
 OPTIONS_DEFINE=	DOCS
 
 ELISPDIR=	${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}
-PLIST_SUB=	ELISPDIR=${ELISPDIR}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${ELISPDIR}
@@ -36,6 +38,6 @@ do-install:
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.org ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

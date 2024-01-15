@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	plproxy
 PORTVERSION=	2.10.0
 CATEGORIES=	databases
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	postgresql-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Function-based sharding for PostgreSQL
+WWW=		https://plproxy.github.io/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

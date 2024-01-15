@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	aom
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.2
+DISTVERSION=	3.8.0
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	AV1 reference encoder/decoder
+WWW=		https://aomedia.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,11 +23,18 @@ GH_ACCOUNT=	jbeich # mirror
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	ENABLE_DOCS ENABLE_TESTS
 
-OPTIONS_DEFINE=	VMAF
+OPTIONS_DEFINE=	JXL VMAF
+OPTIONS_DEFAULT=JXL VMAF
+OPTIONS_EXCLUDE=JXL # https://bugs.chromium.org/p/aomedia/issues/detail?id=3457
+
+JXL_DESC=		Encoding tuning for Butteraugli
+JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
+JXL_USES=		pkgconfig
+JXL_CMAKE_ON=		-DCONFIG_TUNE_BUTTERAUGLI:STRING=1
 
 VMAF_DESC=		Encoding tuning for VMAF
 VMAF_LIB_DEPENDS=	libvmaf.so:multimedia/vmaf
-VMAF_USES=		localbase:ldflags
+VMAF_USES=		pkgconfig
 VMAF_CMAKE_ON=		-DCONFIG_TUNE_VMAF:STRING=1
 
 post-patch:

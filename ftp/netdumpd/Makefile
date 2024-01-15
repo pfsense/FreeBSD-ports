@@ -1,14 +1,12 @@
-# Created by: Mark Johnston <markj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	netdumpd
-PORTVERSION=	20191031
+PORTVERSION=	20220406
 PORTREVISION=	0
 CATEGORIES=	ftp
 MASTER_SITES=	LOCAL/markj
 
 MAINTAINER=	markj@FreeBSD.org
 COMMENT=	UDP server capable of handling netdump transfers
+WWW=		https://github.com/markjdb/netdumpd
 
 LICENSE=	BSD2CLAUSE
 

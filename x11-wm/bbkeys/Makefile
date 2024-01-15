@@ -1,6 +1,3 @@
-# Created by: Patrick Seal <patseal@hyperhost.net>
-# $FreeBSD$
-
 PORTNAME=	bbkeys
 PORTVERSION=	0.9.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	A.J.Caines@halplant.com
 COMMENT=	Keygrabber for the Blackbox window manager
+WWW=		https://bbkeys.sourceforge.net/
 
 LICENSE=	MIT
 

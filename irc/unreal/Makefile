@@ -1,29 +1,35 @@
-# Created by: Gerrit Beine (<tux@pinguru.net>)
-# $FreeBSD$
-
-PORTNAME=	Unreal
-PORTVERSION=	3.2.10.7
+PORTNAME=	unreal
+DISTVERSION=	6.1.1.1
 CATEGORIES=	irc
-MASTER_SITES=	http://www.unrealircd.com/downloads/
-DISTNAME=	${PORTNAME}${PORTVERSION}
+MASTER_SITES=	https://www.unrealircd.org/downloads/
+DISTNAME=	${PORTNAME}ircd-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tanawts@gmail.com
 COMMENT=	Unreal - the next generation ircd
+WWW=		https://www.unrealircd.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_riscv64=	Fails to link: missing sbrk
+LIB_DEPENDS=	libcares.so:dns/c-ares \
+		libpcre2-8.so:devel/pcre2 \
+		libargon2.so:security/libargon2 \
+		libsodium.so:security/libsodium \
+		libjansson.so:devel/jansson \
+		libmaxminddb.so:net/libmaxminddb
+RUN_DEPENDS=	${LOCALBASE}/bin/geoipupdate:net/geoipupdate
 
-LIB_DEPENDS=	libcares.so:dns/c-ares
-
+USES=		pkgconfig cpe gmake localbase ssl
 MODULESDIR=	${PREFIX}/lib/${PORTNAME}
+MODULESSUBDIR=	chanmodes extbans rpc usermodes
 CONFIGDIR=	${PREFIX}/etc/${PORTNAME}
 RUNDIR=		/var/run/ircd
 LOGDIR=		/var/log/ircd
+CACHEDIR=	/var/cache/ircd
+_TMPDIR=	/tmp
 
-USES=		pkgconfig cpe
+EXTRACT_AFTER_ARGS=	--exclude extras/*.tar.gz
+
 HAS_CONFIGURE=	yes
 USE_RC_SUBR=	unrealircd
 
@@ -36,110 +42,61 @@ SUB_LIST+=	RUNDIR=${RUNDIR}
 SUB_LIST+=	USERS=${USERS}
 SUB_LIST+=	GROUPS=${GROUPS}
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	${CPPFLAGS}
-CONFIGURE_ARGS=	--with-listen=5 \
-		--with-dpath=${CONFIGDIR} \
-		--with-spath=${PREFIX}/libexec/ircd \
-		--with-nick-history=2000 \
-		--with-sendq=3000000 \
-		--with-bufferpool=18 \
+CONFIGURE_ARGS=	--with-nick-history=2000 \
+		--with-bindir=${LOCALBASE}/bin \
+		--with-scriptdir=${DATADIR} \
+		--with-confdir=${CONFIGDIR} \
+		--with-builddir=${WRKSRC} \
+		--with-modulesdir=${MODULESDIR} \
+		--with-logdir=${LOGDIR} \
+		--with-cachedir=${CACHEDIR} \
+		--with-tmpdir=${_TMPDIR} \
+		--with-datadir=${DATADIR}/data \
+		--with-docdir=${DATADIR}/doc \
+		--with-pidfile=${RUNDIR}/ircd.pid \
+		--with-controlfile=${RUNDIR}/ircd.ctl \
 		--with-permissions=0600 \
-		--with-fd-setsize=1024 \
 		--with-system-cares \
-		--enable-dynamic-linking
+		--enable-dynamic-linking \
+		--enable-libmaxminddb=yes \
+		--enable-ssl
 
-OPTIONS_DEFINE=	HUB NOSPOOF ZIPLINKS SSL IPV6 PREFIXAQ REMOTE DOCS
-OPTIONS_DEFAULT=	HUB SSL
-HUB_DESC=	Configure as a hub (otherwise configure as a leaf)
-NOSPOOF_DESC=	Enable anti-spoof protection
-ZIPLINKS_DESC=	Enable ziplinks support
-PREFIXAQ_DESC=	Enable prefixes for chanadmin and chanowner
-REMOTE_DESC=	Enable remote includes
+OPTIONS_DEFINE=	DOCS
 
-PORTDOCS=	*
-DOCS=		Donation doc/Authors doc/coding-guidelines \
-		doc/example.conf doc/tao.of.irc \
-		doc/translations.txt doc/unreal32docs.html \
-		doc/technical/005.txt doc/technical/base64.txt \
-		doc/technical/protoctl.txt doc/technical/token.txt \
-		doc/technical/vl.txt
-
-HUB_CONFIGURE_ENABLE=	hub
-NOSPOOF_CONFIGURE_ENABLE=	nospoof
-ZIPLINKS_CONFIGURE_ENABLE=	ziplinks
-IPV6_CONFIGURE_ENABLE=	inet6
-SSL_CONFIGURE_ENABLE=	ssl
-SSL_USES=		ssl
-REMOTE_LIB_DEPENDS=	libcurl.so:ftp/curl
-REMOTE_CONFIGURE_ENABLE=	--enable-libcurl=${LOCALBASE}
-PREFIXAQ_CONFIGURE_ENABLE=	prefixaq
-
-SQLMOD=		${PORTNAME}/SQLMod.tar.gz
-
-# Upstream dead, don't expect a proper fix.
-CFLAGS+=	-fcommon
-
-.if exists(${DISTDIR}/${SQLMOD})
-USES+=		mysql
-WITH_SQLMOD=	yes
-MAKE_ARGS=	all custommodule MODULEFILE=m_sqlmod
-PLIST_SUB+=	SQLMOD=""
-.else
-PLIST_SUB+=	SQLMOD="@comment "
-.endif
-
-post-extract:
-.if defined(WITH_SQLMOD)
-	@${TAR} xfz ${DISTDIR}/${SQLMOD} -C ${WRKSRC}
-	@${MV} ${WRKSRC}/SQLMod* ${WRKSRC}/SQLMod
-	@${CP} -r ${WRKSRC}/SQLMod/m_sqlmod.c ${WRKSRC}/src/modules
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e "s,%%PREFIX%%,${PREFIX}," \
-		-e "s,%%RUNDIR%%,${RUNDIR}," \
-		-e "s,%%USERS%%,${USERS}," \
-		-e "s,%%GROUPS%%,${GROUPS}," \
-		-e "s,%%LOGDIR%%,${LOGDIR}," ${WRKSRC}/include/config.h
-	@${REINPLACE_CMD} -e "s,%%PREFIX%%,${PREFIX}," \
-		-e "s,%%LOGDIR%%,${LOGDIR}," ${WRKSRC}/doc/example.conf
-	@${REINPLACE_CMD} -e "s,%%RUNDIR%%,${RUNDIR}," ${WRKSRC}/src/ircd.c
-	@${REINPLACE_CMD} -e "s,%%RUNDIR%%,${RUNDIR}," ${WRKSRC}/src/modules.c
-	@${REINPLACE_CMD} -e "s,%%RUNDIR%%,${RUNDIR}," ${WRKSRC}/src/s_conf.c
-	@${REINPLACE_CMD} -e "s,%%RUNDIR%%,${RUNDIR}," ${WRKSRC}/src/url.c
-.if defined(WITH_SQLMOD)
-	@${PATCH} -d ${WRKSRC} < ${WRKSRC}/SQLMod/patch
-.endif
-	@${REINPLACE_CMD} -e "/Your system does not support IPv6/ s|as_fn_error|echo|" ${WRKSRC}/configure
+PORTDOCS=	${DOCS:T}
+DOCS=		Donation Authors coding-guidelines \
+		tao.of.irc translations.txt \
+		technical/005.txt technical/base64.txt \
+		technical/serverprotocol.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/ircd ${STAGEDIR}${PREFIX}/libexec/ircd
-	${MKDIR} ${STAGEDIR}${MODULESDIR}
-	${MKDIR} ${STAGEDIR}${CONFIGDIR} || true
-	${MKDIR} ${STAGEDIR}${CONFIGDIR}/aliases || true
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/aliases
-	${MKDIR} ${STAGEDIR}${RUNDIR}/tmp
+	${MKDIR} ${STAGEDIR}${CACHEDIR}
+	${MKDIR} ${STAGEDIR}${CONFIGDIR}
+	${MKDIR} ${STAGEDIR}${CONFIGDIR}/aliases
+	${MKDIR} ${STAGEDIR}${CONFIGDIR}/examples
+	${MKDIR} ${STAGEDIR}${CONFIGDIR}/help
+	${MKDIR} ${STAGEDIR}${CONFIGDIR}/tls
 	${MKDIR} ${STAGEDIR}${LOGDIR}
-	${TOUCH} ${STAGEDIR}${CONFIGDIR}/ircd.motd
-	${TOUCH} ${STAGEDIR}${CONFIGDIR}/ircd.rules
-	${INSTALL_DATA} ${WRKSRC}/badwords.*.conf ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/help.conf ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/spamfilter.conf ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/example.conf ${STAGEDIR}${EXAMPLESDIR}/unrealircd.conf
-	${INSTALL_DATA} ${WRKSRC}/aliases/*.conf ${STAGEDIR}${EXAMPLESDIR}/aliases
-	${INSTALL} ${WRKSRC}/src/modules/*.so ${STAGEDIR}${MODULESDIR}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for file in ${DOCS}
-	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${MODULESDIR}
+	${MKDIR} ${STAGEDIR}${MODULESDIR}/chanmodes
+	${MKDIR} ${STAGEDIR}${MODULESDIR}/extbans
+	${MKDIR} ${STAGEDIR}${MODULESDIR}/rpc
+	${MKDIR} ${STAGEDIR}${MODULESDIR}/usermodes
+	${MKDIR} ${STAGEDIR}${RUNDIR}
+	${TOUCH} ${STAGEDIR}${CONFIGDIR}/ircd.motd.sample
+	${TOUCH} ${STAGEDIR}${CONFIGDIR}/ircd.rules.sample
+	(cd ${WRKSRC}/doc/conf && ${COPYTREE_SHARE} . ${STAGEDIR}${CONFIGDIR})
+	${INSTALL_DATA} ${WRKSRC}/doc/conf/examples/example.conf ${STAGEDIR}${CONFIGDIR}/unrealircd.conf.sample
+	${INSTALL_LIB} ${WRKSRC}/src/modules/*.so ${STAGEDIR}${MODULESDIR}
+.for subdir in ${MODULESSUBDIR}
+	${INSTALL_LIB} ${WRKSRC}/src/modules/${subdir}/*.so ${STAGEDIR}${MODULESDIR}/${subdir}/
 .endfor
 
-.if defined(WITH_SQLMOD)
-	@${CP} ${WRKSRC}/SQLMod/sample.conf ${STAGEDIR}${CONFIGDIR}/m_sqlmod.conf
-	@${CP} ${WRKSRC}/SQLMod/Changes ${STAGEDIR}${DOCSDIR}/Changes.sqlmod
-	@${CP} ${WRKSRC}/SQLMod/README ${STAGEDIR}${DOCSDIR}/README.sqlmod
-	@${CP} ${WRKSRC}/SQLMod/LICENSE ${STAGEDIR}${DOCSDIR}/LICENSE.sqlmod
-.endif
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for file in ${DOCS}
+	${INSTALL_DATA} ${WRKSRC}/doc/${file} ${STAGEDIR}${DOCSDIR}
+.endfor
 
 .include <bsd.port.mk>

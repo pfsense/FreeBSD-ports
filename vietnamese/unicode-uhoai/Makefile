@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	unicode-uhoai
 PORTVERSION=	2.1
 PORTREVISION=	5

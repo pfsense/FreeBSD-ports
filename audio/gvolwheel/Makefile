@@ -1,12 +1,11 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gvolwheel
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.3
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Control volume by scrolling over tray icon
+WWW=		https://github.com/Junker/gvolwheel
 
 LICENSE=	GPLv3
 

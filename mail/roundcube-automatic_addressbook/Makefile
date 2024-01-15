@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	automatic_addressbook
 PORTVERSION=	0.4.3
 CATEGORIES=	mail
@@ -8,6 +6,7 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	andrej@ebert.su
 COMMENT=	Roundcube webmail automatic addressbook plugin
+WWW=		https://github.com/sblaisot/automatic_addressbook
 
 LICENSE=	GPLv3
 
@@ -16,15 +15,17 @@ RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.8:mail/roundcube@${PHP_FLAVOR}
 USES=		php:flavors
 USE_GITHUB=	yes
 GH_ACCOUNT=	sblaisot
+IGNORE_WITH_PHP=83
 
-NO_BUILD=	yes
+WWWDIR=		${RCDIR}/plugins/automatic_addressbook
 NO_ARCH=	yes
+NO_BUILD=	yes
 
 RCDIR=		${PREFIX}/www/roundcube
-WWWDIR=		${RCDIR}/plugins/automatic_addressbook
 
 SUB_FILES=	pkg-message
-SUB_LIST=	RCDIR=${RCDIR} PLUGINDIR=${WWWDIR}
+SUB_LIST=	PLUGINDIR=${WWWDIR} \
+		RCDIR=${RCDIR}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}

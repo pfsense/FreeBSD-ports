@@ -1,14 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	RFinanceYJ
 PORTVERSION=	0.3.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Japanese stock market from Yahoo!-finance-Japan
+WWW=		https://cran.r-project.org/web/packages/RFinanceYJ/
 
 LICENSE=	BSD3CLAUSE
 

@@ -1,25 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	samdrucker
-PORTVERSION=	0.2.4
-PORTREVISION=	1
+PORTVERSION=	0.2.6
 CATEGORIES=	www
 PKGNAMESUFFIX=	server
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Installs the server side of SamDrucker
+WWW=		https://github.com/dlangille/SamDrucker
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		apache php
 
-USE_PHP=	json pdo_pgsql
+USE_PHP=	pdo_pgsql
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-USE_GITHUB=     yes
+USE_GITHUB=	yes
 GH_ACCOUNT=	dlangille
 GH_PROJECT=	SamDrucker
 

@@ -1,6 +1,3 @@
-# Created by: Chris Larsen <darth@vader.dk>
-# $FreeBSD$
-
 PORTNAME=	SQLite-Work
 PORTVERSION=	0.16.01
 PORTREVISION=	1
@@ -12,6 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Report on and update an SQLite database
+WWW=		https://metacpan.org/release/SQLite-Work
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

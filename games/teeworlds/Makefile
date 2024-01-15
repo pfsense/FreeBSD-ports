@@ -1,12 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	teeworlds
 PORTVERSION=	0.7.5
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Platform game featuring buggers equipped with weapons
+WWW=		https://www.teeworlds.com/ \
+		https://github.com/teeworlds/teeworlds
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/license.txt

@@ -1,6 +1,3 @@
-# Created by: Chris D. Faulhaber <jedgar@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fuzz
 PORTVERSION=	0.6
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for testing software by bombarding the program with random data
+WWW=		https://fuzz.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 

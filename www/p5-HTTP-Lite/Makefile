@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	HTTP-Lite
 PORTVERSION=	2.44
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 modules for Lightweight HTTP implementation
+WWW=		https://metacpan.org/release/HTTP-Lite
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

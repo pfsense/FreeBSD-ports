@@ -1,6 +1,3 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
-
 PORTNAME=	netstiff
 PORTVERSION=	20080331
 CATEGORIES=	www
@@ -9,13 +6,13 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful web page update checker
+WWW=		http://pkqs.net/~sbeyer/ #netstiff
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		shebangfix
+USES=		ruby shebangfix
 SHEBANG_FILES=	${WRKSRC}/${PORTNAME}
-USE_RUBY=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 

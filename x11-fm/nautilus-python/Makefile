@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	nautilus-python
-DISTVERSION=	1.2.2
-PORTREVISION=	1
+DISTVERSION=	1.2.3
+PORTREVISION=	4
 CATEGORIES=	x11-fm gnome python
 MASTER_SITES=	GNOME
 
 MAINTAINER=	daniel@shafer.cc
 COMMENT=	Python nautilus bindings
+WWW=		https://wiki.gnome.org/Projects/NautilusPython
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake gnome libtool localbase pathfix pkgconfig python:3.6+ \
+USES=		gmake gnome libtool localbase pathfix pkgconfig python \
 		tar:xz
 USE_GNOME=	cairo gdkpixbuf2 nautilus3 pygobject3
 USE_LDCONFIG=	yes

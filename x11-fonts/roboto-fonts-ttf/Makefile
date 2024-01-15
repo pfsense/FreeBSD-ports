@@ -1,6 +1,3 @@
-# Created by: Winston Weinert <winstonw@lavabit.com>
-# $FreeBSD$
-
 PORTNAME=	roboto-fonts-ttf
 PORTVERSION=	2.134
 PORTREVISION=	1
@@ -10,6 +7,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	wulf@cicgroup.ru
 COMMENT=	Roboto typeface family
+WWW=		https://developer.android.com/design/style/typography.html
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

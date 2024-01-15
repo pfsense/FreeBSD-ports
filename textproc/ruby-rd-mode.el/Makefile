@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	rd-mode.el
 PORTVERSION=	0.6.38
 PORTREVISION=	1
@@ -11,10 +8,11 @@ DISTFILES=	# none
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emacs lisp module for editing RD files
+WWW=		https://github.com/uwabami/rdtool
 
 BUILD_DEPENDS=	${NONEXISTENT}:textproc/ruby-rdtool:patch
 
-USE_RUBY=	yes
+USES=	ruby
 
 WRKSRC=		${WRKDIR}/utils
 NO_BUILD=	yes

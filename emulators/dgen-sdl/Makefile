@@ -1,14 +1,12 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dgen-sdl
 PORTVERSION=	1.33
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	emulators
 MASTER_SITES=	SF/dgen/dgen/${PORTVERSION}
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Wonderful Sega Genesis/MegaDrive emulator
+WWW=		https://dgen.sourceforge.net/
 
 USE_SDL=	sdl
 USE_GL=		glu

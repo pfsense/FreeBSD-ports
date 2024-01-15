@@ -98,8 +98,8 @@ if ($_POST) {
 	}
 }
 
-if ($_GET['act'] == "del") {
-	$id = $_GET['id'];
+if ($_POST['act'] == "del") {
+	$id = $_POST['id'];
 	$id = get_accountkey_id($id);
 	if (isset($a_accountkeys[$id])) {
 		if (!$input_errors) {
@@ -163,7 +163,7 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 			<tr id="fr<?=$accountname;?>" <?=$display?> onClick="fr_toggle('<?=$accountname;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$accountname;?>';">
 				<td>
 					<input type="checkbox" id="frc<?=$accountname;?>" onClick="fr_toggle('<?=$accountname;?>')" name="rule[]" value="<?=$accountname;?>"/>
-					<a class="fa fa-anchor" id="Xmove_<?=$accountname?>" title="<?=gettext("Move checked entries to here")?>"></a>
+					<a class="fa-solid fa-anchor" id="Xmove_<?=$accountname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				</td>
 			  <td>
 				<?=$accountname;?>
@@ -175,14 +175,14 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				<?=htmlspecialchars($accountkey['acmeserver']);?>
 			  </td>
 			  <td class="action-icons">
-				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$accountname?>" name="move_<?=$accountname?>" value="move_<?=$accountname?>"></button>
-				<a href="acme_accountkeys_edit.php?id=<?=$accountname;?>">
+				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=urlencode($accountname)?>" name="move_<?=urlencode($accountname)?>" value="move_<?=urlencode($accountname)?>"></button>
+				<a href="acme_accountkeys_edit.php?id=<?=urlencode($accountname);?>">
 					<?=acmeicon("edit", gettext("edit"))?>
 				</a>
-				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" onclick="return confirm('Do you really want to delete this entry?')">
+				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" usepost>
 					<?=acmeicon("delete", gettext("delete"))?>
 				</a>
-				<a href="acme_accountkeys_edit.php?dup=<?=$accountname;?>">
+				<a href="acme_accountkeys_edit.php?dup=<?=urlencode($accountname);?>">
 					<?=acmeicon("clone", gettext("clone"))?>
 				</a>
 			  </td>
@@ -195,15 +195,15 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 	</div>
 	<nav class="action-buttons">
 		<a href="acme_accountkeys_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn no-confirm"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn no-confirm"></i>
 			<?=gettext("Delete"); ?>
 		</button>
 		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn no-confirm"></i>
+			<i class="fa-solid fa-save icon-embed-btn no-confirm"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>

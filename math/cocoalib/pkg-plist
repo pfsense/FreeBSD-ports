@@ -52,6 +52,7 @@ include/CoCoA/NumTheory-gcd.H
 include/CoCoA/NumTheory-misc.H
 include/CoCoA/NumTheory-modular.H
 include/CoCoA/NumTheory-prime.H
+include/CoCoA/NumTheory-root.H
 include/CoCoA/OpenMath.H
 include/CoCoA/OpenMathXML.H
 include/CoCoA/OrdvArith.H
@@ -102,17 +103,18 @@ include/CoCoA/SmartPtrIRC.H
 include/CoCoA/SparsePolyIter.H
 include/CoCoA/SparsePolyOps-EvalInterval.H
 include/CoCoA/SparsePolyOps-MinPoly.H
-include/CoCoA/SparsePolyOps-RadicalMembership.H
 include/CoCoA/SparsePolyOps-RealRadical.H
 include/CoCoA/SparsePolyOps-RingElem.H
 include/CoCoA/SparsePolyOps-SturmSeq.H
 include/CoCoA/SparsePolyOps-hilbert.H
+include/CoCoA/SparsePolyOps-ideal-RadicalMembership.H
 include/CoCoA/SparsePolyOps-ideal-monomial.H
 include/CoCoA/SparsePolyOps-ideal-points.H
 include/CoCoA/SparsePolyOps-ideal.H
 include/CoCoA/SparsePolyOps-implicit.H
 include/CoCoA/SparsePolyOps-involutive.H
 include/CoCoA/SparsePolyOps-resultant.H
+include/CoCoA/SparsePolyOps-vector.H
 include/CoCoA/SparsePolyRing.H
 include/CoCoA/SugarDegree.H
 include/CoCoA/TmpF5.H
@@ -143,10 +145,10 @@ include/CoCoA/TmpToric.H
 include/CoCoA/TmpUniversalInvolutiveBasisContainer.H
 include/CoCoA/ToString.H
 include/CoCoA/ULong2Long.H
+include/CoCoA/ULongLong2LongLong.H
 include/CoCoA/UPoly.H
 include/CoCoA/VectorOps.H
 include/CoCoA/VerificationLevel.H
-include/CoCoA/apply.H
 include/CoCoA/assert.H
 include/CoCoA/bool3.H
 include/CoCoA/combinatorics.H
@@ -166,6 +168,7 @@ include/CoCoA/matrix.H
 include/CoCoA/module.H
 include/CoCoA/obsolescent.H
 include/CoCoA/random.H
+include/CoCoA/ring-AutomaticConversion.H
 include/CoCoA/ring.H
 include/CoCoA/submodule.H
 include/CoCoA/symbol.H
@@ -174,6 +177,8 @@ include/CoCoA/utils-gmp.H
 include/CoCoA/utils.H
 include/CoCoA/verbose.H
 lib/libcocoa.a
+lib/libcocoa.so
+lib/libcocoa.so.0
 %%PORTDOCS%%%%DOCSDIR%%/CoCoALib.pdf
 %%PORTDOCS%%%%DOCSDIR%%/html/00CodingConventions.html
 %%PORTDOCS%%%%DOCSDIR%%/html/00INTRODUCTION.html
@@ -237,7 +242,6 @@ lib/libcocoa.a
 %%PORTDOCS%%%%DOCSDIR%%/html/QBGenerator.html
 %%PORTDOCS%%%%DOCSDIR%%/html/QuasiPoly.html
 %%PORTDOCS%%%%DOCSDIR%%/html/QuotientRing.html
-%%PORTDOCS%%%%DOCSDIR%%/html/RadicalMembership.html
 %%PORTDOCS%%%%DOCSDIR%%/html/ReductionCog.html
 %%PORTDOCS%%%%DOCSDIR%%/html/RegisterServerOps.html
 %%PORTDOCS%%%%DOCSDIR%%/html/RingDistrMPolyClean.html
@@ -258,7 +262,6 @@ lib/libcocoa.a
 %%PORTDOCS%%%%DOCSDIR%%/html/SmallFpDoubleImpl.html
 %%PORTDOCS%%%%DOCSDIR%%/html/SmallFpImpl.html
 %%PORTDOCS%%%%DOCSDIR%%/html/SmallFpLogImpl.html
-%%PORTDOCS%%%%DOCSDIR%%/html/SmallPrime.html
 %%PORTDOCS%%%%DOCSDIR%%/html/SmartPtrIRC.html
 %%PORTDOCS%%%%DOCSDIR%%/html/SmartPtrIRCCOW.html
 %%PORTDOCS%%%%DOCSDIR%%/html/SocketStream.html
@@ -271,6 +274,7 @@ lib/libcocoa.a
 %%PORTDOCS%%%%DOCSDIR%%/html/SugarDegree.html
 %%PORTDOCS%%%%DOCSDIR%%/html/ToString.html
 %%PORTDOCS%%%%DOCSDIR%%/html/ULong2Long.html
+%%PORTDOCS%%%%DOCSDIR%%/html/ULongLong2LongLong.html
 %%PORTDOCS%%%%DOCSDIR%%/html/UniversalInvolutiveBasisContainer.html
 %%PORTDOCS%%%%DOCSDIR%%/html/VectorOps.html
 %%PORTDOCS%%%%DOCSDIR%%/html/VerificationLevel.html
@@ -306,6 +310,7 @@ lib/libcocoa.a
 %%PORTDOCS%%%%DOCSDIR%%/html/utils-gmp.html
 %%PORTDOCS%%%%DOCSDIR%%/html/utils.html
 %%PORTDOCS%%%%DOCSDIR%%/html/verbose.html
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-00-intro.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-AlexanderDual.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-ApproxPts1.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-BenchmarkToolkit.C
@@ -374,6 +379,7 @@ lib/libcocoa.a
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-RandomSource1.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-RandomSource2.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-RingElem1.C
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-RingElem2.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-RingFp1.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-RingFp2.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-RingFq1.C
@@ -412,9 +418,12 @@ lib/libcocoa.a
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-bool.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-class.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-fn-defn.C
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-for-loop.C
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-vector.C
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++.C
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-integers.C
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-loop-for1.C
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-loop-for2.C
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-loop-while.C
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-vector1.C
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-vector2.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-convert1.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-empty.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-error1.C
@@ -438,6 +447,5 @@ lib/libcocoa.a
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-ring2.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-symbol1.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-symbol2.C
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-c++-vector2.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-verbose1.C
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/index.html

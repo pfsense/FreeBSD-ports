@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wordnet-fpw
 PORTVERSION=	${WN_VER}.${WNFPW_VER}
 PORTREVISION=	0
@@ -10,6 +7,7 @@ DISTNAME=	wordnet-${WN_VER}-fpw${WNFPW_VER}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	English - English Dictionary (EPWING V1 format)
+WWW=		http://openlab.ring.gr.jp/edict/fpw/
 
 USES=		zip
 NO_BUILD=	yes

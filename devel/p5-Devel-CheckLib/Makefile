@@ -1,14 +1,12 @@
-# Created by: Frederic Culot <frederic@culot.org>
-# $FreeBSD$
-
 PORTNAME=	Devel-CheckLib
-PORTVERSION=	1.14
+PORTVERSION=	1.16
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Check that a library is available
+WWW=		https://metacpan.org/release/Devel-CheckLib
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

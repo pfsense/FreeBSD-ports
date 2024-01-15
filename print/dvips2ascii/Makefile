@@ -1,6 +1,3 @@
-# Created by: eserte@cs.tu-berlin.de
-# $FreeBSD$
-
 PORTNAME=	dvips2ascii
 PORTVERSION=	1.3
 CATEGORIES=	print

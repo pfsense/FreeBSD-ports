@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	smc
 PORTVERSION=	4.3.0
 PORTREVISION=	2
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The State Machine Compiler
+WWW=		https://smc.sourceforge.net/
 
 USE_JAVA=	yes
 NO_BUILD=	yes

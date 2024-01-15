@@ -1,28 +1,23 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	send2trash
-DISTVERSION=	1.5.0
-CATEGORIES=	deskutils
-MASTER_SITES=	CHEESESHOP
+PORTVERSION=	1.8.2
+PORTREVISION=	1
+CATEGORIES=	deskutils python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Send2Trash-${PORTVERSION}
-DIST_SUBDIR=	python
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Small package that sends files to the Trash
+WWW=		https://github.com/arsenetar/send2trash
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python:3.6+
-USE_PYTHON=	distutils concurrent autoplist
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+
+USES=		dos2unix python
+USE_PYTHON=	autoplist concurrent pep517
+
 NO_ARCH=	yes
-
-PORTDOCS=	CHANGES.rst README.rst
-OPTIONS_DEFINE=	DOCS
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

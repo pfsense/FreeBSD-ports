@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <tthomas@mail.dotcom.fr>
-# $FreeBSD$
-
 PORTNAME=	newsx
 PORTVERSION=	1.6
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	LOCAL/thierry
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Program to fetch news from and post news to a remote NNTP server
+WWW=		http://www.kvaleberg.no/newsx.html
 
 LICENSE=	GPLv2
 
@@ -19,6 +17,7 @@ BUILD_DEPENDS=	${LOCALBASE}/news/lib/libinn.so:news/inn
 RUN_DEPENDS=	${LOCALBASE}/news/lib/libinn.so:news/inn
 .endif
 
+USES=		cpe
 GNU_CONFIGURE=	yes
 CFLAGS+=	-fcommon
 

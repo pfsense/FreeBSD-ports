@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Template-Plugin-HTML-SuperForm
 PORTVERSION=	1.0
 PORTREVISION=	1

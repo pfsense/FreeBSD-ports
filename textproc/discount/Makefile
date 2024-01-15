@@ -1,49 +1,45 @@
-# Created by: Julien Laffaye <kimelto@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	discount
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.6
+PORTVERSION=	2.2.7d
 CATEGORIES=	textproc devel
+MASTER_SITES=	https://www.pell.portland.or.us/~orc/Code/discount/
 
-MAINTAINER=	jlaffaye@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C implementation of the Markdown markup language
+WWW=		https://www.pell.portland.or.us/~orc/Code/discount/ \
+		https://github.com/Orc/discount
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-USES=		pkgconfig
-USE_GITHUB=	yes
-GH_ACCOUNT=	Orc
-
-HAS_CONFIGURE=		yes
-CONFIGURE_SCRIPT=	configure.sh
-CONFIGURE_ARGS=		--prefix=${PREFIX} \
-			--mandir=${MANPREFIX}/man
-
-INSTALL_TARGET=	install install.man
+USES=		cpe pathfix pkgconfig tar:bz2
 
 CFLAGS+=	-fPIC
-
-MAKE_JOBS_UNSAFE=	yes # libmarkdown is used before it is built
-
-OPTIONS_DEFINE=		EXTRA TAB8 SAMPLES
-OPTIONS_DEFAULT=	EXTRA TAB8
-
-EXTRA_DESC=		Enable all extra features
-TAB8_DESC=		Use a tabstop of 8 (default is 4)
-SAMPLES_DESC=		Install sample programs
-
-EXTRA_CONFIGURE_ON=	--with-dl=both --with-fenced-code --with-github-tags \
-			--with-id-anchor
-
-TAB8_CONFIGURE_ON=	--with-tabstops=8
-
-SAMPLES_INSTALL_TARGET=	install install.samples
-SAMPLES_PLIST_FILES=	bin/makepage bin/mkd2html bin/theme \
-			man/man1/makepage.1.gz man/man1/mkd2html.1.gz \
-			man/man1/theme.1.gz
+CONFIGURE_ARGS=	--mandir=${PREFIX}/share/man --prefix=${PREFIX} --shared
+CONFIGURE_SCRIPT=	configure.sh
+HAS_CONFIGURE=	yes
+INSTALL_TARGET=	install install.man
+TEST_TARGET=	test
+USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	markdown
+
+CPE_VENDOR=	discount_project
+
+PORTSCOUT=	skipv:2.2.7
+
+OPTIONS_DEFINE=	EXTRA SAMPLES TAB8
+OPTIONS_DEFAULT=EXTRA TAB8
+OPTIONS_SUB=	yes
+EXTRA_DESC=	Enable all extra features
+SAMPLES_DESC=	Install sample programs
+TAB8_DESC=	Use a tabstop of 8 (default is 4)
+
+EXTRA_CONFIGURE_ON=	--with-dl=both --with-fenced-code --with-github-tags --with-id-anchor
+SAMPLES_INSTALL_TARGET=	install.samples
+TAB8_CONFIGURE_ON=	--with-tabstops=8
+
+post-install:
+	${INSTALL_DATA} ${WRKSRC}/libmarkdown.a ${STAGEDIR}${PREFIX}/lib/libmarkdown.a
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmarkdown.so
 
 .include <bsd.port.mk>

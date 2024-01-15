@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Number-WithError-LaTeX
 PORTVERSION=	0.06
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	LaTeX output for Number::WithError
+WWW=		https://metacpan.org/release/Number-WithError-LaTeX
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

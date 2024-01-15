@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	App-GitHub
 PORTVERSION=	1.0.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	GitHub Command Tools
+WWW=		https://metacpan.org/release/App-GitHub
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

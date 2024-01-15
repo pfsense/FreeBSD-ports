@@ -1,6 +1,3 @@
-# Created by: Konstantinos Konstantinidis <kkonstan@daemon.gr>
-# $FreeBSD$
-
 PORTNAME=	libvanessa_adt
 PORTVERSION=	0.0.9
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	vanessa_adt-${PORTVERSION}
 
 MAINTAINER=	thomas@bsdunix.ch
 COMMENT=	Library that provides ADTs (queues, dynamic arrays, and more)
+WWW=		https://horms.net/projects/vanessa/
 
 LIB_DEPENDS=	libvanessa_logger.so:devel/libvanessa_logger
 

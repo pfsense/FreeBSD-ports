@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	wimlib
 PORTVERSION=	1.13.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://wimlib.net/downloads/
 
 MAINTAINER=	mail_of_sergey@mail.ru
 COMMENT=	Manipulate Windows Imaging (WIM) archives
+WWW=		https://wimlib.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.GPLv3

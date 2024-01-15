@@ -1,19 +1,21 @@
-# Created by: paulh@logicsquad.net
-# $FreeBSD$
-
 PORTNAME=	refdb
 PORTVERSION=	0.9.9
 DISTVERSIONSUFFIX=	-1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTNAME}-src-${PORTVERSION}-1
 
-MAINTAINER=	ohartman@zedat.fu-berlin.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bibliographic reference database
+WWW=		https://refdb.sourceforge.net/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libbtparse.so:textproc/btparse \
-		libdbi.so:databases/libdbi
+		libdbi.so:databases/libdbi \
+		libltdl.so:devel/libltdl
 
 USES=		gmake iconv readline perl5 libtool pkgconfig pathfix shebangfix
 HAS_CONFIGURE=	yes

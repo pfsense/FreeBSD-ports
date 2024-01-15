@@ -1,24 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=		cd-hit
 DISTVERSIONPREFIX=	V
 DISTVERSION=		4.8.1
-PORTREVISION=	1
+PORTREVISION=		3
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Clustering and comparing protein or nucleotide sequences
+WWW=		http://weizhong-lab.ucsd.edu/cd-hit/
 
 LICENSE=	GPLv2
 
-USES=		compiler:openmp gmake shebangfix
+USES=		gmake shebangfix
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	weizhongli
 GH_PROJECT=	cdhit
 SHEBANG_FILES=	${WRKSRC}/*.pl
 
+.if exists(/usr/include/omp.h)
 MAKE_FLAGS=	openmp=yes
+.else
+MAKE_FLAGS=	openmp=no
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

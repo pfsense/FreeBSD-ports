@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	IO-Async-Resolver-DNS
 PORTVERSION=	0.06
 CATEGORIES=	dns perl5
@@ -9,9 +6,11 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Resolve DNS queries using IO::Async
+WWW=		https://metacpan.org/release/IO-Async-Resolver-DNS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Future>=0:devel/p5-Future \
@@ -19,8 +18,9 @@ RUN_DEPENDS=	p5-Future>=0:devel/p5-Future \
 		p5-List-UtilsBy>=0.07:devel/p5-List-UtilsBy \
 		p5-Net-DNS>=0:dns/p5-Net-DNS
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

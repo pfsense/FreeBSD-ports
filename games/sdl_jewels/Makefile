@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdl_jewels
 PORTVERSION=	1.1.1
 PORTREVISION=	5
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	${PORTNAME:S/sdl/SDL/}-${DISTVERSION}.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tile-matching 8x8 puzzle game
+WWW=		http://www.linuxmotors.com/gljewel/
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/sdl/SDL/}-${PORTVERSION}
 

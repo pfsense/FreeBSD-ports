@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	addrwatch
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.0.2
@@ -7,6 +5,7 @@ CATEGORIES=	net
 
 MAINTAINER=	m.muenz@gmail.com
 COMMENT=	Supports IP/Ethernet pairing for IPv4 and IPv6
+WWW=		https://github.com/fln/addrwatch
 
 LICENSE=	GPLv3
 

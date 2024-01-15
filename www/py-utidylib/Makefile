@@ -1,23 +1,20 @@
-# Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	utidylib
-PORTVERSION=	0.6
+PORTVERSION=	0.9
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	uTidylib-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Python interface to tidy-lib
+COMMENT=	Wrapper for HTML Tidy
+WWW=		https://github.com/nijel/utidylib
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libtidy.so.5:www/tidy-html5
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
+LIB_DEPENDS=	libtidy5.so:www/tidy-html5
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

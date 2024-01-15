@@ -1,21 +1,18 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	randlm
 PORTVERSION=	0.2.5
-PORTREVISION=	19
+PORTREVISION=	24
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Toolkit for building randomized language models
+WWW=		https://sourceforge.net/projects/randlm/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_aarch64=		fails to compile: invalid output constraint =a in assembler
 BROKEN_armv6=		fails to compile: invalid output constraint =a in assembler
-BROKEN_powerpc64=	fails to compile: 'itr' does not name a type
 BROKEN_riscv64=		fails to compile: invalid output constraint =a in assembler
 
 BUILD_DEPENDS=	${LOCALBASE}/include/google/sparse_hash_map:devel/sparsehash
@@ -24,7 +21,6 @@ RUN_DEPENDS=	${LOCALBASE}/include/google/sparse_hash_map:devel/sparsehash
 
 USES=		autoreconf libtool localbase:ldflags compiler:c++11-lang
 USE_CXXSTD=	gnu++98
-USE_PERL5=	run
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=yes

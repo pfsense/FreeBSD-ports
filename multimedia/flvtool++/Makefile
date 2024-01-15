@@ -1,13 +1,11 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	flvtool++
 PORTVERSION=	1.2.1
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for hinting and manipulating the metadata of FLV files
+WWW=		http://mirror.facebook.com/facebook/flvtool++/
 
 LICENSE=	BSD3CLAUSE
 

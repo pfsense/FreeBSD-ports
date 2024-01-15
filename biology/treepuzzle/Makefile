@@ -1,6 +1,3 @@
-# Created by: lentferj
-# $FreeBSD$
-
 PORTNAME=	treepuzzle
 PORTVERSION=	5.2
 CATEGORIES=	biology
@@ -9,6 +6,7 @@ DISTNAME=	tree-puzzle-${PORTVERSION}
 
 MAINTAINER=	jan.lentfer@web.de
 COMMENT=	Maximum likelihood phylogeny reconstruction using quartets
+WWW=		http://www.tree-puzzle.de
 
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/puzzle

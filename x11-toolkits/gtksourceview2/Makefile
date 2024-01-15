@@ -1,29 +1,25 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/x11-toolkits/gtksourceview2/Makefile,v 1.96 2010/09/29 12:42:49 kwm Exp $
-
 PORTNAME=	gtksourceview2
-PORTVERSION=	2.10.5
-PORTREVISION?=	5
+DISTVERSION=	2.10.5
+PORTREVISION=	9
 CATEGORIES=	x11-toolkits gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME:S/2$//}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
-DISTNAME=	${PORTNAME:S/2$//}-${PORTVERSION}
+MASTER_SITES=	GNOME/sources/${PORTNAME:S/2$//}/${DISTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+DISTNAME=	${PORTNAME:S/2$//}-${DISTVERSION}
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Widget that adds syntax highlighting to GtkTextView
 
-USES=		tar:bzip2
+USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:bzip2
+USE_GNOME=	gnomeprefix gtk20 libxml2 intlhack
+USE_LDCONFIG=	yes
 
+GNU_CONFIGURE=	yes
+
+INSTALL_TARGET=	install-strip
 PORTSCOUT=	ignore:1
 
-USES+=		gettext gmake gnome libtool:keepla pathfix pkgconfig
-USE_LDCONFIG=	yes
-USE_GNOME=	gnomeprefix gtk20 gconf2 libxml2 intlhack referencehack
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-compile-warnings=no --enable-glade-catalog=no
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
-INSTALL_TARGET=	install-strip
+CONFIGURE_ARGS=	--enable-compile-warnings=no \
+		--enable-glade-catalog=no \
+		--disable-gtk-doc-html
 
 .include <bsd.port.mk>

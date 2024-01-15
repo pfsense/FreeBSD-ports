@@ -1,6 +1,3 @@
-# Created by: Eiji-usagi-MATSUmoto <usagi@ruby.club.or.jp>
-# $FreeBSD$
-
 PORTNAME=	naga10
 PORTVERSION=	1.1
 PORTREVISION=	4
@@ -11,6 +8,7 @@ DISTNAME=	knj10-${PORTVERSION}
 
 MAINTAINER=	CQG00620@nifty.ne.jp
 COMMENT=	10-dot Kanji font
+WWW=		http://hp.vector.co.jp/authors/VA013391/fonts/ #naga10
 
 LICENSE=	NOTPARTIAL
 LICENSE_NAME=	Whole not partial
@@ -28,8 +26,6 @@ MAKEFILE=	${WRKDIR}/Makefile
 PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias ${STAGEDIR}${FONTSDIR}

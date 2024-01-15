@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	silicon
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1-124
@@ -8,6 +6,7 @@ CATEGORIES=	www devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	High performance, middleware oriented C++14 http web framework
+WWW=		http://siliconframework.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

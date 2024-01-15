@@ -1,6 +1,3 @@
-# Created by: asami
-# $FreeBSD$
-
 PORTNAME=	xdu
 PORTVERSION=	3.0
 PORTREVISION=	4
@@ -8,10 +5,10 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Graphically display output of du
+WWW=		https://sd.wareonearth.com/~phil/xdu/
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	vlasovskikh
-GH_PROJECT=	xdu
 
 USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt

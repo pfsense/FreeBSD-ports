@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	noattach
 PORTVERSION=	1.2
 PORTREVISION=	4
@@ -8,6 +6,7 @@ MASTER_SITES=	ftp://ftp.dinoex.de/pub/FreeBSD/distfiles/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Attachment filter for Sendmail Milter
+WWW=		http://freecode.com/projects/noattach/
 
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	noattach

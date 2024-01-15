@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../u-boot-master
 
 MODEL=		orangepi_r1

@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
 
 # PROVIDE: mosquitto
 # REQUIRE: DAEMON
@@ -22,20 +19,19 @@
 name=mosquitto
 rcvar=mosquitto_enable
 
+load_rc_config $name
+
 mosquitto_enable=${mosquitto_enable:="NO"}
 mosquitto_config=${mosquitto_config:="%%PREFIX%%/etc/mosquitto/mosquitto.conf"}
+mosquitto_user=${mosquitto_user:="nobody"}
 
 command=%%PREFIX%%/sbin/mosquitto
 command_args="-c ${mosquitto_config} -d"
-pidfile=$(grep pidfile ${mosquitto_config} | awk '{print($2)}')
+pidfile=${mosquitto_pidfile:-"/var/run/mosquitto.pid"}
 required_files=${mosquitto_config}
 
-extra_commands="reload"
-stop_postcmd=stop_postcmd
-stop_postcmd()
-{
-  rm -f $pidfile
-}
+extra_commands=reload
+stop_postcmd="rm -f $pidfile"
+start_precmd="install -o ${mosquitto_user} -m 644 /dev/null ${pidfile}"
 
-load_rc_config $name
 run_rc_command "$1"

@@ -1,32 +1,35 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	feedparser
-PORTVERSION=	5.2.1
+PORTVERSION=	6.0.10
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Universal feed parser written in Python
+WWW=		https://github.com/kurtmckee/feedparser
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+ tar:bzip2
-USE_PYTHON=	distutils autoplist
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sgmllib3k>=0:devel/py-sgmllib3k@${PY_FLAVOR}
+
+USES=		cpe python tar:bzip2
+CPE_VENDOR=	mark_pilgrim
+USE_PYTHON=	autoplist distutils
+USE_GITHUB=	yes
+
+GH_ACCOUNT=	kurtmckee
 
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=	DOCS
-
 PORTDOCS=	NEWS README.rst
 
+OPTIONS_DEFINE=	DOCS
+
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 do-test:
-	@(cd ${WRKSRC}/${PORTNAME}; ${PYTHON_CMD} ${PORTNAME}test.py)
+	@(cd ${WRKSRC}; ${PYTHON_CMD} tests/runtests.py)
 
 .include <bsd.port.mk>

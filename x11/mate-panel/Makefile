@@ -1,18 +1,14 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mate-panel
-PORTVERSION=	1.24.1
-PORTREVISION=	2
+PORTVERSION=	1.26.2
+PORTREVISION=	3
+PORTEPOCH=	1
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
-PATCH_SITES=	https://github.com/mate-desktop/${PORTNAME}/commit/
-PATCHFILES+=	9f15be59faa7.patch:-p1 # https://github.com/mate-desktop/mate-panel/pull/1104
-
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Panel component for the MATE Desktop
+WWW=		https://mate-desktop.org/
 
 LICENSE=	GPLv2 GFDL LGPL21
 LICENSE_COMB=	multi
@@ -36,7 +32,6 @@ USE_GNOME=	cairo dconf gnomeprefix gtk30 intltool \
 		introspection:build librsvg2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.panel.applet.clock.gschema.xml \

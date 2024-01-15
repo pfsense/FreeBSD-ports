@@ -1,14 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTTP-Throwable
-PORTVERSION=	0.027
+PORTVERSION=	0.028
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Set of strongly-typed, PSGI-friendly HTTP 1.1 exception libraries
+WWW=		https://metacpan.org/release/HTTP-Throwable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

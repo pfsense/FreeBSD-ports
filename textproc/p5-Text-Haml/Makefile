@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Haml
 PORTVERSION=	0.990118
 CATEGORIES=	textproc perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Haml-parsing Perl extension
+WWW=		https://metacpan.org/release/Text-Haml
 
 LICENSE=	ART20
 

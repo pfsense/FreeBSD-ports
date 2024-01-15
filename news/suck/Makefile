@@ -1,6 +1,3 @@
-# Created by: Noritaka Ishizumi <graphite@taurus.bekkoame.or.jp>
-# $FreeBSD$
-
 PORTNAME=	suck
 PORTVERSION=	4.3.4
 CATEGORIES=	news
@@ -8,6 +5,7 @@ PKGNAMESUFFIX?=	${CNEWS_SUFFIX}${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Receives/sends news to/from localhost via NNTP
+WWW=		https://github.com/lazarus-pkgs/suck
 
 LICENSE=	PD
 
@@ -50,7 +48,7 @@ CONFLICTS+=	suck-4.*
 .if ${PORT_OPTIONS:MINN}
 CFLAGS+=	-DNO_CONFIGDATA -I${LOCALBASE}/include/inn
 MAKE_ENV+=	DB_TYPE="-DUSE_INN23 -DDO_TAGGED_HASH"
-MAKE_ENV+=	DB_LIB="-linn -lstorage -linnhist"
+MAKE_ENV+=	DB_LIB="-linn -linnhist"
 MAKE_ENV+=	DB_LIB_LOC=-L${LOCALBASE}/news/lib
 MAKE_ENV+=	DB_INC_LOC="-I${LOCALBASE}/news/include -I${LOCALBASE}/news/include/inn"
 MAKE_ENV+=	INCDIR2=-I${LOCALBASE}/include

@@ -1,15 +1,13 @@
-# Created by: Jan Stocker <Jan.Stocker@t-online.de>
-# $FreeBSD$
-
 PORTNAME=	gkleds2
 PORTVERSION=	0.8.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	sysutils
 MASTER_SITES=	http://heim.ifi.uio.no/~oyvinha/files/files/
 DISTNAME=	gkleds-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GKrellM Leds for CapsLock, NumLock, and ScrollLock
+WWW=		http://heim.ifi.uio.no/~oyvinha/gkleds/
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING

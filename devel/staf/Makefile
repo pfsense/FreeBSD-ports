@@ -1,6 +1,3 @@
-# Created by: Sergey Kozlov <kozlov.sergey.404@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	staf
 PORTVERSION=	3.4.26
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	STAF${PORTVERSION:S/.//g}-src
 
 MAINTAINER=	skozlov@FreeBSD.org
 COMMENT=	Software Testing Automation Framework
+WWW=		https://staf.sourceforge.net/
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE.htm

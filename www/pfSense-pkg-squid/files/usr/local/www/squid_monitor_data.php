@@ -3,7 +3,7 @@
  * squid_monitor_data.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2012-2014 Marcello Coutinho
  * Copyright (C) 2012-2014 Carlos Cesario <carloscesario@gmail.com>
  * All rights reserved.
@@ -29,10 +29,11 @@ if ($_POST) {
 	// Actions
 	$filter = preg_replace('/(@|!|>|<)/', "", htmlspecialchars($_POST['strfilter']));
 	$program = strtolower($_POST['program']);
+	$conf_path = 'installedpackages/squid/config/0/log_dir';
 	switch ($program) {
 		case 'squid':
 			// Define log file
-			$log = $config['installedpackages']['squid']['config'][0]['log_dir'].'/access.log';
+			$log = config_get_path($conf_path) . '/access.log';
 			// Show table headers
 			show_tds(array("Date", "IP", "Status", "Address", "User", "Destination"));
 			// Fetch lines
@@ -67,7 +68,7 @@ if ($_POST) {
 			break;
 		case 'squid_cache';
 			// Define log file
-			$log = $config['installedpackages']['squid']['config'][0]['log_dir'].'/cache.log';
+			$log = config_get_path($conf_path) . '/cache.log';
 			// Show table headers
 			show_tds(array("Date-Time", "Message"));
 			// Fetch lines

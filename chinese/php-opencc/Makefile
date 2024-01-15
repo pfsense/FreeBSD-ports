@@ -1,24 +1,20 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	opencc
-PORTVERSION=	0.0.0.20161110
+PORTVERSION=	0.0.0.20201211
 CATEGORIES=	chinese
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	OpenCC shared extension for php
+WWW=		https://github.com/NauxLiu/opencc4php
 
 LICENSE=	PHP301
 
 LIB_DEPENDS=	libopencc.so:chinese/opencc
 
+USES=		php:ext
 USE_GITHUB=	yes
 GH_ACCOUNT=	NauxLiu
 GH_PROJECT=	opencc4php
-GH_TAGNAME=	8007639
-
-USES=		php:ext
-IGNORE_WITH_PHP=	80
+GH_TAGNAME=	56973eb
 
 .include <bsd.port.mk>

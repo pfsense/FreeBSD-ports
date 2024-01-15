@@ -1,6 +1,3 @@
-# Created by: Kurt Lidl <kurt.lidl@cello.com>
-# $FreeBSD$
-
 PORTNAME=	Test-Mini
 PORTVERSION=	v1.1.3
 PORTREVISION=	4
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	kurt.lidl@cello.com
 COMMENT=	Provides lightweight unit testing framework
+WWW=		https://metacpan.org/release/Test-Mini
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Data-Inspect>=0.03:devel/p5-Data-Inspect \

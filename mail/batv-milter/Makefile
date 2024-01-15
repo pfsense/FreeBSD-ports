@@ -1,6 +1,3 @@
-# Created by: Hirohisa Yamaguchi <umq@ueo.co.jp>
-# $FreeBSD$
-
 PORTNAME=	batv-milter
 PORTVERSION=	0.5.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	umq@ueo.co.jp
 COMMENT=	Milter for BATV (Bounce Address Tag Validation)
+WWW=		https://sourceforge.net/projects/batv-milter/
 
 .if !exists( /usr/include/libmilter/mfapi.h )
 BUILD_DEPENDS+=	${LOCALBASE}/include/libmilter/mfapi.h:mail/libmilter

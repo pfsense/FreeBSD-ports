@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@FreeBSD.org)
-# $FreeBSD$
-
 PORTNAME=	agrep
 PORTVERSION=	2.04
 PORTREVISION=	2
@@ -15,9 +12,15 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Approximate grep (fast approximate pattern-matching tool)
 
+# Converted from NO_CDROM
+LICENSE=	agrep
+LICENSE_NAME=	agrep
+LICENSE_TEXT=	No redistribution for profit
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
 USES=	tar:Z
 
-NO_CDROM=	No redistribution for profit
+CONFLICTS_INSTALL=	rubygem-amatch # bin/agrep
 
 ALL_TARGET=
 MAKE_ARGS=	CFLAGS="${CFLAGS}"

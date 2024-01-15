@@ -1,6 +1,3 @@
-# Created by: Sam Lawrance <boris@brooknet.com.au>
-# $FreeBSD$
-
 PORTNAME=	postgis-jdbc
 PORTVERSION=	2.1.7
 CATEGORIES=	databases java geography
@@ -9,6 +6,7 @@ EXTRACT_SUFX=	.jar
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	PostGIS spatial data structures for JDBC
+WWW=		http://postgis.refractions.net
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi

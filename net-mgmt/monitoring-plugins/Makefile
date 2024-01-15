@@ -1,14 +1,13 @@
-# Created by: Blaz Zupan <blaz@si.FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	monitoring-plugins
-PORTVERSION=	2.3
+PORTVERSION=	2.3.3
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.monitoring-plugins.org/download/ \
 		LOCAL/mat/${PORTNAME}
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Monitoring Plugins for Nagios
+WWW=		https://www.monitoring-plugins.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -40,7 +39,7 @@ CONFIGURE_ARGS+=	--with-ping-command="/sbin/ping -n -t %d -c %d %s" \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 
-CONFLICTS_INSTALL=	nagios-plugins-*
+CONFLICTS_INSTALL=	nagios-plugins
 
 OPTIONS_DEFINE=		DBI EXTRAOPTS FPING IPV6 LDAP MYSQL NETSNMP NLS PGSQL \
 			QSTAT RADIUS SSH_PORTABLE
@@ -84,7 +83,7 @@ FPING_CONFIGURE_OFF=	ac_cv_path_PATH_TO_FPING6= \
 
 IPV6_CONFIGURE_WITH=	ipv6
 
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_WITH=	ldap
 
 MYSQL_USES=		mysql
@@ -123,11 +122,7 @@ NAGIOSCGIURL?=	${NAGIOSHTMURL}/cgi-bin
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} < 1300041
-_PING6_CMD=	/sbin/ping6 -n -X %d -c %d %s
-.else
 _PING6_CMD=	/sbin/ping6 -n -t %d -c %d %s
-.endif
 
 .if !exists(/usr/bin/ssh) && empty(PORT_OPTIONS:MSSH_PORTABLE)
 PLIST_SUB+=	SSH="@comment "

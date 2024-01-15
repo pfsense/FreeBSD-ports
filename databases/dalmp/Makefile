@@ -1,12 +1,10 @@
-# Created by: Nicolas de Bari Embriz <nbari@dalmp.com>
-# $FreeBSD$
-
 PORTNAME=	dalmp
 PORTVERSION=	3.1.0
 CATEGORIES=	databases
 
 MAINTAINER=	nbari@tequila.io
 COMMENT=	Database Abstraction Layer for MySQL using PHP
+WWW=		https://docs.dalmp.com/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -19,7 +17,7 @@ USES=		php
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_PHP=	pcre mysqli session memcache sqlite3 curl redis
+USE_PHP=	mysqli session memcache sqlite3 curl redis
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

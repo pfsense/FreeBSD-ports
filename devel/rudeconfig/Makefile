@@ -1,6 +1,3 @@
-# Created by: Hardy Schumacher <lowmaster@web.de>
-# $FreeBSD$
-
 PORTNAME=	rudeconfig
 PORTVERSION=	5.0.5
 PORTREVISION=	3
@@ -9,11 +6,14 @@ MASTER_SITES=	http://www.rudeserver.com/config/download/
 
 MAINTAINER=	lowmaster@web.de
 COMMENT=	Library for handling configuration files, written in C++
+WWW=		http://www.rudeserver.com/
 
 USES=		dos2unix libtool
+USE_CXXSTD=	c++14
 DOS2UNIX_GLOB=	*
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
 
 pre-install:
 	${CHMOD} 744 ${WRKSRC}/install-sh

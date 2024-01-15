@@ -1,6 +1,3 @@
-# Created by: Dereckson <dereckson@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rhc
 PORTVERSION=	1.32.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	dereckson@gmail.com
 COMMENT=	Administration console client for RedHat OpenShift
+WWW=		https://github.com/openshift/rhc
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,7 +21,6 @@ RUN_DEPENDS=	minitar:archivers/rubygem-minitar-cli \
 		rubygem-open4>0:devel/rubygem-open4
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 PLIST_FILES=	bin/rhc

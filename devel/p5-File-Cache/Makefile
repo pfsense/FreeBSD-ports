@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	File-Cache
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module implementing a persistent object store
+WWW=		https://metacpan.org/release/File-Cache
 
 LICENSE=	GPLv1 GPLv2 GPLv3
 LICENSE_COMB=	dual

@@ -1,28 +1,25 @@
-# Created by: George V. Neville-Neil
-# $FreeBSD$
-
 PORTNAME=	pypcap
-DISTVERSION=	1.2.3
+PORTVERSION=	1.3.0
 CATEGORIES=	net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simplified object-oriented Python wrapper for libpcap
+WWW=		https://github.com/pynetwork/pypcap
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist cython distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent cython distutils
 
-# Add workaround to avoid using /usr/lib32 over /usr/lib
-# See PR/239725 for details
+# PR 239725: workaround to avoid using /usr/lib32 over /usr/lib
 LDFLAGS+=	-L/usr/lib
 
 pre-configure:
 	cd ${WRKSRC} && cython-${PYTHON_VER} pcap.pyx
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pcap*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

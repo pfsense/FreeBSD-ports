@@ -1,38 +1,39 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	upower
-PORTVERSION=	0.99.11
-PORTREVISION=	1
+DISTVERSION=	1.90.2
 CATEGORIES=	sysutils
-MASTER_SITES=	http://upower.freedesktop.org/releases/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	D-Bus daemon for simplifying power management tasks
+WWW=		https://upower.freedesktop.org/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
 
-USES=		compiler:c11 gettext gmake gnome libtool localbase pathfix \
-		pkgconfig tar:xz
+USES=		compiler:c11 gettext gnome localbase meson pkgconfig
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.freedesktop.org/
+GL_TAGNAME=	8dcf54440d7eb58b75d7982bc1c29ee35dccf0c2
 USE_GNOME=	glib20 introspection:build
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	--disable-gtk-doc \
-		--localstatedir=/var \
-		--with-backend=freebsd \
-		--without-idevice
-INSTALL_TARGET=	install-strip
+MESON_ARGS=	-Dgtk-doc=false \
+		-Dos_backend=freebsd \
+		-Dlocalstatedir=/var \
+		-Dudevrulesdir=no \
+		-Dudevhwdbdir=no \
+		-Dsystemdsystemunitdir=no \
+		-Didevice=disabled
+LDFLAGS+=	-lkvm
 
 OPTIONS_DEFINE=			MANPAGES
 OPTIONS_DEFAULT=		MANPAGES
 OPTIONS_SUB=			yes
-MANPAGES_CONFIGURE_ENABLE=	man-pages
 MANPAGES_BUILD_DEPENDS=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
 				docbook-sgml>0:textproc/docbook-sgml \
-				docbook-xml>0:textproc/docbook-xml
+				docbook-xml>0:textproc/docbook-xml \
+				gtkdoc-scan:textproc/gtk-doc
 MANPAGES_USE=			GNOME=libxslt:build
+MANPAGES_MESON_TRUE=		man
 
 .include <bsd.port.mk>

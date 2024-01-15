@@ -1,23 +1,19 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cucumber-wire
-PORTVERSION=	4.0.1
-PORTREVISION=	1
+PORTVERSION=	7.0.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Wire protocol plugin for Cucumber
+WWW=		https://cucumber.io/ \
+		https://github.com/cucumber/cucumber-ruby-wire
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-cucumber-core>=8.0.1<9:devel/rubygem-cucumber-core \
-		rubygem-cucumber-cucumber-expressions10>=10.3.0<11:devel/rubygem-cucumber-cucumber-expressions10 \
-		rubygem-cucumber-messages>=13.0.1<14:devel/rubygem-cucumber-messages
+RUN_DEPENDS=	rubygem-cucumber-core>=10.1<14:devel/rubygem-cucumber-core \
+		rubygem-cucumber-cucumber-expressions>=14<18:devel/rubygem-cucumber-cucumber-expressions
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

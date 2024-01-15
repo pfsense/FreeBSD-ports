@@ -1,20 +1,17 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	atlassian-jwt
-PORTVERSION=	0.2.0
+PORTVERSION=	0.2.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Authenticate with the Atlassian Connect REST APIs
+WWW=		https://bitbucket.org/atlassian/atlassian-jwt-ruby
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-jwt21>=2.1.0<2.2:www/rubygem-jwt21
+RUN_DEPENDS=	rubygem-jwt>=2.1<3:www/rubygem-jwt
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

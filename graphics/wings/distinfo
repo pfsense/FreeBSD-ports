@@ -1,3 +1,5 @@
-TIMESTAMP = 1588606017
-SHA256 (erlang/wings-2.2.5.tar.bz2) = 95ecf84a8f49bc00b983643e7ccd807f64a3b8b88253037a8ccefbe7a3bedff8
-SIZE (erlang/wings-2.2.5.tar.bz2) = 3211359
+TIMESTAMP = 1696766481
+SHA256 (erlang/dgud-wings-v2.3_GH0.tar.gz) = d8d7751a898afa983b017fe9cd6bdc47dc430e0d86125da782344d4cf1be0f1d
+SIZE (erlang/dgud-wings-v2.3_GH0.tar.gz) = 3962938
+SHA256 (erlang/dgud-libigl-v2.1.0_GH0.tar.gz) = 816ec64b6b2fbabcb1c6353c7df8a2fc1ad5bf4c607b332871a6ab8b29c89dbc
+SIZE (erlang/dgud-libigl-v2.1.0_GH0.tar.gz) = 976016

@@ -1,14 +1,13 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	getdp
-PORTVERSION=	3.3.0
+PORTVERSION=	3.5.0
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	http://www.geuz.org/getdp/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Rather general finite element solver using mixed finite elements
+WWW=		https://www.geuz.org/getdp/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -20,7 +19,14 @@ USES=		fortran tar:tgz cmake
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Rank mismatch in argument 'lines' at (1) (rank-1 and scalar)
+FFLAGS+=	-fallow-argument-mismatch
+.endif
+
 do-test:
 	cd ${WRKSRC}/demos && yes "" | ${STAGEDIR}${PREFIX}/bin/${PORTNAME} magnet.pro -solve MagSta_phi
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	multimedia
 
@@ -12,5 +10,11 @@ GST_PLUGIN=	mpeg2enc
 DIST=		bad
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
+
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS= libmjpegutils.so:multimedia/mjpegtools
+
+MESON_ARGS+=	-Dgpl=enabled
 
 .include "${MASTERDIR}/Makefile"

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	safecopy
 PORTVERSION=	1.7
 CATEGORIES=	sysutils
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	anastasios@mageirias.com
 COMMENT=	Safe copying of files and partition
+WWW=		https://safecopy.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

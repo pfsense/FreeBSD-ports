@@ -1,15 +1,12 @@
-# Created by: Ashish SHUKLA <wahjava@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Devel-REPL
-PORTVERSION=	1.003028
-PORTREVISION=	1
+PORTVERSION=	1.003029
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Modern Perl interactive shell
+WWW=		https://metacpan.org/release/Devel-REPL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

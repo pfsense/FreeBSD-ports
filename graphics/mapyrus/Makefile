@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	mapyrus
 PORTVERSION=	1.802
 PORTREVISION=	0
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Software for creating plots of points, lines, etc
+WWW=		https://mapyrus.sourceforge.net
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/userdoc/COPYING

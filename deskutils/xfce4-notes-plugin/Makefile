@@ -1,8 +1,5 @@
-# Created by: Thorsten Greiner <thorsten.greiner@web.de>
-# $FreeBSD$
-
 PORTNAME=	xfce4-notes-plugin
-PORTVERSION=	1.8.1
+PORTVERSION=	1.10.0
 PORTREVISION=	2
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE/panel-plugins
@@ -10,23 +7,19 @@ DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Notes plugin for the Xfce panel
+WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-notes-plugin
 
 LICENSE=	GPLv2
 
-BROKEN=		Depends on removed XFCE GTK2 support
-
-LIB_DEPENDS=	libunique-1.0.so:x11-toolkits/unique \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
-		tar:bzip2 xfce:gtk2 xorg
-USE_GNOME=	cairo glib20 gtk20 intltool
-USE_XFCE=	panel
+		tar:bzip2 xfce xorg
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool
+USE_XFCE=	libmenu panel xfconf
 USE_XORG=	ice sm x11
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=		NLS

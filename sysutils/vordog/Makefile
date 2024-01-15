@@ -1,6 +1,3 @@
-# Created by: Kueifeng Li <thinker@branda.to>
-# $FreeBSD$
-
 PORTNAME=	vordog
 PORTVERSION=	20080708
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.assembla.com/spaces/vordog/documents/dcR7vqtqyr3AMlab7j
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Watchdog(9) driver for watchdog timer of Vortex86
+WWW=		https://app.assembla.com/spaces/vordog/wiki
 
 LICENSE=	BSD2CLAUSE
 

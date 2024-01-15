@@ -1,6 +1,3 @@
-# Created by: MITA Yoshio <mita@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tkscanfax
 PORTVERSION=	1.1.8
 PORTREVISION=	2
@@ -10,6 +7,7 @@ MASTER_SITES=	http://shino.pos.to/linux/tkscanfax/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tcl/Tk frontend for fax scan/receive/send program (command is tkfax)
+WWW=		http://shino.pos.to/linux/tkscanfax_e.html
 
 WRKSRC=		${WRKDIR}/${PORTNAME}1
 

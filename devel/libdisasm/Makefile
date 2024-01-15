@@ -1,6 +1,3 @@
-# Created by: Lutz Boehne <lboehne@damogran.de>
-# $FreeBSD$
-
 PORTNAME=	libdisasm
 PORTVERSION=	0.23
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/bastard/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Intel x86 instructions disassembler utility and library
+WWW=		https://bastard.sourceforge.net/libdisasm.html
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,130 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	hugo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.79.0
+DISTVERSION=	0.121.1
+PORTEPOCH=	1
 CATEGORIES=	www
 PKGNAMEPREFIX=	go
 DIST_SUBDIR=	${PKGNAMEPREFIX}${PORTNAME}
 
-MAINTAINER=	ben.lavery@hashbang0.com
-COMMENT=	Fast and flexible static site generator
+MAINTAINER=	doceng@FreeBSD.org
+COMMENT=	Fast and Flexible Static Site Generator built with love in GoLang
+WWW=		https://gohugo.io
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
-USE_GITHUB=	yes
-GH_ACCOUNT=	gohugoio
-GH_TUPLE=	\
-		Azure:azure-pipeline-go:v0.1.9:azure_azure_pipeline_go/vendor/github.com/Azure/azure-pipeline-go \
-		Azure:azure-storage-blob-go:v0.6.0:azure_azure_storage_blob_go/vendor/github.com/Azure/azure-storage-blob-go \
-		BurntSushi:locker:a6e239ea1c69:burntsushi_locker/vendor/github.com/BurntSushi/locker \
-		BurntSushi:toml:v0.3.1:burntsushi_toml/vendor/github.com/BurntSushi/toml \
-		PuerkitoBio:purell:v1.1.1:puerkitobio_purell/vendor/github.com/PuerkitoBio/purell \
-		PuerkitoBio:urlesc:de5bf2ad4578:puerkitobio_urlesc/vendor/github.com/PuerkitoBio/urlesc \
-		alecthomas:chroma:v0.8.2:alecthomas_chroma/vendor/github.com/alecthomas/chroma \
-		armon:go-radix:v1.0.0:armon_go_radix/vendor/github.com/armon/go-radix \
-		aws:aws-sdk-go:v1.35.0:aws_aws_sdk_go/vendor/github.com/aws/aws-sdk-go \
-		bep:debounce:v1.2.0:bep_debounce/vendor/github.com/bep/debounce \
-		bep:gitmap:v1.1.2:bep_gitmap/vendor/github.com/bep/gitmap \
-		bep:golibsass:v0.7.0:bep_golibsass/vendor/github.com/bep/golibsass \
-		bep:tmc:v0.5.1:bep_tmc/vendor/github.com/bep/tmc \
-		census-instrumentation:opencensus-go:v0.22.0:census_instrumentation_opencensus_go/vendor/go.opencensus.io \
-		cpuguy83:go-md2man:v2.0.0:cpuguy83_go_md2man_v2/vendor/github.com/cpuguy83/go-md2man/v2 \
-		danwakefield:fnmatch:cbb64ac3d964:danwakefield_fnmatch/vendor/github.com/danwakefield/fnmatch \
-		disintegration:gift:v1.2.1:disintegration_gift/vendor/github.com/disintegration/gift \
-		dlclark:regexp2:v1.4.0:dlclark_regexp2/vendor/github.com/dlclark/regexp2 \
-		dominikh:go-tools:v0.0.1-2019.2.3:dominikh_go_tools/vendor/honnef.co/go/tools \
-		dustin:go-humanize:v1.0.0:dustin_go_humanize/vendor/github.com/dustin/go-humanize \
-		evanw:esbuild:v0.8.15:evanw_esbuild/vendor/github.com/evanw/esbuild \
-		fortytw2:leaktest:v1.3.0:fortytw2_leaktest/vendor/github.com/fortytw2/leaktest \
-		frankban:quicktest:v1.11.2:frankban_quicktest/vendor/github.com/frankban/quicktest \
-		fsnotify:fsnotify:v1.4.9:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
-		getkin:kin-openapi:v0.31.0:getkin_kin_openapi/vendor/github.com/getkin/kin-openapi \
-		ghodss:yaml:v1.0.0:ghodss_yaml/vendor/github.com/ghodss/yaml \
-		go-ini:ini:v1.51.1:go_ini_ini/vendor/gopkg.in/ini.v1 \
-		go-yaml:yaml:v2.4.0:go_yaml_yaml/vendor/gopkg.in/yaml.v2 \
-		gobwas:glob:v0.2.3:gobwas_glob/vendor/github.com/gobwas/glob \
-		gohugoio:testmodBuilder:c56af20f2e95:gohugoio_testmodbuilder_mods/vendor/github.com/gohugoio/testmodBuilder \
-		golang:appengine:v1.6.1:golang_appengine/vendor/google.golang.org/appengine \
-		golang:exp:a1ab85dbe136:golang_exp/vendor/golang.org/x/exp \
-		golang:image:9130b4cfad52:golang_image/vendor/golang.org/x/image \
-		golang:lint:16217165b5de:golang_lint/vendor/golang.org/x/lint \
-		golang:net:16171245cfb2:golang_net/vendor/golang.org/x/net \
-		golang:oauth2:0f29369cfe45:golang_oauth2/vendor/golang.org/x/oauth2 \
-		golang:protobuf:v1.3.2:golang_protobuf/vendor/github.com/golang/protobuf \
-		golang:sync:cd5d95a43a6e:golang_sync/vendor/golang.org/x/sync \
-		golang:sys:bc7a7d42d5c3:golang_sys/vendor/golang.org/x/sys \
-		golang:text:v0.3.4:golang_text/vendor/golang.org/x/text \
-		golang:tools:aa38f8e97acc:golang_tools/vendor/golang.org/x/tools \
-		golang:xerrors:9bdfabe68543:golang_xerrors/vendor/golang.org/x/xerrors \
-		google:go-cloud:v0.15.0:google_go_cloud/vendor/gocloud.dev \
-		google:go-cmp:v0.5.3:google_go_cmp/vendor/github.com/google/go-cmp \
-		google:go-genproto:16a3f7862a1a:google_go_genproto/vendor/google.golang.org/genproto \
-		google:uuid:v1.1.1:google_uuid/vendor/github.com/google/uuid \
-		google:wire:v0.2.2:google_wire/vendor/github.com/google/wire \
-		googleapis:gax-go:v2.0.2:googleapis_gax_go/vendor/github.com/googleapis/gax-go \
-		googleapis:gax-go:v2.0.5:googleapis_gax_go_v2 \
-		googleapis:google-api-go-client:v0.13.0:googleapis_google_api_go_client/vendor/google.golang.org/api \
-		googleapis:google-cloud-go:storage/v1.0.0:googleapis_google_cloud_go_storage \
-		googleapis:google-cloud-go:v0.46.3:googleapis_google_cloud_go/vendor/cloud.google.com/go \
-		gorilla:websocket:v1.4.2:gorilla_websocket/vendor/github.com/gorilla/websocket \
-		grpc:grpc-go:v1.21.1:grpc_grpc_go/vendor/google.golang.org/grpc \
-		hashicorp:golang-lru:v0.5.1:hashicorp_golang_lru/vendor/github.com/hashicorp/golang-lru \
-		hashicorp:hcl:v1.0.0:hashicorp_hcl/vendor/github.com/hashicorp/hcl \
-		inconshreveable:mousetrap:v1.0.0:inconshreveable_mousetrap/vendor/github.com/inconshreveable/mousetrap \
-		jdkato:prose:v1.2.0:jdkato_prose/vendor/github.com/jdkato/prose \
-		jmespath:go-jmespath:v0.4.0:jmespath_go_jmespath/vendor/github.com/jmespath/go-jmespath \
-		jstemmer:go-junit-report:af01ea7f8024:jstemmer_go_junit_report/vendor/github.com/jstemmer/go-junit-report \
-		kr:pretty:v0.2.1:kr_pretty/vendor/github.com/kr/pretty \
-		kr:text:v0.1.0:kr_text/vendor/github.com/kr/text \
-		kylelemons:godebug:v1.1.0:kylelemons_godebug/vendor/github.com/kylelemons/godebug \
-		kyokomi:emoji:v2.2.4:kyokomi_emoji/vendor/github.com/kyokomi/emoji \
-		magefile:mage:v1.10.0:magefile_mage/vendor/github.com/magefile/mage \
-		magiconair:properties:v1.8.1:magiconair_properties/vendor/github.com/magiconair/properties \
-		markbates:inflect:a12c3aec81a6:markbates_inflect/vendor/github.com/markbates/inflect \
-		mattn:go-isatty:v0.0.12:mattn_go_isatty/vendor/github.com/mattn/go-isatty \
-		mattn:go-runewidth:v0.0.7:mattn_go_runewidth/vendor/github.com/mattn/go-runewidth \
-		miekg:mmark:v1.3.6:miekg_mmark/vendor/github.com/miekg/mmark \
-		mitchellh:hashstructure:v1.0.0:mitchellh_hashstructure/vendor/github.com/mitchellh/hashstructure \
-		mitchellh:mapstructure:v1.3.3:mitchellh_mapstructure/vendor/github.com/mitchellh/mapstructure \
-		muesli:smartcrop:v0.3.0:muesli_smartcrop/vendor/github.com/muesli/smartcrop \
-		nicksnyder:go-i18n:v2.1.1:nicksnyder_go_i18n_v2/vendor/github.com/nicksnyder/go-i18n \
-		niklasfasching:go-org:v1.3.2:niklasfasching_go_org/vendor/github.com/niklasfasching/go-org \
-		olekukonko:tablewriter:v0.0.4:olekukonko_tablewriter/vendor/github.com/olekukonko/tablewriter \
-		pelletier:go-toml:v1.8.1:pelletier_go_toml/vendor/github.com/pelletier/go-toml \
-		pkg:errors:v0.9.1:pkg_errors/vendor/github.com/pkg/errors \
-		rogpeppe:go-internal:v1.6.2:rogpeppe_go_internal/vendor/github.com/rogpeppe/go-internal \
-		russross:blackfriday:41c5fccfd6f6:russross_blackfriday/vendor/github.com/russross/blackfriday \
-		russross:blackfriday:v2.0.1:russross_blackfriday_v2/vendor/github.com/russross/blackfriday/v2 \
-		rwcarlsen:goexif:9e8deecbddbd:rwcarlsen_goexif/vendor/github.com/rwcarlsen/goexif \
-		sanity-io:litter:v1.3.0:sanity_io_litter/vendor/github.com/sanity-io/litter \
-		shurcooL:sanitized_anchor_name:v1.0.0:shurcool_sanitized_anchor_name/vendor/github.com/shurcooL/sanitized_anchor_name \
-		spf13:afero:v1.4.1:spf13_afero/vendor/github.com/spf13/afero \
-		spf13:cast:v1.3.1:spf13_cast/vendor/github.com/spf13/cast \
-		spf13:cobra:v1.1.1:spf13_cobra/vendor/github.com/spf13/cobra \
-		spf13:fsync:v0.9.0:spf13_fsync/vendor/github.com/spf13/fsync \
-		spf13:jwalterweatherman:v1.1.0:spf13_jwalterweatherman/vendor/github.com/spf13/jwalterweatherman \
-		spf13:pflag:v1.0.5:spf13_pflag/vendor/github.com/spf13/pflag \
-		spf13:viper:v1.7.1:spf13_viper/vendor/github.com/spf13/viper \
-		subosito:gotenv:v1.2.0:subosito_gotenv/vendor/github.com/subosito/gotenv \
-		tdewolff:minify:v2.6.2:tdewolff_minify_v2/vendor/github.com/tdewolff/minify/v2 \
-		tdewolff:parse:v2.4.2:tdewolff_parse_v2/vendor/github.com/tdewolff/parse/v2 \
-		yuin:goldmark-highlighting:60d527fdb691:yuin_goldmark_highlighting/vendor/github.com/yuin/goldmark-highlighting \
-		yuin:goldmark:v1.2.1:yuin_goldmark/vendor/github.com/yuin/goldmark
+USES=		cpe go:modules
+CPE_VENDOR=	gohugo
 
-post-extract:
-	@${RM} -r ${WRKSRC}/vendor/cloud.google.com/go/storage
-	@${RLN} ${WRKSRC_googleapis_google_cloud_go_storage}/storage ${WRKSRC}/vendor/cloud.google.com/go/storage
-	@${RM} -r ${WRKSRC}/vendor/github.com/googleapis/gax-go/v2
-	@${RLN} ${WRKSRC_googleapis_gax_go_v2}/v2 ${WRKSRC}/vendor/github.com/googleapis/gax-go/v2
-
+GO_MODULE=	github.com/gohugoio/hugo
 GO_BUILDFLAGS=	-ldflags="\
-		-s -w \
+		${STRIP} -w \
 		-X github.com/gohugoio/hugo/common/hugo.buildDate=${SOURCE_DATE_EPOCH:U${SOURCE_DATE_EPOCH_CMD:sh}} \
-		-X github.com/gohugoio/hugo/common/hugo.commitHash=${COMMIT_ID}" \
+		-X github.com/gohugoio/hugo/common/hugo.vendorInfo=freebsd" \
 		${BUILD_TAGS}
+
+CONFLICTS_INSTALL=	hugo # bin/hugo
 
 OPTIONS_DEFINE=		MANPAGES EXTENDED
 OPTIONS_DEFAULT=	MANPAGES EXTENDED
@@ -132,23 +31,29 @@ OPTIONS_SUB=		yes
 
 EXTENDED_DESC=		Enable SCSS/SASS support
 
-EXTENDED_VARS=		CGO_ENABLED=1 BUILD_TAGS="-tags extended"
+EXTENDED_LIB_DEPENDS=	libsass.so:textproc/libsass \
+			libwebp.so:graphics/webp
+EXTENDED_VARS=		CGO_ENABLED=1 \
+			CGO_CFLAGS="-DLIBWEBP_NO_SRC -DUSE_LIBSASS_SRC" \
+			CGO_LDFLAGS="-lm -lwebp -lsass" \
+			BUILD_TAGS="-tags extended"
 EXTENDED_VARS_OFF=	CGO_ENABLED=0
 
-PORTMANS=	hugo-config.1 hugo-convert-toJSON.1 hugo-convert-toTOML.1 \
-		hugo-convert-toYAML.1 hugo-convert.1 hugo-env.1 \
-		hugo-gen-autocomplete.1 hugo-gen-chromastyles.1 \
-		hugo-gen-doc.1 hugo-gen-man.1 hugo-gen.1 \
-		hugo-import-jekyll.1 hugo-import.1 hugo-list-drafts.1 \
-		hugo-list-expired.1 hugo-list-future.1 hugo-list.1 \
-		hugo-new-site.1 hugo-new-theme.1 hugo-new.1 hugo-server.1 \
-		hugo-version.1 hugo.1
+PORTMANS=	hugo-completion-bash.1 hugo-completion-fish.1 hugo-completion-powershell.1 \
+		hugo-completion-zsh.1 hugo-completion.1 hugo-config-mounts.1 \
+		hugo-config.1 hugo-convert-toJSON.1 hugo-convert-toTOML.1 hugo-convert-toYAML.1 \
+		hugo-convert.1 hugo-deploy.1 hugo-env.1 hugo-gen-chromastyles.1 hugo-gen-doc.1 \
+		hugo-gen-man.1 hugo-gen.1 hugo-import-jekyll.1 hugo-import.1 hugo-list-all.1 \
+		hugo-list-drafts.1 hugo-list-expired.1 hugo-list-future.1 hugo-list.1 \
+		hugo-mod-clean.1 hugo-mod-get.1 hugo-mod-graph.1 hugo-mod-init.1 \
+		hugo-mod-npm-pack.1 hugo-mod-npm.1 hugo-mod-tidy.1 hugo-mod-vendor.1 \
+		hugo-mod-verify.1 hugo-mod.1 hugo-new-site.1 hugo-new-theme.1 hugo-new.1 \
+		hugo-server.1 hugo-version.1 hugo.1
 
 # needed to get DISTINFO_FILE in scope for the shell command evaluation by go.mk
 .include <bsd.port.pre.mk>
 
 SOURCE_DATE_EPOCH_CMD=	date -r $$(grep TIMESTAMP ${DISTINFO_FILE} | ${SED} -e 's/[^0-9]//g') '+%FT%TZ%z'
-COMMIT_ID=		1415EFDC
 
 do-build-MANPAGES-on:
 	@cd ${GO_WRKSRC} && ${GO_WRKDIR_BIN}/${PORTNAME} gen man --dir man/man1/

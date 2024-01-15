@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	Net-GrowlClient
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Perl implementation of Growl Network Notification Protocol
+WWW=		https://metacpan.org/release/Net-GrowlClient
 
 USES=		perl5
 USE_PERL5=	configure

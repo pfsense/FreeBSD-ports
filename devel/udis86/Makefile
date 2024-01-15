@@ -1,6 +1,3 @@
-# Created by: Lutz Boehne <lboehne@damogran.de>
-# $FreeBSD$
-
 PORTNAME=	udis86
 PORTVERSION=	1.7.2
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Minimalistic x86 and x86-64 disassembler library
+WWW=		https://udis86.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 

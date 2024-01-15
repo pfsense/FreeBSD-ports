@@ -1,13 +1,12 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	styleguide
-PORTVERSION=	20201111
+PORTVERSION=	20231121
 CATEGORIES=	devel
 PKGNAMEPREFIX=	google-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool to assist with Google style guide compliance
+WWW=		https://google.github.io/styleguide/ \
+		https://github.com/google/styleguide
 
 # cpplint.py and cpplint_unittest.py are released under BSD3CLAUSE
 # style guides is released under CC-BY-3.0
@@ -17,12 +16,13 @@ LICENSE_COMB=	multi
 
 USES=		python shebangfix
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	google
-GH_TAGNAME=	d5b5104
-
 NO_ARCH=	yes
 NO_BUILD=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	google
+GH_TAGNAME=	4d9a478
+
 SHEBANG_FILES=	cpplint/cpplint.py cpplint/cpplint_unittest.py
 
 OPTIONS_DEFINE=	DOCS

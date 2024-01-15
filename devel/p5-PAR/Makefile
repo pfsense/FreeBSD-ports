@@ -1,14 +1,12 @@
-# Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
-
 PORTNAME=	PAR
-PORTVERSION=	1.016
+PORTVERSION=	1.019
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl Archive Toolkit
+WWW=		https://metacpan.org/release/PAR
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

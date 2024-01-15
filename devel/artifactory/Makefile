@@ -1,27 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	artifactory
 DISTVERSION=	5.8.3
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	https://bintray.com/artifact/download/jfrog/artifactory/
 DISTNAME=	jfrog-${PORTNAME}-oss-${PORTVERSION}
 
 MAINTAINER=	dharrigan@gmail.com
 COMMENT=	Universal Artifact Repository Manager
+WWW=		https://www.jfrog.com/artifactory
 
 LICENSE=	GPLv3 APACHE20
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING.AFFERO
 LICENSE_FILE_APACHE20=	${WRKSRC}/tomcat/LICENSE
 
+FORBIDDEN=	Ships a very vulnerable Tomcat 8.5.23
+
 RUN_DEPENDS=	bash:shells/bash
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-oss-${PORTVERSION}
 
-USES=		shebangfix zip
+USES=		cpe shebangfix zip
+CPE_VENDOR=	jfrog
 SHEBANG_FILES=	bin/artifactory.sh
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 JAVA_VENDOR=	openjdk
 NO_BUILD=	yes
 NO_ARCH=	yes

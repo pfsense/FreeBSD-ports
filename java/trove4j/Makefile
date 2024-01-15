@@ -1,14 +1,12 @@
-# Created by: Herve Quiroz <herve.quiroz@esil.univ-mrs.fr>
-# $FreeBSD$
-
 PORTNAME=	trove4j
 PORTVERSION=	3.1a1
 CATEGORIES=	java devel
 MASTER_SITES=	https://bitbucket.org/${PORTNAME}/trove/downloads/
 DISTNAME=	trove-${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance collections API for Java
+WWW=		https://bitbucket.org/robeden/trove/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

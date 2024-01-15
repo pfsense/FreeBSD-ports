@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rack-protection
 PORTVERSION=	1.5.5
 CATEGORIES=	www rubygems
@@ -9,14 +6,14 @@ PKGNAMESUFFIX=	1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Collection of Rack middleware to protect against opportunistic attack
+WWW=		https://github.com/sinatra/rack-protection/tree/stable-1.5
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License
 
-RUN_DEPENDS=	rubygem-rack>=0:www/rubygem-rack
+RUN_DEPENDS=	rubygem-rack>=0,3:www/rubygem-rack
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

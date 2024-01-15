@@ -1,6 +1,3 @@
-# Created by: Florian Limberger <flo@snakeoilproductions.net>
-# $FreeBSD$
-
 PORTNAME=	open-sans
 PORTVERSION=	20180831
 CATEGORIES=	x11-fonts
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	flo@snakeoilproductions.net
 COMMENT=	Clean and modern sans-serif typeface
+WWW=		https://www.opensans.com
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/Apache\ License.txt

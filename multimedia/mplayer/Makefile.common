@@ -1,11 +1,9 @@
 # Contains the build infrastructural definitions for both
 # mplayer and mencoder....the variables that we need to set
 # before we include bsd.port.pre.mk
-#
-# $FreeBSD$
 
-MPLAYER_PORT_VERSION=	1.4.0
-MPLAYER_SNAPSHOT_DATE=	2020-12-25
+MPLAYER_PORT_VERSION=	1.5.0
+MPLAYER_SNAPSHOT_DATE=	2023-09-24
 MASTER_SITES=	LOCAL/riggs/mplayer
 DISTNAME=	mplayer-${MPLAYER_PORT_VERSION}.${MPLAYER_SNAPSHOT_DATE:S/-//g}
 WRKSRC=		${WRKDIR}/mplayer-export-${MPLAYER_SNAPSHOT_DATE}
@@ -14,7 +12,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpng.so:graphics/png \
-		libavcodec.so:multimedia/ffmpeg \
+		libavcodec.so.58:multimedia/ffmpeg4 \
 		libfreetype.so:print/freetype2
 
 BUILD_DEPENDS=	${BUILD_DEPENDS_${ARCH}}
@@ -23,7 +21,8 @@ BUILD_DEPENDS_i386=	as:devel/binutils
 USES=		compiler:c11 gmake iconv ncurses tar:xz
 NOPRECIOUSMAKEVARS=	yes # ARCH
 HAS_CONFIGURE=	yes
-CONFIGURE_ENV=	TMPDIR="${WRKSRC}"
+CONFIGURE_ENV+=	TMPDIR="${WRKSRC}" \
+		PKG_CONFIG_PATH="${LOCALBASE}/ffmpeg4/libdata/pkgconfig"
 CONFIGURE_ARGS=	--cc="${CC}" \
 		--host-cc="${CC}" \
 		--as="${AS}" \
@@ -52,6 +51,10 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 		--disable-real \
 		--yasm=''
 
+MAKE_ENV+=	PKG_CONFIG_PATH="${LOCALBASE}/ffmpeg4/libdata/pkgconfig"
+
+CFLAGS+=	-I${LOCALBASE}/ffmpeg4/include
+
 common-post-patch:
 	@${REINPLACE_CMD} \
 		-e 's|/dev/dvd|${DEFAULT_DVD_DEVICE}|; \
@@ -62,15 +65,14 @@ common-post-patch:
 		-e 's|-lncurses|/usr/lib/libncurses.so|' \
 		-e 's|-liconv|${ICONV_LIB}|' \
 		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}
-	@${FIND} -E ${WRKSRC} -type f \
-		-iregex ".*(configure|.sh|Makefile)" -print0 | \
-		${XARGS} -x -0 -n 10 \
-		${REINPLACE_CMD} -E \
-			-e 's|[[:space:]]gcc[-[:digit:]\.]+| ${CC}|' \
-			-e 's|[[:space:]]gcc| ${CC}|' \
-			-e 's|\$$\(CC\)|${CC}|' \
-			-e 's|/usr/X11R6|${LOCALBASE}|' \
-			-e 's|%%LOCALBASE%%|${LOCALBASE}|'
+	@${REINPLACE_CMD} -E \
+		-e 's|[[:space:]]gcc[-[:digit:]\.]+| ${CC}|' \
+		-e 's|[[:space:]]gcc| ${CC}|' \
+		-e 's|\$$\(CC\)|${CC}|' \
+		-e 's|/usr/X11R6|${LOCALBASE}|' \
+		-e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT} \
+		${CONFIGURE_WRKSRC}/Makefile
 	@${FIND} ${WRKSRC}/DOCS/man -name "mplayer.1" | ${XARGS} ${REINPLACE_CMD} -E -e \
 		's|/usr/\\:local/\\:etc/\\:mplayer|${DATADIR:S/\//\/\\\:/g}|g ; \
 		 s|/dev/\\:(dvd[[:alnum:]]*[[:>:]])|${DEFAULT_DVD_DEVICE:S/dev\//dev\/\\\:/}|g ; \

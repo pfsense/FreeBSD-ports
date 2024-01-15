@@ -1,40 +1,28 @@
-# Created by: Matt Lancereau <matt@rimasec.net>
-# $FreeBSD$
-
 PORTNAME=	orage
-PORTVERSION=	4.12.1
-PORTREVISION=	10
+PORTVERSION=	4.18.0
+PORTREVISION=	3
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Calendar application for the Xfce Desktop
+WWW=		https://git.xfce.org/apps/orage/about/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		Fails to build proper package with XFCE 4.16
-DEPRECATED=	Unsupported upstream, cannot work with XFCE 4.16
-EXPIRATION_DATE=	2021-01-31
-
-LIB_DEPENDS=	libpopt.so:devel/popt \
-		libdbus-glib-1.so:devel/dbus-glib \
-		libdbus-1.so:devel/dbus \
-		libical.so:devel/libical \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+LIB_DEPENDS=	libical.so:devel/libical \
+		libharfbuzz.so:print/harfbuzz
 
 USES=		compiler:c++11-lang desktop-file-utils gettext gmake gnome \
-		libtool pkgconfig tar:bzip2 xfce:gtk2 xorg
-USE_GNOME=	cairo gtk20 intltool
-USE_XFCE=	panel
-USE_XORG=	x11
+		libtool pkgconfig tar:bzip2 xfce xorg
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool
+USE_XFCE=	libmenu
+USE_XORG=	ice sm x11
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
-CFLAGS+=	-I${LOCALBASE}/include/libical
-CONFIGURE_ARGS=	--enable-dbus
+INSTALL_TARGET=	install-strip
 
 PORTSCOUT=	limitw:1,even
 
@@ -47,10 +35,5 @@ NLS_USES=		gettext-runtime
 
 NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
 NOTIFY_CONFIGURE_ENABLE=libnotify
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|(datadir)/orage/doc/C|(datadir)/doc/orage/C|' \
-		${WRKSRC}/doc/C/Makefile.in \
-		${WRKSRC}/doc/C/images/Makefile.in
 
 .include <bsd.port.mk>

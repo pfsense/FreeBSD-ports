@@ -1,8 +1,6 @@
-# Created by: nbm
-# $FreeBSD$
-
 PORTNAME=	phpMyAdmin
-DISTVERSION=	4.9.7
+DISTVERSION=	4.9.11
+PORTREVISION=	1
 CATEGORIES=	databases www
 MASTER_SITES=	https://files.phpmyadmin.net/${PORTNAME}/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-all-languages
@@ -10,11 +8,12 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Set of PHP-scripts to manage MySQL over the web
+WWW=		https://www.phpmyadmin.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS_INSTALL=	phpmyadmin5
+CONFLICTS_INSTALL=	phpMyAdmin-php[0-9][0-9] phpMyAdmin[0-9]-php[0-9][0-9] # www/phpMyAdmin/CONTRIBUTING.md
 
 USES=		cpe php:web,flavors tar:xz
 CPE_PRODUCT=	${PORTNAME:tl}
@@ -29,16 +28,16 @@ NO_BUILD=	yes
 # could, in principle, also use the PHP dbase extension, but it's not
 # available for PHP >= 7.0 and of only minority interest.
 
-USE_PHP=	ctype filter hash json mysqli session spl xml
+USE_PHP=	ctype filter iconv mysqli session xml
 .endif
 
 # Note: default settings will pull in X11 client support.  If you don't
 # want this, either turn off GD in the config dialog, or else turn off
 # FONTCONFIG in the graphics/gd port options.
 
-OPTIONS_DEFINE=		BZ2 CURL GD GMP MBSTRING OPCACHE OPENSSL \
+OPTIONS_DEFINE=		BZ2 CURL GD GMP MBSTRING OPCACHE \
 			SODIUM ZIP ZLIB
-OPTIONS_DEFAULT=	BZ2 GD MBSTRING OPENSSL ZIP ZLIB
+OPTIONS_DEFAULT=	BZ2 GD MBSTRING ZIP ZLIB
 
 BZ2_DESC=	PHP bzip2 library support
 CURL_DESC=	PHP curl support
@@ -46,9 +45,7 @@ GD_DESC=	PHP GD library support (requires X11)
 GMP_DESC=	PHP GMP library support
 MBSTRING_DESC=	PHP Multi-byte String support
 OPCACHE_DESC=	PHP Opcache support
-OPENSSL_DESC=	PHP OpenSSL support
-PDF_DESC=	PHP PDFlib support
-SODIUM_DESC=	PHP libsodium support (only available for PHP >= 7.2)
+SODIUM_DESC=	PHP libsodium support
 ZIP_DESC=	PHP Zip compression support
 ZLIB_DESC=	PHP ZLIB support
 
@@ -63,10 +60,6 @@ PLIST_SUB+=	PMA_GRP=${GROUPS}
 SUB_LIST+=	PKGNAME=${PKGNAME}	        \
 		CFG_FILE=${WWWDIR}/${CFG_FILE}
 SUB_FILES+=	pkg-message
-
-.if ${FLAVOR} != php80
-OPTIONS_DEFINE+=	PDF
-.endif
 
 .if !defined(WITHOUT_PHP_DEPENDS)
 

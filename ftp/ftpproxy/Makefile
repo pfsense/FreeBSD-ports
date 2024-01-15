@@ -1,6 +1,3 @@
-# Created by: Philippe Le Berre <philippe@le-berre.com>
-# $FreeBSD$
-
 PORTNAME=	ftpproxy
 PORTVERSION=	1.2.3
 PORTREVISION=	1
@@ -10,6 +7,7 @@ MASTER_SITES=	http://www.ftpproxy.org/download/ \
 
 MAINTAINER=	philippe@le-berre.com
 COMMENT=	FTP proxy
+WWW=		https://www.ftpproxy.org/
 
 USES=		gmake tar:tgz
 MAKE_JOBS_UNSAFE=	yes

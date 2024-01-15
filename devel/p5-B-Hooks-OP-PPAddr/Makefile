@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	B-Hooks-OP-PPAddr
 PORTVERSION=	0.06
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Hook into opcode execution
+WWW=		https://metacpan.org/release/B-Hooks-OP-PPAddr
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,25 +1,24 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gstreamer1-rtsp-server
-PORTVERSION=	1.16.2
+PORTVERSION=	1.22.4
 CATEGORIES=	multimedia
-MASTER_SITES=	http://gstreamer.freedesktop.org/src/gst-rtsp-server/
+MASTER_SITES=	https://gstreamer.freedesktop.org/src/gst-rtsp-server/
 DISTNAME=	gst-rtsp-server-${PORTVERSION}
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	GStreamer library for building a RTSP server
+WWW=		https://gstreamer.freedesktop.org/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake gnome libtool pathfix pkgconfig tar:xz
+USES=		bison gnome gstreamer libtool meson ninja pathfix pkgconfig python:build tar:xz
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 introspection:build
-USE_GSTREAMER1=	good bad
-INSTALL_TARGET=	install-strip
+USE_GSTREAMER=	good bad
+MESON_ARGS=	-Ddoc=disabled
 
-PLIST_SUB=	VERSION=1.0 SOVERSION=0.1602.0
+BINARY_ALIAS=	python3=${PYTHON_VERSION}
+
+PLIST_SUB=	VERSION=1.0 SOVERSION=0.2204.0
 
 .include <bsd.port.mk>

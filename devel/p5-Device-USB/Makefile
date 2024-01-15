@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Device-USB
 PORTVERSION=	0.35
 PORTREVISION=	2
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	josh.carroll@gmail.com
 COMMENT=	Perl wrapper for libusb
+WWW=		https://metacpan.org/release/Device-USB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

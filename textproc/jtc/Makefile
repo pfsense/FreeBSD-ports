@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	jtc
 DISTVERSION=	1.76
 CATEGORIES=	textproc
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	CLI tool to extract, manipulate and transform JSON
+WWW=		https://github.com/ldn-softdev/jtc
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,6 +16,7 @@ GH_ACCOUNT=	ldn-softdev
 
 LDFLAGS+=	-lexecinfo -lpthread
 
+PORTSCOUT=	skipv:latestbuild,standard.json
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	"Release Notes.md" "User Guide.md" "Walk-path tutorial.md" \
 		README.md

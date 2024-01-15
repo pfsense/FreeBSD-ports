@@ -1,6 +1,3 @@
-# Created by: Ion-Mihai "IOnut" Tetcu <itetcu@people.tecnik93.com>
-# $FreeBSD$
-
 PORTNAME=	sendsms
 PORTVERSION=	0.2.4
 CATEGORIES=	net perl5
@@ -11,6 +8,7 @@ EXTRACT_SUFX=	.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple perl command-line utility to send SMS via from on provider site
+WWW=		http://caspian.dotconf.net/menu/Software/SendSMS/
 
 EXTRACT_CMD=	${GZCAT}
 EXTRACT_BEFORE_ARGS=
@@ -18,7 +16,7 @@ EXTRACT_AFTER_ARGS=	> ${WRKSRC}/${PORTNAME}
 
 PLIST_FILES=	bin/sendsms
 
-CONFLICTS=	gnokii-[0-9]* smstools-[0-9]*
+CONFLICTS=	gnokii smstools
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

@@ -1,14 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	SQL-Maker
-PORTVERSION=	1.21
+PORTVERSION=	1.22
+PORTREVISION=	1
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TOKUHIROM
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for yet another SQL builder
+WWW=		https://metacpan.org/release/SQL-Maker
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

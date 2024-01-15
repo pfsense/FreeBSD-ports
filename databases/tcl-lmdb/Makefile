@@ -1,12 +1,10 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	tcl-lmdb
-PORTVERSION=	0.4.1
+PORTVERSION=	0.4.2
 CATEGORIES=	databases
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Tcl interface to the Lightning Memory-Mapped Database
+WWW=		https://sites.google.com/site/ray2501/tcl-lmdb
 
 LICENSE=	BSD2CLAUSE
 

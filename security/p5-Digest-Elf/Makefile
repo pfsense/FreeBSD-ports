@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Digest-Elf
 PORTVERSION=	1.42
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Perl extension for ElfHash hash algorithm
+WWW=		https://metacpan.org/release/Digest-Elf
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

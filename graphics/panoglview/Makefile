@@ -1,14 +1,12 @@
-# Created by: argv[0] (Iouri V. Ivliev)
-# $FreeBSD$
-
 PORTNAME=	panoglview
 PORTVERSION=	0.2.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	SF/hugin/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ii@any.com.ru
 COMMENT=	Panorama viewer using OpenGL
+WWW=		http://hugin.sourceforge.net/
 
 USES=		compiler:c++11-lang gl gmake
 USE_GL=		glu

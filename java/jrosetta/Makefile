@@ -1,6 +1,3 @@
-# Created by: rfarmer@predatorlabs.net
-# $FreeBSD$
-
 PORTNAME=	jrosetta
 PORTVERSION=	1.0.4
 PORTREVISION=	1
@@ -11,12 +8,14 @@ DISTFILES=	${PORTNAME}-api-${PORTVERSION}.jar:api \
 		${PORTNAME}-engine-${PORTVERSION}.jar:engine
 EXTRACT_ONLY=	#
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	API for building a graphical console in Swing
+WWW=		http://dev.artenum.com/projects/JRosetta
 
 USES=		zip
 USE_JAVA=	yes
 JAVA_RUN=	yes
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	%%JAVAJARDIR%%/jrosetta-api.jar \

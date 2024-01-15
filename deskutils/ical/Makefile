@@ -1,6 +1,3 @@
-# Created by: Eric L. Hernes <erich@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ical
 PORTVERSION=	3.0.4
 CATEGORIES=	deskutils tk
@@ -9,6 +6,7 @@ MASTER_SITES=	https://launchpad.net/ical-tcl/+download/ \
 
 MAINTAINER=	fbsd@opal.com
 COMMENT=	Calendar application
+WWW=		https://www.isi.edu/~johnh/SOFTWARE/ICAL/
 
 LICENSE=	GPLv2
 

@@ -1,7 +1,7 @@
-# $FreeBSD$
-
+PORTREVISION?=	1
 PKGNAMESUFFIX?=	-${OSSEC_TYPE}
 COMMENT?=	Security tool to monitor and check logs and intrusions - local (standalone) installation
+WWW=		https://ossec.github.io
 OSSEC_TYPE?=	local
 
 .include "${.CURDIR}/../ossec-hids/version.mk"
@@ -14,17 +14,17 @@ BROKEN_riscv64=		fails to compile: rootcheck/os_string.c:186:20: use of undeclar
 USES=		compiler gmake ssl
 
 .if ${OSSEC_TYPE} == local
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == agent
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-local-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-local \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == server
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-local-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-local
 .endif
 
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 libevent.so:devel/libevent
@@ -135,9 +135,14 @@ SHARED_DIR=		${OSSEC_HOME}/etc/shared
 
 SAMPLE_FILES=		${OSSEC_HOME}/etc/local_internal_options.conf \
 			${OSSEC_HOME}/active-response/bin/cloudflare-ban.sh \
+			${OSSEC_HOME}/active-response/bin/ossec-aws-waf.sh \
 			${OSSEC_HOME}/active-response/bin/ossec-pagerduty.sh \
 			${OSSEC_HOME}/active-response/bin/ossec-slack.sh \
 			${OSSEC_HOME}/active-response/bin/ossec-tweeter.sh
+
+.if ${OSSEC_TYPE} != agent
+SAMPLE_FILES+=		${OSSEC_HOME}/rules/local_rules.xml
+.endif
 
 .if empty(USER)
 USER=$$(${ID} -un)

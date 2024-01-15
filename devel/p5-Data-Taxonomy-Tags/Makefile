@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	Data-Taxonomy-Tags
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Represents a set of tags for any item
+WWW=		https://metacpan.org/release/Data-Taxonomy-Tags
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

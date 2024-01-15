@@ -1,6 +1,3 @@
-# Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-Object
 PORTVERSION=	2.05
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Data Type Objects for Perl 5
+WWW=		https://metacpan.org/release/Data-Object
 
 LICENSE=	APACHE20
 

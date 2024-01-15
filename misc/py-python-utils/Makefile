@@ -1,21 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	python-utils
-PORTVERSION=	2.4.0
+PORTVERSION=	3.8.1
 CATEGORIES=	misc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Collection of small functions and classes
+WWW=		https://pypi.org/project/python-utils/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
-
 NO_ARCH=	yes
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

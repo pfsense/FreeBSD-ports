@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-CPAN-Meta-YAML
 PORTVERSION=	0.25
 CATEGORIES=	devel perl5
@@ -9,13 +6,16 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Validate a META.yml file within a CPAN distribution
+WWW=		https://metacpan.org/release/Test-CPAN-Meta-YAML
 
 LICENSE=	ART20
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Test-YAML-Valid>=0.03:devel/p5-Test-YAML-Valid
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

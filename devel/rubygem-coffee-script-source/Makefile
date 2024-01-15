@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	coffee-script-source
 PORTVERSION=	1.12.2
 CATEGORIES=	devel rubygems
@@ -8,11 +5,11 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Little language that compiles into JavaScript
+WWW=		https://github.com/jashkenas/coffeescript
 
 LICENSE=	MIT
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

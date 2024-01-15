@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-RNDC
 PORTVERSION=	0.003
 CATEGORIES=	dns perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Speak the BIND Remote Name Daemon Control V1 protocol
+WWW=		https://metacpan.org/release/Net-RNDC
 
 LICENSE=	ART20
 

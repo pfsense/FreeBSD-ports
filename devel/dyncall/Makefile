@@ -1,14 +1,12 @@
-# Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
-
 PORTNAME=	dyncall
-DISTVERSION=	1.1
+DISTVERSION=	1.4
 CATEGORIES=	devel
-MASTER_SITES=	http://www.dyncall.org/r${DISTVERSION}/ \
+MASTER_SITES=	https://www.dyncall.org/r${DISTVERSION}/ \
 		http://www.potion-studios.com/
 
 MAINTAINER=	tphilipp@potion-studios.com
 COMMENT=	Highly dynamic multi-platform foreign function call interface library
+WWW=		https://www.dyncall.org
 
 LICENSE=	ISCL
 
@@ -25,6 +23,7 @@ CFLAGS+=	-fPIC
 
 do-install:
 	${INSTALL_DATA} \
+		${WRKSRC}/dyncall/dyncall_version.h \
 		${WRKSRC}/dyncall/dyncall_value.h \
 		${WRKSRC}/dyncall/dyncall_macros.h \
 		${WRKSRC}/dyncall/dyncall_callf.h \

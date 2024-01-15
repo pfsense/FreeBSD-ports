@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	atom
 PORTVERSION=	1.0
 CATEGORIES=	textproc
@@ -8,6 +6,7 @@ MASTER_SITES=	http://www.bayofrum.net/dist/atom/ \
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Converts text files to html with special attributes
+WWW=		https://www.bayofrum.net/dist/atom/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

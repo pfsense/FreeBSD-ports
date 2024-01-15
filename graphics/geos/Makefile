@@ -1,28 +1,23 @@
-# Created by: Leonardo Martins <lmartins@nepe.eee.ufg.br>
-# $FreeBSD$
-
 PORTNAME=	geos
-PORTVERSION=	3.8.1
+PORTVERSION=	3.12.1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/geos/ \
-		LOCAL/sunpoet
+		https://github.com/libgeos/geos/releases/download/${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Geometry Engine, Open Source
+WWW=		https://libgeos.org/ \
+		https://github.com/libgeos/geos
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lang gmake libtool tar:bzip2
+USES=		cmake compiler:c++14-lang pathfix tar:bzip2
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
+CMAKE_OFF=	BUILD_BENCHMARKS DISABLE_GEOS_INLINE
+CMAKE_ON=	BUILD_SHARED_LIBS
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
-
-post-configure:
-	@${FIND} ${WRKSRC} -name Makefile -exec ${REINPLACE_CMD} -e '/CXXFLAGS = / s| -O2||' {} +
 
 .include <bsd.port.mk>

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	Text-SimpleTable-AutoWidth
 PORTVERSION=	0.09
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for ASCII tables auto-width selection
+WWW=		https://metacpan.org/release/Text-SimpleTable-AutoWidth
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

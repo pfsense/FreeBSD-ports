@@ -1,6 +1,3 @@
-# Created by: Dermot Tynan <dtynan@kalopa.com>
-# $FreeBSD$
-
 PORTNAME=	beanie
 PORTVERSION=	0.8.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source accounting system
+WWW=		http://beanie.sf.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

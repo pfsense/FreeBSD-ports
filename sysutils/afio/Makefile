@@ -1,6 +1,3 @@
-# Created by: Juergen Lock <nox@jelal.hb.north.de>
-# $FreeBSD$
-
 PORTNAME=	afio
 PORTVERSION=	2.5.2
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	http://members.chello.nl/~k.holtman/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Archiver and backup program with builtin compression
+WWW=		http://members.chello.nl/k.holtman/afio.html
 
 LICENSE=	ART20 BSD2CLAUSE
 LICENSE_COMB=	multi

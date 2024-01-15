@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Class-Inner
 PORTVERSION=	0.200001
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perlish implementation of Java like inner classes
+WWW=		https://metacpan.org/release/Class-Inner
 
 USES=		perl5
 USE_PERL5=	configure

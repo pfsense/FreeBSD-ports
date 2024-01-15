@@ -1,15 +1,14 @@
-# Created by: Dominic Mitchell
-# $FreeBSD$
-
 PORTNAME=	slime
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.23
-PORTREVISION=	4
+DISTVERSION=	2.26.1-9
+PORTREVISION=	9
+DISTVERSIONSUFFIX=	-gf368e22a
 CATEGORIES=	editors elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	joe@thrallingpenguin.com
 COMMENT=	Superior Lisp Interaction Mode for Emacs
+WWW=		https://common-lisp.net/project/slime/
 
 LICENSE=	PD
 

@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	dnf
-DISTVERSION=	4.5.2
+DISTVERSION=	4.17.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Dandified YUM, the next-generation version of YUM
+WWW=		https://github.com/rpm-software-management/dnf
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,9 +15,9 @@ RUN_DEPENDS=	libcomps>0:misc/libcomps \
 		${PYTHON_PKGNAMEPREFIX}gpgme>0:security/py-gpgme@${PY_FLAVOR}
 
 USES=		cmake gettext-tools python
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	rpm-software-management
-GH_PROJECT=	dnf
 
 CMAKE_OFF=	FREEBSD_INSTALL_DOC
 CMAKE_ARGS=	-DPYTHON_DESIRED=${PYTHON_MAJOR_VER}
@@ -28,7 +27,10 @@ INSTALL_TARGET=	install
 NO_ARCH=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|'/usr/bin'|'${PREFIX}/bin'|" ${WRKSRC}/bin/dnf*.in
+	@${REINPLACE_CMD} -e "\
+		s|'/usr/bin'|'${PREFIX}/bin'|;\
+		s|@PYTHON_EXECUTABLE@|${PYTHON_CMD}|\
+		" ${WRKSRC}/bin/dnf*.in
 
 post-install:
 	cd ${STAGEDIR}${PREFIX}/bin && \

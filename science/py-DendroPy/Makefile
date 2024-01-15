@@ -1,18 +1,16 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	DendroPy
-PORTVERSION=	4.4.0
+PORTVERSION=	4.6.1
 CATEGORIES=	science python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Phylogenetic computing library
+WWW=		http://packages.python.org/DendroPy/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python:3.6+
-USE_PYTHON=	distutils py3kplist
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

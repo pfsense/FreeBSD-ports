@@ -1,15 +1,13 @@
-# Created by: Chris Larsen <darth@vader.dk>
-# $FreeBSD$
-
 PORTNAME=	WWW-Curl
 PORTVERSION=	4.17
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www ftp perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl extension interface for libcurl
+WWW=		https://metacpan.org/release/WWW-Curl
 
 LICENSE=	MIT
 

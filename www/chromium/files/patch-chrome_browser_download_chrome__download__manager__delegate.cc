@@ -1,29 +1,29 @@
---- chrome/browser/download/chrome_download_manager_delegate.cc.orig	2021-01-18 21:28:49 UTC
+--- chrome/browser/download/chrome_download_manager_delegate.cc.orig	2023-12-10 06:10:27 UTC
 +++ chrome/browser/download/chrome_download_manager_delegate.cc
-@@ -1400,7 +1400,7 @@ void ChromeDownloadManagerDelegate::OnDownloadTargetDe
-         target_info->is_filetype_handled_safely)
-       DownloadItemModel(item).SetShouldPreferOpeningInBrowser(true);
- 
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-     if (item->GetOriginalMimeType() == "application/x-x509-user-cert")
-       DownloadItemModel(item).SetShouldPreferOpeningInBrowser(true);
- #endif
-@@ -1453,7 +1453,7 @@ void ChromeDownloadManagerDelegate::OnDownloadTargetDe
- 
+@@ -1623,7 +1623,7 @@ void ChromeDownloadManagerDelegate::OnDownloadTargetDe
  bool ChromeDownloadManagerDelegate::IsOpenInBrowserPreferreredForFile(
      const base::FilePath& path) {
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
    if (path.MatchesExtension(FILE_PATH_LITERAL(".pdf"))) {
      return !download_prefs_->ShouldOpenPdfInSystemReader();
-@@ -1549,7 +1549,7 @@ void ChromeDownloadManagerDelegate::CheckDownloadAllow
-     bool content_initiated,
+   }
+@@ -1742,7 +1742,7 @@ void ChromeDownloadManagerDelegate::CheckDownloadAllow
      content::CheckDownloadAllowedCallback check_download_allowed_cb) {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
    // Don't download pdf if it is a file URL, as that might cause an infinite
    // download loop if Chrome is not the system pdf viewer.
+   if (url.SchemeIsFile() && download_prefs_->ShouldOpenPdfInSystemReader()) {
+@@ -1788,7 +1788,7 @@ void ChromeDownloadManagerDelegate::CheckSavePackageAl
+   DCHECK(download_item->IsSavePackageDownload());
+ 
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+   absl::optional<enterprise_connectors::AnalysisSettings> settings =
+       safe_browsing::DeepScanningRequest::ShouldUploadBinary(download_item);
+ 

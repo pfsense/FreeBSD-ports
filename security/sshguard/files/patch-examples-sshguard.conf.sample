@@ -1,4 +1,4 @@
---- examples/sshguard.conf.sample.orig	2018-06-25 21:13:07 UTC
+--- examples/sshguard.conf.sample.orig	2021-12-02 18:54:22 UTC
 +++ examples/sshguard.conf.sample
 @@ -6,10 +6,12 @@
  
@@ -15,9 +15,9 @@
  
  # Shell command that provides logs on standard output. (optional, no default)
  # Example 1: ssh and sendmail from systemd journal:
-@@ -40,12 +42,12 @@ IPV4_SUBNET=32
- # !! Warning: These features may not work correctly with sandboxing. !!
+@@ -38,15 +40,15 @@ IPV4_SUBNET=32
  
+ #### EXTRAS ####
  # Full path to PID file (optional, no default)
 -#PID_FILE=/run/sshguard.pid
 +#PID_FILE=/var/run/sshguard.pid
@@ -31,3 +31,6 @@
  # friendlies and will never be blocked.
 -#WHITELIST_FILE=/etc/friends
 +#WHITELIST_FILE=/usr/local/etc/sshguard.whitelist
+ 
+ # If PARSER is unset, SSHGuard will use the installed sshg-parser as its
+ # parser. Setting PARSER overrides this, so that you can use your own parser.

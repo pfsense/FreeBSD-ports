@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	usbhid-dump
 PORTVERSION=	1.4
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	https://github.com/DIGImend/usbhid-dump/releases/download/${PORTVE
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	USB HID device dumping utility
+WWW=		https://github.com/DIGImend/usbhid-dump
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	AsciiDB-TagFile
 PORTVERSION=	1.06
 PORTREVISION=	1

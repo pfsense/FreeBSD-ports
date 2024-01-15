@@ -1,23 +1,20 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	glgraph
 PORTVERSION=	0.2.6
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	math
 MASTER_SITES=	http://glgraph.kaosu.ch/downl/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL based function grapher
+WWW=		https://glgraph.kaosu.ch/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	p5-OpenGL>=0:graphics/p5-OpenGL \
-		import:graphics/ImageMagick6
+RUN_DEPENDS=	p5-OpenGL>=0:graphics/p5-OpenGL
 
-USES=		perl5 shebangfix tar:bzip2
+USES=		magick:6,run perl5 shebangfix tar:bzip2
 USE_PERL5=	run
 SHEBANG_FILES=	${PORTNAME}
 NO_BUILD=	yes

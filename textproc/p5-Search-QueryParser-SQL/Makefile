@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Search-QueryParser-SQL
 PORTVERSION=	0.010
 CATEGORIES=	textproc perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Turn free-text queries into SQL WHERE clauses
+WWW=		https://metacpan.org/release/Search-QueryParser-SQL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

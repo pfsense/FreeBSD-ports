@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	randlib
 PORTVERSION=	1.3
 CATEGORIES=	math
@@ -10,6 +7,7 @@ DISTNAME=	RANDLIB_V90
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library of Routines for Random Number Generation
+WWW=		https://biostatistics.mdanderson.org/SoftwareDownload/SingleSoftware.aspx?Software_Id=27
 
 USES=		uidfix
 USE_LDCONFIG=	yes

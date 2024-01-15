@@ -1,6 +1,3 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	include
 PORTVERSION=	0.4.2
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	openwince-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of the useful include files for embedded developers
+WWW=		https://openwince.sourceforge.net/include/
 
 USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes

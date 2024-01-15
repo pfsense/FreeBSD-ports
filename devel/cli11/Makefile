@@ -1,22 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	cli11
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.1
+DISTVERSION=	2.3.2
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Command line parser for C++11 and beyond
+WWW=		https://github.com/CLIUtils/CLI11
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++11-lang
+TEST_DEPENDS=	${LOCALBASE}/include/boost/optional.hpp:devel/boost-libs \
+		catch>0:devel/catch # fails with catch2-3.x, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=267078
+
+USES=		cmake:testing compiler:c++11-lang
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	CLIUtils
 GH_PROJECT=	CLI11
 
 CMAKE_OFF=	BUILD_TESTING CLI11_BUILD_EXAMPLES
+CMAKE_TESTING_ON=	BUILD_TESTING # CLI11_BOOST # tests fail with Boost, see https://github.com/CLIUtils/CLI11/issues/645
 
 NO_ARCH=	yes
 

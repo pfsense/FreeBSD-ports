@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	pup
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.0-10
 DISTVERSIONSUFFIX=	-g681d7bb
-PORTREVISION=	1
+PORTREVISION=	16
 CATEGORIES=	textproc
 PATCH_SITES=	https://github.com/ericchiang/pup/pull/
 PATCHFILES=	107.patch:-p1 \
@@ -12,6 +10,7 @@ PATCHFILES=	107.patch:-p1 \
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Command-line jq-like HTML parser using CSS selectors
+WWW=		https://github.com/ericchiang/pup
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

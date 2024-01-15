@@ -1,6 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	fightorperish
 PORTVERSION=	0.5
 PORTREVISION=	2
@@ -14,6 +11,7 @@ EXTRACT_ONLY=	fop-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dungeon-crawling game
+WWW=		http://www.newbreedsoftware.com/fop/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/COPYING.txt

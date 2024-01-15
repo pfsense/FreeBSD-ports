@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	curl
 PORTVERSION=	2.1.0
 CATEGORIES=	ftp
@@ -10,6 +7,7 @@ DISTNAME=	RexxCURL-${PORTVERSION}
 
 MAINTAINER=	bob@eager.cx
 COMMENT=	External function package providing an interface to the cURL package
+WWW=		https://rexxcurl.sourceforge.net/
 
 LICENSE=	CPLV1
 LICENSE_NAME=	CPL V1.0 license

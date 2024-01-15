@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	xmlindent
 PORTVERSION=	0.2.17
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	XML stream reformatter
+WWW=		https://xmlindent.sourceforge.net
 
 LICENSE=	GPLv2
 

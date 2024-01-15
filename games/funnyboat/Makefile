@@ -1,24 +1,24 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	funnyboat
 PORTVERSION=	1.6
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Side scrolling shooter game starring a steamboat on the sea
+WWW=		https://github.com/AMDmi3/funnyboat \
+		https://funnyboat.sourceforge.net/
 
 LICENSE=	GPLv2 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/LICENSE-CODE.txt
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MEDIA.txt
 
+RUN_DEPENDS=	${PYGAME}
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	AMDmi3
 
-RUN_DEPENDS=	${PYGAME}
-
-USES=		python:run
+USES=		python:3.8-3.9,run  # version range inherited from numpy
 NO_BUILD=	yes
 NO_ARCH=	yes
 

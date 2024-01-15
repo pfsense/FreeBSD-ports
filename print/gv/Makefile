@@ -1,14 +1,12 @@
-# Created by: tg@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	gv
 PORTVERSION=	3.7.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	print
 MASTER_SITES=	GNU
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	PostScript and PDF previewer
+WWW=		https://www.gnu.org/software/gv/
 
 LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
 

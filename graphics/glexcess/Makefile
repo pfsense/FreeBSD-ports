@@ -1,15 +1,13 @@
-# Created by: Hernan Di Pietro <hernan.di.pietro@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	glexcess
 PORTVERSION=	1.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.glexcess.com/files/
 DISTNAME=	${PORTNAME}
 
 MAINTAINER=	hernan.di.pietro@gmail.com
 COMMENT=	Impressive OpenGL Demo
+WWW=		http://www.glexcess.com
 
 USES=		gl
 USE_GL=		glut

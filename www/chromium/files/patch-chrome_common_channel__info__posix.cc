@@ -1,20 +1,20 @@
---- chrome/common/channel_info_posix.cc.orig	2020-11-13 06:36:38 UTC
+--- chrome/common/channel_info_posix.cc.orig	2023-04-28 17:01:32 UTC
 +++ chrome/common/channel_info_posix.cc
-@@ -67,7 +67,7 @@ std::string GetChannelSuffixForDataDir() {
+@@ -92,7 +92,7 @@ std::string GetChannelSuffixForDataDir() {
    }
  }
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ std::string GetChannelSuffixForExtraFlagsEnvVarName() {
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+   const auto channel_state = GetChannelImpl();
+@@ -118,7 +118,7 @@ std::string GetChannelSuffixForExtraFlagsEnvVarName() 
+ 
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
  std::string GetDesktopName(base::Environment* env) {
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    // Google Chrome packaged as a snap is a special case: the application name
-@@ -96,7 +96,7 @@ std::string GetDesktopName(base::Environment* env) {
-   return "chromium-browser.desktop";
- #endif
- }
--#endif  // defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#endif  // (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
- 
- version_info::Channel GetChannel() {
-   return GetChannelImpl(nullptr);

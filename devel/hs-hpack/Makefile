@@ -1,78 +1,100 @@
-# $FreeBSD$
-
 PORTNAME=	hpack
-PORTVERSION=	0.34.1
+PORTVERSION=	0.35.2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Modern format for Haskell packages
+WWW=		https://github.com/sol/hpack
 
 LICENSE=	BSD3CLAUSE
 
 USES=		cabal
 
-USE_CABAL=	Glob-0.10.0_1 \
-		aeson-1.4.7.1_1 \
-		asn1-encoding-0.9.6_1 \
+USE_CABAL=	Glob-0.10.2_3 \
+		OneTuple-0.4.1.1 \
+		QuickCheck-2.14.2 \
+		StateVar-1.2.2 \
+		aeson-2.1.2.1_1 \
+		appar-0.1.8 \
+		asn1-encoding-0.9.6_2 \
 		asn1-parse-0.9.5 \
 		asn1-types-0.3.4 \
-		async-2.2.2_1 \
-		attoparsec-0.13.2.4 \
-		base-compat-0.11.1 \
-		base-compat-batteries-0.11.1 \
-		base-orphans-0.8.2 \
-		basement-0.0.11_2 \
-		bifunctors-5.5.7 \
-		blaze-builder-0.4.1.0 \
-		cabal-doctest-1.0.8_1 \
+		assoc-1.0.2_3 \
+		async-2.2.4_2 \
+		attoparsec-0.14.4_3 \
+		base-compat-0.12.2 \
+		base-compat-batteries-0.12.2 \
+		base-orphans-0.9.0 \
+		base64-bytestring-1.2.1.0 \
+		basement-0.0.15 \
+		bifunctors-5.5.15 \
+		bitvec-1.1.3.0 \
+		blaze-builder-0.4.2.2_1 \
+		byteorder-1.0.4 \
 		case-insensitive-1.2.1.0 \
-		cereal-0.5.8.1 \
-		comonad-5.0.6 \
-		conduit-1.3.2 \
+		cereal-0.5.8.3 \
+		comonad-5.0.8_1 \
+		conduit-1.3.4.3_1 \
 		connection-0.3.1_1 \
-		cookie-0.4.5 \
-		cryptonite-0.26 \
+		contravariant-1.5.5 \
+		cookie-0.4.6 \
+		cryptonite-0.30 \
+		data-array-byte-0.1.0.1_1 \
 		data-default-class-0.1.2.0 \
-		distributive-0.6.2 \
-		dlist-0.8.0.8 \
-		hashable-1.3.0.0_1 \
+		data-fix-0.3.2_4 \
+		distributive-0.6.2.1_1 \
+		dlist-1.0 \
+		generically-0.1.1 \
+		hashable-1.4.2.0_1 \
 		hourglass-0.2.12 \
-		hsc2hs-0.68.7 \
-		http-client-0.6.4.1 \
-		http-client-tls-0.3.5.3_1 \
+		hsc2hs-0.68.9 \
+		http-client-0.7.13.1_1 \
+		http-client-tls-0.3.6.1 \
 		http-types-0.12.3 \
+		indexed-traversable-0.1.2.1 \
+		indexed-traversable-instances-0.1.1.2_1 \
 		infer-license-0.2.0 \
-		integer-logarithms-1.0.3_2 \
-		libyaml-0.1.2 \
-		memory-0.15.0_1 \
-		mime-types-0.1.0.9 \
-		mono-traversable-1.0.15.1 \
-		network-3.1.1.1 \
-		network-uri-2.6.3.0 \
+		integer-logarithms-1.0.3.1_4 \
+		iproute-1.7.12 \
+		libyaml-0.1.2_1 \
+		memory-0.18.0 \
+		mime-types-0.1.1.0 \
+		mono-traversable-1.0.15.3 \
+		network-3.1.2.8 \
+		network-uri-2.6.4.2 \
 		pem-0.2.4 \
-		primitive-0.7.0.1 \
-		random-1.1_1 \
-		resourcet-1.2.4 \
-		scientific-0.3.6.2 \
+		primitive-0.8.0.0 \
+		random-1.2.1.1 \
+		resourcet-1.3.0 \
+		scientific-0.3.7.0_5 \
+		semialign-1.2.0.1_3 \
+		semigroupoids-5.3.7_1 \
 		socks-0.6.1 \
-		split-0.2.3.4 \
-		streaming-commons-0.2.1.2 \
-		tagged-0.8.6_2 \
-		text-metrics-0.3.0_4 \
-		th-abstraction-0.3.2.0 \
-		time-compat-1.9.3 \
-		tls-1.5.4 \
-		transformers-compat-0.6.5 \
-		unliftio-core-0.2.0.1_1 \
-		unordered-containers-0.2.10.0_1 \
-		uuid-types-1.0.3_2 \
-		vector-0.12.1.2 \
-		vector-algorithms-0.8.0.3 \
-		x509-1.7.5_1 \
-		x509-store-1.6.7_1 \
-		x509-system-1.6.6 \
-		x509-validation-1.6.11 \
-		yaml-0.11.4.0 \
-		zlib-0.6.2.1_1
+		split-0.2.3.5 \
+		splitmix-0.1.0.4_2 \
+		streaming-commons-0.2.2.5 \
+		strict-0.4.0.1_4 \
+		tagged-0.8.7 \
+		text-metrics-0.3.2_2 \
+		text-short-0.1.5_1 \
+		th-abstraction-0.5.0.0 \
+		th-compat-0.1.4_2 \
+		these-1.1.1.1_6 \
+		time-compat-1.9.6.1_5 \
+		tls-1.6.0 \
+		transformers-compat-0.7.2 \
+		unliftio-core-0.2.1.0_1 \
+		unordered-containers-0.2.19.1_1 \
+		uuid-types-1.0.5_3 \
+		vector-0.13.0.0_3 \
+		vector-algorithms-0.9.0.1_2 \
+		vector-stream-0.1.0.0_2 \
+		witherable-0.4.2_4 \
+		x509-1.7.7 \
+		x509-store-1.6.9 \
+		x509-system-1.6.7 \
+		x509-validation-1.6.12 \
+		yaml-0.11.11.0 \
+		zlib-0.6.3.0_1
 
 .include <bsd.port.mk>

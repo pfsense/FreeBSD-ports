@@ -1,6 +1,3 @@
-# Created by: ports@c0decafe.net
-# $FreeBSD$
-
 PORTNAME=	Debug-Client
 PORTVERSION=	0.31
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Client for the standard Perl debugger
+WWW=		https://metacpan.org/release/Debug-Client
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -22,8 +20,9 @@ TEST_DEPENDS=	p5-File-HomeDir>=1:devel/p5-File-HomeDir \
 		p5-Test-Deep>=0.112:devel/p5-Test-Deep \
 		p5-Test-Requires>=0.07:devel/p5-Test-Requires
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

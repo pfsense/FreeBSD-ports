@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DBICx-Sugar
 PORTVERSION=	0.0200
 CATEGORIES=	databases perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Just some syntax sugar for DBIx::Class
+WWW=		https://metacpan.org/release/DBICx-Sugar
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

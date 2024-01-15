@@ -1,21 +1,18 @@
-# Created by: Michael Moll <kvedulv at kvedulv.de>
-# $FreeBSD$
-
 PORTNAME=	concurrent-ruby-edge
-PORTVERSION=	0.6.0
+PORTVERSION=	0.7.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Bleeding edge features for concurrent-ruby
+WWW=		https://github.com/ruby-concurrency/concurrent-ruby
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-concurrent-ruby>=1.1.6<1.2:devel/rubygem-concurrent-ruby
+RUN_DEPENDS=	rubygem-concurrent-ruby>=1.2.0<1.3:devel/rubygem-concurrent-ruby
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

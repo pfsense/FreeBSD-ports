@@ -1,6 +1,3 @@
-# Created by: Jason Harmening <jason.harmening@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libtuner
 PORTVERSION=	1.1.5
 CATEGORIES=	multimedia

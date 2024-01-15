@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Lingua-EN-AddressParse
 PORTVERSION=	1.27
 CATEGORIES=	textproc perl5 geography
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to manipulate geographical addresses
+WWW=		https://metacpan.org/release/Lingua-EN-AddressParse
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

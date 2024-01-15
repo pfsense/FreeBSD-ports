@@ -1,31 +1,39 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
-
 PORTNAME=	opendht
-DISTVERSION=	1.10.1
-PORTREVISION=	3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.1.6
+PORTREVISION=	1
 CATEGORIES=	devel net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Lightweight Distributed Hash Table implementation
+WWW=		https://github.com/savoirfairelinux/opendht/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${LOCALBASE}/include/asio.hpp:net/asio \
+		boost-libs>0:devel/boost-libs \
+		msgpack-cxx>0:devel/msgpack-cxx \
+		restinio>0:www/restinio
 LIB_DEPENDS=	libargon2.so:security/libargon2 \
+		libfmt.so:devel/libfmt \
+		libhttp_parser.so:www/http-parser \
 		libjsoncpp.so:devel/jsoncpp \
-		libmsgpackc.so:devel/msgpack \
 		libnettle.so:security/nettle \
 		libgnutls.so:security/gnutls
+RUN_DEPENDS=	msgpack-cxx>0:devel/msgpack-cxx
+TEST_DEPENDS=	cppunit>0:devel/cppunit
 
-USES=		cmake compiler:c++11-lib pathfix pkgconfig readline:port
+USES=		cmake:testing compiler:c++17-lang localbase ncurses pathfix pkgconfig readline ssl
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	savoirfairelinux
 USE_LDCONFIG=	yes
 
-CMAKE_OFF=	OPENDHT_STATIC
+LDFLAGS+=	-lcrypto
 
-PLIST_SUB=	SHL3=${PORTVERSION} SHL1=${PORTVERSION:R:R}
+CMAKE_OFF=	OPENDHT_STATIC BUILD_TESTING
+CMAKE_TESTING_ON=	BUILD_TESTING # tests fail w/out explanation, see https://github.com/savoirfairelinux/opendht/issues/640, https://github.com/savoirfairelinux/opendht/issues/658
 
 OPTIONS_DEFINE=	PROXY_SERVER PROXY_CLIENT PUSH_NOTIFICATIONS DOCS
 

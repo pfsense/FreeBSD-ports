@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Cache
 PORTVERSION=	2.11
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Cache interface
+WWW=		https://metacpan.org/release/Cache
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

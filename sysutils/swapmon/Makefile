@@ -1,6 +1,3 @@
-# Created by: Alexander Kuehn <freebsd@nagilum.org>
-# $FreeBSD$
-
 PORTNAME=	swapmon
 PORTVERSION=	1.5
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ DISTFILES=	# none
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Add/remove swapspace as needed
+WWW=		http://www.nagilum.net/swapmon/
 
 LICENSE=	BSD2CLAUSE
 

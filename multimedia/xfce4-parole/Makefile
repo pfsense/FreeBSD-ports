@@ -1,14 +1,13 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	parole
-PORTVERSION=	4.16.0
+PORTVERSION=	4.18.1
+PORTREVISION=	1
 CATEGORIES=	multimedia xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Lightweight media player for Xfce4 based on GStreamer
+WWW=		https://docs.xfce.org/apps/parole/introduction
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,18 +15,18 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libnotify.so:devel/libnotify \
-		libtag.so:audio/taglib
+		libtag_c.so:audio/taglib \
+		libharfbuzz.so:print/harfbuzz
 RUN_DEPENDS=	xdg-screensaver:devel/xdg-utils
 
 USES=		compiler:c++11-lang desktop-file-utils gettext-tools \
-		gmake gnome libtool pkgconfig tar:bzip2 xfce xorg
-USE_GNOME=	cairo gtk30 glib20 intltool
-USE_GSTREAMER1=	core faad flac wavpack rtmp x
-USE_XFCE=	panel
+		gmake gnome gstreamer libtool pkgconfig tar:bzip2 xfce xorg
+USE_GNOME=	cairo gdkpixbuf2 gtk30 glib20 intltool
+USE_GSTREAMER=	core faad flac wavpack rtmp x
+USE_XFCE=	libmenu xfconf
 USE_XORG=	ice sm x11
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--enable-notify-plugin \
 		--enable-tray-plugin \
 		--enable-taglib \
@@ -41,12 +40,12 @@ OPTIONS_GROUP_GST_PLUG=	CDDA HTTP
 OPTIONS_DEFAULT=	HTTP
 OPTIONS_SUB=		yes
 
-CDDA_USE=		gstreamer1=cdparanoia
+CDDA_USE=		gstreamer=cdparanoia
 
 GST_PLUG_DESC=		Additional GStreamer plugins
 
 HTTP_DESC=		HTTP streaming (libsoup)
-HTTP_USE=		gstreamer1=soup
+HTTP_USE=		gstreamer=soup
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime

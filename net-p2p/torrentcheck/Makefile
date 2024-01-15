@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	torrentcheck
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${_DISTFILES:N*.txt}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Command-line torrent viewer and hash checker
+WWW=		https://sourceforge.net/projects/torrentcheck/
 
 LICENSE=	PD
 

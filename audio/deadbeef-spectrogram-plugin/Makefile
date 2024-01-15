@@ -1,12 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	deadbeef-spectrogram-plugin
 DISTVERSION=	0.0.2015.01.10
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Spectrogram plugin for DeaDBeeF audio player
+WWW=		https://github.com/cboxdoerfer/ddb_spectrogram
 
 LICENSE=	GPLv2+
 

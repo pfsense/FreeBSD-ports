@@ -1,14 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	udunits2
-PORTVERSION=	0.13
-PORTREVISION=	4
+PORTVERSION=	0.13.2.1
+PORTREVISION=	1
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Udunits-2 Bindings for R
+WWW=		https://cran.r-project.org/web/packages/udunits2/
 
 LICENSE=	GPLv2
 

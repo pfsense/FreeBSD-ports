@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	phprecipebook
 PORTVERSION=	3.01
 PORTREVISION=	5
@@ -8,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION:C/\..*//}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Small php webapp to manage your recipes
+WWW=		https://phprecipebook.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/LICENSE.TXT

@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <lin-chi@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Server-HTTP
 PORTVERSION=	0.09
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	POE Component to create HTTP Servers
+WWW=		https://metacpan.org/release/POE-Component-Server-HTTP
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-POE>=0:devel/p5-POE \

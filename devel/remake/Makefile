@@ -1,14 +1,13 @@
-# Created by: arved
-# $FreeBSD$
-
 PORTNAME=	remake
-PORTVERSION=	1.5
+PORTVERSION=	1.6
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/bashdb/remake/4.3+dbg-${PORTVERSION}/
 DISTNAME=	remake-4.3+dbg-${PORTVERSION}
 
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Fork of gmake with debugger
+WWW=		https://bashdb.sourceforge.net/remake/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

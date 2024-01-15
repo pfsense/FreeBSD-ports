@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	genshingothic
 PORTVERSION=	20150607
 PORTREVISION=	3
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	ja-font-
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	GenShinGothic Japanese TrueType fonts
+WWW=		http://jikasei.me/font/genshin/
 
 LICENSE=	OFL11
 

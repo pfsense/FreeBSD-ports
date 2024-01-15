@@ -1,6 +1,3 @@
-# Created by: Stefan Eggers <seggers@semyam.dinoco.de>
-# $FreeBSD$
-
 PORTNAME=	crafty
 PORTVERSION=	25.2
 PORTREVISION=	1

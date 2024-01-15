@@ -3,9 +3,9 @@
  * snort_passlist_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -33,12 +33,7 @@ $pconfig = array();
 // Arbitrary limit for IP or Alias entries per Pass List.
 $max_addresses = 1000;
 
-if (!is_array($config['installedpackages']['snortglobal']['whitelist']))
-	$config['installedpackages']['snortglobal']['whitelist'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['whitelist']['item']))
-	$config['installedpackages']['snortglobal']['whitelist']['item'] = array();
-
-$a_passlist = &$config['installedpackages']['snortglobal']['whitelist']['item'];
+$a_passlist = config_get_path('installedpackages/snortglobal/whitelist/item', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -93,7 +88,7 @@ elseif (!empty($pconfig['uuid'])) {
 else
 	$passlist_uuid = $a_passlist[$id]['uuid'];
 
-if ($_POST['save'] == "Save") {
+if ($_POST['save']) {
 	unset($input_errors);
 	$pconfig = array();
 	$p_list = array();
@@ -144,7 +139,7 @@ if ($_POST['save'] == "Save") {
 		$p_list['vips'] = $_POST['vips']? 'yes' : 'no';
 		$p_list['vpnips'] = $_POST['vpnips']? 'yes' : 'no';
 		$p_list['address']['item'] = $addrs;
-		$p_list['descr']  =  mb_convert_encoding($_POST['descr'],"HTML-ENTITIES","auto");
+		$p_list['descr'] = $_POST['descr'];
 
 		if (isset($id) && isset($a_passlist[$id])) {
 			$a_passlist[$id] = $p_list;
@@ -153,7 +148,7 @@ if ($_POST['save'] == "Save") {
 		}
 
 		$pconfig = $p_list;
-
+		config_set_path('installedpackages/snortglobal/whitelist/item', $a_passlist);
 		write_config("Snort pkg: modified PASS LIST {$p_list['name']}.");
 
 		/* create pass list file, then sync file with configured partners */
@@ -293,7 +288,7 @@ if (count($pconfig['address']['item']) > 0) {
 			'deleterow' . $counter,
 			'Delete',
 			null,
-			'fa-trash'
+			'fa-solid fa-trash-can'
 		))->addClass('btn-warning btn-sm nowarn')->setAttribute('title', "Delete this entry from list");
 
 		$section->add($group);
@@ -314,7 +309,7 @@ if (count($pconfig['address']['item']) > 0) {
 		'deleterow0',
 		'Delete',
 		null,
-		'fa-trash'
+		'fa-solid fa-trash-can'
 	))->addClass('btn-warning btn-sm nowarn')->setAttribute('title', "Delete this entry from list");
 
 	$section->add($group);
@@ -325,7 +320,7 @@ $form->addGlobal(new Form_Button(
 	'addrow',
 	'Add IP',
 	null,
-	'fa-plus'
+	'fa-solid fa-plus'
 ))->addClass('btn-success addbtn')->setAttribute('title', "Add new IP address, subnet or alias name row");
 
 print($form);

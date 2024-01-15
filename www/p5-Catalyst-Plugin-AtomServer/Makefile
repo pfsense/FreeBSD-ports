@@ -1,6 +1,3 @@
-# Created by: Oleg Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-AtomServer
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Atom API server for Catalyst applications
+WWW=		https://metacpan.org/release/Catalyst-Plugin-AtomServer
 
 BUILD_DEPENDS=	p5-Catalyst-Runtime>=0:www/p5-Catalyst-Runtime	\
 		p5-Catalyst-Plugin-Authentication>=0:www/p5-Catalyst-Plugin-Authentication	\

@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	Date_Holidays_Discordian
 PORTVERSION=	0.1.1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Driver based class to calculate Discordian holidays
+WWW=		https://pear.php.net/package/Date_Holidays_Discordian
 
 LICENSE=	PHP301
 
-BUILD_DEPENDS=  ${PEARDIR}/Date/Holidays.php:devel/pear-Date_Holidays@${PHP_FLAVOR}
+BUILD_DEPENDS=	${PEARDIR}/Date/Holidays.php:devel/pear-Date_Holidays@${PHP_FLAVOR}
 RUN_DEPENDS=	${PEARDIR}/Date/Holidays.php:devel/pear-Date_Holidays@${PHP_FLAVOR}
 
 USES=		pear

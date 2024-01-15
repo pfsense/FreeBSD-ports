@@ -3,11 +3,11 @@
  * suricata_rules_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,14 +41,10 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
+$a_rule = config_get_path("installedpackages/suricata/rule/{$id}", []);
 
-$a_rule = &$config['installedpackages']['suricata']['rule'];
-
-$if_real = get_real_interface($a_rule[$id]['interface']);
-$suricata_uuid = $a_rule[$id]['uuid'];
+$if_real = get_real_interface($a_rule['interface']);
+$suricata_uuid = $a_rule['uuid'];
 $suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/";
 
 $file = htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401);

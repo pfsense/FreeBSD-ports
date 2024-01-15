@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Text-FormatTable
 PORTVERSION=	1.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Renders simple tables as text
+WWW=		https://metacpan.org/release/Text-FormatTable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: 1wardd@airmail.net
-# $FreeBSD$
-
 PORTNAME=	lesstif
 PORTVERSION=	0.95.2
 PORTREVISION=	7
@@ -10,15 +7,16 @@ MASTER_SITES=	SF
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	API compatible clone of the Motif toolkit
+WWW=		https://lesstif.sourceforge.net/
 
 LICENSE=	LGPL20+
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-CONFLICTS?=	open-motif-*
+CONFLICTS?=	open-motif
 
-USES=		tar:bzip2 libtool xorg
+USES=		cpe tar:bzip2 libtool xorg
 USE_XORG=	sm ice xt x11 xext xorgproto xrender xft
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

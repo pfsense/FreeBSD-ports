@@ -1,15 +1,13 @@
-# Created by: Dmitry Pryadko <d.pryadko@rambler-co.ru>
-# $FreeBSD$
-
 PORTNAME=	publicsuffix
 PORTVERSION=	1.1.0
-PORTREVISION=	35
+PORTREVISION=	70
 CATEGORIES=	dns python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	d.pryadko@rambler-co.ru
 COMMENT=	Get public suffix of domain name from Public Suffix List
+WWW=		https://pypi.org/project/publicsuffix/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 PATCH_DEPENDS=	public_suffix_list>=0:dns/public_suffix_list
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 post-patch:

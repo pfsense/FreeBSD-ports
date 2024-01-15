@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gwhois
 PORTVERSION=	20120626
 CATEGORIES=	net
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flexible whois client and proxy
+WWW=		https://julijane.de/gwhois/
 
 LICENSE=	GPLv2
 

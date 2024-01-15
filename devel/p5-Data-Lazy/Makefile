@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Data-Lazy
 PORTVERSION=	0.6
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	"lazy" variables
+WWW=		https://metacpan.org/release/Data-Lazy
 
 USES=		perl5
 USE_PERL5=	configure

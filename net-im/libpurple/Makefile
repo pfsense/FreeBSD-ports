@@ -1,14 +1,14 @@
-# Created by: Jim Mock <jim@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME?=	libpurple
-PORTVERSION=	2.14.1
+PORTVERSION=	2.14.12
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
 DISTNAME=	pidgin-${PORTVERSION}
 
 MAINTAINER?=	marcus@FreeBSD.org
 COMMENT?=	Backend library for the Pidgin multi-protocol messaging client
+WWW=		https://www.pidgin.im/
+
+LICENSE=	GPLv3
 
 USES+=		cpe gettext gmake gnome libtool localbase pathfix pkgconfig \
 		tar:bzip2
@@ -18,7 +18,9 @@ CONFIGURE_ARGS?=--disable-gtkui \
 		--disable-consoleui \
 		--with-dynamic-prpls=${PRPL_MODULES:S/,$//} \
 		--enable-static \
-		--disable-nm
+		--disable-nm \
+		--with-system-ssl-certs=/usr/share/certs/trusted \
+		--disable-schemas-install
 INSTALL_TARGET=	install-strip
 
 .if !defined(PIDGIN_SLAVE)
@@ -44,9 +46,9 @@ OPTIONS_GROUP=		PROTOCOLS
 OPTIONS_RADIO=	TLS
 OPTIONS_RADIO_TLS=	NSS GNUTLS
 OPTIONS_GROUP_PROTOCOLS=BONJOUR GG SAMETIME SILC IRC JABBER \
-			NOVELL OSCAR QQ SIMPLE ZEPHYR
+			NOVELL QQ SIMPLE ZEPHYR
 OPTIONS_DEFAULT=	BONJOUR DBUS NSS GSTREAMER VV IDN GG IRC JABBER \
-			NOVELL OSCAR QQ SIMPLE ZEPHYR
+			NOVELL QQ SASL SIMPLE ZEPHYR
 BONJOUR_DESC=	mDNS support and Bonjour protocol
 GNUTLS_DESC=	Use GNUTLS for encryption support
 NSS_DESC=	Use Mozilla NSS for encryption support
@@ -59,11 +61,11 @@ GG_DESC=	The Gadu-Gadu chat protocol
 IRC_DESC=	The Internet Relay Chat protocol
 JABBER_DESC=	The Jabber/XMPP/Google Talk protocol
 NOVELL_DESC=	The Novell GroupWise chat protocol
-OSCAR_DESC=	The ICQ/Oscar protocol
-QQ_DESC=	The Tercent QQ chat protocol
+QQ_DESC=	The Tencent QQ chat protocol
 SIMPLE_DESC=	The SIMPLE chat protocol
 ZEPHYR_DESC=	The Zephyr chat protocol
 
+PLIST_SUB+=	SHLIB_VERSION=${PORTVERSION:R:E}.${PORTVERSION:E}
 .if defined(WITH_GTKUI)
 OPTIONS_DEFINE+=	GTKSPELL CAP
 OPTIONS_DEFAULT+=	GTKSPELL CAP
@@ -85,6 +87,10 @@ PLIST_SUB+=	CONSOLEUI="@comment not installed: "
 CONFIGURE_ARGS+=--disable-doxygen
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .if ${PORT_OPTIONS:MTCLTK}
 USES+=			tk
@@ -112,29 +118,25 @@ PLIST_SUB+=		PERL:="@comment not installed: " \
 			PERLMAN:="@comment not installed: "
 .endif
 
-.if defined(WITH_GTKUI) && !defined(PIDGIN_SLAVE)
-USE_GNOME+=	gconf2
-GCONF_SCHEMAS=	purple.schemas
-.endif
-
-#.if defined(WITH_GTKUI)
-#USE_GNOME+=		evolutiondataserver
-#PLIST_SUB+=		EVO=""
-#CONFIGURE_ARGS+=	--enable-gevolution
-#.else
+.if defined(WITH_GTKUI)
+USE_GNOME+=		evolutiondataserver3
+PLIST_SUB+=		EVO=""
+CONFIGURE_ARGS+=	--enable-gevolution
+.else
 CONFIGURE_ARGS+=	--disable-gevolution
 PLIST_SUB+=		EVO="@comment not installed: "
-#.endif
+.endif
 
 .if ${PORT_OPTIONS:MGSTREAMER}
-USE_GSTREAMER1+=core good
+USES+=		gstreamer
+USE_GSTREAMER+=core good
 .else
 CONFIGURE_ARGS+=--disable-gstreamer
 .endif
 
 .if ${PORT_OPTIONS:MVV} && ${PORT_OPTIONS:MGSTREAMER}
 LIB_DEPENDS+=	libfarstream-0.2.so:net-im/farstream
-USE_GSTREAMER1+=v4l2
+USE_GSTREAMER+=v4l2
 PLIST_SUB+=	VV=""
 .else
 CONFIGURE_ARGS+=--disable-vv
@@ -181,6 +183,8 @@ PLIST_SUB+=		NSS="@comment "
 .if ${PORT_OPTIONS:MSASL}
 LIB_DEPENDS+=		libsasl2.so:security/cyrus-sasl2
 CONFIGURE_ARGS+=	--enable-cyrus-sasl
+.else
+CONFIGURE_ARGS+=	--disable-cyrus-sasl
 .endif
 
 .if ${PORT_OPTIONS:MBONJOUR}
@@ -204,7 +208,7 @@ LIB_DEPENDS+=		libdbus-glib-1.so:devel/dbus-glib
 .if !defined(PIDGIN_SLAVE)
 RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR}
 .endif
-CONFIGURE_ARGS+=	--enable-dbus --with-python=${PYTHON_CMD}
+CONFIGURE_ARGS+=	--enable-dbus --with-python3=${PYTHON_CMD}
 PLIST_SUB+=		DBUS=""
 .else
 CONFIGURE_ARGS+=	--disable-dbus
@@ -258,13 +262,6 @@ PRPL_MODULES:=		novell,${PRPL_MODULES}
 PLIST_SUB+=		NOVELL="@comment not installed: "
 .endif
 
-.if ${PORT_OPTIONS:MOSCAR}
-PLIST_SUB+=		OSCAR=""
-PRPL_MODULES:=		oscar,${PRPL_MODULES}
-.else
-PLIST_SUB+=		OSCAR="@comment not installed: "
-.endif
-
 #.if ${PORT_OPTIONS:MQQ}
 #PLIST_SUB+=		QQ=""
 #PRPL_MODULES:=		qq,${PRPL_MODULES}
@@ -298,8 +295,6 @@ post-patch:
 .if defined(PIDGIN_SLAVE)
 	@${FIND} ${BUILD_WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} -e \
 		's|$$(top_builddir)/libpurple/libpurple.la|-lpurple|'
-	@${REINPLACE_CMD} -e 's|gconftool-2|gconftool-disabled|g' \
-		${WRKSRC}/configure
 .endif
 
 .if !defined(PIDGIN_SLAVE) && ${PORT_OPTIONS:MPERL}

@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Avahi
-PORTVERSION=	2.1
-PORTREVISION=	1
+PORTVERSION=	2.2
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +12,8 @@ COMMENT=	pfSense package Avahi
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	avahi-app>=0:net/avahi-app
+RUN_DEPENDS=	avahi-app>=0:net/avahi-app \
+		nss_mdns>0:dns/nss_mdns
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -26,7 +27,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/avahi
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/avahi.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -36,6 +37,8 @@ do-install:
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_avahi.inc \
+		${STAGEDIR}${PREFIX}/www/shortcuts
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/avahi_settings.php \
 		${STAGEDIR}${PREFIX}/www
 

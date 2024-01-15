@@ -1,6 +1,3 @@
-# Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	iaikPkcs11Wrapper
 PORTVERSION=	1.2.18
 CATEGORIES=	security java devel
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/g}
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	PKCS\#11 Java wrapper
+WWW=		http://jce.iaik.tugraz.at/sic/products/core_crypto_toolkits/pkcs_11_wrapper
 
 BROKEN_aarch64=		fails to link: /tmp/pkcs11wrapper-01d033.o is incompatible with /usr/lib/crti.o
 
@@ -28,7 +26,7 @@ PORTEXAMPLES=	*
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64"
+.if ${ARCH:M*64*}
 WRKSRC=		${WRKDIR}/src/native/unix/linux-x86_64
 .else
 WRKSRC=		${WRKDIR}/src/native/unix/linux-x86

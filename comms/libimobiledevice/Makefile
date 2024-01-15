@@ -1,30 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	libimobiledevice
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.0
 PORTREVISION?=	0
 CATEGORIES?=	comms
-MASTER_SITES=	http://www.${PORTNAME}.org/downloads/
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${PORTVERSION}/
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Library to communicate with Apple iOS devices
+WWW=		https://www.libimobiledevice.org
 
-LICENSE?=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
 SLAVE_PORT?=	no
 
-USES+=		cpe libtool pathfix pkgconfig ssl tar:bzip2
+USES+=		cpe libtool localbase:ldflags pathfix pkgconfig ssl tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=openssl_CFLAGS="-I${OPENSSLINC}" \
 		openssl_LIBS="-L${OPENSSLLIB} -lssl -lcrypto"
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 .if ${SLAVE_PORT} == no
 
-LIB_DEPENDS=	libplist.so:devel/libplist \
-		libusbmuxd.so:comms/libusbmuxd
+LIB_DEPENDS=	libplist-2.0.so:devel/libplist \
+		libusbmuxd-2.0.so:comms/libusbmuxd
 
 USES+=		gnome
 USE_GNOME=	glib20
@@ -32,7 +30,7 @@ CONFIGURE_ARGS+=--without-cython
 USE_CSTD=	gnu89
 USE_LDCONFIG=	yes
 
-PORTDOCS=	AUTHORS NEWS README
+PORTDOCS=	AUTHORS NEWS README.md
 
 OPTIONS_DEFINE=	DOCS
 
@@ -46,4 +44,10 @@ post-install:
 
 .endif # ${SLAVE_PORT} == no
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
+
+.include <bsd.port.post.mk>

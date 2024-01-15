@@ -1,20 +1,19 @@
-# Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
-
 PORTNAME=	encfs
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.9.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Encrypted pass-through FUSE filesystem
+WWW=		http://www.arg0.net/encfs
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake compiler:c++11-lib fuse ssl
+USES=		cmake compiler:c++11-lib cpe fuse ssl
+CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
 GH_ACCOUNT=	vgough
 

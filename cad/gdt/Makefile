@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gdt
 PORTVERSION=	4.0.4
 CATEGORIES=	cad
@@ -8,6 +6,7 @@ DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	GDS2/GDT format translator
+WWW=		https://sourceforge.net/projects/gds2/
 
 LICENSE=	GPLv2
 

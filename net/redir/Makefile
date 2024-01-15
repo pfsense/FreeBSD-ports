@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	redir
 PORTVERSION=	2.2.1
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://sammy.net/~sammy/hacks/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	TCP connection redirection utility
+WWW=		https://sammy.net/~sammy/hacks/
 
 USES=		gmake
 USE_RC_SUBR=	redir

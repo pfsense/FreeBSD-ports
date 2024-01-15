@@ -1,61 +1,57 @@
-# $FreeBSD$
-
-PORTNAME=		PrusaSlicer
-DISTVERSIONPREFIX=	version_
-DISTVERSION=		2.2.0
-PORTREVISION=		9
-CATEGORIES=		cad
+PORTNAME=	PrusaSlicer
+DISTVERSIONPREFIX=version_
+DISTVERSION=	2.6.0
+PORTREVISION=	7
+CATEGORIES=	cad
+DIST_SUBDIR=	PrusaSlicer
 
 MAINTAINER=	teodorsigaev@gmail.com
 COMMENT=	Slicing application for 3D printers
+WWW=		https://www.prusa3d.com/prusaslicer/
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libtbb.so:devel/tbb \
+BUILD_DEPENDS=	cereal>=1.3.0.10:devel/cereal \
+		cgal>=5.0.2:math/cgal \
+		opencascade>=7.7.0:cad/opencascade
+
+LIB_DEPENDS=	libtbb.so:devel/onetbb \
 		libboost_log.so:devel/boost-libs \
-		libHalf.so:graphics/ilmbase \
+		libImath.so:math/Imath \
 		libnlopt.so:math/nlopt \
+		libqhull_r.so:math/qhull \
 		libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
+		libiconv.so:converters/libiconv \
 		libopenvdb.so:misc/openvdb \
 		libgmp.so:math/gmp \
-		libmpfr.so:math/mpfr
-BUILD_DEPENDS=	cereal>=1.2.2:devel/cereal \
-		googletest>=1.7:devel/googletest \
-		boost-libs>=1.64:devel/boost-libs \
-		wx31-gtk3>=3.1:x11-toolkits/wxgtk31 \
-		cmake>=3.2:devel/cmake \
-		ninja>=1.8.2:devel/ninja \
-		openvdb>=6.1.0:misc/openvdb \
-		gmp>=6.1.2:math/gmp \
-		mpfr>=4.0.2:math/mpfr \
-		qt5-buildtools>=0:devel/qt5-buildtools
+		libmpfr.so:math/mpfr \
+		libdbus-1.so:devel/dbus \
+		libpng.so:graphics/png \
+		libTKXDESTEP.so:cad/opencascade \
+		libtiff.so:graphics/tiff \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreeimage.so:graphics/freeimage \
+		libfreetype.so:print/freetype2 \
+		libavcodec.so:multimedia/ffmpeg4 \
+		libharfbuzz.so:print/harfbuzz \
+		libwayland-egl.so:graphics/wayland
 
-USES=		cmake eigen:3 gettext gl iconv pkgconfig
-
-CMAKE_ARGS+=	-DwxWidgets_CONFIG_EXECUTABLE=${LOCALBASE}/bin/wxgtk3u-3.1-config \
-		-DCGAL_DIR=${WRKSRC}/CGAL/lib/cmake/CGAL
-CMAKE_INSTALL_PREFIX=	${PREFIX}/${PORTNAME}
-
+USES=		cmake cpe desktop-file-utils eigen:3 gettext gl pkgconfig jpeg iconv gnome xorg
+CPE_VENDOR=	prusa3d
 USE_GITHUB=	yes
 GH_ACCOUNT=	prusa3d
-GH_TUPLE=	CGAL:cgal:releases/CGAL-5.0.2:cgal
-USE_WX=		3.1
 USE_GL=		gl glu glew
+USE_GNOME=	gtk30 pango atk cairo gdkpixbuf2 glib20
+USE_WX=		3.2
+USE_XORG=	x11
 
-post-patch:
-	${REINPLACE_CMD} -e 's,%%WRKSRC%%,${WRKSRC},' \
-		${WRKSRC}/CMakeLists.txt
+CMAKE_ARGS+=	-DwxWidgets_CONFIG_EXECUTABLE="${WX_CONFIG}" \
+		-DSLIC3R_GTK=3 \
+		-DSLIC3R_FHS=1 \
+                -DSLIC3R_PCH=OFF
 
-pre-configure:
-	cd ${WRKSRC_cgal} && \
-	${CMAKE_BIN} -E remove CGALConfig-installation-dirs.cmake && \
-	${MKDIR} build && cd build && \
-	${CMAKE_BIN} -DCMAKE_INSTALL_PREFIX=${WRKSRC}/CGAL \
-		-DCMAKE_PREFIX_PATH=${WRKSRC}/CGAL \
-		-DCMAKE_MODULE_PATH=${WRKSRC}/cmake/modules \
-		-DCMAKE_BUILD_TYPE=Release .. && \
-	${BSDMAKE} all install
+PORTDATA=	*
 
 .include <bsd.port.mk>

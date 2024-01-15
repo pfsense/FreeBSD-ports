@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2014 Andrea Tuccia
- * Copyright (c) 2014-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,7 +67,9 @@ function doCmdT($title, $command) {
 	echo "</div>\n";
 }
 
-$pgtitle = array(gettext("Package"), gettext("LADVD"), gettext("Status"));
+$shortcut_section = 'ladvd';
+
+$pgtitle = array(gettext('Status'), gettext('LADVD'));
 include("head.inc");
 
 if ($savemsg) {
@@ -75,8 +77,8 @@ if ($savemsg) {
 }
 
 $tab_array = array();
-$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=ladvd.xml&amp;id=0");
-$tab_array[] = array(gettext("Status"), true, "/status_ladvd.php");
+$tab_array[] = array(gettext('Settings'), false, "/pkg_edit.php?xml=ladvd.xml");
+$tab_array[] = array(gettext('Status'), true, "/status_ladvd.php");
 display_top_tabs($tab_array);
 
 defCmdT("LADVD Devices", "{$control_script}");

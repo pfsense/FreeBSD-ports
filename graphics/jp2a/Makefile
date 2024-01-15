@@ -1,20 +1,18 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jp2a
-DISTVERSION=	1.1.0
+DISTVERSION=	1.1.1
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/Talinx/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Converts JPG images to ASCII
+WWW=		https://github.com/Talinx/jp2a
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 USES=		jpeg localbase ncurses pkgconfig tar:bz2
 USE_CSTD=	c99

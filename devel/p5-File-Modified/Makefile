@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Modified
 PORTVERSION=	0.10
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for checking intelligently if files have changed
+WWW=		https://metacpan.org/release/File-Modified
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

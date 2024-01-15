@@ -1,11 +1,8 @@
-# Created by: Shaun Amott <shaun@FreeBSD.org>
-# $FreeBSD$
-
 # Note: sdcard64.tar.gz contains just an empty 64MB FAT-16 disk image
 
 PORTNAME=	x49gp
 PORTVERSION=	20100425
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	emulators math
 MASTER_SITES=	LOCAL/shaun
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} sdcard64.tar.gz
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	shaun@FreeBSD.org
 COMMENT=	HP 49g+/50g graphics calculator emulator
+WWW=		https://sourceforge.net/projects/x49gp/
 
 BROKEN_i386=		does not build on i386 (error: frame pointer required, but reserved)
 BROKEN_powerpc64=	fails to build: qemu/qemu-git/arm-softmmu/i386-dis.o: No such file or directory
@@ -22,10 +20,9 @@ NOT_FOR_ARCHS_REASON=	unsupported CPU = unknown
 WRKSRC=		${WRKDIR}/x49gp/x49gp-code
 
 USES=		gmake gnome pkgconfig xorg
-USE_GCC=	any
+USE_GCC=	yes
 USE_XORG=	x11
 USE_GNOME=	gtk20
-
 
 OPTIONS_SINGLE=	FIRMWARE
 OPTIONS_SINGLE_FIRMWARE=FIRMWARE_215 FIRMWARE_209

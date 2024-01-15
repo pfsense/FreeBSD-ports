@@ -1,6 +1,3 @@
-# Created by: Sofian Brabez <sbz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ltrace
 PORTVERSION=	0.6.0
 CATEGORIES=	sysutils
@@ -9,11 +6,13 @@ MASTER_SITES=	LOCAL/sbz \
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Track runtime library calls in dynamically linked programs
+WWW=		https://ltrace.org/
 
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-werror
+CONFIGURE_ARGS+=	--without-libunwind # fix build: configure is looking for and finds libunwind.h, but the C code later doesn't find libunwind-ptrace.h and breaks
 ONLY_FOR_ARCHS=	amd64
 
 OPTIONS_DEFINE=	DOCS

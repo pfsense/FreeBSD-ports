@@ -1,21 +1,20 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-
 PORTNAME=	python-memcached
 PORTVERSION=	1.59
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python API for memcached, a distributed memory cache daemon
+WWW=		https://github.com/linsomniac/python-memcached
 
 LICENSE=	PSFL
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.4.0:devel/py-six@${PY_FLAVOR}
 
-NO_ARCH=	yes
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python:3.6+
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
-
 PORTNAME=	POE-Loop-Glib
 PORTVERSION=	0.038
 PORTREVISION=	3
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Bridge that supports Glib event loop from POE
+WWW=		https://metacpan.org/release/POE-Loop-Glib
 
 LICENSE=	GPLv2
 

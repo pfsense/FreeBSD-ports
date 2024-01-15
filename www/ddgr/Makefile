@@ -1,30 +1,26 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ddgr
-PORTVERSION=	1.9
+PORTVERSION=	2.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	DuckDuckGo from the terminal
+WWW=		https://github.com/jarun/ddgr
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR}
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	jarun
 
-USES=		python:3.5+ shebangfix
+USES=		python shebangfix
 SHEBANG_FILES=	${PORTNAME}
 NO_ARCH=	yes
 NO_BUILD=	yes
 
 PORTDOCS=	README.md CHANGELOG
 PLIST_FILES=	bin/ddgr \
-		man/man1/ddgr.1.gz
+		share/man/man1/ddgr.1.gz
 
 OPTIONS_DEFINE=	BASH ZSH FISH DOCS
 OPTIONS_DEFAULT=BASH ZSH FISH
@@ -35,7 +31,7 @@ FISH_PLIST_FILES=	share/fish/completions/ddgr.fish
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/ddgr ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/ddgr.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/ddgr.1 ${STAGEDIR}${MANPREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

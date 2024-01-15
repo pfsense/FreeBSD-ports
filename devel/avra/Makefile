@@ -1,12 +1,10 @@
-# Created by: Wes Peters <@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	avra
 PORTVERSION=	1.4.2
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Macro Assembler for Atmel AVR microcontrollers
+WWW=		https://github.com/hsoft/avra
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

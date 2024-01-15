@@ -1,6 +1,3 @@
-# Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-# $FreeBSD$
-
 PORTNAME=	free-sa
 PORTVERSION=	2.0.0b6.7
 CATEGORIES=	www
@@ -10,10 +7,11 @@ DISTNAME=	free-sa-2.0.0b6p7
 
 MAINTAINER=	moiseev@mezonplus.ru
 COMMENT=	Statistic analyzer for daemons log files similar to SARG
+WWW=		https://free-sa.sourceforge.net
 
 LICENSE=	GPLv3
 
-CONFLICTS=	free-sa-[0-9]*
+CONFLICTS=	free-sa
 
 WWWDIR?=	${PREFIX}/www/${PORTNAME}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${DISTVERSION}

@@ -1,14 +1,12 @@
-# Created by: RaRa Rasputin <rasputin@submonkey.net>
-# $FreeBSD$
-
 PORTNAME=	steghide
 PORTVERSION=	0.5.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Steganography tool to hide data in binary files
+WWW=		https://steghide.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,13 +14,19 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libmcrypt.so:security/libmcrypt \
 		libmhash.so:security/mhash
 
-USES=		compiler gmake jpeg libtool:build localbase perl5
+USES=		compiler cpe gmake jpeg libtool:build localbase perl5
+CPE_VENDOR=	${PORTNAME}_project
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
+
+MAKE_ARGS=	LIBTOOL="${LOCALBASE}/bin/libtool"
+
 CPPFLAGS+=	-fpermissive
-LIBS+=		-lmcrypt
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_clang=	-Wno-static-float-init
-MAKE_ARGS=	LIBTOOL="${LOCALBASE}/bin/libtool"
+
+LIBS+=		-lmcrypt
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

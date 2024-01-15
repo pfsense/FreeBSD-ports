@@ -1,9 +1,6 @@
-# Created by: NAKATA, Maho <maho@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	blacs
 PORTVERSION=	1.7
-PORTREVISION=	38
+PORTREVISION=	40
 CATEGORIES=	math
 MASTER_SITES=	NETLIB/blacs
 DISTNAME=	BLACS
@@ -13,6 +10,7 @@ EXTRACT_ONLY=	mpiblacs.tgz blacstester.tgz mpiblacs-patch03.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BLACS (Basic Linear Algebra Communication Subprograms)
+WWW=		https://www.netlib.org/blacs/
 
 # See http://icl.cs.utk.edu/lapack-forum/archives/lapack/msg01200.html
 LICENSE=	BSD3CLAUSE
@@ -29,10 +27,10 @@ OPTIONS_DEFAULT=	DOCS MPICH
 DOCS_DISTFILES=	blacs_install.ps f77blacsqref.ps lawn94.ps \
 		cblacsqref.ps  mpi_prop.ps mpiblacs_issues.ps
 
-OPENMPI_LIB_DEPENDS=	libmpi.so:net/openmpi
+OPENMPI_USES=	mpi:openmpi
 OPENMPI_EXTRA_PATCHES=	${FILESDIR}/Bmake.inc-openmpi.diff
 
-MPICH_LIB_DEPENDS=	libmpi.so:net/mpich
+MPICH_USES=	mpi:mpich
 MPICH_EXTRA_PATCHES=	${FILESDIR}/Bmake.inc-mpich.diff
 
 .include <bsd.port.pre.mk>
@@ -45,7 +43,7 @@ F77EXTRAFLAGS+=	-fallow-argument-mismatch
 
 DEBUG_LEVEL=	0
 
-.if ${ARCH} == "sparc64" || ${ARCH} == "amd64"
+.if ${ARCH} == "amd64"
 FPIC=	-fPIC
 .else
 FPIC=	-fpic

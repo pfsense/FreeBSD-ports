@@ -3,7 +3,7 @@
  * nut_settings.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
@@ -24,12 +24,9 @@
 require("guiconfig.inc");
 require("/usr/local/pkg/nut/nut.inc");
 
-if (!is_array($config['installedpackages']['nut']['config'])) {
-	$config['installedpackages']['nut']['config'] = array();
-}
-$a_nut = &$config['installedpackages']['nut']['config'][0];
+$a_nut = config_get_path('installedpackages/nut/config/0', []);
 
-if (isset($a_nut)) {
+if (!empty($a_nut)) {
 	if (isset($a_nut['type'])) {
 		$pconfig = $a_nut;
 		$pconfig['extra_args'] = base64_decode($pconfig['extra_args']);
@@ -251,7 +248,7 @@ if ($_POST) {
 			$nut['upsd_users'] = base64_encode(trim(str_replace("\r\n", "\n", $pconfig['upsd_users'])));
 		}
 
-		$a_nut = $nut;
+		config_set_path('installedpackages/nut/config/0', $nut);
 		write_config("Updated UPS settings");
 
 		nut_sync_config();
@@ -373,9 +370,9 @@ $group->addClass('basic');
 $group->add(new Form_Checkbox(
 	'email',
 	'E-Mail',
-	'Enable E-Mail notifications',
+	'Enable notifications',
 	$pconfig['email']
-))->sethelp('E-Mail delivery settings are configured under System -> Advanced, on the Notifications tab.');
+))->sethelp('E-Mail/Telegram/Pushover delivery settings are configured under System -> Advanced, on the Notifications tab.');
 $section->add($group);
 
 $form->add($section);
@@ -464,7 +461,7 @@ $button = new Form_Button(
 	'advancedbutton',
 	'Display Advanced',
 	null,
-	'fa-cog'
+	'fa-solid fa-cog'
 );
 $button->setAttribute('type', 'button')->addClass('btn-info btn-sm');
 $section->addInput(new Form_StaticText(
@@ -678,7 +675,7 @@ events.push(function() {
 		} else {
 			text = "<?=gettext('Display Advanced');?>";
 		}
-		$('#advancedbutton').html('<i class="fa fa-cog"></i> ' + text);
+		$('#advancedbutton').html('<i class="fa-solid fa-cog"></i> ' + text);
 	}
 
 	// Show/Hide settings when the type changes

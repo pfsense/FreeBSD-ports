@@ -1,6 +1,3 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	pdf4tcl
 PORTVERSION=	0.8
 CATEGORIES=	print
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Pure Tcl library to generate PDF files
+WWW=		https://sourceforge.net/projects/pdf4tcl/
 
 OPTIONS_DEFINE=	DOCS
 

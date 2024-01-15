@@ -1,6 +1,3 @@
-# Created by: Sutra Zhou <zhoushuqun@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	ShellEd
 PORTVERSION=	1.0.2a
 PORTREVISION=	4
@@ -12,6 +9,7 @@ DIST_SUBDIR=	eclipse
 
 MAINTAINER=	zhoushuqun@gmail.com
 COMMENT=	Shell script editor for Eclipse
+WWW=		https://sourceforge.net/projects/shelled/
 
 RUN_DEPENDS=	eclipse:java/eclipse
 

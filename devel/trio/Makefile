@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	trio
 PORTVERSION=	1.16
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/c${PORTNAME}/${PORTNAME}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Fully matured and stable set of printf and string functions
+WWW=		https://daniel.haxx.se/projects/trio/
 
 LICENSE=	BSD2CLAUSE
 
@@ -31,7 +29,5 @@ do-test:
 	${CC} -o ${WRKSRC}/regression ${WRKSRC}/regression.c \
 		-L${WRKSRC} -ltrio -Wl,-rpath=${WRKSRC}
 	${WRKSRC}/regression
-
-
 
 .include <bsd.port.mk>

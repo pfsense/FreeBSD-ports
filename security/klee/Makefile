@@ -1,35 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	klee
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2
+DISTVERSION=	3.0
 CATEGORIES=	security devel
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Symbolic virtual machine built on top of LLVM
+WWW=		https://klee.github.io/
 
 LICENSE=	NCSA
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS=	i386 powerpc
 
-BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
-		gmake:devel/gmake
-# Should be a LIB_DEPEND, but hard to express in a generic manner
-RUN_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
-		${PYTHON_PKGNAMEPREFIX}tabulate>0:devel/py-tabulate@${PY_FLAVOR}
+BUILD_DEPENDS=	gmake:devel/gmake
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tabulate>0:devel/py-tabulate@${PY_FLAVOR}
 
-USES=		cmake compiler:c++14-lang localbase pkgconfig python:3.5+,run \
-		shebangfix sqlite
+USES=		cmake compiler:c++14-lang llvm:min=11,max=14,build,run,noexport localbase \
+		pkgconfig python:run shebangfix sqlite
 USE_GITHUB=	yes
 SHEBANG_FILES=	tools/klee-stats/klee-stats tools/ktest-tool/ktest-tool tools/klee-zesti/klee-zesti
 USE_LDCONFIG=	yes
 
 CMAKE_OFF=	ENABLE_POSIX_RUNTIME ENABLE_UNIT_TESTS ENABLE_SYSTEM_TESTS
-CMAKE_ARGS=	-DLLVM_CONFIG_BINARY=${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT} \
+CMAKE_ARGS=	-DLLVM_CONFIG_BINARY=${LOCALBASE}/bin/${LLVM_CONFIG} \
 		-DMAKE_BINARY=${LOCALBASE}/bin/gmake
 
-# TODO METASMT
 OPTIONS_DEFINE=		TCMALLOC
 OPTIONS_DEFAULT=	TCMALLOC Z3 STP
 OPTIONS_MULTI=		BACKEND
@@ -48,5 +43,15 @@ STP_DESC=		Enable STP SMT solver
 STP_CMAKE_BOOL=		ENABLE_SOLVER_STP
 STP_LIB_DEPENDS=	libstp.so:math/stp \
 			libcryptominisat5.so:math/cryptominisat
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64le || ${ARCH} == aarch64
+PLIST_SUB=	32BIT="@comment " \
+		64BIT=""
+.else
+PLIST_SUB=	32BIT="" \
+		64BIT=""
+.endif
 
 .include <bsd.port.mk>

@@ -1,14 +1,12 @@
-# Created by: Davíð Steinn Geirsson <david@isnic.is>
-# $FreeBSD$
-
 PORTNAME=	Redis-RateLimit
 PORTVERSION=	1.0002
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	david@isnic.is
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sliding window rate limiting with Redis
+WWW=		https://metacpan.org/pod/Redis::RateLimit
 
 LICENSE=	MIT
 

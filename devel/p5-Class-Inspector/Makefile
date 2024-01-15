@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Class-Inspector
 PORTVERSION=	1.36
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Provides information about classes
+WWW=		https://metacpan.org/release/Class-Inspector
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Tomokazu ISHII <t-ishii@tryplanet.com>
-# $FreeBSD$
-
 PORTNAME=	ftpfind
 PORTVERSION=	0.996
 CATEGORIES=	ftp

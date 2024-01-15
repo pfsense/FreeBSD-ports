@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Search-Elasticsearch-Client-0_90
 PORTVERSION=	5.02
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	ElasticSearch API for 0.90 servers
+WWW=		https://metacpan.org/release/Search-Elasticsearch-Client-0_90
 
 LICENSE=	APACHE20
 

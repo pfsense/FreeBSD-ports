@@ -1,13 +1,12 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	langid
 DISTVERSION=	1.1.6-20170715
+PORTREVISION=	1
 CATEGORIES=	textproc devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Standalone Language Identification (LangID) tool
+WWW=		https://github.com/saffsd/langid.py
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,7 +19,7 @@ GH_ACCOUNT=	saffsd
 GH_PROJECT=	${PORTNAME}.py
 GH_TAGNAME=	4153583
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_PYTHON=	distutils
 SHEBANG_GLOB=	*.py
 

@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-Libdnet
 PORTVERSION=	0.99
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Libdnet interface
+WWW=		https://metacpan.org/release/Net-Libdnet
 
 LICENSE=	BSD3CLAUSE
 

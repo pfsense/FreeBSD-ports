@@ -1,8 +1,6 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	camomile
 PORTVERSION=	0.4.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 PKGNAMEPREFIX=	ocaml-
@@ -11,6 +9,7 @@ DISTNAME=	examples-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Example programs for Camomile library
+WWW=		https://camomile.sourceforge.net/
 
 WRKSRC=		${WRKDIR}/examples
 NO_BUILD=	yes

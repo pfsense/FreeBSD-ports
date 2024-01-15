@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	xls2txt
 DISTVERSION=	1.0.1
+PORTREVISION=	28
 CATEGORIES=	databases textproc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Utilities to convert spreadsheet files to text and csv formats
+WWW=		https://github.com/masklinn/xls2txt
 
 LICENSE=	APACHE20
 
@@ -60,6 +60,8 @@ CARGO_CRATES=	adler32-1.2.0 \
 EXECUTABLES=	${PORTNAME} xls2csv
 
 PLIST_FILES=	${EXECUTABLES:S/^/bin\//}
+
+CONFLICTS_INSTALL=	catdoc libxls p5-Spreadsheet-Read
 
 post-install:
 	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} ${EXECUTABLES}

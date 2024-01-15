@@ -1,6 +1,3 @@
-# Created by: Vasil Dimov <vd@datamax.bg>
-# $FreeBSD$
-
 PORTNAME=	sparsehash
 PORTVERSION=	2.0.4
 DISTVERSIONPREFIX=	${PORTNAME}-
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	vd@FreeBSD.org
 COMMENT=	Extremely memory-efficient hash_map implementation
+WWW=		https://github.com/sparsehash/sparsehash
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +15,7 @@ USE_GITHUB=	yes
 TEST_TARGET=	check
 
 GNU_CONFIGURE=	yes
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 

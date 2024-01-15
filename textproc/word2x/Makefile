@@ -1,6 +1,3 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	word2x
 PORTVERSION=	0.005
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-zero/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Converter from MS Word to text, HTML, or LaTeX
+WWW=		https://word2x.sourceforge.net/
 
 USES=		gmake
 GNU_CONFIGURE=	yes

@@ -1,15 +1,11 @@
-# Created by: bf <bf2006a@yahoo.com>
-# $FreeBSD$
-
 PORTNAME=	unuran
-PORTVERSION=	1.8.1
-PORTREVISION=	2
+PORTVERSION=	1.11.0
 CATEGORIES=	math
-MASTER_SITES=	http://statmath.wu-wien.ac.at/unuran/ \
-		LOCAL/bf
+MASTER_SITES=	http://statmath.wu-wien.ac.at/unuran/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Universal Non-Uniform RANdom number generators
+WWW=		http://statmath.wu-wien.ac.at/unuran/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

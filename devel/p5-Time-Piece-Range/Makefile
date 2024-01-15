@@ -1,6 +1,3 @@
-# Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
-
 PORTNAME=	Time-Piece-Range
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Deal with a range of Perl Time::Piece objects
+WWW=		https://metacpan.org/release/Time-Piece-Range
 
 LICENSE=	GPLv2+
 

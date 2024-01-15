@@ -1,34 +1,33 @@
-# Created by: Oliver Breuninger <ob@seicom.NET>
-# $FreeBSD$
-
 PORTNAME=	oo2c
 PORTVERSION=	2.1.11
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	lang
 MASTER_SITES=	SF/ooc/ooc2/${PORTVERSION}
 DISTNAME=	${PORTNAME}_${BITS}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Optimizing Oberon-2 compiler of University of Kaiserslautern, Germany
+WWW=		https://ooc.sourceforge.net/OOCref/OOCref_16.html
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 RUN_DEPENDS=	libtool:devel/libtool
 LIB_DEPENDS=	libgc.so:devel/boehm-gc
 
-ONLY_FOR_ARCHS=		amd64 i386
-
 DOCSDIR=	lib/${PORTNAME}
-USES=		gmake libtool:build tar:bzip2
+USES=		gmake libtool:build localbase:ldflags tar:bzip2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
-USE_GCC=	any
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+USE_GCC=	yes
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS THREADS
+OPTIONS_SUB=	yes
+
+THREADS_DESC=	Build thread support
+THREADS_CONFIGURE_ON=	--enable-threads=pthreads
 
 post-patch:
 	@${REINPLACE_CMD} 's/dir=@/dir=$${DESTDIR}@/' \
@@ -38,7 +37,7 @@ post-patch:
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == i386
+.if ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc
 BITS=		32
 .else
 BITS=		64

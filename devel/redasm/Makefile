@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	redasm
 PORTVERSION=	2.1.1
 PORTREVISION=	1
@@ -9,11 +6,12 @@ CATEGORIES=	devel
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Interactive, multiarchitecture disassembler
+WWW=		https://redasm.io/
 
 LICENSE=	GPLv3
 
 USES=		cmake compiler:c++11-lang qt:5
-USE_QT=		buildtools_build qmake_build core gui widgets
+USE_QT=		buildtools:build qmake:build core gui widgets
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	REDasmOrg

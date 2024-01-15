@@ -2,7 +2,7 @@
 # Makefile
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2009-2021 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,8 @@ WARNS=          -Wsystem-headers -Werror -Wall -Wno-format-y2k -W \
                 -Wmissing-prototypes -Wpointer-arith -Wreturn-type \
                 -Wcast-qual -Wwrite-strings -Wswitch -Wshadow \
                 -Wunused-parameter -Wchar-subscripts -Winline \
-                -Wnested-externs -Wredundant-decls -Wno-pointer-sign
+                -Wnested-externs -Wredundant-decls -Wno-pointer-sign \
+		-Wno-format
 LDD=            -lpthread
 CFLAGS+= -O2 -pipe ${WARNS}
 

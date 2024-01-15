@@ -1,9 +1,6 @@
-# Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wiimms
 DISTVERSION=	2.23a
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	sysutils
 MASTER_SITES=	http://gugus69.free.fr/wiimms/ \
 		LOCAL/martymac
@@ -11,6 +8,7 @@ DISTNAME=	wit-${DISTVERSION}
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Wiimms ISO Tools
+WWW=		https://wit.wiimm.de/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl-2.0.txt

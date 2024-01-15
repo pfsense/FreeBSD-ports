@@ -1,6 +1,3 @@
-# Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gngb
 PORTVERSION=	20060309
 PORTREVISION=	10
@@ -9,6 +6,7 @@ MASTER_SITES=	http://m.peponas.free.fr/gngb/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GameBoy(tm) emulator
+WWW=		http://m.peponas.free.fr/gngb/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,10 +25,16 @@ OPENGL_USES=		gl
 OPENGL_USE=		GL=gl
 OPENGL_CONFIGURE_ENABLE=gl
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=int-conversion
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|"$$SDL_CONFIG" = yes|-n "$$SDL_CONFIG"|g ; \
 		 s|sdl-config |$$SDL_CONFIG |g ; \
 		 s|$$OPT||g' ${WRKSRC}/configure
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

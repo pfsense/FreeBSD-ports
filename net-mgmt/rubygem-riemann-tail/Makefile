@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	riemann-tail
 DISTVERSION=	0.0.1
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Tail Riemann event streams from the console
+WWW=		https://github.com/wkf/riemann-tail
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -17,7 +16,6 @@ RUN_DEPENDS=	rubygem-colorize>=0:devel/rubygem-colorize \
 		rubygem-thor0>=0:devel/rubygem-thor0
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,15 +1,12 @@
-# Created by: Matt Dawson <matt@mattsnetwork.co.uk>
-# $FreeBSD$
-
 PORTNAME=	xdx
-PORTVERSION=	2.4
-PORTREVISION=	7
+DISTVERSION=	2.91
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
-MASTER_SITES=	http://www.chronos.org.uk/download/ \
-		LOCAL/db
+MASTER_SITES=	SF/xdxclusterclient/${PORTVERSION}/
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio DX cluster monitor
+WWW=		https://sourceforge.net/projects/xdxclusterclient/
 
 LICENSE=	GPLv2
 
@@ -17,12 +14,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
 USES=		gettext gmake gnome pkgconfig
-USE_GNOME=	cairo gtk20 gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf2 gtk30
 
 GNU_CONFIGURE=	yes
-
-#post-patch:
-#	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} -e \
-#		's|-D.*_DISABLE_DEPRECATED||g'
 
 .include <bsd.port.mk>

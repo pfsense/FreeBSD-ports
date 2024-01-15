@@ -1,6 +1,3 @@
-# Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
-
 PORTNAME=	LWP-UserAgent-WithCache
 PORTVERSION=	0.13
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	LWP::UserAgent extension with local cache
+WWW=		https://metacpan.org/release/LWP-UserAgent-WithCache
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

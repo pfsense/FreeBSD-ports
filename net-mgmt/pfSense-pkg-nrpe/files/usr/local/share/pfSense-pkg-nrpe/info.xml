@@ -7,6 +7,6 @@ to the main Nagios server.]]></descr>
 		<website>http://www.nagios.org/</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>nrpe.xml</configurationfile>
-		<after_install_info>Please visit Services - Nrpe - for configurations</after_install_info>
+		<after_install_info>Please visit Services - NRPE for configuration</after_install_info>
 	</package>
 </pfsensepkgs>

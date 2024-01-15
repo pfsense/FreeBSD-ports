@@ -1,14 +1,12 @@
-# Created by: Randall Hopper <aa8vb@nc.rr.com>
-# $FreeBSD$
-
 PORTNAME=	osg
 PORTVERSION=	3.6.5
 DISTVERSIONPREFIX=	OpenSceneGraph-
-PORTREVISION=	14
+PORTREVISION=	65
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	C++ OpenGL scene graph library for real-time rendering
+WWW=		https://www.openscenegraph.org/
 
 LICENSE=	OSGPL
 LICENSE_NAME=	OpenSceneGraph Public License
@@ -22,12 +20,15 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	openscenegraph
 GH_PROJECT=	OpenSceneGraph
 
-CONFLICTS_INSTALL=osg34-[0-9]*
+CONFLICTS_INSTALL=osg34
 
 USES=		alias cmake compiler:c11 jpeg gl pkgconfig xorg
 USE_GL=		gl
 USE_XORG=	x11
 USE_LDCONFIG=	yes
+USE_CXXSTD=	c++11
+
+CFLAGS+=	-I${LOCALBASE}/include/Imath -DInt64=uint64_t
 
 PLIST_SUB=	OSG_VERSION=${PORTVERSION} \
 		OSG_SHLIBVER=161 \
@@ -54,7 +55,7 @@ COLLADA_DESC=		COLLADA (dae) format support
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_VARS=		FORCE_REQUIRE+=CURL
 CURL_VARS_OFF=		FORCE_IGNORE+=CURL
-FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+FFMPEG_LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4
 FFMPEG_VARS=		FORCE_REQUIRE+=FFmpeg
 FFMPEG_VARS_OFF=	FORCE_IGNORE+=FFmpeg
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
@@ -68,10 +69,10 @@ GDAL_VARS_OFF=		FORCE_IGNORE+=GDAL
 GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 GIF_VARS=		FORCE_REQUIRE+=GIFLIB
 GIF_VARS_OFF=		FORCE_IGNORE+=GIFLIB
-GSTREAMER_USE=		GNOME=glib20 GSTREAMER1=yes
+GSTREAMER_USES=		gnome gstreamer
+GSTREAMER_USE=		GNOME=glib20
 GSTREAMER_VARS=		FORCE_REQUIRE+="GStreamer GLIB"
 GSTREAMER_VARS_OFF=	FORCE_IGNORE+="GStreamer GLIB"
-GSTREAMER_BROKEN=	fails when linking gstreamer plugin, with error cannot find -lgstreamer-1.0
 GTA_LIB_DEPENDS=	libgta.so:devel/libgta
 GTA_VARS=		FORCE_REQUIRE+=GTA
 GTA_VARS_OFF=		FORCE_IGNORE+=GTA
@@ -88,16 +89,19 @@ LUA_VARS_OFF=		FORCE_IGNORE+="Lua51 Lua52"
 NVTT_LIB_DEPENDS=	libnvtt.so:graphics/nvidia-texture-tools
 NVTT_VARS=		FORCE_REQUIRE+=NVTT
 NVTT_VARS_OFF=		FORCE_IGNORE+=NVTT
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr libImath.so:math/Imath
 OPENEXR_VARS=		FORCE_REQUIRE+=OpenEXR
 OPENEXR_VARS_OFF=	FORCE_IGNORE+=OpenEXR
 PDF_LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
+PDF_USES=		gnome
 PDF_USE=		GNOME=cairo
 PDF_VARS=		FORCE_REQUIRE+=Poppler-glib
 PDF_VARS_OFF=		FORCE_IGNORE+=Poppler-glib
+SDL_USES=		sdl
 SDL_USE=		SDL=sdl
 SDL_VARS=		FORCE_REQUIRE+=SDL
 SDL_VARS_OFF=		FORCE_IGNORE+=SDL
+SVG_USES=		gnome
 SVG_USE=		GNOME=cairo,librsvg2
 SVG_VARS=		FORCE_REQUIRE+=RSVG
 SVG_VARS_OFF=		FORCE_IGNORE+=RSVG
@@ -128,6 +132,7 @@ COLLADA_VARS_OFF=	FORCE_IGNORE+=COLLADA
 ASIO_BUILD_DEPENDS=	${LOCALBASE}/include/asio.hpp:net/asio
 ASIO_VARS=		FORCE_REQUIRE+=Asio
 ASIO_VARS_OFF=		FORCE_IGNORE+=Asio
+ASIO_BROKEN=		does not build: no member named 'get_io_service' in 'asio::basic_socket_acceptor<asio::ip::tcp, asio::executor>'
 
 # GUI toolkits are only needed for building examples, which are not even installed
 FORCE_IGNORE=	FLTK FOX wxWidgets GtkGl SDL2		# only for examples
@@ -144,6 +149,8 @@ post-patch:
 		${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g'
 	@${REINPLACE_CMD} -e '/FIND_LIBRARY.*DL_LIBRARY/ d; \
 		s|-pedantic||' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${PATCH_WRKSRC}/CMakeModules/FindFFmpeg.cmake
 .for p in ${FORCE_REQUIRE}
 	@${REINPLACE_CMD} -e '/FIND_PACKAGE.*${p}/ s|)$$| REQUIRED&|' \
 		${WRKSRC}/CMakeLists.txt

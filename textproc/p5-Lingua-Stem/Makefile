@@ -1,6 +1,3 @@
-# Created by: Thorsten Greiner <thorsten.greiner@web.de>
-# $FreeBSD$
-
 PORTNAME=	Lingua-Stem
 PORTVERSION=	2.31
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Provides word stemming algorithms localized by language
+WWW=		https://metacpan.org/release/Lingua-Stem
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -2,7 +2,7 @@
  * filterdns.c
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <pthread_np.h>
+#include <semaphore.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,10 +44,13 @@
 int debug = 0;
 static int interval = 30;
 static char *file = NULL;
+static sem_t merge_sem;
+static uint32_t merge_state;
 static pthread_attr_t g_attr;
-static pthread_cond_t sig_condvar;
-static pthread_mutex_t sig_mtx;
 static pthread_rwlock_t main_lock;
+
+TAILQ_HEAD(thread_list, thread_host) thread_list;
+TAILQ_HEAD(action_list, action) action_list;
 
 static void host_del(struct action *);
 static void action_del(struct action *, struct action_list *);
@@ -76,77 +80,79 @@ action_to_string(int type)
 static void *
 check_action(void *arg)
 {
-	int error, update;
+	int error = 0, update = 0;
 	struct action *act;
 	struct _addr_entry *ent, *enttmp;
 
+	pthread_rwlock_rdlock(&main_lock);
 	act = (struct action *)arg;
-	pthread_mutex_lock(&act->mtx);
 	act->state = THR_RUNNING;
 	for (;;) {
-		pthread_cond_wait(&act->cond, &act->mtx);
-		if (debug >= 6)
-			syslog(LOG_WARNING,
-			    "\tAwaking from the sleep for type: %s %s%s%shostname: %s",
+		pthread_rwlock_unlock(&main_lock);
+		sem_wait(&act->sem);
+		if (act == NULL || act->host == NULL) {
+			break;
+		}
+		pthread_rwlock_rdlock(&main_lock);
+		if (debug >= 6) {
+			LOG(LOG_WARNING,
+			    "\tAwaking from the sleep for type: %s %s%s%s%s%s%shostname: %s",
 			    action_to_string(act->type),
 			    (act->tablename != NULL ? "table: " : ""),
 			    (act->tablename != NULL ? act->tablename : ""),
 			    (act->tablename != NULL ? " " : ""),
-			    act->hostname);
-
-		pthread_rwlock_rdlock(&main_lock);
+			    (act->anchor != NULL ? "anchor: " : ""),
+			    (act->anchor != NULL ? act->anchor : ""),
+			    (act->anchor != NULL ? " " : ""),
+			    (act->hostname != NULL) ? act->hostname: "");
+		}
 		if (act->flags & ACT_FORCE)
 			act->flags &= ~ACT_FORCE;
-		if (act->host != NULL) {
-			TAILQ_FOREACH(ent, &act->rnh, entry) {
-				if (ent->flags & ADDR_STATIC)
-					continue;
-				ent->flags |= ADDR_OLD;
+		TAILQ_FOREACH(ent, &act->rnh, entry) {
+			if (ent->flags & ADDR_STATIC) {
+				continue;
 			}
+			ent->flags |= ADDR_OLD;
+		}
 
-			/* Copy... */
-			TAILQ_FOREACH(ent, &act->host->rnh, entry) {
-				addr_add(&act->rnh, NULL, ent->addr, (ent->flags & ADDR_STATIC));
-			}
+		/* Copy... */
+		TAILQ_FOREACH(ent, &act->host->rnh, entry) {
+			addr_add(&act->rnh, NULL, ent->addr, (ent->flags & ADDR_STATIC));
+		}
 
-			update = 0;
-			TAILQ_FOREACH_SAFE(ent, &act->rnh, entry, enttmp) {
-				if (ent->flags & ADDR_NEW) {
-					ent->flags &= ~ADDR_NEW;
-					update++;
-				}
-				if (ent->flags & ADDR_OLD) {
-					addr_del(&act->rnh, NULL, ent);
-					update++;
-				}
+		update = 0;
+		TAILQ_FOREACH_SAFE(ent, &act->rnh, entry, enttmp) {
+			if (ent->flags & ADDR_NEW) {
+				ent->flags &= ~ADDR_NEW;
+				update++;
 			}
-			if (update > 0 && act->tablename != NULL) {
-				error = table_update(act);
-				if (debug >= 4)
-					syslog(LOG_WARNING,
-					    "\tUpdated %s table %s host: %s error: %d",
-					    action_to_string(act->type),
-					    act->tablename, act->hostname,
-					    error);
+			if (ent->flags & ADDR_OLD) {
+				addr_del(&act->rnh, NULL, ent);
+				update++;
 			}
 		}
-		pthread_rwlock_unlock(&main_lock);
+		if (update > 0 && act->tablename != NULL) {
+			error = table_update(act);
+			if (debug >= 4)
+				LOG(LOG_WARNING,
+				    "\tUpdated %s table %s anchor %s host: %s error: %d",
+				    action_to_string(act->type),
+				    act->tablename, act->anchor, act->hostname,
+				    error);
+		}
 
 		if (act->cmd != NULL) {
 			error = system(act->cmd);
 			if (debug >= 2)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "\tRan command '%s' with exit status %d because a dns change on hostname %s was detected.",
 				    act->cmd, error, act->hostname);
 		}
 	}
+	pthread_rwlock_unlock(&main_lock);
 	act->state = THR_DYING;
-	pthread_mutex_unlock(&act->mtx);
-
-	pthread_mutex_destroy(&act->mtx);
-	pthread_cond_destroy(&act->cond);
-	action_del(act, &action_list);
-
+	sem_post(&act->exit_sem);
+	act->state = THR_STOPPED;
 	return (NULL);
 }
 
@@ -159,20 +165,27 @@ action_create(struct action *act, pthread_attr_t *attr)
 	act->state = THR_STARTING;
 	act->flags = ACT_FORCE;
 	if (debug > 3)
-		syslog(LOG_INFO,
-		    "Creating a new thread for action type: %s %s%s%shostname: %s",
+		LOG(LOG_INFO,
+		    "Creating a new thread for action type: %s %s%s%s%s%s%shostname: %s",
 		    action_to_string(act->type),
 		    (act->tablename != NULL ? "table: " : ""),
 		    (act->tablename != NULL ? act->tablename : ""),
 		    (act->tablename != NULL ? " " : ""),
+		    (act->anchor != NULL ? "anchor: " : ""),
+		    (act->anchor != NULL ? act->anchor : ""),
+		    (act->anchor != NULL ? " " : ""),
 		    act->hostname);
 
-	if (pthread_cond_init(&act->cond, NULL) != 0 ||
-	    pthread_mutex_init(&act->mtx, NULL) != 0)
+	if (sem_init(&act->sem, 0, 0) != 0) {
 		return (-1);
+	}
+	if (sem_init(&act->exit_sem, 0, 0) != 0) {
+		sem_destroy(&act->sem);
+		return (-1);
+	}
 	if (pthread_create(&act->thr_pid, attr, check_action, act) != 0) {
-		pthread_mutex_destroy(&act->mtx);
-		pthread_cond_destroy(&act->cond);
+		sem_destroy(&act->sem);
+		sem_destroy(&act->exit_sem);
 		return (-1);
 	}
 #if 0
@@ -182,8 +195,8 @@ action_create(struct action *act, pthread_attr_t *attr)
 }
 
 struct action *
-action_add(int type, const char *hostname, const char *tablename, int pipe,
-    const char *cmd, int *eexist)
+action_add(int type, const char *hostname, const char *tablename,
+    const char *anchor, int pipe, const char *cmd, int *eexist)
 {
 	char *buf, tmp[16];
 	struct action *search, *act;
@@ -197,6 +210,13 @@ action_add(int type, const char *hostname, const char *tablename, int pipe,
 		if (search->tablename != NULL && tablename != NULL &&
 		    (strlen(search->tablename) != strlen(tablename) ||
 		    strcmp(search->tablename, tablename) != 0))
+			continue;
+		if ((search->anchor != NULL && anchor == NULL) ||
+		    (search->anchor == NULL && anchor != NULL))
+			continue;
+		if (search->anchor != NULL && anchor != NULL &&
+		    (strlen(search->anchor) != strlen(anchor) ||
+		    strcmp(search->anchor, anchor) != 0))
 			continue;
 		if ((search->cmd != NULL && cmd == NULL) ||
 		    (search->cmd == NULL && cmd != NULL))
@@ -229,6 +249,8 @@ action_add(int type, const char *hostname, const char *tablename, int pipe,
 		act->cmd = strdup(cmd);
 	if (tablename != NULL)
 		act->tablename = strdup(tablename);
+	if (anchor != NULL)
+		act->anchor = strdup(anchor);
 	TAILQ_INSERT_TAIL(&action_list, act, next_list);
 
 	buf = calloc(1, _BUF_SIZE);
@@ -237,6 +259,10 @@ action_add(int type, const char *hostname, const char *tablename, int pipe,
 	if (tablename != NULL) {
 		strlcat(buf, " table: ", _BUF_SIZE);
 		strlcat(buf, tablename, _BUF_SIZE);
+	}
+	if (anchor != NULL) {
+		strlcat(buf, " anchor: ", _BUF_SIZE);
+		strlcat(buf, anchor, _BUF_SIZE);
 	}
 	if (type == IPFW_TYPE && pipe > 0) {
 		strlcat(buf, " pipe: ", _BUF_SIZE);
@@ -252,7 +278,7 @@ action_add(int type, const char *hostname, const char *tablename, int pipe,
 		strlcat(buf, " host: ", _BUF_SIZE);
 		strlcat(buf, hostname, _BUF_SIZE);
 	}
-	syslog(LOG_WARNING, "%s", buf);
+	LOG(LOG_WARNING, "%s", buf);
 	free(buf);
 
 	return (act);
@@ -262,23 +288,32 @@ static void
 action_del(struct action *act, struct action_list *actlist)
 {
 	if (debug >= 4)
-		syslog(LOG_INFO,
-		    "Cleaning up action type: %s %s%s%shostname: %s",
+		LOG(LOG_INFO,
+		    "Cleaning up action type: %s %s%s%s%s%s%shostname: %s",
 		    action_to_string(act->type),
 		    (act->tablename != NULL ? "table: " : ""),
 		    (act->tablename != NULL ? act->tablename : ""),
 		    (act->tablename != NULL ? " " : ""),
-		    act->hostname);
+		    (act->anchor != NULL ? "anchor: " : ""),
+		    (act->anchor != NULL ? act->anchor : ""),
+		    (act->anchor != NULL ? " " : ""),
+		    (act->hostname != NULL ? act->hostname : ""));
 	host_del(act);
 	TAILQ_REMOVE(actlist, act, next_list);
 	addr_cleanup(&act->rnh, NULL);
 	table_cleanup(act);
+
 	if (act->hostname != NULL)
 		free(act->hostname);
 	if (act->tablename != NULL)
 		free(act->tablename);
+	if (act->anchor != NULL)
+		free(act->anchor);
 	if (act->cmd != NULL)
 		free(act->cmd);
+	sem_destroy(&act->sem);
+	sem_destroy(&act->exit_sem);
+
 	free(act);
 }
 
@@ -318,7 +353,7 @@ host_add(struct action *act)
 		thr->mask = strtol(p + 1, &q, 0);
 		thr->mask6 = thr->mask;
 		if (!q || *q || thr->mask > 128 || q == (p + 1)) {
-			syslog(LOG_WARNING,
+			LOG(LOG_WARNING,
 			    "invalid netmask '%s' for hostname %s\n", p,
 			    thr->hostname);
 			free(thr);
@@ -334,12 +369,12 @@ host_add(struct action *act)
 	TAILQ_INSERT_TAIL(&thr->actions, act, next_actions);
 	act->host = thr;
 
-	if (thr->mask >= 0)
-		syslog(LOG_WARNING, "\t\tAdding host %s/%d", thr->hostname,
+	if (thr->mask >= 0) {
+		LOG(LOG_WARNING, "\t\tAdding host %s/%d", thr->hostname,
 		    thr->mask);
-	else
-		syslog(LOG_WARNING, "\t\tAdding host %s", thr->hostname);
-
+	} else {
+		LOG(LOG_WARNING, "\t\tAdding host %s", thr->hostname);
+	}
 	return (thr);
 }
 
@@ -352,10 +387,13 @@ host_del(struct action *act)
 	if (thr != NULL) {
 		thr->refcnt--;
 		TAILQ_REMOVE(&thr->actions, act, next_actions);
-		act->host = NULL;
-		pthread_mutex_lock(&thr->mtx);
-		pthread_cond_signal(&thr->cond);
-		pthread_mutex_unlock(&thr->mtx);
+		act->host = NULL; /* should cause any associated thread to exit */
+
+		if (act->state > THR_DYING) {
+			sem_post(&act->sem);
+			sem_wait(&act->exit_sem);
+		}
+		sem_post(&thr->sem);
 	}
 }
 
@@ -392,7 +430,7 @@ addr_add(struct addr_list *head, const char *hostname, struct sockaddr *addr,
 		else if (addr->sa_family == AF_INET6)
 			inet_ntop(addr->sa_family, &satosin6(addr)->sin6_addr.s6_addr,
 			    buffer, sizeof(buffer));
-		syslog(LOG_NOTICE, "\t\t\tadding address %s for host %s",
+		LOG(LOG_NOTICE, "\t\t\tadding address %s for host %s",
 		    buffer, hostname);
 	}
 
@@ -414,7 +452,7 @@ addr_del(struct addr_list *head, const char *hostname, struct _addr_entry *addr)
 			inet_ntop(addr->addr->sa_family,
 			    &satosin6(addr->addr)->sin6_addr.s6_addr,
 			    buffer, sizeof(buffer));
-		syslog(LOG_NOTICE, "\t\t\tremoving address %s from host %s",
+		LOG(LOG_NOTICE, "\t\t\tremoving address %s from host %s",
 		    buffer, hostname);
 	}
 	TAILQ_REMOVE(head, addr, entry);
@@ -436,7 +474,7 @@ host_dns(struct thread_host *thr)
 {
 	struct addrinfo hints, *res0, *res;
 	char buffer[INET6_ADDRSTRLEN];
-	int error;
+	int error = 0;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
@@ -444,7 +482,7 @@ host_dns(struct thread_host *thr)
 	res0 = NULL;
 	error = getaddrinfo(thr->hostname, NULL, &hints, &res0);
 	if (error) {
-		syslog(LOG_WARNING,
+		LOG(LOG_WARNING,
 		    "failed to resolve host %s will retry later again.",
 		    thr->hostname);
 		if (res0 != NULL)
@@ -455,21 +493,21 @@ host_dns(struct thread_host *thr)
 	for (res = res0; res; res = res->ai_next) {
 		if (res->ai_addr == NULL) {
 			if (debug >=4)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "Skipping empty address for hostname %s",
 				    thr->hostname);
 			continue;
 		}
 		if (res->ai_family == AF_INET) {
 			if (debug > 9)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "\t\tfound address %s for host %s",
 				    inet_ntop(res->ai_family,
 				    res->ai_addr->sa_data + 2, buffer,
 				    sizeof buffer), thr->hostname);
 		} else if (res->ai_family == AF_INET6) {
 			if (debug > 9)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "\t\tfound address %s for host %s",
 				    inet_ntop(res->ai_family,
 					res->ai_addr->sa_data + 6, buffer,
@@ -515,6 +553,7 @@ check_hostname(void *arg)
 	struct sockaddr_in6 in6;
 	struct action *act;
 	int update;
+	int ret;
 
  	thr = (struct thread_host *)arg;
 	if (!thr->hostname)
@@ -527,7 +566,7 @@ check_hostname(void *arg)
 		if (thr->mask == -1)
 			thr->mask = 32;
 		if (thr->mask > 32) {
-			syslog(LOG_WARNING,
+			LOG(LOG_WARNING,
 			    "invalid mask for %s/%d",
 			    thr->hostname, thr->mask);
 			thr->mask = 32;
@@ -538,17 +577,15 @@ check_hostname(void *arg)
 		addr_add(&thr->rnh, thr->hostname, (struct sockaddr *)&in6,
 		    ADDR_STATIC);
 
-	pthread_mutex_lock(&thr->mtx);
 	thr->state = THR_RUNNING;
 	for (;;) {
 		clock_gettime(CLOCK_MONOTONIC, &ts);
 		ts.tv_sec += interval;
-		ts.tv_sec += (interval % 30);
 		ts.tv_nsec = 0;
 
 		/* It is safe to ignore the locking here. */
 		if (thr->refcnt == 0)
-			break;
+			goto out;
 
 		/*
 		 * Avoid deadlocks, retry later when we cannot acquire the main
@@ -579,65 +616,68 @@ check_hostname(void *arg)
 		}
 
 		if (update > 0 && debug >= 4)
-			syslog(LOG_WARNING, "Change detected on host: %s",
+			LOG(LOG_WARNING, "Change detected on host: %s",
 			    thr->hostname);
 		TAILQ_FOREACH(act, &thr->actions, next_actions) {
 			if (update == 0 && (act->flags & ACT_FORCE) == 0)
 				continue;
-			pthread_mutex_lock(&act->mtx);
-			pthread_cond_signal(&act->cond);
-			pthread_mutex_unlock(&act->mtx);
+			sem_post(&act->sem);
 		}
 
 		pthread_rwlock_unlock(&main_lock);
 
 again:
-		/* Hack for sleeping a thread */
-		pthread_cond_timedwait(&thr->cond, &thr->mtx, &ts);
-		if (debug >= 6)
-			syslog(LOG_WARNING,
+		/*
+		 * Receiving a signal can interrupt sem_clockwait_np(), So we
+		 * loop on error until we get ETIMEDOUT, or drop out if our
+		 * semaphore becomes invalid.
+		 */
+		ret = sem_clockwait_np(&thr->sem, CLOCK_MONOTONIC,
+		    TIMER_ABSTIME, &ts, NULL);
+		while (ret < 0) {
+			if (errno == ETIMEDOUT) {
+				break;
+			} else if (errno == EINVAL) {
+				goto out;
+			}
+			ret = sem_clockwait_np(&thr->sem, CLOCK_MONOTONIC,
+			    TIMER_ABSTIME, &ts, NULL);
+		}
+		if (debug >= 6) {
+			LOG(LOG_WARNING,
 			    "\tAwaking from the sleep for hostname %s (%d)",
 			    thr->hostname, thr->refcnt);
+		}
+
 	}
+out:
 	thr->state = THR_DYING;
-	pthread_mutex_unlock(&thr->mtx);
 
 	if (debug >= 4)
-		syslog(LOG_INFO, "Cleaning up hostname %s", thr->hostname);
-	pthread_mutex_destroy(&thr->mtx);
-	pthread_cond_destroy(&thr->cond);
+		LOG(LOG_INFO, "Cleaning up hostname %s", thr->hostname);
+	sem_destroy(&thr->sem);
 	TAILQ_REMOVE(&thread_list, thr, next);
 	addr_cleanup(&thr->rnh, thr->hostname);
 	if (thr->hostname != NULL)
 		free(thr->hostname);
-	free(thr);
-
+	thr->state = THR_STOPPED;
 	return (NULL);
 }
 
 static int
 check_hostname_create(struct thread_host *thr, pthread_attr_t *attr)
 {
-	pthread_condattr_t condattr;
-
 	if (thr->state != 0)
 		return (-1);
 	thr->state = THR_STARTING;
 	if (debug > 3)
-		syslog(LOG_INFO, "Creating a new thread for host %s",
+		LOG(LOG_INFO, "Creating a new thread for host %s",
 		    thr->hostname);
-	if (pthread_mutex_init(&thr->mtx, NULL) != 0)
-		return (-1);
-	if (pthread_condattr_init(&condattr) != 0 ||
-	    pthread_condattr_setclock(&condattr, CLOCK_MONOTONIC) != 0 ||
-	    pthread_cond_init(&thr->cond, &condattr) != 0 ||
-	    pthread_condattr_destroy(&condattr) != 0) {
-		pthread_mutex_destroy(&thr->mtx);
+	if (sem_init(&thr->sem, 0, 0) != 0) {
 		return (-1);
 	}
 	if (pthread_create(&thr->thr_pid, attr, check_hostname, thr) != 0) {
-		pthread_mutex_destroy(&thr->mtx);
-		pthread_cond_destroy(&thr->cond);
+		sem_destroy(&thr->sem);
 		return (-1);
 	}
 	pthread_set_name_np(thr->thr_pid, thr->hostname);
@@ -672,17 +712,19 @@ merge_config(void *arg __unused) {
 
 	TAILQ_INIT(&tmp_action_list);
 	TAILQ_INIT(&new_action_list);
-
+	merge_state = THR_RUNNING;
 	for (;;) {
-		pthread_mutex_lock(&sig_mtx);
-		if (pthread_cond_wait(&sig_condvar, &sig_mtx) != 0) {
-			syslog(LOG_ERR,
+		if (sem_wait(&merge_sem) != 0) {
+			LOG(LOG_ERR,
 			    "unable to wait on output queue retrying");
 			continue;
 		}
-		pthread_mutex_unlock(&sig_mtx);
 
-		syslog(LOG_INFO, "%s: configuration reload", __func__);
+		if (merge_state == THR_DYING) {
+			break;
+		}
+
+		LOG(LOG_INFO, "%s: configuration reload", __func__);
 		pthread_rwlock_wrlock(&main_lock);
 	 	if (!TAILQ_EMPTY(&action_list)) {
 			count = 0;
@@ -692,12 +734,12 @@ merge_config(void *arg __unused) {
 				count++;
 			}
 			if (debug > 3)
-				syslog(LOG_INFO, "Copied %d actions to old\n",
+				LOG(LOG_INFO, "Copied %d actions to old\n",
 				    count);
 		}
 
 		if (parse_config(file)) {
-			syslog(LOG_ERR,
+			LOG(LOG_ERR,
 			    "could not parse new configuration file, exiting..."
 			    );
 			exit(10);
@@ -710,7 +752,7 @@ merge_config(void *arg __unused) {
 				count++;
 			}
 			if (debug > 3)
-				syslog(LOG_INFO, "Copied %d actions tonew\n",
+				LOG(LOG_INFO, "Copied %d actions to new\n",
 				    count);
 		}
 
@@ -731,6 +773,13 @@ merge_config(void *arg __unused) {
 				    (strlen(tmpact->tablename) != strlen(act->tablename) ||
 				     strcmp(tmpact->tablename, act->tablename) != 0))
 					continue;
+				if ((tmpact->anchor == NULL && act->anchor != NULL) ||
+				    (tmpact->anchor != NULL && act->anchor == NULL))
+					continue;
+				if (tmpact->anchor != NULL && act->anchor != NULL &&
+				    (strlen(tmpact->anchor) != strlen(act->anchor) ||
+				     strcmp(tmpact->anchor, act->anchor) != 0))
+					continue;
 
 				/* Remove the new copy and use the existing entry. */
 				TAILQ_REMOVE(&tmp_action_list, tmpact, next_list);
@@ -747,21 +796,19 @@ merge_config(void *arg __unused) {
 			}
 		}
 		if (debug > 3) {
-			syslog(LOG_INFO,
+			LOG(LOG_INFO,
 			    "Loaded actions: %d old and %d new = %d total",
 			    count1, count2, count1 + count2);
-			syslog(LOG_INFO, "Cleaning up previous actions");
+			LOG(LOG_INFO, "Cleaning up previous actions");
 		}
 		count = clear_config(&tmp_action_list);
 		if (count > 0 && debug > 3)
-			syslog(LOG_INFO, "Stopped %d old actions\n", count);
+			LOG(LOG_INFO, "Stopped %d old actions\n", count);
 
 		if (!TAILQ_EMPTY(&new_action_list) ||
 		    !TAILQ_EMPTY(&tmp_action_list))
 			errx(6, "assert: temporary lists are not empty.");
-		pthread_rwlock_unlock(&main_lock);
 
-		pthread_rwlock_rdlock(&main_lock);
 		TAILQ_FOREACH(act, &action_list, next_list) {
 			if (act->state != 0)
 				continue;
@@ -777,40 +824,38 @@ merge_config(void *arg __unused) {
 		}
 		/* Make check_hostname() run. */
 		TAILQ_FOREACH(thr, &thread_list, next) {
-			if (thr->state != THR_RUNNING)
+			/* Don't post for threads that aren't running */
+			if (thr->state != THR_RUNNING && thr->state != THR_STARTING)
 				continue;
-			pthread_cond_signal(&thr->cond);
+			sem_post(&thr->sem);
 		}
 		pthread_rwlock_unlock(&main_lock);
 	}
 
-	return (NULL);
+	pthread_rwlock_wrlock(&main_lock);
+	clear_config(&action_list);
+	pthread_rwlock_unlock(&main_lock);
+	LOG(LOG_INFO, "Waiting 2 seconds for threads to finish");
+	sleep(2);
+	exit(0);
 }
 
 static void
 handle_signal(int sig)
 {
 	if (debug >= 3)
-		syslog(LOG_WARNING, "Received signal %s(%d).", strsignal(sig),
+		LOG(LOG_WARNING, "Received signal %s(%d).", strsignal(sig),
 		    sig);
 	switch (sig) {
-		case SIGHUP:
-			pthread_mutex_lock(&sig_mtx);
-			pthread_cond_signal(&sig_condvar);
-			pthread_mutex_unlock(&sig_mtx);
-			break;
-		case SIGTERM:
-		case SIGINT:
-			pthread_rwlock_wrlock(&main_lock);
-			clear_config(&action_list);
-			pthread_rwlock_unlock(&main_lock);
-			syslog(LOG_INFO, "Waiting 2 seconds for threads to finish");
-			sleep(2);
-			exit(0);
-			break;
-		default:
-			if (debug >= 3)
-				syslog(LOG_WARNING, "unhandled signal");
+	case SIGTERM: /* fallthrough */
+	case SIGINT:
+		merge_state = THR_DYING;
+	case SIGHUP: /* fallthrough */
+		sem_post(&merge_sem);
+		break;
+	default:
+		if (debug >= 3)
+			LOG(LOG_WARNING, "unhandled signal");
 	}
 }
 
@@ -824,14 +869,14 @@ filterdns_usage(void)
 int
 main(int argc, char *argv[])
 {
-	FILE *pidfd;
-	char *pidfile;
-	int ch, foreground;
-	pthread_t sig_thr;
-	sig_t sig_error;
-	struct action *act;
-	struct thread_host *thr;
-	uid_t uid;
+	FILE *pidfd = NULL;
+	char *pidfile = NULL;
+	int ch = 0, foreground = 0;
+	pthread_t merge_thr;
+	sig_t sig_error = 0;
+	struct action *act = NULL;
+	struct thread_host *thr = NULL;
+	uid_t uid = 0;
 
 	/*
 	 * Check if filterdns is running as root.  root access is needed later
@@ -841,8 +886,6 @@ main(int argc, char *argv[])
 		errx(1, "filterdns can only run as root (uid=%d).", uid);
 
 	file = NULL;
-	pidfile = NULL;
-	foreground = 0;
 	while ((ch = getopt(argc, argv, "c:d:fi:p:v")) != -1) {
 		switch (ch) {
 		case 'c':
@@ -893,7 +936,7 @@ main(int argc, char *argv[])
 	TAILQ_INIT(&action_list);
 	TAILQ_INIT(&thread_list);
 	if (parse_config(file)) {
-		syslog(LOG_ERR, "unable to open configuration file");
+		LOG(LOG_ERR, "unable to open configuration file");
 		errx(1, "cannot open the configuration file.");
 	}
 
@@ -911,7 +954,7 @@ main(int argc, char *argv[])
 			flock(fileno(pidfd), LOCK_UN);
 			fclose(pidfd);
 		} else {
-			syslog(LOG_WARNING, "could not open pid file");
+			LOG(LOG_WARNING, "could not open pid file");
 			err(2, "could not open pid file: ");
 		}
 	}
@@ -927,7 +970,6 @@ main(int argc, char *argv[])
 	if (sig_error == SIG_ERR)
 		err(EX_OSERR, "unable to set signal handler");
 
-	pthread_rwlock_init(&main_lock, NULL);
 	pthread_attr_init(&g_attr);
 	pthread_attr_setdetachstate(&g_attr, PTHREAD_CREATE_DETACHED);
 
@@ -941,15 +983,15 @@ main(int argc, char *argv[])
 			    thr->hostname);
 	}
 
-	/* Config reload. */
-	pthread_mutex_init(&sig_mtx, NULL);
-	pthread_cond_init(&sig_condvar, NULL);
-	if (pthread_create(&sig_thr, &g_attr, merge_config, NULL) != 0) {
+	/* Config reload, exit. */
+	sem_init(&merge_sem, 0, 0);
+	merge_state = THR_STARTING;
+	if (pthread_create(&merge_thr, &g_attr, merge_config, NULL) != 0) {
 		if (debug >= 1)
-			syslog(LOG_ERR, "Unable to create signal thread %s",
+			LOG(LOG_ERR, "Unable to create configuration  merge thread %s",
 			    thr->hostname);
 	}
-	pthread_set_name_np(sig_thr, "signal-thread");
+	pthread_set_name_np(merge_thr, "merge-thread");
 
 	pthread_exit(NULL);
 }

@@ -1,9 +1,6 @@
-# Created by: dirk.meyer@dinoex.sub.org
-# $FreeBSD$
-
 PORTNAME=	gnustep-app
 PORTVERSION=	2.0.0
-PORTREVISION=	16
+PORTREVISION=	20
 CATEGORIES=	x11 gnustep
 
 MAINTAINER=	ports@FreeBSD.org
@@ -19,7 +16,6 @@ RUN_DEPENDS=	aclock>0:x11-clocks/aclock \
 		appwrapper>0:deskutils/appwrapper \
 		batmon>0:sysutils/batmon \
 		biococoa>0:biology/biococoa \
-		camera>0:graphics/camera \
 		camerakit>0:graphics/camerakit \
 		cartotheque>0:deskutils/cartotheque \
 		cddb-bundle>0:audio/cddb-bundle \
@@ -68,7 +64,6 @@ RUN_DEPENDS=	aclock>0:x11-clocks/aclock \
 		pixen>0:graphics/pixen \
 		plopfolio>0:deskutils/plopfolio \
 		poe>0:multimedia/poe \
-		popup>0:textproc/popup \
 		gnustep-preview>0:graphics/preview \
 		price>0:graphics/price \
 		remotedesk>0:net/remotedesk \

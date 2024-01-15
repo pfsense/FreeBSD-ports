@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	eq10q
 DISTVERSION=	2.2
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Parametric equalizer LV2 audio plugin
+WWW=		https://eq10q.sourceforge.net
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

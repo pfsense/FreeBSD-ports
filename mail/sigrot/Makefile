@@ -1,6 +1,3 @@
-# Created by: Marijn Meijles <marijn@stack.nl>
-# $FreeBSD$
-
 PORTNAME=	sigrot
 PORTVERSION=	1.0
 CATEGORIES=	mail

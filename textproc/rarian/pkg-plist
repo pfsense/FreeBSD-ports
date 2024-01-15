@@ -35,7 +35,7 @@ lib/librarian.so
 lib/librarian.so.0
 lib/librarian.so.0.0.0
 libdata/pkgconfig/rarian.pc
-%%DOCSDIR%%/rarian.document
+share/help/rarian.document
 share/librarian/Templates/C/scrollkeeper_cl.xml
 share/librarian/manual/help-spec-0.2.xml
 share/librarian/manual/index.xhtml

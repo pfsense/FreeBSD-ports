@@ -1,15 +1,13 @@
-# Created by: Sergey Akifyev <asa@gascom.ru>
-# $FreeBSD$
-
 PORTNAME=	madplay
 PORTVERSION=	0.15.2b
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	SF/mad/${PORTNAME}/${PORTVERSION} \
 		ftp://ftp.mars.org/pub/mpeg/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Madplay MP3 player (part of MAD project)
+WWW=		https://www.underbit.com/products/mad/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

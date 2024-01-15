@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@daltons.ca>
-# $FreeBSD$
-
 PORTNAME=	W3C-LinkChecker
 PORTVERSION=	4.81
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Checks the validity of links in an HTML or XHTML document
+WWW=		https://metacpan.org/release/W3C-LinkChecker
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-CSS-DOM>=0.09:www/p5-CSS-DOM \

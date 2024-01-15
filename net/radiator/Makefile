@@ -1,6 +1,3 @@
-# Created by: shan
-# $FreeBSD$
-
 PORTNAME=	Radiator
 PORTVERSION=	4.24
 CATEGORIES=	net
@@ -11,7 +8,9 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	lyngbol@wheel.dk
 COMMENT=	Radiator Radius Server by Open System Consultants
+WWW=		https://www.open.com.au/
 
+# Commercial software
 LICENSE=	radiator
 LICENSE_NAME=	Radiator
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,8 +22,6 @@ MYSQL_DESC=	MySQL support
 USES=		perl5 tar:tgz
 USE_PERL5=	configure
 USE_RC_SUBR=	radiator
-
-RESTRICTED=	Commercial software
 
 .include <bsd.port.pre.mk>
 

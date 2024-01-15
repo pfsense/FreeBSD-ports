@@ -1,8 +1,5 @@
-# Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sagittarius
-PORTVERSION=	0.9.7
+PORTVERSION=	0.9.10
 CATEGORIES=	lang
 MASTER_SITES=	https://bitbucket.org/ktakashi/sagittarius-scheme/downloads/ \
 		LOCAL/ashish
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	-scheme
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	R6RS/R7RS Scheme system
+WWW=		https://bitbucket.org/ktakashi/sagittarius-scheme/wiki/Home
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -34,6 +32,10 @@ SIMD_CMAKE_BOOL=	USE_SSE
 OPTIONS_SUB=		yes
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+CFLAGS+=       -Wno-error=int-conversion
+.endif
 
 .if ${ARCH}=="i386"
 PLIST_ARCH=	i386

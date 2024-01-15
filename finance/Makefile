@@ -1,13 +1,9 @@
-# $FreeBSD$
-#
-
     COMMENT = Monetary, financial, and related applications
 
     SUBDIR += R-cran-AER
     SUBDIR += R-cran-PerformanceAnalytics
     SUBDIR += R-cran-RFinanceYJ
     SUBDIR += R-cran-TTR
-    SUBDIR += R-cran-ccgarch
     SUBDIR += R-cran-fBasics
     SUBDIR += R-cran-fGarch
     SUBDIR += R-cran-gmm
@@ -24,12 +20,16 @@
     SUBDIR += aqbanking
     SUBDIR += beancount
     SUBDIR += beanie
+    SUBDIR += chiapos
     SUBDIR += cointop
     SUBDIR += electrum
     SUBDIR += expense
+    SUBDIR += fabric
     SUBDIR += fava
     SUBDIR += fixc
+    SUBDIR += freqtrade
     SUBDIR += frontaccounting
+    SUBDIR += frontaccounting24
     SUBDIR += gnucash
     SUBDIR += gnucash-docs
     SUBDIR += grisbi
@@ -43,11 +43,16 @@
     SUBDIR += ktoblzcheck
     SUBDIR += ledger
     SUBDIR += ledgersmb12
+    SUBDIR += libbtc
     SUBDIR += libofx
     SUBDIR += libstocks
+    SUBDIR += lnd
     SUBDIR += moneymanagerex
     SUBDIR += myphpmoney
+    SUBDIR += nextcloud-cospend
     SUBDIR += odoo
+    SUBDIR += odoo14
+    SUBDIR += odoo15
     SUBDIR += p5-Business-CreditCard
     SUBDIR += p5-Business-MaxMind-CreditCardFraudDetection
     SUBDIR += p5-Business-OCV
@@ -93,17 +98,47 @@
     SUBDIR += p5-PayflowPro
     SUBDIR += pear_Payment_DTA
     SUBDIR += prestashop
+    SUBDIR += py-Nasdaq-Data-Link
+    SUBDIR += py-alpha-vantage
     SUBDIR += py-backtrader
     SUBDIR += py-bitcoin
+    SUBDIR += py-bt
+    SUBDIR += py-ccxt
+    SUBDIR += py-degiro-connector
     SUBDIR += py-ebaysdk
+    SUBDIR += py-exchange-calendars
+    SUBDIR += py-ffn
+    SUBDIR += py-financedatabase
+    SUBDIR += py-finnhub-python
+    SUBDIR += py-finviz
+    SUBDIR += py-finvizfinance
+    SUBDIR += py-fredapi
+    SUBDIR += py-fundamentalanalysis
+    SUBDIR += py-investiny
+    SUBDIR += py-investpy
+    SUBDIR += py-mplfinance
     SUBDIR += py-ofxparse
+    SUBDIR += py-pandas-market-calendars
+    SUBDIR += py-pandas-ta
     SUBDIR += py-pycoin
+    SUBDIR += py-pycoingecko
+    SUBDIR += py-pythclient
+    SUBDIR += py-python-binance
     SUBDIR += py-python-bitcoinlib
+    SUBDIR += py-python-coinmarketcap
     SUBDIR += py-python-obelisk
+    SUBDIR += py-pytrends
     SUBDIR += py-quantecon
+    SUBDIR += py-stocksera
     SUBDIR += py-stripe
     SUBDIR += py-ta-lib
+    SUBDIR += py-technical
+    SUBDIR += py-thepassiveinvestor
+    SUBDIR += py-tradingview-ta
+    SUBDIR += py-valinvest
     SUBDIR += py-vatnumber
+    SUBDIR += py-yahooquery
+    SUBDIR += py-yfinance
     SUBDIR += py-ystockquote
     SUBDIR += qtbitcointrader
     SUBDIR += quantlib
@@ -111,10 +146,10 @@
     SUBDIR += rubygem-money
     SUBDIR += skrooge
     SUBDIR += sql-ledger
-    SUBDIR += vanitygen
+    SUBDIR += ticker
+    SUBDIR += tickrs
     SUBDIR += venice
     SUBDIR += weberp
-    SUBDIR += wmstock
     SUBDIR += xtrader
 
 .include <bsd.port.subdir.mk>

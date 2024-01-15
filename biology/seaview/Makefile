@@ -1,8 +1,6 @@
-# Created by: frankch@waru.life.nthu.edu.tw
-# $FreeBSD$
-
 PORTNAME=	seaview
-PORTVERSION=	5.0.4
+PORTVERSION=	5.0.5
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	ftp://pbil.univ-lyon1.fr/pub/mol_phylogeny/seaview/archive/
@@ -10,6 +8,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Multiple DNA/protein sequence alignment editor
+WWW=		https://doua.prabi.fr/software/seaview
 
 LICENSE=	GPLv3
 
@@ -38,6 +37,7 @@ post-patch:
 	${REINPLACE_CMD} -e \
 		's|^\(CC\) |#\1 | ; s|-ldl || ; \
 		s|^\(CXX\) |#\1 |' ${WRKSRC}/Makefile
+	${ECHO_CMD} 'boolean javarun;' >> ${WRKSRC}/csrc/phylip.c
 
 do-install:
 	(cd ${WRKSRC} && ${INSTALL_PROGRAM} seaview \

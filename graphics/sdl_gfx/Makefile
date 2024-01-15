@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	sdl_gfx
 PORTVERSION=	2.0.26
 CATEGORIES=	graphics
@@ -9,6 +6,7 @@ DISTNAME=	SDL_gfx-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	SDL graphics drawing primitives and other support functions
+WWW=		https://www.ferzkopp.net/Software/SDL_gfx-2.0/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE

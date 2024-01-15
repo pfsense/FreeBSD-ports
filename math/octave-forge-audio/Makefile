@@ -1,31 +1,24 @@
-# Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
-
 PORTNAME=	octave-forge-audio
-PORTVERSION=	2.0.2
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	2.0.8
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
+WWW=		https://packages.octave.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/../COPYING
 
 LIB_DEPENDS+=	librtmidi.so:audio/rtmidi
 
-USES=		compiler:c++11-lang pkgconfig
+USES=		compiler:c++11-lang octave pkgconfig autoreconf
+USE_GITHUB=	yes
+GH_ACCOUNT=	gnu-octave
+GH_PROJECT=	octave-audio
 
-# OCTSRC is the name of the directory of the package.
-# It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${DISTNAME}
+OCTAVE_SRC=	${GH_PROJECT}-release-${DISTVERSION}
 
-WRKSRC=		${WRKDIR}/${OCTSRC}/src
 GNU_CONFIGURE=	yes
-
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
-
-post-build:
-	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
-	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
 
 .include <bsd.port.mk>

@@ -1,19 +1,21 @@
-# Created by: Elias Mandouvalos <ocean@compulink.gr>
-# $FreeBSD$
-
 PORTNAME=	tn5250
-PORTVERSION=	0.17.4
-PORTREVISION=	1
+DISTVERSION=	0.17.6
 CATEGORIES=	net
-MASTER_SITES=	SF
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	5250 Telnet protocol and Terminal
+WWW=		https://github.com/tn5250/tn5250
+
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		libtool ncurses ssl
+USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-os-dir=no --with-ssl=${OPENSSLBASE}
-USE_LDCONFIG=	yes
+
 INSTALL_TARGET=	install-strip
 
 post-patch:

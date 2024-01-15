@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Xslate
 PORTVERSION=	3.4.0
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	High performance template engine
+WWW=		https://metacpan.org/release/Text-Xslate
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

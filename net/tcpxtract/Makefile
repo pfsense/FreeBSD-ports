@@ -1,6 +1,3 @@
-# Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tcpxtract
 PORTVERSION=	1.0.1
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Tool for extracting files from network traffic
+WWW=		https://tcpxtract.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 

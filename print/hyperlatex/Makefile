@@ -1,20 +1,20 @@
-# Created by: Robert Withrow <witr@rwwa.com>
-# $FreeBSD$
-
 PORTNAME=	Hyperlatex
 DISTVERSION=	2.9a
-PORTREVISION=	11
+PORTREVISION=	20
 CATEGORIES=	print
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/2.9a
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Produce HTML and printed documents from LaTeX source
+WWW=		https://hyperlatex.sourceforge.net/
 
 RUN_DEPENDS=	ppmtogif:graphics/netpbm
 
-USES=		emacs
+USES=		emacs tex
 USE_TEX=	latex
+
+CONFLICTS_INSTALL=	 Hyperlatex Hyperlatex-emacs_*
 
 LATEX_DIR=	${PREFIX}/share/texmf/tex/latex/hyperlatex
 HYPERLATEX_DIR=	${PREFIX}/share/hyperlatex

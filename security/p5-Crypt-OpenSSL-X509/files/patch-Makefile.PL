@@ -1,16 +1,11 @@
---- Makefile.PL.orig	2020-11-05 20:37:56 UTC
+--- Makefile.PL.orig	2022-05-03 17:53:35 UTC
 +++ Makefile.PL
-@@ -18,11 +18,11 @@ inc '-I/usr/local/opt/openssl/include -I/usr/local/inc
- libs '-L/usr/local/opt/openssl/lib -L/usr/local/lib -L/usr/lib -L/usr/local/ssl/lib -lcrypto -lssl';
+@@ -22,7 +22,7 @@ my $api_ver = '0x10100000L';  # (version 1.1.0)
+ my $cc_option_flags = " -DOPENSSL_API_COMPAT=$api_ver -O2 -g";
  
- if ($Config::Config{myuname} =~ /darwin/i) {
--  cc_optimize_flags('-O2 -g -Wall -Werror -Wno-deprecated-declarations');
-+  cc_optimize_flags('-O2 -g -Wall -Wno-deprecated-declarations');
- } elsif ($Config::Config{myuname} =~ /sunos|solaris/i) {
-   # Any SunStudio flags?
+ if ($Config::Config{cc} =~ /gcc/i) {
+-  $cc_option_flags .= $ENV{AUTHOR_TESTING} ? ' -Wall -Werror' : ' -Wall';
++  $cc_option_flags .= $ENV{AUTHOR_TESTING} ? ' -Wall' : ' -Wall';
  } else {
--  cc_optimize_flags('-O2 -g -Wall -Werror');
-+  cc_optimize_flags('-O2 -g -Wall');
+   $cc_option_flags .= '';
  }
- 
- auto_install();

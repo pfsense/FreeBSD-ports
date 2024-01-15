@@ -1,18 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	arcan
-DISTVERSION=	0.6.0.1
+DISTVERSION=	0.6.3
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Display Server, Multimedia Framework, Game Engine
+WWW=		https://arcan-fe.com/
 
-LICENSE=	BSD3CLAUSE GPLv2+ LGPL21
+LICENSE=	BSD3CLAUSE GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC:H}/data/distr/LICENSE.BSD
 LICENSE_FILE_GPLv2+ =	${WRKSRC:H}/data/distr/LICENSE.GPL
 LICENSE_FILE_LGPL21+ =	${WRKSRC:H}/data/distr/LICENSE.LGPL
 
+BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	mesa-dri>0:graphics/mesa-dri
@@ -25,23 +25,22 @@ GH_ACCOUNT=	letoram
 WRKSRC_SUBDIR=	src
 CMAKE_ON=	HYBRID_HEADLESS
 CMAKE_OFF=	STATIC_LIBUVC
-CMAKE_ARGS=	-DENGINE_BUILDTAG:STRING="${DISTVERSIONFULL}"
+CMAKE_ARGS=	-DDISTR_TAG:STRING="portbld" \
+		-DENGINE_BUILDTAG:STRING="${DISTVERSIONFULL}"
 LDFLAGS+=	-Wl,--as-needed # bzip2, ffmpeg, librt, libutil, lzma, zlib
 LDFLAGS_i386=	-Wl,-z,notext
 
-OPTIONS_DEFINE=	ESPEAK FFMPEG LUAJIT SDL SUID TESSERACT UVC VLC VNC WAYLAND
-OPTIONS_DEFAULT=ESPEAK FFMPEG LUAJIT SDL SUID TESSERACT UVC VLC VNC WAYLAND
-OPTIONS_EXCLUDE_aarch64=	LUAJIT # bug 225342
-OPTIONS_EXCLUDE_powerpc64=	LUAJIT
+OPTIONS_DEFINE=	ESPEAK FFMPEG LUAJIT MANPAGES SDL SUID TESSERACT UVC VLC VNC WAYLAND
+OPTIONS_DEFAULT=ESPEAK FFMPEG LUAJIT MANPAGES SDL SUID TESSERACT UVC VLC VNC WAYLAND
 OPTIONS_SUB=	yes
 
-ESPEAK_DESC=		Text to speech via eSpeak
-ESPEAK_LIB_DEPENDS=	libespeak.so:audio/espeak
-
+ESPEAK_LIB_DEPENDS=	libespeak-ng.so:audio/espeak-ng
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 
+MANPAGES_USES=		ruby:build
+
 LUAJIT_DESC=		Use LuaJIT instead of standard Lua
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_USES=		luajit
 LUAJIT_USES_OFF=	lua:51
 LUAJIT_CMAKE_BOOL_OFF=	DISABLE_JIT
 
@@ -66,6 +65,7 @@ UVC_CMAKE_BOOL=		FSRV_DECODE_UVC
 VNC_DESC=		VNC client/server support
 VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
 
+WAYLAND_CATEGORIES=	wayland
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 			libxcb-icccm.so:x11/xcb-util-wm \
@@ -74,12 +74,6 @@ WAYLAND_RUN_DEPENDS=	xwayland-devel>0:x11-servers/xwayland-devel
 WAYLAND_USES=		xorg
 WAYLAND_USE=		XORG=xcb
 WAYLAND_CMAKE_BOOL_OFF=	DISABLE_WAYLAND
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH:Mpowerpc64*}
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -i.prefix 's,/usr/local,${PREFIX},g' \
@@ -91,6 +85,9 @@ post-patch:
 		${WRKSRC}/frameserver/terminal/default/cli_builtin.c \
 		${WRKSRC}/platform/posix/paths.c \
 		${WRKSRC}/shmif/arcan_shmif_debugif.c
+
+pre-configure-MANPAGES-on:
+	@${RUBY} -C ${WRKSRC:H}/doc -Ku docgen.rb mangen 2>/dev/null
 
 post-patch-ESPEAK-off:
 	@${REINPLACE_CMD} -i.noespeak '/find.*Espeak/d' \

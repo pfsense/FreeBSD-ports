@@ -1,15 +1,13 @@
-# Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
-
 PORTNAME=	tuxtype
 PORTVERSION=	1.8.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games education
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Educational typing tutor starring Tux the Linux Penguin
+WWW=		http://tux4kids.alioth.debian.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

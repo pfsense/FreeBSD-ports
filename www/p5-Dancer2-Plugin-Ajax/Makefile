@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Dancer2-Plugin-Ajax
 PORTVERSION=	0.400000
 CATEGORIES=	www perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Ajax handling for Dancer2 applications
+WWW=		https://metacpan.org/pod/Dancer2::Plugin::Ajax
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

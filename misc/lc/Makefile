@@ -1,6 +1,3 @@
-# Created by: jsellens
-# $FreeBSD$
-
 PORTNAME=	lc
 PORTVERSION=	1.0
 CATEGORIES=	misc

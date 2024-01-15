@@ -1,6 +1,3 @@
-# Created by: Christopher Boumenot <boumenot@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Finance-Amortization
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple amortization schedules
+WWW=		https://metacpan.org/release/Finance-Amortization
 
 USES=		perl5
 USE_PERL5=	configure

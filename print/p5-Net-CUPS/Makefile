@@ -1,6 +1,3 @@
-# Created by: Gvozdikov Veniamin <g.veniamin@googlemail.com>
-# $FreeBSD$
-
 PORTNAME=	Net-CUPS
 PORTVERSION=	0.64
 CATEGORIES=	print perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Interface to the CUPS API
+WWW=		https://metacpan.org/release/Net-CUPS
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Net-XMPP2
 PORTVERSION=	0.14
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Implementation of the XMPP Protocol
+WWW=		https://metacpan.org/release/ELMEX/Net-XMPP2-0.14
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

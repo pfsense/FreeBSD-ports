@@ -1,6 +1,3 @@
-# Created by: shanee@augusta.de
-# $FreeBSD$
-
 PORTNAME=	unclutter
 PORTVERSION=	8
 PORTREVISION=	3

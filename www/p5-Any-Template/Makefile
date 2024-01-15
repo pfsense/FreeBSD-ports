@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Any-Template
 PORTVERSION=	1.015
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Provide a consistent interface to a wide array of templating languages
+WWW=		https://metacpan.org/release/Any-Template
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

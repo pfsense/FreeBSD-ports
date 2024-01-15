@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Parse-IRC
 PORTVERSION=	1.22
 CATEGORIES=	irc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parser for the IRC protocol
+WWW=		https://metacpan.org/release/Parse-IRC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

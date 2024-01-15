@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Time-Duration
 PORTVERSION=	1.21
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Rounded or exact English expression of durations
+WWW=		https://metacpan.org/release/Time-Duration
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

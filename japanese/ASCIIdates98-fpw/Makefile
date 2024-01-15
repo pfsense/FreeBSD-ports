@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ASCIIdates98-fpw
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME:S/-fpw//}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Japanese dictionary for PC terms in '98 ASCII Dates Book (EPWING V1 format)
+WWW=		http://openlab.ring.gr.jp/edict/fpw/
 
 USES=		zip
 NO_BUILD=	yes

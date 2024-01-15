@@ -1,77 +1,75 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	tt-rss
-PORTVERSION=	g20201208
-PORTEPOCH=	1
+PORTVERSION=	g20231202
+PORTREVISION=	1
+PORTEPOCH=	2
 CATEGORIES=	www
-MASTER_SITES=	https://git.tt-rss.org/fox/tt-rss/archive/
-DISTNAME=	${GIT_TAGNAME}
-DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	dereks@lifeofadishwasher.com
 COMMENT=	Tiny Tiny RSS: web-based news feed (RSS/Atom) aggregator
+WWW=		https://tt-rss.org/
 
 LICENSE=	GPLv2
 
-USES=		php:cli,web shebangfix gettext-tools
-USE_PHP=	ctype dom fileinfo filter iconv intl hash json mbstring pcntl posix session xmlrpc
+RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git
 
-REINPLACE_ARGS=	-i ""
-SHEBANG_FILES=	lib/dojo-src/rebuild-dojo.sh utils/extract-i18n-js.pl update_daemon2.php
-WRKSRC=		${WRKDIR}/tt-rss
+USES=		gettext-tools php:cli,web shebangfix
 
-GIT_TAGNAME=	71c8d8d36
-
-NO_BUILD=	yes
-NO_ARCH=	yes
-
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.tt-rss.org
+GL_TAGNAME=	2b8e34453234b8b31ebc9e7020f8677bf3889898
+# phe json/openssl extension is required but it's statically linked in default php
+USE_PHP=	ctype dom exif fileinfo filter iconv intl mbstring pcntl pdo \
+		phar posix session simplexml sockets tokenizer xml xmlwriter \
+		zip
 USE_RC_SUBR=	ttrssd
 
-OPTIONS_DEFINE=	CURL GD
-OPTIONS_SINGLE=	DB
-OPTIONS_SINGLE_DB=	MYSQL PGSQL
-OPTIONS_DEFAULT=	CURL GD MYSQL
+SHEBANG_FILES=	update.php update_daemon2.php
+
+REINPLACE_ARGS=	-i ""
+
+NO_ARCH=	yes
+NO_BUILD=	yes
+
+# Instead of depending on the extact database driver list php packages that tt-rss
+# depends on during install pkg-message as a post install setup.
+# mysql: php-mysqli php-pdo_mysql
+# pgsql: php-pgsql php-pdo_pgsql
+#
+# from Mk/Uses/php.mk create sub vars for mysqli/pdo_mysql pgsql/pdo_pgsql values
+SUB_FILES=	config.php httpd-tt-rss.conf pkg-message ttrss_db_check.php
+SUB_LIST=	MYSQL_DEPS="${mysqli_DEPENDS:T} ${pdo_mysql_DEPENDS:T}" \
+		PGSQL_DEPS="${pgsql_DEPENDS:T} ${pdo_pgsql_DEPENDS:T}" \
+		WWWOWN=${WWWOWN}
+
+PLIST_SUB=	WWWGRP=${WWWGRP} \
+		WWWOWN=${WWWOWN}
+
+OPTIONS_DEFINE=		CURL GD
+OPTIONS_DEFAULT=	CURL GD
 
 CURL_DESC=	Use SimplePie instead of Magpie
-CURL_USE=	PHP=curl
-
 GD_DESC=	Use OTP QR code generation
+
+CURL_USE=	PHP=curl
 GD_USE=		PHP=gd
 
-PGSQL_VARS=	DB=pgsql
-PGSQL_USE=	PHP=pdo_pgsql,pgsql
-PGSQL_VARS_OFF=	PGSQL="\#"
-
-MYSQL_VARS=	DB=mysql
-MYSQL_USE=	PHP=pdo_mysql,mysqli
-MYSQL_VARS_OFF=	MYSQL="\#"
-
-.include <bsd.port.options.mk>
-
-SUB_FILES=	httpd-tt-rss.conf pkg-message
-SUB_LIST=	DB=${DB} WWWOWN=${WWWOWN} MYSQL=${MYSQL} PGSQL=${PGSQL}
-PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
-
-PHP2FIX=	config.php-dist update.php
-
-SCRIPTS=	update.php update_daemon2.php
-
-pre-configure:
-.for script in ${PHP2FIX}
-	${REINPLACE_CMD} -e 's|/usr/bin/php|${LOCALBASE}/bin/php|'	\
-		-e 's|/usr/bin/env php| ${LOCALBASE}/bin/php|'		\
-		${WRKSRC}/${script}
-.endfor
-
 do-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR} ${STAGEDIR}${DATADIR}
+	${MKDIR} \
+		${STAGEDIR}${WWWDIR} \
+		${STAGEDIR}${DATADIR} \
+		${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "*" ${STAGEDIR}${WWWDIR} \
-		"! -name LICENSE ! -name .empty")
+		"! -name LICENSE ! -name .empty ! -name Jenkinsfile")
 	${RM} -r ${STAGEDIR}${WWWDIR}/debian
 	${INSTALL_DATA} ${WRKDIR}/httpd-tt-rss.conf ${STAGEDIR}${DATADIR}
-	${ECHO} "${OPSYS}:${PORTVERSION}:${GIT_TAGNAME}" > "${STAGEDIR}${WWWDIR}/version_static.txt"
-	${MV} ${STAGEDIR}${WWWDIR}/config.php-dist ${STAGEDIR}${WWWDIR}/config.php.sample
-	${RLN} ${STAGEDIR}${WWWDIR}/config.php.sample ${STAGEDIR}${WWWDIR}/config.php-dist
+	${ECHO} "${OPSYS}:${PORTVERSION}:${GL_TAGNAME:C/^(.{11}).*$/\1/W}}" > \
+		"${STAGEDIR}${WWWDIR}/version_static.txt"
+	${RM} ${STAGEDIR}${WWWDIR}/config.php-dist
+	${INSTALL_DATA} ${WRKDIR}/config.php \
+		${STAGEDIR}${WWWDIR}/config.php.sample
+	${INSTALL_DATA} ${WRKDIR}/ttrss_db_check.php \
+		${STAGEDIR}${WWWDIR}/ttrss_db_check.php
+	${INSTALL_DATA} ${FILESDIR}/newsyslog.sample \
+		${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

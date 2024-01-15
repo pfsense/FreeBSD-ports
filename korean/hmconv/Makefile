@@ -1,6 +1,3 @@
-# Created by: Junho CHOI <junho.choi@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	hmconv
 PORTVERSION=	1.0.3
 PORTREVISION=	1

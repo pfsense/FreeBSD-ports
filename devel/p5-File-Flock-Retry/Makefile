@@ -1,14 +1,12 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Flock-Retry
-PORTVERSION=	0.631
+PORTVERSION=	0.632
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Yet another flock module
+WWW=		https://metacpan.org/release/File-Flock-Retry
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

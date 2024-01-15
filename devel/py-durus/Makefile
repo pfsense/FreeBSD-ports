@@ -1,21 +1,19 @@
-# Created by: Dryice Liu <dryice@dryice.name>
-# $FreeBSD$
-
 PORTNAME=	durus
 PORTVERSION=	3.9
 PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP \
+MASTER_SITES=	PYPI \
 		http://www.mems-exchange.org/software/durus/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Durus-${PORTVERSION}
 
 MAINTAINER=	robak@FreeBSD.org
 COMMENT=	Persistent object storage system for Python
+WWW=		https://www.mems-exchange.org/software/durus/
 
 LICENSE=	MIT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 OPTIONS_DEFINE=	DOCS

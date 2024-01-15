@@ -1,6 +1,3 @@
-# Created by: Pierre-Paul Lavoie <ppl@nbnet.nb.ca>
-# $FreeBSD$
-
 PORTNAME=	mbasecalc
 PORTVERSION=	1.1
 PORTREVISION=	8
@@ -10,10 +7,13 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple calculator program inspired by basecalc
+WWW=		https://www.muquit.com/muquit/software/mbasecalc/mbasecalc.html
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
+
+USE_CXXSTD=	c++14
 
 MAKE_ARGS=	CC="${CC}" CXX="${CXX}" CFLAGS="${CPPFLAGS} ${CXXFLAGS}" \
 		LIBS="${LDFLAGS}"

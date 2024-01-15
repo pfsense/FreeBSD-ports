@@ -1,14 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-PORTVERSION=	4.14.0
-PORTREVISION=	1
+DISTVERSION=	4.18.0.20231212
 CATEGORIES=	sysutils emulators
-MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	xen-project
+GL_TAGNAME=	1792d1723b7fb45a20b145d2de4d233913b22c09
+GL_TUPLE=	qemu-project:qemu:v8.0.4:qemu \
+		qemu-project:dtc:b6910bec:dtc \
+		qemu-project:meson:3a9b285a:meson \
+		qemu-project:keycodemapdb:f5772a62:keycodemapdb \
+		qemu-project:berkeley-testfloat-3:40619cbb:testfloat \
+		qemu-project:berkeley-softfloat-3:b64af41c:softfloat
 
 MAINTAINER=	royger@FreeBSD.org
-COMMENT=	Xen management tools
+COMMENT=	Xen Hypervisor management tools
+WWW=		https://www.xenproject.org/
 
 LICENSE=	GPLv2 LGPL3
 LICENSE_COMB=	multi
@@ -18,9 +25,11 @@ LIB_DEPENDS=	libyajl.so:devel/yajl \
 		libpixman-1.so:x11/pixman \
 		libargp.so:devel/argp-standalone \
 		libxml2.so:textproc/libxml2
-BUILD_DEPENDS=	seabios>0:misc/seabios
-RUN_DEPENDS=	seabios>0:misc/seabios
-DOCS_BUILD_DEPENDS=markdown:textproc/markdown
+BUILD_DEPENDS=	seabios>0:misc/seabios \
+		${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd:sysutils/edk2@xen_x64 \
+		bash>0:shells/bash
+RUN_DEPENDS=	seabios>0:misc/seabios \
+		${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd:sysutils/edk2@xen_x64
 
 OPTIONS_DEFINE=		DOCS SPICE
 OPTIONS_DEFAULT=	DOCS
@@ -32,10 +41,10 @@ SPICE_BUILD_DEPENDS=	spice-protocol>=0.12.10:devel/spice-protocol
 SPICE_LIB_DEPENDS=	libspice-server.so:devel/libspice-server
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	"not yet ported to anything other than amd64"
+ONLY_FOR_ARCHS_REASON=	not yet ported to anything other than amd64
 
 USES=		cpe gettext gmake gnome libtool localbase:ldflags perl5 \
-		pkgconfig python:3.6+ shebangfix iconv bison
+		pkgconfig python shebangfix iconv bison ninja:build
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
@@ -46,7 +55,9 @@ MAKE_ARGS=	clang=y ARCH=x86_64
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 CONFIGURE_ARGS+=	--with-system-seabios=${LOCALBASE}/share/seabios/bios.bin \
-			--mandir=${MANPREFIX}/man
+			--with-system-ovmf=${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd \
+			--mandir=${MANPREFIX}/man \
+			--disable-golang
 
 SHEBANG_FILES=	tools/misc/xencov_split \
 		tools/python/scripts/convert-legacy-stream \
@@ -58,22 +69,24 @@ DOCS_ALL_TARGET=	docs
 INSTALL_TARGET=		install-tools
 DOCS_INSTALL_TARGET=	install-docs
 
-# Fix build with clang 11
-EXTRA_PATCHES+= ${PATCHDIR}/0001-x86-use-constant-flags-for-section-.init.rodata.patch:-p1
-
 .include <bsd.port.options.mk>
 
 .if ${OPSYS} != FreeBSD
 IGNORE=		only supported on FreeBSD
 .endif
 
-.if ${OSVERSION} < 1200074
-IGNORE=		only supported on FreeBSD 12.0 or newer
-.endif
-
-.if ${PORT_OPTIONS:MSPICE} && ${OSVERSION} < 1300008
-BROKEN=	SPICE support requires FreeBSD version 13.0 or higher
-.endif
+post-extract:
+	${MV} ${WRKSRC_qemu} ${WRKSRC}/tools/qemu-xen
+	${RM} -rf ${WRKSRC}/tools/qemu-xen/dtc
+	${MV} ${WRKSRC_dtc} ${WRKSRC}/tools/qemu-xen/dtc
+	${RM} -rf ${WRKSRC}/tools/qemu-xen/meson
+	${MV} ${WRKSRC_meson} ${WRKSRC}/tools/qemu-xen/meson
+	${RM} -rf ${WRKSRC}/tools/qemu-xen/ui/keycodemapdb
+	${MV} ${WRKSRC_keycodemapdb} ${WRKSRC}/tools/qemu-xen/ui/keycodemapdb
+	${RM} -rf ${WRKSRC}/tools/qemu-xen/tests/fp/berkeley-testfloat-3
+	${MV} ${WRKSRC_testfloat} ${WRKSRC}/tools/qemu-xen/tests/fp/berkeley-testfloat-3
+	${RM} -rf ${WRKSRC}/tools/qemu-xen/tests/fp/berkeley-softfloat-3
+	${MV} ${WRKSRC_softfloat} ${WRKSRC}/tools/qemu-xen/tests/fp/berkeley-softfloat-3
 
 post-patch:
 	@for p in `ls ${FILESDIR}/*qemuu*.patch 2>/dev/null`; do \
@@ -92,7 +105,5 @@ do-install:
 
 post-install:
 	${MKDIR} ${STAGEDIR}/var/run/xen
-	# Empty dir, purge it.
-	${RMDIR} ${STAGEDIR}/${PREFIX}/lib/xen/include
 
 .include <bsd.port.mk>

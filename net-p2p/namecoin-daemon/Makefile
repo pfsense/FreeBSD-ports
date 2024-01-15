@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../namecoin
 
 PKGNAMESUFFIX=	-daemon
@@ -7,11 +5,11 @@ PKGNAMESUFFIX=	-daemon
 COMMENT=	Decentralized, open DNS and more (Daemon)
 SLAVE_PORT=	yes
 
-CONFLICTS_INSTALL=	namecoin-stable-[0-9]* namecoin-stable-daemon-[0-9]* namecoin-stable-utils-[0-9]* \
-		namecoin-beta-[0-9]* namecoin-beta-daemon-[0-9]* namecoin-beta-utils-[0-9]*
-
 OPTIONS_DEFINE=		DEBUG HARDENING TESTS UPNP WALLET ZMQ
 OPTIONS_DEFAULT=	HARDENING UPNP WALLET
+
+USERS=          namecoin
+GROUPS=		namecoin
 
 CONFIGURE_ARGS=	--with-daemon \
 		--without-gui \
@@ -20,8 +18,12 @@ CONFIGURE_ARGS=	--with-daemon \
 		--without-utils \
 		--disable-man
 
-PLIST_FILES=	bin/namecoind
+PLIST_FILES=	bin/namecoind \
+		"@sample %%ETCDIR%%.conf.sample"
 
 USE_RC_SUBR=	namecoind
+
+post-install:
+	${INSTALL_DATA} ${FILESDIR}/namecoin.conf ${STAGEDIR}${PREFIX}/etc/namecoin.conf.sample
 
 .include "${MASTERDIR}/Makefile"

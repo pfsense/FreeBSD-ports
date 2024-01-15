@@ -1,6 +1,3 @@
-# Created by: Petr Holub <hopet@ics.muni.cz>
-# $FreeBSD$
-
 PORTNAME=	jrtplib
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.11.2
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Object-oriented RTP library written in C++
+WWW=		https://research.edm.uhasselt.be/jori/page/Cs/JrtplibOld.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.MIT

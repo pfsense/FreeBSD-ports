@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	familia
 PORTVERSION=	0.7.1
 CATEGORIES=	databases rubygems
@@ -8,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Organize and store ruby objects in Redis
+WWW=		https://github.com/delano/familia
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -19,7 +17,6 @@ RUN_DEPENDS=	rubygem-gibbler>=0.8.6:devel/rubygem-gibbler \
 		rubygem-uri-redis>=0.4.2:net/rubygem-uri-redis
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

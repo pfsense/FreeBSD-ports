@@ -1,14 +1,12 @@
-# Created by: Denis Shaposhnikov <dsh@vlink.ru>
-# $FreeBSD$
-
 PORTNAME=	Params-Validate
-PORTVERSION=	1.30
+PORTVERSION=	1.31
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Validate method/function parameters
+WWW=		https://metacpan.org/release/Params-Validate
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

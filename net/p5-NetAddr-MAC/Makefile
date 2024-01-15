@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	NetAddr-MAC
 PORTVERSION=	0.97
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Handle hardware MAC addresses (EUI-48 and EUI-64)
+WWW=		https://metacpan.org/release/NetAddr-MAC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

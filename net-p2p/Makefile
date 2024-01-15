@@ -1,11 +1,9 @@
-# $FreeBSD$
-#
-
     COMMENT = Peer-to-peer network applications
 
     SUBDIR += amule
-    SUBDIR += amule-devel
+    SUBDIR += autoscan
     SUBDIR += awgg
+    SUBDIR += bazarr
     SUBDIR += bitcoin
     SUBDIR += bitcoin-daemon
     SUBDIR += bitcoin-utils
@@ -14,8 +12,12 @@
     SUBDIR += bitmark-cli
     SUBDIR += bitmark-daemon
     SUBDIR += bitmark-recorder
+    SUBDIR += btcheck
     SUBDIR += btpd
     SUBDIR += c-lightning
+    SUBDIR += cardano-db-sync
+    SUBDIR += cardano-node
+    SUBDIR += cncli
     SUBDIR += cpuminer
     SUBDIR += createtorrent
     SUBDIR += ctcs
@@ -24,14 +26,16 @@
     SUBDIR += deluge
     SUBDIR += deluge-cli
     SUBDIR += ed2k
-    SUBDIR += edonkey-tool-hash
+    SUBDIR += ed2k-hash
     SUBDIR += eiskaltdcpp-cli
     SUBDIR += eiskaltdcpp-daemon
     SUBDIR += eiskaltdcpp-data
     SUBDIR += eiskaltdcpp-gtk
     SUBDIR += eiskaltdcpp-lib
+    SUBDIR += ethash
     SUBDIR += frost
     SUBDIR += go-ethereum
+    SUBDIR += go-prysm
     SUBDIR += gtk-gnutella
     SUBDIR += gtorrentviewer
     SUBDIR += jackett
@@ -43,11 +47,14 @@
     SUBDIR += libswift
     SUBDIR += libtorrent
     SUBDIR += libtorrent-rasterbar
+    SUBDIR += libtorrent-rasterbar2
+    SUBDIR += libutp
     SUBDIR += lidarr
     SUBDIR += linuxdcpp
     SUBDIR += litecoin
     SUBDIR += litecoin-daemon
     SUBDIR += litecoin-utils
+    SUBDIR += lxmf
     SUBDIR += microdc2
     SUBDIR += minder
     SUBDIR += mktorrent
@@ -59,44 +66,46 @@
     SUBDIR += namecoin-daemon
     SUBDIR += namecoin-utils
     SUBDIR += ncdc
+    SUBDIR += nomadnet
+    SUBDIR += ogmios
     SUBDIR += opendchub
-    SUBDIR += openethereum
+    SUBDIR += oura
     SUBDIR += p5-Net-BitTorrent
     SUBDIR += p5-Net-BitTorrent-File
     SUBDIR += p5-Net-BitTorrent-PeerPacket
     SUBDIR += p5-Net-DirectConnect
     SUBDIR += p5-WWW-BitTorrent
     SUBDIR += phex
+    SUBDIR += prowlarr
+    SUBDIR += py-ed2k-tools
     SUBDIR += py-libtorrent-rasterbar
+    SUBDIR += py-nicotine-plus
     SUBDIR += py-transmission-rpc
-    SUBDIR += py-transmissionrpc
     SUBDIR += py-tremc
     SUBDIR += py-vertex
     SUBDIR += qbittorrent
-    SUBDIR += qtum
     SUBDIR += radarr
+    SUBDIR += readarr
+    SUBDIR += reticulum
     SUBDIR += retroshare
     SUBDIR += rslsync
     SUBDIR += rtorrent
     SUBDIR += shx
     SUBDIR += sonarr
     SUBDIR += sonarr-devel
+    SUBDIR += tooth
     SUBDIR += torrent-file-editor
     SUBDIR += torrentcheck
     SUBDIR += torrentsniff
     SUBDIR += transmission
-    SUBDIR += transmission-cli
-    SUBDIR += transmission-daemon
-    SUBDIR += transmission-gtk
-    SUBDIR += transmission-qt
+    SUBDIR += transmission-components
     SUBDIR += transmission-remote-gui
-    SUBDIR += transmission-utils
+    SUBDIR += tremotesf
+    SUBDIR += twitch-tui
     SUBDIR += udpt
     SUBDIR += uhub
     SUBDIR += vuze
+    SUBDIR += xbt
     SUBDIR += xmrig
-    SUBDIR += zetacoin
-    SUBDIR += zetacoin-daemon
-    SUBDIR += zetacoin-utils
 
 .include <bsd.port.subdir.mk>

@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Time-modules
 PORTVERSION=	2013.0912
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Set of modules for time manipulation
+WWW=		https://metacpan.org/release/MUIR/Time-modules-2013.0912
 
 LICENSE=	PD
 

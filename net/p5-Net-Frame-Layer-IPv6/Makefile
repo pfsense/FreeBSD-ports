@@ -1,6 +1,3 @@
-# Created by: Mars G Miro <spry@anarchy.in.the.ph>
-# $FreeBSD$
-
 PORTNAME=	Net-Frame-Layer-IPv6
 PORTVERSION=	1.07
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	spry@anarchy.in.the.ph
 COMMENT=	Perl encoding/decoding implementation of the IPv6 layer
+WWW=		https://metacpan.org/release/Net-Frame-Layer-IPv6
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Bit-Vector>=0:math/p5-Bit-Vector \

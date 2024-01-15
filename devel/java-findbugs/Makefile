@@ -1,6 +1,3 @@
-# Created by: glewis
-# $FreeBSD$
-
 PORTNAME=	findbugs
 PORTVERSION=	1.3.9
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	java-
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Find Bugs in Java Programs
+WWW=		https://findbugs.sourceforge.net/
 
 LICENSE=	LGPL21
 USE_JAVA=	yes

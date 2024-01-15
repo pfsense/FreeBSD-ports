@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	c3p0
 PORTVERSION=	0.9.5.3
 CATEGORIES=	databases java
@@ -8,11 +6,13 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}.bin
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Library for augmenting JDBC drivers with JNDI-bindable DataSources
+WWW=		https://www.mchange.com/projects/c3p0/
 
 LICENSE=	LGPL21 EPL
 LICENSE_COMB=	dual
 
-USES=		tar:tgz
+USES=		cpe tar:tgz
+CPE_VENDOR=	mchange
 USE_JAVA=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

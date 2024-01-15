@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	afternoonstalker
 PORTVERSION=	1.1.6
 CATEGORIES=	games
@@ -9,6 +6,7 @@ MASTER_SITES=	http://perso.b2b2c.ca/~sarrazip/dev/ \
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Clone of the 1981 Night Stalker video game
+WWW=		http://sarrazip.com/dev/afternoonstalker.html
 
 LICENSE=	GPLv2
 

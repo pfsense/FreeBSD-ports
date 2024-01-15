@@ -1,6 +1,3 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	aspell
 PORTVERSION=	0.60.6.1
 DISTVERSIONSUFFIX=	-9.el7
@@ -9,14 +6,17 @@ CATEGORIES=	textproc linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Spelling checker with better logic than ispell (Linux CentOS ${LINUX_DIST_VER})
+WWW=		http://aspell.net/
 
 LICENSE=	LGPL21+
 
-USES=		linux:c7
+USES=		cpe linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+CPE_VENDOR=	gnu
+
+CONFLICTS=	linux-c6-${PORTNAME}
 DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS NLS

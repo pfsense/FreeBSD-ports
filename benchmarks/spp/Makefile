@@ -1,6 +1,3 @@
-# Created by: Lars Eggert <lars@eggert.org>
-# $FreeBSD$
-
 PORTNAME=	spp
 PORTVERSION=	0.4.2
 CATEGORIES=	benchmarks
@@ -10,6 +7,7 @@ DIST_SUBDIR=	caia-swin-${PORTNAME}
 
 MAINTAINER=	lstewart@FreeBSD.org
 COMMENT=	Calculates round trip time from pcap files or live capture
+WWW=		https://bitbucket.org/caia-swin/spp
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

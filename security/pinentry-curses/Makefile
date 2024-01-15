@@ -1,6 +1,3 @@
-# Created by: Michael Nottebrock <lofi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pinentry
 PORTREVISION=	0
 

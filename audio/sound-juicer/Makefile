@@ -1,14 +1,16 @@
-# Created by: Alexander Nedotsukov <bland@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sound-juicer
 PORTVERSION=	3.38.0
+PORTREVISION=	3
 CATEGORIES=	audio gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	9f97ca1faca3.patch:-p1 # https://gitlab.gnome.org/GNOME/sound-juicer/-/merge_requests/27
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Clean, mean, and lean CD ripper for GNOME
+WWW=		http://www.burtonini.com/blog/computers/sound-juicer/
 
 LICENSE=	GPLv3
 
@@ -22,12 +24,10 @@ LIB_DEPENDS=	libmusicbrainz5.so:audio/libmusicbrainz5 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 desktop-file-utils gettext gnome meson \
+USES=		compiler:c11 desktop-file-utils gettext gnome gstreamer meson \
 		pkgconfig tar:xz
-USE_GSTREAMER1=	cdparanoia flac good vorbis
+USE_GSTREAMER=	cdparanoia flac good vorbis
 USE_GNOME=	gtk30
-INSTALLS_ICONS=	yes
-MAKE_ENV=	XDG_CACHE_HOME=${WRKDIR}
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.gnome.sound-juicer.gschema.xml

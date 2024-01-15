@@ -1,6 +1,3 @@
-# Created by: Matt Peterson <matt@peterson.org>
-# $FreeBSD$
-
 PORTNAME=	libconfig
 PORTVERSION=	1.0.5
 PORTREVISION=	1
@@ -11,8 +8,9 @@ PKGNAMEPREFIX=	wand-
 
 MAINTAINER=	matt@peterson.org
 COMMENT=	C library for parsing config files
+WWW=		http://research.wand.net.nz/software/libconfig.php
 
-CONFLICTS=	libconfig-[0-9]*
+CONFLICTS=	libconfig
 
 USES=		gmake libtool
 GNU_CONFIGURE=	yes

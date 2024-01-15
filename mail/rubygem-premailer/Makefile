@@ -1,23 +1,20 @@
-# Created by: Torsten Zuehlsdorff <ports@toco-domains.de>
-# $FreeBSD$
-
 PORTNAME=	premailer
-PORTVERSION=	1.11.1
+PORTVERSION=	1.21.0
 CATEGORIES=	mail rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Improve the rendering of HTML emails
+WWW=		https://github.com/premailer/premailer
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	rubygem-addressable>=0:www/rubygem-addressable \
-		rubygem-css_parser>=1.6.0:textproc/rubygem-css_parser \
+		rubygem-css_parser>=1.12.0:textproc/rubygem-css_parser \
 		rubygem-htmlentities>=4.0.0:textproc/rubygem-htmlentities
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

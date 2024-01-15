@@ -1,6 +1,3 @@
-# Created by: Alex Semenyaka <alex@rinet.ru>
-# $FreeBSD$
-
 PORTNAME=	opencyc
 PORTVERSION=	0.7.0
 PORTREVISION=	3
@@ -10,6 +7,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General knowledge base and commonsense reasoning engine
+WWW=		http://www.opencyc.org
 
 USES=		linux
 USE_LINUX=	xorglibs

@@ -1,6 +1,3 @@
-# Created by: Simon Olofsson <simon@olofsson.de>
-# $FreeBSD$
-
 PORTNAME=	Weather-Underground
 PORTVERSION=	3.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Retrieve weather information from wunderground.com
+WWW=		https://metacpan.org/release/Weather-Underground
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

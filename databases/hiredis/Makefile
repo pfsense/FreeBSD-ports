@@ -1,29 +1,35 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hiredis
-PORTVERSION=	0.13.3
+PORTVERSION=	1.0.2
 DISTVERSIONPREFIX=v
 CATEGORIES=	databases
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Minimalistic C client library for the Redis database
+WWW=		https://github.com/redis/hiredis
 
 LICENSE=	BSD3CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	redis
 
-USES=		gmake
+USES=		cpe gmake
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	redislabs
+
+OPTIONS_DEFINE=		OPENSSL
+OPTIONS_DEFAULT=	OPENSSL
+OPENSSL_MAKE_ARGS=	USE_SSL=1
 
 post-patch:
 	@${REINPLACE_CMD} \
-		-e '/^REAL_/s/ \$$(ARCH)//' \
 		-e 's|\$$(INSTALL_LIBRARY_PATH)/\$$(PKGCONF_PATH)|\$$(DESTDIR)\$$(PREFIX)/libdata/\$$(PKGCONF_PATH)|' \
 		${WRKSRC}/Makefile
 
 post-build:
 	@${STRIP_CMD} ${WRKSRC}/libhiredis.so
+
+do-test:
+	cd ${WRKSRC} && ${MAKE_CMD} test
 
 .include <bsd.port.mk>

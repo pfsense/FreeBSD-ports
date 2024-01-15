@@ -1,6 +1,3 @@
-# Created by: Devin Teske <dteske@vicor.com>
-# $FreeBSD$
-
 PORTNAME=	host-setup
 PORTVERSION=	4.0.2
 CATEGORIES=	sysutils
@@ -8,7 +5,9 @@ MASTER_SITES=	http://druidbsd.sourceforge.net/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	System configuration setup/management utility
+WWW=		https://druidbsd.sourceforge.net/
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	sbin/${PORTNAME} man/man1/${PORTNAME}.1.gz

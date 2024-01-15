@@ -1,14 +1,13 @@
-# Created by: torstenb
-# $FreeBSD$
-
-PORTNAME=	inn
-PORTVERSION=	2.6.3
-PORTREVISION=	1
-CATEGORIES=	news
-MASTER_SITES=	ISC/${PORTNAME}
+PORTNAME?=		inn
+PORTVERSION?=		2.7.1
+PORTREVISION?=		1
+CATEGORIES=		news
+MASTER_SITES=		ISC
+MASTER_SITE_SUBDIR?=	${PORTNAME}
 
 MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	InterNetNews -- the Internet meets Netnews
+WWW=		https://www.eyrie.org/~eagle/software/inn/
 
 BUILD_DEPENDS=	p5-GD>=0:graphics/p5-GD \
 		p5-MIME-Tools>=0:mail/p5-MIME-Tools
@@ -21,26 +20,36 @@ SUB_FILES=	pkg-install
 USES=		cpe gmake libtool perl5 uidfix
 CPE_VENDOR=	isc
 
-CONFLICTS?=	inn-stable-[0-9]* inn-current-[0-9]*
+CONFLICTS?=	inn-current
 
-OPTIONS_DEFINE=		BERKELEYDB GNUPG KERBEROS PYTHON SASL KEYWORDS \
-			LARGE_FILES OPENSSL SETGID_INEWS TAGGED_HASH \
-			UUCP_RNEWS DOCS EXAMPLES
-OPTIONS_DEFAULT=	BERKELEYDB GNUPG KEYWORDS OPENSSL LARGE_FILES \
-			SETGID_INEW UUCP_RNEWS
+OPTIONS_DEFINE=		BERKELEYDB BLACKLISTD GNUPG KERBEROS PYTHON SASL \
+			SQLITE KEYWORDS LARGE_FILES OPENSSL SETGID_INEWS \
+			TAGGED_HASH UUCP_RNEWS DOCS EXAMPLES
+OPTIONS_DEFAULT=	BERKELEYDB BLACKLISTD GNUPG PYTHON SQLITE KEYWORDS \
+			OPENSSL LARGE_FILES SETGID_INEWS UUCP_RNEWS
 OPTIONS_SUB=		yes
 
 KERBEROS_DESC=		Enable Kerberos v5 (for auth_krb5)
 PYTHON_DESC=		Enable support for embedded Python
 SASL_DESC=		Enable SASL (for imapfeed authentication)
+SQLITE_DESC=		Enable SQLite (for ovsqlite overview method)
 TAGGED_HASH_DESC=	Use tagged hash table for history
 LARGE_FILES_DESC=	Support for files larger than 2GB
 KEYWORDS_DESC=		Automatic keyword generation support
 BERKELEYDB_DESC=	Enable BerkeleyDB (for ovdb overview method)
+BLACKLISTD_DESC=	Enable blacklistd support
 OPENSSL_DESC=		Enable OpenSSL (for NNTP over TLS/SSL support)
 GNUPG_DESC=		GnuPG support (for pgpverify control message)
 UUCP_RNEWS_DESC=	Install rnews suitable for use with net/freebsd-uucp
 SETGID_INEWS_DESC=	Enable posting articles locally for all users
+
+BLACKLISTD_CONFIGURE_WITH=	blacklist
+
+.if ${BRANCH:U} == 2.8
+PLIST_SUB+=		SNAPSHOT=""
+.else
+PLIST_SUB+=		SNAPSHOT="@comment "
+.endif
 
 VARBASE?=	/var
 
@@ -62,12 +71,26 @@ CONFIGURE_ARGS+=	--mandir=${MANPREFIX}/man		\
 
 UUCP_RNEWS_RUN_DEPENDS=	uucp:net/freebsd-uucp
 
-INNLIB_LONG=		6.0.0
-LIBVER_LONG=		3.0.3
+INNLIB_LONG?=		9.0.0
+LIBVER_LONG?=		3.0.7
+LIBSTORAGEVER_LONG?=	3.1.1
 PLIST_SUB+=		LIBVER=${LIBVER_LONG:R:R} LIBVER_LONG=${LIBVER_LONG} \
-			INNLIB=${INNLIB_LONG:R:R} INNLIB_LONG=${INNLIB_LONG}
+			INNLIB=${INNLIB_LONG:R:R} INNLIB_LONG=${INNLIB_LONG} \
+			LIBSTORAGEVER=${LIBSTORAGEVER_LONG:R:R} LIBSTORAGEVER_LONG=${LIBSTORAGEVER_LONG}
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MSQLITE}
+USES+=			sqlite
+CONFIGURE_ARGS+=	--with-sqlite3=${LOCALBASE}
+PLIST_SUB+=		SQLITE=""
+
+TO_BE_STRIPPED+=	bin/ovsqlite-server
+CONFIG_FILES+=		ovsqlite.conf
+.else
+CONFIGURE_ARGS+=	--without-sqlite3
+PLIST_SUB+=		SQLITE="@comment "
+.endif
 
 .if ${PORT_OPTIONS:MBERKELEYDB}
 USES+=			bdb
@@ -141,7 +164,7 @@ PLIST_SUB+=		MODE_INEWS=""
 .endif
 PORTDOCS=	CONTRIBUTORS HACKING INSTALL LICENSE MANIFEST NEWS README TODO
 
-TO_BE_STRIPPED=	bin/actsync bin/archive bin/auth/passwd/auth_krb5 \
+TO_BE_STRIPPED+=	bin/actsync bin/archive bin/auth/passwd/auth_krb5 \
 	bin/auth/passwd/ckpasswd bin/auth/passwd/radius bin/auth/resolv/domain \
 	bin/auth/resolv/ident bin/batcher bin/buffchan bin/buffindexed_d \
 	bin/convdate bin/ctlinnd bin/cvtbatch bin/expire bin/expireover \
@@ -153,9 +176,9 @@ TO_BE_STRIPPED=	bin/actsync bin/archive bin/auth/passwd/auth_krb5 \
 	bin/rnews.libexec/decode bin/rnews.libexec/encode bin/shlock \
 	bin/shrinkfile bin/sm bin/tdx-util bin/tinyleaf \
 	lib/libinn.so.${INNLIB_LONG} lib/libinnhist.so.${LIBVER_LONG} \
-	lib/libstorage.so.${LIBVER_LONG}
+	lib/libstorage.so.${LIBSTORAGEVER_LONG}
 
-CONFIG_FILES=	actsync.cfg actsync.ign buffindexed.conf control.ctl \
+CONFIG_FILES+=	actsync.cfg actsync.ign buffindexed.conf control.ctl \
 	control.ctl.local cycbuff.conf distrib.pats distributions expire.ctl \
 	localgroups incoming.conf inn.conf innfeed.conf innreport.conf \
 	innshellvars.local innshellvars.pl.local innshellvars.tcl.local \
@@ -175,9 +198,6 @@ GID!=	id -g
 post-patch:
 	@${REINPLACE_CMD} -E 's!\$$[{(]PATHETC[})]!${EXAMPLESDIR}!g' \
 	                  ${WRKSRC}/site/Makefile
-	@${REINPLACE_CMD} -e 's!et/com_err\.h!com_err.h!g'	\
-	                  -e 's!-lk5crypto!!g'			\
-	                  ${WRKSRC}/configure ${WRKSRC}/authprogs/auth_krb5.c
 	@${REINPLACE_CMD} -e '/^#pragma/d' ${WRKSRC}/*/*.c
 .if ${PORT_OPTIONS:MBERKELEYDB}
 	@${REINPLACE_CMD} -e 's!-ldb!-ldb-${BDB_VER}!' ${WRKSRC}/configure

@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libcidr
 DISTVERSION=	1.2.3
 CATEGORIES=	devel
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.over-yonder.net/~fullermd/projects/${PORTNAME}/ \
 
 MAINTAINER=	fullermd@over-yonder.net
 COMMENT=	Library to handle manipulating CIDR netblocks
+WWW=		https://www.over-yonder.net/~fullermd/projects/libcidr
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

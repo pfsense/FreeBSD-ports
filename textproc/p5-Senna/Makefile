@@ -1,24 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	Senna
 PORTVERSION=	0.51
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DMAKI
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for Embeddable Fulltext Search Engine
+WWW=		https://metacpan.org/release/Senna
 
 LICENSE=	LGPL21
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	senna-cfg:textproc/senna
 
-USES=		perl5
+USES=		perl5 localbase
 USE_PERL5=	modbuild
 CONFIGURE_ARGS+=</dev/null
-CFLAGS+=	-I${LOCALBASE}/include
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

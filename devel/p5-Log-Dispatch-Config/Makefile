@@ -1,6 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
-
 PORTNAME=	Log-Dispatch-Config
 PORTVERSION=	1.04
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Log4j equivalent for Perl
+WWW=		https://metacpan.org/release/Log-Dispatch-Config
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Frederic Cambus
-# $FreeBSD$
-
 PORTNAME=	tetradraw
 PORTVERSION=	2.0.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fully featured ANSI art editor/viewer with TCP/IP multidraw support
+WWW=		https://tetradraw.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

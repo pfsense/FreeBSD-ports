@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	WWW-Yandex-TIC
 PORTVERSION=	0.07
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Query Yandex Thematic Index of Citing (TIC) for domain
+WWW=		https://metacpan.org/release/WWW-Yandex-TIC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

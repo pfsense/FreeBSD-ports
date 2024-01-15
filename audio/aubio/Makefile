@@ -1,19 +1,24 @@
-# Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	aubio
-PORTVERSION=	0.4.7
-PORTREVISION?=	5
+PORTVERSION=	0.4.9
+PORTREVISION?=	4
 CATEGORIES?=	audio
-MASTER_SITES=	http://aubio.org/pub/
+MASTER_SITES=	https://aubio.org/pub/
+
+PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
+PATCHFILES+=	cdfe9cef2dcc3edf7d05ca2e9c2dbbf8dea21f1c.patch:-p1 #FFmpeg 6.x compat
+PATCHFILES+=	8a05420e5dd8c7b8b2447f82dc919765876511b3.patch:-p1 #FFmpeg 6.x compat
+PATCHFILES+=	95ff046c698156f21e2ca0d1d8a02c23ab76969f.patch:-p1 #Add const qualifiers for NumPy >= 1.19.0
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Library for audio labelling
+WWW=		https://aubio.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES+=		pkgconfig tar:bzip2
+USES+=		cpe pkgconfig tar:bzip2
+
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 .if !defined(SLAVEPORT)
 USES+=		python:build waf
@@ -22,13 +27,13 @@ USE_LDCONFIG=	yes
 OPTIONS_GROUP=		DOCS
 OPTIONS_GROUP_DOCS=	DOCS DOXYGEN MANPAGES
 OPTIONS_DEFINE=		COMPLEX FFMPEG FFTW JACK SAMPLERATE SNDFILE TEST
-OPTIONS_DEFAULT=	FFTW JACK MANPAGES SAMPLERATE SNDFILE
+OPTIONS_DEFAULT=	FFMPEG FFTW JACK MANPAGES SAMPLERATE SNDFILE
 OPTIONS_SUB=		yes
 
 COMPLEX_DESC=			Compile with C99 complex.h
 COMPLEX_CONFIGURE_ENABLE=	complex
 
-DOCS_BUILD_DEPENDS=		${PY_SPHINX}
+DOCS_BUILD_DEPENDS=		${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_CONFIGURE_ENABLE=		sphinx
 DOCS_BINARY_ALIAS=		sphinx-build=sphinx-build-${PYTHON_VER}
 
@@ -64,6 +69,8 @@ PORTDOCS=	*
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/pkgconfig/s|$${LIBDIR}|&data|' ${WRKSRC}/waflib/TaskGen.py
+	@${REINPLACE_CMD} -e \
+		'/read/s|rU|r|' ${WRKSRC}/waflib/ConfigSet.py ${WRKSRC}/waflib/Context.py
 
 post-install:
 .for b in mfcc notes onset pitch quiet track

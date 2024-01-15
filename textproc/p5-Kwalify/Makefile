@@ -1,6 +1,3 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Kwalify
 PORTVERSION=	1.23
 CATEGORIES=	textproc perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Implementation of Kwalify parser, validator and data binding tool
+WWW=		https://metacpan.org/release/Kwalify
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

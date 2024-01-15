@@ -1,14 +1,12 @@
-# Created by: David Thiel <lx@redundancy.redundancy.org>
-# $FreeBSD$
-
 PORTNAME=	silktools
-PORTVERSION=	3.19.1
+PORTVERSION=	3.19.2
 CATEGORIES=	security net
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 DISTNAME=	silk-${PORTVERSION}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Tools for large-scale network capture analysis
+WWW=		https://tools.netsa.cert.org/silk/
 
 LICENSE=	GPLR GPLv2
 LICENSE_COMB=	multi
@@ -18,7 +16,7 @@ LICENSE_PERMS_GPLR=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libfixbuf.so:net/libfixbuf
 BUILD_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
-		${P5_POD_PARSER}
+		p5-Pod-Parser>=0:textproc/p5-Pod-Parser
 RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI
 
 GNU_CONFIGURE=	yes
@@ -48,7 +46,6 @@ LOCALTIME_DESC=	Use localtime instead of UTC
 LOCALTIME_CONFIGURE_ENABLE=	localtime
 
 LZO_CONFIGURE_WITH=	lzo=${LOCALBASE}
-LZO_DESC=	LZO compression support
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 
 PYTHON_CONFIGURE_WITH=	python

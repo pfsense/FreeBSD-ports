@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Ports Linux compatibility framework
 #
 # Feature:	linux:args
@@ -25,24 +23,24 @@
 _INCLUDE_USES_LINUX_MK=	yes
 _USES_POST+=		linux
 
-.if empty(linux_ARGS)
-.if exists(${LINUXBASE}/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7)
+.  if empty(linux_ARGS)
+.    if exists(${LINUXBASE}/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7)
 linux_ARGS=		c7
-.else
+.    else
 linux_ARGS=		${LINUX_DEFAULT}
-.endif
-.endif
+.    endif
+.  endif
 
-.if ${linux_ARGS} == c7
-LINUX_DIST_VER?=	7.8.2003
-.else
+.  if ${linux_ARGS} == c7
+LINUX_DIST_VER?=	7.9.2009
+.  else
 IGNORE=			Invalid Linux distribution: ${linux_ARGS}
-.endif
+.  endif
 
-.ifndef ONLY_FOR_ARCHS
-ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	Linux compatibility is only available on amd64 and i386
-.endif
+.  ifndef ONLY_FOR_ARCHS
+ONLY_FOR_ARCHS=		aarch64 amd64 i386
+ONLY_FOR_ARCHS_REASON=	Linux compatibility is only available on aarch64, amd64 and i386
+.  endif
 
 _linux_c7_alsa-lib-devel=		linux-c7-alsa-lib-devel>0:audio/linux-c7-alsa-lib-devel
 _linux_${linux_ARGS}_alsa-plugins-oss=	linux-${linux_ARGS}-alsa-plugins-oss>0:audio/linux-${linux_ARGS}-alsa-plugins-oss
@@ -53,18 +51,19 @@ _linux_c7_at-spi2-core=			linux-c7-at-spi2-core>0:accessibility/linux-c7-at-spi2
 _linux_${linux_ARGS}_atk=		linux-${linux_ARGS}-atk>0:accessibility/linux-${linux_ARGS}-atk
 _linux_${linux_ARGS}_avahi-libs=	linux-${linux_ARGS}-avahi-libs>0:net/linux-${linux_ARGS}-avahi-libs
 _linux_c7_base=				linux_base-c7>=7.6.1810_7:emulators/linux_base-c7
+_linux_c7_ca-certificates=		linux-c7-ca-certificates>0:security/linux-c7-ca-certificates
 _linux_${linux_ARGS}_cairo=		linux-${linux_ARGS}-cairo>0:graphics/linux-${linux_ARGS}-cairo
 _linux_c7_cairo-gobject=		linux-c7-cairo-gobject>0:graphics/linux-c7-cairo-gobject
 _linux_${linux_ARGS}_cups-libs=		linux-${linux_ARGS}-cups-libs>0:print/linux-${linux_ARGS}-cups-libs
 _linux_${linux_ARGS}_curl=		linux-${linux_ARGS}-curl>0:ftp/linux-${linux_ARGS}-curl
 _linux_${linux_ARGS}_cyrus-sasl2=	linux-${linux_ARGS}-cyrus-sasl-lib>0:security/linux-${linux_ARGS}-cyrus-sasl2
-_linux_${linux_ARGS}_dbusglib=		linux-${linux_ARGS}-dbus-glib>0:devel/linux-${linux_ARGS}-dbus-glib
 _linux_${linux_ARGS}_dbuslibs=		linux-${linux_ARGS}-dbus-libs>0:devel/linux-${linux_ARGS}-dbus-libs
 _linux_${linux_ARGS}_devtools=		linux-${linux_ARGS}-devtools>0:devel/linux-${linux_ARGS}-devtools
 _linux_c7_dosfstools=			linux-c7-dosfstools>0:sysutils/linux-c7-dosfstools
 _linux_${linux_ARGS}_dri=		linux-${linux_ARGS}-dri>0:graphics/linux-${linux_ARGS}-dri
 _linux_${linux_ARGS}_elfutils-libelf=	linux-${linux_ARGS}-elfutils-libelf>0:devel/linux-${linux_ARGS}-elfutils-libelf
 _linux_c7_elfutils-libs=		linux-c7-elfutils-libs>0:devel/linux-c7-elfutils-libs
+_linux_c7_expat-devel=			linux-c7-expat-devel>0:textproc/linux-c7-expat-devel
 _linux_${linux_ARGS}_expat=		linux-${linux_ARGS}-expat>0:textproc/linux-${linux_ARGS}-expat
 _linux_c7_flac=				linux-c7-flac-libs>0:audio/linux-c7-flac
 _linux_${linux_ARGS}_fontconfig=	linux-${linux_ARGS}-fontconfig>0:x11-fonts/linux-${linux_ARGS}-fontconfig
@@ -114,6 +113,7 @@ _linux_c7_numactl-libs=			linux-c7-numactl-libs>0:sysutils/linux-c7-numactl-libs
 _linux_${linux_ARGS}_openal-soft=	linux-${linux_ARGS}-openal-soft>0:audio/linux-${linux_ARGS}-openal-soft
 _linux_${linux_ARGS}_openldap=		linux-${linux_ARGS}-openldap>0:net/linux-${linux_ARGS}-openldap
 _linux_c7_openmotif=			linux-c7-motif>0:x11-toolkits/linux-c7-openmotif
+_linux_c7_openssl-devel=		linux-c7-openssl-devel>0:security/linux-c7-openssl-devel
 _linux_c7_openssl=			${_linux_c7_base}
 _linux_c7_p11-kit=			linux-c7-p11-kit>0:security/linux-c7-p11-kit
 _linux_${linux_ARGS}_pango=		linux-${linux_ARGS}-pango>0:x11-toolkits/linux-${linux_ARGS}-pango
@@ -136,42 +136,47 @@ _linux_${linux_ARGS}_tk85=		linux-${linux_ARGS}-tk85>0:x11-toolkits/linux-${linu
 _linux_c7_trousers=			linux-c7-trousers>0:security/linux-c7-trousers
 _linux_${linux_ARGS}_userspace-rcu=	linux-${linux_ARGS}-userspace-rcu>0:sysutils/linux-${linux_ARGS}-userspace-rcu
 _linux_c7_wayland=			linux-c7-wayland>0:graphics/linux-c7-wayland
+_linux_c7_xcb-util=			linux-c7-xcb-util>0:x11/linux-c7-xcb-util
 _linux_c7_xorglibs=			linux-c7-xorg-libs>=7.7_7:x11/linux-c7-xorg-libs
+_linux_c7_zlib-devel=			linux-c7-zlib-devel>0:devel/linux-c7-zlib-devel
 
 USE_LINUX?=		base
-.for i in ${USE_LINUX}
+.  for i in ${USE_LINUX}
 _i_args:=		${i:C/^[^:]*:?//:S/,/ /g}
-.if ${_i_args:Mpatch}
+.    if ${_i_args:Mpatch}
 PATCH_DEPENDS+=		${_linux_${linux_ARGS}_${i:C/:.*//}}
-.endif
-.if ${_i_args:Mbuild}
+.    endif
+.    if ${_i_args:Mbuild}
 BUILD_DEPENDS+=		${_linux_${linux_ARGS}_${i:C/:.*//}}
-.endif
-.if ${_i_args:Mrun} || empty(_i_args)
+.    endif
+.    if ${_i_args:Mrun} || empty(_i_args)
 RUN_DEPENDS+=		${_linux_${linux_ARGS}_${i:C/:.*//}}
-.endif
-.if !defined(_linux_${linux_ARGS}_${i:C/:.*//})
+.    endif
+.    if !defined(_linux_${linux_ARGS}_${i:C/:.*//})
 DEV_ERROR+=		"USE_LINUX=${i}: package does not exist"
-.endif
-.endfor
+.    endif
+.  endfor
 
-.ifdef USE_LINUX_RPM
+.  ifdef USE_LINUX_RPM
 
-.if ${linux_ARGS} == c7
-.ifndef MASTER_SITES
+.    if ${linux_ARGS} == c7
+.      ifndef MASTER_SITES
 MASTER_SITES=		${MASTER_SITE_CENTOS_LINUX}
-MASTER_SITE_SUBDIR=	centos/${LINUX_DIST_VER}/os/x86_64/Packages/:DEFAULT,amd64 \
+MASTER_SITE_SUBDIR=	altarch/${LINUX_DIST_VER}/os/aarch64/Packages/:DEFAULT,aarch64 \
+			altarch/${LINUX_DIST_VER}/updates/aarch64/Packages/:DEFAULT,aarch64 \
+			centos/${LINUX_DIST_VER}/os/x86_64/Packages/:DEFAULT,amd64 \
 			centos/${LINUX_DIST_VER}/updates/x86_64/Packages/:DEFAULT,amd64 \
 			altarch/${LINUX_DIST_VER}/os/i386/Packages/:DEFAULT,i386 \
 			altarch/${LINUX_DIST_VER}/updates/i386/Packages/:DEFAULT,i386 \
 			centos/${LINUX_DIST_VER}/os/Source/SPackages/:SOURCE \
 			centos/${LINUX_DIST_VER}/updates/Source/SPackages/:SOURCE
-.endif
+.      endif
 DIST_SUBDIR?=		centos
-.endif # ${linux_ARGS} == *
+.    endif # ${linux_ARGS} == *
 
 PKGNAMEPREFIX?=		linux-${linux_ARGS}-
 EXTRACT_SUFX?=		.rpm
+EXTRACT_SUFX_aarch64?=	.aarch64${EXTRACT_SUFX}
 EXTRACT_SUFX_amd64?=	.x86_64${EXTRACT_SUFX}
 EXTRACT_SUFX_i386?=	.i686${EXTRACT_SUFX}
 EXTRACT_SUFX_noarch?=	.noarch${EXTRACT_SUFX}
@@ -181,93 +186,108 @@ NO_BUILD=		yes
 NO_WRKSUBDIR=		yes
 USE_LINUX_PREFIX=	yes
 
-.endif # USE_LINUX_RPM
+.  endif # USE_LINUX_RPM
 
 .endif # ! _INCLUDE_USES_LINUX_MK
 
 .ifdef _POSTMKINCLUDED && ! _INCLUDE_USES_LINUX_POST_MK
 _INCLUDE_USES_LINUX_POST_MK=	yes
 
-.ifdef USE_LINUX_RPM
+.  ifdef USE_LINUX_RPM
 
-.if ${USE_LINUX_RPM} == noarch
+.    if ${USE_LINUX_RPM} == noarch
 NO_ARCH=		yes
 SHARE_DISTNAMES?=	${DISTNAME}
-.elif ${USE_LINUX_RPM} == nolib
+.    elif ${USE_LINUX_RPM} == nolib
 BIN_DISTNAMES?=		${DISTNAME}
-.else
+.    else
 LIB_DISTNAMES?=		${DISTNAME}
-.endif
-.if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mamd64)) \
+.    endif
+.    if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Maarch64)) \
+ && empty(NOT_FOR_ARCHS:Maarch64)
+DISTFILES_aarch64?=	${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_aarch64}:aarch64/} \
+			${BIN_DISTNAMES:S/$/${EXTRACT_SUFX_aarch64}:aarch64/} \
+			${SHARE_DISTNAMES:S/$/${EXTRACT_SUFX_noarch}/} \
+			${LIB_DISTNAMES_aarch64:S/$/${EXTRACT_SUFX_aarch64}:aarch64/}
+.    endif
+.    if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mamd64)) \
  && empty(NOT_FOR_ARCHS:Mamd64)
-.if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mi386)) \
+.      if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mi386)) \
  && empty(NOT_FOR_ARCHS:Mi386)
 DISTFILES_amd64?=	${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_i386}:amd64,i386/} \
+			${LIB_DISTNAMES_amd64:S/$/${EXTRACT_SUFX_i386}:amd64,i386/} \
 			${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_amd64}:amd64/} \
+			${LIB_DISTNAMES_amd64:S/$/${EXTRACT_SUFX_amd64}:amd64/} \
 			${BIN_DISTNAMES:S/$/${EXTRACT_SUFX_amd64}:amd64/} \
 			${SHARE_DISTNAMES:S/$/${EXTRACT_SUFX_noarch}/}
-.else
+.      else
 DISTFILES_amd64?=	${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_amd64}/} \
+			${LIB_DISTNAMES_amd64:S/$/${EXTRACT_SUFX_amd64}:amd64/} \
 			${BIN_DISTNAMES:S/$/${EXTRACT_SUFX_amd64}/} \
 			${SHARE_DISTNAMES:S/$/${EXTRACT_SUFX_noarch}/}
-.endif
-.endif
-.if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mi386)) \
+.      endif
+.    endif
+.    if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mi386)) \
  && empty(NOT_FOR_ARCHS:Mi386)
 DISTFILES_i386?=	${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_i386}:amd64,i386/} \
+			${LIB_DISTNAMES_i386:S/$/${EXTRACT_SUFX_i386}:amd64,i386/} \
 			${BIN_DISTNAMES:S/$/${EXTRACT_SUFX_i386}:i386/} \
 			${SHARE_DISTNAMES:S/$/${EXTRACT_SUFX_noarch}/}
-.endif
+.    endif
 SRC_DISTFILES?=		${DISTNAME}${SRC_SUFX}:SOURCE
 
-.ifdef USE_LINUX_RPM_BAD_PERMS
+.    ifdef USE_LINUX_RPM_BAD_PERMS
 EXTRACT_DEPENDS+=	rpm2archive:archivers/rpm4
 EXTRACT_CMD=		rpm2archive
-EXTRACT_BEFORE_ARGS=	<
+EXTRACT_BEFORE_ARGS=	- <
 EXTRACT_AFTER_ARGS=	| ${TAR} xf - --no-same-owner --no-same-permissions
-.endif
+.    endif
 
-.if ${USE_LINUX_RPM} != noarch
+.    if ${USE_LINUX_RPM} != noarch
 PLIST?=			${PKGDIR}/pkg-plist.${ARCH}
-.endif
+.    endif
 
-.if !target(do-install)
+.    if !target(do-install)
 do-install:
 	(cd ${WRKSRC} && \
 		${FIND} * | ${CPIO} -dumpl --quiet ${STAGEDIR}${PREFIX})
-.for d in bin lib lib64 sbin
+.      for d in bin lib lib64 sbin
 	[ ! -e ${STAGEDIR}${PREFIX}/${d} -o -L ${STAGEDIR}${PREFIX}/${d} ] || \
 		(cd ${STAGEDIR}${PREFIX} && \
 		${FIND} ${d} | ${CPIO} -dumpl --quiet usr && ${RM} -r ${d})
-.endfor
+.      endfor
 	[ ! -e ${STAGEDIR}${PREFIX}/usr/share/icons -o \
 		-L ${STAGEDIR}${PREFIX}/usr/share/icons ] || \
 		(cd ${STAGEDIR}${PREFIX}/usr/share && ${FIND} icons | \
 		${CPIO} -dumpl --quiet ${STAGEDIR}${LOCALBASE}/share && \
 		${RM} -r icons)
-.endif
+.    endif
 
-.endif # USE_LINUX_RPM
+.  endif # USE_LINUX_RPM
 
-.ifdef DISTNAME_amd64
+.  ifdef DISTNAME_aarch64
+DISTFILES_aarch64?=	${DISTNAME_aarch64}${EXTRACT_SUFX}
+.  endif
+.  ifdef DISTNAME_amd64
 DISTFILES_amd64?=	${DISTNAME_amd64}${EXTRACT_SUFX}
-.endif
-.ifdef DISTNAME_i386
+.  endif
+.  ifdef DISTNAME_i386
 DISTFILES_i386?=	${DISTNAME_i386}${EXTRACT_SUFX}
-.endif
-.ifndef DISTFILES
-.ifdef DISTFILES_amd64 || DISTFILES_i386
-.if make(makesum)
-_ALL_DISTFILES=		${DISTFILES_amd64} ${DISTFILES_i386}
+.  endif
+
+.  ifndef DISTFILES
+.    ifdef DISTFILES_aarch64 || DISTFILES_amd64 || DISTFILES_i386
+.      if make(makesum)
+_ALL_DISTFILES=		${DISTFILES_aarch64} ${DISTFILES_amd64} ${DISTFILES_i386}
 DISTFILES=		${_ALL_DISTFILES:O:u}
-.else
+.      else
 DISTFILES=		${DISTFILES_${ARCH}}
-.endif
+.      endif
 EXTRACT_ONLY?=		${DISTFILES_${ARCH}:C/:[^:]+$//}
-.endif
-.endif
-.if !empty(SRC_DISTFILES) && (make(makesum) || defined(PACKAGE_BUILDING))
+.    endif
+.  endif
+.  if !empty(SRC_DISTFILES) && (make(makesum) || defined(PACKAGE_BUILDING))
 DISTFILES+=		${SRC_DISTFILES}
-.endif
+.  endif
 
 .endif # _POSTMKINCLUDED && ! _INCLUDE_USES_LINUX_POST_MK

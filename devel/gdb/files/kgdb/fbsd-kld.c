@@ -24,9 +24,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 #include "defs.h"
 #include "command.h"
 #include "completer.h"
@@ -59,15 +56,7 @@ struct kld_info {
 struct target_so_ops kld_so_ops;
 
 /* Per-program-space data key.  */
-static const struct program_space_data *kld_pspace_data;
-
-static void
-kld_pspace_data_cleanup (struct program_space *pspace, void *arg)
-{
-  struct kld_info *info = (struct kld_info *)arg;
-
-  xfree (info);
-}
+static const registry<program_space>::key<kld_info> kld_pspace_data;
 
 /* Get the current kld data.  If none is found yet, add it now.  This
    function always returns a valid object.  */
@@ -77,13 +66,10 @@ get_kld_info (void)
 {
   struct kld_info *info;
 
-  info = (struct kld_info *)
-    program_space_data (current_program_space, kld_pspace_data);
-  if (info != NULL)
-    return info;
+  info = kld_pspace_data.get (current_program_space);
+  if (info == nullptr)
+    info = kld_pspace_data.emplace (current_program_space);
 
-  info = XCNEW (struct kld_info);
-  set_program_space_data (current_program_space, kld_pspace_data, info);
   return info;
 }
 
@@ -128,7 +114,8 @@ check_kld_path (std::string &path)
 static gdb::optional<std::string>
 find_kld_path (const char *filename)
 {
-  if (exec_bfd)
+  bfd *exec_bfd = current_program_space->exec_bfd ();
+  if (exec_bfd != nullptr)
     {
       std::string kernel_dir = ldirname (bfd_get_filename (exec_bfd));
       if (!kernel_dir.empty ())
@@ -172,7 +159,7 @@ read_pointer (CORE_ADDR address)
 	gdb_byte ptr_buf[8];
 	int arch_size;
 
-	arch_size = bfd_get_arch_size (exec_bfd);
+	arch_size = bfd_get_arch_size (current_program_space->exec_bfd ());
 	if (arch_size == -1)
 		return (0);
 	ptr_type = builtin_type (target_gdbarch ())->builtin_data_ptr;
@@ -240,14 +227,8 @@ adjust_section_address (struct target_section *sec, CORE_ADDR *curr_base)
 static void
 load_kld (const char *path, CORE_ADDR base_addr, int from_tty)
 {
-	struct target_section *sections = NULL, *sections_end = NULL, *s;
-	gdb_bfd_ref_ptr bfd;
-	CORE_ADDR curr_addr;
-	symfile_add_flags add_flags;
-	int i;
-
 	/* Open the kld. */
-	bfd = gdb_bfd_openr(path, gnutarget);
+	gdb_bfd_ref_ptr bfd = gdb_bfd_openr(path, gnutarget);
 	if (bfd == NULL)
 		error("\"%s\": can't open: %s", path,
 		    bfd_errmsg(bfd_get_error()));
@@ -260,30 +241,27 @@ load_kld (const char *path, CORE_ADDR base_addr, int from_tty)
 		error("\"%s\": can't find text section", path);
 
 	/* Build a section table from the bfd and relocate the sections. */
-	if (build_section_table (bfd.get(), &sections, &sections_end))
-		error("\"%s\": can't find file sections", path);
-	curr_addr = base_addr;
-	for (s = sections; s < sections_end; s++)
-		adjust_section_address(s, &curr_addr);
+	target_section_table sections = build_section_table (bfd.get());
+	CORE_ADDR curr_addr = base_addr;
+	for (target_section &s : sections)
+		adjust_section_address(&s, &curr_addr);
 
 	/* Build a section addr info to pass to symbol_file_add(). */
 	section_addr_info sap
-	    = build_section_addr_info_from_section_table (sections,
-		sections_end);
-	xfree(sections);
+	    = build_section_addr_info_from_section_table (sections);
 
 	printf_unfiltered("add symbol table from file \"%s\" at\n", path);
-	for (i = 0; i < sap.size(); i++)
-		printf_unfiltered("\t%s_addr = %s\n", sap[i].name.c_str(),
-		    paddress(target_gdbarch(), sap[i].addr));		
+	for (const other_sections &s : sap)
+		printf_unfiltered("\t%s_addr = %s\n", s.name.c_str(),
+		    paddress(target_gdbarch(), s.addr));
 
 	if (from_tty && (!query("%s", "")))
 		error("Not confirmed.");
 
-	add_flags = 0;
+	symfile_add_flags add_flags = 0;
 	if (from_tty)
 		add_flags |= SYMFILE_VERBOSE;
-	symbol_file_add_from_bfd(bfd.get(), path, add_flags, &sap,
+	symbol_file_add_from_bfd(bfd, path, add_flags, &sap,
 	    OBJF_USERLOADED, NULL);
 }
 
@@ -292,7 +270,7 @@ kgdb_add_kld_cmd (const char *arg, int from_tty)
 {
 	CORE_ADDR base_addr;
 
-	if (!exec_bfd)
+	if (current_program_space->exec_bfd () == nullptr)
 		error("No kernel symbol file");
 
 	/* Try to open the raw path to handle absolute paths first. */
@@ -327,7 +305,7 @@ kld_relocate_section_addresses (struct so_list *so, struct target_section *sec)
   lm_info_kld *li = (lm_info_kld *) so->lm_info;
   static CORE_ADDR curr_addr;
 
-  if (sec == so->sections)
+  if (sec == &so->sections->front())
     curr_addr = li->base_address;
 
   adjust_section_address(sec, &curr_addr);
@@ -366,7 +344,7 @@ kld_solib_create_inferior_hook (int from_tty)
 	struct kld_info *info;
 
 	info = get_kld_info();
-	
+
 	/*
 	 * Compute offsets of relevant members in struct linker_file
 	 * and the addresses of global variables.  Newer kernels
@@ -388,17 +366,17 @@ kld_solib_create_inferior_hook (int from_tty)
 			    "Unable to find struct linker_file symbol"));
 
 			info->off_address =
-			    lookup_struct_elt (SYMBOL_TYPE (linker_file_sym),
+			    lookup_struct_elt (linker_file_sym->type (),
 				"address", 0).offset / 8;
 			info->off_filename =
-			    lookup_struct_elt (SYMBOL_TYPE (linker_file_sym),
+			    lookup_struct_elt (linker_file_sym->type (),
 				"filename", 0).offset / 8;
 			info->off_pathname =
-			    lookup_struct_elt (SYMBOL_TYPE (linker_file_sym),
+			    lookup_struct_elt (linker_file_sym->type (),
 				"pathname", 0).offset / 8;
 
 			struct type *link_type =
-			    lookup_struct_elt_type (SYMBOL_TYPE (linker_file_sym),
+			    lookup_struct_elt_type (linker_file_sym->type (),
 				"link", 0);
 			if (link_type == NULL)
 				error (_("Unable to find link type"));
@@ -534,9 +512,9 @@ kld_find_and_open_solib (const char *solib, unsigned o_flags,
   return (fd);
 }
 
-void _initialize_kld_target(void);
+void _initialize_kld_target ();
 void
-_initialize_kld_target(void)
+_initialize_kld_target ()
 {
 	struct cmd_list_element *c;
 
@@ -555,7 +533,4 @@ _initialize_kld_target(void)
 	   "Usage: add-kld FILE\n\
 Load the symbols from the kernel loadable module FILE.");
 	set_cmd_completer(c, filename_completer);
-
-	kld_pspace_data = register_program_space_data_with_cleanup (NULL,
-	    kld_pspace_data_cleanup);
 }

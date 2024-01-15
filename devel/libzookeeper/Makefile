@@ -1,25 +1,24 @@
-# Created by: skreuzer@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	zookeeper
-PORTVERSION=	3.6.2
+PORTVERSION=	3.8.3
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 PKGNAMEPREFIX=	lib
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	dmitry.wagin@ya.ru
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C client interface to Zookeeper server
+WWW=		https://zookeeper.apache.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcppunit.so:devel/cppunit
 
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf cpe libtool pkgconfig
+CPE_VENDOR=	apache
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/zookeeper-client/zookeeper-client-c
 

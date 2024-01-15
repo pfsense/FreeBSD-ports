@@ -1,6 +1,3 @@
-# Created by: Piotr Smyrak <smyru@heron.pl>
-# $FreeBSD$
-
 PORTNAME=	cursor-jimmac-theme
 PORTVERSION=	0.1
 PORTREVISION=	3
@@ -9,7 +6,8 @@ MASTER_SITES=	http://smyrak.com/freebsd/dists/
 DISTNAME=	Jimmac
 
 MAINTAINER=	ps.ports@smyrak.com
-COMMENT=	Beautiful Jimmac X cursor themes.
+COMMENT=	Beautiful Jimmac X cursor themes
+WWW=		http://jimmac.musichall.cz/themes.php?skin=7
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

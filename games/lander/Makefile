@@ -1,51 +1,34 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lander
-PORTVERSION=	0.6.6
-PORTREVISION=	20
+DISTVERSIONPREFIX=	r
+DISTVERSION=	0.7.3
+PORTREVISION=	1
 CATEGORIES=	games
-MASTER_SITES=	http://www.nickg.me.uk/files/ \
-		http://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Lunar Lander clone
+WWW=		https://www.doof.me.uk/lunar-lander/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_11_powerpc64=	fails to configure on powerpc64 elfv1: could not link against boost_filesystem-boost_filesystem
-BROKEN_FreeBSD_12_powerpc64=	fails to configure on powerpc64 elfv1: could not link against boost_filesystem-boost_filesystem
+LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libboost_filesystem.so:devel/boost-libs \
-		libpng.so:graphics/png
+USES=		compiler:c++17-lang display:test gettext gl meson sdl pkgconfig tar:xz
+USE_GITHUB=	yes
+GH_ACCOUNT=	nickg
+USE_SDL=	sdl2 image2 mixer2
+USE_GL=		gl glew
 
-GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lib gettext gl localbase pkgconfig sdl
-USE_SDL=	sdl image mixer
-USE_GL=		gl glu
-
-CONFIGURE_ARGS=	--with-boost="${LOCALBASE}" \
-		--with-boost-filesystem=boost_filesystem
+LDFLAGS+=	${LOCALBASE}/lib/libintl.so
 
 PORTDOCS=	*
 PORTDATA=	*
 
-DESKTOP_ENTRIES="Lunar Lander" \
-		"Lunar Lander clone" \
-		"${DATADIR}/images/ship.png" \
-		"lander" \
-		"Game;ArcadeGame;" \
-		false
-
-OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-R$$found_dir||g' ${WRKSRC}/configure
+OPTIONS_DEFINE=	NLS DOCS
+OPTIONS_SUB=	yes
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

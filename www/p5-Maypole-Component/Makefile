@@ -1,6 +1,3 @@
-# Created by: Marc G. Fournier
-# $FreeBSD$
-
 PORTNAME=	Maypole-Component
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Run Maypole sub-requests as components
+WWW=		https://metacpan.org/release/Maypole-Component
 
 USES=		perl5
 USE_PERL5=	configure patch

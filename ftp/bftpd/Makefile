@@ -1,22 +1,21 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	bftpd
-PORTVERSION=	5.6
+PORTVERSION=	6.1
 CATEGORIES=	ftp
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	jsmith@resonatingmedia.com
 COMMENT=	Very configurable FTP server that can do chroot easily
+WWW=		https://bftpd.sourceforge.net/
 
 LICENSE=	GPLv2
+
+USES=		autoreconf cpe gmake
+CPE_VENDOR=	${PORTNAME}_project
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-pam
 # Fix build with clang 11
 CFLAGS+=	-fcommon
-
-USES=		autoreconf gmake
 
 WRKSRC=	${WRKDIR}/${PORTNAME}
 
@@ -30,7 +29,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/bftpd.conf,${PREFIX}/etc/bftpd.conf,' \
 		${WRKSRC}/mypaths.h
 	@${REINPLACE_CMD} -e 's, -ldl,,g' ${WRKSRC}/configure.in
-	@${FIND} ${WRKSRC} -name CVS | ${XARGS} ${RM} -r
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin/

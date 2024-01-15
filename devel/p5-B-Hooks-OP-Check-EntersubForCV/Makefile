@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	B-Hooks-OP-Check-EntersubForCV
-PORTVERSION=	0.09
-PORTREVISION=	1
+PORTVERSION=	0.10
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to invoke callback on construction of entersub OPs
+WWW=		https://metacpan.org/release/B-Hooks-OP-Check-EntersubForCV
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

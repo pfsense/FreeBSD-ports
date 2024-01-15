@@ -1,6 +1,3 @@
-# Created by: Vivek Khera <vivek@khera.org>
-# $FreeBSD$
-
 PORTNAME=	Mail-Verp
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vivek@khera.org
 COMMENT=	Encodes and decodes Variable Envelope Return Paths (VERP) addresses
+WWW=		https://metacpan.org/release/Mail-Verp
 
 USES=		perl5
 USE_PERL5=	configure

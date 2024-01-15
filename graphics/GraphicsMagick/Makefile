@@ -1,23 +1,21 @@
-# Created by: Ron van Daal
-# $FreeBSD$
-
 PORTNAME=	GraphicsMagick
-PORTVERSION=	1.3.35
+PORTVERSION=	1.3.40
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	SF \
-		ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/${PORTVERSION:R}/
+MASTER_SITES=	SF
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast image processing tools based on ImageMagick
+WWW=		http://www.graphicsmagick.org/
 
 LICENSE=	MIT
 
-USES=		libtool localbase pathfix tar:bzip2
+USES=		cpe libtool localbase pathfix pkgconfig tar:zst
 
 CONFIGURE_ARGS=	--enable-shared --enable-static \
 		--with-windows-font-dir=${WINDOWS_FONT_DIR} \
-		--without-perl --without-trio
+		--without-dps --without-gdi32 --without-perl --without-trio
 CONFIGURE_ENV=	PTHREAD_LIBS=-lpthread
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -27,10 +25,9 @@ USE_LDCONFIG=	yes
 # Use fonts installed by x11-fonts/webfonts by default
 WINDOWS_FONT_DIR?=	${LOCALBASE}/share/fonts/webfonts
 
-OPTIONS_DEFINE=	BZIP2 DOCS FPX FREETYPE JASPER JBIG JPEG LCMS2 LZMA OPENMP Q8BIT PNG SSE TEST TIFF UMEM WEBP WMF X11 XML ZLIB ZSTD
-OPTIONS_DEFAULT=BZIP2 FREETYPE JASPER JBIG JPEG LCMS2 LZMA OPENMP PNG TIFF WEBP WMF X11 XML ZLIB
+OPTIONS_DEFINE=	BZIP2 DOCS FPX FREETYPE HEIF JASPER JBIG JPEG JXL LCMS2 LZMA OPENMP Q8BIT PNG TEST TIFF WEBP WMF X11 XML ZLIB ZSTD
+OPTIONS_DEFAULT=BZIP2 FREETYPE JASPER JBIG JPEG JXL LCMS2 LZMA OPENMP PNG TIFF WEBP WMF X11 XML ZLIB
 Q8BIT_DESC=	Use 8-bit pixels (speed) instead of 16-bit (quality)
-UMEM_DESC=	UMEM memory allocation library support
 TEST_DESC=	Run bundled self-tests after build
 
 BZIP2_CONFIGURE_WITH=	bzlib
@@ -38,18 +35,21 @@ FPX_CONFIGURE_WITH=	fpx
 FPX_LIB_DEPENDS=	libfpx.so:graphics/libfpx
 FREETYPE_CONFIGURE_WITH=ttf
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
+HEIF_CONFIGURE_WITH=	heif
+HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
 JASPER_CONFIGURE_WITH=	jp2
 JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
 JBIG_CONFIGURE_WITH=	jbig
 JBIG_LIB_DEPENDS=	libjbig.so:graphics/jbigkit
 JPEG_CONFIGURE_WITH=	jpeg
 JPEG_USES=		jpeg
+JXL_CONFIGURE_WITH=	jxl
+JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
 LCMS2_CONFIGURE_WITH=	lcms2
 LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 LZMA_CONFIGURE_WITH=	lzma
 OPENMP_CONFIGURE_OFF=	--disable-openmp --without-threads
 OPENMP_CONFIGURE_ON=	--disable-openmp-slow --enable-openmp --with-threads
-OPENMP_USES=		compiler:gcc-c++11-lib
 PNG_CONFIGURE_WITH=	png
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
 Q8BIT_CONFIGURE_OFF=	--with-quantum-depth=16
@@ -60,7 +60,6 @@ TEST_BUILD_DEPENDS=	webfonts>=0:x11-fonts/webfonts
 TEST_RUN_DEPENDS=	webfonts>=0:x11-fonts/webfonts
 TIFF_CONFIGURE_WITH=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
-UMEM_CONFIGURE_WITH=	umem
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 WMF_CONFIGURE_WITH=	wmf
@@ -77,15 +76,9 @@ ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MSSE}
-.if ${MACHINE_CPU:Msse}
-CFLAGS+=	-msse
-.endif
-.if ${MACHINE_CPU:Msse2}
-CFLAGS+=	-msse2
-.endif
-.if ${MACHINE_CPU:Msse3}
-CFLAGS+=	-msse3
+.if ${PORT_OPTIONS:MOPENMP}
+.if ${ARCH} != aarch64 && ${ARCH} != amd64 && ${ARCH} != i386 && ${ARCH} != powerpc64 && ${ARCH} != powerpc64le && ${ARCH} != riscv64
+USES+=		compiler:gcc-c++11-lib
 .endif
 .endif
 

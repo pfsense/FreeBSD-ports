@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	pubs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.3
+DISTVERSION=	0.9.0
 CATEGORIES=	misc python
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Your bibliography on the command line
+WWW=		https://github.com/pubs/pubs
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/license
@@ -20,9 +19,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 USE_PYTHON=	distutils autoplist noflavors
 NO_ARCH=	yes
+
+PORTSCOUT=	skipv:show_and_search
 
 .include <bsd.port.mk>

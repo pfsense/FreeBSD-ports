@@ -1,6 +1,3 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libr3
 PORTVERSION=	1.0.0
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	URL router library with high performance
+WWW=		https://github.com/c9s/r3
 
 LICENSE=	MIT
 

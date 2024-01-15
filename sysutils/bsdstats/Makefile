@@ -1,13 +1,12 @@
-# Created by: Marc G. Fournier <scrappy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bsdstats
 PORTVERSION=	7.0
+PORTREVISION=	3
 CATEGORIES=	sysutils
 DISTFILES=
 
 MAINTAINER=	scrappy@hub.org
 COMMENT=	Monthly script for reporting anonymous statistics about your machine
+WWW=		https://www.bsdstats.org/
 
 LICENSE=	BSD4CLAUSE
 

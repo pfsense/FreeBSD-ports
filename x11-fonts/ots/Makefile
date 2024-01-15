@@ -1,39 +1,32 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ots
-PORTVERSION=	8.1.1
+PORTVERSION=	9.1.0
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://github.com/khaledhosny/ots/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	OpenType Sanitizer
+WWW=		https://github.com/khaledhosny/ots
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	brotli>=1.0.9:archivers/brotli \
+		freetype2>=2.12.1:print/freetype2 \
+		googletest>=1.11.0:devel/googletest \
+		liblz4>=1.9.4:archivers/liblz4 \
+		woff2>=1.0.2:devel/woff2
 LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
 		libfreetype.so:print/freetype2 \
 		libgtest.so:devel/googletest \
 		liblz4.so:archivers/liblz4 \
 		libwoff2dec.so:devel/woff2
 
-USES=		compiler:c++11-lang meson pkgconfig shebangfix tar:xz
+USES=		compiler:c++14-lang meson pkgconfig tar:xz
 
-MESON_FALSE=	debug
-MESON_TRUE=	graphite
+MESON_ARGS=	--default-library=both -Ddebug=false -Dgraphite=true -Dsynthesize-gvar=true
+USE_CXXSTD=	c++14
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
-
-SHEBANG_FILES=	tests/*.sh
-bash_CMD=	${SH}
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/meson.build
-
-do-test:
-	${SETENV} top_builddir=${BUILD_WRKSRC} top_srcdir=${WRKSRC} ${SH} ${WRKSRC}/tests/test_bad_fonts.sh
-	${SETENV} top_builddir=${BUILD_WRKSRC} top_srcdir=${WRKSRC} ${SH} ${WRKSRC}/tests/test_fuzzed_fonts.sh
-	${SETENV} top_builddir=${BUILD_WRKSRC} top_srcdir=${WRKSRC} ${SH} ${WRKSRC}/tests/test_good_fonts.sh
 
 .include <bsd.port.mk>

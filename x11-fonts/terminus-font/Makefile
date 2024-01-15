@@ -1,19 +1,18 @@
-# Created by: Michael Hsin <mhsin@mhsin.org>
-# $FreeBSD$
-
 PORTNAME=	terminus-font
-PORTVERSION=	4.48
+PORTVERSION=	4.49.1
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
-MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}-${PORTVERSION:R}
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Terminus Font - a clean fixed width font
+WWW=		https://terminus-font.sourceforge.net
 
 LICENSE=	OFL11
 
 BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf
 
-USES=		gmake fonts python:build,3.5+ shebangfix
+USES=		gmake fonts python:build shebangfix
 NO_ARCH=	yes
 
 SHEBANG_FILES=	bin/*.py
@@ -33,7 +32,7 @@ SUB_FILES=	pkg-message
 
 .include <bsd.port.options.mk>
 
-ALL_TARGET=	pcf pcf-8bit
+ALL_TARGET=	pcf pcf-8bit otb
 
 post-extract:
 .if ${PORT_OPTIONS:MAO2}
@@ -79,5 +78,6 @@ post-build:
 do-install:
 	@${MKDIR} ${STAGEDIR}${FONTSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.pcf.gz ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.otb ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

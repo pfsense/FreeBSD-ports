@@ -1,6 +1,3 @@
-# Created by: Yoshiaki Uchikawa
-# $FreeBSD$
-
 PORTNAME=	mikmod
 PORTVERSION=	3.2.8
 CATEGORIES=	audio
@@ -9,6 +6,7 @@ MASTER_SITES=	SF \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Mod player which plays MTM, STM, XM, MOD, S3M, ULT, UNI, and IT mods
+WWW=		https://mikmod.sourceforge.net/
 
 LICENSE=	GPLv2
 

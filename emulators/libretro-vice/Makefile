@@ -1,24 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-vice
-PORTVERSION=	0.20201218
+DISTVERSION=	0.20231006
 CATEGORIES=	emulators games
 PKGNAMESUFFIX=	-${FLAVOR}
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	${${FLAVOR}_COMMENT}
+WWW=		https://github.com/libretro/vice-libretro
 
 LICENSE=	GPLv2
 
-FLAVORS=	x128 x64 x64sc xcbm2 xcbm5x0 xpet xplus4 xscpu64 xvic
-FLAVOR?=	${FLAVORS:[2]}
+FLAVORS=	x64 x128 x64sc xcbm2 xcbm5x0 xpet xplus4 xscpu64 xvic
+FLAVOR?=	${FLAVORS:[1]}
 
 USES=		compiler:c11 gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	vice-libretro
-GH_TAGNAME=	5725415
+GH_TAGNAME=	f3542eb9ce3ad7284e2bb69e68bbc10596774b40
 
 MAKE_ARGS=	EMUTYPE=${FLAVOR}
 PLIST_FILES=	lib/libretro/vice_${FLAVOR}_libretro.so

@@ -1,6 +1,3 @@
-# Created by: David Naylor <dbn@dragon.local>
-# $FreeBSD$
-
 PORTNAME=	referenceassemblies-pcl
 PORTVERSION=	4.6
 PORTREVISION=	1
@@ -10,8 +7,9 @@ MASTER_SITES=	https://download.microsoft.com/download/B/7/9/B79993DE-10E7-457A-B
 DISTFILES=	NetFx_PortableLibraryReferenceAssemblies46.exe:ms \
 		referenceassemblies-pcl_2014.04.14.orig.tar.bz2:mono
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Microsoft .Net Portable Class Library Reference Assemblies
+WWW=		https://blogs.msdn.microsoft.com/dotnet/2013/10/14/portable-class-library-pcl-now-available-on-all-platforms/
 
 LICENSE=	EULA
 LICENSE_NAME=	Microsoft software license terms for Microsoft .Net Portable Class Library Reference Assemblies - 4.6

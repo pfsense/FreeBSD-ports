@@ -1,6 +1,3 @@
-# Created by: Vsevolod Stakhov <vsevolod@highsecure.ru>
-# $FreeBSD$
-
 PORTNAME=	exilog
 PORTVERSION=	0.5
 PORTREVISION=	9
@@ -9,6 +6,7 @@ MASTER_SITES=	http://duncanthrax.net/exilog/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to centralize and visualize Exim logs with a web front end
+WWW=		https://duncanthrax.net/exilog/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

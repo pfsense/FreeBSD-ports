@@ -1,6 +1,3 @@
-# Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freepwing
 PORTVERSION=	1.4.4
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	ftp://ftp.sra.co.jp/pub/misc/freepwing/old/1.4/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free JIS X 4081 (subset of EPWING V1) Formatter
+WWW=		http://www.sra.co.jp/people/m-kasahr/freepwing/
 
 RUN_DEPENDS=	gmake:devel/gmake
 

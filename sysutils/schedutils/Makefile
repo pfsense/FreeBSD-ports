@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	schedutils
 PORTVERSION=	0.7.2
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Collection of realtime scheduling tools
+WWW=		https://sourceforge.net/projects/schedutils/
 
 LICENSE=	BSD3CLAUSE
 

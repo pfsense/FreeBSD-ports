@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minitar-cli
 PORTVERSION=	0.8
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library and command-line utility for tar archives
+WWW=		https://github.com/halostatue/minitar
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
@@ -19,7 +17,6 @@ RUN_DEPENDS=	rubygem-minitar>=0.8.0<1:archivers/rubygem-minitar \
 		rubygem-powerbar>=1.0<2:devel/rubygem-powerbar
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,20 +1,19 @@
-# Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	appstream-glib
-PORTVERSION=	0.7.18
+PORTVERSION=	0.8.2
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://people.freedesktop.org/~hughsient/appstream-glib/releases/
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library to help with AppStream metadata
+WWW=		https://github.com/hughsie/appstream-glib/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gcab:archivers/gcab
-LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libjson-glib-1.0.so:devel/json-glib \
 		libyaml.so:textproc/libyaml \
 		libuuid.so:misc/e2fsprogs-libuuid \

@@ -1,19 +1,11 @@
---- printing/print_settings_conversion.cc.orig	2021-01-18 21:29:02 UTC
+--- printing/print_settings_conversion.cc.orig	2023-10-11 18:22:24 UTC
 +++ printing/print_settings_conversion.cc
-@@ -211,14 +211,14 @@ std::unique_ptr<PrintSettings> PrintSettingsFromJobSet
- #endif
+@@ -287,7 +287,7 @@ std::unique_ptr<PrintSettings> PrintSettingsFromJobSet
+     settings->set_is_modifiable(is_modifiable.value());
    }
  
--#if defined(OS_CHROMEOS) || (defined(OS_LINUX) && defined(USE_CUPS))
-+#if defined(OS_CHROMEOS) || ((defined(OS_LINUX) || defined(OS_BSD)) && defined(USE_CUPS))
-   const base::Value* advanced_settings =
-       job_settings.FindDictKey(kSettingAdvancedSettings);
+-#if BUILDFLAG(IS_CHROMEOS) || (BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_CUPS))
++#if BUILDFLAG(IS_CHROMEOS) || ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(USE_CUPS))
+   const base::Value::Dict* advanced_settings =
+       job_settings.FindDict(kSettingAdvancedSettings);
    if (advanced_settings) {
-     for (const auto& item : advanced_settings->DictItems())
-       settings->advanced_settings().emplace(item.first, item.second.Clone());
-   }
--#endif  // defined(OS_CHROMEOS) || (defined(OS_LINUX) && defined(USE_CUPS))
-+#endif  // defined(OS_CHROMEOS) || ((defined(OS_LINUX) || defined(OS_BSD)) && defined(USE_CUPS))
- 
- #if BUILDFLAG(IS_ASH)
-   bool send_user_info =

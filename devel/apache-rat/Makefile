@@ -1,6 +1,3 @@
-# Created by: Pedro Giffuni
-# $FreeBSD$
-
 PORTNAME=	apache-rat
 PORTVERSION=	0.13
 CATEGORIES=	devel java
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Release audit tool
+WWW=		https://creadur.apache.org/rat/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

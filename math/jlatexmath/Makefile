@@ -1,6 +1,3 @@
-# Created by: rfarmer@predatorlabs.net
-# $FreeBSD$
-
 PORTNAME=	jlatexmath
 PORTVERSION=	1.0.7
 CATEGORIES=	math java
@@ -10,8 +7,9 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}.jar:0 \
 		${PORTNAME}-fop-${PORTVERSION}.jar:1
 EXTRACT_ONLY=	# none
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java API to display mathematical formulas written in LaTeX
+WWW=		https://wiki.scilab.org/JLaTeXMath
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov
-# $FreeBSD$
-
 PORTNAME=	xoj
 PORTVERSION=	1.0
 PORTREVISION=	2

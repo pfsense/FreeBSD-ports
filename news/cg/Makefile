@@ -1,6 +1,3 @@
-# Created by: bkhl@elektrubadur.se
-# $FreeBSD$
-
 PORTNAME=	cg
 PORTVERSION=	0.4
 CATEGORIES=	news
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.nih.at/cg/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Semi-automatic newsgroup binary downloader
+WWW=		https://www.nih.at/cg/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

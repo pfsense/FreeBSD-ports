@@ -1,32 +1,34 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gexiv2
-PORTVERSION=	0.12.1
+PORTVERSION=	0.14.2
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 
 MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	GObject-based wrapper around Exiv2 library
+WWW=		https://wiki.gnome.org/Projects/gexiv2
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	vala>=0:lang/vala
-LIB_DEPENDS=	libexiv2.so:graphics/exiv2
+BROKEN_i386=	fails to build with exiv2 0.28
 
-USES=		compiler:c++11-lang gnome libtool:build meson pathfix \
-		pkgconfig tar:xz
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${PY_FLAVOR}
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${PY_FLAVOR}
+
+USES=		compiler:c++17-lang gnome libtool:build meson pathfix pkgconfig \
+		python:build tar:xz vala:build
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 BINARY_WRAPPERS=	gm4
+BINARY_ALIAS=	python3=${PYTHON_CMD}
+
+USE_CXXSTD=	c++17
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_SUB=		yes
 DOCS_BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc
 DOCS_CONFIGURE_ON=	-Dgtk_doc=true
-
-.include <bsd.port.options.mk>
 
 pre-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/vala/vapi

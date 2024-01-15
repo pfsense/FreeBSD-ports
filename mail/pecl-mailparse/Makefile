@@ -1,12 +1,10 @@
-# Created by: Thierry Thomas (<thierry@pompo.net>)
-# $FreeBSD$
-
 PORTNAME=	mailparse
-PORTVERSION=	3.1.1
+PORTVERSION=	3.1.6
 CATEGORIES=	mail www
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	PECL extension to create and decode MIME messages
+WWW=		https://pecl.php.net/package/mailparse
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sd-agent
 DISTVERSION=	1.13.4
 PORTREVISION=	1
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	tim@wallago.co.uk
 COMMENT=	Server Density Agent for FreeBSD
+WWW=		https://www.serverdensity.com/
 
 LICENSE=	BSD3CLAUSE
 

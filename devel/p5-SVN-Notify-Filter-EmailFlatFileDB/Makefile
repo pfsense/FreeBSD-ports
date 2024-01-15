@@ -1,6 +1,3 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	SVN-Notify-Filter-EmailFlatFileDB
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Converts account names to email address based on a flat-file database
+WWW=		https://metacpan.org/release/SVN-Notify-Filter-EmailFlatFileDB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

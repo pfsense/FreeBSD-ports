@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Iterator-Simple
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple iterator and utilities
+WWW=		https://metacpan.org/release/Iterator-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

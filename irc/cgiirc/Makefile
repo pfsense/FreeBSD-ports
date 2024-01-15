@@ -1,6 +1,3 @@
-# Created by: Vsevolod Stakhov <vsevolod@highsecure.ru>
-# $FreeBSD$
-
 PORTNAME=	cgiirc
 PORTVERSION=	0.5.12
 CATEGORIES=	irc www perl5
@@ -9,10 +6,11 @@ MASTER_SITES=	http://cgiirc.org/releases/ \
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	IRC web gateway written in Perl
+WWW=		https://cgiirc.sourceforge.net/
 
 LICENSE=	GPLv2
 
-USES=		perl5  shebangfix
+USES=		cpe perl5 shebangfix
 NO_BUILD=	yes
 SHEBANG_FILES=	docs/identd.pl \
 		irc.cgi \

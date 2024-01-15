@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	bitlbee-discord
-DISTVERSION=	0.4.2-11
-DISTVERSIONSUFFIX=-g3061edd
+DISTVERSION=	0.4.3-7
+DISTVERSIONSUFFIX=-g607f988
 CATEGORIES=	irc
 
 MAINTAINER=	arfy32@gmail.com
 COMMENT=	Discord plugin for bitlbee
+WWW=		https://github.com/sm00th/bitlbee-discord
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +17,6 @@ USES=		autoreconf gnome libtool pkgconfig
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	sm00th
-GH_TAGNAME=	3061edd283b4e886384e5e8cad10f92dc45f3ee7
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-plugindir=${PREFIX}/lib/bitlbee --with-bdatadir=${LOCALBASE}/share/bitlbee

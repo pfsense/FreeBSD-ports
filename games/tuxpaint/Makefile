@@ -1,27 +1,33 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	tuxpaint
-PORTVERSION=	0.9.24
+PORTVERSION=	0.9.28
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF
+DISTNAME=	${PORTNAME}-${PORTVERSION}-sdl2
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Drawing program designed for young children
+WWW=		https://www.tuxpaint.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/COPYING.txt
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick7
 LIB_DEPENDS=	libfribidi.so:converters/fribidi \
-		libpaper.so:print/libpaper
+		libpaper.so:print/libpaper \
+		libimagequant.so:graphics/libimagequant \
+		libpng16.so:graphics/png \
+		libharfbuzz.so:print/harfbuzz
+
 RUN_DEPENDS=	anytopnm:graphics/netpbm \
 		bash:shells/bash
 
-USES=		gettext gmake gnome gperf pkgconfig sdl shebangfix
-SHEBANG_FILES=	src/tuxpaint-import.sh
-USE_GNOME=	librsvg2
-USE_SDL=	image mixer sdl ttf pango
+USES=		gettext gmake gnome gperf magick:7,build pkgconfig \
+		python sdl shebangfix
+SHEBANG_FILES=	src/tuxpaint-import.sh \
+		fonts/locale/zh_tw_docs/maketuxfont.py
+
+USE_GNOME=	librsvg2 cairo
+USE_SDL=	gfx2 image2 mixer2 sdl2 ttf2
 MAKE_ARGS=	CPPFLAGS="-I${LOCALBASE}/include" \
 		LDFLAGS="-L${LOCALBASE}/lib" \
 		PREFIX="${PREFIX}" \
@@ -47,14 +53,14 @@ PORTDATA=	*
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 post-extract:
 	@${RM} -r ${WRKSRC}/fonts/locale/vi_docs
-
-post-patch:
-.for file in src/tuxpaint-import.sh src/tp_magic_api.h.in src/tuxpaint.conf \
-	hildon/tuxpaint.conf
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/${file}
-.endfor
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tuxpaint

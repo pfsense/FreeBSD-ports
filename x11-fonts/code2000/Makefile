@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	code2000
 PORTVERSION=	1.171
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Shareware demo Unicode TrueType font
+WWW=		https://en.wikipedia.org/wiki/Code2000
 
 USES=		fonts zip
 

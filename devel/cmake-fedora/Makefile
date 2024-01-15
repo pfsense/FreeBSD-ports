@@ -1,6 +1,3 @@
-# Created by: buganini@gmail.com
-# $FreeBSD$
-
 PORTNAME=	cmake-fedora
 PORTVERSION=	2.9.2
 DISTVERSIONSUFFIX=	-modules-only
@@ -9,6 +6,7 @@ MASTER_SITES=	https://releases.pagure.org/cmake-fedora/
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	Set of cmake modules for fedora developers
+WWW=		https://pagure.io/cmake-fedora
 
 LICENSE=	BSD3CLAUSE
 

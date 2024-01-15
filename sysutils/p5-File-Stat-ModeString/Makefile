@@ -1,6 +1,3 @@
-# Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
-
 PORTNAME=	File-Stat-ModeString
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Converts file stat(2) mode to/from string representation
+WWW=		https://metacpan.org/release/File-Stat-ModeString
 
 LICENSE=	GPLv2
 

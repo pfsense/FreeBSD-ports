@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-AttributeHelpers
 PORTVERSION=	0.25
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extend your attribute interfaces
+WWW=		https://metacpan.org/release/MooseX-AttributeHelpers
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

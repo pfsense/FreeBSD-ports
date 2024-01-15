@@ -1,6 +1,3 @@
-# Created by: nork@FreeBSD.org
-# $FreeBSD$
-
 CATEGORIES=	japanese games
 
 MAINTAINER=	meta@FreeBSD.org

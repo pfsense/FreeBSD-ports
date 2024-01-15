@@ -1,6 +1,3 @@
-# Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	argdata
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7
@@ -9,6 +6,7 @@ CATEGORIES=	devel
 
 MAINTAINER=	ed@FreeBSD.org
 COMMENT=	Binary serialisation format inspired by YAML, MessagePack and nvlists
+WWW=		https://github.com/NuxiNL/argdata
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

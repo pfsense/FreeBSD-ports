@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
-
 PORTNAME=	cpan-upload
 PORTVERSION=	2.2
 PORTREVISION=	2
@@ -18,5 +15,7 @@ RUN_DEPENDS=	p5-AppConfig-Std>=1.05:devel/p5-AppConfig-Std \
 
 USES=		perl5
 USE_PERL5=	configure
+
+CONFLICTS_INSTALL=	p5-CPAN-Uploader
 
 .include <bsd.port.mk>

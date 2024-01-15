@@ -1,6 +1,3 @@
-# Created by: Andrew St. Jean <andrew@arda.homeunix.net>
-# $FreeBSD$
-
 PORTNAME=	courierpasswd
 PORTVERSION=	1.1.3
 CATEGORIES=	security mail
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.arda.homeunix.net/software-downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	User authentication and password changing utility
+WWW=		http://www.arda.homeunix.net/downloads/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

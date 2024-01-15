@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	Text-Glob
 PORTVERSION=	0.11
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Match globbing patterns against text
+WWW=		https://metacpan.org/release/Text-Glob
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

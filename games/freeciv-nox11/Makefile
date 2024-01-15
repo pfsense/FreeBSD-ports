@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-nox11
 
 MASTERDIR=	${.CURDIR}/../freeciv

@@ -1,27 +1,29 @@
-# Created by: obrien@cs.ucdavis.edu
-# $FreeBSD$
-
 PORTNAME=	minicom
-PORTVERSION=	2.7.1
-PORTREVISION=	2
+PORTVERSION=	2.8
 CATEGORIES=	comms
-MASTER_SITES=	https://fossies.org/linux/misc/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jailbird@fdf.net
 COMMENT=	MS-DOS Telix serial communication program "workalike"
+WWW=		https://salsa.debian.org/minicom-team/minicom/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	lrz:comms/lrzsz
 
-USES=		iconv localbase ncurses
+USES=		cpe iconv localbase ncurses
+CPE_VENDOR=	minicom_project
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-dfl-baud=57600 \
 		--enable-dfl-port=/dev/cuau0 \
 		--enable-lock-dir=/var/spool/lock \
 		--sysconfdir=${PREFIX}/etc/minicom
 LIBS+=		${ICONV_LIB} -lncurses
+
+USE_GITLAB=	yes
+GL_SITE=	https://salsa.debian.org/
+GL_ACCOUNT=	minicom-team
+GL_TAGNAME=	1fb24b4f8e22e5580da9e8d453d8e5c3a18aed6c
 
 OPTIONS_DEFINE=		DOCS NLS
 OPTIONS_SUB=		yes

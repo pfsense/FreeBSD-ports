@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MooseX-Role-Loggable
 PORTVERSION=	0.114
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extensive, yet simple, logging role using Log::Dispatchouli
+WWW=		https://metacpan.org/release/MooseX-Role-Loggable
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

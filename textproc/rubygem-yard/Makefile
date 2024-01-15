@@ -1,24 +1,24 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	yard
-PORTVERSION=	0.9.25
+PORTVERSION=	0.9.34
 CATEGORIES=	textproc devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Documentation generation tool for Ruby
+WWW=		https://yardoc.org/ \
+		https://github.com/lsegal/yard
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
 
 NO_ARCH=	yes
 
 PLIST_FILES=	bin/yard \
 		bin/yardoc \
 		bin/yri
+
+CPE_VENDOR=	yardoc
 
 .include <bsd.port.mk>

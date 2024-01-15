@@ -1,6 +1,3 @@
-# Created by: Kevin Lo <kevlo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ubuntu-font
 PORTVERSION=	0.83
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	0cef8205-${ARCHIVE_NAME}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Ubuntu font family
+WWW=		https://design.ubuntu.com/font/
 
 LICENSE=	UFL
 LICENSE_FILE=	${WRKSRC}/LICENCE.txt

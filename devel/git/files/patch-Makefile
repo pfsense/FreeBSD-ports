@@ -1,6 +1,6 @@
---- Makefile.orig	2019-02-24 16:31:46 UTC
+--- Makefile.orig	2022-10-02 23:02:46 UTC
 +++ Makefile
-@@ -535,16 +535,16 @@ ARFLAGS = rcs
+@@ -542,17 +542,17 @@ bindir = $(prefix)/bin
  
  prefix = $(HOME)
  bindir = $(prefix)/bin
@@ -12,8 +12,9 @@
  mergetoolsdir = $(gitexecdir)/mergetools
  sharedir = $(prefix)/share
 -gitwebdir = $(sharedir)/gitweb
--perllibdir = $(sharedir)/perl5
 +gitwebdir = $(sharedir)/examples/git/gitweb
+ gitwebstaticdir = $(gitwebdir)/static
+-perllibdir = $(sharedir)/perl5
 +perllibdir = %%SITE_PERL%%
  localedir = $(sharedir)/locale
  template_dir = share/git-core/templates
@@ -22,7 +23,18 @@
  ETC_GITCONFIG = $(sysconfdir)/gitconfig
  ETC_GITATTRIBUTES = $(sysconfdir)/gitattributes
  lib = lib
-@@ -1383,9 +1383,9 @@ EXTLIBS += -lz
+@@ -577,8 +577,8 @@ INSTALL = install
+ TAR = tar
+ FIND = find
+ INSTALL = install
+-TCL_PATH = tclsh
+-TCLTK_PATH = wish
++TCL_PATH ?= tclsh
++TCLTK_PATH ?= wish
+ XGETTEXT = xgettext
+ MSGCAT = msgcat
+ MSGFMT = msgfmt
+@@ -1539,9 +1539,9 @@ ifndef NO_OPENSSL
  
  ifndef NO_OPENSSL
  	OPENSSL_LIBSSL = -lssl
@@ -35,21 +47,30 @@
  	else
  		OPENSSL_LINK =
  	endif
-@@ -2234,7 +2234,7 @@ git-instaweb: git-instaweb.sh GIT-SCRIPT-DEFINES
+@@ -2442,7 +2442,7 @@ else # NO_PERL
  	chmod +x $@+ && \
  	mv $@+ $@
  else # NO_PERL
 -$(SCRIPT_PERL_GEN) git-instaweb: % : unimplemented.sh
 +$(SCRIPT_PERL_GEN) git-instaweb git-request-pull: % : unimplemented.sh
- 	$(QUIET_GEN)$(RM) $@ $@+ && \
+ 	$(QUIET_GEN) \
  	sed -e '1s|#!.*/sh|#!$(SHELL_PATH_SQ)|' \
  	    -e 's|@@REASON@@|NO_PERL=$(NO_PERL)|g' \
-@@ -2250,7 +2250,7 @@ ifndef NO_PYTHON
+@@ -2458,7 +2458,7 @@ $(SCRIPT_PYTHON_GEN): % : %.py
  $(SCRIPT_PYTHON_GEN): GIT-CFLAGS GIT-PREFIX GIT-PYTHON-VARS
  $(SCRIPT_PYTHON_GEN): % : %.py
- 	$(QUIET_GEN)$(RM) $@ $@+ && \
+ 	$(QUIET_GEN) \
 -	sed -e '1s|#!.*python|#!$(PYTHON_PATH_SQ)|' \
 +	sed -e '1s|#!.*python.*|#!$(PYTHON_PATH_SQ)|' \
  	    $< >$@+ && \
  	chmod +x $@+ && \
  	mv $@+ $@
+@@ -3238,7 +3238,7 @@ install: all
+ 	$(INSTALL) $(SCRIPTS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
+ 	$(INSTALL) -m 644 $(SCRIPT_LIB) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
+ 	$(INSTALL) $(INSTALL_STRIP) $(install_bindir_xprograms) '$(DESTDIR_SQ)$(bindir_SQ)'
+-	$(INSTALL) $(BINDIR_PROGRAMS_NO_X) '$(DESTDIR_SQ)$(bindir_SQ)'
++	if [ $(BINDIR_PROGRAMS_NO_X) ]; then  $(INSTALL) $(BINDIR_PROGRAMS_NO_X) '$(DESTDIR_SQ)$(bindir_SQ)'; fi
+ 
+ ifdef MSVC
+ 	# We DO NOT install the individual foo.o.pdb files because they

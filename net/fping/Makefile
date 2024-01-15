@@ -1,15 +1,13 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	fping
 PORTVERSION=	5.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://fping.org/dist/ \
 		https://github.com/schweikert/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Quickly ping multiple hosts without flooding the network
+WWW=		https://www.fping.org/
 
 LICENSE=	PreviousBSD
 LICENSE_GROUPS=	FSF

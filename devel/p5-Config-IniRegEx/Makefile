@@ -1,6 +1,3 @@
-# Created by: Murilo Opsfelder <mopsfelder@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Config-IniRegEx
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mopsfelder@gmail.com
 COMMENT=	Ini workaround, regex search for parameters and sections
+WWW=		https://metacpan.org/release/Config-IniRegEx
 
 RUN_DEPENDS=	p5-Config-IniFiles>=0:devel/p5-Config-IniFiles
 

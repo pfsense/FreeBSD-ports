@@ -1,13 +1,12 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freeorion
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.10.1
+DISTVERSION=	0.5
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Turn-based space empire and galactic conquest game
+WWW=		https://www.freeorion.org/
 
 LICENSE=	GPLv2 CC-BY-SA-3.0
 LICENSE_COMB=	multi
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 
 USE_GITHUB=	yes
 
-USES=		cmake compiler:c++14-lang python:3.5+
+USES=		cmake compiler:c++17-lang python
 CMAKE_ARGS=	-Wno-dev
 
 LDFLAGS_i386=	-Wl,-znotext
@@ -25,22 +24,30 @@ LDFLAGS_i386=	-Wl,-znotext
 PORTDOCS=	ChangeLog.md README.md
 PORTDATA=	*
 
-OPTIONS_DEFINE=	DOCS TEST HEADLESS
+OPTIONS_DEFINE=	DOCS TEST CLIENT_GG
+OPTIONS_DEFAULT=DOCS TEST CLIENT_GG
 OPTIONS_SUB=	yes
 
 TEST_CMAKE_BOOL=	BUILD_TESTING
 TEST_TEST_TARGET=	unittest
 TEST_USES=		localbase
 
-HEADLESS_DESC=		Build only headless components: server and AI
-HEADLESS_CMAKE_BOOL=	BUILD_HEADLESS
-HEADLESS_USES_OFF=	gl openal sdl
-HEADLESS_USE_OFF=	SDL=sdl2 GL=gl,glu,glew
-HEADLESS_LIB_DEPENDS_OFF= \
-			libfreetype.so:print/freetype2 \
+CLIENT_GG_DESC=		Build GiGi client
+CLIENT_GG_CMAKE_BOOL=	BUILD_CLIENT_GG
+CLIENT_GG_USES=		gl openal sdl
+CLIENT_GG_USE=		SDL=sdl2 GL=gl,glu,glew
+CLIENT_GG_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 			libogg.so:audio/libogg \
 			libvorbis.so:audio/libvorbis \
 			libpng.so:graphics/png
+
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_VER} != ${PYTHON_DEFAULT}
+# unable to detect boost_python otherwise since required files are
+# not installed by boost-python-libs
+CMAKE_ARGS+=	-DBoost_NO_BOOST_CMAKE:BOOL=YES
+.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -48,4 +55,4 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,5 +1,5 @@
---- blacklist.c.orig	2020-11-16 16:45:24.799150000 -0800
-+++ blacklist.c	2020-11-16 16:45:20.000470000 -0800
+--- blacklist.c.orig	2021-04-28 13:37:52.679784000 -0700
++++ blacklist.c	2021-04-28 13:56:45.677805000 -0700
 @@ -0,0 +1,92 @@
 +/*-
 + * Copyright (c) 2015 The NetBSD Foundation, Inc.
@@ -75,7 +75,7 @@
 +	default:
 +		imlevel = SYSLOG_LEVEL_DEBUG2;
 +	}
-+	do_log(imlevel, message, args);
++	do_log2(imlevel, message, args);
 +}
 +
 +void
@@ -157,9 +157,9 @@
 +
 +
 +#endif /* BLACKLIST_CLIENT_H */
---- servconf.c.orig	2020-11-16 15:52:13.175438000 -0800
-+++ servconf.c	2020-11-16 15:52:15.812142000 -0800
-@@ -168,6 +168,7 @@ initialize_server_options(ServerOptions *options)
+--- servconf.c.orig	2021-04-15 20:55:25.000000000 -0700
++++ servconf.c	2021-04-28 13:36:19.591999000 -0700
+@@ -172,6 +172,7 @@ initialize_server_options(ServerOptions *options)
  	options->max_sessions = -1;
  	options->banner = NULL;
  	options->use_dns = -1;
@@ -167,7 +167,7 @@
  	options->client_alive_interval = -1;
  	options->client_alive_count_max = -1;
  	options->num_authkeys_files = 0;
-@@ -432,6 +433,8 @@ fill_default_server_options(ServerOptions *options)
+@@ -410,6 +411,8 @@ fill_default_server_options(ServerOptions *options)
  		options->max_sessions = DEFAULT_SESSIONS_MAX;
  	if (options->use_dns == -1)
  		options->use_dns = 0;
@@ -176,15 +176,15 @@
  	if (options->client_alive_interval == -1)
  		options->client_alive_interval = 0;
  	if (options->client_alive_count_max == -1)
-@@ -528,6 +531,7 @@ typedef enum {
- 	sGatewayPorts, sPubkeyAuthentication, sPubkeyAcceptedKeyTypes,
+@@ -506,6 +509,7 @@ typedef enum {
+ 	sGatewayPorts, sPubkeyAuthentication, sPubkeyAcceptedAlgorithms,
  	sXAuthLocation, sSubsystem, sMaxStartups, sMaxAuthTries, sMaxSessions,
  	sBanner, sUseDNS, sHostbasedAuthentication,
 +	sUseBlacklist,
- 	sHostbasedUsesNameFromPacketOnly, sHostbasedAcceptedKeyTypes,
- 	sHostKeyAlgorithms,
+ 	sHostbasedUsesNameFromPacketOnly, sHostbasedAcceptedAlgorithms,
+ 	sHostKeyAlgorithms, sPerSourceMaxStartups, sPerSourceNetBlockSize,
  	sClientAliveInterval, sClientAliveCountMax, sAuthorizedKeysFile,
-@@ -658,6 +662,8 @@ static struct {
+@@ -642,6 +646,8 @@ static struct {
  	{ "maxsessions", sMaxSessions, SSHCFG_ALL },
  	{ "banner", sBanner, SSHCFG_ALL },
  	{ "usedns", sUseDNS, SSHCFG_GLOBAL },
@@ -193,7 +193,7 @@
  	{ "verifyreversemapping", sDeprecated, SSHCFG_GLOBAL },
  	{ "reversemappingcheck", sDeprecated, SSHCFG_GLOBAL },
  	{ "clientaliveinterval", sClientAliveInterval, SSHCFG_ALL },
-@@ -1708,6 +1714,10 @@ process_server_config_line_depth(ServerOptions *option
+@@ -1692,6 +1698,10 @@ process_server_config_line_depth(ServerOptions *option
  		intptr = &options->use_dns;
  		goto parse_flag;
  
@@ -204,7 +204,7 @@
  	case sLogFacility:
  		log_facility_ptr = &options->log_facility;
  		arg = strdelim(&cp);
-@@ -2841,6 +2851,7 @@ dump_config(ServerOptions *o)
+@@ -2872,6 +2882,7 @@ dump_config(ServerOptions *o)
  	dump_cfg_fmtint(sCompression, o->compression);
  	dump_cfg_fmtint(sGatewayPorts, o->fwd_opts.gateway_ports);
  	dump_cfg_fmtint(sUseDNS, o->use_dns);
@@ -277,9 +277,9 @@
 --- auth2.c.orig	2020-11-16 17:10:36.772062000 -0800
 +++ auth2.c	2020-11-16 17:12:04.852943000 -0800
 @@ -58,6 +58,7 @@
- #endif
  #include "monitor_wrap.h"
  #include "digest.h"
+ #include "kex.h"
 +#include "blacklist_client.h"
  
  /* import */
@@ -317,33 +317,33 @@
 @@ -1882,6 +1883,7 @@ sshpkt_vfatal(struct ssh *ssh, int r, const char *fmt,
  	case SSH_ERR_NO_KEX_ALG_MATCH:
  	case SSH_ERR_NO_HOSTKEY_ALG_MATCH:
- 		if (ssh && ssh->kex && ssh->kex->failed_choice) {
+ 		if (ssh->kex && ssh->kex->failed_choice) {
 +			BLACKLIST_NOTIFY(BLACKLIST_AUTH_FAIL, ssh, "ssh");
  			ssh_packet_clear_keys(ssh);
  			errno = oerrno;
  			logdie("Unable to negotiate with %s: %s. "
---- sshd.c.orig	2020-11-16 15:52:45.846609000 -0800
-+++ sshd.c	2020-11-16 15:56:34.401305000 -0800
-@@ -131,6 +131,7 @@
+--- sshd.c.orig	2021-08-19 21:03:49.000000000 -0700
++++ sshd.c	2021-09-10 10:37:17.926747000 -0700
+@@ -123,6 +123,7 @@
  #include "version.h"
  #include "ssherr.h"
  #include "sk-api.h"
 +#include "blacklist_client.h"
+ #include "srclimit.h"
+ #include "dh.h"
  
- #ifdef LIBWRAP
- #include <tcpd.h>
-@@ -388,6 +389,8 @@ grace_alarm_handler(int sig)
+@@ -366,6 +367,8 @@ grace_alarm_handler(int sig)
  		kill(0, SIGTERM);
  	}
  
 +	BLACKLIST_NOTIFY(BLACKLIST_AUTH_FAIL, the_active_state, "ssh");
 +
- 	/* XXX pre-format ipaddr/port so we don't need to access active_state */
  	/* Log error and exit. */
- 	sigdie("Timeout before authentication for %s port %d",
-@@ -2290,6 +2293,9 @@ main(int ac, char **av)
+ 	if (use_privsep && pmonitor != NULL && pmonitor->m_pid <= 0)
+ 		cleanup_exit(255); /* don't log in privsep child */
+@@ -2225,6 +2228,9 @@ main(int ac, char **av)
  	if ((loginmsg = sshbuf_new()) == NULL)
- 		fatal("%s: sshbuf_new failed", __func__);
+ 		fatal_f("sshbuf_new failed");
  	auth_debug_reset();
 +
 +	if (options.use_blacklist)
@@ -351,15 +351,15 @@
  
  	if (use_privsep) {
  		if (privsep_preauth(ssh) == 1)
---- Makefile.in.orig	2020-11-16 16:27:13.408700000 -0800
-+++ Makefile.in	2020-11-16 16:28:28.083007000 -0800
-@@ -180,6 +180,8 @@ FIXPATHSCMD	= $(SED) $(PATHSUBS)
+--- Makefile.in.orig	2022-10-03 07:51:42.000000000 -0700
++++ Makefile.in	2022-10-09 10:50:06.401377000 -0700
+@@ -185,6 +185,8 @@ FIXALGORITHMSCMD= $(SHELL) $(srcdir)/fixalgorithms $(S
  FIXALGORITHMSCMD= $(SHELL) $(srcdir)/fixalgorithms $(SED) \
  		     @UNSUPPORTED_ALGORITHMS@
  
 +LIBSSH_OBJS+=	blacklist.o
 +
- all: configure-check $(CONFIGFILES) $(MANPAGES) $(TARGETS)
+ all: $(CONFIGFILES) $(MANPAGES) $(TARGETS)
  
  $(LIBSSH_OBJS): Makefile.in config.h
 --- sshd_config.orig	2020-11-16 16:57:14.276036000 -0800
@@ -372,12 +372,12 @@
  #Compression delayed
  #ClientAliveInterval 0
  #ClientAliveCountMax 3
---- sshd_config.5.orig	2020-11-16 16:57:58.533307000 -0800
-+++ sshd_config.5	2020-11-16 17:00:02.635070000 -0800
-@@ -1703,6 +1703,20 @@ for authentication using
- .Cm TrustedUserCAKeys .
- For more details on certificates, see the CERTIFICATES section in
- .Xr ssh-keygen 1 .
+--- sshd_config.5.orig  2023-12-18 15:59:50.000000000 +0100
++++ sshd_config.5       2024-01-06 16:36:17.025742000 +0100
+@@ -1855,6 +1855,20 @@ This option may be useful in conjunction with
+ is to never expire connections for having no open channels.
+ This option may be useful in conjunction with
+ .Cm ChannelTimeout .
 +.It Cm UseBlacklist
 +Specifies whether
 +.Xr sshd 8

@@ -1,6 +1,3 @@
-# Created by: Edwin Groothuis
-# $FreeBSD$
-
 PORTNAME=	bomberclone
 PORTVERSION=	0.11.9
 PORTREVISION=	3
@@ -9,11 +6,12 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Reimplementation of Atomic Bomber Man
+WWW=		https://bomberclone.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake localbase sdl
+USES=		cpe gmake localbase sdl
 USE_SDL=	image mixer sdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-werror

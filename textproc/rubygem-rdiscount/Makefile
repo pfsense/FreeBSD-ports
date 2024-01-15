@@ -1,18 +1,15 @@
-# Created by: Daniel Roethlisberger <daniel@roe.ch>
-# $FreeBSD$
-
 PORTNAME=	rdiscount
-PORTVERSION=	2.2.0.1
+PORTVERSION=	2.2.0.2
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Fast Markdown converter for ruby based on discount
+WWW=		https://dafoster.net/projects/rdiscount/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_RUBY=	yes
 USES=		gem
 
 PLIST_FILES=	bin/rdiscount

@@ -1,6 +1,3 @@
-# Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	slf4j
 PORTVERSION=	1.7.21
 CATEGORIES=	devel java
@@ -8,9 +5,12 @@ MASTER_SITES=	http://www.slf4j.org/dist/
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Simple facade or abstraction for various logging frameworks
+WWW=		https://www.slf4j.org/
 
 LICENSE=	MIT
 
+USES=		cpe
+CPE_VENDOR=	qos
 USE_JAVA=	YES
 NO_BUILD=	YES
 

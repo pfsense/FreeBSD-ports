@@ -1,14 +1,13 @@
-# Created by: Chris Stuart <firewolf@lightningfire.net>
-# $FreeBSD$
-
 PORTNAME=	gkrellmbgchg2
 PORTVERSION=	0.1.11
-PORTREVISION=	2
+PORTREVISION=	3
+PORTEPOCH=	1
 CATEGORIES=	misc
 MASTER_SITES=	http://www.bender-suhl.de/stefan/comp/sources/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Plugin for GKrellM, which changes the desktop's background image
+WWW=		http://www.bender-suhl.de/stefan/english/comp/gkrellmbgchg.html
 
 LICENSE=	GPLv2
 

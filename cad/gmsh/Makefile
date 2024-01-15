@@ -1,18 +1,14 @@
-# Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
-
 PORTNAME=	gmsh
-DISTVERSION=	4.6.0
-PORTREVISION=	1
+DISTVERSION=	4.11.1
+PORTREVISION=	4
 CATEGORIES=	cad
-MASTER_SITES=	LOCAL/wen \
-		LOCAL/zeising \
-		http://gmsh.info/src/
+MASTER_SITES=	http://gmsh.info/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 DIST_SUBDIR=	gmsh
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Automatic 3D finite element mesh generator
+WWW=		https://www.geuz.org/gmsh/
 
 LICENSE=	AGPLv3+ APACHE20 GPLv3+ GPLv2+ LGPL21
 LICENSE_COMB=	multi
@@ -22,16 +18,20 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libgmp.so:math/gmp \
 		libhdf5.so:science/hdf5 \
 		libpng.so:graphics/png \
-		libsz.so:science/szip \
+		libsz.so:science/libaec \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	getdp:science/getdp
 
 USES=		blaslapack compiler:c++11-lang cmake fortran gl jpeg tar:tgz \
 		xorg
+
 USE_GL=		gl glu
-USE_XORG=	x11 xcursor xext xinerama xfixes xft xrender
+USE_XORG=	ice sm x11 xcursor xext xinerama xfixes xft xrender
 
 CMAKE_ARGS=	-DCMAKE_SKIP_RPATH:BOOL=YES
+
+CXXFLAGS_powerpc64=	-mvsx
+LDFLAGS+=	-lexecinfo
 
 OPTIONS_DEFINE=	CGNS DOCS MED OCC SHARED STATIC
 OPTIONS_DEFAULT=	CGNS MED OCC

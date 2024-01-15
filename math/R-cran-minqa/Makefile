@@ -1,14 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minqa
-PORTVERSION=	1.2.4
-PORTREVISION=	5
+DISTVERSION=	1.2.6
 CATEGORIES=	math
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Derivative-free optimization algorithms by quadratic approximation
+WWW=		https://cran.r-project.org/web/packages/minqa/
 
 LICENSE=	GPLv2
 

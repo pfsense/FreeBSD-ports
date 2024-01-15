@@ -1,5 +1,3 @@
-TIMESTAMP = 1597761383
-SHA256 (libunwind-1.4.0.tar.gz) = df59c931bd4d7ebfd83ee481c943edf015138089b8e50abed8d9c57ba9338435
-SIZE (libunwind-1.4.0.tar.gz) = 872941
-SHA256 (29e17d8d2ccbca07c423e3089a6d5ae8a1c9cb6e.diff) = bb9473bb7d18670e8348ac2af1f096638cdb8678782d1ad7f75c24e1f6a5e8c0
-SIZE (29e17d8d2ccbca07c423e3089a6d5ae8a1c9cb6e.diff) = 14046
+TIMESTAMP = 1697307744
+SHA256 (libunwind-1.7.2.tar.gz) = a18a6a24307443a8ace7a8acc2ce79fbbe6826cd0edf98d6326d0225d6a5d6e6
+SIZE (libunwind-1.7.2.tar.gz) = 912590

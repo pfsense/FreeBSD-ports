@@ -1,23 +1,24 @@
-# Created by: Mark Reidel <ports@mark.reidel.info>
-# $FreeBSD$
-
 PORTNAME=	ncmpc
-PORTVERSION=	0.41
+PORTVERSION=	0.48
 CATEGORIES=	audio
 MASTER_SITES=	https://www.musicpd.org/download/ncmpc/0/
 
 MAINTAINER=	laurent@nilio.ca
 COMMENT=	Ncurses client for the musicpd
+WWW=		https://www.musicpd.org/clients/ncmpc/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-		libmpdclient.so:audio/libmpdclient \
-		libpcre.so:devel/pcre
+LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
+		libpcre2-8.so:devel/pcre2
 
-USES=		compiler:c++17-lang iconv localbase:ldflags meson ncurses \
-		pkgconfig tar:xz
+USES=		compiler:c++17-lang cpe iconv localbase:ldflags meson ncurses \
+		pkgconfig tar:xz shebangfix
+MESON_ARGS=	-Dlirc=disabled
+SHEBANG_GLOB=	*.py
+
+CPE_VENDOR=	ncmpc_project
 
 OPTIONS_DEFINE=		COLORS DOCS LYRICS MANPAGES NLS
 OPTIONS_DEFAULT=	COLORS LYRICS MANPAGES
@@ -33,7 +34,7 @@ DOCS_MESON_TRUE=	html_manual
 
 LYRICS_MESON_TRUE=	lyrics_screen
 
-MANPAGES_BUILD_DEPENDS=	${PY_SPHINX}
+MANPAGES_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 MANPAGES_MAKE_ENV=	PYTHON=${PYTHON_CMD} \
 			SPHINX=sphinx-build-${PYTHON_VER}
 MANPAGES_MESON_TRUE=	manual
@@ -45,4 +46,10 @@ NLS_USES=		gettext
 
 PORTDOCS=	*
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CPPFLAGS+=	-Wno-error=enum-constexpr-conversion
+.endif
+
+.include <bsd.port.post.mk>

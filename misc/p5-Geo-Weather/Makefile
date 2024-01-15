@@ -1,6 +1,3 @@
-# Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
-
 PORTNAME=	Geo-Weather
 PORTVERSION=	1.41
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to retrieve weather information from weather.com
+WWW=		https://metacpan.org/release/Geo-Weather
 
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww
 

@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Sys-Info
 PORTVERSION=	0.23
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Centralized test suite for Sys::Info
+WWW=		https://metacpan.org/release/Test-Sys-Info
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

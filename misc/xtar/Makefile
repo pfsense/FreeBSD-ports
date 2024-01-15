@@ -1,6 +1,3 @@
-# Created by: Andreas Kohout <shanee@rabbit.augusta.de>
-# $FreeBSD$
-
 PORTNAME=	xtar
 PORTVERSION=	1.4
 PORTREVISION=	5

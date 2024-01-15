@@ -1,6 +1,3 @@
-# Created by: Alexander Botero-Lowry <alex@foxybanana.com>
-# $FreeBSD$
-
 PORTNAME=	sidplay2
 PORTVERSION=	2.0.9
 PORTREVISION=	4
@@ -10,6 +7,7 @@ DISTNAME=	sidplay-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Commodore SID music player using libsidplay2
+WWW=		https://sidplay2.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

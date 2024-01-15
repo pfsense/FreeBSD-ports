@@ -1,12 +1,11 @@
-# Created by: James Earl <jdearl@telus.net>
-# $FreeBSD$
-
 PORTNAME=	xfce
-PORTVERSION=	4.16
+PORTVERSION=	4.18
+PORTREVISION=	1
 CATEGORIES=	x11-wm xfce
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Meta-port for the Xfce Desktop Environment
+WWW=		https://www.xfce.org/
 
 RUN_DEPENDS=	xfwm4:x11-wm/xfce4-wm \
 		xfce4-session:x11-wm/xfce4-session \
@@ -24,7 +23,7 @@ APPFINDER_RUN_DEPENDS=	xfce4-appfinder:misc/xfce4-appfinder
 APPFINDER_DESC=		Launcher and finder
 GREYBIRD_DESC=		Install Greybird theme
 GREYBIRD_RUN_DEPENDS=	greybird-theme>0:x11-themes/greybird-theme
-ICONS_RUN_DEPENDS=	adwaita-icon-theme>0:x11-themes/adwaita-icon-theme
+ICONS_RUN_DEPENDS=	xfce-icons-elementary>0:x11-themes/xfce-icons-elementary
 LIGHTDM_RUN_DEPENDS=	lightdm-gtk-greeter:x11/lightdm-gtk-greeter
 LIGHTDM_DESC=		LightDM display manger
 MOUSEPAD_RUN_DEPENDS=	mousepad:editors/mousepad

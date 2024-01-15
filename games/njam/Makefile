@@ -1,6 +1,3 @@
-# Created by: <janos.mohacsi@bsd.hu>
-# $FreeBSD$
-
 PORTNAME=	njam
 PORTVERSION=	1.25
 PORTREVISION=	12
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Fast paced multiplayer pac-man clone
+WWW=		https://web.archive.org/web/20190405231140/http://njam.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

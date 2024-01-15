@@ -1,6 +1,3 @@
-# Created by: Sachidananda Urs
-# $FreeBSD$
-
 PORTNAME=	fstyp
 PORTVERSION=	0.1
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} http://thega
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Detect which filesystem type a device/partition contains
+WWW=		http://nchc.dl.sourceforge.net/sourceforge/fstyp/
 
 USES=		gmake
 GNU_CONFIGURE=	yes

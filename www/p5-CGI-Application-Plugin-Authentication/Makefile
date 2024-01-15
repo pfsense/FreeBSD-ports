@@ -1,6 +1,3 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	CGI-Application-Plugin-Authentication
 PORTVERSION=	0.23
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Support for authenticating requests in CGI::Application
+WWW=		https://metacpan.org/release/CGI-Application-Plugin-Authentication
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

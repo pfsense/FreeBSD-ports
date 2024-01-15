@@ -1,6 +1,3 @@
-# Created by: will
-# $FreeBSD$
-
 PORTNAME=	CGI-Cache
 PORTVERSION=	1.4214
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to cache output of time-intensive CGI scripts
+WWW=		https://metacpan.org/release/CGI-Cache
 
 LICENSE=	GPLv2
 

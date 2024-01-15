@@ -1,23 +1,24 @@
-# Created by: ijliao
-# $FreeBSD$
-
-PORTNAME=	gnu-cobol
-PORTVERSION=	3.1.2
+PORTNAME=	gnucobol
+PORTVERSION=	3.2
 CATEGORIES=	lang
 MASTER_SITES=	GNU/gnucobol
-DISTNAME=	gnucobol-${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
-COMMENT=	Open-source COBOL compiler
+COMMENT=	Free/libre COBOL compiler
+WWW=		https://www.gnu.org/software/gnucobol/
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libgmp.so:math/gmp
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libcjson.so:devel/libcjson \
+		libxml2.so:textproc/libxml2
 
 USES=		bdb gmake libtool ncurses tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+TEST_TARGET=	check
+TEST_ENV=	TESTSUITEFLAGS=--jobs=${MAKE_JOBS_NUMBER}
 
 INFO=		gnucobol
 DATADIR=	${PREFIX}/share/gnucobol

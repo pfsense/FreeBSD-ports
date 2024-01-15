@@ -1,12 +1,13 @@
-# Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mesa-dri
 PORTVERSION=	${MESAVERSION}
-PORTREVISION=	1
 CATEGORIES=	graphics
 
 COMMENT=	OpenGL hardware acceleration drivers for DRI2+
+WWW=		https://www.mesa3d.org/
+
+LIB_DEPENDS+=	libglapi.so:graphics/mesa-libs
+
+USES+=		llvm:lib,noexport
 
 OPTIONS_GROUP=			PLATFORM
 OPTIONS_GROUP_PLATFORM=		PLATFORM_X11 PLATFORM_WAYLAND
@@ -30,29 +31,26 @@ ZSTD_MESON_ENABLED=	zstd
 .include <bsd.port.options.mk>
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
 
-ALL_DRI_DRIVERS=	I915 I965 R100 R200 SWRAST
-ALL_GALLIUM_DRIVERS=	IRIS R300 R600 RADEONSI SVGA SWRAST
-ALL_VULKAN_DRIVERS=	INTEL AMD
+ALL_GALLIUM_DRIVERS=	CROCUS I915 IRIS PANFROST R300 R600 RADEONSI SVGA \
+			SWRAST ZINK
+ALL_VULKAN_DRIVERS=	INTEL AMD SWRAST
 
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64
-GALLIUM_DRIVERS+=	SWRAST	# llvmpipe
-.elif ${ARCH:Marm*} || ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
-DRI_DRIVERS+=		SWRAST # Mesa Classic swrast
+GALLIUM_DRIVERS+=	SWRAST \
+			ZINK
+VULKAN_DRIVERS+=	SWRAST	# lavapipe
+
+.if ${ARCH} == aarch64
+GALLIUM_DRIVERS+=	PANFROST
 .endif
 
 .if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 \
- || ${ARCH} == powerpc || ${ARCH} == powerpc64
-DRI_DRIVERS+=		R100 R200
+ || ${ARCH:Mpowerpc*} || ${ARCH} == riscv64
 GALLIUM_DRIVERS+=	R300 R600 RADEONSI
 VULKAN_DRIVERS+=	AMD
-. if ${PORT_OPTIONS:MPLATFORM_X11}
-USE_XORG+=		xv xvmc
-MESON_ARGS+=		-Dgallium-xvmc=enabled
-. endif
+BUILD_DEPENDS+=		glslangValidator:graphics/glslang
 .endif
 .if ${ARCH} == amd64 || ${ARCH} == i386
-DRI_DRIVERS+=		I915 I965
-GALLIUM_DRIVERS+=	IRIS SVGA
+GALLIUM_DRIVERS+=	CROCUS I915 IRIS SVGA
 VULKAN_DRIVERS+=	INTEL
 .endif
 
@@ -70,27 +68,26 @@ USE_XORG+=		xcb xrandr
 MESA_PLATFORMS+=	wayland
 .endif
 
-MESON_ARGS+=	-Ddri-drivers="${DRI_DRIVERS:ts,:tl}" \
-		-Dgallium-drivers="${GALLIUM_DRIVERS:ts,:tl}" \
+MESON_ARGS+=	-Dgallium-drivers="${GALLIUM_DRIVERS:ts,:tl}" \
 		-Dvulkan-drivers="${VULKAN_DRIVERS:ts,:tl}" \
 		-Dplatforms="${MESA_PLATFORMS:ts,:tl}"
 
-# Disable some options
-MESON_ARGS+=	-Dgallium-xa=disabled \
-		-Dgles1=disabled \
-		-Dgles2=disabled \
-		-Dglx=disabled \
-		-Degl=disabled \
-		-Dosmesa=none \
-		-Dtools=""
+# Vulkan Video extensions (keep in sync with mesa-gallium-va)
+MESON_ARGS+=	-Dvideo-codecs="vc1dec,h264dec,h264enc,h265dec,h265enc"
 
-.for _d in ${ALL_DRI_DRIVERS}
-. if defined(DRI_DRIVERS) && ${DRI_DRIVERS:M${_d}}
-PLIST_SUB+=	${_d}_DRIVER=""
-. else
-PLIST_SUB+=	${_d}_DRIVER="@comment "
-. endif
-.endfor
+# Disable some options
+MESON_ARGS+=	-Dandroid-libbacktrace=disabled \
+		-Dgallium-xa=disabled \
+		-Dgallium-vdpau=disabled \
+		-Dgallium-va=disabled \
+		-Dgles1=enabled \
+		-Dgles2=enabled \
+		-Dglx=disabled \
+		-Degl=enabled \
+		-Dlmsensors=disabled \
+		-Dmicrosoft-clc=disabled \
+		-Dosmesa=false \
+		-Dvalgrind=disabled
 
 .for _gd in ${ALL_GALLIUM_DRIVERS}
 . if defined(GALLIUM_DRIVERS) && ${GALLIUM_DRIVERS:M${_gd}}

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	head
 PORTVERSION=	2015.12.16
 CATEGORIES=	textproc
@@ -7,6 +5,7 @@ PKGNAMEPREFIX=	elasticsearch-plugin-
 
 MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	ElasticSearch Head Plugin
+WWW=		https://mobz.github.io/elasticsearch-head/
 
 LICENSE=	APACHE20
 

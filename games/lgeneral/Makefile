@@ -1,22 +1,19 @@
-# Created by: Filippo Natali <filippo@widestore.net>
-# $FreeBSD$
-
 PORTNAME=	lgeneral
-PORTVERSION=	1.3.2
+DISTVERSION=	1.4.4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME} \
 		SF/${PORTNAME}/${PORTNAME}-data:data
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		pg-data${EXTRACT_SUFX}:data
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	cmangin@arobas.net
 COMMENT=	Turn-based strategy engine inspired by Panzer General
+WWW=		http://lgames.sourceforge.net/index.php?project=LGeneral
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_powerpc=	does not install
-BROKEN_sparc64=	does not install
 
 USES=		gmake localbase sdl
 USE_CSTD=	gnu89
@@ -30,14 +27,8 @@ OPTIONS_SUB=		yes
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
-SOUND_USE=		sdl=mixer
+SOUND_USE=		SDL=mixer
 SOUND_CONFIGURE_OFF=	--disable-sound
-
-post-patch:
-.for i in flags terrain units
-	@${REINPLACE_CMD} -e '/mkinstalldirs/s/$$(${i}dir)/$$(DESTDIR)&/' \
-		${WRKSRC}/src/gfx/${i}/Makefile.in
-.endfor
 
 post-install:
 	${SETENV} DISPLAY= \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphen
 PORTVERSION=	2007.02.17
 PORTREVISION=	1
@@ -18,11 +16,11 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/hyph_de_DE.dic
+PLIST_FILES=	${DATADIR}/hyph_de_DE.dic
 
 DEALIASES=	de_AT de_BE de_CH de_LI de_LU
 .for ALIAS in ${DEALIASES}
-PLIST_FILES+=	%%DATADIR%%/hyph_${ALIAS}.dic
+PLIST_FILES+=	${DATADIR}/hyph_${ALIAS}.dic
 .endfor
 
 do-install:

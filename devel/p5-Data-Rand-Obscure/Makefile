@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Rand-Obscure
 PORTVERSION=	0.021
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for generating (fairly) random strings easily
+WWW=		https://metacpan.org/release/Data-Rand-Obscure
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

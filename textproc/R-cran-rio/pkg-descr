@@ -7,4 +7,4 @@ without explicit decompression, and fast import packages are used where
 appropriate. An additional convenience function, 'convert()', provides a simple
 method for converting between file types.
 
-WWW: https://github.com/leeper/rio
+See also <https://cran.r-project.org/package=rio>.

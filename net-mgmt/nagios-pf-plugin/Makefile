@@ -1,6 +1,3 @@
-# Created by: Kian Mohageri <kian.mohageri@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	nagios-pf-plugin
 PORTVERSION=	0.1
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	net-mgmt
 
 MAINTAINER=	rand@iteris.com
 COMMENT=	Nagios plugin for checking PF
+WWW=		https://github.com/kian/nagios-pf-plugin/
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kian

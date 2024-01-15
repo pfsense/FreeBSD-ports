@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	deheader
 PORTVERSION=	1.6
 CATEGORIES=	devel
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Tool to find unnecessary includes in C/C++ files
+WWW=		http://www.catb.org/esr/deheader/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,7 +17,7 @@ NO_ARCH=	yes
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	esr
-GL_COMMIT=	b408c9013f4e1d917cc12f06edda4e1782e64888
+GL_TAGNAME=	b408c9013f4e1d917cc12f06edda4e1782e64888
 
 PLIST_FILES=	bin/deheader man/man1/deheader.1.gz
 

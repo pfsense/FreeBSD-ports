@@ -1,8 +1,6 @@
-# Created by: dk
-# $FreeBSD$
-
 PORTNAME=	fmsx
-PORTVERSION=	5.4
+PORTVERSION=	6.0
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	http://fms.komkon.org/fMSX/:code \
 		http://fms.komkon.org/fMSX/src/:rom
@@ -15,18 +13,21 @@ EXTRACT_ONLY=	fMSX${PORTVERSION:C/\.//}.zip
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable MSX/MSX2/MSX2+ Emulator
+WWW=		https://fms.komkon.org/fMSX/
 
-LICENSE=	UNKNOWN
-LICENSE_NAME=	unknown
+LICENSE=	fMSX
+LICENSE_NAME=	fMSX License
 LICENSE_TEXT=	This program is NOT in public domain.\
 		It can be freely distributed for non-commercial purposes only. \
-		Legal status of distributed ROM images is unclear.
-LICENSE_PERMS=	none
+		Legal status of distributed ROM images is unclear (abadonware).
+LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
 USES=		dos2unix gmake xorg zip
 USE_XORG=	x11 xext
 DOS2UNIX_FILES=	EMULib/Unix/LibUnix.c EMULib/Unix/NetUnix.c EMULib/Rules.gcc \
 		EMULib/Rules.Unix fMSX/fMSX.html
+
+CFLAGS+=	-fcommon
 
 NO_WRKSUBDIR=	yes
 SUB_FILES=	${PORTNAME}

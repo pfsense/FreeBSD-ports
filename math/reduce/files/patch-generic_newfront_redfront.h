@@ -1,25 +1,26 @@
---- generic/newfront/redfront.h.orig	2018-06-17 19:20:00 UTC
+- fix of this failure on arm64:
+-
+- In file included from /wrkdirs/usr/ports/math/reduce/work/Reduce-svn6339-src/generic/newfront/redchild.c:31:
+- /wrkdirs/usr/ports/math/reduce/work/Reduce-svn6339-src/generic/newfront/redfront.h:118:12: error: conflicting types for '__wcwidth'
+- extern int wcwidth(wchar_t c);
+-            ^
+- /usr/include/wchar.h:213:21: note: expanded from macro 'wcwidth'
+- #define wcwidth(_c)     __wcwidth(_c)
+-                         ^
+- /usr/include/_ctype.h:161:1: note: previous definition is here
+- __wcwidth(__ct_rune_t _c)
+- ^
+- 1 error generated.
+
+--- generic/newfront/redfront.h.orig	2021-03-16 10:41:22 UTC
 +++ generic/newfront/redfront.h
-@@ -114,8 +114,11 @@ typedef void (*sig_t)(int);
-  * version is different...
+@@ -115,7 +115,9 @@ typedef void (*sig_t)(int);
   */
  #ifndef NATIVE_WINDOWS
-+
  #include "sys.h"
-+#ifndef wcwidth
++#  if !defined(__FreeBSD__)
  extern int wcwidth(wchar_t c);
-+#endif
++#  endif
  #include "chartype.h"
  #endif
  
-@@ -133,8 +133,8 @@ extern int wcwidth(wchar_t c);
- #define HANDLE_T int
- #endif
- 
--HANDLE_T MeToReduce[2];
--HANDLE_T ReduceToMe[2];
-+extern HANDLE_T MeToReduce[2];
-+extern HANDLE_T ReduceToMe[2];
- extern int redread(HANDLE_T h, void *buffer, int len);
- extern int redwrite(HANDLE_T h, void *buffer, int len);
- extern void redclose(HANDLE_T h);

@@ -1,10 +1,7 @@
-# Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	spam_report
-PORTREVISION=	0
 
 COMMENT=	Spam report plugin for Claws Mail
+WWW=		https://www.claws-mail.org/plugins.php
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 

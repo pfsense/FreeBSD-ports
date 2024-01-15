@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	netevent
 DISTVERSION=	0.2.1-79
 PORTREVISION=	2
 DISTVERSIONSUFFIX=	-g37c47a4
 CATEGORIES=	sysutils
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for sharing uinput devices with other machines
+WWW=		https://github.com/Blub/netevent
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,7 +17,6 @@ USES=		compiler:c++14-lang gmake localbase
 USE_GITHUB=	yes
 GH_ACCOUNT=	Blub
 HAS_CONFIGURE=	yes
-CPPFLAGS+=	-D_WITH_GETLINE # XXX Remove after FreeBSD 11 EOL
 
 OPTIONS_DEFINE=		EXAMPLES MANPAGES
 OPTIONS_DEFAULT=	EXAMPLES MANPAGES

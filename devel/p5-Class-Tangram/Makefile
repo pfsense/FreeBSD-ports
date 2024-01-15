@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-Tangram
 PORTVERSION=	1.57
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create constructors, accessor, update methods for objects from Tangram
+WWW=		https://metacpan.org/release/Class-Tangram
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Set-Object>=0:devel/p5-Set-Object \

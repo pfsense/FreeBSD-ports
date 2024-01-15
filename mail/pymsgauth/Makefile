@@ -1,6 +1,3 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	pymsgauth
 PORTVERSION=	2.1.0
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://pyropus.ca/software/pymsgauth/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automatically process qsecretary confirmation requests
+WWW=		http://pyropus.ca/software/pymsgauth/
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING

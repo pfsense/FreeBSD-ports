@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	VUser-Google-ProvisioningAPI
 PORTVERSION=	0.24
 PORTREVISION=	2
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Perl module that implements the Google Provisioning API
+WWW=		https://metacpan.org/release/RSMITH/VUser-Google-ProvisioningAPI-0.24
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

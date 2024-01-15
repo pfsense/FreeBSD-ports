@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Net-DNS-ZoneFile-Fast
 PORTVERSION=	1.27
 CATEGORIES=	dns perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module to parse BIND8/9 zone files
+WWW=		https://metacpan.org/release/Net-DNS-ZoneFile-Fast
 
 LICENSE=	BSD3CLAUSE
 

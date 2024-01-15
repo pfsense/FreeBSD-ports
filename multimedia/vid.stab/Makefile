@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	vid.stab
 PORTVERSION=	0.98.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video stabilization library
+WWW=		http://public.hronopik.de/vid.stab/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

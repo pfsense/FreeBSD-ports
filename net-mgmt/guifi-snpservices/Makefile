@@ -1,6 +1,3 @@
-# Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
-
 PORTNAME=		snpservices
 DISTVERSION=		0.2.2-8
 PORTREVISION=		1
@@ -12,6 +9,7 @@ DISTNAME=		${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=		tphilipp@potion-studios.com
 COMMENT=		Graphics server for the guifi.net meshnet
+WWW=		http://es.wiki.guifi.net/wiki/SNPservices
 
 RUN_DEPENDS=		mrtg:net-mgmt/mrtg \
 			rrdtool:databases/rrdtool

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	ellipsis
-PORTVERSION=	0.3.1
+PORTVERSION=	0.3.2
+PORTREVISION=	1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Powerful tool for extending functions
+WWW=		https://cran.r-project.org/web/packages/ellipsis/
 
 LICENSE=	GPLv3
 

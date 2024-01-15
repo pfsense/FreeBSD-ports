@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	cgichk
 PORTVERSION=	2.60
 PORTREVISION=	1
@@ -11,6 +8,8 @@ LICENSE=	GPLv2
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Web site vulnerability scanner
+
+BROKEN=		Unfetchable
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=	cgichk

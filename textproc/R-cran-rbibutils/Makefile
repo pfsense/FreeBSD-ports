@@ -1,16 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	rbibutils
-PORTVERSION=	2.0
+DISTVERSION=	2.2.16
 CATEGORIES=	textproc
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Convert Between Bibliography Formats
+WWW=		https://cran.r-project.org/web/packages/rbibutils/
 
 LICENSE=	GPLv2
-
-RUN_DEPENDS=	R-cran-xml2>0:textproc/R-cran-xml2
 
 USES=		cran:auto-plist,compiles
 

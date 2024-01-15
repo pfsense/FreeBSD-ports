@@ -1,6 +1,3 @@
-# Created by: Stefan Zehl <sec@42.org>
-# $FreeBSD$
-
 PORTNAME=	ladder
 PORTVERSION=	1.00
 PORTREVISION=	2
@@ -13,7 +10,11 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The old "ladder" game
 
-RESTRICTED=	possible copyright problems ?
+# Converted from RESTRICTED
+LICENSE=	ladder
+LICENSE_NAME=	ladder
+LICENSE_TEXT=	possible copyright problems ?
+LICENSE_PERMS=	auto-accept
 
 USES=		ncurses tar
 MAKE_ARGS=	LIBS="${LDFLAGS} -lncurses"

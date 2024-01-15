@@ -1,6 +1,3 @@
-# Created by: Anatoliy Dmytriyev <tolid@plab.ku.dk>
-# $FreeBSD$
-
 PORTNAME=	VCS-CVS
 PORTVERSION=	2.06
 PORTREVISION=	1

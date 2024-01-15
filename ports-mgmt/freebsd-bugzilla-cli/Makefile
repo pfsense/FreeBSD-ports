@@ -1,12 +1,10 @@
-# Created by: Philip M. Gollucci <pgollucci@p6m7g8.com>
-# $FreeBSD$
-
 PORTNAME=	freebsd-bugzilla-cli
 PORTVERSION=	0.15.1
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Interact with the FreeBSD bugzilla instance
+WWW=		https://github.com/pgollucci/freebsd-bugzilla-cli
 
 LICENSE=	APACHE20
 

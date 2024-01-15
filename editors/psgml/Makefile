@@ -1,9 +1,6 @@
-# Created by: Shigeyuki Fukushima <shige@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	psgml
 PORTVERSION=	1.4.0
-PORTREVISION=	10
+PORTREVISION=	19
 CATEGORIES=	editors elisp
 MASTER_SITES=	SF/${PORTNAME}/ALPHA%20${PORTNAME}/1.3.2
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -14,6 +11,7 @@ PATCHFILES=	psgml-symbol-conflict-050503.diff.gz
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Major mode for editing SGML and XML documents for Emacs
+WWW=		http://www.lysator.liu.se/~lenst/about_psgml/
 
 LICENSE=	GPLv2
 
@@ -22,11 +20,12 @@ USES=		emacs
 GNU_CONFIGURE=	YES
 CONFIGURE_ARGS=	--lispdir=${PSGML_LISPDIR}
 CONFIGURE_ENV=	EMACS=${EMACS_CMD}
+
 SUB_FILES=	${PSGML_STARTUPEL}
 SUB_LIST=	PSGML_LISPDIR=${PSGML_LISPDIR}
-PLIST_SUB=	PSGML_STARTUPEL=${PSGML_STARTUPEL}
 
 INFO=		psgml psgml-api
+PLIST_SUB=	PSGML_STARTUPEL=${PSGML_STARTUPEL}
 
 PSGML_STARTUPEL=	psgml-startup.el
 PSGML_LISPDIR=	${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/psgml

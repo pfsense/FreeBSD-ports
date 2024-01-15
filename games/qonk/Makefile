@@ -1,6 +1,3 @@
-# Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
-
 PORTNAME=	qonk
 PORTVERSION=	0.3.1
 PORTREVISION=	15
@@ -9,6 +6,8 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Small space build and conquer strategy game
+WWW=		https://scratchpad.fandom.com/wiki/Qonk \
+		https://sourceforge.net/projects/qonk/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

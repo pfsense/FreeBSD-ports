@@ -1,6 +1,3 @@
-# Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Image-MetaData-JPEG
 PORTVERSION=	0.153
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
 COMMENT=	Perl extension for showing/modifying JPEG (meta)data]
+WWW=		https://metacpan.org/release/Image-MetaData-JPEG
 
 USES=		perl5
 USE_PERL5=	configure

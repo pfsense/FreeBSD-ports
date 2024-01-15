@@ -1,21 +1,18 @@
-# Created by: Jose Jachuf <jjachuf@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	fdb
 PORTVERSION=	2.0.1
+PORTREVISION=	2
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	jjachuf@gmail.com
 COMMENT=	Firebird RDBMS bindings for Python
+WWW=		https://pythonhosted.org/fdb/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-py27_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}
-
-USES=		firebird python:3.6+
+USES=		firebird python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	iorate
 DISTVERSION=	3-05
 CATEGORIES=	benchmarks
@@ -9,6 +7,7 @@ EXTRACT_SUFX=	.tar
 
 MAINTAINER=	blttll@gmail.com
 COMMENT=	General purpose storage I/O benchmarking tool
+WWW=		http://iorate.org/
 
 USES=		alias bison
 MAKEFILE=	makefile

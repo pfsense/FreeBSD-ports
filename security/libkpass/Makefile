@@ -1,6 +1,3 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libkpass
 PORTVERSION=	6
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	security
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for a reading/writing KeePass 1.x DB
+WWW=		https://github.com/bldewolf/libkpass
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

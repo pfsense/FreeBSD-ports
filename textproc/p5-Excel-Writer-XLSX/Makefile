@@ -1,8 +1,5 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Excel-Writer-XLSX
-PORTVERSION=	1.07
+PORTVERSION=	1.11
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JMCNAMARA
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Create a new file in the Excel 2007+ XLSX format
+WWW=		https://metacpan.org/release/Excel-Writer-XLSX
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

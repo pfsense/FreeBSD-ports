@@ -1,31 +1,31 @@
-# Created by: Alex Dupre <sysadmin@alexdupre.com>
-# $FreeBSD$
-
 PORTNAME=	nocc
-PORTVERSION=	1.9.9
+PORTVERSION=	1.9.13
 CATEGORIES=	mail www
 MASTER_SITES=	SF/${PORTNAME}/NOCC/${PORTVERSION}
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Webmail system which access POP3 and IMAP mail servers
+WWW=		https://nocc.sourceforge.net/
 
 LICENSE=	GPLv2
 
-USES=		php:web
+USES=		cpe php:web
 
 OPTIONS_DEFINE=	DOCS
 
-USE_PHP=	ctype iconv imap mbstring pcre session
+USE_PHP=	ctype iconv imap mbstring session
 
 SUB_FILES=	pkg-message
 NO_ARCH=	yes
 NO_BUILD=	yes
 
 NOCCCOMP=	.htaccess favicon.ico robots.txt \
-		action.php common.php contacts.php contacts_manager.php \
+		action.php ckeditor.php ckeditor5.php common.php \
+		contacts.php contacts_manager.php \
 		delete.php down_mail.php download.php get_img.php \
 		help.php index.php logout.php rss.php send.php \
-		ckeditor classes config html js lang themes utils
+		ckeditor5 classes config html htmlpurifier js lang \
+		themes utils
 
 PORTDOCS=	*
 

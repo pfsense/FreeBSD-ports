@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-RewriteAttributes
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple yet powerful HTML attribute rewriting
+WWW=		https://metacpan.org/release/HTML-RewriteAttributes
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HTML-Parser>0:www/p5-HTML-Parser \
@@ -17,5 +16,7 @@ RUN_DEPENDS=	p5-HTML-Parser>0:www/p5-HTML-Parser \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	entr
-PORTVERSION=	4.6
+PORTVERSION=	5.5
 CATEGORIES=	sysutils
-MASTER_SITES=	http://entrproject.org/code/
+MASTER_SITES=	https://eradman.com/entrproject/code/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Runs arbitrary commands when files change
+WWW=		https://eradman.com/entrproject
 
 # This software has code under BSD2CLAUSE license.
 # All the code used in FreeBSD is under ISCL license.

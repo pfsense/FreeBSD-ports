@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	so-synth
 DISTVERSIONPREFIX=	upstream/
 DISTVERSION=	1.5
@@ -8,6 +6,7 @@ PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Unofficial LV2 ports of 50m30n3's synthesizers
+WWW=		https://github.com/jeremysalwen/So-synth-LV2
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wallpapers-freebsd-kde
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -10,6 +8,7 @@ DIST_SUBDIR=	KDE
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	FreeBSD wallpapers designed by KDE artwork team
+WWW=		https://www.kde.org
 
 USES=		tar:bzip2
 

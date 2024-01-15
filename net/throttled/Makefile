@@ -1,6 +1,3 @@
-# Created by: quest <quest@mac.com>
-# $FreeBSD$
-
 PORTNAME=	throttled
 PORTVERSION=	0.5.2
 CATEGORIES=	net
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.intrarts.com/Files/
 
 MAINTAINER=	quest@mac.com
 COMMENT=	Bandwidth shaping and QoS solution
+WWW=		https://www.intrarts.com/throttledcli.html
 
 LICENSE=	GPLv3
 

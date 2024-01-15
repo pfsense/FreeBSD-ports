@@ -1,6 +1,3 @@
-# Created by: Ion-Mihai "IOnut" Tetcu <itetcu@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	spam-buttons
 PORTVERSION=	2.3.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DIST_SUBDIR=	squirrelmail
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides buttons with customizable action (for reporting spam, etc.)
+WWW=		https://www.squirrelmail.org/plugin_view.php?id=242
 
 USE_SM_COMPAT=	yes
 

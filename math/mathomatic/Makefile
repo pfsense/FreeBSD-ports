@@ -1,6 +1,3 @@
-# Created by: Roman Neuhauser <neuhauser@sigpipe.cz>
-# $FreeBSD$
-
 PORTNAME=	mathomatic
 PORTVERSION=	16.0.5
 PORTREVISION=	2
@@ -8,6 +5,7 @@ CATEGORIES=	math
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Highly portable, general purpose CAS (Computer Algebra System)
+WWW=		https://github.com/mfillpot/mathomatic
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

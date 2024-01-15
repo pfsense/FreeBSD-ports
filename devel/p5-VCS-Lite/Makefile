@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	VCS-Lite
 PORTVERSION=	0.12
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Minimal version control system
+WWW=		https://metacpan.org/release/VCS-Lite
 
 LICENSE=	ART20
 

@@ -1,6 +1,3 @@
-# Created by: Philip Schulz <phs@deadc0.de>
-# $FreeBSD$
-
 PORTNAME=	dev86
 PORTVERSION=	0.16.20
 CATEGORIES=	devel
@@ -11,9 +8,9 @@ DISTNAME=	Dev86src-${PORTVERSION}
 
 MAINTAINER=	phs@deadc0.de
 COMMENT=	8086 development tools
+WWW=		http://homepage.ntlworld.com/robert.debath/
 
-CONFLICTS=	bcc-[0-9]* \
-		bin86-[0-9]*
+CONFLICTS=	bcc
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DESTDIRNAME=	DIST

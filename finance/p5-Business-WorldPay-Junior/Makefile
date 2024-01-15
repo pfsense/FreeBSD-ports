@@ -1,6 +1,3 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Business-WorldPay-Junior
 PORTVERSION=	1.07
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module to handle WorldPay Junior for payment services
+WWW=		https://metacpan.org/release/Business-WorldPay-Junior
 
 LICENSE=	GPLv2
 

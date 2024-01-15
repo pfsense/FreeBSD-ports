@@ -1,14 +1,12 @@
-# Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
-
 PORTNAME=	Pod-Simple
-PORTVERSION=	3.42
+PORTVERSION=	3.45
 CATEGORIES=	textproc devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Framework for parsing Pod
+WWW=		https://metacpan.org/release/Pod-Simple
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

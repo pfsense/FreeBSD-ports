@@ -1,6 +1,3 @@
-# Created by: Donald Burr <dburr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	netrek-BRMH
 PORTVERSION=	2.2.2
 PORTREVISION=	2
@@ -12,6 +9,7 @@ EXTRACT_SUFX=	.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	16-player network space battle/conquest game with a Star Trek theme
+WWW=		https://www.netrek.org/
 
 NO_BUILD=		YES
 NO_WRKSUBDIR=		YES

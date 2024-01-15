@@ -1,17 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	rush
-DISTVERSION=	2.1
+DISTVERSION=	2.3
 CATEGORIES=	shells
 MASTER_SITES=	GNU
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Restricted User SHell, providing limited remote access to resources
+WWW=		https://puszcza.gnu.org.ua/software/rush/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext-runtime gmake tar:xz
+USES=		cpe gettext-runtime gmake tar:xz
+
+CPE_VENDOR=	gnu
+
 GNU_CONFIGURE=	yes
 
 INFO=		${PORTNAME}

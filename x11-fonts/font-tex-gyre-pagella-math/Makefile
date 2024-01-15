@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	font-tex-gyre-pagella-math
 DISTVERSION=	1.632
 PORTREVISION=	1
@@ -9,6 +7,7 @@ DISTNAME=	${PORTNAME:S/font-//:S/-//:S/-//}-${DISTVERSION:S/.//}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Math companion for the TeX Gyre Pagella family
+WWW=		https://www.gust.org.pl/projects/e-foundry/tg-math
 
 LICENSE=	GFL
 LICENSE_NAME=	GUST Font License

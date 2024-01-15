@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	urbit
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	0.6.0
@@ -7,6 +5,7 @@ CATEGORIES=	misc emulators lang
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Peer-to-peer network of personal servers (a.k.a. "operating function")
+WWW=		https://urbit.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

@@ -1,6 +1,3 @@
-# Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Qmail-Envelope
 PORTVERSION=	0.53
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Examine and modify qmail envelope strings
+WWW=		https://metacpan.org/release/Qmail-Envelope
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

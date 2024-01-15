@@ -1,6 +1,3 @@
-# Created by: Philippe Casidy <pcasidy@casidy.com>
-# $FreeBSD$
-
 PORTNAME=	mtf
 PORTVERSION=	0.2.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SUNSITE/system/backup
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix reader for the Microsoft Tape Format used by NT Backup
+WWW=		http://layton-graphics.com/mtf/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

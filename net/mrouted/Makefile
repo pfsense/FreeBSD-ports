@@ -1,6 +1,3 @@
-# Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mrouted
 PORTVERSION=	3.9.8
 PORTREVISION=	1
@@ -8,10 +5,13 @@ CATEGORIES=	net
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Multicast routing daemon providing DVMRP for IPv4
+WWW=		http://freecode.com/projects/mrouted
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		cpe
+CPE_VENDOR=	troglobit
 USE_GITHUB=	yes
 GH_ACCOUNT=	troglobit
 USE_RC_SUBR=	mrouted

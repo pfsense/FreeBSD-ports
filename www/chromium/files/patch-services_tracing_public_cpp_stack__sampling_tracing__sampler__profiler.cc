@@ -1,11 +1,11 @@
---- services/tracing/public/cpp/stack_sampling/tracing_sampler_profiler.cc.orig	2020-11-13 06:36:46 UTC
+--- services/tracing/public/cpp/stack_sampling/tracing_sampler_profiler.cc.orig	2023-02-08 09:03:45 UTC
 +++ services/tracing/public/cpp/stack_sampling/tracing_sampler_profiler.cc
-@@ -546,7 +546,7 @@ void TracingSamplerProfiler::TracingProfileBuilder::Sa
+@@ -37,7 +37,7 @@
+ #include "third_party/perfetto/protos/perfetto/trace/track_event/process_descriptor.pbzero.h"
+ #include "third_party/perfetto/protos/perfetto/trace/track_event/thread_descriptor.pbzero.h"
  
- // static
- void TracingSamplerProfiler::MangleModuleIDIfNeeded(std::string* module_id) {
--#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   // Linux ELF module IDs are 160bit integers, which we need to mangle
-   // down to 128bit integers to match the id that Breakpad outputs.
-   // Example on version '66.0.3359.170' x64:
+-#if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_NACL) && !BUILDFLAG(IS_APPLE)
++#if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_NACL) && !BUILDFLAG(IS_APPLE) && !BUILDFLAG(IS_BSD)
+ #include "base/profiler/thread_delegate_posix.h"
+ #define INITIALIZE_THREAD_DELEGATE_POSIX 1
+ #else  // BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_NACL) && !BUILDFLAG(IS_APPLE)

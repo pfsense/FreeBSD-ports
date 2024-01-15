@@ -1,6 +1,3 @@
-# Created by: clsung@dragon2.net
-# $FreeBSD$
-
 PORTNAME=	Class-NamedParms
 PORTVERSION=	1.08
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Lightweight named parameter handling system
+WWW=		https://metacpan.org/release/Class-NamedParms
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

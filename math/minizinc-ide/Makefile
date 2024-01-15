@@ -1,19 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	minizinc-ide
-DISTVERSION=	2.5.3
+DISTVERSION=	2.8.2
 CATEGORIES=	math lang
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	IDE for MiniZinc, a constraint modeling language
+WWW=		https://www.minizinc.org/
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	minizinc:math/minizinc
 
-USES=		gl qmake qt:5
-USE_QT=		core declarative gui location network printsupport sql webchannel webengine widgets buildtools_build
+USES=		gl compiler:c++11-lang qmake qt:5
+USE_QT=		core declarative gui network sql testlib websockets widgets \
+		buildtools:build
 USE_GL=		gl
 
 USE_GITHUB=	yes
@@ -23,6 +23,12 @@ GH_PROJECT=	MiniZincIDE
 USE_GITLAB=	nodefault
 GL_TUPLE=	minizinc:cp-profiler-integration:f16b3132df33b3f258971f36dbe5e909983381c9:cp/cp-profiler/src/cpp-integration
 
-PLIST_FILES=	bin/MiniZincIDE
+PLIST_FILES=	bin/MiniZincIDE \
+		share/pixmaps/minizinc_icon.png
+
+DESKTOP_ENTRIES=	"MiniZinc" "Constraint modeling language" "${PREFIX}/share/pixmaps/minizinc_icon.png" "MiniZincIDE" "Science;Development;Education;" ""
+
+post-install:
+	${INSTALL_DATA} ${WRKSRC}/resources/icon.png ${STAGEDIR}${PREFIX}/share/pixmaps/minizinc_icon.png
 
 .include <bsd.port.mk>

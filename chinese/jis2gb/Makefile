@@ -1,6 +1,3 @@
-# Created by: Zhang Shu
-# $FreeBSD$
-
 PORTNAME=	jis2gb
 PORTVERSION=	1.5
 CATEGORIES=	chinese

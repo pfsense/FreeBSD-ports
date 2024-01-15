@@ -1,35 +1,47 @@
---- remoting/host/it2me/it2me_native_messaging_host_main.cc.orig	2021-01-18 21:29:02 UTC
+--- remoting/host/it2me/it2me_native_messaging_host_main.cc.orig	2023-09-13 12:11:42 UTC
 +++ remoting/host/it2me/it2me_native_messaging_host_main.cc
-@@ -29,12 +29,12 @@
- #include "remoting/host/switches.h"
+@@ -30,7 +30,7 @@
+ #include "remoting/host/resources.h"
  #include "remoting/host/usage_stats_consent.h"
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ #if defined(REMOTING_USE_X11)
  #include <gtk/gtk.h>
- 
  #include "base/linux_util.h"
- #include "ui/events/platform/x11/x11_event_source.h"
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- 
- #if defined(OS_APPLE)
- #include "base/mac/mac_util.h"
-@@ -112,7 +112,7 @@ int It2MeNativeMessagingHostMain(int argc, char** argv
+@@ -77,7 +77,7 @@ bool CurrentProcessHasUiAccess() {
+ // Creates a It2MeNativeMessagingHost instance, attaches it to stdin/stdout and
+ // runs the task executor until It2MeNativeMessagingHost signals shutdown.
+ int It2MeNativeMessagingHostMain(int argc, char** argv) {
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && defined(REMOTING_USE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && defined(REMOTING_USE_X11)
+   if (!IsRunningWayland()) {
+     // Initialize Xlib for multi-threaded use, allowing non-Chromium code to
+     // use X11 safely (such as the WebRTC capturer, GTK ...)
+@@ -125,7 +125,7 @@ int It2MeNativeMessagingHostMain(int argc, char** argv
  
    remoting::LoadResources("");
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   // Create an X11EventSource so the global X11 connection
-   // (x11::Connection::Get()) can dispatch X events.
-   auto event_source =
-@@ -130,7 +130,7 @@ int It2MeNativeMessagingHostMain(int argc, char** argv
-   // Need to prime the host OS version value for linux to prevent IO on the
-   // network thread. base::GetLinuxDistro() caches the result.
-   base::GetLinuxDistro();
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && defined(REMOTING_USE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && defined(REMOTING_USE_X11)
+   // Required for any calls into GTK functions, such as the Disconnect and
+   // Continue windows. Calling with nullptr arguments because we don't have
+   // any command line arguments for gtk to consume.
+@@ -257,7 +257,7 @@ int It2MeNativeMessagingHostMain(int argc, char** argv
+       PolicyWatcher::CreateWithTaskRunner(context->file_task_runner(),
+                                           context->management_service());
  
-   base::File read_file;
-   base::File write_file;
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && defined(REMOTING_USE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && defined(REMOTING_USE_X11)
+   scoped_refptr<AutoThreadTaskRunner> input_task_runner;
+   if (!IsRunningWayland()) {
+     // Create an X11EventSource on all UI threads, so the global X11 connection
+@@ -284,7 +284,7 @@ int It2MeNativeMessagingHostMain(int argc, char** argv
+   // Run the loop until channel is alive.
+   run_loop.Run();
+ 
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && defined(REMOTING_USE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && defined(REMOTING_USE_X11)
+   if (!IsRunningWayland()) {
+     input_task_runner->PostTask(FROM_HERE, base::BindOnce([]() {
+                                   delete ui::X11EventSource::GetInstance();

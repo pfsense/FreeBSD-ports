@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arc-gruvbox
 DISTVERSION=	g20161220
 CATEGORIES=	x11-themes xfce
@@ -7,6 +5,7 @@ PKGNAMESUFFIX=	-theme
 
 MAINTAINER=	jonathan@FreeBSD.org
 COMMENT=	Gruvbox variation on Arc Black Ubuntu theme
+WWW=		https://github.com/Benoth/arc-variations
 
 LICENSE=	GPLv3
 

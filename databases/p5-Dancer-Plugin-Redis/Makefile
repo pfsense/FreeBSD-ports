@@ -1,6 +1,3 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-Redis
 PORTVERSION=	0.8
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Redis database connector for Dancer
+WWW=		https://metacpan.org/release/Dancer-Plugin-Redis
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

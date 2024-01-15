@@ -1,10 +1,7 @@
-# Created by: Pawel Pekala <c0rn@o2.pl>
-# $FreeBSD$
-
 PORTNAME=	fetchinfo
-PORTREVISION=	0
 
 COMMENT=	Header insertion plugin for Claws Mail
+WWW=		https://www.claws-mail.org/plugins.php
 
 CLAWS_PLUGINS_BUILD=	${PORTNAME}
 

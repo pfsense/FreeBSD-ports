@@ -1,12 +1,10 @@
-# Created by: Dominic Fandrey <kamikaze@bsdforen.de>
-# $FreeBSD$
-
 PORTNAME=	automounter
 PORTVERSION=	1.5.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides scripts to dynamically configure amd
+WWW=		https://sf.net/projects/bsdadminscripts/
 
 LICENSE=	BSD2CLAUSE
 

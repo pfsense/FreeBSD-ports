@@ -1,6 +1,3 @@
-# Created by: Makoto Matsushita <matusita@jp.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	skk
 PORTVERSION=	9.6
 PORTREVISION=	3
@@ -8,6 +5,7 @@ CATEGORIES=	japanese elisp
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The "meta-port" for the SKK Japanese-input software
+WWW=		http://openlab.jp/skk/
 
 RUN_DEPENDS=	${LOCALBASE}/share/skk/${SKKJISYO}:japanese/skk-jisyo \
 		${LOCALBASE}/bin/skkdic-count:japanese/skk-tools \

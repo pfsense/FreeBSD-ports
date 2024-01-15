@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	malint
 DISTVERSION=	0.2
 CATEGORIES=	audio
@@ -9,6 +6,7 @@ MASTER_SITES=	https://www.nih.at/malint/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	MPEG Audio stream validator
+WWW=		https://www.nih.at/malint/
 
 LICENSE=	GPLv2
 

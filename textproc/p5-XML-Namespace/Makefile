@@ -1,6 +1,3 @@
-# Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	XML-Namespace
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple support for XML Namespaces
+WWW=		https://metacpan.org/release/XML-Namespace
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

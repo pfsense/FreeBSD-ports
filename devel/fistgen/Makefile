@@ -1,6 +1,3 @@
-# Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
-
 PORTNAME=	fistgen
 PORTVERSION=	0.2.1
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	ftp://ftp.filesystems.org/pub/fistgen/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Language for describing stackable filesystems
+WWW=		https://www.filesystems.org/
 
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=yes

@@ -1,14 +1,12 @@
-# Created by: gahr
-# $FreeBSD$
-
 PORTNAME=	speedtables
-PORTVERSION=	1.13.10
+PORTVERSION=	1.13.18
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	2
 CATEGORIES=	databases
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	High-performance memory-resident database
+WWW=		https://flightaware.github.io/speedtables/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

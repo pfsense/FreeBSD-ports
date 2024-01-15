@@ -1,18 +1,17 @@
-# Created by: Michael Gmelin <freebsd@grem.de>
-# $FreeBSD$
-
 PORTNAME=		intel-backlight
 DISTVERSION=		20200418
+PORTREVISION=		1
 CATEGORIES=		graphics
 
 MAINTAINER=		jmd@FreeBSD.org
 COMMENT=		Control backlight on various modern Intel(R) GPUs
+WWW=		https://github.com/FreeBSDDesktop/intel_backlight_fbsd
 
 LICENSE=		MIT
 LICENSE_FILE=		${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	This hardware is only found on Intel x86 systems
+ONLY_FOR_ARCHS_REASON=	this hardware is only found on Intel x86 systems
 
 LIB_DEPENDS=		libdrm.so:graphics/libdrm \
 			libpciaccess.so:devel/libpciaccess

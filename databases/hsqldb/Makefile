@@ -1,6 +1,3 @@
-# Created by: Michael Winking <mwfp@foldl.net>
-# $FreeBSD$
-
 PORTNAME=	hsqldb
 PORTVERSION=	2.3.4
 CATEGORIES=	databases java
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}_2_3
 
 MAINTAINER=	jim@ohlste.in
 COMMENT=	Embeddable SQL database written in Java
+WWW=		https://hsqldb.org/
 
 LICENSE=	BSD3CLAUSE
 

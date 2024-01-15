@@ -1,14 +1,20 @@
-# Created by: Wen Heping<wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	HTTP_WebDAV_Server
-PORTVERSION=	1.0.0.r4
+PORTVERSION=	1.0.0RC8
 CATEGORIES=	www devel pear
-DISTNAME=	${PORTNAME}-1.0.0RC4
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	WebDAV Server Baseclass
+WWW=		https://pear.php.net/package/HTTP_WebDAV_Server
+
+LICENSE=	BSD2CLAUSE
 
 USES=		pear
+
+NO_ARCH=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	pear
+
+PORTSCOUT=	ignore:1
 
 .include <bsd.port.mk>

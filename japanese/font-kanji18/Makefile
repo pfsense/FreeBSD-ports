@@ -1,6 +1,3 @@
-# Created by: Yoshiro MIHIRA <sanpei@sanpei.org>
-# $FreeBSD$
-
 PORTNAME=	kanji
 PORTVERSION=	1.0
 PORTREVISION=	3
@@ -50,8 +47,6 @@ post-extract:
 	cd ${WRKSRC} && \
 	    ${SED} -f ${RESIZESED_FILE} < ${PORTNAME}${PKGNAMESUFFIX}.bdf \
 	    > ${PORTNAME}${RESIZESED_FILE:R:C/^[0-9][0-9]to//}.bdf
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias.${PKGNAMESUFFIX} \

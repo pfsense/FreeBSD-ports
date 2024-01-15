@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arduino-core
 PORTVERSION=	1.6.18
 PORTREVISION=	1
@@ -8,6 +6,7 @@ DIST_SUBDIR=	arduino
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Core board support for Arduino devices
+WWW=		https://www.arduino.cc/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/license.txt

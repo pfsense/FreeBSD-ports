@@ -1,6 +1,3 @@
-# Created by: Nick Hibma <n_hibma@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sys-Gamin
 PORTVERSION=	0.1
 PORTREVISION=	3

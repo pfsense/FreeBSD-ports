@@ -1,6 +1,3 @@
-# Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
-
 PORTNAME=	crashme
 PORTVERSION=	2.4
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	crashme
 
 MAINTAINER=	gjc@alum.mit.edu
 COMMENT=	Tool to test an operating system's robustness
+WWW=		http://crashme.codeplex.com/
 
 # according to license.rtf, and using the most restrictive one:
 LICENSE=	LGPL21

@@ -1,6 +1,3 @@
-# Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
-
 PORTNAME=	fwanalog
 PORTVERSION=	0.6.9
 PORTREVISION=	6
@@ -9,6 +6,7 @@ MASTER_SITES=	http://tud.at/programm/fwanalog/
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Firewall log summarizer that uses Analog
+WWW=		http://tud.at/programm/fwanalog/
 
 RUN_DEPENDS=	analog:www/analog
 

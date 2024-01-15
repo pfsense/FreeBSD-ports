@@ -1,6 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Complete-Sequence
 PORTVERSION=	0.002
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Complete string from a sequence of choices
+WWW=		https://metacpan.org/release/Complete-Sequence
 
 RUN_DEPENDS=	p5-Complete-Common>=0.22:devel/p5-Complete-Common \
 		p5-Complete-Util>=0.603:devel/p5-Complete-Util \

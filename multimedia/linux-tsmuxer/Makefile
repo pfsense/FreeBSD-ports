@@ -1,6 +1,3 @@
-# Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
-
 PORTNAME=	tsmuxer
 PORTVERSION=	1.10.6
 CATEGORIES=	multimedia linux
@@ -10,6 +7,7 @@ DISTNAME=	tsMuxeR_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to create TS and M2TS files for IP broadcasting
+WWW=		http://www.smlabs.net/en/products/tsmuxer/
 
 USES=		linux
 NO_WRKSUBDIR=	yes

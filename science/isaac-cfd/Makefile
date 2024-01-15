@@ -1,9 +1,6 @@
-# Created by: Pedro F. Giffuni
-# $FreeBSD$
-
 PORTNAME=	isaac
 PORTVERSION=	4.2
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}-cfd/${PORTNAME}-cfd/ISAAC%20Version%20${PORTVERSION}
 DISTFILES=	${PORTNAME}src.4_2${EXTRACT_SUFX} ${PORTNAME}mk.4_2${EXTRACT_SUFX}
@@ -12,6 +9,7 @@ EXTRACT_ONLY=	${PORTNAME}src.4_2${EXTRACT_SUFX} ${PORTNAME}mk.4_2${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Integrated Solution Algorithm for Arbitrary Configuration
+WWW=		https://isaac-cfd.sourceforge.net/
 
 LICENSE=	ISAAC
 LICENSE_NAME=	ISAAC_LICENSE

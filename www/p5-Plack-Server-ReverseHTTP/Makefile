@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Server-ReverseHTTP
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -8,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MIYAGAWA
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of reversehttp gateway for PSGI application
+WWW=		https://metacpan.org/release/MIYAGAWA/Plack-Server-ReverseHTTP-0.02
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

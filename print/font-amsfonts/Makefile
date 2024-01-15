@@ -1,6 +1,3 @@
-# Created by: hrs
-# $FreeBSD$
-
 PORTNAME=	amsfonts
 PORTVERSION=	3.02
 PORTREVISION=	4

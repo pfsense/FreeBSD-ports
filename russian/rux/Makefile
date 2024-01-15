@@ -1,6 +1,3 @@
-# Created by: Vyacheslav Anikin <anikinsl@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	rux
 PORTVERSION=	0.82
 CATEGORIES=	russian
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/rux
 
 MAINTAINER=	anikinsl@gmail.com
 COMMENT=	Best Cyrillic text viewer and code page converter
+WWW=		https://sourceforge.net/projects/rux/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

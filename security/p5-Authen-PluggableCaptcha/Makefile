@@ -1,6 +1,3 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	Authen-PluggableCaptcha
 PORTVERSION=	0.05
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pluggable Captcha framework for Perl
+WWW=		https://metacpan.org/release/Authen-PluggableCaptcha
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Number-Spell>=0:textproc/p5-Number-Spell \

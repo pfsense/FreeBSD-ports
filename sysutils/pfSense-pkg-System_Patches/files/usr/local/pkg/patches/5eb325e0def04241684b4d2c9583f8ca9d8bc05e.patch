@@ -1,0 +1,33 @@
+commit 5eb325e0def04241684b4d2c9583f8ca9d8bc05e
+Author: jim-p <jimp@netgate.com>
+Date:   Thu Nov 9 11:55:07 2023 -0500
+
+    Fix up interfaces.php merge errors. Issue #14949
+
+diff --git a/src/usr/local/www/interfaces.php b/src/usr/local/www/interfaces.php
+index b1cb05a640..fb96991941 100755
+--- a/src/usr/local/www/interfaces.php
++++ b/src/usr/local/www/interfaces.php
+@@ -103,12 +103,6 @@ foreach ($no_address_interfaces as $ifbl) {
+ $is_vlan = (bool) interface_is_vlan($realifname);
+ $is_parent = !$is_vlan;
+ 
+-init_config_arr(array('interfaces', $if));
+-$wancfg = &$config['interfaces'][$if];
+-$old_wancfg = $wancfg;
+-$old_wancfg['realif'] = get_real_interface($if);
+-$old_ppps = $a_ppps;
+-
+ // Populate page descr if it does not exist.
+ if ((strtolower($if) == "wan") &&
+     empty(array_get_path($wancfg, 'descr'))) {
+@@ -1768,6 +1762,9 @@ if ($_POST['apply']) {
+ 			}
+ 		}
+ 
++		config_set_path('ppps/ppp', $a_ppps);
++		config_set_path('gateways/gateway_item', $a_gateways);
++		config_set_path("interfaces/{$if}", $wancfg);
+ 		write_config("Interfaces settings changed");
+ 
+ 		if ($_POST['gatewayip4']) {

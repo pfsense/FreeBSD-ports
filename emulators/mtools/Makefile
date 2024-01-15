@@ -1,20 +1,17 @@
-# Created by: jmz
-# $FreeBSD$
-
 PORTNAME=	mtools
-PORTVERSION=	4.0.10
-PORTREVISION=	6
+PORTVERSION=	4.0.43
 CATEGORIES=	emulators
 MASTER_SITES=	GNU
 
 MAINTAINER=	skreuzer@FreeBSD.org
-COMMENT=	Collection of tools for manipulating MS-DOS files
+COMMENT=	Tools for manipulating MS-DOS disks and images
+WWW=		https://www.gnu.org/software/mtools/intro.html
 
 LICENSE=	GPLv3
 
-CONFLICTS_INSTALL=	multimarkdown-*
+CONFLICTS_INSTALL=	multimarkdown
 
-USES=		gmake makeinfo tar:bzip2
+USES=		gmake makeinfo tar:lz
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_header_malloc_h=no
 CONFIGURE_ARGS=	--enable-xdf
@@ -32,6 +29,7 @@ OPTIONS_DEFAULT=ICONV X11
 USES+=		iconv
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
+LIB_DEPENDS+=	libiconv.so:converters/libiconv
 .else
 CONFIGURE_ENV+=	ac_cv_header_iconv_h=no
 .endif
@@ -47,15 +45,10 @@ MAKE_ENV+=	WITHOUT_X11=yes
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e \
-		's|^#define MT_SIZE_T size_t|#define MT_SIZE_T off_t|g' \
-		${WRKSRC}/llong.h
-	@${REINPLACE_CMD} -e 's|/etc/mtools.conf|${PREFIX}/etc/mtools.conf|g' \
-		${WRKSRC}/mformat.c
-.for f in mtools.5 mtools.texi
-	@${REINPLACE_CMD} -e 's|/usr/local/etc/|${PREFIX}/etc/|g' \
-		${WRKSRC}/${f}
-.endfor
+	@${REINPLACE_CMD} -e '/LOCAL_CONF_FILE/s,/etc/default,${LOCALBASE}/etc,' \
+		${WRKSRC}/mtoolsPaths.h
+	@${REINPLACE_CMD} -e 's|^\(SAMPLE FILE\)$$|#\1|' \
+		${WRKSRC}/mtools.conf
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/mtools.conf ${STAGEDIR}${PREFIX}/etc/mtools.conf.sample

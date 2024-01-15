@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Statistics-Descriptive-Discrete
 PORTVERSION=	0.12
 CATEGORIES=	math perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Compute descriptive statistics for discrete data sets
+WWW=		https://metacpan.org/release/Statistics-Descriptive-Discrete
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
-
 PORTNAME=	pongix
 PORTVERSION=	0.4
 PORTREVISION=	13
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.losersjuegos.com.ar/_media/juegos/pongix/descargas/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free pong-like game
+WWW=		http://www.losersjuegos.com.ar
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

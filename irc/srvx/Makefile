@@ -1,6 +1,3 @@
-# Created by: Walter Venable <weaseal@hotmail.com>
-# $FreeBSD$
-
 PORTNAME=	srvx
 PORTVERSION=	1.3.1
 CATEGORIES=	irc net
@@ -8,12 +5,10 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Services for ircu P10 protocol networks
+WWW=		http://www.srvx.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_armv6=		fails to configure: Cannot detect format string for time_t
-BROKEN_armv7=		fails to configure: Cannot detect format string for time_t
 
 USES=		cpe
 GNU_CONFIGURE=	yes
@@ -30,6 +25,12 @@ BAHAMUT_DESC=	Enable Bahamut protocol (P10 is default)
 
 DEBUG_CONFIGURE_ON=	--enable-debug
 BAHAMUT_CONFIGURE_ON=	--with-protocol=bahamut
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH:Marmv?} || ${ARCH} == powerpc
+CONFIGURE_ENV+=	ac_cv_fmt_time_t="\"%lli\""
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|srvx\.conf|${PREFIX}/etc/srx.conf|' \

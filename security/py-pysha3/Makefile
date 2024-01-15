@@ -1,14 +1,12 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pysha3
 DISTVERSION=	1.0.2
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	SHA-3 (Keccak) for Python
+WWW=		https://bitbucket.org/tiran/pykeccak
 
 LICENSE=	PSFL
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BROKEN_mips64=		fails to compile: KeccakP-1600-opt64.c: error: Not yet implemented
 
 # Actually Python 2.7,3.4+
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 post-install:

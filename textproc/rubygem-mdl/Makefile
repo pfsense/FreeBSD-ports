@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	mdl
 PORTVERSION=	0.11.0
+PORTREVISION=	2
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Check markdown files and flag style issues
+WWW=		https://github.com/markdownlint/markdownlint
 
 LICENSE=	MIT
 
@@ -17,7 +17,6 @@ RUN_DEPENDS=	rubygem-kramdown>=2.3<3:textproc/rubygem-kramdown \
 		rubygem-mixlib-shellout>=0:devel/rubygem-mixlib-shellout
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

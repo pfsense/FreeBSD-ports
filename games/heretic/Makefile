@@ -1,6 +1,3 @@
-# Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
-
 PORTNAME=	heretic
 PORTVERSION=	1.2
 PORTREVISION=	9

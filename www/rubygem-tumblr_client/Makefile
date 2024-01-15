@@ -1,6 +1,3 @@
-# Created by: Michael Moll <kvedulv@kvedulv.de>
-# $FreeBSD$
-
 PORTNAME=	tumblr_client
 PORTVERSION=	0.8.5
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby Wrapper for the Tumblr v2 API
+WWW=		https://github.com/tumblr/tumblr_client
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +19,6 @@ RUN_DEPENDS=	rubygem-faraday0>=0.9.0<1:www/rubygem-faraday0 \
 		rubygem-simple_oauth>=0:net/rubygem-simple_oauth
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

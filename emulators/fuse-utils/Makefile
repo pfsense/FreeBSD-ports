@@ -1,13 +1,12 @@
-# Created by: rene
-# $FreeBSD$
-
 PORTNAME=	fuse-utils
 DISTVERSION=	1.4.3
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF/fuse-emulator/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	rene@FreeBSD.org
 COMMENT=	Utilities from the Free Unix Spectrum Emulator
+WWW=		https://fuse-emulator.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

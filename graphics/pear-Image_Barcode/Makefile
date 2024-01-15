@@ -1,12 +1,10 @@
-# Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
-
 PORTNAME=	Image_Barcode
 PORTVERSION=	1.1.3
 CATEGORIES=	graphics www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class for barcode generation
+WWW=		https://pear.php.net/package/Image_Barcode
 
 USE_PHP=	gd
 USES=		pear php

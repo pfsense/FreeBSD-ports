@@ -1,6 +1,3 @@
-# Created by: Dean Hollister <dean@odyssey.apana.org.au>
-# $FreeBSD$
-
 PORTNAME=	fakeident
 PORTVERSION=	2.7
 CATEGORIES=	security
@@ -10,6 +7,7 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	dean@odyssey.apana.org.au
 COMMENT=	Tool that replies with a standard answer to incoming identd requests
+WWW=		http://www.guru-group.fi/~too/sw/identd.readme
 
 LICENSE=	GPLv2+
 

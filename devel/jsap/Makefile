@@ -1,6 +1,3 @@
-# Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jsap
 DISTVERSION=	2.1
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME:tu}-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java package to parse command-line arguments
+WWW=		http://www.martiansoftware.com/jsap/index.html
 
 USE_JAVA=	yes
 NO_BUILD=	yes

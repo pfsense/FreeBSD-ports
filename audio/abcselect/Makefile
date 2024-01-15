@@ -1,6 +1,3 @@
-# Created by: Sue Blake <sue@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	abcselect
 PORTVERSION=	1.5
 CATEGORIES=	audio
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extract parts, movements, etc from abc music files
+WWW=		https://www.lautengesellschaft.de/cdmm/
 
 USES=		shebangfix perl5
 USE_PERL5=	run

@@ -1,21 +1,18 @@
-# Created by: Michael Moll <kvedulv at kvedulv.de>
-# $FreeBSD$
-
 PORTNAME=	rack-cors
-PORTVERSION=	1.0.6
+PORTVERSION=	2.0.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Middleware that will make Rack-based apps CORS compatible
+WWW=		https://github.com/cyu/rack-cors
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-rack>=1.6.0:www/rubygem-rack
+RUN_DEPENDS=	rubygem-rack>=2.0.0,3:www/rubygem-rack
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

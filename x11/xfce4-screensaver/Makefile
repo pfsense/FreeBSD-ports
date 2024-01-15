@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	xfce4-screensaver
-PORTVERSION=	4.16.0
-PORTREVISION=	1
+PORTVERSION=	4.18.2
+PORTREVISION=	2
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Xfce 4 screen saver and locker
+WWW=		https://git.xfce.org/apps/xfce4-screensaver/about/
 
 LICENSE=	GPLv2 LGPL20
 LICENSE_COMB=	dual
@@ -18,18 +17,19 @@ LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
 BUILD_DEPENDS=	xdt-csource:devel/xfce4-dev-tools
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
-		libxklavier.so:x11/libxklavier
+		libxklavier.so:x11/libxklavier \
+		libharfbuzz.so:print/harfbuzz
 
-USES=		compiler:c11 gettext-tools gl gmake gnome pkgconfig python:3.5+ \
+USES=		compiler:c11 gettext-tools gl gmake gnome pkgconfig python \
 		shebangfix tar:bzip2 xfce xorg
 USE_GL=		gl
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool libwnck3
-USE_XFCE=	garcon libexo xfconf
+USE_XFCE=	garcon xfconf
 USE_XORG=	ice sm x11 xext xrandr xscrnsaver xxf86vm
 
 SHEBANG_FILES=	src/xfce4-screensaver-configure
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --with-console-kit=yes \
+CONFIGURE_ARGS=	--with-console-kit=yes \
 		--with-systemd=no \
 		--enable-maintainer-mode
 
@@ -37,8 +37,6 @@ SCREENSAVER_DIR=	share/applications/screensavers
 
 OPTIONS_DEFINE=	NLS PAM
 OPTIONS_DEFAULT=PAM
-PAM_DESC=	Pluggable Authentication Module support
-
 OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls

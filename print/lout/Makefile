@@ -1,22 +1,24 @@
-# Created by: oly@world.std.com
-# $FreeBSD$
-
 PORTNAME=	lout
-PORTVERSION=	3.40
-PORTREVISION=	1
+PORTVERSION=	3.42.2
+PORTREVISION=	2
 CATEGORIES=	print
-MASTER_SITES=	SAVANNAH
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	LaTeX like document creation system with PostScript/PDF output
+WWW=		https://savannah.nongnu.org/projects/lout/
 
 LICENSE=	GPLv3+
 
-OPTIONS_DEFINE=	DOCS
+USES=		cpe ghostscript:run gmake magick:run
+CPE_VENDOR=	lout_project
 
-USES=	gmake
+USE_GITHUB=	yes
+GH_ACCOUNT=	william8000
+
 MAKEFILE=	makefile
 ALL_TARGET=	lout prg2lout
 INSTALL_TARGET=	install installman installdoc
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

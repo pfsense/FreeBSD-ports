@@ -1,6 +1,3 @@
-# Created by: IWATSUKI Hiroyuki <don@na.rim.or.jp>
-# $FreeBSD$
-
 PORTNAME=	platform
 PORTVERSION=	0.4.0
 CATEGORIES=	devel rubygems
@@ -9,9 +6,9 @@ DISTNAME=	Platform-${PORTVERSION}
 
 MAINTAINER=	don@na.rim.or.jp
 COMMENT=	Hopefully robust platform sensing
+WWW=		https://github.com/berk/platform
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

@@ -1,50 +1,56 @@
-# $FreeBSD$
-
 PORTNAME=	xwayland
 DISTVERSIONPREFIX=	xorg-server-
-DISTVERSION=	1.20.0-844
-DISTVERSIONSUFFIX=	-gc9a3b14c1
+DISTVERSION=	21.0.99.1-607
+DISTVERSIONSUFFIX=	-gf2b019d2b
 CATEGORIES=	x11-servers
 PKGNAMESUFFIX=	-devel
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	231720f8b212.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	48a7bfeb4687.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	2b3c4983f937.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCH_SITES+=	https://github.com/mirror/${GL_PROJECT}/commit/:github
+PATCHFILES+=	cd6c9c1246af.patch:-p1:github # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	707c37b7ab9e.patch:-p1:github # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	3b0d1a3a2296.patch:-p1:github # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	X11 server as Wayland client (development snapshot)
+WWW=		https://wayland.freedesktop.org/xserver.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/mesa-dri \
-		wayland-protocols>=1.18:graphics/wayland-protocols
+		wayland-protocols>=1.30:graphics/wayland-protocols
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libepoxy.so:graphics/libepoxy \
-		libwayland-client.so:graphics/wayland
+		libwayland-client.so:graphics/wayland \
+		libxcvt.so:x11/libxcvt
 RUN_DEPENDS=	xkbcomp:x11/xkbcomp \
 		xkeyboard-config>0:x11/xkeyboard-config
 
 CONFLICTS_INSTALL=	${PORTNAME}
 
 USES=		compiler:c11 gl meson pkgconfig xorg
-USE_GITHUB=	yes
+USE_GITLAB=	yes
 USE_GL=		gbm gl
 USE_XORG=	pixman xau xdmcp xfont2 xkbfile xshmfence xtrans
-GH_ACCOUNT=	freedesktop
-GH_PROJECT=	xorg-xserver
+GL_SITE=	https://gitlab.freedesktop.org
+GL_ACCOUNT=	xorg
+GL_PROJECT=	xserver
 MESON_ARGS=	-D${PORTNAME}=true \
 		-Dxorg=false \
 		-Dxnest=false \
 		-Dxvfb=false \
 		-Dudev=false \
 		-Dudev_kms=false \
+		-Dxcsecurity=true \
 		-Ddefault_font_path="${DEFAULT_FONTPATH_LIST:ts,}"
 PLIST_FILES=	bin/Xwayland \
+		"@comment lib/xorg/protocol.txt" \
 		libdata/pkgconfig/xwayland.pc \
-		man/man1/Xwayland.1.gz
+		"@comment man/man1/Xserver.1.gz" \
+		man/man1/Xwayland.1.gz \
+		share/applications/org.freedesktop.Xwayland.desktop
 
 # Keep in sync with xorg-server
 FONTPATH_ROOT?=	${LOCALBASE}/share/fonts
@@ -58,19 +64,19 @@ DEFAULT_FONTPATH_LIST= \
 	${FONTPATH_ROOT}/75dpi/ \
 	catalogue:${FONTPATHD}
 
-OPTIONS_DEFINE=	NVIDIA
+OPTIONS_DEFINE=	CSD EI NVIDIA
+OPTIONS_DEFAULT=CSD EI
+
+CSD_DESC=		Client-side decorations via libdecor
+CSD_LIB_DEPENDS=	libdecor-0.so:x11-toolkits/libdecor
+CSD_MESON_TRUE=		libdecor
+
+EI_DESC=		Emulated input via libei
+EI_LIB_DEPENDS=		libei.so:x11/libei
+EI_MESON_OFF=		-Dxwayland_ei=false
 
 NVIDIA_DESC=		EGLStream support for glamor on Xwayland
 NVIDIA_BUILD_DEPENDS=	egl-wayland>0:graphics/egl-wayland
 NVIDIA_MESON_TRUE=	xwayland_eglstream
-
-do-install:
-# XXX Prevent Meson from installing unrelated files
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/hw/xwayland/Xwayland \
-		${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${BUILD_WRKSRC}/hw/xwayland/xwayland.pc \
-		${STAGEDIR}${PREFIX}/libdata/pkgconfig
-	${INSTALL_MAN} ${BUILD_WRKSRC}/hw/xwayland/Xwayland.1 \
-		${STAGEDIR}${PREFIX}/man/man1
 
 .include <bsd.port.mk>

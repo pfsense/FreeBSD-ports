@@ -1,6 +1,3 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tweetstream
 PORTVERSION=	2.6.1
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	TweetStream provides simple Ruby access to Twitter Streaming API
+WWW=		https://github.com/tweetstream/tweetstream
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -19,8 +17,8 @@ RUN_DEPENDS=	rubygem-daemons>=1.1<2:devel/rubygem-daemons \
 		rubygem-multi_json>=1.3<2:devel/rubygem-multi_json \
 		rubygem-twitter>=5.5:net/rubygem-twitter
 
-USES=		gem
-USE_RUBY=	yes
+USES=		cpe gem
+CPE_VENDOR=	${PORTNAME}_project
 
 NO_ARCH=	yes
 

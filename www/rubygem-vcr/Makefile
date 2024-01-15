@@ -1,13 +1,11 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vcr
-PORTVERSION=	6.0.0
+PORTVERSION=	6.2.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Record test suite HTTP interactions and replay
+WWW=		https://github.com/vcr/vcr
 
 LICENSE=	HIPPOCRATIC-2.1 MIT
 LICENSE_COMB=	multi
@@ -17,7 +15,6 @@ LICENSE_PERMS_HIPPOCRATIC-2.1=	auto-accept dist-mirror pkg-mirror
 # https://github.com/vcr/vcr/blob/master/LICENSE
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

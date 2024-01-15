@@ -1,31 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	libavif
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.4
+DISTVERSION=	1.0.3
 PORTREVISION=	1
 CATEGORIES=	graphics
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	2340cdb5f0c2.patch:-p1 # https://github.com/AOMediaCodec/libavif/pull/296
-PATCHFILES+=	76244a1fca21.patch:-p1 # unbreak SVTAV1, not upstreamed yet
-
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Library for encoding and decoding .avif files
+WWW=		https://github.com/AOMediaCodec/libavif
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpng.so:graphics/png
+TEST_DEPENDS=	googletest>0:devel/googletest \
+		bash:shells/bash
 
-USES=		cmake compiler:c11 jpeg pkgconfig
+USES=		cmake:testing compiler:c11 cpe jpeg pkgconfig
+CPE_VENDOR=	aomedia
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	AOMediaCodec
-CMAKE_ON=	AVIF_BUILD_APPS AVIF_BUILD_TESTS
-TEST_TARGET=	avif_test_all
+CMAKE_ON=	AVIF_BUILD_APPS
+CMAKE_TESTING_ON=	AVIF_BUILD_TESTS
 
-OPTIONS_DEFINE=	AOM DAV1D GAV1 LIBYUV PIXBUF RAV1E SVTAV1
+OPTIONS_DEFINE=	AOM DAV1D GAV1 LIBSHARPYUV LIBYUV PIXBUF RAV1E SVTAV1
 OPTIONS_DEFAULT=AOM DAV1D PIXBUF
 OPTIONS_SUB=	yes
 
@@ -41,9 +39,14 @@ GAV1_DESC=		AV1 decoding via libgav1
 GAV1_LIB_DEPENDS=	libgav1.so:multimedia/libgav1
 GAV1_CMAKE_BOOL=	AVIF_CODEC_LIBGAV1
 
+LIBSHARPYUV_DESC=		Colorspace conversion via libsharpyuv
+LIBSHARPYUV_LIB_DEPENDS=	libsharpyuv.so:graphics/webp
+LIBSHARPYUV_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_libsharpyuv
+
 LIBYUV_DESC=		Colorspace conversion via libyuv
+LIBYUV_BUILD_DEPENDS=	libyuv>=0.0.1774:graphics/libyuv
 LIBYUV_LIB_DEPENDS=	libyuv.so:graphics/libyuv
-LIBYUV_BROKEN=		libyuv >= 1755 is required, see https://chromium.googlesource.com/libyuv/libyuv/+/d426247a3bf6%5E!/
+LIBYUV_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_libyuv
 
 PIXBUF_USES=		gnome
 PIXBUF_USE=		GNOME=gdkpixbuf2

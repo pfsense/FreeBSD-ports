@@ -1,13 +1,11 @@
-# Created by: Makoto Matsushita <matusita@jp.FreeBSD.ORG>
-# $FreeBSD$
-
 PORTNAME=	dbskkd-cdb
 PORTVERSION=	3.00
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	japanese
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SKK dictionary server based on cdb
+WWW=		https://github.com/jj1bdx/dbskkd-cdb
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

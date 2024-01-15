@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	locale-en_DK
 DISTVERSION=	0.1.1
 CATEGORIES=	misc
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wonderful en_DK.UTF-8 locale
+WWW=		https://github.com/0mp/en_DK.UTF-8
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

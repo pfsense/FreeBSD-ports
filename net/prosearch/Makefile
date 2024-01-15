@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	prosearch
 PORTVERSION=	0.19.4
 PORTREVISION=	10
@@ -8,6 +6,7 @@ MASTER_SITES=	http://pro.setun.net/search/download/ SF/pro-search/pro-search/${P
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful file search
+WWW=		https://sourceforge.net/projects/pro-search/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -29,7 +28,6 @@ OPTIONS_DEFAULT=	CRAWLER SAMBA APACHE DB MYSQL
 CRAWLER_DESC=		With crawler (nmap, p5-libwww)
 SAMBA_DESC=		crawler with SAMBA (file://)
 RSYNC_DESC=		crawler with RSYNC
-APACHE_DESC=		With web server apache2.2+
 MOD_PERL2_DESC=		With MOD_PERL2
 MOD_FASTCGI_DESC=	With MOD_FASTCGI
 DB_DESC=		With both database server and client
@@ -60,7 +58,7 @@ RUN_DEPENDS+=	rsync:net/rsync
 .endif
 
 .if ${PORT_OPTIONS:MAPACHE}
-USES+=		apache:run,2.2+
+USES+=		apache:run
 .endif
 
 .if ${PORT_OPTIONS:MNGINX}

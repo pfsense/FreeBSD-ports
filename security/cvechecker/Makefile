@@ -1,13 +1,12 @@
-# Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cvechecker
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.9
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Check CVE database for vulnerabilities affecting installed packages
+WWW=		https://github.com/sjvermeu/cvechecker/wiki
 
 LICENSE=	GPLv3
 
@@ -16,6 +15,8 @@ LIB_DEPENDS=	libargp.so:devel/argp-standalone \
 RUN_DEPENDS=	bash:shells/bash
 
 MAKE_ENV+=	LDADD=-largp
+SUB_FILES=	pkg-message
+SUB_LIST=	PORTNAME=${PORTNAME}
 
 USES=		autoreconf pkgconfig shebangfix
 

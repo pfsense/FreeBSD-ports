@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Lexical-Alias
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Makes a lexical an alias for another variable
+WWW=		https://metacpan.org/release/Lexical-Alias
 
 USES=		perl5
 USE_PERL5=	configure

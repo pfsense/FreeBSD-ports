@@ -1,6 +1,3 @@
-# Created by: Manuel Giraud <manuel.giraud@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	pcl
 PORTVERSION=	1.6
 PORTREVISION=	1
@@ -9,15 +6,12 @@ MASTER_SITES=	http://www.xmailserver.org/
 
 MAINTAINER=	manuel.giraud@gmail.com
 COMMENT=	Portable Coroutine Library
+WWW=		http://www.xmailserver.org/libpcl.html
 
 USES=		libtool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/lib${PORTNAME}-${PORTVERSION}
-
-post-patch:	# required at least on sparc64
-	@${REINPLACE_CMD} -e '/<ucontext/ { x ; \
-		s,.*,#include <inttypes.h>, ; G ; }' ${WRKSRC}/pcl/pcl.c
 
 .include <bsd.port.mk>

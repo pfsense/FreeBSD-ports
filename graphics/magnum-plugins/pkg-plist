@@ -6,6 +6,7 @@ include/Magnum/OpenDdl/Type.h
 include/Magnum/OpenDdl/Validation.h
 include/Magnum/OpenDdl/configure.h
 include/Magnum/OpenDdl/visibility.h
+include/Magnum/versionPlugins.h
 include/MagnumExternal/TinyGltf/json.hpp
 include/MagnumExternal/TinyGltf/tiny_gltf.h
 include/MagnumPlugins/AssimpImporter/AssimpImporter.h
@@ -28,12 +29,6 @@ include/MagnumPlugins/JpegImporter/JpegImporter.h
 include/MagnumPlugins/JpegImporter/configure.h
 include/MagnumPlugins/MiniExrImageConverter/MiniExrImageConverter.h
 include/MagnumPlugins/MiniExrImageConverter/configure.h
-include/MagnumPlugins/OpenGexImporter/OpenDdl/Document.h
-include/MagnumPlugins/OpenGexImporter/OpenDdl/OpenDdl.h
-include/MagnumPlugins/OpenGexImporter/OpenDdl/Property.h
-include/MagnumPlugins/OpenGexImporter/OpenDdl/Structure.h
-include/MagnumPlugins/OpenGexImporter/OpenDdl/Type.h
-include/MagnumPlugins/OpenGexImporter/OpenDdl/Validation.h
 include/MagnumPlugins/OpenGexImporter/OpenGex.h
 include/MagnumPlugins/OpenGexImporter/OpenGexImporter.h
 include/MagnumPlugins/OpenGexImporter/configure.h
@@ -55,7 +50,7 @@ include/MagnumPlugins/TinyGltfImporter/TinyGltfImporter.h
 include/MagnumPlugins/TinyGltfImporter/configure.h
 lib/libMagnumOpenDdl.so
 lib/libMagnumOpenDdl.so.2
-lib/libMagnumOpenDdl.so.2.3
+lib/libMagnumOpenDdl.so.2.4
 lib/magnum/audioimporters/DrFlacAudioImporter.conf
 lib/magnum/audioimporters/DrFlacAudioImporter.so
 lib/magnum/audioimporters/DrWavAudioImporter.conf

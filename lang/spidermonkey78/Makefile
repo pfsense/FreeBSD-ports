@@ -1,21 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	spidermonkey
-DISTVERSION=	78.6.0
+DISTVERSION=	78.15.0
+PORTREVISION=	19
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source
 PKGNAMESUFFIX=	${SP_VER}
 DISTNAME=	firefox-${DISTVERSION}esr.source
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Standalone JavaScript based from Mozilla 78-esr
+WWW=		https://spidermonkey.dev/
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g} \
-		${RUST_DEFAULT}>=1.35:lang/${RUST_DEFAULT} \
-		autoconf-2.13:devel/autoconf213 \
+BUILD_DEPENDS=	${RUST_DEFAULT}>=1.35:lang/${RUST_DEFAULT} \
+		autoconf2.13:devel/autoconf2.13 \
 		rust-cbindgen>=0.8.7:devel/rust-cbindgen
 LIB_DEPENDS=	libffi.so:devel/libffi \
 		libicudata.so:devel/icu \
@@ -30,9 +29,9 @@ HAS_CONFIGURE=	yes
 WRKSRC=			${WRKDIR}/firefox-${DISTVERSION}
 PATCH_WRKSRC=		${WRKDIR}/firefox-${DISTVERSION}/
 CONFIGURE_OUTSOURCE=	yes
-CONFIGURE_SCRIPT=	../firefox-${DISTVERSION}/js/src/configure
 
-CONFIGURE_ARGS=	--disable-debug \
+CONFIGURE_ARGS=	--enable-application=js \
+		--disable-debug \
 		--disable-debug-symbols \
 		--disable-gold \
 		--disable-jemalloc \
@@ -57,6 +56,8 @@ PLIST_SUB=	SP_VER=${SP_VER}
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
+.elif ${ARCH} == powerpc
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-config_makefiles_rust.mk
 .endif
 
 # Require newer Clang than what's in base system unless user opted out
@@ -78,6 +79,8 @@ BUILD_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/js/moz.configure
+	@${FIND} ${WRKSRC}/build/pymake ${WRKSRC}/python/mozbuild -name *.py -exec \
+		${REINPLACE_CMD} "s|'rU'|'r'|g" {} \;
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/lib/libjs_static.ajs

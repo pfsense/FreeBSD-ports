@@ -1,11 +1,8 @@
-# Created by: Tom McLaughlin <tmclaugh@FreeBSD.org>
-# $FreeBSD$
-
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	net dns
 PKGNAMESUFFIX=	-sharp
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mono bindings for Avahi service discovery
 
 LIB_DEPENDS=	libavahi-core.so:net/avahi-app

@@ -1,6 +1,3 @@
-# Created by: Pav Lucistnik <pav@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cdrkit
 PORTVERSION=	1.1.11
 PORTREVISION=	2
@@ -11,6 +8,7 @@ MASTER_SITES=	http://ponce.cc/slackware/sources/repo/ \
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT?=	Command-line CD/DVD writing suite
+WWW=		http://www.cdrkit.org/
 
 LICENSE=	GPLv2+
 
@@ -22,9 +20,7 @@ SHEBANG_FILES=	3rd-party/dirsplit/dirsplit
 # Fix build with clang11
 CFLAGS+=	-fcommon
 
-CONFLICTS?=	cdrtools-[0-9]* cjk-cdrtools-[0-9]* cdrtools-devel-[0-9]*
-
-SLAVEDIRS=	sysutils/genisoimage
+CONFLICTS?=	cdrtools
 
 PLIST_SUB?=	CDRKIT="" GENISOIMAGE="@comment "
 

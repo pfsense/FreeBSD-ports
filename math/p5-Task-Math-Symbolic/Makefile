@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Task-Math-Symbolic
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Math::Symbolic with lots of plugins
+WWW=		https://metacpan.org/release/Task-Math-Symbolic
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Math-Symbolic>=0.163:math/p5-Math-Symbolic \

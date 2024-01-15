@@ -1,6 +1,3 @@
-# Created by: Alfred Perlstein <alfred@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	insub
 PORTVERSION=	16.0
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	irc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Some scripts for expressing how you feel on IRC and the web
+WWW=		https://github.com/cjones/insub
 
 RUN_DEPENDS=	cowsay:games/cowsay \
 		figlet:misc/figlet

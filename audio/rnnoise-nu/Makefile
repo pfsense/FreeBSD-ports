@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	rnnoise-nu
 DISTVERSION=	g20180916
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Recurrent neural network for audio noise reduction
+WWW=		https://github.com/GregorR/rnnoise-nu
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

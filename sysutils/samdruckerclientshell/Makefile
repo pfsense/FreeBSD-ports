@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	SamDruckerClientShell
-PORTVERSION=	0.2.4
-PORTREVISION=	1
+PORTVERSION=	0.2.6
 CATEGORIES=	sysutils
-MASTER_SITES=   GH
+MASTER_SITES=	GH
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Client for sending package information to SamDrucker
+WWW=		https://github.com/dlangille/SamDrucker
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

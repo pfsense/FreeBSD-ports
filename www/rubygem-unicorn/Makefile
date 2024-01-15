@@ -1,13 +1,11 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	unicorn
-PORTVERSION=	5.6.0
+PORTVERSION=	6.1.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	HTTP server for Rack applications
+WWW=		https://yhbt.net/unicorn/
 
 LICENSE=	GPLv2 GPLv3 RUBY
 LICENSE_COMB=	dual
@@ -17,7 +15,6 @@ LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	rubygem-kgio>=2.6<3:devel/rubygem-kgio \
 		rubygem-raindrops>=0.7<1:www/rubygem-raindrops
 
-USE_RUBY=	yes
 USES=		gem shebangfix
 
 PLIST_FILES=	bin/unicorn bin/unicorn_rails

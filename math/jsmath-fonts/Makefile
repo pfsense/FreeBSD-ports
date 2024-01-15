@@ -1,6 +1,3 @@
-# Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
-
 PORTNAME=	jsMath-fonts
 PORTVERSION=	1.3
 CATEGORIES=	math www
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.math.union.edu/~dpvc/jsMath/download/ \
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Raster fonts pack for jsmath
+WWW=		https://www.math.union.edu/~dpvc/jsMath/
 
 USES=		zip
 NO_BUILD=	yes

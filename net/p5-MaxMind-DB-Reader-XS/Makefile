@@ -1,9 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	MaxMind-DB-Reader-XS
-PORTVERSION=	1.000008
-PORTREVISION=	1
+PORTVERSION=	1.000009
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MAXMIND
@@ -11,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast XS implementation of MaxMind DB reader
+WWW=		https://metacpan.org/release/MaxMind-DB-Reader-XS
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE

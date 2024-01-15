@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	wofi
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.4
-CATEGORIES=	x11
+DISTVERSION=	1.3
+PORTREVISION=	2
+CATEGORIES=	x11 wayland
 MASTER_SITES=	https://hg.sr.ht/~scoopta/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Launcher/menu program for wlroots-based compositors
+WWW=		https://hg.sr.ht/~scoopta/wofi
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.md

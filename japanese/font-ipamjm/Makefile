@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	ipamjm
 PORTVERSION=	00601
 CATEGORIES=	japanese x11-fonts
-MASTER_SITES=	https://mojikiban.ipa.go.jp/OSCDL/IPAmjMincho/
+MASTER_SITES=	https://dforest.watch.impress.co.jp/library/i/ipamjfont/10750/
 PKGNAMEPREFIX=	ja-font-
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	IPAmj Mincho Japanese fonts
+WWW=		https://moji.or.jp/mojikiban/font/
 
 LICENSE=	IPAFONTLICv1.0
 LICENSE_NAME=	IPA Font License Agreement v1.0

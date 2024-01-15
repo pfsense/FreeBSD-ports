@@ -1,6 +1,3 @@
-# Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Wnn7
 PORTVERSION=	2001.10.17
 PORTREVISION=	3
@@ -11,6 +8,7 @@ DISTNAME=	Wnn7SDK
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Wnn7 client library
+WWW=		https://www.omronsoft.co.jp/
 
 USES=		imake tar:tgz
 USE_LDCONFIG=	yes
@@ -18,6 +16,12 @@ WRKSRC=		${WRKDIR}/src
 PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=14
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/X11R6,${LOCALBASE},g' \

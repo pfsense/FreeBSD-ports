@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	libcomps
-DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	0.1.15
+DISTVERSION=	0.1.19
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Comps XML file manipulation library
+WWW=		https://github.com/rpm-software-management/libcomps
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		cmake gnome
+USES=		cmake cpe gnome
+CPE_VENDOR=	rpm
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
@@ -30,6 +29,7 @@ OPTIONS_SUB=		yes
 
 PYTHON_CMAKE_BOOL=	BUILD_PYTHON_MODULE
 PYTHON_USES=		python
+PYTHON_BUILD_DEPENDS=	${PY_SETUPTOOLS}
 PYTHON_CMAKE_ON=	-DPYTHON_DESIRED=${PYTHON_MAJOR_VER}
 
 .include <bsd.port.mk>

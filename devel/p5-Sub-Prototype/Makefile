@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Sub-Prototype
 PORTVERSION=	0.03
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Set a sub's prototype #'
+WWW=		https://metacpan.org/release/Sub-Prototype
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

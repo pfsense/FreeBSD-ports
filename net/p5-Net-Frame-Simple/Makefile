@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Frame-Simple
 PORTVERSION=	1.09
 CATEGORIES=	net perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Base framework for frame crafting
+WWW=		https://metacpan.org/release/Net-Frame-Simple
 
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/LICENSE.Artistic

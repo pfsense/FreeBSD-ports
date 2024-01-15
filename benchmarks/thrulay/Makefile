@@ -1,6 +1,3 @@
-# Created by: shalunov
-# $FreeBSD$
-
 PORTNAME=	thrulay
 PORTVERSION=	0.9
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	shalunov@shlang.com
 COMMENT=	Network capacity tester
+WWW=		https://sourceforge.net/projects/thrulay/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

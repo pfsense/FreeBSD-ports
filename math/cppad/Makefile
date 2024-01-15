@@ -1,21 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	cppad
-DISTVERSION=	20210000.0
+DISTVERSION=	20230000.0
+PORTREVISION=	1
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ Algorithmic Differentiation package
+WWW=		https://coin-or.github.io/CppAD/doc/cppad.htm
 
 LICENSE=	EPL
 
 USES=		cmake compiler:c++11-lang eigen:3,run
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	coin-or
 GH_PROJECT=	CppAD
-USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-Dcppad_prefix=${PREFIX}
+
+TEST_TARGET=	check
 
 .include <bsd.port.mk>

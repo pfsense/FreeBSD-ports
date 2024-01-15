@@ -1,6 +1,3 @@
-# Created by: SADA Kenji <sada@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	japanese
 
 MAINTAINER=	nobutaka@FreeBSD.org

@@ -1,6 +1,3 @@
-# Created by: Andrey Kostenko <andrey@kostenko.name>
-# $FreeBSD$
-
 PORTNAME=	self-init
 PORTVERSION=	0.01
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Invoke package init methods at compile time
+WWW=		https://metacpan.org/release/self-init
 
 TEST_DEPENDS=	p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings \
 		p5-ex-lib>=0:devel/p5-ex-lib

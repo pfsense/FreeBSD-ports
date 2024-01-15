@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	coreos-ct
 PORTVERSION=	0.9.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	15
 CATEGORIES=	sysutils
 
 MAINTAINER=	fabian.freyer@physik.tu-berlin.de
 COMMENT=	Container Linux Config Transpiler
+WWW=		https://coreos.com/os/docs/latest/overview-of-ct.html
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,6 +1,3 @@
-# Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	SVN-Access
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl extension to manipulate SVN Access files
+WWW=		https://metacpan.org/release/SVN-Access
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

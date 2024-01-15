@@ -1,6 +1,3 @@
-# Created by: Geoffroy Desvernay <dgeo@centrale-marseille.fr>
-# $FreeBSD$
-
 PORTNAME=	URL-Encode
 PORTVERSION=	0.03
 CATEGORIES=	www perl5
@@ -10,14 +7,15 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Encoding and decoding of application/x-www-form-urlencoded encoding
+WWW=		https://metacpan.org/pod/URL::Encode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${RUN_DEPENDS}
-
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	XS
 

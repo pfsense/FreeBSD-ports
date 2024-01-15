@@ -1,33 +1,29 @@
-# Created by: Roy Marples <roy@marples.name>
-# $FreeBSD$
-
 PORTNAME=	dhcpcd
-PORTVERSION=	9.4.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	10.0.6
 CATEGORIES=	net
-MASTER_SITES=	https://roy.marples.name/downloads/dhcpcd/ \
-		https://cflags.cc/roy/dhcpcd/
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	DHCP/IPv4LL/IPv6RS/DHCPv6 client
+WWW=		https://roy.marples.name/projects/dhcpcd
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS_INSTALL=	dhcpcd-devel
-
-USES=		compiler:c11 cpe tar:xz
-
+USES=		compiler:c11 cpe
 CPE_VENDOR=	dhcpcd_project
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--datadir=${PREFIX}/share/examples \
-		--privsepuser="_dhcp" \
-		--without-udev
+USE_GITHUB=	yes
+GH_ACCOUNT=	NetworkConfiguration
 USE_RC_SUBR=	dhcpcd
 
+HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--datadir=${PREFIX}/share/examples \
+		--prefix=${PREFIX} \
+		--privsepuser="_dhcp" \
+		--without-udev
+
 post-install:
-	${MV} ${STAGEDIR}${PREFIX}/etc/dhcpcd.conf \
-		${STAGEDIR}${PREFIX}/share/examples/dhcpcd
+	${MV} ${STAGEDIR}${PREFIX}/etc/dhcpcd.conf ${STAGEDIR}${PREFIX}/etc/dhcpcd.conf.sample
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/dhcpcd
-	${MKDIR} ${STAGEDIR}/var/db/dhcpcd
 
 .include <bsd.port.mk>

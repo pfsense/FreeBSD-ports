@@ -1,6 +1,3 @@
-# Created by: Oleg Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	URI-SmartURI
 PORTVERSION=	0.032
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Subclassable and hostless URIs
+WWW=		https://metacpan.org/release/URI-SmartURI
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

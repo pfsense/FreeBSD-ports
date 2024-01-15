@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	UNIVERSAL-which
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for telling fully qualified name of the method
+WWW=		https://metacpan.org/release/UNIVERSAL-which
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Handle dependency on qca
 #
 # Feature:		qca
@@ -15,17 +13,16 @@ _INCLUDE_QCA_MK=	yes
 IGNORE+=		USES=qca takes no arguments
 .  endif
 
-_QCA_LIB=		libqca-qt5.so
-
-_QCA_DEFAULT_PORT=	devel/qca
-_QCA_LEGACY_PORT=	devel/qca-legacy
-
-.  if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} == base
-_QCA_CHOSEN_PORT=	LEGACY
-.  else
-_QCA_CHOSEN_PORT=	DEFAULT
+.  if empty(USES:Mqt*)
+IGNORE+=		Qt version not specified
 .  endif
 
-LIB_DEPENDS+=		${_QCA_LIB}:${_QCA_${_QCA_CHOSEN_PORT}_PORT}
+_QCA_LIB=		libqca-qt${_QT_VER}.so
+
+_QCA_DEFAULT_PORT=	devel/qca
+_QCA_CHOSEN_PORT=	DEFAULT
+_QCA_FLAVOR=		qt${_QT_VER}
+
+LIB_DEPENDS+=		${_QCA_LIB}:${_QCA_${_QCA_CHOSEN_PORT}_PORT}@${_QCA_FLAVOR}
 
 .endif

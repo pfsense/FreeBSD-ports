@@ -1,17 +1,16 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lscpu
 PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
+
+PATCH_SITES=	https://github.com/NanXiao/lscpu/commit/
+PATCHFILES=	6243acc4393f32a0a52d8eeec35081ebb3027cfe.patch:-p2
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Display information about the CPU architecture
+WWW=		https://github.com/NanXiao/lscpu
 
 LICENSE=	BSD3CLAUSE
-
-ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	unconditionally invokes x86-specific code
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	NanXiao

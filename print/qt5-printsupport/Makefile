@@ -1,16 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	printsupport
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	print
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt print support module
 
-USES=		compiler:c++11-lang qmake:no_env qt-dist:5,base
-USE_QT=		core gui widgets qmake_build buildtools_build
+USES=		compiler:c++11-lang perl5 qmake:no_env qt-dist:5,base
+USE_PERL5=	extract
+USE_QT=		core gui widgets qmake:build buildtools:build
 HAS_CONFIGURE=	yes
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}

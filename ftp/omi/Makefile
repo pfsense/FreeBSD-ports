@@ -1,6 +1,3 @@
-# Created by: ache
-# $FreeBSD$
-
 PORTNAME=	omi
 PORTVERSION=	20030719
 CATEGORIES=	ftp

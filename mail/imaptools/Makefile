@@ -1,24 +1,28 @@
-# Created by: bsam
-# $FreeBSD$
-
 PORTNAME=	imaptools
 PORTVERSION=	1.135
+PORTREVISION=	1
 CATEGORIES=	mail
-MASTER_SITES=	LOCAL/bsam
-DISTNAME=	imap_tools_V${PORTVERSION}
+MASTER_SITES=	https://codeberg.org/portmaster/imap_tools/archive/${PORTVERSION}${EXTRACT_SUFX}?dummy=/
+DISTNAME=	${PORTVERSION}
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Tools and scripts to use with IMAP servers
+WWW=		https://codeberg.org/portmaster/imap_tools/
 
 LICENSE=	ISCL
 
-CONFLICTS=	imaputils-[0-9]*
-
-NO_WRKSUBDIR=	yes
-NO_BUILD=	yes
 USES=		shebangfix perl5
-SHEBANG_FILES=	*.pl
 USE_PERL5=	run
+
+SHEBANG_FILES=	*.pl
+
+CONFLICTS=	imaputils
+
+#NO_WRKSUBDIR=	yes
+NO_ARCH=	yes
+NO_BUILD=	yes
+
+WRKSRC=		${WRKDIR}/imap_tools
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/*.pl ${STAGEDIR}${PREFIX}/bin

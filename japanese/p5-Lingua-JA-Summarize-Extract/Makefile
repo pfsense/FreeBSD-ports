@@ -1,6 +1,3 @@
-# Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
-
 PORTNAME=	Lingua-JA-Summarize-Extract
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	CPAN
 
 MAINTAINER=	markun@onohara.to
 COMMENT=	Summary generator for Japanese
+WWW=		https://metacpan.org/release/Lingua-JA-Summarize-Extract
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \

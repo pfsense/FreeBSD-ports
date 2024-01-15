@@ -1,6 +1,3 @@
-# Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
-
 PORTNAME=	editss
 PORTVERSION=	2.2
 PORTREVISION=	3

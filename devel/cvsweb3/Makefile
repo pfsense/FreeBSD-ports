@@ -1,6 +1,3 @@
-# Created by: SADA Kenji <sada@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cvsweb
 PORTVERSION=	3.0.6
 PORTREVISION=	5
@@ -12,6 +9,7 @@ PKGNAMESUFFIX=	3
 # the <freebsd-cvsweb@FreeBSD.org> mailing list.
 MAINTAINER=	noackjr@alumni.rice.edu
 COMMENT=	WWW CGI script to browse CVS repository trees version 3
+WWW=		https://www.FreeBSD.org/projects/cvsweb.html
 
 LICENSE=	BSD2CLAUSE
 
@@ -30,8 +28,10 @@ RUN_DEPENDS+=	enscript:print/enscript-${PAPERSIZE}
 
 CONFLICTS=	cvsweb-2.*
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
 SHEBANG_FILES=	cvsweb.cgi
+
+CPE_VENDOR=	freebsd
 
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,6 +1,3 @@
-# Created by: gugu
-# $FreeBSD$
-
 PORTNAME=	XML-RPC-Fast
 PORTVERSION=	0.8
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mons@cpan.org
 COMMENT=	Fast and modular implementation for an XML-RPC client and server
+WWW=		https://metacpan.org/release/XML-RPC-Fast
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-HTTP-Message>=0:www/p5-HTTP-Message \

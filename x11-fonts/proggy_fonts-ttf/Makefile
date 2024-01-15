@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	proggy_fonts-ttf
 PORTVERSION=	1.0
 PORTREVISION=	3
@@ -13,6 +11,7 @@ DIST_SUBDIR=	proggy_fonts-ttf
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The perfect monospaced bitmap programming fonts, TTF version
+WWW=		http://upperbounds.net/
 
 LICENSE=	MIT
 

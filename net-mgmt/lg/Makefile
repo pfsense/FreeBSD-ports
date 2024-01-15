@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lg
 PORTVERSION=	1.9.s20140622
 PORTREVISION=	1
@@ -9,11 +7,13 @@ MASTER_SITES=	LOCAL/mat/lg \
 
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Looking Glass written in Perl as a CGI script
+WWW=		https://github.com/Cougar/lg
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cougar

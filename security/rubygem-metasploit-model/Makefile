@@ -1,23 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	metasploit-model
-PORTVERSION=	3.1.3
+PORTVERSION=	5.0.2
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Metasploit Model Mixins and Validators
+WWW=		https://github.com/rapid7/metasploit-model
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-activemodel52>=5.2.2:databases/rubygem-activemodel52 \
-		rubygem-activesupport52>=5.2.2:devel/rubygem-activesupport52 \
-		rubygem-railties52>=5.2.2:www/rubygem-railties52
+RUN_DEPENDS=	rubygem-activemodel70>=7.0:databases/rubygem-activemodel70 \
+		rubygem-activesupport70>=7.0:devel/rubygem-activesupport70 \
+		rubygem-railties70>=7.0:www/rubygem-railties70
 
 NO_ARCH=	yes
 
-USE_RUBY=	yes
 USES=		gem
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	HTTP-ProxyPAC
 PORTVERSION=	0.31
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Use a proxy auto config file to get proxy info
+WWW=		https://metacpan.org/release/HTTP-ProxyPAC
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

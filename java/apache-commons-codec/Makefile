@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	commons-codec
-PORTVERSION=	1.15
+PORTVERSION=	1.16.0
 CATEGORIES=	java converters
 MASTER_SITES=	APACHE_COMMONS_BINARIES
 PKGNAMEPREFIX=	apache-
@@ -9,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Implementations of common encoders and decoders
+WWW=		https://commons.apache.org/codec/
 
 LICENSE=	APACHE20
 

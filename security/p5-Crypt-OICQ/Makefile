@@ -1,6 +1,3 @@
-# Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Crypt-OICQ
 PORTVERSION=	1.1
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Cryptographic algorithm used by OICQ protocol
+WWW=		https://metacpan.org/release/Crypt-OICQ
 
 USES=		perl5 tar:tgz
 USE_PERL5=	configure

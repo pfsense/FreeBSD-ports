@@ -8,7 +8,7 @@
  * nut.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Denny Page
  * Copyright (c) 2016 Sander Peterse <sander.peterse88@gmail.com>
  * All rights reserved.
@@ -28,7 +28,7 @@
 	]]>
 	</copyright>
 	<name>nut</name>
-	<version>2.7.4_1</version>
+	<version>%%PKGVERSION%%</version>
 	<title>Services: UPS</title>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/nut/nut.inc</include_file>
@@ -47,9 +47,6 @@
 	<custom_php_resync_config_command>
 		nut_sync_config();	
 	</custom_php_resync_config_command>
-	<custom_php_install_command>
-		nut_install_command();
-	</custom_php_install_command>
 	<custom_php_pre_deinstall_command>
 		nut_deinstall_command();
 	</custom_php_pre_deinstall_command>

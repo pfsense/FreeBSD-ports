@@ -1,9 +1,7 @@
-# Created by: Mark Murray <markm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bsdgames
 PORTVERSION=	0.75
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	games
 
@@ -22,16 +20,10 @@ MAKE_ENV=	WITHOUT_WERROR=yes
 
 CFLAGS+=	-fcommon
 
-CONFLICTS=	hangman-[0-9]*
+CONFLICTS=	hangman
 
 INFO=		wump
 INFO_PATH=	share/games
-
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300134
-MAKE_ARGS+=	NO_WERROR=yes
-.endif
 
 pre-install:
 .for d in atc larn quiz.db boggle
@@ -51,4 +43,4 @@ post-install:
 	@${TOUCH} ${STAGEDIR}/var/games/atc_score
 	@${FIND} ${STAGEDIR}/var/games -type f -exec ${MV} {} {}.sample \;
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

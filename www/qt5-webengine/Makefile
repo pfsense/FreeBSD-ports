@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # QtWebEngine itself is a very thin layer of Qt code on top of a large part of
 # Chromium (everything up to the content/ layer). As such, most of the work in
 # this port revolves around taming Chromium and getting it to build on FreeBSD.
@@ -16,8 +14,12 @@
 # to lag behind the rest of the official Qt5 ones, which is why we set
 # QT5_VERSION and DISTINFO_FILE here.
 
+# In order to successfully build this port in poudriere you need to add
+# MAX_FILES_qt5_webengine=4096 to /usr/local/etc/poudriere.conf
+
 PORTNAME=	webengine
-DISTVERSION=	${QT5_VERSION}
+DISTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -25,8 +27,6 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 5 library to render web content
 
 BUILD_DEPENDS=	bison:devel/bison \
-		ninja:devel/ninja \
-		yasm:devel/yasm \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
@@ -40,6 +40,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		liblcms2.so:graphics/lcms2 \
 		libnspr4.so:devel/nspr \
 		libnss3.so:security/nss \
+		libopenh264.so:multimedia/openh264 \
 		libopus.so:audio/opus \
 		libpci.so:devel/libpci \
 		libpng.so:graphics/png \
@@ -49,7 +50,14 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libwebp.so:graphics/webp
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
-QT5_VERSION=	5.15.2
+QT5_VERSION=	${_KDE_webengine_VERSION}
+
+# Add extra-patch-no-mempcpy-nasm only when there's no mempcpy() in base.
+# Nested variable expansion avoids executing the test when not needed for
+# expanding EXTRA_PATCHES.
+# mempcpy was introduced in ee37f64cf875255338f917a9da76c643cf59786c
+EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
+		|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
 OPTIONS_SINGLE=		AUDIO
 OPTIONS_SINGLE_AUDIO=	ALSA PULSEAUDIO SNDIO
@@ -73,15 +81,17 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 # We pass `norecursive' to USES=qmake because src/plugins/plugins.pro checks
 # whether webenginewidgets is available, which fails when qmake processes all
 # .pro files at once.
-USES=		gl gnome gperf jpeg python:2.7,build pkgconfig \
-		qmake:norecursive,outsource qt-dist:5,webengine shebangfix xorg
+USES=		gl gnome gperf jpeg minizip ninja:build nodejs:build,lts \
+		perl5 pkgconfig python:build qmake:norecursive,outsource \
+		qt-dist:5,webengine shebangfix xorg
 USE_GL=		gl
 USE_GNOME=	glib20 libxml2 libxslt
+USE_PERL5=	build
 USE_QT=		core declarative gui location network printsupport \
 		webchannel widgets \
-		buildtools_build designer_build qmake_build
-USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xorgproto \
-		xrandr xrender xscrnsaver xtst
+		buildtools:build designer:build qmake:build
+USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
+		xorgproto xrandr xrender xscrnsaver xtst
 
 QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
 
@@ -114,7 +124,7 @@ QT_BINARIES=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
 PLIST_SUB+=	BE="" LE="@comment "
 .else
 PLIST_SUB+=	BE="@comment " LE=""
@@ -134,13 +144,15 @@ post-extract-SNDIO-on:
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		${WRKSRC}/src/3rdparty/chromium/base/linux_util.cc \
+		${WRKSRC}/src/3rdparty/chromium/base/test/BUILD.gn \
 		${WRKSRC}/src/3rdparty/chromium/build/toolchain/gcc_toolchain.gni \
 		${WRKSRC}/src/3rdparty/chromium/chrome/common/chrome_paths.cc \
 		${WRKSRC}/src/3rdparty/chromium/third_party/pdfium/core/fxge/fx_ge_linux.cpp \
-		${WRKSRC}/src/3rdparty/chromium/third_party/pdfium/xfa/fgas/font/cfx_fontsourceenum_file.cpp \
 		${WRKSRC}/src/3rdparty/gn/build/gen.py
+	@${REINPLACE_CMD} -E -e 's|^(MODULE_VERSION = ).*|\1${QT5_VERSION}|' \
+		${WRKSRC}/.qmake.conf
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
 	@${REINPLACE_CMD} -e 's/icudtl.dat/icudtb.dat/' \
 		${WRKSRC}/src/core/core_module.pro
 .endif
@@ -151,9 +163,17 @@ pre-configure:
 # $LOCALBASE/bin/python being python3 if the default versions is set to 3.x.
 	${MKDIR} ${CONFIGURE_WRKSRC}/bin && ${LN} -s ${PYTHON_CMD} ${CONFIGURE_WRKSRC}/bin/python
 # Unbundle a few dependencies.
-	${PYTHON_CMD} ${WRKSRC}/src/3rdparty/chromium/build/linux/unbundle/replace_gn_files.py \
-		--system-libraries libwebp libxml libxslt yasm
+	cd ${WRKSRC}/src/3rdparty/chromium && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
+		./build/linux/unbundle/replace_gn_files.py --system-libraries\
+		fontconfig freetype harfbuzz-ng libdrm libevent libpng libwebp libxml libxslt openh264 opus || ${FALSE}
 # Rerun syncqt.pl -- otherwise the resulting package misses some forwarding headers.
 	cd ${WRKSRC} && ${QT_BINDIR}/syncqt.pl -version ${QT5_VERSION}
+
+post-build:
+# Fix version mismatches for CMake
+.for module in Pdf PdfWidgets WebEngine WebEngineCore WebEngineWidgets
+	@${REINPLACE_CMD} -e '/${QT5_VERSION} $${_Qt5${module}_FIND_VERSION_EXACT}/s|${QT5_VERSION}|'"$$(${MAKE} -C ../../devel/qt5-core -VQT5_VERSION)"'|' \
+		${BUILD_WRKSRC}/lib/cmake/Qt5${module}/Qt5${module}Config.cmake
+.endfor
 
 .include <bsd.port.post.mk>

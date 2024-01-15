@@ -1,26 +1,26 @@
-# Created by: cartola (Carlos E. G. Carvalho)
-# $FreeBSD$
-
 PORTNAME=	vigra
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.11.1
-PORTREVISION=	13
+PORTREVISION=	28
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	VIGRA stands for "Vision with Generic Algorithms"
+WWW=		https://ukoethe.github.io/vigra/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libHalf.so:graphics/ilmbase \
-		libsz.so:science/szip
+LIB_DEPENDS=	libImath.so:math/Imath \
+		libsz.so:science/libaec
 
 USES=		cmake compiler:c++14-lang python:run shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	ukoethe
 GH_TAGNAME=	8acd73a
 USE_LDCONFIG=	yes
+
+CFLAGS+=	-I${LOCALBASE}/include/Imath
 
 CMAKE_ARGS=	-DDEPENDENCY_SEARCH_PREFIX:PATH=${LOCALBASE} \
 		-DDOCINSTALL:PATH=${DOCSDIR_REL}
@@ -32,11 +32,12 @@ OPTIONS_GROUP=		IMAGEFORMATS
 OPTIONS_GROUP_IMAGEFORMATS=	PNG JPEG TIFF
 OPTIONS_SUB=		yes
 
+HDF5_CFLAGS=		-DH5_USE_110_API=1
 HDF5_CMAKE_BOOL=	WITH_HDF5
 HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5
 
 OPENEXR_CMAKE_BOOL=	WITH_OPENEXR
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr
 
 NUMPY_DESC=		NumPy mathematical computing (USE Fortran/GCC47+)
 NUMPY_CMAKE_BOOL=	WITH_VIGRANUMPY

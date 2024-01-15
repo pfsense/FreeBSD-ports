@@ -1,14 +1,12 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	heimdall
 PORTVERSION=	1.4.2
 DISTVERSIONPREFIX=	v
 PORTREVISION=	5
 CATEGORIES=	devel
 
-MAINTAINER=	ehaupt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool suite used to flash firmware onto Samsung mobile devices
+WWW=		https://glassechidna.com.au/heimdall/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +19,7 @@ OPTIONS_DEFAULT=GUI
 OPTIONS_SUB=	yes
 
 GUI_USES=	qt:5
-GUI_USE=	QT=buildtools_build,core,gui,qmake_build,widgets
+GUI_USE=	QT=buildtools:build,core,gui,qmake:build,widgets
 GUI_CMAKE_OFF=	-DDISABLE_FRONTEND=YES
 
 GH_ACCOUNT=	Benjamin-Dobell

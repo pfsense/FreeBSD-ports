@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-DBHResolver
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to resolve DB connection with many database servers
+WWW=		https://metacpan.org/release/DBIx-DBHResolver
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	\

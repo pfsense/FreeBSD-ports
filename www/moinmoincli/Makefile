@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	moinmoincli
 DISTVERSION=	4.6.0
 CATEGORIES=	www docs
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Edit existing MoinMoin wiki pages from a command line
+WWW=		https://github.com/0mp/moinmoincli
 
 LICENSE=	BSD2CLAUSE
 

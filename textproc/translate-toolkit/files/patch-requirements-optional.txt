@@ -1,38 +1,41 @@
---- requirements/optional.txt.orig	2020-09-23 07:08:04 UTC
+--- requirements/optional.txt.orig	2023-07-26 04:25:02 UTC
 +++ requirements/optional.txt
-@@ -1,25 +1,25 @@
+@@ -1,27 +1,27 @@
  -r required.txt
  
  # Format support
--aeidon==1.7.0        # Subtitles
-+aeidon>=1.7.0        # Subtitles
+-aeidon==1.13        # Subtitles
++aeidon>=1.13        # Subtitles
  # Format support
  BeautifulSoup4>=4.3  # Trados
  # Encoding detection
--chardet==3.0.4              # chardet
-+chardet>=3.0.4              # chardet
+-charset-normalizer==3.3.2   # chardet
++charset-normalizer>=3.3.2   # chardet
  # Tmserver backend
--cheroot==8.4.5       # tmserver
-+cheroot>=8.4.5       # tmserver
+-cheroot==10.0.0       # tmserver
++cheroot>=10.0.0       # tmserver
+ # Format support
+-fluent.syntax==0.19.0 # Fluent
++fluent.syntax>=0.19.0 # Fluent
  # Format support
 -iniparse==0.5        # INI
 +iniparse>=0.5        # INI
  # Format support
--phply==1.2.5         # PHP
-+phply>=1.2.5         # PHP
- # To provide translations for language names without need for OS package.
--pycountry==20.7.3          # Languages
--pyenchant==3.1.1     # spellcheck
-+pycountry>=20.7.3          # Languages
-+pyenchant>=3.1.1     # spellcheck
+-mistletoe==1.2.1       # Markdown
++mistletoe>=1.2.1       # Markdown
+ # Format support
+-phply==1.2.6         # PHP
+-pyenchant==3.2.2     # spellcheck
++phply>=1.2.6         # PHP
++pyenchant>=3.2.2     # spellcheck
  # Windows Resources (rc2po and po2rc)
--pyparsing==2.4.7     # RC
-+pyparsing>=2.4.7     # RC
+-pyparsing==3.1.1     # RC
++pyparsing>=3.1.1     # RC
  # Faster matching in e.g. pot2po
  python-Levenshtein>=0.12    # Levenshtein
  # Format support
--ruamel.yaml==0.16.12 # YAML
-+ruamel.yaml>=0.16.12 # YAML
+-ruamel.yaml==0.18.5 # YAML
++ruamel.yaml>=0.18.5 # YAML
  # Format support
 -vobject==0.9.6.1     # iCal
 +vobject>=0.9.6.1     # iCal

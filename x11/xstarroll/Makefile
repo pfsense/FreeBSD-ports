@@ -1,6 +1,3 @@
-# Created by: Sakai Hiroaki <sakai@miya.ee.kagu.sut.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	xstarroll
 PORTVERSION=	1.1b
 PORTREVISION=	3
@@ -10,6 +7,7 @@ MASTER_SITES=	http://kozos.jp/myfreesoft/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Letters fly to far, far, far away
+WWW=		https://kozos.jp/myfreesoft/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-1.1
 

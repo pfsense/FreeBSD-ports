@@ -1,24 +1,21 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bgpq4
-PORTVERSION=	0.0.6
+PORTVERSION=	1.11
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Lightweight prefix-list generator for various routers v4
+WWW=		https://github.com/bgp/bgpq4
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-USES=		autoreconf compiler:c11
+USES=		autoreconf compiler:c11 libtool
 USE_GITHUB=	yes
-
-MAKE_ARGS+=	CC="${CC}"
-
 GH_ACCOUNT=	bgp
 
 GNU_CONFIGURE=	yes
+
+MAKE_ARGS+=	CC="${CC}"
 
 PLIST_FILES=	bin/bgpq4 \
 		man/man8/bgpq4.8.gz

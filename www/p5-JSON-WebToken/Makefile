@@ -1,6 +1,3 @@
-# Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	JSON-WebToken
 PORTVERSION=	0.10
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	JSON Web Token (JWT) implementation
+WWW=		https://github.com/xaicron/p5-JSON-WebToken
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,12 @@
-# Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
-
 PORTNAME=	libserialport
 PORTVERSION=	0.1.1
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://sigrok.org/download/source/libserialport/
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Framework for hardware logic analyzers, serial port support library
+WWW=		https://sigrok.org/
 
 LICENSE=	LGPL3
 

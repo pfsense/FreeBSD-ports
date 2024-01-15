@@ -1,18 +1,15 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	protocol-http
-PORTVERSION=	0.21.0
+PORTVERSION=	0.25.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Provides abstractions to handle HTTP protocols
+WWW=		https://github.com/socketry/protocol-http
 
 LICENSE=	MIT
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

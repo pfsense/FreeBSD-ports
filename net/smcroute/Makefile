@@ -1,16 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	smcroute
 PORTVERSION=	2.1.0
 CATEGORIES=	net
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Static multicast routing tool
+WWW=		https://github.com/troglobit/smcroute/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf
+USES=		autoreconf cpe
+CPE_VENDOR=	troglobit
 USE_RC_SUBR=	${PORTNAME}
 USE_GITHUB=	yes
 GH_ACCOUNT=	troglobit

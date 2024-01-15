@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Protocol-ACME
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Interface to the Let's Encrypt ACME API
+WWW=		https://metacpan.org/release/Protocol-ACME
 
 LICENSE=	ART20
 

@@ -1,14 +1,13 @@
-# Created by: Joris Vandalon
-# $FreeBSD$
-
 PORTNAME=	rar2fs
-PORTVERSION=	1.29.1
+DISTVERSION=	1.29.5
 DISTVERSIONPREFIX=	v
+PORTREVISION=	9
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	n_carlsson@outlook.com
-COMMENT=	Mount rar archives as filesystem
+COMMENT=	Mount RAR archives as file system
+WWW=		https://hasse69.github.io/rar2fs/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -32,11 +31,7 @@ PLIST_FILES=	bin/${PORTNAME} \
 		bin/mkr2i \
 		man/man1/rar2fs.1.gz
 
-LIBUNRAR_PORT=	archivers/libunrar5
+LIBUNRAR_PORT=	archivers/libunrar
 LIBUNRAR_PKG=	${LIBUNRAR_PORT:S|archivers/||}
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-lstdc++||g' -e '/rar2fs_LINK =/s|CC|CXX|' \
-		${WRKSRC}/Makefile.am
 
 .include <bsd.port.mk>

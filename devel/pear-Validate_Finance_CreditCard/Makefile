@@ -1,13 +1,16 @@
-# Created by: Anish Mistry (<amistry@am-productions.biz>)
-# $FreeBSD$
-
 PORTNAME=	Validate_Finance_CreditCard
-PORTVERSION=	0.6.0
+PORTVERSION=	0.7.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR CreditCard Validation class
+WWW=		https://pear.php.net/package/Validate_Finance_CreditCard
 
-USES=	pear
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

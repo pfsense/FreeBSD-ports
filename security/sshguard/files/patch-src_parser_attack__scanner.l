@@ -1,11 +1,11 @@
---- src/parser/attack_scanner.l.orig	2018-07-05 17:04:47 UTC
+--- src/parser/attack_scanner.l.orig	2021-03-01 01:01:21 UTC
 +++ src/parser/attack_scanner.l
-@@ -280,6 +280,8 @@ WORDPRESS_LOGIN            .*"/wp-login"(\.php)?
-  /* Bad credentials */
- <opensmtpd_failedcmd>"host="{HOSTNAME}" command=\"AUTH ".+"\" result=\"535 Authentication failed\"" { BEGIN(INITIAL); return OPENSMTPD_AUTHFAIL_SUFF; }
+@@ -247,7 +247,7 @@ HTTP_LOGIN_200OK_BAD       .*({WORDPRESS_LOGIN}|{TYPO3
  
-+ /* pfSense */
-+.+"webConfigurator authentication error for user '"{WORD}"' from: " { return PFSENSE_AUTH_FAIL; }
+  /* cyrus-imap login error */
+ "badlogin: "[^\[]*"["                                           { BEGIN(cyrusimap_loginerr); return CYRUSIMAP_SASL_LOGINERR_PREF; }
+-<cyrusimap_loginerr>"] ".*"SASL".*"failed".?$                   { BEGIN(INITIAL); return CYRUSIMAP_SASL_LOGINERR_SUFF; }
++<cyrusimap_loginerr>"] ".*"SASL".*"fail".*$                   { BEGIN(INITIAL); return CYRUSIMAP_SASL_LOGINERR_SUFF; }
  
-  /**         COMMON-USE TOKENS       do not touch these          **/
-  /* an IPv4 address */
+  /* postfix */
+ "warning: "({WORD}|{HOSTADDR})"["                               { BEGIN(postfix_loginerr); return POSTFIX_SASL_LOGINERR_PREF; }

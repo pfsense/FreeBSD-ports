@@ -1,25 +1,23 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	async-http
-PORTVERSION=	0.53.1
+PORTVERSION=	0.61.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	HTTP client and server library
+WWW=		https://github.com/socketry/async-http
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-async>=1.25<2:devel/rubygem-async \
-		rubygem-async-io>=1.28<2:devel/rubygem-async-io \
-		rubygem-async-pool>=0.2<1:www/rubygem-async-pool \
-		rubygem-protocol-http>=0.21.0<0.22:www/rubygem-protocol-http \
-		rubygem-protocol-http1>=0.13.0<0.14:www/rubygem-protocol-http1 \
-		rubygem-protocol-http2>=0.14.0<0.15:www/rubygem-protocol-http2
+RUN_DEPENDS=	rubygem-async>=1.25:devel/rubygem-async \
+		rubygem-async-io>=1.28:devel/rubygem-async-io \
+		rubygem-async-pool>=0.2:www/rubygem-async-pool \
+		rubygem-protocol-http>=0.25.0:www/rubygem-protocol-http \
+		rubygem-protocol-http1>=0.16.0<0.17:www/rubygem-protocol-http1 \
+		rubygem-protocol-http2>=0.15.0<0.16:www/rubygem-protocol-http2 \
+		rubygem-traces>=0.10.0:devel/rubygem-traces
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

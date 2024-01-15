@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	fortune-mod-freebsd-classic
 DISTVERSION=	g20171128
 CATEGORIES=	misc
 
 MAINTAINER=	jdc@koitsu.org
 COMMENT=	Classic FreeBSD fortunes (including offensives)
+WWW=		https://github.com/koitsu/fortune-mod-freebsd-classic
 
 # LICENSE is intentionally unset.  Some fortune files, such as
 # gerrold.limerick, are copyright the author but used with permission.

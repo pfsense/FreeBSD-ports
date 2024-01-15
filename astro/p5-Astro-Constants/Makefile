@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Astro-Constants
 PORTVERSION=	0.1400
 CATEGORIES=	astro perl5 science
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Physical constants for use in astronomy
+WWW=		https://metacpan.org/release/Astro-Constants
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

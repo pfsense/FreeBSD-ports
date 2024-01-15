@@ -1,9 +1,8 @@
-# $FreeBSD$
-
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-mutt
 
 COMMENT=	Integrates the Notmuch email search and tagging application with Mutt
+WWW=		https://notmuchmail.org/notmuch-mutt/
 
 RUN_DEPENDS=	mutt:mail/mutt \
 		notmuch:mail/notmuch \

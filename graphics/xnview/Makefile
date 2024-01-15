@@ -1,6 +1,3 @@
-# Created by: Serge Negodyuck <petr@petrovich.kiev.ua>
-# $FreeBSD$
-
 PORTNAME=	xnview
 PORTVERSION=	1.70
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTFILES=	XnView-x86-unknown-FreeBSD5.x-static.tgz
 
 MAINTAINER=	petr@petrovich.kiev.ua
 COMMENT=	Easy graphics viewer / converter
+WWW=		https://www.xnview.com/
 
 USES=		cpe
 ONLY_FOR_ARCHS=	i386

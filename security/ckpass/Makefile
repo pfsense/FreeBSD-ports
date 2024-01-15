@@ -1,6 +1,3 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ckpass
 PORTVERSION=	0.2
 CATEGORIES=	security
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ncurses based password database client
+WWW=		http://ckpass.sourceforge.net/
 
 LICENSE=	GPLv3
 

@@ -1,7 +1,8 @@
-# Created by: Alonso Cardenas <acm@FreeBSD.org>
-# $FreeBSD$
 post-patch:
 	@${REINPLACE_CMD}  '76,79d' ${WRKSRC}/CMakeLists.txt
+.if ${PKGNAMESUFFIX} == "-traymonitor"
+	@${REINPLACE_CMD} -e 's|-Werror -Wall|-Wall|g' ${PATCH_WRKSRC}/core/CMakeLists.txt
+.endif
 
 post-build:
 .if ${PKGNAMEPREFIX} == "nagios-check_"

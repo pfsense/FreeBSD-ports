@@ -1,6 +1,3 @@
-# Created by: Abel Chow <ozsanh45vds001@sneakemail.com>
-# $FreeBSD$
-
 PORTNAME=	compupic
 PORTVERSION=	5.1.1063
 CATEGORIES=	graphics
@@ -10,6 +7,7 @@ EXTRACT_ONLY=	# extracted directly in install target
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Digital content manager
+WWW=		http://www.photodex.com/downloads/platforms/freebsd.html
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

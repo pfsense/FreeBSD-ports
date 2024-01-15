@@ -1,0 +1,28 @@
+--- test/Makefile.orig	2022-06-07 13:52:08 UTC
++++ test/Makefile
+@@ -1,5 +1,5 @@
+ CXX = clang++
+-CXXFLAGS = -g -std=c++11 -I. -Wall -Wextra -Wtype-limits -Wconversion -Wshadow # -fno-exceptions -DCPPHTTPLIB_NO_EXCEPTIONS -fsanitize=address
++CXXFLAGS += -g -std=c++11 -I. -Wall -Wextra -Wtype-limits -Wconversion -Wshadow # -fno-exceptions -DCPPHTTPLIB_NO_EXCEPTIONS -fsanitize=address
+ 
+ PREFIX = /usr/local
+ #PREFIX = $(shell brew --prefix)
+@@ -30,15 +30,15 @@ proxy : test_proxy
+ 	./test_proxy
+ 
+ test : test.cc include_httplib.cc ../httplib.h Makefile cert.pem
+-	$(CXX) -o $@ -I.. $(CXXFLAGS) test.cc include_httplib.cc $(TEST_ARGS)
++	$(CXX) -o $@ -I.. $(CXXFLAGS) test.cc include_httplib.cc ${LDFLAGS} $(TEST_ARGS)
+ 
+ # Note: The intention of test_split is to verify that it works to compile and
+ # link the split httplib.h, so there is normally no need to execute it.
+ test_split : test.cc ../httplib.h httplib.cc Makefile cert.pem
+-	$(CXX) -o $@ $(CXXFLAGS) test.cc httplib.cc $(TEST_ARGS)
++	$(CXX) -o $@ $(CXXFLAGS) test.cc httplib.cc ${LDFLAGS} $(TEST_ARGS)
+ 
+ test_proxy : test_proxy.cc ../httplib.h Makefile cert.pem
+-	$(CXX) -o $@ -I.. $(CXXFLAGS) test_proxy.cc $(TEST_ARGS)
++	$(CXX) -o $@ -I.. $(CXXFLAGS) test_proxy.cc ${LDFLAGS} $(TEST_ARGS)
+ 
+ # Runs server_fuzzer.cc based on value of $(LIB_FUZZING_ENGINE).
+ # Usage: make fuzz_test LIB_FUZZING_ENGINE=/path/to/libFuzzer

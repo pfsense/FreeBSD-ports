@@ -1,6 +1,3 @@
-# Created by: David Siebörger <drs@rucus.ru.ac.za>
-# $FreeBSD$
-
 PORTNAME=	mess822
 PORTVERSION=	0.58
 PORTREVISION=	2
@@ -12,6 +9,7 @@ MASTER_SITES=	http://cr.yp.to/software/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	RFC 822 mail message parsing library and rewriting utilities
+WWW=		https://cr.yp.to/mess822.html
 
 USES=		groff qmail:vars
 
@@ -25,6 +23,5 @@ post-patch:
 	@${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/conf-cc
 	@${ECHO_CMD} "${CC} ${STRIP} ${LDFLAGS}" > ${WRKSRC}/conf-ld
 	@${ECHO_CMD} ${STAGEDIR}${PREFIX} > ${WRKSRC}/conf-home
-
 
 .include <bsd.port.mk>

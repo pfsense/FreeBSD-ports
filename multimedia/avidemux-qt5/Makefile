@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	avidemux
 PORTVERSION=	${AVIDEMUX_VERSION}
+PORTREVISION=	2
 CATEGORIES=	multimedia
 PKGNAMESUFFIX=	-qt5
 
@@ -15,6 +14,8 @@ OPTIONS_SLAVE=	QT5
 PLIST=		${.CURDIR}/pkg-plist
 
 .include "${MASTERDIR}/Makefile.common"
+
+USES+=	desktop-file-utils
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/avidemux/qt4
 

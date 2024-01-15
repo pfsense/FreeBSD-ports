@@ -1,6 +1,3 @@
-# Created by: nbm
-# $FreeBSD$
-
 PORTNAME=	icmpmonitor
 PORTVERSION=	1.2
 CATEGORIES=	net-mgmt
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiple host icmp monitoring tool
+WWW=		https://www.crocodile.org/software.html
 
 LICENSE=	GPLv2 BSD4CLAUSE
 LICENSE_COMB=	multi

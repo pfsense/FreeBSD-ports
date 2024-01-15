@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-TT-ControllerLocal
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst TT View with template names relative to the Controller
+WWW=		https://metacpan.org/release/Catalyst-View-TT-ControllerLocal
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

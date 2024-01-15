@@ -1,27 +1,25 @@
-# Created by: Sofian Brabez <sbz@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	phabricator
-PORTVERSION=	0.7.0
+PORTVERSION=	0.8.1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Phabricator API Bindings
+WWW=		https://github.com/disqus/python-phabricator
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}responses>0:devel/py-responses@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	disqus
 GH_PROJECT=	python-${PORTNAME}
-GH_TAGNAME=	dac1219
 
 PORTDOCS=	CHANGES LICENSE README.rst
 

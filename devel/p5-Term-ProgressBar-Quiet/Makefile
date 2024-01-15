@@ -1,6 +1,3 @@
-# Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Term-ProgressBar-Quiet
 PORTVERSION=	0.31
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to display a progress bar, if interactive
+WWW=		https://metacpan.org/release/Term-ProgressBar-Quiet
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

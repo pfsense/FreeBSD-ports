@@ -1,6 +1,3 @@
-# Created by: Heiner Eichmann <h.eichmann@gmx.de>
-# $FreeBSD$
-
 PORTNAME=	gdialog
 PORTVERSION=	2.5
 PORTREVISION=	1
@@ -10,6 +7,7 @@ DISTNAME=	GDialog-090400-25
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Project X addon to read Siemens Gigaset M740AV video recordings
+WWW=		https://sourceforge.net/projects/gdialog-x/
 
 LICENSE=	GPLv2
 
@@ -18,6 +16,8 @@ RUN_DEPENDS=	projectx>=0.90.4.00:multimedia/projectx
 
 USES=		zip
 USE_JAVA=	yes
+
+CONFLICTS_INSTALL=	zenity # bin/gdialog
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

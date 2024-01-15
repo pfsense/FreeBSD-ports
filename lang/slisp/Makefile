@@ -1,6 +1,3 @@
-# Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
-
 PORTNAME=	slisp
 PORTVERSION=	1.2
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.sigala.it/sandro/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple Lisp interpreter
+WWW=		http://www.sigala.it/sandro/software.php #slisp
 
 LICENSE=	BSD2CLAUSE
 

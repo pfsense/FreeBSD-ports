@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cups-smb-backend
 PORTVERSION=	1.0
 PORTREVISION=	12
@@ -10,6 +7,7 @@ DISTFILES=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CUPS backend for printing to Windows servers
+WWW=		http://www.cups.org/articles.php?L294
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/cupsd:print/cups
 

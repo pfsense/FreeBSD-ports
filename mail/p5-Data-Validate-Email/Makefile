@@ -1,6 +1,3 @@
-# Created by: Murilo Opsfelder <mopsfelder@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Data-Validate-Email
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	mopsfelder@gmail.com
 COMMENT=	Common email validation written in Perl
+WWW=		https://metacpan.org/release/Data-Validate-Email
 
 RUN_DEPENDS=	p5-Data-Validate-Domain>=0:dns/p5-Data-Validate-Domain \
 		p5-Email-Address>=0:mail/p5-Email-Address \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		bioawk
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.0-7
@@ -8,6 +6,7 @@ CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	BWK awk modified for biological data
+WWW=		https://github.com/lh3/bioawk
 
 LICENSE=	BSD3CLAUSE
 

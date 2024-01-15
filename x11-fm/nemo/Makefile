@@ -1,13 +1,12 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	nemo
-PORTVERSION=	4.8.2
+PORTVERSION=	5.4.2
+PORTREVISION=	3
 CATEGORIES=	x11-fm gnome
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	File manager for the Cinnamon desktop
+WWW=		https://github.com/linuxmint/nemo
 
 LICENSE=	GPLv2 LGPL20
 LICENSE_COMB=	multi
@@ -17,28 +16,26 @@ LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
 BUILD_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme \
 		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 LIB_DEPENDS=	libcinnamon-desktop.so:x11/cinnamon-desktop \
-		libnotify.so:devel/libnotify \
 		libxapp.so:x11/xapp
 RUN_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme \
 		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 		gvfs>0:devel/gvfs
 
 USES=		compiler:c11 desktop-file-utils gettext gnome meson pkgconfig \
-		python:3.5+ shared-mime-info shebangfix xorg
+		python shared-mime-info shebangfix xorg
 
-SHEBANG_FILES=	generate_additional_file makepot
+SHEBANG_FILES=	generate_additional_file makepot search-helpers/nemo-xls-to-txt
 SHEBANG_GLOB=	*.py
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
 
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intlhack introspection libxml2 pango pygobject3
+USE_GNOME=	cairo gdkpixbuf2 gtk30 intlhack introspection libgsf \
+		libxml2 pango pygobject3
 
 USE_XORG=	x11
 
 GLIB_SCHEMAS=	org.nemo.gschema.xml
-
-INSTALLS_ICONS=	yes
 
 USE_LDCONFIG=	yes
 
@@ -61,9 +58,5 @@ EXIF_MESON_TRUE=	exif
 
 TRACKER_LIB_DEPENDS=	libtracker-sparql-2.0.so:sysutils/tracker
 TRACKER_MESON_TRUE=	tracker
-
-post-patch:
-	# malloc.h is deprecated
-	@${REINPLACE_CMD} -e "/malloc.h/d" ${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Tomasz Paszkowski <ns88@k.pl>
-# $FreeBSD$
-
 PORTNAME=	ssmtp
 PORTVERSION=	2.64
 PORTREVISION=	7
@@ -10,6 +7,7 @@ DISTFILES=	${PORTNAME}_${PORTVERSION}.orig${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extremely simple MTA to get mail off the system to a mail hub
+WWW=		https://wiki.debian.org/sSMTP
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

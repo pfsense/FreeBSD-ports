@@ -1,14 +1,12 @@
-# Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	liblinear
-PORTVERSION=	2.42
+PORTVERSION=	2.47
 CATEGORIES=	science math
 MASTER_SITES=	https://www.csie.ntu.edu.tw/~cjlin/liblinear/ \
 		https://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library for Large Linear Classification
+WWW=		https://www.csie.ntu.edu.tw/~cjlin/liblinear/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

@@ -1,6 +1,3 @@
-# Created by: mk
-# $FreeBSD$
-
 PORTNAME=	hcs12mem
 PORTVERSION=	1.4.1
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	mk@capri.pl
 COMMENT=	Software to manipulate EEPROM/FLASH memory
+WWW=		http://cml.mfk.net.pl/hc12mem
 
 OPTIONS_DEFINE=	DOCS
 

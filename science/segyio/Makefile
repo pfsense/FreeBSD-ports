@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	segyio
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.5
+DISTVERSION=	1.9.11
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library to interact with SEG-Y & Seismic Unix formatted seismic data
+WWW=		https://github.com/equinor/segyio
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/License.md

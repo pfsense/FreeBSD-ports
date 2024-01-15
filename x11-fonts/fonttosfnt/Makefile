@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	fonttosfnt
-PORTVERSION=	1.2.0
+PORTVERSION=	1.2.2
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Wrap a bitmap font in a sftn wrapper
+WWW=		https://www.x.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

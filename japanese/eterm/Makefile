@@ -1,6 +1,3 @@
-# Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
-
 CATEGORIES=	japanese
 
 MASTERDIR=	${.CURDIR}/../../x11/eterm
@@ -17,6 +14,8 @@ CONFIGURE_ARGS=	--enable-trans --enable-utmp \
 		--enable-xim --with-theme-update \
 		--with-backspace=bs --without-terminfo \
 		--enable-multi-charset=kanji
+
+CONFLICTS_INSTALL=	eterm zh-eterm # bin/Eterm
 
 PKGDIR=		${.CURDIR}
 PLIST=		${MASTERDIR}/pkg-plist

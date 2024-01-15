@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rw
 DISTVERSION=	1.0
 PORTREVISION=	1
@@ -8,12 +6,13 @@ MASTER_SITES=	https://sortix.org/rw/release/
 DISTNAME=	rw-portable-${DISTVERSION}
 
 MAINTAINER=	jsmith@resonatingmedia.com
-COMMENT=	Simple replacement for dd wth standard command line flags
+COMMENT=	Simple replacement for dd(1) with standard command-line flags
+WWW=		https://sortix.org/rw/
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS_INSTALL=	rankwidth-*
+CONFLICTS_INSTALL=	rankwidth
 
 PLIST_FILES=	bin/rw share/man/man1/rw.1.gz
 

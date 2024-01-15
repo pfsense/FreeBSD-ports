@@ -1,3 +1,10 @@
-HeadsetControl allows you to setup sidetone for various of gaming headsets.
+A tool to control certain aspects of USB-connected headsets.
 
-WWW: https://github.com/Sapd/HeadsetControl
+Currently, support is provided for
+
+- Adjusting sidetone
+- Getting battery state
+- Controlling LEDs
+- Setting the inactive time.
+
+See the link below for which headset supports which feature.

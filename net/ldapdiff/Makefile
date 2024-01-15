@@ -1,20 +1,17 @@
-# Created by: Christian Brueffer <chris@unixpages.org)
-# $FreeBSD$
-
 PORTNAME=	ldapdiff
 PORTVERSION=	1.4.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	http://launchpadlibrarian.net/20391352/
 DISTNAME=	${PORTNAME}-${PORTVERSION}_src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for patching LDAP directories using LDIF files
+WWW=		https://launchpad.net/ldapdiff
 
 LICENSE=	GPLv3+
 
-USES=		iconv tar:tgz
-USE_OPENLDAP=	yes
+USES=		cpe iconv ldap tar:tgz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${LOCALBASE} \
 		--with-ldap-dir=${LOCALBASE}

@@ -1,35 +1,26 @@
-# Created by: Jeremy Norris <ishmael27@home.com>
-# $FreeBSD$
-
 PORTNAME=	scrot
-DISTVERSION=	1.4
+DISTVERSION=	1.10
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	SCReenshOT - command line screen capture utility
+WWW=		https://github.com/resurrecting-open-source-projects/scrot
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive
-LIB_DEPENDS=	libgiblib.so:graphics/giblib \
-		libImlib2.so:graphics/imlib2
+LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
+USES=		autoreconf pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	resurrecting-open-source-projects
-
-USES=		autoreconf xorg
-USE_CSTD=	c99
 GNU_CONFIGURE=	yes
-USE_XORG=	x11 xfixes xcomposite
+USE_XORG=	x11 xext xfixes xcomposite xinerama
 
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
-PORTDOCS=	AUTHORS CONTRIBUTING.md ChangeLog README
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-
-do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

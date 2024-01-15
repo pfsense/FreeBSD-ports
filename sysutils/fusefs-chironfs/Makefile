@@ -1,6 +1,3 @@
-# Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	chironfs
 PORTVERSION=	1.1.1
 PORTREVISION=	2
@@ -10,9 +7,12 @@ PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	FUSE based filesystem with replication at the filesystem level
+WWW=		https://BSDforge.com/projects/sysutils/fusefs-chironfs/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/doc/copyright
+
+BROKEN=		Unfetchable
 
 USES=		fuse localbase:ldflags
 GNU_CONFIGURE=	yes

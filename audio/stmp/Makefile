@@ -1,25 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	stmp
 PORTVERSION=	0.0.2
+PORTREVISION=	18
 CATEGORIES=	audio
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subsonic terminal music player
+WWW=		https://github.com/wildeyedskies/stmp/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Broken for more than a year
+EXPIRATION_DATE=	2024-01-31
+BROKEN=		fails to build with mpv 0.35, see bug 267114
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libHLSL.a:graphics/glslang
 LIB_DEPENDS=	libmpv.so:multimedia/mpv
 
 USES=		go:modules xorg gl
-
-USE_GL=		egl
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	wildeyedskies
-
 GH_TUPLE=	\
 		fsnotify:fsnotify:v1.4.7:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
 		gdamore:encoding:v1.0.0:gdamore_encoding/vendor/github.com/gdamore/encoding \
@@ -43,6 +43,7 @@ GH_TUPLE=	\
 		spf13:viper:v1.7.1:spf13_viper/vendor/github.com/spf13/viper \
 		subosito:gotenv:v1.2.0:subosito_gotenv/vendor/github.com/subosito/gotenv \
 		yourok:go-mpv:ecdfd901e332:yourok_go_mpv/vendor/github.com/yourok/go-mpv
+USE_GL=		egl
 
 CGO_CFLAGS=	-DTAG_EGL
 CGO_LDFLAGS=	-lEGL

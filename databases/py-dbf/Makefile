@@ -1,18 +1,16 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dbf
-PORTVERSION=	0.99.0
+PORTVERSION=	0.99.3
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Pure python package for reading/writing dbf files
+WWW=		https://pypi.org/project/dbf/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python:3.6+
+USES=		dos2unix python
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

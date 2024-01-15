@@ -46,7 +46,8 @@ if ($command == "importcert") {
 	write_config($changedesc);
 
 	acme_write_all_certificates();
-	if (is_array($certificate['a_actionlist']['item'])) {
+	if (is_array($certificate['a_actionlist']) &&
+	    is_array($certificate['a_actionlist']['item'])) {
 		foreach($certificate['a_actionlist']['item'] as $action) {
 			if ($action['status'] == "disable") {
 				continue;

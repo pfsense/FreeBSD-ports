@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	dune-localfunctions
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.0rc2
+DISTVERSION=	2.8.0
 PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	DUNE framework: Local finite elements
+WWW=		https://www.dune-project.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -23,9 +22,7 @@ USE_GITLAB=	yes
 
 GL_SITE=	https://gitlab.dune-project.org
 GL_ACCOUNT=	core
-GL_COMMIT=	4def7a7c627172d660854411d322818115a20765
-
-CMAKE_ON=	BUILD_SHARED_LIBS
+GL_TAGNAME=	f6628171b2773065ab43f97a77f47cd8c4283d8f
 
 NO_ARCH=	yes
 

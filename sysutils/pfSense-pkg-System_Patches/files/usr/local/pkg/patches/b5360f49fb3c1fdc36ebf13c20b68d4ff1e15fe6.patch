@@ -1,0 +1,15 @@
+diff --git a/src/etc/inc/dyndns.class b/src/etc/inc/dyndns.class
+index 2685496d11..adb5d8cb38 100644
+--- a/src/etc/inc/dyndns.class
++++ b/src/etc/inc/dyndns.class
+@@ -1213,7 +1213,9 @@
+ 					$port = "";
+ 					curl_setopt($ch, CURLOPT_URL, 'https://domains.google.com/nic/update');
+ 					curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
+-					curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
++					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
++					curl_setopt($ch, CURLOPT_USERAGENT, $this->_UserAgent);
++					curl_setopt($ch, CURLOPT_POST, 1);
+ 					break;
+ 				case 'dnsmadeeasy':
+ 					$needsIP = TRUE;

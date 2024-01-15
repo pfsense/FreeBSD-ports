@@ -1,6 +1,3 @@
-# Created by: Alexey V. Antipovsky <kemm@in-line.ru>
-# $FreeBSD$
-
 PORTNAME=	lib765
 PORTVERSION=	0.4.2
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://www.seasip.demon.co.uk/Unix/LibDsk/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emulation of uPD765a Floppy Disc Controller
+WWW=		http://www.seasip.demon.co.uk/Unix/LibDsk/
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/doc/COPYING.LIB

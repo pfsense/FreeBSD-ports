@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libxaw3dxft
-DISTVERSION=	1.6.2e
+DISTVERSION=	1.6.2h
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/sf-xpaint/${PORTNAME}
 DISTNAME=	libXaw3dXft-${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pyrus@bsdmail.com
 COMMENT=	3D Xaw (Athena Widget Set) replacement with extended fonts
+WWW=		https://sourceforge.net/projects/sf-xpaint/files/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Nick Hilliard <nick@foobar.org>
-# $FreeBSD$
-
 PORTNAME=	MasonX-Request-WithApacheSession
 PORTVERSION=	0.31
 PORTREVISION=	2

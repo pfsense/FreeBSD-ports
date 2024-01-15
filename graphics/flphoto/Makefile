@@ -1,6 +1,3 @@
-# Created by: johan
-# $FreeBSD$
-
 PORTNAME=	flphoto
 PORTVERSION=	1.3.1
 PORTREVISION=	15
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Basic image management and display program
+WWW=		http://www.easysw.com/~mike/flphoto/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

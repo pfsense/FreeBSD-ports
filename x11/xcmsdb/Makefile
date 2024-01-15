@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcmsdb
 PORTVERSION=	1.0.5
 CATEGORIES=	x11

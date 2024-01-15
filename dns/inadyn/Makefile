@@ -1,13 +1,11 @@
-# Created by: Alex Samorukov <samm@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	inadyn
-PORTVERSION=	2.7
+PORTVERSION=	2.12.0
 CATEGORIES=	dns
 MASTER_SITES=	https://github.com/troglobit/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Dynamic DNS update client
+WWW=		https://troglobit.com/projects/inadyn/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

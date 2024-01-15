@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mod_asn
 PORTVERSION=	1.7
 PORTREVISION=	2
@@ -7,14 +5,15 @@ CATEGORIES=	www
 MASTER_SITES=	LOCAL/kuriyama \
 		http://mirrorbrain.org/files/releases/
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Look up the AS and network prefix of IP address
+WWW=		https://mirrorbrain.org/mod_asn/
 
 LICENSE=	APACHE20
 
 LIB_DEPENDS=	libapr-1.so:devel/apr1
 
-USES=		apache:2.2+
+USES=		apache
 AP_FAST_BUILD=	yes
 MANUAL_PACKAGE_BUILD=	devel/apr1 with pgsql option required
 

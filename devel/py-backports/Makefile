@@ -1,17 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	backports
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PORTVERSION=	1
 CATEGORIES=	devel python
 DISTFILES=
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Shared namespace shim for py-backports.* ports
 
 LICENSE=	MIT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	flavors py3kplist
 
 NO_ARCH=	yes

@@ -1,15 +1,13 @@
-# Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
-
 PORTNAME=	zipper
 PORTVERSION=	1.5
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	archivers gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	Zipper-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Tool for inspecting the contents of a compressed archive
+WWW=		http://gap.nongnu.org/zipper/
 
 USES=		gnustep
 USE_GNUSTEP=	back build

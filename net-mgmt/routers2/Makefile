@@ -1,6 +1,3 @@
-# Created by: Xavier Beaudouin <kiwi@oav.net>
-# $FreeBSD$
-
 PORTNAME=	routers2
 PORTVERSION=	2.23
 CATEGORIES=	net-mgmt
@@ -10,6 +7,7 @@ DISTNAME=	${PORTNAME}-v${PORTVERSION}
 
 MAINTAINER=	kiwi@oav.net
 COMMENT=	Frontend for the MRTG system monitoring software
+WWW=		https://www.steveshipway.org/software/
 
 BUILD_DEPENDS=	p5-GD>=0:graphics/p5-GD
 RUN_DEPENDS=	p5-Convert-ASN1>=0:converters/p5-Convert-ASN1 \
@@ -22,7 +20,8 @@ RUN_DEPENDS=	p5-Convert-ASN1>=0:converters/p5-Convert-ASN1 \
 		${LOCALBASE}/bin/mrtg:net-mgmt/mrtg
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-v${PORTVERSION}
-USES=		perl5
+USES=		cpe perl5
+CPE_VENDOR=	${PORTNAME}_project
 NO_BUILD=	yes
 NO_ARCH=	yes
 PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}

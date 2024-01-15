@@ -1,14 +1,12 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	diffoscope
-PORTVERSION=	147
+PORTVERSION=	247
 CATEGORIES=	sysutils python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	In-depth comparison of files, archives, and directories
+WWW=		https://diffoscope.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,7 +19,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR} \
 		isoinfo:sysutils/cdrkit \
 		rpm2cpio:archivers/rpm2cpio
 
-USES=		python:3.6+
+USES=		cpe python
+CPE_VENDOR=	reproducible_builds
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

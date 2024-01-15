@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	SWF-Chart
 PORTVERSION=	1.4
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to the SWF Chart generation tool
+WWW=		https://metacpan.org/release/SWF-Chart
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,23 +1,19 @@
-# Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
-
 PORTNAME=	barrage
-PORTVERSION=	1.0.5
+PORTVERSION=	1.0.7
 CATEGORIES=	games
 MASTER_SITES=	SF/lgames/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Destroy as many targets as possible
+WWW=		http://lgames.sourceforge.net/index.php?project=Barrage
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:c11 gmake gnome sdl
-USE_SDL=	sdl mixer
+USE_SDL=	mixer sdl
 
 GNU_CONFIGURE=	yes
-
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS BUGS ChangeLog README
 OPTIONS_DEFINE=	DOCS

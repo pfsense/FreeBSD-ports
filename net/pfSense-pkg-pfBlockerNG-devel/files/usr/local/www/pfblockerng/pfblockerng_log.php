@@ -3,8 +3,8 @@
  * pfblockerng_log.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for the
@@ -227,10 +227,17 @@ function pfb_validate_filepath($validate, $pfb_logtypes) {
 $pconfig = array();
 if ($_POST) {
 	$pconfig = $_POST;
-}	
+}
+
+if (!isset($pconfig['logtype'])) {
+	$pconfig['logtype'] = '';
+}
+if (!isset($pconfig['logFile'])) {
+	$pconfig['logFile'] = '';
+}
 
 // Send logfile to screen
-if ($_REQUEST['ajax']) {
+if (isset($_REQUEST) && isset($_REQUEST['ajax'])) {
 
 	clearstatcache();
 	$pfb_logfilename = htmlspecialchars($_REQUEST['file']);
@@ -246,7 +253,8 @@ if ($_REQUEST['ajax']) {
 		}
 		elseif (($fhandle = @fopen("{$pfb_logfilename}", 'r')) !== FALSE) {
 
-			$linecnt = exec("{$pfb['grep']} -c ^ {$pfb_logfilename} 2>&1");
+			$pfb_logfilename_esc = escapeshellarg($pfb_logfilename);
+			$linecnt = exec("{$pfb['grep']} -c ^ {$pfb_logfilename_esc} 2>&1");
 			$maxcnt = 10000; // Max line limit
 
 			$validate = FALSE;
@@ -288,7 +296,7 @@ if ($_REQUEST['ajax']) {
 }
 
 // Download/Clear logfile
-if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
+if (isset($pconfig['logFile']) && !empty($pconfig['logFile']) && (isset($pconfig['download']) || isset($pconfig['clear']))) {
 	
 	$s_logfile = htmlspecialchars($pconfig['logFile']);
 	if (!pfb_validate_filepath($s_logfile, $pfb_logtypes)) {
@@ -306,6 +314,15 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 			@fclose($fp);
 		} else {
 			unlink_if_exists($s_logfile);
+
+			if (strpos($s_logfile, 'dnsbl.log') !== FALSE ||
+			    strpos($s_logfile, 'unified.log') !== FALSE ||
+			    strpos($s_logfile, 'dns_reply.log') !== FALSE) {
+
+				touch($s_logfile);
+				@chown($s_logfile, 'unbound');
+				@chgrp($s_logfile, 'unbound');
+			}
 		}
 	}
 
@@ -360,8 +377,8 @@ $section = new Form_Section('Log/File Browser selections');
 
 // Collect main logtypes
 $options = array();
-foreach ($pfb_logtypes as $type => $logtype) {
-	$options[$type] = $logtype['name'];
+foreach ($pfb_logtypes as $type => $log_type) {
+	$options[$type] = $log_type['name'];
 }
 
 $section->addInput(new Form_Select(
@@ -374,7 +391,7 @@ $section->addInput(new Form_Select(
 // Collect selected logs
 $logs = array();
 $clearable = $downloadable = FALSE;
-$selected = $pconfig['logtype'] ?: 'defaultlogs';
+$selected = !empty($pconfig['logtype']) ? $pconfig['logtype'] : 'defaultlogs';
 $pfb_sel = $pfb_logtypes[$selected];
 
 if (isset($pfb_sel['logs'])) {
@@ -389,6 +406,7 @@ $downloadable	= $pfb_sel['download'] ?: FALSE;
 
 // Add filepath to selected logs
 $options = array();
+$options[''] = 'Select Log/File to load';
 foreach ($logs as $id => $log) {
 	if ($id == 'logs' && is_array($log)) {
 		foreach ($log as $opt) {
@@ -408,12 +426,12 @@ $section->addInput(new Form_Select(
 $form->add($section);
 
 // Add appropriate buttons for logfile
-$logbtns = '&emsp;&nbsp;<i class="fa fa-refresh icon-pointer icon-primary" onclick="loadFile()" title="Refresh current logfile."></i>';
+$logbtns = '&emsp;&nbsp;<i class="fa-solid fa-arrows-rotate icon-pointer icon-primary" onclick="loadFile()" title="Refresh current logfile."></i>';
 if ($downloadable) {
-	$logbtns .= '&emsp;<i class="fa fa-download icon-pointer icon-primary" name="download[]" id="downloadicon" title="Download current logfile."></i>';
+	$logbtns .= '&emsp;<i class="fa-solid fa-download icon-pointer icon-primary" name="download[]" id="downloadicon" title="Download current logfile."></i>';
 }
 if ($clearable) {
-	$logbtns .= '&emsp;<i class="fa fa-trash icon-pointer icon-primary" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
+	$logbtns .= '&emsp;<i class="fa-solid fa-trash-can icon-pointer icon-primary no-confirm" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
 }
 
 $section = new Form_Section('Log/File Details');
@@ -522,28 +540,27 @@ events.push(function() {
 		$('form').submit();
 	});
 
-	$('#logFile').prepend("<option value='dummy' selected='selected'>Click to select log file</option>");
-	$('#logFile').on('click', function() {
-		$('#logFile').on('change', function(e) {
-			e.stopImmediatePropagation();
-			if ($("#logFile").val() != 'dummy' && $("#logFile").val() != '') {
-				loadFile()
-			}
-		});
+	$('#logFile').on('change', function() {
+		$("option[value='']").remove();
+		loadFile();
 	});
 
 	// Download selected logfile 
 	$('[id^=downloadicon]').click(function(event) {
-		$('#download').val('download');
-		$('#fileContent').val('');
-		$('form').submit();
+		if (confirm(event.target.title)) {
+			$('#download').val('download');
+			$('#fileContent').val('');
+			$('form').submit();
+		}
 	});
 
 	// Clear selected logfile
 	$('[id^=clearicon]').click(function(event) {
-		$('#clear').val('clear');
-		$('#fileContent').val('');
-		$('form').submit();
+		if (confirm(event.target.title)) {
+			$('#clear').val('clear');
+			$('#fileContent').val('');
+			$('form').submit();
+		}
 	});
 });
 //]]>

@@ -1,6 +1,3 @@
-# Created by: Stephen Fisher
-# $FreeBSD$
-
 PORTNAME=	ansiprint
 PORTVERSION=	1.0
 CATEGORIES=	print
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Prints through a terminal with ANSI escape sequences
+WWW=		https://ansiprint.sourceforge.net
 
 USES=		tar:tgz
 PLIST_FILES=	bin/${PORTNAME}

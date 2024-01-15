@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	openh264
 DISTVERSIONPREFIX=v
-DISTVERSION=	2.1.1
+DISTVERSION=	2.3.0
 PORTEPOCH=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Cisco implementation of H.264 codec
+WWW=		https://www.openh264.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

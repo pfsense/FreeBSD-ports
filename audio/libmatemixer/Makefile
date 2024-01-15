@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	libmatemixer
-PORTVERSION=	1.24.1
+PORTVERSION=	1.26.0
+PORTREVISION=	1
 CATEGORIES=	audio mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Mixer library for MATE desktop
+WWW=		https://github.com/mate-desktop/libmatemixer
 
 LICENSE=	LGPL21
 

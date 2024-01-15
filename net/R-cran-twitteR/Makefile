@@ -1,14 +1,12 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	twitteR
 PORTVERSION=	1.1.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	R based Twitter client
+WWW=		https://cran.r-project.org/web/packages/twitteR/
 
 LICENSE=	ART20
 

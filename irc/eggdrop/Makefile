@@ -1,34 +1,24 @@
-# Created by: Ulrich Spoerlein <q@uni.de>
-# $FreeBSD$
-
 PORTNAME=	eggdrop
-PORTVERSION=	1.8.4
-DISTVERSIONPREFIX=	v
+DISTVERSION=	1.9.3
 CATEGORIES=	irc
+MASTER_SITES=	https://github.com/eggheads/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Popular Internet Relay Chat (IRC) bot
+WWW=		https://www.eggheads.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		tcl ssl
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	eggheads
-
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--with-tcllib=${LOCALBASE}/lib/libtcl${TCL_SHLIB_VER}.so \
+CONFIGURE_ARGS=	--with-tcllib=${LOCALBASE}/lib/libtcl${TCL_SHLIB_VER}.so \
 		--with-tclinc=${LOCALBASE}/include/tcl${TCL_VER}/tcl.h \
 		--with-sslinc=${OPENSSLINC} \
 		--with-ssllib=${OPENSSLLIB}
 
-MAKE_JOBS_UNSAFE=	yes
-LLD_UNSAFE=	yes
-
 SUB_FILES=	pkg-message
-
-CONFLICTS=	eggdrop-devel
 
 OPTIONS_DEFINE=	DOCS
 
@@ -82,7 +72,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/scripts
 .for f in CONTENTS action.fix.tcl autobotchk alltools.tcl botchk \
 	cmd_resolve.tcl compat.tcl dccwhois.tcl getops.tcl klined.tcl notes2.tcl ques5.tcl \
-	quotepass.tcl quotepong.tcl sentinel.tcl userinfo.tcl weed
+	quotepong.tcl sentinel.tcl userinfo.tcl weed
 	${INSTALL_DATA} ${WRKSRC}/scripts/${f} ${STAGEDIR}${DATADIR}/scripts
 .endfor
 	@${MKDIR} ${STAGEDIR}${DATADIR}/scripts/help
@@ -107,8 +97,8 @@ do-install:
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ABOUT BANS BOTNET BUG-REPORT COMPILE-GUIDE CONTENTS \
-	FIRST-SCRIPT KNOWN-PROBLEMS MODULES PARTYLINE PATCH-HOWTO \
-	TEXT-SUBSTITUTIONS TRICKS Changes1.6 USERS WEIRD-MESSAGES \
+	FIRST-SCRIPT MODULES PARTYLINE PATCH-HOWTO \
+	TRICKS Changes1.6 USERS \
 	tcl-commands.doc
 	${INSTALL_DATA} ${WRKSRC}/doc/${f} ${STAGEDIR}${DOCSDIR}
 .endfor

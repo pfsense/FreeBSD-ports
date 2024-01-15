@@ -1,6 +1,3 @@
-# Created by: Manuel Creach <manuel.creach@icloud.com>
-# $FreeBSD$
-
 PORTNAME=	libshairport
 PORTVERSION=	1.2.0.20310
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	libshairport-${PORTVERSION}_lib
 
 MAINTAINER=	manuel.creach@icloud.com
 COMMENT=	Airport Extreme Emulator
+WWW=		https://github.com/amejia1/libshairport
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-DNS-Match
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Test domains against another list of FQDNs
+WWW=		https://metacpan.org/release/Net-DNS-Match
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

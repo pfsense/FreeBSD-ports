@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	core
-DISTVERSION=	${QT5_VERSION}
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -13,9 +11,10 @@ LIB_DEPENDS=	libdouble-conversion.so:devel/double-conversion \
 		libpcre2-posix.so:devel/pcre2 \
 		libzstd.so:archivers/zstd
 
-USES=		compiler:c++11-lang gnome qmake:no_env qt-dist:5,base
+USES=		compiler:c++11-lang gnome perl5 qmake:no_env qt-dist:5,base
 USE_GNOME=	glib20
-USE_QT=		qmake_build buildtools_build
+USE_PERL5=	extract
+USE_QT=		qmake:build buildtools:build
 HAS_CONFIGURE=	yes
 # Disable (almost) everything to install minimal qconfig.h.
 # -no-feature-* adds QT_NO_* (for features which have no switch or
@@ -38,16 +37,6 @@ QT_DEFINES=	GLIB
 QT_CONFIG=	glib icu
 
 MORE_WRKSRCS=	src/tools/bootstrap src/corelib src/tools/qlalr
-
-.include <bsd.port.pre.mk>
-# FreeBSD base gained /etc/os-release in r354922, which
-# corresponds to __FreeBSD_version 1300060
-.if ${OSVERSION} < 1300060
-RUN_DEPENDS+=	etc_os-release>0:sysutils/etc_os-release
-post-patch:
-	${REINPLACE_CMD}  -e '/readEtcFile/s|/etc/os-release|${LOCALBASE}/etc/os-release|g' \
-		${WRKSRC}/src/corelib/global/qglobal.cpp
-.endif
 
 post-configure:
 .for d in ${MORE_WRKSRCS}
@@ -75,4 +64,4 @@ post-install:
 	${REINPLACE_CMD} "/#define QT_NO_/d" ${WRKDIR}/qconfig.h
 	${MV} ${WRKDIR}/qconfig.h ${STAGEDIR}${PREFIX}/${QT_INCDIR_REL}/QtCore/qconfig.h
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

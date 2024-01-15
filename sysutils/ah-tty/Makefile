@@ -1,14 +1,12 @@
-# Created by: Michael L. Hostbaek <mich@freebsdcluster.org>
-# $FreeBSD$
-
 PORTNAME=	ah-tty
 PORTVERSION=	0.3.12
 PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
-MAINTAINER=	mich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automatic helper for command prompts and shells
+WWW=		https://ah-tty.sourceforge.net/
 
 USES=		ncurses
 GNU_CONFIGURE=	yes

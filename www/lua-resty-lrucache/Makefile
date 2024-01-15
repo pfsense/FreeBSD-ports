@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	lua-resty-lrucache
-PORTVERSION=	0.10
-DISTVERSIONPREFIX=v
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.13
 CATEGORIES=	www
 
 MAINTAINER=	dmitry.wagin@ya.ru
 COMMENT=	Lua-land LRU cache based on the LuaJIT FFI
+WWW=		https://github.com/openresty/lua-resty-lrucache
 
 LICENSE=	BSD2CLAUSE
 
@@ -18,7 +17,7 @@ GH_ACCOUNT=	openresty
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-LUA_MODSHAREDIR=${LOCALBASE}/share/lua/5.1
+LUA_MODSHAREDIR=	${LOCALBASE}/share/lua/5.1
 
 PLIST_FILES+=	${LUA_MODSHAREDIR}/resty/lrucache.lua \
 		${LUA_MODSHAREDIR}/resty/lrucache/pureffi.lua

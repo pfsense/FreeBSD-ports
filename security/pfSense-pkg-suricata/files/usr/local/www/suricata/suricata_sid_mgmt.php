@@ -3,11 +3,11 @@
  * suricata_sid_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,23 +26,15 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $suricatadir = SURICATADIR;
 $pconfig = array();
 
 // Grab saved settings from configuration
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-$a_nat = &$config['installedpackages']['suricata']['rule'];
-
-if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']))
-	$config['installedpackages']['suricata']['sid_mgmt_lists'] = array();
-if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']['item']))
-	$config['installedpackages']['suricata']['sid_mgmt_lists']['item'] = array();
-$a_list = &$config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
-
-$pconfig['auto_manage_sids'] = $config['installedpackages']['suricata']['config'][0]['auto_manage_sids'];
+$a_nat = config_get_path('installedpackages/suricata/rule', []);
+$a_list = config_get_path('installedpackages/suricata/sid_mgmt_lists/item', []);
+$pconfig['auto_manage_sids'] = config_get_path('installedpackages/suricata/config/0/auto_manage_sids');
 
 // Set default to not show SID modification lists editor controls
 $sidmodlist_edit_style = "display: none;";
@@ -61,12 +53,7 @@ function suricata_is_sidmodslist_active($sidlist) {
 	 *          FALSE if List can be deleted             *
 	 *****************************************************/
 
-	global $g, $config;
-
-	if (!is_array($config['installedpackages']['suricata']['rule']))
-		return FALSE;
-
-	foreach ($config['installedpackages']['suricata']['rule'] as $rule) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $rule) {
 		if ($rule['enable_sid_file'] == $sidlist) {
 			return TRUE;
 		}
@@ -115,6 +102,7 @@ if (isset($_POST['upload'])) {
 			$a_list[] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 			write_config("Suricata pkg: Uploaded new automatic SID management list.");
 		}
 	}
@@ -139,6 +127,8 @@ if (isset($_POST['sidlist_delete']) && isset($a_list[$_POST['sidlist_id']])) {
 		unset($a_list[$_POST['sidlist_id']]);
 
 		// Write the new configuration
+		config_set_path('installedpackages/suricata/rule', $a_nat);
+		config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 		write_config("Suricata pkg: deleted automatic SID management list.");
 	}
 	else {
@@ -167,12 +157,14 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 			$a_list[] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 			write_config("Suricata pkg: added new automatic SID management list.");
 		}
 		else {
 			$a_list[$_POST['listid']] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 			write_config("Suricata pkg: updated automatic SID management list.");
 		}
 		unset($tmp);
@@ -184,28 +176,28 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 }
 
 if (isset($_POST['save_auto_sid_conf'])) {
-	$config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] = $pconfig['auto_manage_sids'] ? "on" : "off";
+	config_set_path('installedpackages/suricata/config/0/auto_manage_sids', $pconfig['auto_manage_sids'] ? "on" : "off");
 
 	// Grab the SID Mods config for the interfaces from the form's controls array
 	foreach ($_POST['sid_state_order'] as $k => $v) {
 		$a_nat[$k]['sid_state_order'] = $v;
 	}
 	foreach ($_POST['enable_sid_file'] as $k => $v) {
-		if ($v == "None") {
+		if (strcasecmp($v, "None") == 0) {
 			unset($a_nat[$k]['enable_sid_file']);
 			continue;
 		}
 		$a_nat[$k]['enable_sid_file'] = $v;
 	}
 	foreach ($_POST['disable_sid_file'] as $k => $v) {
-		if ($v == "None") {
+		if (strcasecmp($v, "None") == 0) {
 			unset($a_nat[$k]['disable_sid_file']);
 			continue;
 		}
 		$a_nat[$k]['disable_sid_file'] = $v;
 	}
 	foreach ($_POST['modify_sid_file'] as $k => $v) {
-		if ($v == "None") {
+		if (strcasecmp($v, "None") == 0) {
 			unset($a_nat[$k]['modify_sid_file']);
 			continue;
 		}
@@ -213,7 +205,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 
 	foreach ($_POST['drop_sid_file'] as $k => $v) {
-		if ($v == "None") {
+		if (strcasecmp($v, "None") == 0) {
 			unset($a_nat[$k]['drop_sid_file']);
 			continue;
 		}
@@ -221,7 +213,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 
 	foreach ($_POST['reject_sid_file'] as $k => $v) {
-		if ($v == "None") {
+		if (strcasecmp($v, "None") == 0) {
 			unset($a_nat[$k]['reject_sid_file']);
 			continue;
 		}
@@ -229,6 +221,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 
 	// Write the new configuration
+	config_set_path('installedpackages/suricata/rule', $a_nat);
 	write_config("Suricata pkg: updated automatic SID management settings.");
 
 	$intf_msg = "";
@@ -265,6 +258,7 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 	touch($tmpdirname . $file, $a_list[$_POST['sidlist_id']]['modtime']);
 
 	if (file_exists($tmpdirname . $file)) {
+		ob_start(); //important or other posts will fail
 		if (isset($_SERVER['HTTPS'])) {
 			header('Pragma: ');
 			header('Cache-Control: ');
@@ -273,9 +267,9 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 			header("Cache-Control: private, must-revalidate");
 		}
 		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize($file));
+		header("Content-length: " . filesize($tmpdirname . $file));
 		header("Content-disposition: attachment; filename = " . basename($file));
-		ob_clean();
+		ob_end_clean(); //important or other post will fail
 		flush();
 		readfile($tmpdirname . $file);
 
@@ -345,17 +339,15 @@ if (isset($_POST['sidlist_dnload_all'])) {
 // Get all the SID Mods Lists as an array
 // Leave this as the last thing before spewing the page HTML
 // so we can pick up any changes made in code above.
-$sidmodlists = $config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
-if (!is_array($sidmodlists)) {
-	$sidmodlists = array();
-}
+$sidmodlists = config_get_path('installedpackages/suricata/sid_mgmt_lists/item', []);
 $sidmodselections = Array();
 $sidmodselections[] = "None";
 foreach ($sidmodlists as $list) {
 	$sidmodselections[] = $list['name'];
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("SID Management"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "SID Management");
 include_once("head.inc");
 
 $tab_array = array();
@@ -364,6 +356,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");
@@ -439,17 +432,17 @@ if ($savemsg) {
 								<td>
 									<a name="sidlist_editX[]" id="sidlist_editX[]" type="button" title="<?=gettext('Edit this SID Mods List');?>"
 										onClick='sidlistid="<?=$i;?>"' style="cursor: pointer;">
-										<i class="fa fa-pencil"></i>
+										<i class="fa-solid fa-pencil"></i>
 									</a>
 
 									<a name="sidlist_deleteX[]" id="sidlist_deleteX[]" type="button" title="<?=gettext('Delete this SID Mods List');?>"
 										onClick='sidlistid="<?=$i;?>"' style="cursor: pointer;">
-										<i class="fa fa-trash" title="<?=gettext('Delete this SID Mods List');?>"></i>
+										<i class="fa-solid fa-trash-can" title="<?=gettext('Delete this SID Mods List');?>"></i>
 									</a>
 
 									<a name="sidlist_dnloadX[]" id="sidlist_dnloadX[]" type="button" title="<?=gettext('Download this SID Mods List');?>"
 										onClick='sidlistid="<?=$i;?>"' style="cursor: pointer;">
-										<i class="fa fa-download" title="<?=gettext('Download this SID Mods List');?>"></i>
+										<i class="fa-solid fa-download" title="<?=gettext('Download this SID Mods List');?>"></i>
 									</a>
 								</td>
 							</tr>
@@ -501,7 +494,7 @@ if ($savemsg) {
 						<?=gettext("List Name: ");?>
 						<input type="text" size="45" class="form-control file" id="sidlist_name" name="sidlist_name" value="<?=$sidmodlist_name;?>" /><br />
 						<button type="submit" class="btn btn-sm btn-primary" id="save" name="save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close editor");?>">
-							<i class="fa fa-save icon-embed-btn"></i>
+							<i class="fa-solid fa-save icon-embed-btn"></i>
 							<?=gettext("Save");?>
 						</button>
 						<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit editor");?>">
@@ -521,16 +514,16 @@ if ($savemsg) {
 		<button data-toggle="modal" data-target="#sidlist_editor" role="button" aria-expanded="false" type="button" name="sidlist_new" id="sidlist_new" class="btn btn-success btn-sm" title="<?=gettext('Create a new SID Mods List');?>"
 		onClick="document.getElementById('sidlist_data').value=''; document.getElementById('sidlist_name').value=''; document.getElementById('sidlist_editor').style.display='table-row-group'; document.getElementById('sidlist_name').focus();
 			document.getElementById('sidlist_id').value='<?=count($a_list);?>';">
-			<i class="fa fa-plus icon-embed-btn"></i><?=gettext("Add")?>
+			<i class="fa-solid fa-plus icon-embed-btn"></i><?=gettext("Add")?>
 		</button>
 
 		<button data-toggle="modal" data-target="#uploader" role="button" aria-expanded="false" type="button" name="sidlist_import" id="sidlist_import" class="btn btn-info btn-sm" title="<?=gettext('Import/upload SID Mods List');?>">
-			<i class="fa fa-upload icon-embed-btn"></i>
+			<i class="fa-solid fa-upload icon-embed-btn"></i>
 			<?=gettext("Import")?>
 		</button>
 
 		<button type="input" name="sidlist_dnload_all" id="sidlist_dnload_all" class="btn btn-info btn-sm" title="<?=gettext('Download all SID Mods Lists in a single gzip archive');?>">
-			<i class="fa fa-download icon-embed-btn"></i>
+			<i class="fa-solid fa-download icon-embed-btn"></i>
 			<?=gettext("Download")?>
 		</button>
 
@@ -636,7 +629,7 @@ if ($savemsg) {
 								?>
 							</select>
 						<?php else : ?>
-							<input type="hidden" name="drop_sid_file[<?=$k?>]" id="drop_sid_file[<?=$k?>]" value="<?=isset($natent['drop_sid_file']) ? $natent['drop_sid_file'] : 'none';?>">
+							<input type="hidden" name="drop_sid_file[<?=$k?>]" id="drop_sid_file[<?=$k?>]" value="<?=isset($natent['drop_sid_file']) ? $natent['drop_sid_file'] : 'None';?>">
 							<span class="text-center"><?=gettext("N/A")?></span>
 						<?php endif; ?>
 					</td>
@@ -655,7 +648,7 @@ if ($savemsg) {
 								?>
 							</select>
 						<?php else : ?>
-							<input type="hidden" name="reject_sid_file[<?=$k?>]" id="reject_sid_file[<?=$k?>]" value="<?=isset($natent['reject_sid_file']) ? $natent['reject_sid_file'] : 'none';?>">
+							<input type="hidden" name="reject_sid_file[<?=$k?>]" id="reject_sid_file[<?=$k?>]" value="<?=isset($natent['reject_sid_file']) ? $natent['reject_sid_file'] : 'None';?>">
 							<span class="text-center"><?=gettext("N/A")?></span>
 						<?php endif; ?>
 					</td>
@@ -667,7 +660,7 @@ if ($savemsg) {
 		</div>
 
 		<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" >
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save");?>
 		</button>
 		&nbsp;&nbsp;<?=gettext("Remember to save changes before exiting this page"); ?>

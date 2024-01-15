@@ -1,59 +1,48 @@
-# $FreeBSD$
-
 PORTNAME=	libmemcached
-PORTVERSION=	1.0.18
-PORTREVISION=	7
+PORTVERSION=	1.1.4
+PORTREVISION=	1
 CATEGORIES=	databases
-MASTER_SITES=	http://launchpad.net/${PORTNAME}/1.0/${PORTVERSION}/+download/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	C and C++ client library to the memcached server
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	C/C++ client library and tools for the memcached server
+WWW=		https://awesomized.github.io/libmemcached/ \
+		https://github.com/awesomized/libmemcached
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libevent.so:devel/libevent
-TEST_DEPENDS=	memcached:databases/memcached
+TEST_DEPENDS=	memcached:databases/memcached \
+		onetbb>=0:devel/onetbb
 
-USES=		autoreconf gmake libtool localbase pathfix pkgconfig
+USES=		bison compiler:c++11-lang pathfix pkgconfig ssl
+
+CMAKE_OFF=	BUILD_DOCSONLY BUILD_DOCS_MANGZ BUILD_DOCS_HTML BUILD_TESTING ENABLE_DTRACE
+CMAKE_ON=	BUILD_SHARED_LIBS ENABLE_MEMASLAP ENABLE_OPENSSL_CRYPTO
+CMAKE_TESTING_ON=	BUILD_TESTING
 USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--without-memcached \
-		--without-sphinx-build \
-		--enable-libmemcachedprotocol
-TEST_TARGET=	check
+USE_GITHUB=	yes
+GH_ACCOUNT=	awesomized
 
-LIBS+=		-lexecinfo
-CXXFLAGS+=	-D__STDC_CONSTANT_MACROS -pthread
-
-OPTIONS_DEFINE=		DEBUG MEMASLAP SASL
-OPTIONS_DEFAULT=	MEMASLAP SASL MURMUR FNV64
-OPTIONS_GROUP=		HASH
+OPTIONS_DEFINE=	DOCS MANPAGES SASL
+OPTIONS_GROUP=	HASH
 OPTIONS_GROUP_HASH=	FNV64 HSIEH MURMUR
-
-MEMASLAP_DESC=	Load generation and benchmark tool
+OPTIONS_DEFAULT=FNV64 HSIEH MURMUR SASL
+OPTIONS_SUB=	yes
 FNV64_DESC=	Enable fnv64 hashing
 HSIEH_DESC=	Enable hsieh hashing
+MEMASLAP_DESC=	Load generation and benchmark tool
 MURMUR_DESC=	Enable murmur hashing
 
-DEBUG_CONFIGURE_ENABLE=		debug
-MEMASLAP_CONFIGURE_ENABLE=	memaslap
-FNV64_CONFIGURE_ENABLE=		fnv64_hash
-HSIEH_CONFIGURE_ENABLE=		hsieh_hash
-MURMUR_CONFIGURE_ENABLE=	murmur_hash
-
-SASL_CONFIGURE_ENABLE=	sasl
+FNV64_CMAKE_BOOL=	ENABLE_HASH_FNV64
+HSIEH_CMAKE_BOOL=	ENABLE_HASH_HSIEH
+MANPAGES_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
+MANPAGES_CMAKE_BOOL=	BUILD_DOCS BUILD_DOCS_MAN
+MANPAGES_USES=		cmake:noninja,testing python:env
+MANPAGES_USES_OFF=	cmake:testing
+MURMUR_CMAKE_BOOL=	ENABLE_HASH_MURMUR
+SASL_CMAKE_BOOL=	ENABLE_SASL
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
-
-PATHFIX_MAKEFILEIN=	include.am
-
-post-patch:
-	@${REINPLACE_CMD} -e '/^LDFLAGS *=/ s/$$/ $${LTLIBSASL2}/' \
-			${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} '/MAKE.*man/d' ${WRKSRC}/man/include.am
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.*
 
 .include <bsd.port.mk>

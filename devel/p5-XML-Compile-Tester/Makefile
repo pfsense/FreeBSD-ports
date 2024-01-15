@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	XML-Compile-Tester
 PORTVERSION=	0.91
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Support XML::Compile Related Regression Testing
+WWW=		https://metacpan.org/release/XML-Compile-Tester
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,5 +17,7 @@ RUN_DEPENDS=	p5-Log-Report>=0.17:devel/p5-Log-Report \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: mwest@uct.ac.za
-# $FreeBSD$
-
 PORTNAME=	lbdb
 PORTVERSION=	0.42.1
 CATEGORIES=	mail
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools for use with mutt external mail address query feature
+WWW=		https://www.spinnaker.de/lbdb/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

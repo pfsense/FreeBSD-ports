@@ -1,6 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Convert-NLS_DATE_FORMAT
 PORTVERSION=	0.06
 CATEGORIES=	converters perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Convert Oracle NLS_DATE_FORMAT <-> strftime format strings
+WWW=		https://metacpan.org/release/Convert-NLS_DATE_FORMAT
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

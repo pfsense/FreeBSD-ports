@@ -1,6 +1,3 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	soothsayer
 PORTVERSION=	0.6.3
 PORTREVISION=	3
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/presage/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Intelligent predictive text entry platform
+WWW=		http://presage.sourceforge.net/
 
 LICENSE=	GPLv2+
 

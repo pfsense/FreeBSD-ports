@@ -1,8 +1,6 @@
 Apache Tomcat is a web server written in 100% Pure Java.
 
-Apache Tomcat 10.x is the current focus of development. It builds on
-Tomcat 9.0.x and implements the Servlet 5.0, JSP 3.0, EL 4.0, WebSocket 2.0
-and Authentication 2.0 specifications (the versions required by Jakarta EE 9
-platform).
-
-WWW: http://tomcat.apache.org/
+Apache Tomcat 11.0.x is the current focus of development. It builds on
+Tomcat 10.1.x and implements the Servlet 6.1, JSP 4.0, EL 6.0, WebSocket TDB
+and Authentication TDB specifications.
+This release is a milestone release and is targeted at Jakarta EE 11.

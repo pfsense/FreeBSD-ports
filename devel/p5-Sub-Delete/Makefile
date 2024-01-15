@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	Sub-Delete
 PORTVERSION=	1.00002
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module enabling one to delete subroutines
+WWW=		https://metacpan.org/release/Sub-Delete
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

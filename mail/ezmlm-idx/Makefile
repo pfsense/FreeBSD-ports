@@ -1,6 +1,3 @@
-# Created by: Neil Blakey-Milner <nbm@rucus.ru.ac.za>
-# $FreeBSD$
-
 PORTNAME=	ezmlm-idx
 PORTVERSION=	7.2.2
 PORTREVISION=	1
@@ -9,12 +6,13 @@ MASTER_SITES=	http://untroubled.org/ezmlm/archive/${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Improved version of the ezmlm mailing list manager
+WWW=		https://www.untroubled.org/ezmlm/
 
 LICENSE=	GPLv2
 
 USES=		groff qmail:run
 
-CONFLICTS=	ezmlm-0.*
+CONFLICTS=	ezmlm # bin/ezmlm-list bin/ezmlm-make bin/ezmlm-manage bin/ezmlm-reject bin/ezmlm-return bin/ezmlm-send bin/ezmlm-sub bin/ezmlm-unsub bin/ezmlm-warn bin/ezmlm-weed
 
 SUB_FILES=	pkg-message
 

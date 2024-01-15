@@ -1,6 +1,3 @@
-# Created by: Johann Visagie <wjv@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	phpbb
 PORTVERSION=	2.0.23
 CATEGORIES=	www
@@ -9,15 +6,17 @@ DISTNAME=	phpBB-${PORTVERSION}
 
 MAINTAINER=	liukang@cn.freebsd.org
 COMMENT=	PHP-based bulletin board / discussion forum system
+WWW=		https://www.phpbb.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
 RUN_DEPENDS=	${LOCALBASE}/share/pear/System.php:devel/pear@${PHP_FLAVOR}
 
-CONFLICTS=	phpbb-tw-[0-9]*
+CONFLICTS=	phpbb-tw
 
-USES=		tar:bzip2 php
+USES=		cpe tar:bzip2 php
+IGNORE_WITH_PHP=	82 83
 
 # The phpBB2 port supports a number of variables that may be tweaked at build
 # time.  Perform a "make options" to see more information on these variables.

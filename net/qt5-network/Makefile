@@ -1,18 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	network
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	net
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt network module
 
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-
-USES=		compiler:c++11-lang qmake:no_env qt-dist:5,base ssl
-USE_QT=		core buildtools_build
+USES=		compiler:c++11-lang perl5 qmake:no_env qt-dist:5,base ssl
+USE_PERL5=	extract
+USE_QT=		core buildtools:build
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-gui -no-xcb
 
@@ -24,9 +20,9 @@ QT_CONFIG=	openssl
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} == "base"
-# 1200085	339270	October 19, 2018	12.0-STABLE after updating OpenSSL to version 1.1.1.
-BROKEN=		Qt5 requires Openssl 1.1.1, upgrade to FreeBSD 12.x/13.x or add DEFAULT_VERSIONS+=ssl=[openssl|libressl*] to /etc/make.conf
+# LibreSSL does not currently support BIO_ADDR in DTLSv1_listen()
+.if ${SSL_DEFAULT:Mlibressl*}
+CONFIGURE_ARGS+=	-no-feature-dtls
 .endif
 
 post-patch:

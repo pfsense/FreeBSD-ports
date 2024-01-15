@@ -1,14 +1,13 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
-
 PORTNAME=	avp
 DISTVERSION=	20170505
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	https://icculus.org/avp/files/
 EXTRACT_SUFX=	-a1.tar.gz
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Open source re-implementation of Alien versus Predator
+WWW=		https://icculus.org/avp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,6 +19,12 @@ USE_SDL=	sdl
 LDFLAGS_i386=	-Wl,-znotext
 
 PLIST_FILES=	bin/${PORTNAME}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${PORTNAME} \

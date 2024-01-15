@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Table-Paragraph
 PORTVERSION=	0.002
 CATEGORIES=	textproc perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Format table data as paragraphs of rows
+WWW=		https://metacpan.org/release/Text-Table-Paragraph
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

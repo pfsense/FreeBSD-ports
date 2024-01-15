@@ -1,6 +1,3 @@
-# Created by: Jov <amutu@amutu.com>
-# $FreeBSD$
-
 PORTNAME=	mac_nonet
 DISTVERSION=	g20150821
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ PKGNAMESUFFIX=	-kmod
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MAC policy to disable access to networking for certain group
+WWW=		https://github.com/pbiernacki/mac_nonet
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

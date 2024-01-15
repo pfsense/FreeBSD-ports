@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	dsdp
 DISTVERSION=	5.8
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	https://www.mcs.anl.gov/hs/software/${PORTNAME:tu}/
 DISTNAME=	${PORTNAME:tu}${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Implementation of interior-point method for semidefinite programming
+WWW=		https://www.mcs.anl.gov/hs/software/DSDP/
 
 LICENSE=	DSDP_LICENSE
 LICENSE_NAME=	DSDP License
@@ -24,7 +23,7 @@ USE_LDCONFIG=	yes
 ALL_TARGET=	all oshared all oshared
 
 BINARY_ALIAS=	make=${GMAKE} gcc=${CC}
-MAKE_ENV=	DSDPROOT=${WRKSRC} SH_LD="${CC} -shared"
+MAKE_ENV=	DSDPROOT=${WRKSRC} SH_LD="${CC} -shared -Wl,-soname,libdsdp.so.0"
 CFLAGS+=	-fPIC
 
 PLIST_FILES=	bin/dsdp5 \
@@ -33,6 +32,8 @@ PLIST_FILES=	bin/dsdp5 \
 		include/dsdp/dsdplapack.h \
 		include/dsdp/dsdpmem.h \
 		include/dsdp/dsdpsys.h \
+		lib/libdsdp.a \
+		lib/libdsdp.so.0 \
 		lib/libdsdp.so
 
 do-build: # the build fails to build all binaries without being called twice due to makefile convolution
@@ -42,7 +43,9 @@ do-build: # the build fails to build all binaries without being called twice due
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/dsdp
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/dsdp5 ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_LIB} ${WRKSRC}/lib/libdsdp.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA} ${WRKSRC}/lib/libdsdp.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/lib/libdsdp.so ${STAGEDIR}${PREFIX}/lib/libdsdp.so.0
+	(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -s libdsdp.so.0 libdsdp.so)
 	${INSTALL_DATA} ${WRKSRC}/include/*.h ${STAGEDIR}${PREFIX}/include/dsdp
 
 .include <bsd.port.mk>

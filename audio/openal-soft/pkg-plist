@@ -1,7 +1,6 @@
 %%CONFIG%%bin/alsoft-config
-bin/altonegen
-bin/makemhr
-bin/openal-info
+%%UTILS%%bin/makemhr
+%%UTILS%%bin/openal-info
 %%ETCDIR%%/alsoftrc.sample
 %%ETCDIR%%/hrtf/Default HRTF.mhr
 %%ETCDIR%%/presets/3D7.1.ambdec
@@ -23,6 +22,8 @@ lib/libopenal.so
 lib/libopenal.so.1
 lib/libopenal.so.%%SOVERSION%%
 libdata/pkgconfig/openal.pc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/alconvolve.c
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/alstreamcb.cpp
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/alffplay.cpp
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/alhrtf.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/allatency.c

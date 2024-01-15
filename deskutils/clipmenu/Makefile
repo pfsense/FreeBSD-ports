@@ -1,13 +1,11 @@
-# Created by: Nicola Stanislao Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	clipmenu
-DISTVERSION=	6.1.0
-PORTREVISION=	1
+DISTVERSION=	6.2.0
+PORTREVISION=	0
 CATEGORIES=	deskutils
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Clipboard management using dmenu, rofi or fzf
+WWW=		https://github.com/cdown/clipmenu
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE

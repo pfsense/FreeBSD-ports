@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	gettext-lint
 PORTVERSION=	0.4
 PORTREVISION=	4
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}.0
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Check the validity and consistency of PO and POT files
+WWW=		https://gettext-lint.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

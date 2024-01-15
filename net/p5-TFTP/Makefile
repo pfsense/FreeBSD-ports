@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	TFTP
 PORTVERSION=	1.0
 DISTVERSIONSUFFIX=	b3
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	rihaz.jerrin@gmail.com
 COMMENT=	TFTP client in Perl as described in RFC783
+WWW=		https://metacpan.org/release/TFTP
 
 LICENSE=	ARTPERL10
 

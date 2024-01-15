@@ -1,31 +1,29 @@
-# Created by: Max Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libiqxmlrpc
 PORTVERSION=	0.13.5
-PORTREVISION=	13
+PORTREVISION=	20
 CATEGORIES=	devel net
 MASTER_SITES=	SF
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free, object-oriented XML-RPC implementation written in C++
+WWW=		https://libiqxmlrpc.wikidot.com/
 
 LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
+
+USES=		cmake gnome localbase:ldflags ssl tar:bzip2
+USE_CXXSTD=	c++14
+USE_GNOME=	libxml2
+USE_LDCONFIG=	yes
+
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOXYGEN DOCS
 
 DOXYGEN_IMPLIES=	DOCS
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CMAKE_OFF=	-Dbuild_docs=off
-
-USE_GNOME=	libxml2
-USES=		cmake gnome ssl tar:bzip2
-LDFLAGS+=	-L${LOCALBASE}/lib
-USE_LDCONFIG=	yes
-
-PORTDOCS=	*
 
 post-patch:
 	${REINPLACE_CMD} -e 's,lib/pkgconfig,libdata/pkgconfig,' ${WRKSRC}/libiqxmlrpc/CMakeLists.txt

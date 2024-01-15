@@ -1,6 +1,3 @@
-# Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	Authen-OATH
 PORTVERSION=	1.0.0
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	${PORTNAME}-v${PORTVERSION}
 
 MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw
 COMMENT=	OATH one time passwords implementation
+WWW=		https://metacpan.org/release/Authen-OATH
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

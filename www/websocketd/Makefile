@@ -1,13 +1,12 @@
-# Created by: Guangyuan Yang <ygy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	websocketd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.1
+DISTVERSION=	0.4.1
+PORTREVISION=	15
 CATEGORIES=	www
 
 MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	Access any command-line tool via a WebSocket
+WWW=		http://websocketd.com/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

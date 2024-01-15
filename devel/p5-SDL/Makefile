@@ -1,15 +1,13 @@
-# Created by: Klaus Goger <klaus.goger@reflex.at>
-# $FreeBSD$
-
 PORTNAME=	SDL
 PORTVERSION=	2.548
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Bindings for SDL
+WWW=		http://sdl.perl.org/
 
 LICENSE=	GPLv2
 

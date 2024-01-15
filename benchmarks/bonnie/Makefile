@@ -1,6 +1,3 @@
-# Created by: se
-# $FreeBSD$
-
 PORTNAME=	bonnie
 PORTVERSION=	2.0.6
 PORTREVISION=	1
@@ -8,8 +5,9 @@ CATEGORIES=	benchmarks
 MASTER_SITES=	http://www.textuality.com/bonnie/
 DISTNAME=	bonnie
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Performance Test of Filesystem I/O
+WWW=		https://www.textuality.com/bonnie/
 
 NO_WRKSUBDIR=	yes
 MAKE_ARGS+=	-e CFLAGS="${CFLAGS}"

@@ -1,22 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	libg15render
-PORTVERSION=	1.2
+DISTVERSION=	3.0.4
 CATEGORIES=	sysutils
-MASTER_SITES=	SF/g15tools/libg15render/${PORTVERSION}
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to render the LCD screen on Logitech keyboards
+WWW=		https://gitlab.com/menelkir/libg15render
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libg15.so:sysutils/libg15
 
-USES=		compiler:gcc-c++11-lib gmake libtool tar:bzip2
+USES=		gmake libtool localbase
+USE_GITLAB=	yes
+USE_LDCONFIG=	yes
+
+GL_ACCOUNT=	menelkir
+GL_TAGNAME=	b7c1b217e95a1c473fa219c1940c8c9db0eb4628
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

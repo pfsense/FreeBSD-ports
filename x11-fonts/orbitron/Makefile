@@ -1,12 +1,10 @@
-# Created by: Florian Limberger <flo@snakeoilproductions.net>
-# $FreeBSD$
-
 PORTNAME=	orbitron
 DISTVERSION=	g20110525
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	flo@snakeoilproductions.net
 COMMENT=	Geometric sans-serif typeface intended for display purposes
+WWW=		https://github.com/theleagueof/orbitron
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/Open\ Font\ License.markdown

@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	NSNMP
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Fast, flexible, low-level, pure-Perl SNMP library
+WWW=		https://metacpan.org/release/NSNMP
 
 USES=		perl5
 USE_PERL5=	configure

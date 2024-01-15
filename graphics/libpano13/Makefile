@@ -1,14 +1,12 @@
-# Created by: Vasil Dimov <vd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libpano13
-PORTVERSION=	2.9.19
-PORTREVISION=	1
+DISTVERSION=	2.9.22
+PORTREVISION=	5
 CATEGORIES=	graphics java
-MASTER_SITES=	SF/panotools/${PORTNAME}/${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	SF/panotools/${PORTNAME}/${PORTNAME}-${DISTVERSION}
 
-MAINTAINER=	grog@FreeBSD.org
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Cross-platform library behind Panorama Tools and other photo stitchers
+WWW=		https://panotools.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,32 +14,23 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USE_GNOME=	gtk20 glib20 pango atk
-
-USES=		autoreconf gnome jpeg libtool pathfix
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include/gtk-2.0 \
-		-I${LOCALBASE}/include/glib-2.0 \
-		-I${LOCALBASE}/include/pango-1.0 \
-		-I${LOCALBASE}/include/atk-1.0
-CONFIGURE_ARGS=	--with-png=${LOCALBASE} \
-		--with-jpeg=${LOCALBASE} \
-		--with-tiff=${LOCALBASE}
-INSTALL_TARGET=	install-strip
-
+USES=		cmake:testing cpe jpeg libtool pathfix perl5 pkgconfig
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
+USE_PERL5=	build	# for pod2man
 
-OPTIONS_DEFINE=	JAVA
+WRKSRC=		${WRKDIR}/libpano13-${DISTVERSION}
+
+OPTIONS_DEFINE=	DOCS JAVA SUITESPARSE
+OPTIONS_DEFAULT=	SUITESPARSE
+SUITESPARSE_DESC=	Use math/suitesparse for faster operation
 OPTIONS_SUB=	yes
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MJAVA}
-USE_JAVA=	yes
-JAVA_OS=	native
-CONFIGURE_ARGS+=	--with-java=${JAVA_HOME}
-.else
-CONFIGURE_ARGS+=	--without-java
-.endif
+JAVA_USE=	java=yes
+JAVA_CMAKE_BOOL=	SUPPORT_JAVA_PROGRAMS
+JAVA_VARS=	JAVA_OS=native
+SUITESPARSE_LIB_DEPENDS= \
+		libcholmod.so:math/suitesparse-cholmod \
+		libspqr.so:math/suitesparse-spqr
+SUITESPARSE_CMAKE_BOOL=	USE_SPARSE_LEVMAR
 
 .include <bsd.port.mk>

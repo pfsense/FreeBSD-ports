@@ -1,13 +1,11 @@
-# Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	endgame-singularity-music
 PORTVERSION=	007
 PORTREVISION=	1
 CATEGORIES=	games
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Music pack for endgame-singularity
+WWW=		http://emhsoft.com/singularity/
 
 LICENSE=	CC-BY-SA-3.0
 

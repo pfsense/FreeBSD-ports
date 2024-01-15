@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	gau2grid
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.5
+DISTVERSION=	2.0.7
+PORTREVISION=	1
 CATEGORIES=	math python
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast computation of a gaussian and its derivative on a grid
+WWW=		https://github.com/dgasmith/gau2grid
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

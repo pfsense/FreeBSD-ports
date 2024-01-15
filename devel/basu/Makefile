@@ -1,25 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	basu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.0
+DISTVERSION=	0.2.1
 CATEGORIES=	devel
+MASTER_SITES=	https://git.sr.ht/~emersion/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	sd-bus library, extracted from systemd
+WWW=		https://sr.ht/~emersion/basu/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE.LGPL2.1
 
 USES=		compiler:c11 gperf meson python:build shebangfix
-USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-GH_ACCOUNT=	emersion
 SHEBANG_FILES=	src/basic/generate-gperfs.py
-
-.if exists(/usr/bin/ld.lld) && ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
-# bus-error.c:(.text.bus_error_name_to_errno+0x9a): undefined reference to '__start_BUS_ERROR_MAP'
-LDFLAGS+=	-fuse-ld=lld
-.endif
+MESON_ARGS=	-Daudit=disabled -Dlibcap=disabled
 
 .include <bsd.port.mk>

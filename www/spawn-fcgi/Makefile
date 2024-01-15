@@ -1,6 +1,3 @@
-# Created by: genserg@hotmail.com
-# $FreeBSD$
-
 PORTNAME=	spawn-fcgi
 PORTVERSION=	1.6.4
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	http://download.lighttpd.net/spawn-fcgi/releases-1.6.x/
 
 MAINTAINER=	rsimmons0@gmail.com
 COMMENT=	Spawns fastcgi applications
+WWW=		https://redmine.lighttpd.net/projects/spawn-fcgi
 
 USES=		cmake
 CMAKE_ARGS=	-DCMAKE_MAN_DIR:string=${MANPREFIX}/man

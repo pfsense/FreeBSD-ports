@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-tyrquake
-PORTVERSION=	0.20200504
+DISTVERSION=	0.20230528
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libretro port of Tyrquake (Quake 1 engine)
+WWW=		https://github.com/libretro/tyrquake
 
 LICENSE=	GPLv2
 
@@ -16,12 +15,12 @@ USE_GL=		gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	tyrquake
-GH_TAGNAME=	8c6ec56
+GH_TAGNAME=	77217664a09afe893a06be8e3e8f9611184636f8
 
 PLIST_FILES=	lib/libretro/tyrquake_libretro.so
 
 do-install:
-	${MKDIR} ${STAGEDIR}/${PREFIX}/lib/libretro;
-	${INSTALL_LIB} ${WRKSRC}/tyrquake_libretro.so ${STAGEDIR}/${PREFIX}/lib/libretro;
+	${MKDIR} ${STAGEDIR}/${PREFIX}/lib/libretro
+	${INSTALL_LIB} ${WRKSRC}/tyrquake_libretro.so ${STAGEDIR}/${PREFIX}/lib/libretro
 
 .include <bsd.port.mk>

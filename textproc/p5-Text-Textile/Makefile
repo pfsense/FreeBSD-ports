@@ -1,15 +1,12 @@
-# Created by: Travis Campbell <hcoyote@ghostar.org>
-# $FreeBSD$
-
 PORTNAME=	Text-Textile
-PORTVERSION=	2.12
-PORTREVISION=	1
+PORTVERSION=	2.13
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	hcoyote@ghostar.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl-based implementation of the Textile syntax by Dean Allen
+WWW=		https://metacpan.org/release/Text-Textile
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
-
 PORTNAME=	scmxx
 PORTVERSION=	0.9.0
 PORTREVISION=	3
@@ -9,12 +6,15 @@ MASTER_SITES=	SF
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Data exchange utility for Siemens mobile phones
+WWW=		http://www.hendrik-sattler.de/scmxx/
 
 USES=		gettext iconv gmake tar:bzip2
 GNU_CONFIGURE=	yes
 CFLAGS+=	-I${LOCALBASE}/include
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+CONFLICTS_INSTALL=	smi # bin/smi
 
 DOCS=		README docs/*.txt
 EXAMPLES=	sms.txt vCalendar.vcs vCard.vcf

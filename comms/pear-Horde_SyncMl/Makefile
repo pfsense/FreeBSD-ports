@@ -1,14 +1,12 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Horde_SyncMl
 PORTVERSION=	2.0.7
 CATEGORIES=	comms www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde API for processing SyncML requests
+WWW=		https://pear.horde.org
 
-USES=	horde
+USES=		horde cpe
 USE_HORDE_RUN=	Horde_Date \
 		Horde_Icalendar \
 		Horde_Log \

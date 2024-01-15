@@ -1,15 +1,13 @@
-# Created by: Olivier Duchateau
-# $FreeBSD$
-
 PORTNAME=	libdbusmenu
 PORTVERSION=	16.04.0
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	https://launchpadlibrarian.net/243440794/ \
 	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	vishwin@vishwin.info
 COMMENT=	GLib and Gtk Implementation of the DBusMenu protocol
+WWW=		https://launchpad.net/libdbusmenu
 
 LICENSE=	GPLv3 LGPL21 LGPL3
 LICENSE_COMB=	multi
@@ -17,15 +15,14 @@ LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING-GPL3
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.2.1
 
-BUILD_DEPENDS=	vapigen:lang/vala
-LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib
+LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
+		libharfbuzz.so:print/harfbuzz
 
 GNU_CONFIGURE=	yes
-USES=		compiler gettext-tools:build,run gmake gnome libtool pathfix \
-		pkgconfig python:run shebangfix xorg
-USE_GNOME=	glib20 intltool intlhack libxslt \
-		introspection:build gtk30
-USE_XORG=	x11
+USES=		compiler gettext-tools gmake gnome libtool pathfix pkgconfig python:run \
+		shebangfix vala:build
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool intlhack libxslt \
+		introspection:build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

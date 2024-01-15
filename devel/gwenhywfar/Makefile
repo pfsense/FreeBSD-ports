@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	gwenhywfar
-PORTVERSION=	5.4.1
-PORTREVISION?=	0
+PORTVERSION=	5.10.2
+PORTREVISION?=	1
 CATEGORIES=	devel net security
-MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/344/
+MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/501/
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Multi-platform helper library for networking and security applications
+WWW=		https://www.aquamaniac.de/rdm/projects/gwenhywfar
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,8 +15,9 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libgnutls.so:security/gnutls \
 		libgpg-error.so:security/libgpg-error
 
-USES=		gettext gmake iconv:translit libtool localbase:ldflags \
+USES=		cpe gettext gmake iconv:translit libtool localbase:ldflags \
 		pathfix pkgconfig
+CPE_VENDOR=	aquamaniac
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-release="yes" \
@@ -27,7 +27,8 @@ USE_LDCONFIG=	yes
 
 GWEN_SHLIB_VER=	79
 PLIST_SUB=	GWEN_SHLIB_VER="${GWEN_SHLIB_VER}" \
-		GWEN_MAJ_MIN_VER="${PORTVERSION:R}"
+		GWEN_MAJ_MIN_VER="${PORTVERSION:R}" \
+		GWEN_MIN_PATCH_VER="${PORTVERSION:R:E}.${PORTVERSION:E}"
 
 .if !defined(SLAVEPORT)
 OPTIONS_DEFINE=			DOXYGEN LIBXML2 MEMDEBUG OPENSSL
@@ -63,19 +64,22 @@ INSTALL_WRKSRC=	${WRKSRC}/gui/${SLAVEPORT}
 LIB_DEPENDS+=	libFOX-1.6.so:x11-toolkits/fox16
 CONFIGURE_ARGS+=--with-fox-includes=${LOCALBASE}/include/fox-1.6 \
 		--with-fox-libs=${LOCALBASE}/lib
+CXXFLAGS+=	-Dregister=
 .  elif ${SLAVEPORT}=="gtk2"
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
 		libfontconfig.so:x11-fonts/fontconfig
 USES+=		gnome
 USE_GNOME+=	cairo gdkpixbuf2 gtk20
 .  elif ${SLAVEPORT}=="gtk3"
+LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz
 USES+=		gnome
 USE_GNOME+=	cairo gdkpixbuf2 gtk30
 .  elif ${SLAVEPORT}=="qt5"
 USES+=		compiler:c++11-lang gl qmake:no_env qt:5
 USE_GL=		gl
 USE_QT=		core gui widgets \
-		buildtools_build qmake_build
+		buildtools:build qmake:build
 CONFIGURE_ARGS+=--with-qt5-qmake=${QMAKE} \
 		--with-qt5-moc=${MOC} \
 		--with-qt5-uic=${UIC}

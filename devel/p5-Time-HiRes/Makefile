@@ -1,6 +1,3 @@
-# Created by: Stephen J. Roznowski <sjr@home.net>
-# $FreeBSD$
-
 PORTNAME=	Time-HiRes
 PORTVERSION=	1.9764
 PORTEPOCH=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module implementing High resolution time, sleep, and alarm
+WWW=		https://metacpan.org/release/Time-HiRes
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,111 +1,105 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	redis
-PORTVERSION=	5.0.9
+DISTVERSION=	7.2.3
 CATEGORIES=	databases
-MASTER_SITES=	http://download.redis.io/releases/
+MASTER_SITES=	https://download.redis.io/releases/
 
-MAINTAINER=	osa@FreeBSD.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Persistent key-value database with built-in net interface
+WWW=		https://redis.io/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	JEMALLOC TESTS TRIB
-OPTIONS_RADIO=	EXTLUA
-OPTIONS_RADIO_EXTLUA=	LUA LUAJIT LUAJITOR
-OPTIONS_SUB=	yes
-JEMALLOC_DESC=	Use jemalloc
-LUA_DESC=	Use lang/lua instead of builtin lua
-LUAJIT_DESC=	Use lang/luajit instead of builtin lua
-LUAJITOR_DESC=	Use lang/luajit-openjit instead of builtin lua
-TESTS_DESC=	Install lang/tcl for redis unit tests
-TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
+USES=		compiler:c11 cpe gmake tcl:test
+CPE_VENDOR=	redislabs
+USE_RC_SUBR=	redis sentinel
 
-USES+=		compiler:c11 gmake
-MAKE_ENV=	"V=yo"
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == i386 && ! ${CFLAGS:M-march=*}
-# Needed for __atomic_fetch_add_8
-USE_GCC=	yes
-CFLAGS+=	-march=i586
-.endif
-
-.if ${PORT_OPTIONS:MJEMALLOC}
-MAKE_ENV+=	"USE_JEMALLOC=yes"
-.endif
-
-.if ${PORT_OPTIONS:MTRIB}
-CATEGORIES+=	ruby
-USE_RUBY=	yes
-RUN_DEPENDS=	rubygem-redis>=2.2:databases/rubygem-redis
-.endif
-
-.if ${PORT_OPTIONS:MLUA}
-USES+=		lua:51
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.lua
-.endif
-
-.if ${PORT_OPTIONS:MLUAJIT}
-LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.luajit
-.endif
-
-.if ${PORT_OPTIONS:MLUAJITOR}
-LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit-openresty
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.luajit-or \
-		${PATCHDIR}/extra-patch-deps_lua_src_lua__cjson.c
-.endif
-
-.if ${PORT_OPTIONS:MLUA} || ${PORT_OPTIONS:MLUAJIT} || ${PORT_OPTIONS:MLUAJITOR}
-CFLAGS+=	-fPIC
-LDFLAGS+=	-Wl,-E
-.endif
-
-.if ${PORT_OPTIONS:MTESTS}
-USES+=		tcl:build
-.endif
+MAKE_ENV=	OPTIMIZATION= \
+		V=yo
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
 
-CONFLICTS?=	redis4-4.* redis-devel-5.*
+CONFLICTS_INSTALL=	redis-devel redis6 redis62 redis70 # etc/rc.d/redis
 
-USE_RC_SUBR=	redis sentinel
-BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \
-		redis-cli redis-sentinel redis-server
+SUB_FILES=	pkg-message
+SUB_LIST=	PORTNAME=${PORTNAME} \
+		REDIS_DBDIR=${REDIS_DBDIR} \
+		REDIS_LOGDIR=${REDIS_LOGDIR} \
+		REDIS_RUNDIR=${REDIS_RUNDIR} \
+		REDIS_USER=${USERS}
 
-USERS=	redis
-GROUPS=	redis
+USERS=		redis
+GROUPS=		redis
+
+PLIST_SUB=	REDIS_DBDIR=${REDIS_DBDIR} \
+		REDIS_GROUP=${GROUPS} \
+		REDIS_LOGDIR=${REDIS_LOGDIR} \
+		REDIS_RUNDIR=${REDIS_RUNDIR} \
+		REDIS_USER=${USERS}
+
+OPTIONS_DEFINE=		JEMALLOC TLS TRIB
+OPTIONS_DEFAULT=	TLS
+OPTIONS_RADIO=		EXTLUA
+OPTIONS_RADIO_EXTLUA=	LUA LUAJIT
+OPTIONS_SUB=		yes
+
+JEMALLOC_DESC=	Use jemalloc
+LUAJIT_DESC=	Use luajit instead of builtin lua
+LUA_DESC=	Use lang/lua instead of builtin lua
+TLS_DESC=	Use TLS (openssl req.)
+TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
+
+JEMALLOC_MAKE_ENV=	USE_JEMALLOC=yes
+LUAJIT_BROKEN=		Fails to link
+LUAJIT_USES=		luajit
+LUAJIT_VARS=		_ADDFLAGS=true
+LUA_BROKEN=		Fails to link
+LUA_USES=		lua:51
+LUA_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.lua
+LUA_VARS=		_ADDFLAGS=true
+TLS_USES=		ssl
+TLS_MAKE_ENV=		BUILD_TLS=yes
+TRIB_CATEGORIES=	ruby
+TRIB_RUN_DEPENDS=	rubygem-redis>=2.2:databases/rubygem-redis
+TRIB_USES=		ruby
+
+BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb redis-cli \
+		redis-sentinel redis-server
 
 REDIS_DBDIR?=	/var/db/redis
 REDIS_RUNDIR?=	/var/run/redis
 REDIS_LOGDIR?=	/var/log/redis
 
-SUB_FILES=	pkg-message
-SUB_LIST+=	PORTNAME=${PORTNAME} \
-	REDIS_USER=${USERS} \
-	REDIS_DBDIR=${REDIS_DBDIR} \
-	REDIS_LOGDIR=${REDIS_LOGDIR} \
-	REDIS_RUNDIR=${REDIS_RUNDIR}
-
-PLIST_SUB+=	REDIS_USER=${USERS} \
-	REDIS_GROUP=${GROUPS} \
-	REDIS_LOGDIR=${REDIS_LOGDIR} \
-	REDIS_DBDIR=${REDIS_DBDIR} \
-	REDIS_RUNDIR=${REDIS_RUNDIR}
-
 .include <bsd.port.pre.mk>
 
-post-patch:
-.if ${PORT_OPTIONS:MJEMALLOC}
+.if ${ARCH} == i386 && !${CFLAGS:M-march=*}
+# Needed for __atomic_fetch_add_8
+USE_GCC=	yes
+CFLAGS+=	-march=i586
+.endif
+
+.if defined(_ADDFLAGS)
+CFLAGS+=	-fPIC
+LDFLAGS+=	-Wl,-E
+.endif
+
+.if ${PORT_OPTIONS:MLUAJIT}
+.  if ${LUAJIT_VER} == luajit
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.luajit
+.  else
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.luajit-or \
+		${PATCHDIR}/extra-patch-src-function_lua.c \
+		${PATCHDIR}/extra-patch-deps_lua_src_lua__cjson.c
+.  endif
+.endif
+
+post-patch-JEMALLOC-on:
 	@${REINPLACE_CMD} '35s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
-.endif
-.if ${PORT_OPTIONS:MLUA} || ${PORT_OPTIONS:MLUAJIT} || ${PORT_OPTIONS:MLUAJITOR}
+
+post-patch-LUA-on:
 	@cd ${WRKSRC}/deps/lua/src && ${CP} fpconv.* lua_* strbuf.* ${WRKSRC}/src/
-.endif
+post-patch-LUAJIT-on: post-patch-LUA-on
+post-patch-LUAJITOR-on: post-patch-LUA-on
 
 post-build:
 	${SED} ${SUB_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \
@@ -113,14 +107,14 @@ post-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${BIN_FILES:C!^!${WRKSRC}/src/!} ${STAGEDIR}${PREFIX}/bin/
-.if ${PORT_OPTIONS:MTRIB}
-	${INSTALL_SCRIPT} ${WRKSRC}/src/redis-trib.rb ${STAGEDIR}${PREFIX}/bin/
-.endif
 	${INSTALL_DATA} ${WRKDIR}/redis.conf ${STAGEDIR}${PREFIX}/etc/redis.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/sentinel.conf ${STAGEDIR}${PREFIX}/etc/sentinel.conf.sample
 	${MKDIR} ${STAGEDIR}${REDIS_LOGDIR} \
 		${STAGEDIR}${REDIS_DBDIR} \
 		${STAGEDIR}${REDIS_RUNDIR}
+
+do-install-TRIB-on:
+	${INSTALL_SCRIPT} ${WRKSRC}/src/redis-trib.rb ${STAGEDIR}${PREFIX}/bin/
 
 do-test:
 	@cd ${WRKSRC} && ${TCLSH} tests/test_helper.tcl

@@ -1,25 +1,26 @@
-# Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
-
 PORTNAME=	libgpg-error
-PORTVERSION=	1.41
+PORTVERSION=	1.47
 CATEGORIES=	security devel
 MASTER_SITES=	GNUPG
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Common error values for all GnuPG components
+WWW=		https://www.gnupg.org/software/libgpg-error/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
 
-USES=		libtool tar:bzip2
+USES=		cpe libtool tar:bzip2
+
+CPE_VENDOR=	gnupg
 
 USE_LDCONFIG=		yes
 GNU_CONFIGURE=		yes
 CPP+=			-P
-CONFIGURE_ARGS=		--enable-static=yes
+CONFIGURE_ARGS=		--enable-static=yes \
+			--enable-install-gpg-error-config
 INSTALL_TARGET=		install-strip
 DOCS=		AUTHORS ChangeLog NEWS README
 INFO=		gpgrt

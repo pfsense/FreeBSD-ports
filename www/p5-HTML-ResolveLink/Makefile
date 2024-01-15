@@ -1,6 +1,3 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
-
 PORTNAME=	HTML-ResolveLink
 PORTVERSION=	0.05
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Resolve relative links in (X)HTML into absolute URI
+WWW=		https://metacpan.org/release/HTML-ResolveLink
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

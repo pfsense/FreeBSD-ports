@@ -1,6 +1,3 @@
-# Created by: Michael Moll <kvedulv@kvedulv.de>
-# $FreeBSD$
-
 PORTNAME=	hammer_cli_foreman_ssh
 PORTVERSION=	0.0.3
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	SSH host commands for Hammer CLI
+WWW=		https://github.com/theforeman/hammer-cli-foreman-ssh
 
 LICENSE=	GPLv3+
 
@@ -17,7 +15,6 @@ RUN_DEPENDS=	rubygem-hammer_cli>=0.0.6:sysutils/rubygem-hammer_cli \
 		rubygem-net-ssh-multi>=1.2.1:security/rubygem-net-ssh-multi
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

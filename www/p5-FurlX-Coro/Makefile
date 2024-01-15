@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	FurlX-Coro
 PORTVERSION=	1.02
 PORTREVISION=	1
@@ -8,8 +6,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:GFUJI
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for multiple HTTP requests with Coro
+WWW=		https://metacpan.org/release/FurlX-Coro
 
 RUN_DEPENDS=	\
 	p5-Coro>0:devel/p5-Coro \

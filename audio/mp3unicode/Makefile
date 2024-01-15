@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mp3unicode
 PORTVERSION=	1.2.1
 PORTREVISION=	2
@@ -8,6 +6,7 @@ MASTER_SITES=	https://github.com/downloads/alonbl/mp3unicode/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ID3 tags charset converter
+WWW=		https://mp3unicode.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,6 +1,3 @@
-# Created by: Yuan-Chen Cheng <ycheng@sinica.edu.tw>
-# $FreeBSD$
-
 PORTNAME=	logrotate
 PORTVERSION=	3.13.0
 PORTREVISION=	1
@@ -16,7 +13,8 @@ LIB_DEPENDS=	libpopt.so:devel/popt
 USE_GITHUB=	yes
 
 PATCH_STRIP=		-p1
-USES=		autoreconf gmake localbase
+USES=		autoreconf cpe gmake localbase
+CPE_VENDOR=	logrotate_project
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-default-mail-command=/usr/bin/mailx \
 		--with-compress-command=/usr/bin/gzip \

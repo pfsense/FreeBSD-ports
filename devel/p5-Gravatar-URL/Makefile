@@ -1,6 +1,3 @@
-# Created by: andrey@kostenko.name
-# $FreeBSD$
-
 PORTNAME=	Gravatar-URL
 PORTVERSION=	1.07
 CATEGORIES=	devel perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Make URLs for Gravatars from an email address
+WWW=		https://metacpan.org/release/Gravatar-URL
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-DNS>=0:dns/p5-Net-DNS \

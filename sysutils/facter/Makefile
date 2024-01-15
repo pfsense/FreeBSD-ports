@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	facter
-PORTVERSION=	3.14.14
+PORTVERSION=	3.14.24
+PORTREVISION=	4
 CATEGORIES?=	sysutils
 MASTER_SITES=	https://downloads.puppetlabs.com/facter/
 
 MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	Cross-platform library for retrieving facts from OS
+WWW=		https://puppetlabs.com/facter
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,13 +19,13 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		liblibcpp-hocon.so:devel/cpp-hocon \
 		libyaml-cpp.so:devel/yaml-cpp
 
-CONFLICTS_INSTALL=	rubygem-facter-2*
+CONFLICTS_INSTALL=	rubygem-facter
 
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
-USES=		cmake:noninja compiler:c++11-lib ssl
+USES=		cmake:noninja compiler:c++11-lib cpe ruby ssl
+CPE_VENDOR=	puppet
 USE_LDCONFIG=	yes
-USE_RUBY=	yes
 CMAKE_ARGS+=	-DMAN_PATH=${MANPREFIX}/man
 CMAKE_OFF=	ENABLE_CXX_WERROR
 

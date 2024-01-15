@@ -1,6 +1,3 @@
-# Created by: Mateusz Piotrowski <0mp@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mourier
 DISTVERSION=	g20170925
 PORTREVISION=	1
@@ -8,6 +5,7 @@ CATEGORIES=	x11-fonts
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Alphabet of geometric symbols based on 7x7 units
+WWW=		https://velvetyne.fr/fonts/mourier/
 
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

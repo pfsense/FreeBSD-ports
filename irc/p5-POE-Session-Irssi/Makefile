@@ -1,6 +1,3 @@
-# Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
-
 PORTNAME=	POE-Session-Irssi
 PORTVERSION=	0.50
 PORTREVISION=	3
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Emit POE events for Irssi signals
+WWW=		https://metacpan.org/release/POE-Session-Irssi
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

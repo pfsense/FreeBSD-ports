@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
-
 PORTNAME=	IO-Interface
 PORTVERSION=	1.09
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for access to network card configuration information
+WWW=		https://metacpan.org/release/IO-Interface
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,12 @@
-# Created by: Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Data-URIEncode
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Allow complex data structures to be encoded using flat URIs
+WWW=		https://metacpan.org/pod/Data::URIEncode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

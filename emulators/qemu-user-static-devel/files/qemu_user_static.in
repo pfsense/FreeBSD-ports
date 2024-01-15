@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
 
 # PROVIDE: %%NAME%%
 # REQUIRE: LOGIN
@@ -74,36 +71,6 @@ list_cmd="${BINMISCCTL} list"
 	else
 		echo "$0: interpreter ${interpreter} not found, cannot register."
 	fi
-	# register mips interpreter styled 'mips'
-	interpreter=${QEMU_DIR}/${QEMU_PREFIX}mips${QEMU_SUFFIX}
-	if [ -x "${interpreter}" ]; then
-		${BINMISCCTL} add mips --interpreter "${interpreter}" \
-			--magic "\x7f\x45\x4c\x46\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08" \
-			--mask "\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff" \
-			--size 20 --set-enabled
-	else
-		echo "$0: interpreter ${interpreter} not found, cannot register."
-	fi
-	# register mipsle interpreter styled 'mipsel'
-	interpreter=${QEMU_DIR}/${QEMU_PREFIX}mipsel${QEMU_SUFFIX}
-	if [ -x "${interpreter}" ]; then
-		${BINMISCCTL} add mipsel --interpreter "${interpreter}" \
-			--magic "\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08\x00" \
-			--mask "\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff" \
-			--size 20 --set-enabled
-	else
-		echo "$0: interpreter ${interpreter} not found, cannot register."
-	fi
-	# register mips64 interpreter styled 'mips64'
-	interpreter=${QEMU_DIR}/${QEMU_PREFIX}mips64${QEMU_SUFFIX}
-	if [ -x "${interpreter}" ]; then
-		${BINMISCCTL} add mips64 --interpreter "${interpreter}" \
-			--magic "\x7f\x45\x4c\x46\x02\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08" \
-			--mask  "\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff" \
-			--size 20 --set-enabled
-	else
-		echo "$0: interpreter ${interpreter} not found, cannot register."
-	fi
 	# register powerpc interpreter styled 'ppc'
 	interpreter=${QEMU_DIR}/${QEMU_PREFIX}ppc${QEMU_SUFFIX}
 	if [ -x "${interpreter}" ]; then
@@ -134,16 +101,6 @@ list_cmd="${BINMISCCTL} list"
 	else
 		echo "$0: interpreter ${interpreter} not found, cannot register."
 	fi
-	# register sparc64 interpreter styled 'sparc64'
-	interpreter=${QEMU_DIR}/${QEMU_PREFIX}sparc64${QEMU_SUFFIX}
-	if [ -x "${interpreter}" ]; then
-		${BINMISCCTL} add sparc64 --interpreter "${interpreter}" \
-			--magic "\x7f\x45\x4c\x46\x02\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x2b" \
-			--mask "\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff" \
-			--size 20 --set-enabled
-	else
-		echo "$0: interpreter ${interpreter} not found, cannot register."
-	fi
 }
 
 %%NAME%%_stop()
@@ -158,7 +115,6 @@ list_cmd="${BINMISCCTL} list"
 	${BINMISCCTL} remove powerpc
 	${BINMISCCTL} remove powerpc64
 	${BINMISCCTL} remove riscv64
-	${BINMISCCTL} remove sparc64
 }
 
 run_rc_command "$1"

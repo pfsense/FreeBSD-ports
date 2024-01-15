@@ -1,18 +1,16 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	loggability
-PORTVERSION=	0.14.0
+PORTVERSION=	0.18.2
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Composable logging system built on the standard Logger library
+WWW=		https://hg.sr.ht/~ged/Loggability
 
 LICENSE=	BSD3CLAUSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

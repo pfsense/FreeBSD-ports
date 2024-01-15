@@ -1,13 +1,12 @@
-# Created by: Jaap Boender <jaapb@kerguelen.org>
-# $FreeBSD$
-
 PORTNAME=	menhir
 PORTVERSION=	20170712
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://cristal.inria.fr/~fpottier/menhir/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LR(1) parser generator for OCaml
+WWW=		http://cristal.inria.fr/~fpottier/menhir
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

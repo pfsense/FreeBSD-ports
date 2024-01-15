@@ -1,0 +1,187 @@
+  <vuln vid="1f0d0024-ac9c-11ee-8e91-1c697a013f4b">
+    <topic>mantis -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mantis-php74</name>
+	<name>mantis-php80</name>
+	<name>mantis-php81</name>
+	<name>mantis-php82</name>
+	<name>mantis-php83</name>
+	<range><lt>2.25.8,1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mantis 2.25.8 release reports:</p>
+	<blockquote cite="https://mantisbt.org/bugs/changelog_page.php?version_id=370">
+	  <p>Security and maintenance release</p>
+	  <ul>
+	    <li>0032432: Update guzzlehttp/psr7 to 1.9.1 (CVE-2023-29197)</li>
+	    <li>0032981: Information Leakage on DokuWiki Integration (CVE-2023-44394)</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-29197</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-29197</url>
+      <cvename>CVE-2023-44394</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-44394</url>
+    </references>
+    <dates>
+      <discovery>2023-10-14</discovery>
+      <entry>2024-01-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3ee577a9-aad4-11ee-86bb-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>120.0.6099.199</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>120.0.6099.199</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/01/stable-channel-update-for-desktop.html">
+	 <p>This update includes 6 security fixes:</p>
+	 <ul>
+	    <li>[1501798] High CVE-2024-0222: Use after free in ANGLE. Reported by Toan (suto) Pham of Qrious Secure on 2023-11-13</li>
+	    <li>[1505009] High CVE-2024-0223: Heap buffer overflow in ANGLE. Reported by Toan (suto) Pham and Tri Dang of Qrious Secure on 2023-11-24</li>
+	    <li>[1505086] High CVE-2024-0224: Use after free in WebAudio. Reported by Huang Xilin of Ant Group Light-Year Security Lab on 2023-11-25</li>
+	    <li>[1506923] High CVE-2024-0225: Use after free in WebGPU. Reported by Anonymous on 2023-12-01</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-0222</cvename>
+      <cvename>CVE-2024-0223</cvename>
+      <cvename>CVE-2024-0224</cvename>
+      <cvename>CVE-2024-0225</cvename>
+      <url>https://chromereleases.googleblog.com/2024/01/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2024-01-03</discovery>
+      <entry>2024-01-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d1b20e09-dbdf-432b-83c7-89f0af76324a">
+    <topic>electron27 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron27</name>
+	<range><lt>27.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v27.2.1">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-6706.</li>
+	    <li>Security: backported fix for CVE-2023-6705.</li>
+	    <li>Security: backported fix for CVE-2023-6703.</li>
+	    <li>Security: backported fix for CVE-2023-6702.</li>
+	    <li>Security: backported fix for CVE-2023-6704.</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-6706</cvename>
+      <url>https://github.com/advisories/GHSA-jqrg-rvpw-5fw5</url>
+      <cvename>CVE-2023-6705</cvename>
+      <url>https://github.com/advisories/GHSA-h27f-fw5q-c2gh</url>
+      <cvename>CVE-2023-6703</cvename>
+      <url>https://github.com/advisories/GHSA-9v72-359m-2vx4</url>
+      <cvename>CVE-2023-6702</cvename>
+      <url>https://github.com/advisories/GHSA-7hjc-c62g-4w73</url>
+      <cvename>CVE-2023-6704</cvename>
+      <url>https://github.com/advisories/GHSA-587x-fmc5-99p9</url>
+    </references>
+    <dates>
+      <discovery>2024-01-04</discovery>
+      <entry>2024-01-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0cee4f9c-5efb-4770-b917-f4e4569e8bec">
+    <topic>electron26 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron26</name>
+	<range><lt>26.6.4</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v26.6.4">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-6704.</li>
+	    <li>Security: backported fix for CVE-2023-6705.</li>
+	    <li>Security: backported fix for CVE-2023-6703.</li>
+	    <li>Security: backported fix for CVE-2023-6702.</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-6704</cvename>
+      <url>https://github.com/advisories/GHSA-587x-fmc5-99p9</url>
+      <cvename>CVE-2023-6705</cvename>
+      <url>https://github.com/advisories/GHSA-h27f-fw5q-c2gh</url>
+      <cvename>CVE-2023-6703</cvename>
+      <url>https://github.com/advisories/GHSA-9v72-359m-2vx4</url>
+      <cvename>CVE-2023-6702</cvename>
+      <url>https://github.com/advisories/GHSA-7hjc-c62g-4w73</url>
+    </references>
+    <dates>
+      <discovery>2024-01-04</discovery>
+      <entry>2024-01-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="13d83980-9f18-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Prefix Truncation Attack in the SSH protocol</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>14.0</ge><lt>14.0_4</lt></range>
+	<range><ge>13.2</ge><lt>13.2_9</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>The SSH protocol executes an initial handshake between the
+	server and the client.  This protocol handshake includes the
+	possibility of several extensions allowing different options to be
+	selected.  Validation of the packets in the handshake is done through
+	sequence numbers.</p>
+	<h1>Impact:</h1>
+	<p>A man in the middle attacker can silently manipulate handshake
+	messages to truncate extension negotiation messages potentially
+	leading to less secure client authentication algorithms or deactivating
+	keystroke timing attack countermeasures.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-48795</cvename>
+      <freebsdsa>SA-23:19.openssh</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-12-19</discovery>
+      <entry>2024-01-02</entry>
+    </dates>
+  </vuln>

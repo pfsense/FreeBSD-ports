@@ -1,6 +1,3 @@
-# Created by: shanee@rabbit.augusta.de
-# $FreeBSD$
-
 PORTNAME=	zorro
 PORTVERSION=	1.1.8
 PORTREVISION=	3

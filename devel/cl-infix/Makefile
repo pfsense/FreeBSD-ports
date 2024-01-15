@@ -1,6 +1,3 @@
-# Created by: Pedro F. Giffuni
-# $FreeBSD$
-
 PORTNAME=	infix
 PORTVERSION=	19960628
 PORTREVISION=	3
@@ -14,10 +11,16 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Lisp macro for reading math expressions in infix form
+WWW=		https://www.cliki.net/infix
+
+# Converted from NO_CDROM
+LICENSE=	infix
+LICENSE_NAME=	infix
+LICENSE_TEXT=	No fees or compensation can be charged
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 NO_BUILD=	yes
-NO_CDROM=	No fees or compensation can be charged
 
 USE_ASDF=	yes
 

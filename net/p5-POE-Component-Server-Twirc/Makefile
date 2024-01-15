@@ -1,6 +1,3 @@
-# Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Server-Twirc
 PORTVERSION=	0.20
 CATEGORIES=	net perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Twitter/IRC gateway
+WWW=		https://metacpan.org/release/POE-Component-Server-Twirc
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

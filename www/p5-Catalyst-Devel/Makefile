@@ -1,6 +1,3 @@
-# Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Devel
 PORTVERSION=	1.42
 CATEGORIES=	www perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst Development Tools
+WWW=		https://metacpan.org/release/Catalyst-Devel
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

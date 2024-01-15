@@ -1,8 +1,5 @@
-# Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
-
 PORTNAME=	zoneinfo
-DISTVERSION=	2020f
+DISTVERSION=	2023c
 CATEGORIES=	misc
 MASTER_SITES=	https://data.iana.org/time-zones/releases/ \
 		ftp://ftp.iana.org/tz/releases/
@@ -18,7 +15,7 @@ PREFIX=		/usr
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	BACKWARD
-OPTIONS_DEFAULT=
+OPTIONS_DEFAULT= BACKWARD
 OPTIONS_SUB=	yes
 
 BACKWARD_DESC=	Include backwards compatible zones

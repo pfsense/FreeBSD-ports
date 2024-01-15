@@ -1,6 +1,3 @@
-# Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Continuity
 PORTVERSION=	1.6
 CATEGORIES=	www perl5
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Stateful Web applications in Perl
+WWW=		https://metacpan.org/release/Continuity
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

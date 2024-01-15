@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libevhtp
 PORTVERSION=	1.2.16
 PORTREVISION=	4
@@ -7,6 +5,7 @@ CATEGORIES=	www
 
 MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	Flexible replacement for libevent httpd API
+WWW=		https://github.com/ellzey/libevhtp
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

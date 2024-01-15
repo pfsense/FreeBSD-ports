@@ -1,6 +1,3 @@
-# Created by: Rodrigo OSORIO <rodrigo@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	podcastdl
 PORTVERSION=	0.3.3
 CATEGORIES=	multimedia
@@ -9,6 +6,7 @@ MASTER_SITES=	http://rodrigo.osorio.free.fr/freebsd/distfiles/ \
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Simple command line podcast client written in plain C
+WWW=		https://www.osorio.me/projects/dev/podcastdl/
 
 LICENSE=	ISCL
 

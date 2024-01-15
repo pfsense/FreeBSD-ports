@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-Format
 PORTVERSION=	0.07
 CATEGORIES=	security perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Conversion utilities for encryption applications
+WWW=		https://metacpan.org/release/Crypt-Format
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

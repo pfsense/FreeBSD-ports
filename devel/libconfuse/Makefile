@@ -1,6 +1,3 @@
-# Created by: Juraj Lutter <otis@sk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	libconfuse
 PORTVERSION=	3.3
 PORTREVISION=	2
@@ -10,10 +7,12 @@ DISTNAME=	confuse-${PORTVERSION}
 
 MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Configuration file parsing library
+WWW=		https://savannah.nongnu.org/projects/confuse/
 
 LICENSE=	ISCL
 
-USES=		iconv libtool pathfix pkgconfig tar:xz
+USES=		cpe iconv libtool pathfix pkgconfig tar:xz
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

@@ -1,6 +1,3 @@
-# Created by: James E Keenan <jkeenan@cpan.org>
-# $FreeBSD$
-
 PORTNAME=	App-cpanminus-reporter
 PORTVERSION=	0.17
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	jkeenan@cpan.org
 COMMENT=	Perl extension to send cpanm output to CPAN Testers database
+WWW=		https://metacpan.org/release/App-cpanminus-reporter
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

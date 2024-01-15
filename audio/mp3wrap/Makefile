@@ -1,14 +1,12 @@
-# Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	mp3wrap
 PORTVERSION=	0.5
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	uqs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Merge mp3 files (and other formats)
+WWW=		https://mp3wrap.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 

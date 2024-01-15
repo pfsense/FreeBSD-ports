@@ -1,8 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Progress-Any
-PORTVERSION=	0.219
+PORTVERSION=	0.220
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PERLANCAR
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Record progress to any output
+WWW=		https://metacpan.org/release/Progress-Any
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

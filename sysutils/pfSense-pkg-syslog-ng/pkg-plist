@@ -1,4 +1,4 @@
-pkg/syslog-ng.xml
+pkg/syslogng.xml
 pkg/syslog-ng.inc
 /etc/inc/priv/syslog-ng.priv.inc
 pkg/syslog-ng_advanced.xml

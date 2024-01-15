@@ -1,6 +1,3 @@
-# Created by: Kawaguti Ginga <ginga@athena.club.ne.jp>
-# $FreeBSD$
-
 PORTNAME=	ng
 PORTVERSION=	1.4.4
 PORTREVISION=	2
@@ -12,6 +9,7 @@ PATCHFILES=	ng-1.4.4-replace_bug.patch
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Light Emacs-clone with Japanese support
+WWW=		http://tt.sakura.ne.jp/~amura/ng/
 
 USES=		ncurses
 MAKEFILE=	sys/sysv/Makefile
@@ -23,7 +21,7 @@ LDFLAGS+=	-lncurses
 
 DOCSDIR=	${PREFIX}/share/doc/ja/${PORTNAME}
 
-CONFLICTS=	ng-devel-[0-9]*
+CONFLICTS=	ng-devel
 
 PORTDOCS=	${MYPORTDOCS:C/$/.euc-jp/}
 PLIST_FILES=	bin/ng

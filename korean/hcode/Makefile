@@ -1,6 +1,3 @@
-# Created by: Junho CHOI <junho.choi@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	hcode
 PORTVERSION=	2.1.3
 PORTREVISION=	1

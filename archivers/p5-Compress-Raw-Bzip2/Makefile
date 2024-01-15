@@ -1,14 +1,12 @@
-# Created by: Thomas Abthorpe <thomas@goodking.ca>
-# $FreeBSD$
-
 PORTNAME=	Compress-Raw-Bzip2
-PORTVERSION=	2.096
+PORTVERSION=	2.206
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Low-Level Interface to bzip2 compression library
+WWW=		https://metacpan.org/release/Compress-Raw-Bzip2
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,18 +1,16 @@
-# Created by: Oddbjorn Steffensen <oddbjorn@tricknology.org>
-# $FreeBSD$
-
 PORTNAME=	pyweblib
 PORTVERSION=	1.3.13
 CATEGORIES=	www
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Yet another web programming framework for Python
+WWW=		http://www.stroeder.com/pylib/PyWebLib/
 
 LICENSE=	GPLv2
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 PORTDOCS=	pyweblib.forms.html pyweblib.helper.html \

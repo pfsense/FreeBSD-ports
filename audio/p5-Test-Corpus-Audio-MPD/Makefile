@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Test-Corpus-Audio-MPD
 PORTVERSION=	1.120990
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Automate launching of fake mdp for testing purposes
+WWW=		https://metacpan.org/release/Test-Corpus-Audio-MPD
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-ShareDir-PathClass>0:devel/p5-File-ShareDir-PathClass \

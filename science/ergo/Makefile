@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	ergo
-DISTVERSION=	3.8
+DISTVERSION=	3.8.2
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	http://www.ergoscf.org/source/tarfiles/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Quantum chemistry program for large-scale atomic calculations
+WWW=		http://www.ergoscf.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,11 +23,13 @@ GNU_CONFIGURE=	yes
 
 TEST_TARGET=	check
 
+CONFLICTS_INSTALL=	ergo-irc-server # bin/ergo
+
 OPTIONS_DEFINE_amd64=	SSE
 OPTIONS_DEFINE_i386=	SSE
-OPTIONS_DEFAULT_amd64=	SSE
-OPTIONS_DEFAULT_i386=	SSE
 
 SSE_CONFIGURE_ENABLE=	sse-intrinsics
+
+# the lapack_test test fails, reported to the upstream's e-mail
 
 .include <bsd.port.mk>

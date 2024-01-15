@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	libdomainkeys
 PORTVERSION=	0.69
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/domainkeys/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DomainKeys library
+WWW=		https://domainkeys.sourceforge.net/
 
 USES=		uidfix ssl
 USE_LDCONFIG=	yes

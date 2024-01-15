@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	Unicode-Tussle
-PORTVERSION=	1.111
+PORTVERSION=	1.115
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=CPAN:BDFOY
@@ -9,12 +7,12 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bokutin@bokut.in
 COMMENT=	Tom's Unicode Scripts So Life is Easier
+WWW=		https://metacpan.org/release/Unicode-Tussle
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	p5-Lingua-EN-Syllable>=0:textproc/p5-Lingua-EN-Syllable \
-		p5-Lingua-JA-Romanize-Japanese>=0:japanese/p5-Lingua-JA-Romanize-Japanese \
 		p5-Lingua-KO-Hangul-Util>=0:korean/p5-Lingua-KO-Hangul-Util \
 		p5-Lingua-KO-Romanize-Hangul>=0:korean/p5-Lingua-KO-Romanize-Hangul \
 		p5-Lingua-ZH-Romanize-Pinyin>=0:chinese/p5-Lingua-ZH-Romanize-Pinyin \

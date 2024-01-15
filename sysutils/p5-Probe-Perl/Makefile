@@ -1,6 +1,3 @@
-# Created by: Felippe de Meirelles Motta <lippemail@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Probe-Perl
 PORTVERSION=	0.03
 CATEGORIES=	sysutils perl5
@@ -8,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:KWILLIAMS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Information about the currently running perl
+WWW=		https://metacpan.org/release/Probe-Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

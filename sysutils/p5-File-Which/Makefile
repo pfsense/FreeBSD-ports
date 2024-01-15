@@ -1,14 +1,12 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-Which
-PORTVERSION=	1.23
+PORTVERSION=	1.27
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Portable implementation of which(1) in Perl
+WWW=		https://metacpan.org/release/File-Which
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

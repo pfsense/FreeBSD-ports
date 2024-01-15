@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	cmrtlib
 DISTVERSIONPREFIX=	intel-media-
 DISTVERSION=	20.1.1
 CATEGORIES=	multimedia
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C for Metal Runtime
+WWW=		https://01.org/intel-media-for-linux
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC:H}/LICENSE.md
 
 ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
+ONLY_FOR_ARCHS_REASON=	only Intel GPUs on x86 are supported
 
 LIB_DEPENDS=	libva.so:multimedia/libva
 

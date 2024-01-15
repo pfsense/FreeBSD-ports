@@ -1,15 +1,13 @@
-# Created by: Guillaume Paquet <amyfoub@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	xpad
 PORTVERSION=	3.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	deskutils
 MASTER_SITES=	http://launchpad.net/xpad/stable/${PORTVERSION}/+download/
 PKGNAMESUFFIX=	3
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Virtual note-pad system for your X11 desktop
+WWW=		https://launchpad.net/xpad/stable
 
 LICENSE=	GPLv3
 
@@ -21,11 +19,10 @@ USES=	pkgconfig gmake tar:bzip2 xorg gnome
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
-CONFLICTS_INSTALL=	xpad-[0-9]*
+CONFLICTS_INSTALL=	xpad
 
 USE_XORG=	x11 sm ice
 USE_GNOME=	gtk20 intltool cairo
-INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 
 NLS_USES=		gettext

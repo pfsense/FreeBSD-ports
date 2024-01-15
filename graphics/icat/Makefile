@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	icat
 PORTVERSION=	0.5
 DISTVERSIONPREFIX=	v
@@ -9,6 +6,7 @@ CATEGORIES=	graphics
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Displays images in 256-color capable terminals
+WWW=		https://github.com/atextor/icat
 
 LICENSE=	BSD2CLAUSE
 
@@ -18,7 +16,7 @@ USES=		dos2unix gmake localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	atextor
 
-CONFLICTS=	sleuthkit-[0-9]*
+CONFLICTS=	sleuthkit
 
 PLIST_FILES=	bin/icat \
 		share/man/man1/icat.1.gz

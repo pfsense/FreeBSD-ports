@@ -1,41 +1,53 @@
-# $FreeBSD$
-
 PORTNAME=	river
-PORTVERSION=	s20210217
-CATEGORIES=	x11-wm
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.2.6
+CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Dynamic tiling Wayland compositor
+WWW=		https://github.com/riverwm/river
 
-LICENSE=	GPLv3+
+LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols \
-		wlroots>=0.12.0:x11-toolkits/wlroots \
-		zig>=0.7.1:lang/zig
+BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
+		wayland-protocols>0:graphics/wayland-protocols \
+		wlroots>=0.16.0:x11-toolkits/wlroots \
+		zig>=0.11.0:lang/zig
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
+		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
 USES=		pkgconfig xorg
 USE_GITHUB=	yes
 USE_XORG=	pixman
-GH_ACCOUNT=	ifreund
-GH_TAGNAME=	3d66cbd
-GH_TUPLE=	ifreund:zig-pixman:7847fd1:zig_pixman/deps/zig-pixman \
-		ifreund:zig-wayland:5def9c5:zig_wayland/deps/zig-wayland \
-		ifreund:zig-xkbcommon:9e4d41f:zig_xkbcommon/deps/zig-xkbcommon \
-		swaywm:zig-wlroots:b38d3d5:zig_wlroots/deps/zig-wlroots
+GH_ACCOUNT=	riverwm
+GH_TUPLE=	ifreund:zig-pixman:b0a9610:zig_pixman/deps/zig-pixman \
+		ifreund:zig-wayland:b9c6fcb:zig_wayland/deps/zig-wayland \
+		ifreund:zig-xkbcommon:e93ceb0:zig_xkbcommon/deps/zig-xkbcommon \
+		swaywm:zig-wlroots:46c81cd:zig_wlroots/deps/zig-wlroots
 MAKE_ENV=	DESTDIR="${STAGEDIR}"
 CONFIGURE_ARGS=	--prefix "${PREFIX}" \
-		${WITH_DEBUG:U-Drelease-fast=true} \
+		${WITH_DEBUG:D:U-Doptimize=ReleaseFast} \
+		${WITH_PIE:D-Dpie} \
+		${STRIP:C/.+/-Dstrip/} \
+		-Dcpu=${CPUTYPE:Ubaseline} \
 		--verbose
 NO_INSTALL=	yes # strip(1) breaks runtime
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}ctl \
 		bin/${PORTNAME}tile \
-		${ETCDIR}/init
+		libdata/pkgconfig/${PORTNAME}-protocols.pc \
+		share/${PORTNAME}-protocols/${PORTNAME}-layout-v3.xml \
+		share/bash-completion/completions/${PORTNAME}ctl \
+		share/fish/vendor_completions.d/${PORTNAME}ctl.fish \
+		share/zsh/site-functions/_${PORTNAME}ctl \
+		${NULL}
+
+# https://github.com/ziglang/zig/issues/12170 (pixman)
+MAKE_ENV+=	PKG_CONFIG_SYSTEM_LIBRARY_PATH="${LOCALBASE}/lib"
 
 OPTIONS_DEFINE=	MANPAGES X11
 OPTIONS_DEFAULT=MANPAGES X11
@@ -46,15 +58,17 @@ MANPAGES_CONFIGURE_OFF=	-Dman-pages=false
 MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
 			share/man/man1/${PORTNAME}ctl.1.gz \
 			share/man/man1/${PORTNAME}tile.1.gz \
-			share/man/man7/${PORTNAME}-layouts.7.gz
+			${NULL}
 
 X11_CONFIGURE_ON=	-Dxwayland=true
 X11_CONFIGURE_OFF=	-Dxwayland=false
 
 post-patch:
-# Respect PREFIX for system-wide config (a la sysconfdir in Meson)
-	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}&,' \
-		${WRKSRC}/doc/${PORTNAME}.1.scd \
+# Respect devel/pkgconf default search
+	@${REINPLACE_CMD} -e '/pkgconfig/s/share/libdata/' \
+		${WRKSRC}/build.zig
+# Respect PREFIX in path references
+	@${REINPLACE_CMD} -e 's,/usr,${LOCALBASE},' \
 		${WRKSRC}/doc/${PORTNAME}ctl.1.scd
 
 do-build:
@@ -63,4 +77,5 @@ do-build:
 do-test:
 	@(cd ${WRKSRC} && ${TEST_ENV} zig build test ${CONFIGURE_ARGS})
 
+.include "${.CURDIR:H:H}/x11-toolkits/wlroots016/override.mk"
 .include <bsd.port.mk>

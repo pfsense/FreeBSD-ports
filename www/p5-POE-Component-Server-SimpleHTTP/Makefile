@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Server-SimpleHTTP
-PORTVERSION=	2.28
+PORTVERSION=	2.30
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to serve HTTP requests in POE
+WWW=		https://metacpan.org/release/POE-Component-Server-SimpleHTTP
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

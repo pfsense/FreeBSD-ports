@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Parse-Netstat
 PORTVERSION=	0.14
 CATEGORIES=	net perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Parse the output of netstat command
+WWW=		https://metacpan.org/release/Parse-Netstat
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

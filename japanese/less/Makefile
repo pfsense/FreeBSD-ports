@@ -1,6 +1,3 @@
-# Created by: Nobuhiro Yasutomi <nobu@psrc.isac.co.jp>
-# $FreeBSD$
-
 PORTNAME=	less
 PORTVERSION=	382.262.03.01
 DISTVERSIONPREFIX=	v
@@ -8,6 +5,7 @@ CATEGORIES=	japanese
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Enhanced less(1) supporting iso-2022-jp and UTF-8
+WWW=		http://web.archive.org/web/20070220213232/http://www25.big.or.jp/~jam/less
 
 LICENSE=	GPLv2
 

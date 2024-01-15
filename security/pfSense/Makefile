@@ -1,14 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense
-DISTVERSION=	2.6.0
+DISTVERSION=	${PRODUCT_VERSION}
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security
-MASTER_SITES=	# empty
-DISTFILES=	# empty
-EXTRACT_ONLY=	# empty
 
-MAINTAINER=	renato@pfsense.com
-COMMENT?=	Meta package to install pfSense required ports
+MAINTAINER=	coreteam@pfsense.org
+COMMENT?=	Main pfSense package
 
 LICENSE=	APACHE20
 
@@ -21,8 +17,9 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		cpdup>=0:sysutils/cpdup \
 		cpustats>=0:sysutils/cpustats \
 		dhcp6>=0:net/dhcp6 \
-		dhcpleases6>=0:sysutils/dhcpleases6 \
+		dhcpcd>0:net/dhcpcd \
 		dhcpleases>=0:sysutils/dhcpleases \
+		dhcpleases6>=0:sysutils/dhcpleases6 \
 		dnsmasq>=0:dns/dnsmasq \
 		dpinger>=0:net/dpinger \
 		expiretable>=0:security/expiretable \
@@ -34,6 +31,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		isc-dhcp44-client>=0:net/isc-dhcp44-client \
 		isc-dhcp44-relay>=0:net/isc-dhcp44-relay \
 		isc-dhcp44-server>=0:net/isc-dhcp44-server \
+		kea>0:net/kea \
 		libxml2>=0:textproc/libxml2 \
 		links>=0:www/links \
 		minicron>=0:sysutils/minicron \
@@ -49,11 +47,11 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
-		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
-		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}phpseclib>=0:security/phpseclib@${PHP_FLAVOR} \
-		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
+		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
+		pfSense-composer-deps>=0:devel/pfSense-composer-deps \
+		pfSense-gnid>=0:security/pfSense-gnid \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pfSense-upgrade>=0:sysutils/pfSense-upgrade \
 		pftop>=0:sysutils/pftop \
@@ -67,9 +65,9 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		uclcmd>=0:devel/uclcmd \
 		unbound>=0:dns/unbound \
 		voucher>=0:sysutils/voucher \
-		wireguard-tools>=0:security/wireguard-tools \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
+		whois>0:net/whois \
 		xinetd>=0:security/xinetd \
 		openvpn-auth-script>=0:security/openvpn-auth-script \
 		opensc>0:security/opensc \
@@ -83,33 +81,45 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		kmod php:flavors
 
-IGNORE_WITH_PHP=	72 73
-USE_PHP=	bz2 bcmath ctype curl dom filter gettext intl json mbstring \
+IGNORE_WITH_PHP=	72 73 74 80 81 82
+USE_PHP=	bz2 bcmath ctype curl dom filter gettext gmp intl json mbstring \
 		mcrypt opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
 		sysvshm sqlite3 tokenizer xml ldap zlib xmlreader xmlwriter
 
 NO_BUILD=	yes
-NO_MTREE=	yes
 
 CONFLICTS=	pfSense-vmware-[0-9]*
 
-PLIST_FILES=	/etc/version.patch
-PLIST_DIRS=	/etc
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.netgate.com
+GL_ACCOUNT=	pfSense
+GL_PROJECT=	${PFSENSE_SRC_REPO}
+GL_COMMIT=	${PFSENSE_COMMITHASH}
+MASTER_SITE_BACKUP=
+NO_CHECKSUM=yes
+
+SUB_FILES=	pkg-post-install
+SUB_LIST=	PRODUCT_NAME=${PRODUCT_NAME}
+PKGPOSTINSTALL=	${WRKDIR}/pkg-post-install
 
 .include <bsd.port.pre.mk>
 
-.if (${ARCH} == "amd64" || ${ARCH} == "i386")
+.if ${ARCH} == "amd64"
 RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
 		smartmontools>=0:sysutils/smartmontools \
 		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \
 		beep>=0:audio/beep \
 		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
-		devcpu-data>=0:sysutils/devcpu-data
+		cpu-microcode>=0:sysutils/cpu-microcode
 .endif
 
 do-install:
-	${MKDIR} ${STAGEDIR}/etc
+	(cd ${WRKSRC}/src && ${COPYTREE_SHARE} "etc usr" ${STAGEDIR})
+	${ECHO} "${PRODUCT_NAME}" > ${STAGEDIR}/etc/platform
 	${ECHO} ${PORTREVISION} > ${STAGEDIR}/etc/version.patch
+	${ECHO} "${PFSENSE_COMMITHASH}" > ${STAGEDIR}/etc/version.lastcommit
+	${ECHO} "${PFSENSE_DATESTRING}" > ${STAGEDIR}/etc/version.buildtime
+	${MKDIR} "${STAGEDIR}/cf/conf"
 
 .include <bsd.port.post.mk>

@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	pfetch
 DISTVERSION=	0.6.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Pretty system information tool written in POSIX sh
+WWW=		https://github.com/dylanaraps/pfetch
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

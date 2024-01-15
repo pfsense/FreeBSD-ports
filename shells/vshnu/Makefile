@@ -1,6 +1,3 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vshnu
 PORTVERSION=	1.0500
 CATEGORIES=	shells perl5
@@ -8,6 +5,7 @@ MASTER_SITES=	http://www.cs.indiana.edu/~kinzler/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	New Visual Shell
+WWW=		https://www.cs.indiana.edu/~kinzler/vshnu/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

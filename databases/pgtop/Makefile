@@ -1,6 +1,3 @@
-# Created by: Bartek Rutkowski <r@robakdesign.com>
-# $FreeBSD$
-
 PORTNAME=	pgtop
 PORTVERSION=	0.11
 CATEGORIES=	databases
@@ -9,6 +6,7 @@ MASTER_SITE_SUBDIR=	CPAN:COSIMO
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Display PostgreSQL performance info like top(1)
+WWW=		https://metacpan.org/release/COSIMO/pgtop-0.05
 
 LICENSE=	GPLv2
 

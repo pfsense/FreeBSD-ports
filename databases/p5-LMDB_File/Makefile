@@ -1,6 +1,3 @@
-# Created by: vanilla@
-# $FreeBSD$
-
 PORTNAME=	LMDB_File
 PORTVERSION=	0.12
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Perl wrapper around the OpenLDAP's LMDB
+WWW=		https://metacpan.org/release/LMDB_File
 
 LICENSE=	ART20
 

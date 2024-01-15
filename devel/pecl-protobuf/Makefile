@@ -1,18 +1,14 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	protobuf
-PORTVERSION=	3.14.0
+PORTVERSION=	3.21.12
 CATEGORIES=	devel
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP binding for Protocol buffers
+WWW=		https://pecl.php.net/package/protobuf
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		localbase php:pecl
-
-IGNORE_WITH_PHP=80
 
 .include <bsd.port.mk>

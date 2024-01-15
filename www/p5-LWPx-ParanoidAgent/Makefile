@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	LWPx-ParanoidAgent
 PORTVERSION=	1.12
 CATEGORIES=	www security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Subclass of LWP::UserAgent that protects you from harm
+WWW=		https://metacpan.org/release/LWPx-ParanoidAgent
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

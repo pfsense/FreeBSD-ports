@@ -1,19 +1,18 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	parrot
 PORTVERSION=	8.1.0
-PORTREVISION=	14
+PORTREVISION=	20
 CATEGORIES=	lang
 MASTER_SITES=	ftp://ftp.parrot.org/pub/parrot/releases/supported/${PORTVERSION}/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Virtual machine for dynamic languages
+WWW=		https://www.parrotcode.org/
 
 LICENSE=	ART20
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
+		p5-Pod-Parser>=0:textproc/p5-Pod-Parser \
 		pcre-config:devel/pcre
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libicudata.so:devel/icu

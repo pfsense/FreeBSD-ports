@@ -1,13 +1,12 @@
-# Created by: Yuzo FURUKAWA <hurukawa@kuee.kyoto-u.ac.jp>
-# $FreeBSD$
-
 PORTNAME=	epstool
 PORTVERSION=	3.09
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.ghostgum.com.au/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create or extract preview bitmaps in EPS files
+WWW=		http://www.ghostgum.com.au/software/epstool.htm
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENCE

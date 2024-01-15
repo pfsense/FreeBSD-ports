@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX?=	-${OSSEC_TYPE}-config
 COMMENT?=	Configuration manager for ossec-hids-${OSSEC_TYPE}
+WWW=		https://ossec.github.io
 OSSEC_TYPE?=	local
 
 .include "${.CURDIR}/../ossec-hids/version.mk"
@@ -10,17 +9,17 @@ MASTERDIR?=	${.CURDIR}
 DISTINFO_FILE?=	${MASTERDIR}/../ossec-hids-local/distinfo
 
 .if ${OSSEC_TYPE} == local
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == agent
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-local-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-local \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == server
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-local-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-local
 .endif
 
 .if !defined(MAINTAINER_MODE)

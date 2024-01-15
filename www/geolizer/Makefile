@@ -1,6 +1,3 @@
-# Created by: ache@FreeBSD.org
-# $FreeBSD$
-
 MAINTAINER=	dinoex@FreeBSD.org
 
 MASTERDIR?=	${.CURDIR}/../webalizer

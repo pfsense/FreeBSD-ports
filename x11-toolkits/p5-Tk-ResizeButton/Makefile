@@ -1,6 +1,3 @@
-# Created by: Lubomir Marinov <lubomir_m@abv.bg>
-# $FreeBSD$
-
 PORTNAME=	Tk-ResizeButton
 PORTVERSION=	0.01
 PORTREVISION=	5

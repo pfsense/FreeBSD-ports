@@ -1,6 +1,3 @@
-# Created by: gelf
-# $FreeBSD$
-
 PORTNAME=	fte
 PORTVERSION=	20110708
 CATEGORIES=	editors
@@ -11,18 +8,23 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-featured text editor for X11
+WWW=		https://fte.sourceforge.net/
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual
 
-WRKSRC=		${WRKDIR}/fte
+DEPRECATED=	Upstream last release was in 2001
+EXPIRATION_DATE=	2024-01-16
 
 USES=		perl5 zip xorg
 USE_PERL5=	build
 USE_XORG=	x11 xpm
 
-CFLAGS+=	-DHAVE_STRLCAT -DHAVE_STRLCPY
 MAKE_ENV=	INSTALL_NONROOT=1
+
+CFLAGS+=	-DHAVE_STRLCAT -DHAVE_STRLCPY
+
+WRKSRC=		${WRKDIR}/fte
 
 OPTIONS_DEFINE=	DOCS
 

@@ -3,7 +3,7 @@
  * backup.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -21,20 +21,7 @@
  */
 
 function backup_sync_package() {
-	global $config;
-	if ($config['installedpackages']['backup']['config'] != "") {
-		foreach ($config['installedpackages']['backup']['config'] as $rowhelper) {
-			if ($rowhelper['enabled'] != "false") {
-				//$tmp_php = base64_decode($rowhelper['php']);
-				if (strlen($tmp_php) > 0) {
-					$tmp .= "// name: " . $rowhelper['name'] . " \n";
-					$tmp .= "// description: " . $rowhelper['description'] . " \n\n";
-					$tmp .= base64_decode($rowhelper['php']);
-					$tmp .= "\n";
-				}
-			}
-		}
-	}
+	// this was broken code.
 }
 
 function backup_install_command() {

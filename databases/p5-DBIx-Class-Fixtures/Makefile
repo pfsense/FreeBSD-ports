@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-Fixtures
 PORTVERSION=	1.001039
 CATEGORIES=	databases perl5
@@ -7,8 +5,9 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SKAUFMAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to use fixtures with DBIx::Class
+WWW=		https://metacpan.org/release/DBIx-Class-Fixtures
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

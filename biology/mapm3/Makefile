@@ -1,6 +1,3 @@
-# Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
-
 PORTNAME=	mapm3
 PORTVERSION=	3.0
 PORTREVISION=	1
@@ -13,6 +10,7 @@ DISTNAME=	mapm3-source
 
 MAINTAINER=	tphilipp@potion-studios.com
 COMMENT=	Constructs linkage maps of markers segregating in experimental crosses
+WWW=		http://www.broad.mit.edu/ftp/distribution/software/mapmaker3/
 
 LICENSE=	MAPMAKER
 LICENSE_NAME=	Whitehead Institute Mapmaker license

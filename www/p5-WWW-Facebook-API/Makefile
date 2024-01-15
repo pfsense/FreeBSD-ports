@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	WWW-Facebook-API
 PORTVERSION=	0.4.18
 PORTREVISION=	3
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Facebook API implementation in Perl
+WWW=		https://metacpan.org/release/WWW-Facebook-API
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

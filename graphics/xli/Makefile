@@ -1,9 +1,6 @@
-# Created by: Satoshi Asami <asami@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xli
 PORTVERSION=	1.17.0
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	graphics
 MASTER_SITES=	DEBIAN
 DISTNAME=	xli_${PORTVERSION}+${XLI_SNAPVER:C/-//g}.orig
@@ -13,9 +10,9 @@ COMMENT=	Utilities to display images in X11
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-CONFLICTS_INSTALL=	xloadimage-*
+CONFLICTS_INSTALL=	xloadimage
 
-USES=		imake jpeg xorg
+USES=		cpe imake jpeg xorg
 USE_XORG=	xi
 WRKSRC=		${WRKDIR}/xli-${XLI_SNAPVER}
 

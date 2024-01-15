@@ -1,6 +1,3 @@
-# Created by: Li-Wen Hsu <lwhsu@lwhsu.org>
-# $FreeBSD$
-
 PORTNAME=	urlimport
 PORTVERSION=	0.42b
 PORTREVISION=	1
@@ -11,10 +8,11 @@ EXTRACT_SUFX=	.py
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Python script for importing modules/packages over the net
+WWW=		https://urlimport.codeshift.net/
 
 NO_WRKSUBDIR=	yes
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 do-extract:

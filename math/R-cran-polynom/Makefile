@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	polynom
-DISTVERSION=	1.4-0
-PORTREVISION=	2
+DISTVERSION=	1.4-1
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Functions to Implement a Class for Univariate Polynomial Manipulations
+WWW=		https://cran.r-project.org/web/packages/polynom/
 
 LICENSE=	GPLv2
 

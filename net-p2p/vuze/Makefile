@@ -1,6 +1,3 @@
-# Created by: Jeremy Faulkner <gldisater@gldis.ca>
-# $FreeBSD$
-
 PORTNAME=	vuze
 PORTVERSION=	5.7.4.0
 PORTREVISION=	2
@@ -10,6 +7,7 @@ DISTNAME=	Vuze_${PORTVERSION:S/.//g}_source
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BitTorrent client written in Java
+WWW=		https://www.vuze.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL.txt
@@ -20,13 +18,12 @@ BUILD_DEPENDS=	${JAVALIBDIR}/log4j.jar:devel/log4j \
 		${JAVALIBDIR}/swt.jar:x11-toolkits/swt
 RUN_DEPENDS=	${JAVALIBDIR}/swt.jar:x11-toolkits/swt
 
-USES=		gnome zip
+USES=		cpe gnome zip
 USE_JAVA=	yes
 JAVA_OS=	native
 USE_ANT=	yes
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 JARFILE=	${PORTNAME}.jar
 

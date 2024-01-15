@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ctpl
 PORTVERSION=	0.3.4
 CATEGORIES=	textproc devel
@@ -7,6 +5,7 @@ MASTER_SITES=	http://download.tuxfamily.org/ctpl/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C Template (Parser) Library
+WWW=		https://ctpl.tuxfamily.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,67 +1,33 @@
-# Created by: lightside <lightside@gmx.com>
-# $FreeBSD$
-
 PORTNAME=	treesheets
-PORTVERSION=	1.0.2
-PORTREVISION=	1
-DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.20231124
 CATEGORIES=	deskutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Free form data organizer
+WWW=		https://strlen.com/treesheets/
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/ZLIB_LICENSE.txt
 
-USES=		compiler:c++17-lang desktop-file-utils gnome
-
+USES=		cmake compiler:c++17-lang desktop-file-utils gnome \
+		shared-mime-info
 USE_GITHUB=	yes
 GH_ACCOUNT=	aardappel
+GH_TAGNAME=	6985406227
+USE_WX=		3.2
 
-USE_WX=		3.0+
-INSTALLS_ICONS=	yes
+PORTSCOUT=	ignore:1 # upstream uses CI run ids as releases
 
-BUILD_WRKSRC=		${WRKSRC}/src
-PACKAGE_VERSION=	\"${PORTVERSION}\"
-MAKE_ENV=		PACKAGE_VERSION=${PACKAGE_VERSION:Q}
+PORTDATA=	images scripts
+PORTDOCS=	docs readme.html
+PORTEXAMPLES=	examples
 
-PORTDATA=	images scripts translations/*/*.mo
-PORTDOCS=	*.html docs
-PORTEXAMPLES=	*
+OPTIONS_DEFINE=	DOCS EXAMPLES NLS
+OPTIONS_SUB=	yes
 
-PLIST_FILES=	bin/${PORTNAME} \
-		share/applications/treesheets.desktop \
-		share/icons/hicolor/scalable/apps/treesheets.svg \
-		share/pixmaps/treesheets.png
+NLS_USES=	gettext-tools
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
-post-patch: .SILENT
-	${REINPLACE_CMD} -e 's|sys->frame->GetPath(L"|(L"${DOCSDIR}/|' \
-		${BUILD_WRKSRC}/document.h
-	${REINPLACE_CMD} -e 's|wxFileName(exename).GetPath()|L"${DATADIR}"|' \
-		${BUILD_WRKSRC}/myframe.h
-	${REINPLACE_CMD} -e 's|frame->GetPath(L"examples|(L"${EXAMPLESDIR}|' \
-		${BUILD_WRKSRC}/system.h
-	${REINPLACE_CMD} -e 's|^\(Icon=\).*|\1${PORTNAME}|' \
-		${WRKSRC}/TS/treesheets.desktop
-
-do-install:
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	(cd ${WRKSRC}/TS && ${COPYTREE_SHARE} "${PORTDATA}" ${STAGEDIR}${DATADIR})
-	${INSTALL_DATA} ${WRKSRC}/TS/treesheets.desktop \
-		${STAGEDIR}${PREFIX}/share/applications
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
-	${INSTALL_DATA} ${WRKSRC}/TS/images/treesheets.svg \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
-	${INSTALL_DATA} ${WRKSRC}/TS/images/icon32.png \
-		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
-
-do-install-DOCS-on:
-	(cd ${WRKSRC}/TS && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
-
-do-install-EXAMPLES-on:
-	(cd ${WRKSRC}/TS/examples && ${COPYTREE_SHARE} "${PORTEXAMPLES}" \
-		${STAGEDIR}${EXAMPLESDIR})
+pre-build:
+	@${REINPLACE_CMD} -e 's|%%EXAMPLESDIR%%|${EXAMPLESDIR}|' ${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

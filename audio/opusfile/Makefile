@@ -1,12 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	opusfile
 PORTVERSION=	0.12
+PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	https://downloads.xiph.org/releases/opus/
+MASTER_SITES=	https://downloads.xiph.org/releases/opus/ \
+		https://ftp.osuosl.org/pub/xiph/releases/opus/
 
 MAINTAINER=	liangtai.s16@gmail.com
 COMMENT=	Opus playback library
+WWW=		https://opus-codec.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

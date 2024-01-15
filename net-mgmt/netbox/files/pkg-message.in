@@ -17,246 +17,311 @@ database migrations will be executed.
 
 The following steps are required to finish the upgrade: 
 
-1. Run database migrations, collect static files, remove stale content files,
-   delete any expired user sessions and clear all cached data:
+1. Run database migrations, trace any missing cable paths, build the embedded
+   documentation, collect static files, remove stale content files, delete any
+   expired user sessions and clear the cache.
 
 # cd %%DATADIR%%
 # python%%PYTHON_VER%% manage.py migrate
+# python%%PYTHON_VER%% manage.py trace_paths --no-input
+# mkdocs build
 # python%%PYTHON_VER%% manage.py collectstatic --no-input
 # python%%PYTHON_VER%% manage.py remove_stale_contenttypes --no-input
+# python%%PYTHON_VER%% manage.py reindex --lazy
 # python%%PYTHON_VER%% manage.py clearsessions
-# python%%PYTHON_VER%% manage.py invalidate all
+# python%%PYTHON_VER%% manage.py clearcache
 
 2. Restart WSGI/httpd environment (supervisord/apache/nginx/etc.)
 EOD
 }
 { type: upgrade
-  maximum_version: "2.6.5"
+  maximum_version: 3.2.4
   message: <<EOD
-1. New dependency: Redis
+/!\ WARNING /!\
 
-Since the 2.6 release a running Redis server instance is required for caching
-objects to run. Also the following settings like below need to be added (or
-modified) in the existing configuration.py:
+The NetBox 3.2 release contains major changes, so at least items 1.), 2.) and
+3.) must be checked before proceeding with the upgrade!
 
-REDIS = {
-	'HOST': 'localhost',
-	'PORT': 6397,
-	'PASSWORD': ''
-	'DATABASE': 0,
-	'CACHE_DATABASE': 1,
-	'DEFAULT_TIMEOUT': 300,
-	'SSL': False,
-}
+/!\ WARNING /!\
 
-Note that if you were using these settings in a prior release with webhooks,
-the DATABASE setting remains the same but an additional CACHE_DATABASE settings
-has been added with a default value of 1 to support the caching backend.
+1. This release includes a database migration that will remove the "asn",
+   "contact_name", "contact_phone", and "contact_email" fields from the site
+   model.  (These fields have been superseded by the ASN and contact models
+   introduced in NetBox v3.1.)
 
-The DATABASE setting will be renamed in a future release of NetBox to better
-relay the meaning of the setting. It is highly recommended to keep the webhook
-and cache databases separate. Using the same database number for both may
-result in webhook processing data being lost during cache flushing events.
+   To protect against the accidental destruction of data, the upgrade process
+   will fail if any sites still have data in any of these fields.  To bypass
+   this safeguard, set the NETBOX_DELETE_LEGACY_DATA environment variable when
+   running the upgrade script, which will permit the destruction of legacy
+   data.
+
+   A set of migration scripts is available to assist with the migration of
+   legacy site data:
+
+   https://github.com/netbox-community/migration-scripts
 
 
-2. View Permissions
-
-NetBox now enforces view-only permissions by default. You can grant view
-permission to a user or group by assigning the "can view" permission for the
-desired objects.
-
-To exclude _all_ objects, effectively disabling view permissions and restoring
-the pre-v2.6 behavior, set:
-
-EXEMPT_VIEW_PERMISSIONS = ['*']
+2. NetBox v3.2 requires Python 3.8 or later.
 
 
-3. CORS_ORIGIN_WHITELIST requires URI Scheme
+3. If the NetBox Plugin "net-mgmt/py-netbox-plugin-extension" is used, please
+   disable it before the migrations are applied.  This can be done by removing
+   the entry "netbox_plugin_extensions" from the "PLUGINS" section in the
+   NetBox configuration.
 
-If you have the CORS_ORIGIN_WHITELIST configuration parameter defined, note
-that each origin must now include a URI scheme.
+   Once the upgrade is done, this port/package can be safely removed as it's no
+   longer required.
+
+
+4. Following items should be checked as well:
+
+    * The embedded documentation now needs to be built locally as the procedure
+      requires a running instance of NetBox:
+
+      # cd %%DATADIR%%
+      # mkdocs build
+
+      Please also refer to the general updating instructions as this needs to
+      be done with every future update of NetBox.
+
+    * Automatic redirection of legacy slug-based URL paths has been removed.
+      URL-based slugs were changed to use numeric IDs in v2.11.0.
+
+    * The "asn" query filter for sites now matches against the AS number of
+      assigned ASN objects.
+
+    * The "created" field of all change-logged models now conveys a full
+      datetime object, rather than only a date.  (Previous date-only values
+      will receive a timestamp of 00:00.)  While this change is largely
+      unconcerning, strictly-typed API consumers may need to be updated.
+
+    * A "pre_run()" method has been added to the base Report class.  Although
+      unlikely to affect most installations, you may need to alter any reports
+      which already use this name for a method.
+
+    * Webhook URLs now support Jinja2 templating.  Although this is unlikely to
+      introduce any issues, it's possible that an unusual URL might trigger a
+      Jinja2 rendering error, in which case the URL would need to be properly
+      escaped.
+
+    * Several changes to the REST API were made as well.  Please check the
+      changelogs for further details.
 EOD
 }
 { type: upgrade
-  maximum_version: 2.6.6
+  maximum_version: 3.2.5
   message: <<EOD
-The 2.6.6 release includes a migration which automatically updates all existing
-cables to enable filtering by site/rack. This migration may take several
-minutes to complete on installations with tens of thousands of cables defined.
+Please note that the general update instructions got another command that needs
+to be issued after each update:
+
+# python%%PYTHON_VER%% manage.py clearcache
 EOD
 }
 { type: upgrade
-  maximum_version: 2.7.7
+  maximum_version: 3.3.4
   message: <<EOD
-1. Removal of the Topology Maps feature
+The NetBox 3.3 release contains some breaking API changes, so please check the
+following items before running the database migrations:
 
-The deprecated topology maps feature has been removed.  Please replicate any
-required data to another source before upgrading NetBox to v2.7.7, as any
-existing topology maps will be deleted.
+* Device position, device type height, and rack unit values are now reported
+  as decimals (e.g. 1.0 or 1.5) to support modeling half-height rack units.
 
+* The "nat_outside" relation on the IP address model now returns a list of zero
+  or more related IP addresses, rather than a single instance (or None).
 
-2. Changed REDIS database configuration settings
+* Several fields on the cable API serializers have been altered or removed to
+  support multiple-object cable terminations:
 
-The REDIS database configuration parameters were splitted up in two discrete
-subsections named "webhooks" and "caching".  This requires modification of the
-REDIS parameter in configuration.py as follows: 
++------------------------------+------+-------------------------------+------+
+| Old Name                     | Type | New Name                      | Type |
++------------------------------+------+-------------------------------+------+
+| termination_a_type           | str  | Removed                       | -    |
+| termination_b_type           | str  | Removed                       | -    |
+| termination_a_id             | int  | Removed                       | -    |
+| termination_b_id             | int  | Removed                       | -    |
+| termination_a                | obj  | a_terminations                | list |
+| termination_b                | obj  | b_terminations                | list |
++------------------------------+------+-------------------------------+------+
 
-Old Redis sample configuration:
+* As with the cable model, several API fields on all objects to which cables
+  can be connected (interfaces, circuit terminations, etc.) have been changed:
 
-REDIS = {
-    'HOST': 'localhost',
-    'PORT': 6379,
-    'PASSWORD': '',
-    'DATABASE': 0,
-    'CACHE_DATABASE': 1,
-    'DEFAULT_TIMEOUT': 300,
-    'SSL': False,
-}
++------------------------------+------+-------------------------------+------+
+| Old Name                     | Type | New Name                      | Type |
++------------------------------+------+-------------------------------+------+
+| link_peer                    | obj  | link_peers                    | list |
+| link_peer_type               | str  | link_peers_type               | str  |
+| connected_endpoint           | obj  | connected_endpoints           | list |
+| connected_endpoint_type      | str  | connected_endpoints_type      | str  |
+| connected_endpoint_reachable | bool | connected_endpoints_reachable | bool |
++------------------------------+------+-------------------------------+------+
 
-New Redis sample configuration:
+* The cable path serialization returned by the "/paths/" endpoint for
+  pass-through ports has been simplified, and the following fields removed:
 
-REDIS = {
-    'webhooks': {
-        'HOST': 'redis.example.com',
-        'PORT': 1234,
-        'PASSWORD': 'foobar',
-        'DATABASE': 0,
-        'DEFAULT_TIMEOUT': 300,
-        'SSL': False,
-    },
-    'caching': {
-        'HOST': 'localhost',
-        'PORT': 6379,
-        'PASSWORD': '',
-        'DATABASE': 1,
-        'DEFAULT_TIMEOUT': 300,
-        'SSL': False,
-    }
-}
+  "origin_type", "origin", "destination_type", "destination". (Additionally,
+  "is_complete" has been added.)
 
-Note that the CACHE_DATABASE parameter has been removed and the connection
-settings have been duplicated for both "webhooks" and "caching".  This allows
-one to make use of separate Redis instances if desired.  It is fine to use the
-same Redis service for both functions, although the database identifiers should
-be different.
+* Several changes to the REST API were made as well.  Please check the
+  changelogs for further details.
 
-
-3. Removal of the WEBHOOKS_ENABLED configuration parameter
-
-As django-rq is now a required library, NetBox assumes that the RQ worker
-process is running and the WEBHOOKS_ENABLED configuration parameter is no
-longer used.  Please ensure that both the NetBox WSGI service and the RQ worker
-process are running on all production installations.
-
-
-4. Fixed natural orderding of interfaces
-
-The 2.7.7 release contains a bug fix regarding the natural ordering of
-interfaces.  If any interfaces appear unordered, run the following management
-command to recalculate their naturalized values after the usual upgrading steps
-(database migrations, collect static files, etc.) were issued:
-
-# cd %%DATADIR%%
-# python%%PYTHON_VER%% manage.py renaturalize dcim.Interface
-
+* The netbox sample rc script got a new "upgrade" directive that also
+  simplifies the upgrade process (database migrations, building the embedded
+  documentation, etc.).
 EOD
 }
 { type: upgrade
-  maximum_version: 2.7.9
+  maximum_version: 3.4.5
   message: <<EOD
-Please note that two additional steps (remove stale content & clear cached
-files) are now required after each update of NetBox.
+1. Please make sure that the PostgreSQL server for the NetBox instance is
+   running version 11 or higher.  This is because PostgreSQL 10 is End-of-Life
+   since November 2022 and Django 4.1 requires PostgreSQL 11 as a minimum.
 
-These were added to the existing update instructions which are displayed with
-each update.
+2. The NetBox 3.4 release contains some breaking changes, so the following
+   items should be checked as well:
+
+   * Device and virtual machine names are no longer case-sensitive.  Attempting
+     to create e.g. "device1" and "DEVICE1" within the same site will raise a
+     validation error.
+
+   * The "asn", "noc_contact", "admin_contact", and "portal_url" fields have
+     been removed from the provider model.  Please replicate any data remaining
+     in these fields to the ASN and contact models introduced in NetBox v3.1
+     prior to upgrading.
+
+   * The "content_type" fields on the CustomLink and ExportTemplate models have
+     been renamed to "content_types" and now support the assignment of multiple
+     content types per object.
+
+   * Within the Python API, the "cf" property on an object with custom fields
+     now returns deserialized values.  For example, a custom field referencing
+     an object will return the object instance rather than its numeric ID.
+
+     To access the raw serialized values, reference the object's
+     "custom_field_data" attribute instead.
+
+   * The "NetBoxModelCSVForm" class has been renamed to
+     "NetBoxModelImportForm".  Backward compatability with the previous name
+     has been retained for this release, but will be dropped in NetBox v3.5.
+
+
+3. Please note that the general update instructions got another command that
+   needs to be issued after each update:
+
+# python%%PYTHON_VER%% manage.py reindex --lazy
+
+   The netbox sample rc script has also been adapted accordingly for this
+   purpose.
 EOD
 }
 { type: upgrade
-  maximum_version: 2.7.10
+  maximum_version: 3.5.2
   message: <<EOD
-Please note that another additional step (delete expired user sessions) is now
-required after each update of NetBox.
+1. If the plugin security/py-netbox-secretstore is used, which is no longer
+   maintained by upstream, the following steps must be done before upgrading to
+   NetBox 3.5:
 
-That step was added to the existing update instructions which are displayed
-with each update.
+   * Migrate from security/py-netbox-secretstore (= 1.4.2_2) to
+     security/py-netbox-secrets (= 1.7.6) with a NetBox 3.4.x instance.
+
+     It is very important that the versions of py-netbox-secretstore and
+     py-netbox-secrets match as specified otherwise the migration will not
+     be successful.
+
+     The reason for this is that py-netbox-secrets 1.8.x is not backwards
+     compatible with Netbox 3.4.  For further details please see the updating
+     instructions of py-netbox-secretstore or the UPDATING entry of 2023-05-11.
+
+2. The NetBox 3.5 release contains some breaking changes, so the following
+   items should be checked as well:
+
+   * The "account: field has been removed from the provider model.
+     This information is now tracked using the new provider account model.
+     Multiple accounts can be assigned per provider.
+
+   * A minimum length of 50 characters is now enforced for the SECRET_KEY
+     configuration parameter.
+
+   * The JobResult model has been moved from the "extras" app to "core" and
+     renamed to Job. Accordingly, its REST API endpoint has been moved from
+     "/api/extras/job-results/" to "/api/core/jobs/".
+
+   * The "obj_type" field on the Job model (previously JobResult) has been
+     renamed to "object_type" for consistency with other models.
+
+   * The JOBRESULT_RETENTION configuration parameter has been renamed
+     to JOB_RETENTION.
+
+   * The "obj" context variable is no longer passed when rendering custom
+     links: Use "object" instead.
+
+   * The REST API schema is now generated using the OpenAPI 3.0 spec
+
+   * The URLs for the REST API schema documentation have changed:
+       - "/api/docs/" is now "/api/schema/swagger-ui/"
+       - "/api/redoc/" is now "/api/schema/redoc/"
 EOD
 }
 { type: upgrade
-  maximum_version: 2.7.11
+  maximum_version: 3.5.4
   message: <<EOD
-The "webhooks" REDIS configuration section has been renamed to "tasks".  Please
-update your configuration as support for the old name will be removed in a
-future release.
+If a separate configuration file is used that does not have an ".py" extension,
+the following message may appear when the netbox rc script is started:
 
-Also the sample rc script got some new default values and improvements, e.g.
-the possibility to add extra arguments or to use a configuration file instead
-of using rc variables.
+!!!
+!!! WARNING: configuration file should have a valid Python extension.
+!!!
+
+In this case, the existing configuration file should be provided with a ".py"
+extension and if set, the rc variable "netbox_config" should also point to the
+configuration file with the new file extension.
+
+The netbox sample rc script, which is provided via the EXAMPLES option, has
+been adjusted accordingly.  This also includes a fix for the default path of
+the configuration if the rc variable "netbox_config" is not set.
 EOD
 }
 { type: upgrade
-  maximum_version: 2.9.8
+  maximum_version: 3.6.1
   message: <<EOD
-Changes related to the NetBox configuration:
+1. The NetBox 3.6 release contains some breaking changes, so the following
+   items should be checked before upgrading:
 
-1. If in use, LDAP authentication must be enabled by setting
-   REMOTE_AUTH_BACKEND to 'netbox.authentication.LDAPBackend'.  (The LDAP
-   configuration parameters in ldap_config.py remain unchanged.)
+   * PostgreSQL 11 is no longer supported (dropped in Django 4.2). NetBox v3.6
+     requires PostgreSQL 12 or later.
 
-2. REMOTE_AUTH_DEFAULT_PERMISSIONS now takes a dictionary rather than a list.
-   This is a mapping of permission names to a dictionary of constraining
-   attributes, or None.
+   * The "device_role" field on the Device model has been renamed to "role".
+     The "device_role" field has been temporarily retained on the REST API
+     serializer for devices for backward compatibility, but is read-only.
 
-   For example, ['dcim.add_site', 'dcim.change_site'] would become
-   {'dcim.add_site': None, 'dcim.change_site': None}.
+   * The "choices" array field has been removed from the CustomField model.
+     Any defined choices are automatically migrated to CustomFieldChoiceSets,
+     accessible via the new "choice_set" field on the CustomField model.
 
-3. Support for the DEFAULT_TIMEOUT parameter under REDIS database configuration
-   was removed.  Set RQ_DEFAULT_TIMEOUT as a global configuration parameter
-   instead.
+   * The "napalm_driver" and "napalm_args" fields (which were deprecated in v3.5)
+     have been removed from the Platform model.
 
+   * The "device" and "device_id" filter for interfaces will no longer include
+     interfaces from virtual chassis peers. Two new filters,
+     "virtual_chassis_member" and "virtual_chassis_member_id", have been
+     introduced to match all interfaces belonging to the specified device's
+     virtual chassis (if any).
 
-Changes related to permissions:
+   * Reports and scripts are now returned within a "results" list when fetched via
+     the REST API, consistent with other models.
 
-1. Any permissions referencing the legacy ReportResult model (e.g.
-   'extras.view_reportresult') should be updated to reference the Report model.
+   * Superusers can no longer retrieve API token keys via the web UI if
+     ALLOW_TOKEN_RETRIEVAL is disabled. (The admin view has been removed
+     per #13044.)
 
-2. The 'secrets.activate_userkey' permission no longer exists.  Instead,
-   'secrets.change_userkey' is checked to determine whether a user has the
-   ability to activate a UserKey.
+2. The following dependencies are now optional and have therefore been moved to
+   corresponding options. An exception is the LDAP option, which has been added
+   for the sake of completeness, because this backend has been around for a
+   good while:
 
-3. The 'users.delete_token permission' is no longer enforced.  All users are
-   permitted to delete their own API tokens.
-
-
-Changes to the REST API:
-
-Numerous changes have been made to the REST API. Please check the changelogs
-for more details.
-
-
-Workaround for issues with invalid nested data:
-
-Users that are experiencing invalid nested data with regions, rack groups, or
-tenant groups can perform a one-time operation using the NetBox shell to
-rebuild the correct nested relationships after upgrading:
-
-# cd %%DATADIR%%
-# python%%PYTHON_VER%% manage.py nbshell
-### NetBox interactive shell (localhost)
-### Python 3.x.x | Django 3.1.x | NetBox 2.9.x
-### lsmodels() will show available models. Use help(<model>) for more info.
->>> Region.objects.rebuild()
->>> RackGroup.objects.rebuild()
->>> TenantGroup.objects.rebuild()
-EOD
-}
-{ type: upgrade
-  maximum_version: 2.9.9
-  message: <<EOD
-An new sample rc script has been added to manage the RQ-worker service.  If the
-EXAMPLES option is enabled (which is the default) it can be found in the
-following directory:
-
-%%EXAMPLESDIR%%/netbox_rq.sample
+   * devel/py-dulwich			-> non-default GIT option
+   * www/py-dj42-django-auth-ldap	-> non-default LDAP option
+   * www/py-boto3			-> non-default S3 option
 EOD
 }
 ]

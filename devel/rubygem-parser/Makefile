@@ -1,20 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	parser
-PORTVERSION=	2.7.2.0
+PORTVERSION=	3.2.2.4
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby parser written in pure Ruby
+WWW=		https://github.com/whitequark/parser
 
 LICENSE=	MIT
-#LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-ast>=2.4.1<2.5:devel/rubygem-ast
+RUN_DEPENDS=	rubygem-ast>=2.4.1<2.5:devel/rubygem-ast \
+		rubygem-racc>=0:devel/rubygem-racc
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

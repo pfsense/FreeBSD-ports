@@ -1,6 +1,3 @@
-# Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	plasma
 PORTVERSION=	0.1
 PORTREVISION=	4

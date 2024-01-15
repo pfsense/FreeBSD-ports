@@ -1,14 +1,12 @@
-# Created by: John Hixson <jhixson@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pianod2
 PORTVERSION=	329
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	http://deviousfish.com/Downloads/pianod2/Devel/
 
 MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Free, multi-source, network-controlled music player daemon
+WWW=		https://deviousfish.com/Pianod2/index.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,10 +26,10 @@ LIB_DEPENDS=	libao.so:audio/libao \
 	libtag.so:audio/taglib
 RUN_DEPENDS=	mksh>0:shells/mksh
 
-USES=	autoreconf compiler:c11 gettext gmake gnome pkgconfig shebangfix
+USES=	autoreconf compiler:c11 gettext gmake gnome gstreamer pkgconfig shebangfix
 
 USE_GNOME=	glib20
-USE_GSTREAMER1=	ffmpeg
+USE_GSTREAMER=	#ffmpeg
 
 USE_RC_SUBR=	pianod
 

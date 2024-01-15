@@ -1,6 +1,3 @@
-# Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
-
 PORTNAME=	vnconvert
 PORTVERSION=	1.0
 PORTREVISION=	1

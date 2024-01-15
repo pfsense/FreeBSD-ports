@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	uroot
-DISTVERSION=	2.1-2
+DISTVERSION=	2.1-3
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Unit Root Tests for Seasonal Time Series
+WWW=		https://cran.r-project.org/web/packages/uroot/
 
 LICENSE=	GPLv2
 

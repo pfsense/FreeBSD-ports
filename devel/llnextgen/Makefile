@@ -1,6 +1,3 @@
-# Created by: Oleksii Tsai <oleksii.tsai@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	LLnextgen
 PORTVERSION=	0.5.5
 CATEGORIES=	devel
@@ -8,6 +5,7 @@ MASTER_SITES=	https://os.ghalkes.nl/LLnextgen/releases/
 
 MAINTAINER=	oleksii.tsai@gmail.com
 COMMENT=	Extended LL(1) parser generator
+WWW=		https://os.ghalkes.nl/LLnextgen/index.html
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

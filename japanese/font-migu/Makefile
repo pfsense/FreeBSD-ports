@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	migu
 PORTVERSION=	1.0.20130617
 PORTREVISION=	5
@@ -13,6 +11,7 @@ DISTFILES=	${PORTNAME}-1p-${PORTVERSION:E}${EXTRACT_SUFX} \
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Another Japanese font set based on MigMix
+WWW=		http://mix-mplus-ipa.sourceforge.jp/migu/
 
 LICENSE=	IPAFONTLICv1.0
 LICENSE_NAME=	IPA Font License Agreement v1.0

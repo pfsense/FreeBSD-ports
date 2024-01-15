@@ -1,6 +1,3 @@
-# Created by: Tom Hukins <tom@eborcom.com>
-# $FreeBSD$
-
 # You can define the following to enable further compile time
 # customizations:
 # MAILDROP_SUID=<username>,
@@ -16,20 +13,22 @@
 # MAILDROP_MBOX_DIR=<dir>	Specify DEFAULT mailbox location
 
 PORTNAME=	maildrop
-PORTVERSION=	3.0.1
+PORTVERSION=	3.1.6
 CATEGORIES=	mail
 MASTER_SITES=	SF/courier/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Mail delivery agent (MDA) with filtering abilities
+WWW=		https://www.courier-mta.org/maildrop/
 
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libcourier-unicode.so:devel/courier-unicode \
-		libidn.so:dns/libidn
+		libidn2.so:dns/libidn2 \
+		libpcre2-8.so:devel/pcre2
 
-USES=		compiler:c++11-lang iconv localbase:ldflags perl5 pkgconfig \
+USES=		compiler:c++11-lang cpe iconv localbase:ldflags perl5 pkgconfig \
 		tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
@@ -39,19 +38,13 @@ CONFIGURE_ARGS=	--enable-syslog=1 \
 		--enable-maildirquota
 INSTALL_TARGET=	install-strip
 
-CONFLICTS=	courier-0.65* libunicode-[0-9]*
+CONFLICTS=	courier-0.65* libunicode
 
 MAILDROP_LOG_COLUMNS?=	72	# lenght of 'File:' line in log
 
-FIXDOCPATH=	libs/liblock/lockmail.1 libs/maildir/deliverquota.8.in \
-		libs/maildir/maildir.5 libs/maildir/maildiracl.1.in \
-		libs/maildir/maildirkw.1 libs/maildir/maildirmake.1.in \
-		libs/maildir/maildirquota.7 libs/maildrop/mailbot.1 \
-		libs/maildrop/maildrop.1.in libs/maildrop/maildropex.7 \
-		libs/maildrop/maildropfilter.7.in libs/maildrop/maildropgdbm.7 \
-		libs/maildrop/reformail.1 \
-		libs/rfc2045/makemime.1 libs/rfc2045/reformime.1 \
-		libs/rfc2045/rfc2045.3 libs/rfc822/rfc822.3
+FIXDOCPATH=	libs/maildir/deliverquota.8.in libs/maildir/maildir.5 \
+		libs/maildir/maildiracl.1.in libs/maildir/maildirkw.1 \
+		libs/maildir/maildirmake.1.in libs/maildir/maildirquota.7 \
 
 DOCS=	AUTHORS INSTALL INSTALL.html README README.html README.postfix \
 	UPGRADE UPGRADE.html maildroptips.txt maildir/README.*
@@ -64,17 +57,19 @@ OPTIONS_MULTI=		AUTHLIB
 AUTHLIB_DESC=		Courier Auth Library support
 .endif
 
-OPTIONS_DEFINE+=	DOVECOTAUTH FAM GDBM MAILWRAPPER DOCS
+OPTIONS_DEFINE+=	DOCS DOVECOTAUTH GDBM INOTIFY MAILWRAPPER
 
 DOVECOTAUTH_DESC=	Dovecot Authentication support
+INOTIFY_DESC=		Inotify support for IDLE command
 MAILWRAPPER_DESC=	Let configure guess which sendmail binary to use
 
 OPTIONS_SUB=		yes
-GDBM_CONFIGURE_ON=	--with-db=gdbm
-GDBM_CONFIGURE_OFF=	--with-db=db
-GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
-MAILWRAPPER_CONFIGURE_OFF=	--enable-sendmail=/usr/sbin/sendmail
 DOVECOTAUTH_CONFIGURE_ENABLE=	dovecotauth
+GDBM_CONFIGURE_OFF=	--with-db=db
+GDBM_CONFIGURE_ON=	--with-db=gdbm
+GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
+INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
+MAILWRAPPER_CONFIGURE_OFF=	--enable-sendmail=/usr/sbin/sendmail
 
 .include <bsd.port.options.mk>
 
@@ -93,12 +88,6 @@ PLIST_SUB+=		MMODE='' MUID='root' MGID='mail'
 
 .if defined(MAILDROP_MBOX_DIR)
 CONFIGURE_ARGS+=	--with-default-maildrop='${MAILDROP_MBOX_DIR}'
-.endif
-
-.if ${PORT_OPTIONS:MFAM}
-USES+=			fam
-.else
-CONFIGURE_ARGS+=	ac_cv_header_fam_h=no ac_cv_lib_fam_FAMOpen=no
 .endif
 
 .if defined(MAILDROP_TRUSTED_USERS)
@@ -125,6 +114,14 @@ CONFIGURE_ARGS+=	--enable-authlib
 .else
 CONFIGURE_ARGS+=	--disable-authlib
 .endif
+
+post-patch-INOTIFY-on:
+	@${REINPLACE_CMD} -e 's|LIBS = @LIBS@|& ${LOCALBASE}/lib/libinotify.a /usr/lib/libpthread.a|' \
+		${WRKSRC}/libs/maildir/Makefile.in
+
+post-configure-INOTIFY-on:
+	@${ECHO_CMD} '#define HAVE_INOTIFY_INIT 1' >>${WRKSRC}/libs/maildir/config.h
+	@${ECHO_CMD} '#define HAVE_INOTIFY_INIT1 1' >>${WRKSRC}/libs/maildir/config.h
 
 post-install:
 .if ${PORT_OPTIONS:MDOVECOTAUTH}

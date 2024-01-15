@@ -1,6 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Math-Symbolic-Custom-Pattern
 PORTVERSION=	2.01
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pattern matching on Math::Symbolic trees
+WWW=		https://metacpan.org/release/Math-Symbolic-Custom-Pattern
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Math-Symbolic>=0.510:math/p5-Math-Symbolic \

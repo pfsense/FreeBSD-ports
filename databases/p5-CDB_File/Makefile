@@ -1,6 +1,3 @@
-# Created by: Jon Nistor <nistor@snickers.org>
-# $FreeBSD$
-
 PORTNAME=	CDB_File
 PORTVERSION=	1.02
 CATEGORIES=	databases perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	nistor@snickers.org
 COMMENT=	Perl5 interface to the CDB package
+WWW=		https://metacpan.org/release/CDB_File
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

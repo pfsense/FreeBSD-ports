@@ -1,11 +1,11 @@
---- third_party/blink/renderer/core/paint/paint_layer.cc.orig	2020-11-13 06:36:48 UTC
+--- third_party/blink/renderer/core/paint/paint_layer.cc.orig	2023-11-03 10:09:45 UTC
 +++ third_party/blink/renderer/core/paint/paint_layer.cc
-@@ -110,7 +110,7 @@ namespace {
- static CompositingQueryMode g_compositing_query_mode =
-     kCompositingQueriesAreOnlyAllowedInCertainDocumentLifecyclePhases;
+@@ -120,7 +120,7 @@ namespace blink {
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- struct SameSizeAsPaintLayer : DisplayItemClient {
+ namespace {
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ struct SameSizeAsPaintLayer : GarbageCollected<PaintLayer>, DisplayItemClient {
    // The bit fields may fit into the machine word of DisplayItemClient which
    // has only 8-bit data.

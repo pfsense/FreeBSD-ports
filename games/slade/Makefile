@@ -1,12 +1,11 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	slade
-PORTVERSION=	3.1.12
+PORTVERSION=	3.1.13
+PORTREVISION=	5
 CATEGORIES=	games
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Modern editor for Doom-engine based games and source ports
+WWW=		https://slade.mancubus.net/
 
 LICENSE=	GPLv2
 
@@ -22,7 +21,7 @@ GH_ACCOUNT=	sirjuddington
 GH_PROJECT=	${PORTNAME:tu}
 
 USES=		cmake compiler:c++14-lang gl pkgconfig
-USE_WX=		3.0+
+USE_WX=		3.0
 USE_GL=		gl glew glu
 
 CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE:FILEPATH="${WX_CONFIG}" \
@@ -33,12 +32,15 @@ PLIST_FILES=	bin/slade share/slade3/slade.pk3 \
 		share/metainfo/net.mancubus.SLADE.metainfo.xml \
 		share/icons/net.mancubus.SLADE.png
 
-OPTIONS_DEFINE=	FLUIDSYNTH
+OPTIONS_DEFINE=	FLUIDSYNTH GTK3
 OPTIONS_DEFAULT=	FLUIDSYNTH
 
 FLUIDSYNTH_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 FLUIDSYNTH_RUN_DEPENDS=	${LOCALBASE}/share/sounds/sf2/FluidR3_GM.sf2:audio/fluid-soundfont
 FLUIDSYNTH_CMAKE_OFF=	-DNO_FLUIDSYNTH:BOOL=ON
+
+GTK3_CMAKE_OFF=		-DWX_GTK3:BOOL=OFF
+GTK3_VARS_OFF=		WANT_WXGTK_VER=2
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,"alsa","oss", ; \
@@ -48,7 +50,5 @@ post-patch:
 		${WRKSRC}/src/External/zreaders/portable_endian.h
 	@${REINPLACE_CMD} -e 's,wxVSCROLL,static_cast<long>(&),' \
 		${WRKSRC}/src/MapEditor/UI/Dialogs/ActionSpecialDialog.cpp
-	@${REINPLACE_CMD} -e 's,(new_print,&.ToStdString(),' \
-		${WRKSRC}/src/Scripting/Lua.cpp
 
 .include <bsd.port.mk>

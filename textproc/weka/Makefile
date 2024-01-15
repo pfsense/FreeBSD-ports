@@ -1,13 +1,11 @@
-# Created by: Simon Olofsson <simon@olofsson.de>
-# $FreeBSD$
-
 PORTNAME=	weka
-DISTVERSION=	3-8-4
+DISTVERSION=	3-8-6
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-3-8/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Data Mining Software in Java
+WWW=		https://www.cs.waikato.ac.nz/ml/weka/
 
 LICENSE=	GPLv2
 

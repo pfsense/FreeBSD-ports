@@ -1,6 +1,3 @@
-# Created by: Jean-Baptiste Quenot <jb.quenot@caraldi.com>
-# $FreeBSD$
-
 PORTNAME=	MIME-Lite-HTML
 PORTVERSION=	1.24
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Provide routine to transform a HTML page into a MIME mail
+WWW=		https://metacpan.org/release/MIME-Lite-HTML
 
 BUILD_DEPENDS=	p5-HTML-Parser>=0:www/p5-HTML-Parser \
 		p5-MIME-Lite>=1:mail/p5-MIME-Lite \

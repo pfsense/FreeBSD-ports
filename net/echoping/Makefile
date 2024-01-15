@@ -1,13 +1,11 @@
-# Created by: peter
-# $FreeBSD$
-
 PORTNAME=	echoping
 PORTVERSION=	6.0.2
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	net
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ping-like program that uses TCP and/or HTTP
+WWW=		https://github.com/bortzmeyer/echoping
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -29,14 +27,14 @@ PING_PLUGINS=	dns random whois
 USE_GITLAB=	yes
 GL_SITE=	https://framagit.org
 GL_ACCOUNT=	bortzmeyer
-GL_COMMIT=	ccf3c95d9249d3065db3853486f41c852d20101e
+GL_TAGNAME=	ccf3c95d9249d3065db3853486f41c852d20101e
 WRKSRC_SUBDIR=	SRC
 
 OPTIONS_DEFINE=	LDAP PGSQL
 OPTIONS_DEFAULT=LDAP
 OPTIONS_SUB=	yes
 
-LDAP_USE=	OPENLDAP=yes
+LDAP_USES=	ldap
 LDAP_VARS=	PING_PLUGINS+=ldap
 
 PGSQL_USES=	pgsql

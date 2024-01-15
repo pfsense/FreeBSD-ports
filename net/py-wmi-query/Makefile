@@ -1,20 +1,19 @@
-# Created by: Silvio Ap Silva aka kanazuchi <alvolivre@live.com>
-# $FreeBSD$
-
 PORTNAME=	wmi-query
 PORTVERSION=	0.1.4
+PORTREVISION=	1
 CATEGORIES=	net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	contato@kanazuchi.com
 COMMENT=	Python scripts to get wmi data classes in a dict
+WWW=		https://github.com/kanazux/wmi-query
 
 LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}impacket>=0:net/py-impacket@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

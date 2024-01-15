@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Math-Polygon
 PORTVERSION=	1.10
 CATEGORIES=	math perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Class for Maintaining Polygon Data
+WWW=		https://metacpan.org/release/Math-Polygon
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

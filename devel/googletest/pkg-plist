@@ -1,9 +1,6 @@
 include/gmock/gmock-actions.h
 include/gmock/gmock-cardinalities.h
 include/gmock/gmock-function-mocker.h
-include/gmock/gmock-generated-actions.h
-include/gmock/gmock-generated-function-mockers.h
-include/gmock/gmock-generated-matchers.h
 include/gmock/gmock-matchers.h
 include/gmock/gmock-more-actions.h
 include/gmock/gmock-more-matchers.h
@@ -17,6 +14,7 @@ include/gmock/internal/custom/gmock-port.h
 include/gmock/internal/gmock-internal-utils.h
 include/gmock/internal/gmock-port.h
 include/gmock/internal/gmock-pp.h
+include/gtest/gtest-assertion-result.h
 include/gtest/gtest-death-test.h
 include/gtest/gtest-matchers.h
 include/gtest/gtest-message.h
@@ -45,9 +43,13 @@ lib/cmake/GTest/GTestConfigVersion.cmake
 lib/cmake/GTest/GTestTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/GTest/GTestTargets.cmake
 lib/libgmock.so
+lib/libgmock.so.%%PORTVERSION%%
 lib/libgmock_main.so
+lib/libgmock_main.so.%%PORTVERSION%%
 lib/libgtest.so
+lib/libgtest.so.%%PORTVERSION%%
 lib/libgtest_main.so
+lib/libgtest_main.so.%%PORTVERSION%%
 libdata/pkgconfig/gmock.pc
 libdata/pkgconfig/gmock_main.pc
 libdata/pkgconfig/gtest.pc

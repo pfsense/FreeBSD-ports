@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	stdlib-normalize
 PORTVERSION=	2.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
-MAINTAINER=	sasaki@fcc.ad.jp
+MAINTAINER=	sasaki12@gmail.com
 COMMENT=	Collection of normalized lua functions
+WWW=		https://github.com/lua-stdlib/normalize
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

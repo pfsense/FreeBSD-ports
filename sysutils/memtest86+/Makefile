@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	memtest86+
 PORTVERSION=	5.01
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.memtest.org/download/${PORTVERSION}/
 
 MAINTAINER=	avg@FreeBSD.org
 COMMENT=	Stand-alone memory test for x86 architecture computers
+WWW=		https://www.memtest.org/
 
 LICENSE=	GPLv2
 
@@ -17,7 +16,7 @@ USES=	gmake
 ALL_TARGET=	all
 PORTDOCS=	*
 
-USE_GCC=	yes
+USE_GCC=	yes:build
 
 # Please provide absolute path below (cannot be root)
 BOOT_DIR?=	/boot/opt
@@ -75,4 +74,3 @@ do-install:
 .endif
 
 .include <bsd.port.mk>
-RUN_DEPENDS:=	${RUN_DEPENDS:Ngcc*}

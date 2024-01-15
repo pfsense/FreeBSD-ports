@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Crypt-CFB
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Perl extension for encrypting data in Cipher Feedback Mode
+WWW=		https://metacpan.org/release/Crypt-CFB
 
 USES=		perl5
 USE_PERL5=	configure

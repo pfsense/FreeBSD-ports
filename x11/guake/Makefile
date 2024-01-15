@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	guake
 PORTVERSION=	3.4.0
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	x11 python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 DISTNAME=	Guake-${PORTVERSION}
 
 MAINTAINER=	daniel@shafer.cc
 COMMENT=	Dropdown terminal made for the GNOME desktop
+WWW=		http://guake-project.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,13 +24,13 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR} \
 		keybinder>0:x11/keybinder \
 		libnotify>0:devel/libnotify
 
-USES=		gmake gnome libtool localbase pathfix python:3.5+ \
+USES=		cpe gmake gnome libtool localbase pathfix python \
 		shebangfix
-USE_GNOME=	gconf2 glib20 gtk30 intltool vte3
+USE_GNOME=	glib20 gtk30 intltool vte3
 USE_PYTHON=	distutils noflavors
 GLIB_SCHEMAS=	org.guake.gschema.xml
+CPE_VENDOR=	guake-project
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 

@@ -1,6 +1,3 @@
-# Created by: Oleg A. Mamontov <oleg@mamontov.net>
-# $FreeBSD$
-
 PORTNAME=	Hash-Union
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	oleg@mamontov.net
 COMMENT=	Smart hashes merging
+WWW=		https://metacpan.org/release/Hash-Union
 
 USES=		perl5
 USE_PERL5=	configure

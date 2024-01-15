@@ -1,12 +1,10 @@
-# Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	libcapn
 PORTVERSION=	1.1.0
 CATEGORIES=	net
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	C Library to interact with Apple Push Notification Service
+WWW=		https://github.com/adobkin/libcapn
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

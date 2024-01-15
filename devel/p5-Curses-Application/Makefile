@@ -1,6 +1,3 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	Curses-Application
 PORTVERSION=	0.2
 PORTREVISION=	1
@@ -11,6 +8,7 @@ DISTNAME=	CursesApplication-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Curses application development framework
+WWW=		https://metacpan.org/release/CursesApplication
 
 LICENSE=	GPLv2
 

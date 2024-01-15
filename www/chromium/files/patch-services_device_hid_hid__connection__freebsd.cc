@@ -1,4 +1,4 @@
---- services/device/hid/hid_connection_freebsd.cc.orig	2020-11-16 10:08:51 UTC
+--- services/device/hid/hid_connection_freebsd.cc.orig	2023-04-05 11:05:06 UTC
 +++ services/device/hid/hid_connection_freebsd.cc
 @@ -0,0 +1,240 @@
 +// Copyright (c) 2014 The Chromium Authors. All rights reserved.
@@ -10,17 +10,14 @@
 +#include <dev/usb/usbhid.h>
 +#include <dev/usb/usb_ioctl.h>
 +
-+#include "base/bind.h"
 +#include "base/files/file_descriptor_watcher_posix.h"
 +#include "base/location.h"
 +#include "base/numerics/safe_math.h"
 +#include "base/posix/eintr_wrapper.h"
-+#include "base/single_thread_task_runner.h"
 +#include "base/strings/stringprintf.h"
-+#include "base/task/post_task.h"
++#include "base/task/single_thread_task_runner.h"
 +#include "base/threading/scoped_blocking_call.h"
 +#include "base/threading/thread_restrictions.h"
-+#include "base/threading/thread_task_runner_handle.h"
 +#include "components/device_event_log/device_event_log.h"
 +#include "services/device/hid/hid_service.h"
 +
@@ -33,12 +30,15 @@
 +                     base::WeakPtr<HidConnectionFreeBSD> connection)
 +      : fd_(std::move(fd)),
 +        connection_(connection),
-+        origin_task_runner_(base::ThreadTaskRunnerHandle::Get()) {
++	origin_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()) {
 +    DETACH_FROM_SEQUENCE(sequence_checker_);
 +    // Report buffers must always have room for the report ID.
 +    report_buffer_size_ = device_info->max_input_report_size() + 1;
 +    has_report_id_ = device_info->has_report_id();
 +  }
++
++  BlockingTaskRunnerHelper(const BlockingTaskRunnerHelper&) = delete;
++  BlockingTaskRunnerHelper& operator=(const BlockingTaskRunnerHelper&) = delete;
 +
 +  ~BlockingTaskRunnerHelper() { DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_); }
 +
@@ -49,8 +49,8 @@
 +    base::internal::AssertBlockingAllowed();
 +
 +    file_watcher_ = base::FileDescriptorWatcher::WatchReadable(
-+        fd_.get(), base::Bind(&BlockingTaskRunnerHelper::OnFileCanReadWithoutBlocking,
-+                              base::Unretained(this)));
++        fd_.get(), base::BindRepeating(&BlockingTaskRunnerHelper::OnFileCanReadWithoutBlocking,
++                                       base::Unretained(this)));
 +  }
 +
 +  void Write(scoped_refptr<base::RefCountedBytes> buffer,
@@ -175,15 +175,15 @@
 +  base::WeakPtr<HidConnectionFreeBSD> connection_;
 +  const scoped_refptr<base::SequencedTaskRunner> origin_task_runner_;
 +  std::unique_ptr<base::FileDescriptorWatcher::Controller> file_watcher_;
-+
-+  DISALLOW_COPY_AND_ASSIGN(BlockingTaskRunnerHelper);
 +};
 +
 +HidConnectionFreeBSD::HidConnectionFreeBSD(
 +    scoped_refptr<HidDeviceInfo> device_info,
 +    base::ScopedFD fd,
-+    scoped_refptr<base::SequencedTaskRunner> blocking_task_runner)
-+    : HidConnection(device_info),
++    scoped_refptr<base::SequencedTaskRunner> blocking_task_runner,
++    bool allow_protected_reports,
++    bool allow_fido_reports)
++    : HidConnection(device_info, allow_protected_reports, allow_fido_reports),
 +      helper_(nullptr, base::OnTaskRunnerDeleter(blocking_task_runner)),
 +      blocking_task_runner_(std::move(blocking_task_runner)) {
 +  helper_.reset(new BlockingTaskRunnerHelper(std::move(fd), device_info,

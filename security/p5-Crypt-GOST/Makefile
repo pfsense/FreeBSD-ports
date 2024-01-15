@@ -1,6 +1,3 @@
-# Created by: Gabor Kovesdan
-# $FreeBSD$
-
 PORTNAME=	Crypt-GOST
 PORTVERSION=	1.00
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Perl extension for GOST Encryption Algorithm
+WWW=		https://metacpan.org/release/Crypt-GOST
 
 USES=		perl5
 USE_PERL5=	configure

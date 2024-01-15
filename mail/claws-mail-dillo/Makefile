@@ -1,10 +1,7 @@
-# Created by: Rozhuk Ivan <rozhuk.im@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	dillo
-PORTREVISION=	0
 
 COMMENT=	Viewing of html messages using the Dillo web browser
+WWW=		https://www.claws-mail.org/plugin.php?plugin=dillo
 
 RUN_DEPENDS=	dillo>=0:www/dillo2
 

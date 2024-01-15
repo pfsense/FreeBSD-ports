@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	alfio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3
+DISTVERSIONSUFFIX=	-bis
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	salvadore@FreeBSD.org
 COMMENT=	Services manager to choose which services start at boot time
+WWW=		https://github.com/lsalvadore/alfio
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

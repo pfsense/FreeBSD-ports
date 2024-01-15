@@ -1,6 +1,3 @@
-# Created by: Leo Kim <leo@florida.sarang.net>
-# $FreeBSD$
-
 PORTNAME=	MP3-ID3v1Tag
 PORTVERSION=	1.11
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Edit ID3v1 Tags from an Audio MPEG Layer 3
+WWW=		https://metacpan.org/release/MP3-ID3v1Tag
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,6 +1,3 @@
-# Created by: Markus Dolze
-# $FreeBSD$
-
 PORTNAME=	iograph
 PORTVERSION=	0.9.1
 CATEGORIES=	sysutils
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/iograph
 
 MAINTAINER=	bsdfan@nurfuerspam.de
 COMMENT=	Creates HTML statistics of network transfer
+WWW=		http://mdolze.gmxhome.de/iograph.shtml
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

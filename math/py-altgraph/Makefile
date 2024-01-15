@@ -1,19 +1,20 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	altgraph
-PORTVERSION=	0.15
+PORTVERSION=	0.17.4
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python graph (network) package
+WWW=		https://altgraph.readthedocs.io/en/latest/ \
+		https://github.com/ronaldoussoren/altgraph
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils unittest
 
 NO_ARCH=	yes
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

@@ -1,15 +1,12 @@
-# Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
-#   $MCom: ports/graphics/libsvg/Makefile,v 1.3 2005/07/04 00:11:29 marcus Exp $
-
 PORTNAME=	libsvg
 PORTVERSION=	0.1.4
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	http://cairographics.org/snapshots/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Parser for SVG content in files or buffers
+WWW=		http://cairographics.org/libsvg
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png

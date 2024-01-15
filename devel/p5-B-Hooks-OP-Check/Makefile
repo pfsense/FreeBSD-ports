@@ -1,6 +1,3 @@
-# Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
-
 PORTNAME=	B-Hooks-OP-Check
 PORTVERSION=	0.22
 CATEGORIES=	devel perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Wrap OP check callbacks
+WWW=		https://metacpan.org/release/B-Hooks-OP-Check
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

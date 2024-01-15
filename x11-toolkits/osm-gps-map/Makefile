@@ -1,13 +1,12 @@
-# Created by: Jean-Sébastien Pédron <dumbbell@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	osm-gps-map
 PORTVERSION=	1.1.0
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits net
 MASTER_SITES=	https://github.com/nzjrs/${PORTNAME}/releases/download/${PORTVERSION}/
 
 MAINTAINER=	dumbbell@FreeBSD.org
 COMMENT=	Gtk+ 3.0 mapping widget
+WWW=		https://nzjrs.github.io/osm-gps-map/
 
 LICENSE=	GPLv2
 

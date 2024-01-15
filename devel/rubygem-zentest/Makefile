@@ -1,8 +1,5 @@
-# Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	zentest
-PORTVERSION=	4.11.2
+PORTVERSION=	4.12.1
 PORTEPOCH=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
@@ -10,18 +7,16 @@ DISTNAME=	ZenTest-${PORTVERSION}
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby Unit Testing Utility
+WWW=		https://github.com/seattlerb/zentest
 
 LICENSE=	MIT
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/autotest \
-		bin/multigem \
+PLIST_FILES=	bin/multigem \
 		bin/multiruby \
-		bin/multiruby_setup \
 		bin/unit_diff \
 		bin/zentest
 

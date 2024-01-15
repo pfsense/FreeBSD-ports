@@ -1,6 +1,3 @@
-# Created by: Andrey Zakhvatov <andy@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	nbench
 PORTVERSION=	2.2.3
 CATEGORIES=	benchmarks
@@ -9,6 +6,7 @@ DISTNAME=	${PORTNAME}-byte-${PORTVERSION}
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	BYTE Magazine's native benchmarks
+WWW=		https://www.math.utah.edu/~mayer/linux/bmark.html
 
 ALL_TARGET=	# empty
 

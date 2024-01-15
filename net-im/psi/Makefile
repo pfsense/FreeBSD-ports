@@ -1,24 +1,21 @@
-# Created by: Jonathan Chen <jonc@chen.org.nz>
-# $FreeBSD$
-
 PORTNAME=	psi
-PORTVERSION=	1.4
-PORTREVISION=	2
+PORTVERSION=	1.5
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	SF/${PORTNAME}/Psi/${PORTVERSION}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Qt-based Jabber (XMPP) client
+WWW=		https://psi-im.org/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libidn.so:dns/libidn \
-		libminizip.so:archivers/minizip
+LIB_DEPENDS=	libidn.so:dns/libidn
 
-USES=		cmake compiler:c++11-lang desktop-file-utils pkgconfig \
+USES=		cmake compiler:c++11-lang desktop-file-utils minizip pkgconfig \
 		qca qt:5 tar:xz xorg
 USE_QT=		concurrent core dbus gui multimedia network svg widgets \
-		x11extras xml buildtools_build qmake_build imageformats_run
+		x11extras xml buildtools:build qmake:build imageformats:run
 USE_XORG=	ice sm x11 xcb xext xscrnsaver
 
 CMAKE_ARGS=	-DIDN_LIBRARY:FILEPATH="${LOCALBASE}/lib/libidn.so" \

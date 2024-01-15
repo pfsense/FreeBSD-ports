@@ -1,6 +1,3 @@
-# Created by: Ganael LAPLANCHE <ganael.laplanche@martymac.org>
-# $FreeBSD$
-
 PORTNAME=	evtViewer
 PORTVERSION=	0.6
 CATEGORIES=	sysutils
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}-${PORTVERSION} \
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Ms event log viewer
+WWW=		https://contribs.martymac.org
 
 LICENSE=	GPLv2
 

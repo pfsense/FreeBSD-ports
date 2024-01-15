@@ -1,6 +1,3 @@
-# Created by: wtp@bsdguru.org
-# $FreeBSD$
-
 CATEGORIES=	polish
 
 MAINTAINER=	wtp@bsdguru.org

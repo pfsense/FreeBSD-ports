@@ -1,14 +1,12 @@
-# Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
-
 PORTNAME=	App-Cmd
-PORTVERSION=	0.331
+PORTVERSION=	0.336
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Write command-line programs with less suffering
+WWW=		https://metacpan.org/release/App-Cmd
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

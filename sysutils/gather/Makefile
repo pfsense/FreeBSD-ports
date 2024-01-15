@@ -1,12 +1,10 @@
-# Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	gather
 PORTVERSION=	0.4.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Utility to store and display system statistics
+WWW=		https://github.com/trociny/gather
 
 LICENSE=	BSD2CLAUSE
 
@@ -15,7 +13,7 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	trociny
 
-CONFLICTS_INSTALL=	harvest-[0-9]*
+CONFLICTS_INSTALL=	harvest
 
 DATADIR=	/var/db/gather
 MAKE_ENV+=	CONFDIR=${PREFIX}/etc/gather DATADIR=${DATADIR}

@@ -1,6 +1,3 @@
-# Created by: pat@databits.net
-# $FreeBSD$
-
 PORTNAME=	hlmaster
 PORTVERSION=	0.9.3
 CATEGORIES=	net games
@@ -8,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Half-Life game master server daemon
+WWW=		https://hlmaster.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

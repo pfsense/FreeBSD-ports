@@ -1,26 +1,24 @@
-# Created by: Pietro Cerutti <gahr@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	tdbc
-DISTVERSION=	1.1.1
-PORTREVISION=	0
+DISTVERSION=	1.1.5
 CATEGORIES=	databases
-MASTER_SITES=	SF/tcl/Tcl/8.6.10
+MASTER_SITES=	SF/tcl/TDBC/${PORTVERSION}
 DISTFILES=	${PORTNAME}${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Common database access interface for Tcl
+WWW=		http://tdbc.tcl.tk
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKDIR}/${PORTNAME}${PORTVERSION}/license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+USES=		tcl:86+,tea
+
 OPTIONS_DEFINE=	MYSQL PGSQL SQLITE ODBC
 OPTIONS_DEFAULT=MYSQL PGSQL SQLITE ODBC
 OPTIONS_SUB=	yes
 
-USES=		tcl:86,tea
 USE_LDCONFIG=	yes
 MAKE_ENV+=	DESTDIR=${STAGEDIR}
 CONFIGURE_ARGS+=--enable-threads \
@@ -79,9 +77,6 @@ do-configure:
 	    ${CONFIGURE_ARGS} ${${module}_CONFIGURE_ARGS}
 
 .endfor
-
-post-configure:
-	${FIND} ${WRKDIR} -type f | ${XARGS} ${REINPLACE_CMD} -e 's|tdbcstub100|tdbcstub|g'
 
 do-build:
 .for module in ${MODULES}

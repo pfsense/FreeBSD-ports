@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	thewidgetfactory
 PORTVERSION=	0.2.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11-themes
-MASTER_SITES=	http://www.stellingwerff.com/TheWidgetFactory/
+MASTER_SITES=	https://www.stellingwerff.com/TheWidgetFactory/ \
+		http://vault.101011010.xyz/distfiles/ \
+		http://freebsd.nsu.ru/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Tool for previewing GTK+ widgets and testing new themes
+MAINTAINER=	danfe@FreeBSD.org
+COMMENT=	Tool for previewing GTK widgets and testing new themes
 
 LICENSE=	GPLv2
 

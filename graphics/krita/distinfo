@@ -1,3 +1,5 @@
-TIMESTAMP = 1604035112
-SHA256 (KDE/krita/krita-4.4.1.tar.xz) = 799770a624b4fbb9ab1b889f14b5b3e446355de7b9e939f182915aaeea76b5ae
-SIZE (KDE/krita/krita-4.4.1.tar.xz) = 169788052
+TIMESTAMP = 1702019416
+SHA256 (KDE/krita/krita-5.2.2.tar.xz) = 41515784d65b5bf12919df909f7406dc90f37076587b8c459ef2abd569a71adb
+SIZE (KDE/krita/krita-5.2.2.tar.xz) = 189146788
+SHA256 (KDE/krita/d9e258bf9d6a.patch) = 657c94dba0f0acd3e0ea03a53be2d8225f0d1fbe29c404815236628b6733d046
+SIZE (KDE/krita/d9e258bf9d6a.patch) = 4169

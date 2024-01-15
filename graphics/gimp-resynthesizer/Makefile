@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	resynthesizer
 PORTVERSION=	2.0.3
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	gimp-
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Gimp plug-in for texture synthesis
+WWW=		https://www.logarithmic.net/pfh/resynthesizer
 
 LICENSE=	GPLv2+ # though COPYING has GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

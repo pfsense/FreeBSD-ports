@@ -1,42 +1,32 @@
-# $FreeBSD$
-
 PORTNAME=	ciscoconfparse
-DISTVERSION=	1.5.22
+DISTVERSION=	1.9.28
 CATEGORIES=	net-mgmt python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Parse, audit, query, build and modify Cisco IOS-style configurations
+WWW=		http://www.pennington.net/py/ciscoconfparse/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}colorama>0:devel/py-colorama@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dnspython>0:dns/py-dnspython@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.6.1:devel/py-poetry-core@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>=23.0:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0.38.4:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}deprecated>=1.2.14:devel/py-deprecated@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dnspython>=2.4.2:dns/py-dnspython@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}loguru>=0.7.2:devel/py-loguru@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}passlib>=1.7.4:security/py-passlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}toml>=0.10.2:textproc/py-toml@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	distutils autoplist
+USES=		python
+USE_PYTHON=	autoplist pep517 pytest
+# Test fails due missing file: fixtures/configs/sample_01.f5
+PYTEST_BROKEN_TESTS=	testParse_parse_syntax_f5_as_junos_nofactory_ioscfg_01
+
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ipaddr>=2.1.11:devel/py-ipaddr@${PY_FLAVOR}
-.endif
-
-do-test:
-.if ${PYTHON_REL} < 3200
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs
-.else
-	# Skip the L4Object_asa_{lt01,lt02,range} tests as "models_asa" is broken in
-	# Python 3
-	# See also: https://github.com/mpenning/ciscoconfparse/issues/14
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs -k 'not _asa_lt and not _asa_range'
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

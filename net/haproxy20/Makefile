@@ -1,19 +1,22 @@
-# Created by: Hugo Saro <hugo@barafranca.com>
-# $FreeBSD$
-
 PORTNAME=	haproxy
-DISTVERSION=	2.0.19
+DISTVERSION=	2.0.33
 CATEGORIES=	net www
 PKGNAMESUFFIX=	20
 MASTER_SITES=	http://www.haproxy.org/download/2.0/src/
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Reliable, high performance TCP/HTTP load balancer
+WWW=		https://www.haproxy.org
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-CONFLICTS_INSTALL=	haproxy-[0-9]* haproxy-devel-[0-9]* haproxy17-[0-9]* haproxy18-[0-9]* haproxy19-[0-9]* haproxy21-[0-9]*
+DEPRECATED=	Upstream EOL reaches on 2024-06-30
+EXPIRATION_DATE=	2024-06-30
+BROKEN_FreeBSD_14=	process runaway
+BROKEN_FreeBSD_15=	process runaway
+
+CONFLICTS_INSTALL=	haproxy haproxy-devel haproxy17 haproxy18
 
 USES=		compiler:c++11-lang cpe gmake
 USE_RC_SUBR=	haproxy
@@ -29,7 +32,7 @@ DPCRE_DESC=		Link dynamically
 SPCRE_DESC=		Link statically
 DEVICEATLAS_DESC=	DeviceAtlas Device Detection support
 PROMEX_DESC=		Enable Prometheus exporter
-OPTIONS_DEFAULT=	SPCRE OPENSSL
+OPTIONS_DEFAULT=	SPCRE OPENSSL PROMEX
 
 DPCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 DPCRE_MAKE_ARGS=	USE_PCRE=1 USE_PCRE_JIT=1

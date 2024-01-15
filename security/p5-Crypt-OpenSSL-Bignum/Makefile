@@ -1,6 +1,3 @@
-# Created by: erwin@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	Crypt-OpenSSL-Bignum
 PORTVERSION=	0.09
 CATEGORIES=	security perl5
@@ -9,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	OpenSSL's multiprecision integer arithmetic #'
+WWW=		https://metacpan.org/release/Crypt-OpenSSL-Bignum
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-Email
 PORTVERSION=	1.0400
 CATEGORIES=	mail perl5
@@ -8,6 +6,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple email handling for Dancer applications
+WWW=		https://metacpan.org/release/Dancer-Plugin-Email
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

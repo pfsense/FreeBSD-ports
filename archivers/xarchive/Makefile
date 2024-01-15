@@ -1,14 +1,12 @@
-# Created by: Mark Kane <mark@mkproductions.org>
-# $FreeBSD$
-
 PORTNAME=	xarchive
 DISTVERSION=	0.2.8-6
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	archivers
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	mark@mkproductions.org
-COMMENT=	GTK+ front end for various archiving tools
+COMMENT=	GTK front end for various archiving tools
+WWW=		https://xarchive.sourceforge.net/
 
 RUN_DEPENDS=	bash:shells/bash
 
@@ -26,7 +24,7 @@ RAR_DESC=	RAR archive support
 RPM_DESC=	RPM archive support
 ZIP_DESC=	ZIP archive support
 
-7ZIP_RUN_DEPENDS=	7z:archivers/p7zip
+7ZIP_RUN_DEPENDS=	7zz:archivers/7-zip
 ARJ_RUN_DEPENDS=	arj:archivers/arj
 ACE_RUN_DEPENDS=	unace:archivers/unace
 DEB_RUN_DEPENDS=	dpkg-deb:archivers/dpkg

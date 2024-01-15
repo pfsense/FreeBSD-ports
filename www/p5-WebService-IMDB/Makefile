@@ -1,6 +1,3 @@
-# Created by: Christopher Key <cjk32@cam.ac.uk>
-# $FreeBSD$
-
 PORTNAME=	WebService-IMDB
 PORTVERSION=	0.05
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl interface to IMDb
+WWW=		https://metacpan.org/release/WebService-IMDB
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

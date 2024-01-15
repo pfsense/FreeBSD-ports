@@ -1,23 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	termplay
 DISTVERSION=	2.0.6
-PORTREVISION=	3
+PORTREVISION=	31
 CATEGORIES=	multimedia
 MASTER_SITES=	CRATESIO
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tool that converts images to ANSI sequences, plays videos in terminals
+WWW=		https://github.com/jD91mZM2/termplay
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libsixel.so:graphics/libsixel
 
-USES=		cargo gnome
+USES=		cargo gnome gstreamer
 USE_GNOME=	glib20
-USE_GSTREAMER1=	yes
 
 CARGO_FEATURES=	bin
 CARGO_CRATES=	\

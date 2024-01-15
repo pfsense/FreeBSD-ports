@@ -1,14 +1,13 @@
-# Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	morse
 PORTVERSION=	2.5
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.catb.org/~esr/morse/ \
 		LOCAL/db
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Morse Code Trainer
+WWW=		http://www.catb.org/~esr/morse/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

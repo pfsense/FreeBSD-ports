@@ -1,6 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libusipp
 PORTVERSION=	2.25
 DISTVERSIONPREFIX=	libusipp-
@@ -9,6 +6,7 @@ CATEGORIES=	net
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Unix socket interface for C++ raw IP/IP6/UDP/TCP, layer 2 framework
+WWW=		https://github.com/stealth/libusipp
 
 LICENSE=	GPLv3+
 

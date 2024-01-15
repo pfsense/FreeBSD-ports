@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpcl
 DISTVERSION=	1.12
 CATEGORIES=	devel
@@ -8,6 +6,7 @@ DISTNAME=	pcl-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Portable Coroutine Library for low level functionality for coroutines
+WWW=		http://xmailserver.org/libpcl.html
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

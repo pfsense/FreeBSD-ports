@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	File-ShareDir-PathClass
 PORTVERSION=	1.112440
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	File::ShareDir returning Path::Class objects
+WWW=		https://metacpan.org/release/File-ShareDir-PathClass
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-ShareDir>=0:devel/p5-File-ShareDir \

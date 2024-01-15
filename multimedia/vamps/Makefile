@@ -1,14 +1,12 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	vamps
 PORTVERSION=	0.99.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/Vamps/${PORTVERSION}
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	High performance tool to transcode DVD videos to a smaller size
+WWW=		https://vamps.sourceforge.net/
 
 LIB_DEPENDS=	libdvdread.so:multimedia/libdvdread
 

@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	clipr
-PORTVERSION=	0.7.1
+PORTVERSION=	0.8.0
+PORTREVISION=	1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Read and Write from the System Clipboard
+WWW=		https://cran.r-project.org/web/packages/clipr/
 
 LICENSE=	GPLv3
 

@@ -1,6 +1,3 @@
-# Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
-
 PORTNAME=	XML-Smart
 PORTVERSION=	1.79
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Smart, easy and powerful way to access/create XML files/data
+WWW=		https://metacpan.org/release/XML-Smart
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

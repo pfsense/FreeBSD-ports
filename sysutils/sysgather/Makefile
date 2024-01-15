@@ -1,6 +1,3 @@
-# Created by: roam@FreeBSD.org
-# $FreeBSD$
-
 PORTNAME=	sysgather
 DISTVERSION=	1.0pre10
 PORTREVISION=	1
@@ -9,6 +6,7 @@ MASTER_SITES=	http://devel.ringlet.net/sysutils/sysgather/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Keep configuration files under version control
+WWW=		https://devel.ringlet.net/sysutils/sysgather/
 
 LICENSE=	BSD2CLAUSE
 

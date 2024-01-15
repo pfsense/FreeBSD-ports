@@ -1,7 +1,5 @@
 #!/bin/sh
 #
-# $FreeBSD$
-#
 # PROVIDE: calloutd
 # REQUIRE: DAEMON
 # BEFORE: mail
@@ -14,9 +12,10 @@ name="calloutd"
 rcvar=calloutd_enable
 
 : ${calloutd_enable="NO"}
+: ${mailfromd_runpath="%%MFD_RUN_DIR%%"}
 
 command="%%PREFIX%%/sbin/${name}"
-pidfile="/var/run/${name}.pid"
+pidfile="${mailfromd_runpath}/${name}.pid"
 
 required_files="%%PREFIX%%/etc/mailfromd.conf"
 

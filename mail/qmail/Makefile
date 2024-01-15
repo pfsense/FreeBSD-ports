@@ -1,6 +1,3 @@
-# Created by: Mario S F Ferreira <lioux@linf.unb.br>
-# $FreeBSD$
-
 PORTNAME=	${QMAIL_PORTNAME}
 PORTVERSION?=	${QMAIL_VERSION}
 PORTREVISION?=	6
@@ -12,11 +9,12 @@ EXTRACT_ONLY?=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER?=	erdgeist@erdgeist.org
 COMMENT?=	Secure, reliable, efficient, simple, and fast MTA
+WWW?=		https://cr.yp.to/qmail.html
 
 DIST_SUBDIR=	qmail
 
-CONFLICTS?=	qmail-ldap-[0-9]* *qmail-mysql-[0-9]* qmail-spamcontrol-[0-9]* *qmail-tls-[0-9]*
-CONFLICTS+=	qmail-vida-[0-9]*
+CONFLICTS?=	qmail-ldap *qmail-mysql qmail-spamcontrol *qmail-tls
+CONFLICTS+=	qmail-vida
 
 USES+=		qmail:vars fakeroot
 PREFIX?=	${QMAIL_PREFIX}
@@ -86,6 +84,8 @@ QMAIL_PORTNAME=			netqmail
 QMAIL_VERSION=			1.06
 BARRIER_SENDMAIL_F_PATCH=	yes
 BARRIER_QMAILQUEUE_PATCH=	yes
+USES+=				cpe
+CPE_VENDOR=			netqmail
 .else
 # This is only used for slave ports.
 QMAIL_PORTNAME=			qmail
@@ -154,7 +154,7 @@ PATCHFILES+=	sendmail-flagf.patch:sendmail_flagf
 # codes 400 to 499 and to bounce mail when any MX server that qmail tries
 # greets with a code 500 to 599.
 # Created by Matthias Andree
-PATCH_SITES+=	http://www-dt.e-technik.uni-dortmund.de/~ma/qmail/:rfc2821
+PATCH_SITES+=	LOCAL/mandree/qmail/:rfc2821
 PATCHFILES+=	patch-qmail-1.03-rfc2821.diff:rfc2821
 .endif
 

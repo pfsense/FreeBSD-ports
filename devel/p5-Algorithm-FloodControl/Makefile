@@ -1,6 +1,3 @@
-# Created by: Andrey <gugu@zoo.rambler.ru>
-# $FreeBSD$
-
 PORTNAME=	Algorithm-FloodControl
 PORTVERSION=	2.001000
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Robot protection
+WWW=		https://metacpan.org/release/Algorithm-FloodControl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

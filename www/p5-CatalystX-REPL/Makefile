@@ -1,6 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CatalystX-REPL
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -11,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read-Eval-Print-Loop for debugging your Catalyst application
+WWW=		https://metacpan.org/release/CatalystX-REPL
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

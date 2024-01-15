@@ -1,13 +1,11 @@
-# Created by: Oliver Eikemeier
-# $FreeBSD$
-
 PORTNAME=	swaks
-PORTVERSION=	20201010.0
+PORTVERSION=	20201014.0
 CATEGORIES=	mail
 MASTER_SITES=	http://jetmore.org/john/code/swaks/
 
 MAINTAINER=	beat@FreeBSD.org
 COMMENT=	Swiss Army Knife SMTP transaction tester
+WWW=		https://jetmore.org/john/code/swaks/
 
 LICENSE=	GPLv2
 

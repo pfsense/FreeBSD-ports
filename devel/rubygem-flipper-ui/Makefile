@@ -1,23 +1,21 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flipper-ui
-PORTVERSION=	0.20.0
+PORTVERSION=	0.28.3
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Rack middleware that provides a fully featured web interface
+WWW=		https://github.com/flippercloud/flipper
 
 LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-erubi>=1.0.0<2.0.0:www/rubygem-erubi \
-		rubygem-flipper>=${PORTVERSION}<0.21:devel/rubygem-flipper \
-		rubygem-rack>=1.4,3<3,3:www/rubygem-rack \
-		rubygem-rack-protection>=1.5.3<2.2.0:www/rubygem-rack-protection
+		rubygem-flipper>=${PORTVERSION}<0.29:devel/rubygem-flipper \
+		rubygem-rack22>=1.4,3<3,3:www/rubygem-rack22 \
+		rubygem-rack-protection>=1.5.3<4.0.0_99:www/rubygem-rack-protection \
+		rubygem-sanitize>=0<7:textproc/rubygem-sanitize
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

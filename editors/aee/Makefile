@@ -1,22 +1,22 @@
-# Created by: Kelly Yancey <kbyanc@posi.net>
-# $FreeBSD$
-
 PORTNAME=	aee
-PORTVERSION=	2.2.21
-PORTREVISION=	2
+DISTVERSION=	2.2.22
 CATEGORIES=	editors
-MASTER_SITES=	https://BSDforge.com/projects/source/editors/aee/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Easy editor with both curses and X11 interfaces
+WWW=		https://gitlab.com/ports1/aee
 
 LICENSE=	ART10
+LICENSE_FILE=	${WRKSRC}/Artistic
 
 USES=		ncurses
 PLIST_FILES=	bin/aee bin/rae man/man1/aee.1.gz ${DATADIR}/help.ae
 ALL_TARGET=	main
 
-MAKE_JOBS_UNSAFE=	yes
+USE_GITLAB=	yes
+GL_ACCOUNT=	ports1
+GL_PROJECT=	aee
+GL_TAGNAME=	bf68f4accb96ac39020ac2d9092022aebfa5df27
 
 OPTIONS_DEFINE=	XAE
 
@@ -37,6 +37,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local/lib|${DATADIR}|g' \
 		${WRKSRC}/aee.1  \
 		${WRKSRC}/localize.c
+		${CHMOD} 0544 ${WRKSRC}/create.mk.aee ${WRKSRC}/create.mk.xae ${WRKSRC}/install-sh
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

@@ -1,6 +1,6 @@
---- base/process/process_metrics_freebsd.cc.orig	2020-11-13 06:36:34 UTC
+--- base/process/process_metrics_freebsd.cc.orig	2023-03-09 06:31:50 UTC
 +++ base/process/process_metrics_freebsd.cc
-@@ -3,8 +3,10 @@
+@@ -3,20 +3,39 @@
  // found in the LICENSE file.
  
  #include "base/process/process_metrics.h"
@@ -11,22 +11,21 @@
  #include <sys/sysctl.h>
  #include <sys/user.h>
  #include <unistd.h>
-@@ -14,11 +16,29 @@
- #include "base/process/process_metrics_iocounters.h"
- #include "base/stl_util.h"
  
-+#include <unistd.h> /* getpagesize() */
-+#include <fcntl.h>  /* O_RDONLY */
++#include <fcntl.h> /* O_RDONLY */
 +#include <kvm.h>
 +#include <libutil.h>
 +
+ #include "base/memory/ptr_util.h"
+ #include "base/process/process_metrics_iocounters.h"
++#include "base/values.h"
+ 
  namespace base {
 +namespace {
- 
 +int GetPageShift() {
 +  int pagesize = getpagesize();
 +  int pageshift = 0;
-+
+ 
 +  while (pagesize > 1) {
 +    pageshift++;
 +    pagesize >>= 1;
@@ -43,11 +42,43 @@
  
  // static
  std::unique_ptr<ProcessMetrics> ProcessMetrics::CreateProcessMetrics(
-@@ -69,4 +89,216 @@ size_t GetSystemCommitCharge() {
-   return mem_total - (mem_free*pagesize) - (mem_inactive*pagesize);
+@@ -24,22 +43,19 @@ std::unique_ptr<ProcessMetrics> ProcessMetrics::Create
+   return WrapUnique(new ProcessMetrics(process));
  }
  
-+int GetNumberOfThreads(ProcessHandle process) {
+-double ProcessMetrics::GetPlatformIndependentCPUUsage() {
++TimeDelta ProcessMetrics::GetCumulativeCPUUsage() {
+   struct kinfo_proc info;
+-  int mib[] = {CTL_KERN, KERN_PROC, KERN_PROC_PID, process_};
+-  size_t length = sizeof(info);
++  size_t length = sizeof(struct kinfo_proc);
++  struct timeval tv;
+ 
++  int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, process_ };
++
+   if (sysctl(mib, std::size(mib), &info, &length, NULL, 0) < 0)
+-    return 0;
++    return TimeDelta();
+ 
+-  return (info.ki_pctcpu / FSCALE) * 100.0;
++  return Microseconds(info.ki_runtime);
+ }
+ 
+-TimeDelta ProcessMetrics::GetCumulativeCPUUsage() {
+-  NOTREACHED();
+-  return TimeDelta();
+-}
+-
+ bool ProcessMetrics::GetIOCounters(IoCounters* io_counters) const {
+   return false;
+ }
+@@ -65,6 +81,230 @@ size_t GetSystemCommitCharge() {
+   pagesize = getpagesize();
+ 
+   return mem_total - (mem_free*pagesize) - (mem_inactive*pagesize);
++}
++
++int64_t GetNumberOfThreads(ProcessHandle process) {
 +  // Taken from FreeBSD top (usr.bin/top/machine.c)
 +
 +  kvm_t* kd = kvm_open(NULL, "/dev/null", NULL, O_RDONLY, "kvm_open");
@@ -120,7 +151,7 @@
 +
 +  length = sizeof(total_count);
 +
-+  if (sysctl(mib, base::size(mib), &total_count, &length, NULL, 0) < 0) {
++  if (sysctl(mib, std::size(mib), &total_count, &length, NULL, 0) < 0) {
 +    total_count = -1;
 +  }
 +
@@ -212,51 +243,63 @@
 +
 +SystemDiskInfo::SystemDiskInfo(const SystemDiskInfo& other) = default;
 +
-+std::unique_ptr<Value> SystemDiskInfo::ToValue() const {
-+  auto res = std::make_unique<DictionaryValue>();
++SystemDiskInfo& SystemDiskInfo::operator=(const SystemDiskInfo&) = default;
 +
++Value::Dict SystemDiskInfo::ToDict() const {
++  Value::Dict res;
++ 
 +  // Write out uint64_t variables as doubles.
 +  // Note: this may discard some precision, but for JS there's no other option.
-+  res->SetDouble("reads", static_cast<double>(reads));
-+  res->SetDouble("reads_merged", static_cast<double>(reads_merged));
-+  res->SetDouble("sectors_read", static_cast<double>(sectors_read));
-+  res->SetDouble("read_time", static_cast<double>(read_time));
-+  res->SetDouble("writes", static_cast<double>(writes));
-+  res->SetDouble("writes_merged", static_cast<double>(writes_merged));
-+  res->SetDouble("sectors_written", static_cast<double>(sectors_written));
-+  res->SetDouble("write_time", static_cast<double>(write_time));
-+  res->SetDouble("io", static_cast<double>(io));
-+  res->SetDouble("io_time", static_cast<double>(io_time));
-+  res->SetDouble("weighted_io_time", static_cast<double>(weighted_io_time));
++  res.Set("reads", static_cast<double>(reads));
++  res.Set("reads_merged", static_cast<double>(reads_merged));
++  res.Set("sectors_read", static_cast<double>(sectors_read));
++  res.Set("read_time", static_cast<double>(read_time));
++  res.Set("writes", static_cast<double>(writes));
++  res.Set("writes_merged", static_cast<double>(writes_merged));
++  res.Set("sectors_written", static_cast<double>(sectors_written));
++  res.Set("write_time", static_cast<double>(write_time));
++  res.Set("io", static_cast<double>(io));
++  res.Set("io_time", static_cast<double>(io_time));
++  res.Set("weighted_io_time", static_cast<double>(weighted_io_time));
 +
-+  return std::move(res);
++  NOTIMPLEMENTED();
++ 
++  return res;
 +}
 +
-+std::unique_ptr<DictionaryValue> SystemMemoryInfoKB::ToValue() const {
-+  auto res = std::make_unique<DictionaryValue>();
-+  res->SetIntKey("total", total);
-+  res->SetIntKey("free", free);
-+  res->SetIntKey("available", available);
-+  res->SetIntKey("buffers", buffers);
-+  res->SetIntKey("cached", cached);
-+  res->SetIntKey("active_anon", active_anon);
-+  res->SetIntKey("inactive_anon", inactive_anon);
-+  res->SetIntKey("active_file", active_file);
-+  res->SetIntKey("inactive_file", inactive_file);
-+  res->SetIntKey("swap_total", swap_total);
-+  res->SetIntKey("swap_free", swap_free);
-+  res->SetIntKey("swap_used", swap_total - swap_free);
-+  res->SetIntKey("dirty", dirty);
-+  res->SetIntKey("reclaimable", reclaimable);
++Value::Dict SystemMemoryInfoKB::ToDict() const {
++  Value::Dict res;
++  res.Set("total", total);
++  res.Set("free", free);
++  res.Set("available", available);
++  res.Set("buffers", buffers);
++  res.Set("cached", cached);
++  res.Set("active_anon", active_anon);
++  res.Set("inactive_anon", inactive_anon);
++  res.Set("active_file", active_file);
++  res.Set("inactive_file", inactive_file);
++  res.Set("swap_total", swap_total);
++  res.Set("swap_free", swap_free);
++  res.Set("swap_used", swap_total - swap_free);
++  res.Set("dirty", dirty);
++  res.Set("reclaimable", reclaimable);
++
++  NOTIMPLEMENTED();
 +
 +  return res;
 +}
 +
-+std::unique_ptr<DictionaryValue> VmStatInfo::ToValue() const {
-+  auto res = std::make_unique<DictionaryValue>();
-+  res->SetIntKey("pswpin", pswpin);
-+  res->SetIntKey("pswpout", pswpout);
-+  res->SetIntKey("pgmajfault", pgmajfault);
++Value::Dict VmStatInfo::ToDict() const {
++  Value::Dict res;
++  // TODO(crbug.com/1334256): Make base::Value able to hold uint64_t and remove
++  // casts below.
++  res.Set("pswpin", static_cast<int>(pswpin));
++  res.Set("pswpout", static_cast<int>(pswpout));
++  res.Set("pgmajfault", static_cast<int>(pgmajfault));
++
++  NOTIMPLEMENTED();
++
 +  return res;
-+}
+ }
+ 
  }  // namespace base

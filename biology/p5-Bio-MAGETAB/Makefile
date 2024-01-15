@@ -1,6 +1,3 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	Bio-MAGETAB
 PORTVERSION=	1.31
 PORTREVISION=	2
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Data model and utility API for the MAGE-TAB format
+WWW=		https://metacpan.org/release/Bio-MAGETAB
 
 LICENSE=	GPLv2
 

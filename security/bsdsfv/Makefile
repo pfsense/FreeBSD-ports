@@ -1,6 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
-
 PORTNAME=	bsdsfv
 PORTVERSION=	1.18
 CATEGORIES=	security
@@ -8,6 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Flexible SFV checksum utility
+WWW=		https://bsdsfv.sourceforge.net/
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 PLIST_FILES=	bin/bsdsfv

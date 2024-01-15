@@ -1,38 +1,54 @@
---- base/process/process_metrics.cc.orig	2020-11-13 06:36:34 UTC
+--- base/process/process_metrics.cc.orig	2023-05-31 08:12:17 UTC
 +++ base/process/process_metrics.cc
-@@ -49,7 +49,7 @@ SystemMetrics SystemMetrics::Sample() {
+@@ -17,7 +17,7 @@ namespace base {
+ namespace {
+ 
+ #if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_AIX)
++    BUILDFLAG(IS_AIX) || BUILDFLAG(IS_BSD)
+ int CalculateEventsPerSecond(uint64_t event_count,
+                              uint64_t* last_event_count,
+                              base::TimeTicks* last_calculated) {
+@@ -54,7 +54,7 @@ SystemMetrics SystemMetrics::Sample() {
    SystemMetrics system_metrics;
  
    system_metrics.committed_memory_ = GetSystemCommitCharge();
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ANDROID)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ANDROID) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
    GetSystemMemoryInfo(&system_metrics.memory_info_);
    GetVmStatInfo(&system_metrics.vmstat_info_);
    GetSystemDiskInfo(&system_metrics.disk_info_);
-@@ -68,7 +68,7 @@ std::unique_ptr<Value> SystemMetrics::ToValue() const 
-   std::unique_ptr<DictionaryValue> res(new DictionaryValue());
+@@ -73,7 +73,7 @@ Value::Dict SystemMetrics::ToDict() const {
+   Value::Dict res;
  
-   res->SetIntKey("committed_memory", static_cast<int>(committed_memory_));
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ANDROID)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_ANDROID) || defined(OS_BSD)
-   std::unique_ptr<DictionaryValue> meminfo = memory_info_.ToValue();
-   std::unique_ptr<DictionaryValue> vmstat = vmstat_info_.ToValue();
-   meminfo->MergeDictionary(vmstat.get());
-@@ -119,7 +119,7 @@ double ProcessMetrics::GetPlatformIndependentCPUUsage(
+   res.Set("committed_memory", static_cast<int>(committed_memory_));
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
+   Value::Dict meminfo = memory_info_.ToDict();
+   meminfo.Merge(vmstat_info_.ToDict());
+   res.Set("meminfo", std::move(meminfo));
+@@ -100,7 +100,6 @@ std::unique_ptr<ProcessMetrics> ProcessMetrics::Create
+ #endif  // !BUILDFLAG(IS_MAC)
  }
- #endif
  
--#if defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_AIX)
+-#if !BUILDFLAG(IS_FREEBSD) || !BUILDFLAG(IS_POSIX)
+ double ProcessMetrics::GetPlatformIndependentCPUUsage(
+     TimeDelta cumulative_cpu) {
+   TimeTicks time = TimeTicks::Now();
+@@ -126,7 +125,6 @@ double ProcessMetrics::GetPlatformIndependentCPUUsage(
+ double ProcessMetrics::GetPlatformIndependentCPUUsage() {
+   return GetPlatformIndependentCPUUsage(GetCumulativeCPUUsage());
+ }
+-#endif
+ 
+ #if BUILDFLAG(IS_WIN)
+ double ProcessMetrics::GetPreciseCPUUsage(TimeDelta cumulative_cpu) {
+@@ -157,7 +155,7 @@ double ProcessMetrics::GetPreciseCPUUsage() {
+ #endif  // BUILDFLAG(IS_WIN)
+ 
+ #if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_AIX)
++    BUILDFLAG(IS_AIX) || BUILDFLAG(IS_BSD)
  int ProcessMetrics::CalculateIdleWakeupsPerSecond(
      uint64_t absolute_idle_wakeups) {
-@@ -132,7 +132,7 @@ int ProcessMetrics::GetIdleWakeupsPerSecond() {
-   NOTIMPLEMENTED();  // http://crbug.com/120488
-   return 0;
- }
--#endif  // defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_CHROMEOS) ||
-+#endif  // defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) ||
-         // defined(OS_AIX)
- 
- #if defined(OS_APPLE)
+   return CalculateEventsPerSecond(absolute_idle_wakeups,

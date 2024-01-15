@@ -1,6 +1,3 @@
-# Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
-
 PORTNAME=	netscape-java40
 PORTVERSION=	1999.11.15
 PORTREVISION=	2

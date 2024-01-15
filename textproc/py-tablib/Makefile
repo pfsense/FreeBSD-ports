@@ -1,26 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	tablib
-PORTVERSION=	2.0.0
+PORTVERSION=	3.5.0
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Format agnostic tabular data library (XLS, JSON, YAML, CSV)
+WWW=		https://github.com/jazzband/tablib
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@${PY_FLAVOR}
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}setuptools_scm>=6.2:devel/py-setuptools_scm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 
-USES=		python:3.5+
-USE_PYTHON=	distutils autoplist
+USES=		cpe python
+CPE_VENDOR=	python
+USE_PYTHON=	autoplist pep517 pytest
 
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	CLI HTML ODS PANDAS XLS XLSX YAML
 OPTIONS_DEFAULT=CLI HTML ODS PANDAS XLS XLSX YAML
+
 CLI_DESC=	Command-line support
 HTML_DESC=	HTML format support
 ODS_DESC=	Open Document .ods support

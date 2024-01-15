@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	smproxy
 PORTVERSION=	1.0.6
 CATEGORIES=	x11

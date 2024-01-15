@@ -1,6 +1,3 @@
-# Created by: tobez
-# $FreeBSD$
-
 PORTNAME=	st
 PORTVERSION=	1.9
 PORTREVISION=	2
@@ -9,6 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}ate-threads/${PORTNAME}ate-threads/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	State Threads Library for Internet Applications
+WWW=		https://state-threads.sourceforge.net/
 
 USES=		uidfix
 USE_LDCONFIG=	yes

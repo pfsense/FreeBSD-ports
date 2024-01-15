@@ -1,33 +1,45 @@
-# Created by: anders@hack.org
-# $FreeBSD$
-
 PORTNAME=	pekwm
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	0.1.17
-PORTREVISION=	5
+DISTVERSION=	0.3.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
 
 MAINTAINER=	natbsd@instinctive.eu
 COMMENT=	Light, Unobtrusive, and configurable windowmanager
+WWW=		https://www.pekwm.se/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libpng.so:graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libfreetype.so:print/freetype2
+RUN_DEPENDS=	gsed:textproc/gsed \
+		xprop:x11/xprop
 
-USES=		autoreconf compiler gmake iconv:wchar_t jpeg \
+USES=		cmake compiler jpeg \
 		localbase pkgconfig tar:bzip2 xorg
 USE_XORG=	xft xpm x11 sm ice xext xinerama xrandr
 USE_GITHUB=	yes
-GH_ACCOUNT=	pekdon
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-shape --enable-xinerama --enable-xrandr \
-		--enable-xft --enable-image-xpm --enable-image-jpeg \
-		--enable-image-png --disable-debug \
-		--disable-pedantic
-CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
-CXXFLAGS_clang=	-Wno-c++11-narrowing
-LDFLAGS+=	${ICONV_LIB}
+GH_ACCOUNT=	pekwm
+
+CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=${PREFIX}/man
+
+OPTIONS_DEFINE=	PANGO
+OPTIONS_DEFAULT=PANGO
+
+PANGO_DESC=	Use Pango font support (both Cairo and Xft)
+
+PANGO_LIB_DEPENDS= libpangocairo-1.0.so:x11-toolkits/pango \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libharfbuzz.so:print/harfbuzz
+PANGO_USES=	gnome gettext-runtime
+PANGO_CMAKE_BOOL=ENABLE_PANGO
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MPANGO}
+USE_GNOME=	glib20 cairo
+.endif
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
-
 PORTNAME=	Metadata
 PORTVERSION=	0.24
 PORTREVISION=	1
@@ -10,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl implementation of Dublin Core compatible metadata
+WWW=		https://metacpan.org/release/Metadata
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

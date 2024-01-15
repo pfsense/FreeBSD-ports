@@ -1,44 +1,45 @@
-# Created by: John Prather
-# $FreeBSD$
-
 PORTNAME=	davmail
-PORTVERSION=	5.5.1
+PORTVERSION=	6.1.0
 CATEGORIES=	mail java
 MASTER_SITES=	SF/davmail/davmail/${PORTVERSION}
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}-${REVISION}
 
-MAINTAINER=	jjuanino@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	POP/IMAP/SMTP/Caldav/Carddav/LDAP Exchange Gateway
+WWW=		https://davmail.sourceforge.net/
 
 LICENSE=	GPLv2
 
 USES=		dos2unix tar:tgz
 
 DOS2UNIX_FILES=	build.xml
-NO_ARCH=	yes
 USE_ANT=	yes
 USE_JAVA=	yes
-ALL_TARGET=	release
-# 5.4.0
-REVISION=	3299
+USE_RC_SUBR=	davmail
+# 6.1.0
+REVISION=	3423
 # port build number, same as on DISTNAME
 MAKE_ARGS=	-Drevision=${REVISION}
 MAKE_ENV+=	"ANT_OPTS=-Dfile.encoding=UTF-8"
+ALL_TARGET=	release
+
+NO_ARCH=	yes
+SUB_FILES=	davmail.sh pkg-message
 
 USERS=		davmail
 GROUPS=		davmail
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
-USE_RC_SUBR=	davmail
-SUB_FILES=	davmail.sh pkg-message
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
 post-patch:
-	@${REINPLACE_CMD} -e 's#exec=\".*/davmail\"#exec=\"${PREFIX}/bin/davmail\"#' \
-		-e 's#icon=\".*/davmail.png\"#icon=\"${DATADIR}/davmail.png\"#' \
+	@${REINPLACE_CMD} -e 's#prefix=\"usr#prefix=\"${PREFIX}#' \
 		${WRKSRC}/build.xml
 
+# Azul JRE FX has been disabled by removing the target:
+# <antcall target="download-jre"/>
+# in files/patch-build.xml patch.
 do-install:
 	@cd ${WRKSRC}/dist && ${FIND} . -type d \
 		-exec ${MKDIR} ${STAGEDIR}${DATADIR}/\{} \;
@@ -55,9 +56,11 @@ do-install:
 		-not -name "*.desktop" \
 		-exec ${INSTALL_DATA} \{} ${STAGEDIR}${DATADIR}/\{} \;
 	@${FIND} ${STAGEDIR}/${DATADIR} -depth -empty -type d -delete
-	${INSTALL_SCRIPT} ${WRKDIR}/davmail.sh ${STAGEDIR}${PREFIX}/bin/davmail
+	${INSTALL_SCRIPT} ${WRKDIR}/davmail.sh \
+		${STAGEDIR}${PREFIX}/bin/davmail
 	${INSTALL_DATA} ${WRKSRC}/src/etc/davmail.properties \
 		${STAGEDIR}${PREFIX}/etc/davmail.properties.sample
-	${INSTALL_DATA} ${WRKSRC}/src/desktop/davmail.desktop ${STAGEDIR}${PREFIX}/share/applications/
+	${INSTALL_DATA} ${WRKSRC}/src/desktop/davmail.desktop \
+		${STAGEDIR}${PREFIX}/share/applications/
 
 .include <bsd.port.mk>
