@@ -9452,9 +9452,9 @@ function sync_package_pfblockerng($cron='') {
 		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
 		$pfb_gmin	= '0';
 		$pfb_ghour	= rand(0,23);
-		$pfb_gmday	= '*';
+		$pfb_gmday	= '4-10';
 		$pfb_gmonth	= '*';
-		$pfb_gwday	= 'Thu';
+		$pfb_gwday	= '*';
 		$pfb_gwho	= 'root';
 
 		// Determine if CRON job requires updating
