@@ -49,23 +49,20 @@ if ($method === 'DELETE' && isset($_GET['action']) && isset($_GET['decision_id']
         case 'status-bouncers-list':
             echo shell_exec("/usr/local/bin/cscli bouncers list -o json");
             break;
-        case 'status-collections-list':
-            echo shell_exec("/usr/local/bin/cscli collections list -o json");
-            break;
         case 'status-decisions-list':
             echo shell_exec("/usr/local/bin/cscli decisions list -l 0 -o json");
             break;
         case 'status-machines-list':
             echo shell_exec("/usr/local/bin/cscli machines list -o json");
             break;
+        case 'status-collections-list':
         case 'status-parsers-list':
-            echo shell_exec("/usr/local/bin/cscli parsers list -o json");
-            break;
         case 'status-postoverflows-list':
-            echo shell_exec("/usr/local/bin/cscli postoverflows list -o json");
-            break;
         case 'status-scenarios-list':
-            echo shell_exec("/usr/local/bin/cscli scenarios list -o json");
+        case 'status-appsec-configs-list':
+        case 'status-appsec-rules-list':
+        case 'status-contexts-list':
+            echo shell_exec("/usr/local/bin/cscli hub list -o json");
             break;
         case 'metrics-acquisition-list':
         case 'metrics-bucket-list':
