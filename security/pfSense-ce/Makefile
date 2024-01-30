@@ -7,7 +7,7 @@ COMMENT?=	pfSense Plus additional package
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	drm-515-kmod>0:graphics/drm-515-kmod
+RUN_DEPENDS=	drm-510-kmod>0:graphics/drm-510-kmod
 
 DISTFILES=
 MASTER_SITES=
