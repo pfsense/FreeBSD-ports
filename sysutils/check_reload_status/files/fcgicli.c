@@ -90,9 +90,9 @@ read_packet(FCGI_Header *header, int sockfd)
 
 	while (read < len) {
 		ssize_t r_read = recv(sockfd, header + read, len - read, 0);
-		if (r_read >= 0) {
+		if (r_read > 0) {
 			read += r_read;
-		} else if (errno != EINTR){
+		} else if (errno != EINTR || r_read == 0){
 			printf("Failed to read %zd header bytes: %s\n",
 			    (ssize_t)len - read, strerror(errno));
 			goto out;
@@ -119,9 +119,9 @@ read_packet(FCGI_Header *header, int sockfd)
 	read = 0;
 	while (read < len) {
 		ssize_t r_read = recv(sockfd, buf + read, len - read, 0);
-		if (r_read >= 0) {
+		if (r_read > 0) {
 			read += r_read;
-		} else if (errno != EINTR){
+		} else if (errno != EINTR || r_read == 0){
 			printf("Failed to read %zd payload bytes: %s\n",
 			    (ssize_t)len - read, strerror(errno));
 			free(buf);
@@ -358,7 +358,10 @@ main(int argc, char **argv)
 			goto endprog;
 			break;
 		default:
-			; /*nop*/
+			printf("Received unexpected header type %u, exiting",
+			    rHeader.type);
+			goto endprog;
+			break;
 		}
 	} while (rHeader.type != FCGI_END_REQUEST);
 
