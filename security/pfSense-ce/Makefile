@@ -3,7 +3,7 @@ DISTVERSION=	${PRODUCT_VERSION}
 CATEGORIES=	security
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense Plus additional package.
+COMMENT=	pfSense CE additional packages.
 WWW=		https://www.pfsense.org/
 
 LICENSE=	APACHE20
