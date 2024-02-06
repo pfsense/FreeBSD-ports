@@ -77,9 +77,21 @@ function getlogs($logdir, $log_extentions = array('log')) {
 
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
-						'logs'		=> array('pfblockerng.log', 'error.log', 'ip_block.log', 'ip_permit.log', 'ip_match.log',
-									'dnsbl.log', 'unified.log', 'extras.log', 'dnsbl_parsed_error.log', 'dns_reply.log',
-									'py_error.log', 'maxmind_ver', 'wizard.log'),
+						'logs'		=> array(
+											'pfblockerng.log', 
+											'error.log', 
+											'ip_block.log', 
+											'ip_permit.log', 
+											'ip_match.log', 
+											'dnsbl.log', 
+											'unified.log', 
+											'extras.log', 
+											'dnsbl_parsed_error.log', 
+											'dns_reply.log', 
+											'py_error.log', 
+											'py_debug.log',
+											'maxmind_ver', 
+											'wizard.log'),
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
@@ -109,7 +121,7 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'clear'		=> TRUE
 						),
 			'dnsbl'		=> array('name'		=> 'DNSBL Files',
-						'ext'		=> array('txt', 'ip'),
+						'ext'		=> array('txt', 'ip', 'exclusions'),
 						'txt'		=> 'dnsbl',
 						'logdir'	=> "{$pfb['dnsdir']}/",
 						'download'	=> TRUE,
@@ -309,6 +321,10 @@ if (isset($pconfig['logFile']) && !empty($pconfig['logFile']) && (isset($pconfig
 
 		// Python log file must be truncated to not lose python file pointer
 		if (strpos($s_logfile, 'py_error.log') !== FALSE) {
+			$fp = @fopen("{$s_logfile}", 'r+');
+			@ftruncate($fp, 0);
+			@fclose($fp);
+		} if (strpos($s_logfile, 'py_debug.log') !== FALSE) {
 			$fp = @fopen("{$s_logfile}", 'r+');
 			@ftruncate($fp, 0);
 			@fclose($fp);
