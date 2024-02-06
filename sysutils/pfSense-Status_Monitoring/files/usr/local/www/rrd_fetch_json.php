@@ -140,7 +140,7 @@ if ($timePeriod === "custom") {
 		$right_rrd_array = array();
 	}
 
-	$resolution = max($left_rrd_array['step'], $right_rrd_array['step']);
+	$resolution = (int) max($left_rrd_array['step'], $right_rrd_array['step']);
 
 	// make sure end time isn't later than last updated time entry
 	if ( $end > $last_updated ) { $end = $last_updated; }
