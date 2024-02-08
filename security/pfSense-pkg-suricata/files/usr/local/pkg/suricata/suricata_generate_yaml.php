@@ -192,6 +192,11 @@ if ($suricatacfg['block_drops_only'] == 'on')
 else
 	$suri_blockdrops = "no";
 
+if ($suricatacfg['passlist_debug_log'] == 'on')
+	$suri_passlist_debugging = "yes";
+else
+	$suri_passlist_debugging = "no";
+
 if ($suricatacfg['blockoffendersip'] == 'src')
 	$suri_blockip = 'SRC';
 elseif ($suricatacfg['blockoffendersip'] == 'dst')
