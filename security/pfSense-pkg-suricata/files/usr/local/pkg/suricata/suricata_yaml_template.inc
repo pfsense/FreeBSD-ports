@@ -49,7 +49,7 @@ outputs:
       pass-list: {$suri_passlist}
       block-ip: {$suri_blockip}
       pf-table: {$suri_pf_table}
-      passlist-debugging: no   # Do not enable debugging on production systems!
+      passlist-debugging: {$suri_passlist_debugging}   # Do not enable debugging on production systems!
 
   # a line based alerts log similar to Snort's fast.log
   - fast:
