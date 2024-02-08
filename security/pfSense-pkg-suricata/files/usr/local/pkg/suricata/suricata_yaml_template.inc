@@ -198,6 +198,12 @@ flow:
 vlan:
   use-for-tracking: true
 
+# This option controls the use of livedev ids in the flow (and defrag)
+# hashing. This is enabled by default and should be disabled if
+# netmap is used with a host stack interface.
+livedev:
+  use-for-tracking: {$livedev_tracking}
+
 # Specific timeouts for flows.
 flow-timeouts:
   default:
