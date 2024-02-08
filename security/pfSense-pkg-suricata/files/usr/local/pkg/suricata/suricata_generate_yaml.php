@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1309,6 +1309,7 @@ else
 	$suricata_use_syslog_priority = "notice";
 
 // Configure IPS operational mode
+$livedev_tracking = "true";
 if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {
 	// Get 'netmap_threads' parameter, if set
 	$netmap_threads_param = 'auto';
@@ -1317,6 +1318,7 @@ if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffender
 	}
 
 	$if_netmap = $if_real;
+	$livedev_tracking = "false";
 
 	// For VLAN interfaces, need to actually run Suricata
 	// on the parent interface, so override interface name.
