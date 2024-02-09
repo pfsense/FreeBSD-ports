@@ -155,8 +155,8 @@ $dbfile_url = MAXMIND_GEOIP2_DNLD_URL;
 $sha256file_url = MAXMIND_GEOIP2_SHA256_DNLD_URL;
 
 // Set MaxMind GeoLite2 Account ID and Password variables
-$user = config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_uid');
-$pwd = config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key');
+$user = config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_uid', "");
+$pwd = config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key', "");
 
 // First check the SHA256 hash of the DB we have (if any) against the latest on 
 // the MaxMind site to see if we already have the most current DB file version.
