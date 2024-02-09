@@ -304,7 +304,7 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 	if ($editable) {
 		$result = $object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
 	} else {
-		$result = $itemvalue;
+		$result = htmlspecialchars($itemvalue, ENT_QUOTES);
 	}
 	return $result;
 }
