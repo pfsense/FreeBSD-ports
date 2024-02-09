@@ -135,12 +135,12 @@ else
 safe_mkdir($geoip_tmppath);
 
 // Get the SHA256 hash of the current database archive file if available,
-// otherwise use a SHA256 zero hash.
+// otherwise use a SHA256 zero-length file hash.
 if (file_exists($suricata_geoip_dbdir . "GeoLite2-Country.mmdb.tar.gz.sha256")) {
 	$sha256_hash = file_get_contents($suricata_geoip_dbdir . "GeoLite2-Country.mmdb.tar.gz.sha256");
 }
 else {
-	$sha256_hash = "d41d8cd98f00b204e9800998ecf8427e"; // zero hash
+	$sha256_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  GeoLite2-Country_20240206.tar.gz"; // zero-length file hash
 }
 
 $result = "";
