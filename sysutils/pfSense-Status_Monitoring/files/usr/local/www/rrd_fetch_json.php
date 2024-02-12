@@ -87,8 +87,8 @@ $unit_desc_lookup = array(
 );
 
 // Posted settings that apply to both left and right axes
-$start = $_POST['start'];
-$end = $_POST['end'];
+$start = (int) $_POST['start'];
+$end = (int) $_POST['end'];
 $timePeriod = $_POST['timePeriod'];
 $resolution = $_POST['resolution'];
 $graphtype = $_POST['graphtype'];
