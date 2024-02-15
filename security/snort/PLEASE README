@@ -1,0 +1,3 @@
+# Ref: https://redmine.pfsense.org/issues/14480
+# I was directed to pass this upstream. There is issues with error handling for when a bad rule loads over updates.
+# This issue caused the full snort system to fail open durring a global attack last week. 
