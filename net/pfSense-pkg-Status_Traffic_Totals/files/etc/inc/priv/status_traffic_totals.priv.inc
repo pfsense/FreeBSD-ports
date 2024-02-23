@@ -3,7 +3,7 @@
  * status_traffic_totals.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

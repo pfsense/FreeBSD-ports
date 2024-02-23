@@ -3,7 +3,7 @@
  * squid_antivirus_status.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2010 Serg Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *

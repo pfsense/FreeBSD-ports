@@ -3,7 +3,7 @@
  * status_frr.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2010-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2010-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2010 Nick Buraglio <nick@buraglio.com>
  * All rights reserved.
  *

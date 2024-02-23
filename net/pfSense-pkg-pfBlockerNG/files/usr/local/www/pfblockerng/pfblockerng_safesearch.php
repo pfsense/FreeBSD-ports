@@ -3,7 +3,7 @@
  * pfblockerng_safesearch.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2020-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2020-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *

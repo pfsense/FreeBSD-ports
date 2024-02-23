@@ -3,7 +3,7 @@
  * lcdproc.php
  *
  * part of pfSense (https://www.pfsense.org/)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2011 Michele Di Maria
  * Copyright (c) 2007-2009 Seth Mos <seth.mos@dds.nl>
  * Copyright (c) 2008 Mark J Crane
