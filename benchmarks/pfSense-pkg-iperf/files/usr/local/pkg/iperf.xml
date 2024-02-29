@@ -29,7 +29,7 @@
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/iperf</title>
 	<savetext>Run iperf client</savetext>
-	<saveicon>fa-rss</saveicon>
+	<saveicon>fa-solid fa-rss</saveicon>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>

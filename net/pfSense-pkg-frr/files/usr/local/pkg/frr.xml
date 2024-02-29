@@ -348,7 +348,7 @@
 			<fielddescr>Force Service Restart</fielddescr>
 			<fieldname>service_force_restart</fieldname>
 			<type>button</type>
-			<buttonicon>fa-cog</buttonicon>
+			<buttonicon>fa-solid fa-cog</buttonicon>
 			<buttonclass>btn-danger</buttonclass>
 			<description>
 				<![CDATA[

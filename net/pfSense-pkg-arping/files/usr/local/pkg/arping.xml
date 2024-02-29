@@ -28,7 +28,7 @@
 	<name>arping</name>
 	<title>Diagnostics/ARPing</title>
 	<savetext>Run ARPing</savetext>
-	<saveicon>fa-rss</saveicon>
+	<saveicon>fa-solid fa-rss</saveicon>
 	<savebtnclass>btn-primary</savebtnclass>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>

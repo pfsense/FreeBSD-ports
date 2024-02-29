@@ -29,7 +29,7 @@
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/iperf</title>
 	<savetext>Run iperf server</savetext>
-	<saveicon>fa-play-circle</saveicon>
+	<saveicon>fa-regular fa-play-circle</saveicon>
 	<savebtnclass>btn-success</savebtnclass>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>

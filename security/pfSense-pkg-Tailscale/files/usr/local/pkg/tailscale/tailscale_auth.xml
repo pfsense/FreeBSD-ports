@@ -90,7 +90,7 @@
 			<fielddescr>Logout and Clean</fielddescr>
 			<fieldname>service_clean</fieldname>
 			<type>button</type>
-			<buttonicon>fa-sign-out</buttonicon>
+			<buttonicon>fa-solid fa-right-from-bracket</buttonicon>
 			<buttonclass>btn-danger</buttonclass>
 			<description>
 				<![CDATA[
