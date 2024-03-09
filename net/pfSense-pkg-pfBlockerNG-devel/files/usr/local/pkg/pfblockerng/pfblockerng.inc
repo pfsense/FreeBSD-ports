@@ -10823,7 +10823,7 @@ function pfb_remove_config_settings() {
 /* Uses XMLRPC to synchronize the changes to a remote node */
 function pfblockerng_sync_on_changes() {
 	// Create array of sync settings and exit if sync is disabled.
-	$pfb_sync = config_get_path('installedpackages/pfblockerngsyncd/config/0', []);
+	$pfb_sync = config_get_path('installedpackages/pfblockerngsync/config/0', []);
 	if (!empty($pfb_sync)) {
 		if ($pfb_sync['varsynconchanges'] == 'disabled' || empty($pfb_sync['varsynconchanges'])) {
 			return;
