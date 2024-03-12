@@ -200,6 +200,8 @@ bin/parser_readme.md
 @(,,755) bin/pfSlogcat
 @(,,755) bin/ping_hosts.sh
 @(,,755) bin/runmsntp.sh
+@(,,755) bin/usermgrpasswd
+@(,,755) bin/usermgrwhoami
 @(,,755) bin/viconfig
 captiveportal/captiveportal-default-logo.png
 captiveportal/index.php
