@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -726,7 +726,8 @@ function pfb_global() {
 	$pfb['maxmind_locale']	= $pfb['ipconfig']['maxmind_locale']	?: 'en';	// MaxMind Localized Language setting
 	$pfb['asn_reporting']	= $pfb['ipconfig']['asn_reporting']	?: 'disabled';	// ASN Reporting
 
-	$pfb['maxmind_key']	= pfb_filter($pfb['ipconfig']['maxmind_key'], PFB_FILTER_WORD, 'pfb_global');	// Maxmind License Key
+	$pfb['maxmind_account']	= pfb_filter($pfb['ipconfig']['maxmind_account'], PFB_FILTER_WORD, 'pfb_global')	?: '';		// Maxmind Account ID
+	$pfb['maxmind_key']	= pfb_filter($pfb['ipconfig']['maxmind_key'], PFB_FILTER_WORD, 'pfb_global')		?: '';		// Maxmind License Key
 
 	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];			// Enabled state of DNSBL
 	$pfb['dnsbl_vip_type']	= $pfb['dnsblconfig']['pfb_dnsvip_type'] ?: 'ipalias';	// Virtual IP type
@@ -9028,7 +9029,7 @@ function sync_package_pfblockerng($cron='') {
 
 	// Download MaxMind Databases if not found
 	$maxmind_verify = FALSE;
-	if (!empty($pfb['maxmind_key'])) {
+	if (!empty($pfb['maxmind_key']) && !empty($pfb['maxmind_account'])) {
 
 		$maxmind_verify = TRUE;
 		if (!file_exists("{$pfb['geoipshare']}/GeoLite2-Country.mmdb") ||
@@ -9327,8 +9328,8 @@ function sync_package_pfblockerng($cron='') {
 
 						// Maxmind License Key verification
 						if ($maxmind_run_once && $row['format'] == 'geoip') {
-							$mmsg = 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.';
-							if (empty($pfb['maxmind_key'])) {
+							$mmsg = 'MaxMind now requires an Account ID and License Key! Review the IP tab: MaxMind settings for more information.';
+							if (empty($pfb['maxmind_key']) || empty($pfb['maxmind_account'])) {
 								pfb_logger("\n\nURGENT:\n    {$mmsg}.\n", 1);
 								file_notice('pfBlockerNG MaxMind', $mmsg, 'pfBlockerNG', '/pfblockerng/pfblockerng_ip.php', 2);
 							}
@@ -10577,7 +10578,7 @@ function sync_package_pfblockerng($cron='') {
 		install_cron_job('pfblockerng.php cron', false);
 	}
 
-	if ($pfb['enable'] == 'on' && !empty($pfb['maxmind_key'])) {
+	if ($pfb['enable'] == 'on' && !empty($pfb['maxmind_key']) && !empty($pfb['maxmind_account'])) {
 		// Define pfBlockerNG MaxMind CRON job
 		$pfb_gcmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dcc >> {$pfb['extraslog']} 2>&1";
 		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
@@ -10823,7 +10824,7 @@ function pfb_remove_config_settings() {
 /* Uses XMLRPC to synchronize the changes to a remote node */
 function pfblockerng_sync_on_changes() {
 	// Create array of sync settings and exit if sync is disabled.
-	$pfb_sync = config_get_path('installedpackages/pfblockerngsyncd/config/0', []);
+	$pfb_sync = config_get_path('installedpackages/pfblockerngsync/config/0', []);
 	if (!empty($pfb_sync)) {
 		if ($pfb_sync['varsynconchanges'] == 'disabled' || empty($pfb_sync['varsynconchanges'])) {
 			return;
