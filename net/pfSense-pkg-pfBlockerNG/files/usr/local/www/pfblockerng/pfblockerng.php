@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -77,14 +77,14 @@ if (isset($argv[1])) {
 // Extras - MaxMind/TOP1M Download URLs/filenames/settings
 $pfb['extras']			= array();
 $pfb['extras'][0]		= array();
-$pfb['extras'][0]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=_MAXMIND_KEY_&suffix=tar.gz';
+$pfb['extras'][0]['url']	= 'https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoLite2-Country.tar.gz';
 $pfb['extras'][0]['file']	= 'GeoLite2-Country.mmdb';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][0]['type']	= 'geoip';
 
 $pfb['extras'][1]		= array();
-$pfb['extras'][1]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=_MAXMIND_KEY_&suffix=zip';
+$pfb['extras'][1]['url']	= 'https://download.maxmind.com/geoip/databases/GeoLite2-Country-CSV/download?suffix=zip';
 $pfb['extras'][1]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
 $pfb['extras'][1]['file']	= '';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
@@ -482,19 +482,22 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 		}
 
 		if ($feed['type'] == 'geoip') {
-			if (empty($pfb['maxmind_key'])) {
-				$mmsg = 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information. Download failed!';
+			if (empty($pfb['maxmind_key']) || empty($pfb['maxmind_account'])) {
+				$mmsg = 'MaxMind now requires an Account ID and License Key! Review the IP tab: MaxMind settings for more information. Download failed!';
 				pfb_logger($mmsg, $logtype);
 				file_notice('pfBlockerNG MaxMind', $mmsg, 'pfBlockerNG', '/pfblockerng/pfblockerng_ip.php', 2);
 				$pfb_error = TRUE;
 				continue;
 			}
-			$feed['url'] = str_replace('_MAXMIND_KEY_', $pfb['maxmind_key'], $feed['url']);
+			$feed['username'] = $pfb['maxmind_account'];
+			$feed['password'] = $pfb['maxmind_key'];
+		}
+		else {
+			$feed['username'] = $feed['username'] ?: '';
+			$feed['password'] = $feed['password'] ?: '';
 		}
 
-		$file_dwn		= "{$feed['folder']}/{$feed['file_dwn']}";
-		$feed['username']	= $feed['username'] ?: '';
-		$feed['password']	= $feed['password'] ?: '';
+		$file_dwn = "{$feed['folder']}/{$feed['file_dwn']}";
 
 		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', $logtype, '', $timeout, $feed['type'], 
 		    $feed['username'], $feed['password'])) {
@@ -1430,7 +1433,7 @@ $php_data = <<<EOF
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -2031,7 +2034,7 @@ function pfb_build_reputation_tab($et_options='') {
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
