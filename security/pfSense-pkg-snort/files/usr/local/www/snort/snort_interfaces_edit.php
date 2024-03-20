@@ -978,6 +978,11 @@ print($form);
 
 <script type="text/javascript">
 //<![CDATA[
+
+var ifacearray = <?= json_encode(get_configured_interface_with_descr()) ?>;
+var ifacemap = new Map(Object.entries(ifacearray));
+ifacemap.set("Unassigned", "Unassigned");
+
 events.push(function(){
 
 	function enable_blockoffenders() {
@@ -1120,6 +1125,10 @@ events.push(function(){
 			hideClass('passlist', false);
 			$('#ips_warn_dlg').modal('hide');
 		}
+	});
+
+	$('#interface').on('change', function() {
+		$('#descr').val(ifacemap.get($('#interface').val()));
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------
