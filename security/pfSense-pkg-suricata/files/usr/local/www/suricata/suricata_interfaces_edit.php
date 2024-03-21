@@ -2055,6 +2055,10 @@ print($form);
 <script type="text/javascript">
 //<![CDATA[
 
+var ifacearray = <?= json_encode(get_configured_interface_with_descr()) ?>;
+var ifacemap = new Map(Object.entries(ifacearray));
+ifacemap.set("Unassigned", "Unassigned");
+
 events.push(function(){
 
 	function enable_blockoffenders() {
@@ -2646,7 +2650,7 @@ events.push(function(){
 	});
 
 	$('#interface').on('change', function() {
-		$('#descr').val($('#interface').val().toUpperCase());
+		$('#descr').val(ifacemap.get($('#interface').val()));
 		$('#file_store_logdir').val('');
 	});
 
