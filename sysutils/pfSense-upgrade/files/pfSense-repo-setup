@@ -209,7 +209,7 @@ pfSense_repo_setup() {
 
 	if [ -z "${NOUPDATE}" ]; then
 		# Fetch the repository settings.
-		if ! /usr/local/sbin/${PRODUCT}-repoc-static; then
+		if ! /usr/local/sbin/${PRODUCT}-repoc-static -N; then
 			echo "failed to update the repository settings!!!"
 			rm -f "/tmp/${PRODUCT}.conf.copy"
 			exit 1
