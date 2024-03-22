@@ -204,12 +204,20 @@ EOF
 
 
 pfSense_repo_setup() {
+	local _feat _fstyle _repoc_args
 
 	cp "${PFSENSE_REPO_CONF}" "/tmp/${PRODUCT}.conf.copy"
 
 	if [ -z "${NOUPDATE}" ]; then
+		_repoc_args=""
+		_feat="$("/usr/local/sbin/${PRODUCT}-repoc-static" -f 2>&1)"
+		if [ "${?}" -eq 0 ] && [ -n "${_feat}" ]; then
+			_fstyle="$(echo -n "${_feat}" | /usr/bin/grep -c "repodir-new-fstyle")"
+			[ "${_fstyle}" = "1" ] && \
+			    _repoc_args="${_repoc_args} -N"
+		fi
 		# Fetch the repository settings.
-		if ! /usr/local/sbin/${PRODUCT}-repoc-static -N; then
+		if ! "/usr/local/sbin/${PRODUCT}-repoc-static" $_repoc_args; then
 			echo "failed to update the repository settings!!!"
 			rm -f "/tmp/${PRODUCT}.conf.copy"
 			exit 1
