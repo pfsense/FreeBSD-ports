@@ -70,6 +70,7 @@ class acme_sh {
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
 		$env['PATH'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+		$env['SSL_CERT_DIR'] = "/etc/ssl/certs/";
 
 		/* Setup Proxy Variables */
 		if (!empty($config['system']['proxyurl'])) {
