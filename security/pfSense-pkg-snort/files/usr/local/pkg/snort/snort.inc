@@ -31,8 +31,7 @@ require_once("xmlrpc_client.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
 // Snort GUI needs at least 512 MB to manipulate large rules arrays
-if (get_php_default_memory($ARCH) < 512)
-	ini_set("memory_limit", "512M");
+ini_set("memory_limit", config_get_path('system/php_memory_limit', '512') . "M");
 
 // Explicitly declare this as global so it works through function call includes 
 global $g, $rebuild_rules;
