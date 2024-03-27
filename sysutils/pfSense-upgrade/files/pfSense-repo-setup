@@ -52,8 +52,8 @@ get_repo_id() {
 	local _id _repo_conf
 
 	_repo_conf="${1}"
-	_id="$(echo -n "${_repo_conf}" | /usr/bin/sed 's/.*pfSense-repo-//' | \
-	    /usr/bin/sed 's/\.conf//')"
+	_id="$(echo -n "${_repo_conf}" | \
+	    /usr/bin/sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
 
 	echo -n "${_id}"
 }
