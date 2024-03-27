@@ -1177,7 +1177,7 @@ if (isset($_POST) && !empty($_POST)) {
 					}
 
 					if ($pfb['dnsbl_py_blacklist']) {
-						@file_put_contents($pfb['unbound_py_data'], ",{$entry},,1,,\n", FILE_APPEND);
+						@file_put_contents($pfb['unbound_py_data'], ",{$entry},,1,DNSBL,USER\n", FILE_APPEND);
 						$dnsbl_py_changes = TRUE;
 					} else {
 						$domain_esc = escapeshellarg($entry);
@@ -1200,7 +1200,7 @@ if (isset($_POST) && !empty($_POST)) {
 						}
 
 						if ($pfb['dnsbl_py_blacklist']) {
-							@file_put_contents($pfb['unbound_py_zone'], ",{$entry},,1,,\n", FILE_APPEND);
+							@file_put_contents($pfb['unbound_py_zone'], ",{$entry},,1,DNSBL_TLD,USER\n", FILE_APPEND);
 							$dnsbl_py_changes = TRUE;
 						} else {
 							$domain_esc = escapeshellarg($entry);
