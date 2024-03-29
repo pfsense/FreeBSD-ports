@@ -3,7 +3,7 @@
 # pfSense-upgrade
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -1469,15 +1469,35 @@ check_upgrade() {
 		local _version_compare=""
 		local _db_dir="/tmp/db/pfSense/pkg"
 		for _repo in /usr/local/etc/pfSense/pkg/repos/*.conf; do
-			local _reponame=$(_echo $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')
-			local _repopath=${_db_dir}/${_reponame}
-			local _pkg_args=""
+			local _name _reponame _reponpath _repoid _repopath
+
+			_repopath=""
+			_reponame="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+			_reponpath="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_reponame}.name"
+			if [ -f "${_reponpath}" ]; then
+				_name="$(/bin/cat "${_reponpath}")"
+				[ "${_name}" = "${_reponame}" ] && \
+				    _repopath="${_db_dir}/${_reponame}"
+			fi
+
+			if [ -z "${_repopath}" ]; then
+				_repoid="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+				_reponpath="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_repoid}.name"
+				if [ -f "${_reponpath}" ]; then
+					_reponame="$(/bin/cat "${_reponpath}")"
+					_repopath="${_db_dir}/${_reponame}"
+				fi
+			fi
+			if [ -z "${_repopath}" ] || [ -z "${_reponame}" ]; then
+				continue
+			fi
 
 			# Skip repos with devel names
 			if [ "${_reponame}" == "devel" ]; then
 				continue
 			fi
 
+			local _pkg_args=""
 			local _is_configured_repo=$( \
 				[ "${_repo}" = "$(stat -f %Y /usr/local/etc/pkg/repos/pfSense.conf)" ] >/dev/null 2>&1; \
 				printf $?

@@ -3,7 +3,7 @@
  * snort_stream5_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *

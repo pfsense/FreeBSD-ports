@@ -3,8 +3,8 @@
  * snort_httpinspect_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2022 Bill Meeks
+ * Copyright (c) 2018-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -519,8 +519,8 @@ $group->add( new Form_Input(
 	'',
 	'number',
 	$pconfig['server_flow_depth']
-))->setAttribute('min', '-1')->setAttribute('max', '65535')->setHelp('Amount of HTTP server response payload to inspect.  Minimum is -1 and maximum is 65535.  -1 disables HTTP inspect and 0 enables all HTTP inspect.  Default is 1460.');
-$group->setHelp('Snort\'s performance may increase by adjusting this value. Setting this value too low may cause false negatives. Values above 0 are specified in bytes.  Recommended setting is maximum (1460).');
+))->setAttribute('min', '-1')->setAttribute('max', '65535')->setHelp('Amount of HTTP server response payload to inspect.  Minimum is -1 and maximum is 65535.  -1 disables HTTP inspect and 0 enables all HTTP inspect.  Default is 65535.');
+$group->setHelp('Snort\'s performance may increase by adjusting this value. Setting this value too low may cause false negatives. Values above 0 are specified in bytes.  Recommended setting is maximum (65535).');
 $section->add($group);
 
 $group = new Form_Group('Client Flow Depth');
@@ -529,8 +529,8 @@ $group->add( new Form_Input(
 	'',
 	'number',
 	$pconfig['client_flow_depth']
-))->setAttribute('min', '-1')->setAttribute('max', '1460')->setHelp('Amount of raw HTTP client request payload to inspect.  Minimum is -1 and maximum is 1460.  -1 disables HTTP inspect and 0 enables all HTTP inspect.  Default is 65535.');
-$group->setHelp('Snort\'s performance may increase by adjusting this value. Setting this value too low may cause false negatives. Values above 0 are specified in bytes.  Recommended setting is maximum (65535).');
+))->setAttribute('min', '-1')->setAttribute('max', '1460')->setHelp('Amount of raw HTTP client request payload to inspect.  Minimum is -1 and maximum is 1460.  -1 disables HTTP inspect and 0 enables all HTTP inspect.  Default is 1460.');
+$group->setHelp('Snort\'s performance may increase by adjusting this value. Setting this value too low may cause false negatives. Values above 0 are specified in bytes.  Recommended setting is maximum (1460).');
 $section->add($group);
 
 $group = new Form_Group('Post Depth');

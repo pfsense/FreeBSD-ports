@@ -3,7 +3,7 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -978,6 +978,11 @@ print($form);
 
 <script type="text/javascript">
 //<![CDATA[
+
+var ifacearray = <?= json_encode(get_configured_interface_with_descr()) ?>;
+var ifacemap = new Map(Object.entries(ifacearray));
+ifacemap.set("Unassigned", "Unassigned");
+
 events.push(function(){
 
 	function enable_blockoffenders() {
@@ -1120,6 +1125,10 @@ events.push(function(){
 			hideClass('passlist', false);
 			$('#ips_warn_dlg').modal('hide');
 		}
+	});
+
+	$('#interface').on('change', function() {
+		$('#descr').val(ifacemap.get($('#interface').val()));
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------

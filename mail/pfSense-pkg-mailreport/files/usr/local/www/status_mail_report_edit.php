@@ -3,7 +3,7 @@
  * status_mail_report_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

@@ -3,7 +3,7 @@
 # pfSense-repo-setup
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,6 +48,16 @@ get_default_repo() {
 	echo ""
 }
 
+get_repo_id() {
+	local _id _repo_conf
+
+	_repo_conf="${1}"
+	_id="$(echo -n "${_repo_conf}" | \
+	    /usr/bin/sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+
+	echo -n "${_id}"
+}
+
 get_repo_name() {
 	local _repo_conf="${1}"
 	repo_path="${_repo_conf%.conf}"
@@ -63,7 +73,13 @@ validate_repo_conf() {
 	local default_file=$(ls -1 ${PLUS_CERT_BASE}/*.default 2>/dev/null | tail -n 1)
 	local default="${PLUS_CERT_BASE}/${PRODUCT}-repo-stable.conf"
 	local repo_name=$(get_repo_name "${PKG_REPO_CONF_PATH}")
-	local pkg_repo_conf="${PLUS_CERT_BASE}/${PRODUCT}-repo-${repo_name}.conf"
+	local id pkg_repo_conf
+
+	pkg_repo_conf="${PLUS_CERT_BASE}/${PRODUCT}-repo-${repo_name}.conf"
+	if [ ! -f "${pkg_repo_conf}" ]; then
+		repo_id="$(get_repo_id "${PKG_REPO_CONF_PATH}")"
+		pkg_repo_conf="${PLUS_CERT_BASE}/${PRODUCT}-repo-${repo_id}.conf"
+	fi
 
 	if [ -n "${default_file}" ] && [ -f "${default_file}" ]; then
 		default="${default_file%%.default}.conf"
@@ -145,6 +161,12 @@ EOF
 	PLUS_REPO_CONF="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}.conf"
 	PLUS_CERT="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}-cert.pem"
 	PLUS_KEY="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}-key.pem"
+	if [ ! -f "${PLUS_REPO_CONF}" ]; then
+		REPO_ID="$(get_repo_id "${PKG_REPO_CONF_PATH}")"
+		PLUS_REPO_CONF="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_ID}.conf"
+		PLUS_CERT="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_ID}-cert.pem"
+		PLUS_KEY="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_ID}-key.pem"
+	fi
 	if [ -f "${PLUS_REPO_CONF}" ] && \
 	   [ "${PLUS_REPO_CONF}" != "$(realpath "${PFSENSE_REPO_CONF}")" ]; then
 		rm -f "${PFSENSE_REPO_CONF}"
@@ -182,12 +204,20 @@ EOF
 
 
 pfSense_repo_setup() {
+	local _feat _fstyle _repoc_args
 
 	cp "${PFSENSE_REPO_CONF}" "/tmp/${PRODUCT}.conf.copy"
 
 	if [ -z "${NOUPDATE}" ]; then
+		_repoc_args=""
+		_feat="$("/usr/local/sbin/${PRODUCT}-repoc-static" -f 2>&1)"
+		if [ "${?}" -eq 0 ] && [ -n "${_feat}" ]; then
+			_fstyle="$(echo -n "${_feat}" | /usr/bin/grep -c "repodir-new-fstyle")"
+			[ "${_fstyle}" = "1" ] && \
+			    _repoc_args="${_repoc_args} -N"
+		fi
 		# Fetch the repository settings.
-		if ! /usr/local/sbin/${PRODUCT}-repoc-static; then
+		if ! "/usr/local/sbin/${PRODUCT}-repoc-static" $_repoc_args; then
 			echo "failed to update the repository settings!!!"
 			rm -f "/tmp/${PRODUCT}.conf.copy"
 			exit 1

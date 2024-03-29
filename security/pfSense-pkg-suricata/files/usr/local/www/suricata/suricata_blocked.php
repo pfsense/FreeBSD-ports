@@ -3,11 +3,11 @@
  * suricata_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -298,7 +298,7 @@ print($form);
 			$tmpblocked = array_flip($blocked_ips_array);
 			$src_ip_list = array();
 
-			foreach (glob("{$suricatalogdir}*/block.log*") as $alertfile) {
+			foreach (glob("{$suricatalogdir}*/block.log") as $alertfile) {
 				$fd = fopen($alertfile, "r");
 				if ($fd) {
 

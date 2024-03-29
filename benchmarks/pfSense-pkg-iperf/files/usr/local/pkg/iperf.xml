@@ -8,7 +8,7 @@
  * iperf.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/iperf</title>
 	<savetext>Run iperf client</savetext>
-	<saveicon>fa-rss</saveicon>
+	<saveicon>fa-solid fa-rss</saveicon>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>

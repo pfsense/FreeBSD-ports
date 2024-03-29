@@ -3,7 +3,7 @@
  * snort_interfaces.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
@@ -440,15 +440,15 @@ if ($savemsg)
 						<div class="row">
 							<div class="col-md-6">
 								<p>
-									Click on the <i class="fa-solid fa-lg fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
-									Click on the <i class="fa-solid fa-lg fa-trash-can" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
-									Click on the <i class="fa-regular fa-lg fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
+									Click on the <i class="fa-lg fa-solid fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
+									Click on the <i class="fa-lg fa-solid fa-trash-can" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
+									Click on the <i class="fa-lg fa-regular fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
 								</p>
 							</div>
 							<div class="col-md-6">
 								<p>
-									<i class="fa-solid fa-lg fa-check-circle" alt="Running"></i> <i class="fa-solid fa-lg fa-times" alt="Not Running"></i> icons will show current Snort status<br/>
-									Click on the <i class="fa-regular fa-lg fa-repeat" alt="Start"></i> or <i class="fa-solid fa-lg fa-circle-stop" alt="Stop"></i> icons to start/stop Snort.
+									<i class="fa-lg fa-solid fa-check-circle" alt="Running"></i> <i class="fa-lg fa-solid fa-times" alt="Not Running"></i> icons will show current Snort status<br/>
+									Click on the <i class="fa-lg fa-solid fa-arrow-rotate-right" alt="Start"></i> or <i class="fa-lg fa-solid fa-circle-stop" alt="Stop"></i> icons to start/stop Snort.
 								</p>
 							</div>
 						</div>', 'info')?>

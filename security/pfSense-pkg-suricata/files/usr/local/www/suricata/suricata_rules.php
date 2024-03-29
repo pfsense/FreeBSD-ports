@@ -3,11 +3,11 @@
  * suricata_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -172,9 +172,10 @@ if (empty($categories) && ($currentruleset != "custom.rules") && ($currentrulese
 		$currentruleset = "custom.rules";
 }
 
-/* One last sanity check -- if the rules directory is empty, default to loading custom rules */
+// One last sanity check -- if the rules directory is empty, or we were
+// not passed a ruleset name to load, default to loading custom rules.
 $tmp = glob("{$suricata_rules_dir}*.rules");
-if (empty($tmp))
+if (empty($tmp) || empty($currentruleset))
 	$currentruleset = "custom.rules";
 
 $ruledir = SURICATA_RULES_DIR;

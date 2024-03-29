@@ -3,7 +3,7 @@
  * haproxy_listeners_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * Copyright (c) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
@@ -251,7 +251,7 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 	if ($editable) {
 		$result = $object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
 	} else {
-		$result = $itemvalue;
+		$result = htmlspecialchars($itemvalue, ENT_QUOTES);
 	}
 	return $result;
 }

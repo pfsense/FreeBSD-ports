@@ -49,7 +49,7 @@ outputs:
       pass-list: {$suri_passlist}
       block-ip: {$suri_blockip}
       pf-table: {$suri_pf_table}
-      passlist-debugging: no   # Do not enable debugging on production systems!
+      passlist-debugging: {$suri_passlist_debugging}   # Do not enable debugging on production systems!
 
   # a line based alerts log similar to Snort's fast.log
   - fast:
@@ -197,6 +197,12 @@ flow:
 # hashing.
 vlan:
   use-for-tracking: true
+
+# This option controls the use of livedev ids in the flow (and defrag)
+# hashing. This is enabled by default and should be disabled if
+# netmap is used with a host stack interface.
+livedev:
+  use-for-tracking: {$livedev_tracking}
 
 # Specific timeouts for flows.
 flow-timeouts:

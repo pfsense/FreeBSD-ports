@@ -3,11 +3,11 @@
  * suricata_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -156,6 +156,8 @@ if (empty($pconfig['ips_netmap_threads']))
 	$pconfig['ips_netmap_threads'] = 'auto';
 if (empty($pconfig['block_drops_only']))
 	$pconfig['block_drops_only'] = "off";
+if (empty($pconfig['passlist_debug_log']))
+	$pconfig['passlist_debug_log'] = "off";
 if (empty($pconfig['runmode']))
 	$pconfig['runmode'] = "autofp";
 if (empty($pconfig['autofp_scheduler']))
@@ -504,6 +506,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['ips_netmap_threads']) $natent['ips_netmap_threads'] = $_POST['ips_netmap_threads']; else $natent['ips_netmap_threads'] = "auto";
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['block_drops_only'] == "on") $natent['block_drops_only'] = 'on'; else $natent['block_drops_only'] = 'off';
+		if ($_POST['passlist_debug_log'] == "on") $natent['passlist_debug_log'] = 'on'; else $natent['passlist_debug_log'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
 		if ($_POST['passlistname']) $natent['passlistname'] =  $_POST['passlistname']; else unset($natent['passlistname']);
 		if ($_POST['homelistname']) $natent['homelistname'] =  $_POST['homelistname']; else unset($natent['homelistname']);
@@ -824,8 +827,8 @@ if ($savemsg2) {
 }
 
 // If using Inline IPS, check that CSO, TSO and LRO are all disabled
-if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!config_path_enabled('system','disablechecksumoffloading') || !config_path_enabled('system', 'disablesegmentationoffloading') || !config_path_enabled('system', 'disablelargereceiveoffloading'))) {
-	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
+if ($pconfig['enable'] == 'on' && (!config_path_enabled('system','disablechecksumoffloading') || !config_path_enabled('system', 'disablesegmentationoffloading') || !config_path_enabled('system', 'disablelargereceiveoffloading'))) {
+	print_info_box(gettext('WARNING! Suricata now requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
 				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
 			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));
 }
@@ -1778,6 +1781,15 @@ $group->setHelp('The default Pass List adds Gateways, DNS servers, locally-attac
 		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation.');
 $section->add($group);
 
+$section->addInput(new Form_Checkbox(
+	'passlist_debug_log',
+	'Enable Passlist Debugging Log',
+	'Checking this option will enable detailed Passlist operations logging to file ' .
+	$suricatalogdir . 'suricata_' . $if_real . $suricata_uuid . '/passlist_debug.log.  Default is Not Checked.',
+	$pconfig['passlist_debug_log'] == 'on' ? true:false,
+	'on'
+));
+
 $form->add($section);
 
 // Add Inline IPS rule edit warning modal pop-up
@@ -2043,12 +2055,17 @@ print($form);
 <script type="text/javascript">
 //<![CDATA[
 
+var ifacearray = <?= json_encode(get_configured_interface_with_descr()) ?>;
+var ifacemap = new Map(Object.entries(ifacearray));
+ifacemap.set("Unassigned", "Unassigned");
+
 events.push(function(){
 
 	function enable_blockoffenders() {
 		var hide = ! $('#blockoffenders').prop('checked');
 		hideCheckbox('blockoffenderskill', hide);
 		hideCheckbox('block_drops_only', hide);
+		hideCheckbox('passlist_debug_log', hide);
 		hideSelect('blockoffendersip', hide);
 		hideSelect('ips_mode', hide);
 		hideClass('passlist', hide);
@@ -2056,6 +2073,7 @@ events.push(function(){
 			hideInput('ips_netmap_threads', hide);
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
+			hideCheckbox('passlist_debug_log', true);
 			hideSelect('blockoffendersip', true);
 			hideClass('passlist', true);
 			hideInput('intf_snaplen', true);
@@ -2278,6 +2296,7 @@ events.push(function(){
 		disableInput('ips_mode', disable);
 		disableInput('blockoffenderskill', disable);
 		disableInput('block_drops_only', disable);
+		disableInput('passlist_debug_log', disable);
 		disableInput('blockoffendersip', disable);
 		disableInput('ips_netmap_threads', disable);
 		disableInput('performance', disable);
@@ -2573,6 +2592,7 @@ events.push(function(){
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
+			hideCheckbox('passlist_debug_log', true);
 			hideSelect('blockoffendersip', true);
 			hideClass('passlist', true);
 			hideInput('intf_snaplen', true);
@@ -2583,6 +2603,7 @@ events.push(function(){
 		else {
 			hideCheckbox('blockoffenderskill', false);
 			hideCheckbox('block_drops_only', false);
+			hideCheckbox('passlist_debug_log', false);
 			hideSelect('blockoffendersip', false);
 			hideInput('intf_snaplen', false);
 			hideClass('passlist', false);
@@ -2629,7 +2650,7 @@ events.push(function(){
 	});
 
 	$('#interface').on('change', function() {
-		$('#descr').val($('#interface').val().toUpperCase());
+		$('#descr').val(ifacemap.get($('#interface').val()));
 		$('#file_store_logdir').val('');
 	});
 

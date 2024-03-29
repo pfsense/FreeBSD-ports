@@ -3,7 +3,7 @@
  * suricata_interfaces.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -481,15 +481,15 @@ include_once("head.inc"); ?>
 	<div class="row">
 		<div class="col-md-6">
 			<p>
-				Click on the <i class="fa-solid fa-lg fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
-				Click on the <i class="fa-solid fa-lg fa-trash-can" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
-				Click on the <i class="fa-regular fa-lg fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
+				Click on the <i class="fa-lg fa-solid fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
+				Click on the <i class="fa-lg fa-solid fa-trash-can" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
+				Click on the <i class="fa-lg fa-regular fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
 			</p>
 		</div>
 		<div class="col-md-6">
 			<p>
-				<i class="fa-solid fa-lg fa-check-circle" alt="Running"></i> <i class="fa-solid fa-lg fa-times" alt="Not Running"></i> icons will show current Suricata status<br/>
-				Click the <i class="fa-regular fa-lg fa-play-circle" alt="Start"></i> or <i class="fa-solid fa-lg fa-arrow-rotate-right" alt="Restart"></i> or <i class="fa-solid fa-lg fa-circle-stop" alt="Stop"></i> icons to start/restart/stop Suricata.
+				<i class="fa-lg fa-solid fa-check-circle" alt="Running"></i> <i class="fa-lg fa-solid fa-times" alt="Not Running"></i> icons will show current Suricata status<br/>
+				Click the <i class="fa-lg fa-regular fa-play-circle" alt="Start"></i> or <i class="fa-lg fa-solid fa-arrow-rotate-right" alt="Restart"></i> or <i class="fa-lg fa-regular fa-circle-stop" alt="Stop"></i> icons to start/restart/stop Suricata.
 			</p>
 		</div>
 	</div>', 'info')?>
@@ -547,7 +547,7 @@ include_once("head.inc"); ?>
 			var service_name = key.substring(0, key.indexOf('_'));
 			if (data[key] != 'DISABLED') {
 				if (data[key] == 'STOPPED') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-cog fa-solid fa-spin text-success text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-cog fa-spin text-success text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-times-circle text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopped on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -555,7 +555,7 @@ include_once("head.inc"); ?>
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').removeClass('hidden');
 				}
 				if (data[key] == 'STARTING') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-solid fa-times-circle text-success text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-times-circle text-success text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-solid fa-spin text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is starting on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -563,8 +563,8 @@ include_once("head.inc"); ?>
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'RUNNING') {
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-times-circle fa-cog fa-spin text-danger text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-check-circle text-success');
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-times-circle fa-cog fa-solid fa-spin text-danger text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is running on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').removeClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
@@ -576,7 +576,7 @@ include_once("head.inc"); ?>
 
 	function suricata_iface_toggle(action, id, intf) {
 		if (action == "stop") {
-			$(intf).removeClass('fa-stop-circle-o fa-solid fa-check-circle text-success text-danger');
+			$(intf).removeClass('fa-regular fa-circle-stop fa-solid fa-check-circle text-success text-danger');
 			$(intf).addClass('fa-cog fa-solid fa-spin text-info');
 			$(intf).prop('title', 'Suricata is shutting down on this interface');
 		}

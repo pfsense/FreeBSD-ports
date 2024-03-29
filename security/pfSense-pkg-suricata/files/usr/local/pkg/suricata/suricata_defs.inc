@@ -3,11 +3,11 @@
  * suricata_defs.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -118,6 +118,12 @@ if (!defined("ABUSE_SSLBL_DNLD_FILENAME"))
 	define("ABUSE_SSLBL_DNLD_FILENAME", "sslblacklist_tls_cert.tar.gz");
 if (!defined("ABUSE_SSLBL_DNLD_URL"))
 	define("ABUSE_SSLBL_DNLD_URL", "https://sslbl.abuse.ch/blacklist/");
+
+# MaxMind GeoIP2 database update permalink URLs
+if (!defined("MAXMIND_GEOIP2_DNLD_URL"))
+	define("MAXMIND_GEOIP2_DNLD_URL", "https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz");
+if (!defined("MAXMIND_GEOIP2_SHA256_DNLD_URL"))
+	define("MAXMIND_GEOIP2_SHA256_DNLD_URL", "https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz.sha256");
 
 if (!defined("VRT_FILE_PREFIX"))
 	define("VRT_FILE_PREFIX", "snort_");

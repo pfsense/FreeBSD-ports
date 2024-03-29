@@ -8,7 +8,7 @@
  * mtr-nox11.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/mtr</title>
 	<savetext>Run mtr</savetext>
-	<saveicon>fa-rss</saveicon>
+	<saveicon>fa-solid fa-rss</saveicon>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>

@@ -3,7 +3,7 @@
  * snort_iprep_list_browser.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *

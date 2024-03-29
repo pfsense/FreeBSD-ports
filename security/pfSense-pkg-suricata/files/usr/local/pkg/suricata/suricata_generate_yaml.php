@@ -3,11 +3,11 @@
  * suricata_generate_yaml.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -191,6 +191,11 @@ if ($suricatacfg['block_drops_only'] == 'on')
 	$suri_blockdrops = "yes";
 else
 	$suri_blockdrops = "no";
+
+if ($suricatacfg['passlist_debug_log'] == 'on')
+	$suri_passlist_debugging = "yes";
+else
+	$suri_passlist_debugging = "no";
 
 if ($suricatacfg['blockoffendersip'] == 'src')
 	$suri_blockip = 'SRC';
@@ -1309,6 +1314,7 @@ else
 	$suricata_use_syslog_priority = "notice";
 
 // Configure IPS operational mode
+$livedev_tracking = "true";
 if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {
 	// Get 'netmap_threads' parameter, if set
 	$netmap_threads_param = 'auto';
@@ -1317,6 +1323,7 @@ if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffender
 	}
 
 	$if_netmap = $if_real;
+	$livedev_tracking = "false";
 
 	// For VLAN interfaces, need to actually run Suricata
 	// on the parent interface, so override interface name.
