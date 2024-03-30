@@ -748,16 +748,16 @@
 			]
 		},
 		"VPN_4": {
-			"info":		"A list of common VPN providers",
-			"description":	"List of common VPN providers.",
+			"info":		"A list of IP's used by VPN providers",
+			"description":	"List of IP's used by VPN providers.",
 			"action":	"block",
 			"cron":		"Weekly",
 			"feeds": [
 				{
-					"feed":		"Ejrv VPN",
-					"website":	"https://github.com/ejrv/VPNs",
-					"url":		"https://raw.githubusercontent.com/ejrv/VPNs/master/vpn-ipv4.txt",
-					"header":	"Ejrv_VPNv4"
+					"feed":		"X4BNet VPN providers",
+					"website":	"https://github.com/X4BNet/lists_vpn",
+					"url":		"https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt",
+					"header":	"X4BNet_VPNv4"
 				}
 			]
 		},
