@@ -3,8 +3,8 @@
  * pfblockerng_ip.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -42,6 +42,7 @@ $pconfig['ip_placeholder']	= $pfb['iconfig']['ip_placeholder']			?: '127.1.7.7';
 $pconfig['maxmind_locale']	= $pfb['iconfig']['maxmind_locale']			?: 'en';
 $pconfig['asn_reporting']	= $pfb['iconfig']['asn_reporting']			?: 'disabled';
 $pconfig['database_cc']		= $pfb['iconfig']['database_cc']			?: '';
+$pconfig['maxmind_account']	= $pfb['iconfig']['maxmind_account']			?: '';
 $pconfig['maxmind_key']		= $pfb['iconfig']['maxmind_key']			?: '';
 $pconfig['inbound_interface']	= explode(',', $pfb['iconfig']['inbound_interface'])	?: array();
 $pconfig['inbound_deny_action']	= $pfb['iconfig']['inbound_deny_action']		?: 'block';
@@ -116,6 +117,10 @@ if ($_POST) {
 			}
 		}
 
+		if (!empty($_POST['maxmind_account']) && empty(pfb_filter($_POST['maxmind_account'], PFB_FILTER_WORD, 'ip'))) {
+			$input_errors[] = 'MaxMind Account Invalid';
+		}
+
 		if (!empty($_POST['maxmind_key']) && empty(pfb_filter($_POST['maxmind_key'], PFB_FILTER_WORD, 'ip'))) {
 			$input_errors[] = 'MaxMind License key Invalid';
 		}
@@ -179,6 +184,7 @@ if ($_POST) {
 			$pfb['iconfig']['ip_placeholder']	= $_POST['ip_placeholder']					?: '127.1.7.7';
 			$pfb['iconfig']['maxmind_locale']	= $_POST['maxmind_locale']					?: 'en';
 			$pfb['iconfig']['database_cc']		= pfb_filter($_POST['database_cc'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['maxmind_account']	= pfb_filter($_POST['maxmind_account'], PFB_FILTER_WORD, 'ip')	?: '';
 			$pfb['iconfig']['maxmind_key']		= pfb_filter($_POST['maxmind_key'], PFB_FILTER_WORD, 'ip')	?: '';
 			$pfb['iconfig']['asn_reporting']	= $_POST['asn_reporting']					?: 'disabled';
 			$pfb['iconfig']['inbound_interface']	= implode(',', (array)$_POST['inbound_interface'])		?: '';
@@ -318,12 +324,23 @@ $form->add($section);
 $section = new Form_Section('MaxMind GeoIP configuration');
 
 $section->addInput(new Form_Input(
+	'maxmind_account',
+	gettext('MaxMind Account ID'),
+	'text',
+	$pconfig['maxmind_account'],
+	['placeholder' => 'Enter your MaxMind GeoLite2 Account ID']
+))->setHelp('To utilize the free MaxMind GeoLite2 GeoIP functionality, you must first register for a free MaxMind user account. Visit the following '
+	. '<a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">Link to Register</a> for a free MaxMind user account. '
+	. '<strong>Use the GeoIP Update version 3.1.1 or newer registration option.</strong>')
+  ->setAttribute('autocomplete', 'off');
+
+$section->addInput(new Form_Input(
 	'maxmind_key',
 	gettext('MaxMind License Key'),
 	'text',
 	$pconfig['maxmind_key'],
-	['placeholder' => 'Enter the MaxMind License Key']
-))->setHelp('To utilize the MaxMind GeoIP functionality, you must first register for a free MaxMind user account. Visit the following '
+	['placeholder' => 'Enter your MaxMind GeoLite2 License Key']
+))->setHelp('To utilize the free MaxMind GeoLite2 GeoIP functionality, you must first register for a free MaxMind user account. Visit the following '
 	. '<a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">Link to Register</a> for a free MaxMind user account. '
 	. '<strong>Utilize the GeoIP Update version 3.1.1 or newer registration option.</strong>')
   ->setAttribute('autocomplete', 'off');
