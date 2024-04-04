@@ -529,7 +529,7 @@ function ntopng_validate_input($post, &$input_errors) {
 		$input_errors[] = "The provided passwords did not match.";
 	}
 	if (function_exists('validate_password')) {
-		$input_errors = array_merge($input_errors, validate_password('ntopng', $post['redis_password']));
+		$input_errors = array_merge($input_errors, validate_password('admin', $post['redis_password']));
 	}
 
 	/* Validate server parameters */

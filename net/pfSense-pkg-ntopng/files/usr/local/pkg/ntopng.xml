@@ -84,7 +84,7 @@
 			<type>password</type>
 			<required>true</required>
 			<size>20</size>
-			<description>Enter the password for the ntopng GUI. Minimum 5 characters.</description>
+			<description>Enter the password for the ntopng admin user. Minimum 5 characters.</description>
 		</field>
 		<field>
 			<fielddescr>Confirm ntopng Admin Password</fielddescr>
