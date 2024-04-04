@@ -62,12 +62,14 @@
 		<field>
 			<fielddescr>Enable ntopng</fielddescr>
 			<fieldname>enable</fieldname>
-			<description>Check this to enable ntopng.</description>
 			<type>checkbox</type>
+			<description>Check this to enable ntopng.</description>
 		</field>
 		<field>
 			<fielddescr>Keep Data/Settings</fielddescr>
 			<fieldname>keepdata</fieldname>
+			<type>checkbox</type>
+			<default_value>on</default_value>
 			<description>Keep ntopng settings, graphs and traffic data.</description>
 			<sethelp>
 				<![CDATA[
@@ -75,16 +77,14 @@
 				on package uninstall/reinstall/upgrade!</strong>
 				]]>
 			</sethelp>
-			<type>checkbox</type>
-			<default_value>on</default_value>
 		</field>
 		<field>
 			<fielddescr>ntopng Admin Password</fielddescr>
 			<fieldname>redis_password</fieldname>
-			<description>Enter the password for the ntopng GUI. Minimum 5 characters.</description>
 			<type>password</type>
 			<required>true</required>
 			<size>20</size>
+			<description>Enter the password for the ntopng admin user. Minimum 5 characters.</description>
 		</field>
 		<field>
 			<fielddescr>Confirm ntopng Admin Password</fielddescr>
@@ -94,22 +94,83 @@
 			<size>20</size>
 		</field>
 		<field>
-			<fielddescr>Interface</fielddescr>
+			<name>HTTP(S) Server Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Note:</fielddescr>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				The HTTP or HTTPS (SSL/TLS) protocol is automatically selected based<br>
+				upon the webConfigurator setting in System / Advanced / Admin Access.<br>
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Server Interface</fielddescr>
+			<fieldname>server_interface</fieldname>
+			<type>interfaces_selection</type>
+			<showlistenall>true</showlistenall>
+			<hideinterfaceregex>loopback|wan</hideinterfaceregex>
+			<default_value>All</default_value>
+			<description>
+				<![CDATA[
+				Interface for the ntopng http(s) server to listen on.
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Server IPv4</fielddescr>
+			<fieldname>server_ipv4</fieldname>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+			<description>
+				<![CDATA[
+				Enable listening on IPv4.
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Server IPv6</fielddescr>
+			<fieldname>server_ipv6</fieldname>
+			<type>checkbox</type>
+			<description>
+				<![CDATA[
+				Enable listening on IPv6.
+				]]>
+			</description>
+		</field>
+		<field>
+			<name>Monitoring Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Monitored Interfaces</fielddescr>
 			<fieldname>interface_array</fieldname>
 			<type>interfaces_selection</type>
-			<size>3</size>
 			<default_value>lan</default_value>
 			<multiple>true</multiple>
 			<hideinterfaceregex>loopback</hideinterfaceregex>
+			<description>
+				<![CDATA[
+				Interfaces for ntopng to monitor. It is generally not recommended to monitor WAN interfaces.
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Promiscuous Mode</fielddescr>
+			<fieldname>promiscuous</fieldname>
+			<type>checkbox</type>
+			<description>
+				<![CDATA[
+				Enable promiscuous mode on all monitored interfaces.
+				]]>
+			</description>
 		</field>
 		<field>
 			<fielddescr>DNS Mode</fielddescr>
 			<fieldname>dns_mode</fieldname>
-			<description>
-				<![CDATA[
-				Configures how name resolution is handled.
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
@@ -118,91 +179,110 @@
 				<option><value>2</value><name>Decode DNS responses and don't resolve numeric IPs</name></option>
 				<option><value>3</value><name>Don't decode DNS responses and don't resolve numeric IPs</name></option>
 			</options>
+			<description>
+				<![CDATA[
+				Configures how name resolution is handled.
+				]]>
+			</description>
 		</field>
 		<field>
-			<fielddescr>Disable Alerts</fielddescr>
-			<description>Alerts can now be disabled via the ntopng GUI.</description>
-			<type>info</type>
-		</field>
-		<field>
-			<name>Local Networks</name>
+			<name>Additional Local Networks</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Mode</fielddescr>
-			<fieldname>local_networks</fieldname>
+			<fielddescr>Note:</fielddescr>
+			<type>info</type>
 			<description>
 				<![CDATA[
-				Configures how Local Networks are defined.
-				<span class="text-info">Default: Consider all RFC1918 networks local.</span>
+				ntopng determines the ip addresses and netmasks for each active interface, and<br>
+				any traffic on those networks is already considered local. If you have additional<br>
+				networks that should be considered as local, add them here.<br>
 				]]>
 			</description>
-			<type>select</type>
-			<default_value>rfc1918</default_value>
-			<options>
-				<option><value>rfc1918</value><name>Consider all RFC1918 networks local</name></option>
-				<option><value>selected</value><name>Consider selected interface networks local</name></option>
-				<option><value>lanonly</value><name>Consider only LAN interface local</name></option>
-				<option><value>custom</value><name>Use custom list below</name></option>
-			</options>
 		</field>
 		<field>
-			<fielddescr>Custom networks list</fielddescr>
+			<fielddescr>Network List</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
-					<fielddescr>CIDR</fielddescr>
+					<fielddescr>Network in cidr format</fielddescr>
 					<fieldname>cidr</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Name (optional, word characters only)</fielddescr>
+					<fieldname>cidr_name</fieldname>
 					<type>input</type>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-		<!-- Hide nonfunctional stuff pending rework - see https://redmine.pfsense.org/issues/7000 -->
-		<!-- 
 		<field>
-			<fielddescr>Historical Data Storage</fielddescr>
-			<fieldname>dump_flows</fieldname>
-			<description>Enable historical data storage</description>
-			<sethelp>
-				<![CDATA[
-				<strong><span class="errmsg">WARNING:</span> This feature consumes HUGE amount of disk space.</strong>
-				Also, browsing the historical data is VERY slow.<br />
-				The historical interface is considered <a href="http://www.gossamer-threads.com/lists/ntop/misc/37506#37506">abandoned by upstream</a>,
-				pending more usable replacement.<br /><br />
-				<input type="submit" name="Delete" value="Delete (Historical) Data" />
-				<strong><span class="errmsg">WARNING:</span> This will delete all ntopng graphs, traffic data and historical dump flows!
-				]]>
-			</sethelp>
-			<type>checkbox</type>
+			<name>Advanced configuration</name>
+			<type>listtopic</type>
 		</field>
-		-->
+                <field>
+                        <fielddescr>Additional configuration for ntopng.conf</fielddescr>
+                        <fieldname>custom_config</fieldname>
+                        <type>textarea</type>
+                        <cols>78</cols>
+                        <rows>6</rows>
+                        <encoding>base64</encoding>
+                        <description>
+                                <![CDATA[
+                                Additional configuration lines to be added directly to the ntopng configuration file.<br>
+				Each option must be on a separate line and in the form of <i>--key=value</i>.<br>
+				See <a href="https://www.ntop.org/guides/ntopng/cli_options/cli_options_example.html" target="_blank">Configruation File Example</a> in the <a href="https://www.ntop.org/guides/ntopng" target="_blank">ntopng guide</a> for configuration file syntax.<br>
+				See <a href="https://www.ntop.org/guides/ntopng/cli_options/cli_options.html" target="_blank">Command Line Options</a> in the <a href="https://www.ntop.org/guides/ntopng" target="_blank">ntopng guide</a> for all available options.<br>
+                                ]]>
+                        </description>
+                </field>
+		<field>
+			<name>Geolocation support</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>GeoLite2 Account ID</fielddescr>
+			<fieldname>maxmind_account</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>GeoLite2 License Key</fielddescr>
+			<fieldname>maxmind_key</fieldname>
+			<type>input</type>
+			<description>
+				<![CDATA[
+				<b>GeoLite2</b> provides location information about IP addresses.<br />
+				To utilize the free MaxMind GeoLite2 GeoIP functionality, you must <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">register for a free MaxMind user account</a>.<br /></br />
+				<button class="btn btn-success btn-sm" name='Submit' id='update_geoip' type='submit' value='Update GeoLite2 DB'><i class="fa fa-refresh icon-embed-btn"></i>Update GeoLite2 DB</button>
+				]]>
+			</description>
+		</field>
 		<field>
 			<name>Utilities</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>GeoLite2 DB License Key</fielddescr>
-			<fieldname>maxmind_key</fieldname>
+			<fielddescr>Delete ntopng Data</fielddescr>
+			<type>info</type>
 			<description>
 				<![CDATA[
-				Additionally, <b>GeoLite2 DB</b> can provide location information about IP addresses.<br />
-				To utilize the free MaxMind GeoLite2 GeoIP functionality, you must <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">register for a free MaxMind user account</a>.<br /></br />
-				<button class="btn btn-success btn-sm" name='Submit' id='update_geoip' type='submit' value='Update GeoLite2 DB'><i class="fa-solid fa-arrows-rotate icon-embed-btn"></i>Update GeoLite2 DB</button>
+				Delete ntopng traffic data and alerts (useful if you are running out of disk space).<br/>
+				<strong><span class="text-danger">WARNING:</span> This will delete all ntopng traffic data and alerts!</strong><br/><br/>
+				<button class="btn btn-danger btn-sm" name='Delete' id='ntopng_delete_data' type='submit' value='Delete data'><i class="fa fa-trash icon-embed-btn"></i>Delete Data</button>
 				]]>
 			</description>
-			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Delete ntopng Data</fielddescr>
+			<fielddescr>Reset ntopng</fielddescr>
+			<type>info</type>
 			<description>
 				<![CDATA[
-				Useful if you are running out of free disk space, or simply want to reset graphs and data.<br/>
-				<strong><span class="text-danger">WARNING:</span> This will delete all ntopng customization, graphs, traffic data and dump flows!<br/><br/>
-				<button class="btn btn-warning btn-sm" name='Delete' id='remove_ntopng_data' type='submit' value='Delete Data'><i class="fa-solid fa-trash-can icon-embed-btn"></i>Delete Data</button>
+				Delete all ntopng data and perform a complete reset of ntopng configuration.<br/>
+				<strong><span class="text-danger">WARNING:</span> In addition to deleting all ntopng traffic data and alerts, this will delete all ntopng preferences and customization!</strong><br/><br/>
+				<button class="btn btn-danger btn-sm" name='Reset' id='ntopng_reset' type='submit' value='Reset ntopng'><i class="fa fa-trash icon-embed-btn"></i>Reset ntopng</button>
 				]]>
 			</description>
-			<type>info</type>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
