@@ -113,8 +113,9 @@ function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName
 		}
 	}
 }
+
 function phparray_to_javascriptarray($items, $javaMapName, $includeitems) {
-	phparray_to_javascriptarray_recursive(1,'',$items, $javaMapName, $includeitems);
+	phparray_to_javascriptarray_recursive(1, '', $items, $javaMapName, $includeitems);
 }
 
 function html_select_options($keyvaluelist, $selected="") {

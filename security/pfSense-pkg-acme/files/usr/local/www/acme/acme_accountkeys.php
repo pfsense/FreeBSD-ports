@@ -29,7 +29,7 @@ require_once("acme/acme_gui.inc");
 require_once("acme/acme_utils.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
-$changedesc = "Services: Acme: Accountkeys";
+$changedesc = "Services: ACME: Accountkeys";
 
 if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
 	$config['installedpackages']['acme']['accountkeys']['item'] = array();
@@ -57,7 +57,7 @@ if ($_POST) {
 				$deleted = true;
 			}
 			if ($deleted) {
-				if (write_config("Acme, deleting accountkey(s)")) {
+				if (write_config("ACME, deleting accountkey(s)")) {
 					//mark_subsystem_dirty('filter');
 					touch($d_acmeconfdirty_path);
 				}
@@ -113,7 +113,7 @@ if ($_POST['act'] == "del") {
 	}
 }
 
-$pgtitle = array("Services", "Acme", "Accountkeys");
+$pgtitle = array("Services", "ACME", "Accountkeys");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -250,7 +250,6 @@ function togglerow($id) {
 }
 
 events.push(function() {
-	
 	$('#clearallnotices').click(function() {
 		ajaxRequest = $.ajax({
 			url: "/index.php",

@@ -29,7 +29,7 @@ require_once("acme/acme_utils.inc");
 require_once("acme/acme_htmllist.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
-$a_certificates = &getarraybyref($config,'installedpackages','acme','certificates','item');
+$a_certificates = &getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
 
 if (isset($_POST['id'])) {
 	$id = $_POST['id'];
@@ -53,11 +53,10 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","descr","status",
-	"acmeaccount","keylength","ocspstaple",
-	"preferredchain", "dnssleep","renewafter"
+	"name", "descr", "status",
+	"acmeaccount", "keylength", "ocspstaple",
+	"preferredchain",  "dnssleep", "renewafter"
 );
-
 
 // <editor-fold desc="domain edit HtmlList">
 $fields_domains=array();
@@ -169,7 +168,7 @@ if (isset($_GET['dup'])) {
 	unset($id);
 	$pconfig['name'] .= "-copy";
 }
-$changedesc = "Services: Acme: Certificate options: ";
+$changedesc = "Services: ACME: Certificate options: ";
 $changecount = 0;
 
 if ($_POST) {
@@ -234,7 +233,7 @@ if ($_POST) {
 			/* If the hostname is valid when allowing wildcards, but not without, then it must be a wildcard */
 			$account = get_accountkey($_POST['acmeaccount']);
 			if (substr($account['acmeserver'], -2, 2) != '-2') {
-				$input_errors[] = "A wildcard 'Domainname' is present but the ACME Account key is not registered to an ACME v2 server.";
+				$input_errors[] = "A wildcard 'Domainname' is present but the ACME Account key is not registered to an ACME server.";
 			}
 		}
 	}
@@ -286,7 +285,7 @@ if ($_POST) {
 }
 
 $closehead = false;
-$pgtitle = array("Services", "Acme", "Certificate options: Edit");
+$pgtitle = array("Services", "ACME", "Certificate options: Edit");
 include("head.inc");
 display_top_tabs_active($acme_tab_array['acme'], "certificates");
 
@@ -316,6 +315,7 @@ foreach($simplefields as $field){
 			}
 		}
 	}
+
 	function toggleCSSdisplay(cssID)
 	{
 		var ss = document.styleSheets;
@@ -361,7 +361,7 @@ $section->addInput(new \Form_Select(
 $a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
 $section->addInput(new \Form_Select(
 	'acmeaccount',
-	'Acme Account',
+	'ACME Account',
 	$pconfig['acmeaccount'],
 	form_name_array($a_accountkeys)
 ));
@@ -454,11 +454,11 @@ print $form;
 <br/>
 <script type="text/javascript">
 <?php
-	phparray_to_javascriptarray($fields_domains_details,"fields_details_domains",Array('/*','/*/name','/*/type'));
+	phparray_to_javascriptarray($fields_domains_details, "fields_details_domains", Array('/*', '/*/name', '/*/type'));
 	phparray_to_javascriptarray($acme_domain_validation_method, "showhide_domainfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	$domainslist->outputjavascript();
-	phparray_to_javascriptarray($fields_actions_details,"fields_details_actions",Array('/*','/*/name','/*/type'));
+	phparray_to_javascriptarray($fields_actions_details, "fields_details_actions", Array('/*', '/*/name', '/*/type'));
 	phparray_to_javascriptarray($acme_newcertificateactions, "showhide_actionfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	$actionslist->outputjavascript();

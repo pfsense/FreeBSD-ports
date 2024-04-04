@@ -28,10 +28,10 @@
 	]]>
 	</copyright>
 	<name>acme</name>
-	<title>Acme</title>
+	<title>ACME</title>
 	<include_file>/usr/local/pkg/acme/acme.inc</include_file>
 	<menu>
-		<name>Acme Certificates</name>
+		<name>ACME Certificates</name>
 		<tooltiptext></tooltiptext>
 		<section>Services</section>
 		<url>/acme/acme_certificates.php</url>
