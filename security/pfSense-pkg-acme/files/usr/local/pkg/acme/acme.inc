@@ -1674,8 +1674,8 @@ function & get_certificate($name) {
 		return $acmesh->generateDomainKey($domain, $keylength);
 	}
 	
-	function registerAcmeAccountKey($name, $ca, $key, $email = "") {
-		$acmesh = new acme_sh($name, $ca, $email);
+	function registerAcmeAccountKey($name, $ca, $key, $email = "", $eabkid = "", $eabhmackey = "") {
+		$acmesh = new acme_sh($name, $ca, $email, $eabkid, $eabhmackey);
 		return $acmesh->registeraccount($key);
 	}
 

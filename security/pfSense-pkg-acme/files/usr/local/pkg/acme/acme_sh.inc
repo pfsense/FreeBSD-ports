@@ -110,12 +110,12 @@ class acme_sh {
 		return $return_value;
 	}
 	
-	function __construct($name, $ca, $email) {
+	function __construct($name, $ca, $email, $eabkid = "", $eabhmackey = "") {
 		$this->name = $name;
-		$this->init($ca, $name, $email);
+		$this->init($ca, $name, $email, $eabkid, $eabhmackey);
 	}
 	
-	function init($ca, $name, $email) {
+	function init($ca, $name, $email, $eabkid, $eabhmackey) {
 		$conf = "ACME_DIRECTORY='{$ca}'\nACCOUNT_EMAIL='{$email}'\n";
 		$cadir = parse_url($ca, PHP_URL_HOST) . parse_url($ca, PHP_URL_PATH);
 		$acmeconf = "/tmp/acme/{$name}/";
@@ -124,6 +124,8 @@ class acme_sh {
 		safe_mkdir($this->path_account);
 		$this->accountconfig = "{$this->acmeconf}accountconf.conf";
 		file_put_contents("{$this->accountconfig}", $conf);
+		$this->eabkid = $eabkid;
+		$this->eabhmackey = $eabhmackey;
 	}
 	
 	function generateAccountKey() {
@@ -142,12 +144,18 @@ class acme_sh {
 	function registeraccount($key) {
 		file_put_contents("{$this->path_account}/account.key", $key);
 		$this->debug = false;
+		$cmdadd = "";
+		if ($this->eabkid) {
+			$cmdadd = " --eab-kid " . escapeshellarg($this->eabkid)
+				. " --eab-hmac-key " . escapeshellarg($this->eabhmackey);
+		}
 		$result = $this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
 				. " --registeraccount"
 				. " --accountconf " . escapeshellarg($this->accountconfig)
 				. " --log-level 3"
-				. " --log " . escapeshellarg($this->acmeconf."acme_issuecert.log"));
+				. " --log " . escapeshellarg($this->acmeconf."acme_issuecert.log")
+				. $cmdadd);
 		return $result == 0;
 	}
 	

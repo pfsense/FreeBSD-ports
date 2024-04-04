@@ -38,9 +38,11 @@ if ($_POST['action'] == "registerkey") {
 	$caname = $_POST['caname'];
 	$key = $_POST['key'];
 	$email = $_POST['email'];
+	$eabkid = $_POST['eabkid'];
+	$eabhmackey = $_POST['eabhmackey'];
 	$ca = $a_acmeserver[$caname]['url'];
 	echo "Register key at ca: {$ca}\n";
-	echo (registerAcmeAccountKey("_registerkey", $ca, $key, $email)) ? "reg-ok" : "reg-fail" ;
+	echo (registerAcmeAccountKey("_registerkey", $ca, $key, $email, $eabkid, $eabhmackey)) ? "reg-ok" : "reg-fail" ;
 	exit;
 }
 
@@ -66,8 +68,9 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","descr", "email",
-	"acmeserver","renewafter"
+	"name","descr","email",
+	"acmeserver","renewafter",
+	"eabkid","eabhmackey"
 );
 
 function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname, $counter) {
@@ -208,6 +211,20 @@ $section->addInput(new \Form_Select(
 	'Let\'s Encrypt ACMEv1 servers no longer allow new registrations, and in June 2021 they will be completely disabled.%1$s%1$s', '<br/>');
 
 $section->addInput(new \Form_Input(
+	'eabkid',
+	'EAB kid',
+	'text',
+        $pconfig['eabkid']
+))->setHelp('Enter the EAB kid for the ACME Server new account request here. (Required for Google)');
+
+$section->addInput(new \Form_Input(
+	'eabhmackey',
+	'EAB hmac-key',
+	'text',
+        $pconfig['eabhmackey']
+))->setHelp('Enter the EAB hmac-key for the ACME Server new account request here. (Required for Google)');
+
+$section->addInput(new \Form_Input(
 	'email',
 	'E-Mail Address',
 	'text',
@@ -302,9 +319,11 @@ events.push(function() {
 		var key = $("#accountkey").val();
 		var caname = $("#acmeserver").val();
 		var email = $("#email").val();
+		var eabkid = $("#eabkid").val();
+		var eabhmackey = $("#eabhmackey").val();
 		ajaxRequest = $.ajax({
 			type: "post",
-			data: { action: "registerkey", caname: caname, key: key, email: email },
+			data: { action: "registerkey", caname: caname, key: key, email: email, eabkid: eabkid, eabhmackey: eabhmackey },
 			success: function(data) {
 				if (data.toLowerCase().indexOf("reg-ok") > -1 ) {
 					$("#btnregisterkeyicon").removeClass("fa-cog fa-spin").addClass("fa-solid fa-check");
