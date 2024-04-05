@@ -1247,11 +1247,11 @@ function squid_resync_general() {
 					} elseif ($settings['dhparams_size'] == '1024') {
 						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.1024";
 					}
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
+					$sslproxy_options .= "";
 				} elseif (file_exists("/etc/dh-parameters.2048")) {
 					// Fallback options for defaults on install
 					$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
+					$sslproxy_options .= "";
 				} else {
 					// Should never get here
 					$sslproxy_dhparams = "";
