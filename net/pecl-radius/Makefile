@@ -15,10 +15,6 @@ CONFIGURE_ARGS=	--enable-radius
 
 OPTIONS_DEFINE=	EXAMPLES
 
-post-extract:
-	${CP} ${FILESDIR}/*.stub.php ${WRKSRC}
-	${CP} ${FILESDIR}/*_arginfo.h ${WRKSRC}
-
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
