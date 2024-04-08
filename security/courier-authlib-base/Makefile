@@ -1,4 +1,3 @@
-PORTREVISION=	0
 PKGNAMESUFFIX=	-base
 
 COMMENT=	Courier authentication library base

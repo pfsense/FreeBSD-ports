@@ -1,12 +1,12 @@
 PORTNAME=	f3d
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
+DISTVERSION=	2.4.0
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast and minimalist 3D viewer
-WWW=		https://f3d-app.github.io/f3d/
+WWW=		https://f3d.app/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE.md
@@ -23,6 +23,7 @@ WRKSRC_SUBDIR=	python
 
 CMAKE_ARGS=	-DFREEBSD_PYTHON_VER=${PYTHON_VER} \
 		-DCMAKE_INSTALL_LIBDIR=lib
+#CMAKE_OFF=	F3D_MULTI_CONFIG_GENERATOR # for https://github.com/f3d-app/f3d/issues/1149 but didn't help
 
 CXXFLAGS+=	-I${LOCALBASE}/include/f3d
 

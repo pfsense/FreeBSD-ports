@@ -1,26 +1,691 @@
-  <vuln vid="6ef4043e-2912-4d79-ba1c-cfb8da63764d">
-    <topic>unbound--Denial of service when trimming EDE text on positive replies</topic>
+  <vuln vid="8e6f684b-f333-11ee-a573-84a93843eb75">
+    <topic>Apache httpd -- multiple vulnerabilities</topic>
     <affects>
       <package>
-	<name>unbound</name>
-	<range><lt></lt></range>
+	<name>apache24</name>
+	<range><lt>2.4.59</lt></range>
+      </package>
+      <package>
+	<name>mod_http2</name>
+	<range><lt>2.0.27</lt></range>
       </package>
     </affects>
     <description>
 	<body xmlns="http://www.w3.org/1999/xhtml">
-	<p>SO-AND-SO reports:</p>
-	<blockquote cite="INSERT URL HERE">
-	  <p>.</p>
+	<p>The Apache httpd project reports:</p>
+	<blockquote cite="https://downloads.apache.org/httpd/CHANGES_2.4.59">
+	  <p>HTTP/2 DoS by memory exhaustion on endless continuation frames</p>
+	  <p>HTTP Response Splitting in multiple modules</p>
 	</blockquote>
 	</body>
     </description>
     <references>
-      <cvename>CVE-2024-1931</cvename>
-      <url>https://www.nlnetlabs.nl/downloads/unbound/CVE-2024-1931.txt</url>
+      <cvename>CVE-2024-27316</cvename>
+      <cvename>CVE-2024-24795</cvename>
+      <cvename>CVE-2024-38709</cvename>
+      <url>https://downloads.apache.org/httpd/CHANGES_2.4.59</url>
+    </references>
+    <dates>
+      <discovery>2024-04-04</discovery>
+      <entry>2024-04-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c2431c4e-622c-4d92-996d-d8b5258ae8c9">
+    <topic>electron{27,28} -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron27</name>
+	<range><lt>27.3.9</lt></range>
+      </package>
+      <package>
+	<name>electron28</name>
+	<range><lt>28.2.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v27.3.9">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2024-2885.</li>
+	    <li>Security: backported fix for CVE-2024-2883.</li>
+	    <li>Security: backported fix for CVE-2024-2887.</li>
+	    <li>Security: backported fix for CVE-2024-2886.</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-2885</cvename>
+      <url>https://github.com/advisories/GHSA-qccw-wmvp-8pv9</url>
+      <cvename>CVE-2024-2883</cvename>
+      <url>https://github.com/advisories/GHSA-gg9c-7j6m-3qq2</url>
+      <cvename>CVE-2024-2887</cvename>
+      <url>https://github.com/advisories/GHSA-q75f-2pp5-9phj</url>
+      <cvename>CVE-2024-2886</cvename>
+      <url>https://github.com/advisories/GHSA-5pj4-f8gh-j3mr</url>
+    </references>
+    <dates>
+      <discovery>2024-04-03</discovery>
+      <entry>2024-04-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4a026b6c-f2b8-11ee-8e76-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>123.0.6312.105</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>123.0.6312.105</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/04/stable-channel-update-for-desktop.html">
+	 <p>This update includes 3 security fixes:</p>
+	 <ul>
+	    <li>[329130358] High CVE-2024-3156: Inappropriate implementation in V8. Reported by Zhenghang Xiao (@Kipreyyy) on 2024-03-12</li>
+	    <li>[329965696] High CVE-2024-3158: Use after free in Bookmarks. Reported by undoingfish on 2024-03-17</li>
+	    <li>[330760873] High CVE-2024-3159: Out of bounds memory access in V8. Reported by Edouard Bochin (@le_douds) and Tao Yan (@Ga1ois) of Palo Alto Networks, via Pwn2Own 2024 on 2024-03-22</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-3156</cvename>
+      <cvename>CVE-2024-3158</cvename>
+      <cvename>CVE-2024-3159</cvename>
+      <url>https://chromereleases.googleblog.com/2024/04/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2024-04-02</discovery>
+      <entry>2024-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="57561cfc-f24b-11ee-9730-001fc69cd6dc">
+    <topic>xorg server -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>xorg-server</name>
+	<name>xephyr</name>
+	<name>xorg-vfbserver</name>
+	<range><lt>21.1.12,1</lt></range>
+      </package>
+      <package>
+	<name>xorg-nextserver</name>
+	<range><lt>21.1.12,2</lt></range>
+      </package>
+      <package>
+	<name>xwayland</name>
+	<range><lt>23.2.5</lt></range>
+      </package>
+      <package>
+	<name>xwayland-devel</name>
+	<range><ge>21.0.99.1.672</ge><lt>21.0.99.1.841_1</lt></range>
+	<range><lt>21.0.99.1.671_1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.Org project reports:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg-announce/2024-April/003497.html">
+	  <ul>
+	    <li>
+	      CVE-2024-31080: Heap buffer overread/data leakage in
+	      ProcXIGetSelectedEvents
+
+	      <p>The ProcXIGetSelectedEvents() function uses the byte-swapped
+	      length of the return data for the amount of data to return to
+	      the client, if the client has a different endianness than
+	      the X server.</p>
+	    </li>
+	    <li>CVE-2024-31081: Heap buffer overread/data leakage in
+	    ProcXIPassiveGrabDevice
+
+	    <p>The ProcXIPassiveGrabDevice() function uses the byte-swapped
+	    length of the return data for the amount of data to return to
+	    the client, if the client has a different endianness than
+	    the X server.</p>
+	    </li>
+
+	    <li>CVE-2024-31083: User-after-free in ProcRenderAddGlyphs
+
+	    <p>The ProcRenderAddGlyphs() function calls the AllocateGlyph()
+	    function to store new glyphs sent by the client to the X server.
+	    AllocateGlyph() would return a new glyph with refcount=0 and
+	    a re-used glyph would end up not changing the refcount at all.
+	    The resulting glyph_new array would thus have multiple entries
+	    pointing to the same non-refcounted glyphs.
+
+	    ProcRenderAddGlyphs() may free a glyph, resulting in a
+	    use-after-free when the same glyph pointer is then later used.</p>
+	    </li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-31080</cvename>
+      <cvename>CVE-2024-31081</cvename>
+      <cvename>CVE-2024-31083</cvename>
+      <url>https://lists.x.org/archives/xorg-announce/2024-April/003497.html</url>
+    </references>
+    <dates>
+      <discovery>2024-04-03</discovery>
+      <entry>2024-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2e3bea0c-f110-11ee-bc57-00e081b7aa2d">
+    <topic>jenkins -- HTTP/2 denial of service vulnerability in bundled Jetty</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.444</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.440.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2024-03-20/">
+	  <h1>Description</h1>
+	  <h5>(High) SECURITY-3379 / CVE-2024-22201</h5>
+	  <p>HTTP/2 denial of service vulnerability in bundled Jetty</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-22201</cvename>
+      <url>https://www.jenkins.io/security/advisory/2024-03-20/</url>
+    </references>
+    <dates>
+      <discovery>2024-03-20</discovery>
+      <entry>2024-04-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d58726ff-ef5e-11ee-8d8e-080027a5b8e9">
+    <topic>mediawiki -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mediawiki139</name>
+	<range><lt>1.39.7</lt></range>
+      </package>
+      <package>
+	<name>mediawiki140</name>
+	<range><lt>1.40.3</lt></range>
+      </package>
+      <package>
+	<name>mediawiki141</name>
+	<range><lt>1.41.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mediawiki reports:</p>
+	<blockquote cite="https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/V3WXEPXV2DU6WTVEKK4XHW4QXD5OFKD7/">
+	  <p>(T355538, CVE-2024-PENDING) SECURITY: XSS in edit summary parser.</p>
+	  <p>(T357760, CVE-2024-PENDING) SECURITY: Denial of service vector via GET
+	    request to Special:MovePage on pages with thousands of subpages.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/V3WXEPXV2DU6WTVEKK4XHW4QXD5OFKD7/</url>
+    </references>
+    <dates>
+      <discovery>2024-03-15</discovery>
+      <entry>2024-03-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bdcd041e-5811-4da3-9243-573a9890fdb1">
+    <topic>electron{27,28} -- Object lifecycle issue in V8</topic>
+    <affects>
+      <package>
+	<name>electron27</name>
+	<range><lt>27.3.8</lt></range>
+      </package>
+      <package>
+	<name>electron28</name>
+	<range><lt>28.2.9</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v27.3.8">
+	  <p>This update fixes the following vulnerability:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2024-2625.</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-2625</cvename>
+      <url>https://github.com/advisories/GHSA-j7h3-fcrw-g6j8</url>
+    </references>
+    <dates>
+      <discovery>2024-03-28</discovery>
+      <entry>2024-03-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d2992bc2-ed18-11ee-96dc-001b217b3468">
+    <topic>Gitlab -- vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>16.10.0</ge><lt>16.10.1</lt></range>
+	<range><ge>16.9.0</ge><lt>16.9.3</lt></range>
+	<range><lt>16.8.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2024/03/27/security-release-gitlab-16-10-1-released/">
+	  <p>Stored-XSS injected in Wiki page via Banzai pipeline</p>
+	  <p>DOS using crafted emojis</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-6371</cvename>
+      <cvename>CVE-2024-2818</cvename>
+      <url>https://about.gitlab.com/releases/2024/03/27/security-release-gitlab-16-10-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2024-03-27</discovery>
+      <entry>2024-03-28</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="814af1be-ec63-11ee-8e76-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>123.0.6312.86</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>123.0.6312.86</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/03/stable-channel-update-for-desktop_26.html">
+	 <p>This update includes 7 security fixes:</p>
+	 <ul>
+	    <li>[327807820] Critical CVE-2024-2883: Use after free in ANGLE. Reported by Cassidy Kim(@cassidy6564) on 2024-03-03</li>
+	    <li>[328958020] High CVE-2024-2885: Use after free in Dawn. Reported by wgslfuzz on 2024-03-11</li>
+	    <li>[330575496] High CVE-2024-2886: Use after free in WebCodecs. Reported by Seunghyun Lee (@0x10n) of KAIST Hacking Lab, via Pwn2Own 2024 on 2024-03-21</li>
+	    <li>[330588502] High CVE-2024-2887: Type Confusion in WebAssembly. Reported by Manfred Paul, via Pwn2Own 2024 on 2024-03-21</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-2883</cvename>
+      <cvename>CVE-2024-2885</cvename>
+      <cvename>CVE-2024-2886</cvename>
+      <cvename>CVE-2024-2887</cvename>
+      <url>https://chromereleases.googleblog.com/2024/03/stable-channel-update-for-desktop_26.html</url>
+    </references>
+    <dates>
+      <discovery>2024-03-26</discovery>
+      <entry>2024-03-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8b3be705-eba7-11ee-99b3-589cfc0f81b0">
+    <topic>phpmyfaq -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>phpmyfaq-php81</name>
+	<name>phpmyfaq-php82</name>
+	<name>phpmyfaq-php83</name>
+	<range><lt>3.2.6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>phpMyFAQ team reports:</p>
+	<blockquote cite="https://www.phpmyfaq.de/security/advisory-2024-03-25">
+	  <p>The phpMyFAQ Team has learned of multiple security issues that'd
+	    been discovered in phpMyFAQ 3.2.5 and earlier. phpMyFAQ contains
+	    cross-site scripting (XSS), SQL injection and bypass
+	    vulnerabilities.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-mmh6-5cpf-2c72</url>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-hm8r-95g3-5hj9</url>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-48vw-jpf8-hwqh</url>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-2grw-mc9r-822r</url>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-6p68-36m6-392r</url>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-pwh2-fpfr-x5gf</url>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-q7g6-xfh2-vhpx</url>
+      <url>https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-qgxx-4xv5-6hcw</url>
+    </references>
+    <dates>
+      <discovery>2024-03-25</discovery>
+      <entry>2024-03-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f661184a-eb90-11ee-92fc-1c697a616631">
+    <topic>emacs -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>emacs</name>
+       <name>emacs-canna</name>
+       <name>emacs-nox</name>
+       <range><lt>29.3,3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>GNU Emacs developers report:</p>
+	<blockquote cite="https://git.savannah.gnu.org/cgit/emacs.git/tree/etc/NEWS?h=emacs-29.3">
+	  <p>Emacs 29.3 is an emergency bugfix release intended to fix several security vulnerabilities.</p>
+	<ul>
+	  <li>Arbitrary Lisp code is no longer evaluated as part of turning on Org mode.  This is for security reasons, to avoid evaluating malicious Lisp code.</li>
+	  <li>New buffer-local variable 'untrusted-content'.  When this is non-nil, Lisp programs should treat buffer contents with extra caution.</li>
+	  <li>Gnus now treats inline MIME contents as untrusted.  To get back previous insecure behavior, 'untrusted-content' should be reset to nil in the buffer.</li>
+	  <li>LaTeX preview is now by default disabled for email attachments.  To get back previous insecure behavior, set the variable 'org--latex-preview-when-risky' to a non-nil value.</li>
+	  <li>Org mode now considers contents of remote files to be untrusted.  Remote files are recognized by calling 'file-remote-p'.</li>
+	</ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-30202</cvename>
+      <cvename>CVE-2024-30203</cvename>
+      <cvename>CVE-2024-30204</cvename>
+      <cvename>CVE-2024-30205</cvename>
+      <url>https://git.savannah.gnu.org/cgit/emacs.git/tree/etc/NEWS?h=emacs-29.3</url>
+    </references>
+    <dates>
+      <discovery>2024-03-24</discovery>
+      <entry>2024-03-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="34f98d06-eb56-11ee-8007-6805ca2fa271">
+    <topic>quiche -- Multiple Vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>quiche</name>
+       <range><lt>0.20.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Quiche Releases reports:</p>
+	<blockquote cite="https://github.com/cloudflare/quiche/releases/tag/0.20.1">
+	 <p>This release includes 2 security fixes:</p>
+	 <ul>
+	  <li>
+		CVE-2024-1410: Unbounded storage of information related to
+		connection ID retirement, in quiche. Reported by Marten
+		Seeman (@marten-seeman)
+	  </li>
+	  <li>
+		CVE-2024-1765: Unlimited resource allocation by QUIC
+		CRYPTO frames flooding in quiche. Reported by Marten
+		Seeman (@marten-seeman)
+	  </li>
+	 </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-1410</cvename>
+      <cvename>CVE-2024-1765</cvename>
+      <url>https://github.com/cloudflare/quiche/releases/tag/0.20.1</url>
+    </references>
+    <dates>
+      <discovery>2024-03-12</discovery>
+      <entry>2024-03-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="80815c47-e84f-11ee-8e76-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>123.0.6312.58</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>123.0.6312.58</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/03/stable-channel-update-for-desktop_19.html">
+	 <p>This update includes 12 security fixes:</p>
+	 <ul>
+	    <li>[327740539] High CVE-2024-2625: Object lifecycle issue in V8. Reported by Ganjiang Zhou(@refrain_areu) of ChaMd5-H1 team on 2024-03-01</li>
+	    <li>[40945098] Medium CVE-2024-2626: Out of bounds read in Swiftshader. Reported by Cassidy Kim(@cassidy6564) on 2023-11-22</li>
+	    <li>[41493290] Medium CVE-2024-2627: Use after free in Canvas. Reported by Anonymous on 2024-01-21</li>
+	    <li>[41487774] Medium CVE-2024-2628: Inappropriate implementation in Downloads. Reported by Ath3r1s on 2024-01-03</li>
+	    <li>[41487721] Medium CVE-2024-2629: Incorrect security UI in iOS. Reported by Muneaki Nishimura (nishimunea) on 2024-01-02</li>
+	    <li>[41481877] Medium CVE-2024-2630: Inappropriate implementation in iOS. Reported by James Lee (@Windowsrcer) on 2023-12-07</li>
+	    <li>[41495878] Low CVE-2024-2631: Inappropriate implementation in iOS. Reported by Ramit Gangwar on 2024-01-29</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-2625</cvename>
+      <cvename>CVE-2024-2626</cvename>
+      <cvename>CVE-2024-2627</cvename>
+      <cvename>CVE-2024-2628</cvename>
+      <cvename>CVE-2024-2629</cvename>
+      <cvename>CVE-2024-2630</cvename>
+      <cvename>CVE-2024-2631</cvename>
+      <url>https://chromereleases.googleblog.com/2024/03/stable-channel-update-for-desktop_19.html</url>
+    </references>
+    <dates>
+      <discovery>2024-03-19</discovery>
+      <entry>2024-03-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7a7129ef-e790-11ee-a1c0-0050569f0b83">
+    <topic>security/shibboleth-idp -- CAS service SSRF</topic>
+    <affects>
+      <package>
+	<name>shibboleth-idp</name>
+	<range><ge>4.3.0</ge><lt>4.3.2</lt></range>
+	<range><ge>5.0.0</ge><lt>5.1.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Shibboleth Developers report:</p>
+	<blockquote cite="https://shibboleth.net/community/advisories/secadv_20240320.txt">
+	  <p>The Identity Provider's CAS support relies on a function in the
+	     Spring Framework to parse CAS service URLs and append the ticket
+	     parameter.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://shibboleth.net/community/advisories/secadv_20240320.txt</url>
+    </references>
+    <dates>
+      <discovery>2024-03-20</discovery>
+      <entry>2024-03-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a8448963-e6f5-11ee-a784-dca632daf43b">
+    <topic>databases/mongodb* -- Improper Certificate Validation</topic>
+    <affects>
+      <package>
+	<name>mongodb44</name>
+	<range><lt>4.4.29</lt></range>
+      </package>
+      <package>
+	<name>mongodb50</name>
+	<range><lt>5.0.25</lt></range>
+      </package>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.14</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>MongoDB, Inc. reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-72839">
+	  <p>A security vulnerability was found where a server process
+	  running MongoDB 3.2.6 or later will allow incoming connections
+	  to skip peer certificate validation if the server process was
+	  started with TLS enabled (net.tls.mode set to allowTLS,
+	  preferTLS, or requireTLS) and without a net.tls.CAFile
+	  configured (CVE-2024-1351).</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-1351</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-1351</url>
     </references>
     <dates>
       <discovery>2024-03-07</discovery>
-      <entry>2024-03-14</entry>
+      <entry>2024-03-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="05b7180b-e571-11ee-a1c0-0050569f0b83">
+    <topic>www/varnish7 -- Denial of Service</topic>
+    <affects>
+      <package>
+	<name>varnish7</name>
+	<range><lt>7.4.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Varnish Development Team reports:</p>
+	<blockquote cite="https://varnish-cache.org/security/VSV00014.html#vsv00014">
+	<p>A denial of service attack can be performed on Varnish Cacher servers
+	   that have the HTTP/2 protocol turned on. An attacker can let the
+	   servers HTTP/2 connection control flow window run out of credits
+	   indefinitely and prevent progress in the processing of streams,
+	   retaining the associated resources.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-43622</cvename>
+      <url>https://varnish-cache.org/security/VSV00014.html#vsv00014</url>
+    </references>
+    <dates>
+      <discovery>2019-04-19</discovery>
+      <entry>2024-03-18</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0a48e552-e470-11ee-99b3-589cfc0f81b0">
+    <topic>amavisd-new -- multipart boundary confusion</topic>
+    <affects>
+      <package>
+	<name>amavisd-new</name>
+	<range><lt>2.12.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Amavis project reports:</p>
+	<blockquote cite="https://gitlab.com/amavis/amavis/-/raw/v2.12.3/README_FILES/README.CVE-2024-28054">
+	  <p>Emails which consist of multiple parts (`Content-Type: multipart/*`)
+	  incorporate boundary information stating at which point one part ends and the
+	  next part begins.</p>
+	  <p>A boundary is announced by an Content-Type header's `boundary` parameter. To
+	  our current knowledge, RFC2046 and RFC2045 do not explicitly specify how a
+	  parser should handle multiple boundary parameters that contain conflicting
+	  values. As a result, there is no canonical choice which of the values should or
+	  should not be used for mime part decomposition.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-28054</cvename>
+      <url>https://gitlab.com/amavis/amavis/-/raw/v2.12.3/README_FILES/README.CVE-2024-28054</url>
+    </references>
+    <dates>
+      <discovery>2024-03-14</discovery>
+      <entry>2024-03-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1ad3d264-e36b-11ee-9c27-40b034429ecf">
+    <topic>typo3-{11,12} -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>typo3-11</name>
+	<range><lt>11.5.35</lt></range>
+      </package>
+      <package>
+	<name>typo3-12</name>
+	<range><lt>12.4.11</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Typo3 developers reports:</p>
+	<blockquote cite="https://typo3.org/article/typo3-1301-12411-and-11535-security-releases-published">
+	  <p>All versions are security releases and contain important security fixes - read the corresponding security advisories here:</p>
+	<ul>
+	  <li>Path Traversal in TYPO3 File Abstraction Layer Storages CVE-2023-30451</li>
+	  <li>Code Execution in TYPO3 Install Tool CVE-2024-22188</li>
+	  <li>Information Disclosure of Hashed Passwords in TYPO3 Backend Forms CVE-2024-25118</li>
+	  <li>Information Disclosure of Encryption Key in TYPO3 Install Tool CVE-2024-25119</li>
+	  <li>Improper Access Control of Resources Referenced by t3:// URI Scheme CVE-2024-25120</li>
+	  <li>Improper Access Control Persisting File Abstraction Layer Entities via Data Handler CVE-2024-25121</li>
+	</ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-30451</cvename>
+      <cvename>CVE-2024-22188</cvename>
+      <cvename>CVE-2024-25118</cvename>
+      <cvename>CVE-2024-25119</cvename>
+      <cvename>CVE-2024-25120</cvename>
+      <cvename>CVE-2024-25121</cvename>
+      <url>https://typo3.org/article/typo3-1301-12411-and-11535-security-releases-published</url>
+    </references>
+    <dates>
+      <discovery>2024-02-13</discovery>
+      <entry>2024-03-16</entry>
     </dates>
   </vuln>
 
@@ -116,6 +781,60 @@
     <dates>
       <discovery>2023-03-12</discovery>
       <entry>2024-03-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6d31ef38-df85-11ee-abf1-6c3be5272acd">
+    <topic>Grafana -- Data source permission escalation</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<range><ge>8.5.0</ge><lt>9.5.17</lt></range>
+	<range><ge>10.0.0</ge><lt>10.0.12</lt></range>
+	<range><ge>10.1.0</ge><lt>10.1.8</lt></range>
+	<range><ge>10.2.0</ge><lt>10.2.5</lt></range>
+	<range><ge>10.3.0</ge><lt>10.3.4</lt></range>
+      </package>
+      <package>
+	<name>grafana9</name>
+	<range><lt>9.5.17</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2024/03/07/grafana-security-release-medium-severity-security-fix-for-cve-2024-1442/">
+	  <p>The vulnerability impacts Grafana Cloud and Grafana Enterprise instances,
+	  and it is exploitable if a user who should not be able to access all data
+	  sources is granted permissions to create a data source.</p>
+	  <p>By default, only organization Administrators are allowed to create a data
+	  source and have full access to all data sources. All other users need to be
+	  explicitly granted permission to create a data source, which then means they
+	  could exploit this vulnerability.</p>
+	  <p>When a user creates a data source via the
+	  <a href="https://grafana.com/docs/grafana/latest/developers/http_api/data_source/#create-a-data-source">API</a>,
+	  they can specify data source UID. If the UID is set to an asterisk (*),
+	  the user gains permissions to query, update, and delete all data sources
+	  in the organization. The exploit, however, does not stretch across
+	  organizations — to exploit the vulnerability in several organizations, a user
+	  would need permissions to create data sources in each organization.</p>
+	  <p>The vulnerability comes from a lack of UID validation. When evaluating
+	  permissions, we interpret an asterisk (*) as a wild card for all resources.
+	  Therefore, we should treat it as a reserved value, and not allow the creation
+	  of a resource with the UID set to an asterisk.</p>
+	  <p>The CVSS score for this vulnerability is
+	  <a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:L/A:L&amp;version=3.1">6 Medium</a>.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-1442</cvename>
+      <url>https://grafana.com/security/security-advisories/cve-2024-1442/</url>
+    </references>
+    <dates>
+      <discovery>2024-02-12</discovery>
+      <entry>2024-03-11</entry>
+      <modified>2024-03-26</modified>
     </dates>
   </vuln>
 
@@ -427,39 +1146,6 @@
     </references>
     <dates>
       <discovery>2024-02-14</discovery>
-      <entry>2024-03-01</entry>
-    </dates>
-  </vuln>
-
-  <vuln vid="46a9eb0f-d7d2-11ee-bb12-001b217b3468">
-    <topic>null -- null</topic>
-    <affects>
-      <package>
-	<name>null</name>
-	<range><lt>null</lt></range>
-      </package>
-    </affects>
-    <description>
-	<body xmlns="http://www.w3.org/1999/xhtml">
-	<p>support@hackerone.com reports:</p>
-	<blockquote cite="https://hackerone.com/reports/2237545">
-	  <p>On Linux, Node.js ignores certain environment variables if those
-	may have been set by an unprivileged user while the process is
-	running with elevated privileges with the only exception of
-	CAP_NET_BIND_SERVICE.  Due to a bug in the implementation of this
-	exception, Node.js incorrectly applies this exception even when
-	certain other capabilities have been set.  This allows unprivileged
-	users to inject code that inherits the process&apos;s elevated
-	privileges.</p>
-	</blockquote>
-	</body>
-    </description>
-    <references>
-      <cvename>CVE-2024-21892</cvename>
-      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-21892</url>
-    </references>
-    <dates>
-      <discovery>2024-02-20</discovery>
       <entry>2024-03-01</entry>
     </dates>
   </vuln>
@@ -1041,6 +1727,11 @@
 	<name>unbound</name>
 	<range><lt>1.19.1</lt></range>
       </package>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>14.0</ge><lt>14.0_6</lt></range>
+	<range><ge>13.2</ge><lt>13.2_11</lt></range>
+      </package>
     </affects>
     <description>
 	<body xmlns="http://www.w3.org/1999/xhtml">
@@ -1077,10 +1768,12 @@
       <url>https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2024q1/017430.html</url>
       <url>https://blog.powerdns.com/2024/02/13/powerdns-recursor-4-8-6-4-9-3-5-0-2-released</url>
       <url>https://nlnetlabs.nl/news/2024/Feb/13/unbound-1.19.1-released/</url>
+      <freebsdsa>SA-24:03.unbound</freebsdsa>
     </references>
     <dates>
       <discovery>2024-02-06</discovery>
       <entry>2024-02-13</entry>
+      <modified>2024-04-01</modified>
     </dates>
   </vuln>
 
@@ -2582,5 +3275,31 @@
     <dates>
       <discovery>2023-12-19</discovery>
       <entry>2024-01-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bd7592a1-cbfd-11ee-a42a-5404a6f3ca32">
+    <topic>gitea -- Prevent anonymous container access</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.21.5</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <h1>Problem Description:</h1>
+    <p>
+      Even with RequireSignInView enabled, anonymous users can use docker pull
+      to fetch public images.
+    </p>
+      </body>
+    </description>
+    <references>
+      <url>https://blog.gitea.com/release-of-1.21.5/</url>
+    </references>
+    <dates>
+      <discovery>2024-01-24</discovery>
+      <entry>2024-02-15</entry>
     </dates>
   </vuln>

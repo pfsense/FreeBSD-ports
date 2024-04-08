@@ -1,6 +1,6 @@
 PORTNAME=	sendmail
-PORTVERSION=	8.18.0.2
-PORTREVISION=	2
+PORTVERSION=	8.18.0.9
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/snapshots/
 PKGNAMESUFFIX?=	-devel${PKGNAMESUFFIX2}
@@ -32,7 +32,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DOCS=		KNOWNBUGS LICENSE PGPKEYS README RELEASE_NOTES \
 		sendmail/TRACEFLAGS sendmail/SECURITY sendmail/TUNING
 PLIST_SUB+=	PREFIX=${PREFIX:S=${PREFIX}/==} \
-		MANPREFIX=${MANPREFIX:S=$=/=:S=${PREFIX}==:S=^/==}
+		MANPREFIX=${PREFIX}/share/
 SUB_FILES=	pkg-message
 
 WCONF=		${WRKSRC}/devtools/Site
@@ -48,10 +48,10 @@ MILTER_SOVER?=	6
 
 OPTIONS_DEFINE?=	SHMEM SEM LA NIS IPV6 TLS DANE SASL SASLAUTHD LDAP \
 			BDB GDBM SOCKETMAP CYRUSLOOKUP BLACKLISTD SMTPUTF8 \
-			PICKY_HELO_CHECK BARELF MILTER MTA_STS \
+			PICKY_HELO_CHECK MILTER MTA_STS \
 			TLS_CERT_CHAIN DOCS
 OPTIONS_DEFAULT?=	SHMEM SEM LA NIS TLS DANE SASL SASLAUTHD BDB1 \
-			BLACKLISTD PICKY_HELO_CHECK BARELF MILTER
+			BLACKLISTD PICKY_HELO_CHECK MILTER
 NO_OPTIONS_SORT=yes
 SHMEM_DESC=		System V shared memory support
 LA_DESC=		load averages support
@@ -64,7 +64,6 @@ SOCKETMAP_DESC=		Enable socketmap feature
 BLACKLISTD_DESC=	Enable blacklistd support
 CYRUSLOOKUP_DESC=	Enable cyruslookup feature
 PICKY_HELO_CHECK_DESC=	Enable picky HELO check
-BARELF_DESC=		Enable checking for "bare LF" in message
 MILTER_DESC=		Enable milter support
 SMTPUTF8_DESC=		Enable unicode address support
 MTA_STS_DESC=		Enable MTA-STS support (option SOCKETMAP and TLS needed)
@@ -199,11 +198,6 @@ do-configure:
 	 'APPENDDEF(`conf_sendmail_ENVDEF'\'', `-DPICKY_HELO_CHECK'\'')' \
 		>> ${WCONF}/site.config.m4
 .endif
-.if ${PORT_OPTIONS:MBARELF}
-	${ECHO_CMD} \
-	 'APPENDDEF(`conf_sendmail_ENVDEF'\'', `-D_FFR_BARE_LF'\'')' \
-		>> ${WCONF}/site.config.m4
-.endif
 .if ! ${PORT_OPTIONS:MSHMEM}
 	${ECHO_CMD} \
 	 'APPENDDEF(`confENVDEF'\'', `-DSM_CONF_SHM=0'\'')' \
@@ -225,7 +219,10 @@ post-build:
 	 ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} op.txt)
 
 pre-install:
-	${MKDIR} ${STAGEDIR}/etc/mail
+	${MKDIR} ${STAGEDIR}/etc/mail \
+		${STAGEDIR}${PREFIX}/share/man/cat1 \
+		${STAGEDIR}${PREFIX}/share/man/cat5 \
+		${STAGEDIR}${PREFIX}/share/man/cat8
 	@${CAT} ${PKGDIR}/pkg-plist >${PLIST}
 	@cd ${WRKSRC} && ${FIND} cf -type f | \
 	${AWK} '{print "share/sendmail/" $$1}' >>${PLIST}
@@ -252,18 +249,18 @@ post-install:
 	(cd ${WRKSRC}/rmail && \
 	 ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} force-install)
 .for i in ${LMAN8}
-	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${MANPREFIX}/man/man8/
+	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/share/man/man8/
 .endfor
 .for i in ${LMAN5}
-	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${MANPREFIX}/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/share/man/man5/
 .endfor
 .for i in ${LMAN1}
-	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/share/man/man1/
 .endfor
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/sendmail
 	${TAR} -C ${WRKSRC} -cf - cf | \
 		${TAR} -C ${STAGEDIR}${PREFIX}/share/sendmail -xf -
-	${RM} ${STAGEDIR}${PREFIX}/man/cat*/*
+	${RM} -rfv ${STAGEDIR}${PREFIX}/share/man/cat*
 # final perm of sendmail is 2555 (see plist), needed for strip cmd
 	${CHMOD} 755 ${STAGEDIR}${PREFIX}/sbin/sendmail
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/vacation

@@ -1,10 +1,10 @@
 PORTNAME=	WinFF
-PORTVERSION=	1.5.5
-PORTREVISION=	32
+PORTVERSION=	1.6.3
+PORTREVISION=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	LOCAL/thierry
+MASTER_SITES=	https://github.com/WinFF/winff/archive/refs/tags/
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
-DISTNAME=	${_PORTNAME}-${PORTVERSION}-source
+DISTNAME=	${_PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Convert your videos quickly, easily, and all at once
@@ -17,7 +17,9 @@ LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
 USES=		fpc lazarus:flavors xorg
 USE_XORG=	x11
 
-NO_WRKSUBDIR=	yes
+#USE_GITHUB=	yes
+#GH_PROJECT=	${_PORTNAME}
+
 _PORTNAME=	${PORTNAME:tl}
 DATADIR=	${PREFIX}/share/${_PORTNAME}
 DOCSDIR=	${PREFIX}/share/doc/${_PORTNAME}
@@ -30,9 +32,10 @@ DESKTOP_ENTRIES=	"${PORTNAME}"	\
 			true
 
 LAZARUS_PROJECT_FILES=	winff.lpr
-LAZBUILD_ARGS=		-d
+LAZBUILD_ARGS=		-d --pcp=${WRKSRC} --scp=${WRKDIR}
 
-BUILD_WRKSRC=	${WRKDIR}/${PKGNAME}/${_PORTNAME}
+WRKSRC=		${WRKDIR}/${_PORTNAME}-${_PORTNAME}-${PORTVERSION}
+BUILD_WRKSRC=	${WRKSRC}/${_PORTNAME}
 
 .if ${FLAVOR:Ugtk2:Mgtk2}
 USES+=		gnome
@@ -47,12 +50,15 @@ pre-configure:
 	${REINPLACE_CMD} -e 's|/usr/bin/|${LOCALBASE}/bin/|g' ${BUILD_WRKSRC}/${fp}
 .endfor
 
+pre-build:
+	${CP} -p ${LOCALBASE}/etc/fppkg.cfg ${WRKDIR}
+
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${PORTNAME:tl} ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DATADIR}/languages
 	${INSTALL_DATA} ${BUILD_WRKSRC}/presets.xml ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${BUILD_WRKSRC}/languages/* ${STAGEDIR}${DATADIR}/languages/
-	${INSTALL_MAN} ${BUILD_WRKSRC}/${_PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${BUILD_WRKSRC}/${_PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${BUILD_WRKSRC}/winff-icons/48x48/${_PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

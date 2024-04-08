@@ -1,6 +1,6 @@
 PORTNAME=	hpl
 DISTVERSION=	2.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	benchmarks
 MASTER_SITES=	NETLIB/benchmark/hpl
 
@@ -11,7 +11,7 @@ WWW=		https://www.netlib.org/benchmark/hpl/
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/www/copyright.html
 
-USES=		fortran
+USES=		fortran pkgconfig
 HPL_ARCH?=	FreeBSD_PIV_CBLAS
 MAKE_ARGS=	arch=${HPL_ARCH}
 ALL_TARGET=	build
@@ -60,7 +60,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/${HPL_ARCH}/xhpl ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKSRC}/bin/${HPL_ARCH}/HPL.dat ${STAGEDIR}${ETCDIR}
-	${INSTALL_MAN} ${WRKSRC}/man/man3/*.3 ${STAGEDIR}${MAN3PREFIX}/man/man3/
+	${INSTALL_MAN} ${WRKSRC}/man/man3/*.3 ${STAGEDIR}${PREFIX}/share/man/man3/
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for doc in BUGS COPYRIGHT HISTORY README TODO TUNING
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}

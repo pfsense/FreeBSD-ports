@@ -1,6 +1,6 @@
 PORTNAME=	multi-aterm
 PORTVERSION=	0.2.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	x11
 MASTER_SITES=	http://www.nongnu.org/materm/
 
@@ -11,10 +11,14 @@ WWW=		https://www.nongnu.org/materm/materm.html
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Unmaintained, last upstream release in 2004
+EXPIRATION_DATE=	2024-04-13
+
 USES=		cpe xorg
 USE_XORG=	x11 xpm
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=--with-xpm=${LOCALBASE}
 
 PORTDOCS=	AUTHORS ChangeLog TODO

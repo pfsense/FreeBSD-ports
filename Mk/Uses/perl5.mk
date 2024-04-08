@@ -193,8 +193,8 @@ CONFIGURE_ARGS+=--install_path lib="${PREFIX}/${SITE_PERL_REL}" \
 		--install_path arch="${PREFIX}/${SITE_ARCH_REL}" \
 		--install_path script="${PREFIX}/bin" \
 		--install_path bin="${PREFIX}/bin" \
-		--install_path libdoc="${MAN3PREFIX}/man/man3" \
-		--install_path bindoc="${MAN1PREFIX}/man/man1"
+		--install_path libdoc="${PERLMANPREFIX}/man/man3" \
+		--install_path bindoc="${PERLMANPREFIX}/man/man1"
 CONFIGURE_SCRIPT?=	Build.PL
 PL_BUILD?=	Build
 CONFIGURE_ARGS+=--destdir ${STAGEDIR}
@@ -251,8 +251,7 @@ TEST_DEPENDS+=		${PERL5_DEPEND}:lang/${PERL_PORT}
 CONFIGURE_ARGS+=	CC="${CC}" CCFLAGS="${CFLAGS}" LD="${CC}" PREFIX="${PREFIX}" \
 			INSTALLPRIVLIB="${PREFIX}/lib" INSTALLARCHLIB="${PREFIX}/lib"
 CONFIGURE_SCRIPT?=	Makefile.PL
-MAN3PREFIX?=		${PREFIX}/${SITE_PERL_REL}
-MAN1PREFIX?=		${PREFIX}/${SITE_PERL_REL}
+PERLMANPREFIX?=		${PREFIX}/${SITE_PERL_REL}
 .undef HAS_CONFIGURE
 
 .    if !target(do-configure)
@@ -262,7 +261,7 @@ do-configure:
 		${SCRIPTDIR}/configure; \
 	fi
 	@cd ${CONFIGURE_WRKSRC} && \
-		${SETENV} ${CONFIGURE_ENV} \
+		${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} \
 		${PERL5} ${CONFIGURE_CMD} ${CONFIGURE_ARGS}
 .      if !${_USE_PERL5:Mmodbuild*}
 	@cd ${CONFIGURE_WRKSRC} && \
@@ -274,13 +273,13 @@ do-configure:
 .  if ${_USE_PERL5:Mmodbuild*}
 .    if !target(do-build)
 do-build:
-	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PERL5} ${PL_BUILD} ${ALL_TARGET} ${MAKE_ARGS})
+	@(cd ${BUILD_WRKSRC}; ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${PERL5} ${PL_BUILD} ${ALL_TARGET} ${MAKE_ARGS})
 .    endif # !target(do-build)
 
 .    if !${USES:Mgmake}
 .      if !target(do-install)
 do-install:
-	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PERL5} ${PL_BUILD} ${INSTALL_TARGET} ${MAKE_ARGS})
+	@(cd ${BUILD_WRKSRC}; ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${PERL5} ${PL_BUILD} ${INSTALL_TARGET} ${MAKE_ARGS})
 .      endif # !target(do-install)
 .    endif # ! USES=gmake
 .  endif # modbuild
@@ -326,9 +325,9 @@ TEST_TARGET?=	test
 TEST_WRKSRC?=	${BUILD_WRKSRC}
 do-test:
 .    if ${USE_PERL5:Mmodbuild*}
-	@cd ${TEST_WRKSRC}/ && ${SETENV} ${TEST_ENV} ${PERL5} ${PL_BUILD} ${TEST_TARGET} ${TEST_ARGS}
+	@cd ${TEST_WRKSRC}/ && ${SETENVI} ${WRK_ENV} ${TEST_ENV} ${PERL5} ${PL_BUILD} ${TEST_TARGET} ${TEST_ARGS}
 .    elif ${USE_PERL5:Mconfigure}
-	@cd ${TEST_WRKSRC}/ && ${SETENV} ${TEST_ENV} ${MAKE_CMD} ${TEST_ARGS} ${TEST_TARGET}
+	@cd ${TEST_WRKSRC}/ && ${SETENVI} ${WRK_ENV} ${TEST_ENV} ${MAKE_CMD} ${TEST_ARGS} ${TEST_TARGET}
 .    endif # USE_PERL5:Mmodbuild*
 .  endif # do-test
 .endif # defined(_POSTMKINCLUDED)

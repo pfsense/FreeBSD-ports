@@ -1,6 +1,6 @@
 PORTNAME=	usockets
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.1
+DISTVERSION=	0.8.8
 CATEGORIES=	net devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,6 +20,8 @@ GH_ACCOUNT=	uNetworking
 GH_PROJECT=	uSockets
 
 MAKE_ARGS=	WITH_OPENSSL=1
+CFLAGS+=	-fPIC # -fPIC is required for the build to succeed, see https://github.com/uNetworking/uSockets/issues/217
+CXXFLAGS+=	-fPIC
 
 ALL_TARGET=	default
 
@@ -30,9 +32,9 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/src/libusockets.h ${STAGEDIR}${PREFIX}/include
 	${INSTALL_LIB} ${WRKSRC}/libuSockets.so ${STAGEDIR}${PREFIX}/lib
 
-do-test: # tests fail to compile: https://github.com/uNetworking/uSockets/issues/160
+do-test: # tests fail to compile: https://github.com/uNetworking/uSockets/issues/213
 	cd ${WRKSRC} && \
-		${CXX} -o test tests/sni_test.c ${STAGEDIR}${PREFIX}/lib/libuSockets.so && \
+		${CC} ${CFLAGS} -o test tests/sni_test.c ${STAGEDIR}${PREFIX}/lib/libuSockets.so && \
 		./test
 
 .include <bsd.port.mk>

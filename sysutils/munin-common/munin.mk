@@ -1,7 +1,8 @@
 LICENSE=	GPLv2
 
-MUNIN_VERSION=	2.0.73
-MUNIN_SITES=	SF/munin/stable/${MUNIN_VERSION}
+MUNIN_VERSION=	2.0.75
+USE_GITHUB=	yes
+GH_ACCOUNT=	munin-monitoring
 DISTINFO_FILE=	${.CURDIR}/../../sysutils/munin-common/distinfo
 PATCHDIR=	${.CURDIR}/../../sysutils/munin-common/files
 
@@ -21,6 +22,7 @@ MUNIN_DIRS=	BINDIR=${PREFIX}/bin \
 		HTMLDIR=${WWWDIR} \
 		LIBDIR=${DATADIR} \
 		LOGDIR=${LOGDIR} \
+		MANDIR=${PREFIX}/share/man \
 		SBINDIR=${PREFIX}/sbin \
 		STATEDIR=${STATEDIR} \
 		SPOOLDIR=${SPOOLDIR}

@@ -12,7 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pbr>0:devel/py-pbr@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}inflection>=0.3.1,<1:devel/py-inflection@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tinycss2>=0.5,<2:textproc/py-tinycss2@${PY_FLAVOR}
 # pytest-catchlog >=1,<2 does not exist until now :(
@@ -24,13 +24,13 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}virtualenv>=0:devel/py-virtualenv@${PY_FLAVOR}
 
-USES=		pyqt:5 pytest python
+USES=		pyqt:5 python
 # PyPi only has the wheel version
 USE_GITHUB=	yes
 GH_ACCOUNT=	blambright
 
 USE_PYQT=	pyqt5
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils pytest
 
 MAKE_ENV=	PBR_VERSION=${PORTVERSION}
 

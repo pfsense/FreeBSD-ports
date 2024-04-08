@@ -23,10 +23,9 @@ IGNORE= Incorrect 'USES+= gem:${gem_ARGS}' usage: argument [${arg}] is not recog
 .include "${USESDIR}/ruby.mk"
 
 PKGNAMEPREFIX?=	rubygem-
-GEM_EXT=	.gem
-# needs to be disabled that rust cargo directories are correctly extracted
-#EXTRACT_ONLY=
-GEM_DIST_SUBDIR?=	rubygem
+EXTRACT_SUFX=	.gem
+# disabled to be able that extract other archives into the gem folder like cargo archives which are required to compile gems that require rust
+#EXTRACT_ONLY?=
 
 BUILD_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
 EXTRACT_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
@@ -64,16 +63,25 @@ PLIST_SUB+=	PORTVERSION="${PORTVERSION}" \
 		GEM_DOC_DIR="${GEM_DOC_DIR}" \
 		GEM_SPEC="${GEM_SPEC}" \
 		GEM_CACHE="${GEM_CACHE}" \
-		GEM_EXT="${GEM_EXT}"
+		EXTRACT_SUFX="${EXTRACT_SUFX}"
 
 RUBYGEMBIN=	${LOCALBASE}/bin/gem
 
+.  if defined(GEMS_SKIP_SUBDIR)
+# do not define a DIST_SUBDIR, currently required to have cargo archives available in the gem source directory to be able to compile it
+#DIST_SUBDIR=
+.  else
+DIST_SUBDIR=	rubygem
+.  endif
+
 .  if defined(DISTFILES)
+# this should maybe be reworked, as if a gem port is used together with cargo archives, the DISTFILES also includes the cargo archives
+# this is currently overwritten in the port that requires this
+# the cargo archives should be filtered out here or better we should only have here gem archives included
 GEMFILES?=	${DISTFILES:C/:[^:]+$//}
 .  else
-GEMFILES?=	${DISTNAME}${GEM_EXT}
+GEMFILES?=	${DISTNAME}${EXTRACT_SUFX}
 .  endif
-DISTFILES+=	${GEM_DIST_SUBDIR}/${GEMFILES}
 
 RUBYGEM_ARGS=-l --no-update-sources --install-dir ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER} --ignore-dependencies --bindir=${STAGEDIR}${PREFIX}/bin
 
@@ -83,10 +91,10 @@ RUBYGEM_ARGS+=	--document rdoc,ri
 RUBYGEM_ARGS+=	--no-document
 .  endif
 
-_USES_extract+=		590:gem-extract
+_USES_extract+=	590:gem-extract
 gem-extract:
-	@${SETENV} ${GEM_ENV} ${RUBYGEMBIN} unpack --target=${WRKDIR} ${DISTDIR}/${GEM_DIST_SUBDIR}/${GEMFILES}
-	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} spec --ruby ${DISTDIR}/${GEM_DIST_SUBDIR}/${GEMFILES} > ${GEMSPEC} ; then \
+	@${SETENVI} ${WRK_ENV} ${GEM_ENV} ${RUBYGEMBIN} unpack --target=${WRKDIR} ${DISTDIR}/${DIST_SUBDIR}/${GEMFILES}
+	@(cd ${BUILD_WRKSRC}; if ! ${SETENVI} ${WRK_ENV} ${GEM_ENV} ${RUBYGEMBIN} spec --ruby ${DISTDIR}/${DIST_SUBDIR}/${GEMFILES} > ${GEMSPEC} ; then \
 		if [ -n "${BUILD_FAIL_MESSAGE}" ] ; then \
 			${ECHO_MSG} "===> Extraction failed unexpectedly."; \
 			(${ECHO_CMD} "${BUILD_FAIL_MESSAGE}") | ${FMT_80} ; \
@@ -96,7 +104,7 @@ gem-extract:
 
 .  if !target(do-build)
 do-build:
-	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} build --force ${GEMSPEC} ; then \
+	@(cd ${BUILD_WRKSRC}; if ! ${SETENVI} ${WRK_ENV} ${GEM_ENV} ${RUBYGEMBIN} build --force ${GEMSPEC} ; then \
 		if [ -n "${BUILD_FAIL_MESSAGE}" ] ; then \
 			${ECHO_MSG} "===> Compilation failed unexpectedly."; \
 			(${ECHO_CMD} "${BUILD_FAIL_MESSAGE}") | ${FMT_80} ; \
@@ -107,7 +115,7 @@ do-build:
 
 .  if !target(do-install)
 do-install:
-	(cd ${BUILD_WRKSRC}; ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} install ${RUBYGEM_ARGS} ${GEMFILES} -- ${CONFIGURE_ARGS})
+	(cd ${BUILD_WRKSRC}; ${SETENVI} ${WRK_ENV} ${GEM_ENV} ${RUBYGEMBIN} install ${RUBYGEM_ARGS} ${GEMFILES} -- ${CONFIGURE_ARGS})
 	${RM} -r ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR}/build_info/
 	${FIND} ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR} -type f -name '*.so' -exec ${STRIP_CMD} {} +
 	${FIND} ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR} -type f \( -name mkmf.log -or -name gem_make.out \) -delete

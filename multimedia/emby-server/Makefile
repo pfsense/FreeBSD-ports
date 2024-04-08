@@ -1,10 +1,10 @@
 PORTNAME=	emby-server
-DISTVERSION?=	4.7.14.0
-PORTREVISION?=	7
+DISTVERSION?=	4.8.3.0
+PORTREVISION?=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/MediaBrowser/Emby.Releases/releases/download/${DISTVERSION}/ \
 		https://mediabrowser.github.io/embytools/
-DISTNAME=	emby-server-freebsd13_${DISTVERSION}_amd64
+DISTNAME=	emby-server-freebsd14_${DISTVERSION}_amd64
 DISTFILES=	${DISTNAME}.tar.xz \
 		ffdetect-${FFVERSION}-x64_freebsd13.tar.xz \
 		ffmpeg-${FFVERSION}.tar.gz \
@@ -52,17 +52,22 @@ LIB_DEPENDS=	libaribb24.so:multimedia/aribb24 \
 		libx265.so:multimedia/x265 \
 		libzvbi.so:devel/libzvbi
 
-RUN_DEPENDS=	icu>0:devel/icu \
+RUN_DEPENDS=	dotnet>0:lang/dotnet \
+		icu>0:devel/icu \
+		krb5>0:security/krb5 \
 		libexif>0:graphics/libexif \
 		libheif>0:graphics/libheif \
 		libimagequant>0:graphics/libimagequant \
 		libinotify>0:devel/libinotify \
 		libjxl>0:graphics/libjxl \
 		libunwind>0:devel/libunwind \
+		openexr>0:graphics/openexr \
 		openjpeg>0:graphics/openjpeg \
-		orc>0:devel/orc
+		orc>0:devel/orc \
+		pango>0:x11-toolkits/pango \
+		tiff>0:graphics/tiff
 
-USES=		compiler:c11 gmake iconv localbase:ldflags pkgconfig sqlite ssl:run
+USES=		compiler:c11 gmake iconv localbase:ldflags magick:6 pkgconfig sqlite ssl:run
 USE_RC_SUBR=	${PORTNAME}
 
 HAS_CONFIGURE=	yes
@@ -77,6 +82,7 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 		--disable-sndio \
 		--disable-v4l2-m2m \
 		--disable-vdpau \
+		--disable-vulkan \
 		--disable-xlib \
 		--enable-chromaprint \
 		--enable-fontconfig \
@@ -136,7 +142,7 @@ do-install:
 	(${INSTALL_PROGRAM} ${WRKSRC}/ffprobe ${STAGEDIR}${PREFIX}/lib/emby-server/bin)
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/emby-server/lib
 	(cd ${WRKDIR}/lib && ${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/lib/emby-server/lib)
-	${RLN} ${LOCALBASE}/lib/libimagequant.so.0.0.4 ${STAGEDIR}${PREFIX}/lib/emby-server/lib/libimagequant.so.0
+	${RLN} ${LOCALBASE}/lib/libimagequant.so.0.4 ${STAGEDIR}${PREFIX}/lib/emby-server/lib/libimagequant.so.0
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/emby-server/system
 	(${INSTALL_DATA} ${WRKDIR}/SQLitePCLRaw.provider.sqlite3.dll.config ${STAGEDIR}${PREFIX}/lib/emby-server/system)
 	(cd ${WRKDIR}/system && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/emby-server/system "! -name EmbyServer")

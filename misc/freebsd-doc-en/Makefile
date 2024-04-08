@@ -1,5 +1,5 @@
 PORTNAME=	freebsd-doc
-PORTVERSION=	20231208
+PORTVERSION=	20240323
 PORTEPOCH=	1
 CATEGORIES=	misc docs
 MASTER_SITES=	LOCAL/doceng
@@ -10,7 +10,7 @@ COMMENT?=	Documentation from the FreeBSD Documentation Project
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	docproj>=4.1.7:textproc/docproj
+BUILD_DEPENDS=	docproj>=4.1.8:textproc/docproj
 
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/doc/documentation
@@ -46,7 +46,7 @@ BUILD_DEPENDS+=	docproj-fonts-cjk>0:textproc/docproj-fonts-cjk
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|enableGitInfo = true|#enableGitInfo = true|' \
-		${WRKSRC}/config/_default/config.toml
+		${WRKSRC}/config/_default/hugo.toml
 
 do-build-HTML-on:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} DOC_LANG="${HTML_DOC_LANG}" \

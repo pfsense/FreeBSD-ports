@@ -1,10 +1,10 @@
 PORTNAME=	crlfuzz
 PORTVERSION=	1.4.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	security
 
-MAINTAINER=	nulldutra@proton.me
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Fast tool to scan CRLF vulnerability written in Go
 WWW=		https://github.com/dwisiswant0/crlfuzz
 

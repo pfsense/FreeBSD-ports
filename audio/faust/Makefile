@@ -1,5 +1,5 @@
 PORTNAME=	faust
-DISTVERSION=	2.69.3
+DISTVERSION=	2.72.14
 CATEGORIES=	audio devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +8,8 @@ WWW=		https://faust.grame.fr/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
+BROKEN_armv7=	compilation broken: the faust executable SEGVs while compiling examples during build: faust -a lv2.cpp -cn amp -I examples examples/amp.dsp -o examples/amp.cpp
 
 LIB_DEPENDS=	libLLVM-${LLVM_VERSION}.so:devel/llvm${LLVM_VERSION}
 RUN_DEPENDS=	bash:shells/bash
@@ -18,7 +20,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	grame-cncm
 GH_TUPLE=	\
-		grame-cncm:faustlibraries:f807daf180c0b05a5c109a182f671872710af04b:grame_cncm_faustlibraries/libraries \
+		grame-cncm:faustlibraries:d28c51f:grame_cncm_faustlibraries/libraries \
 		ccrma:faust2ck:db879cb:faust2ck/tools/faust2ck
 
 SHEBANG_FILES=	tools/faust2appls/* tools/benchmark/faustbench tools/sound2faust/sound2reader
@@ -31,6 +33,8 @@ CXXFLAGS+=	-I${WRKSRC}/compiler/generator/cpp # fatal error: 'cpp_code_container
 CXXFLAGS+=	`llvm-config${LLVM_VERSION} --cflags` -DLLVM_${LLVM_VERSION}0 # for the llvm backend
 CXXFLAGS_riscv64=	-fPIC # attempt to fix failure: can't create dynamic relocation R_RISCV_HI20 against symbol: vtable for LV2UI in readonly segment; recompile object files with -fPIC or pass '-Wl,-z,notext' to allow text relocations in the output
 LDFLAGS+=	-lexecinfo
+
+TEST_ENV=	PATH=${STAGEDIR}${PREFIX}/bin:${PATH}
 
 OPTIONS_DEFINE=		EXAMPLES HIGHLIGHT HTTPD_LIB
 OPTIONS_DEFAULT=	HIGHLIGHT HTTPD_LIB
@@ -73,10 +77,10 @@ post-install-HIGHLIGHT-on:
 	${INSTALL_DATA} ${WRKSRC}/syntax-highlighting/faust.vim ${STAGEDIR}${PREFIX}/share/vim/vimfiles/syntax/
 	# 6) EMACS TODO
 
-do-test: install
+do-test:
 	@${CP} ${FILESDIR}/example-freeverb_demo.dsp ${TEST_WRKSRC}
 	@cd ${TEST_WRKSRC} && \
-		faust2jaqt example-freeverb_demo.dsp && \
-		./example-freeverb_demo
+		${SETENV} ${TEST_ENV} faust2jaqt example-freeverb_demo.dsp && \
+		${SETENV} ${TEST_ENV} ./example-freeverb_demo
 
 .include <bsd.port.mk>

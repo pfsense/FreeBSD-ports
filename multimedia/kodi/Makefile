@@ -1,11 +1,8 @@
 PORTNAME=	kodi
-DISTVERSION=	20.2
-PORTREVISION=	5
+DISTVERSION=	20.4
+PORTREVISION=	2
 CATEGORIES=	multimedia java
 # do not forget to fix devel/kodi-platform when updating kodi
-
-PATCH_SITES=	https://github.com/xbmc/xbmc/commit/
-PATCHFILES=	58a24d4e6165e838d102e807a003db0d9c186de7.patch:-p1
 
 MAINTAINER=	yzrh@noema.org
 COMMENT=	Award winning media center application
@@ -99,6 +96,8 @@ OPTIONS_GROUP_PLATFORM=	GBM WAYLAND X11
 OPTIONS_EXCLUDE_aarch64=FEATURE
 OPTIONS_EXCLUDE_armv7=	FEATURE
 OPTIONS_EXCLUDE_armv6=	FEATURE
+OPTIONS_EXCLUDE_powerpc64=     FEATURE
+OPTIONS_EXCLUDE_powerpc64le=   FEATURE
 
 PLATFORM_DESC=	Kodi platform
 FEATURE_DESC=	X86 CPU feature
@@ -226,6 +225,7 @@ GBM_LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 			libdrm.so:graphics/libdrm \
 			libxkbcommon.so:x11/libxkbcommon \
 			libinput.so:x11/libinput
+GBM_RUN_DEPENDS=	mesa-dri>0:graphics/mesa-dri
 
 WAYLAND_CATEGORIES=	wayland
 WAYLAND_USES=		gl
@@ -295,8 +295,8 @@ post-patch:
 		${WRKSRC}/xbmc/platform/linux/input/LibInputSettings.cpp
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/docs/manpages/kodi.bin.1 ${STAGEDIR}${MAN1PREFIX}/share/man/man1
-	cd ${STAGEDIR}${MAN1PREFIX}/share/man/man1 && ${LN} -s kodi.bin.1.gz kodi.1.gz
+	${INSTALL_MAN} ${WRKSRC}/docs/manpages/kodi.bin.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	cd ${STAGEDIR}${PREFIX}/share/man/man1 && ${LN} -s kodi.bin.1.gz kodi.1.gz
 	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} JsonSchemaBuilder kodi-TexturePacker
 	${FIND} ${STAGEDIR}${PREFIX}/lib/kodi -type f -name '*.so' -print0 | ${XARGS} -0 ${STRIP_CMD}
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/firewalld

@@ -1,5 +1,5 @@
-TIMESTAMP = 1698218459
-SHA256 (go/sysutils_kopia/kopia-v0.15.0/v0.15.0.mod) = 6ac75affc35dddf76e3df321ab9ed091bb17443346f4baaa8a873ad27281f9de
-SIZE (go/sysutils_kopia/kopia-v0.15.0/v0.15.0.mod) = 6195
-SHA256 (go/sysutils_kopia/kopia-v0.15.0/v0.15.0.zip) = e5d7945e0d8942eef8f0a680f5af2d86a2c3b968fc274fb1b3b90ed6266a0e27
-SIZE (go/sysutils_kopia/kopia-v0.15.0/v0.15.0.zip) = 2208100
+TIMESTAMP = 1711454599
+SHA256 (go/sysutils_kopia/kopia-v0.16.1/v0.16.1.mod) = de98d92ee6077fc29f402c74862af775ad4b710fcc051594380b80f5bb6afaf8
+SIZE (go/sysutils_kopia/kopia-v0.16.1/v0.16.1.mod) = 6395
+SHA256 (go/sysutils_kopia/kopia-v0.16.1/v0.16.1.zip) = da5099fb3df38626238de56ecfdd1de68ed67d4b8b3de57d2a0a6ea9d9f76f77
+SIZE (go/sysutils_kopia/kopia-v0.16.1/v0.16.1.zip) = 2263293

@@ -23,6 +23,7 @@ FLAVORS=	default lite
 FLAVOR?=	${FLAVORS:[1]}
 lite_PKGNAMESUFFIX=	${LLVM_SUFFIX}-lite
 
+LLVM_MAJOR_MINOR=${LLVM_RELEASE:C/\.[0-9]$//}
 LLVM_SUFFIX=	-devel
 LLVM_DIR=	llvm${LLVM_SUFFIX}
 LLVM_PREFIX=	${PREFIX}/${LLVM_DIR}
@@ -67,10 +68,6 @@ CMAKE_ARGS+=	-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
 CMAKE_ARGS+=	-DLLVM_ENABLE_RTTI=ON
 CMAKE_ARGS+=	-DLLVM_DEFAULT_TARGET_TRIPLE=${CONFIGURE_TARGET}
 CMAKE_ARGS+=	-DLLVM_HOST_TRIPLE=${CONFIGURE_TARGET}
-# Following commit https://github.com/kitware/cmake/commit/956054
-# we need to either change the whole man-shuffle below, or simply
-# redefine CMAKE_INSTALL_MANDIR
-CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH="share/man"
 CMAKE_ARGS+=	-DLLVM_PARALLEL_LINK_JOBS=1
 CMAKE_ARGS+=	-DLLVM_ENABLE_Z3_SOLVER=OFF
 CMAKE_ARGS+=	-DLLVM_ENABLE_LIBXML2=OFF
@@ -132,6 +129,7 @@ CLANG_USE=		PERL5=build
 COMPILER_RT_DESC=	Sanitizer libraries
 COMPILER_RT_IMPLIES=	CLANG
 COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS}
+COMPILER_RT_CONFLICTS_BUILD=${ARCH}-binutils
 DOCS_BUILD_DEPENDS= \
 	${PYTHON_PKGNAMEPREFIX}myst-parser>0:textproc/py-myst-parser@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR} \
@@ -143,7 +141,7 @@ DOCS_CMAKE_ON= \
 	-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
 	-DSPHINX_WARNINGS_AS_ERRORS=OFF \
 	-DLLVM_BUILD_DOCS=ON
-DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
+DOCS_PLIST_FILES=	${MAN1SRCS:S|^|share/man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 EXTRAS_DESC=		Extra clang tools
 EXTRAS_IMPLIES=		CLANG
 EXTRAS_PLIST_DIRS=	${LLVM_DIR}/include/clang-tidy/plugin
@@ -159,7 +157,9 @@ LIT_DESC=		Install lit and FileCheck test tools
 LIT_VARS=		_USES_PYTHON=python
 LIT_PLIST_SUB=		LIT_MOD_NAME=${LIT_MOD_NAME}
 LLD_DESC=		Install lld, the LLVM linker
-LLDB_BUILD_DEPENDS=	swig:devel/swig
+LLDB_BUILD_DEPENDS=	\
+	${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR} \
+	swig:devel/swig
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_IMPLIES=		CLANG
 LLDB_PLIST_SUB=		PYTHON_ABIVER=${PYTHON_ABIVER}
@@ -179,7 +179,8 @@ STATIC_LIBS_DESC= Install static libraries (does not effect sanitizers)
 
 CONFLICTS_INSTALL=	${PORTNAME}${LLVM_SUFFIX} ${PORTNAME}${LLVM_SUFFIX}-lite
 
-PLIST_SUB+=	LLVM_MAJOR=${LLVM_MAJOR} \
+PLIST_SUB+=	LLVM_MAJOR_MINOR=${LLVM_MAJOR_MINOR} \
+		LLVM_MAJOR=${LLVM_MAJOR} \
 		LLVM_RELEASE=${LLVM_RELEASE}
 
 COMMANDS=	${LLVM_COMMANDS}
@@ -247,7 +248,7 @@ USES+=	gnome
 
 .if ${PORT_OPTIONS:MCOMPILER_RT}
 LLVM_ENABLE_PROJECTS+=	compiler-rt
-COMPILER_RT_PATTERN=	(sanitizer|include.xray|include\/(fuzzer|orc)|profile\/InstrProfData.inc)
+COMPILER_RT_PATTERN=	(sanitizer|include.xray|include\/(fuzzer|orc)|profile\/InstrProfData.inc|profile\/instr_prof_interface.h)
 .endif
 
 .if ${PORT_OPTIONS:MEXTRAS}
@@ -289,7 +290,7 @@ LLVM_ENABLE_PROJECTS+=	openmp
 MAN1SRCS+=	${OPENMP_MAN1SRCS}
 COMMANDS+=	${OPENMP_COMMANDS}
 .endif
-OPENMP_PATTERN=	${OPENMP_COMMANDS:tW:C/  */|/g}|cmake\/openmp|libarcher|lib[ig]*omp|omp.h|ompt.h|ompt-multiplex.h|ompx.h|omp-tools.h
+OPENMP_PATTERN=	${OPENMP_COMMANDS:tW:C/  */|/g}|cmake\/openmp|libarcher|lib[ig]*omp|omp.h|ompt.h|ompt-multiplex.h|ompx.h|omp-tools.h|omp_lib
 
 .if ${PORT_OPTIONS:MPOLLY}
 LLVM_ENABLE_PROJECTS+=	polly
@@ -400,7 +401,7 @@ post-install-DOCS-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/doc
 .for _man in ${MAN1SRCS}
 	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/${_man} \
-	    ${STAGEDIR}${MANPREFIX}/man/man1/${_man:R}${LLVM_SUFFIX}.1
+	    ${STAGEDIR}${PREFIX}/share/man/man1/${_man:R}${LLVM_SUFFIX}.1
 .endfor
 .if ! ${PORT_OPTIONS:MLIT}
 	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/lit.1
@@ -497,6 +498,7 @@ build-plist:
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \
+	    -e 's|${LLVM_MAJOR_MINOR:C/\./\\./}git|%%LLVM_MAJOR_MINOR%%git|' \
 	    -e 's|${LLVM_MAJOR}git|%%LLVM_MAJOR%%git|' \
 	    -e 's|/${LLVM_MAJOR}/|/%%LLVM_MAJOR%%/|' \
 	    -e 's|\([-./]\)${LLVM_MAJOR:C/\./\\./}$$|\1%%LLVM_MAJOR%%|' \

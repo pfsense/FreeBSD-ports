@@ -1,5 +1,5 @@
 PORTNAME=	lazarus
-DISTVERSION=	3.0.0
+DISTVERSION=	3.2.0
 PKGNAMESUFFIX?=  -gtk2
 PORTREVISION?=	0
 CATEGORIES=	editors devel
@@ -22,7 +22,7 @@ ONLY_FOR_ARCHS=	i386 amd64
 USE_GITLAB=	yes
 GL_ACCOUNT=	freepascal.org/lazarus
 GL_PROJECT=	${PORTNAME}
-GL_COMMIT=	f771d54e4a3a6e35697e662aa2e0b954762b56cb
+GL_COMMIT=	9c6333cdc4b14205f0098058597835c6fa673ca3
 
 USES=		desktop-file-utils fpc:run gettext gmake iconv shared-mime-info xorg
 USE_XORG=	x11
@@ -40,7 +40,7 @@ OPTIONS_DEFAULT=	GDB
 .include <bsd.port.options.mk>
 
 LAZARUS_ARCH=	${ARCH:S,amd64,x86_64,}
-LAZARUS_BASE=	3.0.0
+LAZARUS_BASE=	3.2.0
 
 BUILDNAME=	${LAZARUS_ARCH}-${OPSYS:tl}
 LCL_PLATFORM?=	gtk2
@@ -100,7 +100,7 @@ pre-install:
 		@${ECHO_CMD} ${FILE} >> ${PLIST}
 .	endfor
 .	for m in ${MAN1S}
-		@${ECHO_CMD} man/man1/${m}.gz >> ${PLIST}
+		@${ECHO_CMD} share/man/man1/${m}.gz >> ${PLIST}
 .	endfor
 
 	@${ECHO_CMD} "%%DATADIR%%/docs" >> ${PLIST}
@@ -174,7 +174,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/lazarus-wrapper ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_DATA}	${WRKSRC}/Makefile* ${WRKSRC}/fpmake*  ${STAGEDIR}${DATADIR}
 .for FILE in ${MAN1S}
-	${INSTALL_MAN} ${WRKDIR}/man1/${FILE} ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKDIR}/man1/${FILE} ${STAGEDIR}${PREFIX}/share/man/man1
 .endfor
 	${LN} -sf ${DATADIR}/lazbuild ${STAGEDIR}${PREFIX}/bin/lazbuild
 

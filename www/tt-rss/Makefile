@@ -1,8 +1,9 @@
 PORTNAME=	tt-rss
-PORTVERSION=	g20231202
-PORTREVISION=	1
+PORTVERSION=	g20240221
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	www
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	dereks@lifeofadishwasher.com
 COMMENT=	Tiny Tiny RSS: web-based news feed (RSS/Atom) aggregator
@@ -12,11 +13,11 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git
 
-USES=		gettext-tools php:cli,web shebangfix
+USES=		gettext-tools php:cli,web,flavors shebangfix
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.tt-rss.org
-GL_TAGNAME=	2b8e34453234b8b31ebc9e7020f8677bf3889898
+GL_TAGNAME=	81f31399929361d19fb3260a43aa35f9b6cf5105
 # phe json/openssl extension is required but it's statically linked in default php
 USE_PHP=	ctype dom exif fileinfo filter iconv intl mbstring pcntl pdo \
 		phar posix session simplexml sockets tokenizer xml xmlwriter \

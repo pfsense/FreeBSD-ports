@@ -653,6 +653,50 @@
             ..
         ..
         man
+            cat1
+            ..
+            cat2
+            ..
+            cat3
+            ..
+            cat4
+            ..
+            cat5
+            ..
+            cat6
+            ..
+            cat7
+            ..
+            cat8
+            ..
+            cat9
+            ..
+            es              uname=root
+/set uname=root
+                man7
+                ..
+                man8
+                ..
+            ..
+            fr
+                man7
+                ..
+            ..
+            it
+                man7
+                ..
+                man8
+                ..
+            ..
+            ja              uname=root
+/set uname=root
+                man1
+                ..
+                man7
+                ..
+                man8
+                ..
+            ..
             man1
             ..
             man2
@@ -670,6 +714,14 @@
             man8
             ..
             man9
+            ..
+            manl
+            ..
+            mann
+            ..
+            ru.KOI8-R
+                man1
+                ..
             ..
         ..
         misc

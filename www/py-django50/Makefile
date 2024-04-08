@@ -1,5 +1,6 @@
 PORTNAME=	django
-PORTVERSION=	5.0.1
+PORTVERSION=	5.0.4
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI \
 		https://media.djangoproject.com/releases/${PORTVERSION:R}/
@@ -15,17 +16,19 @@ WWW=		https://www.djangoproject.com/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=40.8.0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asgiref>=3.7.0:www/py-asgiref@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlparse>=0.3.1:databases/py-sqlparse@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tblib>0:devel/py-tblib@${PY_FLAVOR}
 
 USES=		cpe python shebangfix
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
 
 DOCSDIR=	${PREFIX}/share/doc/py-django
-PLIST_FILES=	man/man1/django-admin.1.gz
+PLIST_FILES=	share/man/man1/django-admin.1.gz
 PORTDOCS=	*
 
 SHEBANG_FILES=	django/conf/project_template/manage.py-tpl
@@ -59,7 +62,7 @@ post-build-HTMLDOCS-on:
 	cd ${WRKSRC}/docs && ${MAKE} html SPHINXBUILD=sphinx-build-${PYTHON_VER}
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/docs/man/* ${STAGEDIR}/${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/docs/man/* ${STAGEDIR}/${PREFIX}/share/man/man1
 	@${ECHO_MSG}	""
 	@${ECHO_MSG}	"	* See http://docs.djangoproject.com/ for complete documentation"
 	@${ECHO_MSG}	""

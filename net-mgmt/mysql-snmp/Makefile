@@ -2,6 +2,7 @@ PORTNAME=	mysql-snmp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2-17
 DISTVERSIONSUFFIX=	-g1d0b409
+PORTREVISION=	2
 CATEGORIES=	net-mgmt perl5
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -12,13 +13,13 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	net-snmp>=0:net-mgmt/net-snmp \
-		p5-DBD-mysql>=0:databases/p5-DBD-mysql \
+		${DBD_MYSQL} \
 		p5-DBI>=0:databases/p5-DBI \
 		p5-Math-BigInt-GMP>=0:math/p5-Math-BigInt-GMP \
 		p5-Net-SNMP>=5.4.3:net-mgmt/p5-Net-SNMP \
 		p5-Unix-Syslog>=0:sysutils/p5-Unix-Syslog
 
-USES=		perl5 shebangfix
+USES=		mysql perl5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	masterzen
 USE_PERL5=	run test
@@ -36,7 +37,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/snmp/mibs
 	${INSTALL_DATA} ${WRKSRC}/MYSQL-SERVER-MIB.txt \
 		${STAGEDIR}${PREFIX}/share/snmp/mibs
-	${INSTALL_MAN} ${WRKSRC}/mysql-snmp.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/mysql-snmp.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} opennms ${STAGEDIR}/${DATADIR})
 	@${MKDIR} ${STAGEDIR}${ETCDIR}

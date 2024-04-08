@@ -1,5 +1,6 @@
 PORTNAME=	tor
 DISTVERSION=	0.4.8.10
+PORTREVISION=	1
 CATEGORIES=	security net
 MASTER_SITES=	TOR
 
@@ -15,6 +16,7 @@ USE_CSTD=	gnu99 # until this bug report is closed: https://trac.torproject.org/p
 
 CPE_VENDOR=	torproject
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-openssl-dir="${OPENSSLBASE}"
 CONFIGURE_ENV=	TOR_CPPFLAGS_libevent="-I${LOCALBASE}/include" \
 		TOR_LDFLAGS_libevent="-L${LOCALBASE}/lib/" \
@@ -68,7 +70,7 @@ BUILD_DEPENDS+=	asciidoc:textproc/asciidoc
 CONFIGURE_ARGS+=	--disable-asciidoc
 .endif
 
-.if !defined(USE_GCC) && empty(CC:T:M*gcc4*) && \
+.if !defined(USE_GCC) && \
 empty(PORT_OPTIONS:MSTATIC_TOR)
 CONFIGURE_ARGS+=	--enable-gcc-hardening
 .else

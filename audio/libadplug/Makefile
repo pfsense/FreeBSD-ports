@@ -1,6 +1,7 @@
 PORTNAME=	adplug
-PORTVERSION=	2.3.3
 DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	2.3.3
+PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMEPREFIX=	lib
 
@@ -14,13 +15,13 @@ LIB_DEPENDS=	libbinio.so:devel/libbinio
 
 USES=		autoreconf compiler:c++11-lang cpe libtool makeinfo pathfix \
 		pkgconfig
+CPE_VENDOR=	adplug_project
 USE_CSTD=	gnu89
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
-CPE_VENDOR=	adplug_project
-
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=	--enable-maintainer-mode
 
 INSTALL_TARGET=	install-strip

@@ -1,10 +1,10 @@
 PORTNAME=	gokart
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	security
 
-MAINTAINER=	nulldutra@proton.me
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Go Security Static Analysis
 WWW=		https://github.com/praetorian-inc/gokart
 

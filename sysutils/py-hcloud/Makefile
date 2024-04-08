@@ -1,5 +1,5 @@
 PORTNAME=	hcloud
-DISTVERSION=	1.33.2
+DISTVERSION=	1.35.0
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,7 +24,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>=7.4:devel/py-coverage@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}types-requests>=0:devel/py-types-requests@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python:3.8+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517 pytest
 
 .include <bsd.port.mk>

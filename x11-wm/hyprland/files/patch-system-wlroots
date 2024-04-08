@@ -8,7 +8,7 @@ Allow system wlroots to reduce maintenance (wlroots has tons of options)
  
 -wlroots = subproject('wlroots', default_options: ['examples=false', 'renderers=gles2'])
 -have_xwlr = wlroots.get_variable('features').get('xwayland')
-+wlroots = dependency('wlroots', version: ['>=0.17.0', '<0.18.0'], default_options: ['examples=false', 'renderers=gles2'])
++wlroots = dependency('wlroots', version: ['>=0.18.0', '<0.19.0'], default_options: ['examples=false', 'renderers=gles2'])
 +have_xwlr = wlroots.get_variable(pkgconfig: 'have_xwayland', internal: 'have_xwayland') == 'true'
  xcb_dep = dependency('xcb', required: get_option('xwayland'))
  
@@ -24,3 +24,24 @@ Allow system wlroots to reduce maintenance (wlroots has tons of options)
      dependency('cairo'),
      dependency('libdrm'),
      dependency('egl'),
+--- hyprpm/src/core/PluginManager.cpp.orig	2024-02-05 01:59:02 UTC
++++ hyprpm/src/core/PluginManager.cpp
+@@ -285,9 +285,6 @@ eHeadersErrors CPluginManager::headersValid() {
+ eHeadersErrors CPluginManager::headersValid() {
+     const auto HLVER = getHyprlandVersion();
+ 
+-    if (!std::filesystem::exists(DataState::getHeadersPath() + "/share/pkgconfig/hyprland.pc"))
+-        return HEADERS_MISSING;
+-
+     // find headers commit
+     std::string cmd     = std::format("PKG_CONFIG_PATH=\"{}/share/pkgconfig\" pkg-config --cflags --keep-system-cflags hyprland", DataState::getHeadersPath());
+     auto        headers = execAndGet(cmd.c_str());
+@@ -307,7 +304,7 @@ eHeadersErrors CPluginManager::headersValid() {
+         else
+             headers = "";
+ 
+-        if (PATH.ends_with("protocols") || PATH.ends_with("wlroots"))
++        if (PATH.ends_with("protocols") || PATH.contains("wlroots"))
+             continue;
+ 
+         verHeader = removeBeginEndSpacesTabs(PATH.substr(2)) + "/hyprland/src/version.h";

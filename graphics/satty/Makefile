@@ -1,6 +1,6 @@
 PORTNAME=	satty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.3
+DISTVERSION=	0.12.0
 CATEGORIES=	graphics wayland
 MASTER_SITES=	CRATESIO
 
@@ -10,11 +10,14 @@ WWW=		https://github.com/gabm/Satty
 
 LICENSE=	MPL20
 
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
+
 USES=		cargo desktop-file-utils gnome
 USE_GITHUB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk40 libadwaita
+USE_GNOME=	gdkpixbuf2 gtk40 libadwaita
 GH_ACCOUNT=	gabm
 GH_PROJECT=	Satty
+CARGO_ENV=	SOURCE_DIR="${WRKSRC}"
 PLIST_FILES=	bin/${PORTNAME} \
 		share/applications/${PORTNAME}.desktop \
 		share/icons/hicolor/scalable/apps/${PORTNAME}.svg

@@ -1,6 +1,5 @@
 PORTNAME=	fpc
-PORTVERSION=	3.3.1.20240103
-PORTREVISION=	2
+PORTVERSION=	3.3.1.20240323
 CATEGORIES=	lang
 MASTER_SITES=	LOCAL/acm/freepascal/:bootstrap \
 		LOCAL/acm/freepascal/:man
@@ -29,7 +28,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.com/freepascal.org
 GL_ACCOUNT=	fpc
 GL_PROJECT=	source
-GL_TAGNAME=	f86a9bd5c026c7a10a165a8225bcf83e17c47b25
+GL_TAGNAME=	cf6b38c35fe0295adb97500fd3a17d693bac6dba
 
 FPCSRCDIR=	source-${GL_TAGNAME}
 
@@ -93,6 +92,7 @@ post-patch:
 	@${REINPLACE_CMD} -i "" -e 's|900044|${OSVERSION}|g' \
 				-e 's|1201000|${OSVERSION}|g' \
 				-e 's|1200000|${OSVERSION}|g' \
+				-e 's|1400097|${OSVERSION}|g' \
 		${WRKSRC}/rtl/freebsd/${FPC_ARCH}/*.as \
 		${WRKSRC}/rtl/freebsd/${FPC_ARCH}/*.inc
 .else
@@ -168,8 +168,8 @@ do-install:
 		${MAKE_CMD} install ${MAKE_ARGS} ${BOOTPPC})
 
 	# Installing manpages
-	${INSTALL_MAN} ${WRKDIR}/man/man1/* ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKDIR}/man/man5/* ${STAGEDIR}${MAN1PREFIX}/man/man5
+	${INSTALL_MAN} ${WRKDIR}/man/man1/* ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKDIR}/man/man5/* ${STAGEDIR}${PREFIX}/share/man/man5
 	# symlinking compiler
 	(cd ${STAGEDIR}${PREFIX}/bin && ${LN} -sf ../lib/fpc/${FPCBASEVER}/${PPNAME})
 	# creating sample configuration file

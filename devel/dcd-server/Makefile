@@ -1,7 +1,7 @@
 PORTNAME=	dcd
 PORTVERSION=	0.13.6
 DISTVERSIONPREFIX=	v
-PORTREVISION?=	3
+PORTREVISION?=	4
 CATEGORIES?=	devel
 PKGNAMESUFFIX?=	-server
 
@@ -10,6 +10,8 @@ COMMENT?=	Auto-complete program for the D programming language (server)
 WWW=		https://github.com/dlang-community/DCD
 
 LICENSE=	BSL
+
+BROKEN=		none of the overloads of `fatalHandler` are callable using a `shared` object
 
 BUILD_DEPENDS=	ldmd2:lang/ldc \
 		dub:devel/dub \
@@ -45,7 +47,7 @@ do-build:
 do-install:
 	@${MKDIR} ${STAGEDIR}/${D_INCLUDE_DIR}/dcd/${PKGNAMESUFFIX:S/-//}
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/dcd${PKGNAMESUFFIX} ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/man1/dcd${PKGNAMESUFFIX}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man1/dcd${PKGNAMESUFFIX}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	cd ${WRKSRC}/src/dcd/${PKGNAMESUFFIX:S/-//} && ${COPYTREE_SHARE} . ${STAGEDIR}${D_INCLUDE_DIR}/dcd/${PKGNAMESUFFIX:S/-//} "-name *\.d"
 .if ${PKGNAMESUFFIX} == "-server"
 	@${MKDIR} ${STAGEDIR}/${D_LIB_DIR}

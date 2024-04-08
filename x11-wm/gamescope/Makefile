@@ -15,13 +15,13 @@ WWW=		https://github.com/ValveSoftware/gamescope
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
+BUILD_DEPENDS=	cmake:devel/cmake-core \
+		evdev-proto>0:devel/evdev-proto \
 		glslangValidator:graphics/glslang \
 		vulkan-headers>0:graphics/vulkan-headers \
 		wayland-protocols>=1.17:graphics/wayland-protocols \
 		glm>0:math/glm \
-		hwdata>0:misc/hwdata \
-		wlroots>=0.17.0<0.18.0:x11-toolkits/wlroots
+		hwdata>0:misc/hwdata
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libliftoff.so:graphics/libliftoff \
 		libvulkan.so:graphics/vulkan-loader \
@@ -47,6 +47,8 @@ MESON_ARCH_FAMILY=	${ARCH:S/amd/x86_/:S/i3/x/:C/v[67]//:S/power/p/:S/le$//}
 PLIST_FILES=	bin/${PORTNAME} \
 		lib/libVkLayer_FROG_${PORTNAME}_wsi_${MESON_ARCH_FAMILY}.so \
 		share/vulkan/implicit_layer.d/VkLayer_FROG_${PORTNAME}_wsi.${MESON_ARCH_FAMILY}.json
+
+CXXFLAGS+=	-DGLM_ENABLE_EXPERIMENTAL  # GLM_GTX_string_cast is an experimental extension
 
 # https://github.com/freebsd/drm-kmod/issues/271
 PORTSCOUT=	ignore:1
@@ -74,7 +76,7 @@ post-configure:
 		--skip-subprojects/' ${BUILD_WRKSRC}/build.ninja
 .endif
 
-# XXX Drop after FreeBSD 13.2 EOL around 2024-05-01 (don't forget distinfo)
+# XXX Drop after FreeBSD 13.2 EOL around 2024-07-01 (don't forget distinfo)
 .if ${CXX} == c++ && exists(/usr/lib/libc++.so)
 .if !exists(/usr/include/c++/v1/__ranges/as_rvalue_view.h) || make(makesum) || make(fetch)
 BUILD_DEPENDS+=	${CMAKE_BIN}:devel/cmake-core
@@ -87,6 +89,7 @@ CMAKE_BIN=	${LOCALBASE}/bin/cmake
 GH_TUPLE+=	llvm:llvm-project:llvmorg-16.0.1:libcxx
 CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx_prefix/include/c++/v1
 # Don't link against new libc++ as it's not necessary
+CXXFLAGS+=	-D_LIBCPP_HAS_NO_VERBOSE_ABORT_IN_LIBRARY
 #LDFLAGS+=	-nostdlib++ -L${WRKDIR}/libcxx_prefix/lib -l:libc++.a -lcxxrt
 
 pre-configure:	bundled-libcxx

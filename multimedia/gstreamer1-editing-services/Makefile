@@ -1,5 +1,6 @@
 PORTNAME=	gstreamer1-editing-services
 PORTVERSION=	${_GST_VERSION}
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://gstreamer.freedesktop.org/src/gstreamer-editing-services/
 DISTNAME=	gst-editing-services-${PORTVERSION}
@@ -19,7 +20,7 @@ PORTSCOUT=	limitw:1,even
 CONFIGURE_ARGS=	-Ddoc=disabled \
 		-Dvalidate=disabled \
 		-Dpygi-overrides-dir=${PYTHON_SITELIBDIR}/gstreamer-editing-services
-PLIST_SUB=	VERSION=1.0 SOVERSION=0.2205.0
+PLIST_SUB=	VERSION=1.0 SOVERSION=0.2210.0
 
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 

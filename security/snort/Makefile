@@ -28,6 +28,7 @@ USE_LDCONFIG=		yes
 SUB_FILES=		pkg-message
 SHEBANG_FILES=		tools/appid_detector_builder.sh
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 MAKE_JOBS_UNSAFE=	yes
 
 RULES_DIR=		${ETCDIR}/rules

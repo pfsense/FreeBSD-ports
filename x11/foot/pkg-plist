@@ -1,10 +1,10 @@
 bin/foot
 bin/footclient
 @sample etc/xdg/foot/foot.ini.sample
-%%PORTDOCS%%man/man1/foot.1.gz
-%%PORTDOCS%%man/man1/footclient.1.gz
-%%PORTDOCS%%man/man5/foot.ini.5.gz
-%%PORTDOCS%%man/man7/foot-ctlseqs.7.gz
+%%PORTDOCS%%share/man/man1/foot.1.gz
+%%PORTDOCS%%share/man/man1/footclient.1.gz
+%%PORTDOCS%%share/man/man5/foot.ini.5.gz
+%%PORTDOCS%%share/man/man7/foot-ctlseqs.7.gz
 share/applications/org.codeberg.dnkl.foot-server.desktop
 share/applications/org.codeberg.dnkl.foot.desktop
 share/applications/org.codeberg.dnkl.footclient.desktop
@@ -23,6 +23,7 @@ share/fish/vendor_completions.d/footclient.fish
 %%DATADIR%%/themes/derp
 %%DATADIR%%/themes/deus
 %%DATADIR%%/themes/dracula
+%%DATADIR%%/themes/electrophoretic
 %%DATADIR%%/themes/gruvbox-dark
 %%DATADIR%%/themes/gruvbox-light
 %%DATADIR%%/themes/hacktober
@@ -34,6 +35,7 @@ share/fish/vendor_completions.d/footclient.fish
 %%DATADIR%%/themes/modus-vivendi
 %%DATADIR%%/themes/monokai-pro
 %%DATADIR%%/themes/moonfly
+%%DATADIR%%/themes/neon
 %%DATADIR%%/themes/nightfly
 %%DATADIR%%/themes/nord
 %%DATADIR%%/themes/nordiq
@@ -41,6 +43,7 @@ share/fish/vendor_completions.d/footclient.fish
 %%DATADIR%%/themes/panda
 %%DATADIR%%/themes/paper-color-dark
 %%DATADIR%%/themes/paper-color-light
+%%DATADIR%%/themes/poimandres
 %%DATADIR%%/themes/rezza
 %%DATADIR%%/themes/rose-pine
 %%DATADIR%%/themes/selenized-black

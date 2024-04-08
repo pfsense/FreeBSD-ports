@@ -1,17 +1,21 @@
 PORTNAME=	toot
-DISTVERSION=	0.28.0
+DISTVERSION=	0.41.1
 CATEGORIES=	net-im python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	ports@freebsd.org
 COMMENT=	Interact with the Mastodon social network from the command line
 WWW=		https://github.com/ihabunek/toot
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		does not run with current devel/py-urwid (PR 274411)
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.5.0:www/py-beautifulsoup@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}click>=8.1:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.13:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tomlkit>=0.10.0:textproc/py-tomlkit@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wcwidth>=0.1.7:devel/py-wcwidth@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urwid>=2.0.0:devel/py-urwid@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.5.0:www/py-beautifulsoup@${PY_FLAVOR} \

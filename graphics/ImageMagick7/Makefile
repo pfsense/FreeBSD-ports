@@ -1,6 +1,6 @@
 PORTNAME=	ImageMagick
-DISTVERSION=	7.1.0-62
-PORTREVISION=	9
+DISTVERSION=	7.1.1-26
+PORTREVISION=	3
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://ftp.acc.umu.se/mirror/imagemagick.org/ftp/releases/ \
 		https://mirror.dogado.de/imagemagick/releases/ \
@@ -17,7 +17,9 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl	\
+		libzstd.so:archivers/zstd	\
 		libzip.so:archivers/libzip
+TEST_DEPENDS=	gsfonts>=0:print/gsfonts
 
 FLAVORS=		x11 nox11
 FLAVOR?=		${FLAVORS:[1]}
@@ -35,10 +37,10 @@ CPE_PRODUCT=	imagemagick
 CPE_VENDOR=	imagemagick
 SHEBANG_FILES=	www/source/examples.pl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	MAKE=${MAKE_CMD}
 CONFIGURE_ARGS=	--without-dps \
-		--without-flif \
-		--without-zstd
+		--with-zstd
 USE_LDCONFIG=	yes
 USE_GNOME=	libxml2
 
@@ -49,12 +51,14 @@ SAMPLE_FILES=	colors.xml delegates.xml log.xml mime.xml policy.xml \
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
+TEST_TARGET=	check
+
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFMPEG FFTW FONTCONFIG FPX FREETYPE \
+OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFMPEG FFTW FLIF FONTCONFIG FPX FREETYPE \
 		GRAPHVIZ GSLIB JPEG2000 JBIG JPEG JXL LCMS2 LZMA LQR MODULES \
-		OPENEXR OPENMP PDF PERL PNG TESTS TIFF WEBP WMF THREADS \
+		OPENEXR OPENMP PDF PERL PNG TIFF WEBP WMF THREADS \
 		16BIT_PIXEL HDRI HEIF RAW
-OPTIONS_DEFAULT=	16BIT_PIXEL BZIP2 FFTW FONTCONFIG FREETYPE HEIF \
+OPTIONS_DEFAULT=16BIT_PIXEL BZIP2 FFTW FONTCONFIG FREETYPE HEIF \
 		JPEG2000 JBIG JPEG JXL LCMS2 LZMA LQR MODULES OPENEXR PDF PERL PNG \
 		TIFF WEBP WMF THREADS HDRI RAW
 
@@ -72,7 +76,7 @@ CONFIGURE_ARGS+=	--without-x
 DJVU_DESC=		DJVU format support (needs THREADS)
 GSLIB_DESC=		libgs (Postscript SHLIB) support
 FFMPEG_DESC=		VIDEO codec support as FFmpeg
-TESTS_DESC=		Run bundled self-tests after build
+FLIF_DESC=		Free Lossless Image Format support
 #SIMD_CONFIGURE_WITH=	gcc-arch
 CONFIGURE_ARGS+=	--without-gcc-arch
 
@@ -94,6 +98,9 @@ FONTCONFIG_LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig
 
 FREETYPE_CONFIGURE_WITH=	freetype
 FREETYPE_LIB_DEPENDS=		libfreetype.so:print/freetype2
+
+FLIF_CONFIGURE_WITH=	flif
+FLIF_LIB_DEPENDS=	libflif.so:graphics/flif
 
 # FPX (FlashPIX) images
 FPX_CONFIGURE_WITH=	fpx
@@ -162,8 +169,6 @@ RAW_IMPLIES=		LCMS2
 SVG_DESC=		SVG vector image format support (via librsvg, implies the x11 option)
 SVG_CONFIGURE_WITH=	rsvg
 SVG_USE=		gnome=cairo,gdkpixbuf2,librsvg2
-
-TESTS_TEST_DEPENDS=	gsfonts>=0:print/gsfonts
 
 TIFF_CONFIGURE_WITH=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
@@ -329,6 +334,7 @@ post-patch:
 		${WRKSRC}/MagickCore/ImageMagick.pc.in \
 		${WRKSRC}/MagickWand/MagickWand-config.in \
 		${WRKSRC}/MagickWand/MagickWand.pc.in
+	@${REINPLACE_CMD} -e '/^export PKG_CONFIG_LIBDIR/d' ${WRKSRC}/MagickWand/MagickWand-config.in
 
 pre-configure:
 .if defined(_IMAGEMAGICK_THREADS_PERL_MSG)
@@ -342,10 +348,5 @@ post-install:
 	@${MV} ${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i} \
 		${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i}.sample
 .endfor
-
-post-install-TESTS-on: test
-
-do-test:
-	-cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} limits -m 20m ${MAKE} ${_MAKE_JOBS} check
 
 .include <bsd.port.mk>

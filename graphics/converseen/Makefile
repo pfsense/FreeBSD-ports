@@ -1,6 +1,6 @@
 PORTNAME=	converseen
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.0.1
+DISTVERSION=	0.12.2.1
 CATEGORIES=	graphics
 
 MAINTAINER=	fernape@FreeBSD.org
@@ -8,7 +8,7 @@ COMMENT=	Easy to use graphics conversion utility
 WWW=		https://converseen.sourceforge.net/
 
 LICENSE=	GPLv3+
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 FLAVORS=	qt5 qt6
 

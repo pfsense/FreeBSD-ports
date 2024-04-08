@@ -1,7 +1,6 @@
 PORTNAME=	glab
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.35.0
-PORTREVISION=	1
+DISTVERSION=	1.38.0
 CATEGORIES=	devel
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	git:devel/git
 
-USES=		go:modules
+USES=		go:1.21,modules
 
 _BUILD_VERSION=		${DISTVERSION}
 _BUILD_PLATFORM=	${OPSYS:tl}
@@ -51,6 +50,6 @@ post-install-DOCS-on:
 
 post-install-MANPAGES-on:
 	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} run \
-		./cmd/gen-docs --manpage --path ${STAGEDIR}${MAN1PREFIX}/man/man1)
+		./cmd/gen-docs --manpage --path ${STAGEDIR}${PREFIX}/share/man/man1)
 
 .include <bsd.port.mk>

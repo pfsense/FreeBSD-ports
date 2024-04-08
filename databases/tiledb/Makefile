@@ -1,6 +1,5 @@
 PORTNAME=	tiledb
-PORTVERSION=	2.19.0
-PORTREVISION=	1
+PORTVERSION=	2.21.1
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -28,9 +27,10 @@ RUN_DEPENDS=	capnproto1>=1.0.1:devel/capnproto1 \
 USES=		cmake compiler:c++17-lang localbase:ldflags pkgconfig ssl
 
 CFLAGS+=	-DSPDLOG_FMT_EXTERNAL=1
-CFLAGS_armv6+=	-Wno-c++11-narrowing
-CFLAGS_armv7+=	-Wno-c++11-narrowing
-CFLAGS_i386+=	-Wno-c++11-narrowing
+CFLAGS_armv6=	-Wno-c++11-narrowing
+CFLAGS_armv7=	-Wno-c++11-narrowing
+CFLAGS_i386=	-Wno-c++11-narrowing
+CFLAGS_powerpc=	-Wno-c++11-narrowing
 CMAKE_ARGS=	-DCATCH_INCLUDE_DIR=${LOCALBASE}/include/catch2 \
 		-DFREEBSD_OPENSSLBASE=${OPENSSLBASE} \
 		-Dlibmagic_DICTIONARY=/usr/share/misc/magic.mgc
@@ -59,7 +59,6 @@ CMAKE_ON=	CMAKE_EXPORT_COMPILE_COMMANDS \
 		TILEDB_CPP_API \
 		TILEDB_LOG_OUTPUT_ON_FAILURE \
 		TILEDB_SERIALIZATION \
-		TILEDB_STATIC \
 		TILEDB_STATS \
 		TILEDB_TOOLS
 LDFLAGS+=	-lfmt
@@ -69,7 +68,6 @@ GH_PROJECT=	TileDB
 USE_GITHUB=	yes
 
 OPTIONS_DEFINE=	AVX2
-OPTIONS_DEFAULT=AVX2
 AVX2_DESC=	AVX2 instructions support
 
 AVX2_CMAKE_BOOL=	COMPILER_SUPPORTS_AVX2

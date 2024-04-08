@@ -1,12 +1,7 @@
-%%MANPAGES%%man/man7/ecm-developer.7.gz
-%%MANPAGES%%man/man7/ecm-find-modules.7.gz
-%%MANPAGES%%man/man7/ecm-kde-modules.7.gz
-%%MANPAGES%%man/man7/ecm-modules.7.gz
-%%MANPAGES%%man/man7/ecm-toolchains.7.gz
-%%MANPAGES%%man/man7/ecm.7.gz
 share/ECM/cmake/ECMConfig.cmake
 share/ECM/cmake/ECMConfigVersion.cmake
 share/ECM/find-modules/ECMFindModuleHelpersStub.cmake
+share/ECM/find-modules/Find7Zip.cmake
 share/ECM/find-modules/Find7z.cmake
 share/ECM/find-modules/FindCanberra.cmake
 share/ECM/find-modules/FindEGL.cmake
@@ -126,3 +121,9 @@ share/ECM/toolchain/generate-fastlane-metadata.py
 share/ECM/toolchain/hasMainSymbol.cmake
 share/ECM/toolchain/specifydependencies.cmake
 %%HELP%%%%DOCSDIR%%/ExtraCMakeModules.qch
+%%MANPAGES%%share/man/man7/ecm-developer.7.gz
+%%MANPAGES%%share/man/man7/ecm-find-modules.7.gz
+%%MANPAGES%%share/man/man7/ecm-kde-modules.7.gz
+%%MANPAGES%%share/man/man7/ecm-modules.7.gz
+%%MANPAGES%%share/man/man7/ecm-toolchains.7.gz
+%%MANPAGES%%share/man/man7/ecm.7.gz

@@ -1,7 +1,6 @@
 PORTNAME=	dust
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.6
-PORTREVISION=	5
+DISTVERSION=	1.0.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -19,7 +18,7 @@ OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/dust
-	${INSTALL_MAN}  ${WRKSRC}/man-page/dust.1       ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN}  ${WRKSRC}/man-page/dust.1       ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/completions/dust.bash ${STAGEDIR}${PREFIX}/share/bash-completion/completions/dust
 	${INSTALL_DATA} ${WRKSRC}/completions/dust.fish ${STAGEDIR}${PREFIX}/share/fish/vendor_completions.d
 	${INSTALL_DATA} ${WRKSRC}/completions/_dust     ${STAGEDIR}${PREFIX}/share/zsh/site-functions

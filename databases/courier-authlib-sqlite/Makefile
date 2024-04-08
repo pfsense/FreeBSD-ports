@@ -1,4 +1,3 @@
-PORTREVISION=	0
 PKGNAMESUFFIX=	-sqlite
 
 COMMENT=	SQLite support for the Courier authentication library

@@ -1,7 +1,7 @@
 PORTNAME=	git-bug
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -40,6 +40,6 @@ post-install-COMPLETIONS-on:
 .endfor
 
 post-install-MANPAGES-on:
-	${INSTALL_MAN} ${WRKSRC}/doc/man/*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

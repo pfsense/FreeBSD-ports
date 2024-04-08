@@ -19,6 +19,7 @@ USES=		compiler:c11 cpe ncurses pathfix pkgconfig \
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 python_CMD=	${PREFIX}/bin/python${PYTHON_DISTVERSION:R}
 SHEBANG_FILES=	Lib/*.py Lib/*/*.py Lib/*/*/*.py Lib/*/*/*/*.py
 SHEBANG_FILES+=	Lib/test/ziptestdata/exe_with_z64 \
@@ -107,6 +108,15 @@ EXTRA_PATCHES+=	${PATCHDIR}/libressl
 CONFIGURE_ENV+=	ac_cv_working_openssl_hashlib=yes
 .endif
 
+.include <bsd.port.pre.mk>
+
+# llvm17 with -flto=thin makes Programs/_freeze_module crash on armv7; workaround
+# cf. https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276249
+.if ${ARCH} == armv7 && ${CHOSEN_COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 170 && \
+	${COMPILER_VERSION} < 180
+CONFIGURE_ARGS:=	${CONFIGURE_ARGS:N${LTO_CONFIGURE_ON}}
+.endif
+
 post-patch:
 # disable the detection of includes and library from e2fsprogs-libuuid,
 # which introduces hidden dependency and breaks build
@@ -148,4 +158,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/Tools/gdb/libpython.py \
 		${STAGEDIR}${PREFIX}/lib/libpython${PYTHON_VER}${ABIFLAGS}.so.1.0-gdb.py
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

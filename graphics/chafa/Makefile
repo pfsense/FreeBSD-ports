@@ -1,6 +1,5 @@
 PORTNAME=	chafa
-PORTVERSION=	1.12.5
-PORTREVISION=	3
+PORTVERSION=	1.14.0
 CATEGORIES=	graphics
 MASTER_SITES=	https://hpjansson.org/chafa/releases/ \
 		https://github.com/hpjansson/chafa/releases/download/${PORTVERSION}/
@@ -34,6 +33,6 @@ OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/docs/${PORTNAME}.1 \
-		${STAGEDIR}${MANPREFIX}/share/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

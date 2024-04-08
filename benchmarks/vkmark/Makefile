@@ -1,5 +1,6 @@
 PORTNAME=	vkmark
 DISTVERSION=	2017.08-36
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-gab6e6f3
 CATEGORIES=	benchmarks
 
@@ -13,7 +14,8 @@ WWW=		https://github.com/vkmark/vkmark
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING-LGPL2.1
 
-BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers \
+BUILD_DEPENDS=	cmake:devel/cmake-core \
+		vulkan-headers>0:graphics/vulkan-headers \
 		glm>0:math/glm
 LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
 		libassimp.so:multimedia/assimp

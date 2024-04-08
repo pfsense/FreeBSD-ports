@@ -1,6 +1,6 @@
 PORTNAME=	spread
 PORTVERSION=	3.17.4
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net perl5
 MASTER_SITES=	https://BSDforge.com/projects/source/net/spread/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -13,8 +13,6 @@ LICENSE=	SPREAD_OPEN-SOURCE_LICENSE
 LICENSE_NAME=	Spread Open-Source License
 LICENSE_FILE=	files/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-
-BROKEN=		Unfetchable
 
 USES=		groff perl5 tar:xz
 USE_LDCONFIG=	yes
@@ -49,6 +47,8 @@ OPTIONS_DEFINE=	DOCS
 # bsd.port.mk doesn't allow us to use GNU_CONFIGURE and PERL_CONFIGURE together.
 PERL_CONFIGURE_ARGS=	CC="${CC}" CCFLAGS="${CFLAGS}" PREFIX="${PREFIX}" \
 			INSTALLPRIVLIB="${PREFIX}/lib" INSTALLARCHLIB="${PREFIX}/lib"
+# but works for MANPREFIX
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 .include <bsd.port.options.mk>
 

@@ -15,7 +15,6 @@
     SUBDIR += bug5
     SUBDIR += c2t
     SUBDIR += cconv
-    SUBDIR += celvis
     SUBDIR += chiconv
     SUBDIR += chinese-calendar
     SUBDIR += cless
@@ -93,7 +92,6 @@
     SUBDIR += p5-Text-Greeking-zh_TW
     SUBDIR += pcmanx
     SUBDIR += php-opencc
-    SUBDIR += phpbb-tw
     SUBDIR += phpbb3-tw
     SUBDIR += pycangjie
     SUBDIR += pyzy

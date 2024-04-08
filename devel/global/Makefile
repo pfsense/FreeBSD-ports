@@ -1,5 +1,5 @@
 PORTNAME=	global
-PORTVERSION=	6.6.11
+PORTVERSION=	6.6.12
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -16,6 +16,7 @@ CONFIGURE_ARGS=	--with-exuberant-ctags=${LOCALBASE}/bin/exctags \
 		--with-python-interpreter=${LOCALBASE}/bin/python${PYTHON_DEFAULT} \
 		--with-universal-ctags=${LOCALBASE}/bin/uctags
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 USE_CSTD=	c99

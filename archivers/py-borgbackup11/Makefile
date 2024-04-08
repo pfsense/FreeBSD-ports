@@ -13,7 +13,7 @@ WWW=		https://pypi.org/project/borgbackup/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=1.7:devel/py-setuptools_scm@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-scm>=1.7:devel/py-setuptools-scm@${PY_FLAVOR}
 LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
 		libzstd.so:archivers/zstd \
 		libxxhash.so:devel/xxhash
@@ -37,8 +37,8 @@ FUSE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}llfuse>0:devel/py-llfuse@${PY_FLAVOR}
 _BORGHOME=${WRKDIR}/testhome
 _BORGENV=BORG_PASSPHRASE=secret123 PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR} HOME=${_BORGHOME}
 post-install:
-	${MKDIR} ${STAGEDIR}${MAN1PREFIX}/share/man/man1/
-	${INSTALL_MAN} ${WRKSRC}/docs/man/* ${STAGEDIR}${MAN1PREFIX}/share/man/man1/
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/docs/man/* ${STAGEDIR}${PREFIX}/share/man/man1/
 	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/borg/ -name "*.so" \
 		-exec ${STRIP_CMD} {} \;
 	@${ECHO_MSG} "----> running borg smoke tests"

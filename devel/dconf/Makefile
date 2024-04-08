@@ -1,6 +1,6 @@
 PORTNAME=	dconf
 PORTVERSION=	0.40.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DISTNAME=	dconf-${PORTVERSION}
@@ -32,6 +32,8 @@ BINARY_ALIAS=	python3=${PYTHON_VERSION}
 MESON_ARGS=	-Dman=true \
 		-Dgtk_doc=false \
 		-Dvapi=true
+
+TESTING_UNSAFE=	some tests fail
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/dconf/db

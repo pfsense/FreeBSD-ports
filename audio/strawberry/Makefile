@@ -1,5 +1,5 @@
 PORTNAME=	strawberry
-DISTVERSION=	1.0.22
+DISTVERSION=	1.0.23
 PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/strawberrymusicplayer/${PORTNAME}/releases/download/${DISTVERSION}/ \
@@ -14,7 +14,8 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
-LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
+LIB_DEPENDS=	libabsl_base.so:devel/abseil \
+		libprotobuf.so:devel/protobuf \
 		libtag.so:audio/taglib
 
 FLAVORS=		qt6 qt5
@@ -38,8 +39,6 @@ USE_XORG=	ice sm x11 xcb xext
 CMAKE_ON=	BUILD_WITH_${FLAVOR:tu}
 CMAKE_OFF=	ENABLE_UDISKS2
 
-SUB_FILES=	pkg-message
-
 OPTIONS_MULTI=		BACKEND SOUND
 OPTIONS_MULTI_BACKEND=	GSTREAMER VLC
 OPTIONS_MULTI_SOUND=	ALSA PULSEAUDIO
@@ -59,6 +58,7 @@ ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CMAKE_BOOL=	ENABLE_ALSA
 
 CDIO_LIB_DEPENDS=	libcdio.so:sysutils/libcdio
+CDIO_USE=		GSTREAMER=cdparanoia
 CDIO_CMAKE_BOOL=	ENABLE_AUDIOCD
 CDIO_IMPLIES=		GSTREAMER
 
@@ -68,6 +68,7 @@ EBUR128_CMAKE_BOOL=	ENABLE_EBUR128
 EBUR128_IMPLIES=	GSTREAMER
 
 GSTREAMER_USES=		gstreamer
+GSTREAMER_USE=		GSTREAMER=faac,faad,flac,lame,libav,mpg123,opus,taglib,vorbis
 GSTREAMER_CMAKE_BOOL=	ENABLE_GSTREAMER
 
 ICONV_USES=		iconv:translit

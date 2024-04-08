@@ -1,10 +1,14 @@
 PORTNAME=		krb5
 PORTVERSION=		1.19.4
+PORTREVISION=		2
 CATEGORIES=		security
 MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-9]*\.[0-9]*/&X/:C/X\.[0-9]*$//:C/X//}/
 .if !defined(MASTERDIR)
-PKGNAMESUFFIX=		-119
+PKGNAME_X=		-${FLAVOR:S/default//}-119
+.else
+PKGNAME_X=		-${FLAVOR:S/default//}
 .endif
+PKGNAMESUFFIX=		${PKGNAME_X:S/--/-/:C/-$//}
 
 DEPRECATED=		Desupported by MIT following 1.21
 EXPIRATION_DATE=	2024-06-06
@@ -35,12 +39,15 @@ USE_PERL5=		build
 GNU_CONFIGURE=		yes
 CONFIGURE_ARGS?=	--enable-shared --without-system-verto \
 			--disable-rpath
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}" YACC="${YACC}"
 MAKE_ARGS=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}"
 
 CPE_VENDOR=		mit
 CPE_VERSION=		5-${PORTVERSION}
 CPE_PRODUCT=		kerberos
+
+FLAVORS=		default ldap
 
 OPTIONS_DEFINE=		EXAMPLES NLS KRB5_PDF KRB5_HTML DNS_FOR_REALM LDAP LMDB
 OPTIONS_DEFAULT=	KRB5_PDF KRB5_HTML READLINE
@@ -66,6 +73,10 @@ LIBEDIT_USES=		libedit
 LIBEDIT_CONFIGURE_WITH=	libedit
 LIBEDIT_BASE_CONFIGURE_WITH=	libedit
 LIBEDIT_BASE_DESC=	Use libedit in FreeBSD base
+
+.if ${FLAVOR:U} == ldap
+OPTIONS_DEFAULT+=	LDAP LMDB
+.endif
 
 .if defined(KRB5_HOME)
 PREFIX=			${KRB5_HOME}
@@ -118,8 +129,6 @@ PDF_DOC_DIR=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/doc/pdf
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/krb5
-	@${SED} "s|%%PREFIX%%|${PREFIX}|" ${FILESDIR}/kdc.in > ${STAGEDIR}${PREFIX}/sbin/kdc; \
-	${CHMOD} +x ${STAGEDIR}${PREFIX}/sbin/kdc
 # html documentation
 .if ${PORT_OPTIONS:MKRB5_PDF}
 	pdf_files=`${FIND} ${PDF_DOC_DIR} ! -type d`

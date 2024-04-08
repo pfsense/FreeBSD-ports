@@ -1,5 +1,6 @@
 PORTNAME=	calcurse
 DISTVERSION=	4.8.1
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	https://calcurse.org/files/ \
 		https://fossies.org/linux/privat/
@@ -17,6 +18,7 @@ SHEBANG_FILES=	contrib/caldav/calcurse-caldav \
 		contrib/vdir/calcurse-vdir \
 		contrib/vdir/calcurse-vdir.py
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--without-asciidoc
 
 OPTIONS_DEFINE=		CALDAV DOCS NLS
@@ -39,8 +41,5 @@ NLS_CONFIGURE_ENABLE=	nls
 post-patch:
 	@${REINPLACE_CMD} -e 's|^docdir = .*|docdir = ${DOCSDIR}|' ${WRKSRC}/doc/Makefile.in
 	@${REINPLACE_CMD} -e 's|-R$$found_dir||' ${WRKSRC}/configure
-
-post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1/${PORTNAME}.1
 
 .include <bsd.port.mk>

@@ -1,13 +1,13 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-DISTVERSION=	9.18.20
+DISTVERSION=	9.18.24
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
-PORTREVISION=	1
+PORTREVISION=	0
 .else
 # dns/bind918 here
-PORTREVISION=	1
+PORTREVISION=	0
 .endif
 CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${DISTVERSION}
@@ -50,6 +50,7 @@ CPE_UPDATE=	${DISTVERSION:C/.*-//:tl}
 .endif
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-linux-caps \
 		--localstatedir=/var \
 		--sysconfdir=${ETCDIR} \
@@ -95,8 +96,8 @@ OPTIONS_SUB=	yes
 
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
-GSSAPI_BASE_DESC=	Using Heimdal in base
-GSSAPI_HEIMDAL_DESC=	Using security/heimdal
+GSSAPI_BASE_DESC=	Using Heimdal in base (nsupdate is broken)
+GSSAPI_HEIMDAL_DESC=	Using security/heimdal (nsupdate is broken)
 GSSAPI_MIT_DESC=	Using security/krb5
 GSSAPI_NONE_DESC=	Disable
 LARGE_FILE_DESC=	64-bit file support

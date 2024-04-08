@@ -1,5 +1,5 @@
 PORTNAME=	tpm2-tools
-DISTVERSION=	5.5
+DISTVERSION=	5.6
 PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/tpm2-software/tpm2-tools/releases/download/${DISTVERSION}/
@@ -17,7 +17,8 @@ LIB_DEPENDS=	libtss2-esys.so:security/tpm2-tss \
 USES=		compiler:c11 gmake libtool pkgconfig ssl
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	CRYPTO_CFLAGS="-I${OPENSSLINC}" CRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto"
-CONFIGURE_ARGS=	--disable-hardening --disable-fapi
+CONFIGURE_ARGS=	--disable-hardening
 
 .include <bsd.port.mk>

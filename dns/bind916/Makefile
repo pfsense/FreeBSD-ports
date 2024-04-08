@@ -1,7 +1,7 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-DISTVERSION=	9.16.45
+DISTVERSION=	9.16.48
 PORTREVISION=	1
 CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${DISTVERSION}
@@ -12,9 +12,8 @@ MAINTAINER=	mat@FreeBSD.org
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 WWW=		https://www.isc.org/bind/
 
-# Uncomment when bind920 comes of age.
-# DEPRECATED=	End of life, please migrate to a newer version of BIND9
-# EXPIRATION_DATE=	2023-12-31
+DEPRECATED=	End of life, please migrate to a newer version of BIND9
+EXPIRATION_DATE=	2024-04-30
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -32,6 +31,7 @@ CPE_UPDATE=	${DISTVERSION:C/.*-//:tl}
 .endif
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-linux-caps \
 		--localstatedir=/var \
 		--sysconfdir=${ETCDIR} \
@@ -79,8 +79,8 @@ DLZ_POSTGRESQL_DESC=	DLZ Postgres driver
 DLZ_STUB_DESC=		DLZ stub driver
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
-GSSAPI_BASE_DESC=	Using Heimdal in base
-GSSAPI_HEIMDAL_DESC=	Using security/heimdal
+GSSAPI_BASE_DESC=	Using Heimdal in base (nsupdate is broken)
+GSSAPI_HEIMDAL_DESC=	Using security/heimdal (nsupdate is broken)
 GSSAPI_MIT_DESC=	Using security/krb5
 GSSAPI_NONE_DESC=	Disable
 LARGE_FILE_DESC=	64-bit file support

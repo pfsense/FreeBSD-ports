@@ -1,5 +1,5 @@
 PORTNAME=	gitlab-shell
-PORTVERSION=	14.32.0
+PORTVERSION=	14.34.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -13,20 +13,18 @@ LICENSE=	MIT
 # https://gitlab.com/gitlab-org/gitlab-shell/-/merge_requests/720
 #BUILD_DEPENDS=	heimdal>=0:security/heimdal
 
-USES=		gmake go:modules,no_targets pkgconfig
+USES=		gmake go:modules,no_targets,1.22 pkgconfig
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 
-USERS=		git
-GROUPS=		git
-
-#INSTALL_TARGET=	install-strip
-ALL_TARGET=	build
-
 MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
 # make sure to pass go build options into make process
 MAKE_ENV+=	${GO_ENV}
+ALL_TARGET=	build
+
+USERS=		git
+GROUPS=		git
 
 # for go dependencies
 # Gitlab hosts there dependencies on their own platform and not on go-proxy

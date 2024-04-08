@@ -1,6 +1,6 @@
 PORTNAME=	gitaly
-DISTVERSION=	16.7.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	16.10.1
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -11,24 +11,24 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 # define dependencies that are required for build and run under MY_DEPENDS
-MY_DEPENDS=	git>=2.42.0:devel/git
+MY_DEPENDS=	git>=2.43.0:devel/git
 BUILD_DEPENDS=	bash>0:shells/bash \
 		${LOCALBASE}/bin/cmake:devel/cmake-core \
+		pcre2>0:devel/pcre2 \
+		http-parser>0:www/http-parser \
 		${MY_DEPENDS}
 RUN_DEPENDS=	${MY_DEPENDS}
-LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
-		libhttp_parser.so:www/http-parser
 
-USES=		cpe gmake go:modules,no_targets iconv pkgconfig ssl
+USES=		cpe gmake go:modules,no_targets,1.22 iconv pkgconfig ssl
 
 CPE_VENDOR=	gitlab
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	gitlab-org
 
 MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
 # make sure to pass go build options into make process
 MAKE_ENV+=	${GO_ENV}
-
-USE_GITLAB=	yes
-GL_ACCOUNT=	gitlab-org
 
 # for go dependencies
 # Gitlab hosts there dependencies on their own platform and not on go-proxy

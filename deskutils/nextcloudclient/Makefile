@@ -1,5 +1,5 @@
 PORTNAME=	nextcloudclient
-PORTVERSION=	3.11.0
+PORTVERSION=	3.12.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
@@ -23,7 +23,6 @@ USE_QT=		buildtools:build concurrent core dbus declarative graphicaleffects \
 		quickcontrols2 sql svg websockets widgets xml
 
 CMAKE_ARGS=	-DBUILD_UPDATER:BOOL=OFF \
-		-DCMAKE_INSTALL_MANDIR:STRING=man \
 		-DWITH_STACK_PROTECTOR:BOOL=OFF
 
 PLIST_SUB=	VERSION=${PORTVERSION}

@@ -1,5 +1,5 @@
 PORTNAME=	mc
-PORTVERSION=	4.8.30
+PORTVERSION=	4.8.31
 CATEGORIES=	misc shells
 MASTER_SITES=	http://ftp.midnight-commander.org/ \
 		https://ftp.osuosl.org/pub/midnightcommander/
@@ -24,9 +24,10 @@ SHEBANG_FILES=	${WRKSRC}/src/vfs/extfs/helpers/s3+.in \
 python_OLD_CMD=	@PYTHON@
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	ZIP=${LOCALBASE}/bin/zip UNZIP=${UNZIP_NATIVE_CMD}
 
-PORTDOCS=	AUTHORS FAQ HACKING MAINTAINERS NEWS README *.txt
+PORTDOCS=	AUTHORS FAQ HACKING MAINTAINERS NEWS README TODO
 
 OPTIONS_DEFINE=	ASPELL DOCS EDITOR EXTATTR ICONV NLS PCRE2 SFTP SUBSHELL X11
 OPTIONS_DEFAULT=	EDITOR ICONV SFTP SLANG SUBSHELL X11
@@ -41,8 +42,10 @@ PCRE2_DESC=	Use PCRE2 as low-level search engine
 SCREEN_DESC=	Screen library
 SFTP_DESC=	Support for SFTP (via libssh)
 SUBSHELL_DESC=	Build with subshell support
+X11_DESC=	X11 events support (if available)
 
-ASPELL_LIB_DEPENDS=	libaspell.so:textproc/aspell
+ASPELL_BUILD_DEPENDS=	${LOCALBASE}/include/aspell.h:textproc/aspell
+ASPELL_RUN_DEPENDS=	${LOCALBASE}/share/aspell/en.multi:textproc/en-aspell
 ASPELL_CONFIGURE_ENABLE=aspell
 
 EDITOR_CONFIGURE_WITH=	internal-edit
@@ -71,18 +74,13 @@ SLANG_CONFIGURE_ON=	--with-screen=slang
 SUBSHELL_CONFIGURE_WITH=subshell
 SUBSHELL_SUB_FILES=	pkg-message
 
+X11_BUILD_DEPENDS=	${LOCALBASE}/include/X11/Xlib.h:x11/libX11
 X11_CONFIGURE_WITH=	x
-X11_USES=		xorg
-X11_USE=		xorg=x11,xext
-X11_VARS=		CONFLICTS_INSTALL=mc-nox11
-X11_VARS_OFF=		CONFLICTS_INSTALL=mc PKGNAMESUFFIX=-nox11
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|clang\*)|*)|' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|x$$UNRAR_VERSION.*x|$$UNRAR_VERSION -ge |' \
 		${WRKSRC}/src/vfs/extfs/helpers/urar.in
-	@${REINPLACE_CMD} -e '/^AM_CPPFLAGS = /s|CFLAGS)|& $$(E2P_&|' \
-		${WRKSRC}/src/vfs/local/Makefile.in
 
 post-patch-EXTATTR-off:
 	@${REINPLACE_CMD} -e '/found_e2p=/s|yes|disabled|; /e2p library/ \

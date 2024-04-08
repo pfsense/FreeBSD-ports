@@ -41,10 +41,10 @@ include/appstream/as-version.h
 include/appstream/as-video.h
 lib/girepository-1.0/AppStream-1.0.typelib
 lib/libappstream.so
-lib/libappstream.so.1.0.0
+lib/libappstream.so.1.0.1
 lib/libappstream.so.5
 libdata/pkgconfig/appstream.pc
-man/man1/appstreamcli.1.gz
+share/man/man1/appstreamcli.1.gz
 share/appstream/appstream.conf
 share/gettext/its/metainfo.its
 share/gettext/its/metainfo.loc

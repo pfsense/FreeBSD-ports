@@ -1,5 +1,5 @@
 PORTNAME=	pt2-clone
-PORTVERSION=	1.65.1
+PORTVERSION=	1.67
 DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
 MASTER_SITES=	LOCAL/ehaupt:extras
@@ -22,8 +22,8 @@ USE_SDL=	sdl2
 CFLAGS_i386+=	-msse2
 
 PLIST_FILES=	bin/pt2-clone \
-		man/man1/pt2-clone.1.gz \
 		share/applications/pt2-clone.desktop \
+		share/man/man1/pt2-clone.1.gz \
 		share/pixmaps/pt2-clone.png
 
 EXTRASVERSION=	2
@@ -33,12 +33,12 @@ post-patch:
 		${WRKSRC}/release/other/Freedesktop.org*/*.desktop
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${MANPREFIX}/man/man1 \
+	@${MKDIR} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/share/man/man1 \
 		${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/release/other/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_MAN} ${WRKDIR}/${PORTNAME}-extras-${EXTRASVERSION}/${PORTNAME}.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/release/other/Freedesktop.org*/*.desktop \
 		${STAGEDIR}${DESKTOPDIR}/${PORTNAME}.desktop
 	${INSTALL_DATA} ${WRKSRC}/release/other/Freedesktop.org*/*.png \

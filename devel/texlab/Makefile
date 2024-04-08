@@ -1,7 +1,7 @@
 PORTNAME=	texlab
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.2.0
-PORTREVISION=	12
+PORTREVISION=	16
 CATEGORIES=	devel
 
 MAINTAINER=	antranigv@freebsd.am
@@ -17,10 +17,10 @@ GH_ACCOUNT=	latex-lsp
 
 # Fixes: error: the linked panic runtime `panic_unwind` is not compiled with
 # this crate's panic strategy `abort`
-LTO_UNSAFE=	yes
+WITHOUT_LTO=	yes # XXX bug 277333
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz
+		share/man/man1/${PORTNAME}.1.gz
 PORTDOCS=	CHANGELOG.md README.md docs/*
 
 OPTIONS_DEFINE=		DOCS
@@ -29,7 +29,7 @@ OPTIONS_DEFAULT=	DOCS
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

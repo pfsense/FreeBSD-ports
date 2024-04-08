@@ -98,6 +98,10 @@
     SUBDIR += bacula13-client-static
     SUBDIR += bacula13-docs
     SUBDIR += bacula13-server
+    SUBDIR += bacula15-client
+    SUBDIR += bacula15-client-static
+    SUBDIR += bacula15-docs
+    SUBDIR += bacula15-server
     SUBDIR += bacula9-client
     SUBDIR += bacula9-client-static
     SUBDIR += bacula9-docs
@@ -113,6 +117,9 @@
     SUBDIR += bareos21-client
     SUBDIR += bareos21-server
     SUBDIR += bareos21-traymonitor
+    SUBDIR += bareos22-client
+    SUBDIR += bareos22-server
+    SUBDIR += bareos22-traymonitor
     SUBDIR += barrier
     SUBDIR += bashtop
     SUBDIR += bastille
@@ -165,6 +172,7 @@
     SUBDIR += bvm
     SUBDIR += byobu
     SUBDIR += calamares
+    SUBDIR += cardano-cli
     SUBDIR += catatonit
     SUBDIR += catfish
     SUBDIR += catsit
@@ -188,11 +196,9 @@
     SUBDIR += cfengine-masterfiles
     SUBDIR += cfengine-masterfiles-devel
     SUBDIR += cfengine-masterfiles-lts
-    SUBDIR += cfengine-masterfiles320
     SUBDIR += cfengine-masterfiles321
     SUBDIR += cfengine-masterfiles322
     SUBDIR += cfengine-masterfiles323
-    SUBDIR += cfengine320
     SUBDIR += cfengine321
     SUBDIR += cfengine322
     SUBDIR += cfengine323
@@ -421,6 +427,8 @@
     SUBDIR += fortunelock
     SUBDIR += fpart
     SUBDIR += frand
+    SUBDIR += freebsd-bsdlabel
+    SUBDIR += freebsd-fdisk
     SUBDIR += freebsd-snapshot
     SUBDIR += freecolor
     SUBDIR += freedt
@@ -819,6 +827,7 @@
     SUBDIR += nfcutils
     SUBDIR += nitrogen
     SUBDIR += nix
+    SUBDIR += nmdaemon
     SUBDIR += nmrpflash
     SUBDIR += no-login
     SUBDIR += node_exporter
@@ -860,6 +869,7 @@
     SUBDIR += openupsd
     SUBDIR += openzfs
     SUBDIR += openzfs-kmod
+    SUBDIR += orch
     SUBDIR += osinfo-db-tools
     SUBDIR += p5-App-Regather
     SUBDIR += p5-App-RunCron
@@ -1041,8 +1051,7 @@
     SUBDIR += podman-suite
     SUBDIR += polkit
     SUBDIR += polkit-gnome
-    SUBDIR += polkit-qt
-    SUBDIR += polkit-qt-1-devel
+    SUBDIR += polkit-qt-1
     SUBDIR += pot
     SUBDIR += potnet
     SUBDIR += poweralertd
@@ -1085,10 +1094,12 @@
     SUBDIR += py-azure-cli-core
     SUBDIR += py-azure-cli-telemetry
     SUBDIR += py-bitrot
+    SUBDIR += py-blinkstick
     SUBDIR += py-borgmatic
     SUBDIR += py-concurrent-log-handler
     SUBDIR += py-cron-descriptor
     SUBDIR += py-croniter
+    SUBDIR += py-croniter2
     SUBDIR += py-dict-toolbox
     SUBDIR += py-diffoscope
     SUBDIR += py-director
@@ -1227,6 +1238,7 @@
     SUBDIR += rubygem-chef-bin
     SUBDIR += rubygem-chef-cleanroom
     SUBDIR += rubygem-chef-config
+    SUBDIR += rubygem-chef-licensing
     SUBDIR += rubygem-chef-telemetry
     SUBDIR += rubygem-chef-utils
     SUBDIR += rubygem-chef-vault
@@ -1291,7 +1303,6 @@
     SUBDIR += rubygem-tmuxinator
     SUBDIR += rubygem-vagrant-bhyve
     SUBDIR += rubygem-vagrant-mutate
-    SUBDIR += rubygem-vagrant-vbguest
     SUBDIR += rubygem-vagrant_cloud
     SUBDIR += rubygem-vmstat
     SUBDIR += rubygem-win32-file
@@ -1336,6 +1347,7 @@
     SUBDIR += schedutils
     SUBDIR += schilyutils
     SUBDIR += screen
+    SUBDIR += screen-devel
     SUBDIR += screenfetch
     SUBDIR += screenie
     SUBDIR += scterc
@@ -1472,6 +1484,7 @@
     SUBDIR += tuptime
     SUBDIR += turbostat
     SUBDIR += tw_cli
+    SUBDIR += twa-kmod
     SUBDIR += twmn
     SUBDIR += tzdialog
     SUBDIR += u-boot-a13-olinuxino
@@ -1533,6 +1546,7 @@
     SUBDIR += u-boot-sinovoip-bpi-m3
     SUBDIR += u-boot-sopine
     SUBDIR += u-boot-sopine-spi
+    SUBDIR += u-boot-starfive-visionfive2
     SUBDIR += u-boot-tools
     SUBDIR += u-boot-wandboard
     SUBDIR += ua
@@ -1542,7 +1556,6 @@
     SUBDIR += ucspi-tcp
     SUBDIR += ucspi-unix
     SUBDIR += udfclient
-    SUBDIR += uefi-edk2-bhyve-csm
     SUBDIR += ufetch
     SUBDIR += ufs_copy
     SUBDIR += uhidd
@@ -1584,10 +1597,10 @@
     SUBDIR += vm-bhyve
     SUBDIR += vm-bhyve-devel
     SUBDIR += vmdktool
+    SUBDIR += vmstated
     SUBDIR += vmtouch
     SUBDIR += vobcopy
     SUBDIR += volman
-    SUBDIR += vordog
     SUBDIR += vpnc-scripts
     SUBDIR += vttest
     SUBDIR += vzvol
@@ -1658,6 +1671,7 @@
     SUBDIR += yadf
     SUBDIR += yadm
     SUBDIR += yank
+    SUBDIR += yazi
     SUBDIR += z
     SUBDIR += zap
     SUBDIR += zbackup

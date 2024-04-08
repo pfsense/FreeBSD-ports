@@ -1,5 +1,5 @@
 PORTNAME=	xterm
-PORTVERSION=	389
+DISTVERSION=	390
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.invisible-island.net/xterm/:src1 \
 		https://invisible-mirror.net/archives/xterm/:src1 \
@@ -21,6 +21,7 @@ USES=			cpe localbase ncurses tar:tgz xorg
 CPE_VENDOR=		invisible-island
 USE_XORG=		ice x11 xext xft xmu xpm xt
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=	--enable-narrowproto \
 			--with-utempter
 

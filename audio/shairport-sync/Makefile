@@ -1,5 +1,6 @@
 PORTNAME=	shairport-sync
 DISTVERSION=	4.3.2
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -20,6 +21,7 @@ GH_ACCOUNT=	mikebrady
 USE_RC_SUBR=	${PORTNAME}
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc \
 		--with-avahi \
 		--with-libdaemon \

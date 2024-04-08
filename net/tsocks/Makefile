@@ -1,6 +1,6 @@
 PORTNAME=	tsocks
 DISTVERSION=	1.8.b5
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	net security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.8%20beta%205 \
 		http://ftp1.sourceforge.net/tsocks/ \
@@ -17,6 +17,7 @@ USES=		gmake
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--libdir=${PREFIX}/lib \
 		--with-conf=${PREFIX}/etc/tsocks.conf
 

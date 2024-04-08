@@ -1,6 +1,6 @@
 PORTNAME=	RT-Extension-LDAPImport
 PORTVERSION=	0.36
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -24,9 +24,10 @@ USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-MAN3PREFIX=	${PREFIX}
-
 PLIST_SUB+=	RTHOME=share/rt${RT_VER}
+
+post-patch:
+		@${REINPLACE_CMD} -e 's|LocalPath/man/man3|LocalPath/share/man/man3|g' ${WRKSRC}/inc/Module/Install/RTx.pm
 
 # Note: You can install using an arbitrary $PREFIX but only if it
 # matches the $PREFIX used to install www/rt44.  Hence ignore

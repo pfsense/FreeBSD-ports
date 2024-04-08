@@ -1,5 +1,5 @@
 PORTNAME=	qemu
-PORTVERSION=	8.2.0
+PORTVERSION=	8.2.2
 PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
@@ -70,7 +70,7 @@ CONFIGURE_ARGS+=	--cc=${CC} \
 			--extra-ldflags=-L${LOCALBASE}/lib \
 			--extra-ldflags=-L/usr/lib \
 			--localstatedir=/var \
-			--mandir=${PREFIX}/man \
+			--mandir=${PREFIX}/share/man \
 			--prefix=${PREFIX} \
 			--python=${PYTHON_CMD}
 .if ${FLAVOR:U} == guestagent
@@ -241,10 +241,10 @@ post-patch-CDROM_DMA-off:
 	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/include/hw/ide/internal.h
 
 do-build:
-	cd ${WRKSRC} && ${GMAKE} -j${MAKE_JOBS_NUMBER}
+	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${GMAKE} -j${MAKE_JOBS_NUMBER}
 
 do-install:
-	cd ${WRKSRC} && ${SETENV} DESTDIR=${STAGEDIR} ${GMAKE} install
+	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} DESTDIR=${STAGEDIR} ${GMAKE} install
 
 .if !target(post-install)
 post-install:

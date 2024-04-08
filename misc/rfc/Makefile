@@ -1,6 +1,6 @@
 PORTNAME=	rfc
 PORTVERSION=	3.2.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	misc
 MASTER_SITES=	https://BSDforge.com/projects/source/misc/rfc/
 
@@ -9,8 +9,6 @@ COMMENT=	Perl script to search for RFC's
 WWW=		http://www.dewn.com/rfc/
 
 LICENSE=	BSD2CLAUSE
-
-BROKEN=		Unfetchable
 
 RUN_DEPENDS=	w3m:www/w3m
 
@@ -22,7 +20,7 @@ SHEBANG_FILES=	${PORTNAME}-${PORTVERSION}
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-PLIST_FILES=	bin/rfc man/man1/rfc.1.gz
+PLIST_FILES=	bin/rfc share/man/man1/rfc.1.gz
 
 do-configure:
 	@${REINPLACE_CMD} -e 's|/usr/local/etc/rfc|${PREFIX}/etc/rfc| ; \
@@ -35,6 +33,6 @@ do-configure:
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}-${PORTVERSION} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

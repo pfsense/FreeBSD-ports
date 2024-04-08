@@ -27,7 +27,7 @@ WRKDOCS=	${WRKSRC}/../../runtime/doc
 
 DISTINFO_FILE=	${VIM_PORT}/distinfo
 PLIST_FILES=	bin/xxd \
-		man/man1/xxd.1.gz
+		share/man/man1/xxd.1.gz
 
 .include <bsd.port.pre.mk>
 
@@ -36,6 +36,6 @@ VIM_DISTVERSION!=	${BSDMAKE} -f ${VIM_PORT}/Makefile -V DISTVERSION
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/xxd ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKDOCS}/xxd.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKDOCS}/xxd.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.post.mk>

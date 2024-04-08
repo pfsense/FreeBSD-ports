@@ -1,7 +1,6 @@
 PORTNAME=	gdu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.25.0
-PORTREVISION=	3
+DISTVERSION=	5.27.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -32,7 +31,7 @@ PORTDOCS=	README.md
 OPTIONS_DEFINE=		DOCS MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -41,6 +40,6 @@ post-install-DOCS-on:
 
 post-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

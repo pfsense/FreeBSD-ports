@@ -1,5 +1,5 @@
 PORTNAME=	libimg
-PORTVERSION=	1.4.12
+PORTVERSION=	1.4.16
 PORTREVISION=	1
 CATEGORIES?=	graphics tk tcl
 MASTER_SITES=	SF/tkimg/tkimg/${PORTVERSION:R}/tkimg%20${PORTVERSION}
@@ -7,7 +7,7 @@ DISTNAME=	Img-${PORTVERSION}-Source
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Library of image format handlers for Tk4.1 and later
-WWW=		http://members1.chello.nl/~j.nijtmans/img.html
+WWW=		https://sourceforge.net/projects/tkimg/
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
@@ -33,6 +33,8 @@ DOS2UNIX_GLOB=	*.[ch] *.tcl *.msg *.in *.test license.terms
 EXTRACT_AFTER_ARGS=	--exclude 'config.*' --exclude Makefile --exclude \
 			'compat' --exclude win
 MAKE_ARGS+=	INSTALL_ROOT="${STAGEDIR}"
+GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	WRKDIR="${WRKDIR}"
 CONFIGURE_ARGS+=--enable-shared --disable-stubs
 

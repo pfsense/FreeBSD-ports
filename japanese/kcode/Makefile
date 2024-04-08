@@ -1,5 +1,6 @@
 PORTNAME=	kcode
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	japanese
 MASTER_SITES=	http://www.irori.org/dl/tool/
 EXTRACT_SUFX=	.gz
@@ -14,9 +15,7 @@ NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 SHEBANG_FILES=	kcode
 
-PLIST_FILES=	bin/kcode man/ja/man1/kcode.1.gz
-
-RUN_DEPENDS=	ja-p5-Jcode>=0:japanese/p5-Jcode
+PLIST_FILES=	bin/kcode share/man/ja/man1/kcode.1.gz
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -25,6 +24,7 @@ do-extract:
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/kcode ${STAGEDIR}${PREFIX}/bin
 	pod2man ${WRKSRC}/kcode ${WRKSRC}/kcode.1
-	${INSTALL_MAN} ${WRKSRC}/kcode.1 ${STAGEDIR}${MANPREFIX}/man/ja/man1
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/ja/man1
+	${INSTALL_MAN} ${WRKSRC}/kcode.1 ${STAGEDIR}${PREFIX}/share/man/ja/man1
 
 .include <bsd.port.mk>

@@ -10,6 +10,7 @@
 
 PORTNAME=	ksh
 PORTVERSION=	${AST_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES=	shells
 PKGNAMESUFFIX=	-devel
 
@@ -19,8 +20,8 @@ WWW=		http://www.kornshell.com/
 
 LICENSE=	EPL
 
-HASH=		799324b1
-AST_COMMIT_DATE=	2024.01.02
+HASH=		e0218fc3
+AST_COMMIT_DATE=	2024.03.30
 
 USES=		compiler:c11
 
@@ -70,7 +71,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/ksh ${STAGEDIR}${PREFIX}/bin/ksh${PSUFFIX}
-	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/ksh${PSUFFIX}.1
+	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${PREFIX}/share/man/man1/ksh${PSUFFIX}.1
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}${PSUFFIX}/
 	cd ${WRKSRC}/fun/ && ${INSTALL_SCRIPT} dirs popd pushd ${STAGEDIR}${EXAMPLESDIR}${PSUFFIX}/
 

@@ -5,7 +5,8 @@ MASTER_SITES=	SF/dict/dictd/dictd-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Dict protocol (RFC 2229) server
-WWW=		https://www.dict.org/
+WWW=		https://www.dict.org/ \
+		https://sourceforge.net/projects/dict/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,6 +17,7 @@ USES=		bison gmake libtool:build localbase
 
 ALL_TARGET=	dictd dictzip
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install.dictd install.dictzip
 
 SUB_FILES=	dictd.conf pkg-message

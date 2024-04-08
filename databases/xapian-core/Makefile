@@ -1,5 +1,5 @@
 PORTNAME=	xapian-core
-PORTVERSION=	1.4.24
+PORTVERSION=	1.4.25
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -16,6 +16,7 @@ USES=		compiler:c++11-lang libtool pathfix tar:xz
 
 CONFIGURE_ARGS=	ac_cv_func_snprintf=snprintf
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes

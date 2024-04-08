@@ -1,9 +1,9 @@
 PORTNAME=	wezterm
 DISTVERSION=	20230408-112425-69ae8472
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	GPU-accelerated terminal emulator and multiplexer
 WWW=		https://wezfurlong.org/wezterm/
 

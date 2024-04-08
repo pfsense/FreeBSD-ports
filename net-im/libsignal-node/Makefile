@@ -1,12 +1,12 @@
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.32.1
-PORTREVISION=	1
+DISTVERSION=	0.39.1
+PORTREVISION=	2
 CATEGORIES=	net-im
 PKGNAMESUFFIX=	-node
 DISTFILES=	libsignal-node-${DISTVERSION}-yarn-cache.tar.gz
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Platform-agnostic APIs used by the official Signal clients and servers
 WWW=		https://github.com/signalapp/libsignal
 
@@ -24,8 +24,8 @@ BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 USES=		cargo gmake python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	signalapp
-GH_TUPLE=	google:boringssl:3b74ab506eff560da3d67bfac9f1caa68bf31fbd:boringssl \
-		google:boringssl:ae223d6138807a13006342edfeef32e813246b39:boringssl_fips
+GH_TUPLE=	google:boringssl:44b3df6f03d85c901767250329c571db405122d5:boringssl \
+		google:boringssl:853ca1ea1168dff08011e5d42d94609cc0ca2e27:boringssl_fips
 
 # RUSTFLAGS=-Clink-dead-code is required to have a functional libsignal-node binary:
 # linkme is broken with https://github.com/dtolnay/linkme/commit/64e7c63c106848481bea8f66c4885b52c26ca9ec
@@ -42,7 +42,11 @@ USE_LDCONFIG=	yes
 PLIST_FILES=	lib/libsignal_node.so
 
 NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/:S/i386/ia32/:C/powerpc64.*/ppc64/}
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.36.0-67d1b48bd4c1ea31c155ea14a0bd28f04e46eff5-integrity
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.39.1-15b41f15c516ae3eecf8a098a9c9c7aac00444d7-integrity
+NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.6.0-0413f4d0626b99838cd64ad09c88720aa2bec6ed-integrity
 RUST_ARCH=	${ARCH:S/amd64/x86_64/:S/i386/i686/}
+SQLCIPHER=		sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
 
 YARN_TIMESTAMP=	1661146515
 
@@ -76,8 +80,8 @@ post-patch:
 
 # Check hash here: https://github.com/signalapp/boring/tree/libsignal/boring-sys/deps
 post-extract:
-	${MV} ${WRKDIR}/boringssl-3b74ab506eff560da3d67bfac9f1caa68bf31fbd/* ${WRKDIR}/boring-3809a7e1ca2f60a9495620da514f8432f148cde7/boring-sys/deps/boringssl
-	${MV} ${WRKDIR}/boringssl-ae223d6138807a13006342edfeef32e813246b39/* ${WRKDIR}/boring-3809a7e1ca2f60a9495620da514f8432f148cde7/boring-sys/deps/boringssl-fips
+	${MV} ${WRKDIR}/boringssl-44b3df6f03d85c901767250329c571db405122d5/* ${WRKDIR}/boring-8245063ae6eb97d909982b89fad45bb7f0a2a1a0/boring-sys/deps/boringssl
+	${MV} ${WRKDIR}/boringssl-853ca1ea1168dff08011e5d42d94609cc0ca2e27/* ${WRKDIR}/boring-8245063ae6eb97d909982b89fad45bb7f0a2a1a0/boring-sys/deps/boringssl-fips
 
 	${CP} ${FILESDIR}/node/package.json ${WRKSRC}/node
 

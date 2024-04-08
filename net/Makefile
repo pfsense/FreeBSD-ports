@@ -29,8 +29,8 @@
     SUBDIR += arping
     SUBDIR += arpoison
     SUBDIR += arprelease
+    SUBDIR += arrowdl
     SUBDIR += asio
-    SUBDIR += aslookup
     SUBDIR += asterisk-chan_sccp
     SUBDIR += asterisk-g72x
     SUBDIR += asterisk18
@@ -97,7 +97,6 @@
     SUBDIR += cppzmq
     SUBDIR += croc
     SUBDIR += cryptcat
-    SUBDIR += csocks
     SUBDIR += csync2
     SUBDIR += ctrace
     SUBDIR += cvsup-static
@@ -125,8 +124,6 @@
     SUBDIR += dhcprelya
     SUBDIR += dico
     SUBDIR += dictd
-    SUBDIR += dimes
-    SUBDIR += downzemall
     SUBDIR += dpdk
     SUBDIR += dpdk-20.11
     SUBDIR += dpdk-22.11
@@ -167,6 +164,7 @@
     SUBDIR += freeradius-client
     SUBDIR += freeradius3
     SUBDIR += freerdp
+    SUBDIR += freerdp3
     SUBDIR += freeswitch
     SUBDIR += freevrrpd
     SUBDIR += frp
@@ -210,7 +208,6 @@
     SUBDIR += gorss
     SUBDIR += gost
     SUBDIR += gotthard
-    SUBDIR += gq
     SUBDIR += graphpath
     SUBDIR += grilo
     SUBDIR += grilo-plugins
@@ -438,7 +435,6 @@
     SUBDIR += libyang
     SUBDIR += libyang2
     SUBDIR += libzapojit
-    SUBDIR += libzmq2
     SUBDIR += libzmq3
     SUBDIR += libzmq4
     SUBDIR += liferea
@@ -497,7 +493,6 @@
     SUBDIR += mtr-nox11
     SUBDIR += multicat
     SUBDIR += mvfst
-    SUBDIR += nakenchat
     SUBDIR += nanomsg
     SUBDIR += narrowlink
     SUBDIR += nast
@@ -520,6 +515,7 @@
     SUBDIR += net6
     SUBDIR += netatalk3
     SUBDIR += netcat
+    SUBDIR += netdiscover
     SUBDIR += netembryo
     SUBDIR += nethogs
     SUBDIR += netmap
@@ -579,6 +575,7 @@
     SUBDIR += openldap26-server
     SUBDIR += openmdns
     SUBDIR += openmpi
+    SUBDIR += openmpi4
     SUBDIR += openntpd
     SUBDIR += openpgm
     SUBDIR += openradius
@@ -1049,13 +1046,17 @@
     SUBDIR += py-dugong
     SUBDIR += py-ec2-cli-tools
     SUBDIR += py-ephemeral-port-reserve
+    SUBDIR += py-err-backend-discord
+    SUBDIR += py-err-backend-mattermost
     SUBDIR += py-errbot
+    SUBDIR += py-errbot-backend-slackv3
     SUBDIR += py-eventlet
     SUBDIR += py-gdown
     SUBDIR += py-geopy
     SUBDIR += py-gntp
     SUBDIR += py-gspread
     SUBDIR += py-h11
+    SUBDIR += py-haproxy-cli
     SUBDIR += py-haproxy-log-analysis
     SUBDIR += py-haproxyctl
     SUBDIR += py-httpstat
@@ -1093,6 +1094,7 @@
     SUBDIR += py-pcapy-ng
     SUBDIR += py-port-for
     SUBDIR += py-portend
+    SUBDIR += py-pychromecast
     SUBDIR += py-pyenet
     SUBDIR += py-pyfixbuf
     SUBDIR += py-pygeoip
@@ -1116,6 +1118,7 @@
     SUBDIR += py-python-designateclient
     SUBDIR += py-python-glanceclient
     SUBDIR += py-python-heatclient
+    SUBDIR += py-python-ipware
     SUBDIR += py-python-keystoneclient
     SUBDIR += py-python-ldap
     SUBDIR += py-python-neutronclient
@@ -1140,6 +1143,7 @@
     SUBDIR += py-s4cmd
     SUBDIR += py-saltyrtc.server
     SUBDIR += py-sbws
+    SUBDIR += py-scamper
     SUBDIR += py-shodan
     SUBDIR += py-siosocks
     SUBDIR += py-smart-open
@@ -1206,8 +1210,10 @@
     SUBDIR += rdapper
     SUBDIR += rdesktop
     SUBDIR += rdist6
+    SUBDIR += rdist7
     SUBDIR += read_bbrlog
     SUBDIR += realtek-re-kmod
+    SUBDIR += realtek-re-kmod198
     SUBDIR += reaver
     SUBDIR += recvnet
     SUBDIR += redir
@@ -1304,6 +1310,7 @@
     SUBDIR += rubygem-google-cloud-bigtable
     SUBDIR += rubygem-google-cloud-bigtable-admin-v2
     SUBDIR += rubygem-google-cloud-bigtable-v2
+    SUBDIR += rubygem-google-cloud-compute-v1
     SUBDIR += rubygem-google-cloud-core
     SUBDIR += rubygem-google-cloud-env
     SUBDIR += rubygem-google-cloud-errors
@@ -1322,7 +1329,7 @@
     SUBDIR += rubygem-google-cloud-spanner-admin-instance-v1
     SUBDIR += rubygem-google-cloud-spanner-v1
     SUBDIR += rubygem-google-cloud-storage
-    SUBDIR += rubygem-google-cloud-storage144
+    SUBDIR += rubygem-google-cloud-storage145
     SUBDIR += rubygem-google-cloud-trace
     SUBDIR += rubygem-google-cloud-trace-v1
     SUBDIR += rubygem-google-cloud-trace-v2
@@ -1357,7 +1364,6 @@
     SUBDIR += rubygem-oauth21
     SUBDIR += rubygem-octokit
     SUBDIR += rubygem-octokit4
-    SUBDIR += rubygem-octokit6
     SUBDIR += rubygem-octopress-deploy
     SUBDIR += rubygem-omniauth-auth0
     SUBDIR += rubygem-omniauth-authentiq
@@ -1429,14 +1435,14 @@
     SUBDIR += rude
     SUBDIR += rustdesk-server
     SUBDIR += ryu
+    SUBDIR += s3m
     SUBDIR += s5cmd
     SUBDIR += sacc
     SUBDIR += sakisafecli
-    SUBDIR += samba413
     SUBDIR += samba416
+    SUBDIR += samba419
     SUBDIR += samplicator
     SUBDIR += savvycan
-    SUBDIR += sbd
     SUBDIR += sbm
     SUBDIR += scamper
     SUBDIR += scapy
@@ -1568,6 +1574,7 @@
     SUBDIR += turnserver
     SUBDIR += u6rd
     SUBDIR += ucarp
+    SUBDIR += udp-over-tcp
     SUBDIR += udpbroadcastrelay
     SUBDIR += udptunnel
     SUBDIR += udpxy
@@ -1577,7 +1584,6 @@
     SUBDIR += ulxmlrpcpp
     SUBDIR += unfs3
     SUBDIR += unison
-    SUBDIR += unison232
     SUBDIR += unison240
     SUBDIR += unison248
     SUBDIR += unison251
@@ -1632,6 +1638,7 @@
     SUBDIR += wol
     SUBDIR += wpa_supplicant_gui
     SUBDIR += wping
+    SUBDIR += wstunnel
     SUBDIR += x11vnc
     SUBDIR += x2goclient
     SUBDIR += x2goclient-cli

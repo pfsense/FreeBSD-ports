@@ -1,10 +1,10 @@
 PORTNAME=	hypermail
 PORTVERSION=	2.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www mail
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to generate a cross-referenced HTML mail archive
 WWW=		http://www.hypermail-project.org
 

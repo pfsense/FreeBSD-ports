@@ -1,6 +1,5 @@
 PORTNAME=	pkg
-DISTVERSION=	1.20.9
-PORTREVISION=	1
+DISTVERSION=	1.21.0
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 
@@ -19,7 +18,7 @@ USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
 HAS_CONFIGURE=	yes
 PORTDOCS=	NEWS
 PORTSCOUT=	ignore:1
-CONFIGURE_ARGS=	--mandir=${PREFIX}/man --prefix="${PREFIX}"
+CONFIGURE_ARGS=	--prefix="${PREFIX}"
 CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 
 # Use a submake as 'deinstall install' needs to reevaluate PKG_REGISTER

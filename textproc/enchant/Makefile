@@ -1,6 +1,6 @@
 PORTNAME=	enchant
 PORTVERSION=	1.6.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	textproc gnome
 MASTER_SITES=	http://www.abisource.com/downloads/${PORTNAME}/${PORTVERSION}/
 DIST_SUBDIR=	gnome2
@@ -10,9 +10,11 @@ COMMENT=	Dictionary/spellchecking framework
 WWW=		https://www.abisource.com/projects/enchant/
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 USES=		gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20
+USE_CXXSTD=	c++11
 CONFIGURE_ARGS=	--disable-uspell \
 		--disable-voikko
 

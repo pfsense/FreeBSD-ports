@@ -1,10 +1,10 @@
 PORTNAME=	tfsec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.28.4
-PORTREVISION=	1
+DISTVERSION=	1.28.5
+PORTREVISION=	2
 CATEGORIES=	security
 
-MAINTAINER=	nulldutra@proton.me
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Security scanner for Terraform
 WWW=		https://aquasecurity.github.io/tfsec
 

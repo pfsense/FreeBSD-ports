@@ -33,14 +33,14 @@ lib/cmake/KF6KCMUtils/KF6KCMUtilsToolingTargets.cmake
 lib/cmake/KF6KCMUtils/kcmutilsgeneratemoduledata.cpp.in
 lib/cmake/KF6KCMUtils/kcmutilsgeneratemoduledata.h.in
 lib/libKF6KCMUtils.so
-lib/libKF6KCMUtils.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKF6KCMUtils.so.6
+lib/libKF6KCMUtils.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKF6KCMUtilsCore.so
-lib/libKF6KCMUtilsCore.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKF6KCMUtilsCore.so.6
+lib/libKF6KCMUtilsCore.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKF6KCMUtilsQuick.so
-lib/libKF6KCMUtilsQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKF6KCMUtilsQuick.so.6
+lib/libKF6KCMUtilsQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libexec/kf6/kcmdesktopfilegenerator
 %%QT_QMLDIR%%/org/kde/kcmutils/AbstractKCM.qml
 %%QT_QMLDIR%%/org/kde/kcmutils/ContextualHelpButton.qml
@@ -115,6 +115,7 @@ share/locale/hi/LC_MESSAGES/kcmutils6.mo
 share/locale/hne/LC_MESSAGES/kcmutils6.mo
 share/locale/hr/LC_MESSAGES/kcmutils6.mo
 share/locale/hsb/LC_MESSAGES/kcmutils6.mo
+share/locale/hu/LC_MESSAGES/kcmshell6.mo
 share/locale/hu/LC_MESSAGES/kcmutils6.mo
 share/locale/hy/LC_MESSAGES/kcmutils6.mo
 share/locale/ia/LC_MESSAGES/kcmshell6.mo
@@ -135,6 +136,7 @@ share/locale/ko/LC_MESSAGES/kcmshell6.mo
 share/locale/ko/LC_MESSAGES/kcmutils6.mo
 share/locale/ku/LC_MESSAGES/kcmutils6.mo
 share/locale/lb/LC_MESSAGES/kcmutils6.mo
+share/locale/lt/LC_MESSAGES/kcmshell6.mo
 share/locale/lt/LC_MESSAGES/kcmutils6.mo
 share/locale/lv/LC_MESSAGES/kcmutils6.mo
 share/locale/mai/LC_MESSAGES/kcmutils6.mo
@@ -158,6 +160,7 @@ share/locale/ps/LC_MESSAGES/kcmutils6.mo
 share/locale/pt/LC_MESSAGES/kcmutils6.mo
 share/locale/pt_BR/LC_MESSAGES/kcmshell6.mo
 share/locale/pt_BR/LC_MESSAGES/kcmutils6.mo
+share/locale/ro/LC_MESSAGES/kcmshell6.mo
 share/locale/ro/LC_MESSAGES/kcmutils6.mo
 share/locale/ru/LC_MESSAGES/kcmshell6.mo
 share/locale/ru/LC_MESSAGES/kcmutils6.mo

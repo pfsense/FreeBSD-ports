@@ -304,6 +304,7 @@
     SUBDIR += edenmath
     SUBDIR += eigen3
     SUBDIR += eispack
+    SUBDIR += elan
     SUBDIR += elemental
     SUBDIR += elementary-calculator
     SUBDIR += elpa
@@ -436,6 +437,9 @@
     SUBDIR += lcalc
     SUBDIR += ldouble
     SUBDIR += lean
+    SUBDIR += lean4
+    SUBDIR += lean4-std
+    SUBDIR += leangz
     SUBDIR += lemon
     SUBDIR += levmar
     SUBDIR += lib2geom
@@ -611,6 +615,7 @@
     SUBDIR += octave-forge-octave-pool
     SUBDIR += octave-forge-octclip
     SUBDIR += octave-forge-octproj
+    SUBDIR += octave-forge-odbc
     SUBDIR += octave-forge-odebvp
     SUBDIR += octave-forge-onsas
     SUBDIR += octave-forge-optics
@@ -627,6 +632,7 @@
     SUBDIR += octave-forge-pythonic
     SUBDIR += octave-forge-quaternion
     SUBDIR += octave-forge-queueing
+    SUBDIR += octave-forge-rtree
     SUBDIR += octave-forge-secs1d
     SUBDIR += octave-forge-secs2d
     SUBDIR += octave-forge-secs3d
@@ -646,6 +652,7 @@
     SUBDIR += octave-forge-struct
     SUBDIR += octave-forge-symband
     SUBDIR += octave-forge-symbolic
+    SUBDIR += octave-forge-tablicious
     SUBDIR += octave-forge-tcl-octave
     SUBDIR += octave-forge-tsa
     SUBDIR += octave-forge-velas
@@ -901,6 +908,7 @@
     SUBDIR += py-benford_py
     SUBDIR += py-bitmath
     SUBDIR += py-bitvector
+    SUBDIR += py-blis
     SUBDIR += py-bottleneck
     SUBDIR += py-brial
     SUBDIR += py-chaospy
@@ -983,7 +991,6 @@
     SUBDIR += py-moarchiving
     SUBDIR += py-mpmath
     SUBDIR += py-munkres
-    SUBDIR += py-munkres10
     SUBDIR += py-ndindex
     SUBDIR += py-networkx
     SUBDIR += py-nevergrad
@@ -1028,6 +1035,7 @@
     SUBDIR += py-pynndescent
     SUBDIR += py-pyodeint
     SUBDIR += py-pyodesys
+    SUBDIR += py-pyprobables
     SUBDIR += py-pyreadr
     SUBDIR += py-pyrr
     SUBDIR += py-pysmt
@@ -1178,6 +1186,7 @@
     SUBDIR += suitesparse-lagraph
     SUBDIR += suitesparse-ldl
     SUBDIR += suitesparse-mongoose
+    SUBDIR += suitesparse-paru
     SUBDIR += suitesparse-rbio
     SUBDIR += suitesparse-spex
     SUBDIR += suitesparse-spqr

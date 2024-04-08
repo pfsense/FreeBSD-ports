@@ -1,5 +1,6 @@
 PORTNAME=	scm
 PORTVERSION=	5f3
+PORTREVISION=	1
 CATEGORIES=	lang scheme
 MASTER_SITES=	GNU:scm	\
 		http://groups.csail.mit.edu/mac/ftpdir/scm/:psd1
@@ -26,6 +27,7 @@ MAKE_JOBS_UNSAFE=	yes
 CFLAGS:=	${CFLAGS:N-O*} -O0
 CFLAGS+=	-Wall -Wwrite-strings -Wmissing-declarations -Wredundant-decls -Wcast-qual
 CFLAGS+=	-Wno-unused-label -Wno-uninitialized
+CFLAGS_i386=	-O
 
 SUB_FILES=	require.scm
 
@@ -52,6 +54,8 @@ SCM_MODULES=	byte.so bytenumb.so differ.so edline.so gsubr.so \
 		ioext.so posix.so ramap.so record.so rgx.so sc2.so \
 		socket.so unix.so
 SCM_MODULES_X11=x.so
+
+EXTRACT_AFTER_ARGS=	--exclude gmalloc.c
 
 post-extract:
 	${LN} -s ${LOCALBASE}/share/slib ${WRKDIR}
@@ -85,7 +89,6 @@ post-patch:
 		 s|editline freebsd "" "|editline freebsd "${LIBEDIT_SUB1}| ; \
 		 s|-lreadline")$$|${LIBEDIT_SUB2} -lreadline")| ; \
 		 s|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/build.scm
-	@${REINPLACE_CMD} -e 's|__osf__|__FreeBSD__|' ${WRKSRC}/gmalloc.c
 	@${REINPLACE_CMD} -e 's|gnuregex\.h|gnu/regex.h|g' ${WRKSRC}/rgx.c
 	@${REINPLACE_CMD} -e 's|/usr/include|${LOCALBASE}/include|g' \
 		${WRKSRC}/xgen.scm
@@ -96,7 +99,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/scm ${WRKSRC}/scmlit \
 		${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/scm.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/scm.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/scm
 	${INSTALL_DATA} ${WRKDIR}/require.scm ${SCM_DATA:S|^|${WRKSRC}/|} \
 		${STAGEDIR}${PREFIX}/lib/scm

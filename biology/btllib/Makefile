@@ -1,6 +1,6 @@
 PORTNAME=	btllib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.0
+DISTVERSION=	1.7.1
 CATEGORIES=	biology devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +9,8 @@ WWW=		https://github.com/bcgsc/btllib
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+NOT_FOR_ARCHS=	armv6 armv7 i386 mips powerpc # temporary until https://github.com/bcgsc/btllib/issues/117 is fixed
 
 BUILD_DEPENDS=	bash:shells/bash \
 		samtools:biology/samtools \

@@ -1,11 +1,12 @@
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-DISTVERSION=	4.18.0.20231212
+DISTVERSION=	4.18.0.20240201
+PORTREVISION=	1
 CATEGORIES=	sysutils emulators
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	xen-project
-GL_TAGNAME=	1792d1723b7fb45a20b145d2de4d233913b22c09
+GL_TAGNAME=	b1fdd7d0e47e0831ac7a99d0417385fc10d3068c
 GL_TUPLE=	qemu-project:qemu:v8.0.4:qemu \
 		qemu-project:dtc:b6910bec:dtc \
 		qemu-project:meson:3a9b285a:meson \
@@ -56,7 +57,7 @@ BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 CONFIGURE_ARGS+=	--with-system-seabios=${LOCALBASE}/share/seabios/bios.bin \
 			--with-system-ovmf=${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd \
-			--mandir=${MANPREFIX}/man \
+			--mandir=${PREFIX}/share/man \
 			--disable-golang
 
 SHEBANG_FILES=	tools/misc/xencov_split \

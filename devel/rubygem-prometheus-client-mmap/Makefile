@@ -1,5 +1,6 @@
 PORTNAME=	prometheus-client-mmap
-PORTVERSION=	1.0.2
+PORTVERSION=	1.1.1
+PORTREVISION=	2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -9,12 +10,14 @@ WWW=		https://gitlab.com/gitlab-org/prometheus-client-mmap
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-rb_sys>=0.9<1:lang/rubygem-rb_sys
+RUN_DEPENDS=	rubygem-rb_sys>=0.9.86<1:lang/rubygem-rb_sys
 
 USES=		cargo gem gmake llvm:build
 
-# Required to be able to build the rust library the port uses
-GEMFILES:=	${DISTNAME}${GEM_EXT}
+# Required to be able to build the rust library the gem uses
+GEMFILES:=	${DISTNAME}.gem
+DISTFILES+=	${DISTNAME}.gem
+GEMS_SKIP_SUBDIR=	1
 CARGO_VENDOR_DIR=	${WRKSRC}/ext/fast_mmaped_file_rs/cargo-crates
 CARGO_CARGOTOML=	${WRKSRC}/ext/fast_mmaped_file_rs/Cargo.toml
 CARGO_CARGOLOCK=	${WRKSRC}/ext/fast_mmaped_file_rs/Cargo.lock

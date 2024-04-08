@@ -1,6 +1,7 @@
 PORTNAME=	netcdf
 PORTVERSION=	4.9.2
 DISTVERSIONPREFIX=	c-
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://downloads.unidata.ucar.edu/netcdf-c/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -23,6 +24,7 @@ CONFIGURE_ARGS=	--disable-filter-testing --disable-libxml2 \
 		--enable-byterange --enable-dap --enable-netcdf-4
 CPPFLAGS+=	-fPIC -DPIC
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 LIBS+=		-lexecinfo
 TEST_TARGET=	check

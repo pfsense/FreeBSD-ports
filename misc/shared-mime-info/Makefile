@@ -1,6 +1,6 @@
 PORTNAME=	shared-mime-info
 DISTVERSION=	2.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc gnome
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -32,6 +32,7 @@ SHEBANG_FILES=	${WRKSRC}/tests/compare_iana.py \
 		${WRKSRC}/tests/mime-detection/test3.py \
 		${WRKSRC}/tests/test_case.py \
 		${WRKSRC}/tests/test_sub_class_ofs.py
+TESTING_UNSAFE=	yes # env: bash: No such file or directory
 
 MIMESUBDIRS=	application audio image inode message model multipart \
 		packages text video x-epoc x-content font

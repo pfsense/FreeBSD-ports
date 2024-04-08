@@ -1,6 +1,5 @@
 PORTNAME=	wayland-protocols
-PORTVERSION=	1.32
-PORTREVISION=	1
+PORTVERSION=	1.34
 CATEGORIES=	graphics
 MASTER_SITES=	https://gitlab.freedesktop.org/wayland/${PORTNAME}/-/releases/${DISTVERSION}/downloads/
 

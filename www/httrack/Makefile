@@ -1,6 +1,9 @@
 PORTNAME=	httrack
-PORTVERSION=	3.49.4
+PORTVERSION=	3.49.5
 CATEGORIES=	www
+
+PATCH_SITES=	https://github.com/xroche/httrack/commit/
+PATCHFILES=	ce2d2ce810cb1bbaf1c587a3947c31adb47d5244.patch:-p1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Easy-to-use offline browser utility and website copier
@@ -14,6 +17,7 @@ USES=		alias cpe gmake iconv libtool shebangfix ssl
 
 CONFIGURE_ARGS=	--docdir=${DOCSDIR} --with-zlib=/usr
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	${PREFIX}/lib/httrack
 

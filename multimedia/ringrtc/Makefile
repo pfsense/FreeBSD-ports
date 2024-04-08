@@ -1,6 +1,7 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.34.4
+DISTVERSION=	2.37.0
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -31,7 +32,7 @@ DISTFILES=	base-${BASE_REV}.tar.gz:base \
 		testing-${TESTING_REV}.tar.gz:testing \
 		opus-${OPUS_REV}.tar.gz:opus
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Middleware library for Signal-Desktop
 WWW=		https://github.com/signalapp/ringrtc
 
@@ -55,23 +56,23 @@ GH_TUPLE=	signalapp:ringrtc:${DISTVERSIONPREFIX}${DISTVERSION} \
 		signalapp:webrtc:${WEBRTC_REV}:webrtc
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	5845j
+WEBRTC_REV=	6099a
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
-BASE_REV=		609cafa975c8a29d3b2f686c9a42530a556835fe
-BORINGSSL_REV=		b8e012e1ff736cc794273af4a7db521e6b18bcd5
-BUILD_REV=		115a7079919c25462a7fd8c1d22900378bbc6585
-BUILDTOOLS_REV=		b2043d4f435131d0a1bdd5342c17753ef9236572
-CATAPULT_REV=		b8c4f2d99ac66fe47cb8cceec0dd1a1da5d1b51e
-ICU_REV=		985b9a6f70e13f3db741fed121e4dcc3046ad494
-LIBJPEG_TURBO_REV=	30bdb85e302ecfc52593636b2f44af438e05e784
+BASE_REV=		1546e3adb67bb711ca2fd39c3913cb56bd889748
+BORINGSSL_REV=		c38dc29860a72540eb2c4fdb8a8bfb27ef94ddf3
+BUILD_REV=		a21fc6065131d0442e8a54c3ca2638e393b69438
+BUILDTOOLS_REV=		6f834e2039daedfc68a2749c217922b26d5e8497
+CATAPULT_REV=		47efdb4b1428e549c58a6d6c2fa79c4a8ceaf9b4
+ICU_REV=		a622de35ac311c5ad390a7af80724634e5dc61ed
+LIBJPEG_TURBO_REV=	9b894306ec3b28cea46e84c32b56773a98c483da
 LIBSRTP_REV=		5b7c744eb8310250ccc534f3f86a2015b3887a0a
-LIBVPX_REV=		38a707faef72eeff89d669c553e7bfe9e08dba8f
+LIBVPX_REV=		424723dc025ce451dab9568239a46b18d0919b4d
 LIBYUV_REV=		04821d1e7d60845525e8db55c7bcd41ef5be9406
 NASM_REV=		7fc833e889d1afda72c06220e5bed8fb43b2e5ce
-TESTING_REV=		ff8dee88bc0b49f8337cee6e82151c245a63b98c
-THIRD_PARTY_REV=	ee6367daea550c5845a6079cec5fd6555f39144f
-OPUS_REV=		74d8597f47aa680c9f9e21ab0b99c8c0632fe27d
+TESTING_REV=		46366a7e4d08bf9fceeb3c1c3b5eab8a6a5024b5
+THIRD_PARTY_REV=	64d9ec3158b4629163f88b779a53e16f1cc24f81
+OPUS_REV=		593419e833acab4d15b4901fe156177fb7315468
 
 BINARY_ALIAS=	vpython3=${PYTHON_CMD}
 
@@ -95,6 +96,10 @@ GN_ARGS+=	rtc_build_examples=false \
 		treat_warnings_as_errors=false \
 		extra_cxxflags="${CXXFLAGS}" \
 		extra_ldflags="${LDFLAGS}"
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.36.0-67d1b48bd4c1ea31c155ea14a0bd28f04e46eff5-integrity
+NPM_SIGNAL_DIR=	npm-@signalapp-libsignal-client-0.39.1-15b41f15c516ae3eecf8a098a9c9c7aac00444d7-integrity
+NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.6.0-0413f4d0626b99838cd64ad09c88720aa2bec6ed-integrity
+SQLCIPHER=	sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
 
 MAKE_ARGS=	-C out/${BUILDTYPE}
 

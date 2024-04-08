@@ -1,6 +1,6 @@
 PORTNAME=	xcowsay
-PORTVERSION=	1.6
-PORTREVISION=	2
+DISTVERSION=	1.6
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://www.nickg.me.uk/files/ \
 		LOCAL/ehaupt
@@ -19,12 +19,13 @@ USES=		gettext gmake gnome pkgconfig
 USE_CSTD=	c99
 USE_GNOME=	cairo gdkpixbuf2 gtk30
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 OPTIONS_DEFINE=	DBUS
 
-DBUS_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
-			libdbus-1.so:devel/dbus
-DBUS_CFLAGS=		-DWITH_DBUS
+DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+			libdbus-glib-1.so:devel/dbus-glib
 DBUS_CONFIGURE_ENABLE=	dbus
+DBUS_CFLAGS=		-DWITH_DBUS
 
 .include <bsd.port.mk>

@@ -1,6 +1,5 @@
 PORTNAME=	flexiblas
-PORTVERSION=	3.3.1
-PORTREVISION=	2
+PORTVERSION=	3.4.2
 CATEGORIES=	math
 MASTER_SITES=	https://csc.mpi-magdeburg.mpg.de/mpcsc/software/flexiblas/
 
@@ -8,7 +7,7 @@ MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	BLAS and LAPACK wrapper library with runtime exchangable backends
 WWW=		https://www.mpi-magdeburg.mpg.de/projects/flexiblas
 
-LICENSE=	GPLv3
+LICENSE=	LGPL3
 
 LIB_DEPENDS=	libblas.so:math/blas	\
 		libblis.so:math/blis	\
@@ -18,6 +17,8 @@ USES=		cmake:testing fortran python tar:xz
 
 CONFIGURE_ENV=	PYTHON_EXECUTABLE=${PYTHON_CMD}
 USE_LDCONFIG=	yes
+
+PLIST_SUB=	VE=${PORTVERSION:R}
 
 .if defined(WITH_DEBUG)
 CMAKE_ARGS+=	-DFIND_DEBUG:BOOL=ON

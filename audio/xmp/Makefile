@@ -1,6 +1,6 @@
 PORTNAME=	xmp
-PORTVERSION=	4.2.0
-PORTREVISION=	2
+DISTVERSION=	4.2.0
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/libxmp/xmp-cli/releases/download/${PORTNAME}-${PORTVERSION}/
@@ -15,6 +15,7 @@ LIB_DEPENDS=	libxmp.so:audio/libxmp
 
 USES=		gmake localbase:ldflags pkgconfig
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 CONFIGURE_ARGS+=	--sysconfdir=${PREFIX}/etc
 

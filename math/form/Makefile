@@ -1,6 +1,7 @@
 PORTNAME=	form
-PORTVERSION=	4.3.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	4.3.1
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -17,6 +18,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	vermaseren
 
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=	--disable-native \
 			--enable-largefile \
 			--enable-scalar \
@@ -37,7 +39,8 @@ OPENMPI_CONFIGURE_ENV+=		MPICC="${MPICC}" \
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1400091 || (${OSVERSION} >= 1302507 && \
+	${OSVERSION} < 1400000))
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

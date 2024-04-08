@@ -1,6 +1,5 @@
 PORTNAME=	iridium
-PORTVERSION=	2023.11.119
-PORTREVISION=	2
+PORTVERSION=	2024.01.120
 CATEGORIES=	www wayland
 MASTER_SITES=	https://downloads.iridiumbrowser.de/source/
 PKGNAMESUFFIX=	-browser
@@ -298,9 +297,9 @@ do-configure:
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKSRC}/chrome/app/resources/manpage.1.in \
-		${STAGEDIR}${MANPREFIX}/man/man1/iridium.1
+		${STAGEDIR}${PREFIX}/share/man/man1/iridium.1
 	@${SED} -i "" -e 's,\@\@PACKAGE\@\@,chromium,g;s,\@\@MENUNAME\@\@,Iridium Web Browser,g' \
-		${STAGEDIR}${MANPREFIX}/man/man1/iridium.1
+		${STAGEDIR}${PREFIX}/share/man/man1/iridium.1
 	${CP} ${WRKSRC}/chrome/app/theme/chromium/product_logo_22_mono.png ${WRKSRC}/chrome/app/theme/chromium/product_logo_22.png
 .for s in 22 24 48 64 128 256
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/apps
@@ -338,6 +337,7 @@ do-install:
 .if ${ARCH} != aarch64
 	@${MKDIR} ${STAGEDIR}${DATADIR}/swiftshader
 	${INSTALL_LIB} ${WRKSRC}/out/${BUILDTYPE}/libvk_swiftshader.so ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/out/${BUILDTYPE}/vk_swiftshader_icd.json ${STAGEDIR}${DATADIR}
 .endif
 
 post-install-DEBUG-on:

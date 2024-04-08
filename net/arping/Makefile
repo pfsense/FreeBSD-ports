@@ -1,5 +1,5 @@
 PORTNAME=	arping
-DISTVERSION=	2.21
+DISTVERSION=	2.24
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.habets.pp.se/synscan/files/
@@ -16,7 +16,8 @@ LIB_DEPENDS=	libnet.so:net/libnet
 USES=		localbase
 USE_CSTD=	c99
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
-PLIST_FILES=	sbin/arping man/man8/arping.8.gz
+PLIST_FILES=	include/arping.h sbin/arping share/man/man8/arping.8.gz
 
 .include <bsd.port.mk>

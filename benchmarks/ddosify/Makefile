@@ -1,10 +1,10 @@
 PORTNAME=	ddosify
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	benchmarks
 
-MAINTAINER=	nulldutra@proton.me
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	High-performance load testing tool
 WWW=		https://github.com/ddosify/ddosify
 

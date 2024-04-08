@@ -1,5 +1,6 @@
 PORTNAME=	libpcap
 PORTVERSION=	1.10.4
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.tcpdump.org/release/
 
@@ -17,6 +18,7 @@ CPE_VENDOR=	tcpdump
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=--enable-dbus=no \
 		--with-pcap=bpf
 CONFIGURE_ENV+=	LEX=${LOCALBASE}/bin/flex
