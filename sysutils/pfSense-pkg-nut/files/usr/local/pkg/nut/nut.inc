@@ -283,7 +283,7 @@ function nut_sync_config() {
 		$monfile .= "NOTIFYFLAG ONLINE   SYSLOG+WALL+EXEC\n";
 		$monfile .= "NOTIFYFLAG ONBATT   SYSLOG+WALL+EXEC\n";
 		$monfile .= "NOTIFYFLAG LOWBATT  SYSLOG+WALL+EXEC\n";
-		$monfile .= "NOTIFYFLAG FSD	  SYSLOG+WALL+EXEC\n";
+		$monfile .= "NOTIFYFLAG FSD      SYSLOG+WALL+EXEC\n";
 		$monfile .= "NOTIFYFLAG COMMOK   SYSLOG+WALL+EXEC\n";
 		$monfile .= "NOTIFYFLAG COMMBAD  SYSLOG+WALL+EXEC\n";
 		$monfile .= "NOTIFYFLAG SHUTDOWN SYSLOG+WALL+EXEC\n";
