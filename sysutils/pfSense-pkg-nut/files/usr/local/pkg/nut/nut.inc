@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2016-2017 Denny Page
+ * Copyright (c) 2016-2024 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,13 +26,13 @@ require_once("functions.inc");
 require_once("util.inc");
 require_once("service-utils.inc");
 
-define("NUT_ETC", "/usr/local/etc/nut");
-define("NUT_MONFILE", NUT_ETC . "/upsmon.conf");
-define("NUT_UPSFILE", NUT_ETC . "/ups.conf");
-define("NUT_UPSDFILE", NUT_ETC . "/upsd.conf");
-define("NUT_USERSFILE", NUT_ETC . "/upsd.users");
-define("NUT_RCFILE", "/usr/local/etc/rc.d/nut.sh");
-define("NUT_SHUTDOWNFILE", "/usr/local/etc/rc.d/shutdown.nut.sh");
+const NUT_ETC = "/usr/local/etc/nut";
+const NUT_MONFILE = NUT_ETC . "/upsmon.conf";
+const NUT_UPSFILE = NUT_ETC . "/ups.conf";
+const NUT_UPSDFILE = NUT_ETC . "/upsd.conf";
+const NUT_USERSFILE = NUT_ETC . "/upsd.users";
+const NUT_RCFILE = "/usr/local/etc/rc.d/nut.sh";
+const NUT_SHUTDOWNFILE = "/usr/local/etc/rc.d/shutdown.nut.sh";
 
 $shortcut_section = "nut";
 
@@ -128,21 +128,14 @@ function nut_write_shutdownfile() {
 
 
 function nut_sync_config() {
-	global $config;
-
 	if (is_service_running('nut')) {
 		log_error("Stopping service nut");
 		stop_service('nut');
 	}
- 
-	$nut_config = config_get_path('installedpackages/nut/config/0', []);
-	if (!empty($nut_config) && isset($nut_config['type'])) {
-		$type = $nut_config['type'];
-	} else {
-		$type = 'disabled';
-	}
 
-	if ($type == 'disabled') {
+	/* Is the service enabled? */
+	$ups_type = config_get_path('installedpackages/nut/config/0/type', 'disabled');
+	if ($ups_type == 'disabled') {
 		unlink_if_exists(NUT_MONFILE);
 		unlink_if_exists(NUT_UPSFILE);
 		unlink_if_exists(NUT_UPSDFILE);
@@ -152,93 +145,117 @@ function nut_sync_config() {
 		return;
 	}
 
-	if ($type == 'remote_nut') {
-		$user = $nut_config['remote_user'];
-		$pass = $nut_config['remote_pass'];
-		$monitor = $nut_config['name'] . "@" . $nut_config['remote_addr'];
-		if (!empty($nut_config['remote_port'])) {
-			$monitor .= ":" . $nut_config['remote_port'];
-		}
-		$monitor .= " 1 " . $nut_config['remote_user'] . " " . $nut_config['remote_pass'] . " slave";
-	} else {
-		if (!empty($nut_config['ups_conf'])) {
-			$upsfile = base64_decode($nut_config['ups_conf']) . "\n\n";
-		} else {
-			$upsfile = "";
-		}
-		$upsfile .= "[" . $nut_config['name'] . "]\n";
+	/* UPS name */
+	$ups_name = config_get_path('installedpackages/nut/config/0/name');
 
-		switch ($type) {
+	/* If it's a remote NUT server, we only need monitor information. */
+	if ($ups_type == 'remote_nut') {
+		$monitor = $ups_name . "@" . config_get_path('installedpackages/nut/config/0/remote_addr');
+
+		$addport = config_get_path('installedpackages/nut/config/0/remote_port');
+		if (!empty($addport)) {
+			$monitor .= ":" . $addport;
+		}
+
+		$monitor .= " 1 " . config_get_path('installedpackages/nut/config/0/remote_user') . " " .
+				    config_get_path('installedpackages/nut/config/0/remote_pass') . " slave";
+	} else {
+		/* Define driver, port and arguments. */
+		switch ($ups_type) {
 			case 'local_usb':
-				$driver = $nut_config['usb_driver'];
+				$driver = config_get_path('installedpackages/nut/config/0/usb_driver');
 				$port = "auto";
 				break;
-	
+
 			case 'local_serial':
-				$driver = $nut_config['serial_driver'];
-				$port = $nut_config['serial_port'];
+				$driver = config_get_path('installedpackages/nut/config/0/serial_driver');
+				$port = config_get_path('installedpackages/nut/config/0/serial_port');
 				break;
-	
+
 			case 'local_generic':
 				$driver = "genericups";
-				$port = $nut_config['serial_port'];
-				$args = "upstype=" . $nut_config['generic_type'];
+				$port = config_get_path('installedpackages/nut/config/0/serial_port');
+				$args = "upstype=" . config_get_path('installedpackages/nut/config/0/generic_type');
 				break;
-	
+
 			case 'remote_apcupsd':
 				$driver = "apcupsd-ups";
-				$port = $nut_config['remote_addr'];
-				if (!empty($nut_config['remote_port'])) {
-					$port .= ":" . $nut_config['remote_port'];
+				$port = config_get_path('installedpackages/nut/config/0/remote_addr');
+				$addport = config_get_path('installedpackages/nut/config/0/remote_port');
+				if (!empty($addport)) {
+					$port .= ":" . $addport;
 				}
 				break;
-	
+
 			case 'remote_netxml':
 				$driver = "netxml-ups";
-				$port = $nut_config['remote_proto'] . "://" .  $nut_config['remote_addr'];
-				if (!empty($nut_config['remote_port'])) {
-					$port .= ":" . $nut_config['remote_port'];
+				$port = config_get_path('installedpackages/nut/config/0/remote_proto') . "://" .
+					config_get_path('installedpackages/nut/config/0/remote_addr');
+
+				$addport = config_get_path('installedpackages/nut/config/0/remote_port');
+				if (!empty($addport)) {
+					$port .= ":" . $addport;
 				}
 
-				if (!empty($nut_config['remote_user'])) {
-					$args = "login=\"" . $nut_config['remote_user'] . "\"";
-					if (!empty($nut_config['remote_pass'])) {
-						$args .= "\npassword=\"" . $nut_config['remote_pass'] . "\"";
+				$user = config_get_path('installedpackages/nut/config/0/remote_user');
+				if (!empty($user)) {
+					$args = "login=\"" . $user . "\"";
+					$pass = config_get_path('installedpackages/nut/config/0/remote_pass');
+					if (!empty($pass)) {
+						$args .= "\npassword=\"" . $pass . "\"";
 					}
 				}
 				break;
-	
+
 			case 'remote_snmp':
 				$driver = "snmp-ups";
-				$port = $nut_config['remote_addr'];
+				$port = config_get_path('installedpackages/nut/config/0/remote_addr');
 				break;
 
 			case 'dummy':
 				$driver = "dummy-ups";
-				$port = $nut_config['dummy_port'];
+				$port = config_get_path('installedpackages/nut/config/0/dummy_port');
 				break;
 		}
 
+		/* Set up ups.conf */
+		$upsfile = "";
+
+		/* Add any global ups.conf extras */
+		$extras = config_get_path('installedpackages/nut/config/0/ups_conf');
+		if (!empty($extras)) {
+			$upsfile .= base64_decode($extras) . "\n\n";
+		}
+
+		/* UPS section */
+		$upsfile .= "[" . $ups_name . "]\n";
 		$upsfile .= "driver=" . $driver . "\n";
 		$upsfile .= "port=" . $port . "\n";
 		if (!empty($args)) {
 			$upsfile .= $args . "\n";
 		}
-		if (!empty($nut_config['extra_args'])) {
-			$upsfile .= base64_decode($nut_config['extra_args']) . "\n";
+
+		/* Add any driver extras */
+		$extras = config_get_path('installedpackages/nut/config/0/extra_args');
+		if (!empty($extras)) {
+			$upsfile .= base64_decode($extras) . "\n";
 		}
-	  
+
+		/* Set up upsd.conf */
 		$upsdfile = "LISTEN 127.0.0.1\n";
 		$upsdfile .= "LISTEN ::1\n";
-		if (!empty($nut_config['upsd_conf'])) {
-			$upsdfile .= "\n\n" . base64_decode($nut_config['upsd_conf']) . "\n";
+		/* Add any upsd.conf extras */
+		$extras = config_get_path('installedpackages/nut/config/0/upsd_conf');
+		if (!empty($extras)) {
+			$upsdfile .= "\n\n" . base64_decode($extras) . "\n";
 		}
 
+		/* Local user for monitoring */
 		$user = "local-monitor";
 		$pass = bin2hex(openssl_random_pseudo_bytes(10));
-		$monitor = $nut_config['name'] . " 1 " . $user . " " . $pass . " master";
+		$monitor = $ups_name . " 1 " . $user . " " . $pass . " master";
 
-		/* admin user to allow local ups administration */
+		/* Set up upsd.users */
 		$usersfile = "[admin]\n";
 		$usersfile .= "password=" . bin2hex(openssl_random_pseudo_bytes(10)) . "\n";
 		$usersfile .= "actions=set\n";
@@ -246,17 +263,22 @@ function nut_sync_config() {
 		$usersfile .= "[" . $user . "]\n";
 		$usersfile .= "password=" . $pass . "\n";
 		$usersfile .= "upsmon master\n";
-		if (!empty($nut_config['upsd_users'])) {
-			$usersfile .= "\n\n" . base64_decode($nut_config['upsd_users']) . "\n";
+
+		/* Add any upsd.users extras */
+		$extras = config_get_path('installedpackages/nut/config/0/upsd_users');
+		if (!empty($extras)) {
+			$usersfile .= "\n\n" . base64_decode($extras) . "\n";
 		}
 	}
 
 
+	/* Set up upsmon.conf */
 	$monfile = "MONITOR " . $monitor . "\n";
 	$monfile .= "SHUTDOWNCMD \"/sbin/shutdown -p +0\"\n";
 	$monfile .= "POWERDOWNFLAG /etc/killpower\n";
 
-	if ($nut_config['email'] == 'yes') {
+	/* Event notifications? */
+	if (config_get_path('installedpackages/nut/config/0/email') == 'yes') {
 		$monfile .= "NOTIFYCMD /usr/local/pkg/nut/nut_email.php\n";
 		$monfile .= "NOTIFYFLAG ONLINE   SYSLOG+WALL+EXEC\n";
 		$monfile .= "NOTIFYFLAG ONBATT   SYSLOG+WALL+EXEC\n";
@@ -270,10 +292,13 @@ function nut_sync_config() {
 		$monfile .= "NOTIFYFLAG NOPARENT SYSLOG+WALL+EXEC\n";
 	}
 
-	if (!empty($nut_config['upsmon_conf'])) {
-		$monfile .= "\n\n" . base64_decode($nut_config['upsmon_conf']) . "\n";
+	/* Add any upsmon.conf extras */
+	$extras = config_get_path('installedpackages/nut/config/0/upsmon_conf');
+	if (!empty($extras)) {
+		$monfile .= "\n\n" . base64_decode($extras) . "\n";
 	}
 
+	/* Write out the files */
 	if (!empty($upsfile)) {
 		nut_write_file(NUT_UPSFILE, $upsfile, 0640);
 	} else {
@@ -305,37 +330,33 @@ function nut_sync_config() {
 
 function nut_ups_status()
 {
-	global $config;
 	$status = array();
 
-	$nut_config = config_get_path('installedpackages/nut/config/0', []);
-	if (!empty($nut_config) && isset($nut_config['type'])) {
-		$type = $nut_config['type'];
-	} else {
-		$type = 'disabled';
-	}
-
-	if ($type == 'disabled') {
-		$status['_summary'] = "Monitoring is not enabled";
+	/* Is the service enabled? */
+	$ups_type = config_get_path('installedpackages/nut/config/0/type', 'disabled');
+	if ($ups_type == 'disabled') {
+		$status['_summary'] = "UPS monitoring is not enabled";
 		return $status;
 	}
 
-	$ups = $nut_config['name'];
-	if ($type == 'remote_nut') {
-		 $addr = $nut_config['remote_addr'];
+	/* Name of the ups */
+	$ups_name = config_get_path('installedpackages/nut/config/0/name');
+	if ($ups_type == 'remote_nut') {
+		$addr = config_get_path('installedpackages/nut/config/0/remote_addr');
 		if (is_ipaddrv6($addr)) {
-			/* upsc unfortunately requires brackes for ipv6 addresses */
-			$ups .= "@[" . $addr . "]";
+			/* upsc requires brackets for ipv6 addresses */
+			$ups_name .= "@[" . $addr . "]";
 		} else {
-			$ups .= "@" . $addr;
+			$ups_name .= "@" . $addr;
 		}
-		if (!empty($nut_config['remote_port'])) {
-			$ups .= ":" . $nut_config['remote_port'];
+		$port = config_get_path('installedpackages/nut/config/0/remote_port');
+		if (!empty($port)) {
+			$ups_name .= ":" . $port;
 		}
 	} else {
-		$ups .= "@" . "localhost";
+		$ups_name .= "@" . "localhost";
 	}
-	$status['_name'] = $ups;
+	$status['_name'] = $ups_name;
 
 	/* Even though upsc might actually work (no password) it's better to report failure of upsmon */
 	if (!is_service_running('nut')) {
@@ -348,7 +369,8 @@ function nut_ups_status()
 		return $status;
 	}
 
-	$pipe = popen("/usr/local/bin/upsc $ups", 'r');
+	/* Pull the fields from upsc */
+	$pipe = popen("/usr/local/bin/upsc $ups_name", 'r');
 	if ($pipe) {
 		while ($line = fgets($pipe)) {
 			$index = strpos($line, ':');
@@ -376,6 +398,7 @@ function nut_ups_status()
 		return $status;
 	}
 
+	/* Status => meaningful words */
 	if (isset($status['ups.status'])) {
 		$str = strtok($status['ups.status'], ' ');
 		while ($str) {
@@ -438,6 +461,7 @@ function nut_ups_status()
 		$status['_alert'] = true;
 	}
 
+	/* Runtime => hours, minutes, seconds */
 	if (isset($status['battery.runtime'])) {
 		$t = (int) $status['battery.runtime'];
 
