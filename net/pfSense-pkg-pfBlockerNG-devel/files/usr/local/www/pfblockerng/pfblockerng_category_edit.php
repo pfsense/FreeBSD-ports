@@ -388,7 +388,7 @@ if ($pfb['dnsbl_py_blacklist']) {
 					'disabled'	=> 'Null Blocking (no logging)' ];
 }
 
-$options_suppression_cidr	= [ 'Disabled' => 'Disabled' ] + array_combine(range(1, 17, -1), range(1, 17, -1));
+$options_suppression_cidr	= [ 'Disabled' => 'Disabled' ] + array_combine(range(1, 17, 1), range(1, 17, 1));
 
 $interfaces_list		= get_configured_interface_list_by_realif();
 $src_interfaces			= array('lo0' => 'Localhost');
@@ -1514,7 +1514,7 @@ $section->addInput(new Form_StaticText(
 
 if ($gtype == 'ipv4') {
 
-	$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, -1), range(1, 17, -1));
+	$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, 1), range(1, 17, 1));
 	$section->addInput(new Form_Select(
 		'suppression_cidr',
 		'Suppression CIDR Limit',
