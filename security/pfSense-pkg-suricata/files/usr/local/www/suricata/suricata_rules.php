@@ -980,27 +980,27 @@ if ($currentruleset != 'custom.rules' && $currentruleset != 'Active Rules' && st
 $section->add($group);
 print($section);
 
-$action_section = new Form_Section('Mudança em lote');
-$action_group = new Form_Group('SIDs que NÃO SERÃO alterados');
+$action_section = new Form_Section('Change all action');
+$action_group = new Form_Group('SIDs for ignore');
 $action_group->add(new Form_Input(
         'sids',
         'sids',
         'show',
         ''
-))->setAttribute('placeholder', gettext('Separado com espaço, ex.:2003 30012'));
+))->setAttribute('placeholder', gettext('Separate with space, ex.:2003 30012'));
 $action_group->add(new Form_Button(
         'all_drop',
         'All Drop',
         null,
         'fa-thumbs-down'
-))->setAttribute('title', gettext('Definir actions como drop para todas as rules'))->addClass('btn-sm btn-danger');
+))->setAttribute('title', gettext('Set action of all rules for drop'))->addClass('btn-sm btn-danger');
 
 $action_group->add(new Form_Button(
         'all_alert',
         'All Alert',
         null,
         'fa-thumbs-down'
-))->setAttribute('title', gettext('Definir actions como alert para todas as rules'))->addClass('btn-sm btn-success');
+))->setAttribute('title', gettext('Set action of all rules for alert'))->addClass('btn-sm btn-success');
 
 $action_section->add($action_group);
 print($action_section);
