@@ -31,7 +31,7 @@ $recommended_patches = [
   'descr' => 'Fix potential local file include via DNS Resolver Python Module Script include mechanism',
   'links' => [
       [ 'text' => 'pfSense-SA-24_01.webgui',
-         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_01.webgui', ],
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_01.webgui.asc', ],
       [ 'text' => 'Redmine #15135',
          'url' => 'https://redmine.pfsense.org/issues/15135', ],
   ],
@@ -45,7 +45,7 @@ $recommended_patches = [
   'descr' => 'Fix potential stored XSS via services_acb_settings.php "frequency" paramter',
   'links' => [
       [ 'text' => 'pfSense-SA-24_02.webgui',
-         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_02.webgui', ],
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_02.webgui.asc', ],
       [ 'text' => 'Redmine #15224',
          'url' => 'https://redmine.pfsense.org/issues/15224', ],
   ],
@@ -60,7 +60,7 @@ $recommended_patches = [
   'links' => [
       [ 'text' => 'After applying, reboot or use console/ssh menu options 11/16 to restart PHP and the GUI' ],
       [ 'text' => 'pfSense-SA-24_03.webgui',
-         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_03.webgui', ],
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_03.webgui.asc', ],
       [ 'text' => 'Redmine #15263',
          'url' => 'https://redmine.pfsense.org/issues/15263', ],
       [ 'text' => 'Redmine #15264',
@@ -77,7 +77,7 @@ $recommended_patches = [
   'links' => [
       [ 'text' => 'Once applied, this patch may not offer a revert option' ],
       [ 'text' => 'pfSense-SA-24_04.webgui',
-         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_04.webgui', ],
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_04.webgui.asc', ],
       [ 'text' => 'Redmine #15265',
          'url' => 'https://redmine.pfsense.org/issues/15265', ],
   ],
