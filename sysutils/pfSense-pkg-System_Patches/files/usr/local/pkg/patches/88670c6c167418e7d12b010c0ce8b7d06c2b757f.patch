@@ -1,0 +1,19 @@
+commit 88670c6c167418e7d12b010c0ce8b7d06c2b757f
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Apr 8 11:08:57 2024 -0400
+
+    Fix syntax when moving IPsec P2. Fixes #15384
+
+diff --git a/src/usr/local/www/vpn_ipsec.php b/src/usr/local/www/vpn_ipsec.php
+index d6a6bbc789..12f349ce3e 100644
+--- a/src/usr/local/www/vpn_ipsec.php
++++ b/src/usr/local/www/vpn_ipsec.php
+@@ -173,7 +173,7 @@ if ($_POST['apply']) {
+ 		/* copy all p2 entries > $movebtnp2 and not selected */
+ 		for ($i = $movebtnp2+1; $i < count(config_get_path('ipsec/phase2', [])); $i++) {
+ 			if (!in_array($i, $_POST['p2entry'])) {
+-				$a_phase2_new[] = config_get_path('ipsec/phase2/', $i);
++				$a_phase2_new[] = config_get_path('ipsec/phase2/' . $i);
+ 			}
+ 		}
+ 		if (count($a_phase2_new) > 0) {
