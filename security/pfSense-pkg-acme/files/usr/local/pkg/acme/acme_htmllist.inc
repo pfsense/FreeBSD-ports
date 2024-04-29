@@ -217,7 +217,7 @@ class HtmlList
 					$result .= "<tr id='tr_view_$counter' ondblclick='editRow($counter); return false;' >
 						<td>
 							<input type='checkbox' id='frvc{$counter}' onClick='fr_toggle_two({$counter},this)' name='{$tablename}_row[]' value='{$counter}'/>
-							<a class='fa fa-anchor' id='Xmoveview_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")' title='".gettext("Move checked entries to here")."'></a>
+							<a class='fa-solid fa-anchor' id='Xmoveview_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")' title='".gettext("Move checked entries to here")."'></a>
 						</td>
 				  ";
 
@@ -255,7 +255,7 @@ class HtmlList
 				$result .= "<tr id='tr_edit_$counter' class='$displaystyle'>
 						<td>
 							<input type='checkbox' id='frec{$counter}' onClick='fr_toggle_two({$counter},this)' name='{$tablename}_row[]' value='{$counter}'/>
-							<a class='fa fa-anchor' id='Xmove_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")'  title='".gettext("Move checked entries to here")."'></a>
+							<a class='fa-solid fa-anchor' id='Xmove_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")'  title='".gettext("Move checked entries to here")."'></a>
 						</td>";
 				foreach($items as $item){
 					$itemname = $item['name'];
@@ -363,7 +363,7 @@ EOT
 		</table>
 			<button class='btn btn-success addbtn' type='button' value='add another entry' 
 			onclick='javascript:addRowTo(\"{$tablename}\"); return false;'
-			><i class='fa fa-plus icon-embed-btn'></i>Add</button>
+			><i class='fa-solid fa-plus icon-embed-btn'></i>Add</button>
 		</div></div>";
 		return $result;
 	}
@@ -458,7 +458,7 @@ function acme_htmllist_js($tablename = "") {
 		td = d.createElement("td");
 		td.innerHTML = "<td>"+
 				'<input type="checkbox" id="frec'+totalrows+'" onClick="fr_toggle_two('+totalrows+',this)" name="' + tableId + '_row[]" value="'+totalrows+'"/>'+
-				'<a class="fa fa-anchor" id="Xmove_'+totalrows+'" onClick="moveRowUpAboveAnchor('+totalrows+', \'' + tableId + '\')"  title=\"<?=gettext("Move checked entries to here")?>\"></a>'+
+				'<a class="fa-solid fa-anchor" id="Xmove_'+totalrows+'" onClick="moveRowUpAboveAnchor('+totalrows+', \'' + tableId + '\')"  title=\"<?=gettext("Move checked entries to here")?>\"></a>'+
 				"</td>";
 		tr.appendChild(td);
 

@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.7.5
+PORTVERSION=	0.8
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	PiBa.NL.dev@gmail.com
+MAINTAINER=	jimp@netgate.com
 COMMENT=	ACME package for pfSense
 
 LICENSE=	APACHE20
