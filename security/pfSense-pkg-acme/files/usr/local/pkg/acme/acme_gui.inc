@@ -24,78 +24,78 @@ require_once("classes/autoload.inc.php");
 
 $acme_icons = array(
 	'moveup' => array(
-		"faicon" => "fa-solid fa-arrow-up",
+		"faicon" => "fa-arrow-up",
 		"icon" => "icon_up.gif",
 		"iconsize" => 17),
 	'movedown' => array(
-		"faicon" => "fa-solid fa-arrow-down",
+		"faicon" => "fa-arrow-down",
 		"icon" => "icon_down.gif",
 		"iconsize" => 17),
 	'add' => array(
-		"faicon" => "fa-solid fa-plus",
+		"faicon" => "fa-plus",
 		"icon" => "icon_plus.gif",
 		"iconsize" => 17),
 	'delete' => array(
-		"faicon" => "fa-solid fa-trash-can",
+		"faicon" => "fa-trash",
 		"icon" => "icon_x.gif",
 		"iconsize" => 17),
 	'edit' => array(
-		"faicon" => "fa-solid fa-pencil",
+		"faicon" => "fa-pencil",
 		"icon" => "icon_e.gif",
 		"iconsize" => 17),
 	'clone' => array(
-		"faicon" => "fa-regular fa-clone",
+		"faicon" => "fa-clone",
 		"icon" => "icon_plus.gif"),
 	'acl' => array(
-		"faicon" => "fa-solid fa-random",
+		"faicon" => "fa-random",
 		"icon" => "icon_ts_rule.gif",
 		"iconsize" => 11),
 	'cert' => array(
-		"faicon" => "fa-solid fa-lock",
+		"faicon" => "fa-lock",
 		"icon" => "icon_frmfld_cert.png",
 		"iconsize" => 11),
 	'advanced' => array(
-		"faicon" => "fa-solid fa-cog",
+		"faicon" => "fa-cog",
 		"icon" => "icon_advanced.gif",
 		"iconsize" => 11),
 	'enabled' => array(
-		"faicon" => "fa-solid fa-check",
+		"faicon" => "fa-check",
 		"icon" => "icon_pass.gif",
 		"iconsize" => 11),
 	'disabled' => array(
-		"faicon" => "fa-solid fa-ban",
+		"faicon" => "fa-ban",
 		"icon" => "icon_reject.gif",
 		"iconsize" => 11),
 	'stats' => array(
-		"faicon" => "fa-solid fa-tasks",
+		"faicon" => "fa-tasks",
 		"icon" => "icon_log_s.gif",
 		"iconsize" => 11),
 	'stop' => array(
-		"faicon" => "fa-regular fa-circle-stop",
+		"faicon" => "fa-stop-circle-o",
 		"icon" => "icon_service_stop.gif",
 		"iconsize" => 17),
 	'start' => array(
-		"faicon" => "fa-solid fa-play-circle",
+		"faicon" => "fa-play-circle",
 		"icon" => "icon_service_start.gif",
 		"iconsize" => 17),
 	'up' => array(
-		"faicon" => "fa-solid fa-check-circle",
+		"faicon" => "fa-check-circle",
 		"icon" => "icon_interface_up.gif",
 		"iconsize" => 11),
 	'down' => array(
-		"faicon" => "fa-solid fa-times-circle",
+		"faicon" => "fa-times-circle",
 		"icon" => "icon_interface_down.gif",
 		"iconsize" => 11),
 	'resolvedns' => array(
-		"faicon" => "fa-solid fa-info",
+		"faicon" => "fa-info",
 		"icon" => "icon_log.gif",
 		"iconsize" => 11),
 	'help' => array(
-		"faicon" => "fa-solid fa-info-circle",
+		"faicon" => "fa-info-circle",
 		"icon" => "icon_help.gif",
 		"iconsize" => 11),
 	'expand' => array(
-		"faicon" => "fa-regular fa-square-plus",
+		"faicon" => "fa-plus-square-o",
 		"icon" => "plus.gif",
 		"iconsize" => 11)
 
@@ -115,7 +115,7 @@ function acmeicon($iconname, $title) {
 	$title = str_replace("'", "&#39;", $title);
 	
 	$faicon = $acme_icons[$iconname]["faicon"];
-	return "<i class='fa-solid $faicon' title='$title'></i>";
+	return "<i class='fa $faicon' title='$title'></i>";
 }
 
 class Form_Section_class extends Form_Section {
