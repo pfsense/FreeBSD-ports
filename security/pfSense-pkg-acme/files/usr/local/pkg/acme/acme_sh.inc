@@ -70,6 +70,7 @@ class acme_sh {
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
 		$env['PATH'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+		$env['SSL_CERT_DIR'] = "/etc/ssl/certs/";
 
 		/* Setup Proxy Variables */
 		if (!empty($config['system']['proxyurl'])) {
@@ -224,7 +225,7 @@ EOF;
 		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key.next", $certificatepsk);
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
-			$api = $domain->method; 
+			$api = $domain->method;
 			$domainstr .= " --domain " . escapeshellarg($domain->domainname);
 			if (!empty($domain->method)) {
 				$domainparameters = "";
@@ -269,7 +270,7 @@ EOF;
 				}
 
 				$acmechalengedom = (substr($nsupdatedomain, 0, 2) === "*.") ? substr($nsupdatedomain, 2) : $nsupdatedomain;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
+				file_put_contents("{$nsupdatefileprefix}" . (empty($domain->challengealias) ? "_acme-challenge." : "") . "{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
 				$nsupdatekey = base64_decode($domain->NSUPDATE_KEY);
 
 				/* Set a default key algo of HMAC-MD5 if the key type is invalid. */
@@ -283,7 +284,7 @@ key "{$key_name}." {
 	secret "{$nsupdatekey}";
 };
 EOD;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
+				file_put_contents("{$nsupdatefileprefix}" . (empty($domain->challengealias) ? "_acme-challenge." : "") . "{$acmechalengedom}.key", $keydata);
 			}
 		}
 
