@@ -285,7 +285,6 @@
     SUBDIR += bats-core
     SUBDIR += bazel
     SUBDIR += bazel-buildtools
-    SUBDIR += bazel029
     SUBDIR += bazel5
     SUBDIR += bbparse
     SUBDIR += bcc
@@ -371,7 +370,6 @@
     SUBDIR += ccls
     SUBDIR += ccrtp
     SUBDIR += cctz
-    SUBDIR += cdash
     SUBDIR += cdecl
     SUBDIR += cdialog
     SUBDIR += cdk
@@ -451,7 +449,6 @@
     SUBDIR += concurrencpp
     SUBDIR += concurrencykit
     SUBDIR += concurrentqueue
-    SUBDIR += configkit
     SUBDIR += cons
     SUBDIR += cons-test
     SUBDIR += containers
@@ -618,6 +615,7 @@
     SUBDIR += electron25
     SUBDIR += electron27
     SUBDIR += electron28
+    SUBDIR += electron29
     SUBDIR += elf
     SUBDIR += elf-dissector
     SUBDIR += elfcat
@@ -813,6 +811,7 @@
     SUBDIR += git-modes
     SUBDIR += git-p4
     SUBDIR += git-prev-next
+    SUBDIR += git-repo-manager
     SUBDIR += git-review
     SUBDIR += git-subrepo
     SUBDIR += git-svn
@@ -967,6 +966,7 @@
     SUBDIR += hwloc2
     SUBDIR += hyperscan
     SUBDIR += hyprlang
+    SUBDIR += hyprwayland-scanner
     SUBDIR += ice
     SUBDIR += ice37
     SUBDIR += icestorm
@@ -1364,7 +1364,6 @@
     SUBDIR += libpeas
     SUBDIR += libpff
     SUBDIR += libphdi
-    SUBDIR += libphk
     SUBDIR += libphonenumber
     SUBDIR += libplist
     SUBDIR += libpo6
@@ -4249,6 +4248,7 @@
     SUBDIR += py-aioitertools
     SUBDIR += py-aiologger
     SUBDIR += py-aiorpcX
+    SUBDIR += py-aiorpcX-legacy
     SUBDIR += py-aiortc
     SUBDIR += py-aiorwlock
     SUBDIR += py-aiosignal
@@ -4419,6 +4419,7 @@
     SUBDIR += py-backports.cached-property
     SUBDIR += py-backports.csv
     SUBDIR += py-backports.entry-points-selectable
+    SUBDIR += py-backports.tarfile
     SUBDIR += py-backports.zoneinfo
     SUBDIR += py-banal
     SUBDIR += py-bandit
@@ -4429,6 +4430,7 @@
     SUBDIR += py-beniget
     SUBDIR += py-bidict
     SUBDIR += py-billiard
+    SUBDIR += py-binary_file_search
     SUBDIR += py-binaryornot
     SUBDIR += py-biplist
     SUBDIR += py-bitarray
@@ -4607,7 +4609,6 @@
     SUBDIR += py-datasette
     SUBDIR += py-datatest
     SUBDIR += py-dateparser
-    SUBDIR += py-dateutil
     SUBDIR += py-dateutils
     SUBDIR += py-datrie
     SUBDIR += py-dbt-extractor
@@ -4822,6 +4823,7 @@
     SUBDIR += py-gtfslib
     SUBDIR += py-guppy3
     SUBDIR += py-gyp
+    SUBDIR += py-hacking
     SUBDIR += py-hammett
     SUBDIR += py-hash_ring
     SUBDIR += py-hatch
@@ -5092,6 +5094,7 @@
     SUBDIR += py-mypy_extensions
     SUBDIR += py-mystic
     SUBDIR += py-naiveBayesClassifier
+    SUBDIR += py-nanobind
     SUBDIR += py-nanotime
     SUBDIR += py-natsort
     SUBDIR += py-natural
@@ -5207,6 +5210,7 @@
     SUBDIR += py-pbr
     SUBDIR += py-pbs-installer
     SUBDIR += py-pcodedmp
+    SUBDIR += py-pcpp
     SUBDIR += py-pdm
     SUBDIR += py-pdm-autoexport
     SUBDIR += py-pdm-backend
@@ -5395,6 +5399,7 @@
     SUBDIR += py-pymsgbox
     SUBDIR += py-pymtbl
     SUBDIR += py-pynest2d
+    SUBDIR += py-pynvml
     SUBDIR += py-pyopencl
     SUBDIR += py-pyparsing
     SUBDIR += py-pyparsing2
@@ -5509,6 +5514,7 @@
     SUBDIR += py-pytest4-flakes
     SUBDIR += py-python-application
     SUBDIR += py-python-bugzilla
+    SUBDIR += py-python-dateutil
     SUBDIR += py-python-dbusmock
     SUBDIR += py-python-decouple
     SUBDIR += py-python-distutils-extra
@@ -5715,6 +5721,7 @@
     SUBDIR += py-stdlib-list
     SUBDIR += py-stdlibs
     SUBDIR += py-stdnum
+    SUBDIR += py-stestr
     SUBDIR += py-stevedore
     SUBDIR += py-stone
     SUBDIR += py-stopit
@@ -5765,6 +5772,7 @@
     SUBDIR += py-testtools
     SUBDIR += py-thefuzz
     SUBDIR += py-thinc
+    SUBDIR += py-thinc8
     SUBDIR += py-threadpoolctl
     SUBDIR += py-threema-msgapi
     SUBDIR += py-thrift
@@ -5853,6 +5861,7 @@
     SUBDIR += py-urlimport
     SUBDIR += py-urwid
     SUBDIR += py-urwid-readline
+    SUBDIR += py-urwidgets
     SUBDIR += py-urwidtrees
     SUBDIR += py-us
     SUBDIR += py-user_agents
@@ -6294,6 +6303,7 @@
     SUBDIR += rubygem-aws-sdk-connectcontactlens
     SUBDIR += rubygem-aws-sdk-connectparticipant
     SUBDIR += rubygem-aws-sdk-connectwisdomservice
+    SUBDIR += rubygem-aws-sdk-controlcatalog
     SUBDIR += rubygem-aws-sdk-controltower
     SUBDIR += rubygem-aws-sdk-core
     SUBDIR += rubygem-aws-sdk-core2
@@ -6776,6 +6786,7 @@
     SUBDIR += rubygem-childprocess
     SUBDIR += rubygem-childprocess3
     SUBDIR += rubygem-childprocess40
+    SUBDIR += rubygem-childprocess41
     SUBDIR += rubygem-chronic
     SUBDIR += rubygem-chronic_duration
     SUBDIR += rubygem-claide
@@ -7440,7 +7451,6 @@
     SUBDIR += rubygem-ruby-statistics
     SUBDIR += rubygem-ruby2_keywords
     SUBDIR += rubygem-ruby2ruby
-    SUBDIR += rubygem-ruby_dep
     SUBDIR += rubygem-ruby_memcheck
     SUBDIR += rubygem-ruby_parser
     SUBDIR += rubygem-rubygems-mirror
@@ -7894,7 +7904,6 @@
     SUBDIR += tkcvs
     SUBDIR += tkp4
     SUBDIR += tl-expected
-    SUBDIR += tla
     SUBDIR += tllist
     SUBDIR += tlsh
     SUBDIR += tlx

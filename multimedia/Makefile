@@ -37,6 +37,7 @@
     SUBDIR += deforaos-player
     SUBDIR += dirac
     SUBDIR += dragon
+    SUBDIR += droidcam
     SUBDIR += dtv-scan-tables
     SUBDIR += dumpmpeg
     SUBDIR += dv2sub
@@ -62,7 +63,6 @@
     SUBDIR += ffsubsync
     SUBDIR += filebot
     SUBDIR += flvmeta
-    SUBDIR += flvtool++
     SUBDIR += fswebcam
     SUBDIR += gaupol
     SUBDIR += gavl
@@ -180,9 +180,9 @@
     SUBDIR += librav1e
     SUBDIR += librespot
     SUBDIR += librist
-    SUBDIR += librtmp
     SUBDIR += libtheora
     SUBDIR += libtuner
+    SUBDIR += libudfread
     SUBDIR += libuvc
     SUBDIR += libv4l
     SUBDIR += libva
@@ -298,7 +298,6 @@
     SUBDIR += py-ffmpeg-python
     SUBDIR += py-gstreamer1
     SUBDIR += py-guessit
-    SUBDIR += py-librtmp
     SUBDIR += py-mat2
     SUBDIR += py-metadata-cleaner
     SUBDIR += py-mido
@@ -329,12 +328,10 @@
     SUBDIR += recordmydesktop
     SUBDIR += replex
     SUBDIR += ringrtc
-    SUBDIR += rtmpdump
     SUBDIR += rubygem-av
     SUBDIR += rubygem-clutter-gstreamer
     SUBDIR += rubygem-flvtool2
     SUBDIR += rubygem-gstreamer
-    SUBDIR += rubygem-paperclip-av-transcoder
     SUBDIR += rubygem-paperclip-av-transcoder-rails50
     SUBDIR += rubygem-streamio-ffmpeg
     SUBDIR += scte35dump

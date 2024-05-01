@@ -149,7 +149,6 @@
     SUBDIR += faad
     SUBDIR += fabla2-lv2
     SUBDIR += fapg
-    SUBDIR += fasttracker2
     SUBDIR += fatfrog-lv2
     SUBDIR += faudio
     SUBDIR += faust
@@ -200,6 +199,7 @@
     SUBDIR += freebsd-13-mixer
     SUBDIR += freedesktop-sound-theme
     SUBDIR += freepats
+    SUBDIR += ft2-clone
     SUBDIR += ft2play
     SUBDIR += funktrackergold
     SUBDIR += furnace
@@ -208,6 +208,7 @@
     SUBDIR += geonkick-lv2
     SUBDIR += ggwave
     SUBDIR += giada
+    SUBDIR += gigedit
     SUBDIR += gmsynth-lv2
     SUBDIR += gmtp
     SUBDIR += gmusicbrowser
@@ -215,7 +216,6 @@
     SUBDIR += gnome-metronome
     SUBDIR += gnome-music
     SUBDIR += gnome-podcasts
-    SUBDIR += gnuitar
     SUBDIR += gnupod
     SUBDIR += gnuspeechsa
     SUBDIR += gnustep-cdplayer

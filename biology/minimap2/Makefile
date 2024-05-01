@@ -1,6 +1,6 @@
 PORTNAME=		minimap2
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.27
+DISTVERSION=		2.28
 PORTREVISION=		1
 CATEGORIES=		biology
 
@@ -22,5 +22,6 @@ ALL_TARGET=	extra
 INSTALL_TARGET=	install-strip
 
 MAKEFILE=	Makefile.simde
+MAKE_ARGS=	MAN1DIR=${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

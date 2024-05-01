@@ -25,7 +25,8 @@ LDFLAGS+=	-lprotobuf # workaround for https://github.com/OpenLightingProject/ola
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
-CONFIGURE_ARGS=	--disable-unittests --disable-examples
+CONFIGURE_ARGS=		--disable-unittests --disable-examples
+CONFIGURE_ARGS+=	--disable-fatal-warnings # see https://github.com/OpenLightingProject/ola/issues/1962
 
 TEST_TARGET=	check
 INSTALL_TARGET=	install-strip

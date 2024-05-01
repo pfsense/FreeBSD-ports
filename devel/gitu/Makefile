@@ -1,6 +1,6 @@
 PORTNAME=	gitu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.0
+DISTVERSION=	0.19.2
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,7 +16,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	altsem
 
 CARGO_CRATES=	ahash-0.8.11 \
-		aho-corasick-1.1.2 \
+		aho-corasick-1.1.3 \
 		allocator-api2-0.2.16 \
 		android-tzdata-0.1.1 \
 		android_system_properties-0.1.5 \
@@ -26,17 +26,19 @@ CARGO_CRATES=	ahash-0.8.11 \
 		anstyle-parse-0.2.3 \
 		anstyle-query-1.0.2 \
 		anstyle-wincon-3.0.2 \
+		arboard-3.3.2 \
 		atomic-0.6.0 \
-		autocfg-1.1.0 \
+		autocfg-1.2.0 \
 		bitflags-1.3.2 \
-		bitflags-2.4.2 \
+		bitflags-2.5.0 \
+		block-0.1.6 \
 		bstr-0.2.17 \
 		bumpalo-3.15.4 \
-		bytemuck-1.14.3 \
+		bytemuck-1.15.0 \
 		cassowary-0.3.0 \
 		cast-0.3.0 \
 		castaway-0.2.2 \
-		cc-1.0.90 \
+		cc-1.0.95 \
 		cfg-if-1.0.0 \
 		chrono-0.4.37 \
 		ciborium-0.2.2 \
@@ -46,6 +48,7 @@ CARGO_CRATES=	ahash-0.8.11 \
 		clap_builder-4.5.2 \
 		clap_derive-4.5.4 \
 		clap_lex-0.7.0 \
+		clipboard-win-5.3.0 \
 		colorchoice-1.0.0 \
 		compact_str-0.7.1 \
 		console-0.15.8 \
@@ -61,14 +64,15 @@ CARGO_CRATES=	ahash-0.8.11 \
 		crunchy-0.2.2 \
 		derive_more-0.99.17 \
 		diff-0.1.13 \
-		directories-5.0.1 \
-		dirs-sys-0.4.1 \
 		either-1.10.0 \
 		encode_unicode-0.3.6 \
 		equivalent-1.0.1 \
-		figment-0.10.15 \
+		errno-0.3.8 \
+		error-code-3.2.0 \
+		etcetera-0.8.0 \
+		figment-0.10.16 \
 		form_urlencoded-1.2.1 \
-		getrandom-0.2.12 \
+		gethostname-0.4.3 \
 		git-version-0.3.9 \
 		git-version-macro-0.3.9 \
 		git2-0.18.3 \
@@ -77,35 +81,39 @@ CARGO_CRATES=	ahash-0.8.11 \
 		heck-0.4.1 \
 		heck-0.5.0 \
 		hermit-abi-0.3.9 \
+		home-0.5.9 \
 		iana-time-zone-0.1.60 \
 		iana-time-zone-haiku-0.1.2 \
 		idna-0.5.0 \
-		indexmap-2.2.5 \
-		indoc-2.0.4 \
+		indexmap-2.2.6 \
+		indoc-2.0.5 \
 		insta-1.38.0 \
 		is-terminal-0.4.12 \
 		itertools-0.10.5 \
 		itertools-0.12.1 \
-		itoa-1.0.10 \
-		jobserver-0.1.28 \
+		itoa-1.0.11 \
+		jobserver-0.1.30 \
 		js-sys-0.3.69 \
 		lazy_static-1.4.0 \
 		libc-0.2.153 \
 		libgit2-sys-0.16.2+1.7.2 \
-		libredox-0.0.1 \
-		libz-sys-1.1.15 \
+		libz-sys-1.1.16 \
 		linked-hash-map-0.5.6 \
+		linux-raw-sys-0.4.13 \
 		lock_api-0.4.11 \
 		log-0.4.21 \
 		lru-0.12.3 \
-		memchr-2.7.1 \
+		malloc_buf-0.0.6 \
+		memchr-2.7.2 \
 		minimal-lexical-0.2.1 \
 		mio-0.8.11 \
 		nom-7.1.3 \
 		num-traits-0.2.18 \
+		objc-0.2.7 \
+		objc-foundation-0.1.1 \
+		objc_id-0.1.1 \
 		once_cell-1.19.0 \
 		oorandom-11.1.3 \
-		option-ext-0.2.0 \
 		parking_lot-0.12.1 \
 		parking_lot_core-0.9.9 \
 		paste-1.0.14 \
@@ -115,19 +123,19 @@ CARGO_CRATES=	ahash-0.8.11 \
 		plotters-backend-0.3.5 \
 		plotters-svg-0.3.5 \
 		pretty_assertions-1.4.0 \
-		proc-macro2-1.0.78 \
+		proc-macro2-1.0.79 \
 		quote-1.0.35 \
 		ratatui-0.26.1 \
-		rayon-1.9.0 \
+		rayon-1.10.0 \
 		rayon-core-1.12.1 \
 		redox_syscall-0.1.57 \
 		redox_syscall-0.4.1 \
-		redox_users-0.4.4 \
-		regex-1.10.3 \
+		regex-1.10.4 \
 		regex-automata-0.1.10 \
 		regex-automata-0.4.6 \
-		regex-syntax-0.8.2 \
+		regex-syntax-0.8.3 \
 		rustc_version-0.4.0 \
+		rustix-0.38.32 \
 		rustversion-1.0.14 \
 		ryu-1.0.17 \
 		same-file-1.0.6 \
@@ -135,24 +143,24 @@ CARGO_CRATES=	ahash-0.8.11 \
 		semver-1.0.22 \
 		serde-1.0.197 \
 		serde_derive-1.0.197 \
-		serde_json-1.0.114 \
+		serde_json-1.0.115 \
 		serde_spanned-0.6.5 \
 		signal-hook-0.3.17 \
 		signal-hook-mio-0.2.3 \
 		signal-hook-registry-1.4.1 \
 		similar-2.5.0 \
 		simple-logging-2.0.2 \
-		smallvec-1.13.1 \
+		smallvec-1.13.2 \
 		stability-0.1.1 \
 		static_assertions-1.1.0 \
 		strsim-0.11.0 \
 		strum-0.26.2 \
-		strum_macros-0.26.1 \
+		strum_macros-0.26.2 \
 		syn-1.0.109 \
-		syn-2.0.52 \
+		syn-2.0.55 \
 		temp-dir-0.1.13 \
-		thiserror-1.0.57 \
-		thiserror-impl-1.0.57 \
+		thiserror-1.0.58 \
+		thiserror-impl-1.0.58 \
 		thread-id-3.3.0 \
 		tinytemplate-1.2.1 \
 		tinyvec-1.6.0 \
@@ -160,6 +168,26 @@ CARGO_CRATES=	ahash-0.8.11 \
 		toml-0.8.12 \
 		toml_datetime-0.6.5 \
 		toml_edit-0.22.9 \
+		tree-sitter-0.20.10 \
+		tree-sitter-bash-0.20.5 \
+		tree-sitter-c-0.20.8 \
+		tree-sitter-c-sharp-0.20.0 \
+		tree-sitter-cpp-0.20.5 \
+		tree-sitter-go-0.20.0 \
+		tree-sitter-haskell-0.15.0 \
+		tree-sitter-highlight-0.20.1 \
+		tree-sitter-html-0.20.0 \
+		tree-sitter-java-0.20.2 \
+		tree-sitter-javascript-0.20.4 \
+		tree-sitter-json-0.20.2 \
+		tree-sitter-ocaml-0.20.4 \
+		tree-sitter-php-0.20.0 \
+		tree-sitter-python-0.20.4 \
+		tree-sitter-ruby-0.20.1 \
+		tree-sitter-rust-0.20.4 \
+		tree-sitter-scala-0.20.3 \
+		tree-sitter-toml-0.20.0 \
+		tree-sitter-typescript-0.20.5 \
 		tui-prompts-0.3.10 \
 		uncased-0.9.10 \
 		unicode-bidi-0.3.15 \
@@ -203,6 +231,8 @@ CARGO_CRATES=	ahash-0.8.11 \
 		windows_x86_64_msvc-0.48.5 \
 		windows_x86_64_msvc-0.52.4 \
 		winnow-0.6.5 \
+		x11rb-0.13.0 \
+		x11rb-protocol-0.13.0 \
 		yansi-0.5.1 \
 		zerocopy-0.7.32 \
 		zerocopy-derive-0.7.32

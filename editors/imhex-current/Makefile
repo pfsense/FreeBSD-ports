@@ -99,9 +99,18 @@ NLS_USES=	gettext
 
 .include <bsd.port.pre.mk>
 
-.if (${OSVERSION} < 1302510) \
-	|| (${OSVERSION} >= 1400000 && ${OSVERSION} < 1400504)
+# Before LLVM 17 import into the base system
+.if (${OSVERSION} < 1302510 \
+    || (${OSREL:R} == 14 && ${OSVERSION} < 1400504) \
+    || (${OSREL:R} == 15 && ${OSVERSION} < 1500006))
 IGNORE=	requires libc++ of LLVM 17 on the base system
+.endif
+
+# After LLVM 18 import into the base system
+.if ((${OSREL:R} == 15 && ${OSVERSION} >= 1500018) \
+    || (${OSREL:R} == 14 && ${OSVERSION} >= 1400511) \
+    || (${OSREL:R} == 13 && ${OSVERSION} >= 1303503))
+CXXFLAGS+=	-fexperimental-library -D_LIBCPP_ENABLE_EXPERIMENTAL
 .endif
 
 post-extract:
@@ -115,13 +124,18 @@ post-extract:
 	${CP} -R ${WRKSRC_edlib}/* ${WRKSRC}/lib/third_party/edlib
 	${CP} -R ${WRKSRC_fmt}/* ${WRKSRC}/lib/third_party/fmt
 	${CP} -R ${WRKSRC_hashlibplus}/* ${WRKSRC}/lib/third_party/HashLibPlus
-	${CP} -R ${WRKSRC_jthread}/* ${WRKSRC}/lib/third_party/jthread
 	${CP} -R ${WRKSRC_nativefiledialog}/* ${WRKSRC}/lib/third_party/nativefiledialog
 	${CP} -R ${WRKSRC_yara}/* ${WRKSRC}/lib/third_party/yara/yara
 	${MKDIR} ${WRKDIR}/.build/_deps/imhex_patterns_src
 	${CP} -R ${WRKSRC_imhex_patterns}/* ${WRKDIR}/.build/_deps/imhex_patterns_src
 	${CP} -R ${WRKDIR}/imhex-bastion-pats-${GL_TAG_IMHEX_BASTION_PATS}/* ${WRKDIR}/.build/_deps/imhex_patterns_src/patterns/bastion
 	${CP} -R ${WRKDIR}/imhex-ffx-pats-${GL_TAG_IMHEX_FFX_PATS}/* ${WRKDIR}/.build/_deps/imhex_patterns_src/patterns/ffx
+# Before LLVM 18 import into the base system
+.if ((${OSREL:R} == 15 && ${OSVERSION} < 1500018) \
+    || (${OSREL:R} == 14 && ${OSVERSION} < 1400511) \
+    || (${OSREL:R} == 13 && ${OSVERSION} < 1303503))
+	${CP} -R ${WRKSRC_jthread}/* ${WRKSRC}/lib/third_party/jthread
+.endif
 
 post-patch:
 	${CP} -R ${WRKSRC}/lib/external/libwolv/* ${WRKSRC}/lib/external/pattern_language/external/libwolv

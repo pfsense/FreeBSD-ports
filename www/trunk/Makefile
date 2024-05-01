@@ -1,7 +1,6 @@
 PORTNAME=	trunk
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.19.1
-PORTREVISION=	1
+DISTVERSION=	0.19.3
 CATEGORIES=	www devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,6 +18,8 @@ USES=		cargo
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	thedodd
+
+RUSTFLAGS=	${ARCH:S/i386/YES/:C/^[a-z].*//:S/YES/-C target-feature=+sse,+sse2/} # add sse sse2 target-features only on i386
 
 CARGO_CRATES=	addr2line-0.21.0 \
 		adler-1.0.2 \

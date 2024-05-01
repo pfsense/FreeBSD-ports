@@ -1,6 +1,5 @@
 PORTNAME=	gtkwave
-DISTVERSION=	3.3.117
-PORTREVISION=	3
+DISTVERSION=	3.3.119
 CATEGORIES=	cad
 MASTER_SITES=	http://gtkwave.sourceforge.net/
 DISTNAME=	${PORTNAME}-gtk3-${DISTVERSION}
@@ -19,7 +18,6 @@ USES=		compiler:c++11-lang desktop-file-utils gettext gmake gnome \
 USE_GNOME=	cairo gdkpixbuf2 gtk30
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-mime-update \
 		--enable-gtk3 \
 		--without-gconf

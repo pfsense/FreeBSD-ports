@@ -1,7 +1,7 @@
 PORTNAME=	openxr
-DISTVERSION=	1.0.34
-CATEGORIES=	graphics
 DISTVERSIONPREFIX=	release-
+DISTVERSION=	1.1.36
+CATEGORIES=	graphics
 
 MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	OpenXR provides access to Augmented and Virtual Reality (XR-platforms)

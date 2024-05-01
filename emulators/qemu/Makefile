@@ -1,6 +1,5 @@
 PORTNAME=	qemu
-PORTVERSION=	8.2.2
-PORTREVISION=	1
+DISTVERSION=	9.0.0
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
@@ -19,8 +18,9 @@ ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 BUILD_DEPENDS=	bash:shells/bash
 .if ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent
 LIB_DEPENDS+=	libfdt.so:sysutils/dtc \
-		libzstd.so:archivers/zstd \
-		libslirp.so:net/libslirp
+		libinotify.so:devel/libinotify \
+		libslirp.so:net/libslirp \
+		libzstd.so:archivers/zstd
 .endif
 .if (${FLAVOR:U} != nox11 && ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent)
 LIB_DEPENDS+=	libepoxy.so:graphics/libepoxy
@@ -156,7 +156,7 @@ STATIC_LINK_DESC=		Statically link the executables
 USBREDIR_DESC=			usb device network redirection (experimental!)
 VDE_DESC=			vde dependency (for vde networking)
 X86_TARGETS_DESC=		Build only x86 system targets
-CAPSTONE_LIB_DEPENDS=		libcapstone.so:devel/capstone4
+CAPSTONE_LIB_DEPENDS=		libcapstone.so:devel/capstone
 CAPSTONE_CONFIGURE_ON=		--enable-capstone \
 				--extra-cflags=-I${LOCALBASE}/include/capstone
 CAPSTONE_CONFIGURE_OFF=		--disable-capstone
@@ -238,7 +238,7 @@ PLIST_SUB+=	LINUXBOOT_DMA=""
 .endif
 
 post-patch-CDROM_DMA-off:
-	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/include/hw/ide/internal.h
+	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/hw/ide/ide-internal.h
 
 do-build:
 	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${GMAKE} -j${MAKE_JOBS_NUMBER}

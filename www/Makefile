@@ -207,7 +207,7 @@
     SUBDIR += ghostunnel
     SUBDIR += gist
     SUBDIR += gitea
-    SUBDIR += gitlab-ce
+    SUBDIR += gitlab
     SUBDIR += gitlab-pages
     SUBDIR += gitlab-workhorse
     SUBDIR += glassfish
@@ -422,7 +422,6 @@
     SUBDIR += mod_scgi
     SUBDIR += mod_security
     SUBDIR += mod_setenvifplus
-    SUBDIR += mod_tidy
     SUBDIR += mod_umask
     SUBDIR += mod_webauth
     SUBDIR += mod_webkit
@@ -436,6 +435,7 @@
     SUBDIR += moodle41
     SUBDIR += moodle42
     SUBDIR += moodle43
+    SUBDIR += moodle44
     SUBDIR += morty
     SUBDIR += multisort
     SUBDIR += multiwatch
@@ -683,7 +683,6 @@
     SUBDIR += p5-Catalyst-Plugin-Email
     SUBDIR += p5-Catalyst-Plugin-ErrorCatcher
     SUBDIR += p5-Catalyst-Plugin-FillInForm
-    SUBDIR += p5-Catalyst-Plugin-FormBuilder
     SUBDIR += p5-Catalyst-Plugin-FormValidator
     SUBDIR += p5-Catalyst-Plugin-I18N
     SUBDIR += p5-Catalyst-Plugin-Log-Dispatch
@@ -1332,7 +1331,6 @@
     SUBDIR += p5-chklinks
     SUBDIR += p5-jQuery-File-Upload
     SUBDIR += p5-libapreq2
-    SUBDIR += p5-libservlet
     SUBDIR += p5-libwww
     SUBDIR += p5-pQuery
     SUBDIR += p5-webservice-validator-css-w3c
@@ -1552,7 +1550,6 @@
     SUBDIR += py-django-csp
     SUBDIR += py-django-debreach
     SUBDIR += py-django-debug-toolbar
-    SUBDIR += py-django-dpaste
     SUBDIR += py-django-extensions
     SUBDIR += py-django-filer
     SUBDIR += py-django-filter
@@ -2369,6 +2366,7 @@
     SUBDIR += tdom
     SUBDIR += template_
     SUBDIR += templatelite
+    SUBDIR += tgpt
     SUBDIR += thirtybees
     SUBDIR += threejs
     SUBDIR += threema-web
@@ -2385,6 +2383,7 @@
     SUBDIR += tokyopromenade
     SUBDIR += tomcat-devel
     SUBDIR += tomcat-native
+    SUBDIR += tomcat-native2
     SUBDIR += tomcat101
     SUBDIR += tomcat85
     SUBDIR += tomcat9

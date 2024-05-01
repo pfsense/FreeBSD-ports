@@ -1,5 +1,6 @@
 PORTNAME=	ocp
 PORTVERSION=	0.2.109
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://stian.cubic.org/ocp/
@@ -27,7 +28,6 @@ USES=		compiler:c11 dos2unix gmake gnome iconv jpeg localbase:ldflags \
 		makeinfo ncurses pkgconfig shared-mime-info tar:xz
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--libdir=${PREFIX}/lib \
 		--with-dir-suffix="" \
 		--without-sdl \

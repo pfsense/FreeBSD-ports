@@ -34,7 +34,6 @@ include/glaze/compare/compare.hpp
 include/glaze/concepts/container_concepts.hpp
 include/glaze/core/common.hpp
 include/glaze/core/context.hpp
-include/glaze/core/macros.hpp
 include/glaze/core/meta.hpp
 include/glaze/core/opts.hpp
 include/glaze/core/ptr.hpp
@@ -47,6 +46,7 @@ include/glaze/csv/write.hpp
 include/glaze/exceptions/binary_exceptions.hpp
 include/glaze/exceptions/csv_exceptions.hpp
 include/glaze/exceptions/json_exceptions.hpp
+include/glaze/ext/README.md
 include/glaze/ext/cli_menu.hpp
 include/glaze/ext/eigen.hpp
 include/glaze/ext/glaze_asio.hpp
@@ -61,9 +61,12 @@ include/glaze/hardware/volatile_array.hpp
 include/glaze/json.hpp
 include/glaze/json/custom.hpp
 include/glaze/json/invoke.hpp
+include/glaze/json/json_format.hpp
 include/glaze/json/json_ptr.hpp
 include/glaze/json/json_t.hpp
 include/glaze/json/manage.hpp
+include/glaze/json/max_write_precision.hpp
+include/glaze/json/minify.hpp
 include/glaze/json/ndjson.hpp
 include/glaze/json/prettify.hpp
 include/glaze/json/ptr.hpp
@@ -80,15 +83,18 @@ include/glaze/reflection/reflect.hpp
 include/glaze/reflection/to_tuple.hpp
 include/glaze/rpc/repe.hpp
 include/glaze/thread/threadpool.hpp
+include/glaze/trace/trace.hpp
 include/glaze/tuplet/tuple.hpp
 include/glaze/util/any.hpp
 include/glaze/util/bit_array.hpp
 include/glaze/util/comment.hpp
+include/glaze/util/compare.hpp
 include/glaze/util/dtoa.hpp
 include/glaze/util/dump.hpp
 include/glaze/util/expected.hpp
 include/glaze/util/for_each.hpp
 include/glaze/util/hash_map.hpp
+include/glaze/util/help.hpp
 include/glaze/util/inline.hpp
 include/glaze/util/itoa.hpp
 include/glaze/util/murmur.hpp

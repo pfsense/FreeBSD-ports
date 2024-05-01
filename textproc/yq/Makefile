@@ -1,5 +1,5 @@
 PORTNAME=	yq
-DISTVERSION=	3.2.3
+DISTVERSION=	3.4.3
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 
@@ -10,8 +10,9 @@ WWW=		https://kislyuk.github.io/yq/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=3.4.3:devel/py-setuptools-scm@${PY_FLAVOR}
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=7:devel/py-setuptools-scm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	jq:textproc/jq \
 		${PYTHON_PKGNAMEPREFIX}argcomplete>=1.8.1:devel/py-argcomplete@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyaml>=5.3.1:textproc/py-pyaml@${PY_FLAVOR} \
@@ -24,7 +25,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}build>0:devel/py-build@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 
 USES=		python shebangfix
-USE_PYTHON=	distutils noflavors autoplist
+USE_PYTHON=	pep517 noflavors autoplist
 
 SHEBANG_FILES=	test/test.py
 
@@ -34,7 +35,7 @@ CONFLICTS_INSTALL=	go-yq
 
 NO_ARCH=	yes
 
-do-test: # tests fail: https://github.com/kislyuk/yq/issues/168
+do-test: # tests fail: https://github.com/mikefarah/yq/issues/2016
 	@cd ${WRKSRC}/test && ${SETENV} ${TEST_ENV} ./test.py
 
 .include <bsd.port.mk>

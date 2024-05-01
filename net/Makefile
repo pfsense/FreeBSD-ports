@@ -157,6 +157,8 @@
     SUBDIR += foreman-proxy
     SUBDIR += fort
     SUBDIR += fping
+    SUBDIR += freebsd-route6d
+    SUBDIR += freebsd-routed
     SUBDIR += freebsd-telnetd
     SUBDIR += freebsd-uucp
     SUBDIR += freediameter
@@ -206,7 +208,6 @@
     SUBDIR += gopher
     SUBDIR += goreplay
     SUBDIR += gorss
-    SUBDIR += gost
     SUBDIR += gotthard
     SUBDIR += graphpath
     SUBDIR += grilo

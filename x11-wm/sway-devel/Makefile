@@ -1,12 +1,8 @@
 PORTNAME=	sway
-DISTVERSION=	1.9-103 # git rev-list --count 1.9..
-DISTVERSIONSUFFIX=	-g2e951163c
+DISTVERSION=	1.9-125 # git rev-list --count 1.9..
+DISTVERSIONSUFFIX=	-g087226d99
 CATEGORIES=	x11-wm wayland
 PKGNAMESUFFIX=	-devel
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	15575bf1c085.patch:-p1 # https://github.com/swaywm/sway/pull/5090
-PATCHFILES+=	1f1c83e83a1a.patch:-p1 # https://github.com/swaywm/sway/pull/5090
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	i3-compatible Wayland compositor (development snapshot)

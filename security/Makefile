@@ -269,7 +269,6 @@
     SUBDIR += kpkpass
     SUBDIR += kpmenu
     SUBDIR += krb5
-    SUBDIR += krb5-119
     SUBDIR += krb5-120
     SUBDIR += krb5-121
     SUBDIR += krb5-devel
@@ -1228,7 +1227,6 @@
     SUBDIR += samhain
     SUBDIR += samhain-client
     SUBDIR += samhain-server
-    SUBDIR += sancp
     SUBDIR += sasp
     SUBDIR += scanlogd
     SUBDIR += scrypt

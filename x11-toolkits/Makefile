@@ -7,6 +7,7 @@
     SUBDIR += blt
     SUBDIR += bwidget
     SUBDIR += color-widgets-qt5
+    SUBDIR += como
     SUBDIR += copperspice
     SUBDIR += ctk
     SUBDIR += fltk
@@ -23,6 +24,7 @@
     SUBDIR += gstreamer1-plugins-gtk
     SUBDIR += gstreamer1-plugins-pango
     SUBDIR += gtk-layer-shell
+    SUBDIR += gtk-session-lock
     SUBDIR += gtk-sharp-beans
     SUBDIR += gtk-sharp20
     SUBDIR += gtk-sharp30
@@ -114,10 +116,8 @@
     SUBDIR += osm-gps-map
     SUBDIR += otk
     SUBDIR += p5-Alien-wxWidgets
-    SUBDIR += p5-Glade2
     SUBDIR += p5-Gtk2
     SUBDIR += p5-Gtk2-Chmod
-    SUBDIR += p5-Gtk2-Ex-Dialogs
     SUBDIR += p5-Gtk2-Ex-FormFactory
     SUBDIR += p5-Gtk2-Ex-PodViewer
     SUBDIR += p5-Gtk2-Ex-Simple-List
@@ -140,7 +140,6 @@
     SUBDIR += p5-Tk-Date
     SUBDIR += p5-Tk-DynaTabFrame
     SUBDIR += p5-Tk-Enscript
-    SUBDIR += p5-Tk-FileDialog
     SUBDIR += p5-Tk-FontDialog
     SUBDIR += p5-Tk-GBARR
     SUBDIR += p5-Tk-Getopt
@@ -218,6 +217,7 @@
     SUBDIR += rubygem-uh
     SUBDIR += rubygem-vte3
     SUBDIR += rubygem-vte4
+    SUBDIR += scenefx
     SUBDIR += scintilla
     SUBDIR += sdl_pango
     SUBDIR += shared-desktop-ontologies
@@ -228,7 +228,6 @@
     SUBDIR += termit
     SUBDIR += tix
     SUBDIR += tk-wrapper
-    SUBDIR += tk85
     SUBDIR += tk86
     SUBDIR += tk87
     SUBDIR += tkdnd

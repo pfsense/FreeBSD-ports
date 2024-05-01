@@ -1,7 +1,8 @@
 PORTNAME=	got
-DISTVERSION=	0.97
+DISTVERSION=	0.98.2
 CATEGORIES=	devel
-MASTER_SITES=	https://gameoftrees.org/releases/
+MASTER_SITES=	https://gameoftrees.org/releases/portable/
+DISTNAME=	got-portable-${DISTVERSION}
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Game of Trees version control system
@@ -10,25 +11,20 @@ WWW=		https://gameoftrees.org
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-USES=		uidfix
+USES=		localbase pkgconfig ssl
 
 CONFLICTS_INSTALL=	p5-App-GitGot
 
-# Insert #include "openbsd-compat.h" into each source file,
-# after the <...> includes and before the "..." ones.
-n=		${.newline}
-post-extract:
-	@${FIND} ${WRKSRC} -name '*.[cy]' -exec \
-	    ${REINPLACE_CMD} '1,/^#include "/{ \
-	    /^#include "/i\$n#include "openbsd-compat.h"\$n$n}' \
-	    {} +
-	${CP} -R ${FILESDIR}/openbsd-compat ${WRKSRC}
+GNU_CONFIGURE=	Yes
 
-# The regression test suite requires:
-#  installed got
-#  installed git
-#  ssh to 127.0.0.1
-regress:
-	@(cd ${WRKSRC}/regress && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} regress)
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+# When using LibreSSL use its own libtls, but when using OpenSSL
+# use libtls from libretls.
+.if ${SSL_DEFAULT:Mlibressl*}
+#	/* empty */
+.else
+LIB_DEPENDS+=	libtls.so:security/libretls
+.endif # SSL_DEFAULT
+
+.include <bsd.port.post.mk>

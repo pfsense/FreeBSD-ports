@@ -1,5 +1,5 @@
 PORTNAME=	webp
-PORTVERSION=	1.3.2
+PORTVERSION=	1.4.0
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://downloads.webmproject.org/releases/webp/ \
@@ -20,7 +20,6 @@ CONFIGURE_ARGS=	--enable-libwebpdecoder \
 		--enable-libwebpmux \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 

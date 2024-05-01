@@ -39,6 +39,7 @@
     SUBDIR += and
     SUBDIR += android-file-transfer
     SUBDIR += android-file-transfer-qt5
+    SUBDIR += android-ota-payload-extractor
     SUBDIR += angrysearch
     SUBDIR += ansible
     SUBDIR += ansible-iocage
@@ -71,7 +72,6 @@
     SUBDIR += atf-rk3399
     SUBDIR += atf-sun50i_a64
     SUBDIR += atf-sun50i_h6
-    SUBDIR += atitvout
     SUBDIR += atop
     SUBDIR += auto-admin
     SUBDIR += autojump
@@ -217,6 +217,7 @@
     SUBDIR += clockspeed
     SUBDIR += clone
     SUBDIR += clonehdd
+    SUBDIR += cloud-nuke
     SUBDIR += cloudabi-utils
     SUBDIR += clsync
     SUBDIR += cluster-glue
@@ -298,8 +299,8 @@
     SUBDIR += devstat
     SUBDIR += dfc
     SUBDIR += di
+    SUBDIR += diffoci
     SUBDIR += digdag
-    SUBDIR += dim
     SUBDIR += dirdiff
     SUBDIR += direnv
     SUBDIR += direvent
@@ -320,7 +321,6 @@
     SUBDIR += docker-registry
     SUBDIR += doctl
     SUBDIR += doinkd
-    SUBDIR += dolly
     SUBDIR += downtimed
     SUBDIR += dsbbatmon
     SUBDIR += dsbdriverd
@@ -676,7 +676,6 @@
     SUBDIR += libg15render
     SUBDIR += libieee1284
     SUBDIR += libptytty
-    SUBDIR += libretto-config
     SUBDIR += libsunacl
     SUBDIR += libsysstat
     SUBDIR += libtpms
@@ -802,7 +801,6 @@
     SUBDIR += msiklm
     SUBDIR += msktutil
     SUBDIR += mstflint
-    SUBDIR += msyslog
     SUBDIR += mtm
     SUBDIR += mtpfs
     SUBDIR += mtxorbd
@@ -829,7 +827,6 @@
     SUBDIR += nix
     SUBDIR += nmdaemon
     SUBDIR += nmrpflash
-    SUBDIR += no-login
     SUBDIR += node_exporter
     SUBDIR += nomad
     SUBDIR += nomad-pot-driver
@@ -1032,6 +1029,7 @@
     SUBDIR += plasma5-polkit-kde-agent-1
     SUBDIR += plasma5-powerdevil
     SUBDIR += plasma5-systemsettings
+    SUBDIR += plasma6-discover
     SUBDIR += plasma6-drkonqi
     SUBDIR += plasma6-kde-cli-tools
     SUBDIR += plasma6-kinfocenter
@@ -1677,6 +1675,7 @@
     SUBDIR += zbackup
     SUBDIR += zeitgeist
     SUBDIR += zellij
+    SUBDIR += zelta
     SUBDIR += zeroer
     SUBDIR += zetaback
     SUBDIR += zetaback-devel

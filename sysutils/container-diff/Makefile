@@ -1,7 +1,7 @@
 PORTNAME=	container-diff
 PORTVERSION=	0.19.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://github.com/GoogleContainerTools/container-diff
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	The repository has been archived by the owner on 2024-03-28. Upstream suggests diffoci as alternative
+EXPIRATION_DATE=2024-06-30
 
 USES=		go:modules
 
