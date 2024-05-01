@@ -2,7 +2,7 @@
 
 PORTNAME?=	pfSense-pkg-zabbix-agent
 PORTVERSION=	1.0.6
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
