@@ -1225,6 +1225,7 @@ EOD;
 
 	// For pfSense cert manager
 	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
+	$ca_cert = $ca_cert['item'];
 	if ($ca_cert == false) {
 		/* Generate CA with generic details */
 		$ca = array();
@@ -1238,9 +1239,7 @@ EOD;
 		} else {
 			$eapconf["ssl_ca_cert"] = $ca['refid'];
 			$ca_cert = $ca;
-			$a_ca = config_get_path('ca');
-			$a_ca[] = $ca;
-			config_set_path('ca', $a_ca);
+			config_set_path('ca/', $ca);
 			$cert = array();
 			$cert['refid'] = uniqid();
 			$cert['descr'] = "FreeRADIUS Server Certificate";
@@ -1265,9 +1264,10 @@ EOD;
 		}
 
 		if (base64_decode($ca_cert['crt'])) {
-			$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
+			$crl_cert_config = lookup_crl($eapconf["ssl_ca_crl"]);
+			$crl_cert = &$crl_cert_config['item'];
 			if ($crl_cert != false) {
-				crl_update($crl_cert);
+				crl_update($crl_cert_config);
 				$crl = base64_decode($crl_cert['text']);
 				$check_crl = "check_crl = yes";
 			} else {
@@ -1277,6 +1277,7 @@ EOD;
 		}
 
 		$svr_cert = lookup_cert($eapconf["ssl_server_cert"]);
+		$svr_cert = $svr_cert['item'];
 		if ($svr_cert != false) {
 			if (base64_decode($svr_cert['prv'])) {
 				file_put_contents(FREERADIUS_CERTS . "/server_key.pem", base64_decode($svr_cert['prv']));
@@ -2787,11 +2788,13 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	if ($arrmodulesldap['varmodulesldapenabletlssupport'] == 'on') {
 
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert1"]);
+		$ca_cert = $ca_cert['item'];
 		if ($ca_cert != false) {
 			if (base64_decode($ca_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/ca_ldap1_cert.pem", base64_decode($ca_cert['crt']));
 			}
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert1"]);
+			$svr_cert = $svr_cert['item'];
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap1_cert.key", base64_decode($svr_cert['prv']));
@@ -2824,12 +2827,14 @@ EOD;
 	if ($arrmodulesldap['varmodulesldap2enabletlssupport'] == 'on') {
 
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert2"]);
+		$ca_cert = $ca_cert['item'];
 		if ($ca_cert != false) {
 			if (base64_decode($ca_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/ca_ldap2_cert.pem", base64_decode($ca_cert['crt']));
 			}
 
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert2"]);
+			$svr_cert = $svr_cert['item'];
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap2_cert.key", base64_decode($svr_cert['prv']));
@@ -4539,7 +4544,7 @@ function freeradius_validate_ldap($post, &$input_errors) {
 
 function freeradius_plugin_certificates($pluginparams) {
 	$result = array();
-	init_config_arr(array('installedpackages', 'freeradiuseapconf', 'config'));
+	config_init_path('installedpackages/freeradiuseapconf/config');
 	$eapconf = config_get_path('installedpackages/freeradiuseapconf/config/0', []);
 
 	if (($pluginparams['type'] == 'certificates') && !empty($eapconf)) {
