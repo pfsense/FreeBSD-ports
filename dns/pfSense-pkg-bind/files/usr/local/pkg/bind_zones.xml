@@ -133,7 +133,7 @@
 			<fieldname>view</fieldname>
 			<description>Select (CTRL+click) the views that this zone will belong to.</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['installedpackages']['bindviews']['config']]]></source>
+			<source><![CDATA[config_get_path('installedpackages/bindviews/config')]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>
@@ -305,7 +305,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['installedpackages']['bindacls']['config']]]></source>
+			<source><![CDATA[config_get_path('installedpackages/bindacls/config')]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>
@@ -345,7 +345,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['installedpackages']['bindacls']['config']]]></source>
+			<source><![CDATA[config_get_path('installedpackages/bindacls/config')]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>
@@ -367,7 +367,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['installedpackages']['bindacls']['config']]]></source>
+			<source><![CDATA[config_get_path('installedpackages/bindacls/config')]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>
