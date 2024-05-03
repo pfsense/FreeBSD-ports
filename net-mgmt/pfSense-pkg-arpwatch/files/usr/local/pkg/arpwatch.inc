@@ -24,12 +24,10 @@ define('ARPWATCH_SENDMAIL_PATH', '/usr/sbin/sendmail');
 define('ARPWATCH_SENDMAIL_PROXY', '/usr/local/arpwatch/sendmail_proxy.php');
 
 function arpwatch_install_command() {
-	global $config;
-
 	// sendmail proxy
 	arpwatch_install_sendmail_proxy();
 
-	$arpwatch_config = $config['installedpackages']['arpwatch']['config'][0];
+	$arpwatch_config = config_get_path('installedpackages/arpwatch/config/0');
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 	$notifications_recipient = $arpwatch_config['notifications_recipient'];
 	$enable_zeropad = ($arpwatch_config['zeropad'] == 'on') ? '-Z' : '-C';
@@ -87,10 +85,8 @@ function arpwatch_install_command() {
 }
 
 function arpwatch_deinstall_command() {
-	global $config;
-
-	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0));
-	if ($config['installedpackages']['arpwatch']['config'][0]['clear_database'] == 'on') {
+	config_init_path('installedpackages/arpwatch/config/0');
+	if (config_get_path('installedpackages/arpwatch/config/0/clear_database') == 'on') {
 		arpwatch_clear_database();
 	}
 	arpwatch_uninstall_sendmail_proxy();
@@ -144,9 +140,7 @@ function arpwatch_clear_database() {
 }
 
 function arpwatch_parse_database() {
-	global $config;
-
-	$arpwatch_config = $config['installedpackages']['arpwatch']['config'][0];
+	$arpwatch_config = config_get_path('installedpackages/arpwatch/config/0');
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 
 	$database = array();
@@ -226,8 +220,6 @@ function arpwatch_install_sendmail_proxy() {
 	$sendmail_proxy =<<< 'EOF'
 #!/usr/bin/env php
 <?php
-
-global $config;
 require_once("notices.inc");
 
 $fd = fopen('php://stdin','r');
@@ -235,11 +227,11 @@ $message = stream_get_contents($fd);
 fclose($fd);
 
 if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
-    ($config['installedpackages']['arpwatch']['config'][0]['disable_cron'] != 'on'))) {
+    (config_get_path('installedpackages/arpwatch/config/0/disable_cron') != 'on'))) {
 	$subject = array();
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
-	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0, 'row'));
-	foreach ($config['installedpackages']['arpwatch']['config'][0]['row'] as $sup) {
+	config_init_path('installedpackages/arpwatch/config/0/row');
+	foreach (config_get_path('installedpackages/arpwatch/config/0/row', []) as $sup) {
 		if (!empty($sup['mac']) && strpos($message, strtolower($sup['mac'])) &&
 		    (($sup['notification_type'] == 'all') || ($sup['notification_type'] == $subject[1]))) {
 			return;
@@ -249,7 +241,7 @@ if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
 	$message = preg_replace('/^To: .*$/m', '', $message);
 	$message = preg_replace('/^Subject: .*$/m', '', $message);
 	$message = preg_replace("/^(\n){4}/", '', $message);
-	$send_subject = "{$config['system']['hostname']}.{$config['system']['domain']} - Arpwatch Notification : {$subject[1]}";
+	$send_subject = config_get_path('system/hostname') . config_get_path('system/domain') . " - Arpwatch Notification : {$subject[1]}";
 
 	send_smtp_message($message, $send_subject);
 	if (function_exists('notify_via_telegram')) {
