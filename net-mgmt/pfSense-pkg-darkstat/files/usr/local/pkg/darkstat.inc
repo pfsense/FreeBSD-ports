@@ -27,12 +27,8 @@ require_once('service-utils.inc');
 require_once('util.inc');
 
 function sync_package_darkstat() {
-	global $config, $darkstat_config;
-	if (is_array($config['installedpackages']['darkstat'])) {
-		$darkstat_config =& $config['installedpackages']['darkstat']['config'][0];
-	} else {
-		$darkstat_config = array();
-	}
+	global $darkstat_config;
+	$darkstat_config = config_get_path('installedpackages/darkstat/config/0', []);
 
 	/* If the service is (being) disabled, stop it (if running), remove rc script and do nothing else */
 	if ($darkstat_config['enable'] != "on") {
@@ -145,18 +141,17 @@ function sync_package_darkstat() {
 }
 
 function validate_input_darkstat($post, &$input_errors) {
-	global $config;
 	/* Validate Web Interface Port */
 	if ($post['port']) {
 		if (!is_port($post['port'])) {
 			$input_errors[] = gettext("The value for 'Web Interface Port' must be a valid port (1-65535).");
 		}
 		// Check webGUI port conflicts
-		$webgui_port = $config['system']['webgui']['port'];
-		if ($config['system']['webgui']['port'] == "") {
-			if ($config['system']['webgui']['protocol'] == "http") {
+		$webgui_port = config_get_path('system/webgui/port');
+		if (config_get_path('system/webgui/port') == "") {
+			if (config_get_path('system/webgui/protocol') == "http") {
 				$webgui_port = 80;
-			} elseif ($config['system']['webgui']['protocol'] == "https") {
+			} elseif (config_get_path('system/webgui/protocol') == "https") {
 				$webgui_port = 443;
 			}
 		}

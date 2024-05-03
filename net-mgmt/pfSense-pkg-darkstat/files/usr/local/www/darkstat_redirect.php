@@ -22,15 +22,8 @@
 $nocsrf = true;
 require_once("config.inc");
 require_once("guiconfig.inc");
-
-global $config;
-
 // Port
-if (is_array($config['installedpackages']['darkstat'])) {
-	$darkstat_config = $config['installedpackages']['darkstat']['config'][0];
-} else {
-	$darkstat_config = array();
-}
+$darkstat_config = config_get_path('installedpackages/darkstat/config/0', []);
 $port = $darkstat_config['port'] ?: '666';
 $host = $darkstat_config['host'] ?: '';
 
