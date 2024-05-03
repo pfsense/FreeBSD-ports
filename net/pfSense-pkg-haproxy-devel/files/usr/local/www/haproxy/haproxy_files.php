@@ -28,9 +28,6 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_files = &getarraybyref($config,'installedpackages','haproxy','files','item');
-$a_pools = &getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
-
 $fields_files = array();
 $fields_files[0]['name']="name";
 $fields_files[0]['columnheader']="Name";
@@ -60,10 +57,10 @@ if ($_POST) {
 		if ($result)
 			unlink_if_exists($d_haproxyconfdirty_path);
 	} else {
-		$a_files = $fileslist->haproxy_htmllist_get_values();
+		config_set_path('installedpackages/haproxy/files/item', $fileslist->haproxy_htmllist_get_values());
 		$filedupcheck = array();
 
-		foreach($a_files as $key => $file) {
+		foreach(config_get_path('installedpackages/haproxy/files/item', []) as $key => $file) {
 			$name = $file['name'];
 			if (!preg_match("/^[a-zA-Z][a-zA-Z0-9\.\-_]*$/", $file['name']))
 				$input_errors[] = "The field 'Name' (".htmlspecialchars($file['name']).") contains invalid characters. Use only: a-zA-Z0-9.-_ and start with a letter";
@@ -73,11 +70,12 @@ if ($_POST) {
 		}
 
 		// replace references in backends to renamed 'files'
+		$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item');
 		foreach($a_pools as &$backend) {
 			$a_errorfiles = getarraybyref($backend, 'errorfiles', 'item');
 			foreach($a_errorfiles as &$errorfile) {
 				$found = false;
-				foreach($a_files as $key => $file) {
+				foreach(config_get_path('installedpackages/haproxy/files/item', []) as $key => $file) {
 					if ($errorfile['errorfile'] == $key) {
 						$errorfile['errorfile'] = $file['name'];
 						$found = true;
@@ -88,6 +86,7 @@ if ($_POST) {
 				}
 			}
 		}
+		config_set_path('installedpackages/haproxy/ha_pools/item', $a_pools);
 		if (!$input_errors) {
 			// save config when no errors found
 			touch($d_haproxyconfdirty_path);
@@ -132,7 +131,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
 		<div class="table-responsive panel-body">
 			<?php
 			$counter=0;
-			echo $fileslist->Draw($a_files);
+			echo $fileslist->Draw(config_get_path('installedpackages/haproxy/files/item'));
 			?>
 		</div>
 	</div>

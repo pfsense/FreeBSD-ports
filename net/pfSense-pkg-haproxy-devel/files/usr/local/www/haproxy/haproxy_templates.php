@@ -23,7 +23,7 @@
 require_once("authgui.inc");
 require_once("config.inc");
 
-$pconfig = $config['installedpackages']['haproxy'];
+$pconfig = config_get_path('installedpackages/haproxy');
 require_once("guiconfig.inc");
 require_once("certs.inc");
 $shortcut_section = "haproxy";
@@ -33,13 +33,11 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_frontend = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
+$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
 
 function haproxy_add_stats_example() {
-	global $config, $d_haproxyconfdirty_path;
+	global $d_haproxyconfdirty_path;
 
-	$a_backends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
-	$a_frontends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
 	$webcert = haproxy_find_create_certificate("HAProxy stats default");
 
 	$backend = array();
@@ -47,7 +45,7 @@ function haproxy_add_stats_example() {
 	$backend["stats_enabled"] = "yes";
 	$backend["stats_uri"] = "/";
 	$backend["stats_refresh"] = "10";
-	$a_backends[] = $backend;
+	config_set_path('installedpackages/haproxy/ha_pools/item/', $backend);
 
 	$frontend = array();
 	$frontend["name"] = "HAProxy_stats_ssl_frontend";
@@ -58,7 +56,7 @@ function haproxy_add_stats_example() {
 	$frontend["a_extaddr"]["item"]["stats_name"]["extaddr_ssl"] = "yes";
 	$frontend["ssloffloadcert"] = $webcert['refid'];
 	$frontend["backend_serverpool"] = $backend["name"];
-	$a_frontends[] = $frontend;
+	config_set_path('installedpackages/haproxy/ha_backends/item/', $frontend);
 
 	$changedesc = "add new HAProxy stats example";
 
@@ -70,9 +68,8 @@ function haproxy_add_stats_example() {
 }
 
 function template_errorfile() {
-	global $config, $d_haproxyconfdirty_path, $savemsg;
+	global $d_haproxyconfdirty_path, $savemsg;
 
-	$a_files = &getarraybyref($config, 'installedpackages', 'haproxy', 'files', 'item');
 	$a_files_cache = haproxy_get_fileslist();
 	$changecount = 0;
 	if (!isset($a_files_cache["ExampleErrorfile"])) {
@@ -97,7 +94,7 @@ EOD;
 		$newfile = array();
 		$newfile['name'] = "ExampleErrorfile";
 		$newfile['content'] = base64_encode($errorfile);
-		$a_files[] = $newfile;
+		config_set_path('installedpackages/haproxy/files/item/', $newfile);
 		$changecount++;
 		$changedesc = "Errorfile added from template";
 	} else {
@@ -115,10 +112,7 @@ EOD;
 }
 
 function haproxy_template_multipledomains() {
-	global $config, $d_haproxyconfdirty_path;
-
-	$a_backends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
-	$a_frontends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
+	global $d_haproxyconfdirty_path;
 
 	$backend = array();
 	$backend["name"] = "example_backend1";
@@ -127,7 +121,7 @@ function haproxy_template_multipledomains() {
 	$backend["stats_refresh"] = "10";
 	$backend["stats_scope"] = ".";
 	$backend["stats_node"] = "NODE1";
-	$a_backends[] = $backend;
+	config_set_path('installedpackages/haproxy/ha_pools/item/', $backend);
 
 	$backend = array();
 	$backend["name"] = "example_backend2";
@@ -136,7 +130,7 @@ function haproxy_template_multipledomains() {
 	$backend["stats_refresh"] = "10";
 	$backend["stats_scope"] = ".";
 	$backend["stats_node"] = "NODE2";
-	$a_backends[] = $backend;
+	config_set_path('installedpackages/haproxy/ha_pools/item/', $backend);
 
 	$backend = array();
 	$backend["name"] = "example_backend3";
@@ -145,7 +139,7 @@ function haproxy_template_multipledomains() {
 	$backend["stats_refresh"] = "10";
 	$backend["stats_scope"] = ".";
 	$backend["stats_node"] = "NODE3";
-	$a_backends[] = $backend;
+	config_set_path('installedpackages/haproxy/ha_pools/item/', $backend);
 
 	$frontend = array();
 	$frontend["name"] = "example_multipledomains";
@@ -164,7 +158,7 @@ function haproxy_template_multipledomains() {
 	$action["use_backendbackend"] = "example_backend2";
 	$action["acl"] = "mail_acl";
 	$frontend["a_actionitems"]["item"][] = $action;
-	$a_frontends[] = $frontend;
+	config_set_path('installedpackages/haproxy/ha_backends/item/', $frontend);
 
 	$frontend = array();
 	$frontend["name"] = "example_multipledomains_forum";
@@ -181,7 +175,7 @@ function haproxy_template_multipledomains() {
 	$action["use_backendbackend"] = "example_backend3";
 	$action["acl"] = "forum_acl";
 	$frontend["a_actionitems"]["item"][] = $action;
-	$a_frontends[] = $frontend;
+	config_set_path('installedpackages/haproxy/ha_backends/item/', $frontend);
 
 	$changedesc = "haproxy, add multi domain example";
 	header("Location: haproxy_listeners.php");
