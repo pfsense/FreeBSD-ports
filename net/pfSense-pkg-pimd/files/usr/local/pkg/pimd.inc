@@ -45,8 +45,6 @@ require_once("pimd/inc/pimd_validation.inc");
 /* Build a list of assigned/enabled interfaces, formatted for use in a selection
  * list, including IP Aliases, CARP VIPs, and OpenVPN interfaces. */
 function pimd_get_interfaces($includedefault = true, $includevips = true, $includelocalhost = false, $nameprefix = "", $valueprefix = "") {
-	global $config;
-
 	/* Only include the 'default' option when requested, some places like
 	 * OSPF interface selections can't use 'default'.
 	 */
@@ -105,7 +103,7 @@ function pimd_get_list_values($arr) {
 }
 
 function pimd_generate_rcfile() {
-	global $config, $pimd_config_base;
+	global $pimd_config_base;
 
 	$pimd_conf = config_get_path('installedpackages/pimd/config/0', []);
 	if (empty($pimd_conf)) {
@@ -184,7 +182,7 @@ EOF;
 }
 
 function pimd_generate_config_general() {
-	global $config, $pimd_config_base;
+	global $pimd_config_base;
 
 	$pimd_conf = config_get_path('installedpackages/pimd/config/0', []);
 	if (empty($pimd_conf)) {
@@ -251,8 +249,6 @@ function pimd_get_source($source, $returnaddress = false) {
 }
 
 function pimd_generate_config_interfaces() {
-	global $config;
-
 	$pimd_conf = config_get_path('installedpackages/pimdinterfaces/config', []);
 	if (empty($pimd_conf)) {
 		return null;
@@ -304,8 +300,6 @@ function pimd_generate_config_interfaces() {
 }
 
 function pimd_generate_config_bsrcandidate() {
-	global $config;
-
 	$pimd_conf = config_get_path('installedpackages/pimdbsrcandidate/config', []);
 	if (empty($pimd_conf)) {
 		return null;
@@ -329,8 +323,6 @@ function pimd_generate_config_bsrcandidate() {
 }
 
 function pimd_generate_config_rpcandidate() {
-	global $config;
-
 	$pimd_conf = config_get_path('installedpackages/pimdrpcandidate/config', []);
 	if (empty($pimd_conf)) {
 		return null;
@@ -365,8 +357,6 @@ function pimd_generate_config_rpcandidate() {
 }
 
 function pimd_generate_config_rpaddress() {
-	global $config;
-
 	$pimd_conf = config_get_path('installedpackages/pimdrpaddress/config', []);
 	if (empty($pimd_conf)) {
 		return null;
@@ -387,7 +377,7 @@ function pimd_generate_config_rpaddress() {
 }
 
 function pimd_generate_config() {
-	global $config, $pimd_config_base, $pimd_auto_config_warning;
+	global $pimd_config_base, $pimd_auto_config_warning;
 
 	safe_mkdir(PKG_PIMD_CONFIG_BASE);
 	unlink_if_exists("{$pimd_config_base}/pimd.conf");
@@ -444,7 +434,6 @@ function pimd_get_carp_list() {
  * $pluginparams['interface'] contains the affected VIP, id@int e.g. 19@igb1
  */
 function pimd_plugin_carp($pluginparams) {
-	global $config;
 	/* If pimd is not configured, then stop */
 
 	$pimd_conf = config_get_path('installedpackages/pimd/config/0', []);
