@@ -23,10 +23,7 @@
 $nocsrf = true;
 require_once("config.inc");
 require_once("guiconfig.inc");
-
-global $config;
-
-$proto = $config['system']['webgui']['protocol'];
+$proto = config_get_path('system/webgui/protocol');
 
 $httphost = getenv("HTTP_HOST");
 $colonpos = strpos($httphost, ":");
