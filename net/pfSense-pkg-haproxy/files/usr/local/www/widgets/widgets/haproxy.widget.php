@@ -36,11 +36,10 @@ require_once("haproxy/haproxy_socketinfo.inc");
 require_once("haproxy/haproxy_gui.inc");
 
 $first_time = false;
-if (!is_array($config["widgets"]["haproxy"])) {
+if (!is_array(config_get_path("widgets/haproxy"))) {
 	$first_time = true;
-	$config["widgets"]["haproxy"] = array();
+	config_init_path("widgets/haproxy");
 }
-$a_config = &$config["widgets"]["haproxy"];
 
 $getupdatestatus=false;
 if(!empty($_REQUEST['getupdatestatus'])) {
@@ -54,6 +53,7 @@ if(!empty($_GET['act']) and !empty($_GET['be']) and !empty($_GET['srv'])) {
 		session_start();
 	}
 	$user = getUserEntry($_SESSION['Username']);
+	$user = $user['item'];
 	if (!(userHasPrivilege($user, "page-service-haproxy") || userHasPrivilege($user, "page-all"))) {
 		echo "Privilege Denied";
 		return;
@@ -67,9 +67,11 @@ if(!empty($_GET['act']) and !empty($_GET['be']) and !empty($_GET['srv'])) {
 
 $simplefields = array("haproxy_widget_timer","haproxy_widget_showfrontends","haproxy_widget_showclients","haproxy_widget_showclienttraffic");
 if ($_POST['submit']) {
+	$a_config = config_get_path('widgets/haproxy');
 	foreach($simplefields as $fieldname) {
 		$a_config[$fieldname] = $_POST[$fieldname];
 	}
+	config_set_path('widgets/haproxy', $a_config);
 	write_config("Services: HAProxy: Widget: Updated settings via dashboard.");
 	header("Location: /");
 	exit(0);
@@ -79,14 +81,17 @@ if (!session_id()) {
 	session_start();
 }
 $user = getUserEntry($_SESSION['Username']);
+$user = $user['item'];
 
 // Set default values
+$a_config = config_get_path('widgets/haproxy');
 if (!$a_config['haproxy_widget_timer']) {
 	$a_config['haproxy_widget_timer'] = 5000;
 	$a_config['haproxy_widget_showfrontends'] = 'no';
 	$a_config['haproxy_widget_showclients'] = 'yes';
 	$a_config['haproxy_widget_showclienttraffic'] = 'no';
 }
+config_set_path('widgets/haproxy', $a_config);
 
 $refresh_rate = $a_config['haproxy_widget_timer'];
 $show_frontends = $a_config['haproxy_widget_showfrontends']=='yes';

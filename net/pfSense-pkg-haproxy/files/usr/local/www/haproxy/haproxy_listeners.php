@@ -33,8 +33,6 @@ $changedesc = "Services: HAProxy: Frontends";
 
 haproxy_config_init();
 
-$a_frontend = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
-
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
 
@@ -72,16 +70,15 @@ function array_moveitemsbefore(&$items, $before, $selected) {
 if($_GET['action'] == "toggle") {
 	$id = $_GET['id'];
 	echo "$id|";
-	if (isset($a_frontend[get_frontend_id($id)])) {
-		$frontent = &$a_frontend[get_frontend_id($id)];
-		if ($frontent['status'] != "disabled"){
-			$frontent['status'] = 'disabled';
+	if (config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id)) !== null) {
+		if (config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status') != "disabled"){
+			config_set_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status', 'disabled');
 			echo "0|";
 		}else{
-			$frontent['status'] = 'active';
+			config_set_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status', 'active');
 			echo "1|";
 		}
-		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
+		$changedesc .= " set frontend '$id' status to: " . config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status');
 
 		touch($d_haproxyconfdirty_path);
 		write_config($changedesc);
@@ -107,7 +104,7 @@ if ($_POST) {
 				$selected[] = get_frontend_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_frontend[$itemnr]);
+				config_del_path("installedpackages/haproxy/ha_backends/item/{$itemnr}");
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -140,7 +137,9 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_frontend_id($selection);
 			}
+			$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
+			config_set_path('installedpackages/haproxy/ha_backends/item', $a_frontend);
 
 			touch($d_haproxyconfdirty_path);
 			write_config($changedesc);
@@ -156,9 +155,9 @@ if ($_POST) {
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
 	$id = get_frontend_id($id);
-	if (isset($a_frontend[$id])) {
+	if (config_get_path("installedpackages/haproxy/ha_backends/item/{$id}") !== null) {
 		if (!$input_errors) {
-			unset($a_frontend[$id]);
+			config_del_path("installedpackages/haproxy/ha_backends/item/{$id}");
 			$changedesc .= " Frontend delete";
 			write_config($changedesc);
 			touch($d_haproxyconfdirty_path);
@@ -255,7 +254,7 @@ function js_callback(req) {
 	}
 
 	$a_frontend_grouped = array();
-	foreach($a_frontend as &$frontend2) {
+	foreach(config_get_path('installedpackages/haproxy/ha_backends/item', []) as $fidx => $frontend2) {
 		getarraybyref($frontend2);// makes it a valid array in case the item was completely empty.
 		$mainfrontend = get_primaryfrontend($frontend2);
 		$mainname = $mainfrontend['name'];
@@ -263,6 +262,7 @@ function js_callback(req) {
 		$frontend2['ipport'] = $ipport;
 		$frontend2['type'] = $mainfrontend['type'];
 		$a_frontend_grouped[$mainname][] = $frontend2;
+		config_set_path("installedpackages/haproxy/ha_backends/item/{$fidx}", $frontend2);
 	}
 ?>
 
@@ -340,11 +340,13 @@ function js_callback(req) {
 
 					if (get_frontend_uses_ssl($frontend)) {
 						$cert = lookup_cert($frontend['ssloffloadcert']);
+						$cert = $cert['item'];
 						$descr = htmlspecialchars($cert['descr']);
 						$certs = getarraybyref($frontend, 'ha_certificates', 'item');
 						if (count($certs) > 0){
 							foreach($certs as $certitem){
 								$cert = lookup_cert($certitem['ssl_certificate']);
+								$cert = $cert['item'];
 								$descr .= "\n".htmlspecialchars($cert['descr']);
 							}
 						}

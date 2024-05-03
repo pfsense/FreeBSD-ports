@@ -49,8 +49,7 @@ function xmlrpc_sync_execute($syncinfo) {
 }
 
 function xmlrpc_sync_execute_24($sync_logname, $xml, $sync_include,$sync_function) {
-	global $config;
-	if (!is_array($config['hasync']) || empty($config['hasync']['synchronizetoip'])) {
+	if (empty(config_get_path('hasync/synchronizetoip'))) {
 		syslog(LOG_NOTICE, "haproxy: cannot sync configuration (no ip/host configured to sync to on this machine), disable sync to avoid this message.");
 		return;
 	}
@@ -66,15 +65,15 @@ function xmlrpc_sync_execute_24($sync_logname, $xml, $sync_include,$sync_functio
 }
 
 function xmlrpc_sync_execute_23($sync_logname, $xml, $sync_include,$sync_function) {
-	global $config, $g;
+	global $g;
 	//if(!$password)
-		$password = $config['hasync']['password'];
+		$password = config_get_path('hasync/password');
 	if(!$password) {
 		return;
 	}
 
 	//if(!$sync_to_ip)
-		$sync_to_ip = $config['hasync']['synchronizetoip'];
+		$sync_to_ip = config_get_path('hasync/synchronizetoip');
 	if(!$sync_to_ip) {
 		return;
 	}
@@ -95,14 +94,14 @@ function xmlrpc_sync_execute_23($sync_logname, $xml, $sync_include,$sync_functio
 	require_once("xmlrpc_client.inc");
 	
 	//$xmlrpc_sync_neighbor = $sync_to_ip;
-    if($config['system']['webgui']['protocol'] != "") {
-		$synchronizetoip = $config['system']['webgui']['protocol'];
+    if(config_get_path('system/webgui/protocol') != "") {
+		$synchronizetoip = config_get_path('system/webgui/protocol');
 		$synchronizetoip .= "://";
     }
-    $port = $config['system']['webgui']['port'];
+    $port = config_get_path('system/webgui/port');
     /* if port is empty lets rely on the protocol selection */
     if($port == "") {
-		if($config['system']['webgui']['protocol'] == "http") {
+		if(config_get_path('system/webgui/protocol') == "http") {
 			$port = "80";
 		} else {
 			$port = "443";
