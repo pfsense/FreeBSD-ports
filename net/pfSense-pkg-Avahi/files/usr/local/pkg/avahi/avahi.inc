@@ -107,8 +107,6 @@ function avahi_write_config($avahi_config) {
 
 
 function avahi_sync_config() {
-	global $config;
-
 	if (is_service_running('avahi')) {
 		log_error("Stopping service avahi");
 		stop_service('avahi');
@@ -190,7 +188,6 @@ function avahi_get_carp_list() {
 }
 
 function avahi_plugin_carp($pluginparams) {
-	global $config;
 	/* If avahi is not configured, then stop */
 	$avahi_config = config_get_path('installedpackages/avahi/config/0', []);
 	if (empty($avahi_config)) {
