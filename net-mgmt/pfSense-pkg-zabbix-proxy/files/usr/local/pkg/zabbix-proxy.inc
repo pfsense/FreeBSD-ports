@@ -89,14 +89,13 @@ function validate_input_zabbix_proxy($post, &$input_errors) {
 }
 
 function sync_package_zabbix_proxy() {
-	global $config, $g;
+	global $g;
 
 
 	// Check zabbix proxy config
-	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) &&
-	    is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
-		init_config_arr(array('installedpackages', '%%ZABBIXUNIQNAME%%', 'config', 0));
-		$zbproxy_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
+	if (is_array(config_get_path('installedpackages/%%ZABBIXUNIQNAME%%'))) {
+		config_init_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0');
+		$zbproxy_config = config_get_path('installedpackages/%%ZABBIXUNIQNAME%%/config/0');
 		if ($zbproxy_config['proxyenabled'] == "on") {
 			$ListenIp = $zbproxy_config['listenip'] ?: "0.0.0.0";
 			$ListenPort = $zbproxy_config['listenport'] ?: "10051";
@@ -112,13 +111,15 @@ function sync_package_zabbix_proxy() {
 			} else {
 				if ($zbproxy_config['tlscafile'] != "none") {
 					$ca = lookup_ca($zbproxy_config['tlscafile']);
+					$ca = $ca['item'];
 					zabbix_proxy_add_keyfile($ca['crt'], "ca");
 					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.ca";
 				}
 			}
 
 			if ($zbproxy_config['tlscrlfile'] != "none") {
-				$crl = lookup_crl($zbproxy_config['tlscrlfile']);
+				$crl_config = lookup_crl($zbproxy_config['tlscrlfile']);
+				$crl = &$crl_config['item'];
 				crl_update($crl);
 				zabbix_proxy_add_keyfile($crl['text'], "crl-verify");
 				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.crl-verify";
@@ -126,6 +127,7 @@ function sync_package_zabbix_proxy() {
 
 			if ($zbproxy_config['tlscertfile'] != "none") {
 				$cert = lookup_cert($zbproxy_config['tlscertfile']);
+				$cert = $cert['item'];
 
 				zabbix_proxy_add_keyfile($cert['crt'], "cert");
 				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.cert";
@@ -305,30 +307,26 @@ function zabbix_proxy_add_keyfile($data, $directive) {
 }
 
 function zabbix_proxy_certca($type) {
-        global $config;
-        $c_arr = array();
-        $c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-        if (isset($config[$type]) && is_array($config[$type])) {
-                foreach ($config[$type] as $c) {
-                        if (!empty($c['prv'])) {
-                                $res_key = openssl_pkey_get_private(base64_decode($c['prv']));
-                                $key_details = openssl_pkey_get_details($res_key);
-                                if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
-                                        $c_arr[] = $c;
-                                }
-                        } elseif ($type == 'ca') {
-                                $c_arr[] = $c;
-                        }
-                }
-        }
-        return $c_arr;
+	$c_arr = array();
+	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+	foreach (config_get_path($type, []) as $c) {
+		if (!empty($c['prv'])) {
+			$res_key = openssl_pkey_get_private(base64_decode($c['prv']));
+			$key_details = openssl_pkey_get_details($res_key);
+			if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
+				$c_arr[] = $c;
+			}
+		} elseif ($type == 'ca') {
+			$c_arr[] = $c;
+		}
+	}
+	return $c_arr;
 }
 
 function zabbixproxy_plugin_certificates($pluginparams) {
-	global $config;
 	$result = array();
-	init_config_arr(array('installedpackages', 'zabbixproxylts', 'config'));
-	$zabbixconf = $config['installedpackages']['zabbixproxylts']['config'][0];
+	config_init_path('installedpackages/zabbixproxylts/config');
+	$zabbixconf = config_get_path('installedpackages/zabbixproxylts/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {
 		if (($pluginparams['event'] == 'used_ca') && ($zabbixconf['tlscaso'] != 'on') &&
