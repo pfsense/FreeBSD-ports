@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-softflowd
 PORTVERSION=	1.2.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
