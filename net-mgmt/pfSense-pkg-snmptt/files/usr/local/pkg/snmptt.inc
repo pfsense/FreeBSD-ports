@@ -56,15 +56,15 @@ function validate_input_snmptt($post, &$input_errors) {
 }
 
 function sync_package_snmptt() {
-	global $config, $g;
+	global $g;
 
 	if (is_service_running('snmptt') && !file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
 		log_error("Stopping service snmptt");
 		stop_service('snmptt');
 	}
 
-	if (is_array($config['installedpackages']['snmptt'])) {
-		$snmptt_config = $config['installedpackages']['snmptt']['config'][0];
+	if (is_array(config_get_path('installedpackages/snmptt'))) {
+		$snmptt_config = config_get_path('installedpackages/snmptt/config/0');
 		if ($snmptt_config['snmpttenabled'] == "on") {
 			$strip_domain_list = base64_decode($snmptt_config['strip_domain_list']);
 			$strip_domain_list = preg_replace("~\r\n~", "\n", $strip_domain_list);
@@ -76,8 +76,8 @@ function sync_package_snmptt() {
 			include("/usr/local/pkg/snmptt.ini.php");
 			file_put_contents("/usr/local/etc/snmp/snmptt.ini", $snmpttini, LOCK_EX);
 
-			if (is_array($config['installedpackages']['snmpttconf'])) {
-				$snmpttconf_config = $config['installedpackages']['snmpttconf']['config'][0];
+			if (is_array(config_get_path('installedpackages/snmpttconf'))) {
+				$snmpttconf_config = config_get_path('installedpackages/snmpttconf/config/0');
 				$snmptt_configfile = base64_decode($snmpttconf_config['snmptt_configfile']);
 				$snmptt_configfile = preg_replace("~\r\n~", "\n", $snmptt_configfile);
 				file_put_contents("/usr/local/etc/snmp/snmptt.conf", $snmptt_configfile, LOCK_EX);
