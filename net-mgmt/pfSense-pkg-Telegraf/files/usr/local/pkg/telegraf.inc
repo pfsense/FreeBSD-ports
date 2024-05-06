@@ -26,13 +26,11 @@ require_once("service-utils.inc");
 require_once("util.inc");
 
 function telegraf_resync_config() {
-	global $g, $config;
+	global $g;
 
 	$telegraf_conf = array();
-	if (is_array($config['installedpackages']['telegraf'])) {
-		foreach ($config['installedpackages']['telegraf']['config'][0] as $k => $v) {
-			$telegraf_conf[$k] = addslashes($v);
-		}
+	foreach (config_get_path('installedpackages/telegraf/config/0', []) as $k => $v) {
+		$telegraf_conf[$k] = addslashes($v);
 	}
 
 
@@ -52,11 +50,11 @@ function telegraf_resync_config() {
 
 	$shortname = '';
 	if ($telegraf_conf['shortname'] == 'on') {
-		$shortname = "\thostname = \"" . $config['system']['hostname'] . "\"";
+		$shortname = "\thostname = \"" . config_get_path('system/hostname') . "\"";
 	}
 
 	$ca_pem_file = "/usr/local/etc/telegraf.ca";
-	$a_ca = $config['ca'];
+	$a_ca = config_get_path('ca');
 	if (!is_array($a_ca)) {
 		$a_ca=array();
 	}
