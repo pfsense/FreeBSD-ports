@@ -38,19 +38,12 @@ global $snmpd_certkey_dir;
 $snmpd_certkey_dir = "/usr/local/share/snmp/tls/private";
 
 function netsnmp_install_command() {
-	global $config;
 	/* Make some default settings/entries/users, if necessary */
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmpusers'])) {
-		$config['installedpackages']['netsnmpusers'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmpusers']['config'])) {
-		$config['installedpackages']['netsnmpusers']['config'] = array();
+	if (!is_array(config_get_path('installedpackages/netsnmpusers/config'))) {
+		config_init_path('installedpackages/netsnmpusers/config');
 		/* A temp pseudo-random password for this default account. */
 		$temp_password = bin2hex(openssl_random_pseudo_bytes(16));
-		$config['installedpackages']['netsnmpusers']['config'][] = array (
+		config_set_path('installedpackages/netsnmpusers/config/', array (
 			'username' => 'manager',
 			'snmpv3_type' => 'user',
 			'description' => 'manager',
@@ -61,20 +54,12 @@ function netsnmp_install_command() {
 			'privacyprotocol' => 'AES',
 			'passphrase' => $temp_password,
 			'minseclevusm' => 'noauth'
-		);
+		));
 	}
 
-	if (!is_array($config['installedpackages']['netsnmptrapgen'])) {
-		$config['installedpackages']['netsnmptrapgen'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapgen']['config'])) {
-		$config['installedpackages']['netsnmptrapgen']['config'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapgen']['config'][0])) {
-		$config['installedpackages']['netsnmptrapgen']['config'][0] = array();
-	}
-	if (empty($config['installedpackages']['netsnmptrapgen']['config'][0]['iquerysecname'])) {
-		$config['installedpackages']['netsnmptrapgen']['config'][0]['iquerysecname'] = 'manager';
+	config_init_path('installedpackages/netsnmptrapgen/config/0');
+	if (empty(config_get_path('installedpackages/netsnmptrapgen/config/0/iquerysecname'))) {
+		config_set_path('installedpackages/netsnmptrapgen/config/0/iquerysecname', 'manager');
 	}
 }
 
@@ -86,43 +71,31 @@ function netsnmp_install_command() {
 
 /* Get a list of CA Certificates for use with trustCert */
 function netsnmp_get_ca_certs() {
-	global $config;
 	$ca_arr = array();
 	$ca_arr[] = array('refid' => 'none', 'descr' => 'None');
 	$ca_arr[] = array('refid' => 'self', 'descr' => 'Self-Signed Certificate');
 
-	if (is_array($config['ca'])) {
-		foreach ($config['ca'] as $ca) {
-			$ca_arr[] = array('refid' => $ca['refid'], 'descr' => $ca['descr']);
-		}
+	foreach (config_get_path('ca', []) as $ca) {
+		$ca_arr[] = array('refid' => $ca['refid'], 'descr' => $ca['descr']);
 	}
 	return $ca_arr;
 }
 
 /* Get a list of certificates */
 function netsnmp_get_certs() {
-	global $config;
 	$cert_arr = array();
 	$cert_arr[] = array('refid' => 'none', 'descr' => 'None');
 
-	if (is_array($config['cert'])) {
-		foreach ($config['cert'] as $cert) {
-			$cert_arr[] = array('refid' => $cert['refid'], 'descr' => $cert['descr']);
-		}
+	foreach (config_get_path('cert', []) as $cert) {
+		$cert_arr[] = array('refid' => $cert['refid'], 'descr' => $cert['descr']);
 	}
 	return $cert_arr;
 }
 
 /* Get a list of SNMPv3 User names */
 function netsnmp_get_usernames() {
-	global $config;
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmpusers'])) {
-		$config['installedpackages']['netsnmpusers'] = array();
-	}
-	$users = &$config['installedpackages']['netsnmpusers']['config'];
+	config_init_path('installedpackages/netsnmpusers');
+	$users = config_get_path('installedpackages/netsnmpusers/config');
 	$usernames = array();
 
 	if (is_array($users)) {
@@ -161,25 +134,13 @@ function netsnmp_cert_get_keyid($cert) {
 
 /* Write snmpd config file */
 function netsnmp_resync() {
-	global $config, $g, $snmpd_config_file, $snmpd_users_file, $snmpd_cert_dir, $snmpd_certkey_dir;
+	global $g, $snmpd_config_file, $snmpd_users_file, $snmpd_cert_dir, $snmpd_certkey_dir;
 
 	/* Global Settings tab */
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmp'])) {
-		$config['installedpackages']['netsnmp'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmp']['config'])) {
-		$config['installedpackages']['netsnmp']['config'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmp']['config'][0])) {
-		$config['installedpackages']['netsnmp']['config'][0] = array();
-	}
-	$nsettings = &$config['installedpackages']['netsnmp']['config'][0];
+	config_init_path('installedpackages/netsnmp/config/0');
 
 	/* If the service isn't enabled, nothing to do. Stop the service and return. */
-	if ($nsettings['enable_snmpd'] != "on") {
+	if (config_get_path('installedpackages/netsnmp/config/0/enable_snmpd') != "on") {
 		stop_service('net-snmpd');
 		unlink_if_exists('/usr/local/etc/rc.d/net-snmpd.sh');
 		return;
@@ -190,10 +151,8 @@ function netsnmp_resync() {
 
 	/* The binding / agent addresses control where and how snmpd listens for incoming connections. */
 	$agentaddresses = array();
-	if (!is_array($nsettings['row'])) {
-		$nsettings['row'] = array();
-	}
-	foreach ($nsettings['row'] as $agent) {
+	config_init_path('installedpackages/netsnmp/config/0/row');
+	foreach (config_get_path('installedpackages/netsnmp/config/0/row', []) as $agent) {
 		$aa = "";
 		/* At a minimum, a port must be supplied. UDP is assumed in that case */
 		if (!empty($agent['snmpport'])) {
@@ -225,6 +184,8 @@ function netsnmp_resync() {
 	if (!empty($agentaddresses)) {
 		$snmpd_config .= "agentaddress " . implode(',', $agentaddresses) . "\n";
 	}
+
+	$nsettings = config_get_path('installedpackages/netsnmp/config/0');
 
 	/* If a manual string engine ID type is set, use the specified string, otherwise use the type directly. */
 	if (($nsettings['engineidtype'] != 'string') && !empty($nsettings['engineidtype'])) {
@@ -271,6 +232,7 @@ function netsnmp_resync() {
 
 		/* Write CA */
 		$ca = lookup_ca($nsettings['ca_cert']);
+		$ca = $ca['item'];
 		if ($ca) {
 			file_put_contents("{$snmpd_cert_dir}/ca.crt", base64_decode($ca['crt']));
 			chmod($snmpd_cert_dir . '/ca.crt', 0660);
@@ -279,6 +241,7 @@ function netsnmp_resync() {
 		}
 		/* Write server certificate */
 		$cert = lookup_cert($nsettings['server_cert']);
+		$cert = $cert['item'];
 		if ($cert) {
 			file_put_contents("{$snmpd_cert_dir}/snmpd.crt", base64_decode($cert['crt']));
 			chmod($snmpd_cert_dir . '/snmpd.crt', 0660);
@@ -290,16 +253,8 @@ function netsnmp_resync() {
 	}
 
 	/* Host Information tab */
-	if (!is_array($config['installedpackages']['netsnmphostinfo'])) {
-		$config['installedpackages']['netsnmphostinfo'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmphostinfo']['config'])) {
-		$config['installedpackages']['netsnmphostinfo']['config'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmphostinfo']['config'][0])) {
-		$config['installedpackages']['netsnmphostinfo']['config'][0] = array();
-	}
-	$nhisettings = &$config['installedpackages']['netsnmphostinfo']['config'][0];
+	config_init_path('installedpackages/netsnmphostinfo/config/0');
+	$nhisettings = config_get_path('installedpackages/netsnmphostinfo/config/0');
 
 	if (!empty($nhisettings['syslocation'])) {
 		$snmpd_config .= "sysLocation {$nhisettings['syslocation']}\n";
@@ -313,7 +268,7 @@ function netsnmp_resync() {
 	if (!empty($nhisettings['sysdescr'])) {
 		$snmpd_config .= "sysDescr {$nhisettings['sysdescr']}\n";
 	} else {
-		$snmpd_config .= "sysDescr {$g['product_name']} {$config['system']['hostname']}.{$config['system']['domain']}" .
+		$snmpd_config .= "sysDescr {$g['product_name']}" . config_get_path('system/hostname') . config_get_path('system/domain') .
 						 " {$g['product_version_string']} " . php_uname("s") .
 						 " " . php_uname("r") . " " . php_uname("m") . "\n";
 	}
@@ -328,14 +283,14 @@ function netsnmp_resync() {
 	}
 
 	if (empty($nhisettings['disk_usage_percent'])) {
-		$nhisettings['disk_usage_percent'] = "20";
+		config_set_path('installedpackages/netsnmphostinfo/config/0/disk_usage_percent', '20');
 	}
 	/* Ignore /dev and its copies as they are not filesystems that need monitored */
 	$snmpd_config .= "ignoreDisk /dev\n";
 	$snmpd_config .= "ignoreDisk /var/dhcpd/dev\n";
 	$snmpd_config .= "ignoreDisk /var/unbound/dev\n";
 	/* Monitor all disks that snmpd can find */
-	$snmpd_config .= "includeAllDisks {$nhisettings['disk_usage_percent']}%\n";
+	$snmpd_config .= 'includeAllDisks ' . config_get_path('installedpackages/netsnmphostinfo/config/0/disk_usage_percent') . "%\n";
 
 	/* Load average settings each require the previous interval to be set,
 	   otherwise the meaning is ambigious.
@@ -354,10 +309,8 @@ function netsnmp_resync() {
 
 	/* Extended commands (formerly exec) and extendfix */
 	/* TODO: Check if the parameters need quoting */
-	if (!is_array($nhisettings['row'])) {
-		$nhisettings['row'] = array();
-	}
-	foreach ($nhisettings['row'] as $extend) {
+	config_init_path('installedpackages/netsnmphostinfo/config/0/row');
+	foreach (config_get_path('installedpackages/netsnmphostinfo/config/0/row', []) as $extend) {
 		$extend_parameters = "{$extend['ext_miboid']} " .
 					"{$extend['ext_name']} " .
 					"{$extend['ext_prog']} " .
@@ -369,19 +322,10 @@ function netsnmp_resync() {
 	}
 
 	/* SNMPv3 Users */
-	if (!is_array($config['installedpackages']['netsnmpusers'])) {
-		$config['installedpackages']['netsnmpusers'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmpusers']['config'])) {
-		$config['installedpackages']['netsnmpusers']['config'] = array();
-	}
-	$nusettings = &$config['installedpackages']['netsnmpusers']['config'];
+	config_init_path('installedpackages/netsnmpusers/config');
 
 	$snmpd_users_config = "";
-	if (!is_array($nusettings)) {
-		$nusettings = array();
-	}
-	foreach ($nusettings as $user) {
+	foreach (config_get_path('installedpackages/netsnmpusers/config', []) as $user) {
 		/* To make it easier to define a user in one pass, the user settings have both user and cert settings */
 		if (($user['snmpv3_type'] == "user") || ($user['snmpv3_type'] == "both")) {
 			/* Create a user entry in the USM table. This only defines the user and its authentication method/transport */
@@ -421,6 +365,7 @@ function netsnmp_resync() {
 			// netsnmp_cert_get_fingerprint(base64_decode($cert['crt']));
 			/* Write user certificate */
 			$cert = lookup_cert($user['user_cert']);
+			$cert = $cert['item'];
 			if ($cert) {
 				file_put_contents("{$snmpd_cert_dir}/{$user['username']}.crt", base64_decode($cert['crt']));
 				chmod("{$snmpd_cert_dir}/{$user['username']}.crt", 0660);
@@ -460,17 +405,8 @@ function netsnmp_resync() {
 	}
 
 	/* SNMPv1 & SNMPv2c Communities */
-	if (!is_array($config['installedpackages']['netsnmpcommunities'])) {
-		$config['installedpackages']['netsnmpcommunities'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmpcommunities']['config'])) {
-		$config['installedpackages']['netsnmpcommunities']['config'] = array();
-	}
-	$ncsettings = &$config['installedpackages']['netsnmpcommunities']['config'];
-	if (!is_array($ncsettings)) {
-		$ncsettings = array();
-	}
-	foreach ($ncsettings as $community) {
+	config_init_path('installedpackages/netsnmpcommunities/config');
+	foreach (config_get_path('installedpackages/netsnmpcommunities/config', []) as $community) {
 		/* Build the parameters first, add the type later as it could result in repetition. */
 		$community_line = $community['community'];
 
@@ -493,16 +429,8 @@ function netsnmp_resync() {
 	}
 
 	/* Trap Generation */
-	if (!is_array($config['installedpackages']['netsnmptrapgen'])) {
-		$config['installedpackages']['netsnmptrapgen'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapgen']['config'])) {
-		$config['installedpackages']['netsnmptrapgen']['config'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapgen']['config'][0])) {
-		$config['installedpackages']['netsnmptrapgen']['config'][0] = array();
-	}
-	$ntgsettings = &$config['installedpackages']['netsnmptrapgen']['config'][0];
+	config_init_path('installedpackages/netsnmptrapgen/config/0');
+	$ntgsettings = config_get_path('installedpackages/netsnmptrapgen/config/0');
 
 	if (!empty($ntgsettings['trapcommunity'])) {
 		$snmpd_config .= "trapcommunity {$ntgsettings['trapcommunity']}\n";
@@ -596,10 +524,8 @@ function netsnmp_resync() {
 	}
 
 	/* 'monitor' entries define conditions to trigger traps. The control is a rowhelper, so loop through its entries. */
-	if (!is_array($ntgsettings['row'])) {
-		$ntgsettings['row'] = array();
-	}
-	foreach ($ntgsettings['row'] as $monitor) {
+	config_init_path('installedpackages/netsnmptrapgen/config/0/row');
+	foreach (config_get_path('installedpackages/netsnmptrapgen/config/0/row', []) as $monitor) {
 		if (empty($monitor['monitor_name'])) {
 			continue;
 		}
@@ -661,23 +587,11 @@ EOF;
 
 /* Write snmptrapd config file and (re)start the daemon */
 function netsnmp_resync_snmptrapd() {
-	global $config, $snmptrapd_config_file;
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapd'])) {
-		$config['installedpackages']['netsnmptrapd'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapd']['config'])) {
-		$config['installedpackages']['netsnmptrapd']['config'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapd']['config'][0])) {
-		$config['installedpackages']['netsnmptrapd']['config'][0] = array();
-	}
-	$nsettings = &$config['installedpackages']['netsnmptrapd']['config'][0];
+	global $snmptrapd_config_file;
+	config_init_path('installedpackages/netsnmptrapd/config/0');
 
 	/* If snmptrapd is not enabled, then stop the service and do not write the config */
-	if ($nsettings['enable_snmptrapd'] != "on") {
+	if (config_get_path('installedpackages/netsnmptrapd/config/0/enable_snmptrapd') != "on") {
 		stop_service('net-snmptrapd');
 		unlink_if_exists('/usr/local/etc/rc.d/net-snmptrapd.sh');
 		return;
@@ -688,10 +602,8 @@ function netsnmp_resync_snmptrapd() {
 
 	/* The protocol and interface binding for snmptrapd works the same as snmpd */
 	$agentaddresses = array();
-	if (!is_array($nsettings['row'])) {
-		$nsettings['row'] = array();
-	}
-	foreach ($nsettings['row'] as $agent) {
+	config_init_path('installedpackages/netsnmptrapd/config/0/row');
+	foreach (config_get_path('installedpackages/netsnmptrapd/config/0/row', []) as $agent) {
 		$aa = "";
 		/* At a minimum, a port must be supplied. UDP is assumed in that case */
 		if (!empty($agent['snmpport'])) {
@@ -716,6 +628,7 @@ function netsnmp_resync_snmptrapd() {
 		$snmptrapd_config .= "snmpTrapdAddr " . implode(',', $agentaddresses) . "\n";
 	}
 
+	$nsettings = config_get_path('installedpackages/netsnmptrapd/config/0');
 	if (!empty($nsettings['donotretainnotificationlogs'])) {
 		$snmptrapd_config .= "doNotRetainNotificationLogs {$nsettings['donotretainnotificationlogs']}\n";
 	}
@@ -733,17 +646,8 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* Community-based Authentication for receiving traps */
-	if (!is_array($config['installedpackages']['netsnmptrapdcommunities'])) {
-		$config['installedpackages']['netsnmptrapdcommunities'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapdcommunities']['config'])) {
-		$config['installedpackages']['netsnmptrapdcommunities']['config'] = array();
-	}
-	$ncsettings = &$config['installedpackages']['netsnmptrapdcommunities']['config'];
-	if (!is_array($ncsettings)) {
-		$ncsettings = array();
-	}
-	foreach ($ncsettings as $community) {
+	config_init_path('installedpackages/netsnmptrapdcommunities/config');
+	foreach (config_get_path('installedpackages/netsnmptrapdcommunities/config', []) as $community) {
 		/* If no type is specified, assume all types. */
 		if (empty($community['type'])) {
 			$community['type'] = "log,net,execute";
@@ -765,17 +669,8 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* User-based Authentication for receiving traps */
-	if (!is_array($config['installedpackages']['netsnmptrapdusers'])) {
-		$config['installedpackages']['netsnmptrapdusers'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapdusers']['config'])) {
-		$config['installedpackages']['netsnmptrapdusers']['config'] = array();
-	}
-	$nusettings = &$config['installedpackages']['netsnmptrapdusers']['config'];
-	if (!is_array($nusettings)) {
-		$nusettings = array();
-	}
-	foreach ($nusettings as $user) {
+	config_init_path('installedpackages/netsnmptrapdusers/config');
+	foreach (config_get_path('installedpackages/netsnmptrapdusers/config', []) as $user) {
 		/* If no type is specified, assume all types. */
 		if (empty($user['type'])) {
 			$user['type'] = "log,net,execute";
@@ -798,17 +693,10 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* Trap Format tab */
-	if (!is_array($config['installedpackages']['netsnmptrapdformats'])) {
-		$config['installedpackages']['netsnmptrapdformats'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapdformats']['config'])) {
-		$config['installedpackages']['netsnmptrapdformats']['config'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapdformats']['config'][0])) {
-		$config['installedpackages']['netsnmptrapdformats']['config'][0] = array();
-	}
-	$nfsettings = &$config['installedpackages']['netsnmptrapdformats']['config'][0];
+	config_init_path('installedpackages/netsnmptrapdformats/config/0');
+	$nfsettings = config_get_path('installedpackages/netsnmptrapdformats/config/0');
 
+	$nsettings = config_get_path('installedpackages/netsnmptrapd/config/0');
 	if (!empty($nsettings['format1'])) {
 		$snmptrapd_config .= "format1 {$nsettings['format1']}\n";
 	}
@@ -819,10 +707,8 @@ function netsnmp_resync_snmptrapd() {
 
 	/* These formats are in a rowhelper to make the page less cluttered,
 	   but there should only be one of each "destination" defined. */
-	if (!is_array($nsettings['row'])) {
-		$nsettings['row'] = array();
-	}
-	foreach ($nsettings['row'] as $format) {
+	config_init_path('installedpackages/netsnmptrapd/config/0/row');
+	foreach (config_get_path('installedpackages/netsnmptrapd/config/0/row', []) as $format) {
 		if (empty($format['destination'])) {
 			continue;
 		}
@@ -831,36 +717,17 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	/* Trap Handles tab */
-	if (!is_array($config['installedpackages']['netsnmptrapdtraphandles'])) {
-		$config['installedpackages']['netsnmptrapdtraphandles'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapdtraphandles']['config'])) {
-		$config['installedpackages']['netsnmptrapdtraphandles']['config'] = array();
-	}
-	$ntsettings = &$config['installedpackages']['netsnmptrapdtraphandles']['config'];
-
 	/* Nothing fancy. Executes programs when a trap arrives, not much validation we can do. */
-	if (!is_array($ntsettings)) {
-		$ntsettings = array();
-	}
-	foreach ($ntsettings as $traphandle) {
+	config_init_path('installedpackages/netsnmptrapdtraphandles/config');
+	foreach (config_get_path('installedpackages/netsnmptrapdtraphandles/config', []) as $traphandle) {
 		$snmptrapd_config .= "traphandle {$traphandle['destination']} " .
 					"{$traphandle['program']} " .
 					"{$traphandle['args']}\n";
 	}
 
 	/* Forwarding of traps to other hosts */
-	if (!is_array($config['installedpackages']['netsnmptrapdforwards'])) {
-		$config['installedpackages']['netsnmptrapdforwards'] = array();
-	}
-	if (!is_array($config['installedpackages']['netsnmptrapdforwards']['config'])) {
-		$config['installedpackages']['netsnmptrapdforwards']['config'] = array();
-	}
-	$nwsettings = &$config['installedpackages']['netsnmptrapdforwards']['config'];
-	if (!is_array($nwsettings)) {
-		$nwsettings = array();
-	}
-	foreach ($nwsettings as $forward) {
+	config_init_path('installedpackages/netsnmptrapdforwards/config');
+	foreach (config_get_path('installedpackages/netsnmptrapdforwards/config', []) as $forward) {
 		/* The forwarding addresses control where and how snmptrapd will deliver traps to another daemon. */
 		$agentaddresses = array();
 		if (is_array($forward['row'])) {
@@ -893,13 +760,13 @@ function netsnmp_resync_snmptrapd() {
 		}
 	}
 
-	if ($nsettings['snmptrapd_subagent']) {
+	if (config_get_path('installedpackages/netsnmptrapd/config/0/snmptrapd_subagent')) {
 		$snmptrapd_daemon_options .= "-X ";
 	}
 
 	/* Dump custom options into the configuration as-is */
-	if (!empty($nsettings['custom_options'])) {
-		$snmptrapd_config .= "\n" . str_replace("\r", "", base64_decode($nsettings['custom_options'])) . "\n";
+	if (!empty(config_get_path('installedpackages/netsnmptrapd/config/0/custom_options'))) {
+		$snmptrapd_config .= "\n" . str_replace("\r", "", base64_decode(config_get_path('installedpackages/netsnmptrapd/config/0/custom_options'))) . "\n";
 	}
 
 	file_put_contents($snmptrapd_config_file, $snmptrapd_config);
@@ -943,7 +810,6 @@ EOF;
 
 /* snmpd - General tab */
 function netsnmp_validate_general($post, &$input_errors) {
-	global $config;
 	if ($post['enable_snmpd'] != 'on') {
 		return;
 	}
@@ -1012,8 +878,6 @@ function netsnmp_validate_general($post, &$input_errors) {
 
 /* snmpd - Host Information tab */
 function netsnmp_validate_netsnmphostinfo($post, &$input_errors) {
-	global $config;
-
 	/* interface fadeout: blank or numeric, positive */
 	if (!is_numericint($post['interface_fadeout'])) {
 		$input_errors[] = gettext("Interface Fadeout must be an integer greater than 0.");
@@ -1064,8 +928,6 @@ function netsnmp_validate_netsnmphostinfo($post, &$input_errors) {
 
 /* snmpd - Users tab */
 function netsnmp_validate_netsnmpusers($post, &$input_errors) {
-	global $config;
-
 	/* Username cannot be blank */
 	if (empty($post['username'])) {
 		$input_errors[] = gettext("The username cannot be blank.");
@@ -1115,8 +977,6 @@ function netsnmp_validate_netsnmpusers($post, &$input_errors) {
 
 /* snmpd - Communities tab */
 function netsnmp_validate_netsnmpcommunities($post, &$input_errors) {
-	global $config;
-
 	/* rorwcommunity: rocommunity, rwcommunity */
 	if (!in_array($post['rorwcommunity'], array('rocommunity', 'rwcommunity'))) {
 		$input_errors[] = gettext("Invalid Read/Write Access type.");
@@ -1148,13 +1008,7 @@ function netsnmp_validate_netsnmpcommunities($post, &$input_errors) {
 
 /* snmpd - Trap Generation tab*/
 function netsnmp_validate_netsnmptrapgen($post, &$input_errors) {
-	global $config;
-
-	if (is_array($config['installedpackages']['netsnmpusers'])) {
-		$usettings = $config['installedpackages']['netsnmpusers']['config'];
-	} else {
-		$usettings = array();
-	}
+	$usettings = config_get_path('installedpackages/netsnmpusers/config', []);
 	/* authtrapenable: 1, 2 */
 	if (!in_array($post['authtrapenable'], array('1', '2'))) {
 		$input_errors[] = gettext("Invalid Authentication Traps value.");
@@ -1261,8 +1115,6 @@ function netsnmp_validate_netsnmptrapgen($post, &$input_errors) {
 
 /* snmptrapd - General tab*/
 function netsnmp_validate_netsnmptrapd($post, &$input_errors) {
-	global $config;
-
 	$i = 0;
 	$used_ports = array();
 	while (isset($post['transport' . $i])) {
@@ -1331,8 +1183,6 @@ function netsnmp_validate_netsnmptrapd($post, &$input_errors) {
 
 /* snmptrapd - Community Auth tab*/
 function netsnmp_validate_netsnmptrapdcommunities($post, &$input_errors) {
-	global $config;
-
 	/* type: log, net, execute */
 	if (!is_array($post['type'])) {
 		$post['type'] = array();
@@ -1353,13 +1203,7 @@ function netsnmp_validate_netsnmptrapdcommunities($post, &$input_errors) {
 
 /* snmptrapd - User Auth tab*/
 function netsnmp_validate_netsnmptrapdusers($post, &$input_errors) {
-	global $config;
-
-	if (is_array($config['installedpackages']['netsnmpusers'])) {
-		$usettings = $config['installedpackages']['netsnmpusers']['config'];
-	} else {
-		$usettings = array();
-	}
+	$usettings = config_get_path('installedpackages/netsnmpusers/config', []);
 	/* username: valid user */
 	$found_user = false;
 	foreach ($usettings as $user) {
@@ -1391,8 +1235,6 @@ function netsnmp_validate_netsnmptrapdusers($post, &$input_errors) {
 
 /* snmptrapd - Trap Handles tab */
 function netsnmp_validate_netsnmptrapdtraphandles($post, &$input_errors) {
-	global $config;
-
 	/* program: file exists, is executable */
 	if (!empty($post['program']) &&
 	    (!file_exists($post['program']) || !is_executable($post['program']))) {
@@ -1402,8 +1244,6 @@ function netsnmp_validate_netsnmptrapdtraphandles($post, &$input_errors) {
 
 /* snmptrapd - Forwarding of traps to other hosts */
 function netsnmp_validate_netsnmptrapdforwards($post, &$input_errors) {
-	global $config;
-
 	/* Transport Type:
 		D/TLS hostname.
 		UDP/TCP hostname, IPv4 addr
@@ -1452,15 +1292,14 @@ function netsnmp_validate_netsnmptrapdforwards($post, &$input_errors) {
 }
 
 function netsnmp_plugin_certificates($pluginparams) {
-	global $config;
 	$result = array();
-	init_config_arr(array('installedpackages', 'netsnmp', 'config'));
-	$conf = $config['installedpackages']['netsnmp']['config'][0];
+	config_init_path('installedpackages/netsnmp/config');
+	$conf = config_get_path('installedpackages/netsnmp/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($conf) &&
 	    ($conf['enable_snmpd'] == 'on')) {
-		init_config_arr(array('installedpackages', 'netsnmp', 'config', 0, 'row'));
-		$rowconf = $config['installedpackages']['netsnmp']['config'][0]['row'];
+		config_init_path('installedpackages/netsnmp/config/0/row');
+		$rowconf = config_get_path('installedpackages/netsnmp/config/0/row');
 		foreach ($rowconf as $rconf) {
 			if (strstr($rconf['transport'], 'tls')) {
 				$tls = true;
@@ -1488,8 +1327,8 @@ function netsnmp_plugin_certificates($pluginparams) {
 				$item['usedby'] = 'DTLS Server Certificate';
 				$result['certificatelist'][$cert][] = $item;
 			}
-			init_config_arr(array('installedpackages', 'netsnmpusers', 'config'));
-			$usersconf = $config['installedpackages']['netsnmpusers']['config'][0];
+			config_init_path('installedpackages/netsnmpusers/config');
+			$usersconf = config_get_path('installedpackages/netsnmpusers/config/0');
 			foreach ($usersconf as $user) {
 				if (!empty($user['user_cert'])) {
 					$item = array();
