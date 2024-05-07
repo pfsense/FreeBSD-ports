@@ -34,7 +34,7 @@ require_once("service-utils.inc"); // Need this to get RCFILEPREFIX constant
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
-global $config, $g;
+global $g;
 
 $snortdir = SNORTDIR;
 $snortlibdir = SNORT_BASEDIR . "lib";

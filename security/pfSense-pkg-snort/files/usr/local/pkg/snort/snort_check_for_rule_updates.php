@@ -141,7 +141,7 @@ function snort_download_file_url($url, $file_out) {
 	/* It provides logging of returned CURL errors. */
 	/************************************************/
 
-	global $g, $config, $last_curl_error;
+	global $g, $last_curl_error;
 
 	$rfc2616 = array(
 			100 => "100 Continue",

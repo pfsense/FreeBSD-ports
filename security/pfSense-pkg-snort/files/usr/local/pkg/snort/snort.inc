@@ -4217,7 +4217,7 @@ function snort_get_vpns_list() {
 			}
 			/* Mobile warriors */
 			if (config_path_enabled('ipsec', 'mobilekey')) {
-				foreach (config_get_path('ipsec/mobilekey') as $key) {
+				foreach (config_get_path('ipsec/mobilekey', []) as $key) {
 					if (!empty($key['pool_address']) &&
 					    !empty($key['pool_netbits'])) {
 						$vpns_subnet = "{$key['pool_address']}/{$key['pool_netbits']}";
