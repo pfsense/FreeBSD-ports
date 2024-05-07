@@ -22,11 +22,11 @@
 require("guiconfig.inc");
 require("/usr/local/pkg/syslog-ng.inc");
 
-$objects = $config['installedpackages']['syslogngadvanced']['config'];
-$default_logdir = $config['installedpackages']['syslogng']['config'][0]['default_logdir'];
-$default_logfile = $config['installedpackages']['syslogng']['config'][0]['default_logfile'];
-$compress_archives = $config['installedpackages']['syslogng']['config'][0]['compress_archives'];
-$compress_type = $config['installedpackages']['syslogng']['config'][0]['compress_type'];
+$objects = config_get_path('installedpackages/syslogngadvanced/config');
+$default_logdir = config_get_path('installedpackages/syslogng/config/0/default_logdir');
+$default_logfile = config_get_path('installedpackages/syslogng/config/0/default_logfile');
+$compress_archives = config_get_path('installedpackages/syslogng/config/0/compress_archives');
+$compress_type = config_get_path('installedpackages/syslogng/config/0/compress_type');
 
 if ($_POST['logfile']) {
 	$logfile = $_POST['logfile'];
