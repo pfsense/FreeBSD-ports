@@ -32,8 +32,7 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-init_config_arr(array('installedpackages', 'patches', 'item'));
-$a_patches = &$config['installedpackages']['patches']['item'];
+config_init_path('installedpackages/patches/item');
 
 $id = $_GET['id'];
 if (isset($_POST['id'])) {
@@ -45,15 +44,16 @@ if (isset($_GET['dup'])) {
 	$after = $_GET['dup'];
 }
 
-if (isset($id) && $a_patches[$id]) {
-	$pconfig['descr'] = $a_patches[$id]['descr'];
-	$pconfig['location'] = $a_patches[$id]['location'];
-	$pconfig['patch'] = $a_patches[$id]['patch'];
-	$pconfig['pathstrip'] = $a_patches[$id]['pathstrip'];
-	$pconfig['basedir'] = $a_patches[$id]['basedir'];
-	$pconfig['ignorewhitespace'] = isset($a_patches[$id]['ignorewhitespace']);
-	$pconfig['autoapply'] = isset($a_patches[$id]['autoapply']);
-	$pconfig['uniqid'] = $a_patches[$id]['uniqid'];
+$this_patches_config = isset($id) ? config_get_path("installedpackages/patches/item/{$id}") : null;
+if ($this_patches_config) {
+	$pconfig['descr'] = $this_patches_config['descr'];
+	$pconfig['location'] = $this_patches_config['location'];
+	$pconfig['patch'] = $this_patches_config['patch'];
+	$pconfig['pathstrip'] = $this_patches_config['pathstrip'];
+	$pconfig['basedir'] = $this_patches_config['basedir'];
+	$pconfig['ignorewhitespace'] = isset($this_patches_config['ignorewhitespace']);
+	$pconfig['autoapply'] = isset($this_patches_config['autoapply']);
+	$pconfig['uniqid'] = $this_patches_config['uniqid'];
 } else {
 	$pconfig['pathstrip'] = 2;
 	$pconfig['basedir'] = "/";
@@ -128,13 +128,15 @@ if ($_POST) {
 		}
 
 		// Update the patch entry now
-		if (isset($id) && $a_patches[$id]) {
-			$a_patches[$id] = $thispatch;
+		if ($this_patches_config) {
+			$this_patches_config = $thispatch;
 		} else {
 			if (is_numeric($after)) {
+				$a_patches = config_set_path('installedpackages/patches/item');
 				array_splice($a_patches, $after+1, 0, array($thispatch));
+				config_set_path('installedpackages/patches/item', $a_patches);
 			} else {
-				$a_patches[] = $thispatch;
+				config_set_path('installedpackages/patches/item/', $thispatch);
 			}
 		}
 

@@ -34,8 +34,7 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-init_config_arr(array('installedpackages', 'patches', 'item'));
-$a_patches = &$config['installedpackages']['patches']['item'];
+config_init_path('installedpackages/patches/item');
 $savemsgtype = 'success';
 
 list($thisversion, $thisversiontype) = explode('-', $g['product_version'], 2);
@@ -54,7 +53,7 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
     in_array($_POST['type'], ['custom', 'recommended'])) {
 	$typestr = "";
 	if ($_POST['type'] == 'custom') {
-		$patchlist = $a_patches;
+		$patchlist = config_get_path('installedpackages/patches/item');
 		$typestr = gettext('custom');
 	} elseif ($_POST['type'] == 'recommended') {
 		$patchlist = $recommended_patches;
@@ -95,14 +94,14 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
 	$savemsg .= '<br/><br/>' . gettext('Changes may not fully activate until the next reboot or restart of patched functions.');
 }
 
-if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
+if ((($_POST['type'] == 'custom') && (config_get_path("installedpackages/patches/item/{$_POST['id']}"))) ||
     (($_POST['type'] == 'recommended') && !empty(get_recommended_patch($_POST['id'])))) {
 	$savemsg = "";
 
 	if ($_POST['type'] == 'recommended') {
 		$thispatch = get_recommended_patch($_POST['id']);
 	} else {
-		$thispatch = & $a_patches[$_POST['id']];
+		$thispatch = config_get_path("installedpackages/patches/item/{$_POST['id']}");
 	}
 	$descr = patch_descr($thispatch);
 
@@ -205,14 +204,13 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 		default:
 	}
 }
-unset($thispatch);
 
 $need_save = false;
 if (isset($_POST['del'])) {
 	/* delete selected patches */
 	if (is_array($_POST['patch']) && count($_POST['patch'])) {
 		foreach ($_POST['patch'] as $patchi) {
-			unset($a_patches[$patchi]);
+			config_del_path("installedpackages/patches/item/{$patchi}");
 		}
 		$need_save = true;
 	}
@@ -229,6 +227,7 @@ if (isset($_POST['del'])) {
 
 	/* move selected patches before this patch */
 	if (isset($movebtn) && is_array($_POST['patch']) && count($_POST['patch'])) {
+		$a_patches = config_get_path('installedpackages/patches/item');
 		$a_patches_new = array();
 
 		/* copy all patches < $movebtn and not selected */
@@ -259,10 +258,10 @@ if (isset($_POST['del'])) {
 				$a_patches_new[] = $a_patches[$i];
 			}
 		}
-		$a_patches = $a_patches_new;
+		config_set_path('installedpackages/patches/item', $a_patches_new);
 		$need_save = true;
 	} else if (isset($delbtn)) {
-		unset($a_patches[$delbtn]);
+		config_del_path("installedpackages/patches/item/{$delbtn}");
 		$need_save = true;
 	}
 }
@@ -321,7 +320,7 @@ if ($savemsg) {
 $i = 0;
 $cus_can_apply=0;
 $cus_can_revert=0;
-foreach ($a_patches as $thispatch):
+foreach (config_get_path('installedpackages/patches/item', []) as $thispatch):
 	$can_apply = patch_test_apply($thispatch);
 	$can_revert = patch_test_revert($thispatch);
 ?>

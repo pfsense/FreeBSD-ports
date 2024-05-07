@@ -182,12 +182,9 @@ function is_github_url($url) {
 }
 
 function bootup_apply_patches() {
-	global $config;
+	config_init_path('installedpackages/patches/item');
 
-	init_config_arr(array('installedpackages', 'patches', 'item'));
-	$a_patches = &$config['installedpackages']['patches']['item'];
-
-	foreach ($a_patches as $id => $patch) {
+	foreach (config_get_path('installedpackages/patches/item', []) as $id => $patch) {
 		/* Skip if it should not be automatically applied;
 		   only attempt to apply if it can be applied;
 		   and	if it can be reverted it is presumably already applied, so skip it. */
@@ -200,34 +197,28 @@ function bootup_apply_patches() {
 }
 
 function patch_add_shellcmd() {
-	global $config;
-
-	init_config_arr(array('system', 'earlyshellcmd'));
-	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
+	config_init_path('system/earlyshellcmd');
 
 	$found = false;
-	foreach ($a_earlyshellcmd as $idx => $cmd) {
+	foreach (config_get_path('system/earlyshellcmd', []) as $idx => $cmd) {
 		if (stristr($cmd, "apply_patches.php")) {
 			$found = true;
 		}
 	}
 	if (!$found) {
 		// Implicitly creates array if needed
-		$a_earlyshellcmd[] = "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php";
+		config_set_path('system/earlyshellcmd/', "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php");
 		write_config("System Patches package added an early shellcmd: apply patches");
 	}
 }
 
 function patch_remove_shellcmd() {
-	global $config;
-
-	init_config_arr(array('system', 'earlyshellcmd'));
-	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
+	config_init_path('system/earlyshellcmd');
 
 	$removed = 0;
-	foreach ($a_earlyshellcmd as $idx => $cmd) {
+	foreach (config_get_path('system/earlyshellcmd', []) as $idx => $cmd) {
 		if (stristr($cmd, "apply_patches.php")) {
-			unset($a_earlyshellcmd[$idx]);
+			config_del_path("system/earlyshellcmd/{$idx}");
 			$removed++;
 		}
 	}
@@ -241,8 +232,6 @@ function patchlog($msg) {
 }
 
 function patch_descr($patch) {
-	global $config;
-
 	if (!isset($patch) || empty($patch)) {
 		return "";
 	}
