@@ -54,7 +54,7 @@ function tinc_plugin_carp($pluginparams) {
 
 
 function tinc_save() {
-	global $config, $configpath;
+	global $configpath;
 	$configpath = '/usr/local/etc/tinc';
 
 
@@ -63,11 +63,7 @@ function tinc_save() {
 	safe_mkdir("{$configpath}");
 	safe_mkdir("{$configpath}/hosts");
 
-	if (is_array($config['installedpackages']['tinc']['config'])) {
-		$tincconf = &$config['installedpackages']['tinc']['config'][0];
-	} else {
-		$tincconf = array();
-	}
+	$tincconf = config_get_path('installedpackages/tinc/config/0', []);
 
 	// No proper config, bail out.
 	if (!isset($tincconf['name']) || empty($tincconf['name'])) {
@@ -79,8 +75,8 @@ function tinc_save() {
 	fwrite($fout, "name=" . $tincconf['name'] . "\n");
 	fwrite($fout, "AddressFamily=" . $tincconf['addressfamily'] . "\n");
 
-	init_config_arr(array('installedpackages', 'tinchosts', 'config'));
-	foreach ($config['installedpackages']['tinchosts']['config'] as $host) {
+	config_init_path('installedpackages/tinchosts/config');
+	foreach (config_get_path('installedpackages/tinchosts/config', []) as $host) {
 		if ($host['connect']) {
 			fwrite($fout, "ConnectTo=" . $host['name'] . "\n");
 		}
@@ -109,9 +105,7 @@ function tinc_save() {
 		$tincconf['cert_pub'] = base64_encode(file_get_contents("{$configpath}/tmp/rsa_key.pub"));
 		$tincconf['cert_key'] = base64_encode(file_get_contents("{$configpath}/tmp/rsa_key.priv"));
 		$tincconf['gen_rsa'] = false;
-		$config['installedpackages']['tinc']['config'][0]['cert_pub'] = $tincconf['cert_pub'];
-		$config['installedpackages']['tinc']['config'][0]['cert_key'] = $tincconf['cert_key'];
-		$config['installedpackages']['tinc']['config'][0]['gen_rsa'] = $tincconf['gen_rsa'];
+		config_set_path('installedpackages/tinc/config/0', $tincconf);
 		rmdir_recursive("{$configpath}/tmp");
 		write_config("[tinc] New RSA key pair generated.");
 	}
@@ -175,26 +169,18 @@ function tinc_write_rcfile() {
 }
 
 function tinc_install() {
-	global $g, $config;
+	global $g;
 
 	safe_mkdir("/usr/local/etc/tinc/hosts");
 	tinc_write_rcfile();
 	unlink_if_exists("/usr/local/etc/rc.d/tincd");
 
-	if (!is_array($config['ifgroups'])) {
-		$config['ifgroups'] = array();
-	}
-
 	/* Create Interface Group */
-	if (!is_array($config['ifgroups']['ifgroupentry'])) {
-		$config['ifgroups']['ifgroupentry'] = array();
-	}
-
-	$a_ifgroups = &$config['ifgroups']['ifgroupentry'];
+	config_init_path('ifgroups/ifgroupentry');
 
 	/* Don't add the interface group if it already exists */
 	$found = false;
-	foreach ($a_ifgroups as $ifg) {
+	foreach (config_get_path('ifgroups/ifgroupentry', []) as $ifg) {
 		if ($ifg == "pkg_tinc") {
 			$found = true;
 		}
@@ -204,7 +190,7 @@ function tinc_install() {
 		$ifgroupentry['members'] = '';
 		$ifgroupentry['descr'] = 'tinc mesh VPN interface group';
 		$ifgroupentry['ifname'] = 'pkg_tinc';
-		$a_ifgroups[] = $ifgroupentry;
+		config_set_path('ifgroups/ifgroupentry/', $ifgroupentry);
 	}
 
 	/*
@@ -215,36 +201,28 @@ function tinc_install() {
 }
 
 function tinc_deinstall() {
-	global $g, $config;
+	global $g;
 
-	if (!is_array($config['ifgroups'])) {
-		$config['ifgroups'] = array();
-	}
-	
 	/* Remove Interface Group */
-	if (!is_array($config['ifgroups']['ifgroupentry'])) {
-		$config['ifgroups']['ifgroupentry'] = array();
-	}
-
-	$a_ifgroups = &$config['ifgroups']['ifgroupentry'];
+	config_init_path('ifgroups/ifgroupentry');
 
 	$myid = -1;
-	foreach ($a_ifgroups as $idx => $ifgroupentry) {
+	foreach (config_get_path('ifgroups/ifgroupentry', []) as $idx => $ifgroupentry) {
 		if ($ifgroupentry['ifname'] == 'pkg_tinc') {
 			$myid = $idx;
 			break;
 		}
 	}
 
-	if ($myid >= 0 && $a_ifgroups[$myid]) {
-		$members = explode(" ", $a_ifgroups[$_GET['id']]['members']);
+	if ($myid >= 0 && config_get_path("ifgroups/ifgroupentry/{$myid}")) {
+		$members = explode(" ", config_get_path("ifgroups/ifgroupentry/{$_GET['id']}/members"));
 		foreach ($members as $ifs) {
 			$realif = get_real_interface($ifs);
 			if ($realif) {
-				mwexec("/sbin/ifconfig {$realif} -group " . escapeshellarg($a_ifgroups[$_GET['id']]['ifname']));
+				mwexec("/sbin/ifconfig {$realif} -group " . escapeshellarg(config_get_path("ifgroups/ifgroupentry/{$_GET['id']}/ifname")));
 			}
 		}
-		unset($a_ifgroups[$myid]);
+		config_del_path("ifgroups/ifgroupentry/{$myid}");
 		/*
 		* XXX: Do not remove this, otherwise the interface group may not be removed properly.
 		*/
