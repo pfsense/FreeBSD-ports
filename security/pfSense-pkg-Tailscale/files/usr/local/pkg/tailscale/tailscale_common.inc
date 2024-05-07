@@ -19,8 +19,6 @@
  * limitations under the License.
  */
 
-global $config;
-
 require_once('service-utils.inc');
 require_once('vendor/autoload.php');
 
@@ -209,8 +207,7 @@ function tailscale_get_pkg_info($field_map = NULL, $packages = NULL)
  */
 function tailscale_get_config($package, $key, $default = NULL)
 {
-	global $config;
-	$path = $config['installedpackages'][trim($package)]['config'][0];
+	$path = config_get_path('installedpackages/' . trim($package) . '/config/0');
 	return (is_array($path) && array_key_exists($key, $path)) ? $path[$key] : $default;
 }
 
