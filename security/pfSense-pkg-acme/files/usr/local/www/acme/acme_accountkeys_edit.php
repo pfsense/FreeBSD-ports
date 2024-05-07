@@ -44,10 +44,7 @@ if ($_POST['action'] == "registerkey") {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
-	$config['installedpackages']['acme']['accountkeys']['item'] = array();
-}
-$a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
+config_init_path('installedpackages/acme/accountkeys/item');
 
 $id = $_REQUEST['id'];
 
@@ -78,10 +75,10 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 	}
 }
 
-if (isset($id) && $a_accountkeys[$id]) {
-	$pconfig['accountkey'] = base64_decode($a_accountkeys[$id]['accountkey']);
+if (isset($id) && config_get_path("installedpackages/acme/accountkeys/item/{$id}")) {
+	$pconfig['accountkey'] = base64_decode(config_get_path("installedpackages/acme/accountkeys/item/{$id}/accountkey"));
 	foreach($simplefields as $stat) {
-		$pconfig[$stat] = $a_accountkeys[$id][$stat];
+		$pconfig[$stat] = config_get_path("installedpackages/acme/accountkeys/item/{$id}/{$stat}");
 	}
 }
 
@@ -122,15 +119,15 @@ if ($_POST) {
 	}
 
 	/* Ensure that our account key names are unique */
-	for ($i=0; isset($config['installedpackages']['acme']['accountkeys']['item'][$i]); $i++) {
-		if (($_POST['name'] == $config['installedpackages']['acme']['accountkeys']['item'][$i]['name']) && ($i != $id)) {
+	foreach (config_get_path("installedpackages/acme/accountkeys/item", []) as $i => $item) {
+		if (($i != $id) && ($_POST['name'] == $item['name'])) {
 			$input_errors[] = "This name has already been used. Names must be unique.";
 		}
 	}
 
 	$accountkey = array();
-	if(isset($id) && $a_accountkeys[$id]) {
-		$accountkey = $a_accountkeys[$id];
+	if(isset($id)) {
+		$accountkey = config_get_path("installedpackages/acme/accountkeys/item/{$id}", $accountkey);
 	}
 
 	if (!empty($accountkey['name']) && ($accountkey['name'] != $_POST['name'])) {
@@ -139,10 +136,7 @@ if ($_POST) {
 		$oldvalue = $accountkey['name'];
 		$newvalue = $_POST['name'];
 		
-		$a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
-		if (!is_array($a_accountkeys)) {
-			$a_accountkeys = array();
-		}
+		config_init_path('installedpackages/acme/accountkeys/item');
 	}
 
 	if($accountkey['name'] != "") {
@@ -155,10 +149,10 @@ if ($_POST) {
 		update_if_changed($stat, $accountkey[$stat], $_POST[$stat]);
 	}
 	
-	if (isset($id) && $a_accountkeys[$id]) {
-		$a_accountkeys[$id] = $accountkey;
+	if (isset($id) && config_get_path("installedpackages/acme/accountkeys/item/{$id}")) {
+		config_set_path("installedpackages/acme/accountkeys/item/{$id}", $accountkey);
 	} else {
-		$a_accountkeys[] = $accountkey;
+		config_set_path('installedpackages/acme/accountkeys/item/', $accountkey);
 	}
 	if (!isset($input_errors)) {
 		if ($changecount > 0) {

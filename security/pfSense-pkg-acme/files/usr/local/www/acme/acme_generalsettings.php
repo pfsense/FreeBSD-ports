@@ -31,16 +31,14 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $simplefields = array('enable', 'writecerts');
 
-if (!is_array($config['installedpackages']['acme'])) {
-	$config['installedpackages']['acme'] = array();
-}
+config_init_path('installedpackages/acme');
 if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 	
 	if (!$input_errors) {
 		foreach($simplefields as $stat) {
-			$config['installedpackages']['acme'][$stat] = $_POST[$stat];
+			config_set_path("installedpackages/acme/{$stat}", $_POST[$stat]);
 		}
 		
 		set_cronjob();
@@ -50,7 +48,7 @@ if ($_POST) {
 }
 
 foreach($simplefields as $stat) {
-	$pconfig[$stat] = $config['installedpackages']['acme'][$stat];
+	$pconfig[$stat] = config_get_path("installedpackages/acme/{$stat}");
 }
 
 $pgtitle = array(gettext("Services"), gettext("Acme"), gettext("Settings"));

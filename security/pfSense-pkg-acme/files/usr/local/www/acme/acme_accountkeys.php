@@ -31,10 +31,7 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $changedesc = "Services: Acme: Accountkeys";
 
-if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
-	$config['installedpackages']['acme']['accountkeys']['item'] = array();
-}
-$a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
+config_init_path('installedpackages/acme/accountkeys/item');
 
 if ($_POST) {
 	$pconfig = $_POST;
@@ -53,7 +50,7 @@ if ($_POST) {
 				$selected[] = get_accountkey_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_accountkeys[$itemnr]);
+				config_del_path("installedpackages/acme/accountkeys/item/{$itemnr}");
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -85,7 +82,9 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_accountkey_id($selection);
 			}
+			$a_accountkeys = config_get_path('installedpackages/acme/accountkeys/item');
 			array_moveitemsbefore($a_accountkeys, $moveto, $selected);
+			config_set_path('installedpackages/acme/accountkeys/item', $a_accountkeys);
 		
 			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
@@ -101,9 +100,9 @@ if ($_POST) {
 if ($_POST['act'] == "del") {
 	$id = $_POST['id'];
 	$id = get_accountkey_id($id);
-	if (isset($a_accountkeys[$id])) {
+	if (config_get_path("installedpackages/acme/accountkeys/item/{$id}") !== null) {
 		if (!$input_errors) {
-			unset($a_accountkeys[$id]);
+			config_del_path("installedpackages/acme/accountkeys/item/{$id}");
 			$changedesc .= " Accountkey delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
@@ -157,7 +156,7 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				</thead>
 				<tbody class="user-entries">
 <?php
-		foreach ($a_accountkeys as $accountkey) {
+		foreach (config_get_path('installedpackages/acme/accountkeys/item', []) as $accountkey) {
 			$accountname = htmlspecialchars($accountkey['name']);
 			?>
 			<tr id="fr<?=$accountname;?>" <?=$display?> onClick="fr_toggle('<?=$accountname;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$accountname;?>';">
