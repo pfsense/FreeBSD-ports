@@ -23,9 +23,9 @@
 
 require_once('config.inc');
 require_once('globals.inc');
-global $g, $config;
+global $g;
 
-$config = parse_config(true);
+config_set_path('', parse_config(true));
 
 // Enable logging if called via pfBlockerNG
 $verbose = FALSE;
@@ -46,13 +46,13 @@ foreach (array('dnsbl.log', 'dns_reply.log', 'unified.log') as $logfile) {
 }
 
 $python_mode = FALSE;
-if (isset($config['unbound']['python']) && !empty($config['unbound']['python_script'])) {
+if (config_path_enabled('unbound', 'python') && !empty(config_get_path('unbound/python_script'))) {
 	$python_mode = TRUE;
 }
 
 // Function to mount/unmount required folders into Unbound chroot
 function pfb_python_mount($python_mode, $verbose, $type_mount, $type_umount, $type_perms, $folder, $grep_string) {
-	global $g, $config;
+	global $g;
 	$found = FALSE;
 
 	// Force Resolver path

@@ -436,7 +436,7 @@ if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_for
 	} elseif ($pconfig['pfb_force'] == 'cron') {
 		pfb_cron_update('cron');
 	} elseif ($pconfig['pfb_force'] == 'reload') {
-		$config['installedpackages']['pfblockerng']['config'][0]['pfb_reuse'] = 'on';
+		config_set_path('installedpackages/pfblockerng/config/0/pfb_reuse', 'on');
 		write_config('pfBlockerNG: Running Force Reload');
 		pfb_cron_update('reload');
 	}
