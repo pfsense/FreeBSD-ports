@@ -24,11 +24,11 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
-init_config_arr(array('installedpackages', 'pfblockerngglobal'));
-$fconfig	= &$config['installedpackages']['pfblockerngglobal'];
+config_init_path('installedpackages/pfblockerngglobal');
+$fconfig	= config_get_path('installedpackages/pfblockerngglobal');
 
 // Load/convert Feeds (w/alternative aliasname(s), if user-configured)
 $feed_info	= convert_feeds_json();
@@ -84,6 +84,7 @@ if ($_POST) {
 				}
 				else {
 					$fconfig['feed_' . $l_aliasname] = $_POST['feed_' . $l_aliasname] ?: '';
+					config_set_path("installedpackages/pfblockerngglobal/feed_{$l_aliasname}", $fconfig['feed_' . $l_aliasname]);
 					$config_mod = TRUE;
 
 					// IPv4/6 Aliasnames cannot exceed 31 characters in PF. ( pfB_ + aliasname + _v? )
@@ -111,6 +112,7 @@ if ($_POST) {
 						$value					= strtolower($value);		// config XML tag needs to be lowercase
 						${"feed_alt_$value"}			= $post;
 						$fconfig['feed_alt_' . $value]		= ${"feed_alt_$value"};
+						config_set_path("installedpackages/pfblockerngglobal/feed_alt_{$value}", $fconfig['feed_alt_' . $value]);
 					}
 					else {
 						$input_errors[] = 'Invalid Alternative Alias Name';
@@ -389,20 +391,18 @@ print ($section);
 			<?php
 			$list_type = array( 'pfblockernglistsv4' => 'ipv4', 'pfblockernglistsv6' => 'ipv6', 'pfblockerngdnsbl' => 'dnsbl');
 			foreach ($list_type as $type => $feedtype) {
-				if (!empty($config['installedpackages'][$type]['config'])) {
-					foreach ($config['installedpackages'][$type]['config'] as $rowid => $list) {
-						if (isset($list['row'])) {
-							foreach ($list['row'] as $row) {
-								if (!empty($row['url']) && !empty($row['header'])) {
+				foreach (config_get_path("installedpackages/{$type}/config", []) as $rowid => $list) {
+					if (isset($list['row'])) {
+						foreach ($list['row'] as $row) {
+							if (!empty($row['url']) && !empty($row['header'])) {
 
-									$ex_feeds[$feedtype][] = array(	'aliasname'	=>	$list['aliasname'],
-													'action'	=>	$list['action'],
-													'state'		=>	$row['state'],
-													'url'		=>	$row['url'],
-													'header'	=>	$row['header'],
-													'rowid'		=>	$rowid
-													);
-								}
+								$ex_feeds[$feedtype][] = array(	'aliasname'	=>	$list['aliasname'],
+												'action'	=>	$list['action'],
+												'state'		=>	$row['state'],
+												'url'		=>	$row['url'],
+												'header'	=>	$row['header'],
+												'rowid'		=>	$rowid
+												);
 							}
 						}
 					}

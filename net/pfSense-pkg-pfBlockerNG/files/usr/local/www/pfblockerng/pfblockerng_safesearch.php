@@ -24,11 +24,11 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $g, $config, $pfb;
+global $g, $pfb;
 pfb_global();
 
-init_config_arr(array('installedpackages', 'pfblockerngsafesearch'));
-$pfb['bconfig']	= &$config['installedpackages']['pfblockerngsafesearch'];
+config_init_path('installedpackages/pfblockerngsafesearch');
+$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngsafesearch');
 
 $pconfig = array();
 $pconfig['safesearch_enable']		= $pfb['bconfig']['safesearch_enable']			?: 'Disable';
@@ -232,6 +232,7 @@ if (isset($_POST['save'])) {
 		$pfb['bconfig']['safesearch_doh']	= $_POST['safesearch_doh']				?: 'Disable';
 		$pfb['bconfig']['safesearch_doh_list']	= implode(',', (array)$_POST['safesearch_doh_list'])	?: '';
 
+		config_set_path('installedpackages/pfblockerngsafesearch', $pfb['bconfig']);
 		$msg = 'Saved SafeSearch configuration';
 		write_config("[ pfBlockerNG ] {$msg}");
 		$savemsg = "{$msg}. A Force Update|Reload is required to apply changes!";

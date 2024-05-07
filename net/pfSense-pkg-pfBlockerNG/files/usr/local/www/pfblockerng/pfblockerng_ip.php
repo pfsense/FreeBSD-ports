@@ -24,11 +24,11 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
-init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
-$pfb['iconfig'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0];
+config_init_path('installedpackages/pfblockerngipsettings/config/0');
+$pfb['iconfig'] = config_get_path('installedpackages/pfblockerngipsettings/config/0');
 
 $pconfig = array();
 $pconfig['enable_dup']		= $pfb['iconfig']['enable_dup']				?: '';
@@ -197,6 +197,7 @@ if ($_POST) {
 			$pfb['iconfig']['killstates']		= pfb_filter($_POST['killstates'], PFB_FILTER_ON_OFF, 'ip')	?: '';
 			$pfb['iconfig']['v4suppression']	= base64_encode($_POST['v4suppression'])			?: '';
 
+			config_set_path('installedpackages/pfblockerngipsettings/config/0', $pfb['iconfig']);
 			write_config('[pfBlockerNG] save IP settings');
 			if (!empty($savemsg)) {
 				header("Location: /pfblockerng/pfblockerng_ip.php?savemsg={$savemsg}");
