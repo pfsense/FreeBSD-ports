@@ -24,18 +24,18 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 $disable_move = FALSE;
 
-init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
-$pfb['dconfig'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0];
+config_init_path('installedpackages/pfblockerngdnsblsettings/config/0');
+$pfb['dconfig'] = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0');
 
 // Collect local domain TLD for Python TLD Allow array
-if (strpos($config['system']['domain'], '.') !== FALSE) {
-	$local_tld = ltrim(strstr($config['system']['domain'], '.', FALSE), '.');
+if (strpos(config_get_path('system/domain'), '.') !== FALSE) {
+	$local_tld = ltrim(strstr(config_get_path('system/domain'), '.', FALSE), '.');
 } else {
-	$local_tld = $config['system']['domain'];
+	$local_tld = config_get_path('system/domain');
 }
 $default_tlds = array('arpa',$local_tld,'com','net','org','edu','ca','co','io');
 
@@ -341,13 +341,11 @@ $options_aliaslog		= [ 'enabled' => 'Enable', 'disabled' => 'Disable' ];
 
 // Collect all pfSense 'Port' Aliases
 $ports_list = $networks_list = '';
-if (!empty($config['aliases']['alias'])) {
-	foreach ($config['aliases']['alias'] as $alias) {
-		if ($alias['type'] == 'port') {
-			$ports_list .= "{$alias['name']},";
-		} elseif ($alias['type'] == 'network') {
-			$networks_list .= "{$alias['name']},";
-		}
+foreach (config_get_path('aliases/alias', []) as $alias) {
+	if ($alias['type'] == 'port') {
+		$ports_list .= "{$alias['name']},";
+	} elseif ($alias['type'] == 'network') {
+		$networks_list .= "{$alias['name']},";
 	}
 }
 $ports_list			= trim($ports_list, ',');
@@ -430,6 +428,7 @@ if ($_POST) {
 				$dnsbl_webpage = TRUE;
 			}
 			$pfb['dconfig']['dnsbl_webpage'] = $dnsbl_webpage_file;
+			config_set_path('installedpackages/pfblockerngdnsblsettings/config/0/dnsbl_webpage', $pfb['dconfig']['dnsbl_webpage']);
 		}
 		else {
 			$input_errors[] = 'DNSBL Web Server page is invalid!';
@@ -544,6 +543,7 @@ if ($_POST) {
 			if ($_POST['pfb_dnsvip_pass'] == $_POST['pfb_dnsvip_pass_confirm']) {
 				if ($_POST['pfb_dnsvip_pass'] != DMYPWD) {
 					$pfb['dconfig']['pfb_dnsvip_pass'] = pfb_filter($_POST['pfb_dnsvip_pass'], PFB_FILTER_HTML, 'dnsbl password');
+					config_set_path('installedpackages/pfblockerngdnsblsettings/config/0/pfb_dnsvip_pass', $pfb['dconfig']['pfb_dnsvip_pass']);
 				}
 			} else {
 				$input_errors[] = 'DNSBL VIP CARP password does not match the confirm password!';
@@ -625,7 +625,6 @@ if ($_POST) {
 			$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']						?: 'default';
 
 			$pfb['dconfig']['alexa_enable']		= pfb_filter($_POST['alexa_enable'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
-			$pfb['dconfig']['alexa_inclusion']	= implode(',', (array)$_POST['alexa_inclusion'])			?: 'com,net,org,ca,co,io';
 
 			$pfb['dconfig']['pfb_regex_list']	= base64_encode($_POST['pfb_regex_list'])				?: '';
 			$pfb['dconfig']['pfb_noaaaa_list']	= base64_encode($_POST['pfb_noaaaa_list'])				?: '';
@@ -682,6 +681,7 @@ if ($_POST) {
 				@copy("/usr/local/www/pfblockerng/www/{$pfb['dconfig']['dnsbl_webpage']}", '/usr/local/www/pfblockerng/www/dnsbl_active.php');
 			}
 
+			config_set_path('installedpackages/pfblockerngdnsblsettings/config/0', $pfb['dconfig']);
 			write_config('[pfBlockerNG] save DNSBL settings');
 			if ($savemsg) {
 				header("Location: /pfblockerng/pfblockerng_dnsbl.php?savemsg={$savemsg}");

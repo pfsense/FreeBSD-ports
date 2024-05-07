@@ -24,11 +24,11 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
-init_config_arr(array('installedpackages', 'pfblockerngsync', 'config', '0'));
-$pfb['sconfig'] = &$config['installedpackages']['pfblockerngsync']['config'][0];
+config_init_path('installedpackages/pfblockerngsync/config/0');
+$pfb['sconfig'] = config_get_path('installedpackages/pfblockerngsync/config/0');
 
 $pconfig = array();
 $pconfig['varsynconchanges']	= $pfb['sconfig']['varsynconchanges']	?: '';
@@ -115,11 +115,13 @@ if ($_POST) {
 						break;
 				}
 				$pfb['sconfig']['row'][$k_field[1]][$k_field[0]] = $value;
+				config_set_path("installedpackages/pfblockerngsync/config/0/row/{$k_field[1]}/{$k_field[0]}", $pfb['sconfig']['row'][$k_field[1]][$k_field[0]]);
 
 				// Clear checkbox field when POST is empty
 				if ($pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] == 'on' &&
 				    !isset($_POST["varsyncdestinenable-{$k_field[1]}"])) {
 					$pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] = '';
+					config_set_path("installedpackages/pfblockerngsync/config/0/row/{$k_field[1]}/varsyncdestinenable", $pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable']);
 				}
 			}
 		}
@@ -128,6 +130,7 @@ if ($_POST) {
 		foreach ($pfb['sconfig']['row'] as $r_key => $row) {
 			if (!isset($rowhelper_exist[$r_key])) {
 				unset($pfb['sconfig']['row'][$r_key]);
+				config_del_path("installedpackages/pfblockerngsync/config/0/row/{$r_key}");
 			}
 		}
 
@@ -137,6 +140,7 @@ if ($_POST) {
 			$pfb['sconfig']['varsynctimeout']	= $_POST['varsynctimeout']						?: '';
 			$pfb['sconfig']['syncinterfaces']	= pfb_filter($_POST['syncinterfaces'], PFB_FILTER_ON_OFF, 'Sync')	?: '';
 
+			config_set_path('installedpackages/pfblockerngsync/config/0', $pfb['sconfig']);
 			write_config('[pfBlockerNG] save XMLRPC sync settings');
 			header('Location: /pfblockerng/pfblockerng_sync.php');
 			exit;

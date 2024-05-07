@@ -677,7 +677,7 @@ function pfb_validate_domain_labels($input) {
 
 // [ $pfb ] pfBlockerNG global array. This needs to be called to get the updated settings.
 function pfb_global() {
-	global $g, $config, $pfb;
+	global $g, $pfb;
 
 	// Create folders if not exist.
 	foreach ($pfb['folder_array'] as $folder) {
@@ -685,13 +685,13 @@ function pfb_global() {
 	}
 
 	// Reload config.xml to get any recent changes
-	$config = parse_config(true);
+	config_set_path('', parse_config(true));
 
-	init_config_arr(array('installedpackages', 'pfblockerng', 'config', 0));
-	init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
-	init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
-	init_config_arr(array('installedpackages', 'pfblockerngblacklist'));
-	init_config_arr(array('installedpackages', 'pfblockerngglobal'));
+	config_init_path('installedpackages/pfblockerng/config/0');
+	config_init_path('installedpackages/pfblockerngipsettings/config/0');
+	config_init_path('installedpackages/pfblockerngdnsblsettings/config/0');
+	config_init_path('installedpackages/pfblockerngblacklist');
+	config_init_path('installedpackages/pfblockerngglobal');
 
 	// General variables
 	$pfb['config']		= config_get_path('installedpackages/pfblockerng/config/0');
@@ -773,7 +773,7 @@ function pfb_global() {
 	}
 
 	// SafeSearch
-	init_config_arr(array('installedpackages', 'pfblockerngsafesearch'));
+	config_init_path('installedpackages/pfblockerngsafesearch');
 	$pfb['safesearch_enable']	= config_get_path('installedpackages/pfblockerngsafesearch/safesearch_enable', 'Disable');
 	$pfb['safesearch_youtube']	= config_get_path('installedpackages/pfblockerngsafesearch/safesearch_youtube', 'Disable');
 	$pfb['safesearch_doh']		= config_get_path('installedpackages/pfblockerngsafesearch/safesearch_doh', 'Disable');
@@ -1856,11 +1856,11 @@ function pfb_create_dnsbl_cert() {
 
 // Create DNSBL VIP and NAT rules, lighttpd conf and services
 function pfb_create_dnsbl($mode) {
-	global $config, $pfb;
+	global $pfb;
 	pfb_global();
 
 	// Reload config.xml to get any recent changes
-	$config = parse_config(true);
+	config_set_path('', parse_config(true));
 
 	$new_nat = $new_vip = $pfb_ex_nat = $pfb_ex_vip = $dnsbl_ex_nat = $dnsbl_ex_vip = array();
 	$pfb['dnsbl_vip_changed'] = $pfbupdate = FALSE;
@@ -2026,10 +2026,10 @@ function pfb_create_dnsbl($mode) {
 
 		// Update config.xml, if changes required
 		if ($pfbupdate) {
-			init_config_arr(array('nat', 'rule'));
+			config_init_path('nat/rule');
 			config_set_path('nat/rule', $new_nat);
 
-			init_config_arr(array('virtualip', 'vip'));
+			config_init_path('virtualip/vip');
 			config_set_path('virtualip/vip', $new_vip);
 			write_config('pfBlockerNG: saving DNSBL changes');
 		}
@@ -2071,7 +2071,7 @@ function pfb_create_dnsbl($mode) {
 						$vhid		= escapeshellarg("vhid {$pfb['dnsbl_vip_vhid']}");
 						$advbase	= escapeshellarg("advbase {$pfb['dnsbl_vip_base']}");
 						$advskew	= escapeshellarg("advskew {$pfb['dnsbl_vip_skew']}");
-						if (config_path_enabled('/', 'virtualip_carp_maintenancemode')) {
+						if (config_path_enabled('', 'virtualip_carp_maintenancemode')) {
 							$advskew = 'advskew 254';
 						}
 
@@ -2168,17 +2168,17 @@ function pfb_create_dnsbl($mode) {
 
 // Define DNSBL Unbound include settings (config.xml)
 function pfb_unbound_dnsbl($mode) {
-	global $g, $config, $pfb;
+	global $g, $pfb;
 	pfb_global();
 
 	// Reload config.xml to get any recent changes
-	$config = parse_config(true);
+	config_set_path('', parse_config(true));
 
 	$pfbupdate = FALSE;
 	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*conf";
 
 	// Collect Unbound custom option pfSense conf line
-	init_config_arr(array('unbound'));
+	config_init_path('unbound');
 	$pfb['unboundconfig']	= config_get_path('unbound/custom_options');
 
 	if (!empty($pfb['unboundconfig'])) {
@@ -2449,14 +2449,14 @@ function pfb_unbound_python_whitelist($mode='') {
 
 // Unbound python configuration file
 function pfb_unbound_python($mode) {
-	global $config, $pfb;
+	global $pfb;
 	pfb_global();
 
 	// Reload config.xml to get any recent changes
-	$config = parse_config(true);
+	config_set_path('', parse_config(true));
 
 	$pfbpython = FALSE;
-	init_config_arr(array('unbound'));
+	config_init_path('unbound');
 
 	// Ensure log file permissions are set as 'unbound:unbound'
 	foreach (array('dnsbl.log', 'dns_reply.log', 'unified.log') as $logfile) {
@@ -4707,18 +4707,18 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 
 // Archive IP aliastables and DNSBL database. ( Ramdisk installations only )
 function pfb_aliastables($mode) {
-	global $g, $config, $pfb;
+	global $g, $pfb;
 
 	$msg = '';
 	$earlyshellcmd = '/usr/local/pkg/pfblockerng/pfblockerng.sh aliastables';
 
 	// Reload config.xml to get any recent changes
-	$config = parse_config(true);
+	config_set_path('', parse_config(true));
 
-	init_config_arr(array('system', 'earlyshellcmd'));
+	config_init_path('system/earlyshellcmd');
 	$a_earlyshellcmd = config_get_path('system/earlyshellcmd', []);
 
-	init_config_arr(array('installedpackages', 'shellcmdsettings', 'config'));
+	config_init_path('installedpackages/shellcmdsettings/config');
 	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config', []);
 
 	// Only execute function if Ramdisks are used.
@@ -4967,7 +4967,7 @@ function pfb_remove_states() {
 	// Collect any 'Permit' Customlist IPs to suppress
 	$custom_supp = array();
 	foreach (array('pfblockernglistsv4', 'pfblockernglistsv6') as $ip_type) {
-		foreach (config_get_path("installedpackages{$ip_type}/config") as $list) {
+		foreach (config_get_path("installedpackages{$ip_type}/config", []) as $list) {
 			if (!empty($list['custom']) && strpos($list['action'], 'Permit_') !== FALSE) {
 				$custom		= pfbng_text_area_decode($list['custom'], TRUE, FALSE);
 				$custom_supp	= array_merge($custom_supp, $custom);
@@ -5391,7 +5391,7 @@ function pfb_daemon_filterlog() {
 	}
 
 	// Proofpoint ET IQRisk header name reference
-	init_config_arr(array('installedpackages', 'pfblockerngreputation', 'config', 0));
+	config_init_path('installedpackages/pfblockerngreputation/config/0');
 	$et_header	= config_get_path('installedpackages/pfblockerngreputation/config/0/et_header', '');
 	$et_enabled = TRUE;
 	if (empty($et_header)) {
@@ -6969,7 +6969,7 @@ function pfb_clear_contents() {
 
 // Main pfBlockerNG function
 function sync_package_pfblockerng($cron='') {
-	global $g, $config, $pfb, $pfbarr;
+	global $g, $pfb, $pfbarr;
 	pfb_global();
 
 	$pfb['conf_mod']		= FALSE;	// Flag to check for mods to the config.xml file. ('$pfb_config' array to hold changes)
@@ -7087,7 +7087,7 @@ function sync_package_pfblockerng($cron='') {
 	$pfb['dnsbl_alexa_inc'] = pfb_filter($pfb['dnsbl_alexa_inc'], PFB_FILTER_CSV, 'Validate pfB Script variable');
 
 	// Reputation config variables
-	init_config_arr(array('installedpackages', 'pfblockerngreputation', 'config', 0));
+	config_init_path('installedpackages/pfblockerngreputation/config/0');
 	$pfb['config_rep'] = config_get_path('installedpackages/pfblockerngreputation/config/0');
 
 	// Validate pfB Script variables
@@ -9246,7 +9246,7 @@ function sync_package_pfblockerng($cron='') {
 
 		// Collect lists and custom list configuration and format into one array ($lists).
 		foreach	($ip_types as $ip_type	=> $vtype) {
-			foreach (config_get_path("installedpackages/{$ip_type}/config") as $key => $list) {
+			foreach (config_get_path("installedpackages/{$ip_type}/config", []) as $key => $list) {
 				if (!is_array($list)) {
 					$list = array();
 				}
@@ -9998,9 +9998,9 @@ function sync_package_pfblockerng($cron='') {
 	#########################################
 
 	// Reload config.xml to get any recent changes
-	$config = parse_config(true);
+	config_set_path('', parse_config(true));
 
-	init_config_arr(['aliases']);
+	config_init_path('aliases');
 	$exist_aliases = config_get_path('aliases/alias', []);
 	foreach ($exist_aliases as $cbalias) {
 
@@ -10044,13 +10044,13 @@ function sync_package_pfblockerng($cron='') {
 			$new_rules = $permit_rules = $match_rules = $other_rules = $fpermit_rules = $fmatch_rules = $fother_rules = array();
 
 			// Reload config.xml to get any recent changes
-			$config = parse_config(true);
+			config_set_path('', parse_config(true));
 
 			// New vs old rules array comparison
 			$orig_rules_nocreated = $new_rules_nocreated = array();
 
 			// Collect all existing rules
-			init_config_arr(array('filter', 'rule'));
+			config_init_path('filter/rule');
 			$rules = config_get_path('filter/rule', []);
 
 			// Collect existing pfSense rules 'pass', 'match' and 'other' pfSense rules into new arrays.
@@ -10446,15 +10446,15 @@ function sync_package_pfblockerng($cron='') {
 	// Only save config.xml, if changes are found.
 	if ($pfb['conf_mod'] && isset($pfb_config)) {
 		// Reload config.xml to get any recent changes and merge/save changes.
-		$config = parse_config(true);
-		$config = array_replace_recursive($config, $pfb_config);
+		config_set_path('', parse_config(true));
+		config_set_path('', array_replace_recursive(config_get_path(''), $pfb_config));
 		write_config('pfBlockerNG: save settings');
 	}
 
 
 	// Query NAT Rules for previous IPv4 pfBlockerNG aliasnames which are not in the new '_v4' suffix format
 	$pfb_found	= FALSE;
-	$config		= parse_config(true);
+	config_set_path('', parse_config(true));
 
 	foreach (config_get_path('nat/rule', []) as $key => $ex_nat) {
 		foreach (array('source', 'destination') as $rtype) {
@@ -10645,11 +10645,11 @@ function sync_package_pfblockerng($cron='') {
 	// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
 	foreach (array( 'clearip', 'cleardnsbl') as $type) {
 		$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
-		if (isset($config['installedpackages']['pfblockerngglobal']['widget-' . $type])) {
-			if ($config['installedpackages']['pfblockerngglobal']['widget-' . $type] != 'never') {
+		if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") !== null) {
+			if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") != 'never') {
 
 				$pfb_day = '*';
-				if ($config['installedpackages']['pfblockerngglobal']['widget-' . $type] == 'weekly') {
+				if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") == 'weekly') {
 					$pfb_day = '7';
 				}
 
@@ -10730,7 +10730,7 @@ function pfblockerng_php_pre_deinstall_command() {
 
 		// Remove aliastables archive and earlyshellcmd if found.
 		@unlink_if_exists("{$pfb['aliasarchive']}");
-		if (config_path_enabled('system','earlyshellcmd')) {
+		if (config_get_path('system/earlyshellcmd') !== null) {
 			$a_earlyshellcmd = config_get_path('system/earlyshellcmd', '');
 			if (preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd)) {
 				config_set_path('system/earlyshellcmd',
