@@ -289,7 +289,7 @@ function get_carp_stats() {
 			}
 		}
 		$status = "";
-		if (config_path_enabled('/','virtualip_carp_maintenancemode')) {
+		if (config_path_enabled('','virtualip_carp_maintenancemode')) {
 			$status .= "CARP is in Maintenance Mode. ";
 		}
 		$status .= "M/B/I {$mastercount}/{$backupcount}/{$initcount}";

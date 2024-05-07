@@ -736,7 +736,6 @@ EOD;
 }
 
 function set_lcd_value($fieldname, $max, $default_value) {
-	global $config;
 	$value = config_get_path("installedpackages/lcdproc/config/0/{$fieldname}");
 	$returnvalue = "";
 	if ($value != '' && $value != '-1') {
