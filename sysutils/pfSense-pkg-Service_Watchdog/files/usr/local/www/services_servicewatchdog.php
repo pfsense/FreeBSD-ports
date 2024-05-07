@@ -31,15 +31,7 @@ require_once("functions.inc");
 require_once("service-utils.inc");
 require_once("servicewatchdog.inc");
 
-if (!is_array($config['installedpackages']['servicewatchdog'])) {
-	$config['installedpackages']['servicewatchdog'] = array();
-}
-
-if (!is_array($config['installedpackages']['servicewatchdog']['item'])) {
-	$config['installedpackages']['servicewatchdog']['item'] = array();
-}
-
-$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
+config_init_path('installedpackages/servicewatchdog/item');
 
 /* if a custom message has been passed along, lets process it */
 if ($_GET['savemsg']) {
@@ -50,22 +42,20 @@ if (isset($_POST['Update'])) {
 	/* update selected services */
 	if (is_array($_POST['notifies']) && count($_POST['notifies'])) {
 		/* Check each service and set the notify flag only for those chosen, remove those that are unset. */
-		foreach ($a_pwservices as $idx => $thisservice) {
+		foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $idx => $thisservice) {
 			if (!is_array($thisservice)) {
 				continue;
 			}
 			if (in_array($idx, $_POST['notifies'])) {
-				$a_pwservices[$idx]['notify'] = true;
+				config_set_path("installedpackages/servicewatchdog/item/{$idx}/notify", true);
 			} else {
-				if (isset($a_pwservices[$idx]['notify'])) {
-					unset($a_pwservices[$idx]['notify']);
-				}
+				config_del_path("installedpackages/servicewatchdog/item/{$idx}/notify");
 			}
 		}
 	} else {
 		/* No notifies selected, remove them all. */
-		foreach ($a_pwservices as $idx => $thisservice) {
-			unset($a_pwservices[$idx]['notify']);
+		foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $idx => $thisservice) {
+			config_del_path("installedpackages/servicewatchdog/item/{$idx}/notify");
 		}
 	}
 	servicewatchdog_cron_job();
@@ -78,7 +68,7 @@ if (isset($_POST['del'])) {
 	/* delete selected services */
 	if (is_array($_POST['pwservices']) && count($_POST['pwservices'])) {
 		foreach ($_POST['pwservices'] as $servicei) {
-			unset($a_pwservices[$servicei]);
+			config_del_path("installedpackages/servicewatchdog/item/{$servicei}");
 		}
 		servicewatchdog_cron_job();
 		write_config(gettext("Services: Service Watchdog: deleted a service from watchdog."));
@@ -97,6 +87,7 @@ if (isset($_POST['del'])) {
 	}
 	/* move selected services before this service */
 	if (isset($movebtn) && is_array($_POST['pwservices']) && count($_POST['pwservices'])) {
+		$a_pwservices = config_get_path('installedpackages/servicewatchdog/item');
 		$a_pwservices_new = array();
 
 		/* copy all services < $movebtn and not selected */
@@ -127,13 +118,13 @@ if (isset($_POST['del'])) {
 				$a_pwservices_new[] = $a_pwservices[$i];
 			}
 		}
-		$a_pwservices = $a_pwservices_new;
+		config_set_path('installedpackages/servicewatchdog/item', $a_pwservices_new);
 		servicewatchdog_cron_job();
 		write_config(gettext("Services: Service Watchdog: changed services order configuration."));
 		header("Location: services_servicewatchdog.php");
 		return;
 	} else if (isset($delbtn)) {
-		unset($a_pwservices[$delbtn]);
+		config_del_path("installedpackages/servicewatchdog/item/{$delbtn}");
 		servicewatchdog_cron_job();
 		write_config(gettext("Services: Service Watchdog: deleted a service from watchdog."));
 		header("Location: services_servicewatchdog.php");
@@ -169,7 +160,7 @@ print_info_box(gettext("This page allows selecting services to be monitored so t
 
 <?php
 $nservices = $i = 0;
-foreach ($a_pwservices as $thisservice):
+foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $thisservice):
 ?>
 	<tr valign="top" id="fr<?=$nservices?>">
 		<td>

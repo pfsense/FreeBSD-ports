@@ -56,16 +56,14 @@ function servicewatchdog_service_matches($svc1, $svc2) {
 }
 
 function servicewatchdog_is_service_watched($svc) {
-	global $config;
-	init_config_arr(array('installedpackages', 'servicewatchdog', 'item'));
-	$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
+	config_init_path('installedpackages/servicewatchdog/item');
 	$blacklisted_services = array("cron");
 
 	if (empty($svc['name']) || in_array($svc['name'], $blacklisted_services)) {
 		return true;
 	}
 
-	foreach ($a_pwservices as $a_svc) {
+	foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $a_svc) {
 		if (servicewatchdog_service_matches($svc, $a_svc)) {
 			return true;
 		}
@@ -74,11 +72,9 @@ function servicewatchdog_is_service_watched($svc) {
 }
 
 function servicewatchdog_cron_job($force_remove = false) {
-	global $config;
-	init_config_arr(array('installedpackages', 'servicewatchdog', 'item'));
-	$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
+	config_init_path('installedpackages/servicewatchdog/item');
 
-	if (($force_remove == false) && (count($a_pwservices) > 0)) {
+	if (($force_remove == false) && (count(config_get_path('installedpackages/servicewatchdog/item')) > 0)) {
 		// Add the cron job if it doesn't exist.
 		install_cron_job("/usr/local/pkg/servicewatchdog_cron.php", true, "*/1");
 	} else {
@@ -88,11 +84,9 @@ function servicewatchdog_cron_job($force_remove = false) {
 }
 
 function servicewatchdog_check_services() {
-	global $config;
-	init_config_arr(array('installedpackages', 'servicewatchdog', 'item'));
-	$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
+	config_init_path('installedpackages/servicewatchdog/item');
 
-	foreach ($a_pwservices as $svc) {
+	foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $svc) {
 		// apinger became dpinger in pfSense 2.3
 		if ($svc['name'] == 'apinger') {
 			$svc['name'] = 'dpinger';
