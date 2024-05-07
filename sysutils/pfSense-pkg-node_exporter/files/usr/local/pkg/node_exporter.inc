@@ -56,13 +56,12 @@ function node_exporter_write_config($node_exporter_config) {
 	}
 }
 function node_exporter_sync_config() {
-	global $config;
 	if (is_service_running('node_exporter')) {
 		log_error("Stopping service node_exporter");
 		stop_service('node_exporter');
 	}
 
-	$node_exporter_config = &$config['installedpackages']['nodeexporter']['config'][0];
+	$node_exporter_config = config_get_path('installedpackages/nodeexporter/config/0');
 	if ($node_exporter_config['enable'] !== 'on') {
 		unlink_if_exists(NODE_EXPORTER_RCFILE);
 		return;
@@ -88,16 +87,13 @@ function node_exporter_sync_config() {
 }
 
 function node_exporter_install_command() {
-	global $config;
-
 	// If instaing for the first time, set up the default config
-	$node_exporter_config = &$config['installedpackages']['nodeexporter']['config'][0];
-	if (!is_array($node_exporter_config)) {
-		$node_exporter_config = [
+	if (!is_array(config_get_path('installedpackages/nodeexporter/config/0'))) {
+		config_set_path('installedpackages/nodeexporter/config/0', [
 			"collectors" => NODE_EXPORTER_DEFAULT_COLLECTORS,
 			"listen_port" => "9100",
 			"extra_flags" => "--log.level=warn",
-		];
+		]);
 	}
 
 	// Set up textfile cron job
