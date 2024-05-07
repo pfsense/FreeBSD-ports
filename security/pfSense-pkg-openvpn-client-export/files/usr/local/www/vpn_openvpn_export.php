@@ -35,27 +35,17 @@ global $dyndns_split_domain_types, $p12_encryption_levels;
 
 $pgtitle = array("OpenVPN", "Client Export Utility");
 
-if (!is_array($config['openvpn'])) {
-	$config['openvpn'] = array();
-}
+config_init_path('openvpn/openvpn-server');
 
-if (!is_array($config['openvpn']['openvpn-server'])) {
-	$config['openvpn']['openvpn-server'] = array();
-}
+$a_server = config_get_path('openvpn/openvpn-server');
 
-$a_server = $config['openvpn']['openvpn-server'];
+config_init_path('system/user');
 
-if (!is_array($config['system']['user'])) {
-	$config['system']['user'] = array();
-}
+$a_user = config_get_path('system/user');
 
-$a_user = $config['system']['user'];
+config_init_path('cert');
 
-if (!is_array($config['cert'])) {
-	$config['cert'] = array();
-}
-
-$a_cert = $config['cert'];
+$a_cert = config_get_path('cert');
 
 $ras_server = array();
 foreach ($a_server as $server) {
@@ -68,9 +58,9 @@ foreach ($a_server as $server) {
 	if (stripos($server['mode'], "server") === false) {
 		continue;
 	}
-	init_config_arr(array('cert'));
+	config_init_path('cert');
 	$ecdsagood = array();
-	foreach ($config['cert'] as $cert) {
+	foreach (config_get_path('cert', []) as $cert) {
 		if (!empty($cert['prv']) &&
 		    !cert_check_pkey_compatibility($cert['prv'], 'OpenVPN')) {
 			continue;
@@ -88,6 +78,7 @@ foreach ($a_server as $server) {
 				// If $cert is not an array, it's a certref not a cert.
 				if (!is_array($cert)) {
 					$cert = lookup_cert($cert);
+					$cert = $cert['item'];
 				}
 
 				$purpose = cert_get_purpose($cert['crt']);
@@ -151,52 +142,46 @@ $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','bl
 	'useproxy','useproxytype','proxyaddr','proxyport', 'silent','useproxypass','proxyuser');
 	//'pass','proxypass','advancedoptions'
 
-init_config_arr(['installedpackages', 'vpn_openvpn_export', 'serverconfig', 'item']);
-$openvpnexportcfg = &$config['installedpackages']['vpn_openvpn_export'];
-$ovpnserverdefaults = &$openvpnexportcfg['serverconfig']['item'];
-init_config_arr(['installedpackages', 'vpn_openvpn_export', 'defaultsettings']);
-$cfg = &$config['installedpackages']['vpn_openvpn_export']['defaultsettings'];
-if (!is_array($ovpnserverdefaults)) {
-	$ovpnserverdefaults = array();
-}
+config_init_path('installedpackages/vpn_openvpn_export/serverconfig/item');
+$cfg_path = 'installedpackages/vpn_openvpn_export/defaultsettings';
+config_init_path('installedpackages/vpn_openvpn_export/defaultsettings');
 
 if (isset($_POST['save'])) {
 	$vpnid = $_POST['server'];
-	$index = count($ovpnserverdefaults);
-	foreach($ovpnserverdefaults as $key => $cfg) {
+	$index = count(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item'));
+	foreach(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []) as $key => $cfg) {
 		if ($cfg['server'] == $vpnid) {
 			$index = $key;
 			break;
 		}
 	}
-	$cfg = &$ovpnserverdefaults[$index];
-	if (!is_array($cfg)) {
-		$cfg = array();
-	}
+	$cfg_path = "installedpackages/vpn_openvpn_export/serverconfig/item/{$index}";
+	config_init_path($cfg_path);
 	if ($_POST['pass'] <> DMYPWD) {
 		if ($_POST['pass'] <> $_POST['pass_confirm']) {
 			$input_errors[] = "Different certificate passwords entered.";
 		}
-		$cfg['pass'] = $_POST['pass'];
+		config_set_path("{$cfg_path}/pass", $_POST['pass']);
 	}
 	if ($_POST['proxypass'] <> DMYPWD) {
 		if ($_POST['proxypass'] <> $_POST['proxypass_confirm']) {
 			$input_errors[] = "Different Proxy passwords entered.";
 		}
-		$cfg['proxypass'] = $_POST['proxypass'];
+		config_set_path("{$cfg_path}/proxypass", $_POST['proxypass']);
 	}
 
 	foreach ($simplefields as $value) {
-		$cfg[$value] = $_POST[$value];
+		config_set_path("{$cfg_path}/{$value}", $_POST[$value]);
 	}
-	$cfg['advancedoptions'] = base64_encode($_POST['advancedoptions']);
+	config_set_path("{$cfg_path}/advancedoptions", base64_encode($_POST['advancedoptions']));
 	if (empty($input_errors)) {
 		write_config("Save openvpn client export defaults");
 	}
 }
 
-for($i = 0; $i < count($ovpnserverdefaults); $i++) {
-	$ovpnserverdefaults[$i]['advancedoptions'] = base64_decode($ovpnserverdefaults[$i]['advancedoptions']);
+foreach(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item', []) as $i => $item) {
+	config_set_path("installedpackages/vpn_openvpn_export/serverconfig/item/{$i}/advancedoptions",
+	    base64_decode($item['advancedoptions']));
 }
 
 if (!empty($act)) {
@@ -258,7 +243,7 @@ if (!empty($act)) {
 		if ($_POST['password'] != DMYPWD) {
 			$password = $_POST['password'];
 		} else {
-			$password = $cfg['pass'];
+			$password = config_get_path("{$cfg_path}/pass");
 		}
 	}
 	if (isset($_POST['p12encryption']) &&
@@ -275,12 +260,13 @@ if (!empty($act)) {
 		    array_key_exists($crtid, $a_user[$usrid]['cert'])) {
 			$want_cert = true;
 			$cert = lookup_cert($a_user[$usrid]['cert'][$crtid]);
+			$cert = $cert['item'];
 		} else {
 			$input_errors[] = "Invalid user/certificate index value.";
 		}
 	} elseif ($srvcfg['mode'] != "server_user") {
 		$want_cert = true;
-		$cert = $config['cert'][$crtid];
+		$cert = config_get_path("cert/{$crtid}");
 	}
 
 	if ($want_cert) {
@@ -321,7 +307,7 @@ if (!empty($act)) {
 				if ($_POST['proxy_password'] != DMYPWD) {
 					$proxy['password'] = $_POST['proxy_password'];
 				} else {
-					$proxy['password'] = $cfg['proxypass'];
+					$proxy['password'] = config_get_path("{$cfg_path}/proxypass");
 				}
 			}
 		}
@@ -460,6 +446,8 @@ $tab_array[] = array(gettext("Client Specific Overrides"), false, "vpn_openvpn_c
 $tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.xml");
 add_package_tabs("OpenVPN", $tab_array);
 display_top_tabs($tab_array);
+
+$cfg = config_get_path($cfg_path);
 
 $form = new Form("Save as default");
 
@@ -775,7 +763,7 @@ servers[<?=$sindex?>][1][<?=$c?>][3] = '<?=str_replace("'", "\\'", $user['certna
 	$c=0;
 	foreach ($server['certs'] as $cert): ?>
 <?php
-		if (!$server['crlref'] || !is_cert_revoked($config['cert'][$cert['cindex']], $server['crlref'])): ?>
+		if (!$server['crlref'] || !is_cert_revoked(config_get_path("cert/{$cert['cindex']}"), $server['crlref'])): ?>
 servers[<?=$sindex?>][3][<?=$c?>] = new Array();
 servers[<?=$sindex?>][3][<?=$c?>][0] = '<?=$cert['cindex']?>';
 servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certname'])?>';
@@ -786,7 +774,7 @@ servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certna
 endforeach;
 ?>
 
-serverdefaults = <?=json_encode($ovpnserverdefaults)?>;
+serverdefaults = <?=json_encode(config_get_path('installedpackages/vpn_openvpn_export/serverconfig/item'))?>;
 
 function make_form_variable(varname, varvalue) {
 	var exportinput = document.createElement("input");

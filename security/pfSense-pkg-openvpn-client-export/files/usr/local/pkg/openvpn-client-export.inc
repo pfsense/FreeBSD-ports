@@ -43,8 +43,7 @@ $legacy_openvpn_version_rev = "601";
 $legacy_incompatible_ciphers = array("CHACHA20-POLY1305");
 
 function get_openvpnserver_by_id($srvid) {
-	global $config;
-	foreach($config['openvpn']['openvpn-server'] as $server) {
+	foreach(config_get_path('openvpn/openvpn-server', []) as $server) {
 		if ($server['vpnid'] == $srvid) {
 			return $server;
 		}
@@ -53,8 +52,6 @@ function get_openvpnserver_by_id($srvid) {
 }
 
 function openvpn_client_export_prefix($srvid, $usrid = null, $crtid = null) {
-	global $config;
-
 	// lookup server settings
 	$settings = get_openvpnserver_by_id($srvid);
 	if (empty($settings)) {
@@ -63,15 +60,15 @@ function openvpn_client_export_prefix($srvid, $usrid = null, $crtid = null) {
 	if ($settings['disable']) {
 		return false;
 	}
-	$host = empty($config['system']['hostname']) ? "openvpn" : $config['system']['hostname'];
+	$host = config_get_path('system/hostname',"openvpn");
 	$prot = ($settings['protocol'] == 'UDP' ? 'udp' : $settings['protocol']);
 	$port = $settings['local_port'];
 
 	$filename_addition = "";
 	if (isset($usrid) && is_numeric($usrid)) {
-		$filename_addition = "-" . $config['system']['user'][$usrid]['name'];
+		$filename_addition = "-" . config_get_path("system/user/{$usrid}/name");
 	} elseif (isset($crtid) && is_numeric($crtid)) {
-		$filename_addition = "-" . str_replace(' ', '_', cert_get_cn($config['cert'][$crtid]['crt']));
+		$filename_addition = "-" . str_replace(' ', '_', cert_get_cn(config_get_path("cert/{$crtid}/crt")));
 	}
 	return "{$host}-{$prot}-{$port}{$filename_addition}";
 }
@@ -144,7 +141,7 @@ function openvpn_client_pem_to_pk12($outpath, $outpass, $p12encryption, $crtpath
 }
 
 function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
-	global $config, $input_errors;
+	global $input_errors;
 
 	// lookup server settings
 	$settings = get_openvpnserver_by_id($srvid);
@@ -159,6 +156,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 
 	// lookup server certificate info
 	$server_cert = lookup_cert($settings['certref']);
+	$server_cert = $server_cert['item'];
 	if (!$server_cert) {
 		$input_errors[] = "Could not locate server certificate.";
 	} else {
@@ -171,7 +169,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 
 	// lookup user info
 	if (is_numeric($usrid)) {
-		$user = $config['system']['user'][$usrid];
+		$user = config_get_path("system/user/{$usrid}");
 		if (!$user) {
 			$input_errors[] = "Could not find user settings.";
 		}
@@ -182,7 +180,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 		if ($settings['authmode'] == "Local Database") {
 			$cert = $user['cert'][$crtid];
 		} else {
-			$cert = $config['cert'][$crtid];
+			$cert = config_get_path("cert/{$crtid}");
 		}
 		if (!$cert) {
 			$input_errors[] = "Could not find client certificate.";
@@ -190,10 +188,11 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 			// If $cert is not an array, it's a certref not a cert.
 			if (!is_array($cert)) {
 				$cert = lookup_cert($cert);
+				$cert = $cert['item'];
 			}
 		}
 	} elseif (($settings['mode'] == "server_tls") || (($settings['mode'] == "server_tls_user") && ($settings['authmode'] != "Local Database"))) {
-		$cert = $config['cert'][$crtid];
+		$cert = config_get_path("cert/{$crtid}");
 		if (!$cert) {
 			$input_errors[] = "Could not find client certificate.";
 		}
@@ -855,7 +854,6 @@ EOF;
 }
 
 function openvpn_client_export_build_remote_lines($settings, $useaddr, $interface, $expformat, $nl, $legacy=false) {
-	global $config;
 	$remotes = array();
 	if (($useaddr == "serveraddr") || ($useaddr == "servermagic") || ($useaddr == "servermagichost")) {
 		$interface = $settings['interface'];
@@ -872,8 +870,8 @@ function openvpn_client_export_build_remote_lines($settings, $useaddr, $interfac
 			}
 		}
 	} else if ($useaddr == "serverhostname" || empty($useaddr)) {
-		$server_host = empty($config['system']['hostname']) ? "" : "{$config['system']['hostname']}.";
-		$server_host .= "{$config['system']['domain']}";
+		$server_host = empty(config_get_path('system/hostname')) ? "" : config_get_path('system/hostname') . '.';
+		$server_host .= config_get_path('system/domain');
 	} else {
 		$server_host = $useaddr;
 	}
@@ -901,17 +899,17 @@ function openvpn_client_export_build_remote_lines($settings, $useaddr, $interfac
 }
 
 function openvpn_client_export_find_port_forwards($targetip, $targetport, $targetproto, $skipprivate, $findhostname=false) {
-	global $config, $FilterIflist;
+	global $FilterIflist;
 	if (empty($FilterIflist)) {
 		filter_generate_optcfg_array();
 	}
 	$destinations = array();
 
-	if (!is_array($config['nat']) || !is_array($config['nat']['rule'])) {
+	if (!is_array(config_get_path('nat/rule'))) {
 		return $destinations;
 	}
 
-	foreach ($config['nat']['rule'] as $natent) {
+	foreach (config_get_path('nat/rule', []) as $natent) {
 		$dest = array();
 		if (!isset($natent['disabled']) &&
 		   ($natent['target'] == $targetip) &&
@@ -970,10 +968,10 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 }
 
 function openvpn_client_export_find_hostname($interface) {
-	global $config, $dyndns_split_domain_types;
-	init_config_arr(array('dyndnses', 'dyndns'));
-	init_config_arr(array('dnsupdates', 'dnsupdate'));
-	foreach (array($config['dyndnses']['dyndns'], $config['dnsupdates']['dnsupdate']) as $ddnslist) {
+	global $dyndns_split_domain_types;
+	config_init_path('dyndnses/dyndns');
+	config_init_path('dnsupdates/dnsupdate');
+	foreach (array(config_get_path('dyndnses/dyndns'), config_get_path('dnsupdates/dnsupdate')) as $ddnslist) {
 		foreach ($ddnslist as $ddns) {
 			if (($ddns['interface'] == $interface) && isset($ddns['enable']) && !empty($ddns['host']) && !is_numeric($ddns['host']) && is_hostname($ddns['host'])) {
 				return $ddns['host'] . ((in_array($ddns['type'], $dyndns_split_domain_types)) ? '.' . $ddns['domainname'] : '');
@@ -983,23 +981,20 @@ function openvpn_client_export_find_hostname($interface) {
 }
 
 function openvpn_client_export_install_command() {
-	global $config;
-
-	init_config_arr(array('installedpackages', 'vpn_openvpn_export', 'config', 0));
-	if (is_array($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']) &&
-	    isset($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['randomlocalport'])) {
-		if ($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['randomlocalport'] == 'yes') {
-			$config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['bindmode'] = 'lport0';
+	config_init_path('installedpackages/vpn_openvpn_export/config/0');
+	if (config_path_enabled('installedpackages/vpn_openvpn_export/config/0/defaultsettings', 'randomlocalport')) {
+		if (config_get_path('installedpackages/vpn_openvpn_export/config/0/defaultsettings/randomlocalport') == 'yes') {
+			config_set_path('installedpackages/vpn_openvpn_export/config/0/defaultsettings/bindmode', 'lport0');
 		} else {
-			$config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['bindmode'] = 'bind';
+			config_set_path('installedpackages/vpn_openvpn_export/config/0/defaultsettings/bindmode', 'bind');
 		}
-		unset($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['randomlocalport']);
+		config_del_path('installedpackages/vpn_openvpn_export/config/0/defaultsettings/randomlocalport');
 		$config_changed = true;
 	}
 
-	if (is_array($config['installedpackages']['vpn_openvpn_export']['config'][0]['serverconfig']) &&
-	    !empty($config['installedpackages']['vpn_openvpn_export']['config'][0]['serverconfig'])) {
-		foreach ($config['installedpackages']['vpn_openvpn_export']['config'][0]['serverconfig'] as & $srvconf) {
+	if (!empty(config_get_path('installedpackages/vpn_openvpn_export/config/0/serverconfig'))) {
+		$ovpn_server_config = config_get_path('installedpackages/vpn_openvpn_export/config/0/serverconfig');
+		foreach ($ovpn_server_config as & $srvconf) {
 			if (isset($srvconf['randomlocalport'])) {
 				if ($srvconf['randomlocalport'] == 'yes') {
 					$srvconf['bindmode'] = 'lport0';
@@ -1010,6 +1005,7 @@ function openvpn_client_export_install_command() {
 				$config_changed = true;
 			}
 		}
+		config_set_path('installedpackages/vpn_openvpn_export/config/0/serverconfig', $ovpn_server_config);
 	}
 
 	if ($config_changed) {
