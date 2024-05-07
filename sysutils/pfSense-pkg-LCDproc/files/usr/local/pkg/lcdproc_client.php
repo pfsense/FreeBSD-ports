@@ -126,7 +126,6 @@ function lcdproc_get_package_summary() {
 
 // Returns CPU temperature if available from the system
 function lcdproc_get_cpu_temperature() {
-	global $config;
 	$unit = config_get_path('installedpackages/lcdprocscreens/config/0/scr_cputemperature_unit', []);
 
 	$temp_out = "";
@@ -150,7 +149,6 @@ function lcdproc_get_cpu_temperature() {
 
 // NTP Status
 function lcdproc_get_ntp_status() { // https://github.com/pfsense/pfsense/blob/master/src/usr/local/www/widgets/widgets/ntp_status.widget.php#L36
-	global $config;
 	if (config_path_enabled('ntpd')) {
 		if (config_path_enabled('system', 'ipv6allow')) {
 			$inet_version = "";
@@ -165,7 +163,6 @@ function lcdproc_get_ntp_status() { // https://github.com/pfsense/pfsense/blob/m
 }
 
 function lcdproc_get_ntp_gps_sat_count() {
-	global $config;
 	if (config_path_enabled('ntpd/gps', 'extstatus')) {
 		$lookfor = [];
 		$lookfor['GPGSV'] = config_get_path('ntpd/gps/nmeaset/gpgsv');
@@ -255,8 +252,10 @@ function get_interfaces_stats() {
 			$ip = "-";
 		}
 		$ifstatus[] = htmlspecialchars($ifname) ." [$online]";
+		unset($ifinfo, $online, $ip);
 	}
 	$status = " ". implode(", ", $ifstatus);
+	unset($ifstatus, $ifdescrs);
 	return($status);
 }
 
@@ -343,7 +342,7 @@ function output_ipsec_tunnel_status($tunnel) {
 
 function get_ipsec_stats() {
 	global $sad;
-	$sad = array();
+	$sad = [];
 	$sad = ipsec_dump_sad();
 
 	$activecounter = 0;
@@ -521,14 +520,14 @@ function outputled_gateway() {
 function build_interface_link_list() {
 	// Returns a dictionary of all the interfaces along with their
 	// link and address information, keyed on the interface description.
-	$result = array();
+	$result = [];
 	$ifList = get_configured_interface_with_descr();
 
 	foreach($ifList as $ifdescr => $ifname) {
 		// get the interface link infos
 		$ifinfo = get_interface_info($ifdescr);
 
-		$entry = array();
+		$entry = [];
 		$entry['name'] = $ifname;
 		$entry['mac'] = $ifinfo['macaddr'];
 
@@ -561,21 +560,19 @@ function build_interface_link_list() {
 function build_interface_traffic_stats_list() {
 	// Returns a dictionary of all the interfaces along with their in/out
 	// traffic stats, keyed on the interface name.
-	global $config;
-
-	$result = array();
+	$result = [];
 	$interfaceList = get_configured_interface_with_descr();
 
 	foreach($interfaceList as $key => $description) {
 		// get the interface stats (code from ifstats.php)
-		$interface      = $config['interfaces'][$key];
+		$interface      = config_get_path("interfaces/{$key}");
 		$interfaceName  = $interface['if'];
 		$interfaceStats = pfSense_get_interface_stats($interfaceName);
 
 		calculate_interfaceBytesPerSecond_sinceLastChecked($interfaceName, $interfaceStats, $in_Bps, $out_Bps);
 		calculate_bytesToday($interfaceName, $interfaceStats, $in_bytesToday, $out_bytesToday);
 
-		$entry = array();
+		$entry = [];
 		$entry['descr']       = $description;
 
 		$entry['in_Bps']      = $in_Bps;
@@ -859,7 +856,7 @@ function get_bandwidth_by_ip() {
 	foreach($hostLines as $hostLine) {
 		$hostData = explode(";", $hostLine);
 		if (count($hostData) == 3) {
-			$host = array();
+			$host = [];
 			$host['name']   = $hostData[0];
 			$host['in']     = convert_bandwidth_to_shortform($hostData[1]);
 			$host['out']    = convert_bandwidth_to_shortform($hostData[2]);
@@ -900,7 +897,7 @@ function build_interface($lcd) {
 	$lcdpanel_height = get_lcdpanel_height();
 	$refresh_frequency = get_lcdpanel_refresh_frequency() * 8;
 
-	$lcd_cmds = array();
+	$lcd_cmds = [];
 	$lcd_cmds[] = "hello";
 	$lcd_cmds[] = "client_set name pfSense";
 
@@ -1130,7 +1127,9 @@ function build_interface($lcd) {
 					}
 					break;
 				case "scr_interfaces_link":
-					$ifLinkList = build_interface_link_list();
+					if (is_null($ifLinkList)) {
+						$ifLinkList = build_interface_link_list();
+					}
 					foreach ($ifLinkList as $ifdescr => $iflink) {
 						$s_name = $name . $ifdescr;
 						$ifname = $iflink['name'] . ":";
@@ -1177,8 +1176,6 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "widget_set {$name} apctitlel_wdgt 1 1 \"APC UPS:\"";
 						$lcd_cmds[] = "widget_add {$name} apcname_wdgt scroller";
 						$lcd_cmds[] = "widget_add {$name} apcstatus_wdgt scroller";
-						$lcdpanel_height = get_lcdpanel_height();
-						$lcdpanel_width = get_lcdpanel_width();
 						if ($lcdpanel_height >= "4") {
 							$lcd_cmds[] = "widget_add {$name} apctitle_summary string";
 							$lcd_cmds[] = "widget_add {$name} apc_summary string";
@@ -1201,8 +1198,6 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "widget_set {$name} nuttitlel_wdgt 1 1 \"NUT UPS:\"";
 						$lcd_cmds[] = "widget_add {$name} nutname_wdgt scroller";
 						$lcd_cmds[] = "widget_add {$name} nutstatus_wdgt scroller";
-						$lcdpanel_height = get_lcdpanel_height();
-						$lcdpanel_width = get_lcdpanel_width();
 						if ($lcdpanel_height >= "4") {
 							$lcd_cmds[] = "widget_add {$name} nuttitle_summary string";
 							$lcd_cmds[] = "widget_add {$name} nut_summary string";
@@ -1218,549 +1213,634 @@ function build_interface($lcd) {
 				default:
 					break;
 			}
-			if ($includeSummary) add_summary_declaration($lcd_cmds, $name);
+			if ($includeSummary) {
+				add_summary_declaration($lcd_cmds, $name);
+			}
 		}
 	}
 	send_lcd_commands($lcd, $lcd_cmds);
+	unset($name, $lcd_cmds, $gateway_status, $ifLinkList);
 }
 
-function loop_status($lcd) {
-	global $g;
+/* Small function to log information as needed with a brief timestamp.
+ * Primarily used in debugging. */
+function lcdproc_log($msg) {
+	$logfile = "/var/log/lcdproc-debug.log";
+	file_put_contents($logfile, date(gettext("n/j/y H:i:s"), time()) . ' ' . $msg . "\n", FILE_APPEND);
+}
+
+/*
+ * Move all output code into here so that PHP will clean up memory when switching contexts in
+ * the main loop.
+ */
+function output_status($lcd, $lcdproc_screens_config, $lcdpanel_width, $lcdpanel_height, $refresh_frequency, $loopCounter) {
 	global $lcdproc_connect_errors;
-	$lcdproc_screens_config = config_get_path('installedpackages/lcdprocscreens/config/0', []);
-	$lcdpanel_width = get_lcdpanel_width();
-	$lcdpanel_height = get_lcdpanel_height();
-	if (empty($g['product_name'])) {
-		$g['product_name'] = "pfSense";
+
+	/* prepare the summary data */
+	if ($lcdpanel_height >= "4") {
+		$summary_states = explode("/", get_pfstate());
+		$lcd_summary_data = sprintf("%02d%% %02d%% %6d", lcdproc_cpu_usage(), mem_usage(), $summary_states[0]);
+		unset($summary_states);
+		if ($lcdpanel_width > "16") {
+			/* Include the CPU frequency as a percentage */
+			$maxfreq = get_cpu_maxfrequency();
+			if ($maxfreq === false || $maxfreq == 0) {
+				$lcd_summary_data .= "  N/A"; // powerd not available on all systems - https://redmine.pfsense.org/issues/5739
+			} else {
+				$lcd_summary_data .= sprintf(" %3d%%", get_cpu_currentfrequency() / $maxfreq * 100);
+			}
+			unset($maxfreq);
+		}
+	} else {
+		$lcd_summary_data = "";
 	}
 
-	$refresh_frequency = get_lcdpanel_refresh_frequency();
-	/* keep a counter to see how many times we can loop */
-	$loopCounter = 1;
-	while ($loopCounter) {
-		/* prepare the summary data */
-		if ($lcdpanel_height >= "4") {
-			$summary_states = explode("/", get_pfstate());
-			$lcd_summary_data = sprintf("%02d%% %02d%% %6d", lcdproc_cpu_usage(), mem_usage(), $summary_states[0]);
-			if ($lcdpanel_width > "16") {
-				/* Include the CPU frequency as a percentage */
-				$maxfreq = get_cpu_maxfrequency();
-				if ($maxfreq === false || $maxfreq == 0) {
-					$lcd_summary_data .= "  N/A"; // powerd not available on all systems - https://redmine.pfsense.org/issues/5739
-				} else {
-					$lcd_summary_data .= sprintf(" %3d%%", get_cpu_currentfrequency() / $maxfreq * 100);
-				}
-			}
-		} else {
-			$lcd_summary_data = "";
-		}
+	$lcd_cmds = [];
 
-		$lcd_cmds = array();
+	/* Initialize parameters potentially used by multiple screens */
+	if (count(array_intersect(array_keys($lcdproc_screens_config), ["scr_traffic", "scr_top_interfaces_by_bps", "scr_top_interfaces_by_bytes_today", "scr_top_interfaces_by_total_bytes"]))) {
+		$interfaceTrafficList = build_interface_traffic_stats_list();
+	} else {
 		$interfaceTrafficList = null;
+	}
+	if (count(array_intersect(array_keys($lcdproc_screens_config), ["scr_interfaces_link"]))) {
+		$ifLinkList = build_interface_link_list();
+	} else {
 		$ifLinkList = null;
+	}
+	if (count(array_intersect(array_keys($lcdproc_screens_config), ["scr_gwstatus", "scr_gwsum"]))) {
+		$gateway_status = return_gateways_status(true);
+	} else {
 		$gateway_status = null;
+	}
 
-		/* initializes the widget counter */
-		$widget_counter = 0;
+	/* initializes the widget counter */
+	$widget_counter = 0;
 
-		/* controls the output leds */
-		if (outputled_enabled_CFontzPacket()) {
-			$led_output_value = 0;
-			/* LED 1: Interface status */
-			if (substr_count(get_interfaces_stats(), "Down") > 0 ) {
-				$led_output_value = $led_output_value + pow(2, 4);
-			} else {
-				$led_output_value = $led_output_value + pow(2, 0);
-			}
-			/* LED 2: CARP status */
-			switch (outputled_carp()) {
-				/* CARP disabled */
-				case -1:
-					break;
-				/* CARP on Backup */
-				case 0:
-					$led_output_value = $led_output_value + pow(2, 5);
-					break;
-				/* CARP on Master */
-				case 1:
-				default:
-					$led_output_value = $led_output_value + pow(2, 1);
-			}
-			/* LED 3: CPU Usage */
-			if (lcdproc_cpu_usage() > 50) {
-				$led_output_value = $led_output_value + pow(2, 6);
-			} else {
-				$led_output_value = $led_output_value + pow(2, 2);
-			}
-			/* LED 4: Gateway status */
-			switch (outputled_gateway()) {
-				/* Gateways not configured */
-				case -1:
-					break;
-				/* Gateway down or with issues */
-				case 0:
-					$led_output_value = $led_output_value + pow(2, 7);
-					break;
-				/* All Gateways up */
-				case 1:
-					$led_output_value = $led_output_value + pow(2, 3);
-			}
-			/* Sends the command to the panel */
-			$lcd_cmds[] = "output {$led_output_value}";
+	/* controls the output leds */
+	if (outputled_enabled_CFontzPacket()) {
+		$led_output_value = 0;
+		/* LED 1: Interface status */
+		if (substr_count(get_interfaces_stats(), "Down") > 0 ) {
+			$led_output_value = $led_output_value + pow(2, 4);
+		} else {
+			$led_output_value = $led_output_value + pow(2, 0);
+		}
+		/* LED 2: CARP status */
+		switch (outputled_carp()) {
+			/* CARP disabled */
+			case -1:
+				break;
+			/* CARP on Backup */
+			case 0:
+				$led_output_value = $led_output_value + pow(2, 5);
+				break;
+			/* CARP on Master */
+			case 1:
+			default:
+				$led_output_value = $led_output_value + pow(2, 1);
+		}
+		/* LED 3: CPU Usage */
+		if (lcdproc_cpu_usage() > 50) {
+			$led_output_value = $led_output_value + pow(2, 6);
+		} else {
+			$led_output_value = $led_output_value + pow(2, 2);
+		}
+		/* LED 4: Gateway status */
+		switch (outputled_gateway()) {
+			/* Gateways not configured */
+			case -1:
+				break;
+			/* Gateway down or with issues */
+			case 0:
+				$led_output_value = $led_output_value + pow(2, 7);
+				break;
+			/* All Gateways up */
+			case 1:
+				$led_output_value = $led_output_value + pow(2, 3);
+		}
+		/* Sends the command to the panel */
+		$lcd_cmds[] = "output {$led_output_value}";
+		unset($led_output_value);
+	}
+
+	/* process screens to display */
+	foreach ($lcdproc_screens_config as $name => $screen) {
+		if (($screen != "on") &&
+		    ($screen != "yes")) {
+			continue;
 		}
 
-		/* process screens to display */
-		foreach ($lcdproc_screens_config as $name => $screen) {
-			if (($screen != "on") && ($screen != "yes")) {
-				continue;
-			}
+		$updateSummary = true;
 
-			$updateSummary = true;
-
-			switch($name) {
-				case "scr_version":
-					$version = get_version();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$version}\"";
-					break;
-				case "scr_time":
-					$time = date("n/j/Y H:i");
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$time}\"";
-					break;
-				case "scr_uptime":
-					$uptime = get_uptime_stats();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$uptime}\"";
-					break;
-				case "scr_hostname":
-					exec("/bin/hostname", $output, $ret);
-					$hostname = $output[0];
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$hostname}\"";
-					break;
-				case "scr_system":
-					$processor = lcdproc_cpu_usage();
-					$memory = mem_usage();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"CPU {$processor}%, Mem {$memory}%\"";
-					break;
-				case "scr_disk":
-					$disk = disk_usage();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Disk {$disk}%\"";
-					break;
-				case "scr_load":
-					$loadavg = get_loadavg_stats();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$loadavg}\"";
-					break;
-				case "scr_states":
-					$states = get_pfstate();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Cur/Max {$states}\"";
-					break;
-				case "scr_carp":
-					$carp = get_carp_stats();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$carp}\"";
-					break;
-				case "scr_ipsec":
-					$ipsec = get_ipsec_stats();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$ipsec}\"";
-					break;
-				case "scr_interfaces":
-					$interfaces = get_interfaces_stats();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$interfaces}\"";
-					break;
-				case "scr_gwsum":
-					if ($gateway_status === null) {
-						$gateway_status = return_gateways_status(true);
+		switch($name) {
+			case "scr_version":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . get_version() . "\"";
+				break;
+			case "scr_time":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . date("n/j/Y H:i") . "\"";
+				break;
+			case "scr_uptime":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . get_uptime_stats() . "\"";
+				break;
+			case "scr_hostname":
+				exec("/bin/hostname", $output, $ret);
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$output[0]}\"";
+				unset($output, $ret);
+				break;
+			case "scr_system":
+				$processor = lcdproc_cpu_usage();
+				$memory = mem_usage();
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"CPU {$processor}%, Mem {$memory}%\"";
+				unset($processor, $memory);
+				break;
+			case "scr_disk":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Disk " . disk_usage() . "%\"";
+				break;
+			case "scr_load":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . get_loadavg_stats() . "\"";
+				break;
+			case "scr_states":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Cur/Max " . get_pfstate() . "\"";
+				break;
+			case "scr_carp":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . get_carp_stats() . "\"";
+				break;
+			case "scr_ipsec":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . get_ipsec_stats() . "\"";
+				break;
+			case "scr_interfaces":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . get_interfaces_stats() . "\"";
+				break;
+			case "scr_gwsum":
+				$gwup = 0;
+				$gwdown = 0;
+				foreach ($gateway_status as $idx => $gw) {
+					if ($gw['disabled']) {
+						/* Disabled, no need to print anything */
+						continue;
 					}
-					$gwup = 0;
-					$gwdown = 0;
-					foreach ($gateway_status as $idx => $gw) {
-						if ($gw['disabled']) {
-							/* Disabled, no need to print anything */
-							continue;
-						}
-						if ($gw['status'] == 'online') {
-							$gwup += 1;
-						} else {
-							$gwdown += 1;
-						}
-					}
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Up: {$gwup} / Down: {$gwdown}\"";
-					break;
-				case "scr_mbuf":
-					$mbufstats = lcdproc_get_mbuf_stats();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$mbufstats}\"";
-					break;
-				case "scr_packages":
-					$packages = lcdproc_get_package_summary();
-					$title = ($lcdpanel_width >= 20) ? "Installed Packages" : "Packages";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$packages}\"";
-					break;
-				case "scr_cpufrequency":
-					$cpufreq = get_cpufrequency();
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$cpufreq}\"";
-					break;
-				case "scr_cputemperature":
-					$cputemperature = lcdproc_get_cpu_temperature();
-					$title = ($lcdpanel_width >= 20) ? "CPU Temperature" : "CPU Temp";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$cputemperature}\"";
-					break;
-				case "scr_ntp":
-					$ntp_hms = date("H:iT");
-					$ntpq_output = lcdproc_get_ntp_status();
-					if ($ntpq_output != false) {
-						$ntpq_counter = 0;
-						$ntpq_peer = false;
-						foreach ($ntpq_output as $line) {
-							$peersta = substr($line, 0, 1); // Status
-							$line = substr($line, 1);
-							$peerinfo = preg_split("/[\s\t]+/", $line);
-							$peersrv = $peerinfo[0]; // Server IP
-							$peerref = $peerinfo[1]; // Ref ID
-							$peerstr = $peerinfo[2]; // Stratum
-							$peertyp = $peerinfo[3]; // Type
-							$peerdel = substr($peerinfo[7],0,5); // Delay
-							$peeroff = substr($peerinfo[8],0,6); // Offset
-							$peerjit = substr($peerinfo[9],0,5); // Jitter
-							if ($peersta == "o") { // PPS Peer
-								// Common rows
-								$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
-								$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
-								$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
-								if ($peertyp == "l" &&		// Local
-									$peerref == ".GPS.") {	// GPS
-										// For local GPS, display Ref ID and how many satellites are in use or in view
-										$gps_sat_count = lcdproc_get_ntp_gps_sat_count();
-										$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} " . (($gps_sat_count == false) ? "" : "{$gps_sat_count}") . "\"";
-										$ntpq_peer = true;
-										break; // Stop looping
-								}
-								if ($peertyp == "l" &&	// Local
-									$peerref == ".PPS.") {		// PPS											// For local PPS, display Ref ID and stability
-										exec('/usr/local/sbin/ntptime | /usr/bin/grep "pps freq"', $line);
-										$line = implode(",", $line);
-										$ppsinfo = preg_split("/\s+/", $line);
-										$ppsstb = $ppsinfo[6]; // PPS Stability
-										$ppsjit = $ppsinfo[9]; // PPS Jitter
-										$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} {$ppsstb}ppm\"";
-										$ntpq_peer = true;
-										break; // Stop looping
-								}
-							}
-							if ($peersta =="*") { // Active Peer
-								// Common rows
-								$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
-								$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
-								$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
-								// For everything else, display IP of the source
-								$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peersrv}\"";
-								$ntpq_peer = true;
-								break; // Stop looping
-							}
-							$ntpq_counter++;
-						}
-						if ($ntpq_peer == false) {
-							$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: No active peers\"";
-							$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"\"";
-							$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"\"";
-							$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"\"";
-						}
+					if ($gw['status'] == 'online') {
+						$gwup += 1;
 					} else {
-						$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: Server disabled\"";
+						$gwdown += 1;
+					}
+				}
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Up: {$gwup} / Down: {$gwdown}\"";
+				unset($gwup, $gwdown);
+				break;
+			case "scr_mbuf":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . lcdproc_get_mbuf_stats() . "\"";
+				break;
+			case "scr_packages":
+				$title = ($lcdpanel_width >= 20) ? "Installed Packages" : "Packages";
+				$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . lcdproc_get_package_summary() . "\"";
+				unset($title);
+				break;
+			case "scr_cpufrequency":
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . get_cpufrequency() ."\"";
+				break;
+			case "scr_cputemperature":
+				$title = ($lcdpanel_width >= 20) ? "CPU Temperature" : "CPU Temp";
+				$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"" . lcdproc_get_cpu_temperature() . "\"";
+				unset($title);
+				break;
+			case "scr_ntp":
+				$ntp_hms = date("H:iT");
+				$ntpq_output = lcdproc_get_ntp_status();
+				if ($ntpq_output != false) {
+					$ntpq_counter = 0;
+					$ntpq_peer = false;
+					foreach ($ntpq_output as $line) {
+						$peersta = substr($line, 0, 1); // Status
+						$line = substr($line, 1);
+						$peerinfo = preg_split("/[\s\t]+/", $line);
+						$peersrv = $peerinfo[0]; // Server IP
+						$peerref = $peerinfo[1]; // Ref ID
+						$peerstr = $peerinfo[2]; // Stratum
+						$peertyp = $peerinfo[3]; // Type
+						$peerdel = substr($peerinfo[7],0,5); // Delay
+						$peeroff = substr($peerinfo[8],0,6); // Offset
+						$peerjit = substr($peerinfo[9],0,5); // Jitter
+						if ($peersta == "o") { // PPS Peer
+							// Common rows
+							$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
+							$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
+							$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
+							if ($peertyp == "l" &&		// Local
+								$peerref == ".GPS.") {	// GPS
+									// For local GPS, display Ref ID and how many satellites are in use or in view
+									$gps_sat_count = lcdproc_get_ntp_gps_sat_count();
+									$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} " . (($gps_sat_count == false) ? "" : "{$gps_sat_count}") . "\"";
+									$ntpq_peer = true;
+									unset($gps_sat_count);
+									break; // Stop looping
+							}
+							if ($peertyp == "l" &&	// Local
+								$peerref == ".PPS.") {		// PPS											// For local PPS, display Ref ID and stability
+									$gline = null;
+									exec('/usr/local/sbin/ntptime | /usr/bin/grep "pps freq"', $gline);
+									$gline = implode(",", $gline);
+									$ppsinfo = preg_split("/\s+/", $gline);
+									$ppsstb = $ppsinfo[6]; // PPS Stability
+									$ppsjit = $ppsinfo[9]; // PPS Jitter
+									$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} {$ppsstb}ppm\"";
+									$ntpq_peer = true;
+									unset($gline, $ppsinfo, $ppsstb, $ppsjit);
+									break; // Stop looping
+							}
+						}
+						if ($peersta =="*") { // Active Peer
+							// Common rows
+							$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
+							$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
+							$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
+							// For everything else, display IP of the source
+							$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peersrv}\"";
+							$ntpq_peer = true;
+							break; // Stop looping
+						}
+						$ntpq_counter++;
+						unset($peersta, $peerinfo, $peersrv, $peerref, $peerstr, $peertyp, $peerdel, $peeroff, $peerjit);
+					}
+					if ($ntpq_peer == false) {
+						$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: No active peers\"";
 						$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"\"";
 						$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"\"";
 						$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"\"";
 					}
-					$updateSummary = false;
-					break;
-				case "scr_traffic":
-					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
-					get_traffic_stats($interfaceTrafficList, $in_data, $out_data);
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$in_data}\"";
-					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 \"{$out_data}\"";
-					break;
-				case "scr_top_interfaces_by_bps":
-					if ($interfaceTrafficList == null) {
-						// We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
-						$interfaceTrafficList = build_interface_traffic_stats_list();
+					unset($ntpq_counter, $ntpq_peer);
+				} else {
+					$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: Server disabled\"";
+					$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"\"";
+					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"\"";
+					$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"\"";
+				}
+				unset($ntp_hms, $ntpq_output);
+				$updateSummary = false;
+				break;
+			case "scr_traffic":
+				get_traffic_stats($interfaceTrafficList, $in_data, $out_data);
+				$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$in_data}\"";
+				$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 \"{$out_data}\"";
+				unset($in_data, $out_data);
+				break;
+			case "scr_top_interfaces_by_bps":
+				$interfaceTrafficStrings = get_top_interfaces_by_bps($interfaceTrafficList, $lcdpanel_width, $lcdpanel_height);
+
+				$title = ($lcdpanel_width >= 20) ? "Interface bps IN/OUT" : "Intf. bps IN/OUT";
+				$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+
+				for ($i = 0; (($i < ($lcdpanel_height - 1)) && ($i < count($interfaceTrafficStrings))); $i++) {
+					$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+				}
+				unset($interfaceTrafficStrings, $title);
+				$updateSummary = false;
+				break;
+			case "scr_top_interfaces_by_bytes_today":
+				$interfaceTrafficStrings = get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width);
+
+				$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
+				$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+
+				for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
+					$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+				}
+				unset($interfaceTrafficStrings, $title);
+				$updateSummary = false;
+				break;
+			case "scr_top_interfaces_by_total_bytes":
+				$interfaceTrafficStrings = get_top_interfaces_by_total_bytes($interfaceTrafficList, $lcdpanel_width);
+
+				$title = ($lcdpanel_width >= 20) ? "Total         IN/OUT" : "Total   IN / OUT";
+				$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+
+				for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
+					$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+				}
+				unset($interfaceTrafficStrings, $title);
+				$updateSummary = false;
+				break;
+			case "scr_gwstatus":
+				foreach ($gateway_status as $gwname => $gw) {
+					if ($gw['disabled'] ||
+					    $gw['monitor_disable']) {
+						/* Disabled, no need to print anything */
+						continue;
 					}
-					$interfaceTrafficStrings = get_top_interfaces_by_bps($interfaceTrafficList, $lcdpanel_width, $lcdpanel_height);
-
-					$title = ($lcdpanel_width >= 20) ? "Interface bps IN/OUT" : "Intf. bps IN/OUT";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
-
-					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
-
-						$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+					$s_name = $name . $gwname;
+					$lcd_cmds[] = "widget_set {$s_name} gwname_wdgt 1 1 \"{$gwname}\"";
+					$statstring = ucwords($gw['status']);
+					if (!empty($gw['substatus']) &&
+					    ($gw['substatus'] != "none")) {
+						$statstring .= " ({$gw['substatus']})";
 					}
-					$updateSummary = false;
-					break;
-				case "scr_top_interfaces_by_bytes_today":
-					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
-					$interfaceTrafficStrings = get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width);
+					$lcd_cmds[] = "widget_set $s_name stata_wdgt 1 2 " .
+						$lcdpanel_width . " 2 h 4 \"" .
+						$statstring . "\"";
 
-					$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+					$lcd_cmds[] = "widget_set $s_name lossa_wdgt 7 3 " .
+						$lcdpanel_width . " 3 h 4 \"" .
+						$gw['loss'] . "\"";
 
-					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
+					$lcd_cmds[] = "widget_set $s_name rtta_wdgt 8 4 " .
+						$lcdpanel_width . " 4 h 4 \"" .
+						$gw['delay'] . "\"";
+					unset($s_name, $statstring);
+				}
+				$updateSummary = false;
+				break;
+			case "scr_interfaces_link":
+				foreach ($ifLinkList as $ifdescr => $iflink) {
+					$s_name = $name . $ifdescr;
+					$ifname = $iflink['name'] . ":";
+					$l_str = ($iflink['status'] == "down") ? "down" : $iflink['link'];
 
-						$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+					$lcd_cmds[] = "widget_set {$s_name} ifname_wdgt 1 1 \"{$ifname}\"";
+
+					$lcd_cmds[] = "widget_set {$s_name} link_wdgt " .
+						(strlen($iflink['name']) + 3) . " 1 " .
+						$lcdpanel_width . " 1 h 4 \"" . $l_str . "\"";
+
+					$lcd_cmds[] = "widget_set {$s_name} v4a_wdgt 5 2 " .
+						$lcdpanel_width . " 2 h 4 \"" .
+						$iflink['v4addr'] . "\"";
+
+					$lcd_cmds[] = "widget_set {$s_name} v6a_wdgt 5 3 " .
+						$lcdpanel_width . " 3 h 4 \"" .
+						$iflink['v6addr'] . "\"";
+
+					$lcd_cmds[] = "widget_set {$s_name} maca_wdgt 4 4 " .
+						$lcdpanel_width . " 4 h 4 \"" .
+						$iflink['mac'] . "\"";
+
+					unset($ifname, $s_name, $l_str);
+				}
+				$updateSummary = false;
+				break;
+			case "scr_traffic_by_address":
+				$title = ($lcdpanel_width >= 20) ? "Host       IN / OUT" : "Host   IN / OUT";
+				$lcd_cmds[] = "widget_set {$name} title_wdgt 2 1 \"{$title}\"";
+				$lcd_cmds[] = "widget_set {$name} heart_wdgt 1 1 \"" . (($loopCounter & 1) == 0 ? "HEART_OPEN" : "HEART_FILLED") . "\""; // Indicate each time the list has been updated
+
+				$traffic = get_bandwidth_by_ip();
+				$clearLinesFrom = 0;
+
+				if (isset($traffic['error'])) {
+					if ($traffic['error'] === "no info") {
+						// not really an error - there's likely just no traffic
+					} else {
+						// traffic info not available, display the error message instead
+						$lcd_cmds[] = "widget_set {$name} descr_wdgt0 1 2 {$lcdpanel_width} 2 h 2 \"Error: {$traffic['error']}\"";
+						$lcd_cmds[] = "widget_set {$name} data_wdgt0 1 2 \"\"";
+						$clearLinesFrom = 1;
 					}
-					$updateSummary = false;
-					break;
-				case "scr_top_interfaces_by_total_bytes":
-					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
-					$interfaceTrafficStrings = get_top_interfaces_by_total_bytes($interfaceTrafficList, $lcdpanel_width);
-
-					$title = ($lcdpanel_width >= 20) ? "Total         IN/OUT" : "Total   IN / OUT";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
-
-					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
-
-						$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+				} else {
+					for ($i = 0; $i < ($lcdpanel_height - 1) && $i < count($traffic); $i++) {
+						$speeds = $traffic[$i]['in/out'];
+						$left = $lcdpanel_width - strlen($speeds);
+						$lcd_cmds[] = "widget_set {$name} data_wdgt{$i} " . ($left + 1) . " " . ($i + 2) . " \"{$speeds}\"";
+						$lcd_cmds[] = "widget_set {$name} descr_wdgt{$i} 1 " . ($i + 2) . " " . ($left - 1) . " " . ($i + 2) . " h 2 \"{$traffic[$i]['name']}\"";
+						$clearLinesFrom = $i + 1;
+						unset($speeds, $left);
 					}
-					$updateSummary = false;
-					break;
-				case "scr_gwstatus":
-					if ($gateway_status === null) {
-						$gateway_status = return_gateways_status(true);
-					}
-					foreach ($gateway_status as $gwname => $gw) {
-						if ($gw['disabled'] ||
-						    $gw['monitor_disable']) {
-							/* Disabled, no need to print anything */
-							continue;
+				}
+				for($i = $clearLinesFrom; $i < ($lcdpanel_height - 1); $i++) {
+					$lcd_cmds[] = "widget_set {$name} descr_wdgt{$i} 1 2 1 2 h 2 \"\"";
+					$lcd_cmds[] = "widget_set {$name}  data_wdgt{$i} 1 2         \"\"";
+				}
+				unset($traffic, $clearLinesFrom, $title);
+				$updateSummary = false;
+				break;
+			case "scr_apcupsd":
+				if (file_exists("/usr/local/pkg/apcupsd.inc")) {
+					$results = [];
+					$nis_server = check_nis_running_apcupsd();
+					if ($nis_server) {
+						$nisip = (check_nis_ip_apcupsd() != ''? check_nis_ip_apcupsd() : "localhost");
+						$nisport = (check_nis_port_apcupsd() != '' ? check_nis_port_apcupsd() : "3551");
+						$ph = popen("/usr/local/sbin/apcaccess -h " . escapeshellarg($nisip) . ":" . escapeshellarg($nisport) . " 2>&1", "r" );
+						while ($v = fgets($ph)) {
+							$results[trim(explode(': ', $v)[0])]=trim(explode(': ', $v)[1]);
 						}
-						$s_name = $name . $gwname;
-						$lcd_cmds[] = "widget_set {$s_name} gwname_wdgt 1 1 \"{$gwname}\"";
-						$statstring = ucwords($gw['status']);
-						if (!empty($gw['substatus']) &&
-						    ($gw['substatus'] != "none")) {
-							$statstring .= " ({$gw['substatus']})";
+						pclose($ph);
+						if (empty($results)) {
+							$results = [];
+							$results['UPSNAME'] = "Unknown";
+							$results['STATUS'] = "Invalid Response";
 						}
-						$lcd_cmds[] = "widget_set $s_name stata_wdgt 1 2 " .
-							$lcdpanel_width . " 2 h 4 \"" .
-							$statstring . "\"";
-
-						$lcd_cmds[] = "widget_set $s_name lossa_wdgt 7 3 " .
-							$lcdpanel_width . " 3 h 4 \"" .
-							$gw['loss'] . "\"";
-
-						$lcd_cmds[] = "widget_set $s_name rtta_wdgt 8 4 " .
-							$lcdpanel_width . " 4 h 4 \"" .
-							$gw['delay'] . "\"";
+						unset($nisip, $nisport, $ph);
+					} else {
+						$results['UPSNAME'] = "Unknown";
+						$results['STATUS'] = "Service Stopped";
 					}
-					$updateSummary = false;
-					break;
-				case "scr_interfaces_link":
-					// We only want build_interface_link_list() to be
-					// called once per loop, and only if it's needed
-					if ($ifLinkList == null) {
-						$ifLinkList = build_interface_link_list();
+					if (empty($results['UPSNAME'])) {
+						$results['UPSNAME'] = "No Name";
+					}
+					if (empty($results['STATUS'])) {
+						$results['STATUS'] = "Unknown";
 					}
 
-					foreach ($ifLinkList as $ifdescr => $iflink) {
-						$s_name = $name . $ifdescr;
-						$ifname = $iflink['name'] . ":";
-						$l_str = ($iflink['status'] == "down") ? "down" : $iflink['link'];
+					$lcd_cmds[] = "widget_set {$name} apcname_wdgt 10 1 {$lcdpanel_width} 2 h 4 \"{$results['UPSNAME']}\"";
+					$lcd_cmds[] = "widget_set {$name} apcstatus_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$results['STATUS']}\"";
 
-						$lcd_cmds[] = "widget_set $s_name ifname_wdgt 1 1 \"$ifname\"";
-
-						$lcd_cmds[] = "widget_set $s_name link_wdgt " .
-							(strlen($iflink['name']) + 3) . " 1 " .
-							$lcdpanel_width . " 1 h 4 \"" . $l_str . "\"";
-
-						$lcd_cmds[] = "widget_set $s_name v4a_wdgt 5 2 " .
-							$lcdpanel_width . " 2 h 4 \"" .
-							$iflink['v4addr'] . "\"";
-
-						$lcd_cmds[] = "widget_set $s_name v6a_wdgt 5 3 " .
-							$lcdpanel_width . " 3 h 4 \"" .
-							$iflink['v6addr'] . "\"";
-
-						$lcd_cmds[] = "widget_set $s_name maca_wdgt 4 4 " .
-							$lcdpanel_width . " 4 h 4 \"" .
-							$iflink['mac'] . "\"";
-					}
-					$updateSummary = false;
-					break;
-				case "scr_traffic_by_address":
-					$title = ($lcdpanel_width >= 20) ? "Host       IN / OUT" : "Host   IN / OUT";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 2 1 \"{$title}\"";
-					$lcd_cmds[] = "widget_set {$name} heart_wdgt 1 1 \"" . (($loopCounter & 1) == 0 ? "HEART_OPEN" : "HEART_FILLED") . "\""; // Indicate each time the list has been updated
-
-					$traffic = get_bandwidth_by_ip();
-					$clearLinesFrom = 0;
-
-					if (isset($traffic['error'])) {
-						if ($traffic['error'] === "no info") {
-							// not really an error - there's likely just no traffic
+					if ($lcdpanel_height >= "4") {
+						if (!empty($results['LINEV'])) {
+							$results['LINEV'] = str_replace(" Percent", "", $results['LINEV']);
 						} else {
-							// traffic info not available, display the error message instead
-							$lcd_cmds[] = "widget_set {$name} descr_wdgt0 1 2 {$lcdpanel_width} 2 h 2 \"Error: {$traffic['error']}\"";
-							$lcd_cmds[] = "widget_set {$name} data_wdgt0 1 2 \"\"";
-							$clearLinesFrom = 1;
+							$results['LINEV'] = 'N/A';
+						}
+						if (!empty($results['BCHARGE'])) {
+							$results['BCHARGE'] = str_replace(" Percent", "", $results['BCHARGE']);
+						} else {
+							$results['BCHARGE'] = 'N/A';
+						}
+						if (!empty($results['TIMELEFT'])) {
+							$results['TIMELEFT'] = str_replace(" Minutes", "", $results['TIMELEFT']);
+						} else {
+							$results['TIMELEFT'] = 'N/A';
+						}
+						$ups_summary_data = sprintf("%3dV %3d%% %4dM", $results['LINEV'], $results['BCHARGE'], $results['TIMELEFT']);
+						if ($lcdpanel_width > "16") {
+							if (!empty($results['LOADPCT'])) {
+								$results['LOADPCT'] = str_replace(" Percent", "", $results['LOADPCT']);
+							} else {
+								$results['LOADPCT'] = 'N/A';
+							}
+							$ups_summary_data .= sprintf(" %3d%%", $results['LOADPCT']);
+						}
+						$lcd_cmds[] = "widget_set {$name} apc_summary 1 4 \"{$ups_summary_data}\"";
+					}
+					unset($results, $nis_server, $lcdpanel_height, $lcdpanel_width, $ups_summary_data);
+				}
+				$updateSummary = false;
+				break;
+			case "scr_nutups":
+				if (file_exists("/usr/local/pkg/nut/nut.inc")) {
+					$results = nut_ups_status();
+					if (!empty($results)) {
+						if (empty($results['_summary'])) {
+							$results['_summary'] = "Invalid Response";
 						}
 					} else {
-						for ($i = 0; $i < ($lcdpanel_height - 1) && $i < count($traffic); $i++) {
-							$speeds = $traffic[$i]['in/out'];
-							$left = $lcdpanel_width - strlen($speeds);
-							$lcd_cmds[] = "widget_set {$name} data_wdgt{$i} " . ($left + 1) . " " . ($i + 2) . " \"{$speeds}\"";
-							$lcd_cmds[] = "widget_set {$name} descr_wdgt{$i} 1 " . ($i + 2) . " " . ($left - 1) . " " . ($i + 2) . " h 2 \"{$traffic[$i]['name']}\"";
-							$clearLinesFrom = $i + 1;
-						}
+						$results['_name'] = "Unknown";
+						$results['_summary'] = "Service Stopped";
 					}
-					for($i = $clearLinesFrom; $i < ($lcdpanel_height - 1); $i++) {
-						$lcd_cmds[] = "widget_set {$name} descr_wdgt{$i} 1 2 1 2 h 2 \"\"";
-						$lcd_cmds[] = "widget_set {$name}  data_wdgt{$i} 1 2         \"\"";
+					if (empty($results['_name'])) {
+						$results['_name'] = "No Name";
+					} else {
+						[$nutupsname, $nutupshost] = explode('@', $results['_name']);
+						$results['_name'] = $nutupsname;
 					}
-					$updateSummary = false;
-					break;
-				case "scr_apcupsd":
-					if (file_exists("/usr/local/pkg/apcupsd.inc")) {
-						require_once("/usr/local/pkg/apcupsd.inc");
-						$results = [];
-						$nis_server = check_nis_running_apcupsd();
-						if ($nis_server) {
-							$nisip = (check_nis_ip_apcupsd() != ''? check_nis_ip_apcupsd() : "localhost");
-							$nisport = (check_nis_port_apcupsd() != '' ? check_nis_port_apcupsd() : "3551");
-							$ph = popen("/usr/local/sbin/apcaccess -h " . escapeshellarg($nisip) . ":" . escapeshellarg($nisport) . " 2>&1", "r" );
-							while ($v = fgets($ph)) {
-								$results[trim(explode(': ', $v)[0])]=trim(explode(': ', $v)[1]);
-							}
-							pclose($ph);
-							if ($results == null) {
-								$results['UPSNAME'] = "Unknown";
-								$results['STATUS'] = "Invalid Response";
-							}
-						} else {
-							$results['UPSNAME'] = "Unknown";
-							$results['STATUS'] = "Service Stopped";
-						}
-						if (empty($results['UPSNAME'])) {
-							$results['UPSNAME'] = "No Name";
-						}
-						if (empty($results['STATUS'])) {
-							$results['STATUS'] = "Unknown";
-						}
-
-						$lcdpanel_height = get_lcdpanel_height();
-						$lcdpanel_width = get_lcdpanel_width();
-
-						$lcd_cmds[] = "widget_set {$name} apcname_wdgt 10 1 {$lcdpanel_width} 2 h 4 \"{$results['UPSNAME']}\"";
-						$lcd_cmds[] = "widget_set {$name} apcstatus_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$results['STATUS']}\"";
-
-						if ($lcdpanel_height >= "4") {
-							if (!empty($results['LINEV'])) {
-								$results['LINEV'] = str_replace(" Percent", "", $results['LINEV']);
-							} else {
-								$results['LINEV'] = 'N/A';
-							}
-							if (!empty($results['BCHARGE'])) {
-								$results['BCHARGE'] = str_replace(" Percent", "", $results['BCHARGE']);
-							} else {
-								$results['BCHARGE'] = 'N/A';
-							}
-							if (!empty($results['TIMELEFT'])) {
-								$results['TIMELEFT'] = str_replace(" Minutes", "", $results['TIMELEFT']);
-							} else {
-								$results['TIMELEFT'] = 'N/A';
-							}
-							$ups_summary_data = sprintf("%3dV %3d%% %4dM", $results['LINEV'], $results['BCHARGE'], $results['TIMELEFT']);
-							if ($lcdpanel_width > "16") {
-								if (!empty($results['LOADPCT'])) {
-									$results['LOADPCT'] = str_replace(" Percent", "", $results['LOADPCT']);
-								} else {
-									$results['LOADPCT'] = 'N/A';
-								}
-								$ups_summary_data .= sprintf(" %3d%%", $results['LOADPCT']);
-							}
-							$lcd_cmds[] = "widget_set {$name} apc_summary 1 4 \"{$ups_summary_data}\"";
-						}
+					if (empty($results['_summary'])) {
+						$results['_summary'] = "Unknown";
 					}
-					$updateSummary = false;
-					break;
-				case "scr_nutups":
-					if (file_exists("/usr/local/pkg/nut/nut.inc")) {
-						require_once("/usr/local/pkg/nut/nut.inc");
-						$results = nut_ups_status();
-						if (!empty($results)) {
-							if (empty($results['_summary'])) {
-								$results['_summary'] = "Invalid Response";
-							}
-						} else {
-							$results['_name'] = "Unknown";
-							$results['_summary'] = "Service Stopped";
-						}
-						if (empty($results['_name'])) {
-							$results['_name'] = "No Name";
-						} else {
-							[$nutupsname, $nutupshost] = explode('@', $results['_name']);
-							$results['_name'] = $nutupsname;
-						}
-						if (empty($results['_summary'])) {
-							$results['_summary'] = "Unknown";
-						}
 
-						$lcdpanel_height = get_lcdpanel_height();
-						$lcdpanel_width = get_lcdpanel_width();
+					$lcd_cmds[] = "widget_set {$name} nutname_wdgt 10 1 {$lcdpanel_width} 2 h 4 \"{$results['_name']}\"";
+					$lcd_cmds[] = "widget_set {$name} nutstatus_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$results['_summary']}\"";
 
-						$lcd_cmds[] = "widget_set {$name} nutname_wdgt 10 1 {$lcdpanel_width} 2 h 4 \"{$results['_name']}\"";
-						$lcd_cmds[] = "widget_set {$name} nutstatus_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$results['_summary']}\"";
-
-						if ($lcdpanel_height >= "4") {
-							if (empty($results['input.voltage'])) {
-								$results['input.voltage'] = 'N/A';
-							}
-							if (empty($results['battery.charge'])) {
-								$results['battery.charge'] = 'N/A';
-							}
-							if (empty($results['_hms'])) {
-								$results['_hms'] = 'N/A';
-							}
-							$ups_summary_data = sprintf("%3d %3d%% %7s", $results['input.voltage'], $results['battery.charge'], $results['_hms']);
-							if ($lcdpanel_width > "16") {
-								if (empty($results['ups.load'])) {
-									$results['ups.load'] = 'N/A';
-								}
-								$ups_summary_data .= sprintf(" %2d%%", $results['ups.load']);
-							}
-							$lcd_cmds[] = "widget_set {$name} nut_summary 1 4 \"{$ups_summary_data}\"";
+					if ($lcdpanel_height >= "4") {
+						if (empty($results['input.voltage'])) {
+							$results['input.voltage'] = 'N/A';
 						}
+						if (empty($results['battery.charge'])) {
+							$results['battery.charge'] = 'N/A';
+						}
+						if (empty($results['_hms'])) {
+							$results['_hms'] = 'N/A';
+						}
+						$ups_summary_data = sprintf("%3d %3d%% %7s", $results['input.voltage'], $results['battery.charge'], $results['_hms']);
+						if ($lcdpanel_width > "16") {
+							if (empty($results['ups.load'])) {
+								$results['ups.load'] = 'N/A';
+							}
+							$ups_summary_data .= sprintf(" %2d%%", $results['ups.load']);
+						}
+						$lcd_cmds[] = "widget_set {$name} nut_summary 1 4 \"{$ups_summary_data}\"";
 					}
-					$updateSummary = false;
-					break;
-				default:
-					break;
-			}
-			if ($name != "scr_traffic_interface" && substr($name, 0, 23) != 'scr_traffic_by_address_') {	// "scr_traffic_interface" isn't a real screen, it's a parameter for the "scr_traffic" screen
-				$widget_counter++;
-				if ($updateSummary) add_summary_values($lcd_cmds, $name, $lcd_summary_data);
+					unset($results, $nutupsname, $nutupshost, $ups_summary_data);
+				}
+				$updateSummary = false;
+				break;
+			default:
+				break;
+		}
+
+		if (($name != "scr_traffic_interface") &&
+		    (substr($name, 0, 23) != 'scr_traffic_by_address_')) {
+			// "scr_traffic_interface" isn't a real screen, it's a parameter for the "scr_traffic" screen
+			$widget_counter++;
+			if ($updateSummary) {
+				add_summary_values($lcd_cmds, $name, $lcd_summary_data);
 			}
 		}
-		if (send_lcd_commands($lcd, $lcd_cmds)) {
-			$lcdproc_connect_errors = 0; // Reset the error counter
-		} else {
-			//an error occurred
-			return;
+	}
+	if (send_lcd_commands($lcd, $lcd_cmds)) {
+		$lcdproc_connect_errors = 0; // Reset the error counter
+	} else {
+		//an error occurred
+		return;
+	}
+	if (($refresh_frequency * $widget_counter) > 5) {
+		// If LCD is waiting 10 seconds on each screen, for example, then we can update the data of
+		// of a screen while its being displayed.
+		sleep(5);
+	} else {
+		sleep($refresh_frequency * $widget_counter);
+	}
+	unset($lcd_cmds, $lcd_summary_data, $interfaceTrafficList, $ifLinkList, $gateway_status, $widget_counter);
+}
+
+/*
+ * Code for tracking memory usage at various points. Added when attempting
+ * to track down memory leaks.
+ */
+global $mem_used_last, $mem_used_start, $mem_used_end;
+$mem_used_last = 0;
+$mem_used_start = 0;
+$mem_used_end = 0;
+function get_memory_usage_string($when, $cycles = null) {
+	global $mem_used_last, $mem_used_start, $mem_used_end;
+	$str = "";
+	$mem_used_now = memory_get_usage();
+	$change = $mem_used_now - $mem_used_last;
+	$mem_used_last = $mem_used_now;
+
+	$str .= "Mem @ {$when}: ";
+	$str .= "U: " . $mem_used_now . ", ";
+	$str .= "A: " . memory_get_usage(true) . ", ";
+	$str .= "PU: " . memory_get_peak_usage() . ", ";
+	$str .= "PA: " . memory_get_peak_usage(true) . ", ";
+	$str .= "Chg: {$change}";
+
+	if (!is_null($cycles)) {
+		$str .= ", Cyc: {$cycles}";
+	}
+	if ($when == 'start') {
+		$mem_used_start = $mem_used_now;
+	}
+	if ($when == 'GC   ') {
+		$mem_used_end = $mem_used_now;
+		$str .= ", Leftover: " . ($mem_used_end - $mem_used_start);
+	}
+
+	return $str;
+}
+
+/* Main function which sets up and runs the LCD output loop */
+function loop_status($lcd) {
+	global $g, $lcdproc_connect_errors;
+	$debug_log = false;
+	$lcdproc_screens_config = config_get_path('installedpackages/lcdprocscreens/config/0', []);
+	$lcdpanel_width = get_lcdpanel_width();
+	$lcdpanel_height = get_lcdpanel_height();
+	$refresh_frequency = get_lcdpanel_refresh_frequency();
+	/* keep a counter to see how many times we can loop */
+	$loopCounter = 1;
+	gc_enable();
+
+	if (count(array_intersect(array_keys($lcdproc_screens_config), ["scr_apcupsd"])) &&
+	    file_exists("/usr/local/pkg/apcupsd.inc")) {
+		require_once("/usr/local/pkg/apcupsd.inc");
+	}
+	if (count(array_intersect(array_keys($lcdproc_screens_config), ["scr_nutups"])) &&
+	    file_exists("/usr/local/pkg/nut/nut.inc")) {
+		require_once("/usr/local/pkg/nut/nut.inc");
+	}
+
+	while ($loopCounter) {
+		if ($debug_log) {
+			lcdproc_log("------------- Loop {$loopCounter} Start -------------");
+			lcdproc_log(get_memory_usage_string('start'));
 		}
-		if (($refresh_frequency * $widget_counter) > 5) {
-			// If LCD is waiting 10 seconds on each screen, for example, then we can update the data of
-			// of a screen while its being displayed.
-			sleep(5);
-		} else {
-			sleep($refresh_frequency * $widget_counter);
+
+		/* PHP cleans up scoped variables when exiting a function call, so
+		 * putting the actual status code inside a function ensures memory has a
+		 * better chance at being freed while the client runs indefinitely. */
+		output_status($lcd, $lcdproc_screens_config, $lcdpanel_width, $lcdpanel_height, $refresh_frequency, $loopCounter);
+
+		/* Manually trigger garbage collection unconditionally */
+		$gc_cycles = gc_collect_cycles();
+
+		if ($debug_log) {
+			lcdproc_log(get_memory_usage_string('end  '));
+			lcdproc_log(get_memory_usage_string('GC   ', $gc_cycles));
+			lcdproc_log("-------------- Loop {$loopCounter} End --------------");
 		}
 		$loopCounter++;
 	}
 }
 
 /* Initialize the wan traffic counters */
-$traffic_last_ugmt  = array();
-$traffic_last_ifin  = array();
-$traffic_last_ifout = array();
+$traffic_last_ugmt  = [];
+$traffic_last_ifin  = [];
+$traffic_last_ifout = [];
 
-$traffic_last_hour        = array();
-$traffic_startOfDay_ifin  = array();
-$traffic_startOfDay_ifout = array();
+$traffic_last_hour        = [];
+$traffic_startOfDay_ifin  = [];
+$traffic_startOfDay_ifout = [];
 
 /* Initialize the global error counter */
 $lcdproc_connect_errors = 0;
