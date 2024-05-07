@@ -442,7 +442,7 @@ $last_curl_error = "";
 $update_errors = false;
 
 /* Ensure our basic config array of interfaces exists to prevent PHP foreach() errors */
-init_config_arr(array('installedpackages', 'suricata', 'rule'));
+config_init_path('installedpackages/suricata/rule');
 
 /* Save current state (running/not running) for each enabled Suricatat interface */
 $active_interfaces = array();
