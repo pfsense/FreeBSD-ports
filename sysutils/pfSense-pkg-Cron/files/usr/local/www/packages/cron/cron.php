@@ -22,12 +22,10 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/cron.inc");
 
-$a_cron = &$config['cron']['item'];
-
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'php') {
-		if ($a_cron[$_GET['id']]) {
-			unset($a_cron[$_GET['id']]);
+		if (config_get_path("cron/item/{$_GET['id']}")) {
+			config_del_path("cron/item/{$_GET['id']}");
 			write_config(gettext("Crontab item deleted via cron package"));
 			header("Location: cron.php");
 			exit;
@@ -76,9 +74,7 @@ display_top_tabs($tab_array);
 				<tbody>
 
 	<?php
-		$i = 0;
-		if (count($a_cron) > 0) {
-			foreach ($a_cron as $ent) {
+		foreach (config_get_path('cron/item', []) as $i => $ent) {
 	?>
 					<tr>
 						<td><?= htmlspecialchars($ent['minute']) ?></td>
@@ -95,8 +91,6 @@ display_top_tabs($tab_array);
 						</td>
 					</tr>
 	<?php
-		$i++;
-			}
 		}
 	?>
 					<tr>

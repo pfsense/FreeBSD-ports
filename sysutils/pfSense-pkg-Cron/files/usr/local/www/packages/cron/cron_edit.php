@@ -28,8 +28,6 @@ if (!empty($_POST["cancel"])) {
 	exit;
 }
 
-$a_cron = &$config['cron']['item'];
-
 $id = $_GET['id'];
 if (isset($_POST['id'])) {
 	$id = $_POST['id'];
@@ -43,8 +41,8 @@ if (isset($_GET['dup']) && is_numericint($_GET['dup'])) {
 
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'php') {
-		if ($a_cron[$_GET['id']]) {
-			unset($a_cron[$_GET['id']]);
+		if (config_get_path("cron/item/{$_GET['id']}")) {
+			config_del_path("cron/item/{$_GET['id']}");
 			write_config(gettext("Crontab item deleted via cron package"));
 			cron_sync_package();
 			header("Location: cron.php");
@@ -53,14 +51,15 @@ if ($_GET['act'] == "del") {
 	}
 }
 
-if (isset($id) && $a_cron[$id]) {
-	$pconfig['minute'] = $a_cron[$id]['minute'];
-	$pconfig['hour'] = $a_cron[$id]['hour'];
-	$pconfig['mday'] = $a_cron[$id]['mday'];
-	$pconfig['month'] = $a_cron[$id]['month'];
-	$pconfig['wday'] = $a_cron[$id]['wday'];
-	$pconfig['who'] = $a_cron[$id]['who'];
-	$pconfig['command'] = $a_cron[$id]['command'];
+$this_cron_config = isset($id) ? config_get_path("cron/item/{$id}") : null;
+if ($this_cron_config) {
+	$pconfig['minute'] = $this_cron_config['minute'];
+	$pconfig['hour'] = $this_cron_config['hour'];
+	$pconfig['mday'] = $this_cron_config['mday'];
+	$pconfig['month'] = $this_cron_config['month'];
+	$pconfig['wday'] = $this_cron_config['wday'];
+	$pconfig['who'] = $this_cron_config['who'];
+	$pconfig['command'] = $this_cron_config['command'];
 }
 
 if ($_POST) {
@@ -111,12 +110,12 @@ if ($_POST) {
 		$ent['who'] = trim($_POST['who']);
 		$ent['command'] = trim($_POST['command']);
 
-		if (isset($id) && $a_cron[$id] && !$dup) {
+		if ($this_cron_config && !$dup) {
 			// update
-			$a_cron[$id] = $ent;
+			config_set_path("cron/item/{$id}", $ent);
 		} else {
 			// add
-			$a_cron[] = $ent;
+			config_set_path('cron/item/', $ent);
 		}
 
 		write_config(gettext("Crontab edited via cron package"));
