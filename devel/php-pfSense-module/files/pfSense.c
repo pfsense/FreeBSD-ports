@@ -1811,8 +1811,10 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 			array_init(&addr);
 			bzero(outputbuf, sizeof outputbuf);
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_addr;
-			if (IN6_IS_ADDR_LINKLOCAL(&tmp6->sin6_addr))
+			if (IN6_IS_ADDR_LINKLOCAL(&tmp6->sin6_addr)) {
+				zval_ptr_dtor(&addr);
 				break;
+			}
 			inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf,
 			    sizeof(outputbuf));
 			add_assoc_string(&addr, "addr", outputbuf);
