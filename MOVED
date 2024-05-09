@@ -3234,3 +3234,9 @@ sysutils/dim||2024-04-30|Has expired: Abandonware, upstream stopped development 
 net-im/jabberd||2024-04-30|Has expired: No longer developed as of 2019, consider using net-im/ejabberd
 irc/miau||2024-04-30|Has expired: Abandoned upstream, last release in 2010 and no activity since 2014. Consider migrating to irc/soju or irc/znc
 sysutils/no-login||2024-04-30|Has expired: Obsolete, use nologin in base
+lang/gcc48||2024-05-01|Has expired: Unsupported by upstream since 2015. Use GCC 10 or newer instead
+multimedia/rubygem-paperclip-av-transcoder-rails50||2024-05-04|Has expired: Depends on deprecated port devel/rubygem-paperclip-rails50
+devel/rubygem-paperclip-rails50||2024-05-04|Has expired: Upstream repo archived Jul 13, 2023. Upstream recommends using Rails' own ActiveStorage
+devel/rubygem-paperclip-rails5||2024-05-04|Has expired: Upstream repo archived Jul 13, 2023. Upstream recommends using Rails' own ActiveStorage
+biology/pbseqan|biology/seqan|2024-05-05|Has expired: Upstream merged into SeqAn project: Use biology/seqan
+archivers/xpk||2024-05-07|Has expired: Unmaintained, upstream last release in 2002

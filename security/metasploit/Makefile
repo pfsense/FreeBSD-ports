@@ -1,6 +1,5 @@
 PORTNAME=	metasploit
-DISTVERSION=	6.3.50
-PORTREVISION=	3
+DISTVERSION=	6.4.7
 CATEGORIES=	security
 
 MAINTAINER=	tanawts@gmail.com
@@ -44,7 +43,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
 		rubygem-metasploit-concern>=0:security/rubygem-metasploit-concern \
 		rubygem-metasploit-credential>=0:security/rubygem-metasploit-credential \
 		rubygem-metasploit-model>=0:security/rubygem-metasploit-model \
-		rubygem-metasploit-payloads>=2.0.161:security/rubygem-metasploit-payloads \
+		rubygem-metasploit-payloads>=2.0.166:security/rubygem-metasploit-payloads \
 		rubygem-metasploit_data_models>=0:security/rubygem-metasploit_data_models \
 		rubygem-metasploit_payloads-mettle>=1.0.26:security/rubygem-metasploit_payloads-mettle \
 		rubygem-mqtt>=0:net/rubygem-mqtt \
@@ -93,7 +92,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
 		rubygem-ruby_smb>=0:net/rubygem-ruby_smb \
 		rubygem-rubyntlm>=0:net/rubygem-rubyntlm \
 		rubygem-rubyzip>=0:archivers/rubygem-rubyzip \
-		rubygem-sinatra>=0:www/rubygem-sinatra \
+		rubygem-sinatra2>=0:www/rubygem-sinatra2 \
 		rubygem-sqlite3>=0:databases/rubygem-sqlite3 \
 		rubygem-sshkey>=0:security/rubygem-sshkey \
 		rubygem-swagger-blocks>=0:devel/rubygem-swagger-blocks \
@@ -164,7 +163,9 @@ SHEBANG_FILES=	data/exploits/CVE-2017-17562/build.sh \
 		tools/dev/import-dev-keys.sh tools/dev/sign-dev-keys.sh \
 		tools/dev/update_joomla_components.py \
 		tools/hardware/killerbee_msfrelay.py \
-		tools/modules/aws-aggregator-userdata.sh
+		tools/modules/aws-aggregator-userdata.sh \
+		test/ldap/samba-ad-run.sh \
+		test/ldap/samba-ad-setup.sh
 SHEBANG_LANG=	go
 
 STRIP=
@@ -173,7 +174,7 @@ NO_ARCH_IGNORE=	template_x64_bsd.bin template_x86_bsd.bin CVE-2013-2171.bin
 
 post-patch:
 	${REINPLACE_CMD} "/rb-readline/d ; /win32api/d ; \
-		/irb/s|, '~> 1.7.4'|| ; /msgpack/s|, '~> 1.6.0'|| ; /nokogiri/s|, '~> 1.14.0'|| ; /octokit/s|, '~> 4.0'||" \
+		/msgpack/s|, '~> 1.6.0'|| ; /nokogiri/s|, '~> 1.14.0'|| ; /octokit/s|, '~> 4.0'|| ; /sqlite3/s|, '1.6.6'|| ; /irb/s|, '~> 1.7.4'|| ; /faraday/s|, '2.7.11'||" \
 		${WRKSRC}/metasploit-framework.gemspec
 
 do-build:
