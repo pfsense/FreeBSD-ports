@@ -1,5 +1,6 @@
 PORTNAME=	ccid
 PORTVERSION=	1.5.5
+PORTREVISION=  1
 CATEGORIES=	devel
 MASTER_SITES=	https://ccid.apdu.fr/files/
 
@@ -15,6 +16,7 @@ LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 USES=		perl5 pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 USE_PERL5=	build
+LDFLAGS+=      -lpthread
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-usbdropdir=${PREFIX}/lib/pcsc/drivers \
