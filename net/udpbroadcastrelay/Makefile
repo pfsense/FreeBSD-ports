@@ -1,6 +1,7 @@
 PORTNAME=	udpbroadcastrelay
 DISTVERSIONPREFIX=v
 DISTVERSION=	0.3-beta
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	m.muenz@gmail.com
