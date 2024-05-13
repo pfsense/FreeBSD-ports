@@ -270,7 +270,7 @@ EOF;
 				}
 
 				$acmechalengedom = (substr($nsupdatedomain, 0, 2) === "*.") ? substr($nsupdatedomain, 2) : $nsupdatedomain;
-				file_put_contents("{$nsupdatefileprefix}" . (empty($domain->challengealias) ? "_acme-challenge." : "") . "{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
+				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);
 				$nsupdatekey = base64_decode($domain->NSUPDATE_KEY);
 
 				/* Set a default key algo of HMAC-MD5 if the key type is invalid. */
@@ -284,7 +284,7 @@ key "{$key_name}." {
 	secret "{$nsupdatekey}";
 };
 EOD;
-				file_put_contents("{$nsupdatefileprefix}" . (empty($domain->challengealias) ? "_acme-challenge." : "") . "{$acmechalengedom}.key", $keydata);
+				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
 			}
 		}
 
