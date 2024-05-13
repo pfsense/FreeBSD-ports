@@ -1,0 +1,39 @@
+commit 90c4a2fe6db1bafc8bb4bc038cf3e3664ac6db47
+Author: jim-p <jimp@netgate.com>
+Date:   Thu Apr 25 13:24:03 2024 -0400
+
+    Fix usermgrpasswd check for non-privileged users. Fixes #15442
+
+diff --git a/src/usr/local/bin/usermgrpasswd b/src/usr/local/bin/usermgrpasswd
+index bc66f947d6..e672729916 100755
+--- a/src/usr/local/bin/usermgrpasswd
++++ b/src/usr/local/bin/usermgrpasswd
+@@ -78,13 +78,6 @@ if (!posix_isatty(0)) {
+ 	exit(-1);
+ }
+ 
+-/* Most users will not be able to run this script themselves, direct them to the GUI. */
+-if (!is_writable(g_get('conf_path') . '/config.xml')) {
+-	echo gettext("This user does not have write access to the configuration in a shell.") . "\n\n";
+-	echo gettext("Log into the GUI and change the password from there.") . "\n";
+-	exit(-1);
+-}
+-
+ /* Reindex and fetch the current user database */
+ $userindex = index_users();
+ $username = "";
+@@ -108,6 +101,14 @@ if ($argv) {
+ 	}
+ }
+ 
++/* Most users will not be able to run this script themselves, direct them to the GUI. */
++if (!$checkonly &&
++    !is_writable(g_get('conf_path') . '/config.xml')) {
++	echo gettext("This user does not have write access to the configuration in a shell.") . "\n\n";
++	echo gettext("Log into the GUI and change the password from there.") . "\n";
++	exit(-1);
++}
++
+ /* Check if the user passed a name to the script */
+ if (empty($username)) {
+ 	/* Determine the shell user running this script */

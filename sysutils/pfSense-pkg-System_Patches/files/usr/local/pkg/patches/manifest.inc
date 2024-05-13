@@ -26,6 +26,79 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '27fc5a3020fe981b7a5bc98fc9b1660e8773fc7d',
+  'versions' => ['24.03'],
+  'descr' => 'Fix local CAs not being added to the Trust Store',
+  'links' => [
+      [ 'text' => 'After applying, edit and save a CA or reboot.' ],
+      [ 'text' => 'Redmine #15440',
+         'url' => 'https://redmine.pfsense.org/issues/15440', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '90c4a2fe6db1bafc8bb4bc038cf3e3664ac6db47',
+  'versions' => ['24.03'],
+  'descr' => 'Fix CLI password check exiting with a write access error for non-privileged users',
+  'links' => [
+      [ 'text' => 'Redmine #15442',
+         'url' => 'https://redmine.pfsense.org/issues/15442', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '247909ff5387200fb31c76f13e7702a8fbdc06f4',
+  'versions' => ['24.03'],
+  'descr' => 'Fix DNS Forwarder ignoring "Use remote DNS Servers, ignore local DNS" setting',
+  'links' => [
+      [ 'text' => 'Redmine #15434',
+         'url' => 'https://redmine.pfsense.org/issues/15434', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'b891c3a33aff74f4ded6176a78b22ed84821036a',
+  'versions' => ['24.03'],
+  'descr' => 'Show current boot method in the BIOS section of the System Information widget',
+  'links' => [
+      [ 'text' => 'Redmine #15422',
+         'url' => 'https://redmine.pfsense.org/issues/15422', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '7cbbda697adeabca5eaad369099ea995a4c2cd42',
+  'versions' => ['24.03'],
+  'descr' => 'Fix inconsistency in CRL tab names in the Certificate Manager',
+  'links' => [
+      [ 'text' => 'Redmine #15454',
+         'url' => 'https://redmine.pfsense.org/issues/15454', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '2adf7b8cde44a8e2f0f0cbb2a7f6c360e3bf4050',
+  'versions' => ['23.09.1', '2.7.2'],
+  'descr' => 'Fix Packet Capture not working on Tailscale interfaces',
+  'links' => [
+      [ 'text' => 'Redmine #15145',
+         'url' => 'https://redmine.pfsense.org/issues/15145', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '12cbb18a93c1f78e05806b6d3c90511e8967f43f',
   'versions' => ['23.09.1', '2.7.2'],
   'descr' => 'Fix potential local file include via DNS Resolver Python Module Script include mechanism',
