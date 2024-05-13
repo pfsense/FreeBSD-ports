@@ -1673,7 +1673,7 @@ function output_status($lcd, $lcdproc_screens_config, $lcdpanel_width, $lcdpanel
 						}
 						$lcd_cmds[] = "widget_set {$name} apc_summary 1 4 \"{$ups_summary_data}\"";
 					}
-					unset($results, $nis_server, $lcdpanel_height, $lcdpanel_width, $ups_summary_data);
+					unset($results, $nis_server, $ups_summary_data);
 				}
 				$updateSummary = false;
 				break;
