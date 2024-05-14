@@ -1,5 +1,6 @@
 PORTNAME=	libucl
 DISTVERSION=	0.9.2
+PORTREVISION=	1
 CATEGORIES=	textproc devel
 
 # implicit-approval+: bapt dvl
