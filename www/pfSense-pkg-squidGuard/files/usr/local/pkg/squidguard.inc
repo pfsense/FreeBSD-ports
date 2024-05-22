@@ -1013,7 +1013,7 @@ EOF;
 function convert_pfxml_to_sgxml() {
 	capability_update_source();
 
-	$conf = config_get_path('/');
+	$conf = config_get_path('');
 	$sgxml = array();
 	$pfxml = config_get_path('installedpackages/' . MODULE_GENERAL . '/config/0');
 
