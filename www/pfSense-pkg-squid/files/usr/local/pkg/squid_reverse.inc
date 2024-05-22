@@ -44,6 +44,7 @@ function squid_resync_reverse() {
 
 	if (isset($settings['reverse_ssl_cert']) && $settings['reverse_ssl_cert'] != "none") {
 		$svr_cert = lookup_cert($settings['reverse_ssl_cert']);
+		$svr_cert = $svr_cert['item'];
 		if ($svr_cert != false) {
 			if (base64_decode($svr_cert['crt'])) {
 				file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_cert']}.crt", sq_text_area_decode($svr_cert['crt']));
@@ -63,6 +64,7 @@ function squid_resync_reverse() {
 	if (isset($settings['reverse_check_clientca']) && $settings['reverse_check_clientca'] == "on") {
 		if (isset($settings['reverse_ssl_clientca']) && $settings['reverse_ssl_clientca'] != 'none') {
 			$clientca_cert = lookup_ca($settings['reverse_ssl_clientca']);
+			$clientca_cert = $clientca_cert['item'];
 			$clientca_opts = '';
 			if ($clientca_cert != false) {
 				if (base64_decode($clientca_cert['crt'])) {
@@ -75,8 +77,9 @@ function squid_resync_reverse() {
 			}
 		}
 		if (isset($settings['reverse_ssl_clientcrl']) && $settings['reverse_ssl_clientcrl'] != 'none') {
-			$crl = lookup_crl($settings['reverse_ssl_clientcrl']);
-			crl_update($crl);
+			$crl_config = lookup_crl($settings['reverse_ssl_clientcrl']);
+			$crl = &$crl_config['item'];
+			crl_update($crl_config);
 			if ($crl != false) {
 				if (base64_decode($crl['text'])) {
 					file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl", sq_text_area_decode($crl['text']));
@@ -372,8 +375,9 @@ function squid_refresh_crl() {
 	$settings = config_get_path('installedpackages/squidreversegeneral/config/0', []);
 
 	if (isset($settings['reverse_check_clientca']) && $settings['reverse_check_clientca'] == "on" && isset($settings['reverse_ssl_clientcrl']) && $settings['reverse_ssl_clientcrl'] != 'none') {
-		$crl = lookup_crl($settings['reverse_ssl_clientcrl']);
-		crl_update($crl);
+		$crl_config = lookup_crl($settings['reverse_ssl_clientcrl']);
+		$crl = &$crl_config['item'];
+		crl_update($crl_config);
 		if ($crl != false) {
 			if (base64_decode($crl['text'])) {
 				file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl", sq_text_area_decode($crl['text']));
