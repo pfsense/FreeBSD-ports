@@ -20,8 +20,7 @@
  */
 
 function sync_package_ftpproxy() {
-	global $config;
-	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
+	$cf = config_get_path('installedpackages/ftpclientproxy/config/0');
 
 	/* Proxy is not enabled, kill the daemon and issue a filter reload. */
 	if ($cf["enable"] != "on") {
@@ -105,8 +104,7 @@ function validate_form_ftpproxy($post, &$input_errors) {
 }
 
 function ftpproxy_get_port() {
-	global $config;
-	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
+	$cf = config_get_path('installedpackages/ftpclientproxy/config/0');
 	if (!empty($cf["bindport"]) && is_port($cf["bindport"])) {
 		return $cf["bindport"];
 	} else {
@@ -115,8 +113,7 @@ function ftpproxy_get_port() {
 }
 
 function ftpproxy_generate_rules($type) {
-	global $config;
-	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
+	$cf = config_get_path('installedpackages/ftpclientproxy/config/0');
 	$interface_list = explode(",", $cf['localints']);
 	if ($cf['earlyrule']) {
 		$ruletype = "pfearly";
