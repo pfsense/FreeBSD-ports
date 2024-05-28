@@ -1,6 +1,7 @@
 PORTNAME=	snmp
 PORTVERSION=	5.9.4
 PORTEPOCH=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
 		ZI
@@ -17,8 +18,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 NOT_FOR_ARCHS=		mips mips64
 NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
 
-OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
-		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP \
+OPTIONS_DEFINE=	MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
+		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS AX_DISABLE_TRAP \
 		TLS NEWSYSLOG NOLIBPKG SCTP
 OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX NEWSYSLOG
 OPTIONS_SUB=	yes
@@ -31,10 +32,12 @@ AX_SOCKONLY_DESC=	Disable UDP/TCP transports for agentx
 AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
 SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
-JAIL_DESC=		Options for running snmpd within a jail(8)
 NEWSYSLOG_DESC=		Automatically rotate snmpd.log via newsyslog
 NOLIBPKG_DESC=		Build without libpkg
 SCTP_DESC=		Build with SCTP MIB support
+
+USERS=		snmpd
+GROUPS=		snmpd
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
@@ -54,7 +57,8 @@ CONFIGURE_ARGS+=--enable-shared --enable-internal-md5 \
 		--with-sys-location="${NET_SNMP_SYS_LOCATION}" \
 		--with-logfile="${NET_SNMP_LOGFILE}" \
 		--with-persistent-directory="${NET_SNMP_PERSISTENTDIR}" \
-		--with-gnu-ld --without-libwrap \
+		--with-gnu-ld --without-libwrap --enable-ipv6 \
+		--without-kmem-usage \
 		--with-ldflags="-lm -lkvm -ldevstat -L${PKG_PREFIX}/lib -L${LOCALBASE}/lib ${LCRYPTO}"
 SUB_FILES=	pkg-message
 
@@ -129,14 +133,6 @@ CONFIGURE_ARGS+=--disable-snmptrapd-subagent
 CONFIGURE_ARGS+=--enable-agentx-dom-sock-only
 .endif
 
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=--enable-ipv6
-# --with-transport="UDPIPv6 TCPIPv6" --with-modules=mibII/ipv6"
-PLIST_SUB+=	WITH_IPV6=""
-.else
-PLIST_SUB+=	WITH_IPV6="@comment "
-.endif
-
 .if ${PORT_OPTIONS:MUNPRIVILEGED}
 CONFIGURE_ARGS+=--without-root-access
 .endif
@@ -153,10 +149,6 @@ NET_SNMP_LOGFILE?=	/var/log/snmpd.log
 NET_SNMP_PERSISTENTDIR?=/var/net-snmp
 NET_SNMP_WITH_MIB_MODULE_LIST+=	host disman/event-mib mibII/mta_sendmail mibII/tcpTable ucd-snmp/diskio
 
-.if ${OPSYS} == FreeBSD
-NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	mibII/ipv6
-.endif
-
 .if ${PORT_OPTIONS:MSCTP}
 NET_SNMP_WITH_MIB_MODULE_LIST+=	sctp-mib
 .endif
@@ -164,12 +156,6 @@ NET_SNMP_WITH_MIB_MODULE_LIST+=	sctp-mib
 .if ${PORT_OPTIONS:MMFD_REWRITES}
 CONFIGURE_ARGS+=--enable-mfd-rewrites
 NET_SNMP_WITH_MIB_MODULE_LIST+=	if-mib
-.endif
-
-.if ${PORT_OPTIONS:MJAIL}
-NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	host
-NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	ucd-snmp/memory
-CONFIGURE_ARGS+=			--without-kmem-usage
 .endif
 
 .if ${PORT_OPTIONS:MSMUX}
@@ -244,10 +230,6 @@ post-patch:
 	@${REINPLACE_CMD} -E -e 's|SSL_library_init|OPENSSL_init_ssl|g' \
 		${WRKSRC}/configure
 .endif
-	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd12.h \
-		${WRKSRC}/include/net-snmp/system/freebsd13.h
-	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd14.h \
-		${WRKSRC}/include/net-snmp/system/freebsd15.h
 .for header in darwin7.h darwin8.h darwin9.h darwin10.h darwin11.h darwin12.h \
 	darwin13.h darwin14.h darwin15.h darwin16.h darwin17.h
 	@${CP} ${WRKSRC}/include/net-snmp/system/darwin.h \

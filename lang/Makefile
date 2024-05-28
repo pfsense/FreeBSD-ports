@@ -3,6 +3,7 @@
     SUBDIR += abcl
     SUBDIR += alchemist.el
     SUBDIR += algol68g
+    SUBDIR += amber
     SUBDIR += angelscript
     SUBDIR += antimony
     SUBDIR += apache-commons-jelly
@@ -12,6 +13,7 @@
     SUBDIR += awka
     SUBDIR += bas2tap
     SUBDIR += basic256
+    SUBDIR += bend
     SUBDIR += bsh
     SUBDIR += bwbasic
     SUBDIR += c
@@ -178,6 +180,7 @@
     SUBDIR += linux-dotnet11-runtime
     SUBDIR += linux-dotnet11-sdk
     SUBDIR += linux-j
+    SUBDIR += linux-rl9-python3
     SUBDIR += lua51
     SUBDIR += lua52
     SUBDIR += lua53
@@ -267,6 +270,7 @@
     SUBDIR += perl5.34
     SUBDIR += perl5.36
     SUBDIR += perl5.38
+    SUBDIR += perl5.40
     SUBDIR += petite-chez
     SUBDIR += pfe
     SUBDIR += pharo
@@ -388,5 +392,6 @@
     SUBDIR += zig
     SUBDIR += zig-devel
     SUBDIR += zig010
+    SUBDIR += zig011
 
 .include <bsd.port.subdir.mk>

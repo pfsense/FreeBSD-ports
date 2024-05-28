@@ -1,5 +1,6 @@
 PORTNAME=	mpich
 DISTVERSION=	4.2.1
+PORTREVISION=	1
 CATEGORIES=	net parallel
 MASTER_SITES=	https://www.mpich.org/static/downloads/${DISTVERSION}/
 
@@ -32,7 +33,7 @@ OPTIONS_GROUP=		PM
 OPTIONS_GROUP_PM=	GFORKER HYDRA
 OPTIONS_RADIO=		DEFAULTPM
 OPTIONS_RADIO_DEFAULTPM=DGFORKER DHYDRA
-OPTIONS_DEFAULT=	FORTRAN GFORKER HYDRA DHYDRA L0
+OPTIONS_DEFAULT=	FORTRAN GFORKER HYDRA DHYDRA
 OPTIONS_SUB=		yes
 
 FORTRAN_USES=			fortran
@@ -77,6 +78,11 @@ CONFIGURE_ARGS=	--enable-fast=""	\
 PORTDOCS=	*
 
 .include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:ML0}
+# PR 278869 - level-zero is broken
+IGNORE=	is currently not working with the L0 option. Unset L0
+.endif
 
 .if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} == 170
 # linker error when compiling with llvm 17.0.6 on CURRENT - PR 276035

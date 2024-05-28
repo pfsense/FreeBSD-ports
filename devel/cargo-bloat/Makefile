@@ -1,10 +1,11 @@
 PORTNAME=	cargo-bloat
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.0
+DISTVERSION=	0.12.1
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Find out what takes most of the space in your executable
+COMMENT=	Rust: Find out what takes most of the space in your executable
 WWW=		https://github.com/RazrFalcon/cargo-bloat
 
 LICENSE=	MIT
@@ -19,7 +20,7 @@ CARGO_CRATES=	aho-corasick-1.1.3 \
 		binfarce-0.2.1 \
 		fallible-iterator-0.2.0 \
 		json-0.12.4 \
-		libc-0.2.153 \
+		libc-0.2.154 \
 		memchr-2.7.2 \
 		memmap2-0.9.4 \
 		multimap-0.10.0 \

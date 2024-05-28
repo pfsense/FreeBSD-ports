@@ -1,6 +1,6 @@
 PORTNAME=	postgis
 DISTVERSION=	3.2.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	32
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libproj.so:graphics/proj \
 		libgdal.so:graphics/gdal
 
 USES=		alias compiler:c++14-lang cpe gmake gnome iconv:wchar_t libtool:keepla \
-		localbase perl5 pkgconfig pgsql:11+ shebangfix
+		localbase perl5 pkgconfig pgsql:11-15 shebangfix
 USE_GNOME=	libxml2
 USE_PERL5=	build
 

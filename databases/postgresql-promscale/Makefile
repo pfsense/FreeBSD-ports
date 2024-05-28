@@ -1,6 +1,6 @@
 PORTNAME=	promscale
 PORTVERSION=	0.8.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
@@ -15,7 +15,7 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 RUN_DEPENDS=	timescaledb>=2.9.1:databases/timescaledb
 BUILD_DEPENDS=	bash>0:shells/bash
 
-USES=		cargo gmake pgsql:12+
+USES=		cargo gmake pgsql:12-15
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	timescale

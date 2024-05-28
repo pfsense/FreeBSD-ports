@@ -87,7 +87,7 @@ LIBRSVG2_DEFAULT?=	rust
 .  else
 LIBRSVG2_DEFAULT?=	legacy
 .  endif
-# Possible values: c7
+# Possible values: c7 rl9
 LINUX_DEFAULT?=		c7
 # Possible values: 11, 12, 13, 14, 15, 16, 17, -devel (to be used when non-base compiler is required)
 LLVM_DEFAULT?=		15
@@ -101,11 +101,11 @@ LUAJIT_DEFAULT?=	luajit-devel
 .  endif
 # Possible values: 5.10, 5.20, 6.8
 MONO_DEFAULT?=		5.20
-# Possible values: 8.0, 8.1, 10.5m, 10.6m, 10.11m
+# Possible values: 8.0, 8.1, 8.4, 10.5m, 10.6m, 10.11m
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
-# Possible value: 18, 20, 21, current, lts (Note: current = 21 and lts = 20)
+# Possible value: 18, 20, 21, 22, current, lts (Note: current = 22 and lts = 20)
 NODEJS_DEFAULT?=	lts
 # Possible value: 25, 26
 OPENLDAP_DEFAULT?=	26

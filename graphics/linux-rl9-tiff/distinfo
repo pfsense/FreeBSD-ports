@@ -1,0 +1,7 @@
+TIMESTAMP = 1707689988
+SHA256 (rocky/l/libtiff-4.4.0-10.el9.aarch64.rpm) = 2abd5d1fcf98c0fe57e2a7ce205b7e10755e46572471008ce1fb4e141bc4f51a
+SIZE (rocky/l/libtiff-4.4.0-10.el9.aarch64.rpm) = 194788
+SHA256 (rocky/l/libtiff-4.4.0-10.el9.x86_64.rpm) = 5eed9d4c3b7a60dab2890119281adc0cc9b5a4f175581291412bd582e45a576f
+SIZE (rocky/l/libtiff-4.4.0-10.el9.x86_64.rpm) = 200488
+SHA256 (rocky/l/libtiff-4.4.0-10.el9.src.rpm) = ace37a3f12f8c254a64577e9cd5d79ffdc0e6f4a0db1e82e34ad2aa2e4e56e0c
+SIZE (rocky/l/libtiff-4.4.0-10.el9.src.rpm) = 2881335

@@ -159,6 +159,7 @@
     SUBDIR += fiked
     SUBDIR += fizz
     SUBDIR += flawfinder
+    SUBDIR += flawz
     SUBDIR += fprint_demo
     SUBDIR += fprintd
     SUBDIR += fragroute
@@ -343,6 +344,19 @@
     SUBDIR += linux-c7-openssl-devel
     SUBDIR += linux-c7-p11-kit
     SUBDIR += linux-c7-trousers
+    SUBDIR += linux-rl9-ca-certificates
+    SUBDIR += linux-rl9-cyrus-sasl2
+    SUBDIR += linux-rl9-gnupg
+    SUBDIR += linux-rl9-gnutls
+    SUBDIR += linux-rl9-libassuan
+    SUBDIR += linux-rl9-libgcrypt
+    SUBDIR += linux-rl9-libgpg-error
+    SUBDIR += linux-rl9-libsecret
+    SUBDIR += linux-rl9-libtasn1
+    SUBDIR += linux-rl9-libxcrypt
+    SUBDIR += linux-rl9-nettle
+    SUBDIR += linux-rl9-nss
+    SUBDIR += linux-rl9-p11-kit
     SUBDIR += local-php-security-checker
     SUBDIR += logcheck
     SUBDIR += lua-argon2
@@ -402,6 +416,7 @@
     SUBDIR += obfs4proxy-tor
     SUBDIR += ocaml-cryptgps
     SUBDIR += ocaml-cryptokit
+    SUBDIR += ocaml-lwt_ssl
     SUBDIR += ocaml-ssl
     SUBDIR += oidentd
     SUBDIR += oinkmaster
@@ -1096,6 +1111,7 @@
     SUBDIR += rubygem-bcrypt
     SUBDIR += rubygem-bcrypt-ruby
     SUBDIR += rubygem-bcrypt_pbkdf
+    SUBDIR += rubygem-cancancan
     SUBDIR += rubygem-cose
     SUBDIR += rubygem-cvss-suite
     SUBDIR += rubygem-declarative_policy
@@ -1171,6 +1187,7 @@
     SUBDIR += rubygem-pbkdf2-ruby
     SUBDIR += rubygem-pundit
     SUBDIR += rubygem-pundit61
+    SUBDIR += rubygem-pwned
     SUBDIR += rubygem-pyu-ruby-sasl
     SUBDIR += rubygem-rack-oauth2
     SUBDIR += rubygem-rack-oauth21

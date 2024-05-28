@@ -1,5 +1,5 @@
 PORTNAME=	commonmarker
-PORTVERSION=	1.0.4
+PORTVERSION=	1.1.3
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 DISTFILES=	${DISTNAME}.gem
@@ -20,6 +20,6 @@ CARGO_BUILD=	no
 CARGO_INSTALL=	no
 GEM_ENV=	MAKE=gmake
 GEMFILES=	${DISTNAME}.gem
-GEMS_SKIP_SUBDIR=	1
+GEMS_SKIP_SUBDIR=	yes
 
 .include <bsd.port.mk>

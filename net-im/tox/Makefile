@@ -1,6 +1,7 @@
 PORTNAME=	toxcore
 PORTVERSION=	0.2.19
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-im net-p2p
 
@@ -29,7 +30,7 @@ GH_SUBDIR=	third_party/cmp:cmp
 
 CPE_VENDOR=	toktok
 
-USES=		cmake cpe libtool pathfix pkgconfig
+USES=		cmake cpe pathfix pkgconfig
 USE_LDCONFIG=	yes
 PLIST_SUB=	VER=${PORTVERSION:C/0.//}.0 SO=2
 

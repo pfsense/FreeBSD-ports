@@ -2297,7 +2297,6 @@ www/kristall||2023-07-02|Has expired: Requires older openssl
 sysutils/cfengine-masterfiles318||2023-07-02|Has expired: Expire one year after cfengine-masterfiles 3.19.0 released
 sysutils/cfengine318||2023-07-02|Has expired: Expire one year after cfengine 3.19.0 released
 devel/linux-c7-dbus-glib||2023-07-02|Merged into devel/linux-c7-dbus-libs
-devel/ocaml-sexplib|devel/ocaml-sexplib0|2023-07-05|Project renamed
 net/nuster||2023-07-08|Has expired: Does not support OpenSSL 3 and upstream last release was in 2020
 devel/godot2-tools|devel/godot-tools|2023-07-08|Has expired: Requires legacy OpenSSL 1.1.1 so use devel/godot
 devel/rubygem-aws-sdk-core3172|devel/rubygem-aws-sdk-core|2023-07-09|Remove obsoleted port. Use devel/rubygem-aws-sdk-core instead
@@ -3240,3 +3239,25 @@ devel/rubygem-paperclip-rails50||2024-05-04|Has expired: Upstream repo archived 
 devel/rubygem-paperclip-rails5||2024-05-04|Has expired: Upstream repo archived Jul 13, 2023. Upstream recommends using Rails' own ActiveStorage
 biology/pbseqan|biology/seqan|2024-05-05|Has expired: Upstream merged into SeqAn project: Use biology/seqan
 archivers/xpk||2024-05-07|Has expired: Unmaintained, upstream last release in 2002
+www/py-dj42-channels-redis|www/py-channels-redis|2024-05-12|Renamed after all Django consumers were switched from Django 3.2 to Django 4.2 to have a consistent naming scheme
+www/py-dj42-django-auditlog|www/py-django-auditlog|2024-05-12|Renamed after all Django consumers were switched from Django 3.2 to Django 4.2 to have a consistent naming scheme
+www/py-dj42-django-celery-results|www/py-django-celery-results|2024-05-12|Renamed after all Django consumers were switched from Django 3.2 to Django 4.2 to have a consistent naming scheme
+www/py-dj42-django-compression-middleware|www/py-django-compression-middleware|2024-05-12|Renamed after all Django consumers were switched from Django 3.2 to Django 4.2 to have a consistent naming scheme
+www/py-dj42-django-multiselectfield|www/py-django-multiselectfield|2024-05-12|Renamed after all Django consumers were switched from Django 3.2 to Django 4.2 to have a consistent naming scheme
+www/py-dj42-djangorestframework-guardian|www/py-djangorestframework-guardian|2024-05-12|Renamed after all Django consumers were switched from Django 3.2 to Django 4.2 to have a consistent naming scheme
+www/py-dj42-drf-writable-nested|www/py-drf-writable-nested|2024-05-12|Renamed after all Django consumers were switched from Django 3.2 to Django 4.2 to have a consistent naming scheme
+textproc/py-rss2gen|textproc/py-pyrss2gen|2024-05-13|Move textproc/py-rss2gen to textproc/py-pyrss2gen
+x11-fonts/noto-sans-basic|x11-fonts/noto-sans|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-sans instead
+x11-fonts/noto-sans-extra|x11-fonts/noto-sans|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-sans instead
+x11-fonts/noto-sans-mono-basic|x11-fonts/noto-sans-mono|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-sans-mono instead
+x11-fonts/noto-sans-mono-extra|x11-fonts/noto-sans-mono|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-sans-mono instead
+x11-fonts/noto-sans-symbols-basic|x11-fonts/noto-sans-symbols|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-sans-symbols instead
+x11-fonts/noto-sans-symbols-extra|x11-fonts/noto-sans-symbols|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-sans-symbols instead
+x11-fonts/noto-serif-basic|x11-fonts/noto-serif|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-serif instead
+x11-fonts/noto-serif-extra|x11-fonts/noto-serif|2024-05-13|Remove obsoleted port. Use x11-fonts/noto-serif instead
+sysutils/vector||2024-05-15|Has expired: Unmaintained in tree and broken for months
+irc/sic||2024-05-15|Has expired: Last upstream release was in 2001 and no upstream WWW
+devel/tarpaulin|devel/cargo-tarpaulin|2024-05-19|Rename port and package to reflect that this is a Cargo plugin
+sysutils/uutils-coreutils|sysutils/rust-coreutils|2024-05-21|Remove duplicate
+databases/foundationdb|databases/foundationdb71-server|2024-05-23|Reintegrated into databases/foundationdb71-server
+devel/py-dj42-graphene-django|devel/py-graphene-django300|2024-05-26|Renamed to py-graphene-django300 for backwards compatibility with net-mgmt/netbox

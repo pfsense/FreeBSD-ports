@@ -1,5 +1,5 @@
 PORTNAME=	babl
-PORTVERSION=	0.1.106
+PORTVERSION=	0.1.108
 CATEGORIES=	x11
 MASTER_SITES=	GIMP
 
@@ -12,10 +12,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 
-USES=		gnome libtool localbase meson pathfix pkgconfig tar:xz vala:build
+USES=		gnome localbase meson pathfix pkgconfig tar:xz vala:build
 
 USE_LDCONFIG=	yes
 USE_GNOME=	introspection:build
+
+MESON_ARGS=	-Dgi-docgen=disabled -Dwith-docs=false
 
 OPTIONS_DEFINE=	SIMD
 OPTIONS_DEFAULT_amd64=SIMD
@@ -25,7 +27,7 @@ SIMD_MESON_OFF=	-Denable-mmx=false -Denable-sse=false \
 		-Denable-sse2=false -Denable-sse4_1=false \
 		-Denable-avx2=false -Denable-f16c=false
 
-BABL_SHLIB=	0.205.1
+BABL_SHLIB=	0.207.1
 BABL_VER=	0.1
 PLIST_SUB+=	BABL_SHLIB=${BABL_SHLIB} BABL_VER=${BABL_VER}
 

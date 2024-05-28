@@ -1,7 +1,7 @@
 PORTNAME=	unikmer
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.19.1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,6 +22,8 @@ GO_MODULE=	github.com/shenwei356/unikmer
 GO_TARGET=	./${PORTNAME}
 
 PLIST_FILES=	bin/${PORTNAME}
+
+PORTSCOUT=	ignore:0.20.0 # ignore bogus version
 
 pre-patch:
 	${RM} -r ${WRKSRC}/vendor/golang.org/x/sys

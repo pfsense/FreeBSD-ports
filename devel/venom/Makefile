@@ -1,7 +1,7 @@
 PORTNAME=	venom
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	bapt@FreeBSD.org
@@ -9,7 +9,7 @@ COMMENT=	Manage and run integration tests with efficiency
 WWW=		https://github.com/ovh/venom
 
 LICENSE=	APACHE20
-LICENSE_FILES=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 
