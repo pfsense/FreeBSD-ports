@@ -26,6 +26,18 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '15449',
+  'versions' => ['24.03'],
+  'descr' => 'Fix IPsec VTI static routes not being added after boot',
+  'links' => [
+      [ 'text' => 'After applying, edit and save affected IPsec tunnels or reboot.' ],
+      [ 'text' => 'Redmine #15449',
+         'url' => 'https://redmine.pfsense.org/issues/15449', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
   'uniqid' => '15430-24_03',
   'versions' => ['24.03'],
   'descr' => 'Automatically use floating states for IPsec rules',
