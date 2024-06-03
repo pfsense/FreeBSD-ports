@@ -8833,6 +8833,9 @@ function sync_package_pfblockerng($cron='') {
 		// Remove any unused DNSBL aliases
 		$daliases = glob("{$pfb['dnsalias']}/*");
 		if (!empty($daliases)) {
+			if (!is_array($pfb['alias_dnsbl_all'])) {
+				$pfb['alias_dnsbl_all'] = [];
+			}
 			foreach ($daliases as $dlist) {
 				if (!in_array(basename($dlist), $pfb['alias_dnsbl_all'])) {
 					unlink_if_exists ("{$dlist}");
