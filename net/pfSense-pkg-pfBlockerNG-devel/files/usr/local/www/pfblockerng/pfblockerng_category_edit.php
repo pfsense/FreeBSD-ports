@@ -442,7 +442,7 @@ if ($_POST && isset($_POST['save'])) {
 		elseif (is_array($_POST[$s_option])) {
 			$_POST[$s_option] = $s_default;
 		}
-		elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+		elseif (is_array(${"options_$s_option"}) && !array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
 			$_POST[$s_option] = $s_default;
 		}
 	}
@@ -540,8 +540,12 @@ if ($_POST && isset($_POST['save'])) {
 	// Validate Adv. firewall rule settings
 	foreach (array(	'aliasports_in' => 'Port In', 'aliasaddr_in' => 'Destination In',
 			'aliasports_out' => 'Port Out', 'aliasaddr_out' => 'Destination Out') as $value => $auto_dir) {
-		if (!empty($_POST[$value]) && !is_alias($_POST[$value])) {
-			$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
+		if (!empty($_POST[$value])) {
+			if (!is_alias($_POST[$value])) {
+				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
+			} elseif (!in_array(alias_get_type($_POST[$value]), ['network', 'port'])) {
+				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an alias type of Netowrk or Port";
+			}
 		}
 	}
 
