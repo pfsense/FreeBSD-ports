@@ -112,33 +112,35 @@ EOD;
 		$cfg .= "\n";
 	}
 
-        /* Ping Monitor Configuration */
-        if ($telegraf_conf["ping_enable"]) {
-                if (!empty($telegraf_conf['ping_host_1'])) {
-                        $monitor_hosts[] = '"' . $telegraf_conf["ping_host_1"] . '"';
-                }
-                if (!empty($telegraf_conf['ping_host_2'])) {
-                        $monitor_hosts[] = '"' . $telegraf_conf["ping_host_2"] . '"';
-                }
-                if (!empty($telegraf_conf['ping_host_3'])) {
-                        $monitor_hosts[] = '"' . $telegraf_conf["ping_host_3"] . '"';
-                }
-                if (!empty($telegraf_conf['ping_host_4'])) {
-                        $monitor_hosts[] = '"' . $telegraf_conf["ping_host_4"] . '"';
-                }
+	/* Ping Monitor Configuration */
+	if ($telegraf_conf["ping_enable"]) {
+		$monitor_hosts = [];
+		if (!empty($telegraf_conf['ping_host_1'])) {
+			$monitor_hosts[] = '"' . $telegraf_conf["ping_host_1"] . '"';
+		}
+		if (!empty($telegraf_conf['ping_host_2'])) {
+			$monitor_hosts[] = '"' . $telegraf_conf["ping_host_2"] . '"';
+		}
+		if (!empty($telegraf_conf['ping_host_3'])) {
+			$monitor_hosts[] = '"' . $telegraf_conf["ping_host_3"] . '"';
+		}
+		if (!empty($telegraf_conf['ping_host_4'])) {
+			$monitor_hosts[] = '"' . $telegraf_conf["ping_host_4"] . '"';
+		}
 
-                $monitor_hosts = implode(",", $monitor_hosts);
+		if (!empty($monitor_hosts)) {
+			$monitor_hosts = implode(",", $monitor_hosts);
 
-                $cfg .= "\n[[inputs.ping]]\n";
-                $cfg .= "\turls = [" . $monitor_hosts . "]";
-                $cfg .= "\n\tdeadline = 0\n\n"; /* deadline (-w) function not supported in BSD ping */
-        }
+			$cfg .= "\n[[inputs.ping]]\n";
+			$cfg .= "\turls = [" . $monitor_hosts . "]";
+			$cfg .= "\n\tdeadline = 0\n\n"; /* deadline (-w) function not supported in BSD ping */
+		}
+	}
 
-        /* Netstat Configuration */
-        if ($telegraf_conf["netstat_enable"]) {
-
-                $cfg .= "[[inputs.netstat]]\n\n";  
-        }
+	/* Netstat Configuration */
+	if ($telegraf_conf["netstat_enable"]) {
+		$cfg .= "[[inputs.netstat]]\n\n";
+	}
 
 	if ((is_array($telegraf_conf['telegraf_output']) && in_array("influxdb", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "influxdb") {
 		$cfg .= "[[outputs.influxdb]]\n";
@@ -166,7 +168,7 @@ EOD;
 		$cfg .= "\toverwrite_template = false\n";
 		$cfg .= "\ttemplate_name = \"telegraf\"\n";
 		$cfg .= "\turls = [\"" . $telegraf_conf['elasticsearch_server'] . "\"]\n";
-        } else if ((is_array($telegraf_conf['telegraf_output']) && in_array("graphite", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "graphite") {
+	} else if ((is_array($telegraf_conf['telegraf_output']) && in_array("graphite", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "graphite") {
 		$cfg .= "[[outputs.graphite]]\n";
 		$cfg .= "\tservers = [\"" . $telegraf_conf['graphite_server'] . "\"]\n";
 		if (!empty($telegraf_conf['graphite_prefix'])) {
