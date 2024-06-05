@@ -26,6 +26,17 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '14083',
+  'versions' => ['24.03'],
+  'descr' => 'Fix boot failure when a LAGG interface or one of its members has MTU or MSS configured',
+  'links' => [
+      [ 'text' => 'Redmine #14083',
+         'url' => 'https://redmine.pfsense.org/issues/14083', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
   'uniqid' => '15449',
   'versions' => ['24.03'],
   'descr' => 'Fix IPsec VTI static routes not being added after boot',

@@ -16,6 +16,7 @@ pkg/patches/12cbb18a93c1f78e05806b6d3c90511e8967f43f.patch
 pkg/patches/13915.patch
 pkg/patches/13936.patch
 pkg/patches/14035.patch
+pkg/patches/14083.patch
 pkg/patches/14283.patch
 pkg/patches/14942.patch
 pkg/patches/15263-15264-combined.patch
