@@ -129,7 +129,7 @@ if ($_POST) {
 
 		// Update the patch entry now
 		if ($this_patches_config) {
-			$this_patches_config = $thispatch;
+			config_set_path("installedpackages/patches/item/{$id}", $thispatch);
 		} else {
 			if (is_numeric($after)) {
 				$a_patches = config_set_path('installedpackages/patches/item');
