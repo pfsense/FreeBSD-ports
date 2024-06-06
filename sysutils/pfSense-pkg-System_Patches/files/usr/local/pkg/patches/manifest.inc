@@ -26,6 +26,18 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '15430-24_03',
+  'versions' => ['24.03'],
+  'descr' => 'Automatically use floating states for IPsec rules',
+  'links' => [
+      [ 'text' => 'After applying, reload the filter or reboot.' ],
+      [ 'text' => 'Redmine #15430',
+         'url' => 'https://redmine.pfsense.org/issues/15430', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
   'uniqid' => '27fc5a3020fe981b7a5bc98fc9b1660e8773fc7d',
   'versions' => ['24.03'],
   'descr' => 'Fix local CAs not being added to the Trust Store',
@@ -176,6 +188,18 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '15430-23_09_1',
+  'versions' => ['23.09.1', '2.7.2'],
+  'descr' => 'Automatically use floating states for IPsec rules',
+  'links' => [
+      [ 'text' => 'After applying, reload the filter or reboot.' ],
+      [ 'text' => 'Redmine #15430',
+         'url' => 'https://redmine.pfsense.org/issues/15430', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
   'uniqid' => '7d87d7cbce1bf6f0c8a44888c640e2c29393a9cb',
   'versions' => ['23.09.1', '2.7.2'],
   'descr' => 'Fix overly lenient permissions on tmpfs RAM disk for /var',
