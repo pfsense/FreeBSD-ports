@@ -39,7 +39,7 @@ MAKE_ENV+=	INSTALL_INFO=install-info \
 MAKE_JOBS_UNSAFE=	yes
 ALL_TARGET=	lisp info
 
-CONFLICTS=	forge-devel*
+CONFLICTS_INSTALL=	forge-devel*
 
 NO_ARCH=	yes
 

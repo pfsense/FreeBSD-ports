@@ -494,7 +494,6 @@
     SUBDIR += mp3guessenc
     SUBDIR += mp3lint
     SUBDIR += mp3mover
-    SUBDIR += mp3plot
     SUBDIR += mp3riot
     SUBDIR += mp3splt
     SUBDIR += mp3stat
@@ -591,6 +590,7 @@
     SUBDIR += padthv1-lv2
     SUBDIR += paman
     SUBDIR += pamixer
+    SUBDIR += pandaresampler
     SUBDIR += paprefs
     SUBDIR += pasystray
     SUBDIR += patchage
@@ -701,7 +701,6 @@
     SUBDIR += raul
     SUBDIR += rawrec
     SUBDIR += re
-    SUBDIR += rebot3
     SUBDIR += resid
     SUBDIR += rexima
     SUBDIR += rezound
@@ -803,7 +802,6 @@
     SUBDIR += synthpod-lv2
     SUBDIR += synthv1-lv2
     SUBDIR += taglib
-    SUBDIR += taglookup
     SUBDIR += tagutil
     SUBDIR += tamgamp-lv2
     SUBDIR += tap-plugins

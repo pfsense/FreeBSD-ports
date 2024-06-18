@@ -1,14 +1,7 @@
 PORTNAME=	xdg-desktop-portal-hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.1
-PORTREVISION=	5
+DISTVERSION=	1.3.2
 CATEGORIES=	x11 wayland
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	65fb44ae4960.patch:-p1 # https://github.com/hyprwm/xdg-desktop-portal-hyprland/issues/190
-PATCHFILES+=	9c370fd55d6e.patch:-p1 # https://github.com/hyprwm/xdg-desktop-portal-hyprland/pull/193
-PATCHFILES+=	4fc83e6871e9.patch:-p1 # unbreak MALLOC_CONF=junk:true
-PATCHFILES+=	9ace6f969ce4.patch:-p1 # https://github.com/hyprwm/xdg-desktop-portal-hyprland/issues/207
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	xdg-desktop-portal backend for hyprland
@@ -27,11 +20,6 @@ RUN_DEPENDS=	xdg-desktop-portal>0:deskutils/xdg-desktop-portal \
 		grim:x11/grim \
 		slurp:x11/slurp
 
-FLAVORS=	qt6 qt5
-qt5_PKGNAMESUFFIX=	-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}
-qt6_CONFLICTS_INSTALL=	${PORTNAME}-qt5
-
 USES=		cmake compiler:c++11-lib gl pkgconfig qt:6
 USE_GITHUB=	yes
 USE_GL=		gbm
@@ -45,12 +33,7 @@ PLIST_FILES=	bin/hyprland-share-picker \
 		share/dbus-1/services/org.freedesktop.impl.portal.desktop.hyprland.service \
 		share/xdg-desktop-portal/portals/hyprland.portal
 
-.if ${FLAVOR:U} == qt5
-USES:=		${USES:S/qt:6/qt:5/}
-USE_QT=		qmake:build buildtools:build core gui wayland:run widgets
-.endif
-
-# XXX Drop after FreeBSD 14.0 EOL around 2025-03-01
+# XXX Drop after FreeBSD 14.0 EOL around 2024-10-01
 .if exists(/usr/lib/libc++.so) && !exists(/usr/include/c++/v1/__format/write_escaped.h)
 CXXFLAGS+=	-fexperimental-library
 .endif

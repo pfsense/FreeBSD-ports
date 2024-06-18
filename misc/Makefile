@@ -411,7 +411,6 @@
     SUBDIR += py-ast-comments
     SUBDIR += py-boost-histogram
     SUBDIR += py-censys
-    SUBDIR += py-cinder
     SUBDIR += py-codecarbon
     SUBDIR += py-colorbrewer
     SUBDIR += py-colored
@@ -543,6 +542,7 @@
     SUBDIR += ree
     SUBDIR += retry
     SUBDIR += rfc
+    SUBDIR += rgb-tui
     SUBDIR += ringtonetools
     SUBDIR += rname
     SUBDIR += rpl

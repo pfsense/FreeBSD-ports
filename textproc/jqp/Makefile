@@ -1,6 +1,6 @@
 PORTNAME=	jqp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.0
+DISTVERSION=	0.7.0
 PORTREVISION=	1
 CATEGORIES=	textproc
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/noahgorstein/jqp
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.22,modules
 
 GO_MODULE=	github.com/noahgorstein/jqp
 

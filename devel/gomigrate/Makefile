@@ -1,7 +1,9 @@
 PORTNAME=	migrate
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.17.1
+PORTREVISION=	1
 CATEGORIES=	devel
+PKGNAMEPREFIX=	go
 
 MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	CLI for performing database migrations

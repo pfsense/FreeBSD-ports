@@ -1,6 +1,6 @@
 PORTNAME=	vlc
-DISTVERSION=	3.0.20
-PORTREVISION=	7
+DISTVERSION=	3.0.21
+PORTREVISION=	2
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio net www
 MASTER_SITES=	https://get.videolan.org/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -29,8 +29,9 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 RUN_DEPENDS=	ffmpeg>=3.4.1,1:multimedia/ffmpeg
 
 USES=		compiler:c++17-lang cpe desktop-file-utils elfctl gettext-tools \
-		gmake gnome iconv:wchar_t libtool localbase pathfix pkgconfig \
+		gl gmake gnome iconv:wchar_t libtool localbase pathfix pkgconfig \
 		tar:xz
+USE_GL=		opengl
 
 CPE_VENDOR=	videolan
 
@@ -42,7 +43,7 @@ CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 		--enable-fontconfig --enable-freetype --enable-libgcrypt \
 		--enable-libxml2 --enable-oss --enable-postproc \
 		--enable-swscale --enable-vlc \
-		--disable-alsa --disable-archive --disable-aribb25 \
+		--disable-alsa --disable-aribb25 \
 		--disable-chromaprint --disable-crystalhd --disable-dc1394 \
 		--disable-decklink --disable-dsm --disable-dv1394 \
 		--disable-fdkaac --disable-gst-decode --disable-gles2 \
@@ -59,6 +60,7 @@ CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 CONFIGURE_ARGS+=--enable-debug
 .endif
 INSTALL_TARGET=	install-strip
+CFLAGS+=	-Wno-unreachable-code-generic-assoc
 CFLAGS_i386=	-fomit-frame-pointer
 ELF_FEATURES=	+noaslr:bin/.libs/vlc # See PR 270038
 BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
@@ -76,10 +78,10 @@ OPTIONS_DEFINE=	A52 AALIB AOM ARIBSUB ASS AVAHI CACA CHROMECAST DAV1D DBUS DCA \
 		VAAPI VCD VDPAU VORBIS VPX WAYLAND X11 X264 X265 ZVBI
 OPTIONS_DEFINE_powerpc=		ALTIVEC
 OPTIONS_DEFINE_powerpc64=	ALTIVEC
-OPTIONS_DEFAULT=ASS AVAHI DAV1D DBUS DVDNAV DVDREAD GNUTLS HARFBUZZ JPEG \
-		LIVEMEDIA LUA OGG OPTIMIZED_CFLAGS OPUS PNG QT5 SAMPLERATE \
-		SPEEX STREAM TAGLIB THEORA TWOLAME UPNP V4L VAAPI VCD VDPAU \
-		VORBIS WAYLAND X11
+OPTIONS_DEFAULT=ASS AVAHI CHROMECAST DAV1D DBUS DVDNAV DVDREAD GNUTLS HARFBUZZ \
+		JPEG LIVEMEDIA LUA OGG OPTIMIZED_CFLAGS OPUS PNG QT5 SAMPLERATE \
+		SKINS SPEEX STREAM TAGLIB THEORA TWOLAME UPNP V4L VAAPI VCD \
+		VDPAU VORBIS WAYLAND X11
 OPTIONS_DEFAULT_powerpc=	ALTIVEC
 OPTIONS_DEFAULT_powerpc64=	ALTIVEC
 OPTIONS_EXCLUDE=	LIBPLACEBO # https://code.videolan.org/videolan/vlc/-/commit/8e22c39ea3c3
@@ -204,7 +206,7 @@ LIBPLACEBO_LIB_DEPENDS=	libplacebo.so:graphics/libplacebo
 LIBPLACEBO_CONFIGURE_ENABLE=	libplacebo
 
 LIBRSVG2_USE=			GNOME=librsvg2,cairo
-LIBRSVG2_CONFIGURE_ENABLE=	svg
+LIBRSVG2_CONFIGURE_ENABLE=	svg svgdec
 
 LIBSSH2_LIB_DEPENDS=	libssh2.so:security/libssh2
 LIBSSH2_CONFIGURE_ENABLE=	sftp
@@ -307,9 +309,9 @@ SIDPLAY_CONFIGURE_ENABLE=	sid
 SIDPLAY_LDFLAGS=	-L${LOCALBASE}/lib/sidplay/builders
 
 SKINS_IMPLIES=		QT5
-SKINS_USES=		xorg
+SKINS_USES=		libarchive xorg
 SKINS_USE=		XORG=xext,xinerama,xpm
-SKINS_CONFIGURE_ENABLE=	skins2
+SKINS_CONFIGURE_ENABLE=	archive skins2
 
 SMB_USES=		samba:lib
 SMB_CONFIGURE_ENABLE=	smbclient
@@ -363,8 +365,8 @@ WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
 
 X11_LIB_DEPENDS=	libxcb-keysyms.so:x11/xcb-util-keysyms
-X11_USES=		gl xorg
-X11_USE=		GL=gl XORG=xcb,xorgproto,sm,ice,x11
+X11_USES=		xorg
+X11_USE=		XORG=xcb,xorgproto,sm,ice,x11
 X11_CONFIGURE_ENABLE=	xcb xvideo
 X11_CONFIGURE_WITH=	x
 
@@ -392,6 +394,7 @@ post-patch:
 	@${REINPLACE_CMD} \
 		-e '\|LIBS|s|-lrt||' \
 		-e 's|LIBS="-llirc_client|LIBS="$$LIBS_lirc|' \
+		-e '/PKG_CONFIG/s|\"gl\"|"opengl"|g' \
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/dev/cdrom|${WITH_CDROM_DEVICE}|g' \
 		-e 's|/dev/dvd|${WITH_DVD_DEVICE}|g' \

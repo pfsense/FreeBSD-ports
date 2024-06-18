@@ -1,8 +1,7 @@
 PORTNAME=	chromium
-PORTVERSION=	125.0.6422.76
+PORTVERSION=	125.0.6422.141
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
-PORTREVISION=	1
 CATEGORIES=	www wayland
 MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/ \
 		https://nerd.hu/distfiles/:external \
@@ -20,7 +19,7 @@ LICENSE_COMB=	multi
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
-BUIDL_DEPENDS=	bash:shells/bash \
+BUILD_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
 		gperf:devel/gperf \

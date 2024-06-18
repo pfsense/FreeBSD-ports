@@ -1,4 +1,4 @@
---- Gemfile.orig	2024-03-04 19:55:03 UTC
+--- Gemfile.orig	2024-06-12 00:45:02 UTC
 +++ Gemfile
 @@ -10,17 +10,17 @@ gem 'mail', '~> 2.8.1'
  gem 'roadie-rails', '~> 3.1.0'
