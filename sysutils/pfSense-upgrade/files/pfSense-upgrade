@@ -1492,10 +1492,23 @@ check_upgrade() {
 				continue
 			fi
 
-			# Skip repos with devel names
-			if [ "${_reponame}" == "devel" ]; then
-				continue
-			fi
+			# Skip repos with devel names as well as CE->Plus upgrades
+			case "${_reponame}" in
+				devel)
+					continue
+					;;
+				*-devel)
+					continue
+					;;
+				*-preview)
+					continue
+					;;
+				*-upgrade)
+					continue
+					;;
+				*)
+					;;
+			esac
 
 			local _pkg_args=""
 			local _is_configured_repo=$( \
