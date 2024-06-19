@@ -48,10 +48,30 @@ get_default_repo() {
 	echo ""
 }
 
+get_repo_path() {
+	local _repo_name="${1}"
+
+	# If the argument is a repo name, look for the respective repo conf path
+	for file in "${PLUS_CERT_BASE}/${PRODUCT}-repo-"*".name"; do
+		if [ ! -f "${file}" ]; then
+			continue
+		fi
+		if [ "$(/bin/cat ${file})" = "${_repo_name}" ]; then
+			echo -n "${file%.name}.conf"
+			return
+		fi
+	done
+
+	# No path found, return the given value
+	echo -n "${_repo_name}"
+	return
+}
+
 get_repo_id() {
 	local _id _repo_conf
 
-	_repo_conf="${1}"
+	# If the argument is a repo name, look for its path
+	_repo_conf="$(get_repo_path "${1}")"
 	_id="$(echo -n "${_repo_conf}" | \
 	    /usr/bin/sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
 
@@ -59,7 +79,9 @@ get_repo_id() {
 }
 
 get_repo_name() {
-	local _repo_conf="${1}"
+	# If the argument is a repo name, verify its path
+	local _repo_conf="$(get_repo_path "${1}")"
+
 	repo_path="${_repo_conf%.conf}"
 	repo_name="${repo_path}.name"
 	if [ ! -f "${repo_name}" ]; then
@@ -252,7 +274,9 @@ export PLUS_CERT_BASE="$("${PHP}" -n /usr/local/sbin/read_global_var pkg_repos_p
 export PRODUCT="$("${PHP}" -n /usr/local/sbin/read_global_var product_name pfSense)"
 export PFSENSE_REPO_CONF="/usr/local/etc/pkg/repos/${PRODUCT}.conf"
 export PKG_CONF="/usr/local/etc/pkg.conf"
-export PKG_REPO_CONF_PATH="$("${READ_XML_TAG}" string system/pkg_repo_conf_path)"
+PKG_REPO_CONF_PATH="$("${READ_XML_TAG}" string system/pkg_repo_conf_path)"
+# If the value is a repo name, get its path
+export PKG_REPO_CONF_PATH="$(get_repo_path "${PKG_REPO_CONF_PATH}")"
 
 # If no branch is saved on the XML configuration, use the default repo.
 if [ -z "${PKG_REPO_CONF_PATH}" ]; then

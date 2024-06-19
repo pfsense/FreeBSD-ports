@@ -657,8 +657,29 @@ is_plus() {
 	!(is_ce)
 }
 
+get_repo_path() {
+	local _repo_name="${1}"
+
+	# If the argument is a repo name, look for the respective repo conf path
+	for file in "${PLUS_CERT_BASE}/${PRODUCT}-repo-"*".name"; do
+		if [ ! -f "${file}" ]; then
+			continue
+		fi
+		if [ "$(/bin/cat ${file})" = "${_repo_name}" ]; then
+			echo -n "${file%.name}.conf"
+			return
+		fi
+	done
+
+	# No path found, return the given value
+	echo -n "${_repo_name}"
+	return
+}
+
 repo_is_plus_upgrade() {
 	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
+	# If the value is a repo name, get its path
+	pkg_repo_conf_path="$(get_repo_path "${pkg_repo_conf_path}")"
 
 	if [ -n "$(echo $pkg_repo_conf_path | grep ${product}-repo-custom)" ]; then
 		return 0
