@@ -1807,7 +1807,6 @@ if [ -n "${HTTP_PROXY}" ]; then
 	HTTP_PROXY_PASS=$(read_xml_tag.sh string system/proxypass)
 	if [ -n "${HTTP_PROXY_USER}" -a -n "${HTTP_PROXY_PASS}" ]; then
 		HTTP_PROXY_AUTH="${HTTP_PROXY_USER}:${HTTP_PROXY_PASS}"
-		HTTP_PROXY_AUTH="basic:*:${HTTP_PROXY_AUTH}"
 		export HTTP_PROXY_AUTH
 	fi
 fi
