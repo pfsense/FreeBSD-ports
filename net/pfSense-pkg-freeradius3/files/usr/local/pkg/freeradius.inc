@@ -1362,7 +1362,6 @@ eap {
 	#	auto_chain = yes
 	#	psk_identity = "test"
 	#	psk_hexphrase = "036363823"
-		dh_file = \${certdir}/dh
 		random_file = /dev/urandom
 		fragment_size = {$vareapconffragmentsize}
 		include_length = {$vareapconfincludelength}
