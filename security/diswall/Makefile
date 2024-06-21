@@ -1,6 +1,7 @@
 PORTNAME=	diswall
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.2
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,6 +18,8 @@ USES=		cargo sqlite
 USE_GITHUB=	yes
 GH_ACCOUNT=	dis-works
 GH_PROJECT=	diswall-rs
+
+RUSTFLAGS=	${ARCH:S/i386/YES/:C/^[a-z].*//:S/YES/-C target-feature=+sse,+sse2/} # add sse sse2 target-features only on i386
 
 CARGO_CRATES=	adler-1.0.2 \
 		ahash-0.8.11 \

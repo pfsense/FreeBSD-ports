@@ -1,3 +1,214 @@
+  <vuln vid="aa2b65e4-2f63-11ef-9cab-4ccc6adda413">
+    <topic>qt5-webengine -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>qt5-webengine</name>
+	<range><lt>5.15.17.p2_1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<blockquote cite="https://code.qt.io/cgit/qt/qtwebengine-chromium.git/log/?h=87-based">
+	  <p>Backports for 5 security bugs in Chromium:</p>
+	  <ul>
+	    <li>CVE-2024-3837: Use after free in QUIC</li>
+	    <li>CVE-2024-3839: Out of bounds read in Fonts</li>
+	    <li>CVE-2024-3914: Use after free in V8</li>
+	    <li>CVE-2024-4058: Type confusion in ANGLE</li>
+	    <li>CVE-2024-4558: Use after free in ANGLE</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-3837</cvename>
+      <cvename>CVE-2024-3839</cvename>
+      <cvename>CVE-2024-3914</cvename>
+      <cvename>CVE-2024-4058</cvename>
+      <cvename>CVE-2024-4558</cvename>
+      <url>https://code.qt.io/cgit/qt/qtwebengine-chromium.git/log/?h=87-based</url>
+    </references>
+    <dates>
+      <discovery>2024-05-31</discovery>
+      <entry>2024-06-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c5415838-2f52-11ef-9cab-4ccc6adda413">
+    <topic>qt6-webengine -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>qt6-webengine</name>
+	<range><lt>6.7.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Qt qtwebengine-chromium repo reports:</p>
+	<blockquote cite="https://code.qt.io/cgit/qt/qtwebengine-chromium.git/log/?h=118-based">
+	  <p>Backports for 7 security bugs in Chromium:</p>
+	  <ul>
+	    <li>CVE-2024-4948: Use after free in Dawn</li>
+	    <li>CVE-2024-5274: Type Confusion in V8</li>
+	    <li>CVE-2024-5493: Heap buffer overflow in WebRTC</li>
+	    <li>CVE-2024-5494: Use after free in Dawn</li>
+	    <li>CVE-2024-5495: Use after free in Dawn</li>
+	    <li>CVE-2024-5496: Use after free in Media Session</li>
+	    <li>CVE-2024-5499: Out of bounds write in Streams API</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-4948</cvename>
+      <cvename>CVE-2024-5274</cvename>
+      <cvename>CVE-2024-5493</cvename>
+      <cvename>CVE-2024-5494</cvename>
+      <cvename>CVE-2024-5495</cvename>
+      <cvename>CVE-2024-5496</cvename>
+      <cvename>CVE-2024-5499</cvename>
+      <url>https://code.qt.io/cgit/qt/qtwebengine-chromium.git/log/?h=118-based</url>
+    </references>
+    <dates>
+      <discovery>2024-05-31</discovery>
+      <entry>2024-06-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="142c538e-b18f-40a1-afac-c479effadd5c">
+    <topic>openvpn -- two security fixes</topic>
+    <affects>
+      <package>
+	<name>openvpn</name>
+	<range><lt>2.6.11</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gert Doering reports that OpenVPN 2.6.11 fixes two security bugs (three on Windows):</p>
+	<blockquote cite="https://github.com/OpenVPN/openvpn/blob/v2.6.11/Changes.rst#security-fixes">
+	  <p>CVE-2024-5594: control channel: refuse control channel messages with nonprintable characters in them. Security scope: a malicious openvpn peer can send garbage to openvpn log, or cause high CPU load. (Reynir Björnsson)</p>
+	  <p>CVE-2024-28882: only call schedule_exit() once (on a given peer). Security scope: an authenticated client can make the server "keep the session" even when the server has been told to disconnect this client. (Reynir Björnsson)</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-5594</cvename>
+      <cvename>CVE-2024-28882</cvename>
+      <url>https://github.com/OpenVPN/openvpn/blob/v2.6.11/Changes.rst#security-fixes</url>
+    </references>
+    <dates>
+      <discovery>2024-05-16</discovery>
+      <entry>2024-06-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="007e7e77-2f06-11ef-8a0f-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>126.0.6478.114</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>126.0.6478.114</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/06/stable-channel-update-for-desktop_18.html">
+	 <p>This update includes 6 security fixes:</p>
+	 <ul>
+	    <li>[344608204] High CVE-2024-6100: Type Confusion in V8. Reported by Seunghyun Lee (@0x10n) participating in SSD Secure Disclosure's TyphoonPWN 2024 on 2024-06-04</li>
+	    <li>[343748812] High CVE-2024-6101: Inappropriate implementation in WebAssembly. Reported by @ginggilBesel on 2024-05-31</li>
+	    <li>[339169163] High CVE-2024-6102: Out of bounds memory access in Dawn. Reported by wgslfuzz on 2024-05-07</li>
+	    <li>[344639860] High CVE-2024-6103: Use after free in Dawn. Reported by wgslfuzz on 2024-06-04</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-6100</cvename>
+      <cvename>CVE-2024-6101</cvename>
+      <cvename>CVE-2024-6102</cvename>
+      <cvename>CVE-2024-6103</cvename>
+      <url>https://chromereleases.googleblog.com/2024/06/stable-channel-update-for-desktop_18.html</url>
+    </references>
+    <dates>
+      <discovery>2024-06-18</discovery>
+      <entry>2024-06-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="453aa0fc-2d91-11ef-8a0f-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>126.0.6478.54</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>126.0.6478.54</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/06/stable-channel-update-for-desktop.html">
+	 <p>This update includes 21 security fixes:</p>
+	 <ul>
+	    <li>[342456991] High CVE-2024-5830: Type Confusion in V8. Reported by Man Yue Mo of GitHub Security Lab on 2024-05-24</li>
+	    <li>[339171223] High CVE-2024-5831: Use after free in Dawn. Reported by wgslfuzz on 2024-05-07</li>
+	    <li>[340196361] High CVE-2024-5832: Use after free in Dawn. Reported by wgslfuzz on 2024-05-13</li>
+	    <li>[342602616] High CVE-2024-5833: Type Confusion in V8. Reported by @ginggilBesel on 2024-05-24</li>
+	    <li>[342840932] High CVE-2024-5834: Inappropriate implementation in Dawn. Reported by gelatin dessert on 2024-05-26</li>
+	    <li>[341991535] High CVE-2024-5835: Heap buffer overflow in Tab Groups. Reported by Weipeng Jiang (@Krace) of VRI on 2024-05-22</li>
+	    <li>[341875171] High CVE-2024-5836: Inappropriate Implementation in DevTools. Reported by Allen Ding on 2024-05-21</li>
+	    <li>[342415789] High CVE-2024-5837: Type Confusion in V8. Reported by Anonymous on 2024-05-23</li>
+	    <li>[342522151] High CVE-2024-5838: Type Confusion in V8. Reported by Zhenghang Xiao (@Kipreyyy) on 2024-05-24</li>
+	    <li>[340122160] Medium CVE-2024-5839: Inappropriate Implementation in Memory Allocator. Reported by Micky on 2024-05-13</li>
+	    <li>[41492103] Medium CVE-2024-5840: Policy Bypass in CORS. Reported by Matt Howard on 2024-01-17</li>
+	    <li>[326765855] Medium CVE-2024-5841: Use after free in V8. Reported by Cassidy Kim(@cassidy6564) on 2024-02-26</li>
+	    <li>[40062622] Medium CVE-2024-5842: Use after free in Browser UI. Reported by Sven Dysthe (@svn_dy) on 2023-01-12</li>
+	    <li>[333940412] Medium CVE-2024-5843: Inappropriate implementation in Downloads. Reported by hjy79425575 on 2024-04-12</li>
+	    <li>[331960660] Medium CVE-2024-5844: Heap buffer overflow in Tab Strip. Reported by Sri on 2024-04-01</li>
+	    <li>[340178596] Medium CVE-2024-5845: Use after free in Audio. Reported by anonymous on 2024-05-13</li>
+	    <li>[341095523] Medium CVE-2024-5846: Use after free in PDFium. Reported by Han Zheng (HexHive) on 2024-05-16</li>
+	    <li>[341313077] Medium CVE-2024-5847: Use after free in PDFium. Reported by Han Zheng (HexHive) on 2024-05-18</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-5830</cvename>
+      <cvename>CVE-2024-5831</cvename>
+      <cvename>CVE-2024-5832</cvename>
+      <cvename>CVE-2024-5833</cvename>
+      <cvename>CVE-2024-5834</cvename>
+      <cvename>CVE-2024-5835</cvename>
+      <cvename>CVE-2024-5836</cvename>
+      <cvename>CVE-2024-5837</cvename>
+      <cvename>CVE-2024-5838</cvename>
+      <cvename>CVE-2024-5839</cvename>
+      <cvename>CVE-2024-5840</cvename>
+      <cvename>CVE-2024-5841</cvename>
+      <cvename>CVE-2024-5842</cvename>
+      <cvename>CVE-2024-5843</cvename>
+      <cvename>CVE-2024-5844</cvename>
+      <cvename>CVE-2024-5845</cvename>
+      <cvename>CVE-2024-5846</cvename>
+      <cvename>CVE-2024-5847</cvename>
+      <url>https://chromereleases.googleblog.com/2024/06/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2024-06-11</discovery>
+      <entry>2024-06-18</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="f0ba7008-2bbd-11ef-b4ca-814a3d504243">
     <topic>forgejo -- multiple issues</topic>
     <affects>

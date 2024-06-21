@@ -4602,6 +4602,7 @@
     SUBDIR += py-confusable_homoglyphs
     SUBDIR += py-confuse
     SUBDIR += py-connection_pool
+    SUBDIR += py-connexion
     SUBDIR += py-cons
     SUBDIR += py-constantly
     SUBDIR += py-construct
@@ -5103,6 +5104,7 @@
     SUBDIR += py-memory-allocator
     SUBDIR += py-memory-profiler
     SUBDIR += py-mergedeep
+    SUBDIR += py-methodtools
     SUBDIR += py-microversion-parse
     SUBDIR += py-milc
     SUBDIR += py-mime
@@ -5457,6 +5459,7 @@
     SUBDIR += py-pyparsing2
     SUBDIR += py-pyperclip
     SUBDIR += py-pyperf
+    SUBDIR += py-pyperscan
     SUBDIR += py-pyplusplus
     SUBDIR += py-pyproject-api
     SUBDIR += py-pyproject-flake8
@@ -5543,6 +5546,7 @@
     SUBDIR += py-pytest-relaxed
     SUBDIR += py-pytest-remotedata
     SUBDIR += py-pytest-rerunfailures
+    SUBDIR += py-pytest-ruff
     SUBDIR += py-pytest-runner
     SUBDIR += py-pytest-services
     SUBDIR += py-pytest-shutil
@@ -5694,6 +5698,7 @@
     SUBDIR += py-ruamel.yaml
     SUBDIR += py-ruamel.yaml.clib
     SUBDIR += py-rubymarshal
+    SUBDIR += py-ruff
     SUBDIR += py-rush
     SUBDIR += py-rx
     SUBDIR += py-rx1
@@ -5965,6 +5970,7 @@
     SUBDIR += py-whistle
     SUBDIR += py-widgetsnbextension
     SUBDIR += py-wimpy
+    SUBDIR += py-wirerope
     SUBDIR += py-wlc
     SUBDIR += py-woops
     SUBDIR += py-wrapt
@@ -7780,6 +7786,7 @@
     SUBDIR += rubygem-will_paginate
     SUBDIR += rubygem-windows_error
     SUBDIR += rubygem-wisper
+    SUBDIR += rubygem-wisper2
     SUBDIR += rubygem-with_advisory_lock61
     SUBDIR += rubygem-with_env
     SUBDIR += rubygem-wmi-lite

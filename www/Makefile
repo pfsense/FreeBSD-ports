@@ -1645,6 +1645,7 @@
     SUBDIR += py-flask-restx
     SUBDIR += py-flask-script
     SUBDIR += py-flask-security
+    SUBDIR += py-flask-session
     SUBDIR += py-flask-smorest
     SUBDIR += py-flask-socketio
     SUBDIR += py-flask-sockets
@@ -1763,6 +1764,7 @@
     SUBDIR += py-pyweblib
     SUBDIR += py-pywikibot
     SUBDIR += py-pywry
+    SUBDIR += py-qh3
     SUBDIR += py-qt5-webengine
     SUBDIR += py-qt6-webengine
     SUBDIR += py-quilt3

@@ -1,5 +1,6 @@
 PORTNAME=	nushell
 DISTVERSION=	0.94.2
+PORTREVISION=	1
 CATEGORIES=	shells
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +9,8 @@ WWW=		https://www.nushell.sh/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_aarch64=	compilation fails, see https://github.com/nushell/nushell/issues/13194
 
 USES=		cargo localbase ssl
 
