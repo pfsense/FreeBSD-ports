@@ -105,7 +105,7 @@ function patch_test_revert($patch, $fulldetail=false) {
 }
 
 /* Fetch a patch from a URL or github */
-function patch_fetch(& $patch) {
+function patch_fetch(& $patch, $id = null) {
 	global $g;
 	$url = patch_fixup_url($patch['location']);
 	$temp_filename = tempnam("{$g['tmp_path']}/", "system_patches");
@@ -121,6 +121,11 @@ function patch_fetch(& $patch) {
 		    $patch['pathstrip'] == 1 &&
 		    preg_match('/\n--- a\/src\//', $text)) {
 			$patch['pathstrip'] = 2;
+		}
+		if (isset($id)) {
+			config_set_path("installedpackages/patches/item/{$id}", $patch);
+		} else {
+			config_set_path("installedpackages/patches/item/", $patch);
 		}
 		write_config("Fetched patch {$patch['descr']}");
 		return true;

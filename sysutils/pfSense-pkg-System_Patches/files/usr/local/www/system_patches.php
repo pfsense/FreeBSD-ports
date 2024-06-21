@@ -110,7 +110,7 @@ if ((($_POST['type'] == 'custom') && (config_get_path("installedpackages/patches
 			if ($_POST['type'] == 'recommended') {
 				break;
 			}
-			if (patch_fetch($thispatch)) {
+			if (patch_fetch($thispatch, $_POST['id'])) {
 				$savemsg .= gettext("Patch fetched successfully");
 			} else {
 				$savemsgtype = 'danger';
