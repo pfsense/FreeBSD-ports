@@ -544,7 +544,7 @@ if ($_POST && isset($_POST['save'])) {
 			if (!is_alias($_POST[$value])) {
 				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
 			} elseif (!in_array(alias_get_type($_POST[$value]), ['network', 'port'])) {
-				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an alias type of Netowrk or Port";
+				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an alias type of Network or Port";
 			}
 		}
 	}
