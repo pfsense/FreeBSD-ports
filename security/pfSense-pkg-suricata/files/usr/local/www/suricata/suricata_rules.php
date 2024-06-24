@@ -366,6 +366,25 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 	// Set a scroll-to anchor location
 	$anchor = "rule_{$gid}_{$sid}";
 }
+
+elseif (isset($_POST['all_drop'])){
+        if (isset($_POST['sids'])) {
+                shell_exec("bash /usr/local/pkg/suricata/active_rules.sh '/usr/local/share/suricata/rules' '". $_POST['sids'] ."'");
+        }
+        else {
+                shell_exec("bash /usr/local/pkg/suricata/active_rules.sh '/usr/local/share/suricata/rules'");
+        }
+}
+elseif (isset($_POST['all_alert'])){
+        if (isset($_POST['sids'])) {
+                shell_exec("bash /usr/local/pkg/suricata/active_rules.sh '/usr/local/share/suricata/rules' '". $_POST['sids'] ." --alert");
+        }
+        else {
+                shell_exec("bash /usr/local/pkg/suricata/active_rules.sh '/usr/local/share/suricata/rules' '' --alert");
+        }
+
+}
+
 elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
 
 	// Get the GID:SID tags embedded in the clicked rule icon.
@@ -960,6 +979,31 @@ if ($currentruleset != 'custom.rules' && $currentruleset != 'Active Rules' && st
 }
 $section->add($group);
 print($section);
+
+$action_section = new Form_Section('Change all action');
+$action_group = new Form_Group('SIDs for ignore');
+$action_group->add(new Form_Input(
+        'sids',
+        'sids',
+        'show',
+        ''
+))->setAttribute('placeholder', gettext('Separate with space, ex.:2003 30012'));
+$action_group->add(new Form_Button(
+        'all_drop',
+        'All Drop',
+        null,
+        'fa-thumbs-down'
+))->setAttribute('title', gettext('Set action of all rules for drop'))->addClass('btn-sm btn-danger');
+
+$action_group->add(new Form_Button(
+        'all_alert',
+        'All Alert',
+        null,
+        'fa-thumbs-down'
+))->setAttribute('title', gettext('Set action of all rules for alert'))->addClass('btn-sm btn-success');
+
+$action_section->add($action_group);
+print($action_section);
 
 if ($currentruleset == 'custom.rules') :
 		$section = new Form_Section('Defined Custom Rules');
