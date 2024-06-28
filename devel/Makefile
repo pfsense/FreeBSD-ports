@@ -454,6 +454,7 @@
     SUBDIR += colorgcc
     SUBDIR += colormake
     SUBDIR += commit-patch
+    SUBDIR += commitizen
     SUBDIR += commoncpp
     SUBDIR += compiler-rt
     SUBDIR += compiz-bcop
@@ -1020,6 +1021,7 @@
     SUBDIR += ipython
     SUBDIR += ireport
     SUBDIR += isa-l
+    SUBDIR += iscd-commons
     SUBDIR += isfreedesktop
     SUBDIR += isl
     SUBDIR += ispc
@@ -4672,6 +4674,7 @@
     SUBDIR += py-debtcollector
     SUBDIR += py-debugpy
     SUBDIR += py-debugtools
+    SUBDIR += py-decli
     SUBDIR += py-decopatch
     SUBDIR += py-decorator
     SUBDIR += py-decoratortools
@@ -7146,6 +7149,7 @@
     SUBDIR += rubygem-grape-swagger-entity
     SUBDIR += rubygem-grape-swagger20
     SUBDIR += rubygem-grape1
+    SUBDIR += rubygem-grape20
     SUBDIR += rubygem-grape_logging
     SUBDIR += rubygem-graphiql-rails
     SUBDIR += rubygem-graphlient

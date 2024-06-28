@@ -1,6 +1,6 @@
 PORTNAME=	theseus-ship
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.0.0
+DISTVERSION=	6.1.0
 CATEGORIES=	x11-wm # wayland: https://github.com/winft/theseus-ship/issues/9
 
 MAINTAINER=	jbeich@FreeBSD.org
