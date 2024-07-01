@@ -26,6 +26,19 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => 'CVE-2024-6387-workaround',
+  'versions' => ['24.03', '23.09.1', '2.7.2'],
+  'descr' => 'Workaround for SSH CVE-2024-6387',
+  'links' => [
+      [ 'text' => 'After applying, restart the SSH Daemon or reboot.' ],
+      [ 'text' => 'FreeBSD-SA-24:04.openssh',
+         'url' => 'https://www.freebsd.org/security/advisories/FreeBSD-SA-24:04.openssh.asc', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '14083',
   'versions' => ['24.03'],
   'descr' => 'Fix boot failure when a LAGG interface or one of its members has MTU or MSS configured',
