@@ -32,23 +32,46 @@ require_once('udpbroadcastrelay/udpbroadcastrelay.inc');
 // Get configuration data
 $this_item_config = udpbr_get_config();
 
-// Use submitted data instead of configuration data
-if (isset($_POST['save'])) {
-	// Handle POST data differences
+// Get form data
+if (is_array($_POST)) {
+	$temp_item_config = $_POST;
+
+	// Include configuration for all instances
 	if (isset($this_item_config['item'])) {
-		$_POST['item'] = $this_item_config['item'];
+		$temp_item_config['item'] = $this_item_config['item'];
 	}
 
-	$this_item_config = $_POST;
+	$this_item_config = $temp_item_config;
 }
 
-// Parse saved or submitted data
+// Parse item configuration
 if (isset($this_item_config)) {
 	$input_errors = udpbr_parse_config($this_item_config);
 }
 
+// Parse form action
+$item_action = [
+	'action' => null,
+	'data' => null
+];
+if (is_array($_POST) && isset($this_item_config)) {
+	if (isset($_POST['save']) && empty($input_errors)) {
+		// Save configuration
+		$item_action['action'] = 'save';
+	} elseif (isset($_POST['del_btn']) && is_array($_POST['del']) && !empty($_POST['del'])) {
+		// Delete instance(s)
+		$item_action['action'] = 'delete';
+		$item_action['data'] = [];
+		foreach ($_POST['del'] as $id) {
+			if (is_numericint($id) && (array_get_path($this_item_config, "item/{$id}") !== null)) {
+				$item_action['data'][] = intval($id);
+			}
+		}
+	}
+}
+
 // Write configuration
-if (isset($_POST['save']) && isset($this_item_config) && empty($input_errors)) {
+if ($item_action['action'] == 'save') {
 	// Replace existing config
 	udpbr_set_config($this_item_config);
 
@@ -61,16 +84,9 @@ if (isset($_POST['save']) && isset($this_item_config) && empty($input_errors)) {
 }
 
 // Delete configuration
-if (isset($_POST['del_btn']) && is_array($_POST['del']) && isset($this_item_config)) {
-	$ids_to_remove = [];
-	foreach ($_POST['del'] as $id) {
-		if (is_numericint($id) && (array_get_path($this_item_config, "item/{$id}") !== null)) {
-			$ids_to_remove[] = intval($id);
-		}
-	}
-
+if ($item_action['action'] == 'delete') {
 	// Remove existing config items
-	if (udpbr_del_instance_config($ids_to_remove)) {
+	if (udpbr_del_instance_config($item_action['data'])) {
 
 		udpbr_resync();
 

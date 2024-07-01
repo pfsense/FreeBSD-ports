@@ -39,17 +39,19 @@ if (isset($_GET['id']) && is_numericint($_GET['id'])) {
 	}
 }
 
-// Use submitted data instead of configuration data
-if (isset($_POST['save'])) {
-	// Handle POST data differences
-	if (is_array($_POST['interfaces'])) {
-		$_POST['interfaces'] = implode(',', $_POST['interfaces']);
+// Get form data
+if (is_array($_POST)) {
+	$temp_item_config = $_POST;
+
+	// Interfaces are stored as CSVs
+	if (is_array($temp_item_config['interfaces'])) {
+		$temp_item_config['interfaces'] = implode(',', $temp_item_config['interfaces']);
 	}
 
-	$this_item_config = $_POST;
+	$this_item_config = $temp_item_config;
 }
 
-// Parse saved or submitted data
+// Parse item configuration
 if (isset($this_item_config)) {
 	if (isset($this_item_id)) {
 		// Existing instance
@@ -60,8 +62,19 @@ if (isset($this_item_config)) {
 	}
 }
 
+// Parse form action
+$item_action = [
+	'action' => null,
+];
+if (is_array($_POST) && isset($this_item_config)) {
+	if (isset($_POST['save']) && empty($input_errors)) {
+		// Save configuration
+		$item_action['action'] = 'save';
+	}
+}
+
 // Write configuration
-if (isset($_POST['save']) && isset($this_item_config) && empty($input_errors)) {
+if ($item_action['action'] == 'save') {
 	if (isset($this_item_id)) {
 		// Replace an existing config item
 		udpbr_set_instance_config($this_item_config, $this_item_id);
