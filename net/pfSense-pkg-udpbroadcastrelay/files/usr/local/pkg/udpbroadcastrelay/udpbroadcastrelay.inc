@@ -31,9 +31,24 @@ if (!isset($udpbr_global)) {
 		'config_path' => "installedpackages/{$udpbr_global['name']}/config/0",
 	    'rc_filename' => "{$udpbr_global['name']}.sh",
 	    'rc'          => "/usr/local/etc/rc.d/{$udpbr_global['name']}.sh",
-	    'daemon'      => "/usr/local/sbin/{$udpbr_global['name']}",
-		'log_prefix'  => 'UDP Broadcast Relay: '
+	    'daemon'      => "/usr/local/sbin/{$udpbr_global['name']}"
 	];
+}
+
+/**
+ * Writes a message to the dedicated service log.
+ */
+function udpbr_log(string $message, int $priority = LOG_INFO, bool $config_revision = false): void {
+	// /usr/bin/logger -p daemon.info -t udpbroadcastrelay "TESTDEBUG 2"
+	global $udpbr_global;
+
+	openlog($udpbr_global['name'], LOG_ODELAY, LOG_DAEMON);
+	syslog($priority, $message);
+	closelog();
+
+	if ($config_revision) {
+		write_config("UDP Broadcast Relay: {$message}");
+	}
 }
 
 /**
@@ -43,7 +58,7 @@ function udpbr_deinstall(): void {
 	global $udpbr_global;
 
 	if (is_service_running($udpbr_global['name'])) {
-		syslog(LOG_NOTICE, $udpbr_global['log_prefix'] . gettext('Stopping service'));
+		udpbr_log(gettext('Stopping service'), LOG_NOTICE);
 		stop_service($udpbr_global['name']);
 	}
 
@@ -136,10 +151,10 @@ function udpbroadcastrelay_plugin_carp(array $plugin_params = []): void {
 
 	$status_reason = isset($status_reason) ? " ({$status_reason})" : '';
 	if ($start_service) {
-		syslog(LOG_NOTICE, $udpbr_global['log_prefix'] . gettext('Starting service') . $status_reason);
+		udpbr_log((gettext('Starting service') . $status_reason), LOG_NOTICE);
 		start_service($udpbr_global['name']);
 	} else {
-		syslog(LOG_NOTICE, $udpbr_global['log_prefix'] . gettext('Stopping service') . $status_reason);
+		udpbr_log((gettext('Stopping service') . $status_reason), LOG_NOTICE);
 		stop_service($udpbr_global['name']);
 	}
 }
@@ -182,7 +197,7 @@ function udpbr_resync(): void {
 
 	// Stop the service by default
 	if (is_service_running($udpbr_global['name'])) {
-		syslog(LOG_NOTICE, $udpbr_global['log_prefix'] . gettext('Reloading service'));
+		udpbr_log(gettext('Reloading service'), LOG_NOTICE);
 		stop_service($udpbr_global['name']);
 		unlink_if_exists($udpbr_global['rc']);
 	}
@@ -197,7 +212,7 @@ function udpbr_resync(): void {
 
 	// Bail if there's a configuration issue
 	if (!empty($input_errors)) {
-		syslog(LOG_ERR, $udpbr_global['log_prefix'] . gettext('Could not start service due to a configuration error'));
+		udpbr_log(gettext('Could not start service due to a configuration error'), LOG_ERR);
 		return;
 	}
 
@@ -207,7 +222,7 @@ function udpbr_resync(): void {
 	}
 
 	// Convenience function to use in heredocs
-	$hd_get = function (string $hd_get_data): string {return gettext($hd_get_data);};
+	$func_gettext = function (string $message): string {return gettext($message);};
 
 	// Genereate the instance commands
 	$run_commands = [];
@@ -234,7 +249,7 @@ function udpbr_resync(): void {
 				{$run_command} 2>\$UDPBRTEMP >/dev/null
 				ERRORMSG=\$(cat \${UDPBRTEMP})
 				if [ "\$ERRORMSG" != '' ]; then
-					/usr/bin/logger -t {$udpbr_global['name']} "{$udpbr_global['log_prefix']}{$hd_get('Failed to start instance')}: \${ERRORMSG}"
+					/usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start instance')}: \${ERRORMSG}"
 				fi
 		
 		SSCRIPT;
@@ -248,7 +263,7 @@ function udpbr_resync(): void {
 	// Write the rc script
 	$start = <<<BSSCRIPT
 	ERRORMSG=''
-	    UDPBRTEMP=$(mktemp /tmp/udpbr_tmp.XXXXXX) || ERRORMSG="{$hd_get('Could not create temporary file')}"
+	    UDPBRTEMP=$(mktemp /tmp/udpbr_tmp.XXXXXX) || ERRORMSG="{$func_gettext('Could not create temporary file')}"
 	    if [ "\$ERRORMSG" = '' ]; then
 
 	BSSCRIPT;
@@ -256,7 +271,7 @@ function udpbr_resync(): void {
 	$start .= <<<ESSCRIPT
 	    rm -f "\${UDPBRTEMP}"
 	    else
-	        /usr/bin/logger -t {$udpbr_global['name']} "{$udpbr_global['log_prefix']}{$hd_get('Failed to start service')} (\${ERRORMSG})"
+	        /usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start service')} (\${ERRORMSG})"
 	    fi
 	ESSCRIPT;
 
@@ -272,7 +287,7 @@ function udpbr_resync(): void {
 		udpbroadcastrelay_plugin_carp();
 	} else {
 		// Start the service
-		syslog(LOG_NOTICE, $udpbr_global['log_prefix'] . gettext('Starting service'));
+		udpbr_log(gettext('Starting service'), LOG_NOTICE);
 		start_service($udpbr_global['name']);
 	}
 }
@@ -526,7 +541,7 @@ function udpbr_set_config(array $config): void {
 		config_del_path("{$udpbr_global['config_path']}/item");
 	}
 
-	write_config($udpbr_global['log_prefix'] . gettext('saved settings.'));
+	udpbr_log(gettext('saved settings.'), LOG_INFO, true);
 }
 
 /**
@@ -542,10 +557,10 @@ function udpbr_set_instance_config(array $config, int $id = null): void {
 
 	if (isset($id) && config_get_path("{$udpbr_global['config_path']}/item/{$id}")) {
 		config_set_path("{$udpbr_global['config_path']}/item/{$id}", $config);
-		write_config($udpbr_global['log_prefix'] . gettext('saved instance settings.'));
+		udpbr_log(gettext('saved instance settings.'), LOG_INFO, true);
 	} else {
 		config_set_path("{$udpbr_global['config_path']}/item/", $config);
-		write_config($udpbr_global['log_prefix'] . gettext('added new instance.'));
+		udpbr_log(gettext('added new instance.'), LOG_INFO, true);
 	}
 }
 
@@ -567,7 +582,7 @@ function udpbr_del_instance_config(array $instance_ids): bool {
 	}
 
 	if ($deleted_count > 0) {
-		write_config($udpbr_global['log_prefix'] . gettext("deleted {$deleted_count} instance(s)."));
+		udpbr_log(gettext("deleted {$deleted_count} instance(s)."), LOG_INFO, true);
 		return true;
 	}
 
