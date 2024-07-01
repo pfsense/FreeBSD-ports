@@ -37,9 +37,13 @@ if (!isset($udpbr_global)) {
 
 /**
  * Writes a message to the dedicated service log.
+ * 
+ * @param string $message The message to log.
+ * @param int $priority The log priority for the message.
+ * @param bool $config_revision If true, use the message to create a
+ *                              config revision.
  */
 function udpbr_log(string $message, int $priority = LOG_INFO, bool $config_revision = false): void {
-	// /usr/bin/logger -p daemon.info -t udpbroadcastrelay "TESTDEBUG 2"
 	global $udpbr_global;
 
 	openlog($udpbr_global['name'], LOG_ODELAY, LOG_DAEMON);
