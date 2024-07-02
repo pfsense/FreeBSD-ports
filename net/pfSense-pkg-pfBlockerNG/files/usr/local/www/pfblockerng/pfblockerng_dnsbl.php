@@ -3292,15 +3292,12 @@ function enable_python_gp() {
 }
 
 function enable_dnsblip() {
-	var dnsblip = $('#action').prop('checked'); 
-	hideInput('aliaslog', !dnsblip);
-	hideInput('dnsbl_ip_text_in', !dnsblip);
-	hideInput('dnsbl_ip_text_out', !dnsblip);
-
 	if ($('#action').val() != 'Disabled') {
+		hideInput('aliaslog', false);
 		$('#advinboundsettings').show();
 		$('#advoutboundsettings').show();
 	} else {
+		hideInput('aliaslog', true);
 		$('#advinboundsettings').hide();
 		$('#advoutboundsettings').hide();
 	}
