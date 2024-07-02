@@ -33,7 +33,7 @@ require_once('udpbroadcastrelay/udpbroadcastrelay.inc');
 $this_item_config = udpbr_get_config();
 
 // Get form data
-if (is_array($_POST)) {
+if (is_array($_POST) && isset($_POST['save'])) {
 	$temp_item_config = $_POST;
 
 	// Include configuration for all instances

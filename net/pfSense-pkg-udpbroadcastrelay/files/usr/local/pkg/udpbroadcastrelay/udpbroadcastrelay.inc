@@ -62,7 +62,7 @@ function udpbr_deinstall(): void {
 	global $udpbr_global;
 
 	if (is_service_running($udpbr_global['name'])) {
-		udpbr_log(gettext('Stopping service'), LOG_NOTICE);
+		udpbr_log(gettext('Stopping service.'), LOG_NOTICE);
 		stop_service($udpbr_global['name']);
 	}
 
@@ -155,10 +155,10 @@ function udpbroadcastrelay_plugin_carp(array $plugin_params = []): void {
 
 	$status_reason = isset($status_reason) ? " ({$status_reason})" : '';
 	if ($start_service) {
-		udpbr_log((gettext('Starting service') . $status_reason), LOG_NOTICE);
+		udpbr_log((gettext('Starting service.') . $status_reason), LOG_NOTICE);
 		start_service($udpbr_global['name']);
 	} else {
-		udpbr_log((gettext('Stopping service') . $status_reason), LOG_NOTICE);
+		udpbr_log((gettext('Stopping service.') . $status_reason), LOG_NOTICE);
 		stop_service($udpbr_global['name']);
 	}
 }
@@ -199,9 +199,11 @@ function udpbr_get_command(array $config): string {
 function udpbr_resync(): void {
 	global $udpbr_global;
 
+	udpbr_log(gettext('Reloading service.'), LOG_INFO);
+
 	// Stop the service by default
 	if (is_service_running($udpbr_global['name'])) {
-		udpbr_log(gettext('Reloading service'), LOG_NOTICE);
+		udpbr_log(gettext('Stopping service.'), LOG_NOTICE);
 		stop_service($udpbr_global['name']);
 		unlink_if_exists($udpbr_global['rc']);
 	}
@@ -216,7 +218,7 @@ function udpbr_resync(): void {
 
 	// Bail if there's a configuration issue
 	if (!empty($input_errors)) {
-		udpbr_log(gettext('Could not start service due to a configuration error'), LOG_ERR);
+		udpbr_log(gettext('Failed to start service due to a configuration error.'), LOG_ERR);
 		return;
 	}
 
@@ -253,7 +255,7 @@ function udpbr_resync(): void {
 				{$run_command} 2>\$UDPBRTEMP >/dev/null
 				ERRORMSG=\$(cat \${UDPBRTEMP})
 				if [ "\$ERRORMSG" != '' ]; then
-					/usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start instance')}: \${ERRORMSG}"
+					/usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start instance.')}: \${ERRORMSG}"
 				fi
 		
 		SSCRIPT;
@@ -267,7 +269,7 @@ function udpbr_resync(): void {
 	// Write the rc script
 	$start = <<<BSSCRIPT
 	ERRORMSG=''
-	    UDPBRTEMP=$(mktemp /tmp/udpbr_tmp.XXXXXX) || ERRORMSG="{$func_gettext('Could not create temporary file')}"
+	    UDPBRTEMP=$(mktemp /tmp/udpbr_tmp.XXXXXX) || ERRORMSG="{$func_gettext('Failed to create temporary file.')}"
 	    if [ "\$ERRORMSG" = '' ]; then
 
 	BSSCRIPT;
@@ -275,7 +277,7 @@ function udpbr_resync(): void {
 	$start .= <<<ESSCRIPT
 	    rm -f "\${UDPBRTEMP}"
 	    else
-	        /usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start service')} (\${ERRORMSG})"
+	        /usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start service.')} (\${ERRORMSG})"
 	    fi
 	ESSCRIPT;
 
@@ -291,7 +293,7 @@ function udpbr_resync(): void {
 		udpbroadcastrelay_plugin_carp();
 	} else {
 		// Start the service
-		udpbr_log(gettext('Starting service'), LOG_NOTICE);
+		udpbr_log(gettext('Starting service.'), LOG_NOTICE);
 		start_service($udpbr_global['name']);
 	}
 }
@@ -545,7 +547,7 @@ function udpbr_set_config(array $config): void {
 		config_del_path("{$udpbr_global['config_path']}/item");
 	}
 
-	udpbr_log(gettext('saved settings.'), LOG_INFO, true);
+	udpbr_log(gettext('Saved settings.'), LOG_INFO, true);
 }
 
 /**
@@ -561,10 +563,10 @@ function udpbr_set_instance_config(array $config, int $id = null): void {
 
 	if (isset($id) && config_get_path("{$udpbr_global['config_path']}/item/{$id}")) {
 		config_set_path("{$udpbr_global['config_path']}/item/{$id}", $config);
-		udpbr_log(gettext('saved instance settings.'), LOG_INFO, true);
+		udpbr_log(gettext('Saved instance settings.'), LOG_INFO, true);
 	} else {
 		config_set_path("{$udpbr_global['config_path']}/item/", $config);
-		udpbr_log(gettext('added new instance.'), LOG_INFO, true);
+		udpbr_log(gettext('Added new instance.'), LOG_INFO, true);
 	}
 }
 
@@ -586,7 +588,7 @@ function udpbr_del_instance_config(array $instance_ids): bool {
 	}
 
 	if ($deleted_count > 0) {
-		udpbr_log(gettext("deleted {$deleted_count} instance(s)."), LOG_INFO, true);
+		udpbr_log(gettext("Deleted {$deleted_count} instance(s)."), LOG_INFO, true);
 		return true;
 	}
 

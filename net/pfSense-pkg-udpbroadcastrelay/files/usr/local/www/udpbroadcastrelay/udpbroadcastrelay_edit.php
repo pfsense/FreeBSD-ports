@@ -40,7 +40,7 @@ if (isset($_GET['id']) && is_numericint($_GET['id'])) {
 }
 
 // Get form data
-if (is_array($_POST)) {
+if (is_array($_POST) && isset($_POST['save'])) {
 	$temp_item_config = $_POST;
 
 	// Interfaces are stored as CSVs
