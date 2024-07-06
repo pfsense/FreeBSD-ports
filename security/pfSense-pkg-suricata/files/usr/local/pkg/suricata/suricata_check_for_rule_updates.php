@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -442,7 +442,7 @@ $last_curl_error = "";
 $update_errors = false;
 
 /* Ensure our basic config array of interfaces exists to prevent PHP foreach() errors */
-init_config_arr(array('installedpackages', 'suricata', 'rule'));
+config_init_path('installedpackages/suricata/rule');
 
 /* Save current state (running/not running) for each enabled Suricatat interface */
 $active_interfaces = array();

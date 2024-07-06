@@ -61,7 +61,7 @@ if (!defined("SURICATA_BIN_VERSION")) {
 		define("SURICATA_BIN_VERSION", $suricataver);
 	else
 		// If we could not find a version, set a safe default
-		define("SURICATA_BIN_VERSION", "5.0.0");
+		define("SURICATA_BIN_VERSION", "7.0.6");
 }
 
 // Define the name of the pf table used for IP blocks

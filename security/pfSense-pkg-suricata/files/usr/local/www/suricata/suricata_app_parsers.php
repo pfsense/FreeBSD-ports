@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,11 +37,10 @@ if (is_null($id))
 	$id = 0;
 
 // Initialize Suricata interface and HTTP libhtp engine arrays if necessary
-init_config_arr( array( 'installedpackages' , 'suricata' , 'rule') );
-init_config_arr( array('installedpackages', 'suricata', 'rule', $id, 'libhtp_policy', 'item') );
+config_init_path("installedpackages/suricata/rule/{$id}/libhtp_policy/item");
 
 // Initialize required array variables as necessary
-init_config_arr( array('aliases', 'alias') );
+config_init_path('aliases/alias');
 $a_aliases = config_get_path('aliases/alias', []);
 
 $a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
