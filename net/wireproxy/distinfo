@@ -1,5 +1,5 @@
-TIMESTAMP = 1687255601
-SHA256 (go/net_wireproxy/wireproxy-v1.0.6/v1.0.6.mod) = 96535011fbb5b7c75434a50ec86f98bf23d1fddcb864cf020192d5201ff41f02
-SIZE (go/net_wireproxy/wireproxy-v1.0.6/v1.0.6.mod) = 770
-SHA256 (go/net_wireproxy/wireproxy-v1.0.6/v1.0.6.zip) = 15506126edc647bfabe68aae95cae56d62703d6fda637274d8a1c440b715c216
-SIZE (go/net_wireproxy/wireproxy-v1.0.6/v1.0.6.zip) = 21528
+TIMESTAMP = 1715018212
+SHA256 (go/net_wireproxy/wireproxy-v1.0.9/v1.0.9.mod) = 718c49ea2dd8a7099cd943f62dabe35dd91aa6466631dd58470410c796bcd417
+SIZE (go/net_wireproxy/wireproxy-v1.0.9/v1.0.9.mod) = 835
+SHA256 (go/net_wireproxy/wireproxy-v1.0.9/v1.0.9.zip) = f8539f502b387b841b57ba95df4af46b2795bd086432adba0d186103f4ab761a
+SIZE (go/net_wireproxy/wireproxy-v1.0.9/v1.0.9.zip) = 29368

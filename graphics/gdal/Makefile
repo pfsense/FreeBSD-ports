@@ -1,6 +1,5 @@
 PORTNAME=	gdal
-PORTVERSION=	3.8.2
-PORTREVISION=	1
+PORTVERSION=	3.9.0
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -111,7 +110,7 @@ HEADER_FILES=	alg/gdalwarpkernel_opencl.h \
 		port/cpl_vsil_curl_priv.h \
 		port/cpl_worker_thread_pool.h
 
-OPTIONS_DEFINE=	AEC ARMADILLO BRUNSLI CFITSIO CRYPTOPP CURL DEFLATE ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF KML LERC LIBXML2 LZ4 MYSQL NETCDF ODBC OPENJPEG PCRE PCRE2 PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
+OPTIONS_DEFINE=	AEC ARMADILLO BRUNSLI CFITSIO CRYPTOPP CURL DEFLATE ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF JXL KML LERC LIBXML2 LZ4 MYSQL NETCDF ODBC OPENJPEG PCRE2 PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
 OPTIONS_DEFAULT=AEC CURL DEFLATE EXPAT FREEXL GEOS LERC LIBXML2 LZ4 OPENJPEG PCRE2 PGSQL POPPLER WEBP ZSTD \
@@ -125,7 +124,6 @@ CRYPTOPP_DESC=	Cryptopp support
 DEFLATE_DESC=	Faster deflate support via libdeflate library
 EXR_DESC=	EXR support via OpenEXR library
 LERC_DESC=	LERC (Limited Error Raster Compression) support
-PCRE_DESC=	Regular expression support for SQLite
 PCRE2_DESC=	Regular expression support for SQLite
 RASTERLITE2_DESC=	RasterLite2 support
 TILEDB_DESC=	TileDB support
@@ -162,6 +160,8 @@ HDF5_CMAKE_BOOL=	GDAL_USE_HDF5
 HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5
 HEIF_CMAKE_BOOL=	GDAL_USE_HEIF
 HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
+JXL_CMAKE_BOOL=		GDAL_USE_JXL GDAL_USE_JXL_THREADS
+JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
 KML_CMAKE_BOOL=		GDAL_USE_LIBKML
 KML_LIB_DEPENDS=	libkmlbase.so:science/libkml \
 			liburiparser.so:net/uriparser
@@ -181,8 +181,6 @@ ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 OPENJPEG_BUILD_DEPENDS=	openjpeg>=2.1.0:graphics/openjpeg
 OPENJPEG_CMAKE_BOOL=	GDAL_USE_OPENJPEG
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
-PCRE_CMAKE_BOOL=	GDAL_USE_PCRE
-PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PCRE2_CMAKE_BOOL=	GDAL_USE_PCRE2
 PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 PGSQL_CMAKE_BOOL=	GDAL_USE_POSTGRESQL
@@ -208,8 +206,21 @@ XERCES_LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3
 ZSTD_CMAKE_BOOL=	GDAL_USE_ZSTD
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/alg/internal_libqhull \
+			--exclude ${DISTNAME}/frmts/gif/giflib \
+			--exclude ${DISTNAME}/frmts/gtiff/libgeotiff \
+			--exclude ${DISTNAME}/frmts/gtiff/libtiff \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg12 \
+			--exclude ${DISTNAME}/frmts/png/libpng \
+			--exclude ${DISTNAME}/frmts/zlib \
+			--exclude ${DISTNAME}/ogr/ogrsf_frmts/geojson/libjson \
+			--exclude ${DISTNAME}/third_party/LercLib \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/alg/internal_libqhull/
 	@${RM} -r ${WRKSRC}/frmts/gif/giflib/
 	@${RM} -r ${WRKSRC}/frmts/gtiff/libgeotiff/
@@ -220,6 +231,7 @@ post-patch:
 	@${RM} -r ${WRKSRC}/frmts/zlib/
 	@${RM} -r ${WRKSRC}/ogr/ogrsf_frmts/geojson/libjson/
 	@${RM} -r ${WRKSRC}/third_party/LercLib/
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d

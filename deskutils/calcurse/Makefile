@@ -1,5 +1,6 @@
 PORTNAME=	calcurse
 DISTVERSION=	4.8.1
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	https://calcurse.org/files/ \
 		https://fossies.org/linux/privat/
@@ -39,8 +40,5 @@ NLS_CONFIGURE_ENABLE=	nls
 post-patch:
 	@${REINPLACE_CMD} -e 's|^docdir = .*|docdir = ${DOCSDIR}|' ${WRKSRC}/doc/Makefile.in
 	@${REINPLACE_CMD} -e 's|-R$$found_dir||' ${WRKSRC}/configure
-
-post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1/${PORTNAME}.1
 
 .include <bsd.port.mk>

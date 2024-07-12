@@ -1,6 +1,6 @@
---- components/gwp_asan/client/gwp_asan.cc.orig	2023-11-04 07:08:51 UTC
+--- components/gwp_asan/client/gwp_asan.cc.orig	2024-06-22 08:49:42 UTC
 +++ components/gwp_asan/client/gwp_asan.cc
-@@ -66,7 +66,7 @@ constexpr bool kCpuIs64Bit =
+@@ -75,7 +75,7 @@ namespace {
  // ProcessSamplingBoost is the multiplier to increase the
  // ProcessSamplingProbability in scenarios where we want to perform additional
  // testing (e.g., on canary/dev builds).

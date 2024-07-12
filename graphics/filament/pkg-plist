@@ -9,6 +9,7 @@ bin/filamesh
 bin/glslminifier
 %%SAMPLES%%bin/gltf_viewer
 bin/matc
+bin/matedit
 %%SAMPLES%%bin/material_sandbox
 bin/matinfo
 bin/mipgen
@@ -157,8 +158,8 @@ include/utils/PrivateImplementation-impl.h
 include/utils/PrivateImplementation.h
 include/utils/SingleInstanceComponentManager.h
 include/utils/Slice.h
-include/utils/SpinLock.h
 include/utils/StructureOfArrays.h
+include/utils/Systrace.h
 include/utils/algorithm.h
 include/utils/bitset.h
 include/utils/compiler.h
@@ -167,6 +168,7 @@ include/utils/debug.h
 include/utils/generic/Mutex.h
 include/utils/memalign.h
 include/utils/ostream.h
+include/utils/sstream.h
 include/utils/unwindows.h
 include/viewer/AutomationEngine.h
 include/viewer/AutomationSpec.h

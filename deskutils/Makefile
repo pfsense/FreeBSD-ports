@@ -9,7 +9,6 @@
     SUBDIR += anydesk
     SUBDIR += appwrapper
     SUBDIR += arttime
-    SUBDIR += aspostit
     SUBDIR += ausweisapp2
     SUBDIR += autocutsel
     SUBDIR += baobab
@@ -106,7 +105,6 @@
     SUBDIR += gpicker
     SUBDIR += grantlee-editor
     SUBDIR += grantleetheme
-    SUBDIR += griffith
     SUBDIR += growl-for-linux
     SUBDIR += gsimplecal
     SUBDIR += gtimer
@@ -190,6 +188,7 @@
     SUBDIR += nanonote
     SUBDIR += nautilus-sendto
     SUBDIR += nextcloudclient
+    SUBDIR += normcap
     SUBDIR += note
     SUBDIR += notekit
     SUBDIR += notes
@@ -209,6 +208,7 @@
     SUBDIR += pim-data-exporter
     SUBDIR += pim-sieve-editor
     SUBDIR += pinot
+    SUBDIR += pipecolor
     SUBDIR += plan
     SUBDIR += plans
     SUBDIR += plasma5-milou
@@ -225,9 +225,11 @@
     SUBDIR += puush
     SUBDIR += py-autokey
     SUBDIR += py-bugwarrior
+    SUBDIR += py-i3-gnome-pomodoro
     SUBDIR += py-khal
     SUBDIR += py-khard
     SUBDIR += py-paperless
+    SUBDIR += py-paperless-ngx
     SUBDIR += py-py3status
     SUBDIR += py-pystash
     SUBDIR += py-send2trash
@@ -236,16 +238,18 @@
     SUBDIR += py-todoman
     SUBDIR += py-vdirsyncer
     SUBDIR += py-vobject
+    SUBDIR += py-vorta
     SUBDIR += qlipper
     SUBDIR += qmediamanager
     SUBDIR += qownnotes
     SUBDIR += qtfeedback
     SUBDIR += recoll
+    SUBDIR += rednotebook
     SUBDIR += remind
     SUBDIR += rolo
-    SUBDIR += rubrica
     SUBDIR += rubygem-shellplay
     SUBDIR += rubygem-taskjuggler
+    SUBDIR += rwpspread
     SUBDIR += semantik
     SUBDIR += showdown
     SUBDIR += sigi
@@ -290,6 +294,7 @@
     SUBDIR += xcbautolock
     SUBDIR += xchm
     SUBDIR += xdg-desktop-portal
+    SUBDIR += xdg-desktop-portal-lxqt
     SUBDIR += xfce4-generic-slider
     SUBDIR += xfce4-notes-plugin
     SUBDIR += xfce4-notifyd

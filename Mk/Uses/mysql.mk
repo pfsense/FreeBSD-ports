@@ -19,6 +19,9 @@
 # MYSQL_VER
 #		Detected MySQL version.
 #
+# DBD_MYSQL
+#		Set compatible p5-DBD-mysql version
+#
 # MAINTAINER:	ports@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_MYSQL_MK)
@@ -58,12 +61,16 @@ DEFAULT_MYSQL_VER?=	${MYSQL_DEFAULT:S/.//}
 # Mk/bsd.default-versions.mk in sync.
 MYSQL80_LIBVER=		21
 MYSQL81_LIBVER=		22
-.  for v in 5 6 11
-MYSQL10${v}m_LIBVER=	3
+MYSQL84_LIBVER=		24
+
+.  for v in 105 106 1011 114
+MYSQL${v}m_LIBVER=	3
 .  endfor
 
 # Setting/finding MySQL version we want.
-.  if exists(${LOCALBASE}/bin/mysql)
+.  if exists(${LOCALBASE}/bin/mariadb)
+_MARIADB!=      ${LOCALBASE}/bin/mariadb --version | ${GREP} MariaDB | wc -l
+.  elif exists(${LOCALBASE}/bin/mysql)
 _MYSQL!=	${LOCALBASE}/bin/mysql_config --version | ${SED} -e 's/\([0-9]\{1,2\}\)\.\([0-9]*\).*/\1\2/'
 _MARIADB!=	${LOCALBASE}/bin/mysql --version | ${GREP} MariaDB | wc -l
 
@@ -141,5 +148,11 @@ LIB_DEPENDS+=	${_MYSQL_SHLIB}.so.${MYSQL${MYSQL_VER}_LIBVER}:${_MYSQL_CLIENT}
 .  else
 IGNORE=		cannot install: unknown MySQL version: ${MYSQL_VER}
 .  endif # Check for correct libs
+
+.  if ${MYSQL_FLAVOUR} == mariadb
+DBD_MYSQL=	p5-DBD-mysql4>=0:databases/p5-DBD-mysql4
+.  else
+DBD_MYSQL=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
+.  endif
 
 .endif

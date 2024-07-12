@@ -62,7 +62,7 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	21
+JDK_PATCH_VERSION=	23
 JDK_BUILD_NUMBER=	9
 BSD_JDK_VERSION=	1
 
@@ -191,6 +191,12 @@ post-patch:
 		-e 's|%%ICONV_LDFLAGS%%|${ICONV_LDFLAGS}|' \
 		-e 's|%%ICONV_LIBS%%|${ICONV_LIBS}|' \
 		${WRKSRC}/make/autoconf/libraries.m4
+
+post-build:
+.if defined(OPENJDK_SYMLINK_CACERTS)
+	@${RM} ${JDK_IMAGEDIR}/lib/security/cacerts
+	@${LN} -sf ${OPENJDK_SYMLINK_CACERTS} ${JDK_IMAGEDIR}/lib/security/cacerts
+.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${INSTALLDIR}

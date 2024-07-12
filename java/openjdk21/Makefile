@@ -62,8 +62,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	21
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	1
-JDK_BUILD_NUMBER=	12
+JDK_PATCH_VERSION=	3
+JDK_BUILD_NUMBER=	9
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -181,6 +181,12 @@ post-patch:
 		-e 's|%%ICONV_LDFLAGS%%|${ICONV_LDFLAGS}|' \
 		-e 's|%%ICONV_LIBS%%|${ICONV_LIBS}|' \
 		${WRKSRC}/make/autoconf/libraries.m4
+
+post-build:
+.if defined(OPENJDK_SYMLINK_CACERTS)
+	@${RM} ${JDK_IMAGEDIR}/lib/security/cacerts
+	@${LN} -sf ${OPENJDK_SYMLINK_CACERTS} ${JDK_IMAGEDIR}/lib/security/cacerts
+.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${INSTALLDIR}

@@ -1,5 +1,6 @@
 PORTNAME=	ffmpeg
 PORTVERSION=	6.1.1
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -47,7 +48,7 @@ OPTIONS_DEFINE_i386=	MFX
 
 OPTIONS_DEFAULT=	AOM ASM ASS DAV1D DRM FONTCONFIG FREETYPE FREI0R GMP \
 			GNUTLS HARFBUZZ ICONV JXL LAME LCMS2 LIBPLACEBO LIBXML2 NETWORK \
-			OPTIMIZED_CFLAGS OPUS RTCPU SVTAV1 V4L VAAPI VDPAU VMAF \
+			OPTIMIZED_CFLAGS OPUS RTCPU SHADERC SVTAV1 V4L VAAPI VDPAU VMAF \
 			VORBIS VPX VULKAN WEBP X264 X265 XCB
 OPTIONS_DEFAULT_amd64=	NVENC
 OPTIONS_DEFAULT_i386=	NVENC
@@ -86,7 +87,7 @@ OPTIONS_EXCLUDE+=	OPENVINO
 .endif
 
 OPTIONS_RADIO=	RTMP SSL
-OPTIONS_RADIO_RTMP=	GCRYPT GMP LIBRTMP
+OPTIONS_RADIO_RTMP=	GCRYPT GMP
 OPTIONS_RADIO_SSL=	GNUTLS MBEDTLS OPENSSL
 OPTIONS_GROUP=	LICENSE
 OPTIONS_GROUP_LICENSE=	GPL3 NONFREE
@@ -134,7 +135,6 @@ SVTAV1_DESC=	AV1 encoding via SVT-AV1
 SVTHEVC_DESC=	HEVC encoding via SVT-HEVC
 SVTVP9_DESC=	VP9 encoding via SVT-VP9
 LIBPLACEBO_DESC=GPU filters from libplacebo
-LIBRTMP_DESC=	${RTMP_DESC} via librtmp
 TENSORFLOW_DESC=TensorFlow as a DNN module backend for DNN based filters like sr
 TESSERACT_DESC=	Optical Character Recognition via Tesseract
 THEORA_DESC=	Encoding support for theora via libtheora
@@ -266,6 +266,7 @@ GLSLANG_BUILD_DEPENDS=	glslang>0:graphics/glslang \
 			spirv-tools>0:graphics/spirv-tools
 GLSLANG_CONFIGURE_ENABLE=	libglslang
 GLSLANG_LDFLAGS=	-lm
+GLSLANG_IMPLIES=	VULKAN
 
 # gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -455,10 +456,6 @@ RUBBERBAND_CONFIGURE_ENABLE=	librubberband
 # rtcpu
 RTCPU_CONFIGURE_ENABLE=	runtime-cpudetect
 
-# rtmp
-LIBRTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
-LIBRTMP_CONFIGURE_ENABLE=	librtmp
-
 # sdl
 SDL_USES=		sdl
 SDL_USE=		SDL=sdl2
@@ -467,6 +464,7 @@ SDL_CONFIGURE_ENABLE=	sdl2
 # shaderc
 SHADERC_LIB_DEPENDS=	libshaderc_shared.so:graphics/shaderc
 SHADERC_CONFIGURE_ENABLE=	libshaderc
+SHADERC_IMPLIES=	VULKAN
 SHADERC_PREVENTS=	GLSLANG
 
 # smbclient
@@ -584,7 +582,6 @@ VPX_CONFIGURE_ENABLE=	libvpx
 VULKAN_BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CONFIGURE_ENABLE=	vulkan
-VULKAN_IMPLIES=		${"${PORT_OPTIONS:MGLSLANG}":?GLSLANG:SHADERC}
 
 # webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
@@ -653,7 +650,7 @@ LDFLAGS_armv7=	-Wl,-z,notext
 LDFLAGS_i386=	-Wl,-z,notext
 
 CONFIGURE_ARGS+=--prefix="${PREFIX}" \
-		--mandir="${PREFIX}/man" \
+		--mandir="${PREFIX}/share/man" \
 		--datadir="${DATADIR}" \
 		--docdir="${DOCSDIR}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \

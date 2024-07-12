@@ -1,6 +1,6 @@
 PORTNAME=	CoinUtils
 DISTVERSIONPREFIX=	releases/
-DISTVERSION=	2.11.10
+DISTVERSION=	2.11.11
 PORTREVISION=	1
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
@@ -32,6 +32,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	coin-or
 
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	test
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/share/coin

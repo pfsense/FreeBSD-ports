@@ -7,6 +7,7 @@
     SUBDIR += blt
     SUBDIR += bwidget
     SUBDIR += color-widgets-qt5
+    SUBDIR += como
     SUBDIR += copperspice
     SUBDIR += ctk
     SUBDIR += fltk
@@ -23,6 +24,7 @@
     SUBDIR += gstreamer1-plugins-gtk
     SUBDIR += gstreamer1-plugins-pango
     SUBDIR += gtk-layer-shell
+    SUBDIR += gtk-session-lock
     SUBDIR += gtk-sharp-beans
     SUBDIR += gtk-sharp20
     SUBDIR += gtk-sharp30
@@ -95,6 +97,9 @@
     SUBDIR += linux-c7-pango
     SUBDIR += linux-c7-qt-x11
     SUBDIR += linux-c7-tk85
+    SUBDIR += linux-rl9-gtk2
+    SUBDIR += linux-rl9-gtk3
+    SUBDIR += linux-rl9-pango
     SUBDIR += movingmotif
     SUBDIR += mowitz
     SUBDIR += mygui
@@ -105,6 +110,7 @@
     SUBDIR += neXtaw
     SUBDIR += ntk
     SUBDIR += nuklear
+    SUBDIR += ocaml-graphics
     SUBDIR += ocaml-lablgtk2
     SUBDIR += ocaml-lablgtk3
     SUBDIR += ocaml-labltk
@@ -113,18 +119,14 @@
     SUBDIR += osm-gps-map
     SUBDIR += otk
     SUBDIR += p5-Alien-wxWidgets
-    SUBDIR += p5-Glade2
     SUBDIR += p5-Gtk2
     SUBDIR += p5-Gtk2-Chmod
-    SUBDIR += p5-Gtk2-Ex-Dialogs
     SUBDIR += p5-Gtk2-Ex-FormFactory
     SUBDIR += p5-Gtk2-Ex-PodViewer
     SUBDIR += p5-Gtk2-Ex-Simple-List
     SUBDIR += p5-Gtk2-Ex-Utils
-    SUBDIR += p5-Gtk2-GladeXML
     SUBDIR += p5-Gtk2-ImageView
     SUBDIR += p5-Gtk2-PathButtonBar
-    SUBDIR += p5-Gtk2-TrayIcon
     SUBDIR += p5-Gtk3
     SUBDIR += p5-Gtk3-ImageView
     SUBDIR += p5-Gtk3-SimpleList
@@ -141,7 +143,6 @@
     SUBDIR += p5-Tk-Date
     SUBDIR += p5-Tk-DynaTabFrame
     SUBDIR += p5-Tk-Enscript
-    SUBDIR += p5-Tk-FileDialog
     SUBDIR += p5-Tk-FontDialog
     SUBDIR += p5-Tk-GBARR
     SUBDIR += p5-Tk-Getopt
@@ -176,6 +177,7 @@
     SUBDIR += py-tktreectrl
     SUBDIR += py-wxPython4
     SUBDIR += pythonqt
+    SUBDIR += qhotkey
     SUBDIR += qml-box2d
     SUBDIR += qt5-charts
     SUBDIR += qt5-datavis3d
@@ -201,6 +203,7 @@
     SUBDIR += qt6-virtualkeyboard
     SUBDIR += qt6pas
     SUBDIR += qtermwidget
+    SUBDIR += qtermwidget-qt5
     SUBDIR += qwt5-qt5
     SUBDIR += qwt6
     SUBDIR += redkite
@@ -218,7 +221,9 @@
     SUBDIR += rubygem-uh
     SUBDIR += rubygem-vte3
     SUBDIR += rubygem-vte4
+    SUBDIR += scenefx
     SUBDIR += scintilla
+    SUBDIR += sdl2_pango
     SUBDIR += sdl_pango
     SUBDIR += shared-desktop-ontologies
     SUBDIR += skinlf
@@ -228,7 +233,6 @@
     SUBDIR += termit
     SUBDIR += tix
     SUBDIR += tk-wrapper
-    SUBDIR += tk85
     SUBDIR += tk86
     SUBDIR += tk87
     SUBDIR += tkdnd
@@ -241,6 +245,8 @@
     SUBDIR += vte
     SUBDIR += vte3
     SUBDIR += wlroots
+    SUBDIR += wlroots-devel
+    SUBDIR += wlroots-hyprland
     SUBDIR += wlroots015
     SUBDIR += wlroots016
     SUBDIR += wmapp

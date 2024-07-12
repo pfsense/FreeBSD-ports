@@ -1,5 +1,6 @@
 PORTNAME=	kwin
 DISTVERSION=	${KDE_PLASMA_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11-wm kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -22,16 +23,13 @@ LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libxcb-image.so:x11/xcb-util-image \
 		libxcb-keysyms.so:x11/xcb-util-keysyms \
 		libxkbcommon.so:x11/libxkbcommon \
-		libxcvt.so:x11/libxcvt \
-		libpipewire-0.3.so:multimedia/pipewire
+		libxcvt.so:x11/libxcvt
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
-		xwayland-devel>0:x11-servers/xwayland-devel \
+		Xwayland:x11-servers/xwayland \
 		wayland-protocols>0:graphics/wayland-protocols \
 		hwdata>0:misc/hwdata
-RUN_DEPENDS=	xwayland-devel>0:x11-servers/xwayland-devel \
+RUN_DEPENDS=	Xwayland:x11-servers/xwayland \
 		hwdata>0:misc/hwdata
-
-CONFLICTS_INSTALL=	kwinft # bin/kwin_wayland
 
 USES=		cmake compiler:c++11-lib gettext gl gnome kde:5 pkgconfig qt:5 \
 		shebangfix tar:xz xorg \
@@ -54,6 +52,12 @@ USE_XORG=	ice sm x11 xcb xext xi
 SHEBANG_FILES=	kconf_update/*.py \
 		kconf_update/*.pl \
 		src/effects/strip-effect-metadata.py
+
+OPTIONS_DEFINE=		PIPEWIRE
+OPTIONS_DEFAULT=	PIPEWIRE
+PIPEWIRE_DESC=		Required for Wayland screencasting
+PIPEWIRE_LIB_DEPENDS=	libpipewire-0.3.so:multimedia/pipewire
+PIPEWIRE_CMAKE_BOOL=	KWIN_BUILD_PIPEWIRE
 
 # A (hopefully) temporary workaround for
 # https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/2026

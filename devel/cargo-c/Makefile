@@ -1,6 +1,6 @@
 PORTNAME=	cargo-c
-DISTVERSION=	0.9.29
-DISTVERSIONSUFFIX=	+cargo-0.76.0
+DISTVERSION=	0.10.1
+DISTVERSIONSUFFIX=	+cargo-0.80.0
 CATEGORIES=	devel
 MASTER_SITES=	CRATESIO
 # XXX Teach USES=cargo to have proper default
@@ -27,7 +27,7 @@ PLIST_FILES=	bin/cargo-capi \
 .include <bsd.port.pre.mk>
 
 # prevent address space exhaustion on armv6/armv7
-.if ${ARCH:Marmv?}
+.if ${ARCH:Marmv?} || ${ARCH} == powerpc
 LTO_UNSAFE=	yes
 .endif
 

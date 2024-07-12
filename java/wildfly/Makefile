@@ -1,7 +1,7 @@
 PORTNAME=	wildfly
-PORTVERSION=	18.0.1
+DISTVERSION=	31.0.1
 CATEGORIES=	java www
-MASTER_SITES=	https://download.jboss.org/wildfly/${WILDFLY_VERSION}/
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${WILDFLY_VERSION}/
 DISTNAME=	wildfly-${WILDFLY_VERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://wildfly.org/
 
 LICENSE=	GPLv2
 
-USE_JAVA=	8+
+USE_JAVA=	11+
 USE_RC_SUBR=	wildfly
 
 NO_BUILD=	yes
@@ -38,8 +38,8 @@ CONFIG_FILES=	appclient/configuration/appclient.xml \
 		domain/configuration/application-users.properties \
 		domain/configuration/default-server-logging.properties \
 		domain/configuration/domain.xml \
-		domain/configuration/host-master.xml \
-		domain/configuration/host-slave.xml \
+		domain/configuration/host-primary.xml \
+		domain/configuration/host-secondary.xml \
 		domain/configuration/host.xml \
 		domain/configuration/logging.properties \
 		domain/configuration/mgmt-groups.properties \

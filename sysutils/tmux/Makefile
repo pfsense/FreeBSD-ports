@@ -1,6 +1,6 @@
 PORTNAME=	tmux
 PORTVERSION=	3.3a
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/tmux/tmux/releases/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -16,7 +16,7 @@ LICENSE_FILE_GPLv2=	${WRKSRC_bash}/COPYING
 LICENSE_DISTFILES_ISCL=	${DISTNAME}${EXTRACT_SUFX}
 LICENSE_DISTFILES_GPLv2=	${DISTFILE_bash}
 
-USES=		cpe ncurses pkgconfig
+USES=		cpe ncurses:port pkgconfig
 
 CPE_VENDOR=	tmux_project
 
@@ -24,6 +24,7 @@ USE_GITHUB=	nodefault
 GH_TUPLE=	imomaliev:tmux-bash-completion:f5d5323:bash
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-utempter \
 		--sysconfdir=${PREFIX}/etc
 
@@ -31,7 +32,7 @@ CONFLICTS_INSTALL=	tmux23
 
 PLIST_FILES=	bin/tmux \
 		etc/bash_completion.d/tmux \
-		man/man1/tmux.1.gz
+		share/man/man1/tmux.1.gz
 
 PORTDOCS=	CHANGES README
 PORTEXAMPLES=	*

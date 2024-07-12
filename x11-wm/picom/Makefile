@@ -1,6 +1,6 @@
 PORTNAME=	picom
 DISTVERSIONPREFIX=	v
-DISTVERSION=	10.2
+DISTVERSION=	11.2
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -37,15 +37,14 @@ CONFIG_DESC=		Configuration file parsing support
 CONFIG_LIB_DEPENDS=	libconfig.so:devel/libconfig
 CONFIG_MESON_TRUE=	config_file
 
-PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 PCRE_MESON_TRUE=	regex
 
 DRM_DESC=		DRM VSync fallback (deprecated)
 DRM_LIB_DEPENDS=	libdrm.so:graphics/libdrm
 DRM_MESON_TRUE=		vsync_drm
 
-OPENGL_USES=		gl
-OPENGL_USE=		GL=egl,gl
+OPENGL_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
 OPENGL_MESON_TRUE=	opengl
 
 DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
@@ -53,8 +52,8 @@ DBUS_MESON_TRUE=	dbus
 
 DOCS_BUILD_DEPENDS=	a2x:textproc/asciidoc
 DOCS_MESON_TRUE=	with_docs
-DOCS_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
-			man/man1/${PORTNAME}-trans.1.gz
+DOCS_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
+			share/man/man1/${PORTNAME}-trans.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}&,' \

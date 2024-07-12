@@ -48,6 +48,7 @@
     SUBDIR += claws-mail-bsfilter
     SUBDIR += claws-mail-clamd
     SUBDIR += claws-mail-dillo
+    SUBDIR += claws-mail-fancy
     SUBDIR += claws-mail-fetchinfo
     SUBDIR += claws-mail-gdata
     SUBDIR += claws-mail-keyword_warner
@@ -155,6 +156,7 @@
     SUBDIR += hashcash
     SUBDIR += hbiff
     SUBDIR += heirloom-mailx
+    SUBDIR += hydroxide
     SUBDIR += ifile
     SUBDIR += im
     SUBDIR += imapdedup
@@ -185,6 +187,7 @@
     SUBDIR += libsrs2
     SUBDIR += libsrs_alt
     SUBDIR += libvmime
+    SUBDIR += linux-r7-organizer-pro
     SUBDIR += listadmin
     SUBDIR += lmtp2nntp
     SUBDIR += lookout
@@ -198,6 +201,7 @@
     SUBDIR += mailfront
     SUBDIR += mailgraph
     SUBDIR += mailhog
+    SUBDIR += mailio
     SUBDIR += mailman
     SUBDIR += mailman-exim4
     SUBDIR += mailman-postfix
@@ -244,6 +248,7 @@
     SUBDIR += mls
     SUBDIR += mmh
     SUBDIR += mmr
+    SUBDIR += mox
     SUBDIR += mpop
     SUBDIR += msglint
     SUBDIR += msmtp
@@ -267,6 +272,7 @@
     SUBDIR += nullmailer
     SUBDIR += openarc
     SUBDIR += opendkim
+    SUBDIR += opendkim-devel
     SUBDIR += opendmarc
     SUBDIR += opensmtpd
     SUBDIR += opensmtpd-extras
@@ -350,6 +356,7 @@
     SUBDIR += p5-Mail-Audit
     SUBDIR += p5-Mail-Audit-Attach
     SUBDIR += p5-Mail-AuthenticationResults
+    SUBDIR += p5-Mail-BIMI
     SUBDIR += p5-Mail-Box
     SUBDIR += p5-Mail-Box-IMAP4
     SUBDIR += p5-Mail-Box-IMAP4-SSL
@@ -359,6 +366,7 @@
     SUBDIR += p5-Mail-CheckUser
     SUBDIR += p5-Mail-DKIM
     SUBDIR += p5-Mail-DMARC
+    SUBDIR += p5-Mail-DataFeed-Abusix
     SUBDIR += p5-Mail-DeliveryStatus-BounceParser
     SUBDIR += p5-Mail-DomainKeys
     SUBDIR += p5-Mail-Ezmlm
@@ -375,6 +383,7 @@
     SUBDIR += p5-Mail-Mbox-MessageParser
     SUBDIR += p5-Mail-MboxParser
     SUBDIR += p5-Mail-Message
+    SUBDIR += p5-Mail-Milter-Authentication
     SUBDIR += p5-Mail-OpenDKIM
     SUBDIR += p5-Mail-OpenRelay-Simple
     SUBDIR += p5-Mail-POP3Client
@@ -505,6 +514,7 @@
     SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
+    SUBDIR += py-imap-tools
     SUBDIR += py-imapclient
     SUBDIR += py-imaplib2
     SUBDIR += py-mail-parser
@@ -595,6 +605,7 @@
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer
     SUBDIR += rubygem-exception_notification
+    SUBDIR += rubygem-extended_email_reply_parser
     SUBDIR += rubygem-gitlab-mail_room
     SUBDIR += rubygem-mail
     SUBDIR += rubygem-mail_room
@@ -612,6 +623,7 @@
     SUBDIR += rubygem-premailer-rails-rails60
     SUBDIR += rubygem-premailer-rails-rails61
     SUBDIR += rubygem-premailer-rails-rails70
+    SUBDIR += rubygem-premailer-rails-rails71
     SUBDIR += rubygem-premailer-rails110-rails70
     SUBDIR += rubygem-rmail
     SUBDIR += rubygem-roadie
@@ -621,6 +633,7 @@
     SUBDIR += rubygem-roadie3
     SUBDIR += rubygem-ruby-qmail
     SUBDIR += rubygem-valid_email
+    SUBDIR += rubygem-valid_email02
     SUBDIR += rubygem-vmail
     SUBDIR += s-nail
     SUBDIR += sa-stats

@@ -1,8 +1,8 @@
 PORTNAME=	wine
-DISTVERSION=	9.0-rc4
+DISTVERSION=	9.10
 PORTEPOCH=	1
 CATEGORIES=	emulators
-MASTER_SITES=	https://dl.winehq.org/wine/source/9.0/
+MASTER_SITES=	https://dl.winehq.org/wine/source/9.x/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -123,10 +123,9 @@ CONFIGURE_ARGS+=	--without-gstreamer
 PLIST_SUB+=		GSTREAMER="@comment "
 .endif
 
-.if (${LLVM_DEFAULT} == 10 || ${LLVM_DEFAULT} == 11)
-_LLVM_VERSION=	15
-.else
-_LLVM_VERSION=	${LLVM_DEFAULT}
+# Only devel/llvm17 and later come with necessary include files - PR274542
+.if ${LLVM_DEFAULT} < 17
+_LLVM_VERSION=	17
 .endif
 
 .if ${ARCH} == amd64
@@ -153,7 +152,7 @@ PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
 .endif
 
 pre-build:
-	cd ${WRKSRC} && ${MAKE_CMD} depend
+	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_CMD} depend
 
 post-install:
 .if ${ARCH} == i386

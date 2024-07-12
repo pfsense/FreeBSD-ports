@@ -1,6 +1,5 @@
 PORTNAME=	asunder
-PORTVERSION=	2.9.6
-PORTREVISION=	3
+PORTVERSION=	3.0.1
 CATEGORIES=	audio
 MASTER_SITES=	http://littlesvr.ca/asunder/releases/
 
@@ -10,6 +9,9 @@ WWW=		http://littlesvr.ca/asunder/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Depends on deprecated library libcddb, consider using audio/cyanrip instead
+EXPIRATION_DATE=2024-06-30
 
 LIB_DEPENDS=	libcddb.so:audio/libcddb \
 		libfontconfig.so:x11-fonts/fontconfig \

@@ -1,7 +1,7 @@
 PORTNAME=	xastir
 DISTVERSIONPREFIX=	Release-
 DISTVERSION=	2.2.0
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	carl@stagecraft.cx
@@ -32,6 +32,7 @@ USES=		autoreconf gmake gnome jpeg motif shebangfix xorg
 USE_XORG=	ice sm x11 xext xt
 USE_GNOME+=	libxml2
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 SHEBANG_FILES=	scripts/gpx2shape
 SHEBANG_REGEX=	./scripts/.*\.(sh|pl|py)
@@ -42,7 +43,9 @@ GH_PROJECT=	Xastir
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=		BDB CURL DAVIS ERRORPOP FESTIVAL GEOTIFF GPSMAN
+CONFIGURE_ARGS=	--without-map-cache
+
+OPTIONS_DEFINE=		CURL DAVIS ERRORPOP FESTIVAL GEOTIFF GPSMAN
 OPTIONS_RADIO=		MGG
 OPTIONS_RADIO_MGG=	GMAGICK IMAGICK
 
@@ -52,12 +55,11 @@ GEOTIFF_DESC=	Include GeoTIFF Support
 GPSMAN_DESC=	Include GPSMAN Support
 FESTIVAL_DESC=	Include Festival Voice Synthesis Support
 ERRORPOP_DESC=	Send error popups to stderr
-BDB_DESC=	Tiger Map Caching using Berkeley DB
 MGG_DESC=	Image library for raster map processing
 IMAGICK_DESC=	ImageMagick (Version 6)
 GMAGICK_DESC=	GraphicsMagick (Needs GCC to compile)
 
-OPTIONS_DEFAULT=	BDB CURL GMAGICK
+OPTIONS_DEFAULT=	CURL GMAGICK
 
 DAVIS_CONFIGURE_ON=	--enable-davis
 
@@ -82,9 +84,5 @@ FESTIVAL_CONFIGURE_WITH=	festival
 #RTREE_CONFIGURE_WITH=	rtree
 
 ERRORPOP_CONFIGURE_WITH=	errorpopups
-
-BDB_USES=		bdb
-BDB_CONFIGURE_ON=	--with-bdb-incdir=${BDB_INCLUDE_DIR} \
-			--with-bdb-libdir=${BDB_LIB_DIR}
 
 .include <bsd.port.mk>

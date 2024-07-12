@@ -1,6 +1,6 @@
 bin/nextcloud
 bin/nextcloudcmd
-@sample etc/Nextcloud/sync-exclude.lst.sample etc/Nextcloud/sync-exclude.lst
+@sample etc/Nextcloud/sync-exclude.lst.sample
 include/nextcloudsync/creds/abstractcredentials.h
 include/nextcloudsync/creds/httpcredentials.h
 include/nextcloudsync/mirall/account.h
@@ -13,15 +13,10 @@ include/nextcloudsync/mirall/syncresult.h
 lib/libnextcloud_csync.so
 lib/libnextcloud_csync.so.0
 lib/libnextcloud_csync.so.%%VERSION%%
-%%KDE%%lib/libnextclouddolphinpluginhelper.so
 lib/libnextcloudsync.so
 lib/libnextcloudsync.so.0
 lib/libnextcloudsync.so.%%VERSION%%
 lib/nextcloudsync_vfs_suffix.so
-%%DOCS%%man/man1/nextcloud.1.gz
-%%DOCS%%man/man1/nextcloudcmd.1.gz
-%%KDE%%%%QT_PLUGINDIR%%/kf5/kfileitemaction/nextclouddolphinactionplugin.so
-%%KDE%%%%QT_PLUGINDIR%%/kf5/overlayicon/nextclouddolphinoverlayplugin.so
 share/applications/com.nextcloud.desktopclient.nextcloud.desktop
 %%GNOME%%share/caja-python/extensions/syncstate-Nextcloud.py
 share/icons/hicolor/1024x1024/apps/Nextcloud.png
@@ -89,6 +84,8 @@ share/icons/hicolor/72x72/apps/Nextcloud_sync.png
 share/icons/hicolor/72x72/apps/Nextcloud_sync_shared.png
 share/icons/hicolor/72x72/apps/Nextcloud_warn.png
 share/icons/hicolor/72x72/apps/Nextcloud_warn_shared.png
+%%DOCS%%share/man/man1/nextcloud.1.gz
+%%DOCS%%share/man/man1/nextcloudcmd.1.gz
 share/mime/packages/nextcloud.xml
 %%GNOME%%share/nautilus-python/extensions/syncstate-Nextcloud.py
 %%GNOME%%share/nemo-python/extensions/syncstate-Nextcloud.py

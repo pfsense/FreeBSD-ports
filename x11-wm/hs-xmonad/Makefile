@@ -1,5 +1,5 @@
 PORTNAME=	xmonad
-PORTVERSION=	0.17.1
+PORTVERSION=	0.18.0
 CATEGORIES=	x11-wm haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -17,14 +17,13 @@ USE_XORG=	x11 xext xinerama xrandr xscrnsaver
 
 USE_CABAL=	X11-1.10.3 \
 		data-default-class-0.1.2.0 \
-		hsc2hs-0.68.9 \
-		setlocale-1.0.0.10_2
-CABAL_REVISION=	2
+		hsc2hs-0.68.10_2 \
+		setlocale-1.0.0.10_4
 
 OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/man/xmonad.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/man/xmonad.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

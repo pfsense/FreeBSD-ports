@@ -34,16 +34,16 @@ require_once('mailreport/mail_report.inc');
 $reportid = $_REQUEST['reportid'];
 $id = $_REQUEST['id'];
 
-init_config_arr(array('mailreports', 'schedule'));
-$a_mailreports = &$config['mailreports']['schedule'];
+config_init_path('mailreports/schedule');
+$a_mailreports = config_get_path("mailreports/schedule/{$reportid}");
 
-if (!isset($reportid) || !isset($a_mailreports[$reportid])) {
+if (!isset($reportid) || !isset($a_mailreports)) {
 	header("Location: status_mail_report.php");
 	return;
 }
 
-init_config_arr(array('mailreports', 'schedule', $reportid, 'cmd', 'row'));
-$a_cmds = $a_mailreports[$reportid]['cmd']['row'];
+config_init_path("mailreports/schedule/{$reportid}/cmd/row");
+$a_cmds = $a_mailreports['cmd']['row'];
 
 if (isset($id) && $a_cmds[$id]) {
 	$pconfig = $a_cmds[$id];
@@ -65,7 +65,7 @@ if ($_POST) {
 	else
 		$a_cmds[] = $pconfig;
 
-	$a_mailreports[$reportid]['cmd']['row'] = $a_cmds;
+	config_set_path("mailreports/schedule/{$reportid}/cmd/row", $a_cmds);
 
 	write_config("mailreport: Command settings saved");
 	header("Location: status_mail_report_edit.php?id={$reportid}");

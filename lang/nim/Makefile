@@ -1,5 +1,5 @@
 PORTNAME=	nim
-DISTVERSION=	2.0.2
+DISTVERSION=	2.0.6
 CATEGORIES=	lang
 MASTER_SITES=	https://nim-lang.org/download/
 

@@ -1,6 +1,5 @@
 PORTNAME=	miniupnpd
-DISTVERSION=	2.3.3
-PORTREVISION=	2
+DISTVERSION=	2.3.6
 PORTEPOCH=	1
 CATEGORIES=	net
 
@@ -18,7 +17,7 @@ CPE_VENDOR=	miniupnp_project
 USE_GITHUB=	yes
 GH_ACCOUNT=	miniupnp
 GH_PROJECT=	miniupnp
-GH_TAGNAME=	e439318
+GH_TAGNAME=	miniupnpd_2_3_6
 
 USE_RC_SUBR=	miniupnpd
 
@@ -31,7 +30,7 @@ LDFLAGS+=	-L${OPENSSLLIB} -lpfctl
 WRKSRC_SUBDIR=	miniupnpd
 
 PLIST_FILES=	etc/miniupnpd.conf.sample \
-		man/man8/miniupnpd.8.gz \
+		share/man/man8/miniupnpd.8.gz \
 		sbin/miniupnpd
 
 # unconditionally use pf, ipfw does not work on FreeBSD
@@ -52,6 +51,7 @@ UPNP_STRICT_CONFIGURE_ON=	--strict
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|\(-lssl -lcrypto\)|$$(LDFLAGS) \1|g' \
-	${WRKSRC}/Makefile.bsd
+		-e 's|^INSTALLMANDIR.*|INSTALLMANDIR = ${PREFIX}/share/man|' \
+		${WRKSRC}/Makefile.bsd
 
 .include <bsd.port.mk>

@@ -1,3 +1,3 @@
-TIMESTAMP = 1700514906
-SHA256 (mongodb-src-r5.0.23.tar.gz) = 51120e06c47ae29a593f80e20e0de15e7386114c115e10353f966e79cb13da61
-SIZE (mongodb-src-r5.0.23.tar.gz) = 56289856
+TIMESTAMP = 1719241119
+SHA256 (mongodb-mongo-r5.0.27_GH0.tar.gz) = 62a51dee664b6d2722edc8443c2a8d2e1e7400bf48d44ae25b1ad799d3bee5da
+SIZE (mongodb-mongo-r5.0.27_GH0.tar.gz) = 57287707

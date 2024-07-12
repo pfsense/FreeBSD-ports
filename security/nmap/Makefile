@@ -1,5 +1,6 @@
 PORTNAME=	nmap
 DISTVERSION=	7.94
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://nmap.org/dist/ \
 		LOCAL/ohauer
@@ -19,18 +20,23 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 .if !defined(MASTERDIR)
 
-LIB_DEPENDS=	libpcre.so:devel/pcre
-
 USES=		tar:bzip2 gmake cpe
+
+# XXX limit results if we do a grep in the sources!
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/mswin32 \
+			--no-same-owner --no-same-permissions
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	DOCS PCAP SSH2 SSL
-OPTIONS_DEFAULT=SSH2 SSL
+OPTIONS_DEFINE=	DOCS NLS PCAP SSH2 SSL
+OPTIONS_DEFAULT=NLS SSH2 SSL
 
 PCAP_DESC=		Build with libpcap from nmap
 SSH2_DESC=		SSH2 protocol support
 
+NLS_CONFIGURE_ENABLE=	nls
 PCAP_CONFIGURE_ON=	--with-libpcap=included
 SSH2_CONFIGURE_ON=	--with-libssh2=included
 SSH2_CONFIGURE_OFF=	--without-libssh2
@@ -47,15 +53,11 @@ STRIP_FILES+=	nmap nping
 CONFIGURE_ARGS+=--without-localdirs \
 		--without-zenmap \
 		--without-ndiff \
-		--with-libpcre=${LOCALBASE} \
+		--with-libpcre=included \
 		--with-liblua=included \
 		--without-nmap-update
 
 .include <bsd.port.options.mk>
-
-# XXX limit results if we do a grep in the sources!
-post-extract:
-	@${RM} -r ${WRKSRC}/mswin32
 
 .if exists(/usr/lib/libibverbs.a)
 # Link with libibverbs is needed by static libpcap

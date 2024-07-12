@@ -3,11 +3,9 @@ PORTVERSION=	1.4.1
 CATEGORIES=	dns
 MASTER_SITES=	https://BSDforge.com/projects/source/dns/dlint/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Lint for DNS zones (Domain Name Server zone verification utility)
 WWW=		https://BSDforge.com/projects/dns/dlint
-
-BROKEN=		Unfetchable
 
 USES=		shebangfix tar:xz
 NO_ARCH=	yes
@@ -24,7 +22,7 @@ do-configure:
 do-install:
 	cd ${WRKSRC} ; ${INSTALL_SCRIPT} dlint digparse \
 		${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/dlint.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/dlint.8 ${STAGEDIR}${PREFIX}/share/man/man8
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

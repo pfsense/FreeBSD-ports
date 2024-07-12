@@ -1,6 +1,6 @@
 PORTNAME=	cpupdate
 DISTVERSION=	g20180513
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	sysutils
 
 MAINTAINER=	eugen@FreeBSD.org
@@ -32,12 +32,12 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	kernschmelze
 GH_TAGNAME=	48e42d5
 
-PLIST_FILES=	sbin/${PORTNAME} man/man8/${PORTNAME}.8.gz
+PLIST_FILES=	sbin/${PORTNAME} share/man/man8/${PORTNAME}.8.gz
 
-# MCE DB r274
+# MCE DB r296
 CPM_ACCOUNT=	platomav
 CPM_PROJECT=	CPUMicrocodes
-CPM_TAGNAME=	0a6abcd
+CPM_TAGNAME=	628e39b
 
 OPTIONS_DEFINE=		CPM INTEL
 CPM_DESC=		Download platomav/CPUMicrocodes collection
@@ -48,7 +48,7 @@ CPM_PACK?=		${CPM_ACCOUNT}-${CPM_PROJECT}-${CPM_TAGNAME}_GH0.tar.gz
 CPM_DIR=		${WRKDIR}/${CPM_PROJECT}-${CPM_TAGNAME}
 CPM_DATADIR=		${DATADIR}/CPUMicrocodes/secondary/Intel
 
-INTEL_PACK=		microcode-20230808
+INTEL_PACK=		microcode-20240514
 INTEL_DESC=		Download Intel microcode pack ${INTEL_PACK}
 INTEL_PROJECT=		Intel-Linux-Processor-Microcode-Data-Files
 INTEL_MASTER_SITES=	https://codeload.github.com/intel/${INTEL_PROJECT}/tar.gz/:intel
@@ -65,7 +65,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.options.mk>
 

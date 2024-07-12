@@ -1,6 +1,6 @@
---- content/browser/BUILD.gn.orig	2023-11-22 14:00:11 UTC
+--- content/browser/BUILD.gn.orig	2024-06-25 12:08:48 UTC
 +++ content/browser/BUILD.gn
-@@ -2462,6 +2462,13 @@ source_set("browser") {
+@@ -2408,6 +2408,13 @@ source_set("browser") {
      deps += [ "//media/mojo/mojom/stable:stable_video_decoder" ]
    }
  

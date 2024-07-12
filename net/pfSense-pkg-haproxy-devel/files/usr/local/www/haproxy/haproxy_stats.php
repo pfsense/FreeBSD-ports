@@ -24,7 +24,7 @@ require_once("authgui.inc");
 require_once("config.inc");
 require_once("haproxy/haproxy_socketinfo.inc");
 
-$pconfig = $config['installedpackages']['haproxy'];
+$pconfig = config_get_path('installedpackages/haproxy');
 if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && isset($_POST['action']))){
 	if (!(isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport']))){
 		print 'In the "Settings" configure a internal stats port and enable haproxy for this to be functional. Also make sure the service is running.';
@@ -89,13 +89,8 @@ require_once("certs.inc");
 require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
-$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+config_init_path('installedpackages/haproxy/ha_backends/item');
+$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
 
 if ($_POST) {
 	if ($_POST['apply']) {

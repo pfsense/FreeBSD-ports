@@ -1,6 +1,7 @@
 PORTNAME=	lavalauncher
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 MASTER_SITES=	https://git.sr.ht/~leon_plickat/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
@@ -10,6 +11,8 @@ WWW=		https://git.sr.ht/~leon_plickat/lavalauncher
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	https://lists.sr.ht/~leon_plickat/lavalauncher/%3CCIPW63LE88JJ.2LYO5E6UAFLPB@m5%3E
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>0:graphics/wayland-protocols
@@ -38,7 +41,7 @@ LIBRSVG2_MESON_ENABLED=	librsvg
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
 
 post-patch:
 # Extract (snapshot) version from the port instead of meson.build

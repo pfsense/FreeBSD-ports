@@ -1,6 +1,6 @@
 PORTNAME=	deadbeef
 PORTVERSION=	0.7.2
-PORTREVISION=	26
+PORTREVISION=	27
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/
 
@@ -10,6 +10,8 @@ WWW=		http://deadbeef.sourceforge.net/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
+
+BROKEN=		Unfetchable
 
 GNU_CONFIGURE=	yes
 USES=		compiler:c11 desktop-file-utils gettext gmake gnome iconv \
@@ -125,6 +127,7 @@ HOTKEYS_CONFIGURE_OFF=	--disable-hotkeys
 OGG_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 OGG_CONFIGURE_OFF=	--disable-vorbis
 
+FFMPEG_BROKEN=		fails to compile
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libavformat.so:multimedia/ffmpeg \
 		libavutil.so:multimedia/ffmpeg

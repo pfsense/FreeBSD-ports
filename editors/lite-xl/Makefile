@@ -1,5 +1,5 @@
 PORTNAME=	lite-xl
-PORTVERSION=	2.1.2
+PORTVERSION=	2.1.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -18,7 +18,7 @@ MESON_ARGS=	-Duse_system_lua=true
 
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME}-colors:colors ${PORTNAME}-plugins:plugins
-GH_TAGNAME=	315f123:colors 433d368:plugins
+GH_TAGNAME=	42c897c:colors b25f2b2:plugins
 
 OPTIONS_DEFINE=	DOCS
 

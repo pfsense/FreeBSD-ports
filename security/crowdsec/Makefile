@@ -1,6 +1,8 @@
 PORTNAME=	crowdsec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.5
+DISTVERSION=	1.6.2
+# the remote tag was moved for 1.6.2, so we force another tag to avoid the version on proxy.golang.org
+DISTVERSIONSUFFIX=     -final
 PORTREVISION=	1
 CATEGORIES=	security
 
@@ -14,24 +16,30 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libre2.so:devel/re2
 
-USES=		go:1.21,modules pkgconfig
-_COMMIT=	d2d788c5
+USES=		go:1.22,modules pkgconfig
+_COMMIT=	16bfab86
 _BUILD_DATE=	$$(date -u "+%F_%T")
 USE_RC_SUBR=	crowdsec
 
 GO_MODULE=	github.com/crowdsecurity/crowdsec
-GO_TARGET=	./cmd/crowdsec ./cmd/crowdsec-cli ./cmd/notification-email ./cmd/notification-http ./cmd/notification-sentinel ./cmd/notification-slack ./cmd/notification-splunk
+GO_TARGET=	./cmd/crowdsec \
+		./cmd/crowdsec-cli \
+		./cmd/notification-email \
+		./cmd/notification-http \
+		./cmd/notification-sentinel \
+		./cmd/notification-slack \
+		./cmd/notification-splunk
 
 GO_BUILDFLAGS=	-v -trimpath -tags netgo,osusergo,sqlite_omit_load_extension,re2_cgo \
 		-ldflags="\
 		-a -s -w \
-		-X github.com/crowdsecurity/go-cs-lib/version.Version=${DISTVERSIONPREFIX}${DISTVERSION}-freebsd \
+		-X github.com/crowdsecurity/go-cs-lib/version.Version=${DISTVERSIONPREFIX}${DISTVERSION} \
 		-X github.com/crowdsecurity/go-cs-lib/version.BuildDate=${_BUILD_DATE} \
 		-X github.com/crowdsecurity/go-cs-lib/version.Tag=${_COMMIT} \
-		-X $(GO_MODULE)/pkg/cwversion.Codename=alphaga \
-		-X $(GO_MODULE)/pkg/csconfig.defaultConfigDir=${PREFIX}/etc/crowdsec \
-		-X $(GO_MODULE)/pkg/csconfig.defaultDataDir=/var/db/crowdsec/data \
-		-X $(GO_MODULE)/pkg/cwversion.Libre2=C++"
+		-X ${GO_MODULE}/pkg/cwversion.Codename=alphaga \
+		-X ${GO_MODULE}/pkg/csconfig.defaultConfigDir=${PREFIX}/etc/crowdsec \
+		-X ${GO_MODULE}/pkg/csconfig.defaultDataDir=/var/db/crowdsec/data \
+		-X ${GO_MODULE}/pkg/cwversion.Libre2=C++"
 
 SUB_FILES=	pkg-deinstall pkg-install pkg-message crowdsec.cron upgrade-hub
 
@@ -132,7 +140,9 @@ do-install:
 	#
 
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/hub
+	@${MKDIR} ${STAGEDIR}${ETCDIR}/acquis.d
 	@${MKDIR} ${STAGEDIR}/var/db/crowdsec/data
+	@${MKDIR} ${STAGEDIR}/var/db/crowdsec/data/trace
 
 	#
 	# Cron
@@ -151,10 +161,10 @@ do-install:
 	@${RM} ${STAGEDIR}${ETCDIR}/config_win.yaml
 	@${RM} ${STAGEDIR}${ETCDIR}/crowdsec.cron.daily
 	@${RM} ${STAGEDIR}${ETCDIR}/crowdsec.service
+	@${RM} ${STAGEDIR}${ETCDIR}/context.yaml
+	@${RM} ${STAGEDIR}${ETCDIR}/detect.yaml
 	@${RM} ${STAGEDIR}${ETCDIR}/dev.yaml
 	@${RM} ${STAGEDIR}${ETCDIR}/user.yaml
-	@${RM} ${STAGEDIR}${ETCDIR}/detect.yaml
-	@${RM} ${STAGEDIR}${ETCDIR}/context.yaml
 	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/email
 	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/http
 	@${RMDIR} ${STAGEDIR}${ETCDIR}/notifications/sentinel

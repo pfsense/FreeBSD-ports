@@ -1,4 +1,4 @@
---- content/browser/renderer_host/render_view_host_impl.cc.orig	2023-12-23 12:33:28 UTC
+--- content/browser/renderer_host/render_view_host_impl.cc.orig	2024-06-22 08:49:42 UTC
 +++ content/browser/renderer_host/render_view_host_impl.cc
 @@ -271,7 +271,7 @@ void RenderViewHostImpl::GetPlatformSpecificPrefs(
        display::win::ScreenWin::GetSystemMetricsInDIP(SM_CYVSCROLL);

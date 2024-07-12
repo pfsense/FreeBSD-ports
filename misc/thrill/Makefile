@@ -1,6 +1,6 @@
 PORTNAME=	thrill
 DISTVERSION=	g20200406
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NOT_FOR_ARCHS=	armv6 armv7 i386 mips powerpc powerpcspe # static_assert failed due to requirement 'sizeof(unsigned int) == 8' "FOXXLL supports only 64-bit builds"
 
-LIB_DEPENDS=	libmpi.so:net/openmpi
+LIB_DEPENDS=	libmpi_cxx.so:net/openmpi4
 
 USES=		cmake compiler:c++17-lang fortran
 USE_LDCONFIG=	yes
@@ -30,14 +30,4 @@ GH_TUPLE=	USCiLab:cereal:2f9471bc401590cf58b38bbbc33d412dade6d589:USCiLab_cereal
 		tlx:tlx:89397b7fa1aa5631b4b84e53a92d6c5e06044d43:tlx_tlx/extlib/tlx \
 		stxxl:foxxll:a4a8aeee64743f845c5851e8b089965ea1c219d7:stxxl_foxxll/extlib/foxxll
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == clang
-LLVM_VERSION=	10 # clang-11 crashes: https://bugs.llvm.org/show_bug.cgi?id=48562
-BUILD_DEPENDS+=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-CPP=		clang-cpp${LLVM_VERSION}
-CC=		clang${LLVM_VERSION}
-CXX=		clang++${LLVM_VERSION}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

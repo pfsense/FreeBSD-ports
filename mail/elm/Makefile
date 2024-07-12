@@ -1,11 +1,11 @@
 PORTNAME=	elm
 PORTVERSION=	2.5.8
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	http://instinct.org/elm/files/tarballs/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Once-popular mail user agent, version 2.5.x
 WWW=		https://instinct.org/elm/
 
@@ -30,7 +30,7 @@ MAKE_ARGS+=		CATMAN=catman-none
 MAKE_ARGS+=		DESTBIN="${STAGEDIR}${PREFIX}/bin"
 MAKE_ARGS+=		DESTLIB="${STAGEDIR}${PREFIX}/lib"
 MAKE_ARGS+=		LIB="${STAGEDIR}${PREFIX}/lib"
-MAKE_ARGS+=		MAN="${STAGEDIR}${PREFIX}/man/man1"
+MAKE_ARGS+=		MAN="${STAGEDIR}${PREFIX}/share/man/man1"
 MAKE_ARGS+=	-B
 EXTRACT_AFTER_ARGS=	--exclude gencat
 

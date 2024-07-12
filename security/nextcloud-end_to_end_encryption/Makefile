@@ -1,6 +1,7 @@
 PORTNAME=	end_to_end_encryption
-PORTVERSION=	1.14.1
+PORTVERSION=	1.15.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	brnrd@freebsd.org
@@ -9,7 +10,7 @@ WWW=		https://apps.nextcloud.com/apps/end_to_end_encryption
 
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NEXTCLOUD_RUN_DEPENDS=	28
+NEXTCLOUD_RUN_DEPENDS=	29
 
 USES=		nextcloud php:flavors
 

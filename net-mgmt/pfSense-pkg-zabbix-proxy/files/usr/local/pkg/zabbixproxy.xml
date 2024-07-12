@@ -218,7 +218,7 @@
 			<fieldname>tlscrlfile</fieldname>
 			<description>List of revoked certificates.</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['crl']]]></source>
+			<source><![CDATA[config_get_path('crl')]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 			<show_disable_value>none</show_disable_value>

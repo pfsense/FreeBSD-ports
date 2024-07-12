@@ -1,6 +1,6 @@
 PORTNAME=	dnrd
 PORTVERSION=	2.20.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	SF
 
@@ -10,6 +10,9 @@ WWW=		https://dnrd.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Abandonware, last release in 2007 and last activity in 2010. Consider using Unbound, dns/dnsmasq or dns/blocky
+EXPIRATION_DATE=2024-05-31
 
 USES=		cpe gmake
 USE_RC_SUBR=	${PORTNAME}
@@ -36,7 +39,7 @@ RANDOM_CONFIGURE_ENABLE=	random-src
 do-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/src/dnrd ${STAGEDIR}${PREFIX}/sbin/
-	${INSTALL_MAN} ${WRKSRC}/doc/dnrd.8 ${STAGEDIR}${MAN8PREFIX}/man/man8/
+	${INSTALL_MAN} ${WRKSRC}/doc/dnrd.8 ${STAGEDIR}${PREFIX}/share/man/man8/
 	${INSTALL_DATA} ${WRKSRC}/doc/master.sample ${STAGEDIR}${ETCDIR}/
 
 do-install-DOCS-on:

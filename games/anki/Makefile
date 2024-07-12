@@ -1,5 +1,6 @@
 PORTNAME=	anki
-DISTVERSION=	23.12.1
+DISTVERSION=	24.06.2
+PORTREVISION=	1
 # Don't forget to update ${_MY_BUILDHASH} if DISTVERSION changes
 CATEGORIES=	games education python
 MASTER_SITES=	LOCAL/kai/:yarncache
@@ -44,12 +45,12 @@ USES=		cargo desktop-file-utils ninja nodejs:build pyqt:6 python:3.9+ \
 USE_GITHUB=	yes
 GH_ACCOUNT=	ankitects
 # Translation files
-GH_TUPLE=	ankitects:anki-core-i18n:fb301cc:ftlrslib \
-		ankitects:anki-desktop-ftl:8c2191a:ftlextra
+GH_TUPLE=	ankitects:anki-core-i18n:50fdc91:ftlrslib \
+		ankitects:anki-desktop-ftl:e747f9e:ftlextra
 
 USE_PYQT=	pyqt6 sip:build webengine
 
-SHEBANG_FILES=	qt/tools/runanki.system.in
+SHEBANG_FILES=	yarn qt/tools/runanki.system.in
 
 CARGO_CARGOTOML=	${WRKSRC}/Cargo.toml
 
@@ -58,16 +59,12 @@ CARGO_INSTALL=	no
 
 CARGO_TARGET_DIR=	${WRKSRC}/out/rust
 
-# Custom variables introduced to the runner build system via patches
-MAKE_ENV+=	NO_BUNDLE=1 \
-		NO_VENV=1 \
-		OFFLINE_BUILD=1 \
-		OFFLINE_YARNCACHE=${_MY_YARNCACHE}
-# Variables already known and used by the "runner" build system
+# Variables used by the "runner" build system
 MAKE_ENV+=	NODE_BINARY=${LOCALBASE}/bin/node \
+		OFFLINE_BUILD=1 \
 		PROTOC_BINARY=${LOCALBASE}/bin/protoc \
-		PYTHON_BINARY=${PYTHON_CMD} \
 		YARN_BINARY=${LOCALBASE}/bin/yarn \
+		YARN_CACHE_FOLDER=${_MY_YARNCACHE} \
 		out=${WRKSRC}/out
 # If RELEASE is unset the "runner" build system omits the
 # "--release" flag for cargo(1).
@@ -88,7 +85,7 @@ MPV_RUN_DEPENDS=	mpv:multimedia/mpv
 # Should contain the most recent commit that reflects ${DISTVERSION} and must
 # be exactly 8 digits otherwise the check for newer versions won't work as
 # expected.
-_MY_BUILDHASH= 1a1d4d54
+_MY_BUILDHASH= 33a92379
 # Remove ${CARGO_BUILD_TARGET} from ${CARGO_ENV} to avoid problems with
 # hardcoded paths as the "runner" build system expects its components
 # in ${WRKSRC}/out/rust/debug
@@ -156,10 +153,18 @@ do-install:
 	cd ${WRKSRC}/qt/bundle/lin \
 		&& ${INSTALL_DATA} anki.xpm anki.png ${STAGEDIR}${PREFIX}/share/pixmaps \
 		&& ${INSTALL_DATA} anki.desktop ${STAGEDIR}${PREFIX}/share/applications \
-		&& ${INSTALL_MAN} anki.1 ${STAGEDIR}${MANPREFIX}/man/man1
+		&& ${INSTALL_MAN} anki.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	cd ${WRKSRC}/qt/tools \
 		&& ${INSTALL_SCRIPT} runanki.system.in ${STAGEDIR}${PREFIX}/bin/anki
 	${STRIP_CMD} ${STAGEDIR}${DATADIR}/anki/_rsbridge.so
+
+# Autogenerate some parts of the plist file as several *.css and *.mjs files
+# have a computed filename.  As it is user-specific it is impossible to know
+# their filename in advance.
+post-install:
+	@${FIND} ${STAGEDIR}${DATADIR}/_aqt/data/web/sveltekit/_app/immutable/ -type f -name "*.css" -o -name "*.mjs" | \
+		${SORT} | ${SED} -e 's|${STAGEDIR}||' \
+		>> ${TMPPLIST}
 
 # Helper target to make the generation of the yarn cache easier
 make-yarn-cache: patch

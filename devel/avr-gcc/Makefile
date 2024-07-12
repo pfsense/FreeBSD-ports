@@ -1,6 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	11.2.0
-PORTREVISION=	2
+PORTVERSION=	14.1.0
 CATEGORIES=	devel
 MASTER_SITES=	GCC
 PKGNAMEPREFIX=	avr-
@@ -32,6 +31,7 @@ USE_LDCONFIG=	${PREFIX}/lib/gcci/avr/${SUFFIX}
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-libssp \
 		--enable-languages="c c++" \
 		--target=avr \
@@ -79,6 +79,5 @@ post-install:
 		${STAGEDIR}${PREFIX}/lib/libcc1.so.0.0.0 \
 		${STAGEDIR}${PREFIX}/lib/gcc/avr/${PORTVERSION}/plugin/libcc1plugin.so.0.0.0 \
 		${STAGEDIR}${PREFIX}/lib/gcc/avr/${PORTVERSION}/plugin/libcp1plugin.so.0.0.0
-	tar -C ${STAGEDIR}${PREFIX} -xj -f ${FILESDIR}/specs-avr-dx.tar.bz2
 
 .include <bsd.port.post.mk>

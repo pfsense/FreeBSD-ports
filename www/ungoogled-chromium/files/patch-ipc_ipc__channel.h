@@ -1,6 +1,6 @@
---- ipc/ipc_channel.h.orig	2023-03-10 11:01:21 UTC
+--- ipc/ipc_channel.h.orig	2024-06-22 08:49:42 UTC
 +++ ipc/ipc_channel.h
-@@ -233,7 +233,7 @@ class COMPONENT_EXPORT(IPC) Channel : public Sender {
+@@ -218,7 +218,7 @@ class COMPONENT_EXPORT(IPC) Channel : public Sender {
    static std::string GenerateUniqueRandomChannelID();
  #endif
  

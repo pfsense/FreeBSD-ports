@@ -1,7 +1,11 @@
 PORTNAME=	wf-recorder
 DISTVERSION=	0.4.1
+PORTREVISION=	1
 CATEGORIES=	multimedia wayland
 MASTER_SITES=	https://github.com/ammen99/wf-recorder/releases/download/v${DISTVERSION}/
+
+PATCH_SITES=	https://github.com/ammen99/${PORTNAME}/commit/
+PATCHFILES+=	239829231e6b.patch:-p1 # https://github.com/ammen99/wf-recorder/pull/262
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Screen recorder for wlroots-based compositors
@@ -20,7 +24,7 @@ USES=		compiler:c++11-lang gl meson pkgconfig tar:xz
 USE_GL=		gbm
 
 PLIST_FILES=	bin/wf-recorder \
-		man/man1/wf-recorder.1.gz
+		share/man/man1/wf-recorder.1.gz
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=		DOCS PULSEAUDIO

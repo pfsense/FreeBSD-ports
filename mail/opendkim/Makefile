@@ -1,6 +1,6 @@
 PORTNAME=	opendkim
 PORTVERSION=	2.10.3
-PORTREVISION=	16
+PORTREVISION=	20
 CATEGORIES=	mail security
 MASTER_SITES=	SF/${PORTNAME} \
 		SF/${PORTNAME}/Previous%20Releases \
@@ -19,6 +19,7 @@ LICENSE_NAME_SENDMAIL=	Sendmail Open Source License
 LICENSE_PERMS_SENDMAIL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 NO_OPTIONS_SORT=yes
 USES=		autoreconf cpe libtool perl5 pkgconfig shebangfix ssl
 USE_PERL5=	run
@@ -26,6 +27,8 @@ SHEBANG_FILES=	opendkim/opendkim-genkey* reputation/opendkim-* stats/opendkim-* 
 		reprrd/opendkim-reprrdimport*
 USE_LDCONFIG=	yes
 TEST_TARGET=	check  # XXX: 1 of 30 tests fails
+
+CONFLICTS_INSTALL=	opendkim-devel
 
 PORTDOCS=	*
 
@@ -101,10 +104,6 @@ MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 .include "${.CURDIR}/Makefile.options"
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDEBUG}
-WITH_DEBUG=	yes
-.endif
 
 .if ${PORT_OPTIONS:MFILTER}
 SUB_FILES=		pkg-message

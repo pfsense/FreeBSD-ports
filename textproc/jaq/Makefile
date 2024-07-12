@@ -1,7 +1,6 @@
 PORTNAME=	jaq
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.0
-PORTREVISION=	1
+DISTVERSION=	1.5.0
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,23 +16,23 @@ GH_ACCOUNT=	01mf02
 
 CARGO_BUILD_ARGS=	--package=jaq
 CARGO_INSTALL_PATH=	jaq
-CARGO_CRATES=	ahash-0.8.6 \
+CARGO_CRATES=	ahash-0.8.7 \
 		aho-corasick-1.1.2 \
 		allocator-api2-0.2.16 \
-		ariadne-0.3.0 \
 		atty-0.2.14 \
-		base64-0.21.5 \
+		base64-0.22.0 \
 		bincode-1.3.3 \
 		bitflags-1.3.2 \
+		bumpalo-3.14.0 \
 		cc-1.0.79 \
 		cfg-if-1.0.0 \
 		chumsky-0.9.3 \
 		clap-4.0.22 \
 		clap_derive-4.0.21 \
 		clap_lex-0.3.2 \
-		colored_json-3.0.1 \
+		codesnake-0.1.0 \
+		console_log-1.0.0 \
 		dyn-clone-1.0.11 \
-		either-1.8.1 \
 		env_logger-0.10.0 \
 		equivalent-1.0.0 \
 		fastrand-1.9.0 \
@@ -44,8 +43,8 @@ CARGO_CRATES=	ahash-0.8.6 \
 		hifijson-0.2.0 \
 		indexmap-2.1.0 \
 		instant-0.1.12 \
-		itertools-0.10.5 \
 		itoa-1.0.9 \
+		js-sys-0.3.69 \
 		libc-0.2.147 \
 		libm-0.2.8 \
 		libmimalloc-sys-0.1.35 \
@@ -77,17 +76,23 @@ CARGO_CRATES=	ahash-0.8.6 \
 		time-core-0.1.0 \
 		time-macros-0.2.8 \
 		unicode-ident-1.0.10 \
-		unicode-width-0.1.11 \
+		unicode-width-0.1.13 \
 		urlencoding-2.1.3 \
 		version_check-0.9.4 \
 		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.92 \
+		wasm-bindgen-backend-0.2.92 \
+		wasm-bindgen-macro-0.2.92 \
+		wasm-bindgen-macro-support-0.2.92 \
+		wasm-bindgen-shared-0.2.92 \
+		web-sys-0.3.69 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		yansi-0.5.1 \
-		zerocopy-0.7.20 \
-		zerocopy-derive-0.7.20
+		yansi-1.0.1 \
+		zerocopy-0.7.32 \
+		zerocopy-derive-0.7.32
 
 PLIST_FILES=	bin/${PORTNAME}
 

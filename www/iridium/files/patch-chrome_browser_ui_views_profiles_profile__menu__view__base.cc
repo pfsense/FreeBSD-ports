@@ -1,8 +1,8 @@
---- chrome/browser/ui/views/profiles/profile_menu_view_base.cc.orig	2023-10-21 11:51:27 UTC
+--- chrome/browser/ui/views/profiles/profile_menu_view_base.cc.orig	2024-06-25 12:08:48 UTC
 +++ chrome/browser/ui/views/profiles/profile_menu_view_base.cc
-@@ -652,7 +652,7 @@ void ProfileMenuViewBase::SetProfileIdentityInfo(
+@@ -723,7 +723,7 @@ void ProfileMenuViewBase::SetProfileIdentityInfo(
  
- // TODO(crbug.com/1052397): Revisit once build flag switch of lacros-chrome is
+ // TODO(crbug.com/40118868): Revisit once build flag switch of lacros-chrome is
  // complete.
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)

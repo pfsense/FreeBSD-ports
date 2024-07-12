@@ -57,14 +57,14 @@ $logfile_friendly = array(
 );
 
 function set_mail_report_cron_jobs($a_mailreports) {
-	global $config, $g;
+	global $g;
 
-	init_config_arr(array('cron', 'item'));
+	config_init_path('cron/item');
 
 	// Search for old report cron jobs and remove them all
-	for ($x=0, $numjobs=sizeof($config['cron']['item']); $x < $numjobs; $x++) {
-		if (strpos($config['cron']['item'][$x]['command'], "mail_reports_generate.php") !== FALSE) {
-			unset($config['cron']['item'][$x]);
+	for ($x=0, $numjobs=sizeof(config_get_path('cron/item')); $x < $numjobs; $x++) {
+		if (strpos(config_get_path("cron/item/{$x}/command"), "mail_reports_generate.php") !== FALSE) {
+			config_del_path("cron/item/{$x}");
 		}
 	}
 
@@ -78,25 +78,25 @@ function set_mail_report_cron_jobs($a_mailreports) {
 		$cron_item['wday'] = isset($report['dayofweek']) ? $report['dayofweek'] : "*";
 		$cron_item['who'] = "root";
 		$cron_item['command'] = "/usr/local/bin/mail_reports_generate.php {$id} &";
-		$config['cron']['item'][] = $cron_item;
+		config_set_path('cron/item/', $cron_item);
 	}
 }
 
 function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
-	global $config, $g;
+	global $g;
 
-	if (empty($config['notifications']['smtp']['ipaddress']) ||
-	    empty($config['notifications']['smtp']['notifyemailaddress'])) {
+	if (empty(config_get_path('notifications/smtp/ipaddress')) ||
+	    empty(config_get_path('notifications/smtp/notifyemailaddress'))) {
 		return;
 	}
 
 	$mail = new PHPMailer();
 	$mail->IsSMTP();
-	$mail->Host = $config['notifications']['smtp']['ipaddress'];
-	$mail->Port = empty($config['notifications']['smtp']['port']) ? 25 : $config['notifications']['smtp']['port'];
-	$mail->SMTPSecure = isset($config['notifications']['smtp']['ssl']) ? "ssl" : "";
+	$mail->Host = config_get_path('notifications/smtp/ipaddress');
+	$mail->Port = empty(config_get_path('notifications/smtp/port')) ? 25 : config_get_path('notifications/smtp/port');
+	$mail->SMTPSecure = (config_get_path('notifications/smtp/ssl') !== null) ? "ssl" : "";
 
-	if ($config['notifications']['smtp']['sslvalidate'] == "disabled") {
+	if (config_get_path('notifications/smtp/sslvalidate') == "disabled") {
 		$mail->SMTPOptions = array(
 			'ssl' => array(
 			'verify_peer'       => false,
@@ -113,25 +113,25 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 		);
 	}
 
-	if ($config['notifications']['smtp']['username'] &&
-	    $config['notifications']['smtp']['password']) {
+	if (config_get_path('notifications/smtp/username') &&
+	    config_get_path('notifications/smtp/password')) {
 		$mail->SMTPAuth = true;
-		$mail->Username = $config['notifications']['smtp']['username'];
-		$mail->Password = $config['notifications']['smtp']['password'];
+		$mail->Username = config_get_path('notifications/smtp/username');
+		$mail->Password = config_get_path('notifications/smtp/password');
 	}
 
 	$mail->ContentType = 'text/html';
 	$mail->IsHTML(true);
-	$mail->AddReplyTo($config['notifications']['smtp']['fromaddress'], gettext("pfSense Email Report"));
-	$mail->SetFrom($config['notifications']['smtp']['fromaddress'], gettext("pfSense Email Report"));
-	$addresses = explode(",", $config['notifications']['smtp']['notifyemailaddress']);
+	$mail->AddReplyTo(config_get_path('notifications/smtp/fromaddress'), gettext("pfSense Email Report"));
+	$mail->SetFrom(config_get_path('notifications/smtp/fromaddress'), gettext("pfSense Email Report"));
+	$addresses = explode(",", config_get_path('notifications/smtp/notifyemailaddress'));
 	foreach ($addresses as $address) {
 		$recipient = explode("@", $address);
 		$recipient = str_replace(array("_", "."), " ", $recipient[0]);
 		$mail->AddAddress($address, ucwords(strtolower($recipient)));
 	}
-	$mail->Subject = "{$config['system']['hostname']}.{$config['system']['domain']} " . gettext("Email Report") . ": {$headertext}";
-	$mail->Body .= sprintf(gettext("This is a periodic report from pfSense at %s."), $config['system']['hostname'] . '.' . $config['system']['domain']);
+	$mail->Subject = config_get_path('system/hostname') . '.' . config_get_path('system/domain') . gettext("Email Report") . ": {$headertext}";
+	$mail->Body .= sprintf(gettext("This is a periodic report from pfSense at %s."), config_get_path('system/hostname') . '.' . config_get_path('system/domain'));
 	$mail->Body .= "<br />\n<br />\n" . gettext("Current report") . ": {$headertext}<br />\n<br />\n";
 	if (!empty($cmdtext)) {
 		$mail->Body .= $cmdtext;
@@ -153,7 +153,7 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 }
 
 function mail_report_get_log($logfile, $tail = 100, $grepfor = array()) {
-	global $g, $config;
+	global $g;
 	$logfile = "{$g['varlog_path']}/{$logfile}";
 	$logarr = "";
 	$grepline = "  ";

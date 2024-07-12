@@ -1,5 +1,5 @@
 PORTNAME=	php82
-DISTVERSION=	8.2.14
+DISTVERSION=	8.2.20
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -21,25 +21,26 @@ CONFLICTS_INSTALL?=	php[0-9][0-9]${PKGNAMESUFFIX}
 LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libpcre2-8.so:devel/pcre2
 
-GNU_CONFIGURE=		yes
-CONFIGURE_ARGS+=	--disable-all \
-			--program-prefix="" \
-			--with-config-file-scan-dir=${PREFIX}/etc/php \
-			--with-layout=GNU \
-			--with-libxml \
-			--with-openssl \
-			--with-password-argon2=${LOCALBASE}
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS+=	\
+		--disable-all \
+		--program-prefix="" \
+		--with-config-file-scan-dir=${PREFIX}/etc/php \
+		--with-layout=GNU \
+		--with-libxml \
+		--with-openssl \
+		--with-password-argon2=${LOCALBASE}
 
 USES+=		autoreconf:build ssl
 USE_GNOME=	libxml2
 
-LDFLAGS=	-L${OPENSSLLIB} -lcrypto -lssl
+LDFLAGS+=	-L${OPENSSLLIB} -lcrypto -lssl
 # PR230207 Allow relocations against read-only segments (override lld default)
-LDFLAGS_i386=	-Wl,-z,notext
+LDFLAGS_i386+=	-Wl,-z,notext
 
-OPTIONS_DEFINE+=		CGI CLI DEBUG DTRACE EMBED FPM IPV6 LINKTHR \
+OPTIONS_DEFINE+=CGI CLI DEBUG DTRACE EMBED FPM IPV6 LINKTHR \
 				MYSQLND PCRE PHPDBG ZTS
-OPTIONS_DEFAULT=		CGI CLI DTRACE EMBED FPM LINKTHR MYSQLND PCRE
+OPTIONS_DEFAULT=	CGI CLI DTRACE EMBED FPM LINKTHR MYSQLND PCRE
 OPTIONS_EXCLUDE_DragonFly=	DTRACE
 # ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
 OPTIONS_EXCLUDE_aarch64=	DTRACE
@@ -88,7 +89,7 @@ PHPDBG_VARS=		PHP_SAPI+=phpdbg
 ZTS_CONFIGURE_ON=	--enable-zts
 ZTS_CONFIGURE_ENV=	pthreads_working="yes"
 
-DESTDIRNAME=		INSTALL_ROOT
+DESTDIRNAME=	INSTALL_ROOT
 
 .if defined(PKGNAMEPREFIX)
 USES+=			apache
@@ -149,19 +150,19 @@ post-install:
 		${WRKDIR}/php.conf ${STAGEDIR}/${PREFIX}/etc
 
 post-install-CGI-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/php-cgi
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php-cgi
 
 post-install-CLI-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/php
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php
 
 post-install-EMBED-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/lib/libphp.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libphp.so
 
 post-install-FPM-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/sbin/php-fpm
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/php-fpm
 
 post-install-PHPDBG-on:
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/phpdbg
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/phpdbg
 
 .else
 do-install:
@@ -253,9 +254,9 @@ USE_GNOME=	libxml2
 .endif
 
 .if ${PHP_MODNAME} == "enchant"
-LIB_DEPENDS+=   libenchant-2.so:textproc/enchant2
-CONFIGURE_ARGS+=	--with-enchant=${LOCALBASE}
-USES+=			pkgconfig
+LIB_DEPENDS+=	libenchant-2.so:textproc/enchant2
+CONFIGURE_ARGS+=--with-enchant=${LOCALBASE}
+USES+=		pkgconfig
 .endif
 
 .if ${PHP_MODNAME} == "exif"
@@ -352,14 +353,8 @@ USES+=		pkgconfig
 CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 .endif
 
-.if ${PHP_MODNAME} == "json"
-CONFIGURE_ARGS+=	--enable-json
-BUILD_DEPENDS=		re2c:devel/re2c
-.endif
-
 .if ${PHP_MODNAME} == "ldap"
-CONFIGURE_ARGS+=	--with-ldap-sasl=${LOCALBASE} \
-			--with-ldap=${LOCALBASE}
+CONFIGURE_ARGS+=--with-ldap=${LOCALBASE} --with-ldap-sasl=${LOCALBASE}
 USES+=	ldap
 .endif
 
@@ -384,14 +379,13 @@ CONFIGURE_ARGS+=	--with-mysqli
 .if ${PHP_MODNAME} == "odbc"
 LIB_DEPENDS+=	libodbc.so:databases/unixODBC
 
-CONFIGURE_ARGS+=	--enable-odbc \
-			--with-unixODBC=${LOCALBASE}
+CONFIGURE_ARGS+=	--enable-odbc --with-unixODBC=${LOCALBASE}
 .endif
 
 .if ${PHP_MODNAME} == "opcache"
 # This is needed by Zend extensions, keep before everything.
 PHP_MOD_PRIO=		10
-CONFIGURE_ARGS+=        --enable-opcache
+CONFIGURE_ARGS+=	--enable-opcache
 .endif
 
 .if ${PHP_MODNAME} == "pcntl"
@@ -545,7 +539,7 @@ CONFIGURE_ARGS+=	--enable-sysvshm
 .if ${PHP_MODNAME} == "tidy"
 CONFIGURE_ARGS+=	--with-tidy=${LOCALBASE}
 
-LIB_DEPENDS+=	libtidy.so:www/tidy-lib
+LIB_DEPENDS+=	libtidy5.so:www/tidy-html5
 .endif
 
 .if ${PHP_MODNAME} == "tokenizer"
@@ -567,18 +561,6 @@ USE_GNOME=	libxml2
 USE_PHP=	dom:build
 .endif
 
-.if ${PHP_MODNAME} == "xmlrpc"
-CONFIGURE_ARGS+=	--with-iconv-dir=${LOCALBASE} \
-			--with-xmlrpc
-
-USES+=		iconv:translit
-USE_GNOME=	libxml2
-
-PHP_HEADER_DIRS=	libxmlrpc
-
-USE_PHP=	xml:build
-.endif
-
 .if ${PHP_MODNAME} == "xmlwriter"
 CONFIGURE_ARGS+=	--enable-xmlwriter
 
@@ -596,8 +578,7 @@ USE_PHP=	dom:build xml:build
 .if ${PHP_MODNAME} == "zip"
 LIB_DEPENDS+=	libzip.so:archivers/libzip
 
-CONFIGURE_ARGS+=	--with-zip \
-			--with-zlib-dir=/usr
+CONFIGURE_ARGS+=	--with-zip --with-zlib-dir=/usr
 USES+=			pkgconfig
 .endif
 

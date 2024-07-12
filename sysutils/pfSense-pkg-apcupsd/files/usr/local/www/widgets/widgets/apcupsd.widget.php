@@ -387,7 +387,7 @@ if ($_POST['widgetkey']) {
 	header("Location: /");
 	exit(0);
 }
-$widgetperiod = isset($config['widgets']['period']) ? $config['widgets']['period'] * 1000 : 10000;
+$widgetperiod = (config_get_path('widgets/period') !== null) ? config_get_path('widgets/period') * 1000 : 10000;
 
 ?>
 <table class="table table-hover table-striped table-condensed">

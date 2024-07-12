@@ -1,6 +1,6 @@
 PORTNAME=	transient
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.3
+DISTVERSION=	0.7.2
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -11,15 +11,15 @@ WWW=		https://github.com/magit/transient
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR}
-RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.1:misc/compat.el@${EMACS_FLAVOR}
+BUILD_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.5:misc/compat.el@${EMACS_FLAVOR}
+RUN_DEPENDS=	compat.el${EMACS_PKGNAMESUFFIX}>=29.1.4.5:misc/compat.el@${EMACS_FLAVOR}
 
 USES=		emacs gmake makeinfo
 USE_GITHUB=	yes
 GH_ACCOUNT=	magit
 
 MAKE_ENV+=	LOAD_PATH="-L ${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/compat"
-
+MAKE_JOBS_UNSAFE=	yes
 ALL_TARGET=	lisp info
 
 CONFLICTS_INSTALL=	transient-devel-emacs*

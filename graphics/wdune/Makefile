@@ -1,6 +1,6 @@
 PORTNAME=	wdune
 PORTVERSION=	1.956
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.ourproject.org/pub/wdune/
 
@@ -9,6 +9,9 @@ COMMENT=	Graphical VRML97 editor and animation tool
 WWW=		https://wdune.ourproject.org/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	upstream no longer maintained
+EXPIRATION_DATE=2024-06-30
 
 BUILD_DEPENDS=	cgal>0:math/cgal
 LIB_DEPENDS=	libcurl.so:ftp/curl \
@@ -45,7 +48,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/dune ${STAGEDIR}${PREFIX}/bin
 	cd ${WRKSRC}/bin && ${INSTALL_SCRIPT} dune4kids illegal2vrml \
 		${STAGEDIR}${PREFIX}/bin
-	cd ${WRKSRC}/man && ${INSTALL_MAN} dune.1 illegal2vrml.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	cd ${WRKSRC}/man && ${INSTALL_MAN} dune.1 illegal2vrml.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}

@@ -12,6 +12,7 @@
     SUBDIR += R-cran-GDD
     SUBDIR += R-cran-RColorBrewer
     SUBDIR += R-cran-colorspace
+    SUBDIR += R-cran-cowplot
     SUBDIR += R-cran-diagram
     SUBDIR += R-cran-dichromat
     SUBDIR += R-cran-dygraphs
@@ -28,6 +29,7 @@
     SUBDIR += R-cran-pixmap
     SUBDIR += R-cran-png
     SUBDIR += R-cran-qcc
+    SUBDIR += R-cran-ragg
     SUBDIR += R-cran-rgdal
     SUBDIR += R-cran-s2
     SUBDIR += R-cran-scales
@@ -39,7 +41,6 @@
     SUBDIR += a2png
     SUBDIR += aalib
     SUBDIR += aaphoto
-    SUBDIR += acidwarp
     SUBDIR += acidwarp-sdl
     SUBDIR += aeskulap
     SUBDIR += agg
@@ -115,6 +116,7 @@
     SUBDIR += cosmoplayer
     SUBDIR += cptutils
     SUBDIR += crw
+    SUBDIR += ctl
     SUBDIR += curator
     SUBDIR += curtail
     SUBDIR += cuttlefish
@@ -152,6 +154,7 @@
     SUBDIR += dspdfviewer
     SUBDIR += dssim
     SUBDIR += duhdraw
+    SUBDIR += durdraw
     SUBDIR += dust3d
     SUBDIR += dynamechs
     SUBDIR += ebsynth
@@ -159,12 +162,12 @@
     SUBDIR += egl-wayland
     SUBDIR += eglexternalplatform
     SUBDIR += elastix
-    SUBDIR += electricsheep
     SUBDIR += elementary-photos
     SUBDIR += embree
     SUBDIR += enblend
     SUBDIR += engauge-digitizer
     SUBDIR += entangle
+    SUBDIR += entice
     SUBDIR += eog
     SUBDIR += eog-plugins
     SUBDIR += eom
@@ -198,7 +201,7 @@
     SUBDIR += flphoto
     SUBDIR += fly
     SUBDIR += fortytwo
-    SUBDIR += fotoxx
+    SUBDIR += fotocx
     SUBDIR += founts
     SUBDIR += fracplanet
     SUBDIR += fractgen
@@ -241,7 +244,6 @@
     SUBDIR += gifski
     SUBDIR += giftool
     SUBDIR += gimageview
-    SUBDIR += gimmage
     SUBDIR += gimp
     SUBDIR += gimp-app
     SUBDIR += gimp-beautify-plugin
@@ -404,6 +406,7 @@
     SUBDIR += kf6-prison
     SUBDIR += kgeotag
     SUBDIR += kgraphviewer
+    SUBDIR += khronos-texture
     SUBDIR += kimageannotator
     SUBDIR += kimagemapeditor
     SUBDIR += kipi-plugins
@@ -482,7 +485,6 @@
     SUBDIR += libksane
     SUBDIR += libliftoff
     SUBDIR += liblqr-1
-    SUBDIR += liblug
     SUBDIR += libmng
     SUBDIR += libmorph
     SUBDIR += libmypaint
@@ -539,6 +541,24 @@
     SUBDIR += linux-c7-sdl_ttf
     SUBDIR += linux-c7-tiff
     SUBDIR += linux-c7-wayland
+    SUBDIR += linux-rl9-cairo
+    SUBDIR += linux-rl9-cairo-gobject
+    SUBDIR += linux-rl9-dri
+    SUBDIR += linux-rl9-gdk-pixbuf2
+    SUBDIR += linux-rl9-graphite2
+    SUBDIR += linux-rl9-jasper
+    SUBDIR += linux-rl9-jbigkit
+    SUBDIR += linux-rl9-jpeg
+    SUBDIR += linux-rl9-libdrm
+    SUBDIR += linux-rl9-libepoxy
+    SUBDIR += linux-rl9-libglvnd
+    SUBDIR += linux-rl9-librsvg2
+    SUBDIR += linux-rl9-openjpeg
+    SUBDIR += linux-rl9-png
+    SUBDIR += linux-rl9-tiff
+    SUBDIR += linux-rl9-vulkan
+    SUBDIR += linux-rl9-wayland
+    SUBDIR += linux-rl9-webp
     SUBDIR += lua-gd
     SUBDIR += luminance-qt5
     SUBDIR += lux
@@ -555,6 +575,7 @@
     SUBDIR += matplotlib-cpp
     SUBDIR += matplotplusplus
     SUBDIR += meh
+    SUBDIR += menyoki
     SUBDIR += mesa-demos
     SUBDIR += mesa-devel
     SUBDIR += mesa-dri
@@ -583,6 +604,7 @@
     SUBDIR += nanosvg
     SUBDIR += netpbm
     SUBDIR += nip2
+    SUBDIR += noaa-apt
     SUBDIR += nomacs
     SUBDIR += nplot
     SUBDIR += npretty
@@ -590,12 +612,15 @@
     SUBDIR += nurbs++
     SUBDIR += nvidia-drm-510-kmod
     SUBDIR += nvidia-drm-515-kmod
+    SUBDIR += nvidia-drm-61-kmod
     SUBDIR += nvidia-drm-kmod
     SUBDIR += nvidia-texture-tools
     SUBDIR += ocaml-cairo
     SUBDIR += ocaml-images
     SUBDIR += ocaml-lablgl
     SUBDIR += ocrad
+    SUBDIR += ocrs
+    SUBDIR += oculante
     SUBDIR += ogre3d
     SUBDIR += ogre3d19
     SUBDIR += oidn
@@ -630,6 +655,7 @@
     SUBDIR += openslide
     SUBDIR += opensubdiv
     SUBDIR += openvkl
+    SUBDIR += openxr
     SUBDIR += optar
     SUBDIR += optipng
     SUBDIR += osg
@@ -763,6 +789,7 @@
     SUBDIR += pear-Image_Graph
     SUBDIR += pear-Image_GraphViz
     SUBDIR += pear-Image_Transform
+    SUBDIR += pecl-geospatial
     SUBDIR += pecl-imagick
     SUBDIR += pecl-qrencode
     SUBDIR += pecl-vips
@@ -798,6 +825,7 @@
     SUBDIR += pixelize
     SUBDIR += pixen
     SUBDIR += pixie
+    SUBDIR += plantuml
     SUBDIR += plasma-kmod
     SUBDIR += plotutils
     SUBDIR += png
@@ -805,7 +833,6 @@
     SUBDIR += png2html
     SUBDIR += png2ico
     SUBDIR += pngcheck
-    SUBDIR += pngcrush
     SUBDIR += pnglite
     SUBDIR += pngnq
     SUBDIR += pngquant
@@ -858,6 +885,7 @@
     SUBDIR += py-colorz
     SUBDIR += py-colour
     SUBDIR += py-descartes
+    SUBDIR += py-diplib
     SUBDIR += py-django-easy-thumbnails
     SUBDIR += py-djvulibre
     SUBDIR += py-exifread
@@ -911,6 +939,7 @@
     SUBDIR += py-optimize-images
     SUBDIR += py-osmnet
     SUBDIR += py-pandana
+    SUBDIR += py-pdf2image
     SUBDIR += py-photocollage
     SUBDIR += py-piexif
     SUBDIR += py-pillow
@@ -949,6 +978,7 @@
     SUBDIR += py-pyvips
     SUBDIR += py-pyvista
     SUBDIR += py-pyx
+    SUBDIR += py-pyzbar
     SUBDIR += py-qpageview
     SUBDIR += py-qrencode
     SUBDIR += py-qt6-3d
@@ -983,7 +1013,7 @@
     SUBDIR += py-zbar-py
     SUBDIR += pywal
     SUBDIR += qcomicbook
-    SUBDIR += qcustomplot-qt5
+    SUBDIR += qcustomplot
     SUBDIR += qgis
     SUBDIR += qgis-ltr
     SUBDIR += qiv
@@ -1016,7 +1046,6 @@
     SUBDIR += raster3d
     SUBDIR += rawstudio
     SUBDIR += rawtherapee
-    SUBDIR += rayshade
     SUBDIR += reactphysics3d
     SUBDIR += realesrgan-ncnn-vulkan
     SUBDIR += reallyslick
@@ -1059,7 +1088,6 @@
     SUBDIR += rubygem-imagesize
     SUBDIR += rubygem-invisible_captcha
     SUBDIR += rubygem-mini_magick
-    SUBDIR += rubygem-mini_magick410
     SUBDIR += rubygem-opengl
     SUBDIR += rubygem-pdfkit
     SUBDIR += rubygem-png
@@ -1113,6 +1141,8 @@
     SUBDIR += skanlite
     SUBDIR += skanpage
     SUBDIR += spectacle
+    SUBDIR += spectacle-devel
+    SUBDIR += spirv-cross
     SUBDIR += spirv-tools
     SUBDIR += springgraph
     SUBDIR += squish
@@ -1123,6 +1153,7 @@
     SUBDIR += svg2png
     SUBDIR += svgalib
     SUBDIR += svgbob
+    SUBDIR += svgpp
     SUBDIR += swappy
     SUBDIR += swfmill
     SUBDIR += swftools
@@ -1155,7 +1186,6 @@
     SUBDIR += unpaper
     SUBDIR += upscaler
     SUBDIR += urho3d
-    SUBDIR += urt
     SUBDIR += vapoursynth-fmtconv
     SUBDIR += vapoursynth-waifu2x-ncnn-vulkan
     SUBDIR += vapoursynth-waifu2x-w2xc
@@ -1167,7 +1197,6 @@
     SUBDIR += vips
     SUBDIR += visprint
     SUBDIR += viu
-    SUBDIR += vkd3d
     SUBDIR += volpack
     SUBDIR += vp
     SUBDIR += vpaint

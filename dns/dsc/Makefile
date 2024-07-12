@@ -1,5 +1,5 @@
 PORTNAME=	dsc
-PORTVERSION=	2.13.0
+PORTVERSION=	2.15.1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.dns-oarc.net/files/dsc/ \
 		https://dns.company/files/dsc/
@@ -21,6 +21,7 @@ USE_RC_SUBR=	dsc
 SHEBANG_FILES=	src/dsc-psl-convert
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-pid-file=/var/run/${PORTNAME}.pid
 
 SUB_FILES=	pkg-message

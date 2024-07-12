@@ -1,7 +1,6 @@
 PORTNAME=	nest
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.5
-PORTREVISION=	1
+DISTVERSION=	3.7
 CATEGORIES=	science biology # NEST is used in neuroscience
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,6 +10,7 @@ WWW=		https://www.nest-simulator.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_armv7=	compilation fails: error: expected identifier before '__is_convertible'
 BROKEN_i386=	https://github.com/nest/nest-simulator/issues/1205
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
@@ -25,6 +25,8 @@ USE_GITHUB=	yes
 GH_PROJECT=	nest-simulator
 
 SHEBANG_FILES=	bin/nest-server bin/nest-server-mpi testsuite/do_tests.sh
+
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 OPTIONS_DEFINE=		PYTHON DOCS
 OPTIONS_DEFAULT=	PYTHON

@@ -711,6 +711,7 @@
 %%WWWDIR%%/front/item_device.common.form.php
 %%WWWDIR%%/front/item_device.php
 %%WWWDIR%%/front/item_devicebattery.form.php
+%%WWWDIR%%/front/item_devicecamera.form.php
 %%WWWDIR%%/front/item_devicecase.form.php
 %%WWWDIR%%/front/item_devicecontrol.form.php
 %%WWWDIR%%/front/item_devicedrive.form.php
@@ -1171,6 +1172,24 @@
 %%WWWDIR%%/install/migrations/update_10.0.0_to_10.0.1/rename_itemtypes.php
 %%WWWDIR%%/install/migrations/update_10.0.0_to_10.0.1/rulelocation.php
 %%WWWDIR%%/install/migrations/update_10.0.0_to_10.0.1/schema_fixes.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/duplicate_searchopt_fixes.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/fix_document_item_index.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/item_operatingsystem.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/lockedfield.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/pendingreason.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/refusedequipment.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/states.php
+%%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11/transfer.php
+%%WWWDIR%%/install/migrations/update_10.0.11_to_10.0.12.php
+%%WWWDIR%%/install/migrations/update_10.0.11_to_10.0.12/duplicate_searchopt_fixes.php
+%%WWWDIR%%/install/migrations/update_10.0.11_to_10.0.12/log_rights.php
+%%WWWDIR%%/install/migrations/update_10.0.11_to_10.0.12/user.php
+%%WWWDIR%%/install/migrations/update_10.0.12_to_10.0.13.php
+%%WWWDIR%%/install/migrations/update_10.0.12_to_10.0.13/configs.php
+%%WWWDIR%%/install/migrations/update_10.0.12_to_10.0.13/location.php
+%%WWWDIR%%/install/migrations/update_10.0.14_to_10.0.15.php
+%%WWWDIR%%/install/migrations/update_10.0.14_to_10.0.15/user.php
 %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2.php
 %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2/agent.php
 %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2/configs.php
@@ -1187,6 +1206,7 @@
 %%WWWDIR%%/install/migrations/update_10.0.3_to_10.0.4/inventory.php
 %%WWWDIR%%/install/migrations/update_10.0.3_to_10.0.4/ticket.php
 %%WWWDIR%%/install/migrations/update_10.0.4_to_10.0.5.php
+%%WWWDIR%%/install/migrations/update_10.0.4_to_10.0.5/items_disks.php
 %%WWWDIR%%/install/migrations/update_10.0.5_to_10.0.6.php
 %%WWWDIR%%/install/migrations/update_10.0.5_to_10.0.6/appliance.php
 %%WWWDIR%%/install/migrations/update_10.0.5_to_10.0.6/blacklist.php
@@ -1340,6 +1360,11 @@
 %%WWWDIR%%/install/mysql/glpi-0.90.5-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.0-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.1-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.10-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.11-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.12-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.13-empty.sql
+%%WWWDIR%%/install/mysql/glpi-10.0.14-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.2-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.3-empty.sql
 %%WWWDIR%%/install/mysql/glpi-10.0.4-empty.sql
@@ -2524,49 +2549,93 @@
 %%WWWDIR%%/public/lib/tinymce.js.map
 %%WWWDIR%%/public/lib/tinymce.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/dark/content.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/dark/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/dark/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/dark/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/default/content.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/default/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/default/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/default/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/document/content.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/document/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/document/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/document/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5-dark/content.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5-dark/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5-dark/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5-dark/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5/content.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/tinymce-5/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/writer/content.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/writer/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/content/writer/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/content/writer/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.css
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.inline.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.inline.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.inline.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.inline.min.js
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.shadowdom.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.shadowdom.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.shadowdom.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide-dark/skin.shadowdom.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.css
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.inline.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.inline.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.inline.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.inline.min.js
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.shadowdom.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.shadowdom.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.shadowdom.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/oxide/skin.shadowdom.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.css
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.inline.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.inline.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.inline.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.inline.min.js
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.css
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.inline.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.inline.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.inline.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.inline.min.js
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/content.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.min.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.shadowdom.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.shadowdom.js
 %%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.shadowdom.min.css
+%%WWWDIR%%/public/lib/tinymce/skins/ui/tinymce-5/skin.shadowdom.min.js
 %%WWWDIR%%/resources/.htaccess
 %%WWWDIR%%/resources/Rules/RuleAsset.xml
 %%WWWDIR%%/resources/Rules/RuleDictionnaryOperatingSystem.xml
@@ -2721,6 +2790,7 @@
 %%WWWDIR%%/src/Console/Cache/ConfigureCommand.php
 %%WWWDIR%%/src/Console/Cache/DebugCommand.php
 %%WWWDIR%%/src/Console/Cache/SetNamespacePrefixCommand.php
+%%WWWDIR%%/src/Console/Command/ConfigurationCommandInterface.php
 %%WWWDIR%%/src/Console/Command/ForceNoPluginsOptionCommandInterface.php
 %%WWWDIR%%/src/Console/Command/GlpiCommandInterface.php
 %%WWWDIR%%/src/Console/CommandLoader.php
@@ -3078,6 +3148,7 @@
 %%WWWDIR%%/src/Lockedfield.php
 %%WWWDIR%%/src/Log.php
 %%WWWDIR%%/src/Mail/Protocol/ProtocolInterface.php
+%%WWWDIR%%/src/Mail/SMTP/OAuthTokenProvider.php
 %%WWWDIR%%/src/Mail/SMTP/OauthConfig.php
 %%WWWDIR%%/src/Mail/SMTP/OauthProvider/Azure.php
 %%WWWDIR%%/src/Mail/SMTP/OauthProvider/Google.php
@@ -3423,6 +3494,7 @@
 %%WWWDIR%%/src/Toolbox.php
 %%WWWDIR%%/src/Toolbox/DataExport.php
 %%WWWDIR%%/src/Toolbox/DatabaseSchema.php
+%%WWWDIR%%/src/Toolbox/Filesystem.php
 %%WWWDIR%%/src/Toolbox/FrontEnd.php
 %%WWWDIR%%/src/Toolbox/MarkdownBuilder.php
 %%WWWDIR%%/src/Toolbox/Sanitizer.php
@@ -3511,6 +3583,7 @@
 %%WWWDIR%%/templates/components/itilobject/timeline/todo-list-summary.html.twig
 %%WWWDIR%%/templates/components/kanban/item_panels/default_panel.html.twig
 %%WWWDIR%%/templates/components/kanban/kanban.html.twig
+%%WWWDIR%%/templates/components/kanban/teammember.html.twig
 %%WWWDIR%%/templates/components/logs.html.twig
 %%WWWDIR%%/templates/components/masonry_grid.html.twig
 %%WWWDIR%%/templates/components/messages_after_redirect_alerts.html.twig
@@ -3686,7 +3759,10 @@
 %%WWWDIR%%/vendor/glpi-project/inventory_format/inventory.schema.json
 %%WWWDIR%%/vendor/glpi-project/inventory_format/lib/php/Converter.php
 %%WWWDIR%%/vendor/glpi-project/inventory_format/lib/php/FilesToJSON.php
+%%WWWDIR%%/vendor/glpi-project/inventory_format/original-netdiscovery.md
+%%WWWDIR%%/vendor/glpi-project/inventory_format/original-netinventory.md
 %%WWWDIR%%/vendor/glpi-project/inventory_format/original.md
+%%WWWDIR%%/vendor/glpi-project/inventory_format/phpstan.neon
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/CHANGELOG.md
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/LICENSE
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/README.md
@@ -6591,7 +6667,7 @@
 %%WWWDIR%%/vendor/webmozart/assert/src/Assert.php
 %%WWWDIR%%/vendor/webmozart/assert/src/InvalidArgumentException.php
 %%WWWDIR%%/vendor/webmozart/assert/src/Mixin.php
-%%WWWDIR%%/version/10.0.10
+%%WWWDIR%%/version/10.0.15
 @dir %%WWWDIR%%/ajax
 @dir %%WWWDIR%%/bin
 @dir %%WWWDIR%%/config
@@ -6665,6 +6741,10 @@
 @dir %%WWWDIR%%/install
 @dir %%WWWDIR%%/install/migrations
 @dir %%WWWDIR%%/install/migrations/update_10.0.0_to_10.0.1
+@dir %%WWWDIR%%/install/migrations/update_10.0.10_to_10.0.11
+@dir %%WWWDIR%%/install/migrations/update_10.0.11_to_10.0.12
+@dir %%WWWDIR%%/install/migrations/update_10.0.12_to_10.0.13
+@dir %%WWWDIR%%/install/migrations/update_10.0.14_to_10.0.15
 @dir %%WWWDIR%%/install/migrations/update_10.0.1_to_10.0.2
 @dir %%WWWDIR%%/install/migrations/update_10.0.2_to_10.0.3
 @dir %%WWWDIR%%/install/migrations/update_10.0.3_to_10.0.4
@@ -6678,16 +6758,16 @@
 @dir %%WWWDIR%%/install/migrations/update_9.5.x_to_10.0.0
 @dir %%WWWDIR%%/install/mysql
 @dir %%WWWDIR%%/js
-@dir %%WWWDIR%%/js/modules/Debug/
 @dir %%WWWDIR%%/js/Forms
 @dir %%WWWDIR%%/js/RichText
 @dir %%WWWDIR%%/js/modules
+@dir %%WWWDIR%%/js/modules/Debug
 @dir %%WWWDIR%%/js/modules/Kanban
 @dir %%WWWDIR%%/js/modules/Search
 @dir %%WWWDIR%%/js/modules/SearchTokenizer
 @dir %%WWWDIR%%/lib
-@dir %%WWWDIR%%/lib/blueimp/
-@dir %%WWWDIR%%/lib/blueimp/jquery-file-upload/
+@dir %%WWWDIR%%/lib/blueimp
+@dir %%WWWDIR%%/lib/blueimp/jquery-file-upload
 @dir %%WWWDIR%%/lib/bundles
 @dir %%WWWDIR%%/locales
 @dir %%WWWDIR%%/marketplace
@@ -6791,8 +6871,8 @@
 @dir %%WWWDIR%%/src/ContentTemplates/Parameters/ParametersTypes
 @dir %%WWWDIR%%/src/Csv
 @dir %%WWWDIR%%/src/Dashboard
-@dir %%WWWDIR%%/src/Dashboard/Filters/
-@dir %%WWWDIR%%/src/Debug/
+@dir %%WWWDIR%%/src/Dashboard/Filters
+@dir %%WWWDIR%%/src/Debug
 @dir %%WWWDIR%%/src/Exception
 @dir %%WWWDIR%%/src/Features
 @dir %%WWWDIR%%/src/Http
@@ -6823,7 +6903,7 @@
 @dir %%WWWDIR%%/templates/central/lists
 @dir %%WWWDIR%%/templates/components
 @dir %%WWWDIR%%/templates/components/dashboard
-@dir %%WWWDIR%%/templates/components/debug/
+@dir %%WWWDIR%%/templates/components/debug
 @dir %%WWWDIR%%/templates/components/dropdown
 @dir %%WWWDIR%%/templates/components/form
 @dir %%WWWDIR%%/templates/components/itilobject
@@ -7041,7 +7121,7 @@
 @dir %%WWWDIR%%/vendor/psr/http-factory
 @dir %%WWWDIR%%/vendor/psr/http-factory/src
 @dir %%WWWDIR%%/vendor/psr/http-message
-@dir %%WWWDIR%%/vendor/psr/http-message/docs/
+@dir %%WWWDIR%%/vendor/psr/http-message/docs
 @dir %%WWWDIR%%/vendor/psr/http-message/src
 @dir %%WWWDIR%%/vendor/psr/log
 @dir %%WWWDIR%%/vendor/psr/log/Psr

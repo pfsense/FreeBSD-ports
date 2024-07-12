@@ -1,5 +1,5 @@
 PORTNAME=	opensearch-dashboards
-DISTVERSION?=	2.11.1
+DISTVERSION?=	2.14.0
 DISTVERSIONSUFFIX=	-linux-x64
 CATEGORIES=	textproc www
 MASTER_SITES=	https://artifacts.opensearch.org/releases/bundle/${PORTNAME}/${DISTVERSION}/
@@ -55,5 +55,26 @@ post-install:
 	${ECHO} "@dir ${WWWDIR}/plugins/reportsDashboards/node_modules/set-interval-async/test/resources/dynamic" >> ${TMPPLIST}
 	${ECHO} "@dir ${WWWDIR}/plugins/reportsDashboards/node_modules/set-interval-async/examples/fixed" >> ${TMPPLIST}
 	${ECHO} "@dir ${WWWDIR}/plugins/reportsDashboards/node_modules/set-interval-async/examples/dynamic" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/observabilityDashboards/server/adaptors/integrations/__test__" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/observabilityDashboards/server/adaptors/integrations/repository/__test__" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Alerts/components/AlertFlyout" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/CreateDetector/components/ConfigureAlerts/components/AlertCondition" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/AlertTriggerView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/DetectorBasicDetailsView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/DetectorRulesView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/FieldMappingsView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateAlertConditions" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateDetectorBasicDetails" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateDetectorRules" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateFieldMappings" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/AlertTriggersView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/DetectorDetails" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/DetectorDetailsView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/Detectors" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/EditFieldMappings" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Rules/components/DeleteModal" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Rules/components/RuleEditor/components" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Rules/components/RulesTable" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityDashboards/server/multitenancy/test" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

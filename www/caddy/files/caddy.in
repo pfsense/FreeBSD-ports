@@ -119,9 +119,9 @@ caddy_precmd()
     /usr/bin/install -d -m 700 -o "${caddy_user}" -g "${caddy_group}" /var/run/caddy
     if [ -e ${caddy_logfile} ]; then
         /bin/chmod 644 ${caddy_logfile}
-        /usr/sbin/chown root:wheel ${caddy_logfile}
+        /usr/sbin/chown "${caddy_user}:${caddy_group}" ${caddy_logfile}
     else
-        /usr/bin/install -m 644 -o root -g wheel /dev/null ${caddy_logfile}
+        /usr/bin/install -m 644 -o "${caddy_user}" -g "${caddy_group}" /dev/null ${caddy_logfile}
     fi
 }
 
@@ -150,7 +150,9 @@ caddy_prestop()
         echo "done"
         exit 0
     else
-        if echo "${result}" | grep -q "connection refused"; then
+        if echo "${result}" | grep -q -e "connection refused" \
+            -e "connect: no such file or directory"; then
+
             echo "admin interface unavailable; using pidfile"
             return 0
         else

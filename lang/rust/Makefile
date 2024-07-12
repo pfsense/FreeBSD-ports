@@ -1,5 +1,5 @@
 PORTNAME=	rust
-PORTVERSION?=	1.74.1
+PORTVERSION?=	1.79.0
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
@@ -26,10 +26,9 @@ ONLY_FOR_ARCHS?=	aarch64 amd64 armv7 i386 powerpc64 powerpc64le powerpc \
 			riscv64
 ONLY_FOR_ARCHS_REASON?=	requires prebuilt bootstrap compiler
 
-BUILD_DEPENDS=	cmake:devel/cmake-core
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		cpe ninja:build pkgconfig python:build ssl tar:xz
+USES=		cmake:indirect cpe ninja:build pkgconfig python:build ssl tar:xz
 
 CPE_VENDOR=	rust-lang
 
@@ -60,7 +59,7 @@ DOCS_VARS=		_RUST_BUILD_DOCS=true \
 			_RUST_TOOLS+=rustdoc
 DOCS_VARS_OFF=		_RUST_BUILD_DOCS=false
 GDB_RUN_DEPENDS=	${LOCALBASE}/bin/gdb:devel/gdb
-PORT_LLVM_USES=		llvm:min=15,lib,noexport
+PORT_LLVM_USES=		llvm:min=17,lib,noexport
 PORT_LLVM_MAKE_ENV=	RUSTFLAGS="-Lnative=${LOCALBASE}/lib"
 SOURCES_VARS=		_COMPONENTS+=rust-src-${_PACKAGE_VERS} \
 			_RUST_TOOLS+=src
@@ -68,8 +67,8 @@ WASM_VARS=		_COMPONENTS+="rust-analysis-${_PACKAGE_VERS}-wasm32-unknown-unknown 
 			_RUST_TARGETS+=wasm32-unknown-unknown
 
 # See WRKSRC/src/stage0.json for the date and version values
-BOOTSTRAPS_DATE?=		2023-10-05
-RUST_BOOTSTRAP_VERSION?=	1.73.0
+BOOTSTRAPS_DATE?=		2024-05-02
+RUST_BOOTSTRAP_VERSION?=	1.78.0
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 
@@ -102,15 +101,15 @@ IGNORE=		is only for FreeBSD
 .if ${ARCH} == powerpc
 LIB_DEPENDS+=	libatomic.so:lang/gcc${GCC_DEFAULT}
 MAKE_ENV+=	RUSTFLAGS="-L/usr/local/lib/gcc${GCC_DEFAULT}"
-.else
-MAKE_ENV+=	RUST_BACKTRACE=1
-.endif
-
 # rls doesn't build on rust nightly
 # rls needs 64-bit atomics: it doesn't build on powerpc
-.if !defined(NIGHTLY_DATE) && ${ARCH} != powerpc
+.elif !defined(NIGHTLY_DATE)
 _RUST_TOOLS+=	rls
 _COMPONENTS+=	rls-${_PACKAGE_VERS}-${_RUST_TARGET}
+.endif
+
+.if ${ARCH} != powerpc64le
+MAKE_ENV+=	RUST_BACKTRACE=1
 .endif
 
 # per https://rust-lang.github.io/rustup/concepts/components.html
@@ -123,19 +122,8 @@ _COMPONENTS+=	rustc-dev-${_PACKAGE_VERS}-${_RUST_TARGET}
 _COMPONENTS+=	rust-docs-${_PACKAGE_VERS}-wasm32-unknown-unknown rust-docs-json-${_PACKAGE_VERS}-wasm32-unknown-unknown
 .endif
 
-# If the kernel does not return sane kern.proc.pathname values
-# for hardlinks then disable hardlinks in the build to avoid
-# intermittent "can't find crate for `std`" build failures,
-# c.f. PR248184
-#
-# XXX: Avoiding OSVERSION since it is derived from userland but
-# the running kernel might still be newer with sane behavior
-# anyway...
-.if exists(${PATCHDIR}/no-hardlinks)
-_KERN_OSRELDATE!=	${SYSCTL} -n kern.osreldate 2>/dev/null || echo 0
-.  if ${_KERN_OSRELDATE} < 1300521
-EXTRA_PATCHES+=		${PATCHDIR}/no-hardlinks
-.  endif
+.if exists(${PATCHDIR}/${ARCH}${BOOTSTRAPS_SUFFIX})
+EXTRA_PATCHES+=	${PATCHDIR}/${ARCH}${BOOTSTRAPS_SUFFIX}
 .endif
 
 .ifdef QEMU_EMULATING
@@ -159,7 +147,7 @@ post-patch:
 post-patch-PORT_LLVM-on:
 # WASM target hardcodes bundled lld
 	@${REINPLACE_CMD} 's|"rust-lld"|"wasm-ld${LLVM_VERSION}"|' \
-		${WRKSRC}/compiler/rustc_target/src/spec/wasm_base.rs
+		${WRKSRC}/compiler/rustc_target/src/spec/base/wasm.rs
 
 do-configure:
 # Check that the running kernel has COMPAT_FREEBSD11 required by lang/rust post-ino64
@@ -169,7 +157,6 @@ do-configure:
 	@cd ${WRKDIR}/${_component}-*-${OPSYS:tl} && \
 		${SH} install.sh --prefix=${WRKDIR}/bootstrap --verbose
 .endfor
-	@${ECHO_CMD} 'changelog-seen=2' > ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[build]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'build-dir="${WRKDIR}/_build"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'build-stage=2' >> ${WRKSRC}/config.toml
@@ -203,6 +190,7 @@ do-configure:
 .if ${PORT_OPTIONS:MLTO}
 	@${ECHO_CMD} 'lto="thin"' >> ${WRKSRC}/config.toml
 .endif
+	@${ECHO_CMD} 'remap-debuginfo=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[llvm]' >> ${WRKSRC}/config.toml
 .if ${PORT_OPTIONS:MLTO}
 	@${ECHO_CMD} 'thin-lto=true' >> ${WRKSRC}/config.toml
@@ -217,12 +205,10 @@ do-configure:
 # Rust doesn't call the system compiler with the full version of the target.
 # This makes powerpc miscompile due to the secure-plt ABI change.
 # Additionally, force using ld.bfd to work around a linking problem in rustc_mir
-	@${PRINTF} '#!/bin/sh\nexec ${CC} "$$@" --target=powerpc-unknown-freebsd13.0' > ${WRKDIR}/cc-wrapper
+	@${PRINTF} '#!/bin/sh\nexec ${CC} "$$@" --target=powerpc-unknown-freebsd13.2' > ${WRKDIR}/cc-wrapper
 	@${CHMOD} +x ${WRKDIR}/cc-wrapper
-	@${PRINTF} '#!/bin/sh\nexec ${CXX} "$$@" --target=powerpc-unknown-freebsd13.0' > ${WRKDIR}/cxx-wrapper
+	@${PRINTF} '#!/bin/sh\nexec ${CXX} "$$@" --target=powerpc-unknown-freebsd13.2' > ${WRKDIR}/cxx-wrapper
 	@${CHMOD} +x ${WRKDIR}/cxx-wrapper
-	@${PRINTF} '#!/bin/sh\nexec ${CC} -fuse-ld=bfd "$$@" --target=powerpc-unknown-freebsd13.0' > ${WRKDIR}/ld-wrapper
-	@${CHMOD} +x ${WRKDIR}/ld-wrapper
 .endif
 .for _target in ${_RUST_TARGETS}
 	@${ECHO_CMD} '[target.${_target}]' >> ${WRKSRC}/config.toml
@@ -234,11 +220,7 @@ do-configure:
 	@${ECHO_CMD} 'cc="${CC}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'cxx="${CXX}"' >> ${WRKSRC}/config.toml
 .endif
-.if ${ARCH} == powerpc
-	@${ECHO_CMD} 'linker="${WRKDIR}/ld-wrapper"' >> ${WRKSRC}/config.toml
-.else
 	@${ECHO_CMD} 'linker="${CC}"' >> ${WRKSRC}/config.toml
-.endif
 .if ${PORT_OPTIONS:MPORT_LLVM}
 	@${ECHO_CMD} 'llvm-config="${LOCALBASE}/bin/${LLVM_CONFIG}"' >> ${WRKSRC}/config.toml
 .endif

@@ -1,6 +1,7 @@
 PORTNAME=	kubectl
-PORTVERSION=	1.29.0
+PORTVERSION=	1.30.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -9,7 +10,7 @@ WWW=		https://github.com/kubernetes/kubectl
 
 LICENSE=	APACHE20
 
-USES=		cpe go:modules
+USES=		cpe go:1.22,modules
 CPE_VENDOR=	jenkins
 CPE_PRODUCT=	kubernetes
 

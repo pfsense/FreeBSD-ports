@@ -1,6 +1,6 @@
 PORTNAME=	health
 DISTVERSION=	0.95.0
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	deskutils
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -26,6 +26,12 @@ CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
 GLIB_SCHEMAS=	dev.Cogitri.Health.gschema.xml
+
+.if ${MACHINE_ARCH} == i386
+# https://github.com/rust-lang/rust/issues/85598
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 
 post-patch:
 # Make each cargo subcommand very verbose

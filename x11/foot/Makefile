@@ -1,8 +1,11 @@
 PORTNAME=	foot
-DISTVERSION=	1.16.2
+DISTVERSION=	1.17.2
 PORTREVISION=	1
 CATEGORIES=	x11 wayland
 MASTER_SITES=	https://codeberg.org/dnkl/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
+
+PATCH_SITES=	https://codeberg.org/dnkl/${PORTNAME}/commit/
+PATCHFILES+=	d229fd7fcc5a.patch:-p1 # https://codeberg.org/dnkl/foot/pulls/1726
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Fast, lightweight and minimalistic Wayland terminal emulator
@@ -76,6 +79,7 @@ post-build-PGO-on:
 	(cd ${BUILD_WRKSRC} && ./tests/test-config) # -Wbackend-plugin/-Wmissing-profile
 	(cd ${BUILD_WRKSRC} && ./utils/xtgettcap) # -Wbackend-plugin/-Wmissing-profile
 	(cd ${BUILD_WRKSRC} && ./${PORTNAME}client --version) # -Wbackend-plugin/-Wmissing-profile
+	(cd ${BUILD_WRKSRC} && ./${PORTNAME} --version) # -Wbackend-plugin/-Wmissing-profile
 .if defined(WAYLAND_DISPLAY)
 # Likely a local build, so optimize for the current config
 	(cd ${BUILD_WRKSRC} && LC_ALL=en_US.UTF-8 ./${PORTNAME} ${PYTHON_CMD} \

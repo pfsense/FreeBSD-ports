@@ -1,6 +1,6 @@
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Python bindings for version control system
 WWW=		https://subversion.apache.org/
 
@@ -12,8 +12,8 @@ USE_PYTHON=	flavors py3kplist
 # There is bug in python bindings Makefile
 MAKE_JOBS_UNSAFE=yes
 
-PORTREVISION_114=	2
-PORTREVISION_LTS=	0
+PORTREVISION_LATEST=	4
+PORTREVISION_LTS=		2
 
 SVN_BUILD_BINDINGS=	yes
 
@@ -21,7 +21,10 @@ SVN_BUILD_BINDINGS=	yes
 
 CATEGORIES+=	python
 
-CONFIGURE_ARGS+=	--without-gnome-keyring \
+CONFIGURE_ARGS+=	--with-swig-python=${PYTHON_CMD} \
+			--without-swig-perl \
+			--without-swig-ruby \
+			--without-gnome-keyring \
 			--without-kwallet \
 			--with-apxs=no
 

@@ -1,6 +1,6 @@
---- chrome/browser/enterprise/connectors/analysis/analysis_service_settings.cc.orig	2023-10-11 18:22:24 UTC
+--- chrome/browser/enterprise/connectors/analysis/analysis_service_settings.cc.orig	2024-06-17 12:56:06 UTC
 +++ chrome/browser/enterprise/connectors/analysis/analysis_service_settings.cc
-@@ -143,7 +143,7 @@ AnalysisServiceSettings::AnalysisServiceSettings(
+@@ -151,7 +151,7 @@ AnalysisServiceSettings::AnalysisServiceSettings(
    const char* verification_key = kKeyWindowsVerification;
  #elif BUILDFLAG(IS_MAC)
    const char* verification_key = kKeyMacVerification;

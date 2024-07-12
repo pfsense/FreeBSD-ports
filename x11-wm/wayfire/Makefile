@@ -1,12 +1,8 @@
 PORTNAME=	wayfire
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
-PORTREVISION=	2
+DISTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	x11-wm wayland
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	dd479c06bf84.patch:-p1 # https://github.com/WayfireWM/wayfire/issues/599
-PATCHFILES+=	564b75a45d7c.patch:-p1 # https://github.com/WayfireWM/wayfire/pull/1943
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	3D Wayland compositor
@@ -20,8 +16,7 @@ BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wf-config>=0.8.0<0.9.0:devel/wf-config \
 		${LOCALBASE}/include/xf86drmMode.h:graphics/libdrm \
 		wayland-protocols>=1.12:graphics/wayland-protocols \
-		glm>=0.9.8:math/glm \
-		wlroots>=0.16.0<0.17.0:x11-toolkits/wlroots
+		glm>=0.9.8:math/glm
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libinotify.so:devel/libinotify \
 		libwf-config.so:devel/wf-config \
@@ -32,7 +27,7 @@ LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libxkbcommon.so:x11/libxkbcommon
 TEST_DEPENDS=	doctest>0:devel/doctest
 
-USES=		compiler:c++17-lang gl gnome jpeg meson pkgconfig xorg
+USES=		cmake:indirect compiler:c++17-lang gl gnome jpeg meson pkgconfig xorg
 USE_GITHUB=	yes
 USE_GL=		egl glesv2
 USE_GNOME=	cairo pango
@@ -74,6 +69,4 @@ pre-test:
 		${TOUCH} ${WRKDIR}/.meson_build_tests; \
 	fi
 
-# Keep override.mk in sync with x11/wcm + x11/wf-shell
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots016/override.mk"
 .include <bsd.port.mk>

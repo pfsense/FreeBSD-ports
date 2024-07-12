@@ -33,7 +33,6 @@ BUILD_DEPENDS+=		meson:devel/meson
 USE_LOCALE?=	en_US.UTF-8
 
 CONFIGURE_ARGS+=	--prefix ${PREFIX} \
-			--mandir man \
 			--infodir ${INFO_PATH}
 
 # Enable all optional features to make builds deterministic. Consumers can
@@ -54,6 +53,8 @@ INSTALL_TARGET=		install
 # should we have strip separate from WITH_DEBUG?
 .  if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--buildtype debug
+.  elif defined(WITH_DEBUGINFO)
+CONFIGURE_ARGS+=	--buildtype debugoptimized
 .  else
 CONFIGURE_ARGS+=	--buildtype release \
 			--optimization plain \

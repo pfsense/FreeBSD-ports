@@ -30,15 +30,7 @@ require("guiconfig.inc");
 require_once("service-utils.inc");
 require_once("servicewatchdog.inc");
 
-if (!is_array($config['installedpackages']['servicewatchdog'])) {
-	$config['installedpackages']['servicewatchdog'] = array();
-}
-
-if (!is_array($config['installedpackages']['servicewatchdog']['item'])) {
-	$config['installedpackages']['servicewatchdog']['item'] = array();
-}
-
-$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
+config_init_path('installedpackages/servicewatchdog/item');
 
 unset($input_errors);
 
@@ -53,7 +45,7 @@ if ($_POST) {
 	}
 
 	if (!$input_errors) {
-		$a_pwservices[] = $system_services[$_POST['svcid']];
+		config_set_path('installedpackages/servicewatchdog/item/', $system_services[$_POST['svcid']]);
 		servicewatchdog_cron_job();
 		write_config(gettext("Services: Service Watchdog: added a service to watchdog."));
 

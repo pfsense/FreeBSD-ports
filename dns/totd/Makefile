@@ -1,6 +1,6 @@
 PORTNAME=	totd
 PORTVERSION=	1.5.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	https://BSDforge.com/projects/source/dns/totd/
 
@@ -8,15 +8,13 @@ MAINTAINER=	ed@FreeBSD.org
 COMMENT=	DNS proxy that supports IPv6 <==> IPv4 record translation
 WWW=		https://BSDforge.com/projects/dns/totd/
 
-BROKEN=		Unfetchable
-
 USES=		desthack uidfix
 
 USE_RC_SUBR=	totd
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	"@sample etc/totd.conf.sample" \
-		man/man8/totd.8.gz \
+		share/man/man8/totd.8.gz \
 		sbin/totd
 
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-ne_mesg.c \

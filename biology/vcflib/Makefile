@@ -1,6 +1,6 @@
 PORTNAME=		vcflib
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.0.7
+DISTVERSION=		1.0.10
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -39,6 +39,7 @@ OPTIONS_SUB=		yes
 
 ZIG_DESC=		Include Zig language support
 
+# FIXME: https://github.com/vcflib/vcflib/issues/399
 ZIG_BUILD_DEPENDS=	zig010>0:lang/zig010
 
 CMAKE_ARGS+=	-DWFA_GITMODULE=OFF -DWFALIB=${LOCALBASE}/lib/libwfa2.so
@@ -47,6 +48,7 @@ ZIG_CMAKE_OFF=	-DZIG=OFF
 # Clang and GCC disable sse2 by default on i386, but it's required for vcflib
 CFLAGS_i386=	-msse2
 
+# filevercmp is deprecated.  Remove conflict when the port is removed.
 CONFLICTS_INSTALL=	filevercmp libdisorder # include/disorder.h include/filevercmp.h include/pdflib.hpp
 
 .include <bsd.port.options.mk>

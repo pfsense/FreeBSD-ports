@@ -1,11 +1,12 @@
 PORTNAME=	octokit
-PORTVERSION=	8.0.0
+PORTVERSION=	9.1.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Simple wrapper for the GitHub API
-WWW=		https://github.com/octokit/octokit.rb
+WWW=		https://octokit.github.io/octokit.rb/ \
+		https://github.com/octokit/octokit.rb
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

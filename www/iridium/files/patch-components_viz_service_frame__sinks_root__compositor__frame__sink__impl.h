@@ -1,11 +1,11 @@
---- components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h.orig	2023-11-22 14:00:11 UTC
+--- components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h.orig	2024-06-25 12:08:48 UTC
 +++ components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h
-@@ -212,7 +212,7 @@ class VIZ_SERVICE_EXPORT RootCompositorFrameSinkImpl
+@@ -209,7 +209,7 @@ class VIZ_SERVICE_EXPORT RootCompositorFrameSinkImpl
+   // See comments on `EvictionHandler`.
+   EvictionHandler eviction_handler_;
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(IS_OZONE_X11)
    gfx::Size last_swap_pixel_size_;
- #endif
+ #endif  // BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
  

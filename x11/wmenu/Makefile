@@ -1,11 +1,11 @@
 PORTNAME=	wmenu
-DISTVERSION=	0.1.4
+DISTVERSION=	0.1.9
 CATEGORIES=	x11 wayland
-MASTER_SITES=	https://git.sr.ht/~adnano/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
+MASTER_SITES=	https://codeberg.org/adnano/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	o.hushchenkov@gmail.com
 COMMENT=	Efficient dynamic menu for Wayland
-WWW=		https://sr.ht/~adnano/wmenu/
+WWW=		https://codeberg.org/adnano/wmenu/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -26,7 +26,10 @@ CPPFLAGS+=	`pkg-config --cflags epoll-shim`
 LDFLAGS+=	`pkg-config --libs epoll-shim`
 .endif
 
+WRKSRC=		${WRKDIR}/${PORTNAME}
+
 PLIST_FILES=	bin/wmenu \
-		man/man1/wmenu.1.gz
+		bin/wmenu-run \
+		share/man/man1/wmenu.1.gz
 
 .include <bsd.port.mk>

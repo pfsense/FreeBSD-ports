@@ -1,0 +1,185 @@
+diff --git a/src/etc/inc/filter.inc b/src/etc/inc/filter.inc
+index dec6f9d109..9b509f031c 100644
+--- a/src/etc/inc/filter.inc
++++ b/src/etc/inc/filter.inc
+@@ -391,6 +391,8 @@ function filter_configure_sync($delete_states_if_needed = true) {
+ 		$limitrules = "";
+ 	}
+ 
++	$limitrules .= "set state-policy " . config_get_path('system/statepolicy', 'floating') . "\n";
++
+ 	/* User defined maximum table entries in Advanced menu. */
+ 	if (is_numeric(config_get_path('system/maximumtableentries'))) {
+ 		$limitrules .= sprintf("set limit table-entries %d\n", config_get_path('system/maximumtableentries'));
+@@ -3573,9 +3575,13 @@ function filter_generate_user_rule($rule, & $extralabels = null) {
+ 			      ((isset($rule['max-src-conn']) and $rule['max-src-conn'] <> "") or
+ 			      (isset($rule['max-src-conn-rate']) and $rule['max-src-conn-rate'] <> "") or
+ 			      (isset($rule['max-src-conn-rates']) and $rule['max-src-conn-rates'] <> ""))) or
++			    (isset($rule['statepolicy']) and !empty($rule['statepolicy'])) or
+ 			    (isset($rule['sloppy'])) or
+ 			    (isset($rule['nopfsync']))) {
+ 				$aline['flags'] .= "( ";
++				if (!empty($rule['statepolicy'])) {
++					$aline['flags'] .= "{$rule['statepolicy']} ";
++				}
+ 				if (isset($rule['sloppy'])) {
+ 					$aline['flags'] .= "sloppy ";
+ 				}
+diff --git a/src/usr/local/pfSense/include/www/system_advanced_firewall.inc b/src/usr/local/pfSense/include/www/system_advanced_firewall.inc
+index 0c8bf4eee0..11591368ec 100644
+--- a/src/usr/local/pfSense/include/www/system_advanced_firewall.inc
++++ b/src/usr/local/pfSense/include/www/system_advanced_firewall.inc
+@@ -27,6 +27,11 @@ require_once("system.inc");
+ require_once("util.inc");
+ require_once("pfsense-utils.inc");
+ 
++$state_policy_options = [
++	'if-bound' => gettext('Interface Bound States'),
++	'floating' => gettext('Floating States'),
++];
++
+ 
+ // Functions included by system_advanced_firewall.php =========================
+ function getSystemAdvancedFirewall($json = false) {
+@@ -40,6 +45,7 @@ function getSystemAdvancedFirewall($json = false) {
+ 	$pconfig['bogonsinterval'] = config_get_path('system/bogons/interval');
+ 	$pconfig['bypassstaticroutes'] = isset($config['filter']['bypassstaticroutes']);
+ 	$pconfig['checkaliasesurlcert'] = isset($config['system']['checkaliasesurlcert']);
++	$pconfig['statepolicy'] = config_get_path('system/statepolicy', 'floating');
+ 	$pconfig['disablefilter'] = config_get_path('system/disablefilter');
+ 	$pconfig['disablenatreflection'] = config_get_path('system/disablenatreflection');
+ 	$pconfig['disablenegate'] = isset($config['system']['disablenegate']);
+@@ -82,11 +88,17 @@ function getSystemAdvancedFirewall($json = false) {
+ }
+ 
+ function saveSystemAdvancedFirewall($post, $json = false) {
+-	global $g, $config;
++	global $g, $config, $state_policy_options;
+ 
+ 	$rv = array();
+ 
+ 	/* input validation */
++
++	if (!empty($post['statepolicy']) &&
++	    !array_key_exists($post['statepolicy'], $state_policy_options)) {
++		$input_errors[] = gettext("Invalid Firewall State Policy value.");
++	}
++
+ 	if ((isset($post['adaptivestart']) && !isset($post['adaptiveend'])) || (!isset($post['adaptivestart']) && isset($post['adaptiveend']))) {
+ 		$input_errors[] = gettext("The Firewall Adaptive values must be set together.");
+ 	}
+@@ -193,6 +205,8 @@ function saveSystemAdvancedFirewall($post, $json = false) {
+ 			config_del_path('system/disablefilter');
+ 		}
+ 
++		config_set_path('system/statepolicy', $post['statepolicy']);
++
+ 		if ($post['disablevpnrules'] == "yes") {
+ 			$config['system']['disablevpnrules'] = true;
+ 		} else {
+diff --git a/src/usr/local/www/firewall_rules_edit.php b/src/usr/local/www/firewall_rules_edit.php
+index ed31d98bb2..8418cea86f 100644
+--- a/src/usr/local/www/firewall_rules_edit.php
++++ b/src/usr/local/www/firewall_rules_edit.php
+@@ -69,6 +69,12 @@ $icmplookup = array(
+ 	'inet46' => array('name' => 'IPv4+6', 'icmptypes' => $icmptypes46, 'helpmsg' => sprintf(gettext('For ICMP rules on IPv4+IPv6, one or more of these ICMP subtypes may be specified. (Other ICMP subtypes are only valid under IPv4 %1$sor%2$s IPv6, not both)'), '<i>', '</i>'))
+ );
+ 
++$statepolicy_values = [
++	''  => gettext('Use global default'),
++	'if-bound' => gettext('Interface Bound States'),
++	'floating' => gettext('Floating States'),
++];
++
+ $statetype_values = array(
+ 	'keep state' => gettext('Keep'),
+ 	'sloppy state' => gettext('Sloppy'),
+@@ -119,6 +125,7 @@ function is_aoadv_used($rule_config) {
+ 	    ($rule_config['tcpflags2'] != "") ||
+ 	    ($rule_config['tcpflags_any']) ||
+ 	    ($rule_config['nopfsync']) ||
++	    ($rule_config['statepolicy'] != "") ||
+ 	    (($rule_config['statetype'] != "") && ($rule_config['statetype'] != "keep state")) ||
+ 	    ($rule_config['nosync']) ||
+ 	    ($rule_config['vlanprio'] != "") ||
+@@ -284,6 +291,7 @@ if (isset($id) && $a_filter[$id]) {
+ 	$pconfig['max-src-nodes'] = $a_filter[$id]['max-src-nodes'];
+ 	$pconfig['max-src-conn'] = $a_filter[$id]['max-src-conn'];
+ 	$pconfig['max-src-states'] = $a_filter[$id]['max-src-states'];
++	$pconfig['statepolicy'] = $a_filter[$id]['statepolicy'];
+ 	$pconfig['statetype'] = $a_filter[$id]['statetype'];
+ 	$pconfig['statetimeout'] = $a_filter[$id]['statetimeout'];
+ 	$pconfig['nopfsync'] = isset($a_filter[$id]['nopfsync']);
+@@ -828,6 +836,9 @@ if ($_POST['save']) {
+ 	if ($_POST['tagged'] && !is_validaliasname($_POST['tagged'])) {
+ 		$input_errors[] = gettext("Invalid tagged value.");
+ 	}
++	if ($_POST['statepolicy'] && !array_key_exists($_POST['statepolicy'], $statepolicy_values)) {
++		$input_errors[] = gettext("Invalid State Policy.");
++	}
+ 	if ($_POST['statetype'] && !array_key_exists($_POST['statetype'], $statetype_values)) {
+ 		$input_errors[] = gettext("Invalid State Type.");
+ 	}
+@@ -929,6 +940,7 @@ if ($_POST['save']) {
+ 		$filterent['max-src-conn'] = $_POST['max-src-conn'];
+ 		$filterent['max-src-states'] = $_POST['max-src-states'];
+ 		$filterent['statetimeout'] = $_POST['statetimeout'];
++		$filterent['statepolicy'] = $_POST['statepolicy'];
+ 		$filterent['statetype'] = $_POST['statetype'];
+ 		$filterent['os'] = $_POST['os'];
+ 		if ($_POST['nopfsync'] <> "") {
+@@ -1627,6 +1639,16 @@ $section->addInput(new Form_Checkbox(
+ 	$pconfig['nopfsync']
+ ));
+ 
++$section->addInput(new Form_Select(
++	'statepolicy',
++	'State Policy',
++	(isset($pconfig['statepolicy'])) ? $pconfig['statepolicy'] : "",
++	$statepolicy_values
++))->setHelp('Optionally overrides the default state policy behavior to force a specific policy ' .
++		'for connections matching this rule. Only effective when rules keep state.%1$s' .
++		'The global default policy option is located at System > Advanced, Firewall &amp; NAT tab.',
++		'<br />');
++
+ $section->addInput(new Form_Select(
+ 	'statetype',
+ 	'State type',
+diff --git a/src/usr/local/www/system_advanced_firewall.php b/src/usr/local/www/system_advanced_firewall.php
+index 239c055b0d..206fb84daa 100644
+--- a/src/usr/local/www/system_advanced_firewall.php
++++ b/src/usr/local/www/system_advanced_firewall.php
+@@ -250,6 +250,33 @@ $section->addInput(new Form_Checkbox(
+ 	'Note: This will also turn off NAT! To only disable NAT, '.
+ 	'and not firewall rules, visit the %3$sOutbound NAT%4$s page.', g_get('product_label'), '<br/>', '<a href="firewall_nat_out.php">', '</a>');
+ 
++global $state_policy_options;
++
++$section->addInput(new Form_Select(
++	'statepolicy',
++	'Firewall State Policy',
++	$pconfig['statepolicy'],
++	$state_policy_options
++))->setHelp(
++	'%1$sInterface Bound States are more strict and secure. States '.
++	'are bound to specific interfaces by their OS/driver name (e.g. '.
++	'igcX). If a packet attempts to takes an path through a different '.
++	'interface than the one to which it is bound, the packet is '.
++	'dropped. This policy is less likely to allow VPN or other '.
++	'traffic to egress via unexpected paths (e.g. during interface '.
++	'events). '.
++	'%2$sFloating States are less secure, more lenient in their '.
++	'checks, and are not strictly associated with any interface. The '.
++	'interface is tracked in state properties, but it is informational '.
++	'and not enforced. This policy allows HA nodes with different '.
++	'hardware to utilize state synchronization. It is also more '.
++	'forgiving of certain asymmetric routing scenarios. However, this '.
++	'relaxed policy may allow connections to be misdirected or take '.
++	'unexpected paths if the routing table can be manipulated. '.
++	'%3$sThere is no difference in the ability to view or kill states ' .
++	'between either mode.',
++	'</span><ul class="help-block"><li>', '</li><li>', '</li></ul><span class="help-block">');
++
+ $section->addInput(new Form_Checkbox(
+ 	'bypassstaticroutes',
+ 	'Static route filtering',

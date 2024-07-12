@@ -1,5 +1,6 @@
 PORTNAME=	sqlitestudio
 DISTVERSION=	3.4.4
+PORTREVISION=	2
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,20 +20,45 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pawelsalawa
 
 OPTIONS_GROUP=		PLUGINS
-OPTIONS_DEFAULT=	${OPTIONS_GROUP_PLUGINS}
 OPTIONS_SUB=		yes
 PLUGINS_DESC=			Install plugins:
 
-ALL_PLUGINS=		CsvImport CsvExport DbSqliteCipher HtmlExport JsonExport MultiEditorImage PdfExport Printing \
-			RegExpImport SqlFormatterSimple SqlExport SqlEnterpriseFormatter XmlExport
+ALL_PLUGINS=		ConfigMigration CsvExport CsvImport DbAndroid DbSqliteCipher \
+			DbSqliteWx FusionDarkStyle HtmlExport JsonExport MultiEditorImage \
+			PdfExport Printing PythonSyntaxHighlighter RegExpImport ScriptingPython \
+			ScriptingTcl SqlEnterpriseFormatter SqlExport SqlFormatterSimple XmlExport
+
 .for p in ${ALL_PLUGINS}
 OPTIONS_GROUP_PLUGINS+=		PLUGIN${p:C/([A-Z])/_\1/g:tu}
 PLUGIN${p:C/([A-Z])/_\1/g:tu}_DESC=		${p} plugin
 PLUGIN${p:C/([A-Z])/_\1/g:tu}_VARS=	PLUGIN_DIRS+=${p}
 .endfor
 
-PLUGIN_DB_SQLITE_CIPHER_USES=		ssl
-PLUGIN_PRINTING_USE=			QT=printsupport
+PLUGIN_DB_SQLITE_CIPHER_USES=			ssl
+PLUGIN_PRINTING_USE=				QT=printsupport
+
+PLUGIN_PYTHON_SYNTAX_HIGHLIGHTER_USES=		python
+PLUGIN_PYTHON_SYNTAX_HIGHLIGHTER_CXXFLAGS=	-I${PYTHON_INCLUDEDIR}
+PLUGIN_PYTHON_SYNTAX_HIGHLIGHTER_BROKEN=	https://github.com/pawelsalawa/sqlitestudio/issues/4995
+
+PLUGIN_SCRIPTING_PYTHON_USES=			python
+PLUGIN_SCRIPTING_PYTHON_CXXFLAGS=		-I${PYTHON_INCLUDEDIR}
+PLUGIN_SCRIPTING_PYTHON_BROKEN=			https://github.com/pawelsalawa/sqlitestudio/issues/4995
+
+PLUGIN_SCRIPTING_TCL_USES=			tcl:87
+PLUGIN_SCRIPTING_TCL_CXXFLAGS=			-I${TCL_INCLUDEDIR}
+
+# workaround for https://github.com/pawelsalawa/sqlitestudio/issues/4999
+ARCH!=						uname -p
+.if ${ARCH} != "amd64" && ${ARCH} != "i386"
+PLUGIN_DB_SQLITE_WX_BROKEN=			Impossible to build on ${ARCH}: it uses SSE SIMD
+.endif
+
+.for opt in ${OPTIONS_GROUP_PLUGINS}
+.  if "${${opt}_BROKEN}" == ""
+OPTIONS_DEFAULT+=	${opt}
+.  endif
+.endfor
 
 WRKSRC_SUBDIR=	SQLiteStudio3
 

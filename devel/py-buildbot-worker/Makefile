@@ -1,8 +1,9 @@
 PORTNAME=	buildbot-worker
-PORTVERSION=	3.10.1
+DISTVERSION=	3.11.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	buildbot_worker-${DISTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Buildbot Worker Daemon
@@ -31,7 +32,7 @@ USERS=		buildbot
 GROUPS=		buildbot
 
 POST_PLIST+=	fix-plist
-PLIST_FILES=	man/man1/buildbot-worker.1.gz
+PLIST_FILES=	share/man/man1/buildbot-worker.1.gz
 
 # XXX fixup plist. see:
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=205056
@@ -39,7 +40,7 @@ fix-plist:
 	${REINPLACE_CMD} -e 's|^${BUILDBOT_REMOVE_ME}$$||' ${TMPPLIST}
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/docs/buildbot-worker.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/docs/buildbot-worker.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-test:
 	${MKDIR} ${WRKDIR}/tmp

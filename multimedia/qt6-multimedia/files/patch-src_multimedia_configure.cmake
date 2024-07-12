@@ -1,6 +1,6 @@
---- src/multimedia/configure.cmake.orig	2023-10-03 20:42:53 UTC
+--- src/multimedia/configure.cmake.orig	2024-06-08 01:28:28 UTC
 +++ src/multimedia/configure.cmake
-@@ -76,7 +76,7 @@ qt_feature("ffmpeg" PRIVATE
+@@ -80,7 +80,7 @@ qt_feature("ffmpeg" PRIVATE
      LABEL "FFmpeg"
      ENABLE INPUT_ffmpeg STREQUAL 'yes'
      DISABLE INPUT_ffmpeg STREQUAL 'no'

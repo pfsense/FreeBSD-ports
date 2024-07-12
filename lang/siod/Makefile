@@ -1,11 +1,12 @@
 PORTNAME=	siod
 PORTVERSION=	3.6.2
+PORTREVISION=	2
 CATEGORIES=	lang scheme
 MASTER_SITES=	http://people.delphiforums.com/gjc/
 DISTNAME=	siod
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}	# Upstream aren't versioned :(
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Small footprint implementation of the Scheme programming language
 WWW=		https://people.delphiforums.com/gjc/siod.html
 
@@ -27,8 +28,7 @@ NO_WRKSUBDIR=	yes
 EXTRACT_AFTER_ARGS=--exclude md5\* --exclude regex.h --exclude reg????*.c
 MAKE_ARGS=	VPATH=${WRKSRC} MODULES=${MODULES:Q}
 MAKEFILE=	${FILESDIR}/BSDmakefile
-MAKE_ENV=	MKDIR=${MKDIR:Q} STAGEDIR=${STAGEDIR:Q}
-MAKE_ENV+=	MAN1PREFIX=${MAN1PREFIX} PREFIX=${PREFIX:Q}
+MAKE_ENV=	MKDIR=${MKDIR:Q} PREFIX=${PREFIX:Q} STAGEDIR=${STAGEDIR:Q}
 MAKE_ENV+=	INSTALL_MAN=${INSTALL_MAN:Q} INSTALL_SCRIPT=${INSTALL_SCRIPT:Q}
 MAKE_ENV+=	INSTALL_DATA=${INSTALL_DATA:Q}
 

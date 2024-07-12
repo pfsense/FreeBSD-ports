@@ -1,5 +1,6 @@
 PORTNAME=	grpc
-PORTVERSION=	1.60.0
+PORTVERSION=	1.62.2
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	2
 CATEGORIES=	devel
@@ -22,8 +23,6 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 USES=		cmake compiler:c++17-lang cpe localbase:ldflags pkgconfig ssl
 
 USE_GITHUB=	yes
-GH_TUPLE=	census-instrumentation:opencensus-proto:v0.4.1:census_instrumentation_opencensus_proto/third_party/opencensus-proto/src \
-		cncf:xds:0fa0005:cncf_xds/third_party/xds
 
 CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=17 \
 		-DgRPC_ABSL_PROVIDER=package \
@@ -33,8 +32,9 @@ CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=17 \
 		-DgRPC_RE2_PROVIDER=package \
 		-DgRPC_SSL_PROVIDER=package \
 		-DgRPC_ZLIB_PROVIDER=package
-CMAKE_OFF=	gRPC_BACKWARDS_COMPATIBILITY_MODE \
-		gRPC_BUILD_TESTS
+CMAKE_OFF=	CMAKE_CXX_EXTENSIONS \
+		gRPC_BUILD_TESTS \
+		gRPC_DOWNLOAD_ARCHIVES
 CMAKE_ON=	BUILD_SHARED_LIBS \
 		gRPC_BUILD_CODEGEN \
 		gRPC_BUILD_GRPC_CPP_PLUGIN \
@@ -48,13 +48,24 @@ USE_CSTD=	c11
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	SHLIB_MAJOR=${PORTVERSION:R} \
-		SHLIB_MINOR=${PORTVERSION:E}
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+		SHLIB_VER=${PORTVERSION:R}
 
 CONFLICTS_INSTALL=	grpc[0-9][0-9][0-9]
 
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/third_party/abseil-cpp/ \
+			--exclude ${DISTNAME}/third_party/benchmark/ \
+			--exclude ${DISTNAME}/third_party/boringssl-with-bazel/ \
+			--exclude ${DISTNAME}/third_party/cares/ \
+			--exclude ${DISTNAME}/third_party/protobuf/ \
+			--exclude ${DISTNAME}/third_party/re2/ \
+			--exclude ${DISTNAME}/third_party/xxhash/ \
+			--exclude ${DISTNAME}/third_party/zlib/ \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/third_party/abseil-cpp/
 	@${RM} -r ${WRKSRC}/third_party/benchmark/
 	@${RM} -r ${WRKSRC}/third_party/boringssl-with-bazel/
@@ -65,5 +76,6 @@ post-patch:
 	#@${RM} -r ${WRKSRC}/third_party/utf8_range/
 	@${RM} -r ${WRKSRC}/third_party/xxhash/
 	@${RM} -r ${WRKSRC}/third_party/zlib/
+.endif
 
 .include <bsd.port.mk>

@@ -1,6 +1,5 @@
 PORTNAME=	xpdfopen
-PORTVERSION=	0.86
-PORTREVISION=	2
+DISTVERSION=	${TEXLIVE_VERSION}
 CATEGORIES=	print
 MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/
 DISTNAME=	texlive-${TEXLIVE_VERSION}-source
@@ -21,7 +20,7 @@ WRKSRC=		${WRKDIR}/${DISTNAME}/utils/xpdfopen
 
 PLIST_FILES=	bin/pdfclose \
 		bin/pdfopen \
-		man/man1/pdfclose.1.gz \
-		man/man1/pdfopen.1.gz
+		share/man/man1/pdfclose.1.gz \
+		share/man/man1/pdfopen.1.gz
 
 .include <bsd.port.mk>

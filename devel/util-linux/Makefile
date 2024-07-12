@@ -1,5 +1,5 @@
 PORTNAME=	util-linux
-DISTVERSION=	2.39.2
+DISTVERSION=	2.39.4
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/linux/utils/util-linux/v${DISTVERSION:R}/
 
@@ -27,6 +27,7 @@ SHEBANG_FILES=	misc-utils/getopt-example.bash \
 		tests/run.sh
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-nls --disable-ipcrm --disable-ipcs \
 		--disable-makeinstall-chown --disable-makeinstall-setuid \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig

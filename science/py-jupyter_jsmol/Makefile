@@ -1,5 +1,6 @@
 PORTNAME=	jupyter-jsmol
 PORTVERSION=	2022.1.0
+PORTREVISION=	1
 CATEGORIES=	science devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,8 +19,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}ipywidgets>0:devel/py-ipywidgets@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipython>=7.0.0:devel/ipython@${PY_FLAVOR}
 
-USES=		python pytest
-USE_PYTHON=	distutils
+USES=		python
+USE_PYTHON=	distutils pytest
 PYDISTUTILS_CONFIGUREARGS=	--skip-npm
 PYDISTUTILS_BUILDARGS=		--skip-npm
 

@@ -1,13 +1,17 @@
 PORTNAME=	conky
-PORTVERSION=	1.19.6
+PORTVERSION=	1.21.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fernape@FreeBSD.org
 COMMENT?=	Advanced, highly configurable system monitor for X11
 WWW=		https://github.com/brndnmtthws/conky
 
-BUILD_DEPENDS=	gsed:textproc/gsed
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BUILD_DEPENDS=	gperf:devel/gperf \
+		gsed:textproc/gsed
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 
 USES=		cmake compiler:c++11-lib cpe gettext-runtime iconv \
@@ -73,7 +77,8 @@ LUA_CAIRO_IMPLIES=	X11
 LUA_CAIRO_USES=		gnome
 LUA_CAIRO_USE=		GNOME=cairo
 LUA_CAIRO_CMAKE_BOOL=	BUILD_LUA_CAIRO
-LUA_CAIRO_PLIST_FILES=	lib/conky/libcairo.so
+LUA_CAIRO_PLIST_FILES=	lib/conky/libcairo.so \
+			lib/conky/libcairo_xlib.so
 
 LUA_IMLIB2_IMPLIES=	IMLIB2 X11
 LUA_IMLIB2_CMAKE_BOOL=	BUILD_LUA_IMLIB2
@@ -90,7 +95,7 @@ MANPAGES_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FL
 			pandoc:textproc/hs-pandoc
 MANPAGES_USES=		python:build
 MANPAGES_CMAKE_BOOL=	BUILD_DOCS
-MANPAGES_PLIST_FILES=	man/man1/conky.1.gz
+MANPAGES_PLIST_FILES=	share/man/man1/conky.1.gz
 
 METAR_IMPLIES=		CURL
 METAR_CMAKE_BOOL=	BUILD_WEATHER_METAR
@@ -121,7 +126,7 @@ WAYLAND_CMAKE_BOOL=	BUILD_WAYLAND
 WAYLAND_LDFLAGS=	-Wl,--as-needed # pangoft2 deps: glib20, freetype2, harfbuzz
 
 X11_USES=	xorg
-X11_USE=	XORG=x11,xdamage,xext,xfixes
+X11_USE=	XORG=x11,xdamage,xext,xfixes,xi
 X11_CMAKE_BOOL=	BUILD_X11 OWN_WINDOW
 
 XFT_IMPLIES=	X11

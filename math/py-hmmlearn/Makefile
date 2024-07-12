@@ -12,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	wheel-${PYTHON_VER}:devel/py-wheel@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm>=3.4.3:devel/py-setuptools_scm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=3.4.3:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=0.19:science/py-scipy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scikit-learn>=0.16:science/py-scikit-learn@${PY_FLAVOR} \
@@ -25,7 +25,7 @@ USES=		python
 USE_PYTHON=	autoplist pep517 pytest
 
 post-stage:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/hmmlearn/_hmmc.cpython-39.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/hmmlearn/_hmmc.cpython-${PYTHON_SUFFIX}.so
 
 # 2023-12-29: Tests currently fail due to known upstream issues
 do-test:

@@ -322,10 +322,10 @@ update_status(" General Tab -> IP Tab settings...");
 if (config_get_path('installedpackages/pfblockerng/config/0') != null &&
     config_get_path('installedpackages/pfblockerngipsettings/config/0') == null) {
 
-	$pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
+	$pfb['gconfig'] = config_get_path('installedpackages/pfblockerng/config/0');
 
-	init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
-	$pfb['iconfig'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0];
+	config_init_path('installedpackages/pfblockerngipsettings/config/0');
+	$pfb['iconfig'] = config_get_path('installedpackages/pfblockerngipsettings/config/0');
 
 	$settings = array(	'enable_dup', 'enable_agg', 'suppression', 'enable_log', 'maxmind_locale', 'database_cc',
 				'inbound_interface', 'inbound_deny_action', 'outbound_interface', 'outbound_deny_action',
@@ -333,8 +333,10 @@ if (config_get_path('installedpackages/pfblockerng/config/0') != null &&
 
 	foreach ($settings as $setting) {
 		$pfb['iconfig'][$setting] = $pfb['gconfig'][$setting] ?: '';
+		config_set_path("installedpackages/pfblockerngipsettings/config/0/{$setting}", $pfb['iconfig'][$setting]);
 		if (isset($pfb['gconfig'][$setting])) {
 			unset($pfb['gconfig'][$setting]);
+			config_del_path("installedpackages/pfblockerng/config/0/{$setting}");
 		}
 	}
 	update_status(" saving new changes ... done.\n");

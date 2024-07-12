@@ -28,6 +28,7 @@
     SUBDIR += cmigemo
     SUBDIR += cmigemo-dict
     SUBDIR += cp5022x-el
+    SUBDIR += cskk
     SUBDIR += csrd
     SUBDIR += ctags
     SUBDIR += dams
@@ -55,11 +56,13 @@
     SUBDIR += fcitx-mozc
     SUBDIR += fcitx-skk
     SUBDIR += fcitx5-anthy
+    SUBDIR += fcitx5-cskk
     SUBDIR += flower-fpw
     SUBDIR += foldoc-fpw
     SUBDIR += font-aozoramincho
     SUBDIR += font-ayu18
     SUBDIR += font-ayu20
+    SUBDIR += font-bizud-mincho
     SUBDIR += font-cica
     SUBDIR += font-elisa10
     SUBDIR += font-elisa8
@@ -88,6 +91,12 @@
     SUBDIR += font-mona
     SUBDIR += font-mona-ipa
     SUBDIR += font-mona-ttf
+    SUBDIR += font-moralerspace
+    SUBDIR += font-moralerspace-hw
+    SUBDIR += font-moralerspace-hwjpdoc
+    SUBDIR += font-moralerspace-hwnf
+    SUBDIR += font-moralerspace-jpdoc
+    SUBDIR += font-moralerspace-nf
     SUBDIR += font-motoya-al
     SUBDIR += font-mplus-bitmap
     SUBDIR += font-mplus-ipa
@@ -129,7 +138,6 @@
     SUBDIR += japaneseAFM
     SUBDIR += jargon-fpw
     SUBDIR += jcode.pl
-    SUBDIR += jed
     SUBDIR += jishyo
     SUBDIR += jls
     SUBDIR += jvim3
@@ -143,6 +151,7 @@
     SUBDIR += kiten
     SUBDIR += kon2-14dot
     SUBDIR += kon2-16dot
+    SUBDIR += kterm
     SUBDIR += latex-jlisting
     SUBDIR += leafrogue
     SUBDIR += less

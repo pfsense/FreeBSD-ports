@@ -1,5 +1,5 @@
 PORTNAME?=	mariadb
-PORTVERSION=	10.5.23
+PORTVERSION=	10.5.24
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	\
@@ -12,7 +12,6 @@ MASTER_SITES=	\
 		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
 		https://mirror.kku.ac.th/${SITESDIR}/ \
 		https://espejito.fder.edu.uy/${SITESDIR}/ \
-		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
 		https://ftp.osuosl.org/pub/${SITESDIR}/ \
 		https://downloads.mariadb.org/rest-api/mariadb/${PORTVERSION}/
 PKGNAMESUFFIX?=	105-server

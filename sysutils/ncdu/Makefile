@@ -1,5 +1,5 @@
 PORTNAME=	ncdu
-PORTVERSION=	1.19
+PORTVERSION=	1.20
 CATEGORIES=	sysutils
 MASTER_SITES=	https://dev.yorhel.nl/download/
 
@@ -16,7 +16,7 @@ USES=		ncurses
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/ncdu \
-		man/man1/ncdu.1.gz
+		share/man/man1/ncdu.1.gz
 
 # ncdu 1.* (LTS) is written in C.
 # ncdu 2.* (stable) is written in Zig which only works with specific version.

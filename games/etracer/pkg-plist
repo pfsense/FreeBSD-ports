@@ -1,6 +1,6 @@
 bin/etr
-share/applications/etr.desktop
-share/metainfo/etr.appdata.xml
+share/applications/net.sourceforge.extremetuxracer.desktop
+share/metainfo/net.sourceforge.extremetuxracer.metainfo.xml
 %%PORTDOCS%%%%DOCSDIR%%/TODO
 %%PORTDOCS%%%%DOCSDIR%%/code
 %%PORTDOCS%%%%DOCSDIR%%/courses_events
@@ -475,6 +475,7 @@ share/metainfo/etr.appdata.xml
 %%DATADIR%%/translations/it_IT.lst
 %%DATADIR%%/translations/languages.lst
 %%DATADIR%%/translations/pl_PL.lst
+%%DATADIR%%/translations/pt_PT.lst
 %%DATADIR%%/translations/ro_RO.lst
 %%DATADIR%%/translations/se_SE.lst
 %%DATADIR%%/translations/xx_XX.lst

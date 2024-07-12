@@ -1,5 +1,6 @@
 PORTNAME=	puppet
-PORTVERSION=	7.27.0
+PORTVERSION=	7.31.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=   https://forge.puppet.com/v3/files/:forge
 PKGNAMESUFFIX=	7
@@ -54,16 +55,16 @@ CFACTER_RUN_DEPENDS=	facter>=3.0:sysutils/facter
 
 # Get versions from
 # https://github.com/puppetlabs/puppet-agent/tree/7.x/configs/components
-FORGE_MODULES=	augeas_core=1.3.0 \
-		cron_core=1.2.0 \
-		host_core=1.2.0 \
-		mount_core=1.2.0 \
-		scheduled_task=3.1.1 \
-		selinux_core=1.3.0 \
-		sshkeys_core=2.4.0 \
+FORGE_MODULES=	augeas_core=1.5.0 \
+		cron_core=1.3.0 \
+		host_core=1.3.0 \
+		mount_core=1.3.0 \
+		scheduled_task=3.2.0 \
+		selinux_core=1.4.0 \
+		sshkeys_core=2.5.0 \
 		yumrepo_core=1.2.0 \
-		zfs_core=1.4.0 \
-		zone_core=1.1.0
+		zfs_core=1.5.0 \
+		zone_core=1.2.0
 
 .for module in ${FORGE_MODULES}
 DISTFILES+=	puppetlabs-${module:C/=.*//}-${module:C/.*=//}.tar.gz:forge
@@ -126,7 +127,7 @@ post-install:
 	@${FIND} ${STAGEDIR}${RUBY_SITELIBDIR}/${PORTNAME} -type f | \
 		${SED} 's,^${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/specifications
-	${INSTALL_DATA} ${WRKSRC}/.gemspec ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/specifications/${PORTNAME}-${PORTVERSION}.gemspec
+	${INSTALL_DATA} ${WRKSRC}/puppet.gemspec ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/specifications/${PORTNAME}-${PORTVERSION}.gemspec
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

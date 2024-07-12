@@ -1,6 +1,6 @@
 PORTNAME=	xdg-desktop-portal-hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.1
+DISTVERSION=	1.3.2
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,18 +16,14 @@ LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
 		libdrm.so:graphics/libdrm \
 		libwayland-client.so:graphics/wayland \
 		libpipewire-0.3.so:multimedia/pipewire
-RUN_DEPENDS=	grim:x11/grim \
+RUN_DEPENDS=	xdg-desktop-portal>0:deskutils/xdg-desktop-portal \
+		grim:x11/grim \
 		slurp:x11/slurp
 
-FLAVORS=	qt5 qt6
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-qt6
-qt6_CONFLICTS_INSTALL=	${PORTNAME}
-qt6_PKGNAMESUFFIX=	-qt6
-
-USES=		cmake compiler:c++11-lib gl pkgconfig qt:5
+USES=		cmake compiler:c++11-lib gl pkgconfig qt:6
 USE_GITHUB=	yes
 USE_GL=		gbm
-USE_QT=		qmake:build buildtools:build core gui wayland:run widgets
+USE_QT=		base wayland:run
 GH_ACCOUNT=	hyprwm
 GH_TUPLE=	hyprwm:hyprland-protocols:v0.2:hyprland_protocols/subprojects/hyprland-protocols
 LDFLAGS+=	-Wl,--as-needed # GL, sdbus-cpp deps
@@ -37,17 +33,12 @@ PLIST_FILES=	bin/hyprland-share-picker \
 		share/dbus-1/services/org.freedesktop.impl.portal.desktop.hyprland.service \
 		share/xdg-desktop-portal/portals/hyprland.portal
 
-.if ${FLAVOR:U} == qt6
-USES:=		${USES:S/qt:5/qt:6/}
-USE_QT=		base wayland:run
-.endif
-
-# XXX Drop after FreeBSD 14.0 EOL around 2025-03-01
+# XXX Drop after FreeBSD 14.0 EOL around 2024-10-01
 .if exists(/usr/lib/libc++.so) && !exists(/usr/include/c++/v1/__format/write_escaped.h)
 CXXFLAGS+=	-fexperimental-library
 .endif
 
-# XXX Drop after FreeBSD 13.2 EOL around 2024-05-01 (don't forget distinfo)
+# XXX Drop after FreeBSD 13.2 EOL around 2024-07-01 (don't forget distinfo)
 .if ${CXX} == c++ && exists(/usr/lib/libc++.so)
 .if !exists(/usr/include/c++/v1/__ranges/as_rvalue_view.h) || make(makesum) || make(fetch)
 USES+=		llvm:min=16,build,export

@@ -1,6 +1,5 @@
 PORTNAME=	PETSc
-DISTVERSION=	3.20.2
-PORTREVISION=	1
+DISTVERSION=	3.21.2
 CATEGORIES=	science devel
 MASTER_SITES=	http://web.cels.anl.gov/projects/petsc/download/release-snapshots/ # was: https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/
 DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
@@ -12,10 +11,10 @@ WWW=		https://www.mcs.anl.gov/petsc
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	cmake:devel/cmake-core
-LIB_DEPENDS=	libmpich.so:net/mpich
+LIB_DEPENDS=	libblis.so:math/blis \
+		libmpich.so:net/mpich
 
-USES=		blaslapack fortran gmake python shebangfix xorg
+USES=		blaslapack cmake:indirect fortran gmake python shebangfix xorg
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-shared-libraries=1 \
 		--with-mpi-dir=${LOCALBASE} \

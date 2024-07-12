@@ -32,21 +32,18 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $changedesc = "Services: Acme: Certificates";
 
-$a_certificates = &getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
-
 if($_POST['action'] == "toggle") {
 	$id = $_POST['id'];
 	echo "$id|";
-	if (isset($a_certificates[get_certificate_id($id)])) {
-		$item = &$a_certificates[get_certificate_id($id)];
-		if ($item['status'] != "disabled"){
-			$item['status'] = 'disabled';
+	if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id)) !== null) {
+		if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status') != "disabled"){
+			config_set_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status', 'disabled');
 			echo "0|";
 		}else{
-			$item['status'] = 'active';
+			config_set_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status', 'active');
 			echo "1|";
 		}
-		$changedesc .= " set item '$id' status to: {$item['status']}";
+		$changedesc .= " set item '$id' status to: " . config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status');
 		
 		touch($d_acmeconfdirty_path);
 		write_config($changedesc);
@@ -57,7 +54,7 @@ if($_POST['action'] == "toggle") {
 if($_POST['action'] == "issuecert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certificates[get_certificate_id($id)])) {
+	if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id)) !== null) {
 		issue_certificate($id, true);
 	}
 	exit;
@@ -65,7 +62,7 @@ if($_POST['action'] == "issuecert") {
 if($_POST['action'] == "renewcert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certificates[get_certificate_id($id)])) {
+	if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id)) !== null) {
 		issue_certificate($id, true, true);
 	}
 	exit;
@@ -83,7 +80,7 @@ if ($_POST) {
 				$selected[] = get_certificate_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_certificates[$itemnr]);
+				config_del_path("installedpackages/acme/certificates/item/{$itemnr}");
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -114,7 +111,9 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_certificate_id($selection);
 			}
+			$a_certificates = config_get_path('installedpackages/acme/certificates/item');
 			array_moveitemsbefore($a_certificates, $moveto, $selected);
+			config_set_path('installedpackages/acme/certificates/item', $a_certificates);
 		
 			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
@@ -125,9 +124,9 @@ if ($_POST) {
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
 	$id = get_certificate_id($id);
-	if (isset($a_certificates[$id])) {
+	if (config_get_path("installedpackages/acme/certificates/item/{$id}") !== null) {
 		if (!$input_errors) {
-			unset($a_certificates[$id]);
+			config_del_path("installedpackages/acme/certificates/item/{$id}");
 			$changedesc .= " Item delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
@@ -218,10 +217,11 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				</thead>
 				<tbody class="user-entries">
 <?php
-		foreach ($a_certificates as $certificate) {
+		foreach (config_get_path('installedpackages/acme/certificates/item', []) as $certificate) {
 			$certificatename = $certificate['name'];
 			$disabled = $certificate['status'] != 'active';
 			$issuedcert = lookup_cert_by_name($certificate['name']);
+			$issuedcert = $issuedcert['item'];
 			?>
 			<tr id="fr<?=$certificatename;?>" <?=$display?> onClick="fr_toggle('<?=$certificatename;?>')" ondblclick="document.location='acme_certificates_edit.php?id=<?=$certificatename;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 				<td>

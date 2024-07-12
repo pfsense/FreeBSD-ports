@@ -90,7 +90,7 @@ if ($hostipformat != "") {
 				} else {
 					$iplookup[$hostent['ipaddr']] = $hostent['hostname'];
 					if ($hostipformat == "fqdn") {
-						$iplookup[$hostent['ipaddr']] .= "." . $config['system']['domain'];
+						$iplookup[$hostent['ipaddr']] .= "." . config_get_path('system/domain');
 					}
 				}
 			}

@@ -1,13 +1,14 @@
 PORTNAME=	contacts
-PORTVERSION=	5.5.1
+PORTVERSION=	6.0.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	www
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Contacts app for Nextcloud
 WWW=		https://apps.nextcloud.com/apps/contacts
 
-NEXTCLOUD_RUN_DEPENDS=	25
+NEXTCLOUD_RUN_DEPENDS=	29
 
 USES=		cpe nextcloud php:flavors
 CPE_VENDOR=	nextcloud

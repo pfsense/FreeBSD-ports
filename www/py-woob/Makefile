@@ -1,5 +1,6 @@
 PORTNAME=	woob
 PORTVERSION=	3.6
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +13,7 @@ LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>0:devel/py-babel@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>0:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=23.0:devel/py-packaging@${PY_FLAVOR} \
 		${PY_SETUPTOOLS} \
@@ -27,7 +28,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}unidecode>=0:converters/py-unidecode@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}PyExecJS>=0:devel/py-PyExecJS@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Babel>0:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}colorama>=0:devel/py-colorama@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>0:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=23.0:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}prettytable>0:devel/py-prettytable@${PY_FLAVOR} \
@@ -48,7 +49,7 @@ USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=		CLICOLOR NSS RTMPDUMP
+OPTIONS_DEFINE=		CLICOLOR NSS
 OPTIONS_DEFAULT=	CLICOLOR NSS
 
 CLICOLOR_DESC=		Color command line interface
@@ -56,8 +57,6 @@ CLICOLOR_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}termcolor>0:devel/py-termcolor@${PY
 
 NSS_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
 			${PYTHON_PKGNAMEPREFIX}python-nss>0:security/py-python-nss@${PY_FLAVOR}
-
-RTMPDUMP_RUN_DEPENDS=	rtmpdump:multimedia/rtmpdump
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/ssl/certs|${LOCALBASE}/etc/ssl|g' ${WRKSRC}/woob/browser/nss.py

@@ -74,6 +74,7 @@
     SUBDIR += ldview
     SUBDIR += leocad
     SUBDIR += lepton-eda
+    SUBDIR += libbgcode
     SUBDIR += libgdsii
     SUBDIR += libopencad
     SUBDIR += librecad
@@ -142,6 +143,7 @@
     SUBDIR += svlint
     SUBDIR += svls
     SUBDIR += sweethome3d
+    SUBDIR += symbiyosys
     SUBDIR += tkgate
     SUBDIR += tochnog
     SUBDIR += uhdm

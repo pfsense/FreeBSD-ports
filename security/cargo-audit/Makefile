@@ -1,7 +1,8 @@
 PORTNAME=	cargo-audit
 DISTVERSIONPREFIX=	${PORTNAME}/v
-DISTVERSION=	0.18.3
-PORTREVISION=	2
+DISTVERSION=	0.20.0
+PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	security
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -13,8 +14,9 @@ LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
-LIB_DEPENDS=	libgit2.so:devel/libgit2 \
-		libssh2.so:security/libssh2
+# ca_root_nss must be installed until
+# https://github.com/rustsec/rustsec/issues/1137 is fixed
+RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
 USES=		cargo localbase ssl
 USE_GITHUB=	yes
@@ -25,6 +27,7 @@ NO_TEST=	yes
 
 PLIST_FILES=	bin/cargo-audit
 
+CARGO_CARGOLOCK=	${WRKSRC}/../Cargo.lock
 WRKSRC_SUBDIR=	cargo-audit
 
 post-install:

@@ -1,5 +1,5 @@
 PORTNAME=	freeradius
-DISTVERSION=	3.2.3
+DISTVERSION=	3.2.4
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/FreeRADIUS/freeradius-server/releases/download/release_${DISTVERSION:S/./_/g}/ \
 		https://freeradius.org/ftp/pub/radius/%SUBDIR%/ \
@@ -40,6 +40,7 @@ USE_RC_SUBR=	radiusd
 SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay \
 		scripts/sql/rlm_sqlippool_tool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=--without-rlm_python
 # Prevent /root/.rnd leftover
 MAKE_ARGS+=	HOME=/dev/null

@@ -1,6 +1,6 @@
 PORTNAME=	sqlgrey
 PORTVERSION=	1.8.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-1.8%20%28stable%29
 
@@ -38,7 +38,8 @@ OPTIONS_DEFAULT=PGSQL
 STATS_DESC=	Depend on Date::Calc for logstats.pl script
 
 PGSQL_RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
-MYSQL_RUN_DEPENDS=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
+MYSQL_RUN_DEPENDS=	${DBD_MYSQL}
+MYSQL_USES=		mysql
 SQLITE_RUN_DEPENDS=	p5-DBD-SQLite>=0:databases/p5-DBD-SQLite
 STATS_RUN_DEPENDS=	p5-Date-Calc>=0:devel/p5-Date-Calc
 
@@ -49,7 +50,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/sqlgrey-logstats.pl ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/sqlgrey ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_SCRIPT} ${WRKSRC}/update_sqlgrey_config ${STAGEDIR}${PREFIX}/sbin
-	cd ${WRKSRC} && perldoc -u sqlgrey | pod2man sqlgrey > ${STAGEDIR}${MANPREFIX}/man/man1/sqlgrey.1
+	cd ${WRKSRC} && perldoc -u sqlgrey | pod2man sqlgrey > ${STAGEDIR}${PREFIX}/share/man/man1/sqlgrey.1
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 .for i in ${ETCFILES}
 	${INSTALL_DATA} ${WRKSRC}/etc/${i} ${STAGEDIR}${ETCDIR}/${i}.sample

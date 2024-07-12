@@ -61,7 +61,6 @@ class acme_sh {
 	public $preferredchain;
 	
 	private function execacmesh($command, $envvariables = null) {
-		global $config;
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
 		if ($this->debug) {
 			echo "\n{$command}\n";
@@ -70,15 +69,16 @@ class acme_sh {
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
 		$env['PATH'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+		$env['SSL_CERT_DIR'] = "/etc/ssl/certs/";
 
 		/* Setup Proxy Variables */
-		if (!empty($config['system']['proxyurl'])) {
-			$proxy_url = $config['system']['proxyurl'];
-			if (!empty($config['system']['proxyport'])) {
-				$proxy_url .= ":{$config['system']['proxyport']}";
+		if (!empty(config_get_path('system/proxyurl'))) {
+			$proxy_url = config_get_path('system/proxyurl');
+			if (!empty(config_get_path('system/proxyport'))) {
+				$proxy_url .= ':' . config_get_path('system/proxyport');
 			}
-			if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
-				$proxy_url = "{$config['system']['proxyuser']}:{$config['system']['proxypass']}@{$proxy_url}";
+			if (!empty(config_get_path('system/proxyuser')) && !empty(config_get_path('system/proxypass'))) {
+				$proxy_url = config_get_path('system/proxyuser') . ':' . config_get_path('system/proxypass') . "@{$proxy_url}";
 			}
 			$env['http_proxy'] = $proxy_url;
 			$env['https_proxy'] = $proxy_url;
@@ -224,7 +224,7 @@ EOF;
 		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key.next", $certificatepsk);
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
-			$api = $domain->method; 
+			$api = $domain->method;
 			$domainstr .= " --domain " . escapeshellarg($domain->domainname);
 			if (!empty($domain->method)) {
 				$domainparameters = "";

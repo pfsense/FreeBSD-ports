@@ -1,7 +1,7 @@
 PORTNAME=	redshift
 PORTVERSION=	1.12
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	accessibility
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -15,6 +15,9 @@ WWW=		http://jonls.dk/redshift/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Abandoned upstream, no activity for the past 4 years. Consider using accessibility/sct, accessibility/wlsunset or accessibility/wl-gammarelay-rs
+EXPIRATION_DATE=2024-06-30
+
 LIB_DEPENDS=	libdrm.so:graphics/libdrm
 
 USES=		autoreconf:build gettext gmake gnome libtool localbase \
@@ -24,6 +27,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jonls
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 SHEBANG_FILES=	src/redshift-gtk/redshift-gtk.in
 
 CONFIGURE_ARGS+=	--disable-wingdi

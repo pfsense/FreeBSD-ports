@@ -1,24 +1,13 @@
 https://github.com/bevyengine/bevy/issues/4106
 
---- Cargo.lock.orig	2023-12-15 22:16:05 UTC
+--- Cargo.lock.orig	2024-05-18 20:08:41 UTC
 +++ Cargo.lock
-@@ -221,6 +221,12 @@ dependencies = [
- ]
- 
- [[package]]
-+name = "arrayref"
-+version = "0.3.7"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "6b4930d2cb77ce62f89ee5d5289b4ac049559b1c45539271f5ed4fdc7db34545"
+@@ -1527,6 +1527,20 @@ checksum = "514de17de45fdb8dc022b1a7975556c53c86f9f0aa
+ version = "1.6.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "514de17de45fdb8dc022b1a7975556c53c86f9f0aa5f534b98977b171857c2c9"
 +
 +[[package]]
- name = "arrayvec"
- version = "0.7.4"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -1279,6 +1285,20 @@ checksum = "a2bd12c1caf447e69cd4528f47f94d203fd2582878
- checksum = "a2bd12c1caf447e69cd4528f47f94d203fd2582878ecb9e9465484c4148a8223"
- 
- [[package]]
 +name = "calloop"
 +version = "0.10.6"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -31,31 +20,31 @@ https://github.com/bevyengine/bevy/issues/4106
 + "thiserror",
 + "vec_map",
 +]
-+
-+[[package]]
- name = "cc"
- version = "1.0.83"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -1683,6 +1703,15 @@ dependencies = [
- ]
  
  [[package]]
+ name = "cc"
+@@ -2184,6 +2198,15 @@ dependencies = [
+  "proc-macro2",
+  "quote",
+  "syn 2.0.58",
++]
++
++[[package]]
 +name = "dlib"
 +version = "0.5.2"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
 +checksum = "330c60081dcc4c72131f8eb70510f1ac07223e5d4163db481a04a0befcffa412"
 +dependencies = [
-+ "libloading 0.8.1",
-+]
-+
-+[[package]]
- name = "document-features"
- version = "0.2.7"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -2873,7 +2902,25 @@ checksum = "f665ee40bc4a3c5590afb1e9677db74a508659dfd7
- checksum = "f665ee40bc4a3c5590afb1e9677db74a508659dfd71e126420da8274909a0167"
++ "libloading 0.8.3",
+ ]
  
  [[package]]
+@@ -4413,8 +4436,26 @@ checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec5
+ version = "2.7.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
++
++[[package]]
 +name = "memmap2"
 +version = "0.5.10"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -63,9 +52,9 @@ https://github.com/bevyengine/bevy/issues/4106
 +dependencies = [
 + "libc",
 +]
-+
-+[[package]]
- name = "memoffset"
+ 
+ [[package]]
++name = "memoffset"
 +version = "0.6.5"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
 +checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
@@ -74,15 +63,25 @@ https://github.com/bevyengine/bevy/issues/4106
 +]
 +
 +[[package]]
-+name = "memoffset"
- version = "0.7.1"
+ name = "metal"
+ version = "0.24.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
- checksum = "5de893c32cde5f383baa4c04c5d6dbdd735cfd4a794b0debdb2bb1b421da5ff4"
-@@ -3045,10 +3092,24 @@ dependencies = [
-  "bitflags 1.3.2",
-  "cfg-if",
+@@ -4684,10 +4725,35 @@ dependencies = [
   "libc",
-+ "memoffset 0.6.5",
+  "log",
+  "tokio",
++]
++
++[[package]]
++name = "nix"
++version = "0.24.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "fa52e972a9a719cecb6864fb88568781eb706bac2cd1d4f04a648542dbf78069"
++dependencies = [
++ "bitflags 1.3.2",
++ "cfg-if",
++ "libc",
++ "memoffset",
  ]
  
  [[package]]
@@ -95,7 +94,7 @@ https://github.com/bevyengine/bevy/issues/4106
 + "bitflags 1.3.2",
 + "cfg-if",
 + "libc",
-+ "memoffset 0.6.5",
++ "memoffset",
 +]
 +
 +[[package]]
@@ -103,7 +102,7 @@ https://github.com/bevyengine/bevy/issues/4106
  version = "0.26.4"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "598beaf3cc6fdd9a5dfb1630c2800c7acd31df7aaf0f565796fba2b53ca1af1b"
-@@ -3965,6 +4026,12 @@ dependencies = [
+@@ -6457,6 +6523,12 @@ dependencies = [
  ]
  
  [[package]]
@@ -116,7 +115,7 @@ https://github.com/bevyengine/bevy/issues/4106
  name = "scopeguard"
  version = "1.2.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -3981,6 +4048,19 @@ dependencies = [
+@@ -6473,6 +6545,19 @@ dependencies = [
  ]
  
  [[package]]
@@ -133,13 +132,16 @@ https://github.com/bevyengine/bevy/issues/4106
 +]
 +
 +[[package]]
- name = "self_cell"
- version = "0.10.3"
+ name = "sec1"
+ version = "0.7.3"
  source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -4147,6 +4227,25 @@ dependencies = [
- ]
- 
- [[package]]
+@@ -6766,6 +6851,25 @@ dependencies = [
+ checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
+ dependencies = [
+  "serde",
++]
++
++[[package]]
 +name = "smithay-client-toolkit"
 +version = "0.16.1"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -156,29 +158,29 @@ https://github.com/bevyengine/bevy/issues/4106
 + "wayland-client",
 + "wayland-cursor",
 + "wayland-protocols",
-+]
-+
-+[[package]]
- name = "smol_str"
- version = "0.2.0"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -4208,6 +4307,12 @@ checksum = "9e08d8363704e6c71fc928674353e6b7c23dcea9d8
- checksum = "9e08d8363704e6c71fc928674353e6b7c23dcea9d82d7012c8faf2a3a025f8d0"
+ ]
  
  [[package]]
+@@ -6912,6 +7016,12 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69
+ version = "1.1.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
++
++[[package]]
 +name = "strict-num"
 +version = "0.1.1"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
 +checksum = "6637bab7722d379c8b41ba849228d680cc12d0a45ba1fa2b48f2a30577a06731"
-+
-+[[package]]
- name = "svg_fmt"
- version = "0.4.1"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -4407,6 +4512,31 @@ dependencies = [
- ]
  
  [[package]]
+ name = "struct_iterable"
+@@ -7332,6 +7442,31 @@ dependencies = [
+ dependencies = [
+  "num-conv",
+  "time-core",
++]
++
++[[package]]
 +name = "tiny-skia"
 +version = "0.8.4"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -201,16 +203,16 @@ https://github.com/bevyengine/bevy/issues/4106
 + "arrayref",
 + "bytemuck",
 + "strict-num",
+ ]
+ 
+ [[package]]
+@@ -7954,9 +8089,60 @@ dependencies = [
+  "futures-util",
+  "parking_lot",
+  "thiserror",
 +]
 +
 +[[package]]
- name = "tinystr"
- version = "0.7.5"
- source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -4808,6 +4938,57 @@ checksum = "7ab9b36309365056cd639da3134bf87fa8f3d86008
- checksum = "7ab9b36309365056cd639da3134bf87fa8f3d86008abf99e612384a6eecd459f"
- 
- [[package]]
 +name = "wayland-client"
 +version = "0.29.5"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -236,9 +238,9 @@ https://github.com/bevyengine/bevy/issues/4106
 + "once_cell",
 + "smallvec",
 + "wayland-sys",
-+]
-+
-+[[package]]
+ ]
+ 
+ [[package]]
 +name = "wayland-cursor"
 +version = "0.29.5"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -265,7 +267,7 @@ https://github.com/bevyengine/bevy/issues/4106
  name = "wayland-scanner"
  version = "0.29.5"
  source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -4819,6 +5000,17 @@ dependencies = [
+@@ -7968,6 +8154,17 @@ dependencies = [
  ]
  
  [[package]]
@@ -281,9 +283,9 @@ https://github.com/bevyengine/bevy/issues/4106
 +
 +[[package]]
  name = "web-sys"
- version = "0.3.66"
+ version = "0.3.69"
  source = "registry+https://github.com/rust-lang/crates.io-index"
-@@ -5304,7 +5496,12 @@ dependencies = [
+@@ -8558,7 +8755,12 @@ dependencies = [
   "percent-encoding",
   "raw-window-handle",
   "redox_syscall 0.3.5",
@@ -296,21 +298,21 @@ https://github.com/bevyengine/bevy/issues/4106
   "wayland-scanner",
   "web-sys",
   "windows-sys 0.45.0",
-@@ -5361,6 +5558,12 @@ dependencies = [
- dependencies = [
-  "nix 0.26.4",
+@@ -8670,6 +8872,12 @@ dependencies = [
  ]
-+
-+[[package]]
+ 
+ [[package]]
 +name = "xcursor"
 +version = "0.3.5"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
 +checksum = "6a0ccd7b4a5345edfcd0c3535718a4e9ff7798ffc536bb5b5a0e26ff84732911"
- 
- [[package]]
++
++[[package]]
  name = "xml-rs"
---- ../bones-69a1b4dea1bd2efb15ba19f508a94333478882eb/framework_crates/bones_bevy_renderer/Cargo.toml.orig	2023-12-22 01:42:22 UTC
-+++ ../bones-69a1b4dea1bd2efb15ba19f508a94333478882eb/framework_crates/bones_bevy_renderer/Cargo.toml
+ version = "0.8.20"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+--- ../bones-3cb6a880284514c8367ededa62d45e90f48c60b6/framework_crates/bones_bevy_renderer/Cargo.toml.orig	2024-05-17 23:28:12 UTC
++++ ../bones-3cb6a880284514c8367ededa62d45e90f48c60b6/framework_crates/bones_bevy_renderer/Cargo.toml
 @@ -26,7 +26,7 @@ default-features = false
  
  [dependencies.bevy]

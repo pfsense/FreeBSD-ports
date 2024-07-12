@@ -1,6 +1,7 @@
 PORTNAME=	fblog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.8.0
+DISTVERSION=	4.10.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,99 +16,123 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	brocode
 
-CARGO_CRATES=	aho-corasick-1.1.2 \
-		anstream-0.6.4 \
-		anstyle-1.0.4 \
-		anstyle-parse-0.2.2 \
-		anstyle-query-1.0.0 \
-		anstyle-wincon-3.0.1 \
-		autocfg-1.1.0 \
-		bitflags-1.3.2 \
-		bitflags-2.4.1 \
+CARGO_CRATES=	aho-corasick-1.1.3 \
+		android-tzdata-0.1.1 \
+		android_system_properties-0.1.5 \
+		anstream-0.6.14 \
+		anstyle-1.0.7 \
+		anstyle-parse-0.2.4 \
+		anstyle-query-1.0.3 \
+		anstyle-wincon-3.0.3 \
+		autocfg-1.3.0 \
+		bitflags-2.5.0 \
 		block-buffer-0.10.4 \
-		bstr-1.8.0 \
-		cc-1.0.83 \
+		bstr-1.9.1 \
+		bumpalo-3.16.0 \
+		cc-1.0.98 \
 		cfg-if-1.0.0 \
-		clap-4.4.10 \
-		clap_builder-4.4.9 \
-		clap_complete-4.4.4 \
-		clap_derive-4.4.7 \
-		clap_lex-0.6.0 \
-		colorchoice-1.0.0 \
-		cpufeatures-0.2.11 \
+		chrono-0.4.38 \
+		clap-4.5.4 \
+		clap_builder-4.5.2 \
+		clap_complete-4.5.2 \
+		clap_derive-4.5.4 \
+		clap_lex-0.7.0 \
+		colorchoice-1.0.1 \
+		core-foundation-sys-0.8.6 \
+		cpufeatures-0.2.12 \
 		crypto-common-0.1.6 \
 		digest-0.10.7 \
 		dirs-5.0.1 \
 		dirs-sys-0.4.1 \
-		either-1.9.0 \
+		either-1.12.0 \
 		equivalent-1.0.1 \
-		errno-0.3.7 \
+		errno-0.3.9 \
 		generic-array-0.14.7 \
-		getrandom-0.2.11 \
-		handlebars-4.5.0 \
-		hashbrown-0.14.3 \
-		heck-0.4.1 \
-		home-0.5.5 \
-		indexmap-2.1.0 \
-		itoa-1.0.9 \
+		getrandom-0.2.15 \
+		handlebars-5.1.2 \
+		hashbrown-0.14.5 \
+		heck-0.5.0 \
+		home-0.5.9 \
+		iana-time-zone-0.1.60 \
+		iana-time-zone-haiku-0.1.2 \
+		indexmap-2.2.6 \
+		is_terminal_polyfill-1.70.0 \
+		itoa-1.0.11 \
+		js-sys-0.3.69 \
 		lazy_static-1.4.0 \
-		libc-0.2.150 \
-		libredox-0.0.1 \
-		linux-raw-sys-0.4.11 \
-		log-0.4.20 \
-		lua-src-546.0.1 \
-		luajit-src-210.5.2+113a168 \
-		memchr-2.6.4 \
-		mlua-0.9.2 \
-		mlua-sys-0.4.0 \
-		num-traits-0.2.17 \
-		once_cell-1.18.0 \
+		libc-0.2.155 \
+		libredox-0.1.3 \
+		linux-raw-sys-0.4.14 \
+		log-0.4.21 \
+		lua-src-546.0.2 \
+		luajit-src-210.5.8+5790d25 \
+		memchr-2.7.2 \
+		mlua-0.9.8 \
+		mlua-sys-0.6.0 \
+		num-traits-0.2.19 \
+		once_cell-1.19.0 \
 		option-ext-0.2.0 \
-		pest-2.7.5 \
-		pest_derive-2.7.5 \
-		pest_generator-2.7.5 \
-		pest_meta-2.7.5 \
-		pkg-config-0.3.27 \
-		proc-macro2-1.0.69 \
-		quote-1.0.33 \
-		redox_syscall-0.4.1 \
-		redox_users-0.4.4 \
-		regex-1.10.2 \
-		regex-automata-0.4.3 \
-		regex-syntax-0.8.2 \
+		pest-2.7.10 \
+		pest_derive-2.7.10 \
+		pest_generator-2.7.10 \
+		pest_meta-2.7.10 \
+		pkg-config-0.3.30 \
+		proc-macro2-1.0.83 \
+		quote-1.0.36 \
+		redox_users-0.4.5 \
+		regex-1.10.4 \
+		regex-automata-0.4.6 \
+		regex-syntax-0.8.3 \
 		rustc-hash-1.1.0 \
-		rustix-0.38.25 \
-		ryu-1.0.15 \
-		serde-1.0.193 \
-		serde_derive-1.0.193 \
-		serde_json-1.0.108 \
-		serde_spanned-0.6.4 \
+		rustix-0.38.34 \
+		ryu-1.0.18 \
+		serde-1.0.202 \
+		serde_derive-1.0.202 \
+		serde_json-1.0.117 \
+		serde_spanned-0.6.6 \
 		sha2-0.10.8 \
-		strsim-0.10.0 \
-		syn-2.0.39 \
-		thiserror-1.0.50 \
-		thiserror-impl-1.0.50 \
-		toml-0.8.8 \
-		toml_datetime-0.6.5 \
-		toml_edit-0.21.0 \
+		strsim-0.11.1 \
+		syn-2.0.65 \
+		thiserror-1.0.61 \
+		thiserror-impl-1.0.61 \
+		toml-0.8.13 \
+		toml_datetime-0.6.6 \
+		toml_edit-0.22.13 \
 		typenum-1.17.0 \
 		ucd-trie-0.1.6 \
 		unicode-ident-1.0.12 \
 		utf8parse-0.2.1 \
 		version_check-0.9.4 \
 		wasi-0.11.0+wasi-snapshot-preview1 \
-		which-5.0.0 \
+		wasm-bindgen-0.2.92 \
+		wasm-bindgen-backend-0.2.92 \
+		wasm-bindgen-macro-0.2.92 \
+		wasm-bindgen-macro-support-0.2.92 \
+		wasm-bindgen-shared-0.2.92 \
+		which-6.0.1 \
+		windows-core-0.52.0 \
 		windows-sys-0.48.0 \
+		windows-sys-0.52.0 \
 		windows-targets-0.48.5 \
+		windows-targets-0.52.5 \
 		windows_aarch64_gnullvm-0.48.5 \
+		windows_aarch64_gnullvm-0.52.5 \
 		windows_aarch64_msvc-0.48.5 \
+		windows_aarch64_msvc-0.52.5 \
 		windows_i686_gnu-0.48.5 \
+		windows_i686_gnu-0.52.5 \
+		windows_i686_gnullvm-0.52.5 \
 		windows_i686_msvc-0.48.5 \
+		windows_i686_msvc-0.52.5 \
 		windows_x86_64_gnu-0.48.5 \
+		windows_x86_64_gnu-0.52.5 \
 		windows_x86_64_gnullvm-0.48.5 \
+		windows_x86_64_gnullvm-0.52.5 \
 		windows_x86_64_msvc-0.48.5 \
-		winnow-0.5.19 \
-		yansi-0.5.1
+		windows_x86_64_msvc-0.52.5 \
+		winnow-0.6.8 \
+		winsafe-0.0.19 \
+		yansi-1.0.1
 
 PLIST_FILES=	bin/${PORTNAME}
 

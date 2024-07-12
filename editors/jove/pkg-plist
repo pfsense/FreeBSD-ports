@@ -1,11 +1,15 @@
 bin/jove
 bin/teachjove
-libexec/jove/portsrv
-libexec/jove/recover
-man/man1/jove.1.gz
-man/man1/teachjove.1.gz
+lib/jove/recover
+man/man1/jove.1
+man/man1/teachjove.1
+%%DOCSDIR%%/example.rc
+%%DOCSDIR%%/jove.man.pdf
+%%DOCSDIR%%/jove.man.txt
+%%DOCSDIR%%/jove.qref
 %%DATADIR%%/XTermresource
-%%EXTRADOCS%%%%DATADIR%%/cmds.doc
+%%DATADIR%%/cmds.txt
+%%DATADIR%%/jem.txt
 %%DATADIR%%/jove.rc
 %%DATADIR%%/jove.rc.3022
 %%DATADIR%%/jove.rc.sun
@@ -13,13 +17,19 @@ man/man1/teachjove.1.gz
 %%DATADIR%%/jove.rc.vt100
 %%DATADIR%%/jove.rc.wyse
 %%DATADIR%%/jove.rc.xterm
+%%DATADIR%%/jove.rc.xterm-256color
 %%DATADIR%%/jove.rc.z29
-%%DATADIR%%/keychart.
 %%DATADIR%%/keychart.3022
 %%DATADIR%%/keychart.sun
 %%DATADIR%%/keychart.sun-cmd
 %%DATADIR%%/keychart.vt100
 %%DATADIR%%/keychart.wyse
 %%DATADIR%%/keychart.xterm
+%%DATADIR%%/keychart.xterm-256color
 %%DATADIR%%/keychart.z29
 %%DATADIR%%/teach-jove
+@mode 777
+@dir /var/lib/jove/tmp
+@dir /var/lib/jove/preserve
+@dir /var/lib/jove
+@dir /var/lib

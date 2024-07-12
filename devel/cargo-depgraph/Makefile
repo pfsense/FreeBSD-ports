@@ -1,11 +1,11 @@
 PORTNAME=	cargo-depgraph
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.0
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Create dependency graphs for cargo projects using 'cargo metadata'
+COMMENT=	Rust: Create dependency graphs for cargo projects
 WWW=		https://github.com/jplatte/cargo-depgraph
 
 LICENSE=	GPLv3

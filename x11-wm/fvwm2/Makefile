@@ -1,6 +1,6 @@
 PORTNAME=	fvwm
 PORTVERSION=	2.6.9
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/fvwmorg/fvwm/releases/download/${PORTVERSION}/ \
 		http://fvwm.sourceforge.net/generated/icon_download/ \
@@ -13,6 +13,9 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Popular virtual window manager for X
 WWW=		https://www.fvwm.org/
 
+LICENSE=		GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 RUN_DEPENDS=	gm4:devel/m4 \
 		p5-XML-Parser>=0:textproc/p5-XML-Parser
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
@@ -22,6 +25,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 CONFLICTS_INSTALL=	fvwm3
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-mandoc --without-gnome --disable-gtk \
 		--without-rplay-library \
 		ac_cv_path_PYTHON=${PYTHON_CMD}
@@ -117,11 +121,11 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/system.fvwm2rc \
 		${STAGEDIR}${PREFIX}/etc/system.fvwm2rc.dist
 	${INSTALL_MAN} ${WRKSRC}/doc/fvwm/fvwm.1 \
-		${STAGEDIR}${PREFIX}/man/man1/fvwm.1
+		${STAGEDIR}${PREFIX}/share/man/man1/fvwm.1
 	${INSTALL_MAN} ${WRKSRC}/doc/fvwm/fvwm.1 \
-		${STAGEDIR}${PREFIX}/man/man1/fvwm2.1
-	${GZIP_CMD} ${STAGEDIR}${PREFIX}/man/man1/fvwm.1 \
-		${STAGEDIR}${PREFIX}/man/man1/fvwm2.1
+		${STAGEDIR}${PREFIX}/share/man/man1/fvwm2.1
+	${GZIP_CMD} ${STAGEDIR}${PREFIX}/share/man/man1/fvwm.1 \
+		${STAGEDIR}${PREFIX}/share/man/man1/fvwm2.1
 .if ${PORT_OPTIONS:MICONS}
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/fvwm/pixmaps
 	${INSTALL_DATA} ${WRKDIR}/icons/${FVWM_ICONS}/*.xpm \

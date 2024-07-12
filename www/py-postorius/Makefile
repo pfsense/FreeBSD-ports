@@ -1,5 +1,6 @@
 PORTNAME=	postorius
 PORTVERSION=	1.3.10
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +12,10 @@ WWW=		https://gitlab.com/mailman/postorius
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django-mailman3>=1.3.10:mail/py-django-mailman3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}django32>=3.2<4.3:www/py-django32@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}django42>=3.2<4.3:www/py-django42@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mailmanclient>=3.3.3:mail/py-mailmanclient@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}readme-renderer>=0:devel/py-readme-renderer@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_FLAVOR} \
@@ -21,7 +24,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_
 		${PYTHON_PKGNAMEPREFIX}isort>=0:devel/py-isort@${PY_FLAVOR}
 
 USES=		cpe python
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

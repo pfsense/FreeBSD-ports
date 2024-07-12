@@ -7,10 +7,12 @@
     SUBDIR += atuin
     SUBDIR += bash
     SUBDIR += bash-completion
+    SUBDIR += bash-completion-freebsd
     SUBDIR += bash-static
     SUBDIR += bashc
     SUBDIR += bicon
     SUBDIR += bosh
+    SUBDIR += carapace
     SUBDIR += ch
     SUBDIR += dash
     SUBDIR += elvish

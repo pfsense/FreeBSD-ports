@@ -1,7 +1,6 @@
 PORTNAME=	stress-ng
 DISTVERSIONPREFIX=	V
-DISTVERSION=	0.17.03
-PORTREVISION=	1
+DISTVERSION=	0.17.08
 CATEGORIES=	benchmarks
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -19,7 +18,7 @@ GH_ACCOUNT=	ColinIanKing
 
 ALL_TARGET=	# empty
 
-PLIST_FILES=	bin/stress-ng man/man1/stress-ng.1.gz
+PLIST_FILES=	bin/stress-ng share/man/man1/stress-ng.1.gz
 
 OPTIONS_DEFINE=		GPU JUDY LIBINOTIFY XXHASH
 OPTIONS_DEFINE_amd64=	INTELIPSEC
@@ -44,6 +43,7 @@ XXHASH_LDFLAGS=	-lxxhash
 
 GPU_USES=	gl
 
+CFLAGS_powerpc=	-O0
 MAKE_ARGS=	VERBOSE=1
 
 .include <bsd.port.options.mk>
@@ -93,6 +93,6 @@ do-configure:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/stress-ng ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/stress-ng.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/stress-ng.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

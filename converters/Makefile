@@ -20,6 +20,7 @@
     SUBDIR += cmios9
     SUBDIR += cocot
     SUBDIR += convmv
+    SUBDIR += dos2ansi
     SUBDIR += dos2unix
     SUBDIR += dosunix
     SUBDIR += drg2sbg
@@ -46,6 +47,7 @@
     SUBDIR += libticonv
     SUBDIR += libutf-8
     SUBDIR += linux-c7-fribidi
+    SUBDIR += linux-rl9-fribidi
     SUBDIR += lua-iconv
     SUBDIR += lua-json
     SUBDIR += mimelib
@@ -147,6 +149,7 @@
     SUBDIR += py-bencoder
     SUBDIR += py-better-bencode
     SUBDIR += py-bsdconv
+    SUBDIR += py-gotenberg-client
     SUBDIR += py-rencode
     SUBDIR += py-svglib
     SUBDIR += py-text-unidecode

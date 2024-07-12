@@ -62,7 +62,7 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	17
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	9
+JDK_PATCH_VERSION=	11
 JDK_BUILD_NUMBER=	9
 BSD_JDK_VERSION=	1
 
@@ -158,7 +158,6 @@ CONFIGURE_ARGS+=	--disable-warnings-as-errors
 .if ${ARCH} == aarch64
 CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs=-XX:-UseCompressedClassPointers --disable-dtrace
 MAKE_ENV+=		JAVA_TOOL_OPTIONS="-XX:-UseCompressedClassPointers"
-EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_hotspot_share_runtime_arguments.cpp
 .endif
 
 .if empty(ICONV_LIB)
@@ -179,6 +178,12 @@ post-patch:
 		-e 's|%%ICONV_LDFLAGS%%|${ICONV_LDFLAGS}|' \
 		-e 's|%%ICONV_LIBS%%|${ICONV_LIBS}|' \
 		${WRKSRC}/make/autoconf/libraries.m4
+
+post-build:
+.if defined(OPENJDK_SYMLINK_CACERTS)
+	@${RM} ${JDK_IMAGEDIR}/lib/security/cacerts
+	@${LN} -sf ${OPENJDK_SYMLINK_CACERTS} ${JDK_IMAGEDIR}/lib/security/cacerts
+.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${INSTALLDIR}

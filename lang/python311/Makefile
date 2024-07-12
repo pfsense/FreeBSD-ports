@@ -28,7 +28,7 @@ SHEBANG_FILES+=	Lib/test/ziptestdata/exe_with_z64 \
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
 CONFIGURE_ARGS+=	--enable-shared --without-ensurepip \
 			--with-system-ffi
-CONFIGURE_ENV+=		OPT="" # Null out OPT to respect user CFLAGS and remove optimizations
+CONFIGURE_ENV+=		OPT="" ac_cv_prog_cc_g=false # Null out OPT to respect user CFLAGS and remove optimizations
 
 INSTALL_TARGET=		altinstall						# Don't want cloberring of unprefixed files
 
@@ -68,7 +68,7 @@ IPV6_CONFIGURE_ENABLE=	ipv6
 LIBMPDEC_CONFIGURE_ON=	--with-system-libmpdec
 LIBMPDEC_LIB_DEPENDS=	libmpdec.so:math/mpdecimal
 
-LTO_CONFIGURE_ON=	--with-lto=thin
+LTO_CONFIGURE_ON=	--with-lto
 
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3
@@ -105,6 +105,15 @@ PLIST_SUB+=	NO_NIS=""
 .if ${SSL_DEFAULT:Mlibressl*}
 EXTRA_PATCHES+=	${PATCHDIR}/libressl
 CONFIGURE_ENV+=	ac_cv_working_openssl_hashlib=yes
+.endif
+
+.include <bsd.port.pre.mk>
+
+# llvm17 with -flto=thin makes Programs/_freeze_module crash on armv7; workaround
+# cf. https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276249
+.if ${ARCH} == armv7 && ${CHOSEN_COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 170 && \
+	${COMPILER_VERSION} < 180
+CONFIGURE_ARGS:=	${CONFIGURE_ARGS:N${LTO_CONFIGURE_ON}}
 .endif
 
 post-patch:
@@ -148,4 +157,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/Tools/gdb/libpython.py \
 		${STAGEDIR}${PREFIX}/lib/libpython${PYTHON_VER}${ABIFLAGS}.so.1.0-gdb.py
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

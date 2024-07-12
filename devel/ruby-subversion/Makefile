@@ -1,13 +1,13 @@
 PKGNAMEPREFIX=	ruby-
 
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Ruby bindings for version control system
 WWW=		https://subversion.apache.org/
 
 USES+=		compiler:c11 ruby
 
-PORTREVISION_114=	0
-PORTREVISION_LTS=	0
+PORTREVISION_LATEST=	2
+PORTREVISION_LTS=		2
 
 SVN_BUILD_BINDINGS=	yes
 
@@ -15,7 +15,10 @@ SVN_BUILD_BINDINGS=	yes
 
 CATEGORIES+=	ruby
 
-CONFIGURE_ARGS+=	--without-gnome-keyring \
+CONFIGURE_ARGS+=	--with-swig-ruby=${RUBY} \
+			--without-swig-perl \
+			--without-swig-python \
+			--without-gnome-keyring \
 			--without-kwallet \
 			--with-apxs=no
 

@@ -34,6 +34,7 @@ require("shaper.inc");
  */
 phpsession_begin();
 $guiuser = getUserEntry($_SESSION['Username']);
+$guiuser = $guiuser['item'];
 $read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
 phpsession_end();
 

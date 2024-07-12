@@ -1,6 +1,6 @@
 PORTNAME=	mate-desktop
-PORTVERSION=	1.26.0
-PORTREVISION=	2
+PORTVERSION=	1.28.1
+PORTREVISION=	1
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -17,6 +17,7 @@ LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
 
 LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
 BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes
+RUN_DEPENDS=	dconf-editor:devel/dconf-editor
 
 PORTSCOUT=	limitw:1,even
 
@@ -27,6 +28,7 @@ USE_GNOME=	cairo dconf gdkpixbuf2 gnomeprefix gtk30 \
 		intltool introspection:build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.accessibility-keyboard.gschema.xml \

@@ -1,5 +1,5 @@
 PORTNAME=	zam-plugins
-DISTVERSION=	4.2
+DISTVERSION=	4.3
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -28,8 +28,8 @@ USE_XORG=	x11 xext xrandr
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	zamaudio
-GH_TUPLE=	DISTRHO:DPF:8818060:d/dpf \
-		DISTRHO:pugl:3e03459:pugl/dpf/dgl/src/pugl-upstream
+GH_TUPLE=	DISTRHO:DPF:077fcf5:DISTRHO_DPF/dpf \
+		DISTRHO:pugl:e33b2f6:DISTRHO_DPF_pugl/dpf/dgl/src/pugl-upstream
 
 CFLAGS+=	-I${FILESDIR}
 MAKE_ARGS+=	USE_SYSTEM_LIBS=1 HAVE_ZITA_CONVOLVER=true

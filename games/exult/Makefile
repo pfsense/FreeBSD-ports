@@ -1,6 +1,6 @@
 PORTNAME=	exult
 DISTVERSION?=	1.8
-PORTREVISION?=	5
+PORTREVISION?=	6
 PORTEPOCH=	1
 CATEGORIES=	games
 
@@ -32,8 +32,6 @@ PLIST?=			${.CURDIR}/pkg-plist
 
 .if !defined(MASTERDIR)
 MASTER_SITES=	http://prdownloads.sourceforge.net/exult/
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-version.cc \
-		${PATCHDIR}/extra-patch-configure.ac
 .else
 USE_GITHUB=	yes
 .endif

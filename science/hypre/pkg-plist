@@ -23,10 +23,9 @@ include/HYPREf.h
 include/IJ_matrix.h
 include/IJ_vector.h
 include/_hypre_IJ_mv.h
-include/_hypre_blas.h
-include/_hypre_lapack.h
 include/_hypre_parcsr_ls.h
 include/_hypre_parcsr_mv.h
+include/_hypre_seq_block_mv.h
 include/_hypre_sstruct_ls.h
 include/_hypre_sstruct_mv.h
 include/_hypre_struct_ls.h
@@ -38,10 +37,8 @@ include/aux_parcsr_matrix.h
 include/csr_block_matrix.h
 include/csr_matmultivec.h
 include/distributed_matrix.h
-include/f2c.h
 include/fortran.h
 include/fortran_matrix.h
-include/hypre_blas.h
 include/interpreter.h
 include/krylov.h
 include/lobpcg.h

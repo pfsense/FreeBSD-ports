@@ -1,6 +1,6 @@
 PORTNAME=	pks
 PORTVERSION=	0.9.6.20040312
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	security www
 MASTER_SITES=	http://pks.sourceforge.net/ LOCAL/mandree
 DISTFILES=	pks-current.tgz
@@ -12,12 +12,16 @@ WWW=		http://www.mit.edu/people/marc/pks/
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Depends on deprecated Oracle Berkeley DB 5.3 and last release back in 2003
+EXPIRATION_DATE=2024-06-30
+
 USES=		bdb ssl
 USE_RC_SUBR=	pksd
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--datadir=${DATADIR} \
 		--localstatedir=/var/pks \
 		--with-db --with-ipv6 --with-libwrap \

@@ -35,7 +35,7 @@ function pimd_validate_intrange_input($descr, $value, $min, $max) {
 }
 
 function pimd_validate_input_general() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	/* interfacemode (none, all) */
 	if (!in_array($_POST['interfacemode'], array('none', 'all'))) {
@@ -81,7 +81,7 @@ function pimd_validate_input_general() {
 }
 
 function pimd_validate_input_interfaces() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	/* Interface name */
 	if (!in_array($_POST['interface'], pimd_get_list_values(pimd_get_interfaces(false)))) {
@@ -125,7 +125,7 @@ function pimd_validate_input_interfaces() {
 }
 
 function pimd_validate_input_bsrcandidate() {
-	global $config, $input_errors;
+	global $input_errors;
 
 	/* Interface name */
 	if (!in_array($_POST['interface'], pimd_get_list_values(pimd_get_interfaces()))) {
@@ -141,7 +141,7 @@ function pimd_validate_input_bsrcandidate() {
 }
 
 function pimd_validate_input_rpcandidate() {
-	global $config, $input_errors, $pkg;
+	global $input_errors, $pkg;
 
 	/* Interface name */
 	if (!in_array($_POST['interface'], pimd_get_list_values(pimd_get_interfaces()))) {
@@ -191,7 +191,7 @@ function pimd_validate_input_rpcandidate() {
 }
 
 function pimd_validate_input_rpaddress() {
-	global $config, $input_errors;
+	global $input_errors;
 	/* RP Address */
 	if (!empty($_POST['address']) && !is_ipaddrv4($_POST['address'])) {
 		$input_errors[] = gettext('Invalid RP Address');

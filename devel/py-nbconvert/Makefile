@@ -1,12 +1,15 @@
 PORTNAME=	nbconvert
-PORTVERSION=	7.13.1
+PORTVERSION=	7.16.4
+PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/jupyter/nbconvert/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Converting Jupyter Notebooks
-WWW=		https://jupyter.org/
+WWW=		https://nbconvert.readthedocs.io/en/latest/ \
+		https://github.com/jupyter/nbconvert
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

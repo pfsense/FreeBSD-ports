@@ -5,6 +5,306 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20240620:
+  AFFECTS: net-mgmt/net-snmp
+  AUTHOR: markj@FreeBSD.org
+
+  The snmpd and snmptrapd daemons now drop privileges by default when started
+  using the rc scripts provided in the package.  Make sure that snmpd
+  configuration in /usr/local/share/snmp is readable by the "snmpd" user.  If
+  you have defined extension scripts in snmpd.conf, make sure that they can be
+  executed by an unprivileged user.  To revert to the old behavior of always
+  running as root, set snmpd_sugid="NO" or snmptrapd_sugid="NO" in /etc/rc.conf.
+
+  See the snmpd rc script for a hint on how to debug any permission problems
+  that might arise as a result of this change.
+
+20240615:
+  AFFECTS: mail/cyrus-imapd25
+  AUTHOR: ume@FreeBSD.org
+
+  The BDB option is disabled by default.
+
+  If you are using the berkeley cyrusdb backend, we strongly recommend
+  that you switch to something other than the berkeley cyrusdb
+  backend.  If you want to continue using the berkeley cyrusdb
+  backend, build the cyrus-imapd25 port yourself with the BDB option
+  enabled.
+
+20240613:
+  AFFECTS: multimedia/audacios and multimedia/audacious-plugins
+  AUTHOR: madpilot@FreeBSD.org
+
+  Upstream project made qt6 the new default, so the port flavors have
+  been updated to follow this change.
+
+  If you are using the qt6 flavor, you should uninstall it and install
+  the unflavored package. If you want to keep using the qt5 version it
+  will be updated automatically to the qt6 version. If you should
+  uninstall the unflavored package and instal the qt5 version.
+
+20240606:
+  AFFECTS: users of net-mgmt/unifi8
+  AUTHOR: ronald@FreeBSD.org
+
+  The default MongoDB version dependency has been switched from 5.0 to 6.0.
+  Although MongoDB 5.0 -> MongoDB 6.0 datafiles in-place upgrade seem to
+  work, users are strongly recommended to take full backup of unifi
+  database prior to upgrade and start with clean installation afterwards.
+
+  For an in-place upgrade it is important that the MongoDB
+  'featureCompatibilityVersion' is set to 5.0.
+  See: https://www.mongodb.com/docs/v6.0/release-notes/6.0-upgrade-standalone/#feature-compatibility-version
+
+  See updating entry 20230310 for a backup/restore upgrade.
+
+20240604:
+  AFFECTS: net-mgmt/net-snmp
+  AUTHOR: markj@FreeBSD.org
+
+  The net-snmp port's newsyslog(8) configuration has been updated such
+  that the snmpd log file will be owned by the snmpd user following log
+  rotation.  This is done to make it easier to run snmpd as the snmpd
+  user rather than as root, using the snmpd_sugid rc.conf option.
+  For now snmpd still runs as root by default.  This is expected to change
+  in the future.
+
+20240529:
+  AFFECTS: users of TeX*
+  AUTHOR: bofh@FreeBSD.org
+
+  TeX system has been updated to 2024 from 2023. Normal pkg upgrade or
+  portmaster -a should handle all the upgrade properly. In case not please
+  create a ticket or send a mail to tex@FreeBSD.org
+
+  Previously users have reported to delete texlive-texmf prior to
+  starting update, or pkg-static will indicate there is a conflict
+  during the upgrade of texlive-base :
+
+  # pkg remove texlive-texmf
+
+20240529:
+  AFFECTS: users of python
+  AUTHOR: rm@FreeBSD.org
+
+  The default version of python3 and python was switched to 3.11.
+
+  For ports users wanting to keep version 3.9 as default,
+  add DEFAULT_VERSIONS+= python=3.9 python3=3.9 to make.conf
+
+  Following procedures may ease the upgrade:
+
+  For users of pre-build packages:
+  # sh
+  # for i in $(pkg query -g %n 'py39-*'); do pkg set -yn ${i}:py311-${i#py39-}; done
+  # pkg upgrade
+
+  For portmaster users:
+  # sh
+  # portmaster -o lang/python311 python39
+  # REINSTALL="$(pkg info -oq '*py39*')"
+  # pkg delete -f "*py39*"
+  # portmaster $REINSTALL
+  # REBUILD=$(pkg query -g "%n:%dn" '*' | grep py3 | grep -v py311 | cut -d : -f 1 | sort -u)
+  # portmaster $REBUILD
+  # REBUILD2=$(pkg list | grep python-39 | xargs pkg which | awk '{print $6}' | sort -u)
+  # portmaster $REBUILD2
+
+  Final steps (for pre-built packages & portmaster):
+
+  If no longer required, Python 3.9 can be removed via
+  "pkg remove python39" and the directory /usr/local/lib/python3.9 can
+  then be deleted afterwards, if not empty.
+
+20240522:
+  AFFECTS: net-p2p/transmission-daemon
+
+  The web interface has been separated from the daemon port into its own port.
+  This allows users of transmission-gtk and transmission-qt to install the web
+  interface.
+
+20240521:
+  AFFECTS: www/gitlab
+  AUTHOR: mfechner@FreeBSD.org
+
+  Make sure you upgrade first to 16.11.x before you upgrade to the today
+  released version 17.0.0.
+
+  For more details see:
+  https://gitlab.fechner.net/mfechner/Gitlab-docu/-/blob/master/update/16.11-17.0-freebsd.md
+
+20240517:
+  AFFECTS: comms/tio
+  AUTHOR: diizzy@FreeBSD.org
+
+  As of 3.1 upstream have reworked configuration file layout and syntax
+  so older configurations will not work.
+
+  For more details, see
+
+  https://github.com/tio/tio/releases/tag/v3.1
+
+20240513:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 3.9 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
+20240509:
+  AFFECTS: databases/timescaledb
+  AUTHOR: kbowling@FreeBSD.org
+
+  The Foreign Key storage in hypertables has changed in an incompatible way,
+  after runing ALTER EXTENSION, you must run the SQL script here:
+  https://github.com/timescale/timescaledb-extras/blob/master/utils/2.15.X-fix_hypertable_foreign_keys.sql
+
+  For more details, see
+
+  https://github.com/timescale/timescaledb/pull/6797
+
+20240508:
+  AFFECTS: www/oauth2-proxy
+  AUTHOR: netchild@FreeBSD.org
+
+  The start script is converted to be instance aware.  To use it:
+   - cp /usr/local/etc/oauth2-proxy.cfg.sample /usr/local/etc/oauth2-proxy-myapp.cfg
+   - vi /usr/local/etc/oauth2-proxy-myapp.cfg
+   - ln -s oauth2_proxy /usr/local/etc/rc.d/oauth2_proxy_myapp
+   - sysctl oauth2_proxy_myapp_enable=YES
+   - service oauth2_proxy_myapp start
+  This allows to easily start multiple instances on the same system.
+
+  As part of this, the start script was renamed to oauth2_proxy. This only
+  affects manual restarts, no change in rc.conf is needed.
+
+20240430:
+  AFFECTS: audio/py-pyradio
+  AUTHOR: nivit@FreeBSD.org
+
+  The new version of Pyradio moves some data files to new locations.
+  To see what it really does, run pyradio from a terminal the first time.
+  Besides that, the recordings are moved/saved into ~/pyradio-recordings.
+  You can change that directory in the config file.
+
+  For more details, see
+
+  https://github.com/coderholic/pyradio/releases/tag/0.9.3
+
+20240423:
+  AFFECTS: textproc/vale
+  AUTHOR: bofh@FreeBSD.org
+
+  When upgrading to v3.0.0, the vocabularies need to be moved from
+  $StylesPath/Vocab to $StylesPath/config/vocabularies.
+
+20240421:
+  AFFECTS: www/gitlab-ce
+  AUTHOR: mfechner@FreeBSD.org
+
+  With the upgrade to version 16.11 the default path for gitlab-ce changed:
+  /usr/local/www/gitlab-ce -> /usr/local/www/gitlab
+  Make sure you follow the upgrade manual very carefully:
+  https://gitlab.fechner.net/mfechner/Gitlab-docu/-/blob/master/update/16.10-16.11-freebsd.md
+
+  The gitlab port also got a new flavor gitlab@ee to make the Gitlab
+  Enterprise Edition available (you will need a license for it).
+  Please note, that the ee flavor is a draft, but any feedback is welcome.
+  See also the installation and upgrade manual for more details.
+  https://gitlab.fechner.net/mfechner/Gitlab-docu/-/blob/master/install/16.11-freebsd.md
+
+20240408:
+  AFFECTS: users of databases/p5-DBD-mysql
+  AUTHOR: flo@FreeBSD.org
+
+  Upstream removed support for MariaDB from the 5.0 branch. So if you use
+  MariaDB you need to use databases/p5-DBD-mysql4 from now on.
+
+  Portmaster users:
+        portmaster -o databases/p5-DBD-mysql4 databases/p5-DBD-mysql
+        portmaster -a
+
+  Portupgrade users:
+        portupgrade -o databases/p5-DBD-mysql4 -f databases/p5-DBD-mysql
+        portupgrade -a
+
+20240330:
+  AFFECTS: users of mail/spamassassin
+  AUTHOR: cy@FreeBSD.org
+
+  sa-update must be run following update and prior to restarting sa-spamd
+  else it will fail to start due to a syntax error.
+
+20240326:
+  AFFECTS: users of net/bird2
+  AUTHOR: olivier@FreeBSD.org
+
+  The net/bird2 default flavor has ben switched to netlink on FreeBSD >= 14.0
+  There is not change for FreeBSD < 14.0 (default flavor is still rtsock)
+
+20240319:
+  AFFECTS: users of net/rdist6
+  AUTHOR: cy@FreeBSD.org
+
+  As of 52032b3d50c0 net/rdist6 will install its binary named rdist instead
+  of rdist6. Base FreeBSD no longer has its own rdist binary. Therefore
+  there is no need to rename the rdist6 binary to rdist6 to avoid confusion.
+  The historical and default name of the rdist binary is "rdist".
+
+20240318:
+  AFFECTS: users of net-mgmt/unifi8
+  AUTHOR: otis@FreeBSD.org
+
+  The default MongoDB version dependency has been switched from 4.4 to 5.0.
+
+  Although MongoDB 4.4 -> MongoDB 5.0 datafiles in-place upgrade seem to
+  work, users are strongly recommended to take full backup of unifi
+  database prior to upgrade and start with clean installation afterwards.
+
+  See updating entry 20230310 for details.
+
+20240316:
+  AFFECTS: users of net/rabbitmq
+  AUTHOR: dch@FreeBSD.org
+
+  In preparation for upgrading to future RabbitMQ releases, users *must*
+  enable all feature flags before upgrading stepwise to v3.12.13, to be
+  able to migrate later to v3.13.0 when it is released in 2024Q2.
+
+  See https://www.rabbitmq.com/docs/upgrade for details.
+
+20240228:
+  AFFECTS: users of www/redmine50
+  AUTHOR: bofh@FreeBSD.org
+
+  The default version of ruby has been switched from 3.1 to 3.2.
+
+  However www/redmine50 does not support ruby 3.2. Users should add the
+  following in their relevant make.conf file:
+
+  DEFAULT_VERSIONS+=ruby=3.1
+
+  Although redmine 5.1.X supports ruby 3.2 and later but so far there is
+  no redmine51 ports in the tree.
+
+20240222:
+  AFFECTS: users of databases/xtrabackup8
+  AUTHOR: eugen@FreeBSD.org
+
+  The port databases/xtrabackup8 upgraded to version 8.0.35-30
+  and renamed to databases/xtrabackup80 in preparation for upcoming
+  incompatible branch databases/xtrabackup81, to avoid confusion.
+
 20231229:
   AFFECTS: users of databases/tarantool
   AUTHOR: arrowd@FreeBSD.org
@@ -127,7 +427,44 @@ you update your ports collection, before attempting any port upgrades.
 
   The default Perl version has been switched to Perl 5.36.  If you are using
   binary packages to upgrade your system, you do not have anything to do, pkg
-  upgrade will do the right thing.
+  upgrade will do the right thing. For the other people, assuming you are
+  migrating from 5.34 to 5.36, do:
+
+  First, add to /etc/make.conf:
+
+  DEFAULT_VERSIONS+=  perl5=5.36
+
+  Portupgrade users:
+	portupgrade -o lang/perl5.36 -f lang/perl5.34
+
+	  You can now remove the DEFAULT_VERSIONS line added earlier
+	  from /etc/make.conf
+
+	  Then you will need to rebuild everything that uses libperl.so, you
+	  can do so with:
+
+	portupgrade -f `pkg shlib -qR libperl.so.5.34`
+
+	  If, for some reason, this command fails at one point, it is safe to
+	  run it again, it will not rebuild what it already rebuilt, as the
+	  ports that have been rebuilt no longer depend on libperl.so.5.34 but
+	  on libperl.so.5.36.
+
+  Portmaster users:
+	portmaster -o lang/perl5.36 lang/perl5.34
+
+	  You can now remove the DEFAULT_VERSIONS line added earlier
+	  from /etc/make.conf
+
+	  Then you will need to rebuild everything that uses libperl.so, you
+	  can do so with:
+
+	portmaster -f `pkg shlib -qR libperl.so.5.34`
+
+	  If, for some reason, this command fails at one point, it is safe to
+	  run it again, it will not rebuild what it already rebuilt, as the
+	  ports that have been rebuilt no longer depend on libperl.so.5.34 but
+	  on libperl.so.5.36.
 
 20231014:
   AFFECTS: users of security/openssl and security/openssl30

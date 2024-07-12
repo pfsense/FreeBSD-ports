@@ -53,7 +53,6 @@
     SUBDIR += bamp-lv2
     SUBDIR += bangr-lv2
     SUBDIR += baresip
-    SUBDIR += baudline
     SUBDIR += bcg729
     SUBDIR += bchoppr-lv2
     SUBDIR += beep
@@ -150,7 +149,6 @@
     SUBDIR += faad
     SUBDIR += fabla2-lv2
     SUBDIR += fapg
-    SUBDIR += fasttracker2
     SUBDIR += fatfrog-lv2
     SUBDIR += faudio
     SUBDIR += faust
@@ -201,6 +199,7 @@
     SUBDIR += freebsd-13-mixer
     SUBDIR += freedesktop-sound-theme
     SUBDIR += freepats
+    SUBDIR += ft2-clone
     SUBDIR += ft2play
     SUBDIR += funktrackergold
     SUBDIR += furnace
@@ -209,6 +208,7 @@
     SUBDIR += geonkick-lv2
     SUBDIR += ggwave
     SUBDIR += giada
+    SUBDIR += gigedit
     SUBDIR += gmsynth-lv2
     SUBDIR += gmtp
     SUBDIR += gmusicbrowser
@@ -216,8 +216,6 @@
     SUBDIR += gnome-metronome
     SUBDIR += gnome-music
     SUBDIR += gnome-podcasts
-    SUBDIR += gnormalize
-    SUBDIR += gnuitar
     SUBDIR += gnupod
     SUBDIR += gnuspeechsa
     SUBDIR += gnustep-cdplayer
@@ -350,6 +348,7 @@
     SUBDIR += libconvolve
     SUBDIR += libcoverart
     SUBDIR += libdiscid
+    SUBDIR += libdjinterop
     SUBDIR += libdssialsacompat
     SUBDIR += libebur128
     SUBDIR += libechonest
@@ -398,6 +397,7 @@
     SUBDIR += libsonic
     SUBDIR += libsoxr
     SUBDIR += libspecbleach
+    SUBDIR += libvgm
     SUBDIR += libvorbis
     SUBDIR += libxmp
     SUBDIR += lilv
@@ -418,6 +418,19 @@
     SUBDIR += linux-c7-pulseaudio-utils
     SUBDIR += linux-c7-sdl_mixer
     SUBDIR += linux-laudio
+    SUBDIR += linux-rl9-alsa-lib
+    SUBDIR += linux-rl9-alsa-lib-devel
+    SUBDIR += linux-rl9-alsa-plugins-oss
+    SUBDIR += linux-rl9-alsa-plugins-pulseaudio
+    SUBDIR += linux-rl9-flac
+    SUBDIR += linux-rl9-gsm
+    SUBDIR += linux-rl9-libogg
+    SUBDIR += linux-rl9-libsndfile
+    SUBDIR += linux-rl9-libvorbis
+    SUBDIR += linux-rl9-openal-soft
+    SUBDIR += linux-rl9-opus
+    SUBDIR += linux-rl9-pulseaudio-libs
+    SUBDIR += linux-rl9-pulseaudio-utils
     SUBDIR += linuxsampler
     SUBDIR += linuxwave
     SUBDIR += liquidsfz
@@ -477,13 +490,10 @@
     SUBDIR += mp3blaster
     SUBDIR += mp3burn
     SUBDIR += mp3check
-    SUBDIR += mp3ck
     SUBDIR += mp3gain
     SUBDIR += mp3guessenc
     SUBDIR += mp3lint
     SUBDIR += mp3mover
-    SUBDIR += mp3plot
-    SUBDIR += mp3rename
     SUBDIR += mp3riot
     SUBDIR += mp3splt
     SUBDIR += mp3stat
@@ -499,11 +509,13 @@
     SUBDIR += mps
     SUBDIR += mpz
     SUBDIR += mumble
+    SUBDIR += mumble-server
     SUBDIR += murmur
     SUBDIR += murmur-cli
     SUBDIR += muse-sequencer
     SUBDIR += musepack
     SUBDIR += musescore
+    SUBDIR += musescore3
     SUBDIR += musiccontrol
     SUBDIR += musicpc
     SUBDIR += musicpd
@@ -578,7 +590,9 @@
     SUBDIR += padthv1-lv2
     SUBDIR += paman
     SUBDIR += pamixer
+    SUBDIR += pandaresampler
     SUBDIR += paprefs
+    SUBDIR += pasystray
     SUBDIR += patchage
     SUBDIR += pavucontrol
     SUBDIR += pavucontrol-qt
@@ -603,11 +617,9 @@
     SUBDIR += plasma6-ocean-sound-theme
     SUBDIR += plasma6-oxygen-sounds
     SUBDIR += plasma6-plasma-pa
-    SUBDIR += play
     SUBDIR += playgsf
     SUBDIR += playmidi
     SUBDIR += playumidi
-    SUBDIR += pm3umpdl
     SUBDIR += pms
     SUBDIR += pms-devel
     SUBDIR += pocketsphinx
@@ -660,6 +672,7 @@
     SUBDIR += py-python-mpd2
     SUBDIR += py-pyttsx3
     SUBDIR += py-resampy
+    SUBDIR += py-samplerate
     SUBDIR += py-simpleaudio
     SUBDIR += py-soundcloud
     SUBDIR += py-sounddevice
@@ -688,7 +701,6 @@
     SUBDIR += raul
     SUBDIR += rawrec
     SUBDIR += re
-    SUBDIR += rebot3
     SUBDIR += resid
     SUBDIR += rexima
     SUBDIR += rezound
@@ -762,9 +774,6 @@
     SUBDIR += speex
     SUBDIR += speexdsp
     SUBDIR += spek
-    SUBDIR += sphinx
-    SUBDIR += sphinx3
-    SUBDIR += sphinxbase
     SUBDIR += spiralloops
     SUBDIR += spiralsynth
     SUBDIR += spiralsynthmodular
@@ -778,7 +787,6 @@
     SUBDIR += ssr-lv2
     SUBDIR += stegosaurus-lv2
     SUBDIR += stk
-    SUBDIR += stmp
     SUBDIR += stone-phaser-lv2
     SUBDIR += strawberry
     SUBDIR += streamripper
@@ -789,14 +797,11 @@
     SUBDIR += supercollider
     SUBDIR += surge-synthesizer-lv2
     SUBDIR += surge-synthesizer-xt-lv2
-    SUBDIR += sweep
     SUBDIR += swh-lv2
     SUBDIR += swhplugins
     SUBDIR += synthpod-lv2
     SUBDIR += synthv1-lv2
     SUBDIR += taglib
-    SUBDIR += taglib-extras
-    SUBDIR += taglookup
     SUBDIR += tagutil
     SUBDIR += tamgamp-lv2
     SUBDIR += tap-plugins
@@ -884,6 +889,7 @@
     SUBDIR += xsynth-dssi
     SUBDIR += xuidesigner
     SUBDIR += xwave
+    SUBDIR += xwax
     SUBDIR += yell
     SUBDIR += ympd
     SUBDIR += yoshimi

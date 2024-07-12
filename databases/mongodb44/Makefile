@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.4.26
+DISTVERSION=	4.4.29
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/
@@ -17,6 +17,8 @@ LICENSE_NAME_SSPLv1=	Server Side Public License Version 1
 LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+DEPRECATED=	EOL as of February 2024, https://www.mongodb.com/legal/support-policy/lifecycles
+EXPIRATION_DATE=2024-07-31
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
 
@@ -30,11 +32,13 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 USES=		compiler:c++17-lang cpe python:build scons
 USE_RC_SUBR=	mongod
 
+# --modules= disables "enterprise" module from src/mongo/db/modules/
 MAKE_ARGS=	--use-system-zlib \
 		--use-system-pcre \
 		--use-system-snappy \
 		--libc++ \
 		--cxx-std=17 \
+		--modules= \
 		--runtime-hardening=on \
 		-j ${MAKE_JOBS_NUMBER} \
 		--disable-warnings-as-errors \

@@ -15,10 +15,8 @@ LICENSE_TEXT=	may contain iconic, visual, graphical or other\
 		consent of either the trademark or the patent holder
 LICENSE_PERMS=	auto-accept
 
-BROKEN=		Unfetchable
-
 NO_ARCH=	yes
 
 WRKSRC=		${WRKDIR}/"black and white"
 
-.include "${.CURDIR}/../kde-icons-noia/Makefile.icons"
+.include "${.CURDIR}/../kde-icons-nuovext2/Makefile.icons"

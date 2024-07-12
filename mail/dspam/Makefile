@@ -4,7 +4,7 @@
 
 PORTNAME=	dspam
 PORTVERSION=	3.10.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -271,7 +271,6 @@ CONFIGURE_ARGS+=	--with-mysql-includes=${LOCALBASE}/include/mysql \
 			--with-mysql-libraries=${LOCALBASE}/lib/mysql
 PLIST_SUB+=	MYSQL=""
 _DBDRV_COUNT:=	${_DBDRV_COUNT}o
-IGNORE_WITH_MYSQL=	105m 106m 1011m
 .	if ${PORT_OPTIONS:MMYSQL_COMPRESS}
 CONFIGURE_ARGS+=	--enable-client-compression
 .	endif

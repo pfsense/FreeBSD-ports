@@ -657,8 +657,29 @@ is_plus() {
 	!(is_ce)
 }
 
+get_repo_path() {
+	local _repo_name="${1}"
+
+	# If the argument is a repo name, look for the respective repo conf path
+	for file in "${PLUS_CERT_BASE}/${PRODUCT}-repo-"*".name"; do
+		if [ ! -f "${file}" ]; then
+			continue
+		fi
+		if [ "$(/bin/cat ${file})" = "${_repo_name}" ]; then
+			echo -n "${file%.name}.conf"
+			return
+		fi
+	done
+
+	# No path found, return the given value
+	echo -n "${_repo_name}"
+	return
+}
+
 repo_is_plus_upgrade() {
 	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
+	# If the value is a repo name, get its path
+	pkg_repo_conf_path="$(get_repo_path "${pkg_repo_conf_path}")"
 
 	if [ -n "$(echo $pkg_repo_conf_path | grep ${product}-repo-custom)" ]; then
 		return 0
@@ -1492,10 +1513,23 @@ check_upgrade() {
 				continue
 			fi
 
-			# Skip repos with devel names
-			if [ "${_reponame}" == "devel" ]; then
-				continue
-			fi
+			# Skip repos with devel names as well as CE->Plus upgrades
+			case "${_reponame}" in
+				devel)
+					continue
+					;;
+				*-devel)
+					continue
+					;;
+				*-preview)
+					continue
+					;;
+				*-upgrade)
+					continue
+					;;
+				*)
+					;;
+			esac
 
 			local _pkg_args=""
 			local _is_configured_repo=$( \
@@ -1773,7 +1807,6 @@ if [ -n "${HTTP_PROXY}" ]; then
 	HTTP_PROXY_PASS=$(read_xml_tag.sh string system/proxypass)
 	if [ -n "${HTTP_PROXY_USER}" -a -n "${HTTP_PROXY_PASS}" ]; then
 		HTTP_PROXY_AUTH="${HTTP_PROXY_USER}:${HTTP_PROXY_PASS}"
-		HTTP_PROXY_AUTH="basic:*:${HTTP_PROXY_AUTH}"
 		export HTTP_PROXY_AUTH
 	fi
 fi

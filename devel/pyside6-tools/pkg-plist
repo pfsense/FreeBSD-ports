@@ -1,5 +1,7 @@
 %%PYSIDE_BINDIR_REL%%/android_deploy.py
 %%PYSIDE_BINDIR_REL%%/assistant
+%%PYSIDE_BINDIR_REL%%/balsam
+%%PYSIDE_BINDIR_REL%%/balsamui
 %%PYSIDE_BINDIR_REL%%/deploy.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__init__.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
@@ -8,6 +10,8 @@
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/commands%%PYTHON_EXT_SUFFIX%%.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/config%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/config%%PYTHON_EXT_SUFFIX%%.pyc
+%%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/dependency_util%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
+%%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/dependency_util%%PYTHON_EXT_SUFFIX%%.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/deploy_util%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/deploy_util%%PYTHON_EXT_SUFFIX%%.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/__pycache__/nuitka_helper%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
@@ -17,10 +21,13 @@
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/__init__.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc
+%%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/android_config%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
+%%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/android_config%%PYTHON_EXT_SUFFIX%%.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/android_helper%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/android_helper%%PYTHON_EXT_SUFFIX%%.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/buildozer%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/__pycache__/buildozer%%PYTHON_EXT_SUFFIX%%.pyc
+%%PYSIDE_BINDIR_REL%%/deploy_lib/android/android_config.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/android_helper.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/buildozer.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/android/recipes/PySide6/__init__.tmpl.py
@@ -28,8 +35,11 @@
 %%PYSIDE_BINDIR_REL%%/deploy_lib/commands.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/config.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/default.spec
+%%PYSIDE_BINDIR_REL%%/deploy_lib/dependency_util.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/deploy_util.py
 %%PYSIDE_BINDIR_REL%%/deploy_lib/nuitka_helper.py
+%%PYSIDE_BINDIR_REL%%/deploy_lib/pyside_icon.icns
+%%PYSIDE_BINDIR_REL%%/deploy_lib/pyside_icon.ico
 %%PYSIDE_BINDIR_REL%%/deploy_lib/pyside_icon.jpg
 %%PYSIDE_BINDIR_REL%%/deploy_lib/python_helper.py
 %%PYSIDE_BINDIR_REL%%/designer
@@ -58,6 +68,7 @@
 %%PYSIDE_BINDIR_REL%%/qmllint
 %%PYSIDE_BINDIR_REL%%/qmlls
 %%PYSIDE_BINDIR_REL%%/qmltyperegistrar
+%%PYSIDE_BINDIR_REL%%/qsb
 %%PYSIDE_BINDIR_REL%%/qtpy2cpp.py
 %%PYSIDE_BINDIR_REL%%/qtpy2cpp_lib/__pycache__/astdump%%PYTHON_EXT_SUFFIX%%.opt-1.pyc
 %%PYSIDE_BINDIR_REL%%/qtpy2cpp_lib/__pycache__/astdump%%PYTHON_EXT_SUFFIX%%.pyc
@@ -85,4 +96,5 @@
 %%PYSIDE_BINDIR_REL%%/qtpy2cpp_lib/tokenizer.py
 %%PYSIDE_BINDIR_REL%%/qtpy2cpp_lib/visitor.py
 %%PYSIDE_BINDIR_REL%%/rcc
+%%PYSIDE_BINDIR_REL%%/requirements-android.txt
 %%PYSIDE_BINDIR_REL%%/uic

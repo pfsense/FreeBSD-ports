@@ -1,5 +1,5 @@
 PORTNAME=	snowflake-connector-python
-PORTVERSION=	3.5.0
+DISTVERSION=	3.8.0
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,6 @@ USE_PYTHON=	autoplist concurrent distutils
 PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asn1crypto>0.24.0,<2.0.0:devel/py-asn1crypto@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cffi>=1.9,<2:devel/py-cffi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cryptography>=3.1.0:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}oscrypto<2.0:security/py-oscrypto@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openssl>=16.2.0:security/py-openssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyjwt<3.0:www/py-pyjwt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>0:devel/py-pytz@${PY_FLAVOR} \
@@ -35,7 +34,7 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asn1crypto>0.24.0,<2.0.0:devel/py-asn1crypto@
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.3,<5.0:devel/py-typing-extensions@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}filelock>=3.5,<4.0:sysutils/py-filelock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sortedcontainers>=2.4.0:devel/py-sortedcontainers@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}platformdirs>=2.6.0,<4.0.0:devel/py-platformdirs@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}platformdirs>=2.6.0,<5.0.0:devel/py-platformdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tomlkit>0:textproc/py-tomlkit@${PY_FLAVOR}
 
 .include <bsd.port.mk>

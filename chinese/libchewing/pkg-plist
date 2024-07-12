@@ -3,7 +3,6 @@ include/chewing/chewingio.h
 include/chewing/chewing-compat.h
 include/chewing/global.h
 include/chewing/mod_aux.h
-lib/libchewing.a
 lib/libchewing.so
 lib/libchewing.so.3
 lib/libchewing.so.3.3.1
@@ -13,3 +12,7 @@ libdata/pkgconfig/chewing.pc
 %%DATADIR%%/pinyin.tab
 %%DATADIR%%/swkb.dat
 %%DATADIR%%/symbols.dat
+share/man/man1/chewing-cli-dump.1.gz
+share/man/man1/chewing-cli-info.1.gz
+share/man/man1/chewing-cli-init-database.1.gz
+share/man/man1/chewing-cli.1.gz

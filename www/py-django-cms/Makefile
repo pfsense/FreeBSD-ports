@@ -1,7 +1,8 @@
 PORTNAME=	django-cms
-PORTVERSION=	3.9.0
+PORTVERSION=	4.1.0
 PORTREVISION=	1
 CATEGORIES=	www python
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	xenophon+fbsdports@irtnog.org
@@ -11,15 +12,15 @@ WWW=		https://django-cms.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django32>=2.2:www/py-django32@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django42>=2.2:www/py-django42@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}djangocms-admin-style>=1.2:www/py-djangocms-admin-style@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-classy-tags>=0.7.2:www/py-django-classy-tags@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-formtools>=2.1:www/py-django-formtools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-sekizai>=0.7:www/py-django-sekizai@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}django-treebeard>=4.3:www/py-django-treebeard@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}django-treebeard>=4.3:www/py-django-treebeard@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
 
 USES=		python
-USE_GITHUB=	yes
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

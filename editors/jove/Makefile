@@ -1,40 +1,22 @@
 PORTNAME=	jove
-PORTVERSION=	4.16
-PORTREVISION=	2
+DISTVERSION=	4.17.5.3
 CATEGORIES=	editors
-MASTER_SITES=	ftp://ftp.cs.toronto.edu/pub/moraes/jove/ARCHIVE/4.16/ \
-		LOCAL/simon
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Jonathan's Own Version of Emacs
+WWW=		https://github.com/jonmacs/jove
 
-LICENSE=	JOVE
-LICENSE_NAME=	JOVE License
-LICENSE_FILE=	${WRKSRC}/README
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE=	BSD0CLAUSE
 
-DEPRECATED=	No upstream update in last 23 years
-EXPIRATION_DATE=	2024-01-16
+USES=		groff ncurses
 
-USES=		ncurses
+USE_GITHUB=	yes
+GH_ACCOUNT=	jonmacs
 
-MAKE_ARGS=	LIBS="${LDFLAGS} -lncurses"
+pre-patch:
+	${REINPLACE_CMD} -e 's,/usr/local/,${PREFIX}/,' ${WRKSRC}/Makefile
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
-
-OPTIONS_DEFINE=	EXTRADOCS
-OPTIONS_DEFAULT=
-OPTIONS_SUB=	yes
-
-EXTRADOCS_DESC=	Build and install cmds.doc
-EXTRADOCS_USES=	groff
-
-post-patch:
-# Fix collisions with getline(3)
-	@${REINPLACE_CMD} 's|[[:<:]]getline[[:>:]]|get_line|g' ${WRKSRC}/*.c ${WRKSRC}/*.h
-
-post-patch-EXTRADOCS-off:
-	@${REINPLACE_CMD} -E 's|^(all:.*) doc/cmds\.doc$$|\1|' ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} 's|^CMDS.DOC = .*|CMDS.DOC=|' ${WRKSRC}/Makefile
+post-install:
+	@${MKDIR} ${STAGEDIR}/var/lib/jove/tmp
 
 .include <bsd.port.mk>

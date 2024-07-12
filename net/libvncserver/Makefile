@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libpng.so:graphics/png \
 		liblzo2.so:archivers/lzo2
 
-USES=		cmake cpe jpeg libtool pathfix pkgconfig
+USES=		cmake cpe jpeg pathfix pkgconfig
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	libvncserver_project
@@ -47,7 +47,6 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CMAKE_BOOL=	WITH_GNUTLS
 
 OPENSSL_CMAKE_BOOL=	WITH_OPENSSL
-OPENSSL_CMAKE_ON=	-DOPENSSL_ROOT_DIR=${OPENSSLBASE}
 OPENSSL_USES=		ssl
 
 post-install:

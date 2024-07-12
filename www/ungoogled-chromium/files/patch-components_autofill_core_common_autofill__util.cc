@@ -1,6 +1,6 @@
---- components/autofill/core/common/autofill_util.cc.orig	2023-12-23 12:33:28 UTC
+--- components/autofill/core/common/autofill_util.cc.orig	2024-06-22 08:49:42 UTC
 +++ components/autofill/core/common/autofill_util.cc
-@@ -207,7 +207,7 @@ size_t LevenshteinDistance(std::u16string_view a,
+@@ -132,7 +132,7 @@ bool SanitizedFieldIsEmpty(const std::u16string& value
  
  bool ShouldAutoselectFirstSuggestionOnArrowDown() {
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \

@@ -1,8 +1,8 @@
 PORTNAME=	zeek
-DISTVERSION=	6.0.2
+DISTVERSION=	6.0.4
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://download.zeek.org/
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	System for detecting network intruders in real-time
@@ -20,6 +20,9 @@ USES=		bison cmake compiler:c++17-lang cpe gettext-runtime perl5 \
 		python shebangfix ssl
 
 USE_LDCONFIG=	yes
+
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/auxil/c-ares \
+			--no-same-owner --no-same-permissions
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
@@ -42,7 +45,6 @@ CMAKE_ARGS=	-DCARES_ROOT_DIR:PATH=${PREFIX} \
 		-DINSTALL_ZKG:BOOL=OFF \
 		-DPY_MOD_INSTALL_DIR:PATH=${PREFIX}/lib/zeekctl \
 		-DZEEK_ETC_INSTALL_DIR:PATH=${PREFIX}/etc \
-		-DZEEK_MAN_INSTALL_PATH=${MANPREFIX}/man \
 		-DZEEK_ROOT_DIR:PATH=${PREFIX} \
 		-DZEEK_SCRIPT_INSTALL_PATH:PATH=${PREFIX}/share/zeek
 
@@ -116,9 +118,6 @@ STRIP=
 .if ${PORT_OPTIONS:MZEEKCTL}
 USE_RC_SUBR=	zeek
 .endif
-
-post-extract:
-	@${RM} -rf ${WRKSRC}/auxil/c-ares
 
 post-install-ZEEKCTL-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/logs

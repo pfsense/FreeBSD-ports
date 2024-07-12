@@ -1,6 +1,6 @@
 PORTNAME=	porttree
 PORTVERSION=	1.1.r${SVN_REV}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	ports-mgmt python
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -18,20 +18,20 @@ USES=		python tar:bzip2 shebangfix
 
 SVN_REV=	114
 NO_BUILD=	yes
-PLIST_FILES=	bin/porttree man/man1/porttree.1.gz
+PLIST_FILES=	bin/porttree share/man/man1/porttree.1.gz
 NO_ARCH=	yes
 
 SHEBANG_FILES=	src/porttree.py
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/src/porttree.py ${STAGEDIR}${PREFIX}/bin/porttree
-	${INSTALL_MAN} ${WRKSRC}/src/porttree.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/src/porttree.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-test:
 	LC_ALL="en_US.UTF-8" ${WRKSRC}/tests/tests.sh
 
 # maintainer section:
-# require: devel/subversion
+# require: devel/subversion-lts or devel/subversion
 SVNROOT?=	https://svn.code.sf.net/p/porttree/code/trunk
 gen-dist:
 	${MKDIR} ${WRKDIR}

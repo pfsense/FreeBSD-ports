@@ -1,11 +1,6 @@
 PORTNAME=	wlroots
-DISTVERSION=	0.17.1
+DISTVERSION=	0.17.4
 CATEGORIES=	x11-toolkits
-
-PATCH_SITES+=	https://github.com/swaywm/${GL_PROJECT}/commit/:github
-PATCHFILES+=	10f80a8f1bb2.patch:-p1:github # https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/2064
-PATCHFILES+=	3196c73d487f.patch:-p1:github # https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/2064
-PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Modular Wayland compositor library
@@ -56,8 +51,8 @@ X11_LIB_DEPENDS=	libxcb-errors.so:x11/xcb-util-errors \
 			libxcb-render-util.so:x11/xcb-util-renderutil \
 			libxcb-icccm.so:x11/xcb-util-wm
 X11_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-			xwayland-devel>0:x11-servers/xwayland-devel
-X11_RUN_DEPENDS=	xwayland-devel>0:x11-servers/xwayland-devel
+			Xwayland:x11-servers/xwayland
+X11_RUN_DEPENDS=	Xwayland:x11-servers/xwayland
 X11_USE=		XORG=xcb
 X11_MESON_ENABLED=	xwayland
 X11_VARS=		BACKENDS+=x11

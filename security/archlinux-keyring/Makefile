@@ -1,5 +1,5 @@
 PORTNAME=	archlinux-keyring
-DISTVERSION=	20230504
+DISTVERSION=	20240520
 CATEGORIES=	security
 
 MAINTAINER=	vishwin@FreeBSD.org
@@ -14,14 +14,13 @@ BUILD_DEPENDS=	sq:security/sequoia-sq \
 RUN_DEPENDS=	bash:shells/bash \
 		pacman-key:sysutils/pacman@archlinux
 
-USES=		gmake pkgconfig python shebangfix trigger
+USES=		gmake pkgconfig python:3.10+ shebangfix trigger
 SHEBANG_FILES=	keyringctl wkd_sync
 BINARY_ALIAS=	install=ginstall
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.archlinux.org
 GL_ACCOUNT=	archlinux
-GL_TAGNAME=	f7749fd39c019922d504a43b7e94ceef6ae9e0ff
 
 NO_ARCH=	yes
 

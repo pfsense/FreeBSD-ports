@@ -1,4 +1,3 @@
-PORTREVISION=	0
 PKGNAMESUFFIX=	-pgsql
 
 COMMENT=	PostgreSQL support for the Courier authentication library

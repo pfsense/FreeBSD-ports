@@ -1,5 +1,5 @@
 PORTNAME=	http-accept
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -8,6 +8,7 @@ COMMENT=	Parse Accept and Accept-Language HTTP headers
 WWW=		https://github.com/socketry/http-accept
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/license.md
 
 USES=		gem
 

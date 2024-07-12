@@ -1,6 +1,6 @@
 PORTNAME=	libiqxmlrpc
 PORTVERSION=	0.13.5
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	devel net
 MASTER_SITES=	SF
 
@@ -9,6 +9,9 @@ COMMENT=	Free, object-oriented XML-RPC implementation written in C++
 WWW=		https://libiqxmlrpc.wikidot.com/
 
 LICENSE=	BSD2CLAUSE
+
+DEPRECATED=	Fails to build with libxml2 2.13.0 (PR 279705)
+EXPIRATION_DATE=2024-07-16
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 

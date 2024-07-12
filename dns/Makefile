@@ -7,15 +7,12 @@
     SUBDIR += axfr2acl
     SUBDIR += bind-tools
     SUBDIR += bind9-devel
-    SUBDIR += bind916
     SUBDIR += bind918
     SUBDIR += bindgraph
     SUBDIR += blocky
     SUBDIR += c-ares
     SUBDIR += cli53
     SUBDIR += coredns
-    SUBDIR += crossip
-    SUBDIR += curvedns
     SUBDIR += ddclient
     SUBDIR += ddns
     SUBDIR += denominator
@@ -25,10 +22,8 @@
     SUBDIR += dns-ui
     SUBDIR += dns2blackhole
     SUBDIR += dns2tcp
-    SUBDIR += dns_balance
     SUBDIR += dnsblast
     SUBDIR += dnscap
-    SUBDIR += dnscheckengine
     SUBDIR += dnscontrol
     SUBDIR += dnscrypt-proxy2
     SUBDIR += dnscrypt-wrapper
@@ -38,7 +33,6 @@
     SUBDIR += dnsdist
     SUBDIR += dnsenum
     SUBDIR += dnsflood
-    SUBDIR += dnsforwarder
     SUBDIR += dnshistory
     SUBDIR += dnsjava
     SUBDIR += dnsjit
@@ -69,7 +63,6 @@
     SUBDIR += dynip
     SUBDIR += encrypted-dns-server
     SUBDIR += fastresolve
-    SUBDIR += firedns
     SUBDIR += flamethrower
     SUBDIR += fpdns
     SUBDIR += gdnsd2
@@ -80,6 +73,7 @@
     SUBDIR += hesiod
     SUBDIR += hetzner_ddns
     SUBDIR += hostdb
+    SUBDIR += https_dns_proxy
     SUBDIR += idnkit
     SUBDIR += idnkit2
     SUBDIR += inadyn
@@ -101,6 +95,9 @@
     SUBDIR += libnspsl
     SUBDIR += libpsl
     SUBDIR += linux-c7-libasyncns
+    SUBDIR += linux-rl9-libasyncns
+    SUBDIR += linux-rl9-libidn2
+    SUBDIR += linux-rl9-libpsl
     SUBDIR += lua-resty-dns
     SUBDIR += luaunbound
     SUBDIR += mDNSResponder_nss
@@ -168,6 +165,7 @@
     SUBDIR += p5-POE-Filter-DNS-TCP
     SUBDIR += p5-Tie-DNS
     SUBDIR += p5-URBL-Prepare
+    SUBDIR += p5-Zonemaster-LDNS
     SUBDIR += packetq
     SUBDIR += pdnsd
     SUBDIR += pear-File_DNS
@@ -225,7 +223,6 @@
     SUBDIR += rubygem-zonefile
     SUBDIR += samba-nsupdate
     SUBDIR += scavenge
-    SUBDIR += sheerdns
     SUBDIR += sleuth
     SUBDIR += subfinder
     SUBDIR += totd

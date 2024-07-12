@@ -1,6 +1,6 @@
 PORTNAME=	pygslodeiv2
 DISTVERSION=	0.9.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,8 +16,8 @@ BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libgsl.so:math/gsl
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		compiler:c++11-lang localbase python pytest
-USE_PYTHON=	distutils autoplist
+USES=		compiler:c++11-lang localbase python
+USE_PYTHON=	distutils autoplist cython pytest
 
 pre-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} build_ext --inplace

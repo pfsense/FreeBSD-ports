@@ -1,7 +1,7 @@
 PORTNAME=	maim
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.7.4
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -31,6 +31,6 @@ PLIST_FILES=	bin/${PORTNAME} \
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/share/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

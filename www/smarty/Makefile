@@ -1,12 +1,13 @@
 PORTNAME=	smarty
+PORTVERSION=	5.3.1
 DISTVERSIONPREFIX=	v
-PORTVERSION=	4.3.4
 CATEGORIES=	www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP compiling template engine
-WWW=		https://www.smarty.net/
+WWW=		https://www.smarty.net/ \
+		https://github.com/smarty-php/smarty
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,6 +25,6 @@ GH_ACCOUNT=	smarty-php
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	cd ${WRKSRC}/libs && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
+	cd ${WRKSRC}/src && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

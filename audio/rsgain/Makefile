@@ -1,7 +1,7 @@
 PORTNAME=	rsgain
-DISTVERSION=	3.4
-DISTVERSIONSUFFIX=	-source
+DISTVERSION=	3.5.1
 PORTREVISION=	1
+DISTVERSIONSUFFIX=	-source
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/complexlogic/rsgain/releases/download/v${DISTVERSION}/
 
@@ -20,6 +20,7 @@ LIB_DEPENDS=	libtag.so:audio/taglib \
 USES=		cmake compiler:c++2b-lang ebur128 pkgconfig tar:xz
 
 CMAKE_ARGS=	-DMAXPROGBARWIDTH=80
+CMAKE_ON=	INSTALL_MANPAGE
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 OPTIONS_DEFINE=		DOCS UNICODE

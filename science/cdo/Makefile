@@ -1,7 +1,7 @@
 PORTNAME=	cdo
-PORTVERSION=	2.2.2
+PORTVERSION=	2.4.1
 CATEGORIES=	science
-MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/28882/ \
+MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/29421/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -22,7 +22,7 @@ UUID_DESC=	UUID support
 
 PORTSCOUT=	site:https://code.mpimet.mpg.de/projects/cdo/files
 
-USES=		compiler:c++17-lang gmake libtool localbase pathfix python:build
+USES=		compiler:c++20-lang gmake libtool localbase pathfix python:build
 
 CONFIGURE_ARGS=	--disable-data \
 		--disable-extra \
@@ -38,9 +38,8 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	check
-USE_CXXSTD=	c++17
+USE_CXXSTD=	c++20
 USE_LDCONFIG=	yes
-CFLAGS+=	-DPTHREAD_MUTEXATTR
 
 CGRIBEX_CONFIGURE_WITH=	cgribex
 CGRIBEX_LIB_DEPENDS=	libcgribex.so:science/cgribex
@@ -70,6 +69,6 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/libcdi/src/cdi.inc ${STAGEDIR}${PREFIX}/include/cdi.inc
 
 test-NETCDF-on:
-	@cd ${WRKSRC}/ && ${SETENV} CDO_PATH=src/cdo src/cdotest
+	@cd ${WRKSRC}/ && ${SETENVI} ${WRK_ENV} CDO_PATH=src/cdo src/cdotest
 
 .include <bsd.port.mk>

@@ -1,4 +1,3 @@
-PORTREVISION=	0
 PKGNAMESUFFIX=	-mysql
 
 COMMENT=	MySQL support for the Courier authentication library

@@ -1,5 +1,5 @@
 PORTNAME=	dvipsk
-PORTVERSION=	${TEXLIVE_YEAR}.1
+DISTVERSION=	${TEXLIVE_VERSION}
 CATEGORIES=	print
 MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/:source \
 		LOCAL/tex:texmf
@@ -29,14 +29,14 @@ CONFIGURE_ARGS=	--with-kpathsea-includes=${LOCALBASE}/include \
 		--with-system-zlib
 
 EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
-EXTRACT_FILES=			am m4 build-aux texk/dvipsk texk/lcdf-typetools
-WRKSRC=				${WRKDIR}/${DISTNAME}/texk/dvipsk
+EXTRACT_FILES=		am m4 build-aux texk/dvipsk texk/lcdf-typetools
+WRKSRC=			${WRKDIR}/${DISTNAME}/texk/dvipsk
 
 INFO=		dvips
 PLIST_FILES=	bin/afm2tfm \
 		bin/dvips \
-		man/man1/afm2tfm.1.gz \
-		man/man1/dvips.1.gz
+		share/man/man1/afm2tfm.1.gz \
+		share/man/man1/dvips.1.gz
 
 pre-install:
 	${TAR} -Jxf ${DISTDIR}/${DIST_SUBDIR}/${PKGNAMEPREFIX}${PORTNAME}-${TEXLIVE_VERSION}-freebsd${EXTRACT_SUFX} \
@@ -50,11 +50,11 @@ post-install:
 		${SED} -e 's#^${STAGEDIR}${PREFIX}/#@dir #' >> ${TMPPLIST}
 
 .if defined(MAINTAINER_MODE)
-_EXTRACT_FILES=		texmf-dist/doc/dvips/ texmf-dist/dvips/ \
-				texmf-dist/fonts/map/dvips/ \
-				texmf-dist/fonts/enc/dvips/ \
-				texmf-dist/tex/generic/dvips/
-_EXCLUDE_FILES=			texmf-dist/dvips/xdvi
+_EXTRACT_FILES=	texmf-dist/doc/dvips/ texmf-dist/dvips/ \
+		texmf-dist/fonts/map/dvips/ \
+		texmf-dist/fonts/enc/dvips/ \
+		texmf-dist/tex/generic/dvips/
+_EXCLUDE_FILES=	texmf-dist/dvips/xdvi
 _WRKSRC=	${WRKDIR}/${PKGNAMEPREFIX}${PORTNAME}-${TEXLIVE_VERSION}
 
 _maintainer-extract:

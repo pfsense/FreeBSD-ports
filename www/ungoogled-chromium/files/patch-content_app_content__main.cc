@@ -1,4 +1,4 @@
---- content/app/content_main.cc.orig	2023-11-04 07:08:51 UTC
+--- content/app/content_main.cc.orig	2024-05-23 20:04:36 UTC
 +++ content/app/content_main.cc
 @@ -206,7 +206,7 @@ RunContentProcess(ContentMainParams params,
  #endif

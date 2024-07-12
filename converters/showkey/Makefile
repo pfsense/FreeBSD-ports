@@ -1,5 +1,5 @@
 PORTNAME=	showkey
-PORTVERSION=	1.7
+DISTVERSION=	1.9
 CATEGORIES=	converters
 MASTER_SITES=	http://catb.org/~esr/showkey/
 
@@ -8,18 +8,21 @@ COMMENT=	Display cooked key sequences (keycap-to-keystrokes mappings)
 WWW=		http://catb.org/~esr/showkey/
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		gmake
 
 MAKE_ARGS=	CC="${CC} ${CFLAGS}"
 ALL_TARGET=	showkey
 
-PLIST_FILES=	bin/showkey man/man1/showkey.1.gz
+PLIST_FILES=	bin/showkey share/man/man1/showkey.1.gz
 PORTDOCS=	NEWS README
 
 OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/showkey ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/showkey.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/showkey.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

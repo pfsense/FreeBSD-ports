@@ -3,13 +3,14 @@
     SUBDIR += 0ad
     SUBDIR += 0verkill
     SUBDIR += 2048
-    SUBDIR += 2048-qt
     SUBDIR += 3dc
     SUBDIR += 3dpong
     SUBDIR += 3omns
     SUBDIR += 54321
     SUBDIR += 7kaa
     SUBDIR += 90secondportraits
+    SUBDIR += Bugdom
+    SUBDIR += Bugdom2
     SUBDIR += CaribbeanStud
     SUBDIR += DDNet
     SUBDIR += Doom64EX
@@ -17,6 +18,7 @@
     SUBDIR += KnightCap
     SUBDIR += LibreMines
     SUBDIR += NBlood
+    SUBDIR += Nanosaur
     SUBDIR += OpenLara
     SUBDIR += OpenTomb
     SUBDIR += SRB2
@@ -241,6 +243,7 @@
     SUBDIR += entombed
     SUBDIR += enygma
     SUBDIR += epiphany-game
+    SUBDIR += etlegacy
     SUBDIR += etracer
     SUBDIR += euchre
     SUBDIR += eureka
@@ -286,6 +289,7 @@
     SUBDIR += freecell-solver
     SUBDIR += freeciv
     SUBDIR += freeciv-nox11
+    SUBDIR += freeciv21
     SUBDIR += freecol
     SUBDIR += freedink
     SUBDIR += freedink-data
@@ -576,7 +580,6 @@
     SUBDIR += linux-nerogame
     SUBDIR += linux-nwnclient
     SUBDIR += linux-quake3
-    SUBDIR += linux-quake3-demo
     SUBDIR += linux-quake4
     SUBDIR += linux-quake4-demo
     SUBDIR += linux-ssamtfe
@@ -584,7 +587,6 @@
     SUBDIR += linux-steam-utils
     SUBDIR += linux-unrealgold
     SUBDIR += linux-ut
-    SUBDIR += linux-ut2003-demo
     SUBDIR += linux-virtual-jay-peak
     SUBDIR += linwarrior
     SUBDIR += lizzie
@@ -599,6 +601,7 @@
     SUBDIR += lugaru
     SUBDIR += luola
     SUBDIR += lwjgl
+    SUBDIR += lwjgl3
     SUBDIR += macopix
     SUBDIR += madbomber
     SUBDIR += maelstrom
@@ -855,7 +858,6 @@
     SUBDIR += reminiscence
     SUBDIR += renpy
     SUBDIR += rescue
-    SUBDIR += residualvm
     SUBDIR += retroarch
     SUBDIR += retroarch-assets
     SUBDIR += rezerwar
@@ -930,7 +932,7 @@
     SUBDIR += species
     SUBDIR += spellcast
     SUBDIR += spicetrade
-    SUBDIR += spider
+    SUBDIR += star_traders
     SUBDIR += starfighter
     SUBDIR += starlanes
     SUBDIR += steelstorm
@@ -1056,7 +1058,6 @@
     SUBDIR += wyrmgus
     SUBDIR += wyrmsun
     SUBDIR += xasteroids
-    SUBDIR += xataxx
     SUBDIR += xbat
     SUBDIR += xbill
     SUBDIR += xbl

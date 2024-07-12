@@ -1,5 +1,5 @@
 PORTNAME=	qpdf
-DISTVERSION=	11.7.0
+DISTVERSION=	11.9.1
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -12,7 +12,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE_ART20=	${WRKSRC}/Artistic-2.0
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.txt
 
-USES=		compiler:c++11-lang cmake cpe jpeg libtool localbase
+USES=		compiler:c++11-lang cmake cpe jpeg localbase
 USE_LDCONFIG=	yes
 CPE_VENDOR=	qpdf_project
 
@@ -20,7 +20,8 @@ CMAKE_ARGS=	-DHAVE_EXTERN_LONG_TIMEZONE=0 \
 		-DBUILD_STATIC_LIBS=0 \
 		-DUSE_IMPLICIT_CRYPTO=0 \
 		-DALLOW_CRYPTO_NATIVE=0 \
-		-DCMAKE_INSTALL_MANDIR=${PREFIX}/man
+		-DCMAKE_INSTALL_MANDIR=${PREFIX}/share/man
+LDFLAGS=	-Wl,--undefined-version
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_RADIO=		CRYPTO

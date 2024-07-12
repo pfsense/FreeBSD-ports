@@ -865,6 +865,7 @@ function squid_validate_general($post, &$input_errors) {
 			$input_errors[] = "SSL interception cannot be enabled without a CA.";
 		} else {
 			$dca = lookup_ca($post['dca']);
+			$dca = $dca['item'];
 			if (!$dca) {
 				$input_errors[] = "Invalid SSL interception CA.";
 			}
@@ -1206,6 +1207,7 @@ function squid_resync_general() {
 	if ($settings['ssl_proxy'] == 'on') {
 		squid_gen_extra_ca();
 		$srv_cert = lookup_ca($settings["dca"]);
+		$srv_cert = $srv_cert['item'];
 		if ($srv_cert != false) {
 			if (base64_decode($srv_cert['prv'])) {
 				if (file_exists(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen")) {
@@ -1627,7 +1629,7 @@ EOD;
 /* Proxy Server: Remote Proxy Settings configuration handler */
 function squid_resync_upstream() {
 	$conf = "\n#Remote proxies\n";
-	foreach (config_get_path('installedpackages/squidremote/config') as $settings) {
+	foreach (config_get_path('installedpackages/squidremote/config', []) as $settings) {
 		if ($settings['enable'] == 'on') {
 			$conf .= "cache_peer {$settings['proxyaddr']} {$settings['hierarchy']} {$settings['proxyport']} ";
 			if ($settings['icpport'] == '7') {
@@ -1896,7 +1898,7 @@ function squid_resync_auth() {
 	global $valid_acls;
 	$write_config = 0;
 	if (!is_array(config_get_path('installedpackages/squidauth/config'))) {
-		init_config_arr(array('installedpackages', 'squidauth', 'config'));
+		config_init_path('installedpackages/squidauth/config');
 		config_set_path('installedpackages/squidauth/config', [['auth_method' => "none"]]);
 		$write_config++;
 	}
@@ -2640,14 +2642,14 @@ function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false, $addn
 	}
 	if (is_array(config_get_path("{$type}"))) {
 		if (is_array($list_arr)) {
-			foreach (config_get_path("{$type}") as $c) {
+			foreach (config_get_path("{$type}", []) as $c) {
 				if (in_array($c['refid'],array_column($list_arr, 'refid')) && 
 				 (!empty($c['prv']) || $noprv)) {
 					$c_arr[] = $c;
 				}
 			}
 		} else {
-			foreach (config_get_path("{$type}") as $c) {
+			foreach (config_get_path("{$type}", []) as $c) {
 				if (!empty($c['prv']) || $noprv) {
 					$c_arr[] = $c;
 				}
@@ -2733,9 +2735,9 @@ function squid_plugin_carp($pluginparams) {
 
 function squid_plugin_certificates($pluginparams) {
 	$result = array('pkgname' => 'Squid', 'certificatelist' => array());
-	init_config_arr(array('installedpackages', 'squid', 'config'));
+	config_init_path('installedpackages/squid/config');
 	$squidconf = config_get_path('installedpackages/squid/config/0');
-	init_config_arr(array('installedpackages', 'squidreversegeneral', 'config'));
+	config_init_path('installedpackages/squidreversegeneral/config');
 	$squidrevconf = config_get_path('installedpackages/squidreversegeneral/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($squidconf) &&

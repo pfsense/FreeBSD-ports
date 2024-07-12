@@ -1,10 +1,11 @@
 PORTNAME=	qtconsole
-DISTVERSION=	5.5.1
+DISTVERSION=	5.5.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Qt-based console for Jupyter with support for rich media output
 WWW=		https://qtconsole.readthedocs.io/en/stable/
 

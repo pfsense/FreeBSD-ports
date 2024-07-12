@@ -15,12 +15,14 @@ pkg/acme/dnsapi/dns_active24.sh
 pkg/acme/dnsapi/dns_ad.sh
 pkg/acme/dnsapi/dns_ali.sh
 pkg/acme/dnsapi/dns_anx.sh
+pkg/acme/dnsapi/dns_artfiles.sh
 pkg/acme/dnsapi/dns_arvan.sh
 pkg/acme/dnsapi/dns_aurora.sh
 pkg/acme/dnsapi/dns_autodns.sh
 pkg/acme/dnsapi/dns_aws.sh
 pkg/acme/dnsapi/dns_azion.sh
 pkg/acme/dnsapi/dns_azure.sh
+pkg/acme/dnsapi/dns_bookmyname.sh
 pkg/acme/dnsapi/dns_bunny.sh
 pkg/acme/dnsapi/dns_cf.sh
 pkg/acme/dnsapi/dns_clouddns.sh
@@ -36,6 +38,7 @@ pkg/acme/dnsapi/dns_ddnss.sh
 pkg/acme/dnsapi/dns_desec.sh
 pkg/acme/dnsapi/dns_df.sh
 pkg/acme/dnsapi/dns_dgon.sh
+pkg/acme/dnsapi/dns_dnsexit.sh
 pkg/acme/dnsapi/dns_dnshome.sh
 pkg/acme/dnsapi/dns_dnsimple.sh
 pkg/acme/dnsapi/dns_dnsservices.sh
@@ -82,6 +85,7 @@ pkg/acme/dnsapi/dns_knot.sh
 pkg/acme/dnsapi/dns_la.sh
 pkg/acme/dnsapi/dns_leaseweb.sh
 pkg/acme/dnsapi/dns_lexicon.sh
+pkg/acme/dnsapi/dns_limacity.sh
 pkg/acme/dnsapi/dns_linode.sh
 pkg/acme/dnsapi/dns_linode_v4.sh
 pkg/acme/dnsapi/dns_loopia.sh
@@ -127,6 +131,7 @@ pkg/acme/dnsapi/dns_selfhost.sh
 pkg/acme/dnsapi/dns_servercow.sh
 pkg/acme/dnsapi/dns_simply.sh
 pkg/acme/dnsapi/dns_tele3.sh
+pkg/acme/dnsapi/dns_tencent.sh
 pkg/acme/dnsapi/dns_udr.sh
 pkg/acme/dnsapi/dns_ultra.sh
 pkg/acme/dnsapi/dns_unoeuro.sh
@@ -136,6 +141,7 @@ pkg/acme/dnsapi/dns_vercel.sh
 pkg/acme/dnsapi/dns_vscale.sh
 pkg/acme/dnsapi/dns_vultr.sh
 pkg/acme/dnsapi/dns_websupport.sh
+pkg/acme/dnsapi/dns_west_cn.sh
 pkg/acme/dnsapi/dns_world4you.sh
 pkg/acme/dnsapi/dns_yandex.sh
 pkg/acme/dnsapi/dns_yc.sh

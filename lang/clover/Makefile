@@ -12,8 +12,10 @@ ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	needs a GPU supported by the AMDGPU KMS driver
 
 BUILD_DEPENDS=	libclc>=0.3.0:devel/libclc \
+		spirv-tools>=0:graphics/spirv-tools \
 		opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd \
+		libLLVMSPIRVLib.so.${LLVM_VERSION}:devel/spirv-llvm-translator@${LLVM_PORT:T} \
 		libzstd.so:archivers/zstd
 RUN_DEPENDS=	libclc>=0.3.0:devel/libclc \
 		opencl>=0:devel/opencl
@@ -48,7 +50,7 @@ MESON_ARGS+=	-Dplatforms="" \
 
 LDFLAGS_i386=		-Wl,-znotext
 
-.include "${MASTERDIR}/Makefile.targets"
+CONFIGURE_ENV+=	PKG_CONFIG_PATH="${LLVM_PREFIX}/libdata/pkgconfig"
 
 pre-patch:
 	@if [ -e ${LOCALBASE}/bin/llvm-config${LLVM_VERSION} ] && \

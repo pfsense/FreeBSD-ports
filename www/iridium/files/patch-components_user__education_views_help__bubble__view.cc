@@ -1,4 +1,4 @@
---- components/user_education/views/help_bubble_view.cc.orig	2023-11-22 14:00:11 UTC
+--- components/user_education/views/help_bubble_view.cc.orig	2024-06-25 12:08:48 UTC
 +++ components/user_education/views/help_bubble_view.cc
 @@ -997,7 +997,7 @@ gfx::Rect HelpBubbleView::GetAnchorRect() const {
  void HelpBubbleView::OnBeforeBubbleWidgetInit(views::Widget::InitParams* params,

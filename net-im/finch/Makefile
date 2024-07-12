@@ -25,6 +25,6 @@ CONFIGURE_ARGS=	--disable-gtkui \
 		--with-dynamic_prpls=${PRPL_MODULES:S/,$//}
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/finch.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/finch.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include "${MASTERDIR}/Makefile"

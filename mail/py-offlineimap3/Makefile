@@ -1,6 +1,6 @@
 PORTNAME=	offlineimap3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.0.0-18
+DISTVERSION=	8.0.0-37
 DISTVERSIONSUFFIX=	-g${GH_TAGNAME}
 CATEGORIES=	mail python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,24 +16,26 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 # https://github.com/OfflineIMAP/offlineimap3/issues/110
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}distro>=0:sysutils/py-distro@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}imaplib2>=3.5:mail/py-imaplib2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}keyring>0:security/py-keyring@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rfc6555>=0:mail/py-rfc6555@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>=2020.6.20:security/py-certifi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}distro>=0:sysutils/py-distro@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}imaplib2>=3.5:mail/py-imaplib2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}keyring>0:security/py-keyring@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rfc6555>=0:mail/py-rfc6555@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>=1.25.9:net/py-urllib3@${PY_FLAVOR}
 
-USES=		pytest python
+USES=		python
 
 # Project is currently not publishing to pypi sdist.  pypi/naming status:
 # https://github.com/OfflineIMAP/offlineimap3/issues/111
 USE_GITHUB=	yes
 GH_ACCOUNT=	OfflineIMAP
-GH_TAGNAME=	253f97a3e947
+GH_TAGNAME=	d29a4dc459401f8a78e347cb0f8ae7670add0975
 
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 CONFLICTS_INSTALL=	mail/py-offlineimap
 
@@ -54,8 +56,8 @@ DOCS_BUILD_DEPENDS=	${COMMON_BUILD_DEPENDS} \
 GSSAPI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gssapi>=1.6.9:security/py-gssapi@${PY_FLAVOR}
 
 MANPAGES_BUILD_DEPENDS=	${COMMON_BUILD_DEPENDS}
-MANPAGES_PLIST_FILES+=	man/man1/offlineimap.1.gz \
-			man/man7/offlineimapui.7.gz
+MANPAGES_PLIST_FILES+=	share/man/man1/offlineimap.1.gz \
+			share/man/man7/offlineimapui.7.gz
 
 # In concurrent env. sphinx-build is only exist for py38 add "-${PYTHON_VER}" to command
 post-patch:
@@ -71,11 +73,11 @@ post-build-DOCS-on:
 		'! ( -name .lock -or -name .buildinfo )'
 
 post-build-MANPAGES-on:
-	${MKDIR} ${STAGEDIR}${MAN7PREFIX}/man/man7/
-	${MKDIR} ${STAGEDIR}${MAN7PREFIX}/man/man1/
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/man7/
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/man1/
 	cd ${WRKSRC}/docs && ${GMAKE} man && \
-	${INSTALL_MAN} offlineimapui.7 ${STAGEDIR}${MAN7PREFIX}/man/man7/ && \
-	${INSTALL_MAN} offlineimap.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} offlineimapui.7 ${STAGEDIR}${PREFIX}/share/man/man7/ && \
+	${INSTALL_MAN} offlineimap.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

@@ -1,5 +1,5 @@
 PORTNAME=	fossil
-PORTVERSION=	2.23
+PORTVERSION=	2.24
 DISTVERSIONPREFIX=	src-
 PORTREVISION=	0
 PORTEPOCH=	2
@@ -23,7 +23,7 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} --with-openssl=${OPENSSLBASE}
 USE_RC_SUBR=	fossil
 MAKE_JOBS_UNSAFE=yes
 
-PLIST_FILES=	bin/fossil man/man1/fossil.1.gz
+PLIST_FILES=	bin/fossil share/man/man1/fossil.1.gz
 
 OPTIONS_DEFINE=	JSON FUSE STATIC TH1HOOKS TCL
 OPTIONS_DEFAULT=JSON
@@ -49,6 +49,6 @@ post-patch-FUSE-on:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/fossil
-	${INSTALL_MAN} ${WRKSRC}/fossil.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/fossil.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

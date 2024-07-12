@@ -1,5 +1,6 @@
 PORTNAME=	octave-forge-prompt
 DISTVERSION=	0.0.1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

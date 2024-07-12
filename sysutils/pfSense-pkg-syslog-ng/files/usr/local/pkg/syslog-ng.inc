@@ -55,8 +55,6 @@ function syslogng_deinstall_command() {
 }
 
 function syslogng_validate_general($post, &$input_errors) {
-	global $config;
-
 	$objects = config_get_path('installedpackages/syslogngadvanced/config', []);
 
 	if (empty($post['interfaces'])) {
@@ -98,8 +96,6 @@ function syslogng_validate_general($post, &$input_errors) {
 }
 
 function syslogng_validate_advanced($post, &$input_errors) {
-	global $config;
-
 	$objects = config_get_path('installedpackages/syslogngadvanced/config', []);
 
 	if ($post['objectname'] == '_DEFAULT') {
@@ -280,8 +276,6 @@ function syslogng_build_logrotate_conf($settings, $objects) {
 }
 
 function syslogng_generate_rules($type) {
-	global $config;
-
 	$settings = config_get_path('installedpackages/syslogng/config/0', []);
 
 	$interfaces = ($settings['interfaces'] ? $settings['interfaces'] : 'lan');
@@ -301,8 +295,6 @@ function syslogng_generate_rules($type) {
 }
 
 function syslogng_resync() {
-	global $config;
-
 	$settings = config_get_path('installedpackages/syslogng/config/0', []);
 	$objects = config_get_path('installedpackages/syslogngadvanced/config', []);
 
@@ -451,24 +443,21 @@ EOD;
 }
 
 function syslogng_get_ca_or_certs($type, $consumer = 'IPsec') {
-	global $config;
 	$c_arr = array();
 	if (function_exists('cert_build_list')) {
 		$list_arr = cert_build_list($type, $consumer, true, false);
 	}
-	if (isset($config[$type]) && is_array($config[$type])) {
-		if (is_array($list_arr)) {
-			foreach ($config[$type] as $c) {
-				if (in_array($c['refid'],array_column($list_arr, 'refid')) &&
-				 (!empty($c['prv']) || $type == 'ca')) {
-					$c_arr[] = $c;
-				}
+	if (is_array($list_arr)) {
+		foreach (config_get_path($type, []) as $c) {
+			if (in_array($c['refid'],array_column($list_arr, 'refid')) &&
+				(!empty($c['prv']) || $type == 'ca')) {
+				$c_arr[] = $c;
 			}
-		} else {
-			foreach ($config[$type] as $c) {
-				if (!empty($c['prv']) || $type == 'ca') {
-					$c_arr[] = $c;
-				}
+		}
+	} else {
+		foreach (config_get_path($type, []) as $c) {
+			if (!empty($c['prv']) || $type == 'ca') {
+				$c_arr[] = $c;
 			}
 		}
 	}
@@ -476,10 +465,10 @@ function syslogng_get_ca_or_certs($type, $consumer = 'IPsec') {
 }
 
 function syslogng_build_cert($settings) {
-	global $config;
-
 	$ca = lookup_ca($settings['dca']);
+	$ca = $ca['item'];
 	$cert = lookup_cert($settings['certificate']);
+	$cert = $cert['item'];
 
 	if ($cert != false) {
 		file_put_contents(SYSLOGNG_DIR . "/syslog-ng.cert", base64_decode($cert['crt']));
@@ -496,7 +485,6 @@ function syslogng_build_cert($settings) {
 }
 
 function syslogng_plugin_certificates($pluginparams) {
-	global $config;
 	$result = array();
 	$conf = config_get_path('installedpackages/syslogng/config/0', []);
 

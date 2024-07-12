@@ -1,10 +1,11 @@
 PORTNAME=	musicpc
 DISTVERSION=	0.35
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.musicpd.org/download/mpc/0/
 DISTNAME=	mpc-${PORTVERSION}
 
-MAINTAINER=	uzsolt@uzsolt.hu
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Command line client for the musicpd
 WWW=		https://www.musicpd.org/clients/mpc/
 
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
 
 USES=		meson pkgconfig tar:xz
 
-MESON_ARGS=	--mandir=${MANPREFIX}
+MESON_ARGS=	--mandir=${PREFIX}/share/
 
 PORTDOCS=	*
 

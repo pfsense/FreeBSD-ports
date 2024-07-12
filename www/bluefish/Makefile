@@ -1,6 +1,5 @@
 PORTNAME=	bluefish
-DISTVERSION=	2.2.14
-PORTREVISION=	2
+DISTVERSION=	2.2.15
 CATEGORIES=	www editors
 MASTER_SITES=	https://www.bennewitz.com/bluefish/stable/source/ \
 		SF
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 USES=		desktop-file-utils gettext gmake gnome libtool localbase \
 		pkgconfig python:3.8-3.9 shared-mime-info shebangfix tar:bzip2
 USE_GNOME=	cairo gdkpixbuf2 intltool libxml2
-SHEBANG_FILES=	data/css_decompressor data/cssmin.py data/jsbeautify \
+SHEBANG_FILES=	data/css_decompressor data/cssmin.py data/jsbeautify data/json_prettyprint.py \
 		data/jsmin.py data/lorem-ipsum-generator \
 		src/plugin_zencoding/zencoding/actions/*.py \
 		src/plugin_zencoding/zencoding/filters/*.py \
@@ -30,6 +29,8 @@ CONFIGURE_ARGS=	--disable-update-databases \
 		--with-freedesktop_org-mime=${PREFIX}/share/mime \
 		--with-icon-path=${PREFIX}/share/pixmaps
 INSTALL_TARGET=	install-strip
+
+PORTSCOUT=	skipv:2.2.15fp
 
 OPTIONS_DEFINE=		DEBUG DOCS NLS TIDY
 OPTIONS_DEFAULT=	GTK3

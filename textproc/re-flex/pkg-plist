@@ -7,6 +7,7 @@ include/reflex/convert.h
 include/reflex/debug.h
 include/reflex/error.h
 include/reflex/flexlexer.h
+include/reflex/fuzzymatcher.h
 include/reflex/input.h
 include/reflex/linematcher.h
 include/reflex/matcher.h
@@ -27,4 +28,5 @@ lib/cmake/reflex/ReflexConfig.cmake
 lib/cmake/reflex/ReflexTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/reflex/ReflexTargets.cmake
 %%DATADIR%%/lex.vim
-man/man1/reflex.1.gz
+libdata/pkgconfig/reflex.pc
+share/man/man1/reflex.1.gz

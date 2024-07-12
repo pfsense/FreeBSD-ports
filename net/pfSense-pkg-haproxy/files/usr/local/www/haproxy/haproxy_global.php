@@ -112,9 +112,9 @@ if ($_POST) {
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
-			$haproxycfg = &getarraybyref($config, 'installedpackages', 'haproxy');
-			getarraybyref($haproxycfg, 'email_mailers')['item'] = $a_mailers;
-			getarraybyref($haproxycfg, 'dns_resolvers')['item'] = $a_resolvers;
+			$haproxycfg = config_get_path('installedpackages/haproxy');
+			$haproxycfg['email_mailers']['item'] = $a_mailers;
+			$haproxycfg['dns_resolvers']['item'] = $a_resolvers;
 			$haproxycfg['enable'] = $_POST['enable'] ? true : false;
 			$haproxycfg['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
 			$haproxycfg['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
@@ -137,6 +137,7 @@ if ($_POST) {
 			} else {
 				array_set_path($haproxycfg, 'config/0/enable', 'off');
 			}
+			config_set_path('installedpackages/haproxy', $haproxycfg);
 			
 			touch($d_haproxyconfdirty_path);
 			write_config("haproxy: Global settings saved");
@@ -144,21 +145,21 @@ if ($_POST) {
 	}
 }
 
-$a_mailers = getarraybyref($config, 'installedpackages', 'haproxy', 'email_mailers', 'item');
-$a_resolvers = getarraybyref($config, 'installedpackages', 'haproxy', 'dns_resolvers', 'item');
+$a_mailers = config_get_path('installedpackages/haproxy/email_mailers/item');
+$a_resolvers = config_get_path('installedpackages/haproxy/dns_resolvers/item');
 
-$pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
-$pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);
-$pconfig['maxconn'] = $config['installedpackages']['haproxy']['maxconn'];
-$pconfig['enablesync'] = isset($config['installedpackages']['haproxy']['enablesync']);
-$pconfig['remotesyslog'] = $config['installedpackages']['haproxy']['remotesyslog'];
-$pconfig['logfacility'] = $config['installedpackages']['haproxy']['logfacility'];
-$pconfig['loglevel'] = $config['installedpackages']['haproxy']['loglevel'];
-$pconfig['carpdev'] = $config['installedpackages']['haproxy']['carpdev'];
-$pconfig['localstatsport'] = $config['installedpackages']['haproxy']['localstatsport'];
-$pconfig['advanced'] = base64_decode($config['installedpackages']['haproxy']['advanced']);
+$pconfig['enable'] = config_path_enabled('installedpackages/haproxy');
+$pconfig['terminate_on_reload'] = config_path_enabled('installedpackages/haproxy', 'terminate_on_reload');
+$pconfig['maxconn'] = config_get_path('installedpackages/haproxy/maxconn');
+$pconfig['enablesync'] = config_path_enabled('installedpackages/haproxy', 'enablesync');
+$pconfig['remotesyslog'] = config_get_path('installedpackages/haproxy/remotesyslog');
+$pconfig['logfacility'] = config_get_path('installedpackages/haproxy/logfacility');
+$pconfig['loglevel'] = config_get_path('installedpackages/haproxy/loglevel');
+$pconfig['carpdev'] = config_get_path('installedpackages/haproxy/carpdev');
+$pconfig['localstatsport'] = config_get_path('installedpackages/haproxy/localstatsport');
+$pconfig['advanced'] = base64_decode(config_get_path('installedpackages/haproxy/advanced'));
 foreach($simplefields as $stat) {
-	$pconfig[$stat] = $config['installedpackages']['haproxy'][$stat];
+	$pconfig[$stat] = config_get_path("installedpackages/haproxy/{$stat}");
 }
 
 // defaults

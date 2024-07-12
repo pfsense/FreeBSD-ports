@@ -1,7 +1,11 @@
 PORTNAME=	gnutls
-PORTVERSION=	3.7.10
+DISTVERSION=	3.8.5
+PORTREVISION=	3
 CATEGORIES=	security net
-MASTER_SITES=	GNUPG/gnutls/v${PORTVERSION:R}
+MASTER_SITES=	GNUPG/${PORTNAME}/v${DISTVERSION:R}
+
+PATCH_SITES=	https://gitlab.com/gnutls/gnutls/-/commit/
+PATCHFILES=	2d73d945c4b1dfcf8d2328c4d23187d62ffaab2d.patch:-p1
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	GNU Transport Layer Security library
@@ -19,44 +23,56 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 
 USES=		compiler:c11 cpe gmake iconv libtool localbase makeinfo \
 		pkgconfig tar:xz
+CPE_VENDOR=	gnu
 USE_LDCONFIG=	yes
 
-CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-guile \
-		--with-system-priority-file=${PREFIX}/etc/gnutls/config \
+CONFIGURE_ARGS=	--disable-rpath \
+		--enable-ld-version-script \
+		--enable-openssl-compatibility \
 		--with-default-trust-store-dir=/etc/ssl/certs \
+		--with-system-priority-file=${PREFIX}/etc/gnutls/config \
 		--without-brotli \
-		--without-zstd \
+		--without-included-libtasn1 \
 		--without-tpm \
-		--without-tpm2
+		--without-tpm2 \
+		--without-zstd
+
 MAKE_ENV=	MAKEINFOFLAGS=--no-split
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=		DANE EXAMPLES IDN MAN3 NLS P11KIT
-OPTIONS_DEFAULT=	IDN MAN3 P11KIT
+LDFLAGS+=	-Wl,--undefined-version
+
+INFO=		gnutls
+
+OPTIONS_DEFINE=		DANE EXAMPLES IDN KTLS MAN3 NLS P11KIT SRP
+OPTIONS_DEFAULT=	IDN KTLS MAN3 P11KIT
 OPTIONS_SUB=		yes
 
 DANE_DESC=		Certificate verification via DNSSEC
+KTLS_DESC=		Enable support for in-kernel TLS
+MAN3_DESC=		Install API manpages (section 3)
+P11KIT_DESC=		PKCS\#11 and p11-kit support
+SRP_DESC=		Secure Remote Password support
+
 DANE_LIB_DEPENDS=	libunbound.so:dns/unbound
 DANE_CONFIGURE_ENABLE=	libdane
 
-IDN_CONFIGURE_WITH=	idn
 IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
+IDN_CONFIGURE_WITH=	idn
 
-MAN3_DESC=		Install API manpages (section 3)
+KTLS_CONFIGURE_ENABLE=	ktls
 
-NLS_CONFIGURE_ENABLE=	nls
-NLS_CONFIGURE_OFF=	ac_cv_lib_intl_gettext=no
 NLS_USES=		gettext
+NLS_CONFIGURE_OFF=	ac_cv_lib_intl_gettext=no
+NLS_CONFIGURE_ENABLE=	nls
 
-P11KIT_DESC=		PKCS\#11 and p11-kit support
-P11KIT_CONFIGURE_WITH=	p11-kit
-P11KIT_CONFIGURE_ON=	--with-default-trust-store-pkcs11="pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit"
 P11KIT_LIB_DEPENDS=	libp11-kit.so:security/p11-kit
+P11KIT_CONFIGURE_ON=	--with-default-trust-store-pkcs11="pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit"
+P11KIT_CONFIGURE_WITH=	p11-kit
 
-INFO=		gnutls gnutls-guile
+SRP_CONFIGURE_ENABLE=	srp-authentication
 
 post-patch:
 	@${RM} ${WRKSRC}/doc/*.info*
@@ -87,9 +103,6 @@ post-patch:
 		${WRKSRC}/doc/invoke-p11tool.texi \
 		${WRKSRC}/doc/manpages/p11tool.1 \
 		${WRKSRC}/src/p11tool-options.c
-# Bug 260078
-	@${REINPLACE_CMD} 's/-Wa,-march=all//' \
-		${WRKSRC}/lib/accelerated/aarch64/Makefile.in
 # Prevent regeneration.  The order is important.
 	@${TOUCH} ${WRKSRC}/doc/enums.texi \
 		${WRKSRC}/doc/invoke-gnutls-cli.texi \

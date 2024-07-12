@@ -142,7 +142,6 @@
     SUBDIR += p5-transdecoder
     SUBDIR += paml
     SUBDIR += pbbam
-    SUBDIR += pbseqan
     SUBDIR += peak-classifier
     SUBDIR += pear-merger
     SUBDIR += phrap
@@ -179,8 +178,10 @@
     SUBDIR += py-libsedml
     SUBDIR += py-loompy
     SUBDIR += py-macs2
+    SUBDIR += py-macs3
     SUBDIR += py-mrcfile
     SUBDIR += py-multiqc
+    SUBDIR += py-newick
     SUBDIR += py-ont-fast5-api
     SUBDIR += py-orange3-bioinformatics
     SUBDIR += py-orange3-single-cell
@@ -201,7 +202,6 @@
     SUBDIR += rainbow
     SUBDIR += rampler
     SUBDIR += readseq
-    SUBDIR += recombine
     SUBDIR += rna-seq
     SUBDIR += ruby-bio
     SUBDIR += rubygem-bio
@@ -217,12 +217,10 @@
     SUBDIR += seqan-apps
     SUBDIR += seqan1
     SUBDIR += seqan3
-    SUBDIR += seqio
     SUBDIR += seqkit
     SUBDIR += seqtk
     SUBDIR += seqwish
     SUBDIR += sigviewer
-    SUBDIR += sim4
     SUBDIR += slclust
     SUBDIR += smithwaterman
     SUBDIR += snpeff

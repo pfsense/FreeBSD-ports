@@ -1,12 +1,12 @@
 PORTNAME=	bozohttpd
 PORTVERSION=	20210227
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	http://www.eterna.com.au/bozohttpd/ \
-		NETBSD
+MASTER_SITES=	http://eterna23.net/bozohttpd/
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Bozotic HTTP server from NetBSD
-WWW=		http://www.eterna.com.au/bozohttpd/
+WWW=		http://eterna23.net/bozohttpd/
 
 LICENSE=	BSD2CLAUSE
 
@@ -17,7 +17,7 @@ USE_RC_SUBR=	bozohttpd
 MAKE_ARGS=	LDADD="${LIBS}"
 
 PLIST_FILES=	bin/bozohttpd \
-		man/man8/bozohttpd.8.gz
+		share/man/man8/bozohttpd.8.gz
 
 OPTIONS_DEFINE=		BLACKLIST CGI DAEMON DEBUG DIRINDEX\
 			DYNAMIC HTPASSWD LUA SSL USER

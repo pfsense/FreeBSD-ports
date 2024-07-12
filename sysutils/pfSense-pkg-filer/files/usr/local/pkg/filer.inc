@@ -32,14 +32,14 @@ function filer_text_area_decode($text) {
 }
 
 function filer_sync($post = array()) {
-	global $config, $g;
+	global $g;
 	$update_conf = 0;
 
 	/* Loop on configured files. */
 	$count = 0;
 	foreach (config_get_path('installedpackages/filer/config', []) as $file) {
 		if ($file['filedata'] == "" && file_exists($file['fullfile'])) {
-			$config['installedpackages']['filer']['config'][$count]['filedata'] = base64_encode(file_get_contents($file['fullfile']));
+			config_set_path("installedpackages/filer/config/{$count}/filedata", base64_encode(file_get_contents($file['fullfile'])));
 			$file['filedata'] = base64_encode(file_get_contents($file['fullfile']));
 			$update_conf++;
 		}
@@ -116,10 +116,8 @@ function filer_validate_input($post, &$input_errors) {
 
 /* Uses XMLRPC to synchronize the changes to a remote node. */
 function filer_sync_on_changes() {
-	global $config;
-
-	if (is_array($config['installedpackages']['filersync']['config'])) {
-		$filer_sync = $config['installedpackages']['filersync']['config'][0];
+	if (is_array(config_get_path('installedpackages/filersync/config'))) {
+		$filer_sync = config_get_path('installedpackages/filersync/config/0');
 		$synconchanges = $filer_sync['synconchanges'];
 		$synctimeout = $filer_sync['synctimeout'] ?: '250';
 		switch ($synconchanges) {
@@ -132,20 +130,20 @@ function filer_sync_on_changes() {
 				}
 				break;
 			case "auto":
-				if (is_array($config['hasync'])) {
-					$system_carp = $config['hasync'];
+				if (is_array(config_get_path('hasync'))) {
+					$system_carp = config_get_path('hasync');
 					$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
 					$rs[0]['username'] = $system_carp['username'];
 					$rs[0]['password'] = $system_carp['password'];
 					$rs[0]['syncdestinenable'] = FALSE;
 
 					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if ($config['system']['webgui']['protocol'] == "http") {
+					if (config_get_path('system/webgui/protocol') == "http") {
 						$rs[0]['syncprotocol'] = "http";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
+						$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '80';
 					} else {
 						$rs[0]['syncprotocol'] = "https";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
+						$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '443';
 					}
 					if ($system_carp['synchronizetoip'] == "") {
 						log_error("[filer] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
@@ -208,14 +206,14 @@ if(!function_exists('pf_version')) {
 
 /* Do the actual XMLRPC sync. */
 function filer_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
-	global $config, $g;
+	global $g;
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
 		log_error("[filer] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
 	/* XML will hold the sections to sync */
 	$xml = array();
-	$xml['filer'] = $config['installedpackages']['filer'];
+	$xml['filer'] = config_get_path('installedpackages/filer');
 
 	$execcmd = "require_once('/usr/local/pkg/filer.inc');\n";
 	$execcmd .= "filer_sync();";

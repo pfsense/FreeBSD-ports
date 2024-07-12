@@ -1,5 +1,4 @@
 bin/lynx
-man/man1/lynx.1.gz
 @sample etc/lynx.cfg.sample
 @sample etc/lynx.lss.sample
 %%PORTDOCS%%%%DOCSDIR%%/CHANGES
@@ -56,6 +55,7 @@ man/man1/lynx.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/samples/lynxdump
 %%PORTDOCS%%%%DOCSDIR%%/samples/mailcap
 %%PORTDOCS%%%%DOCSDIR%%/samples/mailto-form.pl
+%%PORTDOCS%%%%DOCSDIR%%/samples/mhtml-tool
 %%PORTDOCS%%%%DOCSDIR%%/samples/midnight.lss
 %%PORTDOCS%%%%DOCSDIR%%/samples/mild-colors.lss
 %%PORTDOCS%%%%DOCSDIR%%/samples/mime.types
@@ -142,3 +142,4 @@ share/lynx_help/keystrokes/xterm_help.html.gz
 share/lynx_help/lynx-dev.html.gz
 share/lynx_help/lynx_help_main.html.gz
 share/lynx_help/lynx_url_support.html.gz
+share/man/man1/lynx.1.gz

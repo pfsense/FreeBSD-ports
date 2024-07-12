@@ -1,7 +1,8 @@
 PORTNAME=	stellarium
-PORTVERSION=	23.3
+PORTVERSION=	24.2
 CATEGORIES=	astro
-MASTER_SITES=	https://github.com/Stellarium/stellarium/releases/download/v${PORTVERSION}/
+MASTER_SITES=	https://github.com/Stellarium/stellarium/releases/download/v${PORTVERSION}/ \
+		https://mirrors.tuna.tsinghua.edu.cn/github-release/Stellarium/stellarium/v${PORTVERSION}/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${_DISTFILES:Nstars_*.cat:N*.pdf}
 
@@ -11,6 +12,10 @@ WWW=		https://stellarium.org/
 
 LICENSE=	GPLv2+
 
+BUILD_DEPENDS=	${LOCALBASE}/include/fast_float/fast_float.h:math/fast_float
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
+		libnlopt.so:math/nlopt@minimal
+
 USES=		cmake compiler:c++11-lang desktop-file-utils \
 		perl5 qt:5 shared-mime-info tar:xz
 USE_PERL5=	build
@@ -18,10 +23,8 @@ USE_QT=		qmake:build buildtools:build \
 		charts concurrent core gui network opengl widgets
 CMAKE_OFF=	ENABLE_QT6
 
-GUIDE_VERSION=	${PORTVERSION}
-
 PORTDOCS=	CREDITS.md ChangeLog README.md \
-		stellarium_user_guide-${GUIDE_VERSION}-1.pdf
+		stellarium_user_guide-${PORTVERSION}-1.pdf
 
 OPTIONS_DEFINE=		DOCS GPS MORE_STARS MULTIMEDIA NLS SCRIPTS \
 			SHOWMYSKY TELESCOPE TEST TEXTURES WEBENGINE XLSX
@@ -39,8 +42,7 @@ TEXTURES_DESC=		Install better quality textures
 WEBENGINE_DESC=		Get and show extra object information
 XLSX_DESC=		Data export to Excel files support
 
-DOCS_MASTER_SITES=	https://github.com/Stellarium/stellarium/releases/download/v${GUIDE_VERSION}/:ug
-DOCS_DISTFILES=		stellarium_user_guide-${GUIDE_VERSION}-1.pdf:ug
+DOCS_DISTFILES=		stellarium_user_guide-${PORTVERSION}-1.pdf
 
 GPS_LIB_DEPENDS=	libgps.so:astro/gpsd
 GPS_USE=		QT=location,serialport
@@ -72,7 +74,7 @@ TEXTURES_DISTFILES=	textures-1K.zip:gfx
 WEBENGINE_USE=		QT=declarative,webchannel,webengine
 WEBENGINE_CMAKE_OFF=	-DENABLE_QTWEBENGINE:BOOL=OFF
 
-XLSX_LIB_DEPENDS=	libQXlsx.so:devel/qxlsx
+XLSX_LIB_DEPENDS=	libQXlsxQt5.so:devel/qxlsx@qt5
 XLSX_CMAKE_OFF=		-DENABLE_XLSX:BOOL=OFF
 
 .include <bsd.port.options.mk>
@@ -87,7 +89,7 @@ DISTFILES+=	stars_4_1v0_2.cat:stars4 stars_5_2v0_1.cat:stars5 \
 .endif
 
 post-extract-DOCS-on:
-	@${LN} -sf ${_DISTDIR}/stellarium_user_guide-${GUIDE_VERSION}-1.pdf \
+	@${LN} -sf ${_DISTDIR}/stellarium_user_guide-${PORTVERSION}-1.pdf \
 		${WRKSRC}
 
 post-install:

@@ -1,5 +1,5 @@
-TIMESTAMP = 1703075851
-SHA256 (erlang/erlang-otp-OTP-26.2.1_GH0.tar.gz) = d99eab3af908b41dd4d7df38f0b02a447579326dd6604f641bbe9f2789b5656b
-SIZE (erlang/erlang-otp-OTP-26.2.1_GH0.tar.gz) = 62435848
-SHA256 (erlang/erlang-corba-5.1_GH0.tar.gz) = 03497d71098c474b330794dd523ef19ef20a47c0e2d441009d6cf929455c468f
-SIZE (erlang/erlang-corba-5.1_GH0.tar.gz) = 1392861
+TIMESTAMP = 1719307081
+SHA256 (erlang/erlang-otp-OTP-26.2.5.1_GH0.tar.gz) = 13c301588de6f0b29f390b012ee80a7051b7b080c77676801cb44fd833dbf3cd
+SIZE (erlang/erlang-otp-OTP-26.2.5.1_GH0.tar.gz) = 62488187
+SHA256 (erlang/erlang-corba-5.2.1_GH0.tar.gz) = e96e9dc710c0ab3282ca5045434f5bc5ff493c22ba63fcfd764ce4d6a13a7c8f
+SIZE (erlang/erlang-corba-5.2.1_GH0.tar.gz) = 1400553

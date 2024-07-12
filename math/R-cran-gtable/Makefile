@@ -1,9 +1,9 @@
 PORTNAME=	gtable
-PORTVERSION=	0.3.4
+PORTVERSION=	0.3.5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	uzsolt@uzsolt.hu
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Arrange grobs in tables
 WWW=		https://cran.r-project.org/web/packages/gtable/
 

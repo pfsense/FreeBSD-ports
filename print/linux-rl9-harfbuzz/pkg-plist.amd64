@@ -1,0 +1,14 @@
+usr/lib/.build-id/6c/038a1bbbcc2bae1c1e2da01bada280b3ce0474
+usr/lib/.build-id/90/afc23ba58f9fd20e4a3e81829584614caef0d3
+usr/lib/.build-id/9c/2eac96502021c01d2a7fad392f9a1c963b6a5b
+usr/lib64/girepository-1.0/HarfBuzz-0.0.typelib
+usr/lib64/libharfbuzz-gobject.so.0
+usr/lib64/libharfbuzz-gobject.so.0.20704.0
+usr/lib64/libharfbuzz-subset.so.0
+usr/lib64/libharfbuzz-subset.so.0.20704.0
+usr/lib64/libharfbuzz.so.0
+usr/lib64/libharfbuzz.so.0.20704.0
+%%PORTDOCS%%usr/share/doc/harfbuzz/AUTHORS
+%%PORTDOCS%%usr/share/doc/harfbuzz/NEWS
+%%PORTDOCS%%usr/share/doc/harfbuzz/README
+usr/share/licenses/harfbuzz/COPYING

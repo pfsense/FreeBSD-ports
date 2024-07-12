@@ -1,6 +1,6 @@
 PORTNAME=	get_iplayer
-DISTVERSION=	3.34
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.35
 CATEGORIES=	multimedia net
 
 MAINTAINER=	jamie@catflap.org
@@ -32,16 +32,16 @@ GROUPS=		get_iplayer
 
 SCRIPTS=	${PORTNAME} ${PORTNAME}.cgi
 PLIST_FILES=	bin/${PORTNAME} ${SCRIPTS:S,^,${WWWDIR_REL}/,} \
-		man/man1/${PORTNAME}.1.gz
+		share/man/man1/${PORTNAME}.1.gz
 
 PORTDOCS=	CHANGELOG.md README.md
 
-OPTIONS_DEFINE=	DOCS FFMPEG ATOMICPARSLEY
-OPTIONS_DEFAULT=	FFMPEG ATOMICPARSLEY
-FFMPEG_DESC=	Enable file conversion using FFmpeg
-FFMPEG_RUN_DEPENDS=	ffmpeg>=0:multimedia/ffmpeg
-ATOMICPARSLEY_DESC=	Enable tagging of media files
+OPTIONS_DEFINE=			ATOMICPARSLEY DOCS FFMPEG
+OPTIONS_DEFAULT=		ATOMICPARSLEY FFMPEG
+ATOMICPARSLEY_DESC=		Enable tagging of media files
+FFMPEG_DESC=			Enable file conversion using FFmpeg
 ATOMICPARSLEY_RUN_DEPENDS=	atomicparsley>=0:multimedia/atomicparsley
+FFMPEG_RUN_DEPENDS=		ffmpeg>=0:multimedia/ffmpeg
 
 post-patch:
 	${REINPLACE_CMD} -e "108,110c\\${.newline}	\$$opt_cmdline->{getiplayer} = \"${PREFIX}/bin/${PORTNAME}\";" \
@@ -51,7 +51,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}
 	(cd ${WRKSRC}; ${INSTALL_SCRIPT} ${SCRIPTS} ${STAGEDIR}${WWWDIR})
 	${LN} -sf ${WWWDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

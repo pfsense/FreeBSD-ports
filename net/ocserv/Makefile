@@ -1,5 +1,6 @@
 PORTNAME=	ocserv
-DISTVERSION=	1.2.3
+DISTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	net net-vpn security
 MASTER_SITES=	https://www.infradead.org/ocserv/download/
 
@@ -11,7 +12,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
-		gsed:textproc/gsed
+		gsed:textproc/gsed \
+		ipcalc:net-mgmt/ipcalc
 LIB_DEPENDS=	libev.so:devel/libev \
 		libgnutls.so:security/gnutls \
 		libiconv.so:converters/libiconv \
@@ -29,6 +31,7 @@ USES=		autoreconf cpe gettext-tools gperf libtool localbase ncurses \
 CPE_VENDOR=	infradead
 USE_RC_SUBR=	ocserv
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-namespaces \
 		--without-geoip \
 		--without-http-parser
@@ -72,7 +75,6 @@ post-patch:
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/ocserv ${STAGEDIR}/var/run/ocserv
 	${INSTALL_DATA} ${WRKSRC}/doc/sample.config ${STAGEDIR}${PREFIX}/etc/ocserv/ocserv.conf.sample
-	${INSTALL_MAN} ${WRKSRC}/doc/*.8 ${STAGEDIR}${MANPREFIX}/man/man8
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

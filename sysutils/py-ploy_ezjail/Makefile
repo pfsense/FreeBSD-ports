@@ -1,5 +1,6 @@
 PORTNAME=	ploy_ezjail
 PORTVERSION=	2.0.0
+PORTREVISION=	1
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,8 +16,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lazy>0:devel/py-lazy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ploy>=2.0.0:sysutils/py-ploy@${PY_FLAVOR} \
 		${PY_SETUPTOOLS}
 
-USES=		pytest python
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
 

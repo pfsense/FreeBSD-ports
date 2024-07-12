@@ -1,19 +1,19 @@
 PORTNAME=	river
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.6
+DISTVERSION=	0.3.2
+PORTREVISION=	1
 CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Dynamic tiling Wayland compositor
-WWW=		https://github.com/riverwm/river
+WWW=		https://isaacfreund.com/software/river/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>0:graphics/wayland-protocols \
-		wlroots>=0.16.0:x11-toolkits/wlroots \
-		zig>=0.11.0:lang/zig
+		zig>=0.12.0:lang/zig
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
@@ -24,10 +24,10 @@ USES=		pkgconfig xorg
 USE_GITHUB=	yes
 USE_XORG=	pixman
 GH_ACCOUNT=	riverwm
-GH_TUPLE=	ifreund:zig-pixman:b0a9610:zig_pixman/deps/zig-pixman \
-		ifreund:zig-wayland:b9c6fcb:zig_wayland/deps/zig-wayland \
-		ifreund:zig-xkbcommon:e93ceb0:zig_xkbcommon/deps/zig-xkbcommon \
-		swaywm:zig-wlroots:46c81cd:zig_wlroots/deps/zig-wlroots
+GH_TUPLE=	ifreund:zig-pixman:v0.1.0:zig_pixman/../.cache/zig/p/122014eeb4600a059bdcfe1c864862f17e6d5e4237e3bb7d6818f2a5583f6f4eb843 \
+		ifreund:zig-wayland:v0.1.0:zig_wayland/../.cache/zig/p/1220b0f8f822c1625af7aae4cb3ab2c4ec1a4c0e99ef32867b2a8d88bb070b3e7f6d \
+		ifreund:zig-xkbcommon:v0.1.0:zig_xkbcommon/../.cache/zig/p/1220840390382c88caf9b0887f6cebbba3a7d05960b8b2ee6d80567b2950b71e5017 \
+		swaywm:zig-wlroots:v0.17.0:zig_wlroots/../.cache/zig/p/1220714d1cc39c3abb1d9c22a0b838d847ead099cb7d9931821490483f30c022e827
 MAKE_ENV=	DESTDIR="${STAGEDIR}"
 CONFIGURE_ARGS=	--prefix "${PREFIX}" \
 		${WITH_DEBUG:D:U-Doptimize=ReleaseFast} \
@@ -45,9 +45,6 @@ PLIST_FILES=	bin/${PORTNAME} \
 		share/fish/vendor_completions.d/${PORTNAME}ctl.fish \
 		share/zsh/site-functions/_${PORTNAME}ctl \
 		${NULL}
-
-# https://github.com/ziglang/zig/issues/12170 (pixman)
-MAKE_ENV+=	PKG_CONFIG_SYSTEM_LIBRARY_PATH="${LOCALBASE}/lib"
 
 OPTIONS_DEFINE=	MANPAGES X11
 OPTIONS_DEFAULT=MANPAGES X11
@@ -77,5 +74,4 @@ do-build:
 do-test:
 	@(cd ${WRKSRC} && ${TEST_ENV} zig build test ${CONFIGURE_ARGS})
 
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots016/override.mk"
 .include <bsd.port.mk>

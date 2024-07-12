@@ -1,5 +1,5 @@
 PORTNAME=	pymtbl
-PORTVERSION=	0.5.0
+PORTVERSION=	0.6.0
 PORTREVISION=	0
 CATEGORIES=	devel python
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
@@ -24,6 +24,9 @@ PORTEXAMPLES=	*
 CPPFLAGS+=	-I${LOCALBASE}/include
 
 OPTIONS_DEFINE=	EXAMPLES
+
+pre-build:
+	cython-${PYTHON_VER} ${WRKSRC}/mtbl.pyx
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mtbl*.so

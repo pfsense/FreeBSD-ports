@@ -1,5 +1,5 @@
 PORTNAME=	tinker
-DISTVERSION=	8.10.5
+DISTVERSION=	8.11.3
 PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://dasher.wustl.edu/tinker/downloads/
@@ -77,6 +77,16 @@ post-install-EXAMPLES-on:
 	cd ${WRKSRC}/example && ${INSTALL_DATA} \
 		0README *.make *.dyn *.int *.frac *.key *.seq *.pdb *.xyz \
 		${STAGEDIR}${EXAMPLESDIR}
+
+do-test:
+	${RM} -r ${WRKSRC}/bin
+	${LN} -s ${STAGEDIR}${PREFIX}/bin ${WRKSRC}/bin
+	cd ${WRKSRC}/test && \
+		for test_run in *.run; do \
+			${ECHO} "Running test $${test_run} ..." && \
+			./$${test_run} && \
+			${ECHO} "Test $${test_run} suceeded"; \
+		done
 
 benchmarks: stage
 .for n in 1 2 3 4 5 6 7 8 9

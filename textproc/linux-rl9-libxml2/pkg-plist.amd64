@@ -1,0 +1,14 @@
+usr/bin/xmlcatalog
+usr/bin/xmllint
+usr/lib/.build-id/37/b95885a78adfcfeab8a3b6469687b1f0f0ccb9
+usr/lib/.build-id/6d/b45925c9046613e77c899789b15378bd6f8af0
+usr/lib/.build-id/d6/a7149e1da86cb48b54c10656df390b3b778a14
+usr/lib64/libxml2.so.2
+usr/lib64/libxml2.so.2.9.13
+%%PORTDOCS%%usr/share/doc/libxml2/NEWS
+%%PORTDOCS%%usr/share/doc/libxml2/README.md
+%%PORTDOCS%%usr/share/doc/libxml2/TODO
+usr/share/licenses/libxml2/Copyright
+usr/share/man/man1/xmlcatalog.1.gz
+usr/share/man/man1/xmllint.1.gz
+usr/share/man/man3/libxml.3.gz

@@ -1,6 +1,6 @@
-PORTREVISION=	4
+PORTREVISION=	7
 
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Version control system
 WWW=		https://subversion.apache.org/
 
@@ -44,7 +44,11 @@ SVNFSTYPE?=	fsfs
 SVNGROUP?=	svn
 SVNUSER?=	svn
 
-CONFIGURE_ARGS+=	--without-gnome-keyring \
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ARGS+=	--without-swig-perl \
+			--without-swig-python \
+			--without-swig-ruby \
+			--without-gnome-keyring \
 			--without-kwallet \
 			--with-apxs=no
 

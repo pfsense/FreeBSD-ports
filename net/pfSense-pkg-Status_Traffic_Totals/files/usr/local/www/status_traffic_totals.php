@@ -46,8 +46,6 @@ chdir($home);
 
 print_r($databases);
 */
-global $config;
-
 $vnscfg = config_get_path('installedpackages/traffictotals/config/0', []);
 $portlist = vnstat_portlist();
 
@@ -816,7 +814,7 @@ events.push(function() {
 				}
 
 				//add system name
-				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
+				var systemName = '<?=htmlspecialchars(config_get_path('system/hostname') . "." . config_get_path('system/domain')); ?>';
 				d3.select('#traffic-totals-chart svg')
 					.append("text")
 					.attr("x", 225)

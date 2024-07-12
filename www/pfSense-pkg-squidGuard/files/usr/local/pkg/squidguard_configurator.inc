@@ -535,7 +535,7 @@ function sg_reconfigure_user_db() {
 
 	/* bypass local IPs for squid_status.php, see https://redmine.pfsense.org/issues/11711 */
 	if ($squidguard_config[F_DEFAULT][F_NOTALLOWINGIP]) {
-		init_config_arr(array('installedpackages', 'squidcache','config'));
+		config_init_path('installedpackages/squidcache/config');
 		$proxy_ifaces = explode(",", config_get_path('installedpackages/squid/config/0/active_interface'));
 		$sgips = '';
 		foreach ($proxy_ifaces as $iface) {

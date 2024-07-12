@@ -1,6 +1,5 @@
 PORTNAME=	json-fortran
-DISTVERSION=	8.3.0-8
-DISTVERSIONSUFFIX=	-gd296de8a4
+DISTVERSION=	9.0.1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,7 +17,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jacobwilliams
 
 CMAKE_ON=	USE_GNU_INSTALL_CONVENTION
-
-# all tests fail, see https://github.com/jacobwilliams/json-fortran/issues/539
+CMAKE_OFF=	JSONFORTRAN_ENABLE_TESTS
+CMAKE_TESTING_ON=	JSONFORTRAN_ENABLE_TESTS ENABLE_TESTS
+CMAKE_TESTING_TARGET=	check
 
 .include <bsd.port.mk>

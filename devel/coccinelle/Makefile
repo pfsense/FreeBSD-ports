@@ -1,10 +1,13 @@
 PORTNAME=	coccinelle
 PORTVERSION=	1.1.1
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program matching and transformation engine
 WWW=		http://coccinelle.lip6.fr/
+
+EXTRA_PATCHES=	${FILESDIR}/0001-Fix-263-wrong-default-path-for-COCCINELLE_HOME.patch:-p1
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt

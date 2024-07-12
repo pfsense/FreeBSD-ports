@@ -1,9 +1,9 @@
 PORTNAME=	cli
-PORTVERSION=	3.6.2
+DISTVERSION=	3.6.3
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	uzsolt@uzsolt.hu
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Helpers for Developing Command Line Interfaces
 WWW=		https://cran.r-project.org/web/packages/cli/
 

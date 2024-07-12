@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-global $config, $tailscale_is_installing;
+global $tailscale_is_installing;
 
 require_once('tailscale/tailscale_common.inc');
 
@@ -44,22 +44,22 @@ function tailscale_ifgroup_entry()
  */
 function tailscale_ifgroup_install()
 {
-	global $config;
-
 	$has_ifgroup = false;
 
 	$tailscale_entry = tailscale_ifgroup_entry();
 
-	init_config_arr(['ifgroups', 'ifgroupentry']);
+	config_init_path('ifgroups/ifgroupentry');
 
-	foreach ($config['ifgroups']['ifgroupentry'] as $entry)
+	foreach (config_get_path('ifgroups/ifgroupentry', []) as $entry)
 		if ($has_ifgroup = ($entry['ifname'] === $tailscale_entry['ifname']))
 			break;
 
 	if ($has_ifgroup)
 		return;
 
-	array_unshift($config['ifgroups']['ifgroupentry'], $tailscale_entry);
+	$ifgroups_config = config_get_path('ifgroups/ifgroupentry');
+	array_unshift($ifgroups_config, $tailscale_entry);
+	config_set_path('ifgroups/ifgroupentry', $ifgroups_config);
 
 	write_config(sprintf(gettext('Installed Tailscale interface group (%s)'), $tailscale_entry['ifname']));
 }
@@ -69,17 +69,15 @@ function tailscale_ifgroup_install()
  */
 function tailscale_ifgroup_deinstall()
 {
-	global $config;
-
 	$had_ifgroup = false;
 
 	$tailscale_entry = tailscale_ifgroup_entry();
 
-	init_config_arr(['ifgroups', 'ifgroupentry']);
+	config_init_path('ifgroups/ifgroupentry');
 
-	foreach ($config['ifgroups']['ifgroupentry'] as $idx => $entry)
+	foreach (config_get_path('ifgroups/ifgroupentry', []) as $idx => $entry)
 		if ($entry['ifname'] === $tailscale_entry['ifname']) {
-			unset($config['ifgroups']['ifgroupentry'][$idx]);
+			config_del_path("ifgroups/ifgroupentry/{$idx}");
 			$had_ifgroup = true;
 		}
 
@@ -110,16 +108,14 @@ function tailscale_not_has_keep_config(): bool
  */
 function tailscale_clean(): void
 {
-	global $config;
-
 	# 1. remove the state cache on the filesystem, we keep logs and transferred files
 	unlink_if_exists(tailscale_state_directory() . '/' . TAILSCALED_STATE);
 
 	# 2. clean the tailscale config tree
-	unset($config['installedpackages']['tailscale']);
+	config_del_path('installedpackages/tailscale');
 
 	# 3. clean the tailscale auth config tree
-	unset($config['installedpackages']['tailscaleauth']);
+	config_del_path('installedpackages/tailscaleauth');
 
 	# 4. save the config
 	write_config(gettext('Removed Tailscale package settings and local state cache.'));

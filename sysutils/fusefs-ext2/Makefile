@@ -1,7 +1,7 @@
 PORTNAME=	fusefs-ext2
-PORTVERSION=	0.0.10
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+DISTVERSION=	0.0.11
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -29,6 +29,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib/e2fsprogs -Wl,--rpath \
 PLIST_FILES=	bin/fuse-ext2 \
 		bin/fuse-ext2.probe \
 		libdata/pkgconfig/fuse-ext2.pc \
-		man/man1/fuse-ext2.1.gz
+		share/man/man1/fuse-ext2.1.gz
 
 .include <bsd.port.mk>

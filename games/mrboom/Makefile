@@ -1,5 +1,5 @@
 PORTNAME=	mrboom
-PORTVERSION=	5.3
+DISTVERSION=	5.5
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/Javanaise/mrboom-libretro/releases/download/${PORTVERSION}/
 DISTNAME=	MrBoom-src-${PORTVERSION}
@@ -26,8 +26,8 @@ CFLAGS+=	`sdl2-config --cflags`
 LDFLAGS+=	`sdl2-config --libs`
 
 PLIST_FILES=	bin/mrboom \
-		man/man6/mrboom.6.gz \
 		share/applications/mrboom.desktop \
+		share/man/man6/mrboom.6.gz \
 		share/pixmaps/mrboom.png
 
 post-install:

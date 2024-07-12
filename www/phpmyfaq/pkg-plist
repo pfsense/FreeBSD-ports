@@ -907,6 +907,8 @@
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Cat.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Ccr.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Cluster.php
+%%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Connector.php
+%%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/ConnectorSyncJob.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/DanglingIndices.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Enrich.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Eql.php
@@ -924,12 +926,14 @@
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Ml.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Monitoring.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Nodes.php
+%%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Profiling.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/QueryRuleset.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Rollup.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/SearchApplication.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/SearchableSnapshots.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Security.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Shutdown.php
+%%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Simulate.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Slm.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Snapshot.php
 %%WWWDIR%%/src/libs/elasticsearch/elasticsearch/src/Endpoints/Sql.php
@@ -1537,6 +1541,7 @@
 %%WWWDIR%%/src/libs/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Keys/XML.php
 %%WWWDIR%%/src/libs/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Keys/libsodium.php
 %%WWWDIR%%/src/libs/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/ASN1.php
+%%WWWDIR%%/src/libs/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/IEEE.php
 %%WWWDIR%%/src/libs/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/Raw.php
 %%WWWDIR%%/src/libs/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/SSH2.php
 %%WWWDIR%%/src/libs/phpseclib/phpseclib/phpseclib/Crypt/EC/Parameters.php
@@ -1977,6 +1982,8 @@
 %%WWWDIR%%/src/libs/symfony/http-client/Internal/NativeClientState.php
 %%WWWDIR%%/src/libs/symfony/http-client/Internal/PushedResponse.php
 %%WWWDIR%%/src/libs/symfony/http-client/LICENSE
+%%WWWDIR%%/src/libs/symfony/http-client/Messenger/PingWebhookMessage.php
+%%WWWDIR%%/src/libs/symfony/http-client/Messenger/PingWebhookMessageHandler.php
 %%WWWDIR%%/src/libs/symfony/http-client/MockHttpClient.php
 %%WWWDIR%%/src/libs/symfony/http-client/NativeHttpClient.php
 %%WWWDIR%%/src/libs/symfony/http-client/NoPrivateNetworkHttpClient.php
@@ -2000,6 +2007,7 @@
 %%WWWDIR%%/src/libs/symfony/http-client/Retry/RetryStrategyInterface.php
 %%WWWDIR%%/src/libs/symfony/http-client/RetryableHttpClient.php
 %%WWWDIR%%/src/libs/symfony/http-client/ScopingHttpClient.php
+%%WWWDIR%%/src/libs/symfony/http-client/Test/HarFileResponseFactory.php
 %%WWWDIR%%/src/libs/symfony/http-client/TraceableHttpClient.php
 %%WWWDIR%%/src/libs/symfony/http-client/UriTemplateHttpClient.php
 %%WWWDIR%%/src/libs/symfony/http-client/composer.json
@@ -2015,6 +2023,7 @@
 %%WWWDIR%%/src/libs/symfony/http-foundation/Exception/RequestExceptionInterface.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Exception/SessionNotFoundException.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Exception/SuspiciousOperationException.php
+%%WWWDIR%%/src/libs/symfony/http-foundation/Exception/UnexpectedValueException.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/ExpressionRequestMatcher.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/File/Exception/AccessDeniedException.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/File/Exception/CannotWriteFileException.php
@@ -2104,11 +2113,13 @@
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseFormatSame.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseHasCookie.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseHasHeader.php
+%%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseHeaderLocationSame.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseHeaderSame.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseIsRedirected.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseIsSuccessful.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseIsUnprocessable.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/Test/Constraint/ResponseStatusCodeSame.php
+%%WWWDIR%%/src/libs/symfony/http-foundation/UriSigner.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/UrlHelper.php
 %%WWWDIR%%/src/libs/symfony/http-foundation/composer.json
 %%WWWDIR%%/src/libs/symfony/mailer/CHANGELOG.md
@@ -2132,6 +2143,7 @@
 %%WWWDIR%%/src/libs/symfony/mailer/Exception/RuntimeException.php
 %%WWWDIR%%/src/libs/symfony/mailer/Exception/TransportException.php
 %%WWWDIR%%/src/libs/symfony/mailer/Exception/TransportExceptionInterface.php
+%%WWWDIR%%/src/libs/symfony/mailer/Exception/UnexpectedResponseException.php
 %%WWWDIR%%/src/libs/symfony/mailer/Exception/UnsupportedSchemeException.php
 %%WWWDIR%%/src/libs/symfony/mailer/Header/MetadataHeader.php
 %%WWWDIR%%/src/libs/symfony/mailer/Header/TagHeader.php
@@ -2245,6 +2257,7 @@
 %%WWWDIR%%/src/libs/symfony/mime/Test/Constraint/EmailHasHeader.php
 %%WWWDIR%%/src/libs/symfony/mime/Test/Constraint/EmailHeaderSame.php
 %%WWWDIR%%/src/libs/symfony/mime/Test/Constraint/EmailHtmlBodyContains.php
+%%WWWDIR%%/src/libs/symfony/mime/Test/Constraint/EmailSubjectContains.php
 %%WWWDIR%%/src/libs/symfony/mime/Test/Constraint/EmailTextBodyContains.php
 %%WWWDIR%%/src/libs/symfony/mime/composer.json
 %%WWWDIR%%/src/libs/symfony/polyfill-intl-idn/Idn.php
@@ -2313,6 +2326,7 @@
 %%WWWDIR%%/src/libs/symfony/polyfill-php83/Resources/stubs/DateObjectError.php
 %%WWWDIR%%/src/libs/symfony/polyfill-php83/Resources/stubs/DateRangeError.php
 %%WWWDIR%%/src/libs/symfony/polyfill-php83/Resources/stubs/Override.php
+%%WWWDIR%%/src/libs/symfony/polyfill-php83/Resources/stubs/SQLite3Exception.php
 %%WWWDIR%%/src/libs/symfony/polyfill-php83/bootstrap.php
 %%WWWDIR%%/src/libs/symfony/polyfill-php83/bootstrap81.php
 %%WWWDIR%%/src/libs/symfony/polyfill-php83/composer.json

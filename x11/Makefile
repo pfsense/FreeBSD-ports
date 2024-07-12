@@ -27,6 +27,7 @@
     SUBDIR += bgs
     SUBDIR += bitmap
     SUBDIR += bmpanel2
+    SUBDIR += boomer
     SUBDIR += brisk-menu
     SUBDIR += budgie
     SUBDIR += budgie-desktop
@@ -34,6 +35,7 @@
     SUBDIR += cde
     SUBDIR += cde-25
     SUBDIR += cde-devel
+    SUBDIR += chayang
     SUBDIR += cinnamon
     SUBDIR += cinnamon-desktop
     SUBDIR += cinnamon-menus
@@ -41,6 +43,7 @@
     SUBDIR += cinnamon-session
     SUBDIR += cl-clx
     SUBDIR += cl-clx-sbcl
+    SUBDIR += clip
     SUBDIR += clipcat
     SUBDIR += cliphist
     SUBDIR += clipman
@@ -50,6 +53,7 @@
     SUBDIR += cool-retro-term
     SUBDIR += coreterminal
     SUBDIR += damask
+    SUBDIR += darktile
     SUBDIR += deforaos-integration
     SUBDIR += deforaos-keyboard
     SUBDIR += deforaos-libdesktop
@@ -84,6 +88,7 @@
     SUBDIR += foot
     SUBDIR += fstobdf
     SUBDIR += fuzzel
+    SUBDIR += gbsddialog
     SUBDIR += gdm
     SUBDIR += glcapsviewer
     SUBDIR += gmrun
@@ -119,6 +124,9 @@
     SUBDIR += hs-xmobar
     SUBDIR += hsetroot
     SUBDIR += hybrid-bar
+    SUBDIR += hyprcursor
+    SUBDIR += hypridle
+    SUBDIR += hyprlock
     SUBDIR += hyprpaper
     SUBDIR += hyprpicker
     SUBDIR += i3bar-river
@@ -199,6 +207,7 @@
     SUBDIR += libfm
     SUBDIR += libfm-extra
     SUBDIR += libfm-qt
+    SUBDIR += libfm-qt6
     SUBDIR += libgnomekbd
     SUBDIR += libinput
     SUBDIR += libmatekbd
@@ -229,6 +238,9 @@
     SUBDIR += linux-nvidia-libs-340
     SUBDIR += linux-nvidia-libs-390
     SUBDIR += linux-nvidia-libs-470
+    SUBDIR += linux-rl9-libxkbcommon
+    SUBDIR += linux-rl9-pixman
+    SUBDIR += linux-rl9-xorg-libs
     SUBDIR += listres
     SUBDIR += lsw
     SUBDIR += luit
@@ -242,6 +254,7 @@
     SUBDIR += lxpanel
     SUBDIR += lxqt-about
     SUBDIR += lxqt-globalkeys
+    SUBDIR += lxqt-menu-data
     SUBDIR += lxqt-runner
     SUBDIR += lxrandr
     SUBDIR += ly
@@ -264,8 +277,6 @@
     SUBDIR += mlterm
     SUBDIR += mons
     SUBDIR += mrxvt
-    SUBDIR += mrxvt-devel
-    SUBDIR += multi-aterm
     SUBDIR += mxascii
     SUBDIR += mxico
     SUBDIR += nezd
@@ -276,7 +287,6 @@
     SUBDIR += nvidia-driver-340
     SUBDIR += nvidia-driver-390
     SUBDIR += nvidia-driver-470
-    SUBDIR += nvidia-hybrid-graphics
     SUBDIR += nvidia-secondary-driver
     SUBDIR += nvidia-secondary-driver-390
     SUBDIR += nvidia-settings
@@ -426,6 +436,7 @@
     SUBDIR += terminal.app
     SUBDIR += terminator
     SUBDIR += terminology
+    SUBDIR += tessen
     SUBDIR += thingylaunch
     SUBDIR += tilda
     SUBDIR += tilix
@@ -456,7 +467,9 @@
     SUBDIR += wev
     SUBDIR += wezterm
     SUBDIR += wf-shell
+    SUBDIR += windowtolayer
     SUBDIR += wl-clipboard
+    SUBDIR += wl-kbptr
     SUBDIR += wl-mirror
     SUBDIR += wlogout
     SUBDIR += wlopm
@@ -467,7 +480,7 @@
     SUBDIR += wmblob
     SUBDIR += wmbutton
     SUBDIR += wmcliphist
-    SUBDIR += wmctrl
+    SUBDIR += wmctrl-fork
     SUBDIR += wmdrawer
     SUBDIR += wmenu
     SUBDIR += wmfocus
@@ -520,6 +533,7 @@
     SUBDIR += xcoloredit
     SUBDIR += xcolors
     SUBDIR += xconsole
+    SUBDIR += xcur2png
     SUBDIR += xcursorgen
     SUBDIR += xcut
     SUBDIR += xdg-desktop-portal-gnome
@@ -534,7 +548,6 @@
     SUBDIR += xdotool
     SUBDIR += xdpyinfo
     SUBDIR += xdriinfo
-    SUBDIR += xdtm
     SUBDIR += xedit
     SUBDIR += xev
     SUBDIR += xeyes
@@ -649,6 +662,7 @@
     SUBDIR += xvt
     SUBDIR += xwatchwin
     SUBDIR += xwayland-run
+    SUBDIR += xwayland-satellite
     SUBDIR += xwaylandvideobridge
     SUBDIR += xwd
     SUBDIR += xwininfo
@@ -663,5 +677,6 @@
     SUBDIR += yeahconsole
     SUBDIR += yelp
     SUBDIR += zenity
+    SUBDIR += zutty
 
 .include <bsd.port.subdir.mk>

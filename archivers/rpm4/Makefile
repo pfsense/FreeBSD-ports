@@ -1,5 +1,6 @@
 PORTNAME=	rpm
 PORTVERSION=	4.18.2
+PORTREVISION=	1
 CATEGORIES=	archivers
 MASTER_SITES=	http://ftp.rpm.org/releases/rpm-${PORTVERSION:R}.x/
 PKGNAMESUFFIX=	4
@@ -13,8 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libelf.so:devel/elfutils \
 		gsed:textproc/gsed
-LIB_DEPENDS=	libarchive.so:archivers/libarchive \
-		libdb-5.3.so:databases/db5 \
+LIB_DEPENDS=	libdb-5.3.so:databases/db5 \
 		libelf.so:devel/elfutils \
 		libgcrypt.so:security/libgcrypt \
 		libnss3.so:security/nss \
@@ -34,6 +34,7 @@ SHEBANG_FILES=	scripts/brp-compress scripts/check-prereqs \
 		scripts/perl.req scripts/pkgconfigdeps.sh \
 		scripts/rpm_macros_provides.sh
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-sqlite=yes \
 		--localstatedir=/var \
 		--sysconfdir=${PREFIX}/etc \

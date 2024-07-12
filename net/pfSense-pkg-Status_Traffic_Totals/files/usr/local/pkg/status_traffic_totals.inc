@@ -31,7 +31,7 @@ $vnstat_dbdir = '/var/db/vnstat';
 $vnstat_config = '/usr/local/etc/vnstat.conf';
 
 function vnstat_write_conf() {
-	global $config, $vnstat_dbdir, $vnstat_config;
+	global $vnstat_dbdir, $vnstat_config;
 	$vnscfg = config_get_path('installedpackages/traffictotals/config/0', []);
 	$startDay = isset($vnscfg['startday']) ? $vnscfg['startday'] : 1;
 
@@ -120,7 +120,7 @@ function vnstat_read() {
 }
 
 function vnstat_install() {
-	global $config, $vnstat_dbdir;
+	global $vnstat_dbdir;
 
 	// Remove cron job from old versions, it does not work this way any longer.
 	install_cron_job("/usr/local/bin/vnstat -u", false);
@@ -131,7 +131,7 @@ function vnstat_install() {
 		// Enabled
 		config_set_path('installedpackages/traffictotals/config/0/enabled', true);
 	} catch (Exception $e) {
-		if (config_path_enabled('installedpackages/traffictotals/config/0/enabled')) {
+		if (config_path_enabled('installedpackages/traffictotals/config/0', 'enabled')) {
 			// Enabled but missing data, so reinitialize
 			vnstat_write_conf();
 			vnstat_create_nic_dbs();
@@ -147,7 +147,7 @@ function vnstat_deinstall() {
 }
 
 function vnstat_write_rcfile() {
-	global $g, $config, $vnstat_dbdir, $vnstat_config;
+	global $g, $vnstat_dbdir, $vnstat_config;
 	$rundir = "{$g['varrun_path']}/vnstat";
 	$pidfile = "{$rundir}/vnstat.pid";
 	$user = 'vnstat';
@@ -173,8 +173,7 @@ EOD;
 }
 
 function vnstat_portlist() {
-	global $config;
-	$portlist = $config['interfaces'];
+	$portlist = config_get_path('interfaces');
 	$ifdescrs = get_configured_interface_with_descr();
 
 	if (ipsec_enabled()) {
@@ -205,9 +204,7 @@ function vnstat_portlist() {
 }
 
 function vnstat_sync() {
-	global $config;
-
-	if (config_path_enabled('installedpackages/traffictotals/config/0/', 'enabled')) { // Enabled
+	if (config_path_enabled('installedpackages/traffictotals/config/0', 'enabled')) { // Enabled
 		//make the directory for the interface databases
 		safe_mkdir('/var/db/vnstat');
 		//overwrite vnstat conf

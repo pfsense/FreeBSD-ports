@@ -1,26 +1,27 @@
 PORTNAME=	calife
-PORTVERSION=	3.0.6
-PORTREVISION=	1
+DISTVERSION=	3.0.6
+PORTREVISION=	2
 CATEGORIES=	security
-MASTER_SITES=	https://assets.keltia.net/calife/
+MASTER_SITES=	https://assets.keltia.net/calife/ \
+		https://github.com/keltia/calife/releases/${DISTVERSION}/
 
 MAINTAINER=	roberto@FreeBSD.org
 COMMENT=	Lightweight alternative to sudo
-WWW=		https://www.keltia.net/programs/calife
+WWW=		https://keltia.net/programs/calife
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe tar:xz
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-etcdir=${PREFIX}/etc
-
-CONFIGURE_ARGS+=	--with-pam
+CONFIGURE_ARGS=	--with-etcdir=${PREFIX}/etc \
+		--with-pam
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/calife ${STAGEDIR}${PREFIX}/bin/calife
-	${INSTALL_MAN} ${WRKSRC}/calife.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/calife.auth.5 ${STAGEDIR}${MAN5PREFIX}/man/man5
+	${INSTALL_MAN} ${WRKSRC}/calife.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/calife.auth.5 ${STAGEDIR}${PREFIX}/share/man/man5
 	${INSTALL_DATA} ${WRKSRC}/calife.auth-dist ${STAGEDIR}${PREFIX}/etc/calife.auth.sample
 	${INSTALL_DATA} ${WRKSRC}/pam/freebsd9 ${STAGEDIR}${PREFIX}/etc/pam.d/calife.sample
 

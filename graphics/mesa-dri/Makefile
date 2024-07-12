@@ -73,7 +73,7 @@ MESON_ARGS+=	-Dgallium-drivers="${GALLIUM_DRIVERS:ts,:tl}" \
 		-Dplatforms="${MESA_PLATFORMS:ts,:tl}"
 
 # Vulkan Video extensions (keep in sync with mesa-gallium-va)
-MESON_ARGS+=	-Dvideo-codecs="vc1dec,h264dec,h264enc,h265dec,h265enc"
+MESON_ARGS+=	-Dvideo-codecs="vc1dec,h264dec,h264enc,h265dec,h265enc,av1dec,av1enc,vp9dec"
 
 # Disable some options
 MESON_ARGS+=	-Dandroid-libbacktrace=disabled \
@@ -105,8 +105,6 @@ PLIST_SUB+=	${_vd}_VDRIVER=""
 PLIST_SUB+=	${_vd}_VDRIVER="@comment "
 . endif
 .endfor
-
-.include "${MASTERDIR}/Makefile.targets"
 
 post-install:
 	@${RM} -r ${STAGEDIR}/etc/OpenCL

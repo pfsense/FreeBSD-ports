@@ -1,6 +1,5 @@
 PORTNAME=	gromacs
-DISTVERSION=	2023.2
-PORTREVISION=	2
+DISTVERSION=	2024.2
 CATEGORIES=	science
 MASTER_SITES=	https://ftp.gromacs.org/pub/gromacs/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # only for googletest
@@ -18,7 +17,6 @@ BUILD_DEPENDS=	boost-libs>=1.44:devel/boost-libs
 
 USES=		cmake compiler:c++17-lang gnome pathfix perl5 pkgconfig \
 		python:build shebangfix
-USE_GCC=	yes # clang fails: https://gitlab.com/gromacs/gromacs/-/issues/4909
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
@@ -35,12 +33,19 @@ CMAKE_ARGS=	-DPython_EXECUTABLE=${PYTHON_CMD} \
 
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=		ATLAS FLOAT HWLOC LEGACY OPENMP SIMD
+OPTIONS_DEFINE=		ATLAS FLOAT HWLOC LEGACY SIMD
 OPTIONS_SINGLE=		MP OPENCL
 OPTIONS_SINGLE_MP=	NOMP MPICH OPENMPI THREAD_MPI
 OPTIONS_SINGLE_OPENCL=	OPENCL_NONE OPENCL_ICD OPENCL_SYCL
-OPTIONS_DEFAULT=	HWLOC LEGACY OPENCL_NONE OPENMP THREAD_MPI # FLOAT should not be a default because science/votca needs double precision. This is likely the same for many other uses.
+OPTIONS_DEFAULT=	HWLOC LEGACY OPENCL_NONE THREAD_MPI # FLOAT should not be a default because science/votca needs double precision. This is likely the same for many other uses.
 OPTIONS_SUB=		yes
+
+.if exists(/usr/include/omp.h)
+OPTIONS_DEFINE+=	OPENMP
+OPTIONS_DEFAULT+=	OPENMP
+.else
+CMAKE_OFF+=		GMX_OPENMP
+.endif
 
 ATLAS_DESC=		Use ATLAS for BLAS and LAPACK
 ATLAS_USES=		blaslapack:atlas
@@ -82,8 +87,6 @@ OPENCL_SYCL_LIB_DEPENDS=	libhipSYCL-rt.so:lang/opensycl
 OPENCL_SYCL_IMPLIES=	FLOAT
 OPENCL_SYCL_BROKEN=	configure uses a wrong namespace to find CYCL, see https://gitlab.com/gromacs/gromacs/-/issues/4838
 
-OPENMP_CMAKE_BOOL=	GMX_OPENMP
-
 SIMD_CMAKE_OFF=		-DGMX_SIMD:STRING="None"
 SIMD_CMAKE_ON=		-DGMX_SIMD:STRING="AUTO"
 
@@ -96,6 +99,8 @@ MPICH_LIB_DEPENDS=	libmpich.so:net/mpich
 MPICH_CMAKE_ON=		-DGMX_MPI:BOOL=ON \
 			-DMPI_C_COMPILER:FILEPATH="${LOCALBASE}/bin/mpicc"
 MPICH_PLIST_SUB=	SUFFIX_MPI="_mpi"
+
+OPENMP_CMAKE_BOOL=	GMX_OPENMP
 
 OPENMPI_BUILD_DEPENDS=	openmpi>0:net/openmpi
 OPENMPI_RUN_DEPENDS=	openmpi>0:net/openmpi
@@ -118,6 +123,6 @@ post-patch:
 	@${REINPLACE_CMD} -e '/CMAKE_REQUIRED_LIBRARIES/d' \
 		${WRKSRC}/cmake/gmxTestdlopen.cmake
 
-# tests fail to compile, see https://gitlab.com/gromacs/gromacs/-/issues/4825
+# tests fail to compile, see https://gitlab.com/gromacs/gromacs/-/issues/5046
 
 .include <bsd.port.mk>

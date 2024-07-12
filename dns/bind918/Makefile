@@ -1,7 +1,7 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-DISTVERSION=	9.18.20
+DISTVERSION=	9.18.27
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
 PORTREVISION=	1
@@ -50,6 +50,7 @@ CPE_UPDATE=	${DISTVERSION:C/.*-//:tl}
 .endif
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-linux-caps \
 		--localstatedir=/var \
 		--sysconfdir=${ETCDIR} \
@@ -71,7 +72,7 @@ EXTRA_PATCHES=		${PATCHDIR}/extrapatch-no-bind-tools
 
 PORTDOCS=	*
 
-CONFLICTS=	bind911 bind916 bind9-devel
+CONFLICTS=	bind916 bind9-devel
 .endif	# BIND_TOOLS_SLAVE
 
 MAKE_JOBS_UNSAFE=	yes
@@ -86,7 +87,7 @@ OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 
 .if defined(BIND_TOOLS_SLAVE)
-OPTIONS_EXCLUDE=	DNSTAP DOCS GEOIP LMDB \
+OPTIONS_EXCLUDE=	DOCS GEOIP LMDB \
 			OVERRIDECACHE QUERYTRACE START_LATE \
 			TCP_FASTOPEN
 .endif	# BIND_TOOLS_SLAVE
@@ -95,8 +96,8 @@ OPTIONS_SUB=	yes
 
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
-GSSAPI_BASE_DESC=	Using Heimdal in base
-GSSAPI_HEIMDAL_DESC=	Using security/heimdal
+GSSAPI_BASE_DESC=	Using Heimdal in base (nsupdate is broken)
+GSSAPI_HEIMDAL_DESC=	Using security/heimdal (nsupdate is broken)
 GSSAPI_MIT_DESC=	Using security/krb5
 GSSAPI_NONE_DESC=	Disable
 LARGE_FILE_DESC=	64-bit file support

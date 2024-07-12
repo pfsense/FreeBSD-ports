@@ -1,6 +1,6 @@
 PORTNAME=	cvc5
 DISTVERSIONPREFIX=	cvc5-
-DISTVERSION=	1.0.8
+DISTVERSION=	1.1.2
 PORTREVISION=	1
 CATEGORIES=	math java
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -13,13 +13,12 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
-		${LOCALBASE}/lib/libcadical.a:math/cadical \
 		${LOCALBASE}/lib/symfpu.a:math/symfpu \
 		${PYTHON_PKGNAMEPREFIX}toml>0:textproc/py-toml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tomli>0:textproc/py-tomli@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>0:devel/py-pyparsing@${PY_FLAVOR}
 LIB_DEPENDS=	libantlr3c.so:devel/libantlr3c \
-		libboost_system.so:devel/boost-libs
+		libcadical.so:math/cadical
 
 USES=		cmake:testing ncurses compiler:c++17-lang \
 		localbase:ldflags pkgconfig python:build
@@ -37,6 +36,8 @@ CMAKE_OFF=		BUILD_BINDINGS_PYTHON USE_PYTHON3 # Python binding should be a separ
 CMAKE_TESTING_ON=	ENABLE_UNIT_TESTING
 CMAKE_TESTING_TARGET=	check # check target runs only quick tests (based on https://github.com/cvc5/cvc5/issues/9569#issuecomment-1484943348)
 #CMAKE_TESTING_TARGET=	test # test target also runs longer tests, 2 of which fail, see https://github.com/cvc5/cvc5/issues/9569
+
+PLIST_SUB=		VERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=			COCOALIB EDITLINE JAVA
 OPTIONS_GROUP=			SOLVERS
@@ -89,5 +90,7 @@ CMAKE_ARGS+=		-DENABLE_GPL:BOOL=ON
 .endif
 
 PORTSCOUT=	limit:^[1-9]\.[0-9]+\.[0-9]+ # prevent older generation versions like 1.8, 1.7, etc.
+
+# some tests are skipped without any explanation, see https://github.com/cvc5/cvc5/issues/10456
 
 .include <bsd.port.mk>

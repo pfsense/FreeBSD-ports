@@ -1,6 +1,6 @@
 PORTNAME=	facter
 PORTVERSION=	3.14.24
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES?=	sysutils
 MASTER_SITES=	https://downloads.puppetlabs.com/facter/
 
@@ -26,7 +26,6 @@ PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 USES=		cmake:noninja compiler:c++11-lib cpe ruby ssl
 CPE_VENDOR=	puppet
 USE_LDCONFIG=	yes
-CMAKE_ARGS+=	-DMAN_PATH=${MANPREFIX}/man
 CMAKE_OFF=	ENABLE_CXX_WERROR
 
 OPTIONS_DEFINE=	FACTER_JAVA

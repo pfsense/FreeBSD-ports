@@ -1,6 +1,6 @@
 PORTNAME=	Prima
 PORTVERSION=	1.68.002
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -57,6 +57,8 @@ THAI_LIB_DEPENDS=	libthai.so.0:devel/libthai
 XFT_CONFIGURE_OFF=	WITH_XFT=0
 XFT_CONFIGURE_ON=	WITH_XFT=1
 XFT_USE=		XORG=xft
+
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Prima/Prima.so

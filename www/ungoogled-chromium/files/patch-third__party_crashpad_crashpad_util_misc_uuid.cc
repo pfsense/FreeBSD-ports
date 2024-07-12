@@ -1,6 +1,6 @@
---- third_party/crashpad/crashpad/util/misc/uuid.cc.orig	2022-10-01 07:40:07 UTC
+--- third_party/crashpad/crashpad/util/misc/uuid.cc.orig	2024-06-22 08:49:42 UTC
 +++ third_party/crashpad/crashpad/util/misc/uuid.cc
-@@ -101,7 +101,7 @@ bool UUID::InitializeWithNew() {
+@@ -110,7 +110,7 @@ bool UUID::InitializeWithNew() {
    InitializeFromBytes(uuid);
    return true;
  #elif BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \

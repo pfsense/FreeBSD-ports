@@ -1,0 +1,32 @@
+commit 7cbbda697adeabca5eaad369099ea995a4c2cd42
+Author: jim-p <jimp@netgate.com>
+Date:   Wed May 1 08:52:34 2024 -0400
+
+    Correct inconsistent CRL tab names. Fixes #15454
+
+diff --git a/src/usr/local/www/system_certmanager.php b/src/usr/local/www/system_certmanager.php
+index 6befd29adf..5530f1eed1 100644
+--- a/src/usr/local/www/system_certmanager.php
++++ b/src/usr/local/www/system_certmanager.php
+@@ -695,7 +695,7 @@ if ($savemsg) {
+ $tab_array = array();
+ $tab_array[] = array(gettext('Authorities'), false, 'system_camanager.php');
+ $tab_array[] = array(gettext('Certificates'), true, 'system_certmanager.php');
+-$tab_array[] = array(gettext('Certificate Revocation'), false, 'system_crlmanager.php');
++$tab_array[] = array(gettext('Revocation'), false, 'system_crlmanager.php');
+ display_top_tabs($tab_array);
+ 
+ if (in_array($act, array('new', 'edit')) || (($_POST['save'] == gettext("Save")) && $input_errors)) {
+diff --git a/src/usr/local/www/system_certmanager_renew.php b/src/usr/local/www/system_certmanager_renew.php
+index fb0b678220..46b5c8a548 100644
+--- a/src/usr/local/www/system_certmanager_renew.php
++++ b/src/usr/local/www/system_certmanager_renew.php
+@@ -100,7 +100,7 @@ if ($input_errors) {
+ $tab_array = array();
+ $tab_array[] = array(gettext("CAs"), false, "system_camanager.php");
+ $tab_array[] = array(gettext("Certificates"), false, "system_certmanager.php");
+-$tab_array[] = array(gettext("Certificate Revocation"), false, "system_crlmanager.php");
++$tab_array[] = array(gettext("Revocation"), false, "system_crlmanager.php");
+ $tab_array[] = array(gettext("Renew or Reissue"), true, "system_certmanager_renew.php");
+ display_top_tabs($tab_array);
+ 

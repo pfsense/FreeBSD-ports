@@ -48,7 +48,7 @@ load_rc_config ${name}
 
 pidfile="${%%RC_NAME%%_pid_dir}/${%%RC_NAME%%_pid}"
 command="/usr/sbin/daemon"
-command_args="-r -f -P ${pidfile} %%PREFIX%%/lib/emby-server/system/EmbyServer \
+command_args="-r -f -P ${pidfile} %%LOCALBASE%%/bin/dotnet %%PREFIX%%/lib/emby-server/system/EmbyServer.dll \
 	-os freebsd \
 	-ffdetect ${%%RC_NAME%%_ffdetect} \
 	-ffmpeg ${%%RC_NAME%%_ffmpeg} \
@@ -67,6 +67,10 @@ start_precmd=%%RC_NAME%%_start_precmd
 	ifconfig -a -u -G lo | grep -q inet6
 	if [ $? == 1 ]; then
 		export DOTNET_SYSTEM_NET_DISABLEIPV6=1
+	fi
+
+	if [ `uname -K` -ge 1400092 ]; then
+		export CLR_OPENSSL_VERSION_OVERRIDE=30
 	fi
 
 	export LD_LIBRARY_PATH=%%PREFIX%%/lib/emby-server/lib:%%LOCALBASE%%/lib

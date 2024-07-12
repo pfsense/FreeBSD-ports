@@ -1,5 +1,5 @@
 PORTNAME=	botan
-DISTVERSION=	3.2.0
+DISTVERSION=	3.3.0
 CATEGORIES=	security
 MASTER_SITES=	http://botan.randombit.net/releases/
 PKGNAMESUFFIX=	${_BOTANMAJOR}
@@ -12,11 +12,9 @@ WWW=		https://botan.randombit.net/
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BROKEN_armv6=	include/arm_neon.h:28:2: error: "NEON support not enabled"
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/asio.hpp:devel/boost-libs
 
-LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
-
-USES=		compiler:c++20-lang cpe gmake shebangfix tar:xz
+USES=		compiler:c++20-lang cpe gmake llvm shebangfix tar:xz # llvm fixes build failure, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=279136
 CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 
@@ -25,6 +23,7 @@ SHEBANG_GLOB=	*.py
 HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	configure.py
 CONFIGURE_ARGS=		--cc=${CHOSEN_COMPILER_TYPE} \
+			${"${CCACHE_BIN}" != "":?--compiler-cache=${CCACHE_BIN}:} \
 			--prefix=${PREFIX:Q} \
 			--with-boost \
 			--with-bzip2 \
@@ -33,11 +32,12 @@ CONFIGURE_ARGS=		--cc=${CHOSEN_COMPILER_TYPE} \
 			--with-lzma \
 			--with-zlib \
 			--program-suffix=${_BOTANMAJOR}
+TEST_TARGET=		check
 LDFLAGS+=		-pthread
 
 DOCSDIR=	${LOCALBASE}/share/doc/${PORTNAME}-${PORTVERSION}
 
-_SOABIVER=	2
+_SOABIVER=	3
 _BOTANMAJOR=	${DISTVERSION:S/./ /g:[1]}
 _SHLIBVER=	${DISTVERSION:S/./ /g:[2]}
 _SHLIBVERPATCH=	${DISTVERSION:S/./ /g:[3]}
@@ -68,6 +68,9 @@ SQLITE3_CONFIGURE_WITH=	sqlite3
 CONFIGURE_ARGS+=	--cc-abi="-march=armv8-a+crypto"
 .elif ${ARCH:Mpowerpc64*}
 CONFIGURE_ARGS+=	--cpu="ppc64"
+.if !defined(MACHINE_CPU) || (defined(MACHINE_CPU) && !${MACHINE_ABI:Mvsx2})
+CONFIGURE_ARGS+=	--disable-powercrypto
+.endif
 .endif
 
 .if ${ARCH} == i386 || ${ARCH} == amd64
@@ -82,8 +85,9 @@ PLIST_SUB+=	HAS_PROCESSOR_RNG=""
 PLIST_SUB+=	HAS_PROCESSOR_RNG="@comment "
 .endif
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ) || ${OSVERSION} < 1300000 )
-USES+=	llvm:max=15,min=14
+.if ${OPSYS} == FreeBSD && ( ( ${OSVERSION} >= 1400000 && ${OSVERSION} < 1400091 ) || ( ${OSVERSION} < 1302507 ) )
+# libc++ does not carry std::ranges::find, redirect to boost::range::find:
+EXTRA_PATCHES+= ${FILESDIR}/extrapatch-src_tests_unit__x509.cpp
 .endif
 
 post-patch:

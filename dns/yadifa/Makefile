@@ -1,6 +1,7 @@
 PORTNAME=	yadifa
-DISTVERSION=	2.6.5
-DISTVERSIONSUFFIX=	-11201
+DISTVERSION=	2.6.6
+DISTVERSIONSUFFIX=	-11255
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.yadifa.eu/sites/default/files/releases/ \
 		https://dns.company/downloads/yadifa/
@@ -16,6 +17,7 @@ USES=		compiler:c11 cpe libtool ssl
 USE_RC_SUBR=	${PORTNAME}d
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--localstatedir=/var
 
 SUB_LIST+=	GROUPS="${GROUPS}" \

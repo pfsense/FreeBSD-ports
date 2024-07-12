@@ -1,7 +1,6 @@
 PORTNAME=	ecal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.12.1
-PORTREVISION=	3
+DISTVERSION=	5.13.2
 CATEGORIES=	net devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,30 +10,35 @@ WWW=		https://eclipse-ecal.github.io/ecal/index.html
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BROKEN_armv7=	link fails: undefined reference due to --no-allow-shlib-undefined: absl::lts_20230125::hash_internal::CityHash32(char const*, unsigned int)
+BROKEN_i386=	link fails: undefined reference due to --no-allow-shlib-undefined: absl::lts_20230125::hash_internal::CityHash32(char const*, unsigned int)
+
 BUILD_DEPENDS=	asio>0:net/asio \
 		termcolor>0:devel/termcolor
-LIB_DEPENDS=	libcurl.so:ftp/curl \
+LIB_DEPENDS=	libabsl_hash.so:devel/abseil \
+		libcurl.so:ftp/curl \
 		libfmt.so:devel/libfmt \
 		libfineftp-server.so:ftp/fineftp-server \
 		libftxui-component.so:devel/ftxui \
 		libhdf5.so:science/hdf5 \
 		libprotobuf.so:devel/protobuf \
-		libqwt6.so:x11-toolkits/qwt6 \
+		libqwt.so:x11-toolkits/qwt6@qt5 \
 		libspdlog.so:devel/spdlog \
+		libsysinfo.so:devel/libsysinfo \
 		libtinyxml2.so:textproc/tinyxml2 \
 		libyaml-cpp.so:devel/yaml-cpp
 		# binaries aren't linked with libfineftp-server.so, see https://github.com/continental/ecal/issues/381; same with libcurl.so
 
-USES=		cmake compiler:c++17-lang desktop-file-utils localbase:ldflags qt:5 shared-mime-info
-USE_QT=		core gui widgets buildtools:build qmake:build
+USES=		cmake compiler:c++17-lang desktop-file-utils localbase:ldflags pkgconfig qt:5 shared-mime-info
+USE_QT=		concurrent core gui widgets buildtools:build qmake:build
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	eclipse-ecal
-GH_TUPLE=	eclipse-ecal:tcp_pubsub:f59da78:tcp_pubsub/thirdparty/tcp_pubsub \
-		brofield:simpleini:9b3ed7e:simpleini/thirdparty/simpleini \
-		steinwurf:recycle:c542570:recycle/thirdparty/recycle \
-		xguerin:tclap:349170a:tclap/thirdparty/tclap
+GH_TUPLE=	eclipse-ecal:tcp_pubsub:b0393e4:tcp_pubsub/thirdparty/tcp_pubsub/tcp_pubsub \
+		brofield:simpleini:9b3ed7e:simpleini/thirdparty/simpleini/simpleini \
+		steinwurf:recycle:c542570:recycle/thirdparty/recycle/recycle \
+		xguerin:tclap:349170a:tclap/thirdparty/tclap/tclap
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	BUILD_SAMPLES \
@@ -47,7 +51,7 @@ CMAKE_ARGS=	-DGIT_REVISION_MAJOR=${DISTVERSION:R:R} \
 		-DGIT_REVISION_PATCH=${DISTVERSION:E} \
 		-Dasio_INCLUDE_DIR=${LOCALBASE}/include \
 		-Dqwt_INCLUDE_DIR=${LOCALBASE}/include/qt5/qwt6 \
-		-Dqwt_LIBRARY=${LOCALBASE}/lib/qt5/libqwt6.so
+		-Dqwt_LIBRARY=${LOCALBASE}/lib/qt5/libqwt.so
 
 CXXFLAGS+=	-pthread # see https://github.com/eclipse-ecal/ecal/issues/933
 LDFLAGS+=	-labsl_hash -labsl_log_internal_message -labsl_log_internal_nullguard -labsl_spinlock_wait

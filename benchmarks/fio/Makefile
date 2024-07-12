@@ -1,11 +1,11 @@
 PORTNAME=	fio
-DISTVERSION=	3.36
+DISTVERSION=	3.37
 CATEGORIES=	benchmarks
 MASTER_SITES=	https://brick.kernel.dk/snaps/
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Flexible IO tester
-WWW=		https://git.kernel.dk/?p=fio.git
+WWW=		https://git.kernel.dk/cgit/fio/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -34,8 +34,8 @@ LIBNFS_CONFIGURE_ENABLE=	libnfs
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/fio ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/tools/fio_generate_plots ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/fio.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
-	${INSTALL_MAN} ${WRKSRC}/tools/fio_generate_plots.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/fio.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/tools/fio_generate_plots.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}/compiler
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}/lib

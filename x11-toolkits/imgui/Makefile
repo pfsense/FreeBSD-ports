@@ -1,7 +1,6 @@
 PORTNAME=	imgui
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.90
-PORTREVISION=	1
+DISTVERSION=	1.90.8
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -75,7 +74,7 @@ post-patch:
 do-test:
 	@cd ${WRKSRC}/examples/example_sdl2_opengl3 && \
 		${GMAKE} \
-			CXXFLAGS="${CXFLAGS} `pkg-config --cflags sdl2` -I${STAGEDIR}${PREFIX}/include -I${WRKSRC}/backends" \
+			CXXFLAGS="${CXXFLAGS} `pkg-config --cflags sdl2` -I${STAGEDIR}${PREFIX}/include -I${WRKSRC}/backends" \
 			LIBS="`pkg-config --libs sdl2` -lGL" && \
 		./example_sdl2_opengl3
 

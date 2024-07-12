@@ -1,6 +1,5 @@
 PORTNAME=	ecl
-PORTVERSION=	21.2.1
-PORTREVISION=	1
+PORTVERSION=	23.9.9
 CATEGORIES=	lang lisp
 MASTER_SITES=	https://common-lisp.net/project/ecl/static/files/release/
 
@@ -23,6 +22,7 @@ USE_CSTD=	c99
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--enable-boehm=system \
 		--enable-libatomic=system \
 		--with-gmp-prefix=${LOCALBASE} \

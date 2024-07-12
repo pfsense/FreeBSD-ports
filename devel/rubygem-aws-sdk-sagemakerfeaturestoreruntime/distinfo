@@ -1,3 +1,3 @@
-TIMESTAMP = 1701364356
-SHA256 (rubygem/aws-sdk-sagemakerfeaturestoreruntime-1.27.0.gem) = 0a113bc1a7e42356d77e37758da5b5f1ee6d41a4e8d88e5aec08ede2be082ed7
-SIZE (rubygem/aws-sdk-sagemakerfeaturestoreruntime-1.27.0.gem) = 23040
+TIMESTAMP = 1717663152
+SHA256 (rubygem/aws-sdk-sagemakerfeaturestoreruntime-1.32.0.gem) = d9d29a1e245eec4c35717dc1e1cd4614b8a9773a4ba214b482afe18c6ddd637c
+SIZE (rubygem/aws-sdk-sagemakerfeaturestoreruntime-1.32.0.gem) = 26112

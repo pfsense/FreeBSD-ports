@@ -1,7 +1,6 @@
 PORTNAME=	prodigy-lig
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.1
-PORTREVISION=	2
+DISTVERSION=	1.1.1
 CATEGORIES=	biology python
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,10 +11,11 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}biopython>0:biology/py-biopython@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}biopython>0:biology/py-biopython@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}poetry-core>0:devel/py-poetry-core@${PY_FLAVOR}
 
 USES=		gmake python
-USE_PYTHON=	distutils noflavors autoplist
+USE_PYTHON=	pep517 noflavors autoplist
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	haddocking

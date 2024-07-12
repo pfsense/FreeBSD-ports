@@ -1,5 +1,5 @@
 PORTNAME=	Net-SAML2
-PORTVERSION=	0.74
+PORTVERSION=	0.79
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ WWW=		https://metacpan.org/dist/Net-SAML2
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Crypt-OpenSSL-Bignum>=0:security/p5-Crypt-OpenSSL-Bignum \
@@ -33,7 +33,7 @@ RUN_DEPENDS=	p5-Crypt-OpenSSL-Bignum>=0:security/p5-Crypt-OpenSSL-Bignum \
 		p5-Types-Serialiser>=0:devel/p5-Types-Serialiser \
 		p5-URI>=0:net/p5-URI \
 		p5-URI-Encode>=0:www/p5-URI-Encode \
-		p5-URN-OASIS-SAML2>=0.003:security/p5-URN-OASIS-SAML2 \
+		p5-URN-OASIS-SAML2>=0.004:security/p5-URN-OASIS-SAML2 \
 		p5-XML-Enc>=0.13:textproc/p5-XML-Enc \
 		p5-XML-Generator>=1.13:textproc/p5-XML-Generator \
 		p5-XML-LibXML>=0:textproc/p5-XML-LibXML \

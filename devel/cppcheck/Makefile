@@ -1,5 +1,5 @@
 PORTNAME=	cppcheck
-PORTVERSION=	2.12.1
+DISTVERSION=	2.14.2
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,9 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2
 
-BROKEN_FreeBSD_14=	fails to compile: static_assert failed due to requirement
-
-USES=		compiler:c++11-lib cmake shebangfix tar:bzip2
+USES=		compiler:c++11-lib shebangfix tar:bzip2
 USE_GITHUB=	yes
 GH_ACCOUNT=	danmar
 SHEBANG_FILES=	htmlreport/cppcheck-htmlreport
@@ -34,6 +32,8 @@ RULES_USES=		localbase:ldflags
 TEST_CMAKE_BOOL=	BUILD_TESTS
 TEST_IMPLIES=		GUI
 TEST_USE=		QT=testlib
+TEST_USES=		cmake:testing
+TEST_USES_OFF=		cmake
 
 HTMLREPORT_DESC=	Install cppcheck-htmlreport
 HTMLREPORT_USES=	python:${PYUSE:C/ /,/W}
@@ -59,6 +59,9 @@ CHARTS_DESC=		Enable QtCharts usage in the GUI
 CHARTS_CMAKE_BOOL=	WITH_QCHART
 CHARTS_IMPLIES=		GUI
 CHARTS_USE=		QT=charts
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%WRKSRC%%|${WRKSRC}|' ${WRKSRC}/test/testfilelister.cpp
 
 post-install-HTMLREPORT-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/htmlreport/cppcheck-htmlreport ${STAGEDIR}${PREFIX}/bin

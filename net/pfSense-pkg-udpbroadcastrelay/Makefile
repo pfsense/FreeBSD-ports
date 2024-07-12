@@ -1,5 +1,5 @@
 PORTNAME=	pfSense-pkg-udpbroadcastrelay
-PORTVERSION=	1.0.1
+PORTVERSION=	1.2.2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -24,7 +24,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/udpbroadcastrelay
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/udpbroadcastrelay
 	${MKDIR} ${STAGEDIR}${DATADIR}
 
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/udpbroadcastrelay.priv.inc \
@@ -33,10 +33,10 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/udpbroadcastrelay/udpbroadcastrelay.inc \
 		${STAGEDIR}${PREFIX}/pkg/udpbroadcastrelay
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/udpbroadcastrelay.php \
-		${STAGEDIR}${PREFIX}/www
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/udpbroadcastrelay_edit.php \
-		${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/udpbroadcastrelay/udpbroadcastrelay.php \
+		${STAGEDIR}${PREFIX}/www/udpbroadcastrelay
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/udpbroadcastrelay/udpbroadcastrelay_edit.php \
+		${STAGEDIR}${PREFIX}/www/udpbroadcastrelay
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 
