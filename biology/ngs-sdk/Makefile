@@ -1,5 +1,5 @@
 PORTNAME=	ngs
-DISTVERSION=	2.11.2
+DISTVERSION=	3.0.1
 CATEGORIES=	biology
 PKGNAMESUFFIX=	-sdk
 
@@ -14,8 +14,8 @@ BROKEN_aarch64=		fails to configure: unsupported architecture 'FreeBSD'
 BROKEN_armv6=		fails to configure: unsupported architecture 'FreeBSD':'arm'
 BROKEN_armv7=		fails to configure: unsupported architecture 'FreeBSD':'arm'
 BROKEN_riscv64=		fails to configure: unsupported architecture 'FreeBSD'
-NOT_FOR_ARCHS=		powerpc64
-NOT_FOR_ARCHS_REASON=	os-arch.prl needs to be taught about powerpc64
+NOT_FOR_ARCHS=		powerpc powerpc64 powerpc64le
+NOT_FOR_ARCHS_REASON=	os-arch.prl needs to be taught about powerpc64, etc
 
 USES=		compiler:c++11-lang gmake perl5
 USE_PERL5=	build
@@ -41,6 +41,6 @@ do-install: # install target from the project breaks: https://github.com/ncbi/ng
 		# The above command installs broken-looking static libs with symlinks.
 		# This is intentional, see comments https://github.com/ncbi/ncbi-vdb/issues/36#issuecomment-817990790 This may change in future versions.
 	# strip
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libngs-sdk.so.${DISTVERSION}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libngs-sdk.so.2.11.2
 
 .include <bsd.port.mk>

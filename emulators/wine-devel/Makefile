@@ -1,13 +1,11 @@
 PORTNAME=	wine
-DISTVERSION=	7.22
-PORTREVISION=	1
+DISTVERSION=	9.10
 PORTEPOCH=	1
 CATEGORIES=	emulators
-MASTER_SITES=	https://dl.winehq.org/wine/source/7.x/
+MASTER_SITES=	https://dl.winehq.org/wine/source/9.x/
 PKGNAMESUFFIX=	-devel
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	damjan.jov@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Microsoft Windows compatibility environment
 WWW=		https://www.winehq.org
 
@@ -38,21 +36,22 @@ CONFIGURE_ARGS+=--verbose \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
 		--without-gssapi \
-		--without-gstreamer \
 		--without-inotify \
 		--without-krb5 \
 		--with-mingw CROSSCC="clang" CROSSCFLAGS="-isystem ${FILESDIR}/clang" \
 		--without-netapi \
 		--without-opencl \
 		--without-osmesa \
-		--with-pcap \
+		--without-pcap \
+		--without-pcsclite \
 		--with-pthread \
 		--without-pulse \
 		--without-sane \
 		--with-sdl \
 		--without-udev \
 		--without-unwind \
-		--without-usb
+		--without-usb \
+		--without-wayland
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
 WINELIBDIR=	${PREFIX}/lib
 .if !defined(USE_LDCONFIG32)
@@ -68,20 +67,22 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS STAGING V4L WINEMAKER X11 GECKO MONO
-OPTIONS_DEFAULT=GNUTLS OSS X11
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS V4L WINEMAKER X11 GECKO MONO
+OPTIONS_DEFAULT=ALSA GNUTLS X11
 OPTIONS_RADIO=	AUDIO
 OPTIONS_RADIO_AUDIO=	ALSA OSS
 OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
-STAGING_DESC=	Include Wine Staging patchset (experimental&unsupported)
 WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
 MONO_DESC=	Bundle Mono MSI package for Wine
 
-ALSA_CONFIGURE_ON=	--with-alsa --without-oss
+ALSA_CONFIGURE_WITH=	alsa
+ALSA_USES=		gnome gstreamer
+ALSA_USE=		GNOME=glib20
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_RUN_DEPENDS=	alsa-plugins>0:audio/alsa-plugins
 
 CUPS_CONFIGURE_WITH=	cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
@@ -95,16 +96,9 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 
 MONO_RUN_DEPENDS=	wine-mono-devel>0:emulators/wine-mono-devel
 
-OSS_CONFIGURE_ON=	--without-alsa --with-oss
-
-STAGING_MASTER_SITES=	https://github.com/wine-staging/wine-staging/archive/:staging
-STAGING_DIST=		v${DISTVERSION}.tar.gz
-STAGING_DISTFILES=	${STAGING_DIST}:staging
-STAGING_EXTRACT_DEPENDS=	bash:shells/bash \
-				git:devel/git \
-				autoconf>0:devel/autoconf \
-				gawk:lang/gawk
-STAGING_LIB_DEPENDS=	libtxc_dxtn.so:graphics/s2tc
+OSS_CONFIGURE_WITH=	oss
+OSS_USES=		gnome gstreamer
+OSS_USE=		GNOME=glib20
 
 V4L_CONFIGURE_WITH=	v4l2
 V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
@@ -121,14 +115,17 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MSTAGING} && ${OSVERSION} < 1300000
-BROKEN=		build failure
+.if ${PORT_OPTIONS:MALSA} || ${PORT_OPTIONS:MOSS}
+CONFIGURE_ARGS+=	--with-gstreamer
+PLIST_SUB+=		GSTREAMER=""
+.else
+CONFIGURE_ARGS+=	--without-gstreamer
+PLIST_SUB+=		GSTREAMER="@comment "
 .endif
 
-.if (${LLVM_DEFAULT} == 10 || ${LLVM_DEFAULT} == 11)
-_LLVM_VERSION=	12
-.else
-_LLVM_VERSION=	${LLVM_DEFAULT}
+# Only devel/llvm17 and later come with necessary include files - PR274542
+.if ${LLVM_DEFAULT} < 17
+_LLVM_VERSION=	17
 .endif
 
 .if ${ARCH} == amd64
@@ -150,18 +147,12 @@ post-patch:
 	${REINPLACE_CMD} '/Exec/s|wine|wine64|g' ${WRKSRC}/loader/wine.desktop
 
 .else
+EXTRA_PATCHES+=	files/extra-patch-tools-winebuild-res32
 PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
 .endif
 
-post-extract-STAGING-on: fix-shebang
-	@${LN} -s ${WRKDIR}/${PORTNAME}-staging-${DISTVERSION}/patches ${WRKSRC}/patches
-
-post-patch-STAGING-on:
-	cd ${WRKSRC} && ${PATCH} -p0 < ${PATCHDIR}/extra-gitapply
-	cd ${WRKSRC} && bash ./patches/patchinstall.sh --backend=patch DESTDIR=${WRKSRC} --all
-
 pre-build:
-	cd ${WRKSRC} && ${MAKE_CMD} depend
+	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_CMD} depend
 
 post-install:
 .if ${ARCH} == i386
@@ -178,18 +169,10 @@ post-install:
 .endif
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for i in README ANNOUNCE AUTHORS
+.for i in ANNOUNCE.md AUTHORS README.md
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/programs/winedbg/README ${STAGEDIR}${DOCSDIR}/README.winedbg
 	${INSTALL_DATA} ${WRKSRC}/tools/winedump/README ${STAGEDIR}${DOCSDIR}/README.winedump
-
-check-wine-devel-vs-staging:
-	@${GREP} %%STAGING%% pkg-plist | while read f; do \
-	  f=`echo $$f | ${SED} -e 's:%%STAGING%%::' -e "s:%%DATADIR%%:${DATADIR}:"`; \
-	  if [ -f "$$STAGEDIR/$$PREFIX/$$f" ] || [ -f "$$STAGEDIR/$$f" ]; then \
-	    ${PRINTF} "%s no longer contingent on %%STAGING%%?\n" "$$f"; \
-	  fi \
-	done
 
 .include <bsd.port.post.mk>

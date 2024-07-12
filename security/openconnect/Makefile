@@ -1,5 +1,5 @@
 PORTNAME=	openconnect
-PORTVERSION=	9.01
+PORTVERSION=	9.12
 PORTREVISION=	1
 CATEGORIES=	security net-vpn
 MASTER_SITES=	ftp://ftp.infradead.org/pub/openconnect/ \
@@ -16,11 +16,13 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2
 RUN_DEPENDS=	vpnc-script:sysutils/vpnc-scripts
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-nls --with-vpnc-script=${LOCALBASE}/sbin/vpnc-script \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--without-openssl-version-check --without-libpcsclite \
 		--without-libpskc
-USES=		cpe gmake iconv libtool pkgconfig python:build ssl shebangfix
+USES=		cpe gmake iconv libtool localbase pkgconfig python:build ssl \
+		shebangfix
 CPE_VENDOR=	infradead
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes

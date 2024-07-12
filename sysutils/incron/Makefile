@@ -1,6 +1,6 @@
 PORTNAME=	incron
 DISTVERSION=	2017-11-13
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	joh.hendriks@gmail.com
@@ -16,6 +16,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-X11
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 
 USES=		compiler localbase:ldflags
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	ar-
 GH_TAGNAME=	81421d3a8bde0989d7e167d8a814d5232896c930
@@ -23,7 +24,7 @@ USE_RC_SUBR=	${PORTNAME}
 
 MAKE_ARGS=	PREFIX="${PREFIX}" USER=${UID}	\
 		DOCDIR="${PREFIX}/etc"	\
-		MANPATH=${MANPREFIX}/man
+		MANPATH=${PREFIX}/share/man
 
 CPPFLAGS+=	-D__NR_inotify_init
 LDFLAGS+=	-linotify

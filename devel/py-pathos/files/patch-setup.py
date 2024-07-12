@@ -1,11 +1,11 @@
---- setup.py.orig	2022-10-24 02:43:02 UTC
+--- setup.py.orig	2024-01-28 19:02:51 UTC
 +++ setup.py
-@@ -91,7 +91,7 @@ class BinaryDistribution(Distribution):
- ppft_version = 'ppft>=1.7.6.6'
- dill_version = 'dill>=0.3.6'
- pox_version = 'pox>=0.3.2'
--mp_version = 'multiprocess>=0.70.14'
+@@ -92,7 +92,7 @@ pox_version = 'pox>=0.3.4'
+ ppft_version = 'ppft>=1.7.6.8'
+ dill_version = 'dill>=0.3.8'
+ pox_version = 'pox>=0.3.4'
+-mp_version = 'multiprocess>=0.70.16'
 +mp_version = 'multiprocess>=0.70.12'
- pyina_version = 'pyina>=0.2.6'
- mystic_version = 'mystic>=0.3.9'
+ pyina_version = 'pyina>=0.2.7'
+ mystic_version = 'mystic>=0.4.0'
  # add dependencies

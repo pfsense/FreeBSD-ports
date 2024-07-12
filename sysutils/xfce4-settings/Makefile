@@ -1,6 +1,5 @@
 PORTNAME=	xfce4-settings
-PORTVERSION=	4.18.2
-PORTREVISION=	1
+PORTVERSION=	4.18.6
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
@@ -52,9 +51,9 @@ CONFIGURE_ARGS+=	--enable-debug=yes
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|Rodent|Adwaita|g' \
+	@${REINPLACE_CMD} -e 's|Rodent|elementary-xfce|g' \
 		${WRKSRC}/dialogs/appearance-settings/main.c
-	@${REINPLACE_CMD} -e 's|IconThemeName" type="empty|IconThemeName" type="string" value="Adwaita|' \
+	@${REINPLACE_CMD} -e 's|IconThemeName" type="empty|IconThemeName" type="string" value="elementary-xfce|' \
 		${WRKSRC}/xfsettingsd/xsettings.xml
 
 .include <bsd.port.mk>

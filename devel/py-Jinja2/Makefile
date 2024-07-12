@@ -1,5 +1,5 @@
 PORTNAME=	Jinja2
-DISTVERSION=	3.1.2
+DISTVERSION=	3.1.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,7 +23,7 @@ USE_PYTHON=	autoplist distutils pytest # 23 tests fail, see https://github.com/p
 CPE_VENDOR=	pocoo
 .endif
 .if ${PKGNAMESUFFIX} == -doc
-USES=		gmake python:3.7+
+USES=		gmake python
 USE_PYTHON=	flavors
 .endif
 

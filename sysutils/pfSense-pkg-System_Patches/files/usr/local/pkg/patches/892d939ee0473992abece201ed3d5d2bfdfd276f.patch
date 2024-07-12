@@ -1,0 +1,43 @@
+commit 892d939ee0473992abece201ed3d5d2bfdfd276f
+Author: Christian McDonald <cmcdonald@netgate.com>
+Date:   Wed Jul 19 12:59:55 2023 -0400
+
+    Restore and continue to support dhcpleases6 until Kea migration is complete. Fixes #14502
+
+diff --git a/src/etc/inc/services.inc b/src/etc/inc/services.inc
+index dfe395028d..994e337eb4 100644
+--- a/src/etc/inc/services.inc
++++ b/src/etc/inc/services.inc
+@@ -1638,6 +1638,11 @@ function services_dhcpdv6_configure($blacklist = array()) {
+ 		killbypid("{$g['dhcpd_chroot_path']}{$g['varrun_path']}/dhcpdv6.pid");
+ 	}
+ 
++	/* kill any running dhcpleases6 */
++	if (isvalidpid("{$g['varrun_path']}/dhcpleases6.pid")) {
++		killbypid("{$g['varrun_path']}/dhcpleases6.pid");
++	}
++
+ 	/* DHCP enabled on any interfaces? */
+ 	if (!is_dhcpv6_server_enabled()) {
+ 		return 0;
+@@ -1999,6 +2004,7 @@ EOD;
+ 	/* fire up dhcpd in a chroot */
+ 	if (count($dhcpdv6ifs) > 0) {
+ 		mwexec("/usr/local/sbin/dhcpd -6 -user dhcpd -group _dhcp -chroot {$g['dhcpd_chroot_path']} -cf /etc/dhcpdv6.conf -pf {$g['varrun_path']}/dhcpdv6.pid " . join(" ", $dhcpdv6ifs));
++		mwexec("/usr/local/sbin/dhcpleases6 -c \"/usr/local/bin/php-cgi -f /usr/local/sbin/prefixes.php\" -l {$g['dhcpd_chroot_path']}/var/db/dhcpd6.leases");
+ 	}
+ 	if (platform_booting()) {
+ 		print gettext("done.") . "\n";
+diff --git a/src/etc/inc/syslog.inc b/src/etc/inc/syslog.inc
+index 042c365267..2d9bbb0a68 100644
+--- a/src/etc/inc/syslog.inc
++++ b/src/etc/inc/syslog.inc
+@@ -313,7 +313,7 @@ EOD;
+ 		$syslogconf .= system_syslogd_get_remote_servers($syslogcfg, "*.*");
+ 	}
+ 
+-	$syslogconf .= "!dhcpd,dhcrelay,dhclient,dhcp6c,dhcpleases\n";
++	$syslogconf .= "!dhcpd,dhcrelay,dhclient,dhcp6c,dhcpleases,dhcpleases6,kea-dhcp4,kea-dhcp6\n";
+ 	if (!config_path_enabled('syslog', 'disablelocallogging')) {
+ 		$syslogconf .= "*.*								{$g['varlog_path']}/dhcpd.log\n";
+ 	}

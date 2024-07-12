@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-nrpe
-PORTVERSION=	3.1
-PORTREVISION=	5
+PORTVERSION=	4.2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	pfSense package nrpe
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe3:net-mgmt/nrpe3
+RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe:net-mgmt/nrpe
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -43,4 +42,3 @@ do-install:
 		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
-

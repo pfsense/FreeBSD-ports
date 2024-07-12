@@ -1,6 +1,4 @@
 bin/screengrab
-lib/screengrab/libextedit.so
-lib/screengrab/libextedit.so.1.0.0
 share/applications/screengrab.desktop
 %%DOCSDIR%%/html/default.css
 %%DOCSDIR%%/html/en/index.html
@@ -9,6 +7,7 @@ share/applications/screengrab.desktop
 share/icons/hicolor/scalable/apps/screengrab.svg
 share/metainfo/screengrab.metainfo.xml
 %%DATADIR%%/screengrab.conf
+%%DATADIR%%/translations/screengrab_ar.qm
 %%DATADIR%%/translations/screengrab_arn.qm
 %%DATADIR%%/translations/screengrab_ast.qm
 %%DATADIR%%/translations/screengrab_bg.qm
@@ -19,6 +18,7 @@ share/metainfo/screengrab.metainfo.xml
 %%DATADIR%%/translations/screengrab_el.qm
 %%DATADIR%%/translations/screengrab_es.qm
 %%DATADIR%%/translations/screengrab_et.qm
+%%DATADIR%%/translations/screengrab_fi.qm
 %%DATADIR%%/translations/screengrab_fr.qm
 %%DATADIR%%/translations/screengrab_gl.qm
 %%DATADIR%%/translations/screengrab_he.qm
@@ -27,10 +27,12 @@ share/metainfo/screengrab.metainfo.xml
 %%DATADIR%%/translations/screengrab_it.qm
 %%DATADIR%%/translations/screengrab_ja.qm
 %%DATADIR%%/translations/screengrab_ko.qm
+%%DATADIR%%/translations/screengrab_lg.qm
 %%DATADIR%%/translations/screengrab_lt.qm
 %%DATADIR%%/translations/screengrab_nb_NO.qm
 %%DATADIR%%/translations/screengrab_nl.qm
 %%DATADIR%%/translations/screengrab_oc.qm
+%%DATADIR%%/translations/screengrab_pa.qm
 %%DATADIR%%/translations/screengrab_pl.qm
 %%DATADIR%%/translations/screengrab_pt.qm
 %%DATADIR%%/translations/screengrab_pt_BR.qm

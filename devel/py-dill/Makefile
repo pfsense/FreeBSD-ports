@@ -1,6 +1,5 @@
 PORTNAME=	dill
-DISTVERSION=	0.3.6
-PORTREVISION=	1
+DISTVERSION=	0.3.8
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,8 +14,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	pep517 concurrent autoplist pytest # tests fail, see https://github.com/uqfoundation/dill/issues/578
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_WRKSRC=	${WRKSRC}/dill/tests
 
 NO_ARCH=	yes
 

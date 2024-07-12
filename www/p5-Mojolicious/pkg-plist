@@ -6,6 +6,7 @@ bin/morbo
 %%SITE_PERL%%/Mojo/Asset/File.pm
 %%SITE_PERL%%/Mojo/Asset/Memory.pm
 %%SITE_PERL%%/Mojo/Base.pm
+%%SITE_PERL%%/Mojo/BaseUtil.pm
 %%SITE_PERL%%/Mojo/ByteStream.pm
 %%SITE_PERL%%/Mojo/Cache.pm
 %%SITE_PERL%%/Mojo/Collection.pm
@@ -122,13 +123,13 @@ bin/morbo
 %%SITE_PERL%%/Mojolicious/Validator.pm
 %%SITE_PERL%%/Mojolicious/Validator/Validation.pm
 %%SITE_PERL%%/Mojolicious/resources/public/favicon.ico
+%%SITE_PERL%%/Mojolicious/resources/public/mojo/bootstrap/bootstrap.min.css.map
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/bootstrap/bootstrap.css
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/bootstrap/bootstrap.js
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/failraptor.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/highlight.js/highlight-mojo-dark.css
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/highlight.js/highlight.min.js
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/highlight.js/mojolicious.min.js
-%%SITE_PERL%%/Mojolicious/resources/public/mojo/jquery/jquery.js
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/logo-white-2x.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/logo-white.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/logo.png
@@ -137,6 +138,7 @@ bin/morbo
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/notfound.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/pinstripe-dark.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/pinstripe-light.png
+%%SITE_PERL%%/Mojolicious/resources/public/mojo/popper/popper.js
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/debug.html.ep
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/exception.html.ep
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/not_found.html.ep
@@ -150,6 +152,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::Asset::File.3.gz
 %%PERL5_MAN3%%/Mojo::Asset::Memory.3.gz
 %%PERL5_MAN3%%/Mojo::Base.3.gz
+%%PERL5_MAN3%%/Mojo::BaseUtil.3.gz
 %%PERL5_MAN3%%/Mojo::ByteStream.3.gz
 %%PERL5_MAN3%%/Mojo::Cache.3.gz
 %%PERL5_MAN3%%/Mojo::Collection.3.gz

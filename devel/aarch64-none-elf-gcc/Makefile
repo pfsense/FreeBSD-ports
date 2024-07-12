@@ -1,6 +1,6 @@
 PORTNAME=	gcc
 PORTVERSION?=	11.3.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GCC
 PKGNAMEPREFIX?=	aarch64-none-elf-
@@ -35,6 +35,7 @@ TARGETARCH=	${PKGNAMEPREFIX:C/-//g}
 GCC_TARGET?=	aarch64-none-elf
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_OUTSOURCE=	yes
 CONFIGURE_ARGS+=--target=${GCC_TARGET} --disable-nls --enable-languages=c,c++ \
 		--enable-gnu-indirect-function \
@@ -52,6 +53,15 @@ ALL_TARGET=	all-gcc all-target-libgcc
 INSTALL_TARGET=	install-gcc install-target-libgcc
 
 .include <bsd.port.pre.mk>
+
+# Extraction fails with poudriere on aarch64 for GCC 11.
+# It seems that the bug is specific to lang/gcc11 and lang/gcc12 only.
+# No other GCC port is affected.
+# See https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=271052
+# and https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=246670
+.if ${ARCH} == aarch64
+EXTRACT_CMD=    ${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/LIBSTDCXX/ s/stdc\+\+/c\+\+/g ' \
@@ -78,18 +88,18 @@ post-install:
 	fi
 .endfor
 .for f in c++ cpp g++ gcc gcc-ar gcc-nm gcc-ranlib gcov gcov-dump gcov-tool
-	@if [ ! -f ${STAGEDIR}${PREFIX}/man/man1/${GCC_TARGET}-$f.1 ] ; then \
-		if [ -f ${STAGEDIR}${PREFIX}/man/man1/$f.1 ] ; then \
-			${CP} ${STAGEDIR}${PREFIX}/man/man1/$f.1  \
-			    ${STAGEDIR}${PREFIX}/man/man1/${GCC_TARGET}-$f.1 ; \
+	@if [ ! -f ${STAGEDIR}${PREFIX}/share/man/man1/${GCC_TARGET}-$f.1 ] ; then \
+		if [ -f ${STAGEDIR}${PREFIX}/share/man/man1/$f.1 ] ; then \
+			${CP} ${STAGEDIR}${PREFIX}/share/man/man1/$f.1  \
+			    ${STAGEDIR}${PREFIX}/share/man/man1/${GCC_TARGET}-$f.1 ; \
 		fi \
 	fi
 	@${RM} ${STAGEDIR}${PREFIX}/bin/$f
-	@${RM} ${STAGEDIR}${PREFIX}/man/man1/$f.1
-	@${RM} ${STAGEDIR}${PREFIX}/man/man1/$f.1.gz
+	@${RM} ${STAGEDIR}${PREFIX}/share/man/man1/$f.1
+	@${RM} ${STAGEDIR}${PREFIX}/share/man/man1/$f.1.gz
 .endfor
 	@${RM} ${STAGEDIR}${PREFIX}/share/info/*
-	@${RM} ${STAGEDIR}${PREFIX}/man/man7/*
+	@${RM} ${STAGEDIR}${PREFIX}/share/man/man7/*
 	${RM} -r ${STAGEDIR}/usr/lib/gcc/${GCC_TARGET}/${PORTVERSION}/include-fixed
 
 .include <bsd.port.post.mk>

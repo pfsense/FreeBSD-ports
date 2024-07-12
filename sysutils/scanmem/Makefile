@@ -1,6 +1,7 @@
 PORTNAME=	scanmem
 PORTVERSION=	0.17
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -17,6 +18,7 @@ USE_GITHUB=	yes
 USE_GNOME=	intltool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	ac_cv_file__proc_self_maps=yes \
 		ac_cv_file__proc_self_mem=yes
 

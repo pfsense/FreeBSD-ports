@@ -1,4 +1,4 @@
-PORTREVISION=	1
+PORTREVISION=	0
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -15,13 +15,13 @@ WWW?=		https://www.libreoffice.org/
 
 BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		zip:archivers/zip \
+		pigz:archivers/pigz \
 		${LOCALBASE}/include/sqlext.h:databases/unixODBC \
 		cppunit-config:devel/cppunit \
 		dmake:devel/dmake \
 		gperf>=3.1:devel/gperf \
 		${LOCALBASE}/include/libcuckoo/cuckoohash_map.hh:devel/libcuckoo \
-		libunwind>=20211201_1:devel/libunwind \
-		mdds>=2.0:devel/mdds \
+		mdds>=2.1:devel/mdds \
 		ucpp:devel/ucpp \
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends \
 		vigra-config:graphics/vigra \
@@ -37,7 +37,7 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libicutu.so:devel/icu \
 		liblangtag.so:devel/liblangtag \
 		libltdl.so:devel/libltdl \
-		liborcus-0.17.so:devel/liborcus \
+		liborcus-0.18.so:devel/liborcus \
 		libplds4.so:devel/nspr \
 		libcurl.so:ftp/curl \
 		libgraphite2.so:graphics/graphite2 \
@@ -50,9 +50,10 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libzmf-0.0.so:graphics/libzmf \
 		libpng.so:graphics/png \
 		libpoppler.so:graphics/poppler \
+		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp \
 		liblpsolve55.so:math/lp_solve \
-		libcmis-0.5.so:net/libcmis \
+		libcmis-0.6.so:net/libcmis \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libharfbuzz-icu.so:print/harfbuzz-icu \
@@ -61,6 +62,7 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libassuan.so:security/libassuan \
 		libgpgme.so:security/gpgme \
 		libgpgmepp.so:security/gpgme-cpp \
+		libargon2.so:security/libargon2 \
 		libgpg-error.so:security/libgpg-error \
 		libnss3.so:security/nss \
 		libxmlsec1-nss.so:security/xmlsec1 \
@@ -88,6 +90,12 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libxcb-icccm.so:x11/xcb-util-wm \
 		libserf-1.so:www/serf
+LIB_DEPENDS+=	${LIB_DEPENDS_${ARCH}}
+LIB_DEPENDS_aarch64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_amd64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_i386=	libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64=		libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64le=	libunwind.so:devel/libunwind
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
@@ -101,7 +109,9 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 DISTFILES+=	f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf:ext
 DISTFILES+=	dtoa-20180411.tgz:src
 DISTFILES+=	dragonbox-1.1.3.tar.gz:src
-DISTFILES+=	skia-m103-b301ff025004c9cd82816c86c547588e6c24b466.tar.xz:src
+DISTFILES+=	frozen-1.1.1.tar.gz:src
+DISTFILES+=	skia-m116-2ddcf183eb260f63698aa74d1bb380f247ad7ccd.tar.xz:src
+DISTFILES+=	zxcvbn-c-2.5.tar.gz:src
 
 NOT_FOR_ARCHS=		armv6 armv7
 NOT_FOR_ARCHS_REASON=	Unsupported host_cpu
@@ -117,9 +127,10 @@ INSTALL_TARGET=	distro-pack-install
 SHEBANG_GLOB=	*.py
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USES=		autoreconf:build bison compiler:c++17-lang cpe desktop-file-utils \
 		gettext gl gmake gnome jpeg ldap localbase:ldflags perl5 pkgconfig \
-		python:3.8+ shebangfix shared-mime-info ssl tar:xz xorg
+		python shebangfix shared-mime-info ssl tar:xz xorg
 USE_GL=		gl glew glu
 USE_GNOME=	cairo glib20 libxml2 libxslt
 USE_PERL5=	build
@@ -128,9 +139,10 @@ USE_XORG=	ice sm x11 xaw xcb xext xinerama xrandr xrender
 USES+=		elfctl
 ELF_FEATURES=	+wxneeded:instdir/program/soffice.bin
 
-OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 GTK4 JAVA KF5 LTO MMEDIA PDFIUM PGSQL MARIADB SDK TEST WEBDAV
-OPTIONS_RADIO=	QT
+OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 GTK4 JAVA LTO MMEDIA PDFIUM PGSQL MARIADB SDK TEST WEBDAV
+OPTIONS_RADIO=	QT KDE
 OPTIONS_RADIO_QT=	QT5 QT6
+OPTIONS_RADIO_KDE=	KF5 KF6
 OPTIONS_DEFAULT=	CUPS DOCS JAVA MMEDIA PDFIUM QT5
 #OPTIONS_EXCLUDE=	GTK4
 
@@ -138,11 +150,13 @@ COINMP_DESC=	Enable CoinMP (deprecated) math solver
 GTK4_DESC=	GTK+ 4 GUI toolkit support (experimental, broken)
 JAVA_DESC=	Add Java support (XML filters, macros, DB connections)
 KF5_DESC=	KF5/Qt5 GUI toolkit support (implies QT5)
+KF6_DESC=	KF6/Qt6 GUI toolkit support (implies QT6)
 MMEDIA_DESC=	Enable multimedia backend for Impress
 PDFIUM_DESC=	Enable PDFium secure engine
 PGSQL_DESC=	Build with PostgreSQL-SDBC driver
 MARIADB_DESC=	Build with MariaDB/MySQL-SDBC driver
 QT_DESC=	Select Qt GUI engine version
+KDE_DESC=	Select KDE GUI engine version
 QT5_DESC=	Qt5 GUI toolkit support (default visual style)
 QT6_DESC=	Qt6 GUI toolkit support (experimental visual style)
 SDK_DESC=	Build with SDK
@@ -207,14 +221,24 @@ JAVA_DISTFILES=	17410483b5b5f267aa18b7e00b65e6e0-hsqldb_1_8_0.zip:src \
 		d8bd5eed178db6e2b18eeed243f85aa8-flute-1.1.6.zip:src \
 		db60e4fde8dd6d6807523deb71ee34dc-liblayout-0.2.10.zip:src \
 		eeb2c7ddf0d302fba4bfc6e97eac9624-libbase-1.1.6.zip:src \
-		f94d9870737518e3b597f9265f4e9803-libserializer-1.1.6.zip:src
+		f94d9870737518e3b597f9265f4e9803-libserializer-1.1.6.zip:src \
+		Java-WebSocket-1.5.4.tar.gz:src
 JAVA_USE=	JAVA=yes
-JAVA_VARS=	JAVA_BUILD=yes JAVA_RUN=yes JAVA_VERSION=11+
+JAVA_VARS=	JAVA_BUILD=yes JAVA_RUN=yes JAVA_VERSION=17+
 
 KF5_CONFIGURE_ENABLE=	kf5
 KF5_USE=	kde=config,coreaddons,i18n,kio,windowsystem
 KF5_USES=	kde:5
 KF5_IMPLIES=	QT5
+KF5_PREVENTS=	KF6
+KF5_PREVENTS_MSG=	KF5 cannot coexist with KF6
+
+KF6_CONFIGURE_ENABLE=	kf6
+KF6_USE=	kde=config,coreaddons,i18n,kio,windowsystem
+KF6_USES=	kde:6
+KF6_IMPLIES=	QT6
+KF6_PREVENTS=	KF5
+KF6_PREVENTS_MSG=	KF6 cannot coexist with KF5
 
 LTO_CONFIGURE_ENABLE=	lto
 
@@ -222,7 +246,7 @@ MMEDIA_USES=		gstreamer
 MMEDIA_CONFIGURE_ENABLE=	gstreamer-1-0
 
 PDFIUM_CONFIGURE_ENABLE=	pdfium
-PDFIUM_DISTFILES=	pdfium-5408.tar.bz2:src
+PDFIUM_DISTFILES=	pdfium-6179.tar.bz2:src
 PDFIUM_LIB_DEPENDS=	libabsl_strings.so:devel/abseil \
 			libopenjp2.so:graphics/openjpeg
 
@@ -234,6 +258,8 @@ MARIADB_CONFIGURE_ENABLE=	mariadb-sdbc
 MARIADB_USES=	mysql:client
 
 QT5_CONFIGURE_ENABLE=	qt5
+QT5_PREVENTS=	KF6
+QT5_PREVENTS_MSG=	KF6 support require Qt6 engine
 QT5_USE=	qt=buildtools:build,core,gui,network,qmake:build,widgets,x11extras
 QT5_USES=	qt:5
 
@@ -280,11 +306,13 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-os-version=${OSVERSION} \
 		--with-parallelism=${MAKE_JOBS_NUMBER} \
 		--with-system-abseil \
+		--with-system-argon2 \
 		--with-system-cppunit \
 		--with-system-cuckoo \
 		--with-system-curl \
 		--with-system-dicts \
 		--with-system-dragonbox=no \
+		--with-system-frozen=no \
 		--with-system-gpgmepp \
 		--with-system-libfixmath=no \
 		--with-system-libs \
@@ -296,6 +324,7 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-system-orcus \
 		--with-system-ucpp \
 		--with-system-zlib \
+		--with-system-zxcvbn=no \
 		--with-system-zxing \
 		--with-tls=nss \
 		--with-vendor="FreeBSD ports" \
@@ -333,7 +362,6 @@ BINARY_ALIAS=	sed=gsed
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && ( \
-    (${OSVERSION} >= 1301500 && ${OSVERSION} < 1301502) || \
     (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
 BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
 .endif
@@ -362,10 +390,13 @@ CXXFLAGS_WARN=	-Woverloaded-virtual -Wno-c++11-narrowing \
 CXXFLAGS_WARN=	-Wshadow -Woverloaded-virtual
 .endif
 
+LDFLAGS+=	-Wl,--undefined-version
+
 post-patch:
 .if ${COMPILER_FEATURES:Mlibstdc++}
 	${REINPLACE_CMD} -e 's/gb_CC/gb_CXX/' ${WRKSRC}/solenv/gbuild/platform/unxgcc.mk
 .endif
+	${CP} ${FILESDIR}/powerpc64le-skia.patch.0 ${WRKSRC}/external/skia/
 
 pre-configure:
 	@${TOUCH} ${WRKSRC}/autogen.lastrun
@@ -378,13 +409,18 @@ post-install:
 	${FIND} -s lib/libreoffice -type d -empty \
 	    -exec ${ECHO_CMD} "@dir {}" \; >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX} && \
-	${FIND} -s bin lib man -not -type d >> ${TMPPLIST}
-.for subdir in applications bash-completion icons metainfo mime
+	${FIND} -s bin lib -not -type d >> ${TMPPLIST}
+.for subdir in applications bash-completion icons man metainfo mime
 	@cd ${STAGEDIR}${PREFIX} && \
 	${FIND} -s share/${subdir} -not -type d >> ${TMPPLIST}
 .endfor
 
 post-install-SDK-on:
+.for subdir in share share/doc
+	@cd ${STAGEDIR}${PREFIX} && \
+	${FIND} -s ${subdir}/libreoffice -type d -empty \
+	    -exec ${ECHO_CMD} "@dir {}" \; >> ${TMPPLIST}
+.endfor
 .for subdir in include share share/doc
 	@cd ${STAGEDIR}${PREFIX} && \
 	${FIND} -s ${subdir}/libreoffice -not -type d >> ${TMPPLIST}

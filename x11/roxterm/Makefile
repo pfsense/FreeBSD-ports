@@ -1,10 +1,9 @@
 PORTNAME=	roxterm
-PORTVERSION=	3.12.1
-PORTREVISION=	1
+PORTVERSION=	3.14.3
 CATEGORIES=	x11
 
 MAINTAINER=	nc@FreeBSD.org
-COMMENT=	GTK+ terminal emulator with tabs
+COMMENT=	GTK terminal emulator with tabs
 WWW=		https://github.com/realh/roxterm
 
 LICENSE=	GPLv2+

@@ -1,11 +1,12 @@
 PORTNAME=	jail-primer
 PORTVERSION=	0.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	jail-primer1@a1poweruser.com
 COMMENT=	Third Generation Jail System Solution
-WWW=		http://jail-primer.sourceforge.net/
+WWW=		https://jail-primer.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 
@@ -46,7 +47,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/jail.rcconf.bootime		\
 		${STAGEDIR}${PREFIX}/etc/rc.d
 	${INSTALL_MAN}    ${WRKSRC}/jail-primer.8		\
-		${STAGEDIR}${MAN8PREFIX}/man/man8
+		${STAGEDIR}${PREFIX}/share/man/man8
 	@${MKDIR}	   ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA}   ${WRKSRC}/jail-primer.html		\
 		${STAGEDIR}${DOCSDIR}

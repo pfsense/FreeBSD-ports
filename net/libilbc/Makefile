@@ -1,5 +1,6 @@
 PORTNAME=	libilbc
 DISTVERSION=	3.0.4
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/TimothyGu/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -17,8 +18,10 @@ USE_LDCONFIG=	yes
 
 CONFLICTS=	ilbc-r[0-9]*
 
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/abseil-cpp \
+			--no-same-owner --no-same-permissions
+
 post-patch:
-	${RM} -rf ${WRKSRC}/abseil-cpp
 	${LN} -s ${PREFIX}/include/absl ${WRKSRC}/abseil-cpp
 
 .include <bsd.port.mk>

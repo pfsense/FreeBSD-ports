@@ -2,12 +2,11 @@ PORTNAME=	schilybase
 CATEGORIES=	devel
 
 COMMENT=	Support files and libraries for the schilytools
-WWW=		https://codeberg.org/schilytools/schilytools
 
 NLS_USES=	gettext-tools
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	DOCS NLS PROFILE
+OPTIONS_DEFINE=	DOCS MANPAGES NLS PROFILE
 OPTIONS_DEFAULT=DOCS NLS
 OPTIONS_SUB=	yes
 
@@ -37,7 +36,6 @@ COMPONENTS=	conf \
 		libshedit \
 		libsiconv \
 		libsiconv/tables \
-		libstreamar \
 		man \
 		man/man5
 
@@ -46,7 +44,7 @@ post-patch-PROFILE-off:
 	@${REINPLACE_CMD} -e '/^MK_FILES/s, [a-z]*_p.mk,,' ${WRKSRC}/*/Makefile
 
 post-build-NLS-on:
-	${SETENV} LC_ALL=de_DE.ISO8859-1 msgfmt -o ${WRKDIR}/SCHILY_utils.mo ${WRKSRC}/SCHILY_utils.po
+	msgfmt --no-convert -o ${WRKDIR}/SCHILY_utils.mo ${WRKSRC}/SCHILY_utils.po
 
 # all languages supported by FreeBSD
 _LANGUAGES=	C af am ar be bg ca cs da de el en es et eu fi fr ga he hi hr \
@@ -56,6 +54,8 @@ _LANGUAGES=	C af am ar be bg ca cs da de el en es et eu fi fr ga he hi hr \
 post-install:
 	# this is just a copy of the FreeBSD termcap file, no need to ship it again.
 	${RM} ${STAGEDIR}${PREFIX}/etc/termcap
+	# this one goes to archivers/star
+	${RM} ${STAGEDIR}${PREFIX}/include/schily/strar.h
 
 post-install-NLS-on:
 	@${ECHO_MSG} '=> installing dummy message catalogues'

@@ -1,23 +1,23 @@
 Allow relocation of resource files
 
---- cmake/BuildParameters.cmake.orig	2023-02-10 03:43:10 UTC
+--- cmake/BuildParameters.cmake.orig	2024-04-07 18:04:50 UTC
 +++ cmake/BuildParameters.cmake
-@@ -260,6 +260,10 @@
- 	list(APPEND PCSX2_DEFS DISABLE_BUILD_DATE)
- endif()
+@@ -228,6 +228,10 @@ if(USE_CLANG AND TIMETRACE)
  
-+if(DEFINED PCSX2_RESOURCES_PATH)
-+    add_compile_definitions(PCSX2_RESOURCES_PATH="${PCSX2_RESOURCES_PATH}")
+ if(USE_CLANG AND TIMETRACE)
+ 	add_compile_options(-ftime-trace)
 +endif()
 +
- #-------------------------------------------------------------------------------
- # MacOS-specific things
- #-------------------------------------------------------------------------------
---- pcsx2/Frontend/CommonHost.cpp.orig	2023-02-10 03:43:10 UTC
-+++ pcsx2/Frontend/CommonHost.cpp
-@@ -128,6 +128,10 @@
++if(DEFINED PCSX2_RESOURCES_PATH)
++	add_compile_definitions(PCSX2_RESOURCES_PATH="${PCSX2_RESOURCES_PATH}")
+ endif()
  
- void CommonHost::SetResourcesDirectory()
+ set(PCSX2_WARNINGS ${DEFAULT_WARNINGS})
+--- pcsx2/Pcsx2Config.cpp.orig	2024-04-10 11:22:25 UTC
++++ pcsx2/Pcsx2Config.cpp
+@@ -1855,6 +1855,10 @@ bool EmuFolders::SetResourcesDirectory()
+ 
+ bool EmuFolders::SetResourcesDirectory()
  {
 +#ifdef PCSX2_RESOURCES_PATH
 +	// Resources' path specified at compile time
@@ -25,12 +25,12 @@ Allow relocation of resource files
 +#else
  #ifndef __APPLE__
  	// On Windows/Linux, these are in the binary directory.
- 	EmuFolders::Resources = Path::Combine(EmuFolders::AppRoot, "resources");
-@@ -135,6 +139,7 @@
+ 	Resources = Path::Combine(AppRoot, "resources");
+@@ -1862,6 +1866,7 @@ bool EmuFolders::SetResourcesDirectory()
  	// On macOS, this is in the bundle resources directory.
- 	EmuFolders::Resources = Path::Canonicalize(Path::Combine(EmuFolders::AppRoot, "../Resources"));
+ 	Resources = Path::Canonicalize(Path::Combine(AppRoot, "../Resources"));
  #endif
 +#endif // PCSX2_RESOURCES_PATH
- }
  
- bool CommonHost::ShouldUsePortableMode()
+ 	Console.WriteLnFmt("Resources Directory: {}", Resources);
+ 

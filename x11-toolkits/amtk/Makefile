@@ -1,6 +1,6 @@
 PORTNAME=	amtk
 PORTVERSION=	5.6.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -13,7 +13,7 @@ LICENSE=	LGPL21
 
 BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
 
-USES=		gettext gmake gnome libtool meson pkgconfig tar:xz
+USES=		gettext gmake gnome meson pkgconfig tar:xz
 USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection
 
 .include <bsd.port.mk>

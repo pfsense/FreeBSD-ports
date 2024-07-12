@@ -1,5 +1,6 @@
 PORTNAME=	actdiag
 PORTVERSION=	3.0.0
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}blockdiag>=1.5.0:graphics/py-blockdiag@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
@@ -22,8 +23,8 @@ PORTDOCS=	README.rst
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1/
-	@${ECHO_CMD} man/man1/${PORTNAME}.1.gz >> ${TMPPLIST}
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	@${ECHO_CMD} share/man/man1/${PORTNAME}.1.gz >> ${TMPPLIST}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

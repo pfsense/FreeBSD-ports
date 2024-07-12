@@ -1,6 +1,6 @@
---- gpu/command_buffer/common/gpu_memory_buffer_support.cc.orig	2023-05-05 12:12:41 UTC
+--- gpu/command_buffer/common/gpu_memory_buffer_support.cc.orig	2024-04-23 07:42:17 UTC
 +++ gpu/command_buffer/common/gpu_memory_buffer_support.cc
-@@ -174,7 +174,7 @@ uint32_t GetPlatformSpecificTextureTarget() {
+@@ -182,7 +182,7 @@ uint32_t GetPlatformSpecificTextureTarget() {
  #if BUILDFLAG(IS_MAC)
    return macos_specific_texture_target;
  #elif BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || \

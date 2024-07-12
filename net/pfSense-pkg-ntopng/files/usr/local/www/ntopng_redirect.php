@@ -3,7 +3,7 @@
  * ntopng_redirect.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Denny Page <dennypage@me.com>
  * All rights reserved.
  *
@@ -23,10 +23,7 @@
 $nocsrf = true;
 require_once("config.inc");
 require_once("guiconfig.inc");
-
-global $config;
-
-$proto = $config['system']['webgui']['protocol'];
+$proto = config_get_path('system/webgui/protocol');
 
 $httphost = getenv("HTTP_HOST");
 $colonpos = strpos($httphost, ":");

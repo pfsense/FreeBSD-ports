@@ -3,7 +3,7 @@
  * haproxy_pools.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -29,8 +29,7 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_pools = &getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
-$a_backends = &getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
+$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item');
 
 if ($_POST['apply']) {
 	$result = haproxy_check_and_run($savemsg, true);
@@ -42,7 +41,7 @@ if ($_POST['apply']) {
 	$deleted = false;
 	if (is_array($_POST['rule']) && count($_POST['rule'])) {
 		foreach ($_POST['rule'] as $rulei) {
-			unset($a_pools[$rulei]);
+			config_del_path("installedpackages/haproxy/ha_pools/item/{$rulei}");
 			$deleted = true;
 		}
 
@@ -63,11 +62,11 @@ if ($_POST['apply']) {
 
 		// if a rule is not in POST[rule], it has been deleted by the user
 		foreach ($_POST['rule'] as $id) {
-			$a_filter_new[] = $a_pools[$id];
+			$a_filter_new[] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}");
 		}
 
-		$a_pools = $a_filter_new;
-		if (write_config("haproxy: Changed rules order")) {
+		config_set_path('installedpackages/haproxy/ha_pools/item', $a_filter_new);
+		if (write_config("haproxy: Updated rule order")) {
 			mark_subsystem_dirty('filter');
 		}
 
@@ -75,8 +74,8 @@ if ($_POST['apply']) {
 		exit;
 	}
 } elseif ($_GET['act'] == "del") {
-	if (isset($a_pools[$_GET['id']])) {
-		unset($a_pools[$_GET['id']]);
+	if (config_get_path("installedpackages/haproxy/ha_pools/item/{$_GET['id']}") !== null) {
+		config_del_path("installedpackages/haproxy/ha_pools/item/{$_GET['id']}");
 		write_config("haproxy: Pool deleted");
 		touch($d_haproxyconfdirty_path);
 	}
@@ -121,7 +120,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 <?php
 		$i = 0;
-		foreach ($a_pools as $backend){
+		foreach (config_get_path('installedpackages/haproxy/ha_pools/item', []) as $backend){
 			$fes = find_frontends_using_backend($backend['name']);
 			$fe_list = implode(", ", $fes);
 			$disabled = $fe_list == "";
@@ -135,7 +134,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 					<tr id="fr<?=$i;?>" <?=$display?> onClick="fr_toggle(<?=$i;?>)" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 						<td >
 							<input type="checkbox" id="frc<?=$i;?>" onClick="fr_toggle(<?=$i;?>)" name="rule[]" value="<?=$i;?>"/>
-							<a class="fa fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
+							<a class="fa-solid fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
 						</td>
 			<!--tr class="<?=$textgray?>"-->
 			  <td>
@@ -189,15 +188,15 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 	</div>
 	<nav class="action-buttons">
 		<a href="haproxy_pool_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
-			<i class="fa fa-level-down icon-embed-btn"></i>
+			<i class="fa-solid fa-turn-down icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
 		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>

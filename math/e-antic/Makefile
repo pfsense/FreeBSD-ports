@@ -1,6 +1,6 @@
 PORTNAME=	e-antic
-DISTVERSION=	1.2.1
-PORTREVISION=	3
+DISTVERSION=	2.0.2
+PORTREVISION=	2
 #MASTER_SITES=	https://www.labri.fr/perso/vdelecro/e-antic/
 CATEGORIES=	math
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/flatsurf/e-antic
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 LIB_DEPENDS=	libarb.so:math/arb		\
 		libgmp.so:math/gmp		\
 		libmpfr.so:math/mpfr		\
@@ -21,11 +21,11 @@ LIB_DEPENDS=	libarb.so:math/arb		\
 		libboost_thread.so:devel/boost-libs
 
 USES=		autoreconf compiler:c++11-lang gmake libtool localbase	\
-		python:3.7+
+		python
 
 USE_GITHUB=	yes
 ANTIC_TAG=	f4e8a60
-CATCH_TAG=	ff349a5
+CATCH_TAG=	62fd660
 CEREAL_TAG=	ebef1e9
 FLINT_TAG=	ae7ec89
 GH_ACCOUNT=	flatsurf catchorg:c1 USCiLab:c2 wbhart:f
@@ -47,6 +47,11 @@ INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 PLIST_SUB=	VER=${DISTVERSION}
+
+pre-extract:
+	${MKDIR} ${WRKDIR}/flint-${FLINT_TAG}
+	${LN} -sf ${WRKDIR}/flint-${FLINT_TAG} ${WRKDIR}/flint2-${FLINT_TAG}
+	${RMDIR} ${WRKDIR}/flint-${FLINT_TAG}
 
 post-install:
 	${REINPLACE_CMD} -e 's|${STAGEDIR}||'	\

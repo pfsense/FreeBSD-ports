@@ -1,5 +1,5 @@
 PORTNAME=	owncloud
-PORTVERSION=	10.12.1
+PORTVERSION=	10.14.0
 CATEGORIES=	www
 MASTER_SITES=	https://download.owncloud.com/server/stable/ \
 		LOCAL/sunpoet
@@ -13,13 +13,11 @@ LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe php:flavors,web tar:bzip2
-USE_PHP=	bz2 ctype curl dom fileinfo filter gd iconv intl \
-		mbstring pdo posix session simplexml xml xmlreader xmlwriter \
-		xsl zip zlib
+USE_PHP=	bz2 ctype curl dom fileinfo filter gd iconv intl mbstring pdo posix session simplexml xml xmlreader xmlwriter xsl zip zlib
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}
+WRKSRC=		${WRKDIR}/owncloud
 
 OWNCLOUD_USER?=	${WWWOWN}
 OWNCLOUD_GROUP?=${WWWGRP}

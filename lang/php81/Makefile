@@ -1,5 +1,5 @@
 PORTNAME=	php81
-DISTVERSION=	8.1.20
+DISTVERSION=	8.1.29
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -11,7 +11,10 @@ WWW=		https://www.php.net/
 
 LICENSE=	PHP301
 
-USES+=		compiler:c11 cpe gnome pkgconfig tar:xz
+DEPRECATED=	Upstream EOL reaches on 2025-12-31
+EXPIRATION_DATE=	2025-12-31
+
+USES+=		compiler:c11 cpe gnome localbase pkgconfig tar:xz
 CPE_PRODUCT=	php
 PHP_VER=	81
 
@@ -21,28 +24,26 @@ CONFLICTS_INSTALL?=	php[0-9][0-9]${PKGNAMESUFFIX}
 LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libpcre2-8.so:devel/pcre2
 
-GNU_CONFIGURE=		yes
-CONFIGURE_ARGS+=	--disable-all \
-			--program-prefix="" \
-			--with-config-file-scan-dir=${PREFIX}/etc/php \
-			--with-layout=GNU \
-			--with-libxml \
-			--with-openssl \
-			--with-password-argon2=${LOCALBASE}
-DESTDIRNAME=		INSTALL_ROOT
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS+=	\
+		--disable-all \
+		--program-prefix="" \
+		--with-config-file-scan-dir=${PREFIX}/etc/php \
+		--with-layout=GNU \
+		--with-libxml \
+		--with-openssl \
+		--with-password-argon2=${LOCALBASE}
 
 USES+=		autoreconf:build ssl
 USE_GNOME=	libxml2
 
-CPPFLAGS=	-I${LOCALBASE}/include
-
-LDFLAGS=	-L${OPENSSLLIB} -lcrypto -lssl
+LDFLAGS+=	-L${OPENSSLLIB} -lcrypto -lssl
 # PR230207 Allow relocations against read-only segments (override lld default)
-LDFLAGS_i386=	-Wl,-z,notext
+LDFLAGS_i386+=	-Wl,-z,notext
 
-OPTIONS_DEFINE+=		CGI CLI DEBUG DTRACE EMBED FPM IPV6 LINKTHR \
-				MYSQLND PHPDBG ZTS
-OPTIONS_DEFAULT=		CGI CLI DTRACE EMBED FPM LINKTHR MYSQLND
+OPTIONS_DEFINE+=CGI CLI DEBUG DTRACE EMBED FPM IPV6 LINKTHR \
+				MYSQLND PCRE PHPDBG ZTS
+OPTIONS_DEFAULT=	CGI CLI DTRACE EMBED FPM LINKTHR MYSQLND PCRE
 OPTIONS_EXCLUDE_DragonFly=	DTRACE
 # ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
 OPTIONS_EXCLUDE_aarch64=	DTRACE
@@ -52,10 +53,7 @@ OPTIONS_EXCLUDE_armv7=	DTRACE
 # Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
 OPTIONS_EXCLUDE_mips=	DTRACE FPM
 OPTIONS_EXCLUDE_mips64=	DTRACE FPM
-OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
-OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
 OPTIONS_EXCLUDE_riscv64=	DTRACE
-OPTIONS_EXCLUDE_sparc64=	DTRACE
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=			yes
 
@@ -65,6 +63,7 @@ EMBED_DESC=	Build embedded library
 FPM_DESC=	Build FPM version
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 MYSQLND_DESC=	Build with MySQL Native Driver
+PCRE_DESC=	Use system pcre instead of bundled one
 PHPDBG_DESC=	Interactive PHP debugger
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
@@ -84,10 +83,16 @@ FPM_VARS=		PHP_SAPI+=fpm \
 IPV6_CONFIGURE_OFF=	--disable-ipv6
 LINKTHR_LIBS=		-lpthread
 MYSQLND_CONFIGURE_ON=	--enable-mysqlnd
+PCRE_BUILD_DEPENDS=	re2c>0:devel/re2c
+PCRE_CONFIGURE_ON=	--with-external-pcre=${LOCALBASE}
+PCRE_PLIST_SUB=	BUNDLED_PCRE="@comment "
+PCRE_PLIST_SUB_OFF=	BUNDLED_PCRE=""
 PHPDBG_CONFIGURE_ON=	--enable-phpdbg
 PHPDBG_VARS=		PHP_SAPI+=phpdbg
 ZTS_CONFIGURE_ON=	--enable-zts
 ZTS_CONFIGURE_ENV=	pthreads_working="yes"
+
+DESTDIRNAME=	INSTALL_ROOT
 
 .if defined(PKGNAMEPREFIX)
 USES+=			apache
@@ -96,6 +101,7 @@ PKGMESSAGE=		${PKGDIR}/pkg-message.mod
 MODULENAME=		libphp
 SHORTMODNAME=		php
 WARNING=		"!!! If you have a threaded Apache, you must build ${PHP_PORT} with ZTS support to enable thread-safety in extensions !!!"
+WARNING+=	"!!! Consider switching to php-fpm and mod_proxy_fcgi as per Apache httpd recommendations !!!"
 .endif
 
 .include <bsd.port.pre.mk>
@@ -143,23 +149,24 @@ test: build
 	@(cd ${WRKSRC} && ${MAKE} test)
 
 post-install:
-	@${INSTALL_DATA} ${WRKSRC}/php.ini-development ${WRKSRC}/php.ini-production \
+	${INSTALL_DATA} ${WRKSRC}/php.ini-development ${WRKSRC}/php.ini-production \
 		${WRKDIR}/php.conf ${STAGEDIR}/${PREFIX}/etc
 
 post-install-CGI-on:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php-cgi
-
-post-install-PHPDBG-on:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/phpdbg
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php-cgi
 
 post-install-CLI-on:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php
-
-post-install-FPM-on:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/php-fpm
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/php
 
 post-install-EMBED-on:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libphp.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libphp.so
+
+post-install-FPM-on:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/php-fpm
+
+post-install-PHPDBG-on:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/phpdbg
+
 .else
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}
@@ -173,7 +180,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	81
-IGNORE_WITH_PHP=	80 82 83
+IGNORE_WITH_PHP=	82 83
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -229,8 +236,8 @@ DB4_CONFIGURE_ON=	--with-db4=${LOCALBASE}
 DB4_USES=		bdb
 DB4_VARS=		WITH_BDB_HIGHEST=yes
 FLATFILE_CONFIGURE_ON=	--disable-flatfile
-GDBM_CONFIGURE_ARGS=	--with-gdbm=${LOCALBASE}
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
+GDBM_CONFIGURE_ARGS=	--with-gdbm=${LOCALBASE}
 INIFILE_CONFIGURE_OFF=	--disable-inifile
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 LMDB_CONFIGURE_ARGS=	--with-lmdb=${LOCALBASE}
@@ -250,9 +257,9 @@ USE_GNOME=	libxml2
 .endif
 
 .if ${PHP_MODNAME} == "enchant"
-LIB_DEPENDS+=		libenchant.so:textproc/enchant
-CONFIGURE_ARGS+=	--with-enchant=${LOCALBASE}
-USES+=			pkgconfig
+LIB_DEPENDS+=	libenchant-2.so:textproc/enchant2
+CONFIGURE_ARGS+=--with-enchant=${LOCALBASE}
+USES+=		pkgconfig
 .endif
 
 .if ${PHP_MODNAME} == "exif"
@@ -330,13 +337,7 @@ USES+=		iconv:translit
 
 .if ${PHP_MODNAME} == "imap"
 PHP_MOD_PRIO=		30
-OPTIONS_RADIO=		CLIENT
-OPTIONS_RADIO_CLIENT=	CCLIENT PANDA
-OPTIONS_DEFAULT=	PANDA
-CCLIENT_DESC=		Uses the original but unmaintained cclient
-PANDA_DESC=		Uses the forked panda-cclient instead of the original cclient
-PANDA_LIB_DEPENDS=	libc-client.so.2010:mail/panda-cclient
-PANDA_LIB_DEPENDS_OFF=	libc-client4.so.9:mail/cclient
+LIB_DEPENDS+=	libc-client.so.2010:mail/panda-cclient
 
 CONFIGURE_ARGS+=	--with-imap-ssl=${OPENSSLBASE} \
 			--with-imap=${LOCALBASE}
@@ -355,14 +356,8 @@ USES+=		pkgconfig
 CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 .endif
 
-.if ${PHP_MODNAME} == "json"
-CONFIGURE_ARGS+=	--enable-json
-BUILD_DEPENDS=		re2c:devel/re2c
-.endif
-
 .if ${PHP_MODNAME} == "ldap"
-CONFIGURE_ARGS+=	--with-ldap-sasl=${LOCALBASE} \
-			--with-ldap=${LOCALBASE}
+CONFIGURE_ARGS+=--with-ldap=${LOCALBASE} --with-ldap-sasl=${LOCALBASE}
 USES+=	ldap
 .endif
 
@@ -393,8 +388,7 @@ MYSQLND_USES_OFF=	mysql
 .if ${PHP_MODNAME} == "odbc"
 LIB_DEPENDS+=	libodbc.so:databases/unixODBC
 
-CONFIGURE_ARGS+=	--enable-odbc \
-			--with-unixODBC=${LOCALBASE}
+CONFIGURE_ARGS+=	--enable-odbc --with-unixODBC=${LOCALBASE}
 .endif
 
 .if ${PHP_MODNAME} == "opcache"
@@ -443,10 +437,10 @@ OPTIONS_DEFAULT=	MYSQLND
 
 MYSQLND_DESC=		Use MySQL Native Driver
 
+MYSQLND_CONFIGURE_ON=	--with-pdo-mysql=mysqlnd
 MYSQLND_CONFIGURE_OFF=	--with-pdo-mysql=${LOCALBASE} \
 			--with-zlib-dir=/usr
 MYSQLND_USES_OFF=	mysql
-MYSQLND_CONFIGURE_ON=	--with-pdo-mysql=mysqlnd
 
 USE_PHP=	pdo:build
 .endif
@@ -487,8 +481,8 @@ CONFIGURE_ARGS+=	--with-pspell=${LOCALBASE}
 .endif
 
 .if ${PHP_MODNAME} == "readline"
-CONFIGURE_ARGS+=	--with-readline=/usr
-USES+=			readline
+CONFIGURE_ARGS+=--with-libedit
+USES+=		libedit
 .endif
 
 .if ${PHP_MODNAME} == "session"
@@ -553,7 +547,7 @@ CONFIGURE_ARGS+=	--enable-sysvshm
 .if ${PHP_MODNAME} == "tidy"
 CONFIGURE_ARGS+=	--with-tidy=${LOCALBASE}
 
-LIB_DEPENDS+=	libtidy.so:www/tidy-lib
+LIB_DEPENDS+=	libtidy5.so:www/tidy-html5
 .endif
 
 .if ${PHP_MODNAME} == "tokenizer"
@@ -575,18 +569,6 @@ USE_GNOME=	libxml2
 USE_PHP=	dom:build
 .endif
 
-.if ${PHP_MODNAME} == "xmlrpc"
-CONFIGURE_ARGS+=	--with-iconv-dir=${LOCALBASE} \
-			--with-xmlrpc
-
-USES+=		iconv:translit
-USE_GNOME=	libxml2
-
-PHP_HEADER_DIRS=	libxmlrpc
-
-USE_PHP=	xml:build
-.endif
-
 .if ${PHP_MODNAME} == "xmlwriter"
 CONFIGURE_ARGS+=	--enable-xmlwriter
 
@@ -604,8 +586,7 @@ USE_PHP=	dom:build xml:build
 .if ${PHP_MODNAME} == "zip"
 LIB_DEPENDS+=	libzip.so:archivers/libzip
 
-CONFIGURE_ARGS+=	--with-zip \
-			--with-zlib-dir=/usr
+CONFIGURE_ARGS+=	--with-zip --with-zlib-dir=/usr
 USES+=			pkgconfig
 .endif
 

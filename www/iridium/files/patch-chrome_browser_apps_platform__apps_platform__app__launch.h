@@ -1,8 +1,8 @@
---- chrome/browser/apps/platform_apps/platform_app_launch.h.orig	2022-03-28 18:11:04 UTC
+--- chrome/browser/apps/platform_apps/platform_app_launch.h.orig	2024-06-25 12:08:48 UTC
 +++ chrome/browser/apps/platform_apps/platform_app_launch.h
-@@ -36,7 +36,7 @@ bool OpenExtensionApplicationWindow(Profile* profile,
- // and false otherwise.
- bool OpenExtensionApplicationTab(Profile* profile, const std::string& app_id);
+@@ -38,7 +38,7 @@ bool OpenExtensionApplicationWindow(Profile* profile,
+ content::WebContents* OpenExtensionApplicationTab(Profile* profile,
+                                                   const std::string& app_id);
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

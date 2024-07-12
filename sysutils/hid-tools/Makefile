@@ -8,18 +8,17 @@ WWW=		https://gitlab.freedesktop.org/libevdev/hid-tools
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS_FreeBSD_12=	iichid>=0.0.6:sysutils/iichid
 RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}click>=0:devel/py-click@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}parse>=0:textproc/py-parse@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pyudev>=0:devel/py-pyudev@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}yaml>=0:devel/py-yaml@${PY_FLAVOR} \
 			${RUN_DEPENDS_${OPSYS}_${OSREL:R}}
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.freedesktop.org/
 GL_ACCOUNT=	libevdev
-GL_COMMIT=	0f71fd65d83b28b744a2fe0a6cc1e3139921c721
+GL_TAGNAME=	0f71fd65d83b28b744a2fe0a6cc1e3139921c721
 USE_PYTHON=	autoplist distutils
 
 OPTIONS_DEFINE=		MANPAGES

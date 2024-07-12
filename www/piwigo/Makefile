@@ -1,6 +1,6 @@
 PORTNAME=	piwigo
-DISTVERSION=	13.7.0
-PORTREVISION=	1
+DISTVERSION=	14.4.0
+PORTREVISION=	3
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 CATEGORIES=	www
 MASTER_SITES=	https://piwigo.org/download/dlcounter.php?code=${PORTVERSION}&/
@@ -13,8 +13,9 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 USES=		cpe php:web,flavors zip
-USE_PHP=	ctype dom exif filter gd hash iconv json mbstring mysqli \
-		openssl pcre pdo session simplexml sodium spl tokenizer \
+# php hash/json/openssl/pcre/spl extension is required but it's statically linked in default php
+USE_PHP=	ctype dom exif filter gd iconv json mbstring mysqli \
+		pdo session simplexml sodium tokenizer \
 		xml zip zlib
 # sodium is needed for randomisation stuff (prefferred option),
 # 	could be replaced by mcrypt
@@ -48,16 +49,10 @@ OPT_DESC=	Optional dependencies
 
 EXIFTOOL_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 FFMPEG_RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
-IMAGICK_RUN_DEPENDS=	${IMAGEMAGICK_DEPENDS}
+IMAGICK_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}imagick>=2.2.2:graphics/pecl-imagick@${PHP_FLAVOR}
 MEDIAINFO_RUN_DEPENDS=	mediainfo:multimedia/mediainfo
 
 .include <bsd.port.pre.mk>
-
-.if !empty(IMAGEMAGICK_DEFAULT:M6) || !empty(IMAGEMAGICK_DEFAULT:M6-*)
-IMAGEMAGICK_DEPENDS=	${PECL_PKGNAMEPREFIX}imagick>=2.2.2:graphics/pecl-imagick@${PHP_FLAVOR}
-.elif !empty(IMAGEMAGICK_DEFAULT:M7) || !empty(IMAGEMAGICK_DEFAULT:M7-*)
-IMAGEMAGICK_DEPENDS=	${PECL_PKGNAMEPREFIX}imagick-im7>=2.2.2:graphics/pecl-imagick-im7@${PHP_FLAVOR}
-.endif
 
 pre-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/

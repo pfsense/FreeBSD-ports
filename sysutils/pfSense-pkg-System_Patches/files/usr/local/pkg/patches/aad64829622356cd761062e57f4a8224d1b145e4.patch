@@ -1,0 +1,23 @@
+commit aad64829622356cd761062e57f4a8224d1b145e4
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Sep 25 11:46:24 2023 -0400
+
+    Correct CE logo w/Compact-Red Theme. Fixes #14807
+    
+    Doesn't affect Plus logo, only CE.
+    
+    Fix submitted by James White via Redmine
+
+diff --git a/src/usr/local/www/css/Compact-RED.css b/src/usr/local/www/css/Compact-RED.css
+index fcc3904b5d..d8678f155a 100644
+--- a/src/usr/local/www/css/Compact-RED.css
++++ b/src/usr/local/www/css/Compact-RED.css
+@@ -52,7 +52,7 @@ body {
+     font-size:.5em;
+ }
+ .navbar-brand {
+-    line-height: 10px;
++    line-height: 5px;
+ }
+ 
+ .navbar-brand > img {

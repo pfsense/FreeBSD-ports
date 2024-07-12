@@ -1,5 +1,7 @@
 PORTNAME=	containernetworking-plugins
-DISTVERSION=	0.3
+DISTVERSIONPREFIX=	freebsd-v
+DISTVERSION=	0.5
+PORTREVISION=	7
 CATEGORIES=	net
 
 MAINTAINER=	dfr@FreeBSD.org
@@ -14,7 +16,6 @@ BUILD_DEPENDS=	bash:shells/bash
 USE_GITHUB=	yes
 GH_ACCOUNT=	dfr
 GH_PROJECT=	plugins
-GH_TAGNAME=	freebsd-v0.3
 GH_TUPLE=	golang:sys:v0.6.0:sys
 
 pre-patch:

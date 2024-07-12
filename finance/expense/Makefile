@@ -21,4 +21,8 @@ PORTSCOUT=	ignore:1
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/GNUstep/System/Applications/Expense.app/Expense
 
+post-patch:
+	@${REINPLACE_CMD} -e '/_recordSort/s,^int,NSComparisonResult,' \
+		${WRKSRC}/LedgerModel.[hm]
+
 .include <bsd.port.mk>

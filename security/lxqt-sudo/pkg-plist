@@ -1,3 +1,4 @@
+bin/lxdoas
 bin/lxqt-sudo
 bin/lxsu
 bin/lxsudo
@@ -23,9 +24,12 @@ bin/lxsudo
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_it.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_ja.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_ko.qm
+%%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_lg.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_lt.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_nb_NO.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_nl.qm
+%%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_oc.qm
+%%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_pa.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_pl.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_pt.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_pt_BR.qm
@@ -38,6 +42,7 @@ bin/lxsudo
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_vi.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_zh_CN.qm
 %%LXQT_TRANSLATIONS%%/lxqt-sudo/lxqt-sudo_zh_TW.qm
+share/man/man1/lxdoas.1.gz
 share/man/man1/lxqt-sudo.1.gz
 share/man/man1/lxsu.1.gz
 share/man/man1/lxsudo.1.gz

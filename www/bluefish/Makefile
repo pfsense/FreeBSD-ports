@@ -1,5 +1,5 @@
 PORTNAME=	bluefish
-DISTVERSION=	2.2.14
+DISTVERSION=	2.2.15
 CATEGORIES=	www editors
 MASTER_SITES=	https://www.bennewitz.com/bluefish/stable/source/ \
 		SF
@@ -16,9 +16,9 @@ LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 		libpcre2-8.so:devel/pcre2
 
 USES=		desktop-file-utils gettext gmake gnome libtool localbase \
-		pkgconfig python:3.0-3.9 shared-mime-info shebangfix tar:bzip2
+		pkgconfig python:3.8-3.9 shared-mime-info shebangfix tar:bzip2
 USE_GNOME=	cairo gdkpixbuf2 intltool libxml2
-SHEBANG_FILES=	data/css_decompressor data/cssmin.py data/jsbeautify \
+SHEBANG_FILES=	data/css_decompressor data/cssmin.py data/jsbeautify data/json_prettyprint.py \
 		data/jsmin.py data/lorem-ipsum-generator \
 		src/plugin_zencoding/zencoding/actions/*.py \
 		src/plugin_zencoding/zencoding/filters/*.py \
@@ -30,13 +30,15 @@ CONFIGURE_ARGS=	--disable-update-databases \
 		--with-icon-path=${PREFIX}/share/pixmaps
 INSTALL_TARGET=	install-strip
 
+PORTSCOUT=	skipv:2.2.15fp
+
 OPTIONS_DEFINE=		DEBUG DOCS NLS TIDY
 OPTIONS_DEFAULT=	GTK3
 OPTIONS_SINGLE=		TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
 OPTIONS_SUB=		yes
 
-TOOLKIT_DESC=	GTK+ toolkit
+TOOLKIT_DESC=	GTK toolkit
 
 DEBUG_CONFIGURE_ENABLE=	debugging-output
 GTK2_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \

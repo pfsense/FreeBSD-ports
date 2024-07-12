@@ -1,5 +1,6 @@
 PORTNAME=	gnuastro
-PORTVERSION=	0.20
+PORTVERSION=	0.22
+PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	GNU
 
@@ -18,6 +19,7 @@ LIB_DEPENDS=	libcfitsio.so:astro/cfitsio \
 
 USES=		gmake jpeg libtool:build localbase tar:lz
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
@@ -33,6 +35,9 @@ post-patch:
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's,gcc,$(CC),' \
 		${WRKSRC}/bin/buildprog/ui.c
+	@${REINPLACE_CMD} -e 's,^make -f,g&,' \
+		${WRKSRC}/bin/script/pointing-simulate.sh \
+		${WRKSRC}/bin/script/zeropoint.sh
 
 post-install:
 	@${FIND} ${STAGEDIR}${PREFIX}/etc -name \*.conf \

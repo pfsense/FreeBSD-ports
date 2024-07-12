@@ -1,12 +1,12 @@
 PORTNAME=	libhandy
 PORTVERSION=	1.6.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Library with GTK+ widgets for mobile phones
+COMMENT=	Library with GTK widgets for mobile phones
 WWW=		https://gitlab.gnome.org/GNOME/libhandy/
 
 LICENSE=	LGPL21

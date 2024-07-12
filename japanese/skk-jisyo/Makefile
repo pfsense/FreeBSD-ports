@@ -1,34 +1,28 @@
 PORTNAME=	skk-jisyo
-PORTVERSION=	201409
-PORTREVISION=	0
+DISTVERSIONPREFIX=	g
+DISTVERSION=	20240130
+PORTREVISION=	1
 CATEGORIES=	japanese
-MASTER_SITES=	LOCAL/matusita/${PORTNAME}
 .if defined(WITH_SKKJISYO_CDB)
 PKGNAMESUFFIX=	-cdb
 .endif
-DIST_SUBDIR=	skk-jisyo
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER=	mew14930xvi@inbox.lv
 COMMENT?=	Jisyo (dictionary) files for the SKK Japanese-input software
-WWW=		http://openlab.jp/skk/
+WWW=		http://openlab.jp/skk/dic.html
+
+LICENSE=	GPLv2+
 
 .if defined(WITH_SKKJISYO_CDB)
 BUILD_DEPENDS=	${LOCALBASE}/bin/cdb:databases/tinycdb
 .endif
 
-SKKDIR?=	share/skk
-SKK_JISYO_TYPE?=L M S
+USE_GITHUB=	yes
+GH_ACCOUNT=	skk-dev
+GH_PROJECT=	dict
+GH_TAGNAME=	b798a46
 
-USES=		tar:bzip2
-NO_WRKSUBDIR=		yes
-EXTRACT_CMD=		${CP}
-EXTRACT_BEFORE_ARGS=	-p
-EXTRACT_AFTER_ARGS=	${WRKSRC}
-PLIST_SUB+=		SKKDIR=${SKKDIR}
-.for type in ${SKK_JISYO_TYPE}
-DISTFILES+=		SKK-JISYO.${type}.${PORTVERSION}.bz2
-PLIST_FILES+=		${SKKDIR}/SKK-JISYO.${type}${CDBSUFFIX}
-.endfor
+NOARCH=		yes
 
 .if defined(WITH_SKKJISYO_CDB)
 CDBSUFFIX=		.cdb
@@ -37,8 +31,13 @@ CDBSUFFIX=		#empty
 NO_BUILD=		yes
 .endif
 
-post-extract:
-	@(cd ${WRKSRC}; ${BZIP2_CMD} -d *.bz2)
+SKKDIR?=	share/skk
+SKK_JISYO_TYPE?=L M S JIS2 JIS3_4
+
+.for type in ${SKK_JISYO_TYPE}
+PLIST_FILES+=		${SKKDIR}/SKK-JISYO.${type}${CDBSUFFIX}
+.endfor
+PLIST_SUB+=		SKKDIR=${SKKDIR}
 
 .if defined(WITH_SKKJISYO_DELCOMMENTS)
 # Strip comments in transtation candidates list.
@@ -48,7 +47,7 @@ post-extract:
 post-patch:
 .for type in ${SKK_JISYO_TYPE}
 	${REINPLACE_CMD} -e '/^[^;]/s,;[^/]*/,/,g' -e '/^>/d' \
-		${WRKSRC}/SKK-JISYO.${type}.${PORTVERSION}
+		${WRKSRC}/SKK-JISYO.${type}
 .endfor
 .endif
 
@@ -66,17 +65,17 @@ do-build:
 		END { \
 			print ""; \
 		}' \
-		< ${WRKSRC}/SKK-JISYO.${type}.${PORTVERSION} | \
+		< ${WRKSRC}/SKK-JISYO.${type} | \
 	${LOCALBASE}/bin/cdb -c -t - \
-		${WRKSRC}/SKK-JISYO.${type}.${PORTVERSION}${CDBSUFFIX}
+		${WRKSRC}/SKK-JISYO.${type}${CDBSUFFIX}
 .endfor
 .endif
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${SKKDIR}
 .for type in ${SKK_JISYO_TYPE}
-	${INSTALL_DATA} ${WRKSRC}/SKK-JISYO.${type}.${PORTVERSION}${CDBSUFFIX} \
-		${STAGEDIR}${PREFIX}/${SKKDIR}/SKK-JISYO.${type}${CDBSUFFIX}
+	${INSTALL_DATA} ${WRKSRC}/SKK-JISYO.${type}${CDBSUFFIX} \
+		${STAGEDIR}${PREFIX}/${SKKDIR}/
 .endfor
 
 .include <bsd.port.mk>

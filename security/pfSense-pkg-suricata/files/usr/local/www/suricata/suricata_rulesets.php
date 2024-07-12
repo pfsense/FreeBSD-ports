@@ -3,7 +3,7 @@
  * suricata_rulesets.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -328,7 +328,7 @@ else:
 		'View',
 		'View',
 		'suricata_rules_flowbits.php?id=' . $id . '&returl=' . urlencode($_SERVER['PHP_SELF']),
-		'fa-file-text-o'
+		'fa-regular fa-file-lines'
 	);
 
 	$viewbtn->removeClass('btn-primary')->addClass('btn-success btn-sm')
@@ -413,8 +413,8 @@ else:
 			<tbody>
 				<tr>
 					<td>
-						<i class="fa fa-adn text-success"></i>&nbsp;<?=gettext('- Category is auto-enabled by SID Mgmt conf files'); ?><br/>
-						<i class="fa fa-adn text-danger"></i>&nbsp;<?=gettext('- Category is auto-disabled by SID Mgmt conf files'); ?>
+						<i class="fa-brands fa-adn text-success"></i>&nbsp;<?=gettext('- Category is auto-enabled by SID Mgmt conf files'); ?><br/>
+						<i class="fa-brands fa-adn text-danger"></i>&nbsp;<?=gettext('- Category is auto-disabled by SID Mgmt conf files'); ?>
 					</td>
 				</tr>
 			</tbody>
@@ -427,7 +427,7 @@ else:
 				<?=gettext('Unselect All');?>
 			</button>
 			<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Click to Save changes and rebuild rules');?>">
-				<i class="fa fa-save icon-embed-btn"></i>
+				<i class="fa-solid fa-save icon-embed-btn"></i>
 				<?=gettext(' Save');?>
 			</button>
 		</nav>
@@ -458,7 +458,7 @@ else:
 				<?php if ($cat_mods[$community_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="3">
 						<?php if ($no_community_files): ?>
@@ -471,7 +471,7 @@ else:
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
 						<td colspan="3">
 						<?php if ($no_community_files): ?>
@@ -525,7 +525,7 @@ else:
 				<?php if ($cat_mods[$feodotracker_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="3">
 						<?php if ($no_feodotracker_files): ?>
@@ -538,7 +538,7 @@ else:
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
 						<td colspan="3">
 						<?php if ($no_feodotracker_files): ?>
@@ -592,7 +592,7 @@ else:
 				<?php if ($cat_mods[$sslbl_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="3">
 						<?php if ($no_sslbl_files): ?>
@@ -605,7 +605,7 @@ else:
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
 						<td colspan="3">
 						<?php if ($no_sslbl_files): ?>
@@ -751,10 +751,10 @@ else:
 								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 							elseif ($cat_mods[$file] == 'disabled') {
-								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 						}
 						else {
@@ -793,10 +793,10 @@ else:
 								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 							elseif ($cat_mods[$file] == 'disabled') {
-								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 						}
 						else {
@@ -831,10 +831,10 @@ else:
 								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 							else {
-								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 						}
 						else {
@@ -928,10 +928,10 @@ foreach ($extra_rules as $exrule) {
 								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 							elseif ($cat_mods[$file] == 'disabled') {
-								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
+								echo "	\n<i class=\"fa-brands fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
 							}
 						}
 						else {
@@ -964,7 +964,7 @@ foreach ($extra_rules as $exrule) {
 <div class="table-responsive col-sm-12">
 	<nav class="action-buttons">
 		<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Click to Save changes and rebuild rules');?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext(' Save');?>
 		</button>
 	</nav>

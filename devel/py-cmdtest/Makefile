@@ -1,6 +1,6 @@
 PORTNAME=	cmdtest
 PORTVERSION=	0.33.s20191128
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://git.liw.fi/cmdtest/snapshot/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,11 +20,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}markdown>0:textproc/py-markdown@${PY_FLAVOR}
 		${PYTHON_PKGNAMEPREFIX}cliapp>0:devel/py-cliapp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ttystatus>0:devel/py-ttystatus@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	distutils concurrent autoplist
 NO_ARCH=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e "s,python3,${PYTHON_CMD},g ; s,share/man/,man/," ${WRKSRC}/setup.py
+	@${REINPLACE_CMD} -e "s,python3,${PYTHON_CMD},g" ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

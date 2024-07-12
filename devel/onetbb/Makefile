@@ -1,5 +1,5 @@
 PORTNAME=	onetbb
-PORTVERSION=	2021.9.0
+PORTVERSION=	2021.12.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -11,12 +11,17 @@ LICENSE=	APACHE20
 
 LIB_DEPENDS=	libhwloc.so.15:devel/hwloc2
 
-USES=		cmake compiler:c++11-lang tar:tgz
+USES=		cmake compiler:c++11-lang pathfix tar:tgz
 
 CMAKE_ARGS+=	-DTBB_STRICT:BOOL=FALSE \
 		-DCMAKE_INSTALL_DOCDIR:PATH="${DOCSDIR}" \
 		-DCMAKE_HWLOC_2_LIBRARY_PATH:PATH="${LOCALBASE}/lib/libhwloc.so" \
 		-DCMAKE_HWLOC_2_INCLUDE_PATH:PATH="${LOCALBASE}/include"
+
+# Many symbols in the linker version scripts are undefined because link time
+# optimization (-flto=thin) removes them. Suppress errors with lld >= 17 due to
+# these undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
 
 CONFLICTS=	tbb
 
@@ -42,9 +47,4 @@ DBGSUFX=	_debug
 .if ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH:Marmv?}
 PCSUFX=	32
 .endif
-
-.if ${ARCH} == powerpc64
-CMAKE_ARGS+=	-DTBB_ENABLE_IPO:BOOL=OFF
-.endif
-
 .include <bsd.port.post.mk>

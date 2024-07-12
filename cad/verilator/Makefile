@@ -1,6 +1,6 @@
 PORTNAME=	verilator
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.012
+DISTVERSION=	5.026
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,11 +16,12 @@ BUILD_DEPENDS=	autoconf>0:devel/autoconf \
 		bash:shells/bash \
 		${LOCALBASE}/bin/ar:devel/binutils \
 		help2man:misc/help2man
-LIB_DEPENDS=	libsystemc.so:devel/systemc
+LIB_DEPENDS=	libsystemc.so:devel/systemc # systemc is only added to share/verilator/include/verilated.mk for use during verilation, verilator's own binaries aren't linked with systemc
 RUN_DEPENDS=	${LOCALBASE}/bin/ar:devel/binutils \
 		gmake:devel/gmake # verilator runs gmake for the --hierarchical option when the 'gmake' method is chosen
 
-USES=		bison compiler:c++14-lang gmake localbase:ldflags pathfix perl5 python:build,run,test shebangfix tar:tgz
+USES=		bison compiler:c++17-lang gmake localbase:ldflags pathfix perl5 python:build,run,test shebangfix tar:tgz
+USE_CXXSTD=	c++17 # needs to match that of devel/systemc to avoid mismatches like https://github.com/verilator/verilator/issues/4499
 USE_GITHUB=	yes
 
 SHEBANG_FILES=	bin/verilator_ccache_report \
@@ -31,14 +32,17 @@ SHEBANG_FILES=	bin/verilator_ccache_report \
 		bin/verilator_profcfunc
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	INSTALL_PROGRAM="${INSTALL_SCRIPT}"
 CONFIGURE_ARGS=	AR=${LOCALBASE}/bin/ar \
 		PYTHON3=${PYTHON_CMD}
 CONFIGURE_SHELL=	${LOCALBASE}/bin/bash # see https://github.com/verilator/verilator/issues/3132
 
-TEST_TARGET=	test # tests fail, see https://github.com/verilator/verilator/issues/4158
+TEST_TARGET=	test
 
-BINARY_ALIAS=	make=${GMAKE} python3=${PYTHON_CMD} # aliasas are only for tests
+BINARY_ALIAS=	make=${GMAKE} \
+		python3=${PYTHON_CMD} \
+		git=false
 
 MAKE_JOBS_UNSAFE=	yes # build on 1 CPU because many compile jobs are over 10GB and they can likely cause out-of-memory issues
 
@@ -59,11 +63,19 @@ pre-configure:
 	cd ${WRKSRC} && \
 		autoconf
 
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/bin/verilator_bin
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/share/verilator/bin/verilator_bin
+
+post-install-INSTALL_DBG_EXECUTABLES-on:
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/share/verilator/bin/verilator_bin_dbg \
+		${STAGEDIR}${PREFIX}/share/verilator/bin/verilator_coverage_bin_dbg
 
 post-install-INSTALL_DBG_EXECUTABLES-off:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/verilator_bin
-	@${RM} ${STAGEDIR}${PREFIX}/bin/verilator_bin_dbg ${STAGEDIR}${PREFIX}/bin/verilator_coverage_bin_dbg
+	@${RM} \
+		${STAGEDIR}${PREFIX}/bin/verilator_bin_dbg \
+		${STAGEDIR}${PREFIX}/bin/verilator_coverage_bin_dbg \
+		${STAGEDIR}${PREFIX}/share/verilator/bin/verilator_bin_dbg \
+		${STAGEDIR}${PREFIX}/share/verilator/bin/verilator_coverage_bin_dbg
 
 .include <bsd.port.mk>

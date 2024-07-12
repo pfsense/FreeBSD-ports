@@ -1,12 +1,12 @@
 PORTNAME=	dnsutl
 PORTVERSION=	1.12
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Programs to make using DNS easier
-WWW=		http://dnsutl.sourceforge.net/
+WWW=		https://dnsutl.sourceforge.net/
 
 LIB_DEPENDS=	libexplain.so:devel/libexplain
 
@@ -22,6 +22,6 @@ MAKE_JOBS_UNSAFE=	yes
 USES=		groff
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/man1/*.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man1/*.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

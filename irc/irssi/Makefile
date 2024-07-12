@@ -1,5 +1,6 @@
 PORTNAME=	irssi
-DISTVERSION=	1.4.4
+DISTVERSION=	1.4.5
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES?=	irc
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/ \
@@ -27,7 +28,6 @@ OPTIONS_SUB=		yes
 BOT_DESC=		Bot support
 CAPSICUM_DESC=		Capsicum support
 OTR_DESC=		OTR (off-the-record) support
-TRUECOLOR_DESC=		True color support
 UTF8PROC_DESC=		utf8proc support
 
 BOT_MESON_YES=		with-bot

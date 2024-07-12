@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2014 Andrea Tuccia
- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,16 +26,11 @@ require_once("functions.inc");
 require_once("pkg-utils.inc");
 
 function ladvd_resync_config() {
-	global $config;
-
-	if (!is_array($config['installedpackages']['ladvd'])) {
-		return;
-	}
-	if (!is_array($config['installedpackages']['ladvd']['config'])) {
+	if (!is_array(config_get_path('installedpackages/ladvd/config'))) {
 		return;
 	}
 
-	$ladvd_conf = &$config['installedpackages']['ladvd']['config'][0];
+	$ladvd_conf = config_get_path('installedpackages/ladvd/config/0');
 
 	/* ladvd is turned off in package settings */
 	if (empty($ladvd_conf['enable'])) {

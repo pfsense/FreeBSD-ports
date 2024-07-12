@@ -1,14 +1,8 @@
 PORTNAME=	mpv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.35.1
-PORTREVISION=	4
+DISTVERSION=	0.38.0
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	b95111dda879.patch:-p1 # https://github.com/mpv-player/mpv/pull/10871
-PATCHFILES+=	94c189dae76b.patch:-p1 # https://github.com/mpv-player/mpv/pull/11398
-PATCHFILES+=	362256edbc4f.patch:-p1 # https://github.com/mpv-player/mpv/pull/11398
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Free and open-source general-purpose video player
@@ -20,13 +14,14 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/LICENSE.GPL
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/LICENSE.LGPL
 
 BUILD_DEPENDS=	ffmpeg>=4.0.2,1:multimedia/ffmpeg
-LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+LIB_DEPENDS=	libplacebo.so:graphics/libplacebo \
+		libavcodec.so:multimedia/ffmpeg \
 		libass.so:multimedia/libass
 
 USES=		compiler:c11 cpe desktop-file-utils iconv jpeg \
 		meson pkgconfig python:build shebangfix tar:bz2
 USE_LDCONFIG=	yes
-SHEBANG_FILES=	*.py TOOLS/*.py
+SHEBANG_FILES=	TOOLS/*.py
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mpv-player
@@ -34,15 +29,13 @@ MESON_ARGS=	--auto-features=auto \
 		-Dshaderc=disabled \
 		-Dlibmpv=true
 
-OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 MANPAGES MUJS RUBBERBAND TEST UCHARDET EXAMPLES ZIMG
+OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 MANPAGES MUJS RUBBERBAND UCHARDET EXAMPLES ZIMG
 OPTIONS_DEFAULT=	ARCHIVE DVDNAV LCMS2 LUAJIT MANPAGES NVDEC OPENGL UCHARDET \
 			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDLP
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDNAV LIBBLURAY V4L VAPOURSYNTH
 OPTIONS_GROUP_VO=	CACA NVDEC OPENGL SIXEL VAAPI VDPAU VULKAN WAYLAND X11
 OPTIONS_GROUP_AO=	ALSA JACK OPENAL PIPEWIRE PULSEAUDIO SDL SNDIO
-OPTIONS_RADIO=		YOUTUBE
-OPTIONS_RADIO_YOUTUBE=	YTDL YTDLP
 OPTIONS_SINGLE=		LUA
 OPTIONS_SINGLE_LUA=	LUA LUAJIT LUA_NONE
 OPTIONS_SUB=		yes
@@ -52,14 +45,11 @@ LUA_NONE_DESC=		Disable Lua scripting language support
 LUAJIT_DESC=		Use LuaJIT instead of Lua scripting language support
 MUJS_DESC=		Use MuJS for Javascript language support
 NVDEC_DESC=		NVIDIA decoder with CUDA support
-PIPEWIRE_DESC=		Pipewire sound server support
 RUBBERBAND_DESC=	High quality pitch correction with librubberband
 SIXEL_DESC=		Sixel graphics support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
 VAPOURSYNTH_DESC=	VapourSynth filter bridge
 VULKAN_DESC=		Vulkan output support
-YTDLP_DESC=		Install yt-dlp (youtube-dl fork)
-YTDL_DESC=		Install youtube-dl
 ZIMG_DESC=		High quality software scaling via "z" library
 IN_DESC=		Input
 VO_DESC=		Video Output
@@ -138,12 +128,11 @@ SIXEL_MESON_ENABLED=		sixel
 SNDIO_LIB_DEPENDS=		libsndio.so:audio/sndio
 SNDIO_MESON_ENABLED=		sndio
 
-TEST_MESON_TRUE=		tests
-
 UCHARDET_LIB_DEPENDS=		libuchardet.so:textproc/uchardet
 UCHARDET_MESON_ENABLED=		uchardet
 
 V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/dvb/dmx.h:multimedia/v4l_compat
+V4L_USES=			localbase
 V4L_MESON_ENABLED=		dvbin
 
 VAAPI_LIB_DEPENDS=		libva.so:multimedia/libva
@@ -157,9 +146,8 @@ VDPAU_MESON_ENABLED=		vdpau
 VDPAU_IMPLIES=			X11
 
 VULKAN_BUILD_DEPENDS=		${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
-VULKAN_LIB_DEPENDS=		libplacebo.so:graphics/libplacebo \
-				libvulkan.so:graphics/vulkan-loader
-VULKAN_MESON_ENABLED=		vulkan libplacebo
+VULKAN_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader
+VULKAN_MESON_ENABLED=		vulkan
 
 WAYLAND_CATEGORIES=		wayland
 WAYLAND_BUILD_DEPENDS=		wayland-protocols>=1.15:graphics/wayland-protocols \
@@ -177,8 +165,6 @@ X11_MESON_ENABLED=		x11
 
 YTDLP_RUN_DEPENDS=		yt-dlp:www/yt-dlp
 
-YTDL_RUN_DEPENDS=		youtube-dl:www/youtube_dl
-
 ZIMG_LIB_DEPENDS=		libzimg.so:graphics/sekrit-twc-zimg
 ZIMG_MESON_ENABLED=		zimg
 
@@ -195,8 +181,11 @@ post-patch-MANPAGES-on:
 	@${FIND} ${WRKSRC}/DOCS/man -name '*.rst' | ${XARGS} ${REINPLACE_CMD} \
 		-e 's|/usr/local|${PREFIX}|g'
 
-pre-install-TEST-on:
-	@(cd ${WRKSRC} && ${SETENV} ${TEST_ENV} \
-		${MESON_BUILD_DIR}/${PORTNAME} --unittest=all-simple)
+pre-test:
+	@if [ ! -e ${WRKDIR}/.meson_build_tests ]; then \
+		${RM} ${CONFIGURE_COOKIE} ${BUILD_COOKIE}; \
+		${MAKE} -C${.CURDIR} build MESON_ARGS="${MESON_ARGS} --reconfigure -Dtests=true"; \
+		${TOUCH} ${WRKDIR}/.meson_build_tests; \
+	fi
 
 .include <bsd.port.mk>

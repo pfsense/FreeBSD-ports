@@ -21,13 +21,6 @@ INSTALL_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 
 QT_BINARIES=	yes
 
-OPTIONS_DEFINE=	WEBKIT
-OPTIONS_SUB=	yes
-WEBKIT_DESC=	Build WebKit-based WebView widget
-WEBKIT_QMAKE_ON=	CONFIG+=use_webkit
-WEBKIT_USES=	qt-dist:5,tools
-WEBKIT_USE=	QT=webkit
-
 post-patch:
 # uiplugin is built in x11-toolkits/qt5-uiplugin.
 # uitools is built in devel/qt5-uitools.

@@ -1,6 +1,7 @@
 PORTNAME=	resource-agents
-PORTVERSION=	4.12.0
+PORTVERSION=	4.13.0
 DISTVERSIONPREFIX=v
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	flo@FreeBSD.org
@@ -12,6 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
 		redis-cli:databases/redis
+LIB_DEPENDS=	libqb.so:devel/libqb
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		autoreconf gmake gnome pkgconfig python shebangfix
@@ -20,11 +22,10 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	ClusterLabs
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-fatal-warnings --with-version=${PORTVERSION} \
 		PACKAGE_STRING="${PORTNAME} ${PORTVERSION}" \
 		PACKAGE_VERSION="${PORTVERSION}"
-
-CONFLICTS=	heartbeat
 
 SHEBANG_LANG=	sh
 sh_OLD_CMD=	/bin/sh

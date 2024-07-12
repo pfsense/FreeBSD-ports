@@ -1,5 +1,5 @@
 PORTNAME=	setproctitle
-PORTVERSION=	1.2.3
+PORTVERSION=	1.3.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,15 +11,19 @@ WWW=		https://pypi.org/project/setproctitle/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 PORTDOCS=	HISTORY.rst README.rst
 
 OPTIONS_DEFINE=	DOCS
 
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
+
+TESTING_UNSAFE=	ImportError: attempted relative import with no known parent package
+
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/setproctitle*.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/*setproctitle*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

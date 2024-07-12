@@ -1,7 +1,6 @@
 PORTNAME=	opendht
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.1
-PORTREVISION=	1
+DISTVERSION=	3.1.11
 CATEGORIES=	devel net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -24,7 +23,7 @@ LIB_DEPENDS=	libargon2.so:security/libargon2 \
 RUN_DEPENDS=	msgpack-cxx>0:devel/msgpack-cxx
 TEST_DEPENDS=	cppunit>0:devel/cppunit
 
-USES=		cmake:testing compiler:c++17-lang localbase pathfix pkgconfig readline ssl
+USES=		cmake:testing compiler:c++17-lang localbase ncurses pathfix pkgconfig readline ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	savoirfairelinux
@@ -32,23 +31,25 @@ USE_LDCONFIG=	yes
 
 LDFLAGS+=	-lcrypto
 
-CMAKE_OFF=	OPENDHT_STATIC BUILD_TESTING
-CMAKE_TESTING_ON=	BUILD_TESTING # tests fail w/out explanation, see https://github.com/savoirfairelinux/opendht/issues/640, https://github.com/savoirfairelinux/opendht/issues/658
+CMAKE_OFF=	OPENDHT_STATIC BUILD_TESTING OPENDHT_TESTS_NETWORK
+CMAKE_TESTING_ON=	BUILD_TESTING OPENDHT_TESTS_NETWORK # tests Tests assert and crash, see https://github.com/savoirfairelinux/opendht/issues/696
 
-PLIST_SUB=	SHL3=${PORTVERSION} SHL1=${PORTVERSION:R:R}
+OPTIONS_DEFINE=			INDEX PROXY_CLIENT PROXY_SERVER PUSH_NOTIFICATIONS DOCS
+OPTIONS_DEFAULT=		INDEX PROXY_CLIENT PROXY_SERVER PUSH_NOTIFICATIONS DOCS
 
-OPTIONS_DEFINE=	PROXY_SERVER PROXY_CLIENT PUSH_NOTIFICATIONS DOCS
+INDEX_DESC=			Build DHT indexation feature
+INDEX_CMAKE_BOOL=		OPENDHT_INDEX
+
+PROXY_CLIENT_DESC=		Enable DHT proxy client
+PROXY_CLIENT_CMAKE_BOOL=	OPENDHT_PROXY_CLIENT
 
 PROXY_SERVER_DESC=		Enable DHT proxy server
-PROXY_CLIENT_DESC=		Enable DHT proxy client
-PUSH_NOTIFICATIONS_DESC=	Enable push notifications support
-
 PROXY_SERVER_CMAKE_BOOL=	OPENDHT_PROXY_SERVER
-PROXY_CLIENT_CMAKE_BOOL=	OPENDHT_PROXY_CLIENT
-PUSH_NOTIFICATIONS_CMAKE_BOOL=	OPENDHT_PUSH_NOTIFICATIONS
-
 PROXY_SERVER_LIB_DEPENDS=	libjsoncpp.so:devel/jsoncpp \
 				librestbed.so:www/restbed
+
+PUSH_NOTIFICATIONS_DESC=	Enable push notifications support
+PUSH_NOTIFICATIONS_CMAKE_BOOL=	OPENDHT_PUSH_NOTIFICATIONS
 
 PORTDOCS=	*
 

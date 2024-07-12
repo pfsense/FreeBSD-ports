@@ -1,22 +1,20 @@
 PORTNAME=	sipp
 PORTVERSION=	3.5.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	benchmarks net
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	SIP benchmarking and testing tool
-WWW=		http://sipp.sourceforge.net/
+WWW=		https://sipp.sourceforge.net/
 
 LICENSE=	GPLv2
-
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: /usr/local/lib/gcc9/include/c++/cstddef:52:8: expected unqualified-id before string constant
 
 BUILD_DEPENDS=	help2man:misc/help2man
 
 USES=		autoreconf compiler:c++11-lang gmake ncurses pkgconfig
 
-PLIST_FILES=	bin/sipp man/man1/sipp.1.gz
+PLIST_FILES=	bin/sipp share/man/man1/sipp.1.gz
 
 GNU_CONFIGURE=	yes
 
@@ -54,7 +52,7 @@ post-patch-PCAP-on:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/include/sipp.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/include/sipp.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-PCAP-on:
 	${MKDIR} ${STAGEDIR}${DATADIR}/pcap

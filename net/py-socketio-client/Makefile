@@ -5,7 +5,7 @@ MASTER_SITES=	PYPI/source/s/socketIO-client/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	socketIO_client-${PORTVERSION}
 
-MAINTAINER=	mstucchi@ripe.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Socket.io client library for Python
 WWW=		https://github.com/invisibleroads/socketIO-client
 
@@ -15,7 +15,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.7:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}websocket-client>0:www/py-websocket-client@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.mk>

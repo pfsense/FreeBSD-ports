@@ -3,7 +3,7 @@
  * status_mail_report.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,15 +30,14 @@ require("guiconfig.inc");
 
 require_once('mailreport/mail_report.inc');
 
-init_config_arr(array('mailreports', 'schedule'));
-$a_mailreports = &$config['mailreports']['schedule'];
+config_init_path('mailreports/schedule');
 
 if (isset($_POST['del'])) {
 	if (is_array($_POST['reports']) && count($_POST['reports'])) {
 		foreach ($_POST['reports'] as $reportsi) {
-			unset($a_mailreports[$reportsi]);
+			config_del_path("mailreports/schedule/{$reportsi}");
 		}
-		set_mail_report_cron_jobs($a_mailreports);
+		set_mail_report_cron_jobs(config_get_path('mailreports/schedule'));
 		write_config("Removed Multiple Email Reports");
 		configure_cron();
 		header("Location: status_mail_report.php");
@@ -53,14 +52,14 @@ if (isset($_POST['del'])) {
 	}
 
 	if (isset($delbtn)) {
-		if ($a_mailreports[$delbtn]) {
-			$name = $a_mailreports[$delbtn]['descr'];
-			unset($a_mailreports[$delbtn]);
+		$mailreports_item_config_temp = config_get_path("mailreports/schedule/{$delbtn}");
+		if ($mailreports_item_config_temp) {
+			config_del_path("mailreports/schedule/{$delbtn}");
 
 			// Fix up cron job(s)
-			set_mail_report_cron_jobs($a_mailreports);
+			set_mail_report_cron_jobs(config_get_path('mailreports/schedule'));
 
-			write_config("Removed Email Report '{$name}'");
+			write_config("Removed Email Report '{$mailreports_item_config_temp['descr']}'");
 			configure_cron();
 			header("Location: status_mail_report.php");
 			exit;
@@ -94,7 +93,7 @@ include("head.inc");
 
 <?php
 		$i = 0;
-		foreach ($a_mailreports as $mailreport):
+		foreach (config_get_path('mailreports/schedule', []) as $mailreport):
 			if (!is_array($mailreport)) {
 				$mailreport = array();
 			}
@@ -129,8 +128,8 @@ include("head.inc");
 				<?=(is_array($mailreport['log']['row']) ? count($mailreport['log']['row']) : 0);?>
 			</td>
 			<td style="cursor: pointer;">
-				<a class="fa fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Report');?>"></a>
+				<a class="fa-solid fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
+				<a class="fa-solid fa-trash-can no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Report');?>"></a>
 				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete Report'); ?>">Delete</button>
 			</td>
 		</tr>
@@ -146,12 +145,12 @@ include("head.inc");
 	<nav class="action-buttons">
 		<br />
 		<a href="status_mail_report_edit.php" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add New Report")?>
 		</a>
 <?php if ($i !== 0): ?>
 		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Reports")?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete")?>
 		</button>
 <?php endif; ?>

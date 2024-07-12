@@ -1,12 +1,12 @@
 PORTNAME=	fuse
 PORTVERSION=	1.6.0
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}-emulator/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	rene@FreeBSD.org
 COMMENT=	Free Unix (Sinclair ZX-)Spectrum Emulator
-WWW=		http://fuse-emulator.sourceforge.net
+WWW=		https://fuse-emulator.sourceforge.net
 
 LICENSE=	GPLv2
 
@@ -23,6 +23,7 @@ USE_GNOME=	libxml2 glib20
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS+=--without-joystick # TODO needs libjsw for GTK
 
 OPTIONS_DEFINE=		ICONS ROMS DOCS

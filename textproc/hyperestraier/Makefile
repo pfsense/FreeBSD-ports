@@ -1,12 +1,12 @@
 PORTNAME=	hyperestraier
 PORTVERSION=	1.4.13
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search system
-WWW=		http://hyperestraier.sourceforge.net/
+WWW=		https://hyperestraier.sourceforge.net/
 
 BUILD_DEPENDS=	qdbm>=1.8.77:databases/qdbm
 # check configure for min version of qdbm.
@@ -18,6 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		iconv pathfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-bzip2 --disable-zlib
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib

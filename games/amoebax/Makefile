@@ -1,6 +1,6 @@
 PORTNAME=	amoebax
 PORTVERSION=	0.2.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	http://www.emma-soft.com/games/amoebax/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -16,15 +16,18 @@ LICENSE_FILE_FAL=	${WRKSRC}/COPYING.LAL
 LICENSE_PERMS_FAL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		gmake sdl tar:bzip2
-GNU_CONFIGURE=	yes
+USE_CXXSTD=	c++14
 USE_SDL=	sdl mixer image
 
-PORTDOCS=	*
-PORTDATA=	*
+GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+
 PLIST_FILES=	bin/amoebax \
-		man/man6/amoebax.6.gz \
 		share/applications/amoebax.desktop \
+		share/man/man6/amoebax.6.gz \
 		share/pixmaps/amoebax.svg
+PORTDATA=	*
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 

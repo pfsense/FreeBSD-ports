@@ -1,10 +1,10 @@
-%%AUTOMATED%%include/CUnit/Automated.h
-%%BASIC%%include/CUnit/Basic.h
-%%CURSES%%include/CUnit/CUCurses.h
+include/CUnit/Automated.h
+include/CUnit/Basic.h
+include/CUnit/CUCurses.h
 include/CUnit/CUError.h
 include/CUnit/CUnit.h
 include/CUnit/CUnit_intl.h
-%%CONSOLE%%include/CUnit/Console.h
+include/CUnit/Console.h
 include/CUnit/MyMem.h
 include/CUnit/TestDB.h
 include/CUnit/TestRun.h
@@ -14,7 +14,6 @@ lib/libcunit.so
 lib/libcunit.so.1
 lib/libcunit.so.1.0.1
 libdata/pkgconfig/cunit.pc
-man/man3/CUnit.3.gz
 %%DATADIR%%/CUnit-List.dtd
 %%DATADIR%%/CUnit-List.xsl
 %%DATADIR%%/CUnit-Run.dtd
@@ -51,3 +50,4 @@ man/man3/CUnit.3.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/Console/README
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/Curses/CursesTest
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/Curses/README
+share/man/man3/CUnit.3.gz

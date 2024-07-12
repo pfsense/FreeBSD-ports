@@ -3,7 +3,7 @@
  * haproxy_htmllist.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
  *
@@ -203,7 +203,7 @@ class HaproxyHtmlList
 					$result .= "<tr id='tr_view_$counter' ondblclick='editRow($counter); return false;' >
 						<td>
 							<input type='checkbox' id='frvc{$counter}' onClick='fr_toggle_two({$counter},this)' name='{$tablename}_row[]' value='{$counter}'/>
-							<a class='fa fa-anchor' id='Xmoveview_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")' title='".gettext("Move checked entries to here")."'></a>
+							<a class='fa-solid fa-anchor' id='Xmoveview_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")' title='".gettext("Move checked entries to here")."'></a>
 						</td>
 				  ";
 
@@ -246,7 +246,7 @@ class HaproxyHtmlList
 				$result .= "<tr id='tr_edit_$counter' class='$displaystyle'>
 						<td>
 							<input type='checkbox' id='frec{$counter}' onClick='fr_toggle_two({$counter},this)' name='{$tablename}_row[]' value='{$counter}'/>
-							<a class='fa fa-anchor' id='Xmove_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")'  title='".gettext("Move checked entries to here")."'></a>
+							<a class='fa-solid fa-anchor' id='Xmove_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")'  title='".gettext("Move checked entries to here")."'></a>
 						</td>";
 				$hiddenitems = "";
 				foreach($items as $item){
@@ -457,7 +457,7 @@ function haproxy_htmllist_js(){
 		td = d.createElement("td");
 		td.innerHTML = "<td>"+
 				'<input type="checkbox" id="frec'+totalrows+'" onClick="fr_toggle_two('+totalrows+',this)" name="' + tableId + '_row[]" value="'+totalrows+'"/>'+
-				'<a class="fa fa-anchor" id="Xmove_'+totalrows+'" onClick="moveRowUpAboveAnchor('+totalrows+', \'' + tableId + '\')"  title=\"<?=gettext("Move checked entries to here")?>\"></a>'+
+				'<a class="fa-solid fa-anchor" id="Xmove_'+totalrows+'" onClick="moveRowUpAboveAnchor('+totalrows+', \'' + tableId + '\')"  title=\"<?=gettext("Move checked entries to here")?>\"></a>'+
 				"</td>";
 		tr.appendChild(td);
 

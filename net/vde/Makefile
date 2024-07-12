@@ -1,11 +1,12 @@
 PORTNAME=	vde
 PORTVERSION=	1.5.7
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	User-mode virtual ethernet infrastructure
-WWW=		http://vde.sourceforge.net/
+WWW=		https://vde.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

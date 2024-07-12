@@ -3,7 +3,7 @@
  * haproxy_utils.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * All rights reserved.
  *
@@ -30,6 +30,43 @@ require_once("config.inc");
 class haproxy_utils {
 	public static $pf_version;
 
+	public static function is_valid_haproxy_hostname($hostname){
+		global $input_errors;
+		$parts = explode('@', $hostname);
+		if (count($parts) > 2) {
+			$input_errors[] = "The hostname '$hostname' contains multiple prefixes.";
+			return false;
+		}
+		if (count($parts) == 2) {
+			$hostnameprefix = $parts[0];
+			if ($hostnameprefix == "unix") {
+				// is there any way to further validate this.?.
+				return true;
+			}
+			$hostnamename = $parts[1];
+			if (!in_array($hostnameprefix, array("ipv4","ipv6","upd","udp4","udp6","unix"))) {
+				$input_errors[] = "The hostname '$hostname' has a invalid prefix: $hostnameprefix@";
+				return false; // invalid prefix?
+			}
+		} else {
+			$hostnamename = $hostname;
+		}
+		return is_hostname($hostnamename);
+	}
+	public static function haproxy_hostname_strip_prefix($hostname){
+		$i = stripos($hostname, '@');
+		if ($i !== false) {
+			$hostname = substr($hostname, $i + 1);
+		}
+		return $hostname;
+	}
+	public static function haproxy_hostname_get_prefix($hostname){
+		$i = stripos($hostname, '@');
+		if ($i !== false) {
+			return substr($hostname, 0, $i + 1);
+		}
+		return false;
+	}
 	public static function query_dns($host, $querytype="A,AAAA") {
 		$result = array();
 		$types = explode(',',$querytype);
@@ -124,7 +161,6 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 	// $bindable[key]['ip']          the current IP (possibly changes for dhcp enabled interfaces..)
 	// $bindable[key]['description'] can be shown to user in a selection box
 
-	global $config;
 	$ipversions = explode(',',$ipv);
 	$interfacetypes= explode(',',$interfacetype);
 
@@ -143,7 +179,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 			$bindable['localhost_ipv4'] = $item;
 		}
 		if (in_array('real',$interfacetypes)){
-			foreach($config['interfaces'] as $if => $ifdetail) {
+			foreach(config_get_path('interfaces', []) as $if => $ifdetail) {
 				if (!isset($ifdetail['enable'])) {
 					continue;
 				}
@@ -186,7 +222,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 			}
 		}
 	}
-	if (!isset($config['system']['ipv6allow'])) {
+	if (!config_path_enabled('system', 'ipv6allow')) {
 		return $bindable;// skip adding the IPv6 addresses if those are not 'allowed'
 	}
 
@@ -204,7 +240,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 			$bindable['localhost_ipv6'] = $item;
 		}
 		if (in_array('real',$interfacetypes)){
-			foreach($config['interfaces'] as $if => $ifdetail) {
+			foreach(config_get_path('interfaces', []) as $if => $ifdetail) {
 				if (!isset($ifdetail['enable'])) {
 					continue;
 				}
@@ -289,6 +325,7 @@ function haproxy_recalculate_certifcate_chain(){
 				$recalculate=true;
 			} else {
 				$ca = lookup_ca($cert['caref']);
+				$ca = $ca['item'];
 				if (!$ca) {
 					$recalculate=true;
 				}
@@ -316,6 +353,7 @@ function haproxy_recalculate_certifcate_chain(){
 function get_certificat_usage($refid) {
 	$usage = array();
 	$cert = lookup_cert($refid);
+	$cert = $cert['item'];
 	if (is_cert_revoked($cert)) {
 		$usage[] = "*Revoked";
 	}
@@ -355,6 +393,7 @@ function haproxy_get_certificate_descriptivename($cert) {
 
 	$caname = "";
 	$ca = lookup_ca($cert['caref']);
+	$ca = $ca['item'];
 	if ($ca) {
 		$caname = " (CA: {$ca['descr']})";
 	}
@@ -366,34 +405,27 @@ function haproxy_get_certificates($type = 'server,user', $get_includeWebCert=fal
 	// $get_includeWebCert if the webgui certificate may be included.
 
 	// This function (is intended to) provide a uniform way to retrieve a list of server certificates
-	global $config;
 	$type = ",$type,";
 	$certificates = array();
 	if (strpos($type,',server,') !== false || strpos($type,',user,') !== false ) {
-		if (is_array($config['cert'])) {
-			$a_cert = &$config['cert'];
-			foreach ($a_cert as $cert) {
-				$purpose = cert_get_purpose($cert['crt']);
+		foreach (config_get_path('cert', []) as $cert) {
+			$purpose = cert_get_purpose($cert['crt']);
 
-				$ok = false;
-				$ok |= stristr($type,',server,') && $purpose['server'] == 'Yes';
-				$ok |= stristr($type,',user,') && $purpose['server'] != 'Yes';
-				if (!$ok) {
-					continue;
-				}
-				if ($get_includeWebCert == false && $cert['descr'] == "webConfigurator default") {
-					continue;
-				}
-				$certificates[$cert['refid']]['name'] = haproxy_get_certificate_descriptivename($cert);
+			$ok = false;
+			$ok |= stristr($type,',server,') && $purpose['server'] == 'Yes';
+			$ok |= stristr($type,',user,') && $purpose['server'] != 'Yes';
+			if (!$ok) {
+				continue;
 			}
+			if ($get_includeWebCert == false && $cert['descr'] == "webConfigurator default") {
+				continue;
+			}
+			$certificates[$cert['refid']]['name'] = haproxy_get_certificate_descriptivename($cert);
 		}
 	}
 	if (strpos($type,',ca,') !== false) {
-		if (is_array($config['ca'])) {
-			$a_cert = &$config['ca'];
-			foreach ($a_cert as $cert) {
-				$certificates[$cert['refid']]['name'] = haproxy_get_certificate_descriptivename($cert);
-			}
+		foreach (config_get_path('ca', []) as $cert) {
+			$certificates[$cert['refid']]['name'] = haproxy_get_certificate_descriptivename($cert);
 		}
 	}
 	uasort($certificates, 'haproxy_compareByName');
@@ -422,17 +454,15 @@ function haproxy_get_certificate_subjectAltNames($str_crt, $decode = true) {
 }
 
 function haproxy_get_crls() {
-	global $config;
 	$certificates=array();
-	if (is_array($config['crl'])) {
-		foreach ($config['crl'] as $crl) {
-			$caname = "";
-			$ca = lookup_ca($crl['caref']);
-			if ($ca) {
-				$caname = " (CA: {$ca['descr']})";
-			}
-			$certificates[$crl['refid']]['name'] = $crl['descr'] . $caname;
+	foreach (config_get_path('crl', []) as $crl) {
+		$caname = "";
+		$ca = lookup_ca($crl['caref']);
+		$ca = $ca['item'];
+		if ($ca) {
+			$caname = " (CA: {$ca['descr']})";
 		}
+		$certificates[$crl['refid']]['name'] = $crl['descr'] . $caname;
 	}
 	uasort($certificates, 'haproxy_compareByName');
 	return $certificates;
@@ -516,9 +546,12 @@ function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="",
 	return $result;
 }
 
-function haproxy_keyvalue_array($hap_array) {
+function haproxy_keyvalue_array($hap_array, $includedeprecatedkey = null) {
 	$result = array();
 	foreach($hap_array as $key => $item) {
+		if ($item['deprecated'] && $key != $includedeprecatedkey){
+			continue;
+		}
 		$result[$key] = $item['name'];
 	}
 	return $result;

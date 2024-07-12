@@ -1,11 +1,10 @@
 PORTNAME=	kwave
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
 CATEGORIES=	audio kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Sound editor for KDE
-WWW=		http://kwave.sourceforge.net/
+WWW=		https://kwave.sourceforge.net/
 
 LIB_DEPENDS=	libaudiofile.so:audio/libaudiofile \
 		libFLAC.so:audio/flac \

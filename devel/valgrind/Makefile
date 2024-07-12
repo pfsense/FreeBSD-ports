@@ -1,5 +1,5 @@
 PORTNAME=	valgrind
-PORTVERSION=	3.21.0
+PORTVERSION=	3.23.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/valgrind
@@ -11,11 +11,14 @@ WWW=		https://www.valgrind.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
-USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix python:3.9+,run tar:bz2
+USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix \
+		python:3.9+,run tar:bz2
 USE_PERL5=	build
-SHEBANG_FILES= callgrind/callgrind_annotate.in callgrind/callgrind_control.in cachegrind/cg_merge.in cachegrind/cg_diff.in cachegrind/cg_annotate.in
+SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in \
+		cachegrind/cg_merge.in cachegrind/cg_diff.in \
+		cachegrind/cg_annotate.in
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
@@ -23,7 +26,16 @@ SSP_UNSAFE=	yes
 LIB32_PATH?=	/usr/lib32/libc.so
 
 CONFLICTS=	valgrind-devel
-PORTDOCS=	html
+
+# Valgrind needs to read debuginfo from its own preload shared libraries
+# (quote from README_PACKAGERS
+#-- Don't strip the debug info off lib/valgrind/$platform/vgpreload*.so
+#   in the installation tree.  Either Valgrind won't work at all, or it
+#   will still work if you do, but will generate less helpful error
+#   messages.)
+STRIP=			# empty
+
+PORTDOCS=		html
 
 OPTIONS_DEFINE=		DOCS MANPAGES MPI
 OPTIONS_DEFINE_amd64=	32BIT
@@ -55,9 +67,19 @@ IGNORE=			please either install the lib32 distribution or unset the 32BIT option
 .  endif
 PLIST_SUB+=		X86=""
 . endif
-.else
+PLIST_SUB+=		AARCH64="@comment "
+.endif
+
+.if ${ARCH} == "i386"
 PLIST_SUB+=		AMD64="@comment " \
-			X86=""
+			X86="" \
+			AARCH64="@comment "
+.endif
+
+.if ${ARCH} == "aarch64"
+PLIST_SUB+=		AMD64="@comment " \
+			X86="@comment " \
+			AARCH64=""
 .endif
 
 post-patch-DOCS-off:

@@ -1,7 +1,7 @@
 PORTNAME=	rsgain
-DISTVERSION=	3.3
-DISTVERSIONSUFFIX=	-source
+DISTVERSION=	3.5.1
 PORTREVISION=	1
+DISTVERSIONSUFFIX=	-source
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/complexlogic/rsgain/releases/download/v${DISTVERSION}/
 
@@ -12,15 +12,15 @@ WWW=		https://github.com/complexlogic/rsgain
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libebur128.so:audio/ebur128 \
-		libtag.so:audio/taglib \
+LIB_DEPENDS=	libtag.so:audio/taglib \
 		libfmt.so:devel/libfmt \
 		libinih.so:devel/inih \
 		libavcodec.so:multimedia/ffmpeg
 
-USES=		cmake compiler:c++2b-lang pkgconfig tar:xz
+USES=		cmake compiler:c++2b-lang ebur128 pkgconfig tar:xz
 
 CMAKE_ARGS=	-DMAXPROGBARWIDTH=80
+CMAKE_ON=	INSTALL_MANPAGE
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 OPTIONS_DEFINE=		DOCS UNICODE

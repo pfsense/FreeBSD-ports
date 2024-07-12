@@ -1,5 +1,5 @@
 PORTNAME=	open-vm-tools
-PORTVERSION=	12.2.0
+PORTVERSION=	12.4.0
 DISTVERSIONPREFIX=	stable-
 PORTEPOCH=	2
 CATEGORIES=	emulators
@@ -13,8 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
-LIB_DEPENDS=	libdnet.so:net/libdnet \
-		libmspack.so:archivers/libmspack
+LIB_DEPENDS=	libdnet.so:net/libdnet
 
 FLAVORS=			default nox11
 default_CONFLICTS_INSTALL=	open-vm-tools-nox11
@@ -47,15 +46,18 @@ WRKSRC_SUBDIR=	open-vm-tools
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	DOCS FUSE LIBNOTIFY OPENSSL X11
+OPTIONS_DEFINE=	DOCS DEPLOYPKG FUSE LIBNOTIFY OPENSSL X11
 OPTIONS_DEFAULT=DOCS FUSE LIBNOTIFY OPENSSL X11
 .if ${FLAVOR:U} == nox11
 OPTIONS_EXCLUDE:=	LIBNOTIFY X11
 .endif
 OPTIONS_SUB=
 
+DEPLOYPKG_DESC=		DeployPkg plugin
 LIBNOTIFY_DESC=		Desktop notification support
 
+DEPLOYPKG_LIB_DEPENDS=	libmspack.so:archivers/libmspack
+DEPLOYPKG_CONFIGURE_ENABLE=	deploypkg
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOCS_CONFIGURE_ENABLE=	docs
 FUSE_USES=		fuse
@@ -64,7 +66,7 @@ OPENSSL_CONFIGURE_WITH=	ssl
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2 \
 			libharfbuzz.so:print/harfbuzz
-X11_USES=		xorg
+X11_USES=		desktop-file-utils xorg
 X11_USE=		GNOME=gdkpixbuf2,gdkpixbuf2xlib,gtk30,gtkmm30 \
 			XORG=ice,sm,x11,xext,xi,xinerama,xorgproto,xrandr,xrender,xtst
 X11_CONFIGURE_WITH=	gtk3 gtkmm3 x

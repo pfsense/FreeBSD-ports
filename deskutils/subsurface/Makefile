@@ -1,7 +1,7 @@
 PORTNAME=	subsurface
 DISTVERSIONPREFIX=v
 DISTVERSION=	5.0.10
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	deskutils
 
 MAINTAINER=	romain@FreeBSD.org
@@ -17,12 +17,19 @@ LIB_DEPENDS=	libdivecomputer.so:comms/libdc \
 		libcurl.so:ftp/curl \
 		libssh2.so:security/libssh2
 
-USES=		cmake:noninja desktop-file-utils gmake pkgconfig qt:5 gnome qmake:no_configure sqlite
+USES=		cmake:noninja desktop-file-utils gl gmake pkgconfig qt:5 gnome \
+		qmake:no_configure sqlite ssl
 USE_GITHUB=	yes
+USE_GL=		gl
 GH_TUPLE=	subsurface:googlemaps:7ce7124b385b2ebac0f72c38b094f436d4fe5c58:subsurface/googlemaps
 USE_GNOME=	libxml2 libxslt
-USE_QT=		buildtools concurrent connectivity core declarative declarative-test:build gui linguisttools:build location network printsupport quickcontrols2 svg testlib webkit widgets
+USE_QT=		buildtools:build concurrent connectivity core declarative \
+		declarative-test:build gui linguisttools:build location network \
+		quickcontrols2 svg testlib:build widgets
 
+# Disable the built-in user manual and printing support which require qt5-webkit
+CMAKE_ON=	NO_PRINTING \
+		NO_USERMANUAL
 MAKE_ENV+=	DESTDIR=${STAGEDIR}
 
 pre-configure:

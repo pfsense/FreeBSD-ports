@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/media/gpu/buffer_validation.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/media/gpu/buffer_validation.cc.orig	2023-05-31 08:12:17 UTC
 +++ src/3rdparty/chromium/media/gpu/buffer_validation.cc
 @@ -15,7 +15,7 @@
  #include "ui/gfx/geometry/size.h"
@@ -9,7 +9,7 @@
  #include <sys/types.h>
  #include <unistd.h>
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-@@ -23,7 +23,7 @@ bool GetFileSize(const int fd, size_t* size) {
+@@ -23,7 +23,7 @@
  namespace media {
  
  bool GetFileSize(const int fd, size_t* size) {
@@ -18,7 +18,7 @@
    if (fd < 0) {
      VLOG(1) << "Invalid file descriptor";
      return false;
-@@ -73,7 +73,7 @@ bool VerifyGpuMemoryBufferHandle(
+@@ -76,7 +76,7 @@ bool VerifyGpuMemoryBufferHandle(
      VLOG(1) << "Unsupported: " << pixel_format;
      return false;
    }

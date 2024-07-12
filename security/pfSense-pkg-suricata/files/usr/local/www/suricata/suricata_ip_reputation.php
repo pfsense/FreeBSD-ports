@@ -3,7 +3,7 @@
  * suricata_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -272,7 +272,7 @@ print $form;
 					<td><?=htmlspecialchars($pconfig['iprep_catlist']);?></td>
 					<td> <?=$filedate;?></td>
 					<td><button class="btn btn-sm btn-danger" name="iprep_catlist_delX" id="iprep_catlist_delX" title="<?=gettext('Remove this Categories file');?>">
-					<i class="fa fa-times icon-embed-btn"></i><?=gettext("Delete")?></button>
+					<i class="fa-solid fa-times icon-embed-btn"></i><?=gettext("Delete")?></button>
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -282,7 +282,7 @@ print $form;
 </div>
 <nav class="action-buttons">
 	<button class="btn btn-sm btn-success" name="iprep_catlist_add" id="iprep_catlist_add"  title="<?=gettext('Assign a Categories file');?>">
-		<i class="fa fa-plus icon-embed-btn"></i>
+		<i class="fa-solid fa-plus icon-embed-btn"></i>
 		<?=gettext("Add")?>
 	</button>
 </nav>
@@ -316,7 +316,7 @@ print $form;
 						<td><?=$filedate;?></td>
 						<td>
 							<button class="btn btn-sm btn-danger" name="iplist_delX[]" id="iplist_delX[]" value="<?=$k;?>" title="<?php echo gettext('Remove this IP reputation file');?>">
-							<i class="fa fa-times icon-embed-btn"></i><?=gettext("Delete")?></button>
+							<i class="fa-solid fa-times icon-embed-btn"></i><?=gettext("Delete")?></button>
 						</td>
 					</tr>
 <?php 			endforeach;
@@ -328,7 +328,7 @@ print $form;
 
 <nav class="action-buttons">
 	<button class="btn btn-sm btn-success" name="iplist_add" id="iplist_add" title="<?php echo gettext('Assign a whitelist file');?>">
-		<i class="fa fa-plus icon-embed-btn"></i>
+		<i class="fa-solid fa-plus icon-embed-btn"></i>
 		<?=gettext("Add")?>
 	</button>
 </nav>

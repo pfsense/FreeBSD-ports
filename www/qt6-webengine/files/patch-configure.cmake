@@ -1,6 +1,6 @@
---- configure.cmake.orig	2022-09-26 10:05:50 UTC
+--- configure.cmake.orig	2023-12-12 22:08:45 UTC
 +++ configure.cmake
-@@ -59,7 +59,7 @@ endif()
+@@ -68,7 +68,7 @@ endif()
  endif()
  
  #### Tests
@@ -9,7 +9,7 @@
     check_for_ulimit()
  endif()
  
-@@ -403,7 +403,7 @@ qt_feature("webengine-ozone-x11" PRIVATE
+@@ -428,7 +428,7 @@ qt_feature("webengine-ozone-x11" PRIVATE
  
  qt_feature("webengine-ozone-x11" PRIVATE
      LABEL "Support GLX on qpa-xcb"
@@ -18,7 +18,7 @@
          AND TARGET Qt::Gui
          AND QT_FEATURE_xcb
          AND X11_FOUND
-@@ -440,12 +440,12 @@ add_check_for_support(
+@@ -465,12 +465,12 @@ add_check_for_support(
  )
  add_check_for_support(
     MODULES QtWebEngine
@@ -28,17 +28,44 @@
  )
  add_check_for_support(
     MODULES QtPdf
--   CONDITION LINUX OR (WIN32 AND NOT WIN_ARM_64) OR MACOS OR IOS
-+   CONDITION LINUX OR (WIN32 AND NOT WIN_ARM_64) OR MACOS OR IOS OR FREEBSD
-    MESSAGE "Build can be done only on Linux, Windows, macOS or iOS."
+-   CONDITION LINUX OR (WIN32 AND NOT WIN_ARM_64) OR MACOS OR IOS OR ANDROID
++   CONDITION LINUX OR (WIN32 AND NOT WIN_ARM_64) OR MACOS OR IOS OR ANDROID OR FREEBSD
+    MESSAGE "Build can be done only on Linux, Windows, macO, iOS and Android."
  )
  if(LINUX AND CMAKE_CROSSCOMPILING)
-@@ -546,6 +546,8 @@ add_check_for_support(
-    CONDITION
-        (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL GNU) OR
-        (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL Clang) OR
-+       (FREEBSD AND CMAKE_CXX_COMPILER_ID STREQUAL GNU) OR
-+       (FREEBSD AND CMAKE_CXX_COMPILER_ID STREQUAL Clang) OR
-        (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL MSVC) OR
-        (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL Clang AND
-           CMAKE_CXX_SIMULATE_ID STREQUAL MSVC) OR
+@@ -492,13 +492,6 @@ add_check_for_support(
+    MESSAGE "node.js version 14 or later is required."
+ )
+ add_check_for_support(
+-    MODULES QtWebEngine
+-    CONDITION NOT (Nodejs_ARCH STREQUAL "ia32") AND
+-              NOT (Nodejs_ARCH STREQUAL "x86") AND
+-              NOT (Nodejs_ARCH STREQUAL "arm")
+-    MESSAGE "32bit version of Nodejs is not supported."
+-)
+-add_check_for_support(
+    MODULES QtWebEngine QtPdf
+    CONDITION Python3_EXECUTABLE
+    MESSAGE "Python version 3.6 or later is required."
+@@ -576,8 +569,8 @@ add_check_for_support(
+ add_check_for_support(
+    MODULES QtWebEngine
+    CONDITION MSVC OR
+-       (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
+-       (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
++       (FREEBSD AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
++       (FREEBSD AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
+        (MACOS AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    MESSAGE
+        "${CMAKE_CXX_COMPILER_ID} compiler is not supported."
+@@ -586,8 +579,8 @@ add_check_for_support(
+ add_check_for_support(
+    MODULES QtPdf
+    CONDITION MSVC OR
+-       (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
+-       (LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
++       (FREEBSD AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
++       (FREEBSD AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
+        (APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") OR
+        (ANDROID AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
+        (MINGW AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR

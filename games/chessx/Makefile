@@ -31,13 +31,15 @@ STOCKFISH_DESC=	Install Stockfish Chess Engine
 CRAFTY_RUN_DEPENDS=	crafty:games/crafty
 STOCKFISH_RUN_DEPENDS=	stockfish:games/stockfish
 
+.include <bsd.port.pre.mk>
+
+post-patch:
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+	@${REINPLACE_CMD} -e 's|std::binary_function|std::__binary_function|' \
+		${WRKSRC}/src/database/polyglotdatabase.cpp
+.endif
+
 post-configure:
 	( cd ${BUILD_WRKSRC} && ${LRELEASE} ${WRKSRC}/${PORTNAME}.pro )
 
-# the FIND command works around a bug in FreeBSD 12.4 strip(1) which
-# leaves junk files when attempting to strip a file of unrecognised format.
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/chessx
-	${FIND} ${STAGEDIR}${PREFIX} -name 'ecp.????????' -delete
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

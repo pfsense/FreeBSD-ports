@@ -1,71 +1,69 @@
 PORTNAME=	fastnetmon
-PORTVERSION=	1.2.5
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.2.6
+PORTREVISION=	1
 CATEGORIES=	net-mgmt security
+
+PATCH_SITES=	https://github.com/pavel-odintsov/${PORTNAME}/commit/
+PATCHFILES=	fad8757b8986226024d549a6dfb40abbab01643e.patch:-p2
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Very fast DDoS analyzer with sflow/netflow/mirror support
 WWW=		https://fastnetmon.com
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/../LICENSE
 
-BROKEN_armv6=		does not build: invokes x86 assembler
-BROKEN_armv7=		does not build: invokes x86 assembler
+BROKEN_armv6=	does not build: invokes x86 assembler
+BROKEN_armv7=	does not build: invokes x86 assembler
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		liblog4cpp.so:devel/log4cpp \
 		libmongoc-1.0.so:devel/mongo-c-driver \
-		libjson-c.so:devel/json-c \
 		libbson-1.0.so:devel/libbson \
 		libcapnp.so:devel/capnproto \
-		libgrpc.so:devel/grpc142 \
+		libgrpc.so:devel/grpc \
 		libprotobuf.so:devel/protobuf \
 		libabsl_base.so:devel/abseil \
 		libhiredis.so:databases/hiredis
 
-USES=	cmake compiler:c++11-lang pkgconfig localbase:ldflags ssl
+USES=		cmake compiler:c++20-lang localbase:ldflags pkgconfig ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	pavel-odintsov
 
-USERS=	${PORTNAME}
-GROUPS=	${PORTNAME}
+WRKSRC_SUBDIR=	src
 
 USE_RC_SUBR=	${PORTNAME}
-
-OPTIONS_DEFINE=	DOCS
-
+USERS=		${PORTNAME}
+GROUPS=		${PORTNAME}
 PORTDOCS=	*
 
-CXXFLAGS += -DBOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED \
-	    -D_GNU_SOURCE
 CFLAGS_i386=	-march=i586
-CMAKE_SOURCE_PATH=	${WRKSRC}/src
-CMAKE_ARGS+=	-DENABLE_NETMAP_SUPPORT=ON \
-		-DLINK_WITH_ABSL=ON \
-		-DSET_ABSOLUTE_INSTALL_PATH=OFF \
-		-DCMAKE_INSTALL_MANDIR=${PREFIX}/man
+CXXFLAGS+=	-D_GNU_SOURCE
 
-CMAKE_INSTALL_PREFIX=	${PREFIX}
+CMAKE_OFF=	SET_ABSOLUTE_INSTALL_PATH
+CMAKE_ON=	ENABLE_NETMAP_SUPPORT \
+		LINK_WITH_ABSL
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|; \
 		s|/var/run|&/fastnetmon|g; s|/var/log|&/fastnetmon|g; \
 		s|"/etc/|"${PREFIX}/etc/|g; s|/root/fastnetmon|${DATADIR}|g' \
-		${WRKSRC}/src/fastnetmon.conf ${WRKSRC}/src/fastnetmon.cpp
+		${WRKSRC}/fastnetmon.conf ${WRKSRC}/fastnetmon.cpp
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
-		${WRKSRC}/src/man/fastnetmon.8
+		${WRKSRC}/man/fastnetmon.8
 
 post-install:
-	${MV} ${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf \
-		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/fastnetmon.conf ${STAGEDIR}${PREFIX}/etc/fastnetmon.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/networks_list ${STAGEDIR}${PREFIX}/etc/networks_list.sample
+	${INSTALL_DATA} ${WRKSRC}/networks_whitelist ${STAGEDIR}${PREFIX}/etc/networks_whitelist.sample
 	${MKDIR} ${STAGEDIR}/var/run/fastnetmon ${STAGEDIR}/var/log/fastnetmon_attacks
-	${INSTALL_SCRIPT} ${WRKSRC}/src/notify_about_attack.sh ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/notify_about_attack.sh ${STAGEDIR}${PREFIX}/bin/notify_about_attack.sh.sample
 
 post-install-DOCS-on:
-	cd ${WRKSRC} && ${COPYTREE_SHARE} "README.md docs" ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/../ && ${COPYTREE_SHARE} "README.md docs" ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,11 +1,12 @@
 PORTNAME=	opensearch
-DISTVERSION=	2.7.0
+DISTVERSION?=	2.14.0
 DISTVERSIONSUFFIX=	-linux-x64
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.opensearch.org/releases/bundle/${PORTNAME}/${DISTVERSION}/
+PKGNAMESUFFIX?=	#
 
 MAINTAINER=	opensearch@FreeBSD.org
-COMMENT=	Full-text search engine for Java
+COMMENT?=	Full-text search engine for Java
 WWW=		https://opensearch.org
 
 LICENSE=	APACHE20
@@ -14,11 +15,11 @@ BUILD_DEPENDS=	jna>0:devel/jna
 RUN_DEPENDS=	bash>0:shells/bash \
 		jna>0:devel/jna
 
-CONFLICTS=	opensearch13
+CONFLICTS?=	opensearch13 opensearch210
 
 USES=		cpe shebangfix
 USE_JAVA=	yes
-JAVA_VERSION=	11+
+JAVA_VERSION=	17+
 USE_RC_SUBR=	${PORTNAME}
 
 SHEBANG_FILES=	bin/opensearch bin/opensearch-cli \
@@ -43,7 +44,9 @@ CONFIG_FILES=	opensearch.yml jvm.options log4j2.properties
 PLUGINS_CONFIG_FILES?= \
 		opensearch-notifications-core/notifications-core.yml \
 		opensearch-notifications/notifications.yml \
-		opensearch-observability/observability.yml \
+		opensearch-observability/observability.yml
+.if ${PKGNAMESUFFIX} == "210"
+PLUGINS_CONFIG_FILES+=	\
 		opensearch-performance-analyzer/agent-stats-metadata \
 		opensearch-performance-analyzer/log4j2.xml \
 		opensearch-performance-analyzer/opensearch_security.policy \
@@ -52,7 +55,9 @@ PLUGINS_CONFIG_FILES?= \
 		opensearch-performance-analyzer/rca.conf \
 		opensearch-performance-analyzer/rca_idle_cluster_manager.conf \
 		opensearch-performance-analyzer/rca_cluster_manager.conf \
-		opensearch-performance-analyzer/supervisord.conf \
+		opensearch-performance-analyzer/supervisord.conf
+.endif
+PLUGINS_CONFIG_FILES+= \
 		opensearch-reports-scheduler/reports-scheduler.yml \
 		opensearch-security/action_groups.yml \
 		opensearch-security/allowlist.yml \
@@ -108,31 +113,42 @@ do-install-PLUGINS-on:
 	${MKDIR} ${STAGEDIR}${ETCDIR}/opensearch-notifications-core \
 		 ${STAGEDIR}${ETCDIR}/opensearch-notifications \
 		 ${STAGEDIR}${ETCDIR}/opensearch-observability \
-		 ${STAGEDIR}${ETCDIR}/opensearch-performance-analyzer \
 		 ${STAGEDIR}${ETCDIR}/opensearch-reports-scheduler \
 		 ${STAGEDIR}${ETCDIR}/opensearch-security
+.if ${PKGNAMESUFFIX} == "210"
+	${MKDIR} ${STAGEDIR}${ETCDIR}/opensearch-performance-analyzer
+.endif
+
 .for f in ${PLUGINS_CONFIG_FILES}
 	${INSTALL} ${WRKSRC}/config/${f} ${STAGEDIR}${ETCDIR}/${f}.sample
-	${ECHO} "@sample ${ETCDIR}/${f}.sample" >> ${TMPPLIST}
+	${ECHO} "@sample(opensearch,opensearch,640) ${ETCDIR}/${f}.sample" >> ${TMPPLIST}
 .endfor
 .for f in ${PLUGINS_SAMPLE_CONFIG_FILES}
 	${INSTALL} ${WRKSRC}/config/${f}.example ${STAGEDIR}${ETCDIR}/${f}.sample
-	${ECHO} "${ETCDIR}/${f}.sample" >> ${TMPPLIST}
+	${ECHO} "@(opensearch,opensearch,640) ${ETCDIR}/${f}.sample" >> ${TMPPLIST}
 .endfor
 	(cd ${WRKSRC}/ && ${COPYTREE_SHARE} "plugins" ${STAGEDIR}${PREFIX}/lib/opensearch/)
 	(cd ${WRKSRC}/plugins/opensearch-security/tools && ${COPYTREE_BIN} "*.sh" ${STAGEDIR}${PREFIX}/lib/opensearch/plugins/opensearch-security/tools)
 
 post-install:
 .for f in ${CONFIG_FILES}
-	${ECHO} "@sample ${ETCDIR}/${f}.sample" >> ${TMPPLIST}
+	${ECHO} "@sample(opensearch,opensearch,640) ${ETCDIR}/${f}.sample" >> ${TMPPLIST}
 .endfor
 	${FIND} -s ${STAGEDIR}${PREFIX}/lib/opensearch -not -type d | ${SORT} | \
 		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 	${ECHO} "@dir lib/opensearch/extensions" >> ${TMPPLIST}
+	${ECHO} "@dir libexec/opensearch" >> ${TMPPLIST}
 .if ${PORT_OPTIONS:MPLUGINS}
 	${ECHO} "@dir lib/opensearch/plugins" >> ${TMPPLIST}
+	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-notifications-core" >> ${TMPPLIST}
+	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-notifications" >> ${TMPPLIST}
+	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-observability" >> ${TMPPLIST}
+.if ${PKGNAMESUFFIX} == "210"
+	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-performance-analyzer" >> ${TMPPLIST}
 .endif
-	${ECHO} "@dir libexec/opensearch" >> ${TMPPLIST}
-	${ECHO} "@dir(opensearch,opensearch,0755) ${ETCDIR}" >> ${TMPPLIST}
+	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-reports-scheduler" >> ${TMPPLIST}
+	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/opensearch-security" >> ${TMPPLIST}
+.endif
+	${ECHO} "@dir(opensearch,opensearch,0750) ${ETCDIR}/" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

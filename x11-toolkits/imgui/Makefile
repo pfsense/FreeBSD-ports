@@ -1,6 +1,6 @@
 PORTNAME=	imgui
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.89.6
+DISTVERSION=	1.90.8
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -40,14 +40,18 @@ ALLEGRO5_LIB_DEPENDS=		liballegro.so:devel/allegro5 # even though binary doesn't
 
 GLFW_DESC=			Install GLFW backend
 GLFW_CMAKE_BOOL=		IMGUI_BUILD_GLFW_BINDING
+GLFW_USES=			gl
+GLFW_USE=			GL=gl
 GLFW_LIB_DEPENDS=		libglfw.so:graphics/glfw
 
 OPENGL2_DESC=			Install OPENGL2 backend
-OPENGL2_USES=			localbase
+OPENGL2_USES=			gl localbase
+OPENGL2_USE=			GL=gl
 OPENGL2_CMAKE_BOOL=		IMGUI_BUILD_OPENGL2_BINDING
 
 OPENGL3_DESC=			Install OPENGL3 backend
-OPENGL3_USES=			localbase
+OPENGL3_USES=			gl localbase
+OPENGL3_USE=			GL=gl
 OPENGL3_CMAKE_BOOL=		IMGUI_BUILD_OPENGL3_BINDING
 
 SDL2_DESC=			Install SDL2 backend
@@ -66,5 +70,12 @@ VULKAN_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader
 
 post-patch:
 	@${CP} ${FILESDIR}/CMakeLists.txt ${FILESDIR}/imgui-config.cmake.in ${WRKSRC}
+
+do-test:
+	@cd ${WRKSRC}/examples/example_sdl2_opengl3 && \
+		${GMAKE} \
+			CXXFLAGS="${CXXFLAGS} `pkg-config --cflags sdl2` -I${STAGEDIR}${PREFIX}/include -I${WRKSRC}/backends" \
+			LIBS="`pkg-config --libs sdl2` -lGL" && \
+		./example_sdl2_opengl3
 
 .include <bsd.port.mk>

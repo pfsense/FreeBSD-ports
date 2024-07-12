@@ -1,5 +1,6 @@
 PORTNAME=	protobuf
-PORTVERSION=	4.23.2
+PORTVERSION=	4.25.3
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -13,8 +14,11 @@ WWW=		https://protobuf.dev/ \
 
 LICENSE=	BSD3CLAUSE
 
-USES=		cpe python:3.7+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+
+USES=		cpe python
+USE_PYTHON=	autoplist concurrent pep517
 
 CPE_VENDOR=	google
 

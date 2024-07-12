@@ -1,6 +1,6 @@
 PORTNAME=	HPCombi
-PORTVERSION=	0.0.6
-PORTREVISION=	1
+PORTVERSION=	1.0.1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math devel
 
@@ -15,11 +15,15 @@ ONLY_FOR_ARCHS_REASON=	uses AVX instruction set
 
 BUILD_DEPENDS=	sparsehash>0:devel/sparsehash
 LIB_DEPENDS=	libbenchmark.so:devel/benchmark
+TEST_DEPENDS=	boost-libs>0:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hivert
 
-USES=		cmake compiler:c++11-lang localbase:ldflags
+USES=		cmake:testing compiler:c++11-lang localbase:ldflags pathfix	\
+		pkgconfig
+
+CMAKE_ARGS=	-DHPCOMBI_DISABLE_MARCH_NATIVE:BOOL=on
 
 NO_ARCH=	yes
 
@@ -29,7 +33,10 @@ OPTIONS_SUB=		yes
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CMAKE_ON=	-DAPIDOC_DIR=${DOCSDIR}
 TEST_CMAKE_ON=		-DBUILD_TESTING=1
-TEST_LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
+TEST_LIB_DEPENDS=	libCatch2.so:devel/catch2
+
+DATADIR=	${PREFIX}/share/${PORTNAME:tl}
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:tl}
 
 .include <bsd.port.options.mk>
 
@@ -37,12 +44,9 @@ pre-configure-DOXYGEN-off:
 	${REINPLACE_CMD} -e 's/add_subdirectory(doc)/# No doc/'	\
 		${WRKSRC}/CMakeLists.txt
 
-post-stage:
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	${MV} ${STAGEDIR}${PREFIX}/VERSION ${STAGEDIR}${DATADIR}/
-
 post-stage-DOXYGEN-on:
-	${MV} ${STAGEDIR}${PREFIX}/doc/${PORTNAME}/html ${STAGEDIR}${DOCSDIR}/
-	${RM} -r ${STAGEDIR}${PREFIX}/doc
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${BUILD_WRKSRC}/doc/html &&	\
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

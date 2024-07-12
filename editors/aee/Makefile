@@ -1,5 +1,6 @@
 PORTNAME=	aee
 DISTVERSION=	2.2.22
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	portmaster@BSDforge.com
@@ -10,13 +11,13 @@ LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/Artistic
 
 USES=		ncurses
-PLIST_FILES=	bin/aee bin/rae man/man1/aee.1.gz ${DATADIR}/help.ae
+PLIST_FILES=	bin/aee bin/rae share/man/man1/aee.1.gz ${DATADIR}/help.ae
 ALL_TARGET=	main
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	ports1
 GL_PROJECT=	aee
-GL_COMMIT=	bf68f4accb96ac39020ac2d9092022aebfa5df27
+GL_TAGNAME=	bf68f4accb96ac39020ac2d9092022aebfa5df27
 
 OPTIONS_DEFINE=	XAE
 
@@ -43,7 +44,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/aee ${STAGEDIR}${PREFIX}/bin
 	(cd ${STAGEDIR}${PREFIX}/bin && ${LN} aee rae)
-	${INSTALL_MAN} ${WRKSRC}/aee.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/aee.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/help.ae ${STAGEDIR}${DATADIR}
 
 do-install-XAE-on:

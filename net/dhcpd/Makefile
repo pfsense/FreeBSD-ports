@@ -1,5 +1,6 @@
 PORTNAME=	dhcpd
 PORTVERSION=	6.6.20200413
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	koue@chaosophia.net
@@ -10,24 +11,21 @@ LICENSE=	BSD3CLAUSE
 
 USES=		ssl uidfix
 
-WRKSRC_SUBDIR=	src/usr.sbin/${PORTNAME}
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	koue
-
-CONFLICTS=	isc-dhcp4[1-3]-server*
-
 USE_RC_SUBR=	dhcpd
+
+MAKE_ARGS+=	BINDIR=${PREFIX}/sbin MANDIR=${PREFIX}/share/man/man
 
 CFLAGS+=	-Wall
 
-MAKE_ARGS+=	BINDIR=${PREFIX}/sbin MANDIR=${PREFIX}/man/man
+CONFLICTS=	isc-dhcp4[1-3]-server*
+WRKSRC_SUBDIR=	src/usr.sbin/${PORTNAME}
 
 OPTIONS_DEFINE=	NOPF
+OPTIONS_SUB=	yes
 
 NOPF_DESC=	Disable PF support
-
-OPTIONS_SUB=	yes
 
 NOPF_CFLAGS=	-DNO_PF=1
 

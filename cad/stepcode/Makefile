@@ -1,5 +1,5 @@
 PORTNAME=	stepcode
-PORTVERSION=	0.8.1
+PORTVERSION=	0.8.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
 
@@ -9,8 +9,6 @@ WWW=		https://github.com/stepcode/stepcode/wiki
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_FreeBSD_12_powerpc64=	fails to configure: Schema scan for 15926-0002-lifecycle_integration.exp exited with error code 1
 
 USES=		cmake compiler:c++11-lang
 USE_GITHUB=	yes

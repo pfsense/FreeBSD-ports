@@ -1,8 +1,6 @@
 PORTNAME=	kalk
-DISTVERSION=	23.01.0
-PORTREVISION=	1
-CATEGORIES=	math kde
-MASTER_SITES=	KDE/stable/plasma-mobile/${DISTVERSION}/
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+CATEGORIES=	math kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Kalk is a convergent calculator for Plasma
@@ -14,7 +12,7 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr
 
 USES=		bison cmake desktop-file-utils kde:5 qt:5 tar:xz
-USE_KDE=	config coreaddons ecm i18n kirigami2 unitconversion
+USE_KDE=	config coreaddons ecm:build i18n kirigami2 unitconversion
 USE_QT=		core declarative gui network quickcontrols2 testlib widgets \
 		buildtools:build qmake:build
 

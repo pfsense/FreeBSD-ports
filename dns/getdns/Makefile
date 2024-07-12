@@ -1,6 +1,6 @@
 PORTNAME=	getdns
 PORTVERSION=	1.5.2
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	dns
 MASTER_SITES=	https://getdnsapi.net/dist/ \
 		ZI \
@@ -21,6 +21,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 USES=		compiler:c11 libtool pathfix ssl
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-libidn=${LOCALBASE} --docdir=${DOCSDIR} \
 		--with-trust-anchor=${LOCALBASE}/etc/unbound/root.key
 SOMAJVER=	10
@@ -49,6 +50,12 @@ STUBBY_LIB_DEPENDS=	libyaml.so:textproc/libyaml
 STUBBY_CONFIGURE_WITH=	stubby
 STUBBY_VARS=		USE_RC_SUBR="stubby"
 
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -Ee 's,^(sharedoc = ).*,\1${WRKDIR}/doc,' \
 		-e '/echo .\*\*\*/d' ${WRKSRC}/Makefile.in
@@ -64,4 +71,4 @@ post-stage-STUBBY-on:
 post-install-STUBBY-on:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/stubby
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

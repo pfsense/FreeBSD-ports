@@ -1,9 +1,6 @@
 PORTNAME=	octave-forge-fuzzy-logic-toolkit
-PORTVERSION=	0.4.6
-PORTREVISION=	5
+DISTVERSION=	0.6.0
 CATEGORIES=	math
-MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
-DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
@@ -12,9 +9,12 @@ WWW=		https://packages.octave.org/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
-USES=octave
+USES=		octave
+USE_GITHUB=	yes
+GH_ACCOUNT=	lmarkowsky
+GH_PROJECT=	fuzzy-logic-toolkit
 
-OCTAVE_SRC=		${OCTAVE_PKGNAME}
+OCTAVE_SRC=	${OCTAVE_PKGNAME}-${DISTVERSION}
 
 NO_ARCH=	yes
 NO_BUILD=	yes

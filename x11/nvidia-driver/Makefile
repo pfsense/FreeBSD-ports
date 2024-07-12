@@ -12,7 +12,7 @@
 # ``make DISTVERSION=xxx.yy.zz -DNO_CHECKSUM'' should typically work.
 
 PORTNAME?=	nvidia-driver
-DISTVERSION?=	525.116.03
+DISTVERSION?=	${NVIDIA_DISTVERSION}
 # Always try to set PORTREVISION as it can be overridden by the slave ports
 PORTREVISION?=	0
 CATEGORIES=	x11
@@ -25,6 +25,7 @@ COMMENT?=	NVidia graphics card binary drivers for hardware OpenGL rendering
 WWW=		https://www.nvidia.com/object/unix.html
 
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
+.include "${.CURDIR}/../nvidia-driver/Makefile.version"
 .include "${.CURDIR}/../nvidia-driver/Makefile.common"
 
 # Pull GNU sed(1) for "binary" patching of obj/libglvnd/libEGL.so.1 and
@@ -64,15 +65,14 @@ SUB_FILES=	pkg-message
 .if !defined(LIBGLDIR)
 SUB_FILES+=	nvidia.conf
 .endif
-.if ${NVVERSION} < 410.057
-SUB_FILES+=	pkg-deinstall pkg-install
-.endif
 SUB_PATCHES=	extra-patch-src-Makefile \
-		extra-patch-src-nv-freebsd.h \
-		extra-patch-src-nvidia_subr.c
+		extra-patch-src-nv-freebsd.h
 .if ${NVVERSION} < 510.03901
 SUB_PATCHES+=	extra-patch-src-nvidia_dev.c \
 		extra-patch-src-nvidia_pci.c
+.endif
+.if ${NVVERSION} < 530.03002
+SUB_PATCHES+=	extra-patch-src-nvidia_subr.c
 .endif
 
 DOCSDIR=	${PREFIX}/share/doc/NVIDIA_GLX-1.0
@@ -98,6 +98,9 @@ SUB_LIST+=	KLDNAME=nvidia
 SUB_LIST+=	KLDNAME=nvidia-modeset
 .endif
 
+.if ${NVVERSION} >= 530.03002 && ${NVVERSION} < 545.00
+SUB_PATCHES += extra-patch-src_nvidia-modeset_nvidia-modeset-freebsd.c
+.endif
 .if ${NVVERSION} < 460.039
 .  if ${NVVERSION} >= 358.009
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_nvidia-modeset_nvidia-modeset-freebsd.c
@@ -160,6 +163,9 @@ EXTRA_PATCHES+=	${WRKDIR}/${p}
 .endfor
 
 post-patch: .SILENT
+.if ${NVVERSION} >= 390
+	${REINPLACE_CMD} -e 's|/man/man1|/share/man/man1|' ${WRKSRC}/nvml/man/Makefile
+.endif
 # We should support -CURRENT: kill the check (first #if __FreeBSD_version)
 	linenum=$$(${SED} -ne '/^#if __FreeBSD_version/ { = ; q ; }' \
 		${WRKSRC}/src/${NVSRC}/nv-freebsd.h) ; ${REINPLACE_CMD} \
@@ -179,12 +185,14 @@ post-patch: .SILENT
 		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-freebsd.c
 .endif
 # KPI of kmem_alloc_contig(),kmem_free() changed in FreeBSD src r338143,r338318
+.if ${NVVERSION} < 530.03002
 	${REINPLACE_CMD} \
 	    -e 's/kmem_alloc_contig(kmem_arena, /kmem_alloc_contig(/' \
 	    -e 's/kmem_free(kmem_arena, /kmem_free(/' \
 		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
+.endif
 # Pull the right header after FreeBSD src r347984
-.if ${OSVERSION} >= 1300029 && ${NVVERSION} >= 358.009
+.if ${NVVERSION} >= 358.009
 	${REINPLACE_CMD} -e '/^#include/s:lock\.h:mutex.h:' \
 		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-freebsd.c
 .endif
@@ -259,7 +267,7 @@ post-patch: .SILENT
 		${WRKSRC}/src/${NVSRC}/nvidia_pci.c
 .endif
 # Catch up with pmap_unmapdev() and kmem_*() changes in 14-CURRENT
-.if ${OSVERSION} >= 1400070
+.if ${OSVERSION} >= 1400070 && ${NVVERSION} < 530.03002
 	${REINPLACE_CMD} -e '/pmap_unmapdev/s,(vm_offset_t),,' \
 		${WRKSRC}/src/${NVSRC}/nvidia_os.c
 	${REINPLACE_CMD} -e '/vm_offset_t virtual_address/s,vm_offset_t ,char *,' \
@@ -350,7 +358,7 @@ post-install: .SILENT
 .elif ${NVVERSION} < 465.01901
 	${REINPLACE_CMD} -e '/lib32\/libnvidia-glvkspirv\.so/d' ${TMPPLIST}
 .endif
-.if ${NVVERSION} < 470.074
+.if ${NVVERSION} < 470.074 || ${NVVERSION} >= 545.000
 	${REINPLACE_CMD} -e '/libnvidia-vulkan-producer\.so/d' ${TMPPLIST}
 .endif
 .if ${NVVERSION} < 495.02905
@@ -361,6 +369,10 @@ post-install: .SILENT
 	${REINPLACE_CMD} -e '/libnvidia-allocator\.so/d ; \
 		/nvidia-drm_gbm\.so/d' ${TMPPLIST}
 .endif
+.if ${NVVERSION} < 545.000
+	${REINPLACE_CMD} -e '/libnvidia-gpucomp\.so/d' ${TMPPLIST}
+.endif
+
 .if ${NVVERSION} < 410.057
 # Rename some libraries and install a libmap file to resolve conflict with
 # Mesa libraries.

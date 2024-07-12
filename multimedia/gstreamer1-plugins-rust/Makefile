@@ -1,5 +1,7 @@
 PORTNAME=	gstreamer1-plugins-rust
-DISTVERSION=	0.10.8
+DISTVERSION=	0.11.1
+DISTVERSIONSUFFIX=	+fixup
+PORTREVISION=	8
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,17 +18,22 @@ BUILD_DEPENDS=	cargo-cbuild:devel/cargo-c
 USES=		cargo gnome gstreamer meson pkgconfig python:build shebangfix ssl
 USE_GITLAB=	yes
 USE_GNOME=	glib20
-USE_GSTREAMER=	bad gl # webrtc
+USE_GSTREAMER=	bad # webrtc
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	gstreamer
 GL_PROJECT=	gst-plugins-rs
-GL_COMMIT=	47a213b3222eb689182f680ff8b4d616ae9886c3
 SHEBANG_FILES=	dependencies.py
 MESON_ARGS=	-Ddoc=disabled
 MAKE_ENV=	${CARGO_ENV}
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
+
+.if ${MACHINE_ARCH} == i386 || "${MACHINE_ARCH:Marmv?}" != ""
+# https://github.com/rust-lang/rust/issues/85598
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 
 OPTIONS_DEFINE=	ASM CAIRO CSOUND DAV1D GTK4 PANGO SODIUM WEBP
 OPTIONS_DEFAULT=ASM CAIRO CSOUND DAV1D GTK4 PANGO SODIUM WEBP
@@ -51,9 +58,8 @@ DAV1D_DESC=		AV1 video decoding via libdav1d
 DAV1D_LIB_DEPENDS=	libdav1d.so:multimedia/dav1d
 DAV1D_MESON_ENABLED=	dav1d
 
-GTK4_DESC=		${GTK3_DESC:S/3/4/}
 GTK4_LIB_DEPENDS=	libgraphene-1.0.so:graphics/graphene
-GTK4_USE=		GNOME=gtk40
+GTK4_USE=		GNOME=gtk40 GSTREAMER=gl
 GTK4_MESON_ENABLED=	gtk4
 
 PANGO_USE=		GNOME=cairo,pango

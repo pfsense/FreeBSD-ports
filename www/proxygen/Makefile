@@ -1,6 +1,6 @@
 PORTNAME=	proxygen
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2023.06.12.00
+DISTVERSION=	2024.06.24.00
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,8 +10,9 @@ WWW=		https://github.com/facebook/proxygen
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		link fails: typeinfo for snappy::Source, see https://github.com/facebook/proxygen/issues/503
+
 BUILD_DEPENDS=	bash:shells/bash \
-		${LOCALBASE}/lib/libmvfst_server.a:net/mvfst \
 		gperf>0:devel/gperf
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
 		libbzip2.so:misc/vxl \
@@ -24,19 +25,21 @@ LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
 		libglog.so:devel/glog \
 		libicui18n.so:devel/icu \
 		liblz4.so:archivers/liblz4 \
+		libmvfst_server.so:net/mvfst \
 		libsnappy.so:archivers/snappy \
 		libsodium.so:security/libsodium \
 		libunwind.so:devel/libunwind \
 		libwangle.so:net/wangle \
 		libzstd.so:archivers/zstd
 
-USES=		cmake compiler:c++14-lang cpe perl5 python:3.6+,build ssl
+USES=		cmake compiler:c++14-lang cpe perl5 python:build ssl
 CPE_VENDOR=	facebook
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook
 USE_LDCONFIG=	yes
 
 CXXFLAGS+=	-fPIC
+CXXFLAGS+=	-DGLOG_USE_GLOG_EXPORT
 LDFLAGS+=	-lexecinfo
 
 CMAKE_ON=	BUILD_SHARED_LIBS

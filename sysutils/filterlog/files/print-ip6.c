@@ -28,6 +28,7 @@
 #include <netinet/ip6.h>
 #include <arpa/inet.h>
 
+#include <netinet/sctp.h>
 #include <netinet/udp.h>
 
 #include <stdio.h>
@@ -278,6 +279,17 @@ ip6_print(struct sbuf *sbuf, const u_char *bp, u_int length)
 
 		}
 			return;
+		case IPPROTO_SCTP:
+		{
+			const struct sctphdr *sh;
+
+			sh = (const struct sctphdr *)cp;
+			sbuf_printf(sbuf, "%d,%d,%lu", EXTRACT_16BITS(&sh->src_port), EXTRACT_16BITS(&sh->dest_port),
+				len - sizeof(*sh));
+
+			break;
+		}
+
 #if 0
 		case IPPROTO_ICMPV6:
 			icmp6_print(ndo, cp, len, (const u_char *)ip6, fragmented);

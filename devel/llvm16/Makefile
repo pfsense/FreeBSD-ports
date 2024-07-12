@@ -1,12 +1,16 @@
 PORTNAME=	llvm
-DISTVERSION=	16.0.5
-PORTREVISION=	0
+DISTVERSION=	16.0.6
+PORTREVISION=	11
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}${RCDIR}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
 DISTNAME=	llvm-project-${DISTVERSION}.src
 DISTFILES=	llvm-project-${DISTVERSION}.src${EXTRACT_SUFX}
+
+PATCH_SITES=	https://github.com/llvm/llvm-project/commit/
+PATCHFILES+=	llvmorg-18-init-15199-gb9935bb02a50.patch:-p1 # https://github.com/llvm/llvm-project/pull/75748
+PATCHFILES+=	llvmorg-18-init-15680-g966d564e43e6.patch:-p1 # https://github.com/llvm/llvm-project/pull/76185
 
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang
@@ -39,7 +43,7 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 
 USES=		cmake compiler:c++17-lang cpe tar:xz shebangfix
-_USES_PYTHON?=	python:3.7+,build
+_USES_PYTHON?=	python:build
 USES+=		${_USES_PYTHON}
 USE_LDCONFIG=	${LLVM_PREFIX}/lib
 SHEBANG_FILES=	\
@@ -74,22 +78,12 @@ CMAKE_ARGS+=	-DLLVM_LINK_LLVM_DYLIB=ON
 CMAKE_ARGS+=	-DLLVM_ENABLE_RTTI=ON
 CMAKE_ARGS+=	-DLLVM_DEFAULT_TARGET_TRIPLE=${CONFIGURE_TARGET}
 CMAKE_ARGS+=	-DLLVM_HOST_TRIPLE=${CONFIGURE_TARGET}
-# Following commit https://github.com/kitware/cmake/commit/956054
-# we need to either change the whole man-shuffle below, or simply
-# redefine CMAKE_INSTALL_MANDIR
-CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH="share/man"
 CMAKE_ARGS+=	-DLLVM_PARALLEL_LINK_JOBS=1
 CMAKE_ARGS+=	-DLLVM_ENABLE_Z3_SOLVER=OFF
 CMAKE_ARGS+=	-DLLVM_ENABLE_LIBXML2=OFF
 CMAKE_ARGS+=	-DLLVM_ENABLE_LIBEDIT=OFF
-CMAKE_ARGS+=	-DPython3_EXECUTABLE=${PYTHON_CMD}
 # LLVM likes to pick up ${LOCALBASE}/lib/libtinfo.so.*
 CMAKE_ARGS+=	-DLLVM_ENABLE_TERMINFO=OFF
-
-# Disable assertions.  They should be disabled by cmake, but USES=cmake
-# overrides -DCMAKE_*_FLAGS_RELEASE.
-CFLAGS+=	-DNDEBUG
-CXXFLAGS+=	-DNDEBUG
 
 OPTIONS_DEFINE=	BE_AMDGPU BE_WASM CLANG COMPILER_RT DOCS LLD STATIC_LIBS
 OPTIONS_DEFAULT=	BE_AMDGPU BE_WASM CLANG LLD
@@ -100,9 +94,9 @@ OPTIONS_EXCLUDE_armv7=	COMPILER_RT
 OPTIONS_SUB=	yes
 
 .if ${FLAVOR:Mlite}
-OPTIONS_DEFAULT+=	BE_NATIVE
+OPTIONS_DEFAULT+=	BE_FREEBSD
 .else
-OPTIONS_DEFINE+=	EXTRAS FLANG LIT LLDB MLIR OPENMP PYCLANG
+OPTIONS_DEFINE+=	EXTRAS FLANG LIT LLDB MLIR OPENMP PYCLANG POLLY
 OPTIONS_DEFINE_amd64=	GOLD
 OPTIONS_DEFINE_powerpc=	GOLD
 OPTIONS_DEFINE_powerpc64=	GOLD
@@ -119,11 +113,11 @@ OPTIONS_EXCLUDE_armv7+=	FLANG OPENMP
 OPTIONS_EXCLUDE_i386=	FLANG OPENMP
 OPTIONS_EXCLUDE_powerpc=	FLANG OPENMP
 OPTIONS_EXCLUDE_riscv64=	LLDB
-OPTIONS_EXCLUDE_FreeBSD_12=	OPENMP
 .endif
 
 # All non-backend options
-_ALL_OPTIONS=	CLANG COMPILER_RT DOCS EXTRAS FLANG GOLD LIT LLD LLDB MLIR OPENMP PYCLANG STATIC_LIBS
+_ALL_OPTIONS=	CLANG COMPILER_RT DOCS EXTRAS FLANG GOLD LIT LLD LLDB MLIR \
+		OPENMP POLLY PYCLANG STATIC_LIBS
 
 BE_AMDGPU_DESC=		AMD GPU backend (required by mesa)
 BE_FREEBSD_DESC=	Backends for FreeBSD architectures
@@ -152,17 +146,20 @@ CLANG_USES=		perl5
 CLANG_USE=		PERL5=build
 .endif
 COMPILER_RT_DESC=	Sanitizer libraries
-COMPILER_RT_CMAKE_ON=	-DCOMPILER_RT_INSTALL_PATH=${LLVM_PREFIX}/lib/clang/${LLVM_RELEASE}
+COMPILER_RT_CMAKE_ON= \
+	-DCOMPILER_RT_INSTALL_PATH=${LLVM_PREFIX}/lib/clang/${LLVM_RELEASE}
 COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS}
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
+DOCS_BUILD_DEPENDS= \
+	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
+	${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
 DOCS_CONFLICTS_BUILD=	cmark
 DOCS_PORTDOCS=		llvm
-DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
-			-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
-			-DSPHINX_WARNINGS_AS_ERRORS=OFF \
-			-DLLVM_BUILD_DOCS=ON
-DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
+DOCS_CMAKE_ON= \
+	-DLLVM_ENABLE_SPHINX=ON \
+	-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
+	-DSPHINX_WARNINGS_AS_ERRORS=OFF \
+	-DLLVM_BUILD_DOCS=ON
+DOCS_PLIST_FILES=	${MAN1SRCS:S|^|share/man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 EXTRAS_DESC=		Extra clang tools
 EXTRAS_IMPLIES=		CLANG
 EXTRAS_PLIST_DIRS=	${LLVM_DIR}/include/clang-tidy/plugin
@@ -175,29 +172,35 @@ GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
 GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
 GOLD_PLIST_FILES=	${LLVM_DIR}/lib/LLVMgold.so
 LIT_DESC=		Install lit and FileCheck test tools
-LIT_VARS=		_USES_PYTHON=python:3.7+
+LIT_VARS=		_USES_PYTHON=python
 LLD_DESC=		Install lld, the LLVM linker
 LLDB_BUILD_DEPENDS=	swig:devel/swig
-LLDB_CMAKE_ON=		-DLUA_INCLUDE_DIR=${LOCALBASE}/include/lua${LUA_VER_STR} \
-			-DLUA_LIBRARY=${LOCALBASE}/lib/liblua-${LUA_VER}.so \
-			-DCURSES_INCLUDE_PATH=/usr/include \
-			-DCURSES_CURSES_LIBRARY=/usr/lib/libcurses.so \
-			-DCURSES_FORM_LIBRARY=/usr/lib/libform.so \
-			-DCURSES_NCURSES_LIBRARY=/usr/lib/libncurses.so \
-			-DPANEL_LIBRARIES=/usr/lib/libpanel.so
+LLDB_CMAKE_ON= \
+	-DLUA_INCLUDE_DIR=${LOCALBASE}/include/lua${LUA_VER_STR} \
+	-DLUA_LIBRARY=${LOCALBASE}/lib/liblua-${LUA_VER}.so \
+	-DCURSES_INCLUDE_PATH=/usr/include \
+	-DCURSES_CURSES_LIBRARY=/usr/lib/libcurses.so \
+	-DCURSES_FORM_LIBRARY=/usr/lib/libform.so \
+	-DCURSES_NCURSES_LIBRARY=/usr/lib/libncurses.so \
+	-DPANEL_LIBRARIES=/usr/lib/libpanel.so
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_IMPLIES=		CLANG
 LLDB_PLIST_SUB=		PYTHON_ABIVER=${PYTHON_ABIVER}
 LLDB_USES=		lua:53 libedit
-LLDB_VARS=		_USES_PYTHON=python:3.7+
+LLDB_VARS=		_USES_PYTHON=python
 MLIR_DESC=		Multi-Level Intermediate Representation
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
-OPENMP_CMAKE_ON=	-DLIBOMPTARGET_BUILD_DEVICERTL_BCLIB=OFF
+OPENMP_CMAKE_ON= \
+	-DLIBOMPTARGET_BUILD_DEVICERTL_BCLIB=OFF \
+	-DLIBOMPTARGET_DEP_LIBFFI_INCLUDE_DIR="" \
+	-DLIBOMPTARGET_DEP_LIBFFI_LIBRARIES=""
 OPENMP_PORTDOCS=	openmp
 PYCLANG_DESC=		Install python bindings to libclang
 PYCLANG_IMPLIES=	CLANG
-PYCLANG_VARS=		_USES_PYTHON=python:3.7+
+PYCLANG_VARS=		_USES_PYTHON=python
 PYCLANG_CMAKE_ON=	-DCLANG_PYTHON_BINDINGS_VERSIONS=${PYTHON_VER}
+POLLY_DESC=		Polyhedral loop and data-locality optimizer
+POLLY_PORTDOCS=		polly
 STATIC_LIBS_DESC=	Install static libraries (does not effect sanitizers)
 
 CONFLICTS_INSTALL=	${PORTNAME}${LLVM_SUFFIX} ${PORTNAME}${LLVM_SUFFIX}-lite
@@ -277,13 +280,6 @@ USES+=		gnome
 .if ${PORT_OPTIONS:MCOMPILER_RT}
 LLVM_ENABLE_PROJECTS+=	compiler-rt
 COMPILER_RT_PATTERN=	(sanitizer|include.xray|include\/(fuzzer|orc)|profile\/InstrProfData.inc)
-.if ${OSVERSION} < 1300525
-# An unwind.h is require to build.  I think an in-tree one should be used
-# but this seems to work as a workaround...
-BUILD_DEPENDS+=	libunwind>0:devel/libunwind
-# Allow unwind.h to be found reliably
-USES+=	localbase
-.endif
 .endif
 
 .if ${PORT_OPTIONS:MEXTRAS}
@@ -327,6 +323,12 @@ COMMANDS+=	${OPENMP_COMMANDS}
 .endif
 OPENMP_PATTERN=	${OPENMP_COMMANDS:tW:C/  */|/g}|cmake\/openmp|libarcher|lib[ig]*omp|omp.h|ompt.h|ompt-multiplex.h|omp-tools.h
 
+.if ${PORT_OPTIONS:MPOLLY}
+LLVM_ENABLE_PROJECTS+=	polly
+MAN1SRCS+=	${POLLY_MAN1SRCS}
+.endif
+POLLY_PATTERN=	include\/polly|cmake\/polly|LLVMPolly.so|libPolly
+
 .if ${PORT_OPTIONS:MPYCLANG}
 PYCLANG_PATTERN=	(clang\/(__init__|cindex|enumerations).py)$$
 .endif
@@ -339,7 +341,7 @@ CMAKE_ARGS+=	-DLLVM_ENABLE_PROJECTS="${LLVM_ENABLE_PROJECTS:ts;}"
 .include "${.CURDIR}/Makefile.COMMANDS"
 .include "${.CURDIR}/Makefile.MAN1SRCS"
 
-_FREEBSD_BACKENDS=	AArch64 ARM Mips PowerPC RISCV Sparc X86
+_FREEBSD_BACKENDS=	AArch64 ARM Mips PowerPC RISCV X86
 FREEBSD_BACKENDS=	${_FREEBSD_BACKENDS}
 .if ${ARCH} == amd64
 _NATIVE_BACKENDS=	X86
@@ -366,7 +368,7 @@ FREEBSD_BACKENDS+=	WebAssembly
 NATIVE_BACKENDS+=	WebAssembly
 .endif
 STANDARD_BACKENDS=	${_FREEBSD_BACKENDS} AMDGPU AVR BPF Hexagon Lanai \
-			LoongArch MSP430 NVPTX SystemZ VE WebAssembly XCore
+			LoongArch MSP430 NVPTX Sparc SystemZ VE WebAssembly XCore
 _BE_LIBS_COMMON=	CodeGen Desc Info
 _BE_LIBS_AArch64=	AsmParser Disassembler Utils
 _BE_LIBS_BACKWARDS_AArch64=Exegesis
@@ -498,7 +500,7 @@ post-install-DOCS-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/doc
 .for _man in ${MAN1SRCS}
 	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/${_man} \
-	    ${STAGEDIR}${MANPREFIX}/man/man1/${_man:R}${LLVM_SUFFIX}.1
+	    ${STAGEDIR}${PREFIX}/share/man/man1/${_man:R}${LLVM_SUFFIX}.1
 .endfor
 .if ! ${PORT_OPTIONS:MLIT}
 	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/lit.1
@@ -622,6 +624,7 @@ build-plist:
 	    if ($$0 ~ /(argdumper|lldb|six.py)/) {printf "%%%%LLDB%%%%"} \
 	    if ($$0 ~ /(${MLIR_PATTERN})/) {printf "%%%%MLIR%%%%"} \
 	    if ($$0 ~ /(${OPENMP_PATTERN})/) {printf "%%%%OPENMP%%%%"} \
+	    if ($$0 ~ /(${POLLY_PATTERN})/) {printf "%%%%POLLY%%%%"} \
 	    if ($$0 ~ /${PYCLANG_PATTERN}/) {printf "%%%%PYCLANG%%%%"} \
 	    if ($$0 !~ /(lib[a-z]*_rt|LLVMgold)/ && $$0 !~ /(${BE_PATTERN})$$/) {print}}' ${PLIST}.tmp >> ${PLIST}
 	${ECHO_CMD} '@postexec if type ccache-update-links >/dev/null 2>&1; then ccache-update-links -v; fi' >> ${PLIST}

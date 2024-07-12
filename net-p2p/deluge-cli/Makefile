@@ -1,6 +1,6 @@
 PORTNAME=	deluge
-DISTVERSION=	2.0.3
-PORTREVISION=	4
+DISTVERSION=	2.1.1
+PORTREVISION=	2
 CATEGORIES=	net-p2p python
 MASTER_SITES=	PYPI
 PKGNAMESUFFIX=	-cli
@@ -14,22 +14,20 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	intltool-merge:textproc/intltool \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel \
-		${PYTHON_PKGNAMEPREFIX}slimit>0:www/py-slimit
+		${PYTHON_PKGNAMEPREFIX}rjsmin>0:archivers/py-rjsmin@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0.18:devel/py-xdg@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}libtorrent-rasterbar>=0:net-p2p/py-libtorrent-rasterbar@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openssl>=0.8:security/py-openssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=1.0.1:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mako>=0.2.5:textproc/py-mako@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}service_identity>=0:security/py-service_identity@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}service-identity>=0:security/py-service-identity@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${PY_FLAVOR} \
-		${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}rencode>0:converters/py-rencode@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.interface>0:devel/py-zope.interface@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}distro>0:sysutils/py-distro@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setproctitle>0:devel/py-setproctitle@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}distro>0:sysutils/py-distro@${PY_FLAVOR}
 
-USES=		cpe gettext python:3.5+
+USES=		cpe gettext python
 USE_PYTHON=	autoplist distutils
 
 CPE_VENDOR=	deluge-torrent
@@ -39,7 +37,10 @@ NO_ARCH=	yes
 USE_RC_SUBR=	deluged deluge_web
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS PILLOW
+OPTIONS_DEFAULT=	PILLOW
+PILLOW_DESC=Support for resizing tracker icons (pulls in many graphics libraries which may not be useful in a headless server).
+PILLOW_RUN_DEPENDS=${PY_PILLOW}
 
 PORTDOCS=	CHANGELOG.md README.md
 
@@ -54,7 +55,7 @@ post-patch:
 post-install:
 # install man pages
 .for man in deluge.1 deluge-console.1 deluge-gtk.1 deluge-web.1 deluged.1
-	${INSTALL_MAN} ${WRKSRC}/docs/man/${man} ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/docs/man/${man} ${STAGEDIR}${PREFIX}/share/man/man1/
 .endfor
 
 post-install-DOCS-on:

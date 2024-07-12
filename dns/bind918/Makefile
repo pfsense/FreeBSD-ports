@@ -1,22 +1,21 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
+DISTVERSION=	9.18.27
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
-PORTREVISION=	0
+PORTREVISION=	1
 .else
 # dns/bind918 here
-PORTREVISION=	0
+PORTREVISION=	1
 .endif
 CATEGORIES=	dns net
-MASTER_SITES=	ISC/bind9/${ISCVERSION}
+MASTER_SITES=	ISC/bind9/${DISTVERSION}
 .if defined(BIND_TOOLS_SLAVE)
 PKGNAMESUFFIX=	-tools
 .else
 PKGNAMESUFFIX=	918
 .endif
-DISTNAME=	${PORTNAME}-${ISCVERSION}
 
 MAINTAINER=	mat@FreeBSD.org
 WWW=		https://www.isc.org/bind/
@@ -43,16 +42,15 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 .endif
 
 USES=		autoreconf compiler:c11 cpe libedit libtool pkgconfig ssl tar:xz
-# ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.18.14
 
 CPE_VENDOR=	isc
-CPE_VERSION=	${ISCVERSION:C/-.*//}
-.if ${ISCVERSION:M*-*}
-CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
+CPE_VERSION=	${DISTVERSION:C/-.*//}
+.if ${DISTVERSION:M*-*}
+CPE_UPDATE=	${DISTVERSION:C/.*-//:tl}
 .endif
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-linux-caps \
 		--localstatedir=/var \
 		--sysconfdir=${ETCDIR} \
@@ -74,22 +72,22 @@ EXTRA_PATCHES=		${PATCHDIR}/extrapatch-no-bind-tools
 
 PORTDOCS=	*
 
-CONFLICTS=	bind911 bind916 bind9-devel
+CONFLICTS=	bind916 bind9-devel
 .endif	# BIND_TOOLS_SLAVE
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFAULT=	GSSAPI_NONE IDN JSON LMDB MANPAGES \
+OPTIONS_DEFAULT=	GSSAPI_NONE IDN JSON LMDB \
 			TCP_FASTOPEN DNSTAP
 OPTIONS_DEFINE=		DNSTAP DOCS FIXED_RRSET GEOIP IDN JSON LARGE_FILE LMDB \
-			MANPAGES OVERRIDECACHE QUERYTRACE \
+			OVERRIDECACHE QUERYTRACE \
 			START_LATE TCP_FASTOPEN
 
 OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 
 .if defined(BIND_TOOLS_SLAVE)
-OPTIONS_EXCLUDE=	DNSTAP DOCS GEOIP LMDB \
+OPTIONS_EXCLUDE=	DOCS GEOIP LMDB \
 			OVERRIDECACHE QUERYTRACE START_LATE \
 			TCP_FASTOPEN
 .endif	# BIND_TOOLS_SLAVE
@@ -98,8 +96,8 @@ OPTIONS_SUB=	yes
 
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
-GSSAPI_BASE_DESC=	Using Heimdal in base
-GSSAPI_HEIMDAL_DESC=	Using security/heimdal
+GSSAPI_BASE_DESC=	Using Heimdal in base (nsupdate is broken)
+GSSAPI_HEIMDAL_DESC=	Using security/heimdal (nsupdate is broken)
 GSSAPI_MIT_DESC=	Using security/krb5
 GSSAPI_NONE_DESC=	Disable
 LARGE_FILE_DESC=	64-bit file support
@@ -153,9 +151,6 @@ LARGE_FILE_CONFIGURE_ENABLE=	largefile
 LMDB_CONFIGURE_WITH=	lmdb=${LOCALBASE}
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 
-MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
-MANPAGES_USES=	gmake
-
 OVERRIDECACHE_EXTRA_PATCHES=	${FILESDIR}/extrapatch-bind-min-override-ttl
 
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
@@ -175,6 +170,10 @@ CONFIGURE_ARGS+=	--enable-developer \
 USES+=			perl5
 USE_PERL5=		build
 BUILD_DEPENDS+=		cmocka>0:sysutils/cmocka
+.endif
+
+.if !${PORT_OPTIONS:MDOCS}
+CONFIGURE_ENV+=		ac_cv_path_SPHINX_BUILD=
 .endif
 
 .include <bsd.port.pre.mk>

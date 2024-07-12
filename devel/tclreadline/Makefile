@@ -1,18 +1,19 @@
 PORTNAME=	tclreadline
 PORTVERSION=	2.3.8
 DISTVERSIONPREFIX=	v
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	devel tcl
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	GNU readline for TCL
-WWW=		http://tclreadline.sourceforge.net/
+WWW=		https://tclreadline.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
 USES=		autoreconf libtool tcl readline
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=--with-tcl=${TCL_LIBDIR} \
 		--with-tcl-includes=${TCL_INCLUDEDIR} \
 		--with-readline-includes=${LOCALBASE}/include \

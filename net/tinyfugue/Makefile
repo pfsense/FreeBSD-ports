@@ -1,13 +1,13 @@
 PORTNAME=	tf
 PORTVERSION=	5.0b8
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net games
 MASTER_SITES=	SF/tinyfugue/tinyfugue/5.0%20beta%208
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Popular programmable MUD client, with macro support and more
-WWW=		http://tinyfugue.sourceforge.net/
+WWW=		https://tinyfugue.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -30,6 +30,7 @@ post-build:
 	${STRIP_CMD} ${WRKSRC}/src/tf
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/src/tf.1.nroffman ${STAGEDIR}${PREFIX}/man/man1/tf.1
+	${INSTALL_MAN} ${WRKSRC}/src/tf.1.nroffman \
+		${STAGEDIR}${PREFIX}/share/man/man1/tf.1
 
 .include <bsd.port.mk>

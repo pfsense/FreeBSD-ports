@@ -1,20 +1,21 @@
 PORTNAME=	nntp
 PORTVERSION=	1.5.12.2
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	news
 MASTER_SITES=	ftp://ftp.dinoex.org/pub/c-news/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
 
 PATCH_SITES=	ftp://ftp.dinoex.org/pub/c-news/
-PATCHFILES=	nntp-patch-ansi2
+PATCHFILES=	nntp-patch-ansi3
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	NNTP with NOV support
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libcnews.a:news/cnews
+BUILD_DEPENDS=	${LOCALBASE}/lib/libcnews.a:${CNEWS_PORT}
 
 NO_WRKSUBDIR=	yes
 USE_CSTD=	gnu89
+CFLAGS+=	-Wno-incompatible-pointer-types
 PLIST_SUB+=	VARBASE=${VARBASE}
 PLIST_SUB+=	NEWSBIN=${NEWSBIN:S=^${PREFIX}/==}
 PLIST_SUB+=	NEWSCTL=${NEWSCTL:S=^${VARBASE}/==}
@@ -22,6 +23,7 @@ PLIST_SUB+=	NEWSCTL=${NEWSCTL:S=^${VARBASE}/==}
 DOCSFILES1=	AUTHORIZE CHANGES README README-conf.h SYSLOG doc/rfc977
 DOCSFILES2=	server support xfer xmit
 
+CNEWS_PORT?=	news/cnews
 VARBASE?=	/var
 NEWSBIN?=	${PREFIX}/libexec/cnews
 NEWSCTL?=	${VARBASE}/lib/news
@@ -31,7 +33,7 @@ NEWSOV?=	${VARBASE}/news/over.view
 MAKE_ENV+=	DBLIBS="${LOCALBASE}/lib/libcnews.a -lcrypt -lutil"
 MAKE_ENV+=	ETCDIR="${STAGEDIR}${PREFIX}/sbin"
 MAKE_ENV+=	BINDIR="${STAGEDIR}${NEWSBIN}"
-MAKE_ENV+=	MANDIR="${STAGEDIR}${PREFIX}/man"
+MAKE_ENV+=	MANDIR="${STAGEDIR}${PREFIX}/share/man"
 MAKE_ENV+=	EXECDIR="${STAGEDIR}${PREFIX}/libexec"
 
 OPTIONS_DEFINE=	DOCS
@@ -61,7 +63,7 @@ pre-configure:
 		-e "s=/var/news=${NEWSARTS}=" \
 		-e "s=/usr/local/bin=${PREFIX}/bin=" \
 		-e "s=/usr/local/sbin=${PREFIX}/sbin=" \
-		-e "s=/usr/local/man=${PREFIX}/man=" \
+		-e "s=/usr/local/man=${PREFIX}/share/man=" \
 		${WRKSRC}/conf.h
 
 pre-install:

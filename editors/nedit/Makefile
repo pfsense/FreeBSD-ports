@@ -1,14 +1,14 @@
 PORTNAME=	nedit
 PORTVERSION=	5.7
+PORTREVISION=	1
 CATEGORIES=	editors
-MASTER_SITES=	LOCAL/swills
-DISTFILES=	nedit-${PORTVERSION}-src.tar.gz \
-		nedit.app-defaults
-EXTRACT_ONLY=	nedit-${PORTVERSION}-src.tar.gz
+#MASTER_SITES=	LOCAL/swills
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/
+DISTFILES=	nedit-${PORTVERSION}-src.tar.gz
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	X11/Motif GUI text editor for programs and plain text files
-WWW=		http://www.nedit.org/
+WWW=		https://sourceforge.net/projects/nedit/
 
 LICENSE=	GPLv1
 
@@ -19,11 +19,8 @@ ALL_TARGET=	freebsd
 PLIST_FILES=	bin/nclient \
 		bin/nedit \
 		lib/X11/app-defaults/NEdit.ad \
-		man/man1/nclient.1.gz \
-		man/man1/nedit.1.gz
-
-post-extract:
-	${CP} ${DISTDIR}/nedit.app-defaults ${WRKSRC}/NEdit.ad
+		share/man/man1/nclient.1.gz \
+		share/man/man1/nedit.1.gz
 
 post-build:
 	cd ${WRKSRC} && make docs

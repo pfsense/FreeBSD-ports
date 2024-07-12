@@ -1,5 +1,5 @@
 bin/celluloid
-man/man1/celluloid.1.gz
+share/man/man1/celluloid.1.gz
 share/applications/io.github.celluloid_player.Celluloid.desktop
 share/dbus-1/services/io.github.celluloid_player.Celluloid.service
 share/icons/hicolor/scalable/apps/io.github.celluloid_player.Celluloid.svg
@@ -28,6 +28,7 @@ share/locale/ja/LC_MESSAGES/celluloid.mo
 share/locale/ka/LC_MESSAGES/celluloid.mo
 share/locale/ko/LC_MESSAGES/celluloid.mo
 share/locale/lt/LC_MESSAGES/celluloid.mo
+share/locale/lv/LC_MESSAGES/celluloid.mo
 share/locale/ms/LC_MESSAGES/celluloid.mo
 share/locale/nb_NO/LC_MESSAGES/celluloid.mo
 share/locale/nl/LC_MESSAGES/celluloid.mo

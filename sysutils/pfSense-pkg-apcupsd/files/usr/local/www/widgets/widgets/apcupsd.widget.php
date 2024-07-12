@@ -4,7 +4,7 @@
  * apcupsd.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -133,27 +133,27 @@ if (!function_exists('compose_apc_contents')) {
 					    !in_array($statstr, $mainstatarray)) {
 						$statstr = str_replace("ONLINE", "CHARGING", $statstr);
 						$brot = "45deg";
-						$bicn = "fa fa-plug";
+						$bicn = "fa-solid fa-plug";
 						$bclr = "orange";
 					} elseif (($bchrg != null) && (in_array("ONLINE", $statusarray))) {
 						$brot = "45deg";
-						$bicn = "fa fa-plug";
+						$bicn = "fa-solid fa-plug";
 						$bclr = "green";
 					} elseif ($bchrg != null) {
 						$brot = "270deg";
 						if ($bchrg <= 25) {
-							$bicn = "fas fa-battery-empty";
+							$bicn = "fas fa-solid fa-battery-empty";
 						} elseif ($bchrg <= 50) {
-							$bicn = "fas fa-battery-quarter";
+							$bicn = "fas fa-solid fa-battery-quarter";
 						} elseif ($bchrg <= 75) {
-							$bicn = "fas fa-battery-half";
+							$bicn = "fas fa-solid fa-battery-half";
 						} elseif ($bchrg <= 99) {
-							$bicn = "fas fa-battery-three-quarters";
+							$bicn = "fas fa-solid fa-battery-three-quarters";
 						} else {
-							$bicn = "fas fa-battery-empty";
+							$bicn = "fas fa-solid fa-battery-empty";
 						}
 					} else {
-						$bicn = "fas fa-times-circle";
+						$bicn = "fas fa-solid fa-times-circle";
 						$bclr = "orange";
 						$statstr = "Unknown " . $statstr;
 						$statsubstr = "Unknown " . $statsubstr;
@@ -168,13 +168,13 @@ if (!function_exists('compose_apc_contents')) {
 
 				if ($user_settings["widgets"][$widgetkey]["apc_host_dis"] == "yes") {
 					$rtnstr .= "<tr><td>Apcupsd Host</td>\n";
-					$rtnstr .= "<td><span class=\"fas fa-server\"></span>&nbsp;(" . $nisip . ":" . $nisport . ")</td></tr>\n";
+					$rtnstr .= "<td><span class=\"fas fa-solid fa-server\"></span>&nbsp;(" . $nisip . ":" . $nisport . ")</td></tr>\n";
 				}
 
 				$rtnstr .= "</td></tr><tr><td>Line Voltage</td>\n";
-				$rtnstr .= "<td><span class=\"fa fa-bolt\"></span>&nbsp;" . (($results['LINEV']) ? $results['LINEV'] : "N/A") . (($results['LINEFREQ']!="") ? " (" . $results['LINEFREQ'] . ")" : "") . "</td>\n";
+				$rtnstr .= "<td><span class=\"fa-solid fa-bolt\"></span>&nbsp;" . (($results['LINEV']) ? $results['LINEV'] : "N/A") . (($results['LINEFREQ']!="") ? " (" . $results['LINEFREQ'] . ")" : "") . "</td>\n";
 				$rtnstr .= "<td>Out Voltage</td>\n";
-				$rtnstr .= "<td><span class=\"fa fa-bolt\"></span>&nbsp;" . (($results['OUTPUTV'] != "") ? $results['OUTPUTV'] : "N/A") . "</td>\n";
+				$rtnstr .= "<td><span class=\"fa-solid fa-bolt\"></span>&nbsp;" . (($results['OUTPUTV'] != "") ? $results['OUTPUTV'] : "N/A") . "</td>\n";
 				$rtnstr .= "</tr>\n";
 
 				if ($results['LOADPCT']) {
@@ -190,7 +190,7 @@ if (!function_exists('compose_apc_contents')) {
 					} else {
 						$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $loadpct . "%\"></div>\n";
 					}
-					$rtnstr .= "</div><span class=\"fas fa-info-circle\"></span>&nbsp;" . $loadpct . "%&nbsp;</td></tr>";
+					$rtnstr .= "</div><span class=\"fas fa-solid fa-info-circle\"></span>&nbsp;" . $loadpct . "%&nbsp;</td></tr>";
 				}
 
 				if ($results['ITEMP'] != "") {
@@ -210,7 +210,7 @@ if (!function_exists('compose_apc_contents')) {
 						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ((ceil(substr(($degc), 0, (strlen($degc)-2)))/$tempmax)*100) . "%\"></div>\n";
 					}
 
-					$rtnstr .= "</div>\n<span class=\"fas fa-thermometer-full\"></span>&nbsp;&nbsp;";
+					$rtnstr .= "</div>\n<span class=\"fas fa-solid fa-thermometer-full\"></span>&nbsp;&nbsp;";
 					switch($user_settings['widgets'][$widgetkey]['apc_temp_dis_type']) {
 						case 'degf':
 							$rtnstr .= $degf;
@@ -239,13 +239,13 @@ if (!function_exists('compose_apc_contents')) {
 					$bchrgpbstyle = "progress-bar-success";
 				}
 				$rtnstr .= ($bchrg != null) ? "<td colspan=\"3\"><div class=\"progress\"><div id=\"apcupsd_bcharge_meter\" class=\"progress-bar progress-bar-striped " . $bchrgpbstyle . "\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $bchrg . "%\"></div></div>\n" : "";
-				$rtnstr .= ($bchrg != null) ? "<span class=\"fas fa-battery-full\" ></span>&nbsp;" . $bchrg . "%\n" : "";
+				$rtnstr .= ($bchrg != null) ? "<span class=\"fas fa-solid fa-battery-full\" ></span>&nbsp;" . $bchrg . "%\n" : "";
 
-				$rtnstr .= (($results['BATTV'] != "") ? "<span class=\"fa fa-bolt\" style=\"padding-left:1em\" ></span>&nbsp;" . $results['BATTV'] . "</td></tr>\n" : "</tr>\n");
+				$rtnstr .= (($results['BATTV'] != "") ? "<span class=\"fa-solid fa-bolt\" style=\"padding-left:1em\" ></span>&nbsp;" . $results['BATTV'] . "</td></tr>\n" : "</tr>\n");
 
 				if ($results['TIMELEFT'] != "") {
 					$rtnstr .= "<tr><td>Time Remaining</td>";
-					$rtnstr .= "<td colspan=\"3\"><span class=\"fa fa-clock-o\"></span>&nbsp;" . $results['TIMELEFT'] . "</td></tr>\n";
+					$rtnstr .= "<td colspan=\"3\"><span class=\"fa-regular fa-clock\"></span>&nbsp;" . $results['TIMELEFT'] . "</td></tr>\n";
 				}
 
 				$rtnstr .= "<tr><td>Battery Age</td>";
@@ -269,17 +269,17 @@ if (!function_exists('compose_apc_contents')) {
 
 					if ($batt_age['TotalDays'] >= $user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"]) {
 						$bageclr = "red";
-						$bageicn = "fa fa-calendar-times-o";
+						$bageicn = "fa-regular fa-calendar-xmark";
 					} elseif ($batt_age['TotalDays'] >= $user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"]) {
 						$bageclr = "orange";
-						$bageicn = "fa fa-calendar-minus-o";
+						$bageicn = "fa-regular fa-calendar-minus";
 					} else {
 						$bageclr = "green";
-						$bageicn = "fa fa-calendar-check-o";
+						$bageicn = "fa-regular fa-calendar-check";
 					}
 				} else {
 					$bageclr = "orange";
-					$bageicn = "fa fa-calendar-minus-o";
+					$bageicn = "fa-regular fa-calendar-minus";
 					$batt_age_fstr = "Unknown Battery Date";
 					$batt_org = (DateTime::createFromFormat('m/d/Y H:i:s', '01/01/1900 00:00:00'));
 				}
@@ -294,22 +294,22 @@ if (!function_exists('compose_apc_contents')) {
 				if ($results['SELFTEST'] != "") {
 					switch ($results['SELFTEST']) {
 						case "OK":
-							$stesticn = "fa fa-check-square";
+							$stesticn = "fa-solid fa-check-square";
 							$stestclr = "green";
 							$steststr = "Pass";
 						break;
 						case "BT":
-							$stesticn = "fa fa-exclamation-triangle";
+							$stesticn = "fa-solid fa-exclamation-triangle";
 							$stestclr = "red";
 							$steststr = "Failed (Capacity)";
 						break;
 						case "NG":
-							$stesticn = "fa fa-exclamation-triangle";
+							$stesticn = "fa-solid fa-exclamation-triangle";
 							$stestclr = "red";
 							$steststr = "Failed (Overload)";
 						break;
 						case "NO":
-							$stesticn = "fas fa-question-square";
+							$stesticn = "fas fa-solid fa-question-square";
 							$stestclr = "orange";
 							$steststr = "Unknown (No Recent Test)";
 						break;
@@ -387,7 +387,7 @@ if ($_POST['widgetkey']) {
 	header("Location: /");
 	exit(0);
 }
-$widgetperiod = isset($config['widgets']['period']) ? $config['widgets']['period'] * 1000 : 10000;
+$widgetperiod = (config_get_path('widgets/period') !== null) ? config_get_path('widgets/period') * 1000 : 10000;
 
 ?>
 <table class="table table-hover table-striped table-condensed">
@@ -395,7 +395,7 @@ $widgetperiod = isset($config['widgets']['period']) ? $config['widgets']['period
 		<tr><td><?=gettext("Retrieving data...")?></td></tr>
 	</tbody>
 </table>
-<!-- <a id="apcupsd_apcaccess_refresh" href="#" class="fa fa-refresh" style="display: none;"></a> -->
+<!-- <a id="apcupsd_apcaccess_refresh" href="#" class="fa-solid fa-arrows-rotate" style="display: none;"></a> -->
 </div><div id="<?=$widget_panel_footer_id?>" class="panel-footer collapse">
 <form action="/widgets/widgets/apcupsd.widget.php" method="post" class="form-horizontal">
 	<?=gen_customwidgettitle_div($widgetconfig['title']); ?>
@@ -476,7 +476,7 @@ $widgetperiod = isset($config['widgets']['period']) ? $config['widgets']['period
 	<div class="form-group">
 		<div align="center">
 			<input type="hidden" name="widgetkey" value="<?=htmlspecialchars($widgetkey); ?>">
-			<button type="submit" class="btn btn-primary"><i class="fa fa-save icon-embed-btn"></i><?=gettext('Save')?></button>
+			<button type="submit" class="btn btn-primary"><i class="fa-solid fa-save icon-embed-btn"></i><?=gettext('Save')?></button>
 		</div>
 	</div>
 </form>

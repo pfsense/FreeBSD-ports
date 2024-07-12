@@ -1,9 +1,10 @@
 PORTNAME=	lumina-mediaplayer
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.2
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Streaming media player from the Lumina Desktop
 WWW=		https://lumina-desktop.org/
 
@@ -18,6 +19,8 @@ USE_QT=		buildtools:build core concurrent gui \
 USE_GITHUB=	yes
 GH_ACCOUNT=	lumina-desktop
 GH_PROJECT=	lumina
+
+QMAKE_ARGS=	L_MANDIR=${PREFIX}/share/man
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

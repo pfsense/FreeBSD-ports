@@ -1,16 +1,17 @@
 PORTNAME=	hare
-PORTVERSION=	g20230205
+PORTVERSION=	0.24.0
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/
 PKGNAMESUFFIX=	-lang
-DISTNAME=	274b8b72
+DISTNAME=	${PORTVERSION}
 DIST_SUBDIR=	hare
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Hare language build system and standard library
 WWW=		https://harelang.org/
 
-LICENSE=	MPL20 GPLv3
+LICENSE=	GPLv3 MPL20
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -21,30 +22,26 @@ BUILD_DEPENDS=	harec:lang/harec \
 		scdoc:textproc/scdoc
 RUN_DEPENDS=	harec:lang/harec
 
-MAKE_ARGS=	ARCH=${ARCH:S/^amd64$/x86_64/}
+MAKE_ARGS=	ARCH=${ARCH:S/^amd64$/x86_64/} \
+		DESTDIR=${STAGEDIR} \
+		HARECACHE=${WRKDIR}/.cache/hare \
+		PREFIX=${PREFIX}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTNAME}
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000
-BROKEN=		pre-FreeBSD-13 assembler is not compatible with generated files
-.endif
-
 do-build:
-		${CP} ${FILESDIR}/config.mk ${WRKSRC}
+		cd ${WRKSRC} && ${CP} configs/freebsd.mk config.mk
 		cd ${WRKSRC} && ${MAKE} ${MAKE_ARGS}
 
-post-stage:
-		${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
-		${MV} ${STAGEDIR}${DATADIR}/src/hare/* ${STAGEDIR}${DATADIR}/
+do-install:
+		cd ${WRKSRC} && ${MAKE} ${MAKE_ARGS} install
+		${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/bin/*
 		${MKDIR} ${STAGEDIR}${DOCSDIR}
-		${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}/
 		${INSTALL_DATA} ${WRKSRC}/docs/*.md ${STAGEDIR}${DOCSDIR}/
 
 do-test:
 		cd ${WRKSRC} && ${MAKE} ${MAKE_ARGS} check
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

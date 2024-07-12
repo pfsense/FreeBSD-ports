@@ -1,5 +1,6 @@
 PORTNAME=	pyang
 PORTVERSION=	1.7.8
+PORTREVISION=	1
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,15 +13,11 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 
 DATADIR=	${PREFIX}/share/yang
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|share/man|man|' ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

@@ -1,15 +1,11 @@
---- build.sh.orig	2021-11-07 03:12:45 UTC
-+++ build.sh
-@@ -191,8 +191,10 @@ case $ucpu in
-     mycpu="powerpc64" ;;
-   *power*|*ppc* )
-     if [ "$myos" = "freebsd" ] ; then
--      COMP_FLAGS="$COMP_FLAGS -m64"
--      LINK_FLAGS="$LINK_FLAGS -m64"
-+      if [ "$ucpu" != "powerpc" ] ; then
-+        COMP_FLAGS="$COMP_FLAGS -m64"
-+        LINK_FLAGS="$LINK_FLAGS -m64"
-+      fi
-       mycpu=`uname -p`
-       case $mycpu in
-         powerpc64le)
+--- config/nim.cfg.orig 2020-04-03 17:22:53 UTC
++++ config/nim.cfg
+@@ -8,7 +8,7 @@
+ # Environment variables can be accessed like so:
+ #  gcc.path %= "$CC_PATH"
+ 
+-cc = gcc
++cc = clang
+ 
+ # additional options always passed to the compiler:
+ --parallel_build: "0" # 0 to auto-detect number of processors

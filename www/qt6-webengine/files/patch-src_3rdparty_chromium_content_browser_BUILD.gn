@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/content/browser/BUILD.gn.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/content/browser/BUILD.gn.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/content/browser/BUILD.gn
-@@ -2406,6 +2406,13 @@ jumbo_source_set("browser") {
-     }
+@@ -2463,6 +2463,13 @@ jumbo_source_set("browser") {
+     deps += [ "//media/mojo/mojom/stable:stable_video_decoder" ]
    }
  
 +  if (is_bsd) {
@@ -12,5 +12,5 @@
 +  }
 +
    if (is_chromeos) {
-     deps += [ "//components/value_store:value_store" ]
      sources += [
+       "handwriting/handwriting_recognition_service_impl_cros.cc",

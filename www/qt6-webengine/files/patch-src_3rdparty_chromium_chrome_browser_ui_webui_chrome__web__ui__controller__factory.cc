@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-@@ -310,7 +310,7 @@
- #include "chrome/browser/ui/webui/app_launcher_page_ui.h"
+@@ -213,7 +213,7 @@
+ #include "chrome/browser/ui/webui/chromeos/chrome_url_disabled/chrome_url_disabled_ui.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -9,7 +9,7 @@
  #include "chrome/browser/ui/webui/webui_js_error/webui_js_error_ui.h"
  #endif
  
-@@ -335,17 +335,17 @@
+@@ -239,17 +239,17 @@
  #endif
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -30,7 +30,7 @@
  #include "chrome/browser/ui/webui/connectors_internals/connectors_internals_ui.h"
  #endif
  
-@@ -701,7 +701,7 @@ bool IsAboutUI(const GURL& url) {
+@@ -402,7 +402,7 @@ bool IsAboutUI(const GURL& url) {
  #if !BUILDFLAG(IS_ANDROID)
            || url.host_piece() == chrome::kChromeUITermsHost
  #endif
@@ -39,16 +39,16 @@
            || url.host_piece() == chrome::kChromeUILinuxProxyConfigHost
  #endif
  #if BUILDFLAG(IS_CHROMEOS_ASH)
-@@ -1131,7 +1131,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* we
-     return &NewWebUI<ash::SampleSystemWebAppUI>;
- #endif  // !defined(OFFICIAL_BUILD)
+@@ -663,7 +663,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* we
+   if (url.host_piece() == chrome::kChromeUIMobileSetupHost)
+     return &NewWebUI<ash::cellular_setup::MobileSetupUI>;
  #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (url.host_piece() == chrome::kChromeUIWebUIJsErrorHost)
      return &NewWebUI<WebUIJsErrorUI>;
  #endif
-@@ -1189,7 +1189,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* we
+@@ -725,7 +725,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* we
    if (url.host_piece() == chrome::kChromeUINaClHost)
      return &NewWebUI<NaClUI>;
  #endif
@@ -57,7 +57,7 @@
       defined(TOOLKIT_VIEWS)) ||                         \
      defined(USE_AURA)
    if (url.host_piece() == chrome::kChromeUITabModalConfirmDialogHost)
-@@ -1247,27 +1247,27 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* we
+@@ -794,27 +794,27 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* we
    }
  #endif
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
@@ -87,6 +87,6 @@
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
-   if (base::FeatureList::IsEnabled(features::kDesktopPWAsWebAppSettingsPage) &&
-       url.host_piece() == chrome::kChromeUIWebAppSettingsHost) {
+   if (url.host_piece() == chrome::kChromeUIWebAppSettingsHost)
      return &NewWebUI<WebAppSettingsUI>;
+ #endif

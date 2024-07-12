@@ -8,7 +8,7 @@
  * tailscale.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -118,6 +118,21 @@
 				will persist on install/de-install.
 				]]>
 			</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<name>DNS</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Accept DNS</fielddescr>
+			<fieldname>acceptdns</fieldname>
+			<description>
+				<![CDATA[
+				Accept DNS configuration from the control server.
+				]]>
+			</description>
 			<type>checkbox</type>
 			<default_value>on</default_value>
 		</field>

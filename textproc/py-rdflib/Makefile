@@ -20,7 +20,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}berkeleydb>=0:databases/py-berkeleydb@${PY_
 		${PYTHON_PKGNAMEPREFIX}pytest-subtests>=0:devel/py-pytest-subtests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tabulate>=0:devel/py-tabulate@${PY_FLAVOR}
 
-USES=		cpe python:3.7+ shebangfix
+USES=		cpe python shebangfix
 USE_PYTHON=	autoplist concurrent pep517 pytest
 
 NO_ARCH=	yes
@@ -35,10 +35,4 @@ HTML_DESC=	HTML support
 
 HTML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}html5lib>=1.0<2:www/py-html5lib@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30800
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=0:devel/py-importlib-metadata@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

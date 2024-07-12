@@ -1,6 +1,5 @@
 PORTNAME=	pluma-plugins
-PORTVERSION=	1.26.0
-PORTREVISION=	4
+PORTVERSION=	1.28.0
 CATEGORIES=	editors mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -27,7 +26,7 @@ RUN_DEPENDS=	pluma>=0:editors/pluma \
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 gettext gnome localbase gmake pkgconfig \
-		python:3.8+ shebangfix tar:xz
+		python shebangfix tar:xz
 USE_GNOME=	cairo gdkpixbuf2 gtk30 gtksourceview4 intlhack introspection \
 		intltool vte3
 USE_CSTD=	c11

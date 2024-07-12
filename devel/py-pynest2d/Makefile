@@ -1,7 +1,7 @@
 PORTNAME=	pynest2d
 # XXX there is no 4.13.1
 DISTVERSION=	4.12.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,6 +12,9 @@ WWW=		https://github.com/Ultimaker/libnest2d
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Fails to build with modern python
+EXPIRATION_DATE=	2024-06-29
+
 RUN_DEPENDS=	${LOCALBASE}/include/libnest2d/libnest2d.hpp:devel/libnest2d-ultimaker
 BUILD_DEPENDS=	${LOCALBASE}/include/libnest2d/libnest2d.hpp:devel/libnest2d-ultimaker \
 		sip:devel/py-sip4
@@ -19,7 +22,7 @@ LIB_DEPENDS=	libpolyclipping.so:graphics/polyclipping \
 		libboost_system.so:devel/boost-libs \
 		libnlopt.so:math/nlopt
 
-USES=		python:3.6+ cmake compiler:c++11-lang pyqt:5 pkgconfig
+USES=		python cmake compiler:c++11-lang pyqt:5 pkgconfig
 USE_PYTHON=	flavors
 
 USE_GITHUB=	yes

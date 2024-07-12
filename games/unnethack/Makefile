@@ -1,12 +1,12 @@
 PORTNAME=	unnethack
 DISTVERSION=	5.1.0-20131208
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	New variant of NetHack
-WWW=		http://unnethack.sourceforge.net/
+WWW=		https://unnethack.sourceforge.net/
 
 LICENSE=	nethack
 LICENSE_NAME=	NETHACK GENERAL PUBLIC LICENSE
@@ -26,7 +26,7 @@ CONFIGURE_ARGS=	--datadir="${DATADIR:H}" \
 		--with-group=no \
 		--enable-data-librarian \
 		LFLAGS="${LDFLAGS}"
-MAKE_ARGS=	MANPREFIX="${STAGEDIR}${MANPREFIX}"
+MAKE_ARGS=	MANPREFIX="${STAGEDIR}${PREFIX}/share"
 INSTALL_TARGET=	install manpages
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
 SUB_FILES=	pkg-deinstall
@@ -39,7 +39,7 @@ post-patch:
 	${MV} ${WRKSRC}/doc/nethack.6 ${WRKSRC}/doc/${PORTNAME}.6
 
 post-install:
-	cd ${STAGEDIR}${PREFIX}/man/man6; \
+	cd ${STAGEDIR}${PREFIX}/share/man/man6; \
 	for f in ${WRKSRC}/doc/*.6; do \
 		fn=$${f##*/}; \
 		case $$fn in \

@@ -766,7 +766,7 @@ whoisconvert() {
 			unavailable=''
 			for i in 1 2 3 4 5; do
 				printf "."
-				"${pathcurl}" -H "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+				"${pathcurl}" -A "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
 
 				if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
 					printf "."
@@ -823,7 +823,7 @@ iptoasn() {
 	unavailable=''
 	found=false
 	for i in 1 2 3 4 5; do
-		"${pathcurl}" -H "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+		"${pathcurl}" -A "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
 
 		if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
 			unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"

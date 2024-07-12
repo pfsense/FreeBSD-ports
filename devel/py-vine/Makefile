@@ -1,5 +1,5 @@
 PORTNAME=	vine
-PORTVERSION=	1.3.0
+PORTVERSION=	5.1.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/celery/vine/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

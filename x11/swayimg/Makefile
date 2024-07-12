@@ -1,6 +1,7 @@
 PORTNAME=	swayimg
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.11
+DISTVERSION=	2.2
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
-		libepoll-shim.so:devel/libepoll-shim \
+		libinotify.so:devel/libinotify \
 		libwayland-client.so:graphics/wayland \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -23,15 +24,25 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	artemsen
 MESON_ARGS=	-Dversion="${DISTVERSIONFULL}"
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz \
-		man/man5/${PORTNAME}rc.5.gz \
+		share/man/man1/${PORTNAME}.1.gz \
+		share/man/man5/${PORTNAME}rc.5.gz \
 		share/applications/${PORTNAME}.desktop \
 		share/icons/hicolor/64x64/apps/${PORTNAME}.png \
+		${DATADIR}/swayimgrc \
 		${NULL}
 
-OPTIONS_DEFINE=	BASH GIF HEIF JPEG JXL LIBEXIF LIBRSVG2 PNG TIFF WEBP ZSH
-OPTIONS_DEFAULT=BASH GIF HEIF JPEG JXL LIBEXIF LIBRSVG2 PNG TIFF WEBP ZSH
+# XXX Drop after FreeBSD 13.4 EOL around 2026-01-31
+# https://cgit.freebsd.org/src/commit/?id=af93fea71038
+.if !exists(/usr/include/sys/timerfd.h)
+LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim
+.endif
+
+OPTIONS_DEFINE=	AVIF BASH GIF HEIF JPEG JXL LIBEXIF LIBRSVG2 OPENEXR PNG TIFF WEBP ZSH
+OPTIONS_DEFAULT=AVIF BASH GIF HEIF JPEG JXL LIBEXIF LIBRSVG2 OPENEXR PNG TIFF WEBP ZSH
 OPTIONS_EXCLUDE=${LIBRSVG2_DEFAULT:Mlegacy:C/.+/LIBRSVG2/}
+
+AVIF_LIB_DEPENDS=	libavif.so:graphics/libavif
+AVIF_MESON_ENABLED=	avif
 
 BASH_BUILD_DEPENDS=	bash-completion>0:shells/bash-completion
 BASH_MESON_ENABLED=	bash
@@ -57,6 +68,9 @@ LIBRSVG2_USES=		gnome
 LIBRSVG2_USE=		GNOME=cairo,librsvg2
 LIBRSVG2_MESON_ENABLED=	svg
 
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr
+OPENEXR_MESON_ENABLED=	exr
+
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_MESON_ENABLED=	png
 
@@ -72,6 +86,7 @@ ZSH_PLIST_FILES=	share/zsh/site-functions/_${PORTNAME}
 post-patch:
 # Respect PREFIX for system-wide config
 	@${REINPLACE_CMD} 's,/etc,${PREFIX}&,' \
+		${WRKSRC}/extra/${PORTNAME}rc \
 		${WRKSRC}/extra/${PORTNAME}rc.5 \
 		${WRKSRC}/src/config.c
 

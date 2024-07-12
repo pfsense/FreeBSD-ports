@@ -1,6 +1,6 @@
 PORTNAME=	snakemake
 DISTVERSION=	6.15.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc python
 MASTER_SITES=	PYPI
 
@@ -30,7 +30,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}appdirs>0:devel/py-appdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wrapt>0:devel/py-wrapt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	distutils noflavors autoplist
 
 NO_ARCH=	yes

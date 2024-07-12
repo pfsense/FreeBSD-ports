@@ -42,9 +42,9 @@
 @mode 640
 @owner root
 @group wazuh
-/var/ossec/etc/client.keys
+@sample /var/ossec/etc/client.keys.sample
 /var/ossec/etc/internal_options.conf
-/var/ossec/etc/local_internal_options.conf
+@sample /var/ossec/etc/local_internal_options.conf.sample
 /var/ossec/etc/localtime
 @mode 660
 @owner root
@@ -97,6 +97,7 @@
 @owner root
 @group wazuh
 /var/ossec/lib/libdbsync.so
+/var/ossec/lib/libfimdb.so
 /var/ossec/lib/librsync.so
 /var/ossec/lib/libsyscollector.so
 /var/ossec/lib/libsysinfo.so
@@ -147,6 +148,8 @@
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/21/sca.files
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/22/localfile-extra.template
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/22/sca.files
+/var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/23/localfile-extra.template
+/var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/23/sca.files
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/localfile-commands.template
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/localfile-extra.template
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/sca.files
@@ -158,6 +161,7 @@
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/10/rootcheck.manager.template
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/10/sca.files
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/11/sca.files
+/var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/12/sca.files
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/7/sca.files
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/8/sca.files
 /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/9/sca.files
@@ -295,11 +299,17 @@
 /var/ossec/packages_files/agent_installation_scripts/sca/darwin/20/cis_apple_macOS_11.1.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/darwin/21/cis_apple_macOS_12.0.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/darwin/22/cis_apple_macOS_13.x.yml
+/var/ossec/packages_files/agent_installation_scripts/sca/darwin/23/cis_apple_macOS_14.0.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/debian/cis_debian10.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/debian/cis_debian11.yml
+/var/ossec/packages_files/agent_installation_scripts/sca/debian/cis_debian12.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/debian/cis_debian7.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/debian/cis_debian8.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/debian/cis_debian9.yml
+/var/ossec/packages_files/agent_installation_scripts/sca/freebsd/cis_freebsd12.yml
+/var/ossec/packages_files/agent_installation_scripts/sca/freebsd/cis_freebsd13.yml
+/var/ossec/packages_files/agent_installation_scripts/sca/freebsd/cis_freebsd14.yml
+/var/ossec/packages_files/agent_installation_scripts/sca/freebsd/cis_freebsd15.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/generic/sca_unix_audit.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/hpux/cis_hpux_11i.yml
 /var/ossec/packages_files/agent_installation_scripts/sca/hpux/cis_hpux_11i_bastille.yml
@@ -364,62 +374,7 @@
 @owner root
 @group wazuh
 /var/ossec/queue/syscollector/norm_config.json
-/var/ossec/ruleset/sca/cis_amazon_linux_1.yml
-/var/ossec/ruleset/sca/cis_amazon_linux_2.yml
-/var/ossec/ruleset/sca/cis_apache_24.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_10.11.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_10.12.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_10.13.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_10.14.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_10.15.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_11.1.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_12.0.yml
-/var/ossec/ruleset/sca/cis_apple_macOS_13.x.yml
-/var/ossec/ruleset/sca/cis_centos6_linux.yml
-/var/ossec/ruleset/sca/cis_centos7_linux.yml
-/var/ossec/ruleset/sca/cis_centos8_linux.yml
-/var/ossec/ruleset/sca/cis_debian10.yml
-/var/ossec/ruleset/sca/cis_debian11.yml
-/var/ossec/ruleset/sca/cis_debian7.yml
-/var/ossec/ruleset/sca/cis_debian8.yml
-/var/ossec/ruleset/sca/cis_debian9.yml
-/var/ossec/ruleset/sca/cis_hpux_11i.yml
-/var/ossec/ruleset/sca/cis_hpux_11i_bastille.yml
-/var/ossec/ruleset/sca/cis_iis_10.yml
-/var/ossec/ruleset/sca/cis_mongodb_36.yml
-/var/ossec/ruleset/sca/cis_mysql5-6_community.yml
-/var/ossec/ruleset/sca/cis_mysql5-6_enterprise.yml
-/var/ossec/ruleset/sca/cis_nginx_1.yml
-/var/ossec/ruleset/sca/cis_oracle_database_19c.yml
-/var/ossec/ruleset/sca/cis_postgre-sql-13.yml
-/var/ossec/ruleset/sca/cis_rhel5_linux.yml
-/var/ossec/ruleset/sca/cis_rhel6_linux.yml
-/var/ossec/ruleset/sca/cis_rhel7_linux.yml
-/var/ossec/ruleset/sca/cis_rhel8_linux.yml
-/var/ossec/ruleset/sca/cis_rhel9_linux.yml
-/var/ossec/ruleset/sca/cis_sles11_linux.yml
-/var/ossec/ruleset/sca/cis_sles12_linux.yml
-/var/ossec/ruleset/sca/cis_sles15_linux.yml
-/var/ossec/ruleset/sca/cis_solaris11.4.yml
-/var/ossec/ruleset/sca/cis_solaris11.yml
-/var/ossec/ruleset/sca/cis_sqlserver_2012.yml
-/var/ossec/ruleset/sca/cis_sqlserver_2014.yml
-/var/ossec/ruleset/sca/cis_sqlserver_2016.yml
-/var/ossec/ruleset/sca/cis_sqlserver_2017.yml
-/var/ossec/ruleset/sca/cis_sqlserver_2019.yml
-/var/ossec/ruleset/sca/cis_ubuntu14-04.yml
-/var/ossec/ruleset/sca/cis_ubuntu16-04.yml
-/var/ossec/ruleset/sca/cis_ubuntu18-04.yml
-/var/ossec/ruleset/sca/cis_ubuntu20-04.yml
-/var/ossec/ruleset/sca/cis_ubuntu22-04.yml
-/var/ossec/ruleset/sca/cis_win10_enterprise.yml
-/var/ossec/ruleset/sca/cis_win11_enterprise.yml
-/var/ossec/ruleset/sca/cis_win2012r2.yml
-/var/ossec/ruleset/sca/cis_win2016.yml
-/var/ossec/ruleset/sca/cis_win2019.yml
-/var/ossec/ruleset/sca/cis_win2022.yml
 /var/ossec/ruleset/sca/sca_unix_audit.yml
-/var/ossec/ruleset/sca/web_vulnerabilities.yml
 @mode 750
 @owner root
 @group wazuh
@@ -477,9 +432,11 @@
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/20
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/21
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/22
+@dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin/23
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/darwin
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/10
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/11
+@dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/12
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/7
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/8
 @dir /var/ossec/packages_files/agent_installation_scripts/etc/templates/config/debian/9
@@ -555,8 +512,10 @@
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/darwin/20
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/darwin/21
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/darwin/22
+@dir /var/ossec/packages_files/agent_installation_scripts/sca/darwin/23
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/darwin
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/debian
+@dir /var/ossec/packages_files/agent_installation_scripts/sca/freebsd
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/generic
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/hpux
 @dir /var/ossec/packages_files/agent_installation_scripts/sca/mongodb

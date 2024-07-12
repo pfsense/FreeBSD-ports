@@ -1,7 +1,7 @@
 PORTNAME=	disco
 DISTVERSIONPREFIX=	releases/
 DISTVERSION=	1.0.0-33
-PORTREVISION=	5
+PORTREVISION=	9
 DISTVERSIONSUFFIX=	-g68720be
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
@@ -32,6 +32,7 @@ LIB_DEPENDS=	libAlps.so:math/alps \
 		libOsiIpopt.so:math/osiipopt
 
 USES=		gmake libtool pkgconfig
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

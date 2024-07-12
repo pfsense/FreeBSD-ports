@@ -52,6 +52,7 @@ bin/dh_makeshlibs
 bin/dh_md5sums
 bin/dh_missing
 bin/dh_movefiles
+bin/dh_movetousr
 bin/dh_perl
 bin/dh_prep
 bin/dh_shlibdeps
@@ -91,6 +92,8 @@ bin/postinst-xfonts
 bin/postrm-debconf
 bin/postrm-icons
 bin/postrm-init
+bin/postrm-init-tmpfiles-purge
+bin/postrm-init-tmpfiles-remove
 bin/postrm-menu
 bin/postrm-menu-method
 bin/postrm-modules
@@ -127,6 +130,7 @@ bin/prerm-wm
 %%SITE_PERL%%/Debian/Debhelper/Buildsystem/perl_makemaker.pm
 %%SITE_PERL%%/Debian/Debhelper/Buildsystem/python_distutils.pm
 %%SITE_PERL%%/Debian/Debhelper/Buildsystem/qmake.pm
+%%SITE_PERL%%/Debian/Debhelper/Buildsystem/qmake6.pm
 %%SITE_PERL%%/Debian/Debhelper/Buildsystem/qmake_qt4.pm
 %%SITE_PERL%%/Debian/Debhelper/Dh_Buildsystems.pm
 %%SITE_PERL%%/Debian/Debhelper/Dh_Getopt.pm
@@ -137,6 +141,7 @@ bin/prerm-wm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/elf_tools.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/installinitramfs.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/installsysusers.pm
+%%SITE_PERL%%/Debian/Debhelper/Sequence/movetousr.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/root_sequence.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/single_binary.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/systemd.pm

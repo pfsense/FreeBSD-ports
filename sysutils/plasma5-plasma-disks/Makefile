@@ -25,9 +25,10 @@ RUN_DEPENDS=	smartmontools>0:sysutils/smartmontools
 
 USES=		cmake compiler:c++11-lang kde:5 qt:5 tar:xz xorg
 
-USE_KDE=	activities auth codecs config configwidgets coreaddons \
-		dbusaddons ecm i18n kdeclarative kio ksysguard notifications \
-		plasma-framework service solid widgetsaddons windowsystem
+USE_KDE=	auth codecs config configwidgets coreaddons dbusaddons i18n \
+		kdeclarative kio ksysguard notifications service solid \
+		widgetsaddons windowsystem \
+		ecm:build
 USE_QT=		concurrent core dbus declarative gui network quickcontrols \
 		widgets xml \
 		buildtools:build qmake:build

@@ -1,6 +1,5 @@
 PORTNAME=	kalgebra
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	math education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -15,7 +14,7 @@ USES=		cmake compiler:c++11-lang desktop-file-utils gettext gl kde:5 \
 		readline qt:5 tar:xz
 USE_GL=		glu
 USE_KDE=	auth codecs config configwidgets coreaddons doctools i18n \
-		kio service widgetsaddons xmlgui \
+		kio plasma-workspace service widgetsaddons xmlgui \
 		ecm:build
 USE_QT=		concurrent core dbus declarative gui location network opengl printsupport \
 		svg testlib webchannel widgets xml \

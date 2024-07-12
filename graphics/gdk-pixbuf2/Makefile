@@ -1,19 +1,20 @@
 PORTNAME=	gdk-pixbuf
 PORTVERSION=	2.42.10
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	desktop@FreeBSD.org
-COMMENT=	Graphic library for GTK+
+COMMENT=	Graphic library for GTK
 WWW=		https://developer.gnome.org/gdk-pixbuf/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe gettext gnome localbase:ldflags meson pkgconfig \
-		python:3.7+,build shared-mime-info shebangfix tar:xz trigger
+		python:build shared-mime-info shebangfix tar:xz trigger
 CPE_VENDOR=	gnome
 USE_GNOME=	glib20 introspection:build libxslt:build
 SHEBANG_FILES=	build-aux/*.py

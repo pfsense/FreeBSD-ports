@@ -1,5 +1,5 @@
 PORTNAME=	haproxy
-DISTVERSION=	2.4.23
+DISTVERSION=	2.4.27
 CATEGORIES=	net www
 PKGNAMESUFFIX=	24
 MASTER_SITES=	http://www.haproxy.org/download/2.4/src/
@@ -29,6 +29,7 @@ MAKE_ARGS=	TARGET=freebsd DEFINE=-DFREEBSD_PORTS USE_GETADDRINFO=1 \
 		CC="${CC}" DEBUG_CFLAGS="" CPU_CFLAGS="${CFLAGS}" \
 		${MAKE_ARGS_${ARCH}}
 MAKE_ARGS_i386=	USE_LIBATOMIC=
+MAKE_ARGS_powerpc=	USE_LIBATOMIC=
 
 OPTIONS_DEFINE=		DOCS EXAMPLES LUA OPENSSL DEVICEATLAS PROMEX
 OPTIONS_RADIO=		PCRE
@@ -55,12 +56,6 @@ LUA_MAKE_ARGS=		USE_LUA=1 LUA_INC=${LUA_INCDIR} LUA_LIB=${LUA_LIBDIR} LUA_LIB_NA
 OPTIONS_DEFAULT+=	LUA
 .endif
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc
-MAKE_ARGS+=	USE_LIBATOMIC=
-.endif
-
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64" || ${ARCH} == "i386"
@@ -70,7 +65,7 @@ MAKE_ARGS+=	USE_REGPARM=1
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/haproxy ${STAGEDIR}${PREFIX}/sbin/
 	${INSTALL_PROGRAM} ${WRKSRC}/admin/halog/halog ${STAGEDIR}${PREFIX}/sbin/
-	${INSTALL_MAN} ${WRKSRC}/doc/haproxy.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/haproxy.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR})
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

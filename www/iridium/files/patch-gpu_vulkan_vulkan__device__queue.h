@@ -1,11 +1,11 @@
---- gpu/vulkan/vulkan_device_queue.h.orig	2022-10-05 07:34:01 UTC
+--- gpu/vulkan/vulkan_device_queue.h.orig	2024-06-25 12:08:48 UTC
 +++ gpu/vulkan/vulkan_device_queue.h
-@@ -158,7 +158,7 @@ class COMPONENT_EXPORT(VULKAN) VulkanDeviceQueue {
- 
+@@ -169,7 +169,7 @@ class COMPONENT_EXPORT(VULKAN) VulkanDeviceQueue
    bool allow_protected_memory_ = false;
  
--#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    VkPhysicalDeviceSamplerYcbcrConversionFeatures
        sampler_ycbcr_conversion_features_{
            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES};

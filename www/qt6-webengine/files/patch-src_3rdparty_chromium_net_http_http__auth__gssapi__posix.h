@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/net/http/http_auth_gssapi_posix.h.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/net/http/http_auth_gssapi_posix.h.orig	2022-08-31 12:19:35 UTC
 +++ src/3rdparty/chromium/net/http/http_auth_gssapi_posix.h
-@@ -20,6 +20,9 @@
+@@ -21,6 +21,9 @@
  #if BUILDFLAG(IS_APPLE)
  #include <GSS/gssapi.h>
  #elif BUILDFLAG(IS_FREEBSD)

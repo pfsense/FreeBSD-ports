@@ -1,19 +1,19 @@
 PORTNAME=	dvdbackup
-PORTVERSION=	0.4.2
-PORTREVISION=	7
+DISTVERSION=	0.4.2
+PORTREVISION=	8
 CATEGORIES=	sysutils multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Backup content from DVD to hard disk
-WWW=		http://dvdbackup.sourceforge.net/
+WWW=		https://dvdbackup.sourceforge.net/
 
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libdvdread.so:multimedia/libdvdread
 
-GNU_CONFIGURE=	yes
 USES=		gmake
+GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

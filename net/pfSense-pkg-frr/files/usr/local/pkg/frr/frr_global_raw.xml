@@ -8,7 +8,7 @@
  * frr_global_raw.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -129,7 +129,7 @@
 			<description>
 				<![CDATA[
 				<p><b>Clicking "Update Running" will fill RUNNING fields with current configuration.</p>
-				<p><button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update Running'><i class="fa fa-refresh icon-embed-btn"></i>Update Running</button></p>
+				<p><button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update Running'><i class="fa-solid fa-arrows-rotate icon-embed-btn"></i>Update Running</button></p>
 				]]>
 			</description>
 			<type>info</type>

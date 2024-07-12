@@ -1,18 +1,19 @@
 PORTNAME=	remake
 PORTVERSION=	1.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF/bashdb/remake/4.3+dbg-${PORTVERSION}/
 DISTNAME=	remake-4.3+dbg-${PORTVERSION}
 
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Fork of gmake with debugger
-WWW=		http://bashdb.sourceforge.net/remake/
+WWW=		https://bashdb.sourceforge.net/remake/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USES=		readline
 INFO=		remake
 CONFIGURE_ARGS=	--without-guile

@@ -5,7 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/distrib
 
 MAINTAINER=	david@catwhisker.org
 COMMENT=	Tcl/Tk-based GPS management utility
-WWW=		http://gpsman.sourceforge.net/
+WWW=		https://gpsman.sourceforge.net/
 
 OPTIONS_DEFINE=	DOCS
 
@@ -13,6 +13,7 @@ USES+=		tk:wrapper,run tar:tgz
 
 GPSMANDIR=	${PREFIX}/lib/${PORTNAME}
 PLIST_SUB+=	GPSMANDIR=${GPSMANDIR:S/${PREFIX}\///}
+NO_ARCH=	yes
 NO_BUILD=	yes
 PORTDOCS=	*
 

@@ -14,7 +14,6 @@ BROKEN_armv6=		invokes x86 assembler
 BROKEN_armv7=		invokes x86 assembler
 BROKEN_mips=		invokes x86 assembler
 BROKEN_mips64=		invokes x86 assembler
-BROKEN_sparc64=		invokes x86 assembler
 
 USES=		gmake tar:tgz
 
@@ -39,9 +38,6 @@ BIN_SYMLINKS=	bin/n14 \
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 USES+=		llvm:max=14
-CPP=            clang-cpp${LLVM_VERSION}
-CC=             clang${LLVM_VERSION}
-CXX=            clang++${LLVM_VERSION}
 .endif
 
 post-patch:

@@ -1,5 +1,6 @@
 PORTNAME=	keep
 PORTVERSION=	2.10.1
+PORTREVISION=	1
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,9 +15,9 @@ LICENSE_FILE=	${FILESDIR}/LICENSE.md
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>0:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}terminaltables>0:textproc/py-terminaltables@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pygithub>0:devel/py-pygithub@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}PyGithub>0:devel/py-PyGithub@${PY_FLAVOR}
 
-USES=	python:3.8+
+USES=	python
 USE_PYTHON=	autoplist distutils
 
 SUB_FILES=	pkg-message

@@ -1,13 +1,16 @@
 PORTNAME=	mpatrol
 PORTVERSION=	1.4.8
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dynamic memory debugging and profiling library
-WWW=		http://mpatrol.sourceforge.net/
+WWW=		https://mpatrol.sourceforge.net/
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/../../COPYING
 
 ONLY_FOR_ARCHS=	amd64 i386
 .if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
@@ -42,6 +45,10 @@ OPTIONS_DEFINE=	DOCS
 CFLAGS+=	-DENVIRON=\"ENVIRON_64\" -DMP_INIT_SUPPORT=0
 .endif
 
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=dynamic-exception-spec
+.endif
+
 do-install:
 .for file in hexwords mpedit mpsym mupdate
 	${INSTALL_SCRIPT} ${WRKSRC}/../../bin/${file} ${STAGEDIR}${PREFIX}/bin
@@ -49,8 +56,8 @@ do-install:
 .for file in mpatrol mleak mptrace mprof
 	${INSTALL_PROGRAM} ${WRKSRC}/${file} ${STAGEDIR}${PREFIX}/bin
 .endfor
-	${INSTALL_MAN} ${WRKSRC}/../../man/man1/*.1 ${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/../../man/man3/*.3 ${STAGEDIR}${PREFIX}/man/man3
+	${INSTALL_MAN} ${WRKSRC}/../../man/man1/*.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/../../man/man3/*.3 ${STAGEDIR}${PREFIX}/share/man/man3
 .for lib in mpalloc mpatrol mpatrolmt
 	${INSTALL_DATA} ${WRKSRC}/lib${lib}.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_PROGRAM} ${WRKSRC}/lib${lib}.so.1 ${STAGEDIR}${PREFIX}/lib

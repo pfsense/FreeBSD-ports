@@ -6,13 +6,12 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Video game about traveling in 2D planetary systems
-WWW=		http://spacejunk.sourceforge.net/
+WWW=		https://spacejunk.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_aarch64=	Fails to compile: error: _compile_time_assert__ declared as an array with a negative size
-BROKEN_sparc64=	Doesn't compile on sparc64
 
 USES=		dos2unix localbase sdl
 USE_CXXSTD=	c++98

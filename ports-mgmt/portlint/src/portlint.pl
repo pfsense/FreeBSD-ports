@@ -20,10 +20,13 @@
 use strict;
 use warnings;
 
+BEGIN { $ENV{ NO_COLOR } = 1 if not -t STDOUT; }
+
 use Getopt::Std;
 use File::Find;
 use IPC::Open2;
 use File::Basename;
+use Term::ANSIColor qw(:constants);
 use POSIX qw(strftime);
 
 sub perror($$$$);
@@ -48,8 +51,8 @@ $portdir = '.';
 
 # version variables
 my $major = 2;
-my $minor = 20;
-my $micro = 0;
+my $minor = 22;
+my $micro = 1;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -403,9 +406,13 @@ if ($err || $warn) {
 			print $msg, "\n";
 		}
 	}
-	printf("%d fatal %s and %d %s found.\n", $err, $errtext, $warn, $warntext);
+	if ($err > 0) {
+		print BRIGHT_RED sprintf("%d fatal %s and %d %s found.", $err, $errtext, $warn, $warntext), RESET, "\n";
+	} else {
+		print BRIGHT_YELLOW sprintf("%d fatal %s and %d %s found.", $err, $errtext, $warn, $warntext), RESET, "\n";
+	}
 } else {
-	print "looks fine.\n";
+	print BRIGHT_GREEN "looks fine.", RESET, "\n";
 }
 exit $err;
 
@@ -536,36 +543,6 @@ sub checkdescr {
 		&perror("WARN", $file, -1, "includes iso-8859-1, or ".
 			"other local characters.  files should be in ".
 			"plain 7-bit ASCII");
-	}
-	if ($file =~ /\bpkg-descr/ && $tmp =~ m,https?://,) {
-		my $has_url = 0;
-		my $has_www = 0;
-		my $cpan_url = 0;
-		my $has_endslash = 0;
-		foreach my $line (grep($_ =~ "https?://", split(/\n+/, $tmp))) {
-			$has_url = 1;
-			if ($line =~ m,WWW:[ \t]+https?://,) {
-				$has_www = 1;
-				if ($line =~ m,search.cpan.org,) {
-					$cpan_url = 1;
-					if ($line =~ m,/$,) {
-						$has_endslash = 1;
-					}
-				}
-			}
-		}
-
-		if (!$has_url) {
-			&perror("WARN", $file, -1, "add \"WWW: URL:\" for this port if possible");
-		}
-
-		if ($cpan_url && !$has_endslash) {
-			&perror("WARN", $file, -1, "end WWW CPAN URL with a \"/\"");
-		}
-
-		if ($has_url && ! $has_www) {
-			&perror("FATAL", $file, -1, "contains a URL but no \"WWW:\"");
-		}
 	}
 	close(IN);
 }
@@ -810,8 +787,9 @@ sub checkplist {
 		}
 
 		if ($_ =~ m|\.desktop$| && $makevar{USES} !~ /\bdesktop-file-utils\b/) {
-			&perror("FATAL", $file, $., "this port installs .desktop files. ".
-				"Please add `desktop-file-utils` to USES.");
+			&perror("WARN", $file, $., "this port installs .desktop files. ".
+				"If the .desktop file(s) installed contain ``MimeType='', ".
+				"you must add `desktop-file-utils` to USES.");
 		}
 
 		if ($_ =~ m|^(%%([^%]+)%%)?.*\.mo$| && $makevar{USES} !~ /\bgettext\b/) {
@@ -1347,7 +1325,7 @@ sub checkmakefile {
 	my $tmp;
 	my $bogusdistfiles = 0;
 	my @varnames = ();
-	my($portname, $portversion, $distfiles, $distversionprefix, $distversion, $distversionsuffix, $distname, $extractsufx) = ('') x 8;
+	my($portname, $portversion, $distfiles, $all_distfiles, $distversionprefix, $distversion, $distversionsuffix, $distname, $extractsufx) = ('') x 9;
 	my $masterport = 0;
 	my $slaveport = 0;
 	my $use_gnome_hack = 0;
@@ -1398,6 +1376,11 @@ sub checkmakefile {
 			}
 		}
 		$rawwhole .= $_;
+		if (/\\$/) {
+			# Concat continued lines.
+			chomp $rawwhole;
+			chop $rawwhole;
+		}
 	}
 	close(IN);
 
@@ -2169,6 +2152,7 @@ xargs xmkmf
 				&& $curline !~ /^NO_CDROM(.)?=[^\n]+$i/m
 				&& $curline !~ /^MAINTAINER(.)?=[^\n]+$i/m
 				&& $curline !~ /^WWW(.)?=[^\n]+$i/m
+				&& $curline !~ /^CPE_VENDOR(.)?=[^\n]+$i/m
 				&& $curline !~ /^CATEGORIES(.)?=[^\n]+$i/m
 				&& $curline !~ /^(\w+)?USES(.)?=[^\n]+$i/m
 				&& $curline !~ /^WX_COMPS(.)?=[^\n]+$i/m
@@ -2889,7 +2873,8 @@ DIST_SUBDIR EXTRACT_ONLY
 	}
 
 	# check DISTFILES and related items.
-	$distfiles = $1 if ($tmp =~ /\nDISTFILES[+?]?=[ \t]*([^\n]+)\n/);
+	$distfiles = $1 if ($tmp =~ /\nDISTFILES[?]?=[ \t]*([^\n]+)\n/);
+	$all_distfiles = $1 if ($tmp =~ /\nDISTFILES[+?]?=[ \t]*([^\n]+)\n/);
 	$portname = $makevar{PORTNAME};
 	$portversion = $makevar{PORTVERSION};
 	$distversionprefix = $makevar{DISTVERSIONPREFIX};
@@ -2901,7 +2886,7 @@ DIST_SUBDIR EXTRACT_ONLY
 	# check bogus EXTRACT_SUFX.
 	if ($extractsufx ne '') {
 		print "OK: seen EXTRACT_SUFX, checking value.\n" if ($verbose);
-		if ($distfiles ne '') {
+		if ($all_distfiles ne '') {
 			&perror("WARN", $file, -1, "no need to define EXTRACT_SUFX if ".
 				"DISTFILES is defined.");
 		}
@@ -3105,7 +3090,7 @@ DIST_SUBDIR EXTRACT_ONLY
 			$bogusdistfiles++;
 			print "OK: seen DISTFILES with single item, checking value.\n"
 				if ($verbose);
-			&perror("WARN", $file, -1, "use of DISTFILES with single file ".
+			&perror("WARN", $file, -1, "use of DISTFILES with single file is ".
 				"discouraged. distribution filename should be set by ".
 				"DISTNAME and EXTRACT_SUFX.");
 			if ($distfiles eq (($distname ne '') ? $distname : "$portname-$portversion") . $extractsufx) {
@@ -3661,18 +3646,21 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 
 sub perror($$$$) {
 	my($type, $file, $line, $msg) = @_;
+	my $color;
 
 	if ($type eq 'FATAL') {
 		$err++;
+		$color = BRIGHT_RED;
 	} else {
 		$warn++;
+		$color = BRIGHT_YELLOW;
 	}
 	if ($grouperrs) {
 		$msg = '%%LINES%%' . $msg;
 		if ($file ne "") {
 			$msg = $file . ": " . $msg;
 		}
-		$msg = $type . ": " . $msg;
+		$msg = $color . $type . RESET . ": " . $msg;
 		if (!$errcache{$msg}) {
 			push @errlst, $msg;
 		}
@@ -3686,8 +3674,8 @@ sub perror($$$$) {
 		if ($file ne "") {
 			$msg = $file . ": " . $msg;
 		}
-		$msg = $type . ": " . $msg;
-		print $msg . "\n";
+		$msg = ": " . $msg;
+		print $color, $type, RESET, $msg . "\n";
 	}
 }
 

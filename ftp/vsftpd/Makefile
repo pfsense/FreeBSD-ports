@@ -1,6 +1,6 @@
 PORTNAME=	vsftpd
 PORTVERSION=	3.0.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	ftp
 MASTER_SITES=	https://security.appspot.com/downloads/ \
 		GENTOO
@@ -35,10 +35,9 @@ STACKPROTECTOR_DESC=	Build with stack-protector
 
 .if ${PORT_OPTIONS:MVSFTPD_SSL} && !defined(WITHOUT_SSL)
 USES+=		ssl
-BROKEN_SSL=	openssl30 openssl31
-BROKEN_SSL_REASON=	Requires OpenSSL 3.0.0 deprecated EC_* routines
 SSL_SUFFIX=	-ssl
 CFLAGS+=	-I${OPENSSLINC}
+CFLAGS+=	-Wno-deprecated-declarations
 LDFLAGS+=	-L${OPENSSLLIB}
 .endif
 
@@ -96,8 +95,8 @@ do-install:
 	${LN} ${STAGEDIR}${PREFIX}/libexec/vsftpd ${STAGEDIR}${PREFIX}/libexec/vsftpd6
 	${INSTALL_DATA} ${WRKSRC}/vsftpd.conf ${STAGEDIR}${PREFIX}/etc/vsftpd.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/vsftpd6.conf ${STAGEDIR}${PREFIX}/etc/vsftpd6.conf.sample
-	${INSTALL_MAN} ${WRKSRC}/vsftpd.conf.5 ${STAGEDIR}${PREFIX}/man/man5/
-	${INSTALL_MAN} ${WRKSRC}/vsftpd.8 ${STAGEDIR}${PREFIX}/man/man8/
+	${INSTALL_MAN} ${WRKSRC}/vsftpd.conf.5 ${STAGEDIR}${PREFIX}/share/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/vsftpd.8 ${STAGEDIR}${PREFIX}/share/man/man8/
 	${MKDIR} ${STAGEDIR}/var/ftp ${STAGEDIR}${PREFIX}/share/vsftpd/empty
 
 do-install-DOCS-on:

@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/content/browser/renderer_host/render_process_host_impl.h.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/content/browser/renderer_host/render_process_host_impl.h.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/content/browser/renderer_host/render_process_host_impl.h
-@@ -466,7 +466,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
+@@ -545,7 +545,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
    // Sets this RenderProcessHost to be guest only. For Testing only.
    void SetForGuestsOnlyForTesting();
  

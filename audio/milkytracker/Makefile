@@ -1,8 +1,11 @@
 PORTNAME=	milkytracker
-PORTVERSION=	1.03.00
+PORTVERSION=	1.04.00
 DISTVERSIONPREFIX=	v
 PORTREVISION=	3
 CATEGORIES=	audio
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	7e9171488fc47ad2de646a4536794fda21e7303d.patch:-p1
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Music creation tool inspired by Fast Tracker 2
@@ -16,7 +19,7 @@ LIB_DEPENDS=	libjack.so:audio/jack \
 		liblhasa.so:archivers/lhasa \
 		libzzip.so:devel/zziplib
 
-USES=		cmake compiler:c11 cpe sdl
+USES=		cmake compiler:c11 cpe pkgconfig sdl
 CPE_VENDOR=	milkytracker_project
 USE_GITHUB=	yes
 GH_PROJECT=	MilkyTracker

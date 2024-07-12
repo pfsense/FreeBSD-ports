@@ -1,9 +1,11 @@
 PORTNAME=	xen
-PORTVERSION=	4.17.0
-PORTREVISION=	1
-CATEGORIES=	emulators
-MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
 PKGNAMESUFFIX=	-kernel
+DISTVERSION=	4.18.2.20240411
+CATEGORIES=	emulators
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	xen-project
+GL_TAGNAME=	2d38302c33b117aa9a417056db241aefc840c2f0
 
 MAINTAINER=	royger@FreeBSD.org
 COMMENT=	Hypervisor using a microkernel design
@@ -26,17 +28,6 @@ PLIST_FILES=	/boot/xen \
 		lib/debug/boot/xen.debug \
 		lib/debug/boot/xen-debug.debug
 
-# XSAs
-EXTRA_PATCHES+=	${PATCHDIR}/xsa425.patch:-p1 \
-		${PATCHDIR}/xsa426.patch:-p1 \
-		${PATCHDIR}/0001-xen-Work-around-Clang-IAS-macro-expansion-bug.patch:-p1
-# Backports
-# clang build fixes
-EXTRA_PATCHES+=	${PATCHDIR}/0001-xen-x86-Remove-the-use-of-K-R-functions.patch:-p1
-# Support for fetching video mode from PVH dom0
-EXTRA_PATCHES+=	${PATCHDIR}/0001-x86-platform-introduce-hypercall-to-get-initial-vide.patch:-p1 \
-		${PATCHDIR}/0001-x86-platform-make-XENPF_get_dom0_console-actually-us.patch:-p1
-
 .include <bsd.port.options.mk>
 
 .if ${OPSYS} != FreeBSD
@@ -48,10 +39,12 @@ IGNORE=		only supported on FreeBSD
 #
 # Build both a production and a debug hypervisor.
 do-build:
-	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} build-xen ${MAKE_ARGS} debug=y
+	${ECHO} "CONFIG_DEBUG=y" > ${WRKSRC}/xen/.config
+	${MAKE_CMD} -C ${WRKSRC}/xen olddefconfig ${MAKE_ARGS}
+	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} build-xen ${MAKE_ARGS}
 	cp ${WRKSRC}/xen/xen ${WRKSRC}/xen/xen-debug
 	cp ${WRKSRC}/xen/xen-syms ${WRKSRC}/xen/xen-debug-syms
-	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} clean-xen ${MAKE_ARGS}
+	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} distclean-xen ${MAKE_ARGS}
 	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} build-xen ${MAKE_ARGS}
 
 do-install:

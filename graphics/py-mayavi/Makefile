@@ -1,6 +1,5 @@
 PORTNAME=	mayavi
-DISTVERSION=	4.8.1
-PORTREVISION=	5
+DISTVERSION=	4.8.2
 CATEGORIES=	graphics science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -32,13 +31,14 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}traits>=6.0.0:devel/py-traits@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitsui>=7.0.0:graphics/py-traitsui@${PY_FLAVOR} # list is in mayavi/__init__.py
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_PYTHON=	distutils autoplist
 
 USE_WX=		3.2
 WX_COMPS=	python:run
 
-SHEBANG_FILES=	mayavi/tests/csv_files/csv_2_py
+SHEBANG_FILES=	mayavi/scripts/mayavi2 \
+		mayavi/tests/csv_files/csv_2_py
 
 POST_PLIST=	fix-plist
 

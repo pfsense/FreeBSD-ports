@@ -1,6 +1,6 @@
 PORTNAME=	gnupg
 PORTVERSION=	1.4.23
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 PKGNAMESUFFIX=	1
@@ -16,6 +16,7 @@ CPE_VENDOR=	gnupg
 
 USES=		charsetfix compiler cpe gmake readline tar:bzip2
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-camellia \
 		--enable-noexecstack
 CFLAGS+=	-fcommon
@@ -53,10 +54,13 @@ NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386" && ${COMPILER_TYPE} == "clang"
+.if (${ARCH} == "i386" || ${ARCH} == "powerpc") && ${COMPILER_TYPE} == "clang"
 CFLAGS+=	-fheinous-gnu-extensions
-.elif ${ARCH} == powerpc
-USE_GCC=	yes
+.endif
+
+.if ${ARCH} == "powerpc" && ${COMPILER_TYPE} == "clang"
+BUILD_DEPENDS+=	as:devel/binutils
+CFLAGS+=	-fno-integrated-as
 .endif
 
 post-install-DOCS-on:

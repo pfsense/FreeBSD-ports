@@ -1,6 +1,6 @@
---- mojo/public/c/system/thunks.cc.orig	2022-12-02 17:56:32 UTC
+--- mojo/public/c/system/thunks.cc.orig	2024-03-22 14:16:19 UTC
 +++ mojo/public/c/system/thunks.cc
-@@ -23,7 +23,7 @@
+@@ -25,7 +25,7 @@
  #include "mojo/public/c/system/message_pipe.h"
  
  #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || \
@@ -33,6 +33,6 @@
  #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || \
 -    BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
-   absl::optional<base::ScopedNativeLibrary> library_;
+   std::optional<base::ScopedNativeLibrary> library_;
  #endif
  };

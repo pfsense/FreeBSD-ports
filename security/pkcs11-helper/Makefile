@@ -1,7 +1,11 @@
 PORTNAME=	pkcs11-helper
 PORTVERSION=	1.29.0
+PORTREVISION=	3
 CATEGORIES=	security devel
 MASTER_SITES=	https://github.com/OpenSC/pkcs11-helper/releases/download/pkcs11-helper-${PORTVERSION}/
+
+PATCH_SITES=	https://github.com/OpenSC/pkcs11-helper/commit/
+PATCHFILES=	98b16208d5c7d27e1f15835f3d4961349f425351.diff:-p1
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Helper library for multiple PKCS\#11 providers
@@ -26,16 +30,21 @@ CONFIGURE_ARGS=	--disable-crypto-engine-gnutls \
 		--disable-crypto-engine-mbedtls \
 		--disable-crypto-engine-cryptoapi
 
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS DOXYGEN
+
+DOXYGEN_CONFIGURE_ENABLE=	doc
+DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
+DOXYGEN_USES=		gmake
+DOXYGEN_IMPLIES=	DOCS
 
 PORTDOCS=	*
 
 post-patch:
 	@${REINPLACE_CMD} 's|[(]libdir[)]/pkgconfig|(prefix)/libdata/pkgconfig|' \
 		${WRKSRC}/configure
-	@${REINPLACE_CMD} 's|install-data-am: install-apidocDATA|install-data-am:|' \
-		${WRKSRC}/doc/api/Makefile.in
 
 .include <bsd.port.mk>

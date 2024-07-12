@@ -5,7 +5,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	C++ class library for daemons, clients, servers, and more
-WWW=		http://rudiments.sourceforge.net
+WWW=		https://rudiments.sourceforge.net
 
 LICENSE=	LGPL20
 
@@ -14,6 +14,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 
 USES=		libedit libtool pathfix pkgconfig readline shebangfix
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 PATHFIX_MAKEFILEIN=	Makefile
 SHEBANG_FILES=	doc/programming/insert.pl
 USE_LDCONFIG=	yes

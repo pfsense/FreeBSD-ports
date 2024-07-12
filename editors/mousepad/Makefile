@@ -1,5 +1,5 @@
 PORTNAME=	mousepad
-PORTVERSION=	0.6.1
+PORTVERSION=	0.6.2
 CATEGORIES=	editors xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 USES=		desktop-file-utils gettext-tools gmake gnome libtool perl5 \
 		pkgconfig tar:bzip2 xfce
-USE_GNOME=	cairo dconf gdkpixbuf2 glib20 gtk30 gtksourceview3 intltool
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 gtksourceview3 intltool
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

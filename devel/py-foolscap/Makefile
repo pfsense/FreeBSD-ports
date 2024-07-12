@@ -1,5 +1,6 @@
 PORTNAME=	foolscap
 PORTVERSION=	23.3.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,15 +12,17 @@ WWW=		https://github.com/warner/foolscap
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>=0:security/py-openssl@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>=0,1:security/py-openssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}twisted>=16.0.0:devel/py-twisted@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}txi2p-tahoe>=0.3.2:devel/py-txi2p-tahoe@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}txtorcon>=19.0.0:security/py-txtorcon@${PY_FLAVOR}
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist concurrent distutils unittest
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517 unittest
 
 NO_ARCH=	yes
 TEST_ARGS=	discover -s src

@@ -3,7 +3,7 @@
  * snort_log_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -380,11 +380,11 @@ print ($section);
 </div>
 <div class="col-sm-10 col-sm-offset-2">
 	<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Save Log Management configuration');?>">
-		<i class="fa fa-save icon-embed-btn"></i>
+		<i class="fa-solid fa-save icon-embed-btn"></i>
 		<?=gettext(' Save');?>
 	</button>
 	<button type="submit" id="ResetAll" name="ResetAll" class="btn btn-warning btn-sm" title="<?=gettext('Reset all settings to defaults');?>">
-		<i class="fa fa-refresh icon-embed-btn"></i>
+		<i class="fa-solid fa-arrows-rotate icon-embed-btn"></i>
 		<?=gettext(' Reset');?>
 	</button>
 </div>

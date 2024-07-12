@@ -41,10 +41,11 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	$pconfig['interfaces'] = implode(',', $pconfig['interfaces_a']);
-
 	/* Confirm at least one interface has been chosen */
-	if (empty($pconfig['interfaces_a'])) {
+	if (is_array($pconfig['interfaces_a']) &&
+	    !empty($pconfig['interfaces_a'])) {
+		$pconfig['interfaces'] = implode(',', $pconfig['interfaces_a']);
+	} else {
 		$input_errors[] = gettext("At least one interface must be selected");
 	}
 

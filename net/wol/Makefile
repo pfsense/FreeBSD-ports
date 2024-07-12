@@ -1,18 +1,19 @@
 PORTNAME=	wol
 PORTVERSION=	0.7.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	SF/ahh/OldFiles
 
 MAINTAINER=	david@catwhisker.org
 COMMENT=	Tool to wake up Wake-On-LAN compliant computers
-WWW=		http://ahh.sourceforge.net/wol/
+WWW=		https://ahh.sourceforge.net/wol/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		localbase perl5
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_PERL5=	build
 
 INFO=		wol

@@ -1,6 +1,6 @@
---- chrome/browser/enterprise/connectors/analysis/analysis_service_settings.cc.orig	2022-10-01 07:40:07 UTC
+--- chrome/browser/enterprise/connectors/analysis/analysis_service_settings.cc.orig	2024-06-22 08:49:42 UTC
 +++ chrome/browser/enterprise/connectors/analysis/analysis_service_settings.cc
-@@ -142,11 +142,11 @@ AnalysisServiceSettings::AnalysisServiceSettings(
+@@ -151,7 +151,7 @@ AnalysisServiceSettings::AnalysisServiceSettings(
    const char* verification_key = kKeyWindowsVerification;
  #elif BUILDFLAG(IS_MAC)
    const char* verification_key = kKeyMacVerification;
@@ -9,8 +9,3 @@
    const char* verification_key = kKeyLinuxVerification;
  #endif
  
--#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   const base::Value::Dict& dict = settings_value.GetDict();
-   const base::Value::List* signatures =
-       dict.FindListByDottedPath(verification_key);

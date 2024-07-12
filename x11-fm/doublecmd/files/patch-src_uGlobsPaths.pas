@@ -1,6 +1,6 @@
---- src/uGlobsPaths.pas.orig	2017-12-11 10:45:31 UTC
+--- src/uGlobsPaths.pas.orig	2024-02-29 18:56:08 UTC
 +++ src/uGlobsPaths.pas
-@@ -3,7 +3,7 @@ unit uGlobsPaths;
+@@ -3,7 +3,7 @@ var
  interface
  
  var
@@ -17,12 +17,3 @@
  
  //Global Configuration Filename
  const
-@@ -37,7 +38,7 @@ end;
- procedure LoadPaths;
- begin
-   OnGetApplicationName := @GetAppName;
--  gpExePath := ExtractFilePath(TryReadAllLinks(ParamStrU(0)));
-+  //gpExePath := ExtractFilePath(TryReadAllLinks(ParamStrU(0)));
-   DCDebug('Executable directory: ', gpExePath);
-   
-   gpGlobalCfgDir := gpExePath;

@@ -3,7 +3,7 @@
  * snort_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
@@ -301,7 +301,7 @@ $btnsave = new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 );
 $btnsave->addClass('btn-primary')->addClass('btn-default');
 $btnsave->setAttribute('title', gettext('Save configuration and live-reload the running Snort configuration'));
@@ -333,7 +333,7 @@ print($section);
 									<th><?=gettext("Blacklist Filename"); ?></th>
 									<th><?=gettext("Modification Time"); ?></th>
 									<th><button type="button" class="btn btn-sm btn-success" name="blist_add" id="blist_add" title="<?=gettext('Assign a blacklist file');?>">
-										<i class="fa fa-plus icon-embed-btn"></i>
+										<i class="fa-solid fa-plus icon-embed-btn"></i>
 										<?=gettext("Add");?></button>
 									</th>
 								</tr>
@@ -352,7 +352,7 @@ print($section);
 									<td <?=$class;?>><?=htmlspecialchars($f);?></td>
 									<td <?=$class;?>><?=$filedate;?></td>
 									<td>
-										<i class="fa fa-trash icon-pointer text-info" onClick="$('#list_id').val('<?=$k;?>');$('#mode').val('blist_del');$('#iform').submit();" 
+										<i class="fa-solid fa-trash-can icon-pointer text-info" onClick="$('#list_id').val('<?=$k;?>');$('#mode').val('blist_del');$('#iform').submit();" 
 									 	title="<?=gettext('Remove this blacklist file');?>"></i>
 									</td>
 								</tr>
@@ -378,7 +378,7 @@ print($section);
 									<th><?=gettext("Whitelist Filename"); ?></th>
 									<th><?=gettext("Modification Time"); ?></th>
 									<th><button type="button" class="btn btn-sm btn-success" name="wlist_add" id="wlist_add" title="<?=gettext('Assign a whitelist file');?>">
-										<i class="fa fa-plus icon-embed-btn"></i>
+										<i class="fa-solid fa-plus icon-embed-btn"></i>
 										<?=gettext("Add");?></button>
 									</th>
 								</tr>
@@ -397,7 +397,7 @@ print($section);
 									<td <?=$class;?>><?=htmlspecialchars($f);?></td>
 									<td <?=$class;?>><?=$filedate;?></td>
 									<td>
-										<i class="fa fa-trash icon-pointer text-info" onClick="$('#list_id').val('<?=$k;?>');$('#mode').val('wlist_del');$('#iform').submit();" 
+										<i class="fa-solid fa-trash-can icon-pointer text-info" onClick="$('#list_id').val('<?=$k;?>');$('#mode').val('wlist_del');$('#iform').submit();" 
 										title="<?=gettext('Remove this whitelist file');?>"></i>
 									</td>
 								</tr>

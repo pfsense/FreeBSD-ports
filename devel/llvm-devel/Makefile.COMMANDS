@@ -15,6 +15,7 @@ LLVM_COMMANDS=	\
 		llvm-cvtres \
 		llvm-cxxmap \
 		llvm-debuginfo-analyzer \
+		llvm-debuginfod \
 		llvm-debuginfod-find \
 		llvm-diff \
 		llvm-dis \
@@ -47,8 +48,8 @@ LLVM_COMMANDS=	\
 		llvm-rc \
 		llvm-readelf \
 		llvm-readobj \
+		llvm-readtapi \
 		llvm-reduce \
-		llvm-remark-size-diff \
 		llvm-remarkutil \
 		llvm-rtdyld \
 		llvm-sim \
@@ -58,7 +59,6 @@ LLVM_COMMANDS=	\
 		llvm-strings \
 		llvm-strip \
 		llvm-symbolizer \
-		llvm-tapi-diff \
 		llvm-tblgen \
 		llvm-tli-checker \
 		llvm-undname \
@@ -98,6 +98,7 @@ EXTRAS_COMMANDS= \
 		clang-doc \
 		clang-include-cleaner \
 		clang-include-fixer \
+		clang-installapi \
 		clang-move \
 		clang-pseudo \
 		clang-query \
@@ -113,7 +114,6 @@ FLANG_COMMANDS=	\
 		f18-parse-demo \
 		fir-opt \
 		flang-new \
-		flang-to-external-fc \
 		tco
 
 LIT_COMMANDS=	\
@@ -131,21 +131,25 @@ LLD_COMMANDS=	\
 LLDB_COMMANDS=	\
 		lldb \
 		lldb-argdumper \
+		lldb-dap \
 		lldb-instr \
-		lldb-server \
-		lldb-vscode
+		lldb-server
 
 MLIR_COMMANDS=	\
+		mlir-cat \
 		mlir-cpu-runner \
 		mlir-lsp-server \
+		mlir-minimal-opt \
+		mlir-minimal-opt-canonicalize \
 		mlir-opt \
 		mlir-pdll \
 		mlir-pdll-lsp-server \
+		mlir-query \
 		mlir-reduce \
 		mlir-tblgen \
+		mlir-transform-opt \
 		mlir-translate \
-		tblgen-lsp-server
+		tblgen-lsp-server \
+		tblgen-to-irdl
 
-OPENMP_COMMANDS=	\
-		llvm-omp-device-info \
-		llvm-omp-kernel-replay
+OPENMP_COMMANDS=

@@ -1,5 +1,6 @@
 PORTNAME=	ffmpeg
-PORTVERSION=	6.0
+PORTVERSION=	6.1.1
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -30,9 +31,9 @@ NOPRECIOUSMAKEVARS=	yes # ARCH
 PORTSCOUT=	limit:^6\.
 
 # Option CHROMAPRINT disabled, it cannot work and people are baffled.
-OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ARIBB24 ASM ASS BS2B CACA CDIO \
+OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ARIBB24 ARIBCAPTION ASM ASS BS2B CACA CDIO \
 		CODEC2 DAV1D DAVS2 DC1394 DEBUG DOCS DRM FDK_AAC FLITE \
-		FONTCONFIG FREETYPE FREI0R FRIBIDI GLSLANG GME GSM ICONV ILBC \
+		FONTCONFIG FREETYPE FREI0R FRIBIDI GLSLANG GME GSM HARFBUZZ ICONV ILBC \
 		JACK JXL KLVANC KVAZAAR LADSPA LAME LCMS2 LENSFUN LIBBLURAY LIBPLACEBO LIBRSVG2 \
 		LIBXML2 LTO LV2 MODPLUG MYSOFA NETWORK NVENC OPENAL OPENCL OPENGL \
 		OPENH264 OPENJPEG OPENMPT OPENVINO OPTIMIZED_CFLAGS OPUS POCKETSPHINX \
@@ -46,14 +47,19 @@ OPTIONS_DEFINE_amd64=	MFX VPL
 OPTIONS_DEFINE_i386=	MFX
 
 OPTIONS_DEFAULT=	AOM ASM ASS DAV1D DRM FONTCONFIG FREETYPE FREI0R GMP \
-			GNUTLS ICONV JXL LAME LCMS2 LIBPLACEBO LIBXML2 NETWORK \
-			OPTIMIZED_CFLAGS OPUS RTCPU SVTAV1 V4L VAAPI VDPAU VMAF \
+			GNUTLS HARFBUZZ ICONV JXL LAME LCMS2 LIBPLACEBO LIBXML2 NETWORK \
+			OPTIMIZED_CFLAGS OPUS RTCPU SHADERC SVTAV1 V4L VAAPI VDPAU VMAF \
 			VORBIS VPX VULKAN WEBP X264 X265 XCB
 OPTIONS_DEFAULT_amd64=	NVENC
 OPTIONS_DEFAULT_i386=	NVENC
 
 # i386 is too register-starved for LTO (PR257124)
 OPTIONS_EXCLUDE_i386=	LTO
+
+.if !exists(${.CURDIR:H:H}/multimedia/libaribcaption)
+# https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/b6138633cdf2
+OPTIONS_EXCLUDE+=	ARIBCAPTION
+.endif
 
 .if !exists(${.CURDIR:H:H}/multimedia/davs2)
 # https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/5985a1bf7233
@@ -81,7 +87,7 @@ OPTIONS_EXCLUDE+=	OPENVINO
 .endif
 
 OPTIONS_RADIO=	RTMP SSL
-OPTIONS_RADIO_RTMP=	GCRYPT GMP LIBRTMP
+OPTIONS_RADIO_RTMP=	GCRYPT GMP
 OPTIONS_RADIO_SSL=	GNUTLS MBEDTLS OPENSSL
 OPTIONS_GROUP=	LICENSE
 OPTIONS_GROUP_LICENSE=	GPL3 NONFREE
@@ -89,6 +95,7 @@ OPTIONS_GROUP_LICENSE=	GPL3 NONFREE
 ASS_DESC=	Subtitles rendering via libass
 AOM_DESC=	AV1 video encoding/decoding via libaom
 ARIBB24_DESC=	ARIB text and caption decoding via libaribb24
+ARIBCAPTION_DESC=	ARIB text and caption decoding via libaribcaption
 BS2B_DESC=	Bauer Stereophonic-to-Binaural filter
 CHROMAPRINT_DESC=	Audio fingerprinting with chromaprint
 CODEC2_DESC=	Codec 2 audio encoding/decoding via libcodec2
@@ -101,6 +108,7 @@ FLITE_DESC=	Voice synthesis support via libflite
 GLSLANG_DESC=	GLSL->SPIRV compilation via libglslang
 GME_DESC=	Game Music Emu demuxer
 GPL3_DESC=	Allow (L)GPL version 3 code(cs)
+HARFBUZZ_DESC=	Text shaping via HarfBuzz
 ILBC_DESC=	Internet Low Bit Rate codec
 KLVANC_DESC=	Kernel Labs VANC processing
 KVAZAAR_DESC=	H.265 video codec support via Kvazaar
@@ -127,7 +135,6 @@ SVTAV1_DESC=	AV1 encoding via SVT-AV1
 SVTHEVC_DESC=	HEVC encoding via SVT-HEVC
 SVTVP9_DESC=	VP9 encoding via SVT-VP9
 LIBPLACEBO_DESC=GPU filters from libplacebo
-LIBRTMP_DESC=	${RTMP_DESC} via librtmp
 TENSORFLOW_DESC=TensorFlow as a DNN module backend for DNN based filters like sr
 TESSERACT_DESC=	Optical Character Recognition via Tesseract
 THEORA_DESC=	Encoding support for theora via libtheora
@@ -167,6 +174,10 @@ AOM_CONFIGURE_ENABLE=	libaom
 # arib
 ARIBB24_LIB_DEPENDS=	libaribb24.so:multimedia/aribb24
 ARIBB24_CONFIGURE_ENABLE=	libaribb24
+
+# aribcaption
+ARIBCAPTION_LIB_DEPENDS=	libaribcaption.so:multimedia/libaribcaption
+ARIBCAPTION_CONFIGURE_ENABLE=	libaribcaption
 
 # asm support
 ASM_CONFIGURE_ENABLE=	asm
@@ -215,6 +226,7 @@ DEBUG_CONFIGURE_OFF=	--disable-debug
 # docs
 DOCS_BUILD_DEPENDS=	texi2html:textproc/texi2html
 DOCS_CONFIGURE_ENABLE=	htmlpages
+DOCS_BINARY_ALIAS=	makeinfo=${FALSE} # force texi2html
 
 # drm
 DRM_LIB_DEPENDS=	libdrm.so:graphics/libdrm
@@ -254,6 +266,7 @@ GLSLANG_BUILD_DEPENDS=	glslang>0:graphics/glslang \
 			spirv-tools>0:graphics/spirv-tools
 GLSLANG_CONFIGURE_ENABLE=	libglslang
 GLSLANG_LDFLAGS=	-lm
+GLSLANG_IMPLIES=	VULKAN
 
 # gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -271,6 +284,10 @@ GMP_IMPLIES=		GPL3
 # gsm
 GSM_LIB_DEPENDS=	libgsm.so:audio/gsm
 GSM_CONFIGURE_ENABLE=	libgsm
+
+# harfbuzz
+HARFBUZZ_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
+HARFBUZZ_CONFIGURE_ENABLE=	libharfbuzz
 
 # iconv
 ICONV_USES=	iconv
@@ -332,7 +349,7 @@ LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 LIBXML2_CONFIGURE_ENABLE=	libxml2
 
 # lto
-LTO_CONFIGURE_ENABLE=	lto
+LTO_CONFIGURE_ON=	--enable-lto
 
 # lv2
 LV2_BUILD_DEPENDS=	lv2>0:audio/lv2
@@ -439,10 +456,6 @@ RUBBERBAND_CONFIGURE_ENABLE=	librubberband
 # rtcpu
 RTCPU_CONFIGURE_ENABLE=	runtime-cpudetect
 
-# rtmp
-LIBRTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
-LIBRTMP_CONFIGURE_ENABLE=	librtmp
-
 # sdl
 SDL_USES=		sdl
 SDL_USE=		SDL=sdl2
@@ -451,6 +464,7 @@ SDL_CONFIGURE_ENABLE=	sdl2
 # shaderc
 SHADERC_LIB_DEPENDS=	libshaderc_shared.so:graphics/shaderc
 SHADERC_CONFIGURE_ENABLE=	libshaderc
+SHADERC_IMPLIES=	VULKAN
 SHADERC_PREVENTS=	GLSLANG
 
 # smbclient
@@ -499,7 +513,7 @@ SVTHEVC_PATCHFILES=	master-0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.pa
 # svt-vp9
 SVTVP9_LIB_DEPENDS=	libSvtVp9Enc.so:multimedia/svt-vp9
 SVTVP9_CONFIGURE_ON=	--enable-libsvtvp9
-SVTVP9_PATCH_SITES=	https://github.com/OpenVisualCloud/SVT-VP9/raw/v0.3.0-17-g15bd454/ffmpeg_plugin/:svtvp9
+SVTVP9_PATCH_SITES=	https://github.com/OpenVisualCloud/SVT-VP9/raw/v0.3.0-20-gbab25a6/ffmpeg_plugin/:svtvp9
 SVTVP9_PATCHFILES=	master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch:-p1:svtvp9
 .if make(makesum)
 .MAKEFLAGS:		WITH+=SVTVP9
@@ -568,7 +582,6 @@ VPX_CONFIGURE_ENABLE=	libvpx
 VULKAN_BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CONFIGURE_ENABLE=	vulkan
-VULKAN_IMPLIES=		${"${PORT_OPTIONS:MGLSLANG}":?GLSLANG:SHADERC}
 
 # webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
@@ -637,7 +650,7 @@ LDFLAGS_armv7=	-Wl,-z,notext
 LDFLAGS_i386=	-Wl,-z,notext
 
 CONFIGURE_ARGS+=--prefix="${PREFIX}" \
-		--mandir="${PREFIX}/man" \
+		--mandir="${PREFIX}/share/man" \
 		--datadir="${DATADIR}" \
 		--docdir="${DOCSDIR}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
@@ -665,16 +678,10 @@ LICENSE_TEXT_NONFREE=	enabling OPENSSL or FDK_AAC restricts redistribution
 LICENSE_PERMS_NONFREE=	auto-accept
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == powerpc64 && ${PORT_OPTIONS:MLTO} && ${CHOSEN_COMPILER_TYPE} == clang
-USE_GCC=	yes
-.endif
-
 post-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${DOC_FILES}" ${STAGEDIR}${DOCSDIR})
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \
 		"${DOC_DOCFILES}" ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

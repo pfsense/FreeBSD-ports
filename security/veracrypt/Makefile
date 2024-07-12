@@ -1,5 +1,6 @@
 PORTNAME=	veracrypt
-PORTVERSION=	1.25.9
+PORTVERSION=	1.26.7
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME:S/v/V/:S/c/C/}%20${PORTVERSION}/Source%20Code
 DISTNAME=	${PORTNAME:S/v/V/:S/c/C/}_${PORTVERSION}_Source
@@ -9,12 +10,14 @@ COMMENT=	Open-source disk encryption software based on Truecrypt
 WWW=		https://www.veracrypt.fr/
 
 BUILD_DEPENDS=	yasm:devel/yasm
+LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 RUN_DEPENDS=	${LOCALBASE}/bin/sudo:security/sudo
 
 LICENSE_FILE=	${DOCSDIR}/LICENSE
 
 USES=		compiler:c++11-lang cpe desktop-file-utils fuse gmake iconv pkgconfig tar:bz2
 CPE_VENDOR=	idrix
+USE_CXXSTD=	c++11
 USE_WX=		3.0+
 NO_WRKSUBDIR=	yes
 BUILD_WRKSRC=	${WRKSRC}/src

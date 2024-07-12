@@ -1,5 +1,6 @@
 PORTNAME=	opie
 PORTVERSION=	1.20230501
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	des@FreeBSD.org
@@ -20,9 +21,8 @@ GH_PROJECT=	opie
 MAKE_ARGS=	BINDIR=${PREFIX}/bin \
 		INCLUDEDIR=${PREFIX}/include \
 		LIBDIR=${PREFIX}/lib \
-		MANDIR=${MANPREFIX}/man/man
+		MANDIR=${PREFIX}/share/man/man
 
-IGNORE_FreeBSD_12=	FreeBSD 12 has OPIE in base
 IGNORE_FreeBSD_13=	FreeBSD 13 has OPIE in base
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	types-setuptools
-PORTVERSION=	67.8.0.0
+PORTVERSION=	70.0.0.20240524
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,8 +10,11 @@ WWW=		https://github.com/python/typeshed/tree/main/stubs/setuptools
 
 LICENSE=	APACHE20
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

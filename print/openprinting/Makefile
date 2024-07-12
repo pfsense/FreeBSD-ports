@@ -1,6 +1,6 @@
 PORTNAME=	openprinting
 PORTVERSION=	1.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	print net
 MASTER_SITES=	SF/openprinting/papi/1.0%20Beta
 DISTNAME=	papi-${PORTVERSION}_beta
@@ -8,19 +8,21 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sun's implementation of the OpenPrinting API (PAPI)
-WWW=		http://openprinting.sourceforge.net/
+WWW=		https://openprinting.sourceforge.net/
+
+USES=		gettext gmake iconv libtool localbase tar:bzip2
+USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+
+MAKE_JOBS_UNSAFE=	yes
+INSTALL_TARGET=	install-strip
 
 WRKSRC=		${WRKDIR}/papi-${PORTVERSION}_beta
 
-USES=		gettext gmake iconv libtool tar:bzip2
-USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-MAKE_JOBS_UNSAFE=	yes
+LIBS+=		-lintl
 LLD_UNSAFE=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib -lintl
 
 # TODO: Get mod_ipp to actually work; Sun's example seems to be broken
 # under both Apache 1.3/2.0, this could be a papi issue; does not build
@@ -33,6 +35,10 @@ LIBS+=		-L${LOCALBASE}/lib -lintl
 #	PSM_CUPS	"Build psm_cups.so for printing to CUPS" Off
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 # NOTE: This has only been tested with www/apache20, with integrated APR.
 .if defined(WITH_MOD_IPP)
@@ -70,7 +76,7 @@ PLIST_FILES+=\
 	libexec/lpd-port \
 	libexec/psm-ipp.so \
 	libexec/psm-lpd.so \
-	man/man5/psm-ipp.5.gz
+	share/man/man5/psm-ipp.5.gz
 
 .if defined(WITH_PSM_CUPS)
 PLIST_FILES+=	libexec/psm-cups.so
@@ -89,7 +95,7 @@ post-patch:
 		${WRKSRC}/source/libpapi-dynamic/Makefile.in
 
 post-install:
-.for unneeded in bin sbin man/man1 man/mani share
+.for unneeded in bin sbin share/examples share/man/man1 share/man/mani
 	@${RM} -r ${STAGEDIR}${PREFIX}/${unneeded}
 .endfor
 

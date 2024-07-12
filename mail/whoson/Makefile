@@ -1,18 +1,19 @@
 PORTNAME=	whoson
 PORTVERSION=	2.05
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of `WHO iS ONline' protocol
-WWW=		http://whoson.sourceforge.net/
+WWW=		https://whoson.sourceforge.net/
 
 LICENSE=	PD OpenSSL
 LICENSE_COMB=	multi
 
 USES=		libtool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-config=${PREFIX}/etc/whoson.conf
 USE_LDCONFIG=	yes
 

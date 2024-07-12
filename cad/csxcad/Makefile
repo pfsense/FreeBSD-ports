@@ -1,8 +1,7 @@
 PORTNAME=	csxcad
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.2-109
-DISTVERSIONSUFFIX=	-gcd9decb
-PORTREVISION=	6
+DISTVERSION=	0.6.3
+PORTREVISION=	1
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,13 +17,10 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libgmp.so:math/gmp \
 		libhdf5.so:science/hdf5 \
 		libmpfr.so:math/mpfr \
-		libpng16.so:graphics/png \
-		libsz.so:science/libaec \
-		libtiff.so:graphics/tiff \
 		libtinyxml.so:textproc/tinyxml \
 		libvtkCommonCore-${VTK_VER}.so:math/vtk${VTK_VER:R}
 
-USES=		cmake jpeg pkgconfig
+USES=		cmake pkgconfig
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

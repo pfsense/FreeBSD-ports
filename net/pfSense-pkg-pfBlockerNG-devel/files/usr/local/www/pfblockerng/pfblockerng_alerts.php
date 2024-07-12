@@ -3,7 +3,7 @@
  * pfblockerng_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -28,7 +28,7 @@ require_once('util.inc');
 require_once('guiconfig.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $g, $pfb;
+global $g, $pfb;
 pfb_global();
 
 // Alerts tab customizations
@@ -36,8 +36,8 @@ $aglobal_array = array(	'pfbunicnt' => 200, 'pfbdenycnt' => 25, 'pfbpermitcnt' =
 			'pfbdnscnt' => 25, 'pfbdnsreplycnt' => 200,
 			'ipfilterlimitentries' => 100, 'dnsblfilterlimitentries' => 100, 'dnsfilterlimitentries' => 100); 
 
-init_config_arr(array('installedpackages', 'pfblockerngglobal'));
-$pfb['aglobal'] = &$config['installedpackages']['pfblockerngglobal'];
+config_init_path('installedpackages/pfblockerngglobal');
+$pfb['aglobal'] = config_get_path('installedpackages/pfblockerngglobal');
 
 $alertrefresh	= isset($pfb['aglobal']['alertrefresh'])	? $pfb['aglobal']['alertrefresh']	: 'on';
 $pfbpageload	= $pfb['aglobal']['pfbpageload']	!= ''	? $pfb['aglobal']['pfbpageload']	: 'unified';
@@ -162,9 +162,9 @@ if (!$alert_summary) {
 		$c_config = $clists[$type] = array();
 
 		if ($vtype == 'dnsbl') {
-			$c_config = $config['installedpackages']['pfblockerngdnsbl'];
+			$c_config = config_get_path('installedpackages/pfblockerngdnsbl');
 		} else {
-			$c_config = $config['installedpackages']['pfblockernglistsv' . $vtype];
+			$c_config = config_get_path("installedpackages/pfblockernglistsv{$vtype}");
 		}
 
 		if (isset($c_config) &&
@@ -175,12 +175,13 @@ if (!$alert_summary) {
 
 					if ($type == 'dnsbl') {
 						$lname = "DNSBL_{$data['aliasname']}";
-						$clists[$type][$lname]['base64'] = &$config['installedpackages']['pfblockerngdnsbl']['config'][$row]['custom'];
+						$clists[$type][$lname]['base64'] = config_get_path("installedpackages/pfblockerngdnsbl/config/{$row}/custom");
+						$clists[$type][$lname]['base64_idx'] = $row;
 
 						// Collect Global DNSBL Logging type, or Group logging setting
-						$g_log = $config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['global_log'] ?: '';
+						$g_log = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0/global_log') ?: '';
 						if (empty($g_log)) {
-							$d_log = $config['installedpackages']['pfblockerngdnsbl']['config'][$row]['logging'];
+							$d_log = config_get_path("installedpackages/pfblockerngdnsbl/config/{$row}/logging");
 						} else {
 							$d_log = $g_log;
 						}
@@ -195,7 +196,8 @@ if (!$alert_summary) {
 						$clists[$type][$lname]['log'] = $d_type;
 					} else {
 						$lname = "pfB_{$data['aliasname']}_v{$vtype}";
-						$clists[$type][$lname]['base64'] = &$config['installedpackages']['pfblockernglistsv' . $vtype]['config'][$row]['custom'];
+						$clists[$type][$lname]['base64'] = config_get_path("installedpackages/pfblockernglistsv{$vtype}/config/{$row}/custom");
+						$clists[$type][$lname]['base64_idx'] = $row;
 					}
 					$clists[$type][$lname]['data']	= array();
 
@@ -228,17 +230,17 @@ if (!$alert_summary) {
 		}
 	}
 
-	init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
-	init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
+	config_init_path('installedpackages/pfblockerngipsettings/config/0');
+	config_init_path('installedpackages/pfblockerngdnsblsettings/config/0');
 
-	$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'] = 
-		$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'] ?: '';
+	config_set_path('installedpackages/pfblockerngipsettings/config/0/v4suppression', 
+		config_get_path('installedpackages/pfblockerngipsettings/config/0/v4suppression') ?: '');
 
-	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'] =
-		$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'] ?: '';
+	config_set_path('installedpackages/pfblockerngdnsblsettings/config/0/suppression',
+		config_get_path('installedpackages/pfblockerngdnsblsettings/config/0/suppression') ?: '');
 
-	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['tldexclusion'] =
-		$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['tldexclusion'] ?: '';
+	config_set_path('installedpackages/pfblockerngdnsblsettings/config/0/tldexclusion',
+		config_get_path('installedpackages/pfblockerngdnsblsettings/config/0/tldexclusion') ?: '');
 
 	foreach (array('ipsuppression', 'dnsblwhitelist', 'tldexclusion') as $key => $type) {
 
@@ -247,11 +249,11 @@ if (!$alert_summary) {
 		}
 
 		if ($key == 0) {
-			$clists[$type]['base64'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'];
+			$clists[$type]['base64'] = config_get_path('installedpackages/pfblockerngipsettings/config/0/v4suppression');
 		} elseif ($key == 1) {
-			$clists[$type]['base64'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'];
+			$clists[$type]['base64'] = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0/suppression');
 		} elseif ($key == 2) {
-			$clists[$type]['base64'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['tldexclusion'];
+			$clists[$type]['base64'] = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0/tldexclusion');
 		}
 
 		$clists[$type]['data']		= array();
@@ -572,6 +574,7 @@ if (isset($_POST) && !empty($_POST)) {
 			$pageview = 'alert';
 		}
 
+		config_set_path("installedpackages/pfblockerngglobal", $pfb['aglobal']);
 		write_config('pfBlockerNG: Update ALERT tab settings.');
 		header("Location: /pfblockerng/pfblockerng_alerts.php?view={$pageview}");
 		exit;
@@ -823,6 +826,7 @@ if (isset($_POST) && !empty($_POST)) {
 			}
 			$data .= "{$v4suppression_dat}\r\n";
 			$clists['ipsuppression']['base64'] = base64_encode($data);
+			config_set_path('installedpackages/pfblockerngipsettings/config/0/v4suppression', $clists['ipsuppression']['base64']);
 			write_config("pfBlockerNG: Added {$ip} to the IPv4 Suppression customlist");
 			pfb_create_suppression_file();	// Create pfbsuppression.txt
 		}
@@ -878,6 +882,7 @@ if (isset($_POST) && !empty($_POST)) {
 				$data .= "{$domain}\r\n";
 			}
 			$clists['dnsbl'][$list]['base64'] = base64_encode($data);
+			config_set_path("installedpackages/pfblockerngdnsbl/config/{$clists['dnsbl'][$list]['base64_idx']}/custom", $clists['dnsbl'][$list]['base64']);
 			write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL Group [ {$list} ] customlist");
 			pfb_reload_unbound('enabled', FALSE, TRUE);
 		}
@@ -1022,6 +1027,7 @@ if (isset($_POST) && !empty($_POST)) {
 				}
 				$data .= "{$whitelist}\r\n";
 				$clists['dnsblwhitelist']['base64'] = base64_encode($data);
+				config_set_path("installedpackages/pfblockerngdnsblsettings/config/0/suppression", $clists['dnsblwhitelist']['base64']);
 				write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL Whitelist");
 			}
 
@@ -1127,6 +1133,7 @@ if (isset($_POST) && !empty($_POST)) {
 				}
 				$data .= "{$exclude_string}\r\n";
 				$clists['tldexclusion']['base64'] = base64_encode($data);
+				config_set_path("installedpackages/pfblockerngdnsblsettings/config/0/tldexclusion", $clists['tldexclusion']['base64']);
 				write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL TLD Exclusion customlist.");
 			}
 		}
@@ -1221,6 +1228,7 @@ if (isset($_POST) && !empty($_POST)) {
 					}
 				}
 				$clists['dnsblwhitelist']['base64'] = base64_encode($data);
+				config_set_path("installedpackages/pfblockerngdnsblsettings/config/0/suppression", $clists['dnsblwhitelist']['base64']);
 				break;
 			case 'delete_exclusion':
 				$type = 'TLD Exclusion';
@@ -1233,6 +1241,7 @@ if (isset($_POST) && !empty($_POST)) {
 					$data .= "{$line}";
 				}
 				$clists['tldexclusion']['base64'] = base64_encode($data);
+				config_set_path("installedpackages/pfblockerngdnsblsettings/config/0/tldexclusion", $clists['tldexclusion']['base64']);
 				break;
 			case 'delete_ip':
 				$type	= 'IPv4 Suppression';
@@ -1276,6 +1285,7 @@ if (isset($_POST) && !empty($_POST)) {
 						$data .= "{$line}";
 					}
 					$clists['ipsuppression']['base64'] = base64_encode($data);
+					config_set_path('installedpackages/pfblockerngipsettings/config/0/v4suppression', $clists['ipsuppression']['base64']);
 					$savemsg = "Removed [ {$ip_revert} ] from {$type} customlist and re-added it back into the aliastable [ {$table} ]";
 				}
 				else {
@@ -1302,6 +1312,7 @@ if (isset($_POST) && !empty($_POST)) {
 					}
 
 					$clists['ipwhitelist' . $vtype][$table_2]['base64'] = base64_encode($data);
+					config_set_path("installedpackages/pfblockernglistsv{$vtype}/config/{$clists['ipwhitelist' . $vtype][$table_2]['base64_idx']}/custom", $clists['ipwhitelist' . $vtype][$table_2]['base64']);
 					$aname = substr(substr($table_2, 4),0, -3);					// Remove 'pfB_' and '_v4'
 					touch("{$pfb['permitdir']}/{$aname}_custom_v{$vtype}.update");			// Set Flag for Cron/Update process
 					$savemsg = "The IP [ {$entry} ] has been deleted from the [ {$table} ] Permit Alias customlist.";
@@ -1598,6 +1609,7 @@ if (isset($_POST) && !empty($_POST)) {
 			$data .= "{$whitelist_string}";
 
 			$clists['ipwhitelist' . $vtype][$table]['base64'] = base64_encode($data);
+			config_set_path("installedpackages/pfblockernglistsv{$vtype}/config/{$clists['ipwhitelist' . $vtype][$table]['base64_idx']}/custom", $clists['ipwhitelist' . $vtype][$table]['base64']);
 			write_config("pfBlockerNG: Added [ {$ip} ] to [ {$table} ] Whitelist");
 
 			$aname = substr(substr($table, 4),0, -3);					// Remove 'pfB_' and '_v4'
@@ -1714,11 +1726,9 @@ $supp_ip_txt	= "Clicking this Suppression Icon, will immediately remove the bloc
 
 // Collect Interfaces
 $dnsbl_int = array();
-if (is_array($config['interfaces'])) {
-	foreach ($config['interfaces'] as $int) {
-		if ($int['ipaddr'] != 'dhcp' && !empty($int['ipaddr']) && !empty($int['subnet'])) {
-			$dnsbl_int[] = array("{$int['ipaddr']}/{$int['subnet']}", "{$int['descr']}");
-		}
+foreach (config_get_path('interfaces', []) as $int) {
+	if ($int['ipaddr'] != 'dhcp' && !empty($int['ipaddr']) && !empty($int['subnet'])) {
+		$dnsbl_int[] = array("{$int['ipaddr']}/{$int['subnet']}", "{$int['descr']}");
 	}
 }
 
@@ -2008,11 +2018,11 @@ function dnsbl_log_details($fields) {
 	}
 	if (strpos($fields[5], '_CNAME') !== FALSE) {
 		$isCNAME	= TRUE;
-		$pfb_python	= "&nbsp;<i class=\"fa fa-bolt\" title=\"CNAME Validation\"></i>";
+		$pfb_python	= "&nbsp;<i class=\"fa-solid fa-bolt\" title=\"CNAME Validation\"></i>";
 	}
 	if (strpos($fields[5], 'Python') !== FALSE) {
 		$isPython	= TRUE;
-		$pfb_python	= "&nbsp;<i class=\"fa fa-bolt\" title=\"{$fields[5]}\"></i>";
+		$pfb_python	= "&nbsp;<i class=\"fa-solid fa-bolt\" title=\"{$fields[5]}\"></i>";
 	}
 
 	// Select blocked Domain or Evaluated Domain
@@ -2044,7 +2054,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 			. "&#8226; TLD Exclusions require a Force Reload when a Domain is initially added.\n"
 			. "&#8226; To remove this Domain from the TLD Exclusion customlist, Click 'OK'";
 
-		$ex_dom = '&nbsp;<i class="fa fa-trash-o no-confirm icon-pointer icon-primary" id="DNSBLWT|'
+		$ex_dom = '&nbsp;<i class="fa-regular fa-trash-can no-confirm icon-pointer icon-primary" id="DNSBLWT|'
 			. 'delete_exclusion|' . $fields[7] . '" title="' . $s_txt . '"></i>';
 	}
 
@@ -2095,7 +2105,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 		if ($fields[6] != 'Unknown') {
 		
 			// Default - Domain not in Whitelist
-			$supp_dom = '<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLWT|' . 'add|'
+			$supp_dom = '<i class="fa-solid fa-plus icon-pointer icon-primary" id="DNSBLWT|' . 'add|'
 					. $fields[7] . '|' . $fields[8] . '" title="' . $s_txt . '"></i>';
 		}
 
@@ -2117,7 +2127,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 					. "To remove this Domain [ {$fields[2]} ] from the DNSBL Whitelist"
 					. ", Click 'OK'";
 			}
-			$supp_dom = '<i class="fa fa-trash no-confirm icon-pointer icon-primary" id="DNSBLWT|'
+			$supp_dom = '<i class="fa-solid fa-trash-can no-confirm icon-pointer icon-primary" id="DNSBLWT|'
 					. 'delete_domain|' . $fields[2] . '" title="' . $s_txt . '"></i>';
 		}
 
@@ -2150,7 +2160,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 							. "To remove this Domain [ {$d_query} ]"
 							. "from the DNSBL Whitelist, Click 'OK'";
 					}
-					$supp_dom = '<i class="fa fa-trash no-confirm icon-pointer icon-primary"'
+					$supp_dom = '<i class="fa-solid fa-trash-can no-confirm icon-pointer icon-primary"'
 							. ' id="DNSBLWT|' . "delete_domainwildcard|" . $d_query
 							. '" title="' . $s_txt . '"></i>';
 					break;
@@ -2160,7 +2170,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 
 		// Root Domain blocking all Sub-Domains and is not in whitelist and not in TLD Exclusion
 		if ($isTLD && !$isWhitelist_found && !$isExclusion) {
-			$supp_dom = '<i class="fa fa-plus-circle icon-pointer icon-primary" id="DNSBLWT|' . 'add|'
+			$supp_dom = '<i class="fa-solid fa-plus-circle icon-pointer icon-primary" id="DNSBLWT|' . 'add|'
 				. $fields[7] . '|' . $fields[8] . '|' . $fields[5] . '" title="' . $s_txt . '"></i>';
 		}
 	}
@@ -2172,7 +2182,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 			. "Evaluated Domain:&emsp;&nbsp;[ {$fields[7]} ]\n\n"
 			. "Add [ {$fields[2]} ] to the TLD Whitelist?";
 
-		$supp_dom = '<i class="fa fa-hand-stop-o icon-pointer icon-primary" id="DNSBLWT|' . 'tld|'
+		$supp_dom = '<i class="fa-regular fa-hand icon-pointer icon-primary" id="DNSBLWT|' . 'tld|'
 			. $fields[2] . '|' . $fields[7] . '" title="' . $s_txt . '"></i>';
 	}
 
@@ -2182,7 +2192,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 
 // Function to convert dnsbl.log -> Reports Tab
 function convert_dnsbl_log($mode, $fields) {
-	global $pfb, $config, $local_hosts, $dnsbl_int, $filterfieldsarray, $clists, $dnsbl_unlock, $dup, $counter,
+	global $pfb, $local_hosts, $dnsbl_int, $filterfieldsarray, $clists, $dnsbl_unlock, $dup, $counter,
 		$pfbentries, $skipcount, $dnsblfilterlimit, $dnsblfilterlimitentries;
 
 	if ($dnsblfilterlimit) {
@@ -2449,11 +2459,11 @@ function convert_dnsbl_log($mode, $fields) {
 						. "This Domain can be temporarily Relocked into DNSBL\n"
 						. "by selecting the Unlock Icon!";
 
-					$unlock_dom = '<i class="fa fa-unlock icon-primary text-warning" id="DNSBL_RELCK|'
+					$unlock_dom = '<i class="fa-solid fa-unlock icon-primary text-warning" id="DNSBL_RELCK|'
 							. $qdomain . '|' . $unlock_type . '" title="' . $s_txt . '"></i>';
 				}
 				else {
-					$unlock_dom = '<i class="fa fa-lock icon-primary text-danger" id="DNSBL_ULCK|'
+					$unlock_dom = '<i class="fa-solid fa-lock icon-primary text-danger" id="DNSBL_ULCK|'
 							. $qdomain . '|' . $unlock_type
 							. '" title="Unlock Domain: [ ' . $qdomain . '] from DNSBL?' . $tnote . '" ></i>';
 				}
@@ -2463,11 +2473,11 @@ function convert_dnsbl_log($mode, $fields) {
 						. "Whitelisted:&emsp;[ {$w_line} ]\n\n"
 						. "Unlock this Domain by selecting the Unlock Icon!";
 
-					$unlock_dom = '<i class="fa fa-lock icon-primary text-warning" id="DNSBL_REULCK|'
+					$unlock_dom = '<i class="fa-solid fa-lock icon-primary text-warning" id="DNSBL_REULCK|'
 						. $qdomain . '|' . $unlock_type . '" title="' . $s_txt . '"></i>';
 				}
 				else {
-					$unlock_dom = '<i class="fa fa-unlock icon-primary text-primary" id="DNSBL_LCK|'
+					$unlock_dom = '<i class="fa-solid fa-unlock icon-primary text-primary" id="DNSBL_LCK|'
 						. $qdomain . '|' . $unlock_type . '" title="Re-Lock Domain: ['
 						. $qdomain . ' ] back into DNSBL?' . $tnote . '" ></i>';
 				}
@@ -2478,13 +2488,13 @@ function convert_dnsbl_log($mode, $fields) {
 	// Add 'https' icon to Domains as required.
 	$pfb_https = '';
 	if ($fields[0] == 'DNSBL-HTTPS') {
-		$pfb_https = "&nbsp;<i class=\"fa fa-key icon-pointer\" title=\"Note: HTTPS - URL/URI/UA are not collected at this time!\"></i>";
+		$pfb_https = "&nbsp;<i class=\"fa-solid fa-key icon-pointer\" title=\"Note: HTTPS - URL/URI/UA are not collected at this time!\"></i>";
 	}
 
 	// Threat Lookup Icon
 	$alert_dom = '';
 	if ($fields[6] != 'Unknown') {
-		$alert_dom = '<a class="fa fa-info icon-pointer icon-primary" title="Click for Threat Domain Lookup." target="_blank" ' .
+		$alert_dom = '<a class="fa-solid fa-info icon-pointer icon-primary" title="Click for Threat Domain Lookup." target="_blank" ' .
 				'href="/pfblockerng/pfblockerng_threats.php?domain=' . $qdomain . '"></a>';
 	}
 
@@ -2506,7 +2516,7 @@ function convert_dnsbl_log($mode, $fields) {
 			</tr>");
 	}
 	else {
-		$bg = strpos($config['system']['webgui']['webguicss'], 'dark') ? $pfb['unidnsbl2'] : $pfb['unidnsbl'];
+		$bg = strpos(config_get_path('system/webgui/webguicss'), 'dark') ? $pfb['unidnsbl2'] : $pfb['unidnsbl'];
 		if ($bg == 'none') {
 			$bg = '';
 		}
@@ -2530,7 +2540,7 @@ function convert_dnsbl_log($mode, $fields) {
 
 // Function to convert dns_reply.log -> Reports Tab
 function convert_dns_reply_log($mode, $fields) {
-	global $pfb, $config, $local_hosts, $filterfieldsarray, $clists, $counter, $pfbentries, $skipcount, $dnsfilterlimit, $dnsfilterlimitentries;
+	global $pfb, $local_hosts, $filterfieldsarray, $clists, $counter, $pfbentries, $skipcount, $dnsfilterlimit, $dnsfilterlimitentries;
 
 	if ($dnsfilterlimit) {
 		return TRUE;
@@ -2585,7 +2595,7 @@ function convert_dns_reply_log($mode, $fields) {
 		if (strpos($fields[8], 'not authorized') !== FALSE) {
 			$cc_color = 'red';
 		}
-		$icons = "<i class=\"fa fa-cog\" title=\"Python_control command\" style=\"color: {$cc_color}\"></i>";
+		$icons = "<i class=\"fa-solid fa-cog\" title=\"Python_control command\" style=\"color: {$cc_color}\"></i>";
 	}
 
 	// Determine Whitelist type
@@ -2595,7 +2605,7 @@ function convert_dns_reply_log($mode, $fields) {
 		list($supp_dom, $ex_dom, $isWhitelist_found) = dnsbl_whitelist_type($dns_fields, $clists, $isExclusion, FALSE, $fields[6]);
 
 		// Threat Lookup Icon
-		$icons = '<a class="fa fa-info icon-pointer icon-primary" title="Click for Threat Domain Lookup." target="_blank" ' .
+		$icons = '<a class="fa-solid fa-info icon-pointer icon-primary" title="Click for Threat Domain Lookup." target="_blank" ' .
 				'href="/pfblockerng/pfblockerng_threats.php?domain=' . $fields[6] . '"></a>';
 
 		if (!empty($supp_dom)) {
@@ -2604,7 +2614,7 @@ function convert_dns_reply_log($mode, $fields) {
 
 		// Default - Add to Blacklist
 		else {
-			$icons .= '&nbsp;<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLWT|' . 'dnsbl_add|'
+			$icons .= '&nbsp;<i class="fa-solid fa-plus icon-pointer icon-primary" id="DNSBLWT|' . 'dnsbl_add|'
 				. $fields[6] . '|' . implode('|', $clists['dnsbl']['options']) . '" title="'
 				. "Add Domain [ {$fields[6]} ] to DNSBL" . '"></i>';
 		}
@@ -2653,7 +2663,7 @@ function convert_dns_reply_log($mode, $fields) {
 		$style_bg = '';
 		$title = 'DNS Reply Event';
 		if ($fields[7] == '127.0.0.1') {
-			$bg = strpos($config['system']['webgui']['webguicss'], 'dark') ? $pfb['unireply2'] : $pfb['unireply'];
+			$bg = strpos(config_get_path('system/webgui/webguicss'), 'dark') ? $pfb['unireply2'] : $pfb['unireply'];
 			if ($bg != 'none') {
 				$style_bg = "style=\"background-color:{$bg}\"";
 			}
@@ -2678,7 +2688,7 @@ function convert_dns_reply_log($mode, $fields) {
 
 // Function to convert IP Logs (ip_block, ip_permit and ip_match).log -> Reports Tab
 function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
-	global $pfb, $config, $continents, $filterfieldsarray, $clists, $ip_unlock, $counter, $pfbentries, $skipcount, $dup, $ipfilterlimit, $ipfilterlimitentries;
+	global $pfb, $continents, $filterfieldsarray, $clists, $ip_unlock, $counter, $pfbentries, $skipcount, $dup, $ipfilterlimit, $ipfilterlimitentries;
 
 	if ($ipfilterlimit) {
 		return array(TRUE, '');
@@ -2888,7 +2898,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 		$eval_ip = $eval_new;
 	}
 
-	$alert_ip = '<a class="fa fa-info icon-pointer icon-primary" target="_blank" href="/pfblockerng/pfblockerng_threats.php?host=' .
+	$alert_ip = '<a class="fa-solid fa-info icon-pointer icon-primary" target="_blank" href="/pfblockerng/pfblockerng_threats.php?host=' .
 			$host . '" title="Click for Threat source IP Lookup for [ ' . $host . ' ]"></a>';
 
 	// Suppression Icon
@@ -2932,7 +2942,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 
 							. "To remove this IP from the Whitelist, press 'OK'";
 
-					$supp_ip = '<i class="fa fa-trash no-confirm icon-pointer" id="DNSBLWT|' . 'delete_ipwhitelist|' . $host
+					$supp_ip = '<i class="fa-solid fa-trash-can no-confirm icon-pointer" id="DNSBLWT|' . 'delete_ipwhitelist|' . $host
 							. '|' . $atype . '" title="' . $supp_ip_txt . '"></i>';
 				}
 			}
@@ -2960,7 +2970,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 						. "&emsp;A Force Update is required to add the associated Firewall Permit Rule!\n\n"
 						. "Click 'OK' to continue";
 
-				$supp_ip = '<i class="fa fa-plus icon-pointer icon-primary" id="PFBIPSUP|' . 'add|' . $host
+				$supp_ip = '<i class="fa-solid fa-plus icon-pointer icon-primary" id="PFBIPSUP|' . 'add|' . $host
 						. '|' . $table . $permit_option
 						. '" title="' . $supp_ip_txt . '"></i>';
 			}
@@ -2972,7 +2982,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 
 					. "To remove this IP from the Suppression list, press 'OK'";
 
-			$supp_ip = '<i class="fa fa-trash no-confirm icon-pointer" id="DNSBLWT|' . 'delete_ip|' . $host
+			$supp_ip = '<i class="fa-solid fa-trash-can no-confirm icon-pointer" id="DNSBLWT|' . 'delete_ip|' . $host
 					. '|' . $table . '" title="' . $supp_ip_txt . '"></i>&emsp;';
 		}
 	}
@@ -2984,11 +2994,11 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 			. "&emsp;&emsp;&#8226; Review Threat Source ( i ) Icons for further IP details.";
 
 		if (!isset($ip_unlock[$eval_ip])) {
-			$unlock_ip = '<i class="fa fa-lock icon-primary text-danger" id="IPULCK|' . $eval_ip . '|'  . $table
+			$unlock_ip = '<i class="fa-solid fa-lock icon-primary text-danger" id="IPULCK|' . $eval_ip . '|'  . $table
 					. '" title="Unlock IP: [ ' . $eval_ip . ' ] from Aliastable [ ' . $table . ' ]?'
 					. $tnote . '" ></i>';
 		} else {
-			$unlock_ip = '<i class="fa fa-unlock icon-primary text-primary" id="IPLCK|' . $eval_ip . '|' . $table
+			$unlock_ip = '<i class="fa-solid fa-unlock icon-primary text-primary" id="IPLCK|' . $eval_ip . '|' . $table
 					. '" title="Re-Lock IP: [ ' . $eval_ip . ' ] back into Aliastable [ ' . $table . ' ]?'
 					. $tnote . '" ></i>';
 		}
@@ -3015,7 +3025,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 
 						. "To remove this IP from the Whitelist, press 'OK'";
 
-				$supp_ip = '<i class="fa fa-trash no-confirm icon-pointer" id="DNSBLWT|' . 'delete_ipwhitelist|' . $host
+				$supp_ip = '<i class="fa-solid fa-trash-can no-confirm icon-pointer" id="DNSBLWT|' . 'delete_ipwhitelist|' . $host
 						. '|' . $atype . '" title="' . $supp_ip_txt . '"></i>';
 			}
 			else {
@@ -3035,7 +3045,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 						. "Block/Reject rules\n&emsp;(Rule Order option)\n\n"
 						. "Click 'OK' to continue";
 
-				$supp_ip = '<i class="fa fa-plus-circle icon-pointer" id="PFBIPWHITE|' . $host
+				$supp_ip = '<i class="fa-solid fa-plus-circle icon-pointer" id="PFBIPWHITE|' . $host
 						. '|' . implode('|', $clists['ipwhitelist' . $vtype]['options'])
 						. '" title="' . $supp_ip_txt . '"></i>';
 			}
@@ -3050,7 +3060,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 	// Threat port lookup
 	$query_port = '';
 	if ($p_query_port != $fields[10]) {
-		$query_port = '<a class="fa fa-search icon-pointer" target="_blank" '
+		$query_port = '<a class="fa-solid fa-search icon-pointer" target="_blank" '
 				. 'href="/pfblockerng/pfblockerng_threats.php?port=' . $fields[10]
 				. '" title="Click for Threat Port Lookup [ ' . $fields[10] . ' ]"></a>';
 	}
@@ -3143,13 +3153,13 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 	else {
 		switch($rtype) {
 			case 'Block':
-				$bg = strpos($config['system']['webgui']['webguicss'], 'dark') ? $pfb['uniblock2'] : $pfb['uniblock'];
+				$bg = strpos(config_get_path('system/webgui/webguicss'), 'dark') ? $pfb['uniblock2'] : $pfb['uniblock'];
 				break;
 			case 'Permit':
-				$bg = strpos($config['system']['webgui']['webguicss'], 'dark') ? $pfb['unipermit2'] : $pfb['unipermit'];
+				$bg = strpos(config_get_path('system/webgui/webguicss'), 'dark') ? $pfb['unipermit2'] : $pfb['unipermit'];
 				break;
 			case 'Match':
-				$bg = strpos($config['system']['webgui']['webguicss'], 'dark') ? $pfb['unimatch2'] : $pfb['unimatch'];
+				$bg = strpos(config_get_path('system/webgui/webguicss'), 'dark') ? $pfb['unimatch2'] : $pfb['unimatch'];
 				break;
 		}
 
@@ -3304,7 +3314,7 @@ if (!$pfb['filterlogentries']) {
 		'save',
 		'Save ' . $alert_view,
 		null,
-		'fa-save'
+		'fa-solid fa-save'
 	);
 	$btn_save->removeClass('btn-primary')->addClass('btn-primary btn-xs');
 	$group->add(new Form_StaticText(
@@ -3879,7 +3889,7 @@ if (!$alert_summary) {
 		'filterlogentries_submit',
 		'Apply Filter',
 		NULL,
-		'fa-filter'
+		'fa-solid fa-filter'
 	);
 	$btnsubmit->removeClass('btn-primary')->addClass('btn-primary btn-xs');
 
@@ -3887,7 +3897,7 @@ if (!$alert_summary) {
 		'filterlogentries_clear',
 		gettext('Clear Filter'),
 		NULL,
-		'fa-filter fa-rotate-180'
+		'fa-filter fa-solid fa-rotate-180'
 	);
 	$btnclear->removeClass('btn-primary')->addClass('btn-danger btn-xs');
 
@@ -3965,18 +3975,18 @@ if (!$alert_summary):
 	<?php
 			foreach ($data[0] as $entry => $type) {
 				if ($key == 0) {
-					$unlock = '<i class="fa fa-unlock icon-primary text-primary" id="IPLCK|' . htmlspecialchars($entry) . '|' . $type
+					$unlock = '<i class="fa-solid fa-unlock icon-primary text-primary" id="IPLCK|' . htmlspecialchars($entry) . '|' . $type
 							. '" title="Re-Lock ' . htmlspecialchars($data[1]) . ': [ ' . htmlspecialchars($entry) . ' ] back into Aliastable [ '
 							. htmlspecialchars($type) . ' ]? "></i>';
 
-					$alert = '<a class="fa fa-info icon-pointer icon-primary" target="_blank"'
+					$alert = '<a class="fa-solid fa-info icon-pointer icon-primary" target="_blank"'
 							. ' href="/pfblockerng/pfblockerng_threats.php?host='
 							. htmlspecialchars($entry) . '" title="Click for Threat source IP Lookup for [ ' . htmlspecialchars($entry) . ' ]"></a>';
 				} else {
-					$unlock = '<i class="fa fa-unlock icon-primary text-primary" id="DNSBL_LCK|' . htmlspecialchars($entry) . '|' . htmlspecialchars($type)
+					$unlock = '<i class="fa-solid fa-unlock icon-primary text-primary" id="DNSBL_LCK|' . htmlspecialchars($entry) . '|' . htmlspecialchars($type)
 							. '" title="Re-Lock ' . htmlspecialchars($data[1]) . ': [ ' . htmlspecialchars($entry) . ' ] back into DNSBL? "></i>';
 
-					$alert = '<a class="fa fa-info icon-pointer icon-primary" target="_blank"'
+					$alert = '<a class="fa-solid fa-info icon-pointer icon-primary" target="_blank"'
 							. ' href="/pfblockerng/pfblockerng_threats.php?domain='
 							. htmlspecialchars($entry) . '" title="Click for Threat source Domain Lookup for [ ' . htmlspecialchars($entry) . ' ]"></a>';
 				}
@@ -4103,7 +4113,7 @@ if (!$alert_summary):
 	<div class="panel-heading">
 		<h2 class="panel-title">
 			<? if ($alertrefresh == 'on'): ?>
-			<i class="fa fa-pause-circle icon-primary" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
+			<i class="fa-solid fa-pause-circle icon-primary" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
 			<? endif; ?>
 			<?=gettext($logtype)?><small>-&nbsp;<?=gettext('Last')?>&nbsp;<?=$pfbentries?>&nbsp;<?=gettext('Alert Entries')?></small>
 		</h2>
@@ -4379,21 +4389,21 @@ if (!$alert_summary):
 	<dl class="dl-horizontal responsive">
 		<dt><?=gettext('Icon')?></dt>
 			<dd><?=gettext('Legend')?></dd>
-		<dt><i class="fa fa-info">&nbsp;</i></dt>
+		<dt><i class="fa-solid fa-info">&nbsp;</i></dt>
 			<dd><?=gettext('Links to Threat Source lookups');?></dd>
-		<dt><i class="fa fa-plus"></i></dt>
+		<dt><i class="fa-solid fa-plus"></i></dt>
 			<dd><?=gettext('Whitelist a IP/Domain');?></dd>
-		<dt><i class="fa fa-plus-circle"></i></dt>
+		<dt><i class="fa-solid fa-plus-circle"></i></dt>
 			<dd><?=gettext('Whitelist 1) A GeoIP or large CIDR IP or 2) A TLD Domain');?></dd>
-		<dt><i class="fa fa-hand-stop-o"></i></dt>
+		<dt><i class="fa-regular fa-hand"></i></dt>
 			<dd><?=gettext('Domain is blocked by a whole TLD');?></dd>
-		<dt><i class="fa fa-trash"></i></dt>
+		<dt><i class="fa-solid fa-trash-can"></i></dt>
 			<dd><?=gettext('IP/Domain is already Whitelisted');?></dd>
-		<dt><i class="fa fa-trash-o"></i></dt>
+		<dt><i class="fa-regular fa-trash-can"></i></dt>
 			<dd><?=gettext('Domain is in the TLD Exclusion customlist');?></dd>
-		<dt><i class="fa fa-lock text-danger"></i></dt>
+		<dt><i class="fa-solid fa-lock text-danger"></i></dt>
 			<dd><?=gettext('IP/Domain is locked');?></dd>
-		<dt><i class="fa fa-unlock"></i></dt>
+		<dt><i class="fa-solid fa-unlock"></i></dt>
 			<dd><?=gettext('IP/Domain is unlocked');?></dd>
 	</dl>
 </div>
@@ -4515,13 +4525,13 @@ foreach ($stats as $stat_type => $stype):
 	<div class="panel-heading">
 		<h2 class="panel-title">
 			<? if ($alertrefresh == 'on'): ?>
-			<i class="fa fa-pause-circle icon-primary" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
+			<i class="fa-solid fa-pause-circle icon-primary" id="PauseRefresh" " title="Pause Alerts Refresh"></i>&nbsp;
 			<? endif; ?>
 
 			<?=$stype[0]?>
 			<span class="widget-heading-icon pull-right">
 				<a data-toggle="collapse" href="#Alert_Stats_<?=$stat_type?>_panel-body" id="Alert_Stats_A_<?=$stat_type?>">
-					<i class="fa fa-plus-circle"></i>
+					<i class="fa-solid fa-plus-circle"></i>
 				</a>
 			</span>
 		</h2>
@@ -4640,7 +4650,7 @@ foreach ($stats as $stat_type => $stype):
 							}
 
 							if ($stat_type != 'ipdirection') {
-								$btnsubmit = '<button type="submit" class="fa fa-filter button-icon"'
+								$btnsubmit = '<button type="submit" class="fa-solid fa-filter button-icon"'
 										. " name=\"filterlogentries_submit_{$stat_type}\""
 										. " id=\"filterlogentries_submit_{$stat_type}\""
 										. " value=\"{$filter_value}\" title=\"Filter Alerts for [ {$data} ]\"></button>";
@@ -4657,7 +4667,7 @@ foreach ($stats as $stat_type => $stype):
 									$data = $subdata[0];
 								}
 
-								$alert_event = '<a class="fa fa-info icon-pointer icon-primary"'
+								$alert_event = '<a class="fa-solid fa-info icon-pointer icon-primary"'
 										. ' title="Click for Threat Lookup." target="_blank"'
 										. ' href="/pfblockerng/pfblockerng_threats.php?' . $stype[4] . '=' . $data . '"></a>';
 							}
@@ -4692,7 +4702,7 @@ foreach ($stats as $stat_type => $stype):
 							}
 
 							if ($stat_type == 'ipdstport') {
-								$query_port = '&nbsp;<a class="fa fa-search icon-pointer" target="_blank"'
+								$query_port = '&nbsp;<a class="fa-solid fa-search icon-pointer" target="_blank"'
 										. ' href="/pfblockerng/pfblockerng_threats.php?port=' . $data
 										. '" title="Click for Threat Port Lookup [ ' . $data . ' ]"></a>';
 							}
@@ -5272,11 +5282,11 @@ events.push(function() {
 
 		if (metaId.attr('http-equiv') == 'refresh') {
 			metaId.removeAttr('http-equiv');
-			pr.removeClass('fa fa-pause-circle').addClass('fa fa-undo').attr('title', 'Resume Alerts Refresh');
+			pr.removeClass('fa-solid fa-pause-circle').addClass('fa-solid fa-undo').attr('title', 'Resume Alerts Refresh');
 			window.stop();
 		} else {
 			metaId.attr('http-equiv', 'refresh');
-			pr.removeClass('fa fa-undo').addClass('fa fa-pause-circle').attr('title', 'Pause Alerts Refresh');
+			pr.removeClass('fa-solid fa-undo').addClass('fa-solid fa-pause-circle').attr('title', 'Pause Alerts Refresh');
 		}
 	})
 

@@ -1,7 +1,7 @@
 PORTNAME=	openzfs
-PORTVERSION=	2023012600
+PORTVERSION=	2023113000
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	freqlabs@FreeBSD.org
@@ -16,7 +16,7 @@ BROKEN_riscv64=	fails to compile: btree_test.c:462:49: result of comparison of c
 BUILD_DEPENDS=	ksh93:shells/ksh93
 RUN_DEPENDS=	openzfs-kmod>=0:sysutils/openzfs-kmod
 
-USES+=		autoreconf:build cpe libtool gmake gettext-runtime python:3.3+,build shebangfix
+USES+=		autoreconf:build cpe libtool gmake gettext-runtime python:build shebangfix ssl
 SHEBANG_GLOB=	*.ksh *.ksh.in *.kshlib *.py.in
 SHEBANG_FILES=	tests/zfs-tests/tests/functional/trim/trim.cfg \
 		cmd/arcstat.in \
@@ -25,6 +25,7 @@ SHEBANG_FILES=	tests/zfs-tests/tests/functional/trim/trim.cfg \
 		cmd/arc_summary
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	MAKE=gmake --prefix=${PREFIX} --with-config="user"
 
 OPTIONS_DEFINE=	DEBUG PYTHON TESTS
@@ -34,7 +35,7 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_PROJECT=	zfs
-GH_TAGNAME=	dc5c8006f
+GH_TAGNAME=	494aaae
 
 USE_LDCONFIG=	yes
 

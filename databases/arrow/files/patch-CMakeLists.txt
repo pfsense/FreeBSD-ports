@@ -1,6 +1,6 @@
---- CMakeLists.txt.orig	2021-11-10 02:07:56 UTC
+--- CMakeLists.txt.orig	2024-03-13 13:37:59 UTC
 +++ CMakeLists.txt
-@@ -100,7 +100,7 @@ set(ARROW_BINARY_DIR ${PROJECT_BINARY_DIR})
+@@ -124,7 +124,7 @@ include(CMakeParseArguments)
  
  include(CMakePackageConfigHelpers)
  include(CMakeParseArguments)
@@ -9,7 +9,7 @@
  include(FindPackageHandleStandardArgs)
  
  include(GNUInstallDirs)
-@@ -943,9 +943,9 @@ if(ARROW_BUILD_EXAMPLES)
+@@ -1010,9 +1010,9 @@ endif()
    add_subdirectory(examples/arrow)
  endif()
  
@@ -20,5 +20,5 @@
 +#              ${CMAKE_CURRENT_SOURCE_DIR}/../NOTICE.txt
 +#              ${CMAKE_CURRENT_SOURCE_DIR}/README.md DESTINATION "${ARROW_DOC_DIR}")
  
- #
- # Validate and print out Arrow configuration options
+ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/gdb_arrow.py DESTINATION "${ARROW_GDB_DIR}")
+ 

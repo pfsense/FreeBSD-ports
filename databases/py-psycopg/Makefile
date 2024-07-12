@@ -1,12 +1,12 @@
 PORTNAME=	psycopg
-PORTVERSION=	3.1.9
+PORTVERSION=	3.1.19
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PostgreSQL database adapter for Python
-WWW=		https://www.psycopg.org/ \
+WWW=		https://www.psycopg.org/psycopg3/ \
 		https://github.com/psycopg/psycopg
 
 LICENSE=	LGPL3
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=49.2.0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.37:devel/py-wheel@${PY_FLAVOR}
 
-USES=		pgsql python:3.7+
+USES=		pgsql python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	saltyrtc.server
 PORTVERSION=	5.0.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -29,7 +29,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}collective.checkdocs>=0.2:textproc/py-colle
 		${PYTHON_PKGNAMEPREFIX}pytest-cov>=2.5:devel/py-pytest-cov@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-mock>=1.10:devel/py-pytest-mock@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils
 USE_RC_SUBR=	saltyrtc-server
 

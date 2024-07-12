@@ -1,5 +1,5 @@
 PORTNAME=	iris-client
-DISTVERSION=	2.0.0
+DISTVERSION=	2.0.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	dfir-iris
 GH_PROJECT=	${PORTNAME}
 
-USES=		python:3.8+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

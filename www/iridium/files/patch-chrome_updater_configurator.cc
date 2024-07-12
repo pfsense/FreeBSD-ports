@@ -1,9 +1,9 @@
---- chrome/updater/configurator.cc.orig	2023-03-13 07:33:08 UTC
+--- chrome/updater/configurator.cc.orig	2024-06-25 12:08:48 UTC
 +++ chrome/updater/configurator.cc
-@@ -57,7 +57,7 @@ Configurator::Configurator(scoped_refptr<UpdaterPrefs>
-           base::MakeRefCounted<update_client::InProcessUnzipperFactory>()),
-       patch_factory_(
-           base::MakeRefCounted<update_client::InProcessPatcherFactory>()) {
+@@ -67,7 +67,7 @@ Configurator::Configurator(scoped_refptr<UpdaterPrefs>
+         return std::nullopt;
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+       }()) {
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    // On Linux creating the NetworkFetcherFactory requires performing blocking IO

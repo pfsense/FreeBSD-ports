@@ -1,11 +1,11 @@
---- chrome/browser/intranet_redirect_detector.h.orig	2022-03-28 18:11:04 UTC
+--- chrome/browser/intranet_redirect_detector.h.orig	2024-06-25 12:08:48 UTC
 +++ chrome/browser/intranet_redirect_detector.h
-@@ -27,7 +27,7 @@ class SimpleURLLoader;
+@@ -25,7 +25,7 @@ class SimpleURLLoader;
  class PrefRegistrySimple;
  
  #if !(BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || \
--      BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA))
-+      BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD))
+-      BUILDFLAG(IS_CHROMEOS))
++      BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD))
  #error "IntranetRedirectDetector should only be built on Desktop platforms."
  #endif
  

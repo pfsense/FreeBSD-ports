@@ -1,6 +1,5 @@
 PORTNAME=	rtree
-PORTVERSION=	1.0.1
-PORTREVISION=	1
+PORTVERSION=	1.2.0
 CATEGORIES=	devel science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +15,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/spatialindex/SpatialIndex.h:devel/spatialind
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.29.0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${LOCALBASE}/include/spatialindex/SpatialIndex.h:devel/spatialindex
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

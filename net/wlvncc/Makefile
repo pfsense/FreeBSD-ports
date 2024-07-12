@@ -1,6 +1,5 @@
 PORTNAME=	wlvncc
-PORTVERSION=	s20230105
-PORTREVISION=	2
+PORTVERSION=	s20240407
 CATEGORIES=	net wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -12,8 +11,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING.GPL
 LICENSE_FILE_ISCL=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		${LOCALBASE}/include/libdrm/drm_fourcc.h:graphics/libdrm
+BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 LIB_DEPENDS=	liblzo2.so:archivers/lzo2 \
 		libaml.so:devel/aml \
 		libdrm.so:graphics/libdrm \
@@ -28,7 +26,7 @@ USE_GITHUB=	yes
 USE_GL=		egl gbm glesv2
 USE_XORG=	pixman
 GH_ACCOUNT=	any1
-GH_TAGNAME=	2b9a886
+GH_TAGNAME=	0c1308f
 PLIST_FILES=	bin/${PORTNAME}
 
 .include <bsd.port.mk>

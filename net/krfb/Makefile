@@ -1,6 +1,5 @@
 PORTNAME=	krfb
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	net kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -16,7 +15,7 @@ USES=		alias cmake compiler:c++11-lib gettext jpeg kde:5 pkgconfig \
 USE_KDE=	auth codecs completion config configwidgets coreaddons crash \
 		dbusaddons dnssd doctools i18n notifications wallet \
 		wayland widgetsaddons windowsystem xmlgui \
-		ecm:build
+		ecm:build plasma-wayland-protocols:build
 USE_QT=		core dbus gui network widgets x11extras xml \
 		buildtools:build qmake:build
 USE_XORG=	x11 xcb xdamage xext xtst

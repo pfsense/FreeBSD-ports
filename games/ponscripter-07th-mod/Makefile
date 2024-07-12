@@ -1,6 +1,6 @@
 PORTNAME=	ponscripter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.2
+DISTVERSION=	4.0.0
 PORTREVISION=	1
 CATEGORIES=	games
 PKGNAMESUFFIX=	-${GH_ACCOUNT}
@@ -25,6 +25,7 @@ GH_ACCOUNT=	07th-mod
 GH_PROJECT=	${PORTNAME}-fork
 
 USES=		compiler:c++11-lang gmake pkgconfig sdl shebangfix
+USE_CXXSTD=	gnu++98
 USE_SDL=	image2 mixer2
 EXTRACT_AFTER_ARGS=--exclude src/extlib
 SHEBANG_FILES=	util/xml-template
@@ -42,10 +43,10 @@ OPTIONS_DEFAULT=MANPAGES NOTIFY ${MACHINE_CPU:Msoftfp:C/.+/TREMOR/}
 MANPAGES_BUILD_DEPENDS=	xmlto:textproc/xmlto
 MANPAGES_CONFIGURE_OFF=	--no-docs
 MANPAGES_PLIST_FILES=\
-	man/man6/ponscr.6.gz \
-	man/man7/ponscr-ext.7.gz \
-	man/man7/ponscr-syntax.7.gz \
-	man/man7/ponscripter.7.gz
+	share/man/man6/ponscr.6.gz \
+	share/man/man7/ponscr-ext.7.gz \
+	share/man/man7/ponscr-syntax.7.gz \
+	share/man/man7/ponscripter.7.gz
 
 NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
 NOTIFY_USES=		gnome

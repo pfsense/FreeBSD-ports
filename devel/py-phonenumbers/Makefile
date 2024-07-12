@@ -1,5 +1,5 @@
 PORTNAME=	phonenumbers
-PORTVERSION=	8.4.1
+PORTVERSION=	8.13.28
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/daviddrysdale/python-phonenumbers
 
 LICENSE=	APACHE20
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

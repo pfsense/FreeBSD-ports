@@ -1,10 +1,9 @@
 PORTNAME=	polybar
-DISTVERSION=	3.6.3
-PORTREVISION=	1
+DISTVERSION=	3.7.1
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/polybar/polybar/releases/download/${DISTVERSION}/
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	Fast and easy-to-use status bar
 WWW=		https://github.com/polybar/polybar
 
@@ -24,7 +23,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 # compiler:c++11-lang is needed for powerpc64
 USES=		cmake compiler:c++11-lang gnome localbase:ldflags \
-		pkgconfig python:3.5+,build xorg
+		pkgconfig python:build xorg
 
 USE_GNOME=	cairo
 USE_XORG=	xcb

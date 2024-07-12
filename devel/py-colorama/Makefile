@@ -1,5 +1,5 @@
 PORTNAME=	colorama
-PORTVERSION=	0.4.5
+PORTVERSION=	0.4.6
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +11,10 @@ WWW=		https://github.com/tartley/colorama
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>=0.25.1:devel/py-hatchling@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes
 

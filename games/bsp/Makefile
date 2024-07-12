@@ -1,12 +1,13 @@
 PORTNAME=	bsp
 PORTVERSION=	5.2
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://games.moria.org.uk/doom/bsp/download/ \
 		http://files.kyle-evans.net/freebsd/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Node builder for Doom
-WWW=		http://doombsp.sourceforge.net/
+WWW=		https://doombsp.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,7 +23,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bsp ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/bsp.6 ${STAGEDIR}${MANPREFIX}/man/man6
+	${INSTALL_MAN} ${WRKSRC}/bsp.6 ${STAGEDIR}${PREFIX}/share/man/man6
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

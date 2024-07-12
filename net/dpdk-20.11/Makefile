@@ -17,7 +17,7 @@ BUILD_DEPENDS=	objdump:devel/binutils
 LIB_DEPENDS=	libelf.so:devel/elfutils \
 		libjansson.so:devel/jansson
 
-USES=		kmod meson pkgconfig:both python:3.5+ shebangfix tar:xz
+USES=		kmod meson pkgconfig:both python shebangfix tar:xz
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	examples/ipsec-secgw/test/pkttest.py \
 		examples/ipsec-secgw/test/pkttest.sh \
@@ -31,6 +31,7 @@ SHEBANG_FILES=	examples/ipsec-secgw/test/pkttest.py \
 		usertools/dpdk-telemetry.py
 MESON_ARGS=	-Ddefault_library=shared \
 		-Denable_kmods=true \
+		-Dc_link_args=-Wl,--undefined-version \
 		-Dmachine=default
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-stable-${PORTVERSION}

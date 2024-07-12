@@ -1,6 +1,7 @@
 PORTNAME=	imposm3
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11.1
+PORTREVISION=	8
 CATEGORIES=	databases geography
 
 MAINTAINER=	darcy@dbitech.ca

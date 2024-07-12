@@ -4,7 +4,7 @@
  * nut_email.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Denny Page
  * All rights reserved.
  *
@@ -24,8 +24,7 @@
 require_once("notices.inc");
 
 $subject = "UPS Notification from " . gethostname();
-$message = date('r');
-$message .= "\n\n";
+$message = date('r') . "\n\n";
 $message .= implode(' ', array_slice($argv, 1));
 
 @notify_all_remote($subject . " - " . $message);

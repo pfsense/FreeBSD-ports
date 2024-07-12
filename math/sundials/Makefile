@@ -1,6 +1,6 @@
 PORTNAME=	sundials
-DISTVERSION=	6.4.0
-PORTREVISION=	3
+DISTVERSION=	6.6.0
+PORTREVISION=	9
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/LLNL/sundials/releases/download/v${DISTVERSION}/
 

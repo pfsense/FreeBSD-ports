@@ -3,7 +3,7 @@
  * snort_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
  * Copyright (c) 2014-2022 Bill Meeks
  * All rights reserved.
@@ -166,7 +166,7 @@ $group->add(new Form_Button(
 	'download',
 	'Download',
 	null,
-	'fa-download'
+	'fa-solid fa-download'
 ))->removeClass('btn-default')->addClass('btn-success btn-sm')->setAttribute('title', gettext('Download interface log files as a gzip archive'))
   ->setHelp('All blocked hosts will be saved');
 
@@ -174,7 +174,7 @@ $group->add(new Form_Button(
 	'remove',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')->setAttribute('title', gettext('Clear all blocked hosts log files'))
   ->setHelp('All blocked hosts will be removed');
 
@@ -186,7 +186,7 @@ $group->add(new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->removeClass('btn-default')->addClass('btn-primary btn-sm')
   ->setHelp('Save auto-refresh and view settings');
 
@@ -311,7 +311,7 @@ print($form);
 					$tmp_ip = str_replace(":", ":&#8203;", $blocked_ip);
 					/* Add reverse DNS lookup icons (two different links if pfSense version supports them) */
 					$rdns_link = "";
-					$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$blocked_ip}');\" title=\"";
+					$rdns_link .= "<i class=\"fa-solid fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$blocked_ip}');\" title=\"";
 					$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
 
 					/* print the table row */
@@ -319,7 +319,7 @@ print($form);
 							<td>{$counter}</td>
 							<td style=\"word-wrap:break-word; white-space:normal\">{$tmp_ip}<br/>{$rdns_link}</td>
 							<td style=\"word-wrap:break-word; white-space:normal\">{$blocked_desc}</td>
-							<td><i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();\" 
+							<td><i class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();\" 
 							 title=\"" . gettext("Delete host from Blocked Table") . "\"></i></td>
 						</tr>\n");
 				}

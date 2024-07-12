@@ -1,6 +1,6 @@
 PORTNAME=	amule
 PORTVERSION=	2.3.3
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/aMule/${PORTVERSION}
 DISTNAME=	aMule-${PORTVERSION}
@@ -44,7 +44,7 @@ MMAP_DESC=		Use mapped memory
 MONOLITHIC_DESC=	Compile monolithic aMule
 WXCAS_DESC=		Compile aMule Statistics for GUI
 XAS_DESC=		Install XChat2 plugin
-OPTIONS_DEFAULT=	ALC ALCC AMULECMD AMULEDAEMON AMULEGUI CAS ED2K \
+OPTIONS_DEFAULT=	ALC ALCC AMULECMD AMULEDAEMON AMULEGUI BOOST CAS ED2K \
 			FILEVIEW MONOLITHIC WEBSERVER WXCAS XAS
 OPTIONS_SUB=	yes
 
@@ -118,4 +118,13 @@ post-patch-DOCS-off:
 post-install-FILEVIEW-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/utils/fileview/mulefileview ${STAGEDIR}${PREFIX}/bin
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# amule 2.3.3 does not work with C++17 which is the default since clang
+# 16. Change the defaults and allow the `register' keyword to be used without
+# triggering a compiler error to allow the build to work.
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CXXFLAGS+=	-Wno-register
+.endif
+
+.include <bsd.port.post.mk>

@@ -18,7 +18,6 @@
     SUBDIR += bpl+
     SUBDIR += chirp
     SUBDIR += chu
-    SUBDIR += comserv
     SUBDIR += concordance
     SUBDIR += conserver-com
     SUBDIR += cqrlog
@@ -28,6 +27,7 @@
     SUBDIR += cwstudio
     SUBDIR += cyclonedds
     SUBDIR += dcf77pi
+    SUBDIR += deforaos-phone
     SUBDIR += dfu-programmer
     SUBDIR += dfu-util
     SUBDIR += digiham
@@ -93,12 +93,10 @@
     SUBDIR += mbelib
     SUBDIR += mgetty+sendfax
     SUBDIR += minicom
-    SUBDIR += mlan3
     SUBDIR += morse
     SUBDIR += multimon-ng
     SUBDIR += nanovna-saver
     SUBDIR += nasawash
-    SUBDIR += ncid
     SUBDIR += nec2c
     SUBDIR += nmealib
     SUBDIR += obexapp
@@ -107,7 +105,6 @@
     SUBDIR += opencbm-plugin-xa1541
     SUBDIR += openobex
     SUBDIR += openzwave
-    SUBDIR += openzwave-devel
     SUBDIR += owfs
     SUBDIR += p5-Cisco-UCS
     SUBDIR += p5-Device-Gsm
@@ -140,6 +137,7 @@
     SUBDIR += py-pymodbus
     SUBDIR += py-pyserial
     SUBDIR += py-pyserial-asyncio
+    SUBDIR += py-streamdeck
     SUBDIR += py-xmodem
     SUBDIR += pyla
     SUBDIR += qico
@@ -150,6 +148,7 @@
     SUBDIR += qt5-sensors
     SUBDIR += qt5-serialbus
     SUBDIR += qt5-serialport
+    SUBDIR += qt6-connectivity
     SUBDIR += qt6-sensors
     SUBDIR += qt6-serialbus
     SUBDIR += qt6-serialport
@@ -166,12 +165,10 @@
     SUBDIR += scmxx
     SUBDIR += scrcpy
     SUBDIR += sdr++
-    SUBDIR += sdr-wspr
     SUBDIR += ser2net
     SUBDIR += serialoverip
     SUBDIR += sigdigger
     SUBDIR += sigutils
-    SUBDIR += sms_client
     SUBDIR += smstools3
     SUBDIR += snap7
     SUBDIR += soapyairspy
@@ -191,7 +188,6 @@
     SUBDIR += svxlink
     SUBDIR += syncterm
     SUBDIR += tcpser
-    SUBDIR += telldus-core
     SUBDIR += thebridge
     SUBDIR += tilp2
     SUBDIR += tio
@@ -201,7 +197,6 @@
     SUBDIR += trustedqsl
     SUBDIR += twpsk
     SUBDIR += uarduno
-    SUBDIR += uartlirc
     SUBDIR += uhd
     SUBDIR += uird
     SUBDIR += ujprog

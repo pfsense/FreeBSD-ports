@@ -1,12 +1,12 @@
 PORTNAME=	gpicview
 PORTVERSION=	0.2.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF/lxde/GPicView%20%28image%20Viewer%29/${PORTVERSION:R}.x/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple and fast image viewer for X11
-WWW=		http://lxde.sourceforge.net/gpicview/
+WWW=		https://lxde.sourceforge.net/gpicview/
 
 LICENSE=	GPLv2
 

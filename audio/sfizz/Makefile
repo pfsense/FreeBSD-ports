@@ -1,6 +1,6 @@
 PORTNAME=	sfizz
 DISTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,12 +18,7 @@ BROKEN_i386=	fails to compile: unknown type name 'Elf64_Auxinfo', see https://gi
 LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 RUN_DEPENDS=	zenity:x11/zenity
 
-USES=		cmake localbase:ldflags pkgconfig
-.if !exists(/usr/include/omp.h)
-USES+=		compiler:gcc-c++11-lib
-.else
-USES+=		compiler:c++17-lang
-.endif
+USES=		cmake compiler:c++17-lang localbase:ldflags pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	sfztools
 GH_TUPLE=	\
@@ -73,10 +68,6 @@ VST_LIB_DEPENDS=	${LV2_LIB_DEPENDS}
 VST_CMAKE_BOOL=		SFIZZ_VST
 
 .include <bsd.port.pre.mk>
-
-.if (${OSVERSION} < 1301505) # 20d21e43514502c0a346f3c2cdb1d8cd8c7cc6b0 commit in 13 fixed booleans in stdatomic.h that were causing breakage
-BROKEN=		fails to compile: unknown type name '_Bool'
-.endif
 
 post-install-LV2-on:
 	@${STRIP_CMD} \

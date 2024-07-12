@@ -1,11 +1,11 @@
---- src/3rdparty/chromium/base/system/sys_info.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/base/system/sys_info.cc.orig	2023-09-13 12:11:42 UTC
 +++ src/3rdparty/chromium/base/system/sys_info.cc
-@@ -104,7 +104,7 @@ void SysInfo::GetHardwareInfo(base::OnceCallback<void(
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_APPLE)
-   base::ThreadPool::PostTaskAndReplyWithResult(
-       FROM_HERE, {}, base::BindOnce(&GetHardwareInfoSync), std::move(callback));
--#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   base::ThreadPool::PostTaskAndReplyWithResult(
-       FROM_HERE, {base::MayBlock()}, base::BindOnce(&GetHardwareInfoSync),
-       std::move(callback));
+@@ -166,7 +166,7 @@ std::string SysInfo::HardwareModelName() {
+ #endif
+ 
+ void SysInfo::GetHardwareInfo(base::OnceCallback<void(HardwareInfo)> callback) {
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+   constexpr base::TaskTraits kTraits = {base::MayBlock()};
+ #else
+   constexpr base::TaskTraits kTraits = {};

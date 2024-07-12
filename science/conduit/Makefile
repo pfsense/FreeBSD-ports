@@ -1,6 +1,6 @@
 PORTNAME=	conduit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.8
+DISTVERSION=	0.9.1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,8 +11,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
-		libsiloh5.so:science/silo \
-		libsz.so:science/libaec
+		libsiloh5.so:science/silo
 
 USES=		cmake:testing compiler:c++11-lang fortran
 USE_LDCONFIG=	yes

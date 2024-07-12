@@ -1,6 +1,6 @@
 PORTNAME=	yapet
 DISTVERSION=	2.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://yapet.guengel.ch/downloads/
 
@@ -15,8 +15,10 @@ LIB_DEPENDS+=	libargon2.so:security/libargon2 \
 		libcppunit.so:devel/cppunit
 
 USES=		compiler:c++14-lang gmake ncurses ssl pkgconfig
+USE_CXXSTD=	c++14
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 OPTIONS_DEFINE=		DOCS NLS
 OPTIONS_SUB=		yes

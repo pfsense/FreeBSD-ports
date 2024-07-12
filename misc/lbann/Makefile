@@ -1,8 +1,8 @@
 PORTNAME=	lbann
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.102-254
-PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g2e3012a9a
+PORTREVISION=	4
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,8 @@ COMMENT=	Livermore Big Artificial Neural Network toolkit
 WWW=		https://github.com/LLNL/lbann
 
 LICENSE=	APACHE20
+
+BROKEN=		many C++ errors, broken until the upstream would help, see https://github.com/LLNL/lbann/issues/2407
 
 BUILD_DEPENDS=	cereal>0:devel/cereal \
 		dihydrogen>0:math/dihydrogen \
@@ -21,7 +23,7 @@ LIB_DEPENDS=	libconduit.so:science/conduit \
 		libprotobuf.so:devel/protobuf \
 		libsiloh5.so:science/silo
 
-USES=		cmake:testing compiler:c++17-lang localbase pkgconfig
+USES=		cmake:testing compiler:c++17-lang localbase:ldflags pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	LLNL
@@ -41,7 +43,8 @@ CMAKE_OFF=	LBANN_WITH_CNPY \
 CMAKE_ON=	LBANN_USE_PROTOBUF_MODULE
 CMAKE_TESTING_ON=	LBANN_WITH_UNIT_TESTING # requires MPI cluster
 
-LDFLAGS+=	-lexecinfo
+LDFLAGS+=	-labsl_hash -labsl_log_internal_message -labsl_log_internal_nullguard -labsl_spinlock_wait -lexecinfo
+USE_CXXSTD=	c++17
 
 OPTIONS_SINGLE=		MPI
 OPTIONS_SINGLE_MPI=	MPICH OPENMPI

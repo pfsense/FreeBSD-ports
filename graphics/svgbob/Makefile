@@ -1,6 +1,6 @@
 PORTNAME=	svgbob
 DISTVERSION=	0.7.1
-PORTREVISION=	2
+PORTREVISION=	11
 CATEGORIES=	graphics
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -16,7 +16,6 @@ GH_ACCOUNT=	ivanceras
 
 WRKSRC_SUBDIR=	packages/svgbob_cli
 
-CARGO_ARGS=	-p svgbob
 CARGO_CRATES=	ansi_term-0.12.1 \
 		approx-0.5.1 \
 		arrayvec-0.7.2 \

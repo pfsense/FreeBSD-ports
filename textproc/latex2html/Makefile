@@ -1,8 +1,8 @@
 PORTNAME=	latex2html
 PORTVERSION=	2016
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	textproc
-MASTER_SITES=	TEX_CTAN/support/${PORTNAME}
+MASTER_SITES=	TEX/obsolete/support/${PORTNAME}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Convert LaTeX documents to HTML
@@ -31,7 +31,7 @@ PORTDOCS=	FAQ INSTALL README
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/latex2html.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/latex2html.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

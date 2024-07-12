@@ -1,6 +1,6 @@
 PORTNAME=	apache-beam
 DISTVERSION=	2.43.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE=	APACHE20
 
 PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cloudpickle>=2.2.0:devel/py-cloudpickle@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}crcmod>=1.7:devel/py-crcmod@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=2.8.0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.0:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dill>=0.3.1.1:devel/py-dill@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fastavro>=0.23.6:textproc/py-fastavro@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fasteners>=0.3:devel/py-fasteners@${PY_FLAVOR} \
@@ -35,8 +35,7 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cloudpickle>=2.2.0:devel/py-cloudpickle@${PY_
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
 		${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=36.0.0:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}freezegun>=0.3.12:devel/py-freezegun@${PY_FLAVOR} \
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}freezegun>=0.3.12:devel/py-freezegun@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}joblib>=0.3.12:devel/py-joblib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=1.0.1:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas@${PY_FLAVOR} \
@@ -52,8 +51,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=36.0.0:security/py-cryptograp
 		${PYTHON_PKGNAMEPREFIX}yaml>=3.12:devel/py-yaml@${PY_FLAVOR}
 		# testcontainers[mysql]>=3.0.3 is also required
 
-USES=		python:3.6+ zip
-USE_PYTHON=	distutils cython concurrent autoplist pytest # 5 tests fail, depending on pyarrow, MySqlContainer, threadpoolctl
+USES=		python zip
+USE_PYTHON=	autoplist concurrent cryptography_test cython distutils pytest # 5 tests fail, depending on pyarrow, MySqlContainer, threadpoolctl
 
 post-install:
 	# strip binaries

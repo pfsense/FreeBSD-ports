@@ -1,7 +1,7 @@
 PORTNAME=	gcolor3
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.4.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 
 PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
@@ -21,7 +21,6 @@ USES=		gnome gettext meson libtool pkgconfig
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World
-GL_COMMIT=	7053f9e6a890175fc212df625e02ffbdce418146
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 
 MESON_ARGS=	-Dwerror=false

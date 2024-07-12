@@ -1,6 +1,6 @@
 PORTNAME=	xmcd
 PORTVERSION=	3.3.2
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	audio
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 
@@ -25,6 +25,12 @@ CONFLICTS_INSTALL=	py*-cclib # bin/cda
 
 LIBBINDIR=	${STAGEDIR}${PREFIX}/lib/X11/xmcd/bin-${OPSYS}_${OSREL:R:R}-${ARCH:S/aarch64/arm64/:C/armv.*/arm/:C/powerpc64.*/powerpc/:C/riscv64.*/riscv/}
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 pre-patch:
 	@${CP} ${WRKSRC}/xmcd_d/XMcd.ad ${WRKSRC}/xmcd_d/XMcd.ad.in
 
@@ -36,7 +42,7 @@ post-configure:
 	@${REINPLACE_CMD} \
 		-e 's: BINDIR .*:BINDIR=${STAGEDIR}${PREFIX}/bin:' \
 		-e 's: LIBDIR .*:LIBDIR=${STAGEDIR}${PREFIX}/lib/X11:' \
-		-e 's: MANDIR .*:MANDIR=${STAGEDIR}${PREFIX}/man/man1:' \
+		-e 's: MANDIR .*:MANDIR=${STAGEDIR}${PREFIX}/share/man/man1:' \
 		-e 's: MANSUFFIX .*:MANSUFFIX=1:' \
 		-e 's/^Makefile::/^Makefile:/' \
 		${WRKSRC}/Makefile

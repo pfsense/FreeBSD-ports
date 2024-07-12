@@ -1,5 +1,5 @@
 PORTNAME=	cloud-init
-DISTVERSION=	23.1.2
+DISTVERSION=	24.1.4
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -25,7 +25,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto>0:devel/py-boto@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
 		sudo>0:security/sudo
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	canonical
 USE_PYTHON=	autoplist distutils
@@ -52,6 +52,8 @@ post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/cloud.cfg ${STAGEDIR}${ETCDIR}/cloud.cfg.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cloud.cfg.d/05_logging.cfg ${STAGEDIR}${ETCDIR}/cloud.cfg.d/05_logging.cfg.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cloud.cfg.d/99_freebsd.cfg ${STAGEDIR}${ETCDIR}/cloud.cfg.d/99_freebsd.cfg.sample
-	${REINPLACE_CMD} 's|^.*\.cfg$$|@sample &.sample|' ${_PYTHONPKGLIST}
+	${REINPLACE_CMD} -e 's|^.*\.cfg$$|@sample &.sample|'  \
+		-e 's|${ETCDIR}/clean.d|@dir ${ETCDIR}/clean.d|' \
+		${_PYTHONPKGLIST}
 
 .include <bsd.port.mk>

@@ -1,11 +1,11 @@
 PORTNAME=	grpn
 PORTVERSION=	1.5.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	GTK+-based reverse polish notation (RPN) calculator
+COMMENT=	GTK-based reverse polish notation (RPN) calculator
 WWW=		https://github.com/utopiabound/grpn
 
 LICENSE=	GPLv2
@@ -17,7 +17,7 @@ GH_ACCOUNT=	utopiabound
 
 WRKSRC_SUBDIR=	src
 
-PLIST_FILES=	bin/grpn man/man1/grpn.1.gz
+PLIST_FILES=	bin/grpn share/man/man1/grpn.1.gz
 PORTDOCS=	CHANGES
 
 OPTIONS_DEFINE=	DOCS

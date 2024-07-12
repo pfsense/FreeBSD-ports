@@ -1,5 +1,5 @@
 PORTNAME=	rich
-PORTVERSION=	13.4.2
+PORTVERSION=	13.7.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +17,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}markdown-it-py>=2.2.0:textproc/py-markdown-i
 		${PYTHON_PKGNAMEPREFIX}pygments>=2.13.0<3.0.0:textproc/py-pygments@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist pep517 pytest
 USE_GITHUB=	yes
 

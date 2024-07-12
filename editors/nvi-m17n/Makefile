@@ -1,6 +1,6 @@
 PORTNAME=	nvi
 PORTVERSION=	1.79.20040608
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES?=	editors
 MASTER_SITES=	LOCAL/nyan \
@@ -22,6 +22,7 @@ WRKSRC=		${WRKDIR}/${DISTNAME}/build
 USES=		ncurses perl5
 USE_PERL5=	run
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	OPTFLAG='-D_PATH_SYSEXRC=\"${PREFIX}/etc/vi.exrc\"' \
 		vi_cv_path_perl=${PERL}
 CONFIGURE_ARGS=	--program-prefix=n
@@ -55,6 +56,10 @@ EUC_TW_DESC=		Set euc-tw        as default multibyte encoding
 CANNA_DESC=		Enable canna support
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .if ${PORT_OPTIONS:MEUC_JP}
 CONFIGURE_ARGS+=	--enable-multibyte=euc-jp

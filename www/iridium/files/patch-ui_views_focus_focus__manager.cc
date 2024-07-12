@@ -1,17 +1,17 @@
---- ui/views/focus/focus_manager.cc.orig	2023-01-17 19:19:00 UTC
+--- ui/views/focus/focus_manager.cc.orig	2024-06-25 12:08:48 UTC
 +++ ui/views/focus/focus_manager.cc
-@@ -625,7 +625,7 @@ bool FocusManager::RedirectAcceleratorToBubbleAnchorWi
+@@ -582,7 +582,7 @@ bool FocusManager::RedirectAcceleratorToBubbleAnchorWi
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // TODO(crbug.com/40118868): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
    // Processing an accelerator can delete things. Because we
    // need these objects afterwards on Linux, save widget_ as weak pointer and
    // save the close_on_deactivate property value of widget_delegate in a
-@@ -642,7 +642,7 @@ bool FocusManager::RedirectAcceleratorToBubbleAnchorWi
+@@ -599,7 +599,7 @@ bool FocusManager::RedirectAcceleratorToBubbleAnchorWi
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // TODO(crbug.com/40118868): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)

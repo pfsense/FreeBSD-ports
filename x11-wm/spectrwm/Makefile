@@ -1,9 +1,10 @@
 PORTNAME=	spectrwm
 DISTVERSIONPREFIX=	SPECTRWM_
 DISTVERSION=	3_4_1
+PORTREVISION=	2
 CATEGORIES=	x11-wm
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pyrus@bsdmail.com
 COMMENT=	Small, dynamic tiling window manager for X11
 WWW=		https://github.com/conformal/spectrwm
 
@@ -53,7 +54,7 @@ do-build:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_LIB} ${WRKSRC}/libswmhack.so ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_MAN} ${WRKSRC}/spectrwm.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/spectrwm.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/spectrwm.conf ${STAGEDIR}${PREFIX}/etc/spectrwm.conf.sample
 
 do-install-EXAMPLES-on:

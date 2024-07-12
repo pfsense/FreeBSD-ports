@@ -14,14 +14,14 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyasn1>=0.4.5:devel/py-pyasn1@${PY_FLAVOR} \
 # Cyrus needs PLAIN / CRAM-MD5 / DIGEST-MD5 enabled
 TEST_DEPENDS=	${LOCALBASE}/libexec/slapd:net/openldap${OPENLDAP_VER}-server
 
-USES=		ldap:24 localbase python:3.6+
+USES=		ldap:24 localbase python
 USE_LOCALE=	en_US.UTF-8
 USE_PYTHON=	autoplist distutils
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	ae-dir
 GL_PROJECT=	python-ldap0
-GL_COMMIT=	70b3aad8593d34c82f6bca1eca53f1c8938d345d
+GL_TAGNAME=	70b3aad8593d34c82f6bca1eca53f1c8938d345d
 
 PYDISTUTILS_BUILD_TARGET=	build_ext
 PYDISTUTILS_BUILDARGS+=		--inplace

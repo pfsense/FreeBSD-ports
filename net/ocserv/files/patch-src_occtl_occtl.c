@@ -1,6 +1,6 @@
---- src/occtl/occtl.c.orig	2020-08-06 18:51:31 UTC
+--- src/occtl/occtl.c.orig	2023-12-17 10:19:23 UTC
 +++ src/occtl/occtl.c
-@@ -264,7 +264,7 @@ static int handle_help_cmd(CONN_TYPE * conn, const cha
+@@ -260,7 +260,7 @@ static int handle_help_cmd(CONN_TYPE * conn, const cha
  static int handle_reset_cmd(CONN_TYPE * conn, const char *arg, cmd_params_st *params)
  {
  	rl_reset_terminal(NULL);

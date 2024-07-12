@@ -1,6 +1,6 @@
 PORTNAME=	wdm
 PORTVERSION=	1.28
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	x11 windowmaker
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/wdm/:wdm GENTOO:wdm \
 		http://wolfram.schneider.org/bsd/gif/bsd/:pic_large \
@@ -26,6 +26,7 @@ OPTIONS_SUB=	yes
 USES=		gettext localbase tar:bzip2 xorg
 USE_XORG=	ice sm x11 xau xdmcp xext xinerama xmu
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	DEF_SERVER="${DEF_SERVER}" XRDB_PATH="${XRDB_PATH}"
 CONFIGURE_ARGS=	--with-logdir=/var/log \
 		--with-runlockdir=/var/run \
@@ -49,6 +50,12 @@ WDMDIR=		${PREFIX}/lib/X11/wdm
 
 PAM_CONFIGURE_OFF=	--disable-pam
 PAM_CONFIGURE_ON=	--with-pamdir=${LOCALBASE}/etc/pam.d/
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

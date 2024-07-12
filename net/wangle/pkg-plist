@@ -61,7 +61,6 @@ include/wangle/client/persistence/LRUPersistentCache-inl.h
 include/wangle/client/persistence/LRUPersistentCache.h
 include/wangle/client/persistence/PersistentCache.h
 include/wangle/client/persistence/PersistentCacheCommon.h
-include/wangle/client/persistence/SharedMutexCacheLockGuard.h
 include/wangle/client/persistence/test/Mocks.h
 include/wangle/client/persistence/test/TestUtil.h
 include/wangle/client/ssl/SSLSessionCacheData.h
@@ -70,6 +69,7 @@ include/wangle/client/ssl/SSLSessionCallbacks.h
 include/wangle/client/ssl/SSLSessionPersistentCache-inl.h
 include/wangle/client/ssl/SSLSessionPersistentCache.h
 include/wangle/client/ssl/ThreadSafeSSLSessionCache.h
+include/wangle/ssl/SNIConfig.h
 include/wangle/ssl/test/MockSSLStats.h
 include/wangle/client/ssl/test/Mocks.h
 include/wangle/client/ssl/test/TestUtil.h
@@ -98,6 +98,7 @@ include/wangle/ssl/SSLStats.h
 include/wangle/ssl/SSLUtil.h
 include/wangle/ssl/ServerSSLContext.h
 include/wangle/ssl/TLSCredProcessor.h
+include/wangle/ssl/TLSInMemoryTicketProcessor.h
 include/wangle/ssl/TLSTicketKeyManager.h
 include/wangle/ssl/TLSTicketKeySeeds.h
 include/wangle/ssl/test/TicketUtil.h

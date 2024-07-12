@@ -1,12 +1,12 @@
 PORTNAME=	ndpmon
 PORTVERSION=	1.4.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-1.4/
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	On-link icmpv6 message monitoring and reporting daemon
-WWW=		http://ndpmon.sourceforge.net
+WWW=		https://ndpmon.sourceforge.net
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,6 +18,7 @@ USE_GNOME=	libxml2
 USE_RC_SUBR=	ndpmonitor
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	OSTYPE=FreeBSD
 CONFIGURE_ARGS=	--with-var-datadir=${PREFIX}/var --with-confdir=${ETCDIR} \
 		--with-libxml2=${LOCALBASE} --cache-file=/dev/null
@@ -53,7 +54,7 @@ post-patch:
 .endif
 
 do-install:
-	${INSTALL_MAN} ${WRKSRC}/ndpmon.8 ${STAGEDIR}${PREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/ndpmon.8 ${STAGEDIR}${PREFIX}/share/man/man8
 	${INSTALL_PROGRAM} ${WRKSRC}/ndpmon ${STAGEDIR}${PREFIX}/sbin
 
 	${MKDIR} ${STAGEDIR}${DATADIR}

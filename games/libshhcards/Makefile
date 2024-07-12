@@ -6,7 +6,7 @@ DISTNAME=	shhcards-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for displaying game cards on X Window System
-WWW=		http://shh.thathost.com/pub-unix/ #shhcards
+WWW=		https://shh.thathost.com/pub-unix/ #shhcards
 
 LICENSE=	ART10
 
@@ -14,7 +14,7 @@ USES=		xorg
 USE_XORG=	xpm
 MAKEFILE=	${FILESDIR}/Makefile.lib
 USE_LDCONFIG=	yes
-MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null
+MAKE_ENV=	WITHOUT_PROFILE=yes SRCCONF=/dev/null
 
 OPTIONS_DEFINE=	DOCS
 

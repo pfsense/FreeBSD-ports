@@ -1,9 +1,18 @@
---- helix-loader/src/grammar.rs.orig	2023-05-18 07:01:26 UTC
+--- helix-loader/src/grammar.rs.orig	2024-03-30 13:28:02 UTC
 +++ helix-loader/src/grammar.rs
-@@ -90,57 +90,6 @@ pub fn fetch_grammars() -> Result<()> {
+@@ -86,7 +86,6 @@ fn ensure_git_is_available() -> Result<()> {
+ }
+ 
+ fn ensure_git_is_available() -> Result<()> {
+-    helix_stdx::env::which("git")?;
+     Ok(())
+ }
+ 
+@@ -96,57 +95,6 @@ pub fn fetch_grammars() -> Result<()> {
+     // We do not need to fetch local grammars.
      let mut grammars = get_grammar_configs()?;
      grammars.retain(|grammar| !matches!(grammar.source, GrammarSource::Local { .. }));
- 
+-
 -    println!("Fetching {} grammars", grammars.len());
 -    let results = run_parallel(grammars, fetch_grammar);
 -
@@ -54,7 +63,6 @@
 -        }
 -        bail!("{len} grammars failed to fetch");
 -    }
--
+ 
      Ok(())
  }
- 

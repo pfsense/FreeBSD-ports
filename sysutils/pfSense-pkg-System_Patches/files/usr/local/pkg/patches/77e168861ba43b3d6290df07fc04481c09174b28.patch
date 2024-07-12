@@ -1,0 +1,28 @@
+commit 77e168861ba43b3d6290df07fc04481c09174b28
+Author: jim-p <jimp@netgate.com>
+Date:   Thu Jul 13 08:43:55 2023 -0400
+
+    Correct JS for bulk rule copy convertif. Fixes #14576
+
+diff --git a/src/usr/local/www/firewall_rules.php b/src/usr/local/www/firewall_rules.php
+index 2a02ba4274..d9b20f35e1 100644
+--- a/src/usr/local/www/firewall_rules.php
++++ b/src/usr/local/www/firewall_rules.php
+@@ -349,7 +349,7 @@ if (isset($_POST['del_x'])) {
+ 		$filterent = $a_filter[$rulei];
+ 		$filterent['tracker'] = $tracker++;
+ 		$filterent['interface'] = $_POST['dstif'];
+-		if ($_POST['convertif'] && ($if != $_POST['dstif']) &&
++		if (($_POST['convertif'] == 'true') && ($if != $_POST['dstif']) &&
+ 		    in_array($_POST['dstif'], $confiflist)) {
+ 			if (isset($filterent['source']['network']) &&
+ 			    ($filterent['source']['network'] == $if)) {
+@@ -1267,7 +1267,7 @@ events.push(function() {
+ 	$("#copyr").click(function() {
+ 		$("#rulescopy").modal('hide');
+ 		$("#dstif").val($("#copyr_dstif").val());
+-		$("#convertif").val($("#copyr_convertif").val());
++		$("#convertif").val($("#copyr_convertif").prop('checked'));
+ 		document.getElementById('mainform').submit();
+ 	});
+ 

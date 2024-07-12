@@ -3,7 +3,7 @@
  * rrd_fetch_json.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)
@@ -87,8 +87,8 @@ $unit_desc_lookup = array(
 );
 
 // Posted settings that apply to both left and right axes
-$start = $_POST['start'];
-$end = $_POST['end'];
+$start = (int) $_POST['start'];
+$end = (int) $_POST['end'];
 $timePeriod = $_POST['timePeriod'];
 $resolution = $_POST['resolution'];
 $graphtype = $_POST['graphtype'];
@@ -140,7 +140,7 @@ if ($timePeriod === "custom") {
 		$right_rrd_array = array();
 	}
 
-	$resolution = max($left_rrd_array['step'], $right_rrd_array['step']);
+	$resolution = (int) max($left_rrd_array['step'], $right_rrd_array['step']);
 
 	// make sure end time isn't later than last updated time entry
 	if ( $end > $last_updated ) { $end = $last_updated; }

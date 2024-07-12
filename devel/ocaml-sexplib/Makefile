@@ -1,43 +1,42 @@
 PORTNAME=	sexplib
-PORTVERSION=	113.00.00
-MASTER_SITES=	https://ocaml.janestreet.com/ocaml-core/${PORTVERSION:R}/files/
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.16.0
+PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	OCaml library for working with S-expressions
+MAINTAINER=	freebsd@dev.thsi.be
+COMMENT=	OCaml library for (de)serializing S-expressions
 WWW=		https://janestreet.github.io/
 
-LICENSE=	APACHE20 BSD3CLAUSE
-LICENSE_COMB=	multi
-LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.txt
-LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE-Tywith.txt
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BUILD_DEPENDS=	ocaml-type_conv>=0:devel/ocaml-type_conv
-BUILD_DEPENDS+=	ocamlbuild:devel/ocaml-ocamlbuild
-BUILD_DEPENDS+=	${LOCALBASE}/${OCAML_SITELIBDIR}/num/META:math/ocaml-num
-RUN_DEPENDS=	ocaml-type_conv>=0:devel/ocaml-type_conv
+BUILD_DEPENDS=	${SA_DIR}/num/META:math/ocaml-num \
+		${SA_DIR}/parsexp/META:devel/ocaml-parsexp \
+		${SA_DIR}/sexplib0/META:devel/ocaml-sexplib0
+RUN_DEPENDS=	${SA_DIR}/num/META:math/ocaml-num \
+		${SA_DIR}/parsexp/META:devel/ocaml-parsexp \
+		${SA_DIR}/sexplib0/META:devel/ocaml-sexplib0
+
+USES=		ocaml:dune
+USE_GITHUB=	yes
+GH_ACCOUNT=	janestreet
+USE_OCAML=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-CONFIGURE_ARGS=	--disable-docs --prefix ${PREFIX}
-HAS_CONFIGURE=	yes
-MAKE_JOBS_UNSAFE=	yes
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=	yes
-USE_OCAML_CAMLP4=	yes
-USE_OCAMLFIND_PLIST=	yes
-USES=		gmake
-
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
-OCAML_PKGDIRS=	${PORTNAME} ${PORTNAME}_num ${PORTNAME}_unix
-PORTDOCS=	*
+PORTDOCS=	CHANGES.md CHANGES.txt LICENSE.md LICENSE-Tywith.txt README.org
+
+OPTIONS_DEFINE=	DOCS
+
+SA_DIR=		${LOCALBASE}/${OCAML_SITELIBDIR}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/sexplib*/*.cmxs
-
-post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/ && ${INSTALL_DATA} CHANGES.md README.md ${STAGEDIR}${DOCSDIR}/
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/sexplib/num/sexplib_num.cmxs \
+		${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/sexplib/sexplib.cmxs \
+		${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/sexplib/unix/sexplib_unix.cmxs
 
 .include <bsd.port.mk>

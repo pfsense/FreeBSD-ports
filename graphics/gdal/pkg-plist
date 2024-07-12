@@ -1,6 +1,7 @@
 bin/gdal-config
 bin/gdal_contour
 bin/gdal_create
+bin/gdal_footprint
 bin/gdal_grid
 bin/gdal_rasterize
 bin/gdal_translate
@@ -43,9 +44,6 @@ include/cpl_http.h
 include/cpl_json.h
 include/cpl_list.h
 include/cpl_minixml.h
-include/cpl_minizip_ioapi.h
-include/cpl_minizip_unzip.h
-include/cpl_minizip_zip.h
 include/cpl_multiproc.h
 include/cpl_odbc.h
 include/cpl_port.h
@@ -87,6 +85,7 @@ include/gdaljp2metadata.h
 include/gdaljp2metadatagenerator.h
 include/gdalpansharpen.h
 include/gdalsse_priv.h
+include/gdalsubdatasetinfo.h
 include/gdalwarper.h
 include/gdalwarpkernel_opencl.h
 include/gnm.h
@@ -101,6 +100,7 @@ include/ogr_core.h
 include/ogr_feature.h
 include/ogr_featurestyle.h
 include/ogr_geocoding.h
+include/ogr_geomcoordinateprecision.h
 include/ogr_geometry.h
 include/ogr_p.h
 include/ogr_recordbatch.h
@@ -117,8 +117,8 @@ lib/cmake/gdal/GDALConfig.cmake
 lib/cmake/gdal/GDALConfigVersion.cmake
 lib/gdalplugins/drivers.ini
 lib/libgdal.so
-lib/libgdal.so.33
-lib/libgdal.so.33.%%PORTVERSION%%
+lib/libgdal.so.35
+lib/libgdal.so.35.%%PORTVERSION%%
 libdata/pkgconfig/gdal.pc
 share/bash-completion/completions/gdal-config
 share/bash-completion/completions/gdal2tiles.py
@@ -162,6 +162,7 @@ share/bash-completion/completions/ogrtindex
 %%DATADIR%%/GDALLogoColor.svg
 %%DATADIR%%/GDALLogoGS.svg
 %%DATADIR%%/LICENSE.TXT
+%%DATADIR%%/MM_m_idofic.csv
 %%DATADIR%%/bag_template.xml
 %%DATADIR%%/cubewerx_extra.wkt
 %%DATADIR%%/default.rsc
@@ -172,8 +173,11 @@ share/bash-completion/completions/ogrtindex
 %%DATADIR%%/gdalicon.png
 %%DATADIR%%/gdalinfo_output.schema.json
 %%DATADIR%%/gdalmdiminfo_output.schema.json
+%%DATADIR%%/gdaltileindex.xsd
 %%DATADIR%%/gdalvrt.xsd
+%%DATADIR%%/gfs.xsd
 %%DATADIR%%/gml_registry.xml
+%%DATADIR%%/gml_registry.xsd
 %%DATADIR%%/gmlasconf.xml
 %%DATADIR%%/gmlasconf.xsd
 %%DATADIR%%/grib2_center.csv
@@ -275,7 +279,7 @@ share/bash-completion/completions/ogrtindex
 %%DATADIR%%/jpfgdgml_WL.gfs
 %%DATADIR%%/jpfgdgml_WStrA.gfs
 %%DATADIR%%/jpfgdgml_WStrL.gfs
-%%DATADIR%%/netcdf_config.xsd
+%%NETCDF%%%%DATADIR%%/netcdf_config.xsd
 %%DATADIR%%/nitf_spec.xml
 %%DATADIR%%/nitf_spec.xsd
 %%DATADIR%%/ogrinfo_output.schema.json
@@ -299,7 +303,6 @@ share/bash-completion/completions/ogrtindex
 %%DATADIR%%/seed_2d.dgn
 %%DATADIR%%/seed_3d.dgn
 %%DATADIR%%/stateplane.csv
-%%DATADIR%%/template_tiles.mapml
 %%DATADIR%%/tms_LINZAntarticaMapTileGrid.json
 %%DATADIR%%/tms_MapML_APSTILE.json
 %%DATADIR%%/tms_MapML_CBMTILE.json
@@ -315,6 +318,7 @@ share/man/man1/gdal_contour.1.gz
 share/man/man1/gdal_create.1.gz
 share/man/man1/gdal_edit.1.gz
 share/man/man1/gdal_fillnodata.1.gz
+share/man/man1/gdal_footprint.1.gz
 share/man/man1/gdal_grid.1.gz
 share/man/man1/gdal_merge.1.gz
 share/man/man1/gdal_pansharpen.1.gz

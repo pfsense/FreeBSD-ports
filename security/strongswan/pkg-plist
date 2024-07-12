@@ -17,6 +17,7 @@
 %%CURL%%@sample %%ETCDIR%%.d/charon/curl.conf.sample
 @sample %%ETCDIR%%.d/charon/curve25519.conf.sample
 @sample %%ETCDIR%%.d/charon/des.conf.sample
+%%DHCP%%%%ETCDIR%%.d/charon/dhcp.conf.sample
 @sample %%ETCDIR%%.d/charon/dnskey.conf.sample
 @sample %%ETCDIR%%.d/charon/drbg.conf.sample
 %%EAPAKA3GPP2%%@sample %%ETCDIR%%.d/charon/eap-aka-3gpp2.conf.sample
@@ -36,8 +37,8 @@
 %%GCM%%@sample %%ETCDIR%%.d/charon/gcm.conf.sample
 %%EAPAKA3GPP2%%@sample %%ETCDIR%%.d/charon/gmp.conf.sample
 @sample %%ETCDIR%%.d/charon/hmac.conf.sample
-%%KDF%%@sample %%ETCDIR%%.d/charon/kdf.conf.sample
 %%IPSECKEY%%@sample %%ETCDIR%%.d/charon/ipseckey.conf.sample
+%%KDF%%@sample %%ETCDIR%%.d/charon/kdf.conf.sample
 %%KERNELLIBIPSEC%%@sample %%ETCDIR%%.d/charon/kernel-libipsec.conf.sample
 @sample %%ETCDIR%%.d/charon/kernel-pfkey.conf.sample
 @sample %%ETCDIR%%.d/charon/kernel-pfroute.conf.sample
@@ -49,6 +50,7 @@
 %%MYSQL%%@sample %%ETCDIR%%.d/charon/mysql.conf.sample
 @sample %%ETCDIR%%.d/charon/nonce.conf.sample
 @sample %%ETCDIR%%.d/charon/openssl.conf.sample
+%%VIA%%@sample %%ETCDIR%%.d/charon/padlock.conf.sample
 @sample %%ETCDIR%%.d/charon/pem.conf.sample
 @sample %%ETCDIR%%.d/charon/pgp.conf.sample
 @sample %%ETCDIR%%.d/charon/pkcs1.conf.sample
@@ -83,7 +85,6 @@
 @sample %%ETCDIR%%.d/charon/xcbc.conf.sample
 %%PKI%%@sample %%ETCDIR%%.d/pki.conf.sample
 %%SQL%%@sample %%ETCDIR%%.d/pool.conf.sample
-%%SCEP%%@sample %%ETCDIR%%.d/scepclient.conf.sample
 @sample %%ETCDIR%%.d/starter.conf.sample
 %%SWANCTL%%@sample %%ETCDIR%%.d/swanctl.conf.sample
 %%SWANCTL%%@sample etc/swanctl/swanctl.conf.sample
@@ -144,6 +145,8 @@ lib/ipsec/plugins/libstrongswan-curve25519.la
 lib/ipsec/plugins/libstrongswan-curve25519.so
 lib/ipsec/plugins/libstrongswan-des.la
 lib/ipsec/plugins/libstrongswan-des.so
+%%DHCP%%lib/ipsec/plugins/libstrongswan-dhcp.la
+%%DHCP%%lib/ipsec/plugins/libstrongswan-dhcp.so
 lib/ipsec/plugins/libstrongswan-dnskey.la
 lib/ipsec/plugins/libstrongswan-dnskey.so
 lib/ipsec/plugins/libstrongswan-drbg.la
@@ -208,6 +211,8 @@ lib/ipsec/plugins/libstrongswan-nonce.la
 lib/ipsec/plugins/libstrongswan-nonce.so
 lib/ipsec/plugins/libstrongswan-openssl.la
 lib/ipsec/plugins/libstrongswan-openssl.so
+%%VIA%%lib/ipsec/plugins/libstrongswan-padlock.la
+%%VIA%%lib/ipsec/plugins/libstrongswan-padlock.so
 lib/ipsec/plugins/libstrongswan-pem.la
 lib/ipsec/plugins/libstrongswan-pem.so
 lib/ipsec/plugins/libstrongswan-pgp.la
@@ -276,35 +281,34 @@ libexec/ipsec/_updown
 libexec/ipsec/charon
 %%LOADTESTER%%libexec/ipsec/load-tester
 %%SQL%%libexec/ipsec/pool
-%%SCEP%%libexec/ipsec/scepclient
 libexec/ipsec/starter
 libexec/ipsec/stroke
 libexec/ipsec/whitelist
-%%PKI%%man/man1/pki---acert.1.gz
-%%PKI%%man/man1/pki---dn.1.gz
-%%PKI%%man/man1/pki---est.1.gz
-%%PKI%%man/man1/pki---estca.1.gz
-%%PKI%%man/man1/pki---gen.1.gz
-%%PKI%%man/man1/pki---issue.1.gz
-%%PKI%%man/man1/pki---keyid.1.gz
-%%PKI%%man/man1/pki---pkcs7.1.gz
-%%PKI%%man/man1/pki---print.1.gz
-%%PKI%%man/man1/pki---pub.1.gz
-%%PKI%%man/man1/pki---req.1.gz
-%%PKI%%man/man1/pki---scep.1.gz
-%%PKI%%man/man1/pki---scepca.1.gz
-%%PKI%%man/man1/pki---self.1.gz
-%%PKI%%man/man1/pki---signcrl.1.gz
-%%PKI%%man/man1/pki---verify.1.gz
-%%PKI%%man/man1/pki.1.gz
-man/man5/ipsec.conf.5.gz
-man/man5/ipsec.secrets.5.gz
-man/man5/strongswan.conf.5.gz
-%%SWANCTL%%man/man5/swanctl.conf.5.gz
-man/man8/charon-cmd.8.gz
-man/man8/ipsec.8.gz
-%%SCEP%%man/man8/scepclient.8.gz
-%%SWANCTL%%man/man8/swanctl.8.gz
+%%PKI%%share/man/man1/pki---acert.1.gz
+%%PKI%%share/man/man1/pki---dn.1.gz
+%%PKI%%share/man/man1/pki---est.1.gz
+%%PKI%%share/man/man1/pki---estca.1.gz
+%%PKI%%share/man/man1/pki---gen.1.gz
+%%PKI%%share/man/man1/pki---issue.1.gz
+%%PKI%%share/man/man1/pki---keyid.1.gz
+%%PKI%%share/man/man1/pki---ocsp.1.gz
+%%PKI%%share/man/man1/pki---pkcs7.1.gz
+%%PKI%%share/man/man1/pki---print.1.gz
+%%PKI%%share/man/man1/pki---pub.1.gz
+%%PKI%%share/man/man1/pki---req.1.gz
+%%PKI%%share/man/man1/pki---scep.1.gz
+%%PKI%%share/man/man1/pki---scepca.1.gz
+%%PKI%%share/man/man1/pki---self.1.gz
+%%PKI%%share/man/man1/pki---signcrl.1.gz
+%%PKI%%share/man/man1/pki---verify.1.gz
+%%PKI%%share/man/man1/pki.1.gz
+share/man/man5/ipsec.conf.5.gz
+share/man/man5/ipsec.secrets.5.gz
+share/man/man5/strongswan.conf.5.gz
+%%SWANCTL%%share/man/man5/swanctl.conf.5.gz
+share/man/man8/charon-cmd.8.gz
+share/man/man8/ipsec.8.gz
+%%SWANCTL%%share/man/man8/swanctl.8.gz
 sbin/charon-cmd
 sbin/ipsec
 %%SWANCTL%%sbin/swanctl
@@ -316,9 +320,11 @@ sbin/ipsec
 %%DATADIR%%/templates/config/plugins/cmac.conf
 %%DATADIR%%/templates/config/plugins/constraints.conf
 %%DATADIR%%/templates/config/plugins/counters.conf
+%%CTR%%%%DATADIR%%/templates/config/plugins/ctr.conf
 %%CURL%%%%DATADIR%%/templates/config/plugins/curl.conf
 %%DATADIR%%/templates/config/plugins/curve25519.conf
 %%DATADIR%%/templates/config/plugins/des.conf
+%%DHCP%%%%DATADIR%%/templates/config/plugins/dhcp.conf
 %%DATADIR%%/templates/config/plugins/dnskey.conf
 %%DATADIR%%/templates/config/plugins/drbg.conf
 %%EAPAKA3GPP2%%%%DATADIR%%/templates/config/plugins/eap-aka-3gpp2.conf
@@ -338,8 +344,8 @@ sbin/ipsec
 %%GCM%%%%DATADIR%%/templates/config/plugins/gcm.conf
 %%EAPAKA3GPP2%%%%DATADIR%%/templates/config/plugins/gmp.conf
 %%DATADIR%%/templates/config/plugins/hmac.conf
-%%KDF%%%%DATADIR%%/templates/config/plugins/kdf.conf
 %%IPSECKEY%%%%DATADIR%%/templates/config/plugins/ipseckey.conf
+%%KDF%%%%DATADIR%%/templates/config/plugins/kdf.conf
 %%KERNELLIBIPSEC%%%%DATADIR%%/templates/config/plugins/kernel-libipsec.conf
 %%DATADIR%%/templates/config/plugins/kernel-pfkey.conf
 %%DATADIR%%/templates/config/plugins/kernel-pfroute.conf
@@ -351,11 +357,11 @@ sbin/ipsec
 %%MYSQL%%%%DATADIR%%/templates/config/plugins/mysql.conf
 %%DATADIR%%/templates/config/plugins/nonce.conf
 %%DATADIR%%/templates/config/plugins/openssl.conf
+%%VIA%%%%DATADIR%%/templates/config/plugins/padlock.conf
 %%DATADIR%%/templates/config/plugins/pem.conf
 %%DATADIR%%/templates/config/plugins/pgp.conf
 %%DATADIR%%/templates/config/plugins/pkcs1.conf
 %%PKCS11%%%%DATADIR%%/templates/config/plugins/pkcs11.conf
-%%CTR%%%%DATADIR%%/templates/config/plugins/ctr.conf
 %%DATADIR%%/templates/config/plugins/pkcs12.conf
 %%DATADIR%%/templates/config/plugins/pkcs7.conf
 %%DATADIR%%/templates/config/plugins/pkcs8.conf
@@ -389,7 +395,6 @@ sbin/ipsec
 %%DATADIR%%/templates/config/strongswan.d/charon.conf
 %%PKI%%%%DATADIR%%/templates/config/strongswan.d/pki.conf
 %%SQL%%%%DATADIR%%/templates/config/strongswan.d/pool.conf
-%%SCEP%%%%DATADIR%%/templates/config/strongswan.d/scepclient.conf
 %%DATADIR%%/templates/config/strongswan.d/starter.conf
 %%SWANCTL%%%%DATADIR%%/templates/config/strongswan.d/swanctl.conf
 %%SQL%%%%DATADIR%%/templates/database/sql/mysql.sql
@@ -416,7 +421,3 @@ sbin/ipsec
 %%SWANCTL%%@dir etc/swanctl/x509ca
 %%SWANCTL%%@dir etc/swanctl/x509crl
 %%SWANCTL%%@dir etc/swanctl/x509ocsp
-%%VIA%%%%DATADIR%%/templates/config/plugins/padlock.conf
-%%VIA%%lib/ipsec/plugins/libstrongswan-padlock.la
-%%VIA%%lib/ipsec/plugins/libstrongswan-padlock.so
-%%VIA%%@sample %%ETCDIR%%.d/charon/padlock.conf.sample

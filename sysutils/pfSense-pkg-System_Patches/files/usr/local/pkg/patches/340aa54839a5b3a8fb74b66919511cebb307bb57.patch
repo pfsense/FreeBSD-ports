@@ -1,0 +1,19 @@
+commit 340aa54839a5b3a8fb74b66919511cebb307bb57
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Aug 2 15:14:45 2023 -0400
+
+    Correct OpenVPN if IP addr code. Fixes #14646
+
+diff --git a/src/etc/inc/openvpn.inc b/src/etc/inc/openvpn.inc
+index 0281a094cb..1e63e3dfbf 100644
+--- a/src/etc/inc/openvpn.inc
++++ b/src/etc/inc/openvpn.inc
+@@ -899,7 +899,7 @@ function openvpn_reconfigure($mode, $settings) {
+ 	// OpenVPN defaults to SHA1, so use it when unset to maintain compatibility.
+ 	$digest = !empty($settings['digest']) ? $settings['digest'] : "SHA1";
+ 
+-	$interface = get_failover_interface($settings['interface']);
++	$interface = $settings['interface'];
+ 	// The IP address in the settings can be an IPv4 or IPv6 address associated with the interface
+ 	$ipaddr = $settings['ipaddr'];
+ 

@@ -1,9 +1,7 @@
 PORTNAME=	octave-forge-video
-PORTVERSION=	2.0.2
-PORTREVISION=	5
+DISTVERSION=	2.1.1
+PORTREVISION=	2
 CATEGORIES=	math
-MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
-DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
@@ -14,7 +12,13 @@ LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
 LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4
 
-USES=		octave pkgconfig
+USES=		octave pkgconfig autoreconf
+USE_GITHUB=	yes
+GH_ACCOUNT=	Andy1978
+GH_PROJECT=	octave-video
+
+OCTAVE_SRC=	${GH_PROJECT}-${DISTVERSION}
+
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/ffmpeg4/include

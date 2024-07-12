@@ -83,6 +83,7 @@
 @sample %%ETCDIR%%/queuerules.conf.sample
 @sample %%ETCDIR%%/queues.conf.sample
 @sample %%ETCDIR%%/res_config_mysql.conf.sample
+@sample %%ETCDIR%%/res_config_odbc.conf.sample
 @sample %%ETCDIR%%/res_config_sqlite.conf.sample
 @sample %%ETCDIR%%/res_config_sqlite3.conf.sample
 @sample %%ETCDIR%%/res_corosync.conf.sample
@@ -260,6 +261,7 @@ include/asterisk/poll-compat.h
 include/asterisk/presencestate.h
 include/asterisk/privacy.h
 include/asterisk/pval.h
+include/asterisk/refer.h
 include/asterisk/res_aeap.h
 include/asterisk/res_aeap_message.h
 include/asterisk/res_audiosocket.h
@@ -352,12 +354,12 @@ include/asterisk/xmpp.h
 %%PJSIP%%lib/libasteriskpj.so.2
 lib/libasteriskssl.so
 lib/libasteriskssl.so.1
-man/man8/astdb2bdb.8.gz
-man/man8/astdb2sqlite3.8.gz
-man/man8/asterisk.8.gz
-man/man8/astgenkey.8.gz
-man/man8/autosupport.8.gz
-man/man8/safe_asterisk.8.gz
+share/man/man8/astdb2bdb.8.gz
+share/man/man8/astdb2sqlite3.8.gz
+share/man/man8/asterisk.8.gz
+share/man/man8/astgenkey.8.gz
+share/man/man8/autosupport.8.gz
+share/man/man8/safe_asterisk.8.gz
 sbin/astcanary
 sbin/astdb2bdb
 sbin/astdb2sqlite3

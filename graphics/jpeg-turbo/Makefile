@@ -1,8 +1,8 @@
 PORTNAME=	jpeg-turbo
-DISTVERSION=	2.1.5.1
-PORTREVISION?=	0
+DISTVERSION=	3.0.3
+#PORTREVISION?=	1
 CATEGORIES=	graphics
-MASTER_SITES=	SF/lib${PORTNAME}/${DISTVERSION}
+MASTER_SITES=	https://github.com/lib${PORTNAME}/lib${PORTNAME}/releases/download/${DISTVERSION}/
 DISTNAME=	lib${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -18,16 +18,22 @@ LICENSE_FILE_IJG=	${WRKSRC}/README.ijg
 LICENSE_FILE_ZLIB=	${WRKSRC}/LICENSE.md
 LICENSE_PERMS_IJG=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BUILD_DEPENDS=	${BUILD_DEPENDS_${ARCH}}
+BUILD_DEPENDS_amd64=	nasm:devel/nasm
+BUILD_DEPENDS_i386=	nasm:devel/nasm
+
 USES=		cmake cpe pathfix
+CPE_PRODUCT=	libjpeg-turbo
 USE_LDCONFIG=	yes
 
-CPE_PRODUCT=	libjpeg-turbo
 TEST_TARGET=	test
 
 PORTDOCS=	*
 DOCSDIR=	${PREFIX}/share/doc/libjpeg-turbo
 
 CMAKE_ON=	WITH_JPEG8
+# See https://github.com/libjpeg-turbo/libjpeg-turbo/issues/705
+CMAKE_ARGS=	-DCMAKE_CTEST_ARGUMENTS="-E;'djpeg12-shared-3x2-float-prog-cmp|djpeg12-static-3x2-float-prog-cmp'"
 
 OPTIONS_DEFINE=		DOCS OPTIMIZED_CFLAGS
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
@@ -35,10 +41,6 @@ OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
 OPTIMIZED_CFLAGS_CFLAGS=	-O3
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH} == i386 || ${ARCH} == amd64
-BUILD_DEPENDS+=	nasm:devel/nasm
-.endif
 
 .if ${ARCH} == armv6
 CMAKE_OFF=	WITH_SIMD

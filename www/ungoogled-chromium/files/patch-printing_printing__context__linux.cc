@@ -1,7 +1,7 @@
---- printing/printing_context_linux.cc.orig	2023-04-08 11:38:38 UTC
+--- printing/printing_context_linux.cc.orig	2023-12-23 12:33:28 UTC
 +++ printing/printing_context_linux.cc
-@@ -19,7 +19,7 @@
- #include "printing/units.h"
+@@ -23,7 +23,7 @@
+ #endif
  
  // Avoid using LinuxUi on Fuchsia.
 -#if BUILDFLAG(IS_LINUX)

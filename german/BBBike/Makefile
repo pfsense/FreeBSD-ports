@@ -1,12 +1,12 @@
 PORTNAME=	BBBike
 PORTVERSION=	3.18
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	german
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	slaven@rezic.de
 COMMENT=	Route-finder for cyclists in Berlin and Brandenburg
-WWW=		http://bbbike.sourceforge.net
+WWW=		https://bbbike.sourceforge.net
 
 BUILD_DEPENDS=	p5-Inline-C>=0:devel/p5-Inline-C \
 		p5-CDB_File>=0:databases/p5-CDB_File
@@ -80,7 +80,7 @@ do-build:
 
 do-install:
 	-${RM} -r ${MYDESTDIR}
-	${INSTALL_MAN} ${WRKSRC}/bbbike.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/bbbike.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${FIND} ${WRKSRC} | ${XARGS} ${CHMOD} ugo+r
 	${FIND} ${WRKSRC} -perm -u=x | ${XARGS} ${CHMOD} go+x
 	${CP} -rp ${WRKSRC} ${MYDESTDIR}

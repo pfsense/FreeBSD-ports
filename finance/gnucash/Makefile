@@ -1,5 +1,5 @@
 PORTNAME=	gnucash
-PORTVERSION=	5.1
+PORTVERSION=	5.6
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -10,27 +10,22 @@ WWW=		https://www.gnucash.org/
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	swig:devel/swig \
-		googletest>0:devel/googletest
-LIB_DEPENDS=	libgnome-keyring.so:security/libgnome-keyring \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
+BUILD_DEPENDS=	googletest>0:devel/googletest \
+		swig:devel/swig
+LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
+		libharfbuzz.so:print/harfbuzz \
+		libicudata.so:devel/icu \
 		libsecret-1.so:security/libsecret \
 		libsoup-2.4.so:devel/libsoup \
-		libguile-2.2.so:lang/guile2 \
-		libgc-threaded.so:devel/boehm-gc-threaded \
-		libboost_date_time.so:devel/boost-libs \
-		libicudata.so:devel/icu\
-		libharfbuzz.so:print/harfbuzz
-RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
+		libwebkit2gtk-4.0.so:www/webkit2-gtk3
+RUN_DEPENDS=	p5-Finance-Quote>=0:finance/p5-Finance-Quote \
 		p5-JSON-Parse>=0:devel/p5-JSON-Parse \
-		p5-Finance-Quote>=0:finance/p5-Finance-Quote \
+		p5-libwww>=0:www/p5-libwww \
 		p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https
 
 USES=		cmake:insource compiler:c++11-lib cpe desktop-file-utils \
-		gettext-tools gnome libtool localbase perl5 pkgconfig \
-		shebangfix tar:bzip2 xorg
+		gettext-tools gnome guile:2.2,3.0,conflicts localbase \
+		perl5 pkgconfig shebangfix tar:bzip2 xorg
 USE_XORG=	x11
 USE_CXXSTD=	c++11
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool libxml2 libxslt
@@ -61,32 +56,35 @@ GLIB_SCHEMAS=	org.gnucash.GnuCash.deprecated.gschema.xml \
 		org.gnucash.GnuCash.window.pages.account.tree.gschema.xml \
 		org.gnucash.GnuCash.window.pages.gschema.xml
 
-OPTIONS_DEFINE=	AQBANKING DATABASE DOCS NLS OFX PYTHON
-OPTIONS_DEFAULT=	AQBANKING OFX
+OPTIONS_DEFINE=		AQBANKING DATABASE DOCS NLS OFX PYTHON
+OPTIONS_DEFAULT=	AQBANKING OFX PYTHON
+OPTIONS_SUB=		yes
 
 AQBANKING_DESC=	AqBanking support (HBCI/OpenHBCI)
 DATABASE_DESC=	Enable SQL database backends
 OFX_DESC=	OFX support
 
-OPTIONS_SUB=		yes
 AQBANKING_CMAKE_BOOL=	WITH_AQBANKING
-AQBANKING_LIB_DEPENDS=	libgwenhywfar.so:devel/gwenhywfar \
+AQBANKING_LIB_DEPENDS=	libaqbanking.so:finance/aqbanking \
 			libgwengui-gtk3.so:devel/gwenhywfar-gtk3 \
-			libktoblzcheck.so:finance/ktoblzcheck \
-			libaqbanking.so:finance/aqbanking
+			libgwenhywfar.so:devel/gwenhywfar
 AQBANKING_VARS=		GLIB_SCHEMAS+="org.gnucash.GnuCash.dialogs.flicker.gschema.xml \
 			org.gnucash.GnuCash.dialogs.import.hbci.gschema.xml"
+
 DATABASE_CMAKE_BOOL=	WITH_SQL
 DATABASE_BUILD_DEPENDS=	libdbi-drivers>=0:databases/libdbi-drivers
 DATABASE_LIB_DEPENDS=	libdbi.so:databases/libdbi
 DATABASE_RUN_DEPENDS=	libdbi-drivers>=0:databases/libdbi-drivers
+
 NLS_CMAKE_BOOL_OFF=	DISABLE_NLS
 NLS_USES=		gettext-runtime
+
 OFX_CMAKE_BOOL=		WITH_OFX
 OFX_LIB_DEPENDS=	libofx.so:finance/libofx
 OFX_VARS=		GLIB_SCHEMAS+=org.gnucash.GnuCash.dialogs.import.ofx.gschema.xml
+
 PYTHON_CMAKE_BOOL=	WITH_PYTHON
-PYTHON_USES=		python:3.6+
+PYTHON_USES=		python
 
 post-install-PYTHON-on:
 	@(cd ${STAGEDIR}${PREFIX} \

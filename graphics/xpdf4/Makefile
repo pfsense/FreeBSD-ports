@@ -1,5 +1,6 @@
 PORTNAME=	xpdf
 PORTVERSION=	4.04
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	graphics print
 MASTER_SITES=	https://dl.xpdfreader.com/
@@ -26,7 +27,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 BUILD_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/d050000l.pfb:print/gsfonts
 RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/d050000l.pfb:print/gsfonts
-MANPREFIX=	${PREFIX}/share/xpdf
+MANDIRS=	${PREFIX}/share/xpdf/man
 SUB_FILES=	xpdf-man.conf
 CMAKE_ARGS+=	-DOPI_SUPPORT:BOOL=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt4:BOOL=ON \
 		-DUSE_LCMS:BOOL=OFF -DSYSTEM_XPDFRC=${PREFIX}/etc/xpdfrc \
@@ -34,7 +35,8 @@ CMAKE_ARGS+=	-DOPI_SUPPORT:BOOL=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt4:BOOL=ON \
 		-DCMAKE_INSTALL_BINDIR=${PREFIX}/libexec/xpdf \
 		-DCMAKE_INSTALL_MANDIR=${PREFIX}/share/xpdf/man \
 		-DNO_TEXT_SELECT:BOOL=OFF \
-		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Widgets:BOOL=FALSE
+		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Widgets:BOOL=FALSE \
+		-DCMAKE_DISABLE_FIND_PACKAGE_Qt6Widgets:BOOL=ON
 CPE_VENDOR=	xpdfreader
 
 PLIST_SUB=		DESKTOPDIR="${DESKTOPDIR}"

@@ -1,30 +1,31 @@
 PORTNAME=	postal
-PORTVERSION=	0.73
-PORTREVISION=	3
+PORTVERSION=	0.76
+PORTREVISION=	1
 CATEGORIES=	benchmarks mail
-MASTER_SITES=	http://www.coker.com.au/postal/
+MASTER_SITES=	https://www.coker.com.au/postal/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Benchmark SMTP/POP servers
-WWW=		https://www.coker.com.au/postal/
+WWW=		https://doc.coker.com.au/projects/postal/
 
 LICENSE=	GPLv3
 
 USES=		gmake tar:tgz
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 PLIST_FILES=	bin/postal-list \
-		man/man1/postal-list.1.gz \
-		man/man8/bhm.8.gz \
-		man/man8/postal.8.gz \
-		man/man8/rabid.8.gz \
+		share/man/man1/postal-list.1.gz \
+		share/man/man8/bhm.8.gz \
+		share/man/man8/postal.8.gz \
+		share/man/man8/rabid.8.gz \
 		sbin/bhm \
 		sbin/postal \
 		sbin/rabid
 
+OPTIONS_DEFAULT=	OPENSSL
 OPTIONS_RADIO=		TLS
 OPTIONS_RADIO_TLS=	GNUTLS OPENSSL
-OPTIONS_DEFAULT=	OPENSSL
 
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_USES=		pkgconfig

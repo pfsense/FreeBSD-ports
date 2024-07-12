@@ -1,5 +1,5 @@
 PORTNAME=	gitlab-pages
-PORTVERSION=	16.0.4
+PORTVERSION=	17.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES+=	https://gitlab.com/gitlab-org/gitlab-pages/-/raw/v${DISTVERSION}/
@@ -12,17 +12,14 @@ WWW=		https://gitlab.com/gitlab-org/gitlab-pages
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
-GO_MODULE=	gitlab.com/gitlab-org/gitlab-pages
+USES=		go:modules,1.22
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
-# Find this here: https://gitlab.com/gitlab-org/gitlab-pages/-/tags/
-GL_COMMIT=	66dbacb973099c73a79afe41639cf4b1cf117503
-
-GO_BUILDFLAGS=	-ldflags="-X 'main.VERSION=${PORTVERSION}' -X 'main.REVISION=${GL_COMMIT}'"
-
 USE_RC_SUBR=	gitlab_pages
+
+GO_MODULE=	gitlab.com/gitlab-org/gitlab-pages
+GO_BUILDFLAGS=	-ldflags="-X 'main.VERSION=${PORTVERSION}' -X 'main.REVISION=${GL_TAGNAME}'"
 
 USERS=		gitlab-pages
 GROUPS=		gitlab-pages

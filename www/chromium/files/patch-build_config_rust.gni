@@ -1,11 +1,13 @@
---- build/config/rust.gni.orig	2023-05-31 08:12:17 UTC
+--- build/config/rust.gni.orig	2024-05-21 18:07:39 UTC
 +++ build/config/rust.gni
-@@ -170,7 +170,7 @@ if (enable_rust) {
-     rust_sysroot = "//third_party/rust-toolchain"
-     use_unverified_rust_toolchain = false
-   } else {
--    if (host_os != "linux") {
-+    if (host_os != "linux" && host_os != "openbsd" && host_os != "freebsd") {
-       assert(false,
-              "Attempt to use Android Rust toolchain on an unsupported platform")
-     }
+@@ -272,6 +272,10 @@ if (is_linux || is_chromeos) {
+   }
+ }
+ 
++if (is_bsd) {
++  rust_abi_target = string_replace(rust_abi_target, "linux-gnu", current_os)
++}
++
+ assert(!toolchain_has_rust || rust_abi_target != "")
+ 
+ # This variable is passed to the Rust libstd build.

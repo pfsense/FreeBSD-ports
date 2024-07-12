@@ -63,7 +63,6 @@ share/applications/org.kde.kdeconnect.daemon.desktop
 share/applications/org.kde.kdeconnect.handler.desktop
 share/applications/org.kde.kdeconnect.nonplasma.desktop
 share/applications/org.kde.kdeconnect.sms.desktop
-share/applications/org.kde.kdeconnect_open.desktop
 share/contractor/kdeconnect.contract
 share/dbus-1/services/org.kde.kdeconnect.service
 share/deepin/dde-file-manager/oem-menuextensions/kdeconnect-dde.desktop
@@ -271,6 +270,11 @@ share/locale/en_GB/LC_MESSAGES/kdeconnect-settings.mo
 share/locale/en_GB/LC_MESSAGES/kdeconnect-sms.mo
 share/locale/en_GB/LC_MESSAGES/kdeconnect-urlhandler.mo
 share/locale/en_GB/LC_MESSAGES/plasma_applet_org.kde.kdeconnect.mo
+share/locale/eo/LC_MESSAGES/kdeconnect-fileitemaction.mo
+share/locale/eo/LC_MESSAGES/kdeconnect-interfaces.mo
+share/locale/eo/LC_MESSAGES/kdeconnect-kio.mo
+share/locale/eo/LC_MESSAGES/kdeconnect-nautilus-extension.mo
+share/locale/eo/LC_MESSAGES/kdeconnect-settings.mo
 share/locale/es/LC_MESSAGES/kdeconnect-app.mo
 share/locale/es/LC_MESSAGES/kdeconnect-cli.mo
 share/locale/es/LC_MESSAGES/kdeconnect-core.mo
@@ -789,6 +793,7 @@ share/metainfo/org.kde.kdeconnect.appdata.xml
 share/metainfo/org.kde.kdeconnect.metainfo.xml
 share/nautilus-python/extensions/kdeconnect-share.py
 share/plasma/plasmoids/org.kde.kdeconnect/contents/ui/Battery.qml
+share/plasma/plasmoids/org.kde.kdeconnect/contents/ui/Clipboard.qml
 share/plasma/plasmoids/org.kde.kdeconnect/contents/ui/CompactRepresentation.qml
 share/plasma/plasmoids/org.kde.kdeconnect/contents/ui/Connectivity.qml
 share/plasma/plasmoids/org.kde.kdeconnect/contents/ui/DeviceDelegate.qml

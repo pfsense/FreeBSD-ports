@@ -1,6 +1,5 @@
 PORTNAME=	mailutils
-PORTVERSION=	3.15
-PORTREVISION=	3
+PORTVERSION=	3.17
 CATEGORIES=	mail
 MASTER_SITES=	GNU GNU_ALPHA
 
@@ -13,11 +12,13 @@ LICENSE=	GPLv3+
 LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
 		libltdl.so:devel/libltdl \
 		libunistring.so:devel/libunistring
-TEST_DEPENDS=	automake:devel/automake
+TEST_DEPENDS=	automake:devel/automake \
+		runtest:misc/dejagnu
 
 USES=		cpe gmake iconv libtool localbase readline tar:xz
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	comsatd imap4d pop3d
 INSTALL_TARGET=	install-strip
@@ -51,8 +52,7 @@ GSSAPI_RUN_DEPENDS=	cyrus-sasl-gssapi>0:security/cyrus-sasl2-gssapi
 GSSAPI_USES=		ssl
 GSSAPI_CONFIGURE_WITH=	gssapi
 
-GUILE_LIB_DEPENDS=	libguile-2.2.so:lang/guile2 libgmp.so:math/gmp
-GUILE_USES=		makeinfo pkgconfig
+GUILE_USES=		guile:2.2,alias makeinfo pkgconfig
 GUILE_CONFIGURE_WITH=	guile
 
 MH_CONFIGURE_ENV=	ac_cv_prog_EMACS=no
@@ -65,7 +65,7 @@ NLS_CONFIGURE_ENABLE=	nls
 
 PAM_CONFIGURE_ENABLE=	pam
 
-PYTHON_USES=		python:3.0+
+PYTHON_USES=		python
 PYTHON_CONFIGURE_ENABLE=python
 PYTHON_CONFIGURE_ENV=	PYTHON_CONFIG=${PYTHON_CMD}-config
 
@@ -99,8 +99,6 @@ CONFIGURE_ARGS+=	--enable-debug
 post-patch:
 	@${REINPLACE_CMD} -e '/MU_AUTHLIBS=/s,-lldap,-llber &,' \
 		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e '/need_charset_alias=/s|true|false|' \
-		${WRKSRC}/lib/gnu/Makefile.in
 	@${REINPLACE_CMD} -e '/chown/,+1s|ch|#&|' \
 		${WRKSRC}/dotlock/Makefile.in ${WRKSRC}/mda/mda/Makefile.in
 	@${REINPLACE_CMD} -e 's,-E,& -P,' ${WRKSRC}/libmu_scm/Makefile.in

@@ -1,5 +1,5 @@
 PORTNAME=	gdb
-DISTVERSION=	13.1
+DISTVERSION=	14.1
 PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNU
@@ -25,24 +25,24 @@ TEST_TARGET=	check
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CONFIGURED_M4=m4 CONFIGURED_BISON=byacc
-CONFIGURE_ARGS=	--program-suffix=${DISTVERSION:S/.//g} \
+CONFIGURE_ARGS=	--program-suffix=${VER} \
+		--disable-sim \
 		--enable-targets=all --enable-64-bit-bfd \
 		--with-separate-debug-dir=/usr/lib/debug \
+		--with-additional-debug-dirs=${LOCALBASE}/lib/debug \
 		${ICONV_CONFIGURE_ARG} \
-		--without-libunwind-ia64 --with-system-zlib
+		--without-libunwind-ia64
 CONFIGURE_OUTSOURCE=	yes
 CFLAGS:=	${CFLAGS:C/ +$//}	# blanks at EOL creep in sometimes
 CFLAGS+=	-DRL_NO_COMPAT
-EXCLUDE=	dejagnu expect sim texinfo intl
+EXCLUDE=	dejagnu expect texinfo intl
 EXTRACT_AFTER_ARGS=	${EXCLUDE:S/^/--exclude /}
-EXTRA_PATCHES=	${FILESDIR}/commit-a980a7d24b9
-EXTRA_PATCHES+=	${FILESDIR}/commit-ae61525fcf4
 
 VER=		${DISTVERSION:S/.//g}
 PLIST_SUB=	VER=${VER}
 
-OPTIONS_DEFINE=	GDB_LINK GUILE KGDB NLS PYTHON SOURCE_HIGHLIGHT \
-		TUI XXHASH
+OPTIONS_DEFINE=	DEBUGINFOD GDB_LINK GUILE KGDB NLS PYTHON \
+		SOURCE_HIGHLIGHT TUI XXHASH
 OPTIONS_DEFAULT=	GDB_LINK KGDB NLS PYTHON SOURCE_HIGHLIGHT \
 			TUI XXHASH
 OPTIONS_DEFAULT+=	PORT_READLINE PORT_ICONV SYSTEM_ZLIB
@@ -52,6 +52,7 @@ OPTIONS_SINGLE_READLINE=	BUNDLED_READLINE PORT_READLINE
 OPTIONS_SINGLE_ICONV=	PORT_ICONV SYSTEM_ICONV
 OPTIONS_SINGLE_ZLIB=	BUNDLED_ZLIB SYSTEM_ZLIB
 
+DEBUGINFOD_DESC=	Build gdb with debuginfod server support
 GDB_LINK_DESC=		Create ${PREFIX}/bin/gdb symlink
 KGDB_DESC=		Kernel debugging support
 BUNDLED_READLINE_DESC=	from gdb distfile
@@ -67,22 +68,26 @@ XXHASH_DESC=		Use xxHash for hashing (faster)
 OPTIONS_SUB=	yes
 
 BUNDLED_READLINE_CONFIGURE_OFF=	--with-system-readline
-GUILE_CONFIGURE_WITH=	guile
-GUILE_LIB_DEPENDS=	libguile-2.2.so:lang/guile2
+DEBUGINFOD_CONFIGURE_WITH=	debuginfod
+DEBUGINFOD_LIB_DEPENDS=	libdebuginfod.so:devel/elfutils
+GUILE_CONFIGURE_WITH=	guile=guile-${GUILE_VER}
+GUILE_USES=		guile:2.2,3.0
 NLS_USES=	gettext-runtime
 PORT_READLINE_USES=	readline
 PORT_ICONV_USES=	iconv:wchar_t
 PYTHON_CONFIGURE_ON=	--with-python=${PYTHON_CMD}
 PYTHON_CONFIGURE_OFF=	--without-python
-PYTHON_USES=		python:3.6+
+PYTHON_USES=		python
 SOURCE_HIGHLIGHT_CONFIGURE_ENABLE=	source-highlight
 SOURCE_HIGHLIGHT_LIB_DEPENDS=	\
 	libsource-highlight.so:textproc/source-highlight
 SYSTEM_ICONV_USES=	iconv
-SYSTEM_ZLIB_WITH=	system-zlib
+SYSTEM_ZLIB_CONFIGURE_WITH=	system-zlib
 TUI_CONFIGURE_ENABLE=	tui
 XXHASH_CONFIGURE_OFF=	--with-xxhash=no
 XXHASH_LIB_DEPENDS=	libxxhash.so:devel/xxhash
+
+ALL_TARGET=	all-gdb
 
 .include <bsd.port.pre.mk>
 
@@ -135,40 +140,40 @@ do-install:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/gdb/gdb \
 		${STAGEDIR}${PREFIX}/bin/gdb${VER}
 	${INSTALL_MAN} ${WRKSRC}/gdb/doc/gdb.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/gdb${VER}.1
-	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-syscalls )
+		${STAGEDIR}${PREFIX}/share/man/man1/gdb${VER}.1
+	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-syscalls )
 
 do-install-KGDB-on:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/gdb/kgdb \
 		${STAGEDIR}${PREFIX}/bin/kgdb${VER}
 	${INSTALL_MAN} ${FILESDIR}/kgdb/kgdb.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/kgdb${VER}.1
+		${STAGEDIR}${PREFIX}/share/man/man1/kgdb${VER}.1
 
 do-install-TUI-on:
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdbtui${VER}
 
 do-install-GDB_LINK-on:
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdb
-	${LN} -sf gdb${VER}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/gdb.1
+	${LN} -sf gdb${VER}.1 ${STAGEDIR}${PREFIX}/share/man/man1/gdb.1
 .if ${PORT_OPTIONS:MKGDB}
 	${LN} -sf kgdb${VER} ${STAGEDIR}${PREFIX}/bin/kgdb
-	${LN} -sf kgdb${VER}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/kgdb.1
+	${LN} -sf kgdb${VER}.1 ${STAGEDIR}${PREFIX}/share/man/man1/kgdb.1
 .endif
 
 do-install-PYTHON-on:
-	(cd ${INSTALL_WRKSRC}/gdb ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
-	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
+	(cd ${INSTALL_WRKSRC}/gdb ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
+	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb/python && \
 		${PYTHON_CMD} -m compileall .)
 . for f in gdb gdb/command gdb/function gdb/printer
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb/python/${f} ; ${CHMOD} 644 *.py* )
 . endfor
 .if exists(/usr/lib/libc++.so.1) || exists(/lib/libc++.so.1)
-	@(cd ${WRKSRC_libcxx} ; \
-		${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} \
+	@(cd ${WRKSRC_libcxx} ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} \
 		    LIBCXX_DIR="${LIBCXX_DIR}" install )
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb/auto-load/${LIBCXX_DIR} && \
 		${PYTHON_CMD} -m compileall .)
@@ -176,10 +181,15 @@ do-install-PYTHON-on:
 		${PYTHON_CMD} -m compileall .)
 .endif
 
+# DO NOT try and add rules here to strip .go files, no matter how loudly
+# testport / stage-qa shouts at you about it, because .go files (which are
+# compiled bytecode) are not intended to be stripped and doing so causes
+# breakage at run time.
+
 do-install-GUILE-on:
-	(cd ${INSTALL_WRKSRC}/gdb ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
-	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
+	(cd ${INSTALL_WRKSRC}/gdb ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
+	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
 
 .include <bsd.port.post.mk>

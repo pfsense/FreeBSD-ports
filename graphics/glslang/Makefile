@@ -1,5 +1,5 @@
 PORTNAME=	glslang
-DISTVERSION=	12.2.0
+DISTVERSION=	14.3.0
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -10,8 +10,12 @@ LICENSE=	APACHE20 BSD2CLAUSE BSD3CLAUSE GPLv3+ MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake:testing compiler:c++11-lib python:3.4+,build
+TEST_DEPENDS=	bash:shells/bash \
+		gmake:devel/gmake
+
+USES=		cmake:testing compiler:c++11-lib python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	KhronosGroup
+CMAKE_ON=	ALLOW_EXTERNAL_SPIRV_TOOLS
 
 .include <bsd.port.mk>

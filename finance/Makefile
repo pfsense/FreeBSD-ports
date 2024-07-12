@@ -4,7 +4,6 @@
     SUBDIR += R-cran-PerformanceAnalytics
     SUBDIR += R-cran-RFinanceYJ
     SUBDIR += R-cran-TTR
-    SUBDIR += R-cran-ccgarch
     SUBDIR += R-cran-fBasics
     SUBDIR += R-cran-fGarch
     SUBDIR += R-cran-gmm
@@ -22,11 +21,12 @@
     SUBDIR += beancount
     SUBDIR += beanie
     SUBDIR += chiapos
-    SUBDIR += cointop
     SUBDIR += electrum
     SUBDIR += expense
+    SUBDIR += fabric
     SUBDIR += fava
     SUBDIR += fixc
+    SUBDIR += freqtrade
     SUBDIR += frontaccounting
     SUBDIR += frontaccounting24
     SUBDIR += gnucash
@@ -36,6 +36,7 @@
     SUBDIR += hs-hledger
     SUBDIR += hs-hledger-ui
     SUBDIR += hs-hledger-web
+    SUBDIR += hyperswitch
     SUBDIR += jgnash
     SUBDIR += kmymoney
     SUBDIR += kraft
@@ -45,12 +46,15 @@
     SUBDIR += libbtc
     SUBDIR += libofx
     SUBDIR += libstocks
+    SUBDIR += lnd
     SUBDIR += moneymanagerex
     SUBDIR += myphpmoney
     SUBDIR += nextcloud-cospend
     SUBDIR += odoo
     SUBDIR += odoo14
     SUBDIR += odoo15
+    SUBDIR += odoo16
+    SUBDIR += ord
     SUBDIR += p5-Business-CreditCard
     SUBDIR += p5-Business-MaxMind-CreditCardFraudDetection
     SUBDIR += p5-Business-OCV
@@ -120,14 +124,22 @@
     SUBDIR += py-pandas-ta
     SUBDIR += py-pycoin
     SUBDIR += py-pycoingecko
+    SUBDIR += py-pythclient
     SUBDIR += py-python-binance
     SUBDIR += py-python-bitcoinlib
+    SUBDIR += py-python-coinmarketcap
     SUBDIR += py-python-obelisk
+    SUBDIR += py-pytrends
     SUBDIR += py-quantecon
+    SUBDIR += py-stocksera
     SUBDIR += py-stripe
     SUBDIR += py-ta-lib
     SUBDIR += py-technical
+    SUBDIR += py-thepassiveinvestor
+    SUBDIR += py-tradingview-ta
+    SUBDIR += py-valinvest
     SUBDIR += py-vatnumber
+    SUBDIR += py-yahooquery
     SUBDIR += py-yfinance
     SUBDIR += py-ystockquote
     SUBDIR += qtbitcointrader
@@ -140,6 +152,5 @@
     SUBDIR += tickrs
     SUBDIR += venice
     SUBDIR += weberp
-    SUBDIR += xtrader
 
 .include <bsd.port.subdir.mk>

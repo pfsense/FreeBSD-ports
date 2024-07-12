@@ -1,10 +1,11 @@
 PORTNAME=	lablgtk2
 PORTVERSION=	2.18.13
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	danfe@FreeBSD.org
-COMMENT=	Objective Caml interface to GTK+ 2.x
+COMMENT=	Objective Caml interface to GTK 2.x
 WWW=		https://garrigue.github.io/lablgtk/
 
 LICENSE=	LGPL21
@@ -54,6 +55,7 @@ GTKGLAREA_BUILD_DEPENDS=lablgl:graphics/ocaml-lablgl
 GTKGLAREA_LIB_DEPENDS=	libgtkgl-2.0.so:x11-toolkits/gtkglarea2
 GTKGLAREA_RUN_DEPENDS=	lablgl:graphics/ocaml-lablgl
 GTKGLAREA_CONFIGURE_WITH=gl
+GTKGLAREA_CONFIGURE_ENV=LABLGLDIR=+site-lib/lablGL
 GTKGLAREA_VARS=		EXAMPLES_SUBDIRS+=GL
 
 GTKSOURCEVIEW2_CONFIGURE_WITH=gtksourceview2

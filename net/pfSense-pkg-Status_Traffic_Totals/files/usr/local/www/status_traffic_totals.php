@@ -3,7 +3,7 @@
  * status_traffic_totals.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)
@@ -46,8 +46,6 @@ chdir($home);
 
 print_r($databases);
 */
-global $config;
-
 $vnscfg = config_get_path('installedpackages/traffictotals/config/0', []);
 $portlist = vnstat_portlist();
 
@@ -154,7 +152,7 @@ display_top_tabs($tab_array);
 			<h2 class="panel-title"><?=gettext("Settings"); ?>
 				<span class="widget-heading-icon">
 					<a data-toggle="collapse" href="#traffic-totals-settings-panel_panel-body">
-						<i class="fa fa-plus-circle"></i>
+						<i class="fa-solid fa-plus-circle"></i>
 					</a>
 				</span>
 			</h2>
@@ -210,23 +208,23 @@ display_top_tabs($tab_array);
 					Settings
 				</label>
 				<div class="col-sm-2">
-					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
+					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa-solid fa-cog fa-lg"></i> Display Advanced</button>
 				</div>
 				<div class="col-sm-2">
-					<button class="btn btn-sm btn-primary" type="button" value="csv" name="export" id="export" style="display:none;"><i class="fa fa-download fa-lg"></i> Export As CSV</button>
+					<button class="btn btn-sm btn-primary" type="button" value="csv" name="export" id="export" style="display:none;"><i class="fa-solid fa-download fa-lg"></i> Export As CSV</button>
 				</div>
 				<div class="col-sm-2">
-					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa-solid fa-save fa-lg"></i> Save As Defaults</button>
 				</div>
 				<div class="col-sm-2">
 <?php if (isset($vnscfg['enabled'])): ?>
-					<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Graphing</button>
+					<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa-solid fa-ban fa-lg"></i> Disable Graphing</button>
 <?php else:?>
-					<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable Graphing</button>
+					<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa-solid fa-check fa-lg"></i> Enable Graphing</button>
 <?php endif; ?>
 				</div>
 				<div class="col-sm-2">
-					<button class="btn btn-sm btn-danger" type="submit" value="true" name="reset" id="reset" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset Graphing Data</button>
+					<button class="btn btn-sm btn-danger" type="submit" value="true" name="reset" id="reset" style="display:none;"><i class="fa-solid fa-trash-can fa-lg"></i> Reset Graphing Data</button>
 				</div>
 			</div>
 			<div class="form-group">
@@ -234,7 +232,7 @@ display_top_tabs($tab_array);
 					&nbsp;
 				</label>
 				<div class="col-sm-2">
-					<button class="btn btn-sm btn-primary update-graph" type="button"><i class="fa fa-refresh fa-lg"></i> Update Graphs</button>
+					<button class="btn btn-sm btn-primary update-graph" type="button"><i class="fa-solid fa-arrows-rotate fa-lg"></i> Update Graphs</button>
 				</div>
 			</div>
 		</div>
@@ -374,7 +372,7 @@ events.push(function() {
 				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,23) === "Unable to open database" || errorMsg.substring(0,23) === "Failed to open database" ) {
 
 					//flip enable graphing button
-					$( "#enable" ).val('true').html('<i class="fa fa-check fa-lg"></i> Enable Graphing').removeClass('btn-danger').addClass('btn-success');
+					$( "#enable" ).val('true').html('<i class="fa-solid fa-check fa-lg"></i> Enable Graphing').removeClass('btn-danger').addClass('btn-success');
 
 					errorMsg = "Graphing is not enabled, Enable Graphing in the Advanced Settings above.";
 
@@ -816,7 +814,7 @@ events.push(function() {
 				}
 
 				//add system name
-				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
+				var systemName = '<?=htmlspecialchars(config_get_path('system/hostname') . "." . config_get_path('system/domain')); ?>';
 				d3.select('#traffic-totals-chart svg')
 					.append("text")
 					.attr("x", 225)
@@ -1206,7 +1204,7 @@ events.push(function() {
 	});
 
 	$( "#settings" ).click(function() {
-		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
+		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa-solid fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa-solid fa-cog fa-lg"></i> Display Advanced');
 		$("#export").toggle();
 		$("#defaults").toggle();
 		$("#enable").toggle();

@@ -1,0 +1,27 @@
+"login" and "su" have "auth sufficient pam_self.so" but a screen
+locker is supposed to ask for password regardless.
+
+pam_unix(8) requires root priveleges to access master.passwd(5),
+so try authenticating via setuid helper first.
+
+--- pam/hyprlock.orig	2024-03-01 23:49:44 UTC
++++ pam/hyprlock
+@@ -1,5 +1,4 @@
+-# PAM configuration file for hyprlock
+-# the 'login' configuration file (see /etc/pam.d/login)
++# PAM configuration for hyprlock. Only uses auth facilities.
+ 
+-auth        include     login
++auth        include     unix-selfauth
+ 
+--- src/core/Password.cpp.orig	2024-04-08 14:39:01 UTC
++++ src/core/Password.cpp
+@@ -70,7 +70,7 @@ std::shared_ptr<CPassword::SVerificationResult> CPassw
+             return true;
+         };
+ 
+-        result->realized = auth("hyprlock") || auth("su") || true;
++        result->realized = auth("hyprlock") || true;
+         g_pHyprlock->addTimer(std::chrono::milliseconds(1), passwordCheckTimerCallback, nullptr);
+     }).detach();
+ 

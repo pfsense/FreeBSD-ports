@@ -1,5 +1,6 @@
 PORTNAME=	klavaro
 PORTVERSION=	3.14
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/
 
@@ -19,6 +20,7 @@ USE_LDCONFIG=	yes
 LDFLAGS+=	-rdynamic
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 post-extract:
 	@${REINPLACE_CMD} -e 's|/usr|${PREFIX}|' \

@@ -1,11 +1,12 @@
 PORTNAME=	openrct2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.5
+DISTVERSION=	0.4.11
+PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.0/:sequence \
-		https://github.com/OpenRCT2/objects/releases/download/v1.3.11/:object \
-		https://github.com/OpenRCT2/OpenMusic/releases/download/v1.3.0/:openmsx \
-		https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.3/:opensfx
+MASTER_SITES=	https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.6/:sequence \
+		https://github.com/OpenRCT2/objects/releases/download/v1.4.4/:object \
+		https://github.com/OpenRCT2/OpenMusic/releases/download/v1.5/:openmsx \
+		https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.5/:opensfx
 DISTFILES=	title-sequences.zip:sequence \
 		objects.zip:object\
 		openmusic.zip:openmsx \
@@ -18,7 +19,7 @@ WWW=		https://openrct2.io/
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/licence.txt
 
-NOT_FOR_ARCHS=	mips mips64 powerpc powerpc64 powerpcspe sparc64
+NOT_FOR_ARCHS=	mips mips64 powerpc powerpc64 powerpcspe
 NOT_FOR_ARCHS_REASON=	Only for little-endian architectures
 
 BUILD_DEPENDS=	nlohmann-json>0:devel/nlohmann-json
@@ -34,7 +35,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libbenchmark.so:devel/benchmark \
 		libogg.so:audio/libogg
 
-USES=		cmake compiler:c++17-lang desktop-file-utils gnome gl iconv \
+USES=		cmake compiler:c++17-lang desktop-file-utils gl \
 		localbase:ldflags pkgconfig sdl shared-mime-info ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenRCT2

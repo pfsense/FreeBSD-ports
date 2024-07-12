@@ -6,7 +6,8 @@ PKGNAMESUFFIX=	4
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Rails internals bootup, plugins, generators, and rake tasks
-WWW=		https://github.com/rails/rails/tree/main/railties
+WWW=		https://rubyonrails.org/ \
+		https://github.com/rails/rails/tree/main/railties
 
 LICENSE=	MIT
 
@@ -21,7 +22,7 @@ NO_ARCH=	yes
 
 PLIST_FILES=	bin/rails
 
-CONFLICTS_INSTALL=	rubygem-railties5 rubygem-railties50 rubygem-railties52 rubygem-railties60
+CONFLICTS_INSTALL=	rubygem-railties[0-9] rubygem-railties[0-9][0-9]
 
 PORTSCOUT=	limit:^4\.2\.
 

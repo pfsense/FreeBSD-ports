@@ -1,6 +1,6 @@
 PORTNAME=	gnome-contacts
 PORTVERSION=	41.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 
@@ -12,6 +12,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libchamplain-0.12.so:graphics/libchamplain \
+		libcheese-gtk.so:multimedia/cheese \
 		libclutter-1.0.so:graphics/clutter \
 		libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
 		libcogl.so:graphics/cogl \
@@ -37,7 +38,7 @@ USE_GNOME=	cairo evolutiondataserver3 gdkpixbuf2 gnomedesktop3 gtk30 \
 		intlhack introspection:build
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
 USES=		compiler:c11 gettext gl gnome localbase meson perl5 pkgconfig \
-		python:3.4+,build sqlite tar:xz vala:build xorg
+		python:build sqlite tar:xz vala:build xorg
 
 GLIB_SCHEMAS=	org.gnome.Contacts.gschema.xml
 
@@ -45,19 +46,10 @@ OPTIONS_SUB=		yes
 OPTIONS_DEFINE=		MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 
-OPTIONS_DEFINE_i386=	CHEESE
-OPTIONS_DEFINE_amd64=	CHEESE
-OPTIONS_DEFAULT_i386=	CHEESE
-OPTIONS_DEFAULT_amd64=	CHEESE
-
 MANPAGES_MESON_TRUE=	manpage
 MANPAGES_USE=		GNOME=libxslt:build
 MANPAGES_BUILD_DEPENDS=	docbook-xml>=0:textproc/docbook-xml \
 			docbook-xsl-ns>=0:textproc/docbook-xsl-ns \
 			docbook-xsl>=0:textproc/docbook-xsl
-
-CHEESE_DESC=		Cheese webcam support
-CHEESE_MESON_ENABLED=	cheese
-CHEESE_LIB_DEPENDS=	libcheese-gtk.so:multimedia/cheese
 
 .include <bsd.port.mk>

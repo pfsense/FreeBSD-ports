@@ -1,5 +1,5 @@
 PORTNAME=	webtrees
-PORTVERSION=	2.1.16
+PORTVERSION=	2.1.20
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/fisharebest/${PORTNAME}/releases/download/${PORTVERSION}/
 PKGNAMESUFFIX=	21
@@ -11,8 +11,8 @@ WWW=		https://webtrees.net/
 LICENSE=	GPLv3+
 
 USES=		cpe php shebangfix zip
-
-USE_PHP=	calendar dom filter gd pdo_mysql session simplexml xml
+# php pcre extension is required but it's statically linked in default php
+USE_PHP=	calendar curl dom filter gd iconv pdo_mysql session xml
 
 SHEBANG_FILES=	webtrees/vendor/tecnickcom/tcpdf/tools/tcpdf_addfont.php
 
@@ -24,6 +24,11 @@ NO_BUILD=	yes
 SUB_FILES=	pkg-message pkg-deinstall
 SUB_LIST=	VERSION_SUFFIX=${PKGNAMESUFFIX}
 
+DOCSDIR=	${PREFIX}/share/doc/webtrees21
+PORTDOCS=	CONTRIBUTING.md LICENSE.md README.md SECURITY.md
+
+OPTIONS_DEFINE=	DOCS
+
 do-install:
 	-${MKDIR} ${STAGEDIR}${WWWDIR}
 	@cd ${WRKSRC}/${PORTNAME} && ${COPYTREE_BIN} . ${STAGEDIR}${WWWDIR} "! -name *\.md"
@@ -32,5 +37,9 @@ do-install:
 	@${ECHO_CMD} \
 		'@postexec ${CHOWN} -R ${WWWOWN}:${WWWGRP} %D/${WWWDIR_REL}/data' \
 		>> ${TMPPLIST}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/${PORTNAME} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

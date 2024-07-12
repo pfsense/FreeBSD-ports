@@ -1,13 +1,14 @@
 PORTNAME=	nant
 PORTVERSION=	0.92
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	.NET build tool inspired by Ant
-WWW=		https://github.com/nant/nant
+WWW=		http://nant.sourceforge.net/ \
+		https://github.com/nant/nant
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
@@ -19,7 +20,7 @@ MAKE_ARGS=	MCS=mcs MONO='mono --runtime=v4.0' TARGET=mono-4.0
 MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	run-test
 USES=		gmake mono pkgconfig
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC=		${WRKDIR}/nant-${PORTVERSION}
 
 DATADIR=	${PREFIX}/share/NAnt
 DOCSDIR=	${PREFIX}/share/doc/NAnt

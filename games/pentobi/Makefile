@@ -1,5 +1,6 @@
 PORTNAME=	pentobi
 PORTVERSION=	23.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -10,8 +11,6 @@ WWW=		https://pentobi.sourceforge.io/ \
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
-
-BROKEN_FreeBSD_12=	does not build: no member named 'test' in 'std::__1::atomic_flag'
 
 BUILD_DEPENDS=	itstool:textproc/itstool \
 		xsltproc:textproc/libxslt \

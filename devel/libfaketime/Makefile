@@ -1,6 +1,7 @@
 PORTNAME=	libfaketime
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.10
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -9,6 +10,8 @@ WWW=		https://github.com/wolfcw/libfaketime
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_15=	ld: error: version script assignment of 'GLIBC_2.2' to symbol 'timer_gettime' failed: symbol not defined
 
 USES=		gmake shebangfix
 USE_GITHUB=	yes
@@ -22,16 +25,15 @@ SHEBANG_FILES=	test/functests/common.inc test/testframe.sh
 # Add -DFAKE_STAT to FEATS to see why
 
 MAKE_ENV+=	FEATS="-DFAKE_SLEEP -DFAKE_TIMERS -DFAKE_INTERNAL_CALLS" \
-		MANDIR="/man" \
 		WARNS="-Wall"
 TEST_TARGET=	test
 
 PLIST_FILES=	bin/faketime \
 		lib/faketime/libfaketime.so.1 \
 		lib/faketime/libfaketimeMT.so.1 \
-		man/man1/faketime.1.gz \
 		share/doc/faketime/NEWS \
-		share/doc/faketime/README
+		share/doc/faketime/README \
+		share/man/man1/faketime.1.gz
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/faketime \

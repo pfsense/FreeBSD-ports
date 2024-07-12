@@ -1,7 +1,6 @@
 PORTNAME=	wf-config
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.1
-PORTREVISION=	2
+DISTVERSION=	0.8.0
 CATEGORIES=	devel
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libevdev.so:devel/libevdev
 RUN_DEPENDS=	glm>0:math/glm
 TEST_DEPENDS=	doctest>0:devel/doctest
 
-USES=		compiler:c++17-lang gnome meson pkgconfig
+USES=		cmake:indirect compiler:c++17-lang gnome meson pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes

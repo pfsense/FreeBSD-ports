@@ -3,11 +3,11 @@
  * suricata_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,6 +55,7 @@ else {
 	$pconfig['snortcommunityrules'] = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == "on" ? 'on' : 'off';
 	$pconfig['snort_rules_file'] = htmlentities(config_get_path('installedpackages/suricata/config/0/snort_rules_file'));
 	$pconfig['autogeoipupdate'] = config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == "on" ? 'on' : 'off';
+	$pconfig['maxmind_geoipdb_uid'] = htmlentities(config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_uid'));
 	$pconfig['maxmind_geoipdb_key'] = htmlentities(config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key'));
 	$pconfig['hide_deprecated_rules'] = config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules') == "on" ? 'on' : 'off';
 	$pconfig['enable_etopen_custom_url'] = config_get_path('installedpackages/suricata/config/0/enable_etopen_custom_url') == "on" ? 'on' : 'off';
@@ -219,6 +220,7 @@ if (!$input_errors) {
 		config_set_path('installedpackages/suricata/config/0/etpro_custom_rule_url', trim(html_entity_decode($_POST['etpro_custom_rule_url'])));
 		config_set_path('installedpackages/suricata/config/0/snort_custom_url', trim(html_entity_decode($_POST['snort_custom_url'])));
 		config_set_path('installedpackages/suricata/config/0/gplv2_custom_url', trim(html_entity_decode($_POST['gplv2_custom_url'])));
+		config_set_path('installedpackages/suricata/config/0/maxmind_geoipdb_uid', trim(html_entity_decode($_POST['maxmind_geoipdb_uid'])));
 		config_set_path('installedpackages/suricata/config/0/maxmind_geoipdb_key', trim(html_entity_decode($_POST['maxmind_geoipdb_key'])));
 
 		/* Check and adjust format of Rule Update Starttime string to add colon and leading zero if necessary */
@@ -380,7 +382,7 @@ $section->addInput(new Form_Input(
 	'Snort Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29151.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible with Suricata and will break your installation!');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29200.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible with Suricata and will break your installation!');
 $section->addInput(new Form_Input(
 	'oinkcode',
 	'Snort Oinkmaster Code',
@@ -495,7 +497,7 @@ foreach ($pconfig['extra_rules']['rule'] as $rule) {
 		'deleterow' . $counter,
 		'Delete',
 		null,
-		'fa-trash'
+		'fa-solid fa-trash-can'
 	))->addClass('btn-warning');
 
 	$section->add($group);
@@ -507,7 +509,7 @@ $section->addInput(new Form_Button(
 	'addrow',
 	'Add',
 	null,
-	'fa-plus'
+	'fa-solid fa-plus'
 ))->addClass('btn-success');
 
 $form->add($section);
@@ -544,6 +546,15 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['autogeoipupdate'] == 'on' ? true:false,
 	'on'
 ))->setHelp('When enabled, Suricata will automatically download updates for the free GeoLite2 country IP database.<br /><br />If you have a subscription for more current GeoIP2 updates, uncheck this option and instead create your own process to place the required database file in /usr/local/share/suricata/GeoLite2/.');
+$section->addInput(new Form_Input(
+	'maxmind_geoipdb_uid',
+	gettext('GeoLite2 DB Account ID'),
+	'text',
+	$pconfig['maxmind_geoipdb_uid'],
+	['placeholder' => 'Enter your MaxMind GeoLite2 Account ID']
+))->setHelp('To utilize the free MaxMind GeoLite2 GeoIP functionality, you must <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">register for a free MaxMind user account</a>. '
+	. '<strong>Use the GeoIP Update version 3.1.1 or newer registration option.</strong>')
+  ->setAttribute('autocomplete', 'off');
 $section->addInput(new Form_Input(
 	'maxmind_geoipdb_key',
 	gettext('GeoLite2 DB License Key'),
@@ -586,7 +597,7 @@ $section->addInput(new Form_Select(
 	'log_to_systemlog_priority',
 	'Log Priority',
 	$pconfig['log_to_systemlog_priority'],
-	array( "emerg" => "EMERG", "crit" => "CRIT", "alert" => "ALERT", "err" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO" )
+	array( "debug" => "DEBUG", "config" => "CONF", "perf" => "PERF", "error" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO" )
 ))->setHelp('Select system log Priority (Level) to use for reporting. Default is NOTICE.');
 
 $section->addInput(new Form_Checkbox(
@@ -721,6 +732,7 @@ events.push(function(){
 
 	function enable_geoip2_upd() {
 		var hide = ! $('#autogeoipupdate').prop('checked');
+		hideInput('maxmind_geoipdb_uid', hide);
 		hideInput('maxmind_geoipdb_key', hide);
 	}
 

@@ -3,7 +3,7 @@
  * suricata_suppress.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -130,7 +130,7 @@ display_top_tabs($tab_array, true);
 					<?php $i = 0; foreach ($a_suppress as $list): ?>
 					<?php
 						if (suricata_suppresslist_used($list['name'])) {
-							$icon = "&nbsp;<i class=\"fa fa-info-circle\" style=\"cursor: pointer;\" title=\"" . gettext("List is in use by an instance") . "\"></i>";
+							$icon = "&nbsp;<i class=\"fa-solid fa-info-circle\" style=\"cursor: pointer;\" title=\"" . gettext("List is in use by an instance") . "\"></i>";
 						}
 						else
 							$icon = "";
@@ -147,11 +147,11 @@ display_top_tabs($tab_array, true);
 						</td>
 						<td>
 							<a href="suricata_suppress_edit.php?id=<?=$i?>">
-								<i class="fa fa-pencil fa-lg" title="<?=gettext("Edit Suppress List"); ?>"></i>
+								<i class="fa-solid fa-pencil fa-lg" title="<?=gettext("Edit Suppress List"); ?>"></i>
 							</a>
 							<?php if (suricata_suppresslist_used($list['name'])) : ?>
 							<a href="/suricata/suricata_interfaces_edit.php?id=<?=suricata_find_suppresslist_interface($list['name'])?>">
-								<i class="fa fa-caret-square-o-right" title="<?=gettext('Goto first instance associated with this Suppress List')?>" style="cursor: pointer;"?></i>
+								<i class="fa-regular fa-square-caret-right" title="<?=gettext('Goto first instance associated with this Suppress List')?>" style="cursor: pointer;"?></i>
 							</a>
 							<?php endif; ?>
 						</td>
@@ -163,11 +163,11 @@ display_top_tabs($tab_array, true);
 	</div>
 	<nav class="action-buttons">
 		<a href="suricata_suppress_edit.php?id=<?=$id_gen?>" class="btn btn-sm btn-success" title="<?=gettext('Add a new suppression list');?>">
-			<i class="fa fa-plus icon-embed-btn"></i> <?=gettext("Add");?>
+			<i class="fa-solid fa-plus icon-embed-btn"></i> <?=gettext("Add");?>
 		</a>
 		<?php if (count($a_suppress) > 0): ?>
 		<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Items');?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext('Delete');?>
 		</button>
 		<?php endif; ?>

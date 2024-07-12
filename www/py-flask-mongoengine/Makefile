@@ -1,5 +1,6 @@
 PORTNAME=	flask-mongoengine
 PORTVERSION=	1.0.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,14 +12,14 @@ WWW=		https://github.com/mongoengine/flask-mongoengine
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0:www/py-flask@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Flask-WTF>=0:www/py-flask-wtf@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flask>=0:www/py-flask@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}flask_wtf>=0:www/py-flask-wtf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mongoengine>=0:databases/py-mongoengine@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>=0:devel/py-coverage@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest-cov@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python
 USE_GITHUB=	yes # tests not packaged with PyPI sdist
 GH_ACCOUNT=	MongoEngine
 USE_PYTHON=	autoplist concurrent distutils

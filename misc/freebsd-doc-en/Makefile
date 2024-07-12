@@ -1,5 +1,5 @@
 PORTNAME=	freebsd-doc
-PORTVERSION=	20230611
+PORTVERSION=	20240623
 PORTEPOCH=	1
 CATEGORIES=	misc docs
 MASTER_SITES=	LOCAL/doceng
@@ -10,11 +10,11 @@ COMMENT?=	Documentation from the FreeBSD Documentation Project
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	docproj>=4.1:textproc/docproj
+BUILD_DEPENDS=	docproj>=4.1.8:textproc/docproj
 
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/doc/documentation
 PLIST_SUB=	DOCBASE=${DOCBASE}
-NO_ARCH=	yes
 
 DOCLANG?=		en
 DOCBASE?=		share/doc/freebsd
@@ -46,18 +46,12 @@ BUILD_DEPENDS+=	docproj-fonts-cjk>0:textproc/docproj-fonts-cjk
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|enableGitInfo = true|#enableGitInfo = true|' \
-		${WRKSRC}/config/_default/config.toml
+		${WRKSRC}/config/_default/hugo.toml
 
 do-build-HTML-on:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} DOC_LANG="${HTML_DOC_LANG}" \
 		${MAKE} html
-.if ${DOCLANG} == "en"
-	@${RM} ${WRKSRC}/public/articles/index.html \
-		${WRKSRC}/public/books/index.html
-	@${RM} -r ${WRKSRC}/public/languages/
-.else
 	@${RM} -r ${WRKSRC}/public/${DOCLANG}/languages/
-.endif
 
 do-build-PDF-on:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} DOC_LANG="${DOCLANG}" \
@@ -71,12 +65,6 @@ pre-install:
 
 do-install-HTML-on:
 .if ${DOCLANG} == "en"
-	@${FIND} ${WRKSRC}/public/ -type f -name "*.html" | \
-		${XARGS} ${REINPLACE_CMD} -i '' \
-			-e 's|img src=../../../images|img src=../../images|g'
-	@${FIND} ${WRKSRC}/public/ -name "*.orig" -delete
-	${ECHO} "English HTML documents are in ../articles and ../books" \
-		> ${STAGEDIR}${DESTDIR}${PREFIX}/${DOCBASE}/${DOCLANG}/README.txt
 	${CP} -R ${WRKSRC}/public/* ${STAGEDIR}${DESTDIR}${PREFIX}/${DOCBASE}
 .else
 	${CP} -R ${WRKSRC}/public/${DOCLANG}/* ${STAGEDIR}${DESTDIR}${PREFIX}/${DOCBASE}/${DOCLANG}

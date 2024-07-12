@@ -1,8 +1,9 @@
 PORTNAME=	dbus
-DISTVERSION=	1.14.6
+DISTVERSION=	1.14.10
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	devel gnome
-MASTER_SITES=	http://dbus.freedesktop.org/releases/dbus/
+MASTER_SITES=	https://dbus.freedesktop.org/releases/dbus/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Message bus system for inter-application communication
@@ -20,12 +21,14 @@ USE_RC_SUBR=	dbus
 SHEBANG_FILES=	tools/GetAllMatchRules.py
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-apparmor \
 		--disable-doxygen-docs \
 		--disable-selinux \
 		--disable-systemd \
 		--with-session-socket-dir=/tmp \
 		--with-test-socket-dir=${WRKDIR}
+CONFIGURE_ENV=	have_ld_version_script=yes
 
 INSTALL_TARGET=	install-strip
 
@@ -34,7 +37,7 @@ PORTSCOUT=	limitw:1,even
 USERS=		messagebus
 GROUPS=		messagebus
 
-_LIBVERSION=	3.32.2
+_LIBVERSION=	3.32.4
 
 PLIST_SUB=	GROUPS=${GROUPS} \
 		VERSION="1.0" \

@@ -1,22 +1,26 @@
 PORTNAME=	curlftpfs
 PORTVERSION=	0.9.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Mount remote FTP directories
-WWW=		http://curlftpfs.sourceforge.net/
+WWW=		https://curlftpfs.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-GNU_CONFIGURE=	yes
 USES=		fuse gnome pkgconfig
 USE_GNOME=	glib20
-PLIST_FILES=	bin/curlftpfs man/man1/${PORTNAME}.1.gz
+
+GNU_CONFIGURE=			yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+
+PLIST_FILES=	bin/curlftpfs \
+		share/man/man1/${PORTNAME}.1.gz
 
 .include <bsd.port.mk>

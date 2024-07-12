@@ -1,3 +1,3 @@
-TIMESTAMP = 1675948310
-SHA256 (emersion-drm_info-f819ac496d1d9aa5dc5e50bb3bd60dfbd0030ae6_GL0.tar.gz) = 0fe6abfb9eaffdeab6ab6945765e63dc87677a26706fb95374d76555c00f1af2
-SIZE (emersion-drm_info-f819ac496d1d9aa5dc5e50bb3bd60dfbd0030ae6_GL0.tar.gz) = 18176
+TIMESTAMP = 1696928324
+SHA256 (drm_info-v2.6.0.tar.bz2) = 1b248d28b9c5f869980891279a77275395b95973fa1c5e542da439f18dafed9f
+SIZE (drm_info-v2.6.0.tar.bz2) = 16710

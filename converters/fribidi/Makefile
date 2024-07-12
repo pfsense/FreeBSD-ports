@@ -1,7 +1,10 @@
 PORTNAME=	fribidi
-DISTVERSION=	1.0.13
+DISTVERSION=	1.0.15
 CATEGORIES=	converters
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
+
+PATCH_SITES=	https://github.com/fribidi/fribidi/commit/
+PATCHFILES=	3826589ea556da613bd42742a169789469e8b635.patch:-p1
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Free Implementation of the Unicode Bidirectional Algorithm
@@ -10,7 +13,7 @@ WWW=		https://fribidi.org/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe meson python:3.8+,test shebangfix tar:xz
+USES=		cpe meson python:test shebangfix tar:xz
 CPE_VENDOR=	gnu
 SHEBANG_FILES=	test/test-runner.py
 USE_LDCONFIG=	yes

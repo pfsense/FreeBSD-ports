@@ -1,11 +1,12 @@
 PORTNAME=	amavisd-milter
 PORTVERSION=	1.7.0
+PORTREVISION=	1
 CATEGORIES=	security mail
 MASTER_SITES=	https://github.com/prehor/${PORTNAME}/releases/download/${PORTVERSION}/
 
 MAINTAINER=	rx@rx.cz
 COMMENT=	Milter for amavisd-new
-WWW=		http://amavisd-milter.sourceforge.net
+WWW=		https://amavisd-milter.sourceforge.net
 
 RUN_DEPENDS=	amavisd:security/amavisd-new
 
@@ -28,6 +29,7 @@ AMAVISDIR?=	/var/amavis
 RUNDIR=		/var/run/amavis
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--localstatedir=${RUNDIR} --with-working-dir=${AMAVISDIR}/tmp
 USE_RC_SUBR=	${PORTNAME}
 

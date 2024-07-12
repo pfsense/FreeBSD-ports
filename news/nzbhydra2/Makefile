@@ -1,6 +1,6 @@
 PORTNAME=	nzbhydra2
-DISTVERSION=	4.7.4
-DISTVERSIONSUFFIX=	-linux
+DISTVERSION=	5.3.3
+DISTVERSIONSUFFIX=	-generic
 CATEGORIES=	news java
 MASTER_SITES=	https://github.com/theotherp/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -13,16 +13,25 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 
-USES=		python:3.5+ zip
+USES=		python
 USE_JAVA=	yes
 USE_RC_SUBR=	nzbhydra2
+
+EXTRACT_SUFX=	.zip
+EXTRACT_AFTER_ARGS=	--exclude executables \
+			--exclude other \
+			--exclude WindowsService \
+			--exclude *.exe \
+			--exclude nzbhydra2wrapper.py \
+			--no-same-owner --no-same-permissions
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 SUB_FILES=	nzbhydra2
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} \
-		JAVA=${JAVA}
+		JAVA=${JAVA} \
+		DISTVERSION=${DISTVERSION}
 
 JAVA_VERSION=	17+
 JAVA_VENDOR=	openjdk
@@ -32,19 +41,10 @@ USERS=		nzbhydra2
 GROUPS=		nzbhydra2
 
 PLIST_FILES=	${DATADIR}/lib/core-${DISTVERSION}-exec.jar \
-		${DATADIR}/nzbhydra2 \
 		${DATADIR}/nzbhydra2wrapperPy3.py \
 		${DATADIR}/changelog.md \
 		${DATADIR}/readme.md \
 		${DATADIR}/LICENSE
-
-post-extract:
-	# Cleanup unnecessary files
-	@${RM} -r ${WRKSRC}/systemd ${WRKSRC}/sysv ${WRKSRC}/rc.d ${WRKSRC}/upstart ${WRKSRC}/nzbhydra2wrapper.py
-
-pre-install:
-	# temp fix for https://github.com/theotherp/nzbhydra2/issues/812
-	${RM} -r ${WRKSRC}/data
 
 do-install:
 	@${MKDIR} ${STAGEDIR}/${DATADIR}

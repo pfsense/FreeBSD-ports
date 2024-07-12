@@ -1,12 +1,12 @@
 PORTNAME=	libfame
 PORTVERSION=	0.9.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/fame/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Video encoding library
-WWW=		http://fame.sourceforge.net/
+WWW=		https://fame.sourceforge.net/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,6 +15,7 @@ USES=		libtool
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	MMX

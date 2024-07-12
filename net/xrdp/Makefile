@@ -1,6 +1,6 @@
 PORTNAME=	xrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.22.1
+DISTVERSION=	0.9.26
 PORTEPOCH=	1
 CATEGORIES=	net
 DIST_SUBDIR?=	${PORTNAME}
@@ -15,8 +15,7 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/nasm:devel/nasm
-RUN_DEPENDS=	${LOCALBASE}/lib/pulse-14.2/modules/module-xrdp-sink.so:audio/pulseaudio-module-xrdp \
-		${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp \
+RUN_DEPENDS=	${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp \
 		xterm:x11/xterm
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
@@ -28,9 +27,10 @@ USE_LDCONFIG=	${PREFIX}/lib/xrdp
 USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 GH_ACCOUNT=	neutrinolabs
-GH_TUPLE=	neutrinolabs:librfxcodec:v0.1.6:librfxcodec/librfxcodec \
-		neutrinolabs:libpainter:v0.1.1:libpainter/libpainter
+GH_TUPLE=	neutrinolabs:librfxcodec:c537401a:librfxcodec/librfxcodec \
+		neutrinolabs:libpainter:b44f2fa:libpainter/libpainter
 
 CONFIGURE_ARGS=	--enable-imlib2 \
 		--enable-jpeg \

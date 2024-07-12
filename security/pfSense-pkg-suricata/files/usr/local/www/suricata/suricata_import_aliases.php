@@ -3,7 +3,7 @@
  * suricata_import_aliases.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -98,7 +98,7 @@
 					<?php if ($disable): ?>
 					<tr title="<?=$tooltip?>">
 					  <td class="text-center">
-					  	<i class="fa fa-times text-danger"></i>
+					  	<i class="fa-solid fa-times text-danger"></i>
 					<?php else: ?>
 					<tr>
 					  <td class="text-center">
@@ -152,7 +152,7 @@
 			<?php else: ?>
 				<div class="text-left">
 					<button type="Submit" name="save_import_alias" value="Save" id="save_import_alias" class="btn btn-primary" title="<?=gettext("Import selected item and return")?>">
-						<i class="fa fa-save icon-embed-btn"></i>
+						<i class="fa-solid fa-save icon-embed-btn"></i>
 						<?=gettext("Save"); ?>
 					</button>
 					<button type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="btn btn-warning" title="<?=gettext("Cancel import operation and return")?>">

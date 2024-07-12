@@ -1,5 +1,6 @@
 PORTNAME=	kwin
 DISTVERSION=	${KDE_PLASMA_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11-wm kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -8,8 +9,7 @@ WWW=		https://www.kde.org/plasma-desktop
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libXcursor.so:x11/libXcursor \
-		libdrm.so:graphics/libdrm \
+LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libepoxy.so:graphics/libepoxy \
 		libepoll-shim.so:devel/libepoll-shim \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -25,35 +25,39 @@ LIB_DEPENDS=	libXcursor.so:x11/libXcursor \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxcvt.so:x11/libxcvt
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
-		xwayland-devel>0:x11-servers/xwayland-devel \
+		Xwayland:x11-servers/xwayland \
 		wayland-protocols>0:graphics/wayland-protocols \
 		hwdata>0:misc/hwdata
-RUN_DEPENDS=	xwayland-devel>0:x11-servers/xwayland-devel \
+RUN_DEPENDS=	Xwayland:x11-servers/xwayland \
 		hwdata>0:misc/hwdata
 
-CONFLICTS_INSTALL=	kwinft # bin/kwin_wayland
-
-USES=		cmake compiler:c++11-lib gettext gl gnome kde:5 pkgconfig \
-		python:3.7+,run qt:5 shebangfix tar:xz xorg
+USES=		cmake compiler:c++11-lib gettext gl gnome kde:5 pkgconfig qt:5 \
+		shebangfix tar:xz xorg \
+		python:run
 USE_GL=		egl gbm
 USE_GNOME=	glib20
-USE_KDE=	activities attica auth breeze codecs completion config \
-		configwidgets coreaddons crash dbusaddons decoration \
-		globalaccel i18n iconthemes idletime init itemviews jobwidgets \
-		kcmutils kdeclarative kio kscreenlocker kwayland-integration \
-		newstuff notifications package plasma-framework \
-		plasma-wayland-protocols runner service sonnet textwidgets \
-		wayland widgetsaddons windowsystem xmlgui \
-		doctools:build ecm:build
+USE_KDE=	activities attica auth breeze codecs config configwidgets \
+		coreaddons crash dbusaddons decoration globalaccel i18n \
+		idletime init itemviews kcmutils kdeclarative kscreenlocker \
+		kwayland-integration newstuff notifications package \
+		plasma-framework runner service wayland widgetsaddons \
+		windowsystem xmlgui \
+		doctools:build ecm:build plasma-wayland-protocols:build
 USE_LDCONFIG=	yes
-USE_QT=		concurrent core dbus declarative gui multimedia network script \
-		sensors uiplugin uitools widgets x11extras xml \
+USE_QT=		concurrent core dbus declarative gui network uiplugin uitools \
+		widgets x11extras xml \
 		buildtools:build qmake:build testlib:build \
-		quickcontrols2:run virtualkeyboard:run
+		multimedia:run quickcontrols2:run virtualkeyboard:run
 USE_XORG=	ice sm x11 xcb xext xi
 SHEBANG_FILES=	kconf_update/*.py \
 		kconf_update/*.pl \
 		src/effects/strip-effect-metadata.py
+
+OPTIONS_DEFINE=		PIPEWIRE
+OPTIONS_DEFAULT=	PIPEWIRE
+PIPEWIRE_DESC=		Required for Wayland screencasting
+PIPEWIRE_LIB_DEPENDS=	libpipewire-0.3.so:multimedia/pipewire
+PIPEWIRE_CMAKE_BOOL=	KWIN_BUILD_PIPEWIRE
 
 # A (hopefully) temporary workaround for
 # https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/2026

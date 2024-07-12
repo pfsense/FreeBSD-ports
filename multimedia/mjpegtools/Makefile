@@ -1,6 +1,6 @@
 PORTNAME=	mjpegtools
 PORTVERSION=	2.1.0
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME:S/tools//}/${PORTNAME}/${PORTVERSION}
 
@@ -17,9 +17,11 @@ CONFLICTS=	mplex
 
 USES=		compiler:c++11-lang gmake gnome jpeg libtool localbase pathfix \
 		pkgconfig
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--without-dga --without-libquicktime --without-x
 CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
 

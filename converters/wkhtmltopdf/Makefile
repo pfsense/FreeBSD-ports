@@ -1,5 +1,6 @@
 PORTNAME=	wkhtmltopdf
 PORTVERSION=	0.12.6
+PORTREVISION=	4
 CATEGORIES=	converters
 
 MAINTAINER=	pi@FreeBSD.org
@@ -9,8 +10,9 @@ WWW=		https://github.com/wkhtmltopdf/wkhtmltopdf
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Upstream abandoned the project
+EXPIRATION_DATE=	2024-12-31
 BROKEN_armv6=		fails to build: error: Not supported ARM architecture
-BROKEN_armv7=		fails to build: error: invalid operand for instruction
 BROKEN_mips64=		fails to link: undefined reference to __sync_add_and_fetch_4
 
 RUN_DEPENDS=	webfonts>=0:x11-fonts/webfonts
@@ -18,7 +20,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 
-USES=		compiler gmake iconv jpeg perl5 pkgconfig ssl xorg
+USES=		gmake iconv jpeg perl5 pkgconfig ssl xorg
 USE_XORG=	x11 xext xrender
 USE_PERL5=	build
 USE_LDCONFIG=	yes
@@ -54,10 +56,6 @@ MAKE_ARGS=	INSTALL_ROOT="${STAGEDIR}${PREFIX}"
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386" || ${ARCH} == "powerpc" || ${CHOSEN_COMPILER_TYPE} == gcc
-USE_GCC=	8
-.endif
-
 pre-patch:
 	${RMDIR} ${WRKSRC}/qt
 	${LN} -s ../qt-${WKQT_TAGNAME} ${WRKSRC}/qt
@@ -67,17 +65,16 @@ post-patch:
 		-e 's|/usr/X11R6/include|${LOCALBASE}/include/X11|g' \
 		-e 's|/usr/X11R6/lib|${LOCALBASE}/lib|g' \
 		${PATCH_WRKSRC}/mkspecs/freebsd-g++/qmake.conf
-	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-		${PATCH_WRKSRC}/mkspecs/common/gcc-base.conf
 	${REINPLACE_CMD} -e "s|gcc|${CC}|g" -e "s|g++|${CXX}|g" \
 		${PATCH_WRKSRC}/mkspecs/common/g++-base.conf
-	${REINPLACE_CMD} -e "s|share/man|man|g" \
-		${WRKSRC}/src/image/image.pro \
-		${WRKSRC}/src/pdf/pdf.pro
 	${ECHO} 'LIBS+= -lcrypto' >>${WRKSRC}/src/image/image.pro
 	${ECHO} 'LIBS+= -lcrypto' >>${WRKSRC}/src/pdf/pdf.pro
 	${MKDIR} ${WRKSRC}/build/app ${WRKSRC}/build/qt \
 		${WRKSRC}/build/wkhtmltox
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+	@${FIND} ${PATCH_WRKSRC}/../qt-5db36ec -name "*.cpp" -o -name "*.h" | \
+		${XARGS} ${REINPLACE_CMD} -E 's|register ([a-zA-Z])|\1|g'
+.endif
 
 post-build:
 	cd ${WRKSRC}/build/app && ${SETENV} ${MAKE_ENV} \

@@ -1,5 +1,5 @@
 PORTNAME=	types-python-dateutil
-DISTVERSION=	2.8.19.13
+DISTVERSION=	2.8.19.14
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/python/typeshed
 
 LICENSE=	APACHE20
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

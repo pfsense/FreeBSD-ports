@@ -1,6 +1,7 @@
 PORTNAME=	onionshare-cli
 PORTVERSION=	2.6
 DISTNAME=	onionshare_cli-${PORTVERSION}
+PORTREVISION=	1
 CATEGORIES=	www security python
 MASTER_SITES=   PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +21,7 @@ RUN_DEPENDS=	meek-client:security/meek \
 		${PYTHON_PKGNAMEPREFIX}click>=0:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}colorama>=0:devel/py-colorama@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}eventlet>=0:net/py-eventlet@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Flask>=0:www/py-flask@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}flask>=0:www/py-flask@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask-socketio>=0:www/py-flask-socketio@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gevent-websocket>=0:www/py-gevent-websocket@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil@${PY_FLAVOR} \
@@ -30,7 +31,7 @@ RUN_DEPENDS=	meek-client:security/meek \
 		${PYTHON_PKGNAMEPREFIX}unidecode>=0:converters/py-unidecode@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR}
 
-USES=		cpe python:3.6+
+USES=		cpe python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

@@ -1,0 +1,46 @@
+commit d53185888b7588c85a33ccfc14447335045fe5b7
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Mar 4 13:48:10 2024 -0500
+
+    Fix IPsec Dual Stack w/any remote. Fixes #15147
+
+diff --git a/src/etc/inc/ipsec.inc b/src/etc/inc/ipsec.inc
+index c52b4b6528..69e5e49fe0 100644
+--- a/src/etc/inc/ipsec.inc
++++ b/src/etc/inc/ipsec.inc
+@@ -2485,7 +2485,13 @@ function ipsec_setup_tunnels() {
+ 			/* Mobile tunnels cannot start automatically */
+ 			$start_action = 'none';
+ 		} else {
+-			$remote_spec = $ph1ent['remote-gateway'];
++			if (($ph1ent['protocol'] == 'both') &&
++			    (($ph1ent['remote-gateway'] == '0.0.0.0') ||
++			    ($ph1ent['remote-gateway'] == '::'))) {
++				$remote_spec = '%any';
++			} else {
++				$remote_spec = $ph1ent['remote-gateway'];
++			}
+ 			$sourcehost = (is_ipaddr($remote_spec)) ? $remote_spec : $rgmap[$remote_spec];
+ 			$ifacesuse = ipsec_setup_routes($ph1ent['interface'], $ph1ent['protocol'], $sourcehost, isset($ph1ent['gw_duplicates']));
+ 		}
+diff --git a/src/usr/local/www/vpn_ipsec_phase1.php b/src/usr/local/www/vpn_ipsec_phase1.php
+index fcbf95743f..5d02b89a51 100644
+--- a/src/usr/local/www/vpn_ipsec_phase1.php
++++ b/src/usr/local/www/vpn_ipsec_phase1.php
+@@ -840,9 +840,13 @@ if (!$pconfig['mobile']) {
+ 	))->setHelp('Enter the public IP address or host name of the remote gateway.%1$s%2$s%3$s',
+ 	    '<div class="infoblock">',
+ 	    sprint_info_box(gettext('Use \'0.0.0.0\' to allow connections from any IPv4 address or \'::\' ' .
+-	    'to allow connections from any IPv6 address.' . '<br/>' . 'Child SA Start Action must be set to None and ' .
+-	    'Peer IP Address cannot be used for Remote Identifier. A remote gateway address of \'0.0.0.0\' or \'::\' is not ' .
+-	    'compatible with VTI, use an FQDN instead.'), 'info', false),
++	    'to allow connections from any IPv6 address. For dual stack tunnels, either form will allow connections from ' .
++	    'both address families.' .
++	    '<br/><br/>' .
++	    'Child SA Start Action must be set to None and Peer IP Address cannot be used for Remote Identifier. ' .
++	    '<br/><br/>' .
++	    'A remote gateway address of \'0.0.0.0\' or \'::\' is not compatible with VTI, use an FQDN instead.'),
++	    'info', false),
+ 	    '</div>');
+ 
+ 	$section->add($group);

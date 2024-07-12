@@ -1,6 +1,7 @@
 PORTNAME=	octave-forge-statistics
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	1.6.0
+DISTVERSION=	1.6.6
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -10,11 +11,13 @@ WWW=		https://packages.octave.org/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
-USES=	octave
+USES=		octave
 USE_GITHUB=	yes
 GH_ACCOUNT=	gnu-octave
 GH_PROJECT=	statistics
 
-OCTAVE_SRC=		${GH_PROJECT}-release-${DISTVERSION}
+NO_ARCH=	yes
+
+OCTAVE_SRC=	${GH_PROJECT}-release-${DISTVERSION}
 
 .include <bsd.port.mk>

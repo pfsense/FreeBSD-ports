@@ -3,7 +3,7 @@
  * vpn_wg_peers.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * All rights reserved.
  *
@@ -151,9 +151,9 @@ if (is_array($wgg['peers']) && count($wgg['peers']) > 0):
 						<td><?=wg_generate_peer_allowedips_popup_link($peer_idx)?></td>
 						<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 						<td style="cursor: pointer;">
-							<a class="fa fa-pencil" title="<?=gettext('Edit Peer')?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
+							<a class="fa-solid fa-pencil" title="<?=gettext('Edit Peer')?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
 							<?=wg_generate_toggle_icon_link(($peer['enabled'] == 'yes'), 'peer', "?act=toggle&peer={$peer_idx}")?>
-							<a class="fa fa-trash text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer_idx}"?>" usepost></a>
+							<a class="fa-solid fa-trash-can text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer_idx}"?>" usepost></a>
 						</td>
 					</tr>
 
@@ -176,7 +176,7 @@ endif;
 	</div>
 	<nav class="action-buttons">
 		<a href="vpn_wg_peers_edit.php" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext('Add Peer')?>
 		</a>
 	</nav>

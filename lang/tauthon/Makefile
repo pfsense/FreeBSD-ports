@@ -7,6 +7,7 @@
 PORTNAME=	tauthon
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.5
+PORTREVISION=	1
 CATEGORIES=	lang python
 
 MAINTAINER=	olce.freebsd.ports@certner.fr
@@ -27,6 +28,7 @@ GH_PROJECT=	tauthon
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 # Piggyback on Python support in shebangfix
 python_CMD=	${PREFIX}/bin/${NAME_VERSION}
 # Better be safe than sorry
@@ -134,14 +136,6 @@ PLIST_SUB+=	X86_ONLY="@comment "
 PLIST_SUB+=	32BIT_ONLY="@comment "
 .else
 PLIST_SUB+=	32BIT_ONLY=""
-.endif
-
-.if ${ARCH} == powerpc64
-MAKE_ENV+=	UNAME_m="powerpc64"
-.endif
-
-.if ${ARCH} == sparc64
-CFLAGS+=	-DPYTHON_DEFAULT_RECURSION_LIMIT=900
 .endif
 
 # See https://bugs.freebsd.org/115940 and https://bugs.freebsd.org/193650

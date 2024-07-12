@@ -1,5 +1,5 @@
 PORTNAME=	kphotoalbum
-DISTVERSION=	5.10.0
+DISTVERSION=	5.12.0
 PORTREVISION=	1
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/
@@ -12,17 +12,15 @@ WWW=		https://www.kphotoalbum.org/
 LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
-		libexpat.so:textproc/expat2 \
-		libKF5KDcraw.so:graphics/libkdcraw \
-		libKF5Kipi.so:graphics/libkipi
+		libvlc.so:multimedia/vlc
 
 USES=		cmake compiler:c++11-lang desktop-file-utils jpeg kde:5 \
 		pkgconfig qt:5 shebangfix tar:xz xorg
-USE_KDE=	archive auth codecs completion config \
-		configwidgets coreaddons ecm i18n \
-		iconthemes jobwidgets kio marble purpose service \
-		solid sonnet textwidgets widgetsaddons windowsystem xmlgui
-USE_QT=		concurrent core dbus declarative gui location network phonon4 \
+USE_KDE=	archive auth codecs completion config configwidgets coreaddons \
+		i18n iconthemes jobwidgets kio libkdcraw marble phonon purpose service solid \
+		sonnet textwidgets widgetsaddons windowsystem xmlgui \
+		ecm:build
+USE_QT=		concurrent core dbus declarative gui location network \
 		printsupport sql webchannel widgets xml \
 		buildtools:build qmake:build
 USE_XORG=	x11

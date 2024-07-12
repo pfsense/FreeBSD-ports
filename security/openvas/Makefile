@@ -1,5 +1,5 @@
 PORTNAME=	openvas
-DISTVERSION=	22.7.0
+DISTVERSION=	23.0.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -19,18 +19,22 @@ LIB_DEPENDS=	libgvm_base.so:security/gvm-libs \
 		libssh.so:security/libssh \
 		libgnutls.so:security/gnutls \
 		libnetsnmp.so:net-mgmt/net-snmp \
-		libjson-glib-1.0.so:devel/json-glib
-RUN_DEPENDS=	redis-server:databases/redis \
+		libjson-glib-1.0.so:devel/json-glib \
+		libcurl.so:ftp/curl
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}impacket>=0:net/py-impacket@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}greenbone-feed-sync>0:security/py-greenbone-feed-sync@${PY_FLAVOR} \
+		redis-server:databases/redis \
 		snmpget:net-mgmt/net-snmp \
 		rsync:net/rsync \
-		nmap:security/nmap \
-		${PYTHON_PKGNAMEPREFIX}impacket>=0:net/py-impacket@${PY_FLAVOR}
+		nmap:security/nmap
 
-USES=		bison cmake gnome pkgconfig python:3.5+ ssl
+USES=		bison cmake gnome pkgconfig python ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	greenbone
 GH_PROJECT=	${PORTNAME}-scanner
 USE_GNOME=	glib20
+
+CMAKE_ARGS+=	-DINSTALL_OLD_SYNC_SCRIPT=OFF
 
 USERS=		gvm
 GROUPS=		${USERS}
@@ -41,8 +45,14 @@ GROUPS=		${USERS}
 CFLAGS+=	-Wno-error=strict-prototypes -Wno-error=unused-but-set-variable -Wno-error=invalid-utf8
 .endif
 
+# The struct this error is about is only ever accessed using bcopy() and memset(),
+# so the unaligned structure doesn't matter.  Disable the error, but keep it as a
+# warning so we can see where it is.
+CFLAGS_armv6=	-Wno-error=unaligned-access
+CFLAGS_armv7=	-Wno-error=unaligned-access
+
 post-patch:
-	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>||g' ${WRKSRC}/src/attack.c ${WRKSRC}/src/nasl_plugins.c
+	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>||g' ${WRKSRC}/src/nasl_plugins.c
 	@${REINPLACE_CMD} -e 's|#include <bsd/unistd.h>|#include <unistd.h>|g' ${WRKSRC}//src/pluginload.c
 	@${REINPLACE_CMD} -e 's|vendor_version_get ()|vendor_version_get (void)|g' ${WRKSRC}/misc/vendorversion.c
 

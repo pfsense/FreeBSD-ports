@@ -1,5 +1,5 @@
 PORTNAME=	magic
-DISTVERSION=	8.3.315
+DISTVERSION=	8.3.485
 CATEGORIES=	cad
 MASTER_SITES=	http://opencircuitdesign.com/magic/archive/
 
@@ -8,26 +8,25 @@ COMMENT=	Interactive editor for VLSI layouts
 WWW=		http://opencircuitdesign.com/magic/
 
 LICENSE=	MIT
-LICENSE_FILE=	${FILESDIR}/license.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libBLT25.so:x11-toolkits/blt \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		gmake gnome gl localbase:ldflags python:3.6+,build shebangfix tk:tea tar:tgz xorg
+USES=		gmake gnome gl localbase:ldflags python:build shebangfix tk:tea tar:tgz xorg
 USE_GNOME=	cairo
 USE_XORG=	ice x11 xext xi xmu
 USE_GL=		gl glu
 
 SHEBANG_FILES=	scripts/preproc.py tcltk/magic.sh.in tcltk/ext2sim.sh.in tcltk/ext2spice.sh.in
 
-CONFIGURE_ARGS=	--with-opengl
+CONFIGURE_ARGS=	--with-opengl \
+		--enable-modular # --enable-modular should fix build on 15, when failures were due to missing symbols defined in *.sym but not in code
 CONFIGURE_WRKSRC=	${WRKSRC}/scripts
 
 ALL_TARGET=	tcllibrary
-
-CFLAGS+=	-Wno-return-type # workaround for https://github.com/RTimothyEdwards/magic/issues/67
 
 DESKTOP_ENTRIES="Magic" "" "" "${PORTNAME}" "" ""
 

@@ -1,7 +1,7 @@
 PORTNAME=	dvbcut
 PORTVERSION=	0.7.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	multimedia
 
 MAINTAINER=	se@FreeBSD.org
@@ -26,6 +26,7 @@ USE_GL=		gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	bernhardu
 GH_PROJECT=	dvbcut-deb
+GH_TAGNAME=	d7c8fad
 
 CXXFLAGS+=	-I${LOCALBASE}/include \
 		-I${LOCALBASE}/include/libavcodec \
@@ -45,7 +46,7 @@ post-build:
 
 do-install:
 		${INSTALL_PROGRAM} ${WRKDIR}/.build/dvbcut ${STAGEDIR}${PREFIX}/bin/
-		${INSTALL_MAN} ${WRKSRC}/dvbcut.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+		${INSTALL_MAN} ${WRKSRC}/dvbcut.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 		${MKDIR} ${STAGEDIR}${PREFIX}/share/applications
 		${INSTALL_DATA} ${WRKSRC}/dvbcut.desktop ${STAGEDIR}${PREFIX}/share/applications/
 		${MKDIR} ${STAGEDIR}${PREFIX}/share/dvbcut/icons/

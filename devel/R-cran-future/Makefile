@@ -1,9 +1,9 @@
 PORTNAME=	future
-PORTVERSION=	1.32.0
+DISTVERSION=	1.33.2
 CATEGORIES=	devel
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Unified Parallel and Distributed Processing in R for Everyone
 WWW=		https://cran.r-project.org/web/packages/future/
 

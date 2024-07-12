@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/media/audio/BUILD.gn.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/media/audio/BUILD.gn.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/media/audio/BUILD.gn
-@@ -241,9 +241,20 @@ source_set("audio") {
+@@ -278,9 +278,20 @@ jumbo_source_set("audio") {
      ]
    }
  

@@ -1,19 +1,18 @@
 PORTNAME=	vips
-PORTVERSION=	8.14.2
-PORTREVISION=	4
+PORTVERSION=	8.15.2
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/libvips/libvips/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Free image processing system
-WWW=		https://libvips.github.io/libvips \
+WWW=		https://www.libvips.org/ \
 		https://github.com/libvips/libvips
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
-		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz
 RUN_DEPENDS=	bash:shells/bash
@@ -27,8 +26,7 @@ MESON_ARGS=	--default-library=both \
 		-Ddeprecated=true \
 		-Ddoxygen=false \
 		-Dexamples=true \
-		-Dfontconfig=enabled \
-		-Dintrospection=false \
+		-Dintrospection=disabled \
 		-Dmodules=disabled \
 		-Dnifti=disabled \
 		-Dnsgif=true \
@@ -45,14 +43,17 @@ PLIST_SUB=	VERSION=${PORTVERSION:R}
 
 SHEBANG_FILES=	tools/vipsprofile
 
-OPTIONS_DEFINE=	CFITSIO DOCS FFTW GIF GSF HEIF IMAGEQUANT JPEG JXL LCMS2 LIBEXIF LIBRSVG2 MATIO OPENEXR ORC PANGO PNG POPPLER SPNG TIFF WEBP
-OPTIONS_RADIO=	MAGICK
+OPTIONS_DEFINE=	CFITSIO DOCS FFTW FONTCONFIG GIF HEIF IMAGEQUANT JPEG JXL LCMS2 LIBARCHIVE LIBEXIF LIBRSVG2 MATIO OPENEXR PANGO PNG POPPLER SPNG TIFF WEBP
+OPTIONS_RADIO=	MAGICK SIMD
 OPTIONS_RADIO_MAGICK=	IMAGEMAGICK GRAPHMAGICK
-OPTIONS_DEFAULT=CFITSIO FFTW GIF GSF HEIF IMAGEMAGICK JPEG JXL LCMS2 LIBEXIF LIBRSVG2 MATIO OPENEXR ORC PANGO PNG POPPLER SPNG TIFF WEBP
-GSF_DESC=	Structured file formats support
+OPTIONS_RADIO_SIMD=	HIGHWAY ORC
+OPTIONS_DEFAULT=CFITSIO FFTW FONTCONFIG GIF HEIF HIGHWAY IMAGEMAGICK JPEG JXL LCMS2 LIBARCHIVE LIBEXIF LIBRSVG2 MATIO OPENEXR PANGO PNG POPPLER SPNG TIFF WEBP
+FONTCONFIG_IMPLIES=	PANGO
+LIBARCHIVE_DESC=Save image pyramid via libarchive
+HIGHWAY_DESC=	SIMD support via Highway (preferred)
 IMAGEQUANT_DESC=Image Quantization support
-ORC_DESC=	ORC language support
 MATIO_DESC=	Matlab MAT format support
+ORC_DESC=	Accelerate loops with ORC
 
 CFITSIO_LIB_DEPENDS=	libcfitsio.so:astro/cfitsio
 CFITSIO_MESON_ENABLED=	cfitsio
@@ -60,16 +61,19 @@ DOCS_BUILD_DEPENDS=	gtkdocize:textproc/gtk-doc
 DOCS_MESON_TRUE=	gtk_doc
 FFTW_LIB_DEPENDS=	libfftw3.so:math/fftw3
 FFTW_MESON_ENABLED=	fftw
+FONTCONFIG_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
+FONTCONFIG_MESON_ENABLED=	fontconfig
 GIF_BUILD_DEPENDS=	cgif>=0.2.0:graphics/cgif
 GIF_LIB_DEPENDS=	libcgif.so:graphics/cgif
 GIF_MESON_ENABLED=	cgif
 GRAPHMAGICK_LIB_DEPENDS=libGraphicsMagick.so:graphics/GraphicsMagick
 GRAPHMAGICK_MESON_ON=	-Dmagick=enabled -Dmagick-package=GraphicsMagick
-GSF_MESON_ENABLED=	gsf
-GSF_USE=		GNOME=libgsf
-HEIF_BUILD_DEPENDS=	libheif>=1.3.0:graphics/libheif
+HEIF_BUILD_DEPENDS=	libheif>=1.4.0:graphics/libheif
 HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
 HEIF_MESON_ENABLED=	heif
+HIGHWAY_BUILD_DEPENDS=	highway>=1.0.5:devel/highway
+HIGHWAY_LIB_DEPENDS=	libhwy.so:devel/highway
+HIGHWAY_MESON_ENABLED=	highway
 IMAGEMAGICK_MESON_ON=	-Dmagick=enabled -Dmagick-package=MagickCore
 IMAGEMAGICK_USES=	magick
 IMAGEQUANT_LIB_DEPENDS=	libimagequant.so:graphics/libimagequant
@@ -86,6 +90,9 @@ LCMS2_MESON_ENABLED=	lcms
 LIBEXIF_BUILD_DEPENDS=	libexif>=0.6:graphics/libexif
 LIBEXIF_LIB_DEPENDS=	libexif.so:graphics/libexif
 LIBEXIF_MESON_ENABLED=	exif
+LIBARCHIVE_BUILD_DEPENDS=	libarchive>=3.0.0:archivers/libarchive
+LIBARCHIVE_MESON_ENABLED=	archive
+LIBARCHIVE_USES=	libarchive
 LIBRSVG2_MESON_ENABLED=	rsvg
 LIBRSVG2_USE=		GNOME=cairo,librsvg2
 MATIO_LIB_DEPENDS=	libmatio.so:math/matio
@@ -93,7 +100,7 @@ MATIO_MESON_ENABLED=	matio
 OPENEXR_BUILD_DEPENDS=	openexr>=1.2.2:graphics/openexr
 OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr
 OPENEXR_MESON_ENABLED=	openexr
-ORC_BUILD_DEPENDS=	orc>=0.4.11:devel/orc
+ORC_BUILD_DEPENDS=	orc>=0.4.31:devel/orc
 ORC_LIB_DEPENDS=	liborc-0.4.so:devel/orc
 ORC_MESON_ENABLED=	orc
 PANGO_MESON_ENABLED=	pangocairo

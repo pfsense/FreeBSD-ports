@@ -1,6 +1,6 @@
 PORTNAME=	howdy
 PORTVERSION=	3.0.0.b.20230306
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -16,7 +16,7 @@ RUN_DEPENDS=	opencv>0:graphics/opencv \
 		${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
 		${LOCALBASE}/share/dlib-models/shape_predictor_5_face_landmarks.dat:misc/dlib-models
 
-USES=		python:3.7-3.10,run shebangfix
+USES=		python:run shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	boltgolt

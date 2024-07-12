@@ -1,6 +1,6 @@
 PORTNAME=	poptop
 PORTVERSION=	1.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net net-vpn
 MASTER_SITES=	SF/${PORTNAME}/pptpd/pptpd-${PORTVERSION} \
 		SAMBA/ppp:pppd
@@ -9,7 +9,7 @@ DISTFILES=	pptpd-${PORTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Windows 9x compatible PPTP (VPN) server
-WWW=		http://poptop.sourceforge.net/
+WWW=		https://poptop.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_DISTFILES=	pptpd-${PORTVERSION}${EXTRACT_SUFX}
@@ -21,6 +21,7 @@ WRKSRC=		${WRKDIR}/pptpd-${PORTVERSION}
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-libwrap
 
 USE_RC_SUBR=	pptpd

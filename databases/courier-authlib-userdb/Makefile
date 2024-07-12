@@ -1,4 +1,3 @@
-PORTREVISION=	0
 PKGNAMESUFFIX=	-userdb
 
 COMMENT=	Userdb support for the Courier authentication library

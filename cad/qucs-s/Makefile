@@ -1,6 +1,7 @@
 PORTNAME=	qucs-s
-DISTVERSION=	1.0.0
+DISTVERSION=	24.1.0
 CATEGORIES=	cad
+MASTER_SITES=	https://github.com/ra3xdh/qucs_s/releases/download/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Quite Universal Circuit Simulator: GUI for circuit simulation kernels
@@ -9,12 +10,9 @@ WWW=		https://ra3xdh.github.io/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake qt:5
-USE_QT=		core gui printsupport svg widgets buildtools:build linguisttools:build qmake:build
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	ra3xdh
-GH_PROJECT=	qucs_s
+USES=		bison cmake gl localbase qt:6
+USE_QT=		base svg tools:build
+USE_GL=		gl opengl
 
 OPTIONS_GROUP=		BACKENDS RTDEPENDS
 OPTIONS_GROUP_BACKENDS=	NGSPICE XYCE QUCSATOR

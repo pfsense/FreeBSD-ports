@@ -1,9 +1,9 @@
 PORTNAME=	feedparser
-PORTVERSION=	6.0.8
+PORTVERSION=	6.0.11
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	sbz@FreeBSD.org
+MAINTAINER=	jadawin@FreeBSD.org
 COMMENT=	Universal feed parser written in Python
 WWW=		https://github.com/kurtmckee/feedparser
 
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sgmllib3k>=0:devel/py-sgmllib3k@${PY_FLAVOR}
 
-USES=		cpe python:3.6+ tar:bzip2
+USES=		cpe python tar:bzip2
 CPE_VENDOR=	mark_pilgrim
 USE_PYTHON=	autoplist distutils
 USE_GITHUB=	yes

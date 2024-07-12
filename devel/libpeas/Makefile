@@ -1,6 +1,6 @@
 PORTNAME=	libpeas
 PORTVERSION=	1.34.0
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -52,7 +52,7 @@ pre-build:
 LIB_DEPENDS+=	libpeas-1.0.so:devel/libpeas
 PORTSCOUT=	limitw:1,even
 
-USES+=		python:3.6+
+USES+=		python
 USE_PYTHON=	flavors
 USE_GNOME+=	pygobject3
 MESON_ARGS+=	-Dpython3=true \

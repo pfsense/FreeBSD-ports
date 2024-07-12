@@ -1,6 +1,6 @@
 PORTNAME=	gcc
-PORTVERSION=	11.3.0
-PORTREVISION=	8
+PORTVERSION=	11.4.0
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	GCC
 PKGNAMESUFFIX=	${SUFFIX}
@@ -12,7 +12,7 @@ WWW=		https://gcc.gnu.org
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 armv7 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le riscv64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
@@ -38,9 +38,9 @@ CXXFLAGS:=	${CXXFLAGS:N-mretpoline}
 
 OPTIONS_DEFINE=		GRAPHITE
 GRAPHITE_DESC=		Support for Graphite loop optimizations
-OPTIONS_DEFAULT_aarch64=LTO_BOOTSTRAP
-OPTIONS_DEFAULT_amd64=	LTO_BOOTSTRAP
-OPTIONS_DEFAULT_i386=	LTO_BOOTSTRAP
+OPTIONS_DEFAULT_aarch64=STANDARD_BOOTSTRAP
+OPTIONS_DEFAULT_amd64=	STANDARD_BOOTSTRAP
+OPTIONS_DEFAULT_i386=	STANDARD_BOOTSTRAP
 OPTIONS_DEFAULT_powerpc=LTO_BOOTSTRAP
 OPTIONS_DEFAULT_powerpc64=LTO_BOOTSTRAP
 OPTIONS_DEFAULT_powerpc64le=LTO_BOOTSTRAP
@@ -53,11 +53,16 @@ STANDARD_BOOTSTRAP_DESC=	Build using a full bootstrap without LTO
 OPTIONS_DEFINE_amd64+=		MULTILIB
 OPTIONS_DEFAULT_amd64+=	MULTILIB
 OPTIONS_DEFINE_powerpc64+=	MULTILIB
-OPTIONS_DEFAULT_powerpc64+=	MULTILIB
+#OPTIONS_DEFAULT_powerpc64+=	MULTILIB # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105010
 MULTILIB_DESC=		Build support for 32-bit and 64-bit targets
 MULTILIB_CONFIGURE_ENABLE=	multilib
 .else
 CONFIGURE_ARGS+=	--disable-multilib
+.endif
+
+.if defined(CPUTYPE) && ${CPUTYPE:Mg[3-5]}
+CFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
+CXXFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
 .endif
 
 .include <bsd.port.pre.mk>
@@ -74,7 +79,7 @@ EXTRACT_CMD=    ${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 
-.elif defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+.elif ${ARCH} == powerpc64
 CONFIGURE_ARGS+=	--with-abi=elfv2
 .endif
 
@@ -83,6 +88,7 @@ TARGLIB=	${PREFIX}/lib/gcc${SUFFIX}
 TARGLIB32=	${PREFIX}/lib32	# The version information is added later
 LIBEXEC=	${PREFIX}/libexec/gcc${SUFFIX}
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_OUTSOURCE=	yes
 .if empty(PORT_OPTIONS:M*BOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
@@ -156,7 +162,7 @@ full-regression-test: build
 .endif
 
 post-stage:
-	${RM} ${STAGEDIR}${PREFIX}/man/man7/*
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man7/*
 	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
 	# Add target libraries and include files to packaging list.
 	${RM} ${WRKDIR}/PLIST.lib

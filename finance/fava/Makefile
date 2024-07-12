@@ -1,21 +1,21 @@
 PORTNAME=	fava
-PORTVERSION=	1.24.4
+PORTVERSION=	1.27.3
 CATEGORIES=	finance
 MASTER_SITES=	PYPI
 
-MAINTAINER=	nivit@FreeBSD.org
+MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	Web interface for Beancount
 WWW=		https://beancount.github.io/fava/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=2.7:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cheroot>=8:www/py-cheroot@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}click>=7:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask-babel>1:devel/py-flask-babel@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Flask>=2:www/py-flask@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}flask>=2:www/py-flask@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}markdown2>=2.3.0:textproc/py-markdown2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
@@ -25,7 +25,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=2.7:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}werkzeug>2:www/py-werkzeug@${PY_FLAVOR} \
 		beancount>=2.1.3:finance/beancount
 
-USES=		python:3.5+ # same as finance/beancount
+USES=		python # same as finance/beancount
 USE_PYTHON=	autoplist distutils noflavors
 
 # Upstream archive contains files with UTF-8 names

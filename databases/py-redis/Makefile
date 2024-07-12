@@ -1,5 +1,5 @@
 PORTNAME=	redis
-PORTVERSION=	4.5.5
+PORTVERSION=	5.0.6
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,11 +11,13 @@ WWW=		https://github.com/redis/redis-py
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
 		redis-server:databases/redis
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist concurrent distutils pytest
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517 pytest
 
 NO_ARCH=	yes
 
@@ -28,13 +30,8 @@ HIREDIS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hiredis>=1.0.0:databases/py-hiredis@
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 30800
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=1.0:devel/py-importlib-metadata@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}typing-extensions>=0:devel/py-typing-extensions@${PY_FLAVOR}
-.endif
-
-.if ${PYTHON_REL} <= 31102
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}async_timeout>=4.0.2:devel/py-async_timeout@${PY_FLAVOR}
+.if ${PYTHON_REL} < 31103
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}async_timeout>=4.0.3:devel/py-async_timeout@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

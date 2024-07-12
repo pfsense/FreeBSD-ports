@@ -1,15 +1,12 @@
 PORTNAME=	nn
 PORTVERSION=	6.7.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	news
 MASTER_SITES=	ftp://ftp.nndev.org/pub/nn-${PORTVERSION:R}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Menu based USENET newsreader
 WWW=		http://www.nndev.org/
-
-BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_riscv64=	Fails to link: missing sbrk
 
 SUB_FILES=	pkg-message
 
@@ -20,7 +17,7 @@ pre-patch:
 	@${CP} ${WRKSRC}/config.h-dist ${WRKSRC}/config.h.unparsed
 
 pre-build:
-	@${SED} 's#SUB_PREFIX#${PREFIX}#; s#SUB_MANPREFIX#${MANPREFIX}#' \
+	@${SED} 's#SUB_PREFIX#${PREFIX}#; s#SUB_MANPREFIX#${PREFIX}/share#' \
 		${WRKSRC}/config.h.unparsed > ${WRKSRC}/config.h
 
 post-build:

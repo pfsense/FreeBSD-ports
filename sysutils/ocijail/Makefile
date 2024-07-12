@@ -1,5 +1,6 @@
 PORTNAME=	ocijail
-PORTVERSION=	0.1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.4.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	dfr@FreeBSD.org
@@ -8,13 +9,10 @@ WWW=		https://github.com/dfr/ocijail
 
 LICENSE=	BSD3CLAUSE
 
-IGNORE_FreeBSD_12= Not supported on FreeBSD 12 (uses c++20)
-
 BUILD_DEPENDS=	bazel:devel/bazel5 bash:shells/bash
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dfr
-GH_TAGNAME=	v0.1
 
 PLIST_FILES=	bin/ocijail
 

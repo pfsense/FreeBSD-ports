@@ -1,14 +1,6 @@
 PORTNAME=	dxx-rebirth
-PORTVERSION=	20220929
-DISTVERSIONSUFFIX=	-src
-PORTREVISION=	1
+PORTVERSION=	20240317
 CATEGORIES=	games
-MASTER_SITES=	https://www.dxx-rebirth.com/download/dxx/rebirth/
-DISTNAME=	${PORTNAME}_${PORTVERSION}${DISTVERSIONSUFFIX}
-
-PATCH_SITES=	https://github.com/dxx-rebirth/dxx-rebirth/commit/
-PATCHFILES=	fc4157f56f6acd5e63367974dd4249b88f3a2535.patch:-p1 \
-		2dd538eb4d51835ad4c93b96edd374548b0eef67.patch:-p1
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Open source port of Descent and Descent 2
@@ -25,9 +17,10 @@ BUILD_DEPENDS=	as:devel/binutils
 LIB_DEPENDS=	libphysfs.so:devel/physfs \
 		libpng.so:graphics/png
 
-USES=		compiler:c++17-lang gl localbase:ldflags pkgconfig scons sdl \
-		tar:xz
+USES=		gl localbase:ldflags pkgconfig scons sdl tar:xz
 USE_GL=		gl glu
+USE_GITHUB=	yes
+GH_TAGNAME=	b5ca993
 USE_SDL=	image2 mixer2 sdl2
 
 MAKE_ARGS=	ignore_unknown_variables=1 sdl2=1
@@ -37,12 +30,13 @@ PLIST_FILES=	bin/d1x-rebirth \
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != powerpc64 && ${ARCH} != riscv64
+.if ${ARCH} != riscv64
 MAKE_ARGS+=	lto=1
 .endif
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
-CPPFLAGS+=	-Wno-error=unused-but-set-parameter -Wno-error=unused-but-set-variable
+.if ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc
+CXXFLAGS+=	-Wno-error=missing-field-initializers
+USE_GCC=	12
 .endif
 
 post-install:

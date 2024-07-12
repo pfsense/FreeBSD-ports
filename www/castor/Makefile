@@ -1,20 +1,18 @@
 PORTNAME=	castor
 DISTVERSION=	0.8.16
-PORTREVISION=	26
+PORTREVISION=	36
 CATEGORIES=	www
 MASTER_SITES=	https://git.sr.ht/~julienxx/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	kraileth@elderlinux.org
-COMMENT=	Browser for text-based protocols like Gemini and Gopher using GTK+
+COMMENT=	Browser for text-based protocols like Gemini and Gopher using GTK
 WWW=		https://git.sr.ht/~julienxx/castor
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cargo desktop-file-utils gnome ssl
-BROKEN_SSL=	openssl30 openssl31
-BROKEN_SSL_REASON=	Fails to detect OpenSSL 3.0.0 library
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
 
 CARGO_CRATES=	aho-corasick-0.7.13 \
@@ -128,6 +126,13 @@ PLIST_FILES=	bin/castor \
 		share/pixmaps/org.typed-hole.castor.svg
 
 SUB_FILES=	pkg-message
+
+.include <bsd.port.options.mk>
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl} || ${SSL_DEFAULT:Mopenssl3*}
+BROKEN_SSL=	base openssl openssl31
+BROKEN_SSL_REASON=	Fails to detect OpenSSL 3.0.0 library
+.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/castor

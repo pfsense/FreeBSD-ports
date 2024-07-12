@@ -3,7 +3,7 @@
  * suricata_sid_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -258,6 +258,7 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 	touch($tmpdirname . $file, $a_list[$_POST['sidlist_id']]['modtime']);
 
 	if (file_exists($tmpdirname . $file)) {
+		ob_start(); //important or other posts will fail
 		if (isset($_SERVER['HTTPS'])) {
 			header('Pragma: ');
 			header('Cache-Control: ');
@@ -266,9 +267,9 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 			header("Cache-Control: private, must-revalidate");
 		}
 		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize($file));
+		header("Content-length: " . filesize($tmpdirname . $file));
 		header("Content-disposition: attachment; filename = " . basename($file));
-		ob_clean();
+		ob_end_clean(); //important or other post will fail
 		flush();
 		readfile($tmpdirname . $file);
 
@@ -431,17 +432,17 @@ if ($savemsg) {
 								<td>
 									<a name="sidlist_editX[]" id="sidlist_editX[]" type="button" title="<?=gettext('Edit this SID Mods List');?>"
 										onClick='sidlistid="<?=$i;?>"' style="cursor: pointer;">
-										<i class="fa fa-pencil"></i>
+										<i class="fa-solid fa-pencil"></i>
 									</a>
 
 									<a name="sidlist_deleteX[]" id="sidlist_deleteX[]" type="button" title="<?=gettext('Delete this SID Mods List');?>"
 										onClick='sidlistid="<?=$i;?>"' style="cursor: pointer;">
-										<i class="fa fa-trash" title="<?=gettext('Delete this SID Mods List');?>"></i>
+										<i class="fa-solid fa-trash-can" title="<?=gettext('Delete this SID Mods List');?>"></i>
 									</a>
 
 									<a name="sidlist_dnloadX[]" id="sidlist_dnloadX[]" type="button" title="<?=gettext('Download this SID Mods List');?>"
 										onClick='sidlistid="<?=$i;?>"' style="cursor: pointer;">
-										<i class="fa fa-download" title="<?=gettext('Download this SID Mods List');?>"></i>
+										<i class="fa-solid fa-download" title="<?=gettext('Download this SID Mods List');?>"></i>
 									</a>
 								</td>
 							</tr>
@@ -493,7 +494,7 @@ if ($savemsg) {
 						<?=gettext("List Name: ");?>
 						<input type="text" size="45" class="form-control file" id="sidlist_name" name="sidlist_name" value="<?=$sidmodlist_name;?>" /><br />
 						<button type="submit" class="btn btn-sm btn-primary" id="save" name="save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close editor");?>">
-							<i class="fa fa-save icon-embed-btn"></i>
+							<i class="fa-solid fa-save icon-embed-btn"></i>
 							<?=gettext("Save");?>
 						</button>
 						<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit editor");?>">
@@ -513,16 +514,16 @@ if ($savemsg) {
 		<button data-toggle="modal" data-target="#sidlist_editor" role="button" aria-expanded="false" type="button" name="sidlist_new" id="sidlist_new" class="btn btn-success btn-sm" title="<?=gettext('Create a new SID Mods List');?>"
 		onClick="document.getElementById('sidlist_data').value=''; document.getElementById('sidlist_name').value=''; document.getElementById('sidlist_editor').style.display='table-row-group'; document.getElementById('sidlist_name').focus();
 			document.getElementById('sidlist_id').value='<?=count($a_list);?>';">
-			<i class="fa fa-plus icon-embed-btn"></i><?=gettext("Add")?>
+			<i class="fa-solid fa-plus icon-embed-btn"></i><?=gettext("Add")?>
 		</button>
 
 		<button data-toggle="modal" data-target="#uploader" role="button" aria-expanded="false" type="button" name="sidlist_import" id="sidlist_import" class="btn btn-info btn-sm" title="<?=gettext('Import/upload SID Mods List');?>">
-			<i class="fa fa-upload icon-embed-btn"></i>
+			<i class="fa-solid fa-upload icon-embed-btn"></i>
 			<?=gettext("Import")?>
 		</button>
 
 		<button type="input" name="sidlist_dnload_all" id="sidlist_dnload_all" class="btn btn-info btn-sm" title="<?=gettext('Download all SID Mods Lists in a single gzip archive');?>">
-			<i class="fa fa-download icon-embed-btn"></i>
+			<i class="fa-solid fa-download icon-embed-btn"></i>
 			<?=gettext("Download")?>
 		</button>
 
@@ -659,7 +660,7 @@ if ($savemsg) {
 		</div>
 
 		<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" >
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save");?>
 		</button>
 		&nbsp;&nbsp;<?=gettext("Remember to save changes before exiting this page"); ?>

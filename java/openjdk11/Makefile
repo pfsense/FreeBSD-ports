@@ -62,8 +62,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	19
-JDK_BUILD_NUMBER=	7
+JDK_PATCH_VERSION=	23
+JDK_BUILD_NUMBER=	9
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -163,17 +163,14 @@ CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
 .if ${ARCH} == aarch64 || ${ARCH:Marmv*} || ${ARCH:Mpowerpc64*}
 CONFIGURE_ARGS+=	--disable-warnings-as-errors
 .endif
-.if ${ARCH} == aarch64 || ${ARCH:Marmv*} || (defined(PPC_ABI) && ${PPC_ABI} == ELFv1)
+.if ${ARCH} == aarch64 || ${ARCH:Marmv*}
 CONFIGURE_ARGS+=	--disable-dtrace
 .endif
-.if (defined(PPC_ABI) && ${PPC_ABI} == ELFv2) || ${ARCH} == powerpc64le
+.if ${ARCH:Mpowerpc64*}
 CONFIGURE_ARGS+=	--disable-precompiled-headers
 .endif
 .if ${ARCH} != amd64
 CONFIGURE_ARGS+=	--enable-aot=no
-.endif
-.if ${ARCH} == powerpc64 && ${OSREL:C/\.[0-9]//} == 12
-EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_hotspot_cpu_ppc_vm__version__ppc.hpp
 .endif
 
 .if empty(ICONV_LIB)
@@ -194,6 +191,12 @@ post-patch:
 		-e 's|%%ICONV_LDFLAGS%%|${ICONV_LDFLAGS}|' \
 		-e 's|%%ICONV_LIBS%%|${ICONV_LIBS}|' \
 		${WRKSRC}/make/autoconf/libraries.m4
+
+post-build:
+.if defined(OPENJDK_SYMLINK_CACERTS)
+	@${RM} ${JDK_IMAGEDIR}/lib/security/cacerts
+	@${LN} -sf ${OPENJDK_SYMLINK_CACERTS} ${JDK_IMAGEDIR}/lib/security/cacerts
+.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${INSTALLDIR}

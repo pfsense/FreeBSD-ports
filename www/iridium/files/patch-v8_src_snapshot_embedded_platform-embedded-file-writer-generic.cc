@@ -1,8 +1,8 @@
---- v8/src/snapshot/embedded/platform-embedded-file-writer-generic.cc.orig	2023-04-22 17:45:15 UTC
+--- v8/src/snapshot/embedded/platform-embedded-file-writer-generic.cc.orig	2023-08-28 20:17:35 UTC
 +++ v8/src/snapshot/embedded/platform-embedded-file-writer-generic.cc
 @@ -9,6 +9,10 @@
  
- #include "src/objects/code.h"
+ #include "src/objects/instruction-stream.h"
  
 +#if V8_OS_OPENBSD
 +#include <sys/param.h>

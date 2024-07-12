@@ -1,5 +1,6 @@
 PORTNAME=	rmilter
 PORTVERSION=	1.10.0
+PORTREVISION=	1
 CATEGORIES=	mail
 
 MAINTAINER=	vsevolod@FreeBSD.org
@@ -10,7 +11,7 @@ LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-NOT_FOR_ARCHS=		mips sparc64
+NOT_FOR_ARCHS=		mips
 NOT_FOR_ARCHS_REASON=	fails to compile: error: Unsupported word size
 
 USE_GITHUB=	yes
@@ -45,6 +46,9 @@ WITHOUT_MILTER_LDFLAGS=	yes
 post-patch:
 	${SED} ${SUB_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \
 		${WRKSRC}/freebsd/rmilter > ${WRKDIR}/rmilter
+	@${REINPLACE_CMD} -E 's|BLAKE2_ALIGN\( 64 \) typedef struct __blake2b_state|typedef struct BLAKE2_ALIGN\( 64 \) __blake2b_state|g; \
+		s|BLAKE2_ALIGN\( 64 \) typedef struct __blake2s_state|typedef struct BLAKE2_ALIGN\( 64 \) __blake2s_state|g' \
+		${WRKSRC}/compat/blake2.h
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/rmilter ${STAGEDIR}${PREFIX}/etc/rc.d/

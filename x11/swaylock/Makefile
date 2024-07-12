@@ -1,7 +1,7 @@
 PORTNAME=	swaylock
 DISTVERSIONPREFIX?=	v
 DISTVERSION?=	1.7.2
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -34,7 +34,7 @@ OPTIONS_DEFAULT=MANPAGES PIXBUF
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
 
 PIXBUF_USE=		GNOME=gdkpixbuf2
 PIXBUF_MESON_ENABLED=	gdk-pixbuf
@@ -42,10 +42,7 @@ PIXBUF_MESON_ENABLED=	gdk-pixbuf
 post-patch:
 # Extract (snapshot) version from the port instead of meson.build
 	@${REINPLACE_CMD} -i .nogit -e 's/git.found()/false/' \
-		-e '/project_version/s/@0@/${DISTVERSIONFULL}/' \
+		-e "s/meson.project_version()/'${DISTVERSIONFULL}'/" \
 		${WRKSRC}/meson.build
-# Respect LOCALBASE for unix-selfauth-helper
-	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},' \
-		${WRKSRC}/pam/${PORTNAME}
 
 .include <bsd.port.mk>

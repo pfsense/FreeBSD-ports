@@ -1,12 +1,15 @@
 PORTNAME=	ipykernel
-PORTVERSION=	6.23.1
+PORTVERSION=	6.29.4
+PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/ipython/ipykernel/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	IPython Kernel for Jupyter
 WWW=		https://ipython.org/ \
+		https://ipykernel.readthedocs.io/en/stable/ \
 		https://github.com/ipython/ipykernel
 
 LICENSE=	BSD3CLAUSE
@@ -23,11 +26,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}comm>=0.1.1:devel/py-comm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}nest-asyncio>=0:devel/py-nest-asyncio@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyzmq>=20:net/py-pyzmq@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyzmq>=24:net/py-pyzmq@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tornado>=6.1:www/py-tornado@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitlets>=5.4.0:devel/py-traitlets@${PY_FLAVOR}
 
-USES=		python:3.8+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

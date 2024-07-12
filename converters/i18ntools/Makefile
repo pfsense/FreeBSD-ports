@@ -1,6 +1,6 @@
 PORTNAME=	i18ntools
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	converters
 MASTER_SITES=	ftp://ftp.whizkidtech.redprince.net/unix/ \
 		http://www.whizkidtech.redprince.net/fports/
@@ -10,6 +10,9 @@ COMMENT=	Tools for the conversion to and from UTF-8 Unicode encoding
 WWW=		http://www.whizkidtech.redprince.net/i18n/
 
 LICENSE=	BSD2CLAUSE
+
+DEPRECATED=	Depends on expired converters/tuc
+EXPIRATION_DATE=2024-07-11
 
 LIB_DEPENDS=	libutf-8.so:converters/libutf-8
 RUN_DEPENDS=	tuc:converters/tuc
@@ -64,7 +67,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
 .for f in ${MAN1FILES}
-	${INSTALL_MAN} ${WRKSRC}/${f} ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/share/man/man1
 .endfor
 	${MKDIR} ${STAGEDIR}${DATADIR}/charmaps/binary
 .for f in ${CHARMAPS}

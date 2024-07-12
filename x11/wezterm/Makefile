@@ -1,9 +1,9 @@
 PORTNAME=	wezterm
 DISTVERSION=	20230408-112425-69ae8472
-PORTREVISION=	2
+PORTREVISION=	12
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	GPU-accelerated terminal emulator and multiplexer
 WWW=		https://wezfurlong.org/wezterm/
 
@@ -50,7 +50,7 @@ PLIST_FILES+=	share/site-terminfo/${PORTNAME:C,^.,&/&,}
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_USES=		python:3.4+,build
+DOCS_USES=		python:build
 DOCS_BUILD_DEPENDS=	mdbook:textproc/mdbook \
 			mdbook-linkcheck:textproc/mdbook-linkcheck \
 			mdbook-mermaid:textproc/mdbook-mermaid

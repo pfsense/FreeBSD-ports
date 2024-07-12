@@ -1,5 +1,6 @@
 PORTNAME=	filtermail
 PORTVERSION=	0.8.6
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://sourceforge.net/projects/mailfilter/files/Mailfilter/
 DISTNAME=	mailfilter-${PORTVERSION}
@@ -10,12 +11,7 @@ WWW=		http://mailfilter.sourceforge.net
 
 LICENSE=	GPLv3
 
-.include <bsd.port.options.mk>
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000
-BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
-.endif
-
-USES=		bison gmake ssl
+USES=		bison gmake localbase:ldflags ssl
 
 # This port is filtermail, but the author called it mailfilter. To avoid a
 #  clash with another port called mailfilter, we change all files
@@ -29,19 +25,13 @@ EXTRACT_AFTER_ARGS=	| ${SED} 's/[mM][aA][iI][lL][fF][iI][lL][tT][eE][rR]/filterm
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 MAKE_JOBS_UNSAFE=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000
-CPPFLAGS+=	-I${LOCALBASE}/include/flex
-FLEX=${LOCALBASE}/bin/flex
-.endif
-LDFLAGS+=	-L${LOCALBASE}/lib
-
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz \
-		man/man5/${PORTNAME}ex.5.gz \
-		man/man5/${PORTNAME}rc.5.gz
+		share/man/man1/${PORTNAME}.1.gz \
+		share/man/man5/${PORTNAME}ex.5.gz \
+		share/man/man5/${PORTNAME}rc.5.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|filtermail.sourceforge|mailfilter.sourceforge|g' ${WRKSRC}/README

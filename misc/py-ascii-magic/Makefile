@@ -1,5 +1,5 @@
 PORTNAME=	ascii-magic
-DISTVERSION=	2.0
+DISTVERSION=	2.3.0
 CATEGORIES=	misc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +17,7 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}colorama>0:devel/py-colorama@${PY_FLAVOR} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

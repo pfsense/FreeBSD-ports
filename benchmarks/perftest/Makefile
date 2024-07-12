@@ -1,10 +1,9 @@
 PORTNAME=	perftest
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.4-0.7
-PORTREVISION=	1
+DISTVERSION=    4.5-0.17
 CATEGORIES=	benchmarks
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Collection of tests for RDMA micro-benchmark
 WWW=		https://github.com/linux-rdma/perftest/
 
@@ -16,7 +15,6 @@ IGNORE=		missing OFED user space
 .endif
 
 USES=		autoreconf libtool shebangfix
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	linux-rdma
 

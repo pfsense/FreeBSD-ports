@@ -13,7 +13,7 @@ WWW=		https://pyyaml.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent cython distutils
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}yaml
@@ -36,6 +36,10 @@ PYDISTUTILS_BUILDARGS+=		--include-dirs=${LOCALBASE}/include \
 .else
 PYDISTUTILS_SETUP+=		--without-libyaml
 NO_ARCH=			yes
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 post-install-EXAMPLES-on:

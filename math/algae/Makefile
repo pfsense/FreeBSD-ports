@@ -1,12 +1,12 @@
 PORTNAME=	algae
 PORTVERSION=	4.3.6
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Programming language for numerical analysis
-WWW=		http://algae.sourceforge.net/
+WWW=		https://algae.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,6 +16,7 @@ BROKEN_armv6=		does not build: checking for proper floating point exception hand
 BROKEN_armv7=		does not build: checking for proper floating point exception handling... no
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USES=		fortran
 
 CONFIGURE_ARGS=	--disable-dlmalloc --without-fftw --without-blas \

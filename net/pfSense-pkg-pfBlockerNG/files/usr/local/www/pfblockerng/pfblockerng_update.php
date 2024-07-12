@@ -3,7 +3,7 @@
  * pfblockerng_update.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -264,7 +264,7 @@ exec('/bin/ps -wax', $result_cron);
 if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
 	$status = '<span style="color: red;">&emsp;&emsp;'
 		. 'Active pfBlockerNG CRON JOB'
-		. '</span>&emsp;<i class="fa fa-spinner fa-pulse fa-lg"></i>';
+		. '</span>&emsp;<i class="fa-solid fa-spinner fa-pulse fa-lg"></i>';
 }
 $status .= '<br />&emsp;<small><span style="color: red;">Refresh to update current status and time remaining.</span></small>';
 
@@ -363,7 +363,7 @@ $btn_run = new Form_Button(
 	'run',
 	'Run',
 	NULL,
-	'fa-play-circle'
+	'fa-solid fa-play-circle'
 );
 $btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1);
 
@@ -386,7 +386,7 @@ $btn_logview = new Form_Button(
 	'log_view',
 	$pconfig['log_view'],
 	NULL,
-	'fa-play-circle-o'
+	'fa-regular fa-circle-play'
 );
 $btn_logview->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1)
 	    ->setAttribute('title', $btn_logview_title);
@@ -436,7 +436,7 @@ if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_for
 	} elseif ($pconfig['pfb_force'] == 'cron') {
 		pfb_cron_update('cron');
 	} elseif ($pconfig['pfb_force'] == 'reload') {
-		$config['installedpackages']['pfblockerng']['config'][0]['pfb_reuse'] = 'on';
+		config_set_path('installedpackages/pfblockerng/config/0/pfb_reuse', 'on');
 		write_config('pfBlockerNG: Running Force Reload');
 		pfb_cron_update('reload');
 	}

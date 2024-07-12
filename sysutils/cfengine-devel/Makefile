@@ -2,9 +2,9 @@ PORTNAME=	cfengine
 PORTVERSION=	3.${CFENGINE_COMMIT_DATE}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
-CFENGINE_HASH=		63802c108
-LIBNTECH_HASH=		a73459c
-CFENGINE_COMMIT_DATE=	2023.06.16
+CFENGINE_HASH=		003f41009
+LIBNTECH_HASH=		13a9e99
+CFENGINE_COMMIT_DATE=	2024.06.19
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Systems administration tool for networks
@@ -30,7 +30,9 @@ USES=		autoreconf:build cpe gmake gnome libtool localbase shebangfix \
 		ssl
 USE_GNOME=	libxml2
 SHEBANG_FILES=	examples/remake_outputs.pl
-CFLAGS+=	-Wno-return-type -fcommon
+CFLAGS+=	-Wno-return-type -fcommon \
+		-Wno-int-conversion \
+		-Wno-implicit-function-declaration
 # EXAMPLESDIR=	${PREFIX}/share/examples/cfengine3
 DOCSDIR=	${PREFIX}/share/doc/cfengine
 MAKE_ENV=	EXPLICIT_VERSION=${PORTVERSION}-${HASH}
@@ -43,12 +45,13 @@ CONFIGURE_ARGS=	--docdir=${DOCSDIR} \
 		--libdir=${PREFIX}/libexec \
 		--mandir=${PREFIX}/man \
 		--with-workdir=/var/cfengine \
-		--with-pcre=${LOCALBASE} \
+		--with-pcre2=${LOCALBASE} \
 		--with-lmdb=${LOCALBASE} \
 		--enable-fhs
 INSTALL_TARGET=	install-strip
 
 LIB_DEPENDS+=	libpcre.so:devel/pcre \
+		libpcre2-posix.so:devel/pcre2 \
 		liblmdb.so:databases/lmdb \
 		libyaml.so:textproc/libyaml \
 		libcurl.so:ftp/curl
@@ -59,7 +62,6 @@ PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	postgresql=${LOCALBASE}
 
 MYSQL_USES=		mysql
-MYSQL_BROKEN=		configure: error: MySQL client library exports symbols (EVP_CIPHER_CTX_init) clashing with OpenSSL.
 MYSQL_CONFIGURE_WITH=	mysql=${LOCALBASE}
 MYSQL_LIB_DEPENDS=	libmysqlclient.so:${_MYSQL_CLIENT}
 MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql

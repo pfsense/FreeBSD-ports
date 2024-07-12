@@ -1,5 +1,5 @@
 PORTNAME=	couchbase
-PORTVERSION=	4.1.4
+PORTVERSION=	4.1.6
 CATEGORIES=	databases
 MASTER_SITES=	https://github.com/couchbase/couchbase-php-client/releases/download/${PORTVERSION}/
 
@@ -10,10 +10,7 @@ WWW=		https://pecl.php.net/package/couchbase \
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	cmake:devel/cmake-core
-
-USES=		compiler:c++17-lang php:build,pecl
-IGNORE_WITH_PHP=	83
+USES=		cmake:indirect compiler:c++17-lang php:build,pecl
 
 CONFIGURE_ARGS=	COUCHBASE_CMAKE_EXTRA="-DCOUCHBASE_CXX_CLIENT_EMBED_MOZILLA_CA_BUNDLE=OFF"
 

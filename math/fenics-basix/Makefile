@@ -1,6 +1,6 @@
 PORTNAME=	fenics-basix
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.1
+DISTVERSION=	0.8.0
 PORTREVISION=	1
 CATEGORIES=	math
 
@@ -23,10 +23,4 @@ GH_PROJECT=	basix
 
 WRKSRC_SUBDIR=	cpp
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == clang && !exists(/usr/include/c++/v1/concepts) # true only on FreeBSD_12
-BROKEN=		system is missing a required C++ feature std::concepts
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

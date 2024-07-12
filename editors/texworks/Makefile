@@ -1,7 +1,7 @@
 PORTNAME=	texworks
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.6.7
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	editors
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -29,17 +29,16 @@ USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DTeXworks_DIC_DIR:PATH=${LOCALBASE}/share/hunspell \
 		-DTeXworks_DOCS_DIR:PATH=${DOCSDIR_REL} \
-		-DTeXworks_HELP_DIR:PATH=${DOCSDIR_REL} \
-		-DTeXworks_MAN_DIR:PATH=man/man1
+		-DTeXworks_HELP_DIR:PATH=${DOCSDIR_REL}
 
 PORTDOCS=	*
 PLIST_FILES=	bin/texworks \
-		man/man1/texworks.1.gz \
 		share/applications/texworks.desktop \
 		share/icons/hicolor/128x128/apps/TeXworks.png \
 		share/icons/hicolor/48x48/apps/TeXworks.png \
 		share/icons/hicolor/512x512/apps/TeXworks.png \
 		share/icons/hicolor/64x64/apps/TeXworks.png \
+		share/man/man1/texworks.1.gz \
 		share/metainfo/texworks.appdata.xml
 
 OPTIONS_DEFINE=	DOCS LUA PYTHON
@@ -48,7 +47,7 @@ LUA_USES=		lua
 LUA_CMAKE_BOOL=		WITH_LUA
 LUA_PLIST_FILES=	lib/texworks/libTWLuaPlugin.so
 
-PYTHON_USES=		python:3.4+
+PYTHON_USES=		python
 PYTHON_CMAKE_BOOL=	WITH_PYTHON
 PYTHON_PLIST_FILES=	lib/texworks/libTWPythonPlugin.so
 

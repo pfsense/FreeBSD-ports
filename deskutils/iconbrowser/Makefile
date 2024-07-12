@@ -1,6 +1,5 @@
 PORTNAME=	iconbrowser
-DISTVERSION=	2.1.1
-PORTREVISION=	4
+DISTVERSION=	2.2.0
 CATEGORIES=	deskutils
 
 MAINTAINER=	duchateau.olivier@gmail.com
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libgranite-7.so:x11-toolkits/granite7 \
 		libhandy-1.so:x11-toolkits/libhandy
 
-USES=		gettext-tools gnome meson pkgconfig python:3.7+,build vala:build
+USES=		gettext-tools gnome meson pkgconfig python:build vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	elementary
 USE_GNOME=	glib20 gtk40 gtksourceview5

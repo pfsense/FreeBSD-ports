@@ -1,7 +1,7 @@
 PORTNAME=	mypaint
 DISTVERSIONPREFIX=v
 DISTVERSION=	2.0.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 
 PATCH_SITES=	https://github.com/garynthompson/${PORTNAME}/commit/
@@ -26,7 +26,7 @@ RUN_DEPENDS=	mypaint-brushes2>0:graphics/mypaint-brushes2 \
 		${PYNUMPY}
 
 USES=		compiler:c++11-lib desktop-file-utils gettext gnome localbase \
-		pkgconfig python:3.6+ tar:xz
+		pkgconfig python tar:xz
 USE_GITHUB=	yes
 USE_GNOME=	gtk30 pygobject3 cairo librsvg2:run
 USE_PYTHON=	distutils py3kplist noflavors

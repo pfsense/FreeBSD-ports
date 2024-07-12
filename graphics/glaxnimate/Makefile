@@ -1,7 +1,9 @@
 PORTNAME=	glaxnimate
-DISTVERSION=	0.5.3
+DISTVERSION=	0.5.4
 CATEGORIES=	graphics
-PKGNAMESUFFIX=	-${FLAVOR}
+
+PATCH_SITES=	https://gitlab.com/${GL_ACCOUNT}/${PORTNAME}/-/commit/
+PATCHFILES+=	6f312a0b93208255b2903f6d3105cc36cfc6b6c7.patch:-p1 # Fix build with Qt 6.5.x
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Simple vector animation program
@@ -10,33 +12,23 @@ WWW=		https://glaxnimate.mattbas.org/
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSES/GPL-3.0-or-later.txt
 
+BROKEN_armv7=	lrelease coredumps, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276285
+
 BUILD_DEPENDS=	pip:devel/py-pip@${PY_FLAVOR}
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libpotrace.so:graphics/libpotrace
 
-FLAVORS=		qt5 qt6
-FLAVOR?=		${FLAVORS:[1]}
-qt5_CONFLICTS_INSTALL=	glaxnimate glaxnimate-qt6
-qt6_CONFLICTS_INSTALL=	glaxnimate glaxnimate-qt5
-
 USES=		cmake compiler:c++17-lang desktop-file-utils gl libarchive \
-		python qt:${FLAVOR:S/qt//}
+		python qt:6
 USE_GL=		gl
-_USE_QT5=	concurrent core gui network svg xml widgets buildtools:build \
-		linguisttools:build qmake:build uitools:build
-_USE_QT6=	base svg tools
-USE_QT=		${_USE_QT${FLAVOR:S/qt//}}
+USE_QT=		base svg tools
 
-_CMAKE_ON_qt5=	WITH_QT5
-_CMAKE_ON_qt6=	WITH_QT6
-_CMAKE_OFF_qt5=	WITH_QT6
-_CMAKE_OFF_qt6=	WITH_QT5
-CMAKE_ON=	${_CMAKE_ON_${FLAVOR}}
-CMAKE_OFF=	${_CMAKE_OFF_${FLAVOR}}
+CMAKE_ON=	WITH_QT6
+CMAKE_OFF=	WITH_QT5
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	mattbas
-GL_COMMIT=	3090870e9172dfd587e89753c2d4d19e9c083f70
+GL_TAGNAME=	3090870e9172dfd587e89753c2d4d19e9c083f70
 
 GL_TUPLE=	mattbas:CMake-Lib:3b445d91fd4620542162f35ccc6bf14533a76321:mattbas_CMake_Lib/cmake \
 		mattbas:Qt-Color-Widgets:621a1a3c336aedc451c1597e66449e239d0aed5e:mattbas_Qt_Color_Widgets/external/Qt-Color-Widgets \
@@ -53,8 +45,6 @@ CMAKE_ARGS=	-DPython3_EXECUTABLE=${PYTHON_CMD}
 ALL_TARGET=	all translations
 
 OPTIONS_DEFINE=	DEBUG
-
-DEBUG_VARS=	WITH_DEBUG=yes
 
 .include <bsd.port.options.mk>
 

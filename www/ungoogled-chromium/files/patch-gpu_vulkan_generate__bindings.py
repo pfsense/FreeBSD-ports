@@ -1,6 +1,6 @@
---- gpu/vulkan/generate_bindings.py.orig	2022-10-01 07:40:07 UTC
+--- gpu/vulkan/generate_bindings.py.orig	2024-06-22 08:49:42 UTC
 +++ gpu/vulkan/generate_bindings.py
-@@ -259,7 +259,7 @@ VULKAN_DEVICE_FUNCTIONS = [
+@@ -271,7 +271,7 @@ VULKAN_DEVICE_FUNCTIONS = [
      ]
    },
    {

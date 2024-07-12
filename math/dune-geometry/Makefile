@@ -1,7 +1,7 @@
 PORTNAME=	dune-geometry
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.0
-PORTREVISION=	7
+PORTREVISION=	13
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://www.dune-project.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BUILD_DEPENDS=	openmpi>0:net/openmpi \
+BUILD_DEPENDS=	openmpi4>0:net/openmpi4 \
 		vc>0:devel/vc
 LIB_DEPENDS=	libdunecommon.so:math/dune-common \
 		libopenblas.so:math/openblas \
@@ -23,7 +23,7 @@ USE_LDCONFIG=	yes
 
 GL_SITE=	https://gitlab.dune-project.org
 GL_ACCOUNT=	core
-GL_COMMIT=	e7bfb66e48496aa28e47974c33ea9a4579bf723b
+GL_TAGNAME=	e7bfb66e48496aa28e47974c33ea9a4579bf723b
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_ARGS=	-DTBB_INCLUDE_DIR=${LOCALBASE}/include -DTBB_LIBRARIES=${LOCALBASE}/lib/libtbb.so

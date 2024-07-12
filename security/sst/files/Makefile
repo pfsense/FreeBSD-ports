@@ -1,11 +1,12 @@
 PROG=sst
 
 BINDIR=${PREFIX}/sbin
-MANDIR=${PREFIX}/man/man
+MANDIR=${PREFIX}/share/man/man
 
 CFLAGS+=	-DCONFDIR='"${OPENSSLDIR}"' -DCERTF='"certs/sst.pem"' \
 		-I${OPENSSLINC} -Wno-comment
-# -Wno-dangling-else not available in gcc-4.2, which is still around...
+CFLAGS+=	-Wno-deprecated
+CFLAGS+=	-Wno-dangling-else
 .if exists(/usr/bin/nc)
 CFLAGS+=	-DNETCAT='"/usr/bin/nc"'
 .else

@@ -1,5 +1,6 @@
 PORTNAME=	yt
-DISTVERSION=	4.2.0
+DISTVERSION=	4.3.0
+PORTREVISION=	1
 CATEGORIES=	math astro python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 # dependencies are in setup.cfg
 BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}ewah-bool-utils>=1.0.2:devel/py-ewah-bool-utils@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>0:lang/cython3
 RUN_DEPENDS=	\
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}cmyt>=0.2.2:math/py-cmyt@${PY_FLAVOR} \
@@ -32,8 +34,8 @@ RUN_DEPENDS=	\
 		${PYTHON_PKGNAMEPREFIX}tqdm>=3.4.0:misc/py-tqdm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}unyt>=2.8.0:math/py-unyt@${PY_FLAVOR}
 
-USES=		dos2unix localbase python:3.8+
-USE_PYTHON=	distutils cython autoplist concurrent
+USES=		dos2unix localbase python
+USE_PYTHON=	distutils autoplist concurrent # cython, but cython3 isn't yet available
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|check_for_pyembree() is not None|False|" \

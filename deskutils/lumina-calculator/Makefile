@@ -1,8 +1,9 @@
 PORTNAME=	lumina-calculator
 DISTVERSION=	1.6.2
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Scientific calculator from the Lumina Desktop
 WWW=		https://lumina-desktop.org/
 
@@ -15,6 +16,8 @@ USE_QT=		buildtools:build core gui svg widgets
 USE_GITHUB=	yes
 GH_ACCOUNT=	lumina-desktop
 GH_TAGNAME=	159fc375
+
+QMAKE_ARGS=	L_MANDIR=${PREFIX}/share/man
 
 OPTIONS_DEFINE=		NLS
 OPTIONS_SUB=		yes

@@ -1,5 +1,5 @@
 PORTNAME=	abyss
-DISTVERSION=	2.3.5
+DISTVERSION=	2.3.7
 PORTREVISION=	2
 CATEGORIES=	biology
 
@@ -15,7 +15,8 @@ BROKEN_i386=	result of comparison of constant 18446744073709551615 with expressi
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/version.hpp:devel/boost-libs \
 		ghc:lang/ghc \
 		pandoc:textproc/hs-pandoc # pandoc is required just for one man page: abyss-sealer
-LIB_DEPENDS=	libffi.so:devel/libffi \
+LIB_DEPENDS=	libbtllib.so:biology/btllib \
+		libffi.so:devel/libffi \
 		libgmp.so:math/gmp \
 		libmpich.so:net/mpich # binaries aren't linked with libmpich.so for some reason
 RUN_DEPENDS=	bash:shells/bash \
@@ -33,6 +34,7 @@ make_CMD=	${PREFIX}/bin/gmake
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-sparsehash # configure fails to find std::hash, reported to the ML: https://groups.google.com/forum/#!topic/trans-abyss/SZDBKR5bKxs
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 TEST_TARGET=	check # tests fail to compile, see https://github.com/bcgsc/abyss/issues/453
 

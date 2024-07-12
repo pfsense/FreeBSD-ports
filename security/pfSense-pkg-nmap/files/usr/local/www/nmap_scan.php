@@ -3,7 +3,7 @@
  * nmap_scan.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -548,21 +548,21 @@ if ($processisrunning or $do_nmapscan) {
 		'stopbtn',
 		'Stop',
 		null,
-		'fa-stop-circle'
+		'fa-solid fa-stop-circle'
 	))->addClass('btn-warning');
 
 	$form->addGlobal(new Form_Button(
 		'refreshbtn',
 		'Refresh Results',
 		null,
-		'fa-retweet'
+		'fa-solid fa-retweet'
 	))->addClass('btn-primary');
 } else {
 	$form->addGlobal(new Form_Button(
 		'startbtn',
 		'Start',
 		null,
-		'fa-play-circle'
+		'fa-solid fa-play-circle'
 	))->addClass('btn-success');
 
 	if (file_exists($fp.$fn) or file_exists($fp.$fe)) {
@@ -570,21 +570,21 @@ if ($processisrunning or $do_nmapscan) {
 			'viewbtn',
 			'View Results',
 			null,
-			'fa-file-text-o'
+			'fa-regular fa-file-lines'
 		))->addClass('btn-primary');
 
 		$form->addGlobal(new Form_Button(
 			'downloadbtn',
 			'Download Results',
 			null,
-			'fa-download'
+			'fa-solid fa-download'
 		))->addClass('btn-primary');
 
 		$form->addGlobal(new Form_Button(
 			'clearbtn',
 			'Clear Results',
 			null,
-			'fa-trash'
+			'fa-solid fa-trash-can'
 		))->addClass('btn-danger');
 	}
 }

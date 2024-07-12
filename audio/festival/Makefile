@@ -1,6 +1,6 @@
 PORTNAME=	festival
 PORTVERSION=	2.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio accessibility
 MASTER_SITES=	FESTIVAL
 DISTFILES=	${DISTNAME}-release.tar.gz	\
@@ -20,7 +20,7 @@ PATCHFILES=	src_modules_diphone_diphone.h.diff?id=b58a836:debian	\
 PATCH_SITES=	ftp://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/audio/festival/patches/:netbsd	\
 		https://salsa.debian.org/tts-team/festival/-/raw/b58a836b84ff9a9afa82eb0283bac19bf9c22e71/debian/patches/:debian
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Multi-lingual speech synthesis system
 WWW=		https://www.cstr.ed.ac.uk/projects/festival/
 
@@ -107,7 +107,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/festival.sh ${STAGEDIR}${PREFIX}/bin/festival
 	${INSTALL_SCRIPT} ${WRKDIR}/festival_client.sh ${STAGEDIR}${PREFIX}/bin/festival_client
 	${INSTALL_DATA} ${WRKDIR}/sitevars.scm ${STAGEDIR}${DATADIR}/lib/sitevars.scm
-	${INSTALL_MAN} ${FESTIVAL}/doc/festival.1 ${STAGEDIR}${PREFIX}/man/man1/festival.1
-	${INSTALL_MAN} ${FESTIVAL}/doc/festival_client.1 ${STAGEDIR}${PREFIX}/man/man1/festival_client.1
+	${INSTALL_MAN} ${FESTIVAL}/doc/festival.1 ${STAGEDIR}${PREFIX}/share/man/man1/festival.1
+	${INSTALL_MAN} ${FESTIVAL}/doc/festival_client.1 ${STAGEDIR}${PREFIX}/share/man/man1/festival_client.1
 
 .include <bsd.port.mk>

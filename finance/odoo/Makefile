@@ -1,5 +1,6 @@
 PORTNAME=	odoo
-PORTVERSION=	16.0
+PORTVERSION=	17.0.20240325
+PORTREVISION=	2
 CATEGORIES=	finance www
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,7 +11,7 @@ WWW=		https://www.odoo.com
 LICENSE=	LGPL3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	0a766557bcf95e0b9fc3363103fce8277b0fa835
+GH_TAGNAME=	c18b9f44be3d666ca1e082807a2fdfc7ef2049d2
 
 LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libxslt.so:textproc/libxslt \
@@ -21,7 +22,7 @@ RUN_DEPENDS=	wkhtmltopdf>0:converters/wkhtmltopdf \
 		${PYTHON_PKGNAMEPREFIX}pyserial>=0:comms/py-pyserial@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}vobject>=0:deskutils/py-vobject@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>=0:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gevent>=0:devel/py-gevent@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}greenlet>=0:devel/py-greenlet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
@@ -36,7 +37,7 @@ RUN_DEPENDS=	wkhtmltopdf>0:converters/wkhtmltopdf \
 		${PYTHON_PKGNAMEPREFIX}vatnumber>=0:finance/py-vatnumber@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pydot>=0:graphics/py-pydot@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ldap>=0:net/py-ldap@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-ldap>=0:net/py-python-ldap@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zeep>=0:net/py-zeep@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docutils>=0:textproc/py-docutils@${PY_FLAVOR} \
@@ -54,22 +55,26 @@ RUN_DEPENDS=	wkhtmltopdf>0:converters/wkhtmltopdf \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}libsass>0:www/py-libsass@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}werkzeug>0:www/py-werkzeug@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}secure-cookie>0:www/py-secure-cookie@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests-file>0:www/py-requests-file@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}werkzeug2>0:www/py-werkzeug2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}XlsxWriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xlrd>=1.2.0:textproc/py-xlrd@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xlwt>=1.3.0:textproc/py-xlwt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ofxparse>=0.20:finance/py-ofxparse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ebaysdk>=2.1.3:finance/py-ebaysdk@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}idna>0:dns/py-idna@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}stdnum>0:devel/py-stdnum@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}stdnum>0:devel/py-stdnum@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rjsmin>0:archivers/py-rjsmin@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}freezegun>0:devel/py-freezegun@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}GeoIP2>0:net/py-GeoIP2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR}
 
-USES=		cpe ldap python:3.7+ pgsql shebangfix
-USE_PYTHON=	distutils
+USES=		cpe ldap python pgsql shebangfix
+USE_PYTHON=	cryptography distutils
 
 SHEBANG_LANG=	python
-SHEBANG_FILES=	${WRKSRC}/${PORTNAME}/addons/point_of_sale/tools/posbox/overwrite_before_init/etc/init.d/timesyncd \
-		${WRKSRC}/${PORTNAME}/addons/point_of_sale/tools/posbox/overwrite_before_init/etc/init.d/odoo \
+SHEBANG_FILES=	${WRKSRC}/${PORTNAME}/addons/point_of_sale/tools/posbox/overwrite_before_init/etc/init.d/odoo \
 		${WRKSRC}/${PORTNAME}/addons/web/static/lib/select2/release.sh \
 		${WRKSRC}/${PORTNAME}/addons/web/tooling/*.sh \
 		${WRKSRC}/${PORTNAME}/addons/web/tooling/hooks/pre-commit \
@@ -82,22 +87,18 @@ GROUPS=		${USERS}
 USE_RC_SUBR=	${PORTNAME}
 SUB_FILES=	pkg-message
 
-CONFLICTS=	odoo14 odoo15
+CONFLICTS=	odoo14 odoo15 odoo16
 
 ETCDIR=		${PREFIX}/etc/odoo
 
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 31000
+IGNORE=		odoo requires Python 3.10+
+.endif
+
 post-patch:
-	@${REINPLACE_CMD} -i "" -e 's|werkzeug.url_quote_plus|werkzeug.urls.url_quote_plus|g' \
-		${WRKSRC}/odoo/addons/base/models/ir_ui_view.py
-	@${REINPLACE_CMD} -i "" -e 's|werkzeug.url_unquote_plus|werkzeug.urls.url_quote_plus|g' \
-		-e 's|.NumberConverter|.converters.NumberConverter|g' \
-		${WRKSRC}/odoo/addons/base/models/ir_http.py \
-		${WRKSRC}/odoo/addons/http_routing/models/ir_http.py
-	@${REINPLACE_CMD} -i "" -e 's|from werkzeug import url_encode|from werkzeug.urls import url_encode|g' \
-		${WRKSRC}/odoo/addons/mail/models/mail_thread.py \
-		${WRKSRC}/odoo/addons/hr/models/hr_employee.py
 	@${REINPLACE_CMD} -i "" -e 's|(index !== |(index == |g' \
-		${WRKSRC}/odoo/addons/web/static/src/legacy/js/libs/content-disposition.js \
 		${WRKSRC}/odoo/addons/web/static/src/core/network/download.js
 
 post-extract:
@@ -109,4 +110,4 @@ pre-install:
 post-install:
 	@${INSTALL_SCRIPT} ${FILESDIR}/odoo.conf ${STAGEDIR}${ETCDIR}/odoo.conf.sample
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

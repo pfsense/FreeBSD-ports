@@ -1,11 +1,12 @@
 PORTNAME=	hlmaster
 PORTVERSION=	0.9.3
+PORTREVISION=	1
 CATEGORIES=	net games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Half-Life game master server daemon
-WWW=		http://hlmaster.sourceforge.net/
+WWW=		https://hlmaster.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -13,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		dos2unix
 DOS2UNIX_GLOB=	*.cpp
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

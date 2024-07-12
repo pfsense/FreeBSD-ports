@@ -1,9 +1,9 @@
 PORTNAME=	powerdxx
 DISTVERSION=	0.4.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CPU clock speed/frequency daemon
 WWW=		https://github.com/lonkamikaze/powerdxx
 

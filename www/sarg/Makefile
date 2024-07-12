@@ -1,12 +1,12 @@
 PORTNAME=	sarg
 PORTVERSION=	2.4.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Squid log analyzer and HTML report generator
-WWW=		http://sarg.sourceforge.net/
+WWW=		https://sarg.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,6 +19,7 @@ PHP_DESC=	Install PHP for reporting generating
 
 USES=		autoreconf gmake
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--sysconfdir="${ETCDIR}" \
 		--enable-fontdir="${ETCDIR}/fonts" \
 		--enable-imagedir="${ETCDIR}/images"

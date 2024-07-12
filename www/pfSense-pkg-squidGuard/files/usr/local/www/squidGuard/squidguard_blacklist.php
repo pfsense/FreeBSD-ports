@@ -3,7 +3,7 @@
  * squidguard_blacklist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -187,9 +187,9 @@ display_top_tabs($tab_array);
 					<br><u id="progress_text" name="progress_text">0 %</u>
 					<input class="formfld unknown" size="70" id="blacklist_url" name="blacklist_url" value= '<?="$blacklist_url"; ?>' > &nbsp
 					<br><br>
-					<button class="btn btn-success" id="blacklist_download_start"  name="blacklist_download_start"  onclick="getactivity('download');"><i class="fa fa-download icon-embed-btn"></i>Download</button>
-					<button class="btn btn-warning" id="blacklist_download_cancel" name="blacklist_download_cancel" onclick="getactivity('cancel');"><i class="fa fa-times-circle icon-embed-btn"></i>Cancel</button>
-					<button class="btn btn-info"    id="blacklist_restore_default" name="blacklist_restore_default" onclick="getactivity('restore_default');"><i class="fa fa-undo icon-embed-btn"></i>Restore Default</button>
+					<button class="btn btn-success" id="blacklist_download_start"  name="blacklist_download_start"  onclick="getactivity('download');"><i class="fa-solid fa-download icon-embed-btn"></i>Download</button>
+					<button class="btn btn-warning" id="blacklist_download_cancel" name="blacklist_download_cancel" onclick="getactivity('cancel');"><i class="fa-solid fa-times-circle icon-embed-btn"></i>Cancel</button>
+					<button class="btn btn-info"    id="blacklist_restore_default" name="blacklist_restore_default" onclick="getactivity('restore_default');"><i class="fa-solid fa-undo icon-embed-btn"></i>Restore Default</button>
 					<br><br>
 					Enter FTP or HTTP path to the blacklist archive here.
 					<br><br>
@@ -201,7 +201,7 @@ display_top_tabs($tab_array);
 						<div class="panel-heading">
 							<h2 class="panel-title">
 								<span  style="cursor: pointer;">
-									<i class="fa fa-times-circle" onClick="getactivity('clear_log');" title='Clear Log and Close'></i>
+									<i class="fa-solid fa-times-circle" onClick="getactivity('clear_log');" title='Clear Log and Close'></i>
 								</span>
 								Blacklist update Log
 							</h2>

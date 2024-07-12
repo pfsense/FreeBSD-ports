@@ -1,6 +1,6 @@
 PORTNAME=	tcl
 DISTVERSION=	${TCL_VERSION}${TCL_RC}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	SF/tcl/Tcl/${TCL_VERSION} \
 		TCLTK/tcl8_7
@@ -28,9 +28,6 @@ OPTIONS_DEFINE_powerpc64=	DTRACE
 OPTIONS_DEFINE_powerpc64le=	DTRACE
 OPTIONS_DEFAULT_powerpc64=	DTRACE
 OPTIONS_DEFAULT_powerpc64le=	DTRACE
-OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
-OPTIONS_EXCLUDE_powerpc64_11=	DTRACE
-OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
 TCLMAN_DESC=	Install Tcl function manpages
 TZDATA_DESC=	Install Tcl timezone data
 OPTIONS_SUB=	yes
@@ -50,6 +47,7 @@ INSTALL_TARGET+=install-libraries \
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-shared \
 		--enable-man-suffix=.${MAN_SUFFIX} \
 		--includedir=${PREFIX}/include/tcl${TCL_VER} \

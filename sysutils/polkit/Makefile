@@ -1,14 +1,13 @@
 PORTNAME=	polkit
-PORTVERSION=	122
+DISTVERSION=	124
+PORTREVISION=	3
 CATEGORIES=	sysutils gnome
-MASTER_SITES=	https://www.freedesktop.org/software/polkit/releases/ \
-		https://gitlab.freedesktop.org/${PORTNAME}/${PORTNAME}/-/archive/${PORTVERSION}/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Framework for controlling access to system-wide components
-WWW=		https://www.freedesktop.org/wiki/Software/polkit/
+WWW=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}
 
-LICENSE=	GPLv2
+LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
@@ -18,13 +17,17 @@ USERS=		polkitd
 GROUPS=		polkitd
 
 USES=		compiler:c++17-lang cpe gettext gnome libtool localbase meson \
-		pathfix pkgconfig shebangfix
+		pathfix pkgconfig shebangfix tar:bz2
 USE_GNOME=	glib20 intltool introspection:build
 SHEBANG_FILES=	${WRKSRC}/src/polkitbackend/toarray.pl
 USE_LDCONFIG=	yes
 CPE_VENDOR=	polkit_project
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	polkit-org
+
 MESON_ARGS=	-Dpam_include=system \
+		-Dpam_prefix='etc/pam.d' \
 		-Dpolkitd_user=${USERS} \
 		-Dexamples=false \
 		-Dsession_tracking=ConsoleKit \
@@ -49,8 +52,8 @@ DUKTAPE_MESON_ON=	-Djs_engine='duktape'
 SPIDERMONKEY_LIB_DEPENDS=	libmozjs-102.so:lang/spidermonkey102
 SPIDERMONKEY_MESON_ON=		-Djs_engine='mozjs'
 
-MANPAGES_BUILD_DEPENDS=	docbook-sgml>=4.5:textproc/docbook-sgml \
-			docbook-xsl>=1.76:textproc/docbook-xsl
+MANPAGES_BUILD_DEPENDS=	docbook-sgml>0:textproc/docbook-sgml \
+			docbook-xsl>0:textproc/docbook-xsl
 MANPAGES_USE=		gnome=libxslt:build
 MANPAGES_MESON_TRUE=	man
 

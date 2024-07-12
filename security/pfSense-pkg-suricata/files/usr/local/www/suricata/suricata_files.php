@@ -3,7 +3,7 @@
  * suricata_files.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -258,7 +258,7 @@ $group->add(new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->removeClass('btn-default')->addClass('btn-success btn-sm')
   ->setHelp('Save auto-refresh and view settings');
 
@@ -374,7 +374,7 @@ $group->add(new Form_Button(
 	'filterlogentries_submit',
 	'Apply Filter',
 	null,
-	'fa-filter'
+	'fa-solid fa-filter'
 ))->removeClass("btn-primary btn-default")
   ->addClass("btn-success btn-sm");
 
@@ -382,7 +382,7 @@ $group->add(new Form_Button(
 	'filterlogentries_clear',
 	'Clear Filter',
 	null,
-	'fa-trash-o'
+	'fa-regular fa-trash-can'
 ))->removeclass("btn-primary btn-default")
   ->addClass("btn-danger no-confirm btn-sm");
 
@@ -515,20 +515,20 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
 			$file_ip_src = str_replace(":", ":&#8203;", $file_ip_src);
 			/* Add Reverse DNS lookup icon */
-			$file_ip_src .= '<br /><i class="fa fa-search" onclick="javascript:resolve_with_ajax(\'' . $fields['src_ip'] . '\');" title="';
+			$file_ip_src .= '<br /><i class="fa-solid fa-search" onclick="javascript:resolve_with_ajax(\'' . $fields['src_ip'] . '\');" title="';
 			$file_ip_src .= gettext("Resolve host via reverse DNS lookup") . "\"  alt=\"Icon Reverse Resolve with DNS\" ";
 			$file_ip_src .= " style=\"cursor: pointer;\"></i>";
 			/* Add GeoIP check icon */
 			if (!is_private_ip($fields['src_ip']) && (substr($fields['src_ip'], 0, 2) != 'fc') &&
 			    (substr($fields['src_ip'], 0, 2) != 'fd')) {
-				$file_ip_src .= '&nbsp;&nbsp;<i class="fa fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['src_ip'] . '\');" title="';
+				$file_ip_src .= '&nbsp;&nbsp;<i class="fa-solid fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['src_ip'] . '\');" title="';
 				$file_ip_src .= gettext("Check host GeoIP data") . "\"  alt=\"Icon Check host GeoIP\" ";
 				$file_ip_src .= " style=\"cursor: pointer;\"></i>";
 			}
 
 			/* Add icon for auto-removing from Blocked Table if required */
 			if (isset($tmpblocked[$fields['src_ip']])) {
-				$file_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields['src_ip']}');$('#mode').val('unblock');$('#formfile').submit();\"";
+				$file_ip_src .= "&nbsp;&nbsp;<i class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields['src_ip']}');$('#mode').val('unblock');$('#formfile').submit();\"";
 				$file_ip_src .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 			}
 
@@ -540,20 +540,20 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
 			$file_ip_dst = str_replace(":", ":&#8203;", $file_ip_dst);
 			/* Add Reverse DNS lookup icons */
-			$file_ip_dst .= "<br /><i class=\"fa fa-search\" onclick=\"javascript:resolve_with_ajax('{$fields['dest_ip']}');\" title=\"";
+			$file_ip_dst .= "<br /><i class=\"fa-solid fa-search\" onclick=\"javascript:resolve_with_ajax('{$fields['dest_ip']}');\" title=\"";
 			$file_ip_dst .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\" ";
 			$file_ip_dst .= " style=\"cursor: pointer;\"></i>";
 			/* Add GeoIP check icon */
 			if (!is_private_ip($fields['dest_ip']) && (substr($fields['dest_ip'], 0, 2) != 'fc') &&
 			    (substr($fields['dest_ip'], 0, 2) != 'fd')) {
-				$file_ip_dst .= '&nbsp;&nbsp;<i class="fa fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['dest_ip'] . '\');" title="';
+				$file_ip_dst .= '&nbsp;&nbsp;<i class="fa-solid fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['dest_ip'] . '\');" title="';
 				$file_ip_dst .= gettext("Check host GeoIP data") . "\"  alt=\"Icon Check host GeoIP\" ";
 				$file_ip_dst .= " style=\"cursor: pointer;\"></i>";
 			}
 
 			/* Add icon for auto-removing from Blocked Table if required */
 			if (isset($tmpblocked[$fields['dest_ip']])) {
-				$file_ip_dst .= '&nbsp;&nbsp;<i name="todelete[]" class="fa fa-times icon-pointer text-danger" onClick="$(\'#ip\').val(\'' . $fields['dest_ip'] . '\');$(\'#mode\').val(\'unblock\');$(\'#formfile\').submit();" ';
+				$file_ip_dst .= '&nbsp;&nbsp;<i name="todelete[]" class="fa-solid fa-times icon-pointer text-danger" onClick="$(\'#ip\').val(\'' . $fields['dest_ip'] . '\');$(\'#mode\').val(\'unblock\');$(\'#formfile\').submit();" ';
 				$file_ip_dst .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 			}
 
@@ -574,7 +574,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				$file_hash = 'none';
 			}
 
-			$file_check = '<a class="fa fa-info icon-pointer icon-primary" title="Click for File Check."' .
+			$file_check = '<a class="fa-solid fa-info icon-pointer icon-primary" title="Click for File Check."' .
 				    'target="_blank" href="/suricata/suricata_filecheck.php?filehash=' . $file_hash .
 				    '&uuid=' . $suricata_uuid . '&filename=' . urlencode($file_name) . 
 				    '&filesize=' . urlencode($file_size) . '"></a>';

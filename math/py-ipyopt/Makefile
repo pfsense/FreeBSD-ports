@@ -1,6 +1,5 @@
 PORTNAME=	ipyopt
-DISTVERSION=	0.12.7
-PORTREVISION=	1
+DISTVERSION=	0.12.9
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	${PY_DEPENDS}
 LIB_DEPENDS=	libipopt.so:math/ipopt
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		compiler:c++17-lang pkgconfig python:3.6+
+USES=		compiler:c++17-lang pkgconfig python
 USE_PYTHON=	distutils autoplist pytest
 
 CXXFLAGS+=	$(pkg-config --cflags ipopt)

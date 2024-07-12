@@ -1,6 +1,6 @@
 PORTNAME=	aescrypt
 PORTVERSION=	0.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}.0
 
@@ -10,7 +10,7 @@ PATCHFILES=	aescrypt-0.7-roam-whopper-01.patch.gz
 
 MAINTAINER=	mauroeldritch@gmail.com
 COMMENT=	Command-line AES encryption/decryption suite
-WWW=		http://aescrypt.sourceforge.net/
+WWW=		https://aescrypt.sourceforge.net/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -28,7 +28,7 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 .for f in ${BINS}
 	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${f}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${f}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 .endfor
 
 do-install-DOCS-on:

@@ -14,6 +14,9 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Object-oriented SGML/XML parser toolkit and DSSSL engine
 WWW=		http://www.jclark.com/jade/
 
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 RUN_DEPENDS=	xmlcatmgr:textproc/xmlcatmgr
 
 CONFLICTS=	sp-1.*
@@ -42,9 +45,4 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/xml/jade
 	${INSTALL_DATA} ${WRKSRC}/pubtext/xml* ${STAGEDIR}${PREFIX}/share/xml/jade
 
-.include <bsd.port.pre.mk>
-
-# Same problem with textproc/openjade.
-CPPFLAGS:=	-O ${CFLAGS:N-O*:N-m*}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

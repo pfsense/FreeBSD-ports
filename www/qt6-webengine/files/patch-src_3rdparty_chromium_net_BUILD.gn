@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/net/BUILD.gn.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/net/BUILD.gn.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/net/BUILD.gn
-@@ -108,7 +108,7 @@ net_configs = [
+@@ -126,7 +126,7 @@ net_configs = [
    "//build/config/compiler:wexit_time_destructors",
  ]
  
@@ -9,20 +9,16 @@
    net_configs += [ "//build/config/linux:libresolv" ]
  }
  
-@@ -1092,6 +1092,7 @@ component("net") {
-     "//net/dns:mdns_client",
-     "//net/dns/public",
-     "//net/third_party/quiche",
-+    "//sandbox/policy",
-   ]
- 
-   allow_circular_includes_from = [
-@@ -1218,6 +1219,15 @@ component("net") {
-     ]
+@@ -1255,6 +1255,19 @@ component("net") {
+     deps += [ "//third_party/xdg_shared_mime_info" ]
    }
  
 +  if (is_bsd) {
 +    sources -= [
++      "base/address_map_cache_linux.cc",
++      "base/address_map_cache_linux.h",
++      "base/address_map_linux.cc",
++      "base/address_map_linux.h",
 +      "base/address_tracker_linux.cc",
 +      "base/address_tracker_linux.h",
 +      "base/network_change_notifier_linux.cc",
@@ -33,16 +29,7 @@
    if (is_mac) {
      sources += [
        "base/network_notification_thread_mac.cc",
-@@ -1348,7 +1358,7 @@ component("net") {
-     }
-   }
- 
--  if (is_android || is_chromeos_ash) {
-+  if (is_android || is_chromeos_ash || is_bsd) {
-     sources += [
-       "base/network_change_notifier_posix.cc",
-       "base/network_change_notifier_posix.h",
-@@ -1381,7 +1391,7 @@ component("net") {
+@@ -1410,7 +1423,7 @@ component("net") {
    }
  
    # Use getifaddrs() on POSIX platforms, except Linux.
@@ -51,7 +38,7 @@
      sources += [
        "base/network_interfaces_getifaddrs.cc",
        "base/network_interfaces_getifaddrs.h",
-@@ -4369,7 +4379,7 @@ test("net_unittests") {
+@@ -2905,7 +2918,7 @@ test("net_unittests") {
      ]
    }
  
@@ -60,7 +47,7 @@
      sources += [
        "base/address_tracker_linux_unittest.cc",
        "base/network_interfaces_linux_unittest.cc",
-@@ -4443,6 +4453,10 @@ test("net_unittests") {
+@@ -2973,6 +2986,10 @@ test("net_unittests") {
      "//url:buildflags",
    ]
  
@@ -68,19 +55,19 @@
 +    deps += [ "//sandbox/policy" ]
 +  }
 +
-   allow_circular_includes_from = [ "//net/third_party/quiche:quiche_tests" ]
- 
    if (enable_websockets) {
-@@ -4513,7 +4527,7 @@ test("net_unittests") {
+     deps += [ "//net/server:tests" ]
+   }
+@@ -3055,7 +3072,7 @@ test("net_unittests") {
      ]
    }
  
 -  if (is_linux || is_chromeos) {
 +  if ((is_linux || is_chromeos) && !is_bsd) {
-     sources += [
-       "quic/platform/impl/quic_flags_test.cc",
-       "tools/quic/quic_http_proxy_backend_stream_test.cc",
-@@ -4660,7 +4674,7 @@ test("net_unittests") {
+     sources += [ "tools/quic/quic_simple_server_test.cc" ]
+   }
+ 
+@@ -3190,7 +3207,7 @@ test("net_unittests") {
    }
  
    # Use getifaddrs() on POSIX platforms, except Linux.

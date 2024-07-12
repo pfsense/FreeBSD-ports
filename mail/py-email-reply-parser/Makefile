@@ -1,5 +1,5 @@
 PORTNAME=	email-reply-parser
-PORTVERSION=	0.5.9
+PORTVERSION=	0.5.12
 CATEGORIES=	mail python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ WWW=		https://github.com/zapier/email-reply-parser
 
 LICENSE=	MIT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

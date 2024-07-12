@@ -1,11 +1,11 @@
 PORTNAME=	mspdebug
 PORTVERSION=	0.25.20200402
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	peterjeremy@acm.org
 COMMENT=	Debugger for use with MSP 430 MCUs
-WWW=		http://mspdebug.sourceforge.net/
+WWW=		https://mspdebug.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -25,7 +25,7 @@ LIBMSP430_LIB_DEPENDS=	libmsp430.so:devel/msp430-debug-stack
 USES=		compiler:c11 gmake
 
 PLIST_FILES=	bin/mspdebug \
-		man/man1/mspdebug.1.gz \
+		share/man/man1/mspdebug.1.gz \
 		share/mspdebug/ti_3410.fw.ihex \
 		share/mspdebug/ti_3410.fw.txt \
 		share/doc/mspdebug/EmbeddedMode.txt \

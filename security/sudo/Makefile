@@ -1,5 +1,6 @@
 PORTNAME=	sudo
-PORTVERSION=	1.9.13p3
+PORTVERSION=	1.9.15p5
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	SUDO
 
@@ -12,88 +13,115 @@ LICENSE_NAME=	Sudo license
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		cpe libtool
+USES=		cpe libtool pkgconfig
 CPE_VENDOR=	todd_miller
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-lgcc
-
-CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
-		--with-ignore-dot \
-		--with-tty-tickets \
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+CONFIGURE_ARGS=	--mandir=${PREFIX}/share/man \
+		--sysconfdir=${PREFIX}/etc \
 		--with-env-editor \
+		--with-ignore-dot \
+		--with-logfac=${LOGFAC} \
 		--with-logincap \
 		--with-long-otp-prompt \
-		--with-rundir=/var/run/sudo
+		--with-rundir=/var/run/sudo \
+		--with-tty-tickets
+LDFLAGS+=	-lgcc
 
-OPTIONS_DEFINE=	LDAP INSULTS DISABLE_ROOT_SUDO DISABLE_AUTH NOARGS_SHELL \
-		AUDIT OPIE PAM PYTHON NLS SSSD DOCS EXAMPLES
-OPTIONS_RADIO=	KERBEROS
-OPTIONS_DEFAULT=	AUDIT PAM
-OPTIONS_SUB=	yes
+PORTSCOUT=	ignore:1
 
-INSULTS_DESC=	Enable insults on failures
-DISABLE_ROOT_SUDO_DESC=	Do not allow root to run sudo
+OPTIONS_DEFINE=		AUDIT DISABLE_AUTH DISABLE_ROOT_SUDO DOCS EXAMPLES \
+			INSULTS LDAP NLS NOARGS_SHELL OPIE PAM PYTHON SSL
+OPTIONS_DEFAULT=	AUDIT PAM SSL
+OPTIONS_RADIO=		KERBEROS SSSD
+OPTIONS_RADIO_KERBEROS=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
+OPTIONS_RADIO_SSSD=	SSSD SSSD2
+OPTIONS_SUB=		yes
+
+AUDIT_DESC=		Enable BSM audit support
 DISABLE_AUTH_DESC=	Do not require authentication by default
+DISABLE_ROOT_SUDO_DESC=	Do not allow root to run sudo
+INSULTS_DESC=		Enable insults on failures
+KERBEROS_DESC=		Enable Kerberos 5 authentication (no PAM support)
 NOARGS_SHELL_DESC=	Run a shell if no arguments are given
-AUDIT_DESC=	Enable BSM audit support
-KERBEROS_DESC=	Enable Kerberos 5 authentication (no PAM support)
-OPIE_DESC=	Enable one-time passwords (no PAM support)
-PYTHON_DESC=	Enable python plugin support
-SSSD_DESC=	Enable SSSD backend support.
+OPIE_DESC=		Enable one-time passwords (no PAM support)
+PYTHON_DESC=		Enable python plugin support
+SSL_DESC=		Use OpenSSL TLS and SHA2 functions
+SSSD_DESC=		Enable SSSD backend support (deprecated)
+SSSD2_DESC=		Enable SSSD2 backend support
 
-PAM_PREVENTS=	OPIE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
+AUDIT_CONFIGURE_WITH=	bsm-audit
+
+DISABLE_AUTH_CONFIGURE_ON=	--disable-authentication
+DISABLE_ROOT_SUDO_CONFIGURE_ON=	--disable-root-sudo
+
+GSSAPI_BASE_USES=		gssapi
+GSSAPI_BASE_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_HEIMDAL_USES=		gssapi:heimdal
+GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_MIT_USES=		gssapi:mit
+GSSAPI_MIT_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+
+INSULTS_CONFIGURE_ON=	--with-insults --with-all-insults
+
+LDAP_USES=		ldap
+LDAP_CONFIGURE_ON=	--with-ldap=${PREFIX} \
+			--with-ldap-conf-file=${PREFIX}/etc/${SUDO_LDAP_CONF}
+
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
+NLS_CFLAGS=		-I${LOCALBASE}/include
+NLS_LDFLAGS=		-L${LOCALBASE}/lib -lintl
+
+NOARGS_SHELL_CONFIGURE_ENABLE=	noargs-shell
+
+OPIE_CONFIGURE_ON=	--with-opie
+
+PAM_PREVENTS=		OPIE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
 PAM_PREVENTS_MSG=	PAM cannot be combined with any other authentication plugin
+PAM_CONFIGURE_ON=	--with-pam
 
-LOGFAC?=	authpriv
-CONFIGURE_ARGS+=	--with-logfac=${LOGFAC}
+PYTHON_USES=		python
+PYTHON_CONFIGURE_ENABLE=python
+
+SSL_USES=		ssl
+SSL_CONFIGURE_ON=	--enable-openssl=${OPENSSLBASE}
+
+SSSD_PREVENTS=		GSSAPI_HEIMDAL
+SSSD_PREVENTS_MSG=	sssd requires MIT kerberos and it conflicts with heimdal
+SSSD_RUN_DEPENDS=	sssd:security/sssd
+SSSD_CONFIGURE_ON=	--with-sssd
+
+SSSD2_RUN_DEPENDS=	sssd:security/sssd2
+SSSD2_CONFIGURE_ON=	--with-sssd
+
+LOGFAC?=		authpriv
+SUDO_LDAP_CONF?=	ldap.conf
 
 # This is intentionally not an option.
 # SUDO_SECURE_PATH is a PATH string that will override the user's PATH.
-# ex: make SUDO_SECURE_PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
+# ex: make SUDO_SECURE_PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 .if defined(SUDO_SECURE_PATH)
 CONFIGURE_ARGS+=	--with-secure-path="${SUDO_SECURE_PATH}"
 .endif
 
-NLS_USES=	gettext
-NLS_CONFIGURE_ENABLE=	nls
-NLS_LDFLAGS=	-L${LOCALBASE}/lib -lintl
-NLS_CFLAGS=	-I${LOCALBASE}/include
-
-INSULTS_CONFIGURE_ON=	--with-insults
-INSULTS_CONFIGURE_ON+=	--with-all-insults
-
-LDAP_USES=	ldap
-LDAP_CONFIGURE_ON=	--with-ldap=${PREFIX}
-SUDO_LDAP_CONF?=	ldap.conf
-LDAP_CONFIGURE_ON+=	--with-ldap-conf-file=${PREFIX}/etc/${SUDO_LDAP_CONF}
-
-DISABLE_ROOT_SUDO_CONFIGURE_ON=	--disable-root-sudo
-DISABLE_AUTH_CONFIGURE_ON=	--disable-authentication
-NOARGS_SHELL_CONFIGURE_ENABLE=	noargs-shell
-AUDIT_CONFIGURE_WITH=	bsm-audit
-PAM_CONFIGURE_ON=	--with-pam
-OPIE_CONFIGURE_ON=	--with-opie
-PYTHON_USES=	python
-PYTHON_CONFIGURE_ENABLE=	python
-SSSD_CONFIGURE_ON=	--with-sssd
-SSSD_RUN_DEPENDS=	sssd:security/sssd
-
-OPTIONS_RADIO_KERBEROS=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
-GSSAPI_BASE_USES=	gssapi
-GSSAPI_BASE_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
-GSSAPI_HEIMDAL_USES=	gssapi:heimdal
-GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
-GSSAPI_MIT_USES=	gssapi:mit
-GSSAPI_MIT_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
 # This is intentionally not an option.
-# SUDO_KERB5_INSTANCE is an optional instance string that will be appended to kerberos
-# principals when to perform authentication. Common choices are "admin" and "sudo".
+# SUDO_KERB5_INSTANCE is an optional instance string that will be appended
+# to kerberos principals when to perform authentication. Common choices
+# are "admin" and "sudo".
 .if defined(SUDO_KERB5_INSTANCE)
 CONFIGURE_ARGS+=	--enable-kerb5-instance="${SUDO_KERB5_INSTANCE}"
 .endif
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400072
+. if ${PORT_OPTIONS:MOPIE}
+BUILD_DEPENDS+=	opie>0:security/opie
+RUN_DEPENDS+=	opie>0:security/opie
+. endif
+.endif
 
 .if ${ARCH} == "arm"
 CONFIGURE_ARGS+=	--disable-pie
@@ -103,8 +131,6 @@ post-patch:
 	@${REINPLACE_CMD} -E '/install-(binaries|noexec):/,/^$$/ \
 		s/\$$\(INSTALL\)/& ${STRIP}/;s/-b\~/-b ~/' \
 		${WRKSRC}/src/Makefile.in
-	@${REINPLACE_CMD} -e 's,$$(srcdir)/sudoers2ldif $$(DESTDIR)$$(docdir),$$(srcdir)/sudoers2ldif $$(DESTDIR)$$(bindir),' \
-		${WRKSRC}/plugins/sudoers/Makefile.in
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/pam.conf ${STAGEDIR}${PREFIX}/etc/pam.d/sudo.default
@@ -113,6 +139,7 @@ post-install:
 	${RM} ${STAGEDIR}${PREFIX}/etc/sudoers
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cvtsudoers
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sudoreplay
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/sudo/sudo_intercept.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/sudo_logsrvd
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/sudo_sendlog
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/visudo

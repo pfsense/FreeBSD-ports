@@ -1,8 +1,7 @@
 PORTNAME=	openblas
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.20
-PORTREVISION=	1
-PORTEPOCH=	1
+DISTVERSION=	0.3.27
+PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	NL/lapack/timing/:lapack_tmg
 DISTFILES=	large.tgz:lapack_tmg \
@@ -11,7 +10,7 @@ DIST_SUBDIR=	openblas
 
 MAINTAINER=	phd_kimberlite@yahoo.co.jp
 COMMENT=	Optimized BLAS library based on GotoBLAS2
-WWW=		https://github.com/xianyi/OpenBLAS
+WWW=		https://github.com/OpenMathLib/OpenBLAS
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,8 +18,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		compiler:c11 cpe fortran gmake perl5 pkgconfig
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	xianyi
+GH_ACCOUNT=	OpenMathLib
 GH_PROJECT=	OpenBLAS
+GH_TAGNAME=	ce3f668
 LARGE_FILE=	large.tgz
 TIMING_FILE=	timing.tgz
 CPE_VENDOR=	openblas_project
@@ -35,8 +35,8 @@ PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=			DYNAMIC_ARCH INTERFACE64 OPENMP
 OPTIONS_DEFAULT=		OPENMP
-OPTIONS_DEFINE_i386=		AVX AVX2
-OPTIONS_DEFINE_amd64=		AVX AVX2
+OPTIONS_DEFINE_i386=		AVX AVX2 AVX512
+OPTIONS_DEFINE_amd64=		AVX AVX2 AVX512
 OPTIONS_EXCLUDE_armv6=		OPENMP
 OPTIONS_EXCLUDE_armv7=		OPENMP
 OPTIONS_EXCLUDE_powerpc64le=	OPENMP
@@ -58,6 +58,7 @@ INTERFACE64_DESC=	Use 8 byte integers on 64-bit architectures
 OPENMP_DESC=		Use OpenMP for threading
 AVX_DESC=		Support Advanced Vector Extensions (AVX)
 AVX2_DESC=		Support Advanced Vector Extensions 2 (AVX2)
+AVX512_DESC=		Support Advanced Vector Extensions 512 (AVX512)
 POWER6_DESC=		Optimize for POWER6, instead of the default PPC970
 POWER8_DESC=		Optimize for POWER8, instead of the default PPC970
 
@@ -80,6 +81,7 @@ TARGET_CPU_ARCH=	PPCG4
 .endif
 
 .if ${ARCH} == powerpc64le
+CFLAGS+=		-lm
 USE_GCC=		yes
 .endif
 
@@ -100,6 +102,9 @@ post-patch:
 .endif
 .if ! ${PORT_OPTIONS:MAVX2}
 	@${ECHO_CMD} NO_AVX2=1 >> ${WRKSRC}/Makefile.rule
+.endif
+.if ! ${PORT_OPTIONS:MAVX512}
+	@${ECHO_CMD} NO_AVX512=1 >> ${WRKSRC}/Makefile.rule
 .endif
 .if ${PORT_OPTIONS:MDYNAMIC_ARCH}
 	@${ECHO_CMD} DYNAMIC_ARCH=1 >> ${WRKSRC}/Makefile.rule

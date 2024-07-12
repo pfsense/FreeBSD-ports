@@ -1,5 +1,5 @@
 PORTNAME=	fotokilof
-PORTVERSION=	4.3.3
+PORTVERSION=	4.4.8
 PORTREVISION=	0
 CATEGORIES=	graphics
 MASTER_SITES=	PYPI
@@ -13,7 +13,7 @@ WWW=		https://github.com/TeaM-TL/FotoKilof
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=63.1.0:devel/py-setuptools@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}ttkbootstrap>=1.10.1:devel/py-ttkbootstrap@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.40.0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=9.5.0:graphics/py-pillow@${PY_FLAVOR} \
@@ -21,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=9.5.0:graphics/py-pillow@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}ttkbootstrap>=1.10.1:devel/py-ttkbootstrap@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Wand>=0.6.11:graphics/py-wand@${PY_FLAVOR}
 
-USES=		magick:run python:3.7+
+USES=		magick:run python
 
 # the project really doesn't have PEP-517 support, but distutils/setuptools
 # create a "wrong" entry_points script, so we use our pep517 feature

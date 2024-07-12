@@ -1,18 +1,19 @@
 PORTNAME=	umix
 PORTVERSION=	1.0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced tool for adjusting soundcard mixers, replacement for aumix
-WWW=		http://umix.sourceforge.net/
+WWW=		https://umix.sourceforge.net/
 
 USES=		alias ncurses
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 PLIST_FILES=	bin/umix \
-		man/man1/umix.1.gz
+		share/man/man1/umix.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e \

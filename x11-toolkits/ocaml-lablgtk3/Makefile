@@ -1,18 +1,18 @@
 PORTNAME=	lablgtk3
-PORTVERSION=	3.1.1
-PORTREVISION=	1
+PORTVERSION=	3.1.5
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	madpilot@FreeBSD.org
-COMMENT=	Objective Caml interface to GTK+ 3.x
+COMMENT=	Objective Caml interface to GTK 3.x
 WWW=		https://garrigue.github.io/lablgtk/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	dune:devel/ocaml-dune \
-		ocaml-cairo>0:graphics/ocaml-cairo
+		ocaml-cairo>0:graphics/ocaml-cairo \
+		${LOCALBASE}/${OCAML_SITELIBDIR}/camlp-streams/META:devel/ocaml-camlp-streams
 LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
@@ -56,7 +56,7 @@ do-build:
 
 do-install:
 	cd ${INSTALL_WRKSRC} && dune install --destdir=${STAGEDIR} \
-		--libdir=${OCAML_SITELIBDIR} ${TARGETS}
+		--libdir=${PREFIX}/${OCAML_SITELIBDIR} ${TARGETS}
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

@@ -1,26 +1,115 @@
---- src/input/evdev.c.orig	2021-12-20 00:24:48 UTC
+--- src/input/evdev.c.orig	2023-11-03 06:08:34 UTC
 +++ src/input/evdev.c
-@@ -38,10 +38,10 @@
+@@ -38,9 +38,15 @@
  #include <limits.h>
  #include <unistd.h>
  #include <pthread.h>
--#include <endian.h>
++#ifdef __linux__
+ #include <endian.h>
++#else
 +#include <sys/endian.h>
++#endif
  #include <math.h>
  
--#if __BYTE_ORDER == __LITTLE_ENDIAN
-+#if _BYTE_ORDER == _LITTLE_ENDIAN
++static bool isUseKbdmux = false;
++
+ #if __BYTE_ORDER == __LITTLE_ENDIAN
  #define int16_to_le(val) val
  #else
- #define int16_to_le(val) ((((val) >> 8) & 0x00FF) | (((val) << 8) & 0xFF00))
-@@ -66,8 +66,8 @@ struct input_device {
+@@ -66,8 +72,13 @@ struct input_device {
    int hats_state[3][2];
    int fd;
    char modifiers;
--  __s32 mouseDeltaX, mouseDeltaY, mouseScroll;
--  __s32 touchDownX, touchDownY, touchX, touchY;
-+  int32_t mouseDeltaX, mouseDeltaY, mouseScroll;
++  #ifdef __linux__
+   __s32 mouseDeltaX, mouseDeltaY, mouseVScroll, mouseHScroll;
+   __s32 touchDownX, touchDownY, touchX, touchY;
++  #else
++  int32_t mouseDeltaX, mouseDeltaY, mouseVScroll, mouseHScroll;
 +  int32_t touchDownX, touchDownY, touchX, touchY;
++  #endif
    struct timeval touchDownTime;
    struct timeval btnDownTime;
    short controllerId;
+@@ -749,7 +760,7 @@ static int evdev_handle(int fd) {
+       struct input_event ev;
+       while ((rc = libevdev_next_event(devices[i].dev, LIBEVDEV_READ_FLAG_NORMAL, &ev)) >= 0) {
+         if (rc == LIBEVDEV_READ_STATUS_SYNC)
+-          fprintf(stderr, "Error: cannot keep up\n");
++          fprintf(stderr, "Error:%s(%d) cannot keep up\n", libevdev_get_name(devices[i].dev), i);
+         else if (rc == LIBEVDEV_READ_STATUS_SUCCESS) {
+           if (!handler(&ev, &devices[i]))
+             return LOOP_RETURN;
+@@ -766,6 +777,39 @@ static int evdev_handle(int fd) {
+   return LOOP_OK;
+ }
+ 
++void is_use_kbdmux() {
++  const char* tryFirstInput = "/dev/input/event0";
++  const char* trySecondInput = "/dev/input/event1";
++
++  int fdFirst = open(tryFirstInput, O_RDWR|O_NONBLOCK);
++  int fdSecond = open(trySecondInput, O_RDWR|O_NONBLOCK);
++  if (fdFirst <= 0 && fdSecond <= 0) {
++    //Suppose use kbdmux because of default behavior
++    isUseKbdmux = true;
++    return;
++  }
++
++  struct libevdev *evdevFirst = libevdev_new();
++  libevdev_set_fd(evdevFirst, fdFirst);
++  const char* nameFirst = libevdev_get_name(evdevFirst);
++  struct libevdev *evdevSecond = libevdev_new();
++  libevdev_set_fd(evdevSecond, fdSecond);
++  const char* nameSecond = libevdev_get_name(evdevSecond);
++
++  libevdev_free(evdevFirst);
++  libevdev_free(evdevSecond);
++  close(fdFirst);
++  close(fdSecond);
++
++  if (strcmp(nameFirst, "System keyboard multiplexer") == 0 ||
++      strcmp(nameSecond, "System keyboard multiplexer") == 0) {
++    isUseKbdmux = true;
++    return;
++  }
++
++  return;
++}
++
+ void evdev_create(const char* device, struct mapping* mappings, bool verbose, int rotate) {
+   int fd = open(device, O_RDWR|O_NONBLOCK);
+   if (fd <= 0) {
+@@ -840,6 +884,33 @@ void evdev_create(const char* device, struct mapping* 
+      libevdev_has_event_code(evdev, EV_ABS, ABS_WHEEL) ||
+      libevdev_has_event_code(evdev, EV_ABS, ABS_GAS) ||
+      libevdev_has_event_code(evdev, EV_ABS, ABS_BRAKE));
++  bool is_acpibutton =
++    strcmp(name, "Sleep Button") == 0 ||
++    strcmp(name, "Power Button") == 0;
++  // Just use System keyboard multiplexer for FreeBSD,see kbdcontrol(1) and kbdmux(4)
++  // Trying to grab kbdmux0 and keyboard it's self at the same time results in
++  // the keyboard becoming unresponsive on FreeBSD.
++  bool is_likekeyboard =
++    is_keyboard && isUseKbdmux && strcmp(name, "System keyboard multiplexer") != 0;
++/*
++    (is_keyboard && guid[0] <= 3) ||
++    strcmp(name, "AT keyboard") == 0;
++*/
++
++  // In some cases,acpibutton can be mistaken for a keyboard and freeze the keyboard when tring grab.
++  if (is_acpibutton) {
++    if (verbose)
++      printf("Skip acpibutton: %s\n", name);
++    libevdev_free(evdev);
++    close(fd);
++    return;
++  }
++  // In some cases,Do not grab likekeyboard for avoiding keyboard unresponsive
++  if (is_likekeyboard) {
++    if (verbose)
++      printf("Do NOT grab like-keyboard: %s,version: %d,bustype: %d\n", name, guid[6], guid[0]);
++    is_keyboard = false;
++  }
+ 
+   if (is_accelerometer) {
+     if (verbose)

@@ -1,5 +1,5 @@
 PORTNAME=	${MPORTNAME:tl}
-PORTVERSION=	4.0.3
+PORTVERSION=	5.2.1
 PORTREVISION=	1
 CATEGORIES=	math
 
@@ -8,8 +8,7 @@ WWW=		https://faculty.cse.tamu.edu/davis/suitesparse.html
 
 LICENSE=	LGPL21+
 
-LIB_DEPENDS=	libmetis.so:math/metis		\
-		libamd.so:math/suitesparse-amd		\
+LIB_DEPENDS=	libamd.so:math/suitesparse-amd		\
 		libcamd.so:math/suitesparse-camd	\
 		libcolamd.so:math/suitesparse-colamd	\
 		libccolamd.so:math/suitesparse-ccolamd

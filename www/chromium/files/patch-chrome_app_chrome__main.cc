@@ -1,7 +1,7 @@
---- chrome/app/chrome_main.cc.orig	2023-05-31 08:12:17 UTC
+--- chrome/app/chrome_main.cc.orig	2024-03-22 08:19:40 UTC
 +++ chrome/app/chrome_main.cc
-@@ -27,11 +27,11 @@
- #include "chrome/app/notification_metrics.h"
+@@ -28,11 +28,11 @@
+ #include "chrome/app/chrome_main_mac.h"
  #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
@@ -14,7 +14,16 @@
  #include "chrome/app/chrome_main_linux.h"
  #endif
  
-@@ -136,7 +136,7 @@ int ChromeMain(int argc, const char** argv) {
+@@ -80,7 +80,7 @@ int ChromeMain(int argc, const char** argv) {
+ #error Unknown platform.
+ #endif
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   PossiblyDetermineFallbackChromeChannel(argv[0]);
+ #endif
+ 
+@@ -141,7 +141,7 @@ int ChromeMain(int argc, const char** argv) {
    SetUpBundleOverrides();
  #endif
  
@@ -23,8 +32,8 @@
    AppendExtraArgumentsToCommandLine(command_line);
  #endif
  
-@@ -164,7 +164,7 @@ int ChromeMain(int argc, const char** argv) {
-     headless::SetUpCommandLine(command_line);
+@@ -170,7 +170,7 @@ int ChromeMain(int argc, const char** argv) {
+     headless_mode_handle = headless::InitHeadlessMode();
    } else {
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
 -    BUILDFLAG(IS_WIN)

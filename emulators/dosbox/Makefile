@@ -13,20 +13,23 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		cpe sdl
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-core-inline
+USE_CXXSTD=	c++14
 USE_SDL=	sdl net sound
 
-PLIST_FILES=	bin/dosbox man/man1/dosbox.1.gz share/pixmaps/dosbox.ico
-PORTDOCS=	NEWS README
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-core-inline
 
 DESKTOP_ENTRIES="DOSBox" "${COMMENT}" \
 		"${PREFIX}/share/pixmaps/dosbox.ico" "dosbox" \
 		"System;Emulator;" true
 
+PLIST_FILES=	bin/dosbox share/man/man1/dosbox.1.gz share/pixmaps/dosbox.ico
+PORTDOCS=	NEWS README
+
 OPTIONS_DEFINE=	DOCS
 OPTIONS_RADIO=	DEBUGGER
 OPTIONS_RADIO_DEBUGGER=DEBUGGER_ENABLE DEBUGGER_HEAVY
+
 DEBUGGER_ENABLE_DESC=Enable internal debugger
 DEBUGGER_HEAVY_DESC=Enable internal debugger with extra features
 
@@ -40,7 +43,9 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/dosbox ${STAGEDIR}${PREFIX}/bin/dosbox
 	${INSTALL_DATA} ${WRKSRC}/src/dosbox.ico ${STAGEDIR}${PREFIX}/share/pixmaps/
-	${INSTALL_MAN} ${WRKSRC}/docs/dosbox.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/docs/dosbox.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

@@ -1,15 +1,6 @@
---- src/3rdparty/chromium/media/mojo/mojom/stable/stable_video_decoder_types_mojom_traits.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/media/mojo/mojom/stable/stable_video_decoder_types_mojom_traits.cc.orig	2023-10-11 18:22:24 UTC
 +++ src/3rdparty/chromium/media/mojo/mojom/stable/stable_video_decoder_types_mojom_traits.cc
-@@ -42,7 +42,7 @@ media::stable::mojom::VideoFrameDataPtr MakeVideoFrame
-   gfx::GpuMemoryBufferHandle gpu_memory_buffer_handle =
-       input->GetGpuMemoryBuffer()->CloneHandle();
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   CHECK_EQ(gpu_memory_buffer_handle.type, gfx::NATIVE_PIXMAP);
-   CHECK(!gpu_memory_buffer_handle.native_pixmap_handle.planes.empty());
- #else
-@@ -749,7 +749,7 @@ const gfx::GpuMemoryBufferId& StructTraits<
+@@ -837,7 +837,7 @@ const gfx::GpuMemoryBufferId& StructTraits<
    return input.id;
  }
  
@@ -18,7 +9,7 @@
  // static
  gfx::NativePixmapHandle StructTraits<
      media::stable::mojom::NativeGpuMemoryBufferHandleDataView,
-@@ -770,7 +770,7 @@ bool StructTraits<media::stable::mojom::NativeGpuMemor
+@@ -858,7 +858,7 @@ bool StructTraits<media::stable::mojom::NativeGpuMemor
  
    output->type = gfx::NATIVE_PIXMAP;
  

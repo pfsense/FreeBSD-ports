@@ -1,17 +1,17 @@
---- sandbox/policy/sandbox.cc.orig	2022-12-06 08:09:13 UTC
+--- sandbox/policy/sandbox.cc.orig	2024-06-25 12:08:48 UTC
 +++ sandbox/policy/sandbox.cc
 @@ -18,6 +18,10 @@
  #include "sandbox/policy/linux/sandbox_linux.h"
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
  
 +#if BUILDFLAG(IS_BSD)
-+#include "sandbox/policy/openbsd/sandbox_openbsd.h"
++#include "sandbox/policy/sandbox.h"
 +#endif  // BUILDFLAG(IS_BSD)
 +
  #if BUILDFLAG(IS_MAC)
  #include "sandbox/mac/seatbelt.h"
  #endif  // BUILDFLAG(IS_MAC)
-@@ -31,7 +35,7 @@
+@@ -32,7 +36,7 @@
  namespace sandbox {
  namespace policy {
  

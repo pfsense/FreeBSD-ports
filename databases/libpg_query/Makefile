@@ -1,5 +1,5 @@
 PORTNAME=	libpg_query
-DISTVERSION=	13-2.1.0
+DISTVERSION=	15-4.2.3
 CATEGORIES=	databases devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -8,6 +8,8 @@ WWW=		https://github.com/lfittl/libpg_query
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_i386=	Tests are failing: INVALID result for ALTER SUBSCRIPTION mysub SET PUBLICATION insert_only
 
 USES=		compiler:c11 cpe gmake pgsql
 CPE_VENDOR=	${PORTNAME}_project

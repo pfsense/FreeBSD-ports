@@ -8,7 +8,7 @@
  * nrpe.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Erik Kristensen
  * All rights reserved.
  *
@@ -39,8 +39,8 @@
 	</menu>
 	<service>
 		<name>nrpe</name>
-		<rcfile>nrpe3.sh</rcfile>
-		<executable>nrpe3</executable>
+		<rcfile>nrpe.sh</rcfile>
+		<executable>nrpe</executable>
 		<description>Nagios NRPE Daemon</description>
 	</service>
 	<fields>

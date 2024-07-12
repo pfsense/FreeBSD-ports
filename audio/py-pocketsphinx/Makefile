@@ -1,6 +1,6 @@
 PORTNAME=	pocketsphinx
 PORTVERSION=	0.1.15
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libpulse-simple.so:audio/pulseaudio \
 		libpulse.so:audio/pulseaudio
 
-USES=	python:3.8+
+USES=	python
 USE_PYTHON=	distutils
 
 CFLAGS+=	-I${LOCALBASE}/include

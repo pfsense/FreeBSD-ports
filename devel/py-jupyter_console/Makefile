@@ -1,5 +1,6 @@
 PORTNAME=	jupyter_console
 PORTVERSION=	6.6.3
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jupyter-core>=4.12:devel/py-jupyter-core@${P
 		${PYTHON_PKGNAMEPREFIX}pyzmq>=17:net/py-pyzmq@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitlets>=5.4:devel/py-traitlets@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_LOCALE=	en_US.UTF-8
 USE_PYTHON=	autoplist pep517
 

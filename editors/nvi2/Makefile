@@ -1,7 +1,7 @@
 PORTNAME=	nvi2
-PORTVERSION=	2.2.0
-DISTVERSIONPREFIX=	v
+PORTVERSION=	2.2.1
 PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
 MAINTAINER=	leres@FreeBSD.org
@@ -31,17 +31,22 @@ WIDECHAR_CMAKE_BOOL=	ENABLE_WIDECHAR
 PLIST_FILES=	bin/nex \
 		bin/nvi \
 		bin/nview \
-		man/man1/nex.1.gz \
-		man/man1/nvi.1.gz \
-		man/man1/nview.1.gz
+		share/man/man1/nex.1.gz \
+		share/man/man1/nvi.1.gz \
+		share/man/man1/nview.1.gz
+
+post-patch:
+	${REINPLACE_CMD} -e \
+	    '/-Wall/s/^/add_compile_options(-fcolor-diagnostics)\n/' \
+	    ${WRKSRC}/CMakeLists.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/nvi ${STAGEDIR}${PREFIX}/bin
 	${LN} ${STAGEDIR}${PREFIX}/bin/nvi ${STAGEDIR}${PREFIX}/bin/nex
 	${LN} ${STAGEDIR}${PREFIX}/bin/nvi ${STAGEDIR}${PREFIX}/bin/nview
 	${INSTALL_MAN} ${WRKSRC}/man/vi.1 \
-	    ${STAGEDIR}${MAN1PREFIX}/man/man1/nvi.1
-	${LN} -sf nvi.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/nex.1
-	${LN} -sf nvi.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/nview.1
+	    ${STAGEDIR}${PREFIX}/share/man/man1/nvi.1
+	${LN} -sf nvi.1 ${STAGEDIR}${PREFIX}/share/man/man1/nex.1
+	${LN} -sf nvi.1 ${STAGEDIR}${PREFIX}/share/man/man1/nview.1
 
 .include <bsd.port.mk>

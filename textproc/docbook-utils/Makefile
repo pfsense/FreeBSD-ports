@@ -1,12 +1,12 @@
 PORTNAME=	docbook-utils
 PORTVERSION=	0.6.14
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	textproc
 MASTER_SITES=	SOURCEWARE/docbook-tools/new-trials/SOURCES
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generates various output formats from DocBook SGML documents
-WWW=		http://sources.redhat.com/docbook-tools/
+WWW=		https://www.sourceware.org/docbook-tools/
 
 BUILD_DEPENDS+=	docbook-sgml>0:textproc/docbook-sgml \
 		dsssl-docbook-modular>0:textproc/dsssl-docbook-modular \
@@ -23,6 +23,7 @@ USE_PERL5=	run
 USE_TEX=	jadetex
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 MAKE_ARGS+=	docdir="${DOCSDIR}" htmldir="${DOCSDIR}/html"
 NO_ARCH=	yes
 SHEBANG_FILES=	bin/sgmldiff.in

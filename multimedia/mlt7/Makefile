@@ -2,31 +2,27 @@ PORTNAME=		${_MLT_PORTNAME}
 DISTVERSION=		${_MLT_VERSION}
 PORTREVISION?=		1
 CATEGORIES?=		multimedia
-# Don't use GitHub "fake" downloads that are auto-generated from a
-# tag; the project uploads tarballs for each release.
-#               https://github.com/mltframework/mlt/releases/download/v6.26.1/mlt-6.26.1.tar.gz
 MASTER_SITES=		https://github.com/mltframework/mlt/releases/download/v${DISTVERSION}/
 DISTFILES=		mlt-${DISTVERSION}${EXTRACT_SUFX}
 WRKSRC=			${WRKDIR}/mlt-${DISTVERSION}
 
-PATCH_SITES=		https://github.com/mltframework/mlt/commit/
-PATCHFILES=		77be3ee97453c194006df9080504492a67c8915b.patch:-p1 # Shotcut export bug #1442
-
 MAINTAINER=		kde@FreeBSD.org
 COMMENT?=		Multimedia framework for TV broadcasting
-WWW=		https://www.mltframework.org/
+WWW=			https://www.mltframework.org/
 
 LICENSE?=		GPLv2 GPLv3 LGPL21
 LICENSE_COMB?=		multi
 
-USES+=			alias cmake compiler:c++11-lang eigen:3 localbase pkgconfig
+USES+=			alias cmake compiler:c++11-lang eigen:3 localbase \
+			pathfix pkgconfig
 USE_LDCONFIG=		yes
+
+# Suppress errors with lld >= 17 due to undefined symbols.
+LDFLAGS+=		-Wl,--undefined-version
 
 DATADIR=		${PREFIX}/share/mlt-7
 
 .ifndef(SLAVEPORT) # Master port.
-BROKEN_sparc64=		does not compile on sparc64 (invokes i386 asm)
-
 USES+=			gnome mlt:7,nodepend
 USE_GNOME=		libxml2
 
@@ -108,6 +104,7 @@ PLUSGPL_DESC=		Enable plus GPL module
 PLUSGPL_CMAKE_BOOL=	MOD_PLUSGPL
 
 PLUS_DESC=		Enable plus module
+PLUS_USES=		ebur128
 PLUS_LIB_DEPENDS=	libfftw3.so:math/fftw3
 PLUS_CMAKE_BOOL=	MOD_PLUS
 
@@ -138,7 +135,8 @@ VIDSTAB_LIB_DEPENDS=	libvidstab.so:multimedia/vid.stab
 VIDSTAB_CMAKE_BOOL=	MOD_VIDSTAB
 
 VORBIS_DESC=		Enable Vorbis module
-VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis libogg.so:audio/libogg
+VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
+			libogg.so:audio/libogg
 VORBIS_CMAKE_BOOL=	MOD_VORBIS
 
 XINE_DESC=		Enable xine module
@@ -146,9 +144,6 @@ XINE_CMAKE_BOOL=	MOD_XINE
 
 pre-configure:
 	${RM} ${STAGEDIR}${PREFIX}/man/man1/melt.1
-	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},' \
-		${WRKSRC}/src/modules/frei0r/factory.c \
-		${WRKSRC}/src/modules/jackrack/plugin_mgr.c
 
 common-post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/melt-7

@@ -1,5 +1,5 @@
 PORTNAME=	pyodbc
-PORTVERSION=	4.0.32
+PORTVERSION=	5.0.1
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 BUILD_DEPENDS=	unixODBC>=2.2.14:databases/unixODBC
 
-USES=		localbase python:3.6+
+USES=		localbase python
 USE_PYTHON=	autoplist distutils
 
 post-install:

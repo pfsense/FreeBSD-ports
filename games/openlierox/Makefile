@@ -8,7 +8,10 @@ DISTNAME=	OpenLieroX_${DISTVERSION}.src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Extremely addictive realtime worms shoot-em-up
-WWW=		http://openlierox.sourceforge.net/
+WWW=		https://openlierox.sourceforge.net/
+
+LICENSE=	LGPL20
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 

@@ -1,10 +1,7 @@
 PORTNAME=	opencv
-DISTVERSION=	4.6.0
-PORTREVISION=	10
+DISTVERSION=	4.9.0
+PORTREVISION=	2
 CATEGORIES=	graphics
-
-PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
-PATCHFILES=	496eed950f6d0e7fd92619d47e3cec8f06e96ace.patch:-p1
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Open Source Computer Vision library
@@ -36,10 +33,12 @@ GH_TAGNAME=	v0.1.1f:ade \
 		8afa57abc8229d611c4937165d20e2a2d9fc5a12:face \
 		a56b6ac6f030c312b2dce17430eef13aed9af274:ippicv
 
-CMAKE_ON=	OPENCV_GENERATE_PKGCONFIG
+CMAKE_ON=	OPENCV_GENERATE_PKGCONFIG \
+		OPENCV_SKIP_CMAKE_CXX_STANDARD
 CMAKE_OFF=	OPENCV_GENERATE_SETUPVARS \
 		BUILD_opencv_python2 \
 		BUILD_TESTS
+CMAKE_OFF+=	WITH_OBSENSOR # linux/uvcvideo.h is included when WITH_OBSENSOR is enabled
 CMAKE_ARGS=	-DOPENCV_EXTRA_MODULES_PATH="${WRKSRC}/contrib/modules"
 
 DATADIR=	${PREFIX}/share/${PORTNAME}4
@@ -101,13 +100,12 @@ PATENTED_DESC=		Enable patented 2d feature detection USE AT OWN RISK
 PATENTED_CMAKE_BOOL=	OPENCV_ENABLE_NONFREE
 
 PROTOBUF_DESC=		Enable protobuf support, builds dnn modules
-PROTOBUF_CMAKE_BOOL=	WITH_PROTOBUF
-PROTOBUF_LIB_DEPENDS=	libprotobuf.so:devel/protobuf
+PROTOBUF_CMAKE_BOOL=	WITH_PROTOBUF # by default the bundled protobuf is built
 
 PYTHON_DESC=		Enable Python Support 3.6 or greater
 PYTHON_BUILD_DEPENDS=	${PYNUMPY}
 PYTHON_RUN_DEPENDS=	${PYNUMPY}
-PYTHON_USES=		python:3.6+
+PYTHON_USES=		python
 PYTHON_CMAKE_BOOL=	BUILD_opencv_python3
 PYTHON_CMAKE_ON=	-DOPENCV_PYTHON3_INSTALL_PATH=${PYTHON_SITELIBDIR}
 
@@ -122,7 +120,7 @@ TESSERACT_CMAKE_BOOL=	WITH_TESSERACT
 
 # GUI group options (GTK3 VTK)
 GTK3_USES=		gnome
-GTK3_USE=		gnome=gtk30
+GTK3_USE=		gnome=gtk30,cairo,gdkpixbuf2
 GTK3_CMAKE_BOOL=	WITH_GTK
 
 VTK_DESC=		Include VTK library support (build opencv_viz module)
@@ -166,6 +164,7 @@ FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 GSTREAMER_DESC=		Add GSTREAMER Support
 GSTREAMER_CMAKE_BOOL=	WITH_GSTREAMER
 GSTREAMER_USES=		gstreamer
+GSTREAMER_USE=		gnome=glib20
 
 V4L_DESC=		Enable support for Video for Linux
 V4L_CMAKE_BOOL=		WITH_V4L WITH_LIBV4L
@@ -213,6 +212,12 @@ OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 
 _IPPICV_i386=		ippicv/ippicv_2020_lnx_ia32_20191018_general.tgz
 _IPPICV_amd64=		ippicv/ippicv_2020_lnx_intel64_20191018_general.tgz
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64le && defined(MACHINE_CPU) && ${MACHINE_CPU:Mvsx3}
+CMAKE_ARGS+=		-DCPU_BASELINE:STRING="VSX;VSX3;"
+.endif
 
 post-extract:
 	# Handle contrib

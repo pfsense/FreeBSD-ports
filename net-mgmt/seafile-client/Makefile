@@ -1,6 +1,6 @@
 PORTNAME=	seafile-client
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.0.8
+DISTVERSION=	9.0.6
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	ultima@FreeBSD.org
@@ -15,13 +15,14 @@ LIB_DEPENDS=	libsearpc.so:devel/libsearpc \
 		libinotify.so:devel/libinotify \
 		libevent.so:devel/libevent \
 		libuuid.so:misc/e2fsprogs-libuuid \
-		libjansson.so:devel/jansson
+		libjansson.so:devel/jansson \
+		libwebsockets.so:net/libwebsockets
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
 		bash:shells/bash
 
 USES=		autoreconf gnome iconv libarchive libtool localbase \
-		pathfix pkgconfig python:3.6+ shebangfix sqlite ssl vala:build
+		pathfix pkgconfig python shebangfix sqlite ssl vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
 GH_PROJECT=	seafile
@@ -34,6 +35,7 @@ CONFLICTS=	seafile-server
 SHEBANG_FILES=	*.sh scripts/*.sh app/seaf-cli integration-tests/*.sh
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	SSL_CFLAGS="${OPENSSLINC}" SSL_LIBS="-L${OPENSSLLIB} -lssl -lcrypto"
 CPPFLAGS+=	-I${LOCALBASE}/include/evhtp
 

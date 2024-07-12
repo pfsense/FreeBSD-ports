@@ -1,5 +1,5 @@
 PORTNAME=	octave-forge-netcdf
-PORTVERSION=	1.0.16
+PORTVERSION=	1.0.17
 PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases

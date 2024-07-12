@@ -1,6 +1,6 @@
 PORTNAME=	jql
 DISTVERSIONPREFIX=	jql-v
-DISTVERSION=	6.0.9
+DISTVERSION=	7.1.12
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,121 +15,112 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	yamafaktory
 
-CARGO_CRATES=	anes-0.1.6 \
-		anstream-0.3.0 \
-		anstyle-1.0.0 \
-		anstyle-parse-0.2.0 \
-		anstyle-query-1.0.0 \
-		anstyle-wincon-1.0.0 \
-		anyhow-1.0.71 \
-		autocfg-1.1.0 \
-		bitflags-1.3.2 \
-		bumpalo-3.12.0 \
-		bytes-1.4.0 \
+CARGO_CRATES=	addr2line-0.21.0 \
+		adler-1.0.2 \
+		aho-corasick-1.1.3 \
+		anes-0.1.6 \
+		anstream-0.6.14 \
+		anstyle-1.0.7 \
+		anstyle-parse-0.2.4 \
+		anstyle-query-1.0.3 \
+		anstyle-wincon-3.0.3 \
+		anyhow-1.0.86 \
+		autocfg-1.3.0 \
+		backtrace-0.3.71 \
+		bumpalo-3.16.0 \
+		bytes-1.6.0 \
 		cast-0.3.0 \
-		cc-1.0.78 \
+		cc-1.0.98 \
 		cfg-if-1.0.0 \
-		ciborium-0.2.0 \
-		ciborium-io-0.2.0 \
-		ciborium-ll-0.2.0 \
-		clap-4.3.3 \
-		clap_builder-4.3.3 \
-		clap_derive-4.3.2 \
-		clap_lex-0.5.0 \
-		colorchoice-1.0.0 \
-		colored_json-3.2.0 \
+		ciborium-0.2.2 \
+		ciborium-io-0.2.2 \
+		ciborium-ll-0.2.2 \
+		clap-4.5.7 \
+		clap_builder-4.5.7 \
+		clap_derive-4.5.5 \
+		clap_lex-0.7.0 \
+		colorchoice-1.0.1 \
+		colored_json-5.0.0 \
 		criterion-0.5.1 \
 		criterion-plot-0.5.0 \
-		crossbeam-channel-0.5.6 \
-		crossbeam-deque-0.8.2 \
-		crossbeam-epoch-0.9.13 \
-		crossbeam-utils-0.8.14 \
-		either-1.8.1 \
-		errno-0.3.1 \
-		errno-dragonfly-0.1.2 \
-		half-1.8.2 \
-		hashbrown-0.12.3 \
-		heck-0.4.1 \
-		hermit-abi-0.2.6 \
-		hermit-abi-0.3.1 \
-		indexmap-1.9.2 \
-		io-lifetimes-1.0.4 \
-		is-terminal-0.4.7 \
+		crossbeam-deque-0.8.5 \
+		crossbeam-epoch-0.9.18 \
+		crossbeam-utils-0.8.20 \
+		crunchy-0.2.2 \
+		either-1.12.0 \
+		equivalent-1.0.1 \
+		gimli-0.28.1 \
+		half-2.4.1 \
+		hashbrown-0.14.5 \
+		heck-0.5.0 \
+		hermit-abi-0.3.9 \
+		indexmap-2.2.6 \
+		is-terminal-0.4.12 \
+		is_terminal_polyfill-1.70.0 \
 		itertools-0.10.5 \
-		itoa-1.0.5 \
-		js-sys-0.3.60 \
-		libc-0.2.146 \
-		linux-raw-sys-0.3.8 \
-		log-0.4.17 \
-		memchr-2.5.0 \
-		memoffset-0.7.1 \
-		minimal-lexical-0.2.1 \
-		nom-7.1.3 \
-		num-traits-0.2.15 \
-		num_cpus-1.15.0 \
-		once_cell-1.17.0 \
+		itoa-1.0.11 \
+		js-sys-0.3.69 \
+		libc-0.2.155 \
+		log-0.4.21 \
+		memchr-2.7.2 \
+		miniz_oxide-0.7.3 \
+		num-traits-0.2.19 \
+		num_cpus-1.16.0 \
+		object-0.32.2 \
+		once_cell-1.19.0 \
 		oorandom-11.1.3 \
-		pin-project-lite-0.2.9 \
-		plotters-0.3.4 \
-		plotters-backend-0.3.4 \
-		plotters-svg-0.3.3 \
-		proc-macro2-1.0.53 \
+		pin-project-lite-0.2.14 \
+		plotters-0.3.6 \
+		plotters-backend-0.3.6 \
+		plotters-svg-0.3.6 \
+		proc-macro2-1.0.84 \
 		psm-0.1.21 \
-		quote-1.0.26 \
-		rayon-1.7.0 \
-		rayon-core-1.11.0 \
-		regex-1.7.1 \
-		regex-syntax-0.6.28 \
-		rustix-0.37.7 \
-		ryu-1.0.12 \
+		quote-1.0.36 \
+		rayon-1.10.0 \
+		rayon-core-1.12.1 \
+		regex-1.10.4 \
+		regex-automata-0.4.6 \
+		regex-syntax-0.8.3 \
+		rustc-demangle-0.1.24 \
+		ryu-1.0.18 \
 		same-file-1.0.6 \
-		scopeguard-1.1.0 \
-		serde-1.0.164 \
-		serde_derive-1.0.164 \
-		serde_json-1.0.96 \
-		serde_stacker-0.1.8 \
+		serde-1.0.203 \
+		serde_derive-1.0.203 \
+		serde_json-1.0.117 \
+		serde_stacker-0.1.11 \
 		stacker-0.1.15 \
-		strsim-0.10.0 \
-		syn-1.0.107 \
-		syn-2.0.10 \
-		thiserror-1.0.40 \
-		thiserror-impl-1.0.40 \
+		strsim-0.11.1 \
+		syn-2.0.66 \
+		thiserror-1.0.61 \
+		thiserror-impl-1.0.61 \
 		tinytemplate-1.2.1 \
-		tokio-1.28.2 \
-		tokio-macros-2.1.0 \
-		unicode-ident-1.0.6 \
+		tokio-1.38.0 \
+		tokio-macros-2.3.0 \
+		unicode-ident-1.0.12 \
 		utf8parse-0.2.1 \
-		walkdir-2.3.2 \
-		wasm-bindgen-0.2.83 \
-		wasm-bindgen-backend-0.2.83 \
-		wasm-bindgen-macro-0.2.83 \
-		wasm-bindgen-macro-support-0.2.83 \
-		wasm-bindgen-shared-0.2.83 \
-		web-sys-0.3.60 \
+		walkdir-2.5.0 \
+		wasm-bindgen-0.2.92 \
+		wasm-bindgen-backend-0.2.92 \
+		wasm-bindgen-macro-0.2.92 \
+		wasm-bindgen-macro-support-0.2.92 \
+		wasm-bindgen-shared-0.2.92 \
+		web-sys-0.3.69 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.5 \
+		winapi-util-0.1.8 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		windows-sys-0.42.0 \
-		windows-sys-0.45.0 \
-		windows-sys-0.48.0 \
-		windows-targets-0.42.2 \
-		windows-targets-0.48.0 \
-		windows_aarch64_gnullvm-0.42.2 \
-		windows_aarch64_gnullvm-0.48.0 \
-		windows_aarch64_msvc-0.42.2 \
-		windows_aarch64_msvc-0.48.0 \
-		windows_i686_gnu-0.42.2 \
-		windows_i686_gnu-0.48.0 \
-		windows_i686_msvc-0.42.2 \
-		windows_i686_msvc-0.48.0 \
-		windows_x86_64_gnu-0.42.2 \
-		windows_x86_64_gnu-0.48.0 \
-		windows_x86_64_gnullvm-0.42.2 \
-		windows_x86_64_gnullvm-0.48.0 \
-		windows_x86_64_msvc-0.42.2 \
-		windows_x86_64_msvc-0.48.0 \
-		yansi-0.5.1
+		windows-sys-0.52.0 \
+		windows-targets-0.52.5 \
+		windows_aarch64_gnullvm-0.52.5 \
+		windows_aarch64_msvc-0.52.5 \
+		windows_i686_gnu-0.52.5 \
+		windows_i686_gnullvm-0.52.5 \
+		windows_i686_msvc-0.52.5 \
+		windows_x86_64_gnu-0.52.5 \
+		windows_x86_64_gnullvm-0.52.5 \
+		windows_x86_64_msvc-0.52.5 \
+		winnow-0.6.13 \
+		yansi-1.0.1
 PLIST_FILES=	bin/${PORTNAME}
 
 do-install:

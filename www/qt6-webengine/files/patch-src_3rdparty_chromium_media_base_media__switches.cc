@@ -1,47 +1,65 @@
---- src/3rdparty/chromium/media/base/media_switches.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/media/base/media_switches.cc.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/media/base/media_switches.cc
-@@ -10,7 +10,7 @@
- #include "components/system_media_controls/linux/buildflags/buildflags.h"
- #include "media/media_buildflags.h"
+@@ -17,7 +17,7 @@
+ #include "ui/gl/gl_features.h"
+ #include "ui/gl/gl_utils.h"
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "base/cpu.h"
  #endif
  
-@@ -416,7 +416,7 @@ const base::Feature kGlobalMediaControls {
- const base::Feature kGlobalMediaControls {
-   "GlobalMediaControls",
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_CHROMEOS_LACROS)
-+    BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
-       base::FEATURE_ENABLED_BY_DEFAULT
+@@ -673,7 +673,7 @@ CONSTINIT const base::Feature kGlobalMediaControls(
+ // Show toolbar button that opens dialog for controlling media sessions.
+ CONSTINIT const base::Feature kGlobalMediaControls(
+              "GlobalMediaControls",
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT
  #else
-       base::FEATURE_DISABLED_BY_DEFAULT
-@@ -448,7 +448,7 @@ const base::Feature kGlobalMediaControlsPictureInPictu
- const base::Feature kGlobalMediaControlsPictureInPicture {
-   "GlobalMediaControlsPictureInPicture",
+              base::FEATURE_DISABLED_BY_DEFAULT
+@@ -696,7 +696,7 @@ CONSTINIT const base::Feature kMediaRemotingWithoutFul
+ // If enabled, users can request Media Remoting without fullscreen-in-tab.
+ CONSTINIT const base::Feature kMediaRemotingWithoutFullscreen(
+              "MediaRemotingWithoutFullscreen",
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+              base::FEATURE_ENABLED_BY_DEFAULT
+ #else
+              base::FEATURE_DISABLED_BY_DEFAULT
+@@ -708,7 +708,7 @@ CONSTINIT const base::Feature kGlobalMediaControlsPict
+ CONSTINIT const base::Feature kGlobalMediaControlsPictureInPicture(
+              "GlobalMediaControlsPictureInPicture",
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_CHROMEOS_LACROS)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
-       base::FEATURE_ENABLED_BY_DEFAULT
+              base::FEATURE_ENABLED_BY_DEFAULT
  #else
-       base::FEATURE_DISABLED_BY_DEFAULT
-@@ -489,7 +489,7 @@ const base::Feature kUnifiedAutoplay{"UnifiedAutoplay"
- const base::Feature kUnifiedAutoplay{"UnifiedAutoplay",
-                                      base::FEATURE_ENABLED_BY_DEFAULT};
+              base::FEATURE_DISABLED_BY_DEFAULT
+@@ -752,7 +752,7 @@ BASE_FEATURE(kUnifiedAutoplay,
+              "UnifiedAutoplay",
+              base::FEATURE_ENABLED_BY_DEFAULT);
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  // Enable vaapi video decoding on linux. This is already enabled by default on
  // chromeos, but needs an experiment on linux.
- const base::Feature kVaapiVideoDecodeLinux{"VaapiVideoDecoder",
-@@ -863,7 +863,7 @@ const base::Feature MEDIA_EXPORT kDeprecateLowUsageCod
-     "DeprecateLowUsageCodecs", base::FEATURE_ENABLED_BY_DEFAULT};
- #endif  // BUILDFLAG(IS_CHROMEOS)
+ BASE_FEATURE(kVaapiVideoDecodeLinux,
+@@ -832,7 +832,7 @@ BASE_FEATURE(kVaapiVp9kSVCHWEncoding,
+              "VaapiVp9kSVCHWEncoding",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // defined(ARCH_CPU_X86_FAMILY) && BUILDFLAG(IS_CHROMEOS)
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ // Enables the new V4L2StatefulVideoDecoder instead of V4L2VideoDecoder.
+ BASE_FEATURE(kV4L2FlatStatelessVideoDecoder,
+              "V4L2FlatStatelessVideoDecoder",
+@@ -1348,7 +1348,7 @@ const base::Feature MEDIA_EXPORT kUseOutOfProcessVideo
+ };
+ #endif  // BUILDFLAG(ALLOW_OOP_VIDEO_DECODER)
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- // Spawn utility processes to perform hardware decode acceleration instead of
+ // Spawn utility processes to perform hardware encode acceleration instead of
  // using the GPU process.
- const base::Feature MEDIA_EXPORT kUseOutOfProcessVideoDecoding{
+ const base::Feature MEDIA_EXPORT kUseOutOfProcessVideoEncoding{

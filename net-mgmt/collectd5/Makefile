@@ -1,6 +1,6 @@
 PORTNAME=	collectd
 PORTVERSION=	5.12.0
-PORTREVISION=	8
+PORTREVISION=	13
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://storage.googleapis.com/collectd-tarballs/
 PKGNAMESUFFIX=	5
@@ -12,9 +12,13 @@ WWW=		https://www.collectd.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf cpe gmake libtool pkgconfig shebangfix tar:bzip2
+LIB_DEPENDS=	libpfctl.so:net/libpfctl
+LDFLAGS+=	-lpfctl
+
+USES=		autoreconf cpe gmake libtool localbase:ldflags pkgconfig shebangfix tar:bzip2
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 OPTIONS_DEFINE=		CGI GCRYPT JAVA LOGGING LOGSTASH VIRT
 OPTIONS_GROUP=		INPUT OUTPUT
@@ -47,7 +51,7 @@ MQTT_DESC=		Enable MQTT broker metrics
 MYSQL_DESC=		Enable mysql-based plugins
 NOTIFYDESKTOP_DESC=	Enable desktop notifications
 NOTIFYEMAIL_DESC=	Enable notifications via email
-NUTUPS_DESC=		Enable nut (ups) plugin
+NUTUPS_DESC=		Enable nut (ups) plugin (sysutils/nut must be configured with DEV option)
 OLSRD_DESC=		Enable olsrd plugin
 ONEWIRE_DESC=		Eanble onewire plugin (via owfs)
 OPENLDAP_DESC=		Enable OpenLDAP plugin
@@ -67,7 +71,7 @@ SNMP_DESC=		Enable SNMP plugin
 STATSD_DESC=		Enable statsd plugin
 TOKYOTYRANT_DESC=	Enable tokyotyrant plugin
 TSDB_DESC=		Enable write_tsdb plugin
-VARNISH_DESC=		Enable varnish 6.x cache statistics
+VARNISH_DESC=		Enable varnish 7.x cache statistics
 VIRT_DESC=		Enable libvirt plugin (requires XML)
 XML_DESC=		Enable XML plugins
 ZOOKEEPER_DESC=		Enable zookeeper plugin
@@ -130,8 +134,7 @@ DBI_CFLAGS=		-Wno-deprecated-declarations
 
 GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 			libgpg-error.so:security/libgpg-error
-GCRYPT_CONFIGURE_WITH=	libgcrypt=${LOCALBASE}
-GCRYPT_LIBS=		-lgcrypt
+GCRYPT_CONFIGURE_WITH=	libgcrypt=${LOCALBASE}/bin/libgcrypt-config
 
 INFLUXDB_CONFIGURE_ENABLE=	write_influxdb_udp
 
@@ -239,6 +242,7 @@ SIGROK_CONFIGURE_ENABLE=	sigrok
 SIGROK_USES=			gettext-runtime
 SIGROK_BROKEN=			working only with sigrok < 0.4
 
+SLURM_BROKEN=			Does not compile with slurm-wlm >= 21.x
 SLURM_LIB_DEPENDS=		libslurm.so:sysutils/slurm-wlm
 SLURM_CONFIGURE_ENABLE=		slurm
 SLURM_CONFIGURE_WITH=		libslurm=${LOCALBASE}
@@ -256,7 +260,7 @@ TOKYOTYRANT_CONFIGURE_WITH=	libtokyotyrant=${LOCALBASE}
 
 TSDB_CONFIGURE_ENABLE=	write_tsdb
 
-VARNISH_LIB_DEPENDS=		libvarnishapi.so:www/varnish6
+VARNISH_LIB_DEPENDS=		libvarnishapi.so:www/varnish7
 VARNISH_CONFIGURE_ENABLE=	varnish
 
 VIRT_IMPLIES=		XML

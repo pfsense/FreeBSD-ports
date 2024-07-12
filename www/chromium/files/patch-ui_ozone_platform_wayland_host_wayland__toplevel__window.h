@@ -1,11 +1,11 @@
---- ui/ozone/platform/wayland/host/wayland_toplevel_window.h.orig	2023-05-31 08:12:17 UTC
+--- ui/ozone/platform/wayland/host/wayland_toplevel_window.h.orig	2024-05-21 18:07:39 UTC
 +++ ui/ozone/platform/wayland/host/wayland_toplevel_window.h
-@@ -251,7 +251,7 @@ class WaylandToplevelWindow : public WaylandWindow,
-   // Contains the previous state of the window.
-   PlatformWindowState previous_state_ = PlatformWindowState::kUnknown;
+@@ -263,7 +263,7 @@ class WaylandToplevelWindow : public WaylandWindow,
+   // The display ID to switch to in case the state is `kFullscreen`.
+   int64_t fullscreen_display_id_ = display::kInvalidDisplayId;
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    // Contains the current state of the tiled edges.
    WindowTiledEdges tiled_state_;
  #endif

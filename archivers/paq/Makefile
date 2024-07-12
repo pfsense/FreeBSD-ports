@@ -14,7 +14,11 @@ WWW=		http://mattmahoney.net/dc/zpaq.html
 LICENSE=	GPLv3 MIT
 LICENSE_COMB=	multi
 
+DEPRECATED=	Outdated, unmaintained and format that never gained any traction 
+EXPIRATION_DATE=2024-07-31
+
 USES=		dos2unix zip
+USE_CXXSTD=	c++14
 
 EXTRACT_AFTER_ARGS=	-x *.bat *.exe readme.txt -d ${WRKSRC}
 NO_WRKSUBDIR=	yes

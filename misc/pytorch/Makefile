@@ -1,9 +1,9 @@
 PORTNAME=	pytorch
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.13.1
+DISTVERSION=	2.3.1
 PORTREVISION=	1
 CATEGORIES=	misc # machine-learning
-MASTER_SITES=	https://github.com/pytorch/pytorch/releases/download/v1.13.1/
+MASTER_SITES=	https://github.com/pytorch/pytorch/releases/download/v${DISTVERSION}/
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,32 +11,36 @@ COMMENT=	Tensors and dynamic neural networks in Python (C++ library)
 WWW=		https://pytorch.org/
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=	configure fails: CMake Error at third_party/XNNPACK/CMakeLists.txt:94 (MESSAGE): Unrecognized CMAKE_SYSTEM_NAME = FreeBSD
 BROKEN_i386=	compilation fails: error: use of undeclared identifier 'AVX2'
 
 BUILD_DEPENDS=	gmake:devel/gmake \
-		${LOCALBASE}/include/fxdiv.h:devel/fxdiv
-LIB_DEPENDS=	libopenblas.so:math/openblas \
-		libmpi.so:net/openmpi \
-		libpthreadpool.so:devel/pthreadpool \
+		${LOCALBASE}/include/fxdiv.h:devel/fxdiv \
+		${PY_SETUPTOOLS}
+LIB_DEPENDS=	libabsl_base.so:devel/abseil \
+		libblis.so:math/blis \
+		libopenblas.so:math/openblas \
+		libmpi_cxx.so:net/openmpi4 \
 		libonnx.so:misc/onnx \
+		libpthreadpool.so:devel/pthreadpool \
 		libprotobuf.so:devel/protobuf \
 		libsleef.so:math/sleef
 
-USES=		compiler:c++14-lang cmake localbase:ldflags python # requires python even with PYTHON=off
+USES=		compiler:c++17-lang cmake localbase:ldflags python # requires python even with PYTHON=off
 
 CMAKE_OFF=	BUILD_CUSTOM_PROTOBUF USE_CUDA USE_ROCM  USE_NNPACK USE_QNNPACK USE_PYTORCH_QNNPACK \
 		USE_FBGEMM # workaround recommended by the upstream here: https://github.com/pytorch/pytorch/issues/28337
 CMAKE_ON=	USE_SYSTEM_PYBIND11 \
 		USE_SYSTEM_SLEEF \
 		USE_SYSTEM_ONNX # see other USE_SYSTEM_xx in CMakeLists.txt
+CMAKE_ON+=	ONNX_USE_LITE_PROTO # workaround for the protobuf-related failure described here: https://github.com/onnx/optimizer/issues/38
 CMAKE_ARGS=	-DPSIMD_SOURCE_DIR=${WRKSRC}/third_party/psimd \
-		-DFREEBSD_PYTHON_VER=${PYTHON_VER} \
-		-DPYTHON_EXECUTABLE:STRING=${PYTHON_CMD}
+		-DPYTHON_EXECUTABLE=${PYTHON_CMD}
 
 MAKE_ENV=	USE_NINJA=no # ninja breaks for some reason
-LDFLAGS+=	-lexecinfo
+LDFLAGS+=	-lexecinfo \
+		-pthread
 
 BINARY_ALIAS=	make=${GMAKE} git=true
 
@@ -65,6 +69,8 @@ post-patch:
 	@cd ${WRKSRC} && for f in $$(${GREP} -rl "include <malloc\.h>" * | ${GREP} -E "\.(c|cpp|h|hpp)$$"); do \
 	  ${REINPLACE_CMD} -i'' -E "s|include <malloc\.h>|include <stdlib.h>|" $$f; \
 	done
+	# remove bundled fmt
+	@${RM} -r ${WRKSRC}/third_party/fmt
 
 post-install:
 	# functorch.so is installed back into the source directory, see https://github.com/pytorch/pytorch/issues/91524

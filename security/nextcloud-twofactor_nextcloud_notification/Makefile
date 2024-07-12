@@ -1,6 +1,7 @@
 PORTNAME=	twofactor_nextcloud_notification
-PORTVERSION=	3.7.0
+PORTVERSION=	3.9.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -9,7 +10,7 @@ WWW=		https://apps.nextcloud.com/apps/twofactor_nextcloud_notification
 
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NEXTCLOUD_RUN_DEPENDS=	25
+NEXTCLOUD_RUN_DEPENDS=	26
 
 USES=		nextcloud php:flavors
 

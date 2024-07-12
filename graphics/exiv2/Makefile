@@ -1,9 +1,8 @@
 PORTNAME=	exiv2
-DISTVERSION=	0.27.6
-DISTVERSIONSUFFIX=	-Source
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.28.2
 PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	https://github.com/Exiv2/exiv2/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Exif, IPTC, and XMP metadata manipulation library and tools
@@ -12,47 +11,48 @@ WWW=		https://www.exiv2.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libexpat.so:textproc/expat2
-TEST_DEPENDS=	bash:shells/bash
-TEST_LIB_DEPENDS=	libgtest.so:devel/googletest
+LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
+		libexpat.so:textproc/expat2 \
+		libinih.so:devel/inih \
+		libpng.so:graphics/png
 
-USES=		cmake compiler:c++11-lang cpe dos2unix gettext-tools pathfix \
-		python:3.6+,test localbase:ldflags
-USE_LDCONFIG=	yes
+USES=		cmake compiler:c++17-lang cpe dos2unix gettext-tools iconv \
+		localbase:ldflags pathfix shebangfix
 DOS2UNIX_FILES=	cmake/compilerFlags.cmake
+SHEBANG_FILES=	fuzz/mkdictionary.py tests/runner.py
+USE_LDCONFIG=	yes
 
-TEST_TARGET=	tests
+USE_GITHUB=	yes
+GH_ACCOUNT=	Exiv2
 
 CMAKE_ON=	EXIV2_ENABLE_VIDEO
-CMAKE_OFF=	EXIV2_ENABLE_LIBXMP
+CMAKE_OFF=	EXIV2_ENABLE_EXTERNAL_XMP
 
-OPTIONS_DEFINE=	NLS SAMPLE TEST
+LDFLAGS_mips=	-lintl
+LDFLAGS_mips64=	-lintl
+
+OPTIONS_DEFINE=	DOCS DOXYGEN NLS SAMPLE TEST
 OPTIONS_SUB=	yes
-TEST_IMPLIES=	SAMPLE
-
-NLS_CMAKE_BOOL=	EXIV2_ENABLE_NLS
-NLS_USES=	gettext-runtime
 
 SAMPLE_DESC=	Include sample applications
+
+DOXYGEN_BUILD_DEPENDS=	dot:graphics/graphviz \
+			doxygen:devel/doxygen
+DOXYGEN_CMAKE_BOOL=	EXIV2_BUILD_DOC
+DOXYGEN_ALL_TARGET=	all doc
+DOXYGEN_PORTDOCS=	*
+
+NLS_USES=	gettext-runtime
+NLS_CMAKE_BOOL=	EXIV2_ENABLE_NLS
+
 SAMPLE_CMAKE_BOOL=	EXIV2_BUILD_SAMPLES
 
+TEST_LIB_DEPENDS=	libgtest.so:devel/googletest
+TEST_TEST_DEPENDS=	bash:shells/bash
+TEST_USES=		python:build,test
 TEST_CMAKE_BOOL=	EXIV2_BUILD_UNIT_TESTS
-
-PATHFIX_CMAKELISTSTXT=	CMakeChecks.txt
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-Source
-
-.include <bsd.port.options.mk>
-
-LDFLAGS_mips=		-lintl
-LDFLAGS_mips64=		-lintl
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|python3|${PYTHON_CMD}|' \
-		${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|python3|${PYTHON_CMD}|' \
-		${WRKSRC}/test/Makefile
-	@${REINPLACE_CMD} -e 's|python3|${PYTHON_CMD}|' \
-		${WRKSRC}/test/functions.source
+TEST_CMAKE_ON=		-DPython${PYTHON_MAJOR_VER}_EXECUTABLE:FILEPATH="${PYTHON_CMD}"
+TEST_TEST_TARGET=	test
+TEST_IMPLIES=		SAMPLE
 
 .include <bsd.port.mk>

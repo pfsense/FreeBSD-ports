@@ -1,13 +1,13 @@
 PORTNAME=	xdg-desktop-portal
-PORTVERSION=	1.16.0
-PORTREVISION=	1
-CATEGORIES=	deskutils wayland
+PORTVERSION=	1.18.4
+CATEGORIES=	deskutils
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Portal frontend service for Flatpak
-WWW=		https://github.com/flatpak/xdg-desktop-portal
+WWW=		https://github.com/flatpak/xdg-desktop-portal/
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfuse3.so:sysutils/fusefs-libs3 \
 		libgeoclue-2.so:net/geoclue \
@@ -16,22 +16,15 @@ LIB_DEPENDS=	libfuse3.so:sysutils/fusefs-libs3 \
 		libportal.so:deskutils/libportal
 
 USES=		gettext-tools gmake gnome meson pkgconfig
-
-USE_GNOME=	glib20
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	flatpak
+USE_GNOME=	gdkpixbuf2 glib20
 
-MESON_ARGS=	-Ddocbook-docs=disabled -Dsystemd=disabled
-
-.include <bsd.port.pre.mk>
-
-.if (${OSVERSION} >= 1400000 && ${OSVERSION} < 1400008) \
- || ${OSVERSION} < 1300000
-IGNORE=		requires O_PATH support in open(2)
-.endif
+MESON_ARGS=	-Ddocbook-docs=disabled -Dman-pages=disabled -Dpytest=disabled \
+		-Dflatpak-interfaces=disabled -Dsandboxed-image-validation=false \
+		-Dsystemd=disabled
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/lib/systemd
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

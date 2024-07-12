@@ -1,6 +1,5 @@
 PORTNAME=	mate-settings-daemon
-PORTVERSION=	1.26.0
-PORTREVISION=	2
+PORTVERSION=	1.28.0
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -34,6 +33,7 @@ USE_XORG=	ice sm x11 xext xi
 USE_GNOME=	cairo dconf gtk30 intlhack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-dbus-services=${PREFIX}/share/dbus-1/services \
 		--disable-static \
 		--disable-rfkill
@@ -71,5 +71,11 @@ OPTIONS_SUB=	yes
 
 PULSEAUDIO_CONFIGURE_ENABLE=	pulse
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

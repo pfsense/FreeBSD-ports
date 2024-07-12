@@ -1,6 +1,6 @@
 PORTNAME=	sexpdata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.1
+DISTVERSION=	1.0.2
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,7 +12,7 @@ WWW=		https://pypi.org/project/sexpdata/ \
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.7+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	jd-boyd
 USE_PYTHON=	autoplist distutils pytest

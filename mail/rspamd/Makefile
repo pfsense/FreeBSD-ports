@@ -1,5 +1,5 @@
 PORTNAME=	rspamd
-PORTVERSION=	3.5
+PORTVERSION=	3.8.4
 PORTREVISION=	1
 CATEGORIES=	mail
 
@@ -30,7 +30,6 @@ CMAKE_ARGS+=	-DBUILD_PORT=yes \
 		-DDBDIR=/var/db/rspamd \
 		-DLIBDIR=${PREFIX}/lib/rspamd \
 		-DLOGDIR=/var/log/rspamd \
-		-DMANDIR=${MANPREFIX}/man \
 		-DRUNDIR=/var/run/rspamd
 
 CONFLICTS_INSTALL=	rspamd-devel
@@ -78,12 +77,6 @@ HYPERSCAN_CMAKE_ON=	-DENABLE_HYPERSCAN=ON
 LUAJIT_USES=		luajit
 LUAJIT_USES_OFF=	lua:51+
 LUAJIT_CMAKE_OFF=	-DENABLE_LUAJIT=OFF
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc64
-CMAKE_ARGS+=		-DENABLE_LTO:BOOL=OFF
-.endif
 
 post-install:
 	@${MKDIR} \

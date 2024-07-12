@@ -1,5 +1,5 @@
 PORTNAME=	tripwire
-PORTVERSION=	2.4.3.7
+PORTVERSION=	2.4.3.8
 PORTREVISION=	1
 CATEGORIES=	security
 
@@ -12,11 +12,13 @@ LICENSE=	GPLv2
 USE_GITHUB=	yes
 GH_ACCOUNT=	Tripwire
 GH_PROJECT=	tripwire-open-source
+GH_TAGNAME=	e2f90ed
 
 NO_LICENSES_INSTALL=	yes
 MAKE_JOBS_UNSAFE=	yes
 USES=		cpe gmake ssl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX= ${PREFIX}/share
 MAKE_ARGS=	SYSPRE=${ARCH}-unknown-freebsd \
 		DESTDIR=${STAGEDIR}
 M4=		/usr/bin/m4

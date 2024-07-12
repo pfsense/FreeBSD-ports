@@ -1,5 +1,5 @@
 PORTNAME=	chuffed
-DISTVERSION=	0.12.0
+DISTVERSION=	0.13.2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,9 +11,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		bison cmake compiler:c++11-lang
 USE_GITHUB=	yes
-GH_TAGNAME=	e04bedd # devel branch: only devel branch is compatible with the current MiniZinc
 
 GH_TUPLE=	cp-profiler:cpp-integration:f16b313:cpi/submodules/cp-profiler-integration
+
+CMAKE_ON=	BUILD_SHARED_LIBS
+
+CXXFLAGS+=	-fPIC
 
 DATADIR=	${PREFIX}/share/minizinc/chuffed
 

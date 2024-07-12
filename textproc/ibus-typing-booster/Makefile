@@ -1,5 +1,5 @@
 PORTNAME=	ibus-typing-booster
-PORTVERSION=	2.22.5
+PORTVERSION=	2.25.9
 CATEGORIES=	textproc
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -35,8 +35,8 @@ TEST_DEPENDS=	${LOCALBASE}/share/hunspell/cs_CZ.dic:textproc/cs-hunspell	\
 USE_GITHUB=	yes
 GH_ACCOUNT=	mike-fabian
 
-USES=		autoreconf gettext gmake gnome iconv pathfix pkgconfig	\
-		python:3.7+ shebangfix
+USES=		autoreconf desktop-file-utils gettext gmake gnome iconv pathfix	\
+		pkgconfig python shebangfix
 SHEBANG_FILES=	engine/emoji-picker.in engine/ibus-engine-typing-booster.in	\
 		setup/ibus-setup-typing-booster.in
 SHEBANG_LANG=	sh
@@ -65,7 +65,7 @@ PY2FIX=		setup/user_transliteration.py tests/test_m17n_db_info.py	\
 		tests/test_emoji_similar.py tests/test_emoji_candidates.py
 SHR2FIX=	engine/itb_util.py engine/itb_emoji.py engine/hunspell_table.py	\
 		tests/test_compose_sequences.py typing-booster.appdata.xml	\
-		setup/user_transliteration.py
+		setup/user_transliteration.py ${GLIB_SCHEMAS} engine/itb_sound.py
 COMP2DEL=	engine/Makefile setup/Makefile
 
 pre-configure:

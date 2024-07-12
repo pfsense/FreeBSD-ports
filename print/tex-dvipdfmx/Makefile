@@ -1,5 +1,5 @@
 PORTNAME=	dvipdfmx
-PORTVERSION=	${TEXLIVE_VERSION}
+DISTVERSION=	${TEXLIVE_VERSION}
 CATEGORIES=	print
 MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/
 PKGNAMEPREFIX=	tex-
@@ -23,6 +23,7 @@ USES=		localbase:ldflags pkgconfig tar:xz tex
 USE_TEX=	kpathsea web2c dvipsk luatex texhash
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-system-kpathsea \
 		--with-kpathsea-includes=${LOCALBASE}/include \
 		--with-kpathsea-libdir=${LOCALBASE}/lib \

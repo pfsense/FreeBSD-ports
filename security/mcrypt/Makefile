@@ -1,6 +1,6 @@
 PORTNAME=	mcrypt
 PORTVERSION=	2.6.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/MCrypt/${PORTVERSION} \
 		ftp://argeas.cs-net.gr/pub/unix/mcrypt/attic/ \
@@ -9,7 +9,7 @@ MASTER_SITES=	SF/${PORTNAME}/MCrypt/${PORTVERSION} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Replacement for crypt(1)
-WWW=		http://mcrypt.sourceforge.net/
+WWW=		https://mcrypt.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,6 +20,7 @@ LIB_DEPENDS=	libmcrypt.so:security/libmcrypt \
 USES=		cpe
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--enable-static --with-catgets

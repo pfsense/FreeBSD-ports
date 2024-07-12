@@ -31,10 +31,7 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $changedesc = "Services: Acme: Accountkeys";
 
-if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
-	$config['installedpackages']['acme']['accountkeys']['item'] = array();
-}
-$a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
+config_init_path('installedpackages/acme/accountkeys/item');
 
 if ($_POST) {
 	$pconfig = $_POST;
@@ -53,7 +50,7 @@ if ($_POST) {
 				$selected[] = get_accountkey_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_accountkeys[$itemnr]);
+				config_del_path("installedpackages/acme/accountkeys/item/{$itemnr}");
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -85,7 +82,9 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_accountkey_id($selection);
 			}
+			$a_accountkeys = config_get_path('installedpackages/acme/accountkeys/item');
 			array_moveitemsbefore($a_accountkeys, $moveto, $selected);
+			config_set_path('installedpackages/acme/accountkeys/item', $a_accountkeys);
 		
 			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
@@ -101,9 +100,9 @@ if ($_POST) {
 if ($_POST['act'] == "del") {
 	$id = $_POST['id'];
 	$id = get_accountkey_id($id);
-	if (isset($a_accountkeys[$id])) {
+	if (config_get_path("installedpackages/acme/accountkeys/item/{$id}") !== null) {
 		if (!$input_errors) {
-			unset($a_accountkeys[$id]);
+			config_del_path("installedpackages/acme/accountkeys/item/{$id}");
 			$changedesc .= " Accountkey delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
@@ -157,13 +156,13 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				</thead>
 				<tbody class="user-entries">
 <?php
-		foreach ($a_accountkeys as $accountkey) {
+		foreach (config_get_path('installedpackages/acme/accountkeys/item', []) as $accountkey) {
 			$accountname = htmlspecialchars($accountkey['name']);
 			?>
 			<tr id="fr<?=$accountname;?>" <?=$display?> onClick="fr_toggle('<?=$accountname;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$accountname;?>';">
 				<td>
 					<input type="checkbox" id="frc<?=$accountname;?>" onClick="fr_toggle('<?=$accountname;?>')" name="rule[]" value="<?=$accountname;?>"/>
-					<a class="fa fa-anchor" id="Xmove_<?=$accountname?>" title="<?=gettext("Move checked entries to here")?>"></a>
+					<a class="fa-solid fa-anchor" id="Xmove_<?=$accountname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				</td>
 			  <td>
 				<?=$accountname;?>
@@ -195,15 +194,15 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 	</div>
 	<nav class="action-buttons">
 		<a href="acme_accountkeys_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn no-confirm"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn no-confirm"></i>
 			<?=gettext("Delete"); ?>
 		</button>
 		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn no-confirm"></i>
+			<i class="fa-solid fa-save icon-embed-btn no-confirm"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>

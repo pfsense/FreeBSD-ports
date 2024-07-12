@@ -1,8 +1,9 @@
 PORTNAME=	minipro
-PORTVERSION=	0.5
+DISTVERSION=	0.5
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	sbruno@freebsd.org
+MAINTAINER=	bofh@freebsd.org
 COMMENT=	CLI for MiniPRO TL866xx chip programmers
 WWW=		https://gitlab.com/DavidGriffith/minipro
 
@@ -11,20 +12,21 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	gsed:textproc/gsed
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		compiler:c11 gmake pkgconfig shebangfix
+USES=		compiler:c11 gmake pkgconfig
 USE_GITLAB=	yes
-
 GL_ACCOUNT=	DavidGriffith
-GL_COMMIT=	8be592c954264afdc3a2cb596ee45517cc5dc621
 GL_PROJECT=	${PORTNAME}
+GL_TAGNAME=	e8244313c2558b41a390824e1f847f449ebd7fce
+
 BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
-SHEBANG_FILES=	miniprohex
+
 PLIST_FILES=	bin/minipro \
-		bin/miniprohex \
-		man/man1/minipro.1.gz
+		share/man/man1/minipro.1.gz \
+		share/minipro/infoic.xml \
+		share/minipro/logicic.xml
 
 post-install:
-	@${GZIP_CMD} ${STAGEDIR}${PREFIX}/man/man1/minipro.1
+	@${GZIP_CMD} ${STAGEDIR}${PREFIX}/share/man/man1/minipro.1
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

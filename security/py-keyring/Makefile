@@ -12,10 +12,10 @@ WWW=		https://github.com/jaraco/keyring
 
 LICENSE=	PSFL
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=1.15.0:devel/py-setuptools_scm@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-scm>=1.15.0:devel/py-setuptools-scm@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jaraco.classes>=0:devel/py-jaraco.classes@${PY_FLAVOR}
 
-USES=		cpe python:3.6+
+USES=		cpe python
 CPE_VENDOR=	python
 USE_PYTHON=	autoplist concurrent distutils
 

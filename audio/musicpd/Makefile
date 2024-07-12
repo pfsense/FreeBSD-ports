@@ -1,5 +1,6 @@
 PORTNAME=	musicpd
-PORTVERSION=	0.23.13
+PORTVERSION=	0.23.15
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
@@ -65,7 +66,6 @@ ISO9660_DESC=	Direct support for ISO 9660 images
 PROXYDB_DESC=	Proxy database support via libmpdclient
 LAME_DESC=	Support for MP3 Icecast Streams
 OPENMPT_DESC=	Support for OpenMPT playback
-PIPEWIRE_DESC=	PipeWire support
 PLAYLISTS_DESC=	Enable extra playlist support (wma, RSS)
 QOBUZ_DESC=	Streaming service support: Qobuz
 SIDPLAY_DESC=	Sidplay support (C64 mono and stereo files)
@@ -170,6 +170,7 @@ CDPARANOIA_MESON_ENABLED=	cdio_paranoia
 CDPARANOIA_LIB_DEPENDS=	libcdio_paranoia.so:sysutils/libcdio-paranoia
 CURL_MESON_ENABLED=	curl webdav
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
+CURL_IMPLIES=		PLAYLISTS
 SMB_MESON_ENABLED=	smbclient
 SMB_USES=		samba:lib
 
@@ -242,8 +243,8 @@ do-install:
 
 do-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.1 \
-		${STAGEDIR}${PREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.conf.5 \
-		${STAGEDIR}${PREFIX}/man/man5
+		${STAGEDIR}${PREFIX}/share/man/man5
 
 .include <bsd.port.mk>

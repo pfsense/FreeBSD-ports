@@ -1,6 +1,5 @@
 PORTNAME=	greenlet
-PORTVERSION=	2.0.2
-PORTREVISION=	1
+PORTVERSION=	3.0.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,8 +14,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 NOT_FOR_ARCHS=		mips mips64
 NOT_FOR_ARCHS_REASON=	greenlet needs to be ported to this platform
 
-USES=		python:3.5+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=40.8.0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
 CPPFLAGS+=	-Dregister=
 

@@ -1,5 +1,5 @@
 PORTNAME=	zope.proxy
-DISTVERSION=	4.3.5
+DISTVERSION=	5.2
 CATEGORIES=	net python zope
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,9 @@ LICENSE=	ZPL21
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zope.interface>=3.3.0:devel/py-zope.interface@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
+
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 
 .include <bsd.port.mk>

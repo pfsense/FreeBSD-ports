@@ -1,32 +1,32 @@
 PORTNAME=	wazuh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.4.3
+DISTVERSION=	4.7.5
 CATEGORIES=	security
 MASTER_SITES=	LOCAL/acm/${PORTNAME}/
 PKGNAMESUFFIX=  -dashboard
-DISTFILES=	${PORTNAME}-kibana-app-${DISTVERSION}-${OPENSEARCH_VERSION}${EXTRACT_SUFX} \
+DISTFILES=	${PORTNAME}${PKGNAMESUFFIX}-plugins-${DISTVERSION}-${OPENSEARCH_VERSION}${EXTRACT_SUFX} \
 		opensearch_dashboards.yml
 DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Web user interface for data visualization and analysis
-WWW=		https://github.com/wazuh/wazuh-kibana-app
+WWW=		https://github.com/wazuh/wazuh-dashboard-plugins
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${LOCALBASE}/www/opensearch-dashboards/bin/opensearch-dashboards:textproc/opensearch-dashboards
+RUN_DEPENDS=	${LOCALBASE}/www/opensearch-dashboards/bin/opensearch-dashboards:textproc/opensearch-dashboards210
 
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
 
-OPENSEARCH_VERSION=	2.7.0
+OPENSEARCH_VERSION=	2.10.0
 ETCDIR=		${PREFIX}/etc/wazuh-dashboard
-WRKSRC=		${WRKDIR}/${PORTNAME}-kibana-app-${DISTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}${PKGNAMESUFFIX}-plugins
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
-	@cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${PORTNAME}-kibana-app-${DISTVERSION}-${OPENSEARCH_VERSION}${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS}
+	@cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${PORTNAME}${PKGNAMESUFFIX}-plugins-${DISTVERSION}-${OPENSEARCH_VERSION}${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS}
 	${CP} ${_DISTDIR}/opensearch_dashboards.yml ${WRKDIR}
 
 do-install:

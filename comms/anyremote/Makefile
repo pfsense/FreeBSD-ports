@@ -1,11 +1,12 @@
 PORTNAME=	anyremote
 PORTVERSION=	6.7.3
+PORTREVISION=	1
 CATEGORIES=	comms
 MASTER_SITES=	SF
 
 MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Remote control service over Bluetooth, infrared, or TCP/IP networking
-WWW=		http://anyremote.sourceforge.net/
+WWW=		https://anyremote.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +18,7 @@ USES=		alias iconv pkgconfig python shebangfix gnome xorg
 USE_GNOME=	glib20
 SHEBANG_FILES=	cfg-data/Utils/all-in-1.py
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 

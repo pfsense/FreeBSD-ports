@@ -1,20 +1,27 @@
 PORTNAME=	tix
 PORTVERSION=	8.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF
 DISTNAME=	Tix${DISTVERSION}-src${DISTVERSIONSUFFIX}
 
 MAINTAINER=	doconnor@gsoft.com.au
 COMMENT=	Extension to the Tk toolkit
-WWW=		http://tix.sourceforge.net/
+WWW=		https://tix.sourceforge.net/
+
+USES=		tk:tea
+USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/Tix${DISTVERSION}
-USE_LDCONFIG=	yes
-USES=		tk:tea
 
 TIX_LIB=	libTix${PORTVERSION}.so
 TIX_LIB_FILE=	${TIX_LIB}.0
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 pre-configure:
 	@(cd ${WRKSRC} && \
@@ -32,7 +39,7 @@ post-configure:
 	${WRKSRC}/Makefile
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/man/*.n ${STAGEDIR}${PREFIX}/man/mann/
+	${INSTALL_MAN} ${WRKSRC}/man/*.n ${STAGEDIR}${PREFIX}/share/man/mann/
 	${RM} ${STAGEDIR}${PREFIX}/lib/Tix${PORTVERSION}/${TIX_LIB}
 	${CP} -p ${WRKSRC}/${TIX_LIB} ${WRKSRC}/${TIX_LIB_FILE}
 	${INSTALL_LIB} ${WRKSRC}/${TIX_LIB_FILE} ${STAGEDIR}${PREFIX}/lib
@@ -45,4 +52,4 @@ post-install:
 	${LN} -sf ${PREFIX}/include/tix/generic/tix.h ${STAGEDIR}${PREFIX}/include/tix.h
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/Tix${PORTVERSION}/html
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

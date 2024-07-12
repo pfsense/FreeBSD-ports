@@ -1,5 +1,5 @@
 PORTNAME=	python-bareos
-PORTVERSION=	22.0.3
+PORTVERSION=	23.0.2
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/bareos/bareos
 
 LICENSE=	AGPLv3
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

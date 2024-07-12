@@ -1,3 +1,4 @@
+PORTREVISION=	0
 PKGNAMESUFFIX=	-1byte
 
 COMMENT=	ONScripter with ${ENGLISH_DESC:tl} support

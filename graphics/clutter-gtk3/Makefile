@@ -1,12 +1,12 @@
 PORTNAME=	clutter-gtk
 PORTVERSION=	1.8.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GTK+ Integration library for Clutter
+COMMENT=	GTK Integration library for Clutter
 WWW=		https://blogs.gnome.org/clutter/
 
 LICENSE=	LGPL21

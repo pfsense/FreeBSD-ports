@@ -1,6 +1,6 @@
 PORTNAME=	gmsh
-DISTVERSION=	4.11.1
-PORTREVISION=	2
+DISTVERSION=	4.13.1
+PORTREVISION=	1
 CATEGORIES=	cad python
 MASTER_SITES=	https://gmsh.info/src/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,7 +24,7 @@ LIB_DEPENDS=	libcgns.so:science/cgnslib \
 		libsz.so:science/libaec \
 		libTKV3d.so:cad/opencascade
 
-USES=		cmake gl gnome jpeg python:3.6+ tar:tgz xorg
+USES=		cmake gl gnome jpeg python tar:tgz xorg
 USE_PYTHON=	flavors
 USE_GNOME=	cairo
 USE_GL=		gl glu
@@ -33,6 +33,8 @@ USE_LDCONFIG=	${PYTHON_SITELIBDIR}
 
 CMAKE_ON=	ENABLE_WRAP_PYTHON ENABLE_PRIVATE_API ENABLE_OCC
 CMAKE_ARGS=	-DOCC_INC=${LOCALBASE}/include/OpenCASCADE
+
+CXXFLAGS_powerpc64=	-mvsx
 
 post-install: # remove all except for the python binding
 	@cd ${STAGEDIR}${PREFIX} && \

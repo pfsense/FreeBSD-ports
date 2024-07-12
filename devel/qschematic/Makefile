@@ -1,8 +1,8 @@
 PORTNAME=	qschematic
-DISTVERSION=	1.4.0
+DISTVERSION=	1.6.0
 CATEGORIES=	devel
 
-MAINTAINER=	jbo@insane.engineer
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	Qt/C++ library providing widgets for drawing diagrams
 WWW=		https://github.com/simulton/qschematic
 
@@ -11,15 +11,20 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 
 LIB_DEPENDS=	libgpds.so:devel/gpds
 
-USES=		cmake compiler:c++17-lang qt:5
-USE_QT=		buildtools:build core gui qmake:build widgets
+USES=		cmake compiler:c++20-lang pkgconfig qt:6
+USE_QT=		base
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	simulton
 GH_PROJECT=	QSchematic
 
-CMAKE_OFF=	QSCHEMATIC_BUILD_DEMO QSCHEMATIC_DEPENDENCY_GPDS_DOWNLOAD
 CMAKE_ARGS=	-DQSCHEMATIC_DEPENDENCY_GPDS_TARGET:STRING="gpds::gpds-shared"
+CMAKE_OFF=	QSCHEMATIC_BUILD_DEMO QSCHEMATIC_DEPENDENCY_GPDS_DOWNLOAD
+
+# Since the update from USES qt:5 to qt:6 there appears to be some overlinking
+# resulting in pulling in OpenGL which is not needed by upstream.
+# Put a "workaround" in place until we get to investigate this.
+LDFLAGS+=	-Wl,--as-needed
 
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 

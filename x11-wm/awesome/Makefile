@@ -1,11 +1,11 @@
 PORTNAME=	awesome
 PORTVERSION=	4.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Highly configurable, next generation framework window manager
 WWW=		https://awesomewm.org/
 
@@ -38,7 +38,7 @@ GH_ACCOUNT=	awesomewm
 
 SHEBANG_FILES=	utils/awesome-client
 CMAKE_ARGS=	-DSYSCONFDIR=${PREFIX}/etc \
-		-DAWESOME_MAN_PATH=${MANPREFIX}/man \
+		-DAWESOME_MAN_PATH=${PREFIX}/share/man \
 		-DGENERATE_DOC=OFF \
 		-DLUA_INCLUDE_DIR=${LUA_INCDIR}
 

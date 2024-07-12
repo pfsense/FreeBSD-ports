@@ -3,7 +3,7 @@
  * pfblockerng_feeds.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -24,11 +24,11 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
-init_config_arr(array('installedpackages', 'pfblockerngglobal'));
-$fconfig	= &$config['installedpackages']['pfblockerngglobal'];
+config_init_path('installedpackages/pfblockerngglobal');
+$fconfig	= config_get_path('installedpackages/pfblockerngglobal');
 
 // Load/convert Feeds (w/alternative aliasname(s), if user-configured)
 $feed_info	= convert_feeds_json();
@@ -84,6 +84,7 @@ if ($_POST) {
 				}
 				else {
 					$fconfig['feed_' . $l_aliasname] = $_POST['feed_' . $l_aliasname] ?: '';
+					config_set_path("installedpackages/pfblockerngglobal/feed_{$l_aliasname}", $fconfig['feed_' . $l_aliasname]);
 					$config_mod = TRUE;
 
 					// IPv4/6 Aliasnames cannot exceed 31 characters in PF. ( pfB_ + aliasname + _v? )
@@ -111,6 +112,7 @@ if ($_POST) {
 						$value					= strtolower($value);		// config XML tag needs to be lowercase
 						${"feed_alt_$value"}			= $post;
 						$fconfig['feed_alt_' . $value]		= ${"feed_alt_$value"};
+						config_set_path("installedpackages/pfblockerngglobal/feed_alt_{$value}", $fconfig['feed_alt_' . $value]);
 					}
 					else {
 						$input_errors[] = 'Invalid Alternative Alias Name';
@@ -158,9 +160,9 @@ function url_compare($ftype, $key, $rowid, $aliasname, $row_aliasname, $row_url,
 		// Set found flag
 		$ex_feeds[$ftype][$key]['found'] = TRUE;
 
-		$fa_type = 'check';
+		$fa_type = 'fa-solid fa-check';
 		if ($aliasname != $row_aliasname) {
-			$fa_type = 'check-circle-o';
+			$fa_type = 'fa-regular fa-circle-check';
 		}
 
 		if ($row_state == 'Disabled') {
@@ -169,7 +171,7 @@ function url_compare($ftype, $key, $rowid, $aliasname, $row_aliasname, $row_url,
 				. "&rowid={$rowid}\""
 				. "<span class=\"text-danger\""
 				. "title=\"Feed exists in [ {$row_aliasname} ] but is Disabled.\">"
-				. "<i class=\"fa fa-{$fa_type}\"></i>"
+				. "<i class=\"{$fa_type}\"></i>"
 				. "</span>"
 				. "</a>";
 		} else {
@@ -177,7 +179,7 @@ function url_compare($ftype, $key, $rowid, $aliasname, $row_aliasname, $row_url,
 				. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}"
 				. "&rowid={$rowid}\""
 				. "title=\"Feed exists in [ {$row_aliasname} ]\">"
-				. "<i class=\"fa fa-{$fa_type}\"></i>"
+				. "<i class=\"{$fa_type}\"></i>"
 				. "</a>";
 		}
 
@@ -185,7 +187,7 @@ function url_compare($ftype, $key, $rowid, $aliasname, $row_aliasname, $row_url,
 		if ($feed_url != $row_url) {
 			$x_icon .= "&emsp;"
 				. "<span class=\"text-danger\">"
-				. "<i title=\"http/https protocol mismatch\" class=\"fa fa-key\"></i>"
+				. "<i title=\"http/https protocol mismatch\" class=\"fa-solid fa-key\"></i>"
 				. "</span>";
 		}
 	}
@@ -294,7 +296,7 @@ $btn_save = new Form_Button(
 	'save',
 	'Save Settings',
 	NULL,
-	'fa-save'
+	'fa-solid fa-save'
 );
 
 $btn_save->removeClass('btn-primary')->addClass('btn-primary btn-sm');
@@ -345,23 +347,23 @@ print ($section);
 				<dl class="dl-horizontal responsive">
 					<dt><?=gettext('Icon')?></dt>
 						<dd><?=gettext('Legend')?></dd>
-					<dt><i class="fa fa-info-circle"></i></dt>
+					<dt><i class="fa-solid fa-info-circle"></i></dt>
 						<dd><?=gettext('Alias/Group/Feed Description/Information');?></dd>
-					<dt><i class="fa fa-check"></i></dt>
+					<dt><i class="fa-solid fa-check"></i></dt>
 						<dd><?=gettext('Item exists in pre-defined Alias/Group');?></dd>
-					<dt><span class="text-danger"><i class="fa fa-check"></i></span></dt>
+					<dt><span class="text-danger"><i class="fa-solid fa-check"></i></span></dt>
 						<dd><?=gettext('Item exists but is Disabled in pre-defined Alias/Group');?></dd>
-					<dt><i class="fa fa-check-circle-o"></i></dt>
+					<dt><i class="fa-regular fa-circle-check"></i></dt>
 						<dd><?=gettext('Item exists but in a different Alias/Group');?></dd>
-					<dt><i class="fa fa-plus-circle"></i></dt>
+					<dt><i class="fa-solid fa-plus-circle"></i></dt>
 						<dd><?=gettext('Add Item');?></dd>
-					<dt><span class="text-danger"><i class="fa fa-key"></i></span></dt>
+					<dt><span class="text-danger"><i class="fa-solid fa-key"></i></span></dt>
 						<dd><?=gettext('Feed URL - http/https protocol mismatch');?></dd>
-					<dt><i class="fa fa-angle-right"></i></dt>
+					<dt><i class="fa-solid fa-angle-right"></i></dt>
 						<dd><?=gettext('Alternate Feed URL options');?></dd>
-					<dt><span class="text-danger"><i class="fa fa-bug"></i></span></dt>
+					<dt><span class="text-danger"><i class="fa-solid fa-bug"></i></span></dt>
 						<dd><?=gettext('Feed temporarily unavailable');?></dd>
-					<dt><i class="fa fa-sign-in"></i></dt>
+					<dt><i class="fa-solid fa-right-to-bracket"></i></dt>
 						<dd><?=gettext('Subscription required to access Feed');?></dd>
 				</dl>
 			</div>
@@ -389,20 +391,18 @@ print ($section);
 			<?php
 			$list_type = array( 'pfblockernglistsv4' => 'ipv4', 'pfblockernglistsv6' => 'ipv6', 'pfblockerngdnsbl' => 'dnsbl');
 			foreach ($list_type as $type => $feedtype) {
-				if (!empty($config['installedpackages'][$type]['config'])) {
-					foreach ($config['installedpackages'][$type]['config'] as $rowid => $list) {
-						if (isset($list['row'])) {
-							foreach ($list['row'] as $row) {
-								if (!empty($row['url']) && !empty($row['header'])) {
+				foreach (config_get_path("installedpackages/{$type}/config", []) as $rowid => $list) {
+					if (isset($list['row'])) {
+						foreach ($list['row'] as $row) {
+							if (!empty($row['url']) && !empty($row['header'])) {
 
-									$ex_feeds[$feedtype][] = array(	'aliasname'	=>	$list['aliasname'],
-													'action'	=>	$list['action'],
-													'state'		=>	$row['state'],
-													'url'		=>	$row['url'],
-													'header'	=>	$row['header'],
-													'rowid'		=>	$rowid
-													);
-								}
+								$ex_feeds[$feedtype][] = array(	'aliasname'	=>	$list['aliasname'],
+												'action'	=>	$list['action'],
+												'state'		=>	$row['state'],
+												'url'		=>	$row['url'],
+												'header'	=>	$row['header'],
+												'rowid'		=>	$rowid
+												);
 							}
 						}
 					}
@@ -449,14 +449,14 @@ print ($section);
 											. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}"
 											. "&rowid={$row['rowid']}\"<span class=\"text-danger\""
 											. "title=\"Alias/Group exists but is currently Disabled\">"
-											. "<i class=\"fa fa-check\"></i></span>"
+											. "<i class=\"fa-solid fa-check\"></i></span>"
 											. "</a>";
 									} else {
 										$status = "&emsp;"
 											. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}" 
 											. "&rowid={$row['rowid']}\""
 											. "title=\"Alias/Group exists\">"
-											. "<i class=\"fa fa-check\"></i>"
+											. "<i class=\"fa-solid fa-check\"></i>"
 											. "</a>";
 									}
 								}
@@ -481,7 +481,7 @@ print ($section);
 									. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}"
 									. "&act=addgroup&atype={$aliasname}\""
 									. "title=\"Add Alias/Group: {$aliasname}\">"
-									. "<i class=\"fa fa-plus-circle\"></i>"
+									. "<i class=\"fa-solid fa-plus-circle\"></i>"
 									. "</a>";
 							}
 						}
@@ -549,7 +549,7 @@ print ($section);
 								if ($aliasname != $p_aliasname) {
 									// Add Line break (bullet)
 									$data['info'] = str_replace('-LB-', "\n&emsp;&#9679;&emsp;", $data['info']);
-									print ("<i title=\"{$data['info']}\" class=\"fa fa-info-circle\"></i>{$status}");
+									print ("<i title=\"{$data['info']}\" class=\"fa-solid fa-info-circle\"></i>{$status}");
 								}
 
 								if ($i == 0) {
@@ -570,7 +570,7 @@ print ($section);
 												. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}"
 												. "&act=add&atype={$feed['header']}\""
 												. "title=\"Add feed: [ {$feed['header']} ]\">"
-												. "<i class=\"fa fa-plus-circle\"></i>"
+												. "<i class=\"fa-solid fa-plus-circle\"></i>"
 												. "</a>";
 										}
 										elseif (empty($icon)) {
@@ -588,7 +588,7 @@ print ($section);
 												. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}"
 												. "&act=add&atype={$feed['header']}\""
 												. "title=\"Add feed: [ {$feed['header']} ]\">"
-												. "<i class=\"fa fa-plus-circle\"></i>"
+												. "<i class=\"fa-solid fa-plus-circle\"></i>"
 												. "</a>";
 											}
 										}
@@ -607,7 +607,7 @@ print ($section);
 												. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}"
 												. "&act=add&atype={$feed['header']}\""
 												. "title=\"Add feed: [ {$feed['header']} ]\">"
-												. "<i class=\"fa fa-plus-circle\"></i>"
+												. "<i class=\"fa-solid fa-plus-circle\"></i>"
 												. "</a>";
 										}
 
@@ -630,7 +630,7 @@ print ($section);
 												. "<a href=\"/pfblockerng/pfblockerng_category_edit.php?type={$ftype}"
 												. "&act=add&atype={$alt_feed['header']}\""
 												. "title=\"Add feed: [ {$alt_feed['header']} ]\">"
-												. "<i class=\"fa fa-plus-circle\"></i>"
+												. "<i class=\"fa-solid fa-plus-circle\"></i>"
 												. "</a>";
 										}
 									}
@@ -639,7 +639,7 @@ print ($section);
 									}
 
 									$feed['url']	= $alt_feed['url'];
-									$feed_alternate = "&emsp;<i class=\"fa fa-angle-right\" style=\"cursor: default\""
+									$feed_alternate = "&emsp;<i class=\"fa-solid fa-angle-right\" style=\"cursor: default\""
 											. " title=\"Alternate Feed option\"></i>&emsp;";
 									$feed_header	= $alt_feed['header'];
 									$feed_radio	= "&emsp;<input type=\"radio\" name=\"alt_{$feed['header']}\""
@@ -677,24 +677,24 @@ print ($section);
 
 								// Print info about Feed if available
 								if (isset($feed['info']) && !empty($feed['info'])) {
-									print ("&emsp;<i class=\"fa fa-info-circle icon-primary\" title=\"{$feed['info']}\"></i>");
+									print ("&emsp;<i class=\"fa-solid fa-info-circle icon-primary\" title=\"{$feed['info']}\"></i>");
 								}
 
 								// Print Feed offline status
 								if (isset($feed['status'])) {
-									print ("&emsp;<i class=\"fa fa-bug text-danger\" title=\"Feed temporarily unavailable\"></i>");
+									print ("&emsp;<i class=\"fa-solid fa-bug text-danger\" title=\"Feed temporarily unavailable\"></i>");
 								}
 
 								// Add link to Donate/support link
 								if (isset($feed['donate'])) {
 									print ("&emsp;<a target=\"_blank\" href=\"{$feed['donate']}\" title=\"Click to donation/support page.\">
-									<i class=\"fa fa-cart-plus\"></i></a>");
+									<i class=\"fa-solid fa-cart-plus\"></i></a>");
 								}
 
 								// Add link to Feed registration
 								if ($feed['register']) {
 									print ("&emsp;<a target=\"_blank\" href=\"{$feed['register']}\" title=\"Click to register\">
-										<i class=\"fa fa-sign-in\"></i></a>");
+										<i class=\"fa-solid fa-right-to-bracket\"></i></a>");
 								}
 							?>
 					</td>

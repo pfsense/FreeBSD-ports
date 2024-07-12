@@ -1,5 +1,5 @@
 PORTNAME=	lxmf
-DISTVERSION=	0.3.1
+DISTVERSION=	0.3.9
 CATEGORIES=	net-p2p
 MASTER_SITES=	PYPI
 
@@ -11,7 +11,7 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	reticulum>0:net-p2p/reticulum
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

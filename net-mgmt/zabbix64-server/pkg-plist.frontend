@@ -354,6 +354,7 @@
 %%WWWDIR%%/app/views/administration.miscconfig.edit.php
 %%WWWDIR%%/app/views/administration.module.edit.php
 %%WWWDIR%%/app/views/administration.module.list.php
+%%WWWDIR%%/app/views/administration.proxy.list.php
 %%WWWDIR%%/app/views/administration.queue.details.php
 %%WWWDIR%%/app/views/administration.queue.overview.php
 %%WWWDIR%%/app/views/administration.queue.overview.proxy.php
@@ -407,6 +408,7 @@
 %%WWWDIR%%/app/views/js/administration.mediatype.edit.js.php
 %%WWWDIR%%/app/views/js/administration.mediatype.list.js.php
 %%WWWDIR%%/app/views/js/administration.miscconfig.edit.js.php
+%%WWWDIR%%/app/views/js/administration.proxy.list.js.php
 %%WWWDIR%%/app/views/js/administration.regex.edit.js.php
 %%WWWDIR%%/app/views/js/administration.script.edit.js.php
 %%WWWDIR%%/app/views/js/administration.script.list.js.php
@@ -481,7 +483,6 @@
 %%WWWDIR%%/app/views/js/popup.triggerexpr.js.php
 %%WWWDIR%%/app/views/js/popup.usergroupmapping.edit.js.php
 %%WWWDIR%%/app/views/js/popup.valuemap.edit.js.php
-%%WWWDIR%%/app/views/js/proxy.list.js.php
 %%WWWDIR%%/app/views/js/reports.actionlog.list.js.php
 %%WWWDIR%%/app/views/js/reports.auditlog.list.js.php
 %%WWWDIR%%/app/views/js/reports.scheduledreport.edit.js.php
@@ -561,7 +562,6 @@
 %%WWWDIR%%/app/views/popup.usergroupmapping.edit.php
 %%WWWDIR%%/app/views/popup.valuemap.edit.php
 %%WWWDIR%%/app/views/popup.view.php
-%%WWWDIR%%/app/views/proxy.list.php
 %%WWWDIR%%/app/views/report.status.php
 %%WWWDIR%%/app/views/reports.actionlog.list.csv.php
 %%WWWDIR%%/app/views/reports.actionlog.list.php
@@ -776,7 +776,6 @@
 %%WWWDIR%%/include/classes/helpers/CAuthenticationHelper.php
 %%WWWDIR%%/include/classes/helpers/CBrandHelper.php
 %%WWWDIR%%/include/classes/helpers/CConditionHelper.php
-%%WWWDIR%%/include/classes/helpers/CConfigGeneralHelper.php
 %%WWWDIR%%/include/classes/helpers/CCookieHelper.php
 %%WWWDIR%%/include/classes/helpers/CCorrelationHelper.php
 %%WWWDIR%%/include/classes/helpers/CCsrfTokenHelper.php
@@ -935,6 +934,7 @@
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldMultiSelectItemPrototypeView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldMultiSelectItemView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldMultiSelectMediaTypeView.php
+%%WWWDIR%%/include/classes/html/widgets/CWidgetFieldMultiSelectMapView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldMultiSelectServiceView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldMultiSelectSlaView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldMultiSelectUserView.php
@@ -942,7 +942,6 @@
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldNumericBoxView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldRadioButtonListView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldRangeControlView.php
-%%WWWDIR%%/include/classes/html/widgets/CWidgetFieldSelectResourceView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldSelectView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldSeveritiesView.php
 %%WWWDIR%%/include/classes/html/widgets/CWidgetFieldTagsView.php
@@ -1154,6 +1153,7 @@
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelectHost.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelectItem.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelectItemPrototype.php
+%%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelectMap.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelectMediaType.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelectService.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldMultiSelectSla.php
@@ -1164,7 +1164,6 @@
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldRangeControl.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldReference.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldSelect.php
-%%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldSelectResource.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldSeverities.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldTags.php
 %%WWWDIR%%/include/classes/widgets/fields/CWidgetFieldTextArea.php
@@ -1204,7 +1203,6 @@
 %%WWWDIR%%/include/triggers.inc.php
 %%WWWDIR%%/include/users.inc.php
 %%WWWDIR%%/include/validate.inc.php
-%%WWWDIR%%/include/views/configuration.copy.elements.php
 %%WWWDIR%%/include/views/configuration.graph.edit.php
 %%WWWDIR%%/include/views/configuration.graph.list.php
 %%WWWDIR%%/include/views/configuration.host.discovery.edit.php
@@ -1231,7 +1229,6 @@
 %%WWWDIR%%/include/views/js/common.init.js.php
 %%WWWDIR%%/include/views/js/common.item.edit.js.php
 %%WWWDIR%%/include/views/js/common.template.edit.js.php
-%%WWWDIR%%/include/views/js/configuration.copy.elements.js.php
 %%WWWDIR%%/include/views/js/configuration.graph.edit.js.php
 %%WWWDIR%%/include/views/js/configuration.graph.list.js.php
 %%WWWDIR%%/include/views/js/configuration.host.discovery.edit.js.php
@@ -1255,7 +1252,6 @@
 %%WWWDIR%%/include/views/js/itemtest.js.php
 %%WWWDIR%%/include/views/js/monitoring.history.js.php
 %%WWWDIR%%/include/views/js/monitoring.sysmap.edit.js.php
-%%WWWDIR%%/include/views/js/monitoring.sysmap.list.js.php
 %%WWWDIR%%/include/views/js/monitoring.sysmaps.js.php
 %%WWWDIR%%/include/views/js/reports.toptriggers.js.php
 %%WWWDIR%%/include/views/js/tr_events.js.php
@@ -1363,6 +1359,7 @@
 %%WWWDIR%%/locale/en/LC_MESSAGES/frontend.pot
 %%WWWDIR%%/locale/en_GB/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/en_GB/LC_MESSAGES/frontend.po
+%%WWWDIR%%/locale/en_US/LC_MESSAGES/frontend.pot
 %%WWWDIR%%/locale/es/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/es/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/fa/LC_MESSAGES/frontend.mo
@@ -1385,6 +1382,8 @@
 %%WWWDIR%%/locale/ja/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/ka/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/ka/LC_MESSAGES/frontend.po
+%%WWWDIR%%/locale/kk/LC_MESSAGES/frontend.mo
+%%WWWDIR%%/locale/kk/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/ko/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/ko/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/lt/LC_MESSAGES/frontend.mo
@@ -1562,6 +1561,7 @@
 %%WWWDIR%%/widgets/graph/includes/WidgetForm.php
 %%WWWDIR%%/widgets/graph/manifest.json
 %%WWWDIR%%/widgets/graph/views/widget.edit.php
+%%WWWDIR%%/widgets/graph/views/widget.edit.js.php
 %%WWWDIR%%/widgets/graph/views/widget.view.php
 %%WWWDIR%%/widgets/graphprototype/Widget.php
 %%WWWDIR%%/widgets/graphprototype/actions/WidgetView.php
@@ -1569,6 +1569,7 @@
 %%WWWDIR%%/widgets/graphprototype/includes/WidgetForm.php
 %%WWWDIR%%/widgets/graphprototype/manifest.json
 %%WWWDIR%%/widgets/graphprototype/views/widget.edit.php
+%%WWWDIR%%/widgets/graphprototype/views/widget.edit.js.php
 %%WWWDIR%%/widgets/hostavail/Widget.php
 %%WWWDIR%%/widgets/hostavail/actions/WidgetView.php
 %%WWWDIR%%/widgets/hostavail/assets/js/class.widget.js
@@ -1667,6 +1668,7 @@
 %%WWWDIR%%/widgets/trigover/Widget.php
 %%WWWDIR%%/widgets/trigover/actions/WidgetView.php
 %%WWWDIR%%/widgets/trigover/assets/js/class.widget.js
+%%WWWDIR%%/widgets/trigover/includes/ViewHelper.php
 %%WWWDIR%%/widgets/trigover/includes/WidgetForm.php
 %%WWWDIR%%/widgets/trigover/manifest.json
 %%WWWDIR%%/widgets/trigover/partials/table.left.php

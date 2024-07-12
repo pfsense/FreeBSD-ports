@@ -7,7 +7,7 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Series of programs to interconvert between mac fonts
-WWW=		http://fondu.sourceforge.net/
+WWW=		https://fondu.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
@@ -23,7 +23,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
 .for f in ${MANPAGES}
-	${INSTALL_MAN} ${WRKSRC}/${f}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${f}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 .endfor
 
 .include <bsd.port.mk>

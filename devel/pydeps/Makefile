@@ -1,5 +1,5 @@
 PORTNAME=	pydeps
-DISTVERSION=	1.11.2
+DISTVERSION=	1.12.20
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}stdlib-list>0:devel/py-stdlib-list@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

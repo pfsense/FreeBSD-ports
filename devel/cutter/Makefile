@@ -1,12 +1,12 @@
 PORTNAME=	cutter
 PORTVERSION=	1.2.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	romain@FreeBSD.org
 COMMENT=	Unit Testing Framework for C and C++
-WWW=		http://cutter.sourceforge.net/
+WWW=		https://cutter.sourceforge.net/
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/license/lgpl-3.txt
@@ -19,6 +19,7 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 CONFIGURE_ARGS=	--disable-gtk-doc-html --with-html-dir=${PREFIX}/share/doc \
 		--disable-gstreamer
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USES=		gettext gnome gmake libtool localbase pathfix pkgconfig
 USE_GNOME=	intlhack gdkpixbuf2 glib20 gtk20
 USE_LDCONFIG=	yes

@@ -1,12 +1,15 @@
 PORTNAME=	libbs2b
-PORTVERSION=	3.1.0
-PORTREVISION=	7
+DISTVERSION=	3.1.0
+PORTREVISION=	8
 CATEGORIES=	audio
-MASTER_SITES=	SF/bs2b/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF/bs2b/${PORTNAME}/${DISTVERSION}
 
-MAINTAINER=	liangtai.s16@gmail.com
+PATCH_SITES=	https://github.com/alexmarsev/${PORTNAME}/commit/
+PATCHFILES=	5ca2d59888df047f1e4b028e3a2fd5be8b5a7277.patch:-p1
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bauer Stereophonic-to-Binaural DSP
-WWW=		http://bs2b.sourceforge.net/
+WWW=		https://bs2b.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

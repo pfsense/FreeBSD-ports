@@ -1,10 +1,10 @@
 PORTNAME=	ftxui
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.1.1
+DISTVERSION=	5.0.0
 CATEGORIES=	devel science
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	C++ Functional Terminal User Interface library
+COMMENT=	C++ Functional Terminal User Interface (TUI) library
 WWW=		https://github.com/ArthurSonzogni/FTXUI
 
 LICENSE=	MIT

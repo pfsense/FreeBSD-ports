@@ -1,6 +1,6 @@
 PORTNAME=	gedit
 PORTVERSION=	44.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -30,7 +30,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR} \
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 cpe desktop-file-utils gettext gnome localbase \
-		meson pkgconfig python:3.4+ tar:xz vala:build xorg
+		meson pkgconfig python tar:xz vala:build xorg
 USE_CSTD=	c11
 USE_GNOME=	cairo gdkpixbuf2 gtksourceview4 intlhack introspection libxml2 \
 		pygobject3

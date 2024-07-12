@@ -1,5 +1,6 @@
 PORTNAME=	smooth
 PORTVERSION=	0.9.10
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -23,6 +24,8 @@ USE_XORG=	x11
 MAKE_ARGS=	config="systemlibcpuid systemlibwebp"
 
 post-extract:
+	@${REINPLACE_CMD} -e 's,register ,,' \
+		${WRKSRC}/classes/gui/dialogs/colordlg.cpp
 # Prevent accidental build/use of bundled libraries' code/headers
 	@${RM} -r ${WRKSRC}/libraries/fribidi ${WRKSRC}/libraries/lib* \
 		${WRKSRC}/libraries/v8 ${WRKSRC}/libraries/zlib

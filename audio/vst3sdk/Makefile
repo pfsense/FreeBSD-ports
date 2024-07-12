@@ -1,6 +1,7 @@
 PORTNAME=	vst3sdk
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.7.7_build_19
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -25,6 +26,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 USES=		cmake compiler:c++14-lang gnome localbase:ldflags pkgconfig shebangfix xorg
 USE_GNOME=	cairo gtk30 gtkmm30
 USE_XORG=	ice sm x11 xcb xext
+USE_CXXSTD=	c++20 # otherwise the code in public.sdk/source/vst/hosting/module_linux.cpp uses the default value of __cplusplus=201703 and fails to use the correct #include <filesystem>
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	steinbergmedia

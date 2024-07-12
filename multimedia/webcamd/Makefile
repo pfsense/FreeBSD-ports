@@ -1,10 +1,10 @@
 PORTNAME=	webcamd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.17.1.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Port of Linux USB webcam and DVB drivers into userspace
 WWW=		https://github.com/hselasky/webcamd
 
@@ -69,6 +69,7 @@ USERS=		webcamd
 GROUPS=		webcamd
 
 MAKE_ARGS+=	HAVE_MAN="YES"
+MAKE_ARGS+=	MANDIR=${PREFIX}/share/man/man
 MAKE_ARGS+=	PTHREAD_LIBS="-lpthread"
 
 WEBCAMDDIR=	${WRKDIR}/webcamd-${DISTVERSION}

@@ -1,8 +1,10 @@
 bin/far2l
+bin/far2ledit
 lib/far2l/Plugins/NetRocks/plug/NetRocks-FILE.broker
 lib/far2l/Plugins/NetRocks/plug/NetRocks-FTP.broker
 %%NFS%%lib/far2l/Plugins/NetRocks/plug/NetRocks-NFS.broker
 %%SFTP%%lib/far2l/Plugins/NetRocks/plug/NetRocks-SFTP.broker
+lib/far2l/Plugins/NetRocks/plug/NetRocks-SHELL.broker
 %%SMB%%lib/far2l/Plugins/NetRocks/plug/NetRocks-SMB.broker
 %%WEBDAV%%lib/far2l/Plugins/NetRocks/plug/NetRocks-WebDAV.broker
 lib/far2l/Plugins/NetRocks/plug/NetRocks.far-plug-wide
@@ -38,6 +40,8 @@ share/applications/far2l.desktop
 %%DATADIR%%/FarSpa.lng
 %%DATADIR%%/FarUkr.hlf
 %%DATADIR%%/FarUkr.lng
+%%DATADIR%%/Plugins/NetRocks/plug/SHELL/remote.sh
+%%DATADIR%%/Plugins/NetRocks/plug/SHELL/ways.ini
 %%DATADIR%%/Plugins/NetRocks/plug/bel.lng
 %%DATADIR%%/Plugins/NetRocks/plug/eng.lng
 %%DATADIR%%/Plugins/NetRocks/plug/helpe.hlf
@@ -70,6 +74,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/calc/plug/units/time.csr
 %%DATADIR%%/Plugins/calc/plug/units/volume.csr
 %%DATADIR%%/Plugins/calc/plug/user-examples.csr
+%%DATADIR%%/Plugins/colorer/base/CHANGELOG.md
 %%DATADIR%%/Plugins/colorer/base/catalog.xml
 %%DATADIR%%/Plugins/colorer/base/hrc/auto/empty.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/asm.hrc
@@ -144,6 +149,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gen/xhtml-frameset.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gen/xhtml-strict.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gen/xhtml-trans.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/inet/graphql.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gsp.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/haml.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/html-css.hrc
@@ -374,6 +380,8 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/scons.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/sh-keywords.ent.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/sh.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/shell-bash.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/shell-posix.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/solution.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/squirrel.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/tex.hrc
@@ -409,7 +417,6 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrd/catalog-console.xml
 %%DATADIR%%/Plugins/colorer/base/hrd/catalog-rgb.xml
 %%DATADIR%%/Plugins/colorer/base/hrd/catalog-text.xml
-%%DATADIR%%/Plugins/colorer/base/hrd/catalog-user.xml
 %%DATADIR%%/Plugins/colorer/base/hrd/console/black.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/blue.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/contrib/black_ay.hrd
@@ -433,6 +440,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrd/css/blue.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/bred3.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/fmx.css
+%%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/navy-mirror.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/visual-rgb.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/eclipse.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/grayscale.css
@@ -446,6 +454,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/blue.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/bred3.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/fmx.hrd
+%%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/navy-mirror.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/visual-rgb.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/default.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/eclipse.hrd
@@ -514,6 +523,8 @@ share/applications/far2l.desktop
 %%DATADIR%%/trash.sh
 %%DATADIR%%/unmount.sh
 %%DATADIR%%/view.sh
+%%DATADIR%%/wslgclip.sh
+%%DATADIR%%/wslgclip.vbs
 %%DATADIR%%/xlats.ini
 share/icons/far2l.svg
 share/icons/hicolor/1024x1024/apps/far2l.svg

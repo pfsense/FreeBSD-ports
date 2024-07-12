@@ -1,8 +1,11 @@
 PORTNAME=	libpoly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.11
+DISTVERSION=	0.1.13
 CATEGORIES=	math
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+
+PATCH_SITES=	https://github.com/SRI-CSL/libpoly/commit/
+PATCHFILES=	48f48f945111ab021bed4ad4f192f2cac0c2e84b.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python binding for libpoly
@@ -13,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENCE
 
 LIB_DEPENDS=	libpoly.so:math/libpoly
 
-USES=		cmake localbase:ldflags python:3.6+
+USES=		cmake localbase:ldflags python
 USE_GITHUB=	yes
 GH_ACCOUNT=	SRI-CSL
 USE_LDCONFIG=	yes
@@ -26,7 +29,7 @@ BUILD_WRKSRC=	${WRKSRC}/python
 INSTALL_WRKSRC=	${WRKSRC}/python
 TEST_WRKSRC=	${WRKSRC}/test/python
 
-TEST_ENV=      ${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/polypy*.so

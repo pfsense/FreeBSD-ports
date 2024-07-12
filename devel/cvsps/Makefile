@@ -1,12 +1,12 @@
 PORTNAME=	cvsps
 PORTVERSION=	2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Create patchset information from CVS
-WWW=		http://cvsps.sourceforge.net/
+WWW=		https://cvsps.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,14 +14,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 CONFLICTS=	cvsps-devel
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz
+		share/man/man1/${PORTNAME}.1.gz
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
+		${STAGEDIR}${PREFIX}/share/man/man1/
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

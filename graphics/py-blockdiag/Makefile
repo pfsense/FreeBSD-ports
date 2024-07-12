@@ -1,5 +1,6 @@
 PORTNAME=	blockdiag
 PORTVERSION=	3.0.0
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,7 @@ RUN_DEPENDS=	${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}funcparserlib>=1.0.0:devel/py-funcparserlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}webcolors>=0:graphics/py-webcolors@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
@@ -53,8 +54,8 @@ post-patch-VLGOTHIC-on:
 	${REINPLACE_CMD} '/fontfiles = \[/,/\]/{/fontfiles = \[/H;/VL-PGothic-Regular\.ttf/H;/\]/H;/\]/!d;g;}' ${WRKSRC}/src/blockdiag/utils/bootstrap.py
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1/
-	@${ECHO_CMD} man/man1/${PORTNAME}.1.gz >> ${TMPPLIST}
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	@${ECHO_CMD} share/man/man1/${PORTNAME}.1.gz >> ${TMPPLIST}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

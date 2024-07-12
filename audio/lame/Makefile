@@ -1,6 +1,6 @@
 PORTNAME=	lame
 DISTVERSION=	3.100
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${DISTVERSION}
 
@@ -18,6 +18,7 @@ USES=		cpe gmake iconv libtool
 USE_LDCONFIG=	yes
 CPE_VENDOR=	lame_project
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 CONFIGURE_ARGS=	--enable-nasm --enable-mp3rtp --disable-gtktest
 
@@ -30,6 +31,8 @@ post-patch:
 # Fix parallel builds
 	@${REINPLACE_CMD} -e 's,test -d \.libs || mkdir,mkdir -p,' \
 		${WRKSRC}/libmp3lame/i386/Makefile.in
+# Remove undefined symbol from linker version script - XXX to be removed with lame 3.101
+	@${REINPLACE_CMD} -e '/lame_init_old/d' ${WRKSRC}/include/libmp3lame.sym
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmp3lame.so.0

@@ -1,7 +1,6 @@
 PORTNAME=	highs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.3
-PORTREVISION=	1
+DISTVERSION=	1.7.1
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
@@ -10,11 +9,9 @@ COMMENT=	Solver for large scale sparse linear programming (LP) problems
 WWW=		https://github.com/ERGO-Code/HiGHS
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libOsi.so:math/osi
-
-USES=		blaslapack cmake:testing compiler:c++11-lang pkgconfig
+USES=		cmake:testing compiler:c++11-lang pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ERGO-Code

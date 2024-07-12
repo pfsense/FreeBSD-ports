@@ -1,6 +1,6 @@
 PORTNAME=	pymailq
 PORTVERSION=	0.9.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,14 +15,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	postfix:mail/postfix
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils concurrent
 
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|%%DOCSDIR%%|${DOCSDIR}|g; \
 		s|%%EXAMPLESDIR%%|${EXAMPLESDIR}|g; \
-		s|%%MANPREFIX%%|${MANPREFIX}|g' \
+		s|%%MANPREFIX%%|${PREFIX}/share|g' \
 		${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

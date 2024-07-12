@@ -1,10 +1,10 @@
---- chrome/browser/platform_util_linux.cc.orig	2023-03-09 06:31:50 UTC
+--- chrome/browser/platform_util_linux.cc.orig	2024-04-19 13:02:56 UTC
 +++ chrome/browser/platform_util_linux.cc
-@@ -298,7 +298,9 @@ void RunCommand(const std::string& command,
- 
-   base::LaunchOptions options;
+@@ -300,7 +300,9 @@ void OnLaunchOptionsCreated(const std::string& command
+   argv.push_back(command);
+   argv.push_back(arg);
    options.current_directory = working_directory;
-+#if !defined(OS_BSD)
++#if !BUILDFLAG(IS_BSD)
    options.allow_new_privs = true;
 +#endif
    // xdg-open can fall back on mailcap which eventually might plumb through

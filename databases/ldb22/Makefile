@@ -1,5 +1,6 @@
 PORTNAME=		ldb
 PORTVERSION=		2.2.3
+PORTREVISION=	1
 PORTEPOCH=		0
 CATEGORIES=		databases
 MASTER_SITES=		SAMBA
@@ -38,7 +39,6 @@ PLIST_SUB+=		PKGCONFIGDIR=${PKGCONFIGDIR:S;${PREFIX}/;;}
 CONFIGURE_ARGS+=	--bundled-libraries=!talloc,!tevent,!tdb,!popt,!cmocka \
 			--with-modulesdir=${PREFIX}/lib/shared-modules \
 			--with-privatelibdir=${PREFIX}/lib/ldb \
-			--mandir=${MANPREFIX}/man \
 			--with-openldap=${LOCALBASE} \
 			--disable-rpath \
 			--without-gettext
@@ -94,6 +94,11 @@ PLIST_FILES=		include/ldb_version.h \
 CFLAGS+=		-I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib
 
+# Some symbols in ldb's linker version scripts are not defined, but since the
+# scripts are generated dynamically, suppress errors with lld >= 17 due to these
+# undefined symbols.
+LDFLAGS+=		-Wl,--undefined-version
+
 .if ! ${PORT_OPTIONS:MMANPAGES}
 CONFIGURE_ENV+=		XSLTPROC="true"
 .else
@@ -105,7 +110,7 @@ BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/do
 USES+=			python:build,test
 CONFIGURE_ARGS+=	--disable-python
 .else
-USES+=			gettext-runtime python:3.6+
+USES+=			gettext-runtime python
 
 PLIST_FILES+=		include/pyldb.h \
 			lib/libpyldb-util${PYTHON_EXT_SUFFIX}.so \
@@ -122,14 +127,14 @@ CFLAGS+=		-fno-color-diagnostics
 CONFIGURE_ENV+=		NOCOLOR=yes
 MAKE_ENV+=		NOCOLOR=yes
 
-LDB_MAN1=		man/man1/ldbadd.1.gz \
-			man/man1/ldbdel.1.gz \
-			man/man1/ldbedit.1.gz \
-			man/man1/ldbmodify.1.gz \
-			man/man1/ldbrename.1.gz \
-			man/man1/ldbsearch.1.gz
+LDB_MAN1=		share/man/man1/ldbadd.1.gz \
+			share/man/man1/ldbdel.1.gz \
+			share/man/man1/ldbedit.1.gz \
+			share/man/man1/ldbmodify.1.gz \
+			share/man/man1/ldbrename.1.gz \
+			share/man/man1/ldbsearch.1.gz
 
-LDB_MAN3=		man/man3/ldb.3.gz
+LDB_MAN3=		share/man/man3/ldb.3.gz
 
 PLIST_FILES+=		${LDB_MAN1} ${LDB_MAN3}
 

@@ -3,7 +3,7 @@
  * suricata_passlist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -164,8 +164,8 @@ display_top_tabs($tab_array, true);
 						<?=htmlspecialchars($list['descr'])?>
 					</td>
 					<td>
-						<a href="suricata_passlist_edit.php?id=<?=$i?>" class="fa fa-pencil fa-lg" title="<?=gettext('Edit Pass List');?>"></a>
-						<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
+						<a href="suricata_passlist_edit.php?id=<?=$i?>" class="fa-solid fa-pencil fa-lg" title="<?=gettext('Edit Pass List');?>"></a>
+						<a class="fa-solid fa-trash-can no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
 						<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>">Delete Pass List</button>
 					</td>
 				</tr>
@@ -173,12 +173,12 @@ display_top_tabs($tab_array, true);
 				<tr>
 					<td colspan="5" class="text-right">
 						<a href="suricata_passlist_edit.php?id=<?=$id_gen?>" role="button" class="btn btn-sm btn-success" title="<?=gettext('add a new pass list');?>">
-							<i class="fa fa-plus icon-embed-btn"></i>
+							<i class="fa-solid fa-plus icon-embed-btn"></i>
 							<?=gettext("Add");?>
 						</a>
 						<?php if (count($a_passlist) > 0): ?>
 							<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Items');?>">
-								<i class="fa fa-trash icon-embed-btn"></i>
+								<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 								<?=gettext('Delete');?>
 							</button>
 						<?php endif; ?>

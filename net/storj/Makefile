@@ -1,6 +1,7 @@
 PORTNAME=	storj
-PORTVERSION=	1.79.4
+PORTVERSION=	1.102.3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -14,7 +15,7 @@ USE_GITHUB=	yes
 
 .include "${.CURDIR}/Makefile.deps"
 
-STORJ_CMDS=	certificates crashcollect identity inspector metric-receiver \
+STORJ_CMDS=	certificates crashcollect identity metric-receiver \
 		multinode satellite storagenode storagenode-updater \
 		storj-admin storj-sim uplink versioncontrol
 

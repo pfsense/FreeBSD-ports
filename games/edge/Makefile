@@ -1,6 +1,6 @@
 PORTNAME=	edge
 PORTVERSION=	1.35
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/EDGE%20Source%20Code/${PORTVERSION} \
 		SF/${PORTNAME}/EDGE%20Binaries/${PORTVERSION}:wad
@@ -10,7 +10,7 @@ EXTRACT_ONLY=	Edge-${PORTVERSION}-source${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DOOM style engine aimed at the Total Conversion developer
-WWW=		http://edge.sourceforge.net/
+WWW=		https://edge.sourceforge.net/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
@@ -23,7 +23,7 @@ USE_GL=		glew
 USE_SDL=	sdl
 MAKEFILE=	Makefile.linux
 
-CFLAGS+=	-ffast-math
+CFLAGS+=	-ffast-math --std=c++14
 WRKSRC=		${WRKDIR}/Edge-${PORTVERSION}-source
 
 PLIST_FILES=	bin/edge %%DMDIR%%/edge.wad

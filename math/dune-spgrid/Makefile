@@ -1,7 +1,7 @@
 PORTNAME=	dune-spgrid
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,7 +16,7 @@ DUNE_DEPENDS=	dune-common>0:math/dune-common \
 		dune-geometry>0:math/dune-geometry \
 		dune-uggrid>0:math/dune-uggrid
 BUILD_DEPENDS=	${DUNE_DEPENDS} \
-		openmpi>0:net/openmpi \
+		openmpi4>0:net/openmpi4 \
 		vc>0:devel/vc
 RUN_DEPENDS=	${DUNE_DEPENDS}
 
@@ -25,7 +25,7 @@ USE_GITLAB=	yes
 
 GL_SITE=	https://gitlab.dune-project.org
 GL_ACCOUNT=	extensions
-GL_COMMIT=	0e5a3b234d885ac566c9622421ab4eab97c8a50e
+GL_TAGNAME=	0e5a3b234d885ac566c9622421ab4eab97c8a50e
 
 NO_ARCH=	yes
 

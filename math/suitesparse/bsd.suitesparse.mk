@@ -4,7 +4,7 @@
 
 PKGNAMEPREFIX=	suitesparse-
 SSPNAME=	suitesparse
-SSPVERSION=	7.0.1
+SSPVERSION=	7.7.0
 DISTVERSIONPREFIX=	v
 
 MAINTAINER=	fortran@FreeBSD.org
@@ -25,6 +25,8 @@ CONFIGURE_WRKSRC=${WRKSRC}/SuiteSparse_config
 .endif
 BUILD_WRKSRC=	${CONFIGURE_WRKSRC}
 CMAKE_SOURCE_PATH=	${CONFIGURE_WRKSRC}
+CMAKE_ARGS+=	-DBLAS_LIBRARIES:STRING="${BLASLIB}"	\
+		-DLAPACK_LIBRARIES:STRING="${LAPACKLIB}"
 
 .if ${MPORTNAME} != config &&	\
 	${MPORTNAME} != CSparse &&	\
@@ -37,7 +39,7 @@ LIB_DEPENDS+=	libsuitesparseconfig.so:math/suitesparse-config
 OPTIONS_DEFINE+=DEMOS
 .endif
 
-USES+=		cmake:insource
+USES+=		cmake:insource pathfix
 
 DOCSDIR=	${PREFIX}/share/doc/${SSPNAME}
 MAKE_ENV=	JOBS="${MAKE_JOBS_NUMBER}" \
@@ -45,11 +47,12 @@ MAKE_ENV=	JOBS="${MAKE_JOBS_NUMBER}" \
 		INSTALL="${STAGEDIR}${PREFIX}" \
 		INSTALL_DOC="${STAGEDIR}${DOCSDIR}" \
 		INSTALL_INCLUDE="${STAGEDIR}${PREFIX}/include/${SSPNAME}"
-CMAKE_ARGS+=	-DCMAKE_INSTALL_INCLUDEDIR:PATH="include/${SSPNAME}"
 LDFLAGS+=	-L${WRKSRC}/lib # prevent linking with shared libs from the preinstalled older versions
 
 INSTALL_TARGET=	install # skip USES=cmake
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
+
+PLIST_SUB+=	VER=${PORTVERSION}
 
 # FIXME: wont work if .CURDIR contains spaces
 DISTINFO_FILE=	${.CURDIR}/../../math/suitesparse/distinfo
@@ -57,15 +60,21 @@ DISTINFO_FILE=	${.CURDIR}/../../math/suitesparse/distinfo
 OPTIONS_DEFINE+=	DOCS OPTIMIZED_CFLAGS
 OPTIONS_DEFAULT+=	OPTIMIZED_CFLAGS
 
+.if ${MPORTNAME} == config ||	\
+	${MPORTNAME} == CHOLMOD ||	\
+	${MPORTNAME} == ParU ||	\
+	${MPORTNAME} == SPQR ||	\
+	${MPORTNAME} == UMFPACK
 OPTIONS_RADIO+=		BLAS
-OPTIONS_RADIO_BLAS+=	ATLAS GOTOBLAS NETLIB OPENBLAS
+OPTIONS_RADIO_BLAS+=	ATLAS BLIS NETLIB OPENBLAS
 OPTIONS_DEFAULT+=	OPENBLAS
+BLIS_DESC=		BLAS implemntation from FLAME
 
 ATLAS_USES=		blaslapack:atlas
-GOTOBLAS_DESC=		Goto blas implementation
-GOTOBLAS_USES=		blaslapack:gotoblas
+BLIS_USES=		blaslapack:blis
 NETLIB_USES=		blaslapack:netlib
 OPENBLAS_USES=		blaslapack:openblas
+.endif
 
 OPTIONS_DEFINE+=	OPENMP
 OPTIONS_EXCLUDE_aarch64=	OPENMP
@@ -82,16 +91,13 @@ OPENMP_CMAKE_BOOL=	OPENMP
 OPENMP_CMAKE_BOOL_OFF=	NOPENMP
 
 DEMOS_DESC=		Build the demonstrations
-DEMOS_CMAKE_BOOL=	DEMO
+DEMOS_CMAKE_BOOL=	SUITESPARSE_DEMOS
 
 .if !defined(WITH_DEBUG)
 OPTIMIZED_CFLAGS_CFLAGS=	-O3
 OPTIMIZED_CFLAGS_CXXFLAGS=	-O3
 LDFLAGS+=	-s
 .endif
-
-post-extract:
-	${RM} -r ${WRKSRC}/metis-*
 
 post-install:
 .if ! ${MPORTNAME} == config
@@ -105,8 +111,6 @@ post-install:
 # See PR 230888 : Missing 64 bit atomic functions for i386
 USE_GCC=	yes
 LDFLAGS+=	-latomic
-.elif defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-USE_GCC=	yes
 .else
 USES+=	compiler:c++11-lib
 .endif

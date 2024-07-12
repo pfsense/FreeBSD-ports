@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 PORTVERSION=	${LLVM_MAJOR}
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel lang
 MASTER_SITES=	# not applicable
@@ -33,16 +33,13 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	${COMMANDS:S|^|bin/|} \
-		${MAN1SRCS:S|^|man/man1/|:S|$|.gz|}
+		${MAN1SRCS:S|^|share/man/man1/|:S|$|.gz|}
 
 .include <bsd.port.options.mk>
 
 LLVM_SUFFIX?=	${LLVM_DEFAULT}
 
-.if ${LLVM_SUFFIX:M[789]0}
-# Pre-LLVM 10 releases have a <Major><Minor> suffix
-LLVM_MAJOR=${LLVM_SUFFIX:C/0$//}
-.elif ${LLVM_SUFFIX:M[1-9][0-9]}
+.if ${LLVM_SUFFIX:M[1-9][0-9]}
 # LLVM 10 and later have a <Major> suffix
 LLVM_MAJOR=${LLVM_SUFFIX}
 .elif exists(${.CURDIR}/../llvm${LLVM_SUFFIX}/Makefile.snapshot)
@@ -53,7 +50,7 @@ LLVM_MAJOR=${LLVM_SUFFIX}
 .error Don't know how to get version for ${LLVM_SUFFIX}
 .endif
 
-.if ${LLVM_SUFFIX} == "-cheri" || ${LLVM_SUFFIX} == "-morello"
+.if ${LLVM_SUFFIX} == "-cheri" || ${LLVM_SUFFIX} == "-cheriot" || ${LLVM_SUFFIX} == "-morello"
 OPTIONS_EXCLUDE=	LLDB
 .endif
 
@@ -89,7 +86,7 @@ do-install:
 .endfor
 .for _man in ${MAN1SRCS}
 	${LN} -s ${_man:R}${LLVM_SUFFIX}.1 \
-	    ${STAGEDIR}${MANPREFIX}/man/man1/${_man}
+	    ${STAGEDIR}${PREFIX}/share/man/man1/${_man}
 .endfor
 
 .include <bsd.port.mk>

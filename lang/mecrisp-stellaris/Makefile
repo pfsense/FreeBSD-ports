@@ -5,7 +5,7 @@ MASTER_SITES=	SF/mecrisp
 
 MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Native code Forth system for ARM
-WWW=		http://mecrisp.sourceforge.net
+WWW=		https://mecrisp.sourceforge.net
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 IGNORE_aarch64=	fails to build with qemu-user-static: \
 		qemu-aarch64-static cannot execute armv7 binaries
 .endif
-IGNORE_FreeBSD_12_aarch64=	OS too old to run armv7 binaries on arm64, upgrade to FreeBSD 13
 ONLY_FOR_ARCHS=		aarch64 armv6 armv7
 ONLY_FOR_ARCHS_REASON=	written in ARM assembly
 

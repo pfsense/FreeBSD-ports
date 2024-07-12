@@ -3,11 +3,11 @@
  * snort_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2022 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -168,23 +168,23 @@ elseif (isset($_POST['id']))
 if (empty($instanceid) || !is_numericint($instanceid))
 	$instanceid = 0;
 
-$a_instance = config_get_path('installedpackages/snortglobal/rule', []);
-$snort_uuid = $a_instance[$instanceid]['uuid'];
-$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+$a_instance = config_get_path("installedpackages/snortglobal/rule/{$instanceid}", []);
+$snort_uuid = $a_instance['uuid'];
+$if_real = get_real_interface($a_instance['interface']);
 
 // Load up the arrays of force-enabled and force-disabled SIDs
-$enablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
-$disablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_off']);
+$enablesid = snort_load_sid_mods($a_instance['rule_sid_on']);
+$disablesid = snort_load_sid_mods($a_instance['rule_sid_off']);
 
 // Load up the arrays of forced-alert, forced-drop or forced-reject
 // rules as applicable to the current IPS mode.
-if ($a_instance[$instanceid]['blockoffenders7'] == 'on' && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
-	$alertsid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_force_alert']);
-	$dropsid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_force_drop']);
+if ($a_instance['blockoffenders7'] == 'on' && $a_instance['ips_mode'] == 'ips_mode_inline') {
+	$alertsid = snort_load_sid_mods($a_instance['rule_sid_force_alert']);
+	$dropsid = snort_load_sid_mods($a_instance['rule_sid_force_drop']);
 
 	// REJECT forcing is only applicable to Inline IPS Mode
-	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' ) {
-		$rejectsid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_force_reject']);
+	if ($a_instance['ips_mode'] == 'ips_mode_inline' ) {
+		$rejectsid = snort_load_sid_mods($a_instance['rule_sid_force_reject']);
 	}
 }
 
@@ -274,7 +274,7 @@ if ($_POST['filterlogentries_clear']) {
 if ($_POST['save']) {
 	config_set_path('installedpackages/snortglobal/alertsblocks/arefresh', $_POST['arefresh'] ? 'on' : 'off');
 	config_set_path('installedpackages/snortglobal/alertsblocks/alertnumber', $_POST['alertnumber']);
-	config_set_path('installedpackages/snortglobal/rule', $a_instance);
+	config_set_path("installedpackages/snortglobal/rule/{$instanceid}", $a_instance);
 	write_config("Snort pkg: updated ALERTS tab settings.");
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;
@@ -330,13 +330,13 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 	if (!$input_errors) {
 		/* Add the new entry to the Suppress List and signal Snort to reload config */
 		if (snort_add_supplist_entry($suppress)) {
-			snort_reload_config($a_instance[$instanceid]);
+			snort_reload_config($a_instance);
 			$savemsg = $success;
 			/* Give Snort a couple seconds to reload the configuration */
 			sleep(2);
 		}
 		else
-			$input_errors[] = gettext("Suppress List '{$a_instance[$instanceid]['suppresslistname']}' is defined for this interface, but it could not be found!");
+			$input_errors[] = gettext("Suppress List '{$a_instance['suppresslistname']}' is defined for this interface, but it could not be found!");
 	}
 }
 
@@ -347,12 +347,12 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 
 	// See if the target SID is in our list of modified SIDs,
 	// and toggle it if present.
-	if (isset($enablesid[$gid][$sid]))
-		unset($enablesid[$gid][$sid]);
-	if (isset($disablesid[$gid][$sid]))
-		unset($disablesid[$gid][$sid]);
-	elseif (!isset($disablesid[$gid][$sid]))
-		$disablesid[$gid][$sid] = "disablesid";
+	array_del_path($enablesid, "{$gid}/{$sid}");
+	if (array_get_path($disablesid, "{$gid}/{$sid}")) {
+		array_del_path($disablesid, "{$gid}/{$sid}");
+	} else {
+		array_set_path($disablesid, "{$gid}/{$sid}", 'disablesid');
+	}
 
 	// Write the updated enablesid and disablesid values to the config file.
 	$tmp = "";
@@ -363,9 +363,9 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_on'] = $tmp;
+		$a_instance['rule_sid_on'] = $tmp;
 	else				
-		unset($a_instance[$instanceid]['rule_sid_on']);
+		unset($a_instance['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -375,23 +375,24 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_off'] = $tmp;
+		$a_instance['rule_sid_off'] = $tmp;
 	else				
-		unset($a_instance[$instanceid]['rule_sid_off']);
+		unset($a_instance['rule_sid_off']);
 
 	/* Update the config.xml file. */
-	write_config("Snort pkg: modified state for rule {$gid}:{$sid}");
+	config_set_path("installedpackages/snortglobal/rule/{$instanceid}", $a_instance);
+	write_config("Snort pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 	/*************************************************/
 	/* Update the snort.conf file and rebuild the    */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	snort_generate_conf($a_instance[$instanceid]);
+	snort_generate_conf($a_instance);
 	$rebuild_rules = false;
 
 	/* Soft-restart Snort to live-load the new rules */
-	snort_reload_config($a_instance[$instanceid]);
+	snort_reload_config($a_instance);
 
 	/* Give Snort a couple seconds to reload the configuration */
 	sleep(2);
@@ -451,9 +452,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_alert'] = $tmp;
+			$a_instance['rule_sid_force_alert'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_alert']);
+			unset($a_instance['rule_sid_force_alert']);
 
 		$tmp = "";
 		foreach (array_keys($dropsid) as $k1) {
@@ -463,9 +464,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_drop'] = $tmp;
+			$a_instance['rule_sid_force_drop'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_drop']);
+			unset($a_instance['rule_sid_force_drop']);
 
 		$tmp = "";
 		foreach (array_keys($rejectsid) as $k1) {
@@ -475,23 +476,24 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_reject'] = $tmp;
+			$a_instance['rule_sid_force_reject'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_reject']);
+			unset($a_instance['rule_sid_force_reject']);
 
 		/* Update the config.xml file. */
-		write_config("Snort pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
+		config_set_path("installedpackages/snortglobal/rule/{$instanceid}", $a_instance);
+		write_config("Snort pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 		/*************************************************/
 		/* Update the snort.conf file and rebuild the    */
 		/* rules for this interface.                     */
 		/*************************************************/
 		$rebuild_rules = true;
-		snort_generate_conf($a_instance[$instanceid]);
+		snort_generate_conf($a_instance);
 		$rebuild_rules = false;
 
 		/* Signal Snort to live-load the new rules */
-		snort_reload_config($a_instance[$instanceid]);
+		snort_reload_config($a_instance);
 
 		// Sync to configured CARP slaves if any are enabled
 		snort_sync_on_changes();
@@ -540,11 +542,11 @@ if ($_POST['download']) {
 }
 
 // Load up an array with the current Suppression List GID,SID values
-$supplist = snort_load_suppress_sigs($a_instance[$instanceid], true);
+$supplist = snort_load_suppress_sigs($a_instance, true);
 
 // Load up an array with the configured Snort interfaces
 $interfaces = array();
-foreach ($a_instance as $id => $instance) {
+foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $instance) {
 	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']) . " (" . get_real_interface($instance['interface']) . ")";
 }
 
@@ -591,7 +593,7 @@ $group->add(new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->addClass('btn-primary btn-sm')->setAttribute('title', gettext('Save auto-refresh and view settings'));
 $section->add($group);
 
@@ -599,14 +601,14 @@ $btn_dnload = new Form_Button(
 	'download',
 	'Download',
 	null,
-	'fa-download'
+	'fa-solid fa-download'
 );
 $btn_dnload->removeClass('btn-primary')->addClass('btn-success')->addClass('btn-sm')->setAttribute('title', gettext('Download interface log files as a gzip archive'));
 $btn_clear = new Form_Button(
 	'clear',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 );
 $btn_clear->removeClass('btn-primary')->addClass('btn-danger')->addClass('btn-sm')->setAttribute('title', gettext('Clear all interface log files')); 
 
@@ -717,13 +719,13 @@ $group->add(new Form_Button(
 	'filterlogentries_submit',
 	' ' . 'Filter',
 	null,
-	'fa-filter'
+	'fa-solid fa-filter'
 ))->removeClass('btn-primary')->addClass('btn-success')->addClass('btn-sm');
 $group->add(new Form_Button(
 	'filterlogentries_clear',
 	' ' . 'Clear',
 	null,
-	'fa-trash-o'
+	'fa-regular fa-trash-can'
 ))->removeClass('btn-primary')->addClass('btn-warning')->addClass('btn-sm');
 
 $section->add($group);
@@ -853,7 +855,12 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 		/*                 0         1           2      3      4    5    6    7      8     9    10        11         12      13       14      */
 		/* File format timestamp,sig_generator,sig_id,sig_rev,msg,proto,src,srcport,dst,dstport,id,classification,priority,action,disposition */
 		$fd = fopen("{$g['tmp_path']}/alert_{$snort_uuid}", "r");
-		while (($fields = fgetcsv($fd, 1000, ',', '"')) !== FALSE) {
+		while ($fd !== FALSE) {
+			$fields = fgetcsv($fd, 1000, ',', '"');
+			if ($fields === false) {
+				break;
+			}
+
 			if(count($fields) < 14 || count($fields) > 15)
 				continue;
 
@@ -876,12 +883,12 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* Protocol */
 			$alert_proto = $fields[5];
 			/* Action */
-			if (isset($fields[13]) && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders7'] == 'on') {
+			if (isset($fields[13]) && $a_instance['ips_mode'] == 'ips_mode_inline' && $a_instance['blockoffenders7'] == 'on') {
 
 				switch ($fields[13]) {
 
 					case "alert":
-						$alert_action = '<i class="fa fa-exclamation-triangle icon-pointer text-warning text-center" title="';
+						$alert_action = '<i class="fa-solid fa-exclamation-triangle icon-pointer text-warning text-center" title="';
 						if (isset($alertsid[$fields[1]][$fields[2]])) {
 							$alert_action .= gettext("Rule action is User-Forced to ALERT. Click to force a different action for this rule.");
 						}
@@ -891,7 +898,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 						break;
 
 					case "drop":
-						$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
+						$alert_action = '<i class="fa-solid fa-thumbs-down icon-pointer text-danger text-center" title="';
 						if (isset($dropsid[$fields[1]][$fields[2]])) {
 							$alert_action .= gettext("Rule action is User-Forced to DROP. Click to force a different action for this rule.");
 						}
@@ -901,7 +908,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 						break;
 
 					case "reject":
-						$alert_action = '<i class="fa fa-hand-stop-o icon-pointer text-warning text-center" title="';
+						$alert_action = '<i class="fa-regular fa-hand icon-pointer text-warning text-center" title="';
 						if (isset($rejectsid[$fields[1]][$fields[2]])) {
 							$alert_action .= gettext("Rule action is User-Forced to REJECT. Click to force a different action for this rule.");
 						}
@@ -911,24 +918,24 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 						break;
 
 					case "sdrop":
-						$alert_action = '<i class="fa fa-thumbs-o-down icon-pointer text-danger text-center" title="' . gettext("Rule action is SDROP. Click to force a different action for this rule.");
+						$alert_action = '<i class="fa-regular fa-thumbs-down icon-pointer text-danger text-center" title="' . gettext("Rule action is SDROP. Click to force a different action for this rule.");
 						break;
 
 					case "log":
-						$alert_action = '<i class="fa fa-tasks icon-pointer text-center" title="' . gettext("Rule action is LOG. Click to force a different action for this rule.") . '"</i>';
+						$alert_action = '<i class="fa-solid fa-tasks icon-pointer text-center" title="' . gettext("Rule action is LOG. Click to force a different action for this rule.") . '"</i>';
 						break;
 
 					case "pass":
-						$alert_action = '<i class="fa fa-thumbs-up icon-pointer text-success text-center" title="' . gettext("Rule action is PASS. Click to force a different action for this rule.");
+						$alert_action = '<i class="fa-solid fa-thumbs-up icon-pointer text-success text-center" title="' . gettext("Rule action is PASS. Click to force a different action for this rule.");
 						break;
 
 					default:
-						$alert_action = '<i class="fa fa-question-circle icon-pointer text-danger text-center" title="' . gettext("Rule action is unrecognized!. Click to force a different action for this rule.");
+						$alert_action = '<i class="fa-solid fa-question-circle icon-pointer text-danger text-center" title="' . gettext("Rule action is unrecognized!. Click to force a different action for this rule.");
 				}
 				$alert_action .= '" onClick="toggleAction(\'' . $fields[1] . '\', \'' . $fields[2] . '\');"</i>';
 			}
 			else {
-				$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT.") . '"</i>';
+				$alert_action = '<i class="fa-solid fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT.") . '"</i>';
 			}
 			/* Disposition (not currently used, so just set to "Allow") */
 			$alert_disposition = isset($fields[14])?$fields[14]:gettext("Allow");
@@ -941,22 +948,22 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 
 				/* Add Reverse DNS lookup icons */
 				$alert_ip_src .= '<br/>';
-				$alert_ip_src .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[6] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
+				$alert_ip_src .= '<i class="fa-solid fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[6] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
 
 				/* Add icons for auto-adding to Suppress List if appropriate */
 				if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
 				    !isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
 
-					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
+					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa-regular fa-square-plus icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
 					$alert_ip_src .= " onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[6]}','{$alert_descr}');$('#mode').val('addsuppress_srcip');$('#formalert').submit();\"></i>";
 				}
 				elseif (isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
-					$alert_ip_src .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
+					$alert_ip_src .= '&nbsp;&nbsp;<i class="fa-solid fa-info-circle"';
 					$alert_ip_src .= ' title="' . gettext("This alert track by_src IP is already in the Suppress List") . '"></i>';	
 				}
 				/* Add icon for auto-removing from Blocked Table if required */
 				if (isset($tmpblocked[$fields[6]])) {
-					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[6]}');$('#mode').val('todelete');$('#formalert').submit();\"";
+					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[6]}');$('#mode').val('todelete');$('#formalert').submit();\"";
 					$alert_ip_src .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 				}
 			}
@@ -973,21 +980,21 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 
 				/* Add Reverse DNS lookup icons */
 				$alert_ip_dst .= "<br/>";
-				$alert_ip_dst .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[8] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
+				$alert_ip_dst .= '<i class="fa-solid fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[8] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
 
 				/* Add icons for auto-adding to Suppress List if appropriate */
 				if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
 				    !isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
-					$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[8]}','{$alert_descr}');$('#mode').val('addsuppress_dstip');$('#formalert').submit();\"";
+					$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa-regular fa-square-plus icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[8]}','{$alert_descr}');$('#mode').val('addsuppress_dstip');$('#formalert').submit();\"";
 					$alert_ip_dst .= ' title="' . gettext("Add this alert to the Suppress List and track by_dst IP") . '"></i>';	
 				}
 				elseif (isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
-					$alert_ip_dst .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
+					$alert_ip_dst .= '&nbsp;&nbsp;<i class="fa-solid fa-info-circle"';
 					$alert_ip_dst .= ' title="' . gettext("This alert track by_dst IP is already in the Suppress List") . '"></i>';	
 				}
 				/* Add icon for auto-removing from Blocked Table if required */
 				if (isset($tmpblocked[$fields[8]])) {
-					$alert_ip_dst .= "&nbsp;&nbsp;<i name=\"todelete[]\" class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[8]}');$('#mode').val('todelete');$('#formalert').submit();\" ";
+					$alert_ip_dst .= "&nbsp;&nbsp;<i name=\"todelete[]\" class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[8]}');$('#mode').val('todelete');$('#formalert').submit();\" ";
 					$alert_ip_dst .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 				}
 			}
@@ -998,26 +1005,26 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* GID:SID */
 			$alert_sid_str = "{$fields[1]}:{$fields[2]}";
 			if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2])) {
-				$sidsupplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','{$alert_descr}');$('#mode').val('addsuppress');$('#formalert').submit();\"";
+				$sidsupplink = "<i class=\"fa-regular fa-square-plus icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','{$alert_descr}');$('#mode').val('addsuppress');$('#formalert').submit();\"";
 				$sidsupplink .= ' title="' . gettext("Add this alert to the Suppress List") . '"></i>';	
 			}
 			else {
-				$sidsupplink = '<i class="fa fa-info-circle"';
+				$sidsupplink = '<i class="fa-solid fa-info-circle"';
 				$sidsupplink .= ' title="' . gettext("This alert is already in the Suppress List") . '"></i>';	
 			}
 			/* Add icon for toggling rule state */
 			if (isset($disablesid[$fields[1]][$fields[2]])) {
-				$sid_dsbl_link = "<i class=\"fa fa-times-circle icon-pointer text-warning\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
+				$sid_dsbl_link = "<i class=\"fa-solid fa-times-circle icon-pointer text-warning\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
 				$sid_dsbl_link .= ' title="' . gettext("Rule is forced to a disabled state. Click to remove the force-disable action from this rule.") . '"></i>';
 			}
 			else {
-				$sid_dsbl_link = "<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
+				$sid_dsbl_link = "<i class=\"fa-solid fa-times icon-pointer text-danger\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
 				$sid_dsbl_link .= ' title="' . gettext("Force-disable this rule and remove it from current rules set.") . '"></i>';
 			}
 
 			/* Add icon for toggling rule action if applicable to current mode */
-			if ($a_instance[$instanceid]['blockoffenders7'] == 'on' && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
-				$sid_action_link = "<i class=\"fa fa-pencil-square-o icon-pointer text-info\" onClick=\"toggleAction('{$fields[1]}', '{$fields[2]}');\"";
+			if ($a_instance['blockoffenders7'] == 'on' && $a_instance['ips_mode'] == 'ips_mode_inline') {
+				$sid_action_link = "<i class=\"fa-regular fa-pen-to-square icon-pointer text-info\" onClick=\"toggleAction('{$fields[1]}', '{$fields[2]}');\"";
 				$sid_action_link .= ' title="' . gettext("Click to force a different action for this rule.") . '"></i>';
 			}
 			else {
@@ -1059,7 +1066,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 </div>
 </div>
 
-<?php if ($a_instance[$instanceid]['blockoffenders7'] == 'on') : ?>
+<?php if ($a_instance['blockoffenders7'] == 'on') : ?>
 	<!-- Modal Rule SID action selector window -->
 	<div class="modal fade" role="dialog" id="sid_action_selector">
 		<div class="modal-dialog">
@@ -1082,7 +1089,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_drop" value="action_drop"> <span class = "label label-danger">DROP</span>
 					</label>
 
-			<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders7'] == 'on') : ?>
+			<?php if ($a_instance['ips_mode'] == 'ips_mode_inline' && $a_instance['blockoffenders7'] == 'on') : ?>
 					<label class="radio-inline">
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_reject" value="action_reject"> <span class = "label label-warning">REJECT</span>
 					</label>
@@ -1092,7 +1099,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 				</div>
 				<div class="modal-footer">
 					<button type="submit" form="formalert" class="btn btn-sm btn-primary" id="rule_action_save" name="rule_action_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>" onClick="$('#sid_action_selector').modal('hide');">
-						<i class="fa fa-save icon-embed-btn"></i>
+						<i class="fa-solid fa-save icon-embed-btn"></i>
 						<?=gettext("Save");?>
 					</button>
 					<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">

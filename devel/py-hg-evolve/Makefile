@@ -1,5 +1,5 @@
 PORTNAME=	hg-evolve
-DISTVERSION=	11.0.1
+DISTVERSION=	11.1.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,16 +9,17 @@ COMMENT=	Changeset Evolution with Mercurial
 WWW=		https://www.mercurial-scm.org/doc/evolution/
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	hg:devel/mercurial \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
-
-NO_ARCH=	yes
 
 # Do not conflict with devel/mercurial, which also installs hgext3rd/__init__.py
 EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/hgext3rd/__init__.py
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

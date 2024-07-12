@@ -1,6 +1,6 @@
 PORTNAME=	pcre
 PORTVERSION=	8.45
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	https://ftp.pcre.org/pub/pcre/ \
 		SF
@@ -12,14 +12,16 @@ WWW=		https://www.pcre.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
+DEPRECATED=	EOLed by upstream, use devel/pcre2 instead
+
 USES=			${USES_${ARCH}} cpe libtool pathfix tar:bzip2
 USES_powerpc=		compiler:c++11-lang
 USES_powerpc64=		compiler:c++11-lang
 USES_powerpcspe=	compiler:c++11-lang
-USES_sparc64=		compiler:c++11-lang
 USE_LDCONFIG=		yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-pcre16 \
 		--enable-pcre32 \
 		--enable-pcre8 \

@@ -33,11 +33,11 @@
     SUBDIR += bogofilter-bdb
     SUBDIR += bogofilter-kc
     SUBDIR += bogofilter-sqlite
+    SUBDIR += bsd-vacation
     SUBDIR += bsfilter
     SUBDIR += bsmtp
     SUBDIR += bulk_mailer
     SUBDIR += c-sig
-    SUBDIR += cclient
     SUBDIR += claws-mail
     SUBDIR += claws-mail-acpi_notifier
     SUBDIR += claws-mail-address_keeper
@@ -48,6 +48,7 @@
     SUBDIR += claws-mail-bsfilter
     SUBDIR += claws-mail-clamd
     SUBDIR += claws-mail-dillo
+    SUBDIR += claws-mail-fancy
     SUBDIR += claws-mail-fetchinfo
     SUBDIR += claws-mail-gdata
     SUBDIR += claws-mail-keyword_warner
@@ -77,8 +78,6 @@
     SUBDIR += couriergraph
     SUBDIR += crm114
     SUBDIR += cvsmail
-    SUBDIR += cyrus-imapd23
-    SUBDIR += cyrus-imapd24
     SUBDIR += cyrus-imapd25
     SUBDIR += cyrus-imapd30
     SUBDIR += cyrus-imapd32
@@ -97,6 +96,7 @@
     SUBDIR += dkfilter
     SUBDIR += dkimproxy
     SUBDIR += dma
+    SUBDIR += dmarcts-report-parser
     SUBDIR += dot-forward
     SUBDIR += dovecot
     SUBDIR += dovecot-coi
@@ -127,6 +127,7 @@
     SUBDIR += exim-sa-exim
     SUBDIR += exim-sqlite
     SUBDIR += exipick
+    SUBDIR += exmh-devel
     SUBDIR += exmh2
     SUBDIR += ez-pine-gpg
     SUBDIR += ezmlm
@@ -155,9 +156,9 @@
     SUBDIR += hashcash
     SUBDIR += hbiff
     SUBDIR += heirloom-mailx
+    SUBDIR += hydroxide
     SUBDIR += ifile
     SUBDIR += im
-    SUBDIR += imap-uw
     SUBDIR += imapdedup
     SUBDIR += imapfilter
     SUBDIR += imapsync
@@ -182,11 +183,11 @@
     SUBDIR += libpst
     SUBDIR += libsieve
     SUBDIR += libspamtest
-    SUBDIR += libspf
     SUBDIR += libspf2
     SUBDIR += libsrs2
     SUBDIR += libsrs_alt
     SUBDIR += libvmime
+    SUBDIR += linux-r7-organizer-pro
     SUBDIR += listadmin
     SUBDIR += lmtp2nntp
     SUBDIR += lookout
@@ -200,6 +201,7 @@
     SUBDIR += mailfront
     SUBDIR += mailgraph
     SUBDIR += mailhog
+    SUBDIR += mailio
     SUBDIR += mailman
     SUBDIR += mailman-exim4
     SUBDIR += mailman-postfix
@@ -207,7 +209,6 @@
     SUBDIR += mailpit
     SUBDIR += mailscanner
     SUBDIR += mailslurper
-    SUBDIR += mailsync
     SUBDIR += mailutils
     SUBDIR += mailx
     SUBDIR += mairix
@@ -225,6 +226,9 @@
     SUBDIR += metamail
     SUBDIR += mew
     SUBDIR += mew-devel
+    SUBDIR += mfmod_ldap
+    SUBDIR += mfmod_openmetrics
+    SUBDIR += mfmod_pcre
     SUBDIR += milter-bogom
     SUBDIR += milter-callback
     SUBDIR += milter-greylist
@@ -244,6 +248,7 @@
     SUBDIR += mls
     SUBDIR += mmh
     SUBDIR += mmr
+    SUBDIR += mox
     SUBDIR += mpop
     SUBDIR += msglint
     SUBDIR += msmtp
@@ -267,6 +272,7 @@
     SUBDIR += nullmailer
     SUBDIR += openarc
     SUBDIR += opendkim
+    SUBDIR += opendkim-devel
     SUBDIR += opendmarc
     SUBDIR += opensmtpd
     SUBDIR += opensmtpd-extras
@@ -350,6 +356,7 @@
     SUBDIR += p5-Mail-Audit
     SUBDIR += p5-Mail-Audit-Attach
     SUBDIR += p5-Mail-AuthenticationResults
+    SUBDIR += p5-Mail-BIMI
     SUBDIR += p5-Mail-Box
     SUBDIR += p5-Mail-Box-IMAP4
     SUBDIR += p5-Mail-Box-IMAP4-SSL
@@ -359,6 +366,7 @@
     SUBDIR += p5-Mail-CheckUser
     SUBDIR += p5-Mail-DKIM
     SUBDIR += p5-Mail-DMARC
+    SUBDIR += p5-Mail-DataFeed-Abusix
     SUBDIR += p5-Mail-DeliveryStatus-BounceParser
     SUBDIR += p5-Mail-DomainKeys
     SUBDIR += p5-Mail-Ezmlm
@@ -375,6 +383,7 @@
     SUBDIR += p5-Mail-Mbox-MessageParser
     SUBDIR += p5-Mail-MboxParser
     SUBDIR += p5-Mail-Message
+    SUBDIR += p5-Mail-Milter-Authentication
     SUBDIR += p5-Mail-OpenDKIM
     SUBDIR += p5-Mail-OpenRelay-Simple
     SUBDIR += p5-Mail-POP3Client
@@ -455,7 +464,6 @@
     SUBDIR += perdition
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
-    SUBDIR += php80-imap
     SUBDIR += php81-imap
     SUBDIR += php82-imap
     SUBDIR += php83-imap
@@ -483,7 +491,6 @@
     SUBDIR += postfixadmin-lite
     SUBDIR += postfixadmin33
     SUBDIR += postfixadmin33-lite
-    SUBDIR += postforward
     SUBDIR += postgrey
     SUBDIR += postsrsd
     SUBDIR += prepflog
@@ -496,15 +503,18 @@
     SUBDIR += py-alot
     SUBDIR += py-authheaders
     SUBDIR += py-authres
+    SUBDIR += py-checkdmarc
     SUBDIR += py-django-mailbox
     SUBDIR += py-django-mailman3
     SUBDIR += py-dkimpy
+    SUBDIR += py-dkimpy-milter
     SUBDIR += py-email-reply-parser
     SUBDIR += py-email-validator
     SUBDIR += py-flanker
     SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
+    SUBDIR += py-imap-tools
     SUBDIR += py-imapclient
     SUBDIR += py-imaplib2
     SUBDIR += py-mail-parser
@@ -518,6 +528,7 @@
     SUBDIR += py-offlineimap3
     SUBDIR += py-postfix-mta-sts-resolver
     SUBDIR += py-premailer
+    SUBDIR += py-pyisemail
     SUBDIR += py-pymailq
     SUBDIR += py-pysasl
     SUBDIR += py-pyspf
@@ -540,7 +551,6 @@
     SUBDIR += qmail-qfilter
     SUBDIR += qmail-rblchk
     SUBDIR += qmail-remove
-    SUBDIR += qmail-spamcontrol
     SUBDIR += qmail-tls
     SUBDIR += qmailadmin
     SUBDIR += qmailanalog
@@ -548,8 +558,6 @@
     SUBDIR += qmhandle
     SUBDIR += qpopper
     SUBDIR += qsf
-    SUBDIR += qsheff
-    SUBDIR += qtools
     SUBDIR += queue-fix
     SUBDIR += queue-repair
     SUBDIR += rainloop
@@ -567,12 +575,14 @@
     SUBDIR += roundcube-carddav
     SUBDIR += roundcube-classic
     SUBDIR += roundcube-contextmenu
+    SUBDIR += roundcube-gravatar
     SUBDIR += roundcube-html5_notifier
     SUBDIR += roundcube-identity_smtp
     SUBDIR += roundcube-larry
     SUBDIR += roundcube-login_info
     SUBDIR += roundcube-sauserprefs
     SUBDIR += roundcube-thunderbird_labels
+    SUBDIR += roundcube-tls_icon
     SUBDIR += roundcube-twofactor_gauthenticator
     SUBDIR += roundcube-veximaccountadmin
     SUBDIR += roundcube-yubikey_auth
@@ -582,6 +592,7 @@
     SUBDIR += rubygem-actionmailbox60
     SUBDIR += rubygem-actionmailbox61
     SUBDIR += rubygem-actionmailbox70
+    SUBDIR += rubygem-actionmailbox71
     SUBDIR += rubygem-actionmailer4
     SUBDIR += rubygem-actionmailer5
     SUBDIR += rubygem-actionmailer50
@@ -589,10 +600,12 @@
     SUBDIR += rubygem-actionmailer60
     SUBDIR += rubygem-actionmailer61
     SUBDIR += rubygem-actionmailer70
+    SUBDIR += rubygem-actionmailer71
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer
     SUBDIR += rubygem-exception_notification
+    SUBDIR += rubygem-extended_email_reply_parser
     SUBDIR += rubygem-gitlab-mail_room
     SUBDIR += rubygem-mail
     SUBDIR += rubygem-mail_room
@@ -609,6 +622,9 @@
     SUBDIR += rubygem-premailer-rails-rails52
     SUBDIR += rubygem-premailer-rails-rails60
     SUBDIR += rubygem-premailer-rails-rails61
+    SUBDIR += rubygem-premailer-rails-rails70
+    SUBDIR += rubygem-premailer-rails-rails71
+    SUBDIR += rubygem-premailer-rails110-rails70
     SUBDIR += rubygem-rmail
     SUBDIR += rubygem-roadie
     SUBDIR += rubygem-roadie-rails-rails4
@@ -617,6 +633,7 @@
     SUBDIR += rubygem-roadie3
     SUBDIR += rubygem-ruby-qmail
     SUBDIR += rubygem-valid_email
+    SUBDIR += rubygem-valid_email02
     SUBDIR += rubygem-vmail
     SUBDIR += s-nail
     SUBDIR += sa-stats
@@ -632,7 +649,6 @@
     SUBDIR += sieve-connect
     SUBDIR += sigrot
     SUBDIR += simscan
-    SUBDIR += slapd-cyrus
     SUBDIR += slimta
     SUBDIR += sma
     SUBDIR += smfsav
@@ -711,14 +727,12 @@
     SUBDIR += tlb
     SUBDIR += tmpmail
     SUBDIR += tpop3d
-    SUBDIR += trojita
     SUBDIR += tumgreyspf
     SUBDIR += up-imapproxy
     SUBDIR += usendmail
     SUBDIR += vacation
     SUBDIR += vbsfilter
     SUBDIR += vexim
-    SUBDIR += vmailmgr
     SUBDIR += vpopmail
     SUBDIR += vqadmin
     SUBDIR += vrfy

@@ -43,6 +43,7 @@
     SUBDIR += opencpn
     SUBDIR += openuniverse
     SUBDIR += oskar
+    SUBDIR += osmium-tool
     SUBDIR += osmosis
     SUBDIR += p5-Astro
     SUBDIR += p5-Astro-ADS
@@ -77,8 +78,8 @@
     SUBDIR += pal
     SUBDIR += phd2
     SUBDIR += phoon
+    SUBDIR += pngphoon
     SUBDIR += pp3
-    SUBDIR += ptiger
     SUBDIR += py-astlib
     SUBDIR += py-astral
     SUBDIR += py-astroML
@@ -125,8 +126,7 @@
     SUBDIR += sunclock
     SUBDIR += sunwait
     SUBDIR += swe
-    SUBDIR += tclgeomap
-    SUBDIR += tkgeomap
+    SUBDIR += viking
     SUBDIR += wcslib
     SUBDIR += weather
     SUBDIR += wmglobe
@@ -136,7 +136,6 @@
     SUBDIR += wmspaceweather
     SUBDIR += wmsun
     SUBDIR += xearth
-    SUBDIR += xeartk
     SUBDIR += xephem
     SUBDIR += xmoontool
     SUBDIR += xphoon

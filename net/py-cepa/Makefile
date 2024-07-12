@@ -11,8 +11,7 @@ WWW=		https://github.com/onionshare/cepa
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>0:security/py-cryptography@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}pycryptodome>0:security/py-pycryptodome@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycryptodome>0:security/py-pycryptodome@${PY_FLAVOR}
 
 TEST_DEPENDS=	tor:security/tor \
 		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
@@ -21,8 +20,8 @@ TEST_DEPENDS=	tor:security/tor \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR}
 
-USES=		python:3.6+ shebangfix
-USE_PYTHON=	distutils autoplist concurrent
+USES=		python shebangfix
+USE_PYTHON=	autoplist concurrent cryptography distutils
 NO_ARCH=	yes
 
 SHEBANG_FILES=		*.py

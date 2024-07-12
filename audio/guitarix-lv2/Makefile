@@ -1,7 +1,7 @@
 PORTNAME=	guitarix
 DISTVERSIONPREFIX=	V
 DISTVERSION=	0.44.1
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	audio
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -65,6 +65,8 @@ OPTIONS_SUB=	yes
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=	gettext
 NLS_USE=	GNOME=intltool
+
+BROKEN=		fails to find faust version, see https://github.com/brummer10/guitarix/issues/135
 
 post-install:
 	# strip, see https://sourceforge.net/p/guitarix/bugs/60/

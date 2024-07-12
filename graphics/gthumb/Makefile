@@ -1,12 +1,13 @@
 PORTNAME=	gthumb
 PORTVERSION=	3.12.2
-PORTREVISION=	4
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 PATCH_SITES=	https://gitlab.gnome.org/GNOME/gthumb/-/commit/
 PATCHFILES=	2133520496afd179702953a5d07aa99b5209f9cf.patch:-p1 #Fix build with libraw >= 0.21.0
+PATCHFILES+=	306d0eeca5ef.patch:-p1 # https://gitlab.gnome.org/GNOME/gthumb/-/issues/306
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Image viewer and browser for the GNOME environment
@@ -30,7 +31,7 @@ RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
 USES=		bison compiler:c++11-lib cpe desktop-file-utils gettext gl \
 		gnome jpeg localbase:ldflags meson pkgconfig \
-		python:3.5+,build shebangfix tar:xz xorg
+		python:build shebangfix tar:xz xorg
 USE_GL=		egl
 USE_GNOME=	cairo gtk30 intltool librsvg2
 USE_XORG=	x11 xcomposite xdamage xext xfixes xrandr xi

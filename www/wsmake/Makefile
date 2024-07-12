@@ -1,6 +1,6 @@
 PORTNAME=	wsmake
 PORTVERSION=	0.7.901
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 
@@ -12,7 +12,10 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake tar:bzip2
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-gwsmake=no --enable-iswmake=no
 
 INFO=		wsmake iwsmake gwsmake

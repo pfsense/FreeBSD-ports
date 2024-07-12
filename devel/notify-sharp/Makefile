@@ -1,5 +1,6 @@
 PORTNAME=	notify-sharp
 PORTVERSION=	3.0.3
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.meebey.net/projects/notify-sharp/downloads/
 

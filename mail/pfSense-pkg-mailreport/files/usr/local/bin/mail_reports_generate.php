@@ -4,7 +4,7 @@
  * mail_reports_generate.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -30,18 +30,18 @@ if (!isset($id) && isset($argv[1])) {
 	$id = $argv[1];
 }
 
-init_config_arr(array('mailreports', 'schedule'));
+config_init_path('mailreports/schedule');
 
 // If there is no report ID or the report doesn't exist, bail.
 if (!isset($id) ||
-    !$config['mailreports']['schedule'][$id]) {
+    !config_get_path("mailreports/schedule/{$id}")) {
 	exit;
 }
 
-init_config_arr(array('mailreports', 'schedule', $id, 'cmd', 'row'));
-init_config_arr(array('mailreports', 'schedule', $id, 'log', 'row'));
+config_init_path("mailreports/schedule/{$id}/cmd/row");
+config_init_path("mailreports/schedule/{$id}/log/row");
 
-$thisreport = $config['mailreports']['schedule'][$id];
+$thisreport = config_get_path("mailreports/schedule/{$id}");
 
 // If there is nothing to do, bail!
 if (empty($thisreport['cmd']['row']) && empty($thisreport['log']['row'])) {

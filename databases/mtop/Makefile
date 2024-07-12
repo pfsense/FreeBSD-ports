@@ -1,22 +1,22 @@
 PORTNAME=	mtop
 PORTVERSION=	0.6.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/v${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MySQL Monitoring Tool
-WWW=		http://mtop.sourceforge.net/
+WWW=		https://mtop.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	p5-Curses>=0:devel/p5-Curses \
-		p5-DBD-mysql>=0:databases/p5-DBD-mysql
+		${DBD_MYSQL}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
-USES=		perl5
+USES=		mysql perl5
 USE_PERL5=	configure
 
 post-patch:

@@ -1,12 +1,12 @@
 PORTNAME=	gtkspell3
 PORTVERSION=	3.0.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc gnome
 MASTER_SITES=	SF/gtkspell/${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GTK+ 3 spell checking component
-WWW=		http://gtkspell.sourceforge.net/
+COMMENT=	GTK 3 spell checking component
+WWW=		https://gtkspell.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,5 +1,5 @@
-TIMESTAMP = 1685475508
-SHA256 (go/textproc_go-yq/go-yq-v4.34.1/v4.34.1.mod) = 3e7490afb2313382b6e3e0652424a85d702445c050bbc9f888bd0018bda7d25c
-SIZE (go/textproc_go-yq/go-yq-v4.34.1/v4.34.1.mod) = 993
-SHA256 (go/textproc_go-yq/go-yq-v4.34.1/v4.34.1.zip) = ddde40919b4dbabbec62f5df92af93a6ee8e6e70c65e349bb0608a9c80362a34
-SIZE (go/textproc_go-yq/go-yq-v4.34.1/v4.34.1.zip) = 406552
+TIMESTAMP = 1717461593
+SHA256 (go/textproc_go-yq/go-yq-v4.44.1/v4.44.1.mod) = 4181292e178e2fca4c719c238afd89d3b0c55e0d3a4cb97ed6df176a4c1f86d0
+SIZE (go/textproc_go-yq/go-yq-v4.44.1/v4.44.1.mod) = 1030
+SHA256 (go/textproc_go-yq/go-yq-v4.44.1/v4.44.1.zip) = 1b2e175951d62dae32357f49ff377063976a13c05546551cad170da3746e09b5
+SIZE (go/textproc_go-yq/go-yq-v4.44.1/v4.44.1.zip) = 475838

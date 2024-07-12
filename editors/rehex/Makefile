@@ -1,6 +1,5 @@
 PORTNAME=	rehex
-DISTVERSION=	0.5.4
-PORTREVISION=	1
+DISTVERSION=	0.61.1
 CATEGORIES=	editors
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -10,7 +9,8 @@ WWW=		https://github.com/solemnwarning/rehex
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libcapstone.so:devel/capstone4 \
+LIB_DEPENDS=	libbotan-2.so:security/botan2 \
+		libcapstone.so:devel/capstone \
 		libharfbuzz.so:print/harfbuzz \
 		libiconv.so:converters/libiconv \
 		libjansson.so:devel/jansson \

@@ -7,23 +7,27 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Let's Encrypt client #'
-WWW=		https://github.com/certbot/certbot
+WWW=		https://certbot.eff.org/ \
+		https://github.com/certbot/certbot \
+		https://github.com/certbot/certbot/tree/master/certbot
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}acme>=${ACME_VERSION},1:security/py-acme@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}configargparse>=0.9.3:devel/py-configargparse@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}configargparse>=1.5.3:devel/py-configargparse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}configobj>=5.0.6:devel/py-configobj@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cryptography>=2.5.0,1:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}distro>=1.0.1:sysutils/py-distro@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}josepy>=1.13.0:security/py-josepy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}parsedatetime>=2.4:devel/py-parsedatetime@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyrfc3339>=0:devel/py-pyrfc3339@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytz>=2019.3,1:devel/py-pytz@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pytz>=2019.3,1:devel/py-pytz@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>=41.6.0:devel/py-setuptools@${PY_FLAVOR}
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist concurrent distutils pytest
+USES=		python
+USE_PYTHON=	autoplist concurrent cryptography pep517 pytest
 
 NO_ARCH=	yes
 
@@ -37,10 +41,19 @@ OPTIONS_DEFAULT=MANPAGES
 MANPAGES_BUILD_DEPENDS=	${RUN_DEPENDS} \
 			${PYTHON_PKGNAMEPREFIX}sphinx>=1.2,1:textproc/py-sphinx@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>=0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}repoze.sphinx.autointerface>=0:devel/py-repoze.sphinx.autointerface@${PY_FLAVOR} \
-
+			${PYTHON_PKGNAMEPREFIX}repoze.sphinx.autointerface>=0:devel/py-repoze.sphinx.autointerface@${PY_FLAVOR}
 MANPAGES_PLIST_FILES=	share/man/man1/certbot.1.gz \
 			share/man/man7/certbot.7.gz
+
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 30900
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-resources>=1.3.1:devel/py-importlib-resources@${PY_FLAVOR}
+.endif
+
+.if ${PYTHON_REL} < 31000
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=4.6:devel/py-importlib-metadata@${PY_FLAVOR}
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/certbot/compat/misc.py ${WRKSRC}/certbot/_internal/tests/cli_test.py
@@ -58,4 +71,4 @@ post-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/docs/_build/man/certbot.7 ${STAGEDIR}${PREFIX}/share/man/man7
 
 .include "${.CURDIR}/../py-acme/version.mk"
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	asymptote
 PORTVERSION=	2.81
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -16,7 +16,6 @@ LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual
 
 ONLY_FOR_ARCHS=	amd64 i386
-BROKEN_FreeBSD_12_i386=	./base/plain_filldraw.asy: 21.5: runtime: gmake[2]: *** [Makefile:42: makepen.pdf] Floating point exception (core dumped)
 
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		libcurl.so:ftp/curl \
@@ -24,7 +23,7 @@ LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cson>=0.8:devel/py-cson@${PY_FLAVOR} \
 		${PY_PILLOW}
 
-USES=		compiler:c++14-lang gettext-runtime ghostscript gl gmake gnome ncurses perl5 python:3.6+ \
+USES=		compiler:c++14-lang gettext-runtime ghostscript gl gmake gnome ncurses perl5 python \
 		pyqt:5 shebangfix tar:tgz tex
 SHEBANG_FILES=	GUI/*.py
 USE_GL=		gl glu glut
@@ -35,6 +34,7 @@ USE_PYQT=	pyqt5:run
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-lsp # disable the module with Boost-related errors
 
 MAKE_ENV=	ASYMPTOTE_HOME=${WRKDIR} HOME=${WRKDIR}
@@ -81,6 +81,12 @@ TEST_TARGET=	test
 TEST_WRKSRC=	${WRKSRC}/tests
 
 PORTEXAMPLES=	*
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} 's/-lgc/-lgc-threaded/' ${WRKSRC}/configure

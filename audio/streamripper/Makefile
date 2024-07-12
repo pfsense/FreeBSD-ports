@@ -1,13 +1,13 @@
 PORTNAME=	streamripper
 PORTVERSION=	1.64.6
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28current%29/${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	freebsdports@xorcara.com
 COMMENT=	Splits SHOUTcast stream into tracks
-WWW=		http://streamripper.sourceforge.net
+WWW=		https://streamripper.sourceforge.net
 
 LICENSE=	GPLv2
 
@@ -27,7 +27,7 @@ CONFIGURE_ARGS=	--without-included-libmad \
 		--with-included-cdk
 
 PLIST_FILES=	bin/streamripper \
-		man/man1/streamripper.1.gz
+		share/man/man1/streamripper.1.gz
 
 CFLAGS+=	-DANSI_PROTOTYPES
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -43,6 +43,6 @@ VORBIS_LIB_DEPENDS=	libogg.so:audio/libogg \
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/streamripper ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/streamripper.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

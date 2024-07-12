@@ -1,7 +1,6 @@
-diff -ru bak.ly-0.5.2/src/login.c ly-0.5.2/src/login.c
---- src/login.c	2021-10-16 23:20:01.325733000 -0400
-+++ src/login.c	2021-10-16 23:21:46.738595000 -0400
-@@ -18,7 +18,7 @@
+--- src/login.c.orig	2023-06-15 07:30:09 UTC
++++ src/login.c
+@@ -19,9 +19,13 @@
  #include <sys/stat.h>
  #include <sys/wait.h>
  #include <unistd.h>
@@ -9,40 +8,47 @@ diff -ru bak.ly-0.5.2/src/login.c ly-0.5.2/src/login.c
 +#include <utmpx.h>
  #include <xcb/xcb.h>
  
++#include <sys/param.h>
++#include <sys/types.h>
++#include <login_cap.h>
++
  int get_free_display()
-@@ -213,6 +213,11 @@
+ {
+ 	char xlock[1024];
+@@ -214,13 +218,13 @@
  	// clean env
  	environ[0] = NULL;
+ 	
+-	setenv("TERM", term ? term : "linux", 1);
++	setenv("TERM", term ? term : "xterm", 1);
+ 	setenv("HOME", pwd->pw_dir, 1);
+ 	setenv("PWD", pwd->pw_dir, 1);
+ 	setenv("SHELL", pwd->pw_shell, 1);
+ 	setenv("USER", pwd->pw_name, 1);
+ 	setenv("LOGNAME", pwd->pw_name, 1);
+-	setenv("LANG", lang ? lang : "C", 1);
++	setenv("LANG", lang ? lang : "C.UTF-8", 1);
  
-+	if (lang == NULL)
-+	{
-+		lang = "C.UTF-8";
-+	}
-+
- 	if (term != NULL)
- 	{
- 		setenv("TERM", term, 1);
-@@ -243,9 +248,15 @@
+ 	// Set PATH if specified in the configuration
+ 	if (strlen(config.path))
+@@ -259,9 +263,15 @@
  
- void env_xdg(const char* tty_id, const enum display_server display_server)
+ void env_xdg(const char* tty_id, const char* desktop_name)
  {
--	char user[15];
--	snprintf(user, 15, "/run/user/%d", getuid());
--	setenv("XDG_RUNTIME_DIR", user, 0);
 +	// The "/run/user/%d" directory is not available on FreeBSD. It is much
 +	// better to stick to the defaults and let applications using
 +	// XDG_RUNTIME_DIR to fall back to directories inside user's home
 +	// directory.
 +	/*
-+	 * char user[15];
-+	 * snprintf(user, 15, "/run/user/%d", getuid());
-+	 * setenv("XDG_RUNTIME_DIR", user, 0);
-+	 */
- 	setenv("XDG_SESSION_CLASS", "user", 0);
- 	setenv("XDG_SEAT", "seat0", 0);
- 	setenv("XDG_VTNR", tty_id, 0);
-@@ -271,8 +282,8 @@
- 	}
+     char user[20];
+     snprintf(user, 20, "/run/user/%d", getuid());
+     setenv("XDG_RUNTIME_DIR", user, 0);
++    */
+     setenv("XDG_SESSION_CLASS", "user", 0);
+     setenv("XDG_SESSION_ID", "1", 0);
+     setenv("XDG_SESSION_DESKTOP", desktop_name, 0);
+@@ -269,8 +279,8 @@
+     setenv("XDG_VTNR", tty_id, 0);
  }
  
 -void add_utmp_entry(
@@ -52,7 +58,7 @@ diff -ru bak.ly-0.5.2/src/login.c ly-0.5.2/src/login.c
  	char *username,
  	pid_t display_pid
  ) {
-@@ -283,24 +294,23 @@
+@@ -281,24 +291,23 @@
  	/* only correct for ptys named /dev/tty[pqr][0-9a-z] */
  	strcpy(entry->ut_id, ttyname(STDIN_FILENO) + strlen("/dev/tty"));
  
@@ -88,17 +94,38 @@ diff -ru bak.ly-0.5.2/src/login.c ly-0.5.2/src/login.c
 +	endutxent();
  }
  
- void xauth(const char* display_name, const char* shell, const char* dir)
-@@ -581,7 +591,7 @@
+ void xauth(const char* display_name, const char* shell, char* pwd)
+@@ -598,6 +607,16 @@
+ 			exit(EXIT_FAILURE);
+ 		}
+ 
++		ok = setusercontext(NULL, pwd, pwd->pw_uid, LOGIN_SETALL);
++
++		if (ok != 0)
++		{
++			dgn_throw(DGN_USER_UID);
++			exit(EXIT_FAILURE);
++		}
++
++		/* This is done by setusercontext() on FreeBSD. */
++#if 0
+ 		ok = setgid(pwd->pw_gid);
+ 
+ 		if (ok != 0)
+@@ -613,10 +632,11 @@
+ 			dgn_throw(DGN_USER_UID);
+ 			exit(EXIT_FAILURE);
+ 		}
++#endif
+ 
+ 		// get a display
  		char vt[5];
- 
- 		snprintf(tty_id, 3, "%d", config.tty);
 -		snprintf(vt, 5, "vt%d", config.tty);
-+		snprintf(vt, 5, "vt%d", config.vt);
+++		snprintf(vt, 5, "vt%d", config.vt);
  
- 		// set env
+ 		// set env (this clears the environment)
  		env_init(pwd);
-@@ -636,13 +646,13 @@
+@@ -671,13 +691,13 @@
  	}
  
  	// add utmp audit

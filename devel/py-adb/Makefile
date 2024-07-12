@@ -10,16 +10,15 @@ WWW=		https://github.com/google/python-adb
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libusb1>=1.0.16:devel/py-libusb1@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cryptography>0:security/py-cryptography@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libusb1>=1.0.16:devel/py-libusb1@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
 GH_PROJECT=	python-${PORTNAME}
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils pytest
+USES=		python
+USE_PYTHON=	autoplist cryptography distutils pytest
 
 NO_ARCH=	yes
 

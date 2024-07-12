@@ -1,5 +1,5 @@
 PORTNAME=	ExtensionClass
-PORTVERSION=	4.3.0
+PORTVERSION=	5.1
 CATEGORIES=	devel python zope
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ WWW=		https://pypi.org/project/ExtensionClass/
 LICENSE=	ZPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

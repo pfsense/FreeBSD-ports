@@ -8,7 +8,7 @@
  * tailscale_auth.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,7 +90,7 @@
 			<fielddescr>Logout and Clean</fielddescr>
 			<fieldname>service_clean</fieldname>
 			<type>button</type>
-			<buttonicon>fa-sign-out</buttonicon>
+			<buttonicon>fa-solid fa-right-from-bracket</buttonicon>
 			<buttonclass>btn-danger</buttonclass>
 			<description>
 				<![CDATA[

@@ -1,5 +1,5 @@
 PORTNAME=	disjoint-set
-DISTVERSION=	0.7.4
+DISTVERSION=	0.8.0
 CATEGORIES=	math
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ WWW=		https://github.com/mrapacz/disjoint-set
 
 LICENSE=	MIT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist pytest
 
 NO_ARCH=	yes

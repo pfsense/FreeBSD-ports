@@ -1,6 +1,7 @@
 PORTNAME=	symphony
 DISTVERSIONPREFIX=	releases/
-DISTVERSION=	5.7.1
+DISTVERSION=	5.7.2
+PORTREVISION=	1
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
@@ -22,6 +23,7 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libClp.so:math/clp
 
 USES=		gmake libtool pkgconfig
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

@@ -1,0 +1,15 @@
+diff --git a/a/boot/loader.conf.lua b/b/boot/loader.conf.lua
+index c9bf28016bf8..a8599c1b0da5 100644
+--- a/a/boot/loader.conf.lua
++++ b/b/boot/loader.conf.lua
+@@ -66,6 +66,10 @@ if _ENV["smbios.system.maker"] == "Netgate" then
+     if _ENV["smbios.system.product"] == "4200" then
+          _ENV["console"]="efi"
+          _ENV["hw.uart.console"]="mm:0xfe03e000"
++         _ENV["dev.igc.0.iflib.override_nrxqs"]="1";
++         _ENV["dev.igc.1.iflib.override_nrxqs"]="1";
++         _ENV["dev.igc.2.iflib.override_nrxqs"]="1";
++         _ENV["dev.igc.3.iflib.override_nrxqs"]="1";
+     end
+ end
+ 

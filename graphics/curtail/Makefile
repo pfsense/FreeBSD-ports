@@ -1,5 +1,5 @@
 PORTNAME=	curtail
-DISTVERSION=	1.5.0
+DISTVERSION=	1.10.0
 CATEGORIES=	graphics print
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,8 +12,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	appstream-util:devel/appstream-glib
 RUN_DEPENDS=	cwebp:graphics/webp \
 		jpegoptim:graphics/jpegoptim \
-		optipng:graphics/optipng \
-		pngquant:graphics/pngquant
+		libadwaita>0:x11-toolkits/libadwaita \
+		oxipng:graphics/oxipng \
+		pngquant:graphics/pngquant \
+		scour:textproc/py-scour@${PY_FLAVOR}
 
 USES=		desktop-file-utils gettext gnome meson pkgconfig python
 USE_GNOME=	glib20 gtk30
@@ -30,7 +32,5 @@ BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 post-install: # adjust python path in the executable
 	@${REINPLACE_CMD} -i '' -e 's|^#!.*|#!${PYTHON_CMD}|' ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-
-# 1 test fails, see https://github.com/Huluti/Curtail/issues/142
 
 .include <bsd.port.mk>

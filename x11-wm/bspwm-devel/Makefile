@@ -1,9 +1,10 @@
 PORTNAME=	bspwm
-DISTVERSION=	0.9.10.20230405
+DISTVERSION=	0.9.10.20230829
+PORTREVISION=	2
 CATEGORIES=	x11-wm
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	jbo@insane.engineer
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	Tiling window manager based on binary space partitioning
 WWW=		https://github.com/baskerville/bspwm
 
@@ -18,23 +19,24 @@ RUN_DEPENDS=	sxhkd:x11/sxhkd
 USES=		gmake localbase:ldflags xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	baskerville
-GH_TAGNAME=	8fc2269fe0f29a785885bcd9122812eae7226d7b
+GH_TAGNAME=	af3bd8b4351f4478fe0fe3cfd6c09e44cb108b4b
 USE_XORG=	xcb
 
 CONFLICTS_INSTALL=	bspwm
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	DOCS EXAMPLES CONTRIB
-OPTIONS_SUB=	yes
-CONTRIB_DESC=	Install contrib (shell completions, etc.)
+OPTIONS_DEFINE=		DOCS EXAMPLES CONTRIB
+OPTIONS_DEFAULT=	CONTRIB
+OPTIONS_SUB=		yes
+CONTRIB_DESC=		Install contrib (shell completions, etc.)
 
 do-install:
-	${MKDIR} ${STAGEDIR}${BINDIR} ${STAGEDIR}${MANPREFIX}/man/man1
+	${MKDIR} ${STAGEDIR}${BINDIR} ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_PROGRAM} ${WRKSRC}/bspc ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/bspwm ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/bspc.1 ${STAGEDIR}${MANPREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/doc/bspwm.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/bspc.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/bspwm.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 post-install-CONTRIB-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions

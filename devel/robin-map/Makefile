@@ -1,6 +1,6 @@
 PORTNAME=	robin-map
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.3
+DISTVERSION=	1.3.0
 CATEGORIES=	devel
 
 MAINTAINER=	FreeBSD@Shaneware.biz
@@ -12,6 +12,7 @@ LICENSE=	MIT
 USE_GITHUB=	yes
 GH_ACCOUNT=	Tessil
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	include/tsl/robin_growth_policy.h \

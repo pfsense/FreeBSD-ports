@@ -1,6 +1,6 @@
 PORTNAME=	virt-viewer
 PORTVERSION=	11.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://virt-manager.org/download/sources/${PORTNAME}/
 
@@ -14,7 +14,7 @@ WWW=		https://virt-manager.org/
 LICENSE=	GPLv2
 
 USES=		cpe desktop-file-utils gettext gettext-tools gmake gnome \
-		libtool meson perl5 pkgconfig python:3.6+,build \
+		libtool meson perl5 pkgconfig python:build \
 		shared-mime-info tar:xz xorg
 CPE_VENDOR=	redhat
 USE_GNOME=	gtk30 libxml2

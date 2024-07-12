@@ -1,6 +1,6 @@
 PORTNAME=	argh
-PORTVERSION=	0.28.1
-PORTREVISION=	1
+PORTVERSION=	0.31.2
+PORTREVISION=	0
 CATEGORIES=	devel
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,9 +11,13 @@ WWW=		https://github.com/neithere/argh
 
 LICENSE=	LGPL3
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flit-core>=${PORTVERSION}<4:devel/py-flit-core@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flit-core>=3.2<4:devel/py-flit-core@${PY_FLAVOR}
 
-USES=		python:3.8+
-USE_PYTHON=	autoplist pep517
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-cov>=4.1:devel/py-pytest-cov@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tox>=4.11.3:devel/py-tox@${PY_FLAVOR}
+
+USES=		python
+# tests: 169 passed, 1 warning
+USE_PYTHON=	autoplist pep517 pytest
 
 .include <bsd.port.mk>

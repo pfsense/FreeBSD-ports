@@ -1,7 +1,7 @@
 PORTNAME=	elemental
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.1
-PORTREVISION=	2
+DISTVERSION=	1.5.3
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,14 +10,13 @@ WWW=		https://github.com/LLNL/Elemental
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: include/El/blas_like/level1/Copy.hpp:522:27: ambiguous template specialization 'Copy<>' for 'void El::Copy(const El::Matrix<int>&, El::Matrix<int>&)'
 BROKEN_i386=	clang crashes: https://bugs.llvm.org/show_bug.cgi?id=46026
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmetis.so:math/metis \
 		libmpc.so:math/mpc \
 		libmpfr.so:math/mpfr \
-		libmpi_cxx.so:net/openmpi \
+		libmpi_cxx.so:net/openmpi4 \
 		libopenblas.so:math/openblas \
 		libqd.so:math/qd
 TEST_DEPENDS=	catch>0:devel/catch
@@ -39,7 +38,7 @@ OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
 
-do-test:
+do-test: # 4 tests fail, see https://github.com/LLNL/Elemental/issues/157
 	@cd ${BUILD_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DHydrogen_ENABLE_TESTING:BOOL=ON -DHydrogen_ENABLE_UNIT_TESTS:BOOL=ON ${CMAKE_SOURCE_PATH} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \

@@ -1,12 +1,13 @@
 PORTNAME=	aubio
 PORTVERSION=	0.4.9
-PORTREVISION?=	4
+PORTREVISION?=	5
 CATEGORIES?=	audio
 MASTER_SITES=	https://aubio.org/pub/
 
 PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
 PATCHFILES+=	cdfe9cef2dcc3edf7d05ca2e9c2dbbf8dea21f1c.patch:-p1 #FFmpeg 6.x compat
 PATCHFILES+=	8a05420e5dd8c7b8b2447f82dc919765876511b3.patch:-p1 #FFmpeg 6.x compat
+PATCHFILES+=	95ff046c698156f21e2ca0d1d8a02c23ab76969f.patch:-p1 #Add const qualifiers for NumPy >= 1.19.0
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Library for audio labelling
@@ -20,7 +21,7 @@ USES+=		cpe pkgconfig tar:bzip2
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
 .if !defined(SLAVEPORT)
-USES+=		python:build,3.6+ waf
+USES+=		python:build waf
 USE_LDCONFIG=	yes
 
 OPTIONS_GROUP=		DOCS
@@ -55,7 +56,7 @@ FFTW_LIB_DEPENDS=		libfftw3f.so:math/fftw3-float
 
 MANPAGES_BUILD_DEPENDS=		txt2man:textproc/txt2man
 MANPAGES_CONFIGURE_ENABLE=	manpages
-MANPAGES_CONFIGURE_ON=		--mandir=${MANPREFIX}/man
+MANPAGES_CONFIGURE_ON=		--mandir=${PREFIX}/share/man
 
 SNDFILE_LIB_DEPENDS=		libsndfile.so:audio/libsndfile
 SNDFILE_CONFIGURE_ENABLE=	sndfile

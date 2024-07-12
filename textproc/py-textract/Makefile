@@ -1,6 +1,6 @@
 PORTNAME=	textract
 PORTVERSION=	1.6.5
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}argcomplete>=1.10.0:devel/py-argcomplete@${P
 		${PYTHON_PKGNAMEPREFIX}chardet>=3:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>1.12.0:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.8+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	miniconda-installer
 DISTVERSION=	0.1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils linux
 PKGNAMEPREFIX=	linux-
 
@@ -12,10 +12,11 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	Requires a 64-bit processor, specific CPU features
 
-RUN_DEPENDS=	auto-admin>=0.7.2:sysutils/auto-admin
+RUN_DEPENDS=	auto-admin>=0.8.0:sysutils/auto-admin
 
-USES=		linux python:3.8+
+USES=		linux python
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	outpaddling

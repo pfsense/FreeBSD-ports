@@ -3,7 +3,7 @@
  * softflowd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,13 +26,7 @@ require_once("service-utils.inc");
 require_once("util.inc");
 
 function sync_package_softflowd() {
-	global $config;
-
-	if (is_array($config['installedpackages']['softflowd']['config'][0])) {
-		$cf = $config['installedpackages']['softflowd']['config'][0];
-	} else {
-		$cf = array();
-	}
+	$cf = config_get_path('installedpackages/softflowd/config/0', []);
 	$interface_list = explode(",", $cf['interface']);
 	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
 		$cf['host'] = is_ipaddrv6($cf['host']) ? "[{$cf['host']}]" : $cf['host'];
@@ -175,13 +169,7 @@ function cleanup_config_softflowd() {
 }
 
 function display_interface_indices_softflowd() {
-	global $config;
-
-	if (is_array($config['installedpackages']['softflowd']['config'][0])) {
-		$cf = $config['installedpackages']['softflowd']['config'][0];
-	} else {
-		$cf = array();
-	}
+	$cf = config_get_path('installedpackages/softflowd/config/0', []);
 	
 	/* Compile and display the list of interface indices if softflowd is active */
 	if (isset($cf['interface'])) {

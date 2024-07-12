@@ -1,6 +1,6 @@
 PORTNAME=	atslog
 PORTVERSION=	2.1.1
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	comms
 MASTER_SITES=	BERLIOS
 
@@ -35,8 +35,8 @@ WWW_DESC=	Install web interface
 WWWGD_DESC=	Graphic reports
 
 MYSQL_USES=		mysql
-MYSQL_BUILD_DEPENDS=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
-MYSQL_RUN_DEPENDS=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
+MYSQL_BUILD_DEPENDS=	${DBD_MYSQL}
+MYSQL_RUN_DEPENDS=	${DBD_MYSQL}
 
 PGSQL_USES=		pgsql
 PGSQL_BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
@@ -65,11 +65,10 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${USE_RC_SUBR}/${USE_RC_SUBR} ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${MANPREFIX}/man/man8
-	@${MKDIR} ${STAGEDIR}${MANPREFIX}/man/ru.KOI8-R/man8
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/man/ru.KOI8-R/man8
 .for i in ${USE_RC_SUBR} ${PORTNAME}master
-	${INSTALL_MAN} ${WRKSRC}/man/en/${i}.8 ${STAGEDIR}${MANPREFIX}/man/man8
-	${INSTALL_MAN} ${WRKSRC}/man/ru.KOI8-R/${i}.8 ${STAGEDIR}${MANPREFIX}/man/ru.KOI8-R/man8
+	${INSTALL_MAN} ${WRKSRC}/man/en/${i}.8 ${STAGEDIR}${PREFIX}/share/man/man8
+	${INSTALL_MAN} ${WRKSRC}/man/ru.KOI8-R/${i}.8 ${STAGEDIR}${PREFIX}/share/man/ru.KOI8-R/man8
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/include/${PORTNAME}.conf.default ${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/include/${PORTNAME}.conf.default.rus ${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.rus.sample

@@ -15,7 +15,6 @@ lib/libkwalletbackend5.so
 lib/libkwalletbackend5.so.5
 lib/libkwalletbackend5.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KWallet.pri
-man/man1/kwallet-query.1.gz
 share/applications/org.kde.kwalletd5.desktop
 share/dbus-1/interfaces/kf5_org.kde.KWallet.xml
 share/dbus-1/services/org.kde.kwalletd5.service
@@ -45,6 +44,7 @@ share/locale/el/LC_MESSAGES/kwallet-query.mo
 share/locale/el/LC_MESSAGES/kwalletd5.mo
 share/locale/en_GB/LC_MESSAGES/kwallet-query.mo
 share/locale/en_GB/LC_MESSAGES/kwalletd5.mo
+share/locale/eo/LC_MESSAGES/kwallet-query.mo
 share/locale/eo/LC_MESSAGES/kwalletd5.mo
 share/locale/es/LC_MESSAGES/kwallet-query.mo
 share/locale/es/LC_MESSAGES/kwalletd5.mo
@@ -64,6 +64,7 @@ share/locale/gd/LC_MESSAGES/kwalletd5.mo
 share/locale/gl/LC_MESSAGES/kwallet-query.mo
 share/locale/gl/LC_MESSAGES/kwalletd5.mo
 share/locale/gu/LC_MESSAGES/kwalletd5.mo
+share/locale/he/LC_MESSAGES/kwallet-query.mo
 share/locale/he/LC_MESSAGES/kwalletd5.mo
 share/locale/hi/LC_MESSAGES/kwalletd5.mo
 share/locale/hr/LC_MESSAGES/kwalletd5.mo
@@ -147,5 +148,6 @@ share/locale/zh_CN/LC_MESSAGES/kwallet-query.mo
 share/locale/zh_CN/LC_MESSAGES/kwalletd5.mo
 share/locale/zh_TW/LC_MESSAGES/kwallet-query.mo
 share/locale/zh_TW/LC_MESSAGES/kwalletd5.mo
+share/man/man1/kwallet-query.1.gz
 share/qlogging-categories5/kwallet.categories
 share/qlogging-categories5/kwallet.renamecategories

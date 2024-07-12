@@ -9,9 +9,6 @@ WWW=		https://umurmur.net/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		fails to compile: fatal error: byteswap.h file not found
-BROKEN_armv6=		fails to compile: fatal error: byteswap.h file not found
-
 LIB_DEPENDS=	libconfig.so:devel/libconfig \
 		libprotobuf-c.so:devel/protobuf-c
 
@@ -23,12 +20,12 @@ GNU_CONFIGURE=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400089
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092
 LIB_DEPENDS+=	libmbedtls.so:security/mbedtls
 CONFIGURE_ARGS=	--with-ssl=mbedtls
 .else
 USES+=		ssl
-BROKEN_SSL=	openssl30 openssl31
+BROKEN_SSL=	openssl openssl31
 BROKEN_SSL_REASON=	Requires OpenSSL 3.0.0 deprecated CRYPTO_MEM_CHECK_ON
 CONFIGURE_ARGS=	--with-ssl=openssl
 .endif

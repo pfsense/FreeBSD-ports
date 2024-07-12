@@ -7,12 +7,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION:R}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	PLan EXecution Interchange Language from NASA for robot control
-WWW=		http://plexil.sourceforge.net/wiki/index.php/Main_Page
+WWW=		https://plexil.sourceforge.net/wiki/index.php/Main_Page
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 USES=		gmake libtool
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

@@ -1,5 +1,6 @@
 PORTNAME=	gyp
 PORTVERSION=	20200512
+PORTREVISION=	1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,7 +11,7 @@ WWW=		https://gyp.gsrc.io/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.5+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd
 USE_PYTHON=	autoplist distutils

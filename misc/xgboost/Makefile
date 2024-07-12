@@ -1,6 +1,6 @@
 PORTNAME=	xgboost
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.6
+DISTVERSION=	2.1.0
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,6 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_armv7=	compilation fails: non-constant-expression cannot be narrowed from type 'unsigned long long' to 'size_t', see https://github.com/dmlc/xgboost/issues/8489
 BROKEN_i386=	compilation fails: non-constant-expression cannot be narrowed from type 'unsigned long long' to 'size_t', see https://github.com/dmlc/xgboost/issues/8489
+BROKEN_powerpc=	compilation fails: non-constant-expression cannot be narrowed from type 'unsigned long long' to 'size_t', see https://github.com/dmlc/xgboost/issues/8489
 
 LIB_DEPENDS=	libdmlc.so:devel/dmlc-core
 TEST_DEPENDS=	googletest>0:devel/googletest
@@ -27,10 +28,13 @@ GH_TUPLE=	\
 
 LDFLAGS+=	${LOCALBASE}/lib/libdmlc.so -lexecinfo
 
-CMAKE_TESTING_ON=	GOOGLE_TEST # 1 test fails, see https://github.com/dmlc/xgboost/issues/8425
+CMAKE_TESTING_ON=	GOOGLE_TEST
 
 OPTIONS_DEFINE=		OPENMP
 
 OPENMP_CMAKE_BOOL=	USE_OPENMP
+
+# 1 test fails, see https://github.com/dmlc/xgboost/issues/8425
+# 2.1.0: tests fail to compile, see https://github.com/dmlc/xgboost/issues/10468
 
 .include <bsd.port.mk>

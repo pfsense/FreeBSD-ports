@@ -1,12 +1,12 @@
 PORTNAME=	lincity
 PORTVERSION=	1.13.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Lincity%20Development%20Source/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rich city simulation game for X
-WWW=		http://lincity.sourceforge.net/
+WWW=		https://lincity.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,6 +15,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 

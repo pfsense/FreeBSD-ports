@@ -1,6 +1,6 @@
 PORTNAME=	ffmpegthumbs
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	multimedia kde kde-applications
 PKGNAMEPREFIX=	kdemultimedia-
 
@@ -10,12 +10,12 @@ WWW=		https://www.kde.org/
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libswscale.so:multimedia/ffmpeg \
-		libtag.so:audio/taglib
+LIB_DEPENDS=	libswscale.so:multimedia/ffmpeg
 
 USES=		cmake compiler:c++11-lang kde:5 pkgconfig qt:5 tar:xz xorg
 USE_KDE=	completion config coreaddons i18n jobwidgets kio service solid \
-		widgetsaddons windowsystem
+		widgetsaddons windowsystem \
+		ecm:build
 USE_QT=		concurrent core dbus gui network widgets xml \
 		buildtools:build qmake:build
 USE_XORG=	x11

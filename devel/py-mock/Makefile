@@ -1,5 +1,5 @@
 PORTNAME=	mock
-PORTVERSION=	5.0.2
+PORTVERSION=	5.1.0
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,7 +10,7 @@ WWW=		https://mock.readthedocs.org/en/latest/
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes # tests not packages in PyPI sdist
 GH_ACCOUNT=	testing-cabal
 USE_PYTHON=	autoplist concurrent distutils pytest

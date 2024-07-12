@@ -1,9 +1,10 @@
 PORTNAME=	spin
-PORTVERSION=	6.5.0
+PORTVERSION=	6.5.2
 DISTVERSIONPREFIX=	version-
+PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	On-the-fly verification system for asynchronous concurrent systems
 WWW=		http://spinroot.com
 
@@ -40,7 +41,7 @@ post-patch-ISPIN-on:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/Src/spin ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/Man/spin.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/Man/spin.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

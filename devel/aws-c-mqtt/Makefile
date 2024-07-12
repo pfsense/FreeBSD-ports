@@ -1,10 +1,10 @@
 PORTNAME=	aws-c-mqtt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.13
+DISTVERSION=	0.10.4
 CATEGORIES=	devel
 
 MAINTAINER=	eduardo@FreeBSD.org
-COMMENT=	C99 implementation of the MQTT 3.1.1 specification
+COMMENT=	C99 implementation of the MQTT 3.1.1 and MQTT 5 specification
 WWW=		https://github.com/awslabs/aws-c-mqtt
 
 LICENSE=	APACHE20
@@ -17,11 +17,9 @@ LIB_DEPENDS=	libaws-c-cal.so:security/aws-c-cal \
 		libaws-c-io.so:devel/aws-c-io \
 		libs2n.so:security/s2n-tls
 
-USES=		cmake:testing compiler:c11 ssl
-
+USES=		cmake:testing ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	awslabs
-
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${LOCALBASE}

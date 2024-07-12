@@ -1,6 +1,6 @@
 PORTNAME=	g2o
-DISTVERSION=	20230223
-PORTREVISION=	1
+DISTVERSION=	20230806
+PORTREVISION=	12
 DISTVERSIONSUFFIX=	_git
 CATEGORIES=	math
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libcholmod.so:math/suitesparse-cholmod \
 		libcolamd.so:math/suitesparse-colamd \
 		libcxsparse.so:math/suitesparse-cxsparse \
-		libQGLViewer-qt5.so:graphics/libQGLViewer \
+		libQGLViewer.so:graphics/libQGLViewer \
 		libmetis.so:math/metis \
 		libopenblas.so:math/openblas \
 		libsuitesparseconfig.so:math/suitesparse-config
@@ -69,6 +69,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/include|${LOCALBASE}/include|' \
 		${WRKSRC}/cmake_modules/*.cmake
 
-# tests fail to compile, see https://github.com/RainerKuemmerle/g2o/issues/641
+# tests fail to compile, see https://github.com/RainerKuemmerle/g2o/issues/711
 
 .include <bsd.port.mk>

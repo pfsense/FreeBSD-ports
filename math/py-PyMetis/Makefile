@@ -1,5 +1,5 @@
 PORTNAME=	PyMetis
-DISTVERSION=	2022.1
+DISTVERSION=	2023.1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,13 +17,13 @@ LIB_DEPENDS=	libmetis.so:math/metis
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 TEST_DEPENDS=	pytest:devel/py-pytest@${PY_FLAVOR}
 
-USES=		compiler:c++14-lang localbase python:3.6+
-USE_PYTHON=	distutils autoplist
+USES=		compiler:c++14-lang localbase python
+USE_PYTHON=	distutils autoplist pytest
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pymetis/_internal.cpython-39.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pymetis/_internal.cpython-${PYTHON_SUFFIX}.so
 
 do-test:
 	@cd ${WRKSRC} && ${SETENV} ${TEST_ENV} pytest

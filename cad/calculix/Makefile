@@ -1,6 +1,5 @@
 PORTNAME=	calculix
-PORTVERSION=	2.20
-PORTREVISION=	1
+PORTVERSION=	2.21
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
 DISTFILES=	${DIST_SOURCES}
@@ -40,18 +39,19 @@ DIST_PDF=	cgx_${PORTVERSION}.pdf
 DIST_SOURCES=	cgx_${PORTVERSION}.all${EXTRACT_SUFX}
 PSVIEWER?=	gv
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+.endif
+
+CFLAGS+=	-fpic
+FFLAGS+=	-fpic
+
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 CPPFLAGS+=	-Wno-error=int-conversion
-.endif
-
-.if ${ARCH} == "sparc64"
-CFLAGS+=	-fPIC
-FFLAGS+=	-fPIC
-.else
-CFLAGS+=	-fpic
-FFLAGS+=	-fpic
 .endif
 
 pre-build:

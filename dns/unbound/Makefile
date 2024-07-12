@@ -1,6 +1,6 @@
 PORTNAME=	unbound
-DISTVERSION=	1.17.1
-PORTREVISION=	3
+DISTVERSION=	1.20.0
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/unbound/
 
@@ -19,6 +19,7 @@ USE_LDCONFIG=	yes
 USE_RC_SUBR=	unbound
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-libexpat=${LOCALBASE} \
 		--with-ssl=${OPENSSLBASE}
 TEST_TARGET=	test
@@ -33,8 +34,8 @@ PORTDOCS=	CNAME-basedRedirectionDesignNotes.pdf CREDITS Changelog \
 		ietf67-design-02.pdf requirements.txt
 
 OPTIONS_DEFINE=		DEP-RSA1024 DNSCRYPT DNSTAP DOCS DOH DYNLIB ECDSA EVAPI \
-			FILTER_AAAA GOST HIREDIS LIBEVENT MUNIN_PLUGIN NOASLR \
-			PYTHON SUBNET TFOCL TFOSE THREADS
+			FILTER_AAAA GOST HIREDIS LIBEVENT MUNIN_PLUGIN PYTHON \
+			SUBNET TFOCL TFOSE THREADS
 OPTIONS_DEFAULT=	DNSCRYPT DOH DYNLIB ECDSA GOST LIBEVENT THREADS
 OPTIONS_SUB=		yes
 
@@ -50,7 +51,6 @@ GOST_DESC=		Enable GOST support (requires OpenSSL >= 1.0)
 HIREDIS_DESC=		Enable hiredis support for the cachedb module
 LIBEVENT_DESC=		Build against libevent
 MUNIN_PLUGIN_DESC=	Install Munin plugin
-NOASLR_DESC=		Disable ASLR
 SUBNET_DESC=		Enable client subnet support
 TFOCL_DESC=		Enable TCP Fast Open for client mode
 TFOSE_DESC=		Enable TCP Fast Open for server mode
@@ -80,8 +80,6 @@ LIBEVENT_CONFIGURE_WITH=	libevent
 LIBEVENT_CPPFLAGS+=		$$(pkg-config libevent --cflags-only-I)
 LIBEVENT_LDFLAGS+=		$$(pkg-config libevent --libs-only-L)
 MUNIN_PLUGIN_SUB_FILES=		pkg-message
-NOASLR_USES=			elfctl
-NOASLR_VARS=			ELF_FEATURES=+noaslr:${PORTNAME}
 PYTHON_BUILD_DEPENDS=		swig:devel/swig
 PYTHON_USES=			python
 PYTHON_CONFIGURE_ON=		--with-pythonmodule=yes \
@@ -101,14 +99,18 @@ post-patch:
 		${WRKSRC}/Makefile.in
 
 post-patch-FILTER_AAAA-on:
-	 ${CAT} ${WRKSRC}/contrib/aaaa-filter-iterator.patch | ${PATCH} -d ${WRKSRC} -p1 -s
+	@${CAT} ${WRKSRC}/contrib/aaaa-filter-iterator.patch | \
+		${PATCH} -d ${WRKSRC} -p1 -s
 
 post-build:
-	@for s in ${STRIP_FILES}; do ${STRIP_CMD} ${WRKSRC}/$$s; done
+	@for s in ${STRIP_FILES}; \
+		do ${STRIP_CMD} ${WRKSRC}/$$s; \
+		done
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} \
+		${STAGEDIR}${DOCSDIR}
 
 post-install-MUNIN_PLUGIN-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/munin/plugins

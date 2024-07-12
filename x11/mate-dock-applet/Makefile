@@ -1,6 +1,6 @@
 PORTNAME=	mate-dock-applet
 PORTVERSION=	21.10.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11 mate
 DIST_SUBDIR=	mate
 
@@ -19,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-xlib>=0:x11-toolkits/py-python-xlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xdg>=0:devel/py-xdg@${PY_FLAVOR}
 
-USES=		python:3.7+ autoreconf gettext gmake gnome libtool localbase \
+USES=		python autoreconf gettext gmake gnome libtool localbase \
 		pkgconfig shebangfix tar:xz
 
 USE_GITHUB=	yes

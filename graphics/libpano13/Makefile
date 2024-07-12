@@ -1,12 +1,12 @@
 PORTNAME=	libpano13
-DISTVERSION=	2.9.21
-PORTREVISION=	3
+DISTVERSION=	2.9.22
+PORTREVISION=	9
 CATEGORIES=	graphics java
 MASTER_SITES=	SF/panotools/${PORTNAME}/${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Cross-platform library behind Panorama Tools and other photo stitchers
-WWW=		http://panotools.sourceforge.net/
+WWW=		https://panotools.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		cmake:testing cpe jpeg libtool pathfix perl5 pkgconfig
+USES=		cmake:testing cpe jpeg pathfix perl5 pkgconfig
 CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 USE_PERL5=	build	# for pod2man

@@ -3,7 +3,7 @@
 # pinned to exact versions of everything used to build them.
 
 PORTNAME=	sbcl
-DISTVERSION=	2.3.5
+DISTVERSION=	2.4.5
 DISTVERSIONSUFFIX=	-source
 PORTEPOCH=	1
 CATEGORIES=	lang lisp
@@ -34,9 +34,9 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 PORTDOCS=	*
 
 # All options explained into file: ${WRKSRC}/base-target-features.lisp-expr
-OPTIONS_DEFINE=		COMPRESSION DOCS LINKABLE_RUNTIME QSHOW SAFEPOINT SIMD \
+OPTIONS_DEFINE=		COMPRESSION GARBAGE_COLLECTOR DOCS LINKABLE_RUNTIME QSHOW SAFEPOINT SIMD \
 			THREADS UNICODE XREF
-OPTIONS_DEFAULT=	SBCL THREADS UNICODE
+OPTIONS_DEFAULT=	COMPRESSION SBCL THREADS UNICODE
 
 OPTIONS_SINGLE=			BOOTSTRAP
 OPTIONS_SINGLE_BOOTSTRAP=	ABCL CCL CMUCL SBCL
@@ -47,6 +47,7 @@ BOOTSTRAP_DESC=		Supported languages of the build host
 CCL_DESC=		Clozure Common Lisp
 CMUCL_DESC=		Carnegie Mellon University Common Lisp
 COMPRESSION_DESC=	Enable core compression
+GARBAGE_COLLECTOR_DESC=	Enable mark-region parallel garbage collector
 LINKABLE_RUNTIME_DESC=	Enable SB-LINKABLE-RUNTIME feature (experimental)
 QSHOW_DESC=		C runtime with low-level debugging output
 SAFEPOINT_DESC=		Using safepoints instead of signals
@@ -69,6 +70,9 @@ COMPRESSION_VARS=		MAKE_SH_ARGS+="--with-sb-core-compression"
 COMPRESSION_VARS_OFF=		MAKE_SH_ARGS+="--without-sb-core-compression"
 
 DOCS_VARS=	INFO="asdf sbcl"
+
+GARBAGE_COLLECTOR_VARS=		MAKE_SH_ARGS+="--without-gencgc --with-mark-region-gc"
+GARBAGE_COLLECTOR_VARS_OFF=	MAKE_SH_ARGS+="--with-gencgc --without-mark-region-gc"
 
 LINKABLE_RUNTIME_VARS=		MAKE_SH_ARGS+="--with-sb-linkable-runtime"
 LINKABLE_RUNTIME_VARS_OFF=	MAKE_SH_ARGS+="--without-sb-linkable-runtime"
@@ -151,7 +155,7 @@ post-build-DOCS-on:
 do-install:
 	(cd ${WRKSRC} && ${SETENV} \
 	INSTALL_ROOT="${STAGEDIR}${PREFIX}" \
-	MAN_DIR="${STAGEDIR}${MANPREFIX}/man" \
+	MAN_DIR="${STAGEDIR}${PREFIX}/share/man" \
 	INFO_DIR="${STAGEDIR}${PREFIX}/${INFO_PATH}" \
 	DOC_DIR="${STAGEDIR}${DOCSDIR}" \
 	SBCL_HOME="" \

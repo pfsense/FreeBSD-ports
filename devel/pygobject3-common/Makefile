@@ -13,6 +13,8 @@ COMMENT?=	Common files for the Python bindings for GObject
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
+
 SLAVE_PORT?=	no
 
 USES=		meson pkgconfig tar:xz
@@ -25,6 +27,8 @@ PLIST_SUB=	ARCH=${ARCH} UNAME_R=${UNAME_R} VERSION=${PORTVERSION} \
 		OPSYS=${OPSYS:tl} UNAME_M=${UNAME_M}
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
+
+TESTING_UNSAFE=	AttributeError: 'NoneType' object has no attribute '_version'
 
 .if ${SLAVE_PORT} == no
 PORTSCOUT?=	limitw:1,even
@@ -50,7 +54,7 @@ LIB_DEPENDS+=	libffi.so:devel/libffi
 RUN_DEPENDS+=	pygobject3-common>=0:devel/pygobject3-common
 
 .  if ${SLAVE_PORT} == python
-USES+=		python:3.6+
+USES+=		python
 USE_PYTHON=	flavors py3kplist
 MESON_ARGS+=	-Dpython=${PYTHON_VERSION}
 BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR}

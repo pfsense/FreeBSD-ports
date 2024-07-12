@@ -1,7 +1,7 @@
 PORTNAME=	geeqie
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.1
-PORTREVISION=	11
+DISTVERSION=	2.4
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -11,24 +11,31 @@ WWW=		https://www.geeqie.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png
 RUN_DEPENDS=	bash:shells/bash
-BUILD_DEPENDS=	xxd:editors/vim
+BUILD_DEPENDS=	xxd:sysutils/xxd
+TEST_DEPENDS=	appstreamcli:devel/appstream
 
 USES=		desktop-file-utils gettext-tools gnome jpeg \
 		lua:53 meson pkgconfig shebangfix
 USE_GNOME=	cairo gdkpixbuf2 gtk30 glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	BestImageViewer
-SHEBANG_FILES=	plugins/*/geeqie-*
+SHEBANG_FILES=	plugins/*/geeqie-* \
+		plugins/resize-image/downsize
+CFLAGS+=	-Wno-deprecated-declarations
+MESON_ARGS=	-Ddoxygen=disabled
+MESON_ARGS+=	-Dpandoc=disabled
+MESON_ARGS+=	-Devince=disabled
+MESON_ARGS+=	-Dgit=disabled
 
 PORTDOCS=	*
+PORTDATA=	*
 
 OPTIONS_DEFINE=	EXIV2 LCMS MAP FFMPEGTHUMBNAILER ARCHIVE SPELL DOCS NLS
 OPTIONS_DEFAULT=EXIV2 LCMS MAP FFMPEGTHUMBNAILER ARCHIVE SPELL \
-		TIFF PDF HEIF WEBP DJVU OPENJPEG RAW JXL
+		TIFF PDF HEIF DJVU OPENJPEG RAW JXL WEBP
 OPTIONS_GROUP=	FORMATS
-OPTIONS_GROUP_FORMATS=	TIFF PDF HEIF WEBP DJVU OPENJPEG RAW JXL
+OPTIONS_GROUP_FORMATS=	TIFF PDF HEIF DJVU OPENJPEG RAW JXL WEBP
 OPTIONS_SUB=	yes
 
 FORMATS_DESC=	Image formats support
@@ -60,9 +67,6 @@ FFMPEGTHUMBNAILER_LIB_DEPENDS=	libffmpegthumbnailer.so:multimedia/ffmpegthumbnai
 HEIF_MESON_ENABLED=	heif
 HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
 
-WEBP_MESON_ENABLED=	webp
-WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-
 DJVU_MESON_ENABLED=	djvu
 DJVU_LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre
 
@@ -77,6 +81,9 @@ ARCHIVE_USES=		libarchive
 
 JXL_MESON_ENABLED=	jpegxl
 JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
+
+WEBP_MESON_ENABLED=	webp
+WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 
 SPELL_DESC=		Spelling check through gspell
 SPELL_MESON_ENABLED=	spell

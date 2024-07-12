@@ -1,16 +1,17 @@
 PORTNAME=	uwsgi
-PORTVERSION=	2.0.21
+PORTVERSION=	2.0.26
+PORTREVISION=	1
 CATEGORIES=	www python
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Developer-friendly WSGI server which uses uwsgi protocol
 WWW=		https://projects.unbit.it/uwsgi/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe pkgconfig python:3.6+
+USES=		cpe pkgconfig python
 USE_GITHUB=	yes
 GH_ACCOUNT=	unbit
 USE_PYTHON=	distutils concurrent

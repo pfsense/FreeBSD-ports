@@ -1,13 +1,14 @@
---- src/3rdparty/chromium/third_party/blink/renderer/platform/graphics/begin_frame_provider.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/third_party/blink/renderer/platform/graphics/begin_frame_provider.cc.orig	2023-08-17 07:33:31 UTC
 +++ src/3rdparty/chromium/third_party/blink/renderer/platform/graphics/begin_frame_provider.cc
-@@ -75,7 +75,11 @@ void BeginFrameProvider::CreateCompositorFrameSinkIfNe
+@@ -71,8 +71,12 @@ void BeginFrameProvider::CreateCompositorFrameSinkIfNe
  
-   // Once we are using RAF, this thread is driving Display updates. Update
-   // priority accordingly.
+   // Once we are using RAF, this thread is driving user interactive display
+   // updates. Update priority accordingly.
 +  // pledge(2)
 +  // stop this baloney
 +#if !defined(OS_OPENBSD)
-   base::PlatformThread::SetCurrentThreadPriority(base::ThreadPriority::DISPLAY);
+   base::PlatformThread::SetCurrentThreadType(
+       base::ThreadType::kDisplayCritical);
 +#endif
  
    mojo::Remote<mojom::blink::EmbeddedFrameSinkProvider> provider;

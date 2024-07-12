@@ -1,5 +1,6 @@
 PORTNAME=	icmake
 PORTVERSION=	9.03.01
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -27,7 +28,7 @@ icmake_OLD_CMD=	/usr/bin/icmake
 icmake_CMD=	${LOCALBASE}/bin/icmake
 
 GL_ACCOUNT=	fbb-git
-GL_COMMIT=	9b958b05ac462adf6cde394875964a8127599514
+GL_TAGNAME=	9b958b05ac462adf6cde394875964a8127599514
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -48,7 +49,7 @@ post-patch:
 		${WRKSRC}/scripts/convert
 	@${REINPLACE_CMD} -e 's|"usr/bin"|"bin"| ; \
 		s|"usr/share/icmake"|"share/icmake"| ; \
-		s|"usr/share/man"|"man"| ; \
+		s|"usr/share/man"|"share/man"| ; \
 		s|"usr/lib/icmake"|"lib/icmake"| ; \
 		s|"usr/share/doc/icmake"|"share/doc/icmake"| ; \
 		s|"usr/share/doc/icmake-doc"|"share/examples/icmake"|' \

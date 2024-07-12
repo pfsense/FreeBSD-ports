@@ -1,12 +1,12 @@
 PORTNAME=	djvulibre
 PORTVERSION=	3.5.28
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics www
 MASTER_SITES=	SF/djvu/DjVuLibre/${PORTVERSION}
 
 MAINTAINER=	nc@FreeBSD.org
 COMMENT=	DjVu base libraries and utilities
-WWW=		http://djvu.sourceforge.net/
+WWW=		https://djvu.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 USES=		cpe gmake iconv jpeg libtool
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	djvulibre_project
@@ -22,6 +23,7 @@ PORTDOCS=	*.djvu *.pdf *.txt
 
 INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	JPEG_CFLAGS="-I${LOCALBASE}/include" \
 		JPEG_LIBS="-L${LOCALBASE}/lib -ljpeg" \
 		TIFF_CFLAGS="-I${LOCALBASE}/include" \

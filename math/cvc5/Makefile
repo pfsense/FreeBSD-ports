@@ -1,10 +1,8 @@
 PORTNAME=	cvc5
 DISTVERSIONPREFIX=	cvc5-
-DISTVERSION=	1.0.5
+DISTVERSION=	1.1.2
 PORTREVISION=	1
 CATEGORIES=	math java
-MASTER_SITES+=	http://www.antlr3.org/download/:antlr3
-DISTFILES+=	antlr-3.4-complete.jar:antlr3
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,15 +13,15 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
-		${LOCALBASE}/lib/libcadical.a:math/cadical \
 		${LOCALBASE}/lib/symfpu.a:math/symfpu \
 		${PYTHON_PKGNAMEPREFIX}toml>0:textproc/py-toml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tomli>0:textproc/py-tomli@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>0:devel/py-pyparsing@${PY_FLAVOR}
 LIB_DEPENDS=	libantlr3c.so:devel/libantlr3c \
-		libboost_system.so:devel/boost-libs
+		libcadical.so:math/cadical
 
 USES=		cmake:testing ncurses compiler:c++17-lang \
-		localbase:ldflags pkgconfig python:3.5+,build
+		localbase:ldflags pkgconfig python:build
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 
@@ -31,14 +29,15 @@ USE_JAVA=	yes
 JAVA_BUILD=	yes
 
 CMAKE_BUILD_TYPE=	Production
-CMAKE_ARGS+=		-DANTLR_BINARY=${WRKDIR}/antlr3 \
-			-DFREEBSD_DISTDIR=${DISTDIR} \
+CMAKE_ARGS+=		-DFREEBSD_DISTDIR=${DISTDIR} \
 			-DPython_EXECUTABLE:STRING=${PYTHON_CMD}
 CMAKE_ON=		BUILD_SHARED_LIBS
 CMAKE_OFF=		BUILD_BINDINGS_PYTHON USE_PYTHON3 # Python binding should be a separate port
 CMAKE_TESTING_ON=	ENABLE_UNIT_TESTING
 CMAKE_TESTING_TARGET=	check # check target runs only quick tests (based on https://github.com/cvc5/cvc5/issues/9569#issuecomment-1484943348)
 #CMAKE_TESTING_TARGET=	test # test target also runs longer tests, 2 of which fail, see https://github.com/cvc5/cvc5/issues/9569
+
+PLIST_SUB=		VERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=			COCOALIB EDITLINE JAVA
 OPTIONS_GROUP=			SOLVERS
@@ -90,16 +89,8 @@ LICENSE=		GPLv3
 CMAKE_ARGS+=		-DENABLE_GPL:BOOL=ON
 .endif
 
-PORTSCOUT=	limit:^cvc5-[1-9].* # prevent older generation versions like 1.8
+PORTSCOUT=	limit:^[1-9]\.[0-9]+\.[0-9]+ # prevent older generation versions like 1.8, 1.7, etc.
 
-post-extract:
-	@${CP} ${DISTDIR}/antlr-3.4-complete.jar ${WRKDIR}/antlr3.jar
-	@${ECHO_CMD} "#!/bin/sh" > ${WRKDIR}/antlr3
-	@${ECHO_CMD} "exec \"${LOCALBASE}/bin/java\" -classpath \"${WRKDIR}/antlr3.jar\" org.antlr.Tool \"\$$@\"" >> ${WRKDIR}/antlr3
-	@${CHMOD} +x ${WRKDIR}/antlr3
-
-xpost-patch:
-	@${REINPLACE_CMD} -e "s|sed -i'' -e 's|sed -i '' -e 's|g" \
-		${WRKSRC}/src/fix-install-headers.sh
+# some tests are skipped without any explanation, see https://github.com/cvc5/cvc5/issues/10456
 
 .include <bsd.port.mk>

@@ -1,6 +1,7 @@
 PORTNAME=	searx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	www python
 
 MAINTAINER=	vvelox@vvelox.net
@@ -10,8 +11,8 @@ WWW=		https://asciimoo.github.io/searx/
 LICENSE=	AGPLv3
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>0:security/py-certifi@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Flask>0:www/py-flask@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>0:devel/py-python-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}flask>0:www/py-flask@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask-babel>0:devel/py-flask-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}idna>0:dns/py-idna@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
@@ -31,7 +32,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>0:security/py-certifi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}werkzeug>0:www/py-werkzeug@${PY_FLAVOR}
 BUILD_DEPENDS=	${RUN_DEPENDS}
 
-USES=		python:3.7+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	asciimoo
 USE_PYTHON=	distutils autoplist noflavors

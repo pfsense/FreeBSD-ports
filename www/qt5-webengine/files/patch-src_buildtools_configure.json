@@ -1,6 +1,18 @@
---- src/buildtools/configure.json.orig	2020-11-07 01:22:36 UTC
+* Add support for FreeBSD
+
+--- src/buildtools/configure.json.orig	2024-03-27 11:26:34 UTC
 +++ src/buildtools/configure.json
-@@ -362,7 +362,7 @@
+@@ -148,7 +148,8 @@
+                     "int id = 0;",
+                     "fre2.Add(s, {}, &id);",
+                     "const RE2 &re2 = fre2.GetRE2(id);"
+-                ]
++                ],
++                "qmake" : "CONFIG += c++1z"
+             },
+             "headers": "re2/filtered_re2.h",
+             "sources": [
+@@ -386,7 +387,7 @@
      "features": {
          "webengine-core-support": {
              "label": "Support Qt WebEngine Core",
@@ -9,9 +21,9 @@
                           && !config.static
                           && module.gui
                           && features.webengine-submodule
-@@ -374,21 +374,21 @@
-                          && features.webengine-flex
-                          && features.webengine-python2
+@@ -399,21 +400,21 @@
+                          && features.webengine-python
+                          && features.webengine-nodejs
                           && (!config.sanitizer || features.webengine-sanitizer)
 -                         && (!config.linux || features.pkg-config)
 -                         && (!config.linux || features.webengine-host-pkg-config)
@@ -39,9 +51,9 @@
                           && module.gui
                           && features.webengine-submodule
                           && features.webengine-nowhitespace
-@@ -399,8 +399,8 @@
+@@ -424,8 +425,8 @@
                           && features.webengine-flex
-                          && features.webengine-python2
+                          && features.webengine-python
                           && (!config.sanitizer || features.webengine-sanitizer)
 -                         && (!config.linux || features.pkg-config)
 -                         && (!config.linux || features.webengine-host-pkg-config)

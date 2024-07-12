@@ -1,6 +1,6 @@
 PORTNAME=	pywdns
 PORTVERSION=	0.10.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	dns python
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libwdns.so:dns/wdns
 
-USES=		pkgconfig python:3.6+
+USES=		pkgconfig python
 USE_PYTHON=	autoplist cython distutils
 
 post-patch:

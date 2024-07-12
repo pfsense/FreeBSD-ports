@@ -1,13 +1,13 @@
 PORTNAME=	oo2c
 PORTVERSION=	2.1.11
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	lang
 MASTER_SITES=	SF/ooc/ooc2/${PORTVERSION}
 DISTNAME=	${PORTNAME}_${BITS}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Optimizing Oberon-2 compiler of University of Kaiserslautern, Germany
-WWW=		http://ooc.sourceforge.net/OOCref/OOCref_16.html
+WWW=		https://ooc.sourceforge.net/OOCref/OOCref_16.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,6 +19,7 @@ LIB_DEPENDS=	libgc.so:devel/boehm-gc
 DOCSDIR=	lib/${PORTNAME}
 USES=		gmake libtool:build localbase:ldflags tar:bzip2
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
 USE_GCC=	yes
@@ -37,14 +38,10 @@ post-patch:
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == i386
+.if ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc
 BITS=		32
 .else
 BITS=		64
-.endif
-
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-CFLAGS+=	-fnested-functions
 .endif
 
 .include <bsd.port.post.mk>

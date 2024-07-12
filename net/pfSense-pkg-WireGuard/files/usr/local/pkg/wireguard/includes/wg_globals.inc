@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
- * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License');
@@ -60,7 +60,7 @@ $wgg = array(
 	'php'			=> '/usr/local/bin/php',
 	'php_wg'		=> '/usr/local/bin/php_wg',
 	'wg_pkg_root'		=> '/usr/local/pkg/wireguard',
-	'kmod'			=> 'wg',
+	'kmod'			=> 'if_wg',
 	'subsystem_prefix'	=> 'wireguard',
 	'service_name'		=> 'wireguardd',
 	'nrb'			=> '-NoReMoTeBaCkUp',

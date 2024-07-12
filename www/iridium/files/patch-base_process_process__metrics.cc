@@ -1,4 +1,4 @@
---- base/process/process_metrics.cc.orig	2023-03-13 07:33:08 UTC
+--- base/process/process_metrics.cc.orig	2024-06-25 12:08:48 UTC
 +++ base/process/process_metrics.cc
 @@ -17,7 +17,7 @@ namespace base {
  namespace {
@@ -27,7 +27,7 @@
    Value::Dict meminfo = memory_info_.ToDict();
    meminfo.Merge(vmstat_info_.ToDict());
    res.Set("meminfo", std::move(meminfo));
-@@ -98,7 +98,6 @@ std::unique_ptr<ProcessMetrics> ProcessMetrics::Create
+@@ -100,7 +100,6 @@ std::unique_ptr<ProcessMetrics> ProcessMetrics::Create
  #endif  // !BUILDFLAG(IS_MAC)
  }
  
@@ -35,16 +35,11 @@
  double ProcessMetrics::GetPlatformIndependentCPUUsage(
      TimeDelta cumulative_cpu) {
    TimeTicks time = TimeTicks::Now();
-@@ -124,7 +123,6 @@ double ProcessMetrics::GetPlatformIndependentCPUUsage(
- double ProcessMetrics::GetPlatformIndependentCPUUsage() {
-   return GetPlatformIndependentCPUUsage(GetCumulativeCPUUsage());
+@@ -129,10 +128,9 @@ ProcessMetrics::GetPlatformIndependentCPUUsage() {
+     return GetPlatformIndependentCPUUsage(cpu_usage);
+   });
  }
 -#endif
- 
- #if BUILDFLAG(IS_WIN)
- double ProcessMetrics::GetPreciseCPUUsage(TimeDelta cumulative_cpu) {
-@@ -155,7 +153,7 @@ double ProcessMetrics::GetPreciseCPUUsage() {
- #endif  // BUILDFLAG(IS_WIN)
  
  #if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
 -    BUILDFLAG(IS_AIX)

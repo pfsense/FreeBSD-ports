@@ -2,7 +2,7 @@ PORTNAME=	kterm
 PORTVERSION=	6.2.0
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	.fb6
-PORTREVISION=	16
+PORTREVISION=	19
 CATEGORIES=	japanese x11
 MASTER_SITES=	LOCAL/hrs:pcemu
 DISTFILES=	pcemu1.01alpha.tar.gz:pcemu
@@ -14,12 +14,7 @@ WWW=		https://bogytech.blogspot.jp/search/label/kterm
 
 LICENSE=	MIT
 
-DEPRECATED=	Last upstream release was in 2011
-EXPIRATION_DATE=	2023-07-11
-
-BUILD_DEPENDS=	nkf:japanese/nkf
-
-USES=		imake xorg
+USES=		iconv imake xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
@@ -46,8 +41,6 @@ VGAFONT_BUILD_DEPENDS= \
     ${LOCALBASE}/bin/mkfontscale:x11-fonts/mkfontscale
 VGAFONT_USES=	fonts
 XAW3DLIB_LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
-
-NKFCMD=		${LOCALBASE}/bin/nkf
 
 .include <bsd.port.options.mk>
 
@@ -89,18 +82,24 @@ post-extract:
 	${ECHO_CMD} "#define InstallXtermSetUID 0" >> ${WRKSRC}/kterm.h
 
 post-build:
-	${NKFCMD} -e -u ${WRKSRC}/kterm.jman \
+	${ICONV_CMD} -f iso-2022-jp -t utf-8 ${WRKSRC}/kterm.jman \
 	    | ${GZIP_CMD} > ${WRKSRC}/kterm.1.gz
+pre-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/ja.UTF-8/man1
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/kterm.1.gz ${STAGEDIR}${MANPREFIX}/man/ja/man1
+	${INSTALL_MAN} ${WRKSRC}/kterm.1.gz \
+	    ${STAGEDIR}${PREFIX}/share/man/ja.UTF-8/man1
+pre-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
+pre-install-VGAFONT-on:
+	${MKDIR} ${STAGEDIR}${FONTSDIR}
+post-install-DOCS-on:
 	${INSTALL_DATA} \
 	    ${WRKSRC}/README.kt \
 	    ${WRKSRC}/README.wallpaper.ja \
 	    ${FILESDIR}/dot.termcap \
 	    ${STAGEDIR}${DOCSDIR}
 post-install-VGAFONT-on:
-	${MKDIR} ${STAGEDIR}${FONTSDIR}
 	${INSTALL_DATA} ${WRKDIR}/pcemu1.01alpha/vga.pcf.gz \
 	    ${STAGEDIR}${FONTSDIR}
 

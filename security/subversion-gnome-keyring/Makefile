@@ -1,12 +1,12 @@
 PKGNAMESUFFIX=	-gnome-keyring
 CATEGORIES=	security gnome
 
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Gnome Keyring integration for Version control system
 WWW=		https://subversion.apache.org/
 
-PORTREVISION_114=	0
-PORTREVISION_LTS=	0
+PORTREVISION_LATEST=	2
+PORTREVISION_LTS=		2
 
 .include "${.CURDIR}/../../devel/subversion/Makefile.addons"
 

@@ -1,9 +1,9 @@
 PORTNAME=	spyder-kernels
-PORTVERSION=	2.4.3
-PORTREVISION=	1
+DISTVERSION=	2.5.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	spyder_kernels-${DISTVERSION}
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Jupyter kernels for the Spyder console
@@ -13,14 +13,14 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cloudpickle>0:devel/py-cloudpickle@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ipykernel>0:devel/py-ipykernel@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}ipykernel>=6.29.3:devel/py-ipykernel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipyparallel>0:devel/py-ipyparallel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipython>=7.31.1:devel/ipython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jupyter-client>=7.3.4<9:devel/py-jupyter-client@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyzmq>=22.1.0:net/py-pyzmq@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitlets>0:devel/py-traitlets@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wurlitzer>=1.0.3:misc/py-wurlitzer@${PY_FLAVOR}
-# 1 failed, 71 passed, 4 skipped, 15 warnings
+# 92 passed, 6 skipped, 6 warnings 
 # test_django_settings fail if www/djangoXX not installed
 TEST_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}codecov>0:devel/py-codecov@${PY_FLAVOR} \
@@ -41,8 +41,8 @@ TEST_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xarray>0:devel/py-xarray@${PY_FLAVOR}
 
-USES=		python:3.8+ pytest
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
 

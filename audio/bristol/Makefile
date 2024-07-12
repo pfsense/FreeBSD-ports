@@ -1,12 +1,12 @@
 PORTNAME=	bristol
 PORTVERSION=	0.60.10
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.60
 
 MAINTAINER=	pierrejacques.mimifir@gmail.com
 COMMENT=	Vintage synthesizers emulation for electric pianos and organs
-WWW=		http://bristol.sourceforge.net/
+WWW=		https://bristol.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -16,6 +16,7 @@ LIB_DEPENDS=	libjack.so:audio/jack \
 USES=		cpe libtool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 INSTALL_TARGET=	install-strip
 CPE_VENDOR=	nick_copeland
 

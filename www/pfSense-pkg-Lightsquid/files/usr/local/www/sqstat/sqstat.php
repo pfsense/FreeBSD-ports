@@ -3,7 +3,7 @@
  * sqstat.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006 Alex Samorukov <samm@os2.kiev.ua>
  * Copyright (c) 2011 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
@@ -60,8 +60,8 @@ function sqstat_AJAX_response( $request ) {
 	$time = date("h:i:s d/m/Y");
 	$res .= "$('#sqstat_updtime').html('{$time}');";
 
-	$data = sqstat_resultHTML( $data );
 	if ($squidclass->errno == 0) {
+		$data = sqstat_resultHTML($data);
 		$data = sqstat_AJAX_prep($data);
 		$res .= "$('#sqstat_result').html('{$data}');";
 	} else {
@@ -242,7 +242,7 @@ function sqstat_errorHTML() {
 }
 
 function sqstat_loadconfig() {
-	global $squidclass, $config;
+	global $squidclass;
 
 	$squidclass->errno = 0;
 	$squidclass->errstr = '';
@@ -252,11 +252,7 @@ function sqstat_loadconfig() {
 	$iface = '127.0.0.1';
 	/* Load config from pfSense and find proxy port */
 	$iport = 3128;
-	if (is_array($config['installedpackages']['squid']['config'][0])) {
-		$squid_settings = $config['installedpackages']['squid']['config'][0];
-	} else {
-		$squid_settings = array();
-	}
+	$squid_settings = config_get_path('installedpackages/squid/config/0', []);
 	$iport = $squid_settings['proxy_port'] ? $squid_settings['proxy_port'] : 3128;
 
 	$squidclass->squidhost = $iface;

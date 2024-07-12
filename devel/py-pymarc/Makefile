@@ -1,5 +1,5 @@
 PORTNAME=	pymarc
-PORTVERSION=	5.1.0
+PORTVERSION=	5.1.2
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -11,7 +11,7 @@ WWW=		https://gitlab.com/pymarc/pymarc
 
 LICENSE=	BSD2CLAUSE
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils unittest
 
 NO_ARCH=	yes

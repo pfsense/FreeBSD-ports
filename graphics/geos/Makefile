@@ -1,8 +1,8 @@
 PORTNAME=	geos
-PORTVERSION=	3.11.2
+PORTVERSION=	3.12.2
 CATEGORIES=	graphics geography
-MASTER_SITES=	https://download.osgeo.org/geos/ \
-		https://github.com/libgeos/geos/releases/download/${PORTVERSION}/
+MASTER_SITES=	https://github.com/libgeos/geos/releases/download/${PORTVERSION}/ \
+		https://download.osgeo.org/geos/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Geometry Engine, Open Source
@@ -12,7 +12,7 @@ WWW=		https://libgeos.org/ \
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake compiler:c++11-lang tar:bzip2
+USES=		cmake compiler:c++14-lang pathfix tar:bzip2
 
 CMAKE_OFF=	BUILD_BENCHMARKS DISABLE_GEOS_INLINE
 CMAKE_ON=	BUILD_SHARED_LIBS

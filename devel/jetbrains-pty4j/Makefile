@@ -1,5 +1,5 @@
 PORTNAME=	pty4j
-PORTVERSION=	0.12.11
+PORTVERSION=	0.12.26
 CATEGORIES=	devel java
 PKGNAMEPREFIX=	jetbrains-
 DIST_SUBDIR=	jetbrains
@@ -11,43 +11,32 @@ WWW=		https://github.com/JetBrains/pty4j
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
+
 USES=		gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	JetBrains
 GH_PROJECT=	pty4j
-GH_TAGNAME=	7488f35f79bcd9801ce5ff68afc98a3f43bb97fa
+GH_TAGNAME=	d99aca3680e5e302d1a88cfd191a14532d33d0b4
+
+MAKEFILE=	Makefile_freebsd
+ALL_TARGET=	linux_${ARCH:S/amd64/x86_64/:S/powerpc64le/ppc64le/}
+DATADIR=	${PREFIX}/share/jetbrains/${PORTNAME}
+EXTRACT_AFTER_ARGS=	--exclude os # Don't extract bundled binaries
+BUILD_WRKSRC=	${WRKSRC}/native
+PLIST_FILES=	share/jetbrains/${PORTNAME}/${ARCH}/libpty.so
 
 .include <bsd.port.options.mk>
 
-# The directory we need to install Pty4J's native library in depends
-# on the install target's architecture.  We rebuild libpty.so instead
-# of using one of the bundled ones which are FreeBSD 10.x only.
-.if ${ARCH} == "amd64"
-PTY4J_ARCH=	x86-64
-.elif ${ARCH} == "i386"
-PTY4J_ARCH=	x86
-.else
-PTY4J_ARCH=
-.endif
-
-.if ${PTY4J_ARCH} != ""
-# Despite what the name might suggest using the linux_x86_64 target
-# will always build libpty.so for the native platform.
-BUILD_WRKSRC=	${WRKSRC}/native
-MAKEFILE=	Makefile_freebsd
-ALL_TARGET=	linux_x86_64
-PLIST_FILES+=	lib/pty4j/freebsd/${PTY4J_ARCH}/libpty.so
-.else
-# If native Pty4J support is missing.
-NO_BUILD=	yes
+.if ${ARCH} == powerpc64le
+BINARY_ALIAS=	powerpc64le-linux-gnu-gcc=cc
 .endif
 
 do-install:
-.if ${PTY4J_ARCH} != ""
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/pty4j/freebsd/${PTY4J_ARCH}
-# See above why we always use freebsd/x86-64/ here
-	${INSTALL_LIB} ${WRKSRC}/os/freebsd/x86-64/libpty.so ${STAGEDIR}${PREFIX}/lib/pty4j/freebsd/${PTY4J_ARCH}/
-.endif
+	${MKDIR} ${STAGEDIR}${DATADIR}/${ARCH}
+	${INSTALL_LIB} \
+		${WRKSRC}/os/freebsd/${ARCH:S/amd64/x86-64/:S/powerpc64le/ppc64le/}/libpty.so \
+		${STAGEDIR}${DATADIR}/${ARCH}
 
 .include <bsd.port.mk>

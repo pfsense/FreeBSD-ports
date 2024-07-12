@@ -1,5 +1,5 @@
 PORTNAME=	ikiwiki
-DISTVERSION=	3.20200202.3
+DISTVERSION=	3.20200202.4
 CATEGORIES=	www
 MASTER_SITES=	DEBIAN_POOL \
 		LOCAL/mat/${PORTNAME}
@@ -74,8 +74,7 @@ post-patch:
 		${WRKSRC}/doc/ikiwiki-mass-rebuild.mdwn \
 		${WRKSRC}/doc/ikiwiki-update-wikilist.mdwn
 	@${REINPLACE_CMD} -i '' \
-		-e 's|$$(PREFIX)/share/man|$$(PREFIX)/man|; \
-		    s|share/ikiwiki/examples|${EXAMPLESDIR_REL}|; \
+		-e 's|share/ikiwiki/examples|${EXAMPLESDIR_REL}|; \
 		    s|\./pm_filter|$$(PERL) &|' \
 		${WRKSRC}/Makefile.PL
 	@${REINPLACE_CMD} -i '' \
@@ -100,7 +99,5 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/ikiwiki.setup ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/wikilist ${STAGEDIR}${EXAMPLESDIR}
-	@${RMDIR} ${STAGEDIR}${EXAMPLESDIR}/doc/examples
-	@${RMDIR} ${STAGEDIR}${EXAMPLESDIR}/doc
 
 .include <bsd.port.mk>

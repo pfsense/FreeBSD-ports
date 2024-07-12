@@ -1,5 +1,5 @@
 PORTNAME=	prowlarr
-DISTVERSION=	1.5.2.3484
+DISTVERSION=	1.19.0.4568
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://github.com/Prowlarr/Prowlarr/releases/download/v${PORTVERSION}/
 DISTNAME=	Prowlarr.master.${PORTVERSION}.freebsd-core-x64
@@ -17,10 +17,9 @@ RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss \
 		krb5>0:security/krb5 \
 		libiconv>0:converters/libiconv \
 		libinotify>0:devel/libinotify \
-		libunwind>0:devel/libunwind \
-		sqlite3>0:databases/sqlite3
+		libunwind>0:devel/libunwind
 
-USES=	ssl:run
+USES=		sqlite:3 ssl:run
 
 USE_RC_SUBR=	${PORTNAME}
 

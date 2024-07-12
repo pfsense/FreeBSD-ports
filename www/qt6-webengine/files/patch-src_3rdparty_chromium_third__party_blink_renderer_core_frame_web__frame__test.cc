@@ -1,17 +1,17 @@
---- src/3rdparty/chromium/third_party/blink/renderer/core/frame/web_frame_test.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/third_party/blink/renderer/core/frame/web_frame_test.cc.orig	2023-09-13 12:11:42 UTC
 +++ src/3rdparty/chromium/third_party/blink/renderer/core/frame/web_frame_test.cc
-@@ -6281,7 +6281,7 @@ TEST_F(WebFrameTest, DISABLED_PositionForPointTest) {
-   EXPECT_EQ(64, ComputeOffset(layout_object, 1000, 1000));
+@@ -6456,7 +6456,7 @@ TEST_F(WebFrameTest, DISABLED_PositionForPointTest) {
  }
  
--#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
-+#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_BSD)
- TEST_F(WebFrameTest, SelectRangeStaysHorizontallyAlignedWhenMoved) {
-   RegisterMockedHttpURLLoad("move_caret.html");
- 
-@@ -6660,7 +6660,7 @@ TEST_F(CompositedSelectionBoundsTest, SVGTextWithFragm
- TEST_F(CompositedSelectionBoundsTest, SVGTextWithFragments) {
-   RunTest("composited_selection_bounds_svg_text_with_fragments.html");
+ #if BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_BSD)
+ // TODO(crbug.com/1090246): Fix these tests on Fuchsia and re-enable.
+ // TODO(crbug.com/1317375): Build these tests on all platforms.
+ #define MAYBE_SelectRangeStaysHorizontallyAlignedWhenMoved \
+@@ -6865,7 +6865,7 @@ TEST_F(CompositedSelectionBoundsTest, LargeSelectionSc
+ TEST_F(CompositedSelectionBoundsTest, LargeSelectionNoScroll) {
+   RunTest("composited_selection_bounds_large_selection_noscroll.html");
  }
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)

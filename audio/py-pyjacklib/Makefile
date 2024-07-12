@@ -5,7 +5,7 @@ PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python bindings for the Jack library
 WWW=		https://github.com/jackaudio/pyjacklib
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.md
 
 LIB_DEPENDS=	libjack.so:audio/jack
 
-USES=		localbase python:3.6+
+USES=		localbase python
 USE_PYTHON=	autoplist distutils
 
 USE_GITHUB=	yes

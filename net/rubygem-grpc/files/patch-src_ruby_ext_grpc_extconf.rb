@@ -1,23 +1,20 @@
---- src/ruby/ext/grpc/extconf.rb.orig	2023-02-26 18:56:37 UTC
+--- src/ruby/ext/grpc/extconf.rb.orig	2024-05-18 09:15:48 UTC
 +++ src/ruby/ext/grpc/extconf.rb
-@@ -69,11 +69,11 @@ if apple_toolchain && !cross_compiling
+@@ -96,9 +96,9 @@ end
  end
  
  # Don't embed on TruffleRuby (constant-time crypto is unsafe with Sulong, slow build times)
 -ENV['EMBED_OPENSSL'] = (RUBY_ENGINE != 'truffleruby').to_s
-+ENV['EMBED_OPENSSL'] =  'false'
++ENV['EMBED_OPENSSL'] = 'false'
  # Don't embed on TruffleRuby (the system zlib is already linked for the zlib C extension, slow build times)
 -ENV['EMBED_ZLIB'] = (RUBY_ENGINE != 'truffleruby').to_s
 +ENV['EMBED_ZLIB'] = 'false'
  
--ENV['EMBED_CARES'] = 'true'
-+ENV['EMBED_CARES'] = 'false'
- 
  ENV['ARCH_FLAGS'] = RbConfig::CONFIG['ARCH_FLAG']
  if apple_toolchain && !cross_compiling
-@@ -94,25 +94,6 @@ output_dir = File.expand_path(RbConfig::CONFIG['topdir
- grpc_lib_dir = File.join(output_dir, 'libs', grpc_config)
- ENV['BUILDDIR'] = output_dir
+@@ -122,30 +122,10 @@ strip_tool += ' -x' if apple_toolchain
+ strip_tool = RbConfig::CONFIG['STRIP']
+ strip_tool += ' -x' if apple_toolchain
  
 -unless windows
 -  puts 'Building internal gRPC into ' + grpc_lib_dir
@@ -35,18 +32,26 @@
 -  exit 1 unless $? == 0
 -end
 -
+ # C-core built, generate Makefile for ruby extension
+ $LDFLAGS = maybe_remove_strip_all_linker_flag($LDFLAGS)
+ $DLDFLAGS = maybe_remove_strip_all_linker_flag($DLDFLAGS)
+ 
 -$CFLAGS << ' -DGRPC_RUBY_WINDOWS_UCRT' if windows_ucrt
 -$CFLAGS << ' -I' + File.join(grpc_root, 'include')
+-$CFLAGS << ' -g'
 -
  def have_ruby_abi_version()
    return true if RUBY_ENGINE == 'truffleruby'
    # ruby_abi_version is only available in development versions: https://github.com/ruby/ruby/pull/6231
-@@ -141,10 +122,8 @@ def ext_export_filename()
+@@ -174,13 +154,12 @@ ext_export_file = File.join(grpc_root, 'src', 'ruby', 
  end
  
  ext_export_file = File.join(grpc_root, 'src', 'ruby', 'ext', 'grpc', ext_export_filename())
 -$LDFLAGS << ' -Wl,--version-script="' + ext_export_file + '.gcc"' if linux
--$LDFLAGS << ' -Wl,-exported_symbols_list,"' + ext_export_file + '.clang"' if apple_toolchain
+ if apple_toolchain
+   $LDFLAGS << ' -weak_framework CoreFoundation'
+   $LDFLAGS << ' -Wl,-exported_symbols_list,"' + ext_export_file + '.clang"'
+ end
  
 -$LDFLAGS << ' ' + File.join(grpc_lib_dir, 'libgrpc.a') unless windows
 +$LDFLAGS << ' -lgrpc' unless windows

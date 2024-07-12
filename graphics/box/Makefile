@@ -1,13 +1,13 @@
 PORTNAME=	box
 PORTVERSION=	0.4.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}c/Box%20-%20the%20compiler/${DISTNAME}/
 DIST_SUBDIR=	box
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compiler for box, the figure description language
-WWW=		http://boxc.sourceforge.net
+WWW=		https://boxc.sourceforge.net
 
 LICENSE=	GPLv2+ LGPL3+
 LICENSE_COMB=	multi
@@ -17,6 +17,7 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo
 
 USES=		gmake libtool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-cairo
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=yes

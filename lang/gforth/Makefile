@@ -19,8 +19,8 @@ LIB_DEPENDS=	libavcall.so:devel/libffcall \
 USES=		gmake libtool:build localbase makeinfo
 USE_GCC=	yes
 USE_LDCONFIG=	${PREFIX}/lib/gforth/${PORTVERSION}/libcc-named
-
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	GFORTHHIST=${WRKSRC}
 MAKE_ENV=	GFORTHHIST=${WRKSRC}
 ALL_TARGET=	kernel/version.fs more info
@@ -47,7 +47,7 @@ WORDSIZE=32
 WORDSIZE=64
 .endif
 
-.if ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == sparc64
+.if ${ARCH} == powerpc || ${ARCH} == powerpc64
 BYTEORDER=b
 .else
 BYTEORDER=l

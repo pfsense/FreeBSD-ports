@@ -1,6 +1,6 @@
 PORTNAME=	openvpn
-DISTVERSION=	g20230331
-PORTREVISION=	0
+DISTVERSION=	g20240211
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security net net-vpn
 PKGNAMESUFFIX=	-devel
@@ -21,7 +21,7 @@ LIB_DEPENDS+=	liblzo2.so:archivers/lzo2
 USES=		autoreconf cpe libtool pkgconfig python:build shebangfix tar:xz
 IGNORE_SSL=	libressl libressl-devel
 USE_GITLAB=	yes
-GL_COMMIT=	fafb05f6f3a7a1b46c278961ec8d2d8970f01096
+GL_TAGNAME=	91b057a2b5b4d16b64d9d01824a8ec9327a61da1
 USE_RC_SUBR=	openvpn
 
 SHEBANG_FILES=	sample/sample-scripts/auth-pam.pl \
@@ -30,6 +30,7 @@ SHEBANG_FILES=	sample/sample-scripts/auth-pam.pl \
 		sample/sample-scripts/verify-cn
 
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=	--enable-strict
 # set PLUGIN_LIBDIR so that unqualified plugin paths are found:
 CONFIGURE_ENV+=		PLUGINDIR="${PREFIX}/lib/openvpn/plugins"
@@ -40,7 +41,7 @@ CONFIGURE_ENV+=		PLUGINDIR="${PREFIX}/lib/openvpn/plugins"
 CFLAGS+=	-DLOG_OPENVPN=${LOG_OPENVPN}
 .endif
 
-CPPFLAGS+=	-I${WRKSRC}/include -I${LOCALBASE}/include -DCONFIGURE_GIT_REVISION='\"${GL_COMMIT}\"' -DCONFIGURE_GIT_FLAGS=
+CPPFLAGS+=	-I${WRKSRC}/include -I${LOCALBASE}/include -DCONFIGURE_GIT_REVISION='\"${GL_TAGNAME}\"' -DCONFIGURE_GIT_FLAGS=
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 CONFLICTS_INSTALL?=	openvpn-2.[!4].* openvpn-[!2].* openvpn-beta \
@@ -54,7 +55,6 @@ PORTEXAMPLES=	*
 OPTIONS_DEFINE=		DOCS EASYRSA EXAMPLES LZ4 PKCS11 SMALL DCO TEST \
 			X509ALTUSERNAME
 OPTIONS_DEFAULT=	EASYRSA LZ4 OPENSSL TEST DCO
-OPTIONS_EXCLUDE_FreeBSD_12=	DCO # FreeBSD 14 only
 OPTIONS_EXCLUDE_FreeBSD_13=	DCO # FreeBSD 14 only
 OPTIONS_SINGLE=		SSL
 OPTIONS_SINGLE_SSL=	MBEDTLS OPENSSL

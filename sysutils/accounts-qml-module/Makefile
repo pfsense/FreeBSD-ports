@@ -1,6 +1,6 @@
 PORTNAME=	accounts-qml-module
 DISTVERSION=	0.7
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils kde
 DIST_SUBDIR=	KDE/${GL_ACCOUNT}
 
@@ -11,8 +11,8 @@ WWW=		https://gitlab.com/groups/accounts-sso
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libaccounts-qt5.so:net-im/libaccounts-qt5 \
-		libsignon-qt5.so:sysutils/signon-qt5
+LIB_DEPENDS=	libaccounts-qt5.so:net-im/libaccounts-qt@qt5 \
+		libsignon-qt5.so:sysutils/signond@qt5
 
 USES=		compiler:c++11-lang gl pkgconfig qmake qt:5 tar:bz2
 USE_GL=		gl
@@ -21,6 +21,6 @@ USE_QT=		core declarative gui network testlib xml \
 # gitlab variables
 USE_GITLAB=	yes
 GL_ACCOUNT=	accounts-sso
-GL_COMMIT=	cfadea7ba8ba4011ae20d771696eb74deb87201e
+GL_TAGNAME=	cfadea7ba8ba4011ae20d771696eb74deb87201e
 
 .include <bsd.port.mk>

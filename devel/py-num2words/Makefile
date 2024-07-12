@@ -1,5 +1,5 @@
 PORTNAME=	num2words
-PORTVERSION=	0.5.9
+PORTVERSION=	0.5.13
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,9 @@ WWW=		https://github.com/savoirfairelinux/num2words
 
 LICENSE=	LGPL21
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

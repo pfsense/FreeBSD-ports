@@ -1,10 +1,9 @@
 PORTNAME=	icu
-DISTVERSION=	73_2
-PORTREVISION?=	0 # keep for icu-lx
+DISTVERSION=	74_2
+PORTREVISION?=	1 # keep for icu-lx
 PORTEPOCH?=	1
 CATEGORIES?=	devel
-MASTER_SITES=	https://github.com/unicode-org/${PORTNAME}/releases/download/release-${DISTVERSION:S/rc/-&/:S/_/-/g}/ \
-		SF/${PORTNAME}/${PORTNAME:tu}4C/${PORTVERSION}
+MASTER_SITES=	https://github.com/unicode-org/${PORTNAME}/releases/download/release-${DISTVERSION:S/rc/-&/:S/_/-/g}/
 DISTNAME=	icu4c-${DISTVERSION}-src
 
 MAINTAINER=	office@FreeBSD.org
@@ -19,6 +18,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 USES+=		compiler:c++11-lib cpe gmake pathfix python:build tar:tgz
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS?=--disable-layoutex
 CONFIGURE_ARGS+=--with-data-packaging=archive \
 		--disable-renaming \

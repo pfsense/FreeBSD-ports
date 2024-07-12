@@ -1,10 +1,10 @@
 PORTNAME=	execjs
-PORTVERSION=	2.8.1
-PORTREVISION=	3
+PORTVERSION=	2.9.1
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	ExecJS lets you run JavaScript code from Ruby
 WWW=		https://github.com/rails/execjs
 

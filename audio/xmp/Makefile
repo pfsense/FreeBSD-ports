@@ -1,12 +1,13 @@
 PORTNAME=	xmp
-PORTVERSION=	4.2.0
+DISTVERSION=	4.2.0
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/libxmp/xmp-cli/releases/download/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Player for many different Amiga and PC module formats
-WWW=		http://xmp.sourceforge.net/
+WWW=		https://xmp.sourceforge.net/
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,6 @@
 PORTNAME=	notebook
-PORTVERSION=	6.4.12
-PORTREVISION=	2
+PORTVERSION=	6.4.13
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -28,7 +28,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tornado>=6.1:www/py-tornado@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitlets>=4.2.1:devel/py-traitlets@${PY_FLAVOR}
 
-USES=		cpe desktop-file-utils python:3.7+
+USES=		cpe desktop-file-utils python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

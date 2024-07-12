@@ -1,5 +1,6 @@
 PORTNAME=	ngspice_rework
-PORTVERSION=	38
+PORTVERSION=	41
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	SF/ngspice/ng-spice-rework/${PORTVERSION}
 DISTNAME=	ngspice-${PORTVERSION}
@@ -12,8 +13,6 @@ LICENSE=	BSD3CLAUSE BSD4CLAUSE LGPL21+
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=	fails to link: missing sbrk
-
 LIB_DEPENDS=	libfftw3.so:math/fftw3
 
 FLAVORS=	x11 shlib
@@ -24,6 +23,7 @@ USES=		compiler:c11 gmake libtool ncurses readline autoreconf pkgconfig
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-cider --enable-xspice --with-readline=yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 OPTIONS_DEFINE=	DEBUG
 
@@ -34,10 +34,10 @@ CONFIGURE_ARGS+=	--with-ngshared --enable-shared
 USES+=			xorg
 USE_XORG=		ice sm x11 xaw xext xmu xt xft
 CONFIGURE_ARGS+=	--with-x
-PLIST_FILES=		bin/ngspice man/man1/ngspice.1.gz
+PLIST_FILES=		bin/ngspice share/man/man1/ngspice.1.gz
 post-install:
 	@cd ${STAGEDIR}${PREFIX} && \
-		${RM} -r include lib share && \
+		${RM} -r include lib share/ngspice && \
 		${RM} bin/cmpp man/man1/cmpp.1
 .endif
 

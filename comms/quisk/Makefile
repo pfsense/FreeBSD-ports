@@ -1,6 +1,6 @@
 PORTNAME=	quisk
-DISTVERSION=	4.2.13
-PORTREVISION=	1
+DISTVERSION=	4.2.19
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	PYPI
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libasound.so:audio/alsa-lib \
 		libpulse.so:audio/pulseaudio
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils noflavors
 USE_WX=		3.2
 

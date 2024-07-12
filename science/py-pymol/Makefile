@@ -26,7 +26,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>0:devel/py-msgpack@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Pmw>0:x11-toolkits/py-Pmw@${PY_FLAVOR} \
 		${PYNUMPY}
 
-USES=		compiler:c++11-lang gl gnome python:3.5+ tar:bz2
+USES=		compiler:c++11-lang gl gnome python tar:bz2
 USE_GL=		gl glew glu glut
 USE_GNOME=	libxml2
 USE_PYTHON=	distutils concurrent # autoplist is broken: https://github.com/schrodinger/pymol-open-source/issues/99
@@ -38,6 +38,11 @@ GH_PROJECT=	${PORTNAME}-open-source
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}chempy # chempy port is unrelated, see https://github.com/schrodinger/pymol-open-source/issues/100
 
 CXXFLAGS+=	-DMSGPACK_NO_BOOST # in line with MSGPACK_USE_BOOST=OFF in devel/msgpack-cxx
+
+.if !exists(/usr/include/omp.h)
+PYDISTUTILS_CONFIGUREARGS+=	--use-openmp=no
+PYDISTUTILS_BUILDARGS+=		--use-openmp=no
+.endif
 
 OPTIONS_SINGLE=		GUI
 OPTIONS_SINGLE_GUI=	QT5 TK

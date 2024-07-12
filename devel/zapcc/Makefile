@@ -11,10 +11,11 @@ LICENSE=	NCSA
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 BROKEN_riscv64=		fails to build: CMake Error at cmake/config-ix.cmake:407: Unknown architecture riscv64
+BROKEN_FreeBSD_15=	fails to build: failed symbol not defined
 
 BUILD_DEPENDS=	googletest>0:devel/googletest
 
-USES=		cmake compiler:c++11-lang gnome libedit python:3.4+ shebangfix
+USES=		cmake compiler:c++11-lang gnome libedit python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	yrnkrn
 GH_TAGNAME=	b4c31cc

@@ -1,7 +1,6 @@
 PORTNAME=	libosmium
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.19.0
-PORTREVISION=	1
+DISTVERSION=	2.20.0
 CATEGORIES=	astro geography devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,7 +11,6 @@ LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs \
-		protozero>=0:devel/protozero \
 		gdal>=0:graphics/gdal \
 		protozero>=0:devel/protozero \
 		expat>=0:textproc/expat2 \

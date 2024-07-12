@@ -1,6 +1,7 @@
 PORTNAME=	fastest_pkg
 PORTVERSION=	0.2.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	ports-mgmt python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycurl>0:ftp/py-pycurl@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	ehaupt
 USE_PYTHON=	autoplist concurrent distutils

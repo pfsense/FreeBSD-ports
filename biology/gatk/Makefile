@@ -1,5 +1,5 @@
 PORTNAME=	gatk
-DISTVERSION=	4.4.0.0
+DISTVERSION=	4.5.0.0
 CATEGORIES=	biology java
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -10,9 +10,7 @@ WWW=		https://gatk.broadinstitute.org/hc/en-us
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-BROKEN_FreeBSD_12_powerpc64=	fails to build: String index out of range: -1
-
-BUILD_DEPENDS=	gradle761:devel/gradle761
+BUILD_DEPENDS=	gradle:devel/gradle
 
 USES=		gettext-runtime
 USE_JAVA=	yes
@@ -69,7 +67,7 @@ do-fetch:
 		) && \
 		${FIND} ${PORTNAME}-${DISTVERSION} -and -exec ${TOUCH} -h -d 1970-01-01T00:00:00Z {} \; && \
 		${FIND} ${PORTNAME}-${DISTVERSION} -print0 | LC_ALL=C ${SORT} -z | \
-		${TAR} czf ${DISTNAME}${EXTRACT_SUFX} --format=bsdtar --gid 0 --uid 0 --options gzip:!timestamp --no-recursion --null -T - && \
+		${TAR} czf ${DISTNAME}${EXTRACT_SUFX} --format=ustar --gid 0 --uid 0 --options gzip:!timestamp --no-recursion --null -T - && \
 		${RM} -r ${PORTNAME}-${DISTVERSION}; \
 	fi
 .endif
@@ -88,7 +86,7 @@ post-extract: # need a separate extract step because the cache is in /tmp, and n
 .endif
 
 do-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} gradle761 \
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} gradle \
 		--gradle-user-home ${DEPS_CACHE_DIR}/gradle-${PORTNAME} --project-cache-dir ${DEPS_CACHE_DIR}/gradle-${PORTNAME} \
 		${GRADLE_ARGS} --build-cache localJar
 

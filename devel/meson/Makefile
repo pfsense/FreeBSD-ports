@@ -1,5 +1,5 @@
 PORTNAME=	meson
-PORTVERSION=	1.1.1
+PORTVERSION=	1.4.1
 CATEGORIES=	devel python
 MASTER_SITES=	https://github.com/mesonbuild/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -14,7 +14,7 @@ BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-xdist>0:devel/py-pytest-xdist@${PY_FLAVOR}
 
-USES=		ninja:run python:3.6+ shebangfix
+USES=		ninja:run python shebangfix
 USE_PYTHON=	autoplist pep517
 SHEBANG_FILES=	mesonbuild/rewriter.py \
 		mesonbuild/scripts/cmake_run_ctgt.py
@@ -24,7 +24,7 @@ NO_ARCH=	yes
 TEST_ENV=	${MAKE_ENV:NCC=*:NCXX=*}
 
 # Hide from regular build to avoid accidental dependency on symlinks
-.if make(test)
+.if make(test) || ("${WITH_TESTING}" == yes && make(package))
 # helper_create_binary_wrapper, test_python_module, test cases/*.py
 BINARY_ALIAS+=	python3=${PYTHON_CMD:T} python=${PYTHON_CMD:T}
 do-test: create-binary-alias # force if run late

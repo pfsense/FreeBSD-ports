@@ -1,6 +1,6 @@
 PORTNAME=	denemo
 PORTVERSION=	2.0.6
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	audio
 MASTER_SITES=	GNU
 
@@ -19,7 +19,10 @@ LIB_DEPENDS=	libaubio.so:audio/aubio \
 		libsndfile.so:audio/libsndfile \
 		libportaudio.so:audio/portaudio \
 		librubberband.so:audio/rubberband \
-		libguile.so:lang/guile1 \
+		libharfbuzz.so:print/harfbuzz \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libsamplerate.so:audio/libsamplerate \
 		libfftw3.so:math/fftw3
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
@@ -27,8 +30,8 @@ EXTRACT_BEFORE_ARGS=\
 		-s '!\(/Clarinet in B\).*\(\.denemo\)$$!\1b\2!p' -xf
 
 USES=		bison:alias compiler:c++11-lang desktop-file-utils gettext gmake \
-		gnome pkgconfig
-USE_GNOME=	intltool librsvg2 libxml2
+		gnome guile:1.8 localbase:ldflags pkgconfig
+USE_GNOME=	cairo intltool librsvg2 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-jack \
 		--disable-alsa \
@@ -39,8 +42,6 @@ CONFIGURE_ARGS=	--enable-jack \
 		--enable-guile_1_8
 
 CFLAGS+=	-Wno-error=return-type
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=		DOCS EXAMPLES LILYPOND PDF
 OPTIONS_SINGLE=		TOOLKIT
@@ -53,7 +54,7 @@ GTK3_USE=		gnome=gtk30,gtksourceview3
 LILYPOND_DESC=		Install LilyPond (Printing)
 LILYPOND_RUN_DEPENDS=	lilypond:print/lilypond
 PDF_CONFIGURE_OFF=	--disable-evince
-TOOLKIT_DESC=		GTK+ toolkit
+TOOLKIT_DESC=		GTK toolkit
 
 .include <bsd.port.options.mk>
 
@@ -63,6 +64,12 @@ LIB_DEPENDS+=	libevview3.so:graphics/evince
 
 .if ${PORT_OPTIONS:MGTK2} && ${PORT_OPTIONS:MPDF}
 LIB_DEPENDS+=	libatrilview.so:graphics/atril
+.endif
+
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 post-patch:
@@ -103,4 +110,4 @@ post-install-EXAMPLES-on:
 	(cd ${WRKSRC}/examples && ${INSTALL_DATA} *.denemo \
 		${STAGEDIR}${EXAMPLESDIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

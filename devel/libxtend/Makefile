@@ -1,6 +1,7 @@
 PORTNAME=	libxtend
-DISTVERSION=	0.1.8-2
-DISTVERSIONSUFFIX=	-ge883e5e
+DISTVERSION=	0.2.0-2
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	-g5f45f63
 CATEGORIES=	devel
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -15,9 +16,7 @@ USE_LDCONFIG=	yes
 
 GH_ACCOUNT=	outpaddling
 
+MAKE_ARGS=	MANDIR=${PREFIX}/share/man
 INSTALL_TARGET=	install-strip
-
-pre-build:
-	cd ${WRKSRC} && ${MAKE} depend
 
 .include <bsd.port.mk>

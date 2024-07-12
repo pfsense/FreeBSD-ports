@@ -1,5 +1,5 @@
 PORTNAME=	click
-PORTVERSION=	8.1.3
+PORTVERSION=	8.1.7
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ WWW=		https://github.com/pallets/click
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils pytest
 
 NO_ARCH=	yes

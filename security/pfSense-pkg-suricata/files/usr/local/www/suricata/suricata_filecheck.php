@@ -3,7 +3,7 @@
  * suricata_filecheck.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -89,37 +89,37 @@ if ($savemsg) {
 			<tbody>
 				<!-- IP threat source links -->
 				<tr>
-					<td><span style="color: blue;">Hash Lookups</span><i class="fa fa-globe pull-right"></i></td>
+					<td><span style="color: blue;">Hash Lookups</span><i class="fa-solid fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.virustotal.com/gui/file/<?=$file_hash;?>/detection/">
 						<?=gettext("VirusTotal");?></a></td>
 				</tr>
 				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><i class="fa-solid fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.hybrid-analysis.com/sample/<?=$file_hash;?>">
 						<?=gettext("Hybrid Analysis");?></a></td>
 				</tr>
 				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>	
+					<td><i class="fa-solid fa-globe pull-right"></i></td>	
 					<td><a target="_blank" href="https://virusscan.jotti.org/en-US/search/hash/<?=$file_hash;?>">
 						<?=gettext("Jotti's malware scan");?></a></td>
 				</tr>
 				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>	
+					<td><i class="fa-solid fa-globe pull-right"></i></td>	
 					<td><a target="_blank" href="https://metadefender.opswat.com/results/file/<?=$file_hash;?>/hash/overview?lang=en">
 						<?=gettext("OPSWAT MetaDefender Cloud");?></a></td>
 				</tr>
 				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>	
+					<td><i class="fa-solid fa-globe pull-right"></i></td>	
 					<td><a target="_blank" href="https://www.joesandbox.com/search?q=<?=$file_hash;?>">
 						<?=gettext("JOESandbox Cloud");?></a></td>
 				</tr>
 				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>	
+					<td><i class="fa-solid fa-globe pull-right"></i></td>	
 					<td><a target="_blank" href="https://opentip.kaspersky.com/<?=$file_hash;?>/">
 						<?=gettext("Kaspersky Threat Intelligence Portal");?></a></td>
 				</tr>
 				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>	
+					<td><i class="fa-solid fa-globe pull-right"></i></td>	
 					<td><a target="_blank" href="https://beta.virusbay.io/sample/browse?q=<?=$file_hash;?>">
 						<?=gettext("VirusBay");?></a></td>
 				</tr>
@@ -168,7 +168,7 @@ if ($filepath) {
 		'download',
 		'Download',
 		null,
-		'fa-download'
+		'fa-solid fa-download'
 	))->removeClass('btn-default')->addClass('btn-info btn-sm');
 }
 

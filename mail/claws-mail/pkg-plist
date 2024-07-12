@@ -234,7 +234,7 @@ lib/claws-mail/plugins/pgpinline.deps
 lib/claws-mail/plugins/pgpmime.deps
 lib/claws-mail/plugins/smime.deps
 libdata/pkgconfig/claws-mail.pc
-man/man1/claws-mail.1.gz
+share/man/man1/claws-mail.1.gz
 share/applications/claws-mail.desktop
 %%DATADIR%%/acroread2claws-mail.pl
 %%DATADIR%%/calypso_convert.pl
@@ -293,7 +293,7 @@ share/icons/hicolor/64x64/apps/claws-mail.png
 %%NLS%%share/locale/nl/LC_MESSAGES/claws-mail.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/claws-mail.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/claws-mail.mo
-%%GTK2%%%%NLS%%share/locale/pt_PT/LC_MESSAGES/claws-mail.mo
+%%NLS%%share/locale/pt_PT/LC_MESSAGES/claws-mail.mo
 %%NLS%%share/locale/ro/LC_MESSAGES/claws-mail.mo
 %%NLS%%share/locale/ru/LC_MESSAGES/claws-mail.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/claws-mail.mo

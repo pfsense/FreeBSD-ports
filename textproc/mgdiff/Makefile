@@ -1,6 +1,6 @@
 PORTNAME=	mgdiff
 PORTVERSION=	1.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	textproc
 MASTER_SITES=	XCONTRIB/applications
 DISTNAME=	${PORTNAME}
@@ -20,6 +20,12 @@ DESKTOP_ENTRIES=	"mgdiff" "GUI front end to the UNIX diff command" \
 			"mgdiff-48x48" \
 			"mgdiff" "GNOME;GTK;Motif;Development;System;" \
 			false
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps

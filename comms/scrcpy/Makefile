@@ -1,14 +1,10 @@
 PORTNAME=	scrcpy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0
-PORTREVISION=	2
+DISTVERSION=	2.4
 CATEGORIES=	comms net
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONFULL}/:server
 DISTFILES=	${SERVER_FILE}:server
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	6b769675fa68e60c9765022e43c4d7b1e329353a.patch:-p1
 
 MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Display and control your Android device
@@ -20,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 RUN_DEPENDS=	adb:devel/android-tools
 
-USES=		compiler:c++11-lang desktop-file-utils meson pkgconfig sdl
+USES=		compiler:c++11-lang meson pkgconfig sdl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Genymobile
@@ -32,7 +28,7 @@ MESON_ARGS=	-Dportable=false \
 
 PLIST_FILES=	bin/scrcpy \
 		etc/bash_completion.d/scrcpy \
-		man/man1/scrcpy.1.gz \
+		share/man/man1/scrcpy.1.gz \
 		share/applications/scrcpy-console.desktop \
 		share/applications/scrcpy.desktop \
 		share/icons/hicolor/256x256/apps/scrcpy.png \

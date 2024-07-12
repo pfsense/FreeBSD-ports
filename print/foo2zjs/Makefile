@@ -1,6 +1,6 @@
 PORTNAME=	foo2zjs
 PORTVERSION=	20161203
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	LOCAL/bsam/${PORTNAME} \
 		ftp://ftp.wart.ru/pub/FreeBSD/ports/distfiles/
@@ -26,6 +26,8 @@ CPE_VENDOR=	rkkda
 SHEBANG_FILES=	msexpand printer-profile.sh
 
 MAKE_JOBS_UNSAFE=	yes
+
+CONFLICTS_INSTALL=	mscompress # bin/msexpand
 
 SUB_FILES=	${_DEVDCONF_FILE} pkg-message
 

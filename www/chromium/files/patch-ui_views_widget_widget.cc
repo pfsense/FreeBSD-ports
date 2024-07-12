@@ -1,6 +1,6 @@
---- ui/views/widget/widget.cc.orig	2023-05-31 08:12:17 UTC
+--- ui/views/widget/widget.cc.orig	2024-06-17 12:56:06 UTC
 +++ ui/views/widget/widget.cc
-@@ -53,7 +53,7 @@
+@@ -57,7 +57,7 @@
  #include "ui/views/window/custom_frame_view.h"
  #include "ui/views/window/dialog_delegate.h"
  
@@ -9,7 +9,7 @@
  #include "ui/linux/linux_ui.h"
  #endif
  
-@@ -2027,7 +2027,7 @@ const ui::NativeTheme* Widget::GetNativeTheme() const 
+@@ -2152,7 +2152,7 @@ const ui::NativeTheme* Widget::GetNativeTheme() const 
    if (parent_)
      return parent_->GetNativeTheme();
  

@@ -1,5 +1,5 @@
-TIMESTAMP = 1684977735
-SHA256 (go/textproc_trdsql/trdsql-v0.11.1/v0.11.1.mod) = 55ed73e7dda73f6af72adf14de4366dbfb019c846356981bc24155f6c8585d70
-SIZE (go/textproc_trdsql/trdsql-v0.11.1/v0.11.1.mod) = 1150
-SHA256 (go/textproc_trdsql/trdsql-v0.11.1/v0.11.1.zip) = b9feb1525f1ed1dcc0a9d8b5a068e8c6bb9aa8c394e95efdf21077eeb796d940
-SIZE (go/textproc_trdsql/trdsql-v0.11.1/v0.11.1.zip) = 2529030
+TIMESTAMP = 1717438244
+SHA256 (go/textproc_trdsql/trdsql-v0.20.0/v0.20.0.mod) = e6d3b79bae91c6f6f8949bf5ec43330b752aeb1cc1fa8a5125bc34578796d650
+SIZE (go/textproc_trdsql/trdsql-v0.20.0/v0.20.0.mod) = 2083
+SHA256 (go/textproc_trdsql/trdsql-v0.20.0/v0.20.0.zip) = a296eb876828310fa0b52f6f736483293d04cd1a1db4e73e1aed666a9cb8488f
+SIZE (go/textproc_trdsql/trdsql-v0.20.0/v0.20.0.zip) = 2542779

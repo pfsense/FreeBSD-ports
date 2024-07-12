@@ -1,12 +1,13 @@
 PORTNAME=	gvm
-PORTVERSION=	22.7.0
+PORTVERSION=	23.5.2
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Greenbone vulnerability management (metaport)
 WWW=		https://www.openvas.org/
 
-USES=		metaport python:3.7+
+USES=		metaport python
 
 # Install GVM libraries
 RUN_DEPENDS+=	${LOCALBASE}/lib/libgvm_base.so:security/gvm-libs
@@ -22,6 +23,9 @@ RUN_DEPENDS+=   ${LOCALBASE}/sbin/openvas:security/openvas
 
 # Install Notus Scanner
 RUN_DEPENDS+=	${LOCALBASE}/bin/notus-scanner:security/py-notus-scanner
+
+# Install Greenbone Community Feed
+RUN_DEPENDS+=	greenbone-feed-sync:security/py-greenbone-feed-sync@${PY_FLAVOR}
 
 # Install GVM Web Interface
 RUN_DEPENDS+=	${LOCALBASE}/sbin/gsad:security/gsad

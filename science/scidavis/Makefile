@@ -1,11 +1,11 @@
 PORTNAME=	scidavis
 PORTVERSION=	2.9.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Scientific data analysis and visualization
-WWW=		http://scidavis.sourceforge.net
+WWW=		https://scidavis.sourceforge.net
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -36,7 +36,7 @@ OPTIONS_DEFAULT=	PYTHON
 OPTIONS_SUB=	yes
 
 PYTHON_DESC=	Python scripting support
-PYTHON_USES=	pyqt:5 python:3.6+
+PYTHON_USES=	pyqt:5 python
 PYTHON_USE=	PYQT=pyqt5 sip
 PYTHON_CMAKE_ON=	-DPython3_EXECUTABLE=${PYTHON_CMD} \
 			-DSCRIPTING_PYTHON=True

@@ -1,5 +1,6 @@
 PORTNAME=	libflame
 DISTVERSION=	5.2.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -14,12 +15,14 @@ ONLY_FOR_ARCHS_REASON=	make system does not support other architectures yet
 BUILD_DEPENDS=	bash:shells/bash
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c11 gmake python:3.7
+USES=		compiler:c11 gmake python:build shebangfix
+SHEBANG_FILES=	build/flatten-headers.py
 USE_CSTD=	c99
-USE_LDCONFIG=	yes
+OPENMP_CFLAGS?=	-fopenmp
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	flame
+USE_LDCONFIG=	yes
 
 OPTIONS_RADIO=	PARALLELIZATION
 OPTIONS_RADIO_PARALLELIZATION=	NONE THREADS OPENMP
@@ -47,12 +50,14 @@ CONFIGURE_ARGS+=	--enable-default-${b:tl}-blocksize=${${b}_BLOCKSIZE}
 .endif
 .endfor
 
-.include <bsd.port.options.mk>
+MAKE_ENV+=	PYTHON=${PYTHON_CMD}
+
+.include <bsd.port.pre.mk>
+
 .if ${PORT_OPTIONS:MOPENMP}
 .if ${CHOSEN_COMPILER_TYPE} == clang
 IGNORE=		clang does not support OPENMP, use THREADS instead
 .endif
-OPENMP_CFLAGS ?=	-fopenmp
 CFLAGS+=		${OPENMP_CFLAGS}
 LDFLAGS+=		${OPENMP_CFLAGS}
 CONFIGURE_ARGS+=	--enable-multithreading=openmp
@@ -71,4 +76,4 @@ CONFIGURE_ARGS+=	--disable-autodetect-f77-ldflags \
 #	@${MKDIR} ${STAGEDIR}${PREFIX}/include/libflame
 #	${INSTALL_DATA} ${WRKSRC}/include_local/* ${STAGEDIR}/${PREFIX}/include/libflame/
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,4 +1,4 @@
---- base/process/process_handle_freebsd.cc.orig	2022-10-01 07:40:07 UTC
+--- base/process/process_handle_freebsd.cc.orig	2024-04-23 07:42:17 UTC
 +++ base/process/process_handle_freebsd.cc
 @@ -3,6 +3,7 @@
  // found in the LICENSE file.
@@ -8,7 +8,7 @@
  
  #include <limits.h>
  #include <stddef.h>
-@@ -15,10 +16,13 @@ namespace base {
+@@ -20,10 +21,13 @@ namespace base {
  
  ProcessId GetParentProcessId(ProcessHandle process) {
    struct kinfo_proc info;

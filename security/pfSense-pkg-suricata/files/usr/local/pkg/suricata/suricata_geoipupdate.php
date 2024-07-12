@@ -3,11 +3,11 @@
  * suricata_geoipupdate.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ require("/usr/local/pkg/suricata/suricata_defs.inc");
 /* and stores the result in the file specified by $tmpfile.    */
 /* The HTTP response code is retuned when $result is not NULL. */
 /***************************************************************/
-function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
+function suricata_download_geoip_file($url, $tmpfile, $user, $pwd, &$result = NULL) {
 
 	global $g;
 
@@ -64,6 +64,7 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
 	// detect broken connection so it disconnects after +-10 minutes (with default TCP_KEEPIDLE and TCP_KEEPINTVL) to avoid waiting forever.
 	curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1);
@@ -87,6 +88,10 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 			curl_setopt($ch, CURLOPT_PROXYUSERPWD, config_get_path('system/proxyuser') . ":" . config_get_path('system/proxypass'));
 		}
 	}
+
+	// Set the MaxMind Account ID and Password fields
+	curl_setopt($ch, CURLOPT_USERPWD, "{$user}:{$pwd}");
+
 	$rc = curl_exec($ch);
 	if ($rc === true) {
 		switch ($response = curl_getinfo($ch, CURLINFO_RESPONSE_CODE)) {
@@ -129,13 +134,13 @@ else
 // Create a temporary location to download the database to
 safe_mkdir($geoip_tmppath);
 
-// Get the MD5 hash of the current database archive file if available,
-// otherwise use a MD5 zero hash.
-if (file_exists($suricata_geoip_dbdir . "GeoLite2-Country.mmdb.tar.gz.md5")) {
-	$md5_hash = file_get_contents($suricata_geoip_dbdir . "GeoLite2-Country.mmdb.tar.gz.md5");
+// Get the SHA256 hash of the current database archive file if available,
+// otherwise use a SHA256 zero-length file hash.
+if (file_exists($suricata_geoip_dbdir . "GeoLite2-Country.mmdb.tar.gz.sha256")) {
+	$sha256_hash = file_get_contents($suricata_geoip_dbdir . "GeoLite2-Country.mmdb.tar.gz.sha256");
 }
 else {
-	$md5_hash = "d41d8cd98f00b204e9800998ecf8427e"; // zero hash
+	$sha256_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  GeoLite2-Country_20240206.tar.gz"; // zero-length file hash
 }
 
 $result = "";
@@ -143,17 +148,21 @@ $result = "";
 // Set the output filenames for the downloaded DB archives
 $dbtarfile = $geoip_tmppath . "GeoLite2-Country.mmdb.tar.gz";
 $dbfile = $geoip_tmppath . "GeoLite2-Country.mmdb";
-$md5file = $geoip_tmppath . "GeoLite2-Country.mmdb.tar.gz.md5";
+$sha256file = $geoip_tmppath . "GeoLite2-Country.mmdb.tar.gz.sha256";
 
 // Set the URL strings with the user's license key.
-$dbfile_url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=" . config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key') . "&suffix=tar.gz";
-$md5file_url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=" . config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key') . "&suffix=tar.gz.md5";
+$dbfile_url = MAXMIND_GEOIP2_DNLD_URL;
+$sha256file_url = MAXMIND_GEOIP2_SHA256_DNLD_URL;
 
-// First check the MD5 of the DB we have (if any) against the latest on the 
-// MaxMind site to see if we already have the most current DB file version.
-if (suricata_download_geoip_file($md5file_url, $md5file, $result) && ($result == 200 || $result == 201)) {
-	if (file_exists($md5file)) {
-		if ($md5_hash == file_get_contents($md5file)) {
+// Set MaxMind GeoLite2 Account ID and Password variables
+$user = config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_uid', "");
+$pwd = config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key', "");
+
+// First check the SHA256 hash of the DB we have (if any) against the latest on 
+// the MaxMind site to see if we already have the most current DB file version.
+if (suricata_download_geoip_file($sha256file_url, $sha256file, $user, $pwd, $result) && ($result == 200 || $result == 201)) {
+	if (file_exists($sha256file)) {
+		if ($sha256_hash == file_get_contents($sha256file)) {
 			syslog(LOG_NOTICE, "[Suricata] The GeoLite2-Country IP database is up-to-date.");
 			$notify_message .= gettext("- MaxMind GeoLite2 IP database is up-to-date.\n");
 		} else {
@@ -174,17 +183,17 @@ safe_mkdir($suricata_geoip_dbdir);
 $result = "";
 
 // Attempt to download the GeoIP database from MaxMind
-if ($needs_update && suricata_download_geoip_file($dbfile_url, $dbtarfile, $result)) {
+if ($needs_update && suricata_download_geoip_file($dbfile_url, $dbtarfile, $user, $pwd, $result)) {
 
 	// If the file downloaded successfully, unpack it and store the DB
-	// and MD5 files in the PBI_BASE/share/suricata/GeoLite2 directory.
+	// and SHA256 files in the PBI_BASE/share/suricata/GeoLite2 directory.
 	if (file_exists($dbtarfile) && ($result == 200 || $result == 201)) {
 		syslog(LOG_NOTICE, "[Suricata] New GeoLite2-Country IP database gzip archive successfully downloaded.");
 		syslog(LOG_NOTICE, "[Suricata] Extracting new GeoLite2-Country database from the archive...");
 		mwexec("/usr/bin/tar -xzf {$dbtarfile} --strip=1 -C {$geoip_tmppath}");
 		syslog(LOG_NOTICE, "[Suricata] Moving new database to {$suricata_geoip_dbdir}GeoLite2-Country.mmdb...");
 		@rename($dbfile, "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb");
-		@rename($md5file, "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb.tar.gz.md5");
+		@rename($sha256file, "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb.tar.gz.sha256");
 		syslog(LOG_NOTICE, "[Suricata] GeoLite2-Country database update completed.");
 		$notify_message .= gettext("- MaxMind GeoLite2 IP database update completed.\n");
 	} else {

@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/build/config/ozone.gni.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/build/config/ozone.gni.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/build/config/ozone.gni
-@@ -94,7 +94,15 @@ declare_args() {
+@@ -87,7 +87,15 @@ declare_args() {
      } else if (is_chromeos_lacros) {
        ozone_platform = "wayland"
        ozone_platform_wayland = true

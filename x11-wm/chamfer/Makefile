@@ -1,5 +1,5 @@
 PORTNAME=	chamfer
-DISTVERSION=	s20230310
+DISTVERSION=	s20240511
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -26,23 +26,19 @@ LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-xlib>0:x11-toolkits/py-python-xlib@${PY_FLAVOR}
 
-USES=		compiler:c++17-lang meson localbase pkgconfig python:3.3+ xorg
+USES=		cmake:indirect compiler:c++17-lang meson localbase \
+		pkgconfig python xorg
 USE_GITHUB=	yes
 USE_XORG=	xcb
 GH_ACCOUNT=	jaelpark
 GH_PROJECT=	${PORTNAME}wm
-GH_TAGNAME=	93b8f79
+GH_TAGNAME=	4784d02
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr,${PREFIX},' \
 		${WRKSRC}/src/config.cpp ${WRKSRC}/src/main.cpp
 # XXX import('python').find_installation().dependency()
-# XXX https://github.com/mesonbuild/meson/issues/4788
 	@${REINPLACE_CMD} -e '/boost/!s/python3/python-${PYTHON_VER}/' \
-		-e '/boost/s/python3/python${PYTHON_SUFFIX}/' \
-		`if [ ${PYTHON_REL} -lt 30800 ]; then \
-			printf "%s %s" -e '/python.*embed/d'; \
-		 fi` \
 		-e '/boost/s/,/,static:true,/' \
 		${WRKSRC}/meson.build
 

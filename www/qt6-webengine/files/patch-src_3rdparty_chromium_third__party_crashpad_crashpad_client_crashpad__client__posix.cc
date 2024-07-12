@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/third_party/crashpad/crashpad/client/crashpad_client_posix.cc.orig	2022-11-08 06:37:22 UTC
+--- src/3rdparty/chromium/third_party/crashpad/crashpad/client/crashpad_client_posix.cc.orig	2022-02-07 13:39:41 UTC
 +++ src/3rdparty/chromium/third_party/crashpad/crashpad/client/crashpad_client_posix.cc
 @@ -0,0 +1,40 @@
 +// Copyright 2017 The Crashpad Authors. All rights reserved.

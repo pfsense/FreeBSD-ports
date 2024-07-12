@@ -1,5 +1,6 @@
 PORTNAME=	xgalaga++
 PORTVERSION=	0.9
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://marc.mongenet.ch/OSS/XGalaga/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -14,20 +15,22 @@ WWW=		https://marc.mongenet.ch/OSS/XGalaga/
 LICENSE=	GPLv2
 
 USES=		gmake xorg
+USE_CXXSTD=	c++14
 USE_XORG=	x11 xpm
 
 ALL_TARGET=	${PORTNAME}
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-PLIST_FILES=	bin/${PORTNAME} \
-		man/man6/${PORTNAME}.6.gz \
-		share/pixmaps/${PORTNAME}.png
-
-PORTDOCS=	README
-OPTIONS_DEFINE=	DOCS
 
 DESKTOP_ENTRIES="XGalaga++" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;ArcadeGame;" ""
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+PLIST_FILES=	bin/${PORTNAME} \
+		share/man/man6/${PORTNAME}.6.gz \
+		share/pixmaps/${PORTNAME}.png
+PORTDOCS=	README
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|CXX =|CXX ?=|; \
@@ -39,7 +42,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.6x \
-		${STAGEDIR}${MAN6PREFIX}/man/man6/${PORTNAME}.6
+		${STAGEDIR}${PREFIX}/share/man/man6/${PORTNAME}.6
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 

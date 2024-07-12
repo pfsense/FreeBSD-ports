@@ -31,6 +31,7 @@
     SUBDIR += eclipse-findbugs
     SUBDIR += eclipse-pydev
     SUBDIR += eclipse-shelled
+    SUBDIR += eclipse-yaml-editor
     SUBDIR += hamcrest
     SUBDIR += icedtea-web
     SUBDIR += infobus
@@ -81,7 +82,6 @@
     SUBDIR += mmake
     SUBDIR += mx4j
     SUBDIR += netbeans
-    SUBDIR += netcomponents
     SUBDIR += netrexx
     SUBDIR += netty
     SUBDIR += openjdk11
@@ -90,13 +90,14 @@
     SUBDIR += openjdk17-jre
     SUBDIR += openjdk18
     SUBDIR += openjdk19
+    SUBDIR += openjdk20
+    SUBDIR += openjdk21
+    SUBDIR += openjdk22
     SUBDIR += openjdk8
     SUBDIR += openjdk8-jre
     SUBDIR += openjfx14
     SUBDIR += phpeclipse
     SUBDIR += proguard
-    SUBDIR += sablevm
-    SUBDIR += sablevm-classpath
     SUBDIR += servingxml
     SUBDIR += sigar
     SUBDIR += springframework
@@ -105,18 +106,6 @@
     SUBDIR += trove4j
     SUBDIR += veditor
     SUBDIR += visualvm
-    SUBDIR += wildfly10
-    SUBDIR += wildfly11
-    SUBDIR += wildfly12
-    SUBDIR += wildfly13
-    SUBDIR += wildfly14
-    SUBDIR += wildfly15
-    SUBDIR += wildfly16
-    SUBDIR += wildfly17
-    SUBDIR += wildfly18
-    SUBDIR += wildfly24
-    SUBDIR += wildfly25
-    SUBDIR += wildfly26
-    SUBDIR += wildfly90
+    SUBDIR += wildfly
 
 .include <bsd.port.subdir.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	gnome-control-center
 PORTVERSION=	43.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -43,7 +43,7 @@ RUN_DEPENDS=	cantarell-fonts>=0:x11-fonts/cantarell-fonts \
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c++11-lib gettext gnome gstreamer localbase:ldflags meson \
-		pkgconfig python:3.6+,build samba:lib tar:xz xorg
+		pkgconfig python:build samba:lib tar:xz xorg
 USE_GNOME=	cairo gnomedesktop3 gsound libxml2
 USE_XORG=	x11 xi
 USE_LDCONFIG=	yes
@@ -59,17 +59,4 @@ OPTIONS_DEFAULT=	WAYLAND
 WAYLAND_MESON_TRUE=	wayland
 WAYLAND_LIB_DEPENDS=	libgudev-1.0.so:devel/libgudev
 
-.include <bsd.port.pre.mk>
-
-# FreeBSD base gained an os-release in r354922, but that does not exist
-# always (see Synth bug 191, or PR 255354). Be a little more forgiving:
-# assume sufficiently recent base "will have it", and check otherwise
-# because 12.2 does, others like 12.1 do not have it.
-.if !exists(/etc/rc.d/os-release) && (${OSVERSION} < 1300060)
-RUN_DEPENDS+=	etc_os-release>0:sysutils/etc_os-release
-post-patch:
-	@${REINPLACE_CMD}  -e 's|/etc/os-release|${LOCALBASE}/etc/os-release|g' \
-		${WRKSRC}/panels/common/cc-os-release.c
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

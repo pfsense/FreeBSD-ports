@@ -25,6 +25,7 @@ upgrade Document Server to a new version and all your changes will be lost.
     # psql -U postgres -c "CREATE DATABASE onlyoffice;"
     # psql -U postgres -c "CREATE USER onlyoffice WITH password 'onlyoffice';"
     # psql -U postgres -c "GRANT ALL privileges ON DATABASE onlyoffice TO onlyoffice;"
+    # psql -U postgres -c "ALTER DATABASE onlyoffice OWNER to onlyoffice;"
     # psql -hlocalhost -Uonlyoffice -d onlyoffice -f %%WWWDIR%%/documentserver/server/schema/postgresql/createdb.sql
 
     Optionally in case of a jail with local IP:
@@ -54,7 +55,11 @@ files = %%ETCDIR%%/documentserver/supervisor/*.conf
     # service supervisord start
 
 5. Set up nginx:
-  - nginx sample configuration files are located in: %%ETCDIR%%/documentserver/nginx
+  - For HTTP include the following in your %%PREFIX%%/etc/nginx/nginx.conf file:
+      include %%ETCDIR%%/documentserver/nginx/ds.conf;
+
+NOTE: documentserver-update-securelink.sh will only update ./nginx/ds.conf and local.json under %%ETCDIR%%/documentserver/!
+  - run documentserver-update-securelink.sh once for creationg a verysecretstring 
 
   - start nginx:
     # service nginx start
@@ -62,7 +67,10 @@ files = %%ETCDIR%%/documentserver/supervisor/*.conf
 6. Follow the following doc If you want to use Onlyoffice with Nextcloud:
   - https://api.onlyoffice.com/editors/nextcloud
 
-7. Enjoy.
+7. Install OnlyOffice plugins (you'll need internet):
+  # %%PREFIX%%/bin/documentserver-pluginsmanager.sh --update=%%PREFIX%%/www/onlyoffice/documentserver/sdkjs-plugins/plugin-list-default.json
+
+8. Enjoy.
 EOM
 }
 { type: upgrade

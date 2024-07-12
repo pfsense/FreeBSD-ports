@@ -3,7 +3,7 @@ DISTVERSION=	3.0
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/ibara/shuf/releases/download/${PORTNAME}-${DISTVERSION}/
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Randomly permute input lines
 WWW=		https://github.com/ibara/shuf
 
@@ -17,6 +17,6 @@ PLIST_FILES=	bin/shuf \
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/shuf ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/shuf.1 ${STAGEDIR}${MAN1PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/shuf.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

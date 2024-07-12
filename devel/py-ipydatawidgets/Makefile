@@ -1,5 +1,5 @@
 PORTNAME=	ipydatawidgets
-PORTVERSION=	4.3.3
+PORTVERSION=	4.3.5
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -17,7 +17,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipywidgets>=7.0.0:devel/py-ipywidgets@${PY_F
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}traittypes>=0.2.0:devel/py-traittypes@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	distutils autoplist pytest
 
 NO_ARCH=	yes

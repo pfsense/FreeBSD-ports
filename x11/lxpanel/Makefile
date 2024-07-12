@@ -4,9 +4,9 @@ PORTREVISION=	4
 CATEGORIES=	x11
 MASTER_SITES=	SF/lxde/LXPanel%20%28desktop%20panel%29/LXPanel%20${PORTVERSION:R}.x/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Lightweight X11 desktop panel
-WWW=		https://wiki.lxde.org/en/LXPanel
+WWW=		https://github.com/lxde/lxpanel
 
 LICENSE=	GPLv2+ MIT
 LICENSE_COMB=	multi
@@ -24,6 +24,7 @@ USES=		gmake gnome libtool localbase pathfix pkgconfig tar:xz xorg
 USE_GNOME=	glib20 gtk20 cairo gdkpixbuf2 gdkpixbuf2xlib intltool
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 		--with-plugins="${LXPANEL_PLUGINS}"
 INSTALL_TARGET=	install-strip

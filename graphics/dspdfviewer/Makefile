@@ -1,7 +1,7 @@
 PORTNAME=	dspdfviewer
 PORTVERSION=	1.15.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	64
+PORTREVISION=	67
 CATEGORIES=	graphics
 
 MAINTAINER=	fox@FreeBSD.org
@@ -29,8 +29,8 @@ CMAKE_ARGS=	-DBuildTests=OFF \
 		-DPOPPLER_LIBRARIES=${LOCALBASE}/lib/libpoppler-qt5.so
 
 PLIST_FILES=	bin/dspdfviewer \
-		man/man1/dspdfviewer.1.gz \
-		share/applications/dspdfviewer.desktop
+		share/applications/dspdfviewer.desktop \
+		share/man/man1/dspdfviewer.1.gz
 
 .include <bsd.port.pre.mk>
 
@@ -51,7 +51,7 @@ CFLAGS+=	-Wno-error=extra-semi-stmt
 .endif
 
 # Fixes build failure for Clang 11.0.0
-.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1300111 || ${OSVERSION} >= 1204000) && ${CHOSEN_COMPILER_TYPE} == clang
+.if ${OPSYS} == FreeBSD && ${CHOSEN_COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-error=suggest-destructor-override
 CFLAGS+=	-Wno-error=suggest-override
 .endif
@@ -59,6 +59,16 @@ CFLAGS+=	-Wno-error=suggest-override
 # Fixes build failure for Clang 14.0.3
 .if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400059 && ${CHOSEN_COMPILER_TYPE} == clang
 CFLAGS+=       -Wno-error=bitwise-instead-of-logical
+.endif
+
+# Fixes build failure for Clang 16.0.6
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400059 && ${CHOSEN_COMPILER_TYPE} == clang
+CFLAGS+=       -Wno-error=unsafe-buffer-usage
+.endif
+
+# Fixes build failure for Clang 18.1.4
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500018 && ${CHOSEN_COMPILER_TYPE} == clang
+CFLAGS+=       -Wno-error=switch-default
 .endif
 
 # Prepare for Qt5-5.15

@@ -1,6 +1,6 @@
 PORTNAME=	paperless
 PORTVERSION=	2.7.0
-PORTREVISION=	14
+PORTREVISION=	18
 CATEGORIES=	deskutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -36,12 +36,14 @@ RUN_DEPENDS+=	gpg2:security/gnupg \
 		tesseract:graphics/tesseract \
 		unpaper:graphics/unpaper
 
-USES=		python:3.5+ shebangfix
+USES=		python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	the-paperless-project
 USE_RC_SUBR=	paperless-consumer
 
 SHEBANG_FILES=	${WRKSRC}/src/manage.py
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}*paperless-ngx
 
 SUB_FILES=	README nginx.conf paperless.7 pkg-message sshd_config uwsgi.ini
 SUB_LIST=	PKGBASE=${PKGBASE} PYTHON_CMD=${PYTHON_CMD} \
@@ -57,7 +59,7 @@ GROUPS=		paperless
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_SINGLE=		IMAGICK
 OPTIONS_SINGLE_IMAGICK=	IMAGICK6_NOX11 IMAGICK6_X11 IMAGICK7_NOX11 IMAGICK7_X11
-OPTIONS_DEFAULT=	IMAGICK6_X11
+OPTIONS_DEFAULT=	IMAGICK7_X11
 
 IMAGICK_DESC=		${IMAGEMAGICK_DESC}
 IMAGICK6_NOX11_DESC=	ImageMagick6 without X11 support
@@ -115,7 +117,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}/var/db/paperless/consume/input \
 		${STAGEDIR}/var/db/paperless/media \
 		${STAGEDIR}/var/db/paperless/sqlite
-	${INSTALL_MAN} ${WRKDIR}/paperless.7 ${STAGEDIR}${MANPREFIX}/man/man7
+	${INSTALL_MAN} ${WRKDIR}/paperless.7 ${STAGEDIR}${PREFIX}/share/man/man7
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/presentation

@@ -1,27 +1,28 @@
 PORTNAME=	simpleagenda
-PORTVERSION=	0.43
-PORTREVISION=	13
+PORTVERSION=	0.46
+DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils gnustep
-MASTER_SITES=	http://coyote.octets.fr/pub/gnustep/
 DISTNAME=	SimpleAgenda-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple calendar and agenda application
-WWW=		http://wiki.gnustep.org/index.php/SimpleAgenda.app
-
-LIB_DEPENDS+=	libical.so:devel/libical \
-		libuuid.so:misc/e2fsprogs-libuuid
+WWW=		https://mediawiki.gnustep.org/index.php/SimpleAgenda.app
 
 LICENSE=	GPLv2
 
-USES=		gnustep
-USE_GNUSTEP=	back build
+LIB_DEPENDS=	libical.so:devel/libical \
+		libuuid.so:misc/e2fsprogs-libuuid
+
+USES=		gnustep localbase
 GNU_CONFIGURE=	yes
+USE_GNUSTEP=	back base build gui
+USE_GITHUB=	yes
+GH_ACCOUNT=	poroussel
+TEST_TARGET=	check
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-CFLAGS+=	-I${LOCALBASE}/include
-
-pre-configure:
-	${REINPLACE_CMD} -e 's|SimpleAgenda|SimpleAgenda.m|' ${WRKSRC}/configure
+post-patch:
+	@${REINPLACE_CMD} -e 's|SimpleAgenda|&.m|' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e '1{x; s|^|#import <AppKit/AppKitDefines.h>|; \
+		G;}' ${WRKSRC}/SoundBackend.m
 
 .include <bsd.port.mk>

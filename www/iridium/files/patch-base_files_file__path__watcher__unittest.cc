@@ -1,29 +1,29 @@
---- base/files/file_path_watcher_unittest.cc.orig	2023-03-13 07:33:08 UTC
+--- base/files/file_path_watcher_unittest.cc.orig	2024-06-25 12:08:48 UTC
 +++ base/files/file_path_watcher_unittest.cc
-@@ -521,7 +521,7 @@ TEST_F(FilePathWatcherTest, MAYBE_WatchDirectory) {
-   VLOG(1) << "Waiting for file1 creation";
-   ASSERT_TRUE(WaitForEvent());
+@@ -847,7 +847,7 @@ TEST_F(FilePathWatcherTest, WatchDirectory) {
+   }
+   delegate.RunUntilEventsMatch(event_expecter);
  
 -#if !BUILDFLAG(IS_APPLE)
-+#if !BUILDFLAG(IS_APPLE) && !BUILDFLAG(IS_BSD)
-   // Mac implementation does not detect files modified in a directory.
++#if !BUILDFLAG(IS_APPLE) && BUILDFLAG(IS_BSD)
    ASSERT_TRUE(WriteFile(file1, "content v2"));
-   VLOG(1) << "Waiting for file1 modification";
-@@ -1345,7 +1345,7 @@ enum Permission {
-   Execute
- };
+   // Mac implementation does not detect files modified in a directory.
+   // TODO(crbug.com/40263777): Expect that no events are fired on Mac.
+@@ -1783,7 +1783,7 @@ namespace {
+ 
+ enum Permission { Read, Write, Execute };
  
 -#if BUILDFLAG(IS_APPLE)
 +#if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_BSD)
  bool ChangeFilePermissions(const FilePath& path, Permission perm, bool allow) {
    struct stat stat_buf;
  
-@@ -1376,7 +1376,7 @@ bool ChangeFilePermissions(const FilePath& path, Permi
- }
- #endif  // BUILDFLAG(IS_APPLE)
+@@ -1817,7 +1817,7 @@ bool ChangeFilePermissions(const FilePath& path, Permi
+ 
+ }  // namespace
  
 -#if BUILDFLAG(IS_APPLE)
-+#if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_BSD)
++#if BUILDFLAG(IS_APPLE) && BUILDFLAG(IS_BSD)
  // Linux implementation of FilePathWatcher doesn't catch attribute changes.
  // http://crbug.com/78043
  // Windows implementation of FilePathWatcher catches attribute changes that

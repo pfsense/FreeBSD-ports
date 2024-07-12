@@ -1,9 +1,8 @@
 PORTNAME=	tuxpaint
-PORTVERSION=	0.9.28
-PORTREVISION=	2
+PORTVERSION=	0.9.32
 CATEGORIES=	games
 MASTER_SITES=	SF
-DISTNAME=	${PORTNAME}-${PORTVERSION}-sdl2
+#DISTNAME=	${PORTNAME}-${PORTVERSION}-sdl2
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Drawing program designed for young children
@@ -16,13 +15,14 @@ LIB_DEPENDS=	libfribidi.so:converters/fribidi \
 		libpaper.so:print/libpaper \
 		libimagequant.so:graphics/libimagequant \
 		libpng16.so:graphics/png \
-		libharfbuzz.so:print/harfbuzz
+		libharfbuzz.so:print/harfbuzz \
+		libSDL2_Pango.so:x11-toolkits/sdl2_pango
 
 RUN_DEPENDS=	anytopnm:graphics/netpbm \
 		bash:shells/bash
 
 USES=		gettext gmake gnome gperf magick:7,build pkgconfig \
-		python:3.7+ sdl shebangfix
+		python sdl shebangfix
 SHEBANG_FILES=	src/tuxpaint-import.sh \
 		fonts/locale/zh_tw_docs/maketuxfont.py
 
@@ -31,8 +31,8 @@ USE_SDL=	gfx2 image2 mixer2 sdl2 ttf2
 MAKE_ARGS=	CPPFLAGS="-I${LOCALBASE}/include" \
 		LDFLAGS="-L${LOCALBASE}/lib" \
 		PREFIX="${PREFIX}" \
-		MAN_PREFIX="${STAGEDIR}${MANPREFIX}/man" \
-		DEVMAN_PREFIX="${STAGEDIR}${MANPREFIX}/man" \
+		MAN_PREFIX="${STAGEDIR}${PREFIX}/share/man" \
+		DEVMAN_PREFIX="${STAGEDIR}${PREFIX}/share/man" \
 		X11_ICON_PREFIX="${STAGEDIR}${PREFIX}/share/pixmaps" \
 		GNOME_PREFIX="${PREFIX}" \
 		ARCH_INSTALL="" \
@@ -52,6 +52,12 @@ PORTDOCS=	*
 PORTDATA=	*
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-extract:
 	@${RM} -r ${WRKSRC}/fonts/locale/vi_docs

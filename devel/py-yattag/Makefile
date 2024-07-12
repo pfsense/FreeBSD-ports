@@ -1,5 +1,5 @@
 PORTNAME=	yattag
-PORTVERSION=	1.15.1
+PORTVERSION=	1.15.2
 CATEGORIES=	devel
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ WWW=		https://www.yattag.org/ \
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/license/lgpl-2.1.txt
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils pytest
 NO_ARCH=	yes
 

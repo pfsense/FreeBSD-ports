@@ -1,5 +1,5 @@
 PORTNAME=	libdisplay-info
-DISTVERSION=	0.1.1
+DISTVERSION=	0.2.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,8 +16,8 @@ USES=		compiler:c11 meson pkgconfig python:build shebangfix
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	emersion
-GL_COMMIT=	92b031749c0fe84ef5cdf895067b84a829920e25
 SHEBANG_FILES=	tool/*.py
+PLIST_SUB=	VERSION=${DISTVERSION:C/-.*//}
 
 pre-test:
 	@if [ ! -e ${WRKDIR}/.meson_build_tests ]; then \

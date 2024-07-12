@@ -1,6 +1,6 @@
---- third_party/blink/renderer/core/editing/editing_behavior.cc.orig	2023-04-08 11:38:38 UTC
+--- third_party/blink/renderer/core/editing/editing_behavior.cc.orig	2023-12-23 12:33:28 UTC
 +++ third_party/blink/renderer/core/editing/editing_behavior.cc
-@@ -284,7 +284,7 @@ bool EditingBehavior::ShouldInsertCharacter(const Keyb
+@@ -324,7 +324,7 @@ bool EditingBehavior::ShouldInsertCharacter(const Keyb
    // unexpected behaviour
    if (ch < ' ')
      return false;

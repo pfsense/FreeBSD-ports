@@ -1,12 +1,13 @@
 PORTNAME=	rack
-PORTVERSION=	2.2.7
+PORTVERSION=	2.2.9
+PORTREVISION=	1
 PORTEPOCH=	3
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	22
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Rack, a Ruby Webserver Interface
+COMMENT=	Rack, a modular Ruby web server interface
 WWW=		https://github.com/rack/rack
 
 LICENSE=	MIT
@@ -16,10 +17,12 @@ USES=		cpe gem
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/rackup
-
 CPE_VENDOR=	rack_project
 
 PORTSCOUT=	limit:^2\.2\.
+
+# Avoid CONFLICTS_INSTALL with www/rubygem-rackup
+post-install:
+	${RM} ${STAGEDIR}${PREFIX}/bin/rackup
 
 .include <bsd.port.mk>

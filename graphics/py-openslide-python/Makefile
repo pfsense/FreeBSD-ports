@@ -1,5 +1,5 @@
 PORTNAME=	openslide-python
-DISTVERSION=	1.2.0
+DISTVERSION=	1.3.1
 CATEGORIES=	graphics
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE=	LGPL21
 RUN_DEPENDS=	openslide>0:graphics/openslide \
 		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 post-install:

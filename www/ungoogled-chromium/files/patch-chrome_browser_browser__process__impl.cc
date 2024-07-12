@@ -1,7 +1,7 @@
---- chrome/browser/browser_process_impl.cc.orig	2023-06-05 19:39:05 UTC
+--- chrome/browser/browser_process_impl.cc.orig	2024-06-22 08:49:42 UTC
 +++ chrome/browser/browser_process_impl.cc
-@@ -216,7 +216,7 @@
- #include "components/enterprise/browser/controller/chrome_browser_cloud_management_controller.h"
+@@ -232,7 +232,7 @@
+ #include "chrome/browser/ui/profiles/profile_picker.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -9,7 +9,7 @@
  #include "chrome/browser/error_reporting/chrome_js_error_report_processor.h"  // nogncheck
  #endif
  
-@@ -1200,7 +1200,7 @@ void BrowserProcessImpl::PreMainMessageLoopRun() {
+@@ -1289,7 +1289,7 @@ void BrowserProcessImpl::PreMainMessageLoopRun() {
  
    ApplyMetricsReportingPolicy();
  
@@ -18,9 +18,9 @@
    ChromeJsErrorReportProcessor::Create();
  #endif
  
-@@ -1433,7 +1433,7 @@ void BrowserProcessImpl::Unpin() {
+@@ -1602,7 +1602,7 @@ void BrowserProcessImpl::Unpin() {
  // Mac is currently not supported.
- // TODO(crbug.com/1052397): Revisit once build flag switch of lacros-chrome is
+ // TODO(crbug.com/40118868): Revisit once build flag switch of lacros-chrome is
  // complete.
 -#if BUILDFLAG(IS_WIN) || (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
 +#if BUILDFLAG(IS_WIN) || (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || BUILDFLAG(IS_BSD)

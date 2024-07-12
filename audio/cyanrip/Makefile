@@ -1,8 +1,9 @@
 PORTNAME=	cyanrip
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.0
-PORTREVISION=	2
+DISTVERSION=	0.9.3.1
 CATEGORIES=	audio
+MASTER_SITES=	https://github.com/cyanreg/${PORTNAME}/releases/download/${DISTVERSIONFULL}/
+DISTNAME=	${PORTNAME}-src-${DISTVERSIONFULL}
 
 MAINTAINER=	diizzy@FreeBSD.org
 COMMENT=	Audio CD ripper with command-line interface and focus on accuracy
@@ -19,8 +20,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 
 USES=		localbase meson pkgconfig
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	cyanreg
+NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/cyanrip
 

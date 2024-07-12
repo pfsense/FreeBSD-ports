@@ -61,6 +61,7 @@ bin/tsxs
 include/ts/apidefs.h
 include/ts/experimental.h
 include/ts/mgmtapi.h
+include/ts/parentselectdefs.h
 include/ts/remap.h
 include/ts/ts.h
 include/tscpp/api/Async.h
@@ -94,6 +95,7 @@ include/tscpp/util/IntrusiveDList.h
 include/tscpp/util/LocalBuffer.h
 include/tscpp/util/PostScript.h
 include/tscpp/util/TextView.h
+include/tscpp/util/TsSharedMutex.h
 lib/libtscore.so
 lib/libtscore.so.9
 lib/libtscore.so.%%PORTVERSION%%
@@ -121,6 +123,7 @@ libexec/trafficserver/access_control.so
 libexec/trafficserver/acme.so
 libexec/trafficserver/authproxy.so
 libexec/trafficserver/background_fetch.so
+libexec/trafficserver/block_errors.so
 libexec/trafficserver/cache_fill.so
 libexec/trafficserver/cache_promote.so
 libexec/trafficserver/cache_range_requests.so
@@ -141,6 +144,7 @@ libexec/trafficserver/geoip_acl.so
 libexec/trafficserver/header_freq.so
 libexec/trafficserver/header_rewrite.so
 libexec/trafficserver/hook-trace.so
+libexec/trafficserver/http_stats.so
 libexec/trafficserver/icap.so
 libexec/trafficserver/inliner.so
 libexec/trafficserver/ja3_fingerprint.so
@@ -152,6 +156,7 @@ libexec/trafficserver/metalink.so
 libexec/trafficserver/money_trace.so
 libexec/trafficserver/mp4.so
 libexec/trafficserver/multiplexer.so
+libexec/trafficserver/parent_select.so
 libexec/trafficserver/prefetch.so
 libexec/trafficserver/rate_limit.so
 libexec/trafficserver/redo_cache_lookup.so
@@ -181,9 +186,9 @@ lib/perl5/Apache/TS.pm
 lib/perl5/Apache/TS/AdminClient.pm
 lib/perl5/Apache/TS/Config.pm
 lib/perl5/Apache/TS/Config/Records.pm
-man/man3/Apache::TS.3.gz
-man/man3/Apache::TS::AdminClient.3.gz
-man/man3/Apache::TS::Config::Records.3.gz
+share/man/man3/Apache::TS.3.gz
+share/man/man3/Apache::TS::AdminClient.3.gz
+share/man/man3/Apache::TS::Config::Records.3.gz
 @dir(,,) libexec/trafficserver
 @dir(,,) include/ts
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%ETCDIR%%/body_factory/default

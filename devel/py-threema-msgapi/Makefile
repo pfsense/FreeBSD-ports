@@ -1,6 +1,7 @@
 PORTNAME=	threema-msgapi
 PORTVERSION=	3.0.6
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,7 +12,7 @@ WWW=		https://github.com/lgrahl/threema-msgapi-sdk-python/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.2+
+USES=		python
 USE_PYTHON=	distutils autoplist
 USE_GITHUB=	yes
 GH_ACCOUNT=	lgrahl

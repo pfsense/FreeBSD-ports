@@ -1,5 +1,6 @@
 PORTNAME=	securesystemslib
-PORTVERSION=	0.28.0
+PORTVERSION=	0.31.0
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,13 +13,11 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>0:devel/py-hatchling@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=3.3.2:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pynacl>1.2.0:security/py-pynacl@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pynacl>1.2.0:security/py-pynacl@${PY_FLAVOR}
 TEST_DEPENDS=	${LOCALBASE}/bin/gpg:security/gnupg
 
-USES=		python:3.7+ pytest shebangfix
-USE_PYTHON=	autoplist pep517
-PYTEST_ARGS=	tests
+USES=		python shebangfix
+USE_PYTHON=	autoplist cryptography pep517 pytest
 
 SHEBANG_FILES=	securesystemslib/settings.py \
 	securesystemslib/schema.py \
@@ -29,5 +28,10 @@ SHEBANG_FILES=	securesystemslib/settings.py \
 	securesystemslib/formats.py
 
 NO_ARCH=	yes
+TEST_ARGS=	tests
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|hatchling==|hatchling>=|g' \
+		${WRKSRC}/pyproject.toml
 
 .include <bsd.port.mk>

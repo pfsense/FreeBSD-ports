@@ -1,7 +1,6 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	26.0.1
-PORTREVISION=	0
+DISTVERSION=	26.2.5.1
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime26
 DIST_SUBDIR=	erlang
@@ -12,15 +11,13 @@ WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
 
-BROKEN_sparc64=	Fails to build: error: fp_except undeclared
-
 USES=		compiler cpe gmake ncurses perl5
 CPE_VENDOR=	erlang
 CPE_PRODUCT=	erlang/otp
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	erlang:otp,corba
 GH_PROJECT=	otp:otp corba:corba
-GH_TAGNAME=	5.1:corba
+GH_TAGNAME=	5.2.1:corba
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
@@ -28,7 +25,6 @@ CONFIGURE_ARGS=	--enable-dirty-schedulers \
 		--enable-kernel-poll \
 		--enable-smp-support \
 		--enable-threads
-MAKE_ARGS=	all
 
 _ERLANG_LIB=	${PORTNAME}${PORTVERSION:C/\..*//}
 
@@ -40,7 +36,7 @@ WRKSRC=		${WRKSRC_otp}
 
 OPTIONS_DEFINE=		CHUNKS CORBA DTRACE JAVA KQUEUE ODBC OPENSSL SCTP \
 			SHARING WX
-OPTIONS_DEFAULT=	CORBA DTRACE KQUEUE OPENSSL SCTP SHARING
+OPTIONS_DEFAULT=	CHUNKS CORBA DTRACE KQUEUE OPENSSL SCTP SHARING
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
@@ -66,8 +62,6 @@ WX_DESC=	Enable WX application
 # probes fixed does not match the number of defined probes (54 != 132,
 # respectively)" you probably misconfigured DTrace in some way.
 
-CHUNKS_MAKE_ARGS+=		DOC_TARGETS=chunks \
-				docs
 DTRACE_CONFIGURE_WITH=		dynamic-trace=dtrace
 DTRACE_CFLAGS=			-fno-omit-frame-pointer
 DTRACE_VARS=			STRIP=""
@@ -76,10 +70,8 @@ JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
 JAVA_VARS=			USE_JAVA=yes
 KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
-ODBC_USES=			localbase
+ODBC_USES=			localbase:ldflags
 ODBC_CONFIGURE_WITH=		odbc
-ODBC_CFLAGS=			-I/usr/local/include
-ODBC_LDFLAGS=			-L/usr/local/lib
 OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		ssl=${OPENSSLBASE}
 SCTP_CONFIGURE_ENABLE=		sctp
@@ -120,6 +112,12 @@ post-configure-ODBC-on:
 
 post-configure-ODBC-off:
 	echo "disabled by port options" > ${WRKSRC}/lib/odbc/SKIP
+
+post-install-CHUNKS-on:
+	cd ${WRKSRC_otp} && \
+		${SETENV} ERL_TOP=${WRKSRC_otp} \
+		${MAKE_CMD} release_docs DOC_TARGETS=chunks \
+		RELEASE_ROOT=${STAGEDIR}${PREFIX}/lib/${_ERLANG_LIB}
 
 post-build-CORBA-on:
 	cd ${WRKSRC_corba} && \

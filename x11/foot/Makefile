@@ -1,7 +1,11 @@
 PORTNAME=	foot
-DISTVERSION=	1.14.0
+DISTVERSION=	1.17.2
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 MASTER_SITES=	https://codeberg.org/dnkl/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
+
+PATCH_SITES=	https://codeberg.org/dnkl/${PORTNAME}/commit/
+PATCHFILES+=	d229fd7fcc5a.patch:-p1 # https://codeberg.org/dnkl/foot/pulls/1726
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Fast, lightweight and minimalistic Wayland terminal emulator
@@ -12,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		tllist>=1.0.4:devel/tllist \
-		wayland-protocols>0:graphics/wayland-protocols
+		wayland-protocols>=1.32:graphics/wayland-protocols
 LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 		libwayland-client.so:graphics/wayland \
 		libfcft.so:x11-fonts/fcft \
@@ -26,8 +30,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 OPTIONS_DEFINE=	DOCS LTO NOTIFY PGO UTF8PROC XDG
 OPTIONS_DEFAULT=LTO NOTIFY PGO UTF8PROC XDG
 OPTIONS_EXCLUDE+=	${CC:T:Mgcc*:C/.+/LTO/} # undefined reference to `xstrdup'
-OPTIONS_EXCLUDE_powerpc64=	${"${/usr/bin/ld:L:tA}"==/usr/bin/ld.lld:?LTO:} # https://github.com/llvm/llvm-project/issues/46697
-OPTIONS_EXCLUDE_FreeBSD_12=	${WAYLAND_DISPLAY:UPGO} # ./pgo hangs
 
 DOCS_BUILD_DEPENDS=	scdoc:textproc/scdoc
 DOCS_MESON_ENABLED=	docs
@@ -77,6 +79,7 @@ post-build-PGO-on:
 	(cd ${BUILD_WRKSRC} && ./tests/test-config) # -Wbackend-plugin/-Wmissing-profile
 	(cd ${BUILD_WRKSRC} && ./utils/xtgettcap) # -Wbackend-plugin/-Wmissing-profile
 	(cd ${BUILD_WRKSRC} && ./${PORTNAME}client --version) # -Wbackend-plugin/-Wmissing-profile
+	(cd ${BUILD_WRKSRC} && ./${PORTNAME} --version) # -Wbackend-plugin/-Wmissing-profile
 .if defined(WAYLAND_DISPLAY)
 # Likely a local build, so optimize for the current config
 	(cd ${BUILD_WRKSRC} && LC_ALL=en_US.UTF-8 ./${PORTNAME} ${PYTHON_CMD} \

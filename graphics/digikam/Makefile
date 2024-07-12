@@ -1,11 +1,20 @@
 PORTNAME=	digikam
-DISTVERSION=	7.10.0
-PORTREVISION=	6
+DISTVERSION=	8.3.0
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	-1
 CATEGORIES=	graphics kde
-MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
-DIST_SUBDIR=	KDE/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION} \
+		https://files.kde.org/digikam/%SUBDIR%/:aesthetic,autotags,face,shape \
+		https://kde-applicationdata.mirrors.omnilance.com/digikam/%SUBDIR%/:aesthetic,autotags,face,shape \
+		https://mirrors.ocf.berkeley.edu/kde-applicationdata/digikam/%SUBDIR%/:aesthetic,autotags,face,shape
+MASTER_SITE_SUBDIR=	aestheticdetector/:aesthetic \
+			autotags/:autotags \
+			facesengine/dnnface/:face \
+			facesengine/shape-predictor/:shape
 # One bit changed in the naming convention ..
 DISTFILES=	digiKam-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}${EXTRACT_SUFX}
+DIST_SUBDIR=	KDE/${PORTNAME}
+EXTRACT_ONLY=	digiKam-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}${EXTRACT_SUFX}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE digital photo management application
@@ -14,94 +23,113 @@ WWW=		https://www.digikam.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
 LIB_DEPENDS=	libKF5Sane.so:graphics/libksane \
-		libboost_graph.so:devel/boost-libs \
 		libexiv2.so:graphics/exiv2 \
 		libexpat.so:textproc/expat2 \
 		libgphoto2.so:graphics/libgphoto2 \
-		libicalss.so:devel/libical \
 		libjasper.so:graphics/jasper \
 		liblcms2.so:graphics/lcms2 \
 		liblensfun.so:graphics/lensfun \
-		liblqr-1.so:graphics/liblqr-1 \
 		libopencv_core.so:graphics/opencv \
 		libheif.so:graphics/libheif \
-		libpgf.so:graphics/libpgf \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
 		libx265.so:multimedia/x265
+RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 
-USES=		bison cmake compiler:c++11-lib desktop-file-utils eigen:3 gl \
-		gnome jpeg kde:5 magick pkgconfig qt:5 shebangfix tar:xz xorg
-USE_GL=		gl glu
+USES=		bison cmake compiler:c++17-lang desktop-file-utils eigen:3 gl \
+		gnome jpeg kde:5 magick pkgconfig qt:5 \
+		shebangfix tar:xz xorg
+USE_GL=		opengl glu
 USE_GNOME=	glib20 libxml2 libxslt
-USE_KDE=	archive auth bookmarks calendarcore codecs completion config \
-		configwidgets coreaddons crash doctools ecm filemetadata \
-		guiaddons i18n iconthemes itemmodels itemviews jobwidgets kdelibs4support \
-		kio marble libkipi notifications notifyconfig parts service \
-		solid sonnet textwidgets threadweaver unitconversion \
-		widgetsaddons windowsystem xmlgui
-USE_QT=		concurrent core dbus declarative gui location network opengl \
-		printsupport sql webchannel widgets x11extras xml xmlpatterns \
-		sql-sqlite3:run \
+USE_KDE=	auth calendarcore codecs completion config configwidgets \
+		coreaddons doctools filemetadata i18n iconthemes jobwidgets \
+		kio notifications notifyconfig service solid sonnet \
+		threadweaver widgetsaddons windowsystem xmlgui \
+		ecm:build
+USE_LDCONFIG=	yes
+USE_QT=		concurrent core dbus declarative gui location network \
+		networkauth opengl printsupport sql svg webchannel webengine \
+		widgets x11extras xml xmlpatterns \
 		buildtools:build qmake:build
 USE_XORG=	ice sm x11 xext
 
-USE_LDCONFIG=	yes
 SHEBANG_FILES=	core/data/scripts/digitaglinktree/digitaglinktree
+
+CMAKE_ON=	BUILD_WITH_CCACHE DIGIKAMSC_COMPILE_DIGIKAM ENABLE_KFILEMETADATASUPPORT \
+		CMAKE_DISABLE_FIND_PACKAGE_VAAPI
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
+
+PLIST_SUB=	SHLIB_VER=${DISTVERSION}
 
 WITH_CCACHE_BUILD=	yes
 
-# Disable kipiplugins, as they are built in their own port: graphics/kipiplugins.
-# Remember to keep that port in sync with this one.
-CMAKE_ON=	BUILD_WITH_CCACHE DIGIKAMSC_COMPILE_DIGIKAM ENABLE_KFILEMETADATASUPPORT
-
-OPTIONS_DEFINE=		DOCS DOXYGEN KDEPIM KVKONTAKTE MEDIAPLAYER MYSQL NLS WEBENGINE
-OPTIONS_DEFAULT=	${OPTIONS_DEFINE:NWEBENGINE:NMEDIAPLAYER}
+OPTIONS_DEFINE=		AUTOTAGS FACEDETECT KDEPIM MEDIAPLAYER NLS
+OPTIONS_MULTI=		DB
+DB_DESC=		Database options
+OPTIONS_MULTI_DB=	MYSQL MYSQL_INTERNAL SQLITE3
+OPTIONS_DEFAULT=	${OPTIONS_DEFINE:NAUTOTAGS:NFACEDETECT} \
+			${OPTIONS_MULTI_DB:NMYSQL_INTERNAL}
 OPTIONS_SUB=		yes
 
-DOCS_DESC=		Digikam documentation
-DOCS_CMAKE_BOOL=	DIGIKAMSC_COMPILE_DOC
-DOCS_USES=		gettext
-DOCS_USE=		KDE=doctools
+AUTOTAGS_DESC=		Install data required for autotagging (~436 MiB)
+AUTOTAGS_DISTFILES=	classification_classes_ILSVRC2012.txt:autotags \
+			coco.names:autotags \
+			resnet50.onnx:autotags \
+			yolov5n_batch_16_s320.onnx:autotags \
+			yolov5x_batch_16_s320.onnx:autotags
 
-DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
-DOXYGEN_IMPLIES=	DOCS
+FACEDETECT_DESC=	Install data required for face detection (~419 MiB)
+FACEDETECT_DISTFILES=	weights_inceptionv3_299.pb:aesthetic \
+			deploy.prototxt:face \
+			openface_nn4.small2.v1.t7:face \
+			res10_300x300_ssd_iter_140000_fp16.caffemodel:face \
+			yolov3-face.cfg:face \
+			yolov3-wider_16000.weights:face \
+			shapepredictor.dat:shape
 
 KDEPIM_DESC=		KDEPim Addressbook support
-KDEPIM_USE=		KDE=akonadi,akonadicontacts,contacts,grantleetheme
 KDEPIM_USES=		grantlee:5
+KDEPIM_USE=		KDE=akonadi,akonadicontacts,contacts,grantleetheme,itemmodels
 KDEPIM_CMAKE_BOOL=	ENABLE_AKONADICONTACTSUPPORT
-KDEPIM_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5AkonadiContact
 
-MEDIAPLAYER_DESC=	Enable mediaplayer
+MEDIAPLAYER_DESC=		Enable media player
 MEDIAPLAYER_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
-				libQtAV.so:multimedia/QtAV
+				libvdpau.so:multimedia/libvdpau
+MEDIAPLAYER_USE=		QT=multimedia XORG=xv
 MEDIAPLAYER_CMAKE_BOOL=		ENABLE_MEDIAPLAYER
-MEDIAPLAYER_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_FFmpeg \
-				CMAKE_DISABLE_FIND_PACKAGE_QtAV
+MEDIAPLAYER_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_FFmpeg
 
-MYSQL_USES=		mysql:server
 MYSQL_USE=		QT=sql-mysql:run
-MYSQL_CMAKE_BOOL=	ENABLE_INTERNALMYSQL \
-			ENABLE_MYSQLSUPPORT
-MYSQL_CMAKE_ON=		-DMYSQLD_PATH:PATH=${LOCALBASE}/libexec \
-			-DMYSQL_TOOLS_PATH:PATH=${LOCALBASE}/bin
+MYSQL_CMAKE_BOOL=	ENABLE_MYSQLSUPPORT
 
-KVKONTAKTE_DESC=	vk.com Plugin
-KVKONTAKTE_LIB_DEPENDS=	libKF5Vkontakte.so:net/libkvkontakte
-KVKONTAKTE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5Vkontakte
+MYSQL_INTERNAL_DESC=		Use a dedicated MySQL instance (requires MariaDB)
+MYSQL_INTERNAL_USES=		mysql:server
+MYSQL_INTERNAL_CMAKE_BOOL=	ENABLE_INTERNALMYSQL
+# Only works with MariaDB. Try to keep this in sync with supported MySQL
+# versions and add any version not ending with 'm' to the IGNORE list.
+MYSQL_INTERNAL_VARS=		IGNORE_WITH_MYSQL="80 81"
+MYSQL_INTERNAL_IMPLIES=		MYSQL
 
 NLS_DESC=		Digikam i18n translations
-NLS_CMAKE_BOOL=		DIGIKAMSC_COMPILE_PO
-NLS_USES=		gettext
+NLS_USES=		gettext-tools
 NLS_USE=		KDE=i18n
+NLS_CMAKE_BOOL=		DIGIKAMSC_COMPILE_PO
 
-WEBENGINE_DESC=		Use Qt WebEngine instead of WebKit
-WEBENGINE_USE=		QT=webengine
-WEBENGINE_USE_OFF=	QT=webkit
-WEBENGINE_CMAKE_BOOL=	ENABLE_QWEBENGINE
+SQLITE3_USE=		QT=sql-sqlite3:run
 
-PLIST_SUB=		SHLIB_VER=${DISTVERSION}
+post-install-AUTOTAGS-on:
+	@${MKDIR} ${STAGEDIR}${DATADIR}/facesengine
+.for f in ${AUTOTAGS_DISTFILES:C/:.*//}
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${f} ${STAGEDIR}${DATADIR}/facesengine
+.endfor
+
+post-install-FACEDETECT-on:
+	@${MKDIR} ${STAGEDIR}${DATADIR}/facesengine
+.for f in ${FACEDETECT_DISTFILES:C/:.*//}
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${f} ${STAGEDIR}${DATADIR}/facesengine
+.endfor
 
 .include <bsd.port.mk>

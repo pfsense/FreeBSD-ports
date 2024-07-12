@@ -1,10 +1,19 @@
---- src/CMakeLists.txt.orig	2022-09-06 07:09:19 UTC
+--- src/CMakeLists.txt.orig	2023-12-12 14:21:21 UTC
 +++ src/CMakeLists.txt
-@@ -127,7 +127,7 @@ if (NOT WIN32 AND NOT APPLE)
+@@ -62,7 +62,7 @@ if (SLIC3R_GUI)
+ 
+     find_package(JPEG MODULE QUIET)
+     find_package(TIFF MODULE QUIET) # Tiff exported config is broken for static build
+-    find_package(NanoSVG REQUIRED)
++	#find_package(NanoSVG REQUIRED)
+ 
+     string(REGEX MATCH "wxpng" WX_PNG_BUILTIN ${wxWidgets_LIBRARIES})
+     if (PNG_FOUND AND NOT WX_PNG_BUILTIN)
+@@ -131,7 +131,7 @@ if (NOT WIN32 AND NOT APPLE)
      set_target_properties(PrusaSlicer PROPERTIES OUTPUT_NAME "prusa-slicer")
  endif ()
  
--target_link_libraries(PrusaSlicer libslic3r cereal)
+-target_link_libraries(PrusaSlicer libslic3r libcereal)
 +target_link_libraries(PrusaSlicer libslic3r)
  
  if (APPLE)

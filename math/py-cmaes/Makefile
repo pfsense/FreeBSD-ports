@@ -1,5 +1,5 @@
 PORTNAME=	cmaes
-PORTVERSION=	0.9.1
+PORTVERSION=	0.10.0
 PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	PYPI
@@ -12,10 +12,12 @@ WWW=		https://github.com/CyberAgent/cmaes
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

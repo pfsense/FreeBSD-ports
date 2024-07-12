@@ -3,7 +3,7 @@
  * snort_download_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
@@ -302,13 +302,13 @@ $group->add(new Form_Button(
 	'update',
 	'Update Rules',
 	'#',
-	'fa-check'
+	'fa-solid fa-check'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('title', gettext("Check for and install only new updates"));
 $group->add(new Form_Button(
 	'force',
 	'Force Update',
 	'#',
-	'fa-download'
+	'fa-solid fa-download'
 ))->removeClass('btn-primary')->addClass('btn-warning')->addClass('btn-sm')->setAttribute('title', gettext("Force an update of all enabled rule sets"));
 $group->setHelp('Click UPDATE RULES to check for and automatically apply any new posted updates for selected rules packages.  Clicking FORCE UPDATE ' . 
 		'will zero out the MD5 hashes and force the download and application of the latest versions of the enabled rules packages.');
@@ -323,14 +323,14 @@ $group->add(new Form_Button(
 	'view',
 	'View Log',
 	'#',
-	'fa-file-text-o'
+	'fa-regular fa-file-lines'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('title', gettext('View rules update log'))->setAttribute('data-target', '#vwupdlog')->setAttribute('data-toggle', 'modal');
 
 $group->add(new Form_Button(
 	'clear',
 	'Clear Log',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 ))->removeClass('btn-primary')->addClass('btn-danger')->addClass('btn-sm')->setAttribute('title', gettext('Clear rules update log'));
 $group->setHelp('The log file is limited to 1024K in size and is automatically cleared when that limit is exceeded.');
 $section->add($group);
@@ -366,7 +366,7 @@ $modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
 $modal->addInput(new Form_StaticText (
 	null,
 	'Updating rule sets may take a while ... please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' . 
-	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
+	'<i class="content fa fa-spinner fa-pulse fa-solid fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
 

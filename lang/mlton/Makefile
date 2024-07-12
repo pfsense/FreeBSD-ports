@@ -1,7 +1,3 @@
-# Previously maintained by Jesper Louis Andersen
-# (jesper.louis.andersen@gmail.com) and Geoffrey Mainland
-# (mainland@apeiron.net)
-#
 # Because MLton is written in SML, it needs an SML compiler to build.
 # It is easiest to use another (earlier) binary version of MLton as
 # the SML compiler.  So, this Makefile fetches and installs an
@@ -12,11 +8,7 @@ PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES+=	https://github.com/beyert/mlton-freebsd_bootstrap/raw/c7371c1/:bootstrap
 DISTFILES+=	${BOOTNAME}.i386-${OPSYS:tl}-13.txz:bootstrap \
-		${BOOTNAME}.amd64-${OPSYS:tl}-13.txz:bootstrap \
-		${BOOTNAME}.i386-${OPSYS:tl}-12.txz:bootstrap \
-		${BOOTNAME}.amd64-${OPSYS:tl}-12.txz:bootstrap \
-		${BOOTNAME}.i386-${OPSYS:tl}-11.txz:bootstrap \
-		${BOOTNAME}.amd64-${OPSYS:tl}-11.txz:bootstrap
+		${BOOTNAME}.amd64-${OPSYS:tl}-13.txz:bootstrap
 
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Optimizing Standard ML compiler
@@ -39,20 +31,18 @@ USES=		compiler:c11 gmake
 BOOTNAME=	${BOOTNAMEPREFIX}${PORTNAME}${BOOTNAMESUFFIX}-${BOOTVERSIONPREFIX}${BOOTVERSION}${BOOTVERSIONSUFFIX}
 BOOTVERSIONSUFFIX=
 BOOTVERSION=	${PORTVERSION}
-BOOTOSMAJ=	${OSREL:R}
+BOOTOSMAJ=	13
 
 OPTIONS_DEFINE=			DOCS EXAMPLES
 OPTIONS_DEFAULT=		MLTON NATIVE
 OPTIONS_SINGLE=			BOOTSTRAP TARGET
-OPTIONS_SINGLE_BOOTSTRAP=	MLTON POLYML SMLNJ WINE
-OPTIONS_SINGLE_TARGET=		MINGW32 NATIVE
+OPTIONS_SINGLE_BOOTSTRAP=	MLTON POLYML SMLNJ
+OPTIONS_SINGLE_TARGET=		NATIVE
 
-MINGW32_DESC=	Add mingw32 Windows target (requires wine)
 MLTON_DESC=	Bootstrap with MLton (ideal if supported)
 NATIVE_DESC=	Use default target for given architecture
 POLYML_DESC=	Bootstrap with PolyML
 SMLNJ_DESC=	Bootstrap with SML/NJ (can take many hours)
-WINE_DESC=	Bootstrap MINGW32 with wine
 
 DOCS_BUILD_DEPENDS=		htmldoc:textproc/htmldoc
 DOCS_USES=			tex
@@ -63,7 +53,6 @@ DOCS_ALL_TARGET=		install-docs all
 DOCS_ALL_TARGET_OFF=		all
 DOCS_INSTALL_TARGET=		install-docs install
 DOCS_INSTALL_TARGET_OFF=	install
-MINGW32_BROKEN=			not yet implemented MINGW32 option in modern versions of ${PORTNAME}
 MLTON_MAKE_ARGS=		DESTDIR='' \
 				LIB=${BOOT_WRKSRC}/lib \
 				MLTON_VERSION=${PORTVERSION} \
@@ -98,24 +87,7 @@ SMLNJ_VARS=			BOOT_DIST= \
 BOOT_WRKSRC=	${WRKSRC}/build
 BOOT_WRKTMP=	${WRKDIR}/mlton-bootstrap
 
-.if ${PORT_OPTIONS:MNATIVE} && ${OSREL:R} >= 13
-BOOTOSMAJ=	13
-.endif
-
 BOOT_DIST_NEW=	${PKGNAME}${DISTVERSIONSUFFIX}.${ARCH}-${OPSYS:tl}-${OSREL:R}-${HOST}${BOOT_SUFX}
-
-.if ${PORT_OPTIONS:MMINGW32} && ${PORT_OPTIONS:MWINE}
-BUILD_DEPENDS+=	${LOCALBASE}/mingw32/lib/libgmp.a:math/mingw32-libgmp \
-		mingw32-gcc:devel/mingw32-gcc \
-		wine:emulators/wine
-RUN_DEPENDS+=	${LOCALBASE}/mingw32/lib/libgmp.a:math/mingw32-libgmp \
-		mingw32-gcc:devel/mingw32-gcc
-SSP_CFLAGS?=	-fstack-protector # XXX -strong isn't supported by GCC < 4.9
-
-PLIST_SUB+=	MINGW32CROSS=""
-.else
-PLIST_SUB+=	MINGW32CROSS="@comment "
-.endif
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MLton
@@ -125,7 +97,7 @@ GH_TAGNAME=	b2fca3d
 BOOT_CMD=	--xz
 BOOT_SUFX=	.txz
 
-RAM_SLOP_32=	$$(${SYSCTL} "hw.physmem" | ${AWK} '{ values = values" "$$2 } END { print values; }' | ${AWK} '{ "freebsd-version -r" | getline ver; split(ver, xs, "\."); kernelOSMAJ = xs[1]; osj = ${BOOTOSMAJ}; physmem = $$1 / 1024 / 1024 / 1024; os = kernelOSMAJ; maxphysmem = physmem; if (physmem > 3.2) { maxphysmem = 3.2; }; ospcent = 0.70; if (osj < 13 && os != osj) { ospcent = 0.65; } else if (os >= 13) { if (physmem < 3.1) { ospcent = 0.83; } else { ospcent = 0.80; } }; targetmem = maxphysmem * ospcent; targetpcent = targetmem / physmem; print int((targetpcent + 0.005) * 100) / 100; }')
+RAM_SLOP_32=	$$(${SYSCTL} "hw.physmem" | ${AWK} '{ values = values" "$$2 } END { print values; }' | ${AWK} '{ physmem = $$1 / 1024 / 1024 / 1024; maxphysmem = physmem; if (physmem > 3.2) { maxphysmem = 3.2; }; ospcent = 0.70; if (physmem < 3.1) { ospcent = 0.83; } else { ospcent = 0.80; }; targetmem = maxphysmem * ospcent; targetpcent = targetmem / physmem; print int((targetpcent + 0.005) * 100) / 100; }')
 
 post-extract:
 	@${MKDIR} ${BOOT_WRKSRC}
@@ -194,9 +166,5 @@ makebootstrap: all
 	@${ECHO_MSG} "====> Backing up new bootstrap image (${BOOT_DIST_NEW})"
 	@${MV} ${BOOT_WRKTMP}/${BOOT_DIST_NEW} ${MASTERDIR}/
 ##	@${RMDIR} ${BOOT_WRKTMP}
-
-post-build-MINGW32-on:
-	@${ECHO} Adding mingw32 target...
-	${WRKSRC}/bin/add-local-cross mingw32 x86 mingw
 
 .include <bsd.port.mk>

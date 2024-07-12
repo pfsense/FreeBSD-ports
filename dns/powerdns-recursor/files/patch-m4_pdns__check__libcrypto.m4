@@ -1,4 +1,4 @@
---- m4/pdns_check_libcrypto.m4.orig	2020-11-16 16:30:04 UTC
+--- m4/pdns_check_libcrypto.m4.orig	2023-09-13 09:07:48 UTC
 +++ m4/pdns_check_libcrypto.m4
 @@ -75,8 +75,10 @@ AC_DEFUN([PDNS_CHECK_LIBCRYPTO], [
          for ssldir in $ssldirs; do

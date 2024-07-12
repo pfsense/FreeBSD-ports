@@ -1,6 +1,6 @@
 PORTNAME=	allacrost
 PORTVERSION=	1.0.2
-PORTREVISION=	32
+PORTREVISION=	33
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION}
 DISTNAME=	${PORTNAME}_demo_source_${PORTVERSION}
@@ -11,6 +11,8 @@ WWW=		https://web.archive.org/web/20201126135328/http://allacrost.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		uses incompatible C++ features from different C++ standards that can't be built together due to feature deprecation restrictions
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libogg.so:audio/libogg \

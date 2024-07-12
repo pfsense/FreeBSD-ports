@@ -1,5 +1,5 @@
 PORTNAME=	xstatic-angular-lrdragndrop
-PORTVERSION=	1.0.2.4
+PORTVERSION=	1.0.2.6
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -12,8 +12,11 @@ WWW=		https://github.com/openstack/xstatic-angular-lrdragndrop
 
 LICENSE=	MIT
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

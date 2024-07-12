@@ -1,6 +1,6 @@
 PORTNAME=	libdatachannel
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.18.5
+DISTVERSION=	0.21.1
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,12 +16,11 @@ USES=		cmake compiler:c++17-lang ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	paullouisageneau
-GH_TUPLE=	SergiusTheBest:plog:d8461e9d473e59fbcc1f79eee021550dcf81e618:SergiusTheBest_plog/deps/plog \
-		sctplab:usrsctp:7c31bd35c79ba67084ce029511193a19ceb97447:sctplab_usrsctp/deps/usrsctp \
-		paullouisageneau:libjuice:0dabc046cd23da6908749e4c6add834ec29a7c49:paullouisageneau_libjuice/deps/libjuice \
-		nlohmann:json:4f8fba14066156b73f1189a2b8bd568bde5284c5:nlohmann_json/deps/json \
+GH_TUPLE=	SergiusTheBest:plog:e21baecd4753f14da64ede979c5a19302618b752:SergiusTheBest_plog/deps/plog \
+		sctplab:usrsctp:ebb18adac6501bad4501b1f6dccb67a1c85cc299:sctplab_usrsctp/deps/usrsctp \
+		paullouisageneau:libjuice:ac0fc81:paullouisageneau_libjuice/deps/libjuice \
+		nlohmann:json:9cca280a4d0ccf0c08f47a99aa71d1b0e52f8d03:nlohmann_json/deps/json \
 		cisco:libsrtp:a566a9cfcd619e8327784aa7cff4a1276dc1e895:cisco_libsrtp/deps/libsrtp
-
 CMAKE_ON=	USE_SYSTEM_SRTP NO_EXAMPLES NO_TESTS
 
 .include <bsd.port.pre.mk>

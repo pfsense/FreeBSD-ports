@@ -1,10 +1,10 @@
---- src/3rdparty/chromium/components/metrics/drive_metrics_provider_linux.cc.orig	2022-06-08 06:40:31 UTC
+--- src/3rdparty/chromium/components/metrics/drive_metrics_provider_linux.cc.orig	2023-09-13 12:11:42 UTC
 +++ src/3rdparty/chromium/components/metrics/drive_metrics_provider_linux.cc
 @@ -4,7 +4,13 @@
  
  #include "components/metrics/drive_metrics_provider.h"
  
-+#if defined(OS_BSD)
++#if BUILDFLAG(IS_BSD)
 +#include <sys/types.h>
 +#define MAJOR(dev) major(dev)
 +#define MINOR(dev) minor(dev)

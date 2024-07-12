@@ -1,14 +1,14 @@
 PORTNAME=	gpac
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0
-PORTREVISION=	1
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 PKGNAMESUFFIX=	-libgpac
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Gpac MPEG-4 Systems library and headers
-WWW=		http://gpac.sourceforge.net/
+WWW=		https://gpac.sourceforge.net/
 
 LICENSE=	LGPL21
 
@@ -56,7 +56,8 @@ PNG_CONFIGURE_OFF=	--use-png=no
 
 post-patch:
 	${REINPLACE_CMD} -e 's|s/\.\*\\(\[0-9\]\\)\\+\$$/\\1/|s/^[^0-9]*//| ;\
-		/CFLAGS=/s/-O3//' ${WRKSRC}/configure
+		/CFLAGS=/s/-O3// ; s/-export-dynamic/-Wl,--export-dynamic/' \
+		${WRKSRC}/configure
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/gpac.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig

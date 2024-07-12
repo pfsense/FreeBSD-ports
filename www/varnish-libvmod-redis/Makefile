@@ -1,5 +1,6 @@
 PORTNAME=	libvmod-redis
-PORTVERSION=	20230315
+PORTVERSION=	20230915
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
@@ -15,10 +16,11 @@ LIB_DEPENDS=	libev.so:devel/libev \
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 
 USES=		autoreconf compiler:c11 gmake libtool pkgconfig \
-		python:3.5+,build varnish:7
+		python:build varnish:7
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static --disable-tls
 INSTALL_TARGET=	install-strip
 DOCSDIR=	${PREFIX}/share/doc/vmod-redis
@@ -28,7 +30,7 @@ CFLAGS+=	-I${WRKSRC}/src
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	carlosabalde
-GH_TAGNAME=	da883d1
+GH_TAGNAME=	53d35ad
 
 OPTIONS_DEFINE=	DOCS
 

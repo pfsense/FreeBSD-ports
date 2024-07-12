@@ -1,5 +1,5 @@
 PORTNAME=	libvirt
-PORTVERSION=	9.4.0
+PORTVERSION=	10.3.0
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/ \
 		ftp://libvirt.org/libvirt/
@@ -116,10 +116,13 @@ MESON_ARGS+=	\
 		-Dudev=disabled \
 		-Dnetcf=disabled \
 		-Dsysctl_config=disabled \
+		-Dnbdkit=disabled \
+		-Dnbdkit_config_default=disabled \
 		-Dlogin_shell=disabled \
 		-Dwireshark_dissector=disabled \
 		-Dinit_script=none \
 		-Dbash_completion=disabled \
+		-Duserfaultfd_sysctl=disabled \
 		-Dlocalstatedir=${VARDIR}
 
 # random_data fix can be removed when 8.x is eol
@@ -131,7 +134,7 @@ PORTSCOUT=	limit:\d+\.\d+\.\d+$$
 LDFLAGS+=	-L${LOCALBASE}/lib -fstack-protector
 
 USES=		gnome charsetfix compiler:c++0x cpe gettext-runtime gmake libtool \
-	        meson pathfix perl5 python:3.6+,build pkgconfig shebangfix tar:xz
+	        meson pathfix perl5 python:build pkgconfig shebangfix tar:xz
 USE_GNOME=	glib20
 USE_RC_SUBR=	libvirtd virtlogd
 CPE_VENDOR=	redhat
@@ -139,7 +142,7 @@ USE_PERL5=	build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-SHLIB_VER=	0.9004.0
+SHLIB_VER=	0.10003.0
 PLIST_SUB+=	SHLIB_VER=${SHLIB_VER}
 PORTDOCS=	*
 #SHEBANG_FILES=	src/keycodemapdb/tools/keymap-gen

@@ -1,5 +1,5 @@
 PORTNAME=	fasm
-PORTVERSION=	1.73.30
+PORTVERSION=	1.73.32
 CATEGORIES=	lang devel
 MASTER_SITES=	https://flatassembler.net/ \
 		LOCAL/sunpoet
@@ -14,13 +14,12 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 ONLY_FOR_ARCHS=	amd64 i386
 IA32_BINARY_PORT=	yes
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+WRKSRC=		${WRKDIR}/fasm
 
 PLIST_FILES=	bin/fasm
 PORTDOCS=	fasm.txt readme.txt whatsnew.txt
 
-# bin/fasm
-CONFLICTS_INSTALL=	fasm-fpga SASM
+CONFLICTS_INSTALL=	fasm-fpga SASM # bin/fasm
 
 OPTIONS_DEFINE=	DOCS
 

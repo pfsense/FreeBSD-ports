@@ -3,7 +3,7 @@
  * suricata_os_policy_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -79,7 +79,7 @@ if ($pengcfg['name'] <> "default") {
 		'select_alias',
 		'Aliases',
 		null,
-		'fa-search-plus'
+		'fa-solid fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
@@ -110,7 +110,7 @@ $form->addGlobal(new Form_Button(
 	'save_os_policy',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->addClass("btn-primary");
 
 $form->addGlobal(new Form_Button(

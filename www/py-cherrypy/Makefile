@@ -13,7 +13,7 @@ WWW=		http://www.cherrypy.org/
 LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheroot>=8.2.1:www/py-cheroot@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jaraco.collections>=4.2.0:devel/py-jaraco.collections@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}more-itertools>0:devel/py-more-itertools@${PY_FLAVOR} \
@@ -30,9 +30,9 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}codecov>=2.1.13:devel/py-codecov@${PY_FLAVO
 		${PYTHON_PKGNAMEPREFIX}pytest-sugar>=0.9.7:devel/py-pytest-sugar@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-memcached>=1.59:databases/py-python-memcached@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests-toolbelt>0:www/py-requests-toolbelt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+		${PY_SETUPTOOLS}
 
-USES=		cpe python:3.6+
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent distutils pytest
 PYTEST_BROKEN_TESTS=	test_0_NormalStateFlow test_8_Ram_Cleanup \
 			test_multipart_decoding \

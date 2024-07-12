@@ -1,5 +1,6 @@
 PORTNAME=	fuglu
-PORTVERSION=	1.2.0
+PORTVERSION=	1.4.0
+PORTREVISION=	1
 CATEGORIES=	mail python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,7 @@ RUN_DEPENDS=	postfix:mail/postfix \
 		${PYTHON_PKGNAMEPREFIX}rarfile>0:archivers/py-rarfile@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lzma>0:archivers/py-lzma@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 USE_RC_SUBR=	fuglu

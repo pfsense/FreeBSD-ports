@@ -1,5 +1,5 @@
 PORTNAME=	imapclient
-DISTVERSION=	2.3.1
+DISTVERSION=	3.0.1
 CATEGORIES=	mail python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +14,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.4+ zip
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python zip
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
 

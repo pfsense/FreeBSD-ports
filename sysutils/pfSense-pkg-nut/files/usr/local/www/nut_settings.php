@@ -3,7 +3,7 @@
  * nut_settings.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
@@ -461,7 +461,7 @@ $button = new Form_Button(
 	'advancedbutton',
 	'Display Advanced',
 	null,
-	'fa-cog'
+	'fa-solid fa-cog'
 );
 $button->setAttribute('type', 'button')->addClass('btn-info btn-sm');
 $section->addInput(new Form_StaticText(
@@ -675,7 +675,7 @@ events.push(function() {
 		} else {
 			text = "<?=gettext('Display Advanced');?>";
 		}
-		$('#advancedbutton').html('<i class="fa fa-cog"></i> ' + text);
+		$('#advancedbutton').html('<i class="fa-solid fa-cog"></i> ' + text);
 	}
 
 	// Show/Hide settings when the type changes

@@ -1,5 +1,6 @@
 PORTNAME=	dbmail
-PORTVERSION=	3.3.1
+PORTVERSION=	3.4.1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 
@@ -8,8 +9,6 @@ COMMENT=	SQL database-based mail system (POP3 and IMAP)
 WWW=		http://www.dbmail.org/
 
 LICENSE=	GPLv2
-
-BROKEN_aarch64=	Fails to link: missing sbrk
 
 BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
 		docbook-sgml>0:textproc/docbook-sgml \
@@ -33,7 +32,7 @@ CONFIGURE_ARGS+=	--enable-manpages \
 			--sysconfdir=${LOCALBASE}/etc \
 			--with-zdb=${LOCALBASE}
 
-MAKE_ARGS+=	mandir=${MANPREFIX}/man
+MAKE_ARGS+=	mandir=${PREFIX}/share/man
 INSTALL_TARGET=	install-strip
 
 PLIST_SUB+=	DBMAIL_GROUP="${DBMAIL_GROUP}" \
@@ -55,6 +54,17 @@ SIEVE_CONFIGURE_WITH=	sieve
 DBMAIL_USER?=	mailnull
 DBMAIL_GROUP?=	mail
 PIDDIR?=	/var/run/dbmail
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e '/dbmail-sieved\.8 /d' \
+		${WRKSRC}/man/Makefile.am \
+		${WRKSRC}/man/Makefile.in
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/dbmail.conf ${STAGEDIR}${PREFIX}/etc/dbmail.conf.sample

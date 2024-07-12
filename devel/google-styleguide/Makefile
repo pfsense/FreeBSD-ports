@@ -1,11 +1,12 @@
 PORTNAME=	styleguide
-PORTVERSION=	20230426
+PORTVERSION=	20240227
 CATEGORIES=	devel
 PKGNAMEPREFIX=	google-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool to assist with Google style guide compliance
-WWW=		https://github.com/google/styleguide
+WWW=		https://google.github.io/styleguide/ \
+		https://github.com/google/styleguide
 
 # cpplint.py and cpplint_unittest.py are released under BSD3CLAUSE
 # style guides is released under CC-BY-3.0
@@ -20,7 +21,7 @@ NO_BUILD=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-GH_TAGNAME=	2173b8d
+GH_TAGNAME=	8487c08
 
 SHEBANG_FILES=	cpplint/cpplint.py cpplint/cpplint_unittest.py
 

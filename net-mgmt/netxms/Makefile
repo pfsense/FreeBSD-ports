@@ -1,5 +1,5 @@
 PORTNAME=	netxms
-PORTVERSION=	3.4.313
+PORTVERSION=	3.9.420
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.netxms.org/download/releases/${PORTVERSION:R}/
 
@@ -10,9 +10,6 @@ WWW=		https://www.netxms.org/
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-BROKEN_FreeBSD_13=	error: conflicting types for 'qsort_s'
-BROKEN_FreeBSD_14=	error: conflicting types for 'qsort_s'
-
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
 		libjansson.so:devel/jansson \
@@ -21,6 +18,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libmosquitto.so:net/mosquitto
 
 USES=		gmake iconv libtool localbase perl5 ssl
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -56,7 +54,7 @@ SERVER_CONFIGURE_ON=	--with-server
 SSH_LIB_DEPENDS=	libssh.so:security/libssh
 SSH_CONFIGURE_OFF=	--disable-ssh
 
-SONUM=	34
+SONUM=	39
 
 .include <bsd.port.options.mk>
 

@@ -1,7 +1,7 @@
 PORTNAME=	opensmtpd-filter-rspamd
-PORTVERSION=	0.1.7
+PORTVERSION=	0.1.8
 DISTVERSIONPREFIX=	v
-PORTREVISION=	12
+PORTREVISION=	7
 CATEGORIES=	mail
 
 MAINTAINER=	manu@FreeBSD.Org
@@ -10,8 +10,7 @@ WWW=		https://github.com/poolpOrg/filter-rspamd
 
 LICENSE=	ISCL
 
-RUN_DEPENDS=	opensmtpd>=6.6.0:mail/opensmtpd \
-		rspamd>=0:mail/rspamd
+RUN_DEPENDS=	opensmtpd>=6.6.0:mail/opensmtpd
 
 USES=		go
 

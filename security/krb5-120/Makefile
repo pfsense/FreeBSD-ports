@@ -1,10 +1,14 @@
 PORTNAME=		krb5
-PORTVERSION=		1.20.1
+PORTVERSION=		1.20.2
+PORTREVISION=		3
 CATEGORIES=		security
 MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-9]*\.[0-9]*/&X/:C/X\.[0-9]*$//:C/X//}/
 .if !defined(MASTERDIR)
-PKGNAMESUFFIX=		-120
+PKGNAME_X=		-${FLAVOR:S/default//}-120
+.else
+PKGNAME_X=		-${FLAVOR:S/default//}
 .endif
+PKGNAMESUFFIX=		${PKGNAME_X:S/--/-/:C/-$//}
 
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
@@ -19,7 +23,7 @@ CONFLICTS=		heimdal krb5 krb5-11* krb5-121
 CONFLICTS_BUILD=	boringssl
 
 KERBEROSV_URL=		http://web.mit.edu/kerberos/
-USES=			compiler:c++11-lang cpe gmake gettext-runtime \
+USES=			autoreconf compiler:c++11-lang cpe gmake gettext-runtime \
 			gssapi:bootstrap,mit libtool:build localbase \
 			perl5 pkgconfig ssl
 USE_CSTD=		gnu99
@@ -27,8 +31,8 @@ USE_LDCONFIG=		yes
 USE_PERL5=		build
 GNU_CONFIGURE=		yes
 CONFIGURE_ARGS?=	--enable-shared --without-system-verto \
-			--disable-rpath --localstatedir="${PREFIX}/var" \
-			--runstatedir="${PREFIX}/var/run"
+			--disable-rpath
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}" YACC="${YACC}"
 MAKE_ARGS=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}"
 
@@ -36,10 +40,12 @@ CPE_VENDOR=		mit
 CPE_VERSION=		5-${PORTVERSION}
 CPE_PRODUCT=		kerberos
 
+FLAVORS=		default ldap
+
 OPTIONS_DEFINE=		EXAMPLES NLS KRB5_PDF KRB5_HTML DNS_FOR_REALM LDAP LMDB
 OPTIONS_DEFAULT=	KRB5_PDF KRB5_HTML READLINE
 OPTIONS_RADIO=		CMD_LINE_EDITING
-OPTIONS_RADIO_CMD_LINE_EDITING=	READLINE LIBEDIT
+OPTIONS_RADIO_CMD_LINE_EDITING=	READLINE LIBEDIT LIBEDIT_BASE
 CMD_LINE_EDITING_DESC=	Command line editing for kadmin and ktutil
 KRB5_PDF_DESC=		Install krb5 PDF documentation
 KRB5_HTML_DESC=		Install krb5 HTML documentation
@@ -53,14 +59,31 @@ LMDB_CONFIGURE_WITH=	lmdb
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 LMDB_IMPLIES=		LDAP
 NLS_USES=		gettext
+NLS_CONFIGURE_OFF=	--disable-nls
 READLINE_USES=		readline
 READLINE_CONFIGURE_WITH=readline
 LIBEDIT_USES=		libedit
 LIBEDIT_CONFIGURE_WITH=	libedit
+LIBEDIT_BASE_CONFIGURE_WITH=	libedit
+LIBEDIT_BASE_DESC=	Use libedit in FreeBSD base
+
+.if ${FLAVOR:U} == ldap
+OPTIONS_DEFAULT+=	LDAP LMDB
+.endif
 
 .if defined(KRB5_HOME)
 PREFIX=			${KRB5_HOME}
 .endif
+.if !defined(KRB5_LOCALSTATEDIR)
+KRB5_LOCALSTATEDIR=	"${PREFIX}/var"
+.endif
+.if !defined(KRB5_RUNSTATEDIR)
+KRB5_RUNSTATEDIR=	"${PREFIX}/var/run"
+.endif
+CONFIGURE_ARGS+=	--runstatedir="${KRB5_RUNSTATEDIR}"
+CONFIGURE_ARGS+=	--localstatedir="${KRB5_LOCALSTATEDIR}"
+PLIST_SUB+=		KRB5_LOCALSTATEDIR=${KRB5_LOCALSTATEDIR}
+PLIST_SUB+=		KRB5_RUNSTATEDIR=${KRB5_RUNSTATEDIR}
 CPPFLAGS+=		-I${OPENSSLINC}
 LDFLAGS+=		-L${OPENSSLLIB}
 
@@ -99,8 +122,6 @@ PDF_DOC_DIR=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/doc/pdf
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/krb5
-	@${SED} "s|%%PREFIX%%|${PREFIX}|" ${FILESDIR}/kdc.in > ${STAGEDIR}${PREFIX}/sbin/kdc; \
-	${CHMOD} +x ${STAGEDIR}${PREFIX}/sbin/kdc
 # html documentation
 .if ${PORT_OPTIONS:MKRB5_PDF}
 	pdf_files=`${FIND} ${PDF_DOC_DIR} ! -type d`

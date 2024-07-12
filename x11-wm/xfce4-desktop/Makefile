@@ -1,6 +1,6 @@
 PORTNAME=	xfce4-desktop
 PORTVERSION=	4.18.1
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	x11-wm xfce
 MASTER_SITES=	XFCE
 DISTNAME=	xfdesktop-${DISTVERSIONFULL}
@@ -19,10 +19,11 @@ LIB_DEPENDS=	libnotify.so:devel/libnotify \
 USES=		compiler:c11 gettext-tools gmake gnome pkgconfig tar:bzip2 \
 		xfce xorg
 USE_GNOME=	cairo glib20 gdkpixbuf2 gtk30 intltool libwnck3
-USE_XFCE=	garcon libexo
+USE_XFCE=	garcon libexo xfconf
 USE_XORG=	ice sm x11
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--enable-gio-unix \

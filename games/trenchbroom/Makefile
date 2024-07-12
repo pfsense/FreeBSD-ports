@@ -1,6 +1,6 @@
 PORTNAME=	${GH_PROJECT:tl}
 PORTVERSION=	2.0.0.b
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games cad
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -37,6 +37,9 @@ post-patch:
 		${WRKSRC}/common/src/IO/SystemPaths.cpp
 	@${REINPLACE_CMD} -e '/return m_.*Margin/s,(),,' \
 		${WRKSRC}/common/src/View/CellLayout.h
+	@${REINPLACE_CMD} -e '/typedef std::/s,auto_ptr,unique_ptr,' \
+		${WRKSRC}/common/src/IO/NodeSerializer.h \
+		${WRKSRC}/common/src/Renderer/FontTexture.h
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/TrenchBroom ${STAGEDIR}${PREFIX}/bin

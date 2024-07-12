@@ -1,6 +1,6 @@
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION}
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	editors java
 MASTER_SITES=	https://dlcdn.apache.org/openoffice/${PORTVERSION}/source/ \
 		https://archive.apache.org/dist/openoffice/${PORTVERSION}/source/ \
@@ -75,7 +75,7 @@ LIB_DEPENDS=								\
 		libnspr4.so:devel/nspr					\
 		libcurl.so:ftp/curl					\
 		libcairo.so:graphics/cairo				\
-		libpng.so:graphics/png					\
+		libpng16.so:graphics/png				\
 		libgraphite.so:graphics/silgraphite			\
 		libblas.so:math/blas					\
 		libCbcSolver.so:math/cbc				\
@@ -113,10 +113,8 @@ RUN_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
 		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
 		shared-mime-info ssl tar:bzip2 xorg
-BROKEN_SSL=	openssl30 openssl31
-BROKEN_SSL_REASON=	unsupported option -print-multi-os-directory
 USE_GL=		gl glu
-USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt libidl glib20
+USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt glib20
 USE_JAVA=	yes
 JAVA_BUILD=	jdk
 JAVA_RUN=	jdk
@@ -129,15 +127,15 @@ CONFLICTS_INSTALL=	apache-openoffice-devel
 
 AOOVERSION1=	4
 AOOVERSION2=	1
-AOOVERSION3=	14
+AOOVERSION3=	15
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
-AOOTAG=		AOO4114m1\(Build:9811\)
-GITREVISION=	a0d24fb625
+AOOTAG=		AOO4115m2\(Build:9813\)
+GITREVISION=	5f13fa0070
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
 AOOVERSION=	${AOOVERSION1}.${AOOVERSION2}.${AOOVERSION3}
 AOOXXX=		${AOOVERSION1}${AOOVERSION2}${AOOVERSION3}
-AOOSUFFIX=	${PORTVERSION}
+AOOSUFFIX=	${AOOVERSION1}.${AOOVERSION2}
 AOOSRC=		apache-openoffice-${AOOVERSION}-${GITREVISION}-src${EXTRACT_SUFX}
 
 AOOUDIR=		.openoffice.org\/${AOOVERSION1}
@@ -203,7 +201,6 @@ WITH=	SDK
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && ( \
-    (${OSVERSION} >= 1301500 && ${OSVERSION} < 1301502) || \
     (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
 BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
 .endif

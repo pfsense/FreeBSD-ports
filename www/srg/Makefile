@@ -1,5 +1,6 @@
 PORTNAME=	srg
 PORTVERSION=	1.3.6
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://mirror.crc.net.nz/pub/srg/
@@ -12,18 +13,19 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		tar:bzip2
+USE_CXXSTD=	c++14
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 OPTIONS_DEFINE=	EXAMPLES
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/CPPFLAGS/s|-I/usr/local/include|| ; \
 		 /LDFLAGS/s|-L/usr/local/lib||' ${WRKSRC}/configure
 
-post-install:
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for ex in srg.daily srg.monthly srg.weekly
 	${INSTALL_DATA} ${WRKSRC}/examples/${ex} ${STAGEDIR}${EXAMPLESDIR}

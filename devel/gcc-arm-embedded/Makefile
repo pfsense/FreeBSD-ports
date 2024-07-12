@@ -12,7 +12,7 @@ WWW=		https://launchpad.net/gcc-arm-embedded
 LICENSE=	GPLv2 LGPL20 LGPL21 GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-NOT_FOR_ARCHS=		arm armeb armv6 armv7 \
+NOT_FOR_ARCHS=		arm armv6 armv7 \
 			mips mips64 mips64el mipsel mipsn32
 NOT_FOR_ARCHS_REASON=	Very slow to build on emulator
 
@@ -61,7 +61,7 @@ INFO_PATH=	${PORTNAME}-${FULL_VERSION}/share/doc/gcc-${TARGET}/info
 INFO=		annotate as bfd binutils cpp cppinternals gcc \
 		gccinstall gccint gdb gprof ld stabs
 
-MANPREFIX=	${PREFIX}/${PORTNAME}-${FULL_VERSION}/${DOCS_SUFFIX}
+MANDIRS=	${PREFIX}/${PORTNAME}-${FULL_VERSION}/${DOCS_SUFFIX}/man
 DOCSDIR=	${PREFIX}/${PORTNAME}-${FULL_VERSION}/${DOCS_SUFFIX}
 EXAMPLESDIR=	${PREFIX}/${PORTNAME}-${FULL_VERSION}/share/gcc-${TARGET}/samples
 
@@ -100,6 +100,10 @@ VAR_TO_SUBMAKE_NOEXPAND=	CONFIGURE_ENV MAKE_ENV
 #.if ${PORT_OPTIONS:MPURE}
 #IGNORE=	PURE option is not valid anymore, no libraries are bundled
 #.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USE_GCC=	yes
+.endif
 
 post-extract:
 .if ${PORT_OPTIONS:MPURE}

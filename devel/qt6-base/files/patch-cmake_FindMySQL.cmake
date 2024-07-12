@@ -1,13 +1,13 @@
-Help cmake figure out the locations of the headers when mariadb is used.
+Use pkgconf to set hints for MariaDB, as well.
 
---- cmake/FindMySQL.cmake.orig	2021-10-20 11:54:23 UTC
+--- cmake/FindMySQL.cmake.orig	2024-05-08 09:42:08 UTC
 +++ cmake/FindMySQL.cmake
-@@ -19,7 +19,7 @@
- #     The mysql client library
- 
- find_package(PkgConfig QUIET)
--pkg_check_modules(PC_MySQL QUIET mysqlclient)
-+pkg_search_module(PC_MySQL QUIET mysqlclient mariadb)
- 
- find_path(MySQL_INCLUDE_DIR
-           NAMES mysql.h
+@@ -43,7 +43,7 @@ if(PkgConfig_FOUND AND NOT DEFINED MySQL_ROOT)
+     find_package(PkgConfig QUIET)
+ endif()
+ if(PkgConfig_FOUND AND NOT DEFINED MySQL_ROOT)
+-    pkg_check_modules(PC_MySQL QUIET "mysqlclient")
++    pkg_search_module(PC_MySQL QUIET "libmariadb" "mysqlclient")
+     set(MySQL_include_dir_hints ${PC_MySQL_INCLUDEDIR})
+     set(MySQL_library_hints ${PC_MySQL_LIBDIR})
+     set(MySQL_library_hints_debug "")

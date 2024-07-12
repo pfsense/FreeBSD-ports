@@ -1,9 +1,10 @@
-COMMENT=	Fcitx support for GTK+ (common files)
+COMMENT=	Fcitx support for GTK (common files)
 
 PKGNAMESUFFIX=	-common
 
 MASTERDIR=	${.CURDIR}/../fcitx5-gtk
 
+LIB_DEPENDS=	# empty
 RUN_DEPENDS=	# empty
 
 PLIST=	${MASTERDIR}/pkg-plist.common

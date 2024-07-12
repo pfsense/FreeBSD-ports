@@ -1,6 +1,6 @@
---- base/system/sys_info_unittest.cc.orig	2023-03-13 07:33:08 UTC
+--- base/system/sys_info_unittest.cc.orig	2024-06-25 12:08:48 UTC
 +++ base/system/sys_info_unittest.cc
-@@ -259,12 +259,16 @@ TEST_F(SysInfoTest, GetHardwareInfo) {
+@@ -264,12 +264,16 @@ TEST_F(SysInfoTest, GetHardwareInfo) {
    EXPECT_TRUE(IsStringUTF8(hardware_info->model));
    bool empty_result_expected =
  #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_WIN) || \

@@ -1,7 +1,10 @@
 PORTNAME=	libva-intel-driver
 DISTVERSION=	2.4.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	4206d0e15363.patch:-p1 # https://github.com/intel/intel-vaapi-driver/pull/566
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	VAAPI legacy driver for Intel GMA 4500 (Gen4) to UHD 630 (Gen9.5)
@@ -21,7 +24,7 @@ USES=		compiler:c11 meson pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	intel
 GH_PROJECT=	intel-vaapi-driver
-PLIST_FILES=	lib/dri/i915_drv_video.so lib/dri/i965_drv_video.so
+PLIST_FILES=	lib/dri/i965_drv_video.so
 
 OPTIONS_DEFINE=	HYBRID WAYLAND X11
 OPTIONS_DEFAULT=HYBRID WAYLAND X11
@@ -35,8 +38,5 @@ WAYLAND_MESON_YES=	with_wayland
 
 X11_LIB_DEPENDS=	libva-x11.so:multimedia/libva
 X11_MESON_YES=		with_x11
-
-post-install:
-	${LN} -sf i965_drv_video.so ${STAGEDIR}${PREFIX}/lib/dri/i915_drv_video.so
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	eclipse
 PORTVERSION=	4.24
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java devel
 
 # Tag's Timestamp on eclipse-platform/eclipse.platform.releng.aggregator github.com
@@ -18,7 +18,7 @@ LICENSE=	EPL
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	git:devel/git@lite \
-		${LOCALBASE}/share/java/maven/bin/mvn:devel/maven \
+		maven>0:devel/maven \
 		zip:archivers/zip
 LIB_DEPENDS=	libsecret-1.so:security/libsecret \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3

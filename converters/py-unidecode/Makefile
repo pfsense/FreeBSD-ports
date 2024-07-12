@@ -1,5 +1,5 @@
 PORTNAME=	unidecode
-PORTVERSION=	1.1.1
+DISTVERSION=	1.3.7
 CATEGORIES=	converters python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ WWW=		https://pypi.org/project/Unidecode/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist concurrent
 
 NO_ARCH=	yes

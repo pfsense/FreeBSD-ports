@@ -1,10 +1,11 @@
 PORTNAME=	mod_mono
 PORTVERSION=	3.13
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Apache module for serving ASP.NET applications
 WWW=		https://www.mono-project.com/
 
@@ -17,7 +18,8 @@ RUN_DEPENDS=	xsp:www/xsp
 USES=		apache libtool mono pkgconfig
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-static --man=${PREFIX}/man
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ARGS=	--disable-static --man=${PREFIX}/share/man
 INSTALL_TARGET=	install
 PLIST_SUB=	MOD_MONOCONFDIR=${MOD_MONOCONFDIR}
 

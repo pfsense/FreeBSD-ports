@@ -1,6 +1,6 @@
 PORTNAME=	cpupdate
 DISTVERSION=	g20180513
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	sysutils
 
 MAINTAINER=	eugen@FreeBSD.org
@@ -30,27 +30,25 @@ SUB_LIST=	CPM_DIR="${CPM_DIR}" INTEL_DIR="${INTEL_DIR}" \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kernschmelze
-GH_PROJECT=	${PORTNAME}
 GH_TAGNAME=	48e42d5
 
-PLIST_FILES=	sbin/${PORTNAME} man/man8/${PORTNAME}.8.gz
+PLIST_FILES=	sbin/${PORTNAME} share/man/man8/${PORTNAME}.8.gz
 
-# MCE DB r268
+# MCE DB r296
 CPM_ACCOUNT=	platomav
 CPM_PROJECT=	CPUMicrocodes
-CPM_TAGNAME=	246a49d
+CPM_TAGNAME=	628e39b
 
 OPTIONS_DEFINE=		CPM INTEL
 CPM_DESC=		Download platomav/CPUMicrocodes collection
 CPM_GH_ACCOUNT=		${CPM_ACCOUNT}:cpm
 CPM_GH_PROJECT=		${CPM_PROJECT}:cpm
 CPM_GH_TAGNAME=		${CPM_TAGNAME}:cpm
-CPM_PACK=		${CPM_ACCOUNT}-${CPM_PROJECT}-${CPM_TAGNAME}_GH0
-CPM_MASTER_SITES=	https://codeload.github.com/platomav/${CPM_PROJECT}/tar.gz/${CPM_TAGNAME}?dummy=/${CPM_PACK}.tar.gz
+CPM_PACK?=		${CPM_ACCOUNT}-${CPM_PROJECT}-${CPM_TAGNAME}_GH0.tar.gz
 CPM_DIR=		${WRKDIR}/${CPM_PROJECT}-${CPM_TAGNAME}
 CPM_DATADIR=		${DATADIR}/CPUMicrocodes/secondary/Intel
 
-INTEL_PACK=		microcode-20230613
+INTEL_PACK=		microcode-20240514
 INTEL_DESC=		Download Intel microcode pack ${INTEL_PACK}
 INTEL_PROJECT=		Intel-Linux-Processor-Microcode-Data-Files
 INTEL_MASTER_SITES=	https://codeload.github.com/intel/${INTEL_PROJECT}/tar.gz/:intel
@@ -58,15 +56,16 @@ INTEL_DISTFILES=	${INTEL_PACK}:intel
 INTEL_DIR=		${WRKDIR}/${INTEL_PROJECT}-${INTEL_PACK}/intel-ucode
 INTEL_DATADIR=		${DATADIR}/CPUMicrocodes/primary/Intel
 
-CPUPDATE_SITES?=	${CPM_MASTER_SITES}:cpm ${INTEL_MASTER_SITES}
-CPUPDATE_DISTFILES?=	${CPM_PACK}:cpm ${INTEL_PACK}:intel
+CPUPDATE_SITES?=	${INTEL_MASTER_SITES} \
+			https://codeload.github.com/platomav/${CPM_PROJECT}/tar.gz/${CPM_TAGNAME}?dummy=/:cpm
+CPUPDATE_DISTFILES?=	${INTEL_PACK}:intel ${CPM_PACK}:cpm
 
 post-patch:
 	${REINPLACE_CMD} -e "s,/usr/local/share/cpupdate,${DATADIR},g" ${WRKSRC}/cpupdate.h
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.options.mk>
 

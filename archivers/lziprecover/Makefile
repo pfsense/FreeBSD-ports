@@ -1,5 +1,5 @@
 PORTNAME=	lziprecover
-PORTVERSION=	1.23
+PORTVERSION=	1.24
 CATEGORIES=	archivers
 MASTER_SITES=	SAVANNAH/lzip/${PORTNAME}
 
@@ -9,14 +9,16 @@ WWW=		https://www.nongnu.org/lzip/lziprecover.html
 
 LICENSE=	GPLv2+
 
+TEST_DEPENDS=	lzip:archivers/lzip
+
 USES=		tar:lz
 HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--prefix=${PREFIX} --infodir=${PREFIX}/${INFO_PATH} \
-		--mandir=${MANPREFIX}/man CXXFLAGS="${CXXFLAGS}"
+CONFIGURE_ARGS=	--prefix=${PREFIX} CXX="${CXX}" CXXFLAGS="${CXXFLAGS}"
+MAKE_ARGS=	INSTALL_PROGRAM="${INSTALL_PROGRAM}"
 TEST_TARGET=	check
 
 INFO=		${PORTNAME}
-PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
+PLIST_FILES=	bin/${PORTNAME} share/man/man1/${PORTNAME}.1.gz
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 
 OPTIONS_DEFINE=	DOCS

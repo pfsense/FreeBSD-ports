@@ -1,5 +1,5 @@
 PORTNAME=	pythran
-PORTVERSION=	0.13.1
+PORTVERSION=	0.16.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}gast>=0.5.0:devel/py-gast@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}beniget>=0.4.0:devel/py-beniget@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

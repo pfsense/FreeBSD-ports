@@ -1,6 +1,6 @@
 PORTNAME=		vsearch
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.22.1
+DISTVERSION=		2.28.1
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -13,15 +13,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 ONLY_FOR_ARCHS=		aarch64 amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	Explicitly enumerated by upstream developers
 
-LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
-
 USES=		autoreconf ghostscript:build gmake localbase
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	torognes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
-PLIST_FILES=	bin/vsearch man/man1/vsearch.1.gz
+PLIST_FILES=	bin/vsearch share/man/man1/vsearch.1.gz
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

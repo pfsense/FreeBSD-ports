@@ -1,5 +1,6 @@
 PORTNAME=	bacula
-DISTVERSION=	13.0.1
+DISTVERSION=	13.0.4
+PORTREVISION=	3
 CATEGORIES?=	sysutils
 MASTER_SITES=	SF/bacula/bacula/${PORTVERSION}
 PKGNAMEPREFIX?=	#
@@ -13,9 +14,9 @@ LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES+=		cpe libtool readline shebangfix ssl
-SHEBANG_FILES=	src/cats/make_catalog_backup.pl.in scripts/baculabackupreport.in
+SHEBANG_FILES=	src/cats/make_catalog_backup.pl.in scripts/baculabackupreport
 
-CONFLICTS?=	bacula11-server bacula9-server bacula-server
+CONFLICTS?=	bacula15-server bacula11-server bacula9-server
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2
 
@@ -25,13 +26,15 @@ GROUPS=		${USERS}
 PLIST_SUB+=	LIB_VERSION=${PORTVERSION}
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE?=	MTX NLS IPV6
+OPTIONS_DEFINE?=	MTX NLS IPV6 S3
 MTX_DESC=		Install mtx for control of autochanger devices
+S3_DESC=		Install S3 plugin
 
 .if ${PKGNAMESUFFIX} == "13-server"
 OPTIONS_MULTI=		BACKEND
@@ -91,7 +94,7 @@ BACULA_DIR?=	/var/db/bacula
 
 PLIST_SUB+=	BACULA_DIR=${BACULA_DIR}
 
-SUB_LIST=	BACULA_USER=${BACULA_USER} \
+SUB_LIST+=	BACULA_USER=${BACULA_USER} \
 		BACULA_GROUP=${BACULA_GROUP} \
 		BACULA_UID=${BACULA_UID} \
 		BACULA_GID=${BACULA_GID} \
@@ -114,16 +117,25 @@ CONFFILES=		sd dir
 
 MYSQL_CONFIGURE_ON=	--with-mysql=yes
 MYSQL_USES=		mysql
+MYSQL_SUB_LIST=		REQ_MYSQL=mysql
+MYSQL_SUB_LIST_OFF=	REQ_MYSQL=""
 SQLITE3_CONFIGURE_ON=	--with-sqlite3=yes
 SQLITE3_USES=		sqlite:3
 PGSQL_CONFIGURE_ON=	--with-postgresql=yes
 PGSQL_USES=		pgsql
+PGSQL_SUB_LIST=		REQ_PGSQL=postgresql
+PGSQL_SUB_LIST_OFF=	REQ_PGSQL=""
 
 MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
 
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MS3}
+CONFIGURE_ARGS+=	--enable-s3
+LIB_DEPENDS+=		libs3.so:sysutils/bacula-libs3
+.endif
 
 # if IPv6 is not in the kernel, it generates many errors
 .if ! ${PORT_OPTIONS:MIPV6}

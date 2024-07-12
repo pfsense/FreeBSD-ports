@@ -7,11 +7,11 @@ DISTNAME=	PyRTF-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to create RTF documents using the Python language
-WWW=		http://pyrtf.sourceforge.net/
+WWW=		https://pyrtf.sourceforge.net/
 
 LICENSE=	GPLv1
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

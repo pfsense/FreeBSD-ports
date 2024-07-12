@@ -1,9 +1,9 @@
---- gpu/command_buffer/service/shared_image/wrapped_sk_image_backing.cc.orig	2023-04-22 17:45:15 UTC
+--- gpu/command_buffer/service/shared_image/wrapped_sk_image_backing.cc.orig	2024-06-25 12:08:48 UTC
 +++ gpu/command_buffer/service/shared_image/wrapped_sk_image_backing.cc
-@@ -181,7 +181,7 @@ bool WrappedSkImageBacking::Initialize() {
-   for (int plane = 0; plane < num_planes; ++plane) {
-     auto& texture = textures_[plane];
-     gfx::Size plane_size = format().GetPlaneSize(plane, size());
+@@ -214,7 +214,7 @@ bool WrappedSkImageBacking::Initialize(const std::stri
+ 
+     constexpr GrRenderable is_renderable = GrRenderable::kYes;
+     constexpr GrProtected is_protected = GrProtected::kNo;
 -#if DCHECK_IS_ON() && !BUILDFLAG(IS_LINUX)
 +#if DCHECK_IS_ON() && !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_BSD)
      // Blue for single-planar and magenta-ish for multi-planar.

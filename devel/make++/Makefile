@@ -1,12 +1,13 @@
 PORTNAME=	make++
 PORTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	SF/${PORTNAME:S/+/p/g}/${PORTVERSION}
 DISTNAME=	${PORTNAME:S/+/p/g}-${PORTVERSION}
 
 MAINTAINER=	gavin@16degrees.com.au
 COMMENT=	Drop-in replacement for GNU make
-WWW=		http://makepp.sourceforge.net/
+WWW=		https://makepp.sourceforge.net/
 
 LICENSE=	ART10 GPLv2+
 LICENSE_COMB=	dual
@@ -14,7 +15,7 @@ LICENSE_COMB=	dual
 USES=		perl5 tar:txz
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
-		--mandir=${MANPREFIX}/man \
+		--mandir=${PREFIX}/share/man \
 		--htmldir=${DOCSDIR}/html
 NO_ARCH=	yes
 

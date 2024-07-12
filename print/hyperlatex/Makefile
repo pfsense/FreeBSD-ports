@@ -1,13 +1,13 @@
 PORTNAME=	Hyperlatex
 DISTVERSION=	2.9a
-PORTREVISION=	19
+PORTREVISION=	23
 CATEGORIES=	print
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/2.9a
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Produce HTML and printed documents from LaTeX source
-WWW=		http://hyperlatex.sourceforge.net/
+WWW=		https://hyperlatex.sourceforge.net/
 
 RUN_DEPENDS=	ppmtogif:graphics/netpbm
 

@@ -3,7 +3,7 @@
  * snort_uninstall.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
@@ -34,7 +34,7 @@ require_once("service-utils.inc"); // Need this to get RCFILEPREFIX constant
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
-global $config, $g;
+global $g;
 
 $snortdir = SNORTDIR;
 $snortlibdir = SNORT_BASEDIR . "lib";

@@ -1,6 +1,6 @@
 PORTNAME=	cbindgen
-DISTVERSION=	0.24.3
-PORTREVISION=	10
+DISTVERSION=	0.26.0
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	CRATESIO
 PKGNAMEPREFIX=	rust-
@@ -9,7 +9,7 @@ DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Generate C bindings from Rust code
-WWW=		https://github.com/eqrion/cbindgen
+WWW=		https://github.com/mozilla/cbindgen
 
 LICENSE=	MPL20
 

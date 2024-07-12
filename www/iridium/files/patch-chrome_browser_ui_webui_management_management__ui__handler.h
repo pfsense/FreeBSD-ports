@@ -1,11 +1,20 @@
---- chrome/browser/ui/webui/management/management_ui_handler.h.orig	2023-03-13 07:33:08 UTC
+--- chrome/browser/ui/webui/management/management_ui_handler.h.orig	2024-06-25 12:08:48 UTC
 +++ chrome/browser/ui/webui/management/management_ui_handler.h
-@@ -24,7 +24,7 @@
- #include "extensions/common/extension_id.h"
- #include "url/gurl.h"
+@@ -31,7 +31,7 @@ namespace policy {
+ class PolicyService;
+ }  // namespace policy
  
--#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- // Constants defining the IDs for the localized strings sent to the page as
- // load time data.
- extern const char kManagementScreenCaptureEvent[];
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ namespace device_signals {
+ class UserPermissionService;
+ }  // namespace device_signals
+@@ -72,7 +72,7 @@ class ManagementUIHandler : public content::WebUIMessa
+   base::Value::List GetManagedWebsitesInfo(Profile* profile) const;
+   base::Value::List GetApplicationsInfo(Profile* profile) const;
+   virtual policy::PolicyService* GetPolicyService();
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   virtual device_signals::UserPermissionService* GetUserPermissionService();
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+ 

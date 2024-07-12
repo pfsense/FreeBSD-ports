@@ -1,5 +1,5 @@
 PORTNAME=	pynn
-PORTVERSION=	0.11.0
+PORTVERSION=	0.12.3
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,9 +17,11 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY}
 
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
 NO_ARCH=	yes
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 PYDISTUTILS_PKGNAME=	PyNN
 

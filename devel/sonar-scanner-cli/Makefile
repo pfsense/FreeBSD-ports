@@ -1,6 +1,6 @@
 PORTNAME=	sonar-scanner-cli
-DISTVERSION=	4.4.0.2170
-PORTREVISION=	4
+DISTVERSION=	6.0.0.4432
+PORTREVISION=	0
 CATEGORIES=	devel security www java
 MASTER_SITES=	https://binaries.sonarsource.com/Distribution/${PORTNAME}/
 

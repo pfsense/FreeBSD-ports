@@ -1,5 +1,5 @@
 PORTNAME=	clhep
-PORTVERSION=	2.4.6.4
+PORTVERSION=	2.4.7.1
 CATEGORIES=	science math
 MASTER_SITES=	https://proj-clhep.web.cern.ch/proj-clhep/dist1/
 

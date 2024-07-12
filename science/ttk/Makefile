@@ -1,6 +1,6 @@
 PORTNAME=	ttk
-DISTVERSION=	1.1.0
-PORTREVISION=	3
+DISTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -23,6 +23,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/functional/hash.hpp:devel/boost-libs \
 		websocketpp>0:devel/websocketpp \
 		${PY_DEPENDS}
 BUILD_DEPENDS+=	nlohmann-json>0:devel/nlohmann-json # is required by lib/cmake/paraview-5.11/vtk/VTK-vtk-module-find-packages.cmake:1167
+BUILD_DEPENDS+=	fast_float>0:math/fast_float # attempt to fix build failures triggered by find_package(fastfloat) from paraview's vtk cmake scripts
 LIB_DEPENDS=	libcgraph.so:graphics/graphviz \
 		libembree3.so:graphics/embree \
 		libfreetype.so:print/freetype2 \
@@ -37,6 +38,8 @@ USE_XORG=	x11
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	topology-tool-kit
+
+CMAKE_ARGS=	-DPython3_EXECUTABLE=${PYTHON_CMD}
 
 post-stage:
 	${RM} ${STAGEDIR}${PREFIX}/include/Python.h

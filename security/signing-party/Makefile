@@ -1,5 +1,6 @@
 PORTNAME=	signing-party
 PORTVERSION=	2.10
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	romain@FreeBSD.org
@@ -29,7 +30,7 @@ CONFLICTS_INSTALL= pgpdir sig2dot springgraph # bin/gpgdir bin/sig2dot bin/sprin
 USE_GITLAB=	yes
 GL_SITE=	https://salsa.debian.org/
 GL_ACCOUNT=	signing-party-team
-GL_COMMIT=	8f6c9d59d8edbb08dade7bac06417fce07626f7f
+GL_TAGNAME=	8f6c9d59d8edbb08dade7bac06417fce07626f7f
 
 BINS=		keyanalyze/keyanalyze keyanalyze/process_keys \
 		gpgwrap/bin/gpgwrap
@@ -64,7 +65,7 @@ do-install:
 	${INSTALL_PROGRAM} ${BINS:S|^|${WRKSRC}/|} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${SCRIPTS:S|^|${WRKSRC}/|} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${MANUALS1:S|^|${WRKSRC}/|} \
-		${STAGEDIR}${MAN1PREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${EXAMPLES:S|^|${WRKSRC}/|} ${STAGEDIR}${EXAMPLESDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/caff

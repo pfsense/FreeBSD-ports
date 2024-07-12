@@ -1,10 +1,11 @@
 PORTNAME=	scilab
 PORTVERSION=	6.1.1
-PORTREVISION=	8
+PORTREVISION=	18
 CATEGORIES=	math cad java
-MASTER_SITES=	https://cgit.scilab.org/scilab/snapshot/
+MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
+DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scientific software package for numerical computations
 WWW=		https://www.scilab.org
 
@@ -39,7 +40,6 @@ LDFLAGS+=	${ICONV_LIB}
 
 CONFIGURE_ENV=	BLAS_LIBS="${BLASLIB}" LAPACK_LIBS="${LAPACKLIB}"
 INSTALL_TARGET=	install-strip
-WRKSRC_SUBDIR=	scilab
 
 PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
@@ -132,8 +132,12 @@ CONFIGURE_ARGS+=	--enable-debug
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 150
 CFLAGS+=	-Wno-error=int-conversion
+.endif
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 .if ${GCC_DEFAULT} >= 10
@@ -144,6 +148,15 @@ FFLAGS+=	-fallow-argument-mismatch
 post-patch:
 	@${REINPLACE_CMD} 's,/usr/local,${LOCALBASE},' ${WRKSRC}/etc/librarypath.xml
 	@${REINPLACE_CMD} -e 's, gfortran, ${FC},' ${WRKSRC}/modules/dynamic_link/src/scripts/configure
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+	@${REINPLACE_CMD} -e 's|std::filesystem|std::__fs::filesystem|g' \
+		${WRKSRC}/modules/fileio/src/cpp/fullpath.cpp \
+		${WRKSRC}/modules/fileio/sci_gateway/cpp/sci_get_absolute_file_path.cpp
+	@${REINPLACE_CMD} -e 's|std::binary_function|std::__binary_function|' \
+		${WRKSRC}/modules/ast/includes/types/sparseOp.hxx
+	@${REINPLACE_CMD} -e 's|std::unary_function|std::__unary_function|' \
+		${WRKSRC}/modules/ast/src/cpp/types/sparse.cpp
+.endif
 
 post-patch-GUI-on:
 # scilab segfaults on FreeBSD with C locale

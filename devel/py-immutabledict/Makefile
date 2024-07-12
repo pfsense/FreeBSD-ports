@@ -1,6 +1,5 @@
 PORTNAME=	immutabledict
-PORTVERSION=	2.2.4
-PORTREVISION=	1
+PORTVERSION=	3.0.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,5 +15,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>0:devel/py-poetry-core@${PY_FL
 
 USES=		python
 USE_PYTHON=	autoplist concurrent pep517
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

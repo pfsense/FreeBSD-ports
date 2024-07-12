@@ -1,6 +1,6 @@
 PORTNAME=	ndiff
 PORTVERSION=	2.00
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	ftp://ftp.math.utah.edu/pub/misc/
 
@@ -14,7 +14,7 @@ USES=		desthack
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz \
+		share/man/man1/${PORTNAME}.1.gz \
 		%%DATADIR%%/${PORTNAME}.awk
 
 PORTDOCS=	*.html *.pdf *.ps *.txt
@@ -29,11 +29,7 @@ GMP_CONFIGURE_ON=	--with-gmp
 .include <bsd.port.options.mk>
 
 .if ! ${PORT_OPTIONS:MGMP}
-.if ${ARCH} == sparc64
-CONFIGURE_ARGS+=	--with-long-double
-.else
 CONFIGURE_ARGS+=	--with-double
-.endif
 .endif
 
 post-patch:

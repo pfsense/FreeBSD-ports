@@ -1,6 +1,7 @@
 PORTNAME=	horizon-eda
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.0
+DISTVERSION=	2.6.0
+PORTREVISION=	1
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,37 +12,30 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/optional.hpp:devel/boost-libs \
+		cmake:devel/cmake-core \
 		cppzmq>0:net/cppzmq \
 		glm>0:math/glm
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libepoxy.so:graphics/libepoxy \
+		libfreeimage.so:graphics/freeimage \
 		libgit2.so:devel/libgit2 \
-		libharfbuzz.so:print/harfbuzz \
 		libpng16.so:graphics/png \
 		libpodofo09.so:graphics/podofo09 \
-		libTKSTEP.so:cad/opencascade \
+		libspnav.so:misc/libspnav \
+		libTKDESTEP.so:cad/opencascade \
 		libuuid.so:misc/e2fsprogs-libuuid \
-		libzip.so:archivers/libzip \
 		libzmq.so:net/libzmq4
 
-USES=		gmake gnome libarchive localbase pkgconfig python:build sqlite # compiler:c++17-lang
+USES=		desktop-file-utils gnome libarchive localbase meson pkgconfig python:build sqlite
 USE_GNOME=	atkmm gdkpixbuf2 gtkmm30 librsvg2
 
 USE_GITHUB=	yes
 GH_PROJECT=	horizon
 
-MAKE_ARGS=	DEBUGFLAGS= OPTIMIZE=
-
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-LLVM_VER=	12 # workaround for bug#263870
-BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
-CPP=		clang-cpp${LLVM_VER}
-CC=		clang${LLVM_VER}
-CXX=		clang++${LLVM_VER}
-
 # Patch sources to force using include files installed by graphics/podofo09
-post-patch:
+pre-configure:
 	@${REINPLACE_CMD} -e '/^#include/s|podofo/podofo.h|podofo09/podofo.h|' \
 		${WRKSRC}/src/export_pdf/export_pdf.cpp \
 		${WRKSRC}/src/export_pdf/export_pdf_board.cpp \

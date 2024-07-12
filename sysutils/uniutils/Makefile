@@ -1,6 +1,6 @@
 PORTNAME=	uniutils
-PORTVERSION=	2.27
-PORTREVISION=	2
+PORTVERSION=	2.28
+PORTREVISION=	1
 CATEGORIES=	sysutils textproc
 MASTER_SITES=	http://billposer.org/Software/Downloads/
 
@@ -13,8 +13,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	ascii2binary:converters/ascii2binary
 
+USES=		gettext localbase tar:bz2
 GNU_CONFIGURE=	yes
-USES=		gettext localbase
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 LIBS+=		-lintl
 
@@ -25,8 +26,8 @@ PORTDOCS=	AUTHORS NEWS README
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 pre-configure:
-	@${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's|TestData|${EXAMPLESDIR}|' ${WRKSRC}/README
+	${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|' ${WRKSRC}/Makefile.in
+	${REINPLACE_CMD} -e 's|TestData|${EXAMPLESDIR}|' ${WRKSRC}/README
 
 do-test:
 	(cd ${WRKSRC} &&		\

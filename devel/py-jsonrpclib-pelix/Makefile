@@ -1,5 +1,5 @@
 PORTNAME=	jsonrpclib-pelix
-PORTVERSION=	0.4.3.2
+PORTVERSION=	0.4.3.3
 CATEGORIES=	devel
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://pypi.org/project/jsonrpclib-pelix/
 
 LICENSE=	APACHE20
 
-USES=		python:3.4+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

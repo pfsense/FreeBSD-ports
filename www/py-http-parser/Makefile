@@ -11,8 +11,11 @@ WWW=		https://github.com/benoitc/http-parser/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist cython distutils
+
+post-configure:
+	cython-${PYTHON_VER} ${WRKSRC}/http_parser/parser.pyx
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/http_parser/parser*.so

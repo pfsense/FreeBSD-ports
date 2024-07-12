@@ -1,10 +1,11 @@
 PORTNAME=	pam
-PORTVERSION=	2.2.4
+PORTVERSION=	2.2.5
 CATEGORIES=	security pear
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PECL classes for PAM integration
-WWW=		https://pecl.php.net/package/PAM
+WWW=		https://pecl.php.net/package/PAM \
+		https://github.com/amishmm/php-pam
 
 LICENSE=	PHP202
 

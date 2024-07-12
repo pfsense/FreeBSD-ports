@@ -1,5 +1,5 @@
 PORTNAME=	websockets
-PORTVERSION=	11.0.3
+PORTVERSION=	12.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://pypi.org/project/websockets/
 
 LICENSE=	BSD3CLAUSE
 
-USES=		cpe python:3.7+
+USES=		cpe python
 CPE_VENDOR=	${PORTNAME}_project
 USE_PYTHON=	autoplist distutils
 

@@ -3,7 +3,7 @@
  * snort_import_aliases.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
@@ -247,7 +247,7 @@ include("head.inc");
 				?>
 				<?php if ($disable): ?>
 				<tr title="<?=$tooltip;?>">
-					<td><i class="fa fa-times text-danger"></i>
+					<td><i class="fa-solid fa-times text-danger"></i>
 				<?php else: ?>
 				<tr>
 					<td><input type="checkbox" name="toimport[]" value="<?=htmlspecialchars($alias['name']);?>" title="<?=$tooltip;?>"/></td>

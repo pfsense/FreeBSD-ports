@@ -1,6 +1,6 @@
 PORTNAME=	libvmod-querystring
 DISTVERSION=	v2.0.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
@@ -13,10 +13,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 
-USES=		autoreconf libtool pkgconfig python:3.5+,build varnish:7
+USES=		autoreconf libtool pkgconfig python:build varnish:7
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static
 INSTALL_TARGET=	install-strip
 DOCSDIR=	${PREFIX}/share/doc/vmod-querystring

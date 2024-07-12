@@ -1,6 +1,6 @@
 PORTNAME=	gnash
 PORTVERSION=	0.8.10
-PORTREVISION=	59
+PORTREVISION=	64
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://git.savannah.gnu.org/cgit/gnash.git/snapshot/
 DISTNAME=	gnash-2b3bdede0305c4fc3ad21a0a4197330606c9b880
@@ -33,13 +33,15 @@ CONFLICTS=	gnash-devel
 
 USES=		cpe tar:bzip2 compiler:c++11-lang autoreconf gmake libtool \
 		pkgconfig jpeg gnome gl sdl desktop-file-utils xorg localbase:ldflags
-USE_CSTD=	gnu11
 CPE_VENDOR=	gnu
-GNU_CONFIGURE=	yes
-USE_GNOME=	atk gdkpixbuf2 gtk20 libxml2 pango
+USE_CSTD=	gnu11
+USE_CXXSTD=	c++11
 USE_XORG=	x11 xau xdmcp xext xi xinerama ice sm xv
+USE_GNOME=	atk gdkpixbuf2 gtk20 libxml2 pango
 USE_GL=		egl
 USE_SDL=	sdl
+GNU_CONFIGURE=	yes
+
 SYSCONFIGDIR=	${PREFIX}/etc
 
 # jemalloc leads to infinite recursion on FreeBSD
@@ -58,6 +60,7 @@ CONFIGURE_ARGS=	--with-boost-incl="${LOCALBASE}/include" \
 		--disable-kparts3 \
 		--disable-jemalloc \
 		--without-gconf
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 #MAKE_ARGS+=	INCLUDES="-I${LOCALBASE}/include/ffmpeg"
 
 GNASHVER=	0.8.11dev
@@ -116,9 +119,6 @@ GNASH_RENDERERS+=	agg
 IGNORE=		support for OpenGL is currently broken, use option AGG
 GNASH_RENDERERS+=	ogl
 LIB_DEPENDS+=		libgdkglext-x11-1.0.so:x11-toolkits/gtkglext
-. if ${PORT_OPTIONS:MVAAPI}
-LIB_DEPENDS+=		libva-glx.so:multimedia/libva-glx
-. endif
 .endif
 
 .if ${PORT_OPTIONS:MCAIRO}

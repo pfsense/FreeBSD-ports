@@ -1,6 +1,5 @@
 PORTNAME=	mesa-libs
 PORTVERSION=	${MESAVERSION}
-PORTREVISION=	1
 CATEGORIES=	graphics
 
 COMMENT=	OpenGL libraries that support GLX and EGL clients
@@ -9,7 +8,9 @@ WWW=		https://www.mesa3d.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/docs/license.rst
 
-LIB_DEPENDS=	libOpenGL.so:graphics/libglvnd
+USES=		llvm:noexport
+
+BUILD_DEPENDS=	libglvnd>=0:graphics/libglvnd
 
 OPTIONS_GROUP=			PLATFORM
 OPTIONS_GROUP_PLATFORM=		PLATFORM_X11 PLATFORM_WAYLAND
@@ -23,7 +24,7 @@ OPTIONS_SUB=	yes
 
 WAYLAND_DESC=		Enable support for the Wayland platform in EGL
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>=1.8:graphics/wayland-protocols
-WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland
+WAYLAND_LIB_DEPENDS=	libwayland-server.so:graphics/wayland
 WAYLAND_IMPLIES=	PLATFORM_WAYLAND
 
 ZSTD_DESC=		Use ZSTD for shader cache
@@ -35,14 +36,17 @@ USE_LDCONFIG=		yes
 .include <bsd.port.options.mk>
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
 
-MESON_ARGS+=	-Dgallium-vdpau=disabled \
+MESON_ARGS+=	-Dandroid-libbacktrace=disabled \
+		-Dgallium-vdpau=disabled \
 		-Dgallium-omx=disabled \
 		-Dgallium-va=disabled \
 		-Dgallium-xa=disabled \
 		-Dgallium-nine=false \
+		-Dlmsensors=disabled \
 		-Dmicrosoft-clc=disabled \
 		-Dosmesa=false \
 		-Dtools="" \
+		-Dvalgrind=disabled \
 		-Degl=enabled \
 		-Dgbm=enabled \
 		-Dvulkan-drivers="" \
@@ -70,8 +74,6 @@ MESON_ARGS+=	-Dplatforms="${MESA_PLATFORMS:ts,:tl}"
 # PR230239 Fix the build for i386 when WITH_LLD_IS_LD is set
 LDFLAGS+=-Wl,-z,notext
 .endif
-
-.include "${MASTERDIR}/Makefile.targets"
 
 post-install:
 # Fallback if GLX_EXT_libglvnd is missing or vendor library doesn't exist

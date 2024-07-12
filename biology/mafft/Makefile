@@ -1,5 +1,6 @@
 PORTNAME=	mafft
 PORTVERSION=	7.267
+PORTREVISION=	1
 CATEGORIES=	biology
 MASTER_SITES=	http://mafft.cbrc.jp/alignment/software/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-without-extensions-src
@@ -27,14 +28,6 @@ MAKE_ENV=	INSTALL_LIB="${INSTALL_LIB}" \
 		INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
 		MKDIR="${MKDIR}" \
 		LN="${LN}"
-
-.include <bsd.port.options.mk>
-
-post-patch:
-.if ${ARCH} == sparc64
-	@${REINPLACE_CMD} -e 's|ENABLE_MULTITHREAD = -Denablemultithread||' \
-		${BUILD_WRKSRC}/Makefile
-.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

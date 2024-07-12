@@ -1,6 +1,6 @@
 PORTNAME=	fcitx
 PORTVERSION=	4.2.9.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -64,13 +64,13 @@ TPUNC_DESC=	Use traditional quotation marks
 
 .include <bsd.port.options.mk>
 
+KDE_MAN_PREFIX=	${PREFIX}/share/man
 CMAKE_ARGS+=	-DENABLE_XDGAUTOSTART=OFF -DFORCE_ENCHANT=ON \
 		-DLIBICONV_LIBC_HAS_ICONV_OPEN=OFF \
 		-DDATADIR=${DATADIR} \
 		-DDOCSDIR=${DOCSDIR} \
 		-DGOBJECT_INTROSPECTION_GIRDIR=${PREFIX}/share/gir-1.0 \
 		-DGOBJECT_INTROSPECTION_TYPELIBDIR=${PREFIX}/lib/girepository-1.0 \
-		-DMANPREFIX=${MANPREFIX} \
 		-DPREFIX=${PREFIX} \
 		-DENABLE_QT=OFF -DENABLE_QT_IM_MODULE=OFF -DENABLE_QT_GUI=OFF
 

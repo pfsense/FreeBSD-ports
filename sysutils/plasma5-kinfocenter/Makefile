@@ -6,30 +6,32 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plasma5 utility providing system information
 WWW=		https://www.kde.org/plasma-desktop
 
-RUN_DEPENDS=	lscpu:sysutils/lscpu \
+RUN_DEPENDS=	clinfo:devel/clinfo \
 		glxinfo:graphics/mesa-demos \
+		lscpu:sysutils/lscpu \
 		vulkaninfo:graphics/vulkan-tools \
-		xdpyinfo:x11/xdpyinfo \
-		clinfo:devel/clinfo
+		wayland-info:graphics/wayland-utils \
+		xdpyinfo:x11/xdpyinfo
 
-USES=		cmake compiler:c++11-lib gettext gl kde:5 pkgconfig qt:5 \
-		tar:xz xorg
-USE_GL=		egl gl glu
-USE_KDE=	auth bookmarks codecs completion config configwidgets \
-		coreaddons crash dbusaddons emoticons guiaddons i18n \
-		iconthemes init itemmodels itemviews jobwidgets kcmutils \
-		kdeclarative kio notifications package parts service solid \
-		sonnet textwidgets unitconversion wayland widgetsaddons \
-		windowsystem xmlgui \
+USES=		cmake compiler:c++11-lib gettext kde:5 pkgconfig qt:5 tar:xz \
+		xorg
+USE_KDE=	auth codecs completion config configwidgets coreaddons i18n \
+		init jobwidgets kcmutils kdeclarative kio package service \
+		solid widgetsaddons windowsystem \
 		doctools:build ecm:build \
-		systemsettings:run
-USE_QT=		concurrent core dbus declarative gui network printsupport \
-		widgets xml \
+		kirigami2:run systemsettings:run
+USE_QT=		concurrent core dbus declarative gui network widgets xml \
 		buildtools:build qmake:build
 USE_XORG=	ice sm x11 xext
 
 # TODO	-- this should be handled correctly...
 LDFLAGS+=-ldevinfo
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386
+RUN_DEPENDS+=	dmidecode:sysutils/dmidecode
+.endif
 
 # install freebsd-logo and distrorc
 post-install:

@@ -1,14 +1,16 @@
 PORTNAME=	stress-ng
 DISTVERSIONPREFIX=	V
-DISTVERSION=	0.15.08
+DISTVERSION=	0.17.08
 CATEGORIES=	benchmarks
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Stress test benchmarks
-WWW=		http://kernel.ubuntu.com/~cking/stress-ng/
+WWW=		https://github.com/ColinIanKing/stress-ng/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS+=libmpfr.so:math/mpfr
 
 USES=		compiler:c11 gmake jpeg localbase:ldflags
 USE_GITHUB=	yes
@@ -16,7 +18,7 @@ GH_ACCOUNT=	ColinIanKing
 
 ALL_TARGET=	# empty
 
-PLIST_FILES=	bin/stress-ng man/man1/stress-ng.1.gz
+PLIST_FILES=	bin/stress-ng share/man/man1/stress-ng.1.gz
 
 OPTIONS_DEFINE=		GPU JUDY LIBINOTIFY XXHASH
 OPTIONS_DEFINE_amd64=	INTELIPSEC
@@ -41,6 +43,7 @@ XXHASH_LDFLAGS=	-lxxhash
 
 GPU_USES=	gl
 
+CFLAGS_powerpc=	-O0
 MAKE_ARGS=	VERBOSE=1
 
 .include <bsd.port.options.mk>
@@ -51,10 +54,10 @@ USE_GL=	egl glesv2 gbm
 
 pre-patch:
 	${MKDIR} ${WRKSRC}/configs
+	${TOUCH} ${WRKSRC}/configs/HAVE_CRYPT_H
 .if ${ARCH} == i386
 	${TOUCH} ${WRKSRC}/configs/HAVE_VECMATH
 .endif
-
 
 #to dsiable Intel IPSEC detection
 post-patch-INTELIPSEC-off:
@@ -85,8 +88,11 @@ post-patch-GPU-off:
 	${TOUCH} ${WRKSRC}/configs/HAVE_LIB_GBM
 	${TOUCH} ${WRKSRC}/configs/HAVE_GBM_H
 
+do-configure:
+	cd ${WRKSRC} && ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} ${_MAKE_JOBS} config
+
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/stress-ng ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/stress-ng.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/stress-ng.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

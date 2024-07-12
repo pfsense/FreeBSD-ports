@@ -1,5 +1,5 @@
 PORTNAME=	qemu
-PORTVERSION=	8.0.2
+DISTVERSION=	9.0.1
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
@@ -18,11 +18,15 @@ ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 BUILD_DEPENDS=	bash:shells/bash
 .if ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent
 LIB_DEPENDS+=	libfdt.so:sysutils/dtc \
-		libzstd.so:archivers/zstd \
-		libslirp.so:net/libslirp
+		libinotify.so:devel/libinotify \
+		libslirp.so:net/libslirp \
+		libzstd.so:archivers/zstd
 .endif
 .if (${FLAVOR:U} != nox11 && ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent)
 LIB_DEPENDS+=	libepoxy.so:graphics/libepoxy
+.endif
+.if (${FLAVOR:U} != nox11 && ${FLAVOR:U} != tools && ${FLAVOR:U} != default)
+PKGMESSAGE=	${.CURDIR}/pkg-message.guest-agent
 .endif
 
 FLAVORS=			default nox11 tools guestagent
@@ -45,7 +49,8 @@ guestagent_PLIST=		${.CURDIR}/pkg-plist-ga
 guestagent_CONFLICTS_INSTALL=	qemu qemu-devel qemu-nox11 qemu-tools qemu-utils qemu6* \
 				qemu7* qemu-guest-agent
 
-USES=		cpe gmake gnome ninja perl5 pkgconfig python:build tar:xz
+USES=		cpe gmake gnome ninja perl5 pkgconfig python:build shebangfix tar:xz
+SHEBANG_FILES=	scripts/xml-preprocess.py
 USE_GNOME=	glib20
 USE_PERL5=	build
 .if ${FLAVOR:U} != tools && ${FLAVOR:U} != guestagent
@@ -65,7 +70,7 @@ CONFIGURE_ARGS+=	--cc=${CC} \
 			--extra-ldflags=-L${LOCALBASE}/lib \
 			--extra-ldflags=-L/usr/lib \
 			--localstatedir=/var \
-			--mandir=${PREFIX}/man \
+			--mandir=${PREFIX}/share/man \
 			--prefix=${PREFIX} \
 			--python=${PYTHON_CMD}
 .if ${FLAVOR:U} == guestagent
@@ -151,7 +156,7 @@ STATIC_LINK_DESC=		Statically link the executables
 USBREDIR_DESC=			usb device network redirection (experimental!)
 VDE_DESC=			vde dependency (for vde networking)
 X86_TARGETS_DESC=		Build only x86 system targets
-CAPSTONE_LIB_DEPENDS=		libcapstone.so:devel/capstone4
+CAPSTONE_LIB_DEPENDS=		libcapstone.so:devel/capstone
 CAPSTONE_CONFIGURE_ON=		--enable-capstone \
 				--extra-cflags=-I${LOCALBASE}/include/capstone
 CAPSTONE_CONFIGURE_OFF=		--disable-capstone
@@ -229,21 +234,17 @@ PLIST_SUB+=	BSDUSER="@comment "
 PLIST_SUB+=	BSDUSER=""
 .endif
 
-.if ${ARCH} == "sparc64"
-CONFIGURE_ARGS+=	--sparc_cpu=v9
-.endif
-
 PLIST_SUB+=	LINUXBOOT_DMA=""
 .endif
 
 post-patch-CDROM_DMA-off:
-	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/include/hw/ide/internal.h
+	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/hw/ide/ide-internal.h
 
 do-build:
-	cd ${WRKSRC} && ${GMAKE} -j${MAKE_JOBS_NUMBER}
+	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${GMAKE} -j${MAKE_JOBS_NUMBER}
 
 do-install:
-	cd ${WRKSRC} && ${SETENV} DESTDIR=${STAGEDIR} ${GMAKE} install
+	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} DESTDIR=${STAGEDIR} ${GMAKE} install
 
 .if !target(post-install)
 post-install:

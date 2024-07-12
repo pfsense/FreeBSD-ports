@@ -3,7 +3,7 @@
  * suricata_ip_list_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -220,8 +220,8 @@ print $form;
 						<td><?=date('M-d Y g:i a', filemtime("{$iprep_path}{$file}")); ?></td>
 						<td><?=format_bytes(filesize("{$iprep_path}{$file}")); ?></td>
 						<td>
-							<a href="#" class="fa fa-pencil icon-primary" onClick="suricata_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
-							<a href="#" class="fa fa-trash icon-primary no-confirm" onClick="suricata_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-pencil icon-primary" onClick="suricata_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onClick="suricata_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -266,11 +266,11 @@ print $form;
 					<tr>
 						<td colspan="4" class="text-right">
 							<button type="button" class="btn btn-success btn-sm" title="<?=gettext('Create a new IP List');?>" onclick="document.getElementById('iplist_data').value=''; document.getElementById('iplist_name').value=''; document.getElementById('iplist_editor').style.display='table-row-group'; document.getElementById('iplist_name').focus();">
-								<i class="fa fa-plus icon-embed-btn"></i>
+								<i class="fa-solid fa-plus icon-embed-btn"></i>
 								<?=gettext(' Add');?>
 							</button>
 							<button type="button" class="btn btn-info btn-sm" title="<?=gettext('Upload IP List file');?>" onclick="document.getElementById('uploader').style.display='table-row-group';">
-								<i class="fa fa-upload icon-embed-btn"></i>
+								<i class="fa-solid fa-upload icon-embed-btn"></i>
 								<?=gettext(' Upload');?>
 							</button>
 						</td>
@@ -295,10 +295,10 @@ print $form;
 						</ol>
 					</p>
 					<p>
-						Click on the <i class="fa fa-lg fa-plus" alt="Add Icon"></i> icon to open the editor window to create a new IP List.<br/>
-						Click on the <i class="fa fa-lg fa-upload" alt="Upload Icon"></i> icon to upload a new IP List file from your local machine.<br/>
-						Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to view or edit an existing IP List.<br/>
-						Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an existing IP List.
+						Click on the <i class="fa-solid fa-lg fa-plus" alt="Add Icon"></i> icon to open the editor window to create a new IP List.<br/>
+						Click on the <i class="fa-solid fa-lg fa-upload" alt="Upload Icon"></i> icon to upload a new IP List file from your local machine.<br/>
+						Click on the <i class="fa-solid fa-lg fa-pencil" alt="Edit Icon"></i> icon to view or edit an existing IP List.<br/>
+						Click on the <i class="fa-solid fa-lg fa-trash-can" alt="Delete Icon"></i> icon to delete an existing IP List.
 					</p>
 				</div>
 			</div>

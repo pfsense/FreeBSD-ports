@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/content/browser/utility_sandbox_delegate.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/content/browser/utility_sandbox_delegate.cc.orig	2023-07-16 15:47:57 UTC
 +++ src/3rdparty/chromium/content/browser/utility_sandbox_delegate.cc
-@@ -62,10 +62,10 @@ UtilitySandboxedProcessLauncherDelegate::
- #if BUILDFLAG(ENABLE_PLUGINS)
+@@ -63,13 +63,13 @@ UtilitySandboxedProcessLauncherDelegate::
+ #if BUILDFLAG(ENABLE_PPAPI)
        sandbox_type_ == sandbox::mojom::Sandbox::kPpapi ||
  #endif
 -#if BUILDFLAG(IS_FUCHSIA)
@@ -12,17 +12,12 @@
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
        sandbox_type_ == sandbox::mojom::Sandbox::kHardwareVideoDecoding ||
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)
- #if BUILDFLAG(IS_CHROMEOS_ASH)
-@@ -75,7 +75,7 @@ UtilitySandboxedProcessLauncherDelegate::
-       sandbox_type_ == sandbox::mojom::Sandbox::kLibassistant ||
- #endif  // BUILDFLAG(ENABLE_CROS_LIBASSISTANT)
- #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-       sandbox_type_ == sandbox::mojom::Sandbox::kScreenAI ||
- #endif
-       sandbox_type_ == sandbox::mojom::Sandbox::kAudio ||
-@@ -108,7 +108,7 @@ ZygoteHandle UtilitySandboxedProcessLauncherDelegate::
+       sandbox_type_ == sandbox::mojom::Sandbox::kHardwareVideoEncoding ||
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+ #if BUILDFLAG(IS_CHROMEOS_ASH)
+@@ -124,10 +124,10 @@ ZygoteCommunication* UtilitySandboxedProcessLauncherDe
    // unsandboxed zygote and then apply their actual sandboxes in the forked
    // process upon startup.
    if (sandbox_type_ == sandbox::mojom::Sandbox::kNetwork ||
@@ -30,13 +25,8 @@
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)
        sandbox_type_ == sandbox::mojom::Sandbox::kHardwareVideoDecoding ||
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)
- #if BUILDFLAG(IS_CHROMEOS_ASH)
-@@ -122,7 +122,7 @@ ZygoteHandle UtilitySandboxedProcessLauncherDelegate::
- #if BUILDFLAG(ENABLE_OOP_PRINTING)
-       sandbox_type_ == sandbox::mojom::Sandbox::kPrintBackend ||
- #endif
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-       sandbox_type_ == sandbox::mojom::Sandbox::kScreenAI ||
- #endif
-       sandbox_type_ == sandbox::mojom::Sandbox::kSpeechRecognition) {
+       sandbox_type_ == sandbox::mojom::Sandbox::kHardwareVideoEncoding ||
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+ #if BUILDFLAG(IS_CHROMEOS_ASH)

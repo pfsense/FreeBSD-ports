@@ -1,5 +1,5 @@
 PORTNAME=	m2crypto
-PORTVERSION=	0.38.0
+PORTVERSION=	0.41.0
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,12 +12,12 @@ WWW=		https://gitlab.com/m2crypto/m2crypto
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-BUILD_DEPENDS=	swig>=2.0.4:devel/swig
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR} \
+		swig>=4.0:devel/swig
 
-USES=		cpe python:3.6+ ssl
-USE_PYTHON=	autoplist concurrent distutils
-
-PYDISTUTILS_BUILDARGS=	build_ext --openssl=${OPENSSLBASE} --swig=${LOCALBASE}/bin/swig
+USES=		cpe python ssl
+USE_PYTHON=	autoplist concurrent pep517
 
 CPE_VENDOR=	m2crypto_project
 

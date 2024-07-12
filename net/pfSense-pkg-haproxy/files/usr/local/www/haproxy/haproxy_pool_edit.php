@@ -3,7 +3,7 @@
  * haproxy_pool_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -29,8 +29,6 @@ require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
-
-$a_pools = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
 
 $a_files = haproxy_get_fileslist();
 
@@ -304,7 +302,7 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 	if ($editable) {
 		$result = $object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
 	} else {
-		$result = $itemvalue;
+		$result = htmlspecialchars($itemvalue, ENT_QUOTES);
 	}
 	return $result;
 }
@@ -340,17 +338,17 @@ $htmllist_actions->fields_details_showfieldfunction = 'fields_actions_details_sh
 $htmllist_actions->keyfield = "name";
 
 
-if (isset($id) && $a_pools[$id]) {
-	$pconfig['a_acl'] = getarraybyref($a_pools[$id],'a_acl','item');
-	$pconfig['a_actionitems'] = getarraybyref($a_pools[$id],'a_actionitems','item');
-	$a_errorfiles = getarraybyref($a_pools[$id],'errorfiles','item');
-	$a_servers = getarraybyref($a_pools[$id],'ha_servers','item');
+if (isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")) {
+	$pconfig['a_acl'] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/a_acl/item");
+	$pconfig['a_actionitems'] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/a_actionitems/item");
+	$a_errorfiles = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/errorfiles/item");
+	$a_servers = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/ha_servers/item");
 
-	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
-	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
+	$pconfig['advanced'] = base64_decode(config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/advanced"));
+	$pconfig['advanced_backend'] = base64_decode(config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/advanced_backend"));
 
 	foreach($simplefields as $stat) {
-		$pconfig[$stat] = $a_pools[$id][$stat];
+		$pconfig[$stat] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/{$stat}");
 	}
 }
 
@@ -386,16 +384,16 @@ if ($_POST) {
 	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
 		$input_errors[] = "The field 'Name' contains invalid characters.";
 	}
-	if ($_POST['checkinter'] !== "" && !is_numeric($_POST['checkinter'])) {
+	if (!empty($_POST['checkinter']) && !is_numeric($_POST['checkinter'])) {
 		$input_errors[] = "The field 'Check frequency' value is not a number.";
 	}
-	if ($_POST['connection_timeout'] !== "" && !is_numeric($_POST['connection_timeout'])) {
+	if (!empty($_POST['connection_timeout']) && !is_numeric($_POST['connection_timeout'])) {
 		$input_errors[] = "The field 'Connection timeout' value is not a number.";
 	}
-	if ($_POST['server_timeout'] !== "" && !is_numeric($_POST['server_timeout'])) {
+	if (!empty($_POST['server_timeout']) && !is_numeric($_POST['server_timeout'])) {
 		$input_errors[] = "The field 'Server timeout' value is not a number.";
 	}
-	if ($_POST['retries'] !== "" && !is_numeric($_POST['retries'])) {
+	if (!empty($_POST['retries']) && !is_numeric($_POST['retries'])) {
 		$input_errors[] = "The field 'Retries' value is not a number.";
 	}
 	// the colon ":" is invalid in the username, other than that pretty much any character can be used.
@@ -410,7 +408,7 @@ if ($_POST) {
 		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
 	}
 	/* Ensure that our pool names are unique */
-	$a_backends = getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
+	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item');
 	for ($i=0; isset($a_backends[$i]); $i++) {
 		if (($_POST['name'] == $a_backends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
@@ -431,8 +429,8 @@ if ($_POST) {
 		}
 
 		if (!isset($server['forwardto']) || $server['forwardto'] == "") {
-			if (!is_ipaddr($server_address) && !is_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
-				$input_errors[] = "The field 'Address' for server $server_name is not a valid ip address or hostname." . $server_address;
+			if (!is_ipaddr($server_address) && !haproxy_utils::is_valid_haproxy_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
+				$input_errors[] = "The field 'Address' for server '$server_name' is not a valid ip address or hostname '" . $server_address . "'.";
 			}
 		} else {
 			if ((!empty($server_address)) || ($server_port && !is_numeric($server_port))) {
@@ -453,13 +451,13 @@ if ($_POST) {
 
 	$a_errorfiles = $errorfileslist->haproxy_htmllist_get_values();
 
-	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security'])) {
+	if (!empty($_POST['strict_transport_security']) && !is_numeric($_POST['strict_transport_security'])) {
 		$input_errors[] = "The field 'Strict-Transport-Security' is not empty or a number.";
 	}
 
 	$pool = array();
-	if(isset($id) && $a_pools[$id]) {
-		$pool = $a_pools[$id];
+	if(isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")) {
+		$pool = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}");
 	}
 
 	if (!empty($pool['name']) && ($pool['name'] != $_POST['name'])) {
@@ -486,10 +484,10 @@ if ($_POST) {
 		update_if_changed($stat, $pool[$stat], $_POST[$stat]);
 	}
 
-	if (isset($id) && $a_pools[$id]) {
-		$a_pools[$id] = $pool;
+	if (isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")) {
+		config_set_path("installedpackages/haproxy/ha_pools/item/{$id}", $pool);
 	} else {
-		$a_pools[] = $pool;
+		config_set_path('installedpackages/haproxy/ha_pools/item/', $pool);
 	}
 	if (!isset($input_errors)) {
 		if ($changecount > 0) {
@@ -630,7 +628,7 @@ $serverslist->Draw($a_servers).
 	</td></tr><tr><td class="vncell">
 	Cookie: </td><td class="vncell">the value of the cookie used to identify a server (only when cookie-persistence is enabled below)
 	</td></tr><tr><td class="vncell">
-	Advanced: </td><td class="vncell">More advanced settings like rise,fall,error-limit,send-proxy and others can be configured here.<br/>For a full list of options see the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.2">HAProxy manual: Server and default-server options</a>
+	Advanced: </td><td class="vncell">More advanced settings like rise,fall,error-limit,send-proxy and others can be configured here.<br/>For a full list of options see the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#5.2">HAProxy manual: Server and default-server options</a>
 	</td></tr>
 	</table>
 EOT
@@ -774,7 +772,7 @@ $section->addInput(new Form_StaticText(
 					</tr>
 				</table>
 			<br/>
-			For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/>			Actions should be added below to use the result of the acl as a conditional parameter.
+			For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/>			Actions should be added below to use the result of the acl as a conditional parameter.
 			</div>
 EOT
 ));
@@ -827,7 +825,7 @@ $section->addInput(new Form_Select(
 	'check_type',
 	'Health check method',
 	$pconfig['check_type']?$pconfig['check_type']:"HTTP",
-	haproxy_keyvalue_array($a_checktypes)
+	haproxy_keyvalue_array($a_checktypes, $pconfig['check_type'])
 ))->setHelp('<textarea readonly="yes" cols="60" rows="2" id="check_type_description" name="check_type_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>');
 
 //TODO milliseconds behind field.
@@ -880,7 +878,7 @@ $section->addInput(new Form_Checkbox(
 	'Agent checks',
 	'Use agent checks',
 	$pconfig['agent_check']
-))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#5.2-agent-check' target='_blank'>haproxy manual</a>)");
+))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#5.2-agent-check' target='_blank'>haproxy manual</a>)");
 $section->addInput(new Form_Input('agent_port', 'Agent port', 'number', $pconfig['agent_port']
 ),"haproxy_agent_check")->setHelp('Fill in the TCP portnumber the healthcheck should be performed on.');
 $section->addInput(new Form_Input('agent_inter', 'Agent interval', 'text', $pconfig['agent_inter']
@@ -1143,7 +1141,7 @@ $form->add($section);
 
 print $form;
 ?>
-				<?php if (isset($id) && $a_pools[$id]): ?>
+				<?php if (isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")): ?>
 				<input name="id" type="hidden" value="<?=$id;?>" />
 				<?php endif; ?>
 
@@ -1232,6 +1230,13 @@ print $form;
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
+	$('form').submit(function(event){
+		// disable all elements that dont have a value to avoid posting them as it could be sending
+		// more than 5000 variables which is the php default max for less than 100 san's which acme does support
+		// p.s. the jquery .find(['value'='']) would not find newly added empty items) so we use .filter(...)
+		$(this).find(':input').filter(function() { return !this.value }).attr("disabled", "disabled")
+		return true;
+	});
 
 	$('#transparent_clientip').on('change', function() {
 		updatevisibility();

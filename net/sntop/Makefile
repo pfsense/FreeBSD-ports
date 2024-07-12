@@ -1,12 +1,12 @@
 PORTNAME=	sntop
 PORTVERSION=	1.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Monitor status of network nodes using fping
-WWW=		http://sntop.sourceforge.net/
+WWW=		https://sntop.sourceforge.net/
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,6 +15,7 @@ USES=		ncurses
 RUN_DEPENDS=	${LOCALBASE}/sbin/fping:net/fping
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 PORTDOCS=	COPYING CREDITS ChangeLog INSTALL README TODO
 PORTEXAMPLES=	alarm.sh sntoprc.EXAMPLE
 SUB_FILES=	pkg-message

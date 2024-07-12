@@ -1,6 +1,6 @@
 PORTNAME=	vtk
 DISTVERSION=	8.2.0
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	8
@@ -12,7 +12,7 @@ WWW=		https://www.vtk.org
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN_FreeBSD_14_aarch64=	clang-14 crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=264834
+BROKEN_FreeBSD_13_aarch64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=275784
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libpng.so:graphics/png \
@@ -72,7 +72,7 @@ DESIGNER_CMAKE_BOOL=	QT_DESIGNER_PLUGIN
 DESIGNER_USE=		QT=designer
 DESIGNER_IMPLIES=	QT5
 
-MPI_LIB_DEPENDS=	libmpi.so:net/openmpi
+MPI_LIB_DEPENDS=	libmpi_cxx.so:net/openmpi4
 MPI_CMAKE_ON=		-DMPIEXEC=${LOCALBASE}/mpi/openmpi/bin/mpiexec
 
 OSMESA_CMAKE_ARGS=	-DVTK_OPENGL_HAS_OSMESA:BOOL=ON \

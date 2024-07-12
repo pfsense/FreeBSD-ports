@@ -1,5 +1,5 @@
 PORTNAME=	construct
-PORTVERSION=	2.10.68
+PORTVERSION=	2.10.70
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -12,7 +12,7 @@ WWW=		https://github.com/construct/construct
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

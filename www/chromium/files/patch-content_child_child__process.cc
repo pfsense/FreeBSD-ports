@@ -1,6 +1,6 @@
---- content/child/child_process.cc.orig	2023-04-28 17:01:32 UTC
+--- content/child/child_process.cc.orig	2023-11-03 10:09:45 UTC
 +++ content/child/child_process.cc
-@@ -63,7 +63,7 @@ ChildProcess::ChildProcess(base::ThreadType io_thread_
+@@ -66,7 +66,7 @@ ChildProcess::ChildProcess(base::ThreadType io_thread_
                                 thread_pool_init_params)
      : resetter_(&child_process, this, nullptr),
        io_thread_(std::make_unique<ChildIOThread>()) {

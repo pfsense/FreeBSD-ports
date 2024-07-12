@@ -1,6 +1,6 @@
 PORTNAME=	crack-attack
 PORTVERSION=	1.1.14
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 
@@ -8,15 +8,17 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenGL game based on Super Nintendo classic Tetris Attack
 WWW=		https://www.nongnu.org/crack-attack/
 
-USES=		compiler:c++11-lang gl gnome pkgconfig xorg
-USE_XORG=	x11 xi xmu sm ice
+USES=		compiler:c++11-lang gl gnome localbase pkgconfig xorg
+USE_CXXSTD=	c++14
 USE_GL=		glut
 USE_GNOME=	gtk20
+USE_XORG=	x11 xi xmu sm ice
+
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man6/${PORTNAME}.6.gz \
+		share/man/man6/${PORTNAME}.6.gz \
 		share/pixmaps/${PORTNAME}.xpm
 PORTDATA=	*
 

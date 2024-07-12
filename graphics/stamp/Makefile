@@ -1,12 +1,12 @@
 PORTNAME=	stamp
 PORTVERSION=	2.0.8
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Adds a graphical, configurable timestamp to a grayscale image
-WWW=		http://stamp.sourceforge.net/
+WWW=		https://stamp.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

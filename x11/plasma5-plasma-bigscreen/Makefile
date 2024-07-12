@@ -9,10 +9,10 @@ WWW=		https://www.kde.org/plasma-desktop
 USES=		cmake compiler:c++11-lib cpe desktop-file-utils gettext kde:5 \
 		pkgconfig qt:5 tar:xz xorg
 USE_KDE=	activities activities-stats auth codecs completion config \
-		configwidgets coreaddons ecm i18n jobwidgets kcmutils \
-		kdeclarative kio kirigami2 notifications package \
-		plasma-framework plasma-workspace service solid wayland \
-		widgetsaddons windowsystem
+		configwidgets coreaddons i18n jobwidgets kcmutils kdeclarative \
+		kio kirigami2 notifications package plasma-framework \
+		plasma-workspace service solid widgetsaddons windowsystem \
+		ecm:build
 USE_QT=		concurrent core dbus declarative gui network widgets xml \
 		buildtools:build qmake:build
 USE_XORG=	x11

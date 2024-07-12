@@ -42,7 +42,7 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # OSREL			- The release version of the operating system as a text
 #				  string (e.g., "12.4").
 # OSVERSION		- The operating system version as a comparable integer;
-#				  the value of __FreeBSD_version (e.g., 1204000).
+#				  the value of __FreeBSD_version (e.g., 1302000).
 #
 # This is the beginning of the list of all variables that need to be
 # defined in a port, listed in order that they should be included
@@ -155,8 +155,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  but distfiles can be put on ftp sites and CDROMs.
 # FORBIDDEN		- Package build should not be attempted because of
 #				  security vulnerabilities.
-# LEGAL_TEXT	- Port has legal issues (e.g., special permission to distribute, lacks a license).
-# LEGAL_PACKAGE - Port has no legal issues but defines NO_PACKAGE
 # IGNORE		- Package build should be skipped entirely (e.g.
 #				  because of serious unfixable problems in the build,
 #				  because it cannot be manually fetched, etc).  Error
@@ -501,13 +499,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  Installs all directories and files from ${WRKSRC}/doc
 #				  to ${DOCSDIR} except sed(1) backup files.
 #
-# MANPREFIX		- The directory prefix for manual pages.
-#				  Default: ${PREFIX}
-# MAN<sect>PREFIX
-#				- If manual pages of some sections install in different
-#				  locations than others, use these.
-#				  Default: ${MANPREFIX}
-#
 # Set the following to specify all .info files your port installs.
 #
 # INFO			- A list of .info files (omitting the trailing ".info");
@@ -567,10 +558,15 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # fetch-url-list
 #				- Show list of URLS to retrieve missing ${DISTFILES} and
 #				  ${PATCHFILES} for this port.
+# fetch-url-recursive-list
+#				- Show list of URLS to retrieve missing ${DISTFILES} and
+#				  ${PATCHFILES} for this port and dependencies.
 # fetch-urlall-list
 #				- Show list of URLS to retrieve ${DISTFILES} and
 #				  ${PATCHFILES} for this port.
-#
+# fetch-urlall-recursive-list
+#				- Show list of URLS to retrieve ${DISTFILES} and
+#				  ${PATCHFILES} for this port and dependencies.
 # all-depends-list
 #				- Show all directories which are dependencies
 #				  for this port.
@@ -595,8 +591,8 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				- Show all directories which are test-dependencies
 #				  for this port.
 # install-missing-packages
-#               - Install missing dependencies from package and mark
-#                 them as automatically installed.
+#				- Install missing dependencies from package and mark
+#				  them as automatically installed.
 # extract		- Unpacks ${DISTFILES} into ${WRKDIR}.
 # patch			- Apply any provided patches to the source.
 # configure		- Runs either GNU configure, one or more local configure
@@ -613,9 +609,10 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				- Create a package for a port and _all_ of its dependencies.
 # describe		- Try to generate a one-line description for each port for
 #				  use in INDEX files and the like.
-# check-plist		- Checks for files missing from the plist, and files in the plist
-#				  that are not installed by the port.
-# check-sanity		- Perform some basic checks of the port layout.
+# describe-json	- Generate a JSON-compliant representation of each port.
+# check-plist	- Checks for files missing from the plist, and files in the
+#				  plist that are not installed by the port.
+# check-sanity	- Perform some basic checks of the port layout.
 # checkpatch	- Do a "patch -C" instead of a "patch".  Note that it may
 #				  give incorrect results if multiple patches deal with
 #				  the same file.
@@ -669,6 +666,10 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # Here are some variables used in various stages.
 #
 # For options see bsd.options.mk
+#
+# WRK_ENV		- Environment used when running the upstream build system.
+#				  Target-specific environment variables can be defined using
+#				  CONFIGURE_ENV, MAKE_ENV, TEST_ENV, and similar variables.
 #
 # For fetch:
 #
@@ -750,7 +751,7 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				- Pass these args to configure if ${HAS_CONFIGURE} is set.
 #				  Default: "--prefix=${GNU_CONFIGURE_PREFIX}
 #				  --infodir=${PREFIX}/${INFO_PATH} --localstatedir=/var
-#				  --mandir=${MANPREFIX}/man --build=${CONFIGURE_TARGET}" if
+#				  --mandir=${PREFIX}/share/man --build=${CONFIGURE_TARGET}" if
 #				  GNU_CONFIGURE is set, "CC=${CC} CFLAGS=${CFLAGS}
 #				  PREFIX=${PREFIX} INSTALLPRIVLIB=${PREFIX}/lib
 #				  INSTALLARCHLIB=${PREFIX}/lib" if USES=perl5 and
@@ -852,7 +853,7 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  described below except that any line beginning with @comment
 #				  is deleted.
 # SUB_LIST		- List of "variable=value" pair for substitution in ${SUB_FILES}
-#				  Some pairs are added by default: eg. PREFIX=${PREFIX}
+#				  Some pairs are added by default: e.g. PREFIX=${PREFIX}
 #
 # USE_LDCONFIG  - If set to "yes", this adds ${PREFIX}/lib to the list of
 #				  directories to be searched for shared libraries.
@@ -898,7 +899,7 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  "Name" "Comment" "Icon" "Exec" "Categories" StartupNotify
 #				  Rules:
 #					* Only add desktop entries for applications which do not
-#					  require a terminal (ie. X applications).
+#					  require a terminal (i.e. X11 applications).
 #					* If the upstream distribution already installs .desktop
 #					  files, you do not need to use this.
 #					* If you require a more elaborate .desktop file than this
@@ -1014,7 +1015,7 @@ LC_ALL=		C
 # These need to be absolute since we don't know how deep in the ports
 # tree we are and thus can't go relative.  They can, of course, be overridden
 # by individual Makefiles or local system make configuration.
-_LIST_OF_WITH_FEATURES=	debug lto ssp pie relro bind_now
+_LIST_OF_WITH_FEATURES=	bind_now debug debuginfo lto pie relro sanitize ssp testing
 _DEFAULT_WITH_FEATURES=	ssp
 PORTSDIR?=		/usr/ports
 LOCALBASE?=		/usr/local
@@ -1116,10 +1117,8 @@ makepatch:
 		${SH} ${SCRIPTSDIR}/smart_makepatch.sh
 .  endif
 
-
 # Start of options section
 .  if defined(INOPTIONSMK) || ( !defined(USEOPTIONSMK) && !defined(AFTERPORTMK) )
-
 
 # Get the default maintainer
 MAINTAINER?=	ports@FreeBSD.org
@@ -1180,7 +1179,7 @@ OSVERSION!=	${AWK} '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${SRC
 .    endif
 _EXPORTED_VARS+=	OSVERSION
 
-.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1204000 || (${OSVERSION} >= 1300000 && ${OSVERSION} < 1301000))
+.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1302000 )
 _UNSUPPORTED_SYSTEM_MESSAGE=	Ports Collection support for your ${OPSYS} version has ended, and no ports\
 								are guaranteed to build on this system. Please upgrade to a supported release.
 .      if defined(ALLOW_UNSUPPORTED_SYSTEM)
@@ -1283,6 +1282,23 @@ _PORTDIRNAME=	${.CURDIR:T}
 PORTDIRNAME?=	${_PORTDIRNAME}
 PKGORIGIN?=		${PKGCATEGORY}/${PORTDIRNAME}
 
+# Now that PKGORIGIN is set, look for origin-specific variables.
+# These are typically set in a make.conf, in the form:
+#
+# category_portname_VARS= varname=value othervar+=value novar@
+#
+# e.g.  devel_llvm10_VARS= MAKE_JOBS_NUMBER=2
+
+.    for var in ${${PKGORIGIN:S/\//_/}_VARS:C/=.*//:O:u}
+.      if ${var:M*@}
+.  undef ${var:C/.$//}
+.      elif ${var:M*+}
+${var:C/.$//}+=	${${PKGORIGIN:S/\//_/}_VARS:M${var}=*:C/[^+]*\+=//:C/^"(.*)"$$/\1/}
+.      else
+${var}=			${${PKGORIGIN:S/\//_/}_VARS:M${var}=*:C/[^=]*=//:C/^"(.*)"$$/\1/}
+.      endif
+.    endfor
+
 # where 'make config' records user configuration options
 PORT_DBDIR?=	/var/db/ports
 
@@ -1308,11 +1324,25 @@ LDCONFIG32_DIR=	libdata/ldconfig32
 TMPDIR?=	/tmp
 .    endif # defined(PACKAGE_BUILDING)
 
-.    if defined(WITH_DEBUG_PORTS)
-.      if ${WITH_DEBUG_PORTS:M${PKGORIGIN}}
-WITH_DEBUG=	yes
+# Enable default features unless they have been disabled by the user, and cleanup
+.    for feature in ${_DEFAULT_WITH_FEATURES}
+.      if !defined(WITHOUT_${feature:tu})
+WITH_${feature:tu}=		yes
+.undef WITHOUT_${feature:tu}
 .      endif
-.    endif
+.    endfor
+
+# For each Feature we support, process the
+# WITH_FEATURE_PORTS and WITHOUT_FEATURE_PORTS variables
+.    for feature in ${_LIST_OF_WITH_FEATURES}
+.      if defined(WITHOUT_${feature:tu}_PORTS) && ${WITHOUT_${feature:tu}_PORTS:M${PKGORIGIN}}
+# Feature disabled for this port, remove WITH_<feat>
+.undef WITH_${feature:tu}
+.      elif defined(WITH_${feature:tu}_PORTS) && ${WITH_${feature:tu}_PORTS:M${PKGORIGIN}}
+# Feature enabled for this port, set WITH_<feat>
+WITH_${feature:tu}=	yes
+.      endif
+.    endfor
 
 .    if defined(USE_LTO)
 WITH_LTO=	${USE_LTO}
@@ -1421,13 +1451,7 @@ USES+=mysql:${USE_MYSQL}
 .include "${PORTSDIR}/Mk/bsd.wx.mk"
 .    endif
 
-.    if !defined(UID)
-.      if defined(.MAKE.UID)
-UID=	${.MAKE.UID}
-.      else
-UID!=	${ID} -u
-.      endif
-.    endif
+UID?=	${.MAKE.UID}
 
 DESTDIRNAME?=	DESTDIR
 
@@ -1522,13 +1546,12 @@ SUB_LIST+=	${FLAVOR:tu}="" NO_${FLAVOR:tu}="@comment "
 .      endif
 .    endif # defined(${FLAVOR})
 
-
 EXTRACT_SUFX?=			.tar.gz
 
 .    if defined(USE_LINUX_PREFIX)
 PREFIX=					${LINUXBASE}
 DATADIR?=				${PREFIX}/usr/share/${PORTNAME}
-DOCSDIR?=				${PREFIX}/usr/share/doc/${PORTNAME}-${PORTVERSION}
+DOCSDIR?=				${PREFIX}/usr/share/doc/${PORTNAME}-${DISTVERSION}
 NO_LICENSES_INSTALL=	yes
 NO_MTREE=				yes
 .    endif
@@ -1592,6 +1615,17 @@ PKG_NOTES+=	flavor
 PKG_NOTE_flavor=	${FLAVOR}
 .    endif
 
+WRK_ENV+=		HOME=${WRKDIR} \
+				PWD="$${PWD}" \
+				__MAKE_CONF=${NONEXISTENT}
+.    for e in OSVERSION PATH TERM TMPDIR \
+				UNAME_b UNAME_i UNAME_K UNAME_m UNAME_n \
+				UNAME_p UNAME_r UNAME_s UNAME_U UNAME_v
+.      ifdef ${e}
+WRK_ENV+=		${e}=${${e}:Q}
+.      endif
+.    endfor
+
 TEST_ARGS?=		${MAKE_ARGS}
 TEST_ENV?=		${MAKE_ENV}
 
@@ -1627,6 +1661,7 @@ QA_ENV+=		STAGEDIR=${STAGEDIR} \
 				PKGORIGIN=${PKGORIGIN} \
 				LIB_RUN_DEPENDS='${_LIB_RUN_DEPENDS:C,[^:]*:([^:]*):?.*,\1,}' \
 				UNIFIED_DEPENDS=${_UNIFIED_DEPENDS:C,([^:]*:[^:]*):?.*,\1,:O:u:Q} \
+				WANTED_LIBRARIES='${LIB_DEPENDS:C,([^:]*):([^:]*):?.*,\1,}' \
 				PKGBASE=${PKGBASE} \
 				LICENSE="${LICENSE}" \
 				LICENSE_PERMS="${_LICENSE_PERMS}" \
@@ -1702,7 +1737,7 @@ WRKSRC?=		${WRKDIR}/${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}
 .      if defined(WRKSRC)
 DEV_WARNING+=	"You are using USE_GITLAB and WRKSRC is set which is wrong.  Set GL_PROJECT, GL_ACCOUNT correctly, and/or set WRKSRC_SUBDIR and remove WRKSRC entirely."
 .      endif
-WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}
+WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_TAGNAME}
 .    endif
 
 # If the distname is not extracting into a specific subdirectory, have the
@@ -1769,7 +1804,7 @@ CFLAGS:=	${CFLAGS:C/${_CPUCFLAGS}//}
 .    endif
 
 .    for f in ${_LIST_OF_WITH_FEATURES}
-.      if defined(WITH_${f:tu}) || ( ${_DEFAULT_WITH_FEATURES:M${f}} &&  !defined(WITHOUT_${f:tu}) )
+.      if defined(WITH_${f:tu})
 .include "${PORTSDIR}/Mk/Features/$f.mk"
 .      endif
 .    endfor
@@ -1896,7 +1931,6 @@ CO_ENV+=	NO_PREFIX_RMDIR=1
 CO_ENV+=	NO_PREFIX_RMDIR=0
 .    endif
 
-
 METADIR=		${WRKDIR}/.metadir
 
 PKGPREINSTALL?=		${PKGDIR}/pkg-pre-install
@@ -1961,8 +1995,7 @@ ERROR+=	"Unknown USES=${f:C/\:.*//}"
 .    endif
 
 .    if defined(USE_LOCALE)
-CONFIGURE_ENV+=	LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
-MAKE_ENV+=		LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
+WRK_ENV+=	LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 .    endif
 
 # Macro for doing in-place file editing using regexps.  REINPLACE_ARGS may only
@@ -2008,8 +2041,7 @@ MAKE_ENV+=		PREFIX=${PREFIX} \
 			CC="${CC}" CFLAGS="${CFLAGS}" \
 			CPP="${CPP}" CPPFLAGS="${CPPFLAGS}" \
 			LDFLAGS="${LDFLAGS}" LIBS="${LIBS}" \
-			CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" \
-			MANPREFIX="${MANPREFIX}"
+			CXX="${CXX}" CXXFLAGS="${CXXFLAGS}"
 
 # Add -fno-strict-aliasing to CFLAGS with optimization level -O2 or higher.
 # gcc 4.x enable strict aliasing optimization with -O2 which is known to break
@@ -2176,6 +2208,7 @@ PKGMESSAGE?=	${PKGDIR}/pkg-message
 _PKGMESSAGES+=	${PKGMESSAGE}
 
 TMPPLIST?=	${WRKDIR}/.PLIST.mktmp
+_PLIST?=	${WRKDIR}/.PLIST
 
 # backward compatibility for users
 .    if defined(_PKG_TRANSITIONING_TO_NEW_EXT)
@@ -2208,11 +2241,6 @@ PKG_DBDIR?=		/var/db/pkg
 ALL_TARGET?=		all
 INSTALL_TARGET?=	install
 INSTALL_TARGET+=	${LATE_INSTALL_ARGS}
-
-# Integrate with the license auditing framework
-.    if !defined (DISABLE_LICENSES)
-.include "${PORTSDIR}/Mk/bsd.licenses.mk"
-.    endif
 
 # Popular master sites
 .include "${PORTSDIR}/Mk/bsd.sites.mk"
@@ -2587,14 +2615,6 @@ check-categories:
 
 PKGREPOSITORYSUBDIR?=	All
 PKGREPOSITORY?=		${PACKAGES}/${PKGREPOSITORYSUBDIR}
-.    if exists(${PACKAGES})
-PACKAGES:=	${PACKAGES:S/:/\:/g}
-_HAVE_PACKAGES=	yes
-PKGFILE?=		${PKGREPOSITORY}/${PKGNAME}${PKG_SUFX}
-.    else
-PKGFILE?=		${.CURDIR}/${PKGNAME}${PKG_SUFX}
-.    endif
-WRKDIR_PKGFILE=	${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX}
 
 # The "latest version" link -- ${PKGNAME} minus everthing after the last '-'
 PKGLATESTREPOSITORY?=	${PACKAGES}/Latest
@@ -2605,6 +2625,75 @@ PKGOLDLATESTFILE=		${PKGLATESTREPOSITORY}/${PKGBASE}.${PKG_COMPRESSION_FORMAT}
 # Temporary workaround to be deleted once every supported version of FreeBSD
 # have a bootstrap which handles the pkg extension.
 PKGOLDSIGFILE=			${PKGLATESTREPOSITORY}/${PKGBASE}.${PKG_COMPRESSION_FORMAT}.sig
+.    endif
+
+
+_PKGS=	${PKGBASE}
+PORTS_FEATURES+=	SUBPACKAGES
+.    if defined(SUBPACKAGES)
+.      if ${SUBPACKAGES:Mmain}
+DEV_ERROR+=	"SUBPACKAGES cannot contain 'main', it is a reserved value"
+.      endif
+.      for sp in ${SUBPACKAGES}
+.        if ${sp:C/[[:lower:][:digit:]_]//g}
+_BAD_SUBPACKAGES_NAMES+=	${sp}
+.        endif
+.      endfor
+.      if !empty(_BAD_SUBPACKAGES_NAMES)
+DEV_ERROR+=	"SUBPACKAGES cannot subpackages that are not all [a-z0-9_]: ${_BAD_SUBPACKAGES_NAMES}"
+.      endif
+.    endif
+.    for sp in ${SUBPACKAGES}
+# If a FRAMEWORK generated package needs to override its subpackage package name
+# it can do it with this mechanism
+.      if !defined(_PKGS.${sp})
+_PKGS.${sp}=	${PKGBASE}-${sp}
+.      endif
+_PKGS+=	${_PKGS.${sp}}
+PKGBASE.${sp}=	${_PKGS.${sp}}
+_SP.${_PKGS.${sp}}=.${sp}
+.    endfor
+
+.    if !defined(_DID_SUBPACKAGES_HELPERS)
+_DID_SUBPACKAGES_HELPERS=	yes
+_SUBPACKAGE_HELPERS_FILE=	DESCR PKGINSTALL PKGDEINSTALL PKGMESSAGE \
+							PKGPREINSTALL PKGPOSTINSTALL PKGPREDEINSTALL PKGPOSTDEINSTALL \
+							PKGPREUPGRADE PKGPOSTUPGRADE PKGUPGRADE
+
+.      for sp in ${SUBPACKAGES}
+# These overwrite the current value
+.        for v in ${_SUBPACKAGE_HELPERS_FILE}
+${v}.${sp}?=	${$v}.${sp}
+.        endfor
+_PKGMESSAGES.${sp}=		${PKGMESSAGE}.${sp}
+.        if !exists(${DESCR.${sp}}) && ${sp} != debuginfo
+DESCR.${sp}=	${DESCR}
+DEV_WARNING+=	"DESCR.${sp} needs to point to an existing file."
+.        endif
+COMMENT.${sp}?=	${COMMENT} (subpkg: ${sp})
+.      endfor
+.    endif
+
+.    if exists(${PACKAGES})
+PACKAGES:=	${PACKAGES:S/:/\:/g}
+_HAVE_PACKAGES=	yes
+_PKGDIR=	${PKGREPOSITORY}
+.    else
+_PKGDIR=	${.CURDIR}
+.    endif
+.    for sp in ${_PKGS}
+PKGNAME${_SP.${sp}}=	${sp}-${PKGVERSION}
+PKGNAMES+=				${PKGNAME${_SP.${sp}}}
+PKGFILE${_SP.${sp}}=	${_PKGDIR}/${PKGNAME${_SP.${sp}}}${PKG_SUFX}
+.    endfor
+_EXTRA_PACKAGE_TARGET_DEP+=	${_PKGDIR}
+.    for sp in ${_PKGS}
+WRKDIR_PKGFILE${_SP.${sp}}=	${WRKDIR}/pkg/${PKGNAME${_SP.${sp}}}${PKG_SUFX}
+.    endfor
+
+# Integrate with the license auditing framework
+.    if !defined (DISABLE_LICENSES)
+.include "${PORTSDIR}/Mk/bsd.licenses.mk"
 .    endif
 
 CONFIGURE_SCRIPT?=	configure
@@ -2624,7 +2713,7 @@ CONFIGURE_MAX_CMD_LEN!=	${SYSCTL} -n kern.argmax
 .      endif
 _EXPORTED_VARS+=	CONFIGURE_MAX_CMD_LEN
 GNU_CONFIGURE_PREFIX?=	${PREFIX}
-GNU_CONFIGURE_MANPREFIX?=	${MANPREFIX}
+GNU_CONFIGURE_MANPREFIX?=	${PREFIX}/share
 CONFIGURE_ARGS+=	--prefix=${GNU_CONFIGURE_PREFIX} $${_LATE_CONFIGURE_ARGS}
 .      if defined(CROSS_TOOLCHAIN)
 CROSS_HOST=		${ARCH:S/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
@@ -2668,19 +2757,7 @@ SCRIPTS_ENV+=	CURDIR=${MASTERDIR} DISTDIR=${DISTDIR} \
 SCRIPTS_ENV+=	BATCH=yes
 .    endif
 
-.    if ${PREFIX} == /usr
-MANPREFIX?=	/usr/share
-.    else
-MANPREFIX?=	${PREFIX}
 MANDIRS+=	${PREFIX}/share/man
-.    endif
-
-MANDIRS+=	${MANPREFIX}/man
-.    for sect in 1 2 3 4 5 6 7 8 9
-MAN${sect}PREFIX?=	${MANPREFIX}
-.    endfor
-MANLPREFIX?=	${MANPREFIX}
-MANNPREFIX?=	${MANPREFIX}
 INFO_PATH?=	share/info
 
 .    if defined(INFO)
@@ -2830,17 +2907,6 @@ IGNORE=		is marked as broken on ${OPSYS}: ${BROKEN_${OPSYS}}
 IGNORE=		is forbidden: ${FORBIDDEN}
 .      endif
 
-# Define the text to be output to LEGAL
-.      if defined(LEGAL_TEXT)
-LEGAL= ${LEGAL_TEXT}
-.      elif defined(RESTRICTED)
-LEGAL= ${RESTRICTED}
-.      elif defined(NO_CDROM)
-LEGAL= ${NO_CDROM}
-.      elif defined(NO_PACKAGE) && ! defined(LEGAL_PACKAGE)
-LEGAL= ${NO_PACKAGE}
-.      endif
-
 .      if (defined(MANUAL_PACKAGE_BUILD) && defined(PACKAGE_BUILDING))
 IGNORE=		has to be built manually: ${MANUAL_PACKAGE_BUILD}
 clean:
@@ -2938,12 +3004,6 @@ DEPENDS_TARGET+=	install
 DEPENDS_TARGET+=	clean
 DEPENDS_ARGS+=	NOCLEANDEPENDS=yes
 .      endif
-.    endif
-
-.    if defined(USE_GITLAB) && !${USE_GITLAB:Mnodefault} && empty(GL_COMMIT_DEFAULT)
-check-makevars::
-	@${ECHO_MSG} "GL_COMMIT is a required 40 character hash for use USE_GITLAB"
-	@${FALSE}
 .    endif
 
 ################################################################
@@ -3044,9 +3104,8 @@ check-vulnerable:
 			${SH} ${SCRIPTSDIR}/check-vulnerable.sh
 .    endif
 
-# Quote simply quote all variables, except FETCH_ENV, some ports are creative
-# with it, and it needs to be quoted twice to pass through the echo/eval in
-# do-fetch.
+# Quote all variables except FETCH_ENV. Because some ports are creative,
+# quoting twice is necessary to pass through the echo/eval in do-fetch.
 _DO_FETCH_ENV= \
 			dp_DISABLE_SIZE='${DISABLE_SIZE}' \
 			dp_DISTDIR='${_DISTDIR}' \
@@ -3126,11 +3185,25 @@ fetch-url-list-int:
 .      endif
 .    endif
 
+.    if !target(fetch-url-recursive-list-int)
+fetch-url-recursive-list-int: fetch-url-list-int
+	@recursive_cmd="fetch-url-list-int"; \
+	    recursive_dirs="$$(${ALL-DEPENDS-FLAVORS-LIST})"; \
+		${_FLAVOR_RECURSIVE_SH}
+.    endif
+
 # Prints out all the URL for all the DISTFILES and PATCHFILES.
 
 .    if !target(fetch-urlall-list)
 fetch-urlall-list:
 	@cd ${.CURDIR} && ${SETENV} FORCE_FETCH_ALL=yes ${MAKE} fetch-url-list-int
+.    endif
+
+.    if !target(fetch-urlall-recursive-list)
+fetch-urlall-recursive-list: fetch-urlall-list
+	@recursive_cmd="fetch-urlall-list"; \
+	    recursive_dirs="$$(${ALL-DEPENDS-FLAVORS-LIST})"; \
+		${_FLAVOR_RECURSIVE_SH}
 .    endif
 
 # Prints the URL for all the DISTFILES and PATCHFILES that are not here
@@ -3139,6 +3212,12 @@ fetch-urlall-list:
 fetch-url-list: fetch-url-list-int
 .    endif
 
+.    if !target(fetch-url-recursive-list)
+fetch-url-recursive-list: fetch-url-list
+	@recursive_cmd="fetch-url-list"; \
+	    recursive_dirs="$$(${ALL-DEPENDS-FLAVORS-LIST})"; \
+		${_FLAVOR_RECURSIVE_SH}
+.    endif
 
 # Extract
 
@@ -3237,7 +3316,7 @@ do-configure:
 	@${MKDIR} ${CONFIGURE_WRKSRC}
 	@(cd ${CONFIGURE_WRKSRC} && \
 	    ${SET_LATE_CONFIGURE_ARGS} \
-		if ! ${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" \
+		if ! ${SETENVI} ${WRK_ENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" \
 	    CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" CXXFLAGS="${CXXFLAGS}" \
 	    LDFLAGS="${LDFLAGS}" LIBS="${LIBS}" \
 	    INSTALL="/usr/bin/install -c" \
@@ -3254,7 +3333,8 @@ do-configure:
 .    endif
 
 # Build
-DO_MAKE_BUILD?=	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS:N${DESTDIRNAME}=*}
+DO_MAKE_BUILD?=	${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
+				${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS:N${DESTDIRNAME}=*}
 .    if !target(do-build)
 do-build:
 	@(cd ${BUILD_WRKSRC}; if ! ${DO_MAKE_BUILD} ${ALL_TARGET}; then \
@@ -3345,13 +3425,15 @@ check-install-conflicts:
 
 .    if !target(do-install) && !defined(NO_INSTALL)
 do-install:
-	@(cd ${INSTALL_WRKSRC} && ${SETENV} ${MAKE_ENV} ${FAKEROOT} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
+	@(cd ${INSTALL_WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${FAKEROOT} \
+		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
 .    endif
 
 # Test
 
 .    if !target(do-test) && defined(TEST_TARGET)
-DO_MAKE_TEST?=	${SETENV} ${TEST_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${TEST_ARGS:N${DESTDIRNAME}=*}
+DO_MAKE_TEST?=	${SETENVI} ${WRK_ENV} ${TEST_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
+				${MAKEFILE} ${TEST_ARGS:N${DESTDIRNAME}=*}
 do-test:
 	@(cd ${TEST_WRKSRC}; if ! ${DO_MAKE_TEST} ${TEST_TARGET}; then \
 		if [ -n "${TEST_FAIL_MESSAGE}" ] ; then \
@@ -3368,15 +3450,10 @@ do-test:
 _EXTRA_PACKAGE_TARGET_DEP+= ${PKGFILE}
 _PORTS_DIRECTORIES+=	${PKGREPOSITORY}
 
-${PKGFILE}: ${WRKDIR_PKGFILE} ${PKGREPOSITORY}
-	@${LN} -f ${WRKDIR_PKGFILE} ${PKGFILE} 2>/dev/null \
-			|| ${CP} -f ${WRKDIR_PKGFILE} ${PKGFILE}
-
 .      if ${PKGORIGIN} == "ports-mgmt/pkg" || ${PKGORIGIN} == "ports-mgmt/pkg-devel"
 _EXTRA_PACKAGE_TARGET_DEP+=	${PKGLATESTREPOSITORY}
 _PORTS_DIRECTORIES+=	${PKGLATESTREPOSITORY}
 _EXTRA_PACKAGE_TARGET_DEP+=	${PKGLATESTFILE}
-
 
 ${PKGLATESTFILE}: ${PKGFILE} ${PKGLATESTREPOSITORY}
 	${INSTALL} -l rs ${PKGFILE} ${PKGLATESTFILE}
@@ -3398,14 +3475,31 @@ ${PKGOLDSIGFILE}: ${PKGLATESTREPOSITORY}
 .    endif
 
 # from here this will become a loop for subpackages
-${WRKDIR_PKGFILE}: ${TMPPLIST} create-manifest ${WRKDIR}/pkg
-	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
+.    for sp in ${_PKGS}
+${_PLIST}.${sp}: ${TMPPLIST}
+	@if [ "${PKGBASE}" = "${sp}" ]; then \
+		${SED} "/^@comment /d; /@@/d" ${TMPPLIST} > ${.TARGET} ; \
+	else \
+		${SED} -n "s/@@${sp:S/${PKGBASE}-//}@@//p" ${TMPPLIST} > ${.TARGET} ; \
+	fi
+
+${WRKDIR_PKGFILE${_SP.${sp}}}:	${_PLIST}.${sp} create-manifest ${WRKDIR}/pkg
+	@echo "===>   Building ${PKGNAME${_SP.${sp}}}"
+	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR}.${sp} -p ${_PLIST}.${sp} -o ${WRKDIR}/pkg ${PKGNAME}; then \
 		cd ${.CURDIR} && eval ${MAKE} delete-package >/dev/null; \
 		exit 1; \
 	fi
-	#
-# Temporary will be later dynamically added per subpackages
-_EXTRA_PACKAGE_TARGET_DEP+=	${WRKDIR_PKGFILE}
+
+_EXTRA_PACKAGE_TARGET_DEP+=	${WRKDIR_PKGFILE${_SP.${sp}}}
+
+.      if defined(_HAVE_PACKAGES)
+${PKGFILE${_SP.${sp}}}: ${WRKDIR_PKGFILE${_SP.${sp}}}
+	@${LN} -f ${WRKDIR_PKGFILE${_SP.${sp}}} ${PKGFILE${_SP.${sp}}} 2>/dev/null \
+		|| ${CP} -f ${WRKDIR_PKGFILE${_SP.${sp}}} ${PKGFILE${_SP.${sp}}}
+
+_EXTRA_PACKAGE_TARGET_DEP+=	${PKGFILE${_SP.${sp}}}
+.      endif
+.    endfor
 # This will be the end of the loop
 
 .    if !target(do-package)
@@ -3422,14 +3516,18 @@ do-package: ${_EXTRA_PACKAGE_TARGET_DEP} ${WRKDIR}/pkg
 
 .    if !target(delete-package)
 delete-package:
-	@${ECHO_MSG} "===>  Deleting package for ${PKGNAME}"
+.      for sp in ${_PKGS}
+	@${ECHO_MSG} "===>  Deleting package for ${sp}"
 # When staging, the package may only be in the workdir if not root
-	@${RM} ${PKGFILE} ${WRKDIR_PKGFILE} 2>/dev/null || :
+	@${RM} ${PKGFILE${_SP.${sp}}} ${WRKDIR_PKGFILE${_SP.${sp}}} 2>/dev/null || :
+.      endfor
 .    endif
 
 .    if !target(delete-package-list)
 delete-package-list:
-	@${ECHO_CMD} "[ -f ${PKGFILE} ] && (${ECHO_CMD} deleting ${PKGFILE}; ${RM} ${PKGFILE})"
+.      for sp in ${_PKGS}
+	@${ECHO_CMD} "[ -f ${PKGFILE${_SP.${sp}}} ] && (${ECHO_CMD} deleting ${PKGFILE${_SP.${sp}}}; ${RM} ${PKGFILE${_SP.${sp}}})"
+.      endfor
 .    endif
 
 # Used by scripts and users to install a package from local repository.
@@ -3441,15 +3539,17 @@ _INSTALL_PKG_ARGS=	-f
 .      if defined(INSTALLS_DEPENDS)
 _INSTALL_PKG_ARGS+=	-A
 .      endif
-install-package:
-	@if [ -f "${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX}" ]; then \
-	    _pkgfile="${WRKDIR_PKGFILE}"; \
+.      for sp in ${_PKGS}
+install-package: install-package.${sp}
+install-package.${sp}:
+	@if [ -f "${WRKDIR_PKGFILE${_SP.${sp}}}" ]; then \
+	    _pkgfile="${WRKDIR_PKGFILE${_SP.${sp}}}"; \
 	else \
-	    _pkgfile="${PKGFILE}"; \
+	    _pkgfile="${PKGFILE${_SP.${sp}}}"; \
 	fi; \
 	${PKG_ADD} ${_INSTALL_PKG_ARGS} $${_pkgfile}
+.      endfor
 .    endif
-
 
 # Utility targets follow
 
@@ -3641,7 +3741,7 @@ install-message:
 test-message:
 	@${ECHO_MSG} "===>  Testing for ${PKGNAME}"
 package-message:
-	@${ECHO_MSG} "===>  Building package for ${PKGNAME}"
+	@${ECHO_MSG} "===>  Building packages for ${PKGNAME}"
 
 # Empty pre-* and post-* targets
 
@@ -3711,14 +3811,16 @@ deinstall:
 		${SU_CMD} "${MAKE} ${.TARGET}"
 	@${ECHO_MSG} "===>  Returning to user credentials"
 .      else
-	@${ECHO_MSG} "===>  Deinstalling for ${PKGBASE}"
-	@if ${PKG_INFO} -e ${PKGBASE}; then \
-		p=`${PKG_INFO} -q -O ${PKGBASE}`; \
+.        for _sp in ${_PKGS}
+	@${ECHO_MSG} "===>  Deinstalling for ${_sp}"
+	@if ${PKG_INFO} -e ${_sp}; then \
+		p=`${PKG_INFO} -q -O ${_sp}`; \
 		${ECHO_MSG} "===>   Deinstalling $${p}"; \
-		${PKG_DELETE} -f ${PKGBASE} ; \
+		${PKG_DELETE} -f ${_sp} ; \
 	else \
-		${ECHO_MSG} "===>   ${PKGBASE} not installed, skipping"; \
+		${ECHO_MSG} "===>   ${_sp} not installed, skipping"; \
 	fi
+.        endfor
 	@${RM} ${INSTALL_COOKIE} ${PACKAGE_COOKIE}
 .      endif
 .    endif
@@ -3944,7 +4046,7 @@ package-name:
 repackage: pre-repackage package
 
 pre-repackage:
-	@${RM} ${PACKAGE_COOKIE}
+	@${RM} ${PACKAGE_COOKIE} ${TMPPLIST}*
 .    endif
 
 # Build a package but don't check the cookie for installation, also don't
@@ -3962,10 +4064,13 @@ package-noinstall: package
 depends: pkg-depends extract-depends patch-depends lib-depends fetch-depends build-depends run-depends
 
 .      for deptype in PKG EXTRACT PATCH FETCH BUILD LIB RUN TEST
+.        for sp in ${_PKGS}
+${deptype}_DEPENDS_ALL+=	${${deptype}_DEPENDS${_SP.${sp}}}
+.        endfor
 ${deptype:tl}-depends:
-.        if defined(${deptype}_DEPENDS) && !defined(NO_DEPENDS)
+.        if !empty(${deptype}_DEPENDS_ALL) && !defined(NO_DEPENDS)
 	@${SETENV} \
-		dp_RAWDEPENDS="${${deptype}_DEPENDS}" \
+		dp_RAWDEPENDS="${${deptype}_DEPENDS_ALL}" \
 		dp_DEPTYPE="${deptype}_DEPENDS" \
 		dp_DEPENDS_TARGET="${DEPENDS_TARGET}" \
 		dp_DEPENDS_PRECLEAN="${DEPENDS_PRECLEAN}" \
@@ -3994,7 +4099,7 @@ ${deptype:tl}-depends:
 
 # Dependency lists: both build and runtime, recursive.  Print out directory names.
 
-_UNIFIED_DEPENDS=${PKG_DEPENDS} ${EXTRACT_DEPENDS} ${PATCH_DEPENDS} ${FETCH_DEPENDS} ${BUILD_DEPENDS} ${LIB_DEPENDS} ${RUN_DEPENDS} ${TEST_DEPENDS}
+_UNIFIED_DEPENDS=${PKG_DEPENDS_ALL} ${EXTRACT_DEPENDS_ALL} ${PATCH_DEPENDS_ALL} ${FETCH_DEPENDS_ALL} ${BUILD_DEPENDS_ALL} ${LIB_DEPENDS_ALL} ${RUN_DEPENDS_ALL} ${TEST_DEPENDS_ALL}
 _DEPEND_SPECIALS=	${_UNIFIED_DEPENDS:M*\:*\:*:C,^[^:]*:([^:]*):.*$,\1,}
 
 .    for d in ${_UNIFIED_DEPENDS:M*\:/*}
@@ -4047,9 +4152,9 @@ ALL-DEPENDS-LIST=			${DEPENDS-LIST} -r ${_UNIFIED_DEPENDS:Q}
 ALL-DEPENDS-FLAVORS-LIST=	${DEPENDS-LIST} -f -r ${_UNIFIED_DEPENDS:Q}
 DEINSTALL-DEPENDS-FLAVORS-LIST=	${DEPENDS-LIST} -f -r ${_UNIFIED_DEPENDS:N${PKG_DEPENDS}:Q}
 MISSING-DEPENDS-LIST=		${DEPENDS-LIST} -m ${_UNIFIED_DEPENDS:Q}
-BUILD-DEPENDS-LIST=			${DEPENDS-LIST} "${PKG_DEPENDS} ${EXTRACT_DEPENDS} ${PATCH_DEPENDS} ${FETCH_DEPENDS} ${BUILD_DEPENDS} ${LIB_DEPENDS}"
-RUN-DEPENDS-LIST=			${DEPENDS-LIST} "${LIB_DEPENDS} ${RUN_DEPENDS}"
-TEST-DEPENDS-LIST=			${DEPENDS-LIST} ${TEST_DEPENDS:Q}
+BUILD-DEPENDS-LIST=			${DEPENDS-LIST} "${PKG_DEPENDS_ALL} ${EXTRACT_DEPENDS_ALL} ${PATCH_DEPENDS_ALL} ${FETCH_DEPENDS_ALL} ${BUILD_DEPENDS_ALL} ${LIB_DEPENDS_ALL}"
+RUN-DEPENDS-LIST=			${DEPENDS-LIST} "${LIB_DEPENDS_ALL} ${RUN_DEPENDS_ALL}"
+TEST-DEPENDS-LIST=			${DEPENDS-LIST} ${TEST_DEPENDS_ALL:Q}
 CLEAN-DEPENDS-LIST=			${DEPENDS-LIST} -wr ${_UNIFIED_DEPENDS:Q}
 CLEAN-DEPENDS-LIMITED-LIST=	${DEPENDS-LIST} -w ${_UNIFIED_DEPENDS:Q}
 
@@ -4138,7 +4243,7 @@ fetch-required: fetch
 	@${ECHO_MSG} "===> Fetching all required distfiles for ${PKGNAME} and dependencies"
 .        for deptype in PKG EXTRACT PATCH FETCH BUILD RUN
 .          if defined(${deptype}_DEPENDS)
-	@targ=fetch; deps="${${deptype}_DEPENDS}"; ${FETCH_LIST}
+	@targ=fetch; deps="${${deptype}_DEPENDS_ALL}"; ${FETCH_LIST}
 .          endif
 .        endfor
 .      endif
@@ -4150,7 +4255,7 @@ fetch-required-list: fetch-list
 .      if !defined(NO_DEPENDS)
 .        for deptype in PKG EXTRACT PATCH FETCH BUILD RUN
 .          if defined(${deptype}_DEPENDS)
-	@targ=fetch-list; deps="${${deptype}_DEPENDS}"; ${FETCH_LIST}
+	@targ=fetch-list; deps="${${deptype}_DEPENDS_ALL}"; ${FETCH_LIST}
 .          endif
 .        endfor
 .      endif
@@ -4189,7 +4294,7 @@ package-depends-list:
 	@${PACKAGE-DEPENDS-LIST}
 .    endif
 
-_LIB_RUN_DEPENDS=	${LIB_DEPENDS} ${RUN_DEPENDS}
+_LIB_RUN_DEPENDS=	${LIB_DEPENDS_ALL} ${RUN_DEPENDS_ALL}
 PACKAGE-DEPENDS-LIST?= \
 	if [ "${CHILD_DEPENDS}" ]; then \
 		installed=$$(${PKG_INFO} -qO ${PKGORIGIN} 2>/dev/null || \
@@ -4207,6 +4312,11 @@ PACKAGE-DEPENDS-LIST?= \
 	checked="${PARENT_CHECKED}"; \
 	for dir in ${_LIB_RUN_DEPENDS:C,[^:]*:([^:]*):?.*,\1,}; do \
 		unset flavor; \
+		case $${dir} in \
+		*~*) \
+			dir=$${dir%~*}; \
+			;; \
+		esac; \
 		case $${dir} in \
 		*@*) \
 			flavor=$${dir\#*@}; \
@@ -4236,62 +4346,85 @@ PACKAGE-DEPENDS-LIST?= \
 		fi; \
 	done
 
-ACTUAL-PACKAGE-DEPENDS?= \
+# FIXME: SELF_DEPENDS can only be used to depend on sub packages whose
+# package name has not been overrided by the framework, otherwize the
+# assumption made below that the package name is "PKGBASE-$$self" is broken.
+.    for sp in ${_PKGS}
+ACTUAL-PACKAGE-DEPENDS${_SP.${sp}}?= \
 	depfiles="" ; \
-	for lib in ${LIB_DEPENDS:C/\:.*//}; do \
+	for lib in ${LIB_DEPENDS${_SP.${sp}}:C/\:.*//}; do \
 		depfiles="$$depfiles `${SETENV} LIB_DIRS="${LIB_DIRS}" LOCALBASE="${LOCALBASE}" ${SH} ${SCRIPTSDIR}/find-lib.sh $${lib}`" ; \
 	done ; \
-	${SETENV} PKG_BIN="${PKG_BIN}" ${SH} ${SCRIPTSDIR}/actual-package-depends.sh $${depfiles} ${RUN_DEPENDS:C/(.*)\:.*/"\1"/}
+	for self in ${SELF_DEPENDS${_SP.${sp}}}; do \
+		if [ "$$self" = "main" ]; then \
+			printf "\"%s\": {origin: \"%s\", version: \"%s\"}\n" ${PKGBASE} ${PKGORIGIN} ${PKGVERSION}; \
+		else \
+			printf "\"%s-%s\": {origin: \"%s\", version: \"%s\"}\n" ${PKGBASE} $$self ${PKGORIGIN} ${PKGVERSION}; \
+		fi ; \
+	done ; \
+	${SETENV} PKG_BIN="${PKG_BIN}" ${SH} ${SCRIPTSDIR}/actual-package-depends.sh $${depfiles} ${RUN_DEPENDS${_SP.${sp}}:C/(.*)\:.*/"\1"/}
+.    endfor
 
 PKG_NOTES_ENV?=
 .    for note in ${PKG_NOTES}
 PKG_NOTES_ENV+=	dp_PKG_NOTE_${note}=${PKG_NOTE_${note}:Q}
 .    endfor
 
-create-manifest:
+.    for sp in ${_PKGS}
+PKG_NOTES.${sp}=	${PKG_NOTES}
+PKG_NOTES_ENV.${sp}=	${PKG_NOTES_ENV}
+.      if ${sp} != ${PKGBASE}
+PKG_NOTES.${sp}+=	subpackage
+PKG_NOTES_ENV.${sp}+=	dp_PKG_NOTE_subpackage=${_SP.${sp}:S/^.//1}
+.      endif
+create-manifest: create-manifest.${sp}
+create-manifest.${sp}:
 	@${SETENV} \
 			dp_SCRIPTSDIR='${SCRIPTSDIR}'                         \
-			dp_ACTUAL_PACKAGE_DEPENDS='${ACTUAL-PACKAGE-DEPENDS}' \
+			dp_ACTUAL_PACKAGE_DEPENDS='${ACTUAL-PACKAGE-DEPENDS${_SP.${sp}}}' \
 			dp_CATEGORIES='${CATEGORIES:u:S/$/,/}'                \
-			dp_COMMENT=${COMMENT:Q}                               \
+			dp_COMMENT=${COMMENT${_SP.${sp}}:Q}                   \
 			dp_COMPLETE_OPTIONS_LIST='${COMPLETE_OPTIONS_LIST}'   \
 			dp_DEPRECATED=${DEPRECATED:Q}                         \
-			dp_DESCR='${DESCR}'                                   \
+			dp_DESCR='${DESCR${_SP.${sp}}}'                       \
 			dp_EXPIRATION_DATE='${EXPIRATION_DATE}'               \
 			dp_GROUPS='${GROUPS:u:S/$/,/}'                        \
 			dp_LICENSE='${LICENSE:u:S/$/,/}'                      \
 			dp_LICENSE_COMB='${LICENSE_COMB}'                     \
 			dp_MAINTAINER='${MAINTAINER}'                         \
-			dp_METADIR='${METADIR}'                               \
+			dp_METADIR='${METADIR}.${sp}'                         \
 			dp_NO_ARCH='${NO_ARCH}'                               \
-			dp_PKGBASE='${PKGBASE}'                               \
-			dp_PKGDEINSTALL='${PKGDEINSTALL}'                     \
-			dp_PKGINSTALL='${PKGINSTALL}'                         \
-			dp_PKGMESSAGES='${_PKGMESSAGES}'                      \
+			dp_PKGBASE='${sp}'                                    \
+			dp_PKGDEINSTALL='${PKGDEINSTALL${_SP.${sp}}}'         \
+			dp_PKGINSTALL='${PKGINSTALL${_SP.${sp}}}'             \
+			dp_PKGMESSAGES='${_PKGMESSAGES${_SP.${sp}}}'          \
 			dp_PKGORIGIN='${PKGORIGIN}'                           \
-			dp_PKGPOSTDEINSTALL='${PKGPOSTDEINSTALL}'             \
-			dp_PKGPOSTINSTALL='${PKGPOSTINSTALL}'                 \
-			dp_PKGPREDEINSTALL='${PKGPREDEINSTALL}'               \
-			dp_PKGPREINSTALL='${PKGPREINSTALL}'                   \
+			dp_PKGPOSTDEINSTALL='${PKGPOSTDEINSTALL${_SP.${sp}}}' \
+			dp_PKGPOSTINSTALL='${PKGPOSTINSTALL${_SP.${sp}}}'     \
+			dp_PKGPREDEINSTALL='${PKGPREDEINSTALL${_SP.${sp}}}'   \
+			dp_PKGPREINSTALL='${PKGPREINSTALL${_SP.${sp}}}'       \
 			dp_PKGVERSION='${PKGVERSION}'                         \
 			dp_PKG_BIN='${PKG_BIN}'                               \
 			dp_PKG_IGNORE_DEPENDS='${PKG_IGNORE_DEPENDS}'         \
-			dp_PKG_NOTES='${PKG_NOTES}'                           \
+			dp_PKG_NOTES='${PKG_NOTES.${sp}}'                     \
 			dp_PORT_OPTIONS='${PORT_OPTIONS}'                     \
 			dp_PREFIX='${PREFIX}'                                 \
 			dp_USERS='${USERS:u:S/$/,/}'                          \
 			dp_WWW='${WWW}'                                       \
-			${PKG_NOTES_ENV}                                      \
+			${PKG_NOTES_ENV.${sp}}                                \
 			${SH} ${SCRIPTSDIR}/create-manifest.sh
-
+.    endfor
 
 # Print out package names.
 
 package-depends:
 	@${PACKAGE-DEPENDS-LIST} | ${AWK} '{print $$1":"$$3}'
 
-actual-package-depends:
-	@${ACTUAL-PACKAGE-DEPENDS}
+.    for sp in ${_PKGS}
+actual-package-depends: actual-package-depends.${sp}
+actual-package-depends.${sp}:
+	@${ACTUAL-PACKAGE-DEPENDS${_SP.${sp}}}
+.    endfor
 
 # Build packages for port and dependencies
 
@@ -4338,12 +4471,12 @@ install-missing-packages:
 # first to avoid gratuitous breakage.
 
 .    if !target(describe)
-_EXTRACT_DEPENDS=${EXTRACT_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
-_PATCH_DEPENDS=${PATCH_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
-_FETCH_DEPENDS=${FETCH_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
-_LIB_DEPENDS=${LIB_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
-_BUILD_DEPENDS=${BUILD_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,} ${_LIB_DEPENDS}
-_RUN_DEPENDS=${RUN_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,} ${_LIB_DEPENDS}
+_EXTRACT_DEPENDS=${EXTRACT_DEPENDS_ALL:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
+_PATCH_DEPENDS=${PATCH_DEPENDS_ALL:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
+_FETCH_DEPENDS=${FETCH_DEPENDS_ALL:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
+_LIB_DEPENDS=${LIB_DEPENDS_ALL:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
+_BUILD_DEPENDS=${BUILD_DEPENDS_ALL:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,} ${_LIB_DEPENDS}
+_RUN_DEPENDS=${RUN_DEPENDS_ALL:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,} ${_LIB_DEPENDS}
 .      if exists(${DESCR})
 _DESCR=${DESCR}
 .      else
@@ -4367,6 +4500,75 @@ describe-${f}:
 .        endfor
 .      endif # empty(FLAVORS)
 .    endif
+
+.    if empty(FLAVORS) || defined(_DESCRIBE_WITH_FLAVOR)
+
+.      if defined(_DESCRIBE_WITH_FLAVOR)
+_JSON_OBJ_NAME="\"${FLAVOR}-${.CURDIR:T}\":"
+.      endif
+
+describe-json:
+	@(${ECHO_CMD} "${_JSON_OBJ_NAME} { ";\
+	${ECHO_CMD} \"uses\":[\"${USES:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"flavors\":[\"${FLAVORS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"options_default\":[\"${OPTIONS_DEFAULT:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"fetch_depends\":[\"${FETCH_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"extract_depends\":[\"${EXTRACT_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"patch_depends\":[\"${PATCH_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"build_depends\":[\"${BUILD_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"lib_depends\":[\"${LIB_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"run_depends\":[\"${RUN_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"test_depends\":[\"${TEST_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"pkg_depends\":[\"${PKG_DEPENDS:ts,:Q:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"complete_options_list\":[\"${COMPLETE_OPTIONS_LIST:ts,:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"categories\":[\"${CATEGORIES:ts,:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"license\":[\"${LICENSE:ts,:S/,/\",\"/g}\"], ;\
+	${ECHO_CMD} \"deprecated\":\""${DEPRECATED:S/"/\\\"/g:S/\\\\*/*/g:S/\\\'/'/g}" \", ;\
+	${ECHO_CMD} \"broken\":\"${BROKEN:Q:S/"/\\\"/g:S/\\\\*/*/g:S/\\\'/'/g}\", ;\
+	${ECHO_CMD} \"distversion\":\"${DISTVERSION}\", ;\
+	${ECHO_CMD} \"distversionprefix\":\"${DISTVERSIONPREFIX}\", ;\
+	${ECHO_CMD} \"distversionsuffix\":\"${DISTVERSIONSUFFIX}\", ;\
+	${ECHO_CMD} \"expiration_date\":\"${EXPIRATION_DATE}\", ;\
+	${ECHO_CMD} \"flavor\":\"${FLAVOR}\", ;\
+	${ECHO_CMD} \"gh_account\":\"${GH_ACCOUNT}\", ;\
+	${ECHO_CMD} \"gh_project\":\"${GH_PROJECT}\", ;\
+	${ECHO_CMD} \"gh_tagname\":\"${GH_TAGNAME}\", ;\
+	${ECHO_CMD} \"gl_account\":\"${GL_ACCOUNT}\", ;\
+	${ECHO_CMD} \"gl_commit\":\"${GL_COMMIT}\", ;\
+	${ECHO_CMD} \"gl_project\":\"${GL_PROJECT}\", ;\
+	${ECHO_CMD} \"gl_site\":\"${GL_SITE}\", ;\
+	${ECHO_CMD} \"maintainer\":\"${MAINTAINER}\", ;\
+	${ECHO_CMD} \"makefiles\":\"${MAKEFILES}\", ;\
+	${ECHO_CMD} \"pkgbase\":\"${PKGBASE}\", ;\
+	${ECHO_CMD} \"pkgname\":\"${PKGNAME}\", ;\
+	${ECHO_CMD} \"pkgnamesuffix\":\"${PKGNAMESUFFIX}\", ;\
+	${ECHO_CMD} \"pkgorigin\":\"${PKGORIGIN}\", ;\
+	${ECHO_CMD} \"comment\":\"${COMMENT:Q:S/"/\\\"/g:S/\\\\*/*/g:S/\\\'/'/g}\", ;\
+	${ECHO_CMD} \"portepoch\":\"${PORTEPOCH}\", ;\
+	${ECHO_CMD} \"portname\":\"${PORTNAME}\", ;\
+	${ECHO_CMD} \"portrevision\":\"${PORTREVISION}\", ;\
+	${ECHO_CMD} \"portversion\":\"${PORTVERSION}\", ;\
+	${ECHO_CMD} \"use_github\":\"${USE_GITHUB}\", ;\
+	${ECHO_CMD} \"use_gitlab\":\"${USE_GITLAB}\", ;\
+	${ECHO_CMD} \"www\":\"${WWW:Q}\" ;\
+	${ECHO_CMD} "}" >> ${INDEX_OUT})
+.    else # empty(FLAVORS)
+describe-json: ${FLAVORS:S/^/describe-json-/}
+_LAST_FLAVOR = ${FLAVORS:[-1]}
+.      for f in ${FLAVORS}
+describe-json-${f}:
+	@if [ "${f}" == "${FLAVORS:[1]}" ]; then \
+		${ECHO_CMD} "{" ;\
+	fi;
+	@cd ${.CURDIR} && ${SETENV} FLAVOR=${f} ${MAKE} -B -D_DESCRIBE_WITH_FLAVOR describe-json
+	@if [ "${f}" != "${_LAST_FLAVOR}" ]; then \
+		${ECHO_MSG} "," ;\
+	else \
+		${ECHO_CMD} "}" ;\
+	fi; \
+
+.      endfor
+.    endif # empty(FLAVORS)
 
 www-site:
 	@${ECHO_CMD} ${_WWW}
@@ -4412,7 +4614,6 @@ _PRETTY_PRINT_DEPENDS_LIST=\
 		${ECHO_MSG} -n `${AWK} -F\| "\\$$1 ~ /^${PKGNAME}/ {print \\$$$${fldnum};}" ${INDEXDIR}/${INDEXFILE}` ; \
 		${ECHO_MSG} "\" to $$target."; \
 	fi;
-
 
 .    if !target(pretty-print-build-depends-list)
 pretty-print-build-depends-list:
@@ -4460,6 +4661,13 @@ generate-plist: ${WRKDIR}
 	@for file in ${PLIST_FILES}; do \
 		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} >> ${TMPPLIST}; \
 	done
+.      for sp in ${_PKGS}
+.        if ${sp} != ${PKGBASE}
+	@for file in ${PLIST_FILES${_SP.${sp}}}; do \
+		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's/^/@@${_SP.${sp}:S/^.//}@@/' >> ${TMPPLIST}; \
+	done
+.        endif
+.      endfor
 .      if !empty(PLIST)
 .        for f in ${PLIST}
 	@if [ -f "${f}" ]; then \
@@ -4473,6 +4681,13 @@ generate-plist: ${WRKDIR}
 	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@dir ,' >> ${TMPPLIST}
 .      endfor
 
+.      for sp in ${_PKGS}
+.        if ${sp} != ${PKGBASE}
+.          for dir in ${PLIST_DIRS${_SP.${sp}}}
+	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@@${_SP.${sp}:S/^.//}@@@dir ,' >> ${TMPPLIST}
+.          endfor
+.        endif
+.      endfor
 .    endif
 
 ${TMPPLIST}:
@@ -4626,20 +4841,20 @@ stage-qa:
 
 pretty-flavors-package-names: .PHONY
 .    if empty(FLAVORS)
-	@${ECHO_CMD} "no flavor: ${PKGNAME}"
+	@${ECHO_CMD} "no flavor: ${PKGNAMES}"
 .    else
 .      for f in ${FLAVORS}
 	@${ECHO_CMD} -n "${f}: "
-	@cd ${.CURDIR} && ${SETENV} FLAVOR=${f} ${MAKE} -B -V PKGNAME
+	@cd ${.CURDIR} && ${SETENV} -i FLAVOR=${f} ${MAKE} -B -V PKGNAMES
 .      endfor
 .    endif
 
 flavors-package-names: .PHONY
 .    if empty(FLAVORS)
-	@${ECHO_CMD} "${PKGNAME}"
+	@${ECHO_CMD} "${PKGNAMES}" | ${XARGS} -n 1
 .    else
 .      for f in ${FLAVORS}
-	@cd ${.CURDIR} && ${SETENV} FLAVOR=${f} ${MAKE} -B -V PKGNAME
+	@cd ${.CURDIR} && ${SETENV} -i FLAVOR=${f} ${MAKE} -B -V PKGNAMES | ${XARGS} -n 1
 .      endfor
 .    endif
 
@@ -4650,19 +4865,22 @@ STAGE_ARGS=		-i ${STAGEDIR}
 STAGE_ARGS=	-N
 .      endif
 
-fake-pkg:
-.      if defined(INSTALLS_DEPENDS)
-.        if !defined(NO_PKG_REGISTER)
+.      for sp in ${_PKGS}
+fake-pkg: fake-pkg.${sp}
+fake-pkg.${sp}: ${_PLIST}.${sp}
+.        if defined(INSTALLS_DEPENDS)
+.          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
-.        endif
-	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR} -f ${TMPPLIST}
-.      else
-.        if !defined(NO_PKG_REGISTER)
+.          endif
+	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
+.        else
+.          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME}"
+.          endif
+	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
 .        endif
-	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR} -f ${TMPPLIST}
-.      endif
-	@${RM} -r ${METADIR}
+	@${RM} -r ${METADIR}.${sp}
+.      endfor
 .    endif
 
 # Depend is generally meaningless for arbitrary ports, but if someone wants
@@ -5260,7 +5478,7 @@ _STAGE_SEQ=		050:stage-message 100:stage-dir 150:run-depends \
 				900:add-plist-info 910:add-plist-docs 920:add-plist-examples \
 				930:add-plist-data 940:add-plist-post ${POST_PLIST:C/^/990:/} \
 				${_OPTIONS_install} ${_USES_install} \
-				${_OPTIONS_stage} ${_USES_stage}
+				${_OPTIONS_stage} ${_USES_stage} ${_FEATURES_stage}
 .    if defined(DEVELOPER)
 _STAGE_SEQ+=	995:stage-qa
 .    else
@@ -5277,7 +5495,7 @@ _INSTALL_SEQ=	100:install-message \
 				300:create-manifest
 _INSTALL_SUSEQ=	400:fake-pkg 500:security-check
 
-_PACKAGE_DEP=	stage
+_PACKAGE_DEP=	stage ${_TESTING_PACKAGE_DEP}
 _PACKAGE_SEQ=	100:package-message 300:pre-package 450:pre-package-script \
 				500:do-package 850:post-package-script \
 				${_OPTIONS_package} ${_USES_package}

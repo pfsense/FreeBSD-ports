@@ -1,6 +1,6 @@
 PORTNAME=	sayaka
 PORTVERSION=	3.5.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im
 
 MAINTAINER=	sue@iwmt.org
@@ -21,6 +21,8 @@ PLIST_FILES=	bin/sayaka
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS
+
+CXXFLAGS+=	-Wno-error=vla-cxx-extension
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/sayaka ${STAGEDIR}${PREFIX}/bin

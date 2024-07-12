@@ -1,5 +1,5 @@
 PORTNAME=	sftpgo
-PORTVERSION=	2.5.2
+PORTVERSION=	2.6.2
 CATEGORIES=	ftp www
 MASTER_SITES=	https://github.com/drakkan/${PORTNAME}/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME}_v${PORTVERSION}_src_with_deps
@@ -11,7 +11,7 @@ WWW=		https://github.com/drakkan/sftpgo
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules tar:xz
+USES=		go:1.22,modules tar:xz
 USE_RC_SUBR=	${PORTNAME}
 
 NO_WRKSUBDIR=	yes
@@ -62,6 +62,6 @@ post-install-ZSH-on:
 	${INSTALL_DATA} ${WRKDIR}/zsh_completions ${STAGEDIR}${PREFIX}/share/zsh/site-functions/_${PORTNAME}
 
 post-install-MANPAGES-on:
-	${FIND} ${WRKDIR}/manpages -type f -execdir ${INSTALL_MAN} {} ${STAGEDIR}${MANPREFIX}/man/man1 \;
+	${FIND} ${WRKDIR}/manpages -type f -execdir ${INSTALL_MAN} {} ${STAGEDIR}${PREFIX}/share/man/man1 \;
 
 .include <bsd.port.mk>

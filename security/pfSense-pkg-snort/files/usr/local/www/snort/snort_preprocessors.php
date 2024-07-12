@@ -3,7 +3,7 @@
  * snort_preprocessors.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
  * Copyright (c) 2013-2022 Bill Meeks
@@ -39,12 +39,12 @@ if (is_null($id)) {
 }
 
 // Initialize multiple config engine arrays for supported preprocessors if necessary
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'frag3_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'stream5_tcp_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'http_inspect_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_server_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_client_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'arp_spoof_engine', 'item'));
+config_init_path("installedpackages/snortglobal/rule/{$id}/frag3_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/stream5_tcp_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/http_inspect_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/ftp_server_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/ftp_client_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/arp_spoof_engine/item");
 
 $a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
@@ -808,7 +808,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 			'view',
 			'View',
 			'#',
-			'fa-file-text-o'
+			'fa-regular fa-file-lines'
 		);
 		$btnview->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm');
 		$btnview->setAttribute('data-target', '#rulesviewer')->setAttribute('data-toggle', 'modal');
@@ -888,13 +888,13 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'btn_import',
 		' Import',
 		null,
-		'fa-upload'
+		'fa-solid fa-upload'
 	))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm');
 	$group->add(new Form_Button(
 		'btn_edit_hat',
 		empty($pconfig['host_attribute_data']) ? 'Create' : 'Edit',
 		null,
-		empty($pconfig['host_attribute_data']) ? 'fa-plus' : 'fa-pencil'
+		empty($pconfig['host_attribute_data']) ? 'fa-plus' : 'fa-solid fa-pencil'
 	))->removeClass('btn-primary')->addClass('btn-success')->addClass('btn-sm');
 	$group->setHelp('The Host Attribute Data file has a required specific format.  See the Snort manual for details.');
 	$section->add($group);
@@ -1011,7 +1011,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START HTTP Inspect settings   -->
 	<div class="panel panel-default" id="preproc_http">
 		<div class="panel-heading">
-			<h2 class="panel-title">HTTP Inspect<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_http_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">HTTP Inspect<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_http_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_http_panel-body" class="panel-body collapse in">
 <?php
@@ -1071,11 +1071,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=http_inspect_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_httpinspect_engine.php?id=<?=$id?>&eng_id=<?=$http_inspect_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1087,11 +1087,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_httpinspect_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_httpinspect_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_http_inspect', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_http_inspect', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1108,7 +1108,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START Frag3 settings       -->
 	<div class="panel panel-default" id="preproc_frag3">
 		<div class="panel-heading">
-			<h2 class="panel-title">Frag3 Target-Based IP Defragmentation<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_frag3_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">Frag3 Target-Based IP Defragmentation<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_frag3_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_frag3_panel-body" class="panel-body collapse in">
 <?php
@@ -1151,11 +1151,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=frag3_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_frag3_engine.php?id=<?=$id?>&eng_id=<?=$frag3_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1167,11 +1167,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_frag3_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_frag3_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_frag3', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_frag3', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1188,7 +1188,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START Stream5 settings -->
 	<div class="panel panel-default" id="preproc_stream5">
 		<div class="panel-heading">
-			<h2 class="panel-title">Stream5 Target-Based Stream Reassembly<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_stream5_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">Stream5 Target-Based Stream Reassembly<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_stream5_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_stream5_panel-body" class="panel-body collapse in">
 <?php
@@ -1304,11 +1304,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=stream5_tcp_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_stream5_engine.php?id=<?=$id?>&eng_id=<?=$stream5_tcp_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1320,11 +1320,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_stream5_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_stream5_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_stream5_tcp', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_stream5_tcp', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1443,7 +1443,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'btnSelectAlias',
 		' ' . 'Aliases',
 		'#',
-		'fa-search-plus'
+		'fa-solid fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
@@ -1465,7 +1465,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'btnSelectAlias',
 		' ' . 'Aliases',
 		'#',
-		'fa-search-plus'
+		'fa-solid fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
@@ -1547,7 +1547,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 <!--	START FTP Protocol setttings -->
 	<div class="panel panel-default" id="preproc_ftp">
 		<div class="panel-heading">
-			<h2 class="panel-title">FTP Protocol Options<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_ftp_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">FTP Protocol Options<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_ftp_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_ftp_panel-body" class="panel-body collapse in">
 			<div class="form-group">
@@ -1563,11 +1563,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=ftp_client_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import client configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_ftp_client_engine.php?id=<?=$id?>&eng_id=<?=$ftp_client_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new client configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1579,11 +1579,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_ftp_client_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this client configuration")?>"></a>
+										<a href="snort_ftp_client_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this client configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_ftp_client', '<?=$f;?>');" title="<?=gettext("Delete this client configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_ftp_client', '<?=$f;?>');" title="<?=gettext("Delete this client configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default client configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default client configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1606,11 +1606,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<a href="snort_import_aliases.php?id=<?=$id?>&eng=ftp_server_engine" class="btn btn-sm btn-info" role="button" title="<?=gettext("Import server configuration from existing Aliases")?>">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext(' Import');?>
 										</a>
 										<a href="snort_ftp_server_engine.php?id=<?=$id?>&eng_id=<?=$ftp_server_engine_next_id?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1622,11 +1622,11 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['name'])?></td>
 									<td title="<?=trim(filter_expand_alias($v['bind_to']));?>"><?=gettext($v['bind_to'])?></td>
 									<td>
-										<a href="snort_ftp_server_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
+										<a href="snort_ftp_server_engine.php?id=<?=$id;?>&eng_id=<?=$f;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this server configuration")?>"></a>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_ftp_server', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_ftp_server', '<?=$f;?>');" title="<?=gettext("Delete this server configuration")?>"></a>
 									<?php else : ?>
-										<i class="fa fa-trash-o icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
+										<i class="fa-regular fa-trash-can icon-primary text-muted" title="<?=gettext("Default server configuration cannot be deleted")?>"></i>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -1684,7 +1684,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 ?>
 	<div class="panel panel-default" id="preproc_arp_spoof_row">
 		<div class="panel-heading">
-			<h2 class="panel-title">ARP Spoof Detection<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_arp_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+			<h2 class="panel-title">ARP Spoof Detection<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_arp_panel-body"><i class="fa-solid fa-plus-circle"></i></a></span></h2>
 		</div>
 		<div id="preproc_arp_panel-body" class="panel-body collapse in">
 <?php
@@ -1721,7 +1721,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("IP Address")?></th>
 									<th>
 										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$arp_spoof_engine_next_id;?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new address pair entry")?>">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
 									</th>
@@ -1733,8 +1733,8 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['mac_addr'])?></td>
 									<td><?=gettext($v['ip_addr'])?></td>
 									<td>
-										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this address pair entry")?>"></a>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
+										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext("Edit this address pair entry")?>"></a>
+										<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -2075,13 +2075,13 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'save',
 		'Save',
 		null,
-		'fa-save'
+		'fa-solid fa-save'
 	);
 	$btnreset = new Form_Button(
 		'ResetAll',
 		'Reset',
 		null,
-		'fa-repeat'
+		'fa-solid fa-arrow-rotate-right'
 	);
 	$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save preprocessor settings');
 	$btnreset->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning')->setAttribute('title', 'Reset all preprocessors to their defaults');
@@ -2125,7 +2125,7 @@ $btnsave = new Form_Button(
 	'arp_spoof_save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 );
 $btncancel = new Form_Button(
 	'arp_spoof_cancel',

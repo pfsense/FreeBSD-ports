@@ -1,12 +1,12 @@
 PORTNAME=	pnm2ppa
 PORTVERSION=	1.13
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	print
 MASTER_SITES=	SF
 
 MAINTAINER=	000.fbsd@quip.cz
 COMMENT=	Convert PNM images to PPA for some HP printers
-WWW=		http://pnm2ppa.sourceforge.net/
+WWW=		https://pnm2ppa.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/en/LICENSE
@@ -44,7 +44,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pnm2ppa ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/asciippafilter ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/ppafilter ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/pnm2ppa.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/pnm2ppa.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/pnm2ppa.conf.sample ${STAGEDIR}${PREFIX}/etc
 
 .include <bsd.port.mk>

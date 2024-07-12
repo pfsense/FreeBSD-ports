@@ -3,7 +3,7 @@
  * suricata_rules_flowbits.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -173,14 +173,14 @@ if ($savemsg)
 	<div class="panel-body">
 		<div class="content pull-left">
 			<dl class="dl-horizontal">
-				<dt><i class="fa fa-plus-square-o"></i></dt><dd><?=gettext('Alert is not suppressed');?></dd>
-				<dt><i class="fa fa-info-circle"></i></dt><dd><?=gettext('Alert is suppressed');?><dd>
+				<dt><i class="fa-regular fa-square-plus"></i></dt><dd><?=gettext('Alert is not suppressed');?></dd>
+				<dt><i class="fa-solid fa-info-circle"></i></dt><dd><?=gettext('Alert is suppressed');?><dd>
 				<dt></dt><dd class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Icons are only displayed for flowbit rules without the ' . '<em>noalert</em>' . ' option.');?></dd>
 			</dl>
 		</div>
 		<div class="content clearfix">
 			<button type="submit" class="btn btn-default btn-sm btn-success pull-right" id="cancel" name="cancel" title="<?=gettext('Return to previous page');?>">
-				<i class="fa fa-backward icon-embed-btn text-success"></i>
+				<i class="fa-solid fa-backward icon-embed-btn text-success"></i>
 				<?=gettext('Return'); ?>
 			</button>
 		</div>
@@ -227,11 +227,11 @@ if ($savemsg)
 									$supplink = "";
 								else {
 									if (!isset($supplist[$gid][$sid])) {
-										$supplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"doAddSuppress('{$gid}','{$sid}');\"";
+										$supplink = "<i class=\"fa-regular fa-square-plus icon-pointer\" onClick=\"doAddSuppress('{$gid}','{$sid}');\"";
 										$supplink .= " title='" . gettext("Click to add to Suppress List") . "'></i>";
 									}
 									else {
-										$supplink = "<i class=\"fa fa-info-circle icon-pointer\" title='";
+										$supplink = "<i class=\"fa-solid fa-info-circle icon-pointer\" title='";
 										$supplink .= gettext("Alert has been suppressed") . "'></i>";
 									}
 								}

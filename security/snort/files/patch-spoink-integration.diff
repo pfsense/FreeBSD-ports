@@ -1,6 +1,6 @@
-diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.am ./snort-2.9.19/src/output-plugins/Makefile.am
---- ./snort-2.9.19.orig/src/output-plugins/Makefile.am	2021-10-20 07:04:33.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2021-12-08 15:15:29.000000000 -0500
+diff -ruN ./snort-2.9.20.orig/src/output-plugins/Makefile.am ./snort-2.9.20/src/output-plugins/Makefile.am
+--- ./snort-2.9.20.orig/src/output-plugins/Makefile.am	2022-04-20 10:15:08.000000000 -0400
++++ ./src/output-plugins/Makefile.am	2023-11-09 18:25:39.000000000 -0500
 @@ -13,7 +13,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
@@ -11,9 +11,9 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.am ./snort-2.9.19/src/
  
  if BUILD_BUFFER_DUMP
  libspo_a_SOURCES += \
-diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.in ./snort-2.9.19/src/output-plugins/Makefile.in
---- ./snort-2.9.19.orig/src/output-plugins/Makefile.in	2021-11-11 03:42:11.000000000 -0500
-+++ ./src/output-plugins/Makefile.in	2021-12-08 15:18:27.000000000 -0500
+diff -ruN ./snort-2.9.20.orig/src/output-plugins/Makefile.in ./snort-2.9.20/src/output-plugins/Makefile.in
+--- ./snort-2.9.20.orig/src/output-plugins/Makefile.in	2022-05-23 11:42:31.000000000 -0400
++++ ./src/output-plugins/Makefile.in	2023-11-09 18:27:59.000000000 -0500
 @@ -116,7 +116,8 @@
  	spo_log_tcpdump.c spo_log_tcpdump.h spo_unified2.c \
  	spo_unified2.h spo_log_ascii.c spo_log_ascii.h \
@@ -40,12 +40,12 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.in ./snort-2.9.19/src/
  	$(am__append_1)
  all: all-am
  
-diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/output-plugins/spo_pf.c
---- ./snort-2.9.19.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2021-11-11 16:44:23.000000000 -0500
-@@ -0,0 +1,811 @@
+diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/output-plugins/spo_pf.c
+--- ./snort-2.9.20.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.c	2024-02-24 19:40:08.000000000 -0500
+@@ -0,0 +1,920 @@
 +/*
-+* Copyright (c) 2021  Bill Meeks
++* Copyright (c) 2024  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -125,6 +125,8 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +#include <ifaddrs.h>
 +#include <pthread.h>
 +
++#include <libpfctl.h>
++
 +#define PFDEVICE        "/dev/pf"
 +
 +enum spblock { SPOINK_BLOCK_SRC, SPOINK_BLOCK_DST, SPOINK_BLOCK_BOTH };
@@ -150,6 +152,9 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +
 +LIST_HEAD(iflist_head, iflist);
 +
++// Define a static instance of an Interface IP Linked List
++static struct iflist_head iflhead;
++
 +typedef struct _SpoAlertPfData {
 +    char *wlfile; 
 +    char *pftable; 
@@ -157,7 +162,6 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +    int kill;
 +    enum spblock block;
 +    struct wlist_head head;
-+    struct iflist_head iflhead;
 +} SpoAlertPfData;
 +
 +// Used to lock Interface List while it is being updated
@@ -166,6 +170,7 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +// Used for Interface IP change monitoring thread
 +pthread_t s2c_ifmon_thread;
 +int s2c_ifmon_thread_created = 0;
++int s2c_AlertPf_init = 0;
 +
 +void AlertPfInit(struct _SnortConfig *, char *);
 +static SpoAlertPfData *ParseAlertPfArgs(char *);
@@ -173,12 +178,15 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +void AlertPfCleanExit(int, void *);
 +void AlertPfRestart(struct _SnortConfig *, int, void *);
 +void *s2c_monitor_iface_changes(void *);
++void s2c_LogMessage(const char *, ...) __attribute__((format (printf, 1, 2)));
++void s2c_WarningMessage(const char *, ...) __attribute__((format (printf, 1, 2)));
++void s2c_ErrorMessage(const char *, ...) __attribute__((format (printf, 1, 2)));
 +
 +static int s2c_parse_ifam_address(struct sockaddr *, sfaddr_t *);
 +static void s2c_iflist_maint(sfaddr_t *, struct iflist_head *, u_char);
 +static int s2c_pf_init(void);
 +static int s2c_pf_block(SpoAlertPfData *, sfaddr_t *);
-+static int s2c_pf_intbl(int, char *, int);
++static int s2c_pf_intbl(int, char *);
 +static int s2c_parse_line(char *, FILE*);
 +static int s2c_parse_load_wl(FILE*, struct wlist_head*, int);
 +static int s2c_parse_search_wl(SpoAlertPfData *, sfaddr_t *);
@@ -197,12 +205,27 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +{
 +    SpoAlertPfData *data;
 +    DEBUG_WRAP(DebugMessage(DEBUG_INIT, "Output: AlertPf Initialized\n"););
++
++    s2c_LogMessage("Initializing 'alert_pf' custom output module for Legacy Mode Blocking.\n");
 +    
 +    if (pthread_mutex_init(&s2c_mutex_lock, NULL) != 0)
 +        FatalError("Threading mutex init failed.  Snort needs to be compiled with '--enable-pthread'.\n");
 +  
++    // Create a syslog instance for our use
++    int options = LOG_CONS | LOG_NDELAY | LOG_NOWAIT;
++    if (ScDaemonMode())
++        options |= LOG_PID;
++    openlog("snort", options, LOG_DAEMON | LOG_USER);
++    
++    // Parse our module configuration from snort.conf
 +    data = ParseAlertPfArgs(args);
-+    		
++
++    // Populate automatic firewall interface IP pass list
++    s2c_init_iface_list(&iflhead);
++
++    // Set flag to show this module is loaded
++    s2c_AlertPf_init = -1;
++
 +    DEBUG_WRAP(DebugMessage(DEBUG_INIT,"Linking AlertPf functions to call lists...\n"););
 +
 +    AddFuncToOutputList(sc, AlertPf, OUTPUT_TYPE__ALERT, data);
@@ -210,25 +233,26 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +#ifdef SNORT_RELOAD
 +    AddFuncToReloadList(AlertPfRestart, data);
 +#endif
++}
 +
++void AlertPfStartMonitorThread(void)
++{
++    pthread_attr_t attr;
++
++	// Create the interface IP change monitoring thread
++    if (!s2c_ifmon_thread_created && s2c_AlertPf_init) {
++        pthread_attr_init(&attr);
++        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
++        if (pthread_create(&s2c_ifmon_thread, &attr, s2c_monitor_iface_changes, &iflhead))
++            s2c_ErrorMessage("Failed to create firewall interface IP Address change monitoring thread for Snort 'alert_pf' custom output plugin. Interface IPs may be blocked!\n");
++        s2c_ifmon_thread_created = -1;
++    }
 +}
 +
 +void AlertPf(Packet *p, const char *msg, void *arg, Event *event)
 +{
 +    SpoAlertPfData *data = (SpoAlertPfData *)arg;
 +    sfaddr_t *ip;
-+    
-+    // Must create the interface IP change monitoring thread here instead
-+    // of in the AlertPfInit() function because that function is called
-+    // before Snort daemonizes.  After daemonizing, any previous threads
-+    // would be lost.  Only attempt to create the interface monitoring 
-+    // thread once.
-+    if (!s2c_ifmon_thread_created) {
-+        s2c_init_iface_list(&data->iflhead);
-+        if (pthread_create(&s2c_ifmon_thread, NULL, s2c_monitor_iface_changes, &data->iflhead))
-+            ErrorMessage("Failed to create firewall interface IP Address change monitoring thread for Snort 'alert_pf' custom output plugin.\n");
-+        s2c_ifmon_thread_created = -1;
-+    }
 +
 +    // Test for valid IP header in packet and
 +    // ignore packets with no valid IP information
@@ -252,8 +276,8 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +    }
 +    if (s2c_parse_search_wl(data, ip))
 +        return;
-+
-+    s2c_pf_block(data, ip);
++    else
++        s2c_pf_block(data, ip);
 +
 +    return;
 +}
@@ -262,7 +286,7 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +s2c_monitor_iface_changes(void *args)
 +{
 +	int sock = -1;
-+	int fib;
++	int fib = RT_ALL_FIBS;
 +	size_t fib_len = sizeof(fib);
 +	ssize_t len;
 +	char msg[MAX_RTMSG_SIZE];
@@ -275,27 +299,33 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +
 +	struct iflist_head *head = args;
 +
-+	sock = socket(PF_ROUTE, SOCK_RAW, 0);
++	sock = socket(PF_ROUTE, SOCK_RAW, AF_UNSPEC);
 +	if (sock == -1) {
-+		ErrorMessage("Failed to create socket(PF_ROUTE): %s.  Dynamic firewall interface IP changes will not be monitored!\n", strerror(errno));
++		s2c_ErrorMessage("Failed to create socket(PF_ROUTE): %s.  Dynamic firewall interface IP changes will not be monitored!\n", strerror(errno));
 +		return (NULL);
 +	}
 +
++    pthread_setname_np(pthread_self(), "IM#01");
++
 +	if (sysctlbyname("net.my_fibnum", &fib, &fib_len, NULL, 0) < 0)
 +	{  
-+		WarningMessage("spo_pf -> Failed to obtain active route table FIB so using all FIBs by default.\n");
++        s2c_WarningMessage("Failed to obtain active route table FIB, so using all FIBs by default.\n");
 +		fib = RT_ALL_FIBS;
 +	}
 +
-+	LogMessage("spo_pf -> Firewall interface IP address change notification monitoring thread started.\n");
++	s2c_LogMessage("Firewall interface IP address change notification monitoring thread started for Legacy Blocking Mode.\n");
 +	setsockopt(sock, SOL_SOCKET, SO_SETFIB, (void *)&fib, sizeof(fib));
 +
-+	// Loop forever receiving and handling kernel RTM messages
++	// Loop forever receiving and handling kernel RTM messages by checking the RTAX flags
 +	for (;;) {
 +
 +		len = read(sock, &msg, sizeof(msg));
-+		if (len == -1)
-+			continue;
++
++        // Disregard any route message not of the size we require
++        if (len < sizeof(struct ifa_msghdr))
++            continue;
++        else
++            len -= sizeof(struct ifa_msghdr);
 +
 +		rtm = (struct rt_msghdr *)msg;
 +		if (rtm->rtm_version != RTM_VERSION)
@@ -306,32 +336,39 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +		switch (rtm->rtm_type) {
 +			case RTM_NEWADDR:
 +			case RTM_DELADDR:
-+				// Make sure all address info we need is present in the message
-+				if (ifam->ifam_addrs != 0xb4)
-+					continue;
-+				break;
++                // Make sure all address info we need is present in the message
++				if (ifam->ifam_addrs & (RTAX_NETMASK | RTAX_IFP | RTAX_IFA | RTAX_BRD)) {
++
++                    // Get the interface address that is changing (will be third sockaddr in msg)
++                    p = (char *)(ifam + 1);
++                    p += SA_SIZE((struct sockaddr *)p);
++                    len -= SA_SIZE((struct sockaddr *)p);
++                    p += SA_SIZE((struct sockaddr *)p);
++                    len -= SA_SIZE((struct sockaddr *)p);
++                    sa = (struct sockaddr *)p;
++
++                    // If we've run out of data, skip this message as something is amiss
++                    if (len == 0 || len < SA_SIZE(sa))
++                        continue;
++
++                    // Make sure we have a valid non-zero IP address in that sockaddr structure
++                    if (!s2c_parse_ifam_address(sa, &addr)) {
++                        s2c_WarningMessage("Firewall interface IP change notification thread received an invalid IP address via kernel routing message socket -- Ignoring the message.\n");
++                        continue;
++                    }
++
++                    // OK, now either delete it from or add it to the interface IP list
++                    s2c_LogMessage("Received notification of an IP address change on interface %s.\n", if_indextoname(ifam->ifam_index, ifname));
++                    s2c_iflist_maint(&addr, head, rtm->rtm_type);
++                }
++                continue;
 +
 +			default:
 +				continue;
 +		}
-+
-+		// Get the address that is changing (should be third sockaddr structure in msg)
-+		p = (char *)((char *)ifam + sizeof(struct ifa_msghdr));
-+		p += SA_SIZE((struct sockaddr *)p);
-+		p += SA_SIZE((struct sockaddr *)p);
-+		sa = (struct sockaddr *)p;
-+
-+		// Make sure we have a valid non-zero IP address in that sockaddr structure
-+		if (!s2c_parse_ifam_address(sa, &addr)) {
-+			WarningMessage("spo_pf -> Firewall interface IP change notification thread received an invalid IP address via kernel routing message socket -- Ignoring the message.\n");
-+			continue;
-+		}
-+
-+		// OK, now either delete it from or add it to the interface IP list
-+		LogMessage("spo_pf -> Received notification of IP address change on interface %s.\n", if_indextoname(ifam->ifam_index, ifname));
-+		s2c_iflist_maint(&addr, head, ifam->ifam_type);
 +	}
 +
++    s2c_LogMessage("Legacy Blocking Mode firewall interface IP address change notification monitoring thread #IM01 shutting down.\n");
 +	return (NULL);
 +}
 +
@@ -345,15 +382,15 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +		case AF_INET:
 +			if (((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr == INADDR_ANY)
 +				return 0;
-+			ip->family = AF_INET;
-+			memcpy(sfaddr_get_ip4_ptr(ip), &((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr, sizeof(in_addr_t));
++            if (sfip_set_raw(ip, &((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr, AF_INET) != SFIP_SUCCESS)
++                return 0;
 +			return 1;
 +
 +		case AF_INET6:
 +			if (IN6_IS_ADDR_UNSPECIFIED(&((struct sockaddr_in6 *)(void *)sa)->sin6_addr))
 +				return 0;
-+			ip->family = AF_INET6;
-+			memcpy(sfaddr_get_ip6_ptr(ip), &((struct sockaddr_in6 *)(void *)sa)->sin6_addr.s6_addr, sizeof(struct in6_addr));
++            if (sfip_set_raw(ip, &((struct sockaddr_in6 *)(void *)sa)->sin6_addr.s6_addr, AF_INET6) != SFIP_SUCCESS)
++                return 0;
 +			return 1;
 +
 +		default:
@@ -383,12 +420,12 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +			pthread_mutex_lock(&s2c_mutex_lock);
 +			struct iflist *ifl = SnortAlloc(sizeof(struct iflist));
 +			if (ifl == NULL) {
-+				ErrorMessage("spo_pf -> s2c_iflist_maint() could not allocate memory for new Interface IP List entry.\n");
++				s2c_ErrorMessage("spo_pf -> s2c_iflist_maint() could not allocate memory for new Interface IP List entry.\n");
 +				break;
 +			}
 +			memcpy(&(ifl->ifaddr), ip, sizeof(sfaddr_t));
 +			LIST_INSERT_HEAD(head, ifl, elem);
-+			LogMessage("spo_pf -> added address %s to automatic interface IP Pass List.\n", sfip_to_str(ip));
++			s2c_LogMessage("Added address %s to automatic interface IP Pass List for Legacy Blocking Mode.\n", sfip_to_str(ip));
 +			break;
 +
 +		case RTM_DELADDR:
@@ -403,14 +440,14 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +				if (sfip_fast_equals_raw(&aux1->ifaddr, ip)) {
 +					LIST_REMOVE(aux1, elem);
 +					free(aux1);
-+					LogMessage("spo_pf -> deleted address %s from automatic IP Pass List.\n", sfip_to_str(ip));
++					s2c_LogMessage("Deleted address %s from automatic interface IP Pass List for Legacy Blocking Mode.\n", sfip_to_str(ip));
 +					break;
 +				}
 +			}
 +			break;
 +
 +		default:
-+			ErrorMessage("spo_pf -> s2c_iflist_maint() received unrecognized action parameter.\n");
++			s2c_ErrorMessage("spo_pf -> s2c_iflist_maint() received unrecognized action parameter.\n");
 +			return;
 +	}
 +
@@ -431,12 +468,16 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +    if (data == NULL)
 +        FatalError("Unable to allocate memory for alert_pf data: %s. Terminating program!\n", strerror(errno));    
 +    
-+    if(args == NULL) 
-+        FatalError("Unable to load alert_pf args: %s. Terminating program!\n", strerror(errno));    
++    if(args == NULL) {
++        free(data);
++        FatalError("Unable to load alert_pf args: %s. Terminating program!\n", strerror(errno));
++    }
 +
 +    data->fd = s2c_pf_init();
-+    if (data->fd == -1)
++    if (data->fd == -1) {
++        free(data);
 +        FatalError("s2c_pf_init() => no pf device! Legacy Blocking cannot be enabled. Terminating program!\n");
++    }
 +    
 +    DEBUG_WRAP(DebugMessage(DEBUG_LOG,"ParseAlertPfArgs: %s\n", args););
 +
@@ -446,28 +487,38 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +    // the pass list file and the second must the name of the pf
 +    // table where blocked IPs are to be stored.
 +
-+    if(num_toks <= 1) 
++    if(num_toks <= 1) {
++        free(data);
 +        FatalError("snort.conf => You must supply TWO arguments for the pf plugin...: %s. Terminating program!\n", strerror(errno));
++    }
 +
-+    if(strstr(toks[0], "..") != NULL) 
++    if(strstr(toks[0], "..") != NULL) {
++        free(data);
 +        FatalError("snort.conf => File definition contains \"..\".  Do not do use relative paths! Terminating program!\n");
++    }
 +
 +    data->wlfile = strdup(toks[0]);
 +    wl = fopen(data->wlfile, "r");
-+    if (wl == NULL)
++    if (wl == NULL) {
++        free(data);
 +        FatalError("snort.conf => Unable to open Pass List file: %s. Terminating program!\n", strerror(errno));
++    }
 +    res = s2c_parse_load_wl(wl, &data->head, data->fd);
 +    fclose(wl);
 +    if (res == -1)
-+        ErrorMessage("snort.conf => Unable to load Pass List: %s. Friendly IP addresses may be blocked!\n", strerror(errno)); 
++        s2c_ErrorMessage("snort.conf => Unable to load Pass List: %s. Friendly IP addresses may be blocked!\n", strerror(errno)); 
 +
-+    if (!strlen(toks[1]))
-+        FatalError("snort.conf => No pf table defined for blocking: %s. Terminating program!\n", strerror(errno));                
-+    else
++    if (!strlen(toks[1])) {
++        free(data);
++        FatalError("snort.conf => No pf table defined for blocking: %s. Terminating program!\n", strerror(errno));
++    } else {
 +     	data->pftable = strdup(toks[1]);
++    }
 +
-+    if (s2c_pf_intbl(data->fd, data->pftable, 0) == 0)
-+        FatalError("pf.conf => Table %s does not exist in packet filter: %s. Terminating program!\n", data->pftable, strerror(errno));	
++    if (s2c_pf_intbl(data->fd, data->pftable) == 0) {
++        free(data);
++        FatalError("pf.conf => Table %s does not exist in packet filter: %s. Terminating program!\n", data->pftable, strerror(errno));
++    }
 +
 +    // Set default values for optional arguments.
 +    data->block = SPOINK_BLOCK_SRC;
@@ -496,9 +547,11 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +{
 +    SpoAlertPfData *data = (SpoAlertPfData *)arg;
 +    DEBUG_WRAP(DebugMessage(DEBUG_LOG,"AlertPfCleanExit\n"););
++
++    s2c_LogMessage("Shutting down Legacy Blocking Mode custom output plugin, 'alert_pf'.\n");
 + 
 +    s2c_parse_free_wl(&data->head);
-+    s2c_free_iface_list(&data->iflhead);
++    s2c_free_iface_list(&iflhead);
 +    pthread_mutex_destroy(&s2c_mutex_lock);
 +    close(data->fd);
 +
@@ -507,30 +560,36 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +    if(data->wlfile != NULL)
 +        free(data->wlfile);
 +    free(data);
++    closelog();
 +}
 +
 +void AlertPfRestart(struct _SnortConfig *sc, int signal, void *arg)
 +{
 +    SpoAlertPfData *data = (SpoAlertPfData *)arg;
-+    FILE *wl; int res;
++    FILE *wl;
 +
 +    DEBUG_WRAP(DebugMessage(DEBUG_LOG,"AlertPfRestart\n"););
 +
++    s2c_LogMessage("Restarting Legacy Blocking Mode custom output plugin: received 'snort reload config' signal.\n");
++
 +    // Reload the Pass List
 +    s2c_parse_free_wl(&data->head);
-+    s2c_free_iface_list(&data->iflhead);
-+    if (data->wlfile == NULL)
-+        FatalError("Missing Pass List file from arguments.");
++    s2c_free_iface_list(&iflhead);
++    if (data->wlfile == NULL) {
++        free(data);
++        FatalError("Missing Pass List file from arguments.\n");
++    }
 +    wl = fopen(data->wlfile, "r");
-+    if (wl == NULL)
++    if (wl == NULL) {
++        free(data);
 +        FatalError("snort.conf => Unable to open Pass List file: %s. Terminating program!\n", strerror(errno));
-+    res = s2c_parse_load_wl(wl, &data->head, data->fd);
++    }
++    if (s2c_parse_load_wl(wl, &data->head, data->fd) == -1)
++    	s2c_ErrorMessage("snort.conf => Unable to load Pass List: %s. Pass List IP addresses may be blocked!\n", strerror(errno)); 
 +    fclose(wl);
-+    if (res == -1)
-+    	ErrorMessage("snort.conf => Unable to load Pass List: %s. Friendly IP addresses may be blocked!\n", strerror(errno)); 
 +
 +    // Rebuild the firewall interface IP list
-+    s2c_init_iface_list(&data->iflhead);
++    s2c_init_iface_list(&iflhead);
 +}
 +
 +static int
@@ -542,71 +601,75 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +static int
 +s2c_pf_block(SpoAlertPfData *data, sfaddr_t *net_addr) 
 +{ 
-+	struct pfioc_table io; 
-+    	struct pfr_table table; 
-+      	struct pfr_addr addr; 
++    struct pfr_table table;
++    struct pfr_addr addr;
++    int nadd = 0;
++    int nerrors = 0;
 +
-+	if (data->fd < 0)
-+		data->fd = s2c_pf_init();
-+	if (data->fd == -1) {
-+		ErrorMessage("s2c_pf_init() => no pf device available! Unable to add IP to block list.\n");
-+		return -1;
-+	}
++    if (data->fd < 0)
++        data->fd = s2c_pf_init();
++    if (data->fd == -1) {
++        s2c_ErrorMessage("s2c_pf_init() => no pf device available! Unable to add IP to block list.\n");
++        return -1;
++    }
 +
-+        memset(&io,    0x00, sizeof(struct pfioc_table)); 
-+        memset(&table, 0x00, sizeof(struct pfr_table)); 
-+        memset(&addr,  0x00, sizeof(struct pfr_addr)); 
-+            
-+        strlcpy(table.pfrt_name, data->pftable, PF_TABLE_NAME_SIZE); 
-+        
-+        net_addr->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
++    memset(&table, 0x00, sizeof(struct pfr_table)); 
++    memset(&addr,  0x00, sizeof(struct pfr_addr)); 
 +
-+        addr.pfra_af  = net_addr->family; 
-+        addr.pfra_net = net_addr->family == AF_INET ? 32 : 128;; 
++    strlcpy(table.pfrt_name, data->pftable, PF_TABLE_NAME_SIZE); 
++    net_addr->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
++    addr.pfra_af  = net_addr->family; 
++    addr.pfra_net = net_addr->family == AF_INET ? 32 : 128; 
 +
-+        io.pfrio_table  = table; 
-+        io.pfrio_buffer = &addr; 
-+        io.pfrio_esize  = sizeof(addr); 
-+        io.pfrio_size   = 1; 
-+        
-+        if (ioctl(data->fd, DIOCRADDADDRS, &io))
-+            ErrorMessage("s2c_pf_block() => ioctl() DIOCRADDADDRS: %s\n", strerror(errno));
-+ 
-+	if (data->kill) {
-+		struct pfioc_state_kill psk;
++    // Add offender's IP address to passed pf table
++    if (pfctl_table_add_addrs(data->fd, &table, &addr, 1, &nadd, 0))
++        s2c_ErrorMessage("s2c_pf_block() => pfctl_table_add_addrs(): failed to add IP to pf table\n");
 +
-+		memset(&psk, 0, sizeof(psk));
-+		memset(&psk.psk_src.addr.v.a.mask, 0xff, sizeof(psk.psk_src.addr.v.a.mask));
-+		psk.psk_af = net_addr->family;
-+		if (psk.psk_af == AF_INET)
-+			memcpy(&psk.psk_src.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
-+		else if (psk.psk_af == AF_INET6)
-+			memcpy(&psk.psk_src.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
++    // Attempt to kill any open firewall states associated with blocked IP
++    if (data->kill && nadd > 0) {
++        struct pfctl_kill kill = {
++            .af = net_addr->family,
++        };
++        unsigned int nkill = 0;
++
++		memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
++		if (kill.af == AF_INET)
++			memcpy(&kill.src.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
++		else if (kill.af == AF_INET6)
++			memcpy(&kill.src.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
 +		else
 +			return (-1);
 +
-+		/* XXX: Should ignore? */
-+		ioctl(data->fd, DIOCKILLSTATES, &psk);
++        // Kill any open firewall states where blocked IP is the SRC
++		if (pfctl_kill_states(data->fd, &kill, &nkill)) {
++            s2c_ErrorMessage("s2c_pf_block() => pfctl_kill_states(): failed to kill states where blocked IP address was SRC.\n");
++            nerrors++;
++        }
 +
-+		memset(&psk, 0, sizeof(psk));
-+		memset(&psk.psk_dst.addr.v.a.mask, 0xff, sizeof(psk.psk_dst.addr.v.a.mask));
-+		psk.psk_af = net_addr->family;
-+		if (psk.psk_af == AF_INET)
-+			memcpy(&psk.psk_dst.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
-+		else if (psk.psk_af == AF_INET6)
-+			memcpy(&psk.psk_dst.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
-+		else
-+			return (-1);
++		memset(&kill, 0, sizeof(kill));
++		memset(&kill.dst.addr.v.a.mask, 0xff, sizeof(kill.dst.addr.v.a.mask));
++		kill.af = net_addr->family;
 +
-+		/* XXX: Should ignore? */
-+		ioctl(data->fd, DIOCKILLSTATES, &psk);
++		if (kill.af == AF_INET)
++			memcpy(&kill.dst.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
++		else if (kill.af == AF_INET6)
++			memcpy(&kill.dst.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
 +
++        // Kill any open firewall states where blocked IP is the DST
++		if (pfctl_kill_states(data->fd, &kill, &nkill)) {
++            s2c_ErrorMessage("s2c_pf_block() => pfctl_kill_states(): failed to kill states where blocked IP address was DST.\n");
++            nerrors++;
++        }
 +	}
-+        return(0); 
++
++    if (nerrors)
++        return (-1);
++    else
++        return (0); 
 +}
 +
 +static int
-+s2c_pf_intbl(int dev, char * tablename, int debug)
++s2c_pf_intbl(int dev, char * tablename)
 +{
 +	int i;
 +	struct pfioc_table io;
@@ -629,14 +692,19 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +	io.pfrio_buffer = table_aux;
 +	io.pfrio_esize = sizeof(struct pfr_table);
 +	
-+	if(ioctl(dev, DIOCRGETTABLES, &io)) 
++	if(ioctl(dev, DIOCRGETTABLES, &io)) { 
++        free(table_aux);
 +		FatalError("s2c_pf_intbl() => ioctl() DIOCRGETTABLES: %s. Terminating program!\n", strerror(errno));
++    }
 +
 +	for(i=0; i< io.pfrio_size; i++) {
-+		if (!strcmp(table_aux[i].pfrt_name, tablename))
-+			return 1;	
++		if (!strcmp(table_aux[i].pfrt_name, tablename)) {
++            free(table_aux);
++			return 1;
++        }	
 +	}
 +	
++    free(table_aux);
 +	return 0;
 +}
 +
@@ -684,7 +752,7 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +		if (ret == 1) {
 +			ipw = calloc(1, sizeof(struct ipwlist));
 +			if (ipw == NULL) {
-+				ErrorMessage("Could not allocate memory for white list entry!");
++				s2c_ErrorMessage("Could not allocate memory for white list entry!\n");
 +				continue;
 +			}
 +			// See if the white list entry is an IP address
@@ -694,17 +762,17 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +				continue;		
 +			}
 +			// Not an IP, so see if a pf table alias name
-+			if (s2c_pf_intbl(dev, cad, 0)) {
++			if (s2c_pf_intbl(dev, cad)) {
 +				ipw->spo_wltype = SPO_WLTYPE_ALIAS;
 +                strlcpy(ipw->spo_alias_tblname, cad, PF_TABLE_NAME_SIZE); 
 +				LIST_INSERT_HEAD(head, ipw, elem);
 +				continue;		
 +			} // else we don't know what the entry is
-+			ErrorMessage("Parameter %s supplied in the Pass List neither a valid IP address nor an existing pf alias table, skipping this entry.", cad);
++			s2c_ErrorMessage("Parameter %s supplied in the Pass List neither a valid IP address nor an existing pf alias table, skipping this entry.\n", cad);
 +			free(ipw);
 +			continue;
 +		} else // Current line in file exceeded WLMAX length limit
-+			ErrorMessage("Error encountered! Line %d in Pass List exceeds length limit of %d characters, skipping the entry.", linenum, WLMAX);
++			s2c_ErrorMessage("Error encountered! Line %d in Pass List exceeds length limit of %d characters, skipping the entry.\n", linenum, WLMAX);
 +	}
 +
 +	lock.l_type = F_UNLCK;
@@ -716,53 +784,54 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +static int
 +s2c_parse_search_wl(SpoAlertPfData *data, sfaddr_t *ip)
 +{
-+        struct iflist *aux1;	
-+        struct ipwlist *aux2;	
-+        struct pfioc_table io; 
-+        struct pfr_table table; 
-+        struct pfr_addr addr; 
++    struct iflist *aux1;	
++    struct ipwlist *aux2, *aux2_temp;	
++    struct pfioc_table io; 
++    struct pfr_table table; 
++    struct pfr_addr addr; 
 +
-+        // Check and do not block firewall interface IP addresses
-+        LIST_FOREACH(aux1, &data->iflhead, elem) {
-+            if (sfip_fast_equals_raw(&aux1->ifaddr, ip))
-+                return 1;
-+        }
++    // Check and do not block firewall interface IP addresses
++    LIST_FOREACH(aux1, &iflhead, elem) {
++        if (sfip_fast_equals_raw(&aux1->ifaddr, ip))
++            return 1;
++    }
 +
 +	// Now check the user-supplied PASS LIST (whitelist) IP addresses and aliases
-+	LIST_FOREACH(aux2, &data->head, elem) {
-+            switch (aux2->spo_wltype) {
++	LIST_FOREACH_SAFE(aux2, &data->head, elem, aux2_temp) {
++        switch (aux2->spo_wltype) {
 +
-+                case SPO_WLTYPE_ADDR:
-+                    if (sfip_contains(&aux2->waddr, ip) == SFIP_CONTAINS)
-+                        return 1;
-+                    break;
++            case SPO_WLTYPE_ADDR:
++                if (sfip_contains(&aux2->waddr, ip) == SFIP_CONTAINS)
++                    return 1;
++                break;
 +
-+                case SPO_WLTYPE_ALIAS:
-+                    // See if the packet IP address is in the alias table
-+                    memset(&io,    0x00, sizeof(struct pfioc_table)); 
-+                    memset(&table, 0x00, sizeof(struct pfr_table)); 
-+                    memset(&addr,  0x00, sizeof(struct pfr_addr)); 
-+                    strlcpy(table.pfrt_name, &aux2->spo_alias_tblname, PF_TABLE_NAME_SIZE); 
-+                    ip->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(ip), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(ip), sizeof(struct in6_addr));
-+                    addr.pfra_af  = ip->family; 
-+                    addr.pfra_net = ip->family == AF_INET ? 32 : 128;
-+                    io.pfrio_table  = table; 
-+                    io.pfrio_buffer = &addr; 
-+                    io.pfrio_esize  = sizeof(addr); 
-+                    io.pfrio_size   = 1; 
-+                    if (ioctl(data->fd, DIOCRTSTADDRS, &io)) {
-+                        // The IP lookup in pf failed. See if due to deleted alias table name.
-+                        if (s2c_pf_intbl(data->fd, &aux2->spo_alias_tblname, 0) == 0) {
-+                            LIST_REMOVE(aux2, elem);
-+                            free(aux2);
-+                            ErrorMessage("s2c_pf_block() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List. The alias appears to have been deleted, so removing it from the active Pass List.\n", strerror(errno), inet_ntoax(ip), &aux2->spo_alias_tblname);
-+                        } else {
-+                            ErrorMessage("s2c_pf_block() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List.\n", strerror(errno), inet_ntoax(ip), &aux2->spo_alias_tblname);
-+                        }
-+                        break;
++            case SPO_WLTYPE_ALIAS:
++                // See if the packet IP address is in the alias table
++                memset(&io,    0x00, sizeof(struct pfioc_table)); 
++                memset(&table, 0x00, sizeof(struct pfr_table)); 
++                memset(&addr,  0x00, sizeof(struct pfr_addr)); 
++                strlcpy(table.pfrt_name, aux2->spo_alias_tblname, PF_TABLE_NAME_SIZE); 
++                ip->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(ip), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(ip), sizeof(struct in6_addr));
++                addr.pfra_af  = ip->family; 
++                addr.pfra_net = ip->family == AF_INET ? 32 : 128;
++                io.pfrio_table  = table; 
++                io.pfrio_buffer = &addr; 
++                io.pfrio_esize  = sizeof(addr); 
++                io.pfrio_size   = 1; 
++                if (ioctl(data->fd, DIOCRTSTADDRS, &io)) {
++                    // The IP lookup in pf failed. See if due to deleted alias table name.
++                    if (s2c_pf_intbl(data->fd, aux2->spo_alias_tblname) == 0) {
++                        LIST_REMOVE(aux2, elem);
++                        free(aux2);
++                        s2c_ErrorMessage("s2c_parse_search_wl() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List. The alias appears to have been deleted, so removing it from the active Pass List.\n", strerror(errno), inet_ntoa(ip), aux2->spo_alias_tblname);
++                    } else {
++                        s2c_ErrorMessage("s2c_parse_search_wl() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List.\n", strerror(errno), inet_ntoa(ip), aux2->spo_alias_tblname);
 +                    }
-+                    if (addr.pfra_fback == PFR_FB_MATCH)
-+                        return 1;
++                    break;
++                }
++
++                if (addr.pfra_fback == PFR_FB_MATCH)
++                    return 1;
 +        }
 +    }
 +
@@ -781,7 +850,7 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +	if (LIST_EMPTY(wl)) { 
 +		return (1);
 +	} else { 
-+		ErrorMessage("s2c_parse_free_wl() => Unable to free Pass List memory: %s\n", strerror(errno));
++		s2c_ErrorMessage("s2c_parse_free_wl() => Unable to free Pass List memory: %s\n", strerror(errno));
 +		return (0);
 +	}
 +}
@@ -796,20 +865,25 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +	LIST_INIT(head);
 +
 +	if (getifaddrs(&ifap) == 0) {
++        s2c_LogMessage("Populating the internal list of firewall interface IP addresses for auto-whitelisting.\n");
 +		pthread_mutex_lock(&s2c_mutex_lock);
 +		for (ifa = ifap; ifa != NULL; ifa = ifa->ifa_next) {
 +			if (ifa->ifa_addr) {
 +				switch (ifa->ifa_addr->sa_family) {
 +					case AF_INET:
-+						addr.family = AF_INET;
-+						memcpy(sfaddr_get_ip4_ptr(&addr), &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, sizeof(in_addr_t));
-+						LogMessage("spo_pf -> adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
++                        if (sfip_set_raw(&addr, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, AF_INET) != SFIP_SUCCESS) {
++                            s2c_LogMessage("Failed to copy address from interface %s using sfip_set_raw(). Skipping this entry!\n", ifa->ifa_name);
++                            continue;
++                        }
++						s2c_LogMessage("Added firewall interface %s IPv4 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
 +						break;
 +
 +					case AF_INET6:
-+						addr.family = AF_INET6;
-+						memcpy(sfaddr_get_ip6_ptr(&addr), &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, sizeof(struct in6_addr));
-+						LogMessage("spo_pf -> adding firewall interface %s IPv6 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
++                        if (sfip_set_raw(&addr, &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, AF_INET6) != SFIP_SUCCESS) {
++                            s2c_LogMessage("Failed to copy address from interface %s using sfip_set_raw(). Skipping this entry!\n", ifa->ifa_name);
++                            continue;
++                        }
++						s2c_LogMessage("Added firewall interface %s IPv6 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
 +						break;
 +
 +					default:
@@ -819,7 +893,7 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +				// Get here only for IPv4 or IPv6 addresses, so store in list
 +				ifl = SnortAlloc(sizeof(struct iflist));
 +				if (ifl == NULL) {
-+					ErrorMessage("Could not allocate memory for Interface List entry.\n");
++					s2c_ErrorMessage("Could not allocate memory for firewall interface auto-whitelist entry.\n");
 +					continue;
 +				}
 +				memcpy(&(ifl->ifaddr), &addr, sizeof(sfaddr_t));
@@ -828,9 +902,8 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +		}
 +		pthread_mutex_unlock(&s2c_mutex_lock);
 +		freeifaddrs(ifap);
-+	}
-+	else {
-+		WarningMessage("Warning -- Failed to get list of firewall interface addresses for auto-whitelisting.\n");
++	} else {
++        s2c_WarningMessage("Warning -- Failed to get list of firewall interface addresses for auto-whitelisting.\n");
 +		return -1;
 +	}
 +
@@ -851,16 +924,52 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +	if (LIST_EMPTY(head)) { 
 +		return (1);
 +	} else { 
-+		ErrorMessage("s2c_free_iface_list() => Unable to free interface list memory: %s\n", strerror(errno));
++		s2c_ErrorMessage("s2c_free_iface_list() => Unable to free interface list memory: %s\n", strerror(errno));
 +		return (0);
 +	}
 +}
-diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.h ./snort-2.9.19/src/output-plugins/spo_pf.h
---- ./snort-2.9.19.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.h	2021-02-05 23:08:01.000000000 -0500
-@@ -0,0 +1,42 @@
++
++void s2c_ErrorMessage(const char *format,...)
++{
++    char buf[STD_BUF+1];
++    va_list ap;
++
++    va_start(ap, format);
++    vsnprintf(buf, STD_BUF, format, ap);
++    buf[STD_BUF] = '\0';
++    syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_ERR), "%s", buf);
++    va_end(ap);
++}
++
++void s2c_LogMessage(const char *format,...)
++{
++    char buf[STD_BUF+1];
++    va_list ap;
++
++    va_start(ap, format);
++    vsnprintf(buf, STD_BUF, format, ap);
++    buf[STD_BUF] = '\0';
++    syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_INFO), "%s", buf);
++    va_end(ap);
++}
++
++void s2c_WarningMessage(const char *format,...)
++{
++    char buf[STD_BUF+1];
++    va_list ap;
++
++    va_start(ap, format);
++    vsnprintf(buf, STD_BUF, format, ap);
++    buf[STD_BUF] = '\0';
++    syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_WARNING), "%s", buf);
++    va_end(ap);
++}
+diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.h ./snort-2.9.20/src/output-plugins/spo_pf.h
+--- ./snort-2.9.20.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.h	2024-02-24 16:58:41.000000000 -0500
+@@ -0,0 +1,43 @@
 +/*
-+* Copyright (c) 2021  Bill Meeks
++* Copyright (c) 2024  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -899,20 +1008,13 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.h ./snort-2.9.19/src/out
 +#define __SPO_PF_H__
 +
 +void AlertPfSetup(void);
++void AlertPfStartMonitorThread(void);
 +
 +#endif 
-diff -ruN ./snort-2.9.19.orig/src/plugbase.c ./snort-2.9.19/src/plugbase.c
---- ./snort-2.9.19.orig/src/plugbase.c	2021-10-20 07:04:33.000000000 -0400
-+++ ./src/plugbase.c	2021-12-08 15:20:45.000000000 -0500
-@@ -124,6 +124,7 @@
- #include "output-plugins/spo_log_null.h"
- #include "output-plugins/spo_log_ascii.h"
- #include "output-plugins/spo_unified2.h"
-+#include "output-plugins/spo_pf.h"
- 
- #ifdef DUMP_BUFFER
- #include "output-plugins/spo_log_buffer_dump.h"
-@@ -1579,6 +1580,7 @@
+diff -ruN ./snort-2.9.20.orig/src/plugbase.c ./snort-2.9.20/src/plugbase.c
+--- ./snort-2.9.20.orig/src/plugbase.c	2022-05-18 01:02:15.000000000 -0400
++++ ./src/plugbase.c	2024-02-24 17:49:30.000000000 -0500
+@@ -1579,6 +1579,7 @@
      LogTcpdumpSetup();
      AlertFastSetup();
      AlertFullSetup();
@@ -920,3 +1022,14 @@ diff -ruN ./snort-2.9.19.orig/src/plugbase.c ./snort-2.9.19/src/plugbase.c
  #ifndef WIN32
      /* Win32 doesn't support AF_UNIX sockets */
      AlertUnixSockSetup();
+diff -ruN ./snort-2.9.20.orig/src/snort.c ./snort-2.9.20/src/snort.c
+--- ./snort-2.9.20.orig/src/snort.c	2022-05-18 01:07:17.000000000 -0400
++++ ./src/snort.c	2024-02-24 18:09:21.000000000 -0500
+@@ -873,6 +873,7 @@
+ {
+ 
+     ControlSocketInit();
++    AlertPfStartMonitorThread();
+ 
+ #ifdef SIDE_CHANNEL
+     SideChannelStartTXThread();

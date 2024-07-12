@@ -5,8 +5,8 @@ CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/Gspoof-3/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Console/GTK+ TCP/IP Packets Forger
-WWW=		http://gspoof.sourceforge.net/
+COMMENT=	Console/GTK TCP/IP Packets Forger
+WWW=		https://gspoof.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

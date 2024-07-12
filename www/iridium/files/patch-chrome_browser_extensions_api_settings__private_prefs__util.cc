@@ -1,20 +1,20 @@
---- chrome/browser/extensions/api/settings_private/prefs_util.cc.orig	2023-04-22 17:45:15 UTC
+--- chrome/browser/extensions/api/settings_private/prefs_util.cc.orig	2024-06-25 12:08:48 UTC
 +++ chrome/browser/extensions/api/settings_private/prefs_util.cc
-@@ -191,7 +191,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
+@@ -197,7 +197,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
+   (*s_allowlist)[::prefs::kSidePanelHorizontalAlignment] =
+       settings_api::PrefType::kBoolean;
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
-   (*s_allowlist)[::prefs::kUseCustomChromeFrame] =
-       settings_api::PrefType::PREF_TYPE_BOOLEAN;
- #endif
-@@ -203,7 +203,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
-       settings_api::PrefType::PREF_TYPE_STRING;
-   (*s_allowlist)[::prefs::kPolicyThemeColor] =
-       settings_api::PrefType::PREF_TYPE_NUMBER;
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   (*s_allowlist)[::prefs::kUsesSystemThemeDeprecated] =
-       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-   (*s_allowlist)[::prefs::kSystemTheme] =
+   (*s_allowlist)[::prefs::kUseCustomChromeFrame] =
+       settings_api::PrefType::kBoolean;
+ #endif
+@@ -208,7 +208,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
+   // Appearance settings.
+   (*s_allowlist)[::prefs::kCurrentThemeID] = settings_api::PrefType::kString;
+   (*s_allowlist)[::prefs::kPolicyThemeColor] = settings_api::PrefType::kNumber;
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   (*s_allowlist)[::prefs::kSystemTheme] = settings_api::PrefType::kNumber;
+ #endif
+   (*s_allowlist)[::prefs::kHomePage] = settings_api::PrefType::kUrl;

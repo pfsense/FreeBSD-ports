@@ -1,12 +1,12 @@
 PORTNAME=	mpg321
 PORTVERSION=	0.2.10
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Command-line MP3 player, compatible with mpg123
-WWW=		http://mpg321.sourceforge.net/
+WWW=		https://mpg321.sourceforge.net/
 
 LIB_DEPENDS=	libao.so:audio/libao \
 		libid3tag.so:audio/libid3tag \
@@ -20,7 +20,7 @@ CONFIGURE_ARGS=	--disable-mpg123-symlink
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-PLIST_FILES=	bin/mpg321 man/man1/mpg321.1.gz
+PLIST_FILES=	bin/mpg321 share/man/man1/mpg321.1.gz
 
 OPTIONS_DEFINE=	SCROBBLER
 SCROBBLER_DESC=	Last.fm Audioscrobbler support

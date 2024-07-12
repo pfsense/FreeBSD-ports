@@ -4,8 +4,11 @@
 Elixir requires a compatible Erlang/OTP runtime. Ensure that you have
 one of the following installed:
 
-- lang/erlang
-- lang/erlang-runtime24 or newer
+- lang/erlang-runtime27 or newer
+
+Note that lang/erlang through lang/erlang-runtime26 are not compatible
+with this build.
+
 EOM
 }
 { type: upgrade
@@ -13,9 +16,10 @@ EOM
 Elixir requires a compatible Erlang/OTP runtime. Ensure that you have
 one of the following installed, as you prefer:
 
-- lang/erlang
-- lang/erlang-runtime25 or newer
+- lang/erlang-runtime27 or newer
 
+Note that lang/erlang through lang/erlang-runtime26 are not compatible
+with this build.
 EOM
 }
 ]

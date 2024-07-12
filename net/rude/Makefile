@@ -1,12 +1,12 @@
 PORTNAME=	rude
 PORTVERSION=	0.70
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Real-time UDP data emitter and collector
-WWW=		http://rude.sourceforge.net/
+WWW=		https://rude.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/DOC/COPYING
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/DOC/COPYING
 RUN_DEPENDS=	p5-Tk>=0:x11-toolkits/p5-Tk
 
 HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--mandir=${PREFIX}/share/man
 CONFIGURE_ENV=	--with-debug-lvl=3
 USES=		perl5 shebangfix
 SHEBANG_FILES=	grude/grude

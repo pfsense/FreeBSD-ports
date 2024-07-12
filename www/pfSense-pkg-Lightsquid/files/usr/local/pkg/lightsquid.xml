@@ -8,7 +8,7 @@
  * lightsquid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -146,8 +146,8 @@
 			<fielddescr>Links</fielddescr>
 			<description>
 				<![CDATA[
-				<button type="submit" class="btn btn-info" name="navto_lightsquid" id="navto_lightsquid" value="Open Lightsquid"><i class="fa fa-sign-in icon-embed-btn"></i>Open Lightsquid</button>
-				<button type="submit" class="btn btn-info" name="navto_sqstat" id="navto_sqstat" value="Open sqstat"><i class="fa fa-sign-in icon-embed-btn"></i>Open sqstat</button>
+				<button type="submit" class="btn btn-info" name="navto_lightsquid" id="navto_lightsquid" value="Open Lightsquid"><i class="fa-solid fa-right-to-bracket icon-embed-btn"></i>Open Lightsquid</button>
+				<button type="submit" class="btn btn-info" name="navto_sqstat" id="navto_sqstat" value="Open sqstat"><i class="fa-solid fa-right-to-bracket icon-embed-btn"></i>Open sqstat</button>
 				]]>
 			</description>
 		</field>
@@ -293,9 +293,9 @@
 			<description>
 				<![CDATA[
 				Use these buttons to start a background refresh of the Lightsquid reports.<br/><br/>
-				<button type="submit" class="btn btn-primary" name="refreshnow" id="refreshnow" value="Refresh Now"><i class="fa fa-refresh icon-embed-btn"></i>Refresh</button>
+				<button type="submit" class="btn btn-primary" name="refreshnow" id="refreshnow" value="Refresh Now"><i class="fa-solid fa-arrows-rotate icon-embed-btn"></i>Refresh</button>
 				Will (re)parse today's entries only in Squid's current access.log.<br/><br/>
-				<button type="submit" class="btn btn-warning" name="refreshfull" id="refreshfull" value="Refresh Full"><i class="fa fa-retweet icon-embed-btn"></i>Refresh Full</button>
+				<button type="submit" class="btn btn-warning" name="refreshfull" id="refreshfull" value="Refresh Full"><i class="fa-solid fa-retweet icon-embed-btn"></i>Refresh Full</button>
 				Will (re)parse all entries in all Squid's access logs, including the rotated ones.
 				<span class="text-info">This may take a long time to finish!</span></dd>
 				]]>

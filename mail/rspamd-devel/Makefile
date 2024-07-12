@@ -1,5 +1,5 @@
 PORTNAME=	rspamd
-PORTVERSION=	3.4.a1.20221001
+PORTVERSION=	3.7.a1.20230808
 PORTREVISION=	3
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
@@ -20,7 +20,7 @@ RUN_DEPENDS=	ca_root_nss>=3.*:security/ca_root_nss
 USES=		cmake compiler:c++20-lang cpe gnome perl5 pkgconfig sqlite ssl
 CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
-GH_TAGNAME=	572e0b0
+GH_TAGNAME=	1f9ec9e
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 USE_PERL5=	build run
@@ -34,7 +34,6 @@ CMAKE_ARGS+=	-DBUILD_PORT=yes \
 		-DGIT_ID=${GH_TAGNAME} \
 		-DLIBDIR=${PREFIX}/lib/rspamd \
 		-DLOGDIR=/var/log/rspamd \
-		-DMANDIR=${MANPREFIX}/man \
 		-DRUNDIR=/var/run/rspamd
 
 DEBUG_FLAGS=	-g -O0
@@ -84,12 +83,6 @@ HYPERSCAN_CMAKE_ON=	-DENABLE_HYPERSCAN=ON
 LUAJIT_USES=		luajit
 LUAJIT_USES_OFF=	lua:51+
 LUAJIT_CMAKE_OFF=	-DENABLE_LUAJIT=OFF
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc64
-CMAKE_ARGS+=		-DENABLE_LTO:BOOL=OFF
-.endif
 
 post-install:
 	@${MKDIR} \

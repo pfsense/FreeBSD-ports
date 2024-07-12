@@ -1,5 +1,6 @@
 PORTNAME=	podofo
-PORTVERSION=	0.10.0
+PORTVERSION=	0.10.3
+PORTREVISION=	2
 CATEGORIES=	graphics print
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -11,9 +12,9 @@ LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	fast_float>=0:math/fast_float \
-		hhdate>=0:devel/hhdate \
+		date>=0:devel/date \
 		libfmt>=0:devel/libfmt \
-		utf8cpp>=0:devel/utf8cpp
+		utf8cpp>=4.0.3:devel/utf8cpp
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libidn.so:dns/libidn
@@ -24,10 +25,12 @@ USE_GNOME=	libxml2
 CFLAGS+=	-I${LOCALBASE}/include/fast_float
 CMAKE_ARGS=	-DFONTCONFIG_LIBRARIES=${LOCALBASE}/lib/libfontconfig.so \
 		-DOPENSSL_INCLUDE_DIR=${OPENSSLINC} \
-		-DOPENSSL_LIBRARIES=${OPENSSLDIR}
+		-DOPENSSL_LIBRARIES=${OPENSSLLIB}
 CMAKE_OFF=	PODOFO_BUILD_EXAMPLES PODOFO_BUILD_LIB_ONLY PODOFO_BUILD_STATIC PODOFO_BUILD_TEST PODOFO_BUILD_TOOLS
 CMAKE_TESTING_ON=	PODOFO_BUILD_TEST
 USE_LDCONFIG=	yes
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 USE_GITHUB=	yes
 
@@ -43,11 +46,19 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 TIFF_CMAKE_BOOL=	WANT_TIFF
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/fast_float.h \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/date \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/fmt \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/utf8cpp \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} ${WRKSRC}/3rdparty/fast_float.h
 	@${RM} -r ${WRKSRC}/3rdparty/date/
 	@${RM} -r ${WRKSRC}/3rdparty/fmt/
-	@${RM} -r ${WRKSRC}/3rdparty/utfcpp/
+	@${RM} -r ${WRKSRC}/3rdparty/utf8cpp/
+.endif
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
 PORTNAME=	ngrep
 PORTVERSION=	1.45
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net security
 MASTER_SITES=	SF
 
 MAINTAINER=	logan@elandsys.com
 COMMENT=	Network grep
-WWW=		http://ngrep.sourceforge.net/
+WWW=		https://ngrep.sourceforge.net/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -25,7 +25,7 @@ PCRE_DESC=		Use PCRE instead of GNU regex
 PORTS_PCAP_DESC=	Use ports PCAP instead of system PCAP
 CAPSICUM_DESC=		Build with capsicum if kernel supports it
 
-PLIST_FILES=	bin/ngrep man/man8/ngrep.8.gz
+PLIST_FILES=	bin/ngrep share/man/man8/ngrep.8.gz
 
 PORTDOCS=	CHANGES.txt CREDITS.txt INSTALL.txt LICENSE.txt \
 		README.txt REGEX.txt

@@ -1,13 +1,13 @@
 PORTNAME=	impressive
-DISTVERSION=	0.13.1
-PORTREVISION=	13
+DISTVERSION=	0.13.2
+PORTREVISION=	2
 CATEGORIES=	graphics python
 MASTER_SITES=	SF/${PORTNAME}/Impressive/${DISTVERSION}/
 DISTNAME=	Impressive-${DISTVERSION}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Stylish way of giving presentations
-WWW=		http://impressive.sourceforge.net/
+WWW=		https://impressive.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}PyOpenGL>=0:graphics/py-PyOpenGL@${PY_FLAVOR
 		${PYGAME} \
 		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR}
 
-USES=		python:3.5+ sdl shebangfix
+USES=		python sdl shebangfix
 USE_SDL=	sdl
 
 SHEBANG_FILES=	impressive.py

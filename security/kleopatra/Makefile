@@ -1,6 +1,5 @@
 PORTNAME=	kleopatra
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
 CATEGORIES=	security kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -27,4 +26,10 @@ USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CXXFLAGS+=	-Wno-error=enum-constexpr-conversion
+.endif
+
+.include <bsd.port.post.mk>

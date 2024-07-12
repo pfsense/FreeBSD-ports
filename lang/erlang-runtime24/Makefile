@@ -1,7 +1,7 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	24.3.4.12
-PORTREVISION=	0
+DISTVERSION=	24.3.4.17
+PORTREVISION=	2
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime24
 DIST_SUBDIR=	erlang
@@ -12,15 +12,13 @@ WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
 
-BROKEN_sparc64=	Fails to build: error: fp_except undeclared
-
 USES=		compiler cpe gmake ncurses perl5
 CPE_VENDOR=	erlang
 CPE_PRODUCT=	erlang/otp
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	erlang:otp,corba
 GH_PROJECT=	otp:otp corba:corba
-GH_TAGNAME=	5.1:corba
+GH_TAGNAME=	5.2.1:corba
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
@@ -75,10 +73,8 @@ JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
 JAVA_VARS=			USE_JAVA=yes
 KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
-ODBC_USES=			localbase
+ODBC_USES=			localbase:ldflags
 ODBC_CONFIGURE_WITH=		odbc
-ODBC_CFLAGS=			-I/usr/local/include
-ODBC_LDFLAGS=			-L/usr/local/lib
 OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		ssl=${OPENSSLBASE}
 SCTP_CONFIGURE_ENABLE=		sctp

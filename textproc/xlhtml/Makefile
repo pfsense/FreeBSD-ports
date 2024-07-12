@@ -1,13 +1,13 @@
 PORTNAME=	xlhtml
 PORTVERSION=	0.5
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/chicago/${PORTNAME}/backend
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert Excel and PowerPoint files to HTML and text
-WWW=		http://chicago.sourceforge.net/xlhtml/
+WWW=		https://chicago.sourceforge.net/xlhtml/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		autoreconf gmake tar:tgz
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 OPTIONS_DEFINE=	DOCS
 

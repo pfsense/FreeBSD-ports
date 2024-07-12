@@ -1,5 +1,5 @@
 PORTNAME=	${GH_PROJECT:tl}
-PORTVERSION=	1.9.1.1
+PORTVERSION=	1.10.1.1
 CATEGORIES=	games
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -18,8 +18,9 @@ GH_PROJECT=	OpenBVE
 USES=		gmake mono:nuget openal:soft sdl
 USE_SDL=	sdl2
 MAKEFILE=	makefile
-ALL_TARGET=	all-release
+ALL_TARGET=	all-${WITH_DEBUG:?debug:release}
 
+# Generated with `make makenuget'
 NUGET_DEPENDS=	CS-Script.lib=3.30.3 \
 		DotNetZip=1.16.0 \
 		LibUsbDotNet=2.2.29 \
@@ -53,8 +54,14 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 5.10
-BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: The imported project "/usr/local/lib/mono/msbuild/15.0/bin/Roslyn/Microsoft.CSharp.Core.targets" was not found
+.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
+BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: error MSB4184: The expression ""Program.cs".GetPathsOfAllDirectoriesAbove()" cannot be evaluated. Method 'System.String.GetPathsOfAllDirectoriesAbove' not found.
+.endif
+
+.if defined(WITH_DEBUG)
+PLIST_SUB+=	DEBUG="" RELEASE="@comment "
+.else
+PLIST_SUB+=	RELEASE="" DEBUG="@comment "
 .endif
 
 post-patch:
@@ -63,15 +70,16 @@ post-patch:
 
 do-install:
 # This is Windows only, so can be removed
-	${RM} ${WRKSRC}/bin_release/AtsPluginProxy.*
-	${CP} -a ${WRKSRC}/bin_release ${STAGEDIR}${DATADIR}
+	${RM} ${WRKSRC}/bin_[dr]*/AtsPluginProxy.*
+	${CP} -a ${WRKSRC}/bin_[dr]* ${STAGEDIR}${DATADIR}
 .for script program in openbve OpenBve openbve-objectviewer ObjectViewer \
     openbve-routeviewer RouteViewer
 	${PRINTF} '#!/bin/sh\n\nexec mono ${DATADIR}/${program}.exe\
 		"$$@"\n' > ${STAGEDIR}${PREFIX}/bin/${script}
 	${CHMOD} +x ${STAGEDIR}${PREFIX}/bin/${script}
 .endfor
-	${INSTALL_MAN} ${WRKSRC}/debian/*.6 ${STAGEDIR}${MANPREFIX}/man/man6
+	${INSTALL_MAN} ${WRKSRC}/debian/*.6 \
+		${STAGEDIR}${PREFIX}/share/man/man6
 	${INSTALL_DATA} ${WRKSRC}/debian/openbve.desktop \
 		${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/debian/openbve.png \

@@ -1,6 +1,5 @@
 PORTNAME=	minizinc
-DISTVERSION=	2.6.4
-PORTREVISION=	1
+DISTVERSION=	2.8.5
 CATEGORIES=	math lang
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -29,6 +28,8 @@ GH_PROJECT=	libminizinc
 CMAKE_ON=	BUILD_SHARED_LIBS
 
 CXXFLAGS+=	-DFREEBSD_MZN_STDLIB_DIR="\\\"${DATADIR}\\\""
+CXXFLAGS+=	-I${LOCALBASE}/include/highs # workaround for https://github.com/MiniZinc/libminizinc/issues/744
+LDFLAGS+=	-L${LOCALBASE}/lib # workaround for https://github.com/MiniZinc/libminizinc/issues/744
 
 OPTIONS_DEFINE=		WITH_SCIP
 

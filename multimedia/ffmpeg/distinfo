@@ -1,9 +1,9 @@
-TIMESTAMP = 1677530629
-SHA256 (ffmpeg-6.0.tar.xz) = 57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082
-SIZE (ffmpeg-6.0.tar.xz) = 10234012
+TIMESTAMP = 1703981246
+SHA256 (ffmpeg-6.1.1.tar.xz) = 8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a1f4ac0873616f968
+SIZE (ffmpeg-6.1.1.tar.xz) = 10458600
 SHA256 (master-0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch) = e8fdc940474f3819b9a8d30cab8164774584c051322acb6194bcb03d56e8175a
 SIZE (master-0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch) = 25395
 SHA256 (0002-doc-Add-libsvt_hevc-encoder-docs.patch) = a164ebdc4d281352bf7ad1b179aae4aeb33f1191c444bed96cb8ab333c046f81
 SIZE (0002-doc-Add-libsvt_hevc-encoder-docs.patch) = 5461
-SHA256 (master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch) = d8b91ea5f07d0208cbe0290567083808708014a1953fda322d13cb619349c9ee
+SHA256 (master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch) = 0433016c8523c7ce159523946a76c8fa06a926f33f94b70e8de7c2082d14178c
 SIZE (master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch) = 25894

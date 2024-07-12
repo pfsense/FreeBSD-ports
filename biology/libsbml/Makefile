@@ -1,7 +1,10 @@
 PORTNAME=	libsbml
-PORTVERSION=	5.20.0
+PORTVERSION=	5.20.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	biology devel
+
+PATCH_SITES=	https://github.com/sbmlteam/libsbml/commit/
+PATCHFILES=	a3e217851f18d3c5e8e2b0082fb98176738491e8.patch:-p1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	API Library for Working with SBML File
@@ -59,7 +62,7 @@ LIBXML2_USE=		GNOME=libxml2
 LIBXML2_USES=		gnome
 PYTHON_BUILD_DEPENDS=	swig:devel/swig
 PYTHON_CMAKE_BOOL=	WITH_PYTHON
-PYTHON_USES=		python:3.7+
+PYTHON_USES=		python
 PYTHON_CMAKE_ON=	WITH_SWIG
 RUBY_BUILD_DEPENDS=	swig:devel/swig
 RUBY_CMAKE_BOOL=	WITH_RUBY

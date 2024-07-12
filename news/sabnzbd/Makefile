@@ -1,5 +1,5 @@
 PORTNAME=	sabnzbd
-DISTVERSION=	4.0.0
+DISTVERSION=	4.2.2
 CATEGORIES=	news
 MASTER_SITES=	https://github.com/sabnzbd/sabnzbd/releases/download/${DISTVERSION}/
 DISTNAME=	SABnzbd-${DISTVERSION}-src
@@ -19,14 +19,14 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>=0:devel/py-cheetah3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.0:textproc/py-feedparser@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}portend>=0:net/py-portend@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sabctools>=0:news/py-sabctools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sabctools>=8.1.0:news/py-sabctools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}guessit>0:multimedia/py-guessit@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}puremagic>0:sysutils/py-puremagic@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pysocks>0:net/py-pysocks@${PY_FLAVOR} \
 		par2repair:archivers/par2cmdline \
 		unrar:archivers/unrar
 
-USES=		python:3.8+ shebangfix gettext
+USES=		python shebangfix gettext
 USE_RC_SUBR=	sabnzbd
 
 SHEBANG_FILES=	SABnzbd.py tools/msgfmt.py
@@ -57,7 +57,7 @@ DBUS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR}
 NOTIFY2_IMPLIES=	DBUS
 NOTIFY2_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}notify2>=0:devel/py-notify2@${PY_FLAVOR}
 PYGOBJECT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>=3.10.2:devel/py-gobject3@${PY_FLAVOR}
-SSL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${PY_FLAVOR}
+SSL_USE=		PYTHON=cryptography
 
 post-patch:
 	@${REINPLACE_CMD} -e "s:%%DATADIR%%:'${DATADIR}':g" \
@@ -70,11 +70,11 @@ do-build:
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/SABnzbd.py ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/sabnzbd
-	cd ${WRKSRC}/sabnzbd && ${COPYTREE_SHARE} \* ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/sabnzbd
+	cd ${WRKSRC}/sabnzbd && ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/sabnzbd
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 .for i in email icons interfaces locale po tools
 	@${MKDIR} ${STAGEDIR}${DATADIR}/${i}
-	cd ${WRKSRC}/${i} && ${COPYTREE_SHARE} \* ${STAGEDIR}${DATADIR}/${i}
+	cd ${WRKSRC}/${i} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/${i}
 .endfor
 
 post-install-DOCS-on:

@@ -1,5 +1,6 @@
 PORTNAME=	bhyve+
 PORTVERSION=	0.1.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	pali.gabor@gmail.com
@@ -7,6 +8,9 @@ COMMENT=	BHyVe with unofficial extensions
 WWW=		https://github.com/pgj/freebsd-bhyve-plus-port
 
 LICENSE=	BSD2CLAUSE
+
+DEPRECATED=	EOLed upstream
+EXPIRATION_DATE=2024-09-30
 
 ONLY_FOR_ARCHS=	amd64
 USES=		kmod uidfix
@@ -42,9 +46,7 @@ LIB9P_VERSION=		1.1
 PLIST_SUB=		9P_SHLIB_MAJOR=${LIB9P_VERSION} \
 			VMMAPI_SHLIB_MAJOR=${LIBVMMAPI_VERSION}
 
-.if 1200000 <= ${OSVERSION} && ${OSVERSION} < 1300000
-EXTRA_PATCHES=	${PATCHDIR}/freebsd-12 ${PATCHDIR}/freebsd-12/3
-.elif 1301000 <= ${OSVERSION} && ${OSVERSION} < 1400000
+.if 1302000 <= ${OSVERSION} && ${OSVERSION} < 1400000
 EXTRA_PATCHES=	${PATCHDIR}/freebsd-13/1
 .elif 1400000 <= ${OSVERSION} && ${OSVERSION} < 1500000
 EXTRA_PATCHES=		${PATCHDIR}/freebsd-14
@@ -108,7 +110,7 @@ do-install:
 	${INSTALL_LIB} ${WRKSRC}/lib/libvmmapi/libvmmapi.so.${LIBVMMAPI_VERSION} ${STAGEDIR}${PREFIX}/lib
 .for _bin in bhyve bhyveload bhyvectl
 	${INSTALL_PROGRAM} ${WRKSRC}/usr.sbin/${_bin}/${_bin} ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/usr.sbin/${_bin}/${_bin}.8.gz ${STAGEDIR}${PREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/usr.sbin/${_bin}/${_bin}.8.gz ${STAGEDIR}${PREFIX}/share/man/man8
 .endfor
 	${INSTALL_KLD} ${WRKSRC}/sys/modules/vmm/vmm.ko ${STAGEDIR}${KMODDIR}
 

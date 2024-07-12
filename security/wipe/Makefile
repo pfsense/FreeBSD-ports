@@ -1,12 +1,12 @@
 PORTNAME=	wipe
 PORTVERSION=	2.3.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File and block device wiping utility
-WWW=		http://wipe.sourceforge.net/
+WWW=		https://wipe.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		tar:bzip2
 GNU_CONFIGURE=	yes
 
-PLIST_FILES=	bin/wipe man/man1/wipe.1.gz
+PLIST_FILES=	bin/wipe share/man/man1/wipe.1.gz
 PORTDOCS=	CHANGES README TESTING TODO
 
 OPTIONS_DEFINE=	DOCS
@@ -25,7 +25,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

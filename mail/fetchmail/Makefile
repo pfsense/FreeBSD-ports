@@ -1,5 +1,5 @@
 PORTNAME?=	fetchmail
-DISTVERSION=	6.4.37
+DISTVERSION=	6.4.38
 PORTREVISION?=	0
 CATEGORIES=	mail
 # The next line is inherited by the fetchmailconf dependent port,
@@ -23,6 +23,7 @@ IGNORE_SSL_REASON=	incompatible license/no GPLv2 clause 2b exception for LibreSS
 USE_RC_SUBR=	fetchmail
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 # the added PYTHON=: suppresses python builds,
 # see ../../mail/fetchmailconf/ for the configuration tool
@@ -45,16 +46,13 @@ PORTDOCS=	FAQ FEATURES NEWS NOTES OLDNEWS README README.SSL \
 		README.SSL-SERVER design-notes.html esrs-design-notes.html \
 		fetchmail-FAQ.html fetchmail-features.html todo.html
 
-OPTIONS_DEFINE=		CA_BUNDLE DOCS NLS
-OPTIONS_DEFAULT=	CA_BUNDLE GSSAPI_BASE OPENSSL
+OPTIONS_DEFINE=		DOCS NLS
+OPTIONS_DEFAULT=	GSSAPI_BASE OPENSSL
 OPTIONS_SINGLE=		GSSAPI TLS
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 OPTIONS_SINGLE_TLS=	OPENSSL WOLFSSL
 
 OPTIONS_SUB=	yes
-
-CA_BUNDLE_DESC=		Install CA bundle for OpenSSL
-CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 GSSAPI_BASE_USES=		gssapi
 GSSAPI_BASE_CONFIGURE_ON=	${GSSAPI_CONFIGURE_ARGS} \
@@ -94,7 +92,7 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/fetchmailrc.sample \
 		${STAGEDIR}${PREFIX}/etc/fetchmailrc.sample
 	${RM} ${STAGEDIR}${PREFIX}/bin/fetchmailconf
-	${RM} ${STAGEDIR}${PREFIX}/man/man1/fetchmailconf.1*
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man1/fetchmailconf.1*
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -106,12 +104,6 @@ post-install-DOCS-on:
 
 .if (${OPSYS} == FreeBSD && ${OSVERSION} < 1400072) || ${OPSYS} != FreeBSD
 CONFIGURE_ARGS+=	--enable-opie
-.endif
-
-.if ${OPSYS} == FreeBSD && (${ARCH:Mpowerpc*} && ${OSREL:R} < 13)
-# as of 2019-10-02, powerpc's base compiler does not yield a working fetchmail.
-# https://svnweb.freebsd.org/ports?view=revision&revision=513614 -- pkubaj@
-USE_GCC=	yes
 .endif
 
 .include <bsd.port.post.mk>

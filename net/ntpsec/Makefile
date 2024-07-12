@@ -1,8 +1,6 @@
 PORTNAME=	ntpsec
 DISTVERSIONPREFIX=	NTPsec_
-DISTVERSION=	1_2_1-52
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g5943108da
+DISTVERSION=	1_2_3
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -26,15 +24,26 @@ MAKE_ENV=	NOSYNC=1 # workaround for the console problem: https://gitlab.com/NTPs
 
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=			DOCS
+OPTIONS_DEFINE=			DOCS REFCLOCKS
+OPTIONS_DEFAULT=		REFCLOCKS
 
 DOCS_CONFIGURE_ENABLE=	doc
 DOCS_BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor # alternatively ntpsec can use asciidoc:textproc/asciidoc but it prefers asciidoctor
 
+REFCLOCKS_DESC=	Enable all refclocks
+REFCLOCKS_VARS=	CONFIGURE_ARGS+=--refclock=all
+
 PORTSCOUT=	limit:^\d+\. # prevent alpha-numeric strings
 
-post-install: # autoplist: plist varies depending on the python version
+post-install:
+	# autoplist: plist varies depending on the python version
 	@cd ${STAGEDIR}${PREFIX} && \
 		${FIND} * -type f -or -type l | ${SED} -e 's|^share/man/.*|&.gz|' >> ${TMPPLIST}
+	# strip binaries
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/bin/ntpfrob \
+		${STAGEDIR}${PREFIX}/bin/ntptime \
+		${STAGEDIR}${PREFIX}/lib/libntpc.so.1.1.0 \
+		${STAGEDIR}${PREFIX}/sbin/ntpd
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	bitarray
-PORTVERSION=	2.5.1
+PORTVERSION=	2.8.1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,7 +10,7 @@ WWW=		https://pypi.org/project/bitarray/
 LICENSE=	PSFL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	ilanschnell
 USE_PYTHON=	autoplist distutils

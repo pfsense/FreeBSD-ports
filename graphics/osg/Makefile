@@ -1,7 +1,7 @@
 PORTNAME=	osg
 PORTVERSION=	3.6.5
 DISTVERSIONPREFIX=	OpenSceneGraph-
-PORTREVISION=	60
+PORTREVISION=	70
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -26,6 +26,7 @@ USES=		alias cmake compiler:c11 jpeg gl pkgconfig xorg
 USE_GL=		gl
 USE_XORG=	x11
 USE_LDCONFIG=	yes
+USE_CXXSTD=	c++11
 
 CFLAGS+=	-I${LOCALBASE}/include/Imath -DInt64=uint64_t
 

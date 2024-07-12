@@ -5,8 +5,8 @@ CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	GTK+ passwords manager for system and network administrators
-WWW=		http://gtkpasman.sourceforge.net/
+COMMENT=	GTK passwords manager for system and network administrators
+WWW=		https://gtkpasman.sourceforge.net/
 
 RUN_DEPENDS+=	gpgv2:security/gnupg
 

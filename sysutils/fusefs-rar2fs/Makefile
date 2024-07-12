@@ -1,7 +1,6 @@
 PORTNAME=	rar2fs
-DISTVERSION=	1.29.5
+DISTVERSION=	1.29.6
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
@@ -13,13 +12,14 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${NONEXISTENT}:${LIBUNRAR_PORT}:patch
-LIB_DEPENDS=	libunrar.so.6:${LIBUNRAR_PORT}
+LIB_DEPENDS=	libunrar.so:${LIBUNRAR_PORT}
 
 USES=		autoreconf compiler:c11 gmake fuse
 USE_GITHUB=	yes
 GH_ACCOUNT=	hasse69
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static-unrar \
 		--with-fuse-lib=${LOCALBASE}/lib \
 		--with-fuse=${LOCALBASE}/include/fuse \
@@ -29,9 +29,9 @@ CONFIGURE_ENV=	LIBUNRAR_PKG=${LIBUNRAR_PKG}
 
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/mkr2i \
-		man/man1/rar2fs.1.gz
+		share/man/man1/rar2fs.1.gz
 
-LIBUNRAR_PORT=	archivers/libunrar6
+LIBUNRAR_PORT=	archivers/libunrar
 LIBUNRAR_PKG=	${LIBUNRAR_PORT:S|archivers/||}
 
 .include <bsd.port.mk>

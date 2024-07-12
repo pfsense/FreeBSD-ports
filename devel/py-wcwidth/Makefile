@@ -1,5 +1,5 @@
 PORTNAME=	wcwidth
-PORTVERSION=	0.2.6
+PORTVERSION=	0.2.8
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ WWW=		https://github.com/jquast/wcwidth
 LICENSE=	MIT
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.mk>

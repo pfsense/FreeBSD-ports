@@ -1,6 +1,6 @@
 PORTNAME=	xf86-video-savage
 PORTVERSION=	2.3.9
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11-drivers
 
 PATCH_SITES=	https://gitlab.freedesktop.org/xorg/driver/${PORTNAME}/-/commit/
@@ -15,5 +15,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gl xorg-cat:driver
 USE_GL=		gl
+
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

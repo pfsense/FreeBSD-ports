@@ -1,15 +1,15 @@
---- src/3rdparty/chromium/v8/src/api/api.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/v8/src/api/api.cc.orig	2023-10-11 18:22:24 UTC
 +++ src/3rdparty/chromium/v8/src/api/api.cc
-@@ -138,7 +138,7 @@
+@@ -141,7 +141,7 @@
  #include "src/wasm/wasm-serialization.h"
  #endif  // V8_ENABLE_WEBASSEMBLY
  
 -#if V8_OS_LINUX || V8_OS_DARWIN || V8_OS_FREEBSD
 +#if V8_OS_LINUX || V8_OS_DARWIN || V8_OS_FREEBSD || V8_OS_OPENBSD
  #include <signal.h>
- #include "include/v8-wasm-trap-handler-posix.h"
- #include "src/trap-handler/handler-inside-posix.h"
-@@ -6064,7 +6064,7 @@ bool v8::V8::Initialize(const int build_config) {
+ #include <unistd.h>
+ 
+@@ -6352,7 +6352,7 @@ bool v8::V8::Initialize(const int build_config) {
    return true;
  }
  

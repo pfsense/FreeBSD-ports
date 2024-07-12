@@ -1,11 +1,11 @@
---- components/viz/test/fake_display_client.h.orig	2023-01-11 09:17:16 UTC
+--- components/viz/test/fake_display_client.h.orig	2024-01-30 07:53:34 UTC
 +++ components/viz/test/fake_display_client.h
-@@ -35,7 +35,7 @@ class FakeDisplayClient : public mojom::DisplayClient 
+@@ -36,7 +36,7 @@ class FakeDisplayClient : public mojom::DisplayClient 
    void AddChildWindowToBrowser(gpu::SurfaceHandle child_window) override;
  #endif
  
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(IS_OZONE_X11)
    void DidCompleteSwapWithNewSize(const gfx::Size& size) override;
- #endif
+ #endif  // BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
  

@@ -1,13 +1,13 @@
 PORTNAME=	goocanvas
 PORTVERSION=	2.0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Cairo-based canvas widget for GTK+ 3
+COMMENT=	Cairo-based canvas widget for GTK 3
 WWW=		https://sourceforge.net/projects/goocanvas/
 
 LICENSE=	LGPL20

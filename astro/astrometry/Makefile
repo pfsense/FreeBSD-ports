@@ -1,8 +1,7 @@
 PORTNAME=	astrometry
-PORTVERSION=	0.93
-PORTREVISION=	1
+PORTVERSION=	0.95
 CATEGORIES=	astro
-MASTER_SITES=	http://astrometry.net/downloads/
+MASTER_SITES=	https://github.com/dstndstn/${PORTNAME}.net/releases/download/${DISTVERSION}/
 DISTNAME=	${PORTNAME}.net-${PORTVERSION}
 
 MAINTAINER=	rhurlin@FreeBSD.org
@@ -18,8 +17,8 @@ BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libcfitsio.so:astro/cfitsio \
 		libgsl.so:math/gsl \
-		libpng.so:graphics/png \
 		libnetpbm.so:graphics/netpbm \
+		libpng16.so:graphics/png \
 		libwcs.so:astro/wcslib
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astropy>0:astro/py-astropy@${PY_FLAVOR} \
 		${PYNUMPY}
@@ -36,7 +35,7 @@ MAKE_ENV=	INSTALL_DIR=${STAGEDIR}${PREFIX} \
 		DATA_INSTALL_DIR=${STAGEDIR}${DATADIR} \
 		DOC_INSTALL_DIR=${STAGEDIR}${DOCSDIR} \
 		EXAMPLE_INSTALL_DIR=${STAGEDIR}${EXAMPLESDIR} \
-		MAN1_INSTALL_DIR=${STAGEDIR}${PREFIX}/man/man1 \
+		MAN1_INSTALL_DIR=${STAGEDIR}${PREFIX}/share/man/man1 \
 		PY_BASE_INSTALL_DIR=${STAGEDIR}${PYTHON_LIBDIR}/astrometry \
 		PYTHON=${PYTHON_CMD} PYTHON_SCRIPT=${PYTHON_CMD}
 MAKE_JOBS_UNSAFE=	yes
@@ -45,13 +44,12 @@ LDFLAGS+=	-lz
 
 CONFLICTS_INSTALL=	afni p5-Text-RecordParser # bin/imstat bin/tabmerge
 
-MANDIRS=	${MANPREFIX}/man/man1
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_DEFAULT=	EXAMPLES
 
-FILES=	an-fitstopnm an-pnmtofits astrometry-engine \
+FILES=	an-fitstopnm an-pnmtofits astrometry-engine augment-xylist \
 	build-astrometry-index downsample-fits fit-wcs \
 	fits-column-merge fits-flip-endian fits-guess-scale \
 	fitscopy fitsgetext fitsverify get-healpix get-wcs \
@@ -67,6 +65,7 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${file}
 .endfor
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libastrometry.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/astrometry/solver/_solver${PYTHON_EXT_SUFFIX}.so
 	@${REINPLACE_CMD} -i '' \
 		-e 's|${STAGEDIR}/usr/local/data|${DATADIR}|' \
 		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.cfg

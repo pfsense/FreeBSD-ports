@@ -1,6 +1,6 @@
 PORTNAME=	blt
 PORTVERSION=	2.5.3
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF/wize
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -28,6 +28,7 @@ MAKE_JOBS_UNSAFE=yes
 PLIST_SUB+=	BLTVER=${PORTVERSION:R} \
 		BLTSHORTVER=${PORTVERSION:R:S/.//}
 
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-jpeg=${LOCALBASE} \
 
 post-patch:
@@ -44,6 +45,10 @@ post-install:
 
 .if ${TCL_VER} > 8.5
 CFLAGS+=	-DUSE_INTERP_RESULT -DUSE_INTERP_ERRORLINE
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,7 +1,8 @@
 PORTNAME=	flrig
-PORTVERSION=	1.3.54
+PORTVERSION=	2.0.05
 CATEGORIES=	comms hamradio
-MASTER_SITES=	SF/fldigi/${PORTNAME}
+MASTER_SITES=	SF/fldigi/${PORTNAME} \
+		http://www.w1hkj.com/files/fldigi/
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Ham Radio rig control program, cooperates with fldigi
@@ -9,28 +10,22 @@ WWW=		http://www.w1hkj.com/flrig-help/index.html
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpng.so:graphics/png \
+LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libfltk.so:x11-toolkits/fltk
+		libpng.so:graphics/png \
+		libudev.so:devel/libudev-devd
 
-USES=		gmake jpeg xorg
-USE_XORG=	x11 xrender xcursor xfixes xext xft xinerama
+USES=		desktop-file-utils gmake jpeg xorg
+USE_XORG=	x11 xcursor xext xfixes xft xinerama xrender
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	FLTK_CONFIG="${LOCALBASE}/bin/fltk-config"
-PLIST_FILES=	bin/flrig share/applications/flrig.desktop \
-		 share/pixmaps/flrig.xpm
-OPTIONS_DEFINE=	NATIVE_OPT
+PLIST_FILES=	bin/flrig \
+		share/applications/flrig.desktop \
+		share/pixmaps/flrig.xpm
+OPTIONS_DEFINE=	NATIVE
 
-NATIVE_OPT_DESC=	Enable Native Optimizations
+NATIVE_CONFIGURE_ON+=	--enable-optimizations=native
+NATIVE_CONFIGURE_OFF+=	--enable-optimizations=none
 
-NATIVE_OPT_CONFIGURE_ON+=	--enable-optimizations=native
-NATIVE_OPT_CONFIGURE_OFF+=	--enable-optimizations=none
-
-.include <bsd.port.pre.mk>
-
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-CFLAGS+=	-mminimal-toc
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

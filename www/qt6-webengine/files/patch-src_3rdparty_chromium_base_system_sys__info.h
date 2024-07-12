@@ -1,20 +1,20 @@
---- src/3rdparty/chromium/base/system/sys_info.h.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/base/system/sys_info.h.orig	2023-10-11 18:22:24 UTC
 +++ src/3rdparty/chromium/base/system/sys_info.h
-@@ -212,6 +212,8 @@ class BASE_EXPORT SysInfo {
-   // On Desktop this returns true when memory <= 2GB.
-   static bool IsLowEndDevice();
+@@ -266,6 +266,8 @@ class BASE_EXPORT SysInfo {
+   static void ResetCpuSecurityMitigationsEnabledForTesting();
+ #endif
  
 +  static uint64_t MaxSharedMemorySize();
 +
   private:
+   friend class test::ScopedAmountOfPhysicalMemoryOverride;
    FRIEND_TEST_ALL_PREFIXES(SysInfoTest, AmountOfAvailablePhysicalMemory);
-   FRIEND_TEST_ALL_PREFIXES(debug::SystemMetricsTest, ParseMeminfo);
-@@ -222,7 +224,7 @@ class BASE_EXPORT SysInfo {
+@@ -278,7 +280,7 @@ class BASE_EXPORT SysInfo {
    static HardwareInfo GetHardwareInfoSync();
  
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || \
 -    BUILDFLAG(IS_AIX)
 +    BUILDFLAG(IS_AIX) || BUILDFLAG(IS_BSD)
-   static int64_t AmountOfAvailablePhysicalMemory(
+   static uint64_t AmountOfAvailablePhysicalMemory(
        const SystemMemoryInfoKB& meminfo);
  #endif

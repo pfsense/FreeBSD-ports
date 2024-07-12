@@ -1,5 +1,6 @@
 PORTNAME=	cde
 PORTVERSION=	${COMMIT_DATE}
+PORTREVISION=	2
 CATEGORIES=	x11
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	-devel
@@ -12,8 +13,8 @@ WWW=		https://sourceforge.net/p/cdesktopenv/wiki/Home/
 USE_GITHUB=	yes
 GH_ACCOUNT=	cschuber
 GH_PROJECT=	cdesktopenv-code
-GH_TAGNAME=	ece21debb
-COMMIT_DATE=	2023.04.01
+GH_TAGNAME=	3fa42c44a
+COMMIT_DATE=	2024.06.02
 
 LICENSE=	LGPL21
 
@@ -47,9 +48,10 @@ RUN_DEPENDS=	ksh93:shells/ksh			\
 		sessreg:x11/sessreg
 
 USES=		autoreconf:build iconv:wchar_t gmake jpeg libtool motif perl5 \
-		shebangfix tcl:86 xorg
+		shebangfix tcl:86 xorg llvm:16
 SHEBANG_LANG=	pl
-SHEBANG_FILES=	programs/dtinfo/tools/bin/ccdate
+SHEBANG_FILES=	programs/dtinfo/tools/bin/ccdate \
+		programs/dtdocbook/tcl/docbook.tcl
 DT_PREFIX=	${PREFIX}/dt${DT_ID}
 USE_LDCONFIG=	${DT_PREFIX}/lib
 USE_RC_SUBR=	dtcms${DT_ID} dtlogin${DT_ID}
@@ -57,13 +59,16 @@ USE_XORG=	ice sm x11 xau xdmcp xext xinerama xmu xscrnsaver xt
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${DT_PREFIX}
-MANPREFIX=	${DT_PREFIX}/share
+GNU_CONFIGURE_MANPREFIX=	${DT_PREFIX}/share
+MANDIRS=	${DT_PREFIX}/share/man
 INFODIR=	${DT_PREFIX}/share/info
 CONFIGURE_ARGS=	--with-tcl=${LOCALBASE}/lib/tcl8.6 MAKE="gmake"
 MAKE_ARGS+=	PERL=${PERL} "LOCAL_LDFLAGS=${LDFLAGS}"
 MAKE_JOBS_UNSAFE=yes
 MAKE_ENV=	MALLOC_CONF=junk:false
 SUB_FILES=	pkg-message
+CFLAGS+=	-Wno-register -Wno-incompatible-function-pointer-types \
+		-Wno-implicit-function-declaration
 LDFLAGS+=	-z muldefs #--allow-multiple-definition
 
 pre-configure:

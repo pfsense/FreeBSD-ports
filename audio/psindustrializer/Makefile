@@ -1,6 +1,6 @@
 PORTNAME=	psindustrializer
 DISTVERSION=	0.2.7
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio
 MASTER_SITES=	SF/industrializer/
 
@@ -40,5 +40,11 @@ JACK_LIB_DEPENDS=	libjack.so:audio/jack
 PULSE_DESC=		PulseAudio support
 PULSE_CONFIGURE_ENABLE=	pulse
 PULSE_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

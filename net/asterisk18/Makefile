@@ -1,5 +1,6 @@
 PORTNAME=	asterisk
-PORTVERSION=	18.18.0
+PORTVERSION=	18.21.0
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -30,9 +31,11 @@ USE_RC_SUBR=	asterisk
 
 SHEBANG_FILES=	agi/agi-test.agi \
 		agi/jukebox.agi \
-		contrib/scripts/astversion
+		contrib/scripts/astversion \
+		contrib/scripts/ast_coredumper
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
 		--with-ilbc=internal \
 		--with-crypto=${OPENSSLBASE} \
@@ -67,7 +70,6 @@ OPTIONS_DEFINE_i386=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_powerpc=		DAHDI
 OPTIONS_DEFINE_powerpc64=	DAHDI
 OPTIONS_DEFINE_powerpc64le=	DAHDI
-OPTIONS_DEFINE_sparc64=		DAHDI
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC OPUS MYSQL PGSQL \
 				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP URIPARSER \
 				VORBIS XMLDOC
@@ -76,7 +78,6 @@ OPTIONS_DEFAULT_i386=		DAHDI XMPP
 OPTIONS_DEFAULT_powerpc=	DAHDI XMPP
 OPTIONS_DEFAULT_powerpc64=	DAHDI XMPP
 OPTIONS_DEFAULT_powerpc64le=	DAHDI XMPP
-OPTIONS_DEFAULT_sparc64=	DAHDI XMPP
 
 OPTIONS_GROUP=			CODECS DATABASE
 OPTIONS_GROUP_CODECS=		GSM NEWG711 OPUS SPEEX VORBIS
@@ -214,18 +215,21 @@ ASTERISK_MOH_G729_SOUNDS=	asterisk-moh-opsound-g729-2.03.tar.gz
 ASTERISK_USER?=		asterisk
 ASTERISK_GROUP?=	asterisk
 
-PJSIP_VERSION=	2.13
+PJSIP_VERSION=	2.13.1
 
 .include <bsd.port.options.mk>
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 USES+=		llvm:max=14
-CPP=            clang-cpp${LLVM_VERSION}
-CC=             clang${LLVM_VERSION}
-CXX=            clang++${LLVM_VERSION}
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
+LIB_DEPENDS+=	libgnutls.so:security/gnutls
+CFLAGS+=	-DOPENSSL_API_COMPAT=0x10100000L
+LDFLAGS+=	-lgnutls
+.endif
 
 .if empty(ICONV_LIB)
 CONFIGURE_ARGS+=ac_cv_lib_iconv_iconv_open=no \

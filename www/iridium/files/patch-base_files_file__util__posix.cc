@@ -1,6 +1,6 @@
---- base/files/file_util_posix.cc.orig	2022-10-05 07:34:01 UTC
+--- base/files/file_util_posix.cc.orig	2024-06-25 12:08:48 UTC
 +++ base/files/file_util_posix.cc
-@@ -700,32 +700,34 @@ bool CreateDirectoryAndGetError(const FilePath& full_p
+@@ -819,33 +819,34 @@ bool CreateDirectoryAndGetError(const FilePath& full_p
                                  File::Error* error) {
    ScopedBlockingCall scoped_blocking_call(
        FROM_HERE, BlockingType::MAY_BLOCK);  // For call to mkdir().
@@ -34,11 +34,12 @@
 -    if (!DirectoryExists(subpath)) {
 -      if (error)
 -        *error = File::OSErrorToFileError(saved_errno);
+-      errno = saved_errno;
 -      return false;
 +    if (!PathExists(subpath)) {
 +      if ((mkdir(subpath.value().c_str(), 0700) == -1) &&
 +          ((full_path != subpath) ? (errno != ENOENT) : (-1))) {
-+        int saved_errno = errno;
++        int saved_errno = errno; 
 +        if (error)
 +          *error = File::OSErrorToFileError(saved_errno);
 +        return false;

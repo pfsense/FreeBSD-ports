@@ -9,19 +9,20 @@ MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	NVidia graphic card status and overclocking tool
 WWW=		https://www.linuxhardware.org/nvclock/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+MAKE_ARGS=	mandir=${STAGEDIR}${PREFIX}/share/man
 
-PLIST_FILES=	bin/nvclock bin/smartdimmer man/man1/nvclock.1.gz
+PLIST_FILES=	bin/nvclock bin/smartdimmer share/man/man1/nvclock.1.gz
 PORTDOCS=	ABOUT AUTHORS ChangeLog FAQ README
 
 OPTIONS_DEFINE=	NVCONTROL X11 DOCS
 OPTIONS_DEFAULT=	NVCONTROL X11
 
 NVCONTROL_DESC=	NV-CONTROL support (for OpenGL settings)
-X11_DESC=	Build GUI program (requires GTK+ 2.x)
+X11_DESC=	Build GUI program (requires GTK 2.x)
 
 NVCONTROL_USE=		XORG=xext
 NVCONTROL_USES=		pkgconfig xorg

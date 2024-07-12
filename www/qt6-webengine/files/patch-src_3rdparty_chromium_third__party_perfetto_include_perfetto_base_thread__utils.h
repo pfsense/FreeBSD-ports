@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/third_party/perfetto/include/perfetto/base/thread_utils.h.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/third_party/perfetto/include/perfetto/base/thread_utils.h.orig	2023-01-11 09:17:16 UTC
 +++ src/3rdparty/chromium/third_party/perfetto/include/perfetto/base/thread_utils.h
 @@ -34,6 +34,7 @@ __declspec(dllimport) unsigned long __stdcall GetCurre
  #include <sys/syscall.h>
@@ -8,7 +8,7 @@
  #else
  #include <pthread.h>
  #endif
-@@ -45,6 +46,11 @@ inline PlatformThreadId GetThreadId() {
+@@ -45,6 +46,11 @@ namespace base {
  using PlatformThreadId = pid_t;
  inline PlatformThreadId GetThreadId() {
    return gettid();

@@ -1,7 +1,7 @@
 PORTNAME=	openmw
-PORTREVISION=	7
 DISTVERSIONPREFIX=	openmw-
-DISTVERSION=	0.47.0
+DISTVERSION=	0.48.0
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	fluffy@FreeBSD.org
@@ -11,16 +11,22 @@ WWW=		https://openmw.org/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4 \
+BROKEN_FreeBSD_15_aarch64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276702
+BROKEN_FreeBSD_15_amd64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276702
+
+LIB_DEPENDS=	libavcodec.so.60:multimedia/ffmpeg \
 		libboost_thread.so:devel/boost-libs \
 		libMyGUIEngine.so:x11-toolkits/mygui \
 		libBulletCollision.so:devel/bullet@double \
 		libosg.so:graphics/osg \
 		libRecast.so:graphics/recastnavigation \
 		libunshield.so:archivers/unshield \
-		liblz4.so:archivers/liblz4
+		liblz4.so:archivers/liblz4 \
+		libicui18n.so:devel/icu \
+		libyaml-cpp.so:devel/yaml-cpp
 
-USES=		cmake compiler:c++17-lang gl openal pkgconfig qt:5 sdl xorg
+USES=		cmake compiler:c++17-lang desktop-file-utils gl luajit openal \
+		pkgconfig qt:5 sdl sqlite xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenMW
 USE_GL=		gl
@@ -44,9 +50,6 @@ DOCS_USES=		python:build
 
 PORTDOCS=	*
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-		${PATCH_WRKSRC}/cmake/FindFFmpeg.cmake
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 

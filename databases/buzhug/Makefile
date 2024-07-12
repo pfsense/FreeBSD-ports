@@ -6,9 +6,9 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pure-Python database engine
-WWW=		http://buzhug.sourceforge.net/
+WWW=		https://buzhug.sourceforge.net/
 
-USES=		dos2unix python:3.6+ zip
+USES=		dos2unix python zip
 USE_PYTHON=	distutils autoplist concurrent optsuffix
 
 .include <bsd.port.mk>

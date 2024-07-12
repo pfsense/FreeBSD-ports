@@ -1,6 +1,6 @@
 PORTNAME=	exim
 PORTVERSION?=	${EXIM_VERSION}
-PORTREVISION?=	0
+PORTREVISION?=	5
 CATEGORIES=	mail
 MASTER_SITES=	EXIM:exim
 MASTER_SITE_SUBDIR=	/exim4/:exim \
@@ -17,9 +17,11 @@ WWW=		https://www.exim.org/
 
 LICENSE=	GPLv2
 
+BUILD_DEPENDS=	p5-File-FcntlLock>0:devel/p5-File-FcntlLock
+RUN_DEPENDS=	p5-File-FcntlLock>0:devel/p5-File-FcntlLock
+
 USES=		compiler cpe tar:bzip2 perl5
 USE_CSTD=	c99
-USE_PERL5=	run
 
 # Exim build system is job unsafe atm
 MAKE_JOBS_UNSAFE=	yes
@@ -46,7 +48,6 @@ OPTIONS_SUB=	yes
 AUTH_SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 BDB_USES=	bdb
 DMARC_LIB_DEPENDS=	libopendmarc.so:mail/opendmarc
-EMBEDDED_PERL_USE=	perl5=run,build
 EXIMON_USES=	xorg
 EXIMON_USE=	xorg=x11,xaw,xext,xmu,xt
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -64,32 +65,10 @@ SPF_LIB_DEPENDS=	libspf2.so:mail/libspf2
 SQLITE_LIB_DEPENDS=	libicudata.so:devel/icu
 SQLITE_USES=	pkgconfig sqlite
 
-DEBIAN_PATCHES_PREFIX=	${FILESDIR}/debian/75
-EXTRA_PATCHES= \
-		${DEBIAN_PATCHES_PREFIX}_01-Fix-exit-on-attempt-to-rewrite-a-malformed-address.-.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_05-SPF-fix-memory-accounting-for-error-case.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_08-Fix-regex-n-use-after-free.-Bug-2915.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_09-Fix-non-WITH_CONTENT_SCAN-build.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_10-Fix-non-WITH_CONTENT_SCAN-build-2.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_11-Fix-non-WITH_CONTENT_SCAN-build-3.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_16-GnuTLS-fix-for-clients-offering-no-TLS-extensions.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_18-Fix-Build-with-libopendmarc-1.4.x-fixes-2728.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_19-DMARC-fix-use-after-free-in-dmarc_dns_lookup.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_22-Fix-daemon-startup.-Bug-2930.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_23-Fix-reccipients-after-run.-.-Bug-2929.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_31-Fix-regext-substring-capture-variables-for-null-matc.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_32-Fix-regex-substring-capture-variables-for-null-match.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_34-Fix-regex-substring-capture-commentary.-Bug-2933.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_37-OpenSSL-when-preloading-creds-do-the-server-certs-be.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_38-OpenSSL-fix-double-expansion-of-tls_verify_certifica.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_50-Fix-logging-of-max-size-log-line.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_55-Fix-recursion-on-dns_again_means_nonexist.-Bug-2911.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_58-Close-server-smtp-socket-explicitly-on-connect-ACL-d.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_60-OpenSSL-fix-tls_eccurve-setting-explicit-curve-group.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_62-OpenSSL-Fix-tls_eccurve-on-earlier-versions-than-3.0.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_63-OpenSSL-log-conns-rejected-for-bad-ALPN-with-the-off.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_64-DANE-do-not-check-dns_again_means_nonexist-for-TLSA-.patch:-p1 \
-		${DEBIAN_PATCHES_PREFIX}_66-Fix-crash-in-expansions.patch:-p1
+#DEBIAN_PATCHES_PREFIX=	${FILESDIR}/debian/75
+#EXTRA_PATCHES= \
+#		${DEBIAN_PATCHES_PREFIX}_01-Fix-exit-on-attempt-to-rewrite-a-malformed-address.-.patch:-p1 \
+#		${DEBIAN_PATCHES_PREFIX}_05-SPF-fix-memory-accounting-for-error-case.patch:-p1
 
 .include <bsd.port.options.mk>
 
@@ -130,7 +109,7 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Local-sa-exim.c
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Local-sa-exim.conf
 .endif
 
-EXIM_VERSION=	4.96
+EXIM_VERSION=	4.97.1
 SA_EXIM_VERSION=4.2.1
 EXIM_INSTALL_ARG+=	"-no_chown" "-no_symlink"
 EXTRA_PATCHES+=	`${FIND} ${PATCHDIR} -name '74_*.patch'|${SORT} -h`
@@ -408,6 +387,10 @@ SEDLIST+=	-e 's,^\# (AUTH_CYRUS_SASL=),\1,' \
 		-e 's,^\# (AUTH_LIBS=.*-lsasl2),\1,'
 .endif
 
+.if ${PORT_OPTIONS:MAUTH_TLS}
+SEDLIST+=	-e 's,^\# (AUTH_TLS=),\1,'
+.endif
+
 .if ${PORT_OPTIONS:MAUTH_RADIUS}
 WITH_RADIUS_TYPE?=	RADLIB
 .if ${WITH_RADIUS_TYPE:tl} == radlib
@@ -513,6 +496,10 @@ SEDLIST+=	-e 's,XX_SPF_FLAGS_XX,,' \
 .if ${PORT_OPTIONS:MSRS}
 SEDLIST+=	-e 's,XX_SRS_FLAGS_XX,-DSUPPORT_SRS,' \
 		-e 's,XX_SRS_LIBS_XX,,'
+.elif ${PORT_OPTIONS:MOLD_SRS}
+LIB_DEPENDS+=	libsrs_alt.so:mail/libsrs_alt
+SEDLIST+=	-e 's,XX_SRS_FLAGS_XX,-DEXPERIMENTAL_SRS_ALT,' \
+		-e 's,XX_SRS_LIBS_XX,-L${LOCALBASE}/lib -lsrs_alt,'
 .else
 SEDLIST+=	-e 's,XX_SRS_FLAGS_XX,,' \
 		-e 's,XX_SRS_LIBS_XX,,'
@@ -632,7 +619,7 @@ post-install:
 .endfor
 .endif
 	@${MKDIR} -m 750 ${STAGEDIR}${LOGDIR}
-	${INSTALL_MAN} ${WRKSRC}/doc/exim.8 ${STAGEDIR}${MAN8PREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/doc/exim.8 ${STAGEDIR}${PREFIX}/share/man/man8
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKDIR}/POST-INSTALL-NOTES ${STAGEDIR}${DOCSDIR}

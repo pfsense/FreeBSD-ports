@@ -1,6 +1,6 @@
 PORTNAME=	darktable
-PORTVERSION=	4.2.1
-PORTREVISION=	6
+PORTVERSION=	4.6.0
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -42,9 +42,10 @@ LIB_DEPENDS=	libavif.so:graphics/libavif \
 		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp
 
-USES=		cmake compiler:gcc-c++11-lib desktop-file-utils gl gnome jpeg \
-		llvm:14,build lua:54 perl5 pkgconfig sdl shebangfix sqlite \
+USES=		cmake compiler:c++11-lib desktop-file-utils gl gnome jpeg \
+		llvm:15,build lua:54 perl5 pkgconfig sdl shebangfix sqlite \
 		tar:xz xorg
+USE_GCC=	12
 USE_GL=		gl
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
@@ -53,15 +54,14 @@ USE_XORG=	ice sm x11 xext xrandr
 
 SHEBANG_FILES=	tools/*.sh
 
-USE_GCC=	yes
-
-CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1
+CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1 -DUSE_PORTMIDI:BOOL=OFF
 
 CMAKE_BOOL+=	BUILD_CMSTEST USE_AVIF USE_CAMERA_SUPPORT USE_HEIF \
-		USE_KWALLET USE_LUA USE_MAP USE_OPENEXR USE_OPENJPEG \
-		USE_WEBP RAWSPEED_ENABLE_LTO
+		USE_ISOBMFF USE_KWALLET USE_LUA USE_MAP USE_OPENEXR \
+		USE_OPENJPEG USE_WEBP RAWSPEED_ENABLE_LTO
 
 CFLAGS+=	-fopenmp -I${LOCALBASE}/include/Imath
+CXXFLAGS+=	-stdlib=libc++
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/\.rc/~rc/}
@@ -98,7 +98,7 @@ TOOLS_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == aarch64
+.if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
 CMAKE_ARGS+=	-DUSE_OPENCL:BOOL=OFF
 CXXFLAGS+=	-DGDK_DISABLE_DEPRECATED
 PLIST_SUB+=	NO_OPENCL="@comment "

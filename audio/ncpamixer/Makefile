@@ -1,6 +1,5 @@
 PORTNAME=	ncpamixer
-DISTVERSION=	1.3.3.3
-PORTREVISION=	1
+DISTVERSION=	1.3.7
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,22 +11,15 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 
-USES=		cmake compiler:c++17-lang
+USES=		cmake compiler:c++17-lang ncurses
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	fulhax
 
+CMAKE_OFF=	BUILD_MANPAGES
+
 WRKSRC_SUBDIR=	src
 
 PLIST_FILES=	bin/${PORTNAME}
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1300079
-USES+=          ncurses
-.else
-USES+=          ncurses:port
-CFLAGS+=	-I${LOCALBASE}/include/ncurses
-.endif
 
 .include <bsd.port.mk>

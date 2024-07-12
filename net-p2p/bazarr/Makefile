@@ -1,6 +1,6 @@
 PORTNAME=	bazarr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.1
+DISTVERSION=	1.4.3
 CATEGORIES=	net-p2p python
 MASTER_SITES=	https://github.com/morpheus65535/bazarr/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
 DISTNAME=	bazarr
@@ -8,21 +8,24 @@ DIST_SUBDIR=	${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	michiel@vanbaak.eu
 COMMENT=	Automatic subtitle downloader for Radarr and Sonarr
+WWW=		https://www.bazarr.media
 
 LICENSE=	GPLv3
 
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}lxml>=4.3.0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>1.12.0:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=9.0.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}webrtcvad>=2.0.10:audio/py-webrtcvad@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
 		ffprobe:multimedia/ffmpeg \
 		unrar:archivers/unrar
 
-USES=		python:3.7+ zip
+USES=		python zip
 
 USE_RC_SUBR=	bazarr
 
+NO_ARCH=	yes
 SUB_FILES=	${PORTNAME} package_info
 SUB_LIST=	MAINTAINER=${MAINTAINER} \
 		PKGVERSION=${PKGVERSION} \

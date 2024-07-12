@@ -1,0 +1,5 @@
+TIMESTAMP = 1714019280
+SHA256 (go/print_pdfcpu/pdfcpu-v0.8.0/v0.8.0.mod) = cdf3fcacaf481e60a7cf39851b796d15a5960d2c77bc9ad5e8e86ddac977b8f1
+SIZE (go/print_pdfcpu/pdfcpu-v0.8.0/v0.8.0.mod) = 319
+SHA256 (go/print_pdfcpu/pdfcpu-v0.8.0/v0.8.0.zip) = e0c542ea2dee23151bcd586b1c5530d772dcd4a8aabe4422c908869a3edd3a9e
+SIZE (go/print_pdfcpu/pdfcpu-v0.8.0/v0.8.0.zip) = 267967682

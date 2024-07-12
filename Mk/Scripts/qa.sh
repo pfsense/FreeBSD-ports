@@ -116,6 +116,7 @@ baselibs() {
 	local found_openssl
 	local file
 	[ "${PKGBASE}" = "pkg" -o "${PKGBASE}" = "pkg-devel" ] && return
+
 	while read -r f; do
 		case ${f} in
 		File:\ .*)
@@ -136,10 +137,13 @@ baselibs() {
 	done <<-EOF
 	$(list_stagedir_elfs -exec readelf -d {} + 2>/dev/null)
 	EOF
-	if [ -z "${USESSSL}" -a -n "${found_openssl}" ]; then
-		warn "you need USES=ssl"
-	elif [ -n "${USESSSL}" -a -z "${found_openssl}" ]; then
-		warn "you may not need USES=ssl"
+
+	if ! list_stagedir_elfs | egrep -q 'lib(crypto|ssl).so*'; then
+		if [ -z "${USESSSL}" -a -n "${found_openssl}" ]; then
+			warn "you need USES=ssl"
+		elif [ -n "${USESSSL}" -a -z "${found_openssl}" ]; then
+			warn "you may not need USES=ssl"
+		fi
 	fi
 	return ${rc}
 }
@@ -425,7 +429,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/mate-panel" ]; then warn "you need USE_MATE+=panel"
 	elif [ ${pkg} = "sysutils/mate-polkit" ]; then warn "you need USE_MATE+=polkit"
 	# KDE
-	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^kde-\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/' 
+	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^kde-\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/'
 	# KDE Applications
 	elif [ ${pkg} = "net/akonadi-contacts" ]; then warn "you need to use USE_KDE+=akonadicontacts"
 	elif [ ${pkg} = "deskutils/akonadi-import-wizard" ]; then warn "you need to use USE_KDE+=akonadiimportwizard"
@@ -496,7 +500,6 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/kf5-kded" ]; then warn "you need to use USE_KDE+=kded"
 	elif [ ${pkg} = "x11/kf5-kdelibs4support" ]; then warn "you need to use USE_KDE+=kdelibs4support"
 	elif [ ${pkg} = "security/kf5-kdesu" ]; then warn "you need to use USE_KDE+=kdesu"
-	elif [ ${pkg} = "www/kf5-kdewebkit" ]; then warn "you need to use USE_KDE+=kdewebkit"
 	elif [ ${pkg} = "www/kf5-khtml" ]; then warn "you need to use USE_KDE+=khtml"
 	elif [ ${pkg} = "devel/kf5-kio" ]; then warn "you need to use USE_KDE+=kio"
 	elif [ ${pkg} = "lang/kf5-kross" ]; then warn "you need to use USE_KDE+=kross"
@@ -649,11 +652,11 @@ proxydeps_suggest_uses() {
 }
 
 proxydeps() {
-	local file dep_file dep_file_pkg already rc
+	local file dep_file dep_file_pkg already rc dep_lib_file dep_lib_files
 
 	rc=0
 
-	# Check all dynamicaly linked ELF files
+	# Check all dynamically linked ELF files
 	# Some .so are not executable, but we want to check them too.
 	while read -r file; do
 		# No results presents a blank line from heredoc.
@@ -697,6 +700,8 @@ proxydeps() {
 				rc=1
 			fi
 			already="${already} ${dep_file}"
+			dep_lib_file=$(basename ${dep_file})
+			dep_lib_files="${dep_lib_files} ${dep_lib_file%%.so*}.so"
 		done <<-EOT
 		$(env LD_LIBMAP_DISABLE=1 ldd -a "${STAGEDIR}${file}" | \
 			awk '
@@ -712,6 +717,13 @@ proxydeps() {
 		sed -e 's/^\.//')
 	EOT
 
+	# Check whether all files in LIB_DPEENDS are actually linked against
+	for _library in ${WANTED_LIBRARIES} ; do
+		if ! listcontains ${_library} "${dep_lib_files}" ; then
+			warn "you might not need LIB_DEPENDS on ${_library}"
+		fi
+	done
+
 	[ -z "${PROXYDEPS_FATAL}" ] && return 0
 
 	return ${rc}
@@ -724,6 +736,8 @@ sonames() {
 		[ -z "${f}" ] && continue
 		# Ignore symlinks
 		[ -f "${f}" -a ! -L "${f}" ] || continue
+		# Ignore .debug files
+		[ "${f}" == "${f%.debug}" ] || continue
 		if ! readelf -d ${f} | grep SONAME > /dev/null; then
 			warn "${f} doesn't have a SONAME."
 			warn "pkg(8) will not register it as being provided by the port."
@@ -876,24 +890,24 @@ gemfiledeps()
 	if [ -z "$USE_RUBY" ]; then
 		return 0
 	fi
-	
+
 	# skip check if port is a rubygem-* one; they have no Gemfiles
 	if [ "${PKGBASE%%-*}" = "rubygem" ]; then
 		return 0
 	fi
-	
+
 	# advise install of bundler if its not present for check
 	if ! type bundle > /dev/null 2>&1; then
 		notice "Please install sysutils/rubygem-bundler for additional Gemfile-checks"
 		return 0
 	fi
- 
+
 	# locate the Gemfile(s)
 	while read -r f; do
-	
+
 		# no results presents a blank line from heredoc
 		[ -z "$f" ] && continue
-	
+
 		# if there is no Gemfile everything is fine - stop here
 		[ ! -f "$f" ] && return 0;
 
@@ -903,7 +917,7 @@ gemfiledeps()
 		if ! bundle check --dry-run --gemfile $f > /dev/null 2>&1; then
 			warn "Dependencies defined in ${f} are not satisfied"
 		fi
-      
+
 	done <<-EOF
 		$(find ${STAGEDIR} -name Gemfile)
 		EOF
@@ -981,14 +995,11 @@ depends_blacklist()
 			lang/go)
 				instead="USES=go"
 				;;
-			lang/julia)
-				instead="a dependency on lang/julia\${JULIA_DEFAULT:S/.//}"
+			lang/mono)
+				instead="USES=mono"
 				;;
 			devel/llvm)
-				instead="a dependency on devel/llvm\${LLVM_DEFAULT}"
-				;;
-			www/py-django)
-				instead="one of the www/py-djangoXYZ port"
+				instead="USES=llvm"
 				;;
 		esac
 
@@ -1023,10 +1034,18 @@ reinplace()
 	fi
 }
 
+prefixman() {
+	if [ -d "${STAGEDIR}${PREFIX}/man" ]; then
+		warn "Installing man files in ${PREFIX}/man is no longer supported. Consider installing these files in ${PREFIX}/share/man instead."
+		ls -liTd ${STAGEDIR}${PREFIX}/man
+	fi
+	return 0
+}
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
-checks="$checks license depends_blacklist pkgmessage reinplace"
+checks="$checks license depends_blacklist pkgmessage reinplace prefixman"
 
 ret=0
 cd ${STAGEDIR} || exit 1

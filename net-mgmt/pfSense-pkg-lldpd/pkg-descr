@@ -3,4 +3,4 @@ as well as support for several proprietary discovery protocols including
 Cisco Discovery Protocol (CDP), Extreme Discovery Protocol (EDP), Foundry
 Discovery Protocol (FDP), and Nortel Discovery Protocol (NDP / SONMP).
 
-WWW: https://docs.netgate.com/pfsense/en/latest/packages/nut.html
+WWW: https://docs.netgate.com/pfsense/en/latest/packages/lldp.html

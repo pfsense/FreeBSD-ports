@@ -1,5 +1,5 @@
 PORTNAME=	lxml
-PORTVERSION=	4.9.2
+PORTVERSION=	4.9.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ WWW=		https://lxml.de/ \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/doc/licenses/BSD.txt
 
-USES=		compiler cpe gnome python:3.6+ uniquefiles:dirs
+USES=		compiler cpe gnome python uniquefiles:dirs
 USE_GNOME=	libxml2 libxslt
 USE_PYTHON=	autoplist concurrent cython distutils
 
@@ -30,6 +30,12 @@ PYDISTUTILS_BUILDARGS=		--inplace
 # force regeneration of cython files
 post-extract:
 	@${FIND} ${WRKSRC} -name "*.c" -delete
+
+pre-configure: # remove with update to 5.x
+	@if ! xml2-config --version | ${GREP} -q ^2\.11; then \
+		${REINPLACE_CMD} -e 's|, xmlerror.xmlError\*|, const xmlerror.xmlError*|' \
+			${WRKSRC}/src/lxml/*.pxi; \
+	fi
 
 post-install:
 	@${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} \

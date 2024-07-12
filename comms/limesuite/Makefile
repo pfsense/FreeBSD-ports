@@ -1,7 +1,7 @@
 PORTNAME=	limesuite
 DISTVERSIONPREFIX=	v
 DISTVERSION=	22.09.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms astro hamradio
 
 MAINTAINER=	tomek@cedro.info
@@ -85,10 +85,6 @@ OCTAVE_OCT_SITE_DIR=	(octave-config --oct-site-dir)
 OCTAVE_M_SITE_DIR=	(octave-config --m-site-dir)
 PLIST_SUB+=		OCTAVE_OCT_SITE_DIR=${OCTAVE_OCT_SITE_DIR:sh}/
 PLIST_SUB+=		OCTAVE_M_SITE_DIR=${OCTAVE_M_SITE_DIR:sh}/
-.endif
-
-.if ${PORT_OPTIONS:MDEBUG}
-WITH_DEBUG=	yes
 .endif
 
 post-build:

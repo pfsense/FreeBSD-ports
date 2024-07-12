@@ -1,14 +1,11 @@
 PORTNAME=	mldonkey
-PORTVERSION=	3.1.5
-PORTREVISION=	5
+DISTVERSION=	3.1.7-2
 CATEGORIES+=	net-p2p
-MASTER_SITES=	SF
-
-EXTRA_PATCHES=	${FILESDIR}/git-30e77e2:-p1
+MASTER_SITES=	https://github.com/ygrek/${PORTNAME}/releases/download/release-3-1-7-2/
 
 MAINTAINER?=	danfe@FreeBSD.org
 COMMENT?=	Multi-protocol peer-to-peer client written in OCaml
-WWW=		http://mldonkey.sourceforge.net/
+WWW=		https://mldonkey.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Copying.txt
@@ -18,8 +15,15 @@ CONFLICTS=	mldonkey{-{core,gui},}-devel
 BUILD_DEPENDS=	${LOCALBASE}/lib/ocaml/nums.cma:math/ocaml-num
 
 USES=		compiler:c++11-lang cpe gmake iconv pkgconfig tar:bzip2
+ARCH!=		uname -p
+.if ${ARCH} == i386
+# `as' is used to compile src/utils/lib/md4_i386.s
+USE_BINUTILS=	yes
+.endif
+USE_CXXSTD=	c++14
 USE_OCAML=	yes
 USE_OCAML_CAMLP4=yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	ac_cv_lib_charset_locale_charset=no
 ALL_TARGET=	opt
@@ -36,6 +40,7 @@ OPTIONS_DEFINE=	GD DOCS EXAMPLES
 OPTIONS_DEFAULT=CORE GD GUI
 OPTIONS_MULTI=	CLIENT
 OPTIONS_MULTI_CLIENT=CORE GUI
+
 CORE_DESC=	Client 'core' support
 
 .include <bsd.port.options.mk>
@@ -122,13 +127,6 @@ post-patch:
 		-e 's|http://www.bluetack.co.uk/config/antip2p.txt|http://www.bluetack.co.uk/config/level1.gz|' \
 		${WRKSRC}/src/daemon/common/commonOptions.ml \
 		${WRKSRC}/src/networks/donkey/donkeyServers.ml
-	@${REINPLACE_CMD} \
-		-e 's/[u(]int32/&_t/' ${WRKSRC}/src/utils/cdk/zlibstubs.c \
-		${WRKSRC}/src/utils/cdk/gdstubs.c
-	@${REINPLACE_CMD} \
-		-e 's/int64/&_t/' ${WRKSRC}/src/config/unix/os_stubs_c.c \
-		${WRKSRC}/src/utils/lib/os_stubs.h \
-		${WRKSRC}/src/utils/lib/fst_hash.c
 
 do-install:
 .if ${PORT_OPTIONS:MCORE}

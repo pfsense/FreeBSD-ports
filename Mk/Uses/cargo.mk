@@ -97,7 +97,7 @@ WRKSRC_crate_${_crate}=	${WRKDIR}/${_wrksrc}
 
 CARGO_BUILDDEP?=	yes
 .  if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.70.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.79.0:lang/${RUST_DEFAULT}
 .  elif ${CARGO_BUILDDEP:tl} == "any-version"
 BUILD_DEPENDS+=	${RUST_DEFAULT}>=0:lang/${RUST_DEFAULT}
 .  endif
@@ -135,13 +135,12 @@ CARGO_ENV+= \
 	RUSTDOC=${RUSTDOC} \
 	RUSTFLAGS="${RUSTFLAGS} ${LDFLAGS:C/.+/-C link-arg=&/}"
 
-.  if ${ARCH} != powerpc
+.  if ${ARCH} != powerpc64le
 CARGO_ENV+=	RUST_BACKTRACE=1
 .  endif
 
-.  if !defined(LTO_UNSAFE) || (defined(LTO_DISABLE_CHECK) && ${ARCH} == powerpc64) || (defined(LTO_DISABLE_CHECK) && ${ARCH} == riscv64)
+.  if defined(WITH_LTO)
 _CARGO_MSG=	"===>   Additional optimization to port applied"
-WITH_LTO=	yes
 .  endif
 
 # Adjust -C target-cpu if -march/-mcpu is set by bsd.cpu.mk
@@ -155,14 +154,10 @@ RUSTFLAGS+=	-C target-cpu=${CPUTYPE:C/\+.+//g}
 RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 .  endif
 
-.  if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-USE_GCC?=	yes
-STRIP_CMD=	${LOCALBASE}/bin/strip # unsupported e_type with base strip
-.  endif
-
 # Helper to shorten cargo calls.
-_CARGO_RUN=		${SETENV} ${MAKE_ENV} ${CARGO_ENV} ${CARGO}
-CARGO_CARGO_RUN=	cd ${WRKSRC}; ${SETENV} CARGO_FREEBSD_PORTS_SKIP_GIT_UPDATE=1 ${_CARGO_RUN}
+_CARGO_RUN=		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CARGO_ENV} ${CARGO}
+CARGO_CARGO_RUN=	cd ${WRKSRC}; ${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${CARGO_ENV} \
+			CARGO_FREEBSD_PORTS_SKIP_GIT_UPDATE=1 ${CARGO}
 
 # User arguments for cargo targets.
 CARGO_BUILD_ARGS?=
@@ -289,7 +284,7 @@ cargo-extract:
 .    if ${_index} != @git
 	@${MV} ${WRKDIR}/${_crate} ${CARGO_VENDOR_DIR}/${_crate}
 	@${PRINTF} '{"package":"%s","files":{}}' \
-		$$(${SHA256} -q ${DISTDIR}/${CARGO_DIST_SUBDIR}/${_crate}${CARGO_CRATE_EXT}) \
+		$$(${SHA256} -q ${_DISTDIR}/${CARGO_DIST_SUBDIR}/${_crate}${CARGO_CRATE_EXT}) \
 		> ${CARGO_VENDOR_DIR}/${_crate}/.cargo-checksum.json
 	@if [ -r ${CARGO_VENDOR_DIR}/${_crate}/Cargo.toml.orig ]; then \
 		${MV} ${CARGO_VENDOR_DIR}/${_crate}/Cargo.toml.orig \
@@ -390,7 +385,7 @@ cargo-crates: cargo-crates-generate-lockfile
 cargo-crates-generate-lockfile: extract
 	@if [ ! -r "${CARGO_CARGOLOCK}" ]; then \
 		${ECHO_MSG} "===> ${CARGO_CARGOLOCK} not found.  Trying to generate it..."; \
-		cd ${WRKSRC}; ${_CARGO_RUN} generate-lockfile \
+		cd ${CARGO_CARGOLOCK:H}; ${_CARGO_RUN} generate-lockfile \
 			--manifest-path ${CARGO_CARGOTOML} \
 			--verbose; \
 	fi

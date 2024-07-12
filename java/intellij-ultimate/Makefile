@@ -1,7 +1,8 @@
 PORTNAME=	intellij-ultimate
-DISTVERSION=	2022.2.3
+DISTVERSION=	2022.2.5
+PORTREVISION=	2
 CATEGORIES=	java devel
-MASTER_SITES=	https://download-cf.jetbrains.com/idea/
+MASTER_SITES=	https://download-cdn.jetbrains.com/idea/
 DISTNAME=	ideaIU-${DISTVERSION}-no-jbr
 DIST_SUBDIR=	jetbrains
 
@@ -33,7 +34,7 @@ NO_BUILD=	yes
 SUB_FILES=	idea idea.desktop pkg-message
 
 BUILD_TYPE=	IU
-BUILD_VERSION=	222.4345.14
+BUILD_VERSION=	222.4554.10
 BUILD_MARKER=	${BUILD_TYPE}-${BUILD_VERSION}
 PLIST_SUB=	BUILD_MARKER=${BUILD_MARKER}
 WRKSRC=		${WRKDIR}/idea-${BUILD_MARKER}
@@ -66,7 +67,7 @@ do-install:
 	${INSTALL_LIB} ${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/freebsd64/libjansi.so \
 		${STAGEDIR}${DATADIR}/plugins/maven/lib/maven3/lib/jansi-native/freebsd64/
 	${INSTALL_SCRIPT} ${WRKDIR}/idea ${STAGEDIR}${PREFIX}/bin/idea
-	${INSTALL_MAN} ${FILESDIR}/idea.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${FILESDIR}/idea.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKDIR}/idea.desktop ${STAGEDIR}${PREFIX}/share/applications/
 # Use fsnotifier replacement provided by java/intellij-fsnotifier
 	${ECHO} "idea.filewatcher.executable.path=${PREFIX}/intellij/bin/fsnotifier" >> ${STAGEDIR}${DATADIR}/bin/idea.properties

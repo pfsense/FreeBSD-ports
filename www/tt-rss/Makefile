@@ -1,7 +1,9 @@
 PORTNAME=	tt-rss
-PORTVERSION=	g20230509
+PORTVERSION=	g20240421
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	www
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	dereks@lifeofadishwasher.com
 COMMENT=	Tiny Tiny RSS: web-based news feed (RSS/Atom) aggregator
@@ -11,14 +13,14 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git
 
-USES=		gettext-tools php:cli,web shebangfix
+USES=		gettext-tools php:cli,web,flavors shebangfix
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.tt-rss.org
-GL_COMMIT=	11946f0148d0b8a76ecc120fd9c1dc0b7fa04664
-
-USE_PHP=	ctype dom exif fileinfo filter iconv intl mbstring openssl \
-		pcntl pdo phar posix session simplexml tokenizer xml xmlwriter \
+GL_TAGNAME=	d832907125a7711397da8ade5cfb51082d802542
+# phe json/openssl extension is required but it's statically linked in default php
+USE_PHP=	ctype dom exif fileinfo filter iconv intl mbstring pcntl pdo \
+		phar posix session simplexml sockets tokenizer xml xmlwriter \
 		zip
 USE_RC_SUBR=	ttrssd
 
@@ -61,7 +63,7 @@ do-install:
 		"! -name LICENSE ! -name .empty ! -name Jenkinsfile")
 	${RM} -r ${STAGEDIR}${WWWDIR}/debian
 	${INSTALL_DATA} ${WRKDIR}/httpd-tt-rss.conf ${STAGEDIR}${DATADIR}
-	${ECHO} "${OPSYS}:${PORTVERSION}:${GL_COMMIT:C/^(.{11}).*$/\1/W}}" > \
+	${ECHO} "${OPSYS}:${PORTVERSION}:${GL_TAGNAME:C/^(.{11}).*$/\1/W}}" > \
 		"${STAGEDIR}${WWWDIR}/version_static.txt"
 	${RM} ${STAGEDIR}${WWWDIR}/config.php-dist
 	${INSTALL_DATA} ${WRKDIR}/config.php \

@@ -1,7 +1,6 @@
 PORTNAME=	lightgbm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.5
-PORTREVISION=	1
+DISTVERSION=	4.4.0
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,15 +18,21 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 GH_PROJECT=	LightGBM
 GH_TUPLE=	boostorg:compute:36350b7:boostorg_compute/external_libs/compute \
-		fmtlib:fmt:b6f4cea:fmt/external_libs/fmt \
-		lemire:fast_double_parser:ace6064:fast_double_parser/external_libs/fast_double_parser
+		fmtlib:fmt:f5e5435:fmt/external_libs/fmt \
+		lemire:fast_double_parser:efec035:fast_double_parser/external_libs/fast_double_parser
 
 CMAKE_TESTING_ON=	BUILD_CPP_TEST
 CMAKE_TESTING_TARGET=
 
 CXXFLAGS+=	-I${LOCALBASE}/include/eigen3
 
+.if !exists(/usr/include/omp.h)
+CMAKE_ARGS+=	-DUSE_OPENMP:BOOL=OFF
+.endif
+
 post-test:
-	${WRKSRC}/testlightgbm
+	@${WRKSRC}/testlightgbm
+
+# tests fail to open the file examples/binary_classification/binary.test, see https://github.com/microsoft/LightGBM/issues/6486
 
 .include <bsd.port.mk>

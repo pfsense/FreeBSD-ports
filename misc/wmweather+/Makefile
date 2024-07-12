@@ -1,5 +1,6 @@
 PORTNAME=	wmweather+
 PORTVERSION=	2.18
+PORTREVISION=	2
 CATEGORIES=	misc windowmaker geography
 MASTER_SITES=	SF/wmweatherplus/wmweather%2B/ \
 		SF/nemysisfreebsdp/misc/:icons
@@ -37,7 +38,7 @@ WRKSRC=		${WRKDIR}/wmweather+-${PORTVERSION}
 SUB_FILES=	pkg-message
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz \
+		share/man/man1/${PORTNAME}.1.gz \
 		share/pixmaps/${PORTNAME}.png
 
 PORTDOCS=	ChangeLog README
@@ -65,7 +66,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 

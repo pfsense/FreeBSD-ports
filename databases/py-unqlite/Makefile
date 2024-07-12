@@ -1,5 +1,5 @@
 PORTNAME=	unqlite
-PORTVERSION=	0.9.3
+PORTVERSION=	0.9.6
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/coleifer/unqlite-python
 
 LICENSE=	MIT
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist cython
 
 post-stage:

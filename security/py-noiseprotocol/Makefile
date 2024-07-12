@@ -10,10 +10,8 @@ WWW=		https://pypi.org/project/noiseprotocol/
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=2.8:security/py-cryptography@${PY_FLAVOR}
-
-USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist cryptography distutils
 
 NO_ARCH=	yes
 

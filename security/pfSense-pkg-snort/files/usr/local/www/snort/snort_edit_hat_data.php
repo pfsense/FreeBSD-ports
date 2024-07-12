@@ -3,7 +3,7 @@
  * snort_edit_hat_data.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
@@ -89,19 +89,19 @@ $btnsave = new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 );
 $btnreturn = new Form_Button(
 	'',
 	'Return',
 	'snort_preprocessors.php?id=' . $id,
-	'fa-backward'
+	'fa-solid fa-backward'
 );
 $btnclear = new Form_Button(
 	'clear',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 );
 
 // Customize the class and attributes for the buttons

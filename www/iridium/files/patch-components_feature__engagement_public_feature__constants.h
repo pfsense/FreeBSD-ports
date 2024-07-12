@@ -1,21 +1,30 @@
---- components/feature_engagement/public/feature_constants.h.orig	2023-04-22 17:45:15 UTC
+--- components/feature_engagement/public/feature_constants.h.orig	2024-06-25 12:08:48 UTC
 +++ components/feature_engagement/public/feature_constants.h
-@@ -22,7 +22,7 @@ BASE_DECLARE_FEATURE(kUseClientConfigIPH);
+@@ -20,7 +20,7 @@ BASE_DECLARE_FEATURE(kIPHDemoMode);
  BASE_DECLARE_FEATURE(kIPHDummyFeature);
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+ BASE_DECLARE_FEATURE(kEsbDownloadRowPromoFeature);
  BASE_DECLARE_FEATURE(kIPHBatterySaverModeFeature);
- BASE_DECLARE_FEATURE(kIPHDesktopSharedHighlightingFeature);
- BASE_DECLARE_FEATURE(kIPHDesktopTabGroupsNewGroupFeature);
-@@ -181,7 +181,8 @@ BASE_DECLARE_FEATURE(kIPHiOSAppStorePromoFeature);
+ BASE_DECLARE_FEATURE(kIPHCompanionSidePanelFeature);
+@@ -252,7 +252,8 @@ BASE_DECLARE_FEATURE(kDefaultBrowserTriggerCriteriaExp
  #endif  // BUILDFLAG(IS_IOS)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || \
 +    BUILDFLAG(IS_BSD)
- BASE_DECLARE_FEATURE(kIPHAutofillVirtualCardSuggestionFeature);
- #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
-         // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) ||
+ BASE_DECLARE_FEATURE(kIPHAutofillCreditCardBenefitFeature);
+ BASE_DECLARE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature);
+ BASE_DECLARE_FEATURE(kIPHAutofillManualFallbackFeature);
+@@ -301,7 +302,7 @@ BASE_DECLARE_FEATURE(kIPHScalableIphHelpAppBasedTenFea
+ BASE_DECLARE_FEATURE(kIPHScalableIphGamingFeature);
+ #endif
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ BASE_DECLARE_FEATURE(kIPHDesktopPWAsLinkCapturingLaunch);
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+ 

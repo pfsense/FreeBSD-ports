@@ -1,12 +1,12 @@
 PORTNAME=	antiword
 PORTVERSION=	0.37
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
-MASTER_SITES=	http://www.winfield.demon.nl/linux/
+MASTER_SITES=	https://web.archive.org/web/20221207132720/http://www.winfield.demon.nl/linux/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application for displaying Microsoft(R) Word documents
-WWW=		http://www.winfield.demon.nl/index.html
+WWW=		https://web.archive.org/web/20221207132720/http://www.winfield.demon.nl
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/Docs/COPYING
@@ -35,7 +35,7 @@ post-patch:
 	@${REINPLACE_CMD} -E 's,/usr/share,${PREFIX}/share,g' ${WRKSRC}/antiword.h
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/Docs/antiword.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/Docs/antiword.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -3,11 +3,11 @@
  * suricata_alerts.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -137,6 +137,10 @@ function suricata_widget_get_alerts() {
 					$fields = array();
 					$tmp = array();
 
+					// Drop any invalid line read from the log excerpt
+					if (empty(trim($buf)))
+						continue;
+
 					// Parse alert log entry to find the parts we want to display
 					$fields[0] = substr($buf, 0, strpos($buf, '  '));
 
@@ -180,17 +184,14 @@ function suricata_widget_get_alerts() {
 
 					// Create a DateTime object from the event timestamp that
 					// we can use to easily manipulate output formats.
-					if (($event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields[0])) !== FALSE) {
+					try {
+						$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields[0]);
 						$suricata_alerts[$counter]['timestamp'] = strval(date_timestamp_get($event_tm));
 						$suricata_alerts[$counter]['timeonly'] = date_format($event_tm, "H:i:s");
 						$suricata_alerts[$counter]['dateonly'] = date_format($event_tm, "M d");
-					}
-					else {
-						// For some reason the event timestamp was invalid, 
-						// set some default empty values for the fields.
-						$suricata_alerts[$counter]['timestamp'] = 0;
-						$suricata_alerts[$counter]['timeonly'] = ' ';
-						$suricata_alerts[$counter]['dateonly'] = ' ';
+					} catch (Exception $e) {
+						syslog(LOG_WARNING, "[suricata] WARNING: Dashboard Widget found invalid timestamp entry in current alerts.log, the line will be ignored and skipped.");
+						continue;
 					}
 
 					// Check the 'CATEGORY' field for the text "(null)" and

@@ -1,5 +1,5 @@
 PORTNAME=		openvpn
-DISTVERSION=		2.6.5
+DISTVERSION=		2.6.11
 PORTREVISION?=		0
 CATEGORIES=		security net net-vpn
 MASTER_SITES=		https://swupdate.openvpn.org/community/releases/ \
@@ -25,6 +25,7 @@ SHEBANG_FILES=		sample/sample-scripts/auth-pam.pl \
 			sample/sample-scripts/verify-cn
 
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=	--enable-strict --with-crypto-library=openssl
 # set PLUGIN_LIBDIR so that unqualified plugin paths are found:
 CONFIGURE_ENV+=		PLUGINDIR="${PREFIX}/lib/openvpn/plugins"
@@ -42,11 +43,10 @@ PORTEXAMPLES=		*
 OPTIONS_DEFINE=		ASYNC_PUSH DCO DOCS EASYRSA EXAMPLES LZ4 LZO PKCS11 SMALL \
 			TEST UNITTESTS X509ALTUSERNAME
 OPTIONS_DEFAULT=	DCO EASYRSA LZ4 LZO PKCS11 TEST
-OPTIONS_EXCLUDE_FreeBSD_12=	DCO # FreeBSD 14 only
 OPTIONS_EXCLUDE_FreeBSD_13=	DCO # FreeBSD 14 only
 
 ASYNC_PUSH_DESC=	Enable async-push support
-DCO_DESC=		Build with Data Channel Offload (ovpn(4)) support
+DCO_DESC=		Data Channel Offload/ovpn(4) support->README.dco.md
 EASYRSA_DESC=		Install security/easy-rsa RSA helper package
 LZO_DESC=		LZO compression (incompatible with LibreSSL)
 PKCS11_DESC=		Use security/pkcs11-helper, needs same SSL lib!
@@ -156,9 +156,12 @@ post-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
-.for i in AUTHORS ChangeLog PORTS
+.for i in AUTHORS ChangeLog Changes.rst CONTRIBUTING.rst PORTS README README.ec
 	${INSTALL_MAN} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}/
 .endfor
+.if !empty(PORT_OPTIONS:MDCO)
+	${INSTALL_MAN} ${WRKSRC}/README.dco.md ${STAGEDIR}${DOCSDIR}/
+.endif
 
 post-install-EXAMPLES-on:
 	(cd ${WRKSRC}/sample && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}/)

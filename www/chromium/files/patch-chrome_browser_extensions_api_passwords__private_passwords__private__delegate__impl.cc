@@ -1,6 +1,6 @@
---- chrome/browser/extensions/api/passwords_private/passwords_private_delegate_impl.cc.orig	2023-05-31 08:12:17 UTC
+--- chrome/browser/extensions/api/passwords_private/passwords_private_delegate_impl.cc.orig	2024-06-17 12:56:06 UTC
 +++ chrome/browser/extensions/api/passwords_private/passwords_private_delegate_impl.cc
-@@ -544,7 +544,7 @@ void PasswordsPrivateDelegateImpl::OsReauthCall(
+@@ -610,7 +610,7 @@ void PasswordsPrivateDelegateImpl::OnFetchingFamilyMem
  }
  
  void PasswordsPrivateDelegateImpl::OsReauthTimeoutCall() {
@@ -8,4 +8,4 @@
 +#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_BSD)
    PasswordsPrivateEventRouter* router =
        PasswordsPrivateEventRouterFactory::GetForProfile(profile_);
-   if (router)
+   if (router) {

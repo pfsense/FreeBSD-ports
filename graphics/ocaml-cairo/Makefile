@@ -1,5 +1,6 @@
 PORTNAME=	cairo
-PORTVERSION=	0.6.1
+PORTVERSION=	0.6.4
+PORTREVISION=	2
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	ocaml-
 
@@ -32,7 +33,7 @@ do-build:
 
 do-install:
 	cd ${INSTALL_WRKSRC} && dune install --destdir=${STAGEDIR} \
-		--libdir=${OCAML_SITELIBDIR} cairo2
+		--libdir=${PREFIX}/${OCAML_SITELIBDIR} cairo2
 
 post-install-EXAMPLES-on:
 	@(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})

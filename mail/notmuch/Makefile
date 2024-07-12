@@ -1,5 +1,5 @@
 PORTNAME=	notmuch
-DISTVERSION=	0.37
+DISTVERSION=	0.38.3
 PORTREVISION?=	0
 CATEGORIES?=	mail
 MASTER_SITES=	https://notmuchmail.org/releases/
@@ -27,8 +27,7 @@ TEST_DEPENDS=	${LOCALBASE}/bin/gdb:devel/gdb \
 		gsha256sum:sysutils/coreutils \
 		gwc:sysutils/coreutils
 
-USES=		compiler:c++11-lang gmake gnome pkgconfig \
-		python:3.5+,build,test
+USES=		gmake gnome pkgconfig python:build,test
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 .endif
@@ -38,7 +37,7 @@ USES+=		tar:xz
 .ifndef MASTERDIR
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--infodir=${PREFIX}/${INFO_PATH} \
-		--mandir=${MANPREFIX}/man \
+		--mandir=${PREFIX}/share/man \
 		--prefix=${PREFIX} \
 		--with-bash-completion \
 		--with-retry-lock \
@@ -70,11 +69,6 @@ DOXYGEN_CONFIGURE_WITH=		api-docs
 MANPAGES_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 MANPAGES_CONFIGURE_WITH=	docs
 
-# Avoid conflict with C++20 <version> by ignoring <...> under WRKSRC
-post-patch:
-	@${REINPLACE_CMD} -i .c++20 's/-I$$(srcdir)/-iquote$$(srcdir)/' \
-		${WRKSRC}/*/Makefile.local
-
 # Install bash completions without incurring a dependency on
 # shells/bash-completion.
 post-configure:
@@ -90,7 +84,7 @@ post-install:
 
 # Keep poudriere-testport(8) happy.
 post-install-MANPAGES-on:
-	@${RM} ${STAGEDIR}${MANPREFIX}/man/man1/notmuch-emacs-mua.1.gz
+	@${RM} ${STAGEDIR}${PREFIX}/share/man/man1/notmuch-emacs-mua.1.gz
 .endif
 
 .include <bsd.port.mk>

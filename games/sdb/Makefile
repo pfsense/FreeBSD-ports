@@ -15,18 +15,14 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gl gmake sdl
-USE_SDL=	mixer image sdl
+USE_CXXSTD=	c++14
 USE_GL=		gl glu
+USE_SDL=	mixer image sdl
 
-BUILD_WRKSRC=	${WRKSRC}/src
+MAKE_ARGS=	CPP="${CXX}" CXXFLAGS="${CXXFLAGS}" LIBS="${LIBS}"
 
 CXXFLAGS+=	`${SDL_CONFIG} --cflags`
 LIBS+=		`${SDL_CONFIG} --libs` -lSDL_image -lSDL_mixer -lGL -lGLU
-MAKE_ARGS=	CPP="${CXX}" CXXFLAGS="${CXXFLAGS}" LIBS="${LIBS}"
-
-PLIST_FILES=	bin/sdb
-PORTDOCS=	*
-PORTDATA=	*
 
 DESKTOP_ENTRIES="Shotgun Debugger" \
 		"" \
@@ -35,11 +31,17 @@ DESKTOP_ENTRIES="Shotgun Debugger" \
 		"Game;ActionGame;" \
 		""
 
+BUILD_WRKSRC=	${WRKSRC}/src
+
+PLIST_FILES=	bin/sdb
+PORTDATA=	*
+PORTDOCS=	*
+
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != "powerpc" && ${ARCH} != "powerpc64" && ${ARCH} != "sparc64"
+.if ${ARCH} != "powerpc" && ${ARCH} != "powerpc64"
 PLIST_SUB+=	MODEL_SUFFIX="md2"
 .else
 # big-endian requires different set of models

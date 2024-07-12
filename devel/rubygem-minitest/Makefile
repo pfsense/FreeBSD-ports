@@ -1,11 +1,12 @@
 PORTNAME=	minitest
-PORTVERSION=	5.18.0
+PORTVERSION=	5.23.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Minitest provides a complete suite of testing facilities
-WWW=		https://github.com/minitest/minitest
+WWW=		https://docs.seattlerb.org/minitest/ \
+		https://github.com/minitest/minitest
 
 LICENSE=	MIT
 

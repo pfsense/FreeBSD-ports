@@ -1,21 +1,20 @@
 PORTNAME=	libaec
-PORTVERSION=	1.0.6
+PORTVERSION=	1.1.3
 CATEGORIES=	science
-MASTER_SITES=	https://gitlab.dkrz.de/k202009/libaec/uploads/45b10e42123edd26ab7b3ad92bcf7be2/
+MASTER_SITES=	https://github.com/MathisRosenhauer/libaec/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Adaptive entropy coding library
-WWW=		https://gitlab.dkrz.de/k202009/libaec
+WWW=		https://gitlab.dkrz.de/k202009/libaec \
+		https://github.com/MathisRosenhauer/libaec
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		libtool
+USES=		cmake:testing
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+CMAKE_OFF=	AEC_FUZZING BUILD_TESTING
+CMAKE_TESTING_ON=	BUILD_TESTING
 USE_LDCONFIG=	yes
-
-CONFLICTS_INSTALL=	hdf-szip
 
 .include <bsd.port.mk>

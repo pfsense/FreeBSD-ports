@@ -1,5 +1,5 @@
 PORTNAME=	phpunit
-DISTVERSION=	8.5.33
+DISTVERSION=	8.5.37
 CATEGORIES=	devel www
 MASTER_SITES=	https://phar.phpunit.de/
 PKGNAMESUFFIX=	8${PHP_PKGNAMESUFFIX}
@@ -21,6 +21,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/phpunit
+
+CONFLICTS_INSTALL=	phpunit*
 
 # Download isn't compressed or aggregated, it's just the single file
 do-extract:

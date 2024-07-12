@@ -1,5 +1,6 @@
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
+PORTREVISION=	2
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -11,6 +12,9 @@ COMMENT=	Interpreted object-oriented programming language
 WWW=		https://www.python.org/
 
 LICENSE=	PSFL
+
+DEPRECATED=	Upgrade to a newer Python version. 3.8 is in maintenance status and gets security fixes only. End-of-Life: 2024-10. See https://devguide.python.org/versions/
+EXPIRATION_DATE=2024-10-31
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
@@ -41,9 +45,7 @@ SUB_FILES=		pkg-message
 SUB_LIST=		PYTHON_SUFFIX=${PYTHON_SUFFIX}
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
-			XY=${PYTHON_SUFFIX} \
-			XYDOT=${PYTHON_VER} \
-			XYZDOT=${DISTVERSION} \
+			DISTVERSION=${DISTVERSION} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
 OPTIONS_DEFINE=		DEBUG IPV6 LIBMPDEC LTO NLS PYMALLOC
@@ -94,10 +96,6 @@ PLIST_FILES+=	bin/python${PYTHON_VER}${ABIFLAGS} \
 		bin/python${PYTHON_VER}${ABIFLAGS}-config \
 		libdata/pkgconfig/python-${PYTHON_VER}${ABIFLAGS}.pc \
 		libdata/pkgconfig/python-${PYTHON_VER}${ABIFLAGS}-embed.pc
-.endif
-
-.if ${ARCH} == sparc64
-CFLAGS+=	-DPYTHON_DEFAULT_RECURSION_LIMIT=900
 .endif
 
 # See https://bugs.freebsd.org/115940 and https://bugs.freebsd.org/193650

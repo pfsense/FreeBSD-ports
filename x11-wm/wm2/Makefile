@@ -2,10 +2,10 @@ PORTNAME=	wm2
 PORTVERSION=	4.0
 PORTREVISION=	2
 CATEGORIES=	x11-wm
-MASTER_SITES=	http://www.all-day-breakfast.com/wm2/
+MASTER_SITES=	${WWW}
 DISTNAME=	${PORTNAME}-${PORTVERSION:R}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Simple window manager for X
 WWW=		https://www.all-day-breakfast.com/wm2/
 
@@ -13,6 +13,7 @@ BUILD_DEPENDS=	makedepend:devel/makedepend
 
 USES=		xorg
 USE_XORG=	x11 xext xmu
+
 ALL_TARGET=	depend wm2
 
 OPTIONS_DEFINE=	DOCS

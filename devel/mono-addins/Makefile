@@ -1,10 +1,10 @@
 PORTNAME=	mono-addins
 PORTVERSION=	1.3
-PORTREVISION=	2
 DISTVERSIONPREFIX=	${PORTNAME}-
+PORTREVISION=	5
 CATEGORIES=	devel
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mono framework to create extensible applications
 WWW=		https://www.mono-project.com/Mono.Addins
 
@@ -14,6 +14,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mono
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	ac_cv_path_MCS=${LOCALBASE}/bin/mcs
 USES=		autoreconf gmake gnome mono pkgconfig
 

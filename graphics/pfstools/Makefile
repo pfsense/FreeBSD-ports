@@ -1,12 +1,12 @@
 PORTNAME=	pfstools
 DISTVERSION=	2.1.0
-PORTREVISION=	17
+PORTREVISION=	21
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	fbsd@any.com.ru
 COMMENT=	Tools for manipulating HDR images and video frames
-WWW=		http://pfstools.sourceforge.net/
+WWW=		https://pfstools.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,6 +19,7 @@ CFLAGS+=	-I${LOCALBASE}/include/Imath
 LDFLAGS+=	-lthr
 
 USES=		cmake cpe tar:tgz dos2unix jpeg perl5
+USE_CXXSTD=	c++14
 USE_PERL5=	run
 USE_LDCONFIG=	yes
 

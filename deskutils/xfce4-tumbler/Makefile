@@ -1,5 +1,5 @@
 PORTNAME=	tumbler
-PORTVERSION=	4.18.1
+PORTVERSION=	4.18.2
 PORTREVISION=	2
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE
@@ -14,11 +14,11 @@ LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png
+LIB_DEPENDS=	libpng16.so:graphics/png
 
 USES=		compiler:c11 gettext-tools gmake gnome libtool \
 		localbase:ldflags pathfix pkgconfig tar:bzip2 xfce
-USE_GNOME=	cairo gdkpixbuf2 glib20 intltool libgsf librsvg2
+USE_GNOME=	cairo gdkpixbuf2 glib20 intltool libgsf
 USE_XFCE=	libutil
 USE_LDCONFIG=	yes
 
@@ -58,7 +58,6 @@ GSTREAMER_CONFIGURE_ENABLE=	gstreamer-thumbnailer
 GSTREAMER_USES=		gstreamer
 
 JPEG_CONFIGURE_ENABLE=	jpeg-thumbnailer
-JPEG_LIB_DEPENDS=	libexif.so:graphics/libexif
 JPEG_USES=		jpeg
 
 NLS_CONFIGURE_ENABLE=	nls

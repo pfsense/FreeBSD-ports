@@ -1,15 +1,16 @@
 PORTNAME=	dnsx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.4
+DISTVERSION=	1.2.1
+PORTREVISION=	3
 CATEGORIES=	dns
 
-MAINTAINER=	0xdutra@gmail.com
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	DNS toolkit allow to run multiple DNS queries
 WWW=		https://github.com/projectdiscovery/dnsx
 
 LICENSE=	MIT
 
-USES=		go:modules
+USES=		go:1.21,modules
 
 GO_MODULE=	github.com/projectdiscovery/dnsx
 GO_TARGET=	./cmd/${PORTNAME}

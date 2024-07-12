@@ -1,12 +1,12 @@
 PORTNAME=	ogmrip
 PORTVERSION=	1.0.1
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application and libraries for encoding DVDs into DivX/OGM files
-WWW=		http://ogmrip.sourceforge.net/
+WWW=		https://ogmrip.sourceforge.net/
 
 LICENSE=	GPLv2+  # from source, though COPYING says LGPLv2
 
@@ -26,6 +26,7 @@ RUN_DEPENDS=	lame:audio/lame \
 USES=		desktop-file-utils gmake gnome libtool localbase:ldflags \
 		pathfix pkgconfig
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-gtk-support --disable-dbus-support \
 		--disable-libnotify-support
 USE_GNOME=	glib20 intlhack libxml2

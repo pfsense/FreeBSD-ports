@@ -1,6 +1,6 @@
 PORTNAME=	libreswan
-DISTVERSION=	4.7
-PORTREVISION=	1
+DISTVERSION=	4.12
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://download.libreswan.org/
 
@@ -33,7 +33,8 @@ MAKE_ARGS=	PKG_BASE=${LOCALBASE} \
 		CRYPT_LDFLAGS=-lcrypt \
 		USE_PTHREAD_SETSCHEDPRIO=false \
 		WERROR_CFLAGS=""  \
-		PYTHON_BINARY=${PYTHON_CMD}
+		PYTHON_BINARY=${PYTHON_CMD} \
+		FINALMANDIR=${PREFIX}/share/man
 
 BINARY_ALIAS=	awk=gawk
 
@@ -48,9 +49,8 @@ post-configure:
 
 post-install:
 .for f in \
-	_import_crl addconn algparse asn1check cavp dncheck ecdsasigkey \
-	enumcheck hunkcheck ipcheck jambufcheck keyidcheck pluto readwriteconf \
-	routecheck rsasigkey showhostkey timecheck vendoridcheck whack
+	_import_crl addconn algparse asn1check cavp dncheck ecdsasigkey enumcheck hunkcheck ipcheck \
+	jambufcheck keyidcheck pluto readwriteconf rsasigkey showhostkey showroute timecheck vendoridcheck whack
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/ipsec/${f}
 .endfor
 

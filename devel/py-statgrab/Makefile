@@ -1,5 +1,5 @@
 PORTNAME=	statgrab
-PORTVERSION=	0.7.1
+PORTVERSION=	0.7.3
 CATEGORIES=	devel python
 MASTER_SITES=	https://github.com/libstatgrab/pystatgrab/releases/download/PYSTATGRAB_${PORTVERSION:S/./_/g}/ \
 		http://ftp.mirrorservice.org/pub/i-scream/py${PORTNAME}/ \
@@ -15,7 +15,7 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libstatgrab.so:devel/libstatgrab
 
-USES=		pkgconfig python:3.6+
+USES=		pkgconfig python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

@@ -1,20 +1,20 @@
 PORTNAME=	pyparsing
-PORTVERSION=	3.0.9
-PORTREVISION=	2
+PORTVERSION=	3.1.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	General parsing module for Python
-WWW=		https://github.com/pyparsing/pyparsing
+WWW=		https://pyparsing-docs.readthedocs.io/en/latest/ \
+		https://github.com/pyparsing/pyparsing
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flit-core>=3.2<4:devel/py-flit-core@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

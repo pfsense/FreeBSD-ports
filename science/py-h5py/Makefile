@@ -1,24 +1,31 @@
 PORTNAME=	h5py
-PORTVERSION=	3.8.0
-PORTREVISION=	1
+PORTVERSION=	3.11.0
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	General-purpose Python interface to the HDF5 library
-WWW=		https://www.h5py.org/
+WWW=		https://www.h5py.org/ \
+		https://github.com/h5py/h5py
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/licenses/license.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pkgconfig>=0,1:devel/py-pkgconfig@${PY_FLAVOR} \
-		${RUN_DEPENDS}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pkgconfig>=0,1:devel/py-pkgconfig@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>=61:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 LIB_DEPENDS=	libhdf5.so:science/hdf5
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.14.5,1:math/py-numpy@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.17.3,1:math/py-numpy@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>=3.1.1:net/py-mpi4py@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tables>=3.4.4:devel/py-tables@${PY_FLAVOR}
 
-USES=		localbase pkgconfig python:3.7+
-USE_PYTHON=	autoplist concurrent cython distutils pytest
+USES=		localbase pkgconfig python
+USE_PYTHON=	autoplist concurrent cython pep517 pytest
+
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR}
+TEST_WRKSRC=	${STAGEDIR}${PYTHON_SITELIBDIR}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

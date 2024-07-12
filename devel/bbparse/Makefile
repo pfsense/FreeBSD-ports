@@ -1,5 +1,6 @@
 PORTNAME=	bbparse
 PORTVERSION=	0.1.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -19,28 +20,22 @@ PIE_UNSAFE=	yes
 
 PLIST_FILES=	lib/libbbparse.a \
 		include/bbparse.h \
-		man/man3/libbbparse.3.gz
+		share/man/man3/libbbparse.3.gz
 
 MANPAGE_LINKS=	bbr_get_next bbr_get_stackname bbr_get_tlh bbr_init_fd bbr_init_file bbr_fini
 
 .for l in ${MANPAGE_LINKS}
-PLIST_FILES+=	man/man3/${l}.3.gz
+PLIST_FILES+=	share/man/man3/${l}.3.gz
 .endfor
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300076
-IGNORE=	builds only on FreeBSD 13-head with minimum revision 356414
-.endif
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib
 	${MKDIR} ${STAGEDIR}${PREFIX}/include
 	${INSTALL_DATA} ${WRKSRC}/libbbparse.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_DATA} ${WRKSRC}/bbparse.h ${STAGEDIR}${PREFIX}/include
-	${INSTALL_MAN} ${WRKSRC}/libbbparse.3.gz ${STAGEDIR}${PREFIX}/man/man3
+	${INSTALL_MAN} ${WRKSRC}/libbbparse.3.gz ${STAGEDIR}${PREFIX}/share/man/man3
 .for l in ${MANPAGE_LINKS}
-	${RLN} ${STAGEDIR}${PREFIX}/man/man3/libbbparse.3.gz ${STAGEDIR}${PREFIX}/man/man3/${l}.3.gz
+	${RLN} ${STAGEDIR}${PREFIX}/share/man/man3/libbbparse.3.gz ${STAGEDIR}${PREFIX}/share/man/man3/${l}.3.gz
 .endfor
 
 .include <bsd.port.mk>

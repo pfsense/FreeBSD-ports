@@ -20,6 +20,8 @@
     SUBDIR += cmios9
     SUBDIR += cocot
     SUBDIR += convmv
+    SUBDIR += dos2ansi
+    SUBDIR += dos2unix
     SUBDIR += dosunix
     SUBDIR += drg2sbg
     SUBDIR += dumpasn1
@@ -27,7 +29,6 @@
     SUBDIR += fconv
     SUBDIR += fix-mime-charset
     SUBDIR += fondu
-    SUBDIR += fpc-iconvenc
     SUBDIR += fribidi
     SUBDIR += gbase
     SUBDIR += gbsdconv
@@ -46,6 +47,7 @@
     SUBDIR += libticonv
     SUBDIR += libutf-8
     SUBDIR += linux-c7-fribidi
+    SUBDIR += linux-rl9-fribidi
     SUBDIR += lua-iconv
     SUBDIR += lua-json
     SUBDIR += mimelib
@@ -136,8 +138,6 @@
     SUBDIR += pear-Services_JSON
     SUBDIR += pecl-igbinary
     SUBDIR += php-bsdconv
-    SUBDIR += php80-iconv
-    SUBDIR += php80-mbstring
     SUBDIR += php81-iconv
     SUBDIR += php81-mbstring
     SUBDIR += php82-iconv
@@ -149,6 +149,7 @@
     SUBDIR += py-bencoder
     SUBDIR += py-better-bencode
     SUBDIR += py-bsdconv
+    SUBDIR += py-gotenberg-client
     SUBDIR += py-rencode
     SUBDIR += py-svglib
     SUBDIR += py-text-unidecode
@@ -167,6 +168,7 @@
     SUBDIR += rubygem-url_safe_base64
     SUBDIR += rubygem-xdr
     SUBDIR += showkey
+    SUBDIR += simdutf
     SUBDIR += ta2as
     SUBDIR += tnef
     SUBDIR += trans

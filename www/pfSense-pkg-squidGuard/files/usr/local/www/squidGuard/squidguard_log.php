@@ -3,7 +3,7 @@
  * squidguard_log.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -187,23 +187,23 @@ display_top_tabs($tab_array);
 					<th class="text-center">
 						<div class="btn-group">
 							<button type="button" class="btn btn-xs btn-default" id="hd_blocklog" name="hd_blocklog" onclick="getactivity('blocklog');">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								<?= gettext("Blocked") ?>
 							</button>
 							<button type="button" class="btn btn-xs btn-default" id="hd_guilog" name="hd_guilog" onclick="getactivity('guilog');">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								<?= gettext("Filter GUI log") ?>
 							</button>
 							<button type="button" class="btn btn-xs btn-default" id="hd_filterlog" name="hd_filterlog" onclick="getactivity('filterlog');">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								<?= gettext("Filter log") ?>
 							</button>
 							<button type="button" class="btn btn-xs btn-default" id="hd_proxyconf" name="hd_proxyconf" onclick="getactivity('proxyconf');">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								<?= gettext("Proxy config") ?>
 							</button>
 							<button type="button" class="btn btn-xs btn-default" id="hd_filterconf" name="hd_filterconf" onclick="getactivity('filterconf');">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								<?= gettext("Filter config") ?>
 							</button>
 						</div>

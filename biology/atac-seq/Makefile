@@ -1,6 +1,5 @@
 PORTNAME=	atac-seq
-DISTVERSION=	0.1.2
-PORTREVISION=	1
+DISTVERSION=	0.2.0
 CATEGORIES=	biology python
 MASTER_SITES=	# empty
 
@@ -21,8 +20,15 @@ RUN_DEPENDS=	sra-tools>0:biology/sra-tools \
 		${PYTHON_PKGNAMEPREFIX}macs2>0:biology/py-macs2@${PY_FLAVOR} \
 		fasda>0:biology/fasda \
 		peak-classifier>0:biology/peak-classifier \
-		webbrowser>0:www/webbrowser
+		webbrowser>0:www/webbrowser \
+		curl>0:ftp/curl
 
 USES=		metaport python
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} != FreeBSD || ${OSVERSION} >= 1302509
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}MACS3>0:biology/py-macs3@${PY_FLAVOR}
+.endif
 
 .include <bsd.port.mk>

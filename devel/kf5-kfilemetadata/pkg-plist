@@ -44,6 +44,7 @@ lib/libKF5FileMetaData.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_PLUGINDIR%%/kf5/kfilemetadata/kfilemetadata_exiv2extractor.so
 %%QT_PLUGINDIR%%/kf5/kfilemetadata/kfilemetadata_fb2extractor.so
 %%QT_PLUGINDIR%%/kf5/kfilemetadata/kfilemetadata_ffmpegextractor.so
+%%MOBIPOCKET%%%%QT_PLUGINDIR%%/kf5/kfilemetadata/kfilemetadata_mobiextractor.so
 %%QT_PLUGINDIR%%/kf5/kfilemetadata/kfilemetadata_odfextractor.so
 %%QT_PLUGINDIR%%/kf5/kfilemetadata/kfilemetadata_office2007extractor.so
 %%QT_PLUGINDIR%%/kf5/kfilemetadata/kfilemetadata_officeextractor.so
@@ -66,6 +67,7 @@ share/locale/da/LC_MESSAGES/kfilemetadata5.mo
 share/locale/de/LC_MESSAGES/kfilemetadata5.mo
 share/locale/el/LC_MESSAGES/kfilemetadata5.mo
 share/locale/en_GB/LC_MESSAGES/kfilemetadata5.mo
+share/locale/eo/LC_MESSAGES/kfilemetadata5.mo
 share/locale/es/LC_MESSAGES/kfilemetadata5.mo
 share/locale/et/LC_MESSAGES/kfilemetadata5.mo
 share/locale/eu/LC_MESSAGES/kfilemetadata5.mo

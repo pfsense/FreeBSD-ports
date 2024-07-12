@@ -3,7 +3,7 @@
 # pfSense-upgrade
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,8 @@ Usage: ${me} [-46bdfhnRUy] [-l logfile] [-p socket] [-c|-u|[-i|-d] pkg_name]
 	-y          - Assume yes as the answer to any possible interaction
 
 The following parameters are mutually exclusive:
-	-c          - Check if upgrade is necessary
+	-c          - Check if update is available in the current repo
+	-C          - Check if upgrade is available in any of the available repos
 	-i pkg_name - Install package PKG_NAME
 	-r pkg_name - Remove package PKG_NAME
 	-u          - Update repository information
@@ -656,8 +657,29 @@ is_plus() {
 	!(is_ce)
 }
 
+get_repo_path() {
+	local _repo_name="${1}"
+
+	# If the argument is a repo name, look for the respective repo conf path
+	for file in "${PLUS_CERT_BASE}/${PRODUCT}-repo-"*".name"; do
+		if [ ! -f "${file}" ]; then
+			continue
+		fi
+		if [ "$(/bin/cat ${file})" = "${_repo_name}" ]; then
+			echo -n "${file%.name}.conf"
+			return
+		fi
+	done
+
+	# No path found, return the given value
+	echo -n "${_repo_name}"
+	return
+}
+
 repo_is_plus_upgrade() {
 	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
+	# If the value is a repo name, get its path
+	pkg_repo_conf_path="$(get_repo_path "${pkg_repo_conf_path}")"
 
 	if [ -n "$(echo $pkg_repo_conf_path | grep ${product}-repo-custom)" ]; then
 		return 0
@@ -1022,7 +1044,7 @@ pkg_upgrade() {
 
 		# Always make sure important packages are set as vital
 		set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
-		    ${product}-rc ${product}-base ${uboot_pkg}
+		    ${product}-base ${uboot_pkg}
 
 		check_upgrade mute skip_update
 		case "$?" in
@@ -1156,13 +1178,12 @@ pkg_upgrade() {
 			fi
 			echo " done."
 
-			# Force upgrade pfSense-rc together with kernel. It's
-			# failing for some reason on armv[67] even with the
-			# proper dependency version registered
-			if upgrade_available ${product}-rc; then
-				_exec "pkg-static upgrade -U ${product}-rc" \
-				    "Upgrading ${product}-rc"
+			# Remove vital flag from pfSense-rc so we can remove it later,
+			# now that the rc scripts are part of security/pfSense
+			if is_pkg_installed "${product}-rc"; then
+				unset_vital_flag "${product}-rc"
 			fi
+
 			# In the past /boot/loader.conf was part of kernel pkg
 			# and now it's an orphan file.  Check if current
 			# installation has it registered on kernel pkg and make
@@ -1262,6 +1283,13 @@ pkg_upgrade() {
 
 		if upgrade_available; then
 			delete_annotation=1
+
+			# Remove legacy pfSense-rc package if present
+			if is_pkg_installed "${product}-rc"; then
+				echo "Removing ${product}-rc"
+				_pkg delete -yf "${product}-rc"
+			fi
+
 			if [ -n "${is_pkg_locked}" ]; then
 				# Upgrade pkg
 				pkg_unlock pkg
@@ -1305,13 +1333,16 @@ pkg_upgrade() {
 
 			# Always make sure important packages are set as vital
 			set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
-			    ${product}-rc ${product}-base ${uboot_pkg}
+			    ${product}-base ${uboot_pkg}
 
 			# Register that system is running latest pkg_set_version
 			cp -f ${pkg_set_version} ${running_pkg_set_version}
 
 			# Cleanup possible crash report from PHP upgrade
 			rm -f /tmp/PHP_errors.log
+
+			# Clean up .pkgsave files
+			find / -name \*.pkgsave -delete
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 3
@@ -1445,26 +1476,126 @@ check_upgrade() {
 	    && pkg_update "" mute
 
 	local _version_compare=""
-	for _package in ${_meta_pkg} ${_core_pkgs}; do
-		_version_compare=$(compare_pkg_version ${_package})
-		case "${_version_compare}" in
-			!|=)
+	local _installed_version=""
+	if [ "${action}" == "checkall" ]; then
+		# Get newest of meta or core packages as our baseline version
+		for _package in ${_meta_pkg} ${_core_pkgs}; do
+			local _other_version=$(_pkg query %v ${_package})
+			if [ -z "${_installed_version}" ] || [ $(_pkg version -t ${_installed_version} ${_other_version}) ]; then
+				_installed_version=${_other_version}
+			fi
+		done
+
+		local _new_version="0"
+		local _version_compare=""
+		local _db_dir="/tmp/db/pfSense/pkg"
+		for _repo in /usr/local/etc/pfSense/pkg/repos/*.conf; do
+			local _name _reponame _reponpath _repoid _repopath
+
+			_repopath=""
+			_reponame="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+			_reponpath="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_reponame}.name"
+			if [ -f "${_reponpath}" ]; then
+				_name="$(/bin/cat "${_reponpath}")"
+				[ "${_name}" = "${_reponame}" ] && \
+				    _repopath="${_db_dir}/${_reponame}"
+			fi
+
+			if [ -z "${_repopath}" ]; then
+				_repoid="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+				_reponpath="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_repoid}.name"
+				if [ -f "${_reponpath}" ]; then
+					_reponame="$(/bin/cat "${_reponpath}")"
+					_repopath="${_db_dir}/${_reponame}"
+				fi
+			fi
+			if [ -z "${_repopath}" ] || [ -z "${_reponame}" ]; then
 				continue
+			fi
+
+			# Skip repos with devel names as well as CE->Plus upgrades
+			case "${_reponame}" in
+				devel)
+					continue
+					;;
+				*-devel)
+					continue
+					;;
+				*-preview)
+					continue
+					;;
+				*-upgrade)
+					continue
+					;;
+				*)
+					;;
+			esac
+
+			local _pkg_args=""
+			local _is_configured_repo=$( \
+				[ "${_repo}" = "$(stat -f %Y /usr/local/etc/pkg/repos/pfSense.conf)" ] >/dev/null 2>&1; \
+				printf $?
+				  )
+			local _pkgs="${_meta_pkg} ${_core_pkgs}"
+			if [ ${_is_configured_repo} -ne 0 ]; then
+				_pkgs="${product}-base"
+				_pkg_args="-C ${_repopath}/pkg.conf"
+				# No repo db files, initialize
+				if [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense.sqlite" ] ||
+				   [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense-core.sqlite" ]; then
+					mkdir -p ${_repopath}
+					pfSense-repo-setup ${_db_dir}/${_reponame} $_repo > /dev/null 2>&1
+					$(_pkg ${_pkg_args} update)
+				fi
+			fi
+
+			for _package in ${_pkgs}; do
+				if [ ${_is_configured_repo} -ne 0 ]; then
+				   	_version_compare=$(compare_pkg_version "${_package}" "${_new_version}" "${_repopath}/pkg.conf")
+				else
+					_version_compare=$(compare_pkg_version "${_package}" "${_new_version}")
+				fi
+				if [ "${_version_compare}" == "<" ]; then
+					_new_version=$(_pkg ${_pkg_args} rquery -U %v ${_package})
+				fi
+			done
+		done
+		_version_compare=$(_pkg version -t "${_installed_version}" "${_new_version}")
+		case "${_version_compare}" in
+			'<')
+				if [ -z "${_mute}" ]; then
+					_echo "${_new_version} version of ${product} is available"
+				fi
+				return 2
 				;;
 			'>')
-				[ -z "${_mute}" ] \
-				    && _echo "Your system is on a newer version"
+				if [ -z "${_mute}" ]; then
+				    _echo "Your system is on a newer version"
+				fi
 				return 0
 				;;
 		esac
+	else
+		for _package in ${_meta_pkg} ${_core_pkgs}; do
+			_version_compare=$(compare_pkg_version ${_package})
+			case "${_version_compare}" in
+				!|=)
+					continue
+					;;
+				'>')
+					[ -z "${_mute}" ] \
+						&& _echo "Your system is on a newer version"
+					return 0
+					;;
+			esac
 
-		local _new_version=$(_pkg rquery -U %v ${_package})
-		[ -z "${_mute}" ] \
-		    && _echo \
-		    "${_new_version} version of ${product} is available"
-		return 2
-	done
-
+		    _new_version=$(_pkg rquery -U %v ${_package})
+			if [ -z "${_mute}" ]; then
+				_echo "${_new_version} version of ${product} is available"
+			fi
+			return 2
+		done
+	fi
 	[ -z "${_mute}" ] \
 	    && _echo "Your system is up to date"
 	return 0
@@ -1479,10 +1610,17 @@ is_pkg_installed() {
 
 compare_pkg_version() {
 	local _pkg_name="${1}"
+	local _lver="${2}"
+	local _pkg_conf="${3}"
+	local _conf_args=""
 
 	if [ -z "${_pkg_name}" ]; then
 		echo '!'
 		return 1
+	fi
+
+	if [ -n "${_pkg_conf}" ]; then
+		_conf_args="-C ${_pkg_conf}"
 	fi
 
 	if ! is_pkg_installed ${_pkg_name}; then
@@ -1490,7 +1628,9 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	local _lver=$(_pkg query %v ${_pkg_name})
+	if [ -z "${_lver}" ]; then
+	   local _lver=$(_pkg query %v ${_pkg_name})
+	fi
 
 	if [ -z "${_lver}" ]; then
 		_echo -o stderr "ERROR: It was not possible to determine ${_pkg_name}" \
@@ -1499,12 +1639,12 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	local _rver=$(_pkg rquery -U %v ${_pkg_name})
+	local _rver=$(_pkg rquery ${_conf_args} -U %v ${_pkg_name})
 
 	# Maybe we need fresh metadata, lets try to obtain it respecting
 	# dont_update variable
 	if [ -z "${_rver}" ]; then
-		_rver=$(_pkg rquery ${dont_update} %v ${_pkg_name})
+		_rver=$(_pkg ${dont_update} ${_conf_args} rquery %v ${_pkg_name})
 	fi
 
 	if [ -z "${_rver}" ]; then
@@ -1667,7 +1807,6 @@ if [ -n "${HTTP_PROXY}" ]; then
 	HTTP_PROXY_PASS=$(read_xml_tag.sh string system/proxypass)
 	if [ -n "${HTTP_PROXY_USER}" -a -n "${HTTP_PROXY_PASS}" ]; then
 		HTTP_PROXY_AUTH="${HTTP_PROXY_USER}:${HTTP_PROXY_PASS}"
-		HTTP_PROXY_AUTH="basic:*:${HTTP_PROXY_AUTH}"
 		export HTTP_PROXY_AUTH
 	fi
 fi
@@ -1727,7 +1866,7 @@ unset action
 unset action_pkg
 unset force_ipv4
 unset force_ipv6
-while getopts 46b:cdfi:hp:l:nr:RuUy opt; do
+while getopts 46b:cCdfi:hp:l:nr:RuUy opt; do
 	case ${opt} in
 		4)
 			if [ -n "${force_ipv6}" ]; then
@@ -1749,6 +1888,8 @@ while getopts 46b:cdfi:hp:l:nr:RuUy opt; do
 			;;
 		c)
 			action="check"
+			;;
+		C)  action="checkall"
 			;;
 		d)
 			stdout=''
@@ -1933,7 +2074,7 @@ if [ -n "${NEW_MAJOR}" -a "${action}" = "install" ]; then
 fi
 
 case "${action}" in
-	check)
+	check | checkall)
 		check_upgrade
 		_exit $?
 		;;

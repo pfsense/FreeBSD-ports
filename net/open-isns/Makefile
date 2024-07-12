@@ -1,6 +1,7 @@
 PORTNAME=	open-isns
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.101
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	pavelivolkov@gmail.com
@@ -9,7 +10,7 @@ WWW=		https://github.com/open-iscsi/open-isns/
 
 LICENSE=	LGPL21
 
-USES=	autoreconf gmake pathfix python:3.6+,test shebangfix
+USES=	autoreconf gmake pathfix python:test shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	open-iscsi
@@ -18,6 +19,7 @@ USE_LDCONFIG=	yes
 USE_RC_SUBR=	isnsd
 SHEBANG_FILES=	isnssetup ${TEST_WRKSRC}/*.py ${TEST_WRKSRC}/*.pl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-shared
 INSTALL_TARGET=	install install_lib
 TEST_ARGS=	LD_LIBRARY_PATH=${WRKSRC}

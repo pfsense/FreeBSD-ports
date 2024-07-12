@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/mojo/public/tools/bindings/mojom.gni.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/mojo/public/tools/bindings/mojom.gni.orig	2023-09-13 12:11:42 UTC
 +++ src/3rdparty/chromium/mojo/public/tools/bindings/mojom.gni
-@@ -688,6 +688,16 @@ template("mojom") {
-       enabled_features += [ "is_win" ]
+@@ -743,6 +743,16 @@ template("mojom") {
+       enabled_features += [ "is_apple" ]
      }
  
 +    if (is_openbsd) {
@@ -15,5 +15,5 @@
 +    }
 +
      action(parser_target_name) {
-       script = mojom_parser_script
-       inputs = mojom_parser_sources + [ build_metadata_filename ]
+       allow_remote = true
+       custom_processor = "mojom_parser"

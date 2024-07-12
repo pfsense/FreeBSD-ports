@@ -3,7 +3,7 @@
  * vpn_wg_tunnels.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * All rights reserved.
  *
@@ -177,11 +177,11 @@ if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0):
 						<td><?=count($peers)?></td>
 
 						<td style="cursor: pointer;">
-							<a class="fa fa-user-plus" title="<?=gettext('Add Peer')?>" href="<?="vpn_wg_peers_edit.php?tun={$tunnel['name']}"?>"></a>
-							<a class="fa fa-pencil" title="<?=gettext('Edit Tunnel')?>" href="<?="vpn_wg_tunnels_edit.php?tun={$tunnel['name']}"?>"></a>
-							<a class="fa fa-download" title="<?=gettext('Download Configuration')?>" href="<?="?act=download&tun={$tunnel['name']}"?>" usepost></a>
+							<a class="fa-solid fa-user-plus" title="<?=gettext('Add Peer')?>" href="<?="vpn_wg_peers_edit.php?tun={$tunnel['name']}"?>"></a>
+							<a class="fa-solid fa-pencil" title="<?=gettext('Edit Tunnel')?>" href="<?="vpn_wg_tunnels_edit.php?tun={$tunnel['name']}"?>"></a>
+							<a class="fa-solid fa-download" title="<?=gettext('Download Configuration')?>" href="<?="?act=download&tun={$tunnel['name']}"?>" usepost></a>
 							<?=wg_generate_toggle_icon_link(($tunnel['enabled'] == 'yes'), 'tunnel', "?act=toggle&tun={$tunnel['name']}")?>
-							<a class="fa fa-trash text-danger" title="<?=gettext('Delete Tunnel')?>" href="<?="?act=delete&tun={$tunnel['name']}"?>" usepost></a>
+							<a class="fa-solid fa-trash-can text-danger" title="<?=gettext('Delete Tunnel')?>" href="<?="?act=delete&tun={$tunnel['name']}"?>" usepost></a>
 						</td>
 					</tr>
 
@@ -241,7 +241,7 @@ endif;
 	</div>
 	<nav class="action-buttons">
 		<a href="vpn_wg_tunnels_edit.php" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext('Add Tunnel')?>
 		</a>
 	</nav>
@@ -275,8 +275,8 @@ events.push(function() {
 	});
 
 	$('.tree').treegrid({
-		expanderExpandedClass: 'fa fa fa-chevron-down',
-		expanderCollapsedClass: 'fa fa fa-chevron-right',
+		expanderExpandedClass: 'fa-solid fa fa-chevron-down',
+		expanderCollapsedClass: 'fa-solid fa fa-chevron-right',
 		initialState: 'collapsed'
 	});
 });

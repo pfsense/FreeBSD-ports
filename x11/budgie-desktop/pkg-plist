@@ -30,6 +30,8 @@ lib/budgie-desktop/libgvc.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.keyboard-layout/libkeyboardlayoutapplet.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.lock-keys/LockKeysApplet.plugin
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.lock-keys/liblockkeysapplet.so
+%%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.night-light/NightLight.plugin
+%%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.night-light/libnightlightapplet.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.notifications/NotificationsApplet.plugin
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.notifications/libnotificationsapplet.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.places-indicator/PlacesIndicator.plugin
@@ -46,6 +48,8 @@ lib/budgie-desktop/libgvc.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.status/libstatusapplet.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.tasklist/TasklistApplet.plugin
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.tasklist/libtasklistapplet.so
+%%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.trash/TrashApplet.plugin
+%%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.trash/libtrashapplet.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.tray/TrayApplet.plugin
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.tray/libtrayapplet.so
 %%BUDGIE_PLUGINSDIR%%/org.budgie-desktop.applet.user-indicator/UserIndicator.plugin
@@ -87,13 +91,13 @@ libdata/pkgconfig/budgie-raven-plugin-1.0.pc
 libdata/pkgconfig/budgie-theme-1.0.pc
 libexec/budgie-desktop/budgie-polkit-dialog
 libexec/budgie-desktop/budgie-power-dialog
-man/man1/budgie-daemon.1.gz
-man/man1/budgie-desktop-settings.1.gz
-man/man1/budgie-desktop.1.gz
-man/man1/budgie-panel.1.gz
-man/man1/budgie-run-dialog.1.gz
-man/man1/budgie-wm.1.gz
-man/man1/org.buddiesofbudgie.BudgieScreenshot.1.gz
+share/man/man1/budgie-daemon.1.gz
+share/man/man1/budgie-desktop-settings.1.gz
+share/man/man1/budgie-desktop.1.gz
+share/man/man1/budgie-panel.1.gz
+share/man/man1/budgie-run-dialog.1.gz
+share/man/man1/budgie-wm.1.gz
+share/man/man1/org.buddiesofbudgie.BudgieScreenshot.1.gz
 share/applications/org.buddiesofbudgie.BudgieDaemon.desktop
 share/applications/org.buddiesofbudgie.BudgieDesktopSettings.desktop
 share/applications/org.buddiesofbudgie.BudgiePanel.desktop
@@ -155,6 +159,7 @@ share/locale/es_CL/LC_MESSAGES/budgie-desktop.mo
 share/locale/es_MX/LC_MESSAGES/budgie-desktop.mo
 share/locale/es_PE/LC_MESSAGES/budgie-desktop.mo
 share/locale/es_US/LC_MESSAGES/budgie-desktop.mo
+share/locale/et/LC_MESSAGES/budgie-desktop.mo
 share/locale/eu/LC_MESSAGES/budgie-desktop.mo
 share/locale/fi/LC_MESSAGES/budgie-desktop.mo
 share/locale/fr/LC_MESSAGES/budgie-desktop.mo

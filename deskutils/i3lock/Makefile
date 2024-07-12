@@ -1,5 +1,5 @@
 PORTNAME=	i3lock
-PORTVERSION=	2.13
+PORTVERSION=	2.15
 CATEGORIES=	deskutils x11
 MASTER_SITES=	http://i3wm.org/${PORTNAME}/
 
@@ -19,18 +19,16 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libxcb-util.so:x11/xcb-util \
 		libxcb-xrm.so:x11/xcb-util-xrm
 
-MAKE_ARGS=	PREFIX="${PREFIX}" X11LIB="${LOCALBASE}/lib" \
-		X11INC="${LOCALBASE}/include" CC="${CC}" \
-		MANDIR="${MANPREFIX}/man"
+RUN_DEPENDS=	unix-selfauth-helper>0:security/unix-selfauth-helper
 
-PLIST_FILES=	"@(,,4755) bin/i3lock" \
-		man/man1/i3lock.1.gz
+PLIST_FILES=	bin/i3lock \
+		share/man/man1/i3lock.1.gz \
+		etc/pam.d/i3lock
 
-USES=		gmake iconv localbase pkgconfig tar:bzip2 xorg
+USES=		iconv localbase meson pkgconfig tar:xz xorg
 LDFLAGS+=	${ICONV_LIB}
 USE_XORG=	x11 xcb xt xorgproto xext
 USE_CSTD=	c99
-GNU_CONFIGURE=	yes
 
 CONFLICTS_INSTALL=	i3lock-color
 
@@ -39,8 +37,9 @@ PORTDOCS=	CHANGELOG README.md
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/i3lock
 	@${RM} ${STAGEDIR}${PREFIX}/etc/pam.d/i3lock
+	@${LN} -s ${LOCALBASE}/etc/pam.d/unix-selfauth \
+		${STAGEDIR}${PREFIX}/etc/pam.d/i3lock
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -3,7 +3,7 @@
  * pfblockerng_category_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -25,7 +25,7 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $group, $pfb;
+global $group, $pfb;
 pfb_global();
 
 $rowdata	= array();
@@ -140,8 +140,8 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 	$disable_move	= TRUE;
 	$all_group	= $new_group = array();
 
-	init_config_arr(array('installedpackages', $conf_type, 'config'));
-	$rowdata	= $config['installedpackages'][$conf_type]['config'];
+	config_init_path("installedpackages/{$conf_type}/config");
+	$rowdata	= config_get_path("installedpackages/{$conf_type}/config");
 
 	$feed_info = convert_feeds_json();			// Load/convert Feeds (w/alternative aliasname(s), if user-configured
 	if (is_array($feed_info) &&
@@ -162,8 +162,8 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 
 					// If an alternate URL is defined, add applicable URL
 					if (isset($feed['alternate'])) {
-						init_config_arr(array('installedpackages', 'pfblockerngglobal'));
-						$selected = $config['installedpackages']['pfblockerngglobal']['feed_alt_' . strtolower($feed['header'])];
+						config_init_path('installedpackages/pfblockerngglobal');
+						$selected = config_get_path('installedpackages/pfblockerngglobal/feed_alt_' . strtolower($feed['header']));
 						$selected = str_replace('alt_', '', $selected);
 
 						if ($feed['header'] != $selected) {
@@ -287,7 +287,7 @@ $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext($pgtype), 
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', "{$pg_url}", '@self');
 
 include_once('head.inc');
-init_config_arr(array('installedpackages', $conf_type, 'config', 0));
+config_init_path("installedpackages/{$conf_type}/config/0");
 
 
 // Select field options
@@ -357,18 +357,16 @@ $options_stateremoval		= [	'enabled' => 'Enabled', 'disabled' => 'Disabled' ];
 $portslist = $networkslist = '';
 $options_aliasports_in = $options_aliasports_out = array();
 
-if (!empty($config['aliases']['alias'])) {
-	foreach ($config['aliases']['alias'] as $alias) {
-		if ($alias['type'] == 'port') {
-			$portslist .= "{$alias['name']},";
-			$options_aliasports_in[$alias['name']] = $alias['name'];
-			$options_aliasports_out[$alias['name']] = $alias['name'];
-		}
-		elseif ($alias['type'] == 'network') {
-			$networkslist .= "{$alias['name']},";
-			$options_aliasaddr_in[$alias['name']] = $alias['name'];
-			$options_aliasaddr_out[$alias['name']] = $alias['name'];
-		}
+foreach (config_get_path('aliases/alias', []) as $alias) {
+	if ($alias['type'] == 'port') {
+		$portslist .= "{$alias['name']},";
+		$options_aliasports_in[$alias['name']] = $alias['name'];
+		$options_aliasports_out[$alias['name']] = $alias['name'];
+	}
+	elseif ($alias['type'] == 'network') {
+		$networkslist .= "{$alias['name']},";
+		$options_aliasaddr_in[$alias['name']] = $alias['name'];
+		$options_aliasaddr_out[$alias['name']] = $alias['name'];
 	}
 }
 $ports_list			= trim($portslist, ',');
@@ -388,7 +386,7 @@ if ($pfb['dnsbl_py_blacklist']) {
 					'disabled'	=> 'Null Blocking (no logging)' ];
 }
 
-$options_suppression_cidr	= [ 'Disabled' => 'Disabled' ] + array_combine(range(1, 17, -1), range(1, 17, -1));
+$options_suppression_cidr	= [ 'Disabled' => 'Disabled' ] + array_combine(range(1, 17, 1), range(1, 17, 1));
 
 $interfaces_list		= get_configured_interface_list_by_realif();
 $src_interfaces			= array('lo0' => 'Localhost');
@@ -444,7 +442,7 @@ if ($_POST && isset($_POST['save'])) {
 		elseif (is_array($_POST[$s_option])) {
 			$_POST[$s_option] = $s_default;
 		}
-		elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+		elseif (is_array(${"options_$s_option"}) && !array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
 			$_POST[$s_option] = $s_default;
 		}
 	}
@@ -542,8 +540,12 @@ if ($_POST && isset($_POST['save'])) {
 	// Validate Adv. firewall rule settings
 	foreach (array(	'aliasports_in' => 'Port In', 'aliasaddr_in' => 'Destination In',
 			'aliasports_out' => 'Port Out', 'aliasaddr_out' => 'Destination Out') as $value => $auto_dir) {
-		if (!empty($_POST[$value]) && !is_alias($_POST[$value])) {
-			$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
+		if (!empty($_POST[$value])) {
+			if (!is_alias($_POST[$value])) {
+				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
+			} elseif (!in_array(alias_get_type($_POST[$value]), ['network', 'port'])) {
+				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an alias type of Network or Port";
+			}
 		}
 	}
 
@@ -668,60 +670,58 @@ if ($_POST && isset($_POST['save'])) {
 
 	if (!$input_errors) {
 
-		if (!is_array($config['installedpackages'][$conf_type]['config'][$rowid])) {
-			$config['installedpackages'][$conf_type]['config'][$rowid] = array();
-		}
+		config_init_path("installedpackages/{$conf_type}/config/{$rowid}");
 
-		$config['installedpackages'][$conf_type]['config'][$rowid]['aliasname']			= $_POST['aliasname']					?: '';
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliasname", $_POST['aliasname'] ?: '');
 
 		if (isset($_POST['description']) && !empty($_POST['description'])) {
-			$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= pfb_filter($_POST['description'], PFB_FILTER_HTML, 'Category_edit')   ?: '';
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/description", pfb_filter($_POST['description'], PFB_FILTER_HTML, 'Category_edit') ?: '');
 		} else {
-			$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= '';
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/description", '');
 		}
 
-		$config['installedpackages'][$conf_type]['config'][$rowid]['action']			= $_POST['action']					?: 'Disabled';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['cron']			= $_POST['cron']					?: 'Never';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['dow']			= $_POST['dow']						?: '';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['sort']			= $_POST['sort']					?: 'sort';
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/action", $_POST['action'] ?: 'Disabled');
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/cron", $_POST['cron'] ?: 'Never');
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/dow", $_POST['dow'] ?: '');
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/sort", $_POST['sort'] ?: 'sort');
 
-		$config['installedpackages'][$conf_type]['config'][$rowid]['srcint']			= $_POST['srcint']					?: '';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['script_pre']		= $_POST['script_pre']					?: '';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['script_post']		= $_POST['script_post']					?: '';
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/srcint", $_POST['srcint'] ?: '');
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/script_pre", $_POST['script_pre'] ?: '');
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/script_post", $_POST['script_post'] ?: '');
 
 		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliaslog']		= $_POST['aliaslog']					?: 'enabled';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['stateremoval']	= $_POST['stateremoval']				?: 'enabled';
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliaslog", $_POST['aliaslog'] ?: 'enabled');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/stateremoval", $_POST['stateremoval'] ?: 'enabled');
 
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_in']	= pfb_filter($_POST['autoaddrnot_in'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_in']	= pfb_filter($_POST['autoports_in'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_in']	= $_POST['aliasports_in']				?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_in']	= pfb_filter($_POST['autoaddr_in'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_in']	= pfb_filter($_POST['autonot_in'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_in']	= $_POST['aliasaddr_in']				?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_in']	= $_POST['autoproto_in']				?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_in']	= $_POST['agateway_in']					?: 'default';
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoaddrnot_in", pfb_filter($_POST['autoaddrnot_in'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoports_in", pfb_filter($_POST['autoports_in'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliasports_in", $_POST['aliasports_in'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoaddr_in", pfb_filter($_POST['autoaddr_in'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autonot_in", pfb_filter($_POST['autonot_in'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliasaddr_in", $_POST['aliasaddr_in'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoproto_in", $_POST['autoproto_in'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/agateway_in", $_POST['agateway_in'] ?: 'default');
 
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_out']	= pfb_filter($_POST['autoaddrnot_out'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_out']	= pfb_filter($_POST['autoports_out'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_out']	= $_POST['aliasports_out']				?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_out']	= pfb_filter($_POST['autoaddr_out'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_out']	= pfb_filter($_POST['autonot_out'], PFB_FILTER_ON_OFF, 'Category_edit');
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_out']	= $_POST['aliasaddr_out']				?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_out']	= $_POST['autoproto_out']				?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']				?: 'default';
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoaddrnot_out", pfb_filter($_POST['autoaddrnot_out'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoports_out", pfb_filter($_POST['autoports_out'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliasports_out", $_POST['aliasports_out'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoaddr_out", pfb_filter($_POST['autoaddr_out'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autonot_out", pfb_filter($_POST['autonot_out'], PFB_FILTER_ON_OFF, 'Category_edit'));
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/aliasaddr_out", $_POST['aliasaddr_out'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/autoproto_out", $_POST['autoproto_out'] ?: '');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/agateway_out", $_POST['agateway_out'] ?: 'default');
 
-			$config['installedpackages'][$conf_type]['config'][$rowid]['suppression_cidr']	= $_POST['suppression_cidr']				?: 'Disabled';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['whois_convert']	= pfb_filter($_POST['whois_convert'], PFB_FILTER_ON_OFF, 'Category_edit');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/suppression_cidr", $_POST['suppression_cidr'] ?: 'Disabled');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/whois_convert", pfb_filter($_POST['whois_convert'], PFB_FILTER_ON_OFF, 'Category_edit'));
 		}
 		else {
-			$config['installedpackages'][$conf_type]['config'][$rowid]['logging']		= $_POST['logging']					?: 'Enabled';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['order']		= $_POST['order']					?: 'default';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['filter_alexa']	= pfb_filter($_POST['filter_alexa'], PFB_FILTER_ON_OFF, 'Category_edit');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/logging", $_POST['logging'] ?: 'Enabled');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/order", $_POST['order'] ?: 'default');
+			config_set_path("installedpackages/{$conf_type}/config/{$rowid}/filter_alexa", pfb_filter($_POST['filter_alexa'], PFB_FILTER_ON_OFF, 'Category_edit'));
 		}
 
 		// Set flag to update CustomList on next Cron|Force update|Force reload
-		if (base64_decode($config['installedpackages'][$conf_type]['config'][$rowid]['custom']) != $_POST['custom']) {
+		if (base64_decode(config_get_path("installedpackages/{$conf_type}/config/{$rowid}/custom")) != $_POST['custom']) {
 			$action = $_POST['action'];
 			$aname  = $_POST['aliasname'];
 
@@ -729,8 +729,8 @@ if ($_POST && isset($_POST['save'])) {
 			touch("{$pfbarr['folder']}/{$aname}_custom{$suffix}.update");
 		}
 
-		init_config_arr(array('installedpackages', $conf_type, 'config', $rowid));
-		$config['installedpackages'][$conf_type]['config'][$rowid]['custom']			= base64_encode($_POST['custom']) 			?: '';
+		config_init_path("installedpackages/{$conf_type}/config/{$rowid}");
+		config_set_path("installedpackages/{$conf_type}/config/{$rowid}/custom", base64_encode($_POST['custom']) ?: '');
 
 		$rowhelper_exist = array();
 		foreach ($_POST as $key => $value) {
@@ -745,27 +745,23 @@ if ($_POST && isset($_POST['save'])) {
 				if (!empty($value) && $k_field[0] != 'url') {
 					$value = pfb_filter($value, PFB_FILTER_HTML, 'Category_edit save');
 				}
-				init_config_arr(array('installedpackages', $conf_type, 'config', $rowid, 'row', $k_field[1]));
-				$config['installedpackages'][$conf_type]['config'][$rowid]['row'][$k_field[1]][$k_field[0]] = $value;
+				config_init_path("installedpackages/{$conf_type}/config/{$rowid}/row/{$k_field[1]}");
+				config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row/{$k_field[1]}/{$k_field[0]}", $value);
 			}
 		}
 
 		// Remove all undefined rowhelpers
-		if (is_array($config['installedpackages'][$conf_type]['config'][$rowid]['row'])) {
-			foreach ($config['installedpackages'][$conf_type]['config'][$rowid]['row'] as $r_key => $row) {
-				if (!isset($rowhelper_exist[$r_key])) {
-					unset($config['installedpackages'][$conf_type]['config'][$rowid]['row'][$r_key]);
-				}
+		foreach (config_get_path("installedpackages/{$conf_type}/config/{$rowid}/row", []) as $r_key => $row) {
+			if (!isset($rowhelper_exist[$r_key])) {
+				config_del_path("installedpackages/{$conf_type}/config/{$rowid}/row/{$r_key}");
 			}
 		}
 
 		// Remove unused xml tag
-		if (isset($config['installedpackages'][$conf_type]['config'][$rowid]['infolists'])) {
-			unset($config['installedpackages'][$conf_type]['config'][$rowid]['infolists']);
-		}
+		config_del_path("installedpackages/{$conf_type}/config/{$rowid}/infolists");
 
-		init_config_arr(array('installedpackages', $conf_type, 'config', $rowid));
-		$name = $config['installedpackages'][$conf_type]['config'][$rowid]['aliasname'] ?: 'Unknown';
+		config_init_path("installedpackages/{$conf_type}/config/{$rowid}");
+		$name = config_get_path("installedpackages/{$conf_type}/config/{$rowid}/aliasname") ?: 'Unknown';
 		$savemsg = "Saved [ Type:{$type}, Name:{$name} ] configuration";
 		write_config("pfBlockerNG: {$savemsg}");
 		header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
@@ -789,8 +785,8 @@ else {
 	if ($action == 'addgroup' || $action == 'add') {
 		;
 	} else {
-		init_config_arr(array('installedpackages', $conf_type, 'config'));
-		$rowdata = &$config['installedpackages'][$conf_type]['config'];
+		config_init_path("installedpackages/{$conf_type}/config");
+		$rowdata = config_get_path("installedpackages/{$conf_type}/config");
 	}
 
 	$pconfig				= array();
@@ -880,6 +876,7 @@ if (isset($Lmove) and isset($Xmove) && isset($rowdata[$rowid]['row'])) {
 	}
 
 	$rowdata[$rowid]['row'] = $final;
+	config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row", $rowdata[$rowid]['row']);
 	$savemsg = 'The selected row(s) have been moved.';
 	write_config("pfBlockerNG: {$gtype} - Rows(s) moved");
 	header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
@@ -992,6 +989,7 @@ if (empty($rowdata[$rowid]['row'])) {
 							'state' 	=> 'Disabled',
 							'url'		=> '',
 							'header'	=> '' ) );
+	config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row", $rowdata[$rowid]['row']);
 }
 
 // Sort row by Header/Label field followed by Enabled/Disabled State settings
@@ -1012,6 +1010,7 @@ if (!isset($input_errors) && (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid
 		$final[] = $data;
 	}
 	$rowdata[$rowid]['row'] = $final;
+	config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row", $rowdata[$rowid]['row']);
 }
 
 $numrows	= (count($rowdata[$rowid]['row']) -1) ?: 0;
@@ -1034,7 +1033,7 @@ foreach ($rowdata[$rowid] as $tags) {
 		if ($rowdata[$rowid]['sort'] == 'no-sort') {
 
 			$move_anchor = "<input type=\"checkbox\" name=\"Lmove[{$r_id}]\" value=\"{$r_id}\" id=\"{$r_id}\" />
-						<button type=\"submit\" class=\"fa fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\" id=\"{$r_id}\"
+						<button type=\"submit\" class=\"fa-solid fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\" id=\"{$r_id}\"
 						title=\"Move checked entries before this anchor\"></button>";
 
 			$group->add(new Form_StaticText(
@@ -1112,7 +1111,7 @@ foreach ($rowdata[$rowid] as $tags) {
 			'deleterow' . $rowcounter,
 			'Delete',
 			NULL,
-			'fa-trash'
+			'fa-solid fa-trash-can'
 		))->removeClass('btn-primary')
 		  ->addClass('btn-warning btn-xs')->setWidth(1);
 
@@ -1219,7 +1218,7 @@ $btnadd = new Form_Button(
 	'addrow',
 	'Add',
 	null,
-	'fa-plus'
+	'fa-solid fa-plus'
 );
 $btnadd->removeClass('btn-primary')
 	->addClass('btn-xs btn-success')
@@ -1229,7 +1228,7 @@ $btnstate = new Form_Button(
 	'chgstate',
 	'Enable All',
 	NULL,
-	'fa-toggle-on'
+	'fa-solid fa-toggle-on'
 );
 $btnstate->removeClass('btn-primary')
 	 ->addClass('btn-primary btn-xs')
@@ -1514,7 +1513,7 @@ $section->addInput(new Form_StaticText(
 
 if ($gtype == 'ipv4') {
 
-	$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, -1), range(1, 17, -1));
+	$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, 1), range(1, 17, 1));
 	$section->addInput(new Form_Select(
 		'suppression_cidr',
 		'Suppression CIDR Limit',

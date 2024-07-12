@@ -1,5 +1,5 @@
 PORTNAME=	pari
-DISTVERSION=	2.15.3
+DISTVERSION=	2.15.5
 PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	https://pari.math.u-bordeaux.fr/pub/pari/unix/
@@ -20,7 +20,7 @@ USE_LDCONFIG=	yes
 USE_PERL5=	build run
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	Configure
-CONFIGURE_ARGS=	--mandir=${MANPREFIX}/man/man1 \
+CONFIGURE_ARGS=	--mandir=${PREFIX}/share/man/man1 \
 		--prefix=${PREFIX} \
 		--with-readline
 ALL_TARGET=	gp
@@ -54,12 +54,6 @@ PORTDATA=	*
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-.include <bsd.port.pre.mk>
-
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-CFLAGS+=	-mminimal-toc
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -E '/libpari_base\=/s/-tls|-gmp//' \
 		${WRKSRC}/Configure
@@ -79,4 +73,4 @@ do-test-PTHREADS-on:
 do-test-MPI-on:
 	@cd ${WRKSRC} && ${MAKE_CMD} test-parallel RUNTEST="mpirun -np 3"
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME?=	arcanist
 PORTVERSION?=	20220518
-PORTREVISION?=	4
+PORTREVISION?=	5
 CATEGORIES?=	devel
 PKGNAMESUFFIX=	${SLAVE_PKGNAMESUFFIX}${PHP_PKGNAMESUFFIX}
 
@@ -8,42 +8,36 @@ MAINTAINER=	grembo@FreeBSD.org
 COMMENT?=	Libraries for the command line interface for Phabricator
 WWW?=		https://secure.phabricator.com/book/arcanist/
 
-SLAVEPORT?=	lib
-
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PHP_DESTDIR=	lib/php/arcanist
 USES=		php:cli,flavors python:env shebangfix
-SHEBANG_FILES=	bin/arc \
-		bin/phage \
-		scripts/*.php \
-		scripts/hgdaemon/*.php \
-		src/parser/*.php \
-		support/arcanoid/arcanoid.py \
-		support/lib/*.php \
-		support/unit/*.php \
-		support/xhpast/*.php \
-		support/xhpast/bin/*.php
-
-USE_PHP=	curl dom simplexml zlib
 USE_GITHUB=	yes
-NO_BUILD=	yes
-NO_ARCH=	yes
-PORTSCOUT=	ignore:1
 GH_ACCOUNT=	phacility
 GH_TAGNAME=	85c953e
+USE_PHP=	curl dom simplexml zlib
+
+SHEBANG_FILES=	bin/arc bin/phage scripts/*.php scripts/hgdaemon/*.php \
+		src/parser/*.php support/arcanoid/arcanoid.py support/lib/*.php \
+		support/unit/*.php support/xhpast/*.php \
+		support/xhpast/bin/*.php
+
+NO_ARCH=	yes
+NO_BUILD=	yes
+PORTSCOUT=	ignore:1
+SLAVEPORT?=	lib
+
 PLIST=		${.CURDIR}/pkg-plist
+
+PHP_DESTDIR=	lib/php/arcanist
 
 .if ${SLAVEPORT} == lib
 SLAVE_PKGNAMESUFFIX=	-${SLAVEPORT}
 
-RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss
-
-OPTIONS_DEFINE=	ENCODINGS
-OPTIONS_DEFAULT=ENCODINGS
-ENCODINGS_DESC=	Support for encodings other than utf-8
-ENCODINGS_USE=	PHP=mbstring
+OPTIONS_DEFINE=		ENCODINGS
+OPTIONS_DEFAULT=	ENCODINGS
+ENCODINGS_DESC=		Support for encodings other than utf-8
+ENCODINGS_USE=		PHP=mbstring
 
 .else # link only
 
@@ -82,8 +76,7 @@ do-install:
 	@${REINPLACE_CMD} \
 		's|%%PYTHON_CMD%%|${PYTHON_CMD}|g' \
 		${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/src/workflow/ArcanistAnoidWorkflow.php
-	${LN} -sf ${LOCALBASE}/share/certs/ca-root-nss.crt \
-		${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/resources/ssl/default.pem
+	${RM} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/resources/ssl/default.pem
 	${RLN} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/support/shell/hooks/bash-completion.sh \
 		 ${STAGEDIR}${PREFIX}/share/bash-completion/completions/arc
 	${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/bin/arc shell-complete --generate

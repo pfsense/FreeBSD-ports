@@ -1,5 +1,5 @@
 PORTNAME=	slick-greeter
-PORTVERSION=	1.6.0
+PORTVERSION=	2.0.2
 PORTREVISION=	1
 CATEGORIES=	x11
 
@@ -14,7 +14,9 @@ LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 		libcanberra.so:audio/libcanberra \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
-		liblightdm-gobject-1.so:x11/lightdm
+		liblightdm-gobject-1.so:x11/lightdm \
+		libxapp.so:x11/xapp
+
 RUN_DEPENDS=	numlockx>=0:x11/numlockx
 
 USES=		autoreconf gettext gmake gnome localbase pkgconfig python:run shebangfix \
@@ -27,8 +29,10 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 SHEBANG_FILES=	files/usr/bin/slick-greeter-check-hidpi \
 		files/usr/bin/slick-greeter-set-keyboard-layout \
+		files/usr/bin/slick-greeter-enable-tap-to-click \
 		makepot
 bash_OLD_CMD=	/usr/bin/bash
 bash_CMD=	/bin/sh

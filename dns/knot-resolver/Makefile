@@ -1,5 +1,6 @@
 PORTNAME=	knot-resolver
-DISTVERSION=	5.6.0
+DISTVERSION=	5.7.2
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://secure.nic.cz/files/knot-resolver/ \
 		https://dns.company/downloads/knot-resolver/
@@ -26,7 +27,7 @@ LIB_DEPENDS=	libdnssec.so:dns/knot3-lib \
 RUN_DEPENDS=	lua51-cqueues>=20200726_1:devel/lua-cqueues@lua51
 
 USES=		compiler:c11 libedit libtool luajit meson ncurses ninja \
-		pkgconfig python:3.5+,build shebangfix tar:xz
+		pkgconfig python:build shebangfix tar:xz
 USE_CXXSTD=	c++11
 USE_RC_SUBR=	krescachegc kresd
 

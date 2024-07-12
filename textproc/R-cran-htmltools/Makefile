@@ -1,9 +1,9 @@
 PORTNAME=	htmltools
-PORTVERSION=	0.5.5
+DISTVERSION=	0.5.8.1
 CATEGORIES=	textproc
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	uzsolt@uzsolt.hu
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Tools for HTML generation and output
 WWW=		https://cran.r-project.org/web/packages/htmltools/
 

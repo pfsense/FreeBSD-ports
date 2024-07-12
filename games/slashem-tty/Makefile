@@ -1,5 +1,6 @@
 PORTNAME=	slashem
 PORTVERSION=	0.0.7E.7F.3
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/0.0.7E7F3
 PKGNAMESUFFIX=	-tty
@@ -7,7 +8,7 @@ DISTNAME=	se${PORTVERSION:S/.//g:tl}
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Dungeon explorin', slashin', hackin' game
-WWW=		http://slashem.sourceforge.net/
+WWW=		https://slashem.sourceforge.net/
 
 USES=		cpe gmake
 CPE_VENDOR=	freebsd

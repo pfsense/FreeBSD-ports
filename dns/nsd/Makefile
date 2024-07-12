@@ -1,5 +1,5 @@
 PORTNAME=	nsd
-DISTVERSION=	4.6.1
+DISTVERSION=	4.10.0
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/nsd/
 
@@ -20,13 +20,12 @@ USE_RC_SUBR=	nsd
 NSDUSER?=	nsd
 NSDGROUP?=	nsd
 NSDLSDIR=	/var
-NSDDBDIR=	/var/db/nsd
 NSDRUNDIR=	/var/run/nsd
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--localstatedir=${NSDLSDIR} \
 		--with-configdir=${ETCDIR} \
-		--with-dbfile=${NSDDBDIR}/nsd.db \
 		--with-libevent=${LOCALBASE} \
 		--with-pidfile=${NSDRUNDIR}/nsd.pid \
 		--with-ssl=${OPENSSLBASE} \
@@ -35,8 +34,7 @@ CONFIGURE_ARGS=	--localstatedir=${NSDLSDIR} \
 USERS=		${NSDUSER}
 GROUPS=		${NSDGROUP}
 
-PLIST_SUB=	NSDDBDIR=${NSDDBDIR} \
-		NSDGROUP=${NSDGROUP} \
+PLIST_SUB=	NSDGROUP=${NSDGROUP} \
 		NSDRUNDIR=${NSDRUNDIR} \
 		NSDUSER=${NSDUSER}
 
@@ -47,7 +45,7 @@ PORTDOCS=	CREDITS ChangeLog LICENSE NSD-4-features NSD-DATABASE \
 
 OPTIONS_DEFINE=		BIND8_STATS CHECKING DNSTAP DOCS IPV6 LARGEFILE \
 			MINRESPSIZE MMAP MUNIN_PLUGIN NSEC3 PACKED RADIXTREE \
-			ROOT_SERVER RRL ZONE_STATS
+			RRL ZONE_STATS
 OPTIONS_DEFAULT=	BIND8_STATS LARGEFILE MINRESPSIZE NSEC3 RADIXTREE RRL \
 			ZONE_STATS
 OPTIONS_SUB=		yes
@@ -62,7 +60,6 @@ MUNIN_PLUGIN_DESC=	Install Munin plugin (requires BIND8_STATS)
 NSEC3_DESC=		NSEC3 support
 PACKED_DESC=		Enable packed structures for reduced memory use
 RADIXTREE_DESC=		Enabled: more (15%) memory use but less CPU cycles
-ROOT_SERVER_DESC=	Configure as a root server
 RRL_DESC=		Response Rate Limiting
 ZONE_STATS_DESC=	Separate statistics for each zone
 
@@ -79,7 +76,6 @@ MUNIN_PLUGIN_IMPLIES=		BIND8_STATS
 NSEC3_CONFIGURE_ENABLE=		nsec3
 PACKED_CONFIGURE_ENABLE=	packed
 RADIXTREE_CONFIGURE_ENABLE=	radix-tree
-ROOT_SERVER_CONFIGURE_ENABLE=	root-server
 RRL_CONFIGURE_ENABLE=		ratelimit
 ZONE_STATS_CONFIGURE_ENABLE=	zone-stats
 

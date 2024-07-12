@@ -6,13 +6,14 @@ MASTER_SITES=	http://www.alhem.net/project/minder/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small network application for automatic maintenance of peer lists
-WWW=		http://www.alhem.net/project/minder/index.html
+WWW=		https://www.alhem.net/project/minder/index.html
 
 LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libSockets.so:net/Sockets
 
 USES=		gmake gnome pkgconfig ssl
+USE_CXXSTD=	c++14
 USE_GNOME=	libxml2
 
 CFLAGS+=	-DHAVE_OPENSSL

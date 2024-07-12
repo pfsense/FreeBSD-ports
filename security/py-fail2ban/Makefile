@@ -1,5 +1,5 @@
 PORTNAME=	fail2ban
-DISTVERSION=	1.0.2
+DISTVERSION=	1.1.0
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		cpe python:3.6+,patch,run shebangfix
+USES=		cpe python:patch,run shebangfix
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 PYDISTUTILS_BUILDARGS+=	--without-tests
@@ -70,9 +70,9 @@ post-patch:
 post-install:
 	@${MKDIR} ${STAGEDIR}${FAIL2BAN_DBDIR} ${STAGEDIR}/var/run/fail2ban
 .for file in fail2ban-client fail2ban-regex fail2ban-server fail2ban
-	${INSTALL_MAN} ${WRKSRC}/man/${file}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/${file}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 .endfor
-	${INSTALL_MAN} ${WRKSRC}/man/jail.conf.5 ${STAGEDIR}${MANPREFIX}/man/man5/fail2ban-jail.conf.5
+	${INSTALL_MAN} ${WRKSRC}/man/jail.conf.5 ${STAGEDIR}${PREFIX}/share/man/man5/fail2ban-jail.conf.5
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

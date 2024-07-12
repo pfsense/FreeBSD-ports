@@ -1,6 +1,6 @@
 PORTNAME=	libgda
 DISTVERSION?=	5.2.10
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	databases gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	5
@@ -15,7 +15,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING.LIB
 
-USES=		cpe python readline shebangfix tar:xz
+USES=		cpe python readline shebangfix sqlite tar:xz
 CPE_VENDOR=	gnome
 LIBGDA5_SLAVE?=	no
 SHEBANG_FILES=	libgda-report/RML/*/*.py
@@ -28,6 +28,7 @@ USES+=		gettext gmake gnome libtool localbase pathfix pkgconfig
 USE_GNOME=	glib20 libxslt intlhack introspection:build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 #MAKE_JOBS_UNSAFE=yes
 CONFIGURE_ARGS=	--without-oracle \
@@ -96,6 +97,10 @@ JAVA_VENDOR=		bsdjava openjdk
 CFLAGS+=		-I${JAVA_HOME}/include -I${JAVA_HOME}/include/freebsd
 .else
 CONFIGURE_ARGS+=	--without-java
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 post-patch:

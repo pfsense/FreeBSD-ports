@@ -1,6 +1,6 @@
 PORTNAME=	dconf
 PORTVERSION=	0.40.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DISTNAME=	dconf-${PORTVERSION}
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gnome localbase meson pkgconfig python:3.6+,build tar:xz vala:build
+USES=		gettext gnome localbase meson pkgconfig python:build tar:xz vala:build
 USE_CSTD=	c99
 USE_GNOME=	glib20 libxslt:build
 USE_LDCONFIG=	yes
@@ -32,6 +32,8 @@ BINARY_ALIAS=	python3=${PYTHON_VERSION}
 MESON_ARGS=	-Dman=true \
 		-Dgtk_doc=false \
 		-Dvapi=true
+
+TESTING_UNSAFE=	some tests fail
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/dconf/db

@@ -1,6 +1,5 @@
 PORTNAME=	minder
-PORTVERSION=	1.14.0
-PORTREVISION=	3
+PORTVERSION=	1.16.4
 CATEGORIES=	graphics
 # avoid PKGBASE collision with net-p2p/minder
 PKGNAMESUFFIX=	-app
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libmarkdown.so:textproc/discount
 
 USES=		desktop-file-utils gettext gnome libarchive localbase:ldflags \
-		meson pkgconfig python:3.5+,build shared-mime-info shebangfix vala:build
+		meson pkgconfig python:build shared-mime-info shebangfix vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	phase1geo
 GH_PROJECT=	Minder

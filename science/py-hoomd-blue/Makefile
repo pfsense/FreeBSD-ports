@@ -1,6 +1,6 @@
 PORTNAME=	hoomd-blue
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.0.0
+DISTVERSION=	4.7.0
 CATEGORIES=	science # physics
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -20,7 +20,7 @@ GH_ACCOUNT=	glotzerlab
 
 GH_TUPLE=	glotzerlab:upp11:0c1fb8d:glotzerlab_upp11/hoomd/extern/upp11 \
 		glotzerlab:nano-signal-slot:34223a4:glotzerlab_nano_signal_slot/hoomd/extern/nano-signal-slot \
-		glotzerlab:quickhull:a706b5b:glotzerlab_quickhull/hoomd/extern/quickhull \
+		glotzerlab:quickhull:1ffbc6f:glotzerlab_quickhull/hoomd/extern/quickhull \
 		glotzerlab:random123:a2c4f04:glotzerlab_random123/hoomd/extern/random123 \
 		glotzerlab:HIP:d211f99:glotzerlab_HIP/hoomd/extern/HIP \
 		glotzerlab:hipCUB:c70e193:glotzerlab_hipCUB/hoomd/extern/hipCUB \
@@ -57,4 +57,12 @@ TBB_LIB_DEPENDS=	libtbb.so:devel/onetbb
 
 # the test mpi-test_communication requires excessive resources, see https://github.com/glotzerlab/hoomd-blue/issues/1396
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+post-patch:
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+	@${REINPLACE_CMD} -e 's|std::unary_function|std::__unary_function|' \
+		${WRKSRC}/hoomd/ParticleData.cc
+.endif
+
+.include <bsd.port.post.mk>

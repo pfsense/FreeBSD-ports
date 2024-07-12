@@ -1,7 +1,6 @@
 PORTNAME=	symengine
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.0
-PORTREVISION=	1
+DISTVERSION=	0.11.0
 CATEGORIES=	math python
 #MASTER_SITES=	PYPI # latest release isn't compatible with math/symengine
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,6 +12,8 @@ WWW=		https://symengine.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		incompatible with symengine-0.12.0, see https://github.com/symengine/symengine.py/issues/484
+
 LIB_DEPENDS=	libarb.so:math/arb \
 		libecm.so:math/gmp-ecm \
 		libflint.so:math/flint2 \
@@ -22,7 +23,7 @@ LIB_DEPENDS=	libarb.so:math/arb \
 		libsymengine.so:math/symengine
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sympy>0:math/py-sympy@${PY_FLAVOR} # see https://github.com/symengine/symengine.py/issues/416
 
-USES=		cmake compiler:c++11-lang python:3.7+
+USES=		cmake compiler:c++11-lang python
 USE_PYTHON=	cython flavors pytest
 
 USE_GITHUB=	yes

@@ -1,10 +1,9 @@
 PORTNAME=	typo3
-PORTVERSION=	${PORT_V_MAJOR}.${PORT_V_MINOR}.${PORT_V_PATCH}
-#PORTREVISION=	1
+DISTVERSION=	${PORT_V_MAJOR}.${PORT_V_MINOR}.${PORT_V_PATCH}
 CATEGORIES=	www
-MASTER_SITES=	https://typo3.azureedge.net/typo3/${PORTVERSION}/
+MASTER_SITES=	https://typo3.azureedge.net/typo3/${DISTVERSION}/
 PKGNAMESUFFIX=	-${PORT_V_MAJOR}${PHP_PKGNAMESUFFIX}
-DISTNAME=	${PORTNAME}_src-${PORTVERSION}
+DISTNAME=	${PORTNAME}_src-${DISTVERSION}
 
 MAINTAINER=	freebsd-ports@charlieroot.de
 COMMENT=	Typo3 content management system
@@ -13,32 +12,29 @@ WWW=		https://typo3.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-IGNORE_WITH_MYSQL=	56 57 101m 102m
-IGNORE_WITH_PHP=	80 82 83
-
 USES=		cpe php:web,flavors shebangfix
-USE_PHP=	ctype dom fileinfo filter gd intl \
-		mbstring openssl pdo session simplexml \
-		tokenizer xml zip zlib
+# php openssl extension is required but it's statically linked in default php
+USE_PHP=	ctype dom fileinfo filter gd intl mbstring pdo session \
+		simplexml tokenizer xml zip zlib
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_src-${PORTVERSION}
-SHEBANG_GLOB=	*.sh *.php
+SHEBANG_GLOB=	*.php *.sh
 NO_ARCH=	yes
 NO_BUILD=	yes
 PORTSCOUT=	limit:^${PORT_V_MAJOR}\.${PORT_V_MINOR}\.
 SUB_FILES=	pkg-message
 SUB_LIST+=	PREFIX=${PREFIX} \
-		TYPO3WWW=${TYPO3WWW} \
-		TYPO3DIR=${TYPO3DIR}
+		TYPO3DIR=${TYPO3DIR} \
+		TYPO3WWW=${TYPO3WWW}
 
 PORT_V_MAJOR=	12
 PORT_V_MINOR=	4
-PORT_V_PATCH=	2
+PORT_V_PATCH=	16
 
 TYPO3DIR=	www/${PORTNAME}-${PORT_V_MAJOR}
 
-OPTIONS_DEFINE=	CURL GMP IMAGICK MYSQL POSTGRES SQLITE
-OPTIONS_DEFAULT=MYSQL
+OPTIONS_DEFINE=		CURL GMP IMAGICK MYSQL POSTGRES SQLITE
+OPTIONS_DEFAULT=	MYSQL
 
 IMAGICK_DESC=	${IMAGEMAGICK_DESC}
 MBSTRING_DESC=	${MULTIBYTE_DESC}

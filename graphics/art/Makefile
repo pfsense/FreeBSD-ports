@@ -1,5 +1,5 @@
 PORTNAME=	art
-DISTVERSION=	1.20
+DISTVERSION=	1.22.1
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/agriggio/art/downloads/
 PKGNAMESUFFIX=	-raw-image-editor
@@ -27,7 +27,7 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		liblensfun.so:graphics/lensfun \
 		liblcms2.so:graphics/lcms2 \
 		libmimalloc.so:devel/mimalloc \
-		libpng.so:graphics/png \
+		libOpenColorIO.so:graphics/opencolorio \
 		libtiff.so:graphics/tiff
 
 USES=		cmake compiler:c++11-lang desktop-file-utils gnome jpeg pkgconfig tar:xz xorg
@@ -38,8 +38,15 @@ EXTRACT_CMD=	gtar
 
 LDFLAGS+=	-lpthread # otherwise build breaks on some systems: error: undefined symbol: pthread_create
 
-OPTIONS_DEFINE=		LTO
-OPTIONS_DEFAULT=	LTO
+OPTIONS_DEFINE=		CTL LTO
+OPTIONS_DEFAULT=	CTL LTO
+
+CTL_DESC=		Enable support for the ACES Color Transformation Language
+CTL_CMAKE_BOOL=		ENABLE_CTL
+CTL_LIB_DEPENDS=	libIlmCtl.so:graphics/ctl \
+			libImath.so:math/Imath \
+			libOpenEXR.so:graphics/openexr \
+			libpng16.so:graphics/png
 
 LTO_CMAKE_BOOL=		WITH_LTO
 

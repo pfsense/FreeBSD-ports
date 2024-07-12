@@ -1,12 +1,12 @@
 PORTNAME=	djview
 PORTVERSION=	4.12
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF/djvu/DjView/${PORTVERSION}
 
 MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Standalone Djvu viewer and plugin based on Qt toolkit
-WWW=		http://djvu.sourceforge.net/
+WWW=		https://djvu.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,6 +25,7 @@ USE_QT=		core gui network opengl printsupport widgets \
 USE_XORG=	sm ice xext xt
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	LRELEASE="${LRELEASE}" LUPDATE="${LUPDATE}"
 
 INSTALL_TARGET=	install-strip

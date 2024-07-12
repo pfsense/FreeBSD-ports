@@ -1,5 +1,6 @@
 PORTNAME=	freecell-solver
 PORTVERSION=	6.2.0
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://fc-solve.shlomifish.org/downloads/fc-solve/
 
@@ -31,7 +32,7 @@ LIB_DEPENDS_powerpc=	libgmp.so:math/gmp
 OPTIONS_DEFINE=	DOCS TCMALLOC
 TCMALLOC_DESC=	Use Google's TCMalloc
 
-USES=		cmake compiler:c11 localbase perl5 python:3.4+ shebangfix tar:xz
+USES=		cmake compiler:c11 localbase perl5 python shebangfix tar:xz
 USE_PERL5=	build
 SHEBANG_FILES=	board_gen/make_pysol_freecell_board.py \
 		board_gen/transpose-freecell-board.py \
@@ -46,9 +47,6 @@ TCMALLOC_LIB_DEPENDS=	libtcmalloc.so:devel/google-perftools
 TCMALLOC_CMAKE_OFF=	-DFCS_AVOID_TCMALLOC:BOOL=ON
 
 post-patch:
-.for f in Shlomif_Common.cmake
-	@${REINPLACE_CMD} -e 's|share/man|man|' ${WRKSRC}/cmake/${f}
-.endfor
 .for f in children-playing-ball.sh sentient-pearls.sh
 	@${REINPLACE_CMD} -e 's|/bin/bash|/bin/sh|' ${WRKSRC}/Presets/presets/${f}
 .endfor

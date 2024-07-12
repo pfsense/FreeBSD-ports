@@ -1,6 +1,6 @@
 PORTNAME=	appleseed
 DISTVERSION=	2.1.0-beta
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -15,15 +15,13 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libpng.so:graphics/png \
 		libIlmThread.so:graphics/openexr \
 		libImath.so:math/Imath \
-		libOpenColorIO.so:graphics/opencolorio \
+		libOpenColorIOv1.so:graphics/opencoloriov1 \
 		libOpenImageIO.so:graphics/openimageio \
 		libxerces-c.so:textproc/xerces-c3 \
 		liboslexec.so:graphics/openshadinglanguage
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}hq
-
-BROKEN=		cannot build with recent Boost and OCIO libs
 
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	not ported to it yet
@@ -60,7 +58,7 @@ EMBREE_DESC=	Embree intersection backend support
 EMBREE_LIB_DEPENDS=	libembree3.so:graphics/embree
 EMBREE_CMAKE_ON=	-DWITH_EMBREE:BOOL=ON
 
-PYTHON_USES=	gl python:3.5+,build,run
+PYTHON_USES=	gl python:build,run
 PYTHON_USE=	GL=gl
 PYTHON_CMAKE_ON=	-DWITH_PYTHON3_BINDINGS:BOOL=ON
 

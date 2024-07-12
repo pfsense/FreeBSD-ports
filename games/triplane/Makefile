@@ -1,6 +1,6 @@
 PORTNAME=	triplane
 PORTVERSION=	1.08.r20130224
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://contribs.martymac.org/FreeBSD-ports/distfiles/ \
 		SF/${PORTNAME}
@@ -8,7 +8,7 @@ DISTNAME=	${PORTNAME}-classic-${PORTVERSION}
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Port of the original Triplane Turmoil game
-WWW=		http://triplane.sourceforge.net/
+WWW=		https://triplane.sourceforge.net/
 
 LICENSE=	GPLv3
 

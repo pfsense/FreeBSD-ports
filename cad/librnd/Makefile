@@ -30,8 +30,7 @@ PLIST_SUB=	DISTVERSION=${DISTVERSION}
 OPTIONS_DEFINE=	DOCS GD MOTIF GTK2 GTK2GL GTK4 STROKE WGET
 OPTIONS_DEFAULT=	GD GTK2 GTK2GL STROKE WGET
 OPTIONS_SUB=	yes
-GTK2GL_DESC=	GTK+ 2 GUI with OpenGL support
-GTK4_DESC=	GTK+ 4 GUI toolkit support
+GTK2GL_DESC=	GTK 2 GUI with OpenGL support
 WGET_DESC=	Wget support
 
 GD_LIB_DEPENDS=	libgd.so:graphics/gd
@@ -76,6 +75,10 @@ PLIST_SUB+=	GUI=""
 .else
 PLIST_SUB+=	GUI="@comment "
 .endif
+
+post-patch:
+	@${ECHO_CMD} 'USER_CFLAGS += -DSCCONFIG_ACCEPT_IMPLICIT' \
+		>> ${WRKSRC}/scconfig/Makefile
 
 pre-configure:
 	${REINPLACE_CMD} \

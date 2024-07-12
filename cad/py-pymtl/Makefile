@@ -1,5 +1,5 @@
 PORTNAME=	pymtl
-DISTVERSION=	3.1.15
+DISTVERSION=	3.1.16
 CATEGORIES=	cad python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,7 +22,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}graphviz>0:graphics/py-graphviz@${PY_FLAVOR
 		verilator:cad/verilator \
 		yosys:cad/yosys
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils pytest # 94 tests fail, see https://github.com/pymtl/pymtl3/issues/247
 
 BINARY_ALIAS=	g++=${CXX}

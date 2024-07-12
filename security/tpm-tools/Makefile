@@ -1,12 +1,12 @@
 PORTNAME=	tpm-tools
 PORTVERSION=	1.3.9.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF/trousers/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Provides a basic set of TPM tools
-WWW=		http://trousers.sourceforge.net
+WWW=		https://trousers.sourceforge.net
 
 LICENSE=	CPL
 LICENSE_NAME=	Common Public License
@@ -23,6 +23,7 @@ USE_LDCONFIG=	YES
 
 NO_WRKSUBDIR=	YES
 GNU_CONFIGURE=	YES
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 LIBS+=		-L${LOCALBASE}/lib -lintl
 INSTALL_TARGET=	install-strip
 

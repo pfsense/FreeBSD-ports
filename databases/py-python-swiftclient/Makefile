@@ -1,5 +1,6 @@
 PORTNAME=	python-swiftclient
 PORTVERSION=	3.13.1
+PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,12 +18,12 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=1.1:www/py-requests@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/manpages/swift.1 \
-	    ${STAGEDIR}${MANPREFIX}/man/man1
+	    ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

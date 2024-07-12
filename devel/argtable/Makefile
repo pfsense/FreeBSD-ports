@@ -1,13 +1,13 @@
 PORTNAME=	argtable
 PORTVERSION=	2.13
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION:S/./-/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ANSI C library for parsing GNU style command line arguments
-WWW=		http://argtable.sourceforge.net/
+WWW=		https://argtable.sourceforge.net/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,7 +24,7 @@ post-patch:
 		 s|^install-data-am: install-dist_exampleDATA|install-data-am: |g' ${WRKSRC}/Makefile.in
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/argtable2.3 ${STAGEDIR}${MAN3PREFIX}/man/man3
+	${INSTALL_MAN} ${WRKSRC}/doc/argtable2.3 ${STAGEDIR}${PREFIX}/share/man/man3
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,8 +1,8 @@
-TIMESTAMP = 1685034213
-SHA256 (oidn-weights-4322c25e25a05584f65da1a4be5cef40a4b2e90b.tar.gz) = ea9bd87ea429b0e64cc1ba62875ad5c4882e476224f594f4f559f60b59e3b770
-SIZE (oidn-weights-4322c25e25a05584f65da1a4be5cef40a4b2e90b.tar.gz) = 20605602
-SHA256 (OpenImageDenoise-oidn-v2.0.0_GH0.tar.gz) = 81eea9c36b446183ba67f8cb8e435bcc33b5b55fd83bbad67615c219560ee4a7
-SIZE (OpenImageDenoise-oidn-v2.0.0_GH0.tar.gz) = 3580694
+TIMESTAMP = 1718696155
+SHA256 (oidn-weights-28883d1769d5930e13cf7f1676dd852bd81ed9e7.tar.gz) = 90726b544f6e8b86a8bc4756e7c0b3da7530d4bab9dd671f2689001b4f9801f7
+SIZE (oidn-weights-28883d1769d5930e13cf7f1676dd852bd81ed9e7.tar.gz) = 46880514
+SHA256 (OpenImageDenoise-oidn-v2.3.0_GH0.tar.gz) = e71555003f972863ace8a7391287c0d74f1adfc875138338f577daf43b269402
+SIZE (OpenImageDenoise-oidn-v2.3.0_GH0.tar.gz) = 3634727
 SHA256 (OpenImageDenoise-mkl-dnn-9bea36e_GH0.tar.gz) = b4626c0cf65e64ec16d93f8af7941bccd62385da5ea16fd81de5d26b7cb10f71
 SIZE (OpenImageDenoise-mkl-dnn-9bea36e_GH0.tar.gz) = 7191010
 SHA256 (ROCmSoftwarePlatform-composable_kernel-e85178b_GH0.tar.gz) = b870ae0dcac8083a239814fff673a83ddd5abfc477b4320af08a2232cd42849c

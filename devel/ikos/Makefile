@@ -1,7 +1,7 @@
 PORTNAME=	ikos
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1
-PORTREVISION=	4
+DISTVERSION=	3.2
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,6 +11,8 @@ WWW=		https://github.com/NASA-SW-VnV/ikos
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.pdf
 
+BROKEN_armv7=	configure fails: error when running a program linked with GMP: Segmentation fault
+
 BUILD_DEPENDS=	llvm${LLVM_VERSION}>0:devel/llvm${LLVM_VERSION}
 LIB_DEPENDS=	libapron.so:math/apron \
 		libboost_system.so:devel/boost-libs \
@@ -18,10 +20,9 @@ LIB_DEPENDS=	libapron.so:math/apron \
 		libgmp.so:math/gmp \
 		libppl.so:devel/ppl \
 		libtbb.so:devel/onetbb
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
-		llvm${LLVM_VERSION}>0:devel/llvm${LLVM_VERSION}
+RUN_DEPENDS=	llvm${LLVM_VERSION}>0:devel/llvm${LLVM_VERSION}
 
-USES=		cmake ncurses python:3.6+ sqlite
+USES=		cmake ncurses python sqlite
 USE_GITHUB=	yes
 GH_ACCOUNT=	NASA-SW-VnV
 USE_LDCONFIG=	yes

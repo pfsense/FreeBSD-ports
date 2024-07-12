@@ -1,0 +1,23 @@
+commit d536506909c89b5f42e6bf1c63cf02e723b0fb72
+Author: jim-p <jimp@netgate.com>
+Date:   Fri Jul 21 10:44:37 2023 -0400
+
+    Fix Captive Portal view HTML link param. Fixes #14598
+    
+    The way the code regex matches the parameter it needs the extra bit on
+    the end so it both matches the regex and gets the target parsed out.
+    Also this makes it consistent with the other links in the section.
+
+diff --git a/src/usr/local/www/services_captiveportal.php b/src/usr/local/www/services_captiveportal.php
+index 19d44093de..9d03e38ced 100644
+--- a/src/usr/local/www/services_captiveportal.php
++++ b/src/usr/local/www/services_captiveportal.php
+@@ -788,7 +788,7 @@ if ($pconfig['page']['htmltext']) {
+ 	$group->add(new Form_Button(
+ 		'btnview',
+ 		'View Page Contents',
+-		'?zone=' . $cpzone . '&act=viewhtml',
++		'?zone=' . $cpzone . '&act=viewhtmlhtml',
+ 		'fa-file-text-o'
+ 	))->addClass('btn btn-info btn-xs')->setAttribute("target", "_blank");
+ 

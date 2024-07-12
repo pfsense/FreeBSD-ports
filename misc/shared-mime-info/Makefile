@@ -1,6 +1,6 @@
 PORTNAME=	shared-mime-info
 DISTVERSION=	2.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc gnome
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -21,7 +21,7 @@ USE_GITLAB=	YES
 GL_SITE=	https://gitlab.freedesktop.org/
 GL_ACCOUNT=	xdg
 GL_PROJECT=	shared-mime-info
-GL_COMMIT=	13695c7225c2f525a435e72739c33ac32bbfbbb9
+GL_TAGNAME=	13695c7225c2f525a435e72739c33ac32bbfbbb9
 GL_TUPLE=	xdg:xdgmime:de283fc430460b9b3a7e61432a6d273cd64cb102:xdgmime/src/xdgmime
 bash_CMD=	/bin/sh
 SHEBANG_FILES=	${WRKSRC}/tests/compare_iana.py \
@@ -32,6 +32,7 @@ SHEBANG_FILES=	${WRKSRC}/tests/compare_iana.py \
 		${WRKSRC}/tests/mime-detection/test3.py \
 		${WRKSRC}/tests/test_case.py \
 		${WRKSRC}/tests/test_sub_class_ofs.py
+TESTING_UNSAFE=	yes # env: bash: No such file or directory
 
 MIMESUBDIRS=	application audio image inode message model multipart \
 		packages text video x-epoc x-content font

@@ -3,7 +3,7 @@
  * snort_passlist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -153,8 +153,8 @@ display_top_tabs($tab_array, true);
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['name']);?></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=snort_is_passlist_used($list['name']) ? gettext("Yes"):gettext("No");?></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['descr']);?>&nbsp;</td>
-				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit this Pass List');?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
+				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa-solid fa-pencil" title="<?=gettext('Edit this Pass List');?>"></a>
+				<a class="fa-solid fa-trash-can no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
 				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>">Delete Pass List</button></td>
 			</tr>
 		<?php endforeach; ?>
@@ -164,12 +164,12 @@ display_top_tabs($tab_array, true);
 
 	<nav class="action-buttons">
 		<a href="snort_passlist_edit.php?id=<?php echo $id_gen;?>" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add a new pass list');?>">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<?php if (count($a_passlist) > 0): ?>
 			<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete selected items');?>">
-				<i class="fa fa-trash icon-embed-btn"></i>
+				<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 				<?=gettext('Delete');?>
 			</button>
 		<?php endif; ?>

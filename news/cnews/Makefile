@@ -1,6 +1,6 @@
 PORTNAME=	cnews
 PORTVERSION=	cr.g
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	news
 MASTER_SITES=	ftp://ftp.cs.toronto.edu/pub/c-news/ \
 		ftp://ftp.funet.fi/pub/unix/news/cnews/ \
@@ -23,7 +23,7 @@ PATCHFILES=	c-news-patch-fileart.c c-news-patch-namelen \
 		c-news-patch-y2k-2 \
 		c-news-patch-inews-path \
 		c-news-patch-gawk3 \
-		c-news-patch-ansi2
+		c-news-patch-ansi3
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	News server
@@ -130,9 +130,9 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/conf/config ${STAGEDIR}${NEWSBIN}/
 	cd ${WRKSRC} && ${MAKE} ${MAKE_ARGS} ${MAKE_FLAGS} ${MAKEFILE} install
 	cd ${WRKSRC} && ${MAKE} ${MAKE_ARGS} ${MAKE_FLAGS} ${MAKEFILE} ui readpostcheck
-	cd ${WRKSRC}/man && ${INSTALL_MAN} ${LMAN1} ${STAGEDIR}${PREFIX}/man/man1/
-	cd ${WRKSRC}/man && ${INSTALL_MAN} ${LMAN5} ${STAGEDIR}${PREFIX}/man/man5/
-	cd ${WRKSRC}/man && ${INSTALL_MAN} ${LMAN8} ${STAGEDIR}${PREFIX}/man/man8/
+	cd ${WRKSRC}/man && ${INSTALL_MAN} ${LMAN1} ${STAGEDIR}${PREFIX}/share/man/man1/
+	cd ${WRKSRC}/man && ${INSTALL_MAN} ${LMAN5} ${STAGEDIR}${PREFIX}/share/man/man5/
+	cd ${WRKSRC}/man && ${INSTALL_MAN} ${LMAN8} ${STAGEDIR}${PREFIX}/share/man/man8/
 .if ${PORT_OPTIONS:MEXAMPLES}
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/newsctl
 	cd ${WRKSRC} && ${INSTALL_DATA} ${NO_EG_FILES:S,^,*/,} \

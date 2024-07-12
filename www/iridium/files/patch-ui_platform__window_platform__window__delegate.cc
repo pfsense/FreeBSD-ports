@@ -1,11 +1,11 @@
---- ui/platform_window/platform_window_delegate.cc.orig	2023-04-22 17:45:15 UTC
+--- ui/platform_window/platform_window_delegate.cc.orig	2024-06-25 12:08:48 UTC
 +++ ui/platform_window/platform_window_delegate.cc
-@@ -29,7 +29,7 @@ PlatformWindowDelegate::PlatformWindowDelegate() = def
+@@ -61,7 +61,7 @@ gfx::Insets PlatformWindowDelegate::CalculateInsetsInD
+   return gfx::Insets();
+ }
  
- PlatformWindowDelegate::~PlatformWindowDelegate() = default;
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  void PlatformWindowDelegate::OnWindowTiledStateChanged(
      WindowTiledEdges new_tiled_edges) {}
  #endif

@@ -1,6 +1,6 @@
 PORTNAME=	synctex
-PORTVERSION=	2.0.0
-PORTREVISION=	2
+DISTVERSION=	2.0.0
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/
 PKGNAMEPREFIX=	tex-
@@ -9,7 +9,7 @@ DIST_SUBDIR=	TeX
 
 MAINTAINER=	tex@FreeBSD.org
 COMMENT=	Synchronization TeXnology parser library
-WWW=		http://itexmac.sourceforge.net/SyncTeX.html
+WWW=		https://itexmac.sourceforge.net/SyncTeX.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/synctexdir/README.txt
@@ -19,6 +19,7 @@ USE_LDCONFIG=	yes
 USE_TEX=	kpathsea
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	${EXCLUDE_ENGINES:S/^/--disable-/} \
 		--with-system-kpathsea \
 		--with-system-zlib \

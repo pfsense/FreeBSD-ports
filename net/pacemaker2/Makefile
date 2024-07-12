@@ -1,13 +1,12 @@
-PORTVERSION=		2.1.5
+PORTVERSION=		2.1.7
+PORTREVISION=		1
 PKGNAMESUFFIX=		2
 
 WWW=		https://www.clusterlabs.org/pacemaker/
 
-.include "${.CURDIR}/../pacemaker1/Makefile.common"
+.include "${.CURDIR}/Makefile.common"
 
 CONFIGURE_ARGS+=	--with-noarch-pkgconfigdir=${PREFIX}/libdata/pkgconfig
-
-CONFLICTS+=		pacemaker1
 
 LIB_DEPENDS+=		libffi.so:devel/libffi \
 	libgmp.so:math/gmp \
@@ -20,6 +19,8 @@ LIB_DEPENDS+=		libffi.so:devel/libffi \
 	libunistring.so:devel/libunistring
 
 USES+=	gettext
+
+SHEBANG_FILES+=	agents/ocf/*
 
 post-patch: post-patch-common
 

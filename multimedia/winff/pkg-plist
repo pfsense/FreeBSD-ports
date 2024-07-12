@@ -1,10 +1,11 @@
 bin/winff
-man/man1/winff.1.gz
+share/man/man1/winff.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/WinFF.ca.pdf
 %%PORTDOCS%%%%DOCSDIR%%/WinFF.en.pdf
 %%PORTDOCS%%%%DOCSDIR%%/WinFF.es.pdf
 %%PORTDOCS%%%%DOCSDIR%%/WinFF.fr.pdf
 %%PORTDOCS%%%%DOCSDIR%%/WinFF.nl.pdf
+%%PORTDOCS%%%%DOCSDIR%%/WinFF.pt.pdf
 share/pixmaps/winff.png
 %%DATADIR%%/languages/winff.ab.po
 %%DATADIR%%/languages/winff.ar.po
@@ -12,7 +13,6 @@ share/pixmaps/winff.png
 %%DATADIR%%/languages/winff.bg.po
 %%DATADIR%%/languages/winff.ca.po
 %%DATADIR%%/languages/winff.cs.po
-%%DATADIR%%/languages/winff.de_DE.po
 %%DATADIR%%/languages/winff.de.po
 %%DATADIR%%/languages/winff.el.po
 %%DATADIR%%/languages/winff.en_GB.po
@@ -36,7 +36,6 @@ share/pixmaps/winff.png
 %%DATADIR%%/languages/winff.nb.po
 %%DATADIR%%/languages/winff.nl.po
 %%DATADIR%%/languages/winff.pl.po
-%%DATADIR%%/languages/winff.po
 %%DATADIR%%/languages/winff.pot
 %%DATADIR%%/languages/winff.pt_BR.po
 %%DATADIR%%/languages/winff.pt.po

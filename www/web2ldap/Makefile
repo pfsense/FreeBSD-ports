@@ -1,5 +1,6 @@
 PORTNAME=	web2ldap
 PORTVERSION=	1.8.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI https://www.web2ldap.de/download/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,7 +24,7 @@ RUN_DEPENDS=	\
 		${LOCALBASE}/etc/mime.types:misc/mime-support
 
 OPTIONS_DEFINE=	DOCS
-USES=		cpe python:3.6+
+USES=		cpe python
 USE_PYTHON=	distutils autoplist
 
 SUB_FILES=	pkg-message ${PORTNAME}

@@ -1,5 +1,5 @@
 PORTNAME=	slony1v2
-PORTVERSION=	2.2.10
+PORTVERSION=	2.2.11
 CATEGORIES=	databases
 MASTER_SITES=	http://main.slony.info/downloads/2.2/source/
 DISTNAME=	slony1-${PORTVERSION}
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
 
 GNU_CONFIGURE=	yes
-USES=		bison gmake shebangfix tar:bzip2 pgsql
+USES=		bison gmake shebangfix tar:bzip2 pgsql:12-15
 WANT_PGSQL=	server
 USE_RC_SUBR=	slon
 SHEBANG_FILES=	tools/altperl/slonik_restart_node.pl

@@ -1,6 +1,6 @@
 PORTNAME=	rrdtool
 DISTVERSION=	1.8.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	databases graphics
 MASTER_SITES=	https://github.com/oetiker/rrdtool-1.x/releases/download/v${DISTVERSION}/
 
@@ -22,6 +22,10 @@ CONFIGURE_ARGS=	--disable-tcl
 CONFIGURE_ENV=	RRDDOCDIR=${DOCSDIR:Q}
 INSTALL_TARGET=	install-strip
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/freetype2
+# Some symbols in the linker version script librrd.sym are undefined when the
+# CACHE option is off. Suppress errors with lld >= 17 due to these undefined
+# symbols.
+LDFLAGS+=	-Wl,--undefined-version
 CONFLICTS=	rrdtool12
 PORTDOCS=	*
 PORTEXAMPLES=	cgi-demo.cgi
@@ -62,7 +66,7 @@ PERL_PORTEXAMPLES=		4charts.pl bigtops.pl minmax.pl perftest.pl \
 				piped-demo.pl rrdcached/rrdcached-size.pl \
 				rrdcached/RRDCached.pm shared-demo.pl \
 				stripes.pl
-PYTHON_BUILD_DEPENDS=		${PYTHON_PKGNAMEPREFIX}setuptools>=63.1.0:devel/py-setuptools@${PY_FLAVOR}
+PYTHON_BUILD_DEPENDS=		${PY_SETUPTOOLS}
 PYTHON_USES=			python
 PYTHON_USE=			PYTHON=flavors,optsuffix
 PYTHON_CONFIGURE_ENABLE=	python

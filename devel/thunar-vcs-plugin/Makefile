@@ -1,6 +1,6 @@
 PORTNAME=	thunar-vcs-plugin
 PORTVERSION=	0.2.0
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	devel xfce
 MASTER_SITES=	XFCE/thunar-plugins
 DIST_SUBDIR=	xfce4
@@ -12,9 +12,11 @@ WWW=		https://goodies.xfce.org/projects/thunar-plugins/thunar-vcs-plugin
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
+
 USES=		compiler:c11 gettext-tools gmake gnome libtool localbase \
 		pkgconfig tar:bzip2 xfce
-USE_GNOME=	cairo gtk30 glib20 intltool
+USE_GNOME=	cairo gdkpixbuf2 gtk30 glib20 intltool
 USE_XFCE=	libexo thunar
 
 GNU_CONFIGURE=	yes
@@ -31,7 +33,11 @@ NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
 
 SUBVERSION_CONFIGURE_ENABLE=	subversion
-SUBVERSION_LIB_DEPENDS=		libsvn_client-1.so:devel/subversion \
-				libapr-1.so:devel/apr1
+.if ${WITH_SUBVERSION_VER:U} == LTS
+SUBVERSION_LIB_DEPENDS=	libsvn_client-1.so:devel/subversion-lts
+.else
+SUBVERSION_LIB_DEPENDS=	libsvn_client-1.so:devel/subversion
+.endif
+SUBVERSION_LIB_DEPENDS+=	libapr-1.so:devel/apr1
 
 .include <bsd.port.mk>

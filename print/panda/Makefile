@@ -1,6 +1,6 @@
 PORTNAME=	panda
 PORTVERSION=	0.5.4
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	print
 MASTER_SITES=	SF \
 		SAVANNAH \
@@ -11,6 +11,9 @@ COMMENT=	PDF generation library
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
+
+DEPRECATED=	Depends on deprecated Oracle Berkeley DB 5.3 and upstream is dead
+EXPIRATION_DATE=2024-06-30
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
@@ -27,7 +30,7 @@ USE_LDCONFIG=	yes
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/man/panda_*.3 ${STAGEDIR}${MANPREFIX}/man/man3
+	${INSTALL_MAN} ${WRKSRC}/man/panda_*.3 ${STAGEDIR}${PREFIX}/share/man/man3
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in AUTHORS CONTRIBUTORS ChangeLog DEV-HINTS README TODO UNDERWAY
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}

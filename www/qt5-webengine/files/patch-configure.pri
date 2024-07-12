@@ -1,6 +1,8 @@
---- configure.pri.orig	2020-11-07 01:22:36 UTC
+* Add support for FreeBSD
+
+--- configure.pri.orig	2024-03-27 11:26:34 UTC
 +++ configure.pri
-@@ -123,6 +123,9 @@ defineTest(qtConfTest_detectPlatform) {
+@@ -136,6 +136,9 @@ defineTest(qtConfTest_detectPlatform) {
      macos:qtwebengine_isMacOsPlatformSupported() {
          $${1}.platform = "macos"
      }

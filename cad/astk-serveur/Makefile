@@ -34,7 +34,7 @@ RUN_DEPENDS+=	${SHELL_INSTALL_ASTER}:shells/${SHIADEP}
 
 USES=		gettext
 .if !defined(CLIENT_SEUL)
-USES+=		python:3.6+ shebangfix tk:build
+USES+=		python shebangfix tk:build
 SHEBANG_FILES=	unittest/run_test.py
 .else
 USES+=		tk
@@ -59,11 +59,6 @@ tools_dir=	${LOCALBASE}/aster/outils
 conf_dir=	${WRKSRC}/etc/astkrc
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300068
-# ASTK is not useful without french/aster
-IGNORE=	a larger value of ARG_MAX is needed for Code_Aster, please upgrade your system
-.endif
 
 WRKCONF=	${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/configuration
 .if !defined(CLIENT_SEUL)

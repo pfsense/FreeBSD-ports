@@ -1,6 +1,5 @@
 PORTNAME=	fonttools
-PORTVERSION=	4.39.4
-PORTREVISION=	1
+PORTVERSION=	4.51.0
 CATEGORIES=	print python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,13 +11,15 @@ WWW=		https://github.com/fonttools/fonttools
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ufolib2>=0:print/py-ufolib2@${PY_FLAVOR}
 
-USES=		python:3.7+ zip
-USE_PYTHON=	autoplist concurrent cython distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent cython pep517
 
 OPTIONS_DEFINE=	GRAPHITE INTERPOLATABLE LXML PLOT REPACKER SYMFONT UFO UNICODE WOFF
-OPTIONS_DEFAULT=LXML UFO UNICODE
+OPTIONS_DEFAULT=LXML UFO UNICODE WOFF
 GRAPHITE_DESC=	Process graphite type tables in ttLib/tables
 INTERPOLATABLE_DESC=	Interpolatability support
 LXML_DESC=	Read/write XML files via lxml (faster/safer than built-in ElementTree)
@@ -30,8 +31,9 @@ UNICODE_DESC=	Use latest Unicode Character Database
 WOFF_DESC=	Compress/uncompress WOFF webfonts
 
 GRAPHITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lz4>=1.7.4.2:archivers/py-lz4@${PY_FLAVOR}
-INTERPOLATABLE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}scipy>=0:science/py-scipy@${PY_FLAVOR}
-LXML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.0<5:devel/py-lxml@${PY_FLAVOR}
+INTERPOLATABLE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR} \
+				${PYTHON_PKGNAMEPREFIX}scipy>=0:science/py-scipy@${PY_FLAVOR}
+LXML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.0:devel/py-lxml@${PY_FLAVOR}
 PLOT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=0:math/py-matplotlib@${PY_FLAVOR}
 REPACKER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}uharfbuzz>=0.23.0:print/py-uharfbuzz@${PY_FLAVOR}
 SYMFONT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sympy>=0:math/py-sympy@${PY_FLAVOR}
@@ -41,8 +43,8 @@ WOFF_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}brotli>=1.0.1:archivers/py-brotli@${PY_
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:UNICODE} && ${PYTHON_REL} < 31200
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}unicodedata2>=15.0.0:devel/py-unicodedata2@${PY_FLAVOR}
+.if ${PORT_OPTIONS:UNICODE} && ${PYTHON_REL} < 31299
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}unicodedata2>=15.1.0:devel/py-unicodedata2@${PY_FLAVOR}
 .endif
 
 post-install:

@@ -48,6 +48,7 @@ bin/testhess
 bin/testpair
 bin/testpol
 bin/testrot
+bin/testsurf
 bin/testvir
 bin/timer
 bin/timerot
@@ -63,7 +64,6 @@ bin/xyzint
 bin/xyzmol2
 bin/xyzpdb
 %%DATADIR%%/params/0README
-%%DATADIR%%/params/amber14sb.prm
 %%DATADIR%%/params/amber94.prm
 %%DATADIR%%/params/amber96.prm
 %%DATADIR%%/params/amber98.prm
@@ -71,6 +71,7 @@ bin/xyzpdb
 %%DATADIR%%/params/amber99sb.prm
 %%DATADIR%%/params/amoeba04.prm
 %%DATADIR%%/params/amoeba09.prm
+%%DATADIR%%/params/amoebabio-hfc23.prm
 %%DATADIR%%/params/amoebabio09.prm
 %%DATADIR%%/params/amoebabio18.prm
 %%DATADIR%%/params/amoebail22.prm
@@ -92,7 +93,6 @@ bin/xyzpdb
 %%DATADIR%%/params/mmff.prm
 %%DATADIR%%/params/oplsaa.prm
 %%DATADIR%%/params/oplsaal.prm
-%%DATADIR%%/params/oplsaam.prm
 %%DATADIR%%/params/oplsua.prm
 %%DATADIR%%/params/smoothaa.prm
 %%DATADIR%%/params/smoothua.prm
@@ -100,6 +100,7 @@ bin/xyzpdb
 %%DATADIR%%/params/water03.prm
 %%DATADIR%%/params/water14.prm
 %%DATADIR%%/params/water21.prm
+%%DATADIR%%/params/water22.prm
 %%DATADIR%%/test/0README
 %%DATADIR%%/test/anion.dat
 %%DATADIR%%/test/anion.dyn0

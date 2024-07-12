@@ -1,9 +1,9 @@
---- third_party/blink/public/common/renderer_preferences/renderer_preferences.h.orig	2022-04-01 07:48:30 UTC
+--- third_party/blink/public/common/renderer_preferences/renderer_preferences.h.orig	2024-06-25 12:08:48 UTC
 +++ third_party/blink/public/common/renderer_preferences/renderer_preferences.h
-@@ -50,7 +50,7 @@ struct BLINK_COMMON_EXPORT RendererPreferences {
-   bool webrtc_allow_legacy_tls_protocols{false};
+@@ -65,7 +65,7 @@ struct BLINK_COMMON_EXPORT RendererPreferences {
    UserAgentOverride user_agent_override;
    std::string accept_languages;
+   bool send_subresource_notification{false};
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    std::string system_font_family_name;

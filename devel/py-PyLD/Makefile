@@ -1,16 +1,17 @@
 PORTNAME=	PyLD
 PORTVERSION=	0.7.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Implementation of the JSON Linked Data specification in Python
 WWW=		https://github.com/digitalbazaar/pyld
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils concurrent
 NO_ARCH=	yes
 

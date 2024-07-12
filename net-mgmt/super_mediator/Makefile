@@ -1,6 +1,6 @@
 PORTNAME=	super_mediator
 PORTVERSION=	1.6.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 
@@ -18,11 +18,13 @@ USES=		compiler:c11 gnome libtool pathfix perl5 pkgconfig ssl
 USE_GNOME=	glib20
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 INSTALL_TARGET=	install-strip
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
 OPTIONS_DEFINE=	SPREAD MYSQL SKIPSET
 OPTIONS_DEFAULT=	MYSQL SKIPSET
+OPTIONS_SUB=	yes
 
 MYSQL_DESC=	Enable SuperMediator to directly write into MySQL
 SKIPSET_DESC=	Enable SiLK IPSET files for filtering
@@ -31,7 +33,7 @@ SPREAD_DESC=	Enable Spread libary as a pub/sub distribution capability
 MYSQL_LIB_DEPENDS=	libmysqlclient.so:${_MYSQL_CLIENT}
 MYSQL_USES=	mysql
 MYSQL_CONFIGURE_WITH=	mysql
-MYSQL_VARS=	IGNORE_WITH_MYSQL=80
+MYSQL_VARS=	IGNORE_WITH_MYSQL="80 81"
 SKIPSET_LIB_DEPENDS=	libsilk.so:security/silktools
 SKIPSET_CONFIGURE_WITH=	skipset
 SPREAD_LIB_DEPENDS=	libspread.so:net/spread4

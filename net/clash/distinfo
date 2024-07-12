@@ -1,5 +1,5 @@
-TIMESTAMP = 1684915246
-SHA256 (go/net_clash/clash-v1.16.0/v1.16.0.mod) = 28ce820304dbf04d92b768d784195ccd9526cf49bc2363111688cf6ea528d5b3
-SIZE (go/net_clash/clash-v1.16.0/v1.16.0.mod) = 1617
-SHA256 (go/net_clash/clash-v1.16.0/v1.16.0.zip) = 5cc5f78cc5192d82581464c62a0b30402df25595d2534101f288180f7c43b4c8
-SIZE (go/net_clash/clash-v1.16.0/v1.16.0.zip) = 391354
+TIMESTAMP = 1699225407
+SHA256 (go/net_clash/clash-v1.18.0/v1.18.0.mod) = cbd2e5ff408a859b0aaec15e55badf976886aeb072decceb45e2ba2eab7a1525
+SIZE (go/net_clash/clash-v1.18.0/v1.18.0.mod) = 1657
+SHA256 (go/net_clash/clash-v1.18.0/v1.18.0.zip) = eba291c596158b15219f5663d785884c0f45cef43e5a6c13e5e0f2b63426f90a
+SIZE (go/net_clash/clash-v1.18.0/v1.18.0.zip) = 440454

@@ -1,7 +1,9 @@
 PORTNAME=	phpsysinfo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.4.2
+DISTVERSION=	3.4.3
+PORTREVISION=	2
 CATEGORIES=	www
+PKGNAMESUFFIX=  ${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	tremere@cainites.net
 COMMENT=	PHP script for displaying system information
@@ -12,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe php:web
 USE_GITHUB=	yes
-USE_PHP=	dom mbstring simplexml xml
+USE_PHP=	dom mbstring simplexml xml xsl
 
 NO_ARCH=	yes
 NO_BUILD=	yes

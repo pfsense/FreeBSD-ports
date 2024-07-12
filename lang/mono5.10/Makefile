@@ -1,12 +1,12 @@
 PORTNAME=	mono
 PORTVERSION=	5.10.1.57
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	lang
 MASTER_SITES=	https://download.mono-project.com/sources/mono/
 PKGNAMESUFFIX=	5.10
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source implementation of .NET Development Framework
 WWW=		https://www.mono-project.com/
 
@@ -38,13 +38,15 @@ NLS_USES=	gettext
 
 X11_USES=	display:test
 
-USES=	autoreconf bison compiler:c11 cpe gmake iconv libtool \
-	pathfix perl5 python:3.6+ shebangfix tar:bzip2
+USES=	autoreconf bison compiler:c11 cpe elfctl gmake iconv libtool \
+	pathfix perl5 python shebangfix tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	scripts/mono-heapviz mono/mini/genmdesc.py mono/tests/test_lldb.py
 BINARY_ALIAS=	python=${PYTHON_CMD}
+ELF_FEATURES=	+wxneeded:mono/mini/mono-sgen
 
 CONFIGURE_ARGS=	--disable-dtrace
 CONFIGURE_ENV=	ac_cv_header_sys_inotify_h=no
@@ -96,10 +98,6 @@ post-patch:
 		${WRKSRC}/man/mono-configuration-crypto.1 \
 		${WRKSRC}/man/mono.1 \
 		${WRKSRC}/man/mozroots.1
-
-post-configure:
-	${REINPLACE_CMD} -e 's|share\/man|man|g' \
-		${WRKSRC}/mcs/jay/Makefile
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/mono

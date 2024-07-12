@@ -1,7 +1,6 @@
 PORTNAME=	PySCIPOpt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.3.0
-PORTREVISION=	1
+DISTVERSION=	5.1.1
 CATEGORIES=	math python
 #MASTER_SITES=	PYPI # no tests
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +13,8 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libscip.so:math/SCIP
 
-USES=		localbase python:3.6+
-USE_PYTHON=	distutils cython autoplist pytest
+USES=		localbase python
+USE_PYTHON=	distutils cython autoplist pytest # 1 test fails, see https://github.com/scipopt/PySCIPOpt/issues/840
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	scipopt

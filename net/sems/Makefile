@@ -1,6 +1,6 @@
 PORTNAME=	sems
 DISTVERSION=	${SEMS_VERSION}.g20200510
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	nwhitehorn@FreeBSD.org
@@ -13,14 +13,13 @@ LICENSE_FILE=	${WRKSRC}/doc/COPYING
 LIB_DEPENDS=	libopus.so:audio/opus \
 		libcodec2.so:audio/codec2 \
 		libevent.so:devel/libevent \
-		librtmp.so:multimedia/librtmp \
 		libilbc.so:net/ilbc \
 		libgsm.so:audio/gsm \
 		libsamplerate.so:audio/libsamplerate \
 		libspeex.so:audio/speex \
 		libspandsp.so:comms/spandsp
 
-USES=		cmake compiler:c++11-lang python:3.4+,run shebangfix ssl
+USES=		cmake compiler:c++11-lang python:run shebangfix ssl
 SHEBANG_GLOB=	sems-*
 
 PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}
@@ -34,7 +33,7 @@ CFLAGS+=	-Wno-reorder
 CMAKE_ARGS=	-DSEMS_CFG_PREFIX=${PREFIX} -DSEMS_AUDIO_PREFIX=${PREFIX}/lib \
 		-DSEMS_EXEC_PREFIX=${PREFIX} -DSEMS_DOC_PREFIX=${PREFIX}/share/doc
 CMAKE_ON=	SEMS_USE_SPANDSP SEMS_USE_LIBSAMPLERATE SEMS_USE_OPUS \
-		SEMS_USE_OPENSSL
+		SEMS_USE_OPENSSL CMAKE_DISABLE_FIND_PACKAGE_Librtmp
 
 USE_RC_SUBR=	sems
 

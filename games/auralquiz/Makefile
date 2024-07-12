@@ -1,7 +1,7 @@
 PORTNAME=	auralquiz
 PORTVERSION=	1.0.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 
@@ -14,17 +14,17 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libtag.so:audio/taglib
 
-USES=		compiler:c++11-lang gl qmake qt:5
+USES=		compiler:c++11-lang gl kde:5 qmake qt:5
 USE_GL=		gl
-USE_QT=		core gui widgets phonon4 qmake:build buildtools:build
+USE_KDE=	phonon
+USE_QT=		core gui widgets qmake:build buildtools:build
 
 PORTDOCS=	CHANGELOG README TODO
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|; \
-		s|%%MAN6PREFIX%%|${MAN6PREFIX}|' \
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' \
 		${WRKSRC}/Auralquiz.pro
 
 post-install-DOCS-on:

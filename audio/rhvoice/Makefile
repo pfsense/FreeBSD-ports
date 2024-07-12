@@ -1,5 +1,6 @@
 PORTNAME=	RHVoice
 DISTVERSION=	1.2.4
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,8 +11,6 @@ LICENSE=	LGPL21+ GPLv3+ # the main code is under LGPL21+, MAGE library is under 
 LICENSE_COMB=	multi
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/licenses/lgpl-2.1.txt
 LICENSE_FILE_GPLv3+ =	${WRKSRC}/licenses/gpl-3.0.txt
-
-BROKEN_FreeBSD_12_powerpc64=	fails to configure: The C++ compiler is not working
 
 USES=		compiler:c++0x pkgconfig scons
 USE_LDCONFIG=	yes

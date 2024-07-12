@@ -1,6 +1,5 @@
 PORTNAME=	traits
-PORTVERSION=	6.4.1
-PORTREVISION=	1
+PORTVERSION=	6.4.3
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +13,7 @@ LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	${PYNUMPY}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

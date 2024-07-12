@@ -1,6 +1,6 @@
 PORTNAME=	katarakt
 PORTVERSION=	0.2
-PORTREVISION=	27
+PORTREVISION=	30
 CATEGORIES=	graphics
 
 MAINTAINER=	kurt@kmk-computers.de
@@ -20,15 +20,15 @@ USE_GL=		gl
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.cs.fau.de
 GL_ACCOUNT=	Qui_Sum
-GL_COMMIT=	99735bc0b15b57d689b6c982d43b85ed1b40ef45
+GL_TAGNAME=	99735bc0b15b57d689b6c982d43b85ed1b40ef45
 
 PLIST_FILES=	bin/katarakt \
-		man/man1/katarakt.1.gz
+		share/man/man1/katarakt.1.gz
 
 post-build:
 	cd ${WRKSRC} && ${MAKE} doc
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/katarakt.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/katarakt.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION1}.${AOOVERSION2}.${TIMESTAMP}
-PORTREVISION=	2
+PORTREVISION=	1
 PORTEPOCH=	4
 CATEGORIES=	editors java
 MASTER_SITES=	https://dist.apache.org/repos/dist/dev/openoffice/${AOOVERSION}-${AOORC}-${TIMESTAMP}/source/ \
@@ -54,7 +54,6 @@ BROKEN_powerpc64=	fails to compile: aoo-4.2.0/main/solver/420/unxfbsdppc64.pro/i
 
 BUILD_DEPENDS=								\
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip		\
-	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
 		${LOCALBASE}/bin/unzip:archivers/unzip			\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
@@ -78,7 +77,7 @@ LIB_DEPENDS=								\
 		libnspr4.so:devel/nspr					\
 		libcurl.so:ftp/curl					\
 		libcairo.so:graphics/cairo				\
-		libpng.so:graphics/png					\
+		libpng16.so:graphics/png				\
 		libgraphite.so:graphics/silgraphite			\
 		libblas.so:math/blas					\
 		libCbcSolver.so:math/cbc				\
@@ -117,7 +116,7 @@ USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
 		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
 		python:3.9 shared-mime-info ssl tar:${TARTYPE} xorg
 USE_GL=		gl glu
-USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt libidl glib20
+USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt glib20
 USE_JAVA=	yes
 JAVA_BUILD=	jdk
 JAVA_RUN=	jdk
@@ -133,20 +132,19 @@ AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
 AOOTAG=		AOO420m4\(Build:9823\)
-GITREVISION=	e501375395
-TIMESTAMP=	1678061694
+GITREVISION=	ed2e9b1ba7
+TIMESTAMP=	1707679630
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
 AOOVERSION=	${AOOVERSION1}.${AOOVERSION2}.${AOOVERSION3}
 AOOXXX=		${AOOVERSION1}${AOOVERSION2}${AOOVERSION3}
+AOOSUFFIX=	${AOOVERSION1}.${AOOVERSION2}
 .if defined(AOORC)
-AOOSUFFIX=	${AOOVERSION}-${AOORC}
 AOOSRC=		apache-openoffice-${AOOVERSION}-${GITREVISION}-src${EXTRACT_SUFX}
 AOODISTTAG=
 TARTYPE=	bzip2
 .else
-AOOSUFFIX=	${PORTVERSION}
 AOOSRC=		apache-openoffice-${TIMESTAMP}-${GITREVISION}-src${EXTRACT_SUFX}
 AOODISTTAG=	:snap
 TARTYPE=	xz
@@ -198,6 +196,7 @@ MYSQL_CONFIGURE_ENABLE=		mysql-connector
 MYSQL_CONFIGURE_WITH=		system-mysql
 MYSQL_LIB_DEPENDS=		libmysqlcppconn.so:databases/mysql-connector-c++
 MYSQL_USES=			mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 
 SDK_CONFIGURE_ENABLE=		odk
 SDK_DISTFILES=			unowinreg.dll:unoreg
@@ -233,7 +232,6 @@ WITH=	SDK
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && ( \
-    (${OSVERSION} >= 1301500 && ${OSVERSION} < 1301502) || \
     (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
 BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
 .endif

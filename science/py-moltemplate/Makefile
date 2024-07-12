@@ -1,6 +1,6 @@
 PORTNAME=	moltemplate
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.20.20
+DISTVERSION=	2.20.21
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		bash:shells/bash
 TEST_DEPENDS=	shunit2>0:devel/shunit2
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_PYTHON=	distutils concurrent autoplist
 
 USE_GITHUB=	yes

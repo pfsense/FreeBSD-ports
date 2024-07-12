@@ -1,29 +1,13 @@
---- CMakeLists.txt.orig	2019-12-02 22:50:20 UTC
+- workaround for https://github.com/Boolector/boolector/issues/226
+
+--- CMakeLists.txt.orig	2024-06-06 01:55:51 UTC
 +++ CMakeLists.txt
-@@ -434,20 +434,24 @@ configure_file(
- # Regression tests
+@@ -196,7 +196,7 @@ add_required_c_flag("-std=gnu99")
+ #       btorconfig.h and they are else not yet added to CMAKE_C(XX)_FLAGS at
+ #       file generation time (configure_file).
+ add_required_c_flag("-std=gnu99")
+-add_required_cxx_flag("-std=gnu++11")
++add_required_cxx_flag("-std=gnu++14")
  
- # Get and configure google test
-+if (BUILD_TESTING)
- include(cmake/googletest.cmake)
- fetch_googletest(
-     ${PROJECT_SOURCE_DIR}/cmake
-     ${PROJECT_BINARY_DIR}/googletest
-     )
- 
--enable_testing()
-+  enable_testing()
-+endif(BUILD_TESTING)
- 
- #-----------------------------------------------------------------------------#
- # Source directories
- 
- include_directories(src ${CMAKE_CURRENT_BINARY_DIR}/src)
- add_subdirectory(src)
--add_subdirectory(test)
-+if (BUILD_TESTING)
-+  add_subdirectory(test)
-+endif(BUILD_TESTING)
- if(PYTHON)
-   add_subdirectory(src/api/python)
- endif()
+ add_check_c_cxx_flag("-W")
+ add_check_c_cxx_flag("-Wall")

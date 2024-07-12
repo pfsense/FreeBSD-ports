@@ -14,4 +14,6 @@ LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE.txt
 
 USES=		gem iconv
 
+CONFIGURE_ARGS=	--with-cflags=-Wno-incompatible-function-pointer-types
+
 .include <bsd.port.mk>

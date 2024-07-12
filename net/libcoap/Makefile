@@ -1,9 +1,10 @@
 PORTNAME=	libcoap
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.3.1
+DISTVERSION=	4.3.4
+PORTREVISION=	1
 CATEGORIES=	net
 
-MAINTAINER=	tcberner@FreeBSD.org
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	C implementation of the Constrained Application Protocol
 WWW=		https://github.com/obgm/libcoap
 
@@ -19,6 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	obgm
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 INSTALL_TARGET=	install-strip
 

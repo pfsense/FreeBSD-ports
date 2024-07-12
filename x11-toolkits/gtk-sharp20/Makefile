@@ -1,12 +1,12 @@
 PORTNAME=	gtk-sharp
 PORTVERSION=	2.12.45
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://download.mono-project.com/sources/gtk-sharp212/
 PKGNAMESUFFIX=	20
 
-MAINTAINER=	mono@FreeBSD.org
-COMMENT=	GTK+ and GNOME interfaces for the .NET runtime
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	GTK and GNOME interfaces for the .NET runtime
 WWW=		https://www.mono-project.com/Gtk
 
 LICENSE=	LGPL21
@@ -25,14 +25,8 @@ SHEBANG_FILES=	parser/*.pl
 GNU_CONFIGURE=	yes
 MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 
-.include <bsd.port.pre.mk>
-
-.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
-BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: 'Range' is an ambiguous reference between 'System.Range' and 'Gtk.Range'
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' \
 		${WRKSRC}/glib/glue/*.c
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

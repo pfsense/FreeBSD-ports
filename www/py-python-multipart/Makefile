@@ -1,5 +1,5 @@
 PORTNAME=	python-multipart
-PORTVERSION=	0.0.6
+PORTVERSION=	0.0.9
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -7,8 +7,8 @@ DISTNAME=	python_multipart-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Streaming multipart parser for Python
-WWW=		https://andrew-d.github.io/python-multipart/ \
-		https://github.com/andrew-d/python-multipart
+WWW=		https://kludex.github.io/python-multipart/ \
+		https://github.com/Kludex/python-multipart
 
 LICENSE=	APACHE20
 
@@ -18,7 +18,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=0:devel/py-yaml@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

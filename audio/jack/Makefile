@@ -1,7 +1,7 @@
 PORTNAME=	jackit
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.9.22
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	dev@submerge.ch
@@ -14,7 +14,7 @@ LICENSE_COMB=	multi
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 		libsysinfo.so:devel/libsysinfo
 
-USES=		compiler:c11 pkgconfig python:3.4+ shebangfix waf
+USES=		compiler:c11 pkgconfig python shebangfix waf
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	jackd
 
@@ -49,6 +49,8 @@ OPUS_CONFIGURE_OFF=	--opus=no
 
 PROFILING_DESC=		Build with profiling information
 PROFILING_CONFIGURE_ON=	--profile
+
+TESTING_UNSAFE=	No function 'test' defined in ${WRKSRC}/wscript
 
 .include <bsd.port.pre.mk>
 

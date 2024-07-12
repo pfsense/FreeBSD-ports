@@ -7,14 +7,14 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Genetic variant annotation and effect prediction toolbox
-WWW=		http://snpeff.sourceforge.net/
+WWW=		https://snpeff.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		python:3.6+ shebangfix zip
+USES=		python shebangfix zip
 USE_JAVA=	yes
 
 JAVA_VERSION=	17+

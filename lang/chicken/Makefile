@@ -1,5 +1,6 @@
 PORTNAME=	chicken
 DISTVERSION=	5.3.0
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	lang scheme
 MASTER_SITES=	https://code.call-cc.org/releases/${DISTVERSION}/
@@ -20,14 +21,19 @@ MAKEFILE=	GNUmakefile
 MAKE_ARGS=	C_COMPILER="${CC}" \
 		C_COMPILER_OPTIMIZATION_OPTIONS="${CFLAGS}" \
 		CXX_COMPILER="${CXX}" \
+		CSC_PROGRAM=chicken-csc \
+		CSI_PROGRAM=chicken-csi \
 		DOCDIR="${DOCSDIR}" \
 		LIBDIR="${PREFIX}/lib" \
 		LIBRARIAN="${AR}" \
 		LINKER_OPTIONS="${LDFLAGS}" \
-		MANDIR=${PREFIX}/man \
-		PREFIX=${PREFIX}
+		MANDIR=${PREFIX}/share/man \
+		PREFIX=${PREFIX} \
+		CHICKEN=./chicken
 
+MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	check
+TEST_ARGS=	${MAKE_ARGS} PROGRAM_PREFIX=chicken-
 
 DATADIR=	${PREFIX}/share/chicken
 DOCSDIR=	${PREFIX}/share/doc/chicken

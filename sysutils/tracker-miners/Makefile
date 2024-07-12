@@ -1,6 +1,6 @@
 PORTNAME=	tracker-miners
 PORTVERSION=	2.3.5
-PORTREVISION=	38
+PORTREVISION=	46
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 
@@ -20,7 +20,6 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libtotem-plparser.so:multimedia/totem-pl-parser \
 		libpoppler-glib.so:graphics/poppler-glib \
 		libpng.so:graphics/png \
-		libtag.so:audio/taglib \
 		libtiff.so:graphics/tiff \
 		libgif.so:graphics/giflib \
 		libvorbisfile.so:audio/libvorbis \
@@ -32,7 +31,7 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 PORTSCOUT=	limitw:1,even
 
 USES=		gettext gnome jpeg localbase:ldflags meson \
-		pathfix pkgconfig python:3.4+,build sqlite tar:xz vala:build
+		pathfix pkgconfig python:build sqlite tar:xz vala:build
 USE_GNOME=	cairo intltool libgsf libxml2
 
 MESON_ARGS=	-Dsystemd_user_services=no \

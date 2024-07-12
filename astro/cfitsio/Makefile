@@ -1,5 +1,5 @@
 PORTNAME=	cfitsio
-PORTVERSION=	4.2.0
+PORTVERSION=	4.4.0
 CATEGORIES=	astro
 MASTER_SITES=	https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/ \
 		https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/oldvers/ \
@@ -27,9 +27,6 @@ CPE_VENDOR=	nasa
 
 OPTIONS_DEFINE=	DOCS
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|' ${WRKSRC}/*.[chl]
-
 do-install:
 	cd ${WRKSRC}/ && ${INSTALL_DATA} drvrsmem.h fitsio.h fitsio2.h longnam.h ${STAGEDIR}${PREFIX}/include/
 	${INSTALL_DATA} ${WRKSRC}/libcfitsio.a ${STAGEDIR}${PREFIX}/lib/
@@ -40,6 +37,6 @@ do-install:
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
-	${INSTALL_DATA} ${WRKSRC}/docs/*.doc ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/docs/changes.txt ${WRKSRC}/docs/*.pdf ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

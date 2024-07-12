@@ -1,6 +1,6 @@
 PORTNAME=	libcryptui
 PORTVERSION=	3.12.2
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	security gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -22,6 +22,7 @@ USE_GNOME=	intlhack gnomeprefix gtk30 introspection:build
 USE_XORG=	sm ice
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
@@ -39,7 +40,7 @@ CONFIGURE_ARGS+=--disable-libnotify
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|"1.2 1.4 2.0"|"1.2 1.4 2.0 2.1 2.2 2.3"|g' \
+	@${REINPLACE_CMD} -e 's|"1.2 1.4 2.0"|"1.2 1.4 2.0 2.1 2.2 2.3 2.4"|g' \
 		${WRKSRC}/configure
 
 .include <bsd.port.mk>

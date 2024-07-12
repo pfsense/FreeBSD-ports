@@ -15,7 +15,6 @@
     SUBDIR += cingb
     SUBDIR += citra
     SUBDIR += citra-qt5
-    SUBDIR += cpmemu
     SUBDIR += cpmtools
     SUBDIR += cpmtools2
     SUBDIR += darcnes
@@ -25,12 +24,14 @@
     SUBDIR += dosbox-staging
     SUBDIR += dosbox-x
     SUBDIR += dps8m
+    SUBDIR += duckstation
     SUBDIR += dynamips-community
     SUBDIR += edumips64
     SUBDIR += elliott-803
     SUBDIR += emu64
     SUBDIR += emulationstation
     SUBDIR += fceux
+    SUBDIR += flexemu
     SUBDIR += fmsx
     SUBDIR += frodo
     SUBDIR += fs-uae
@@ -41,14 +42,11 @@
     SUBDIR += gbe
     SUBDIR += gens
     SUBDIR += gngb
-    SUBDIR += gngeo
     SUBDIR += gxemul
     SUBDIR += hatari
     SUBDIR += hercules
     SUBDIR += higan
-    SUBDIR += hugo
     SUBDIR += hv_kvp_cmd
-    SUBDIR += ines
     SUBDIR += javatari
     SUBDIR += joytran
     SUBDIR += jzintv
@@ -68,7 +66,9 @@
     SUBDIR += linux-c7
     SUBDIR += linux-power10-functional-sim
     SUBDIR += linux-power9-functional-sim
+    SUBDIR += linux-rl9
     SUBDIR += linux_base-c7
+    SUBDIR += linux_base-rl9
     SUBDIR += magia
     SUBDIR += mame
     SUBDIR += mastergear
@@ -95,6 +95,7 @@
     SUBDIR += nestopia
     SUBDIR += o2em
     SUBDIR += ods2reader
+    SUBDIR += open-simh
     SUBDIR += open-vm-tools
     SUBDIR += openmsx
     SUBDIR += p5-Acme-6502
@@ -106,6 +107,7 @@
     SUBDIR += ppsspp
     SUBDIR += ppsspp-qt5
     SUBDIR += py-gns3-converter
+    SUBDIR += py-m64py
     SUBDIR += py-unicorn
     SUBDIR += qemu
     SUBDIR += qemu-cheri
@@ -113,15 +115,14 @@
     SUBDIR += qemu-powernv
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
-    SUBDIR += qemu6
     SUBDIR += qemu7
+    SUBDIR += qemu8
     SUBDIR += qmc2
     SUBDIR += quasi88
     SUBDIR += reicast
     SUBDIR += ripes
     SUBDIR += riscv-isa-sim
     SUBDIR += rpcs3
-    SUBDIR += rtc
     SUBDIR += rubygem-fission
     SUBDIR += sameboy
     SUBDIR += simh
@@ -139,7 +140,6 @@
     SUBDIR += tme
     SUBDIR += tnylpo
     SUBDIR += tpm-emulator
-    SUBDIR += tuxnes
     SUBDIR += uae
     SUBDIR += ucon64
     SUBDIR += uconvert
@@ -173,6 +173,7 @@
     SUBDIR += wine-mono
     SUBDIR += wine-mono-devel
     SUBDIR += wine-proton
+    SUBDIR += wine8
     SUBDIR += winetricks
     SUBDIR += x16-emulator
     SUBDIR += x16-rom

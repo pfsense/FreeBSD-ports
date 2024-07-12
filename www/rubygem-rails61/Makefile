@@ -1,14 +1,13 @@
 PORTNAME=	rails
-PORTVERSION=	6.1.7.3
-PORTREVISION=	1
+PORTVERSION=	6.1.7.8
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	61
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Full-stack web application framework
-WWW=		https://github.com/rails/rails \
-		https://rubyonrails.org/
+WWW=		https://rubyonrails.org/ \
+		https://github.com/rails/rails
 
 LICENSE=	MIT
 
@@ -36,13 +35,12 @@ RUN_DEPENDS=	rubygem-actioncable61>=${PORTVERSION}<${PORTVERSION}_99:www/rubygem
 		rubygem-puma>=0:www/rubygem-puma \
 		rubygem-rake>=11.1:devel/rubygem-rake \
 		rubygem-sass-rails-rails61>=0:textproc/rubygem-sass-rails-rails61 \
-		rubygem-selenium-webdriver>=4.0.0:www/rubygem-selenium-webdriver \
+		rubygem-selenium-webdriver>=4.11.0:www/rubygem-selenium-webdriver \
 		rubygem-spring>=0:devel/rubygem-spring \
-		rubygem-sqlite3>=1.4<2:databases/rubygem-sqlite3 \
+		rubygem-sqlite3>=1.4:databases/rubygem-sqlite3 \
 		rubygem-turbolinks>=5<6:www/rubygem-turbolinks \
 		rubygem-uglifier>=1.3.0:www/rubygem-uglifier \
 		rubygem-web-console-rails61>=3.3.0:devel/rubygem-web-console-rails61 \
-		rubygem-webdrivers>=0:www/rubygem-webdrivers \
 		rubygem-webmock>=0:www/rubygem-webmock \
 		rubygem-webpacker-rails61>=5.0<6:devel/rubygem-webpacker-rails61 \
 		rubygem-webrick>=0:www/rubygem-webrick

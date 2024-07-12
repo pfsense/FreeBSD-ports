@@ -1,5 +1,6 @@
 PORTNAME=	wikiman
-DISTVERSION=	2.12.2
+DISTVERSION=	2.13.2
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	filip@parag.rs
@@ -13,7 +14,8 @@ RUN_DEPENDS=	findutils>4:misc/findutils \
 		fzf>0.2:textproc/fzf \
 		gawk>5:lang/gawk \
 		ripgrep>12:textproc/ripgrep \
-		w3m>0.5:www/w3m
+		w3m>0.5:www/w3m \
+		parallel>0:sysutils/parallel
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	filiparag
@@ -35,7 +37,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/sources
 	(cd ${WRKSRC}/sources && ${COPYTREE_BIN} . ${STAGEDIR}${DATADIR}/sources)
 
-	${INSTALL_MAN} ${WRKSRC}/wikiman.1.man ${STAGEDIR}${MANPREFIX}/share/man/man1/wikiman.1
+	${INSTALL_MAN} ${WRKSRC}/wikiman.1.man ${STAGEDIR}${PREFIX}/share/man/man1/wikiman.1
 
 do-install-BASH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d

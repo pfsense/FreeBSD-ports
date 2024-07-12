@@ -1,6 +1,6 @@
 PORTNAME=			${SAMBA4_BASENAME}416
 PORTVERSION=			${SAMBA4_VERSION}
-PORTREVISION=			1
+PORTREVISION=			5
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
@@ -50,7 +50,7 @@ EXTRA_PATCHES=			\
 
 SAMBA4_BASENAME=		samba
 SAMBA4_PORTNAME=		${SAMBA4_BASENAME}4
-SAMBA4_VERSION=			4.16.10
+SAMBA4_VERSION=			4.16.11
 SAMBA4_DISTNAME=		${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=			${WRKDIR}/${DISTNAME}
@@ -73,7 +73,7 @@ SAMBA4_CONFIG=			smb4.conf
 SAMBA4_MODULES_CLASS=		auth bind9 gensec gpext idmap ldb nss_info \
 				pdb perfcount process_model service vfs
 
-CONFIGURE_ARGS=			--mandir="${MANPREFIX}/man" \
+CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
 				--sysconfdir="${SAMBA4_CONFDIR}" \
 				--includedir="${SAMBA4_INCLUDEDIR}" \
 				--datadir="${DATADIR}" \
@@ -102,6 +102,14 @@ USE_PERL5=			build
 USE_LDCONFIG=			${SAMBA4_LIBDIR}
 WAF_CMD=			buildtools/bin/waf
 CONFIGURE_LOG=			bin/config.log
+
+FLAVORS=			default externalldb
+FLAVOR?=			${FLAVORS:[1]}
+externalldb_PKGNAMESUFFIX=		-externalldb
+
+# Make sure that the right version of Python is used by the tools
+# https://bugzilla.samba.org/show_bug.cgi?id=7305
+SHEBANG_FILES=			${PATCH_WRKSRC}/source4/scripting/bin/* ${PATCH_WRKSRC}/selftest/*
 
 PKGCONFIGDIR?=			${PREFIX}/libdata/pkgconfig
 PKGCONFIGDIR_REL?=		${PKGCONFIGDIR:S,^${PREFIX}/,,}
@@ -193,7 +201,11 @@ SAMBA4_BUNDLED_CMOCKA?=		no
 SAMBA4_BUNDLED_TALLOC?=		no
 SAMBA4_BUNDLED_TEVENT?=		no
 SAMBA4_BUNDLED_TDB?=		no
+.if ${FLAVOR:U} != externalldb
 SAMBA4_BUNDLED_LDB?=		yes
+.else
+SAMBA4_BUNDLED_LDB?=		no
+.endif
 # cmocka
 .if defined(SAMBA4_BUNDLED_CMOCKA) && ${SAMBA4_BUNDLED_CMOCKA} == yes
 SAMBA4_BUNDLED_LIBS+=		cmocka
@@ -304,12 +316,12 @@ CONFIGURE_ARGS+=		\
 FRUIT_PREVENTS=			ZEROCONF_NONE
 FRUIT_PREVENTS_MSG=		MacOSX support requires Zeroconf(AVAHI or MDNSRESPONDER)
 FRUIT_VARS=			SAMBA4_MODULES+=vfs_fruit
-FRUIT_PLIST_FILES=		man/man8/vfs_fruit.8.gz
+FRUIT_PLIST_FILES=		share/man/man8/vfs_fruit.8.gz
 
 GLUSTERFS_CONFIGURE_ENABLE=	glusterfs
 GLUSTERFS_LIB_DEPENDS=		libglusterfs.so:net/glusterfs
 GLUSTERFS_VARS=			SAMBA4_MODULES+=vfs_glusterfs
-GLUSTERFS_PLIST_FILES=		man/man8/vfs_glusterfs.8.gz
+GLUSTERFS_PLIST_FILES=		share/man/man8/vfs_glusterfs.8.gz
 
 ZEROCONF_NONE_MAKE_ENV=		ZEROCONF=none
 ##############################################################################
@@ -409,10 +421,6 @@ UTMP_CONFIGURE_WITH=		utmp
 ##############################################################################
 .include <bsd.port.options.mk>
 ##############################################################################
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300076
-IGNORE=runs only on FreeBSD 13.1 and above due use of O_EMPTY_PATH
-.endif
-
 .if !defined(WANT_EXP_MODULES) || empty(WANT_EXP_MODULES)
 WANT_EXP_MODULES=		vfs_cacheprime
 .endif
@@ -458,7 +466,7 @@ SAMBA4_MODULES+=		auth_skel pdb_test gpext_security gpext_registry \
 USES+=				python:build,test
 CONFIGURE_ARGS+=		--disable-python
 .else
-USES+=				python:3.6+
+USES+=				python
 PLIST+=				${PKGDIR}/pkg-plist.python
 # Don't cache Python modules
 CONFIGURE_ARGS+=		--nopycache
@@ -539,7 +547,7 @@ PLIST_FILES+=			${SAMBA4_LIBDIR}/private/libldb-mdb-int-samba4.so \
 
 .if ${PORT_OPTIONS:MGSSAPI_MIT}
 PLIST_FILES+=			${SAMBA4_MODULEDIR}/krb5/winbind_krb5_localauth.so \
-				man/man8/winbind_krb5_localauth.8.gz
+				share/man/man8/winbind_krb5_localauth.8.gz
 .	if ${PORT_OPTIONS:MAD_DC}
 PLIST_FILES+=			${SAMBA4_LIBDIR}/krb5/plugins/kdb/samba.so
 .	endif
@@ -556,10 +564,10 @@ MAKE_ENV+=			RPCGEN_CPP="${CPP}"
 #.if ${readline_ARGS} == port
 #CFLAGS+=			-D_FUNCTION_DEF
 #.endif
-
-# Make sure that the right version of Python is used by the tools
-# https://bugzilla.samba.org/show_bug.cgi?id=7305
-SHEBANG_FILES=			${PATCH_WRKSRC}/source4/scripting/bin/* ${PATCH_WRKSRC}/selftest/*
+# Some symbols in samba's linker version scripts are not defined, but since the
+# scripts are generated dynamically, suppress errors with lld >= 17 due to these
+# undefined symbols.
+LDFLAGS+=			-Wl,--undefined-version
 
 SAMBA4_SUB=			SAMBA4_LOGDIR="${SAMBA4_LOGDIR}" \
 				SAMBA4_RUNDIR="${SAMBA4_RUNDIR}" \
@@ -651,21 +659,21 @@ post-install-rm-junk:
 
 post-install-fix-manpages:
 .for f in vfs_aio_linux.8 vfs_btrfs.8 vfs_ceph.8 vfs_gpfs.8
-				${RM} ${STAGEDIR}${PREFIX}/man/man8/${f}
+				${RM} ${STAGEDIR}${PREFIX}/share/man/man8/${f}
 .endfor
 .if defined(SAMBA4_BUNDLED_LDB) && ${SAMBA4_BUNDLED_LDB} == yes
 .	for f in ldbadd.1 ldbdel.1 ldbedit.1 ldbmodify.1 ldbrename.1 ldbsearch.1
-				${MV} ${STAGEDIR}${PREFIX}/man/man1/${f} ${STAGEDIR}${PREFIX}/man/man1/samba-${f}
+				${MV} ${STAGEDIR}${PREFIX}/share/man/man1/${f} ${STAGEDIR}${PREFIX}/share/man/man1/samba-${f}
 .	endfor
 .endif
 .if defined(SAMBA4_BUNDLED_TDB) && ${SAMBA4_BUNDLED_TDB} == yes
 .	for f in tdbbackup.8 tdbdump.8 tdbrestore.8 tdbtool.8
-				${MV} ${STAGEDIR}${PREFIX}/man/man8/${f} ${STAGEDIR}${PREFIX}/man/man8/samba-${f}
+				${MV} ${STAGEDIR}${PREFIX}/share/man/man8/${f} ${STAGEDIR}${PREFIX}/share/man/man8/samba-${f}
 .	endfor
 .endif
 
 post-install: post-install-rm-junk post-install-fix-manpages
-				${LN} -sf smb.conf.5.gz ${STAGEDIR}${PREFIX}/man/man5/smb4.conf.5.gz
+				${LN} -sf smb.conf.5.gz ${STAGEDIR}${PREFIX}/share/man/man5/smb4.conf.5.gz
 # Run post-install script
 .for dir in			${SAMBA4_LOGDIR} ${SAMBA4_RUNDIR} ${SAMBA4_LOCKDIR} ${SAMBA4_MODULEDIR}
 					${INSTALL} -d -m 0755 "${STAGEDIR}${dir}"
@@ -684,7 +692,7 @@ post-install: post-install-rm-junk post-install-fix-manpages
 
 post-install-FRUIT-off:
 				${RM} ${STAGEDIR}${SAMBA4_MODULEDIR}/vfs/fruit.so
-				${RM} ${STAGEDIR}${PREFIX}/man/man8/vfs_fruit.8
+				${RM} ${STAGEDIR}${PREFIX}/share/man/man8/vfs_fruit.8
 
 post-install-DOCS-on:
 				${MKDIR} ${STAGEDIR}${DOCSDIR}

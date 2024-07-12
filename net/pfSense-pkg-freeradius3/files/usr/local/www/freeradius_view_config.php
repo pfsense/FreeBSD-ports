@@ -3,7 +3,7 @@
  * freeradius_view_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2011 Marcello Coutinho <marcellocoutinho@gmail.com>
  * All rights reserved.
@@ -82,35 +82,35 @@ if ($savemsg) {
 					<th class="text-center">
 						<div class="btn-group">
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('radiusd');" id='btn_radiusd' value="radiusd.conf">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								radiusd.conf
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('eap');" id='btn_eap' value="eap.conf">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								eap
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('sql');" id='btn_sql' value="sql.conf">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								sql
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('clients');" id='btn_clients' value="clients.conf">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								clients.conf
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('users');" id='btn_users' value="users">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								users
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('macs');" id='btn_macs' value="macs">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								macs
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('virtual-server-default');" id='btn_virtual-server-default' value="virtual-server-default">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								virtual-server-default
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('ldap');" id='btn_ldap' value="ldap">
-								<i class="fa fa-file-text-o"></i>
+								<i class="fa-regular fa-file-lines"></i>
 								ldap
 							</button>
 						</div>

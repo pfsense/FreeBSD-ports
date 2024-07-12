@@ -1,28 +1,24 @@
 PORTNAME=	wmmemfree
 PORTVERSION=	0.7
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils windowmaker
 MASTER_SITES=	SUNSITE/X11/xutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Memory and swap monitoring dockapp
 
-BROKEN_FreeBSD_12=	fails to compile: read_mem.c: invalid use of undefined type 'struct vmmeter'
-BROKEN_FreeBSD_13=	fails to compile: read_mem.c: invalid use of undefined type 'struct vmmeter'
-BROKEN_FreeBSD_14=	fails to compile: read_mem.c: invalid use of undefined type 'struct vmmeter'
-BROKEN_mips=		fails to compile: mem_freebsd.c: storage size of 'vm' isn't known
-BROKEN_mips64=		fails to compile: mem_freebsd.c: storage size of 'vm' isn't known
+LICENSE=	GPLv2+
 
-USES=		tar:bzip2 xorg
-USE_XORG=	xpm
+USES=		localbase tar:bzip2 xorg
+USE_XORG=	x11 xext xpm
 
-PLIST_FILES=	"@(,kmem,2555) bin/wmmemfree" man/man1/${PORTNAME}.1.gz
+PLIST_FILES=	bin/${PORTNAME} share/man/man1/${PORTNAME}.1.gz
 
 post-patch:
 	@${CP} ${FILESDIR}/mem_freebsd.* ${WRKSRC}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

@@ -26,7 +26,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=0:devel/py-virtualenv@${PY_FLAV
 		${PY_MERCURIAL}	\
 		gpg:security/gnupg
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist pep517 pytest
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}-${PORTNAME}
@@ -52,10 +52,6 @@ PYTEST_BROKEN_TESTS=	test_non_dotted_version
 .if ${PYTHON_REL} < 31100
 BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tomli>=1.0.0:textproc/py-tomli@${PY_FLAVOR}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tomli>=1.0.0:textproc/py-tomli@${PY_FLAVOR}
-.endif
-
-.if ${PYTHON_REL} < 30800
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>0:devel/py-importlib-metadata@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

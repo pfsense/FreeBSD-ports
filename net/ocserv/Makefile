@@ -1,5 +1,6 @@
 PORTNAME=	ocserv
-DISTVERSION=	1.1.7
+DISTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	net net-vpn security
 MASTER_SITES=	https://www.infradead.org/ocserv/download/
 
@@ -11,7 +12,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
-		gsed:textproc/gsed
+		gsed:textproc/gsed \
+		ipcalc:net-mgmt/ipcalc
 LIB_DEPENDS=	libev.so:devel/libev \
 		libgnutls.so:security/gnutls \
 		libiconv.so:converters/libiconv \
@@ -23,12 +25,13 @@ LIB_DEPENDS=	libev.so:devel/libev \
 		libtalloc.so:devel/talloc \
 		libtasn1.so:security/libtasn1
 
-USES=		autoreconf cpe gperf libtool localbase ncurses pathfix \
-		pkgconfig readline tar:xz
+USES=		autoreconf cpe gettext-tools gperf libtool localbase ncurses \
+		pathfix pkgconfig readline tar:xz
 
 CPE_VENDOR=	infradead
 USE_RC_SUBR=	ocserv
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-namespaces \
 		--without-geoip \
 		--without-http-parser
@@ -38,7 +41,7 @@ GROUPS=		_ocserv
 
 PLIST_SUB=	GROUPS="${GROUPS}" \
 		USERS="${USERS}"
-PORTDOCS=	AUTHORS ChangeLog NEWS README TODO
+PORTDOCS=	AUTHORS ChangeLog NEWS README
 PORTEXAMPLES=	profile.xml sample.config sample.passwd
 
 OPTIONS_DEFINE=	DOCS EXAMPLES GSSAPI MAXMIND RADIUS
@@ -56,15 +59,14 @@ RADIUS_CONFIGURE_OFF=	--without-radius
 .include <bsd.port.pre.mk>
 
 post-patch:
-	${REINPLACE_CMD} 's|/usr/bin/ocserv-fw|${PREFIX}/bin/ocserv-fw|g' \
-		${WRKSRC}/src/main-user.c
-	${REINPLACE_CMD} 's|/usr/bin/ocserv\\-fw|${PREFIX}/bin/ocserv\\-fw|g' \
+	${REINPLACE_CMD} 's|/usr/bin/ocserv\\-fw|${PREFIX}/libexec/ocserv\\-fw|g' \
 		${WRKSRC}/doc/ocserv.8
 	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
 		-e 's|%%ETCDIR%%|${ETCDIR}|g' \
 		-e 's|%%USERS%%|${USERS}|g' \
 		-e 's|%%GROUPS%%|${GROUPS}|g' \
-		${WRKSRC}/doc/sample.config
+		${WRKSRC}/doc/sample.config \
+		${WRKSRC}/src/main-user.c
 .if "${PREFIX}" != "" && "${PREFIX}" != "/" && "${PREFIX}" != "/usr"
 	${REINPLACE_CMD} -E 's|^(#define DEFAULT_CFG_FILE ")(/etc/ocserv/ocserv.conf")|\1${PREFIX}\2|' ${WRKSRC}/src/config.c
 	${REINPLACE_CMD} -E 's|^(#define DEFAULT_OCPASSWD ")(/etc/ocserv/ocpasswd")|\1${PREFIX}\2|' ${WRKSRC}/src/ocpasswd/ocpasswd.c
@@ -73,7 +75,6 @@ post-patch:
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/ocserv ${STAGEDIR}/var/run/ocserv
 	${INSTALL_DATA} ${WRKSRC}/doc/sample.config ${STAGEDIR}${PREFIX}/etc/ocserv/ocserv.conf.sample
-	${INSTALL_MAN} ${WRKSRC}/doc/*.8 ${STAGEDIR}${MANPREFIX}/man/man8
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

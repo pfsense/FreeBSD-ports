@@ -1,6 +1,6 @@
 PORTNAME=	pcl
-DISTVERSION=	1.12.1
-PORTREVISION=	8
+DISTVERSION=	1.13.1
+PORTREVISION=	2
 CATEGORIES=	graphics math
 MASTER_SITES=	https://github.com/PointCloudLibrary/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSION}/
 PKGNAMESUFFIX=	-pointclouds
@@ -8,15 +8,7 @@ DISTNAME=	source
 DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}/${DISTVERSION}
 
 PATCH_SITES=	https://github.com/PointCloudLibrary/pcl/commit/
-# backport of patches fixing build
-PATCHFILES=	d253f645f0bfbcd2c818fa5d0a6970c61f39c6b5.patch:-p1 \
-		b220d4b3e259dba0686d0b7cdbff10c668176ded.patch:-p1
-# backport of patches fixing tests
-PATCHFILES+=	ba388061b0f9ed9584e57d6019c30b044a657c3e.patch:-p1 \
-		614e19d96bd8415dbfb52d86df0f3774a9f462fe.patch:-p1 \
-		09c76582b5ff0f2b942609f5c85744f1ce96e332.patch:-p1 \
-		5be6766fbb8f5e9b2fe97a077dd5be53e5fc6983.patch:-p1 \
-		09ea81f995f00b9565037b0fafe121eccfe4cf57.patch:-p1
+PATCHFILES+=	69a2392e4c5976bd4dc1e33cc4659fa210f68485.patch:-p1 # https://github.com/PointCloudLibrary/pcl/pull/5903 fixing https://github.com/PointCloudLibrary/pcl/issues/5902
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Point Cloud Library
@@ -30,14 +22,12 @@ NOT_FOR_ARCHS=		armv6 armv7
 NOT_FOR_ARCHS_REASON=	common/include/pcl/pcl_macros.h:420:4: error: aligned_malloc not supported on your platform
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-		libexpat.so:textproc/expat2 \
 		libflann_cpp.so:math/flann \
 		libfreetype.so:print/freetype2 \
 		liblz4.so:archivers/liblz4 \
-		libpcap.so:net/libpcap \
-		libtiff.so:graphics/tiff
+		libpcap.so:net/libpcap
 
-USES=		cmake:testing compiler:c++14-lang eigen:3 jpeg localbase:ldflags python xorg
+USES=		cmake:testing compiler:c++14-lang eigen:3 localbase:ldflags python xorg
 USE_XORG=	x11 xext xt ice sm
 USE_LDCONFIG=	yes
 
@@ -67,7 +57,7 @@ OPENGL_USES=		gl
 OPENGL_USE=		GL=gl,glu
 
 PNG_CMAKE_BOOL=		WITH_PNG
-PNG_LIB_DEPENDS=	libpng.so:graphics/png
+PNG_LIB_DEPENDS=	libpng16.so:graphics/png
 
 QHULL_DESC=		Include convex-hull operations
 QHULL_CMAKE_BOOL=	WITH_QHULL

@@ -1,5 +1,5 @@
 PORTNAME=	docker
-PORTVERSION=	6.0.1
+PORTVERSION=	6.1.3
 PORTREVISION=	1
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
@@ -12,7 +12,8 @@ WWW=		https://github.com/docker/docker-py
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docker-pycreds>=0.4.0:security/py-docker-pycreds@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=21.3:devel/py-packaging@${PY_FLAVOR} \
@@ -21,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docker-pycreds>=0.4.0:security/py-docker-pyc
 		${PYTHON_PKGNAMEPREFIX}urllib3>=1.26.11:net/py-urllib3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}websocket-client>=1.3.3:www/py-websocket-client@${PY_FLAVOR}
 
-USES=		python:3.7-3.10
+USES=		python
 USE_PYTHON=	autoplist pep517
 
 NO_ARCH=	yes

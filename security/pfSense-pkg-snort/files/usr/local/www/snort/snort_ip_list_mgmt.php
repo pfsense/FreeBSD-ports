@@ -3,7 +3,7 @@
  * snort_ip_list_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -167,8 +167,8 @@ display_top_tabs($tab_array, true);
 						<td><?=date('M-d Y g:i a', filemtime("{$iprep_path}{$file}")); ?></td>
 						<td><?=format_bytes(filesize("{$iprep_path}{$file}")); ?> </td>
 						<td>
-							<a href="#" class="fa fa-pencil icon-primary" onClick="snort_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
-							<a href="#" class="fa fa-trash icon-primary no-confirm" onClick="snort_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-pencil icon-primary" onClick="snort_iplist_action('edit', '<?=addslashes($file);?>');" title="<?=gettext('Edit this IP List');?>"></a>
+							<a href="#" class="fa-solid fa-trash-can icon-primary no-confirm" onClick="snort_iplist_action('delete', '<?=addslashes($file);?>');" title="<?=gettext('Delete this IP List');?>"></a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -183,7 +183,7 @@ display_top_tabs($tab_array, true);
 				<div class="form-group">
 					<input type="file" name="iprep_fileup" id="iprep_fileup" class="form-control" />
 					<button type="submit" name="upload" id="upload" class="btn btn-info btn-sm" title="<?=gettext('Upload selected IP list to firewall');?>">
-						<i class="fa fa-upload icon-embed-btn"></i>
+						<i class="fa-solid fa-upload icon-embed-btn"></i>
 						<?=gettext('Upload'); ?>
 					</button>
 					<button type="button" class="btn btn-default btn-sm btn-warning" onClick="document.getElementById('uploader').style.display='none';">
@@ -200,7 +200,7 @@ display_top_tabs($tab_array, true);
 						<input type="text" class="form-control" id="iplist_name" name="iplist_name" value="<?=gettext($iplist_name);?>" />
 					</div>
 					<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Save changes and close editor');?>">
-						<i class="fa fa-save icon-embed-btn"></i>
+						<i class="fa-solid fa-save icon-embed-btn"></i>
 						<?=gettext('Save'); ?>
 					</button>
 					<button type="button" class="btn btn-default btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext('Cancel');?>" onClick="document.getElementById('iplist_editor').style.display='none';"  
@@ -220,11 +220,11 @@ display_top_tabs($tab_array, true);
 </div>
 <nav class="action-buttons">
 	<button type="button" class="btn btn-success btn-sm" title="<?=gettext('Create new IP List');?>" onclick="document.getElementById('iplist_data').value=''; document.getElementById('iplist_name').value=''; document.getElementById('iplist_editor').style.display='inline'; document.getElementById('iplist_name').focus();">
-		<i class="fa fa-plus icon-embed-btn"></i>
+		<i class="fa-solid fa-plus icon-embed-btn"></i>
 		<?=gettext('Add');?>
 	</button>
 	<button type="button" class="btn btn-info btn-sm" title="<?=gettext('Upload IP List file');?>" onclick="document.getElementById('uploader').style.display='inline';">
-		<i class="fa fa-upload icon-embed-btn"></i>
+		<i class="fa-solid fa-upload icon-embed-btn"></i>
 		<?=gettext('Upload');?>
 	</button>
 </nav>
@@ -241,10 +241,10 @@ display_top_tabs($tab_array, true);
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Click on the <i class="fa fa-lg fa-plus" alt="Add Icon"></i> icon to open the editor window to create a new IP List.<br/>
-				Click on the <i class="fa fa-lg fa-upload" alt="Upload Icon"></i> icon to upload a new IP List file from your local machine.<br/>
-				Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to view or edit an existing IP List.<br/>
-				Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an existing IP List.
+				Click on the <i class="fa-solid fa-lg fa-plus" alt="Add Icon"></i> icon to open the editor window to create a new IP List.<br/>
+				Click on the <i class="fa-solid fa-lg fa-upload" alt="Upload Icon"></i> icon to upload a new IP List file from your local machine.<br/>
+				Click on the <i class="fa-solid fa-lg fa-pencil" alt="Edit Icon"></i> icon to view or edit an existing IP List.<br/>
+				Click on the <i class="fa-solid fa-lg fa-trash-can" alt="Delete Icon"></i> icon to delete an existing IP List.
 			</p>
 		</div>
 	</div>

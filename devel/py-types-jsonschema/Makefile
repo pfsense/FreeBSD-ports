@@ -1,5 +1,5 @@
 PORTNAME=       types-jsonschema
-PORTVERSION=    4.17.0.8
+PORTVERSION=    4.22.0.20240610
 CATEGORIES=     devel python
 MASTER_SITES=   PYPI
 PKGNAMEPREFIX=  ${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=            https://pypi.org/project/types-jsonschema/
 
 LICENSE=        APACHE20
 
-USES=           python:3.7+
+USES=           python
 USE_PYTHON=     autoplist distutils
 NO_ARCH=        yes
 

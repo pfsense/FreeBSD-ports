@@ -1,9 +1,10 @@
 PORTNAME=	heimdal
 PORTVERSION=	${HEIMDAL_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES=	security
 PKGNAMESUFFIX=	-devel
-HASH=		93454c885
-HEIMDAL_COMMIT_DATE=	2023.06.06
+HASH=		3253c4954
+HEIMDAL_COMMIT_DATE=	2023.11.29
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Popular BSD-licensed implementation of Kerberos 5
@@ -54,6 +55,7 @@ CONFIGURE_ARGS=	--with-berkeley-db \
 		--enable-kx509 \
 		--without-microhttpd
 # XXX --with-readline picks up libreadline even if found in /usr/lib.
+GNU_CONFIGURE_MANPREFIX= ${PREFIX}/share
 MAKE_ENV=	INSTALL_CATPAGES=no
 INSTALL_TARGET=	install-strip
 .if !exists(/etc/rc.d/ipropd_master)

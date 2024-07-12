@@ -1,6 +1,5 @@
 PORTNAME=	messagelib
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
 CATEGORIES=	net kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -21,7 +20,7 @@ USES=		cmake compiler:c++11-lib cpe gettext grantlee:5 kde:5 qca \
 CPE_VENDOR=	kde
 USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
 		coreaddons guiaddons i18n iconthemes imap itemmodels itemviews jobwidgets \
-		kdewebkit kio notifications service solid sonnet syntaxhighlighting \
+		kio ktextaddons notifications service solid sonnet syntaxhighlighting \
 		textwidgets wallet widgetsaddons windowsystem xmlgui \
 		ecm:build
 # pim components
@@ -42,4 +41,10 @@ OPTIONS_SUB=		yes
 INOTIFY_DESC=		Filesystem alteration notifications using inotify
 INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CXXFLAGS+=	-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION
+.endif
+
+.include <bsd.port.post.mk>

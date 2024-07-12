@@ -1,5 +1,6 @@
 PORTNAME=	liferea
 DISTVERSION=	1.14.5
+PORTREVISION=	2
 CATEGORIES=	net gnome
 MASTER_SITES=	https://github.com/lwindolf/liferea/releases/download/v${DISTVERSION}/
 
@@ -21,13 +22,14 @@ RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 
 USES=		compiler:c++11-lang cpe desktop-file-utils gettext \
 		gmake gnome libtool localbase \
-		pathfix pkgconfig python:3.4+ sqlite tar:bzip2
+		pathfix pkgconfig python sqlite tar:bzip2
 USE_GNOME=	cairo dconf:run gtk30 gdkpixbuf2 intltool introspection \
 		libxslt libxml2
 
 GLIB_SCHEMAS=	net.sf.liferea.gschema.xml
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--enable-introspection
 
 # Introspection starts the program, but it may hang or crash-abort

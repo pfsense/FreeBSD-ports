@@ -1,16 +1,11 @@
 PORTNAME=	xwayland
-PORTVERSION=	22.1.8
+PORTVERSION=	24.1.0
 PORTEPOCH=	1
 CATEGORIES=	x11-servers
 MASTER_SITES=	XORG/individual/xserver
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	42e34498f87a.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	0d56c27582a2.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	1f7b28547011.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	X11 server as Wayland Client
+COMMENT=	X11 server as Wayland client
 WWW=		https://wayland.freedesktop.org/xserver.html
 
 LICENSE=	MIT
@@ -18,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/mesa-dri \
-		wayland-protocols>=1.18:graphics/wayland-protocols
+		wayland-protocols>=1.30:graphics/wayland-protocols
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libepoxy.so:graphics/libepoxy \
 		libwayland-client.so:graphics/wayland \
@@ -29,17 +24,11 @@ RUN_DEPENDS=	xkbcomp:x11/xkbcomp \
 CONFLICTS_INSTALL=	${PORTNAME}-devel
 
 USES=		compiler:c11 gl meson pkgconfig xorg tar:xz
-USE_GL=		egl gbm gl
-USE_XORG=	pixman xau xfont2 xkbfile xshmfence xtrans
+USE_GL=		gbm gl
+USE_XORG=	pixman xau xdmcp xfont2 xkbfile xshmfence xtrans
 
 MESON_ARGS=	-Dxvfb=false \
-		-Dxdmcp=false \
-		-Dxcsecurity=false \
-		-Ddri3=true \
-		-Dglamor=true \
-		-Dsha1=libmd \
-		-Dipv6=true \
-		-Dxkb_dir=${LOCALBASE}/share/X11/xkb \
+		-Dxcsecurity=true \
 		-Dxkb_output_dir=/var/lib/xkb \
 		-Ddefault_font_path="${DEFAULT_FONTPATH_LIST:ts,}"
 
@@ -55,10 +44,15 @@ DEFAULT_FONTPATH_LIST= \
 	${FONTPATH_ROOT}/75dpi/ \
 	catalogue:${FONTPATHD}
 
-OPTIONS_DEFINE=	NVIDIA
+OPTIONS_DEFINE=		CSD EI
+OPTIONS_DEFAULT=	CSD EI
 
-NVIDIA_DESC=		EGLStream support for glamor on Xwayland
-NVIDIA_BUILD_DEPENDS=	egl-wayland>0:graphics/egl-wayland
-NVIDIA_MESON_TRUE=	xwayland_eglstream
+CSD_DESC=		Client-side decorations via libdecor
+CSD_LIB_DEPENDS=	libdecor-0.so:x11-toolkits/libdecor
+CSD_MESON_TRUE=		libdecor
+
+EI_DESC=		Emulated input via libei
+EI_LIB_DEPENDS=		libei.so:x11/libei
+EI_MESON_OFF=		-Dxwayland_ei=false
 
 .include <bsd.port.mk>

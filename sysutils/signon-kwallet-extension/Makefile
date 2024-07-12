@@ -7,7 +7,7 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KWallet integration for signon framework
 WWW=		https://projects.kde.org/projects/kde/kdenetwork/signon-kwallet-extension
 
-LIB_DEPENDS=	libsignon-qt5.so:sysutils/signon-qt5
+LIB_DEPENDS=	libsignon-qt5.so:sysutils/signond@qt5
 
 USES=		cmake compiler:c++11-lang kde:5 pkgconfig qt:5 tar:xz
 USE_KDE=	wallet \

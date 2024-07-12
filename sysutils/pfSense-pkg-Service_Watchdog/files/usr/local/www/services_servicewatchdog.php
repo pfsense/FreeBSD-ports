@@ -3,7 +3,7 @@
  * services_servicewatchdog.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,15 +31,7 @@ require_once("functions.inc");
 require_once("service-utils.inc");
 require_once("servicewatchdog.inc");
 
-if (!is_array($config['installedpackages']['servicewatchdog'])) {
-	$config['installedpackages']['servicewatchdog'] = array();
-}
-
-if (!is_array($config['installedpackages']['servicewatchdog']['item'])) {
-	$config['installedpackages']['servicewatchdog']['item'] = array();
-}
-
-$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
+config_init_path('installedpackages/servicewatchdog/item');
 
 /* if a custom message has been passed along, lets process it */
 if ($_GET['savemsg']) {
@@ -50,22 +42,20 @@ if (isset($_POST['Update'])) {
 	/* update selected services */
 	if (is_array($_POST['notifies']) && count($_POST['notifies'])) {
 		/* Check each service and set the notify flag only for those chosen, remove those that are unset. */
-		foreach ($a_pwservices as $idx => $thisservice) {
+		foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $idx => $thisservice) {
 			if (!is_array($thisservice)) {
 				continue;
 			}
 			if (in_array($idx, $_POST['notifies'])) {
-				$a_pwservices[$idx]['notify'] = true;
+				config_set_path("installedpackages/servicewatchdog/item/{$idx}/notify", true);
 			} else {
-				if (isset($a_pwservices[$idx]['notify'])) {
-					unset($a_pwservices[$idx]['notify']);
-				}
+				config_del_path("installedpackages/servicewatchdog/item/{$idx}/notify");
 			}
 		}
 	} else {
 		/* No notifies selected, remove them all. */
-		foreach ($a_pwservices as $idx => $thisservice) {
-			unset($a_pwservices[$idx]['notify']);
+		foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $idx => $thisservice) {
+			config_del_path("installedpackages/servicewatchdog/item/{$idx}/notify");
 		}
 	}
 	servicewatchdog_cron_job();
@@ -78,7 +68,7 @@ if (isset($_POST['del'])) {
 	/* delete selected services */
 	if (is_array($_POST['pwservices']) && count($_POST['pwservices'])) {
 		foreach ($_POST['pwservices'] as $servicei) {
-			unset($a_pwservices[$servicei]);
+			config_del_path("installedpackages/servicewatchdog/item/{$servicei}");
 		}
 		servicewatchdog_cron_job();
 		write_config(gettext("Services: Service Watchdog: deleted a service from watchdog."));
@@ -97,6 +87,7 @@ if (isset($_POST['del'])) {
 	}
 	/* move selected services before this service */
 	if (isset($movebtn) && is_array($_POST['pwservices']) && count($_POST['pwservices'])) {
+		$a_pwservices = config_get_path('installedpackages/servicewatchdog/item');
 		$a_pwservices_new = array();
 
 		/* copy all services < $movebtn and not selected */
@@ -127,13 +118,13 @@ if (isset($_POST['del'])) {
 				$a_pwservices_new[] = $a_pwservices[$i];
 			}
 		}
-		$a_pwservices = $a_pwservices_new;
+		config_set_path('installedpackages/servicewatchdog/item', $a_pwservices_new);
 		servicewatchdog_cron_job();
 		write_config(gettext("Services: Service Watchdog: changed services order configuration."));
 		header("Location: services_servicewatchdog.php");
 		return;
 	} else if (isset($delbtn)) {
-		unset($a_pwservices[$delbtn]);
+		config_del_path("installedpackages/servicewatchdog/item/{$delbtn}");
 		servicewatchdog_cron_job();
 		write_config(gettext("Services: Service Watchdog: deleted a service from watchdog."));
 		header("Location: services_servicewatchdog.php");
@@ -169,12 +160,12 @@ print_info_box(gettext("This page allows selecting services to be monitored so t
 
 <?php
 $nservices = $i = 0;
-foreach ($a_pwservices as $thisservice):
+foreach (config_get_path('installedpackages/servicewatchdog/item', []) as $thisservice):
 ?>
 	<tr valign="top" id="fr<?=$nservices?>">
 		<td>
 			<input type="checkbox" id="frc<?=$nservices?>" name="pwservices[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$nservices?>')" />
-			<a class="fa fa-anchor" id="Xmove_<?=$nservices?>" title="<?=gettext("Move checked entries to here")?>"></a>
+			<a class="fa-solid fa-anchor" id="Xmove_<?=$nservices?>" title="<?=gettext("Move checked entries to here")?>"></a>
 		</td>
 		<td><input type="checkbox" id="notify<?=$nservices?>" name="notifies[]" value="<?=$i?>" style="margin: 0; padding: 0; width: 15px; height: 15px;" <?PHP if (isset($thisservice['notify'])) echo 'checked="checked"'?>/></td>
 		<td onclick="fr_toggle(<?=$nservices?>)" id="frd<?=$nservices?>" ondblclick="document.location='services_servicewatchdog_add.php?id=<?=$nservices?>';">
@@ -185,7 +176,7 @@ foreach ($a_pwservices as $thisservice):
 		</td>
 		<td style="cursor: pointer;">
 			<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$i?>" name="move_<?=$i?>" value="move_<?=$i?>"><?=gettext("Move checked entries to here")?></button>
-			<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete'); ?>"></a>
+			<a class="fa-solid fa-trash-can no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete'); ?>"></a>
 			<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete'); ?>">Delete</button>
 		</td>
 	</tr>
@@ -212,16 +203,16 @@ endforeach;
 	<nav class="action-buttons">
 		<br />
 		<a href="services_servicewatchdog_add.php" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add New Service")?>
 		</a>
 		<button type="submit" id="Update" name="Update" class="btn btn-sm btn-primary" value="Update Notification Settings" title="<?=gettext('Update Notification Settings')?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save Notification Settings")?>
 		</button>
 <?php if ($i !== 0): ?>
 		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Services")?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete")?>
 		</button>
 <?php endif; ?>

@@ -1,13 +1,13 @@
 PORTNAME=	refdb
 PORTVERSION=	0.9.9
 DISTVERSIONSUFFIX=	-1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTNAME}-src-${PORTVERSION}-1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bibliographic reference database
-WWW=		http://refdb.sourceforge.net/
+WWW=		https://refdb.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,7 +27,8 @@ LIBS+=		-lm
 
 CONFIGURE_ARGS=	--with-expat-lib=${LOCALBASE}/lib \
 		--with-classpath-root=${PREFIX}/share/java/classes \
-		--with-refdb-url=http://localhost/refdb
+		--with-refdb-url=http://localhost/refdb \
+		--mandir=${PREFIX}/share/man
 XMLCATMGR=	${LOCALBASE}/bin/xmlcatmgr
 
 OPTIONS_DEFINE=		DOCS CATALOG

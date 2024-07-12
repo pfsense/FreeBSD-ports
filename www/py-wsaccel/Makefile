@@ -1,5 +1,5 @@
 PORTNAME=	wsaccel
-PORTVERSION=	0.6.4
+PORTVERSION=	0.6.6
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,9 @@ WWW=		https://github.com/methane/wsaccel
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.6+
+DEPRECATED=	Upstream ceased development
+
+USES=		python
 USE_PYTHON=	autoplist distutils pytest
 
 post-install:

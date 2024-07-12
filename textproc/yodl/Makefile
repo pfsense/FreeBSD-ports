@@ -1,6 +1,6 @@
 PORTNAME=	yodl
 PORTVERSION=	3.10.00
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -20,7 +20,7 @@ CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	build
 USE_GITLAB=	yes
 GL_ACCOUNT=	fbb-git
-GL_COMMIT=	5fa97b175c85581d01329013cfdb4239f019b023
+GL_TAGNAME=	5fa97b175c85581d01329013cfdb4239f019b023
 
 SHEBANG_LANG=	icmake
 icmake_OLD_CMD=	/usr/bin/icmake
@@ -56,7 +56,6 @@ DOCS_USE=	TEX=latex:build,dvipsk:build
 post-patch:
 	@${REINPLACE_CMD} -e 's|"/usr"|"${PREFIX}"| ; \
 		s|"/share/yodl"|"/share/${PORTNAME}-${PORTVERSION}"| ; \
-		s|"/share/man"|"/man"| ; \
 		s|"/share/doc/yodl"|"/share/doc/${PORTNAME}-${PORTVERSION}"| ; \
 		s|"/share/doc/yodl-doc"|"/share/doc/${PORTNAME}-${PORTVERSION}/doc"| ; \
 		s|"gcc"|"${CC}"| ; \

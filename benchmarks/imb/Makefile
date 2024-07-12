@@ -1,6 +1,6 @@
 PORTNAME=	IMB
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2021.3
+DISTVERSION=	2021.7
 PORTREVISION=	1
 CATEGORIES=	benchmarks parallel
 MASTER_SITES=	https://github.com/intel/mpi-benchmarks/archive/refs/tags/
@@ -17,6 +17,8 @@ LICENSE_FILE=	${WRKSRC}/license/license.txt
 #GH_PROJECT=	mpi-benchmarks
 
 USES=		gmake localbase
+USE_CXXSTD=	c++14
+
 BINARY_ALIAS=	make=${GMAKE}
 
 WRKSRC=		${WRKDIR}/mpi-benchmarks-${DISTNAME}

@@ -1,6 +1,6 @@
 PORTNAME=	vaultwarden
-DISTVERSION=	1.28.1
-PORTREVISION=	2
+DISTVERSION=	1.30.5
+PORTREVISION=	4
 CATEGORIES=	security
 
 MAINTAINER=	mr@FreeBSD.org
@@ -10,11 +10,13 @@ WWW=		https://github.com/dani-garcia/vaultwarden
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BROKEN_i386=    doesn't buld on pkg builder
+
 LIB_DEPENDS+=	libcapnp.so:devel/capnproto \
 		libgmp.so:math/gmp \
 		libnettle.so:security/nettle
 
-USES=		cargo mysql:client pgsql ssl
+USES=		cargo ssl
 
 # make makeplist > pkg-plist #One has to edit/review the generated plist
 # make generate-plist && make check-plist
@@ -22,34 +24,63 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	dani-garcia
 USE_RC_SUBR=	${PORTNAME}
 
-OPTIONS_DEFINE=	WEBVAULT
-OPTIONS_DEFAULT=WEBVAULT
+USERS=		${WWWOWN}
+GROUPS=		${WWWGRP}
+PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
+OPTIONS_DEFINE=	WEBVAULT
+OPTIONS_DEFAULT=${OPTIONS_DEFINE} ${OPTIONS_MULTI_DATABASE}
+OPTIONS_MULTI=	DATABASE
+OPTIONS_MULTI_DATABASE=	MYSQL PGSQL SQLITE
+
+DATABASE_DESC=	Database support
 WEBVAULT_DESC=	Vaultwarden web (bw_web_builds)
 
+MYSQL_USES=	mysql:client
+MYSQL_VARS=	cargo_features+=mysql
+PGSQL_USES=	pgsql
+PGSQL_VARS=	cargo_features+=postgresql
+SQLITE_VARS=	cargo_features+=sqlite
 WEBVAULT_RUN_DEPENDS=	${WWWDIR}/web-vault/index.html:www/vaultwarden-web_vault
 
 # make cargo-crates > Makefile.crates
 
-CARGO_FEATURES=	mysql postgresql sqlite #vendored_openssl
+CARGO_FEATURES=	--no-default-features
 #CARGO_ENV+=	RUSTC_BOOTSTRAP=1
 
 INSTALL_TARGET=	install-strip
 
-SUB_FILES=	pkg-message
 SUB_LIST=	WWWGRP=${WWWGRP} \
-		WWWOWN=${WWWOWN}
+ 		WWWOWN=${WWWOWN}
+
+.include <bsd.port.pre.mk>
+
+# avoid LTO-induced address space exhaustion
+.if ${ARCH:Marmv?} || ${ARCH} == i386
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
+
+.if !defined(WITH_DEBUG)
+CARGO_INSTALL_ARGS+=	--config profile.release.strip=true
+.endif
 
 #post-patch:
 #	${REINPLACE_CMD} 's/^rust-version = "1.60"/rust-version = "1.59"/' \
 #		${WRKSRC}/Cargo.toml
 
-post-install:
+pre-install:
+	${MKDIR} ${STAGEDIR}/${WWWDIR}/data
+	# @${ECHO_CMD} "@owner ${WWWOWN}" >> ${PLIST}
+	# @${ECHO_CMD} "@group ${WWWGRP}" >> ${PLIST}
+	# @${ECHO_CMD} "@mode 755" >> ${PLIST}
+	# @${ECHO_CMD} "${STAGEDIR}/${WWWDIR}/data" >> ${PLIST}
+	# @${ECHO_CMD} "@mode" >> ${PLIST}
+	# @${ECHO_CMD} "@group" >> ${PLIST}
+	# @${ECHO_CMD} "@owner" >> ${PLIST}
 	${MKDIR} ${STAGEDIR}/${ETCDIR}/rc.conf.d
 	${INSTALL} -m0600 ${FILESDIR}/${PORTNAME}_conf.in ${STAGEDIR}/${LOCALBASE}/etc/rc.conf.d/${PORTNAME}.sample
-	${MKDIR} ${STAGEDIR}/${WWWDIR}/data
-	${ECHO_CMD} \
-		'@postexec chown -R ${WWWOWN}:${WWWGRP} %D/${WWWDIR_REL}/data' \
-		>> ${TMPPLIST}
 
-.include <bsd.port.mk>
+#post-install:
+
+.include <bsd.port.post.mk>

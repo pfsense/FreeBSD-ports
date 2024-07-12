@@ -1,5 +1,6 @@
 PORTNAME=	asyncssh
-PORTVERSION=	2.13.1
+PORTVERSION=	2.14.2
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,11 +12,12 @@ WWW=		https://github.com/ronf/asyncssh
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=3.1:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.6:devel/py-typing-extensions@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.6:devel/py-typing-extensions@${PY_FLAVOR}
 
-USES=		cpe python:3.6+
-USE_PYTHON=	autoplist concurrent distutils unittest
+USES=		cpe python
+USE_PYTHON=	autoplist concurrent cryptography pep517 unittest
 
 NO_ARCH=	yes
 
@@ -37,6 +39,6 @@ GSSAPI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gssapi>=1.2.0:security/py-gssapi@${PY
 LIBNACL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libnacl>=1.4.2:security/py-libnacl@${PY_FLAVOR}
 NETTLE_LIB_DEPENDS=	libnettle.so:security/nettle
 PKCS11_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-pkcs11>=0.7.0:security/py-python-pkcs11@${PY_FLAVOR}
-PYOPENSSL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>=17.0.0:security/py-openssl@${PY_FLAVOR}
+PYOPENSSL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>=23.0.0,1:security/py-openssl@${PY_FLAVOR}
 
 .include <bsd.port.mk>

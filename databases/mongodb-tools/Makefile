@@ -1,10 +1,10 @@
 PORTNAME=	mongodb-tools
-DISTVERSION=	100.7.2
+DISTVERSION=	100.9.5
 CATEGORIES=	databases
 
 MAINTAINER=	ronald@FreeBSD.org
-COMMENT=	Tools for MongoDB 4.4.x and up
-WWW=		https://docs.mongodb.com/database-tools/
+COMMENT=	MongoDB Database Tools
+WWW=		https://www.mongodb.com/docs/database-tools/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -17,7 +17,7 @@ GH_PROJECT=	mongo-tools
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
 GO_BUILDFLAGS=	-tags "${USE_MY_TAGS}"
 
-CONFLICTS_INSTALL=	mongodb4[02]-tools
+CONFLICTS_INSTALL=	mongodb42-tools
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_DEFAULT=	BSONDUMP MONGODUMP MONGOEXPORT MONGOFILES MONGOIMPORT \

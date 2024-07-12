@@ -1,6 +1,6 @@
 PORTNAME=	sdl-sopwith
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	2.3.0
+DISTVERSION=	2.5.0
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,6 +15,7 @@ USES=		autoreconf pkgconfig sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	fragglet
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_SDL=	sdl2
 
 PORTDOCS=	*

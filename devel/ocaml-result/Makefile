@@ -1,5 +1,6 @@
 PORTNAME=	result
 PORTVERSION=	1.5
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -18,8 +19,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	janestreet
 
 ALL_TARGET=	default
-MAKE_ENV=	LIBDIR=${OCAML_SITELIBDIR}
+MAKE_ENV=	LIBDIR=${PREFIX}/${OCAML_SITELIBDIR}
 
 OPTIONS_DEFINE=	DOCS
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/result/result.cmxs
 
 .include <bsd.port.mk>

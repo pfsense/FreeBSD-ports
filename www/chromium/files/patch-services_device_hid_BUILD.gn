@@ -1,6 +1,6 @@
---- services/device/hid/BUILD.gn.orig	2022-11-30 08:12:58 UTC
+--- services/device/hid/BUILD.gn.orig	2024-01-30 07:53:34 UTC
 +++ services/device/hid/BUILD.gn
-@@ -35,7 +35,26 @@ source_set("hid") {
+@@ -36,7 +36,26 @@ source_set("hid") {
      "//services/device/public/mojom",
    ]
  

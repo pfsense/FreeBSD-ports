@@ -1,5 +1,5 @@
 PORTNAME=	qmidictl
-DISTVERSION=	0.9.10
+DISTVERSION=	1.0.0
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		cmake compiler:c++17-lang gl localbase pkgconfig qt:6
 GNU_CONFIGURE=	yes
 USE_QT=		base svg tools:build
-USE_GL=		gl
+USE_GL=		gl opengl
 
 BINARY_ALIAS=	qmake=${QMAKE} \
 		git=false

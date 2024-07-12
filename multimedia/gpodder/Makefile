@@ -1,5 +1,6 @@
 PORTNAME=	gpodder
-DISTVERSION=	3.11.1
+DISTVERSION=	3.11.4
+PORTREVISION=	1
 CATEGORIES=	multimedia python
 
 MAINTAINER=	rm@FreeBSD.org
@@ -20,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 		yt-dlp:www/yt-dlp \
 		${PYTHON_PKGNAMEPREFIX}eyed3>=0:audio/py-eyed3@${PY_FLAVOR}
 
-USES=		gettext gmake gnome python:3.5+ shebangfix
+USES=		gettext gmake gnome python shebangfix
 
 USE_GITHUB=	yes
 
@@ -30,7 +31,7 @@ OPTIONS_SUB=		yes
 OPTIONS_EXCLUDE=	NLS
 
 ALL_TARGET=	messages
-MAKE_ENV=	PYTHON=${PYTHON_CMD} GPODDER_MANPATH_NO_SHARE="yes"
+MAKE_ENV=	PYTHON=${PYTHON_CMD}
 MAKEFILE=	makefile
 NO_ARCH=	yes
 

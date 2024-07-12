@@ -1,6 +1,6 @@
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang devel perl5
 MASTER_SITES=	CPAN/../../src/5.0
 DIST_SUBDIR=	perl
@@ -14,9 +14,8 @@ LICENSE_COMB=	dual
 LICENSE_FILE_ART10=	${WRKSRC}/Artistic
 LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
-# Uncomment when the default Perl is switched to 5.36
-#DEPRECATED=	Support end three years after .0 release, please upgrade to a more recent version of Perl
-#EXPIRATION_DATE=	2024-05-20
+DEPRECATED=	Support end three years after .0 release, please upgrade to a more recent version of Perl
+EXPIRATION_DATE=	2024-06-30
 
 USES=		cpe tar:xz
 
@@ -133,9 +132,9 @@ OPTIONS_DEFAULT=	DTRACE MULTIPLICITY PERL_64BITINT THREADS
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE=	DTRACE
 .endif
-.for a in aarch64 arm armv6 armv7 \
+.for a in aarch64 armv6 armv7 \
 	mips mips64 mips64el mips64elhf mips64hf mipsel mipselhf mipshf mipsn32 \
-	riscv64 riscv64sf sparc64
+	riscv64 riscv64sf
 OPTIONS_EXCLUDE_${a}=	DTRACE
 .endfor
 OPTIONS_SUB=		yes

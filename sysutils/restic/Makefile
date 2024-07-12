@@ -1,6 +1,7 @@
 PORTNAME=	restic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.15.2
+DISTVERSION=	0.16.4
+PORTREVISION=	7
 CATEGORIES=	sysutils
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -11,15 +12,13 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
-
 GO_MODULE=	github.com/restic/restic
-
 GO_TARGET=	./cmd/${PORTNAME}
 
 PLIST_SUB=	PORTNAME=${PORTNAME}
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/man/* ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/man/* ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL} -d ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 	${INSTALL_SCRIPT} ${WRKSRC}/doc/bash-completion.sh \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d/${PORTNAME}.sh

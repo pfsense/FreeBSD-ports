@@ -13,12 +13,12 @@ LICENSE=	MIT
 
 # Per PEP-518, the default [build-system] section when not defined is:
 # requires = ["setuptools", "wheel"]  # PEP 508 specifications.
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}black>0:devel/py-black@${PY_FLAVOR}
 
 # No tests because they are not in the release tarball
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

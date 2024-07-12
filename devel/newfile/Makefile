@@ -1,12 +1,12 @@
 PORTNAME=	newfile
 PORTVERSION=	1.0.14
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for creating starter files in various languages
-WWW=		http://newfile.sourceforge.net/
+WWW=		https://newfile.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -21,7 +21,7 @@ PORTDOCS=	newfile.html
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/newfile.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/doc/newfile.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/

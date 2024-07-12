@@ -3,7 +3,7 @@
  * snort_passlist_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -288,7 +288,7 @@ if (count($pconfig['address']['item']) > 0) {
 			'deleterow' . $counter,
 			'Delete',
 			null,
-			'fa-trash'
+			'fa-solid fa-trash-can'
 		))->addClass('btn-warning btn-sm nowarn')->setAttribute('title', "Delete this entry from list");
 
 		$section->add($group);
@@ -309,7 +309,7 @@ if (count($pconfig['address']['item']) > 0) {
 		'deleterow0',
 		'Delete',
 		null,
-		'fa-trash'
+		'fa-solid fa-trash-can'
 	))->addClass('btn-warning btn-sm nowarn')->setAttribute('title', "Delete this entry from list");
 
 	$section->add($group);
@@ -320,7 +320,7 @@ $form->addGlobal(new Form_Button(
 	'addrow',
 	'Add IP',
 	null,
-	'fa-plus'
+	'fa-solid fa-plus'
 ))->addClass('btn-success addbtn')->setAttribute('title', "Add new IP address, subnet or alias name row");
 
 print($form);

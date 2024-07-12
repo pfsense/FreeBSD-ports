@@ -1,6 +1,6 @@
---- third_party/blink/renderer/core/layout/layout_view.cc.orig	2023-05-31 08:12:17 UTC
+--- third_party/blink/renderer/core/layout/layout_view.cc.orig	2024-06-17 12:56:06 UTC
 +++ third_party/blink/renderer/core/layout/layout_view.cc
-@@ -66,7 +66,7 @@
+@@ -72,7 +72,7 @@
  #include "ui/display/screen_info.h"
  #include "ui/gfx/geometry/quad_f.h"
  
@@ -9,8 +9,8 @@
  #include "third_party/blink/renderer/platform/fonts/font_cache.h"
  #endif
  
-@@ -305,7 +305,7 @@ void LayoutView::UpdateLayout() {
-     fragmentation_context_.Clear();
+@@ -799,7 +799,7 @@ void LayoutView::LayoutRoot() {
+     intrinsic_logical_widths_ = LogicalWidth();
    }
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)

@@ -1,6 +1,6 @@
 PORTNAME=	ipygany
 DISTVERSION=	0.5.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipywidgets>0:devel/py-ipywidgets@${PY_FLAVOR
 		${PYNUMPY}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipydatawidgets>0:devel/py-ipydatawidgets@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils concurrent autoplist pytest
 
 NO_ARCH=	yes

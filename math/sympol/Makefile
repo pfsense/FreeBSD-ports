@@ -1,7 +1,7 @@
 PORTNAME=	sympol
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.9
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,6 +18,7 @@ LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
 		libgmp.so:math/gmp
 
 USES=		cmake:testing compiler:c++11-lang eigen:3 localbase:ldflags perl5 shebangfix
+USE_CXXSTD=	c++14
 USE_PERL5=	test
 USE_LDCONFIG=	yes
 

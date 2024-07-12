@@ -1,20 +1,20 @@
 PORTNAME=	marko
-PORTVERSION=	1.3.0
-PORTREVISION=	2
+PORTVERSION=	2.1.0
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Markdown parser with high extensibility
-WWW=		https://github.com/frostming/marko
+WWW=		https://marko-py.readthedocs.io/en/latest/ \
+		https://github.com/frostming/marko
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pdm-pep517>=0:devel/py-pdm-pep517@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pdm-backend>=0:devel/py-pdm-backend@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

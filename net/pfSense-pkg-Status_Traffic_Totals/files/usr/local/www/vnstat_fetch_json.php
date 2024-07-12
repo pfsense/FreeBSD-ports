@@ -3,7 +3,7 @@
  * vnstat_fetch_json.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)

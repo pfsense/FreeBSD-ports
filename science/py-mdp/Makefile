@@ -8,13 +8,13 @@ DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Modular toolkit for Data Processing
-WWW=		http://mdp-toolkit.sourceforge.net/
+WWW=		https://mdp-toolkit.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 OPTIONS_DEFINE=	LIBSVM SCIPY

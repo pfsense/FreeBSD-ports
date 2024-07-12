@@ -1,6 +1,6 @@
 PORTNAME=	broot
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.22.1
+DISTVERSION=	1.39.0
 PORTREVISION=	1
 CATEGORIES=	misc
 
@@ -21,15 +21,15 @@ GH_ACCOUNT=	canop
 
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz
-PORTDOCS=	CHANGELOG.md README.md documentation.md features.md
+		share/man/man1/${PORTNAME}.1.gz
+PORTDOCS=	CHANGELOG.md README.md features.md
 
 OPTIONS_DEFINE=		CLIPBOARD DOCS
 OPTIONS_DEFAULT=	CLIPBOARD
 
 CLIPBOARD_DESC=	Enable terminal X11 clipboard support
 
-CLIPBOARD_USES=		python:3.6+,build xorg
+CLIPBOARD_USES=		python:build xorg
 CLIPBOARD_USE=		XORG=xcb
 CLIPBOARD_BINARY_ALIAS=	python3=${PYTHON_CMD}
 CLIPBOARD_VARS=		CARGO_FEATURES+=clipboard
@@ -47,7 +47,7 @@ pre-build:
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

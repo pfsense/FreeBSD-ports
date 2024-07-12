@@ -1,5 +1,6 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	4.8.4
+DISTVERSION=	5.1.7
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
@@ -13,13 +14,12 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_i386=	does not build, webrtc related
-BROKEN_SSL=	openssl30 openssl31
-BROKEN_SSL_REASON=	undefined symbol: ERR_load_BIO_strings
+#BROKEN_SSL=	openssl openssl31
+#BROKEN_SSL_REASON=	undefined symbol: ERR_load_BIO_strings
 NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe
 NOT_FOR_ARCHS_REASON=	Only little endian is supported
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
-		microsoft-gsl>0:devel/microsoft-gsl \
 		range-v3>0:devel/range-v3 \
 		tl-expected>0:devel/tl-expected \
 		v4l_compat>0:multimedia/v4l_compat \
@@ -27,6 +27,7 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		${LOCALBASE}/lib/libtg_owt.a:net-im/tg_owt
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libavformat.so:multimedia/ffmpeg \
+		libcrc32c.so:devel/crc32c \
 		libdbus-1.so:devel/dbus \
 		libdispatch.so:devel/libdispatch \
 		libfmt.so:devel/libfmt \
@@ -38,6 +39,7 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libprotobuf.so:devel/protobuf \
 		libqrcodegencpp.so:graphics/qr-code-generator \
 		librnnoise.so:audio/rnnoise \
+		libsrtp2.so:net/libsrtp2 \
 		libxcb-keysyms.so:x11/xcb-util-keysyms \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxxhash.so:devel/xxhash \
@@ -50,30 +52,33 @@ qt6_PKGNAMESUFFIX=	-qt6
 qt5_CONFLICTS_INSTALL=	${PORTNAME}-qt6
 qt6_CONFLICTS_INSTALL=	${PORTNAME}
 
-USES=		cmake desktop-file-utils gl gnome jpeg localbase \
-		minizip openal pkgconfig python:3.7+,build ssl xorg
+USES=		cmake compiler:c++20-lang desktop-file-utils gl gnome jpeg localbase \
+		minizip openal pkgconfig python:build ssl xorg
 
-USE_CXXSTD=	c++17
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	telegramdesktop
 GH_PROJECT=	tdesktop
 
 .if ${FLAVOR} == qt5
 USES+=		kde:5 qt:5
-USE_QT=		buildtools:build core dbus gui imageformats network qmake:build \
+USE_QT=		buildtools:build core dbus declarative gui imageformats network qmake:build \
 		svg wayland widgets
 USE_KDE=	coreaddons kimageformats
 .else
-USES+=		qt:6
-USE_QT=		5compat base imageformats lottie shadertools svg tools:build wayland
+USES+=		kde:6 qt:6
+USE_QT=		5compat base declarative imageformats lottie shadertools svg tools:build wayland
+USE_KDE=	coreaddons kimageformats
 .endif
 
 USE_GL=		gl
 USE_GNOME=	glib20 glibmm26 introspection
 USE_XORG=	x11 xcb xcomposite xdamage xext xfixes xrandr xrender xtst
 
-CMAKE_ARGS=	-DTDESKTOP_API_ID=${TELEGRAM_API_ID} -DTDESKTOP_API_HASH=${TELEGRAM_API_HASH}
+CMAKE_ARGS=	-DTDESKTOP_API_ID=${TELEGRAM_API_ID} -DTDESKTOP_API_HASH=${TELEGRAM_API_HASH} \
+		-DQT_VERSION_MAJOR=${FLAVOR:S/qt//}
 CMAKE_ON=	DESKTOP_APP_USE_PACKAGED DESKTOP_APP_DISABLE_CRASH_REPORTS \
+		DESKTOP_APP_DISABLE_JEMALLOC \
+		DESKTOP_APP_DISABLE_SCUDO \
 		DESKTOP_APP_DISABLE_WAYLAND_INTEGRATION
 
 # Since cmake 3.25.0, BSDs are no longer recognised as Linux (in this port).
@@ -105,15 +110,40 @@ TELEGRAM_API_ID=	601761
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} > 1400000
-USES+=	llvm:build
-CC=	${_LLVM_MK_PREFIX}/bin/clang
-CPP=	${_LLVM_MK_PREFIX}/bin/clang-cpp
-CXX=	${_LLVM_MK_PREFIX}/bin/clang++
-#LD?=	${_LLVM_MK_PREFIX}/bin/ld
-.else
-USES+=	compiler:c++17-lang
+.if ${OPSYS} == FreeBSD && ((${OSVERSION} >= 1400000 && ${OSVERSION} < 1400091) || ${OSVERSION} < 1302507)
+#EXTRA_PATCHES=	${PATCHDIR}/extra-patch-CMakeLists.txt
+USES+=	llvm:min=16,build
+USES:=	${USES:Ncompiler\:*} # XXX avoid warnings
+.if defined(WITH_CCACHE_BUILD) && !defined(NO_CCACHE)
+CMAKE_ARGS+=	-DCMAKE_CC_COMPILER_LAUNCHER="${LOCALBASE}/bin/ccache" \
+		-DCMAKE_CPP_COMPILER_LAUNCHER="${LOCALBASE}/bin/ccache" \
+		-DCMAKE_CXX_COMPILER_LAUNCHER="${LOCALBASE}/bin/ccache"
 .endif
+#.else
+#USES+=	compiler:c++20-lang
+.endif
+
+post-extract:
+	# Some of the third-party components already built, and
+	# can be safely removed
+	${RM} -rf \
+		${WRKSRC}/Telegram/ThirdParty/QR \
+		${WRKSRC}/Telegram/ThirdParty/dispatch \
+		${WRKSRC}/Telegram/ThirdParty/expected \
+		${WRKSRC}/Telegram/ThirdParty/fcitx5-qt \
+		${WRKSRC}/Telegram/ThirdParty/hime \
+		${WRKSRC}/Telegram/ThirdParty/hunspell \
+		${WRKSRC}/Telegram/ThirdParty/jemalloc \
+		${WRKSRC}/Telegram/ThirdParty/jimf \
+		${WRKSRC}/Telegram/ThirdParty/kcoreaddons \
+		${WRKSRC}/Telegram/ThirdParty/kimageformats \
+		${WRKSRC}/Telegram/ThirdParty/lz4 \
+		${WRKSRC}/Telegram/ThirdParty/minizip \
+		${WRKSRC}/Telegram/ThirdParty/plasma-wayland-protocols \
+		${WRKSRC}/Telegram/ThirdParty/range-v3 \
+		${WRKSRC}/Telegram/ThirdParty/wayland \
+		${WRKSRC}/Telegram/ThirdParty/wayland-protocols \
+		${WRKSRC}/Telegram/ThirdParty/xxHash
 
 post-patch:
 	# XXX fix the following on every source file

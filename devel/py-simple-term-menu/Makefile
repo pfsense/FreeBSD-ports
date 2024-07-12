@@ -1,7 +1,7 @@
 PORTNAME=	simple-term-menu
-PORTVERSION=	1.6.1
+PORTVERSION=	1.6.4
 CATEGORIES=	devel
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dvl@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/IngoMeyer441/simple-term-menu
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.5+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

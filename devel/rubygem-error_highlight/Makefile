@@ -1,5 +1,5 @@
 PORTNAME=	error_highlight
-PORTVERSION=	0.5.1
+PORTVERSION=	0.6.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -10,8 +10,6 @@ WWW=		https://github.com/ruby/error_highlight
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/LICENSE.txt
-
-BROKEN_RUBY30=	yes
 
 USES=		gem
 

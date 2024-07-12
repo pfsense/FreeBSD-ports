@@ -1,7 +1,6 @@
 PORTNAME=	iio-oscilloscope
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14
-PORTREVISION=	4
+DISTVERSION=	0.17
 DISTVERSIONSUFFIX=	-master
 CATEGORIES=	misc
 
@@ -23,12 +22,13 @@ LIB_DEPENDS=	libad9361.so:misc/libad9361-iio \
 		libmatio.so:math/matio
 
 USES=		cmake compiler:c11 gnome localbase:ldflags pkgconfig
-USE_GNOME=	atk cairo gdkpixbuf2 gtk20 libxml2 pango
+USE_GNOME=	atk cairo gdkpixbuf2 gtk30 libxml2 pango
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	analogdevicesinc
 
+CFLAGS+=	`pkg-config --cflags gtkdatabox` # workaround for https://github.com/analogdevicesinc/iio-oscilloscope/issues/499
 LDFLAGS+=	-lm -lexecinfo
 
 .include <bsd.port.mk>

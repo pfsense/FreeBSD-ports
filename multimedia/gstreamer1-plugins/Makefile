@@ -1,7 +1,7 @@
 PORTNAME=	gstreamer
 PORTVERSION?=	${BASE_PORTVERSION}
 # plug-in port instead, like ${category}/gstreamer1-plugin-${PLUGIN}.
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	multimedia audio
 MASTER_SITES=	https://gstreamer.freedesktop.org/src/gst-plugins-base/:base \
 		https://gstreamer.freedesktop.org/src/gst-plugins-bad/:bad \
@@ -37,7 +37,7 @@ UGLY_DISTNAME=		gst-plugins-ugly-${UGLY_PORTVERSION}
 UGLY_DISTFILE=		${UGLY_DISTNAME}${EXTRACT_SUFX}
 DIST?=		base
 
-USES+=		meson cpe gettext gnome gstreamer libtool pathfix pkgconfig python:3.8+,build tar:xz
+USES+=		meson cpe gettext gnome gstreamer libtool pathfix pkgconfig python:build tar:xz
 USE_GNOME+=	glib20 introspection:build libxml2
 GST_PLUGIN?=	base
 USE_LDCONFIG=	yes
@@ -58,7 +58,7 @@ IGNORE=		DIST not specified
 .endif
 
 VERSION=	1.0
-SOVERSION=	0.2202.0
+SOVERSION=	0.2210.0
 PLIST_SUB+=	VERSION="${VERSION}" \
 		SOVERSION="${SOVERSION}"
 

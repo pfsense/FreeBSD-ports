@@ -6,14 +6,14 @@ DISTNAME=	shhmsg-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for displaying messages
-WWW=		http://shh.thathost.com/pub-unix/ #shhmsg
+WWW=		https://shh.thathost.com/pub-unix/ #shhmsg
 
 LICENSE=	ART10
 
 USES=		uidfix
 MAKEFILE=	${FILESDIR}/Makefile.lib
 USE_LDCONFIG=	yes
-MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null
+MAKE_ENV=	WITHOUT_PROFILE=yes SRCCONF=/dev/null
 
 OPTIONS_DEFINE=		DOCS
 

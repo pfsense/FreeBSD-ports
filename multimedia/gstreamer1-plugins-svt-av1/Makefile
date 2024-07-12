@@ -1,6 +1,6 @@
 PORTNAME=	svt-av1
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.0
+DISTVERSION=	2.0.0
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	gstreamer1-plugins-
 
@@ -18,7 +18,6 @@ USE_GITLAB=	yes
 USE_GNOME=	glib20
 GL_ACCOUNT=	AOMediaCodec
 GL_PROJECT=	SVT-AV1
-GL_COMMIT=	ea296ef350714fb6f105b420fb0bc321d9997ffd
 WRKSRC_SUBDIR=	gstreamer-plugin
 PLIST_FILES=	lib/gstreamer-1.0/libgstsvtav1enc.so
 

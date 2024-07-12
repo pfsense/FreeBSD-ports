@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	7.0.0-rc3
+DISTVERSION=	7.0.11
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -25,7 +25,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} 
 # build depends used while running ${WRKSRC}/src/third_party/mozjs/gen-config.sh
 BUILD_DEPENDS+=	autoconf2.13:devel/autoconf2.13 \
 		gsed:textproc/gsed
-LIB_DEPENDS= 	libcurl.so:ftp/curl \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre2-8.so:devel/pcre2 \
 		libsnappy.so:archivers/snappy \
 		libstemmer.so:textproc/snowballstemmer \
@@ -49,10 +49,19 @@ USE_RC_SUBR=	mongod
 SHEBANG_FILES=	buildscripts/scons.py
 python_OLD_CMD=	@python_interpreter@
 
-MAKE_ARGS=	--cxx-std=20 \
+EXTRACT_AFTER_ARGS=	--exclude src/third_party/pcre2 \
+			--exclude src/third_party/snappy-* \
+			--exclude src/third_party/libstemmer_c \
+			--exclude src/third_party/unwind \
+			--exclude src/third_party/yaml-cpp \
+			--exclude src/third_party/zlib-* \
+			--exclude src/third_party/zstandard \
+			--no-same-owner --no-same-permissions
+
+MAKE_ARGS=	--allocator=system \
+		--cxx-std=20 \
 		--disable-warnings-as-errors \
 		--libc++ \
-		--allocator=system \
 		--runtime-hardening=on \
 		--use-system-libunwind \
 		--use-system-pcre2 \
@@ -66,15 +75,24 @@ MAKE_ARGS=	--cxx-std=20 \
 		MONGO_VERSION=${DISTVERSION} \
 		VERBOSE=on
 
+CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
+
 CONFLICTS_INSTALL=	mongodb[0-9][0-9]
 
 USERS=		mongodb
 GROUPS=		mongodb
 
 OPTIONS_DEFINE=		LTO SASL SSL NOAVX
-OPTIONS_DEFAULT=	LTO SASL SSL
+OPTIONS_DEFINE_aarch64=	ARMV80A
+OPTIONS_DEFAULT=	SASL SSL NOAVX
 
+# MongoDB on non-LSE ARM cpu like Raspberry Pi can work but is unsupported upstream.
+# Can give corruption on high concurrency.
+# Please read https://jira.mongodb.org/browse/SERVER-71772.
+ARMV80A_DESC=	Enable non-LSE ARM64 CPUs like RPI4.
 NOAVX_DESC=	"Disable AVX instructions on amd64 (Sandybridge+)"
+
+ARMV80A_EXTRA_PATCHES=	${FILESDIR}/extrapatch-SConstruct
 
 LTO_MAKE_ARGS=	--lto=on
 
@@ -105,13 +123,11 @@ MOZJS_ARCH=	${ARCH}
 .endif
 
 post-patch:
-	${RM} -rf ${WRKSRC}/src/third_party/pcre2
-	${RM} -rf ${WRKSRC}/src/third_party/snappy-*
-	${RM} -rf ${WRKSRC}/src/third_party/libstemmer_c
-	${RM} -rf ${WRKSRC}/src/third_party/unwind
-	${RM} -rf ${WRKSRC}/src/third_party/yaml-cpp
-	${RM} -rf ${WRKSRC}/src/third_party/zlib-*
-	${RM} -rf ${WRKSRC}/src/third_party/zstandard
+# fix build with python-3.11
+	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/util.py
+	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/preprocessor.py
+	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/backend/base.py
+	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/action/process_define_files.py
 
 do-configure:
 # Replacement of ${WRKSRC}/src/third_party/mozjs/get-sources.sh

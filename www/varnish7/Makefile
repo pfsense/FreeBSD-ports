@@ -1,5 +1,6 @@
 PORTNAME=	varnish
-DISTVERSION=	7.3.0
+DISTVERSION=	7.4.3
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://varnish-cache.org/downloads/
 PKGNAMESUFFIX=	7
@@ -16,10 +17,11 @@ BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR} \
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 USES=		cpe libedit libtool localbase ncurses pathfix \
-		pkgconfig python:3.6+,build shebangfix tar:tgz
+		pkgconfig python:build shebangfix tar:tgz
 CPE_VENDOR=	varnish-cache
 CPE_PRODUCT=	varnish_cache
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 SHEBANG_FILES=	lib/libvcc/*.py lib/libvsc/*.py
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	varnishd varnishlog varnishncsa

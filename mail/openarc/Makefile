@@ -1,6 +1,6 @@
 PORTNAME=	openarc
 DISTVERSION=	1-0-0-Beta3.20201016
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	autoconf-archive>0:devel/autoconf-archive
 LIB_DEPENDS=	libjansson.so:devel/jansson
 
-USES=		autoreconf gmake libtool pkgconfig ssl
+USES=		autoreconf gmake libtool localbase pkgconfig ssl
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -22,6 +22,8 @@ GH_PROJECT=	OpenARC
 GH_TAGNAME=	eb430db
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+CONFIGURE_ARGS=	--with-openssl=${OPENSSLBASE}
 
 USE_RC_SUBR=	${PORTNAME}
 

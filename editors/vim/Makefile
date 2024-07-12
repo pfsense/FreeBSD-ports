@@ -1,11 +1,12 @@
 PORTNAME=	vim
-PORTVERSION=	9.0.1627
+PORTVERSION=	9.1.0470
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
 MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Improved version of the vi editor (${FLAVOR:U} flavor)
-WWW=		https://www.vim.org/
+WWW=		https://www.vim.org/ \
+		https://github.com/vim/vim
 
 LICENSE=	VIM
 LICENSE_NAME=	VIM License
@@ -17,6 +18,7 @@ USE_GITHUB=	yes
 
 # Vim will try to link against libcanberra if it's installed
 CONFIGURE_ARGS=	--disable-canberra \
+		--disable-libsodium \
 		--enable-cscope \
 		--enable-gui=${GUI} \
 		--enable-multibyte \
@@ -27,6 +29,7 @@ MAKE_ARGS=	STRIP="${STRIP_CMD}" \
 
 CPE_VERSION=	${PORTVERSION:R}
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 PLIST_SUB=	VIM_VER=${VIM_VER}
 PORTDATA=	${VIM_VER}
 PORTSCOUT=	ignore:1
@@ -43,10 +46,6 @@ CONFLICTS_INSTALL=	${FLAVORS:N${FLAVOR}:S/^/vim-/}
 
 .for f in ${FLAVORS:Nconsole}
 ${f}_PKGNAMESUFFIX=	-${f}
-.endfor
-
-.for f in ${FLAVORS:Ntiny}
-${f}_CONFLICTS_INSTALL=	xxd
 .endfor
 
 # GUI flavors
@@ -95,8 +94,8 @@ USE_XORG=	ice sm x11 xmu xpm xt
 # Options {{{1
 # The bulk of the OPTIONS are for normal (non-tiny) vim
 ### Make sure any new options are excluded below in CONSOLE/TINY
-OPTIONS_DEFAULT=	CTAGS_BASE PYTHON
-OPTIONS_DEFINE=		MAKE_JOBS NLS XTERM_SAVE
+OPTIONS_DEFAULT=	CTAGS_BASE PYTHON XXD
+OPTIONS_DEFINE=		MAKE_JOBS NLS XTERM_SAVE XXD
 OPTIONS_SINGLE=		CTAGS
 OPTIONS_SINGLE_CTAGS=	CTAGS_BASE CTAGS_EXUBERANT CTAGS_UNIVERSAL
 OPTIONS_GROUP=		LANGBIND
@@ -113,6 +112,7 @@ OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE:NMAKE_JOBS} \
 
 MAKE_JOBS_DESC=		Enable parallel build
 XTERM_SAVE_DESC=	Restore xterm screen after exit
+XXD_DESC=		Install xxd hexdumper
 
 CTAGS_BASE_DESC=	Use system ctags
 CTAGS_EXUBERANT_DESC=	Use exctags instead of ctags
@@ -127,6 +127,8 @@ MAKE_JOBS_VARS_OFF=	MAKE_JOBS_UNSAFE=yes
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
+XXD_RUN_DEPENDS=	xxd:sysutils/xxd
+
 # LANGUAGE BINDINGS
 LANGBIND_DESC=		Optional language bindings
 
@@ -137,7 +139,7 @@ LUA_USES=		lua
 PERL_CONFIGURE_ENABLE=	perlinterp
 PERL_USES=		perl5
 
-PYTHON_USES=		python:3.6+
+PYTHON_USES=		python
 PYTHON_USES_OFF=	python:env
 PYTHON_CONFIGURE_ENABLE=	python3interp
 PYTHON_CONFIGURE_WITH=	python3-command=${PYTHON_CMD}
@@ -182,13 +184,15 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/vim ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/runtime/defaults.vim ${STAGEDIR}${DATADIR}/${VIM_VER}
 	${INSTALL_DATA} ${FILESDIR}/defaults_freebsd.vim ${STAGEDIR}${DATADIR}/${VIM_VER}
-	${INSTALL_MAN} ${WRKSRC}/runtime/doc/vim.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/runtime/doc/vim.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .else  # flavor != tiny
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/defaults_freebsd.vim ${STAGEDIR}${DATADIR}/${VIM_VER}
 	${RM} ${STAGEDIR}${PREFIX}/bin/ex
 	${RM} ${STAGEDIR}${PREFIX}/bin/view
+	${RM} ${STAGEDIR}${PREFIX}/bin/xxd
+	${FIND} ${STAGEDIR}${PREFIX} -name xxd.1 -delete
 .  for F in eview evim gview gvim gvimdiff rgview rgvim rview rvim vimdiff
 	${LN} -sf vim ${STAGEDIR}${PREFIX}/bin/$F
 .  endfor

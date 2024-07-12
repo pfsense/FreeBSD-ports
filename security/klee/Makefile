@@ -1,7 +1,6 @@
 PORTNAME=	klee
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3
-PORTREVISION=	2
+DISTVERSION=	3.1
 CATEGORIES=	security devel
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -11,13 +10,13 @@ WWW=		https://klee.github.io/
 LICENSE=	NCSA
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS=	i386 powerpc
 
 BUILD_DEPENDS=	gmake:devel/gmake
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tabulate>0:devel/py-tabulate@${PY_FLAVOR}
 
-USES=		cmake compiler:c++14-lang llvm:min=9,max=13,build,run localbase \
-		pkgconfig python:3.5+,run shebangfix sqlite
+USES=		cmake compiler:c++14-lang llvm:min=12,max=16,build,run,noexport localbase \
+		pkgconfig python:run shebangfix sqlite
 USE_GITHUB=	yes
 SHEBANG_FILES=	tools/klee-stats/klee-stats tools/ktest-tool/ktest-tool tools/klee-zesti/klee-zesti
 USE_LDCONFIG=	yes
@@ -47,7 +46,7 @@ STP_LIB_DEPENDS=	libstp.so:math/stp \
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64le
+.if ${ARCH} == powerpc64le || ${ARCH} == aarch64
 PLIST_SUB=	32BIT="@comment " \
 		64BIT=""
 .else

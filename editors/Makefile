@@ -7,7 +7,6 @@
     SUBDIR += aewan
     SUBDIR += amp
     SUBDIR += apel
-    SUBDIR += asedit
     SUBDIR += beav
     SUBDIR += bee-host
     SUBDIR += biew
@@ -36,7 +35,6 @@
     SUBDIR += e93
     SUBDIR += ecce
     SUBDIR += ecrire
-    SUBDIR += edith
     SUBDIR += editorconfig-core-c
     SUBDIR += elementary-code
     SUBDIR += emacs
@@ -46,8 +44,6 @@
     SUBDIR += fileobj
     SUBDIR += flim
     SUBDIR += focuswriter
-    SUBDIR += fpc-ide
-    SUBDIR += fte
     SUBDIR += fxite
     SUBDIR += gedit
     SUBDIR += gedit-plugins
@@ -68,16 +64,17 @@
     SUBDIR += hnb
     SUBDIR += hte
     SUBDIR += imhex
-    SUBDIR += impress
+    SUBDIR += imhex-current
     SUBDIR += jed
     SUBDIR += jedit
     SUBDIR += joe
     SUBDIR += jove
     SUBDIR += jucipp
     SUBDIR += jupp
-    SUBDIR += kak-lsp
     SUBDIR += kakoune
+    SUBDIR += kakoune-lsp
     SUBDIR += kate
+    SUBDIR += kate-devel
     SUBDIR += kibi
     SUBDIR += kile
     SUBDIR += komodo-edit
@@ -87,9 +84,10 @@
     SUBDIR += lazarus-devel
     SUBDIR += lazarus-qt5
     SUBDIR += lazarus-qt5-devel
+    SUBDIR += lazarus-qt6
+    SUBDIR += lazarus-qt6-devel
     SUBDIR += le
     SUBDIR += leafpad
-    SUBDIR += led
     SUBDIR += libreoffice
     SUBDIR += libreoffice-af
     SUBDIR += libreoffice-am
@@ -197,7 +195,6 @@
     SUBDIR += libreoffice-zu
     SUBDIR += linux-bcompare
     SUBDIR += linux-r7-office
-    SUBDIR += linux-sublime
     SUBDIR += linux-sublime-text4
     SUBDIR += linux-sublime3
     SUBDIR += linux-wps-office
@@ -209,7 +206,6 @@
     SUBDIR += micro
     SUBDIR += mined
     SUBDIR += mle
-    SUBDIR += morla
     SUBDIR += mousepad
     SUBDIR += mp
     SUBDIR += nano
@@ -219,9 +215,11 @@
     SUBDIR += neovim-gtk
     SUBDIR += neovim-qt
     SUBDIR += notepadnext
+    SUBDIR += notepadnext-devel
     SUBDIR += novelwriter
     SUBDIR += nvi-m17n
     SUBDIR += nvi2
+    SUBDIR += omegaT
     SUBDIR += openoffice-4
     SUBDIR += openoffice-devel
     SUBDIR += orbiton
@@ -230,13 +228,13 @@
     SUBDIR += p5-Vimana
     SUBDIR += paredit-mode.el
     SUBDIR += parinfer-rust
-    SUBDIR += pdfedit
     SUBDIR += pico-alpine
     SUBDIR += picpas
     SUBDIR += pluma
     SUBDIR += pluma-plugins
     SUBDIR += poedit
     SUBDIR += poke
+    SUBDIR += pragtical
     SUBDIR += psgml
     SUBDIR += puff
     SUBDIR += py-babi
@@ -282,6 +280,7 @@
     SUBDIR += vile
     SUBDIR += vim
     SUBDIR += vim-colorschemes-legacy
+    SUBDIR += vim-lsp
     SUBDIR += vis
     SUBDIR += vscode
     SUBDIR += web-mode
@@ -291,8 +290,6 @@
     SUBDIR += wxhexeditor
     SUBDIR += xcoral
     SUBDIR += xed
-    SUBDIR += xi-core
-    SUBDIR += xi-term
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
     SUBDIR += yudit

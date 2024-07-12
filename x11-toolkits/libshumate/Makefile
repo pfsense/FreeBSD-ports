@@ -1,6 +1,5 @@
 PORTNAME=	libshumate
-DISTVERSION=	1.0.3
-PORTREVISION=	2
+DISTVERSION=	1.2.2
 CATEGORIES=	x11-toolkits geography
 MASTER_SITES=	GNOME
 
@@ -11,12 +10,16 @@ WWW=		https://wiki.gnome.org/Projects/libshumate
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+BUILD_DEPENDS=	gperf:devel/gperf
+LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
+		libprotobuf-c.so:devel/protobuf-c \
+		libsoup-3.0.so:devel/libsoup3 \
 		libgraphene-1.0.so:graphics/graphene
 
 USES=		gettext gnome meson pkgconfig sqlite tar:xz vala:build
 USE_GNOME=	cairo gdkpixbuf2 gtk40 introspection:build
 USE_LDCONFIG=	yes
+MESON_ARGS=	-Dsysprof=disabled
 
 OPTIONS_DEFINE=	DOCS
 

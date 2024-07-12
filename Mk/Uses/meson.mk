@@ -33,12 +33,14 @@ BUILD_DEPENDS+=		meson:devel/meson
 USE_LOCALE?=	en_US.UTF-8
 
 CONFIGURE_ARGS+=	--prefix ${PREFIX} \
-			--mandir man \
 			--infodir ${INFO_PATH}
 
 # Enable all optional features to make builds deterministic. Consumers can
 # expose those as port OPTIONS_* or explicitly pass -D<option>=disabled
 CONFIGURE_ARGS+=	--auto-features=enabled
+
+# Temporarily disable bytecode due to embedding STAGEDIR
+CONFIGURE_ARGS+=	-Dpython.bytecompile=-1
 
 # Disable color output.  Meson forces it on by default, Ninja
 # strips it before it goes to the log, but Samurai does not, so we
@@ -51,8 +53,11 @@ INSTALL_TARGET=		install
 # should we have strip separate from WITH_DEBUG?
 .  if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--buildtype debug
+.  elif defined(WITH_DEBUGINFO)
+CONFIGURE_ARGS+=	--buildtype debugoptimized
 .  else
 CONFIGURE_ARGS+=	--buildtype release \
+			--optimization plain \
 			--strip
 .  endif
 

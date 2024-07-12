@@ -1,6 +1,6 @@
 PORTNAME=	netradiant
 PORTVERSION=	20150621
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	games cad
 MASTER_SITES=	http://ingar.intranifty.net/gtkradiant/files/ LOCAL/danfe \
 		http://ingar.intranifty.net/gtkradiant/files/gamepacks/:gp
@@ -46,7 +46,9 @@ GAMES=	DarkPlaces Doom3 ET Neverball Nexuiz OpenArena Osirion Quake1 \
 GAMEPACK_DISTFILES=	${GAMES:S/$/Pack.zip:gp/}
 
 post-patch:
-	@${REINPLACE_CMD} -e '/#include/s,<sys/dir,&ent,' \
+	@${REINPLACE_CMD} -e 's,register ,,' \
+		${WRKSRC}/libs/container/hashfunc.h
+	@${REINPLACE_CMD} -e '/#include/s,sys/dir,dirent,' \
 		${WRKSRC}/tools/quake2/qdata/qdata.c
 	@${REINPLACE_CMD} -e 's,#ifndef WIN32,#ifdef NeXT,' \
 		${WRKSRC}/tools/quake3/q3data/q3data.c
@@ -62,7 +64,7 @@ do-install:
 	@${RMDIR} ${WRKSRC}/install/games
 	${CP} -a ${WRKSRC}/install/* ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${DISTDIR}/q3map2.6 ${STAGEDIR}${MANPREFIX}/man/man6
+	${INSTALL_MAN} ${DISTDIR}/q3map2.6 ${STAGEDIR}${PREFIX}/share/man/man6
 
 do-install-GAMEPACK-on:
 .for g in ${GAMES}

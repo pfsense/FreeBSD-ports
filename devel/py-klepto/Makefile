@@ -1,22 +1,23 @@
 PORTNAME=	klepto
-PORTVERSION=	0.2.3
+PORTVERSION=	0.2.5
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Persistent caching to memory, disk, or database
-WWW=		https://github.com/uqfoundation/klepto
+WWW=		https://klepto.readthedocs.io/en/latest/ \
+		https://github.com/uqfoundation/klepto
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=42:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dill>=0.3.6:devel/py-dill@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pox>=0.3.2:devel/py-pox@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dill>=0.3.8:devel/py-dill@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pox>=0.3.4:devel/py-pox@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

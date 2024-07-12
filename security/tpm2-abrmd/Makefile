@@ -1,6 +1,6 @@
 PORTNAME=	tpm2-abrmd
-DISTVERSION=	2.4.1
-PORTREVISION=	1
+DISTVERSION=	3.0.0
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/tpm2-software/tpm2-abrmd/releases/download/${DISTVERSION}/
 
@@ -20,6 +20,7 @@ USE_GNOME=	glib20
 USE_RC_SUBR=	tpm2-abrmd
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-dbuspolicydir=${PREFIX}/etc/dbus-1/system.d
 
 GROUPS=		_tss

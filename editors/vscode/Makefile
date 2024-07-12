@@ -1,6 +1,5 @@
 PORTNAME=	vscode
-DISTVERSION=	1.79.2
-PORTREVISION=	1
+DISTVERSION=	1.90.2
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
 DISTFILES=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
@@ -23,13 +22,14 @@ BUILD_DEPENDS=	zip:archivers/zip \
 		yarn-node${NODE_VER_MAJOR}>0:www/yarn-node${NODE_VER_MAJOR}
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libatspi.so:accessibility/at-spi2-core \
-		libsnappy.so:archivers/snappy \
 		libFLAC.so:audio/flac \
 		libopus.so:audio/opus \
 		libsndio.so:audio/sndio \
 		libdbus-1.so:devel/dbus \
 		libicuuc.so:devel/icu \
+		libepoll-shim.so:devel/libepoll-shim \
 		libevent.so:devel/libevent \
+		libffi.so:devel/libffi \
 		libinotify.so:devel/libinotify \
 		libnotify.so:devel/libnotify \
 		libpci.so:devel/libpci \
@@ -41,11 +41,14 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libpng.so:graphics/png \
 		libwayland-client.so:graphics/wayland \
 		libwebp.so:graphics/webp \
+		libdav1d.so:multimedia/dav1d \
 		libvpx.so:multimedia/libvpx \
 		libopenh264.so:multimedia/openh264 \
+		libpipewire-0.3.so:multimedia/pipewire \
 		libcups.so:print/cups \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
+		libkrb5.so.3:security/krb5 \
 		libsecret-1.so:security/libsecret \
 		libnss3.so:security/nss \
 		libexpat.so:textproc/expat2 \
@@ -63,7 +66,7 @@ USES=		desktop-file-utils gl gmake gnome iconv:wchar_t jpeg \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	695af097c7bd098fbf017ce3ac85e09bbc5dda06
+SOURCE_COMMIT_HASH=	5437499feb04f7a586f677b155b039bc2b3669eb
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -74,8 +77,8 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-# Keep NODE_VER in sync with www/node16 DISTVERSION
-NODE_VER=	16.20.0
+# Keep NODE_VER in sync with www/node20 DISTVERSION
+NODE_VER=	20.14.0
 NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
 
 SHEBANG_REGEX=	./(extensions|resources|scripts|src)/.*\.sh$$
@@ -98,7 +101,7 @@ OPTIONS_DEFINE=	REH
 OPTIONS_DEFAULT=# none
 REH_DESC=	Build remote extension host
 
-ELECTRON_DIR=	${.CURDIR}/../../devel/electron22
+ELECTRON_DIR=	${.CURDIR}/../../devel/electron29
 .include	"${ELECTRON_DIR}/Makefile.version"
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}
@@ -110,8 +113,12 @@ pre-everything::
 	@${ECHO_MSG} "opened by a jail (default 1024) is exceeded during the build of ${PORTNAME}."
 	@${ECHO_MSG} "To successfully build ${PORTNAME} with poudriere(8), you must add the following"
 	@${ECHO_MSG} "line to poudriere.conf:"
-	@${ECHO_MSG} "MAX_FILES_${PORTNAME}=4096"
+	@${ECHO_MSG} "MAX_FILES_${PORTNAME}=8192"
 	@${ECHO_MSG} ""
+
+post-extract:
+	${CP} ${WRKSRC}/build/.moduleignore.linux \
+		${WRKSRC}/build/.moduleignore.freebsd
 
 post-patch:
 	# force use of electron version matching port one
@@ -207,6 +214,14 @@ do-build:
 	cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
 		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt
+	# add newline character at the end of the file if not already
+	${AWK} '1' ${WRKSRC}/build/checksums/electron.txt > \
+		${WRKSRC}/build/checksums/electron.txt.new
+	${MV} -f ${WRKSRC}/build/checksums/electron.txt.new \
+		${WRKSRC}/build/checksums/electron.txt
+	cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
+		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
+		${SED} -e 's/ / */' >> ${WRKSRC}/build/checksums/electron.txt
 	# build and package vscode
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn run tsc -p build/tsconfig.build.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min

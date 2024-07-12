@@ -1,6 +1,6 @@
 PORTNAME=	cqrlog
 PORTVERSION=	2.5.2
-PORTREVISION=	4
+PORTREVISION=	11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	comms hamradio
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
@@ -23,9 +23,6 @@ GH_ACCOUNT=	ok2cqr
 
 SHEBANG_FILES=	tools/cqrlog-apparmor-fix \
 		voice_keyer/voice_keyer.sh
-USE_FPC=	cairo fcl-base chm fcl-db fcl-image fcl-json fcl-net fcl-web \
-		fcl-registry rtl-extra fcl-xml mysql numlib opengl openssl \
-		pasjpeg regexpr x11
 
 ALL_TARGET=	${PORTNAME}
 
@@ -38,8 +35,9 @@ NO_LAZBUILD=	yes
 LAZBUILD_ARGS=	-d --pcp=.
 DOS2UNIX_WRKSRC=${WRKSRC}/src/synapse/
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5 ${PORTNAME}-qt6
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt6
+qt6_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
 
 post-extract:
 	@${RM} -r ${WRKSRC}/src/lnet/lib/openssl.pas
@@ -59,6 +57,10 @@ post-patch:
 		${WRKSRC}/src/fTRXControl.pas ${WRKSRC}/src/fPreferences.lfm
 	${REINPLACE_CMD} -e s!%%DATADIR%%!${DATADIR}!g \
 		${WRKSRC}/src/dData.pas ${WRKSRC}/src/fGrayline.pas
+	${REINPLACE_CMD} -e 's|ifdef LCLQT5|if defined\(LCLQT5\) or defined\(LCLQT6\)|g' \
+		${WRKSRC}/src/lnet/lib/lclnet.pas
+	${REINPLACE_CMD} -e 's|unixutil|Unix|g' -e 's|UnixUtil|Unix|g' \
+		${WRKSRC}/src/lnet/lib/lcommon.pp
 
 post-build:
 	@${RM} ${WRKSRC}/help/cwd.html.*

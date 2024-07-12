@@ -11,10 +11,9 @@ WWW=		https://sourceforge.net/projects/blinkensisters/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/DOC/LICENSE
 
-BROKEN_sparc64=	does not compile on sparc64
-
 # actually, old gcc fails in theora.h
 USES=		cmake:insource compiler:c++11-lang localbase perl5 sdl
+USE_CXXSTD=	c++14
 USE_SDL=	sdl image ttf
 USE_PERL5=	build
 

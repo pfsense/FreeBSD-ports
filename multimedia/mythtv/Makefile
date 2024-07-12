@@ -1,7 +1,7 @@
 PORTNAME=	mythtv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	33.1
-PORTREVISION=	1
+DISTVERSION=	34.0
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 
@@ -22,7 +22,6 @@ LIB_DEPENDS=	liblzo2.so:archivers/lzo2 \
 		libtag.so:audio/taglib \
 		libexiv2.so:graphics/exiv2 \
 		libva.so:multimedia/libva \
-		libva-glx.so:multimedia/libva-glx \
 		libbluray.so:multimedia/libbluray \
 		libass.so:multimedia/libass \
 		libfftw3_threads.so:math/fftw3 \
@@ -44,7 +43,7 @@ BUILD_DEPENDS=	yasm:devel/yasm \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
 USES=		compiler:c++17-lang gmake gl iconv libtool pkgconfig pathfix \
-		perl5 python:3.5+ qmake:no_env qt:5 shebangfix ssl xorg
+		perl5 python qmake:no_env qt:5 shebangfix ssl xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV
@@ -52,7 +51,7 @@ USE_GL=		gl
 USE_LDCONFIG=	yes
 USE_QT=		buildtools:build core dbus gui imageformats:run \
 		linguist:build multimedia network opengl qmake:build script \
-		sql sql-mysql:run webkit widgets xml
+		sql sql-mysql:run widgets xml
 USE_PERL5=	run build
 USE_XORG=	x11 xv xrandr xxf86vm xinerama xext xcb
 SHEBANG_FILES=	programs/scripts/database/*.pl \
@@ -61,13 +60,15 @@ SHEBANG_FILES=	programs/scripts/database/*.pl \
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}" --cxx="${CXX}" \
 		--libxml2-path="${LOCALBASE}/include/libxml2" \
-		--disable-audio-alsa
+		--disable-audio-alsa \
+		--disable-qtwebkit
 CONFIGURE_ENV=	QMAKESPEC="${QMAKESPEC}" MOC="${MOC}" \
 		QTDIR="${PREFIX}" PKG_CONFIG_PATH="${LOCALBASE}/libdata/pkgconfig"
 MAKE_ENV=	QTDIR="${PREFIX}" \
 		QMAKESPEC="${QMAKESPEC}"
 NOPRECIOUSMAKEVARS=	# don't override ARCH in ffmpeg makefiles
 DESTDIRNAME=	INSTALL_ROOT
+CFLAGS_powerpc=	-Wno-error=int-conversion
 CPPFLAGS+=	${QTCPPFLAGS}
 LDFLAGS+=	-L${LOCALBASE}/lib
 LDFLAGS_aarch64=-Wl,-z,notext
@@ -110,7 +111,7 @@ BINDINGS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mysqlclient>=0:databases/py-mysql
 			${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}simplejson>=0:devel/py-simplejson@${PY_FLAVOR} \
 			p5-DBI>=0:databases/p5-DBI \
-			p5-DBD-mysql>0:databases/p5-DBD-mysql \
+			${DBD_MYSQL} \
 			p5-Net-UPnP>=0:multimedia/p5-Net-UPnP \
 			p5-IO-Socket-INET6>=2.51:net/p5-IO-Socket-INET6 \
 			p5-XML-Simple>=0:textproc/p5-XML-Simple \
@@ -123,7 +124,7 @@ BINDINGS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mysqlclient>=1.2.2:databases/py-mys
 			${PYTHON_PKGNAMEPREFIX}requests-cache>0:www/py-requests-cache@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}simplejson>=3:devel/py-simplejson@${PY_FLAVOR} \
 			p5-DBI>=0:databases/p5-DBI \
-			p5-DBD-mysql>0:databases/p5-DBD-mysql \
+			${DBD_MYSQL} \
 			p5-Net-UPnP>=0:multimedia/p5-Net-UPnP \
 			p5-IO-Socket-INET6>=2.51:net/p5-IO-Socket-INET6 \
 			p5-XML-Simple>=0:textproc/p5-XML-Simple \
@@ -131,6 +132,7 @@ BINDINGS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mysqlclient>=1.2.2:databases/py-mys
 			p5-LWP-UserAgent-Determined>=0:www/p5-LWP-UserAgent-Determined
 BINDINGS_CONFIGURE_ON=	--python="${PYTHON_CMD}" --with-bindings=perl,python
 BINDINGS_CONFIGURE_OFF=	--without-bindings=perl,python
+BINDINGS_USES=		mysql
 
 HDHOMERUN_DESC=		Native support for HDHomeRun network tuners
 HDHOMERUN_LIB_DEPENDS=	libhdhomerun.so:multimedia/libhdhomerun
@@ -163,7 +165,6 @@ post-patch:
 		${WRKSRC}/programs/scripts/database/mythconverg_backup.pl \
 		${WRKSRC}/programs/scripts/database/mythconverg_restore.pl \
 		${WRKSRC}/programs/mythcommflag/mythcommflag-analyze
-.if !defined(SLAVEPORT)
 	# Header file from:
 	# https://git.linuxtv.org/media_tree.git/tree/include/uapi/linux/dvb
 	@${MKDIR} ${LINUXDVB}
@@ -218,19 +219,14 @@ post-patch:
 		-e 's|/usr/bin/perl|${LOCALBASE}/bin/perl|g' \
 		-e 's|__user||g' \
 		${LINUXDVB}/frontend.h
-.endif
 
 pre-install:
-.if !defined(SLAVEPORT)
 	@${REINPLACE_CMD} -e '/^CPPFLAGS=/ s#$$# -I${LOCALBASE}/include#' \
 		${WRKSRC}/libs/libmythbase/mythconfig.mak
-.endif
 
 post-install:
-.if !defined(SLAVEPORT)
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/mythtv/database
 	${INSTALL_DATA} ${WRKSRC}/database/mc.sql ${STAGEDIR}${PREFIX}/share/mythtv/database
-.endif
 	@${FIND} ${STAGEDIR}${PREFIX}/bin -type f -exec ${SH} -c "${FILE} -i '{}' | \
 		${GREP} -q 'x-executable; charset=binary'" \; -print | ${XARGS} ${STRIP_CMD}
 	@${FIND} ${STAGEDIR}${PREFIX}/lib -type f -name lib\*.so.\* | ${XARGS} ${STRIP_CMD}

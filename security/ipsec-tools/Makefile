@@ -5,13 +5,13 @@
 
 PORTNAME=	ipsec-tools
 PORTVERSION=	0.8.2
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	KAME racoon IKE daemon, ipsec-tools version
-WWW=		http://ipsec-tools.sourceforge.net/
+WWW=		https://ipsec-tools.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
@@ -21,6 +21,7 @@ CONFLICTS=	racoon
 INSTALL_TARGET=	install-strip
 USE_RC_SUBR=	racoon
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-shared --sysconfdir=${PREFIX}/etc/racoon \
 		--localstatedir=${STATEDIR:S/\/racoon//}
@@ -99,7 +100,7 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/src/racoon/doc/* ${STAGEDIR}/${DOCSDIR}
 
 .if ${OPSYS} == FreeBSD
-.  if ${SSL_DEFAULT} != openssl
+.  if ${SSL_DEFAULT} != openssl111
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-ipsec-tools
 PLIST_FILES+=	include/racoon/openssl_compat.h
 .  endif

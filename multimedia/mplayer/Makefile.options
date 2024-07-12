@@ -41,6 +41,8 @@ DEFAULT_KERN_HZ=1024
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang-version
+# Turn off incompatible function pointer check for clang16+
+CFLAGS+=	-Wno-incompatible-function-pointer-types
 # Require 16 byte stack realignment on i386 to interface
 # properly with hand crafted assembler code in ffmpeg
 CFLAGS_i386+=	-mstack-alignment=16 -mstackrealign
@@ -51,14 +53,15 @@ BUILD_DEPENDS+=	as:devel/binutils@native
 CFLAGS+=	-no-integrated-as
 .endif
 
-LDFLAGS_i386+=	-Wl,-z,notext
-
-# Extra build options for debugging
-# =================================
+.if defined(MACHINE_CPU) && ${MACHINE_CPU:Maltivec}
+CONFIGURE_ARGS+=	--enable-altivec
+.endif
 
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-debug=3
 .endif
+
+LDFLAGS_i386+=	-Wl,-z,notext
 
 # Win32 DLL codecs support on i386, mostly superseded by ffmpeg
 # =============================================================

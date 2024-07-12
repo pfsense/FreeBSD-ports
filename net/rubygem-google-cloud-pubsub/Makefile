@@ -1,18 +1,21 @@
 PORTNAME=	google-cloud-pubsub
-PORTVERSION=	2.15.4
+PORTVERSION=	2.18.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Official library for Google Cloud Pub/Sub
-WWW=		https://github.com/googleapis/google-cloud-ruby/tree/main/google-cloud-pubsub
+WWW=		https://cloud.google.com/ruby/docs/reference/google-cloud-pubsub/latest/ \
+		https://googleapis.github.io/google-cloud-ruby/docs/ \
+		https://github.com/googleapis/google-cloud-ruby/tree/main/google-cloud-pubsub \
+		https://github.com/googleapis/google-cloud-ruby
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-concurrent-ruby>=1.1<2:devel/rubygem-concurrent-ruby \
 		rubygem-google-cloud-core>=1.5<2:net/rubygem-google-cloud-core \
-		rubygem-google-cloud-pubsub-v1>=0.8<1:net/rubygem-google-cloud-pubsub-v1 \
+		rubygem-google-cloud-pubsub-v1>=0.20<1:net/rubygem-google-cloud-pubsub-v1 \
 		rubygem-retriable>=3.1<4:devel/rubygem-retriable
 
 USES=		gem

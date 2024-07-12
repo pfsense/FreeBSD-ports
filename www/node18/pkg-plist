@@ -2236,8 +2236,8 @@ include/node/v8-exception.h
 include/node/v8-extension.h
 include/node/v8-external.h
 include/node/v8-forward.h
-include/node/v8-function.h
 include/node/v8-function-callback.h
+include/node/v8-function.h
 include/node/v8-initialization.h
 include/node/v8-internal.h
 include/node/v8-isolate.h
@@ -2272,11 +2272,11 @@ include/node/v8-wasm.h
 include/node/v8-weak-callback-info.h
 include/node/v8.h
 include/node/v8config.h
-%%DTRACE%%lib/dtrace/node.d
 lib/node_modules/corepack/CHANGELOG.md
 lib/node_modules/corepack/LICENSE.md
 lib/node_modules/corepack/README.md
 lib/node_modules/corepack/dist/corepack.js
+lib/node_modules/corepack/dist/lib/corepack.cjs
 lib/node_modules/corepack/dist/npm.js
 lib/node_modules/corepack/dist/npx.js
 lib/node_modules/corepack/dist/pnpm.js
@@ -2326,7 +2326,7 @@ lib/node_modules/corepack/shims/yarn.ps1
 lib/node_modules/corepack/shims/yarnpkg
 lib/node_modules/corepack/shims/yarnpkg.cmd
 lib/node_modules/corepack/shims/yarnpkg.ps1
-@(,,444) man/man1/node.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/gdbinit
 %%PORTDOCS%%%%DOCSDIR%%/lldb_commands.py
+@(,,444) share/man/man1/node.1.gz
 share/systemtap/tapset/node.stp

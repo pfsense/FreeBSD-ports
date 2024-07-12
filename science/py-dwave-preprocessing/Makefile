@@ -1,6 +1,5 @@
 PORTNAME=	dwave-preprocessing
-DISTVERSION=	0.5.4
-PORTREVISION=	1
+DISTVERSION=	0.6.5
 CATEGORIES=	science python # quantum-computing
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,14 +10,13 @@ WWW=		https://github.com/dwavesystems/dwave-preprocessing
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dimod>=0.12.2:science/py-dimod@${PY_FLAVOR} \
+PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dimod>=0.12.14:science/py-dimod@${PY_FLAVOR} \
 		${PYNUMPY}
 BUILD_DEPENDS=	${PY_DEPENDS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.30.0:devel/py-wheel@${PY_FLAVOR}
-LIB_DEPENDS=	libspdlog.so:devel/spdlog
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		localbase:ldflags python:3.7+
+USES=		localbase:ldflags python
 USE_PYTHON=	distutils cython unittest # 1 test fails, see https://github.com/dwavesystems/dwave-preprocessing/issues/74
 
 USE_GITHUB=	yes

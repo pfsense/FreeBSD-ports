@@ -1,11 +1,12 @@
 PORTNAME=	gocr
 PORTVERSION=	0.52
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www-e.uni-magdeburg.de/jschulen/ocr/
 
 MAINTAINER=	freebsd-ports@dan.me.uk
 COMMENT=	OCR (Optical Character Recognition) program
-WWW=		http://jocr.sourceforge.net/
+WWW=		https://jocr.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -13,11 +14,12 @@ LIB_DEPENDS=	libnetpbm.so:graphics/netpbm
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-netpbm=${LOCALBASE}
 MAKE_ARGS=	prefix=${PREFIX} exec_prefix=${PREFIX}
 
 PLIST_FILES=	bin/gocr \
-		man/man1/gocr.1.gz
+		share/man/man1/gocr.1.gz
 PORTDOCS=	*
 
 DOCSRCDIR1=	${WRKSRC}

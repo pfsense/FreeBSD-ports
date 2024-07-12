@@ -110,7 +110,7 @@ DIST_SUBDIR=	PECL
 
 PHPBASE?=	${LOCALBASE}
 
-_ALL_PHP_VERSIONS=	80 81 82 83
+_ALL_PHP_VERSIONS=	81 82 83
 
 # Make the already installed PHP the default one.
 .  if exists(${PHPBASE}/etc/php.conf)
@@ -180,7 +180,7 @@ PHP_VER=	${FLAVOR:S/^php//}
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
 .    if ${PHP_VER} == 83
-PHP_EXT_DIR=   20220830
+PHP_EXT_DIR=   20230831
 PHP_EXT_INC=    hash json openssl pcre random spl
 .    elif ${PHP_VER} == 82
 PHP_EXT_DIR=   20220829
@@ -188,13 +188,10 @@ PHP_EXT_INC=    hash json openssl pcre random spl
 .    elif ${PHP_VER} == 81
 PHP_EXT_DIR=   20210902
 PHP_EXT_INC=    hash json openssl pcre spl
-.    elif ${PHP_VER} == 80
-PHP_EXT_DIR=   20200930
-PHP_EXT_INC=    hash json openssl pcre spl
 .    else
 # (rene) default to DEFAULT_VERSIONS
-PHP_EXT_DIR=   20210902
-PHP_EXT_INC=    hash json openssl pcre spl
+PHP_EXT_DIR=   20220829
+PHP_EXT_INC=    hash json openssl pcre random spl
 .    endif
 
 # Try to figure out what the PHP_EXT_DIR should be WRT the
@@ -321,7 +318,7 @@ PHP_MOD_PRIO=	30
 PHP_MOD_PRIO=	20
 .      endif
 .    endif
-PHP_EXT_INI_FILE=	etc/php/ext-${PHP_MOD_PRIO}-${PHP_MODNAME}.ini
+PHP_EXT_INI_FILE=	etc/php/ext-${PHP_MOD_PRIO}-${PHP_MODNAME}.ini.sample
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
@@ -356,7 +353,7 @@ add-plist-phpext:
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "@preunexec ${RM} %D/include/php/ext/php_config.h.orig" \
 		>> ${TMPPLIST}
-	@${ECHO_CMD} "${PHP_EXT_INI_FILE}" \
+	@${ECHO_CMD} "@sample ${PHP_EXT_INI_FILE}" \
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "[" > ${PHP_EXT_PKGMESSAGE}
 	@${ECHO_CMD} "{" >> ${PHP_EXT_PKGMESSAGE}
@@ -383,7 +380,6 @@ _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
 		tidy tokenizer xml xmlreader xmlrpc xmlwriter xsl zephir_parser \
 		zip zlib
 # version specific components
-_USE_PHP_VER80=	${_USE_PHP_ALL}
 _USE_PHP_VER81=	${_USE_PHP_ALL}
 _USE_PHP_VER82=	${_USE_PHP_ALL}
 _USE_PHP_VER83=	${_USE_PHP_ALL}

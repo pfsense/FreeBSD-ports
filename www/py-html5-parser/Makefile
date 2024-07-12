@@ -1,5 +1,5 @@
 PORTNAME=	html5-parser
-PORTVERSION=	0.4.11
+PORTVERSION=	0.4.12
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.9.2:devel/py-lxml@${PY_FLAVOR}
 
-USES=		gnome pkgconfig python:3.6+
+USES=		gnome pkgconfig python
 USE_PYTHON=	autoplist distutils
 USE_GNOME=	libxml2
 

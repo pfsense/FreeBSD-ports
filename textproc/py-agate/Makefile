@@ -1,5 +1,5 @@
 PORTNAME=	agate
-PORTVERSION=	1.7.1
+PORTVERSION=	1.11.0
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytimeparse>=1.1.5:devel/py-pytimeparse@${PY
 		${PYTHON_PKGNAMEPREFIX}leather>=0.3.2:graphics/py-leather@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyicu>=2.4.2:devel/py-pyicu@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	zgv
 PORTVERSION=	5.9
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	SUNSITE/apps/graphics/viewers/svga
 
@@ -14,28 +14,25 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		gmake jpeg localbase:ldflags makeinfo
-ALL_TARGET=	zgv info
+USES=		gmake jpeg localbase:ldflags
+ALL_TARGET=	zgv
 INFO=		zgvrc
 
 OPTIONS_DEFINE=	SDL DOCS
 
+SDL_LIB_DEPENDS_OFF=	libvga.so:graphics/svgalib
+SDL_USES=	sdl
+SDL_USE=	SDL=sdl
+SDL_MAKE_ENV=	BACKEND=SDL
+SDL_MAKE_ENV_OFF=	BACKEND=SVGALIB
+SDL_CPPFLAGS=	$$(${SDL_CONFIG} --cflags)
+SDL_LDFLAGS=	$$(${SDL_CONFIG} --libs)
+
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MSDL}
-USES+=		sdl
-USE_SDL=	sdl
-MAKE_ENV+=	BACKEND=SDL
-CPPFLAGS+=	$$(${SDL_CONFIG} --cflags)
-LDFLAGS+=	$$(${SDL_CONFIG} --libs)
-.else
-LIB_DEPENDS+=	libvga.so:graphics/svgalib
-MAKE_ENV+=	BACKEND=SVGALIB
-ONLY_FOR_ARCHS=	i386 amd64
+.if empty(PORT_OPTIONS:MSDL)
+ONLY_FOR_ARCHS=	amd64 i386
 .endif
-
-post-extract:
-	@${RM} ${WRKSRC}/doc/zgv
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -53,7 +50,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/zgv ${STAGEDIR}${PREFIX}/bin/zgv
-	${INSTALL_MAN} ${WRKSRC}/doc/zgv.1 ${STAGEDIR}${MANPREFIX}/man/man1/zgv.1
+	${INSTALL_MAN} ${WRKSRC}/doc/zgv.1 ${STAGEDIR}${PREFIX}/share/man/man1/zgv.1
 	${INSTALL_DATA} ${WRKSRC}/doc/sample.zgvrc ${STAGEDIR}${PREFIX}/etc/zgvrc.sample
 	${INSTALL_DATA} ${WRKSRC}/doc/zgv ${STAGEDIR}${PREFIX}/${INFO_PATH}/zgvrc.info
 

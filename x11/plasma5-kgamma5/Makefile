@@ -1,4 +1,4 @@
-PORTNAME=	kgamma5
+PORTNAME=	kgamma
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	x11 kde kde-plasma
 
@@ -7,13 +7,10 @@ COMMENT=	Plasma5 display gamma settings
 WWW=		https://www.kde.org/plasma-desktop
 
 USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz xorg
-USE_KDE=	auth bookmarks codecs completion config configwidgets \
-		coreaddons crash emoticons guiaddons i18n iconthemes init \
-		itemmodels itemviews jobwidgets kio notifications parts \
-		service solid sonnet textwidgets unitconversion widgetsaddons \
-		windowsystem xmlgui \
+USE_KDE=	auth codecs config configwidgets coreaddons i18n init service \
+		widgetsaddons \
 		doctools:build ecm:build
-USE_QT=		core dbus gui network printsupport widgets x11extras xml \
+USE_QT=		core gui widgets xml \
 		buildtools:build qmake:build
 USE_XORG=	ice sm x11 xext xxf86vm
 

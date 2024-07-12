@@ -1,23 +1,24 @@
 PORTNAME=	rename
 PORTVERSION=	1.99.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rename multiple files using regular expressions
-WWW=		http://rename.sourceforge.net/
+WWW=		https://rename.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-PLIST_FILES=	bin/renamex man/man1/renamex.1.gz
+PLIST_FILES=	bin/renamex share/man/man1/renamex.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/^CC/s|\([[:blank:]]\)\(=\)|\1?\2| ; \
 		 /^PREFIX/s|\([[:blank:]]\)\(=\)|\1?\2| ; \
 		 s|/usr/local/bin|$$(PREFIX)/bin| ; \
-		 s|/usr/local/man|$$(PREFIX)/man| ; \
+		 s|/usr/local/man|$$(PREFIX)/share/man| ; \
 		 /^CFLAGS/s|\([[:blank:]]\)\(=\)|\1+\2| ; \
 		 s|-O[0-9]|| ; \
 		 s|$$^$$|$$(OBJS)| ; \

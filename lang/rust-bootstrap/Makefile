@@ -2,7 +2,7 @@
 # to upload them to ~/public_distfiles on freefall in preparation
 # for the next lang/rust update.
 PORTNAME=	rust
-PORTVERSION=	1.70.0
+PORTVERSION=	1.79.0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/
 PKGNAMEPREFIX=	${FLAVOR:S/_/-/g}-
@@ -30,7 +30,7 @@ BUILD_DEPENDS=	${FLAVOR:S/_/-/g}-freebsd-sysroot>=a2021.09.14:devel/freebsd-sysr
 FLAVORS=	aarch64 amd64 armv7 i386 powerpc powerpc64 powerpc64le riscv64
 FLAVOR?=	${FLAVORS:[1]}
 
-USES=		cpe ninja:build perl5 python:3.6+,build tar:xz
+USES=		cpe ninja:build perl5 python:build tar:xz
 CPE_VENDOR=	${PORTNAME}-lang
 # for openssl-src crate
 USE_PERL5=	build
@@ -65,9 +65,6 @@ _RUST_LLVM_TARGET_riscv64=		RISCV
 .if ${OPSYS} != FreeBSD
 IGNORE=	is only for FreeBSD
 .endif
-.if (${FLAVOR} == powerpc64le || ${FLAVOR} == riscv64) && ${OSVERSION} < 1300116
-IGNORE=	will not build on 12.x due to old system
-.endif
 
 .if exists(${PATCHDIR}/${FLAVOR:S/_/-/})
 EXTRA_PATCHES+=	${PATCHDIR}/${FLAVOR:S/_/-/}
@@ -82,7 +79,6 @@ do-configure:
 # Check that the running kernel has COMPAT_FREEBSD11 required by lang/rust post-ino64
 	@${SETENV} CC="${CC}" OPSYS="${OPSYS}" OSVERSION="${OSVERSION}" WRKDIR="${WRKDIR}" \
 		${SH} ${SCRIPTSDIR}/rust-compat11-canary.sh
-	@${ECHO_CMD} 'changelog-seen=2' > ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[build]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'build-dir="${WRKDIR}/_build"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'vendor=true' >> ${WRKSRC}/config.toml

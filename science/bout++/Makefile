@@ -1,7 +1,7 @@
 PORTNAME=	bout++
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.4.2
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	science math # physics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libuuid.so:misc/e2fsprogs-libuuid
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cmake:testing python:3.6+ gettext-runtime shebangfix
+USES=		cmake:testing python gettext-runtime shebangfix
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

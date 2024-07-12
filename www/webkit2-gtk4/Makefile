@@ -1,6 +1,6 @@
 PORTNAME=	webkit
 DISTVERSION=	2.38.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	https://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk4
@@ -11,7 +11,7 @@ PATCH_SITES=	https://github.com/WebKit/WebKit/commit/
 PATCHFILES=	285ff73b5f6d46d6e502aca30061667e41a3114b.diff:-p1
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Opensource browser engine using the GTK+ 4 toolkit
+COMMENT=	Opensource browser engine using the GTK 4 toolkit
 WWW=		https://webkitgtk.org/
 
 LICENSE=	BSD2CLAUSE GPLv2
@@ -55,16 +55,12 @@ CPE_PRODUCT=	webkitgtk
 
 BINARY_ALIAS=		python=${PYTHON_CMD}
 CXXFLAGS+=		-DFIXED_EXECUTABLE_MEMORY_POOL_SIZE_IN_MB=32
-CXXFLAGS_powerpc=	-DENABLE_YARR_JIT=0
-CXXFLAGS_powerpc64=	-DENABLE_YARR_JIT=0
 CMAKE_ARGS=		-DPORT=GTK
 CMAKE_OFF=		${CMAKE_OFF_${ARCH}:U} ENABLE_GAMEPAD ENABLE_GLES2 \
 			ENABLE_JOURNALD_LOG USE_LD_GOLD USE_SYSTEMD
 CMAKE_ON=		ENABLE_MINIBROWSER USE_GTK4 USE_SYSTEM_MALLOC
 CMAKE_OFF_armv6=	ENABLE_JIT
 CMAKE_OFF_armv7=	ENABLE_JIT
-CMAKE_OFF_powerpc=	ENABLE_JIT
-CMAKE_OFF_powerpc64=	ENABLE_JIT
 INSTALL_TARGET=		install
 
 OPTIONS_DEFINE=		DEBUG GEOIP GSTREAMER WAYLAND
@@ -99,6 +95,12 @@ WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \
 			libwpe-1.0.so:www/libwpe \
 			libWPEBackend-fdo-1.0.so:www/wpebackend-fdo
 
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CXXFLAGS+=	-Wno-error=enum-constexpr-conversion
+.endif
+
 pre-configure:
 # .if !exists() evaluates too early before cairo has a chance to be installed
 	@if ! pkg-config --exists cairo-egl; then \
@@ -118,4 +120,4 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/webkit2gtk-5.0/*
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/WebKitWebDriver-5
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

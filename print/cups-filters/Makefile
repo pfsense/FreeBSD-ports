@@ -1,8 +1,8 @@
 PORTNAME=	cups-filters
-PORTVERSION=	1.28.16
+PORTVERSION=	1.28.17
 PORTREVISION=	4
 CATEGORIES=	print
-MASTER_SITES=	https://www.openprinting.org/download/cups-filters/
+MASTER_SITES=	https://github.com/OpenPrinting/cups-filters/releases/download/${DISTVERSION}/
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Additional backends, filters and other software for CUPS
@@ -14,7 +14,7 @@ LICENSE_COMB=	multi
 BUILD_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libqpdf.so:print/qpdf \
-		libcupsimage.so:print/cups \
+		libcups.so:print/cups \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
@@ -43,6 +43,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-shell=/bin/sh \
 		--with-pdftops-path=${LOCALBASE}/bin/pdftops \
 		--with-test-font-path=${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=			BRAILLE COLORD DOCS
@@ -133,6 +134,13 @@ PSPOPPLER_RUN_DEPENDS=		pdftops:graphics/poppler-utils
 PSPOPPLER_CONFIGURE_ON=		--with-pdftops=pdftops
 PSPOPPLER_DESC=			Poppler pdftops(1)
 
+.include <bsd.port.pre.mk>
+
+#.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=dynamic-exception-spec
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share|${PREFIX}/share|' \
 		-e 's|/etc|${PREFIX}&|' \
@@ -145,4 +153,4 @@ post-install:
 	@${MV} ${STAGEDIR}${PREFIX}/etc/cups/cups-browsed.conf \
 		${STAGEDIR}${PREFIX}/etc/cups/cups-browsed.conf.sample
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

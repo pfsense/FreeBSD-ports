@@ -1,6 +1,6 @@
 PORTNAME=	aws-c-s3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.8
+DISTVERSION=	0.5.10
 CATEGORIES=	devel
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -20,14 +20,14 @@ LIB_DEPENDS=	libaws-c-auth.so:security/aws-c-auth \
 		libaws-checksums.so:devel/aws-checksums \
 		libs2n.so:security/s2n-tls
 
-USES=		cmake:testing compiler:c11 ssl
+USES=		cmake:testing ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	awslabs
 
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${LOCALBASE}
+CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE}
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	BUILD_TESTING ENABLE_NET_TESTS
 

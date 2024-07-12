@@ -1,6 +1,6 @@
 PORTNAME=	wsdd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.0
+DISTVERSION=	0.8
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/christgau/wsdd
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.5+,run shebangfix
+USES=		python:run shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	christgau
 SHEBANG_FILES=	src/${PORTNAME}.py
@@ -23,18 +23,18 @@ GROUPS=		_wsdd
 
 PLIST_FILES=	bin/${PORTNAME} \
 		etc/rc.d/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz
+		share/man/man8/${PORTNAME}.8.gz
 
 post-patch:
-	${REINPLACE_CMD} 's|PYTHON|${PYTHON_CMD}|' ${WRKSRC}/etc/rc.d/${PORTNAME}
+	${REINPLACE_CMD} 's|PYTHON|${PYTHON_CMD}|' ${WRKSRC}/etc/rc.d/${PORTNAME}.freebsd
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/src/${PORTNAME}.py \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d
-	${INSTALL_SCRIPT} ${WRKSRC}/etc/rc.d/${PORTNAME} \
+	${INSTALL_SCRIPT} ${WRKSRC}/etc/rc.d/${PORTNAME}.freebsd \
 		${STAGEDIR}${PREFIX}/etc/rc.d/${PORTNAME}
-	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.8 \
+		${STAGEDIR}${PREFIX}/share/man/man8/
 
 .include <bsd.port.mk>

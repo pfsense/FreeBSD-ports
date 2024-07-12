@@ -1,19 +1,22 @@
---- Makefile.orig	2018-08-26 02:54:47 UTC
+--- Makefile.orig	2023-08-28 22:28:23 UTC
 +++ Makefile
-@@ -25,15 +25,7 @@
- 
- CC     ?= clang
+@@ -26,15 +26,13 @@
+ CC ?= clang
+ DV != $(CC) -dumpversion
  
 -.if $(MACHINE) == "i386" || $(MACHINE) == "amd64" || $(MACHINE) == "x86_64"
--CFLAGS = $(CDEFS) -march=native -mssse3 -ffast-math
+-CFLAGS = $(CDEFS) -march=native -mssse3
 -.elif $(MACHINE) == "arm"
 -CFLAGS = $(CDEFS) -fsigned-char
--.else
++.if $(MACHINE) == "arm"
++CFLAGS += $(CDEFS) -fsigned-char
+ .else
 -CFLAGS = $(CDEFS)
--.endif
--
--CFLAGS += -std=c11 -g0 -Ofast -fstrict-aliasing -Wno-parentheses
-+CFLAGS += -std=c11 -fstrict-aliasing -Wno-parentheses
- PREFIX ?= /usr/local
++CFLAGS += $(CDEFS)
+ .endif
  
- HEADERS = binutils.h store.h
+-CFLAGS += -std=gnu11 -g0 -O3 -fno-pic -fvisibility=hidden -fstrict-aliasing -fno-common -fstack-protector -Wno-parentheses
++CFLAGS += -std=gnu11 -g0 -O3 -fvisibility=hidden -fstrict-aliasing -fno-common -fstack-protector -Wno-parentheses
+ 
+ # Clang only flags come here
+ .if $(DV) == "4.2.1"

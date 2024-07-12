@@ -1,11 +1,11 @@
 PORTNAME=	materia-gtk-theme
 DISTVERSIONPREFIX=	v
 DISTVERSION=	20210322
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-themes
 
 MAINTAINER=	tagattie@FreeBSD.org
-COMMENT=	Material Design theme for GNOME/GTK+ based desktop environments
+COMMENT=	Material Design theme for GNOME/GTK based desktop environments
 WWW=		https://github.com/nana-4/materia-theme
 
 LICENSE=	GPLv2

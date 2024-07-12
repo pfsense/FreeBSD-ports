@@ -1,5 +1,6 @@
 @sample %%ETCDIR%%/bastille.conf.sample
 bin/bastille
+etc/rc.d/bastille
 %%DATADIR%%/bootstrap.sh
 %%DATADIR%%/clone.sh
 %%DATADIR%%/cmd.sh
@@ -19,13 +20,16 @@ bin/bastille
 %%DATADIR%%/list.sh
 %%DATADIR%%/mount.sh
 %%DATADIR%%/pkg.sh
+%%DATADIR%%/rcp.sh
 %%DATADIR%%/rdr.sh
 %%DATADIR%%/rename.sh
 %%DATADIR%%/restart.sh
 %%DATADIR%%/service.sh
+%%DATADIR%%/setup.sh
 %%DATADIR%%/start.sh
 %%DATADIR%%/stop.sh
 %%DATADIR%%/sysrc.sh
+%%DATADIR%%/tags.sh
 %%DATADIR%%/template.sh
 %%DATADIR%%/templates/default/base/Bastillefile
 %%DATADIR%%/templates/default/clone/Bastillefile
@@ -40,5 +44,5 @@ bin/bastille
 %%DATADIR%%/upgrade.sh
 %%DATADIR%%/verify.sh
 %%DATADIR%%/zfs.sh
-man/man8/bastille.8.gz
+share/man/man8/bastille.8.gz
 @dir %%ETCDIR%%

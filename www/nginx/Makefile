@@ -1,6 +1,6 @@
 PORTNAME=	nginx
-PORTVERSION=	1.24.0
-PORTREVISION?=	6
+PORTVERSION=	1.26.1
+PORTREVISION=	0
 PORTEPOCH=	3
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	nginx-devel
 
-PORTSCOUT=	limit:^1\.24\.[0-9]*
+PORTSCOUT=	limit:^1\.2[6-7]\.[0-9]*
 
 USES=		cpe
 
@@ -78,11 +78,11 @@ OPTIONS_GROUP_MAILGRP=	MAIL MAIL_IMAP MAIL_POP3 MAIL_SMTP MAIL_SSL
 OPTIONS_GROUP_STREAMGRP=	STREAM STREAM_REALIP STREAM_SSL \
 	STREAM_SSL_PREREAD
 
-OPTIONS_DEFINE=		DEBUG DEBUGLOG DSO FILE_AIO IPV6 NJS NJS_XML THREADS WWW
+OPTIONS_DEFINE=		DEBUG DEBUGLOG DSO FILE_AIO IPV6 NJS NJS_XML OTEL THREADS WWW
 OPTIONS_DEFAULT?=	DSO FILE_AIO HTTP HTTP_ADDITION HTTP_AUTH_REQ HTTP_CACHE \
 		HTTP_DAV HTTP_FLV HTTP_GUNZIP_FILTER HTTP_GZIP_STATIC HTTP_MP4 \
 		HTTP_RANDOM_INDEX HTTP_REALIP HTTP_SECURE_LINK HTTP_SLICE HTTP_SSL \
-		HTTP_STATUS HTTP_SUB HTTPV2 MAIL MAIL_SSL STREAM \
+		HTTP_STATUS HTTP_SUB HTTPV2 HTTPV3 MAIL MAIL_SSL STREAM \
 		STREAM_REALIP STREAM_SSL STREAM_SSL_PREREAD THREADS WWW
 
 LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2
@@ -151,6 +151,8 @@ HTTP_IMAGE_FILTER_VARS=		DSO_BASEMODS+=http_image_filter_module
 HTTP_MP4_CONFIGURE_ON=		--with-http_mp4_module
 HTTP_PERL_CATEGORIES=		perl5
 HTTP_PERL_USES=			perl5
+# Fix build failure on clang >= 12
+HTTP_PERL_CFLAGS=		-Wno-compound-token-split-by-macro
 HTTP_PERL_VARS=			DSO_BASEMODS+=http_perl_module
 HTTP_RANDOM_INDEX_CONFIGURE_ON=	--with-http_random_index_module
 HTTP_REALIP_CONFIGURE_ON=	--with-http_realip_module
@@ -160,15 +162,13 @@ HTTP_SSL_CONFIGURE_ON=		--with-http_ssl_module
 HTTP_SSL_USES=			ssl
 HTTP_STATUS_CONFIGURE_ON=	--with-http_stub_status_module
 HTTP_SUB_CONFIGURE_ON=		--with-http_sub_module
+HTTP_XSLT_CONFIGURE_ON=		--with-http_xslt_module
 HTTP_XSLT_LIB_DEPENDS=		libxml2.so:textproc/libxml2 \
 				libxslt.so:textproc/libxslt
 HTTP_XSLT_VARS=			DSO_BASEMODS+=http_xslt_module
 HTTPV2_IMPLIES=			HTTP_SSL
 HTTPV2_CONFIGURE_ON=		--with-http_v2_module
-HTTPV3_CONFIGURE_ON=		--build=nginx-quic \
-				--with-stream_quic_module \
-				--with-http_v3_module
-HTTPV3_EXTRA_PATCHES=		${PATCHDIR}/extra-patch-httpv3:-p1
+HTTPV3_CONFIGURE_ON=		--with-http_v3_module
 HTTPV3_BORING_BUILD_DEPENDS=	${LOCALBASE}/bin/bssl:security/boringssl
 HTTPV3_BORING_RUN_DEPENDS=	${LOCALBASE}/bin/bssl:security/boringssl
 HTTPV3_BORING_IMPLIES=		HTTPV3
@@ -188,6 +188,7 @@ MAIL_SMTP_CONFIGURE_OFF=	--without-mail_smtp_module
 MAIL_SSL_USES=			ssl
 MAIL_SSL_CONFIGURE_ON=		--with-mail_ssl_module
 STREAM_VARS=			DSO_BASEMODS+=stream
+STREAM_CONFIGURE_ON=		--with-stream
 STREAM_REALIP_CONFIGURE_ON=	--with-stream_realip_module
 STREAM_SSL_USES=		ssl
 STREAM_SSL_CONFIGURE_ON=	--with-stream_ssl_module
@@ -239,20 +240,19 @@ CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
 .endif
 
-# Fix build failure on clang >= 12
-.if ${PORT_OPTIONS:MHTTP_PERL} && ${OSVERSION} >= 1301000
-CFLAGS+=	-Wno-compound-token-split-by-macro
+.if ${PORT_OPTIONS:MPASSENGER}
+CONFIGURE_ENV+=	EXTRA_PRE_CXXFLAGS="-std=c++14"
 .endif
 
-.if empty(PORT_OPTIONS:MLUA) && empty(PORT_OPTIONS:MMODSECURITY3) && \
-    empty(PORT_OPTIONS:MPASSENGER)
+.if empty(PORT_OPTIONS:MMODSECURITY3) && empty(PORT_OPTIONS:MPASSENGER)
 CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib"
 .else
 CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib -lpcre"
 LIB_DEPENDS+=		libpcre.so:devel/pcre
 .endif
 
-.if empty(PORT_OPTIONS:MNJS_XML)
+.if ${PORT_OPTIONS:MNJS} && empty(PORT_OPTIONS:MNJS_XML)
+CONFIGURE_ENV+=		NJS_LIBXSLT=NO
 NJS_CONFIGURE_ARGS=	--no-libxml2
 .endif
 
@@ -266,6 +266,10 @@ pre-everything::
 .endif
 	@${ECHO_MSG}
 
+post-extract-NAXSI-on:
+	@${RMDIR} ${WRKSRC_naxsi}/naxsi_src/libinjection
+	@${LN} -s ${WRKSRC_libinjection} ${WRKSRC_naxsi}/naxsi_src/libinjection
+
 pre-patch-HTTPV3-on:
 	@${MV} ${WRKSRC}/README ${WRKSRC}/README.1st
 
@@ -276,7 +280,7 @@ post-patch:
 		${WRKSRC}/conf/nginx.conf
 
 post-patch-BROTLI-on:
-	@${REINPLACE_CMD} -E 's!^brotli=.*!brotli="${LOCALBASE}"!' ${WRKSRC_brotli}/config
+	@${REINPLACE_CMD} 's!%%PREFIX%%!${LOCALBASE}!g' ${WRKSRC_brotli}/filter/config
 
 post-patch-DRIZZLE-on:
 	@${REINPLACE_CMD} 's!%%PREFIX%%!${LOCALBASE}!g' ${WRKSRC_drizzle}/config
@@ -298,18 +302,12 @@ post-patch-HTTP_AUTH_KRB5-on:
 post-patch-HTTP_TARANTOOL-on:
 	@${REINPLACE_CMD} 's!%%PREFIX%%!${LOCALBASE}!g' ${WRKSRC_nginx_tarantool}/config
 
-# linker error acquire if --std=c99 defined, add "static" to inline function
-post-patch-HTTP_ZIP-on:
-	@${REINPLACE_CMD} \
-		's!^inline!static inline!' \
-		${WRKSRC_mod_zip}/ngx_http_zip_parsers.*
-
 post-patch-ICONV-on:
 	@${REINPLACE_CMD} 's!%%PREFIX%%!${LOCALBASE}!g' ${WRKSRC_iconv}/config
 
 post-patch-PASSENGER-on:
 	@${REINPLACE_CMD} \
-		'177,179s!true!false!' \
+		'168,170s!true!false!' \
 		${WRKSRC_PASSENGER}/build/basics.rb
 	@${REINPLACE_CMD} \
 		's!-I/usr/include/libev!!; \
@@ -327,11 +325,6 @@ post-patch-SFLOW-on:
 	@${REINPLACE_CMD} \
 		's!%%PREFIX%%!${LOCALBASE}!g' \
 		${WRKSRC_sflow}/ngx_http_sflow_config.h
-
-post-patch-VOD-on:
-	@${REINPLACE_CMD} \
-		's!%%PREFIX%%!${LOCALBASE}!g' \
-		${WRKSRC_vod}/config
 
 pre-configure-SMALL_LIGHT-on:
 	( cd ${WRKSRC_small_light} && ./setup )
@@ -370,7 +363,7 @@ do-install-LINK-on:
 
 do-install-NAXSI-on:
 	${INSTALL_DATA} \
-	${WRKDIR}/naxsi-${NAXSI_NGINX_VER}/naxsi_config/naxsi_core.rules \
+	${WRKDIR}/naxsi-${NAXSI_NGINX_VER}/naxsi_rules/naxsi_core.rules \
 	${STAGEDIR}${ETCDIR}
 .endif
 
@@ -378,7 +371,7 @@ do-install-NAXSI-on:
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/vim/vimfiles
 	cd ${WRKSRC}/contrib/vim && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/vim/vimfiles
-	${INSTALL_MAN} ${WRKSRC}/objs/nginx.8 ${STAGEDIR}${MAN8PREFIX}/share/man/man8
+	${INSTALL_MAN} ${WRKSRC}/objs/nginx.8 ${STAGEDIR}${PREFIX}/share/man/man8
 	${CAT} ${WRKSRC}/conf/nginx.conf >> ${STAGEDIR}${ETCDIR}/nginx.conf-dist
 
 post-install-WWW-on:

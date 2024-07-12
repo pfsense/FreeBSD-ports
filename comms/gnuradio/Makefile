@@ -1,7 +1,7 @@
 PORTNAME=	gnuradio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.8.4.0
-PORTREVISION=	11
+PORTREVISION=	17
 CATEGORIES=	comms astro hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -34,7 +34,7 @@ LIB_DEPENDS=	libcodec2.so:audio/codec2 \
 		libfftw3.so:math/fftw3 \
 		libfftw3f.so:math/fftw3-float \
 		libgmpxx.so:math/gmp \
-		libqwt6.so:x11-toolkits/qwt6 \
+		libqwt.so:x11-toolkits/qwt6@qt5 \
 		${PY_BOOST} \
 		liblog4cpp.so:devel/log4cpp \
 		libportaudio.so:audio/portaudio \
@@ -48,8 +48,8 @@ LIB_DEPENDS=	libcodec2.so:audio/codec2 \
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		cmake compiler:c++11-lang desktop-file-utils fortran gnome \
-		iconv perl5 pkgconfig pyqt:5 python:3.5+ qt:5 shared-mime-info \
-		shebangfix
+		iconv localbase:ldflags perl5 pkgconfig pyqt:5 python \
+		qt:5 shared-mime-info shebangfix
 
 SHEBANG_FILES=	grc/scripts/freedesktop/grc_setup_freedesktop.in \
 		gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor \

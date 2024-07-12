@@ -1,6 +1,6 @@
 PORTNAME=	trlib
-DISTVERSION=	g20211004
-PORTREVISION=	1
+DISTVERSION=	0.4
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,8 +20,7 @@ USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	felixlen
-GH_TAGNAME=	f168b59
 
-# some tests fail, see https://github.com/felixlen/trlib/issues/16
+# all valgrind tests fail, see https://github.com/felixlen/trlib/issues/16, due to https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259294
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
  * cellular.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
  * All rights reserved.
  *
@@ -61,11 +61,11 @@ if (isset($_POST['getsignalstrength'])) {
 
 			// Choose an icon by interface status
 			if ($ifinfo['status'] == "up" || $ifinfo['status'] == "associated") {
-				$icon = 'arrow-up text-success';
+				$icon = 'fa-solid fa-arrow-up text-success';
 			} elseif ($ifinfo['status'] == "no carrier") {
-				$icon = 'times-circle text-danger';
+				$icon = 'fa-solid fa-times-circle text-danger';
 			} elseif ($ifinfo['status'] == "down") {
-				$icon = 'arrow-down text-danger';
+				$icon = 'fa-solid fa-arrow-down text-danger';
 			} else {
 				$known_status = false;
 			}
@@ -208,7 +208,7 @@ if (isset($_POST['getsignalstrength'])) {
 			$("#modem td#macaddr").attr("title", macaddr);
 			$("#modem a#ifname").attr("href", href).html(ifname);
 			if (known_status) {
-				$("#modem #status").html('<i class="fa fa-' + icon + '" title="' + status + '"></i>');
+				$("#modem #status").html('<i class="' + icon + '" title="' + status + '"></i>');
 			} else {
 				$("#modem #status").html(status);
 			}
@@ -230,7 +230,7 @@ if (isset($_POST['getsignalstrength'])) {
 		var color = (str <= 1) ? "text-danger" :
 		    (str == 2) ? "text-warning" :
 		    "text-success";
-		$("#signal-strength-bars").html('<i class="fa fa-signal ' + color + '" title="signal strength ' + str + '"></i>');
+		$("#signal-strength-bars").html('<i class="fa-solid fa-signal ' + color + '" title="signal strength ' + str + '"></i>');
 		var width = 15 + str * 22;
 		$("#signal-strength-bars").css("width", width + "%");
 	}

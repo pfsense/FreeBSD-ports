@@ -1,6 +1,6 @@
-PORTREVISION=	3
+PORTREVISION=	7
 
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Version control system
 WWW=		https://subversion.apache.org/
 
@@ -33,7 +33,7 @@ TOOLS_DESC=		Install several tools
 
 SVNSERVE_WRAPPER_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-svnserve-wrapper
 
-USES+=			shebangfix python:3.5+,env
+USES+=			shebangfix python:env
 python_OLD_CMD+=	"/bin/env python"
 SHEBANG_REGEX=		./tools/.*
 
@@ -44,7 +44,11 @@ SVNFSTYPE?=	fsfs
 SVNGROUP?=	svn
 SVNUSER?=	svn
 
-CONFIGURE_ARGS+=	--without-gnome-keyring \
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ARGS+=	--without-swig-perl \
+			--without-swig-python \
+			--without-swig-ruby \
+			--without-gnome-keyring \
 			--without-kwallet \
 			--with-apxs=no
 

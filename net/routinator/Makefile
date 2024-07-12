@@ -1,10 +1,7 @@
 PORTNAME=	routinator
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.1
-PORTREVISION=	4
+DISTVERSION=	0.14.0
 CATEGORIES=	net
-MASTER_SITES=	${ROUTINATOR_UI_URL}/v${ROUTINATOR_UI_VERSION}/:0
-DISTFILES+=	routinator-ui-build.tar.gz:0
 
 MAINTAINER=	jaap@NLnetLabs.nl
 COMMENT=	RPKI signed route collector and validator
@@ -35,16 +32,16 @@ GROUPS=		${PORTNAME}
 ROUTINATOR_UI_VERSION=	0.3.4
 ROUTINATOR_UI_URL=	https://github.com/NLnetLabs/routinator-ui/releases/download/
 
+OPTIONS_DEFINE=	ASPA
 OPTIONS_SUB=	yes
 
-post-patch:
-	${REINPLACE_CMD} -e "s|DISTDIR|${DISTDIR}|" \
-		${WRKSRC}/cargo-crates/routinator-ui-${ROUTINATOR_UI_VERSION}/build.rs
+ASPA_DESC=	(Experimental) enable aspa support
+ASPA_VARS=	CARGO_FEATURES+=aspa
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/routinator
 	${INSTALL_MAN} ${WRKSRC}/doc/routinator.1 \
-		${STAGEDIR}${PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/routinator
 	${INSTALL_DATA} ${WRKSRC}/etc/routinator.conf.example \
 		${STAGEDIR}${PREFIX}/etc/routinator/routinator.conf.example

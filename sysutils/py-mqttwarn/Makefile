@@ -1,5 +1,5 @@
 PORTNAME=	mqttwarn
-DISTVERSION=	0.34.1
+DISTVERSION=	0.35.0
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,8 @@ LICENSE=	EPL
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}versioningit>=0:devel/py-versioningit@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}attrs>=19.3.0:devel/py-attrs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docopt>=0.6.2:devel/py-docopt@${PY_FLAVOR} \
@@ -25,7 +26,7 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}attrs>=19.3.0:devel/py-attrs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.22.0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.13.0:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 
 USE_PYTHON=	autoplist concurrent pep517
 SHEBANG_REGEX=	'.*\.py$$'

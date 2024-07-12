@@ -264,30 +264,30 @@ teleirc:*:320:
 caldera:*:321:
 tlsc:*:322:
 soju:*:323:
-# free: 324
+dkimpy-milter:*:324:
 dkfilter:*:325:
 smfs:*:326:
 _reticulum:*:327:
-# free: 328
-# free: 329
+galene:*:328:
+certspotter:*:329:
 orthanc:*:330:
-# free: 331
-# free: 332
-# free: 333
+svxlink:*:331:
+keycloak:*:332:
 honeytrap:*:333:
-# free: 335
+percona:*:334:
+benthos:*:335:
 # free: 336
 daapd:*:337:
 murmur:*:338:
-# free: 339
+mumble-server:*:339:
 wildfire:*:340:
 stunnel:*:341:
 openfire:*:342:
-# free: 343
-# free: 344
-# free: 345
+gunicorn:*:343:
+snmpd:*:344:
+_metronome:*:345:
 # free: 346
-# free: 347
+eturnal:*:347:
 # free: 348
 # free: 349
 _sabnzbd:*:350:
@@ -404,7 +404,7 @@ inadyn:*:455:
 # free: 461
 # free: 462
 # free: 463
-# free: 464
+lpjs:*:464:
 courier:*:465:
 condor:*:466:
 netmon:*:467:
@@ -476,8 +476,8 @@ dkimproxy:*:525:
 # free: 533
 pgbouncer:*:534:
 redis:*:535:
-# free: 536
-# free: 537
+keydb:*:536:
+valkey:*:537:
 # free: 538
 # free: 539
 # free: 540
@@ -769,7 +769,7 @@ selenium:*:824:
 polw:*:825:
 statsd:*:826:
 _tuptime:*:827:
-# free: 828
+cirrus:*:828:
 # free: 829
 # free: 830
 # free: 831
@@ -808,7 +808,7 @@ plocate:*:860:
 # free: 864
 # free: 865
 # free: 866
-# free: 867
+sqlpage:*:867:
 jellyfin:*:868:
 keyd:*:869:
 buildbot:*:870:
@@ -850,7 +850,7 @@ artifactory:*:905:
 opentsdb:*:906:
 influxd:*:907:
 riemann:*:908:
-proxy65:*:909:
+proxysql:*:909:
 bacula:*:910:
 iserv:*:911:
 _sj3:*:912:
@@ -909,7 +909,7 @@ git_daemon:*:964:
 elasticsearch:*:965:
 ossec:*:966:
 loki:*:967:
-# free: 968
+promtail:*:968:
 kippo:*:969:
 colord:*:970:
 shibd:*:971:

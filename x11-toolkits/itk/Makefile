@@ -1,6 +1,6 @@
 PORTNAME=	itk
 PORTVERSION=	3.4.2
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF/incrtcl/%5BIncr%20Tcl_Tk%5D-source/Itk%20${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION}
@@ -28,6 +28,12 @@ PLIST_SUB+=	MAJOR=${MAJOR} MINOR=${MINOR}
 ITK_LIB=	libitk.so.${MAJOR}
 
 ITK_LIB_FILE=	${ITK_LIB}.${SHLIB_MAJOR}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .if defined(DISPLAY)
 post-build:	test

@@ -1,5 +1,6 @@
 PORTNAME=	imapsync
-PORTVERSION=	2.178
+PORTVERSION=	2.229
+PORTREVISION=	1
 DISTVERSIONPREFIX=	imapsync-
 CATEGORIES=	mail perl5
 
@@ -22,6 +23,7 @@ RUN_DEPENDS=	p5-Crypt-OpenSSL-RSA>0:security/p5-Crypt-OpenSSL-RSA \
 		p5-IO-Tee>0:devel/p5-IO-Tee \
 		p5-JSON-WebToken>0:www/p5-JSON-WebToken \
 		p5-Mail-IMAPClient>0:mail/p5-Mail-IMAPClient \
+		p5-Proc-ProcessTable>0:devel/p5-Proc-ProcessTable \
 		p5-Readonly>0:devel/p5-Readonly \
 		p5-Regexp-Common>0:textproc/p5-Regexp-Common \
 		p5-Sys-MemInfo>0:devel/p5-Sys-MemInfo \
@@ -40,13 +42,13 @@ NO_ARCH=	yes
 
 PORTSCOUT=	limit:^1\.(\d\.){3}
 
-PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
+PLIST_FILES=	bin/${PORTNAME} share/man/man1/${PORTNAME}.1.gz
 
 POD2MAN?=	pod2man
 
 do-install:
 	${POD2MAN} ${WRKSRC}/${PORTNAME} ${WRKSRC}/${PORTNAME}.1
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

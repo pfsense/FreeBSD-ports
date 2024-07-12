@@ -1,13 +1,13 @@
 PORTNAME=	libzvbi
 PORTVERSION=	0.2.35
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF/zapping/zvbi/${PORTVERSION}
 DISTNAME=	${PORTNAME:S/lib//}-${PORTVERSION}
 
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Routines to access raw VBI capture devices
-WWW=		http://zapping.sourceforge.net/doc/libzvbi/
+WWW=		https://zapping.sourceforge.net/doc/libzvbi/
 
 LICENSE=	GPLv2+
 

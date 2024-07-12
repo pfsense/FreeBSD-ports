@@ -1,6 +1,6 @@
 PORTNAME=	gleam
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.29.0
+DISTVERSION=	1.2.0
 PORTREVISION=	1
 CATEGORIES=	lang
 
@@ -11,11 +11,11 @@ WWW=		https://gleam.run/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/compiler-core/LICENCE
 
+BROKEN_i386=	needs SSE or SSE2 type extensions to compile
+
 USES=		cargo ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	gleam-lang
-
-.include "Makefile.deps"
 
 RUSTFLAGS+=	--cap-lints=warn
 

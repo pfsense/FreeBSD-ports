@@ -1,6 +1,6 @@
---- gpu/vulkan/vulkan_device_queue.cc.orig	2023-05-05 12:12:41 UTC
+--- gpu/vulkan/vulkan_device_queue.cc.orig	2024-06-22 08:49:42 UTC
 +++ gpu/vulkan/vulkan_device_queue.cc
-@@ -93,7 +93,7 @@ bool VulkanDeviceQueue::Initialize(
+@@ -125,7 +125,7 @@ bool VulkanDeviceQueue::Initialize(
  
        // In dual-CPU cases, we cannot detect the active GPU correctly on Linux,
        // so don't select GPU device based on the |gpu_info|.
@@ -9,12 +9,12 @@
      // If gpu_info is provided, the device should match it.
      if (gpu_info && (device_properties.vendorID != gpu_info->gpu.vendor_id ||
                       device_properties.deviceID != gpu_info->gpu.device_id)) {
-@@ -233,7 +233,7 @@ bool VulkanDeviceQueue::Initialize(
-   enabled_device_features_2_ = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2};
- 
-   // Android, Fuchsia, and Linux(VaapiVideoDecoder) need YCbCr sampler support.
--#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+@@ -268,7 +268,7 @@ bool VulkanDeviceQueue::Initialize(
+   // Android, Fuchsia, Linux, and CrOS (VaapiVideoDecoder) need YCbCr sampler
+   // support.
+ #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (!physical_device_info.feature_sampler_ycbcr_conversion) {
      LOG(ERROR) << "samplerYcbcrConversion is not supported.";
      return false;

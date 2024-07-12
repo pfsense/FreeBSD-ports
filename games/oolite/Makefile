@@ -21,7 +21,7 @@ LIB_DEPENDS=		libespeak-ng.so:audio/espeak-ng \
 			libvorbisfile.so:audio/libvorbis \
 			libpng.so:graphics/png
 
-USES=			gl gnustep openal:al minizip perl5 python:3.5+,build sdl \
+USES=			gl gnustep openal:al minizip perl5 python:build sdl \
 			tar:bzip2 xorg
 USE_CXXSTD=		gnu++98
 USE_GL=			gl glu
@@ -57,6 +57,12 @@ BROKEN_aarch64=		fails to configure: error: These compiler flags are invalid: -O
 BROKEN_armv6=		fails to compile: your compiler does not follow the C++ specification for temporary object destruction order
 BROKEN_armv7=		fails to compile: your compiler does not follow the C++ specification for temporary object destruction order
 BROKEN_i386=		fails to compile: ../methodjit/MethodJIT.cpp:318:5: error: expected '(' after 'asm'
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+ADDITIONAL_CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch: .SILENT
 	${REINPLACE_CMD} -e 's/GNUSTEP_USER_ROOT/GNUSTEP_LOCAL_ROOT/ ; \

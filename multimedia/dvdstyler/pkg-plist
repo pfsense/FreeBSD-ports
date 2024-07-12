@@ -1,5 +1,5 @@
 bin/dvdstyler
-man/man1/dvdstyler.1.gz
+share/man/man1/dvdstyler.1.gz
 share/applications/dvdstyler.desktop
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog
@@ -116,6 +116,7 @@ share/applications/dvdstyler.desktop
 %%DATADIR%%/buttons/pill3.xml
 %%DATADIR%%/buttons/settings.xml
 %%DATADIR%%/buttons/star-frame.xml
+%%DATADIR%%/buttons/star.xml
 %%DATADIR%%/buttons/sticky_note.xml
 %%DATADIR%%/buttons/stone.xml
 %%DATADIR%%/buttons/text-circle-v2.xml

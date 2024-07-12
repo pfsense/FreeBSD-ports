@@ -1,6 +1,6 @@
 PORTNAME=	blacs
 PORTVERSION=	1.7
-PORTREVISION=	39
+PORTREVISION=	40
 CATEGORIES=	math
 MASTER_SITES=	NETLIB/blacs
 DISTNAME=	BLACS
@@ -43,7 +43,7 @@ F77EXTRAFLAGS+=	-fallow-argument-mismatch
 
 DEBUG_LEVEL=	0
 
-.if ${ARCH} == "sparc64" || ${ARCH} == "amd64"
+.if ${ARCH} == "amd64"
 FPIC=	-fPIC
 .else
 FPIC=	-fpic

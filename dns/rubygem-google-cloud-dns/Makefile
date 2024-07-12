@@ -1,11 +1,13 @@
 PORTNAME=	google-cloud-dns
-PORTVERSION=	0.36.1
+PORTVERSION=	0.37.0
 CATEGORIES=	dns rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Official library for Google Cloud DNS
-WWW=		https://github.com/googleapis/google-cloud-ruby/tree/main/google-cloud-dns \
+WWW=		https://cloud.google.com/ruby/docs/reference/google-cloud-dns/latest/ \
+		https://googleapis.github.io/google-cloud-ruby/docs/ \
+		https://github.com/googleapis/google-cloud-ruby/tree/main/google-cloud-dns \
 		https://github.com/googleapis/google-cloud-ruby
 
 LICENSE=	APACHE20

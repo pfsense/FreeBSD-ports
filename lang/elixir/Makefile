@@ -1,7 +1,6 @@
 PORTNAME=	elixir
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.14.5
-PORTREVISION=	0
+DISTVERSION=	1.16.3
 CATEGORIES=	lang
 MASTER_SITES+=	https://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
 DISTFILES=	Docs.zip:doc
@@ -28,7 +27,7 @@ ALL_TARGET=	# empty
 
 REINPLACE_ARGS=	-i ""
 NO_ARCH=	yes
-MAKE_ENV+=	MAN_PREFIX=${PREFIX}/man \
+MAKE_ENV+=	MAN_PREFIX=${PREFIX}/share/man \
 		PATH="${LOCALBASE}/lib/erlang/bin:${PATH}"
 
 OPTIONS_DEFINE=		DOCS

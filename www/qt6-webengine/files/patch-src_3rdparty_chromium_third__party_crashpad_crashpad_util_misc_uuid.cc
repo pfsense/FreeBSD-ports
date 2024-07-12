@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/third_party/crashpad/crashpad/util/misc/uuid.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/third_party/crashpad/crashpad/util/misc/uuid.cc.orig	2022-02-28 16:54:41 UTC
 +++ src/3rdparty/chromium/third_party/crashpad/crashpad/util/misc/uuid.cc
 @@ -101,7 +101,7 @@ bool UUID::InitializeWithNew() {
    InitializeFromBytes(uuid);

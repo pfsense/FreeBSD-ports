@@ -1,13 +1,13 @@
 PORTNAME=	parcellite
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	meta@FreeBSD.org
-COMMENT=	Lightweight GTK+ clipboard manager
-WWW=		http://parcellite.sourceforge.net
+COMMENT=	Lightweight GTK clipboard manager
+WWW=		https://parcellite.sourceforge.net
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,6 +18,7 @@ USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--disable-appindicator
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 PORTDOCS=	AUTHORS ChangeLog README
 

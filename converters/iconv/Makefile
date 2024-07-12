@@ -1,10 +1,10 @@
 PORTNAME=	iconv
 PORTVERSION=	2.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	converters
 MASTER_SITES=	LOCAL/bland
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Charset conversion library and utilities
 
 LICENSE=	BSD3CLAUSE

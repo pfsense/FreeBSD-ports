@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-VER=3.0.6
+VER=3.0.8
 
 PROJECT_NAME="acme.sh"
 
@@ -104,12 +104,12 @@ ECC_SUFFIX=""
 LOG_LEVEL_1=1
 LOG_LEVEL_2=2
 LOG_LEVEL_3=3
-DEFAULT_LOG_LEVEL="$LOG_LEVEL_1"
+DEFAULT_LOG_LEVEL="$LOG_LEVEL_2"
 
 DEBUG_LEVEL_1=1
 DEBUG_LEVEL_2=2
 DEBUG_LEVEL_3=3
-DEBUG_LEVEL_DEFAULT=$DEBUG_LEVEL_1
+DEBUG_LEVEL_DEFAULT=$DEBUG_LEVEL_2
 DEBUG_LEVEL_NONE=0
 
 DOH_CLOUDFLARE=1
@@ -925,8 +925,16 @@ _sed_i() {
   fi
 }
 
+if [ "$(echo abc | egrep -o b 2>/dev/null)" = "b" ]; then
+  __USE_EGREP=1
+else
+  __USE_EGREP=""
+fi
+
 _egrep_o() {
-  if ! egrep -o "$1" 2>/dev/null; then
+  if [ "$__USE_EGREP" ]; then
+    egrep -o -- "$1" 2>/dev/null
+  else
     sed -n 's/.*\('"$1"'\).*/\1/p'
   fi
 }
@@ -1424,6 +1432,9 @@ _toPkcs() {
   else
     ${ACME_OPENSSL_BIN:-openssl} pkcs12 -export -out "$_cpfx" -inkey "$_ckey" -in "$_ccert" -certfile "$_cca"
   fi
+  if [ "$?" == "0" ]; then
+    _savedomainconf "Le_PFXPassword" "$pfxPassword"
+  fi
 
 }
 
@@ -1555,7 +1566,7 @@ createDomainKey() {
 createCSR() {
   _info "Creating csr"
   if [ -z "$1" ]; then
-    _usage "Usage: $PROJECT_ENTRY --create-csr --domain <domain.tld> [--domain <domain2.tld> ...]"
+    _usage "Usage: $PROJECT_ENTRY --create-csr --domain <domain.tld> [--domain <domain2.tld> ...] [--ecc]"
     return
   fi
 
@@ -1787,6 +1798,10 @@ _date2time() {
   fi
   #Mac/BSD
   if date -u -j -f "%Y-%m-%d %H:%M:%S" "$(echo "$1" | tr -d "Z" | tr "T" ' ')" +"%s" 2>/dev/null; then
+    return
+  fi
+  #Omnios
+  if da="$(echo "$1" | tr -d "Z" | tr "T" ' ')" perl -MTime::Piece -e 'print Time::Piece->strptime($ENV{da}, "%Y-%m-%d %H:%M:%S")->epoch, "\n";' 2>/dev/null; then
     return
   fi
   _err "Can not parse _date2time $1"
@@ -2103,10 +2118,16 @@ _head_n() {
 }
 
 _tail_n() {
-  if ! tail -n "$1" 2>/dev/null; then
+  if _is_solaris; then
     #fix for solaris
     tail -"$1"
+  else
+    tail -n "$1"
   fi
+}
+
+_tail_c() {
+  tail -c "$1" 2>/dev/null || tail -"$1"c
 }
 
 # url  payload needbase64  keyfile
@@ -2118,6 +2139,7 @@ _send_signed_request() {
   if [ -z "$keyfile" ]; then
     keyfile="$ACCOUNT_KEY_PATH"
   fi
+  _debug "=======Begin Send Signed Request======="
   _debug url "$url"
   _debug payload "$payload"
 
@@ -2290,7 +2312,7 @@ _setopt() {
   if [ ! -f "$__conf" ]; then
     touch "$__conf"
   fi
-  if [ -n "$(tail -c 1 <"$__conf")" ]; then
+  if [ -n "$(_tail_c 1 <"$__conf")" ]; then
     echo >>"$__conf"
   fi
 
@@ -2390,13 +2412,18 @@ _migratedomainconf() {
   _old_key="$1"
   _new_key="$2"
   _b64encode="$3"
-  _value=$(_readdomainconf "$_old_key")
-  if [ -z "$_value" ]; then
-    return 1 # oldkey is not found
-  fi
-  _savedomainconf "$_new_key" "$_value" "$_b64encode"
+  _old_value=$(_readdomainconf "$_old_key")
   _cleardomainconf "$_old_key"
-  _debug "Domain config $_old_key has been migrated to $_new_key"
+  if [ -z "$_old_value" ]; then
+    return 1 # migrated failed: old value is empty
+  fi
+  _new_value=$(_readdomainconf "$_new_key")
+  if [ -n "$_new_value" ]; then
+    _debug "Domain config new key exists, old key $_old_key='$_old_value' has been removed."
+    return 1 # migrated failed: old value replaced by new value
+  fi
+  _savedomainconf "$_new_key" "$_old_value" "$_b64encode"
+  _debug "Domain config $_old_key has been migrated to $_new_key."
 }
 
 #_migratedeployconf   oldkey  newkey  base64encode
@@ -2493,10 +2520,10 @@ _startserver() {
   _debug Le_Listen_V6 "$Le_Listen_V6"
 
   _NC="socat"
-  if [ "$Le_Listen_V4" ]; then
-    _NC="$_NC -4"
-  elif [ "$Le_Listen_V6" ]; then
+  if [ "$Le_Listen_V6" ]; then
     _NC="$_NC -6"
+  else
+    _NC="$_NC -4"
   fi
 
   if [ "$DEBUG" ] && [ "$DEBUG" -gt "1" ]; then
@@ -2513,22 +2540,34 @@ _startserver() {
   _content_len="$(printf "%s" "$content" | wc -c)"
   _debug _content_len "$_content_len"
   _debug "_NC" "$_NC $SOCAT_OPTIONS"
+  export _SOCAT_ERR="$(_mktemp)"
   $_NC $SOCAT_OPTIONS SYSTEM:"sleep 1; \
 echo 'HTTP/1.0 200 OK'; \
 echo 'Content-Length\: $_content_len'; \
 echo ''; \
-printf '%s' '$content';" &
+printf '%s' '$content';" 2>"$_SOCAT_ERR" &
   serverproc="$!"
+  if [ -f "$_SOCAT_ERR" ]; then
+    if grep "Permission denied" "$_SOCAT_ERR" >/dev/null; then
+      _err "socat: $(cat $_SOCAT_ERR)"
+      _err "Can not listen for user: $(whoami)"
+      _err "Maybe try with root again?"
+      rm -f "$_SOCAT_ERR"
+      return 1
+    fi
+  fi
 }
 
 _stopserver() {
   pid="$1"
   _debug "pid" "$pid"
   if [ -z "$pid" ]; then
+    rm -f "$_SOCAT_ERR"
     return
   fi
 
   kill $pid
+  rm -f "$_SOCAT_ERR"
 
 }
 
@@ -3123,7 +3162,7 @@ _setNginx() {
         _err "nginx command is not found."
         return 1
       fi
-      NGINX_CONF="$(nginx -V 2>&1 | _egrep_o "--conf-path=[^ ]* " | tr -d " ")"
+      NGINX_CONF="$(nginx -V 2>&1 | _egrep_o "\-\-conf-path=[^ ]* " | tr -d " ")"
       _debug NGINX_CONF "$NGINX_CONF"
       NGINX_CONF="$(echo "$NGINX_CONF" | cut -d = -f 2)"
       _debug NGINX_CONF "$NGINX_CONF"
@@ -3177,7 +3216,8 @@ _setNginx() {
     return 1
   fi
   _info "Check the nginx conf before setting up."
-  if ! nginx -t >/dev/null; then
+  if ! nginx -t >/dev/null 2>&1; then
+    _err "It seems that nginx conf is not correct, cannot continue."
     return 1
   fi
 
@@ -3204,14 +3244,14 @@ location ~ \"^/\.well-known/acme-challenge/([-_a-zA-Z0-9]+)\$\" {
   fi
   _debug3 "Modified config:$(cat $FOUND_REAL_NGINX_CONF)"
   _info "nginx conf is done, let's check it again."
-  if ! nginx -t >/dev/null; then
+  if ! nginx -t >/dev/null 2>&1; then
     _err "It seems that nginx conf was broken, let's restore."
     cat "$_backup_conf" >"$FOUND_REAL_NGINX_CONF"
     return 1
   fi
 
   _info "Reload nginx"
-  if ! nginx -s reload >/dev/null; then
+  if ! nginx -s reload >/dev/null 2>&1; then
     _err "It seems that nginx reload error, let's restore."
     cat "$_backup_conf" >"$FOUND_REAL_NGINX_CONF"
     return 1
@@ -3775,7 +3815,7 @@ _regAccount() {
     eab_sign_t="$eab_protected64.$eab_payload64"
     _debug3 eab_sign_t "$eab_sign_t"
 
-    key_hex="$(_durl_replace_base64 "$_eab_hmac_key" | _dbase64 multi | _hex_dump | tr -d ' ')"
+    key_hex="$(_durl_replace_base64 "$_eab_hmac_key" | _dbase64 | _hex_dump | tr -d ' ')"
     _debug3 key_hex "$key_hex"
 
     eab_signature=$(printf "%s" "$eab_sign_t" | _hmac sha256 $key_hex | _base64 | _url_replace)
@@ -4540,7 +4580,7 @@ issue() {
 
   vlist="$Le_Vlist"
   _cleardomainconf "Le_Vlist"
-  _info "Getting domain auth token for each domain"
+  _debug "Getting domain auth token for each domain"
   sep='#'
   dvsep=','
   if [ -z "$vlist" ]; then
@@ -4596,11 +4636,21 @@ issue() {
     if [ "$_notAfter" ]; then
       _newOrderObj="$_newOrderObj,\"notAfter\": \"$_notAfter\""
     fi
+    _debug "STEP 1, Ordering a Certificate"
     if ! _send_signed_request "$ACME_NEW_ORDER" "$_newOrderObj}"; then
       _err "Create new order error."
       _clearup
       _on_issue_err "$_post_hook"
       return 1
+    fi
+    if _contains "$response" "invalid"; then
+      if echo "$response" | _normalizeJson | grep '"status":"invalid"' >/dev/null 2>&1; then
+        _err "Create new order with invalid status."
+        _err "$response"
+        _clearup
+        _on_issue_err "$_post_hook"
+        return 1
+      fi
     fi
 
     Le_LinkOrder="$(echo "$responseHeaders" | grep -i '^Location.*$' | _tail_n 1 | tr -d "\r\n " | cut -d ":" -f 2-)"
@@ -4626,6 +4676,7 @@ issue() {
       return 1
     fi
 
+    _debug "STEP 2, Get the authorizations of each domain"
     #domain and authz map
     _authorizations_map=""
     for _authz_url in $(echo "$_authorizations_seg" | tr ',' ' '); do
@@ -4634,6 +4685,7 @@ issue() {
         _err "get to authz error."
         _err "_authorizations_seg" "$_authorizations_seg"
         _err "_authz_url" "$_authz_url"
+        _err "$response"
         _clearup
         _on_issue_err "$_post_hook"
         return 1
@@ -4641,14 +4693,23 @@ issue() {
 
       response="$(echo "$response" | _normalizeJson)"
       _debug2 response "$response"
+      if echo "$response" | grep '"status":"invalid"' >/dev/null 2>&1; then
+        _err "get authz objec with invalid status, please try again later."
+        _err "_authorizations_seg" "$_authorizations_seg"
+        _err "$response"
+        _clearup
+        _on_issue_err "$_post_hook"
+        return 1
+      fi
       _d="$(echo "$response" | _egrep_o '"value" *: *"[^"]*"' | cut -d : -f 2- | tr -d ' "')"
       if _contains "$response" "\"wildcard\" *: *true"; then
         _d="*.$_d"
       fi
       _debug2 _d "$_d"
-      _authorizations_map="$_d,$response
+      _authorizations_map="$_d,$response#$_authz_url
 $_authorizations_map"
     done
+
     _debug2 _authorizations_map "$_authorizations_map"
 
     _index=0
@@ -4700,7 +4761,8 @@ $_authorizations_map"
         _on_issue_err "$_post_hook"
         return 1
       fi
-
+      _authz_url="$(echo "$_candidates" | sed "s/$_idn_d,//" | _egrep_o "#.*" | sed "s/^#//")"
+      _debug _authz_url "$_authz_url"
       if [ -z "$thumbprint" ]; then
         thumbprint="$(__calc_account_thumbprint)"
       fi
@@ -4752,7 +4814,7 @@ $_authorizations_map"
         _debug keyauthorization "$keyauthorization"
       fi
 
-      dvlist="$d$sep$keyauthorization$sep$uri$sep$vtype$sep$_currentRoot"
+      dvlist="$d$sep$keyauthorization$sep$uri$sep$vtype$sep$_currentRoot$sep$_authz_url"
       _debug dvlist "$dvlist"
 
       vlist="$vlist$dvlist$dvsep"
@@ -4769,6 +4831,7 @@ $_authorizations_map"
       keyauthorization=$(echo "$ventry" | cut -d "$sep" -f 2)
       vtype=$(echo "$ventry" | cut -d "$sep" -f 4)
       _currentRoot=$(echo "$ventry" | cut -d "$sep" -f 5)
+      _authz_url=$(echo "$ventry" | cut -d "$sep" -f 6)
       _debug d "$d"
       if [ "$keyauthorization" = "$STATE_VERIFIED" ]; then
         _debug "$d is already verified, skip $vtype."
@@ -4894,7 +4957,7 @@ $_authorizations_map"
     uri=$(echo "$ventry" | cut -d "$sep" -f 3)
     vtype=$(echo "$ventry" | cut -d "$sep" -f 4)
     _currentRoot=$(echo "$ventry" | cut -d "$sep" -f 5)
-
+    _authz_url=$(echo "$ventry" | cut -d "$sep" -f 6)
     if [ "$keyauthorization" = "$STATE_VERIFIED" ]; then
       _info "$d is already verified, skip $vtype."
       continue
@@ -4904,6 +4967,7 @@ $_authorizations_map"
     _debug "d" "$d"
     _debug "keyauthorization" "$keyauthorization"
     _debug "uri" "$uri"
+    _debug "_authz_url" "$_authz_url"
     removelevel=""
     token="$(printf "%s" "$keyauthorization" | cut -d '.' -f 1)"
 
@@ -5034,6 +5098,7 @@ $_authorizations_map"
       MAX_RETRY_TIMES=30
     fi
 
+    _debug "Lets check the status of the authz"
     while true; do
       waittimes=$(_math "$waittimes" + 1)
       if [ "$waittimes" -ge "$MAX_RETRY_TIMES" ]; then
@@ -5057,9 +5122,9 @@ $_authorizations_map"
         errordetail="$(echo "$error" | _egrep_o '"detail": *"[^"]*' | cut -d '"' -f 4)"
         _debug2 errordetail "$errordetail"
         if [ "$errordetail" ]; then
-          _err "$d:Verify error:$errordetail"
+          _err "Invalid status, $d:Verify error detail:$errordetail"
         else
-          _err "$d:Verify error:$error"
+          _err "Invalid status, $d:Verify error:$error"
         fi
         if [ "$DEBUG" ]; then
           if [ "$vtype" = "$VTYPE_HTTP" ]; then
@@ -5081,13 +5146,13 @@ $_authorizations_map"
         break
       fi
 
-      if [ "$status" = "pending" ]; then
+      if _contains "$status" "pending"; then
         _info "Pending, The CA is processing your order, please just wait. ($waittimes/$MAX_RETRY_TIMES)"
-      elif [ "$status" = "processing" ]; then
+      elif _contains "$status" "processing"; then
         _info "Processing, The CA is processing your order, please just wait. ($waittimes/$MAX_RETRY_TIMES)"
       else
-        _err "$d:Verify error:$response"
-        _clearupwebbroot "$_currentRoot" "$removelevel" "$token" "$d"
+        _err "Unknown status: $status, $d:Verify error:$response"
+        _clearupwebbroot "$_currentRoot" "$removelevel" "$token"
         _clearup
         _on_issue_err "$_post_hook" "$vlist"
         return 1
@@ -5096,11 +5161,11 @@ $_authorizations_map"
       _sleep 2
       _debug "checking"
 
-      _send_signed_request "$uri"
+      _send_signed_request "$_authz_url"
 
       if [ "$?" != "0" ]; then
-        _err "$d:Verify error:$response"
-        _clearupwebbroot "$_currentRoot" "$removelevel" "$token" "$d"
+        _err "Invalid code, $d:Verify error:$response"
+        _clearupwebbroot "$_currentRoot" "$removelevel" "$token"
         _clearup
         _on_issue_err "$_post_hook" "$vlist"
         return 1
@@ -5342,6 +5407,12 @@ $_authorizations_map"
   fi
   _savedomainconf "Le_NextRenewTimeStr" "$Le_NextRenewTimeStr"
   _savedomainconf "Le_NextRenewTime" "$Le_NextRenewTime"
+
+  #convert to pkcs12
+  if [ "$Le_PFXPassword" ]; then
+    _toPkcs "$CERT_PFX_PATH" "$CERT_KEY_PATH" "$CERT_PATH" "$CA_CERT_PATH" "$Le_PFXPassword"
+  fi
+  export CERT_PFX_PATH
 
   if [ "$_real_cert$_real_key$_real_ca$_reload_cmd$_real_fullchain" ]; then
     _savedomainconf "Le_RealCertPath" "$_real_cert"
@@ -6035,6 +6106,7 @@ installcronjob() {
   fi
   _t=$(_time)
   random_minute=$(_math $_t % 60)
+  random_hour=$(_math $_t / 60 % 24)
 
   if ! _exists "$_CRONTAB" && _exists "fcrontab"; then
     _CRONTAB="fcrontab"
@@ -6059,16 +6131,14 @@ installcronjob() {
   _info "Installing cron job"
   if ! $_CRONTAB -l | grep "$PROJECT_ENTRY --cron"; then
     if _exists uname && uname -a | grep SunOS >/dev/null; then
-      $_CRONTAB -l | {
-        cat
-        echo "$random_minute 0 * * * $lesh --cron --home \"$LE_WORKING_DIR\" $_c_entry> /dev/null"
-      } | $_CRONTAB --
+      _CRONTAB_STDIN="$_CRONTAB --"
     else
-      $_CRONTAB -l | {
-        cat
-        echo "$random_minute 0 * * * $lesh --cron --home \"$LE_WORKING_DIR\" $_c_entry> /dev/null"
-      } | $_CRONTAB -
+      _CRONTAB_STDIN="$_CRONTAB -"
     fi
+    $_CRONTAB -l | {
+      cat
+      echo "$random_minute $random_hour * * * $lesh --cron --home \"$LE_WORKING_DIR\" $_c_entry> /dev/null"
+    } | $_CRONTAB_STDIN
   fi
   if [ "$?" != "0" ]; then
     _err "Install cron job failed. You need to manually renew your certs."
@@ -6941,7 +7011,7 @@ Parameters:
 
   -f, --force                       Force install, force cert renewal or override sudo restrictions.
   --staging, --test                 Use staging server, for testing.
-  --debug [0|1|2|3]                 Output debug info. Defaults to 1 if argument is omitted.
+  --debug [0|1|2|3]                 Output debug info. Defaults to $DEBUG_LEVEL_DEFAULT if argument is omitted.
   --output-insecure                 Output all the sensitive messages.
                                       By default all the credentials/sensitive messages are hidden from the output/debug/log for security.
   -w, --webroot <directory>         Specifies the web root folder for web root mode.
@@ -6959,7 +7029,7 @@ Parameters:
   -k, --keylength <bits>            Specifies the domain key length: 2048, 3072, 4096, 8192 or ec-256, ec-384, ec-521.
   -ak, --accountkeylength <bits>    Specifies the account key length: 2048, 3072, 4096
   --log [file]                      Specifies the log file. Defaults to \"$DEFAULT_LOG_FILE\" if argument is omitted.
-  --log-level <1|2>                 Specifies the log level, default is 1.
+  --log-level <1|2>                 Specifies the log level, default is $DEFAULT_LOG_LEVEL.
   --syslog <0|3|6|7>                Syslog level, 0: disable syslog, 3: error, 6: info, 7: debug.
   --eab-kid <eab_key_id>            Key Identifier for External Account Binding.
   --eab-hmac-key <eab_hmac_key>     HMAC key for External Account Binding.
@@ -6967,7 +7037,7 @@ Parameters:
 
   These parameters are to install the cert to nginx/apache or any other server after issue/renew a cert:
 
-  --cert-file <file>                Path to copy the cert file to after issue/renew..
+  --cert-file <file>                Path to copy the cert file to after issue/renew.
   --key-file <file>                 Path to copy the key file to after issue/renew.
   --ca-file <file>                  Path to copy the intermediate cert file to after issue/renew.
   --fullchain-file <file>           Path to copy the fullchain cert file to after issue/renew.
@@ -6997,7 +7067,8 @@ Parameters:
   --no-profile                      Only valid for '--install' command, which means: do not install aliases to user profile.
   --no-color                        Do not output color text.
   --force-color                     Force output of color text. Useful for non-interactive use with the aha tool for HTML E-Mails.
-  --ecc                             Specifies to use the ECC cert. Valid for '--install-cert', '--renew', '--revoke', '--to-pkcs12' and '--create-csr'
+  --ecc                             Specifies use of the ECC cert. Only valid for '--install-cert', '--renew', '--remove ', '--revoke',
+                                      '--deploy', '--to-pkcs8', '--to-pkcs12' and '--create-csr'.
   --csr <file>                      Specifies the input csr.
   --pre-hook <command>              Command to be run before obtaining any certificates.
   --post-hook <command>             Command to be run after attempting to obtain/renew certificates. Runs regardless of whether obtain/renew succeeded or failed.

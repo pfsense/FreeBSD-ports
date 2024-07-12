@@ -19,6 +19,7 @@ LIB_DEPENDS=	libsearpc.so:devel/libsearpc \
 		libevent.so:devel/libevent \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson \
+		libjwt.so:www/libjwt \
 		libonig.so:devel/oniguruma
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
@@ -27,7 +28,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} 
 CONFLICTS=	seafile
 
 USES=		autoreconf compiler:c11 gnome iconv libarchive libtool localbase mysql \
-		pathfix pgsql pkgconfig python:3.7+ shebangfix sqlite ssl vala:build
+		pathfix pgsql pkgconfig python shebangfix sqlite ssl vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
 USE_GNOME=	glib20
@@ -37,6 +38,7 @@ SHEBANG_FILES=	tools/seafile-admin
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	SSL_CFLAGS="${OPENSSLINC}" SSL_LIBS="-L${OPENSSLLIB} -lssl \
 		-lcrypto" PKG_CONFIG_PATH="${WRKDIR}/pkgconfig"
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 
 PATHFIX_MAKEFILEIN=	Makefile.am
 
@@ -89,8 +91,7 @@ post-patch:
 .endif
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/${SEABIN} ${STAGEDIR}${PREFIX}/${SEALIB} \
-		${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/seafile/share/doc/seafile
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SEABIN} ${STAGEDIR}${PREFIX}/${SEALIB}
 .for SERVPROG in seaf-fsck seafserv-gc seaf-fuse seaf-migrate \
 		seaf-server seaf-server-init seafile-controller
 	if [ -e "${STAGEDIR}${PREFIX}/bin/${SERVPROG}" ]; then \
@@ -106,8 +107,6 @@ post-install:
 		${COPYTREE_SHARE} ${PYTHON_VERSION} ${STAGEDIR}${PREFIX}/${SEALIB})
 	@${RM} -rf ${STAGEDIR}${PREFIX}/lib/${PYTHON_VERSION} \
 		${STAGEDIR}${PREFIX}/bin/seafile-admin
-	${INSTALL_DATA} ${WRKSRC}/doc/seafile-tutorial.doc \
-		${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/seafile/share/doc/seafile/
 	(cd ${WRKSRC}/scripts && \
 		${COPYTREE_SHARE} "sql" ${STAGEDIR}${PREFIX}/${SEAFILE_SERVER})
 

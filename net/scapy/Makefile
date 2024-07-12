@@ -1,6 +1,6 @@
 PORTNAME=	scapy
 PORTVERSION=	2.5.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,11 +13,10 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libdnet>0:net/py-libdnet@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pypcap>0:net/py-pypcap@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cryptography>0:security/py-cryptography@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pypcap>0:net/py-pypcap@${PY_FLAVOR}
 
-USES=		cpe python:3.7+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		cpe python
+USE_PYTHON=	autoplist concurrent cryptography distutils
 
 NO_ARCH=	yes
 
@@ -44,7 +43,7 @@ PYX_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyx>0:graphics/py-pyx@${PY_FLAVOR}
 SOX_RUN_DEPENDS=	${LOCALBASE}/bin/sox:audio/sox
 
 post-patch:
-	@${REINPLACE_CMD} "s,share/man/man1,man/man1," ${WRKSRC}/setup.py
+	@${RM} ${WRKSRC}/test/__init__.py
 	@${REINPLACE_CMD} "s,/usr/share/,${LOCALBASE}/share/," \
 		${WRKSRC}/scapy/modules/nmap.py
 	@${REINPLACE_CMD} "s,/etc/,${LOCALBASE}/etc/," \

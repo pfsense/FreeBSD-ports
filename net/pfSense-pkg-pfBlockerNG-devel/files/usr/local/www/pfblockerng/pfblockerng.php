@@ -3,8 +3,8 @@
  * pfblockerng.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -59,7 +59,7 @@ require_once('services.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
 
-global $config, $g, $pfb;
+global $g, $pfb;
 
 // Clear IP/DNSBL counters via CRON
 if (isset($argv[1])) {
@@ -77,14 +77,14 @@ if (isset($argv[1])) {
 // Extras - MaxMind/TOP1M Download URLs/filenames/settings
 $pfb['extras']			= array();
 $pfb['extras'][0]		= array();
-$pfb['extras'][0]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=_MAXMIND_KEY_&suffix=tar.gz';
+$pfb['extras'][0]['url']	= 'https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoLite2-Country.tar.gz';
 $pfb['extras'][0]['file']	= 'GeoLite2-Country.mmdb';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][0]['type']	= 'geoip';
 
 $pfb['extras'][1]		= array();
-$pfb['extras'][1]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=_MAXMIND_KEY_&suffix=zip';
+$pfb['extras'][1]['url']	= 'https://download.maxmind.com/geoip/databases/GeoLite2-Country-CSV/download?suffix=zip';
 $pfb['extras'][1]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
 $pfb['extras'][1]['file']	= '';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
@@ -248,7 +248,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 
 // Determine if source list file has an updated timestamp
 function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $format, $vtype) {
-	global $config, $pfb;
+	global $pfb;
 
 	$log = "[ {$header} ] [ NOW ]\n";
 	pfb_logger("{$log}", 1);
@@ -482,19 +482,22 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 		}
 
 		if ($feed['type'] == 'geoip') {
-			if (empty($pfb['maxmind_key'])) {
-				$mmsg = 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information. Download failed!';
+			if (empty($pfb['maxmind_key']) || empty($pfb['maxmind_account'])) {
+				$mmsg = 'MaxMind now requires an Account ID and License Key! Review the IP tab: MaxMind settings for more information. Download failed!';
 				pfb_logger($mmsg, $logtype);
 				file_notice('pfBlockerNG MaxMind', $mmsg, 'pfBlockerNG', '/pfblockerng/pfblockerng_ip.php', 2);
 				$pfb_error = TRUE;
 				continue;
 			}
-			$feed['url'] = str_replace('_MAXMIND_KEY_', $pfb['maxmind_key'], $feed['url']);
+			$feed['username'] = $pfb['maxmind_account'];
+			$feed['password'] = $pfb['maxmind_key'];
+		}
+		else {
+			$feed['username'] = $feed['username'] ?: '';
+			$feed['password'] = $feed['password'] ?: '';
 		}
 
-		$file_dwn		= "{$feed['folder']}/{$feed['file_dwn']}";
-		$feed['username']	= $feed['username'] ?: '';
-		$feed['password']	= $feed['password'] ?: '';
+		$file_dwn = "{$feed['folder']}/{$feed['file_dwn']}";
 
 		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', $logtype, '', $timeout, $feed['type'], 
 		    $feed['username'], $feed['password'])) {
@@ -534,7 +537,7 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 
 // Function to update Lists/Feeds as per Cron
 function pfblockerng_sync_cron() {
-	global $config, $pfb, $pfbarr;
+	global $pfb, $pfbarr;
 
 	$hour = date('G');
 	$dow  = date('N');
@@ -544,63 +547,61 @@ function pfblockerng_sync_cron() {
 
 	$list_type = array('pfblockernglistsv4' => '_v4', 'pfblockernglistsv6' => '_v6', 'pfblockerngdnsbl' => '_v4');
 	foreach ($list_type as $ltype => $vtype) {
-		if (!empty($config['installedpackages'][$ltype]['config'])) {
-			foreach ($config['installedpackages'][$ltype]['config'] as $list) {
-				if (isset($list['row']) && $list['action'] != 'Disabled' && $list['cron'] != 'Never') {
-					foreach ($list['row'] as $row) {
-						if (!empty($row['url']) && $row['state'] != 'Disabled') {
+		foreach (config_get_path("installedpackages/{$ltype}/config", []) as $list) {
+			if (isset($list['row']) && $list['action'] != 'Disabled' && $list['cron'] != 'Never') {
+				foreach ($list['row'] as $row) {
+					if (!empty($row['url']) && $row['state'] != 'Disabled') {
 
-							if ($ltype == 'pfblockerngdnsbl') {
-								$header = "{$row['header']}";
-							} else {
-								$header = "{$row['header']}{$vtype}";
-							}
+						if ($ltype == 'pfblockerngdnsbl') {
+							$header = "{$row['header']}";
+						} else {
+							$header = "{$row['header']}{$vtype}";
+						}
 
-							if (empty(pfb_filter($header, PFB_FILTER_WORD, 'php'))) {
-								pfb_logger("\n Invalid Header:{$row['header']} *skipping*", 1);
-								continue;
-							}
+						if (empty(pfb_filter($header, PFB_FILTER_WORD, 'php'))) {
+							pfb_logger("\n Invalid Header:{$row['header']} *skipping*", 1);
+							continue;
+						}
 
-							// Determine folder location for alias (return array $pfbarr)
-							pfb_determine_list_detail($list['action'], '', '', '');
-							$pfbfolder	= $pfbarr['folder'];
-							$pfborig	= $pfbarr['orig'];
+						// Determine folder location for alias (return array $pfbarr)
+						pfb_determine_list_detail($list['action'], '', '', '');
+						$pfbfolder	= $pfbarr['folder'];
+						$pfborig	= $pfbarr['orig'];
 
-							// Bypass update if state is defined as 'Hold' and list file exists
-							if ($row['state'] == 'Hold' && file_exists("{$pfbfolder}/{$header}.txt")) {
-								continue;
-							}
+						// Bypass update if state is defined as 'Hold' and list file exists
+						if ($row['state'] == 'Hold' && file_exists("{$pfbfolder}/{$header}.txt")) {
+							continue;
+						}
 
-							// Attempt download, when a previous 'fail' file marker is found.
-							if (file_exists("{$pfbfolder}/{$header}.fail")) {
-								pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
-								continue;
-							}
+						// Attempt download, when a previous 'fail' file marker is found.
+						if (file_exists("{$pfbfolder}/{$header}.fail")) {
+							pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+							continue;
+						}
 
-							// Allow cURL SSL downgrade if user configured.
-							$pflex = FALSE;
-							if ($row['state'] == 'Flex') {
-								$pflex = TRUE;
-							}
+						// Allow cURL SSL downgrade if user configured.
+						$pflex = FALSE;
+						if ($row['state'] == 'Flex') {
+							$pflex = TRUE;
+						}
 
-							switch ($list['cron']) {
-								case 'EveryDay':
-									if ($hour == $pfb['24hour']) {
-										pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
-									}
-									break;
-								case 'Weekly':
-									if ($hour == $pfb['24hour'] && $dow == $list['dow']) {
-										pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
-									}
-									break;
-								default:
-									$pfb_sch = pfb_cron_base_hour($list['cron']);
-									if (in_array($hour, $pfb_sch)) {
-										pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
-									}
-									break;
-							}
+						switch ($list['cron']) {
+							case 'EveryDay':
+								if ($hour == $pfb['24hour']) {
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+								}
+								break;
+							case 'Weekly':
+								if ($hour == $pfb['24hour'] && $dow == $list['dow']) {
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+								}
+								break;
+							default:
+								$pfb_sch = pfb_cron_base_hour($list['cron']);
+								if (in_array($hour, $pfb_sch)) {
+									pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format'], $vtype);
+								}
+								break;
 						}
 					}
 				}
@@ -611,8 +612,8 @@ function pfblockerng_sync_cron() {
 	// If no lists require updates, check if Continents are configured and update accordingly.
 	if (!$pfb['update_cron']) {
 		foreach ($pfb['continents'] as $continent => $pfb_alias) {
-			if (isset($config['installedpackages']['pfblockerng' . strtolower(str_replace(' ', '', $continent))]['config'])) {
-				$continent_config = $config['installedpackages']['pfblockerng' . strtolower(str_replace(' ', '', $continent))]['config'][0];
+			$continent_config = config_get_path('installedpackages/pfblockerng' . strtolower(str_replace(' ', '', $continent)) . '/config/0');
+			if ($continent_config !== null) {
 				if ($continent_config['action'] != 'Disabled') {
 					$pfb['update_cron'] = TRUE;
 					break;
@@ -1429,8 +1430,8 @@ $php_data = <<<EOF
  * pfblockerng_{$continent_en}.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -1450,7 +1451,7 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global \$config, \$pfb;
+global \$pfb;
 pfb_global();
 
 \$continent			= "{$continent}";	// Continent name (Locale specific)
@@ -1475,18 +1476,16 @@ $options_aliaslog		= [	'enabled' => 'Enabled', 'disabled' => 'Disabled' ];
 $portslist = $networkslist = '';
 $options_aliasports_in = $options_aliasports_out = array();
 
-if (!empty($config['aliases']['alias'])) {
-	foreach ($config['aliases']['alias'] as $alias) {
-		if ($alias['type'] == 'port') {
-			$portslist .= "{$alias['name']},";
-			$options_aliasports_in[$alias['name']] = $alias['name'];
-			$options_aliasports_out[$alias['name']] = $alias['name'];
-		}
-		elseif ($alias['type'] == 'network') {
-			$networkslist .= "{$alias['name']},";
-			$options_aliasaddr_in[$alias['name']] = $alias['name'];
-			$options_aliasaddr_out[$alias['name']] = $alias['name'];
-		}
+foreach (config_get_path('aliases/alias', []) as $alias) {
+	if ($alias['type'] == 'port') {
+		$portslist .= "{$alias['name']},";
+		$options_aliasports_in[$alias['name']] = $alias['name'];
+		$options_aliasports_out[$alias['name']] = $alias['name'];
+	}
+	elseif ($alias['type'] == 'network') {
+		$networkslist .= "{$alias['name']},";
+		$options_aliasaddr_in[$alias['name']] = $alias['name'];
+		$options_aliasaddr_out[$alias['name']] = $alias['name'];
 	}
 }
 $ports_list			= trim($portslist, ',');
@@ -1498,8 +1497,8 @@ $options_agateway_in		= $options_agateway_out		= pfb_get_gateways();
 $continent_display		= str_replace('_', ' ', "{$continent}");				// Continent name displayed on page
 $conf_type			= 'pfblockerng' . strtolower(str_replace('_', '', $continent_en));	// XML config location
 
-init_config_arr(array('installedpackages', $conf_type, 'config', 0));
-$pfb['geoipconfig'] = &$config['installedpackages'][$conf_type]['config'][0];
+config_init_path("installedpackages/{$conf_type}/config/0");
+$pfb['geoipconfig'] = config_get_path("installedpackages/{$conf_type}/config/0");
 
 $active[$continent_display]	= TRUE;
 
@@ -1658,6 +1657,7 @@ if ($_POST) {
 			$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']				?: '';
 			$pfb['geoipconfig']['agateway_out']		= $_POST['agateway_out']				?: '';
 
+			config_set_path('installedpackages/{$conf_type}/config/0', $pfb['geoipconfig']);
 			write_config("[pfBlockerNG] save GeoIP [ {$continent_display} ] settings");
 			header("Location: /pfblockerng/pfblockerng_{$continent_en}.php");
 			exit;
@@ -2030,8 +2030,8 @@ function pfb_build_reputation_tab($et_options='') {
  * pfblockerng_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -2051,11 +2051,11 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
-init_config_arr(array('installedpackages', 'pfblockerngreputation', 'config', 0));
-$pfb['repconfig'] = &$config['installedpackages']['pfblockerngreputation']['config'][0];
+config_init_path('installedpackages/pfblockerngreputation/config/0');
+$pfb['repconfig'] = config_get_path('installedpackages/pfblockerngreputation/config/0');
 
 $pconfig = array();
 $pconfig['enable_rep']		= $pfb['repconfig']['enable_rep'];
@@ -2204,6 +2204,7 @@ if ($_POST) {
 			// Set flag to update ET IQRisk on next Cron|Force update|Force reload
 			$pfb['repconfig']['et_update']	= 'enabled';
 
+			config_set_path('installedpackages/pfblockerngreputation/config/0', $pfb['repconfig']);
 			write_config('[pfBlockerNG] save Reputation settings');
 			header('Location: /pfblockerng/pfblockerng_reputation.php');
 			exit;

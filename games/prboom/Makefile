@@ -1,12 +1,12 @@
 PORTNAME=	prboom
 PORTVERSION=	2.5.0
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20stable/${PORTVERSION}
 
 MAINTAINER=	thiagohero501@gmail.com
 COMMENT=	Multiplayer-capable and modified version of ID's classic DOOM game
-WWW=		http://prboom.sourceforge.net/
+WWW=		https://prboom.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -18,6 +18,7 @@ USE_GL=		gl
 USE_SDL=	mixer net sdl
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-i386-asm
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

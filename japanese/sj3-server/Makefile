@@ -1,6 +1,6 @@
 PORTNAME=	sj3
 PORTVERSION=	2.0.1.20
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	japanese
 MASTER_SITES=	LOCAL/nork
 PKGNAMESUFFIX=	-server
@@ -51,8 +51,13 @@ POSTPATCHES.nodocports= \
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 post-patch:
 	cd ${WRKSRC} && ${CAT} ${POSTPATCHES} | ${PATCH}
+	${REINPLACE_CMD} 's|/man/|/share/man/|' ${WRKSRC}/doc/man/Imakefile
 
 post-patch-DOCS-off:
 	cd ${WRKSRC} && ${CAT} ${POSTPATCHES.nodocports} | ${PATCH}

@@ -3,7 +3,7 @@
  * tftp_files.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -140,11 +140,11 @@ display_top_tabs($tab_array);
 						<td>
 						<a name="tftpd_deleteX[]" id="tftpd_deleteX[]" type="button" title="<?=gettext('Delete this file');?>"
 							href='?type=tftp&amp;act=del&amp;filename=<?=htmlspecialchars($file);?>' style="cursor: pointer;" text="delete this">
-							<i class="fa fa-trash" title="<?=gettext('Delete this file');?>"></i>
+							<i class="fa-solid fa-trash-can" title="<?=gettext('Delete this file');?>"></i>
 						</a>
 						<a name="tftpd_dnloadX[]" id="tftpd_dnloadX[]" type="button" title="<?=gettext('Download this file');?>"
 							href='tftp_files.php?a=download&amp;filename=<?=htmlspecialchars($file);?>' style="cursor: pointer;">
-							<i class="fa fa-download" title="<?=gettext('Download this file');?>"></i>
+							<i class="fa-solid fa-download" title="<?=gettext('Download this file');?>"></i>
 						</a>
 					</td>
 				</tr>
@@ -181,24 +181,24 @@ display_top_tabs($tab_array);
 	</div>
 	<nav class="action-buttons">
 		<button data-toggle="modal" data-target="#uploader" role="button" aria-expanded="false" type="button" name="tftpd_upload" id="tftpd_upload" class="btn btn-info btn-sm" title="<?=gettext('Upload files');?>">
-			<i class="fa fa-upload icon-embed-btn"></i>
+			<i class="fa-solid fa-upload icon-embed-btn"></i>
 			<?=gettext("Upload")?>
 		</button>
 		<a name="tftpd_dnload_all" id="tftpd_dnload_all" type="button" class="btn btn-info btn-sm" 
 			title="<?=sprintf(gettext('Backup all files to %s and download the backup in a single gzip archive'), BACKUP_PATH);?>" 
 			href="tftp_files.php?a=download&amp;t=backup" text="download all files">
-			<i class="fa fa-download icon-embed-btn"></i>
+			<i class="fa-solid fa-download icon-embed-btn"></i>
 			<?=gettext('Backup &amp; Download');?>
 		</a>
 		<a name="tftpd_backup" id="tftpd_backup" type="button" class="btn btn-success btn-sm" title="<?=sprintf(gettext('Backup all files to %s'), BACKUP_PATH);?>"
 			href="tftp_files.php?a=other&amp;t=backup" text="backup files">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext('Backup');?>
 		</a>
 		<?php if (file_exists(BACKUP_PATH)): ?>
 		<a name="tftpd_restore" id="tftpd_restore" type="button" class="btn btn-danger btn-sm" title="<?=sprintf(gettext('Restore all files from %s'), BACKUP_PATH);?>"
 			href="tftp_files.php?a=other&amp;t=restore" text="restore backup">
-			<i class="fa fa-undo icon-embed-btn"></i>
+			<i class="fa-solid fa-undo icon-embed-btn"></i>
 			<?=gettext('Restore');?>
 		</a>
 		<?php endif; ?>

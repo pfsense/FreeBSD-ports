@@ -1,5 +1,6 @@
 PORTNAME=	xfs
 PORTVERSION=	1.2.0
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
 
@@ -12,6 +13,7 @@ CPE_VENDOR=	x.org
 CPE_PRODUCT=	x_font_server
 USE_XORG=	libfs xfont2 xorgproto xtrans
 USE_RC_SUBR=	xfs
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--without-xmlto --without-fop
 
 post-patch:

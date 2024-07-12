@@ -3,7 +3,7 @@
  * haproxy_listeners_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * Copyright (c) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
@@ -41,12 +41,11 @@ if (!function_exists("cert_get_purpose")) {
 
 haproxy_config_init();
 
-$a_backend = &getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
-$a_pools = getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
+$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item');
 uasort($a_pools, 'haproxy_compareByName');
 
 global $simplefields;
-$simplefields = array('name','desc','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
+$simplefields = array('name','descr','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
 	'max_connections','client_timeout','port','advanced_bind',
 	'ssloffloadcert','sslsnifilter','ssl_crtlist_advanced','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
 	'sslclientcert-none','sslclientcert-invalid','sslocsp',
@@ -251,7 +250,7 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 	if ($editable) {
 		$result = $object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
 	} else {
-		$result = $itemvalue;
+		$result = htmlspecialchars($itemvalue, ENT_QUOTES);
 	}
 	return $result;
 }
@@ -294,18 +293,18 @@ $htmllist_crlCertificates = new HaproxyHtmlList("tbl_crlCerts", $fields_crlCerti
 $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
-if (isset($id) && $a_backend[$id]) {
-	$pconfig['a_acl'] = getarraybyref($a_backend[$id],'ha_acls','item');
-	$pconfig['a_certificates'] = getarraybyref($a_backend[$id],'ha_certificates','item');
-	$pconfig['clientcert_ca'] = getarraybyref($a_backend[$id],'clientcert_ca','item');
-	$pconfig['clientcert_crl'] = getarraybyref($a_backend[$id],'clientcert_crl','item');
-	$pconfig['a_extaddr'] = getarraybyref($a_backend[$id],'a_extaddr','item');
-	$pconfig['a_actionitems'] = getarraybyref($a_backend[$id],'a_actionitems','item');
-	$pconfig['a_errorfiles'] = getarraybyref($a_backend[$id],'a_errorfiles','item');
+if (isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")) {
+	$pconfig['a_acl'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/ha_acls/item");
+	$pconfig['a_certificates'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/ha_certificates/item");
+	$pconfig['clientcert_ca'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/clientcert_ca/item");
+	$pconfig['clientcert_crl'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/clientcert_crl/item");
+	$pconfig['a_extaddr'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/a_extaddr/item");
+	$pconfig['a_actionitems'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/a_actionitems/item");
+	$pconfig['a_errorfiles'] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/a_errorfiles/item");
 
-	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
+	$pconfig['advanced'] = base64_decode(config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/advanced"));
 	foreach($simplefields as $stat) {
-		$pconfig[$stat] = $a_backend[$id][$stat];
+		$pconfig[$stat] = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/{$stat}");
 	}
 }
 
@@ -359,13 +358,13 @@ if ($_POST) {
 			}
 		}
 
-		if ($_POST['client_timeout'] !== "" && !is_numeric($_POST['client_timeout'])) {
+		if (!empty($_POST['client_timeout']) && !is_numeric($_POST['client_timeout'])) {
 			$input_errors[] = sprintf(gettext("The value '%s' in field 'Client timeout' is not a number."), htmlspecialchars($_POST['client_timeout']));
 		}
 	}
 
 	/* Ensure that our pool names are unique */
-	$a_frontends = getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
+	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item');
 	for ($i=0; isset($a_frontends[$i]); $i++) {
 		if (($_POST['name'] == $a_frontends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = gettext("This frontend name has already been used. Frontend names must be unique.")." $i != $id";
@@ -427,8 +426,8 @@ if ($_POST) {
 	}
 	if (!$input_errors) {
 		$backend = array();
-		if(isset($id) && $a_backend[$id]) {
-			$backend = $a_backend[$id];
+		if(isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")) {
+			$backend = config_get_path("installedpackages/haproxy/ha_backends/item/{$id}");
 		}
 
 		if($backend['name'] != "") {
@@ -437,9 +436,9 @@ if ($_POST) {
 
 		// update references to this primary frontend
 		if ($backend['name'] != $_POST['name']) {
-			foreach($a_backend as &$frontend) {
+			foreach(config_get_path('installedpackages/haproxy/ha_backends/item', []) as $fidx => $frontend) {
 				if ($frontend['primary_frontend'] == $backend['name']) {
-					$frontend['primary_frontend'] = $_POST['name'];
+					config_set_path("installedpackages/haproxy/ha_backends/item/{$fidx}/primary_frontend", $_POST['name']);
 				}
 			}
 		}
@@ -452,18 +451,18 @@ if ($_POST) {
 		}
 
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
-		getarraybyref($backend,'ha_acls')['item'] = $a_acl;
-		getarraybyref($backend,'ha_certificates')['item'] = $a_certificates;
-		getarraybyref($backend,'clientcert_ca')['item'] = $a_clientcert_ca;
-		getarraybyref($backend,'clientcert_crl')['item'] = $a_clientcert_crl;
-		getarraybyref($backend,'a_extaddr')['item'] = $a_extaddr;
-		getarraybyref($backend,'a_actionitems')['item'] = $a_actionitems;
-		getarraybyref($backend,'a_errorfiles')['item'] = $a_errorfiles;
+		array_set_path($backend,'ha_acls/item', $a_acl);
+		array_set_path($backend,'ha_certificates/item', $a_certificates);
+		array_set_path($backend,'clientcert_ca/item', $a_clientcert_ca);
+		array_set_path($backend,'clientcert_crl/item', $a_clientcert_crl);
+		array_set_path($backend,'a_extaddr/item', $a_extaddr);
+		array_set_path($backend,'a_actionitems/item', $a_actionitems);
+		array_set_path($backend,'a_errorfiles/item', $a_errorfiles);
 
-		if (isset($id) && $a_backend[$id]) {
-			$a_backend[$id] = $backend;
+		if (isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")) {
+			config_set_path("installedpackages/haproxy/ha_backends/item/{$id}", $backend);
 		} else {
-			$a_backend[] = $backend;
+			config_set_path('installedpackages/haproxy/ha_backends/item/', $backend);
 		}
 
 		if ($changecount > 0) {
@@ -625,7 +624,7 @@ if ($pconfig['status'] == 'disable') {
 }
 
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']));
-$section->addInput(new Form_Input('desc', 'Description', 'text', $pconfig['desc']));
+$section->addInput(new Form_Input('descr', 'Description', 'text', $pconfig['descr']));
 
 $section->addInput(new Form_Select(
 	'status',
@@ -717,7 +716,7 @@ $section->addInput(new Form_StaticText(
 	</table>
 	<br/>
 	acl's with the same name will be 'combined' using OR criteria.<br/>
-	For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
+	For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
 	<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
 	-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
 	-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.
@@ -995,7 +994,13 @@ var port_array  = <?= json_encode(get_alias_list(array("port", "url_ports", "url
 var address_array = <?= json_encode(get_alias_list(array("host", "network", "openvpn", "urltable"))) ?>;
 
 events.push(function() {
-
+	$('form').submit(function(event){
+		// disable all elements that dont have a value to avoid posting them as it could be sending
+		// more than 5000 variables which is the php default max for less than 100 san's which acme does support
+		// p.s. the jquery .find(['value'='']) would not find newly added empty items) so we use .filter(...)
+		$(this).find(':input').filter(function() { return !this.value }).attr("disabled", "disabled")
+		return true;
+	});
 
 <?php
 	// On gui descriptions when a closetype has been selected..
@@ -1143,8 +1148,8 @@ events.push(function() {
 </script>
 
 <!--
-<?php if (isset($id) && $a_backend[$id]): ?>
-<input name="id" type="hidden" value="<?=$a_backend[$id]['name'];?>" />
+<?php if (isset($id) && config_get_path("installedpackages/haproxy/ha_backends/item/{$id}")): ?>
+<input name="id" type="hidden" value="<?=config_get_path("installedpackages/haproxy/ha_backends/item/{$id}/name");?>" />
 <?php endif; ?>
 -->
 

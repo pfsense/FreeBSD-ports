@@ -1,8 +1,11 @@
 PORTNAME=	radvd
 PORTVERSION=	2.19
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	http://www.litech.org/radvd/dist/
+
+PATCH_SITES=	https://github.com/${PORTNAME}-project/${PORTNAME}/commit/
+PATCHFILES=	3f1aeb2.patch:-p1
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Linux/BSD IPv6 router advertisement daemon
@@ -14,6 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USES=		gmake pkgconfig
 CONFIGURE_ARGS=	--program-transform-name=
 USE_RC_SUBR=	radvd

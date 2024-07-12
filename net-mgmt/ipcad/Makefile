@@ -1,6 +1,6 @@
 PORTNAME=	ipcad
 PORTVERSION=	3.7.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://ipcad.sourceforge.net/ \
@@ -8,7 +8,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 
 MAINTAINER=	vlm@lionet.info
 COMMENT=	IP accounting daemon with Cisco-like RSH and NetFlow export
-WWW=		http://ipcad.sourceforge.net/
+WWW=		https://ipcad.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,7 +23,7 @@ post-patch:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ipcad
-	${INSTALL_MAN} ${WRKSRC}/ipcad.8 ${STAGEDIR}${MANPREFIX}/man/man8
-	${INSTALL_MAN} ${WRKSRC}/ipcad.conf.5 ${STAGEDIR}${MANPREFIX}/man/man5
+	${INSTALL_MAN} ${WRKSRC}/ipcad.8 ${STAGEDIR}${PREFIX}/share/man/man8
+	${INSTALL_MAN} ${WRKSRC}/ipcad.conf.5 ${STAGEDIR}${PREFIX}/share/man/man5
 
 .include <bsd.port.mk>

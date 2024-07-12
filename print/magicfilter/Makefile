@@ -1,6 +1,7 @@
 PORTNAME=	magicfilter
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.3.i
+PORTREVISION=	2
 CATEGORIES=	print
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -21,7 +22,8 @@ CONFIGURE_SCRIPT=	configure.sh
 CONFIGURE_ARGS+=	--prefix=${PREFIX} \
 			--confdir=${PREFIX}/etc \
 			--filterdir=${PREFIX}/libexec/magicfilter \
-			--use-fifo
+			--use-fifo \
+			--mandir=${PREFIX}/share/man
 CONFIGURE_ENV+=		LOCALBASE=${LOCALBASE}
 
 .include <bsd.port.pre.mk>

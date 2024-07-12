@@ -3,7 +3,7 @@
  * vpn_wg_tunnels_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * All rights reserved.
  *
@@ -260,7 +260,7 @@ $group->add(new Form_Button(
 	'genkeys',
 	'Generate',
 	null,
-	'fa-key'
+	'fa-solid fa-key'
 ))->addClass('btn-primary btn-sm')
   ->setHelp('New Keys')
   ->setWidth(1);
@@ -276,12 +276,12 @@ $section->setAttribute('id', 'addresses');
 if (!is_wg_tunnel_assigned($pconfig['name'])) {
 	$section->addInput(new Form_StaticText(
 		'Assignment',
-		"<i class='fa fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces_assign.php'>Interface Assignments</a>"
+		"<i class='fa-solid fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces_assign.php'>Interface Assignments</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
 		'Firewall Rules',
-		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/firewall_rules.php?if={$wgg['ifgroupentry']['ifname']}'>WireGuard Interface Group</a>"
+		"<i class='fa-solid fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/firewall_rules.php?if={$wgg['ifgroupentry']['ifname']}'>WireGuard Interface Group</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
@@ -328,7 +328,7 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 			"deleterow{$counter}",
 			'Delete',
 			null,
-			'fa-trash'
+			'fa-solid fa-trash-can'
 		))->addClass('btn-warning btn-sm');
 	
 		$section->add($group);
@@ -338,24 +338,24 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 		'addrow',
 		'Add Address',
 		null,
-		'fa-plus'
+		'fa-solid fa-plus'
 	))->addClass('btn-success btn-sm addbtn');
 } else {
 	$wg_pfsense_if = wg_get_pfsense_interface_info($pconfig['name']);
 
 	$section->addInput(new Form_StaticText(
 		'Assignment',
-		"<i class='fa fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces_assign.php'>{$s(htmlspecialchars($wg_pfsense_if['descr']))} ({$s(htmlspecialchars($wg_pfsense_if['name']))})</a>"
+		"<i class='fa-solid fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces_assign.php'>{$s(htmlspecialchars($wg_pfsense_if['descr']))} ({$s(htmlspecialchars($wg_pfsense_if['name']))})</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
 		'Interface',
-		"<i class='fa fa-ethernet' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}'>{$s(gettext('Interface Configuration'))}</a>"
+		"<i class='fa-solid fa-ethernet' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}'>{$s(gettext('Interface Configuration'))}</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
 		'Firewall Rules',
-		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/firewall_rules.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}'>{$s(gettext('Firewall Configuration'))}</a>"
+		"<i class='fa-solid fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/firewall_rules.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}'>{$s(gettext('Firewall Configuration'))}</a>"
 	));
 }
 
@@ -416,9 +416,9 @@ print($form);
 					<td><?=wg_generate_peer_allowedips_popup_link($peer_idx)?></td>
 					<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 					<td style="cursor: pointer;">
-						<a class="fa fa-pencil" title="<?=gettext('Edit Peer')?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
+						<a class="fa-solid fa-pencil" title="<?=gettext('Edit Peer')?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
 						<?=wg_generate_toggle_icon_link(($peer['enabled'] == 'yes'), 'peer', "?act=toggle&peer={$peer_idx}&tun={$tun}")?>
-						<a class="fa fa-trash text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer_idx}&tun={$tun}"?>" usepost></a>
+						<a class="fa-solid fa-trash-can text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer_idx}&tun={$tun}"?>" usepost></a>
 					</td>
 				</tr>
 
@@ -445,7 +445,7 @@ print($form);
 if ($is_new):
 ?>
 	<button class="btn btn-success btn-sm" title="<?=gettext('Add Peer')?>" disabled>
-		<i class="fa fa-plus icon-embed-btn"></i>
+		<i class="fa-solid fa-plus icon-embed-btn"></i>
 		<?=gettext('Add Peer')?>
 	</button>
 <?php
@@ -453,14 +453,14 @@ if ($is_new):
 else:
 ?>
 	<a href="<?="vpn_wg_peers_edit.php?tun={$pconfig['name']}"?>" class="btn btn-success btn-sm">
-		<i class="fa fa-plus icon-embed-btn"></i>
+		<i class="fa-solid fa-plus icon-embed-btn"></i>
 		<?=gettext('Add Peer')?>
 	</a>
 <?php
 endif;
 ?>
 	<button type="submit" id="saveform" name="saveform" class="btn btn-primary btn-sm" value="save" title="<?=gettext('Save tunnel')?>">
-		<i class="fa fa-save icon-embed-btn"></i>
+		<i class="fa-solid fa-save icon-embed-btn"></i>
 		<?=gettext('Save Tunnel')?>
 	</button>
 </nav>

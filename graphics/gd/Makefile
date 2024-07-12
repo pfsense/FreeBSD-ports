@@ -1,6 +1,6 @@
 PORTNAME=	libgd
 PORTVERSION=	2.3.3
-PORTREVISION=	5
+PORTREVISION=	13
 PORTEPOCH=	1
 CATEGORIES+=	graphics
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/gd-${PORTVERSION}/
@@ -14,17 +14,18 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	libgd ??-libgd
 
-USES=		cpe tar:xz pkgconfig pathfix libtool:keepla shebangfix
+USES=		cpe tar:xz pkgconfig pathfix libtool:keepla autoreconf shebangfix
 SHEBANG_FILES=	${WRKSRC}/src/bdftogd
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gd-formats
+CFLAGS+=	-ffp-contract=off # do not contract to FMA or thereabouts, PR 278105
 TMPDIR?=	/tmp
 MAKE_ENV=	TMPDIR=${TMPDIR}
 SUB_FILES=	gdlib-config
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=	PNG JPEG WEBP TIFF XPM HEIF AVIF LIQ FREETYPE FONTCONFIG RAQM ICONV
+OPTIONS_DEFINE=	PNG JPEG WEBP TIFF XPM HEIF AVIF LIQ FREETYPE FONTCONFIG RAQM ICONV THREADS
 OPTIONS_DEFAULT=PNG JPEG WEBP TIFF FREETYPE FONTCONFIG ICONV
 NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
@@ -46,7 +47,6 @@ HEIF_CPPFLAGS=		-I${LOCALBASE}/include
 AVIF_LIB_DEPENDS=	libavif.so:graphics/libavif
 AVIF_CONFIGURE_OFF=	--without-avif
 AVIF_CPPFLAGS=		-I${LOCALBASE}/include
-AVIF_USES=		autoreconf
 AVIF_BROKEN=	option AVIF has a circular dependency loop
 LIQ_DESC=	libimagequant color conversion support
 LIQ_LIB_DEPENDS=	libimagequant.so:graphics/libimagequant
@@ -68,6 +68,7 @@ XPM_CONFIGURE_ON=	--with-x
 XPM_CONFIGURE_OFF=	--with-xpm=no
 ICONV_USES=	iconv
 ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
+THREADS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-threads
 
 .include <bsd.port.options.mk>
 

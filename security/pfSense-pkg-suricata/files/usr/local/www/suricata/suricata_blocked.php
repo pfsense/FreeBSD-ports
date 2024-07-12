@@ -3,11 +3,11 @@
  * suricata_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -198,7 +198,7 @@ $group->add(new Form_Button(
 	'download',
 	'Download',
 	null,
-	'fa-download'
+	'fa-solid fa-download'
 ))->removeClass('btn-default')->addClass('btn-info btn-sm')
   ->setHelp('All blocked hosts will be saved');
 
@@ -206,7 +206,7 @@ $group->add(new Form_Button(
 	'remove',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-solid fa-trash-can'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')
   ->setHelp('All blocked hosts will be cleared');
 
@@ -218,7 +218,7 @@ $group->add(new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->removeClass('btn-default')->addClass('btn-success btn-sm')
   ->setHelp('Save auto-refresh and view settings');
 
@@ -298,7 +298,7 @@ print($form);
 			$tmpblocked = array_flip($blocked_ips_array);
 			$src_ip_list = array();
 
-			foreach (glob("{$suricatalogdir}*/block.log*") as $alertfile) {
+			foreach (glob("{$suricatalogdir}*/block.log") as $alertfile) {
 				$fd = fopen($alertfile, "r");
 				if ($fd) {
 
@@ -312,6 +312,10 @@ print($form);
 						$fields = array();
 						$tmp = array();
 
+						// Drop any invalid line read from the log
+						if (empty(trim($buf)))
+							continue;
+
 						/***************************************************************/
 						/* Parse block log entry to find the parts we want to display. */
 						/* We parse out all the fields even though we currently use    */
@@ -323,7 +327,12 @@ print($form);
 
 						// Create a DateTime object from the event timestamp that
 						// we can use to easily manipulate output formats.
-						$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
+						try {
+							$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
+						} catch (Exception $e) {
+							syslog(LOG_WARNING, "[suricata] WARNING: found invalid timestamp entry in current blocks.log, the line will be ignored and skipped.");
+							continue;
+						}
 
 						// Field 1 is the action
 						if (strpos($buf, '[') !== FALSE && strpos($buf, ']') !== FALSE)
@@ -409,12 +418,12 @@ print($form);
 				$tmp_ip = str_replace(":", ":&#8203;", $block_ip_str);
 				/* Add reverse DNS lookup icons */
 				$rdns_link = "";
-				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
+				$rdns_link .= "<i class=\"fa-solid fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
 				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
 				/* Add GeoIP check icon */
 				if (!is_private_ip($block_ip_str) && (substr($block_ip_str, 0, 2) != 'fc') &&
 				    (substr($block_ip_str, 0, 2) != 'fd')) {
-					$rdns_link .= "&nbsp;&nbsp;<i class=\"fa fa-globe\" onclick=\"javascript:geoip_with_ajax('{$block_ip_str}');\" title=\"";
+					$rdns_link .= "&nbsp;&nbsp;<i class=\"fa-solid fa-globe\" onclick=\"javascript:geoip_with_ajax('{$block_ip_str}');\" title=\"";
 					$rdns_link .= gettext("Check host GeoIP data") . "\" alt=\"Icon Check host GeoIP\"></i>";
 				}
 		?>
@@ -423,7 +432,7 @@ print($form);
 					<td><?=$blocked_time;?></td>
 					<td style="word-wrap:break-word; white-space:normal"><?=$blocked_desc;?></td>
 					<td><?=$blocked_ruleid;?></td>
-					<td><i class="fa fa-times icon-pointer text-danger" onClick="$('#ip').val('<?=$block_ip_str;?>');$('#mode').val('todelete');$('#formblock').submit();"
+					<td><i class="fa-solid fa-times icon-pointer text-danger" onClick="$('#ip').val('<?=$block_ip_str;?>');$('#mode').val('todelete');$('#formblock').submit();"
 					 title="<?=gettext("Delete host from Blocked Table");?>"></i></td>
 				</tr>
 		<?php

@@ -1,6 +1,5 @@
 PORTNAME=	pyside2-tools
-DISTVERSION=	5.15.2
-PORTREVISION=	2
+DISTVERSION=	${QT5_VERSION}
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/QtForPython/shiboken2/PySide2-${DISTVERSION}-src
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,12 +12,12 @@ WWW=		https://wiki.qt.io/Qt_for_Python
 LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR} \
 		git>0:devel/git
 LIB_DEPENDS=	libshiboken2.cpython-${PYTHON_SUFFIX}${PYTHON_ABIVER}.so:devel/shiboken2@${PY_FLAVOR} \
 		libpyside2.cpython-${PYTHON_SUFFIX}${PYTHON_ABIVER}.so:devel/pyside2@${PY_FLAVOR}
 
-USES=		cmake gl python:3.5+ qt:5 shebangfix tar:xz xorg
+USES=		cmake gl python qt:5 shebangfix tar:xz xorg
 USE_GL=		gl
 USE_PYTHON=	flavors
 USE_QT=		3d buildtools charts core datavis3d declarative \

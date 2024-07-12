@@ -1,5 +1,6 @@
 PORTNAME=	bindgen-cli
-DISTVERSION=	0.66.0
+DISTVERSION=	0.69.4
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	CRATESIO
 PKGNAMEPREFIX=	rust-
@@ -13,7 +14,7 @@ WWW=		https://github.com/rust-lang/rust-bindgen
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cargo llvm:run
+USES=		cargo llvm:run,noexport
 PLIST_FILES=	bin/${PORTNAME:S/-cli//}
 
 post-patch:

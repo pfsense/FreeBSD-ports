@@ -1,9 +1,9 @@
 PORTNAME=	yandex-ddns
 DISTVERSION=	g20200613
-PORTREVISION=	11
+PORTREVISION=	19
 CATEGORIES=	dns
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Use Yandex DNS as a dynamic DNS provider
 WWW=		https://github.com/thekvs/yandex-ddns
 

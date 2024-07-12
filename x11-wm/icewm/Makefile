@@ -1,5 +1,5 @@
 PORTNAME=	icewm
-PORTVERSION=	3.4.0
+PORTVERSION=	3.6.0
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/ice-wm/icewm/releases/download/${PORTVERSION}/
 
@@ -39,7 +39,7 @@ IMLIB2_USE_OFF=		GNOME=gdkpixbuf2xlib
 
 LIBRSVG2_BUILD_DEPENDS_OFF=	${LOCALBASE}/include/nanosvg.h:graphics/nanosvg
 LIBRSVG2_USE=		GNOME=librsvg2
-LIBRSVG2_CONFIGURE_OFF=	--disable-rsvg --enable-nanosvg
+LIBRSVG2_CONFIGURE_OFF=	--disable-librsvg --enable-nanosvg
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
@@ -65,7 +65,7 @@ post-patch-LIBRSVG2-off:
 		${LOCALBASE}/include/nanosvgrast.h ${WRKSRC}/src
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ChangeLog NEWS README TODO doc/*.html
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor

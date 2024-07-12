@@ -1,25 +1,24 @@
 PORTNAME=	fricas
-DISTVERSION=	1.3.8
+DISTVERSION=	1.3.10
 DISTVERSIONSUFFIX=	-full
 CATEGORIES=	math
 MASTER_SITES=	SF
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Advanced computer algebra system
-WWW=		http://fricas.sourceforge.net
+WWW=		https://fricas.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license/LICENSE.AXIOM
 
-BROKEN_i386=	build fails, reported to ML
-
 BUILD_DEPENDS=	sbcl:lang/sbcl
+RUN_DEPENDS=	rlwrap:devel/rlwrap
 
 USES=		autoreconf gmake tar:bz2 xorg
 USE_XORG=	ice sm x11 xpm
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-lisp=sbcl
+CONFIGURE_ARGS=	--with-lisp="sbcl --dynamic-space-size 2048"
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 

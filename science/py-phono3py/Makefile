@@ -1,6 +1,6 @@
 PORTNAME=	phono3py
 DISTVERSION=	1.22.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,7 +22,7 @@ PY_DEPENDS=	${PYNUMPY} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		blaslapack:openblas fortran localbase python:3.7+
+USES=		blaslapack:openblas fortran localbase python
 USE_PYTHON=	distutils cython autoplist
 
 .include <bsd.port.mk>

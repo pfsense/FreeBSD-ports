@@ -1,5 +1,5 @@
 PORTNAME=	geojson
-PORTVERSION=	3.0.1
+PORTVERSION=	3.1.0
 PORTEPOCH=	1
 CATEGORIES=	devel geography python
 MASTER_SITES=	PYPI
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>1.9:devel/py-simplejson@${PY_FLAV
 
 PORTDOCS=	LICENSE.rst CHANGELOG.rst README.rst
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

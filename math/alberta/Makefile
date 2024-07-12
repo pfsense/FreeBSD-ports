@@ -6,9 +6,10 @@ PKGNAMESUFFIX=	-fem
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Adaptive multi-level finite element toolbox
-WWW=		http://www.alberta-fem.de/
+WWW=		https://www.alberta-fem.de/
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gsed:textproc/gsed \
 		opendx>0:graphics/opendx
@@ -24,7 +25,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.mathematik.uni-stuttgart.de/ians-nmh
 GL_ACCOUNT=	alberta
 GL_PROJECT=	alberta3
-GL_COMMIT=	920315ae1bbfd1b1fb6672d916619ac37a411e95
+GL_TAGNAME=	920315ae1bbfd1b1fb6672d916619ac37a411e95
 
 GNU_CONFIGURE=	yes
 
@@ -35,5 +36,11 @@ MAKE_JOBS_UNSAFE=	yes # otherwise it begins to rebuild something during stage an
 INSTALL_TARGET=	install-strip
 
 BINARY_ALIAS=	make=${GMAKE} sed=gsed
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.mk>

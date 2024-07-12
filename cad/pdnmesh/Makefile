@@ -1,12 +1,12 @@
 PORTNAME=	pdnmesh
 PORTVERSION=	0.2.2
-PORTREVISION=	21
+PORTREVISION=	23
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mesh generator and solver for Finite Element problems
-WWW=		http://pdnmesh.sourceforge.net/
+WWW=		https://pdnmesh.sourceforge.net/
 
 LICENSE=	GPLv2+
 
@@ -19,6 +19,7 @@ USES=		compiler:c++11-lang fortran gl gnome pkgconfig
 USE_GL=		glu
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 LDFLAGS+=	-lm
 
 DESKTOP_ENTRIES="pdnMesh" "${COMMENT}" "" "${PORTNAME}" "" true

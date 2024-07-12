@@ -1,8 +1,7 @@
 PORTNAME=	pynmsg
-PORTVERSION=	0.5.0
+PORTVERSION=	0.5.1
 PORTREVISION=	1
 CATEGORIES=	net python
-MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	truckman@FreeBSD.org
@@ -14,7 +13,9 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libnmsg.so:net/nmsg
 
-USES=		pkgconfig python:3.6+ shebangfix uniquefiles:dirs
+USES=		pkgconfig python shebangfix uniquefiles:dirs
+USE_GITHUB=	yes
+GH_ACCOUNT=	farsightsec
 USE_PYTHON=	autoplist cython distutils
 
 SHEBANG_FILES=	examples/*.py

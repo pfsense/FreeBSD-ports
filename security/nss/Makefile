@@ -1,11 +1,11 @@
 PORTNAME=	nss
-PORTVERSION=	3.90
+PORTVERSION=	3.100
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Libraries to support development of security-enabled applications
-WWW=		https://developer.mozilla.org/docs/Mozilla/Projects/NSS
+WWW=		https://firefox-source-docs.mozilla.org/security/nss/index.html
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -51,6 +51,8 @@ OPTIONS_DEFINE_powerpc64=	VSX
 VSX_CFLAGS=	-DUSE_PPC_CRYPTO
 VSX_DESC=	Use VSX optimized routines (POWER8 or newer)
 
+TESTING_UNSAFE=	Fatal DOMSUF env. variable is not defined
+
 .include <bsd.port.options.mk>
 
 .if ! ${PORT_OPTIONS:MDEBUG}
@@ -65,7 +67,7 @@ MAKE_ENV+=	NSS_DISABLE_ARM32_NEON=1
 .endif
 
 .if ${ARCH} == powerpc64 || ${ARCH} == powerpc
-EXTRA_PATCHES=	${FILESDIR}/${ARCH}${PPC_ABI:tl}-lib_freebl_scripts_gen.sh
+EXTRA_PATCHES=	${FILESDIR}/${ARCH}-lib_freebl_scripts_gen.sh
 USES+=		compiler:c++11-lang # -mcrypto -mvsx
 .if ! ${PORT_OPTIONS:MVSX}
 MAKE_ENV+=	NSS_DISABLE_CRYPTO_VSX=1

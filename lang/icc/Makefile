@@ -1,6 +1,6 @@
 PORTNAME=	icc
 PORTVERSION=	8.1.038
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang linux devel
 MASTER_SITES=	#empty
 DISTNAME=	l_cc_pc_${PORTVERSION:C/p.+$//}
@@ -17,6 +17,9 @@ LICENSE_COMB=	multi
 LICENSE_NAME_INTEL=	Intel
 LICENSE_TEXT_INTEL=	Intel forbids any redistribution.
 LICENSE_PERMS_INTEL=	auto-accept
+
+DEPRECATED=	This version is EOL since a long time, i386 only, and the current clang based Intel oneAPI DPC++/C++ seems to work.
+EXPIRATION_DATE=2024-07-01
 
 EXTRACT_DEPENDS=	rpm2cpio.pl:archivers/rpm2cpio
 
@@ -176,7 +179,7 @@ do-install:
 	cd ${WRKSRC}/opt && ${FIND} . -print | \
 		${CPIO} -pdu --quiet ${STAGEDIR}${PREFIX}
 
-	${MV} ${STAGEDIR}${PREFIX}/${COMPILERDIR}/man/man1/icc.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${MV} ${STAGEDIR}${PREFIX}/${COMPILERDIR}/man/man1/icc.1 ${STAGEDIR}${PREFIX}/man/man1
 	${RM} -r ${STAGEDIR}${PREFIX}/${COMPILERDIR}/man
 
 .if ${PORT_OPTIONS:MDOCS}

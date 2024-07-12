@@ -1,6 +1,6 @@
 PORTNAME=	gpaw
 DISTVERSION=	22.1.0
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,7 +23,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ase>0:science/py-ase@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=0:science/py-scipy@${PY_FLAVOR} \
 		gpaw-setups>0:science/gpaw-setups
 
-USES=		gettext-runtime localbase python:3.7+ shebangfix
+USES=		gettext-runtime localbase python shebangfix
 USE_PYTHON=	distutils concurrent autoplist
 
 SHEBANG_FILES=	tools/*

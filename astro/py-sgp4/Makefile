@@ -1,5 +1,5 @@
 PORTNAME=	sgp4
-PORTVERSION=	2.22
+PORTVERSION=	2.23
 CATEGORIES=	astro python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE=	MIT
 #GH_ACCOUNT=	brandon-rhodes
 #GH_PROJECT=	python-sgp4
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	distutils
 .if !defined(WITH_DEBUG)
 LDFLAGS+=	-s

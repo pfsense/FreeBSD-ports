@@ -1,6 +1,6 @@
 PORTNAME=	uhd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.2.0.0
+DISTVERSION=	4.6.0.0
 PORTREVISION=	1
 CATEGORIES=	comms hamradio
 DIST_SUBDIR=	${PORTNAME}
@@ -25,16 +25,13 @@ BUILD_DEPENDS=	orcc:devel/orc \
 		${PYTHON_PKGNAMEPREFIX}ruamel.yaml>=0:devel/py-ruamel.yaml@${PY_FLAVOR}
 
 USES=		compiler:c++14-lang cmake ncurses pkgconfig \
-		dos2unix python:3.7+ shebangfix
+		dos2unix python shebangfix
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	EttusResearch
 
 CONFLICTS=	usrp
 
-BROKEN_FreeBSD_12_aarch64=	fails to configure: Could not find standard set_new_handler function
-BROKEN_FreeBSD_12_armv6=	fails to configure: Could not find standard set_new_handler function
-BROKEN_FreeBSD_12_armv7=	fails to configure: Could not find standard set_new_handler function
 BROKEN_FreeBSD_13_aarch64=	fails to configure: Could not find standard set_new_handler function
 BROKEN_FreeBSD_13_armv6=	fails to configure: Could not find standard set_new_handler function
 BROKEN_FreeBSD_13_armv7=	fails to configure: Could not find standard set_new_handler function
@@ -60,8 +57,6 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CMAKE_ON=	-DENABLE_DOXYGEN:STRING="ON"
 DOXYGEN_CMAKE_OFF=	-DENABLE_DOXYGEN:STRING="OFF" \
 			-DENABLE_MANUAL:STRING="OFF"
-
-PORTDOCS=	*
 
 do-install:
 # install host component

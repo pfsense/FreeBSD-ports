@@ -7,7 +7,10 @@ DISTNAME=	sidplay-libs-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to play Commodore 64 SID-tunes cycle accurately
-WWW=		http://sidplay2.sourceforge.net/
+WWW=		https://sidplay2.sourceforge.net/
+
+DEPRECATED=	Abandonware and superseded by audio/libsidplayfp
+EXPIRATION_DATE=2024-07-31
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

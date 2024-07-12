@@ -15,14 +15,15 @@ BROKEN_aarch64=		does not configure: error: check for atomictype failed
 BROKEN_mips=		does not configure: in section .data.rel.ro of csvdeserializer-test.o: defined in discarded section
 BROKEN_mips64=		does not configure: in section .data.rel.ro of csvdeserializer-test.o: defined in discarded section
 BROKEN_riscv64=		does not configure: error: check for atomictype failed
-BROKEN_sparc64=		does not configure
 
 USES=		cpe iconv libtool localbase pathfix
 CPE_VENDOR=	tntnet
 USE_CSTD=	gnu89
+USE_CXXSTD=	c++14
+USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USE_LDCONFIG=	yes
 
 .include <bsd.port.pre.mk>
 

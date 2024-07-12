@@ -1,6 +1,6 @@
 PORTNAME=	tvm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.0
+DISTVERSION=	0.16.0
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +9,9 @@ WWW=		https://tvm.ai/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		compilation fails with the latest dmlc-core, see https://github.com/apache/tvm/issues/17116
+BROKEN_armv7=	comilation fails: error: expected identifier before '__is_convertible'
 
 BUILD_DEPENDS=	dmlc-core>0:devel/dmlc-core \
 		rang>0:devel/rang

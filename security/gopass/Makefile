@@ -1,6 +1,7 @@
 PORTNAME=	gopass
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.15.5
+DISTVERSION=	1.15.13
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -16,7 +17,7 @@ ONLY_FOR_ARCHS_REASON=	upstream only supports ${ONLY_FOR_ARCHS}
 RUN_DEPENDS=	git:devel/git \
 		gpg2:security/gnupg
 
-USES=		go:modules
+USES=		go:1.22,modules
 
 # Usage examples are in a separate repo
 USE_GITHUB=	nodefault

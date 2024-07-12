@@ -1,5 +1,6 @@
 PORTNAME=	dico
 DISTVERSION=	2.11
+PORTREVISION=	2
 CATEGORIES=	net textproc
 MASTER_SITES=	GNU
 
@@ -15,6 +16,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 USES=		gmake libtool localbase pkgconfig readline tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 INFO=		dico
@@ -34,9 +36,8 @@ GSASL_USES=		iconv
 GSASL_LIB_DEPENDS=	libgsasl.so:security/libgsasl
 GSASL_CONFIGURE_WITH=	gsasl
 
-GUILE_LIB_DEPENDS=	libguile-2.2.so:lang/guile2 \
-			libgc-threaded.so:devel/boehm-gc-threaded
-GUILE_CONFIGURE_OFF=	--without-guile
+GUILE_USES=		guile:2.2,alias
+GUILE_CONFIGURE_WITH=	guile
 
 LDAP_USES=		ldap
 LDAP_CONFIGURE_OFF=	--without-ldap

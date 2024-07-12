@@ -1,6 +1,6 @@
 PORTNAME=	gnokii
 PORTVERSION=	0.6.31
-PORTREVISION=	14
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	http://www.gnokii.org/download/gnokii/ \
@@ -22,10 +22,11 @@ USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
 USE_GNOME=	glib20 intltool
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--enable-security
+CONFIGURE_ARGS=	--enable-security
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 SHEBANG_FILES=	smsd/action
 
-SUB_FILES+=	pkg-message
+SUB_FILES=	pkg-message
 PORTDOCS=	*
 
 CONFLICTS=	smstools sendsms
@@ -59,6 +60,7 @@ MYSQL_USES=		mysql ssl
 MYSQL_PLIST_SUB=	MSM=''
 MYSQL_PLIST_SUB_OFF=	MSM='@comment '
 MYSQL_CONFIGURE_OFF=	--disable-mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 PGSQL_USES=		pgsql
 PGSQL_PLIST_SUB=	PGM=''
 PGSQL_PLIST_SUB_OFF=	PGM='@comment '

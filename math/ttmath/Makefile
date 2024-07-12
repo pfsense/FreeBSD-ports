@@ -9,7 +9,8 @@ WWW=		https://ttmath.org
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-FETCH_DEPENDS=	git:devel/git
+FETCH_DEPENDS=	ca_root_nss>0:security/ca_root_nss \
+		git:devel/git
 
 USES=		cmake:testing
 
@@ -27,7 +28,7 @@ do-fetch:
 	    (cd ${PORTNAME}-${DISTVERSIONFULL} && git reset -q --hard ${GIT_TAG} && ${RM} -r .git) && \
 	    ${FIND} ${PORTNAME}-${DISTVERSIONFULL} -and -exec ${TOUCH} -h -d 1970-01-01T00:00:00Z {} \; && \
 	    ${FIND} ${PORTNAME}-${DISTVERSIONFULL} -print0 | LC_ALL=C ${SORT} -z | \
-	        ${TAR} czf ${PORTNAME}-${DISTVERSIONFULL}${EXTRACT_SUFX} --format=bsdtar --gid 0 --uid 0 --options gzip:!timestamp --no-recursion --null -T - && \
+	        ${TAR} czf ${PORTNAME}-${DISTVERSIONFULL}${EXTRACT_SUFX} --format=ustar --gid 0 --uid 0 --options gzip:!timestamp --no-recursion --null -T - && \
 	    ${RM} -r ${PORTNAME}-${DISTVERSIONFULL}; \
 	fi
 

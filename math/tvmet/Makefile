@@ -1,18 +1,19 @@
 PORTNAME=	tvmet
 PORTVERSION=	1.7.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/Tar.Gz_Bz2%20Archive/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny Vector and Matrix template library
-WWW=		http://tvmet.sourceforge.net/
+WWW=		https://tvmet.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake tar:bzip2 libtool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-cxx=${CXX}
 
 OPTIONS_DEFINE=	CPPUNIT DEBUG DOCS EXAMPLES

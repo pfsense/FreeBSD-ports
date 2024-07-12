@@ -1,6 +1,7 @@
 PORTNAME=	podman
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.5.1
+DISTVERSION=	5.1.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	dfr@FreeBSD.org
@@ -18,8 +19,8 @@ RUN_DEPENDS=	conmon:sysutils/conmon \
 		containers-common>=0:sysutils/containers-common \
 		ocijail:sysutils/ocijail
 
-USES=		gmake go:no_targets pkgconfig python:3.7+,build shebangfix
-USE_RC_SUBR=	podman
+USES=		gmake go:no_targets pkgconfig python:build shebangfix
+USE_RC_SUBR=	podman podman_service
 
 SHEBANG_FILES=	${WRKSRC}/hack/markdown-preprocess
 MAKE_ARGS=	SHELL=${LOCALBASE}/bin/bash

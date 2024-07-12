@@ -1,11 +1,11 @@
---- chrome/common/url_constants.h.orig	2023-05-31 08:12:17 UTC
+--- chrome/common/url_constants.h.orig	2024-06-17 12:56:06 UTC
 +++ chrome/common/url_constants.h
-@@ -504,7 +504,7 @@ extern const char kOutdatedPluginLearnMoreURL[];
- extern const char kPhoneHubPermissionLearnMoreURL[];
+@@ -888,7 +888,7 @@ inline constexpr char kOutdatedPluginLearnMoreURL[] =
+ inline constexpr char kPhoneHubPermissionLearnMoreURL[] =
+     "https://support.google.com/chromebook?p=multidevice";
  
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_FUCHSIA)
-+    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
- 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  // "Learn more" URL for the chrome apps deprecation dialog.
- extern const char kChromeAppsDeprecationLearnMoreURL[];
+ inline constexpr char kChromeAppsDeprecationLearnMoreURL[] =
+     "https://support.google.com/chrome?p=chrome_app_deprecation";

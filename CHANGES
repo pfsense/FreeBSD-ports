@@ -10,6 +10,137 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20240408:
+AUTHOR: flo@FreeBSD.org
+
+  A new variable DBD_MYSQL has been introduced and should be used to depend
+  on the correct version of p5-DBD-mysql. Versions >= 5.000 removed support
+  for MariaDB. DBD_MYSQL will check which MYSQL_FLAVOUR is used and set the
+  correct version as a dependency. For this to work, ports need to add mysql
+  to USES.
+
+20240408:
+AUTHOR: makc@FreeBSD.org
+
+  USES=cmake now supports `indirect' argument. This argument adds cmake binary
+  to the BUILD_DEPENDS and and exposes CMAKE_ARGS and some other helpers, but
+  does not run cmake in the configure step. cmake:indirect is intended
+  primarily for ports which use meson or pep517 for build.
+
+20240229:
+AUTHOR: tijl@FreeBSD.org
+
+  A new command SETENVI that clears the environment and a new variable
+  WRK_ENV that contains a basic environment to use with SETENVI have
+  been added.
+  Ports that run (parts of) the upstream build system directly using
+  commands like "${SETENV} ${MAKE_ENV} ${MAKE_CMD} ..." should change
+  that to "${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${MAKE_CMD} ...".  This way
+  the build system runs with a clean environment without interference
+  from the user environment or ports framework environment.  Ports can
+  add extra environment variables to WRK_ENV similar to CONFIGURE_ENV,
+  MAKE_ENV, TEST_ENV, and so on, but WRK_ENV is used in all targets
+  while the latter are target-specific.
+
+20240111:
+AUTHOR: bapt@FreeBSD.org
+
+  MAN[1-8LN]PREFIX variable has been removed from the framework, use PREFIX
+  directly.
+
+20230929:
+AUTHOR: sunpoet@FreeBSD.org
+
+  USE_PYTHON=cryptography{,_build,_test} has been added to the ports tree.
+  20230722 entry is obsoleted now. All existing USES=pycryptography* have
+  been converted to USE_PYTHON=cryptography{,_build,_test} in PR 273727.
+
+  Usage:
+    USE_PYTHON=cryptography_build adds security/py-cryptography to BUILD_DEPENDS
+    USE_PYTHON=cryptography adds security/py-cryptography to RUN_DEPENDS
+    USE_PYTHON=cryptography_test adds security/py-cryptography to TEST_DEPENDS
+
+20230823:
+AUTHOR: tcberner@FreeBSD.org
+
+  USES=llvm.mk now supports 'export' (default) and 'noexport' arguments.
+  When export is set, CC, CXX and CPP will be set to the path corresponding
+  to the chosen llvm-version.
+
+20230821:
+AUTHOR: jhale@FreeBSD.org
+
+  A new uses 'ebur128' has been added to transparently depend on the
+  proper variant of 'rust' or 'legacy' depending on the default version
+  set by the user.
+
+  Usage:	USES=ebur128:ARGS
+  Valid ARGS:	<none>, build, lib, run, test
+    <none>:	(default) same as lib
+    build:	add BUILD_DEPENDS
+    lib:	add LIB_DEPENDS
+    run:	add RUN_DEPENDS
+    test:	add TEST_DEPENDS
+
+  If you prefer not to use rust, add the following to your make.conf:
+
+	DEFAULT_VERSIONS+=ebur128=legacy
+
+20230728:
+AUTHOR: andrew@tao11.riddles.org.uk, fuz@FreeBSD.org
+
+  A new uses 'guile' has been added to transparently depend on the
+  proper variant of guile depending on the default version set by the
+  user and the demands of the port.
+
+  See Mk/Uses/guile.mk for in-depth documentation.
+
+20230722:
+AUTHOR: tcberner@FreeBSD.org
+
+  A new uses 'pycryptography' has been added to transparently depend on the
+  proper variant of 'rust' or 'legacy' depending on the default version set
+  by the user.
+
+  Supported arguments: <none>,build,run
+  Passing no arguments (<none>) is equivalent to passing both build and run.
+
+  Usage:
+	USES=pycryptography:build
+		-> adds a BUILD_DEPENDS only
+	USES=pycryptography:run
+		-> adds a RUN_DEPENDS only
+	USES=pycryptography:test
+		-> adds a TEST_DEPENDS only
+	USES=pycryptography:build,run   or   USES=pycryptography
+		-> adds a BUILD_ and RUN_DEPENDS
+
+20230712:
+AUTHOR: zirias@FreeBSD.org
+
+  USE_GITLAB has been changed to allow fetching by tag name. This was done by
+  removing the GL_COMMIT variable and introducing GL_TAGNAME instead.
+
+  Similar to USE_GITHUB/GH_TAGNAME, you can still use a commit hash with
+  GL_TAGNAME (the full 40-character hash is required for that). If not
+  specified, GL_TAGNAME defaults to DISTVERSIONFULL.
+
+  Note fetching by tag name might not work on gitlab installations running
+  very old versions; in that case, you must still specify a commit hash.
+
+  For now, GL_COMMIT is still recognized but deprecated, using it will issue
+  a warning in developer mode.
+
+20230712:
+AUTHOR: 0mp@FreeBSD.org
+
+  Two new targets are now available: fetch-url-recursive-list
+  and fetch-urlall-recursive-list. They are the recursive variants
+  of the well-established targets fetch-url-list and fetch-urlall-list,
+  which allow for listing the complete URLs of DISTFILES and PATCHFILES
+  of a port. The recursive variants add the URLs of the port's dependencies
+  to the output.
+
 20230430:
 AUTHOR: zirias@FreeBSD.org
 

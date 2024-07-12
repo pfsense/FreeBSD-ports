@@ -1,5 +1,5 @@
 PORTNAME=	pytest-relaxed
-PORTVERSION=	2.0.1
+DISTVERSION=	2.0.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest4>=3:devel/py-pytest4@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}decorator>=4:devel/py-decorator@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils pytest
 
 NO_ARCH=	yes

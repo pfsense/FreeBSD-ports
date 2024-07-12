@@ -1,3 +1,3 @@
-TIMESTAMP = 1629947671
-SHA256 (esr-loccount-dc8279ab2e49ba60db121a47c15dc4ef8b543352_GL0.tar.gz) = 5524d7dc7cec31729d19a6b0a39e8a396c54c643a39844edc138715fe03f8b65
-SIZE (esr-loccount-dc8279ab2e49ba60db121a47c15dc4ef8b543352_GL0.tar.gz) = 71286
+TIMESTAMP = 1709999106
+SHA256 (loccount-2.16.tar.gz) = 4059cc0f61ccea2e424f1c3ccb838fedccaa15f0b53ef31534f59b38792048a2
+SIZE (loccount-2.16.tar.gz) = 83003

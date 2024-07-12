@@ -1,14 +1,14 @@
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Perl bindings for Version control system
 WWW=		https://subversion.apache.org/
 
 USES=		perl5
 USE_PERL5=	build run
 
-PORTREVISION_114=	0
-PORTREVISION_LTS=	0
+PORTREVISION_LATEST=	2
+PORTREVISION_LTS=		2
 
 SVN_BUILD_BINDINGS=	yes
 
@@ -18,7 +18,10 @@ MAKE_JOBS_UNSAFE=	yes
 
 CATEGORIES+=	perl5
 
-CONFIGURE_ARGS+=	--without-gnome-keyring \
+CONFIGURE_ARGS+=	--with-swig-perl=${PERL} \
+			--without-swig-python \
+			--without-swig-ruby \
+			--without-gnome-keyring \
 			--without-kwallet \
 			--with-apxs=no
 

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense-pkg-frr
-PORTVERSION=	1.2
-PORTREVISION=	3
+PORTVERSION=	2.0.2
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,8 +11,8 @@ COMMENT=	FRR package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	frr7>=0:net/frr7 \
-		frr7-pythontools>=0:net/frr7-pythontools
+RUN_DEPENDS=	frr9>=0:net/frr9 \
+		frr9-pythontools>=0:net/frr9-pythontools
 
 CONFLICTS=	pfSense-pkg-OpenBGPD-[0-9]* \
 		pfSense-pkg-Quagga_OSPF-[0-9]*

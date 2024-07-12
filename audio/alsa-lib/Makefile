@@ -1,21 +1,15 @@
 PORTNAME=	alsa-lib
-PORTVERSION=	1.2.2
-PORTREVISION=	1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.2.12
 CATEGORIES=	audio
-MASTER_SITES=	GH
+MASTER_SITES=	https://www.alsa-project.org/files/pub/lib/
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	alsa-project
-GH_PROJECT=	${PORTNAME}
-
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	ALSA compatibility library
 WWW=		https://www.alsa-project.org/
 
 LICENSE=	LGPL21+
 
-USES=		autoreconf cpe libtool:keepla tar:bzip2
+USES=		cpe gmake libtool:keepla tar:bzip2
 CPE_VENDOR=	alsa-project
 CPE_PRODUCT=	alsa
 USE_LDCONFIG=	yes
@@ -27,9 +21,13 @@ TEST_ENV=	${MAKE_ENV} \
 		ALSA_CONFIG_PATH="${FILESDIR}/asound.conf.sample"
 TEST_TARGET=	check
 CPPFLAGS+=	-I${FILESDIR}
+# Some symbols in the linker version script Versions.in are only defined when
+# --enable-alisp is used at configure time. Suppress errors with lld >= 17 due
+# to these undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
 
-OPTIONS_DEFINE=		PYTHON
-OPTIONS_SUB=		yes
+OPTIONS_DEFINE=	PYTHON
+OPTIONS_SUB=	yes
 
 PYTHON_USES=			gettext-runtime python
 PYTHON_CONFIGURE_ENABLE=	mixer-pymods python

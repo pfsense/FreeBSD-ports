@@ -1,6 +1,7 @@
 PORTNAME=	distcc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.4
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -18,6 +19,7 @@ USE_GITHUB=	yes
 USE_RC_SUBR=	distccd
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-Werror \
 		--sysconfdir=${ETCDIR} \
 		CC="${CC}" \
@@ -36,7 +38,7 @@ GROUPS=		distcc
 PLIST_FILES=	${_BIN_FILES:S|^|bin/|} \
 		${_CONFIG_FILES:S|^|${ETCDIR}/${PORTNAME}/|} \
 		${_DISTCC_COMPILERS:S|^|${CCLINKDIR}/|} \
-		${_MAN_FILES:S|^|man/man1/|:S|$|.gz|} \
+		${_MAN_FILES:S|^|share/man/man1/|:S|$|.gz|} \
 		${_SBIN_FILES:S|^|sbin/|} \
 		etc/default/distcc
 
@@ -55,7 +57,7 @@ GUI_USES=		gnome
 GUI_USE=		GNOME=gtk20
 GUI_CONFIGURE_WITH=	gtk
 IPV6_CONFIGURE_ENABLE=	rfc2553
-PUMP_USES=		python:3.6+
+PUMP_USES=		python
 PUMP_CONFIGURE_ENABLE=	pump-mode
 PUMP_PLIST_FILES=	${PYTHON_SITELIBDIR}/include_server-${PORTVERSION}-py${PYTHON_VER}.egg-info \
 			${PYTHON_SITELIBDIR}/include_server/basics.py \

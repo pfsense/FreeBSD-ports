@@ -3,7 +3,7 @@
  * sqstat.class.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006 Alex Samorukov <samm@os2.kiev.ua>
  * Copyright (c) 2011 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
@@ -90,7 +90,7 @@ class squidstat {
 			$text .= '<META HTTP-EQUIV=Refresh CONTENT="' . $refresh . '; URL=' . $_SERVER["PHP_SELF"] . '?refresh=' . $refresh . '&config=' . $GLOBALS["config"] . '"/>';
 		}
 		$text .= '<title>SqStat ' . SQSTAT_VERSION . '</title>' . ($use_js ? '<script src="zhabascript.js" type="text/javascript"></script>' : '') . '</head>'
-		    . ($use_js ? '<body onload="jsInit();"><div id="dhtmltooltip"></div><i id="dhtmlpointer" class="fa fa-arrow-right"></i>' : '<body>')
+		    . ($use_js ? '<body onload="jsInit();"><div id="dhtmltooltip"></div><i id="dhtmlpointer" class="fa-solid fa-arrow-right"></i>' : '<body>')
 		    . $body . '</body></html>';
 		return $text;
 	}

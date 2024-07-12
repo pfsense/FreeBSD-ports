@@ -1,6 +1,6 @@
 PORTNAME=	openhab
-PORTVERSION=	3.4.4
-PORTREVISION=	0
+PORTVERSION=	4.1.3
+PORTREVISION=	1
 CATEGORIES=	misc java
 MASTER_SITES=	https://openhab.jfrog.io/artifactory/libs-release-local/org/openhab/distro/openhab/${PORTVERSION}/
 DISTNAME=	openhab-${PORTVERSION}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 USES=		cpe zip
 USE_JAVA=	yes
-JAVA_VERSION=	11
+JAVA_VERSION=	17
 JAVA_RUN=	yes
 USE_RC_SUBR=	openhab
 SUB_FILES=	pkg-message

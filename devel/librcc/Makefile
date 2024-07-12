@@ -1,12 +1,12 @@
 PORTNAME=	librcc
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	0.2.13
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library used by rusxmms for language autodetection
-WWW=		http://rusxmms.sourceforge.net
+WWW=		https://rusxmms.sourceforge.net
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

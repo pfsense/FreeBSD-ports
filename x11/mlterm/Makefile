@@ -1,10 +1,11 @@
 PORTNAME=	mlterm
 PORTVERSION=	3.9.3
+PORTREVISION=	2
 CATEGORIES=	x11
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Multilingual X11 terminal emulator
-WWW=		http://mlterm.sourceforge.net/
+WWW=		https://mlterm.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 
@@ -19,12 +20,13 @@ USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_XORG=	sm x11 xft
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-gui=x11 --with-imagelib=gdk-pixbuf2 --enable-utmp \
 		--enable-optimize-redrawing --disable-iiimf --with-gtk=3.0 \
 		--disable-ssh2
 EXTERNAL_TOOLS=	mlclient,mlconfig,mlterm-menu,mlcc,w3mmlconfig,mlimgloader
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -lintl
+LDFLAGS+=	-L${LOCALBASE}/lib -lintl -Wl,--undefined-version
 MAKE_JOBS_UNSAFE=	yes
 
 GH_ACCOUNT=	arakiken

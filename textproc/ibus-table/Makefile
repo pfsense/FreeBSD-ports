@@ -1,5 +1,5 @@
 PORTNAME=	ibus-table
-DISTVERSION=	1.17.0
+DISTVERSION=	1.17.5
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		autoreconf gettext-tools gmake gnome pkgconfig python:3.4+ shebangfix
+USES=		autoreconf gettext-tools gmake gnome pkgconfig python shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kaio
@@ -23,6 +23,7 @@ GH_ACCOUNT=	kaio
 SHEBANG_GLOB=	*.py
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 GLIB_SCHEMAS=	org.freedesktop.ibus.engine.table.gschema.xml
 

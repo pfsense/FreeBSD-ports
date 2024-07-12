@@ -1,6 +1,6 @@
 PORTNAME=	ffnvcodec-headers
 DISTVERSIONPREFIX=	n
-DISTVERSION=	11.1.5.2
+DISTVERSION=	12.0.16.1
 CATEGORIES=	multimedia
 
 MAINTAINER=	iwtcex@gmail.com
@@ -15,6 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	FFmpeg
 GH_PROJECT=	nv-codec-headers
 
+MAKE_ARGS+=	PREFIX="${PREFIX}"
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	cloud-init
-DISTVERSION=	23.2-30
-DISTVERSIONSUFFIX=	-g5267ebbf
+DISTVERSION=	23.4-319
+DISTVERSIONSUFFIX=	-gec384da45
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-devel
@@ -31,7 +31,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-cov>=0:devel/py-pytest-cov@${PY_FLAV
 		${PYTHON_PKGNAMEPREFIX}responses>=0:devel/py-responses@${PY_FLAVOR} \
 		bash:shells/bash
 
-USES=		python:3.6+ shebangfix
+USES=		python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	canonical
 USE_PYTHON=	autoplist distutils
@@ -62,6 +62,8 @@ post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/cloud.cfg ${STAGEDIR}${ETCDIR}/cloud.cfg.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cloud.cfg.d/05_logging.cfg ${STAGEDIR}${ETCDIR}/cloud.cfg.d/05_logging.cfg.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cloud.cfg.d/99_freebsd.cfg ${STAGEDIR}${ETCDIR}/cloud.cfg.d/99_freebsd.cfg.sample
-	${REINPLACE_CMD} 's|^.*\.cfg$$|@sample &.sample|' ${_PYTHONPKGLIST}
+	${REINPLACE_CMD} -e 's|^.*\.cfg$$|@sample &.sample|'  \
+		-e 's|${ETCDIR}/clean.d|@dir ${ETCDIR}/clean.d|' \
+		${_PYTHONPKGLIST}
 
 .include <bsd.port.mk>

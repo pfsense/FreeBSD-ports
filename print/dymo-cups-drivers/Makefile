@@ -2,21 +2,20 @@ PORTNAME=	dymo-cups-drivers
 PORTVERSION=	1.4.0
 PORTREVISION=	4
 CATEGORIES=	print
-MASTER_SITES=	http://download.dymo.com/Software/Linux/
+MASTER_SITES=	https://download.dymo.com/Software/Linux/
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source DYMO CUPS driver
-WWW=		http://www.dymo.com
+WWW=		https://www.dymo.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcupsimage.so:print/cups
 
-WRKSRC=		${WRKDIR}/dymo-cups-drivers-1.4.0.5
-
+USES=		localbase:ldflags
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+
+WRKSRC=		${WRKDIR}/dymo-cups-drivers-1.4.0.5
 
 .include <bsd.port.mk>

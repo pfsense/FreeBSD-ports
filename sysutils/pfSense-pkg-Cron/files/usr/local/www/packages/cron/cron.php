@@ -3,7 +3,7 @@
  * cron.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -22,12 +22,10 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/cron.inc");
 
-$a_cron = &$config['cron']['item'];
-
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'php') {
-		if ($a_cron[$_GET['id']]) {
-			unset($a_cron[$_GET['id']]);
+		if (config_get_path("cron/item/{$_GET['id']}")) {
+			config_del_path("cron/item/{$_GET['id']}");
 			write_config(gettext("Crontab item deleted via cron package"));
 			header("Location: cron.php");
 			exit;
@@ -69,16 +67,14 @@ display_top_tabs($tab_array);
 						<th width="5%">who</th>
 						<th width="60%">command</th>
 						<th width="10%">
-							<a class="btn btn-small btn-success" href="cron_edit.php"><i class="fa fa-plus" alt="edit"></i> Add</a>
+							<a class="btn btn-small btn-success" href="cron_edit.php"><i class="fa-solid fa-plus" alt="edit"></i> Add</a>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 
 	<?php
-		$i = 0;
-		if (count($a_cron) > 0) {
-			foreach ($a_cron as $ent) {
+		foreach (config_get_path('cron/item', []) as $i => $ent) {
 	?>
 					<tr>
 						<td><?= htmlspecialchars($ent['minute']) ?></td>
@@ -89,20 +85,18 @@ display_top_tabs($tab_array);
 						<td><?= htmlspecialchars($ent['who']) ?></td>
 						<td><?= htmlspecialchars($ent['command']) ?></td>
 						<td>
-							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit" title="<?=gettext('Edit this job')?>"></i></a>
-							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa fa-clone" alt="copy" title="<?=gettext('Copy this job')?>"></i></a>
-							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete" title="<?=gettext('Delete this job')?>"></i></a>
+							<a href="cron_edit.php?id=<?=$i?>"><i class="fa-solid fa-pencil" alt="edit" title="<?=gettext('Edit this job')?>"></i></a>
+							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa-regular fa-clone" alt="copy" title="<?=gettext('Copy this job')?>"></i></a>
+							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa-solid fa-trash-can" alt="delete" title="<?=gettext('Delete this job')?>"></i></a>
 						</td>
 					</tr>
 	<?php
-		$i++;
-			}
 		}
 	?>
 					<tr>
 						<td colspan="7"></td>
 						<td>
-							<a class="btn btn-small btn-success" href="cron_edit.php"><i class="fa fa-plus" alt="add"></i> Add</a>
+							<a class="btn btn-small btn-success" href="cron_edit.php"><i class="fa-solid fa-plus" alt="add"></i> Add</a>
 						</td>
 					</tr>
 				</tbody>

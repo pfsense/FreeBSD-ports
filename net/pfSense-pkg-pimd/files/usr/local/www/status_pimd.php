@@ -3,7 +3,7 @@
  * status_pimd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2020-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2020-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,8 +20,6 @@
  */
 
 require("guiconfig.inc");
-global $config;
-
 $enabled = (config_get_path('installedpackages/pimd/config/0/enable') == 'on');
 
 $tab_array = array();

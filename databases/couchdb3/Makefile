@@ -1,5 +1,6 @@
 PORTNAME=	couchdb3
-DISTVERSION=	3.3.2
+DISTVERSION=	3.3.3
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/couchdb/source/${DISTVERSION}
 DISTNAME=	apache-couchdb-${DISTVERSION}
@@ -18,23 +19,9 @@ LIB_DEPENDS=	libicudata.so:devel/icu \
 RUN_DEPENDS=	erlang-runtime${_ERLVER}>=${_ERLVER}.0:lang/erlang-runtime${_ERLVER}
 
 USES=		compiler:c++17-lang cpe gmake libtool ncurses
-USE_RC_SUBR=	${PORTNAME}
-
-CONFLICTS=	couchdb[24]*
-
 CPE_VENDOR=	apache
 CPE_PRODUCT=	couchdb
-
-USERS=		couchdb
-GROUPS=		couchdb
-
-SUB_FILES=	pkg-message
-SUB_LIST=	APPDIR=${_APPDIR} \
-		ERL_PATH=${LOCALBASE}/lib/erlang${_ERLVER}/bin/erl \
-		PORTNAME=${PORTNAME} \
-		RELDIR=${_RELDIR} \
-		WWWDIR=${WWWDIR}
-PLIST_SUB=	VERSION=${DISTVERSION}
+USE_RC_SUBR=	${PORTNAME}
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--skip-deps \
@@ -42,9 +29,22 @@ CONFIGURE_ARGS=	--skip-deps \
 		--rebar ${LOCALBASE}/bin/rebar \
 		--spidermonkey-version 91
 
+MAKE_ENV=	PATH=${LOCALBASE}/lib/erlang${_ERLVER}/bin:${PATH}
 ALL_TARGET=	release
 
-MAKE_ENV=	PATH=${LOCALBASE}/lib/erlang${_ERLVER}/bin:${PATH}
+CONFLICTS=	couchdb[24]*
+
+SUB_FILES=	pkg-message
+SUB_LIST=	APPDIR=${_APPDIR} \
+		ERL_PATH=${LOCALBASE}/lib/erlang${_ERLVER}/bin/erl \
+		PORTNAME=${PORTNAME} \
+		RELDIR=${_RELDIR} \
+		WWWDIR=${WWWDIR}
+
+USERS=		couchdb
+GROUPS=		couchdb
+
+PLIST_SUB=	VERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes
@@ -90,7 +90,7 @@ pre-install:
 	${INSTALL_DATA} ${WRKSRC}/rel/couchdb/etc/vm.args \
 		${STAGEDIR}${ETCDIR}/vm.args.sample
 	${INSTALL_MAN} ${WRKSRC}/share/docs/man/apachecouchdb.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 # prune build artefacts and surplus headers
 	${FIND} -E ${WRKSRC} -type f \
 		-regex '.*\.(a|buildinfo|c|cc|cmd|d|o|orig|h|cpp)' -print -delete

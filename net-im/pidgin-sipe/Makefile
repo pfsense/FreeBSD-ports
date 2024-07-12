@@ -48,6 +48,12 @@ PORTDOCS=	AUTHORS ChangeLog HACKING NEWS README TODO
 
 CFLAGS+=	-Wno-error
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} 's/LDLAGS/LDFLAGS/' ${WRKSRC}/configure
 

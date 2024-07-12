@@ -1,7 +1,7 @@
---- chrome/browser/defaults.cc.orig	2022-10-05 07:34:01 UTC
+--- chrome/browser/defaults.cc.orig	2023-10-21 11:51:27 UTC
 +++ chrome/browser/defaults.cc
-@@ -52,7 +52,7 @@ const bool kSyncAutoStarts = true;
- const bool kSyncAutoStarts = false;
+@@ -44,7 +44,7 @@ const bool kShowHelpMenuItemIcon = true;
+ const bool kShowHelpMenuItemIcon = false;
  #endif
  
 -#if BUILDFLAG(IS_LINUX)

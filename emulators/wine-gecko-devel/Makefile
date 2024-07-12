@@ -1,5 +1,5 @@
 PORTNAME=	wine-gecko
-DISTVERSION=	2.47.3
+DISTVERSION=	2.47.4
 CATEGORIES=	emulators
 MASTER_SITES=	http://dl.winehq.org/wine/wine-gecko/${DISTVERSION}/
 PKGNAMESUFFIX=	-devel
@@ -7,7 +7,7 @@ DISTNAME=	wine-gecko-${DISTVERSION}-x86
 EXTRACT_SUFX=	.msi
 EXTRACT_ONLY=
 
-MAINTAINER=	damjan.jov@gmail.com
+MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	Gecko Layout Engine for Wine development branch (HTML support)
 WWW=		https://wiki.winehq.org/Gecko
 

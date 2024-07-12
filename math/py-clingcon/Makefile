@@ -1,5 +1,5 @@
 PORTNAME=	clingcon
-DISTVERSION=	5.2.0
+DISTVERSION=	5.2.1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	cmake:devel/cmake-core \
 		${PYTHON_PKGNAMEPREFIX}clingo>0:math/py-clingo@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}clingo>0:math/py-clingo@${PY_FLAVOR}
 
-USES=		compiler:c++17-lang python:3.6+
+USES=		compiler:c++17-lang python
 USE_PYTHON=	distutils autoplist
 
 post-install:

@@ -1,5 +1,5 @@
 PORTNAME=	rectangle-packer
-DISTVERSION=	2.0.1
+DISTVERSION=	2.0.2
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,7 +10,7 @@ WWW=		https://github.com/Penlect/rectangle-packer
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils cython autoplist unittest
 
 USE_GITHUB=	yes

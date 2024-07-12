@@ -1,12 +1,12 @@
 PORTNAME=	slrn
 PORTVERSION=	1.0.3a
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	news
 MASTER_SITES=	http://www.jedsoft.org/releases/slrn/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SLang-based newsreader
-WWW=		http://slrn.sourceforge.net/
+WWW=		https://slrn.sourceforge.net/
 
 LICENSE=	GPLv2+
 
@@ -17,6 +17,7 @@ CONFLICTS_INSTALL=	ja-slrn
 USES=		gmake iconv tar:bz2
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS+=--disable-inews --with-slrnpull \
 		${ICONV_CONFIGURE_ARG}
 

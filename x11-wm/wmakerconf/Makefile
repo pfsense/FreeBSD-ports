@@ -1,30 +1,32 @@
 PORTNAME=	wmakerconf
 PORTVERSION=	2.12
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Configuration tool for Window Maker
 WWW=		https://sourceforge.net/projects/wmakerconf/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libWINGs.so:x11-wm/windowmaker
-RUN_DEPENDS=	rpm:archivers/rpm4
+LIB_DEPENDS=	libWINGs.so:x11-wm/windowmaker \
+		libharfbuzz.so:print/harfbuzz \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libwraster.so:x11-wm/libwraster
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-USES=		gettext pkgconfig perl5 gmake gnome shebangfix xorg
-USE_GNOME=	gtk20
+USES=		gettext pkgconfig perl5 gmake gnome localbase shebangfix xorg
+USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_XORG=	x11
 SHEBANG_FILES=	scripts/getfile.pl.in scripts/upgrade.pl.in
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-wmakerdataprefix="${LOCALBASE}/share" \
-		--with-wmakeretcprefix="${LOCALBASE}/share"
-USE_XORG=	x11
-LIBS=		-L${LOCALBASE}/lib -lintl -lX11 -lWUtil
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+LIBS=		-lintl -lX11 -lWUtil
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-extract:
 	@${FIND} ${WRKSRC} -name "*.gmo" -delete
@@ -42,7 +44,8 @@ post-patch:
 .for file in data/po/ja.po po/ja.po
 	@${REINPLACE_CMD} -e 's|JISX-0208-1983-0|euc-jp|g' ${WRKSRC}/${file}
 .endfor
-	@${FIND} ${WRKSRC}/src -name "*.c" | ${XARGS} ${REINPLACE_CMD} -e \
-		'/WMWritePropListToFile/s|,[[:space:]]YES||g'
+	@${REINPLACE_CMD} -e '/WMWritePropListToFile/s|,[[:space:]]YES||' \
+		${WRKSRC}/src/menu.c ${WRKSRC}/src/rootmenu.c \
+		${WRKSRC}/src/wmconfig.c
 
 .include <bsd.port.mk>

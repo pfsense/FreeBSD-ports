@@ -1,7 +1,7 @@
-PORTNAME=	adjuster
+PORTNAME=		adjuster
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.23-23
-DISTVERSIONSUFFIX=	-g7c06b0f
+DISTVERSION=		3.233
+PORTREVISION=		1
 CATEGORIES=	www
 
 MAINTAINER=	ssb22@cam.ac.uk
@@ -20,8 +20,11 @@ SHEBANG_FILES=	*.py
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/adjuster \
-		bin/annogen \
-		bin/termlayout
+PLIST_FILES=	bin/adjuster   \
+		bin/annogen            \
+		bin/termlayout         \
+		share/man/man1/adjuster.1.gz \
+		share/man/man1/annogen.1.gz  \
+		share/man/man1/termlayout.1.gz
 
 .include <bsd.port.mk>

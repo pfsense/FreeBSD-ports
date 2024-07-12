@@ -29,7 +29,7 @@ USE_KDE=	archive attica auth bookmarks codecs completion config \
 		itemviews jobwidgets kcmutils kio newstuff notifications \
 		notifyconfig service solid widgetsaddons windowsystem xmlgui \
 		ecm:build
-USE_QT=		concurrent core dbus gui network webkit widgets xml \
+USE_QT=		concurrent core dbus gui network webengine widgets xml \
 		buildtools:build qmake:build
 USE_XORG=	x11
 

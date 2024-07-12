@@ -1,6 +1,6 @@
 PORTNAME=	spidermonkey
 DISTVERSION=	91.13.0
-PORTREVISION=	10
+PORTREVISION=	21
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source
 PKGNAMESUFFIX=	${SP_VER}
@@ -52,12 +52,18 @@ CONFIGURE_ENV=	HOST_CC=${CC} \
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 PLIST_SUB=	SP_VER=${SP_VER}
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+CONFIGURE_ENV+=	LLVM_CONFIG=llvm-config${LLVM_VERSION} \
+		LLVM_OBJDUMP=llvm-objdump${LLVM_VERSION}
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
-.elif ${ARCH} == powerpc
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-config_makefiles_rust.mk
 .endif
 
 # Require newer Clang than what's in base system unless user opted out

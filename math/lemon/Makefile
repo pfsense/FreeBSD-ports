@@ -19,6 +19,7 @@ LIB_DEPENDS=	libCbc.so:math/cbc \
 		libOsi.so:math/osi
 
 USES=		cmake
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 CMAKE_ON=	BUILD_SHARED_LIBS

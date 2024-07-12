@@ -5,7 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	bkoenig@alpha-tierchen.de
 COMMENT=	Rule-based event handling in a KNX installation
-WWW=		http://linknx.sourceforge.net/
+WWW=		https://linknx.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -18,6 +18,7 @@ LIB_DEPENDS=	libpthsem.so:devel/pthsem
 BUILD_DEPENDS=	${LOCALBASE}/lib/libargp.a:devel/argp-standalone
 
 USES=	compiler gmake autoreconf pkgconfig
+USE_CXXSTD=	c++14
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=CFLAGS="-I${LOCALBASE}/include" \
@@ -47,6 +48,7 @@ LIBLUA_LDFLAGS=	-L${LUA_LIBDIR}
 MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
 MYSQL_CONFIGURE_OFF=	--without-mysql
 MYSQL_USES=	mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 
 PORTDOCS=	*
 

@@ -1,13 +1,13 @@
 PORTNAME=	cw
 PORTVERSION=	1.0.16
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://cwrapper.sourceforge.net/ \
 		http://www.fakehalo.us/cw/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Non-intrusive color wrapper for common commands
-WWW=		http://cwrapper.sourceforge.net/
+WWW=		https://cwrapper.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,6 +22,7 @@ cw_OLD_CMD=	/cw
 cw_CMD=		${PREFIX}/bin/cw
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 ALL_TARGET=	local
 
 PORTDOCS=	CHANGES CONTRIB README

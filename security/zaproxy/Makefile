@@ -1,11 +1,11 @@
 PORTNAME=	zaproxy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.12.0
-PORTREVISION=	2
+DISTVERSION=	2.14.0
+PORTREVISION=	1
 CATEGORIES=	security java
 
 MAINTAINER=	acm@FreeBSD.org
-COMMENT=	The OWASP zed attack proxy
+COMMENT=	The zed attack proxy
 WWW=		https://www.zaproxy.org/
 
 LICENSE=	APACHE20
@@ -23,7 +23,7 @@ NO_ARCH=	yes
 
 MAKE_ENV+=	GRADLE_USER_HOME=${WRKDIR}
 
-DESKTOP_ENTRIES="ZAP" "OWASP ZAP" "${PREFIX}/share/pixmaps/zaproxy.png" "${PORTNAME}" \
+DESKTOP_ENTRIES="ZAP" "Zed Attack Proxy" "${PREFIX}/share/pixmaps/zaproxy.png" "${PORTNAME}" \
 		"System;Security;" true
 
 # to rebuild the deps archive:

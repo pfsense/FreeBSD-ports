@@ -1,6 +1,8 @@
 bin/netgen
 include/core/archive.hpp
 include/core/array.hpp
+include/core/autodiff.hpp
+include/core/autodiffdiff.hpp
 include/core/bitarray.hpp
 include/core/concurrentqueue.h
 include/core/exception.hpp
@@ -9,10 +11,14 @@ include/core/hashtable.hpp
 include/core/localheap.hpp
 include/core/logging.hpp
 include/core/memtracer.hpp
+include/core/mpi4py_pycapi.h
 include/core/mpi_wrapper.hpp
 include/core/ngcore.hpp
 include/core/ngcore_api.hpp
 include/core/ngstream.hpp
+include/core/ng_mpi.hpp
+include/core/ng_mpi_generated_declarations.hpp
+include/core/ng_mpi_native.hpp
 include/core/paje_trace.hpp
 include/core/profiler.hpp
 include/core/python_ngcore.hpp
@@ -58,7 +64,6 @@ include/csg/triapprox.hpp
 include/csg/vscsg.hpp
 include/general/autodiff.hpp
 include/general/autoptr.hpp
-include/general/dynamicmem.hpp
 include/general/gzstream.h
 include/general/hashtabl.hpp
 include/general/myadt.hpp
@@ -85,7 +90,6 @@ include/gprim/geom3d.hpp
 include/gprim/geomfuncs.hpp
 include/gprim/geomobjects.hpp
 include/gprim/geomops.hpp
-include/gprim/geomops2.hpp
 include/gprim/geomtest3d.hpp
 include/gprim/gprim.hpp
 include/gprim/spline.hpp
@@ -112,6 +116,7 @@ include/include/opti.hpp
 include/include/parallel.hpp
 include/include/stlgeom.hpp
 include/include/visual.hpp
+include/interface/rw_medit.hpp
 include/interface/writeuser.hpp
 include/linalg/densemat.hpp
 include/linalg/linalg.hpp
@@ -181,6 +186,9 @@ include/pybind11/detail/internals.h
 include/pybind11/detail/type_caster_base.h
 include/pybind11/detail/typeid.h
 include/pybind11/eigen.h
+include/pybind11/eigen/common.h
+include/pybind11/eigen/matrix.h
+include/pybind11/eigen/tensor.h
 include/pybind11/embed.h
 include/pybind11/eval.h
 include/pybind11/functional.h
@@ -194,6 +202,7 @@ include/pybind11/pytypes.h
 include/pybind11/stl.h
 include/pybind11/stl_bind.h
 include/pybind11/stl/filesystem.h
+include/pybind11/type_caster_pyobject_ptr.h
 include/stlgeom/meshstlsurface.hpp
 include/stlgeom/stlgeom.hpp
 include/stlgeom/stlline.hpp
@@ -216,7 +225,9 @@ lib/libtogl.a
 %%PYTHON_SITELIBDIR%%/netgen/NgOCC.py
 %%PYTHON_SITELIBDIR%%/netgen/__init__.py
 %%PYTHON_SITELIBDIR%%/netgen/__main__.py
-%%PYTHON_SITELIBDIR%%/netgen/config.py
+%%PYTHON_SITELIBDIR%%/netgen/config/__init__.py
+%%PYTHON_SITELIBDIR%%/netgen/config/__main__.py
+%%PYTHON_SITELIBDIR%%/netgen/config/config.py
 %%PYTHON_SITELIBDIR%%/netgen/csg.py
 %%PYTHON_SITELIBDIR%%/netgen/geom2d.py
 %%PYTHON_SITELIBDIR%%/netgen/gui.py
@@ -229,6 +240,7 @@ lib/libtogl.a
 %%PYTHON_SITELIBDIR%%/netgen/stl.py
 %%PYTHON_SITELIBDIR%%/netgen/version.py
 %%PYTHON_SITELIBDIR%%/netgen/webgui.py
+%%PYTHON_SITELIBDIR%%/netgen_mesher-py3.egg-info
 %%PYTHON_SITELIBDIR%%/pyngcore/__init__.py
 %%PYTHON_SITELIBDIR%%/pyngcore/pyngcore%%PYTHON_EXT_SUFFIX%%.so
 %%DATADIR%%/boundarycondition.geo

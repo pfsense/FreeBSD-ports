@@ -1,5 +1,5 @@
 PORTNAME=	poudriere
-DISTVERSION=	3.3.7
+DISTVERSION=	3.4.1
 PORTREVISION=	1
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	LOCAL/bdrewery/${PORTNAME}/ \
@@ -20,19 +20,42 @@ GH_ACCOUNT=	freebsd
 GNU_CONFIGURE=	yes
 ETCDIR=		${PREFIX}/etc/poudriere.d
 
-OPTIONS_DEFINE=	BASH CERTS DIALOG4PORTS EXAMPLES QEMU ZSH
-OPTIONS_DEFAULT=BASH CERTS DIALOG4PORTS ZSH
+MAKE_ARGS+=	mandir=${PREFIX}/share/man
+
+OPTIONS_DEFINE=	BASH MANIFESTS PORTCONFIG EXAMPLES QEMU ZSH
+OPTIONS_DEFAULT=BASH MANIFESTS PORTCONFIG ZSH
 OPTIONS_SUB=	yes
 
-CERTS_DESC=		Install checksum and SSL certificates for jail creation
-CERTS_RUN_DEPENDS+=	ca_root_nss>=0:security/ca_root_nss
-CERTS_RUN_DEPENDS+=	freebsd-release-manifests>0:misc/freebsd-release-manifests
+MANIFESTS_DESC=		Install manifests for jail creation
+MANIFESTS_RUN_DEPENDS+=	freebsd-release-manifests>0:misc/freebsd-release-manifests
 
-DIALOG4PORTS_DESC=	Install dialog4ports for options command
-DIALOG4PORTS_RUN_DEPENDS=	dialog4ports>0:ports-mgmt/dialog4ports
+PORTCONFIG_DESC=	Install portconfig for options command
+PORTCONFIG_RUN_DEPENDS=	portconfig>0:ports-mgmt/portconfig
 
 QEMU_DESC=	Add qemu-user-static for non-x86 architectures
 QEMU_RUN_DEPENDS=	qemu-user-static>0:emulators/qemu-user-static
+
+# gmake is not strictly needed but handles test jobs better
+TEST_DEPENDS=	gmake>0:devel/gmake
+TEST_ENV=	MAKE=gmake
+.if make(test)
+MAKE_CMD=	gmake
+.endif
+TEST_TARGET=	check
+TEST_ARGS=	-s
+TEST_ARGS+=	${_MAKE_JOBS}
+# ccache passthrough helps for building pkg a few hundred times.
+# ccache not added as a dependency because it is only used if setup
+# and provided in the env already.
+# XXX: Passthrough local PKGREPOSITORY dir for fetch support
+ccache_vars=	CCACHE_DIR_NON_ROOT_SAFE CCACHE_GROUP \
+		CCACHE_GID CCACHE_STATIC_PREFIX CCACHE_TEMPDIR \
+		CCACHE_DIR CCACHE_NLEVELS
+.for _cv in ${ccache_vars}
+.  if !empty(${_cv})
+TEST_ENV+=	${_cv}=${${_cv}}
+.  endif
+.endfor
 
 .include <bsd.port.options.mk>
 
@@ -48,11 +71,9 @@ PLIST_SUB+=	RM="@comment "
 .endif
 
 post-patch:
-	${CP} -f ${WRKSRC}/src/bin/poudriere ${WRKSRC}/poudriere
 	${REINPLACE_CMD} \
 	    -e "s,^\(POUDRIERE_VERSION\)=.*,\1='${PKGVERSION}'," \
-	    ${WRKSRC}/poudriere
-	${REINPLACE_CMD} '/.PHONY: poudriere/d' ${WRKSRC}/Makefile.*
+	    ${WRKSRC}/src/bin/poudriere.in
 
 post-install:
 	${LN} -fs ${LOCALBASE}/share/freebsd/MANIFESTS \

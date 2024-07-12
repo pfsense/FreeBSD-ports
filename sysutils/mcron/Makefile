@@ -1,5 +1,5 @@
 PORTNAME=	mcron
-PORTVERSION=	1.2.1
+PORTVERSION=	1.2.3
 PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
@@ -11,18 +11,14 @@ WWW=		https://www.gnu.org/software/mcron/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libguile-2.2.so:lang/guile2
-
-USES=		gmake pkgconfig
+USES=		gmake guile:3.0 pkgconfig
 GNU_CONFIGURE=	yes
-
-CONFLICTS_INSTALL=	interchange isc-cron # bin/crontab
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 TEST_TARGET=	check
 
-INFO=		mcron
+CONFLICTS_INSTALL=	interchange isc-cron # bin/crontab
 
-PLIST_SUB=	GUILE_SITE=share/guile/site/2.2 \
-		GUILE_SITE_CCACHE=lib/guile/2.2/site-ccache
+INFO=		mcron
 
 .include <bsd.port.mk>

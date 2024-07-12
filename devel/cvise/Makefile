@@ -1,5 +1,5 @@
 PORTNAME=	cvise
-PORTVERSION=	2.8.0
+DISTVERSION=	2.10.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel python
 
@@ -26,7 +26,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-flake8>=0:devel/py-pytest-flake8@${P
 # once this is installed, all tests pass for me:
 # 260 passed, 1 skipped in 64.82 seconds
 
-USES=		cmake compiler llvm:min=15,build,run python:3.6+ shebangfix
+USES=		cmake compiler llvm:min=16,build,run python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	marxin
 USE_PYTHON=	pytest
@@ -36,18 +36,4 @@ SHEBANG_FILES=	cvise-delta.py cvise.py
 CMAKE_ARGS+=	-DLLVM_DIR:PATH=${LLVM_PREFIX}/lib/cmake/llvm
 CMAKE_ARGS+=	-DClang_DIR:PATH=${LLVM_PREFIX}/lib/cmake/clang
 
-.include <bsd.port.pre.mk>
-
-.if ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} < 150
-CPP=		clang-cpp${LLVM_VERSION}
-CC=		clang${LLVM_VERSION}
-CXX=		clang++${LLVM_VERSION}
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/cvise.py
-
-do-test:
-	cd ${BUILD_WRKSRC} && pytest
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

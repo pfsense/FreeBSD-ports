@@ -25,7 +25,7 @@
 #
 # Usage:
 #
-# USES+=	PORT[:(VERSION|wrapper),build,run,tea]
+# USES+=	PORT[:(VERSION|wrapper),build,run,tea,test]
 #
 # where PORT is one of:
 #
@@ -38,18 +38,19 @@
 #   			  is installed, bring in the default version. See
 #   			  ${_TCLTK_DEFAULT_VERSION} below.
 #
-# - 85, 86, 87		- Depend on a specific version series of PORT. Multiple
+# - 86, 87		- Depend on a specific version series of PORT. Multiple
 #   			  values are OK. The highest version available is
 #   			  picked.
 #
-# - 85+, 86+, 87+	- Depend on any installed version greater or equal to
+# - 86+, 87+		- Depend on any installed version greater or equal to
 #   			  the specified version.
 #
 # If wrapper is specified, an additional dependency on tcl-wrapper or
 # tk-wrapper is added. It is NOT possible to select a specific version of
 # Tcl/Tk when using the wrapper.
 #
-# Build-time / Run-time only dependencies can be specified with build or run.
+# Build-time / Run-time / Test-time only dependencies can be specified with
+# build, run or test.
 #
 # Tea can be used for Tcl/Tk extensions that use the Tcl Extension Architecture
 # [http://www.tcl.tk/doc/tea] and allows to set common autoconf parameters.
@@ -70,7 +71,7 @@ _INCLUDE_USES_TCL_MK=	yes
 #
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_TCLTK_VALID_VERSIONS=	85 86 87
+_TCLTK_VALID_VERSIONS=	86 87
 
 #
 # Bring in the default and check that the specified version is in the list of
@@ -93,16 +94,13 @@ _TCLTK_PORT?=	tcl
 .  if ${tcl_ARGS:M*+}
 _TCLTK_MIN_VERSION:=	${tcl_ARGS:M*+:S/+//}
 _TCLTK_WANTED_VERSIONS:=${_TCLTK_DEFAULT_VERSION}
-.    if ${_TCLTK_MIN_VERSION} == "85"
-IGNORE=	Minimum tcltk version 85+ is meaningless
-.    endif
 .  endif
 
 #
 # Parse one or more ver arguments.
 #
-.  if ${tcl_ARGS:M8[5-7]}
-_TCLTK_WANTED_VERSIONS:=${tcl_ARGS:M8[5-7]}
+.  if ${tcl_ARGS:M8[6-7]}
+_TCLTK_WANTED_VERSIONS:=${tcl_ARGS:M8[6-7]}
 .  endif
 
 #
@@ -155,12 +153,6 @@ _TCLTK_WANTED_VERSION:= ${_TCLTK_HIGHEST_VERSION}
 .  endif
 
 #
-# Deprecate by default all ports depending on 8.5
-.  if ${_TCLTK_WANTED_VERSION} == "85"
-DEPRECATED=	Tcl/Tk 8.5 is nearing EOL, please consider porting to Tcl/Tk 8.6
-.  endif
-
-#
 # Exported variables
 #
 TCL_VER:=	${_TCLTK_WANTED_VERSION:S/8/8./}
@@ -208,6 +200,9 @@ BUILD_DEPENDS+=	${_TCLTK_WRAPPER_PORT} \
 		${_TCLTK_EXE_LINE}
 .  elif ${tcl_ARGS:Mrun}
 RUN_DEPENDS+=	${_TCLTK_WRAPPER_PORT} \
+		${_TCLTK_EXE_LINE}
+.  elif ${tcl_ARGS:Mtest}
+TEST_DEPENDS+=	${_TCLTK_WRAPPER_PORT} \
 		${_TCLTK_EXE_LINE}
 .  else
 RUN_DEPENDS+=	${_TCLTK_WRAPPER_PORT}

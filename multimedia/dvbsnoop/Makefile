@@ -1,20 +1,22 @@
 PORTNAME=	dvbsnoop
 PORTVERSION=	1.4.50
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	fbsd@opal.com
 COMMENT=	DVB stream analyzer / MPEG analyzer
-WWW=		http://dvbsnoop.sourceforge.net/
+WWW=		https://dvbsnoop.sourceforge.net/
 
 DVB_HEADERS=	dmx.h frontend.h
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CFLAGS+=	-I${WRKSRC}
 USES=		gmake
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/dvbsnoop.1.gz
+		share/man/man1/dvbsnoop.1.gz
 
 .include <bsd.port.pre.mk>
 

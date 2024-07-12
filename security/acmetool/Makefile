@@ -1,6 +1,7 @@
 PORTNAME=	acmetool
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.2
+PORTREVISION=	11
 CATEGORIES=	security
 
 MAINTAINER=	samm@FreeBSD.org
@@ -9,7 +10,7 @@ WWW=		https://github.com/hlandau/acme/
 
 LICENSE=	MIT
 
-USES=		go:1.18
+USES=		go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hlandau
@@ -46,6 +47,7 @@ GH_TUPLE=	alecthomas:template:fb15b89:template/vendor/github.com/alecthomas/temp
 		square:go-jose:5606281:go_jose/vendor/gopkg.in/square/go-jose.v1 \
 		tylerb:graceful:4654dfb:graceful/vendor/gopkg.in/tylerb/graceful.v1 \
 		go-yaml:yaml:7649d45:go_yaml/vendor/gopkg.in/yaml.v2 \
+		erikdubbelboer:gspt:ce36a51:gspt/vendor/github.com/erikdubbelboer/gspt
 
 GO_BUILDFLAGS=	-ldflags "\
 		-X github.com/hlandau/acmetool/vendor/github.com/hlandau/acmetool/hooks.DefaultPath=${PREFIX}/libexec/acme/hooks \
@@ -57,7 +59,7 @@ post-build:
 	${GO_WRKDIR_BIN}/${PORTNAME} --help-man > ${WRKSRC}/${PORTNAME}.8
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.8 ${STAGEDIR}${PREFIX}/share/man/man8
 	${MKDIR} ${STAGEDIR}/var/db/acme
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/acme/hooks
 

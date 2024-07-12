@@ -1,6 +1,6 @@
 PORTNAME=	leofs
 DISTVERSION=	1.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 DIST_SUBDIR=	${PORTNAME}
 
@@ -10,7 +10,7 @@ WWW=		https://leo-project.net/
 
 LICENSE=	APACHE20
 
-NOT_FOR_ARCHS=		riscv64 sparc64
+NOT_FOR_ARCHS=		riscv64
 NOT_FOR_ARCHS_REASON=	does not build: error Please implement AtomicPointer for this platform
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/erlang21/bin/erlc:lang/erlang-runtime21 \
@@ -55,6 +55,7 @@ SUB_LIST+=	LEOFS_USER=${LEOFS_USER} \
 SUB_FILES+=	${LEOFS_SBIN_FILES:S/^/sbin-/}
 
 USES=		dos2unix gmake pkgconfig ssl
+USE_CXXSTD=	gnu++11
 USE_RC_SUBR=	${PORTNAME}
 
 DOS2UNIX_FILES=	apps/leo_*/snmp/snmpa_*/leo_*_snmp.config

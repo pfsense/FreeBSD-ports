@@ -4,7 +4,7 @@ CATEGORIES=	lang python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dave@dal.ca
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dialect of Lisp that is embedded in Python
 WWW=		https://docs.hylang.org/en/stable/
 
@@ -20,7 +20,7 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astor>=0.8:devel/py-astor@${PY_FLAVOR} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

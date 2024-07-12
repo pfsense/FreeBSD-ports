@@ -1,6 +1,5 @@
 PORTNAME=	mpifx
-DISTVERSION=	1.3.1
-PORTREVISION=	1
+DISTVERSION=	1.5
 CATEGORIES=	net devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,9 +10,8 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	fypp:devel/py-fypp@${PY_FLAVOR}
-LIB_DEPENDS=	libmpi.so:net/mpich
 
-USES=		cmake:testing fortran python:build
+USES=		cmake:testing fortran mpi:mpich python:build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dftbplus
@@ -32,6 +30,6 @@ post-test: # run test programs # at least one test crashes, see https://github.c
 FFLAGS+=	-fallow-argument-mismatch
 .endif
 
-# tests fail to build: https://github.com/dftbplus/mpifx/issues/43
+# tests fail to run: https://github.com/dftbplus/mpifx/issues/49
 
 .include <bsd.port.post.mk>

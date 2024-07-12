@@ -14,16 +14,17 @@ include/clamav.h
 include/libfreshclam.h
 lib/libclamav.so
 lib/libclamav.so.12
-lib/libclamav.so.12.0.0
+lib/libclamav.so.12.0.2
+lib/libclamav_rust.a
 %%UNRAR%%lib/libclamunrar.so
 %%UNRAR%%lib/libclamunrar.so.12
-%%UNRAR%%lib/libclamunrar.so.12.0.0
+%%UNRAR%%lib/libclamunrar.so.12.0.2
 %%UNRAR%%lib/libclamunrar_iface.so
 %%UNRAR%%lib/libclamunrar_iface.so.12
-%%UNRAR%%lib/libclamunrar_iface.so.12.0.0
+%%UNRAR%%lib/libclamunrar_iface.so.12.0.2
 lib/libfreshclam.so
 lib/libfreshclam.so.3
-lib/libfreshclam.so.3.0.0
+lib/libfreshclam.so.3.0.1
 libdata/pkgconfig/libclamav.pc
 share/man/man1/clambc.1.gz
 share/man/man1/clamconf.1.gz
@@ -69,6 +70,7 @@ share/man/man8/clamd.8.gz
 %%PORTDOCS%%%%DOCSDIR%%/html/faq/faq-eol.html
 %%PORTDOCS%%%%DOCSDIR%%/html/faq/faq-freshclam.html
 %%PORTDOCS%%%%DOCSDIR%%/html/faq/faq-ignore.html
+%%PORTDOCS%%%%DOCSDIR%%/html/faq/faq-malware-fp-reports.html
 %%PORTDOCS%%%%DOCSDIR%%/html/faq/faq-misc.html
 %%PORTDOCS%%%%DOCSDIR%%/html/faq/faq-ml.html
 %%PORTDOCS%%%%DOCSDIR%%/html/faq/faq-pua.html
@@ -96,6 +98,7 @@ share/man/man8/clamd.8.gz
 %%PORTDOCS%%%%DOCSDIR%%/html/fonts/open-sans-v17-all-charsets-italic.woff2
 %%PORTDOCS%%%%DOCSDIR%%/html/fonts/open-sans-v17-all-charsets-regular.woff2
 %%PORTDOCS%%%%DOCSDIR%%/html/fonts/source-code-pro-v11-all-charsets-500.woff2
+%%PORTDOCS%%%%DOCSDIR%%/html/googled62299e9391332c4.html
 %%PORTDOCS%%%%DOCSDIR%%/html/highlight.css
 %%PORTDOCS%%%%DOCSDIR%%/html/highlight.js
 %%PORTDOCS%%%%DOCSDIR%%/html/images/change-fork-name.png
@@ -159,6 +162,7 @@ share/man/man8/clamd.8.gz
 %%PORTDOCS%%%%DOCSDIR%%/html/searcher.js
 %%PORTDOCS%%%%DOCSDIR%%/html/searchindex.js
 %%PORTDOCS%%%%DOCSDIR%%/html/searchindex.json
+%%PORTDOCS%%%%DOCSDIR%%/html/sitemap.xml
 %%PORTDOCS%%%%DOCSDIR%%/html/theme-dawn.js
 %%PORTDOCS%%%%DOCSDIR%%/html/theme-tomorrow_night.js
 %%PORTDOCS%%%%DOCSDIR%%/html/tomorrow-night.css

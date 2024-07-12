@@ -1,11 +1,11 @@
 PORTNAME=	supervisor
-PORTVERSION=	4.2.4
+PORTVERSION=	4.2.5
 PORTEPOCH=	1
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	thomas@gibfest.dk
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	System for controlling process state under UNIX
 WWW=		http://supervisord.org/
 
@@ -19,7 +19,7 @@ LICENSE_PERMS_REPOZE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0.5.0:devel/py-mock@${PY_FLAVOR}
 
-USES=		cpe python:3.6+ shebangfix
+USES=		cpe python shebangfix
 USE_PYTHON=	autoplist distutils
 USE_RC_SUBR=	supervisord
 SHEBANG_FILES=	supervisor/scripts/*.py supervisor/tests/fixtures/*.py

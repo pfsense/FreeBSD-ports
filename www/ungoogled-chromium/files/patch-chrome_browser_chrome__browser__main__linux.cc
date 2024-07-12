@@ -1,13 +1,15 @@
---- chrome/browser/chrome_browser_main_linux.cc.orig	2023-05-05 12:12:41 UTC
+--- chrome/browser/chrome_browser_main_linux.cc.orig	2024-06-22 08:49:42 UTC
 +++ chrome/browser/chrome_browser_main_linux.cc
-@@ -54,13 +54,15 @@ ChromeBrowserMainPartsLinux::~ChromeBrowserMainPartsLi
- }
+@@ -25,7 +25,7 @@
+ #include "device/bluetooth/dbus/bluez_dbus_thread_manager.h"
+ #include "ui/base/l10n/l10n_util.h"
  
- void ChromeBrowserMainPartsLinux::PostCreateMainMessageLoop() {
--#if BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   // No-op: Ash and Lacros Bluetooth DBusManager initialization depend on
-   // FeatureList, and is done elsewhere.
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include "ui/ozone/public/ozone_platform.h"
+ #endif
+ 
+@@ -72,7 +72,9 @@ void ChromeBrowserMainPartsLinux::PostCreateMainMessag
  #endif  // BUILDFLAG(IS_CHROMEOS)
  
  #if !BUILDFLAG(IS_CHROMEOS)
@@ -17,7 +19,16 @@
  
    // Set up crypt config. This needs to be done before anything starts the
    // network service, as the raw encryption key needs to be shared with the
-@@ -120,7 +122,7 @@ void ChromeBrowserMainPartsLinux::PostBrowserStart() {
+@@ -98,7 +100,7 @@ void ChromeBrowserMainPartsLinux::PostCreateMainMessag
+   ChromeBrowserMainPartsPosix::PostCreateMainMessageLoop();
+ }
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ void ChromeBrowserMainPartsLinux::PostMainMessageLoopRun() {
+   ChromeBrowserMainPartsPosix::PostMainMessageLoopRun();
+   ui::OzonePlatform::GetInstance()->PostMainMessageLoopRun();
+@@ -137,7 +139,7 @@ void ChromeBrowserMainPartsLinux::PostBrowserStart() {
  #endif  // defined(USE_DBUS) && !BUILDFLAG(IS_CHROMEOS)
  
  void ChromeBrowserMainPartsLinux::PostDestroyThreads() {

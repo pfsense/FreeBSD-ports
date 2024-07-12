@@ -1,5 +1,5 @@
 PORTNAME=	sshguard
-PORTVERSION=	2.4.2
+PORTVERSION=	2.4.3
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	security
@@ -11,9 +11,12 @@ WWW=		https://www.sshguard.net/
 
 LICENSE=	BSD2CLAUSE
 
+USES=		autoreconf
+
 USE_RC_SUBR=	sshguard
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 SUB_FILES=	pkg-message
 
 post-patch:

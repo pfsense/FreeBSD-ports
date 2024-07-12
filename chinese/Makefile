@@ -15,7 +15,6 @@
     SUBDIR += bug5
     SUBDIR += c2t
     SUBDIR += cconv
-    SUBDIR += celvis
     SUBDIR += chiconv
     SUBDIR += chinese-calendar
     SUBDIR += cless
@@ -48,6 +47,7 @@
     SUBDIR += gcin-qt5
     SUBDIR += gydict
     SUBDIR += hc
+    SUBDIR += ibus-array
     SUBDIR += ibus-cangjie
     SUBDIR += ibus-chewing
     SUBDIR += ibus-libpinyin
@@ -69,7 +69,6 @@
     SUBDIR += lunar
     SUBDIR += moettf
     SUBDIR += muni
-    SUBDIR += oicq
     SUBDIR += opencc
     SUBDIR += opendesktop-fonts
     SUBDIR += oto
@@ -92,7 +91,6 @@
     SUBDIR += p5-Text-Greeking-zh_TW
     SUBDIR += pcmanx
     SUBDIR += php-opencc
-    SUBDIR += phpbb-tw
     SUBDIR += phpbb3-tw
     SUBDIR += pycangjie
     SUBDIR += pyzy

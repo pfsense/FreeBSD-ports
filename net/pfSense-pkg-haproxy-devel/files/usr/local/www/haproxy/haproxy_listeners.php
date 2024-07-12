@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
- * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
@@ -32,8 +32,6 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 $changedesc = "Services: HAProxy: Frontends";
 
 haproxy_config_init();
-
-$a_frontend = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
@@ -72,16 +70,15 @@ function array_moveitemsbefore(&$items, $before, $selected) {
 if($_GET['action'] == "toggle") {
 	$id = $_GET['id'];
 	echo "$id|";
-	if (isset($a_frontend[get_frontend_id($id)])) {
-		$frontent = &$a_frontend[get_frontend_id($id)];
-		if ($frontent['status'] != "disabled"){
-			$frontent['status'] = 'disabled';
+	if (config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id)) !== null) {
+		if (config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status') != "disabled"){
+			config_set_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status', 'disabled');
 			echo "0|";
 		}else{
-			$frontent['status'] = 'active';
+			config_set_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status', 'active');
 			echo "1|";
 		}
-		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
+		$changedesc .= " set frontend '$id' status to: " . config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($id) . '/status');
 
 		touch($d_haproxyconfdirty_path);
 		write_config($changedesc);
@@ -107,7 +104,7 @@ if ($_POST) {
 				$selected[] = get_frontend_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_frontend[$itemnr]);
+				config_del_path("installedpackages/haproxy/ha_backends/item/{$itemnr}");
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -140,7 +137,9 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_frontend_id($selection);
 			}
+			$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
+			config_set_path('installedpackages/haproxy/ha_backends/item', $a_frontend);
 
 			touch($d_haproxyconfdirty_path);
 			write_config($changedesc);
@@ -156,9 +155,9 @@ if ($_POST) {
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
 	$id = get_frontend_id($id);
-	if (isset($a_frontend[$id])) {
+	if (config_get_path("installedpackages/haproxy/ha_backends/item/{$id}") !== null) {
 		if (!$input_errors) {
-			unset($a_frontend[$id]);
+			config_del_path("installedpackages/haproxy/ha_backends/item/{$id}");
 			$changedesc .= " Frontend delete";
 			write_config($changedesc);
 			touch($d_haproxyconfdirty_path);
@@ -255,7 +254,7 @@ function js_callback(req) {
 	}
 
 	$a_frontend_grouped = array();
-	foreach($a_frontend as &$frontend2) {
+	foreach(config_get_path('installedpackages/haproxy/ha_backends/item', []) as $fidx => $frontend2) {
 		getarraybyref($frontend2);// makes it a valid array in case the item was completely empty.
 		$mainfrontend = get_primaryfrontend($frontend2);
 		$mainname = $mainfrontend['name'];
@@ -263,6 +262,7 @@ function js_callback(req) {
 		$frontend2['ipport'] = $ipport;
 		$frontend2['type'] = $mainfrontend['type'];
 		$a_frontend_grouped[$mainname][] = $frontend2;
+		config_set_path("installedpackages/haproxy/ha_backends/item/{$fidx}", $frontend2);
 	}
 ?>
 
@@ -307,13 +307,13 @@ function js_callback(req) {
 						<td>
 						<?if($frontend['secondary'] != 'yes'):?>
 							<input type="checkbox" id="frc<?=$frontendname;?>" onClick="fr_toggle('<?=$frontendname;?>')" name="rule[]" value="<?=$frontendname;?>"/>
-							<a class="fa fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
+							<a class="fa-solid fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 						<?endif?>
 						</td>
 				  <td>
 				  <?if($frontend['secondary'] == 'yes'):?>
 					<input type="checkbox" id="frc<?=$frontendname;?>" onClick="fr_toggle('<?=$frontendname;?>')" name="rule[]" value="<?=$frontendname;?>"/>
-					<a class="fa fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
+					<a class="fa-solid fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				  <?endif?>
 				  </td>
 				  <td>
@@ -340,11 +340,13 @@ function js_callback(req) {
 
 					if (get_frontend_uses_ssl($frontend)) {
 						$cert = lookup_cert($frontend['ssloffloadcert']);
+						$cert = $cert['item'];
 						$descr = htmlspecialchars($cert['descr']);
 						$certs = getarraybyref($frontend, 'ha_certificates', 'item');
 						if (count($certs) > 0){
 							foreach($certs as $certitem){
 								$cert = lookup_cert($certitem['ssl_certificate']);
+								$cert = $cert['item'];
 								$descr .= "\n".htmlspecialchars($cert['descr']);
 							}
 						}
@@ -448,15 +450,15 @@ function js_callback(req) {
 	</div>
 	<nav class="action-buttons">
 		<a href="haproxy_listeners_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add frontend to the end of the list')?>">
-			<i class="fa fa-level-down icon-embed-btn"></i>
+			<i class="fa-solid fa-turn-down icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<button name="del_x" type="submit" class="btn btn-danger btn-sm no-confirm" value="<?=gettext("Delete selected frontends"); ?>" title="<?=gettext('Delete selected frontends')?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
 		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary no-confirm" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>

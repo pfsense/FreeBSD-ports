@@ -1,6 +1,5 @@
 PORTNAME=	Rdpack
-DISTVERSION=	2.4
-PORTREVISION=	1
+DISTVERSION=	2.6
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -10,9 +9,7 @@ WWW=		https://cran.r-project.org/web/packages/Rdpack/
 
 LICENSE=	GPLv2+
 
-CRAN_DEPENDS=	R-cran-rbibutils>=1.3:textproc/R-cran-rbibutils
-BUILD_DEPENDS=	${CRAN_DEPENDS}
-RUN_DEPENDS=	${CRAN_DEPENDS}
+RUN_DEPENDS=	R-cran-rbibutils>=1.3:textproc/R-cran-rbibutils
 
 USES=		cran:auto-plist
 

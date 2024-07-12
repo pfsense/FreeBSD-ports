@@ -1,12 +1,13 @@
 PORTNAME=	html2wml
 PORTVERSION=	0.4.11
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	SF/htmlwml/Html2Wml/${PORTVERSION} \
 		http://maddingue.free.fr/softwares/download/Html2Wml/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CGI that can do on-the-fly HTML to WML conversion
-WWW=		http://htmlwml.sourceforge.net/
+WWW=		https://htmlwml.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,7 +21,7 @@ SHEBANG_FILES=	html2wml.cgi
 NO_ARCH=	yes
 
 PORTDOCS=	*
-PLIST_FILES=	bin/html2wml man/man1/html2wml.1.gz
+PLIST_FILES=	bin/html2wml share/man/man1/html2wml.1.gz
 
 OPTIONS_DEFINE=	DOCS
 
@@ -37,7 +38,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/html2wml.cgi \
 		${STAGEDIR}${PREFIX}/bin/html2wml
 	${INSTALL_MAN} ${WRKSRC}/doc/html2wml.man \
-		${STAGEDIR}${MANPREFIX}/man/man1/html2wml.1
+		${STAGEDIR}${PREFIX}/share/man/man1/html2wml.1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

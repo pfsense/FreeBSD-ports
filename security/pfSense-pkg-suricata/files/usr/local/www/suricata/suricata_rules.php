@@ -3,11 +3,11 @@
  * suricata_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -172,9 +172,10 @@ if (empty($categories) && ($currentruleset != "custom.rules") && ($currentrulese
 		$currentruleset = "custom.rules";
 }
 
-/* One last sanity check -- if the rules directory is empty, default to loading custom rules */
+// One last sanity check -- if the rules directory is empty, or we were
+// not passed a ruleset name to load, default to loading custom rules.
 $tmp = glob("{$suricata_rules_dir}*.rules");
-if (empty($tmp))
+if (empty($tmp) || empty($currentruleset))
 	$currentruleset = "custom.rules";
 
 $ruledir = SURICATA_RULES_DIR;
@@ -954,7 +955,7 @@ if ($currentruleset != 'custom.rules' && $currentruleset != 'Active Rules' && st
 		'',
 		'View All',
 		'javascript:wopen(\'/suricata/suricata_rules_edit.php?id=' . $id . '&openruleset=' . $currentruleset . '\',\'FileViewer\');',
-		'fa-file-text-o'
+		'fa-regular fa-file-lines'
 	))->removeClass("btn-default")->addClass("btn-sm btn-success")->setAttribute('title', gettext("View raw text for all rules in selected category"));
 }
 $section->add($group);
@@ -971,14 +972,14 @@ if ($currentruleset == 'custom.rules') :
 ?>
 		<nav class="action-buttons">
 			<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Save custom rules for this interface');?>">
-				<i class="fa fa-save icon-embed-btn"></i>
+				<i class="fa-solid fa-save icon-embed-btn"></i>
 				<?=gettext('Save');?>
 			</button>
 			<button type="submit" id="cancel" name="cancel" class="btn btn-warning btn-sm" title="<?=gettext('Cancel changes and return to last page');?>">
 				<?=gettext('Cancel');?>
 			</button>
 			<button type="submit" id="clear" name="clear" class="btn btn-danger btn-sm" title="<?=gettext('Deletes all custom rules for this interface');?>">
-				<i class="fa fa-trash icon-embed-btn"></i>
+				<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 				<?=gettext('Clear');?>
 			</button>
 		</nav>
@@ -992,31 +993,31 @@ $group->add(new Form_Button(
 	'apply',
 	'Apply',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 ))->setAttribute('title', gettext('Apply changes made on this tab and rebuild the interface rules'))->addClass('btn-primary btn-sm');
 $group->add(new Form_Button(
 	'resetall',
 	'Reset All',
 	null,
-	'fa-repeat'
+	'fa-solid fa-arrow-rotate-right'
 ))->setAttribute('title', gettext('Remove user overrides for all rule categories'))->addClass('btn-sm btn-warning');
 $group->add(new Form_Button(
 	'resetcategory',
 	'Reset Current',
 	null,
-	'fa-repeat'
+	'fa-solid fa-arrow-rotate-right'
 ))->setAttribute('title', gettext('Remove user overrides for only the currently selected category'))->addClass('btn-sm btn-warning');
 $group->add(new Form_Button(
 	'disable_all',
 	'Disable All',
 	null,
-	'fa-times-circle-o'
+	'fa-regular fa-circle-xmark'
 ))->setAttribute('title', gettext('Disable all rules in the currently selected category'))->addClass('btn-sm btn-danger');
 $group->add(new Form_Button(
 	'enable_all',
 	'Enable All',
 	null,
-	'fa-check-circle-o'
+	'fa-regular fa-circle-check'
 ))->setAttribute('title', gettext('Enable all rules in the currently selected category'))->addClass('btn-sm btn-success');
 if ($currentruleset == 'Auto-Flowbit Rules') {
 	$msg = '<b>' . gettext('Note: ') . '</b>' . gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ');
@@ -1080,14 +1081,14 @@ $group->add(new Form_Button(
 	'filterrules_submit',
 	'Apply Filter',
 	null,
-	'fa-filter'
+	'fa-solid fa-filter'
 ))->removeClass("btn-primary")
   ->addClass("btn-sm btn-success");
 $group->add(new Form_Button(
 	'filterrules_clear',
 	'Clear Filter',
 	null,
-	'fa-trash-o'
+	'fa-regular fa-trash-can'
 ))->removeclass("btn-primary")
   ->addClass("btn-sm btn-danger no-confirm");
 $section->add($group);
@@ -1105,23 +1106,23 @@ print($section);
 				<tbody>
 					<tr>
 						<td><b><?=gettext('Legend: ');?></b></td>
-						<td style="padding-left: 8px;"><i class="fa fa-check-circle-o text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Enabled');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-check-circle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Enabled by user');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action/content modified by SID Mgmt');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule contains noalert option');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-regular fa-circle-check text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Enabled');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-solid fa-check-circle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Enabled by user');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-brands fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-brands fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action/content modified by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-solid fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-solid fa-exclamation-triangle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule contains noalert option');?></small></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-regular fa-circle-xmark text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-solid fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-brands fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
 						<td></td><td></td>
 				<?php if ($a_rule['blockoffenders'] == 'on') : ?>
-						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-solid fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
 					<?php if ($a_rule['ips_mode'] == 'ips_mode_inline') : ?>
-						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa-regular fa-hand text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
 					<?php else : ?>
 						<td></td><td></td>
 					<?php endif; ?>
@@ -1201,12 +1202,12 @@ print($section);
 									if ($v['disabled'] == 1 && $v['state_toggled'] == 1) {
 										$textss = '<span class="text-muted">';
 										$textse = '</span>';
-										$iconb_class = 'class="fa fa-adn text-danger text-left"';
+										$iconb_class = 'class="fa-brands fa-adn text-danger text-left"';
 										$title = gettext("Auto-disabled by settings on SID Mgmt tab");
 									}
 									elseif ($v['disabled'] == 0 && $v['state_toggled'] == 1) {
 										$textss = $textse = "";
-										$iconb_class = 'class="fa fa-adn text-success text-left"';
+										$iconb_class = 'class="fa-brands fa-adn text-success text-left"';
 										$title = gettext("Auto-enabled by settings on SID Mgmt tab");
 									}
 									$managed_count++;
@@ -1217,7 +1218,7 @@ print($section);
 									$textse = "</span>";
 									$disable_cnt++;
 									$user_disable_cnt++;
-									$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
+									$iconb_class = 'class="fa-solid fa-times-circle text-danger text-left"';
 									$title = gettext("Disabled by user. Click to change rule state");
 								}
 								// See if the rule is in our list of user-enabled overrides
@@ -1225,7 +1226,7 @@ print($section);
 									$textss = $textse = "";
 									$enable_cnt++;
 									$user_enable_cnt++;
-									$iconb_class = 'class="fa fa-check-circle text-success text-left"';
+									$iconb_class = 'class="fa-solid fa-check-circle text-success text-left"';
 									$title = gettext("Enabled by user. Click to change rules state");
 								}
 
@@ -1235,27 +1236,27 @@ print($section);
 									$textss = "<span class=\"text-muted\">";
 									$textse = "</span>";
 									$disable_cnt++;
-									$iconb_class = 'class="fa fa-times-circle-o text-danger text-left"';
+									$iconb_class = 'class="fa-regular fa-circle-xmark text-danger text-left"';
 									$title = gettext("Disabled by default. Click to change rule state");
 								}
 								elseif ($v['disabled'] == 0 && $v['state_toggled'] == 0) {
 									$textss = $textse = "";
 									$enable_cnt++;
-									$iconb_class = 'class="fa fa-check-circle-o text-success text-left"';
+									$iconb_class = 'class="fa-regular fa-circle-check text-success text-left"';
 									$title = gettext("Enabled by default.");
 								}
 
 								// Determine which icon to display in the second column for rule action.
 								// Default to ALERT icon.
 								$textss = $textse = "";
-								$iconact_class = 'class="fa fa-exclamation-triangle text-warning text-center"';
+								$iconact_class = 'class="fa-solid fa-exclamation-triangle text-warning text-center"';
 								$title_act = gettext("Rule will alert on traffic when triggered.");
 								if ($v['action'] == 'drop' && $a_rule['blockoffenders'] == 'on') {
-									$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
+									$iconact_class = 'class="fa-solid fa-thumbs-down text-danger text-center"';
 									$title_act = gettext("Rule will drop traffic when triggered.");
 								}
 								elseif ($v['action'] == 'reject' && $a_rule['ips_mode'] == 'ips_mode_inline' && $a_rule['blockoffenders'] == 'on') {
-									$iconact_class = 'class="fa fa-hand-stop-o text-warning text-center"';
+									$iconact_class = 'class="fa-regular fa-hand text-warning text-center"';
 									$title_act = gettext("Rule will reject traffic when triggered.");
 								}
 								if ($a_rule['blockoffenders'] == 'on') {
@@ -1264,7 +1265,7 @@ print($section);
 
 								// Rules with "noalert;" option enabled get special treatment
 								if ($v['noalert'] == 1) {
-									$iconact_class = 'class="fa fa-exclamation-triangle text-success text-center"';
+									$iconact_class = 'class="fa-solid fa-exclamation-triangle text-success text-center"';
 									$title_act = gettext("Rule contains the 'noalert;' and/or 'flowbits:noalert;' options.");
 								}
 
@@ -1301,7 +1302,7 @@ print($section);
 										<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="toggleState('<?=$sid; ?>', '<?=$gid; ?>');" 
 										<?=$iconb_class; ?> title="<?=$title; ?>"></a><?=$textse; ?>
 						<?php if ($v['managed'] == 1 && $v['modified'] == 1) : ?>
-										<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
+										<i class="fa-brands fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
 						<?php endif; ?>
 									</td>
 
@@ -1400,7 +1401,7 @@ print($section);
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-sm btn-primary" id="rule_action_save" name="rule_action_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>">
-					<i class="fa fa-save icon-embed-btn"></i>
+					<i class="fa-solid fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
 				<button type="button" class="btn btn-sm btn-warning" id="cancel_sid_action" name="cancel_sid_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
@@ -1437,7 +1438,7 @@ print($section);
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-sm btn-primary" id="rule_state_save" name="rule_state_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>">
-					<i class="fa fa-save icon-embed-btn"></i>
+					<i class="fa-solid fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
 				<button type="button" class="btn btn-sm btn-warning" id="cancel_state_action" name="cancelcancel_state_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">

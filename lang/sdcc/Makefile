@@ -1,13 +1,13 @@
 PORTNAME=	sdcc
 PORTVERSION=	4.0.0
 DISTVERSIONPREFIX=src-
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	SF
 
 MAINTAINER=	darius@dons.net.au
 COMMENT=	Small Device C Compiler
-WWW=		http://sdcc.sourceforge.net/
+WWW=		https://sdcc.sourceforge.net/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	multi

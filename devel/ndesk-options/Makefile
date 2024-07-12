@@ -1,10 +1,10 @@
 PORTNAME=	ndesk-options
 PORTVERSION=	0.2.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://www.ndesk.org/archive/${PORTNAME}/
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Callback-based program option parser for C\#
 WWW=		http://www.ndesk.org/Options
 

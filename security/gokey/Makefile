@@ -1,10 +1,10 @@
 PORTNAME=	gokey
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.2
-PORTREVISION=	5
+PORTREVISION=	14
 CATEGORIES=	security
 
-MAINTAINER=	0xdutra@gmail.com
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Simple password manager write in Go
 WWW=		https://github.com/cloudflare/gokey
 

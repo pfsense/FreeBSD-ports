@@ -74,7 +74,7 @@
     SUBDIR += flowd
     SUBDIR += flowviewer
     SUBDIR += fprobe
-    SUBDIR += glpi-plugins-fusioninventory-server
+    SUBDIR += geom-exporter
     SUBDIR += gnu-ipcalc
     SUBDIR += gping
     SUBDIR += grepcidr
@@ -87,6 +87,7 @@
     SUBDIR += icinga-php-library
     SUBDIR += icinga-php-thirdparty
     SUBDIR += icinga2
+    SUBDIR += icingadb
     SUBDIR += icingaweb2
     SUBDIR += icingaweb2-module-businessprocess
     SUBDIR += icingaweb2-module-cube
@@ -96,6 +97,7 @@
     SUBDIR += icingaweb2-module-generictts
     SUBDIR += icingaweb2-module-grafana
     SUBDIR += icingaweb2-module-graphite
+    SUBDIR += icingaweb2-module-icingadb
     SUBDIR += icingaweb2-module-idoreports
     SUBDIR += icingaweb2-module-incubator
     SUBDIR += icingaweb2-module-jira
@@ -147,6 +149,7 @@
     SUBDIR += nagios-certexp-plugin
     SUBDIR += nagios-check_bacula11
     SUBDIR += nagios-check_bacula13
+    SUBDIR += nagios-check_bacula15
     SUBDIR += nagios-check_bacula9
     SUBDIR += nagios-check_clamav
     SUBDIR += nagios-check_cpu_usage
@@ -265,6 +268,8 @@
     SUBDIR += p5-NetAddr-IP-Lite
     SUBDIR += p5-NetApp
     SUBDIR += p5-POE-Component-SNMP
+    SUBDIR += p5-Prometheus-Tiny
+    SUBDIR += p5-Prometheus-Tiny-Shared
     SUBDIR += p5-RDR-Collector
     SUBDIR += p5-SNMP-Info
     SUBDIR += p5-SNMP-MIB-Compiler
@@ -287,13 +292,11 @@
     SUBDIR += pandorafms_server
     SUBDIR += pftabled
     SUBDIR += php-fpm_exporter
-    SUBDIR += php80-snmp
     SUBDIR += php81-snmp
     SUBDIR += php82-snmp
     SUBDIR += php83-snmp
     SUBDIR += phpfpm_exporter
     SUBDIR += phpipam
-    SUBDIR += phpweathermap
     SUBDIR += ping_exporter
     SUBDIR += pktstat
     SUBDIR += pmacct
@@ -342,6 +345,7 @@
     SUBDIR += rancid3
     SUBDIR += rate
     SUBDIR += rcpd
+    SUBDIR += realmd
     SUBDIR += remarp
     SUBDIR += resource-agents
     SUBDIR += riemann
@@ -351,6 +355,7 @@
     SUBDIR += routers2-extensions
     SUBDIR += routers2-extras
     SUBDIR += rrdbot
+    SUBDIR += rs-aggregate
     SUBDIR += rtrlib
     SUBDIR += rubygem-blimpy
     SUBDIR += rubygem-checkson
@@ -391,7 +396,7 @@
     SUBDIR += torrus
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
-    SUBDIR += unifi7
+    SUBDIR += unifi8
     SUBDIR += victoria-metrics
     SUBDIR += virt-viewer
     SUBDIR += vmutils
@@ -402,10 +407,6 @@
     SUBDIR += xymon-client
     SUBDIR += xymon-server
     SUBDIR += yaf
-    SUBDIR += zabbix4-agent
-    SUBDIR += zabbix4-java
-    SUBDIR += zabbix4-proxy
-    SUBDIR += zabbix4-server
     SUBDIR += zabbix5-agent
     SUBDIR += zabbix5-java
     SUBDIR += zabbix5-proxy
@@ -420,5 +421,10 @@
     SUBDIR += zabbix64-java
     SUBDIR += zabbix64-proxy
     SUBDIR += zabbix64-server
+    SUBDIR += zabbix7-agent
+    SUBDIR += zabbix7-frontend
+    SUBDIR += zabbix7-java
+    SUBDIR += zabbix7-proxy
+    SUBDIR += zabbix7-server
 
 .include <bsd.port.subdir.mk>

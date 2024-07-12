@@ -22,9 +22,9 @@
     SUBDIR += p5-FreeBSD-Ports-INDEXhash
     SUBDIR += packagekit
     SUBDIR += packagekit-qt
-    SUBDIR += parfetch-overlay
     SUBDIR += pchecker
     SUBDIR += pkg
+    SUBDIR += pkg-appstream
     SUBDIR += pkg-devel
     SUBDIR += pkg-graph
     SUBDIR += pkg-provides
@@ -53,6 +53,7 @@
     SUBDIR += portless
     SUBDIR += portlint
     SUBDIR += portmaster
+    SUBDIR += portoptscli
     SUBDIR += portrac
     SUBDIR += ports-tools
     SUBDIR += portscout
@@ -71,6 +72,7 @@
     SUBDIR += poudriere-devel
     SUBDIR += psearch
     SUBDIR += py-FreeBSD-ports
+    SUBDIR += py-pnu-portstreelint
     SUBDIR += py-pytoport
     SUBDIR += py-skog
     SUBDIR += rc-subr-jail

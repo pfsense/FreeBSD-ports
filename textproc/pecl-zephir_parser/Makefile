@@ -1,8 +1,8 @@
 PORTNAME=	zephir_parser
-DISTVERSION=	1.5.3
+DISTVERSION=	1.6.0
 CATEGORIES=	textproc
 
-MAINTAINER=	cmcdonald@netgate.com
+MAINTAINER=	rcm@rcm.sh
 COMMENT=	Zephir Parser delivered as a C extension for the PHP language
 WWW=		https://github.com/zephir-lang/php-zephir-parser
 

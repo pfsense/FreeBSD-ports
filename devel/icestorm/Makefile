@@ -1,5 +1,5 @@
 PORTNAME=	icestorm
-PORTVERSION=	g20220915
+PORTVERSION=	g20231212
 CATEGORIES=	devel
 
 MAINTAINER=	manu@FreeBSD.org
@@ -13,14 +13,14 @@ LIB_DEPENDS=	libftdi1.so:devel/libftdi1 \
 		libboost_python${PYTHON_SUFFIX}.so:devel/boost-python-libs
 BUILD_DEPENDS=	gsed:textproc/gsed
 
-USES=		compiler:c++11-lang gmake pkgconfig python:3.3+ shebangfix
+USES=		compiler:c++11-lang gmake pkgconfig python shebangfix
 
 SHEBANG_FILES=	${WRKSRC}/icebox/*.py \
 		${WRKSRC}/icebox/Makefile
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	yosyshq
-GH_TAGNAME=	a545498d6f
+GH_TAGNAME=	1a40ae75d4
 
 BINARY_ALIAS=	python3=${PYTHON_CMD} sed=gsed
 

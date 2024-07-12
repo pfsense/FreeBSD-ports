@@ -4,13 +4,13 @@
 
 PORTNAME=	dspam
 PORTVERSION=	3.10.2
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	danny@dannywarren.com
 COMMENT=	Bayesian spam filter
-WWW=		http://dspam.sourceforge.net/
+WWW=		https://dspam.sourceforge.net/
 
 LICENSE=	AGPLv3
 
@@ -88,7 +88,7 @@ SHEBANG_FILES=	src/tools/dspam_logrotate \
 		webui/cgi-bin/templates/*/strings.pl \
 		webui/cgi-bin/templates/strings.pl \
 		webui/cgi-bin/*.cgi \
-		webui/cgi-bin/*.pl
+		webui/cgi-bin/*.pl*
 
 .ifdef(GDBS)
 CFLAGS+=	-g -DDEBUG

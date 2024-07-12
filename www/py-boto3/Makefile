@@ -1,25 +1,26 @@
 PORTNAME=	boto3
-PORTVERSION=	1.26.146
+PORTVERSION=	1.34.127
 CATEGORIES=	www python devel
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	AWS SDK for Python
-WWW=		https://github.com/boto/boto3
+WWW=		https://aws.amazon.com/sdk-for-python/ \
+		https://github.com/boto/boto3
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=1.29.${PORTVERSION:E}<1.30.0:devel/py-botocore@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=${PORTVERSION}<1.35.0:devel/py-botocore@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jmespath>=0.7.1<2.0.0:devel/py-jmespath@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.6.0<0.7.0:net/py-s3transfer@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.10.0<0.11.0:net/py-s3transfer@${PY_FLAVOR}
 
-USES=		python:3.7+
-USE_PYTHON=	autoplist concurrent distutils pytest
+USES=		python
+USE_PYTHON=	autoplist concurrent pep517 pytest
 
 NO_ARCH=	yes
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	boto
 
 .include <bsd.port.mk>

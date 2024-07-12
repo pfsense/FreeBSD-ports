@@ -3,7 +3,7 @@
  * suricata_check_for_rule_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -442,7 +442,7 @@ $last_curl_error = "";
 $update_errors = false;
 
 /* Ensure our basic config array of interfaces exists to prevent PHP foreach() errors */
-init_config_arr(array('installedpackages', 'suricata', 'rule'));
+config_init_path('installedpackages/suricata/rule');
 
 /* Save current state (running/not running) for each enabled Suricatat interface */
 $active_interfaces = array();
@@ -672,7 +672,11 @@ if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
 						$existing_rules = unserialize(file_get_contents("{$suricatadir}{$rulesfilename}.ruleslist"));
 						$newrules = array_diff($downloaded_rules, $existing_rules);
 						if (!empty($newrules)) {
-							$notify_new_message .= gettext("- Extra {$exrule['name']} rules: " . implode(', ', $newrules) . "\n");
+							$tmpstring = implode(', ', $newrules);
+							// There is a 4096 character limit enforced for strings sent to gettext() !!
+							// Make sure we don't exceed that if there are lots of new rule categories.
+							$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+							$notify_new_message .= gettext("- Extra {$exrule['name']} rules: " . $tmpstring . "\n");
 							@file_put_contents("{$suricatadir}{$rulesfilename}.ruleslist", serialize($downloaded_rules));
 						}
 					} else {
@@ -763,7 +767,9 @@ if ($emergingthreats == 'on') {
 			$existing_rules = unserialize(file_get_contents("{$suricatadir}{$emergingthreats_filename}.ruleslist"));
 			$newrules = array_diff($downloaded_rules, $existing_rules);
 			if (!empty($newrules)) {
-				$notify_new_message .= gettext("- {$et_name} rules: " . implode(', ', $newrules) . "\n");
+				$tmpstring = implode(', ', $newrules);
+				$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+				$notify_new_message .= gettext("- {$et_name} rules: " . $tmpstring . "\n");
 				@file_put_contents("{$suricatadir}{$emergingthreats_filename}.ruleslist", serialize($downloaded_rules));
 			}
 		} else {
@@ -817,7 +823,9 @@ if ($snortdownload == 'on') {
 			$existing_rules = unserialize(file_get_contents("{$suricatadir}{$snort_filename}.ruleslist"));
 			$newrules = array_diff($downloaded_rules, $existing_rules);
 			if (!empty($newrules)) {
-				$notify_new_message .= gettext("- Snort rules: " . implode(', ', $newrules) . "\n");
+				$tmpstring = implode(', ', $newrules);
+				$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+				$notify_new_message .= gettext("- Snort rules: " . $tmpstring . "\n");
 				@file_put_contents("{$suricatadir}{$snort_filename}.ruleslist", serialize($downloaded_rules));
 			}
 		} else {
@@ -856,7 +864,9 @@ if ($snortcommunityrules == 'on') {
 			$existing_rules = unserialize(file_get_contents("{$suricatadir}{$snort_community_rules_filename}.ruleslist"));
 			$newrules = array_diff($downloaded_rules, $existing_rules);
 			if (!empty($newrules)) {
-				$notify_new_message .= gettext("- Snort GPLv2 Community Rules: " . implode(', ', $newrules) . "\n");
+				$tmpstring = implode(', ', $newrules);
+				$tmpstring = (strlen($tmpstring) > 4096) ? substr($tmpstring,0,4000).'... msg truncated - too long to translate' : $tmpstring;
+				$notify_new_message .= gettext("- Snort GPLv2 Community Rules: " . $tmpstring . "\n");
 				@file_put_contents("{$suricatadir}{$snort_community_rules_filename}.ruleslist", serialize($downloaded_rules));
 			}
 		} else {

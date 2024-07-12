@@ -1,5 +1,6 @@
 PORTNAME=	sks
 PORTVERSION=	1.1.6
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://bitbucket.org/skskeyserver/sks-keyserver/downloads/
 
@@ -10,6 +11,10 @@ COMMENT=	Synchronizing Key Server, a fast OpenPGP keyserver
 WWW=		https://bitbucket.org/skskeyserver/sks-keyserver/
 
 LICENSE=	GPLv2+
+
+BROKEN=		Unfetchable
+DEPRECATED=	Depends on deprecated port databases/db5
+EXPIRATION_DATE=2024-06-30
 
 BUILD_DEPENDS=	${LOCALBASE}/${OCAML_SITELIBDIR}/num/META:math/ocaml-num
 
@@ -23,7 +28,7 @@ SHEBANG_FILES=	sks_build.sh
 MAKE_ENV=	BDBINCLUDE="-I${BDB_INCLUDE_DIR}" \
 		BDBLIB="-L${BDB_LIB_DIR}" \
 		LIBDB="-l${BDB_LIB_NAME}" \
-		MANDIR="${MANPREFIX}/man"
+		MANDIR="${PREFIX}/share/man"
 
 SUB_FILES=	pkg-message
 

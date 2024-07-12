@@ -1,6 +1,5 @@
 PORTNAME=	rpyc
-PORTVERSION=	5.3.1
-PORTREVISION=	1
+PORTVERSION=	6.0.0
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>=0:devel/py-hatchling@${PY_FLAVOR}
 
-USES=		cpe python:3.7+ shebangfix
+USES=		cpe python shebangfix
 CPE_VENDOR=	${PORTNAME:tl}_project
 
 SHEBANG_FILES=	rpyc/cli/*.py

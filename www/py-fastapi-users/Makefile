@@ -1,5 +1,6 @@
 PORTNAME=	fastapi-users
-DISTVERSION=	11.0.0
+DISTVERSION=	12.1.2
+PORTREVISION=	1
 CATEGORIES=	www devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +14,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=3.1.0:security/py-bcrypt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}email-validator>=1.1.0,<2.1:mail/py-email-validator@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}email-validator>=1.1.0:mail/py-email-validator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fastapi>=0.65.2:www/py-fastapi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}makefun>=1.11.2,<2.0:devel/py-makefun@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}passlib>=0:security/py-passlib@${PY_FLAVOR} \
@@ -26,7 +27,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asgi-lifespan>=0:devel/py-asgi-lifespan@${P
 		${PYTHON_PKGNAMEPREFIX}pytest-asyncio>=0:devel/py-pytest-asyncio@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-mock>=0:devel/py-pytest-mock@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils pytest
 
 TEST_ENV=	PYTHONPATH=${WRKSRC}/src
@@ -48,10 +49,4 @@ OAUTH_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}httpx-oauth>=0.3,<0.4:www/py-httpx-oau
 SQLALCHEMY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}databases>=0.3.0:databases/py-databases@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}sqlalchemy14>=1.4.0:databases/py-sqlalchemy14@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30800
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.7.4.3:devel/py-typing-extensions@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

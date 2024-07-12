@@ -1,6 +1,6 @@
 PORTNAME=	wl-clipboard
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
+DISTVERSION=	2.2.1
 PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
@@ -19,9 +19,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	bugaevc
 PLIST_FILES=	bin/wl-copy \
 		bin/wl-paste \
-		man/man1/wl-clipboard.1.gz \
-		man/man1/wl-copy.1.gz \
-		man/man1/wl-paste.1.gz \
+		share/man/man1/wl-clipboard.1.gz \
+		share/man/man1/wl-copy.1.gz \
+		share/man/man1/wl-paste.1.gz \
 		share/bash-completion/completions/wl-copy \
 		share/bash-completion/completions/wl-paste \
 		share/fish/vendor_completions.d/wl-copy.fish \
@@ -37,6 +37,7 @@ post-patch:
 		-e '/local/!s,/etc,${LOCALBASE}&,' \
 		${WRKSRC}/completions/bash/wl-copy \
 		${WRKSRC}/completions/zsh/_wl-copy \
+		${WRKSRC}/data/${PORTNAME}.1 \
 		${WRKSRC}/src/util/files.c
 
 .include <bsd.port.mk>

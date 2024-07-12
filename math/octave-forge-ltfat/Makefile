@@ -1,10 +1,10 @@
 PORTNAME=	octave-forge-ltfat
-PORTVERSION=	2.3.1
-PORTREVISION=	14
+PORTVERSION=	2.6.0
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	math
-MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
-DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
+MASTER_SITES=	https://github.com/ltfat/ltfat/releases/download/v2.6.0/
+DISTNAME=	${OCTAVE_PKGNAME}-${PORTVERSION}-of
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
@@ -13,8 +13,6 @@ WWW=		https://packages.octave.org/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: modules/libltfat/src/dgt_multi.c:47:31: 'cexpl' undeclared (first use in this function); did you mean 'cexpf'?
-
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libportaudio.so:audio/portaudio \
 		libopenblas.so:math/openblas
@@ -22,8 +20,6 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 USES=		octave
 
 OCTAVE_SRC=		${OCTAVE_PKGNAME}
-
-GNU_CONFIGURE=	yes
 
 post-build:
 	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure

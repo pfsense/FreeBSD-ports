@@ -1,5 +1,6 @@
 PORTNAME=	compiler-rt
 DISTVERSION=	0.r${SVN_REV}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/brooks
 
@@ -13,8 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 BROKEN_powerpc=		does not compile
 BROKEN_powerpc64=	does not build: undefined reference to fmax
-
-BUILD_DEPENDS=	cmake:devel/cmake
 
 CONFIGURE_WRKSRC=	${WRKDIR}/build
 BUILD_WRKSRC=		${WRKDIR}/build
@@ -54,7 +53,11 @@ SVN_REV!=	svn info ${LLVM_SVN}/ | ${GREP} Revision | cut -d' ' -f2
 .endif
 
 .if defined(BOOTSTRAP)
+.if ${WITH_SUBVERSION_VER:U} == LTS
+FETCH_DEPENDS+=	svn:devel/subversion-lts
+.else
 FETCH_DEPENDS+=	svn:devel/subversion
+.endif
 
 do-fetch:
 	${MKDIR} ${WRKDIR}

@@ -1,11 +1,11 @@
---- components/live_caption/caption_util.cc.orig	2022-10-05 07:34:01 UTC
+--- components/live_caption/caption_util.cc.orig	2024-06-25 12:08:48 UTC
 +++ components/live_caption/caption_util.cc
-@@ -140,7 +140,7 @@ bool IsLiveCaptionFeatureSupported() {
-     return false;
- #endif
+@@ -144,7 +144,7 @@ std::string GetCaptionSettingsUrl() {
+   return "chrome://os-settings/audioAndCaptions";
+ #endif  // BUILDFLAG(IS_CHROMEOS)
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   // Check if the CPU has the required instruction set to run the Speech
-   // On-Device API (SODA) library.
-   static bool has_sse41 = base::CPU().has_sse41();
+   return "chrome://settings/captions";
+ #endif  // BUILDFLAG(IS_LINUX)
+ 

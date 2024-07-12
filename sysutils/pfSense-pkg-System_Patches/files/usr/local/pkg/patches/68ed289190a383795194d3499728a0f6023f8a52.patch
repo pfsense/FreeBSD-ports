@@ -1,0 +1,56 @@
+commit 68ed289190a383795194d3499728a0f6023f8a52
+Author: jim-p <jimp@netgate.com>
+Date:   Thu Mar 7 14:05:59 2024 -0500
+
+    Ensure RO user cannot trigger QinQ operations. Fixes #15318
+
+diff --git a/src/usr/local/www/interfaces_qinq.php b/src/usr/local/www/interfaces_qinq.php
+index 40d46217d0..989f012ccc 100644
+--- a/src/usr/local/www/interfaces_qinq.php
++++ b/src/usr/local/www/interfaces_qinq.php
+@@ -37,6 +37,20 @@ $a_qinqs = &$config['qinqs']['qinqentry'];
+ if ($_POST['act'] == "del") {
+ 	$id = $_POST['id'];
+ 
++	/*
++	 * Check user privileges to test if the user is allowed to make changes.
++	 * Otherwise users can end up in an inconsistent state where some changes are
++	 * performed and others denied. See https://redmine.pfsense.org/issues/15318
++	 */
++	phpsession_begin();
++	$guiuser = getUserEntry($_SESSION['Username']);
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	phpsession_end();
++
++	if ($read_only) {
++		$input_errors = array(gettext("Insufficient privileges to make the requested change (read only)."));
++	}
++
+ 	/* check if still in use */
+ 	if (isset($a_qinqs) && vlan_inuse($a_qinqs[$id])) {
+ 		$input_errors[] = gettext("This QinQ cannot be deleted because it is still being used as an interface.");
+diff --git a/src/usr/local/www/interfaces_qinq_edit.php b/src/usr/local/www/interfaces_qinq_edit.php
+index 4a469a463e..e9de981c8d 100644
+--- a/src/usr/local/www/interfaces_qinq_edit.php
++++ b/src/usr/local/www/interfaces_qinq_edit.php
+@@ -88,6 +88,20 @@ if ($_POST['save']) {
+ 	unset($input_errors);
+ 	$pconfig = $_POST;
+ 
++	/*
++	 * Check user privileges to test if the user is allowed to make changes.
++	 * Otherwise users can end up in an inconsistent state where some changes are
++	 * performed and others denied. See https://redmine.pfsense.org/issues/15318
++	 */
++	phpsession_begin();
++	$guiuser = getUserEntry($_SESSION['Username']);
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	phpsession_end();
++
++	if ($read_only) {
++		$input_errors = array(gettext("Insufficient privileges to make the requested change (read only)."));
++	}
++
+ 	if (empty($_POST['tag'])) {
+ 		$input_errors[] = gettext("First level tag cannot be empty.");
+ 	}

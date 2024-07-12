@@ -1,5 +1,5 @@
 PORTNAME=	xfce4-panel
-PORTVERSION=	4.18.4
+PORTVERSION=	4.18.6
 CATEGORIES=	x11-wm xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
@@ -13,9 +13,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
 
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libdbusmenu-gtk3.so:devel/libdbusmenu \
+LIB_DEPENDS=	libdbusmenu-gtk3.so:devel/libdbusmenu \
 		libharfbuzz.so:print/harfbuzz
 
 USES=		compiler:c11 desktop-file-utils gettext-tools gmake gnome \
@@ -26,8 +24,9 @@ USE_XFCE=	garcon libexo xfconf
 USE_XORG=	ice sm x11 xext
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-gio-unix \
+		--without-html-dir
 INSTALL_TARGET=	install-strip
-CONFIGURE_ARGS=	--enable-gio-unix --without-html-dir
 
 PORTSCOUT=	limitw:1,even
 
@@ -37,15 +36,15 @@ OPTIONS_SUB=		yes
 
 GIR_DESC=		Use Gobject Introspection
 
-GIR_USE=		gnome=introspection:build
+GIR_USE=		GNOME=introspection:build
 GIR_CONFIGURE_ON=	--enable-introspection=yes
 GIR_CONFIGURE_OFF=	--enable-introspection=no
 
-NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
+NLS_CONFIGURE_ENABLE=	nls
 
+VAPI_IMPLIES=		GIR
 VAPI_USES=		vala:build
 VAPI_CONFIGURE_ENABLE=	vala
-VAPI_IMPLIES=		GIR
 
 .include <bsd.port.mk>

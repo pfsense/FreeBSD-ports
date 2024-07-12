@@ -1,0 +1,34 @@
+commit fcd5e10a67ac9a67cc7116ea1a314aaea225c699
+Author: jim-p <jimp@netgate.com>
+Date:   Fri Sep 1 12:10:35 2023 -0400
+
+    Correct CARP event IPsec VIP tests. Fixes #14738
+
+diff --git a/src/etc/rc.carpbackup b/src/etc/rc.carpbackup
+index 650242f382..1acf48c1e5 100755
+--- a/src/etc/rc.carpbackup
++++ b/src/etc/rc.carpbackup
+@@ -92,7 +92,8 @@ foreach (config_get_path("ipsec/phase1", []) as $ph1ent) {
+ 	if (empty($ph1ent)) {
+ 		continue;
+ 	}
+-	if ((substr($ph1ent['interface'], 0, 4) == '_vip') && (in_array($ph1ent['interface'], $vips))) {
++	if ((substr($ph1ent['interface'], 0, 4) == '_vip') &&
++	    (in_array(substr($ph1ent['interface'], 4), array_column($vips, 'uniqid')))) {
+ 		log_error("Reconfiguring IPsec because of transition to CARP backup.");
+ 		ipsec_configure();
+ 		break;
+diff --git a/src/etc/rc.carpmaster b/src/etc/rc.carpmaster
+index ccc131b981..b8115c128b 100755
+--- a/src/etc/rc.carpmaster
++++ b/src/etc/rc.carpmaster
+@@ -93,7 +93,8 @@ foreach (config_get_path("ipsec/phase1", []) as $ph1ent) {
+ 	if (empty($ph1ent)) {
+ 		continue;
+ 	}
+-	if ((substr($ph1ent['interface'], 0, 4) == '_vip') && (in_array($ph1ent['interface'], $vips))) {
++	if ((substr($ph1ent['interface'], 0, 4) == '_vip') &&
++	    (in_array(substr($ph1ent['interface'], 4), array_column($vips, 'uniqid')))) {
+ 		log_error("Reconfiguring IPsec because of transition to CARP master.");
+ 		ipsec_configure();
+ 		break;

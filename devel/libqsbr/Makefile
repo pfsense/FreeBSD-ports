@@ -9,8 +9,7 @@ WWW=		https://github.com/rmind/libqsbr
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
-BROKEN_i386=	static_assert(sizeof(qsbr_epoch_t) == 8, "expected 64-bit counter")
-BROKEN_powerpc=	static_assert(sizeof(qsbr_epoch_t) == 8, "expected 64-bit counter")
+BROKEN_FreeBSD_armv7=	static assertion failed due to requirement 'sizeof(unsigned long) == 8': expected 64-bit counter
 
 USES=		compiler:c11 gmake libtool:build
 USE_GITHUB=	yes
@@ -22,5 +21,12 @@ MAKE_ENV=	DESTDIR=${STAGEDIR}${PREFIX} \
 		INCDIR=${LOCALBASE}/include \
 		LIBDIR=${LOCALBASE}/lib \
 		MANDIR=${LOCALBASE}/man
+TEST_TARGET=	tests
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500006
+CFLAGS_i386=	-Wno-error=sync-alignment
+.endif
 
 .include <bsd.port.mk>

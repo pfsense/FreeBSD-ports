@@ -1,41 +1,36 @@
 PORTNAME=	sway
-DISTVERSION?=	1.8.1-158 # git rev-list --count 1.8.1..
-DISTVERSIONSUFFIX?=	-gc0876290
+DISTVERSION=	1.9-145 # git rev-list --count 1.9..
+DISTVERSIONSUFFIX=	-gfce8de0f
 CATEGORIES=	x11-wm wayland
-PKGNAMESUFFIX?=	-devel
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	cd9d1038a822.patch:-p1 # https://github.com/swaywm/sway/pull/5090
-PATCHFILES+=	1f1c83e83a1a.patch:-p1 # https://github.com/swaywm/sway/pull/5090
+PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT?=	i3-compatible Wayland compositor (development snapshot)
-WWW?=		https://swaywm.org/
+COMMENT=	i3-compatible Wayland compositor (development snapshot)
+WWW=		https://swaywm.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayland-protocols>=1.24:graphics/wayland-protocols \
-		wlroots>=0.16.0.529<0.17.0:x11-toolkits/wlroots
+		wayland-protocols>=1.24:graphics/wayland-protocols
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libevdev.so:devel/libevdev \
 		libudev.so:devel/libudev-devd \
 		libpcre2-8.so:devel/pcre2 \
+		libdrm.so:graphics/libdrm \
 		libwayland-egl.so:graphics/wayland \
-		libwlroots.so:x11-toolkits/wlroots \
+		libwlroots-0.18.so:x11-toolkits/wlroots-devel \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
-USES=		compiler:c11 gl gnome meson pkgconfig xorg
+USES=		compiler:c11 gnome meson pkgconfig xorg
 USE_GITHUB=	yes
-USE_GL+=	glesv2
 USE_GNOME=	cairo pango
 USE_XORG=	pixman
-GH_ACCOUNT?=	swaywm
+GH_ACCOUNT=	swaywm
 MESON_ARGS=	-Dsd-bus-provider=basu
 
-CONFLICTS_INSTALL?=	${PORTNAME} ${PORTNAME}fx
+CONFLICTS_INSTALL=	${PORTNAME} ${PORTNAME}fx
 
 OPTIONS_DEFINE=	BASU MANPAGES PIXBUF SWAYBG X11
 OPTIONS_DEFAULT=BASU MANPAGES PIXBUF SWAYBG X11
@@ -56,7 +51,6 @@ SWAYBG_RUN_DEPENDS=	swaybg:x11/swaybg
 
 X11_USE=		XORG=xcb
 X11_LIB_DEPENDS=	libxcb-icccm.so:x11/xcb-util-wm
-X11_MESON_ENABLED=	xwayland
 
 post-patch:
 # Let @sample handle default files under etc/
@@ -67,5 +61,4 @@ post-patch:
 		-e '/project_version/s/@0@/${DISTVERSIONFULL}/' \
 		${WRKSRC}/meson.build
 
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots-devel/override.mk"
 .include <bsd.port.mk>

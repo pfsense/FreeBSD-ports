@@ -1,6 +1,6 @@
 PORTNAME=	gnome-builder
 PORTVERSION=	42.1
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -38,7 +38,7 @@ PORTDOCS=	*
 CONFLICTS_BUILD=	gnome-builder-3.16.*
 
 USES=		compiler:c++11-lang desktop-file-utils gettext gnome \
-		localbase:lfdlags meson pkgconfig python:3.6+,build shebangfix \
+		localbase:lfdlags meson pkgconfig python:build shebangfix \
 		tar:xz vala:lib
 USE_GNOME=	cairo gtksourceview4 introspection libxml2 vte3
 SHEBANG_FILES=	${WRKSRC}/src/plugins/gradle/gradle_plugin.py \

@@ -22,10 +22,10 @@
 # Examples:
 #   USE_GCC=	yes			# port requires a current version of GCC
 #							# as defined in bsd.default-versions.mk.
-#   USE_GCC=	11 			# port requires GCC 11.
+#   USE_GCC=	12 			# port requires GCC 12.
 #   USE_GCC=	yes:build	# port requires a current version of GCC at
 #							# build time only.
-#   USE_GCC=	10:build	# port requires GCC 10 at build time only.
+#   USE_GCC=	12:build	# port requires GCC 12 at build time only.
 #
 # If you are wondering what your port exactly does, use "make test-gcc"
 # to see some debugging.
@@ -35,7 +35,7 @@ GCC_Include_MAINTAINER=		gerald@FreeBSD.org
 # All GCC versions supported by this framework.
 #
 # When updating this, keep Mk/bsd.default-versions.mk in sync.
-GCCVERSIONS=	4.8 8 9 10 11 12 13 14
+GCCVERSIONS=	9 10 11 12 13 14 15
 
 # No configurable parts below this. ####################################
 #
@@ -85,7 +85,7 @@ IGNORE=	Unknown version of GCC specified (USE_GCC=${USE_GCC})
 # A concrete version has been selected. Set proper ports dependencies,
 # CC, CXX, CPP, and flags.
 V:=			${_USE_GCC:S/.//}
-.  if ${V} == 14
+.  if ${V} == 15
 _GCC_PORT:=		gcc${V}-devel
 .  else
 _GCC_PORT:=		gcc${V}
@@ -110,15 +110,14 @@ LDFLAGS+=		-Wl,-rpath=${_GCC_RUNTIME} -L${_GCC_RUNTIME}
 CFLAGS:=		${CFLAGS:N-mretpoline}
 CXXFLAGS:=		${CXXFLAGS:N-mretpoline}
 
-.  if defined(_GCC_PORT)
 BUILD_DEPENDS+=	${CC}:lang/${_GCC_PORT}
-.    if defined(_USE_GCC_RUN_DEPENDS)
+.  if defined(_USE_GCC_RUN_DEPENDS)
 RUN_DEPENDS+=	${CC}:lang/${_GCC_PORT}
-.    endif
+.  endif
+
 # GCC ports already depend on binutils; make sure whatever we build
 # leverages this as well.
 USE_BINUTILS=	yes
-.  endif
 
 .endif # defined(_USE_GCC) && !defined(FORCE_BASE_CC_FOR_TESTING)
 
@@ -135,6 +134,4 @@ test-gcc:
 	@echo CFLAGS=\"${CFLAGS}\"
 	@echo CXXFLAGS=\"${CXXFLAGS}\"
 	@echo LDFLAGS=\"${LDFLAGS}\"
-	@echo "BUILD_DEPENDS=${BUILD_DEPENDS}"
-	@echo "RUN_DEPENDS=${RUN_DEPENDS}"
 .endif

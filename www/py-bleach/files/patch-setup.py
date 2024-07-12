@@ -1,11 +1,11 @@
---- setup.py.orig	2022-06-27 14:39:19 UTC
+--- setup.py.orig	2023-10-06 16:19:57 UTC
 +++ setup.py
-@@ -32,7 +32,7 @@ INSTALL_REQUIRES = [
+@@ -32,7 +32,7 @@ EXTRAS_REQUIRE = {
  
  EXTRAS_REQUIRE = {
      "css": [
--        "tinycss2>=1.1.0,<1.2",
-+        "tinycss2>=1.1.0,<1.3",
+-        "tinycss2>=1.1.0,<1.3",
++        "tinycss2>=1.1.0,<1.4",
      ],
-     "dev": [
-         "black==22.3.0; implementation_name == 'cpython'",
+ }
+ 

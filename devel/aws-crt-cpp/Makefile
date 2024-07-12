@@ -1,6 +1,6 @@
 PORTNAME=	aws-crt-cpp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.20.2
+DISTVERSION=	0.27.0
 CATEGORIES=	devel
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -23,11 +23,9 @@ LIB_DEPENDS=	libaws-c-auth.so:security/aws-c-auth \
 		libaws-checksums.so:devel/aws-checksums \
 		libs2n.so:security/s2n-tls
 
-USES=		cmake:testing compiler:c11 ssl
-
+USES=		cmake:testing ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	awslabs
-
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${LOCALBASE}

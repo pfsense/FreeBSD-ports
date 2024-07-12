@@ -1,6 +1,6 @@
 PORTNAME=	tvm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.0
+DISTVERSION=	0.16.0
 CATEGORIES=	misc # machine-learning
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,6 +11,8 @@ WWW=		https://tvm.ai/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 LIB_DEPENDS=	libtvm.so:misc/tvm
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}attrs>0:devel/py-attrs@${PY_FLAVOR} \
@@ -21,8 +23,8 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}synr>0:devel/py-synr@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tornado>0:www/py-tornado@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	distutils noegginfo pytest # tests fail, see https://github.com/apache/tvm/issues/13132
+USES=		python
+USE_PYTHON=	pep517 concurrent pytest # autoplist fails; tests fail, see https://github.com/apache/tvm/issues/13132
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	apache

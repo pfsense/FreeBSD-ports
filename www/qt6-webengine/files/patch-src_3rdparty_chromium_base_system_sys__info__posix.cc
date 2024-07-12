@@ -1,38 +1,24 @@
---- src/3rdparty/chromium/base/system/sys_info_posix.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/base/system/sys_info_posix.cc.orig	2023-08-17 07:33:31 UTC
 +++ src/3rdparty/chromium/base/system/sys_info_posix.cc
-@@ -37,7 +37,7 @@ namespace {
- 
- namespace {
- 
--#if !BUILDFLAG(IS_OPENBSD)
-+#if !BUILDFLAG(IS_BSD)
- int NumberOfProcessors() {
-   // sysconf returns the number of "logical" (not "physical") processors on both
-   // Mac and Linux.  So we get the number of max available "logical" processors.
-@@ -77,7 +77,7 @@ base::LazyInstance<base::internal::LazySysInfoValue<in
- 
- base::LazyInstance<base::internal::LazySysInfoValue<int, NumberOfProcessors>>::
-     Leaky g_lazy_number_of_processors = LAZY_INSTANCE_INITIALIZER;
--#endif  // !BUILDFLAG(IS_OPENBSD)
-+#endif  // !BUILDFLAG(IS_BSD)
- 
- int64_t AmountOfVirtualMemory() {
-   struct rlimit limit;
-@@ -143,11 +143,11 @@ namespace base {
+@@ -117,7 +117,7 @@ bool GetDiskSpaceInfo(const base::FilePath& path,
  
  namespace base {
  
 -#if !BUILDFLAG(IS_OPENBSD)
 +#if !BUILDFLAG(IS_BSD)
  int SysInfo::NumberOfProcessors() {
-   return g_lazy_number_of_processors.Get().value();
+ #if BUILDFLAG(IS_MAC)
+   absl::optional<int> number_of_physical_cores =
+@@ -161,7 +161,7 @@ int SysInfo::NumberOfProcessors() {
+ 
+   return num_cpus;
  }
 -#endif  // !BUILDFLAG(IS_OPENBSD)
 +#endif  // !BUILDFLAG(IS_BSD)
  
  // static
- int64_t SysInfo::AmountOfVirtualMemory() {
-@@ -239,6 +239,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
+ uint64_t SysInfo::AmountOfVirtualMemory() {
+@@ -251,6 +251,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
      arch = "x86";
    } else if (arch == "amd64") {
      arch = "x86_64";

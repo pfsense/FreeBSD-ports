@@ -1,9 +1,9 @@
 PORTNAME=	lumina-pdf
 DISTVERSION=	1.6.2
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	deskutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	PDF viewer from the Lumina Desktop
 WWW=		https://lumina-desktop.org
 

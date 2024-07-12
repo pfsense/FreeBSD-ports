@@ -1,6 +1,6 @@
 PORTNAME=	obexapp
 PORTVERSION=	1.4.15
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	comms net
 MASTER_SITES=	http://people.freebsd.org/~emax/obexapp/
 
@@ -13,17 +13,11 @@ LIB_DEPENDS=	libopenobex.so:comms/openobex \
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		iconv readline uidfix
-PLIST_FILES=	bin/obexapp man/man1/obexapp.1.gz
+PLIST_FILES=	bin/obexapp share/man/man1/obexapp.1.gz
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300134
-MAKE_ENV+=	NO_WERROR=yes
-.else
 MAKE_ENV+=	MK_WERROR=no
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/-liconv/${ICONV_LIB}/' ${WRKSRC}/Makefile
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

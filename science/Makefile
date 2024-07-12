@@ -64,7 +64,6 @@
     SUBDIR += coordgenlibs
     SUBDIR += cp2k
     SUBDIR += cp2k-data
-    SUBDIR += crf++
     SUBDIR += csvtk
     SUBDIR += dakota
     SUBDIR += dalton
@@ -103,6 +102,7 @@
     SUBDIR += gamess-us
     SUBDIR += gbtolib
     SUBDIR += gchemutils
+    SUBDIR += gcp
     SUBDIR += gdma
     SUBDIR += geant4
     SUBDIR += gemmi
@@ -147,7 +147,6 @@
     SUBDIR += libctl
     SUBDIR += libecpint
     SUBDIR += libefp
-    SUBDIR += libgeodecomp
     SUBDIR += libgetar
     SUBDIR += libghemical
     SUBDIR += libgridxc
@@ -164,10 +163,10 @@
     SUBDIR += libssm
     SUBDIR += libsvm
     SUBDIR += libsvm-python
-    SUBDIR += libtensorflow1
     SUBDIR += libvdwxc
     SUBDIR += libxc
     SUBDIR += liggghts
+    SUBDIR += linearelasticity
     SUBDIR += linux-zotero
     SUBDIR += luscus
     SUBDIR += m-aneos
@@ -175,6 +174,7 @@
     SUBDIR += maeparser
     SUBDIR += massxpert
     SUBDIR += mbdyn
+    SUBDIR += mcpl
     SUBDIR += mcstas
     SUBDIR += mcstas-comps
     SUBDIR += mctc-lib
@@ -187,6 +187,7 @@
     SUBDIR += metaphysicl
     SUBDIR += minc2
     SUBDIR += mmdb2
+    SUBDIR += mmg
     SUBDIR += mmtf-cpp
     SUBDIR += mol2ps
     SUBDIR += molgif
@@ -202,7 +203,9 @@
     SUBDIR += mstore
     SUBDIR += multicharge
     SUBDIR += multiwfn
+    SUBDIR += mutationpp
     SUBDIR += namd
+    SUBDIR += ncrystal
     SUBDIR += nest
     SUBDIR += netcdf
     SUBDIR += netcdf-cxx
@@ -223,12 +226,12 @@
     SUBDIR += opensim-core
     SUBDIR += opensph
     SUBDIR += opsin
+    SUBDIR += optench
     SUBDIR += orthanc
     SUBDIR += orthanc-dicomweb
     SUBDIR += orthanc-mysql
     SUBDIR += orthanc-postgresql
     SUBDIR += orthanc-webviewer
-    SUBDIR += p5-Algorithm-SVMLight
     SUBDIR += p5-Chemistry-3DBuilder
     SUBDIR += p5-Chemistry-Bond-Find
     SUBDIR += p5-Chemistry-Canonicalize
@@ -277,6 +280,7 @@
     SUBDIR += py-GPy
     SUBDIR += py-GPyOpt
     SUBDIR += py-HepMC3
+    SUBDIR += py-HofstadterTools
     SUBDIR += py-MDAnalysis
     SUBDIR += py-MDAnalysisTests
     SUBDIR += py-OpenFermion
@@ -295,7 +299,6 @@
     SUBDIR += py-asdf
     SUBDIR += py-asdf-standard
     SUBDIR += py-asdf-transform-schemas
-    SUBDIR += py-asdf-unit-schemas
     SUBDIR += py-ase
     SUBDIR += py-atomium
     SUBDIR += py-avogadrolibs
@@ -314,6 +317,7 @@
     SUBDIR += py-cirq-rigetti
     SUBDIR += py-coards
     SUBDIR += py-dftbplus
+    SUBDIR += py-dftd4
     SUBDIR += py-dimod
     SUBDIR += py-dipy
     SUBDIR += py-dlib
@@ -331,6 +335,7 @@
     SUBDIR += py-dwavebinarycsp
     SUBDIR += py-earthpy
     SUBDIR += py-eccodes
+    SUBDIR += py-emmet-core
     SUBDIR += py-esda
     SUBDIR += py-fresnel
     SUBDIR += py-gemmi
@@ -342,6 +347,7 @@
     SUBDIR += py-gsd
     SUBDIR += py-h5json
     SUBDIR += py-h5py
+    SUBDIR += py-h5pyd
     SUBDIR += py-hiphive
     SUBDIR += py-hoomd-blue
     SUBDIR += py-inequality
@@ -362,9 +368,15 @@
     SUBDIR += py-mmtf-python
     SUBDIR += py-molmod
     SUBDIR += py-moltemplate
+    SUBDIR += py-mp-api
+    SUBDIR += py-mpcontribs-client
+    SUBDIR += py-mplhep
+    SUBDIR += py-mplhep-data
     SUBDIR += py-mrchem
+    SUBDIR += py-ncrystal
     SUBDIR += py-netCDF4
     SUBDIR += py-netcdf-flattener
+    SUBDIR += py-nglview
     SUBDIR += py-nibabel
     SUBDIR += py-nilearn
     SUBDIR += py-obspy
@@ -375,6 +387,7 @@
     SUBDIR += py-paida
     SUBDIR += py-paramz
     SUBDIR += py-penaltymodel
+    SUBDIR += py-periodictable
     SUBDIR += py-phono3py
     SUBDIR += py-phonopy
     SUBDIR += py-pupynere
@@ -388,6 +401,7 @@
     SUBDIR += py-pygmo2
     SUBDIR += py-pyked
     SUBDIR += py-pymatgen
+    SUBDIR += py-pymatgen-analysis-alloys
     SUBDIR += py-pymbd
     SUBDIR += py-pymol
     SUBDIR += py-pyosf
@@ -398,17 +412,6 @@
     SUBDIR += py-pyteomics
     SUBDIR += py-qcelemental
     SUBDIR += py-qcengine
-    SUBDIR += py-qiskit
-    SUBDIR += py-qiskit-aer
-    SUBDIR += py-qiskit-dynamics
-    SUBDIR += py-qiskit-experiments
-    SUBDIR += py-qiskit-finance
-    SUBDIR += py-qiskit-ibm-experiment
-    SUBDIR += py-qiskit-ibm-provider
-    SUBDIR += py-qiskit-ibmq-provider
-    SUBDIR += py-qiskit-nature
-    SUBDIR += py-qiskit-optimization
-    SUBDIR += py-qiskit-terra
     SUBDIR += py-qspin
     SUBDIR += py-quantities
     SUBDIR += py-rmf
@@ -433,6 +436,7 @@
     SUBDIR += py-thewalrus
     SUBDIR += py-tobler
     SUBDIR += py-trainstation
+    SUBDIR += py-trx-python
     SUBDIR += py-tweedledum
     SUBDIR += py-vedo
     SUBDIR += py-veusz
@@ -444,6 +448,7 @@
     SUBDIR += qcl
     SUBDIR += qiskit-aer
     SUBDIR += qmcpack
+    SUBDIR += qt6-quick3dphysics
     SUBDIR += quantum-espresso
     SUBDIR += quantum-espresso-pseudopotentials
     SUBDIR += quantum-jet
@@ -457,6 +462,8 @@
     SUBDIR += rubygem-rgeo-proj4
     SUBDIR += rubygem-rgeo-shapefile
     SUBDIR += rubygem-ruby-netcdf
+    SUBDIR += salome-configuration
+    SUBDIR += salome-kernel
     SUBDIR += scidavis
     SUBDIR += sciplot
     SUBDIR += segyio
@@ -481,7 +488,6 @@
     SUBDIR += spglib
     SUBDIR += spheral
     SUBDIR += step
-    SUBDIR += svmlight
     SUBDIR += tblite
     SUBDIR += teem
     SUBDIR += tfel

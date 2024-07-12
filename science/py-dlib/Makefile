@@ -1,8 +1,7 @@
 PORTNAME=	dlib
-DISTVERSION=	19.24
-PORTREVISION=	1
+DISTVERSION=	19.24.2
 CATEGORIES=	science devel math python
-MASTER_SITES=	http://dlib.net/files/
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -12,12 +11,10 @@ WWW=		http://dlib.net
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/dlib/LICENSE.txt
 
-BUILD_DEPENDS=		cmake:devel/cmake-core
 LIB_DEPENDS=		${PY_BOOST} \
 			libpng.so:graphics/png
 
-USES=			compiler:c++11-lang pkgconfig python:3.7-3.10 shebangfix \
-			tar:bzip2
+USES=			cmake:indirect compiler:c++11-lang pkgconfig python shebangfix
 USE_PYTHON=		autoplist distutils
 SHEBANG_FILES=		python_examples/*.py
 

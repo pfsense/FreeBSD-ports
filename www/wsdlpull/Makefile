@@ -1,12 +1,12 @@
 PORTNAME=	wsdlpull
 PORTVERSION=	1.24
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ WSDL Parser
-WWW=		http://wsdlpull.sourceforge.net/
+WWW=		https://wsdlpull.sourceforge.net/
 
 LICENSE=	LGPL21 # code says LGPL20+ and MIT though
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,6 +15,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=		libtool localbase
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 

@@ -1,11 +1,11 @@
 PORTNAME=	clipit
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	deskutils
 
 MAINTAINER=	jrm@FreeBSD.org
-COMMENT=	Lightweight GTK+ clipboard manager forked from parcellite
+COMMENT=	Lightweight GTK clipboard manager forked from parcellite
 WWW=		https://github.com/CristianHenzel/ClipIt
 
 LICENSE=	GPLv3
@@ -19,6 +19,7 @@ USE_GNOME=	gtk30 intltool
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-gtk3
 
 OPTIONS_DEFINE=	NLS XDOTOOL

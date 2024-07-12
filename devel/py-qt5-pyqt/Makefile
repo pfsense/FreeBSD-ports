@@ -19,14 +19,17 @@ BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dbus>1:devel/py-dbus@${PY_FLAVOR} \
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dbus>1:devel/py-dbus@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR}
 
-USES=		pkgconfig python:3.8+ pyqt:5 qt:5
+USES=		gl pkgconfig python pyqt:5 qt:5
+USE_GL=		gl
 USE_PYTHON=	concurrent flavors py3kplist
 USE_PYQT=	qtbuilder sip pysip
 USE_QT=		connectivity core dbus declarative designer gui help imageformats location \
 		multimedia network opengl printsupport quick3d remoteobjects \
-		sensors serialport speech sql svg testlib webchannel webkit websockets \
+		sensors serialport speech sql svg testlib webchannel websockets \
 		widgets x11extras xml xmlpatterns \
 		buildtools:build qmake:build
+
+SIP_ARGS=	--disable QtWebKit --disable QtWebKitWidgets
 
 PORTSCOUT?=	limit:^${_QT_VERSION:R}
 

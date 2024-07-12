@@ -1,6 +1,6 @@
 PORTNAME=	ffmpeg
 PORTVERSION=	4.4.4
-PORTREVISION=	2
+PORTREVISION=	12
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
 PKGNAMESUFFIX=	4
@@ -85,7 +85,7 @@ OPTIONS_EXCLUDE+=	OPENVINO
 .endif
 
 OPTIONS_RADIO=	RTMP SSL
-OPTIONS_RADIO_RTMP=	GCRYPT GMP LIBRTMP
+OPTIONS_RADIO_RTMP=	GCRYPT GMP
 OPTIONS_RADIO_SSL=	GNUTLS MBEDTLS OPENSSL
 OPTIONS_GROUP=	LICENSE
 OPTIONS_GROUP_LICENSE=	GPL3 NONFREE
@@ -129,7 +129,6 @@ SRT_DESC=	Haivision SRT protocol via libsrt
 SVTAV1_DESC=	AV1 encoding via SVT-AV1
 SVTHEVC_DESC=	HEVC encoding via SVT-HEVC
 SVTVP9_DESC=	VP9 encoding via SVT-VP9
-LIBRTMP_DESC=	${RTMP_DESC} via librtmp
 TENSORFLOW_DESC=TensorFlow as a DNN module backend for DNN based filters like sr
 TESSERACT_DESC=	Optical Character Recognition via Tesseract
 THEORA_DESC=	Encoding support for theora via libtheora
@@ -216,6 +215,7 @@ DEBUG_CONFIGURE_OFF=	--disable-debug
 # docs
 DOCS_BUILD_DEPENDS=	texi2html:textproc/texi2html
 DOCS_CONFIGURE_ENABLE=	htmlpages
+DOCS_BINARY_ALIAS=	makeinfo=${FALSE} # force texi2html
 
 # drm
 DRM_LIB_DEPENDS=	libdrm.so:graphics/libdrm
@@ -255,6 +255,7 @@ GLSLANG_BUILD_DEPENDS=	glslang>0:graphics/glslang \
 			spirv-tools>0:graphics/spirv-tools
 GLSLANG_CONFIGURE_ENABLE=	libglslang
 GLSLANG_LDFLAGS=	-lm
+GLSLANG_IMPLIES=	VULKAN
 
 # gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -427,10 +428,6 @@ RUBBERBAND_CONFIGURE_ENABLE=	librubberband
 # rtcpu
 RTCPU_CONFIGURE_ENABLE=	runtime-cpudetect
 
-# rtmp
-LIBRTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
-LIBRTMP_CONFIGURE_ENABLE=	librtmp
-
 # sdl
 SDL_USES=		sdl
 SDL_USE=		SDL=sdl2
@@ -547,7 +544,6 @@ VPX_CONFIGURE_ENABLE=	libvpx
 VULKAN_BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CONFIGURE_ENABLE=	vulkan
-VULKAN_IMPLIES=		GLSLANG
 
 # webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
@@ -612,7 +608,7 @@ LDFLAGS_armv7=	-Wl,-z,notext
 LDFLAGS_i386=	-Wl,-z,notext
 
 CONFIGURE_ARGS+=--prefix="${PREFIX}" \
-		--mandir="${PREFIX}/man" \
+		--mandir="${PREFIX}/share/man" \
 		--datadir="${DATADIR}" \
 		--docdir="${DOCSDIR}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
@@ -641,16 +637,10 @@ LICENSE_TEXT_NONFREE=	enabling OPENSSL or FDK_AAC restricts redistribution
 LICENSE_PERMS_NONFREE=	auto-accept
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == powerpc64 && ${PORT_OPTIONS:MLTO} && ${CHOSEN_COMPILER_TYPE} == clang
-USE_GCC=	yes
-.endif
-
 post-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${DOC_FILES}" ${STAGEDIR}${DOCSDIR})
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \
 		"${DOC_DOCFILES}" ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

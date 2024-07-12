@@ -1,7 +1,7 @@
 PORTNAME=	RcppArmadillo
-DISTVERSION=	0.12.4.0.0
+DISTVERSION=	0.12.8.4.0
 CATEGORIES=	math
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Rcpp integration for Armadillo templated linear algebra library
@@ -12,6 +12,8 @@ LICENSE=	GPLv2+
 CRAN_DEPENDS=	R-cran-Rcpp>=0.11.0:devel/R-cran-Rcpp
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
+TEST_DEPENDS=	R-cran-slam>0:math/R-cran-slam \
+		R-cran-tinytest>0:devel/R-cran-tinytest
 
 USES=		cran:auto-plist,compiles
 

@@ -3,7 +3,7 @@
  * wireguard.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
  * Copyright (c) 2021 Vajonam
  * Copyright (c) 2020 Ascrod
@@ -124,7 +124,7 @@ if (isset($_POST['save'])) {
 
 		<nav class="action-buttons">
 			<button type="submit" class="btn btn-primary">
-				<i class="fa fa-save icon-embed-btn"></i>
+				<i class="fa-solid fa-save icon-embed-btn"></i>
 				<?=gettext('Save')?>
 			</button>
 		</nav>

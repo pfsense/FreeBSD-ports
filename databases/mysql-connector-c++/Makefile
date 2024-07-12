@@ -1,5 +1,6 @@
 PORTNAME=	mysql-connector-c++
-PORTVERSION=	8.0.32
+PORTVERSION=	8.0.33
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/Connector-C++
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -17,6 +18,7 @@ LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libzstd.so:archivers/zstd
 
 USES=		cmake:noninja compiler:c++17-lang cpe gmake mysql ssl
+IGNORE_WITH_MYSQL=	105m 106m 1011m
 CPE_VENDOR=	oracle
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
@@ -31,12 +33,17 @@ CMAKE_ARGS=	-DCMAKE_ENABLE_C++17=ON \
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS JDBC
+OPTIONS_DEFAULT=	JDBC
 OPTIONS_SUB=	yes
+
+JDBC_DESC=	Build  JDBC Interface
 
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOCS_CMAKE_ON=		-DDOC_DESTINATION="${DOCSDIR}" \
 			-DWITH_DOC=ON
+JDBC_LIB_DEPENDS=	libunwind.so:devel/libunwind
+JDBC_CMAKE_ON=		-DWITH_JDBC=ON
 
 post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/INFO_BIN

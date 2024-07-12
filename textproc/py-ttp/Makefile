@@ -1,5 +1,5 @@
 PORTNAME=	ttp
-PORTVERSION=	0.9.4
+PORTVERSION=	0.9.5
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${PY_FLAVOR}
 
-USES=		dos2unix python:3.6+
+USES=		dos2unix python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

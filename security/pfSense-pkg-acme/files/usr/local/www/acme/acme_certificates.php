@@ -32,21 +32,18 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $changedesc = "Services: Acme: Certificates";
 
-$a_certificates = &getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
-
 if($_POST['action'] == "toggle") {
 	$id = $_POST['id'];
 	echo "$id|";
-	if (isset($a_certificates[get_certificate_id($id)])) {
-		$item = &$a_certificates[get_certificate_id($id)];
-		if ($item['status'] != "disabled"){
-			$item['status'] = 'disabled';
+	if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id)) !== null) {
+		if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status') != "disabled"){
+			config_set_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status', 'disabled');
 			echo "0|";
 		}else{
-			$item['status'] = 'active';
+			config_set_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status', 'active');
 			echo "1|";
 		}
-		$changedesc .= " set item '$id' status to: {$item['status']}";
+		$changedesc .= " set item '$id' status to: " . config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id) . '/status');
 		
 		touch($d_acmeconfdirty_path);
 		write_config($changedesc);
@@ -57,7 +54,7 @@ if($_POST['action'] == "toggle") {
 if($_POST['action'] == "issuecert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certificates[get_certificate_id($id)])) {
+	if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id)) !== null) {
 		issue_certificate($id, true);
 	}
 	exit;
@@ -65,7 +62,7 @@ if($_POST['action'] == "issuecert") {
 if($_POST['action'] == "renewcert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certificates[get_certificate_id($id)])) {
+	if (config_get_path('installedpackages/acme/certificates/item/' . get_certificate_id($id)) !== null) {
 		issue_certificate($id, true, true);
 	}
 	exit;
@@ -83,7 +80,7 @@ if ($_POST) {
 				$selected[] = get_certificate_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_certificates[$itemnr]);
+				config_del_path("installedpackages/acme/certificates/item/{$itemnr}");
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -114,7 +111,9 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_certificate_id($selection);
 			}
+			$a_certificates = config_get_path('installedpackages/acme/certificates/item');
 			array_moveitemsbefore($a_certificates, $moveto, $selected);
+			config_set_path('installedpackages/acme/certificates/item', $a_certificates);
 		
 			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
@@ -125,9 +124,9 @@ if ($_POST) {
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
 	$id = get_certificate_id($id);
-	if (isset($a_certificates[$id])) {
+	if (config_get_path("installedpackages/acme/certificates/item/{$id}") !== null) {
 		if (!$input_errors) {
-			unset($a_certificates[$id]);
+			config_del_path("installedpackages/acme/certificates/item/{$id}");
 			$changedesc .= " Item delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
@@ -169,7 +168,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 			<?=gettext('Search')?>
 			<span class="widget-heading-icon pull-right">
 				<a data-toggle="collapse" href="#search-panel_panel-body">
-					<i class="fa fa-plus-circle"></i>
+					<i class="fa-solid fa-plus-circle"></i>
 				</a>
 			</span>
 		</h2>
@@ -188,8 +187,8 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				</select>
 			</div>
 			<div class="col-sm-3">
-				<a id="btnsearch" title="<?=gettext("Search")?>" class="btn btn-primary btn-sm"><i class="fa fa-search icon-embed-btn"></i><?=gettext("Search")?></a>
-				<a id="btnclear" title="<?=gettext("Clear")?>" class="btn btn-info btn-sm"><i class="fa fa-undo icon-embed-btn"></i><?=gettext("Clear")?></a>
+				<a id="btnsearch" title="<?=gettext("Search")?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-search icon-embed-btn"></i><?=gettext("Search")?></a>
+				<a id="btnclear" title="<?=gettext("Clear")?>" class="btn btn-info btn-sm"><i class="fa-solid fa-undo icon-embed-btn"></i><?=gettext("Clear")?></a>
 			</div>
 			<div class="col-sm-10 col-sm-offset-2">
 				<span class="help-block"><?=gettext('Enter a search string or *nix regular expression to search certificate names and distinguished names.')?></span>
@@ -218,15 +217,16 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				</thead>
 				<tbody class="user-entries">
 <?php
-		foreach ($a_certificates as $certificate) {
+		foreach (config_get_path('installedpackages/acme/certificates/item', []) as $certificate) {
 			$certificatename = $certificate['name'];
 			$disabled = $certificate['status'] != 'active';
 			$issuedcert = lookup_cert_by_name($certificate['name']);
+			$issuedcert = $issuedcert['item'];
 			?>
 			<tr id="fr<?=$certificatename;?>" <?=$display?> onClick="fr_toggle('<?=$certificatename;?>')" ondblclick="document.location='acme_certificates_edit.php?id=<?=$certificatename;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 				<td>
 					<input type="checkbox" id="frc<?=$certificatename;?>" onClick="fr_toggle('<?=$certificatename;?>')" name="rule[]" value="<?=$certificatename;?>"/>
-					<a class="fa fa-anchor" id="Xmove_<?=$certificatename?>" title="<?=gettext("Move checked entries to here")?>"></a>
+					<a class="fa-solid fa-anchor" id="Xmove_<?=$certificatename?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				</td>
 			  <td>
 				<?php
@@ -271,14 +271,14 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 			
 				  if ($method == "dns_manual"): ?>
 				  <a href='javascript:renewcertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
-					  <i id="btnrenewicon_<?=$certificatename;?>" class="fa fa-check"></i> Renew
+					  <i id="btnrenewicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Renew
 				  </a>
 				  <a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
-					  <i id="btnissueicon_<?=$certificatename;?>" class="fa fa-check"></i> Issue
+					  <i id="btnissueicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Issue
 				  </a>
 				  <?php else: ?>
 				  <a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
-					  <i id="btnissueicon_<?=$certificatename;?>" class="fa fa-check"></i> Issue/Renew
+					  <i id="btnissueicon_<?=$certificatename;?>" class="fa-solid fa-check"></i> Issue/Renew
 				  </a>
 				  <?php endif; ?>
 			  </td>
@@ -303,15 +303,15 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 	</div>
 	<nav class="action-buttons">
 		<a href="acme_certificates_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add certificate to the end of the list')?>">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected certificates"); ?>" title="<?=gettext('Delete selected certificates')?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
 		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save certificate order')?>">
-			<i class="fa fa-save icon-embed-btn no-confirm"></i>
+			<i class="fa-solid fa-save icon-embed-btn no-confirm"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>
@@ -352,7 +352,7 @@ function js_callback(req_content) {
 }
 
 function issuecertificate($id) {
-	$("i[id='btnissueicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-spin");
+	$("i[id='btnissueicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-solid fa-spin");
 	
 	ajaxRequest = $.ajax({
 		url: "",
@@ -360,16 +360,16 @@ function issuecertificate($id) {
 		data: { id: $id, action: "issuecert"},
 		success: function(data) {
 			js_callbackrenew(data);
-			$("i[id='btnissueicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-check");
+			$("i[id='btnissueicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-solid fa-check");
 		},
 		error: function(data) {
-			$("i[id='btnissueicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-chain-broken");
+			$("i[id='btnissueicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-solid fa-link-slash");
 		}
 	});
 }
 
 function renewcertificate($id) {
-	$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-spin");
+	$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-solid fa-spin");
 	
 	ajaxRequest = $.ajax({
 		url: "",
@@ -377,10 +377,10 @@ function renewcertificate($id) {
 		data: { id: $id, action: "renewcert"},
 		success: function(data) {
 			js_callbackrenew(data);
-			$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-check");
+			$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-solid fa-check");
 		},
 		error: function(data) {
-			$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-chain-broken");
+			$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-solid fa-link-slash");
 		}
 	});
 }

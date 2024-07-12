@@ -12,10 +12,11 @@ WWW=		http://www.outoforder.cc/projects/httpd/mod_umask/
 LICENSE=	APACHE20
 
 USES=		apache tar:bzip2
-GNU_CONFIGURE=	yes
 
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 SRC_FILE=	src/${PORTNAME}.c
+
+GNU_CONFIGURE=	yes
 
 .include <bsd.port.mk>

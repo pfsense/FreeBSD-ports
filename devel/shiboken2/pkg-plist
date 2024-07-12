@@ -1,5 +1,4 @@
 bin/shiboken2
-bin/shiboken_tool.py
 include/shiboken2/autodecref.h
 include/shiboken2/basewrapper.h
 include/shiboken2/bindingmanager.h
@@ -8,7 +7,6 @@ include/shiboken2/gilstate.h
 include/shiboken2/helper.h
 include/shiboken2/pep384impl.h
 include/shiboken2/python25compat.h
-include/shiboken2/qapp_macro.h
 include/shiboken2/sbkarrayconverter.h
 include/shiboken2/sbkconverter.h
 include/shiboken2/sbkdbg.h
@@ -26,16 +24,16 @@ include/shiboken2/signature_p.h
 include/shiboken2/threadstatesaver.h
 include/shiboken2/typespec.h
 include/shiboken2/voidptr.h
-lib/cmake/Shiboken2-%%DISTVERSION%%/Shiboken2Config%%PYVERSTR%%.cmake
 lib/cmake/Shiboken2-%%DISTVERSION%%/Shiboken2Config.cmake
+lib/cmake/Shiboken2-%%DISTVERSION%%/Shiboken2Config%%PYVERSTR%%.cmake
 lib/cmake/Shiboken2-%%DISTVERSION%%/Shiboken2ConfigVersion.cmake
 lib/cmake/Shiboken2-%%DISTVERSION%%/Shiboken2Targets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/Shiboken2-%%DISTVERSION%%/Shiboken2Targets.cmake
 lib/cmake/Shiboken2-%%DISTVERSION%%/shiboken_helpers.cmake
 lib/libshiboken2%%PYVERSTR%%.so
-lib/libshiboken2%%PYVERSTR%%.so.%%DISTVERSION%%
 lib/libshiboken2%%PYVERSTR%%.so.5.15
-libdata/pkgconfig/shiboken2.pc
+lib/libshiboken2%%PYVERSTR%%.so.%%DISTVERSION%%
+%%PYTHON_SITELIBDIR%%/shiboken2/Shiboken.pyi
 %%PYTHON_SITELIBDIR%%/shiboken2/__init__.py
 %%PYTHON_SITELIBDIR%%/shiboken2/__pycache__/__init__%%PYVERSTR%%.opt-1.pyc
 %%PYTHON_SITELIBDIR%%/shiboken2/__pycache__/__init__%%PYVERSTR%%.pyc
@@ -45,12 +43,12 @@ libdata/pkgconfig/shiboken2.pc
 %%PYTHON_SITELIBDIR%%/shiboken2/__pycache__/_git_shiboken_module_version%%PYVERSTR%%.pyc
 %%PYTHON_SITELIBDIR%%/shiboken2/_config.py
 %%PYTHON_SITELIBDIR%%/shiboken2/_git_shiboken_module_version.py
-%%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__feature__.py
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__init__.py
-%%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__pycache__/__feature__%%PYVERSTR%%.opt-1.pyc
-%%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__pycache__/__feature__%%PYVERSTR%%.pyc
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__pycache__/__init__%%PYVERSTR%%.opt-1.pyc
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__pycache__/__init__%%PYVERSTR%%.pyc
+%%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__pycache__/feature%%PYVERSTR%%.opt-1.pyc
+%%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/__pycache__/feature%%PYVERSTR%%.pyc
+%%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/feature.py
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/signature/__init__.py
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/signature/__pycache__/__init__%%PYVERSTR%%.opt-1.pyc
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/signature/__pycache__/__init__%%PYVERSTR%%.pyc
@@ -81,6 +79,7 @@ libdata/pkgconfig/shiboken2.pc
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/signature/loader.py
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/signature/mapping.py
 %%PYTHON_SITELIBDIR%%/shiboken2/files.dir/shibokensupport/signature/parser.py
+%%PYTHON_SITELIBDIR%%/shiboken2/py.typed
 %%PYTHON_SITELIBDIR%%/shiboken2/shiboken2%%PYVERSTR%%.so
 %%PYTHON_SITELIBDIR%%/shiboken2_generator/__init__.py
 %%PYTHON_SITELIBDIR%%/shiboken2_generator/__pycache__/__init__%%PYVERSTR%%.opt-1.pyc
@@ -91,3 +90,4 @@ libdata/pkgconfig/shiboken2.pc
 %%PYTHON_SITELIBDIR%%/shiboken2_generator/__pycache__/_git_shiboken_generator_version%%PYVERSTR%%.pyc
 %%PYTHON_SITELIBDIR%%/shiboken2_generator/_config.py
 %%PYTHON_SITELIBDIR%%/shiboken2_generator/_git_shiboken_generator_version.py
+libdata/pkgconfig/shiboken2.pc

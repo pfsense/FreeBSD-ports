@@ -1,6 +1,5 @@
 PORTNAME=	${MPORTNAME:tl}
-PORTVERSION=	3.0.3
-PORTREVISION=	1
+PORTVERSION=	3.3.2
 CATEGORIES=	math
 
 COMMENT=	Symmetric approximate minimum degree

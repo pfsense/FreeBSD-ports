@@ -3,7 +3,7 @@
  * haproxy_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (C) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -29,9 +29,10 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-$simplefields = array('nbthread', 'hard_stop_after', 'localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
-  'email_level', 'email_myhostname', 'email_from', 'email_to',
-  'resolver_retries', 'resolver_timeoutretry', 'resolver_holdvalid');
+$simplefields = array('nbthread', 'hard_stop_after', 'localstats_refreshtime', 'localstats_sticktable_refreshtime',
+	'log-send-hostname', 'sslcompatibilitymode', 'ssldefaultdhparam', 'email_level', 'email_myhostname',
+	'email_from', 'email_to', 'resolver_retries', 'resolver_timeoutretry', 'resolver_holdvalid');
+$sslcompatibilitymodes = array('auto' => 'Auto', 'modern' => 'Modern', 'intermediate' => 'Intermediate', 'old' => 'Old');
 
 $none = array();
 $none['']['name'] = "Dont log";
@@ -111,9 +112,9 @@ if ($_POST) {
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
-			$haproxycfg = &getarraybyref($config, 'installedpackages', 'haproxy');
-			getarraybyref($haproxycfg, 'email_mailers')['item'] = $a_mailers;
-			getarraybyref($haproxycfg, 'dns_resolvers')['item'] = $a_resolvers;
+			$haproxycfg = config_get_path('installedpackages/haproxy');
+			$haproxycfg['email_mailers']['item'] = $a_mailers;
+			$haproxycfg['dns_resolvers']['item'] = $a_resolvers;
 			$haproxycfg['enable'] = $_POST['enable'] ? true : false;
 			$haproxycfg['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
 			$haproxycfg['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
@@ -124,19 +125,19 @@ if ($_POST) {
 			$haproxycfg['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
 			$haproxycfg['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
 			$haproxycfg['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
-			$haproxycfg['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
 			foreach($simplefields as $stat) {
 				$haproxycfg[$stat] = $_POST[$stat];
 			}
 
 			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
 			if ($_POST['enable']) {
-				if (is_array($haproxycfg['config'][0])) {
-					unset($haproxycfg['config'][0]['enable']);
+				if (array_get_path($haproxycfg, 'config/0/enable')) {
+					array_del_path($haproxycfg, 'config/0/enable');
 				}
 			} else {
-				$haproxycfg['config'][0]['enable'] = 'off';
+				array_set_path($haproxycfg, 'config/0/enable', 'off');
 			}
+			config_set_path('installedpackages/haproxy', $haproxycfg);
 			
 			touch($d_haproxyconfdirty_path);
 			write_config("haproxy: Global settings saved");
@@ -144,22 +145,21 @@ if ($_POST) {
 	}
 }
 
-$a_mailers = getarraybyref($config, 'installedpackages', 'haproxy', 'email_mailers', 'item');
-$a_resolvers = getarraybyref($config, 'installedpackages', 'haproxy', 'dns_resolvers', 'item');
+$a_mailers = config_get_path('installedpackages/haproxy/email_mailers/item');
+$a_resolvers = config_get_path('installedpackages/haproxy/dns_resolvers/item');
 
-$pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
-$pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);
-$pconfig['maxconn'] = $config['installedpackages']['haproxy']['maxconn'];
-$pconfig['enablesync'] = isset($config['installedpackages']['haproxy']['enablesync']);
-$pconfig['remotesyslog'] = $config['installedpackages']['haproxy']['remotesyslog'];
-$pconfig['logfacility'] = $config['installedpackages']['haproxy']['logfacility'];
-$pconfig['loglevel'] = $config['installedpackages']['haproxy']['loglevel'];
-$pconfig['carpdev'] = $config['installedpackages']['haproxy']['carpdev'];
-$pconfig['localstatsport'] = $config['installedpackages']['haproxy']['localstatsport'];
-$pconfig['advanced'] = base64_decode($config['installedpackages']['haproxy']['advanced']);
-$pconfig['nbproc'] = $config['installedpackages']['haproxy']['nbproc'];
+$pconfig['enable'] = config_path_enabled('installedpackages/haproxy');
+$pconfig['terminate_on_reload'] = config_path_enabled('installedpackages/haproxy', 'terminate_on_reload');
+$pconfig['maxconn'] = config_get_path('installedpackages/haproxy/maxconn');
+$pconfig['enablesync'] = config_path_enabled('installedpackages/haproxy', 'enablesync');
+$pconfig['remotesyslog'] = config_get_path('installedpackages/haproxy/remotesyslog');
+$pconfig['logfacility'] = config_get_path('installedpackages/haproxy/logfacility');
+$pconfig['loglevel'] = config_get_path('installedpackages/haproxy/loglevel');
+$pconfig['carpdev'] = config_get_path('installedpackages/haproxy/carpdev');
+$pconfig['localstatsport'] = config_get_path('installedpackages/haproxy/localstatsport');
+$pconfig['advanced'] = base64_decode(config_get_path('installedpackages/haproxy/advanced'));
 foreach($simplefields as $stat) {
-	$pconfig[$stat] = $config['installedpackages']['haproxy'][$stat];
+	$pconfig[$stat] = config_get_path("installedpackages/haproxy/{$stat}");
 }
 
 // defaults
@@ -280,14 +280,6 @@ $section->add($group);
 
 $cpucores = trim(`/sbin/sysctl kern.smp.cpus | cut -d" " -f2`);
 
-$section->addInput(new Form_Input('nbproc', 'Number of processes to start', 'text', $pconfig['nbproc']
-))->setPlaceholder("1")->setHelp(<<<EOD
-	Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
-	Note : Consider leaving this value empty or 1  because in multi-process mode (nbproc > 1) memory is not shared between the processes, which could result in random behaviours for several options like ACL's, sticky connections, stats pages, admin maintenance options and some others.<br/>
-	For more information about the <b>"nbproc"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#nbproc' target='_blank'>HAProxy Documentation</a></b>
-EOD
-);
-
 if (haproxy_version() >= "1.8") {
 	$section->addInput(new Form_Input('nbthread', 'Number of threads to start per process', 'text', $pconfig['nbthread']
 	))->setPlaceholder("1")->setHelp(<<<EOD
@@ -404,6 +396,20 @@ $form->add($section);
 
 $section = new Form_Section('Tuning');
 
+$section->addInput(new Form_Select(
+	'sslcompatibilitymode',
+	'SSL/TLS Compatibility Mode',
+	$pconfig['sslcompatibilitymode'],
+	$sslcompatibilitymodes
+))->setHelp(<<<EOD
+	The SSL/TLS Compatibility Mode determines which cipher suites and TLS versions are supported by default.<br />
+	Old mode disables SSLv3 and appropriate ciphers.<br />
+	Intermediate mode also disables HIGH ciphers, SHA1, TLS v1.0 and TLS v1.1.<br />
+	Modern mode also disables TLS v1.2, leaving only TLS v1.3 and AEAD ciphers.<br />
+	If unsure leave it as 'Auto'.
+EOD
+);
+
 $section->add(group_input_with_text(
 	'ssldefaultdhparam',
 	'Max SSL Diffie-Hellman size',
@@ -415,7 +421,7 @@ $section->add(group_input_with_text(
 	Sets the maximum size of the Diffie-Hellman parameters used for generating
 	the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange.
 	Minimum and default value is: 1024, bigger values might increase CPU usage.<br/>
-	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b><br/>
+	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b><br/>
 	NOTE: HAProxy will emit a warning when starting when this setting is used but not configured.
 EOD
 );

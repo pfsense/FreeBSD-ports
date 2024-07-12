@@ -3,7 +3,7 @@
  * suricata_interfaces.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -194,6 +194,9 @@ EOD;
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}
 			else {
+				// Forcefully remove the PID file if it exists since we checked already for a running process and stopped it.
+				// This allows the user the start Suricata in the event of a failed previous start due to a config error.
+				unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricatacfg['uuid']}.pid");
 				syslog(LOG_NOTICE, "Starting Suricata on {$if_friendly}({$if_real}) per user request...");
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}
@@ -382,23 +385,23 @@ include_once("head.inc"); ?>
 					<td id="frd<?=$nnats?>" ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?php if (config_get_path("installedpackages/suricata/rule/{$nnats}/enable") == "on") : ?>
 						<?php if (suricata_is_running($suricata_uuid, $if_real)) : ?>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('suricata is running on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa-solid fa-check-circle text-success icon-primary" title="<?=gettext('suricata is running on this interface');?>"></i>
 							&nbsp;
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Restart suricata on this interface');?>"></i>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Start suricata on this interface');?>"></i>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>', this);" title="<?=gettext('Stop suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Restart suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Start suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>', this);" title="<?=gettext('Stop suricata on this interface');?>"></i>
 						<?php elseif ($suri_starting[$nnats] == TRUE || file_exists("{$g['varrun_path']}/suricata_pkg_starting.lck")) : ?>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('suricata is starting on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa-solid fa-cog fa-spin text-info icon-primary" title="<?=gettext('suricata is starting on this interface');?>"></i>
 							&nbsp;
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Restart suricata on this interface');?>"></i>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Start suricata on this interface');?>"></i>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>', this);" title="<?=gettext('Stop suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Restart suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Start suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>', this);" title="<?=gettext('Stop suricata on this interface');?>"></i>
 						<?php else: ?>
-							<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('suricata is stopped on this interface');?>"></i>
+							<i class="fa-solid fa-times-circle text-danger icon-primary" title="<?=gettext('suricata is stopped on this interface');?>"></i>
 							&nbsp;
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Restart suricata on this interface');?>"></i>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Start suricata on this interface');?>"></i>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>', this);" title="<?=gettext('Stop suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Restart suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>', this);" title="<?=gettext('Start suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>', this);" title="<?=gettext('Stop suricata on this interface');?>"></i>
 						<?php endif; ?>
 					<?php else : ?>
 						<?=gettext('DISABLED');?>&nbsp;
@@ -429,11 +432,11 @@ include_once("head.inc"); ?>
 					</td>
 
 					<td>
-						<a href="suricata_interfaces_edit.php?id=<?=$nnats;?>" class="fa fa-pencil icon-primary" title="<?=gettext('Edit this Suricata interface mapping');?>"></a>
+						<a href="suricata_interfaces_edit.php?id=<?=$nnats;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext('Edit this Suricata interface mapping');?>"></a>
 						<?php if ($id_gen < count($ifaces)): ?>
-							<a href="suricata_interfaces_edit.php?id=<?=$nnats?>&action=dup" class="fa fa-clone" title="<?=gettext('Clone this Suricata instance to an available interface');?>"></a>
+							<a href="suricata_interfaces_edit.php?id=<?=$nnats?>&action=dup" class="fa-regular fa-clone" title="<?=gettext('Clone this Suricata instance to an available interface');?>"></a>
 						<?php endif; ?>
-						<a style="cursor:pointer;" class="fa fa-trash no-confirm icon-primary" id="Xldel_<?=$nnats?>" title="<?=gettext('Delete this Suricata interface mapping'); ?>"></a>
+						<a style="cursor:pointer;" class="fa-solid fa-trash-can no-confirm icon-primary" id="Xldel_<?=$nnats?>" title="<?=gettext('Delete this Suricata interface mapping'); ?>"></a>
 						<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$nnats?>" name="ldel_<?=$nnats?>" value="ldel_<?=$nnats?>" title="<?=gettext('Delete this Suricata interface mapping'); ?>">Delete this Suricata interface mapping</button>
 					</td>
 
@@ -455,13 +458,13 @@ include_once("head.inc"); ?>
 <nav class="action-buttons">
 	<?php if ($id_gen < count($ifaces)): ?>
 		<a href="suricata_interfaces_edit.php?id=<?=$id_gen?>" class="btn btn-sm btn-success" title="<?=gettext('Add Suricata interface mapping')?>">
-			<i class="fa fa-plus icon-embed-btn" ></i><?=gettext("Add")?>
+			<i class="fa-solid fa-plus icon-embed-btn" ></i><?=gettext("Add")?>
 		</a>
 	<?php endif; ?>
 
 	<?php if ($id_gen != 0): ?>
 		<button type="submit" name="del_x" id="del_x" class="btn btn-danger btn-sm no-confirm" title="<?=gettext('Delete selected Suricata interface mapping(s)');?>" onclick="return intf_del()">
-			<i class="fa fa-trash no-confirm icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can no-confirm icon-embed-btn"></i>
 			<?=gettext('Delete');?>
 		</button>
 	<?php endif; ?>
@@ -478,15 +481,15 @@ include_once("head.inc"); ?>
 	<div class="row">
 		<div class="col-md-6">
 			<p>
-				Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
-				Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
-				Click on the <i class="fa fa-lg fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
+				Click on the <i class="fa-lg fa-solid fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
+				Click on the <i class="fa-lg fa-solid fa-trash-can" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
+				Click on the <i class="fa-lg fa-regular fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
 			</p>
 		</div>
 		<div class="col-md-6">
 			<p>
-				<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current Suricata status<br/>
-				Click the <i class="fa fa-lg fa-play-circle" alt="Start"></i> or <i class="fa fa-lg fa-repeat" alt="Restart"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/restart/stop Suricata.
+				<i class="fa-lg fa-solid fa-check-circle" alt="Running"></i> <i class="fa-lg fa-solid fa-times" alt="Not Running"></i> icons will show current Suricata status<br/>
+				Click the <i class="fa-lg fa-regular fa-play-circle" alt="Start"></i> or <i class="fa-lg fa-solid fa-arrow-rotate-right" alt="Restart"></i> or <i class="fa-lg fa-regular fa-circle-stop" alt="Stop"></i> icons to start/restart/stop Suricata.
 			</p>
 		</div>
 	</div>', 'info')?>
@@ -544,24 +547,24 @@ include_once("head.inc"); ?>
 			var service_name = key.substring(0, key.indexOf('_'));
 			if (data[key] != 'DISABLED') {
 				if (data[key] == 'STOPPED') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-cog fa-spin text-success text-info');
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-times-circle text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-cog fa-spin text-success text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-times-circle text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopped on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').addClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').removeClass('hidden');
 				}
 				if (data[key] == 'STARTING') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-times-circle text-success text-danger');
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-spin text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-times-circle text-success text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-solid fa-spin text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is starting on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').addClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'RUNNING') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-check-circle text-success');
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-times-circle fa-cog fa-spin text-danger text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-times-circle fa-cog fa-spin text-danger text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-check-circle text-success');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is running on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').removeClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
@@ -573,8 +576,8 @@ include_once("head.inc"); ?>
 
 	function suricata_iface_toggle(action, id, intf) {
 		if (action == "stop") {
-			$(intf).removeClass('fa-stop-circle-o fa-check-circle text-success text-danger');
-			$(intf).addClass('fa-cog fa-spin text-info');
+			$(intf).removeClass('fa-regular fa-circle-stop fa-solid fa-check-circle text-success text-danger');
+			$(intf).addClass('fa-cog fa-solid fa-spin text-info');
 			$(intf).prop('title', 'Suricata is shutting down on this interface');
 		}
 		$('#toggle').val(action);

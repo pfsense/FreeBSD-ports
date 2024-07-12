@@ -1,6 +1,8 @@
---- src/buildtools/config/support.pri.orig	2020-11-07 01:22:36 UTC
+* Add support for FreeBSD
+
+--- src/buildtools/config/support.pri.orig	2024-03-27 11:26:34 UTC
 +++ src/buildtools/config/support.pri
-@@ -5,7 +5,7 @@ defineTest(qtwebengine_skipBuild) {
+@@ -5,7 +5,7 @@ defineReplace(qtwebengine_checkWebEngineCoreError) {
  
  # this should match webengine-core-support
  defineReplace(qtwebengine_checkWebEngineCoreError) {
@@ -9,9 +11,9 @@
          qtwebengine_skipBuild("QtWebEngine can be built only on Linux, Windows or macOS.")
          return(false)
      }
-@@ -23,14 +23,14 @@ defineReplace(qtwebengine_checkWebEngineCoreError) {
-     !qtwebengine_checkForFlex(QtWebEngine):return(false)
-     !qtwebengine_checkForPython2(QtWebengine):return(false)
+@@ -24,14 +24,14 @@ defineReplace(qtwebengine_checkWebEngineCoreError) {
+     !qtwebengine_checkForPython(QtWebEngine):return(false)
+     !qtwebengine_checkForNodejs(QtWebEngine):return(false)
      !qtwebengine_checkForSanitizer(QtWebEngine):return(false)
 -    linux:!qtwebengine_checkForPkgCfg(QtWebEngine):return(false)
 -    linux:!qtwebengine_checkForHostPkgCfg(QtWebEngine):return(false)
@@ -31,7 +33,7 @@
      win32:!qtwebengine_checkForCompiler64(QtWebEngine):return(false)
      win32:!qtwebengine_checkForWinVersion(QtWebEngine):return(false)
      return(true)
-@@ -38,7 +38,7 @@ defineReplace(qtwebengine_checkWebEngineCoreError) {
+@@ -39,7 +39,7 @@ defineReplace(qtwebengine_checkPdfError) {
  
  # this shuold match webengine-qtpdf-support
  defineReplace(qtwebengine_checkPdfError) {
@@ -40,10 +42,12 @@
          qtwebengine_skipBuild("QtPdf can be built only on Linux, Windows, macOS or iOS.")
          return(false)
      }
-@@ -54,6 +54,8 @@ defineReplace(qtwebengine_checkPdfError) {
+@@ -53,8 +53,8 @@ defineReplace(qtwebengine_checkPdfError) {
+     !qtwebengine_checkForFlex(QtPdf):return(false)
+     !qtwebengine_checkForPython(QtPdf):return(false)
      !qtwebengine_checkForSanitizer(QtPdf):return(false)
-     linux:!qtwebengine_checkForPkgCfg(QtPdf):return(false)
-     linux:!qtwebengine_checkForHostPkgCfg(QtPdf):return(false)
+-    linux:!qtwebengine_checkForPkgCfg(QtPdf):return(false)
+-    linux:!qtwebengine_checkForHostPkgCfg(QtPdf):return(false)
 +    unix:!qtwebengine_checkForPkgCfg(QtPdf):return(false)
 +    unix:!qtwebengine_checkForHostPkgCfg(QtPdf):return(false)
      win32:!qtwebengine_checkForWinVersion(QtPdf):return(false)

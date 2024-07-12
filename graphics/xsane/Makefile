@@ -1,6 +1,6 @@
 PORTNAME=	xsane
 PORTVERSION=	0.999
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
@@ -21,7 +21,7 @@ USES=		gmake gnome jpeg localbase:ldflags pkgconfig
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.com/sane-project
 GL_ACCOUNT=	frontend
-GL_COMMIT=	d01b4089ce6778e76fa86a0410d4e80cf6eb819e
+GL_TAGNAME=	d01b4089ce6778e76fa86a0410d4e80cf6eb819e
 USE_GNOME=	gtk20 gdkpixbuf2
 GNU_CONFIGURE=	yes
 
@@ -48,7 +48,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|@POSUB@ doc|@POSUB@|' ${WRKSRC}/Makefile.in
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.man ${STAGEDIR}${MAN1PREFIX}/man/man1/${PORTNAME}.1
+	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.man ${STAGEDIR}${PREFIX}/share/man/man1/${PORTNAME}.1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
 

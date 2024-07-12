@@ -1,5 +1,5 @@
 PORTNAME=	sqlobject
-PORTVERSION=	3.10.1
+PORTVERSION=	3.11.0
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}formencode>=1.2.2:www/py-formencode@${PY_F
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
-USES=		dos2unix python:3.6+
+USES=		dos2unix python
 USE_PYTHON=	autoplist distutils
 
 # currently MaxDB(SAP), ADODB are not supported

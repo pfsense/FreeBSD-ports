@@ -1,5 +1,6 @@
 PORTNAME=	gti
-PORTVERSION=	1.8.0
+PORTVERSION=	1.9.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -15,11 +16,11 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 USE_GITHUB=	yes
 GH_ACCOUNT=	rwos
 
-PLIST_FILES=	bin/${PORTNAME} man/man6/${PORTNAME}.6.gz
-
 GTI_SPEED?=	50
 CFLAGS+=	-DGTI_SPEED=${GTI_SPEED}
 
+PLIST_FILES=	bin/${PORTNAME} \
+		share/man/man6/${PORTNAME}.6.gz
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS
@@ -35,7 +36,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.6 ${STAGEDIR}${MANPREFIX}/man/man6
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.6 ${STAGEDIR}${PREFIX}/share/man/man6
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

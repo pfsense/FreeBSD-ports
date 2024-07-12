@@ -1,6 +1,5 @@
 PORTNAME=	gdal
-PORTVERSION=	3.7.0
-PORTREVISION=	2
+PORTVERSION=	3.9.0
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -30,6 +29,7 @@ CMAKE_OFF=	BUILD_CSHARP_BINDINGS \
 		BUILD_JAVA_BINDINGS \
 		BUILD_PYTHON_BINDINGS \
 		BUILD_TESTING \
+		BUILD_VSIPRELOAD \
 		CLANG_TIDY_ENABLED \
 		CSHARP_MONO \
 		ENABLE_DEFLATE64 \
@@ -61,10 +61,12 @@ CMAKE_ON=	BUILD_APPS \
 		ENABLE_GNM \
 		ENABLE_IPO \
 		ENABLE_PAM \
+		GDAL_AUTOLOAD_PLUGINS \
 		GDAL_BUILD_OPTIONAL_DRIVERS \
 		GDAL_HIDE_INTERNAL_SYMBOLS \
 		GDAL_OBJECT_LIBRARIES_POSITION_INDEPENDENT_CODE \
 		GDAL_SPLIT_EXPORTED_LIBS \
+		GDAL_USE_CPL_MULTIPROC_PTHREAD \
 		GDAL_USE_EXTERNAL_LIBS \
 		GDAL_USE_GEOTIFF \
 		GDAL_USE_GIF \
@@ -82,6 +84,7 @@ CMAKE_ON=	BUILD_APPS \
 		GDAL_USE_ZLIB \
 		OGR_BUILD_OPTIONAL_DRIVERS \
 		OGR_SQLITE_ALLOW_LOAD_EXTENSIONS \
+		RENAME_INTERNAL_SHAPELIB_SYMBOLS \
 		USE_CCACHE
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
@@ -107,22 +110,26 @@ HEADER_FILES=	alg/gdalwarpkernel_opencl.h \
 		port/cpl_vsil_curl_priv.h \
 		port/cpl_worker_thread_pool.h
 
-OPTIONS_DEFINE=	ARMADILLO BRUNSLI CFITSIO CRYPTOPP CURL DEFLATE ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF KML LERC LIBXML2 LZ4 MYSQL NETCDF ODBC OPENJPEG PCRE PCRE2 PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
+OPTIONS_DEFINE=	AEC ARMADILLO BRUNSLI CFITSIO CRYPTOPP CURL DEFLATE ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF JXL KML LERC LIBXML2 LZ4 MYSQL NETCDF ODBC OPENJPEG PCRE2 PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
-OPTIONS_DEFAULT=CURL DEFLATE EXPAT FREEXL GEOS LERC LIBXML2 LZ4 OPENJPEG PCRE2 PGSQL POPPLER WEBP ZSTD \
+OPTIONS_DEFAULT=AEC CURL DEFLATE EXPAT FREEXL GEOS LERC LIBXML2 LZ4 OPENJPEG PCRE2 PGSQL POPPLER WEBP ZSTD \
 		HDF5 KML NETCDF SPATIALITE SFCGAL SQLITE XERCES
+OPTIONS_EXCLUDE_powerpc=	LERC
+OPTIONS_EXCLUDE_powerpc64=	LERC
 OPTIONS_SUB=	yes
+AEC_DESC=	Adaptive entropy coding library
 BRUNSLI_DESC=	Brunsli support via libbrunsli library
 CRYPTOPP_DESC=	Cryptopp support
 DEFLATE_DESC=	Faster deflate support via libdeflate library
 EXR_DESC=	EXR support via OpenEXR library
 LERC_DESC=	LERC (Limited Error Raster Compression) support
-PCRE_DESC=	Regular expression support for SQLite
 PCRE2_DESC=	Regular expression support for SQLite
 RASTERLITE2_DESC=	RasterLite2 support
 TILEDB_DESC=	TileDB support
 
+AEC_CMAKE_BOOL=		GDAL_USE_LIBAEC
+AEC_LIB_DEPENDS=	libaec.so:science/libaec
 ARMADILLO_CMAKE_BOOL=	GDAL_USE_ARMADILLO
 ARMADILLO_LIB_DEPENDS=	libarmadillo.so:math/armadillo
 BRUNSLI_CMAKE_BOOL=	GDAL_USE_BRUNSLI
@@ -153,8 +160,12 @@ HDF5_CMAKE_BOOL=	GDAL_USE_HDF5
 HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5
 HEIF_CMAKE_BOOL=	GDAL_USE_HEIF
 HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
+JXL_CMAKE_BOOL=		GDAL_USE_JXL GDAL_USE_JXL_THREADS
+JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
 KML_CMAKE_BOOL=		GDAL_USE_LIBKML
-KML_LIB_DEPENDS=	libkmlbase.so:science/libkml
+KML_LIB_DEPENDS=	libkmlbase.so:science/libkml \
+			liburiparser.so:net/uriparser
+KML_USES=		minizip
 LERC_CMAKE_BOOL=	GDAL_USE_LERC
 LERC_LIB_DEPENDS=	libLerc.so:graphics/lerc
 LIBXML2_CMAKE_BOOL=	GDAL_USE_LIBXML2
@@ -170,8 +181,6 @@ ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 OPENJPEG_BUILD_DEPENDS=	openjpeg>=2.1.0:graphics/openjpeg
 OPENJPEG_CMAKE_BOOL=	GDAL_USE_OPENJPEG
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
-PCRE_CMAKE_BOOL=	GDAL_USE_PCRE
-PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PCRE2_CMAKE_BOOL=	GDAL_USE_PCRE2
 PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 PGSQL_CMAKE_BOOL=	GDAL_USE_POSTGRESQL
@@ -197,8 +206,21 @@ XERCES_LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3
 ZSTD_CMAKE_BOOL=	GDAL_USE_ZSTD
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/alg/internal_libqhull \
+			--exclude ${DISTNAME}/frmts/gif/giflib \
+			--exclude ${DISTNAME}/frmts/gtiff/libgeotiff \
+			--exclude ${DISTNAME}/frmts/gtiff/libtiff \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg12 \
+			--exclude ${DISTNAME}/frmts/png/libpng \
+			--exclude ${DISTNAME}/frmts/zlib \
+			--exclude ${DISTNAME}/ogr/ogrsf_frmts/geojson/libjson \
+			--exclude ${DISTNAME}/third_party/LercLib \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/alg/internal_libqhull/
 	@${RM} -r ${WRKSRC}/frmts/gif/giflib/
 	@${RM} -r ${WRKSRC}/frmts/gtiff/libgeotiff/
@@ -209,6 +231,7 @@ post-patch:
 	@${RM} -r ${WRKSRC}/frmts/zlib/
 	@${RM} -r ${WRKSRC}/ogr/ogrsf_frmts/geojson/libjson/
 	@${RM} -r ${WRKSRC}/third_party/LercLib/
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d

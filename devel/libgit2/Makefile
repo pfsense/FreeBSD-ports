@@ -5,8 +5,7 @@
 
 PORTNAME=	libgit2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.2
-PORTREVISION=	1
+DISTVERSION=	1.7.2
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -18,14 +17,17 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
 		libhttp_parser.so:www/http-parser
 
-USES=		cmake:testing cpe pkgconfig python:build ssl
+USES=		cmake:testing cpe localbase pkgconfig python:build ssl
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
 CMAKE_TESTING_ON=	BUILD_TESTS
 
 CMAKE_ARGS=	-DREGEX_BACKEND=pcre2 -DUSE_HTTP_PARSER=system \
-		-DCMAKE_CTEST_ARGUMENTS="-E;'invasive|online'"
+		-DCMAKE_CTEST_ARGUMENTS="-E;'invasive|online'" \
+		-DOPENSSL_ROOT_DIR=${OPENSSLBASE} \
+		-DOPENSSL_ENGINES_DIR=${ENGINESDIR}
+
 CMAKE_OFF=	BUILD_TESTS
 
 PLIST_SUB=	DISTVERSION=${DISTVERSION} \

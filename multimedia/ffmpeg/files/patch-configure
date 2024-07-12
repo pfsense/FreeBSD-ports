@@ -1,6 +1,6 @@
---- configure.orig	2022-10-09 19:04:43 UTC
+--- configure.orig	2023-02-27 20:43:45 UTC
 +++ configure
-@@ -3784,13 +3784,7 @@ host_os=$target_os_default
+@@ -3888,13 +3888,7 @@ target_os_default=$(tolower $(uname -s))
  host_os=$target_os_default
  
  # machine
@@ -15,7 +15,20 @@
  cpu="generic"
  intrinsics="none"
  
-@@ -6758,7 +6752,7 @@ if enabled x86; then
+@@ -6705,10 +6699,10 @@ enabled libglslang && { check_lib spirv_compiler glsla
+ enabled libfribidi        && require_pkg_config libfribidi fribidi fribidi.h fribidi_version_info
+ enabled libharfbuzz       && require_pkg_config libharfbuzz harfbuzz hb.h hb_buffer_create
+ enabled libglslang && { check_lib spirv_compiler glslang/Include/glslang_c_interface.h glslang_initialize_process \
+-                            -lglslang -lMachineIndependent -lOSDependent -lHLSL -lOGLCompiler -lGenericCodeGen \
++                            -lglslang -lMachineIndependent -lOSDependent -lGenericCodeGen \
+                             -lSPVRemapper -lSPIRV -lSPIRV-Tools-opt -lSPIRV-Tools -lpthread -lstdc++ -lm ||
+                         require spirv_compiler glslang/Include/glslang_c_interface.h glslang_initialize_process \
+-                            -lglslang -lOSDependent -lHLSL -lOGLCompiler \
++                            -lglslang -lOSDependent \
+                             -lSPVRemapper -lSPIRV -lSPIRV-Tools-opt -lSPIRV-Tools -lpthread -lstdc++ -lm; }
+ enabled libgme            && { check_pkg_config libgme libgme gme/gme.h gme_new_emu ||
+                                require libgme gme/gme.h gme_new_emu -lgme -lstdc++; }
+@@ -7018,7 +7013,7 @@ fi
  
  if enabled x86; then
      case $target_os in

@@ -1,8 +1,9 @@
 PORTNAME=	libwraster
-PORTVERSION=	0.95.9
-PORTREVISION=	2
+PORTVERSION=	0.96.0
+PORTREVISION=	1
 CATEGORIES=	x11-wm windowmaker
-MASTER_SITES=	http://windowmaker.org/pub/source/release/
+MASTER_SITES=	https://www.windowmaker.org/pub/source/release/ \
+		https://github.com/window-maker/wmaker/releases/download/wmaker-${PORTVERSION}/ LOCAL/danfe
 DISTNAME=	WindowMaker-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp
 
-USES=		jpeg libtool localbase pathfix pkgconfig xorg
+USES=		gmake jpeg libtool localbase pathfix pkgconfig xorg
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xext xft xinerama xmu xpm
 BUILD_WRKSRC=	${WRKSRC}/wrlib

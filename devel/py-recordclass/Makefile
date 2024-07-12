@@ -1,12 +1,12 @@
 PORTNAME=	recordclass
-PORTVERSION=	0.18.4
+PORTVERSION=	0.22
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Mutable variants of tuple and collections.namedtuple
-WWW=		https://pypi.org/project/recordclass/
+WWW=		https://github.com/intellimath/recordclass
 
 LICENSE=	MIT
 

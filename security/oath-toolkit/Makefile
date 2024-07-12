@@ -1,6 +1,6 @@
 PORTNAME=	oath-toolkit
-PORTVERSION=	2.6.7
-PORTREVISION=	3
+PORTVERSION=	2.6.9
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	SAVANNAH
 
@@ -14,7 +14,9 @@ LICENSE_COMB=	multi
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR}
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR} \
+		--disable-pam-tests
 USES=		gmake libtool pathfix pkgconfig
 USE_GNOME=	libxslt
 USE_LDCONFIG=	yes

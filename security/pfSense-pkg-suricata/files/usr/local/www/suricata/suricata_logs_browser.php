@@ -3,7 +3,7 @@
  * suricata_logs_browser.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -144,9 +144,9 @@ $staticContent = '<span style="display:none; " id="fileStatusBox">' .
 		'<strong>' . gettext("Log File Path: ") . '</strong>' . '<span style="display:inline;" id="fbTarget"></span>' . '</p>' . 
 		'<p style="padding-right:15px; display:none;" id="fileRefreshBtn">' . 
 		'<button type="button" class="btn btn-sm btn-info" name="refresh" id="refresh" onclick="loadFile();" title="' . 
-		gettext("Refresh current display") . '"><i class="fa fa-repeat icon-embed-btn"></i>' . gettext("Refresh") . '</button>&nbsp;&nbsp;' . 
+		gettext("Refresh current display") . '"><i class="fa-solid fa-arrow-rotate-right icon-embed-btn"></i>' . gettext("Refresh") . '</button>&nbsp;&nbsp;' . 
 		'<button type="button" class="btn btn-sm btn-danger hidden no-confirm" name="fileClearBtn" id="fileClearBtn" ' . 
-		'onclick="clearFile();" title="' . gettext("Clear selected log file contents") . '"><i class="fa fa-trash icon-embed-btn"></i>' . 
+		'onclick="clearFile();" title="' . gettext("Clear selected log file contents") . '"><i class="fa-solid fa-trash-can icon-embed-btn"></i>' . 
 		gettext("Clear") . '</button></p>';
 
 $section->addInput(new Form_StaticText(

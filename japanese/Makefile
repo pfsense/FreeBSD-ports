@@ -14,7 +14,6 @@
     SUBDIR += alias-fonts
     SUBDIR += another-htmllint
     SUBDIR += anthy
-    SUBDIR += awffull
     SUBDIR += bible_names-fpw
     SUBDIR += boiled-mozc
     SUBDIR += bookview
@@ -29,6 +28,7 @@
     SUBDIR += cmigemo
     SUBDIR += cmigemo-dict
     SUBDIR += cp5022x-el
+    SUBDIR += cskk
     SUBDIR += csrd
     SUBDIR += ctags
     SUBDIR += dams
@@ -56,11 +56,13 @@
     SUBDIR += fcitx-mozc
     SUBDIR += fcitx-skk
     SUBDIR += fcitx5-anthy
+    SUBDIR += fcitx5-cskk
     SUBDIR += flower-fpw
     SUBDIR += foldoc-fpw
     SUBDIR += font-aozoramincho
     SUBDIR += font-ayu18
     SUBDIR += font-ayu20
+    SUBDIR += font-bizud-mincho
     SUBDIR += font-cica
     SUBDIR += font-elisa10
     SUBDIR += font-elisa8
@@ -89,6 +91,12 @@
     SUBDIR += font-mona
     SUBDIR += font-mona-ipa
     SUBDIR += font-mona-ttf
+    SUBDIR += font-moralerspace
+    SUBDIR += font-moralerspace-hw
+    SUBDIR += font-moralerspace-hwjpdoc
+    SUBDIR += font-moralerspace-hwnf
+    SUBDIR += font-moralerspace-jpdoc
+    SUBDIR += font-moralerspace-nf
     SUBDIR += font-motoya-al
     SUBDIR += font-mplus-bitmap
     SUBDIR += font-mplus-ipa
@@ -100,7 +108,6 @@
     SUBDIR += font-plemoljp
     SUBDIR += font-plemoljp-hs
     SUBDIR += font-plemoljp-nf
-    SUBDIR += font-plemoljp-nfj
     SUBDIR += font-ricty
     SUBDIR += font-ricty-discord
     SUBDIR += font-rounded-mgenplus
@@ -131,7 +138,6 @@
     SUBDIR += japaneseAFM
     SUBDIR += jargon-fpw
     SUBDIR += jcode.pl
-    SUBDIR += jed
     SUBDIR += jishyo
     SUBDIR += jls
     SUBDIR += jvim3

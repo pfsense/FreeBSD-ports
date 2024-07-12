@@ -1,5 +1,6 @@
 PORTNAME=	calcurse
 DISTVERSION=	4.8.1
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	https://calcurse.org/files/ \
 		https://fossies.org/linux/privat/
@@ -25,8 +26,8 @@ OPTIONS_SUB=		yes
 
 CALDAV_DESC=	Support Calendaring Extensions to WebDAV
 
-CALDAV_USES=		python:3.6+
-CALDAV_USES_OFF=	python:3.6+,env
+CALDAV_USES=		python
+CALDAV_USES_OFF=	python:env
 CALDAV_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}httplib2>=0:www/py-httplib2@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}oauth2client>=0:security/py-oauth2client@${PY_FLAVOR}
 
@@ -39,8 +40,5 @@ NLS_CONFIGURE_ENABLE=	nls
 post-patch:
 	@${REINPLACE_CMD} -e 's|^docdir = .*|docdir = ${DOCSDIR}|' ${WRKSRC}/doc/Makefile.in
 	@${REINPLACE_CMD} -e 's|-R$$found_dir||' ${WRKSRC}/configure
-
-post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1/${PORTNAME}.1
 
 .include <bsd.port.mk>

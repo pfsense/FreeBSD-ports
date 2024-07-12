@@ -1,10 +1,7 @@
 PORTNAME=	arcan
-DISTVERSION=	0.6.2.1
-PORTREVISION=	2
+DISTVERSION=	0.6.3
+PORTREVISION=	1
 CATEGORIES=	multimedia
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	9b807ac75c6f.patch:-p2 # https://github.com/letoram/arcan/issues/258
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Display Server, Multimedia Framework, Game Engine
@@ -30,7 +27,9 @@ WRKSRC_SUBDIR=	src
 CMAKE_ON=	HYBRID_HEADLESS
 CMAKE_OFF=	STATIC_LIBUVC
 CMAKE_ARGS=	-DDISTR_TAG:STRING="portbld" \
-		-DENGINE_BUILDTAG:STRING="${DISTVERSIONFULL}"
+		-DENGINE_BUILDTAG:STRING="${DISTVERSIONFULL}" \
+		-DMAN_DEST=share/man/man1 \
+		-DAPIMAN_DEST=share/man/man3
 LDFLAGS+=	-Wl,--as-needed # bzip2, ffmpeg, librt, libutil, lzma, zlib
 LDFLAGS_i386=	-Wl,-z,notext
 
@@ -74,7 +73,7 @@ WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 			libxcb-icccm.so:x11/xcb-util-wm \
 			libxkbcommon.so:x11/libxkbcommon
-WAYLAND_RUN_DEPENDS=	xwayland-devel>0:x11-servers/xwayland-devel
+WAYLAND_RUN_DEPENDS=	Xwayland:x11-servers/xwayland
 WAYLAND_USES=		xorg
 WAYLAND_USE=		XORG=xcb
 WAYLAND_CMAKE_BOOL_OFF=	DISABLE_WAYLAND

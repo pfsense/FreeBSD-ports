@@ -1,13 +1,13 @@
 PORTNAME=	aegis
 PORTVERSION=	4.25
 DISTVERSIONSUFFIX=	.D510
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	aryeh.friedman@gmail.com
 COMMENT=	Transaction-based software configuration management system
-WWW=		http://aegis.sourceforge.net/
+WWW=		https://aegis.sourceforge.net/
 
 LICENSE=	GPLv3
 
@@ -17,6 +17,7 @@ RUN_DEPENDS=	tkdiff:textproc/tkdiff
 USES=		cpe gettext ghostscript gnome groff perl5 tk bison
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CPPFLAGS+=	"-I${LOCALBASE}/include"
 CONFIGURE_ARGS=	--with-nlsdir="${PREFIX}/share/locale"
 CONFIGURE_ENV=	WISH="${WISH}"

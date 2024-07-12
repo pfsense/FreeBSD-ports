@@ -1,7 +1,7 @@
 PORTNAME=	ALPSCore
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.0
-PORTREVISION=	18
+DISTVERSION=	2.3.1
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,15 +11,15 @@ WWW=		https://github.com/ALPSCore/ALPSCore
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-BROKEN_i386=	fails to build: no matching member function for call to 'read'
-
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libhdf5.so:science/hdf5 \
 		libsz.so:science/libaec
 
 USES=		cmake compiler:c++11-lang eigen:3
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
+
 TEST_TARGET=	test # 2 to 3 tests fail: https://github.com/ALPSCore/ALPSCore/issues/388
 
 CMAKE_ARGS+=	-DTesting:BOOL=OFF # enable only for the 'test' target
@@ -35,7 +35,7 @@ DOXYGEN_CMAKE_BOOL=	Documentation
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 OPENMPI_CMAKE_BOOL=	ENABLE_MPI
-OPENMPI_LIB_DEPENDS=	libmpi.so:net/openmpi
+OPENMPI_LIB_DEPENDS=	libmpi_cxx.so:net/openmpi4
 
 PORTDOCS=	*
 

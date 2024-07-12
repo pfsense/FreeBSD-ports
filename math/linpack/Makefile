@@ -1,6 +1,6 @@
 PORTNAME=	linpack
 PORTVERSION=	1.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	math
 MASTER_SITES=	NL
 DISTFILES=	${SRCS}
@@ -11,7 +11,7 @@ WWW=		https://www.netlib.org/linpack/
 
 LIB_DEPENDS=	libblas.so:math/blas
 
-MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null
+MAKE_ENV=	WITHOUT_PROFILE=yes SRCCONF=/dev/null
 MAKEFILE=	${FILESDIR}/Makefile.lib
 
 USES=		fortran uidfix

@@ -1,12 +1,9 @@
 PORTNAME=	glib
-DISTVERSION=	2.76.3
+DISTVERSION=	2.80.3
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
-
-PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
-PATCHFILES+=	f6c40b1d27ed.patch:-p1 # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3335
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Some useful routines of C programming (current stable version)
@@ -14,13 +11,15 @@ WWW=		https://www.gtk.org/
 
 LICENSE=	LGPL20
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
 LIB_DEPENDS=	libffi.so:devel/libffi \
 		libpcre2-8.so:devel/pcre2
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
 
 # iconv:wchar_t - our iconv in base doesn't support utf-8 -> wchar_t (boooo)
 # (wchar_t is used by glibmm, rawtherapee triggered this)
 USES=		compiler:c11 cpe gettext gnome iconv:wchar_t localbase:ldflags \
-		meson perl5 pkgconfig python:3.7+ tar:xz trigger
+		meson perl5 pkgconfig python tar:xz trigger
 TRIGGERS=	gio-modules glib-schemas
 USE_LDCONFIG=	yes
 USE_PERL5=	build
@@ -28,7 +27,9 @@ USE_PYTHON=	py3kplist
 MESON_ARGS=	-Db_lundef=false \
 		-Ddefault_library=both \
 		-Dinstalled_tests=false \
+		-Dintrospection=disabled \
 		-Dlibmount=disabled \
+		-Dlocalstatedir=/var \
 		-Druntime_dir=/var/run \
 		-Dselinux=disabled \
 		-Dxattr=false
@@ -38,7 +39,7 @@ CPE_VENDOR=	gnome
 
 CONFLICTS_INSTALL=	p5-Giovanni
 
-_LIBVERSION=	0.7600.3
+_LIBVERSION=	0.8000.3
 PLIST_SUB=	LIBVERSION=${_LIBVERSION}
 
 OPTIONS_DEFINE=		DEBUG GTKDOC FAM_ALTBACKEND MANPAGES NLS TEST
@@ -47,14 +48,12 @@ OPTIONS_SUB=		yes
 
 GTKDOC_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
 GTKDOC_IMPLIES=		TEST
-GTKDOC_MESON_TRUE=	gtk_doc
+GTKDOC_MESON_TRUE=	documentation
 
 FAM_ALTBACKEND_DESC=	Alternate file monitor backend
 
-MANPAGES_BUILD_DEPENDS=	docbook-xml>4.1.2:textproc/docbook-xml \
-			docbook-xsl>0:textproc/docbook-xsl
-MANPAGES_USE=		GNOME=libxslt:build
-MANPAGES_MESON_TRUE=	man
+MANPAGES_BUILD_DEPENDS=	rst2man:textproc/py-docutils
+MANPAGES_MESON_ENABLED=	man-pages
 
 TEST_BUILD_DEPENDS=	dbus-daemon:devel/dbus
 TEST_MESON_TRUE=	tests
@@ -88,9 +87,6 @@ post-configure-GTKDOC-on:
 	@${REINPLACE_CMD} -e '\+^build docs/reference/gio/gdbus-object-manager-example/gdbus-object-manager-example-decl.txt:+s+$$+ || gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.so+' ${BUILD_WRKSRC}/build.ninja
 
 post-patch:
-	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g ; \
-		s|/usr/share/locale/locale|${LOCALBASE}/share/locale/locale|g' \
-		${WRKSRC}/glib/gutils.c
 	${REINPLACE_CMD} -e 's|@PYTHON@|${PYTHON_CMD}|g' \
 		${WRKSRC}/gio/gdbus-2.0/codegen/gdbus-codegen.in \
 		${WRKSRC}/glib/gtester-report.in \

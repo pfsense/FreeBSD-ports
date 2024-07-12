@@ -1,8 +1,8 @@
---- remoting/host/policy_watcher.cc.orig	2023-04-28 17:01:32 UTC
+--- remoting/host/policy_watcher.cc.orig	2024-03-22 08:19:40 UTC
 +++ remoting/host/policy_watcher.cc
-@@ -183,7 +183,7 @@ base::Value::Dict PolicyWatcher::GetDefaultPolicies() 
-   result.Set(key::kRemoteAccessHostAllowEnterpriseRemoteSupportConnections,
+@@ -192,7 +192,7 @@ base::Value::Dict PolicyWatcher::GetDefaultPolicies() 
               true);
+   result.Set(key::kRemoteAccessHostAllowEnterpriseFileTransfer, false);
  #endif
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)

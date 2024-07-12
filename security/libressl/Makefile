@@ -1,5 +1,6 @@
 PORTNAME=	libressl
-PORTVERSION=	3.7.3
+PORTVERSION=	3.9.2
+PORTREVISION=	1
 CATEGORIES=	security devel
 MASTER_SITES=	OPENBSD/LibreSSL
 
@@ -26,8 +27,7 @@ NC_DESC=	Install TLS-enabled netcat
 
 CONFLICTS_INSTALL=		libressl-devel
 libtls_CONFLICTS_INSTALL=	libretls
-default_CONFLICTS_INSTALL=	openssl \
-				openssl3[01]
+default_CONFLICTS_INSTALL=	openssl openssl111 openssl3[12] openssl-quictls
 
 .if ${FLAVOR:U} == default
 OPTIONS_EXCLUDE=	LIBTLS
@@ -40,6 +40,7 @@ LIBTLS_CONFIGURE_ENABLE=	libtls-only
 NC_CONFIGURE_ENABLE=		nc
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USES=		cpe libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 OPTIONS_SUB=	yes
@@ -49,12 +50,12 @@ LDFLAGS+=	-pthread
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
-PLIST_SUB+=	LIBCRYPTO_SHLIBMAJ=50 \
-		LIBCRYPTO_SHLIBFULL=50.0.2 \
-		LIBSSL_SHLIBMAJ=53 \
-		LIBSSL_SHLIBFULL=53.0.2 \
-		LIBTLS_SHLIBMAJ=26 \
-		LIBTLS_SHLIBFULL=26.0.2
+PLIST_SUB+=	LIBCRYPTO_SHLIBMAJ=53 \
+		LIBCRYPTO_SHLIBFULL=53.0.0 \
+		LIBSSL_SHLIBMAJ=56 \
+		LIBSSL_SHLIBFULL=56.0.0 \
+		LIBTLS_SHLIBMAJ=29 \
+		LIBTLS_SHLIBFULL=29.0.0
 
 post-patch-MAN3-off:
 	${REINPLACE_CMD} -e '/^install-man:/s/install-man3//' \
@@ -63,9 +64,11 @@ post-patch-MAN3-off:
 
 post-install:
 	${RM} -r ${STAGEDIR}/${PREFIX}/etc/ssl/cert.pem
+	${RMDIR} ${STAGEDIR}${PREFIX}/etc/ssl/certs
+	${LN} -s /etc/ssl/certs ${STAGEDIR}${PREFIX}/etc/ssl/certs
 
 post-stage-MAN3-on:
-	(cd ${STAGEDIR}${MANPREFIX}; ${FIND} man/man3 -not -type d | \
+	(cd ${STAGEDIR}${PREFIX}; ${FIND} share/man/man3 -not -type d | \
 		${SED} 's/$$/.gz/' >> ${TMPPLIST})
 
 .include <bsd.port.mk>

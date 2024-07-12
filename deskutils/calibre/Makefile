@@ -1,12 +1,9 @@
 PORTNAME=	calibre
-PORTVERSION=	6.21.0
+PORTVERSION=	7.12.0
 CATEGORIES=	deskutils python
-MASTER_SITES=	http://download.calibre-ebook.com/${PORTVERSION}/ \
-		https://curl.haxx.se/ca/:cacert
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		cacert.pem:cacert
+MASTER_SITES=	http://download.calibre-ebook.com/${PORTVERSION}/
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY=	${DISTFILES:C/:[^:]+$//:Ncacert.pem}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Ebook management application
@@ -14,97 +11,94 @@ WWW=		https://calibre-ebook.com/
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libpoppler-qt6.so:graphics/poppler-qt6 \
-		libwmflite.so:graphics/libwmf \
-		libchm.so:misc/chmlib \
-		libicudata.so:devel/icu \
-		libpodofo.so:graphics/podofo \
-		libmtp.so:multimedia/libmtp \
-		libfreetype.so:print/freetype2 \
-		libhunspell-1.7.so:textproc/hunspell \
-		libhyphen.so:textproc/hyphen \
-		libstemmer.so:textproc/snowballstemmer \
-		libxkbcommon.so:x11/libxkbcommon \
-		libuchardet.so:textproc/uchardet
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mechanize>=0:www/py-mechanize@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}css-parser>=1.0.4:www/py-css-parser@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}apsw>=0:databases/py-apsw@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}msgpack>=0.3:devel/py-msgpack@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}regex>=0:textproc/py-regex@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.3:www/py-html5-parser@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}zeroconf>0:net/py-zeroconf@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyicu>0:devel/py-pyicu@${PY_FLAVOR} \
-		${LOCALBASE}/bin/cmake:devel/cmake-core \
-		liberation-fonts-ttf>=2.1.3:x11-fonts/liberation-fonts-ttf \
-		MathJax3>0:www/mathjax3
-RUN_DEPENDS=	xdg-open:devel/xdg-utils \
-		${PYTHON_PKGNAMEPREFIX}css-parser>=1.0.4:www/py-css-parser@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mechanize>=0:www/py-mechanize@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}netifaces>=0:net/py-netifaces@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cssselect>=0:www/py-cssselect@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}apsw>=0:databases/py-apsw@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}msgpack>=0.3:devel/py-msgpack@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}regex>=0:textproc/py-regex@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}markdown>=0:textproc/py-markdown@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}charset-normalizer>=0:textproc/py-charset-normalizer@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.3:www/py-html5-parser@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.8:textproc/py-feedparser@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jeepney>=0.6:devel/py-jeepney@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
-		pdftohtml:graphics/poppler-utils \
-		${PYTHON_PKGNAMEPREFIX}zeroconf>0:net/py-zeroconf@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pycryptodome>0:security/py-pycryptodome@${PY_FLAVOR} \
-		liberation-fonts-ttf>=2.1.3:x11-fonts/liberation-fonts-ttf\
-		MathJax3>0:www/mathjax3
+EXTRACT_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+BUILD_DEPENDS=		${LOCALBASE}/bin/cmake:devel/cmake-core \
+			${NONEXISTENT}:misc/iso-codes:extract \
+			${PYTHON_PKGNAMEPREFIX}apsw>=3.43.0.0:databases/py-apsw@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.12.2:www/py-beautifulsoup@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}css-parser>=1.0.10:www/py-css-parser@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.12:www/py-html5-parser@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}lxml>=4.9.3:devel/py-lxml@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}mechanize>=0.4.8:www/py-mechanize@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}msgpack>=0.3:devel/py-msgpack@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}regex>=0:textproc/py-regex@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}xxhash>3.3.0:devel/py-xxhash@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}zeroconf>0:net/py-zeroconf@${PY_FLAVOR} \
+			liberation-fonts-ttf>=2.1.3:x11-fonts/liberation-fonts-ttf \
+			MathJax3>0:www/mathjax3
+LIB_DEPENDS=		libfreetype.so:print/freetype2 \
+			libhunspell-1.7.so:textproc/hunspell \
+			libhyphen.so:textproc/hyphen \
+			libicudata.so:devel/icu \
+			libmtp.so:multimedia/libmtp \
+			libpodofo.so:graphics/podofo \
+			libstemmer.so:textproc/snowballstemmer \
+			libuchardet.so:textproc/uchardet \
+			libxkbcommon.so:x11/libxkbcommon
+RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}apsw>=3.43.0.0:databases/py-apsw@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.12.2:www/py-beautifulsoup@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}css-parser>=1.0.10:www/py-css-parser@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}dnspython>=2.4.2:dns/py-dnspython@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.10:textproc/py-feedparser@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.12:www/py-html5-parser@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}jeepney>=0.8.0:devel/py-jeepney@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}lxml>=4.9.3:devel/py-lxml@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}markdown>=3.4.4:textproc/py-markdown@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}mechanize>=0.4.8:www/py-mechanize@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}msgpack>=1.0.7:devel/py-msgpack@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}netifaces>=0.11.0:net/py-netifaces@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pillow>=10.0.1:graphics/py-pillow@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pycryptodome>=3.19.0:security/py-pycryptodome@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}regex>=0:textproc/py-regex@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}xxhash>=3.3.0:devel/py-xxhash@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}zeroconf>0:net/py-zeroconf@${PY_FLAVOR} \
+			liberation-fonts-ttf>=2.1.3:x11-fonts/liberation-fonts-ttf \
+			MathJax3>0:www/mathjax3 \
+			pdftohtml:graphics/poppler-utils \
+			xdg-open:devel/xdg-utils
 
-USES=		desktop-file-utils gettext-runtime gl gnome localbase:ldflags \
-		pkgconfig pyqt:6 python:3.8+ qt:6 shared-mime-info shebangfix \
-		ssl tar:xz xorg
-USE_RC_SUBR=	calibre
-SUB_LIST+=	PYTHON_VERSION=${PYTHON_VERSION}
+USES=		desktop-file-utils gettext-runtime:build gl localbase:ldflags \
+		pkgconfig pyqt:6 python:3.11+ qt:6 shared-mime-info shebangfix sqlite ssl \
+		tar:xz xorg
+USE_GL=		opengl
 USE_PYQT=	pyqt6 pysip qtbuilder sip webengine
 USE_QT=		base
-USE_GL=		egl gl
-USE_GNOME=	glib20
-USE_XORG=	xrender xext x11
+USE_RC_SUBR=	calibre
+USE_XORG=	x11 xext xrender
 
 USE_GITHUB=	nodefault
-GH_TUPLE=	kovidgoyal:calibre-translations:bd464ab:translations \
-		LibreOffice:dictionaries:1698414:hypenation
+GH_TUPLE=	kovidgoyal:calibre-translations:ce2962b:translations \
+		LibreOffice:dictionaries:7272a82:hypenation
 
-SHEBANG_GLOB=	*.sh *.py *.recipe
+SHEBANG_GLOB=	*.py *.recipe *.sh
 python_OLD_CMD=	"/usr/bin/env  python" ${LOCALBASE}/bin/python3
-MAKE_ENV+=	FC_INC_DIR="${LOCALBASE}/include/fontconfig" \
+MAKE_ENV=	CALIBRE_CONFIG_DIRECTORY=${WRKDIR}/calibre-config \
+		FC_INC_DIR="${LOCALBASE}/include/fontconfig" \
 		FC_LIB_DIR="${LOCALBASE}/lib" \
 		OVERRIDE_CFLAGS="${CFLAGS}" \
 		OVERRIDE_LDFLAGS="${LDFLAGS}" \
-		PODOFO_LIB_DIR="${LOCALBASE}/lib" \
 		PODOFO_INC_DIR="${LOCALBASE}/include/podofo" \
-		WITH_USB=yes \
-		CALIBRE_CONFIG_DIRECTORY=${WRKDIR}/calibre-config \
-		XDG_DATA_DIRS=${STAGEDIR}${PREFIX}/share \
-		XDG_CONFIG_HOME=${WRKDIR}/xdg-config \
-		XDG_UTILS_INSTALL_MODE=system \
+		PODOFO_LIB_DIR="${LOCALBASE}/lib" \
+		PYTHONDONTWRITEBYTECODE=true \
 		QMAKE=${QMAKE} \
 		SIP_BIN=${SIP} \
 		SIP_DIR=${PYQT_SIPDIR} \
-		PYTHONDONTWRITEBYTECODE=true
+		WITH_USB=yes \
+		XDG_CONFIG_HOME=${WRKDIR}/xdg-config \
+		XDG_DATA_DIRS=${STAGEDIR}${PREFIX}/share \
+		XDG_UTILS_INSTALL_MODE=system
+SUB_LIST=	PYTHON_VERSION=${PYTHON_VERSION}
+
+.include <bsd.port.pre.mk>
+
+ISOCODESWRKSRC!=	${BSDMAKE} -C ${.CURDIR}/../../misc/iso-codes -V WRKSRC
 
 post-extract:
 	@${MV} ${WRKSRC_translations} ${WRKSRC}/src/translations
-	@${CP} ${DISTDIR}/${DIST_SUBDIR}/cacert.pem ${WRKSRC}/resources/mozilla-ca-certs.pem
+	@${CP} ${LOCALBASE}/share/certs/ca-root-nss.crt ${WRKSRC}/resources/mozilla-ca-certs.pem
 	@${CP} ${FILESDIR}/user-agent-data.json ${WRKSRC}/resources
 
 post-patch:
@@ -113,6 +107,8 @@ post-patch:
 		${WRKSRC}/setup/install.py \
 		${WRKSRC}/src/calibre/gui2/dialogs/custom_recipes.py \
 		${WRKSRC}/src/calibre/gui2/preferences/tweaks.py
+	@${REINPLACE_CMD} -e "s|%%ISOCODESWRKSRC%%|${ISOCODESWRKSRC}|" \
+		${WRKSRC}/setup/iso_codes.py
 
 do-configure:
 	# do nothing
@@ -150,4 +146,4 @@ update-recent-uas: patch
 		${PYSETUP} recent_uas)
 	${CP} ${BUILD_WRKSRC}/resources/user-agent-data.json ${FILESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

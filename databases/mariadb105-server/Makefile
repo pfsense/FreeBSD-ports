@@ -1,5 +1,5 @@
 PORTNAME?=	mariadb
-PORTVERSION=	10.5.20
+PORTVERSION=	10.5.24
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	\
@@ -12,7 +12,6 @@ MASTER_SITES=	\
 		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
 		https://mirror.kku.ac.th/${SITESDIR}/ \
 		https://espejito.fder.edu.uy/${SITESDIR}/ \
-		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
 		https://ftp.osuosl.org/pub/${SITESDIR}/ \
 		https://downloads.mariadb.org/rest-api/mariadb/${PORTVERSION}/
 PKGNAMESUFFIX?=	105-server
@@ -23,6 +22,8 @@ WWW=		https://mariadb.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+#EXPIRATION_DATE=	2025-06-01
 
 LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2
 
@@ -208,6 +209,10 @@ CMAKE_ARGS+=		-DPLUGIN_${PLUGIN}=NO
 
 .if ${SSL_DEFAULT} != base && ${PORT_OPTIONS:MGSSAPI_BASE}
 GSSAPI_BASE_IGNORE=	GSSAPI_BASE is not compatible with OpenSSL from ports. Use other GSSAPI options or OpenSSL from base system
+.endif
+
+.if ${SSL_DEFAULT:Mlibressl*}
+CFLAGS+=        -Wno-incompatible-function-pointer-types
 .endif
 
 .if ${ARCH} != amd64 && ${ARCH} != aarch64

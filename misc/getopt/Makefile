@@ -1,5 +1,6 @@
 PORTNAME=	getopt
 PORTVERSION=	1.1.6
+PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	http://frodo.looijaard.name/system/files/software/getopt/ \
 		LOCAL/sunpoet
@@ -23,9 +24,6 @@ NLS_MAKE_ARGS=		WITHOUT_GETTEXT=0
 NLS_MAKE_ARGS_OFF=	WITHOUT_GETTEXT=1
 NLS_LDFLAGS=		-lintl
 NLS_USES=		gettext localbase:ldflags
-
-post-patch:
-	@${RM} ${WRKSRC}/gnu/*.o
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/getopt

@@ -1,7 +1,8 @@
 PORTNAME=	libHX
-PORTVERSION=	4.12
+PORTVERSION=	4.23
 CATEGORIES=	lang
-MASTER_SITES=	https://inai.de/files/libhx/
+MASTER_SITES=	https://inai.de/files/libhx/ \
+		https://codeberg.org/jengelh/libhx/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	C/C++ library with common data structures and functions
@@ -22,5 +23,8 @@ OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:tl}
+
+post-install-DOCS-on:
+	${CP} -a ${INSTALL_WRKSRC}/doc/ ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

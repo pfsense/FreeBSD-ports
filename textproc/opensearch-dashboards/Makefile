@@ -1,61 +1,42 @@
 PORTNAME=	opensearch-dashboards
-DISTVERSION=	2.7.0
+DISTVERSION?=	2.14.0
 DISTVERSIONSUFFIX=	-linux-x64
 CATEGORIES=	textproc www
 MASTER_SITES=	https://artifacts.opensearch.org/releases/bundle/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	opensearch@FreeBSD.org
-COMMENT=	Visualization dashboards for OpenSearch
+COMMENT?=	Visualization dashboards for OpenSearch
 WWW=		https://opensearch.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	npm-node16>0:www/npm-node16
+CONFLICTS?=	opensearch-dashboards210
 
-CONFLICTS=	opensearch-dashboard13
+BUILD_DEPENDS=	npm-node18>0:www/npm-node18
 
-USES=		nodejs:16,build,run python:build
+USES=		nodejs:18,build,run python:build
 USE_RC_SUBR=	${PORTNAME}
+
+SUB_FILES=	pkg-deinstall
+SUB_LIST=	PORTNAME="${PORTNAME}" \
+		PKGNAMESUFFIX="${PKGNAMESUFFIX}" \
+		WWWDIR=${WWWDIR}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-OPTIONS_DEFINE=	CHROME
-
-CHROME_DESC=	Add dependency on www/chromium (required for PDF reports)
-CHROME_RUN_DEPENDS=chrome:www/chromium
-
-NODE_VER=	16.20.0
+NODE_VER=	18.18.0
+NO_BUILD=	yes
 
 _DEVDIR=	${WRKDIR}/.devdir
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' -e 's|%%LOCALBASE%%|${LOCALBASE}|' -e 's|%%WRKSRC%%|${WRKSRC}|' \
-		${WRKSRC}/node_modules/re2/binding.gyp
 	@${REINPLACE_CMD} -e 's|14.20.1|${NODE_VER}|g' ${WRKSRC}/package.json
 	${RM} \
 		${WRKSRC}/bin/*.orig \
 		${WRKSRC}/bin/*.bak \
-		${WRKSRC}/node_modules/re2/binding.gyp.orig \
-		${WRKSRC}/node_modules/re2/binding.gyp.bak \
 		${WRKSRC}/package.json.bak
 	${RM} -r ${WRKSRC}/plugins/reportsDashboards/.chromium
-
-do-configure:
-	(cd ${WRKSRC}/node_modules/re2 && \
-		${SETENV} HOME=${WRKDIR} PYTHONDONTWRITEBYTECODE=1 \
-		${LOCALBASE}/lib/node_modules/npm/bin/node-gyp-bin/node-gyp configure \
-		--python=${PYTHON_CMD} \
-		--nodedir ${LOCALBASE} \
-		--devdir=${_DEVDIR})
-
-do-build:
-	(cd ${WRKSRC}/node_modules/re2 && \
-		${SETENV} HOME=${WRKDIR} PYTHONDONTWRITEBYTECODE=1 \
-		${LOCALBASE}/lib/node_modules/npm/bin/node-gyp-bin/node-gyp build \
-		--devdir=${_DEVDIR})
-	${RM} -r ${WRKSRC}/node_modules/re2/build/Release/.deps \
-		${WRKSRC}/node_modules/re2/build/Release/obj.target
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR} ${STAGEDIR}${ETCDIR}
@@ -63,7 +44,6 @@ do-install:
 	(cd ${WRKSRC} && \
 		${COPYTREE_SHARE} "data node_modules package.json plugins src" ${STAGEDIR}${WWWDIR} && \
 		${COPYTREE_BIN} bin ${STAGEDIR}${WWWDIR})
-	${STRIP_CMD} ${STAGEDIR}${WWWDIR}/node_modules/re2/build/Release/re2.node
 
 post-install:
 	${ECHO} "@sample ${ETCDIR}/opensearch_dashboards.yml.sample" >> ${TMPPLIST}
@@ -75,5 +55,26 @@ post-install:
 	${ECHO} "@dir ${WWWDIR}/plugins/reportsDashboards/node_modules/set-interval-async/test/resources/dynamic" >> ${TMPPLIST}
 	${ECHO} "@dir ${WWWDIR}/plugins/reportsDashboards/node_modules/set-interval-async/examples/fixed" >> ${TMPPLIST}
 	${ECHO} "@dir ${WWWDIR}/plugins/reportsDashboards/node_modules/set-interval-async/examples/dynamic" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/observabilityDashboards/server/adaptors/integrations/__test__" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/observabilityDashboards/server/adaptors/integrations/repository/__test__" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Alerts/components/AlertFlyout" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/CreateDetector/components/ConfigureAlerts/components/AlertCondition" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/AlertTriggerView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/DetectorBasicDetailsView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/DetectorRulesView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/FieldMappingsView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateAlertConditions" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateDetectorBasicDetails" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateDetectorRules" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/components/UpdateFieldMappings" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/AlertTriggersView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/DetectorDetails" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/DetectorDetailsView" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/Detectors" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Detectors/containers/EditFieldMappings" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Rules/components/DeleteModal" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Rules/components/RuleEditor/components" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityAnalyticsDashboards/test/mocks/Rules/components/RulesTable" >> ${TMPPLIST}
+	${ECHO} "@dir ${WWWDIR}/plugins/securityDashboards/server/multitenancy/test" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

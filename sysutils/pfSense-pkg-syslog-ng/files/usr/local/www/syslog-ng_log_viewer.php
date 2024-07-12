@@ -3,7 +3,7 @@
  * syslog-ng_log_viewer.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Lance Leger
  * All rights reserved.
  *
@@ -22,11 +22,11 @@
 require("guiconfig.inc");
 require("/usr/local/pkg/syslog-ng.inc");
 
-$objects = $config['installedpackages']['syslogngadvanced']['config'];
-$default_logdir = $config['installedpackages']['syslogng']['config'][0]['default_logdir'];
-$default_logfile = $config['installedpackages']['syslogng']['config'][0]['default_logfile'];
-$compress_archives = $config['installedpackages']['syslogng']['config'][0]['compress_archives'];
-$compress_type = $config['installedpackages']['syslogng']['config'][0]['compress_type'];
+$objects = config_get_path('installedpackages/syslogngadvanced/config');
+$default_logdir = config_get_path('installedpackages/syslogng/config/0/default_logdir');
+$default_logfile = config_get_path('installedpackages/syslogng/config/0/default_logfile');
+$compress_archives = config_get_path('installedpackages/syslogng/config/0/compress_archives');
+$compress_type = config_get_path('installedpackages/syslogng/config/0/compress_type');
 
 if ($_POST['logfile']) {
 	$logfile = $_POST['logfile'];
@@ -143,7 +143,7 @@ $form->addGlobal(new Form_Button(
 	'submit',
 	"Refresh",
 	null,
-	'fa-refresh'
+	'fa-solid fa-arrows-rotate'
 ))->addClass('btn-primary');
 
 $form->add($section);

@@ -1,12 +1,12 @@
 PORTNAME=	rlpr
 PORTVERSION=	2.06
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	print net
 MASTER_SITES=	http://fossies.org/unix/misc/old/	\
 		http://linuxfocus.org/~guido/	\
 		http://truffula.com/rlpr/
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Send print jobs to lpd servers anywhere on a network
 WWW=		http://freecode.com/projects/rlpr
 
@@ -14,6 +14,7 @@ LICENSE=	GPLv2
 
 USES=		cpe
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 # rlpr supports gettext/libintl, but does not currently come with ANY
 # translation .po files. When this changes, it would make sense to
 # enable the use of gettext in this port:
@@ -35,7 +36,7 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/rlpr	\
 		${STAGEDIR}${PREFIX}/bin/rlprm
 
-PLIST_FILES+=	man/man1/rlpq.1.gz man/man1/rlpr.1.gz man/man1/rlprm.1.gz \
-		man/man5/rlprrc.5.gz man/man8/rlprd.8.gz
+PLIST_FILES+=	share/man/man1/rlpq.1.gz share/man/man1/rlpr.1.gz share/man/man1/rlprm.1.gz \
+		share/man/man5/rlprrc.5.gz share/man/man8/rlprd.8.gz
 
 .include <bsd.port.mk>

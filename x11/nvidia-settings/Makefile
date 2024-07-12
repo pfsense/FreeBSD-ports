@@ -1,5 +1,5 @@
 PORTNAME=	nvidia-settings
-PORTVERSION=	470.86
+PORTVERSION=	535.146.02
 PORTREVISION=	1
 CATEGORIES=	x11
 
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libvdpau.so:multimedia/libvdpau
 
 USES=		gl gmake gnome pkgconfig gettext-runtime xorg
-USE_GNOME=	gtk20 cairo gdkpixbuf2
+USE_GNOME=	gtk30 cairo gdkpixbuf2
 USE_GL=		gl
 USE_XORG=	x11 xext xv xxf86vm
 
@@ -29,9 +29,9 @@ GH_ACCOUNT=	NVIDIA
 
 PLIST_FILES=	bin/nvidia-settings \
 		libexec/nvidia-settings \
-		man/man1/nvidia-settings.1.gz \
-		lib/libnvidia-gtk2.so.${PORTVERSION} \
+		lib/libnvidia-gtk3.so.${PORTVERSION} \
 		share/applications/nvidia-settings.desktop \
+		share/man/man1/nvidia-settings.1.gz \
 		share/pixmaps/nvidia-settings.png
 
 SUB_FILES=	nvidia-settings
@@ -40,13 +40,12 @@ LDFLAGS+=	-pthread
 LLD_UNSAFE=	yes
 MAKE_ENV=	NV_USE_BUNDLED_LIBJANSSON=0 \
 		NV_VERBOSE=1 \
-		GTK3_AVAILABLE=0 \
+		GTK2_AVAILABLE=0 \
 		INSTALL_DOC_ARGS="${INSTALL_MAN:Ninstall}" \
 		XNVCTRL_CFLAGS=-I${LOCALBASE}/include \
 		XNVCTRL_LDFLAGS=-L${LOCALBASE}/lib
 
 post-patch:	.SILENT
-	${REINPLACE_CMD} -e '/^MANDIR/s|share/||' ${WRKSRC}/utils.mk
 	${REINPLACE_CMD} -E -e 's,__(PIXMAP|UTILS)_PATH__/,,' \
 		-e 's|__NVIDIA_SETTINGS_DESKTOP_CATEGORIES__|Settings;HardwareSettings;|' \
 		${WRKSRC}/doc/nvidia-settings.desktop
@@ -54,7 +53,8 @@ post-patch:	.SILENT
 		${WRKSRC}/src/gtk+-2.x/ctkappprofile.c
 
 post-install:	.SILENT
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libnvidia-gtk2.so.${PORTVERSION}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libnvidia-gtk3.so.${PORTVERSION}
+	${RM} ${STAGEDIR}/${PREFIX}/lib/libnvidia-wayland-client.so.${PORTVERSION}
 	${INSTALL_DATA} ${WRKSRC}/doc/nvidia-settings.desktop \
 		${STAGEDIR}/${DESKTOPDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/nvidia-settings.png \

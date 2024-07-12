@@ -1,5 +1,5 @@
 PORTNAME=	libayatana-indicator
-PORTVERSION=	0.9.3
+PORTVERSION=	0.9.4
 PORTREVISION=	1
 CATEGORIES=	devel
 

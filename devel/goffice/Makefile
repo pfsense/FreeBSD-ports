@@ -1,11 +1,11 @@
 PORTNAME=	goffice
 PORTVERSION=	0.10.53
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GLib/GTK+ set of document centric objects and utilities
+COMMENT=	GLib/GTK set of document centric objects and utilities
 WWW=		http://live.gnome.org/libgoffice
 
 LICENSE=	GPLv2

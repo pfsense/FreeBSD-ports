@@ -1,7 +1,7 @@
 PORTNAME=	mesen
 DISTVERSION=	0.9.8-4
-PORTREVISION=	2
 DISTVERSIONSUFFIX=	-g4c701ad6
+PORTREVISION=	4
 CATEGORIES=	emulators
 
 MAINTAINER=	ports@FreeBSD.org
@@ -41,8 +41,8 @@ MONO_DESC=	Mono based GUI frontend
 LIBRETRO_DESC=	Libretro core
 
 MONO_ALL_TARGET=	ui
-MONO_BUILD_DEPENDS=	mono:lang/mono
-MONO_RUN_DEPENDS=	mono:lang/mono
+MONO_BUILD_DEPENDS=	mono:lang/mono${MONO_DEFAULT}
+MONO_RUN_DEPENDS=	mono:lang/mono${MONO_DEFAULT}
 MONO_DESKTOP_ENTRIES=	"Mesen" "NES/Famicom Emulator" \
 			"${PORTNAME}" "${PORTNAME}" "Game;Emulator;" false
 
@@ -50,8 +50,8 @@ LIBRETRO_ALL_TARGET=	libretro
 
 .include <bsd.port.pre.mk>
 
-.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 5.10
-BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: The imported project "/usr/local/lib/mono/msbuild/15.0/bin/Roslyn/Microsoft.CSharp.Core.targets" was not found
+.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
+BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: error MSB4184: The expression ""Program.cs".GetPathsOfAllDirectoriesAbove()" cannot be evaluated. Method 'System.String.GetPathsOfAllDirectoriesAbove' not found.
 .endif
 
 do-install: 	# empty to avoid default

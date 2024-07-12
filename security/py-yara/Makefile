@@ -1,5 +1,5 @@
 PORTNAME=	yara
-PORTVERSION=	4.2.3
+PORTVERSION=	4.3.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	VirusTotal
 GH_PROJECT=	yara-python
 
-USES=		cpe localbase python:3.6+
+USES=		cpe localbase python
 CPE_VENDOR=	virustotal
 USE_PYTHON=	distutils autoplist
 PYDISTUTILS_BUILDARGS=	--dynamic-linking

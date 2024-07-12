@@ -1,6 +1,6 @@
---- Makefile.orig	2003-06-10 20:26:51 UTC
+--- Makefile.orig	2023-10-04 18:23:40 UTC
 +++ Makefile
-@@ -5,13 +5,13 @@
+@@ -5,7 +5,7 @@
  
  # -m386 (486,pentium,pentiumpro)
  #OPTIMIZE=-O7 -mpentiumpro
@@ -9,22 +9,19 @@
  
  # debug symbols will be stripped anyway during 'make install'
  DEBUG=-g
+@@ -24,12 +24,11 @@ mls: $(OBJS)
+ 	$(CC) -c -o $@ $< $(CFLAGS)
  
- #### DON'T CHANGE ANYTHING BELOW ####
--DESTDIR=/usr/local
-+DESTDIR?=/usr/local
- CFLAGS=-Wall $(OPTIMIZE) $(DEBUG)
- LIBS=-lm
- CC=gcc
-@@ -37,9 +37,8 @@ mls_text.o: mls_text.c mls_text.h mls_lang.h Makefile
- 	$(CC) $(CFLAGS) -c mls_text.c -o mls_text.o
+ mls: $(OBJS)
+-	$(CC) -o $@ $^ $(CFLAGS)
++	$(CC) -o $@ $(OBJS) $(CFLAGS)
  
  install: mls
 -	install -m 755 -g root -o root -s mls $(DESTDIR)/bin
 -	install -m 644 -g root -o root mls.1 $(DESTDIR)/man/man1
 -	gzip -9f $(DESTDIR)/man/man1/mls.1
 +	$(BSD_INSTALL_PROGRAM) mls $(DESTDIR)$(PREFIX)/bin
-+	$(BSD_INSTALL_MAN) mls.1 $(DESTDIR)$(PREFIX)/man/man1
++	$(BSD_INSTALL_MAN) mls.1 $(DESTDIR)$(PREFIX)/share/man/man1
  	@echo "**************************************************************"
  	@echo "*** To use HTML feature or PHP wrapper, copy contents of   ***"
  	@echo "*** 'html' subdirectory to location accessible by your     ***"

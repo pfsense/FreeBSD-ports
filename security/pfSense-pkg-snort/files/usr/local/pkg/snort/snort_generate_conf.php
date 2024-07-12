@@ -3,9 +3,9 @@
  * snort_generate_conf.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2022 Bill Meeks
+ * Copyright (c) 2013-2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,10 @@ $external_net = "";
 if (!empty($snortcfg['externallistname']) && $snortcfg['externallistname'] != 'default') {
 	$external_net_list = snort_build_list($snortcfg, $snortcfg['externallistname'], false, true);
 	$external_net = implode(",", $external_net_list);
-	$external_net = "[" . trim($external_net) . "]";
+	$external_net = trim($external_net);
 }
 else {
-	foreach ($home_net_list as $ip)
-		$external_net .= "!{$ip},";
-	$external_net = trim($external_net, ', ');
+	$external_net = "!\$HOME_NET";
 }
 
 /* User added custom configuration arguments */
@@ -1008,16 +1006,22 @@ preprocessor appid: \
 EOD;
 
 /* def ARP Spoof preprocessor */
-$arpspoof_preproc = "# ARP Spoof preprocessor #\n";
+$arpspoof_preproc = "";
 if ($snortcfg['arp_unicast_detection'] == 'on') {
+	$arpspoof_preproc = "# ARP Spoof preprocessor (detect unicast ARP requests) #\n";
 	$arpspoof_preproc .= "preprocessor arpspoof: -unicast\n";
+	foreach (array_get_path($snortcfg, 'arp_spoof_engine/item', []) as $f => $v) {
+		$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
+		$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	}
 }
-else {
+elseif ($snortcfg['arpspoof_preproc'] == 'on') {
+	$arpspoof_preproc = "# ARP Spoof preprocessor #\n";
 	$arpspoof_preproc .= "preprocessor arpspoof\n";
-}
-foreach (array_get_path($snortcfg, 'arp_spoof_engine/item', []) as $f => $v) {
-	$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
-	$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	foreach (array_get_path($snortcfg, 'arp_spoof_engine/item', []) as $f => $v) {
+		$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
+		$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	}
 }
 
 /***************************************/

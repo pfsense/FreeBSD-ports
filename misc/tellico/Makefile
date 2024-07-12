@@ -1,6 +1,6 @@
 PORTNAME=	tellico
-DISTVERSION=	3.4.6
-PORTREVISION=	3
+DISTVERSION=	3.5.4
+PORTREVISION=	1
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
 
@@ -24,13 +24,14 @@ USES=		cmake compiler:c++11-lang desktop-file-utils gettext gnome \
 		kde:5 pkgconfig python:run qt:5 shared-mime-info shebangfix \
 		tar:xz xorg
 USE_GNOME=	libxml2 libxslt
-USE_KDE=	archive attica5 auth bookmarks codecs completion config \
+USE_KDE=	archive attica auth bookmarks codecs completion config \
 		configwidgets coreaddons crash filemetadata guiaddons \
-		i18n iconthemes itemmodels itemviews jobwidgets js khtml kio \
-		libkcddb libksane newstuff parts service solid sonnet \
+		i18n iconthemes itemmodels itemviews jobwidgets kio \
+		libkcddb libksane newstuff service solid sonnet \
 		textwidgets wallet widgetsaddons windowsystem xmlgui \
 		doctools:build ecm:build
-USE_QT=		concurrent core dbus gui network printsupport widgets xml  \
+USE_QT=		charts concurrent core dbus declarative gui location network \
+		printsupport webchannel webengine widgets xml \
 		buildtools:build qmake:build testlib:build
 USE_XORG=	x11
 

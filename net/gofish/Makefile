@@ -1,11 +1,12 @@
 PORTNAME=	gofish
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	SF
 
 MAINTAINER=	kaiw27@gmail.com
 COMMENT=	GoFish Gopher Server
-WWW=		http://gofish.sourceforge.net/
+WWW=		https://gofish.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -13,6 +14,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 GOPHERROOT?=	${PREFIX}/gopher
 GOPHERUSER?=	nobody
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-gopherroot=${GOPHERROOT} \
 		--with-gopheruser=${GOPHERUSER}
 MAKE_ENV=	localstatedir=/var

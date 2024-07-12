@@ -1,9 +1,9 @@
 PORTNAME=	highr
-PORTVERSION=	0.10
+PORTVERSION=	0.11
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	uzsolt@uzsolt.hu
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Syntax Highlighting for R Source Code
 WWW=		https://cran.r-project.org/web/packages/highr/
 

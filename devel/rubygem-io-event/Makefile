@@ -1,11 +1,12 @@
 PORTNAME=	io-event
-PORTVERSION=	1.2.2
+PORTVERSION=	1.6.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Event loop
-WWW=		https://github.com/socketry/io-event
+WWW=		https://socketry.github.io/io-event/ \
+		https://github.com/socketry/io-event
 
 LICENSE=	MIT
 

@@ -1,6 +1,5 @@
-PORTNAME=	PySCeS
-DISTVERSION=	1.0.3
-PORTREVISION=	1
+PORTNAME=	pysces
+DISTVERSION=	1.2.1
 CATEGORIES=	biology python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -8,24 +7,25 @@ DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python Simulator for Cellular Systems
-WWW=		http://pysces.sourceforge.net/
+WWW=		https://pysces.github.io/
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENCE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-PY_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}meson-python>0:devel/meson-python@${PY_FLAVOR} \
+		${PYNUMPY}
 PY_EXTRA=	${PYTHON_PKGNAMEPREFIX}python-libsbml>0:biology/py-python-libsbml@${PY_FLAVOR}
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}scikit-build>0:devel/py-scikit-build@${PY_FLAVOR} \
-		cmake:devel/cmake-core \
-		${PY_DEPENDS}
-RUN_DEPENDS=	${PY_DEPENDS} ${PY_EXTRA}
+RUN_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR} \
+		${PY_EXTRA}
 
-USES=		fortran python
-USE_PYTHON=	distutils autoplist
+USES=		fortran localbase:ldflags python
+USE_PYTHON=	pep517 autoplist pytest
 
-LDFLAGS+=	-lpython${PYTHON_VER} -shared # see https://github.com/PySCeS/pysces/issues/29
+LDFLAGS+=	-lpython${PYTHON_VER}
+
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 

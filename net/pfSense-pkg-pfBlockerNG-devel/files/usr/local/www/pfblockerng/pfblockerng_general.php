@@ -3,7 +3,7 @@
  * pfblockerng_general.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -24,7 +24,7 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
 // Add Wizard tab on new installations only
@@ -32,13 +32,12 @@ $pfb_wizard = TRUE;
 if ($_GET && isset($_GET['wizard']) && $_GET['wizard'] == 'skip') {
 	$pfb_wizard = FALSE;
 }
-elseif (is_array($config['installedpackages']['pfblockerng']) &&
-	!empty($config['installedpackages']['pfblockerng']['config'][0])) {
+elseif (!empty(config_get_path('installedpackages/pfblockerng/config/0'))) {
 	$pfb_wizard = FALSE;
 }
 
-init_config_arr(array('installedpackages', 'pfblockerng', 'config', 0));
-$pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
+config_init_path('installedpackages/pfblockerng/config/0');
+$pfb['gconfig'] = config_get_path('installedpackages/pfblockerng/config/0');
 
 $pconfig = array();
 $pconfig['enable_cb']			= $pfb['gconfig']['enable_cb']				?: '';
@@ -150,6 +149,7 @@ if ($_POST) {
 			$pfb['gconfig']['log_max_dnsreplylog']		= $_POST['log_max_dnsreplylog']			?: 20000;
 			$pfb['gconfig']['log_max_unilog']		= $_POST['log_max_unilog']			?: 20000;
 
+			config_set_path('installedpackages/pfblockerng/config/0', $pfb['gconfig']);
 			write_config('[pfBlockerNG] save General settings');
 
 			$pfb['save'] = TRUE;
@@ -299,17 +299,17 @@ $section->addInput(new Form_StaticText(
 
 	<ul class="list-inline" style="margin-top: 4px; margin-bottom: -2px; border-style: outset; border-bottom-color: #8B181B; border-right-color: #8B181B; border-width: 2px;">
 		<li class="list-inline-item"><a target="_blank" href="http://pfblockerng.com">
-			<span style="color: #8B181B;" class="fa fa-globe"></span> HomePage</a></li>
+			<span style="color: #8B181B;" class="fa-solid fa-globe"></span> HomePage</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://twitter.com/intent/follow?screen_name=BBcan177">
-			<span style="color: #8B181B;" class="fa fa-twitter"></span> Follow on Twitter</a></li>
+			<span style="color: #8B181B;" class="fa-brands fa-twitter"></span> Follow on Twitter</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/r/pfBlockerNG/new/">
-			<span style="color: #8B181B;" class="fa fa-reddit"></span> Reddit</a></li>
+			<span style="color: #8B181B;" class="fa-brands fa-reddit"></span> Reddit</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://infosec.exchange/@BBcan177#">
-			<span style="color: #8B181B;" class="fa fa-globe"></span> Mastodon</a></li>
+			<span style="color: #8B181B;" class="fa-solid fa-globe"></span> Mastodon</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://github.com/BBcan177">
-			<span style="color: #8B181B;" class="fa fa-github"></span> GitHub</a></li>
+			<span style="color: #8B181B;" class="fa-brands fa-github"></span> GitHub</a></li>
 		<li class="list-inline-item"><a target="_blank" href="mailto:bbcan177@gmail.com?Subject=pfBlockerNG%20Support">
-			<span style="color: #8B181B;" class="fa fa-envelope-o"></span> Contact Us</a></li>
+			<span style="color: #8B181B;" class="fa-regular fa-envelope"></span> Contact Us</a></li>
 	</ul>
 	<span class="pull-right"><small>Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.</small></span>
 </div>

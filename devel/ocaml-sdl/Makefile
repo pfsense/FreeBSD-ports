@@ -1,6 +1,6 @@
 PORTNAME=	sdl
 PORTVERSION=	0.9.1
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	SF/ocaml${PORTNAME}/OCamlSDL/ocaml${PORTNAME}-${PORTVERSION}
 PKGNAMEPREFIX=	ocaml-
@@ -8,7 +8,7 @@ DISTNAME=	ocamlsdl-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml interface to the SDL
-WWW=		http://ocamlsdl.sourceforge.net/
+WWW=		https://ocamlsdl.sourceforge.net/
 
 LICENSE=	LGPL20+ # source says LGPL20+, COPYING says LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,7 +23,7 @@ USE_OCAML_LDCONFIG=yes
 USES=		gmake sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-lablgldir=${LOCALBASE} \
+CONFIGURE_ARGS=	--with-lablgldir=${LOCALBASE}/${OCAML_SITELIBDIR}/lablGL \
 		--with-sdl-prefix=${LOCALBASE} \
 		--with-installdir=${PREFIX}
 

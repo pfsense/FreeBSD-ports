@@ -1,6 +1,6 @@
 PORTNAME?=	zed
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.1
+DISTVERSION=	1.16.0
 CATEGORIES=	textproc
 
 MAINTAINER=	meta@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BROKEN_i386=	fails to build: cannot use math.MaxUint32 (untyped int constant 4294967295) as int value in assignment (overflows)
 
-USES=		go:modules
+USES=		go:modules,1.21
 
 GO_MODULE?=	github.com/brimdata/zed
 GO_PKGNAME?=	github.com/brimdata/zed/cmd/zed

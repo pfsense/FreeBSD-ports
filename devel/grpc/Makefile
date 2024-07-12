@@ -1,5 +1,6 @@
 PORTNAME=	grpc
-PORTVERSION=	1.54.2
+PORTVERSION=	1.62.2
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	2
 CATEGORIES=	devel
@@ -22,8 +23,6 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 USES=		cmake compiler:c++17-lang cpe localbase:ldflags pkgconfig ssl
 
 USE_GITHUB=	yes
-GH_TUPLE=	census-instrumentation:opencensus-proto:v0.4.1:census_instrumentation_opencensus_proto/third_party/opencensus-proto/src \
-		cncf:xds:32f1caf:cncf_xds/third_party/xds
 
 CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=17 \
 		-DgRPC_ABSL_PROVIDER=package \
@@ -33,33 +32,50 @@ CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=17 \
 		-DgRPC_RE2_PROVIDER=package \
 		-DgRPC_SSL_PROVIDER=package \
 		-DgRPC_ZLIB_PROVIDER=package
-CMAKE_OFF=	gRPC_BACKWARDS_COMPATIBILITY_MODE gRPC_BUILD_TESTS
-CMAKE_ON=	BUILD_SHARED_LIBS gRPC_BUILD_CODEGEN gRPC_BUILD_CSHARP_EXT gRPC_BUILD_GRPC_CPP_PLUGIN gRPC_BUILD_GRPC_CSHARP_PLUGIN gRPC_BUILD_GRPC_NODE_PLUGIN gRPC_BUILD_GRPC_OBJECTIVE_C_PLUGIN gRPC_BUILD_GRPC_PHP_PLUGIN gRPC_BUILD_GRPC_PYTHON_PLUGIN gRPC_BUILD_GRPC_RUBY_PLUGIN
+CMAKE_OFF=	CMAKE_CXX_EXTENSIONS \
+		gRPC_BUILD_TESTS \
+		gRPC_DOWNLOAD_ARCHIVES
+CMAKE_ON=	BUILD_SHARED_LIBS \
+		gRPC_BUILD_CODEGEN \
+		gRPC_BUILD_GRPC_CPP_PLUGIN \
+		gRPC_BUILD_GRPC_CSHARP_PLUGIN \
+		gRPC_BUILD_GRPC_NODE_PLUGIN \
+		gRPC_BUILD_GRPC_OBJECTIVE_C_PLUGIN \
+		gRPC_BUILD_GRPC_PHP_PLUGIN \
+		gRPC_BUILD_GRPC_PYTHON_PLUGIN \
+		gRPC_BUILD_GRPC_RUBY_PLUGIN
 USE_CSTD=	c11
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	SHLIB_MAJOR=${PORTVERSION:R} \
-		SHLIB_MINOR=${PORTVERSION:E}
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+		SHLIB_VER=${PORTVERSION:R}
 
 CONFLICTS_INSTALL=	grpc[0-9][0-9][0-9]
 
-.include <bsd.port.pre.mk>
-
-# Skip openssl.pc while using OpenSSL from base system on older FreeBSD versions which does not skip this file
-.if ${SSL_DEFAULT} == base && !exists(/usr/libdata/pkgconfig/openssl.pc)
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-openssl
-.endif
-
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/third_party/abseil-cpp/ \
+			--exclude ${DISTNAME}/third_party/benchmark/ \
+			--exclude ${DISTNAME}/third_party/boringssl-with-bazel/ \
+			--exclude ${DISTNAME}/third_party/cares/ \
+			--exclude ${DISTNAME}/third_party/protobuf/ \
+			--exclude ${DISTNAME}/third_party/re2/ \
+			--exclude ${DISTNAME}/third_party/xxhash/ \
+			--exclude ${DISTNAME}/third_party/zlib/ \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/third_party/abseil-cpp/
 	@${RM} -r ${WRKSRC}/third_party/benchmark/
 	@${RM} -r ${WRKSRC}/third_party/boringssl-with-bazel/
 	@${RM} -r ${WRKSRC}/third_party/cares/
 	@${RM} -r ${WRKSRC}/third_party/protobuf/
 	@${RM} -r ${WRKSRC}/third_party/re2/
+	#@${RM} -r ${WRKSRC}/third_party/upb/
+	#@${RM} -r ${WRKSRC}/third_party/utf8_range/
 	@${RM} -r ${WRKSRC}/third_party/xxhash/
 	@${RM} -r ${WRKSRC}/third_party/zlib/
+.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

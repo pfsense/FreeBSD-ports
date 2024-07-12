@@ -1,6 +1,6 @@
 PORTNAME=	recoll
 PORTVERSION=	1.33.1
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	deskutils
 MASTER_SITES=	https://www.lesbonscomptes.com/recoll/
 
@@ -11,7 +11,7 @@ WWW=		https://www.lesbonscomptes.com/recoll/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
 RUN_DEPENDS=	antiword:textproc/antiword \
 		catdoc:textproc/catdoc \
@@ -20,7 +20,7 @@ RUN_DEPENDS=	antiword:textproc/antiword \
 		wpd2html:textproc/libwpd010
 
 USES=		bison compiler:c++11-lang gmake gnome iconv libtool localbase \
-		pkgconfig python:3.5+ shebangfix
+		pkgconfig python shebangfix
 USE_GNOME=	libxslt
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
@@ -33,6 +33,7 @@ SHEBANG_FILES=	desktop/hotrecoll.py filters/*.py filters/rclimg
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-recollq \
 		--enable-xadump
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 MAKE_ENV=	PYTHON_CMD=${PYTHON_CMD}
 BINARY_ALIAS=	python2=${FALSE} python3=${PYTHON_CMD}
 

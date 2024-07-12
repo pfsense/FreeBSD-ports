@@ -1,12 +1,12 @@
 PORTNAME=	wput
 PORTVERSION=	0.6.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	ftp
 MASTER_SITES=	SF
 
 MAINTAINER=	chip-set@mail.ru
 COMMENT=	Upload files or directories to FTP server with resume support
-WWW=		http://wput.sourceforge.net/
+WWW=		https://wput.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -45,7 +45,7 @@ pre-configure:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/wput
-	${INSTALL_MAN}	${WRKSRC}/doc/*.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN}	${WRKSRC}/doc/*.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	@${INSTALL} -d ${STAGEDIR}${EXAMPLESDIR}

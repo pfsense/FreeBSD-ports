@@ -1,5 +1,6 @@
 PORTNAME=	presage
 DISTVERSION=	0.9.1
+PORTREVISION=	1
 CATEGORIES=	deskutils kde
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libuuid.so:misc/e2fsprogs-libuuid
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR}
 
-USES=		gmake libtool:build localbase shebangfix python:3.6+ sqlite
+USES=		gmake libtool:build localbase shebangfix python sqlite
 
 SHEBANG_FILES=	apps/dbus/presage_dbus_python_demo \
 		apps/dbus/presage_dbus_python_demo.in \
@@ -29,11 +30,12 @@ SHEBANG_FILES=	apps/dbus/presage_dbus_python_demo \
 		bindings/python/presage_python_demo.in
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-documentation \
 		--disable-gprompter \
 		--disable-static
 INSTALL_TARGET=	install-strip
 
-CONFLICTS_INSTALL=	soothsayer # man/man1/text2ngram.1.gz
+CONFLICTS_INSTALL=	soothsayer # share/man/man1/text2ngram.1.gz
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	regex
-DISTVERSION=	2022.9.13
+DISTVERSION=	2023.10.3
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/mrabarnett/mrab-regex
 
 LICENSE=	PSFL
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils pytest # 1 test fails, see https://github.com/mrabarnett/mrab-regex/issues/482
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}

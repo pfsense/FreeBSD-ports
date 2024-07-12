@@ -1,7 +1,7 @@
 PORTNAME=	php-mode.el
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.24.3
-PORTREVISION=	2
+DISTVERSION=	1.25.0
+PORTREVISION=	4
 CATEGORIES=	lang elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -15,6 +15,8 @@ USES=		emacs gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-php
 GH_PROJECT=	${PORTNAME:S/.el$//}
+
+EMACS_FLAVORS_EXCLUDE=	devel_full devel_nox # Eager macro-expansion failure: (void-variable flymake-allowed-file-name-masks)
 
 NO_ARCH=	yes
 

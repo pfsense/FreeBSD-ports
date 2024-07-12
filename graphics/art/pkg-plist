@@ -15,6 +15,7 @@ share/ART/dcpprofiles/CANON EOS R6.dcp
 share/ART/dcpprofiles/CANON EOS RP.dcp
 share/ART/dcpprofiles/CANON EOS-1D X MARK III.dcp
 share/ART/dcpprofiles/CANON POWERSHOT G1 X MARK II.dcp
+share/ART/dcpprofiles/CANON POWERSHOT G5 X MARK II.dcp
 share/ART/dcpprofiles/Canon EOS 100D.dcp
 share/ART/dcpprofiles/Canon EOS 1300D.dcp
 share/ART/dcpprofiles/Canon EOS 20D.dcp
@@ -41,6 +42,7 @@ share/ART/dcpprofiles/Canon PowerShot G7 X.dcp
 share/ART/dcpprofiles/Canon PowerShot S110.dcp
 share/ART/dcpprofiles/Canon PowerShot S120.dcp
 share/ART/dcpprofiles/FUJIFILM FinePix F600EXR.dcp
+share/ART/dcpprofiles/FUJIFILM GFX 100.dcp
 share/ART/dcpprofiles/FUJIFILM GFX 50R.dcp
 share/ART/dcpprofiles/FUJIFILM X-A5.dcp
 share/ART/dcpprofiles/FUJIFILM X-A7.dcp
@@ -92,6 +94,9 @@ share/ART/dcpprofiles/NIKON Z 50.dcp
 share/ART/dcpprofiles/NIKON Z 6.dcp
 share/ART/dcpprofiles/NIKON Z 6_2.dcp
 share/ART/dcpprofiles/NIKON Z 7.dcp
+share/ART/dcpprofiles/NIKON Z 8.dcp
+share/ART/dcpprofiles/NIKON Z 9.dcp
+share/ART/dcpprofiles/NIKON Z F.dcp
 share/ART/dcpprofiles/Nikon D200.dcp
 share/ART/dcpprofiles/Nikon D3000.dcp
 share/ART/dcpprofiles/Nikon D3100.dcp
@@ -203,6 +208,7 @@ share/ART/iccprofiles/output/RTv4_Medium.icc
 share/ART/iccprofiles/output/RTv4_Rec2020.icc
 share/ART/iccprofiles/output/RTv4_Rec2100_PQ.icc
 share/ART/iccprofiles/output/RTv4_sRGB.icc
+share/ART/images/ART-logo-1024.png
 share/ART/images/ART-logo-128.png
 share/ART/images/ART-logo-16.png
 share/ART/images/ART-logo-24.png
@@ -588,6 +594,7 @@ share/ART/languages/Nederlands
 share/ART/languages/Portugues (Brasil)
 share/ART/languages/README
 share/ART/languages/default
+share/ART/luts/sigmoid.ctl
 share/ART/options
 share/ART/profiles/Auto-Matched Curve.arp
 share/ART/profiles/Noise Reduction High.arp
@@ -644,3 +651,4 @@ share/icons/hicolor/24x24/apps/ART.png
 share/icons/hicolor/256x256/apps/ART.png
 share/icons/hicolor/48x48/apps/ART.png
 share/man/man1/ART.1.gz
+@dir share/ART/ctlscripts

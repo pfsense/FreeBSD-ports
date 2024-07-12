@@ -1,10 +1,14 @@
 PORTNAME=	turnserver
 PORTVERSION=	4.6.2
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://turnserver.open-sys.org/downloads/extradocs/:xdocs \
 		http://coturn.net/turnserver/extradocs/:xdocs
 PKGNAMEPREFIX=
 DISTFILES=	turn.extra.docs-2.0.0.1.tar.gz:xdocs
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	eea46e0b8526c38f6219fe62569be53469932464.patch:-p1 # https://github.com/coturn/coturn/pull/1198
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	STUN/TURN Server; IPv6, DTLS support; RFCs 5389, 5766, 6062, 6156
@@ -16,19 +20,21 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libevent.so:devel/libevent
 
 USES=		gettext-runtime perl5 pkgconfig shebangfix ssl
+USE_GITHUB=	yes
+GH_ACCOUNT=	coturn
+GH_PROJECT=	coturn
+USE_RC_SUBR=	turnserver
+
 SHEBANG_FILES=	examples/scripts/restapi/shared_secret_maintainer.pl
+
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV+=	PTHREAD_LIBS=-pthread TURN_DISABLE_RPATH=1
 # MongoDB support is disabled until devel/mongo-c-driver is updated
 CONFIGURE_ENV+=	TURN_NO_MONGO=1
+
 TEST_TARGET=	test
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	coturn
-GH_PROJECT=	coturn
-
 SUB_FILES=	pkg-message
-USE_RC_SUBR=	turnserver
 
 MANPAGES=	turnserver.1 turnadmin.1 turnutils.1 turnutils_peer.1 \
 		turnutils_stunclient.1 turnutils_uclient.1 coturn.1 \
@@ -79,13 +85,14 @@ OPTIONS_DEFINE=	DOCS EXAMPLES MYSQL PGSQL REDIS SQLITE
 OPTIONS_DEFAULT=	MYSQL PGSQL REDIS SQLITE
 OPTIONS_SUB=	yes
 
+REDIS_DESC=	Redis support for user database and for status and statistics reporting
+
 MYSQL_USES=	mysql
 MYSQL_CONFIGURE_ENV_OFF=	TURN_NO_MYSQL=1
 
 PGSQL_USES=	pgsql
 PGSQL_CONFIGURE_ENV_OFF=	TURN_NO_PQ=1
 
-REDIS_DESC=	Redis support for user database and for status and statistics reporting
 REDIS_LIB_DEPENDS=	libhiredis.so:databases/hiredis
 REDIS_CONFIGURE_ENV_OFF=	TURN_NO_HIREDIS=1
 
@@ -99,7 +106,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/turnutils_${f} ${STAGEDIR}${PREFIX}/bin/
 .endfor
 	(cd ${WRKSRC}/man/man1 && ${INSTALL_MAN} ${MANPAGES} \
-		${STAGEDIR}${PREFIX}/man/man1)
+		${STAGEDIR}${PREFIX}/share/man/man1)
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/turndb && ${INSTALL_DATA} schema.sql schema.userdb.redis \
 		schema.stats.redis ${STAGEDIR}${DATADIR})
@@ -112,9 +119,13 @@ do-install:
 	(cd ${WRKSRC}/include/turn && ${COPYTREE_SHARE} "client ns_turn_defs.h" \
 		${STAGEDIR}${PREFIX}/include/turn)
 
-do-install-SQLITE-on:
-	${MKDIR} ${STAGEDIR}${PREFIX}/var/db
-	${INSTALL_DATA} ${WRKSRC}/sqlite/turndb ${STAGEDIR}${PREFIX}/var/db/turndb
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKDIR}/turndocs/docs && ${COPYTREE_SHARE} "${DOCS}" ${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTREADMEDOCS} ${STAGEDIR}${DOCSDIR})
+	${INSTALL_DATA} ${PKGMESSAGE} ${STAGEDIR}${DOCSDIR}/postinstall.txt
+	(cd ${WRKSRC}/turndb && ${INSTALL_DATA} schema.sql schema.mongo.sh \
+		schema.userdb.redis schema.stats.redis ${STAGEDIR}${DOCSDIR})
 
 do-install-EXAMPLES-on:
 .for dir in basic loadbalance longtermsecure longtermsecuredb restapi selfloadbalance
@@ -130,12 +141,8 @@ do-install-EXAMPLES-on:
 		${STAGEDIR}${EXAMPLESDIR}/scripts/${f}
 .endfor
 
-do-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKDIR}/turndocs/docs && ${COPYTREE_SHARE} "${DOCS}" ${STAGEDIR}${DOCSDIR})
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTREADMEDOCS} ${STAGEDIR}${DOCSDIR})
-	${INSTALL_DATA} ${PKGMESSAGE} ${STAGEDIR}${DOCSDIR}/postinstall.txt
-	(cd ${WRKSRC}/turndb && ${INSTALL_DATA} schema.sql schema.mongo.sh \
-		schema.userdb.redis schema.stats.redis ${STAGEDIR}${DOCSDIR})
+do-install-SQLITE-on:
+	${MKDIR} ${STAGEDIR}${PREFIX}/var/db
+	${INSTALL_DATA} ${WRKSRC}/sqlite/turndb ${STAGEDIR}${PREFIX}/var/db/turndb
 
 .include <bsd.port.mk>

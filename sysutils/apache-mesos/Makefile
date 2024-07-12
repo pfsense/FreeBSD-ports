@@ -1,6 +1,6 @@
 PORTNAME=	mesos
 PORTVERSION=	1.11.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	sysutils
 MASTER_SITES=	APACHE/mesos/${PORTVERSION}:mesos
 PKGNAMEPREFIX=	apache-
@@ -15,6 +15,8 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN=		fails to build, configure: error: Cannot find the ELFIO headers
+DEPRECATED=	Marked BROKEN for over a year
+EXPIRATION_DATE=2024-05-31
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		elfio>0:devel/elfio \
@@ -33,9 +35,14 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libleveldb.so:databases/leveldb \
 		libprotobuf.so:devel/protobuf \
 		libsasl2.so:security/cyrus-sasl2 \
-		libsvn_delta-1.so:devel/subversion \
-		libsvn_subr-1.so:devel/subversion \
 		libzookeeper_mt.so:devel/libzookeeper
+.if ${WITH_SUBVERSION_VER:U} == LTS
+LIB_DEPENDS+=	libsvn_delta-1.so:devel/subversion-lts
+LIB_DEPENDS+=	libsvn_subr-1.so:devel/subversion-lts
+.else
+LIB_DEPENDS+=	libsvn_delta-1.so:devel/subversion
+LIB_DEPENDS+=	libsvn_subr-1.so:devel/subversion
+.endif
 
 USES=		cpe gmake libarchive libtool python:run shebangfix
 CPE_VENDOR=	apache
@@ -75,8 +82,8 @@ JAVA_DESC=	Enable Java bindings
 
 JAVA_CONFIGURE_ENABLE=	java
 JAVA_USE=		java=yes
-JAVA_BUILD_DEPENDS=	mvn:devel/maven
-JAVA_FETCH_DEPENDS=	mvn:devel/maven
+JAVA_BUILD_DEPENDS=	maven>0:devel/maven
+JAVA_FETCH_DEPENDS=	maven>0:devel/maven
 JAVA_CONFIGURE_ENV=	PROTOBUF_JAR="${MAVEN_REPO}/com/google/protobuf/protobuf-java/${PROTOBUF_VERSION}/protobuf-java-${PROTOBUF_VERSION}.jar"
 JAVA_MAKE_ENV=		MAVEN_OPTS="${MAVEN_OPTS}"
 JAVA_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_java_mesos.pom.in

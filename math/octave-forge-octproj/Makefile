@@ -1,6 +1,6 @@
 PORTNAME=	octave-forge-octproj
 PORTVERSION=	3.0.2
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	math
 MASTER_SITES=	https://bitbucket.org/jgpallero/octproj/downloads/
 DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 LIB_DEPENDS+=	libproj.so:graphics/proj
 
 USES=		octave
+
+NO_ARCH=	yes
 
 post-patch:
 	${REINPLACE_CMD} -e s/CC/MKOCTFILE/ -e s/-Wall// -e s/-Wextra// ${WRKSRC}/Makefile

@@ -1,7 +1,7 @@
 PORTNAME=	dune-pdelab
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7.0.20210824
-PORTREVISION=	9
+PORTREVISION=	24
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,7 +20,7 @@ DUNE_DEPENDS=	dune-common>0:math/dune-common \
 		dune-typetree>0:math/dune-typetree
 BUILD_DEPENDS=	${DUNE_DEPENDS} \
 		suitesparse>0:math/suitesparse \
-		${LOCALBASE}/mpi/openmpi/lib/libmpi.so:net/openmpi
+		openmpi4>0:net/openmpi4
 LIB_DEPENDS=	libarpack.so:math/arpack-ng \
 		libdunealugrid.so:math/dune-alugrid \
 		libduneuggrid.so:math/dune-uggrid \
@@ -41,7 +41,7 @@ LIB_DEPENDS=	libarpack.so:math/arpack-ng \
 		libtbb.so:devel/onetbb
 RUN_DEPENDS=	${DUNE_DEPENDS} \
 		suitesparse>0:math/suitesparse \
-		${LOCALBASE}/mpi/openmpi/lib/libmpi.so:net/openmpi
+		openmpi4>0:net/openmpi4
 
 USES=		cmake compiler:c++17-lang fortran pkgconfig
 USE_GITLAB=	yes
@@ -49,7 +49,7 @@ USE_LDCONFIG=	yes
 
 GL_SITE=	https://gitlab.dune-project.org
 GL_ACCOUNT=	pdelab
-GL_COMMIT=	20c7085389d3eb4f8ca99e1bc60f7fa6036536c8
+GL_TAGNAME=	20c7085389d3eb4f8ca99e1bc60f7fa6036536c8
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_ARGS=	-DTBB_INCLUDE_DIR=${LOCALBASE}/include -DTBB_LIBRARIES=${LOCALBASE}/lib/libtbb.so

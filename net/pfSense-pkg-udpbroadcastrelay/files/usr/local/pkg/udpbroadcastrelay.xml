@@ -8,7 +8,7 @@
  * udpbroadcastrelay.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2023-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@
 	<menu>
 		<name>UDP Broadcast Relay</name>
 		<section>Services</section>
-		<url>/udpbroadcastrelay.php</url>
+		<url>/udpbroadcastrelay/udpbroadcastrelay.php</url>
 	</menu>
 	<service>
 		<name>udpbroadcastrelay</name>

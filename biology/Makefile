@@ -1,5 +1,8 @@
     COMMENT = Biology
 
+    SUBDIR += R-cran-Biobase
+    SUBDIR += R-cran-BiocGenerics
+    SUBDIR += R-cran-BiocManager
     SUBDIR += abyss
     SUBDIR += ad2vcf
     SUBDIR += artemis
@@ -15,6 +18,7 @@
     SUBDIR += bcftools
     SUBDIR += bedtools
     SUBDIR += bfc
+    SUBDIR += bifrost
     SUBDIR += bio-mocha
     SUBDIR += bioawk
     SUBDIR += biococoa
@@ -27,6 +31,7 @@
     SUBDIR += bolt-lmm
     SUBDIR += bowtie
     SUBDIR += bowtie2
+    SUBDIR += btllib
     SUBDIR += bwa
     SUBDIR += canu
     SUBDIR += cd-hit
@@ -94,8 +99,10 @@
     SUBDIR += libsbml
     SUBDIR += libsedml
     SUBDIR += linux-foldingathome
+    SUBDIR += locarna
     SUBDIR += mafft
     SUBDIR += mapm3
+    SUBDIR += mashmap
     SUBDIR += megahit
     SUBDIR += metaeuk
     SUBDIR += migrate
@@ -135,7 +142,6 @@
     SUBDIR += p5-transdecoder
     SUBDIR += paml
     SUBDIR += pbbam
-    SUBDIR += pbseqan
     SUBDIR += peak-classifier
     SUBDIR += pear-merger
     SUBDIR += phrap
@@ -167,12 +173,15 @@
     SUBDIR += py-goatools
     SUBDIR += py-gtfparse
     SUBDIR += py-hits
+    SUBDIR += py-htseq
     SUBDIR += py-libnuml
     SUBDIR += py-libsedml
     SUBDIR += py-loompy
     SUBDIR += py-macs2
+    SUBDIR += py-macs3
     SUBDIR += py-mrcfile
     SUBDIR += py-multiqc
+    SUBDIR += py-newick
     SUBDIR += py-ont-fast5-api
     SUBDIR += py-orange3-bioinformatics
     SUBDIR += py-orange3-single-cell
@@ -193,13 +202,13 @@
     SUBDIR += rainbow
     SUBDIR += rampler
     SUBDIR += readseq
-    SUBDIR += recombine
     SUBDIR += rna-seq
     SUBDIR += ruby-bio
     SUBDIR += rubygem-bio
     SUBDIR += rubygem-bio-executables
     SUBDIR += rubygem-bio-old-biofetch-emulator
     SUBDIR += rubygem-bio-shell
+    SUBDIR += salmon
     SUBDIR += sam2pairwise
     SUBDIR += samtools
     SUBDIR += scrm
@@ -208,11 +217,10 @@
     SUBDIR += seqan-apps
     SUBDIR += seqan1
     SUBDIR += seqan3
-    SUBDIR += seqio
     SUBDIR += seqkit
     SUBDIR += seqtk
+    SUBDIR += seqwish
     SUBDIR += sigviewer
-    SUBDIR += sim4
     SUBDIR += slclust
     SUBDIR += smithwaterman
     SUBDIR += snpeff

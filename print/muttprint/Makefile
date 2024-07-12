@@ -1,12 +1,12 @@
 PORTNAME=	muttprint
 PORTVERSION=	0.73
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	print mail
 MASTER_SITES=	SF/muttprint/muttprint/muttprint-${PORTVERSION}
 
 MAINTAINER=	guru@unixarea.de
 COMMENT=	Utility to print mail for most any mail client
-WWW=		http://muttprint.sourceforge.net/
+WWW=		https://muttprint.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -17,6 +17,7 @@ RUN_DEPENDS=	psnup:print/psutils \
 		p5-Text-Iconv>=0:converters/p5-Text-Iconv
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USES=		autoreconf gmake perl5 tex
 USE_TEX=	latex dvipsk
 

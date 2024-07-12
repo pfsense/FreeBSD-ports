@@ -1,11 +1,8 @@
 PORTNAME=	strongswan
-DISTVERSION=	5.9.10
-PORTREVISION=	2
+DISTVERSION=	5.9.14
 CATEGORIES=	security net-vpn
 MASTER_SITES=	https://download.strongswan.org/ \
 		https://download2.strongswan.org/
-PATCH_SITES=	https://github.com/strongswan/strongswan/commit/
-PATCHFILES=	3d0d3f5d028a0c630f89cb4fec5b2cd5364f568b.patch:-p1
 
 MAINTAINER=	strongswan@nanoteq.com
 COMMENT=	Open Source IKEv2 IPsec-based VPN solution
@@ -19,7 +16,9 @@ USE_LDCONFIG=	${PREFIX}/lib/ipsec
 USE_RC_SUBR=	strongswan
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-gmp \
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
+		--disable-gmp \
 		--disable-kernel-netlink \
 		--disable-scripts \
 		--enable-addrblock \
@@ -42,10 +41,10 @@ CONFIGURE_ARGS=	--disable-gmp \
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=			CTR CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS \
+OPTIONS_DEFINE=			CTR CURL DHCP EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS \
 				EAPSIMFILE FARP GCM IKEV1 IPSECKEY KDF \
 				KERNELLIBIPSEC LDAP LOADTESTER MEDIATION MYSQL \
-				PKCS11 PKI PYTHON SCEP SMP SQLITE SWANCTL \
+				PKCS11 PKI PYTHON SMP SQLITE SWANCTL \
 				TESTVECTOR TPM TSS2 UNBOUND UNITY VICI XAUTH
 OPTIONS_DEFINE_i386=	VIA
 OPTIONS_DEFAULT=		BUILTIN CURL GCM IKEV1 KDF PKI SWANCTL VICI
@@ -57,6 +56,7 @@ OPTIONS_SUB=			yes
 BUILTIN_DESC=		Use builtin printf hooks
 CTR_DESC=		Enable CTR cipher mode wrapper plugin
 CURL_DESC=		Enable CURL to fetch CRL/OCSP
+DHCP_DESC=		Enable DHCP based attribute provider plugin
 EAPAKA3GPP2_DESC=	Enable EAP AKA with 3gpp2 backend
 EAPDYNAMIC_DESC=	Enable EAP dynamic proxy module
 EAPRADIUS_DESC=		Enable EAP Radius proxy authentication
@@ -73,7 +73,6 @@ MEDIATION_DESC=		Enable IKEv2 Mediation Extension
 PKCS11_DESC=		Enable PKCS11 token support
 PKI_DESC=		Enable PKI tools
 PYTHON_DESC=		Python VICI protocol plugin
-SCEP_DESC=		Enable Simple Certificate Enrollment Protocol
 SMP_DESC=		Enable XML-based management protocol (DEPRECATED)
 SWANCTL_DESC=		Install swanctl (requires VICI)
 TESTVECTOR_DESC=	Enable crypto test vectors
@@ -91,6 +90,7 @@ BUILTIN_CONFIGURE_ON=		--with-printf-hooks=builtin
 CTR_CONFIGURE_ON=		--enable-ctr
 CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
 CURL_CONFIGURE_ON=		--enable-curl
+DHCP_CONFIGURE_ON=		--enable-dhcp
 EAPAKA3GPP2_LIB_DEPENDS=	libgmp.so:math/gmp
 EAPAKA3GPP2_CONFIGURE_ON=	--enable-eap-aka \
 				--enable-eap-aka-3gpp2
@@ -116,7 +116,6 @@ PKI_CONFIGURE_OFF=		--disable-pki
 PYTHON_IMPLIES=			VICI
 PYTHON_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}vici>0:security/py-vici@${PY_FLAVOR}
 PYTHON_USES=			python
-SCEP_CONFIGURE_OFF=		--disable-scepclient
 SMP_LIB_DEPENDS=		libxml2.so:textproc/libxml2
 SMP_CONFIGURE_ON=		--enable-smp
 SQLITE_LIB_DEPENDS=		libsqlite3.so:databases/sqlite3

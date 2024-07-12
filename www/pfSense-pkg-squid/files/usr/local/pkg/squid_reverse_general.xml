@@ -8,7 +8,7 @@
  * squid_reverse_general.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * Copyright (c) 2015 Gekkenhuis
  * All rights reserved.
@@ -273,7 +273,7 @@
 				This must match the 'Client Certificate CA' selected above!<br/><br/>
 				After updating the CRL in System - Cert Manager - Certificate Revocation, remember to press the 'Refresh CRL' button below.
 				Otherwise, the updated CRL will not have any effect on Squid reverse proxy users!<br/><br/>
-				<button class="btn btn-primary btn-sm" name='refresh_crl' id='refresh_crl' type='submit' value='Refresh CRL'><i class="fa fa-refresh icon-embed-btn"></i>Refresh CRL</button>
+				<button class="btn btn-primary btn-sm" name='refresh_crl' id='refresh_crl' type='submit' value='Refresh CRL'><i class="fa-solid fa-arrows-rotate icon-embed-btn"></i>Refresh CRL</button>
 				]]>
 			</description>
 			<type>select_source</type>

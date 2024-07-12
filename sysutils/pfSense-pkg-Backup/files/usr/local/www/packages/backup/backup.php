@@ -3,7 +3,7 @@
  * backup.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -22,25 +22,18 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/backup.inc");
 
-global $config, $backup_dir, $backup_filename, $backup_path;
+global $backup_dir, $backup_filename, $backup_path;
 
-if (!is_array($config['installedpackages']['backup'])) {
-	$config['installedpackages']['backup'] = array();
-}
+config_init_path('installedpackages/backup/config');
 
-if (!is_array($config['installedpackages']['backup']['config'])) {
-	$config['installedpackages']['backup']['config'] = array();
-}
-
-$a_backup = &$config['installedpackages']['backup']['config'];
 $backup_dir = "/root/backup";
 $backup_filename = "pfsense.bak.tgz";
 $backup_path = "{$backup_dir}/{$backup_filename}";
 
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
-		if ($a_backup[$_GET['id']]) {
-			unset($a_backup[$_GET['id']]);
+		if (config_get_path("installedpackages/backup/config/{$_GET['id']}")) {
+			config_del_path("installedpackages/backup/config/{$_GET['id']}");
 			write_config("Backup: Item deleted");
 			header("Location: backup.php");
 			exit;
@@ -52,10 +45,10 @@ if ($_GET['a'] == "download") {
 	if ($_GET['t'] == "backup") {
 		/* assume no... */
 		$has_backup = false;
-		if (count($a_backup) > 0) {
+		if (count(config_get_path('installedpackages/backup/config')) > 0) {
 			/* Do NOT remove the trailing space after / from $backup_cmd below!!! */
 			$backup_cmd = "/usr/bin/tar --exclude {$backup_path} --create --verbose --gzip --file {$backup_path} --directory / ";
-			foreach ($a_backup as $ent) {
+			foreach (config_get_path('installedpackages/backup/config', []) as $ent) {
 				if ($ent['enabled'] == "true") {
 					$backup_cmd .= escapeshellarg($ent['path']) . ' ';
 				}
@@ -162,7 +155,7 @@ display_top_tabs($tab_array);
 						<input name="ulfile" type="file" class="btn btn-info" id="ulfile" />
 						<br />
 						<button name="submit" type="submit" class="btn btn-primary" id="upload" value="Upload">
-							<i class="fa fa-upload icon-embed-btn"></i>
+							<i class="fa-solid fa-upload icon-embed-btn"></i>
 							Upload
 						</button>
 					</td>
@@ -185,16 +178,16 @@ display_top_tabs($tab_array);
 				<tr>
 					<td>
 						<button type='button' class="btn btn-primary" value='Backup' onclick="document.location.href='backup.php?a=download&amp;t=backup';">
-							<i class="fa fa-download icon-embed-btn"></i>
+							<i class="fa-solid fa-download icon-embed-btn"></i>
 							Backup
 						</button>
 						<?php	if (file_exists($backup_path)) { ?>
 								<button type="button" class="btn btn-warning" value="Restore" onclick="document.location.href='backup.php?a=other&amp;t=restore';">
-									<i class="fa fa-undo icon-embed-btn"></i>
+									<i class="fa-solid fa-undo icon-embed-btn"></i>
 									Restore
 								</button>
 								<button type="button" class="btn btn-danger" value="Delete" target="_new" onclick="document.location.href='backup.php?a=other&amp;t=delete';">
-									<i class="fa fa-trash icon-embed-btn"></i>
+									<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 									Delete
 								</button>
 						<?php 	} ?>
@@ -220,26 +213,24 @@ display_top_tabs($tab_array);
 				</thead>
 				<tbody>
 <?php
-$i = 0;
-if (count($a_backup) > 0):
-	foreach ($a_backup as $ent): ?>
+foreach (config_get_path('installedpackages/backup/config', []) as $i => $ent): ?>
 					<tr>
 						<td><?=$ent['name']?>&nbsp;</td>
 						<td><?=$ent['path']?>&nbsp;</td>
 						<td><? echo ($ent['enabled'] == "true") ? "Enabled" : "Disabled";?>&nbsp;</td>
 						<td><?=htmlspecialchars($ent['description'])?>&nbsp;</td>
 						<td>
-							<a href="backup_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
-							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
+							<a href="backup_edit.php?id=<?=$i?>"><i class="fa-solid fa-pencil" alt="edit"></i></a>
+							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa-solid fa-trash-can" alt="delete"></i></a>
 						</td>
 					</tr>
-<?php	$i++;
-	endforeach;
-endif; ?>
+<?php
+endforeach;
+?>
 					<tr>
 						<td colspan="5"></td>
 						<td>
-							<a class="btn btn-small btn-success" href="backup_edit.php"><i class="fa fa-plus" alt="add"></i> Add</a>
+							<a class="btn btn-small btn-success" href="backup_edit.php"><i class="fa-solid fa-plus" alt="add"></i> Add</a>
 						</td>
 					</tr>
 				</tbody>

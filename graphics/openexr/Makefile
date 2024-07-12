@@ -1,7 +1,33 @@
-PORTNAME=	openexr
-PORTVERSION=	3.1.8
-PORTREVISION=	0
+PORTNAME?=	openexr
+PORTVERSION=	3.2.4
+PORTREVISION?=	0
 CATEGORIES=	graphics devel
+.if !defined(MASTERDIR)
+MASTER_SITES=	https://raw.githubusercontent.com/AcademySoftwareFoundation/openexr-images/v1.0/:testimages \
+		https://github.com/AcademySoftwareFoundation/openexr/releases/download/v${PORTVERSION}/:DEFAULT \
+		LOCAL/mandree/openexr/:DEFAULT \
+		LOCAL/mandree/openexr/:testimages
+DISTFILES=	${EXTRACT_ONLY}:DEFAULT
+DISTFILES+=	Beachball/multipart.0001.exr:testimages
+DISTFILES+=	Beachball/singlepart.0001.exr:testimages
+DISTFILES+=	Chromaticities/Rec709_YC.exr:testimages
+DISTFILES+=	Chromaticities/Rec709.exr:testimages
+DISTFILES+=	Chromaticities/XYZ_YC.exr:testimages
+DISTFILES+=	Chromaticities/XYZ.exr:testimages
+DISTFILES+=	LuminanceChroma/Flowers.exr:testimages
+DISTFILES+=	LuminanceChroma/Garden.exr:testimages
+DISTFILES+=	MultiResolution/ColorCodedLevels.exr:testimages
+DISTFILES+=	MultiResolution/WavyLinesCube.exr:testimages
+DISTFILES+=	MultiResolution/WavyLinesLatLong.exr:testimages
+DISTFILES+=	MultiView/Adjuster.exr:testimages
+DISTFILES+=	TestImages/GammaChart.exr:testimages
+DISTFILES+=	TestImages/GrayRampsHorizontal.exr:testimages
+DISTFILES+=	v2/LeftView/Balls.exr:testimages
+DISTFILES+=	v2/Stereo/Trunks.exr:testimages
+.endif
+DIST_SUBDIR=	openexr # hardcode - not using ${PORTNAME} - so we can share the distdir with openexr-website-docs, avoiding double download of ...
+EXTRACT_ONLY=	openexr-v${PORTVERSION}${EXTRACT_SUFX}
+NO_WRKSUBDIR=	yes
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	High dynamic-range (HDR) image file format
@@ -9,42 +35,48 @@ WWW=		https://www.openexr.com/
 
 LICENSE=	BSD3CLAUSE
 
-# exact version required to avoid hard-to-debug issues
-LIB_DEPENDS=	libImath-3_1.so.29:math/Imath
+BUILD_DEPENDS?=	help2man:misc/help2man
+# exact libImath version required to avoid hard-to-debug issues
+LIB_DEPENDS?=	libImath-3_1.so.29:math/Imath \
+		libdeflate.so:archivers/libdeflate
 
-USES=		cmake compiler:c++14-lang cpe pathfix pkgconfig
+USES?=		cmake:testing compiler:c++14-lang cpe pathfix pkgconfig
 
-USE_GITHUB=	yes
-GH_TUPLE=	AcademySoftwareFoundation:openexr:v${PORTVERSION}
+#USE_GITHUB=	yes
+#GH_TUPLE=	AcademySoftwareFoundation:openexr:v${PORTVERSION}
 
 USE_LDCONFIG=	yes
-CMAKE_ARGS+=	-DCMAKE_DEBUG_POSTFIX=
+
+CMAKE_TESTING_ON=	BUILD_TESTING \
+			OPENEXR_TEST_LIBRARIES \
+			OPENEXR_TEST_PYTHON \
+			OPENEXR_TEST_TOOLS
+
+CMAKE_OFF=	BUILD_TESTING \
+		OPENEXR_TEST_LIBRARIES \
+		OPENEXR_TEST_PYTHON \
+		OPENEXR_TEST_TOOLS
+
+CMAKE_ARGS?=	-DCMAKE_DEBUG_POSTFIX=
+
 CPPFLAGS+=	-I.
 # must be linked with -l{thr|pthread} explicitly
 LDFLAGS+=	-lpthread
 
-PATCH_STRIP=	-p1
-
-_MAJORVER=	3_1
-_VER=		30
-_MINVER=	8
-_PLVER=		1
-
+_MAJORVER=	3_2
+_VER=		31
+_REL=		${PORTVERSION}
 PLIST_SUB+=	MAJORVER=${_MAJORVER} \
 		VER=${_VER} \
-		MINVER=${_MINVER} \
-		PLVER=${_PLVER}
+		REL=${_REL}
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
+.if !defined(MASTERDIR)
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONS_SUB=	yes
-DOCS_BUILD_DEPENDS=breathe-apidoc:devel/py-breathe \
-		${PYTHON_PKGNAMEPREFIX}sphinx_press_theme>=0:textproc/py-sphinx_press_theme
-DOCS_USES=	python:build
-DOCS_CMAKE_BOOL=BUILD_DOCS
-DOCS_CMAKE_ON=	-DPython_EXECUTABLE:STRING=${PYTHON_CMD}
+DOCS_CMAKE_BOOL=OPENEXR_INSTALL_DOCS INSTALL_DOCS
 
 _DOCSRCDIR1=	${WRKSRC}
 _DOC_FILES1=	CHANGES.md CONTRIBUTING.md GOVERNANCE.md LICENSE.md SECURITY.md \
@@ -53,6 +85,18 @@ _DOC_FILES1=	CHANGES.md CONTRIBUTING.md GOVERNANCE.md LICENSE.md SECURITY.md \
 # too many reports about compilation failures, so
 # sanity check we are using the same C++ standard library
 _imath_libcxx=	${COMPILER_FEATURES:Mlib*c++}
+
+# This would be better placed in pre-test to avoid wasting space,
+# but if we do that, the cmake in src/test/bin will go downloading the files,
+# so we do not benefit from our checksumming and the distdir caching.
+post-extract:
+	${MKDIR} ${CONFIGURE_WRKSRC}/src/test/bin
+.for i in ${DISTFILES:M*.exr?testimages}
+	d="$$(dirname "${CONFIGURE_WRKSRC}/src/test/bin/${i:S/:testimages//}")" \
+	  && ${MKDIR} "$$d" \
+	  && ${CP} ${DISTDIR}/${DIST_SUBDIR}/${i:S/:testimages//} "$$d"
+.endfor
+
 pre-configure:
 	@${READELF} -d ${LOCALBASE}/lib/libImath.so \
 	| ${EGREP} -q '\<NEEDED\>.*\[${_imath_libcxx:C/\+/\\+/g}\.' \
@@ -60,15 +104,6 @@ pre-configure:
 		${ECHO_CMD} "*** OpenEXR would. Please recompile and reinstall Imath with the  ***" ; \
 		${ECHO_CMD} "*** same C++ std. library before trying to build OpenEXR.  Abort. ***" ; \
 		exit 1; }
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${_DOC_FILES1:S|^|${_DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
-	( cd ${BUILD_WRKSRC}/docs/sphinx && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} )
-	${RM} -r ${STAGEDIR}${DOCSDIR}/.??* ${STAGEDIR}${DOCSDIR}/../OpenEXR/sphinx
-
-post-install-DOCS-off:
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/${PORTNAME} 2>/dev/null || :
 
 post-install-EXAMPLES-on:
 	${MV} \
@@ -79,7 +114,5 @@ post-install-EXAMPLES-off:
 	${RM} -R ${STAGEDIR}${PREFIX}/share/doc/OpenEXR/examples/
 	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/OpenEXR 2>/dev/null || :
 
-do-test:
-	cd ${BUILD_WRKSRC} && ctest -j ${MAKE_JOBS_NUMBER}
-
+.endif
 .include <bsd.port.mk>

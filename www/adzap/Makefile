@@ -6,9 +6,12 @@ MASTER_SITES=	http://adzapper.sourceforge.net/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Filter out animated ad banners from web pages
-WWW=		http://adzapper.sourceforge.net/
+WWW=		https://adzapper.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=	Obsolete, no longer provides reasonable amount of filtering
+EXPIRATION_DATE=2024-06-30
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	scripts/squid_redirect-nodata scripts/wrapzap scripts/zapchain

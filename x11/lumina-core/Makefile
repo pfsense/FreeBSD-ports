@@ -1,10 +1,10 @@
 PORTNAME=	lumina-core
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.2
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	x11
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Lumina Desktop Environment
 WWW=		https://lumina-desktop.org/
 
@@ -33,6 +33,8 @@ USE_QT=		buildtools:build concurrent core dbus declarative gui \
 USE_GITHUB=	yes
 GH_ACCOUNT=	lumina-desktop
 GH_PROJECT=	lumina
+
+QMAKE_ARGS=	L_MANDIR=${PREFIX}/share/man
 
 OPTIONS_DEFINE=		MULTIMEDIA TRUEOS NLS
 OPTIONS_DEFAULT=	MULTIMEDIA

@@ -1,8 +1,11 @@
 PORTNAME=	elmerfem
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	9.0
-PORTREVISION=	7
+PORTREVISION=	17
 CATEGORIES=	science
+
+PATCH_SITES=	https://github.com/ElmerCSC/${PORTNAME}/commit/
+PATCHFILES=	48e9430c.patch:-p1 # https://github.com/ElmerCSC/elmerfem/pull/294
 
 MAINTAINER=	henrik@gulbra.net
 COMMENT=	Multiphysical simulation software
@@ -19,11 +22,11 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libparpack.so:math/arpack-ng
 
 USES=		cmake compiler:c++11-lang fortran
-
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	ElmerCSC
-
 USE_LDCONFIG=	${PREFIX}/lib/elmersolver
+
 CMAKE_ARGS=	-DELMER_FEM_REVISION:STRING=${GH_TAGNAME}
 
 ALL_TARGET=	# empty
@@ -44,11 +47,11 @@ OPTIONS_SUB=		yes
 GUI_DESC=		Build with ElmerGUI (Graphical User Interface)
 OCC_DESC=		Use OpenCASCADE for CAD import in ElmerGUI
 
-GUI_LIB_DEPENDS=	libqwt6.so:x11-toolkits/qwt6
+GUI_LIB_DEPENDS=	libqwt.so:x11-toolkits/qwt6@qt5
 GUI_USES=		gl jpeg qt:5 xorg
 GUI_USE=		gl=gl,glu xorg=ice,sm,x11,xext,xt qt=${_QT5_LIBS:ts,}
 GUI_CMAKE_BOOL=		WITH_ELMERGUI WITH_PARAVIEW
-GUI_CMAKE_ON=		-DQWT_LIBRARY=${QT_LIBDIR}/libqwt6.so \
+GUI_CMAKE_ON=		-DQWT_LIBRARY=${QT_LIBDIR}/libqwt.so \
 			-DQWT_INCLUDE_DIR=${QT_INCDIR}/qwt6 \
 			-DDESIRED_QT_VERSION=5 \
 			-DWITH_QT5:BOOL=TRUE \
@@ -69,9 +72,8 @@ OCC_CMAKE_ON=		-DVTK_DIR=${LOCALBASE}/lib/cmake/vtk-9.0 \
 
 _LIBSTAGEDIR=	${STAGEDIR}/${PREFIX}/lib/elmersolver
 _PYVERSION=	${PYTHON_VER}${PYTHON_ABIVER}
-_QT5_LIBS=	buildtools:build concurrent core declarative gui location \
-		network opengl printsupport qmake:build script sensors \
-		sql svg webchannel webkit widgets xml
+_QT5_LIBS=	buildtools:build core declarative gui network opengl \
+		printsupport qmake:build script sql svg widgets xml
 
 .include <../../math/vtk9/Makefile.version>
 .include <bsd.port.pre.mk>
@@ -95,10 +97,10 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,"metis.*/metis\.h",<metis.h>,' \
 		${WRKSRC}/elmergrid/src/egparallel.c
 
-post-patch-OCC-on:
-	@${REINPLACE_CMD} -e "s|\$${VERSION}|`${PKG_QUERY} '%v' opencascade`|" \
+pre-configure-OCC-on:
+	${REINPLACE_CMD} -e "s|\$${VERSION}|`${PKG_QUERY} '%v' opencascade`|" \
 		"${WRKSRC}/cmake/Modules/FindOCE.cmake"
-	@${REINPLACE_CMD} -e 's|$${INCLUDE}|${LOCALBASE}/include/OpenCASCADE|' \
+	${REINPLACE_CMD} -e 's|$${INCLUDE}|${LOCALBASE}/include/OpenCASCADE|' \
 		"${WRKSRC}/cmake/Modules/FindOCE.cmake"
 
 post-configure:

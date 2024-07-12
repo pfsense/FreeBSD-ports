@@ -1,27 +1,26 @@
 PORTNAME=	librewolf
-DISTVERSION=	109.0.1.2
-PORTREVISION=	6
+DISTVERSION=	127.0.1
 CATEGORIES=	www wayland
-MASTER_SITES=	https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/${DISTVERSION:R}-2/
-DISTNAME=	${PORTNAME}-${DISTVERSION:R}-2.source.
+MASTER_SITES=	https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/${DISTVERSION:R}-1/
+DISTNAME=	${PORTNAME}-${DISTVERSION:R}-1.source.
 EXTRACT_SUFX=	tar.gz
-
-PATCH_SITES=	https://gitlab.com/librewolf-community/browser/source/-/raw/d114d4f8e8271adcb854082060c387b16ac56352/
-PATCHFILES=	patches/unity_kde/unity-menubar.patch?inline=false:-p1
 
 MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Custom version of Firefox, focused on privacy, security and freedom
 WWW=		https://librewolf.net/
 
+LICENSE=	MPL20
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
 BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
-		nss>=3.84:security/nss \
-		icu>=71.1:devel/icu \
+		nss>=3.95:security/nss \
+		icu>=73.1:devel/icu \
 		libevent>=2.1.8:devel/libevent \
-		harfbuzz>=4.4.1:print/harfbuzz \
+		harfbuzz>=8.3.0:print/harfbuzz \
 		graphite2>=1.3.14:graphics/graphite2 \
-		png>=1.6.37:graphics/png \
+		png>=1.6.39:graphics/png \
 		dav1d>=1.0.0:multimedia/dav1d \
-		libvpx>=1.12.0:multimedia/libvpx \
+		libvpx>=1.14.0:multimedia/libvpx \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf2.13:devel/autoconf2.13 \
@@ -34,9 +33,9 @@ BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
 .include <bsd.port.options.mk>
 
 .if ${ARCH} != powerpc64
-BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx \
+BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
 		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \
-		${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/clang/${LLVM_VERSION}/lib/wasi/libclang_rt.builtins-wasm32.a:devel/wasi-compiler-rt${LLVM_DEFAULT}
+		wasi-compiler-rt${LLVM_VERSION}>0:devel/wasi-compiler-rt${LLVM_VERSION}
 .endif
 
 USE_GECKO=	gecko
@@ -74,17 +73,18 @@ MOZ_OPTIONs=	--enable-application=browser \
 		MOZ_SERVICES_HEALTHREPORT=0
 
 # helpful when testing beta
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:R}-2
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:R}-1
 
 FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default48.png
 FIREFOX_DESKTOP=	${MOZSRC}/taskcluster/docker/firefox-snap/firefox.desktop
 
 .if ${ARCH} == powerpc64
+CFLAGS+=	-DHWY_COMPILE_ONLY_SCALAR
 MOZ_OPTIONS+=	--without-wasm-sandboxed-libraries
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx \
+BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
 		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \
-		${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/clang/${LLVM_VERSION}/lib/wasi/libclang_rt.builtins-wasm32.a:devel/wasi-compiler-rt${LLVM_DEFAULT}
+		wasi-compiler-rt${LLVM_VERSION}>0:devel/wasi-compiler-rt${LLVM_VERSION}
 MOZ_OPTIONS+=	--with-wasi-sysroot=${LOCALBASE}/share/wasi-sysroot
 .endif
 

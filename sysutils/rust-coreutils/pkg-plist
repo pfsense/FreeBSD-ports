@@ -35,6 +35,7 @@ bin/%%BINPREFIX%%fold
 bin/%%BINPREFIX%%groups
 bin/%%BINPREFIX%%hashsum
 bin/%%BINPREFIX%%head
+bin/%%BINPREFIX%%hostid
 bin/%%BINPREFIX%%hostname
 bin/%%BINPREFIX%%id
 bin/%%BINPREFIX%%install
@@ -67,7 +68,6 @@ bin/%%BINPREFIX%%ptx
 bin/%%BINPREFIX%%pwd
 bin/%%BINPREFIX%%readlink
 bin/%%BINPREFIX%%realpath
-bin/%%BINPREFIX%%relpath
 bin/%%BINPREFIX%%rm
 bin/%%BINPREFIX%%rmdir
 bin/%%BINPREFIX%%seq

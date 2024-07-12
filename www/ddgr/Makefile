@@ -1,5 +1,5 @@
 PORTNAME=	ddgr
-PORTVERSION=	2.1
+PORTVERSION=	2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	jarun
 
-USES=		python:3.7+ shebangfix
+USES=		python shebangfix
 SHEBANG_FILES=	${PORTNAME}
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -31,7 +31,7 @@ FISH_PLIST_FILES=	share/fish/completions/ddgr.fish
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/ddgr ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/ddgr.1 ${STAGEDIR}${MANPREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/ddgr.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

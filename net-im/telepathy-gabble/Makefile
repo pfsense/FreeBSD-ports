@@ -1,6 +1,6 @@
 PORTNAME=	telepathy-gabble
 PORTVERSION=	0.18.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-im
 MASTER_SITES=	http://telepathy.freedesktop.org/releases/${PORTNAME}/
 
@@ -30,6 +30,7 @@ USES=		alias gmake gnome libtool pathfix pkgconfig python:build \
 		shebangfix sqlite ssl
 USE_GNOME=	glib20 gtksourceview3 libxslt:build
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-ca-certificates=${LOCALBASE}/share/certs/ca-root-nss.crt
 CONFIGURE_ENV=	LIBS="-pthread"
 INSTALL_TARGET=	install-strip
@@ -42,6 +43,10 @@ PLIST_SUB=	PVERSION=${PORTVERSION}
 
 .if ${SSL_DEFAULT} == base
 CONFIGURE_ENV+=	OPENSSL_LIBS="-L/usr/lib -ssl -crypto" OPENSSL_CFLAGS="-I/usr/include"
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 post-patch:

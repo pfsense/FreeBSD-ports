@@ -1,6 +1,6 @@
---- sandbox/policy/switches.h.orig	2023-06-05 19:39:05 UTC
+--- sandbox/policy/switches.h.orig	2023-12-23 12:33:28 UTC
 +++ sandbox/policy/switches.h
-@@ -57,10 +57,10 @@ SANDBOX_POLICY_EXPORT extern const char kFileUtilSandb
+@@ -57,10 +57,10 @@ SANDBOX_POLICY_EXPORT extern const char kWindowsSystem
  SANDBOX_POLICY_EXPORT extern const char kMirroringSandbox[];
  #endif  // BUILDFLAG(IS_MAC)
  

@@ -1,6 +1,6 @@
 PORTNAME=	aster
 DISTVERSION=	${ASTER_DISTVERSION}
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	french cad
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -11,6 +11,8 @@ LICENSE=	GPLv2
 
 NOT_FOR_ARCHS=		armv6 armv7 i386 mips powerpc
 NOT_FOR_ARCHS_REASON=	ARG_MAX is too small for Code_Aster on 32 bits systems
+
+BROKEN=	fails to build the catalog of elements
 
 #-----------------------------------------------------------------------
 # You may define these options:
@@ -45,7 +47,7 @@ RUN_DEPENDS+=	${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
 		${PYNUMPY}	\
 		${PYTHON_PKGNAMEPREFIX}sympy>0:math/py-sympy@${PY_FLAVOR}
 
-USES=		bison blaslapack:openblas fortran gettext python:3.6+ qt:5 tk
+USES=		bison blaslapack:openblas fortran gettext python qt:5 tk
 USE_BINUTILS=	yes
 USE_QT=		linguisttools:build
 
@@ -79,10 +81,6 @@ INTERACTIVE_SCRIPTS=	check_compilers.py setup.py
 
 .include "${.CURDIR}/../../french/aster/bsd.aster.mk"
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300068
-BROKEN=	a larger value of ARG_MAX is needed for Code_Aster, please upgrade your system
-.endif
 
 .if ${ARCH} == "i386"
 FLAGARCH=	-DP_LINUX -DLINUX

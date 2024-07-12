@@ -1,5 +1,6 @@
 PORTNAME=	fabric
-PORTVERSION=	3.1.0
+PORTVERSION=	3.2.2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -17,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}invoke>=1.3:devel/py-invoke@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pathlib2>0:devel/py-pathlib2@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=2.0.0:devel/py-mock@${PY_FLAVOR}
 
-USES=		cpe python:3.7+
+USES=		cpe python
 CPE_VENDOR=	fabfile
 USE_PYTHON=	autoplist concurrent distutils pytest
 

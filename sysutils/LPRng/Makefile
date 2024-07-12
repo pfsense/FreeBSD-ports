@@ -1,6 +1,6 @@
 PORTNAME=	LPRng
 PORTVERSION=	3.8.C
-PORTREVISION=	5
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	sysutils print
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}
@@ -8,18 +8,16 @@ DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Enhanced Printer Spooler
-WWW=		http://lprng.sourceforge.net/
+WWW=		https://lprng.sourceforge.net/
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual
-
-BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_riscv64=	Fails to link: missing sbrk
 
 LIB_DEPENDS=	libgdbm.so:databases/gdbm
 
 USES=		gmake ssl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-config_subdir="" \
 		--with-filterdir=${PREFIX}/libexec/filters \
 		--with-filter_path="${PREFIX}/bin:/bin:/usr/bin:${PREFIX}/sbin:/sbin:/usr/sbin" \

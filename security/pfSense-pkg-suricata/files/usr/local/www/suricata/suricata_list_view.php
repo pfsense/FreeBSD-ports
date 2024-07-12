@@ -3,7 +3,7 @@
  * suricata_list_view.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -68,7 +68,7 @@ if (isset($id) && isset($wlist)) {
 	elseif ($type == "externalnet") {
 		if ($wlist == "default") {
 			$list = suricata_build_list($a_rule, $a_rule['homelistname']);
-			$contents = "";
+			$contents = "Defined in suricata.yaml as: !\$HOME_NET which expands to:\n\n";
 			foreach ($list as $ip)
 				$contents .= "!{$ip}\n";
 			$contents = trim($contents, "\n");

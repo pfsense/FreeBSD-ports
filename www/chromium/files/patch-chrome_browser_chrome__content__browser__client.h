@@ -1,9 +1,9 @@
---- chrome/browser/chrome_content_browser_client.h.orig	2023-05-31 08:12:17 UTC
+--- chrome/browser/chrome_content_browser_client.h.orig	2024-06-17 12:56:06 UTC
 +++ chrome/browser/chrome_content_browser_client.h
-@@ -460,7 +460,7 @@ class ChromeContentBrowserClient : public content::Con
-   void OverridePageVisibilityState(
-       content::RenderFrameHost* render_frame_host,
-       content::PageVisibilityState* visibility_state) override;
+@@ -507,7 +507,7 @@ class ChromeContentBrowserClient : public content::Con
+   bool IsPluginAllowedToUseDevChannelAPIs(
+       content::BrowserContext* browser_context,
+       const GURL& url) override;
 -#if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC)
 +#if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_BSD)
    void GetAdditionalMappedFilesForChildProcess(

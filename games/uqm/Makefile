@@ -1,5 +1,6 @@
 PORTNAME=	uqm
 DISTVERSION=	0.8.0
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/sc2/UQM/${DISTVERSION:R}
 DISTFILES=	${DISTNAME}-src.tgz ${DISTNAME}-content.uqm
@@ -7,7 +8,7 @@ EXTRACT_ONLY=	${DISTNAME}-src.tgz
 
 MAINTAINER=	mail@maxlor.com
 COMMENT=	Space exploration game The Ur-Quan Masters
-WWW=		http://sc2.sourceforge.net
+WWW=		https://sc2.sourceforge.net
 
 LICENSE=	GPLv2+ CC-BY-NC-SA-2.5
 LICENSE_COMB=	multi
@@ -113,6 +114,6 @@ do-install:
 .endif
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/users/manual.txt ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/doc/users/uqm.6 ${STAGEDIR}${PREFIX}/man/man6
+	${INSTALL_MAN} ${WRKSRC}/doc/users/uqm.6 ${STAGEDIR}${PREFIX}/share/man/man6
 
 .include <bsd.port.mk>

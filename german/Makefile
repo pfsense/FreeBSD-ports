@@ -8,7 +8,6 @@
     SUBDIR += ding
     SUBDIR += dtaus
     SUBDIR += eric6
-    SUBDIR += geonext
     SUBDIR += hunspell
     SUBDIR += hyphen
     SUBDIR += jdictionary-eng-ger
@@ -17,6 +16,7 @@
     SUBDIR += mythes
     SUBDIR += phone
     SUBDIR += schwobifyer
+    SUBDIR += tipp10
     SUBDIR += unix-connect
     SUBDIR += webalizer2
     SUBDIR += wordpress

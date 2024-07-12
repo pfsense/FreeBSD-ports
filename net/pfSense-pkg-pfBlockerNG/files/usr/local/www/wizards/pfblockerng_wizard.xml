@@ -5,7 +5,7 @@
  * pfblockerng_wizard.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -37,21 +37,21 @@
 
 			<ul class="list-inline" style="margin-top: 4px; margin-bottom: -2px; border-style: outset; border-bottom-color: #8B181B; border-right-color: #8B181B; border-width: 2px;">
 				<li class="list-inline-item"><a target="_blank" href="http://pfblockerng.com">
-					<span style="color: #8B181B;" class="fa fa-globe"></span> HomePage</a></li>
+					<span style="color: #8B181B;" class="fa-solid fa-globe"></span> HomePage</a></li>
 				<li class="list-inline-item"><a target="_blank" href="https://twitter.com/intent/follow?screen_name=BBcan177">
-					<span style="color: #8B181B;" class="fa fa-twitter"></span> Follow on Twitter</a></li>
+					<span style="color: #8B181B;" class="fa-brands fa-twitter"></span> Follow on Twitter</a></li>
 				<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/r/pfBlockerNG/new/">
-					<span style="color: #8B181B;" class="fa fa-reddit"></span> Reddit</a></li>
+					<span style="color: #8B181B;" class="fa-brands fa-reddit"></span> Reddit</a></li>
 				<li class="list-inline-item"><a target="_blank" href="https://infosec.exchange/@BBcan177#">
-					<span style="color: #8B181B;" class="fa fa-globe"></span> Mastodon</a></li>
+					<span style="color: #8B181B;" class="fa-solid fa-globe"></span> Mastodon</a></li>
 				<li class="list-inline-item"><a target="_blank" href="https://github.com/BBcan177">
-					<span style="color: #8B181B;" class="fa fa-github"></span> GitHub</a></li>
+					<span style="color: #8B181B;" class="fa-brands fa-github"></span> GitHub</a></li>
 				<li class="list-inline-item"><a target="_blank" href="mailto:bbcan177@gmail.com?Subject=pfBlockerNG%20Support">
-					<span style="color: #8B181B;" class="fa fa-envelope-o"></span> Contact us</a></li>
+					<span style="color: #8B181B;" class="fa-regular fa-envelope"></span> Contact us</a></li>
 				<li class="list-inline-item"><a target="_blank" href="https://www.youtube.com/@LAWRENCESYSTEMS/search?query=pfblockerng">
-					<span style="color: #8B181B;" class="fa fa-globe"></span> Tom Lawrence Youtube channel</a></li>
+					<span style="color: #8B181B;" class="fa-solid fa-globe"></span> Tom Lawrence Youtube channel</a></li>
 				<li class="list-inline-item"><a target="_blank" href="https://www.vikash.nl/setup-pfblockerng-python-mode-with-pfsense/">
-					<span style="color: #8B181B;" class="fa fa-globe"></span> Vikash.nl - Advanced Python mode tutorial</a></li>
+					<span style="color: #8B181B;" class="fa-solid fa-globe"></span> Vikash.nl - Advanced Python mode tutorial</a></li>
 			</ul>
 		</div>
 		<div style="width: 25%; height: 170px; float: right;">

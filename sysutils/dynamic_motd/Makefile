@@ -1,6 +1,6 @@
 PORTNAME=	dynamic_motd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3
+DISTVERSION=	1.4
 CATEGORIES=	sysutils
 
 MAINTAINER=	sstallion@gmail.com
@@ -9,8 +9,6 @@ WWW=		https://github.com/sstallion/dynamic_motd
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-IGNORE_FreeBSD_12=	requires FreeBSD 13.0 or later
 
 NO_ARCH=	yes
 USE_GITHUB=	yes

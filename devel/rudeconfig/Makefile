@@ -1,6 +1,6 @@
 PORTNAME=	rudeconfig
 PORTVERSION=	5.0.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://www.rudeserver.com/config/download/
 
@@ -9,9 +9,12 @@ COMMENT=	Library for handling configuration files, written in C++
 WWW=		http://www.rudeserver.com/
 
 USES=		dos2unix libtool
+USE_CXXSTD=	c++14
 DOS2UNIX_GLOB=	*
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 pre-install:
 	${CHMOD} 744 ${WRKSRC}/install-sh

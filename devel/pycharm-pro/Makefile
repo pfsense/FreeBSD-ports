@@ -1,12 +1,10 @@
 PORTNAME=	pycharm-pro
-PORTVERSION=	2022.2.2
-PORTREVISION=	2
+DISTVERSION=	2024.1.4
 CATEGORIES=	devel java python
-MASTER_SITES=	https://download.jetbrains.com/python/ \
-		http://download.jetbrains.com/python/
+MASTER_SITES=	https://download.jetbrains.com/python/
 DISTNAME=	pycharm-professional-${PORTVERSION}
 
-MAINTAINER=	guido@kollerie.com
+MAINTAINER=	rm@FreeBSD.org
 COMMENT=	JetBrains PyCharm Professional Edition IDE
 WWW=		https://www.jetbrains.com/pycharm/
 
@@ -15,16 +13,34 @@ LICENSE_NAME=	Subscription license agreement for business and organizations
 LICENSE_TEXT=	See: https://www.jetbrains.com/store/license.html
 LICENSE_PERMS=	no-dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
+BUILD_DEPENDS=	jna>0:devel/jna
 RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
-		intellij-pty4j>=0.11.4:java/intellij-pty4j \
-		openjfx14>=0:java/openjfx14
+		jetbrains-pty4j>=0.12.13:devel/jetbrains-pty4j \
+		jetbrains-restarter>=233.11799.241:devel/jetbrains-restarter \
+		jetbrains-sqlite>=232.8660.185:devel/jetbrains-sqlite
 
-USES=		python:run shebangfix
+USES=		cpe desktop-file-utils python:run shebangfix
 
-SHEBANG_FILES=	bin/restart.py
-
+CPE_VENDOR=	jetbrains
 USE_JAVA=	yes
-JAVA_VERSION=	11+
+JAVA_VERSION=	17+
+SHEBANG_FILES=	plugins/python/helpers/pycodestyle-2.10.0.py \
+		plugins/python/helpers/pycodestyle.py \
+		plugins/python/helpers/typeshed/scripts/sync_tensorflow_protobuf_stubs.sh
+
+# Remove the bundled native Pty4J support libraries, they are replaced
+# by devel/jetbrains-pty4j
+# Remove bundled linux-only JRE
+EXTRACT_AFTER_ARGS=	--exclude pycharm-${PORTVERSION}/bin/*fsnotifier* \
+			--exclude pycharm-${PORTVERSION}/bin/*.so \
+			--exclude pycharm-${PORTVERSION}/bin/repair \
+			--exclude pycharm-${PORTVERSION}/lib/*.so \
+			--exclude pycharm-${PORTVERSION}/plugins/*.so \
+			--exclude pycharm-${PORTVERSION}/plugins/cwm-plugin/quiche-native \
+			--exclude pycharm-${PORTVERSION}/plugins/python/helpers/pydev/pydevd_attach_to_process \
+			--exclude pycharm-${PORTVERSION}/lib/pty4j \
+			--exclude pycharm-${PORTVERSION}/jbr \
+			--no-same-owner --no-same-permissions
 
 WRKSRC=		${WRKDIR}/pycharm-${PORTVERSION}
 
@@ -36,23 +52,33 @@ NO_BUILD=	yes
 SUB_FILES+=	pkg-message pycharm ${PORTNAME}.desktop
 SUB_LIST+=	IDEA_HOME=${IDEA_HOME}
 
+# Remove non-native binaries
+post-extract:
+	@${FIND} ${WRKSRC}/lib ${WRKSRC}/plugins -type d -empty -delete
+# TODO: Remove and enable fsnotifier when devel/libinotify is fixed
+# Disable filewatcher warning message on IDEA startup
+	${ECHO} "idea.filewatcher.disabled=true" >> ${WRKSRC}/bin/idea.properties
+# Use fsnotifier replacement provided by java/intellij-fsnotifier
+	${ECHO} "idea.filewatcher.executable.path=${IDEA_HOME}/bin/fsnotifier" >> ${WRKSRC}/bin/idea.properties
+
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	@${TAR} -czf - -C ${WRKSRC} . | ${TAR} xzf - -C ${STAGEDIR}${DATADIR}
-# Linux/Windows/OS X only so remove them
-	@${RM} ${STAGEDIR}${DATADIR}/bin/*fsnotifier* ${STAGEDIR}${DATADIR}/bin/*.so
-# Remove the bundled native Pty4J support libraries, they are replaced
-# by java/intellij-pty4j
-	@${RM} -r ${STAGEDIR}${DATADIR}/lib/pty4j-native
-# Remove bundled linux-only JRE
-	@${RM} -r ${STAGEDIR}${DATADIR}/jbr
-	@${RM} -r ${STAGEDIR}${DATADIR}/helpers/pydev/pydevd_attach_to_process
+	cd "${WRKSRC}" && ${FIND} . | ${CPIO} -pdum -R root:wheel ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/pycharm ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}.desktop ${STAGEDIR}${PREFIX}/share/applications/
-# Use pty4j replacement provided by java/intellij-pty4j
-	${LN} -sf ${IDEA_HOME}/lib/libpty ${STAGEDIR}${DATADIR}/lib/pty4j-native
-# Use fsnotifier replacement provided by java/intellij-fsnotifier
-	${ECHO} "idea.filewatcher.executable.path=${IDEA_HOME}/bin/fsnotifier" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
+	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
+# Install FreeBSD native lib provided by devel/jna
+	@${MKDIR} ${WRKDIR}/jna
+	@(cd ${WRKDIR}/jna && ${JAR} xf ${JAVAJARDIR}/jna.jar com/sun/jna/freebsd-x86-64/libjnidispatch.so)
+	${MKDIR} ${STAGEDIR}${DATADIR}/lib/jna/amd64
+	${INSTALL_LIB} ${WRKDIR}/jna/com/sun/jna/freebsd-x86-64/libjnidispatch.so ${STAGEDIR}${DATADIR}/lib/jna/amd64/
+# Use pty4j replacement provided by devel/jetbrains-pty4j
+	${MKDIR} ${STAGEDIR}${DATADIR}/lib/pty4j/freebsd/x86-64
+	${LN} -sf ../../../../../jetbrains/pty4j/amd64/libpty.so ${STAGEDIR}${DATADIR}/lib/pty4j/freebsd/x86-64/libpty.so
+# Use restarter provided by devel/jetbrains-restarter
+	${LN} -sf ../../jetbrains/restarter/restarter ${STAGEDIR}${DATADIR}/bin/restarter
+# Use sqlite replacement provided by devel/jetbrains-sqlite
+	${MKDIR} ${STAGEDIR}${DATADIR}/lib/native/linux-x86_64
+	${LN} -sf ../../../../jetbrains/sqlite/amd64/libsqliteij.so ${STAGEDIR}${DATADIR}/lib/native/linux-x86_64/libsqliteij.so
 # Fix "Typeahead timeout is exceeded" error
 	${ECHO} "action.aware.typeAhead=false" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
 # Fix slow render

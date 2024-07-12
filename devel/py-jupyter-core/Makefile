@@ -1,13 +1,15 @@
 PORTNAME=	jupyter-core
-PORTVERSION=	5.3.0
+PORTVERSION=	5.7.2
 CATEGORIES=	devel python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/jupyter/jupyter_core/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	jupyter_core-${PORTVERSION}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Jupyter core package
-WWW=		https://jupyter.org/
+WWW=		https://jupyter.org/ \
+		https://github.com/jupyter/jupyter_core
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,7 +22,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipykernel>=0:devel/py-ipykernel@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}pytest-cov>=0:devel/py-pytest-cov@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-timeout>=0:devel/py-pytest-timeout@${PY_FLAVOR}
 
-USES=		python:3.7+ shebangfix
+USES=		python shebangfix
 USE_PYTHON=	autoplist concurrent pep517 pytest
 
 NO_ARCH=	yes

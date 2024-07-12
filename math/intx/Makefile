@@ -1,6 +1,6 @@
 PORTNAME=	intx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.0
+DISTVERSION=	0.10.1
 CATEGORIES=	math
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -15,5 +15,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	chfast
 
 CMAKE_OFF=	INTX_TESTING
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

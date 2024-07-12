@@ -1,6 +1,6 @@
 PORTNAME=	readchar
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.5
+DISTVERSION=	3.1.0
 CATEGORIES=	textproc devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -17,7 +17,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>0:devel/py-coverage@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
-USES=		dos2unix localbase python:3.6+
+USES=		dos2unix localbase python
 DOS2UNIX_GLOB=	*.py
 # PYPI does not seem to work so far.
 USE_GITHUB=	yes

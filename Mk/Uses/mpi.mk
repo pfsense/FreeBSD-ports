@@ -31,6 +31,7 @@ USES+=	pkgconfig
 LIB_DEPENDS+=	libmpich.so:net/mpich
 MPI_HOME=	${LOCALBASE}
 MPI_LIBS+=	`pkgconf --libs mpich`
+MPI4PY=		${PYTHON_PKGNAMEPREFIX}mpi4py-mpich>0:net/py-mpi4py-mpich@${PY_FLAVOR}
 .    if ${USES:Mfortran}
 MPI_LIBS+=	-lmpifort
 MPIFC=		${MPI_HOME}/bin/mpif90
@@ -38,8 +39,13 @@ MPIF90=		${MPIFC}
 .    endif
 MPI_CFLAGS+=	`pkgconf --cflags mpich`
 .  elif ${mpi_ARGS} == openmpi
-LIB_DEPENDS+=	libmpi_cxx.so:net/openmpi
+.    if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc
+LIB_DEPENDS+=	libmpi_cxx.so:net/openmpi4
+.    else
+LIB_DEPENDS+=	libmpi_mpifh.so:net/openmpi
+.    endif
 MPI_HOME=	${LOCALBASE}/mpi/openmpi
+MPI4PY=		${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py@${PY_FLAVOR}
 .    if ${USES:Mfortran}
 MPI_LIBS+=	`pkgconf --libs ompi-fort`
 MPIFC=		${MPI_HOME}/bin/mpif90

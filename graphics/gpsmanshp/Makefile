@@ -1,13 +1,13 @@
 PORTNAME=	gpsmanshp
 PORTVERSION=	1.2.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics tcl geography
 MASTER_SITES=	SF/${PORTNAME}/distr
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shapelib support for gpsman
-WWW=		http://gpsmanshp.sourceforge.net/
+WWW=		https://gpsmanshp.sourceforge.net/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/doc/gpl-3_0.txt

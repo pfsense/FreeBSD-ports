@@ -1,5 +1,5 @@
 PORTNAME=	libcdada
-DISTVERSION=	0.4.0
+DISTVERSION=	0.5.2
 CATEGORIES=	devel
 
 MAINTAINER=	pi@FreeBSD.org
@@ -9,7 +9,7 @@ WWW=		https://github.com/msune/libcdada
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf libtool pkgconfig python:3.8+ shebangfix
+USES=		autoreconf libtool pkgconfig python shebangfix
 SHEBANG_FILES=	tools/cdada-gen
 USE_GITHUB=	yes
 GNU_CONFIGURE=	yes

@@ -1,12 +1,13 @@
 PORTNAME=	cvsps
 DISTVERSION=	2.2b1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/
 PKGNAMESUFFIX?=	-devel
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Create patchset information from CVS
-WWW=		http://cvsps.sourceforge.net/
+WWW=		https://cvsps.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,14 +18,15 @@ USES=		gmake
 ALL_TARGET=	cvsps
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz
+		share/man/man1/${PORTNAME}.1.gz
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
+		${STAGEDIR}${PREFIX}/share/man/man1/
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

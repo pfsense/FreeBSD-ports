@@ -1,5 +1,6 @@
 PORTNAME=	gtk-update-icon-cache
 PORTVERSION=	3.24.31
+PORTREVISION=	1
 CATEGORIES=	graphics
 DIST_SUBDIR=	gnome
 
@@ -15,7 +16,6 @@ USE_GNOME=	gdkpixbuf2
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	Community/gentoo
-GL_COMMIT=	66d25fb3ec331817e108cd6a2c4020d55e8ba74b
 
 OPTIONS_DEFINE=	MANPAGES
 OPTIONS_DEFAULT=MANPAGES

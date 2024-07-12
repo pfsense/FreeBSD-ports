@@ -15,13 +15,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}woob>=2.0:www/py-woob@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}woob>=2.0:www/py-woob@${PY_FLAVOR}
 
-USES=		gmake pyqt:5 python:3.7+
+USES=		gmake pyqt:5 python
 USE_PYQT=	pyqt5 sip
 USE_PYTHON=	autoplist distutils
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	woob
-GL_COMMIT=	958a79c2e5de4698afe34f960fc1698cf2de8ca5
+GL_TAGNAME=	958a79c2e5de4698afe34f960fc1698cf2de8ca5
 
 BINARY_ALIAS=	pyuic5=pyuic5-${PYTHON_VER}
 

@@ -1,6 +1,6 @@
 PORTNAME=	gtimer
 PORTVERSION=	2.0.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -12,13 +12,20 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		gettext perl5 gmake gnome pkgconfig xorg
-USE_XORG=	x11 xscrnsaver
+USES=		gettext gmake gnome localbase perl5 pkgconfig xorg
 USE_GNOME=	gtk20
+USE_XORG=	x11 xscrnsaver
+
 GNU_CONFIGURE=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include -Wno-return-type
-LIBS+=		-L${LOCALBASE}/lib -lX11
+CPPFLAGS+=	-Wno-return-type
+LIBS+=		-lX11
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|1.1.7|${PORTVERSION}|g' ${WRKSRC}/configure
@@ -37,7 +44,7 @@ post-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 .for lang in cs cz es fr sv
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/locale/${lang}/LC_MESSAGES
 	${INSTALL_DATA} ${WRKSRC}/po/${lang}.mo \

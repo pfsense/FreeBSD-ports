@@ -3,7 +3,7 @@
  * netgate_firmware_upgrade.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -143,7 +143,7 @@ if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
 				'upgrade',
 				'Upgrade and Reboot',
 				null,
-				'fa-check'
+				'fa-solid fa-check'
 			))->setAttribute("title", "Upgrade Firmware and reboot the system")->addClass('btn-danger');
 		}
 

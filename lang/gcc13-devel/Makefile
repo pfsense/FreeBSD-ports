@@ -1,5 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	13.1.1.s20230617
+PORTVERSION=	13.3.1.s20240614
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -12,7 +12,7 @@ WWW=		https://gcc.gnu.org
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 armv7 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
@@ -46,7 +46,6 @@ OPTIONS_DEFINE=		GRAPHITE
 OPTIONS_DEFAULT_aarch64=STANDARD_BOOTSTRAP
 OPTIONS_DEFAULT_amd64=	STANDARD_BOOTSTRAP
 OPTIONS_DEFAULT_i386=	STANDARD_BOOTSTRAP
-OPTIONS_DEFAULT_powerpc=LTO_BOOTSTRAP
 OPTIONS_DEFAULT_powerpc64=LTO_BOOTSTRAP
 OPTIONS_DEFAULT_powerpc64le=LTO_BOOTSTRAP
 OPTIONS_RADIO=	BOOTSTRAP
@@ -66,17 +65,18 @@ MULTILIB_CONFIGURE_ENABLE=	multilib
 CONFIGURE_ARGS+=	--disable-multilib
 .endif
 
+.if defined(CPUTYPE) && ${CPUTYPE:Mg[3-5]}
+CFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
+CXXFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 
-.elif defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+.elif ${ARCH} == powerpc64
 CONFIGURE_ARGS+=	--with-abi=elfv2
-USE_GCC=	yes
-
-.elif ${ARCH} == powerpc64le
-USE_GCC=	yes
 .endif
 
 LANGUAGES:=	c,c++,objc,fortran,jit
@@ -84,6 +84,7 @@ TARGLIB=	${PREFIX}/lib/gcc${SUFFIX}
 TARGLIB32=	${PREFIX}/lib32	# The version information is added later
 LIBEXEC=	${PREFIX}/libexec/gcc${SUFFIX}
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_OUTSOURCE=	yes
 .if empty(PORT_OPTIONS:M*BOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
@@ -159,8 +160,12 @@ full-regression-test: build
 .endif
 
 post-stage:
-	${RM} ${STAGEDIR}${PREFIX}/man/man7/*
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man7/*
 	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
+	# Install ISO_Fortran_binding.h in an easily findable directory
+	${MKDIR} ${STAGEDIR}${PREFIX}/include/gcc${SUFFIX}
+	${INSTALL_DATA} ${STAGEDIR}${PREFIX}/lib/gcc${SUFFIX}/gcc/${CONFIGURE_TARGET}/${GCC_VERSION}/include/ISO_Fortran_binding.h	\
+		${STAGEDIR}${PREFIX}/include/gcc${SUFFIX}
 	# Add target libraries and include files to packaging list.
 	${RM} ${WRKDIR}/PLIST.lib
 

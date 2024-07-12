@@ -1,4 +1,4 @@
---- content/browser/renderer_host/render_widget_host_view_event_handler.cc.orig	2022-10-01 07:40:07 UTC
+--- content/browser/renderer_host/render_widget_host_view_event_handler.cc.orig	2024-06-22 08:49:42 UTC
 +++ content/browser/renderer_host/render_widget_host_view_event_handler.cc
 @@ -596,7 +596,7 @@ bool RenderWidgetHostViewEventHandler::CanRendererHand
    if (event->type() == ui::ET_MOUSE_EXITED) {

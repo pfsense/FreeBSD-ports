@@ -3,7 +3,7 @@
  * snort_rulesets.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
@@ -329,7 +329,7 @@ if ($btn_view_flowb_rules == TRUE) {
 		'view',
 		'View',
 		'snort_rules_flowbits.php?id=' . $id . '&returl=' . urlencode($_SERVER['PHP_SELF']),
-		'fa-file-text-o'
+		'fa-regular fa-file-lines'
 	);
 	$btn_viewFlowbits->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm');
 	$group = new Form_Group('Auto-Flowbit Rules');
@@ -387,8 +387,8 @@ if ($snortdownload == "on") {
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Select the rulesets (Categories) Snort will load at startup")?></h2></div>
 	<div class="panel-body">
 		<div class="table-responsive col-sm-12">
-			<i class="fa fa-adn text-success"></i>&nbsp;<?=gettext('- Category is auto-enabled by SID Mgmt conf files'); ?><br/>
-			<i class="fa fa-adn text-danger"></i>&nbsp;<?=gettext('- Category is auto-disabled by SID Mgmt conf files'); ?>
+			<i class="fa-brands fa-adn text-success"></i>&nbsp;<?=gettext('- Category is auto-enabled by SID Mgmt conf files'); ?><br/>
+			<i class="fa-brands fa-adn text-danger"></i>&nbsp;<?=gettext('- Category is auto-disabled by SID Mgmt conf files'); ?>
 		</div>
 		<nav class="action-buttons">
 			<button type="submit" id="selectall" name="selectall" class="btn btn-info btn-sm" title="<?=gettext('Add all categories to enforcing rules');?>">
@@ -398,7 +398,7 @@ if ($snortdownload == "on") {
 				<?=gettext('Unselect All');?>
 			</button>
 			<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Click to Save changes and rebuild rules');?>">
-				<i class="fa fa-save icon-embed-btn"></i>
+				<i class="fa-solid fa-save icon-embed-btn"></i>
 				<?=gettext('Save');?>
 			</button>
 		</nav>
@@ -429,7 +429,7 @@ if ($snortdownload == "on") {
 				<?php if ($cat_mods[$community_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="5">
 							<?php if ($no_community_files): ?>
@@ -442,7 +442,7 @@ if ($snortdownload == "on") {
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
 						<td colspan="5">
 							<?php if ($no_community_files): ?>
@@ -511,7 +511,7 @@ if ($snortdownload == "on") {
 				<?php if ($cat_mods[$feodotracker_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa-brands fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="5">
 							<?php if ($no_feodotracker_files): ?>
@@ -524,7 +524,7 @@ if ($snortdownload == "on") {
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa-brands fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
 						<td colspan="5">
 							<?php if ($no_feodotracker_files): ?>
@@ -683,10 +683,10 @@ if ($snortdownload == "on") {
 								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
@@ -719,10 +719,10 @@ if ($snortdownload == "on") {
 								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
@@ -755,10 +755,10 @@ if ($snortdownload == "on") {
 								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+								echo "	\n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
@@ -788,10 +788,10 @@ if ($snortdownload == "on") {
 							echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 					if ($cat_mods[$file] == 'enabled') {
 							$CHECKED = "enabled";
-						echo "  \n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+						echo "  \n" . '<i class="fa-brands fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 					}
 					else {
-						echo "  \n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
+						echo "  \n" . '<i class="fa-brands fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 					}
 				}
 				else {
@@ -817,7 +817,7 @@ if ($snortdownload == "on") {
 
 <div class="col-sm-10 col-sm-offset-2">
 	<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Click to Save changes and rebuild rules');?>">
-		<i class="fa fa-save icon-embed-btn"></i>
+		<i class="fa-solid fa-save icon-embed-btn"></i>
 		<?=gettext('Save');?>
 	</button>
 </div>

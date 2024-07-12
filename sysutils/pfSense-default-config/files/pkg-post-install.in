@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ ! -f "${PKG_ROOTDIR}/cf/conf/config.xml" ]; then
+	cp "${PKG_ROOTDIR}/conf.default/config.xml" "${PKG_ROOTDIR}/cf/conf/config.xml"
+fi
+
+if [ ! -L "${PKG_ROOTDIR}/conf" ]; then
+	ln -sf "${PKG_ROOTDIR}/cf/conf" "${PKG_ROOTDIR}/conf"
+fi
+
+if [ ! -d "${PKG_ROOTDIR}/cf/conf/backup" ]; then
+	mkdir "${PKG_ROOTDIR}/cf/conf/backup"
+fi
+
+FLAVOR="%%FLAVOR%%"
+echo "${FLAVOR}" > "${PKG_ROOTDIR}/etc/default-config-flavor"
+
+exit 0

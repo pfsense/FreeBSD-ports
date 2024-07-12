@@ -1,12 +1,12 @@
 PORTNAME=	spar
 PORTVERSION=	0.5.10
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	math devel
 MASTER_SITES=	SF/${PORTNAME}/Spar/${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Modular math parser
-WWW=		http://spar.sourceforge.net/
+WWW=		https://spar.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +17,7 @@ USE_CSTD=	gnu89
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 .include <bsd.port.pre.mk>
 

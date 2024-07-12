@@ -1,28 +1,31 @@
 PORTNAME=	sfcgal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.1
-PORTREVISION=	4
+DISTVERSION=	1.5.1
+PORTREVISION=	1
 CATEGORIES=	databases math graphics
+
+MASTER_SITES=	https://github.com/CGAL/cgal/releases/download/v5.6/:source1
+DISTFILES=	CGAL-5.6.tar.xz:source1
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Wrapper library around CGAL for PostGIS
-WWW=		http://www.sfcgal.org/
+WWW=		https://oslandia.gitlab.io/SFCGAL/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	cgal>0:math/cgal
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr
 
 USES=		cmake compiler:c++14-lang
 USE_GITLAB=	yes
-GL_ACCOUNT=	Oslandia
+GL_ACCOUNT=	SFCGAL
 GL_PROJECT=	SFCGAL
-GL_COMMIT=	2d6a1a89552f14fe2926038b7237686bb9e5472e
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	SHL3=${PORTVERSION} SHL1=${PORTVERSION:R:R} DEBUG_SUFFIX=${WITH_DEBUG:Dd}
+
+CMAKE_ARGS+=	-DCGAL_DIR=${WRKDIR}/CGAL-5.6
 
 .include <bsd.port.mk>

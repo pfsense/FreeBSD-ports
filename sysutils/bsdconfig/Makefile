@@ -1,6 +1,6 @@
 PORTNAME=	bsdconfig
 PORTVERSION=	0.9.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://druidbsd.sourceforge.net/download/bsdconfig/
 DISTNAME=	${PORTNAME}.130705
@@ -10,7 +10,7 @@ PATCHFILES=	${DISTNAME}-${PORTVERSION}.diff.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to configure various aspects of FreeBSD
-WWW=		http://druidbsd.sourceforge.net/
+WWW=		https://druidbsd.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 
@@ -22,7 +22,7 @@ BSDCFG_LIBE=	libexec/bsdconfig
 BSDCFG_SHARE=	share/bsdconfig
 
 MAKE_ARGS+=	LIBEXECDIR="${PREFIX}/libexec" \
-		MANDIR="${PREFIX}/man/man" \
+		MANDIR="${PREFIX}/share/man/man" \
 		SBINDIR="${PREFIX}/sbin" \
 		SHAREDIR="${PREFIX}/share"
 

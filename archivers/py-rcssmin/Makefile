@@ -1,5 +1,5 @@
 PORTNAME=	rcssmin
-PORTVERSION=	1.1.1
+PORTVERSION=	1.1.2
 CATEGORIES=	archivers python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/ndparker/rcssmin
 
 LICENSE=	APACHE20
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

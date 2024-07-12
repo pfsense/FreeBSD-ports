@@ -1,9 +1,9 @@
 PORTNAME=	purrr
-PORTVERSION=	1.0.1
+PORTVERSION=	1.0.2
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	uzsolt@uzsolt.hu
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Functional Programming Tools
 WWW=		https://cran.r-project.org/web/packages/purrr/
 

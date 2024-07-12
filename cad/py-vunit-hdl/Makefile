@@ -12,17 +12,22 @@ WWW=		https://vunit.github.io/
 
 LICENSE=	MPL20
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	ghdl:cad/ghdl
 TEST_DEPENDS=	pylint:devel/pylint@${PY_FLAVOR}
 
-USES=		python:3.7+
-USE_PYTHON=	pep517 autoplist pytest # 42 tests fail, see https://github.com/VUnit/vunit/issues/941
+USES=		python
+USE_PYTHON=	pep517 autoplist pytest # 1 test fails, see https://github.com/VUnit/vunit/issues/982
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	VUnit
 GH_PROJECT=	vunit
+GH_TUPLE=	Paebbels:JSON-for-VHDL:95e848b:j4v/vunit/vhdl/JSON-for-VHDL \
+		OSVVM:OSVVM:2104430:osvvm/vunit/vhdl/osvvm
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 NO_ARCH=	yes
 

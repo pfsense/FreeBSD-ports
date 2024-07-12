@@ -1,6 +1,6 @@
 PORTNAME=	tracker
 PORTVERSION=	2.3.4
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 
@@ -23,7 +23,7 @@ LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c++11-lib gettext gnome localbase:ldflags meson \
-		pkgconfig python:3.4+,build sqlite tar:xz vala:build
+		pkgconfig python:build sqlite tar:xz vala:build
 USE_GNOME=	glib20 introspection:build libxml2
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Ddocs=false \

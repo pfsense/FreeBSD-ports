@@ -1,4 +1,4 @@
---- third_party/wayland/include/config.h.orig	2023-03-01 05:42:12 UTC
+--- third_party/wayland/include/config.h.orig	2024-02-03 15:42:55 UTC
 +++ third_party/wayland/include/config.h
 @@ -9,7 +9,14 @@
  

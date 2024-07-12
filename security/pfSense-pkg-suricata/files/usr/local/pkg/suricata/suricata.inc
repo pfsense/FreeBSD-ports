@@ -3,7 +3,7 @@
  * suricata.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -39,8 +39,8 @@ require("/usr/local/pkg/suricata/suricata_defs.inc");
 
 global $g;
 
-// Suricata GUI needs some extra PHP memory space to manipulate large rules arrays
-ini_set("memory_limit", "512M");
+// Suricata GUI needs at least 512MB to manipulate large rules arrays
+ini_set("memory_limit", config_get_path('system/php_memory_limit', '512') . "M");
 
 function suricata_generate_id() {
 
@@ -681,7 +681,7 @@ function suricata_rules_up_install_cron($should_install=true) {
 		$suricata_rules_up_hr = strval($hour);
 		for ($i=0; $i<3; $i++) {
 			$hour += 6;
-			if ($hour > 24) {
+			if ($hour > 23) {
 				$hour -= 24;
 			}
 			$suricata_rules_up_hr .= "," . strval($hour);
@@ -695,7 +695,7 @@ function suricata_rules_up_install_cron($should_install=true) {
 		$hour = intval(substr($suricata_rules_upd_time, 0, 2));
 		$suricata_rules_up_hr = strval($hour) . ",";
 		$hour += 12;
-		if ($hour > 24) {
+		if ($hour > 23) {
 			$hour -= 24;
 		}
 		$suricata_rules_up_hr .= strval($hour);
@@ -1005,7 +1005,7 @@ function suricata_Getdirsize($node) {
 	}
 
 	$blah = exec( "/usr/bin/du -kdc $node" );
-	return substr( $blah, 0, strpos($blah, 9) );
+	return substr( $blah, 0, strpos($blah, chr(9) ) );
 }
 
 function suricata_build_sid_msg_map($rules_path, $sid_file) {
@@ -4148,7 +4148,7 @@ function suricata_get_vpns_list() {
 			}
 			/* Mobile warriors */
 			if (config_path_enabled('ipsec', 'mobilekey')) {
-				foreach (config_get_path('ipsec/mobilekey') as $key) {
+				foreach (config_get_path('ipsec/mobilekey', []) as $key) {
 					if (!empty($key['pool_address']) &&
 					    !empty($key['pool_netbits'])) {
 						$vpns_subnet = "{$key['pool_address']}/{$key['pool_netbits']}";

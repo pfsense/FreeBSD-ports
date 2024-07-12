@@ -1,6 +1,6 @@
 PORTNAME=	dune-fem
 DISTVERSION=	2.8.0.5
-PORTREVISION=	7
+PORTREVISION=	23
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	arpack++>0:math/arpack++ \
 		dune-localfunctions>=2.6:math/dune-localfunctions \
 		dune-spgrid>0:math/dune-spgrid \
 		vc>0:devel/vc \
-		${LOCALBASE}/mpi/openmpi/lib/libmpi.so:net/openmpi
+		openmpi4>0:net/openmpi4
 LIB_DEPENDS=	libpsurface.so:math/psurface \
 		libarpack.so:math/arpack-ng \
 		libdunealugrid.so:math/dune-alugrid \
@@ -41,7 +41,7 @@ LIB_DEPENDS=	libpsurface.so:math/psurface \
 RUN_DEPENDS=	dune-istl>=2.6:math/dune-istl \
 		dune-localfunctions>=2.6:math/dune-localfunctions \
 		dune-spgrid>0:math/dune-spgrid \
-		${LOCALBASE}/mpi/openmpi/lib/libmpi.so:net/openmpi
+		openmpi4>0:net/openmpi4
 
 USES=		cmake compiler:c++17-lang eigen:3 fortran pkgconfig
 USE_GITLAB=	yes
@@ -49,7 +49,7 @@ USE_LDCONFIG=	yes
 
 GL_SITE=	https://gitlab.dune-project.org
 GL_ACCOUNT=	dune-fem
-GL_COMMIT=	30e278aa744c908fbf4bbd8b237eb26c0475d16e
+GL_TAGNAME=	30e278aa744c908fbf4bbd8b237eb26c0475d16e
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 

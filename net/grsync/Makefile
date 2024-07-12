@@ -1,5 +1,5 @@
 PORTNAME=	grsync
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.1
 PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.opbyte.it/release/ \
@@ -14,13 +14,15 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	rsync:net/rsync \
 		bash:shells/bash
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz
 
 USES=		desktop-file-utils gettext gmake gnome \
 		pkgconfig shared-mime-info shebangfix
-USE_GNOME=	cairo gtk30 intltool
+USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=	--disable-unity
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

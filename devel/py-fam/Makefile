@@ -8,18 +8,21 @@ DISTNAME=	python-fam-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python Interface to the File Alteration Monitor
-WWW=		http://python-fam.sourceforge.net/
+WWW=		https://python-fam.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.6+ fam
+USES=		python fam
 USE_PYTHON=	distutils autoplist
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 CFLAGS+=	-Wno-error=int-conversion
+.if ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 .endif
 
 pre-patch:
@@ -28,4 +31,4 @@ pre-patch:
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_fam*.so
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

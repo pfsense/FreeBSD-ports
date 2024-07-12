@@ -1,6 +1,6 @@
 PORTNAME=	openxpki
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.24.1
+DISTVERSION=	3.24.2
 CATEGORIES=	security perl5
 PKGNAMEPREFIX=	p5-
 PKGNAMESUFFIX=	-i18n
@@ -16,10 +16,12 @@ LICENSE_FILE=	${WRKSRC}/../../LICENSE
 USES=		gettext-runtime gettext-tools gmake perl5
 
 USE_GITHUB=	yes
+MAKE_JOBS_UNSAFE=	yes
 
 ALL_TARGET=	scan default
 NO_ARCH=	yes
-# stay with stable versions only:
+
+# Track stable versions.
 PORTSCOUT=	limitw:1,even
 
 WRKSRC_SUBDIR=	core/i18n

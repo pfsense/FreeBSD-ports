@@ -75,6 +75,11 @@ lib/calibre/calibre/db/lazy.py
 lib/calibre/calibre/db/legacy.py
 lib/calibre/calibre/db/listeners.py
 lib/calibre/calibre/db/locking.py
+lib/calibre/calibre/db/notes/__init__.py
+lib/calibre/calibre/db/notes/connect.py
+lib/calibre/calibre/db/notes/exim.py
+lib/calibre/calibre/db/notes/schema_upgrade.py
+lib/calibre/calibre/db/tests/notes.py
 lib/calibre/calibre/db/restore.py
 lib/calibre/calibre/db/schema_upgrades.py
 lib/calibre/calibre/db/search.py
@@ -497,6 +502,7 @@ lib/calibre/calibre/ebooks/oeb/polish/utils.py
 lib/calibre/calibre/ebooks/oeb/reader.py
 lib/calibre/calibre/ebooks/oeb/stylizer.py
 lib/calibre/calibre/ebooks/oeb/transforms/__init__.py
+lib/calibre/calibre/ebooks/oeb/transforms/alt_text.py
 lib/calibre/calibre/ebooks/oeb/transforms/cover.py
 lib/calibre/calibre/ebooks/oeb/transforms/data_url.py
 lib/calibre/calibre/ebooks/oeb/transforms/embed_fonts.py
@@ -652,11 +658,13 @@ lib/calibre/calibre/gui2/__init__.py
 lib/calibre/calibre/gui2/actions/__init__.py
 lib/calibre/calibre/gui2/actions/add.py
 lib/calibre/calibre/gui2/actions/add_to_library.py
+lib/calibre/calibre/gui2/actions/all_actions.py
 lib/calibre/calibre/gui2/actions/annotate.py
 lib/calibre/calibre/gui2/actions/author_mapper.py
 lib/calibre/calibre/gui2/actions/auto_scroll.py
 lib/calibre/calibre/gui2/actions/booklist_context_menu.py
 lib/calibre/calibre/gui2/actions/browse_annots.py
+lib/calibre/calibre/gui2/actions/browse_notes.py
 lib/calibre/calibre/gui2/actions/catalog.py
 lib/calibre/calibre/gui2/actions/choose_library.py
 lib/calibre/calibre/gui2/actions/convert.py
@@ -669,6 +677,7 @@ lib/calibre/calibre/gui2/actions/embed.py
 lib/calibre/calibre/gui2/actions/fetch_news.py
 lib/calibre/calibre/gui2/actions/fts.py
 lib/calibre/calibre/gui2/actions/help.py
+lib/calibre/calibre/gui2/actions/layout_actions.py
 lib/calibre/calibre/gui2/actions/manage_categories.py
 lib/calibre/calibre/gui2/actions/mark_books.py
 lib/calibre/calibre/gui2/actions/match_books.py
@@ -707,6 +716,7 @@ lib/calibre/calibre/gui2/catalog/catalog_csv_xml.py
 lib/calibre/calibre/gui2/catalog/catalog_epub_mobi.py
 lib/calibre/calibre/gui2/catalog/catalog_epub_mobi_ui.py
 lib/calibre/calibre/gui2/catalog/catalog_tab_template_ui.py
+lib/calibre/calibre/gui2/central.py
 lib/calibre/calibre/gui2/changes.py
 lib/calibre/calibre/gui2/comments_editor.py
 lib/calibre/calibre/gui2/complete2.py
@@ -802,11 +812,11 @@ lib/calibre/calibre/gui2/dialogs/choose_plugin_toolbars.py
 lib/calibre/calibre/gui2/dialogs/comments_dialog.py
 lib/calibre/calibre/gui2/dialogs/confirm_delete.py
 lib/calibre/calibre/gui2/dialogs/confirm_delete_location.py
-lib/calibre/calibre/gui2/dialogs/confirm_delete_location_ui.py
 lib/calibre/calibre/gui2/dialogs/confirm_merge.py
 lib/calibre/calibre/gui2/dialogs/conversion_error.py
 lib/calibre/calibre/gui2/dialogs/conversion_error_ui.py
 lib/calibre/calibre/gui2/dialogs/custom_recipes.py
+lib/calibre/calibre/gui2/dialogs/data_files_manager.py
 lib/calibre/calibre/gui2/dialogs/delete_matching_from_device.py
 lib/calibre/calibre/gui2/dialogs/delete_matching_from_device_ui.py
 lib/calibre/calibre/gui2/dialogs/device_category_editor.py
@@ -816,6 +826,7 @@ lib/calibre/calibre/gui2/dialogs/drm_error_ui.py
 lib/calibre/calibre/gui2/dialogs/duplicates.py
 lib/calibre/calibre/gui2/dialogs/edit_authors_dialog.py
 lib/calibre/calibre/gui2/dialogs/edit_authors_dialog_ui.py
+lib/calibre/calibre/gui2/dialogs/edit_category_notes.py
 lib/calibre/calibre/gui2/dialogs/enum_values_edit.py
 lib/calibre/calibre/gui2/dialogs/exim.py
 lib/calibre/calibre/gui2/dialogs/jobs_ui.py
@@ -826,6 +837,7 @@ lib/calibre/calibre/gui2/dialogs/metadata_bulk.py
 lib/calibre/calibre/gui2/dialogs/metadata_bulk_ui.py
 lib/calibre/calibre/gui2/dialogs/multisort.py
 lib/calibre/calibre/gui2/dialogs/opml.py
+lib/calibre/calibre/gui2/dialogs/palette.py
 lib/calibre/calibre/gui2/dialogs/password.py
 lib/calibre/calibre/gui2/dialogs/password_ui.py
 lib/calibre/calibre/gui2/dialogs/plugin_updater.py
@@ -837,6 +849,7 @@ lib/calibre/calibre/gui2/dialogs/saved_search_editor.py
 lib/calibre/calibre/gui2/dialogs/scheduler.py
 lib/calibre/calibre/gui2/dialogs/search.py
 lib/calibre/calibre/gui2/dialogs/select_formats.py
+lib/calibre/calibre/gui2/dialogs/show_category_note.py
 lib/calibre/calibre/gui2/dialogs/smartdevice.py
 lib/calibre/calibre/gui2/dialogs/smartdevice_ui.py
 lib/calibre/calibre/gui2/dialogs/tag_categories.py
@@ -882,6 +895,7 @@ lib/calibre/calibre/gui2/library/annotations.py
 lib/calibre/calibre/gui2/library/caches.py
 lib/calibre/calibre/gui2/library/delegates.py
 lib/calibre/calibre/gui2/library/models.py
+lib/calibre/calibre/gui2/library/notes.py
 lib/calibre/calibre/gui2/library/views.py
 lib/calibre/calibre/gui2/linux_file_dialogs.py
 lib/calibre/calibre/gui2/listener.py
@@ -997,6 +1011,7 @@ lib/calibre/calibre/gui2/store/stores/amazon_es_plugin.py
 lib/calibre/calibre/gui2/store/stores/amazon_fr_plugin.py
 lib/calibre/calibre/gui2/store/stores/amazon_in_plugin.py
 lib/calibre/calibre/gui2/store/stores/amazon_it_plugin.py
+lib/calibre/calibre/gui2/store/stores/amazon_mx_plugin.py
 lib/calibre/calibre/gui2/store/stores/amazon_plugin.py
 lib/calibre/calibre/gui2/store/stores/amazon_uk_plugin.py
 lib/calibre/calibre/gui2/store/stores/archive_org_plugin.py
@@ -1537,6 +1552,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/dictionaries/es-ES/es-ES.aff
 %%DATADIR%%/dictionaries/es-ES/es-ES.dic
 %%DATADIR%%/dictionaries/es-ES/locales
+%%DATADIR%%/dictionaries/online-catalog.json
 %%DATADIR%%/ebook-convert-complete.calibre_msgpack
 %%DATADIR%%/editor-functions.json
 %%DATADIR%%/editor-help/css.json
@@ -1683,6 +1699,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/jobs.png
 %%DATADIR%%/images/keyboard-prefs.png
 %%DATADIR%%/images/languages.png
+%%DATADIR%%/images/layout.png
 %%DATADIR%%/images/library.png
 %%DATADIR%%/images/list_remove.png
 %%DATADIR%%/images/lookfeel.png
@@ -1731,6 +1748,8 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/network-server.png
 %%DATADIR%%/images/news.png
 %%DATADIR%%/images/next.png
+%%DATADIR%%/images/notes-for-dark-theme.png
+%%DATADIR%%/images/notes.png
 %%DATADIR%%/images/ok.png
 %%DATADIR%%/images/page.png
 %%DATADIR%%/images/plugboard.png
@@ -1855,6 +1874,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/metadata_sqlite.sql
 %%DATADIR%%/mime.types
 %%DATADIR%%/mozilla-ca-certs.pem
+%%DATADIR%%/notes_sqlite.sql
 %%DATADIR%%/pdf-mathjax-loader.js
 %%DATADIR%%/pdf-preprint.js
 %%DATADIR%%/pin-template.svg

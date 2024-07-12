@@ -12,8 +12,8 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 # make test: 1 failed, 48 passed
-USES=		python:3.7+ pytest
-USE_PYTHON=	concurrent distutils autoplist
+USES=		python
+USE_PYTHON=	concurrent distutils autoplist pytest
 
 NO_ARCH=	yes
 

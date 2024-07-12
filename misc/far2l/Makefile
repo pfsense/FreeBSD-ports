@@ -1,6 +1,7 @@
 PORTNAME=	far2l
-PORTVERSION=	2.5.0
+PORTVERSION=	2.6.1
 DISTVERSIONPREFIX=	v_
+DISTVERSIONSUFFIX=	_hotfix1
 CATEGORIES=	misc
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -9,10 +10,7 @@ WWW=		https://github.com/elfmz/far2l
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	gawk:lang/gawk gm4:devel/m4 \
-		${LOCALBASE}/include/spdlog/spdlog.h:devel/spdlog
-LIB_DEPENDS=	libfmt.so:devel/libfmt \
-		libpcre.so:devel/pcre \
+LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libuchardet.so:textproc/uchardet \
 		libxerces-c.so:textproc/xerces-c3
 RUN_DEPENDS=	bash:shells/bash
@@ -20,9 +18,12 @@ RUN_DEPENDS=	bash:shells/bash
 USE_GITHUB=	yes
 GH_ACCOUNT=	elfmz
 
-USES=		cmake compiler:c++11-lang perl5 pkgconfig shebangfix ssl
+USES=		cmake compiler:c++11-lang libarchive perl5 pkgconfig \
+		shebangfix ssl
 USE_PERL5=	build
 SHEBANG_FILES=	far2l/bootstrap/view.sh
+
+CMAKE_OFF=	UNRAR	# libarchive handles *.rar files just fine
 
 OPTIONS_DEFINE=	NFS SFTP SMB WEBDAV WXGTK X11
 OPTIONS_DEFAULT=	NFS SFTP WEBDAV WXGTK X11
@@ -33,7 +34,7 @@ NFS_LIB_DEPENDS=	libnfs.so:net/libnfs
 SFTP_DESC=	SFTP file transfer support
 SFTP_LIB_DEPENDS=	libssh.so:security/libssh
 
-SMB_USES=	libarchive samba:lib
+SMB_USES=	samba:lib
 
 WEBDAV_DESC=	WebDav protocol support via libneon
 WEBDAV_LIB_DEPENDS=	libneon.so:www/neon
@@ -48,7 +49,15 @@ X11_USES=	xorg
 X11_USE=	XORG=ice,sm,x11,xext,xi
 
 post-patch:
+	@${REINPLACE_CMD} -e \
+		's,pkg_search_module\(([[:alpha:]]*\)[^)]*,find_package\1,' \
+			${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e 's,^if (fmt_FOUND,& AND FALSE,' \
+		${WRKSRC}/colorer/CMakeLists.txt
 	@${GREP} -Rl --null --include=\*.cpp /bin/bash ${WRKSRC} | ${XARGS} \
 		-0 ${REINPLACE_CMD} -e 's,/bin/bash,${LOCALBASE}&,'
+
+post-stage:
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/far2l/Plugins/NetRocks/plug/SHELL
 
 .include <bsd.port.mk>

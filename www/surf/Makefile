@@ -1,12 +1,12 @@
 PORTNAME=	surf
 DISTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	http://dl.suckless.org/${PORTNAME}/
 PKGNAMESUFFIX=	-browser
 
 MAINTAINER=	dmgk@FreeBSD.org
-COMMENT=	Simple Web browser based on WebKit2/GTK+
+COMMENT=	Simple Web browser based on WebKit2/GTK
 WWW=		https://surf.suckless.org
 
 LICENSE=	MIT
@@ -31,7 +31,7 @@ DESKTOP_ENTRIES="Surf" "" "${PREFIX}/share/pixmaps/surf.png" "surf" "" true
 
 PLIST_FILES=	bin/surf \
 		lib/surf/webext-surf.so \
-		man/man1/surf.1.gz \
+		share/man/man1/surf.1.gz \
 		share/pixmaps/surf.png
 
 PORTDOCS=	README TODO.md
@@ -53,7 +53,6 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/^PREFIX/s| =| ?=| ; \
-		/^MANPREFIX/s|/share/man|/man| ; \
 		/^X11/s|/usr/X11R6/|$${LOCALBASE}/| ; \
 		/^GTKINC/s| =| ?=| ; \
 		/^GTKLIB/s| =| ?=| ; \

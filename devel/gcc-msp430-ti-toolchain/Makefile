@@ -4,7 +4,6 @@ PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GCC/releases/gcc-${GCC_REL_VERSION}:gcc \
 		SOURCEWARE/binutils/releases:binutils \
-		ftp://sources.redhat.com/pub/:newlib \
 		GNU/gdb:gdb \
 		SOURCEWARE/newlib:newlib \
 		http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSPGCC/${TI_VERSION:S/./_/g}/export/:tipatch \
@@ -63,7 +62,6 @@ CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_REL_VERSION}
 
 PATCH_WRKSRC=	${WRKDIR}
-MANPREFIX=	${PREFIX}/${PORTNAME}-${TI_VERSION}
 DOCSDIR=	${PREFIX}/${PORTNAME}-${TI_VERSION}/docs
 PLIST_SUB+=	TARGET=${TARGET} GCC_VERSION=${GCC_VERSION} \
 		TI_VERSION=${TI_VERSION} DOC_VERSION=${DOC_VERSION}
@@ -95,6 +93,10 @@ CONFIGURE_ARGS_COMMON=	--prefix=${INTERIM_PREFIX} \
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 CFLAGS+=       -Wno-error=int-conversion
+.endif
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USE_GCC=	yes:build
 .endif
 
 pre-patch:

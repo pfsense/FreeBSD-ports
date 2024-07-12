@@ -1,5 +1,6 @@
 PORTNAME=	vmaf
 DISTVERSION=	r7
+PORTREVISION=	3
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	vapoursynth-
 

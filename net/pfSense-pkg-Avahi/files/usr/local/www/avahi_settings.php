@@ -266,7 +266,7 @@ foreach ($pconfig['filtering']['rule'] as $rule) {
 		'deleterow' . $counter,
 		'Delete',
 		null,
-		'fa-trash'
+		'fa-solid fa-trash-can'
 	))->addClass('btn-warning');
 
 	$section->add($group);
@@ -278,7 +278,7 @@ $section->addInput(new Form_Button(
 	'addrow',
 	'Add',
 	null,
-	'fa-plus'
+	'fa-solid fa-plus'
 ))->addClass('btn-success');
 
 $form->add($section);
@@ -338,7 +338,7 @@ $button = new Form_Button(
 	'advancedbutton',
 	'Display Advanced',
 	null,
-	'fa-cog'
+	'fa-solid fa-cog'
 );
 $button->setAttribute('type', 'button')->addClass('btn-info btn-sm');
 $section->addInput(new Form_StaticText(
@@ -437,7 +437,7 @@ events.push(function() {
 		} else {
 			text = "<?=gettext('Display Advanced');?>";
 		}
-		$('#advancedbutton').html('<i class="fa fa-cog"></i> ' + text);
+		$('#advancedbutton').html('<i class="fa-solid fa-cog"></i> ' + text);
 	}
 
 	function show_filtering() {

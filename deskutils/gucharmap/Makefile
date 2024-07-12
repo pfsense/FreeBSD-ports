@@ -1,5 +1,5 @@
 PORTNAME=	gucharmap
-PORTVERSION=	15.0.0
+PORTVERSION=	15.1.0 # must sync with textproc/UCD
 PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 #MASTER_SITES=	GNOME
@@ -13,7 +13,7 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool \
-		UCD>=0:textproc/UCD \
+		UCD=${PORTVERSION},1:textproc/UCD \
 		${LOCALBASE}/share/aclocal/yelp.m4:textproc/yelp-tools
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpcre2-8.so:devel/pcre2
@@ -29,7 +29,6 @@ MESON_ARGS=	-Ducd_path=${LOCALBASE}/share/unicode/ucd/
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	GNOME
-GL_COMMIT=	36de4b20deb47bccd8434e36dcc48db8b9460e47
 
 GLIB_SCHEMAS=	org.gnome.Charmap.gschema.xml
 

@@ -1,12 +1,12 @@
 PORTNAME=	dcd
 PORTVERSION=	0.99.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}player/${PORTNAME}player/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, programmable, intelligent CD player
-WWW=		http://dcdplayer.sourceforge.net/
+WWW=		https://dcdplayer.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libcdaudio.so:audio/libcdaudio
 USES=		gmake
 
 PLIST_FILES=	bin/dcd \
-		man/man1/dcd.1.gz
+		share/man/man1/dcd.1.gz
 
 post-patch:
 	# Handle namespace collision with libcdaudio
@@ -24,7 +24,5 @@ post-patch:
 	    ${WRKSRC}/dcd.c ${WRKSRC}/infinite.c
 	# Linux? Bugger off!
 	${REINPLACE_CMD} -e 's|linux/||' ${WRKSRC}/process.c
-	${REINPLACE_CMD} -e 's|<endian|<sys/endian|; s|__BYTE_ORDER|_BYTE_ORDER|' \
-	    ${WRKSRC}/endian.h
 
 .include <bsd.port.mk>

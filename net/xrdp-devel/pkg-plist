@@ -5,13 +5,7 @@ bin/xrdp-sesadmin
 bin/xrdp-sesrun
 bin/xrdp-dumpfv1
 lib/libpainter.a
-lib/libpainter.so
-lib/libpainter.so.0
-lib/libpainter.so.0.0.0
-lib/librfxencode.so
-lib/librfxencode.so.0.0.0
 lib/librfxencode.a
-lib/librfxencode.so.0
 include/ms-erref.h
 include/ms-fscc.h
 include/ms-rdpbcgr.h
@@ -43,6 +37,14 @@ lib/xrdp/libipm.a
 lib/xrdp/libipm.so
 lib/xrdp/libipm.so.0
 lib/xrdp/libipm.so.0.0.0
+lib/xrdp/libsesman.a
+lib/xrdp/libsesman.so
+lib/xrdp/libsesman.so.0
+lib/xrdp/libsesman.so.0.0.0
+lib/xrdp/libtoml.a
+lib/xrdp/libtoml.so
+lib/xrdp/libtoml.so.1
+lib/xrdp/libtoml.so.1.0.0
 lib/xrdp/libvnc.a
 lib/xrdp/libvnc.so
 lib/xrdp/libxrdp.a
@@ -55,6 +57,8 @@ lib/xrdp/libxrdpapi.so
 lib/xrdp/libxrdpapi.a
 lib/xrdp/libxrdpapi.so.0
 lib/xrdp/libxrdpapi.so.0.0.0
+libexec/xrdp/waitforx
+libexec/xrdp/xrdp-sesexec
 etc/pam.d/xrdp-sesman
 etc/rc.d/xrdp
 etc/rc.d/xrdp-sesman
@@ -92,17 +96,17 @@ etc/rc.d/xrdp-sesman
 @sample %%ETCDIR%%/reconnectwm.sh.sample
 @sample %%ETCDIR%%/xrdp.ini.sample
 @sample %%ETCDIR%%/xrdp_keyboard.ini.sample
-man/man1/xrdp-dis.1.gz
-man/man5/sesman.ini.5.gz
-man/man8/xrdp.8.gz
-man/man5/xrdp.ini.5.gz
-man/man8/xrdp-chansrv.8.gz
-man/man8/xrdp-dumpfv1.8.gz
-man/man8/xrdp-genkeymap.8.gz
-man/man8/xrdp-keygen.8.gz
-man/man8/xrdp-sesadmin.8.gz
-man/man8/xrdp-sesman.8.gz
-man/man8/xrdp-sesrun.8.gz
+share/man/man1/xrdp-dis.1.gz
+share/man/man5/sesman.ini.5.gz
+share/man/man8/xrdp.8.gz
+share/man/man5/xrdp.ini.5.gz
+share/man/man8/xrdp-chansrv.8.gz
+share/man/man8/xrdp-dumpfv1.8.gz
+share/man/man8/xrdp-genkeymap.8.gz
+share/man/man8/xrdp-keygen.8.gz
+share/man/man8/xrdp-sesadmin.8.gz
+share/man/man8/xrdp-sesman.8.gz
+share/man/man8/xrdp-sesrun.8.gz
 sbin/xrdp
 sbin/xrdp-chansrv
 sbin/xrdp-sesman

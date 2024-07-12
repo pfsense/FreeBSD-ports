@@ -1,6 +1,6 @@
 PORTNAME=	resvg-c-api
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.34.1
+DISTVERSION=	0.42.0
 PORTREVISION=	1
 CATEGORIES=	graphics
 
@@ -22,56 +22,55 @@ WRKSRC_SUBDIR=	crates/c-api
 
 CARGO_CRATES=	adler-1.0.2 \
 		arrayref-0.3.7 \
-		arrayvec-0.7.2 \
-		base64-0.21.2 \
+		arrayvec-0.7.4 \
+		base64-0.22.1 \
 		bitflags-1.3.2 \
-		bytemuck-1.13.1 \
+		bitflags-2.5.0 \
+		bytemuck-1.16.0 \
 		cfg-if-1.0.0 \
 		color_quant-1.1.0 \
-		crc32fast-1.3.2 \
-		data-url-0.2.0 \
-		fdeflate-0.3.0 \
-		flate2-1.0.26 \
+		crc32fast-1.4.2 \
+		data-url-0.3.1 \
+		fdeflate-0.3.4 \
+		flate2-1.0.30 \
 		float-cmp-0.9.0 \
-		fontconfig-parser-0.5.2 \
-		fontdb-0.14.1 \
-		gif-0.12.0 \
+		fontconfig-parser-0.5.6 \
+		fontdb-0.18.0 \
+		gif-0.13.1 \
 		imagesize-0.12.0 \
-		jpeg-decoder-0.3.0 \
-		kurbo-0.9.5 \
-		libc-0.2.144 \
-		log-0.4.17 \
-		memmap2-0.6.2 \
-		miniz_oxide-0.7.1 \
-		once_cell-1.17.1 \
+		jpeg-decoder-0.3.1 \
+		kurbo-0.11.0 \
+		libc-0.2.155 \
+		log-0.4.21 \
+		memmap2-0.9.4 \
+		miniz_oxide-0.7.3 \
+		once_cell-1.19.0 \
 		pico-args-0.5.0 \
-		png-0.17.8 \
-		rctree-0.5.0 \
-		rgb-0.8.36 \
-		roxmltree-0.18.0 \
-		rustybuzz-0.7.0 \
-		simd-adler32-0.3.5 \
+		png-0.17.13 \
+		rgb-0.8.37 \
+		roxmltree-0.19.0 \
+		roxmltree-0.20.0 \
+		rustybuzz-0.14.0 \
+		simd-adler32-0.3.7 \
 		simplecss-0.2.1 \
-		siphasher-0.3.10 \
-		slotmap-1.0.6 \
-		smallvec-1.10.0 \
+		siphasher-1.0.1 \
+		slotmap-1.0.7 \
+		smallvec-1.13.2 \
 		strict-num-0.1.1 \
-		svgtypes-0.11.0 \
-		tiny-skia-0.10.0 \
-		tiny-skia-path-0.10.0 \
+		svgtypes-0.15.1 \
+		tiny-skia-0.11.4 \
+		tiny-skia-path-0.11.4 \
 		tinyvec-1.6.0 \
 		tinyvec_macros-0.1.1 \
-		ttf-parser-0.18.1 \
-		ttf-parser-0.19.0 \
-		unicode-bidi-0.3.13 \
-		unicode-bidi-mirroring-0.1.0 \
-		unicode-ccc-0.1.2 \
-		unicode-general-category-0.6.0 \
-		unicode-script-0.5.5 \
+		ttf-parser-0.21.1 \
+		unicode-bidi-0.3.15 \
+		unicode-bidi-mirroring-0.2.0 \
+		unicode-ccc-0.2.0 \
+		unicode-properties-0.1.1 \
+		unicode-script-0.5.6 \
 		unicode-vo-0.1.0 \
 		version_check-0.9.4 \
-		weezl-0.1.7 \
-		xmlparser-0.13.5 \
+		weezl-0.1.8 \
 		xmlwriter-0.1.0
 
 PLIST_FILES=	include/ResvgQt.h \

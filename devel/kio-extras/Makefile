@@ -1,6 +1,6 @@
 PORTNAME=	kio-extras
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	5
+PORTREVISION=	1
 CATEGORIES=	devel kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -9,7 +9,7 @@ WWW=		https://projects.kde.org/projects/kde/workspace/kio-extras
 
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libImath.so:math/Imath \
-		libkdsoap.so:www/kdsoap
+		libkdsoap.so:www/kdsoap@qt5
 
 USES=		cmake compiler:c++11-lib gettext gperf kde:5 \
 		pkgconfig qt:5 shared-mime-info shebangfix tar:xz xorg
@@ -17,10 +17,10 @@ USE_KDE=	activities archive auth bookmarks codecs completion config \
 		configwidgets coreaddons crash dbusaddons dnssd doctools \
 		emoticons guiaddons i18n iconthemes init itemmodels itemviews \
 		jobwidgets js kdelibs4support khtml kio notifications parts \
-		pty service solid sonnet syntaxhighlighting textwidgets unitconversion \
+		phonon pty service solid sonnet syntaxhighlighting textwidgets unitconversion \
 		widgetsaddons windowsystem xmlgui \
 		ecm:build
-USE_QT=		concurrent core dbus declarative gui location network phonon4 printsupport \
+USE_QT=		concurrent core dbus declarative gui location network printsupport \
 		sql svg testlib webchannel widgets xml \
 		buildtools:build qmake:build
 USE_XORG=	x11 xcursor
@@ -52,8 +52,8 @@ EXR_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_OpenEXR
 EXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr
 
 EXIV_DESC=		Provides support for automatic rotation of JPEGs in the thumbnail kioslave
-EXIV_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Exiv2
-EXIV_LIB_DEPENDS=	libexiv2.so:graphics/exiv2
+EXIV_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5kExiv2
+EXIV_USE=		KDE=libkexiv2
 
 SLP_DESC=		Provides SLP support in the network:/ kioslave
 SLP_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_SLP

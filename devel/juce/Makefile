@@ -1,5 +1,5 @@
 PORTNAME=	juce
-DISTVERSION=	7.0.5
+DISTVERSION=	7.0.7
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -25,7 +25,8 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libsysinfo.so:devel/libsysinfo
 
 USES=		cmake compiler:c++11-lang dos2unix gl gnome localbase:ldflags pkgconfig xorg
-DOS2UNIX_FILES=	modules/juce_core/juce_core.h
+DOS2UNIX_FILES=	modules/juce_core/juce_core.h \
+		modules/juce_dsp/containers/juce_AudioBlock_test.cpp
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
 USE_GL=		gl
 USE_XORG=	x11 xcomposite xcursor xext xinerama xorgproto xrandr
@@ -72,7 +73,7 @@ post-patch:
 	@${REINPLACE_CMD} -i '' -e ' \
 		s|"/etc/fonts/fonts.conf"|"${PREFIX}/etc/fonts/fonts.conf"| ; \
 		s|"/usr/share/fonts/fonts.conf"|"${PREFIX}/share/fonts/fonts.conf"| \
-		' ${WRKSRC}/modules/juce_graphics/native/juce_linux_Fonts.cpp
+		' ${WRKSRC}/modules/juce_graphics/native/juce_Fonts_linux.cpp
 	# fix JUCE modules path (but it still complains about the path)
 	@${REINPLACE_CMD} -i '' -e ' \
 		s|"~/JUCE|"${PREFIX}/include/JUCE-${PORTVERSION}| \

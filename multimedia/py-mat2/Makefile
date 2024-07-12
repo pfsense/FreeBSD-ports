@@ -1,5 +1,5 @@
 PORTNAME=	mat2
-DISTVERSION=	0.13.3
+DISTVERSION=	0.13.4
 PORTREVISION=	3
 CATEGORIES=	multimedia audio graphics textproc python
 MASTER_SITES=	PYPI

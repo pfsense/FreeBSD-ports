@@ -1,8 +1,8 @@
 PORTNAME=	gwenhywfar
-PORTVERSION=	5.10.1
-PORTREVISION?=	0
+PORTVERSION=	5.10.2
+PORTREVISION?=	1
 CATEGORIES=	devel net security
-MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/465/
+MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/501/
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Multi-platform helper library for networking and security applications
@@ -64,6 +64,7 @@ INSTALL_WRKSRC=	${WRKSRC}/gui/${SLAVEPORT}
 LIB_DEPENDS+=	libFOX-1.6.so:x11-toolkits/fox16
 CONFIGURE_ARGS+=--with-fox-includes=${LOCALBASE}/include/fox-1.6 \
 		--with-fox-libs=${LOCALBASE}/lib
+CXXFLAGS+=	-Dregister=
 .  elif ${SLAVEPORT}=="gtk2"
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \

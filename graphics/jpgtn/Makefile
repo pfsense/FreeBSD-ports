@@ -1,22 +1,23 @@
 PORTNAME=	jpgtn
 PORTVERSION=	2.06
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	SF SUNSITE/apps/graphics/misc
 
 MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Creates thumbnails of JPEG images
-WWW=		http://jpgtn.sourceforge.net/
+WWW=		https://jpgtn.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		jpeg
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-libjpeg=${LOCALBASE}
 
 PLIST_FILES=	bin/jpgtn \
-		man/man1/jpgtn.1.gz
+		share/man/man1/jpgtn.1.gz
 
 WITH_MAXSIZE?=	2048
 WITH_MINSIZE?=	1

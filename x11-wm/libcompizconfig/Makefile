@@ -4,7 +4,7 @@ PORTREVISION=	2
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://BSDforge.com/projects/source/x11-wm/libcompizconfig/
 
-MAINTAINER=	potmaster@BSDforge.com
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Alternative configuration system for Compiz
 
 LICENSE=	GPLv2

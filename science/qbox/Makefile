@@ -1,6 +1,6 @@
 PORTNAME=	qbox
 DISTVERSIONPREFIX=	rel
-DISTVERSION=	1_76_0
+DISTVERSION=	1_76_4
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +14,7 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libcurl.so:ftp/curl \
 		libfftw3.so:math/fftw3 \
 		liblapack.so:math/lapack \
-		libmpich.so:net/mpich \
+		libmpicxx.so:net/mpich \
 		libscalapack.so:math/scalapack \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libxerces-c.so:textproc/xerces-c3

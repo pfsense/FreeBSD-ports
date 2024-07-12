@@ -1,7 +1,7 @@
 PORTNAME=	dune-alugrid
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.0
-PORTREVISION=	5
+PORTREVISION=	11
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libalberta_utilities.so:math/alberta \
 		libdunegrid.so:math/dune-grid \
 		libduneuggrid.so:math/dune-uggrid \
 		libmetis.so:math/metis \
-		libmpi.so:net/openmpi \
+		libmpi_cxx.so:net/openmpi4 \
 		libopenblas.so:math/openblas \
 		libtbb.so:devel/onetbb
 
@@ -28,7 +28,7 @@ USE_LDCONFIG=	yes
 
 GL_SITE=	https://gitlab.dune-project.org
 GL_ACCOUNT=	extensions
-GL_COMMIT=	ffd6cd15dc7092593c3d5827c2a2b43b81d7a32f
+GL_TAGNAME=	ffd6cd15dc7092593c3d5827c2a2b43b81d7a32f
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 

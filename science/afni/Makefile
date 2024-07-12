@@ -1,6 +1,6 @@
 PORTNAME=		afni
 DISTVERSIONPREFIX=	AFNI_
-DISTVERSION=		23.1.08
+DISTVERSION=		24.1.22
 CATEGORIES=		science biology graphics perl5 python
 
 MAINTAINER=	fernape@FreeBSD.org
@@ -60,7 +60,7 @@ MAKE_ENV=	CC="${CC}" R_SHARE_DIR=${LOCALBASE}/lib/R/share
 MAKE_JOBS_UNSAFE=yes
 ALL_TARGET=	vastness suma
 
-CFLAGS+=	-fcommon
+CFLAGS+=	-fcommon -Wno-incompatible-function-pointer-types
 
 ###########################################################################
 # Install parameters
@@ -84,7 +84,7 @@ CONFLICTS=	im \
 X11R6_FILES=	coxplot/Makefile \
 		coxplot/Makefile.f2c
 
-PKG_COMPRESSION_LEVEL= 	-6
+PKG_COMPRESSION_LEVEL= 	6
 
 post-extract:
 .for f in ${X11R6_FILES}

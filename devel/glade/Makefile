@@ -1,12 +1,12 @@
 PORTNAME=	glade
 PORTVERSION=	3.40.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	User interface builder for GTK+ 3
+COMMENT=	User interface builder for GTK 3
 WWW=		https://glade.gnome.org/
 
 LICENSE=	GPLv2+ LGPL21+
@@ -36,7 +36,7 @@ GJS_MESON_ENABLED=	gjs
 GJS_LIB_DEPENDS=	libgjs.so:lang/gjs
 
 PYTHON_MESON_ENABLED=	python
-PYTHON_USES=		python:3.4+
+PYTHON_USES=		python
 PYTHON_USE=		GNOME=pygobject3
 
 WEBKIT_DESC=		Webkit glade support

@@ -1,12 +1,12 @@
 PORTNAME=	fbpanel
 PORTVERSION=	6.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight, NETWM compliant X11 desktop panel
-WWW=		http://fbpanel.sourceforge.net/
+WWW=		https://fbpanel.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -32,7 +32,7 @@ post-patch:
 		${WRKSRC}/data/man/${PORTNAME}.1.in
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/data/man/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/data/man/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${LN} -sf ${DATADIR}/images/logo.png ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 
 post-install-DOCS-on:

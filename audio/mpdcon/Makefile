@@ -18,6 +18,12 @@ LIB_DEPENDS=	libmpdclient.so.2:audio/libmpdclient \
 USES=		gnustep
 USE_GNUSTEP=	base gui back build
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -e \
 		's|^GNUSTEP_INSTALLATION_DIR|#GNUSTEP_INSTALLATION_DIR|' \

@@ -1,5 +1,6 @@
 PORTNAME=	smlnj
 PORTVERSION=	110.98
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://smlnj.cs.uchicago.edu/dist/working/${PORTVERSION}/ \
 		ftp://mirror.free.de/http/smlnj.cs.uchicago.edu/dist/working/${PORTVERSION}/
@@ -21,16 +22,19 @@ ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		compiler
 
-NO_WRKSUBDIR=	yes
-
 SUB_FILES=	pkg-install
 SUB_LIST=	EXEBINDIR=${MLBINRELATIVE} EXENAMES="${MLEXE}"
+
+NO_WRKSUBDIR=	yes
+
 PKGDEINSTALL=	${PKGINSTALL}
 
 OPTIONS_DEFINE=		EVERYTHING RECOMPILE
-RECOMPILE_IMPLIES=	EVERYTHING
+
 EVERYTHING_DESC=	install everything from the SML/NJ distribution
 RECOMPILE_DESC=		recompile the SML compiler - implies EVERYTHING
+
+RECOMPILE_IMPLIES=	EVERYTHING
 
 .include <bsd.port.pre.mk>
 
@@ -41,6 +45,10 @@ PLIST_SUB+=	RUNTIME_SO="@comment "
 .else
 RUNTIME_SO=	"${STAGEDIR}${MLBIN}/.run/run.$${ARCH}-$${OPSYS}.so"
 PLIST_SUB+=	RUNTIME_SO=
+.endif
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
 .if (${ARCH} == "i386")
@@ -336,7 +344,7 @@ do-install:
 	@[ ! -d ${WRKSRC}/doc/man/man${mansect} ] || \
 	{ cd ${WRKSRC}/doc/man/man${mansect} && ls *.${mansect} | \
 	  ${XARGS} -J % \
-	    ${INSTALL_MAN} % ${STAGEDIR}${MANPREFIX}/man/man${mansect} ; }
+	    ${INSTALL_MAN} % ${STAGEDIR}${PREFIX}/share/man/man${mansect} ; }
 .endfor
 	@${ECHO} '(* Stripping runtime executable: *)'
 	MLARCHOPSYS=`${STAGEDIR}${MLBIN}/.arch-n-opsys` && \

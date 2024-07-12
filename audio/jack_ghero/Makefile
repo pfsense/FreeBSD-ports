@@ -1,10 +1,10 @@
 PORTNAME=	jack_ghero
 DISTVERSIONPREFIX=	v
 PORTVERSION=		1.0.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemon that converts a GuitarHero device into a JACK MIDI device
 WWW=		https://github.com/hselasky/jack_ghero
 
@@ -18,7 +18,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	hselasky
 
 PLIST_FILES=	sbin/jack_ghero \
-		man/man8/jack_ghero.8.gz
+		share/man/man8/jack_ghero.8.gz
 
 OPTIONS_DEFINE=	DEBUG
 

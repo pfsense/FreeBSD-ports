@@ -1,6 +1,6 @@
 PORTNAME=	clearsilver
 PORTVERSION=	0.10.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://www.clearsilver.net/downloads/
 
@@ -8,8 +8,11 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast, powerful, and language-neutral template system
 WWW=		http://www.clearsilver.net/
 
+DEPRECATED=     Abandonware and outdated, last release in 2017 no activity since 2019
+
 USES=		gmake
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-apache --disable-perl --disable-ruby \
 		--disable-java --disable-csharp --disable-python
 

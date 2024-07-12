@@ -1,6 +1,6 @@
 PORTNAME=	codeblocks
 PORTVERSION=	20.03
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/Sources/${PORTVERSION}
 
@@ -21,15 +21,20 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 USES=		autoreconf compiler:c++11-lang desktop-file-utils \
 		fam:gamin gettext-runtime gnome libtool localbase \
 		pathfix pkgconfig shared-mime-info tar:xz xorg
-USE_WX=		3.0+
+USE_CXXSTD=	c++11
 USE_GNOME=	gtk30 cairo
+USE_LDCONFIG=	yes
+USE_WX=		3.0+
 USE_XORG=	x11
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-wx-config=${WX_CONFIG} --disable-pch \
 		--with-boost-system=boost_system
+CONFIGURE_ENV=	CPPFLAGS="${CPPFLAGS}"
+
 PKG_CONFIG_LIBDIR=	${LOCALBASE}/libdata/pkgconfig
 INSTALL_TARGET=	install-strip
-USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

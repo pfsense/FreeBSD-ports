@@ -1,6 +1,6 @@
 PORTNAME=	tsocks
 DISTVERSION=	1.8.b5
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	net security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.8%20beta%205 \
 		http://ftp1.sourceforge.net/tsocks/ \
@@ -9,7 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:C/.b/beta/}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Allow non SOCKS aware applications to use SOCKS without modification
-WWW=		http://tsocks.sourceforge.net
+WWW=		https://tsocks.sourceforge.net
 
 LICENSE=	GPLv2
 

@@ -3,7 +3,7 @@
  * frr.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
 
 global $frr_daemons;
-$frr_daemons = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'ripd', 'bfdd');
+$frr_daemons = array('zebra', 'mgmtd', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'ripd', 'bfdd');
 
 global $frr_well_known_communities;
 $frr_well_known_communities = array("internet", "no-export", "no-advertise", "local-as");
@@ -72,8 +72,6 @@ function frr_get_carp_list() {
 /* Build a list of assigned/enabled interfaces, formatted for use in a selection
  * list, including IP Aliases, CARP VIPs, and OpenVPN interfaces. */
 function frr_get_interfaces($includedefault = true, $includevips = true, $includelocalhost = false, $nameprefix = "", $valueprefix = "") {
-	global $config;
-
 	/* Only include the 'default' option when requested, some places like
 	 * OSPF interface selections can't use 'default'.
 	 */
@@ -137,7 +135,6 @@ function frr_get_list_values($arr) {
  * $pluginparams['interface'] contains the affected VIP, id@int e.g. 19@igb1
  */
 function frr_plugin_carp($pluginparams) {
-	global $config;
 	/* If frr is not configured, then stop */
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
@@ -162,6 +159,84 @@ function frr_plugin_carp($pluginparams) {
 		start_service("FRR zebra");
 	} elseif ($pluginparams['event'] == "rc.carpbackup") {
 		stop_service("FRR zebra");
+	}
+}
+
+/*
+ * Called when gathering status output.
+ * See https://redmine.pfsense.org/issues/14777 and
+ *     https://redmine.pfsense.org/issues/14588
+ */
+
+function frr_plugin_statusoutput($pluginparams) {
+	require_once('status_output.inc');
+	$entry_prefix = 'Package-FRR-';
+	$control_script = "/usr/local/bin/frrctl";
+	$frr_enabled    = ((config_get_path('installedpackages/frr/config/0/enable') == 'on')       || !empty(config_get_path('installedpackages/frrglobalraw/config/0/zebra')));
+	$bgpd_enabled   = ((config_get_path('installedpackages/frrbgp/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bgpd')));
+	$ospfd_enabled  = ((config_get_path('installedpackages/frrospfd/config/0/enable') == 'on')  || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospfd')));
+	$ospf6d_enabled = ((config_get_path('installedpackages/frrospf6d/config/0/enable') == 'on') || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospf6d')));
+	$ripd_enabled   = ((config_get_path('installedpackages/frrripd/config/0/enable') == 'on')   || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ripd')));
+	$bfdd_enabled   = ((config_get_path('installedpackages/frrbfd/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bfdd')));
+
+	if (is_readable('/var/etc/frr/frr.conf')) {
+		status_cmd_define("{$entry_prefix}Config-FRR", "cat /var/etc/frr/frr.conf");
+	}
+	if (is_readable('/var/etc/frr/vtysh.conf')) {
+		status_cmd_define("{$entry_prefix}Config-vtysh", "cat /var/etc/frr/vtysh.conf");
+	}
+	if ($frr_enabled) {
+		status_cmd_define("{$entry_prefix}Config-running", "/usr/local/bin/vtysh -c 'show run'");
+	} else {
+		/* FRR is disabled, remaining commands would fail */
+		return;
+	}
+
+	status_cmd_define("{$entry_prefix}Zebra Routes", "{$control_script} zebra route");
+	status_cmd_define("{$entry_prefix}Zebra IPv6 Routes", "{$control_script} zebra route6");
+	status_cmd_define("{$entry_prefix}Zebra CPU", "{$control_script} zebra cpu");
+	status_cmd_define("{$entry_prefix}Zebra Interfaces", "{$control_script} zebra int");
+	status_cmd_define("{$entry_prefix}Zebra Memory", "{$control_script} zebra mem");
+
+	if ($bgpd_enabled) {
+		status_cmd_define("{$entry_prefix}BGP Routes", "{$control_script} bgp route");
+		status_cmd_define("{$entry_prefix}BGP IPv6 Routes", "{$control_script} bgp6 route");
+		status_cmd_define("{$entry_prefix}BGP Summary", "{$control_script} bgp sum");
+		status_cmd_define("{$entry_prefix}BGP Neighbors", "{$control_script} bgp neighbor");
+		status_cmd_define("{$entry_prefix}BGP Peer Groups", "{$control_script} bgp peer");
+		status_cmd_define("{$entry_prefix}BGP Next Hops", "{$control_script} bgp nexthop");
+		status_cmd_define("{$entry_prefix}BGP Memory", "{$control_script} bgp mem");
+	}
+	if ($ospfd_enabled) {
+		status_cmd_define("{$entry_prefix}OSPF General", "{$control_script} ospf general");
+		status_cmd_define("{$entry_prefix}OSPF Neighbors", "{$control_script} ospf neighbor");
+		status_cmd_define("{$entry_prefix}OSPF Routes", "{$control_script} ospf route");
+		status_cmd_define("{$entry_prefix}OSPF Database", "{$control_script} ospf database");
+		status_cmd_define("{$entry_prefix}OSPF Router Database", "{$control_script} ospf database router");
+		status_cmd_define("{$entry_prefix}OSPF Interfaces", "{$control_script} ospf interfaces");
+		status_cmd_define("{$entry_prefix}OSPF CPU Usage", "{$control_script} ospf cpu");
+		status_cmd_define("{$entry_prefix}OSPF Memory", "{$control_script} ospf mem");
+	}
+	if ($ospf6d_enabled) {
+		status_cmd_define("{$entry_prefix}OSPF6 General", "{$control_script} ospf6 general");
+		status_cmd_define("{$entry_prefix}OSPF6 Neighbors", "{$control_script} ospf6 neighbor");
+		status_cmd_define("{$entry_prefix}OSPF6 Routes", "{$control_script} ospf6 route");
+		status_cmd_define("{$entry_prefix}OSPF6 Database", "{$control_script} ospf6 database");
+		status_cmd_define("{$entry_prefix}OSPF6 Router Database", "{$control_script} ospf6 database router");
+		status_cmd_define("{$entry_prefix}OSPF6 Interfaces", "{$control_script} ospf6 interfaces");
+		status_cmd_define("{$entry_prefix}OSPF6 CPU Usage", "{$control_script} ospf6 cpu");
+		status_cmd_define("{$entry_prefix}OSPF6 Memory", "{$control_script} ospf6 mem");
+	}
+	if ($ripd_enabled) {
+		status_cmd_define("{$entry_prefix}RIP General", "{$control_script} rip general");
+		status_cmd_define("{$entry_prefix}RIP Routes", "{$control_script} rip routes");
+		status_cmd_define("{$entry_prefix}RIP General", "{$control_script} rip general");
+		status_cmd_define("{$entry_prefix}RIP Routes", "{$control_script} rip routes");
+	}
+	if ($bfdd_enabled) {
+		status_cmd_define("{$entry_prefix}BFD Peers Brief", "{$control_script} bfd peer_br");
+		status_cmd_define("{$entry_prefix}BFD Peers", "{$control_script} bfd peer");
+		status_cmd_define("{$entry_prefix}BFD Peers Counters", "{$control_script} bfd counters");
 	}
 }
 
@@ -202,7 +277,6 @@ function frr_get_interfaceinfo($interface, $ipv6 = false) {
 
 /* Build a list of potential route destinations (gateways, interfaces) */
 function frr_get_route_destinations() {
-	global $config;
 	$list = array();
 
 	$list[] = PKG_FRR_LIST_NONE_VALUE;
@@ -283,7 +357,7 @@ function frr_generate_config_rcfile() {
 
 	/* Config area to daemon name mapping */
 	$config_key_daemons = array(
-		'frr' => array('zebra', 'staticd'),
+		'frr' => array('zebra', 'mgmtd', 'staticd'),
 		'frrbfd' => array('bfdd'),
 		'frrbgp' => array('bgpd'),
 		'frrospfd' => array('ospfd'),
@@ -435,7 +509,6 @@ EOF;
 }
 
 function frr_service_action($restart_needed) {
-	global $config;
 	/* If frr is not configured, then stop */
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
@@ -511,7 +584,7 @@ function frr_daemons_running($daemons) {
 
 /* Setup necessary setkey entries for TCP MD5 authentication. */
 function frr_setkey($restart_needed) {
-	global $config, $frr_config_base;
+	global $frr_config_base;
 	$peers = array();
 
 	if (empty(config_get_path('installedpackages/frr/config/0/enable'))) {
@@ -701,7 +774,7 @@ function frr_generate_config() {
 }
 
 function frr_generate_config_vtysh() {
-	global $config, $frr_config_base, $frr_auto_config_warning;
+	global $frr_config_base, $frr_auto_config_warning;
 
 	unlink_if_exists("{$frr_config_base}/vtysh.conf");
 
@@ -756,7 +829,7 @@ function frr_flatten_config_interfaces() {
 }
 
 function frr_generate_config_integrated() {
-	global $config, $frr_config_base, $frr_auto_config_warning, $frr_integrated_config;
+	global $frr_config_base, $frr_auto_config_warning, $frr_integrated_config;
 
 	unlink_if_exists("{$frr_config_base}/frr.conf");
 
@@ -782,7 +855,7 @@ function frr_generate_config_integrated() {
 
 		$integratedconffile = $frr_auto_config_warning;
 		$integratedconffile .= "frr defaults traditional\n";
-		$integratedconffile .= "hostname " . $config['system']['hostname'] . "." . $config['system']['domain'] . "\n";
+		$integratedconffile .= 'hostname ' . config_get_path('system/hostname') . '.' .config_get_path('system/domain') . "\n";
 
 		/* Management Password */
 		if ($frr_conf['password']) {
@@ -835,7 +908,6 @@ function frr_generate_config_integrated() {
 
 		$integratedconffile .= "line vty\n";
 		$integratedconffile .= "!\n";
-		$integratedconffile .= "end\n";
 
 		/* Remove sample configuration files */
 		array_map('unlink', glob("{$frr_config_base}/*.sample*"));
@@ -848,7 +920,6 @@ function frr_generate_config_integrated() {
 
 /* Upgrade the FRR configuration to the latest format */
 function frr_config_sort_route_map() {
-	global $config;
 	update_status("Sorting route-map configuration items");
 
 	$frr_routemap_conf = config_get_path('installedpackages/frrglobalroutemaps/config', []);
@@ -883,7 +954,6 @@ function frr_package_config_cleanup($area, $add0 = false) {
 
 /* Upgrade the FRR configuration to the latest format */
 function frr_package_config_upgrade() {
-	global $config;
 	update_status("Upgrading FRR Settings ... ");
 	$need_write = false;
 	/* Populate FRR Global Settings */
@@ -1143,8 +1213,6 @@ function frr_package_config_upgrade() {
 }
 
 function frr_set_tunables() {
-	global $config;
-
 	$sysctl_conf = config_get_path('sysctl/item', []);
 	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
 

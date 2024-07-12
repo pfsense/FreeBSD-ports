@@ -1,12 +1,12 @@
 PORTNAME=	tass64
-PORTVERSION=	1.58.2974
+PORTVERSION=	1.59.3120
 CATEGORIES=	devel
 MASTER_SITES=	SF/tass64/source
 DISTNAME=	64tass-${PORTVERSION}-src
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Multi pass optimizing macro assembler for 65xx series processors
-WWW=		http://tass64.sourceforge.net/
+WWW=		https://tass64.sourceforge.net/
 
 LICENSE=	GPLv2+ LGPL20+ LGPL21+ MIT
 LICENSE_COMB=	multi

@@ -8,7 +8,7 @@
  * freeradius.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -251,11 +251,11 @@
 					}
 				</script>
 				<button type="button" class="btn btn-info btn-sm" onClick="genotpsecret();" id='btn_genotp' value="genotp">
-					<i class="fa fa-random"></i>
+					<i class="fa-solid fa-random"></i>
 					Generate OTP Secret
 				</button>
 				<button type="button" class="btn btn-info btn-sm" onClick="$('#varusersmotpinitsecret').attr('type', 'text');" id='btn_showotp' value="showotp">
-					<i class="fa fa-search"></i>
+					<i class="fa-solid fa-search"></i>
 					Show OTP Secret
 				</button>
 				]]>
@@ -272,7 +272,7 @@
 				<span class="text-info">May only contain a PIN consisting of 4-8 digits. Normally 4 digits are used.</span>
 				<br/>
 				<button type="button" class="btn btn-info btn-sm" onClick="$('#varusersmotppin').attr('type', 'text');" id='btn_showotppin' value="showotppin">
-					<i class="fa fa-search"></i>
+					<i class="fa-solid fa-search"></i>
 					Show OTP PIN
 				</button>
 				]]>
@@ -310,7 +310,7 @@
 				it as a secure piece of information and do not send it through an insecure channel such as e-mail.
 				<br/>
 				<button type="button" class="btn btn-info btn-sm" onClick="genOTPQR();" id='btn_makeqrcode' value="makeqrcode">
-					<i class="fa fa-qrcode"></i>
+					<i class="fa-solid fa-qrcode"></i>
 					Generate QR Code
 				</button>
 				<div id="qrcode" style="display: none; width:200px; height:200px; margin-top:15px;"></div>

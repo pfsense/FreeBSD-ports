@@ -1,9 +1,15 @@
---- pyproject.toml.orig	2023-05-11 11:46:32 UTC
+--- pyproject.toml.orig	2024-04-01 17:37:16 UTC
 +++ pyproject.toml
-@@ -1,5 +1,5 @@
- [build-system]
--requires = ["setuptools", "scikit-build", "cython", "cmake", "ninja", "oldest-supported-numpy"]
-+requires = ["setuptools", "scikit-build", "cython", "numpy"]
+@@ -2,10 +2,8 @@ requires = [
+ requires = [
+     "setuptools",
+     "scikit-build",
+-    "cython>=3",
+-    "cmake",
+-    "ninja",
+-    "numpy>=2.0.0rc1",
++    "cython",
++    "numpy",
+ ]
+ build-backend = "setuptools.build_meta"
  
- [project]
- name = "blosc2"

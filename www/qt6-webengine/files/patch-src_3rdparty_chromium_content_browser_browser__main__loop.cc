@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/content/browser/browser_main_loop.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/content/browser/browser_main_loop.cc.orig	2023-12-12 22:08:45 UTC
 +++ src/3rdparty/chromium/content/browser/browser_main_loop.cc
-@@ -247,6 +247,12 @@
+@@ -251,6 +251,12 @@
  #include "mojo/public/cpp/bindings/lib/test_random_mojo_delays.h"
  #endif
  
@@ -13,7 +13,7 @@
  // One of the linux specific headers defines this as a macro.
  #ifdef DestroyAll
  #undef DestroyAll
-@@ -554,6 +560,12 @@ int BrowserMainLoop::EarlyInitialization() {
+@@ -544,6 +550,12 @@ int BrowserMainLoop::EarlyInitialization() {
    // by now since a thread to start the ServiceManager has been created
    // before the browser main loop starts.
    DCHECK(SandboxHostLinux::GetInstance()->IsInitialized());
@@ -27,20 +27,11 @@
  
    // GLib's spawning of new processes is buggy, so it's important that at this
 @@ -581,7 +593,7 @@ int BrowserMainLoop::EarlyInitialization() {
+   base::PlatformThread::SetCurrentThreadType(base::ThreadType::kCompositing);
  
-   // Up the priority of the UI thread unless it was already high (since Mac
-   // and recent versions of Android (O+) do this automatically).
--#if !BUILDFLAG(IS_MAC)
-+#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_BSD)
-   if (base::FeatureList::IsEnabled(
-           features::kBrowserUseDisplayThreadPriority) &&
-       base::PlatformThread::GetCurrentThreadPriority() <
-@@ -592,7 +604,7 @@ int BrowserMainLoop::EarlyInitialization() {
- #endif  // !BUILDFLAG(IS_MAC)
- 
- #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+ #if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
 -    BUILDFLAG(IS_ANDROID)
 +    BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_BSD)
    // We use quite a few file descriptors for our IPC as well as disk the disk
-   // cache,and the default limit on the Mac is low (256), so bump it up.
+   // cache, and the default limit on Apple is low (256), so bump it up.
  

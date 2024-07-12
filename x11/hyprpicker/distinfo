@@ -1,3 +1,5 @@
-TIMESTAMP = 1685380198
-SHA256 (hyprwm-hyprpicker-v0.1.1_GH0.tar.gz) = f6a5e57dc69e3b0499a34f4533583bd7d7770f5a1a9834f521b532f0d1ec26e0
-SIZE (hyprwm-hyprpicker-v0.1.1_GH0.tar.gz) = 23067
+TIMESTAMP = 1715699592
+SHA256 (hyprwm-hyprpicker-v0.3.0_GH0.tar.gz) = a443188ef7619be48c9992ea208121772b7e1da6662d672c650e30e159eeb891
+SIZE (hyprwm-hyprpicker-v0.3.0_GH0.tar.gz) = 24591
+SHA256 (36d974181da4.patch) = 69543b77de140263ad9d45b2d3b87ddfedce64009fd9c89b64908f13a94f12bd
+SIZE (36d974181da4.patch) = 805

@@ -1,5 +1,6 @@
 PORTNAME=	libvmod-dynamic
 PORTVERSION=	20230321
+PORTREVISION=	4
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
@@ -14,10 +15,11 @@ LIB_DEPENDS=	libgetdns.so:dns/getdns
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 
 USES=		autoreconf compiler:c11 gmake libtool pkgconfig \
-		python:3.5+,build varnish:7
+		python:build varnish:7
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static
 INSTALL_TARGET=	install-strip
 DOCSDIR=	${PREFIX}/share/doc/vmod-dynamic

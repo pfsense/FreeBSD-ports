@@ -1,6 +1,6 @@
 PORTNAME=	vtk
-DISTVERSION=	9.2.2
-PORTREVISION=	3
+DISTVERSION=	9.2.6
+PORTREVISION=	5
 CATEGORIES=	math graphics
 MASTER_SITES=	https://vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	9
@@ -12,6 +12,8 @@ WWW=		https://vtk.org/
 
 LICENSE=	BSD3CLAUSE
 
+BROKEN_FreeBSD_13_aarch64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=275784
+
 LIB_DEPENDS=	\
 		libexpat.so:textproc/expat2 \
 		libfreetype.so:print/freetype2 \
@@ -20,7 +22,7 @@ LIB_DEPENDS=	\
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		alias cmake compiler:c++11-lang gl jpeg localbase xorg
+USES=		alias cmake compiler:c++11-lang jpeg localbase xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	ice x11 xt xext sm xcursor xfixes xrender
 
@@ -67,7 +69,7 @@ GROUPS_DESC=		Groups
 $w_DESC=		Enable $w group
 .endfor
 
-PYTHON_USES=		python:3.6+
+PYTHON_USES=		python
 PYTHON_CMAKE_BOOL=	VTK_WRAP_PYTHON
 PYTHON_CMAKE_ON=	-DVTK_PYTHON_VERSION=${PYTHON_MAJOR_VER} -DPython3_EXECUTABLE=${PYTHON_CMD}
 PYTHON_VARS=		SUB_FILES=PKG-INFO SUB_LIST=PORTVERSION=${PORTVERSION}
@@ -88,6 +90,8 @@ DESIGNER_IMPLIES=	QT5
 
 OMPI_CMAKE_BOOL=	VTK_USE_MPI
 OMPI_USES=		mpi:openmpi
+OMPI_CMAKE_ON=		-DMPI_HOME=${LOCALBASE}/mpi/openmpi
+OMPI_LDFLAGS=		${MPI_LIBS}
 
 OSMESA_CMAKE_ON=	-DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
 			-DOSMESA_INCLUDE_DIR:PATH=${LOCALBASE}/include/Mesa \
@@ -100,7 +104,7 @@ JAVA_VARS=		USE_JAVA=yes
 JAVA_CMAKE_BOOL=	VTK_WRAP_JAVA
 JAVA_CMAKE_ON=		-DJAVA_INCLUDE_PATH:PATH=${JAVA_HOME}/include \
 			-DJAVA_AWT_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ARCH}/libjawt.so \
-			-DJAVA_JVM_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ATCH}/libjava.so
+			-DJAVA_JVM_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ARCH}/libjava.so
 
 TCLTK_USES=		tk
 TCLTK_CMAKE_ON=		-DVTK_GROUP_ENABLE_Tk:STRING=YES \

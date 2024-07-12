@@ -1,6 +1,5 @@
 PORTNAME=	thunderbird
-DISTVERSION=	102.12.0
-PORTREVISION=	1
+DISTVERSION=	115.12.2
 CATEGORIES=	mail news net-im wayland
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
 		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source
@@ -11,14 +10,13 @@ COMMENT=	Mozilla Thunderbird is standalone mail and news that stands above
 WWW=		https://www.mozilla.com/thunderbird/
 
 BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
-		nss>=3.79:security/nss \
-		icu>=71.1,1:devel/icu \
+		nss>=3.90:security/nss \
 		libevent>=2.1.8:devel/libevent \
-		harfbuzz>=4.1.0:print/harfbuzz \
+		harfbuzz>=7.3.0:print/harfbuzz \
 		graphite2>=1.3.14:graphics/graphite2 \
-		png>=1.6.37:graphics/png \
+		png>=1.6.39:graphics/png \
 		dav1d>=1.0.0:multimedia/dav1d \
-		libvpx>=1.11.0:multimedia/libvpx \
+		libvpx>=1.13.0:multimedia/libvpx \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf2.13:devel/autoconf2.13 \
@@ -30,7 +28,9 @@ LIB_DEPENDS=	libjson-c.so:devel/json-c \
 
 SSP_UNSAFE=	yes
 USE_GECKO=	gecko
-USE_MOZILLA=	-sqlite
+# cannot use system icu: calendar is completely broken by
+# https://unicode-org.atlassian.net/browse/ICU-22132 (fix not in 74.1)
+USE_MOZILLA=	-icu -sqlite
 CFLAGS_powerpc64le=	-DSQLITE_BYTEORDER=1234
 
 USES=		tar:xz
@@ -54,9 +54,9 @@ OPTIONS_DEFAULT=CANBERRA
 .if ${ARCH} == powerpc64
 MOZ_OPTIONS+=	--without-wasm-sandboxed-libraries
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx \
+BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx${LLVM_VERSION} \
 		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \
-		${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/clang/${LLVM_VERSION}/lib/wasi/libclang_rt.builtins-wasm32.a:devel/wasi-compiler-rt${LLVM_DEFAULT}
+		wasi-compiler-rt${LLVM_VERSION}>0:devel/wasi-compiler-rt${LLVM_VERSION}
 MOZ_OPTIONS+=	--with-wasi-sysroot=${LOCALBASE}/share/wasi-sysroot
 .endif
 
@@ -67,11 +67,6 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/comm/mail/app/nsMailApp.cpp
-
-pre-configure:
-	(cd ${WRKSRC} && ${LOCALBASE}/bin/autoconf2.13)
-	(cd ${MOZSRC} && ${LOCALBASE}/bin/autoconf2.13)
-	(cd ${MOZSRC}/js/src/ && ${LOCALBASE}/bin/autoconf2.13)
 
 port-pre-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/defaults

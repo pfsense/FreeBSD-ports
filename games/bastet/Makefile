@@ -1,6 +1,6 @@
 PORTNAME=	bastet
 PORTVERSION=	0.43.2
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://fph.altervista.org/prog/files/
 
@@ -13,10 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs
 
+USES=		compiler:c++11-lang gmake localbase:ldflags ncurses tar:tgz
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	fph
-
-USES=		compiler:c++11-lang gmake localbase:ldflags ncurses tar:tgz
 
 PORTDOCS=	AUTHORS README NEWS
 
@@ -24,7 +24,7 @@ OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bastet ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/bastet.6 ${STAGEDIR}${MAN6PREFIX}/share/man/man6/
+	${INSTALL_MAN} ${WRKSRC}/bastet.6 ${STAGEDIR}${PREFIX}/share/man/man6/
 	@${MKDIR} ${STAGEDIR}/var/games
 	${TOUCH} ${STAGEDIR}/var/games/bastet.scores2.sample
 	${INSTALL_DATA} ${WRKSRC}/bastet.png ${STAGEDIR}${PREFIX}/share/pixmaps/

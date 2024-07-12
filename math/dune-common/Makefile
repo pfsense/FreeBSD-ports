@@ -1,7 +1,7 @@
 PORTNAME=	dune-common
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.0
-PORTREVISION=	8
+PORTREVISION=	14
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BUILD_DEPENDS=	metis>0:math/metis \
-		openmpi>0:net/openmpi \
+		openmpi4>0:net/openmpi4 \
 		vc>0:devel/vc # Metis isn't used, see https://gitlab.dune-project.org/core/dune-common/-/issues/306
 LIB_DEPENDS=	libopenblas.so:math/openblas \
 		libtbb.so:devel/onetbb
@@ -24,7 +24,7 @@ USE_LDCONFIG=	yes
 
 GL_SITE=	https://gitlab.dune-project.org
 GL_ACCOUNT=	core
-GL_COMMIT=	df65b1282ea89ad40d2cb6565983f7e633ccce31
+GL_TAGNAME=	df65b1282ea89ad40d2cb6565983f7e633ccce31
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_ARGS=	-DTBB_INCLUDE_DIR=${LOCALBASE}/include -DTBB_LIBRARIES=${LOCALBASE}/lib/libtbb.so

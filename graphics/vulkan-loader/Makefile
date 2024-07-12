@@ -1,6 +1,6 @@
 PORTNAME=	vulkan-loader
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.254
+DISTVERSION=	1.3.288
 CATEGORIES=	graphics devel
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -11,13 +11,14 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 
-USES=		alias cmake compiler:c++11-lib pkgconfig python:3.4+,build
+USES=		alias cmake compiler:c++11-lib pkgconfig python:build
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	KhronosGroup
 GH_PROJECT=	Vulkan-Loader
 CMAKE_ON=	CMAKE_SKIP_RPATH
 CMAKE_OFF=	BUILD_TESTS
+PLIST_SUB=	VERSION=${DISTVERSION:C/-.*//}
 
 OPTIONS_DEFINE=	WAYLAND XCB XLIB
 OPTIONS_DEFAULT=WAYLAND XCB XLIB

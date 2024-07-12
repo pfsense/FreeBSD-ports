@@ -1,6 +1,6 @@
 PORTNAME=	jumpy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.0
+DISTVERSION=	0.12.1
 PORTREVISION=	1
 CATEGORIES=	games wayland
 
@@ -11,9 +11,12 @@ WWW=		https://fishfolk.org/games/jumpy/
 LICENSE=	CC-BY-NC-4.0 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_MIT=	${WRKSRC}/licenses/LICENSE-MIT
+LICENSE_DISTFILES_CC-BY-NC-4.0=	${DISTNAME}${EXTRACT_SUFX}
 
-LIB_DEPENDS=	libzstd.so:archivers/zstd \
-		libasound.so:audio/alsa-lib \
+BROKEN_aarch64=	need https://github.com/shellrow/netdev/pull/71
+BROKEN_armv7=	need https://github.com/shellrow/netdev/pull/71
+
+LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libudev.so:devel/libudev-devd
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
 		${LOCALBASE}/lib/libvulkan.so:graphics/vulkan-loader
@@ -21,14 +24,20 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-pl
 USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	fishfolk
-LTO_UNSAFE=	yes # bevy_dylib fails with -C panic=abort
+WITHOUT_LTO=	yes # XXX bug 277333 # bevy_dylib
 PLIST_FILES=	bin/${PORTNAME}
-PLIST_FILES+=	"@comment bin/core" # not packaged in vendor binaries
 PORTDATA=	*
+
+.if ${MACHINE_ARCH} == i386 || "${MACHINE_ARCH:Marmv?}" != ""
+# https://github.com/rust-lang/rust/issues/85598
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+# https://github.com/briansmith/ring/issues/1793#issuecomment-1793243725
+RUSTFLAGS+=	-C target-feature=+sse2
+.endif
 
 post-patch:
 # Search assets under PREFIX instead of current directory
-	@${REINPLACE_CMD} 's,assets",../${DATADIR_REL}/&,' \
+	@${REINPLACE_CMD} 's,assets",${DATADIR}/&,' \
 		${WRKSRC}/src/main.rs \
 		${WRKSRC_crate_bevy_asset}/src/lib.rs
 

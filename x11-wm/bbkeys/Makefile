@@ -1,12 +1,12 @@
 PORTNAME=	bbkeys
 PORTVERSION=	0.9.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF
 
 MAINTAINER=	A.J.Caines@halplant.com
 COMMENT=	Keygrabber for the Blackbox window manager
-WWW=		http://bbkeys.sourceforge.net/
+WWW=		https://bbkeys.sourceforge.net/
 
 LICENSE=	MIT
 
@@ -16,13 +16,14 @@ USES=		perl5 pkgconfig xorg
 USE_PERL5=	build
 USE_XORG=	x11 xext
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CPPFLAGS+=	`pkg-config --cflags xft`
 LDFLAGS+=	`pkg-config --libs xft`
 
 PORTDOCS=	AUTHORS BUGS ChangeLog NEWS README TODO
 
 PLIST_FILES=	bin/bbkeys %%DATADIR%%/bbkeysrc %%DATADIR%%/defaultStyle \
-		man/man1/bbkeys.1.gz man/man5/bbkeysrc.5.gz
+		share/man/man1/bbkeys.1.gz share/man/man5/bbkeysrc.5.gz
 
 OPTIONS_DEFINE=	DOCS
 

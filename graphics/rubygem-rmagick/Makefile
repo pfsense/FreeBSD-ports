@@ -1,17 +1,18 @@
 PORTNAME=	rmagick
-PORTVERSION=	5.2.0
-PORTREVISION=	1
+PORTVERSION=	6.0.1
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby binding for ImageMagick
-WWW=		https://github.com/rmagick/rmagick
+WWW=		https://rmagick.github.io/ \
+		https://github.com/rmagick/rmagick
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-pkg-config>=1.4<2:devel/rubygem-pkg-config
+RUN_DEPENDS=	rubygem-observer>=0.1<1:devel/rubygem-observer \
+		rubygem-pkg-config>=1.4<2:devel/rubygem-pkg-config
 
 USES=		gem pkgconfig shebangfix
 

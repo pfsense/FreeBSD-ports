@@ -1,0 +1,19 @@
+commit f387c974a9a597bf01ab86ec049cca186a1e050c
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Jul 5 14:51:06 2023 -0400
+
+    Encode dynamic log if filter. Fixes #14548
+
+diff --git a/src/usr/local/www/status_logs_filter_dynamic.php b/src/usr/local/www/status_logs_filter_dynamic.php
+index 80049c5c5d..65f7602677 100644
+--- a/src/usr/local/www/status_logs_filter_dynamic.php
++++ b/src/usr/local/www/status_logs_filter_dynamic.php
+@@ -128,7 +128,7 @@ system_log_filter();
+ 		$filter_query_string = "type=formatted&filter=" . urlencode(json_encode($filterfieldsarray ));
+ 	}
+ 	if ($filtersubmit) {	# Raw mode.
+-		$filter_query_string = "type=raw&filter=" . urlencode(json_encode($filtertext )) . "&interfacefilter=" . $interfacefilter;
++		$filter_query_string = "type=raw&filter=" . urlencode(json_encode($filtertext)) . "&interfacefilter=" . urlencode(json_encode($interfacefilter));
+ 	}
+ 
+ 

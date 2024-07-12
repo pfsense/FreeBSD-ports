@@ -1,6 +1,6 @@
 PORTNAME=	sem
 PORTVERSION=	0.0.2
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	http://ocaml-sem.sourceforge.net/files/ \
 		SF/ocaml-${PORTNAME}/${PORTNAME}/${PORTVERSION}
@@ -8,7 +8,7 @@ PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	POSIX semaphores for OCaml
-WWW=		http://ocaml-sem.sourceforge.net/
+WWW=		https://ocaml-sem.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

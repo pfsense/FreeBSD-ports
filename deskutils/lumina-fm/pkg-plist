@@ -1,6 +1,6 @@
 bin/lumina-fm
-man/man1/lumina-fm.1.gz
 share/applications/lumina-fm.desktop
+share/icons/hicolor/scalable/apps/Insight-FileManager.svg
 %%NLS%%share/lumina-desktop/i18n/lumina-fm_af.qm
 %%NLS%%share/lumina-desktop/i18n/lumina-fm_ar.qm
 %%NLS%%share/lumina-desktop/i18n/lumina-fm_az.qm
@@ -68,3 +68,4 @@ share/applications/lumina-fm.desktop
 %%NLS%%share/lumina-desktop/i18n/lumina-fm_zh_HK.qm
 %%NLS%%share/lumina-desktop/i18n/lumina-fm_zh_TW.qm
 %%NLS%%share/lumina-desktop/i18n/lumina-fm_zu.qm
+share/man/man1/lumina-fm.1.gz

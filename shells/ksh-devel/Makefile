@@ -10,6 +10,7 @@
 
 PORTNAME=	ksh
 PORTVERSION=	${AST_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES=	shells
 PKGNAMESUFFIX=	-devel
 
@@ -19,10 +20,8 @@ WWW=		http://www.kornshell.com/
 
 LICENSE=	EPL
 
-BROKEN_FreeBSD_12=	exit code 139 making lib/libcmd
-
-HASH=		943089ec
-AST_COMMIT_DATE=	2023.06.13
+HASH=		1407f3be
+AST_COMMIT_DATE=	2024.06.26
 
 USES=		compiler:c11
 
@@ -49,7 +48,6 @@ KSH93D_DESC=		Install to ${PREFIX}/bin/ksh93d (development)
 CFLAGS+=	-DMAP_TYPE
 LDFLAGS+=	-lm
 MAKE_ENV=	CCFLAGS="-Wno-unused-value -Wno-parentheses -Wno-logical-op-parentheses" CFLAGS="${CFLAGS}"
-
 STATIC_MAKE_ENV=	LDFLAGS+=-static
 
 KSH_PLIST_SUB=		93=""
@@ -72,7 +70,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/ksh ${STAGEDIR}${PREFIX}/bin/ksh${PSUFFIX}
-	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/ksh${PSUFFIX}.1
+	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${PREFIX}/share/man/man1/ksh${PSUFFIX}.1
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}${PSUFFIX}/
 	cd ${WRKSRC}/fun/ && ${INSTALL_SCRIPT} dirs popd pushd ${STAGEDIR}${EXAMPLESDIR}${PSUFFIX}/
 

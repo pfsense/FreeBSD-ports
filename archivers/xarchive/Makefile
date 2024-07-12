@@ -1,17 +1,18 @@
 PORTNAME=	xarchive
 DISTVERSION=	0.2.8-6
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	archivers
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	mark@mkproductions.org
-COMMENT=	GTK+ front end for various archiving tools
-WWW=		http://xarchive.sourceforge.net/
+COMMENT=	GTK front end for various archiving tools
+WWW=		https://xarchive.sourceforge.net/
 
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		gnome pkgconfig
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_GNOME=	gtk20
 
 OPTIONS_DEFINE=	7ZIP ARJ ACE DEB RAR RPM ZIP

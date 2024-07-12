@@ -1,12 +1,12 @@
 PORTNAME=	btanks
 PORTVERSION=	0.9.8083
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Fast 2D tank arcade game with multiplayer and split-screen modes
-WWW=		http://btanks.sourceforge.net/
+WWW=		https://btanks.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -49,7 +49,7 @@ pre-build:
 
 post-install:
 	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}.6 \
-		${STAGEDIR}${MANPREFIX}/man/man6
+		${STAGEDIR}${PREFIX}/share/man/man6
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/*.so \

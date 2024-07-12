@@ -1,5 +1,5 @@
 PORTNAME=	asyncpg
-PORTVERSION=	0.27.0
+PORTVERSION=	0.29.0
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ WWW=		https://github.com/MagicStack/asyncpg/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe pgsql:11+ python:3.6+
+USES=		cpe pgsql:11+ python
 CPE_VENDOR=	magic
 USE_PYTHON=	autoplist concurrent cython distutils
 

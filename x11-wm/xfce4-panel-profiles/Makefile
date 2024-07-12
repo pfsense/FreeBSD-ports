@@ -1,5 +1,6 @@
 PORTNAME=	xfce4-panel-profiles
 PORTVERSION=	1.0.14
+PORTREVISION=	2
 CATEGORIES=	x11-wm xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -10,9 +11,9 @@ WWW=		https://git.xfce.org/apps/xfce4-panel-profiles/about/
 
 LICENSE=	GPLv3
 
-USES=		gettext-tools gmake gnome python:3.3+ shebangfix tar:bz2 xfce
+USES=		gettext-tools gmake gnome python shebangfix tar:bz2 xfce
 USE_GNOME=	gtk30 intltool
-USE_XFCE=	panel
+USE_XFCE=	libmenu panel
 
 NO_ARCH=	yes
 HAS_CONFIGURE=	yes

@@ -1,5 +1,5 @@
 PORTNAME=	node
-PORTVERSION=	20.2.0
+PORTVERSION=	${NODEJS_PORTVERSION}
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://nodejs.org/dist/v${PORTVERSION}/
@@ -14,7 +14,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_SSL=	libressl libressl-devel
-BROKEN_SSL_REASON=	Node.js ${PORTVERSION:R:R}.x requires OpenSSL 1.1.x or the BUNDLED_SSL option enabled
+BROKEN_SSL_REASON=	Node.js ${PORTVERSION:R:R}.x requires OpenSSL or the BUNDLED_SSL option enabled
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	brotli>=1.0.9,1:archivers/brotli \
@@ -27,7 +27,7 @@ LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
 		libnghttp2.so:www/libnghttp2 \
 		libuv.so:devel/libuv
 
-USES=		compiler:c++11-lib gmake localbase pkgconfig python:3.6+,build shebangfix
+USES=		compiler:c++11-lib gmake localbase pkgconfig python:build shebangfix tar:xz
 
 CONFIGURE_ARGS=	--prefix=${PREFIX:S|^${DESTDIR}||} \
 		--shared-brotli \
@@ -56,18 +56,15 @@ OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS
 OPTIONS_SUB=	yes
 BUNDLED_SSL_DESC=	Use bundled OpenSSL implementation from node.js
 
-BUNDLED_SSL_CONFIGURE_OFF=	--shared-openssl --openssl-use-def-ca-store
+BUNDLED_SSL_CONFIGURE_OFF=	--openssl-use-def-ca-store --shared-openssl
 BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
 BUNDLED_SSL_USES_OFF=	ssl
 NLS_BUILD_DEPENDS=	icu>=69.1:devel/icu
 NLS_CONFIGURE_ON=	--with-intl=system-icu
 NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
+.include "Makefile.version"
 .include <bsd.port.options.mk>
-
-.if (defined(PPC_ABI) && ${PPC_ABI} == ELFv2) || ${ARCH} == powerpc64le
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-common.gypi
-.endif
 
 .if ${PORT_OPTIONS:MBUNDLED_SSL} && ${ARCH} != amd64
 CONFIGURE_ARGS+=--openssl-no-asm

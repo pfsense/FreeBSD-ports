@@ -1,13 +1,15 @@
 PORTNAME=	xplanet
 PORTVERSION=	1.3.1
+PORTREVISION=	3
 CATEGORIES=	astro geography
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Draw pictures of the earth textured by an image
-WWW=		http://xplanet.sourceforge.net/
+WWW=		https://xplanet.sourceforge.net/
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USES=		iconv:wchar_t localbase xorg
 USE_XORG=	x11 xext xt xscrnsaver
 CONFIGURE_ARGS=	--with-map-extension=jpg

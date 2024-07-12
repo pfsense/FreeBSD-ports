@@ -1,14 +1,17 @@
 PORTNAME=	rustypaste
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.1
+DISTVERSION=	0.15.0
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	DtxdF@disroot.org
 COMMENT=	Minimal file upload/pastebin service
-WWW=		https://github.com/orhun/rustypaste/
+WWW=		https://blog.orhun.dev/blazingly-fast-file-sharing
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_i386=	compilation fails: error[E0080]: evaluation of constant value failed
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
@@ -19,13 +22,16 @@ USE_RC_SUBR=	${PORTNAME}
 
 CARGO_FEATURES=	--no-default-features
 
-SUB_LIST+=	USER="${USERS:[0]}"
+SUB_LIST+=	USER=${RUSTYPASTE_USER}
 
-USERS=		${PORTNAME}
-GROUPS=		${PORTNAME}
+USERS=		${RUSTYPASTE_USER}
+GROUPS=		${RUSTYPASTE_GROUP}
 
-PLIST_SUB+=	GROUP="${GROUPS:[0]}" \
-		USER="${USERS:[0]}"
+RUSTYPASTE_USER=	${PORTNAME}
+RUSTYPASTE_GROUP=	${RUSTYPASTE_USER}
+
+PLIST_SUB+=	GROUP=${RUSTYPASTE_USER} \
+		USER=${RUSTYPASTE_GROUP}
 
 OPTIONS_DEFINE=		SHUTTLE
 OPTIONS_DEFAULT=	OPENSSL

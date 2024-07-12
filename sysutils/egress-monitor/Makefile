@@ -1,5 +1,6 @@
 PORTNAME=	egress-monitor
 DISTVERSION=	0.0.5
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	meka@tilda.center
@@ -9,8 +10,6 @@ WWW=		https://github.com/mekanix/egress-monitor
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_12=	casper sysctl service works only in 13.0 and onward
-
 USES=		uidfix
 USE_RC_SUBR=	egress-monitor
 SUB_FILES=	pkg-message
@@ -18,7 +17,9 @@ SUB_FILES=	pkg-message
 USE_GITHUB=	yes
 GH_ACCOUNT=	mekanix
 
-PLIST_FILES=	man/man1/egress-monitor.1.gz \
-		sbin/egress-monitor
+MAKE_ARGS=	MANDIR="${PREFIX}/share/man/man"
+
+PLIST_FILES=	sbin/egress-monitor \
+		share/man/man1/egress-monitor.1.gz
 
 .include <bsd.port.mk>

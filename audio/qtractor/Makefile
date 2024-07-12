@@ -1,6 +1,6 @@
 PORTNAME=	qtractor
-DISTVERSIONPREFIX=	${PORTNAME}_
-DISTVERSION=	0_9_34
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.0
 CATEGORIES=	audio
 MASTER_SITES=	https://download.steinberg.net/sdk_downloads/:vst3sdk
 DISTFILES=	${VST3_SDK_ARCHIVE}:vst3sdk
@@ -28,10 +28,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libogg.so:audio/libogg \
 		librubberband.so:audio/rubberband \
 		libsamplerate.so:audio/libsamplerate \
-		libserd-0.so:devel/serd \
 		libsndfile.so:audio/libsndfile \
-		libsord-0.so:devel/sord \
-		libsratom-0.so:audio/sratom \
 		libsuil-0.so:audio/suil \
 		libvorbis.so:audio/libvorbis \
 		libvorbisenc.so:audio/libvorbis \
@@ -47,7 +44,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	rncbc
 
 CMAKE_OFF=	CONFIG_CLAP # for audio/clap, but it doesn't install anything
-CMAKE_OFF+=	CONFIG_QT6 # breaks with Qt6: Gtk-ERROR **: 21:10:56.939: GTK+ 2.x symbols detected. Using GTK+ 2.x and GTK+ 3 in the same process is not supported
+CMAKE_OFF+=	CONFIG_QT6 # breaks with Qt6: Gtk-ERROR **: 21:10:56.939: GTK 2.x symbols detected. Using GTK 2.x and GTK 3 in the same process is not supported
 
 OPTIONS_DEFINE=		VST3
 OPTIONS_DEFAULT=	VST3

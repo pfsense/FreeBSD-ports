@@ -1,5 +1,5 @@
 PORTNAME=	ducc0
-DISTVERSION=	0.30.0
+DISTVERSION=	0.34.0
 CATEGORIES=	math
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,16 +17,14 @@ BROKEN_i386=	non-constant-expression cannot be narrowed from type 'long long' to
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR}
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		compiler:c++17-lang python:3.6+
+USES=		compiler:c++17-lang python
 
 USE_PYTHON=	distutils autoplist pytest
 
 MAKE_ENV=	DUCC0_OPTIMIZATION=none
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/ducc0*.so
-
-do-test: install
-	@cd ${WRKSRC} && py.test
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/ducc0*.so
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	msmtp
-PORTVERSION=	1.8.23
+PORTVERSION=	1.8.26
 CATEGORIES=	mail
 MASTER_SITES=	https://marlam.de/msmtp/releases/
 
@@ -12,7 +12,8 @@ WWW=		https://marlam.de/msmtp/
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf cpe gmake makeinfo pkgconfig tar:xz
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+USES=		cpe gmake makeinfo pkgconfig tar:xz
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 INFO=		msmtp

@@ -1,6 +1,6 @@
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	22.0.3
+DISTVERSION=	23.0.2
 PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
@@ -13,12 +13,12 @@ WWW=		https://www.bareos.org/
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-CONFLICTS?=	bareos20-server bareos19-server bareos18-server
+CONFLICTS?=	bareos20-server bareos21-server bareos22-server
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libjansson.so:devel/jansson
 
-USES+=		cmake compiler:c++11-lang cpe localbase perl5 pkgconfig readline \
+USES+=		cmake compiler:c++11-lang cpe localbase:ldflags perl5 pkgconfig readline \
 		shebangfix
 USE_GITHUB=	yes
 USE_PERL5=	run
@@ -31,11 +31,9 @@ PLIST_SUB+=	LIB_VERSION=${PORTVERSION}
 USE_LDCONFIG=	yes
 SHEBANG_LANG=	perl python
 SHEBANG_GLOB=	*.py
-SHEBANG_FILES=	${WRKSRC}/core/src/cats/make_catalog_backup.pl.in \
-		${WRKSRC}/contrib/misc/bsmc/bin/bsmc
+SHEBANG_FILES=	${WRKSRC}/contrib/misc/bsmc/bin/bsmc
 
-CPPFLAGS+=	-I${LOCALBASE}/readline -I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/readline
 
 OPTIONS_DEFAULT=	OPENSSL
 OPTIONS_SINGLE=		CRYPTO
@@ -167,24 +165,9 @@ CMAKE_ARGS+=	-Dbuild-dird=ON \
 		-Dbuild_client_only=OFF
 # Server default database
 
+MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
 PGSQL_CMAKE_ON=		-Dpostgresql=ON
 PGSQL_USES=	pgsql
-
-MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMYSQL}
-DBTYPE=			mysql
-SUB_LIST+=		REQ_MYSQL=mysql REQ_PGSQL=""
-.elif ${PORT_OPTIONS:MSQLITE3}
-DBTYPE=			sqlite3
-.else
-DBTYPE=			postgresql
-SUB_LIST+=		REQ_MYSQL="" REQ_PGSQL=postgresql
-.endif
-PLIST_SUB+=		DBTYPE=${DBTYPE}
-
 .endif
 
 .if defined(WITH_CLIENT_ONLY)
@@ -199,9 +182,9 @@ MP1+=	bsmtp.1 bregex.1 bwild.1 bareos-tray-monitor.1
 MAKE_ENV+=	MAN8="${MP8}" MAN1="${MP1}"
 
 post-patch:
-	@${REINPLACE_CMD}  '124,129d' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD}  '133,138d' ${WRKSRC}/CMakeLists.txt
 .if ${PKGNAMESUFFIX} == "-server"
-	@${REINPLACE_CMD}  '51d' ${WRKSRC}/core/src/plugins/CMakeLists.txt
+	@${REINPLACE_CMD}  '50d' ${WRKSRC}/core/src/plugins/CMakeLists.txt
 .endif
 .if ${PKGNAMESUFFIX} == "-client"
 	@${REINPLACE_CMD} -e 's|-Werror -Wall|-Wall|g' ${PATCH_WRKSRC}/core/CMakeLists.txt
@@ -223,7 +206,7 @@ post-extract:
 post-install:
 .if defined(WITH_CLIENT_ONLY)
 	${MKDIR} ${STAGEDIR}${ETCDIR}/bconsole.d/
-	${MV} ${STAGEDIR}${ETCDIR}/bconsole.conf ${STAGEDIR}${ETCDIR}/bconsole.d/bconsole.conf.sample
+	${MV} ${STAGEDIR}${ETCDIR}/bconsole.conf.sample ${STAGEDIR}${ETCDIR}/bconsole.d/bconsole.conf.sample
 .else
 	${INSTALL_SCRIPT} ${FILESDIR}/chio-bareos ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_DATA} ${FILESDIR}/bareos-barcodes ${STAGEDIR}${ETCDIR}/bareos-barcodes.sample
@@ -235,4 +218,5 @@ post-install:
 .else
 .include "${MASTERDIR}/Makefile.common"
 .endif # -client and -server are defined
+
 .include <bsd.port.mk>

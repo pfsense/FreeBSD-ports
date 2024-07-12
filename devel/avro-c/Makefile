@@ -1,6 +1,5 @@
 PORTNAME=	avro
-PORTVERSION=	1.11.1
-PORTREVISION=	1
+PORTVERSION=	1.11.3
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/avro/stable/c
 PKGNAMESUFFIX=	-c
@@ -12,8 +11,6 @@ WWW=		https://avro.apache.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_sparc64=	fails to build
 
 LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libsnappy.so:archivers/snappy

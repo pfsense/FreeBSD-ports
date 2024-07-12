@@ -1,12 +1,12 @@
 PORTNAME=	autotrace
 PORTVERSION=	0.31.1
-PORTREVISION=	34
+PORTREVISION=	35
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/AutoTrace/${PORTVERSION}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Convert bitmap to vector graphics
-WWW=		http://AutoTrace.sourceforge.net/
+WWW=		https://AutoTrace.sourceforge.net/
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
@@ -16,6 +16,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USES=		cpe pathfix pkgconfig libtool
 CPE_VENDOR=	autotrace_project
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 CPPFLAGS+=	$$(libpng-config --I_opts)
 LDFLAGS+=	$$(libpng-config --L_opts)

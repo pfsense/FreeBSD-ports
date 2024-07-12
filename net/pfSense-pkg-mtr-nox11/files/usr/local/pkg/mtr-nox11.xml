@@ -8,7 +8,7 @@
  * mtr-nox11.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2024 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@
 	<version>%%PKGVERSION%%</version>
 	<title>Diagnostics/mtr</title>
 	<savetext>Run mtr</savetext>
-	<saveicon>fa-rss</saveicon>
+	<saveicon>fa-solid fa-rss</saveicon>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
@@ -97,7 +97,7 @@
 
 	if (!is_hostname($_POST['hostname']) && !is_ipaddr($_POST['hostname'])) {
 		echo "<strong><span class='errmsg'>ERROR:</span> Invalid target hostname or IP address.</strong>\n\n";
-		echo '<br/><button class="btn btn-info" type="button" value="' . gettext("Back to mtr") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to mtr") . '</button>';
+		echo '<br/><button class="btn btn-info" type="button" value="' . gettext("Back to mtr") . '" onclick="history.back()"><i class="fa-solid fa-undo icon-embed-btn"></i> ' . gettext("Back to mtr") . '</button>';
 		die();
 	}
 
@@ -121,7 +121,7 @@
 	$mtr_options .= " " . $_POST['hostname'];
 	echo "Running mtr $mtr_options:\n\n";
 	system("/usr/local/sbin/mtr" . $mtr_options);
-	echo '<br/><button class="btn btn-info" type="button" value="' . gettext("Back to mtr") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to mtr") . '</button>';
+	echo '<br/><button class="btn btn-info" type="button" value="' . gettext("Back to mtr") . '" onclick="history.back()"><i class="fa-solid fa-undo icon-embed-btn"></i> ' . gettext("Back to mtr") . '</button>';
 	]]>
 	</custom_add_php_command>
 </packagegui>

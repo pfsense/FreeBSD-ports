@@ -8,13 +8,14 @@ WWW=		https://www.kde.org/plasma-desktop
 
 LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		libpulse.so:audio/pulseaudio
+RUN_DEPENDS=	${LOCALBASE}/share/sounds/freedesktop/index.theme:audio/freedesktop-sound-theme
 
 USES=		cmake compiler:c++11-lib gettext gnome kde:5 pkgconfig qt:5 \
 		shebangfix tar:xz
 USE_GNOME=	glib20
-USE_KDE=	config configwidgets coreaddons ecm globalaccel i18n kcmutils \
+USE_KDE=	config configwidgets coreaddons globalaccel i18n kcmutils \
 		kdeclarative notifications package plasma-framework \
-		doctools:build
+		doctools:build ecm:build
 USE_QT=		core dbus declarative gui network widgets xml \
 		buildtools:build qmake:build
 

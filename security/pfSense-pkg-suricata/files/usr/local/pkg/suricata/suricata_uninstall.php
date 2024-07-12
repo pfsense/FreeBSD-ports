@@ -3,11 +3,11 @@
  * suricata_uninstall.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -115,7 +115,7 @@ if (!empty($widgets)) {
 		}
 	}
 	config_set_path('widgets/sequence', implode(",", $widgetlist));
-	write_config("Suricata pkg removed Dashboard Alerts widget.");
+	write_config("Suricata pkg removed Dashboard Alerts widget.", false);
 }
 
 // See if we are to clear blocked hosts on uninstall

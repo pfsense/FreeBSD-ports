@@ -1,5 +1,5 @@
 PORTNAME=	veloren
-PORTVERSION=	s20230614
+PORTVERSION=	s20240626
 CATEGORIES=	games wayland
 PKGNAMESUFFIX=	-weekly
 
@@ -11,20 +11,22 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_aarch64=	https://github.com/rust-lang/libc/issues/3217
+BROKEN_i386=	https://github.com/bytecodealliance/wasmtime/issues/7924
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
-# https://gitlab.com/veloren/veloren/-/issues/1006
 ONLY_FOR_ARCHS_REASON=	unsupported platform by https://github.com/wasmerio/wasmer
 
-LIB_DEPENDS=	libasound.so:audio/alsa-lib \
+LIB_DEPENDS=	libzstd.so:archivers/zstd \
+		libasound.so:audio/alsa-lib \
 		libudev.so:devel/libudev-devd \
-		libshaderc_shared.so:graphics/shaderc
+		libshaderc_shared.so:graphics/shaderc \
+		libxkbcommon-x11.so:x11/libxkbcommon
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
 		${LOCALBASE}/lib/libvulkan.so:graphics/vulkan-loader
 
 USES=		cargo xorg
 USE_XORG=	xcb
 USE_GITLAB=	yes
-GL_COMMIT=	fdad31b16b3ee7f521aa5e6e15511c71251e66ac
+GL_TAGNAME=	v0.16.0-297-g6a4fcbe41 # git describe --match='v[0-9]*' weekly
 CARGO_ENV=	VELOREN_USERDATA_STRATEGY=system SHADERC_LIB_DIR="${LOCALBASE}/lib"
 PLIST_FILES=	bin/${PORTNAME}-server-cli \
 		bin/${PORTNAME}-voxygen \
@@ -36,11 +38,11 @@ PORTDATA=	*
 CONFLICTS_INSTALL=	${PORTNAME}
 
 .if ${MACHINE_ARCH} == i386
-# Fixes error "Rust cannot catch foreign exceptions"
+# https://github.com/rust-lang/rust/issues/85598
 CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
 .endif
 # Fixes error "Instruction does not dominate all uses!"
-LTO_UNSAFE=	yes
+WITHOUT_LTO=	yes # XXX bug 277333
 
 # https://gitlab.com/veloren/veloren/issues/264
 CARGO_ENV+=		RUSTC_BOOTSTRAP=1
@@ -52,7 +54,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/"git"/"${TRUE}"/' \
 		${WRKSRC}/common/build.rs
 # Extract (snapshot) version from the port instead of empty file
-	@${REINPLACE_CMD} -e '/GIT_HASH/s/=.*/= "${GL_COMMIT:C/(.{8}).*/\1/}";/' \
+	@${REINPLACE_CMD} -e '/GIT_HASH/s/=.*/= "${GL_TAGNAME:C/.*-g(.{8}).*/\1/}";/' \
 		-e "/GIT_DATE.*static/s/=.*/= \"$$(date -ur $$(${AWK} '/TIMESTAMP/ { print $$3 }' \
 			${DISTINFO_FILE}) +'%Y-%m-%d-%H:%M')\";/" \
 		${WRKSRC}/common/src/util/mod.rs

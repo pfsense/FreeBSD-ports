@@ -1,18 +1,19 @@
 PORTNAME=	tse3
 PORTVERSION=	0.3.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME:tu}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIDI library
-WWW=		http://tse3.sourceforge.net/
+WWW=		https://tse3.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake libtool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--without-doc-install \
 		--without-aRts
 USE_LDCONFIG=	yes

@@ -3,7 +3,7 @@
  * suricata.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018-2024 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *

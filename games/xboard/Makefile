@@ -1,6 +1,6 @@
 PORTNAME?=	xboard
 PORTVERSION?=	4.9.1
-PORTREVISION?=	3
+PORTREVISION?=	4
 PORTEPOCH?=	0
 CATEGORIES?=	games
 MASTER_SITES?=	GNU
@@ -35,7 +35,7 @@ PHALANX_DESC=	Install phalanx engine
 FRONTEND_DESC=	Front End
 XAW_DESC=	Xaw GUI toolkit support (default)
 XAW3D_DESC=	Xaw3d GUI toolkit support (not fully supported)
-GTK2_DESC=	GTK+ 2 GUI toolkit support (experimental)
+GTK2_DESC=	GTK 2 GUI toolkit support (experimental)
 SOUND_DESC=	Sound Output
 SOX_DESC=	SoX audio support
 
@@ -69,6 +69,7 @@ USE_GNOME+=	gtk20
 SHEBANG_FILES=	texi2man
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS+=MKDIR_P="${MKDIR}" PERLPATH=${PERL}
 CFLAGS+=	-I${LOCALBASE}/include -fcommon
 LDFLAGS+=	-L${LOCALBASE}/lib

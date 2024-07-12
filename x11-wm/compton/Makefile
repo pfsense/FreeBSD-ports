@@ -1,9 +1,9 @@
 PORTNAME=	compton
-PORTVERSION=	20160907
-PORTREVISION=	6
+DISTVERSION=	20160907
+PORTREVISION=	8
 CATEGORIES=	x11-wm
 
-MAINTAINER=	femc7488@gmail.com
+MAINTAINER=	parakleta@darkreality.org
 COMMENT=	Feature-rich compositing window manager for X11
 WWW=		https://github.com/chjj/compton
 
@@ -13,11 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	xprop:x11/xprop \
 		xwininfo:x11/xwininfo
 
+USES=		gmake pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	chjj
 GH_TAGNAME=	b7f43ee
-
-USES=		gmake pkgconfig xorg
 USE_XORG=	x11 xcomposite xdamage xext xfixes xrandr xrender
 
 MAKE_ARGS=	COMPTON_VERSION=git-${PORTVERSION}-${GH_TAGNAME} \
@@ -56,9 +55,9 @@ DOCS_BUILD_DEPENDS=	a2x:textproc/asciidoc \
 			xsltproc:textproc/libxslt \
 			docbook-xml>0:textproc/docbook-xml \
 			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
-DOCS_MAKE_ARGS=		DOCDIR=${DOCSDIR} MANDIR=${MANPREFIX}/man/man1
+DOCS_MAKE_ARGS=		DOCDIR=${DOCSDIR} MANDIR=${PREFIX}/share/man/man1
 DOCS_ALL_TARGET=	docs
-DOCS_PLIST_FILES=	man/man1/compton.1.gz man/man1/compton-trans.1.gz
+DOCS_PLIST_FILES=	share/man/man1/compton.1.gz share/man/man1/compton-trans.1.gz
 DOCS_PORTDOCS=		README.md cdbus-driver.sh
 
 post-patch:

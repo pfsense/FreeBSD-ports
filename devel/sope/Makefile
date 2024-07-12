@@ -1,5 +1,5 @@
 PORTNAME=		sope
-PORTVERSION=		5.8.3
+PORTVERSION=		5.10.0
 CATEGORIES=		devel gnustep
 MASTER_SITES=		https://packages.sogo.nu/sources/
 DISTNAME=		SOPE-${PORTVERSION}
@@ -43,9 +43,16 @@ MEMCACHED_RUN_DEPENDS=	${LOCALBASE}/bin/memcached:databases/memcached
 MYSQL_USES=		mysql
 PGSQL_USES=		pgsql
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|gcc|${CC}|g' ${WRKSRC}/sope-core/NGStreams/configure
+	@${REINPLACE_CMD} -e 's|LDAP_OPT_ON|1|g' ${WRKSRC}/sope-ldap/NGLdap/NGLdapConnection.m
 .for f in config.guess config.sub
 	@${CP} ${TEMPLATES}/$f ${WRKSRC}/sope-core/NGStreams/
 .endfor

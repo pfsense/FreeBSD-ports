@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/ui/views/examples/widget_example.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/ui/views/examples/widget_example.cc.orig	2023-01-11 09:17:16 UTC
 +++ src/3rdparty/chromium/ui/views/examples/widget_example.cc
 @@ -49,7 +49,7 @@ void WidgetExample::CreateExampleView(View* container)
    modal_button->SetCallback(

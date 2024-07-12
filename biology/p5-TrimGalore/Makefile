@@ -3,7 +3,7 @@ DISTVERSION=	0.6.5
 CATEGORIES=	biology perl5 python
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	jwb@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wrapper around Cutadapt and FastQC for adapter and quality trimming
 WWW=		https://github.com/FelixKrueger/TrimGalore
 
@@ -14,7 +14,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cutadapt>=2.5:biology/py-cutadapt@${PY_FLAVO
 		fastqc>0:biology/fastqc
 
 # Future: Can 3.4+ be determined from cutadapt dep?
-USES=		perl5 python:env,3.4+ shebangfix
+USES=		perl5 python:env shebangfix
 USE_PERL5=	run
 USE_GITHUB=	yes
 

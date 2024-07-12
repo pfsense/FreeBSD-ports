@@ -1,11 +1,11 @@
 PORTNAME=	simplescreenrecorder
 DISTVERSION=	0.4.4-9
 DISTVERSIONSUFFIX=	-gc092f3e
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Screen video recorder
+COMMENT=	Screen video/audio recorder
 WWW=		https://www.maartenbaert.be/simplescreenrecorder/
 
 LICENSE=	GPLv3

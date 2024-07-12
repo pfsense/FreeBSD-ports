@@ -1,10 +1,10 @@
 PORTNAME=	crawl
 PORTVERSION=	0.4
-PORTREVISION=	14
+PORTREVISION=	17
 CATEGORIES=	www
 MASTER_SITES=	http://www.monkey.org/~provos/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Small, efficient web crawler with advanced features
 WWW=		https://www.monkey.org/~provos/crawl/
 
@@ -12,7 +12,7 @@ LICENSE=	BSD4CLAUSE
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-USES=		bdb pkgconfig
+USES=		bdb:18 pkgconfig
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libevent --program-transform-name=''

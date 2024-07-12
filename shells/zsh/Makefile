@@ -1,6 +1,6 @@
 PORTNAME=	zsh
 DISTVERSION=	5.9
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	shells
 MASTER_SITES=	https://www.zsh.org/pub/ \
 		SF \
@@ -43,6 +43,7 @@ CONFIGURE_ENV+=	zsh_cv_sys_path_dev_fd=no \
 		zsh_cv_path_utmpx=/var/run/utx.active
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CPPFLAGS+=	-DBOOL_DEFINED
 LDFLAGS+=	-Wl,--as-needed
 TEST_TARGET=	test
@@ -73,6 +74,7 @@ DOCS=		LICENCE META-FAQ README \
 		Etc/BUGS Etc/CONTRIBUTORS Etc/FAQ Etc/completion-style-guide \
 		Doc/zsh*.html Doc/zsh.dvi
 DOCS_DISTFILES=	${DISTNAME}-doc${EXTRACT_SUFX}:doc
+DOCS_CONFIGURE_OFF=	--enable-runhelpdir=no
 
 PORTDOCS=	*
 PORTEXAMPLES=	zlogin zshenv zshrc

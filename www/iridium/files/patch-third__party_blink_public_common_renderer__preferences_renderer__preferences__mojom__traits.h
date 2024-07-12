@@ -1,7 +1,7 @@
---- third_party/blink/public/common/renderer_preferences/renderer_preferences_mojom_traits.h.orig	2022-04-01 07:48:30 UTC
+--- third_party/blink/public/common/renderer_preferences/renderer_preferences_mojom_traits.h.orig	2024-06-25 12:08:48 UTC
 +++ third_party/blink/public/common/renderer_preferences/renderer_preferences_mojom_traits.h
-@@ -157,7 +157,7 @@ struct BLINK_COMMON_EXPORT
-     return data.accept_languages;
+@@ -166,7 +166,7 @@ struct BLINK_COMMON_EXPORT
+     return data.send_subresource_notification;
    }
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
