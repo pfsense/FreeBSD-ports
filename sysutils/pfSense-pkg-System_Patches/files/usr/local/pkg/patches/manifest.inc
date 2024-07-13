@@ -235,6 +235,19 @@ $recommended_patches = [
   'basedir' => '/',
   'pathstrip' => 2,
   'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '15606',
+  'versions' => ['24.03', '23.09.1', '2.7.2'],
+  'descr' => 'Automatically use floating states on IPsec VTI',
+  'links' => [
+      [ 'text' => 'After applying, reload the filter or reboot.' ],
+      [ 'text' => 'Redmine #15606',
+         'url' => 'https://redmine.pfsense.org/issues/15606', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
 ],[
   'uniqid' => '7d87d7cbce1bf6f0c8a44888c640e2c29393a9cb',
   'versions' => ['23.09.1', '2.7.2'],
