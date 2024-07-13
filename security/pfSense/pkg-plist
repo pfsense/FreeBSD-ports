@@ -222,6 +222,7 @@ pfSense/include/www/firewall_nat_npt.inc
 pfSense/include/www/firewall_nat_out.inc
 pfSense/include/www/firewall_schedule.inc
 pfSense/include/www/firewall_virtual_ip.inc
+pfSense/include/www/services_dhcp.inc
 pfSense/include/www/services_dnsmasq.inc
 pfSense/include/www/status_output.inc
 pfSense/include/www/system_advanced_admin.inc
@@ -562,9 +563,11 @@ www/services_checkip_edit.php
 www/services_dhcp.php
 www/services_dhcp_edit.php
 www/services_dhcp_relay.php
+www/services_dhcp_settings.php
 www/services_dhcpv6.php
 www/services_dhcpv6_edit.php
 www/services_dhcpv6_relay.php
+www/services_dhcpv6_settings.php
 www/services_dnsmasq.php
 www/services_dnsmasq_domainoverride_edit.php
 www/services_dnsmasq_edit.php
