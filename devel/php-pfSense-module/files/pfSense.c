@@ -2777,7 +2777,9 @@ pfSense_append_state(struct pfctl_state *s, void *arg) {
 
 	array_init(&array);
 
-	add_assoc_string(&array, "if", s->orig_ifname);
+	add_assoc_string(&array, "if", s->ifname);
+	add_assoc_string(&array, "origif", s->orig_ifname);
+	add_assoc_string(&array, "rt_ifname", s->rt_ifname);
 	if ((p = getprotobynumber(proto)) != NULL) {
 		add_assoc_string(&array, "proto", p->p_name);
 		if (a->filter != NULL && strstr(p->p_name, a->filter))
