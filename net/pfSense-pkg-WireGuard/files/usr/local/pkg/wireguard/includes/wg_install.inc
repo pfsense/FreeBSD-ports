@@ -272,7 +272,7 @@ function wg_earlyshellcmd_install() {
  * This function removes earlyshellcmd entries in the config
  */
 function wg_earlyshellcmd_deinstall() {
-	global $config, $wgg;
+	global $wgg;
 
 	wg_globals();
 
@@ -304,6 +304,9 @@ function wg_earlyshellcmd_deinstall() {
 			}
 		}
 	}
+
+	config_set_path('system/earlyshellcmd', $a_earlyshellcmd);
+	config_set_path('installedpackages/shellcmdsettings/config', $a_shellcmdsettings);
 
 	wg_write_config('De-installed earlyshellcmd(s).', false);
 }

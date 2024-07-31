@@ -59,7 +59,7 @@ function wg_toggle_tunnel($tunnel_name) {
 		if (empty($input_errors)) {
 			$wgg['tunnels'][$tun_idx] = $tunnel;
 
-			$action_txt = $is_enabled ? 'Disabled' : 'Enabled';
+			$action_text = $is_enabled ? 'Disabled' : 'Enabled';
 			
 			// Sync with configuration backend
 			wg_write_config("{$action_text} tunnel {$tunnel['name']}.", true);
@@ -492,7 +492,7 @@ function wg_do_peer_post($post) {
 		$wgg['peers'][$peer_idx] = $pconfig;
 
 		// Sync with configuration backend
-		wg_write_config("Updated peer {$peer_idx} ({$peer['publickey']}).", true);
+		wg_write_config("Updated peer {$peer_idx} ({$pconfig['publickey']}).", true);
 
 		// Resync the package
 		wg_resync();
