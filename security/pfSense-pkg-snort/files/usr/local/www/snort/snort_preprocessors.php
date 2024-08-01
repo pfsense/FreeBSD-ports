@@ -39,12 +39,12 @@ if (is_null($id)) {
 }
 
 // Initialize multiple config engine arrays for supported preprocessors if necessary
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'frag3_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'stream5_tcp_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'http_inspect_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_server_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_client_engine', 'item'));
-init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'arp_spoof_engine', 'item'));
+config_init_path("installedpackages/snortglobal/rule/{$id}/frag3_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/stream5_tcp_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/http_inspect_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/ftp_server_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/ftp_client_engine/item");
+config_init_path("installedpackages/snortglobal/rule/{$id}/arp_spoof_engine/item");
 
 $a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 

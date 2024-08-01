@@ -20,8 +20,6 @@
  */
 
 require("guiconfig.inc");
-global $config;
-
 $enabled = (config_get_path('installedpackages/pimd/config/0/enable') == 'on');
 
 $tab_array = array();

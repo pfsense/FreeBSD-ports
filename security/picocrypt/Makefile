@@ -1,5 +1,6 @@
 PORTNAME=	picocrypt
 DISTVERSION=	1.34
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	eduardo@FreeBSD.org

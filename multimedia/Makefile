@@ -145,6 +145,7 @@
     SUBDIR += kodi-addon-screensaver.matrixtrails
     SUBDIR += kodi-addon-screensaver.stars
     SUBDIR += kodi-addon-visualization.fishbmc
+    SUBDIR += kodi-addon-visualization.projectm
     SUBDIR += kodi-addon-visualization.shadertoy
     SUBDIR += kodi-addon-visualization.spectrum
     SUBDIR += kooha
@@ -203,6 +204,14 @@
     SUBDIR += libzen
     SUBDIR += linux-c7-libtheora
     SUBDIR += linux-c7-libv4l
+    SUBDIR += linux-rl9-ffmpeg
+    SUBDIR += linux-rl9-gstreamer1
+    SUBDIR += linux-rl9-gstreamer1-libav
+    SUBDIR += linux-rl9-libtheora
+    SUBDIR += linux-rl9-libv4l
+    SUBDIR += linux-rl9-libva
+    SUBDIR += linux-rl9-libvdpau
+    SUBDIR += linux-rl9-libvpx
     SUBDIR += linux-tsmuxer
     SUBDIR += linux_dvbwrapper-kmod
     SUBDIR += livego
@@ -348,6 +357,7 @@
     SUBDIR += subtitleoffsetmodifier
     SUBDIR += subtools
     SUBDIR += svt-av1
+    SUBDIR += svt-av1-psy
     SUBDIR += svt-hevc
     SUBDIR += svt-vp9
     SUBDIR += syncplay

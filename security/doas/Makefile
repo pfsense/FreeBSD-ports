@@ -1,5 +1,5 @@
 PORTNAME=	doas
-PORTVERSION=	6.3p10
+PORTVERSION=	6.3p12
 CATEGORIES=	security
 
 MAINTAINER=	jsmith@resonatingmedia.com
@@ -19,6 +19,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	slicer69
 
 MAKE_ENV+=	TARGETPATH=-DGLOBAL_PATH='\"${_GLOBAL_PATH}\"'
+
+CONFLICTS=	opendoas
 
 BINMODE=	4755
 

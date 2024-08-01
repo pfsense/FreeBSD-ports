@@ -24,9 +24,14 @@ USE_PYTHON=	autoplist concurrent pep517
 NO_ARCH=	yes
 PLIST_FILES=	${PYTHON_SITELIBDIR}/cffsubr/tx
 
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/external \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/external/
+.endif
 
 post-install:
 	${LN} -s ${LOCALBASE}/bin/tx ${STAGEDIR}${PYTHON_SITELIBDIR}/cffsubr/tx

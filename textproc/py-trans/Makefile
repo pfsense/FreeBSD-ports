@@ -1,5 +1,6 @@
 PORTNAME=	trans
 PORTVERSION=	2.1.0
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -8,16 +9,13 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Module for performing transliteration
 WWW=		https://github.com/zzzsochi/trans
 
-LICENSE=	BSDunclear
-LICENSE_NAME=	Unclear BSD License
-LICENSE_TEXT=	License of this software is declared as 'BSD' in CHANGELOG. \
-		But it is not clear which versions of the BSD license (2, \
-		3 or 4 clause) it is. No further file (except CHANGELOG) in \
-		the source archive contains license information.
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE=	BSD2CLAUSE
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
 USES=		python tar:bzip2
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
 

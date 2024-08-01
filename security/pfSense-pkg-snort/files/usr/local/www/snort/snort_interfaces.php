@@ -209,7 +209,7 @@ if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 	<?php
 	require_once('/usr/local/pkg/snort/snort.inc');
 	require_once('service-utils.inc');
-	global \$g, \$rebuild_rules, \$config;
+	global \$g, \$rebuild_rules;
 	\$snortcfg = config_get_path('installedpackages/snortglobal/rule/{$id}', []);
 	\$rebuild_rules = true;
 	touch('{$start_lck_file}');

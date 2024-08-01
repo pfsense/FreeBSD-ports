@@ -1,12 +1,13 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
 DISTVERSION=	6.0.15
+PORTREVISION=	3
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
 MAINTAINER=	ronald@FreeBSD.org
-COMMENT=	Distributed document-oriented "NoSQL" database (6.0.x Branch)
-WWW=		https://docs.mongodb.com/v6.0/
+COMMENT=	MongoDB Community Edition (6.0.x Branch)
+WWW=		https://www.mongodb.com/docs/v6.0/
 
 LICENSE=	APACHE20 SSPLv1 # mongodb is SSPLv1, C++ driver is APACHE20
 LICENSE_COMB=	multi
@@ -50,6 +51,16 @@ USE_RC_SUBR=	mongod
 SHEBANG_FILES=	buildscripts/scons.py
 python_OLD_CMD=	@python_interpreter@
 
+EXTRACT_AFTER_ARGS=	--exclude src/third_party/icu4c-* \
+			--exclude src/third_party/pcre-* \
+			--exclude src/third_party/snappy-* \
+			--exclude src/third_party/libstemmer_c \
+			--exclude src/third_party/unwind \
+			--exclude src/third_party/yaml-cpp \
+			--exclude src/third_party/zlib-* \
+			--exclude src/third_party/zstandard \
+			--no-same-owner --no-same-permissions
+
 MAKE_ARGS=	--cxx-std=17 \
 		--disable-warnings-as-errors \
 		--libc++ \
@@ -75,7 +86,7 @@ USERS=		mongodb
 GROUPS=		mongodb
 
 OPTIONS_DEFINE=		LTO SASL SSL NOAVX
-OPTIONS_DEFAULT=	LTO SASL SSL
+OPTIONS_DEFAULT=	SASL SSL NOAVX
 
 NOAVX_DESC=	"Disable AVX instructions on amd64 (Sandybridge+)"
 
@@ -108,15 +119,6 @@ MOZJS_ARCH=	${ARCH}
 .endif
 
 post-patch:
-	${RM} -rf ${WRKSRC}/src/third_party/icu4c-*
-	${RM} -rf ${WRKSRC}/src/third_party/pcre-*
-	${RM} -rf ${WRKSRC}/src/third_party/snappy-*
-	${RM} -rf ${WRKSRC}/src/third_party/libstemmer_c
-	${RM} -rf ${WRKSRC}/src/third_party/unwind
-	${RM} -rf ${WRKSRC}/src/third_party/yaml-cpp
-	${RM} -rf ${WRKSRC}/src/third_party/zlib-*
-	${RM} -rf ${WRKSRC}/src/third_party/zstandard
-
 # fix build with python-3.11
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/util.py
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/preprocessor.py

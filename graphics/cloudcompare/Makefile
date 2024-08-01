@@ -1,10 +1,10 @@
 PORTNAME=	cloudcompare
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.12.4
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics
 
-MAINTAINER=	nc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D point cloud processing software
 WWW=		https://www.cloudcompare.org/
 

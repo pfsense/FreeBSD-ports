@@ -22,16 +22,17 @@
 namespace { // global code
 	/* Write an ACME certificates to the filesystem. */
 	function acme_write_certificate($certref) {
-		global $config;
 		$prefix = '/conf/acme';
 		safe_mkdir($prefix);
 
 		/* Lookup the certificate and CA */
 		$cert = lookup_cert($certref);
+		$cert = $cert['item'];
 		if (empty($cert)) {
 			return;
 		}
 		$ca = lookup_ca($cert['caref']);
+		$ca = $ca['item'];
 		if (empty($ca)) {
 			return;
 		}
@@ -51,9 +52,7 @@ namespace { // global code
 	}
 	/* Write all ACME certificates to the filesystem */
 	function acme_write_all_certificates() {
-		global $config;
-		$a_global = &$config['installedpackages']['acme'];
-		if (!isset($a_global['writecerts'])) {
+		if (!config_path_enabled('installedpackages/acme', 'writecerts')) {
 			return;
 		}
 
@@ -67,19 +66,18 @@ namespace { // global code
 		}
 	}
 	function acme_plugin_certificates($pluginparams) {
-		global $config;
 		$result = array();
 		if ($pluginparams['type'] == 'certificates' && $pluginparams['event'] == 'used_certificates') {
 			/* If there are no certificates, there is nothing to process. */
-			if (!isset($config['installedpackages']['acme']['certificates']['item']) ||
-			    !is_array($config['installedpackages']['acme']['certificates']['item'])) {
+			if (!is_array(config_get_path('installedpackages/acme/certificates/item'))) {
 				return array();
 			}
 			$result['pkgname'] = "Acme";
 			$result['certificatelist'] = array();
-			foreach ($config['installedpackages']['acme']['certificates']['item'] as $certificate) {
+			foreach (config_get_path('installedpackages/acme/certificates/item', []) as $certificate) {
 				$certificatename = $certificate["name"];
 				$cert = lookup_cert_by_name($certificatename);
+				$cert = $cert['item'];
 				$item = array();
 				$cert = $cert['refid'];
 				$item['usedby'] = "Acme - {$certificatename}";
@@ -2790,30 +2788,12 @@ $a_keylength['ec-256'] = array('name' => "256-bit ECDSA", 'ecc' => true);
 $a_keylength['ec-384'] = array('name' => "384-bit ECDSA", 'ecc' => true);
 $a_keylength['custom'] = array('name' => "Custom...");
 
-if (!is_array($config['installedpackages']['acme'])) {
-	$config['installedpackages']['acme'] = array();
-}
-if (!is_array($config['installedpackages']['acme']['certificates'])) {
-	$config['installedpackages']['acme']['certificates'] = array();
-}
-if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
-	$config['installedpackages']['acme']['certificates']['item'] = array();
-}
+config_init_path('installedpackages/acme/certificates/item');
 
-if (!is_array($config['installedpackages']['acme'])) {
-	$config['installedpackages']['acme'] = array();
-}
-if (!is_array($config['installedpackages']['acme']['accountkeys'])) {
-	$config['installedpackages']['acme']['accountkeys'] = array();
-}
-if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
-	$config['installedpackages']['acme']['accountkeys']['item'] = array();
-}
+config_init_path('installedpackages/acme/accountkeys/item');
 
 function set_cronjob() {
-	global $config;
-	$a_global = &$config['installedpackages']['acme'];
-	if (isset($a_global['enable'])) {
+	if (config_path_enabled('installedpackages/acme')) {
 		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | /usr/bin/logger -t ACME 2>&1', true, "16", "3");
 	} else {
 		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | /usr/bin/logger -t ACME 2>&1', false);
@@ -2850,31 +2830,33 @@ function acme_custom_php_install_command() {
 }
 
 function acme_convert_desc_to_descr() {
-	global $config;
-	init_config_arr(array('installedpackages', 'acme', 'accountkeys', 'item'));
-	init_config_arr(array('installedpackages', 'acme', 'certificates', 'item'));
+	config_init_path('installedpackages/acme/accountkeys/item');
+	config_init_path('installedpackages/acme/certificates/item');
 
 	foreach (array('accountkeys', 'certificates') as $a_array) {
-		foreach ($config['installedpackages']['acme'][$a_array]['item'] as & $item) {
+		$acme_item_config = config_get_path("installedpackages/acme/{$a_array}/item");
+		foreach ($acme_item_config as & $item) {
 			if (isset($item['desc'])) {
 				$item['descr'] = $item['desc'];
 				unset($item['desc']);
 			}
 		}
+		config_set_path("installedpackages/acme/{$a_array}/item", $acme_item_config);
 	}
 }
 
 function acme_convert_letsencryptv1_to_letsencryptv2() {
-	global $config;
-	init_config_arr(array('installedpackages', 'acme', 'accountkeys', 'item'));
+	config_init_path('installedpackages/acme/accountkeys/item');
 
-	foreach ($config['installedpackages']['acme']['accountkeys']['item'] as & $item) {
+	$acme_item_config = config_get_path('installedpackages/acme/accountkeys/item');
+	foreach ($acme_item_config as & $item) {
 		if ($item['acmeserver'] == 'letsencrypt-staging') {
 			$item['acmeserver'] = 'letsencrypt-staging-2';
 		} elseif ($item['acmeserver'] == 'letsencrypt-production') {
 			$item['acmeserver'] = 'letsencrypt-production-2';
 		}
 	}
+	config_set_path('installedpackages/acme/accountkeys/item', $acme_item_config);
 }
 
 function get_itembyname($a_array, $name) {
@@ -2891,29 +2873,18 @@ function get_itembyname($a_array, $name) {
 }
 
 function get_accountkey_id($name) {
-	global $config;
-	if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
-		$config['installedpackages']['acme']['accountkeys']['item'] = array();
-	}
-	$a_array = &$config['installedpackages']['acme']['accountkeys']['item'];
-	return get_itembyname($a_array, $name);
+	config_init_path('installedpackages/acme/accountkeys/item');
+	return get_itembyname(config_get_path('installedpackages/acme/accountkeys/item'), $name);
 }
 function get_accountkey($name) {
-	global $config;
-	if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
-		$config['installedpackages']['acme']['accountkeys']['item'] = array();
-	}
-	$a_array = &$config['installedpackages']['acme']['accountkeys']['item'];
+	config_init_path('installedpackages/acme/accountkeys/item');
 	$id = get_accountkey_id($name);
-	return $a_array[$id];
+	return config_get_path("installedpackages/acme/accountkeys/item/{$id}");
 }
 
 function get_certificate_id($name) {
-	global $config;
-	if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
-		$config['installedpackages']['acme']['certificates']['item'] = array();
-	}
-	$a_certificates = &$config['installedpackages']['acme']['certificates']['item'];
+	config_init_path('installedpackages/acme/certificates/item');
+	$a_certificates = config_get_path('installedpackages/acme/certificates/item');
 	$i = 0;
 	if (is_array($a_certificates)) {
 		foreach ($a_certificates as $certificate) {
@@ -2926,15 +2897,11 @@ function get_certificate_id($name) {
 	return null;
 }
 
-function & get_certificate($name) {
-	global $config;
-	if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
-		$config['installedpackages']['acme']['certificates']['item'] = array();
-	}
-	$a_certificates = &$config['installedpackages']['acme']['certificates']['item'];
+function get_certificate($name) {
+	config_init_path('installedpackages/acme/certificates/item');
 	$id = get_certificate_id($name);
 	if (is_numeric($id)) {
-		return $a_certificates[$id];
+		return config_get_path("installedpackages/acme/certificates/item/{$id}");
 	}
 	return null;
 }
@@ -2955,8 +2922,7 @@ function & get_certificate($name) {
 	}
 
 	function renew_all_certificates($force = false) {
-		global $config;
-		$a_certificates = getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
+		$a_certificates = config_get_path('installedpackages/acme/certificates/item');
 		$errors = "";
 		foreach($a_certificates as $certificate) {
 			if ($certificate['status'] != 'active') {
@@ -2979,9 +2945,8 @@ function & get_certificate($name) {
 	function getCertificatePSK($ca, $certificate, $domain) {
 		$certificatename = $certificate['name'];
 		$cert = lookup_cert_by_name($certificatename);
+		$cert = $cert['item'];
 		if (!is_array($cert)) {
-			global $config;
-			$a_cert =& $config['cert'];
 			$cert = array();
 			$cert['refid'] = uniqid();
 			$cert['descr'] = $certificatename;
@@ -2995,7 +2960,7 @@ function & get_certificate($name) {
 				echo "\n getCertificatePSK using custom key";
 				$cert['prv'] = $certificate['keypaste']; // (already base64-encoded)
 			}
-			$a_cert[] = $cert;
+			config_set_path('cert/', $cert);
 			echo "\n{$cert['prv']}";
 			$desc = "Acme: Add new certificate & key.";
 			write_config($desc);
@@ -3040,13 +3005,9 @@ function & get_certificate($name) {
 	}
 
 	function saveCACertificateToStore($crt) {
-		global $config;
 		$crt_enc = base64_encode($crt);
-		if (!is_array($config['ca'])) {
-			$config['ca'] = array();
-		}
-		$a_ca =& $config['ca'];
-		foreach($a_ca as $ca) {
+		config_init_path('ca');
+		foreach(config_get_path('ca', []) as $ca) {
 			if ($ca['crt'] == $crt_enc) {
 				return;
 			}
@@ -3056,12 +3017,11 @@ function & get_certificate($name) {
 		$cert['refid'] = uniqid();
 		$cert['descr'] = "Acmecert: {$subject}";
 		ca_import($cert, $crt);
-		$a_ca[] = $cert;
+		config_set_path('ca/', $cert);
 		syslog(LOG_NOTICE, "Acme, storing new CA: {$subject}");
 	}
 
 	function storeCertificateCer($certificatename, $keyfile, $cerfile, $fullchainfile) {
-		global $config;
 		$certupdated = false;
 
 		$key = file_get_contents($keyfile);
@@ -3079,15 +3039,14 @@ function & get_certificate($name) {
 				saveCACertificateToStore($cacert);
 			}
 		}
-		if (is_array($config['cert'])) {
-			foreach ($config['cert'] as &$cert) {
-				if ($cert['descr'] == $certificatename) {
-					syslog(LOG_NOTICE, "Acme, storing new certificate: {$certificatename}");
-					echo "\nupdate cert!";
-					cert_import($cert, $crt, $key);
-					$certupdated = true;
-					break;
-				}
+		foreach (config_get_path('cert', []) as $idx => $cert) {
+			if ($cert['descr'] == $certificatename) {
+				syslog(LOG_NOTICE, "Acme, storing new certificate: {$certificatename}");
+				echo "\nupdate cert!";
+				cert_import($cert, $crt, $key);
+				config_set_path("cert/{$idx}", $cert);
+				$certupdated = true;
+				break;
 			}
 		}
 
@@ -3096,7 +3055,7 @@ function & get_certificate($name) {
 
 	function issue_certificate($id, $force = false, $renew = false) {
 		$result = true;
-		$certificate = & get_certificate($id);
+		$certificate = get_certificate($id);
 		if (!$force) {
 			if ($certificate['status'] != 'active') {
 				echo "Certificate renewal for this certificate is set to: disabled\n";

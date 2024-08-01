@@ -1,5 +1,5 @@
 PORTNAME=	pcsc-lite
-PORTVERSION=	2.2.1
+PORTVERSION=	2.2.2
 PORTEPOCH=	2
 CATEGORIES=	devel security
 MASTER_SITES=	https://pcsclite.apdu.fr/files/
@@ -12,7 +12,7 @@ LICENSE=	BSD3CLAUSE GPLv3+
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool meson pathfix perl5 pkgconfig python:env shebangfix tar:xz
+USES=		meson perl5 pkgconfig python:env shebangfix tar:xz
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_RC_SUBR=	pcscd
@@ -28,9 +28,9 @@ SHEBANG_FILES=	src/spy/pcsc-spy
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS EXAMPLES POLKIT
+OPTIONS_DEFAULT=	POLKIT
 OPTIONS_GROUP=		FEATURES
 OPTIONS_GROUP_FEATURES=	FILTER
-OPTIONS_DEFAULT=	POLKIT
 OPTIONS_SUB=	yes
 
 FEATURES_DESC=	Default features knobs
@@ -43,11 +43,11 @@ POLKIT_LIB_DEPENDS=	libpolkit-gobject-1.so:sysutils/polkit
 POLKIT_MESON_TRUE=	polkit
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/pcsc/drivers
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/pcsc/services
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/pcsc/drivers
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/pcsc/services
 
 post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/example/Makefile.am ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/example/pcsc_demo.c ${STAGEDIR}${EXAMPLESDIR}
 

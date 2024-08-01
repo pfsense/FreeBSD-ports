@@ -186,6 +186,7 @@ function ntopng_sync_package() {
 	/* HTTP/HTTPS */
 	if (config_get_path('system/webgui/protocol') == "https") {
 		$cert = lookup_cert(config_get_path('system/webgui/ssl-certref'));
+		$cert = $cert['item'];
 		ntopng_write_cert_file(CERT_FILE, $cert);
 		$config_lines .= "--http-port=0\n--https-port=$listen_string\n";
 	} else {
@@ -199,7 +200,7 @@ function ntopng_sync_package() {
 	}
 
 	/* Monitor interfaces */
-	foreach (config_get_path('installedpackages/ntopng/config/0/interface_array') as $iface) {
+	foreach (config_get_path('installedpackages/ntopng/config/0/interface_array', []) as $iface) {
 		$if = convert_friendly_interface_to_real_interface_name($iface);
 		if ($if) {
 			$config_lines .= "--interface={$if}\n";
@@ -214,7 +215,7 @@ function ntopng_sync_package() {
 
 	/* Additional local networks */
 	$nets = array();
-	foreach (config_get_path('installedpackages/ntopng/config/0/row') as $net) {
+	foreach (config_get_path('installedpackages/ntopng/config/0/row', []) as $net) {
 		$cidr = trim($net['cidr']);
 		if (is_subnet($cidr)) {
 			$cidr_name = trim($net['cidr_name']);

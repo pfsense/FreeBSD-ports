@@ -855,7 +855,12 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 		/*                 0         1           2      3      4    5    6    7      8     9    10        11         12      13       14      */
 		/* File format timestamp,sig_generator,sig_id,sig_rev,msg,proto,src,srcport,dst,dstport,id,classification,priority,action,disposition */
 		$fd = fopen("{$g['tmp_path']}/alert_{$snort_uuid}", "r");
-		while (($fields = fgetcsv($fd, 1000, ',', '"')) !== FALSE) {
+		while ($fd !== FALSE) {
+			$fields = fgetcsv($fd, 1000, ',', '"');
+			if ($fields === false) {
+				break;
+			}
+
 			if(count($fields) < 14 || count($fields) > 15)
 				continue;
 

@@ -1,4 +1,5 @@
 PORTNAME=	easy-rsa
+PORTEPOCH=	1
 DISTVERSION=	3.1.7
 CATEGORIES=	security net-mgmt
 MASTER_SITES=	https://github.com/OpenVPN/easy-rsa/releases/download/v${DISTVERSION}/ \
@@ -26,6 +27,7 @@ PORTDATA=	x509-types/
 _pd_files=	ChangeLog COPYING.md README.md README.quickstart.md mktemp.txt
 _pd_dirs=	doc/
 PORTDOCS=	${_pd_files} ${_pd_dirs}
+SUB_FILES=	pkg-message
 
 do-install:
 		${MKDIR} ${STAGEDIR}${PREFIX}/bin

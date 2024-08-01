@@ -1,6 +1,6 @@
 PORTNAME=	opendkim
 PORTVERSION=	2.10.3
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	mail security
 MASTER_SITES=	SF/${PORTNAME} \
 		SF/${PORTNAME}/Previous%20Releases \
@@ -27,6 +27,8 @@ SHEBANG_FILES=	opendkim/opendkim-genkey* reputation/opendkim-* stats/opendkim-* 
 		reprrd/opendkim-reprrdimport*
 USE_LDCONFIG=	yes
 TEST_TARGET=	check  # XXX: 1 of 30 tests fails
+
+CONFLICTS_INSTALL=	opendkim-devel
 
 PORTDOCS=	*
 

@@ -32,8 +32,6 @@ define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
 
 function cellular_sync() {
-	global $config;
-
 	$cellular = config_get_path('installedpackages/cellular/config/0', []);
 	if (empty($cellular)) {
 		return null;
@@ -133,8 +131,6 @@ function get_baudrates() {
 function cellular_before_everything() {
 
 	global $pkg;
-	global $config;
-
 	$cellular = config_get_path('installedpackages/cellular/config/0', []);
 
 	// little workaround for dynamic field (content) generation

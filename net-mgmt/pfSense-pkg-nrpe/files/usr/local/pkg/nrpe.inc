@@ -31,26 +31,23 @@ define('NRPE_CONFIG_DIR', NRPE_BASE . '/etc');
 define('NRPE_RCFILE', '/usr/local/etc/rc.d/nrpe.sh');
 
 function nrpe_upgrade_config() {
-	global $config;
-	if (is_array($config['installedpackages']['nrpe2']['config'][0]) &&
-	    !is_array($config['installedpackages']['nrpe']['config'][0])) {
-		$config['installedpackages']['nrpe'] =
-		    $config['installedpackages']['nrpe2'];
-		unset($config['installedpackages']['nrpe2']);
+	if (is_array(config_get_path('installedpackages/nrpe2/config/0')) &&
+	    !is_array(config_get_path('installedpackages/nrpe/config/0'))) {
+		config_set_path('installedpackages/nrpe',
+		    config_get_path('installedpackages/nrpe2'));
+		config_del_path('installedpackages/nrpe2');
 	}
 }
 
 function nrpe_custom_php_install_command() {
-	global $config;
-
 	nrpe_upgrade_config();
 
 	/* Create default commands configuration */
 	if (is_array(
-	    $config['installedpackages']['nrpe']['config'][0]['row'])) {
+	    config_get_path('installedpackages/nrpe/config/0/row'))) {
 		return;
 	}
-	$config['installedpackages']['nrpe']['config'][0]['row'] = array(
+	config_set_path('installedpackages/nrpe/config/0/row', array(
 		0 => array(
 			'name' => 'check_users',
 			'command' => 'check_users',
@@ -96,7 +93,7 @@ function nrpe_custom_php_install_command() {
 			'warning' => '50%',
 			'critical' => '25%'
 		)
-	);
+	));
 
 }
 
@@ -162,10 +159,9 @@ function nrpe_resync_package() {
 }
 
 function nrpe_custom_php_write_config() {
-	global $config;
 	$nagios_check_path = NRPE_BASE . "/libexec/nagios";
 
-	$pconfig = $config['installedpackages']['nrpe']['config'][0];
+	$pconfig = config_get_path('installedpackages/nrpe/config/0');
 
 	$cmds = array();
 	foreach ($pconfig['row'] as $cmd) {
@@ -216,9 +212,7 @@ EOD;
 }
 
 function nrpe_custom_php_service() {
-	global $config;
-
-	if ($config['installedpackages']['nrpe']['config'][0]['enabled'] ==
+	if (config_get_path('installedpackages/nrpe/config/0/enabled') ==
 	    "on") {
 		nrpe_write_rc_file();
 		if (is_service_running("nrpe")) {
@@ -269,21 +263,20 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 }
 
 function nrpe_sync_config() {
-	global $config;
-	init_config_arr(array('hasync'));
-	$system_carp = $config['hasync'];
+	config_init_path('hasync');
+	$system_carp = config_get_path('hasync');
 	if (!is_array($system_carp) ||
 	    !$system_carp['synchronizetoip'] ||
 	    !$system_carp['username'] ||
 	    !$system_carp['password']) {
 		return -1;
 	}
-	if ($config['system']['webgui']['protocol'] == "http") {
+	if (config_get_path('system/webgui/protocol') == "http") {
 		$varsyncprotocol = "http";
-		$varsyncport = $config['system']['webgui']['port'] ?: '80';
+		$varsyncport = config_get_path('system/webgui/port') ?: '80';
 	} else {
 		$varsyncprotocol = "https";
-		$varsyncport = $config['system']['webgui']['port'] ?: '443';
+		$varsyncport = config_get_path('system/webgui/port') ?: '443';
 	}
 	nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
 	    $varsyncprotocol, $system_carp['username'],
@@ -293,14 +286,12 @@ function nrpe_sync_config() {
 /* Do the actual XMLRPC sync */
 function nrpe_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
     $password, $synctimeout) {
-	global $config;
-
 	/*
 	 * Send over the <nrpe> portion of config.xml
 	 * $xml will hold the section to sync.
 	 */
 	$xml = array();
-	$xml['nrpe'] = $config['installedpackages']['nrpe'];
+	$xml['nrpe'] = config_get_path('installedpackages/nrpe');
 
 	/*
 	 * Build a series of commands as a PHP file for

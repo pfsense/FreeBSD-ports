@@ -1,7 +1,7 @@
 PORTNAME=	parinfer-rust
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.3.20220110
-PORTREVISION=	21
+PORTREVISION=	23
 CATEGORIES=	editors
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://github.com/eraserhd/parinfer-rust
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BROKEN_i386=	error: casting references to a bigger memory layout than the backing allocation is undefined behavior, even if the reference is unused
 
 BUILD_DEPENDS=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
 

@@ -33,8 +33,6 @@ $shortcut_section = "lldpd";
 
 
 function lldpd_sync_config() {
-	global $config;
-
 	if (is_service_running('lldpd')) {
 		log_error("Stopping service lldpd");
 		stop_service('lldpd');

@@ -20,7 +20,6 @@ include/tiledb/api/c_api/filter/filter_api_enum.h
 include/tiledb/api/c_api/filter/filter_api_external.h
 include/tiledb/api/c_api/filter_list/filter_list_api_external.h
 include/tiledb/api/c_api/group/group_api_external.h
-include/tiledb/api/c_api/group/group_api_external_experimental.h
 include/tiledb/api/c_api/object/object_api_enum.h
 include/tiledb/api/c_api/object/object_api_external.h
 include/tiledb/api/c_api/query/query_api_enum.h
@@ -36,6 +35,7 @@ include/tiledb/array.h
 include/tiledb/array_deprecated.h
 include/tiledb/array_experimental.h
 include/tiledb/array_schema.h
+include/tiledb/array_schema_deprecated.h
 include/tiledb/array_schema_evolution.h
 include/tiledb/array_schema_experimental.h
 include/tiledb/arrow_io_impl.h
@@ -61,7 +61,6 @@ include/tiledb/filter.h
 include/tiledb/filter_list.h
 include/tiledb/fragment_info.h
 include/tiledb/group.h
-include/tiledb/group_experimental.h
 include/tiledb/log.h
 include/tiledb/object.h
 include/tiledb/object_iter.h
@@ -69,6 +68,7 @@ include/tiledb/query.h
 include/tiledb/query_channel.h
 include/tiledb/query_condition.h
 include/tiledb/query_condition_experimental.h
+include/tiledb/query_deprecated.h
 include/tiledb/query_experimental.h
 include/tiledb/schema_base.h
 include/tiledb/stats.h
@@ -76,6 +76,7 @@ include/tiledb/subarray.h
 include/tiledb/subarray_experimental.h
 include/tiledb/tiledb
 include/tiledb/tiledb.h
+include/tiledb/tiledb_deprecated.h
 include/tiledb/tiledb_dimension_label_experimental.h
 include/tiledb/tiledb_enum.h
 include/tiledb/tiledb_experimental

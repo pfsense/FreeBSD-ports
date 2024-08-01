@@ -1,6 +1,5 @@
 PORTNAME=	gdal
-PORTVERSION=	3.8.5
-PORTREVISION=	2
+PORTVERSION=	3.9.0
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -207,8 +206,21 @@ XERCES_LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3
 ZSTD_CMAKE_BOOL=	GDAL_USE_ZSTD
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/alg/internal_libqhull \
+			--exclude ${DISTNAME}/frmts/gif/giflib \
+			--exclude ${DISTNAME}/frmts/gtiff/libgeotiff \
+			--exclude ${DISTNAME}/frmts/gtiff/libtiff \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg \
+			--exclude ${DISTNAME}/frmts/jpeg/libjpeg12 \
+			--exclude ${DISTNAME}/frmts/png/libpng \
+			--exclude ${DISTNAME}/frmts/zlib \
+			--exclude ${DISTNAME}/ogr/ogrsf_frmts/geojson/libjson \
+			--exclude ${DISTNAME}/third_party/LercLib \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} -r ${WRKSRC}/alg/internal_libqhull/
 	@${RM} -r ${WRKSRC}/frmts/gif/giflib/
 	@${RM} -r ${WRKSRC}/frmts/gtiff/libgeotiff/
@@ -219,6 +231,7 @@ post-patch:
 	@${RM} -r ${WRKSRC}/frmts/zlib/
 	@${RM} -r ${WRKSRC}/ogr/ogrsf_frmts/geojson/libjson/
 	@${RM} -r ${WRKSRC}/third_party/LercLib/
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d

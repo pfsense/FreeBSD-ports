@@ -19,285 +19,39 @@
  * limitations under the License.
  */
 
-
-require_once('config.inc');
-require_once('functions.inc');
-require_once('util.inc');
+require_once('pfsense-utils.inc');
 require_once('service-utils.inc');
-require_once('interfaces_fast.inc');
+require_once('interfaces.inc');
 
-if (!isset($udpbr_strings)) {
-	$udpbr_strings = array(
-	    'rc_filename' => 'udpbroadcastrelay.sh',
-	    'rc'          => '/usr/local/etc/rc.d/udpbroadcastrelay.sh',
-	    'daemon'      => '/usr/local/sbin/udpbroadcastrelay',
-	    'services'    => '/usr/local/etc/udpbroadcastrelay/services/',
-		'svc_start'   => gettext('Starting service') . ' udpbroadcastrelay',
-		'svc_stop'    => gettext('Stopping service') . ' udpbroadcastrelay'
-	);
+global $udpbr_global;
+if (!isset($udpbr_global)) {
+	$udpbr_global['name'] = 'udpbroadcastrelay';
+	$udpbr_global = [
+		'name'        => $udpbr_global['name'],
+		'config_path' => "installedpackages/{$udpbr_global['name']}/config/0",
+	    'rc_filename' => "{$udpbr_global['name']}.sh",
+	    'rc'          => "/usr/local/etc/rc.d/{$udpbr_global['name']}.sh",
+	    'daemon'      => "/usr/local/sbin/{$udpbr_global['name']}"
+	];
 }
 
 /**
- * Validates the given settings.
+ * Writes a message to the dedicated service log.
  * 
- * @param array $settings Settings to validate; can be all settings, or a single instance.
- * @param bool $is_instance If settings is for a single instance, check for duplicate instances
- * @param int $idx (Optional) Configuration array index of the given instance
- * @param array $available_interfaces (Optional) Validate settings based on the given interface array keyed by friendly name
- * 
- * @return array List of strings describing the validation errors
- * @return false No errors found; settings are valid.
- * @return null No settings given to check.
+ * @param string $message The message to log.
+ * @param int $priority The log priority for the message.
+ * @param bool $config_revision If true, use the message to create a
+ *                              config revision.
  */
-function udpbr_validate_config(array $settings, bool $is_instance, ?int $idx = null, array $available_interfaces = []): array|false|null {
-	if (empty($settings)) {
-		return null;
-	}
+function udpbr_log(string $message, int $priority = LOG_INFO, bool $config_revision = false): void {
+	global $udpbr_global;
 
-	if ($is_instance) {
-		$pconfig = array('item' => array());
-		$pconfig['item'][] = $settings;
-	} else {
-		$pconfig = $settings;
-	}
+	openlog($udpbr_global['name'], LOG_ODELAY, LOG_DAEMON);
+	syslog($priority, $message);
+	closelog();
 
-	$input_errors = array();
-	$input_errors_prefix = gettext('General: ');
-	// Validate service 'Track CARP Status' option
-	if (!empty($pconfig['carpstatusvid']) && $pconfig['carpstatusvid'] != 'none') {
-		$available_carpstatusvid = udpbr_get_carp_list();
-		if (!array_key_exists($pconfig['carpstatusvid'], $available_carpstatusvid)) {
-			$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Invalid "Track CARP Status" option.'));
-		}
-	}
-
-	if (!empty($pconfig['item']) && is_array($pconfig['item'])) {
-		// Check for duplicate instances when validating instance settings
-		if ($is_instance) {
-			$saved_instances = config_get_path('installedpackages/udpbroadcastrelay/config/0/item', []);
-		}
-
-		if (empty($available_interfaces)) {
-			$available_interfaces = udpbr_get_interfaces_sorted();
-		}
-		foreach ($pconfig['item'] as $pidx => $pinstance) {
-			$input_errors_prefix = "$idx";
-			if (!$is_instance) {
-				$idx = $pidx;
-				$input_errors_prefix = "$pidx";
-			} elseif (null === $idx) {
-				$input_errors_prefix = 'new';
-			}
-			$input_errors_prefix = sprintf(gettext('Instance [%s]: '), $input_errors_prefix);
-
-			// Validate instance ID
-			if (!empty($pinstance['id'])) {
-				if (!($pinstance['id'] >= 1 && $pinstance['id'] <= 63)) {
-					$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Invalid instance ID given.'));
-				}
-			} else {
-				$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('An instance ID number from 1 to 63 is required.'));
-			}
-
-			// Validate instance port
-			if (!empty($pinstance['port'])) {
-				if (!($pinstance['port'] >= 1 && $pinstance['port'] <= 65535)) {
-					$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Invalid port number given.'));
-				}
-			} else {
-				$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('A port number from 1 to 65535 is required.'));
-			}
-
-			// Validate instance selected interfaces
-			$interfaces = explode(',', $pinstance['interfaces']);
-			if (is_array($interfaces) && count($interfaces) >= 2) {
-				if (((bool) array_intersect_key(array_flip($interfaces), $available_interfaces)) == false) {
-					$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Invalid interface(s) selected.'));
-				}
-			} else {
-				$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('At least two interfaces must be selected.'));
-			}
-
-			// Validate instance spoof option
-			if (!empty($pinstance['spoof']) || $pinstance['spoof'] == '0') {
-				if (!in_array($pinstance['spoof'], array(0,1,2))) {
-					$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Invalid spoof option selected.'));
-				}
-			}
-
-			// Validate instance multicast address
-			if (!empty($pinstance['multicast'])) {
-				if (!is_ipaddr($pinstance['multicast'])) {
-					$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Invalid multicast IP address given.'));
-				}
-			}
-
-			// Check for duplicates
-			if ($is_instance && isset($pinstance['enable']) && $idx !== null) {
-				$pinstance_interfaces = explode(',', $pinstance['interfaces']);
-				foreach ($saved_instances as $saved_instance_idx => $saved_instance) {
-					$input_errors_prefix = sprintf(gettext('Instance [%s]: '), $saved_instance_idx);
-					if (isset($saved_instance['enable']) && $idx != $saved_instance_idx) {
-						if ($pinstance['id'] == $saved_instance['id']) {
-							$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Duplicate ID found on another instance.'));
-						}
-						if ($pinstance['id'] != $saved_instance['id'] && $pinstance['port'] == $saved_instance['port'] &&
-						    !empty(array_intersect($pinstance_interfaces, explode(',', $saved_instance['interfaces'])))) {
-							$input_errors[] = sprintf('%1$s%2$s', $input_errors_prefix, gettext('Duplicate port found on an instance with overlaping interfaces.'));
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return (empty($input_errors) ? false : $input_errors);
-}
-
-/**
- * Generates the shell command string needed to run the given instance configuraiton.
- * 
- * @param array $instance Configuration for a single instance
- * 
- * @return string Full shell command
- */
-function udpbr_get_command(array $instance): string {
-	global $udpbr_strings;
-	$interfaces = explode(',', $instance['interfaces']);
-
-	$command = sprintf('%1$s --id %2$s --port %3$s', $udpbr_strings['daemon'], $instance['id'], $instance['port']);
-	foreach ($interfaces as $value) {
-		$command .= sprintf(' --dev %s', $value);
-	}
-	if (!empty($instance['multicast'])) {
-		$command .= sprintf(' --multicast %s', $instance['multicast']);
-	}
-	if ($instance['spoof'] == '1') {
-		$command .= ' -s 1.1.1.1';
-	} elseif ($instance['spoof'] == '2') {
-		$command .= ' -s 1.1.1.2';
-	}
-	$command .= ' -f';
-
-	return escapeshellcmd($command);
-}
-
-/**
- * Initializes the configuration path; creates the service script, and starts/stops the service as needed.
- */
-function udpbr_resync(): void {
-	global $udpbr_strings;
-	$hd_get = function (string $hd_get_data): string {return gettext($hd_get_data);};
-	$cpath = 'installedpackages/udpbroadcastrelay/config/0';
-
-	if (is_service_running('udpbroadcastrelay')) {
-		syslog(LOG_NOTICE, $udpbr_strings['svc_stop']);
-		stop_service('udpbroadcastrelay');
-	}
-
-	$run_commands = array();
-	$instances = udpbr_get_settings(true);
-	if (!empty($instances)) {
-		$available_interfaces = udpbr_get_interfaces_sorted();
-		$available_interfaces_ports = array_flip(convert_real_interface_to_friendly_interface_name_fast());
-		foreach ($instances as $instance_idx => $instance) {
-			if (empty($instance)) {
-				continue;
-			}
-
-			$input_errors = udpbr_validate_config($instance, true, $instance_idx, $available_interfaces);
-			if (is_array($input_errors)) {
-				syslog(LOG_ERR, gettext('ERROR validating UDP Broadcast Relay settings: ') . implode('; ', $input_errors));
-				continue;
-			}
-
-			if (!isset($instance['enable'])) {
-				continue;
-			}
-
-			// Use the interface's real name instead of its friendly name
-			$instance_interfaces = array();
-			foreach (explode(',', $instance['interfaces']) as $i) {
-				if (array_key_exists($i, $available_interfaces_ports)) {
-					$instance_interfaces[] = $available_interfaces_ports[$i];
-				} else {
-					continue 2;
-				}
-			}
-			$instance['interfaces'] = implode(',', $instance_interfaces);
-
-			$run_command = udpbr_get_command($instance);
-			if (!empty($run_command)) {
-				$run_script = <<<SSCRIPT
-				        : > "\${UDPBRTEMP}"
-				        {$run_command} 2>\$UDPBRTEMP >/dev/null
-				        ERRORMSG=\$(cat \${UDPBRTEMP})
-				        if [ "\$ERRORMSG" != '' ]; then
-				            /usr/bin/logger -t udpbroadcastrelay "{$hd_get('Failed to start instance')}: \${ERRORMSG}"
-				        fi
-				
-				SSCRIPT;
-
-				$run_commands[] = $run_script;
-			}
-		}
-	}
-	if (empty($run_commands) || !config_path_enabled($cpath)) {
-		unlink_if_exists($udpbr_strings['rc']);
-		return;
-	}
-
-	/* Write the rc script */
-	$start = <<<BSSCRIPT
-	ERRORMSG=''
-	    UDPBRTEMP=$(mktemp /tmp/udpbr_tmp.XXXXXX) || ERRORMSG="{$hd_get('Could not create temporary file')}"
-	    if [ "\$ERRORMSG" = '' ]; then
-
-	BSSCRIPT;
-	$start .= implode(PHP_EOL, $run_commands);
-	$start .= <<<ESSCRIPT
-	    rm -f "\${UDPBRTEMP}"
-	    else
-	        /usr/bin/logger -t udpbroadcastrelay "{$hd_get('Failed to start service')}: \${ERRORMSG}"
-	    fi
-	ESSCRIPT;
-
-	$stop = '/usr/bin/killall -q udpbroadcastrelay; rm -f /tmp/udpbr_tmp.*';
-	write_rcfile(array(
-		'file' => $udpbr_strings['rc_filename'],
-		'start' => $start,
-		'stop' => $stop
-		)
-	);
-
-	if (platform_booting()) {
-		return;
-	}
-
-	if (config_path_enabled($cpath)) {
-		/* Start/Restart UDP Broadcast Relay, if a CARP VIP is set, check its status and act appropriately. */
-		$carpstatusvid = config_get_path($cpath . '/carpstatusvid');
-		if (!empty($carpstatusvid) || $carpstatusvid != 'none') {
-			$status = get_carp_interface_status($carpstatusvid);
-			switch (strtoupper($status)) {
-				// Stop the service if the VIP is in BACKUP or INIT state.
-				case 'BACKUP':
-				case 'INIT':
-					syslog(LOG_NOTICE, $udpbr_strings['svc_stop'] . ' (CARP BACKUP/INIT)');
-					stop_service('udpbroadcastrelay');
-					break;
-				// Start the service if the VIP is MASTER state.
-				case 'MASTER':
-				// Assume it's up if the status can't be determined.
-				default:
-					syslog(LOG_NOTICE, $udpbr_strings['svc_start']);
-					start_service('udpbroadcastrelay');
-					break;
-			}
-		} else {
-			syslog(LOG_NOTICE, $udpbr_strings['svc_start']);
-			start_service('udpbroadcastrelay');
-		}
+	if ($config_revision) {
+		write_config("UDP Broadcast Relay: {$message}");
 	}
 }
 
@@ -305,208 +59,538 @@ function udpbr_resync(): void {
  * Stops the service and removes the service script.
  */
 function udpbr_deinstall(): void {
-	global $udpbr_strings;
-	if (is_service_running('udpbroadcastrelay')) {
-		syslog(LOG_NOTICE, $udpbr_strings['svc_stop']);
-		stop_service('udpbroadcastrelay');
+	global $udpbr_global;
+
+	if (is_service_running($udpbr_global['name'])) {
+		udpbr_log(gettext('Stopping service.'), LOG_NOTICE);
+		stop_service($udpbr_global['name']);
 	}
 
-	unlink_if_exists($udpbr_strings['rc']);
+	unlink_if_exists($udpbr_global['rc']);
+	unlink_if_exists('/tmp/udpbr_tmp.*');
 }
 
 /**
- * Get the available CARP VIPs on the system.
+ * Get available CARP VIPs.
  * 
- * @return array List of strings keyed by the VIP ID
+ * @return array List of strings keyed by the VIP ID.
  */
-function udpbr_get_carp_list(): array {
-	$list = array();
-	$list['none'] = 'none';
-	$carplist = get_configured_vip_list('all', VIP_CARP);
-	foreach ($carplist as $vid => $vaddr) {
+function udpbr_get_carpvips(): array {
+	$list = [];
+	foreach (get_configured_vip_list('all', VIP_CARP) as $vid => $vaddr) {
 		$vip = get_configured_vip($vid);
 		$list[$vid] = "{$vaddr} (vhid: {$vip['vhid']})";
 	}
+
 	return ($list);
 }
 
 /**
- * Starts or stops the service based on the CARP transition
+ * Starts or stops the service depending on the CARP status
  * 
- * @param array $pluginparams List of plugin parameters
+ * @param array $plugin_params List of plugin parameters.
  */
-function udpbroadcastrelay_plugin_carp(array $pluginparams): void {
-	global $udpbr_strings;
-	$carpstatusvid = config_get_path('installedpackages/udpbroadcastrelay/config/0/carpstatusvid');
+function udpbroadcastrelay_plugin_carp(array $plugin_params = []): void {
+	global $udpbr_global;
 
-	/* If there is no "Track CARP Status" IP address selected, then stop */
-	if (empty($carpstatusvid) || $carpstatusvid == 'none') {
+	$start_service = false;
+	$status_reason = null;
+
+	// Track a specific CARP VIP
+	$config_carp_vid = config_get_path("{$udpbr_global['config_path']}/carpstatusvid", 'none');
+	if ($config_carp_vid == 'none') {
+		// Only take action if there's a CARP VIP being tracked
 		return;
 	}
-	/* Locate the VIP and match it against the configured "Track CARP Status" IP address */
-	list($vhid, $iface) = explode("@", trim($pluginparams['interface']));
-	$friendly = convert_real_interface_to_friendly_interface_name($iface);
-	$vip = get_configured_vip($carpstatusvid);
-	if (($vip['vhid'] != $vhid) || ($vip['interface'] != $friendly)) {
-		/* This is not the VIP we're looking for, move along. */
-		return;
+	if (array_get_path($plugin_params, 'type') == 'carp') {
+		/* Event triggered by CARP transition */
+
+		// Only take action when an interface is provided
+		if (!isset($plugin_params['interface'])) {
+			return;
+		}
+
+		// Only take action when the CARP VIP interface matches the CARP event interface
+		list($carp_vhid, $carp_interface_port) = explode("@", trim($plugin_params['interface']));
+		$carp_interface_name = convert_real_interface_to_friendly_interface_name($carp_interface_port);
+		$config_carp_vip = get_configured_vip($config_carp_vid);
+		if (($config_carp_vip['vhid'] != $carp_vhid) || ($config_carp_vip['interface'] != $carp_interface_name)) {
+			return;
+		}
+
+		// Initialize the service based solely on the CARP event
+		switch (array_get_path($plugin_params, 'event')) {
+			case 'rc.carpmaster':
+				$start_service = true;
+				$status_reason = 'CARP MASTER';
+				break;
+			case 'rc.carpbackup':
+			default:
+				$start_service = false;
+				$status_reason = 'CARP BACKUP';
+				break;
+		}
+	} else {
+		/* Event triggered by service reload */
+
+		// Initialize the service based solely the CARP VIP status
+		switch (strtoupper(get_carp_interface_status($config_carp_vid))) {
+			// Stop the service if the VIP is down
+			case 'BACKUP':
+			case 'INIT':
+				$start_service = false;
+				$status_reason = 'CARP BACKUP/INIT';
+				break;
+			// Start the service if the VIP is up
+			case 'MASTER':
+				$start_service = true;
+				$status_reason = 'CARP MASTER';
+				break;
+			// Start the service if the VIP state cannot be determined
+			default:
+				$start_service = true;
+				break;
+		}
 	}
-	/* Start or stop the service as needed based on the CARP transition. */
-	if ($pluginparams['event'] == 'rc.carpmaster') {
-		syslog(LOG_NOTICE, $udpbr_strings['svc_start']);
-		start_service('udpbroadcastrelay');
-	} elseif ($pluginparams['event'] == 'rc.carpbackup') {
-		syslog(LOG_NOTICE, $udpbr_strings['svc_stop'] . ' (CARP BACKUP/INIT)');
-		stop_service('udpbroadcastrelay');
+
+	$status_reason = isset($status_reason) ? " ({$status_reason})" : '';
+	if ($start_service) {
+		udpbr_log((gettext('Starting service.') . $status_reason), LOG_NOTICE);
+		start_service($udpbr_global['name']);
+	} else {
+		udpbr_log((gettext('Stopping service.') . $status_reason), LOG_NOTICE);
+		stop_service($udpbr_global['name']);
 	}
 }
 
 /**
- * Generates a list of interfaces and their descriptions with port names, sorted by their friendly names.
- * For example: 'lan' => 'LAN (igb1)' or simply 'lan' => 'LAN'
+ * Generates the shell command needed to run an instance. Does not
+ * validate the given configuration.
  * 
- * @param bool $description_only (Optional) When true, excludes the port name from the interface description
+ * @param array $config Instance config with interface ports.
  * 
- * @return array List of interfaces and their description, keyed by the interface's friendly name.
+ * @return string Full shell command.
  */
-function udpbr_get_interfaces_sorted(bool $description_only = false): array {
-	// Get all interfaces and their descriptions
-	$i_ports = get_interface_arr();
-	$i_names = convert_real_interface_to_friendly_interface_name_fast();
-	$i_descriptions = get_configured_interface_with_descr(true);
+function udpbr_get_command(array $config): string {
+	global $udpbr_global;
 
-	/* Group interfaces and their descriptions in a consistent order */
-	foreach ($i_names as $i => $n) {
-		if (array_search($i, $i_ports, true) === false) {
-			// Ignore interfaces that are not found on the system
-			continue;
-		}
-		$i_list_assigned[$n] = $i;
+	$command = "{$udpbr_global['daemon']} --id {$config['id']} --port {$config['port']}";
+
+	foreach ($config['ports'] as $interface) {
+		$command .= " --dev {$interface}";
 	}
-	$i_list_assigned_append = $i_list_assigned;
-	foreach ($i_ports as $i) {
-		if (in_array($i, array('pfsync0', 'pflog0', 'enc0', 'lo0'))) {
-			// Ignore special interfaces
+	if (isset($config['multicast'])) {
+		$command .= " --multicast {$config['multicast']}";
+	}
+	if ($config['spoof'] == '1') {
+		$command .= ' -s 1.1.1.1';
+	} elseif ($config['spoof'] == '2') {
+		$command .= ' -s 1.1.1.2';
+	}
+
+	$command .= ' -f';
+
+	return escapeshellcmd($command);
+}
+
+/**
+ * Generates the service script and starts/stops the service as needed.
+ */
+function udpbr_resync(): void {
+	global $udpbr_global;
+
+	udpbr_log(gettext('Reloading service.'), LOG_INFO);
+
+	// Stop the service by default
+	if (is_service_running($udpbr_global['name'])) {
+		udpbr_log(gettext('Stopping service.'), LOG_NOTICE);
+		stop_service($udpbr_global['name']);
+		unlink_if_exists($udpbr_global['rc']);
+	}
+
+	// Bail if the system is booting - package services will be started after
+	if (is_platform_booting()) {
+		return;
+	}
+
+	$config = udpbr_get_config();
+	$input_errors = udpbr_parse_config($config);
+
+	// Bail if there's a configuration issue
+	if (!empty($input_errors)) {
+		udpbr_log(gettext('Failed to start service due to a configuration error.'), LOG_ERR);
+		return;
+	}
+
+	// Don't take further action if no instance would be started
+	if (empty($config) || !isset($config['enable']) || empty($config['item'])) {
+		return;
+	}
+
+	// Convenience function to use in heredocs
+	$func_gettext = function (string $message): string {return gettext($message);};
+
+	// Genereate the instance commands
+	$run_commands = [];
+	$instance_id = 0;
+	$interfaces = udpbr_get_interfaces();
+	foreach ($config['item'] as $instance) {
+		if (!isset($instance['enable'])) {
 			continue;
 		}
 
-		$append = false;
-		$assigned = false;
-		$description = sprintf(gettext('unassigned (%s)'), $i);
+		// Generate the instance ID
+		$instance_id++;
+		$instance['id'] = $instance_id;
 
-		if (preg_match('/(ovpn[sc]\d+/', $i)) {
-			$append = true;
+		// Use the interface's real name instead of its friendly name
+		$instance['ports'] = [];
+		foreach (explode(',', $instance['interfaces']) as $interface) {
+			$instance['ports'][] = $interfaces[$interface]['port'];
 		}
 
-		// Set the interface description
-		if (!$assigned && array_key_exists($i, $i_names)) {
-			if (array_key_exists($i_names[$i], $i_descriptions)) {
-				$assigned = true;
-				if ($description_only) {
-					$description = sprintf('%1$s', $i_descriptions[$i_names[$i]]);
-				} else {
-					$description = sprintf('%1$s (%2$s)', $i_descriptions[$i_names[$i]], $i);
+		$run_command = udpbr_get_command($instance);
+		$run_commands[] = <<<SSCRIPT
+				: > "\${UDPBRTEMP}"
+				{$run_command} 2>\$UDPBRTEMP >/dev/null
+				ERRORMSG=\$(cat \${UDPBRTEMP})
+				if [ "\$ERRORMSG" != '' ]; then
+					/usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start instance.')}: \${ERRORMSG}"
+				fi
+		
+		SSCRIPT;
+	}
+
+	// Don't take further action if no instance would be started
+	if (empty($run_commands)) {
+		return;
+	}
+
+	// Write the rc script
+	$start = <<<BSSCRIPT
+	ERRORMSG=''
+	    UDPBRTEMP=$(mktemp /tmp/udpbr_tmp.XXXXXX) || ERRORMSG="{$func_gettext('Failed to create temporary file.')}"
+	    if [ "\$ERRORMSG" = '' ]; then
+
+	BSSCRIPT;
+	$start .= implode(PHP_EOL, $run_commands);
+	$start .= <<<ESSCRIPT
+	    rm -f "\${UDPBRTEMP}"
+	    else
+	        /usr/bin/logger -p daemon.err -t {$udpbr_global['name']} "{$func_gettext('Failed to start service.')} (\${ERRORMSG})"
+	    fi
+	ESSCRIPT;
+
+	$stop = "/usr/bin/killall -q {$udpbr_global['name']}; rm -f /tmp/udpbr_tmp.*";
+	write_rcfile([
+		'file' => $udpbr_global['rc_filename'],
+		'start' => $start,
+		'stop' => $stop
+	]);
+
+	if (array_get_path($config, 'carpstatusvid', 'none') != 'none') {
+		// Handle CARP status when tracking a CARP VIP
+		udpbroadcastrelay_plugin_carp();
+	} else {
+		// Start the service
+		udpbr_log(gettext('Starting service.'), LOG_NOTICE);
+		start_service($udpbr_global['name']);
+	}
+}
+
+/**
+ * Generates a list of interfaces and their descriptions.
+ * 
+ * Example: ['lan' => ['port'=>'igb1', 'descr'=>'LAN']]
+ * 
+ * @param bool $valid_only (Optional) If false, do not verify that an
+ *                         interface is available.
+ * @param bool $append_port (Optional) If false, do not append the port to
+ *                          the interface's description.
+ * 
+ * @return array List of interfaces keyed by their friendly name.
+ */
+function udpbr_get_interfaces(bool $valid_only = true, bool $append_port = true): array {
+	$interfaces = [];
+	$interface_ports = array_flip(get_interface_arr());
+	foreach (config_get_path('interfaces') as $interface_name => $interface) {
+		if ($valid_only && (!isset($interface['enable']) ||
+		    !isset($interface['if']) || !isset($interface_ports[$interface['if']]))) {
+			/* Skip invalid interfaces. Valid interfaces must be assigned,
+			   enabled, and currently exist on the system */
+			continue;
+		}
+
+		$interfaces[$interface_name] = [
+			'port' => $interface['if'],
+			'descr' => $interface['descr']
+		];
+		if ($append_port) {
+			$interfaces[$interface_name]['descr'] .= " ({$interface['if']})";
+		}
+	}
+
+	return $interfaces;
+}
+
+/**
+ * Validates all configuration. The given configuration is then normalized
+ * with expected values if no errors are detected.
+ * 
+ * @param array &$config Full config to parse.
+ * 
+ * @return array|null null on a valid config, otherwise a list of errors.
+ */
+function udpbr_parse_config(?array &$config): null|array {
+	$input_errors = [];
+
+	// Check for invalid arguments
+	if (empty($config)) {
+		$input_errors[] = 'Invalid configuration.';
+		return $input_errors;
+	}
+
+	// Validate service 'Track CARP Status' option
+	if (isset($config['carpstatusvid']) && ($config['carpstatusvid'] != 'none') &&
+	    !array_key_exists($config['carpstatusvid'], udpbr_get_carpvips())) {
+		$input_errors[] = 'Invalid "Track CARP Status" option.';
+	}
+
+	// Parse all instances without modifying the original configuration
+	$temp_config_instances = (is_array($config['item'])) ? $config['item'] : [];
+	$enabled_instance_count = 0;
+	foreach ($temp_config_instances as $id => &$item) {
+		if (is_array(udpbr_parse_instance_config($item, $id))) {
+			$input_errors[] = "Invalid configuration for instance {$id}";
+		}
+		if (isset($item['enable'])) {
+			$enabled_instance_count++;
+		}
+	}
+
+	// Validate instance count
+	if ($enabled_instance_count > 63) {
+		$input_errors[] = "Instance limit reached; a maximum of 63 enabled instances are supported.";
+	}
+
+	// Build the configuration with validated values
+	if (empty($input_errors)) {
+		$temp_config = [];
+
+		// Optional settings
+		if (isset($config['enable'])) {
+			$temp_config['enable'] = true;
+		}
+		if (isset($config['carpstatusvid']) && ($config['carpstatusvid'] != 'none')) {
+			$temp_config['carpstatusvid'] = htmlspecialchars($config['carpstatusvid']);
+		}
+		if (!empty($temp_config_instances)) {
+			$temp_config['item'] = $temp_config_instances;
+		}
+
+		$config = $temp_config;
+		return null;
+	}
+
+	return $input_errors;
+}
+
+/**
+ * Validates the configuration for an instance. The given configuration is
+ * then normalized with expected values if no errors are detected.
+ * 
+ * @param array &$config Instance config to parse.
+ * @param int $id (Optional) Config index of the given instance.
+ * 
+ * @return array|null null on a valid config, otherwise a list of errors.
+ */
+function udpbr_parse_instance_config(?array &$config, ?int $id = null): null|array {
+	$input_errors = [];
+	$temp_config_interfaces = null;
+	
+	// Check for invalid arguments
+	if (empty($config)) {
+		$input_errors[] = 'Invalid configuration.';
+		return $input_errors;
+	}
+
+	// Validate interfaces
+	if (isset($config['interfaces']) && is_string($config['interfaces'])) {
+		$temp_config_interfaces = explode(',', $config['interfaces']);
+		if (count($temp_config_interfaces) < 2) {
+			unset($temp_config_interfaces);
+			$input_errors[] = 'At least two interfaces must be selected.';
+		} elseif (!empty(array_diff_key($temp_config_interfaces, array_keys(udpbr_get_interfaces())))) {
+			$input_errors[] = 'Invalid interface(s) selected.';
+		}
+	} else {
+		$input_errors[] = 'At least two interfaces must be selected.';
+	}
+
+	// Validate port
+	if (isset($config['port']) && is_numericint($config['port'])) {
+		if (!($config['port'] >= 1 && $config['port'] <= 65535)) {
+			$input_errors[] = 'Invalid port number given.';
+		}
+	} else {
+		$input_errors[] = 'A port number from 1 to 65535 is required.';
+	}
+
+	// Validate spoof option
+	if (isset($config['spoof']) && is_numericint($config['spoof'])) {
+		if (!in_array($config['spoof'], [0,1,2])) {
+			$input_errors[] = 'Invalid spoof option selected.';
+		}
+	}
+
+	// Validate multicast address
+	if (!empty($config['multicast']) && !is_ipaddr($config['multicast'])) {
+		$input_errors[] = 'Invalid multicast IP address given.';
+	}
+
+	// Check for duplicates
+	if (isset($config['enable']) && isset($temp_config_interfaces)) {
+		foreach (udpbr_get_instance_config() as $instance_id => $instance) {
+			if (($id !== $instance_id) && isset($instance['enable']) && is_string($instance['interfaces'])) {
+				if (($config['port'] == $instance['port']) && !empty(array_intersect($temp_config_interfaces, explode(',', $instance['interfaces'])))) {
+					$input_errors[] = 'Duplicate port found on an instance with overlaping interfaces.';
 				}
 			}
 		}
+	}
 
-		// Save the interface to the respective group
-		if ($assigned && (get_interface_ip($i_names[$i]) || get_interface_ipv6($i_names[$i]))) {
-			if ($append) {
-				$i_list_assigned_append[$i_names[$i]] = $description;
-				unset($i_list_assigned[$i_names[$i]]);
-			} else {
-				$i_list_assigned[$i_names[$i]] = $description;
-				unset($i_list_assigned_append[$i_names[$i]]);
-			}
-		} else {
-			unset($i_list_assigned[$i_names[$i]]);
-			unset($i_list_assigned_append[$i_names[$i]]);
+	// Build the configuration with validated values
+	if (empty($input_errors)) {
+		$temp_config = [];
+
+		// Optional settings
+		if (isset($config['enable'])) {
+			$temp_config['enable'] = true;
 		}
-	}
-
-	/* return ordered interface list */
-	return array_merge($i_list_assigned, $i_list_assigned_append);
-}
-
-/**
- * Fetches the configuration for the service and or instance(s).
- * 
- * @param bool $instancesonly (Optional) When true, returns a list of all instances configuration
- * @param int $idx (Optional) Return the instance stored at the given configuration array index
- * 
- * @return array Empty when no instances are configured
- * @return array All configuration
- * @return array List of all instances configuration
- * @return array Instance configuration in the given configuration array index
- */
-function udpbr_get_settings(bool $instancesonly = false, ?int $idx = null): array {
-	$cpath = 'installedpackages/udpbroadcastrelay/config/0';
-
-	// Return all settings config
-	if (!$instancesonly) {
-		return config_get_path($cpath, []);
-	}
-
-	// Return all instances config
-	if (null === $idx) {
-		return config_get_path($cpath . '/item', []);
-	}
-
-	// Return the instance config for the given idx
-	return config_get_path($cpath . "/item/{$idx}", []);
-}
-
-/**
- * Writes the configuration for the given instance array, and optionally removes it.
- * 
- * @param array $instance Configuration for a single instance. Set as null when removing.
- * @param bool $is_new_entry Signifies to save the given instance as a new entry
- * @param int $idx (Optional) Configuration array index of instance to update or remove
- */
-function udpbr_set_instance(?array $instance, bool $is_new_entry, ?int $idx = null): void {
-	// Instances config path
-	$cpath = 'installedpackages/udpbroadcastrelay/config/0/item';
-
-	if (!empty($instance) && $is_new_entry) {
-		// Save a new instance config
-		$pkg_instances_config = config_get_path($cpath, []);
-		$pkg_instances_config[] = $instance;
-		config_set_path($cpath, $pkg_instances_config);
-	} elseif (null !== $idx) {
-		$cpath = sprintf('%1$s/%2$s', $cpath, $idx);
-		if (!empty($instance)) {
-			// Update existing instance config
-			if (!empty(config_get_path($cpath))) {
-				config_set_path($cpath, $instance);
-			}
-		} else {
-			// Remove existing instance config
-			if (!empty(config_get_path($cpath))) {
-				config_del_path($cpath);
-			}
+		if (!empty($config['description']) || ($config['description'] === 0)) {
+			$temp_config['description'] = htmlspecialchars($config['description']);
 		}
+		if (!empty($config['multicast'])) {
+			$temp_config['multicast'] = htmlspecialchars($config['multicast']);
+		}
+		
+		// Required settings
+		$temp_config['interfaces'] = htmlspecialchars($config['interfaces']);
+		$temp_config['spoof'] = intval($config['spoof']);
+		$temp_config['port'] = intval($config['port']);
+
+		$config = $temp_config;
+		return null;
 	}
+
+	return $input_errors;
 }
 
 /**
- * Writes the configuration for service's general settings. Does not include instance configuration.
+ * Get the full package configuration.
  * 
- * @param array $settings List of general settings
+ * @return array|null Package configuration if it exist.
  */
-function udpbr_set_settings(array $settings): void {
-	$cpath = 'installedpackages/udpbroadcastrelay/config/0';
+function udpbr_get_config(): array|null {
+	global $udpbr_global;
 
-	// Save the general settings
-	if (isset($settings['enable'])) {
+	return config_get_path($udpbr_global['config_path']);
+}
+
+/**
+ * Get a specific instance configuration. If the instance ID is omitted,
+ * get the configuration for all instances.
+ * 
+ * @param int $id (Optional) Config index for a specific instance.
+ * 
+ * @return array|null Instance(s) configuration if any exist.
+ */
+function udpbr_get_instance_config(int $id = null): array|null {
+	global $udpbr_global;
+
+	// config for specific instance
+	if (isset($id)) {
+		return config_get_path("{$udpbr_global['config_path']}/item/{$id}");
+	}
+
+	// config for all instances
+	return config_get_path("{$udpbr_global['config_path']}/item");
+}
+
+/**
+ * Writes all configuration; includes general and instance settings.
+ * 
+ * @param array $config All settings.
+ */
+function udpbr_set_config(array $config): void {
+	global $udpbr_global;
+
+	// Save general settings
+	if (isset($config['enable'])) {
 		// Must not be empty for compatibility with is_service_enabled()
-		config_set_path($cpath . '/enable', 'yes');
+		config_set_path("{$udpbr_global['config_path']}/enable", 'yes');
 	} else {
-		config_del_path($cpath . '/enable');
+		config_del_path("{$udpbr_global['config_path']}/enable");
 	}
-	if (isset($settings['carpstatusvid'])) {
-		config_set_path($cpath . '/carpstatusvid', $settings['carpstatusvid']);
+	if (isset($config['carpstatusvid'])) {
+		config_set_path("{$udpbr_global['config_path']}/carpstatusvid", $config['carpstatusvid']);
+	} else {
+		config_del_path("{$udpbr_global['config_path']}/carpstatusvid");
+	}
+
+	// Save instance settings
+	if (is_array($config['item']) && (count($config['item']) > 0)) {
+		// reindex the instances
+		$config['item'] = array_values($config['item']);
+		config_set_path("{$udpbr_global['config_path']}/item", $config['item']);
+	} else {
+		config_del_path("{$udpbr_global['config_path']}/item");
+	}
+
+	udpbr_log(gettext('Saved settings.'), LOG_INFO, true);
+}
+
+/**
+ * Writes the configuration for an instance.
+ * 
+ * Does not validate data.
+ * 
+ * @param array $config Instance configuration.
+ * @param int $id (Optional) Configuration item to replace.
+ */
+function udpbr_set_instance_config(array $config, int $id = null): void {
+	global $udpbr_global;
+
+	if (isset($id) && config_get_path("{$udpbr_global['config_path']}/item/{$id}")) {
+		config_set_path("{$udpbr_global['config_path']}/item/{$id}", $config);
+		udpbr_log(gettext('Saved instance settings.'), LOG_INFO, true);
+	} else {
+		config_set_path("{$udpbr_global['config_path']}/item/", $config);
+		udpbr_log(gettext('Added new instance.'), LOG_INFO, true);
 	}
 }
 
-?>
+/**
+ * Delete one or more instances.
+ * 
+ * @param array $instance_ids A list of instance config IDs.
+ * 
+ * @return bool true if an instance was deleted, false otherwise.
+ */
+function udpbr_del_instance_config(array $instance_ids): bool {
+	global $udpbr_global;
+
+	$deleted_count = 0;
+	foreach ($instance_ids as $id) {
+		if (is_numericint($id) && (config_del_path("{$udpbr_global['config_path']}/item/" . intval($id)) !== null)) {
+			$deleted_count++;
+		}
+	}
+
+	if ($deleted_count > 0) {
+		udpbr_log(gettext("Deleted {$deleted_count} instance(s)."), LOG_INFO, true);
+		return true;
+	}
+
+	return false;
+}

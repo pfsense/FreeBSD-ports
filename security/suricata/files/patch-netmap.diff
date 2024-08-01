@@ -1,0 +1,12 @@
+diff -ruN ./suricata-7.0.6.orig/src/source-netmap.c ./suricata-7.0.6/src/source-netmap.c
+--- ./suricata-7.0.6.orig/src/source-netmap.c	2024-06-26 03:23:47.000000000 -0400
++++ ./src/source-netmap.c	2024-07-06 17:38:00.000000000 -0400
+@@ -673,7 +673,7 @@
+         }
+     }
+ 
+-    Packet *p = PacketPoolGetPacket();
++    Packet *p = PacketGetFromQueueOrAlloc();
+     if (unlikely(p == NULL)) {
+         return;
+     }

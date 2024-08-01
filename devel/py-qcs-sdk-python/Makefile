@@ -1,6 +1,7 @@
 PORTNAME=	qcs-sdk-python
 DISTVERSIONPREFIX=	python/v
 DISTVERSION=	0.17.7
+PORTREVISION=	2
 CATEGORIES=	devel python
 #MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,6 +23,8 @@ USE_PYTHON=	pep517 autoplist
 USE_GITHUB=	yes
 GH_ACCOUNT=	rigetti
 GH_PROJECT=	qcs-sdk-rust
+
+RUSTFLAGS=	${ARCH:S/i386/YES/:C/^[a-z].*//:S/YES/-C target-feature=+sse,+sse2/} # add sse sse2 target-features only on i386
 
 CARGO_CRATES=	addr2line-0.21.0 \
 		adler-1.0.2 \

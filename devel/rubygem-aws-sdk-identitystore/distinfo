@@ -1,3 +1,3 @@
-TIMESTAMP = 1708449908
-SHA256 (rubygem/aws-sdk-identitystore-1.34.0.gem) = 3933da7bd4610a1d9e0ed8493fb2ed25b6edaeb2ffc1c3a6ddb7d39590e6d9f2
-SIZE (rubygem/aws-sdk-identitystore-1.34.0.gem) = 36352
+TIMESTAMP = 1717662840
+SHA256 (rubygem/aws-sdk-identitystore-1.37.0.gem) = 0624955d9e4d5add9ea78c17d8fab58d586f081ac4c5e37210ad0d605cce3c4e
+SIZE (rubygem/aws-sdk-identitystore-1.37.0.gem) = 36864

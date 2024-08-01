@@ -1,5 +1,5 @@
 PORTNAME=	veloren
-PORTVERSION=	s20240503
+PORTVERSION=	s20240626
 CATEGORIES=	games wayland
 PKGNAMESUFFIX=	-weekly
 
@@ -18,14 +18,15 @@ ONLY_FOR_ARCHS_REASON=	unsupported platform by https://github.com/wasmerio/wasme
 LIB_DEPENDS=	libzstd.so:archivers/zstd \
 		libasound.so:audio/alsa-lib \
 		libudev.so:devel/libudev-devd \
-		libshaderc_shared.so:graphics/shaderc
+		libshaderc_shared.so:graphics/shaderc \
+		libxkbcommon-x11.so:x11/libxkbcommon
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
 		${LOCALBASE}/lib/libvulkan.so:graphics/vulkan-loader
 
 USES=		cargo xorg
 USE_XORG=	xcb
 USE_GITLAB=	yes
-GL_TAGNAME=	v0.16.0-145-g9e98d473e # git describe --match='v[0-9]*' weekly
+GL_TAGNAME=	v0.16.0-297-g6a4fcbe41 # git describe --match='v[0-9]*' weekly
 CARGO_ENV=	VELOREN_USERDATA_STRATEGY=system SHADERC_LIB_DIR="${LOCALBASE}/lib"
 PLIST_FILES=	bin/${PORTNAME}-server-cli \
 		bin/${PORTNAME}-voxygen \

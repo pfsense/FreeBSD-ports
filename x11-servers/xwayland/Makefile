@@ -1,13 +1,8 @@
 PORTNAME=	xwayland
-PORTVERSION=	23.2.6
+PORTVERSION=	24.1.0
 PORTEPOCH=	1
 CATEGORIES=	x11-servers
 MASTER_SITES=	XORG/individual/xserver
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	cd6c9c1246af.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	707c37b7ab9e.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	3b0d1a3a2296.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X11 server as Wayland client
@@ -49,7 +44,7 @@ DEFAULT_FONTPATH_LIST= \
 	${FONTPATH_ROOT}/75dpi/ \
 	catalogue:${FONTPATHD}
 
-OPTIONS_DEFINE=		CSD EI NVIDIA
+OPTIONS_DEFINE=		CSD EI
 OPTIONS_DEFAULT=	CSD EI
 
 CSD_DESC=		Client-side decorations via libdecor
@@ -59,9 +54,5 @@ CSD_MESON_TRUE=		libdecor
 EI_DESC=		Emulated input via libei
 EI_LIB_DEPENDS=		libei.so:x11/libei
 EI_MESON_OFF=		-Dxwayland_ei=false
-
-NVIDIA_DESC=		EGLStream support for glamor on Xwayland
-NVIDIA_BUILD_DEPENDS=	egl-wayland>0:graphics/egl-wayland
-NVIDIA_MESON_TRUE=	xwayland_eglstream
 
 .include <bsd.port.mk>

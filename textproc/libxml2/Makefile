@@ -1,5 +1,5 @@
 PORTNAME=	libxml2
-DISTVERSION=	2.11.7
+DISTVERSION=	2.11.8
 PORTREVISION?=	0
 CATEGORIES?=	textproc gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${DISTVERSION:R}/
@@ -55,6 +55,12 @@ post-patch:
 post-install:
 .if defined(LIBXML2_SLAVE)
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/site-packages/libxml2mod.so
+	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
+		-f -d ${PYTHONPREFIX_SITELIBDIR} \
+		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
+		-f -d ${PYTHONPREFIX_SITELIBDIR} \
+		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 .endif
 
 .include <bsd.port.mk>

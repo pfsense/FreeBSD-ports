@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	7.0.9
+DISTVERSION=	7.0.11
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -49,6 +49,15 @@ USE_RC_SUBR=	mongod
 SHEBANG_FILES=	buildscripts/scons.py
 python_OLD_CMD=	@python_interpreter@
 
+EXTRACT_AFTER_ARGS=	--exclude src/third_party/pcre2 \
+			--exclude src/third_party/snappy-* \
+			--exclude src/third_party/libstemmer_c \
+			--exclude src/third_party/unwind \
+			--exclude src/third_party/yaml-cpp \
+			--exclude src/third_party/zlib-* \
+			--exclude src/third_party/zstandard \
+			--no-same-owner --no-same-permissions
+
 MAKE_ARGS=	--allocator=system \
 		--cxx-std=20 \
 		--disable-warnings-as-errors \
@@ -75,7 +84,7 @@ GROUPS=		mongodb
 
 OPTIONS_DEFINE=		LTO SASL SSL NOAVX
 OPTIONS_DEFINE_aarch64=	ARMV80A
-OPTIONS_DEFAULT=	SASL SSL
+OPTIONS_DEFAULT=	SASL SSL NOAVX
 
 # MongoDB on non-LSE ARM cpu like Raspberry Pi can work but is unsupported upstream.
 # Can give corruption on high concurrency.
@@ -114,14 +123,6 @@ MOZJS_ARCH=	${ARCH}
 .endif
 
 post-patch:
-	${RM} -rf ${WRKSRC}/src/third_party/pcre2
-	${RM} -rf ${WRKSRC}/src/third_party/snappy-*
-	${RM} -rf ${WRKSRC}/src/third_party/libstemmer_c
-	${RM} -rf ${WRKSRC}/src/third_party/unwind
-	${RM} -rf ${WRKSRC}/src/third_party/yaml-cpp
-	${RM} -rf ${WRKSRC}/src/third_party/zlib-*
-	${RM} -rf ${WRKSRC}/src/third_party/zstandard
-
 # fix build with python-3.11
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/util.py
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/preprocessor.py

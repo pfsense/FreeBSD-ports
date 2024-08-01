@@ -16,9 +16,13 @@ pkg/patches/12cbb18a93c1f78e05806b6d3c90511e8967f43f.patch
 pkg/patches/13915.patch
 pkg/patches/13936.patch
 pkg/patches/14035.patch
+pkg/patches/14083.patch
 pkg/patches/14283.patch
 pkg/patches/14942.patch
 pkg/patches/15263-15264-combined.patch
+pkg/patches/15430-24_03.patch
+pkg/patches/15430-23_09_1.patch
+pkg/patches/15449.patch
 pkg/patches/17630ffa48e33def331a65ee50f1ba1d2c3a5de5.patch
 pkg/patches/18b8e41591905844627377b76347f8acba88f0a1.patch
 pkg/patches/1a57545864783b3acc5f28d166a79bd92a849759.patch
@@ -132,6 +136,7 @@ pkg/patches/fcd5e10a67ac9a67cc7116ea1a314aaea225c699.patch
 pkg/patches/fd30b9eda98900eb5f1a0c37d600ef4deaf582ad.patch
 pkg/patches/fed25589f4eba4ac6293fec7135f0078c03dfb62.patch
 pkg/patches/ff715efce5e6c65b3d49dc2da7e1bdc437ecbf12.patch
+pkg/patches/CVE-2024-6387-workaround.patch
 pkg/patches/statepolicy.patch
 pkg/patches/terrapin-no-etm-no-chacha.patch
 %%DATADIR%%/info.xml

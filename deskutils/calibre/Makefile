@@ -1,5 +1,5 @@
 PORTNAME=	calibre
-PORTVERSION=	7.10.0
+PORTVERSION=	7.12.0
 CATEGORIES=	deskutils python
 MASTER_SITES=	http://download.calibre-ebook.com/${PORTVERSION}/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -61,7 +61,7 @@ RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}apsw>=3.43.0.0:databases/py-apsw@${PY_FLAVO
 			xdg-open:devel/xdg-utils
 
 USES=		desktop-file-utils gettext-runtime:build gl localbase:ldflags \
-		pkgconfig pyqt:6 python qt:6 shared-mime-info shebangfix sqlite ssl \
+		pkgconfig pyqt:6 python:3.11+ qt:6 shared-mime-info shebangfix sqlite ssl \
 		tar:xz xorg
 USE_GL=		opengl
 USE_PYQT=	pyqt6 pysip qtbuilder sip webengine
@@ -70,8 +70,8 @@ USE_RC_SUBR=	calibre
 USE_XORG=	x11 xext xrender
 
 USE_GITHUB=	nodefault
-GH_TUPLE=	kovidgoyal:calibre-translations:9741e2c:translations \
-		LibreOffice:dictionaries:8c5b631:hypenation
+GH_TUPLE=	kovidgoyal:calibre-translations:ce2962b:translations \
+		LibreOffice:dictionaries:7272a82:hypenation
 
 SHEBANG_GLOB=	*.py *.recipe *.sh
 python_OLD_CMD=	"/usr/bin/env  python" ${LOCALBASE}/bin/python3

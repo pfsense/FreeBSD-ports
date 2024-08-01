@@ -22,25 +22,18 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/backup.inc");
 
-global $config, $backup_dir, $backup_filename, $backup_path;
+global $backup_dir, $backup_filename, $backup_path;
 
-if (!is_array($config['installedpackages']['backup'])) {
-	$config['installedpackages']['backup'] = array();
-}
+config_init_path('installedpackages/backup/config');
 
-if (!is_array($config['installedpackages']['backup']['config'])) {
-	$config['installedpackages']['backup']['config'] = array();
-}
-
-$a_backup = &$config['installedpackages']['backup']['config'];
 $backup_dir = "/root/backup";
 $backup_filename = "pfsense.bak.tgz";
 $backup_path = "{$backup_dir}/{$backup_filename}";
 
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
-		if ($a_backup[$_GET['id']]) {
-			unset($a_backup[$_GET['id']]);
+		if (config_get_path("installedpackages/backup/config/{$_GET['id']}")) {
+			config_del_path("installedpackages/backup/config/{$_GET['id']}");
 			write_config("Backup: Item deleted");
 			header("Location: backup.php");
 			exit;
@@ -52,10 +45,10 @@ if ($_GET['a'] == "download") {
 	if ($_GET['t'] == "backup") {
 		/* assume no... */
 		$has_backup = false;
-		if (count($a_backup) > 0) {
+		if (count(config_get_path('installedpackages/backup/config')) > 0) {
 			/* Do NOT remove the trailing space after / from $backup_cmd below!!! */
 			$backup_cmd = "/usr/bin/tar --exclude {$backup_path} --create --verbose --gzip --file {$backup_path} --directory / ";
-			foreach ($a_backup as $ent) {
+			foreach (config_get_path('installedpackages/backup/config', []) as $ent) {
 				if ($ent['enabled'] == "true") {
 					$backup_cmd .= escapeshellarg($ent['path']) . ' ';
 				}
@@ -220,9 +213,7 @@ display_top_tabs($tab_array);
 				</thead>
 				<tbody>
 <?php
-$i = 0;
-if (count($a_backup) > 0):
-	foreach ($a_backup as $ent): ?>
+foreach (config_get_path('installedpackages/backup/config', []) as $i => $ent): ?>
 					<tr>
 						<td><?=$ent['name']?>&nbsp;</td>
 						<td><?=$ent['path']?>&nbsp;</td>
@@ -233,9 +224,9 @@ if (count($a_backup) > 0):
 							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa-solid fa-trash-can" alt="delete"></i></a>
 						</td>
 					</tr>
-<?php	$i++;
-	endforeach;
-endif; ?>
+<?php
+endforeach;
+?>
 					<tr>
 						<td colspan="5"></td>
 						<td>

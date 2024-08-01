@@ -1,5 +1,5 @@
 PORTNAME=	level-zero
-PORTVERSION=	1.16.14
+PORTVERSION=	1.17.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -18,7 +18,6 @@ USES=		cmake compiler:c++14-lang localbase:ldflags pathfix
 
 CXXFLAGS+=	-DSPDLOG_FMT_EXTERNAL
 LDFLAGS+=	-lfmt
-PIE_UNSAFE=	yes
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}

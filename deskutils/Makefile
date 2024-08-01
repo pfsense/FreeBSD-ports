@@ -105,7 +105,6 @@
     SUBDIR += gpicker
     SUBDIR += grantlee-editor
     SUBDIR += grantleetheme
-    SUBDIR += griffith
     SUBDIR += growl-for-linux
     SUBDIR += gsimplecal
     SUBDIR += gtimer
@@ -250,6 +249,7 @@
     SUBDIR += rolo
     SUBDIR += rubygem-shellplay
     SUBDIR += rubygem-taskjuggler
+    SUBDIR += rwpspread
     SUBDIR += semantik
     SUBDIR += showdown
     SUBDIR += sigi
@@ -294,6 +294,7 @@
     SUBDIR += xcbautolock
     SUBDIR += xchm
     SUBDIR += xdg-desktop-portal
+    SUBDIR += xdg-desktop-portal-lxqt
     SUBDIR += xfce4-generic-slider
     SUBDIR += xfce4-notes-plugin
     SUBDIR += xfce4-notifyd

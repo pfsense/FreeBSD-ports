@@ -5,6 +5,174 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20240620:
+  AFFECTS: net-mgmt/net-snmp
+  AUTHOR: markj@FreeBSD.org
+
+  The snmpd and snmptrapd daemons now drop privileges by default when started
+  using the rc scripts provided in the package.  Make sure that snmpd
+  configuration in /usr/local/share/snmp is readable by the "snmpd" user.  If
+  you have defined extension scripts in snmpd.conf, make sure that they can be
+  executed by an unprivileged user.  To revert to the old behavior of always
+  running as root, set snmpd_sugid="NO" or snmptrapd_sugid="NO" in /etc/rc.conf.
+
+  See the snmpd rc script for a hint on how to debug any permission problems
+  that might arise as a result of this change.
+
+20240615:
+  AFFECTS: mail/cyrus-imapd25
+  AUTHOR: ume@FreeBSD.org
+
+  The BDB option is disabled by default.
+
+  If you are using the berkeley cyrusdb backend, we strongly recommend
+  that you switch to something other than the berkeley cyrusdb
+  backend.  If you want to continue using the berkeley cyrusdb
+  backend, build the cyrus-imapd25 port yourself with the BDB option
+  enabled.
+
+20240613:
+  AFFECTS: multimedia/audacios and multimedia/audacious-plugins
+  AUTHOR: madpilot@FreeBSD.org
+
+  Upstream project made qt6 the new default, so the port flavors have
+  been updated to follow this change.
+
+  If you are using the qt6 flavor, you should uninstall it and install
+  the unflavored package. If you want to keep using the qt5 version it
+  will be updated automatically to the qt6 version. If you should
+  uninstall the unflavored package and instal the qt5 version.
+
+20240606:
+  AFFECTS: users of net-mgmt/unifi8
+  AUTHOR: ronald@FreeBSD.org
+
+  The default MongoDB version dependency has been switched from 5.0 to 6.0.
+  Although MongoDB 5.0 -> MongoDB 6.0 datafiles in-place upgrade seem to
+  work, users are strongly recommended to take full backup of unifi
+  database prior to upgrade and start with clean installation afterwards.
+
+  For an in-place upgrade it is important that the MongoDB
+  'featureCompatibilityVersion' is set to 5.0.
+  See: https://www.mongodb.com/docs/v6.0/release-notes/6.0-upgrade-standalone/#feature-compatibility-version
+
+  See updating entry 20230310 for a backup/restore upgrade.
+
+20240604:
+  AFFECTS: net-mgmt/net-snmp
+  AUTHOR: markj@FreeBSD.org
+
+  The net-snmp port's newsyslog(8) configuration has been updated such
+  that the snmpd log file will be owned by the snmpd user following log
+  rotation.  This is done to make it easier to run snmpd as the snmpd
+  user rather than as root, using the snmpd_sugid rc.conf option.
+  For now snmpd still runs as root by default.  This is expected to change
+  in the future.
+
+20240529:
+  AFFECTS: users of TeX*
+  AUTHOR: bofh@FreeBSD.org
+
+  TeX system has been updated to 2024 from 2023. Normal pkg upgrade or
+  portmaster -a should handle all the upgrade properly. In case not please
+  create a ticket or send a mail to tex@FreeBSD.org
+
+  Previously users have reported to delete texlive-texmf prior to
+  starting update, or pkg-static will indicate there is a conflict
+  during the upgrade of texlive-base :
+
+  # pkg remove texlive-texmf
+
+20240529:
+  AFFECTS: users of python
+  AUTHOR: rm@FreeBSD.org
+
+  The default version of python3 and python was switched to 3.11.
+
+  For ports users wanting to keep version 3.9 as default,
+  add DEFAULT_VERSIONS+= python=3.9 python3=3.9 to make.conf
+
+  Following procedures may ease the upgrade:
+
+  For users of pre-build packages:
+  # sh
+  # for i in $(pkg query -g %n 'py39-*'); do pkg set -yn ${i}:py311-${i#py39-}; done
+  # pkg upgrade
+
+  For portmaster users:
+  # sh
+  # portmaster -o lang/python311 python39
+  # REINSTALL="$(pkg info -oq '*py39*')"
+  # pkg delete -f "*py39*"
+  # portmaster $REINSTALL
+  # REBUILD=$(pkg query -g "%n:%dn" '*' | grep py3 | grep -v py311 | cut -d : -f 1 | sort -u)
+  # portmaster $REBUILD
+  # REBUILD2=$(pkg list | grep python-39 | xargs pkg which | awk '{print $6}' | sort -u)
+  # portmaster $REBUILD2
+
+  Final steps (for pre-built packages & portmaster):
+
+  If no longer required, Python 3.9 can be removed via
+  "pkg remove python39" and the directory /usr/local/lib/python3.9 can
+  then be deleted afterwards, if not empty.
+
+20240522:
+  AFFECTS: net-p2p/transmission-daemon
+
+  The web interface has been separated from the daemon port into its own port.
+  This allows users of transmission-gtk and transmission-qt to install the web
+  interface.
+
+20240521:
+  AFFECTS: www/gitlab
+  AUTHOR: mfechner@FreeBSD.org
+
+  Make sure you upgrade first to 16.11.x before you upgrade to the today
+  released version 17.0.0.
+
+  For more details see:
+  https://gitlab.fechner.net/mfechner/Gitlab-docu/-/blob/master/update/16.11-17.0-freebsd.md
+
+20240517:
+  AFFECTS: comms/tio
+  AUTHOR: diizzy@FreeBSD.org
+
+  As of 3.1 upstream have reworked configuration file layout and syntax
+  so older configurations will not work.
+
+  For more details, see
+
+  https://github.com/tio/tio/releases/tag/v3.1
+
+20240513:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 3.9 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
+20240509:
+  AFFECTS: databases/timescaledb
+  AUTHOR: kbowling@FreeBSD.org
+
+  The Foreign Key storage in hypertables has changed in an incompatible way,
+  after runing ALTER EXTENSION, you must run the SQL script here:
+  https://github.com/timescale/timescaledb-extras/blob/master/utils/2.15.X-fix_hypertable_foreign_keys.sql
+
+  For more details, see
+
+  https://github.com/timescale/timescaledb/pull/6797
+
 20240508:
   AFFECTS: www/oauth2-proxy
   AUTHOR: netchild@FreeBSD.org
@@ -54,20 +222,6 @@ you update your ports collection, before attempting any port upgrades.
   Please note, that the ee flavor is a draft, but any feedback is welcome.
   See also the installation and upgrade manual for more details.
   https://gitlab.fechner.net/mfechner/Gitlab-docu/-/blob/master/install/16.11-freebsd.md
-
-20240409:
-  AFFECTS: x11-servers/xwayland-devel
-  AUTHOR: jbeich@FreeBSD.org
-
-  xwayland-devel has dropped HiDPI patches thus currently incompatible
-  with stable/legacy versions of wlroots. Only affects builds when
-  /usr/local/bin/Xwayland is already installed. Doesn't affect
-  hyprland and sway-devel or non-wlroots compositors.
-
-  If you use portmaster:
-    # portmaster -o x11-servers/xwayland-devel x11-servers/xwayland
-  If you use portupgrade:
-    # portupgrade -o x11-servers/xwayland-devel x11-servers/xwayland
 
 20240408:
   AFFECTS: users of databases/p5-DBD-mysql

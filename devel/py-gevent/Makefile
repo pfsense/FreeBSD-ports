@@ -36,10 +36,13 @@ USE_PYTHON=	autoplist concurrent pep517
 MAKE_ENV=	GEVENTSETUP_EMBED_CARES=0 GEVENTSETUP_EMBED_LIBEV=0 GEVENTSETUP_EMBED_LIBUV=0
 TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR}
 
-post-patch:
-	@${RM} ${WRKSRC}/src/gevent/_util_py2.py
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/deps \
+			--no-same-owner --no-same-permissions
+.else
 	@${RM} -r ${WRKSRC}/deps/
+.endif
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +

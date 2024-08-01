@@ -31,16 +31,16 @@ define('SUDO_CONF', SUDO_CONFIG_DIR . '/sudo.conf');
 define('SUDO_SUDOERS', SUDO_CONFIG_DIR . '/sudoers');
 
 function sudo_install() {
-	global $g, $config;
+	global $g;
 
 	/*
 	 * If we don't have a config, pre-load some good default sudo entries.
 	 */
 	if (is_array(
-	    $config['installedpackages']['sudo']['config'][0]['row'])) {
+	    config_get_path('installedpackages/sudo/config/0/row'))) {
 		return;
 	}
-	$config['installedpackages']['sudo']['config'][0]['row'] = array(
+	config_set_path('installedpackages/sudo/config/0/row', array(
 		0 => array(
 			"username" => "user:root",
 			"runas" => "user:root",
@@ -56,11 +56,10 @@ function sudo_install() {
 			"runas" => "user:root",
 			"cmdlist" => "ALL"
 		)
-	);
+	));
 }
 
 function sudo_write_config() {
-	global $config;
 	$sudoers = "";
 
 	$sudoconf = "Plugin sudoers_policy " . SUDO_LIBEXEC_DIR .
@@ -70,21 +69,20 @@ function sudo_write_config() {
 	file_put_contents(SUDO_CONF, $sudoconf);
 
 	if (!is_array(
-	    $config['installedpackages']['sudo']['config'][0]['row'])) {
+	    config_get_path('installedpackages/sudo/config/0/row'))) {
 		/* No config, wipe sudoers file and bail. */
 		unlink(SUDO_SUDOERS);
 		log_error("No sudo configuration found, removing sudoers " .
 		    "file to prevent unpredictable results.");
 		return;
 	}
-	$sudocfg = &$config['installedpackages']['sudo']['config'][0];
 
-	if ($sudocfg['add_includedir'] == 'include_start') {
+	if (config_get_path('installedpackages/sudo/config/0/add_includedir') == 'include_start') {
 		$sudoers .= "#includedir /usr/local/etc/sudoers.d\n";
 	}
 
 	/* Parse the config and massage it into proper sudo config lines. */
-	foreach ($sudocfg['row'] as $sudo_commands) {
+	foreach (config_get_path('installedpackages/sudo/config/0/row', []) as $sudo_commands) {
 		// (user|group) ALL=(ALL|user spec) ALL|command list
 		list($etype, $ename) = explode(":", $sudo_commands['username']);
 		$user = ($etype == "group") ? "%{$ename}" : $ename;
@@ -98,7 +96,7 @@ function sudo_write_config() {
 		$sudoers .= "{$user} ALL=({$runas}) {$nopasswd} {$commands}\n";
 	}
 
-	if ($sudocfg['add_includedir'] == 'include_end') {
+	if (config_get_path('installedpackages/sudo/config/0/add_includedir') == 'include_end') {
 		$sudoers .= "#includedir /usr/local/etc/sudoers.d\n";
 	}
 
@@ -127,16 +125,12 @@ function sudo_write_config() {
  * entries.  Optionally include "ALL" as a user (for use by the Run As list)
  */
 function sudo_get_users($list_all_user = false) {
-	global $config;
-	if (!is_array($config['system']['user'])) {
-		$config['system']['user'] = array();
-	}
-	$a_user = &$config['system']['user'];
+	config_init_path('system/user');
 
 	/* Make an entry for root, even though admin is essentially the same
 	 * as root, they are distinct.
 	 */
-	$a_user[]['name'] = 'root';
+	config_set_path('system/user/', ['name' => 'root']);
 
 	/* Include users created by other packages */
 	$stdout = '';
@@ -147,13 +141,10 @@ function sudo_get_users($list_all_user = false) {
 		if ($user == '') {
 			continue;
 		}
-		$a_user[]['name'] = $user;
+		config_set_path('system/user/', ['name' => $user]);
 	}
 
-	if (!is_array($config['system']['group'])) {
-		$config['system']['group'] = array();
-	}
-	$a_group = &$config['system']['group'];
+	config_init_path('system/group');
 	
 	/* Include groups created by other packages */
 	pkg_exec('query %G', $stdout, $stderr);
@@ -161,7 +152,7 @@ function sudo_get_users($list_all_user = false) {
 		if ($group == '') {
 			continue;
 		}
-		$a_group[]['name'] = $group;
+		config_set_path('system/group/', ['name' => $group]);
 	}
 
 	$users = array();
@@ -174,7 +165,7 @@ function sudo_get_users($list_all_user = false) {
 		$users[] = $tmpuser;
 	}
 
-	foreach ($a_user as $user) {
+	foreach (config_get_path('system/user', []) as $user) {
 		$tmpuser = array();
 		$tmpuser["name"] = "user:{$user['name']}";
 		$tmpuser["descr"] = "User: {$user['name']}";
@@ -190,7 +181,7 @@ function sudo_get_users($list_all_user = false) {
 	$tmpuser["descr"] = "Group: wheel";
 	$users[] = $tmpuser;
 
-	foreach ($a_group as $group) {
+	foreach (config_get_path('system/group', []) as $group) {
 		/*
 		 * The "all" group is internal and doesn't make sense to use
 		 * here.
@@ -231,21 +222,20 @@ function sudo_validate_commands(&$input_errors) {
 }
 
 function sudo_sync_config() {
-	global $config;
-	init_config_arr(array('hasync'));
-	$system_carp = $config['hasync'];
+	config_init_path('hasync');
+	$system_carp = config_get_path('hasync');
 	if (!is_array($system_carp) ||
 	    !$system_carp['synchronizetoip'] ||
 	    !$system_carp['username'] ||
 	    !$system_carp['password']) {
 		return -1;
 	}
-	if ($config['system']['webgui']['protocol'] == "http") {
+	if (config_get_path('system/webgui/protocol') == "http") {
 		$varsyncprotocol = "http";
-		$varsyncport = $config['system']['webgui']['port'] ?: '80';
+		$varsyncport = config_get_path('system/webgui/port') ?: '80';
 	} else {
 		$varsyncprotocol = "https";
-		$varsyncport = $config['system']['webgui']['port'] ?: '443';
+		$varsyncport = config_get_path('system/webgui/port') ?: '443';
 	}
 	sudo_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
 	    $varsyncprotocol, $system_carp['username'],
@@ -255,14 +245,12 @@ function sudo_sync_config() {
 /* Do the actual XMLRPC sync */
 function sudo_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
     $password, $synctimeout) {
-	global $config;
-
 	/*
 	 * Send over the <sudo> portion of config.xml
 	 * $xml will hold the section to sync.
 	 */
 	$xml = array();
-	$xml['sudo'] = $config['installedpackages']['sudo'];
+	$xml['sudo'] = config_get_path('installedpackages/sudo');
 
 	$remote_sudo_config_apply = <<<EOD
 require_once('/usr/local/pkg/sudo.inc');

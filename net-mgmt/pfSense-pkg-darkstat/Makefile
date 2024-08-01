@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-darkstat
 PORTVERSION=	3.1.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

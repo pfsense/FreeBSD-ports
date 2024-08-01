@@ -1,6 +1,7 @@
 PORTNAME=	surelog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.82
+DISTVERSION=	1.83
+PORTREVISION=	1
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -70,7 +71,7 @@ post-install:
 	@${RM} -r \
 		${STAGEDIR}${DATADIR}
 
-post-test:
-	cd ${BUILD_WRKSRC} && ctest
+post-test: # 9 tests fail, see https://github.com/chipsalliance/Surelog/issues/3971
+	@cd ${BUILD_WRKSRC} && ctest
 
 .include <bsd.port.mk>

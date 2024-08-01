@@ -25,58 +25,35 @@ require_once("pkg-utils.inc");
 require_once("haproxy.inc");
 
 function haproxy_upgrade_config() {
-	global $config, $static_output;
+	global $static_output;
 	// for future config upgrades.
 	// make sure the version stays 'comparable'
-	if (is_arrayset($config,'installedpackages','haproxy') && isset($config['installedpackages']['haproxy']['configversion']))
-		$configversion = $config['installedpackages']['haproxy']['configversion'];
-	else
-		$configversion = "00.12";
+	$configversion = config_get_path('installedpackages/haproxy/configversion', "00.12");
 
 	$static_output .= "HAProxy, from version $configversion\n";
 	update_output_window($static_output);
 	
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy'])) {
-		$config['installedpackages']['haproxy'] = array();
-	}
+	config_init_path('installedpackages/haproxy');
 
 	$writeconfigupdate = false;
 	if ($configversion < "00.13") {
 		/* Do XML upgrade from haproxy 0.31 to haproxy-dev */
-		if (is_array($config['installedpackages']['haproxy']['ha_servers'])) {
+		if (is_array(config_get_path('installedpackages/haproxy/ha_servers'))) {
 			$static_output .= "HAProxy, Do XML upgrade from haproxy 0.31 to haproxy-dev\n";
 			update_output_window($static_output);
 
 		/* We have an old config */
-			$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-			$a_global = &$config['installedpackages']['haproxy'];
-			
-			if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-				$config['installedpackages']['haproxy']['ha_backends'] = array();
-			}
-			if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-				$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-			}
-			$a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+			config_set_path('installedpackages/haproxy/ha_pools/item', []);
+			$a_global = config_get_path('installedpackages/haproxy');
 
-			if (!is_array($config['installedpackages']['haproxy']['ha_servers'])) {
-				$config['installedpackages']['haproxy']['ha_servers'] = array();
-			}
-			if (!is_array($config['installedpackages']['haproxy']['ha_servers']['item'])) {
-				$config['installedpackages']['haproxy']['ha_servers']['item'] = array();
-			}
-			$a_oldservers = &$config['installedpackages']['haproxy']['ha_servers']['item'];
+			config_init_path('installedpackages/haproxy/ha_backends/item');
+			$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item');
 
-			if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-				$config['installedpackages']['haproxy']['ha_pools'] = array();
-			}
-			if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-				$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-			}
-			$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+			config_init_path('installedpackages/haproxy/ha_servers/item');
+			$a_oldservers = config_get_path('installedpackages/haproxy/ha_servers/item');
+
+			config_init_path('installedpackages/haproxy/ha_pools/item');
+			$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item');
 
 			foreach ($a_backends as $id => $be) {
 				$a_backends[$id]['status'] = 'active';
@@ -111,41 +88,46 @@ function haproxy_upgrade_config() {
 				unset($pool['weight']);
 				$a_pools[] = $pool;
 			}
-			unset($config['installedpackages']['haproxy']['ha_servers']);
+			config_set_path('installedpackages/haproxy/ha_backends/item', $a_backends);
+			config_set_path('installedpackages/haproxy/ha_pools/item', $a_pools);
+			config_del_path('installedpackages/haproxy/ha_servers');
 			$writeconfigupdate = true;
 		}
 
 		/* XML update to: pkg v1.3 and 'pool' changed to 'backend_serverpool' because 'pool' was added to listtags() in xmlparse.inc */
-		if (is_arrayset($config,'installedpackages','haproxy','ha_backends','item',0,'pool')) {
+		if (is_array(config_get_path('installedpackages/haproxy/ha_backends/item/0/pool'))) {
 			$static_output .= "HAProxy, Do XML upgrade, change to backend_serverpool from pool array\n";
 			update_output_window($static_output);
-
-			foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend)
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			foreach($frontends_config as &$frontend)
 			{
 				$backend_serverpool = $frontend['pool'][0];
 				$frontend['backend_serverpool'] = $backend_serverpool;
 				unset($frontend['pool']);
 			}
+			config_set_path('installedpackages/haproxy/ha_backends/item', $frontends_config);
 			$writeconfigupdate = true;
 		}
 		//also move setting for existing 2.0 installations as only the new variable is used
-		if (is_arrayset($config,'installedpackages','haproxy','ha_backends','item',0) &&
-			isset($config['installedpackages']['haproxy']['ha_backends']['item'][0]['pool'])) {
+		if (is_array(config_get_path('installedpackages/haproxy/ha_backends/item/0/pool'))) {
 			$static_output .= "HAProxy, Do XML upgrade, change to backend_serverpool from pool\n";
 			update_output_window($static_output);
-			foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend)
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			foreach($frontends_config as &$frontend)
 			{
 				$backend_serverpool = $frontend['pool'];
 				$frontend['backend_serverpool'] = $backend_serverpool;
 				unset($frontend['pool']);
 			}
+			config_set_path('installedpackages/haproxy/ha_backends/item', $frontends_config);
 			$writeconfigupdate = true;
 		}
 		// update config to "haproxy-devel 1.5-dev19 pkg v0.5"
-		if(is_arrayset($config,'installedpackages','haproxy','ha_backends','item')) {
+		if(is_array(config_get_path('installedpackages/haproxy/ha_backends/item'))) {
 			$static_output .= "HAProxy, Do XML upgrade, update frontend options\n";
 			update_output_window($static_output);
-			foreach ($config['installedpackages']['haproxy']['ha_backends']['item'] as &$bind) {
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			foreach ($frontends_config as &$bind) {
 				if($bind['httpclose'] && $bind['httpclose'] == "yes" ) {
 					$bind['httpclose'] = "httpclose";
 					$writeconfigupdate = true;
@@ -163,12 +145,14 @@ function haproxy_upgrade_config() {
 					$writeconfigupdate = true;
 				}
 			}
+			config_set_path('installedpackages/haproxy/ha_backends/item', $frontends_config);
 		}
 	}
 	if ($configversion < "00.13") {
 		// update config to "haproxy-devel 1.5-dev19 pkg v0.13"
-		if (is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-			foreach ($config['installedpackages']['haproxy']['ha_backends']['item'] as &$bind) {
+		$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+		if (is_array($frontends_config)) {
+			foreach ($frontends_config as &$bind) {
 				if (isset($bind['extaddr'])) {
 					$new['extaddr'] = $bind['extaddr'];
 					$new['extaddr_port'] = $bind['port'];
@@ -179,6 +163,7 @@ function haproxy_upgrade_config() {
 				unset($bind['port']);
 				//unset($bind['ssloffload']);
 			}
+			config_set_path('installedpackages/haproxy/ha_backends/item', $frontends_config);
 		}
 		$configversion = "00.13";
 	}
@@ -193,8 +178,9 @@ function haproxy_upgrade_config() {
 		$static_output .= "HAProxy, 00.17\n";
 		update_output_window($static_output);
 		// remove 'none' ca-cert, and set checkbox to allow for no certificate instead.
-		if (is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-			foreach ($config['installedpackages']['haproxy']['ha_backends']['item'] as &$bind) {
+		$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+		if (is_array($frontends_config)) {
+			foreach ($frontends_config as &$bind) {
 				$list = array();
 				foreach ($bind['clientcert_ca']['item'] as $ca){
 					if (empty($ca['cert_ca']))
@@ -204,17 +190,18 @@ function haproxy_upgrade_config() {
 				}
 				$bind['clientcert_ca']['item'] = $list;
 			}
+			config_set_path('installedpackages/haproxy/ha_backends/item', $frontends_config);
 		}
 		$configversion = "00.17";
 	}
 	if ($configversion < "00.19") {
 		update_output_window($static_output);
-		$carpint = $config['installedpackages']['haproxy']['carpdev'];
-		if (is_arrayset($config, 'virtualip', 'vip') && is_arrayset($config, 'installedpackages', 'haproxy')) {
-			foreach($config['virtualip']['vip'] as $carp) {
+		$carpint = config_get_path('installedpackages/haproxy/carpdev');
+		if (is_array(config_get_path('installedpackages/haproxy'))) {
+			foreach(config_get_path('virtualip/vip', []) as $carp) {
 				$carp_int = "{$carp['interface']}_vip{$carp['vhid']}";
 				if ($carp_int == $carpint) {
-					$config['installedpackages']['haproxy']['carpdev'] = $carp['subnet'];
+					config_set_path('installedpackages/haproxy/carpdev', $carp['subnet']);
 					break;
 				}
 			}
@@ -223,8 +210,9 @@ function haproxy_upgrade_config() {
 	}
 	if ($configversion < "00.32") {
 		$frontends = array();
-		if (is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-			foreach ($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend) {
+		$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+		if (is_array($frontends_config)) {
+			foreach ($frontends_config as &$frontend) {
 				$primaryfrontend = get_primaryfrontend($frontend);
 				$fe_name = $primaryfrontend['name'];
 				$frontends[$fe_name][] = &$frontend;
@@ -289,25 +277,14 @@ function haproxy_upgrade_config() {
 					}
 				}
 			}
+			config_set_path('installedpackages/haproxy/ha_backends/item', $frontends_config);
 		}
 		$configversion = "00.32";
 	}
 	if ($configversion < "00.57") {
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-			$config['installedpackages']['haproxy']['ha_backends'] = array();
-		}
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-		}
-		if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-			$config['installedpackages']['haproxy']['ha_pools'] = array();
-		}
-		if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-			$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-		}
+		config_init_path('installedpackages/haproxy/ha_backends/item');
+		config_init_path('installedpackages/haproxy/ha_pools/item');
 
-		$haproxycfg = &$config['installedpackages']['haproxy'];
-		$a_frontend = &$haproxycfg['ha_backends']['item'];
 		// - assign unique ID's to all backends and servers for saving/loading server-state file
 		//
 		// - the backend nolonger automaticaly 'guesses' the desired backend ssl/check-ssl flags..
@@ -318,16 +295,16 @@ function haproxy_upgrade_config() {
 		
 		$id = 100;
 		$newbackends = array();
-		foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		foreach(config_get_path('installedpackages/haproxy/ha_pools/item', []) as $bidx => $backend) {
 			$id++;
 			$backend['id'] = $id;
+			config_set_path("installedpackages/haproxy/ha_pools/item/{$bidx}/id", $id);
 			
 			$fes = find_frontends_using_backend($backend['name']);
 			$httpfrontend = false;
 			$tcpfrontend = false;
 			foreach($fes as $fename) {
-				$frontend = $a_frontend[get_frontend_id($fename)];
-				if ($frontend['type'] == "http") {
+				if (config_get_path('installedpackages/haproxy/ha_backends/item/' . get_frontend_id($fename) . '/type') == "http") {
 					$httpfrontend = true;
 				} else {
 					$tcpfrontend = true;
@@ -355,7 +332,7 @@ function haproxy_upgrade_config() {
 				$newbackends[] = $newbackend;
 				
 				// rename backend references where required.
-				$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+				$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item');
 				foreach ($a_frontends as &$frontend) {
 					if ($frontend['type'] == 'http') {
 						continue;
@@ -374,6 +351,7 @@ function haproxy_upgrade_config() {
 					}
 				}
 				unset($frontend);
+				config_set_path('installedpackages/haproxy/ha_backends/item', $a_frontends);
 				
 			} else {
 				// only https/tcp frontends to this backend..
@@ -387,33 +365,35 @@ function haproxy_upgrade_config() {
 							$server['checkssl'] = 'yes';
 						}
 					}
+					config_set_path("installedpackages/haproxy/ha_pools/item/{$bidx}", $backend);
 				}
 			}
 		}
-		unset($backend);
 		// add duplicated backends to the config.
 		foreach($newbackends as $newbackend) {
-			$haproxycfg['ha_pools']['item'][] = $newbackend;
+			config_set_path('installedpackages/haproxy/ha_pools/item/', $newbackend);
 		}
 		$configversion = "00.57";
 	}
 	if ($configversion < "00.58") {
-		if (is_arrayset($config,'installedpackages','haproxy','ha_backends','item')) {
+		if (is_array(config_get_path('installedpackages/haproxy/ha_backends/item'))) {
 			$static_output .= "HAProxy, Do XML upgrade, update description fields\n";
 			update_output_window($static_output);
-			foreach ($config['installedpackages']['haproxy']['ha_backends']['item'] as &$item) {
+			$frontends_config = config_get_path('installedpackages/haproxy/ha_backends/item');
+			foreach ($frontends_config as &$item) {
 				if (isset($item['desc'])) {
 					$item['descr'] = $item['desc'];
 					unset($item['desc']);
 				}
 			}
+			config_set_path('installedpackages/haproxy/ha_backends/item', $frontends_config);
 		}
 		$configversion = "00.58";
 	}
 
-	$writeconfigupdate = $config['installedpackages']['haproxy']['configversion'] <> $configversion;
+	$writeconfigupdate = config_get_path('installedpackages/haproxy/configversion') <> $configversion;
 	if ($writeconfigupdate) {
-		$config['installedpackages']['haproxy']['configversion'] = $configversion;
+		config_set_path('installedpackages/haproxy/configversion', $configversion);
 		$static_output .= "HAProxy, write updated config to version: $configversion\n";
 		update_output_window($static_output);
 		write_config("HAProxy, update xml config version to version: ". $configversion);

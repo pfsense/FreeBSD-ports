@@ -59,7 +59,7 @@ function zeek_get_real_interface_address($iface) {
 
 /* Check whether Zeek is enabled*/
 function zeek_enabled() {
-	global $config, $zeek_enabled;
+	global $zeek_enabled;
 	$zeek_enabled = false;
 
 	$settings = config_get_path('installedpackages/zeek/config/0', []);
@@ -76,7 +76,7 @@ function zeek_enabled() {
 
 // Check whether Zeek Cluster is enabled
 function zeek_cluster_enabled() {
-	global $config, $zeek_cluster_enabled;
+	global $zeek_cluster_enabled;
 	$zeek_cluster_enabled = false;
 
 	$settings = config_get_path('installedpackages/zeekcluster/config/0', []);
@@ -90,7 +90,6 @@ function zeek_cluster_enabled() {
 
 // Start and/or stop services according to Zeek configuration
 function zeek_restart_services() {
-	global $config;
 	// do not (re)start zeek services on boot
 	if (platform_booting()) {
 		return;
@@ -162,7 +161,7 @@ EOD;
 */
 
 function zeek_install_command() {
-	global $g, $config;
+	global $g;
 
 	/* Hard kill any running zeek processes that may have been started by any
 	 of the pfSense scripts such as check_reload_status() or rc.start_packages*/
@@ -218,10 +217,8 @@ function zeek_deinstall_command() {
 
 // Zeek NSM: General Settings input validation
 function zeek_validate_general($post, &$input_errors) {
-	global $config;
-
-	init_config_arr(array('installedpackages', 'zeek', 'config'));
-	$settings = &$config['installedpackages']['zeek']['config'][0];
+	config_init_path('installedpackages/zeek/config');
+	$settings = config_get_path('installedpackages/zeek/config/0');
 
 	if ($post['enable'] == "on") {
 		if (!zeek_cluster_enabled()) {
@@ -319,8 +316,6 @@ function zeek_validate_cluster($post, &$input_errors) {
 }
 
 function zeek_validate_script($post, &$input_errors) {
-	global $config;
-
 	if (!zeek_enabled()) {
 		$input_errors[] = 'Enabled Zeek instance first';
 	} else {
@@ -344,8 +339,6 @@ function zeek_validate_script($post, &$input_errors) {
 }
 
 function zeek_settings_resync() {
-	global $config;
-
 	$networksfile =  ZEEK_ETC . '/networks.cfg';
 	$nodefile =  ZEEK_ETC . '/node.cfg';
 
@@ -356,8 +349,8 @@ function zeek_settings_resync() {
 		return;
 	}
 
-	init_config_arr(array('installedpackages', 'zeek', 'config'));
-	$settings = &$config['installedpackages']['zeek']['config'][0];
+	config_init_path('installedpackages/zeek/config');
+	$settings = config_get_path('installedpackages/zeek/config/0');
 
 	$hostname = ($settings['hostname'] ? $settings['hostname'] : 'localhost');
 	// Read assigned interface
@@ -437,10 +430,8 @@ EOD;
 }
 
 function zeek_zeekctl_resync() {
-	global $config;
-
-	init_config_arr(array('installedpackages', 'zeekcontrol', 'config'));
-	$settings = &$config['installedpackages']['zeekcontrol']['config'][0];
+	config_init_path('installedpackages/zeekcontrol/config');
+	$settings = config_get_path('installedpackages/zeekcontrol/config/0');
 
 	$email = $settings['admin_email'] ? $settings['admin_email'] : 'admin@localhost';
 	$mailconnection = ($settings['mail_connection_summary'] == "on") ? 1 : 0;
@@ -544,10 +535,8 @@ EOD;
 }
 
 function zeek_cluster_resync() {
-	global $config;
-
-	init_config_arr(array('installedpackages', 'zeekcluster', 'config'));
-	$settings = &$config['installedpackages']['zeekcluster']['config'][0];
+	config_init_path('installedpackages/zeekcluster/config');
+	$settings = config_get_path('installedpackages/zeekcluster/config/0');
 
 	$managerhost = ($settings['manager_host'] ? $settings['manager_host'] : 'localhost');
 	$proxyhost = ($settings['proxy_host'] ? $settings['proxy_host'] : 'localhost');
@@ -621,11 +610,11 @@ EOD;
 }
 
 function zeek_log_resync() {
-	global $config, $zeeklogstate;
+	global $zeeklogstate;
 	$zeeklogstate = false;
 
-	init_config_arr(array('installedpackages', 'zeeklog', 'config'));
-	$settings = &$config['installedpackages']['zeeklog']['config'][0];
+	config_init_path('installedpackages/zeeklog/config');
+	$settings = config_get_path('installedpackages/zeeklog/config/0');
 
 	if ($settings['remove_zeek_log'] == "on") {
 		$zeeklogstate = true;
@@ -634,8 +623,6 @@ function zeek_log_resync() {
 }
 
 function zeek_script_resync() {
-	global $config;
-
 	$conf = '';
 	$conf .= <<<EOD
 ##! Local site policy. Customize as appropriate.
@@ -727,10 +714,10 @@ function zeek_script_resync() {
 
 EOD;
 
-	init_config_arr(array('installedpackages', 'zeekscript', 'config'));
+	config_init_path('installedpackages/zeekscript/config');
 
 	if (zeek_enabled()) {
-		foreach ($config['installedpackages']['zeekscript']['config'] as $script) {
+		foreach (config_get_path('installedpackages/zeekscript/config', []) as $script) {
 			$path = $script['zeekscriptpath'];
 			$filename = '';
 			if ($script['zeekscriptpath'] == '') {
@@ -769,8 +756,6 @@ EOD;
 
 // Uses XMLRPC to synchronize the changes to a remote node
 function zeek_sync_on_changes() {
-	global $config;
-
 	$zeek_sync = config_get_path('installedpackages/zeeksync/config/0', []);
 	$synconchanges = $zeek_sync['synconchanges'];
 	$synctimeout = $zeek_sync['synctimeout'] ?: '250';
@@ -784,19 +769,19 @@ function zeek_sync_on_changes() {
 			}
 		break;
 		case "auto":
-			if (is_array($config['hasync'])) {
-				$system_carp = $config['hasync'];
+			if (is_array(config_get_path('hasync'))) {
+				$system_carp = config_get_path('hasync');
 				$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
 				$rs[0]['username'] = $system_carp['username'];
 				$rs[0]['password'] = $system_carp['password'];
 				$rs[0]['syncdestinenable'] = FALSE;
 				// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-				if ($config['system']['webgui']['protocol'] == "http") {
+				if (config_get_path('system/webgui/protocol') == "http") {
 					$rs[0]['syncprotocol'] = "http";
-					$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
+					$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '80';
 				} else {
 					$rs[0]['syncprotocol'] = "https";
-					$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
+					$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '443';
 				}
 				if ($system_carp['synchronizetoip'] == "") {
 					log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
@@ -852,7 +837,7 @@ function zeek_sync_on_changes() {
 
 // Do the actual XMLRPC sync
 function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
-	global $config, $g;
+	global $g;
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
 		log_error("[zeek] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
@@ -860,10 +845,10 @@ function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $v
 	}
 	/* XML will hold the sections to sync */
 	$xml = array();
-	$xml['zeek'] = $config['installedpackages']['zeek'];
-	$xml['zeekcontrol'] = $config['installedpackages']['zeekcontrol'];
-	$xml['zeekcluster'] = $config['installedpackages']['zeekcluster'];
-	$xml['zeekscript'] = $config['installedpackages']['zeekscript'];
+	$xml['zeek'] = config_get_path('installedpackages/zeek');
+	$xml['zeekcontrol'] = config_get_path('installedpackages/zeekcontrol');
+	$xml['zeekcluster'] = config_get_path('installedpackages/zeekcluster');
+	$xml['zeekscript'] = config_get_path('installedpackages/zeekscript');
 
 	$synctimeout = intval($varsynctimeout);
 	$execcmd = "require_once('/usr/local/pkg/zeek.inc');\n";

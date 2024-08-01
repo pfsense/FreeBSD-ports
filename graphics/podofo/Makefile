@@ -46,11 +46,19 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 TIFF_CMAKE_BOOL=	WANT_TIFF
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
-post-patch:
 # Clean up bundled libraries
+.if !defined(MAINTAINER_MODE)
+EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/fast_float.h \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/date \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/fmt \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/3rdparty/utf8cpp \
+			--no-same-owner --no-same-permissions
+.else
+post-patch:
 	@${RM} ${WRKSRC}/3rdparty/fast_float.h
 	@${RM} -r ${WRKSRC}/3rdparty/date/
 	@${RM} -r ${WRKSRC}/3rdparty/fmt/
 	@${RM} -r ${WRKSRC}/3rdparty/utf8cpp/
+.endif
 
 .include <bsd.port.mk>

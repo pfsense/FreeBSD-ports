@@ -13,8 +13,6 @@
     SUBDIR += c-ares
     SUBDIR += cli53
     SUBDIR += coredns
-    SUBDIR += crossip
-    SUBDIR += curvedns
     SUBDIR += ddclient
     SUBDIR += ddns
     SUBDIR += denominator
@@ -35,7 +33,6 @@
     SUBDIR += dnsdist
     SUBDIR += dnsenum
     SUBDIR += dnsflood
-    SUBDIR += dnsforwarder
     SUBDIR += dnshistory
     SUBDIR += dnsjava
     SUBDIR += dnsjit
@@ -98,6 +95,9 @@
     SUBDIR += libnspsl
     SUBDIR += libpsl
     SUBDIR += linux-c7-libasyncns
+    SUBDIR += linux-rl9-libasyncns
+    SUBDIR += linux-rl9-libidn2
+    SUBDIR += linux-rl9-libpsl
     SUBDIR += lua-resty-dns
     SUBDIR += luaunbound
     SUBDIR += mDNSResponder_nss

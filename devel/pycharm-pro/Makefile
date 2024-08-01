@@ -1,5 +1,5 @@
 PORTNAME=	pycharm-pro
-DISTVERSION=	2023.3.5
+DISTVERSION=	2024.1.4
 CATEGORIES=	devel java python
 MASTER_SITES=	https://download.jetbrains.com/python/
 DISTNAME=	pycharm-professional-${PORTVERSION}
@@ -16,13 +16,31 @@ LICENSE_PERMS=	no-dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 BUILD_DEPENDS=	jna>0:devel/jna
 RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 		jetbrains-pty4j>=0.12.13:devel/jetbrains-pty4j \
+		jetbrains-restarter>=233.11799.241:devel/jetbrains-restarter \
 		jetbrains-sqlite>=232.8660.185:devel/jetbrains-sqlite
 
-USES=		cpe python:run shebangfix
+USES=		cpe desktop-file-utils python:run shebangfix
 
 CPE_VENDOR=	jetbrains
 USE_JAVA=	yes
 JAVA_VERSION=	17+
+SHEBANG_FILES=	plugins/python/helpers/pycodestyle-2.10.0.py \
+		plugins/python/helpers/pycodestyle.py \
+		plugins/python/helpers/typeshed/scripts/sync_tensorflow_protobuf_stubs.sh
+
+# Remove the bundled native Pty4J support libraries, they are replaced
+# by devel/jetbrains-pty4j
+# Remove bundled linux-only JRE
+EXTRACT_AFTER_ARGS=	--exclude pycharm-${PORTVERSION}/bin/*fsnotifier* \
+			--exclude pycharm-${PORTVERSION}/bin/*.so \
+			--exclude pycharm-${PORTVERSION}/bin/repair \
+			--exclude pycharm-${PORTVERSION}/lib/*.so \
+			--exclude pycharm-${PORTVERSION}/plugins/*.so \
+			--exclude pycharm-${PORTVERSION}/plugins/cwm-plugin/quiche-native \
+			--exclude pycharm-${PORTVERSION}/plugins/python/helpers/pydev/pydevd_attach_to_process \
+			--exclude pycharm-${PORTVERSION}/lib/pty4j \
+			--exclude pycharm-${PORTVERSION}/jbr \
+			--no-same-owner --no-same-permissions
 
 WRKSRC=		${WRKDIR}/pycharm-${PORTVERSION}
 
@@ -36,16 +54,7 @@ SUB_LIST+=	IDEA_HOME=${IDEA_HOME}
 
 # Remove non-native binaries
 post-extract:
-	@${RM} ${WRKSRC}/bin/*fsnotifier* ${WRKSRC}/bin/*.so ${WRKSRC}/bin/repair
-	@${FIND} ${WRKSRC}/lib ${WRKSRC}/plugins -name '*.so' -delete
 	@${FIND} ${WRKSRC}/lib ${WRKSRC}/plugins -type d -empty -delete
-	@${RM} -r ${WRKSRC}/plugins/cwm-plugin/quiche-native
-	@${RM} -r ${WRKSRC}/plugins/python/helpers/pydev/pydevd_attach_to_process
-# Remove the bundled native Pty4J support libraries, they are replaced
-# by devel/jetbrains-pty4j
-	@${RM} -r ${WRKSRC}/lib/pty4j
-# Remove bundled linux-only JRE
-	@${RM} -r ${WRKSRC}/jbr
 # TODO: Remove and enable fsnotifier when devel/libinotify is fixed
 # Disable filewatcher warning message on IDEA startup
 	${ECHO} "idea.filewatcher.disabled=true" >> ${WRKSRC}/bin/idea.properties
@@ -65,6 +74,8 @@ do-install:
 # Use pty4j replacement provided by devel/jetbrains-pty4j
 	${MKDIR} ${STAGEDIR}${DATADIR}/lib/pty4j/freebsd/x86-64
 	${LN} -sf ../../../../../jetbrains/pty4j/amd64/libpty.so ${STAGEDIR}${DATADIR}/lib/pty4j/freebsd/x86-64/libpty.so
+# Use restarter provided by devel/jetbrains-restarter
+	${LN} -sf ../../jetbrains/restarter/restarter ${STAGEDIR}${DATADIR}/bin/restarter
 # Use sqlite replacement provided by devel/jetbrains-sqlite
 	${MKDIR} ${STAGEDIR}${DATADIR}/lib/native/linux-x86_64
 	${LN} -sf ../../../../jetbrains/sqlite/amd64/libsqliteij.so ${STAGEDIR}${DATADIR}/lib/native/linux-x86_64/libsqliteij.so

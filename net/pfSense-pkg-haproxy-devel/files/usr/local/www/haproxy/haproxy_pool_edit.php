@@ -30,8 +30,6 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_pools = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
-
 $a_files = haproxy_get_fileslist();
 
 if (isset($_POST['id'])) {
@@ -340,17 +338,17 @@ $htmllist_actions->fields_details_showfieldfunction = 'fields_actions_details_sh
 $htmllist_actions->keyfield = "name";
 
 
-if (isset($id) && $a_pools[$id]) {
-	$pconfig['a_acl'] = getarraybyref($a_pools[$id],'a_acl','item');
-	$pconfig['a_actionitems'] = getarraybyref($a_pools[$id],'a_actionitems','item');
-	$a_errorfiles = getarraybyref($a_pools[$id],'errorfiles','item');
-	$a_servers = getarraybyref($a_pools[$id],'ha_servers','item');
+if (isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")) {
+	$pconfig['a_acl'] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/a_acl/item");
+	$pconfig['a_actionitems'] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/a_actionitems/item");
+	$a_errorfiles = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/errorfiles/item");
+	$a_servers = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/ha_servers/item");
 
-	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
-	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
+	$pconfig['advanced'] = base64_decode(config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/advanced"));
+	$pconfig['advanced_backend'] = base64_decode(config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/advanced_backend"));
 
 	foreach($simplefields as $stat) {
-		$pconfig[$stat] = $a_pools[$id][$stat];
+		$pconfig[$stat] = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}/{$stat}");
 	}
 }
 
@@ -410,7 +408,7 @@ if ($_POST) {
 		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
 	}
 	/* Ensure that our pool names are unique */
-	$a_backends = getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
+	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item');
 	for ($i=0; isset($a_backends[$i]); $i++) {
 		if (($_POST['name'] == $a_backends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
@@ -458,8 +456,8 @@ if ($_POST) {
 	}
 
 	$pool = array();
-	if(isset($id) && $a_pools[$id]) {
-		$pool = $a_pools[$id];
+	if(isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")) {
+		$pool = config_get_path("installedpackages/haproxy/ha_pools/item/{$id}");
 	}
 
 	if (!empty($pool['name']) && ($pool['name'] != $_POST['name'])) {
@@ -486,10 +484,10 @@ if ($_POST) {
 		update_if_changed($stat, $pool[$stat], $_POST[$stat]);
 	}
 
-	if (isset($id) && $a_pools[$id]) {
-		$a_pools[$id] = $pool;
+	if (isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")) {
+		config_set_path("installedpackages/haproxy/ha_pools/item/{$id}", $pool);
 	} else {
-		$a_pools[] = $pool;
+		config_set_path('installedpackages/haproxy/ha_pools/item/', $pool);
 	}
 	if (!isset($input_errors)) {
 		if ($changecount > 0) {
@@ -1143,7 +1141,7 @@ $form->add($section);
 
 print $form;
 ?>
-				<?php if (isset($id) && $a_pools[$id]): ?>
+				<?php if (isset($id) && config_get_path("installedpackages/haproxy/ha_pools/item/{$id}")): ?>
 				<input name="id" type="hidden" value="<?=$id;?>" />
 				<?php endif; ?>
 

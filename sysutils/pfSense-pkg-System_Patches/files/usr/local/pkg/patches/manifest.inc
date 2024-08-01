@@ -26,6 +26,54 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => 'CVE-2024-6387-workaround',
+  'versions' => ['24.03', '23.09.1', '2.7.2'],
+  'descr' => 'Workaround for SSH CVE-2024-6387',
+  'links' => [
+      [ 'text' => 'After applying, restart the SSH Daemon or reboot.' ],
+      [ 'text' => 'FreeBSD-SA-24:04.openssh',
+         'url' => 'https://www.freebsd.org/security/advisories/FreeBSD-SA-24:04.openssh.asc', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '14083',
+  'versions' => ['24.03'],
+  'descr' => 'Fix boot failure when a LAGG interface or one of its members has MTU or MSS configured',
+  'links' => [
+      [ 'text' => 'Redmine #14083',
+         'url' => 'https://redmine.pfsense.org/issues/14083', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
+  'uniqid' => '15449',
+  'versions' => ['24.03'],
+  'descr' => 'Fix IPsec VTI static routes not being added after boot',
+  'links' => [
+      [ 'text' => 'After applying, edit and save affected IPsec tunnels or reboot.' ],
+      [ 'text' => 'Redmine #15449',
+         'url' => 'https://redmine.pfsense.org/issues/15449', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
+  'uniqid' => '15430-24_03',
+  'versions' => ['24.03'],
+  'descr' => 'Automatically use floating states for IPsec rules',
+  'links' => [
+      [ 'text' => 'After applying, reload the filter or reboot.' ],
+      [ 'text' => 'Redmine #15430',
+         'url' => 'https://redmine.pfsense.org/issues/15430', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
   'uniqid' => '27fc5a3020fe981b7a5bc98fc9b1660e8773fc7d',
   'versions' => ['24.03'],
   'descr' => 'Fix local CAs not being added to the Trust Store',
@@ -176,6 +224,31 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '15430-23_09_1',
+  'versions' => ['23.09.1', '2.7.2'],
+  'descr' => 'Automatically use floating states for IPsec rules',
+  'links' => [
+      [ 'text' => 'After applying, reload the filter or reboot.' ],
+      [ 'text' => 'Redmine #15430',
+         'url' => 'https://redmine.pfsense.org/issues/15430', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '15606',
+  'versions' => ['24.03', '23.09.1', '2.7.2'],
+  'descr' => 'Automatically use floating states on IPsec VTI',
+  'links' => [
+      [ 'text' => 'After applying, reload the filter or reboot.' ],
+      [ 'text' => 'Redmine #15606',
+         'url' => 'https://redmine.pfsense.org/issues/15606', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],[
   'uniqid' => '7d87d7cbce1bf6f0c8a44888c640e2c29393a9cb',
   'versions' => ['23.09.1', '2.7.2'],
   'descr' => 'Fix overly lenient permissions on tmpfs RAM disk for /var',

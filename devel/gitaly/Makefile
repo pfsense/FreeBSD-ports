@@ -1,6 +1,6 @@
 PORTNAME=	gitaly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	16.11.1
+DISTVERSION=	17.0.3
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -11,7 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 # define dependencies that are required for build and run under MY_DEPENDS
-MY_DEPENDS=	git>=2.43.0:devel/git
+MY_DEPENDS=	git>=2.45.2:devel/git
 BUILD_DEPENDS=	bash>0:shells/bash \
 		${LOCALBASE}/bin/cmake:devel/cmake-core \
 		pcre2>0:devel/pcre2 \

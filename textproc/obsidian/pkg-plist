@@ -77,4 +77,5 @@ share/applications/obsidian.desktop
 %%DATADIR%%/snapshot_blob.bin
 %%DATADIR%%/v8_context_snapshot.bin
 %%DATADIR%%/vk_swiftshader_icd.json
+share/metainfo/md.obsidian.obsidian.appdata.xml
 share/pixmaps/obsidian.png
