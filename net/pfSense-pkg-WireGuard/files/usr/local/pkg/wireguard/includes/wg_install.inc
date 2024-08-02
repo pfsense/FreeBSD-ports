@@ -71,8 +71,6 @@ function wg_install() {
  * This is the main deinstall hook
  */
 function wg_deinstall() {
-	global $config, $wgg;
-
 	wg_globals();
 
 	update_status("  Removing WireGuard early shell commands...");
@@ -91,7 +89,7 @@ function wg_deinstall() {
 	wg_delete_temp_files();
 
 	// Only delete WireGuard configuration if keep_conf is explicitly 'no'
-	if (isset($wgg['config']['keep_conf']) && $wgg['config']['keep_conf'] == 'no') {
+	if (config_get_path('installedpackages/wireguard/config/0/keep_conf') == 'no') {
 		update_status("done.\n  Removing WireGuard configuration settings...");
 
 		// Removes WireGuard configuration
@@ -146,19 +144,31 @@ function wg_defaults_install() {
 	// Read latest settings
 	wg_globals();
 
-	$wgg['config']['enable']			= wg_is_service_enabled() ? 'on' : 'off';
+	config_set_path('installedpackages/wireguard/config/0/enable', (wg_is_service_enabled() ? 'on' : 'off'));
 
-	$wgg['config']['keep_conf']			= isset($wgg['config']['keep_conf']) ? $wgg['config']['keep_conf'] : 'yes';
+	if (config_get_path('installedpackages/wireguard/config/0/keep_conf') === null) {
+		config_set_path('installedpackages/wireguard/config/0/keep_conf', 'yes');
+	}
 
-	$wgg['config']['resolve_interval']		= isset($wgg['config']['resolve_interval']) ? $wgg['config']['resolve_interval'] : $wgg['default_resolve_interval'];
+	if (config_get_path('installedpackages/wireguard/config/0/resolve_interval') === null) {
+		config_set_path('installedpackages/wireguard/config/0/resolve_interval', $wgg['default_resolve_interval']);
+	}
 	
-	$wgg['config']['resolve_interval_track']	= isset($wgg['config']['resolve_interval_track']) ? $wgg['config']['resolve_interval_track'] : 'no';
+	if (config_get_path('installedpackages/wireguard/config/0/resolve_interval_track') === null) {
+		config_set_path('installedpackages/wireguard/config/0/resolve_interval_track', 'no');
+	}
 	
-	$wgg['config']['interface_group']		= isset($wgg['config']['interface_group']) ? $wgg['config']['interface_group'] : 'all';
+	if (config_get_path('installedpackages/wireguard/config/0/interface_group') === null) {
+		config_set_path('installedpackages/wireguard/config/0/interface_group', 'all');
+	}
 	
-	$wgg['config']['hide_secrets'] 			= isset($wgg['config']['hide_secrets']) ? $wgg['config']['hide_secrets'] : 'yes';
+	if (config_get_path('installedpackages/wireguard/config/0/hide_secrets') === null) {
+		config_set_path('installedpackages/wireguard/config/0/hide_secrets', 'yes');
+	}
 
-	$wgg['config']['hide_peers'] 			= isset($wgg['config']['hide_peers']) ? $wgg['config']['hide_peers'] : 'yes';
+	if (config_get_path('installedpackages/wireguard/config/0/hide_peers') === null) {
+		config_set_path('installedpackages/wireguard/config/0/hide_peers', 'yes');
+	}
 	
 	wg_write_config('Applied package default settings as necessary.', false);
 }
@@ -221,8 +231,6 @@ function wg_destroy_tunnels(&$cmds = null) {
 }
 
 function wg_listenport_alias_install() {
-	global $config, $wgg;
-
 	wg_globals();
 
 	// TODO ?
@@ -232,19 +240,19 @@ function wg_listenport_alias_install() {
  * This function creates earlyshellcmd entries in the config
  */
 function wg_earlyshellcmd_install() {
-	global $config, $wgg;
+	global $wgg;
 
 	wg_globals();
 
 	wg_earlyshellcmd_deinstall();
 
-	init_config_arr(array('system', 'earlyshellcmd'));
+	config_init_path('system/earlyshellcmd');
 
-	init_config_arr(array('installedpackages', 'shellcmdsettings', 'config'));
+	config_init_path('installedpackages/shellcmdsettings/config');
 
-	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
+	$a_earlyshellcmd = config_get_path('system/earlyshellcmd');
 
-	$a_shellcmdsettings = &$config['installedpackages']['shellcmdsettings']['config'];
+	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config');
 
 	$shellcmd_pkg_cmds = array_map(fn($x) => $x['cmd'], $a_shellcmdsettings);
 
@@ -265,6 +273,9 @@ function wg_earlyshellcmd_install() {
 		}
 	}
 
+	config_set_path('system/earlyshellcmd', $a_earlyshellcmd);
+	config_set_path('installedpackages/shellcmdsettings/config', $a_shellcmdsettings);
+
 	wg_write_config('Installed earlyshellcmd(s).', false);
 }
 
@@ -276,13 +287,13 @@ function wg_earlyshellcmd_deinstall() {
 
 	wg_globals();
 
-	init_config_arr(array('system', 'earlyshellcmd'));
+	config_init_path('system/earlyshellcmd');
 	
-	init_config_arr(array('installedpackages', 'shellcmdsettings', 'config'));
+	config_init_path('installedpackages/shellcmdsettings/config');
 
-	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
+	$a_earlyshellcmd = config_get_path('system/earlyshellcmd');
 
-	$a_shellcmdsettings = &$config['installedpackages']['shellcmdsettings']['config'];
+	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config');
 
 	$shellcmd_pkg_cmds = array_map(fn($x) => $x['cmd'], $a_shellcmdsettings);
 
@@ -315,21 +326,20 @@ function wg_earlyshellcmd_deinstall() {
  * This function creates the WireGuard interface group
  */
 function wg_ifgroup_install() {
-	global $config, $wgg;
+	global $wgg;
 
 	wg_globals();
 
 	wg_ifgroup_deinstall();
 
-	if (isset($wgg['config']['interface_group'])
-	    && ($wgg['config']['interface_group'] == 'none')) {
+	if (config_get_path('installedpackages/wireguard/config/0/interface_group') == 'none') {
 		// No point installing the interface group...
 		return;
 	}
 
-	init_config_arr(array('ifgroups', 'ifgroupentry'));
+	config_init_path('ifgroups/ifgroupentry');
 
-	$a_ifgroups = &$config['ifgroups']['ifgroupentry'];
+	$a_ifgroups = config_get_path('ifgroups/ifgroupentry');
 
 	$ifgroup_names = array_map(fn($x) => $x['ifname'], $a_ifgroups);
 
@@ -338,6 +348,8 @@ function wg_ifgroup_install() {
 		array_unshift($a_ifgroups, $wgg['ifgroupentry']);
 	}
 
+	config_set_path('ifgroups/ifgroupentry', $a_ifgroups);
+
 	wg_write_config("Installed interface group ({$wgg['ifgroupentry']['ifname']}).", false);
 }
 
@@ -345,13 +357,13 @@ function wg_ifgroup_install() {
  * This function removes the WireGuard interface group
  */
 function wg_ifgroup_deinstall() {
-	global $config, $wgg;
+	global $wgg;
 
 	wg_globals();
 
-	init_config_arr(array('ifgroups', 'ifgroupentry'));
+	config_init_path('ifgroups/ifgroupentry');
 
-	$a_ifgroups = &$config['ifgroups']['ifgroupentry'];
+	$a_ifgroups = config_get_path('ifgroups/ifgroupentry');
 
 	$ifgroup_names = array_map(fn($x) => $x['ifname'], $a_ifgroups);
 
@@ -361,6 +373,8 @@ function wg_ifgroup_deinstall() {
 		}
 	}
 
+	config_set_path('ifgroups/ifgroupentry', $a_ifgroups);
+
 	wg_write_config("De-installed interface group ({$wgg['ifgroupentry']['ifname']}).", false);
 }
 
@@ -368,13 +382,13 @@ function wg_ifgroup_deinstall() {
  * This function removes the WireGuard Unbound access list
  */
 function wg_unbound_acl_deinstall() {
-	global $config, $wgg;
+	global $wgg;
 
 	wg_globals();
 
-	init_config_arr(array('unbound', 'acls'));
+	config_init_path('unbound/acls');
 
-	$a_unbound_acls = &$config['unbound']['acls'];
+	$a_unbound_acls = config_get_path('unbound/acls');
 
 	$a_unbound_acls_names = array_map(fn($x) => $x['aclname'], $a_unbound_acls);
 
@@ -384,6 +398,8 @@ function wg_unbound_acl_deinstall() {
 		}
 	}
 
+	config_set_path('unbound/acls', $a_unbound_acls);
+
 	wg_write_config("De-installed Unbound ACL group ({$wgg['unboundaclentry']['aclname']}).", false);
 }
 
@@ -391,7 +407,7 @@ function wg_unbound_acl_deinstall() {
  * This function creates the WireGuard Unbound access list
  */
 function wg_unbound_acl_install() {
-	global $config, $wgg;
+	global $wgg;
 
 	// Format tunnel description if one is configured
 	$tunDescr = fn($tunnel) => !empty($tunnel['descr']) ? " ({$tunnel['descr']})" : null;
@@ -402,9 +418,9 @@ function wg_unbound_acl_install() {
 
 	$tun_networks = wg_get_tunnel_networks();
 
-	init_config_arr(array('unbound', 'acls'));
+	config_init_path('unbound/acls');
 
-	$a_unbound_acls = &$config['unbound']['acls'];
+	$a_unbound_acls = config_get_path('unbound/acls');
 
 	$a_unbound_acls_names = array_map(fn($x) => $x['aclname'], $a_unbound_acls);
 
@@ -429,6 +445,8 @@ function wg_unbound_acl_install() {
 			array_unshift($a_unbound_acls, $wgg['unboundaclentry']);
 		}
 	}
+
+	config_set_path('unbound/acls', $a_unbound_acls);
 
 	wg_write_config("Installed Unbound ACL group ({$wgg['unboundaclentry']['aclname']}).", false);
 }

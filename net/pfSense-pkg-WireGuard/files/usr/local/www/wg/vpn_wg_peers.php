@@ -138,9 +138,9 @@ display_top_tabs($tab_array);
 				</thead>
 				<tbody>
 <?php
-if (is_array($wgg['peers']) && count($wgg['peers']) > 0):
+if (count(config_get_path('installedpackages/wireguard/peers/item', [])) > 0):
 
-		foreach ($wgg['peers'] as $peer_idx => $peer):
+		foreach (config_get_path('installedpackages/wireguard/peers/item', []) as $peer_idx => $peer):
 ?>
 					<tr ondblclick="document.location='<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>';" class="<?=wg_peer_status_class($peer)?>">
 						<td><?=htmlspecialchars(wg_truncate_pretty($peer['descr'], 16))?></td>

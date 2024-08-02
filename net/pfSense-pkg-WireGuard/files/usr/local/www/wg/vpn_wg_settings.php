@@ -89,7 +89,7 @@ $s = fn($x) => $x;
 wg_defaults_install();
 
 // Grab current configuration from the XML
-$pconfig = $wgg['config'];
+$pconfig = config_get_path('installedpackages/wireguard/config/0');
 
 $shortcut_section = 'wireguard';
 
