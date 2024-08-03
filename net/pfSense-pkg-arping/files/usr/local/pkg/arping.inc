@@ -29,9 +29,8 @@ function arping_package_php_command() {
 		$iface = convert_friendly_interface_to_real_interface_name($_POST['interface']);
 		$arping_options .= " -i {$iface}";
 	}
-	$ping_host = trim($_POST['pinghost']);
-	if (is_ipaddr($ping_host) || is_hostname($ping_host) || is_macaddr($ping_host)) {
-		$arping_options .= " " . $ping_host;
+	if (is_ipaddr($_POST['pinghost']) || is_hostname($_POST['pinghost']) || is_macaddr($_POST['pinghost'])) {
+		$arping_options .= " " . $_POST['pinghost'];
 		echo "<strong>arping {$arping_options} output:</strong><br /><br />";
 		system("/usr/local/sbin/arping {$arping_options}");
 		echo "{$button}";
