@@ -246,15 +246,11 @@ function wg_earlyshellcmd_install() {
 
 	wg_earlyshellcmd_deinstall();
 
-	config_init_path('system/earlyshellcmd');
+	$a_earlyshellcmd = config_get_path('system/earlyshellcmd', []);
 
-	config_init_path('installedpackages/shellcmdsettings/config');
+	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config', []);
 
-	$a_earlyshellcmd = config_get_path('system/earlyshellcmd');
-
-	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config');
-
-	$shellcmd_pkg_cmds = array_map(fn($x) => $x['cmd'], $a_shellcmdsettings);
+	$shellcmd_pkg_cmds = array_column($a_shellcmdsettings, 'cmd');
 
 	foreach ($wgg['shellcmdentries'] as $shellcmd) {
 		// Need to escape slashes from the path
@@ -287,15 +283,14 @@ function wg_earlyshellcmd_deinstall() {
 
 	wg_globals();
 
-	config_init_path('system/earlyshellcmd');
-	
-	config_init_path('installedpackages/shellcmdsettings/config');
+	$a_earlyshellcmd = config_get_path('system/earlyshellcmd', []);
 
-	$a_earlyshellcmd = config_get_path('system/earlyshellcmd');
+	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config', []);
+	if (empty($a_shellcmdsettings)) {
+		return;
+	}
 
-	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config');
-
-	$shellcmd_pkg_cmds = array_map(fn($x) => $x['cmd'], $a_shellcmdsettings);
+	$shellcmd_pkg_cmds = array_column($a_shellcmdsettings, 'cmd');
 
 	foreach ($wgg['shellcmdentries'] as $shellcmd) {
 		// Need to escape slashes from the path
@@ -337,11 +332,9 @@ function wg_ifgroup_install() {
 		return;
 	}
 
-	config_init_path('ifgroups/ifgroupentry');
+	$a_ifgroups = config_get_path('ifgroups/ifgroupentry', []);
 
-	$a_ifgroups = config_get_path('ifgroups/ifgroupentry');
-
-	$ifgroup_names = array_map(fn($x) => $x['ifname'], $a_ifgroups);
+	$ifgroup_names = array_column($a_ifgroups, 'ifname');
 
 	if (!preg_grep("/{$wgg['ifgroupentry']['ifname']}/", $ifgroup_names)) {
 		// Put our entry at the top of the list
@@ -361,11 +354,12 @@ function wg_ifgroup_deinstall() {
 
 	wg_globals();
 
-	config_init_path('ifgroups/ifgroupentry');
+	$a_ifgroups = config_get_path('ifgroups/ifgroupentry', []);
+	if (empty($a_ifgroups)) {
+		return;
+	}
 
-	$a_ifgroups = config_get_path('ifgroups/ifgroupentry');
-
-	$ifgroup_names = array_map(fn($x) => $x['ifname'], $a_ifgroups);
+	$ifgroup_names = array_column($a_ifgroups, 'ifname');
 
 	if ($groups = preg_grep("/{$wgg['ifgroupentry']['ifname']}/", $ifgroup_names)) {
 		foreach ($groups as $group_idx => $group) {
@@ -386,11 +380,12 @@ function wg_unbound_acl_deinstall() {
 
 	wg_globals();
 
-	config_init_path('unbound/acls');
-
 	$a_unbound_acls = config_get_path('unbound/acls');
+	if (empty($a_unbound_acls)) {
+		return;
+	}
 
-	$a_unbound_acls_names = array_map(fn($x) => $x['aclname'], $a_unbound_acls);
+	$a_unbound_acls_names = array_column($a_unbound_acls, 'aclname');
 
 	if ($acls = preg_grep("/{$wgg['unboundaclentry']['aclname']}/", $a_unbound_acls_names)) {
 		foreach ($acls as $acl_idx => $acl) {
@@ -418,11 +413,9 @@ function wg_unbound_acl_install() {
 
 	$tun_networks = wg_get_tunnel_networks();
 
-	config_init_path('unbound/acls');
+	$a_unbound_acls = config_get_path('unbound/acls', []);
 
-	$a_unbound_acls = config_get_path('unbound/acls');
-
-	$a_unbound_acls_names = array_map(fn($x) => $x['aclname'], $a_unbound_acls);
+	$a_unbound_acls_names = array_column($a_unbound_acls, 'aclname');
 
 	// Only need to create the ACL if we actually have tunnel networks to add
 	if (!empty($tun_networks) && is_array($tun_networks)) {
