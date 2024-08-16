@@ -7,6 +7,7 @@ PKGNAMESUFFIX=	9-pythontools
 .else
 PKGNAMESUFFIX=	9
 .endif
+PORTREVISION= 1
 
 MAINTAINER=	olivier@FreeBSD.org
 
