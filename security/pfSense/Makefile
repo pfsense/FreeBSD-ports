@@ -31,6 +31,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		isc-dhcp44-client>=0:net/isc-dhcp44-client \
 		isc-dhcp44-relay>=0:net/isc-dhcp44-relay \
 		isc-dhcp44-server>=0:net/isc-dhcp44-server \
+		jq>0:textproc/jq \
 		kea>0:net/kea \
 		libxml2>=0:textproc/libxml2 \
 		links>=0:www/links \
