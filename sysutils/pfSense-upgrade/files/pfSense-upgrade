@@ -1537,7 +1537,7 @@ check_upgrade() {
 				printf $?
 				  )
 			# skip this repo if this is not the selected/configured branch and .release does not exist
-			if [ ${_is_configured_repo} -ne 0 ] && [ -z "/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_reponame}.release" ]; then
+			if [ ${_is_configured_repo} -ne 0 ] && [! -f "/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_reponame}.release" ]; then
 				continue
 			fi
 			local _pkgs="${_meta_pkg} ${_core_pkgs}"
