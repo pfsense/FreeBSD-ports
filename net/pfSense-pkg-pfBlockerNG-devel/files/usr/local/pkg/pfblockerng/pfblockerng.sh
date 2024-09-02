@@ -81,6 +81,9 @@ tempmatchfile=/tmp/pfbtemp8_$rvar
 domainmaster=/tmp/pfbtemp9_$rvar
 asntemp=/tmp/pfbtemp10_$rvar
 
+dnsbl_exclusions=/tmp/dnsbl_exclusions
+dnsbl_cleanup_wildcards=/tmp/dnsbl_cleanup_wildcards
+
 dnsbl_tld_remove=/tmp/dnsbl_tld_remove
 
 dnsbl_add=/tmp/dnsbl_add
@@ -361,10 +364,8 @@ duplicate() {
 	emptyfiles # Call emptyfiles function
 }
 
-
-
-# Function for DNSBL (De-Duplication, Whitelist, and Alexa Whitelist)
-dnsbl_scrub() {
+# DNSBL scrubbing for Unbound mode (De-Duplication, Whitelist, and Alexa Whitelist)
+dnsbl_scrub_unbound() {
 
 	counto="$(grep -c ^ ${pfbdomain}${alias}.bk)"
 	alexa_enable="${max}"
@@ -379,15 +380,7 @@ dnsbl_scrub() {
 		# Only execute awk command, if master domain file contains data.
 		query_size="$(grep -c ^ ${domainmaster})"
 		if [ "${query_size}" -gt 0 ]; then
-
-			# Unbound blocking mode dedup
-			if [ "${dedup}" == '' ]; then
-				awk 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
-
-			# Unbound python blocking mode dedup
-			else
-				awk -F',' 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
-			fi
+			awk 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
 		fi
 
 		rm -f "${domainmaster}"
@@ -406,20 +399,11 @@ dnsbl_scrub() {
 		countw="$((countf - countx))"
 
 		if [ "${countw}" -gt 0 ]; then
-			if [ "${dedup}" == '' ]; then
-				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
-			else
-				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
-			fi
+			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
 
 			if [ -z "${data}" ]; then
-				if [ "${dedup}" == '' ]; then
-					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
-				else
-					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
-				fi
+				data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
 			fi
 
 			echo "  Whitelist: ${data}"
@@ -437,20 +421,11 @@ dnsbl_scrub() {
 		counta="$((countf - countx))"
 
 		if [ "${counta}" -gt 0 ]; then
-			if [ "${dedup}" == '' ]; then
-				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
-			else
-				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
-			fi
+			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
 
 			if [ -z "${data}" ]; then
-				if [ "${dedup}" == '' ]; then
-					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
-				else
-					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
-				fi
+				data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
 			fi
 
 			echo "  TOP1M Whitelist: ${data}"
@@ -470,6 +445,194 @@ dnsbl_scrub() {
 	echo '  ----------------------------------------------------------------------'
 }
 
+# DNSBL scrubbing for Python mode (De-Duplication, Whitelist, and Alexa Whitelist)
+# Does not print exactly which lines are removed by the whitelist processing, since
+# it is spammy and this step will be removed in favor of zero-downtime reloads anyway.
+# If desired, users can see the contents of the final whitelist file in the logs tab.
+dnsbl_scrub_python() {
+
+	counto="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	alexa_enable="${max}"
+
+	# Process De-Duplication
+	sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2"
+	countu="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+
+	if [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
+		find "${pfbdomain}"*.txt ! -name "${alias}.txt" | xargs cat > "${domainmaster}"
+
+		# Only execute awk command, if master domain file contains data.
+		query_size="$(grep -c ^ ${domainmaster})"
+		if [ "${query_size}" -gt 0 ]; then
+			# Consider both the domain name (2nd column) and type of entry (7th column) when checking for duplicates
+			awk -F',' 'FNR==NR{a[$2, $7];next}!(($2, $7) in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+		fi
+
+		rm -f "${domainmaster}"
+	else
+		mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
+	fi
+
+	countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	countd="$((countu - countf))"
+	rm -f "${pfbdomain}${alias}.bk2"
+
+	# Sort and count the Easylist exclusions
+	rm -f "${pfbdomain}${alias}.ex2"
+	if [ -s "${pfbdomain}${alias}.ex" ]; then
+		sort "${pfbdomain}${alias}.ex" | uniq > "${pfbdomain}${alias}.ex2"
+		mv -f "${pfbdomain}${alias}.ex2" "${pfbdomain}${alias}.ex"
+		countex="$(grep -c ^ ${pfbdomain}${alias}.ex)"
+	else
+		countex=0
+	fi
+
+	# Remove Whitelisted Domains and Sub-Domains, if configured
+	if [ -s "${pfbdnsblsuppression}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
+		/usr/local/bin/ggrep -vF -f "${pfbdnsblsuppression}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+		countw="$((countf - countx))"
+
+		if [ "${countw}" -gt 0 ]; then
+			mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
+		fi
+	else
+		countw=0
+	fi
+
+	# Process TOP1M Whitelist
+	if [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
+		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+		/usr/local/bin/ggrep -vFi -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+		counta="$((countf - countx))"
+
+		if [ "${counta}" -gt 0 ]; then
+			mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
+		fi
+	else
+		counta=0
+	fi
+
+	countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	rm -f "${pfbdomain}${alias}.bk2"
+
+	echo '  ----------------------------------------------------------------------'
+	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" '  Orig.' 'Unique' '# Dups' '# Excl' '# White' '# TOP1M' 'Final'
+	echo '  ----------------------------------------------------------------------'
+	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" "  ${counto}" "${countu}" "${countd}" "${countex}" "${countw}" "${counta}" "${countf}"
+	echo '  ----------------------------------------------------------------------'
+}
+
+# Process all downloaded exclusion, converted them to GNU grep regexes and put them into a master file
+dnsbl_py_assemble_exclusions_file() {
+	# Downloaded exclusion lists are always either regular expressions or wildcards
+	# Convert all of them to regular expressions for GNU grep
+	if [ "$(ls -A ${pfbdomain}*.exclusions 2>/dev/null)" ]; then
+		find "${pfbdomain}"*.exclusions | xargs cat | sort | uniq | cut -d',' -f1 | \
+			sed 's/\./\\./g' | sed 's/*/[^,[:space:]]*/g' | sed 's/^/[,.]/' | sed 's/$/,,/' > "${dnsbl_exclusions}"
+	fi
+}
+
+# Remove excluded Domains and Sub-Domains using the file assembled above
+dnsbl_py_remove_excluded() {
+
+	counto="$(grep -c ^ ${pfbdomain}${alias}.txt)"
+
+	# Process DNSBL file
+	if [ -s "${pfbdomain}${alias}.txt" ] && [ -s "${dnsbl_exclusions}" ]; then
+
+		# Only execute if exclusion temp file contains data
+		query_size="$(grep -c ^ ${dnsbl_exclusions})"
+		if [ "${query_size}" -gt 0 ]; then
+			countf="$(grep -c ^ ${pfbdomain}${alias}.txt)"
+			/usr/local/bin/ggrep -v -f "${dnsbl_exclusions}" "${pfbdomain}${alias}.txt" > "${pfbdomain}${alias}.bk"
+			countx="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+			countex="$((countf - countx))"
+
+			if [ "${countex}" -gt 0 ]; then
+				mv -f "${pfbdomain}${alias}.bk" "${pfbdomain}${alias}.txt"
+			else
+				rm -f "${pfbdomain}${alias}.bk"
+			fi
+		else 
+			countex=0
+		fi
+	else
+		countex=0
+	fi
+
+	countf="$(grep -c ^ ${pfbdomain}${alias}.txt)"
+
+	echo '  ------------------------------'
+	printf "%-10s %-10s %-10s\n" '  Orig.' '# Removed' 'Final'
+	echo '  ------------------------------'
+	printf "%-10s %-10s %-10s\n" "  ${counto}" "${countex}" "${countf}"
+	echo '  ------------------------------'
+}
+
+# Remove the assembled exclusions file
+dnsbl_py_cleanup_exclusions_file() {
+	rm -f "${dnsbl_exclusions}"
+}
+
+# Process all DNSBL files looking for wildcard entries and put them all in a master file
+dnsbl_py_assemble_redundants_file() {
+	if [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
+		find "${pfbdomain}"*.txt | xargs cat | grep ',1$' | sort | uniq | cut -d',' -f2 | sed -E 's/^(.*)$/,\1,,\n.\1,,/' > "${dnsbl_cleanup_wildcards}"
+	fi
+}
+
+# Remove all exact-match and regex entries that would be redundant given an existing wildcard entry
+# e.g. google.com and *.google.com are both redundant if a wildcard entry google.com exists
+dnsbl_py_remove_redundant() {
+
+	counto="$(grep -c ^ ${pfbdomain}${alias}.txt)"
+
+	# Process DNSBL file
+	if [ -s "${pfbdomain}${alias}.txt" ] && [ -s "${dnsbl_cleanup_wildcards}" ]; then
+
+		# Only execute if wildcard temp file contains data
+		query_size="$(grep -c ^ ${dnsbl_cleanup_wildcards})"
+		if [ "${query_size}" -gt 0 ]; then
+			countf="$(grep -c ^ ${pfbdomain}${alias}.txt)"
+
+			# backup wildcard entries, as they are surely going to be removed (obviously they all exist in the wildcard temp file)
+			grep ',1$' "${pfbdomain}${alias}.txt" > "${pfbdomain}${alias}.bk2"
+
+			# remove all redundant entries
+			/usr/local/bin/ggrep -vF -f "${dnsbl_cleanup_wildcards}" "${pfbdomain}${alias}.txt" > "${pfbdomain}${alias}.bk"
+
+			countw="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+			countx="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+			countrd="$((countf - (countx + countw)))"
+
+			if [ "${countrd}" -gt 0 ]; then
+				cat "${pfbdomain}${alias}.bk" "${pfbdomain}${alias}.bk2" | sort > "${pfbdomain}${alias}.txt"
+			fi
+
+			rm -f "${pfbdomain}${alias}.bk"
+			rm -f "${pfbdomain}${alias}.bk2"
+		else 
+			countrd=0
+		fi
+	else
+		countrd=0
+	fi
+
+	countf="$(grep -c ^ ${pfbdomain}${alias}.txt)"
+
+	echo '  ------------------------------'
+	printf "%-10s %-10s %-10s\n" '  Orig.' '# Removed' 'Final'
+	echo '  ------------------------------'
+	printf "%-10s %-10s %-10s\n" "  ${counto}" "${countrd}" "${countf}"
+	echo '  ------------------------------'
+}
+
+# Remove the assembled wildcards
+dnsbl_py_cleanup_redundants_file() {
+	rm -f "${dnsbl_cleanup_wildcards}"
+}
 
 # Function to process TLD
 domaintld() {
@@ -1311,8 +1474,29 @@ case "${1}" in
 	continent)
 		duplicate
 		;;
-	dnsbl_scrub)
-		dnsbl_scrub
+	dnsbl_scrub_unbound)
+		dnsbl_scrub_unbound
+		;;
+	dnsbl_scrub_python)
+		dnsbl_scrub_python
+		;;
+	dnsbl_py_assemble_exclusions_file)
+		dnsbl_py_assemble_exclusions_file
+		;;
+	dnsbl_py_remove_excluded)
+		dnsbl_py_remove_excluded
+		;;
+	dnsbl_py_cleanup_exclusions_file)
+		dnsbl_py_cleanup_exclusions_file
+		;;
+	dnsbl_py_assemble_redundants_file)
+		dnsbl_py_assemble_redundants_file
+		;;
+	dnsbl_py_remove_redundant)
+		dnsbl_py_remove_redundant
+		;;
+	dnsbl_py_cleanup_redundants_file)
+		dnsbl_py_cleanup_redundants_file
 		;;
 	domaintld)
 		domaintld
