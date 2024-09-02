@@ -257,6 +257,7 @@ $pfb['rfc7231'] = array(
 
 // File download Mime-Types
 $pfb['mime_types'] = array_flip(array(	'inode/x-empty',
+					'text/x-file',
 					'text/plain',
 					'text/html',
 					'text/xml',
@@ -585,6 +586,9 @@ function pfb_filter($input, $type, $reference='Unknown', $default='', $escape=FA
 				    ($hostname == 'easylist-downloads.adblockplus.org' || $hostname == 'easylist.to' )) {
 					$output[0] = 'text/plain';
 				}
+				elseif ($output[0] == 'application/octet-stream' && $hostname == 'ipinfo.io') {
+					$output[0] = 'text/plain';
+				}
 				else {
 					pfb_logger("\n[PFB_FILTER - {$type}] Failed or invalid Mime Type: [" .  htmlspecialchars($output[0]) . "|" . htmlspecialchars($retval) . "]", 2);
 					unlink_if_exists($input[1]);
@@ -725,6 +729,7 @@ function pfb_global() {
 	$pfb['cc']		= $pfb['ipconfig']['database_cc'];			// Disable Country database CRON updates
 	$pfb['maxmind_locale']	= $pfb['ipconfig']['maxmind_locale']	?: 'en';	// MaxMind Localized Language setting
 	$pfb['asn_reporting']	= $pfb['ipconfig']['asn_reporting']	?: 'disabled';	// ASN Reporting
+	$pfb['asn_token']	= $pfb['ipconfig']['asn_token']		?: '';		// ASN Token (IPinfo)
 
 	$pfb['maxmind_account']	= pfb_filter($pfb['ipconfig']['maxmind_account'], PFB_FILTER_WORD, 'pfb_global')	?: '';		// Maxmind Account ID
 	$pfb['maxmind_key']	= pfb_filter($pfb['ipconfig']['maxmind_key'], PFB_FILTER_WORD, 'pfb_global')		?: '';		// Maxmind License Key
@@ -748,9 +753,7 @@ function pfb_global() {
 	$pfb['dnsbl_sync']	= $pfb['dnsblconfig']['pfb_dnsbl_sync'];		// Live Updates to Resolver without a Reload
 	$pfb['dnsbl_global_log']= $pfb['dnsblconfig']['global_log'] ?: '';		// Global Logging/Blocking mode
 
-	$pfb['dnsbl_python']	= $pfb['dnsblconfig']['pfb_python'];			// DNSBL Resolver python integration
 	$pfb['dnsbl_mode']	= $pfb['dnsblconfig']['dnsbl_mode'];			// DNSBL Mode (Unbound/python mode)
-
 	$pfb['dnsbl_py_reply']	= $pfb['dnsblconfig']['pfb_py_reply'];			// DNSBL Resolver python DNS Reply logging
 	$pfb['dnsbl_py_block']	= $pfb['dnsblconfig']['pfb_py_block'];			// DNSBL Resolver python blocking mode
 	$pfb['dnsbl_hsts']	= $pfb['dnsblconfig']['pfb_hsts'];			// DNSBL Resolver python block HSTS via Null Block mode
@@ -1746,13 +1749,14 @@ EOF;
 		$pfb_conf .= <<<EOF
 
 	\$SERVER["socket"] == "127.0.0.1:{$pfb['dnsbl_port_ssl']}" {
-		ssl.engine	= "enable"
-		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
-		ssl.dh-file	= "/etc/dh-parameters.4096"
-		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
-		ssl.ec-curve	= "secp384r1"
-		ssl.honor-cipher-order = "enable"
-		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+		ssl.engine			= "enable"
+		ssl.pemfile			= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file			= "/etc/dh-parameters.4096"
+		ssl.ec-curve			= "secp384r1"
+		ssl.honor-cipher-order		= "enable"
+		ssl.openssl.ssl-conf-cmd	= ("MinProtocol"	=> "TLSv1.2",
+					 	   "Options"		=> "-ServerPreference",
+						   "CipherString"	=> "EECDH+AESGCM:AES256+EECDH:CHACHA20:!SHA1:!SHA256:!SHA384")
 	}
 
 	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:80" {
@@ -1764,13 +1768,14 @@ EOF;
 	$pfb_conf .= <<<EOF
 
 	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:443" {
-		ssl.engine	= "enable"
-		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
-		ssl.dh-file	= "/etc/dh-parameters.4096"
-		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
-		ssl.ec-curve	= "secp384r1"
-		ssl.honor-cipher-order = "enable"
-		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+		ssl.engine			= "enable"
+		ssl.pemfile			= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file			= "/etc/dh-parameters.4096"
+		ssl.ec-curve			= "secp384r1"
+		ssl.honor-cipher-order		= "enable"
+		ssl.openssl.ssl-conf-cmd	= ("MinProtocol"	=> "TLSv1.2",
+                                                   "Options"		=> "-ServerPreference",
+                                                   "CipherString"	=> "EECDH+AESGCM:AES256+EECDH:CHACHA20:!SHA1:!SHA256:!SHA384")
 	}
 
 EOF;
@@ -1782,13 +1787,14 @@ EOF;
 	}
 
 	\$SERVER["socket"] == "[::1]:{$pfb['dnsbl_port_ssl']}" {
-		ssl.engine	= "enable"
-		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
-		ssl.dh-file	= "/etc/dh-parameters.4096"
-		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
-		ssl.ec-curve	= "secp384r1"
-		ssl.honor-cipher-order = "enable"
-		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+		ssl.engine			= "enable"
+		ssl.pemfile			= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file			= "/etc/dh-parameters.4096"
+		ssl.ec-curve			= "secp384r1"
+		ssl.honor-cipher-order 		= "enable"
+		ssl.openssl.ssl-conf-cmd	= ("MinProtocol"	=> "TLSv1.2",
+						   "Options"		=> "-ServerPreference",
+						   "CipherString"	=> "EECDH+AESGCM:AES256+EECDH:CHACHA20:!SHA1:!SHA256:!SHA384")
 	}
 
 EOF;
@@ -1801,13 +1807,14 @@ EOF;
 	}
 
 	\$SERVER["socket"] == "[::{$pfb['dnsbl_vip']}]:443" {
-		ssl.engine	= "enable"
-		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
-		ssl.dh-file	= "/etc/dh-parameters.4096"
-		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
-		ssl.ec-curve	= "secp384r1"
-		ssl.honor-cipher-order = "enable"
-		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+		ssl.engine			= "enable"
+		ssl.pemfile			= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file			= "/etc/dh-parameters.4096"
+		ssl.ec-curve			= "secp384r1"
+		ssl.honor-cipher-order		= "enable"
+		ssl.openssl.ssl-conf-cmd	= ("MinProtocol"	=> "TLSv1.2",
+						   "Options"		=> "-ServerPreference",
+						   "CipherString"	=> "EECDH+AESGCM:AES256+EECDH:CHACHA20:!SHA1:!SHA256:!SHA384")
 	}
 
 EOF;
@@ -3865,7 +3872,14 @@ function find_reported_header($ip, $pfbfolder, $geoip=FALSE) {
 					$validate = ((ip2long($ip) & $mask) == (ip2long($addr) & $mask));
 				}
 				else {
-					$validate = (Net_IPv6::isInNetmask($ip, $line[1]));
+					/* Normalize IPv6 prefix to its start address to avoid PHP errors
+					 * https://redmine.pfsense.org/issues/14256
+					 */
+					list($prefix, $length) = explode('/', $line[1]);
+					$prefix = gen_subnetv6($prefix, $length);
+					$subnet = "{$prefix}/{$length}";
+
+					$validate = (Net_IPv6::isInNetmask($ip, $subnet));
 				}
 
 				// Return header on CIDR match
@@ -4091,9 +4105,19 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 			return FALSE;
 		}
 
-		// Create Top1m update file marker
-		if ($type == 'top1m') {
-			touch("{$pfb['dbdir']}/top-1m.update");
+		// Create update file markers on new downloads available
+		switch($type) {
+			case 'geoip':
+				touch("{$pfb['dbdir']}/geoip.update");
+				break;
+			case 'top1m':
+				touch("{$pfb['dbdir']}/top-1m.update");
+				break;
+			case 'asn':
+				touch("{$pfb['dbdir']}/asn.update");
+				break;
+			default:
+				break;
 		}
 
 		// Set downloaded file timestamp to remote timestamp
@@ -4106,6 +4130,15 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 			if ($type == 'geoip') {
 				// Extras - MaxMind downloads
 				exec("/usr/bin/tar -xzf {$file_dwn_esc} --strip=1 -C {$pfb['geoipshare']} >/dev/null 2>&1");
+				unlink_if_exists($file_dwn_esc);
+				return TRUE;
+			}
+			elseif ($type == 'asn') {
+				exec("/usr/bin/gunzip -c {$file_dwn_esc} > {$header_esc}", $output, $retval);
+
+				// Update ASN Lookup table definitions
+				exec("{$pfb['script']} asn_table >> {$logtype} 2>&1");
+
 				unlink_if_exists($file_dwn_esc);
 				return TRUE;
 			}
@@ -4214,13 +4247,15 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 		}
 		else {
 			// Uncompressed file format.
-			if ($type == 'geoip') {
-				// Extras - MaxMind/TOP1M downloads
+			if ($type == 'geoip' || $type == 'asn') {
+				// Extras - MaxMind/TOP1M/ASN downloads
 				@rename("{$file_download}", "{$head_download}");
 				return TRUE;
-			} elseif ($type == 'blacklist') {
+			}
+			elseif ($type == 'blacklist') {
 				$retval = 0;
-			} else {
+			}
+			else {
 				// Rename file to 'orig' format
 				@rename("{$file_download}", "{$orig_download}");
 				$retval = 0;
@@ -5714,7 +5749,7 @@ function pfb_daemon_filterlog() {
 
 					// Determine ASN number of host
 					$asn = 'null';
-					if (($pfb['asn_reporting'] != 'disabled') && !empty($ip)) {
+					if (($pfb['asn_reporting'] != 'disabled' || !empty($pfb['asn_token'])) && !empty($ip)) {
 
 						$is_asn_cache = FALSE;
 						$db_handle = pfb_open_sqlite(5, 'Query ASN cache');
@@ -5741,7 +5776,7 @@ function pfb_daemon_filterlog() {
 						}
 						pfb_close_sqlite($db_handle);
 
-						// If Host IP is not in ASN cache, collect ASN from BGPview API
+						// If Host IP is not in ASN cache, collect ASN from ASN database
 						if (!$is_asn_cache) {
 							$asn = exec("{$pfb['script']} iptoasn " . escapeshellarg($ip) . " 2>&1");
 
@@ -7045,7 +7080,7 @@ function sync_package_pfblockerng($cron='') {
 	// If table limit not defined, set default to 2M
 	if (empty(config_get_path('system/maximumtableentries'))) {
 		config_set_path('system/maximumtableentries', '2000000');
-		write_config('pfBlockerNG: save max Firewall table entries limit');
+		write_config('pfBlockerNG: save max Firewall table entries limit', false);
 	}
 	$pfb['table_limit'] = config_get_path('system/maximumtableentries');
 
@@ -7590,6 +7625,12 @@ function sync_package_pfblockerng($cron='') {
 		$log = "\n===[  DNSBL Process  ]================================================\n";
 		pfb_logger("{$log}", 1);
 	}
+
+	// Define DNSBL arrays and variables
+	$pfb['alias_dnsbl_all']		= array();	// Array of all DNSBL aliases
+	$pfb['tld_update']		= array();	// Array of all DNSBL Aliases/Feeds used for TLD Function
+	$pfb['domain_update']		= FALSE;	// Flag to signal update Unbound
+	$pfb['updateip']		= FALSE;	// Flag to signal updates to DNSBL IP lists
 
 	$dnsbl_error = FALSE;
 	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && !$pfb['save']) {
@@ -8180,12 +8221,6 @@ function sync_package_pfblockerng($cron='') {
 					$lists[] = $list;
 				}
 			}
-
-			// Define DNSBL arrays and variables
-			$pfb['alias_dnsbl_all']		= array();	// Array of all DNSBL aliases
-			$pfb['tld_update']		= array();	// Array of all DNSBL Aliases/Feeds used for TLD Function
-			$pfb['domain_update']		= FALSE;	// Flag to signal update Unbound
-			$pfb['updateip']		= FALSE;	// Flag to signal updates to DNSBL IP lists
 
 			foreach ($lists as $list) {
 
@@ -8833,9 +8868,6 @@ function sync_package_pfblockerng($cron='') {
 		// Remove any unused DNSBL aliases
 		$daliases = glob("{$pfb['dnsalias']}/*");
 		if (!empty($daliases)) {
-			if (!is_array($pfb['alias_dnsbl_all'])) {
-				$pfb['alias_dnsbl_all'] = [];
-			}
 			foreach ($daliases as $dlist) {
 				if (!in_array(basename($dlist), $pfb['alias_dnsbl_all'])) {
 					unlink_if_exists ("{$dlist}");
@@ -8905,6 +8937,7 @@ function sync_package_pfblockerng($cron='') {
 		else {
 			@file_put_contents("{$pfb['dbdir']}/DNSBLIP_v4.txt", "{$pfb['ip_ph']}\n", LOCK_EX);
 		}
+		unlink_if_exists($pfb['ip_cache']);
 		touch("{$pfb['denydir']}/DNSBLIP_v4.update");
 	}
 
@@ -9140,7 +9173,8 @@ function sync_package_pfblockerng($cron='') {
 
 						// Compare existing (original file) and new Continent data
 						if ($continent == $continent_ex && !empty($pfctlck)
-						    && file_exists("{$pfbfolder}/{$cc_alias}.txt") && $pfb['reuse'] == '') {
+						    && file_exists("{$pfbfolder}/{$cc_alias}.txt") && $pfb['reuse'] == ''
+						    && !file_exists("{$pfb['dbdir']}/geoip.update")) {
 							if (!$pfb['save']) {
 								$log = "\n[ {$cc_alias} ]{$logtab} exists. [ NOW ]";
 								pfb_logger("{$log}", 1);
@@ -9294,7 +9328,7 @@ function sync_package_pfblockerng($cron='') {
 			}
 		}
 
-		$maxmind_run_once = TRUE;
+		$maxmind_run_once = $asn_run_once = TRUE;
 		foreach	($lists	as $list) {
 			if ($runonce_v4 && $list['vtype'] == '_v4') {
 				$runonce_v4 = FALSE;
@@ -9339,6 +9373,16 @@ function sync_package_pfblockerng($cron='') {
 							$maxmind_run_once = FALSE;
 						}
 
+						// IPinfo ASN Token verification
+						if ($asn_run_once && $row['format'] == 'asn') {
+							$mmsg = 'To utilize the ASN functionality, you must register for a free IPinfo Account. Review IP Tab for more information.';
+							if (empty($pfb['asn_token'])) {
+								pfb_logger($mmsg, $logtype);
+								file_notice('pfBlockerNG ASN', $mmsg, 'pfBlockerNG', '/pfblockerng/pfblockerng_ip.php', 2);
+							}
+							$asn_run_once = FALSE;
+						}
+
 						// IPv4 Advanced Tunables
 						$pfbcidr = 'Disabled';
 						if (isset($list['suppression_cidr']) && $list['suppression_cidr'] != 'Disabled' && is_numeric($list['suppression_cidr'])) {
@@ -9381,6 +9425,14 @@ function sync_package_pfblockerng($cron='') {
 
 						// Collect active alias list (Used for pfctl update when 'Reputation' is enabled.
 						$pfb_alias_lists_all[] = "{$alias}";
+
+						// Set update flags on new downloads available for GeoIP and ASN
+						if ($row['format'] == 'geoip' && file_exists("{$pfb['dbdir']}/geoip.update")) {
+							touch("{$pfbfolder}/{$header}.update");
+						}
+						if ($row['format'] == 'asn' && file_exists("{$pfb['dbdir']}/asn.update")) {
+							touch("{$pfbfolder}/{$header}.update");
+						}
 
 						if (file_exists("{$pfbfolder}/{$header}.txt") &&
 						    !file_exists("{$pfbfolder}/{$header}.update") &&
@@ -9531,6 +9583,7 @@ function sync_package_pfblockerng($cron='') {
 							if ($pfb_script_pre && file_exists("{$pfb_script_pre}")) {
 								pfb_logger("\nExecuting pre-script: {$list['script_pre']}\n", 1);
 								$file_dwn_esc = escapeshellarg("{$file_dwn}.orig");
+								@copy("{$file_dwn}.orig", "{$file_dwn}.orig.pre"); // Save original file for restoration
 								exec("{$pfb_script_pre} {$file_dwn_esc} {$list['vtype']} {$elog}");
 							}
 
@@ -9613,7 +9666,7 @@ function sync_package_pfblockerng($cron='') {
 
 										// Use regex as last alternative.
 
-										if (strpos($oline, '-') !== FALSE) {
+										if (strpos($oline, '-') !== FALSE && strpos($oline, '.') !== FALSE) {
 											// Network range 192.168.0.0-192.168.0.254
 											if (preg_match($pfb['range'], $oline, $matches)) {
 												$a_cidr = ip_range_to_subnet_array($matches[1], $matches[2]);
@@ -9666,6 +9719,32 @@ function sync_package_pfblockerng($cron='') {
 											}
 										}
 
+										// Range parser
+										if (strpos($line, '-') !== FALSE && strpos($line, ':') !== FALSE) {
+											$matches = explode('-', $line);
+											if (count($matches) == 2) {
+												$a_cidr = ip_range_to_subnet_array($matches[0],$matches[1]);
+												if (!empty($a_cidr)) {
+													foreach ($a_cidr as $cidr) {
+														if (!empty($cidr)) {
+															if (validate_ipv6($cidr)) {
+																$ip_data .= $cidr . "\n";
+															}
+															else {
+																$parse_error = TRUE;
+                                                                                                                        }
+                                                                                                                }
+                                                                                                        }
+                                                                                                }
+												if (!$parse_error) {
+													continue;
+												}
+											}
+											else {
+												$parse_error = TRUE;
+											}
+										}
+
 										// IPv6 Regex parser
 										if (preg_match_all($pfb['ipv6'], $oline, $matches)) {
 											$matches = array_unique($matches[0]);
@@ -9703,6 +9782,7 @@ function sync_package_pfblockerng($cron='') {
 							if ($pfb_script_post && file_exists("{$pfb_script_post}")) {
 								pfb_logger("\nExecuting post-script: {$list['script_pre']}\n", 1);
 								$file_org_esc = escapeshellarg("{$file_dwn}.orig");
+								@copy("{$file_dwn}.orig", "{$file_dwn}.orig.post"); // Save original file for restoration
 								exec("{$pfb_script_post} {$file_org_esc} {$list['vtype']} {$elog}");
 							}
 
@@ -9786,6 +9866,15 @@ function sync_package_pfblockerng($cron='') {
 
 							// Remove update file indicator
 							unlink_if_exists("{$pfbfolder}/{$header}.update");
+
+							// Restore Original Downloaded file after Post Script function
+							if (file_exists("{$file_dwn}.orig.post")) {
+								@rename("{$file_dwn}.orig.post", "{$file_dwn}.orig");
+							}
+							// Restore Original Downloaded file after Pre Script function 
+							if (file_exists("{$file_dwn}.orig.pre")) {
+								@rename("{$file_dwn}.orig.pre", "{$file_dwn}.orig");
+							}
 						}
 					}
 				}
@@ -9793,6 +9882,9 @@ function sync_package_pfblockerng($cron='') {
 		}
 	}
 
+	// Remove database update file markers
+	unlink_if_exists("{$pfb['dbdir']}/geoip.update");
+	unlink_if_exists("{$pfb['dbdir']}/asn.update");
 
 	#################################
 	#	REPUTATION PROCESSES	#
@@ -10448,10 +10540,14 @@ function sync_package_pfblockerng($cron='') {
 
 	// Only save config.xml, if changes are found.
 	if ($pfb['conf_mod'] && isset($pfb_config)) {
+		pfb_logger("\nSaving config changes", 1);
+
 		// Reload config.xml to get any recent changes and merge/save changes.
 		config_read_file(true);
 		config_set_path('', array_replace_recursive(config_get_path(''), $pfb_config));
 		write_config('pfBlockerNG: save settings');
+
+		pfb_logger("... completed", 1);
 	}
 
 
@@ -10490,6 +10586,9 @@ function sync_package_pfblockerng($cron='') {
 
 		// Remove any IPs in Alerts unlock feature
 		unlink_if_exists("{$pfb['ip_unlock']}");
+
+		// Remove IP Cache file
+		unlink_if_exists($pfb['ip_cache']);
 
 		require_once('filter.inc');
 		filter_configure();
@@ -10581,15 +10680,15 @@ function sync_package_pfblockerng($cron='') {
 		install_cron_job('pfblockerng.php cron', false);
 	}
 
-	if ($pfb['enable'] == 'on' && !empty($pfb['maxmind_key']) && !empty($pfb['maxmind_account'])) {
-		// Define pfBlockerNG MaxMind CRON job
+	// Define pfBlockerNG MaxMind/TOP1M/ASN Cron job
+	if ($pfb['enable'] == 'on') {
 		$pfb_gcmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dcc >> {$pfb['extraslog']} 2>&1";
-		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
+		// CRON hour is randomized between 0-23 Hour to minimize effect on Servers 
 		$pfb_gmin	= '0';
 		$pfb_ghour	= rand(0,23);
 		$pfb_gmday	= '*';
 		$pfb_gmonth	= '*';
-		$pfb_gwday	= '5';
+		$pfb_gwday	= '*';
 		$pfb_gwho	= 'root';
 
 		// Determine if CRON job requires updating
@@ -10650,7 +10749,6 @@ function sync_package_pfblockerng($cron='') {
 		$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
 		if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") !== null) {
 			if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") != 'never') {
-
 				$pfb_day = '*';
 				if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") == 'weekly') {
 					$pfb_day = '7';
@@ -10769,7 +10867,7 @@ function pfblockerng_php_pre_deinstall_command() {
 				}
 			}
 			config_set_path('widgets/sequence', implode(',', $widgetlist));
-			write_config('pfBlockerNG: Remove widget');
+			write_config('pfBlockerNG: Remove widget',false);
 		}
 	}
 	else {
