@@ -36,7 +36,7 @@
 		<url>/pkg_edit.php?xml=darkstat.xml</url>
 	</menu>
 	<menu>
-		<name>darkstat </name>
+		<name>darkstat</name>
 		<tooltiptext>Access darkstat</tooltiptext>
 		<section>Diagnostics</section>
 		<url>/darkstat_redirect.php</url>

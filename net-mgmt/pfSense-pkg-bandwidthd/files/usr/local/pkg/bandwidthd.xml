@@ -38,7 +38,7 @@
 		<url>/pkg_edit.php?xml=bandwidthd.xml</url>
 	</menu>
 	<menu>
-		<name>BandwidthD </name>
+		<name>BandwidthD</name>
 		<section>Status</section>
 		<url>/status_bandwidthd.php</url>
 	</menu>

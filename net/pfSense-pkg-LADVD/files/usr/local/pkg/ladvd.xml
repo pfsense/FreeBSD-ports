@@ -37,7 +37,7 @@
 		<url>/pkg_edit.php?xml=ladvd.xml</url>
 	</menu>
 	<menu>
-		<name>LADVD </name>
+		<name>LADVD</name>
 		<tooltiptext>Viwe LADVD status.</tooltiptext>
 		<section>Status</section>
 		<url>/status_ladvd.php</url>

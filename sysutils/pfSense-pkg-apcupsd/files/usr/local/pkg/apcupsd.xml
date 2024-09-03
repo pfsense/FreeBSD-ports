@@ -40,7 +40,7 @@
 		<url>/pkg_edit.php?xml=apcupsd.xml</url>
 	</menu>
 	<menu>
-		<name>Apcupsd </name>
+		<name>Apcupsd</name>
 		<section>Status</section>
 		<url>/pkg_edit.php?xml=apcupsd.xml</url>
 	</menu>
