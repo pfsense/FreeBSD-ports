@@ -181,7 +181,7 @@ function tinc_install() {
 	/* Don't add the interface group if it already exists */
 	$found = false;
 	foreach (config_get_path('ifgroups/ifgroupentry', []) as $ifg) {
-		if ($ifg == "pkg_tinc") {
+		if ($ifg['ifname'] == "pkg_tinc") {
 			$found = true;
 		}
 	}
