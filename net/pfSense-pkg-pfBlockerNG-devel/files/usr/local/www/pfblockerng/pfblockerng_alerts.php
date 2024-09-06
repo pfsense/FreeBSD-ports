@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Parts based on works from Snort_alerts.php
@@ -575,7 +575,7 @@ if (isset($_POST) && !empty($_POST)) {
 		}
 
 		config_set_path("installedpackages/pfblockerngglobal", $pfb['aglobal']);
-		write_config('pfBlockerNG: Update ALERT tab settings.');
+		write_config('pfBlockerNG: Update ALERT tab settings.', false);
 		header("Location: /pfblockerng/pfblockerng_alerts.php?view={$pageview}");
 		exit;
 	}
@@ -827,7 +827,7 @@ if (isset($_POST) && !empty($_POST)) {
 			$data .= "{$v4suppression_dat}\r\n";
 			$clists['ipsuppression']['base64'] = base64_encode($data);
 			config_set_path('installedpackages/pfblockerngipsettings/config/0/v4suppression', $clists['ipsuppression']['base64']);
-			write_config("pfBlockerNG: Added {$ip} to the IPv4 Suppression customlist");
+			write_config("pfBlockerNG: Added {$ip} to the IPv4 Suppression customlist", false);
 			pfb_create_suppression_file();	// Create pfbsuppression.txt
 		}
 		header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
@@ -883,7 +883,7 @@ if (isset($_POST) && !empty($_POST)) {
 			}
 			$clists['dnsbl'][$list]['base64'] = base64_encode($data);
 			config_set_path("installedpackages/pfblockerngdnsbl/config/{$clists['dnsbl'][$list]['base64_idx']}/custom", $clists['dnsbl'][$list]['base64']);
-			write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL Group [ {$list} ] customlist");
+			write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL Group [ {$list} ] customlist", false);
 			pfb_reload_unbound('enabled', FALSE, TRUE);
 		}
 		else {
@@ -1028,7 +1028,7 @@ if (isset($_POST) && !empty($_POST)) {
 				$data .= "{$whitelist}\r\n";
 				$clists['dnsblwhitelist']['base64'] = base64_encode($data);
 				config_set_path("installedpackages/pfblockerngdnsblsettings/config/0/suppression", $clists['dnsblwhitelist']['base64']);
-				write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL Whitelist");
+				write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL Whitelist", false);
 			}
 
 			// Create tempfile for DNSBL Whitelisting
@@ -1134,7 +1134,7 @@ if (isset($_POST) && !empty($_POST)) {
 				$data .= "{$exclude_string}\r\n";
 				$clists['tldexclusion']['base64'] = base64_encode($data);
 				config_set_path("installedpackages/pfblockerngdnsblsettings/config/0/tldexclusion", $clists['tldexclusion']['base64']);
-				write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL TLD Exclusion customlist.");
+				write_config("pfBlockerNG: Added [ {$domain} ] to DNSBL TLD Exclusion customlist.", false);
 			}
 		}
 		header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
@@ -1327,7 +1327,7 @@ if (isset($_POST) && !empty($_POST)) {
 		}
 
 		if ($pfb_found) {
-			write_config("pfBlockerNG: Deleted [ {$entry} ] from {$type} customlist");
+			write_config("pfBlockerNG: Deleted [ {$entry} ] from {$type} customlist", false);
 			if ($dnsbl_py_changes) {
 				pfb_unbound_python_whitelist('alerts');
 				pfb_reload_unbound('enabled', FALSE);
@@ -1610,7 +1610,7 @@ if (isset($_POST) && !empty($_POST)) {
 
 			$clists['ipwhitelist' . $vtype][$table]['base64'] = base64_encode($data);
 			config_set_path("installedpackages/pfblockernglistsv{$vtype}/config/{$clists['ipwhitelist' . $vtype][$table]['base64_idx']}/custom", $clists['ipwhitelist' . $vtype][$table]['base64']);
-			write_config("pfBlockerNG: Added [ {$ip} ] to [ {$table} ] Whitelist");
+			write_config("pfBlockerNG: Added [ {$ip} ] to [ {$table} ] Whitelist", false);
 
 			$aname = substr(substr($table, 4),0, -3);					// Remove 'pfB_' and '_v4'
 			touch("{$pfb['permitdir']}/{$aname}_custom_v{$vtype}.update");			// Set Flag for Cron/Update process
@@ -2835,7 +2835,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 		if (strpos($fields[18], '|') !== FALSE) {
 			$fields[18]	= str_replace('ASN:', '', $fields[18]);
 			$asn		= explode('|', $fields[18], 3);
-			$fields[18] = "<span title=\"|" . htmlspecialchars($asn[2]) . "\">AS" . htmlspecialchars($asn[1]) . "</span>";
+			$fields[18] = "<span title=\"|" . htmlspecialchars($asn[2]) . "\">" . htmlspecialchars($asn[1]) . "</span>";
 		} else {
 			$fields[18] = '';
 		}
