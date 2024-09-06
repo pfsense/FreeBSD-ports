@@ -201,7 +201,7 @@ suppress() {
 	fi
 
 	if [ -e "${pfbsuppression}" ] && [ -s "${pfbsuppression}" ]; then
-		data="$(cat ${pfbsuppression} | sort | uniq)"
+		data="$(sort -u ${pfbsuppression})"
 
 		if [ ! -z "${data}" ] && [ ! -z "${alias}" ]; then
 			if [ "${alias}" == 'suppressheader' ]; then
@@ -323,7 +323,7 @@ duplicate() {
 	# Check if alias exists in masterfile
 	lcheck="$(grep -m1 ${alias} ${masterfile})"; if [ -z "${lcheck}" ]; then dupcheck=0; fi
 	# Check for single alias in masterfile
-	aliaslist="$(cut -d ' ' -f1 ${masterfile} | sort | uniq)"; if [ "${alias}" == "${aliaslist}" ]; then hcheck=0; fi
+	aliaslist="$(cut -d ' ' -f1 ${masterfile} | sort -u)"; if [ "${alias}" == "${aliaslist}" ]; then hcheck=0; fi
 
 	# Only execute if 'Alias' exists in masterfile
 	if [ "${dupcheck}" -eq 1 ]; then
@@ -335,7 +335,7 @@ duplicate() {
 
 	# Don't execute when only a single 'Alias' exists in masterfile
 	if [ ! "${hcheck}" -eq 0 ]; then
-		sort "${pfbdeny}${alias}.txt" | uniq > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
+		sort -u "${pfbdeny}${alias}.txt" > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
 		"${pathgrepcidr}" -vf "${mastercat}" "${pfbdeny}${alias}.txt" > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
 	fi
 
@@ -370,7 +370,7 @@ dnsbl_scrub() {
 	alexa_enable="${max}"
 
 	# Process De-Duplication
-	sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2"
+	sort -u "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
 	countu="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 
 	if [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
@@ -408,17 +408,17 @@ dnsbl_scrub() {
 		if [ "${countw}" -gt 0 ]; then
 			if [ "${dedup}" == '' ]; then
 				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+					cut -d '"' -f2 | cut -d ' ' -f1 | sort -u | tr '\n' '|')"
 			else
 				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
+					cut -d ',' -f2 | sort -u | tr '\n' '|')"
 			fi
 
 			if [ -z "${data}" ]; then
 				if [ "${dedup}" == '' ]; then
-					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort -u | tr '\n' '|')"
 				else
-					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
+					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort -u | tr '\n' '|')"
 				fi
 			fi
 
@@ -439,17 +439,17 @@ dnsbl_scrub() {
 		if [ "${counta}" -gt 0 ]; then
 			if [ "${dedup}" == '' ]; then
 				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+					cut -d '"' -f2 | cut -d ' ' -f1 | sort -u | tr '\n' '|')"
 			else
 				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
+					cut -d ',' -f2 | sort -u | tr '\n' '|')"
 			fi
 
 			if [ -z "${data}" ]; then
 				if [ "${dedup}" == '' ]; then
-					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort -u | tr '\n' '|')"
 				else
-					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
+					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort -u | tr '\n' '|')"
 				fi
 			fi
 
@@ -479,14 +479,14 @@ domaintld() {
 	> "${tempfile}"; > "${tempfile2}"; > "${dupfile}"
 
 	if [ -s "${dnsbl_file}.raw" ]; then
-		sort "${dnsbl_file}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_file}.raw"
+		sort -u "${dnsbl_file}.raw" > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_file}.raw"
 		countto="$(grep -v '"transparent"\|\"static\"' ${dnsbl_file}.raw | grep -c ^)"
 	else
 		countto=0
 	fi
 
 	if [ -s "${dnsbl_tld_remove}" ]; then
-		sort "${dnsbl_tld_remove}" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}"
+		sort -u "${dnsbl_tld_remove}" > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}"
 		counttm="$(grep -c '^\.' ${dnsbl_tld_remove})"
 	else
 		counttm=0
@@ -505,7 +505,7 @@ domaintld() {
 		for file in ${dnsbl_tmp_files}; do
 			# For each file, place 'local-zone' before 'local-data'
 			head -1 "${file}" >> "${dupfile}"
-			tail -n +2 "${file}" | sort | uniq >> "${dupfile}"
+			tail -n +2 "${file}" | sort -u >> "${dupfile}"
 		done
 
 		# Remove redundant Domains (in 'redirect zone')
@@ -524,7 +524,7 @@ domaintld() {
 	# 'Transparent zone'
 	# Remove redundant Domains (in 'transparent zone')
 	if [ -s "${dnsbl_tld_remove}.tsp" ] && [ -s "${dnsbl_file}.tsp" ]; then
-		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
+		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}.tsp" "${dnsbl_file}.tsp" | sort -u > "${tempfile2}"
 	else
 		echo "XXX"
 		# XXXX to be confirmed!
@@ -544,7 +544,7 @@ domaintld() {
 
 	# Sort 'Transparent zone' remove file
 	if [ -s "${dnsbl_tld_remove}.tsp" ]; then
-		sort "${dnsbl_tld_remove}.tsp" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}.tsp"
+		sort -u "${dnsbl_tld_remove}.tsp" > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}.tsp"
 	fi
 
 	# Remove redundant Domains in DNSBL files
@@ -584,14 +584,14 @@ domaintldpy() {
 	dnsbl_files="${cc}";
 
 	if [ -s "${dnsbl_python_data}.raw" ]; then
-		sort "${dnsbl_python_data}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_data}.raw"
+		sort -u "${dnsbl_python_data}.raw" > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_data}.raw"
 		countd="$(grep -c ^ ${dnsbl_python_data}.raw)"
 	else
 		countd=0
 	fi
 
 	if [ -s "${dnsbl_python_zone}.raw" ]; then
-		sort "${dnsbl_python_zone}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_zone}.raw"
+		sort -u "${dnsbl_python_zone}.raw" > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_zone}.raw"
 		countz="$(grep -c ^ ${dnsbl_python_zone}.raw)"
 	else
 		countz=0
@@ -602,7 +602,7 @@ domaintldpy() {
 	countto="$((countd + countz))"
 
 	if [ -s "${dnsbl_tld_remove}" ]; then
-		sort "${dnsbl_tld_remove}" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}"
+		sort -u "${dnsbl_tld_remove}" > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}"
 		counttm="$(grep -c '^\.' ${dnsbl_tld_remove})"
 	else
 		counttm=0
@@ -874,7 +874,7 @@ reputation_depends() {
 
 # Reputation function to condense an IP range if a 'Max' amount of IP addresses are found in a /24 range per individual list.
 reputation_max() {
-	sort "${pfbdeny}${alias}.txt" | uniq > "${tempfile}"
+	sort -u "${pfbdeny}${alias}.txt" > "${tempfile}"
 	data="$(cut -d '.' -f 1-3 ${tempfile} | awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}')"
 
 	# Classify repeat offenders by Country code
@@ -940,7 +940,7 @@ reputation_max() {
 	if [ "${count}" -gt 0 ]; then
 		echo; echo "  Reputation (Max=${max}) - Range(s)"
 		cat "${dupfile}" | tr '\n' '|'; echo
-		sort "${pfbdeny}${alias}.txt" | uniq > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
+		sort -u "${pfbdeny}${alias}.txt" > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
 	fi
 
 	if [ "${count}" -gt 0 ] || [ "${countr}" -gt 0 ]; then
@@ -1195,7 +1195,7 @@ processxlsx() {
 	if [ -s "${pfborig}${alias}.raw" ]; then
 		"${pathtar}" -xf "${pfborig}${alias}.raw" -C "${tmpxlsx}"
 		"${pathtar}" -xOf "${tmpxlsx}"*.[xX][lL][sS][xX] "xl/sharedStrings.xml" | \
-			grep -aoEw "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" | sort | uniq > "${pfborig}${alias}.orig"
+			grep -aoEw "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" | sort -u > "${pfborig}${alias}.orig"
 		rm -r "${tmpxlsx}"*
 
 		countf="$(grep -cv ^${ip_placeholder2}$ ${pfborig}${alias}.orig)"
