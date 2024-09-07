@@ -35,13 +35,17 @@ require_once('classes/Form.class.php');
 config_init_path('installedpackages/patches/item');
 
 $id = $_GET['id'];
-if (isset($_POST['id'])) {
+if (is_numericint($_POST['id'])) {
 	$id = $_POST['id'];
 }
 
-if (isset($_GET['dup'])) {
+if (is_numericint($_GET['dup'])) {
 	$id = $_GET['dup'];
 	$after = $_GET['dup'];
+}
+
+if (!is_numericint($id)) {
+	unset($id);
 }
 
 $this_patches_config = isset($id) ? config_get_path("installedpackages/patches/item/{$id}") : null;

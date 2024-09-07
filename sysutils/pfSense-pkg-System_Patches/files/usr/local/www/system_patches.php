@@ -94,7 +94,7 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
 	$savemsg .= '<br/><br/>' . gettext('Changes may not fully activate until the next reboot or restart of patched functions.');
 }
 
-if ((($_POST['type'] == 'custom') && (config_get_path("installedpackages/patches/item/{$_POST['id']}"))) ||
+if ((($_POST['type'] == 'custom') && is_numericint($_POST['id']) && (config_get_path("installedpackages/patches/item/{$_POST['id']}"))) ||
     (($_POST['type'] == 'recommended') && !empty(get_recommended_patch($_POST['id'])))) {
 	$savemsg = "";
 
