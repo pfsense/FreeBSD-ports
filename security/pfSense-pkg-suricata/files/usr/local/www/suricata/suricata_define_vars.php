@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -91,6 +91,38 @@ if ($_POST) {
 		if ($_POST["def_{$key}"] && is_alias($_POST["def_{$key}"]) && trim(filter_expand_alias($_POST["def_{$key}"])) == "")
 			$input_errors[] = "FQDN aliases are not allowed for port variables in Suricata.";
 	}
+
+	if ($_POST['enable_extra_servers_ports']) {
+		for ($x = 0; $x < 99; $x++) {
+			if (isset($_POST["extra_name{$x}"]) && isset($_POST["extra_value{$x}"])) {
+				$type = $_POST["extra_server_or_port{$x}"];
+				$name = trim($_POST["extra_name{$x}"]);
+				$value = $_POST["extra_value{$x}"];
+
+				if (preg_match("/[^A-Za-z0-9_]/", $name)) {
+					$input_errors[] = gettext("The extra variable name may only contain the characters A-Z, 0-9 and '_'.");
+				}
+				if ("" != $value) {
+					if (!is_alias($value)) {
+						$input_errors[] = "Only aliases are allowed";
+					} elseif (trim(filter_expand_alias($value)) == "") {
+						$input_errors[] = "FQDN aliases are not allowed for variables in Suricata.";
+					} elseif ($type == 'server' && $suricata_servers[strtolower($name)]) {
+						$input_errors[] = "'" . $name . "' is a standard server variable.";
+					} elseif ($type == 'port' && $suricata_ports[strtolower($name)]) {
+						$input_errors[] = "'" . $name . "' is a standard port variable.";
+					}
+				}
+				$extra_servers_ports['item'][] = array(
+					'type' => $type,
+					'name' => $name,
+					'value' => $value
+				);
+			}
+		}
+		$natent['extra_servers_ports'] = $extra_servers_ports;
+	}
+
 	/* if no errors write to suricata.yaml */
 	if (!$input_errors) {
 		/* post new options */
@@ -110,6 +142,8 @@ if ($_POST) {
 		// Save the updated interface configuration
 		$a_nat = $natent;
 		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+		config_set_path("installedpackages/suricata/rule/{$id}/enable_extra_servers_ports", $_POST['enable_extra_servers_ports'] ? 'on' : 'off');
+		config_set_path("installedpackages/suricata/rule/{$id}/extra_servers_ports", $extra_servers_ports);
 		write_config("Suricata pkg: saved changes for PORT or IP variables.");
 
 		/* Update the suricata.yaml file for this interface. */
@@ -232,6 +266,72 @@ foreach ($suricata_ports as $key => $server) {
 }
 $form->add($section);
 
+$section = new Form_Section('Enable Extra Variables');
+$section->addInput(new Form_Checkbox(
+	'enable_extra_servers_ports',
+	'Enable Extra Variables',
+	'Enable Extra Variables',
+	$pconfig['enable_extra_servers_ports'] == 'on' ? true:false,
+	'on'
+))->setHelp('Add extra custom servers and ports');
+$form->add($section);
+
+$section = new Form_Section('Define Extras Variables (Custom IP or port variables)');
+$section->addClass('extra_servers_ports');
+
+if (!$pconfig['extra_servers_ports']) {
+	$pconfig['extra_servers_ports'] = array();
+	$pconfig['extra_servers_ports']['item'] = array(array('type' => 'server', 'name' => '', 'value' => ''));
+}
+
+$counter = 0;
+$numrows = count($pconfig['extra_servers_ports']['item']) - 1;
+
+foreach ($pconfig['extra_servers_ports']['item'] as $item) {
+	$group = new Form_Group(($counter == 0) ? 'Variable':null);
+	$group->addClass('repeatable');
+
+	$group->add(new Form_Select(
+		'extra_server_or_port' . $counter,
+		'Server',
+		$item['type'],
+		['server' => 'Server', 'port' => 'Port']
+	))->setWidth(2)->setHelp($numrows == $counter ? 'Server or Port':null);;
+
+	$group->add(new Form_Input(
+		'extra_name'. $counter,
+		'Name',
+		'text',
+		$item['name']
+	))->setWidth(3)->setHelp($numrows == $counter ? 'Name':null);
+
+	$group->add(new Form_Input(
+		'extra_value'. $counter,
+		'Value',
+		'text',
+		$item['value']
+	))->setWidth(3)->setHelp($numrows == $counter ? 'Value':null);
+
+	$group->add(new Form_Button(
+		'deleterow' . $counter,
+		'Delete',
+		null,
+		'fa-trash'
+	))->addClass('btn-warning');
+
+	$section->add($group);
+
+	$counter++;
+}
+
+$section->addInput(new Form_Button(
+	'addrow',
+	'Add',
+	null,
+	'fa-plus'
+))->addClass('btn-success');
+$form->add($section);
+
 print($form);
 
 ?>
@@ -253,6 +353,20 @@ events.push(function() {
 	?>
 	}
 
+	function show_extra_servers_ports() {
+		hide = !$('#enable_extra_servers_ports').prop('checked');
+		hideClass('extra_servers_ports', hide);
+	}
+
+	// ---------- Click checkbox handlers ---------------------------------------------------------
+	// When 'enable_extra_servers_ports' is clicked, show 'extra_servers_ports' list
+	$('#enable_extra_servers_ports').click(function () {
+		show_extra_servers_ports();
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+	show_extra_servers_ports();
+	checkLastRow();
 	setTimeout(createAutoSuggest, 500);
 
 });

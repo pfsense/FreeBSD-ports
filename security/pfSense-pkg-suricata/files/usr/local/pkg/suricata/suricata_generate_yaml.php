@@ -86,7 +86,6 @@ foreach ($suricata_servers as $alias => $avalue) {
 	}
 	$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
 }
-$addr_vars = trim($addr_vars);
 if(config_get_path('system/ssh/port'))
         $ssh_port = config_get_path('system/ssh/port');
 else
@@ -109,6 +108,18 @@ foreach ($suricata_ports as $alias => $avalue) {
 	}
 	$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
 }
+if ($suricatacfg['enable_extra_servers_ports'] == 'on') {
+	foreach ($suricatacfg['extra_servers_ports']['item'] as $item) {
+		$avalue = trim(filter_expand_alias($item['value']));
+		$avalue = preg_replace('/\s+/', ', ', trim($avalue));
+		if ($item['type'] == 'server') {
+			$addr_vars .= "    " . strtoupper($item['name']) . ": \"{$avalue}\"\n";
+		} else {
+			$port_vars .= "    " . strtoupper($item['name']) . ": \"{$avalue}\"\n";
+		}
+	}
+}
+$addr_vars = trim($addr_vars);
 $port_vars = trim($port_vars);
 
 // Define a Suppress List (Threshold) if one is configured
