@@ -47,7 +47,7 @@ $suricata_servers = array (
 	"dnp3_client" => "\$HOME_NET", "modbus_server" => "\$HOME_NET", "modbus_client" => "\$HOME_NET",
 	"enip_server" => "\$HOME_NET", "enip_client" => "\$HOME_NET", "ftp_servers" => "\$HOME_NET", "ssh_servers" => "\$HOME_NET",
 	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24", 
-	"sip_servers" => "\$HOME_NET"
+	"sip_servers" => "\$HOME_NET", "custom_servers" => ''
 );
 
 /* if user has defined a custom ssh port, use it, else default to '22' */
@@ -60,7 +60,8 @@ $suricata_ports = array(
 	"shellcode_ports" => "!80",
 	"DNP3_PORTS" => "20000", 
 	"file_data_ports" => "\$HTTP_PORTS,110,143", 
-	"sip_ports" => "5060,5061,5600"
+	"sip_ports" => "5060,5061,5600",
+	"custom_ports" => ''
 );
 
 // Sort our SERVERS and PORTS arrays to make values
@@ -202,7 +203,7 @@ foreach ($suricata_servers as $key => $server) {
 		$label,
 		'text',
 		$pconfig[$name]
-	))->setHelp('Default value: ' . $server . '. Leave blank for default value.');
+	))->setHelp('Default value: ' . (!empty($server) ? " {$server}. Leave blank for default value." : 'not used.'));
 }
 $form->add($section);
 
@@ -227,7 +228,7 @@ foreach ($suricata_ports as $key => $server) {
 		$label,
 		'text',
 		$pconfig[$name]
-	))->setHelp('Default value: ' . $server . '. Leave blank for default value.');
+	))->setHelp('Default value: ' . (!empty($server) ? " {$server}. Leave blank for default value." : 'not used.'));
 
 }
 $form->add($section);

@@ -76,7 +76,7 @@ $suricata_servers = array (
 	"dnp3_client" => "\$HOME_NET", "modbus_server" => "\$HOME_NET", "modbus_client" => "\$HOME_NET",
 	"enip_server" => "\$HOME_NET", "enip_client" => "\$HOME_NET", "ftp_servers" => "\$HOME_NET", "ssh_servers" => "\$HOME_NET", 
 	"aim_servers" => "64.12.24.0/23, 64.12.28.0/23, 64.12.161.0/24, 64.12.163.0/24, 64.12.200.0/24, 205.188.3.0/24, 205.188.5.0/24, 205.188.7.0/24, 205.188.9.0/24, 205.188.153.0/24, 205.188.179.0/24, 205.188.248.0/24", 
-	"sip_servers" => "\$HOME_NET"
+	"sip_servers" => "\$HOME_NET", "custom_servers" => ''
 );
 $addr_vars = "";
 foreach ($suricata_servers as $alias => $avalue) {
@@ -84,7 +84,9 @@ foreach ($suricata_servers as $alias => $avalue) {
 		$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
 		$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 	}
-	$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	if (!empty($avalue)) {
+		$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	}
 }
 $addr_vars = trim($addr_vars);
 if(config_get_path('system/ssh/port'))
@@ -99,7 +101,8 @@ $suricata_ports = array(
 	"shellcode_ports" => "!80", 
 	"DNP3_PORTS" => "20000", 
 	"file_data_ports" => "\$HTTP_PORTS, 110, 143", 
-	"sip_ports" => "5060, 5061, 5600"
+	"sip_ports" => "5060, 5061, 5600",
+	"custom_ports" => ''
 );
 $port_vars = "";
 foreach ($suricata_ports as $alias => $avalue) {
@@ -107,7 +110,9 @@ foreach ($suricata_ports as $alias => $avalue) {
 		$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
 		$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 	}
-	$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	if (!empty($avalue)) {
+		$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+	}
 }
 $port_vars = trim($port_vars);
 
