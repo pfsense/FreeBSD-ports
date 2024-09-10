@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2024 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,7 +74,7 @@ elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 if (is_null($instanceid))
 	$instanceid = 0;
 
-$a_instance = config_get_path("installedpackages/suricata/rule/{$id}", []);
+$a_instance = config_get_path("installedpackages/suricata/rule/{$instanceid}", []);
 $suricata_uuid = $a_instance['uuid'];
 $if_real = get_real_interface($a_instance['interface']);
 $suricatalogdir = SURICATALOGDIR;
