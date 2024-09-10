@@ -4162,7 +4162,7 @@ function suricata_get_vpns_list() {
 		/* Site-to-Site IPsec */
 		if (config_get_path('ipsec/phase2')) {
 			foreach (config_get_path('ipsec/phase2', []) as $ph2ent) {
-				if ((!$ph2ent['mobile']) && ($ph2ent['mode'] != 'transport') &&
+				if ((!isset($ph2ent['mobile'])) && ($ph2ent['mode'] != 'transport') &&
 				    !isset($ph2ent['disabled'])) {
 					if (!array_get_path($ph2ent, 'remoteid')) {
 						continue;
