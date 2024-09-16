@@ -1,5 +1,5 @@
 PORTNAME=	iocage-devel
-PORTVERSION=	1.6.20240531
+PORTVERSION=	1.7.20240618
 PORTEPOCH=	1
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,6 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=6.7:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-runner>=2.0.0:devel/py-pytest-runner@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.11.1:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}texttable>=0.8.7:textproc/py-texttable@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tqdm>=4.10.0:misc/py-tqdm@${PY_FLAVOR} \
 		ca_root_nss>0:security/ca_root_nss
@@ -29,14 +30,14 @@ USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	iocage
-GH_TAGNAME=	93779af196efe60396915d1744f07714073a15fa
+GH_TAGNAME=	6e2b0a0586fe5a6c3ac0ce6bc62bdaa714169720
 
 USE_PYTHON=	autoplist distutils
 
 CONFLICTS=	py*-iocage py*-iocage-devel
 NO_ARCH=	yes
 
-_IOCAGE_LIB_VERSION=	1.6
+_IOCAGE_LIB_VERSION=	1.7
 PLIST_FILES=		${PYTHON_SITELIBDIR}/${PORTNAME:S/-devel//g}_lib-${_IOCAGE_LIB_VERSION}-py${PYTHON_VER}.egg-info/dependency_links.txt \
 			${PYTHON_SITELIBDIR}/${PORTNAME:S/-devel//g}_lib-${_IOCAGE_LIB_VERSION}-py${PYTHON_VER}.egg-info/entry_points.txt \
 			${PYTHON_SITELIBDIR}/${PORTNAME:S/-devel//g}_lib-${_IOCAGE_LIB_VERSION}-py${PYTHON_VER}.egg-info/PKG-INFO \

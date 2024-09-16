@@ -1,9 +1,9 @@
 PORTNAME=	worker
-PORTVERSION=	5.0.2
+PORTVERSION=	5.1.0
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://www.boomerangsworld.de/cms/worker/downloads/
 
-MAINTAINER=	mp39590@gmail.com
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	X11 file manager based on Directory Opus of AmigaOS
 WWW=		http://www.boomerangsworld.de/cms/worker/
 
@@ -14,7 +14,6 @@ RUN_DEPENDS=	bash:shells/bash
 USES=		compiler:c++14-lang localbase pkgconfig python:run \
 		shebangfix tar:bzip2 xorg
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_XORG=	ice sm x11 xinerama
 
 SHEBANG_FILES=	${WRKSRC}/scripts/*.sh \

@@ -1,6 +1,6 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
-DISTVERSION=	${JDK_MAJOR_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
+DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
@@ -34,7 +34,7 @@ CPE_VENDOR=	oracle
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	battleblow
-GH_PROJECT=	jdk22
+GH_PROJECT=	jdk22u
 
 NO_CCACHE=	yes
 
@@ -62,8 +62,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	22
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	0
-JDK_BUILD_NUMBER=	36
+JDK_PATCH_VERSION=	2
+JDK_BUILD_NUMBER=	9
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -138,17 +138,11 @@ CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFA
 			--with-extra-cxxflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}"
 .else
 MAKE_ENV+=	USE_CLANG=true
-.if ${COMPILER_VERSION} >= 130
 EXTRA_CFLAGS+=		-Wno-unused-but-set-parameter
-.if ${COMPILER_VERSION} >= 140
 EXTRA_CFLAGS+=		-Wno-bitwise-instead-of-logical
-.endif
-.if ${COMPILER_VERSION} >= 160
 EXTRA_CFLAGS+=		-Wno-error=deprecated-non-prototype
-.endif
 CONFIGURE_ARGS+=	--with-extra-cflags="${EXTRA_CFLAGS}"
 CONFIGURE_ARGS+=	--with-extra-cxxflags="${EXTRA_CFLAGS}"
-.endif
 .endif
 
 .if ${ARCH} == aarch64 || ${ARCH:Mpowerpc64*}

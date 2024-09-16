@@ -1,11 +1,12 @@
 PORTNAME=	rubocop-rspec
-PORTVERSION=	3.0.1
+PORTVERSION=	3.0.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	RuboCop plugin of code style checking for RSpec files
-WWW=		https://github.com/rubocop/rubocop-rspec
+WWW=		https://docs.rubocop.org/rubocop-rspec/ \
+		https://github.com/rubocop/rubocop-rspec
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE.md

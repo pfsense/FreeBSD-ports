@@ -1,6 +1,6 @@
---- content/app/content_main_runner_impl.cc.orig	2024-06-17 12:56:06 UTC
+--- content/app/content_main_runner_impl.cc.orig	2024-08-26 12:06:38 UTC
 +++ content/app/content_main_runner_impl.cc
-@@ -144,18 +144,20 @@
+@@ -149,18 +149,20 @@
  #include "content/browser/posix_file_descriptor_info_impl.h"
  #include "content/public/common/content_descriptors.h"
  
@@ -23,7 +23,7 @@
  #include "third_party/boringssl/src/include/openssl/crypto.h"
  #include "third_party/webrtc_overrides/init_webrtc.h"  // nogncheck
  
-@@ -189,6 +191,10 @@
+@@ -194,6 +196,10 @@
  #include "media/base/media_switches.h"
  #endif
  
@@ -34,7 +34,7 @@
  #if BUILDFLAG(IS_ANDROID)
  #include "base/system/sys_info.h"
  #include "content/browser/android/battery_metrics.h"
-@@ -384,7 +390,7 @@ void InitializeZygoteSandboxForBrowserProcess(
+@@ -403,7 +409,7 @@ void InitializeZygoteSandboxForBrowserProcess(
  }
  #endif  // BUILDFLAG(USE_ZYGOTE)
  
@@ -43,7 +43,7 @@
  
  #if BUILDFLAG(ENABLE_PPAPI)
  // Loads the (native) libraries but does not initialize them (i.e., does not
-@@ -422,7 +428,10 @@ void PreloadLibraryCdms() {
+@@ -441,7 +447,10 @@ void PreloadLibraryCdms() {
  
  void PreSandboxInit() {
    // Ensure the /dev/urandom is opened.
@@ -54,7 +54,7 @@
  
    // May use sysinfo(), sched_getaffinity(), and open various /sys/ and /proc/
    // files.
-@@ -434,9 +443,16 @@ void PreSandboxInit() {
+@@ -453,9 +462,16 @@ void PreSandboxInit() {
    // https://boringssl.googlesource.com/boringssl/+/HEAD/SANDBOXING.md
    CRYPTO_pre_sandbox_init();
  
@@ -71,7 +71,7 @@
  
  #if BUILDFLAG(ENABLE_PPAPI)
    // Ensure access to the Pepper plugins before the sandbox is turned on.
-@@ -847,11 +863,10 @@ int ContentMainRunnerImpl::Initialize(ContentMainParam
+@@ -877,11 +893,10 @@ int ContentMainRunnerImpl::Initialize(ContentMainParam
                   base::GlobalDescriptors::kBaseDescriptor);
  #endif  // !BUILDFLAG(IS_ANDROID)
  
@@ -85,7 +85,7 @@
  
  #endif  // !BUILDFLAG(IS_WIN)
  
-@@ -1038,8 +1053,20 @@ int ContentMainRunnerImpl::Initialize(ContentMainParam
+@@ -1058,8 +1073,20 @@ int ContentMainRunnerImpl::Initialize(ContentMainParam
        process_type == switches::kZygoteProcess) {
      PreSandboxInit();
    }
@@ -106,7 +106,7 @@
    delegate_->SandboxInitialized(process_type);
  
  #if BUILDFLAG(USE_ZYGOTE)
-@@ -1114,7 +1141,7 @@ int NO_STACK_PROTECTOR ContentMainRunnerImpl::Run() {
+@@ -1133,7 +1160,7 @@ int NO_STACK_PROTECTOR ContentMainRunnerImpl::Run() {
            ->ReconfigureAfterFeatureListInit(process_type);
      }
  
@@ -115,7 +115,7 @@
      // If dynamic Mojo Core is being used, ensure that it's loaded very early in
      // the child/zygote process, before any sandbox is initialized. The library
      // is not fully initialized with IPC support until a ChildProcess is later
-@@ -1149,6 +1176,11 @@ int NO_STACK_PROTECTOR ContentMainRunnerImpl::Run() {
+@@ -1168,6 +1195,11 @@ int NO_STACK_PROTECTOR ContentMainRunnerImpl::Run() {
    content_main_params_.reset();
  
    RegisterMainThreadFactories();

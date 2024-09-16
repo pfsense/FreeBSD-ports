@@ -19,14 +19,14 @@ GNU_CONFIGURE=	yes
 
 INSTALL_TARGET=	install-strip
 
-CONFIGURE_ARGS=	--disable-cache --without-ffmpeg
+CONFIGURE_ARGS=	--disable-cache --without-ffmpeg --without-musepack \
+		--without-sidplay2
 
-OPTIONS_DEFINE=	AAC CURL DEBUG FLAC JACK MODPLUG MP3 MUSEPACK RCC \
-		SAMPLERATE SIDPLAY2 SNDFILE SPEEX VORBIS WAVPACK
+OPTIONS_DEFINE=	AAC CURL DEBUG FLAC JACK MODPLUG MP3 RCC \
+		SAMPLERATE SNDFILE SPEEX VORBIS WAVPACK
 OPTIONS_DEFAULT=MP3 VORBIS FLAC CURL WAVPACK
 CURL_DESC=	curl support (Internet streams)
 RCC_DESC=	RCC support
-SIDPLAY2_DESC=	libsidplay2 support
 
 AAC_LIB_DEPENDS=	libfaad.so:audio/faad
 AAC_PLIST_FILES=	lib/moc/decoder_plugins/libaac_decoder.so
@@ -53,21 +53,12 @@ MP3_LIB_DEPENDS=	libmad.so:audio/libmad \
 MP3_PLIST_FILES=	lib/moc/decoder_plugins/libmp3_decoder.so
 MP3_CONFIGURE_OFF=	--without-mp3
 
-MUSEPACK_LIB_DEPENDS=	libmpcdec.so:audio/musepack \
-			libtag_c.so:audio/taglib
-MUSEPACK_PLIST_FILES=	lib/moc/decoder_plugins/libmusepack_decoder.so
-MUSEPACK_CONFIGURE_OFF=	--without-musepack
-
 RCC_LIB_DEPENDS=	librcc.so:devel/librcc \
 			librcd.so:devel/librcd
 RCC_CONFIGURE_OFF=	--without-rcc
 
 SAMPLERATE_LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 SAMPLERATE_CONFIGURE_OFF=	--without-samplerate
-
-SIDPLAY2_LIB_DEPENDS=	libsidplay2.so:audio/libsidplay2
-SIDPLAY2_PLIST_FILES=	lib/moc/decoder_plugins/libsidplay2_decoder.so
-SIDPLAY2_CONFIGURE_OFF=	--without-sidplay2
 
 SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 SNDFILE_PLIST_FILES=	lib/moc/decoder_plugins/libsndfile_decoder.so

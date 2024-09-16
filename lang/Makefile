@@ -99,7 +99,6 @@
     SUBDIR += gcc14-devel
     SUBDIR += gcc15-devel
     SUBDIR += gcc6-aux
-    SUBDIR += gcc9
     SUBDIR += gforth
     SUBDIR += ghc
     SUBDIR += ghc810
@@ -125,6 +124,7 @@
     SUBDIR += go120
     SUBDIR += go121
     SUBDIR += go122
+    SUBDIR += go123
     SUBDIR += gomacro
     SUBDIR += gprolog
     SUBDIR += gptscript
@@ -146,7 +146,6 @@
     SUBDIR += hs-koka
     SUBDIR += hs-unlambda
     SUBDIR += huc
-    SUBDIR += icc
     SUBDIR += inko
     SUBDIR += intel-compute-runtime
     SUBDIR += intercal
@@ -242,6 +241,7 @@
     SUBDIR += p5-ExtUtils-F77
     SUBDIR += p5-Interpolation
     SUBDIR += p5-JSAN
+    SUBDIR += p5-JavaScript-QuickJS
     SUBDIR += p5-JavaScript-Squish
     SUBDIR += p5-JavaScript-Value-Escape
     SUBDIR += p5-List-MoreUtils
@@ -269,7 +269,6 @@
     SUBDIR += pbasic
     SUBDIR += pcc
     SUBDIR += perl5-devel
-    SUBDIR += perl5.34
     SUBDIR += perl5.36
     SUBDIR += perl5.38
     SUBDIR += perl5.40
@@ -283,6 +282,8 @@
     SUBDIR += php82-extensions
     SUBDIR += php83
     SUBDIR += php83-extensions
+    SUBDIR += php84
+    SUBDIR += php84-extensions
     SUBDIR += picoc
     SUBDIR += picolisp
     SUBDIR += pkl
@@ -296,6 +297,7 @@
     SUBDIR += py-dhall
     SUBDIR += py-hy
     SUBDIR += py-lupa
+    SUBDIR += py-sly
     SUBDIR += py-textX
     SUBDIR += python
     SUBDIR += python-doc-html

@@ -1,6 +1,6 @@
 PORTNAME=	iamb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.9
+DISTVERSION=	0.0.10
 PORTREVISION=	2
 CATEGORIES=	net-im
 
@@ -11,8 +11,7 @@ WWW=		https://iamb.chat/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/oniguruma.pc:devel/oniguruma
-
+BROKEN_i386=	fails to build
 USES=		cargo ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	ulyssa

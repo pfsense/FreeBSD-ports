@@ -1,9 +1,9 @@
 PORTNAME=	keyd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.3
+DISTVERSION=	2.5.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Key remapping daemon for evdev
 WWW=		https://github.com/rvaiya/keyd
 
@@ -18,8 +18,7 @@ USE_GITHUB=	yes
 USE_RC_SUBR=	${PORTNAME}
 GH_ACCOUNT=	rvaiya
 SHEBANG_FILES=	scripts/*
-MAKE_ARGS=	PREFIX="${PREFIX}" \
-		VERSION="${DISTVERSIONFULL}" COMMIT=""
+MAKE_ARGS=	VERSION="${DISTVERSIONFULL}" COMMIT=""
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}-application-mapper
 PLIST_DIRS=	${ETCDIR}

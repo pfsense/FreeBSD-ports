@@ -1,6 +1,6 @@
---- net/base/network_change_notifier.cc.orig	2024-06-25 12:08:48 UTC
+--- net/base/network_change_notifier.cc.orig	2024-08-27 06:28:16 UTC
 +++ net/base/network_change_notifier.cc
-@@ -37,7 +37,7 @@
+@@ -42,7 +42,7 @@
  #include "net/base/network_change_notifier_linux.h"
  #elif BUILDFLAG(IS_APPLE)
  #include "net/base/network_change_notifier_apple.h"

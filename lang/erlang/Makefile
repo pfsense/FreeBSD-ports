@@ -1,7 +1,6 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	25.3.2.12
-PORTREVISION=	1
+DISTVERSION=	25.3.2.13
 PORTEPOCH=	4
 CATEGORIES=	lang parallel java
 DIST_SUBDIR=	erlang
@@ -101,7 +100,7 @@ WX_VARS=			USE_GL="gl glu" \
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 130
+.if ${COMPILER_TYPE} == clang
 # PR 258494
 CONFIGURE_ARGS+=	--disable-pgo
 .endif

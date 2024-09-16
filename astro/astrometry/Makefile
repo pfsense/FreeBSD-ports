@@ -1,5 +1,6 @@
 PORTNAME=	astrometry
 PORTVERSION=	0.95
+PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	https://github.com/dstndstn/${PORTNAME}.net/releases/download/${DISTVERSION}/
 DISTNAME=	${PORTNAME}.net-${PORTVERSION}
@@ -13,7 +14,8 @@ LICENSE=	GPLv3+
 BROKEN_armv6=		fails to link: os-features-test.c:10: undefined symbol 'canonicalize_file_name'
 BROKEN_armv7=		fails to link: os-features-test.c:10: undefined symbol 'canonicalize_file_name'
 
-BUILD_DEPENDS=	${PYNUMPY}
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYNUMPY}
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libcfitsio.so:astro/cfitsio \
 		libgsl.so:math/gsl \
@@ -49,6 +51,9 @@ SUB_FILES=	pkg-message
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_DEFAULT=	EXAMPLES
 
+# These files are taken from cfitsio and installed by cfitsio 4.5.0+.
+# fitscopy was slightly modified by astrometry team.
+CFITSIO_FILES=	fitscopy fitsverify imcopy
 FILES=	an-fitstopnm an-pnmtofits astrometry-engine augment-xylist \
 	build-astrometry-index downsample-fits fit-wcs \
 	fits-column-merge fits-flip-endian fits-guess-scale \
@@ -63,6 +68,9 @@ FILES=	an-fitstopnm an-pnmtofits astrometry-engine augment-xylist \
 post-install:
 .for file in ${FILES}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${file}
+.endfor
+.for file in ${CFITSIO_FILES}
+	${MV} ${STAGEDIR}${PREFIX}/bin/${file} ${STAGEDIR}${PREFIX}/bin/astrometry-${file}
 .endfor
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libastrometry.so
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/astrometry/solver/_solver${PYTHON_EXT_SUFFIX}.so

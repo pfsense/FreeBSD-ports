@@ -1,6 +1,6 @@
 PORTNAME=	mesa
-DISTVERSION=	24.1-branchpoint-2966
-DISTVERSIONSUFFIX=	-ge60dcaa71d7
+DISTVERSION=	24.2-branchpoint-2418
+DISTVERSIONSUFFIX=	-ge0157abec6f
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
@@ -8,6 +8,7 @@ PATCH_SITES=	https://github.com/mesa3d/${GL_PROJECT}/commit/:github
 PATCHFILES+=	700efacda59c.patch:-p1:github
 PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
 PATCHFILES+=	2930dcbb3329.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22246
+PATCHFILES+=	11aaf934112c.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22941
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Bleeding edge Mesa drivers (OpenCL, OpenGL, Vulkan)
@@ -20,7 +21,8 @@ ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	Limited scope: no old drivers and no software rendering. \
 			See also https://mesamatrix.net/
 
-BUILD_DEPENDS=	libglvnd>=1.3.2:graphics/libglvnd \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyyaml>0:devel/py-pyyaml@${PY_FLAVOR} \
+		libglvnd>=1.3.2:graphics/libglvnd \
 		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libexpat.so:textproc/expat2
@@ -32,8 +34,7 @@ USE_LDCONFIG=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 BINARY_ALIAS=	python=${PYTHON_CMD}
 SHEBANG_FILES=	src/vulkan/overlay-layer/${PORTNAME}-overlay-control.py
-MESON_ARGS=	-Dgallium-omx=disabled \
-		-Dgallium-xa=disabled \
+MESON_ARGS=	-Dgallium-xa=disabled \
 		-Dandroid-libbacktrace=disabled \
 		-Dlibunwind=disabled \
 		-Dlmsensors=disabled \
@@ -41,6 +42,7 @@ MESON_ARGS=	-Dgallium-omx=disabled \
 		-Dvalgrind=disabled \
 		-Dplatforms=${PLATFORMS:O:[-1..1]:ts,} \
 		-Dvideo-codecs=all \
+		-Dunversion-libgallium=true \
 		${NULL}
 LDFLAGS+=	-Wl,--undefined-version # https://gitlab.freedesktop.org/mesa/mesa/-/issues/8003
 PLIST_SUB=	ARCH=${ARCH:S/amd/x86_/}
@@ -53,7 +55,7 @@ OPTIONS_GROUP_VULKAN=	anv hasvk radv
 OPTIONS_EXCLUDE_i386=	LTO # anv: vkcube fails on vkCreateSwapchainKHR
 OPTIONS_EXCLUDE+=	${ARCH:Naarch64:C/.+/panfrost/}
 OPTIONS_EXCLUDE+=	${ARCH:Namd64:Ni386:Nx86_64:C/.+/crocus hasvk/}
-OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:Nx86_64:C/.+/anv iris/}
+OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:Nx86_64:Npowerpc64*:C/.+/anv iris/}
 OPTIONS_EXCLUDE+=	${"${GL_DEFAULT:S/,/ /g:[-1]}"==${.CURDIR:T}:?COINST:}
 OPTIONS_SLAVE+=		${"${GL_DEFAULT:S/,/ /g:[-1]}"!=${.CURDIR:T}:?COINST:}
 OPTIONS_SUB=		yes
@@ -78,7 +80,8 @@ radeonsi_DESC=		Southern Islands and newer
 
 VULKAN_DESC=		Vulkan drivers
 anv_DESC=		Skylake and newer (implies OPENCL)
-anv_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR}
+anv_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
+			glslangValidator:graphics/glslang
 anv_MESON_ON=		${"${ARCH:Mamd64}":?:-Dintel-rt=disabled} # https://gitlab.freedesktop.org/mesa/mesa/-/issues/10629
 anv_IMPLIES=		OPENCL
 hasvk_DESC=		Ivy Bridge, Haswell, Broadwell
@@ -103,11 +106,11 @@ LTO_MESON_TRUE=		b_lto
 
 OPENCL_DESC=		Heterogeneous computing via OpenCL (implies LLVM)
 OPENCL_BUILD_DEPENDS=	bindgen:devel/rust-bindgen-cli \
-			libclc>0:devel/libclc \
+			libclc-${LLVM_PORT:T}>0:devel/libclc@${LLVM_PORT:T} \
 			spirv-tools>0:graphics/spirv-tools \
 			rustc:lang/${RUST_DEFAULT}
 OPENCL_LIB_DEPENDS=	libLLVMSPIRVLib.so.${OPENCL_SOVERSION}:devel/spirv-llvm-translator@${LLVM_PORT:T}
-OPENCL_RUN_DEPENDS=	libclc>0:devel/libclc
+OPENCL_RUN_DEPENDS=	libclc-${LLVM_PORT:T}>0:devel/libclc@${LLVM_PORT:T}
 OPENCL_SOVERSION=	${LLVM_VERSION}${${LLVM_VERSION}>=18:?.1:}
 OPENCL_CONFIGURE_ENV=	PKG_CONFIG_PATH="${LLVM_PREFIX}/libdata/pkgconfig"
 OPENCL_MESON_FALSE=	b_lundef # environ

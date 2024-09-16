@@ -97,7 +97,7 @@ WRKSRC_crate_${_crate}=	${WRKDIR}/${_wrksrc}
 
 CARGO_BUILDDEP?=	yes
 .  if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.79.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.81.0:lang/${RUST_DEFAULT}
 .  elif ${CARGO_BUILDDEP:tl} == "any-version"
 BUILD_DEPENDS+=	${RUST_DEFAULT}>=0:lang/${RUST_DEFAULT}
 .  endif
@@ -139,8 +139,9 @@ CARGO_ENV+= \
 CARGO_ENV+=	RUST_BACKTRACE=1
 .  endif
 
-.  if defined(WITH_LTO)
+.  if !defined(WITHOUT_LTO)
 _CARGO_MSG=	"===>   Additional optimization to port applied"
+WITH_LTO=	yes
 .  endif
 
 # Adjust -C target-cpu if -march/-mcpu is set by bsd.cpu.mk
@@ -322,6 +323,7 @@ cargo-configure:
 		${ECHO_CMD} "[profile.release]" >> ${CARGO_CARGOTOML}; \
 		${ECHO_CMD} "opt-level = 2" >> ${CARGO_CARGOTOML}; \
 		${ECHO_CMD} "debug = false" >> ${CARGO_CARGOTOML}; \
+		${ECHO_CMD} 'strip = "symbols"' >> ${CARGO_CARGOTOML}; \
 	fi
 	@${ECHO_MSG} "===>   Updating Cargo.lock"
 	@${CARGO_CARGO_RUN} update \

@@ -1,10 +1,10 @@
---- ext/node/Cargo.toml.orig	2024-02-11 11:04:43 UTC
+--- ext/node/Cargo.toml.orig	2024-08-23 11:15:01 UTC
 +++ ext/node/Cargo.toml
-@@ -72,6 +72,7 @@ spki.workspace = true
- signature.workspace = true
- simd-json = "0.13.4"
+@@ -91,6 +91,7 @@ stable_deref_trait = "1.2.0"
+ sm3 = "0.4.2"
  spki.workspace = true
-+sysinfo = "0.30.12"
+ stable_deref_trait = "1.2.0"
++sysinfo = "0.31.2"
+ thiserror.workspace = true
  tokio.workspace = true
  url.workspace = true
- winapi.workspace = true

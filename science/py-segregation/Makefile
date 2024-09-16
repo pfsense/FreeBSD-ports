@@ -1,12 +1,14 @@
 PORTNAME=	segregation
-PORTVERSION=	2.4.2
+PORTVERSION=	2.5
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Analytics for spatial and non-spatial segregation in Python
-WWW=		https://pysal.org/segregation/
+WWW=		https://pysal.org/segregation/ \
+		https://github.com/pysal/segregation
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

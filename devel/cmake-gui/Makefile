@@ -1,5 +1,6 @@
 PORTNAME=	cmake
 DISTVERSION=	${_CMAKE_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-gui
 
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libuv.so:devel/libuv \
 		librhash.so:security/rhash
 
-USES=		cmake:run,insource compiler:c++11-lang desktop-file-utils libarchive \
+USES=		cmake:run,insource compiler:c++17-lang desktop-file-utils libarchive \
 		python:build shared-mime-info qt:6
 USE_QT=		base
 

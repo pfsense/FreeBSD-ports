@@ -1,6 +1,5 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	5.1.7
-PORTREVISION=	1
+DISTVERSION=	5.5.1
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
@@ -26,6 +25,7 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		yasm:devel/yasm \
 		${LOCALBASE}/lib/libtg_owt.a:net-im/tg_owt
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
+		libada.so:devel/libada \
 		libavformat.so:multimedia/ffmpeg \
 		libcrc32c.so:devel/crc32c \
 		libdbus-1.so:devel/dbus \
@@ -36,7 +36,7 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libopenh264.so:multimedia/openh264 \
 		libopus.so:audio/opus \
 		libpipewire-0.3.so:multimedia/pipewire \
-		libprotobuf.so:devel/protobuf \
+		libprotobuf-lite.so:devel/protobuf \
 		libqrcodegencpp.so:graphics/qr-code-generator \
 		librnnoise.so:audio/rnnoise \
 		libsrtp2.so:net/libsrtp2 \
@@ -110,7 +110,7 @@ TELEGRAM_API_ID=	601761
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ((${OSVERSION} >= 1400000 && ${OSVERSION} < 1400091) || ${OSVERSION} < 1302507)
+.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1400000 && ${OSVERSION} < 1400091)
 #EXTRA_PATCHES=	${PATCHDIR}/extra-patch-CMakeLists.txt
 USES+=	llvm:min=16,build
 USES:=	${USES:Ncompiler\:*} # XXX avoid warnings

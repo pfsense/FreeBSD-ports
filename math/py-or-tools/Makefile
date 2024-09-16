@@ -1,7 +1,7 @@
 PORTNAME=	or-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	9.5
-PORTREVISION=	9
+DISTVERSION=	9.6
+PORTREVISION=	1
 CATEGORIES=	math
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -19,6 +19,7 @@ PY_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}absl-py>0:devel/py-absl-py@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}protobuf>0:devel/py-protobuf@${PY_FLAVOR}
 BUILD_DEPENDS=	${PY_DEPENDS} \
+		${PY_SETUPTOOLS} \
 		pybind11>0:devel/pybind11 \
 		protoc-gen-mypy:devel/py-mypy-protobuf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
@@ -68,6 +69,8 @@ post-patch:
 		${WRKSRC}/ortools/glop/CMakeLists.txt \
 		${WRKSRC}/ortools/linear_solver/CMakeLists.txt \
 		${WRKSRC}/ortools/sat/CMakeLists.txt
+	@${REINPLACE_CMD} -e '17,19d ; /AbslStringify/,+10d' \
+		${WRKSRC}/ortools/base/logging.h
 
 do-install: # by default cmake installs the whole or-tools project without the python part, so extract the wheel and install python files manually here
 	${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}

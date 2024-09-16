@@ -1,7 +1,7 @@
 PORTNAME=	screego
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
-PORTREVISION=	20
+PORTREVISION=	22
 CATEGORIES=	www
 MASTER_SITES=	https://registry.yarnpkg.com/:yarn
 DISTFILES=	@babel/code-frame/-/code-frame-7.8.3.tgz:yarn \
@@ -1477,6 +1477,9 @@ WWW=		https://github.com/screego/server
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Outdated, unmaintained in tree and marked broken over a year ago
+EXPIRATION_DATE=2024-09-30
 
 BUILD_DEPENDS=	yarn:www/yarn
 

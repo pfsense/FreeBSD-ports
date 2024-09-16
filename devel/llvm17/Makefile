@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 DISTVERSION=	17.0.6
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}${RCDIR}/
@@ -9,6 +9,7 @@ DISTNAME=	llvm-project-${DISTVERSION}.src
 DISTFILES=	llvm-project-${DISTVERSION}.src${EXTRACT_SUFX}
 
 PATCH_SITES=	https://github.com/llvm/llvm-project/commit/
+PATCHFILES+=	llvmorg-18-init-1760-g68744ffbdd7d.patch:-p1 # https://reviews.llvm.org/D157589
 PATCHFILES+=	llvmorg-18-init-15199-gb9935bb02a50.patch:-p1 # https://github.com/llvm/llvm-project/pull/75748
 PATCHFILES+=	llvmorg-18-init-15680-g966d564e43e6.patch:-p1 # https://github.com/llvm/llvm-project/pull/76185
 
@@ -374,11 +375,14 @@ NATIVE_BACKENDS+=	WebAssembly
 STANDARD_BACKENDS=	${_FREEBSD_BACKENDS} AMDGPU AVR BPF Hexagon Lanai \
 			LoongArch MSP430 NVPTX SystemZ VE WebAssembly XCore
 _BE_LIBS_COMMON=	CodeGen Desc Info
-_BE_INCS_AArch64=	arm_bf16.h arm_sme_draft_spec_subject_to_change.h
+_BE_INCS_AArch64=	arm_sme_draft_spec_subject_to_change.h
 _BE_LIBS_AArch64=	AsmParser Disassembler Utils
 _BE_LIBS_BACKWARDS_AArch64=Exegesis
 _BE_LIBS_AMDGPU=	AsmParser Disassembler TargetMCA Utils
-_BE_INCS_ARM=		arm_cde.h arm_fp16.h arm_mve.h arm_neon.h arm_sve.h
+# XXX: some of these are for both ARM and AArch64, but we don't provide
+# a mechanism to build AArch64 without ARM so we avoid duplication by
+# listing them here.
+_BE_INCS_ARM=		arm_bf16.h arm_cde.h arm_fp16.h arm_mve.h arm_neon.h arm_sve.h
 _BE_LIBS_ARM=		AsmParser Disassembler Utils
 _BE_LIBS_AVR=		AsmParser Disassembler
 _BE_LIBS_BPF=		AsmParser Disassembler

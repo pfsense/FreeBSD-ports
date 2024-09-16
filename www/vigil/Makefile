@@ -1,12 +1,12 @@
 PORTNAME=	vigil
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.26.3
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Monitor distributed infrastructure and send alerts (Slack, SMS, etc.)
-WWW=		https://crates.io/crates/vigil-server
+WWW=		https://github.com/valeriansaliou/vigil
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -278,8 +278,5 @@ OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

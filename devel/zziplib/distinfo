@@ -1,5 +1,3 @@
-TIMESTAMP = 1717174009
-SHA256 (gdraheim-zziplib-v0.13.76_GH0.tar.gz) = 08b0e300126329c928a41b6d68e397379fad02469e34a0855d361929968ea4c0
-SIZE (gdraheim-zziplib-v0.13.76_GH0.tar.gz) = 1185716
-SHA256 (081b8ba4d0417abe6c2d997f5198e23b7fdb2977.patch) = 488a221208c1dd9cdd2eb04b5df8b33bd0a1c38bf69ec15f4f541a6fea4d88ab
-SIZE (081b8ba4d0417abe6c2d997f5198e23b7fdb2977.patch) = 1717
+TIMESTAMP = 1724084520
+SHA256 (gdraheim-zziplib-v0.13.78_GH0.tar.gz) = feaeee7c34f18aa27bd3da643cc6a47d04d2c41753a59369d09102d79b9b0a31
+SIZE (gdraheim-zziplib-v0.13.78_GH0.tar.gz) = 1190713

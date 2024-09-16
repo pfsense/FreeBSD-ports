@@ -315,6 +315,7 @@
     SUBDIR += galaxis
     SUBDIR += galaxyhack
     SUBDIR += garden-of-coloured-lights
+    SUBDIR += gargoyle
     SUBDIR += gbrainy
     SUBDIR += gcompris-qt
     SUBDIR += gemdropx
@@ -608,7 +609,6 @@
     SUBDIR += magiccube4d
     SUBDIR += mahjong
     SUBDIR += maitretarot
-    SUBDIR += manaplus
     SUBDIR += mancala
     SUBDIR += mangband
     SUBDIR += marblemarcher
@@ -790,6 +790,7 @@
     SUBDIR += prboom
     SUBDIR += prboom-plus
     SUBDIR += primateplunge
+    SUBDIR += prismlauncher
     SUBDIR += puckman
     SUBDIR += punchy
     SUBDIR += pvpgn

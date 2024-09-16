@@ -1,9 +1,8 @@
 PORTNAME=	minizip
-PORTVERSION=	1.2.11
-PORTREVISION=	1
+DISTVERSION=	1.3.1
 CATEGORIES=	archivers
-MASTER_SITES=	SF/libpng/zlib/${PORTVERSION}
-DISTNAME=	zlib-${PORTVERSION}
+MASTER_SITES=	https://github.com/madler/zlib/releases/download/v${DISTVERSION}/
+DISTNAME=	zlib-${DISTVERSION}
 
 MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Zip library and programs from Zlib distribution
@@ -17,10 +16,7 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-demos
 INSTALL_TARGET=	install-strip
-WRKSRC=		${WRKDIR}/zlib-${PORTVERSION}/contrib/minizip
-
-post-patch:
-	@${REINPLACE_CMD} 's/#ifdef unix || __APPLE__/#ifdef unix/' ${WRKSRC}/mini???.c
+WRKSRC=		${WRKDIR}/zlib-${DISTVERSION}/contrib/minizip
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/*.1 ${STAGEDIR}${PREFIX}/share/man/man1

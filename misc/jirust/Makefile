@@ -1,6 +1,6 @@
 PORTNAME=	jirust
 DISTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,7 @@ WWW=		https://github.com/Code-Militia/jirust
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		compilation fails, see https://github.com/Code-Militia/jirust/issues/153
 BROKEN_i386=	compilation fails: undefined symbol: __atomic_is_lock_free
 
 BUILD_DEPENDS=	gmake:devel/gmake
@@ -623,8 +624,5 @@ OPENSSLLIB=	/usr/lib
 MAKE_ENV=	LIBCLANG_PATH=${LLVM_PREFIX}/lib/libclang.so
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

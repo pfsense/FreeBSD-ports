@@ -1,6 +1,7 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
+PORTREVISION=	1
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
@@ -62,8 +63,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	23
-JDK_BUILD_NUMBER=	9
+JDK_PATCH_VERSION=	24
+JDK_BUILD_NUMBER=	8
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -88,6 +89,9 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--disable-hotspot-gtest \
 		--with-jvm-features=shenandoahgc \
 		--with-alsa=${LOCALBASE} \
+		--with-extra-cflags="${CFLAGS}" \
+		--with-extra-cxxflags="${CXXFLAGS}" \
+		--with-extra-ldflags="${LDFLAGS}" \
 		--with-fontconfig=${LOCALBASE} \
 		--with-freetype=system \
 		--with-freetype-include=${LOCALBASE}/include/freetype2 \
@@ -147,20 +151,15 @@ CONFIGURE_ARGS+=	--with-toolchain-type=${COMPILER_TYPE}
 
 .if ${COMPILER_TYPE} == gcc
 USE_GCC=	yes
-CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT} -L${LOCALBASE}/lib/gcc${GCC_DEFAULT}" \
-			--with-extra-cflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}" \
-			--with-extra-cxxflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}"
+LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT} -L${LOCALBASE}/lib/gcc${GCC_DEFAULT}
+CFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}
+CXXFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}
+CONFIGURE_ARGS+=--disable-precompiled-headers
 .else
 MAKE_ENV+=	USE_CLANG=true
-.if ${COMPILER_VERSION} >= 130
-LLVM_VER=	12
-BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
-CC=		${LOCALBASE}/bin/clang${LLVM_VER}
-CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
-.endif
 .endif
 
-.if ${ARCH} == aarch64 || ${ARCH:Marmv*} || ${ARCH:Mpowerpc64*}
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH:Marmv*} || ${ARCH:Mpowerpc64*}
 CONFIGURE_ARGS+=	--disable-warnings-as-errors
 .endif
 .if ${ARCH} == aarch64 || ${ARCH:Marmv*}

@@ -106,6 +106,7 @@ share/fish/vendor_completions.d/highlight.fish
 %%DATADIR%%/langDefs/gambas.lang
 %%DATADIR%%/langDefs/gdb.lang
 %%DATADIR%%/langDefs/gdscript.lang
+%%DATADIR%%/langDefs/gleam.lang
 %%DATADIR%%/langDefs/go.lang
 %%DATADIR%%/langDefs/graphviz.lang
 %%DATADIR%%/langDefs/haml.lang
@@ -158,6 +159,7 @@ share/fish/vendor_completions.d/highlight.fish
 %%DATADIR%%/langDefs/mod2.lang
 %%DATADIR%%/langDefs/mod3.lang
 %%DATADIR%%/langDefs/modelica.lang
+%%DATADIR%%/langDefs/mojo.lang
 %%DATADIR%%/langDefs/moon.lang
 %%DATADIR%%/langDefs/ms.lang
 %%DATADIR%%/langDefs/msl.lang
@@ -254,6 +256,7 @@ share/fish/vendor_completions.d/highlight.fish
 %%DATADIR%%/langDefs/txt.lang
 %%DATADIR%%/langDefs/typescript.lang
 %%DATADIR%%/langDefs/upc.lang
+%%DATADIR%%/langDefs/v.lang
 %%DATADIR%%/langDefs/vala.lang
 %%DATADIR%%/langDefs/vb.lang
 %%DATADIR%%/langDefs/verilog.lang
@@ -299,6 +302,7 @@ share/fish/vendor_completions.d/highlight.fish
 %%DATADIR%%/plugins/outhtml_codefold.lua
 %%DATADIR%%/plugins/outhtml_copy_clipboard.lua
 %%DATADIR%%/plugins/outhtml_curly_brackets_matcher.lua
+%%DATADIR%%/plugins/outhtml_focus.lua
 %%DATADIR%%/plugins/outhtml_ie7_webctrl.lua
 %%DATADIR%%/plugins/outhtml_keyword_matcher.lua
 %%DATADIR%%/plugins/outhtml_ligature_fonts.lua
@@ -442,6 +446,7 @@ share/fish/vendor_completions.d/highlight.fish
 %%DATADIR%%/themes/darkslategray.theme
 %%DATADIR%%/themes/darkspectrum.theme
 %%DATADIR%%/themes/denim.theme
+%%DATADIR%%/themes/diff.theme
 %%DATADIR%%/themes/duotone-dark-earth.theme
 %%DATADIR%%/themes/duotone-dark-forest.theme
 %%DATADIR%%/themes/duotone-dark-sea.theme

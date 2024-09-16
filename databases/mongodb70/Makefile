@@ -1,11 +1,11 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	7.0.11
+DISTVERSION=	7.0.14
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
 MAINTAINER=	ronald@FreeBSD.org
-COMMENT=	Distributed document-oriented "NoSQL" database (7.0.x Branch)
+COMMENT=	MongoDB Community Edition (7.0.x Branch)
 WWW=		https://www.mongodb.com/docs/v7.0/
 
 LICENSE=	APACHE20 SSPLv1 # mongodb is SSPLv1, C++ driver is APACHE20
@@ -17,13 +17,14 @@ LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pymongo>0:databases/py-pymongo@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.11:devel/py-pyyaml@${PY_FLAVOR}
 # build depends used while running ${WRKSRC}/src/third_party/mozjs/gen-config.sh
-BUILD_DEPENDS+=	autoconf2.13:devel/autoconf2.13 \
+BUILD_DEPENDS+=	gm4:devel/m4 \
 		gsed:textproc/gsed
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre2-8.so:devel/pcre2 \
@@ -33,12 +34,12 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libyaml-cpp.so:devel/yaml-cpp \
 		libzstd.so:archivers/zstd
 
-USES=		compiler:c++20-lang cpe python:build scons shebangfix
+USES=		compiler:c++20-lang cpe python:build scons shebangfix ssl
 # gmake is used while running ${WRKSRC}/src/third_party/mozjs/gen-config.sh
 USES+=		gmake pkgconfig
 
 # mozjs tag comes from ${WRKSRC}/src/third_party/mozjs/get-sources.sh
-MOZJS_TAG=	82aac6af18abcd5bf188afbc821779ccb0ca0902
+MOZJS_TAG=	22954e1ce6bf72c7cf36f3a29ef030fff4ff6d33
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mongodb mongodb-forks:mozjs
@@ -49,20 +50,13 @@ USE_RC_SUBR=	mongod
 SHEBANG_FILES=	buildscripts/scons.py
 python_OLD_CMD=	@python_interpreter@
 
-EXTRACT_AFTER_ARGS=	--exclude src/third_party/pcre2 \
-			--exclude src/third_party/snappy-* \
-			--exclude src/third_party/libstemmer_c \
-			--exclude src/third_party/unwind \
-			--exclude src/third_party/yaml-cpp \
-			--exclude src/third_party/zlib-* \
-			--exclude src/third_party/zstandard \
-			--no-same-owner --no-same-permissions
-
+CONFIGURE_ENV+=	M4=${LOCALBASE}/bin/gm4
 MAKE_ARGS=	--allocator=system \
 		--cxx-std=20 \
 		--disable-warnings-as-errors \
 		--libc++ \
 		--runtime-hardening=on \
+		--ssl \
 		--use-system-libunwind \
 		--use-system-pcre2 \
 		--use-system-snappy \
@@ -79,12 +73,21 @@ CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
 
 CONFLICTS_INSTALL=	mongodb[0-9][0-9]
 
+EXTRACT_AFTER_ARGS=	--exclude src/third_party/pcre2 \
+			--exclude src/third_party/snappy-* \
+			--exclude src/third_party/libstemmer_c \
+			--exclude src/third_party/unwind \
+			--exclude src/third_party/yaml-cpp \
+			--exclude src/third_party/zlib-* \
+			--exclude src/third_party/zstandard \
+			--no-same-owner --no-same-permissions
+
 USERS=		mongodb
 GROUPS=		mongodb
 
-OPTIONS_DEFINE=		LTO SASL SSL NOAVX
+OPTIONS_DEFINE=		LTO NOAVX SASL
 OPTIONS_DEFINE_aarch64=	ARMV80A
-OPTIONS_DEFAULT=	SASL SSL NOAVX
+OPTIONS_DEFAULT=	NOAVX SASL
 
 # MongoDB on non-LSE ARM cpu like Raspberry Pi can work but is unsupported upstream.
 # Can give corruption on high concurrency.
@@ -100,9 +103,6 @@ NOAVX_MAKE_ARGS=	--experimental-optimization="-sandybridge"
 
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_MAKE_ARGS=		--use-sasl-client
-
-SSL_USES=	ssl
-SSL_MAKE_ARGS=	--ssl
 
 .include <bsd.port.pre.mk>
 
@@ -129,10 +129,13 @@ post-patch:
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/backend/base.py
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/action/process_define_files.py
 
+pre-configure:
+	# Verify we downloaded the proper mozjs git tag.
+	sh -c "test \"X`grep -E '^LIB_GIT_REVISION=' ${WRKSRC}/src/third_party/mozjs/get-sources.sh`\" = \"XLIB_GIT_REVISION=${MOZJS_TAG}\""
+
 do-configure:
 # Replacement of ${WRKSRC}/src/third_party/mozjs/get-sources.sh
 	${LN} -sF ${WRKDIR}/spidermonkey-${MOZJS_TAG} ${WRKSRC}/src/third_party/mozjs/mozilla-release
-	cd ${WRKSRC}/src/third_party/mozjs/mozilla-release/js/src && ${LOCALBASE}/bin/autoconf2.13
 	cd ${WRKSRC}/src/third_party/mozjs && PYTHON3="${PYTHON_CMD}" ${SH} ./gen-config.sh ${MOZJS_ARCH} freebsd
 
 do-build:
@@ -147,6 +150,12 @@ do-install:
 .for doc in LICENSE-Community.txt MPL-2 README THIRD-PARTY-NOTICES
 	${MV} ${STAGEDIR}${PREFIX}/${doc} ${STAGEDIR}${DOCSDIR}/
 .endfor
+	${INSTALL_MAN} ${WRKSRC}/debian/mongod.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/debian/mongos.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/debian/mongodb-parameters.5 ${STAGEDIR}${PREFIX}/share/man/man5/
 	${RM} ${STAGEDIR}${PREFIX}/bin/resmoke.py
+
+do-test:
+	${SH} ${FILESDIR}/make.test.sh "${STAGEDIR}${PREFIX}/bin"
 
 .include <bsd.port.post.mk>

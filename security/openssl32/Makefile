@@ -1,8 +1,6 @@
 PORTNAME=	openssl
-DISTVERSION=	3.2.2
+PORTVERSION=	3.2.3
 CATEGORIES=	security devel
-MASTER_SITES=	https://www.openssl.org/source/ \
-		ftp://ftp.cert.dfn.de/pub/tools/net/openssl/source/
 PKGNAMESUFFIX=	32
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -22,6 +20,8 @@ CONFIGURE_ARGS=	--openssldir=${OPENSSLDIR} \
 
 USES=		cpe perl5
 USE_PERL5=	build
+USE_GITHUB=	yes
+GH_TAGNAME=	${PORTNAME}-${PORTVERSION}
 TEST_TARGET=	test
 
 LDFLAGS_i386=	-Wl,-znotext
@@ -146,7 +146,7 @@ ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 SHLIBS=			lib/engines-${OPENSSL_SHLIBVER}/loader_attic.so
 
-PORTSCOUT=		limit=^3\.2\.
+PORTSCOUT=		limit:^${DISTVERSION:R:S/./\./g}\.
 
 .include <bsd.port.options.mk>
 

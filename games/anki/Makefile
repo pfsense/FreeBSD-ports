@@ -1,6 +1,6 @@
 PORTNAME=	anki
-DISTVERSION=	24.06.2
-PORTREVISION=	1
+DISTVERSION=	24.06.3
+PORTREVISION=	2
 # Don't forget to update ${_MY_BUILDHASH} if DISTVERSION changes
 CATEGORIES=	games education python
 MASTER_SITES=	LOCAL/kai/:yarncache
@@ -45,8 +45,8 @@ USES=		cargo desktop-file-utils ninja nodejs:build pyqt:6 python:3.9+ \
 USE_GITHUB=	yes
 GH_ACCOUNT=	ankitects
 # Translation files
-GH_TUPLE=	ankitects:anki-core-i18n:50fdc91:ftlrslib \
-		ankitects:anki-desktop-ftl:e747f9e:ftlextra
+GH_TUPLE=	ankitects:anki-core-i18n:b4813a3:ftlrslib \
+		ankitects:anki-desktop-ftl:b956084:ftlextra
 
 USE_PYQT=	pyqt6 sip:build webengine
 
@@ -85,7 +85,7 @@ MPV_RUN_DEPENDS=	mpv:multimedia/mpv
 # Should contain the most recent commit that reflects ${DISTVERSION} and must
 # be exactly 8 digits otherwise the check for newer versions won't work as
 # expected.
-_MY_BUILDHASH= 33a92379
+_MY_BUILDHASH= d678e393
 # Remove ${CARGO_BUILD_TARGET} from ${CARGO_ENV} to avoid problems with
 # hardcoded paths as the "runner" build system expects its components
 # in ${WRKSRC}/out/rust/debug
@@ -156,7 +156,6 @@ do-install:
 		&& ${INSTALL_MAN} anki.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	cd ${WRKSRC}/qt/tools \
 		&& ${INSTALL_SCRIPT} runanki.system.in ${STAGEDIR}${PREFIX}/bin/anki
-	${STRIP_CMD} ${STAGEDIR}${DATADIR}/anki/_rsbridge.so
 
 # Autogenerate some parts of the plist file as several *.css and *.mjs files
 # have a computed filename.  As it is user-specific it is impossible to know

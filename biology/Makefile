@@ -5,6 +5,7 @@
     SUBDIR += R-cran-BiocManager
     SUBDIR += abyss
     SUBDIR += ad2vcf
+    SUBDIR += andi
     SUBDIR += artemis
     SUBDIR += atac-seq
     SUBDIR += augustus
@@ -60,6 +61,7 @@
     SUBDIR += fastqc
     SUBDIR += fasttree
     SUBDIR += fastx-toolkit
+    SUBDIR += fermi-lite
     SUBDIR += figtree
     SUBDIR += flash
     SUBDIR += fluctuate
@@ -71,6 +73,7 @@
     SUBDIR += generand
     SUBDIR += gff2ps
     SUBDIR += gffread
+    SUBDIR += gkl
     SUBDIR += gmap
     SUBDIR += gperiodic
     SUBDIR += graphlan

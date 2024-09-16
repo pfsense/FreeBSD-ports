@@ -524,6 +524,7 @@
     SUBDIR += xcb-util-renderutil
     SUBDIR += xcb-util-wm
     SUBDIR += xcb-util-xrm
+    SUBDIR += xclicker
     SUBDIR += xclickroot
     SUBDIR += xclip
     SUBDIR += xclipboard
@@ -602,6 +603,7 @@
     SUBDIR += xmessage
     SUBDIR += xmh
     SUBDIR += xmodmap
+    SUBDIR += xmoji
     SUBDIR += xmore
     SUBDIR += xmotd
     SUBDIR += xmsg

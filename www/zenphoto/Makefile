@@ -1,12 +1,13 @@
 PORTNAME=	zenphoto
-PORTVERSION=	1.6.3
+PORTVERSION=	1.6.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simpler web photo gallery
-WWW=		https://www.zenphoto.org/
+WWW=		https://www.zenphoto.org/ \
+		https://github.com/zenphoto/zenphoto
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE

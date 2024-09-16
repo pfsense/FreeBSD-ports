@@ -1,7 +1,7 @@
 PORTNAME=	sqldeveloper
 DISTVERSION=	23.1.1.345.2114
 DISTVERSIONSUFFIX=	-no-jre
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	databases java
 # https://www.oracle.com/tools/downloads/sqldev-downloads.html
 MASTER_SITES=
@@ -11,8 +11,9 @@ MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Graphical tool for database development
 WWW=		https://www.oracle.com/database/technologies/appdev/sqldeveloper-landing.html
 
-# https://www.oracle.com/downloads/licenses/sqldev-license.html
-LICENSE_NAME=	OTN
+LICENSE=	OTN
+LICENSE_NAME=	Oracle Technology Network License Agreement for Business Operations
+LICENSE_TEXT=	https://www.oracle.com/downloads/licenses/sqldev-license.html
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror
 
 RUN_DEPENDS=	openjfx14>=0:java/openjfx14 \
@@ -20,7 +21,7 @@ RUN_DEPENDS=	openjfx14>=0:java/openjfx14 \
 
 USES=		gnome zip
 USE_JAVA=	yes
-JAVA_VERSION=	11+
+JAVA_VERSION=	${SQLDEVELOPER_JAVA_VERSION:U11 17}
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 NO_ARCH=	yes

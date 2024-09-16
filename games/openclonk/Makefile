@@ -1,6 +1,6 @@
 PORTNAME=	openclonk
 DISTVERSION=	8.1
-PORTREVISION=	4
+PORTREVISION=	5
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	games
 MASTER_SITES=	http://www.openclonk.org/builds/release/${DISTVERSION}/
@@ -38,7 +38,7 @@ LDFLAGS_i386=	-Wl,-znotext
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} >= 150
+.if ${COMPILER_TYPE} == "clang"
 LDFLAGS_i386+=  -Wl,--no-check-dynamic-relocations
 .endif
 

@@ -1,4 +1,4 @@
---- build/linux/unbundle/icu.gn.orig	2023-04-13 18:16:16 UTC
+--- build/linux/unbundle/icu.gn.orig	2024-08-26 12:06:38 UTC
 +++ build/linux/unbundle/icu.gn
 @@ -17,6 +17,15 @@ config("icu_config") {
      "USING_SYSTEM_ICU=1",

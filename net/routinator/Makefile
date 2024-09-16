@@ -1,6 +1,7 @@
 PORTNAME=	routinator
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.14.0
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	jaap@NLnetLabs.nl
@@ -10,7 +11,7 @@ WWW=		https://github.com/NLnetLabs/routinator
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	ring crate not ported to other architectures
 
 RUN_DEPENDS=	rsync:net/rsync
@@ -38,8 +39,13 @@ OPTIONS_SUB=	yes
 ASPA_DESC=	(Experimental) enable aspa support
 ASPA_VARS=	CARGO_FEATURES+=aspa
 
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == i386
+RUSTFLAGS+=	-C target-feature=+sse2
+.endif
+
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/routinator
 	${INSTALL_MAN} ${WRKSRC}/doc/routinator.1 \
 		${STAGEDIR}${PREFIX}/share/man/man1/
 	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/routinator

@@ -31,7 +31,6 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libgpr.so:devel/grpc \
 		libicuuc.so:devel/icu \
 		libnghttp2.so:www/libnghttp2 \
-		libopentracing.so:devel/libopentracing \
 		libprotobuf.so:devel/protobuf \
 		libre2.so:devel/re2 \
 		libxxhash.so:devel/xxhash \

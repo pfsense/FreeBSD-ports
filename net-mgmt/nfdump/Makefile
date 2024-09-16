@@ -1,5 +1,6 @@
 PORTNAME=	nfdump
 PORTVERSION=	1.7.4
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
@@ -68,7 +69,7 @@ GEODB_CONFIGURE_ENABLE=	maxmind
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 CPPFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

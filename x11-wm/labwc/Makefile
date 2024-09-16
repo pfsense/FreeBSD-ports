@@ -1,5 +1,5 @@
 PORTNAME=	labwc
-DISTVERSION=	0.7.2
+DISTVERSION=	0.8.0
 CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -9,10 +9,10 @@ WWW=		https://github.com/labwc/labwc
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayland-protocols>0:graphics/wayland-protocols
+		wayland-protocols>=1.35:graphics/wayland-protocols
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libwayland-server.so:graphics/wayland \
-		libwlroots.so:x11-toolkits/wlroots \
+		libwlroots-0.18.so:x11-toolkits/wlroots \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
@@ -50,6 +50,7 @@ NLS_PLIST_FILES=	share/locale/ar/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/es/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/et/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/eu/LC_MESSAGES/${PORTNAME}.mo \
+			share/locale/fa/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/fi/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/fr/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/gl/LC_MESSAGES/${PORTNAME}.mo \
@@ -58,6 +59,7 @@ NLS_PLIST_FILES=	share/locale/ar/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/it/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/ja/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/ka/LC_MESSAGES/${PORTNAME}.mo \
+			share/locale/ko/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/lt/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/nl/LC_MESSAGES/${PORTNAME}.mo \
 			share/locale/pa/LC_MESSAGES/${PORTNAME}.mo \

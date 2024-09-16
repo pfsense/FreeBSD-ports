@@ -1,6 +1,7 @@
 PORTNAME=	electron
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${ELECTRON_VER:S/-beta./.b/}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v29.2.0/:chromium \
 		https://commondatastorage.googleapis.com/chromium-nodejs/:chromium_node \
@@ -19,6 +20,9 @@ WWW=		https://electronjs.org/
 LICENSE=	BSD3CLAUSE LGPL21 MPL11 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/electron/LICENSE
+
+DEPRECATED=	EOLed upstream, switch to newer version
+EXPIRATION_DATE=	2024-10-31
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
@@ -242,13 +246,6 @@ YARN_TIMESTAMP=	61171200
 
 .include "Makefile.version"
 .include <bsd.port.pre.mk>
-
-# libc++ < 16 needs these extra patches
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1302507
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-electron_shell_browser_electron__browser__context.h \
-		${PATCHDIR}/extra-patch-electron_shell_browser_ui_gtk_menu__gtk.h \
-		${PATCHDIR}/extra-patch-electron_shell_browser_ui_status__icon__gtk.h
-.endif
 
 .if ${PORT_OPTIONS:MHEIMDAL_BASE} && !exists(/usr/lib/libkrb5.so)
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base

@@ -44,6 +44,7 @@ include/quic/codec/QuicWriteCodec.h
 include/quic/codec/Types.h
 include/quic/common/BufAccessor.h
 include/quic/common/BufUtil.h
+include/quic/common/ChainedByteRange.h
 include/quic/common/CircularDeque-inl.h
 include/quic/common/CircularDeque.h
 include/quic/common/EnumArray.h
@@ -162,10 +163,10 @@ include/quic/server/third-party/siphash.h
 include/quic/state/AckEvent.h
 include/quic/state/AckHandlers.h
 include/quic/state/AckStates.h
+include/quic/state/ClonedPacketIdentifier.h
 include/quic/state/DatagramHandlers.h
 include/quic/state/LossState.h
 include/quic/state/OutstandingPacket.h
-include/quic/state/PacketEvent.h
 include/quic/state/PendingPathRateLimiter.h
 include/quic/state/QuicAckFrequencyFunctions.h
 include/quic/state/QuicConnectionStats.h

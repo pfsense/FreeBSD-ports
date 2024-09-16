@@ -35,7 +35,6 @@
     SUBDIR += asmixer
     SUBDIR += asterisk-espeak
     SUBDIR += asterisk-flite
-    SUBDIR += asunder
     SUBDIR += atracdenc
     SUBDIR += atunes
     SUBDIR += aubio
@@ -71,7 +70,6 @@
     SUBDIR += bslizr-lv2
     SUBDIR += cadence
     SUBDIR += calf-lv2
-    SUBDIR += cam
     SUBDIR += cantata
     SUBDIR += caps-lv2
     SUBDIR += caps-plugins
@@ -134,7 +132,6 @@
     SUBDIR += elisa
     SUBDIR += emms
     SUBDIR += enscribe
-    SUBDIR += epos-devel
     SUBDIR += eq10q-lv2
     SUBDIR += espeak-ng
     SUBDIR += espressivo-lv2
@@ -193,6 +190,7 @@
     SUBDIR += fogpad-lv2
     SUBDIR += fomp-lv2
     SUBDIR += foo-yc20
+    SUBDIR += fooyin
     SUBDIR += fossmixer
     SUBDIR += freac
     SUBDIR += freealut
@@ -247,7 +245,6 @@
     SUBDIR += gstreamer1-plugins-lv2
     SUBDIR += gstreamer1-plugins-modplug
     SUBDIR += gstreamer1-plugins-mpg123
-    SUBDIR += gstreamer1-plugins-musepack
     SUBDIR += gstreamer1-plugins-ogg
     SUBDIR += gstreamer1-plugins-openmpt
     SUBDIR += gstreamer1-plugins-opus
@@ -283,7 +280,6 @@
     SUBDIR += hts_engine-API
     SUBDIR += hydrogen
     SUBDIR += icecast
-    SUBDIR += icecast-kh
     SUBDIR += icegenerator
     SUBDIR += ices
     SUBDIR += id3el
@@ -390,7 +386,6 @@
     SUBDIR += libshairport
     SUBDIR += libshout
     SUBDIR += libsidplay
-    SUBDIR += libsidplay2
     SUBDIR += libsidplayfp
     SUBDIR += libsmf
     SUBDIR += libsndfile
@@ -539,8 +534,6 @@
     SUBDIR += openal-soft
     SUBDIR += opencore-amr
     SUBDIR += openspc
-    SUBDIR += optimfrog
-    SUBDIR += optimfrog-sse2
     SUBDIR += opus
     SUBDIR += opus-tools
     SUBDIR += opusfile
@@ -701,7 +694,6 @@
     SUBDIR += raul
     SUBDIR += rawrec
     SUBDIR += re
-    SUBDIR += resid
     SUBDIR += rexima
     SUBDIR += rezound
     SUBDIR += rhvoice
@@ -743,8 +735,6 @@
     SUBDIR += shntool
     SUBDIR += shortwave
     SUBDIR += shuriken
-    SUBDIR += sidplay
-    SUBDIR += sidplay2
     SUBDIR += sidplayer
     SUBDIR += sidplayfp
     SUBDIR += simplemod

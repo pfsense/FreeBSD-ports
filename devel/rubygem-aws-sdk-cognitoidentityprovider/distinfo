@@ -1,3 +1,3 @@
-TIMESTAMP = 1718690498
-SHA256 (rubygem/aws-sdk-cognitoidentityprovider-1.94.0.gem) = c46f932e0564b6e04f8895e0d900a990b088219bd50e5135d75527a973232d61
-SIZE (rubygem/aws-sdk-cognitoidentityprovider-1.94.0.gem) = 203776
+TIMESTAMP = 1725560103
+SHA256 (rubygem/aws-sdk-cognitoidentityprovider-1.101.0.gem) = a1504c0a82ad7cb9f499982b45db36f1d7baf378c746369cb669edd1ed87f87c
+SIZE (rubygem/aws-sdk-cognitoidentityprovider-1.101.0.gem) = 206336

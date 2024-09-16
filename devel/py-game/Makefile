@@ -1,5 +1,5 @@
 PORTNAME=	game
-DISTVERSION=	2.5.2
+DISTVERSION=	2.6.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,6 +11,8 @@ WWW=		https://www.pygame.org/news
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/docs/LGPL.txt
+
+BROKEN_i386=	error: always_inline function '_mm_set_epi32' requires target feature 'sse2'
 
 BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \

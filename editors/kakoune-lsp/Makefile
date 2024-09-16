@@ -1,7 +1,7 @@
 PORTNAME=	kakoune-lsp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	17.0.1
-PORTREVISION=	2
+DISTVERSION=	17.1.2
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -26,7 +26,6 @@ PORTDOCS=	README.asciidoc
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/kak-lsp
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/kak-lsp.toml ${STAGEDIR}${ETCDIR}/kak-lsp.toml.sample
 

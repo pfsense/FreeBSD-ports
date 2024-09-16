@@ -1,5 +1,5 @@
 PORTNAME=	nghttp2
-PORTVERSION=	1.62.1
+PORTVERSION=	1.63.0
 CATEGORIES=	www net
 MASTER_SITES=	https://github.com/nghttp2/nghttp2/releases/download/v${PORTVERSION}/
 
@@ -44,11 +44,6 @@ HPACK_CMAKE_BOOL=	ENABLE_HPACK_TOOLS
 HPACK_LIB_DEPENDS=	libjansson.so:devel/jansson
 
 .include <bsd.port.options.mk>
-
-.if ${OSREL} == 13.2
-USES+=		llvm
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-compatibility-fix
-.endif
 
 .if ${OSREL} == 14.0
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-compatibility-fix

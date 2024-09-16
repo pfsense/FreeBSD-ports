@@ -1,6 +1,7 @@
 PORTNAME=	xtrabackup80
 PORTVERSION=	8.0.35
 DISTVERSIONSUFFIX=	-30
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://downloads.percona.com/downloads/Percona-XtraBackup-8.0/Percona-XtraBackup-8.0.35-30/source/tarball/:percona \
 		SF/boost/boost/${BOOST_VERSION}:boost
@@ -104,7 +105,7 @@ post-patch:
 .for d in storage/innobase/xtrabackup/src sql/protobuf
 	${REINPLACE_CMD} 's,%%PREFIX%%,${PREFIX},' ${WRKSRC}/${d}/CMakeLists.txt
 .endfor
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's|std::unary_function|std::__unary_function|' \
 		${WRKSRC}/../boost_${BOOST_VERSION_UNDER}/boost/container_hash/hash.hpp
 .endif

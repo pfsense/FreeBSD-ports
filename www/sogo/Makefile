@@ -1,6 +1,5 @@
 PORTNAME=		sogo
-PORTVERSION=		5.10.0
-PORTREVISION=	1
+PORTVERSION=		5.11.0
 CATEGORIES=		www gnustep
 MASTER_SITES=		https://packages.sogo.nu/sources/
 DISTNAME=		SOGo-${PORTVERSION}
@@ -41,7 +40,7 @@ ACTIVESYNC_DESC=	Enable support for ActiveSync protocol
 MFA_DESC=		Enable support for multi-factor authentication
 SAML2_DESC=		Enable support for SAML2 authentication
 
-ACTIVESYNC_LIB_DEPENDS=	libwbxml2.so:textproc/wbxml2
+ACTIVESYNC_LIB_DEPENDS=	libwbxml2.so:textproc/libwbxml
 
 MFA_LIB_DEPENDS=	liboath.so:security/oath-toolkit
 MFA_CONFIGURE_ON=	--enable-mfa

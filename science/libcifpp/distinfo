@@ -1,5 +1,5 @@
-TIMESTAMP = 1689922296
-SHA256 (libcifpp-5.1.0.1/components.cif.gz) = 981c20f825179f073663aeac5b7416d8b851c87caa5bf9e7d885963bfa471ac0
-SIZE (libcifpp-5.1.0.1/components.cif.gz) = 92865675
-SHA256 (libcifpp-5.1.0.1/PDB-REDO-libcifpp-v5.1.0.1_GH0.tar.gz) = ae2cdf7851d1be4ef1fa5bdaf9abbc7d01df9d0935ae8baf9d6335577445d74b
-SIZE (libcifpp-5.1.0.1/PDB-REDO-libcifpp-v5.1.0.1_GH0.tar.gz) = 2242975
+TIMESTAMP = 1726205020
+SHA256 (libcifpp-7.0.5/components.cif.gz) = d7b861b7b270188584c45a2802c048dbdb3c61325856536c8aab1276398b5e34
+SIZE (libcifpp-7.0.5/components.cif.gz) = 101362575
+SHA256 (libcifpp-7.0.5/PDB-REDO-libcifpp-v7.0.5_GH0.tar.gz) = 5de29b28e422c27464f346dc2dd238e514b06dd588590af7ec4139f03817f5a0
+SIZE (libcifpp-7.0.5/PDB-REDO-libcifpp-v7.0.5_GH0.tar.gz) = 2648187

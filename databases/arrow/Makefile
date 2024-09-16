@@ -1,6 +1,6 @@
 PORTNAME=	arrow
-DISTVERSION=	15.0.2
-PORTREVISION=	1
+DISTVERSION=	17.0.0
+PORTREVISION=	3
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${DISTVERSION} \
 		https://github.com/apache/orc/archive/rel/:orc
@@ -91,7 +91,6 @@ FLIGHT_LIB_DEPENDS=		libgflags.so:devel/gflags \
 				libgrpc.so:devel/grpc \
 				libre2.so:devel/re2
 FLIGHT_IMPLIES=			IPC COMPUTE # see https://github.com/apache/arrow/issues/40766
-FLIGHT_BROKEN=			configure breaks: Could not find a package configuration file provided by "re2"
 
 GANDIVA_DESC=			Gandiva libraries
 GANDIVA_USES=			llvm:17,lib ssl
@@ -178,13 +177,6 @@ TENSORFLOW_BROKEN=		needs testing
 TESTING_DESC=			Arrow testing libraries
 TESTING_CMAKE_BOOL=		ARROW_TESTING
 TESTING_LIB_DEPENDS=		libgtest.so:devel/googletest
-
-# workaround for https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=277953
-OPSYS!=		uname -s # HACK: OPSYS is defined in bsd.port.options.mk which has to be later
-OSVERSION!=	awk '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${CROSS_SYSROOT}/usr/include/sys/param.h # HACK: same as above
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1303000
-TESTING_BROKEN=	configure fails because GTest built with C++ level <17 isn't compatible with C++17 used in arrow
-.endif
 
 # form OPTIONS_DEFAULT
 .for opt in ${OPTIONS_GROUP_COMPONENTS}

@@ -1,4 +1,4 @@
---- media/base/video_frame.h.orig	2024-06-25 12:08:48 UTC
+--- media/base/video_frame.h.orig	2024-08-27 06:28:16 UTC
 +++ media/base/video_frame.h
 @@ -45,7 +45,7 @@
  #include "base/apple/scoped_cftyperef.h"
@@ -18,7 +18,7 @@
      // TODO(mcasas): Consider turning this type into STORAGE_NATIVE
      // based on the idea of using this same enum value for both DMA
      // buffers on Linux and CVPixelBuffers on Mac (which currently use
-@@ -341,7 +341,7 @@ class MEDIA_EXPORT VideoFrame : public base::RefCounte
+@@ -402,7 +402,7 @@ class MEDIA_EXPORT VideoFrame : public base::RefCounte
        ReleaseMailboxAndGpuMemoryBufferCB mailbox_holder_and_gmb_release_cb,
        base::TimeDelta timestamp);
  
@@ -27,7 +27,7 @@
    // Wraps provided dmabufs
    // (https://www.kernel.org/doc/html/latest/driver-api/dma-buf.html) with a
    // VideoFrame. The frame will take ownership of |dmabuf_fds|, and will
-@@ -650,7 +650,7 @@ class MEDIA_EXPORT VideoFrame : public base::RefCounte
+@@ -721,7 +721,7 @@ class MEDIA_EXPORT VideoFrame : public base::RefCounte
    scoped_refptr<gpu::ClientSharedImage> shared_image(
        size_t texture_index) const;
  
@@ -36,12 +36,12 @@
    // The number of DmaBufs will be equal or less than the number of planes of
    // the frame. If there are less, this means that the last FD contains the
    // remaining planes. Should be > 0 for STORAGE_DMABUFS.
-@@ -886,7 +886,7 @@ class MEDIA_EXPORT VideoFrame : public base::RefCounte
-   // GPU memory buffer, if this frame is STORAGE_GPU_MEMORY_BUFFER.
-   std::unique_ptr<gfx::GpuMemoryBuffer> gpu_memory_buffer_;
+@@ -963,7 +963,7 @@ class MEDIA_EXPORT VideoFrame : public base::RefCounte
+   // GpuMemoryBuffers. Clients will set this flag while creating a VideoFrame.
+   bool is_mappable_si_enabled_ = false;
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   class DmabufHolder;
  
    // Dmabufs for the frame, used when storage is STORAGE_DMABUFS. Size is either
+   // equal or less than the number of planes of the frame. If it is less, then

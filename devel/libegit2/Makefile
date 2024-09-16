@@ -1,6 +1,6 @@
 PORTNAME=	libegit2
 DISTVERSION=	g20200515
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -10,6 +10,9 @@ WWW=		https://github.com/magit/libegit2
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	No consumer in ports tree
+EXPIRATION_DATE=	2024-09-30
 
 LIB_DEPENDS=	libgit2.so:devel/libgit2
 

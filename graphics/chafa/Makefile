@@ -1,5 +1,5 @@
 PORTNAME=	chafa
-DISTVERSION=	1.14.1
+DISTVERSION=	1.14.4
 CATEGORIES=	graphics
 MASTER_SITES=	https://hpjansson.org/chafa/releases/ \
 		https://github.com/hpjansson/chafa/releases/download/${PORTVERSION}/
@@ -26,19 +26,9 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR}/html
 
-# https://github.com/hpjansson/chafa/issues/152
-CONFIGURE_ENV+=	WEBP_CFLAGS='-lwebp'
-
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
-
-# Remove when releng/13.2 is EoL
-.if ${OSVERSION} < 1303001 && ${ARCH} == "i386"
-BROKEN=		error: libchafa.so: undefined reference to _mm_extract_epi64
-.endif
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/docs/${PORTNAME}.1 \

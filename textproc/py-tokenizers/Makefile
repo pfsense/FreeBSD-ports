@@ -1,5 +1,5 @@
 PORTNAME=	tokenizers
-DISTVERSION=	0.19.1
+DISTVERSION=	0.20.0
 PORTREVISION=	2
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
@@ -25,8 +25,5 @@ CARGO_BUILD=	no
 CARGO_INSTALL=	no
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
-
-post-install:
-	@${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -type f -name '*.so' -exec ${STRIP_CMD} {} ';'
 
 .include <bsd.port.mk>

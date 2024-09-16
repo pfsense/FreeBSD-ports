@@ -1,5 +1,6 @@
 PORTNAME=	novnc
-PORTVERSION=	1.4.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.5.0
 CATEGORIES=	www
 
 MAINTAINER=	dpetrov67@gmail.com
@@ -12,21 +13,19 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 USES=		cpe
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	novnc
 GH_PROJECT=	noVNC
-GH_TAGNAME=	90455ee
+
+EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/.gitignore \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/.gitmodules \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/.github \
+			--no-same-owner --no-same-permissions
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 TARGET_DIR=	${PREFIX}/libexec/novnc
 
-post-extract:
-	@cd ${WRKSRC} && ${RM} .gitignore .gitmodules .travis.yml .eslintignore
-	@cd ${WRKSRC} && ${RM} -R .github
-	@${FIND} ${WRKSRC} -name '.eslintrc' -delete
-
 do-install:
 	${MKDIR} ${STAGEDIR}${TARGET_DIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${TARGET_DIR}
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${TARGET_DIR})
 
 .include <bsd.port.mk>

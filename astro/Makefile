@@ -13,6 +13,7 @@
     SUBDIR += geographiclib
     SUBDIR += gkrellmoon2
     SUBDIR += gnuastro
+    SUBDIR += google-earth-pro
     SUBDIR += gpsbabel
     SUBDIR += gpsbabel14
     SUBDIR += gpscorrelate
@@ -87,6 +88,7 @@
     SUBDIR += py-astropy-helpers
     SUBDIR += py-ephem
     SUBDIR += py-extension-helpers
+    SUBDIR += py-fitsio
     SUBDIR += py-horoscopegenerator
     SUBDIR += py-indiweb
     SUBDIR += py-jplephem

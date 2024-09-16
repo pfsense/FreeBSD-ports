@@ -1,13 +1,14 @@
 PORTNAME=	pycsw
 PORTVERSION=	2.6.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	OGC CSW server implementation
-WWW=		https://pycsw.org/
+WWW=		https://pycsw.org/ \
+		https://github.com/geopython/pycsw
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

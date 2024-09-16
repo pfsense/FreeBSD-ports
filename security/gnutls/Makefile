@@ -1,11 +1,7 @@
 PORTNAME=	gnutls
-DISTVERSION=	3.8.5
-PORTREVISION=	3
+DISTVERSION=	3.8.7.1
 CATEGORIES=	security net
-MASTER_SITES=	GNUPG/${PORTNAME}/v${DISTVERSION:R}
-
-PATCH_SITES=	https://gitlab.com/gnutls/gnutls/-/commit/
-PATCHFILES=	2d73d945c4b1dfcf8d2328c4d23187d62ffaab2d.patch:-p1
+MASTER_SITES=	GNUPG/${PORTNAME}/v${DISTVERSION:C/(\.[^.]*).*/\1/}
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	GNU Transport Layer Security library
@@ -43,6 +39,8 @@ INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 LDFLAGS+=	-Wl,--undefined-version
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C/(\.[^.]*\.[^.]*).*/\1/}
 
 INFO=		gnutls
 

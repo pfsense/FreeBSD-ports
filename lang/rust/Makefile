@@ -1,5 +1,5 @@
 PORTNAME=	rust
-PORTVERSION?=	1.79.0
+PORTVERSION?=	1.81.0
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
@@ -67,8 +67,8 @@ WASM_VARS=		_COMPONENTS+="rust-analysis-${_PACKAGE_VERS}-wasm32-unknown-unknown 
 			_RUST_TARGETS+=wasm32-unknown-unknown
 
 # See WRKSRC/src/stage0.json for the date and version values
-BOOTSTRAPS_DATE?=		2024-05-02
-RUST_BOOTSTRAP_VERSION?=	1.78.0
+BOOTSTRAPS_DATE?=		2024-08-08
+RUST_BOOTSTRAP_VERSION?=	1.80.0
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 
@@ -101,9 +101,10 @@ IGNORE=		is only for FreeBSD
 .if ${ARCH} == powerpc
 LIB_DEPENDS+=	libatomic.so:lang/gcc${GCC_DEFAULT}
 MAKE_ENV+=	RUSTFLAGS="-L/usr/local/lib/gcc${GCC_DEFAULT}"
+.endif
+
 # rls doesn't build on rust nightly
-# rls needs 64-bit atomics: it doesn't build on powerpc
-.elif !defined(NIGHTLY_DATE)
+.if !defined(NIGHTLY_DATE)
 _RUST_TOOLS+=	rls
 _COMPONENTS+=	rls-${_PACKAGE_VERS}-${_RUST_TARGET}
 .endif

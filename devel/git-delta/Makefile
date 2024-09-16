@@ -1,5 +1,5 @@
 PORTNAME=	delta
-DISTVERSION=	0.17.0
+DISTVERSION=	0.18.1
 PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	git-
@@ -19,6 +19,8 @@ CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
 GH_ACCOUNT=	dandavison
 
+TEST_TARGET=	test
+
 CONFLICTS_INSTALL=	delta
 PLIST_FILES=		bin/delta
 
@@ -27,9 +29,6 @@ OPTIONS_DEFAULT=	BASH FISH ZSH
 BASH_PLIST_FILES=	etc/bash_completion.d/_${PORTNAME}.bash
 FISH_PLIST_FILES=	share/fish/vendor_functions.d/${PORTNAME}.fish
 ZSH_PLIST_FILES=	share/zsh/site-functions/_${PORTNAME}
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/delta
 
 post-install-BASH-on:
 	${MKDIR} ${STAGEDIR}${LOCALBASE}/etc/bash_completion.d

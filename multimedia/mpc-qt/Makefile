@@ -1,9 +1,9 @@
 PORTNAME=	mpc-qt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	23.12
+DISTVERSION=	24.06
 CATEGORIES=	multimedia audio
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Media Player Classic Qute Theater
 WWW=		https://github.com/mpc-qt/mpc-qt
 

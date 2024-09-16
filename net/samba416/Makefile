@@ -5,7 +5,7 @@ CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
 
-MAINTAINER=			timur@FreeBSD.org
+MAINTAINER=			samba@FreeBSD.org
 COMMENT=			Free SMB/CIFS and AD/DC server and client for Unix
 WWW=				https://gitlab.com/samba-freebsd/
 
@@ -106,6 +106,9 @@ CONFIGURE_LOG=			bin/config.log
 FLAVORS=			default externalldb
 FLAVOR?=			${FLAVORS:[1]}
 externalldb_PKGNAMESUFFIX=		-externalldb
+.if ${FLAVOR:U} == externalldb
+BROKEN=				fails to build; databases/ldb25 is not built with Python support by default
+.endif
 
 # Make sure that the right version of Python is used by the tools
 # https://bugzilla.samba.org/show_bug.cgi?id=7305

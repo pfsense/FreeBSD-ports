@@ -1,6 +1,6 @@
 PORTNAME=	comrak
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.24.1
+DISTVERSION=	0.28.0
 PORTREVISION=	1
 CATEGORIES=	textproc
 
@@ -27,6 +27,7 @@ CARGO_CRATES=	adler-1.0.2 \
 		bit-set-0.5.3 \
 		bit-vec-0.6.3 \
 		bitflags-1.3.2 \
+		caseless-0.2.1 \
 		cc-1.0.78 \
 		cfg-if-1.0.0 \
 		clap-4.0.32 \
@@ -105,12 +106,15 @@ CARGO_CRATES=	adler-1.0.2 \
 		time-0.3.17 \
 		time-core-0.1.0 \
 		time-macros-0.2.6 \
+		tinyvec-1.8.0 \
+		tinyvec_macros-0.1.1 \
 		toml-0.5.10 \
 		toml-0.7.3 \
 		toml_datetime-0.6.1 \
 		toml_edit-0.19.6 \
 		typed-arena-2.0.2 \
 		unicode-ident-1.0.6 \
+		unicode-normalization-0.1.23 \
 		unicode_categories-0.1.1 \
 		version_check-0.9.4 \
 		walkdir-2.3.2 \
@@ -151,8 +155,5 @@ CARGO_CRATES=	adler-1.0.2 \
 		yaml-rust-0.4.5
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

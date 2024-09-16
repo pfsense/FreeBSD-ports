@@ -1,5 +1,5 @@
 PORTNAME=	rust-analyzer
-DISTVERSION=	2024-06-03
+DISTVERSION=	2024-08-27
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -28,9 +28,6 @@ PLIST_FILES=	bin/rust-analyzer
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rust-analyzer
 
 post-install-DOCS-on:
 	@cd ${WRKSRC}/docs && \

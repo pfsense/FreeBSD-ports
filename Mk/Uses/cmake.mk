@@ -62,7 +62,9 @@ _INCLUDE_USES_CMAKE_MK=	yes
 
 _valid_ARGS=		indirect insource noninja run testing _internal
 
-_CMAKE_VERSION=		3.29.6
+# Reminder: devel/cmake-core, devel/cmake-doc, devel/cmake-gui, and devel/cmake-man
+# are all affected by changing _CMAKE_VERSION. Please check each of these ports.
+_CMAKE_VERSION=		3.30.3
 CMAKE_BIN=		${LOCALBASE}/bin/cmake
 
 # Sanity check
@@ -103,6 +105,7 @@ CMAKE_ARGS+=		-DCMAKE_C_COMPILER:STRING="${CC}" \
 			-DCMAKE_MODULE_LINKER_FLAGS:STRING="${LDFLAGS}" \
 			-DCMAKE_SHARED_LINKER_FLAGS:STRING="${LDFLAGS}" \
 			-DCMAKE_INSTALL_PREFIX:PATH="${CMAKE_INSTALL_PREFIX}" \
+			-DCMAKE_AUTOGEN_PARALLEL:STRING="${MAKE_JOBS_NUMBER}" \
 			-DCMAKE_BUILD_TYPE:STRING="${CMAKE_BUILD_TYPE}" \
 			-DTHREADS_HAVE_PTHREAD_ARG:BOOL=YES \
 			-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=YES \

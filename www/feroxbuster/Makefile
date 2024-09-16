@@ -1,7 +1,7 @@
 PORTNAME=	feroxbuster
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.10.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www security
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -427,7 +427,11 @@ OPENSSLLIB=	/usr/lib
 
 PLIST_FILES=	bin/${PORTNAME}
 
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+LIB_DEPENDS+=	libatomic.so:lang/gcc${GCC_DEFAULT}
+LDFLAGS+=	-L/usr/local/lib/gcc${GCC_DEFAULT} -latomic
+.endif
 
 .include <bsd.port.mk>

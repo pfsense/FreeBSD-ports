@@ -1,5 +1,5 @@
 PORTNAME=	feh
-PORTVERSION=	3.10.2
+PORTVERSION=	3.10.3
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://feh.finalrewind.org/
