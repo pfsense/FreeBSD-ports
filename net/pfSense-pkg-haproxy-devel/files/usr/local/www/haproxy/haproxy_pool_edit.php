@@ -471,10 +471,10 @@ if ($_POST) {
 	if($pool['name'] != "") {
 		$changedesc .= " modified pool: '{$pool['name']}'";
 	}
-	$pool['ha_servers']['item'] = $a_servers;
-	$pool['a_acl']['item'] = $pconfig['a_acl'];
-	$pool['a_actionitems']['item'] = $pconfig['a_actionitems'];
-	$pool['errorfiles']['item'] = $a_errorfiles;
+	array_set_path($pool, 'ha_servers/item', $a_servers);
+	array_set_path($pool, 'a_acl/item', $pconfig['a_acl']);
+	array_set_path($pool, 'a_actionitems/item', $pconfig['a_actionitems']);
+	array_set_path($pool, 'errorfiles/item', $a_errorfiles);
 
 	update_if_changed("advanced", $pool['advanced'], base64_encode($_POST['advanced']));
 	update_if_changed("advanced_backend", $pool['advanced_backend'], base64_encode($_POST['advanced_backend']));
