@@ -113,8 +113,8 @@ if ($_POST) {
 
 		if (!$input_errors) {
 			$haproxycfg = config_get_path('installedpackages/haproxy');
-			$haproxycfg['email_mailers']['item'] = $a_mailers;
-			$haproxycfg['dns_resolvers']['item'] = $a_resolvers;
+			array_set_path($haproxycfg, 'email_mailers/item', $a_mailers);
+			array_set_path($haproxycfg, 'dns_resolvers/item', $a_resolvers);
 			$haproxycfg['enable'] = $_POST['enable'] ? true : false;
 			$haproxycfg['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
 			$haproxycfg['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
