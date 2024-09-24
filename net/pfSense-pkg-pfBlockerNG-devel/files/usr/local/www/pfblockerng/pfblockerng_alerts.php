@@ -2835,7 +2835,7 @@ function convert_ip_log($mode, $fields, $p_query_port, $rtype) {
 		if (strpos($fields[18], '|') !== FALSE) {
 			$fields[18]	= str_replace('ASN:', '', $fields[18]);
 			$asn		= explode('|', $fields[18], 3);
-			$fields[18] = "<span title=\"|" . htmlspecialchars($asn[2]) . "\">" . htmlspecialchars($asn[1]) . "</span>";
+			$fields[18] = "<span title=\"|" . htmlspecialchars($asn[2]) . "\">AS" . htmlspecialchars($asn[1]) . "</span>";
 		} else {
 			$fields[18] = '';
 		}
