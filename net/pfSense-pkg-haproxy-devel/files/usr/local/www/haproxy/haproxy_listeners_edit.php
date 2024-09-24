@@ -41,7 +41,7 @@ if (!function_exists("cert_get_purpose")) {
 
 haproxy_config_init();
 
-$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item');
+$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 uasort($a_pools, 'haproxy_compareByName');
 
 global $simplefields;
