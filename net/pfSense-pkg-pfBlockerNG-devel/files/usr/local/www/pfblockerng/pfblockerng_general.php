@@ -24,7 +24,7 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $pfb;
+global $config, $pfb;
 pfb_global();
 
 // Add Wizard tab on new installations only
@@ -32,12 +32,13 @@ $pfb_wizard = TRUE;
 if ($_GET && isset($_GET['wizard']) && $_GET['wizard'] == 'skip') {
 	$pfb_wizard = FALSE;
 }
-elseif (!empty(config_get_path('installedpackages/pfblockerng/config/0'))) {
+elseif (is_array($config['installedpackages']['pfblockerng']) &&
+	!empty($config['installedpackages']['pfblockerng']['config'][0])) {
 	$pfb_wizard = FALSE;
 }
 
-config_init_path('installedpackages/pfblockerng/config/0');
-$pfb['gconfig'] = config_get_path('installedpackages/pfblockerng/config/0');
+init_config_arr(array('installedpackages', 'pfblockerng', 'config', 0));
+$pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
 
 $pconfig = array();
 $pconfig['enable_cb']			= $pfb['gconfig']['enable_cb']				?: '';
@@ -149,7 +150,6 @@ if ($_POST) {
 			$pfb['gconfig']['log_max_dnsreplylog']		= $_POST['log_max_dnsreplylog']			?: 20000;
 			$pfb['gconfig']['log_max_unilog']		= $_POST['log_max_unilog']			?: 20000;
 
-			config_set_path('installedpackages/pfblockerng/config/0', $pfb['gconfig']);
 			write_config('[pfBlockerNG] save General settings');
 
 			$pfb['save'] = TRUE;

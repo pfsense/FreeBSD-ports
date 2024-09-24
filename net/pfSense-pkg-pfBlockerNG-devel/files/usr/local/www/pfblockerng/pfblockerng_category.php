@@ -24,7 +24,7 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $pfb;
+global $config, $pfb;
 pfb_global();
 
 $action = $gtype = '';
@@ -116,19 +116,22 @@ switch ($gtype) {
 
 // Collect rowdata
 if ($type != 'GeoIP') {
-	$rowdata_path = "installedpackages/{$conf_type}/config";
-	config_init_path($rowdata_path);
-	$rowdata = config_get_path($rowdata_path);
+	init_config_arr(array('installedpackages', $conf_type, 'config'));
+	$rowdata = &$config['installedpackages'][$conf_type]['config'];
 } else {
 
 	// Collect GeoIP rowdata
 	foreach ($pfb['continents'] as $continent => $pfb_alias) {
-		$continent_config = config_get_path('installedpackages/pfblockerng' . strtolower(str_replace(' ', '', $continent)) . '/config', [[
-			'action' => 'Disabled',
-			'cron' => 'Never',
-			'aliaslog' => 'enabled'
-		]]);
-
+		if (isset($config['installedpackages']['pfblockerng' . strtolower(str_replace(' ', '', $continent))]['config'])) {
+			$continent_config = $config['installedpackages']['pfblockerng' . strtolower(str_replace(' ', '', $continent))]['config'];
+		}
+		else {
+			$continent_config			= array();
+			$continent_config[0]			= array();
+			$continent_config[0]['action']		= 'Disabled';
+			$continent_config[0]['cron']		= 'Never';
+			$continent_config[0]['aliaslog']	= 'enabled';
+		}
 		if (!is_array($continent_config[0])) {
 			$continent_config[0] = array();
 		}
@@ -143,9 +146,6 @@ if ($type != 'GeoIP') {
 if (isset($rowdata[0]) && empty($rowdata[0])) {
 	unset($rowdata[0]);
 	$rowdata = array_values($rowdata);
-	if (isset($rowdata_path)) {
-		config_set_path($rowdata_path, $rowdata);
-	}
 	write_config("pfBlockerNG: Removed empty rowdata");
 }
 
@@ -157,9 +157,6 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 			$name = pfb_filter($rowdata[$rowid]['aliasname'], PFB_FILTER_WORD, 'Category');
 			if (!empty($name) && isset($rowdata[$rowid])) {
 				unset($rowdata[$rowid]);
-				if (isset($rowdata_path)) {
-					config_del_path("{$rowdata_path}/{$rowid}");
-				}
 				write_config("pfBlockerNG: Removed [ {$type} | {$name} ]");
 				$savemsg = "Removed [ Type: {$type}, Name: {$name} ]";
 			} else {
@@ -256,14 +253,11 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 							if (!$input_errors) {
 								if ($gtype != 'geoip') {
 									$rowdata[$rowid][$variable] = pfb_filter($value, PFB_FILTER_HTML, 'Category');
-									if (isset($rowdata_path)) {
-										config_set_path("{$rowdata_path}/{$rowid}/{$variable}", $rowdata[$rowid][$variable]);
-									}
 								} else {
 									$continent = pfb_filter(strtolower(str_replace(' ', '', $rowdata[$rowid]['aliasname'])), PFB_FILTER_HTML, 'Category');
 
-									config_init_path("installedpackages/pfblockerng{$continent}/config/0");
-									config_set_path("installedpackages/pfblockerng{$continent}/config/0/{$variable}", pfb_filter($value, PFB_FILTER_HTML, 'Category'));
+									init_config_arr(array('installedpackages', 'pfblockerng' . $continent, 'config', 0));
+									$config['installedpackages']['pfblockerng' . $continent]['config'][0][$variable] = pfb_filter($value, PFB_FILTER_HTML, 'Category');
 								}
 							}
 						}
@@ -296,9 +290,6 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 
 					if (!$input_errors) {
 						$rowdata = $new_rows;
-						if (isset($rowdata_path)) {
-							config_set_path($rowdata_path, $rowdata);
-						}
 					}
 				}
 
