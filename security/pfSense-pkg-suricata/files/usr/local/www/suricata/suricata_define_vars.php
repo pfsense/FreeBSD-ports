@@ -47,7 +47,7 @@ $suricata_servers = array (
 	"dnp3_client" => "\$HOME_NET", "modbus_server" => "\$HOME_NET", "modbus_client" => "\$HOME_NET",
 	"enip_server" => "\$HOME_NET", "enip_client" => "\$HOME_NET", "ftp_servers" => "\$HOME_NET", "ssh_servers" => "\$HOME_NET",
 	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24", 
-	"sip_servers" => "\$HOME_NET", "custom_servers" => ''
+	"sip_servers" => "\$HOME_NET"
 );
 
 /* if user has defined a custom ssh port, use it, else default to '22' */
@@ -60,8 +60,7 @@ $suricata_ports = array(
 	"shellcode_ports" => "!80",
 	"DNP3_PORTS" => "20000", 
 	"file_data_ports" => "\$HTTP_PORTS,110,143", 
-	"sip_ports" => "5060,5061,5600",
-	"custom_ports" => ''
+	"sip_ports" => "5060,5061,5600"
 );
 
 // Sort our SERVERS and PORTS arrays to make values
@@ -79,6 +78,48 @@ if ($_POST) {
 
 	$natent = array();
 	$natent = $pconfig;
+
+	// Build custom variables
+	$custom_variables = [];
+	foreach (array_keys($_POST) as $key) {
+		if (!str_starts_with($key, 'custom_vars_item_type')) {
+			continue;
+		}
+		$matches = [];
+		if (!preg_match('/^custom_vars_item_type(?P<index>[[:digit:]]+)$/', $key, $matches)) {
+			continue;
+		};
+		$custom_variable = [
+			'type' => $_POST["custom_vars_item_type{$matches['index']}"],
+			'name' => array_key_exists("custom_vars_item_name{$matches['index']}", $_POST) ? strtolower($_POST["custom_vars_item_name{$matches['index']}"]) : null,
+			'value' => array_key_exists("custom_vars_item_value{$matches['index']}", $_POST) ? $_POST["custom_vars_item_value{$matches['index']}"] : null,
+		];
+		if (!in_array($custom_variable['type'], ['server', 'port']) ||
+		    empty($custom_variable['name']) || empty($custom_variable['value'])) {
+			continue;
+		}
+		$custom_variables[] = $custom_variable;
+	}
+	if (!empty($custom_variables)) {
+		array_set_path($natent, 'custom_vars/item', $custom_variables);
+	}
+
+	// Input validation for custom variables
+	$all_variables = $suricata_servers + $suricata_ports;
+	foreach ($custom_variables as $item) {
+		if (isset($all_variables[$item['name']])) {
+			$input_errors[] = "The variable '{$item['name']}' is already defined.";
+			continue;
+		}
+		if (preg_match("/^[[:word:]]$/", $item['name'])) {
+			$input_errors[] = gettext('Custom variable names may only contain the characters A-Z, 0-9 and "_".');
+		}
+		if (!is_alias($item['value'])) {
+			$input_errors[] = "Only aliases are allowed";
+		} elseif (empty(trim(filter_expand_alias($item['value'])))) {
+			$input_errors[] = "FQDN aliases are not allowed for IP variables in Suricata.";
+		}
+	}
 
 	foreach ($suricata_servers as $key => $server) {
 		if ($_POST["def_{$key}"] && !is_alias($_POST["def_{$key}"]))
@@ -233,6 +274,70 @@ foreach ($suricata_ports as $key => $server) {
 }
 $form->add($section);
 
+$section = new Form_Section('Custom Variables');
+$section->addClass('custom_vars');
+
+if (empty(array_get_path($pconfig, 'custom_vars/item'))) {
+	$row_last = 0;
+	$pconfig['custom_vars'] = [
+		'item' => [[
+			'type' => 'server',
+			'name' => '',
+			'value' => ''
+		]]
+	];
+} else {
+	$row_last = count($pconfig['custom_vars']['item']) - 1;
+}
+
+$row_index = 0;
+foreach (array_get_path($pconfig, 'custom_vars/item', []) as $item) {
+	$group = new Form_Group((($row_index == 0) ? 'Variable' : null));
+	$group->addClass('repeatable');
+
+	$group->add(new Form_Select(
+		'custom_vars_item_type' . $row_index,
+		'Variable Type',
+		$item['type'],
+		[
+			'server' => 'Server',
+			'port' => 'Port'
+		]
+	))->setWidth(2)->setHelp((($row_index == $row_last) ? 'Type' : null));
+
+	$group->add(new Form_Input(
+		'custom_vars_item_name'. $row_index,
+		'Variable Name',
+		'text',
+		$item['name']
+	))->setWidth(3)->setHelp((($row_index == $row_last) ? 'Name' : null));
+
+	$group->add(new Form_Input(
+		'custom_vars_item_value'. $row_index,
+		'Variable Value',
+		'text',
+		$item['value']
+	))->setWidth(3)->setHelp((($row_index == $row_last) ? 'Value' : null));
+
+	$group->add(new Form_Button(
+		'deleterow' . $row_index,
+		'Delete',
+		null,
+		'fa-solid fa-trash-can'
+	))->addClass('btn-sm btn-warning');
+
+	$section->add($group);
+	$row_index++;
+}
+$section->addInput(new Form_Button(
+	'addrow',
+	'Add',
+	null,
+	'fa-solid fa-plus'
+))->addClass('btn-success');
+
+$form->add($section);
+
 print($form);
 
 ?>
@@ -254,6 +359,7 @@ events.push(function() {
 	?>
 	}
 
+	checkLastRow();
 	setTimeout(createAutoSuggest, 500);
 
 });
