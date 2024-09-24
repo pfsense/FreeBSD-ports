@@ -3,8 +3,8 @@
  * pfblockerng_category.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2024 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -146,7 +146,7 @@ if (isset($rowdata[0]) && empty($rowdata[0])) {
 	if (isset($rowdata_path)) {
 		config_set_path($rowdata_path, $rowdata);
 	}
-	write_config("pfBlockerNG: Removed empty rowdata", false);
+	write_config("pfBlockerNG: Removed empty rowdata");
 }
 
 if (!empty($action) && isset($gtype) && isset($rowid)) {
@@ -160,7 +160,7 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 				if (isset($rowdata_path)) {
 					config_del_path("{$rowdata_path}/{$rowid}");
 				}
-				write_config("pfBlockerNG: Removed [ {$type} | {$name} ]", false);
+				write_config("pfBlockerNG: Removed [ {$type} | {$name} ]");
 				$savemsg = "Removed [ Type: {$type}, Name: {$name} ]";
 			} else {
 				$savemsg = "Could not delete [ Type: {$type}, Name: {$name} ], not found";
@@ -304,7 +304,7 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 
 				// Save postdata and Table re-ordering
 				if (!$input_errors) {
-					write_config("pfBlockerNG: Saved page order format/settings for [ {$type} ]", false);
+					write_config("pfBlockerNG: Saved page order format/settings for [ {$type} ]");
 				} else {
 					// return errors to AJAX request
 					print(json_encode($input_errors));
@@ -604,7 +604,8 @@ if (isset($savemsg)) {
 if ($gtype == 'geoip') {
 	print_callout('GeoIP database GeoLite2 distributed under the Creative Commons Attribution-ShareAlike 4.0 International License by:
 			<a target="_blank" href="https://www.maxmind.com">MaxMind Inc.</a><br /><br />
-			The GeoIP database is automatically updated each day at a random hour.<br /><br />
+			The GeoIP database is automatically updated the first Tuesday of each month.<br />
+			(To avoid any MaxMind update delays, update is now scheduled for the first Thursday of each month.)<br /><br />
 
 			<span class="text-danger"><strong>Note:&emsp;</strong></span>
 			pfSense by default implicitly blocks all unsolicited inbound traffic to the WAN interface.<br />

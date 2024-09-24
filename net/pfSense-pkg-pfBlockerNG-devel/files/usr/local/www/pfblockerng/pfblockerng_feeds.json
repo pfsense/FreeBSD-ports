@@ -5,8 +5,8 @@
 			"* pfblockerng_feeds.json",
 			"*",
 			"* part of pfSense (https://www.pfsense.org)",
-			"* Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)",
-			"* Copyright (c) 2015-2024 BBcan177@gmail.com",
+			"* Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)",
+			"* Copyright (c) 2015-2023 BBcan177@gmail.com",
 			"* All rights reserved.",
 			"*",
 			"* Licensed under the Apache License, Version 2.0 (the \"License\")",
@@ -111,16 +111,15 @@
 				},
 				{
 					"feed":		"Spamhaus",
-					"website":	"https://www.spamhaus.org/blocklists/do-not-route-or-peer/",
-					"contact":	"https://contact-center.spamhaus.org/",
-					"url":		"https://www.spamhaus.org/drop/drop_v4.json",
-					"delist":	"https://check.spamhaus.org/",
+					"website":	"https://www.spamhaus.org/drop/",
+					"contact":	"https://www.spamhaus.org/organization/contacts/",
+					"url":		"https://www.spamhaus.org/drop/drop.txt",
+					"delist":	"https://www.spamhaus.org/lookup/",
 					"header":	"Spamhaus_Drop"
 				},
 				{
-					"status":	"discontinued",
 					"feed":		"Spamhaus",
-					"website":	"https://www.spamhaus.org/blocklists/do-not-route-or-peer/",
+					"website":	"https://www.spamhaus.org/drop/",
 					"url":		"https://www.spamhaus.org/drop/edrop.txt",
 					"delist":	"https://www.spamhaus.org/lookup/",
 					"header":	"Spamhaus_eDrop"
@@ -904,10 +903,8 @@
 				},
 				{
 					"feed":		"Spamhaus",
-					"website":	"https://www.spamhaus.org/blocklists/do-not-route-or-peer/",
-					"contact":	"https://contact-center.spamhaus.org/",
-					"url":		"https://www.spamhaus.org/drop/drop_v6.json",
-					"delist":	"https://check.spamhaus.org/",
+					"website":	"https://www.spamhaus.org/drop/",
+					"url":		"https://www.spamhaus.org/drop/dropv6.txt",
 					"header":	"Spamhaus_Drop6"
 				}
 			]
@@ -1627,7 +1624,6 @@
 					"header":	"Magento"
 				},
 				{
-					"status":	"discontinued",
 					"feed":		"H3X",
 					"website":	"https://tracker.h3x.eu/about/",
 					"url":		"https://tracker.h3x.eu/api/sites_1month.php",
