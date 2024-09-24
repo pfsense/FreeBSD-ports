@@ -9732,10 +9732,10 @@ function sync_package_pfblockerng($cron='') {
 															}
 															else {
 																$parse_error = TRUE;
-															}
-														}
-													}
-												}
+                                                                                                                        }
+                                                                                                                }
+                                                                                                        }
+                                                                                                }
 												if (!$parse_error) {
 													continue;
 												}
@@ -10683,7 +10683,7 @@ function sync_package_pfblockerng($cron='') {
 	// Define pfBlockerNG MaxMind/TOP1M/ASN Cron job
 	if ($pfb['enable'] == 'on') {
 		$pfb_gcmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dcc >> {$pfb['extraslog']} 2>&1";
-		// CRON hour is randomized between 0-23 Hour to minimize effect on Servers
+		// CRON hour is randomized between 0-23 Hour to minimize effect on Servers 
 		$pfb_gmin	= '0';
 		$pfb_ghour	= rand(0,23);
 		$pfb_gmday	= '*';
@@ -10867,7 +10867,7 @@ function pfblockerng_php_pre_deinstall_command() {
 				}
 			}
 			config_set_path('widgets/sequence', implode(',', $widgetlist));
-			write_config('pfBlockerNG: Remove widget', false);
+			write_config('pfBlockerNG: Remove widget',false);
 		}
 	}
 	else {
