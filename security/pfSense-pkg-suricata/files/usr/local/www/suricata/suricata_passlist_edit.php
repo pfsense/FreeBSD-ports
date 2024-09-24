@@ -39,7 +39,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 /* Should never be called without identifying list index, so bail */
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	header("Location: /suricata/suricata_interfaces_passlist.php");
 	exit;
 }

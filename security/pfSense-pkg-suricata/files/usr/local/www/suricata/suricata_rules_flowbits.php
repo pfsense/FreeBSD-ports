@@ -38,7 +38,7 @@ if (isset($_POST['id']) && is_numericint($_POST['id']))
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	header("Location: /suricata/suricata_interfaces.php");
 	exit;
 }

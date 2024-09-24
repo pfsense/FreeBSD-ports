@@ -43,7 +43,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 // $_POST['openruleset'] fields set in the response,
 // but the system function will pass back a
 // $_POST['if'] field we can use instead.
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	if (isset($_POST['if'])) {
 		// Split the posted string at the '|' delimiter
 		$response = explode('|', $_POST['if']);

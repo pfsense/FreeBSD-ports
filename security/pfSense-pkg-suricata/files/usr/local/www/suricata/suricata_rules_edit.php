@@ -33,7 +33,7 @@ if (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 // If we were not passed a valid index ID, close the pop-up and exit
-if (is_null($id)) {
+if (!is_numericint($id)) {
 	echo '<html><body>';
 	echo '<script language="javascript" type="text/javascript">';
 	echo 'window.close();</script>';

@@ -156,7 +156,7 @@ if (isset($_POST['instance']) && is_numericint($_POST['instance']))
 elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 	$instanceid = $_GET['instance'];
 
-if (is_null($instanceid))
+if (!is_numericint($instanceid))
 	$instanceid = 0;
 
 $a_instance = config_get_path("installedpackages/suricata/rule/{$instanceid}", []);
