@@ -7004,7 +7004,7 @@ function pfb_clear_contents() {
 
 // Main pfBlockerNG function
 function sync_package_pfblockerng($cron='') {
-	global $g, $config, $pfb, $pfbarr;
+	global $g, $pfb, $pfbarr;
 	pfb_global();
 
 	$pfb['conf_mod']		= FALSE;	// Flag to check for mods to the config.xml file. ('$pfb_config' array to hold changes)
@@ -10544,7 +10544,7 @@ function sync_package_pfblockerng($cron='') {
 
 		// Reload config.xml to get any recent changes and merge/save changes.
 		config_set_path('', parse_config(true));
-		$config = array_replace_recursive($config, $pfb_config);
+		config_set_path('', array_replace_recursive(config_get_path(''), $pfb_config));
 		write_config('pfBlockerNG: save settings');
 
 		pfb_logger("... completed", 1);
