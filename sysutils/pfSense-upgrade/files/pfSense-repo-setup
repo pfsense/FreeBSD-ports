@@ -91,6 +91,19 @@ get_repo_name() {
 	/bin/cat "${repo_name}"
 }
 
+get_repoc_feat() {
+	local _err _feat
+
+	_feat="$("/usr/local/sbin/${PRODUCT}-repoc-static" -f 2>&1)"
+	_err="${?}"
+	if [ "${_err}" -ne 0 ] || [ -z "${_feat}" ]; then
+		echo -n ""
+		return "${_err}"
+	fi
+	echo -n "${_feat}"
+	return 0
+}
+
 validate_repo_conf() {
 	local default_file=$(ls -1 ${PLUS_CERT_BASE}/*.default 2>/dev/null | tail -n 1)
 	local default="${PLUS_CERT_BASE}/${PRODUCT}-repo-stable.conf"
@@ -226,18 +239,15 @@ EOF
 
 
 pfSense_repo_setup() {
-	local _feat _fstyle _repoc_args
+	local _fstyle _repoc_args
 
 	cp "${PFSENSE_REPO_CONF}" "/tmp/${PRODUCT}.conf.copy"
 
 	if [ -z "${NOUPDATE}" ]; then
 		_repoc_args=""
-		_feat="$("/usr/local/sbin/${PRODUCT}-repoc-static" -f 2>&1)"
-		if [ "${?}" -eq 0 ] && [ -n "${_feat}" ]; then
-			_fstyle="$(echo -n "${_feat}" | /usr/bin/grep -c "repodir-new-fstyle")"
-			[ "${_fstyle}" = "1" ] && \
-			    _repoc_args="${_repoc_args} -N"
-		fi
+		_fstyle="$(get_repoc_feat | /usr/bin/grep -c "repodir-new-fstyle")"
+		[ "${?}" -eq 0 ] && [ "${_fstyle}" = "1" ] && \
+		    _repoc_args="${_repoc_args} -N"
 		# Fetch the repository settings.
 		if ! "/usr/local/sbin/${PRODUCT}-repoc-static" $_repoc_args; then
 			echo "failed to update the repository settings!!!"
