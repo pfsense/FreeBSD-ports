@@ -1547,8 +1547,8 @@ check_upgrade() {
 				# No repo db files, initialize
 				if [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense.sqlite" ] ||
 				   [ ! -f "${_db_dir}/${_reponame}/db/repo-pfSense-core.sqlite" ]; then
-					mkdir -p ${_repopath}
-					pfSense-repo-setup ${_db_dir}/${_reponame} $_repo > /dev/null 2>&1
+					mkdir -p "${_repopath}"
+					pfSense-repo-setup "${_db_dir}/${_reponame}" "${_repo}" > /dev/null 2>&1
 					$(_pkg ${_pkg_args} update)
 				fi
 			fi
