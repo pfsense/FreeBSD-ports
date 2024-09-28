@@ -544,6 +544,19 @@ _be_migrate() {
 	return 0
 }
 
+get_repoc_feat() {
+	local _err _feat
+
+	_feat="$("/usr/local/sbin/pfSense-repoc-static" -f 2>&1)"
+	_err="${?}"
+	if [ "${_err}" -ne 0 ] || [ -z "${_feat}" ]; then
+		echo -n ""
+		return "${_err}"
+	fi
+	echo -n "${_feat}"
+	return 0
+}
+
 notice() {
 	msg="$@"
 
@@ -1478,6 +1491,8 @@ check_upgrade() {
 	local _version_compare=""
 	local _installed_version=""
 	if [ "${action}" == "checkall" ]; then
+		local _rel_feat _rel_sup
+
 		# Get newest of meta or core packages as our baseline version
 		for _package in ${_meta_pkg} ${_core_pkgs}; do
 			local _other_version=$(_pkg query %v ${_package})
@@ -1486,14 +1501,23 @@ check_upgrade() {
 			fi
 		done
 
+		_rel_sup="0"
+		_rel_feat="$(get_repoc_feat | /usr/bin/grep -c "is-release")"
+		[ "${?}" -eq 0 ] && [ "${_rel_feat}" = "1" ] && \
+		    _rel_sup="1"
+
 		local _new_version="0"
 		local _version_compare=""
 		local _db_dir="/tmp/db/pfSense/pkg"
 		for _repo in /usr/local/etc/pfSense/pkg/repos/*.conf; do
-			local _name _reponame _reponpath _repoid _repopath
+			local _name _reponame _reponpath _repoid _repopath _reporel
+			local _is_configured_repo
 
 			_repopath=""
 			_reponame="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+			_is_configured_repo="0"
+			[ "${_repo}" = "$(stat -f %Y /usr/local/etc/pkg/repos/pfSense.conf)" ] && \
+				_is_configured_repo="1"
 			_reponpath="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_reponame}.name"
 			if [ -f "${_reponpath}" ]; then
 				_name="$(/bin/cat "${_reponpath}")"
@@ -1504,44 +1528,49 @@ check_upgrade() {
 			if [ -z "${_repopath}" ]; then
 				_repoid="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
 				_reponpath="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_repoid}.name"
+				_reporel="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_repoid}.release"
 				if [ -f "${_reponpath}" ]; then
 					_reponame="$(/bin/cat "${_reponpath}")"
 					_repopath="${_db_dir}/${_reponame}"
+					# Skip the development builds.
+					if [ "${_rel_sup}" = "1" ] && \
+					    [ "$_is_configured_repo}" = "0" ] && \
+					    [ ! -f "${_reporel}" ]; then
+						continue
+					fi
 				fi
 			fi
 			if [ -z "${_repopath}" ] || [ -z "${_reponame}" ]; then
 				continue
 			fi
 
-			# Skip repos with devel names as well as CE->Plus upgrades
-			case "${_reponame}" in
-				devel)
-					continue
-					;;
-				*-devel)
-					continue
-					;;
-				*-preview)
-					continue
-					;;
-				*-upgrade)
-					continue
-					;;
-				*)
-					;;
-			esac
+			#
+			# Backward compatibility when pfSense-repoc does not
+			# support the 'is-release' flag.
+			#
+			if [ "${_rel_sup}" != "1" ]; then
+				# Skip repos with devel names as well as CE->Plus upgrades
+				case "${_reponame}" in
+					devel)
+						continue
+						;;
+					*-devel)
+						continue
+						;;
+					*-preview)
+						continue
+						;;
+					*-upgrade)
+						continue
+						;;
+					*)
+						;;
+				esac
+			fi
 
 			local _pkg_args=""
-			local _is_configured_repo=$( \
-				[ "${_repo}" = "$(stat -f %Y /usr/local/etc/pkg/repos/pfSense.conf)" ] >/dev/null 2>&1; \
-				printf $?
-				  )
-			# skip this repo if this is not the selected/configured branch and .release does not exist
-			if [ ${_is_configured_repo} -ne 0 ] && [! -f "/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_reponame}.release" ]; then
-				continue
-			fi
 			local _pkgs="${_meta_pkg} ${_core_pkgs}"
-			if [ ${_is_configured_repo} -ne 0 ]; then
+			if [ ${_is_configured_repo} -eq 0 ]; then
 				_pkgs="${product}-base"
 				_pkg_args="-C ${_repopath}/pkg.conf"
 				# No repo db files, initialize
@@ -1554,7 +1583,7 @@ check_upgrade() {
 			fi
 
 			for _package in ${_pkgs}; do
-				if [ ${_is_configured_repo} -ne 0 ]; then
+				if [ ${_is_configured_repo} -eq 0 ]; then
 				   	_version_compare=$(compare_pkg_version "${_package}" "${_new_version}" "${_repopath}/pkg.conf")
 				else
 					_version_compare=$(compare_pkg_version "${_package}" "${_new_version}")
