@@ -1514,7 +1514,7 @@ check_upgrade() {
 			local _is_configured_repo
 
 			_repopath=""
-			_reponame="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+			_reponame="$(echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
 			_is_configured_repo="0"
 			[ "${_repo}" = "$(stat -f %Y /usr/local/etc/pkg/repos/pfSense.conf)" ] && \
 				_is_configured_repo="1"
@@ -1526,7 +1526,7 @@ check_upgrade() {
 			fi
 
 			if [ -z "${_repopath}" ]; then
-				_repoid="$(_echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
+				_repoid="$(echo -n $_repo | sed 's/.*pfSense-repo-\(.*\).conf/\1/g')"
 				_reponpath="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_repoid}.name"
 				_reporel="/usr/local/etc/pfSense/pkg/repos/pfSense-repo-${_repoid}.release"
 				if [ -f "${_reponpath}" ]; then
