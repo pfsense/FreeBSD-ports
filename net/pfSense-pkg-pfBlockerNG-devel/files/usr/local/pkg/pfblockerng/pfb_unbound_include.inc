@@ -4,8 +4,8 @@
  * pfBlockerNG - Unbound resolver python integration
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,13 +46,13 @@ foreach (array('dnsbl.log', 'dns_reply.log', 'unified.log') as $logfile) {
 }
 
 $python_mode = FALSE;
-if (isset($config['unbound']['python']) && !empty($config['unbound']['python_script'])) {
+if (config_path_enabled('unbound', 'python') && !empty(config_get_path('unbound/python_script'))) {
 	$python_mode = TRUE;
 }
 
 // Function to mount/unmount required folders into Unbound chroot
 function pfb_python_mount($python_mode, $verbose, $type_mount, $type_umount, $type_perms, $folder, $grep_string) {
-	global $g, $config;
+	global $g;
 	$found = FALSE;
 
 	// Force Resolver path
