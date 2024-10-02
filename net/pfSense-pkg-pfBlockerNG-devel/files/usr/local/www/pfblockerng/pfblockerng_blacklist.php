@@ -3,8 +3,8 @@
  * pfblockerng_blacklist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2016-2024 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-global $config, $pfb;
+global $pfb;
 pfb_global();
 
 $blacklist_types = glob("/usr/local/pkg/pfblockerng/*_global_usage");
@@ -89,8 +89,8 @@ if (!empty($blacklist_types)) {
 	}
 }
 
-init_config_arr(array('installedpackages', 'pfblockerngblacklist'));
-$pfb['bconfig']	= &$config['installedpackages']['pfblockerngblacklist'];
+config_init_path('installedpackages/pfblockerngblacklist');
+$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngblacklist');
 
 $pconfig = array();
 $pconfig['blacklist_enable']		= $pfb['bconfig']['blacklist_enable']				?: 'Disable';
@@ -143,6 +143,7 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 			$_POST['blacklist_enable'] = 'Disable';
 		}
 		$pfb['bconfig']['blacklist_enable'] = $_POST['blacklist_enable'];
+		config_set_path('installedpackages/pfblockerngblacklist/blacklist_enable', $pfb['bconfig']['blacklist_enable']);
 		$config_mod = TRUE;
 	}
 
@@ -151,6 +152,7 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 			$_POST['blacklist_lang'] = 'EN';
 		}
 		$pfb['bconfig']['blacklist_lang'] = $_POST['blacklist_lang'];
+		config_set_path('installedpackages/pfblockerngblacklist/blacklist_lang', $pfb['bconfig']['blacklist_lang']);
 		$config_mod = TRUE;
 	}
 
@@ -187,14 +189,18 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 
 		if (isset($_POST['blacklist_selected'])) {
 			$pfb['bconfig']['blacklist_selected']	= implode(',', (array)$_POST['blacklist_selected'])	?: '';
+			config_set_path('installedpackages/pfblockerngblacklist/blacklist_selected', $pfb['bconfig']['blacklist_selected']);
 		} else {
 			$pfb['bconfig']['blacklist_selected']	= '';
+			config_set_path('installedpackages/pfblockerngblacklist/blacklist_selected', $pfb['bconfig']['blacklist_selected']);
 		}
 		if (isset($_POST['blacklist_freq'])) {
 			$pfb['bconfig']['blacklist_freq']	= $_POST['blacklist_freq']				?: '';
+			config_set_path('installedpackages/pfblockerngblacklist/blacklist_freq', $pfb['bconfig']['blacklist_freq']);
 		}
 		if (isset($_POST['blacklist_logging'])) {
 			$pfb['bconfig']['blacklist_logging']	= $_POST['blacklist_logging']				?: '';
+			config_set_path('installedpackages/pfblockerngblacklist/blacklist_logging', $pfb['bconfig']['blacklist_logging']);
 		}
 
 		$config_mod = TRUE;
@@ -243,6 +249,7 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 			$a_list[] = $list;
 		}
 		$pfb['bconfig']['item'] = $a_list;
+		config_set_path('installedpackages/pfblockerngblacklist/item', $pfb['bconfig']['item']);
 
 		// Check for Large category selections and show savemsg
 		foreach ($blacklist_types as $type => $setting) {
