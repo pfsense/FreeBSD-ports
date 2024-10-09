@@ -1,6 +1,6 @@
 PORTNAME=	WinFF
 PORTVERSION=	1.6.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/WinFF/winff/archive/refs/tags/
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
@@ -13,6 +13,8 @@ WWW=		https://www.biggmatt.com/p/winff.html
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
+
+ONLY_FOR_ARCHS=	i386 amd64
 
 USES=		fpc lazarus:flavors xorg
 USE_XORG=	x11

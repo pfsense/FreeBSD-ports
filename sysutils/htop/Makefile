@@ -1,6 +1,6 @@
 PORTNAME=	htop
 DISTVERSION=	3.3.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/${PORTNAME}-dev/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -14,7 +14,7 @@ WWW=		https://htop.dev/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		desktop-file-utils ncurses tar:xz
+USES=		ncurses tar:xz
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-unicode

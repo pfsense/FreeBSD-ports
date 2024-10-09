@@ -90,10 +90,6 @@
     SUBDIR += backupuser
     SUBDIR += bacnet-stack-apps
     SUBDIR += bacula-libs3
-    SUBDIR += bacula11-client
-    SUBDIR += bacula11-client-static
-    SUBDIR += bacula11-docs
-    SUBDIR += bacula11-server
     SUBDIR += bacula13-client
     SUBDIR += bacula13-client-static
     SUBDIR += bacula13-docs
@@ -102,10 +98,6 @@
     SUBDIR += bacula15-client-static
     SUBDIR += bacula15-docs
     SUBDIR += bacula15-server
-    SUBDIR += bacula9-client
-    SUBDIR += bacula9-client-static
-    SUBDIR += bacula9-docs
-    SUBDIR += bacula9-server
     SUBDIR += baloo-widgets
     SUBDIR += bamf
     SUBDIR += bareos-client
@@ -132,7 +124,6 @@
     SUBDIR += beats7
     SUBDIR += beats8
     SUBDIR += bfs
-    SUBDIR += bhyve+
     SUBDIR += bhyve-firmware
     SUBDIR += bhyve-rc
     SUBDIR += bhyvemgr
@@ -263,6 +254,7 @@
     SUBDIR += cramfs
     SUBDIR += crashme
     SUBDIR += crate
+    SUBDIR += createrepo_c
     SUBDIR += cronic
     SUBDIR += cronolog
     SUBDIR += cronolog-devel
@@ -432,6 +424,7 @@
     SUBDIR += frand
     SUBDIR += freebsd-bsdlabel
     SUBDIR += freebsd-fdisk
+    SUBDIR += freebsd-rustdate
     SUBDIR += freebsd-snapshot
     SUBDIR += freecolor
     SUBDIR += freedt
@@ -464,6 +457,7 @@
     SUBDIR += fusefs-libs
     SUBDIR += fusefs-libs3
     SUBDIR += fusefs-lkl
+    SUBDIR += fusefs-mergerfs
     SUBDIR += fusefs-mhddfs
     SUBDIR += fusefs-mp3fs
     SUBDIR += fusefs-nbt
@@ -480,6 +474,7 @@
     SUBDIR += fusefs-sqlfs
     SUBDIR += fusefs-squashfuse
     SUBDIR += fusefs-sshfs
+    SUBDIR += fusefs-ufs
     SUBDIR += fusefs-unionfs
     SUBDIR += fusefs-unreliablefs
     SUBDIR += fusefs-webdavfs
@@ -875,7 +870,6 @@
     SUBDIR += openupsd
     SUBDIR += openzfs
     SUBDIR += openzfs-kmod
-    SUBDIR += orch
     SUBDIR += osinfo-db-tools
     SUBDIR += p5-App-Regather
     SUBDIR += p5-App-RunCron
@@ -1063,6 +1057,7 @@
     SUBDIR += polkit-gnome
     SUBDIR += polkit-qt-1
     SUBDIR += popeye
+    SUBDIR += porch
     SUBDIR += pot
     SUBDIR += potnet
     SUBDIR += poweralertd
@@ -1550,6 +1545,8 @@
     SUBDIR += u-boot-qemu-arm
     SUBDIR += u-boot-qemu-arm64
     SUBDIR += u-boot-qemu-riscv64
+    SUBDIR += u-boot-quartz64-a
+    SUBDIR += u-boot-quartz64-b
     SUBDIR += u-boot-riotboard
     SUBDIR += u-boot-rock-pi-4
     SUBDIR += u-boot-rock64
@@ -1718,6 +1715,7 @@
     SUBDIR += zpool-iostat-viz
     SUBDIR += zrep
     SUBDIR += zrepl
+    SUBDIR += zrepl-dsh2dsh
     SUBDIR += zsd
     SUBDIR += zsm
     SUBDIR += ztop

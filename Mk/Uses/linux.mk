@@ -124,6 +124,7 @@ _linux_c7_libssh2=			linux-c7-libssh2>0:security/linux-c7-libssh2
 _linux_${linux_ARGS}_libtasn1=		linux-${linux_ARGS}-libtasn1>0:security/linux-${linux_ARGS}-libtasn1
 _linux_${linux_ARGS}_libthai=		linux-${linux_ARGS}-libthai>0:devel/linux-${linux_ARGS}-libthai
 _linux_${linux_ARGS}_libtheora=		linux-${linux_ARGS}-libtheora>0:multimedia/linux-${linux_ARGS}-libtheora
+_linux_${linux_ARGS}_libtool-ltdl=	linux-${linux_ARGS}-libtool-ltdl>0:devel/linux-${linux_ARGS}-libtool-ltdl
 _linux_rl9_libtracker-sparql=		linux-rl9-libtracker-sparql>0:databases/linux-rl9-libtracker-sparql
 _linux_rl9_libunistring=		linux-rl9-libunistring>0:devel/linux-rl9-libunistring
 _linux_${linux_ARGS}_libunwind=		linux-${linux_ARGS}-libunwind>0:devel/linux-${linux_ARGS}-libunwind
@@ -217,6 +218,7 @@ MASTER_SITE_SUBDIR=	altarch/${LINUX_DIST_VER}/os/aarch64/Packages/:DEFAULT,aarch
 			centos/${LINUX_DIST_VER}/updates/Source/SPackages/:SOURCE
 .      endif
 DIST_SUBDIR?=		centos
+DEPRECATED=		CentOS Linux 7 reached end of life (EOL) on June 30, 2024
 .    elif ${linux_ARGS} == rl9
 .      ifndef MASTER_SITES
 MASTER_SITES=		${MASTER_SITE_ROCKY_LINUX}

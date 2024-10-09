@@ -1,5 +1,5 @@
 PORTNAME=	victoria-logs
-PORTVERSION=	0.29.0
+PORTVERSION=	0.34.0
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=-victorialogs
 CATEGORIES=	net-mgmt
@@ -19,7 +19,7 @@ USE_RC_SUBR?=	${PORTNAME}
 MAKE_ENV=	PKG_TAG=v${PORTVERSION} GOOS=${OPSYS:tl} \
 		BUILDINFO_TAG=tags-v${PORTVERSION}-victorialogs \
 		DATEINFO_TAG=${_GET_DATE:sh} GOFLAGS=-buildvcs=false
-ALL_TARGET=	${PORTNAME}-pure
+ALL_TARGET=	${PORTNAME}-pure vlogscli-pure
 
 USERS=		victoria-logs
 GROUPS=		victoria-logs
@@ -38,6 +38,8 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/bin/${PORTNAME}-pure \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/bin/vlogscli-pure \
+		${STAGEDIR}${PREFIX}/bin/vlogscli
 	@${MKDIR} ${STAGEDIR}${VICTORIA_DATA}
 
 do-install-DOCS-on:

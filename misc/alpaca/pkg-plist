@@ -8,6 +8,7 @@ share/Alpaca/alpaca/custom_widgets/chat_widget.py
 share/Alpaca/alpaca/custom_widgets/message_widget.py
 share/Alpaca/alpaca/custom_widgets/model_widget.py
 share/Alpaca/alpaca/custom_widgets/table_widget.py
+share/Alpaca/alpaca/custom_widgets/terminal_widget.py
 share/Alpaca/alpaca/dialogs.py
 share/Alpaca/alpaca/internal.py
 share/Alpaca/alpaca/main.py
@@ -21,10 +22,12 @@ share/locale/bn/LC_MESSAGES/alpaca.mo
 share/locale/de/LC_MESSAGES/alpaca.mo
 share/locale/es/LC_MESSAGES/alpaca.mo
 share/locale/fr/LC_MESSAGES/alpaca.mo
+share/locale/he/LC_MESSAGES/alpaca.mo
 share/locale/hi/LC_MESSAGES/alpaca.mo
 share/locale/nb_NO/LC_MESSAGES/alpaca.mo
 share/locale/pt_BR/LC_MESSAGES/alpaca.mo
 share/locale/ru/LC_MESSAGES/alpaca.mo
+share/locale/te/LC_MESSAGES/alpaca.mo
 share/locale/tr/LC_MESSAGES/alpaca.mo
 share/locale/uk/LC_MESSAGES/alpaca.mo
 share/locale/zh_Hans/LC_MESSAGES/alpaca.mo

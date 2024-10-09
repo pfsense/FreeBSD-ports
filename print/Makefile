@@ -43,6 +43,7 @@
     SUBDIR += epson-inkjet-printer-escpr
     SUBDIR += epson-inkjet-printer-escpr2
     SUBDIR += epsonepl
+    SUBDIR += extractpdfmark
     SUBDIR += fig2dev
     SUBDIR += flpsed
     SUBDIR += font-amsfonts
@@ -219,6 +220,7 @@
     SUBDIR += rubygem-prawn-icon
     SUBDIR += rubygem-prawn-js
     SUBDIR += rubygem-prawn-layout
+    SUBDIR += rubygem-prawn-rails
     SUBDIR += rubygem-prawn-security
     SUBDIR += rubygem-prawn-svg
     SUBDIR += rubygem-prawn-table

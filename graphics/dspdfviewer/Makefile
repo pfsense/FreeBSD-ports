@@ -1,7 +1,7 @@
 PORTNAME=	dspdfviewer
 PORTVERSION=	1.15.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	67
+PORTREVISION=	68
 CATEGORIES=	graphics
 
 MAINTAINER=	fox@FreeBSD.org
@@ -62,7 +62,7 @@ CFLAGS+=       -Wno-error=bitwise-instead-of-logical
 .endif
 
 # Fixes build failure for Clang 16.0.6
-.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )) && ${CHOSEN_COMPILER_TYPE} == clang
+.if ${OPSYS} == FreeBSD && ${CHOSEN_COMPILER_TYPE} == clang
 CFLAGS+=       -Wno-error=unsafe-buffer-usage
 .endif
 

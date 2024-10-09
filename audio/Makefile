@@ -347,7 +347,6 @@
     SUBDIR += libdjinterop
     SUBDIR += libdssialsacompat
     SUBDIR += libebur128
-    SUBDIR += libechonest
     SUBDIR += libfilteraudio
     SUBDIR += libfishsound
     SUBDIR += libg722
@@ -673,7 +672,6 @@
     SUBDIR += py-soxr
     SUBDIR += py-speechrecognition
     SUBDIR += py-spotipy
-    SUBDIR += py-tagpy
     SUBDIR += py-torchaudio
     SUBDIR += py-vosk
     SUBDIR += py-wavio

@@ -1,7 +1,7 @@
 PORTNAME=	litecoin
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.21.3
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	hsw@bitmark.com
@@ -9,6 +9,8 @@ COMMENT?=	Virtual Peer-to-Peer Currency Client (QT)
 WWW=		https://www.litecoin.org/
 
 LICENSE=	MIT
+
+BROKEN=		fails to build with boost-1.85+
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libfmt.so:devel/libfmt \

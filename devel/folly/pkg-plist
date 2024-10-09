@@ -115,6 +115,7 @@ include/folly/algorithm/simd/Movemask.h
 include/folly/algorithm/simd/detail/SimdAnyOf.h
 include/folly/algorithm/simd/detail/SimdCharPlatform.h
 include/folly/algorithm/simd/detail/SimdForEach.h
+include/folly/algorithm/simd/detail/Traits.h
 include/folly/algorithm/simd/detail/UnrollUtils.h
 include/folly/base64.h
 include/folly/channels/Channel-fwd.h
@@ -146,7 +147,6 @@ include/folly/channels/Transform-inl.h
 include/folly/channels/Transform.h
 include/folly/channels/detail/AtomicQueue.h
 include/folly/channels/detail/ChannelBridge.h
-include/folly/channels/detail/FunctionTraits.h
 include/folly/channels/detail/IntrusivePtr.h
 include/folly/channels/detail/MultiplexerTraits.h
 include/folly/channels/detail/PointerVariant.h
@@ -229,6 +229,7 @@ include/folly/container/heap_vector_types.h
 include/folly/container/range_traits.h
 include/folly/container/small_vector.h
 include/folly/container/sorted_vector_types.h
+include/folly/container/span.h
 include/folly/container/tape.h
 include/folly/container/test/F14TestUtil.h
 include/folly/container/test/TrackingTypes.h
@@ -420,7 +421,6 @@ include/folly/experimental/ExecutionObserver.h
 include/folly/experimental/FlatCombiningPriorityQueue.h
 include/folly/experimental/FunctionScheduler.h
 include/folly/experimental/Instructions.h
-include/folly/experimental/JSONSchema.h
 include/folly/experimental/LockFreeRingBuffer.h
 include/folly/experimental/NestedCommandLineApp.h
 include/folly/experimental/PrimaryPtr.h
@@ -597,7 +597,10 @@ include/folly/ext/test_ext.h
 include/folly/external/aor/asmdefs.h
 include/folly/external/farmhash/farmhash.h
 include/folly/external/fast-crc32/avx512_crc32c_v8s3x4.h
+include/folly/external/fast-crc32/neon_crc32c_v3s4x2e_v2.h
+include/folly/external/fast-crc32/neon_eor3_crc32c_v8s2x4_s3.h
 include/folly/external/fast-crc32/sse_crc32c_v8s3x3.h
+include/folly/external/nvidia/hash/detail/Crc32cCombineDetail.h
 include/folly/fibers/AddTasks-inl.h
 include/folly/fibers/AddTasks.h
 include/folly/fibers/AtomicBatchDispatcher-inl.h
@@ -693,6 +696,7 @@ include/folly/hash/MurmurHash.h
 include/folly/hash/SpookyHashV1.h
 include/folly/hash/SpookyHashV2.h
 include/folly/hash/detail/ChecksumDetail.h
+include/folly/hash/traits.h
 include/folly/init/Init.h
 include/folly/init/Phase.h
 include/folly/io/Cursor-inl.h

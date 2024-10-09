@@ -1,7 +1,7 @@
 PORTNAME=	astroid
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.16
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	mail
 
 MAINTAINER=	mylan.connolly@gmail.com
@@ -12,6 +12,8 @@ LICENSE=	GPLv3+ LGPL21+
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING.GPL-3.0+
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LGPL-2.1+
+
+BROKEN=		fails to build with boost-1.85+
 
 BUILD_DEPENDS=	scdoc:textproc/scdoc \
 		notmuch>0:mail/notmuch

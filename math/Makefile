@@ -339,6 +339,7 @@
     SUBDIR += flann
     SUBDIR += flexfloat
     SUBDIR += flexiblas
+    SUBDIR += flint
     SUBDIR += flint2
     SUBDIR += flintqs
     SUBDIR += flopc++
@@ -542,8 +543,10 @@
     SUBDIR += ntpoly
     SUBDIR += numdiff
     SUBDIR += obake
+    SUBDIR += ocaml-farith
     SUBDIR += ocaml-num
     SUBDIR += ocaml-ocamlgraph
+    SUBDIR += ocaml-ocplib-simplex
     SUBDIR += ocaml-zarith
     SUBDIR += ocamlgsl
     SUBDIR += octave
@@ -998,6 +1001,7 @@
     SUBDIR += py-ml-dtypes
     SUBDIR += py-mnnpy
     SUBDIR += py-moarchiving
+    SUBDIR += py-modin
     SUBDIR += py-mpmath
     SUBDIR += py-munkres
     SUBDIR += py-narwhals
@@ -1212,7 +1216,6 @@
     SUBDIR += symphony
     SUBDIR += sympol
     SUBDIR += sympow
-    SUBDIR += tablix
     SUBDIR += taucs
     SUBDIR += tblis
     SUBDIR += testu01

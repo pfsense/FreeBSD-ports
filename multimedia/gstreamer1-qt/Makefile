@@ -1,6 +1,6 @@
 PORTNAME=	gstreamer1
 PORTVERSION=	1.2.0
-PORTREVISION=	28
+PORTREVISION=	29
 CATEGORIES=	multimedia
 MASTER_SITES=	http://gstreamer.freedesktop.org/src/qt-gstreamer/
 PKGNAMESUFFIX=	-qt5
@@ -12,6 +12,9 @@ WWW=		https://gstreamer.freedesktop.org/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=		Project abandoned 10 years ago
+EXPIRATION_DATE=	2024-10-22
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libgstreamer-1.0.so:multimedia/gstreamer1

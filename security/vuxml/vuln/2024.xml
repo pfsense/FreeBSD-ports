@@ -1,3 +1,877 @@
+  <vuln vid="2368755b-83f6-11ef-8d2e-a04a5edf46d9">
+    <topic>Unbound -- Denial of service attack</topic>
+    <affects>
+      <package>
+	<name>unbound</name>
+	<range><lt>1.21.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NLnet labs report:</p>
+	<blockquote cite="https://nlnetlabs.nl/news/2024/Oct/03/unbound-1.21.1-released/">
+	  <p>A vulnerability has been discovered in Unbound when handling
+	    replies with very large RRsets that Unbound needs to perform name
+	    compression for.</p>
+	  <p>Malicious upstreams responses with very large RRsets can cause
+	    Unbound to spend a considerable time applying name compression to
+	    downstream replies. This can lead to degraded performance and
+	    eventually denial of service in well orchestrated attacks.</p>
+	  <p>Unbound version 1.21.1 introduces a hard limit on the number of
+	    name compression calculations it is willing to do per packet.
+	    Packets that need more compression will result in semi-compressed
+	    packets or truncated packets, even on TCP for huge messages, to
+	    avoid locking the CPU for long.</p>
+	  <p>This change should not affect normal DNS traffic.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-8508</cvename>
+      <url>https://nlnetlabs.nl/news/2024/Oct/03/unbound-1.21.1-released/</url>
+    </references>
+    <dates>
+      <discovery>2024-10-03</discovery>
+      <entry>2024-10-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fe7031d3-3000-4b43-9fa6-52c2b624b8f9">
+    <topic>zeek -- potential DoS vulnerability</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>7.0.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tim Wojtulewicz of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v7.0.3">
+	  <p> Adding to the POP3 hardening in 7.0.2, the parser now
+	  simply discards too many pending commands, rather than
+	  any attempting to process them. Further, invalid server
+	  responses do not result in command completion anymore.
+	  Processing out-of-order commands or finishing commands
+	  based on invalid server responses could result in
+	  inconsistent analyzer state, potentially triggering null
+	  pointer references for crafted traffic. </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v7.0.3</url>
+    </references>
+    <dates>
+      <discovery>2024-10-05</discovery>
+      <entry>2024-10-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0417d41a-8175-11ef-a5dc-b42e991fc52e">
+    <topic>firefox -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>131.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.3.0,1</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>128.3.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1872744%2C1897792%2C1911317%2C1913445%2C1914106%2C1914475%2C1914963%2C1915008%2C1916476">
+	<ul>
+	<li>CVE-2024-9392: A compromised content process could have
+	allowed for the arbitrary loading of cross-origin pages.</li>
+	<li>CVE-2024-9396: It is currently unknown if this issue is
+	exploitable but a condition may arise where the structured
+	clone of certain objects could lead to memory corruption.</li>
+	<li>CVE-2024-9400: A potential memory corruption vulnerability
+	could be triggered if an attacker had the ability to trigger
+	an OOM at a specific moment during JIT compilation.</li>
+	<li>CVE-2024-9401: Memory safety bugs present in Firefox 130,
+	Firefox ESR 115.15, Firefox ESR 128.2, and Thunderbird 128.2.
+	Some of these bugs showed evidence of memory corruption and we
+	presume that with enough effort some of these could have been
+	exploited to run arbitrary code.</li>
+	<li>CVE-2024-9402: Memory safety bugs present in Firefox 130,
+	Firefox ESR 128.2, and Thunderbird 128.2.  Some of these bugs
+	showed evidence of memory corruption and we presume that with
+	enough effort some of these could have been exploited to run
+	arbitrary code.</li>
+	<li>CVE-2024-9403: Memory safety bugs present in Firefox 130.
+	Some of these bugs showed evidence of memory corruption and we
+	presume that with enough effort some of these could have been
+	exploited to run arbitrary code.</li>
+	</ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-9392</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-9392</url>
+      <cvename>CVE-2024-9396</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-9396</url>
+      <cvename>CVE-2024-9400</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-9400</url>
+      <cvename>CVE-2024-9401</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-9401</url>
+      <cvename>CVE-2024-9402</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-9402</url>
+      <cvename>CVE-2024-9403</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-9403</url>
+    </references>
+    <dates>
+      <discovery>2024-10-01</discovery>
+      <entry>2024-10-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3c6f8270-3210-4e2f-ba72-a9cdca7417a0">
+    <topic>jenkins -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.479</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.462.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2024-10-02/">
+	  <h1>Description</h1>
+	  <h5>(Medium) SECURITY-3451 / CVE-2024-47803</h5>
+	  <p>Exposure of multi-line secrets through error messages in Jenkins</p>
+	  <h1>Description</h1>
+	  <h5>(Medium) SECURITY-3448 / CVE-2024-47804</h5>
+	  <p>Item creation restriction bypass vulnerability in Jenkins</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47803</cvename>
+      <cvename>CVE-2024-47804</cvename>
+      <url>https://www.jenkins.io/security/advisory/2024-10-02/</url>
+    </references>
+    <dates>
+      <discovery>2024-10-02</discovery>
+      <entry>2024-10-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8b20f21a-8113-11ef-b988-08002784c58d">
+    <topic>redis,valkey -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><ge>7.4.0</ge><lt>7.4.1</lt></range>
+	<range><ge>7.2.0</ge><lt>7.2.6</lt></range>
+      </package>
+      <package>
+	<name>redis72</name>
+	<range><ge>7.2.0</ge><lt>7.2.6</lt></range>
+      </package>
+      <package>
+	<name>redis62</name>
+	<range><ge>6.2.0</ge><lt>6.2.16</lt></range>
+      </package>
+      <package>
+	<name>valkey</name>
+	<range><ge>8,0,0</ge><lt>8.0.1</lt></range>
+	<range><ge>7.2.0</ge><lt>7.2.7</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Redis core team reports:</p>
+	<blockquote cite="https://github.com/redis/redis/releases/tag/7.4.1">
+	  <dl>
+	    <dt>CVE-2024-31449</dt>
+	    <dd>Lua library commands may lead to stack overflow and potential RCE.</dd>
+	    <dt>CVE-2024-31227</dt>
+	    <dd>Potential Denial-of-service due to malformed ACL selectors.</dd>
+	    <dt>CVE-2024-31228</dt>
+	    <dd>Potential Denial-of-service due to unbounded pattern matching.</dd>
+	  </dl>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-31449</cvename>
+      <cvename>CVE-2024-31227</cvename>
+      <cvename>CVE-2024-31228</cvename>
+      <url>https://github.com/redis/redis/releases/tag/7.4.1</url>
+    </references>
+    <dates>
+      <discovery>2024-10-02</discovery>
+      <entry>2024-10-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fe5c1e7a-7eed-11ef-9533-f875a43e1796">
+    <topic>php -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	      <name>php81</name>
+	      <range><lt>8.1.30</lt></range>
+      </package>
+      <package>
+	      <name>php82</name>
+	      <range><lt>8.2.24</lt></range>
+      </package>
+      <package>
+	      <name>php83</name>
+	      <range><lt>8.3.12</lt></range>
+      </package>
+    </affects>
+    <description>
+	    <body xmlns="http://www.w3.org/1999/xhtml">
+	      <p>php.net reports:</p>
+	      <blockquote cite="https://www.php.net/ChangeLog-8.php">
+					<ul>
+						<li>CVE-2024-8926: CGI: Fixed bug GHSA-9pqp-7h25-4f32 (Bypass of CVE-2024-4577, Parameter Injection Vulnerability).</li>
+						<li>CVE-2024-8927: CGI: Fixed bug GHSA-94p6-54jq-9mwp (cgi.force_redirect configuration is bypassable due to the environment variable collision).</li>
+						<li>CVE-2024-9026: FPM: Fixed bug GHSA-865w-9rf3-2wh5 (Logs from childrens may be altered).</li>
+						<li>CVE-2024-8925: SAPI: Fixed bug GHSA-9pqp-7h25-4f32 (Erroneous parsing of multipart form data).</li>
+					</ul>
+	      </blockquote>
+	    </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-8926</cvename>
+      <cvename>CVE-2024-8927</cvename>
+      <cvename>CVE-2024-9026</cvename>
+      <cvename>CVE-2024-8925</cvename>
+      <url>https://www.php.net/ChangeLog-8.php</url>
+    </references>
+    <dates>
+      <discovery>2024-09-26</discovery>
+      <entry>2024-09-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f9cfdb00-7f43-11ef-9b27-592d55dd336d">
+    <topic>Slixmpp -- Lack of SSL Certificate hostname validation in XMLStream</topic>
+    <affects>
+      <package>
+	<name>py38-slixmpp</name>
+	<name>py39-slixmpp</name>
+	<name>py310-slixmpp</name>
+	<name>py311-slixmpp</name>
+	<range><lt>1.8.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NIST reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2022-45197">
+	  <p>Slixmpp before 1.8.3 lacks SSL Certificate hostname validation in XMLStream,
+	allowing an attacker to pose as any server in the eyes of Slixmpp.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2022-45197</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2022-45197</url>
+    </references>
+    <dates>
+      <discovery>2022-12-25</discovery>
+      <entry>2024-09-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2f82696c-adad-447b-9938-c99441805fa3">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>129.0.6668.70</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>129.0.6668.70</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/09/stable-channel-update-for-desktop_24.html">
+	 <p>This update includes 5 security fixes:</p>
+	 <ul>
+	    <li>[365254285] High CVE-2024-9120: Use after free in Dawn. Reported by Anonymous on 2024-09-08</li>
+	    <li>[363538434] High CVE-2024-9121: Inappropriate implementation in V8. Reported by Tashita Software Security on 2024-09-01</li>
+	    <li>[365802567] High CVE-2024-9122: Type Confusion in V8. Reported by Seunghyun Lee (@0x10n) on 2024-09-10</li>
+	    <li>[365884464] High CVE-2024-9123: Integer overflow in Skia. Reported by raven at KunLun lab on 2024-09-11</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-9120</cvename>
+      <cvename>CVE-2024-9121</cvename>
+      <cvename>CVE-2024-9122</cvename>
+      <cvename>CVE-2024-9123</cvename>
+      <url>https://chromereleases.googleblog.com/2024/09/stable-channel-update-for-desktop_24.html</url>
+    </references>
+    <dates>
+      <discovery>2024-09-24</discovery>
+      <entry>2024-09-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="42ec2207-7e85-11ef-89a4-b42e991fc52e">
+    <topic>sqlite -- use-after-free bug in jsonparseaddnodearray</topic>
+    <affects>
+      <package>
+	<name>sqlite3</name>
+	<range><lt>3.43.2,1</lt></range>
+      </package>
+      <package>
+	<name>linux-rl9-sqlite</name>
+	<range><lt>3.43.2</lt></range>
+      </package>
+      <package>
+	<name>linux-c7-sqlite</name>
+	<range><lt>3.43.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>secalert@redhat.com reports:</p>
+	<blockquote cite="https://access.redhat.com/security/cve/CVE-2024-0232">
+	  <p>A heap use-after-free issue has been identified in SQLite in the
+	jsonParseAddNodeArray() function in sqlite3.c.  This flaw allows a
+	local attacker to leverage a victim to pass specially crafted
+	malicious input to the application, potentially causing a crash and
+	leading to a denial of service.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-0232</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-0232</url>
+    </references>
+    <dates>
+      <discovery>2024-01-16</discovery>
+      <entry>2024-09-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="24375796-7cbc-11ef-a3a9-001cc0382b2f">
+    <topic>cups-filters -- remote code execution</topic>
+    <affects>
+      <package>
+	<name>cups-filters</name>
+	<range><lt>1.28.17_6</lt></range>
+      </package>
+      <package>
+	<name>cups</name>
+	<range><lt>2.4.11</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenPrinting reports:</p>
+	<blockquote cite="https://github.com/OpenPrinting/cups-browsed/security/advisories/GHSA-rj88-6mr5-rcw8">
+	  <p>Due to the service binding to *:631 ( INADDR_ANY ), multiple bugs
+	    in cups-browsed can be exploited in sequence to introduce a
+	    malicious printer to the system. This chain of exploits ultimately
+	    enables an attacker to execute arbitrary commands remotely on the
+	    target machine without authentication when a print job is started.
+	    Posing a significant security risk over the network. Notably, this
+	    vulnerability is particularly concerning as it can be exploited
+	    from the public internet, potentially exposing a vast number of
+	    systems to remote attacks if their CUPS services are enabled.</p>
+	</blockquote>
+	<p>The vulnerability allows an attacker on the internet to create a
+	  new printer device with arbitrary commands in the PPD file of the
+	  printer. Attacks using mDNS on the local network can also replace an
+	  existing printer. The commands are executed when a user attempts to
+	  print on the malicious device. They run with the privileges of the
+	  user "cups".</p>
+	<p>It is recommended to disable the cups_browsed service until patches
+	  become available. On FreeBSD this is the default. You can check the
+	  status and disable the service with the following commands:</p>
+	<p><code># service cups_browsed status<br />
+	  # service cups_browsed stop<br />
+	  # service cups_browsed disable</code></p>
+	<p>If you choose to leave the service enabled, attacks from the
+	  internet can be blocked by removing the "cups" protocol from the
+	  BrowseRemoteProtocols and BrowseProtocols directives in
+	  /usr/local/etc/cups/cups-browsed.conf. Attacks using mDNS can be
+	  blocked by removing the "dnssd" protocol as well. Access can be
+	  limited to specific IP addresses using BrowseAllow, BrowseDeny, and
+	  BrowseOrder directives as documented in cups-browsed.conf(5). Then
+	  restart the service with the following command:</p>
+	<p><code># service cups_browsed restart</code></p>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47076</cvename>
+      <cvename>CVE-2024-47175</cvename>
+      <cvename>CVE-2024-47176</cvename>
+      <url>https://github.com/OpenPrinting/cups-browsed/security/advisories/GHSA-rj88-6mr5-rcw8</url>
+    </references>
+    <dates>
+      <discovery>2024-09-26</discovery>
+      <entry>2024-09-27</entry>
+      <modified>2024-10-02</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="ca5f3bbc-7a62-11ef-9533-f875a43e1796">
+    <topic>expat -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>expat</name>
+	<range><lt>2.6.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>libexpat reports:</p>
+	<blockquote cite="https://github.com/libexpat/libexpat/blob/master/expat/Changes">
+	<ul>
+	<li>CVE-2024-45490: Calling function XML_ParseBuffer with
+	len &lt; 0 without noticing and then calling XML_GetBuffer
+	will have XML_ParseBuffer fail to recognize the problem
+	and XML_GetBuffer corrupt memory.
+	With the fix, XML_ParseBuffer now complains with error
+	XML_ERROR_INVALID_ARGUMENT just like sibling XML_Parse
+	has been doing since Expat 2.2.1, and now documented.
+	Impact is denial of service to potentially artitrary code
+	execution.</li>
+	<li>CVE-2024-45491: Internal function dtdCopy can have an
+	integer overflow for nDefaultAtts on 32-bit platforms
+	(where UINT_MAX equals SIZE_MAX).
+	Impact is denial of service to potentially artitrary code
+	execution.</li>
+	<li>CVE-2024-45492: Internal function nextScaffoldPart can
+	have an integer overflow for m_groupSize on 32-bit
+	platforms (where UINT_MAX equals SIZE_MAX).
+	Impact is denial of service to potentially artitrary code
+	execution.</li>
+	</ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-45490</cvename>
+      <cvename>CVE-2024-45491</cvename>
+      <cvename>CVE-2024-45492</cvename>
+      <url>https://github.com/libexpat/libexpat/blob/master/expat/Changes</url>
+    </references>
+    <dates>
+      <discovery>2024-09-24</discovery>
+      <entry>2024-09-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4b7ed61f-7bbf-11ef-9369-2cf05da270f3">
+    <topic>Gitlab -- vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<name>gitlab-ee</name>
+	<range><ge>17.4.0</ge><lt>17.4.1</lt></range>
+	<range><ge>17.3.0</ge><lt>17.3.4</lt></range>
+	<range><ge>15.6.0</ge><lt>17.2.8</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2024/09/25/patch-release-gitlab-17-4-1-released/">
+	  <p>Maintainer can leak Dependency Proxy password by changing Dependency Proxy URL via crafted POST request</p>
+	  <p>AI feature reads unsanitized content, allowing for attacker to hide prompt injection</p>
+	  <p>Project reference can be exposed in system notes</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-4278</cvename>
+      <cvename>CVE-2024-4099</cvename>
+      <cvename>CVE-2024-8974</cvename>
+      <url>https://about.gitlab.com/releases/2024/09/25/patch-release-gitlab-17-4-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2024-09-25</discovery>
+      <entry>2024-09-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="802961eb-7a89-11ef-bdd7-a0423f48a938">
+    <topic>frr - BGP</topic>
+    <affects>
+      <package>
+	<name>frr9</name>
+	<range><lt>9.1.2</lt></range>
+      </package>
+      <package>
+	<name>frr8</name>
+	<range><lt>8.5.6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cve@mitre.org reports:</p>
+	<blockquote cite="https://github.com/FRRouting/frr/pull/16497">
+	  <p>An issue was discovered in FRRouting (FRR). bgp_attr_encap
+	in bgpd/bgp_attr.c does not check the actual remaining stream length
+	before taking the TLV value.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-44070</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-44070</url>
+    </references>
+    <dates>
+      <discovery>2024-08-19</discovery>
+      <entry>2024-09-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d47b7ae7-fe1d-4f7f-919a-480ca8035f00">
+    <topic>zeek -- potential DoS vulnerability</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>7.0.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tim Wojtulewicz of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v7.0.2">
+	  <p> The POP3 parser has been hardened to avoid unbounded
+	  state growth in the face of one-sided traffic capture or
+	  when enabled for non-POP3 traffic. </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v7.0.2</url>
+    </references>
+    <dates>
+      <discovery>2024-09-24</discovery>
+      <entry>2024-09-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c02b8db5-771b-11ef-9a62-002590c1f29c">
+    <topic>FreeBSD -- NFS client accepts file names containing path separators</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>14.1</ge><lt>14.1_3</lt></range>
+	<range><ge>14.0</ge><lt>14.0_9</lt></range>
+	<range><ge>13.3</ge><lt>13.3_5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>When mounting a remote filesystem using NFS, the kernel did not
+	sanitize remotely provided filenames for the path separator character,
+	"/".  This allows readdir(3) and related functions to return
+	filesystem entries with names containing additional path components.</p>
+	<h1>Impact:</h1>
+	<p>The lack of validation described above gives rise to a confused
+	deputy problem.  For example, a program copying files from an NFS
+	mount could be tricked into copying from outside the intended source
+	directory, and/or to a location outside the intended destination
+	directory.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-6759</cvename>
+      <freebsdsa>SA-24:07.nfsclient</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2024-08-07</discovery>
+      <entry>2024-09-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8fb61d94-771b-11ef-9a62-002590c1f29c">
+    <topic>FreeBSD -- ktrace(2) fails to detach when executing a setuid binary</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>14.1</ge><lt>14.1_3</lt></range>
+	<range><ge>14.0</ge><lt>14.0_9</lt></range>
+	<range><ge>13.3</ge><lt>13.3_5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>A logic bug in the code which disables kernel tracing for setuid
+	programs meant that tracing was not disabled when it should have,
+	allowing unprivileged users to trace and inspect the behavior of
+	setuid programs.</p>
+	<h1>Impact:</h1>
+	<p>The bug may be used by an unprivileged user to read the contents
+	of files to which they would not otherwise have access, such as the
+	local password database.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-6760</cvename>
+      <freebsdsa>SA-24:06.ktrace</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2024-08-07</discovery>
+      <entry>2024-09-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f140cff0-771a-11ef-9a62-002590c1f29c">
+    <topic>FreeBSD -- pf incorrectly matches different ICMPv6 states in the state table</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>14.1</ge><lt>14.1_3</lt></range>
+	<range><ge>14.0</ge><lt>14.0_9</lt></range>
+	<range><ge>13.3</ge><lt>13.3_5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>In ICMPv6 Neighbor Discovery (ND), the ID is always 0.  When
+	pf is configured to allow ND and block incoming Echo Requests, a
+	crafted Echo Request packet after a Neighbor Solicitation (NS) can
+	trigger an Echo Reply.  The packet has to come from the same host
+	as the NS and have a zero as identifier to match the state created
+	by the Neighbor Discovery and allow replies to be generated.</p>
+	<h1>Impact:</h1>
+	<p>ICMPv6 packets with identifier value of zero bypass firewall
+	rules written on the assumption that the incoming packets are going
+	to create a state in the state table.</p>
+	<h1>Note:</h1>
+	<p>This advisory introduced additional issues that were addressed by
+	FreeBSD-EN-24:16.pf.  Please refer to that erratum for additional
+	fixes.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-6640</cvename>
+      <freebsdsa>SA-24:05.pf</freebsdsa>
+      <url>https://www.freebsd.org/security/advisories/FreeBSD-EN-24:16.pf.asc</url>
+    </references>
+    <dates>
+      <discovery>2024-08-07</discovery>
+      <entry>2024-09-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="93c12fe5-7716-11ef-9a62-002590c1f29c">
+    <topic>FreeBSD -- Integer overflow in libnv</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>14.1</ge><lt>14.1_5</lt></range>
+	<range><ge>14.0</ge><lt>14.0_11</lt></range>
+	<range><ge>13.4</ge><lt>13.4_1</lt></range>
+	<range><ge>13.3</ge><lt>13.3_7</lt></range>
+      </package>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>14.1</ge><lt>14.1_5</lt></range>
+	<range><ge>14.0</ge><lt>14.0_11</lt></range>
+	<range><ge>13.4</ge><lt>13.4_1</lt></range>
+	<range><ge>13.3</ge><lt>13.3_7</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>A malicious value of size in a structure of packed libnv can
+	cause an integer overflow, leading to the allocation of a smaller
+	buffer than required for the parsed data.  The introduced check was
+	incorrect, as it took into account the size of the pointer, not the
+	structure.  This vulnerability affects both kernel and userland.</p>
+	<p>This issue was originally intended to be addressed as part of
+	FreeBSD-SA-24:09.libnv, but due to a logic issue, this issue was
+	not properly addressed.</p>
+	<h1>Impact:</h1>
+	<p>It is possible for an attacker to overwrite portions of memory
+	(in userland or the kernel) as the allocated buffer might be smaller
+	than the data received from a malicious process.  This vulnerability
+	could result in privilege escalation or cause a system panic.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-45287</cvename>
+      <freebsdsa>SA-24:16.libnv</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2024-09-19</discovery>
+      <entry>2024-09-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1febd09b-7716-11ef-9a62-002590c1f29c">
+    <topic>FreeBSD -- bhyve(8) out-of-bounds read access via XHCI emulation</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>14.1</ge><lt>14.1_5</lt></range>
+	<range><ge>14.0</ge><lt>14.0_11</lt></range>
+	<range><ge>13.4</ge><lt>13.4_1</lt></range>
+	<range><ge>13.3</ge><lt>13.3_7</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>bhyve can be configured to emulate devices on a virtual USB
+	controller (XHCI), such as USB tablet devices.  An insufficient
+	boundary validation in the USB code could lead to an out-of-bounds read
+	on the heap, which could potentially lead to an arbitrary write and
+	remote code execution.</p>
+	<h1>Impact:</h1>
+	<p>A malicious, privileged software running in a guest VM can exploit
+	the vulnerability to crash the hypervisor process or potentially achieve
+	code execution on the host in the bhyve userspace process, which
+	typically runs as root.  Note that bhyve runs in a Capsicum sandbox, so
+	malicious code is constrained by the capabilities available to the bhyve
+	process.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-41721</cvename>
+      <freebsdsa>SA-24:15.bhyve</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2024-09-19</discovery>
+      <entry>2024-09-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3e738678-7582-11ef-bece-2cf05da270f3">
+    <topic>Gitlab -- vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<name>gitlab-ee</name>
+	<range><ge>17.3.0</ge><lt>17.3.3</lt></range>
+	<range><ge>17.2.0</ge><lt>17.2.7</lt></range>
+	<range><ge>0</ge><lt>17.1.8</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2024/09/17/patch-release-gitlab-17-3-3-released/">
+	  <p>SAML authentication bypass</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-45409</cvename>
+      <url>https://about.gitlab.com/releases/2024/09/17/patch-release-gitlab-17-3-3-released/</url>
+    </references>
+    <dates>
+      <discovery>2024-09-17</discovery>
+      <entry>2024-09-18</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="58750d49-7302-11ef-8c95-195d300202b3">
+    <topic>OpenSSH -- Pre-authentication async signal safety issue</topic>
+    <affects>
+      <package>
+	<name>openssh-portable</name>
+	<range><lt>9.8.p1_1,1</lt></range>
+      </package>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>14.1</ge><lt>14.1_3</lt></range>
+	<range><ge>14.0</ge><lt>14.0_9</lt></range>
+	<range><ge>13.3</ge><lt>13.3_5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The FreeBSD Project reports:</p>
+	<blockquote cite="https://www.freebsd.org/security/advisories/FreeBSD-SA-24:08.openssh.asc">
+	  <p>
+	    A signal handler in sshd(8) may call a logging function that is not async-
+	    signal-safe. The signal handler is invoked when a client does not
+	    authenticate within the LoginGraceTime seconds (120 by default).
+	    This signal handler executes in the context of the sshd(8)'s privileged
+	    code, which is not sandboxed and runs with full root privileges.</p>
+	    <p>This issue is another instance of the problem in CVE-2024-6387 addressed by
+	    FreeBSD-SA-24:04.openssh.  The faulty code in this case is from the
+	    integration of blacklistd in OpenSSH in FreeBSD.
+	  </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-7589</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-7589</url>
+      <freebsdsa>SA-24:08.openssh</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2024-08-06</discovery>
+      <entry>2024-09-15</entry>
+      <modified>2024-09-20</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="bd940aba-7467-11ef-a5c4-08002784c58d">
+    <topic>SnappyMail -- multiple mXSS in HTML sanitizer</topic>
+    <affects>
+      <package>
+	<name>snappymail-php81</name>
+	<name>snappymail-php82</name>
+	<name>snappymail-php83</name>
+	<name>snappymail-php84</name>
+	<range><lt>2.38.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Oskar reports:</p>
+	<blockquote cite="https://github.com/the-djmaze/snappymail/security/advisories/GHSA-2rq7-79vp-ffxm">
+	  <p>
+	    SnappyMail uses the `cleanHtml()` function to cleanup HTML
+	    and CSS in emails. Research discovered that the function
+	    has a few bugs which cause an mXSS exploit. Because the
+	    function allowed too many (invalid) HTML elements, it was
+	    possible (with incorrect markup) to trick the browser to
+	    "fix" the broken markup into valid markup. As a result a
+	    motivated attacker may be able to inject javascript.
+	  </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-45800</cvename>
+      <url>https://github.com/the-djmaze/snappymail/security/advisories/GHSA-2rq7-79vp-ffxm</url>
+    </references>
+    <dates>
+      <discovery>2024-09-16</discovery>
+      <entry>2024-09-16</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="e464f777-719e-11ef-8a0f-a8a1599412c6">
     <topic>chromium -- multiple security fixes</topic>
     <affects>
@@ -14,7 +888,7 @@
       <body xmlns="http://www.w3.org/1999/xhtml">
        <p>Chrome Releases reports:</p>
        <blockquote cite="https://chromereleases.googleblog.com/2024/09/stable-channel-update-for-desktop_10.html">
-	 <p>This update includes 5 security fixes:</p>
+	 <p>This update includes 4 security fixes:</p>
 	 <ul>
 	    <li>[361461526] High CVE-2024-8636: Heap buffer overflow in Skia. Reported by Renan Rios (@hyhy_100) on 2024-08-22</li>
 	    <li>[361784548] High CVE-2024-8637: Use after free in Media Router. Reported by lime(@limeSec_) from TIANGONG Team of Legendsec at QI-ANXIN Group on 2024-08-23</li>
@@ -1240,11 +2114,11 @@
     <affects>
       <package>
 	<name>nginx-devel</name>
-	<range><ge>1.5.13</ge><lt>1.27.1</lt></range>
+	<range><ge>1.5.13,3</ge><lt>1.27.1,3</lt></range>
       </package>
       <package>
 	<name>nginx</name>
-	<range><ge>1.6.0</ge><lt>1.26.2</lt></range>
+	<range><ge>1.6.0,3</ge><lt>1.26.2,3</lt></range>
       </package>
     </affects>
     <description>
@@ -1522,7 +2396,7 @@
     <topic>firefox -- multiple vulnerabilities</topic>
     <affects>
       <package>
-	<name>mozilla</name>
+	<name>firefox</name>
 	<range><lt>129.0,2</lt></range>
       </package>
     </affects>
@@ -2784,6 +3658,13 @@ All of these are related to the CometVisu add-on for openHAB - if you are a user
 	<name>openssh-portable</name>
 	<range><lt>9.7.p1_2,1</lt></range>
       </package>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>14.1</ge><lt>14.1_2</lt></range>
+	<range><ge>14.0</ge><lt>14.0_8</lt></range>
+	<range><ge>13.3</ge><lt>13.3_4</lt></range>
+	<range><ge>13.2</ge><lt>13.2_12</lt></range>
+      </package>
     </affects>
     <description>
 	<body xmlns="http://www.w3.org/1999/xhtml">
@@ -2796,11 +3677,12 @@ All of these are related to the CometVisu add-on for openHAB - if you are a user
     <references>
       <cvename>CVE-2024-6387</cvename>
       <url>https://www.openssh.com/security.html</url>
+      <freebsdsa>SA-24:04.openssh</freebsdsa>
     </references>
     <dates>
       <discovery>2024-07-01</discovery>
       <entry>2024-07-01</entry>
-      <modified>2024-07-03</modified>
+      <modified>2024-09-20</modified>
     </dates>
   </vuln>
 

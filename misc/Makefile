@@ -294,6 +294,7 @@
     SUBDIR += ompl
     SUBDIR += ondir
     SUBDIR += onnx
+    SUBDIR += onnxruntime
     SUBDIR += ooo
     SUBDIR += opencyc
     SUBDIR += openhab
@@ -552,7 +553,6 @@
     SUBDIR += quary
     SUBDIR += randomx
     SUBDIR += raspberrypi-gpioshutdown
-    SUBDIR += raspberrypi-userland
     SUBDIR += raspbsd-led
     SUBDIR += ree
     SUBDIR += retry

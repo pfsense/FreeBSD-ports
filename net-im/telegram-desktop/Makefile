@@ -1,5 +1,6 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	5.5.1
+DISTVERSION=	5.5.5
+PORTREVISION=	3
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
@@ -110,7 +111,7 @@ TELEGRAM_API_ID=	601761
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1400000 && ${OSVERSION} < 1400091)
+.if ${OPSYS} == FreeBSD
 #EXTRA_PATCHES=	${PATCHDIR}/extra-patch-CMakeLists.txt
 USES+=	llvm:min=16,build
 USES:=	${USES:Ncompiler\:*} # XXX avoid warnings

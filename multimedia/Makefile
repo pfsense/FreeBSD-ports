@@ -109,6 +109,7 @@
     SUBDIR += gstreamer1-plugins-ugly
     SUBDIR += gstreamer1-plugins-v4l2
     SUBDIR += gstreamer1-plugins-vpx
+    SUBDIR += gstreamer1-plugins-webrtc
     SUBDIR += gstreamer1-plugins-x264
     SUBDIR += gstreamer1-plugins-x265
     SUBDIR += gstreamer1-qt
@@ -125,6 +126,7 @@
     SUBDIR += intel-media-sdk
     SUBDIR += iso2mkv
     SUBDIR += jellyfin
+    SUBDIR += jellyfin-media-player
     SUBDIR += jmref
     SUBDIR += kaffeine
     SUBDIR += kamoso
