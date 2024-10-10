@@ -387,7 +387,7 @@ function frr_generate_config_rcfile() {
 		}
 	}
 	/* BGP RPKI */
-	if (config_get_path("installedpackages/{$config_key}/config/0/enablerpki")) {
+	if (config_get_path("installedpackages/frrbgp/config/0/enablerpki") == "on") {
 		$frr_daemon_modules['bgpd'] .= ' -M rpki';
 	}
 

@@ -137,12 +137,6 @@
 			<description>Local path that includes the public key file of the router</description>
 			<type>input</type>
 		</field>
-		<field>
-			<fielddescr>Known Hosts Path</fielddescr>
-			<fieldname>knownhostspath</fieldname>
-			<description>Local path that includes the known hosts file</description>
-			<type>input</type>
-		</field>
 	</fields>
 	<custom_delete_php_command>
 		frr_generate_config();
