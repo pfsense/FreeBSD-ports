@@ -71,7 +71,7 @@ remove_crontab "root"
 # was committed in 72c441e9e0c0f3d4cd26f554a67aa91e06734b5b.
 # See #14876.
 #
-[ -x /usr/sbin/certctl ] && \
+[ -x /usr/sbin/certctl ] && [ -d /usr/share/certs/trusted ] && \
     /usr/sbin/certctl rehash
 
 exit 0
