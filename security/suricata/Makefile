@@ -1,5 +1,6 @@
 PORTNAME=	suricata
 DISTVERSION=	7.0.7
+PORTREVISION=   0
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -86,7 +87,7 @@ NSS_CONFIGURE_OFF=	--disable-nspr \
 PORTS_PCAP_LIB_DEPENDS=	libpcap.so.1:net/libpcap
 
 PYTHON_BUILD_DEPENDS=		${PYTHON_RUN_DEPENDS}
-PYTHON_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
+PYTHON_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 PYTHON_USES=			python
 PYTHON_CONFIGURE_ENABLE=	python
 
