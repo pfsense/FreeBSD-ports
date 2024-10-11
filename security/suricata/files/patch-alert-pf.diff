@@ -1,6 +1,6 @@
-diff -ruN ./suricata-7.0.3.orig/src/Makefile.am ./suricata-7.0.3/src/Makefile.am
---- ./suricata-7.0.3.orig/src/Makefile.am	2024-02-08 04:35:49.000000000 -0500
-+++ ./src/Makefile.am	2024-02-08 13:05:08.000000000 -0500
+diff -ruN ./suricata-7.0.7.orig/src/Makefile.am ./suricata-7.0.7/src/Makefile.am
+--- ./suricata-7.0.7.orig/src/Makefile.am	2024-10-01 02:11:19.000000000 -0400
++++ ./src/Makefile.am	2024-10-10 10:39:36.000000000 -0400
 @@ -13,6 +13,7 @@
  	action-globals.h \
  	alert-debuglog.h \
@@ -9,7 +9,7 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.am ./suricata-7.0.3/src/Makefile.am
  	alert-syslog.h \
  	app-layer-detect-proto.h \
  	app-layer-dnp3.h \
-@@ -630,6 +631,7 @@
+@@ -634,6 +635,7 @@
  libsuricata_c_a_SOURCES = \
  	alert-debuglog.c \
  	alert-fastlog.c \
@@ -17,9 +17,9 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.am ./suricata-7.0.3/src/Makefile.am
  	alert-syslog.c \
  	app-layer.c \
  	app-layer-detect-proto.c \
-diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
---- ./suricata-7.0.3.orig/src/Makefile.in	2024-02-08 04:40:54.000000000 -0500
-+++ ./src/Makefile.in	2024-02-08 13:10:13.000000000 -0500
+diff -ruN ./suricata-7.0.7.orig/src/Makefile.in ./suricata-7.0.7/src/Makefile.in
+--- ./suricata-7.0.7.orig/src/Makefile.in	2024-10-01 02:16:27.000000000 -0400
++++ ./src/Makefile.in	2024-10-10 10:45:12.000000000 -0400
 @@ -153,6 +153,7 @@
  libsuricata_c_a_LIBADD =
  am_libsuricata_c_a_OBJECTS = alert-debuglog.$(OBJEXT) \
@@ -28,7 +28,7 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
  	app-layer.$(OBJEXT) app-layer-detect-proto.$(OBJEXT) \
  	app-layer-dnp3.$(OBJEXT) app-layer-dnp3-objects.$(OBJEXT) \
  	app-layer-enip.$(OBJEXT) app-layer-enip-common.$(OBJEXT) \
-@@ -617,6 +618,7 @@
+@@ -625,6 +626,7 @@
  am__maybe_remake_depfiles = depfiles
  am__depfiles_remade = ./$(DEPDIR)/alert-debuglog.Po \
  	./$(DEPDIR)/alert-fastlog.Po ./$(DEPDIR)/alert-syslog.Po \
@@ -36,7 +36,7 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
  	./$(DEPDIR)/app-layer-detect-proto.Po \
  	./$(DEPDIR)/app-layer-dnp3-objects.Po \
  	./$(DEPDIR)/app-layer-dnp3.Po \
-@@ -1332,6 +1334,7 @@
+@@ -1345,6 +1347,7 @@
  	action-globals.h \
  	alert-debuglog.h \
  	alert-fastlog.h \
@@ -44,7 +44,7 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
  	alert-syslog.h \
  	app-layer-detect-proto.h \
  	app-layer-dnp3.h \
-@@ -1949,6 +1952,7 @@
+@@ -1966,6 +1969,7 @@
  libsuricata_c_a_SOURCES = \
  	alert-debuglog.c \
  	alert-fastlog.c \
@@ -52,7 +52,7 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
  	alert-syslog.c \
  	app-layer.c \
  	app-layer-detect-proto.c \
-@@ -2882,6 +2886,7 @@
+@@ -2906,6 +2910,7 @@
  
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-debuglog.Po@am__quote@ # am--include-marker
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-fastlog.Po@am__quote@ # am--include-marker
@@ -60,7 +60,7 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-syslog.Po@am__quote@ # am--include-marker
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/app-layer-detect-proto.Po@am__quote@ # am--include-marker
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/app-layer-dnp3-objects.Po@am__quote@ # am--include-marker
-@@ -3686,6 +3691,7 @@
+@@ -3713,6 +3718,7 @@
  distclean: distclean-am
  		-rm -f ./$(DEPDIR)/alert-debuglog.Po
  	-rm -f ./$(DEPDIR)/alert-fastlog.Po
@@ -68,7 +68,7 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
  	-rm -f ./$(DEPDIR)/alert-syslog.Po
  	-rm -f ./$(DEPDIR)/app-layer-detect-proto.Po
  	-rm -f ./$(DEPDIR)/app-layer-dnp3-objects.Po
-@@ -4345,6 +4351,7 @@
+@@ -4375,6 +4381,7 @@
  maintainer-clean: maintainer-clean-am
  		-rm -f ./$(DEPDIR)/alert-debuglog.Po
  	-rm -f ./$(DEPDIR)/alert-fastlog.Po
@@ -76,10 +76,10 @@ diff -ruN ./suricata-7.0.3.orig/src/Makefile.in ./suricata-7.0.3/src/Makefile.in
  	-rm -f ./$(DEPDIR)/alert-syslog.Po
  	-rm -f ./$(DEPDIR)/app-layer-detect-proto.Po
  	-rm -f ./$(DEPDIR)/app-layer-dnp3-objects.Po
-diff -ruN ./suricata-7.0.3.orig/src/alert-pf.c ./suricata-7.0.3/src/alert-pf.c
---- ./suricata-7.0.3.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2024-02-07 22:28:53.000000000 -0500
-@@ -0,0 +1,2096 @@
+diff -ruN ./suricata-7.0.7.orig/src/alert-pf.c ./suricata-7.0.7/src/alert-pf.c
+--- ./suricata-7.0.7.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/alert-pf.c	2024-10-10 10:34:57.000000000 -0400
+@@ -0,0 +1,2088 @@
 +/* Copyright (C) 2007-2023 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -378,8 +378,8 @@ diff -ruN ./suricata-7.0.3.orig/src/alert-pf.c ./suricata-7.0.3/src/alert-pf.c
 +     */
 +    for(i=0; i < io.pfrio_size; i++) {
 +        if (!strcmp(table_list[i].pfrt_name, tablename)) {
-+        if (pf == NULL)
-+            close(dev);
++            if (pf == NULL)
++                close(dev);
 +            SCFree(table_list);
 +            return 1;
 +        }	
@@ -1022,7 +1022,7 @@ diff -ruN ./suricata-7.0.3.orig/src/alert-pf.c ./suricata-7.0.3/src/alert-pf.c
 +                    SCRWLockWRLock(&rwlock_intf_tree);
 +                    if (SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, intf_tree, user_addr) == NULL) {
 +                        SCFree(user_addr);
-+                        SCLogWarning("Failed to add address %s to automatic firewall interface IP pass list. This address may become blocked!");
++                        SCLogWarning("Failed to add address %s to automatic firewall interface IP pass list. This address may become blocked!", tmp);
 +                    } else {
 +                        SCLogInfo("Added address %s to automatic firewall interface IP pass list.", tmp);
 +                    }
@@ -1045,7 +1045,7 @@ diff -ruN ./suricata-7.0.3.orig/src/alert-pf.c ./suricata-7.0.3/src/alert-pf.c
 +                    SCRWLockWRLock(&rwlock_intf_tree);
 +                    if (SCRadixAddKeyIPV6((uint8_t *)&ip->addr_data8, intf_tree, user_addr) == NULL) {
 +                        SCFree(user_addr);
-+                        SCLogWarning("Failed to add address %s to automatic firewall interface IP pass list. This address may become blocked!");
++                        SCLogWarning("Failed to add address %s to automatic firewall interface IP pass list. This address may become blocked!", tmp);
 +                    } else {
 +                        SCLogInfo("Added address %s to automatic firewall interface IP pass list.", tmp);
 +                    }
@@ -1745,10 +1745,6 @@ diff -ruN ./suricata-7.0.3.orig/src/alert-pf.c ./suricata-7.0.3/src/alert-pf.c
 +            continue;
 +        }
 +
-+        /* Don't block on alerts where SIG_FLAG_NOALERT is set for the Signature */
-+        if (pa->s->flags & SIG_FLAG_NOALERT) {
-+            continue;
-+        }
 +        apft->alert_pf_alerts++;
 +
 +        /* If blocking only DROP rules and alert is not from a DROP rule, ignore it */
@@ -1979,10 +1975,6 @@ diff -ruN ./suricata-7.0.3.orig/src/alert-pf.c ./suricata-7.0.3/src/alert-pf.c
 +            continue;
 +        }
 +
-+        /* Don't block on alerts where SIG_FLAG_NOALERT is set for the Signature */
-+        if (pa->s->flags & SIG_FLAG_NOALERT) {
-+            continue;
-+        }
 +        apft->alert_pf_alerts++;
 +
 +        /* If blocking only DROP rules and alert is not from a DROP rule, ignore it */
@@ -2176,8 +2168,8 @@ diff -ruN ./suricata-7.0.3.orig/src/alert-pf.c ./suricata-7.0.3/src/alert-pf.c
 +
 +    return TM_ECODE_OK;
 +}
-diff -ruN ./suricata-7.0.3.orig/src/alert-pf.h ./suricata-7.0.3/src/alert-pf.h
---- ./suricata-7.0.3.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
+diff -ruN ./suricata-7.0.7.orig/src/alert-pf.h ./suricata-7.0.7/src/alert-pf.h
+--- ./suricata-7.0.7.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/alert-pf.h	2024-01-03 11:52:54.000000000 -0500
 @@ -0,0 +1,47 @@
 +/* Copyright (C) 2007-2023 Open Information Security Foundation
@@ -2227,9 +2219,9 @@ diff -ruN ./suricata-7.0.3.orig/src/alert-pf.h ./suricata-7.0.3/src/alert-pf.h
 +
 +#endif /* __ALERT_PF_H__ */
 +
-diff -ruN ./suricata-7.0.3.orig/src/output.c ./suricata-7.0.3/src/output.c
---- ./suricata-7.0.3.orig/src/output.c	2024-02-08 04:35:49.000000000 -0500
-+++ ./src/output.c	2024-02-08 13:11:46.000000000 -0500
+diff -ruN ./suricata-7.0.7.orig/src/output.c ./suricata-7.0.7/src/output.c
+--- ./suricata-7.0.7.orig/src/output.c	2024-10-01 02:11:20.000000000 -0400
++++ ./src/output.c	2024-10-10 10:46:50.000000000 -0400
 @@ -42,6 +42,7 @@
  
  #include "alert-fastlog.h"
@@ -2247,9 +2239,9 @@ diff -ruN ./suricata-7.0.3.orig/src/output.c ./suricata-7.0.3/src/output.c
      /* syslog log */
      AlertSyslogRegister();
      JsonDropLogRegister();
-diff -ruN ./suricata-7.0.3.orig/src/suricata-common.h ./suricata-7.0.3/src/suricata-common.h
---- ./suricata-7.0.3.orig/src/suricata-common.h	2024-02-08 04:35:49.000000000 -0500
-+++ ./src/suricata-common.h	2024-02-08 13:12:34.000000000 -0500
+diff -ruN ./suricata-7.0.7.orig/src/suricata-common.h ./suricata-7.0.7/src/suricata-common.h
+--- ./suricata-7.0.7.orig/src/suricata-common.h	2024-10-01 02:11:20.000000000 -0400
++++ ./src/suricata-common.h	2024-10-10 10:47:32.000000000 -0400
 @@ -489,6 +489,7 @@
      LOGGER_JSON_METADATA,
      LOGGER_JSON_FRAME,
