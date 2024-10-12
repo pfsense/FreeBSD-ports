@@ -28,6 +28,9 @@ _echo() {
 notice() {
 	msg="$@"
 
+	# bail out if the PHP is not installed
+	[ ! -x /usr/local/bin/php ] && return
+
 	/usr/local/bin/php -r \
 	    "require_once('notices.inc'); \
 	    file_notice('pfSense-upgrade', '${msg}', 'Upgrade', '', 1, true);"
