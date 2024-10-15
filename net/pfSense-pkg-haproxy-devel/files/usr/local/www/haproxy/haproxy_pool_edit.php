@@ -408,7 +408,7 @@ if ($_POST) {
 		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
 	}
 	/* Ensure that our pool names are unique */
-	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item');
+	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 	for ($i=0; isset($a_backends[$i]); $i++) {
 		if (($_POST['name'] == $a_backends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";

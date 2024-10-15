@@ -41,7 +41,7 @@ class haproxy_utils {
 			$hostnameprefix = $parts[0];
 			if ($hostnameprefix == "unix") {
 				// is there any way to further validate this.?.
-				return true; 
+				return true;
 			}
 			$hostnamename = $parts[1];
 			if (!in_array($hostnameprefix, array("ipv4","ipv6","upd","udp4","udp6","unix"))) {
