@@ -497,7 +497,6 @@ function squid_fixup_user() {
 
 function squid_install_command() {
 	/* Set storage system for ramdisk */
-	config_init_path('installedpackages/squidcache');
 
 	// Fix user/group entry permissions
 	squid_fixup_user();
@@ -1898,7 +1897,6 @@ function squid_resync_auth() {
 	global $valid_acls;
 	$write_config = 0;
 	if (!is_array(config_get_path('installedpackages/squidauth/config'))) {
-		config_init_path('installedpackages/squidauth/config');
 		config_set_path('installedpackages/squidauth/config', [['auth_method' => "none"]]);
 		$write_config++;
 	}
@@ -2735,9 +2733,7 @@ function squid_plugin_carp($pluginparams) {
 
 function squid_plugin_certificates($pluginparams) {
 	$result = array('pkgname' => 'Squid', 'certificatelist' => array());
-	config_init_path('installedpackages/squid/config');
 	$squidconf = config_get_path('installedpackages/squid/config/0');
-	config_init_path('installedpackages/squidreversegeneral/config');
 	$squidrevconf = config_get_path('installedpackages/squidreversegeneral/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($squidconf) &&
