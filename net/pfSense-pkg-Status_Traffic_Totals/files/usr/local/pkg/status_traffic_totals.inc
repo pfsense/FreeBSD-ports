@@ -173,7 +173,7 @@ EOD;
 }
 
 function vnstat_portlist() {
-	$portlist = config_get_path('interfaces');
+	$portlist = config_get_path('interfaces', []);
 	$ifdescrs = get_configured_interface_with_descr();
 
 	if (ipsec_enabled()) {
