@@ -27,8 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $pfb;
 pfb_global();
 
-config_init_path('installedpackages/pfblockerngglobal');
-$fconfig	= config_get_path('installedpackages/pfblockerngglobal');
+$fconfig	= config_get_path('installedpackages/pfblockerngglobal', []);
 
 // Load/convert Feeds (w/alternative aliasname(s), if user-configured)
 $feed_info	= convert_feeds_json();

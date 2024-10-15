@@ -36,8 +36,7 @@ elseif (!empty(config_get_path('installedpackages/pfblockerng/config/0'))) {
 	$pfb_wizard = FALSE;
 }
 
-config_init_path('installedpackages/pfblockerng/config/0');
-$pfb['gconfig'] = config_get_path('installedpackages/pfblockerng/config/0');
+$pfb['gconfig'] = config_get_path('installedpackages/pfblockerng/config/0', []);
 
 $pconfig = array();
 $pconfig['enable_cb']			= $pfb['gconfig']['enable_cb']				?: '';

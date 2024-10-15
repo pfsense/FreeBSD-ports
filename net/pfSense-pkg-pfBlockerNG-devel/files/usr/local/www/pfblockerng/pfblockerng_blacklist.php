@@ -89,8 +89,7 @@ if (!empty($blacklist_types)) {
 	}
 }
 
-config_init_path('installedpackages/pfblockerngblacklist');
-$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngblacklist');
+$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngblacklist', []);
 
 $pconfig = array();
 $pconfig['blacklist_enable']		= $pfb['bconfig']['blacklist_enable']				?: 'Disable';

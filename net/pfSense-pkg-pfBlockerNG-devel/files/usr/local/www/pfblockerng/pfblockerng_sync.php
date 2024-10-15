@@ -27,8 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $pfb;
 pfb_global();
 
-config_init_path('installedpackages/pfblockerngsync/config/0');
-$pfb['sconfig'] = config_get_path('installedpackages/pfblockerngsync/config/0');
+$pfb['sconfig'] = config_get_path('installedpackages/pfblockerngsync/config/0', []);
 
 $pconfig = array();
 $pconfig['varsynconchanges']	= $pfb['sconfig']['varsynconchanges']	?: '';

@@ -47,8 +47,7 @@ $pfb['err']	= '<i class="fa-solid fa-minus-circle text-danger" title="pf Errors 
 $wglobal_array = array ('popup' => 'off', 'sortcolumn' => 'none', 'sortmix' => 'off', 'sortdir' => 'asc', 'dnsblquery' => 5,
 			'maxfails' => 3, 'maxheight' => 2500, 'clearip' => 'never', 'cleardnsbl' => 'never');
 
-config_init_path('installedpackages/pfblockerngglobal');
-$pfb['wglobal'] = config_get_path('installedpackages/pfblockerngglobal');
+$pfb['wglobal'] = config_get_path('installedpackages/pfblockerngglobal', []);
 foreach ($wglobal_array as $type => $value) {
 	$pfb[$type] = $pfb['wglobal']['widget-' . "{$type}"] ?: $value;
 }

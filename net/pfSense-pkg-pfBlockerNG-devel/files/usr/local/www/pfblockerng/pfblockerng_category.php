@@ -117,8 +117,7 @@ switch ($gtype) {
 // Collect rowdata
 if ($type != 'GeoIP') {
 	$rowdata_path = "installedpackages/{$conf_type}/config";
-	config_init_path($rowdata_path);
-	$rowdata = config_get_path($rowdata_path);
+	$rowdata = config_get_path($rowdata_path, []);
 } else {
 
 	// Collect GeoIP rowdata
@@ -262,7 +261,6 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 								} else {
 									$continent = pfb_filter(strtolower(str_replace(' ', '', $rowdata[$rowid]['aliasname'])), PFB_FILTER_HTML, 'Category');
 
-									config_init_path("installedpackages/pfblockerng{$continent}/config/0");
 									config_set_path("installedpackages/pfblockerng{$continent}/config/0/{$variable}", pfb_filter($value, PFB_FILTER_HTML, 'Category'));
 								}
 							}
