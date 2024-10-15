@@ -30,8 +30,6 @@ require("guiconfig.inc");
 require_once("service-utils.inc");
 require_once("servicewatchdog.inc");
 
-config_init_path('installedpackages/servicewatchdog/item');
-
 unset($input_errors);
 
 if ($_POST) {
