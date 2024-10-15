@@ -111,7 +111,7 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_certificate_id($selection);
 			}
-			$a_certificates = config_get_path('installedpackages/acme/certificates/item');
+			$a_certificates = config_get_path('installedpackages/acme/certificates/item', []);
 			array_moveitemsbefore($a_certificates, $moveto, $selected);
 			config_set_path('installedpackages/acme/certificates/item', $a_certificates);
 		

@@ -2788,10 +2788,6 @@ $a_keylength['ec-256'] = array('name' => "256-bit ECDSA", 'ecc' => true);
 $a_keylength['ec-384'] = array('name' => "384-bit ECDSA", 'ecc' => true);
 $a_keylength['custom'] = array('name' => "Custom...");
 
-config_init_path('installedpackages/acme/certificates/item');
-
-config_init_path('installedpackages/acme/accountkeys/item');
-
 function set_cronjob() {
 	if (config_path_enabled('installedpackages/acme')) {
 		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | /usr/bin/logger -t ACME 2>&1', true, "16", "3");
@@ -2830,9 +2826,6 @@ function acme_custom_php_install_command() {
 }
 
 function acme_convert_desc_to_descr() {
-	config_init_path('installedpackages/acme/accountkeys/item');
-	config_init_path('installedpackages/acme/certificates/item');
-
 	foreach (array('accountkeys', 'certificates') as $a_array) {
 		$acme_item_config = config_get_path("installedpackages/acme/{$a_array}/item");
 		foreach ($acme_item_config as & $item) {
@@ -2846,9 +2839,7 @@ function acme_convert_desc_to_descr() {
 }
 
 function acme_convert_letsencryptv1_to_letsencryptv2() {
-	config_init_path('installedpackages/acme/accountkeys/item');
-
-	$acme_item_config = config_get_path('installedpackages/acme/accountkeys/item');
+	$acme_item_config = config_get_path('installedpackages/acme/accountkeys/item', []);
 	foreach ($acme_item_config as & $item) {
 		if ($item['acmeserver'] == 'letsencrypt-staging') {
 			$item['acmeserver'] = 'letsencrypt-staging-2';
@@ -2873,17 +2864,14 @@ function get_itembyname($a_array, $name) {
 }
 
 function get_accountkey_id($name) {
-	config_init_path('installedpackages/acme/accountkeys/item');
-	return get_itembyname(config_get_path('installedpackages/acme/accountkeys/item'), $name);
+	return get_itembyname(config_get_path('installedpackages/acme/accountkeys/item', []), $name);
 }
 function get_accountkey($name) {
-	config_init_path('installedpackages/acme/accountkeys/item');
 	$id = get_accountkey_id($name);
 	return config_get_path("installedpackages/acme/accountkeys/item/{$id}");
 }
 
 function get_certificate_id($name) {
-	config_init_path('installedpackages/acme/certificates/item');
 	$a_certificates = config_get_path('installedpackages/acme/certificates/item');
 	$i = 0;
 	if (is_array($a_certificates)) {
@@ -2898,7 +2886,6 @@ function get_certificate_id($name) {
 }
 
 function get_certificate($name) {
-	config_init_path('installedpackages/acme/certificates/item');
 	$id = get_certificate_id($name);
 	if (is_numeric($id)) {
 		return config_get_path("installedpackages/acme/certificates/item/{$id}");
@@ -2922,7 +2909,7 @@ function get_certificate($name) {
 	}
 
 	function renew_all_certificates($force = false) {
-		$a_certificates = config_get_path('installedpackages/acme/certificates/item');
+		$a_certificates = config_get_path('installedpackages/acme/certificates/item', []);
 		$errors = "";
 		foreach($a_certificates as $certificate) {
 			if ($certificate['status'] != 'active') {
@@ -3006,7 +2993,6 @@ function get_certificate($name) {
 
 	function saveCACertificateToStore($crt) {
 		$crt_enc = base64_encode($crt);
-		config_init_path('ca');
 		foreach(config_get_path('ca', []) as $ca) {
 			if ($ca['crt'] == $crt_enc) {
 				return;

@@ -44,8 +44,6 @@ if ($_POST['action'] == "registerkey") {
 	exit;
 }
 
-config_init_path('installedpackages/acme/accountkeys/item');
-
 $id = $_REQUEST['id'];
 
 if (isset($_GET['dup'])) {
@@ -135,8 +133,6 @@ if ($_POST) {
 		// name changed:
 		$oldvalue = $accountkey['name'];
 		$newvalue = $_POST['name'];
-		
-		config_init_path('installedpackages/acme/accountkeys/item');
 	}
 
 	if($accountkey['name'] != "") {

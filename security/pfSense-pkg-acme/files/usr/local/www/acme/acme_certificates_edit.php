@@ -150,11 +150,8 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 }
 
 if (isset($id) && config_get_path("installedpackages/acme/certificates/item/{$id}")) {
-	config_init_path("installedpackages/acme/certificates/item/{$id}/a_domainlist/item");
-	config_init_path("installedpackages/acme/certificates/item/{$id}/a_actionlist/item");
-
-	$a_domains = config_get_path("installedpackages/acme/certificates/item/{$id}/a_domainlist/item");
-	$a_actions = config_get_path("installedpackages/acme/certificates/item/{$id}/a_actionlist/item");
+	$a_domains = config_get_path("installedpackages/acme/certificates/item/{$id}/a_domainlist/item", []);
+	$a_actions = config_get_path("installedpackages/acme/certificates/item/{$id}/a_actionlist/item", []);
 
 	$pconfig["lastrenewal"] = config_get_path("installedpackages/acme/certificates/item/{$id}/lastrenewal");
 	$pconfig['keypaste'] = base64_decode(config_get_path("installedpackages/acme/certificates/item/{$id}/keypaste"));
@@ -249,8 +246,6 @@ if ($_POST) {
 		// name changed:
 		$oldvalue = $certificate['name'];
 		$newvalue = $_POST['name'];
-		
-		config_init_path('installedpackages/acme/certificates/item');
 	}
 
 	if($certificate['name'] != "") {
@@ -357,7 +352,7 @@ $section->addInput(new \Form_Select(
 	'acmeaccount',
 	'Acme Account',
 	$pconfig['acmeaccount'],
-	form_name_array(config_get_path('installedpackages/acme/accountkeys/item'))
+	form_name_array(config_get_path('installedpackages/acme/accountkeys/item', []))
 ));
 
 $section->addInput(new \Form_Select(
