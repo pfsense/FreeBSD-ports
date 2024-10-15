@@ -125,8 +125,6 @@ function sudo_write_config() {
  * entries.  Optionally include "ALL" as a user (for use by the Run As list)
  */
 function sudo_get_users($list_all_user = false) {
-	config_init_path('system/user');
-
 	/* Make an entry for root, even though admin is essentially the same
 	 * as root, they are distinct.
 	 */
@@ -144,8 +142,6 @@ function sudo_get_users($list_all_user = false) {
 		config_set_path('system/user/', ['name' => $user]);
 	}
 
-	config_init_path('system/group');
-	
 	/* Include groups created by other packages */
 	pkg_exec('query %G', $stdout, $stderr);
 	foreach (explode(PHP_EOL, $stdout) as $group) {
@@ -222,7 +218,6 @@ function sudo_validate_commands(&$input_errors) {
 }
 
 function sudo_sync_config() {
-	config_init_path('hasync');
 	$system_carp = config_get_path('hasync');
 	if (!is_array($system_carp) ||
 	    !$system_carp['synchronizetoip'] ||
