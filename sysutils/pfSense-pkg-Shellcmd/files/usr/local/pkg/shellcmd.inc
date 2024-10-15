@@ -141,7 +141,7 @@ function shellcmd_sync_package() {
 
 
 function shellcmd_import_config() {
-	$shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config');
+	$shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config', []);
 
 	$i = 0;
 

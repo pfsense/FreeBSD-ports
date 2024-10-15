@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Shellcmd
 PORTVERSION=	1.0.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
