@@ -27,8 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $pfb;
 pfb_global();
 
-config_init_path('installedpackages/pfblockerngipsettings/config/0');
-$pfb['iconfig'] = config_get_path('installedpackages/pfblockerngipsettings/config/0');
+$pfb['iconfig'] = config_get_path('installedpackages/pfblockerngipsettings/config/0', []);
 
 $pconfig = array();
 $pconfig['enable_dup']		= $pfb['iconfig']['enable_dup']				?: '';

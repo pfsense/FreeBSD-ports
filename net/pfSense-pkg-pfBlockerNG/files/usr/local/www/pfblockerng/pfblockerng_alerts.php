@@ -36,8 +36,7 @@ $aglobal_array = array(	'pfbunicnt' => 200, 'pfbdenycnt' => 25, 'pfbpermitcnt' =
 			'pfbdnscnt' => 25, 'pfbdnsreplycnt' => 200,
 			'ipfilterlimitentries' => 100, 'dnsblfilterlimitentries' => 100, 'dnsfilterlimitentries' => 100); 
 
-config_init_path('installedpackages/pfblockerngglobal');
-$pfb['aglobal'] = config_get_path('installedpackages/pfblockerngglobal');
+$pfb['aglobal'] = config_get_path('installedpackages/pfblockerngglobal', []);
 
 $alertrefresh	= isset($pfb['aglobal']['alertrefresh'])	? $pfb['aglobal']['alertrefresh']	: 'on';
 $pfbpageload	= $pfb['aglobal']['pfbpageload']	!= ''	? $pfb['aglobal']['pfbpageload']	: 'unified';
@@ -229,9 +228,6 @@ if (!$alert_summary) {
 			}
 		}
 	}
-
-	config_init_path('installedpackages/pfblockerngipsettings/config/0');
-	config_init_path('installedpackages/pfblockerngdnsblsettings/config/0');
 
 	config_set_path('installedpackages/pfblockerngipsettings/config/0/v4suppression', 
 		config_get_path('installedpackages/pfblockerngipsettings/config/0/v4suppression') ?: '');

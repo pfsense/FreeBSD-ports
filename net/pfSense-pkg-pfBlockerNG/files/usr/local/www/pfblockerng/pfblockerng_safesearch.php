@@ -27,8 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $g, $pfb;
 pfb_global();
 
-config_init_path('installedpackages/pfblockerngsafesearch');
-$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngsafesearch');
+$pfb['bconfig']	= config_get_path('installedpackages/pfblockerngsafesearch', []);
 
 $pconfig = array();
 $pconfig['safesearch_enable']		= $pfb['bconfig']['safesearch_enable']			?: 'Disable';

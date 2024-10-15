@@ -28,8 +28,7 @@ global $pfb;
 pfb_global();
 $disable_move = FALSE;
 
-config_init_path('installedpackages/pfblockerngdnsblsettings/config/0');
-$pfb['dconfig'] = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0');
+$pfb['dconfig'] = config_get_path('installedpackages/pfblockerngdnsblsettings/config/0', []);
 
 // Collect local domain TLD for Python TLD Allow array
 if (strpos(config_get_path('system/domain'), '.') !== FALSE) {
