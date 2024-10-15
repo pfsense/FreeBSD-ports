@@ -57,6 +57,32 @@ $crowdsec_aliases = array(
 
 );
 
+
+/**
+ * update the XML configuration: convert old options, drop deprecated, etc.
+ *
+ * @return void
+ */
+function crowdsec_config_migrate()
+{
+    parse_config(true);
+    $cf = config_get_path('installedpackages/crowdsec/config/0', []);
+
+    // noop on fresh install
+    if (!$cf) {
+        return;
+    }
+
+    // for backward compatibility, convert remote_lapi_host and remote_lapi_port to remote_lapi_url
+    if (empty($cf['remote_lapi_url']) && !empty($cf['remote_lapi_host'])) {
+        $cf['remote_lapi_url'] = 'http://' . $cf['remote_lapi_host'] . ':' . $cf['remote_lapi_port'];
+        unset($cf['remote_lapi_host']);
+        unset($cf['remote_lapi_port']);
+        config_set_path('installedpackages/crowdsec/config/0', $cf);
+    }
+    write_config('pfsense_crowdsec: configuration updated.');
+}
+
 /**
  * custom_php_validation_command hook (setting edition before submit)
  *
@@ -74,16 +100,12 @@ function crowdsec_validate_form($post, &$input_errors)
     }
     // Use external LAPI
     if (empty($post['enable_lapi'])) {
-        if (empty($post['remote_lapi_port'])) {
-            $input_errors[] = 'Remote LAPI port is required for remote LAPI.';
+        if (empty($post['remote_lapi_url'])) {
+            $input_errors[] = 'An URL is required for remote LAPI.';
         } else {
-            $remote_lapi_port = $post['remote_lapi_port'];
-            if (!is_numeric($remote_lapi_port)) {
-                $input_errors[] = 'Remote LAPI port must be a numeric value.';
+            if (filter_var($post['remote_lapi_url'], FILTER_VALIDATE_URL) === FALSE) {
+                $input_errors[] = 'Remote LAPI URL is not valid.';
             }
-        }
-        if (empty($post['remote_lapi_host'])) {
-            $input_errors[] = 'Remote LAPI host is required for remote LAPI.';
         }
         if (empty($post['remote_agent_user'])) {
             $input_errors[] = 'Agent user is required for external LAPI usage.';
@@ -127,6 +149,7 @@ function crowdsec_validate_form($post, &$input_errors)
  */
 function crowdsec_install()
 {
+    crowdsec_config_migrate();
     $candidate_log_dir = '/var/log/crowdsec/';
     $candidate_log_max_size = 999999;
     global $crowdsec_aliases;
@@ -271,6 +294,7 @@ function crowdsec_resync_config()
     if (!$cf) {
         return;
     }
+
     // Init some flags to handle services management
     $should_use_crowdsec = false;
     $should_use_firewall = false;
@@ -302,7 +326,7 @@ function crowdsec_resync_config()
         if (!empty($fw_conf)) {
             $fw_conf['api_key'] = '${API_KEY}';
             if (!empty($cf['lapi_port']) && !empty($cf['lapi_host'])) {
-                $fw_conf['api_url'] = 'http://' . $cf['lapi_host'] . ':' . $cf['lapi_port'] . '/';
+                $fw_conf['api_url'] = 'http://' . $cf['lapi_host'] . ':' . $cf['lapi_port'];
             }
         }
 
@@ -315,8 +339,8 @@ function crowdsec_resync_config()
          * @see /usr/local/etc/rc.d/crowdsec_firewall
          */
         // there is no --force option, we ignore errors if the machine or bouncer don't exist
-        mwexec('cscli bouncers delete pfsense-firewall 2>/dev/null');
-        mwexec('cscli machines delete pfsense 2>/dev/null');
+        mwexec('cscli bouncers delete pfsense-firewall --ignore-missing');
+        mwexec('cscli machines delete pfsense --ignore-missing');
     } else { // Handle Remote LAPI ON (e.g. LAPI OFF)
         // Modify Agent yaml config
         if (!empty($crowdsec_conf)) {
@@ -328,8 +352,9 @@ function crowdsec_resync_config()
                 $lapi_credentials['login'] = $cf['remote_agent_user'];
                 $lapi_credentials['password'] = $cf['remote_agent_password'];
             }
-            if (!empty($cf['remote_lapi_port']) && !empty($cf['remote_lapi_host'])) {
-                $lapi_credentials['url'] = 'http://' . $cf['remote_lapi_host'] . ':' . $cf['remote_lapi_port'];
+            if (!empty($cf['remote_lapi_url'])) {
+                // TODO: clean up the url??
+                $lapi_credentials['url'] = $cf['remote_lapi_url'];
             }
         }
         // Modify Firewall bouncer yaml config
@@ -337,8 +362,8 @@ function crowdsec_resync_config()
             if (!empty($cf['remote_fw_bouncer_api_key'])) {
                 $fw_conf['api_key'] = $cf['remote_fw_bouncer_api_key'];
             }
-            if (!empty($cf['remote_lapi_port']) && !empty($cf['remote_lapi_host'])) {
-                $fw_conf['api_url'] = 'http://' . $cf['remote_lapi_host'] . ':' . $cf['remote_lapi_port'] . '/';
+            if (!empty($cf['remote_lapi_url'])) {
+                $fw_conf['api_url'] = $cf['remote_lapi_url'];
             }
         }
     }
@@ -404,6 +429,7 @@ function crowdsec_resync_config()
                 if (!file_exists(CROWDSEC_PFSENSE_COLLECTION)) {
                     if (!empty($crowdsec_conf)) {
                         shell_exec("cscli hub update");
+                        shell_exec("cscli hub upgrade");
                         shell_exec("cscli --error collections install crowdsecurity/pfsense");
                         // We assume reloading won't fail
                         shell_exec("service crowdsec reload");

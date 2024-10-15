@@ -22,8 +22,19 @@ require_once("util.inc");
 require_once("globals.inc");
 
 
-$default = '[]';
+$default = json_encode([]);
 $method = $_SERVER['REQUEST_METHOD'] ?? '';
+
+function getServiceStatus($service) {
+    $status = trim(shell_exec("service $service onestatus"));
+    if (strpos($status, "not running") !== false) {
+        return "stopped";
+    } elseif (strpos($status, "is running") !== false) {
+        return "running";
+    }
+    return "unknown";
+}
+
 if ($method === 'DELETE' && isset($_GET['action']) && isset($_GET['decision_id'])) {
     $id = (int) strip_tags($_GET['decision_id']);
     $action = strip_tags($_GET['action']);
@@ -35,7 +46,6 @@ if ($method === 'DELETE' && isset($_GET['action']) && isset($_GET['decision_id']
         else {
             echo $default;
         }
-
     } else {
         echo $default;
     }
@@ -75,27 +85,13 @@ if ($method === 'DELETE' && isset($_GET['action']) && isset($_GET['decision_id']
             echo shell_exec("/usr/local/bin/cscli metrics -o json");
             break;
         case 'services-status':
-            $crowdsec = trim(shell_exec("service crowdsec onestatus"));
-            $crowdsec_status = "unknown";
-            if (strpos($crowdsec, "not running") > 0) {
-                $crowdsec_status = "stopped";
-            } elseif (strpos($crowdsec, "is running") > 0) {
-                $crowdsec_status = "running";
-            }
-            $crowdsec_firewall = trim(shell_exec("service crowdsec_firewall onestatus"));
-            $crowdsec_firewall_status = "unknown";
-            if (strpos($crowdsec_firewall, "not running") > 0) {
-                $crowdsec_firewall_status = "stopped";
-            } elseif (strpos($crowdsec_firewall, "is running") > 0) {
-                $crowdsec_firewall_status = "running";
-            }
             echo json_encode(
                 [
-                    'crowdsec-status' => $crowdsec_status,
-                    'crowdsec-firewall-status'=> $crowdsec_firewall_status
+                    'crowdsec-status' => getServiceStatus('crowdsec'),
+                    'crowdsec-firewall-status'=> getServiceStatus('crowdsec_firewall'),
                 ]);
             break;
-        default;
+        default:
             echo $default;
     }
 } else {
