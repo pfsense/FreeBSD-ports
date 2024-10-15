@@ -34,7 +34,6 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-config_init_path('installedpackages/patches/item');
 $savemsgtype = 'success';
 
 list($thisversion, $thisversiontype) = explode('-', $g['product_version'], 2);
@@ -53,7 +52,7 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
     in_array($_POST['type'], ['custom', 'recommended'])) {
 	$typestr = "";
 	if ($_POST['type'] == 'custom') {
-		$patchlist = config_get_path('installedpackages/patches/item');
+		$patchlist = config_get_path('installedpackages/patches/item', []);
 		$typestr = gettext('custom');
 	} elseif ($_POST['type'] == 'recommended') {
 		$patchlist = $recommended_patches;
@@ -227,7 +226,7 @@ if (isset($_POST['del'])) {
 
 	/* move selected patches before this patch */
 	if (isset($movebtn) && is_array($_POST['patch']) && count($_POST['patch'])) {
-		$a_patches = config_get_path('installedpackages/patches/item');
+		$a_patches = config_get_path('installedpackages/patches/item', []);
 		$a_patches_new = array();
 
 		/* copy all patches < $movebtn and not selected */

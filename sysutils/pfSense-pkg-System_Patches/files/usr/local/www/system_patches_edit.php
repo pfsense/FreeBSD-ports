@@ -32,8 +32,6 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-config_init_path('installedpackages/patches/item');
-
 $id = $_GET['id'];
 if (is_numericint($_POST['id'])) {
 	$id = $_POST['id'];
