@@ -137,7 +137,7 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_frontend_id($selection);
 			}
-			$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item');
+			$a_frontend = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
 			config_set_path('installedpackages/haproxy/ha_backends/item', $a_frontend);
 

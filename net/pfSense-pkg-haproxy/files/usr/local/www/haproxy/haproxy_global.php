@@ -112,7 +112,7 @@ if ($_POST) {
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
-			$haproxycfg = config_get_path('installedpackages/haproxy');
+			$haproxycfg = config_get_path('installedpackages/haproxy', []);
 			array_set_path($haproxycfg, 'email_mailers/item', $a_mailers);
 			array_set_path($haproxycfg, 'dns_resolvers/item', $a_resolvers);
 			$haproxycfg['enable'] = $_POST['enable'] ? true : false;

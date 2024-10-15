@@ -364,7 +364,7 @@ if ($_POST) {
 	}
 
 	/* Ensure that our pool names are unique */
-	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item');
+	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 	for ($i=0; isset($a_frontends[$i]); $i++) {
 		if (($_POST['name'] == $a_frontends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = gettext("This frontend name has already been used. Frontend names must be unique.")." $i != $id";

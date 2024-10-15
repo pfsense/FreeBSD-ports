@@ -29,7 +29,7 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item');
+$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 
 if ($_POST['apply']) {
 	$result = haproxy_check_and_run($savemsg, true);

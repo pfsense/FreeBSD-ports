@@ -70,7 +70,7 @@ if ($_POST) {
 		}
 
 		// replace references in backends to renamed 'files'
-		$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item');
+		$a_pools = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 		foreach($a_pools as &$backend) {
 			$a_errorfiles = getarraybyref($backend, 'errorfiles', 'item');
 			foreach($a_errorfiles as &$errorfile) {

@@ -727,7 +727,7 @@ function haproxy_find_acl($name) {
 function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	$frontend = $backendsettings['frontend'];
 	$ipversion = $backendsettings['ipversion'];
-	$a_global = config_get_path('installedpackages/haproxy');
+	$a_global = config_get_path('installedpackages/haproxy', []);
 	$a_mailers = config_get_path('installedpackages/haproxy/email_mailers/item');
 	$a_resolvers = config_get_path('installedpackages/haproxy/dns_resolvers/item');
 	$a_servers = getarraybyref($pool,'ha_servers','item');
@@ -1452,7 +1452,7 @@ function haproxy_write_certificate_issuer($filename, $certid) {
 }
 
 function haproxy_uses_ocsp() {
-	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item');
+	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 	foreach ($a_frontends as $frontend) {
 		if ($frontend['sslocsp'] == 'yes') {
 			return true;
@@ -1496,7 +1496,7 @@ function haproxy_updateocsp_one($socketupdate, $filename, $name) {
 function haproxy_updateocsp($socketupdate = true) {
 	global $g;
 
-	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item');
+	$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 	$configpath = "{$g['varetc_path']}/haproxy";
 	foreach ($a_frontends as $frontend) {
 		$primaryfrontend = get_primaryfrontend($frontend);
@@ -1530,7 +1530,7 @@ function haproxy_writeconf($configpath) {
 	rmdir_recursive($configpath);
 	@mkdir($configpath, 0755, true);
 
-	$a_global = config_get_path('installedpackages/haproxy');
+	$a_global = config_get_path('installedpackages/haproxy', []);
 	$a_frontends = getarraybyref($a_global,'ha_backends','item');
 	$a_backends = getarraybyref($a_global,'ha_pools','item');
 	$a_mailers = getarraybyref($a_global,'email_mailers','item');
@@ -2269,7 +2269,7 @@ function use_transparent_clientip_proxying() {
 }
 
 function haproxy_get_transparent_backends(){
-	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item');
+	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 	$transparent_backends = array();
 	foreach ($a_backends as $backend) {
 		if ($backend["transparent_clientip"] != 'yes') {
@@ -2395,7 +2395,7 @@ function haproxy_plugin_certificates($pluginparams) {
 		$result['pkgname'] = "HAProxy";
 		$result['certificatelist'] = array();
 		// return a array of used certificates.
-		$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item');
+		$a_frontends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 		foreach($a_frontends as &$frontend) {
 			if (get_frontend_uses_ssl($frontend) && ($frontend['secondary'] != 'yes')) {
 				if ($pluginparams['event'] == 'used_certificates') {
@@ -2452,7 +2452,7 @@ function haproxy_plugin_certificates($pluginparams) {
 			}
 		}
 
-		$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item');
+		$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 		foreach ($a_backends as $backend) {
 			$a_servers = getarraybyref($backend,'ha_servers','item');
 			foreach($a_servers as $srv) {
@@ -2499,7 +2499,7 @@ function haproxy_check_run($reload) {
 	global $g, $haproxy_run_message;
 	haproxy_config_init();
 	$haproxylock = lock("haproxy", LOCK_EX);
-	$a_global = config_get_path('installedpackages/haproxy');
+	$a_global = config_get_path('installedpackages/haproxy', []);
 	$configpath = "{$g['varetc_path']}/haproxy";
 
 	if ($reload) {
@@ -2624,7 +2624,7 @@ function haproxy_sync_xmlrpc_settings() {
 		return false;
 	}
 	// preserve 'old' sync settings, that should not be overwritten by xmlrpc-sync.
-	$old_config = config_get_path('installedpackages/haproxy');
+	$old_config = config_get_path('installedpackages/haproxy', []);
 	$enable = config_path_enabled('installedpackages/haproxy', 'enablesync');
 	config_set_path('installedpackages/haproxy', config_get_path('installedpackages/haproxysyncpkg'));
 	config_del_path('installedpackages/haproxysyncpkg');
@@ -2752,7 +2752,7 @@ function get_frontend_bindips($frontend) {
 }
 
 function haproxy_check_config() {
-	$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item');
+	$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 	$result = false;
 	$activefrontends = array();
 	$issues = array();
@@ -2985,7 +2985,7 @@ function get_backend($name) {
 }
 
 function use_frontend_as_unixsocket($name) {
-	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item');
+	$a_backends = config_get_path('installedpackages/haproxy/ha_pools/item', []);
 	foreach ($a_backends as $backend) {
 		$a_servers = getarraybyref($backend,'ha_servers','item');
 		if (is_array($a_servers)) {
@@ -3100,7 +3100,7 @@ function config_id() {
 }
 
 function find_frontends_using_backend($backendname) {
-	$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item');
+	$a_backends = config_get_path('installedpackages/haproxy/ha_backends/item', []);
 	$result = array();
 	foreach ($a_backends as $frontend) {
 		$used = false;
