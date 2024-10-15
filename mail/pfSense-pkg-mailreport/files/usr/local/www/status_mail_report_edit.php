@@ -34,7 +34,6 @@ $cmdid = $_REQUEST['cmdid'];
 $logid = $_REQUEST['logid'];
 $id = $_REQUEST['id'];
 
-config_init_path('mailreports/schedule');
 $a_mailreports = isset($id) ? config_get_path("mailreports/schedule/{$id}") : null;
 
 if ($a_mailreports) {
@@ -212,7 +211,7 @@ if ($_POST) {
 	}
 
 	// Fix up cron job(s)
-	set_mail_report_cron_jobs(config_get_path('mailreports/schedule'));
+	set_mail_report_cron_jobs(config_get_path('mailreports/schedule', []));
 	write_config("mailreport: Settings updated");
 	configure_cron();
 	header("Location: status_mail_report.php");

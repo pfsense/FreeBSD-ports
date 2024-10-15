@@ -34,7 +34,6 @@ require_once('mailreport/mail_report.inc');
 $reportid = $_REQUEST['reportid'];
 $id = $_REQUEST['id'];
 
-config_init_path('mailreports/schedule');
 $a_mailreports = config_get_path("mailreports/schedule/{$reportid}");
 
 if (!isset($reportid) || !isset($a_mailreports)) {

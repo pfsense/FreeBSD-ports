@@ -30,8 +30,6 @@ if (!isset($id) && isset($argv[1])) {
 	$id = $argv[1];
 }
 
-config_init_path('mailreports/schedule');
-
 // If there is no report ID or the report doesn't exist, bail.
 if (!isset($id) ||
     !config_get_path("mailreports/schedule/{$id}")) {

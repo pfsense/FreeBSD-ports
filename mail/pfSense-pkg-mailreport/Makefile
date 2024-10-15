@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-mailreport
 PORTVERSION=	3.6.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	# empty
 DISTFILES=	# empty
