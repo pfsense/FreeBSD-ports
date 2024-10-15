@@ -321,7 +321,7 @@ function udpbr_resync(): void {
 function udpbr_get_interfaces(bool $valid_only = true, bool $append_port = true): array {
 	$interfaces = [];
 	$interface_ports = array_flip(get_interface_arr());
-	foreach (config_get_path('interfaces') as $interface_name => $interface) {
+	foreach (config_get_path('interfaces', []) as $interface_name => $interface) {
 		if ($valid_only && (!isset($interface['enable']) ||
 		    !isset($interface['if']) || !isset($interface_ports[$interface['if']]))) {
 			/* Skip invalid interfaces. Valid interfaces must be assigned,
