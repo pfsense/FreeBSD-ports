@@ -1251,7 +1251,7 @@ EOD;
 				file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
 				$cert_error = true;
 			} else {
-				$a_cert = config_get_path('cert');
+				$a_cert = config_get_path('cert', []);
 				$a_cert[] = $cert;
 				config_set_path('cert', $a_cert);
 				$eapconf["ssl_server_cert"] = $cert['refid'];
@@ -4543,7 +4543,6 @@ function freeradius_validate_ldap($post, &$input_errors) {
 
 function freeradius_plugin_certificates($pluginparams) {
 	$result = array();
-	config_init_path('installedpackages/freeradiuseapconf/config');
 	$eapconf = config_get_path('installedpackages/freeradiuseapconf/config/0', []);
 
 	if (($pluginparams['type'] == 'certificates') && !empty($eapconf)) {
