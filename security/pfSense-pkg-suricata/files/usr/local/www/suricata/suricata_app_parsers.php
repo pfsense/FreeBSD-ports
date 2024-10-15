@@ -40,7 +40,6 @@ if (!is_numericint($id))
 config_init_path("installedpackages/suricata/rule/{$id}/libhtp_policy/item");
 
 // Initialize required array variables as necessary
-config_init_path('aliases/alias');
 $a_aliases = config_get_path('aliases/alias', []);
 
 $a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
