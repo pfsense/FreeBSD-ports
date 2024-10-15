@@ -8,6 +8,11 @@ WWW: https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_pfsens
 Package Changelog
 =================
 
+0.1.4
+
+ * allow overriding scheme and path in remote LAPI URL
+ * require crowdsec 1.6.3
+
 0.1.3
 
  * drop-down menu for hub items, with appsec and contexts

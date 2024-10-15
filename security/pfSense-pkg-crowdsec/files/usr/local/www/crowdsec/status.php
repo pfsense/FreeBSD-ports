@@ -104,8 +104,8 @@ EOT;
 $cf = config_get_path('installedpackages/crowdsec/config/0', []);
 $isRemoteLapi = empty($cf['enable_lapi']);
 
-$machinesLi = $isRemoteLapi ? '' : '<li class="main-tab" id="li-status-machines"><a href="#tab-status-machines">Machines</a></li>';
-$bouncersLi = $isRemoteLapi ? '' : '<li class="main-tab"><a href="#tab-status-bouncers">Bouncers</a></li>';
+$machinesLi = $isRemoteLapi ? '' : '<li class="main-tab" id="li-status-machines"><a href="#tab-status-machines">Log Processors</a></li>';
+$bouncersLi = $isRemoteLapi ? '' : '<li class="main-tab"><a href="#tab-status-bouncers">Remediation Components</a></li>';
 $machinesTab = $isRemoteLapi ? '' : '<div id="tab-status-machines">
     <table id="table-status-machines" class="table table-condensed table-hover table-striped crowdsecTable">
             <thead>

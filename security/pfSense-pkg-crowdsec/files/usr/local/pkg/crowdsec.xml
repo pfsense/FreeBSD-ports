@@ -148,20 +148,13 @@
             <description><![CDATA[<p>You will need to register the log processor and the bouncer in the LAPI machine, then report here their connection credentials.</p><p>Run the following commands on the remote machine:</p><pre># cscli machines add pfsense --auto -f -</pre><p>and</p><pre># cscli bouncers add pfsense-firewall</pre>]]></description>
         </field>
         <field>
-            <fielddescr>Remote LAPI host</fielddescr>
-            <fieldname>remote_lapi_host</fieldname>
+            <fielddescr>Remote LAPI URL</fielddescr>
+            <fieldname>remote_lapi_url</fieldname>
             <type>input</type>
-            <description>Host name or IP.</description>
+            <description>Full URL of the LAPI endpoint, i.e.: http://remote-address:8080/</description>
         </field>
         <field>
-            <fielddescr>Remote LAPI port</fielddescr>
-            <fieldname>remote_lapi_port</fieldname>
-            <type>input</type>
-            <description>Port number of the LAPI endpoint.</description>
-            <default_value>8080</default_value>
-        </field>
-        <field>
-            <fielddescr>User</fielddescr>
+            <fielddescr>Login</fielddescr>
             <fieldname>remote_agent_user</fieldname>
             <type>input</type>
             <description>Name of the pfSense machine in the remote LAPI</description>
