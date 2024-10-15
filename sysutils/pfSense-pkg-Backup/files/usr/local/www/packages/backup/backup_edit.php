@@ -22,8 +22,6 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/backup.inc");
 
-config_init_path('installedpackages/backup/config');
-
 $id = $_GET['id'];
 if (isset($_POST['id'])) {
 	$id = $_POST['id'];
