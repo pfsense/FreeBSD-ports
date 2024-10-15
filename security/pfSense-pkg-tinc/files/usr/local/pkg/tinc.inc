@@ -75,7 +75,6 @@ function tinc_save() {
 	fwrite($fout, "name=" . $tincconf['name'] . "\n");
 	fwrite($fout, "AddressFamily=" . $tincconf['addressfamily'] . "\n");
 
-	config_init_path('installedpackages/tinchosts/config');
 	foreach (config_get_path('installedpackages/tinchosts/config', []) as $host) {
 		if ($host['connect']) {
 			fwrite($fout, "ConnectTo=" . $host['name'] . "\n");
@@ -176,7 +175,6 @@ function tinc_install() {
 	unlink_if_exists("/usr/local/etc/rc.d/tincd");
 
 	/* Create Interface Group */
-	config_init_path('ifgroups/ifgroupentry');
 
 	/* Don't add the interface group if it already exists */
 	$found = false;
@@ -204,7 +202,6 @@ function tinc_deinstall() {
 	global $g;
 
 	/* Remove Interface Group */
-	config_init_path('ifgroups/ifgroupentry');
 
 	$myid = -1;
 	foreach (config_get_path('ifgroups/ifgroupentry', []) as $idx => $ifgroupentry) {
