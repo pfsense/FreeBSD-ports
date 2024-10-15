@@ -217,8 +217,7 @@ function zeek_deinstall_command() {
 
 // Zeek NSM: General Settings input validation
 function zeek_validate_general($post, &$input_errors) {
-	config_init_path('installedpackages/zeek/config');
-	$settings = config_get_path('installedpackages/zeek/config/0');
+	$settings = config_get_path('installedpackages/zeek/config/0', []);
 
 	if ($post['enable'] == "on") {
 		if (!zeek_cluster_enabled()) {
@@ -349,8 +348,7 @@ function zeek_settings_resync() {
 		return;
 	}
 
-	config_init_path('installedpackages/zeek/config');
-	$settings = config_get_path('installedpackages/zeek/config/0');
+	$settings = config_get_path('installedpackages/zeek/config/0', []);
 
 	$hostname = ($settings['hostname'] ? $settings['hostname'] : 'localhost');
 	// Read assigned interface
@@ -430,8 +428,7 @@ EOD;
 }
 
 function zeek_zeekctl_resync() {
-	config_init_path('installedpackages/zeekcontrol/config');
-	$settings = config_get_path('installedpackages/zeekcontrol/config/0');
+	$settings = config_get_path('installedpackages/zeekcontrol/config/0', []);
 
 	$email = $settings['admin_email'] ? $settings['admin_email'] : 'admin@localhost';
 	$mailconnection = ($settings['mail_connection_summary'] == "on") ? 1 : 0;
@@ -535,8 +532,7 @@ EOD;
 }
 
 function zeek_cluster_resync() {
-	config_init_path('installedpackages/zeekcluster/config');
-	$settings = config_get_path('installedpackages/zeekcluster/config/0');
+	$settings = config_get_path('installedpackages/zeekcluster/config/0', []);
 
 	$managerhost = ($settings['manager_host'] ? $settings['manager_host'] : 'localhost');
 	$proxyhost = ($settings['proxy_host'] ? $settings['proxy_host'] : 'localhost');
@@ -613,8 +609,7 @@ function zeek_log_resync() {
 	global $zeeklogstate;
 	$zeeklogstate = false;
 
-	config_init_path('installedpackages/zeeklog/config');
-	$settings = config_get_path('installedpackages/zeeklog/config/0');
+	$settings = config_get_path('installedpackages/zeeklog/config/0', []);
 
 	if ($settings['remove_zeek_log'] == "on") {
 		$zeeklogstate = true;
@@ -713,8 +708,6 @@ function zeek_script_resync() {
 # @load policy/protocols/ssl/heartbleed
 
 EOD;
-
-	config_init_path('installedpackages/zeekscript/config');
 
 	if (zeek_enabled()) {
 		foreach (config_get_path('installedpackages/zeekscript/config', []) as $script) {
