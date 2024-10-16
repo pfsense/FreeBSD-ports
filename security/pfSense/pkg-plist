@@ -773,6 +773,11 @@ www/vendor/js-cookie/.jshintrc
 www/vendor/js-cookie/js.cookie.js
 www/vendor/nvd3/nv.d3.css
 www/vendor/nvd3/nv.d3.js
+www/vendor/nvd3/nv.d3.js.map
+www/vendor/nvd3/nv.d3.min.css
+www/vendor/nvd3/nv.d3.min.css.map
+www/vendor/nvd3/nv.d3.min.js
+www/vendor/nvd3/nv.d3.min.js.map
 www/vendor/sortable/LICENSE
 www/vendor/sortable/sortable-theme-bootstrap.css
 www/vendor/sortable/sortable.js
