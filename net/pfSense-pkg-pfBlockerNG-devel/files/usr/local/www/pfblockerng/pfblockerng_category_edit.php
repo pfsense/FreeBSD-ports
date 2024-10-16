@@ -981,7 +981,6 @@ if (empty($rowdata[$rowid]['row'])) {
 							'state' 	=> 'Disabled',
 							'url'		=> '',
 							'header'	=> '' ) );
-	config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row", $rowdata[$rowid]['row']);
 }
 
 // Sort row by Header/Label field followed by Enabled/Disabled State settings
