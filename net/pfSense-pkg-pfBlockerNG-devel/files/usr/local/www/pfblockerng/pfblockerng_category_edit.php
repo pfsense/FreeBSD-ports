@@ -737,6 +737,9 @@ if ($_POST && isset($_POST['save'])) {
 				if (!empty($value) && $k_field[0] != 'url') {
 					$value = pfb_filter($value, PFB_FILTER_HTML, 'Category_edit save');
 				}
+				if (($k_field[0] == 'url') && ($_POST["format-{$k_field[1]}"] == 'asn')) {
+					$value = htmlentities($value);
+				}
 				config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row/{$k_field[1]}/{$k_field[0]}", $value);
 			}
 		}
@@ -1063,7 +1066,7 @@ foreach ($rowdata[$rowid] as $tags) {
 				'url-' . $r_id,
 				'',
 				'text',
-				$row['url']
+				(($row['format'] == 'asn') ? html_entity_decode($row['url']) : $row['url'])
 		))->setHelp(($numrows == $rowcounter) ? 'Source' : NULL)
 		  ->setWidth(5);
 
