@@ -199,8 +199,8 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 					unset($pfb['extras'][2]); // Remove TOP1M
 				}
 
-				// Skip ASN update, if disabled or Token not defined
-				if ($pfb['asn_reporting'] == 'disabled' || empty($pfb['asn_token'])) {
+				// Skip ASN update if Token is not defined
+				if (empty($pfb['asn_token'])) {
 					unset($pfb['extras'][3], $pfb['extras'][4]);
 				}
 			}
@@ -240,8 +240,8 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 			break;
 		case 'asn':		// Update ASN database only
 		case 'asn_shell':
-			// Skip ASN update, if disabled or Token not defined
-			if ($pfb['asn_reporting'] == 'disabled' || empty($pfb['asn_token'])) {
+			// Skip ASN update if Token is not defined
+			if (empty($pfb['asn_token'])) {
 				$asn_log = "\n  ASN Token not defined. Terminating Download. ";
 				if ($argv[1] == 'asn') {
 					pfb_logger($asn_log, 2);
