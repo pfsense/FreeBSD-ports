@@ -1,6 +1,7 @@
 PORTNAME=	cargo-edit
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.13.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,6 +17,8 @@ USES=		cargo localbase:ldflags ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	killercup
+
+RUSTFLAGS=	${ARCH:S/i386/YES/:C/^[a-z].*//:S/YES/-C target-feature=+sse,+sse2/} # add sse sse2 target-features only on i386
 
 CARGO_CRATES=	addr2line-0.24.1 \
 		adler2-2.0.0 \
@@ -339,9 +342,12 @@ CARGO_CRATES=	addr2line-0.24.1 \
 OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
 
-PLIST_FILES=	bin/cargo-add \
-		bin/cargo-rm \
-		bin/cargo-set-version \
+PLIST_FILES=	bin/cargo-set-version \
 		bin/cargo-upgrade
+
+post-install: # these 2 were merged into cargo
+	@${RM} \
+		${STAGEDIR}${PREFIX}/bin/cargo-add \
+		${STAGEDIR}${PREFIX}/bin/cargo-rm
 
 .include <bsd.port.mk>

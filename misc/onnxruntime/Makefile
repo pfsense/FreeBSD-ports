@@ -12,6 +12,8 @@ WWW=		https://onnxruntime.ai/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	compilation fails: error: requested alignment is less than minimum alignment of 8 for type 'google::protobuf::internal::ThreadSafeArena::CacheAlignedLifecycleIdGenerator'
+
 BUILD_DEPENDS=	gpatch:devel/patch
 LIB_DEPENDS=	libabsl_base.so:devel/abseil
 
@@ -43,7 +45,6 @@ pre-configure:
 
 # NOTE there should be an EXTRACT_ONLY statement
 # NOTE shared libs can't be enabled because the build would fail, see discussion in this issue: https://github.com/microsoft/onnxruntime/issues/22331
-# 1 test fails, see https://github.com/microsoft/onnxruntime/issues/22353
 
 .include <Makefile.MASTER_SITES>
 .include <Makefile.DISTFILES>

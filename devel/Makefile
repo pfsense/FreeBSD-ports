@@ -4594,6 +4594,7 @@
     SUBDIR += py-castellan
     SUBDIR += py-catalogue
     SUBDIR += py-cattrs
+    SUBDIR += py-cattrs23
     SUBDIR += py-cbor
     SUBDIR += py-cbor2
     SUBDIR += py-cclib
@@ -4602,6 +4603,7 @@
     SUBDIR += py-celery-progress
     SUBDIR += py-celery-singleton
     SUBDIR += py-cerberus
+    SUBDIR += py-cereslib
     SUBDIR += py-certsrv
     SUBDIR += py-cffi
     SUBDIR += py-cfgv
@@ -4644,6 +4646,7 @@
     SUBDIR += py-clikit
     SUBDIR += py-clint
     SUBDIR += py-clldutils
+    SUBDIR += py-cloc
     SUBDIR += py-cloudpathlib
     SUBDIR += py-cloudpickle
     SUBDIR += py-cluster
@@ -4698,6 +4701,7 @@
     SUBDIR += py-crcmod
     SUBDIR += py-crick
     SUBDIR += py-crontab
+    SUBDIR += py-crosshair-tool
     SUBDIR += py-cson
     SUBDIR += py-csv23
     SUBDIR += py-ctags
@@ -4931,6 +4935,7 @@
     SUBDIR += py-googleapis-common-protos
     SUBDIR += py-gptscript
     SUBDIR += py-gpxpy
+    SUBDIR += py-graal
     SUBDIR += py-grab
     SUBDIR += py-graphene
     SUBDIR += py-graphene-django
@@ -4982,6 +4987,7 @@
     SUBDIR += py-hupper
     SUBDIR += py-hvac
     SUBDIR += py-hypothesis
+    SUBDIR += py-hypothesis-crosshair
     SUBDIR += py-hypothesmith
     SUBDIR += py-icalendar
     SUBDIR += py-ice
@@ -5146,6 +5152,7 @@
     SUBDIR += py-lineedit
     SUBDIR += py-littleutils
     SUBDIR += py-livemark
+    SUBDIR += py-lizard
     SUBDIR += py-llfuse
     SUBDIR += py-llvmcpy
     SUBDIR += py-llvmlite
@@ -5374,6 +5381,11 @@
     SUBDIR += py-pep562
     SUBDIR += py-pep621
     SUBDIR += py-pep8-naming
+    SUBDIR += py-perceval
+    SUBDIR += py-perceval-mozilla
+    SUBDIR += py-perceval-opnfv
+    SUBDIR += py-perceval-puppet
+    SUBDIR += py-perceval-weblate
     SUBDIR += py-period
     SUBDIR += py-persistent
     SUBDIR += py-petname
@@ -5525,6 +5537,7 @@
     SUBDIR += py-pyformance
     SUBDIR += py-pygdbmi
     SUBDIR += py-pygit2
+    SUBDIR += py-pygls
     SUBDIR += py-pygpx
     SUBDIR += py-pyhashxx
     SUBDIR += py-pyhcl
@@ -5569,8 +5582,8 @@
     SUBDIR += py-pyproject-flake8
     SUBDIR += py-pyproject-fmt
     SUBDIR += py-pyproject-fmt-rust
+    SUBDIR += py-pyproject-hooks
     SUBDIR += py-pyproject-metadata
-    SUBDIR += py-pyproject_hooks
     SUBDIR += py-pypugjs
     SUBDIR += py-pyqtree
     SUBDIR += py-pyquery
@@ -5700,6 +5713,7 @@
     SUBDIR += py-python-pcre
     SUBDIR += py-python-ptrace
     SUBDIR += py-python-rapidjson
+    SUBDIR += py-python-semantic-release
     SUBDIR += py-python-socketio
     SUBDIR += py-python-statsd
     SUBDIR += py-python-subunit
@@ -5853,6 +5867,7 @@
     SUBDIR += py-setuptools_scm_git_archive
     SUBDIR += py-sexpdata
     SUBDIR += py-sgmllib3k
+    SUBDIR += py-sgqlc
     SUBDIR += py-sh
     SUBDIR += py-shapely
     SUBDIR += py-shellingham
@@ -5869,11 +5884,13 @@
     SUBDIR += py-simpy
     SUBDIR += py-single-version
     SUBDIR += py-sip
+    SUBDIR += py-sirmordred
     SUBDIR += py-six
     SUBDIR += py-smmap
     SUBDIR += py-snakeviz
     SUBDIR += py-sniffio
     SUBDIR += py-sortedcontainers
+    SUBDIR += py-sortinghat
     SUBDIR += py-sourcemap
     SUBDIR += py-spark-parser
     SUBDIR += py-sparse
@@ -6012,6 +6029,7 @@
     SUBDIR += py-types-toml
     SUBDIR += py-types-typed-ast
     SUBDIR += py-types-urllib3
+    SUBDIR += py-typeshed-client
     SUBDIR += py-typing-extensions
     SUBDIR += py-typing-inspect
     SUBDIR += py-tzdata
@@ -6461,6 +6479,7 @@
     SUBDIR += rubygem-aws-sdk-cloudcontrolapi
     SUBDIR += rubygem-aws-sdk-clouddirectory
     SUBDIR += rubygem-aws-sdk-cloudformation
+    SUBDIR += rubygem-aws-sdk-cloudformation-gitlab
     SUBDIR += rubygem-aws-sdk-cloudfront
     SUBDIR += rubygem-aws-sdk-cloudfrontkeyvaluestore
     SUBDIR += rubygem-aws-sdk-cloudhsm
@@ -6503,6 +6522,7 @@
     SUBDIR += rubygem-aws-sdk-controlcatalog
     SUBDIR += rubygem-aws-sdk-controltower
     SUBDIR += rubygem-aws-sdk-core
+    SUBDIR += rubygem-aws-sdk-core-gitlab
     SUBDIR += rubygem-aws-sdk-core2
     SUBDIR += rubygem-aws-sdk-costandusagereportservice
     SUBDIR += rubygem-aws-sdk-costexplorer
@@ -6613,6 +6633,7 @@
     SUBDIR += rubygem-aws-sdk-kinesisvideosignalingchannels
     SUBDIR += rubygem-aws-sdk-kinesisvideowebrtcstorage
     SUBDIR += rubygem-aws-sdk-kms
+    SUBDIR += rubygem-aws-sdk-kms-gitlab
     SUBDIR += rubygem-aws-sdk-lakeformation
     SUBDIR += rubygem-aws-sdk-lambda
     SUBDIR += rubygem-aws-sdk-lambdapreview
@@ -6642,6 +6663,7 @@
     SUBDIR += rubygem-aws-sdk-marketplacedeployment
     SUBDIR += rubygem-aws-sdk-marketplaceentitlementservice
     SUBDIR += rubygem-aws-sdk-marketplacemetering
+    SUBDIR += rubygem-aws-sdk-marketplacereporting
     SUBDIR += rubygem-aws-sdk-mediaconnect
     SUBDIR += rubygem-aws-sdk-mediaconvert
     SUBDIR += rubygem-aws-sdk-medialive
@@ -6730,6 +6752,7 @@
     SUBDIR += rubygem-aws-sdk-route53recoveryreadiness
     SUBDIR += rubygem-aws-sdk-route53resolver
     SUBDIR += rubygem-aws-sdk-s3
+    SUBDIR += rubygem-aws-sdk-s3-gitlab
     SUBDIR += rubygem-aws-sdk-s3control
     SUBDIR += rubygem-aws-sdk-s3outposts
     SUBDIR += rubygem-aws-sdk-sagemaker
@@ -6758,6 +6781,7 @@
     SUBDIR += rubygem-aws-sdk-snowball
     SUBDIR += rubygem-aws-sdk-snowdevicemanagement
     SUBDIR += rubygem-aws-sdk-sns
+    SUBDIR += rubygem-aws-sdk-socialmessaging
     SUBDIR += rubygem-aws-sdk-sqs
     SUBDIR += rubygem-aws-sdk-ssm
     SUBDIR += rubygem-aws-sdk-ssmcontacts
@@ -7646,6 +7670,7 @@
     SUBDIR += rubygem-readwritesettings
     SUBDIR += rubygem-recaptcha
     SUBDIR += rubygem-recursive-open-struct
+    SUBDIR += rubygem-recursive-open-struct1
     SUBDIR += rubygem-red-datasets
     SUBDIR += rubygem-redis-activesupport
     SUBDIR += rubygem-redis-activesupport-rails5
@@ -8238,22 +8263,14 @@
     SUBDIR += wand-libconfig
     SUBDIR += wandio
     SUBDIR += wasi-compiler-rt
-    SUBDIR += wasi-compiler-rt12
-    SUBDIR += wasi-compiler-rt13
-    SUBDIR += wasi-compiler-rt14
-    SUBDIR += wasi-compiler-rt15
-    SUBDIR += wasi-compiler-rt16
     SUBDIR += wasi-compiler-rt17
     SUBDIR += wasi-compiler-rt18
+    SUBDIR += wasi-compiler-rt19
     SUBDIR += wasi-libc
     SUBDIR += wasi-libcxx
-    SUBDIR += wasi-libcxx12
-    SUBDIR += wasi-libcxx13
-    SUBDIR += wasi-libcxx14
-    SUBDIR += wasi-libcxx15
-    SUBDIR += wasi-libcxx16
     SUBDIR += wasi-libcxx17
     SUBDIR += wasi-libcxx18
+    SUBDIR += wasi-libcxx19
     SUBDIR += wasm3
     SUBDIR += wasmer
     SUBDIR += websocketpp

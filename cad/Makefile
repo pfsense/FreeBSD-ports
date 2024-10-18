@@ -1,5 +1,6 @@
     COMMENT = CAD tools
 
+    SUBDIR += Clipper2
     SUBDIR += PrusaSlicer
     SUBDIR += abc
     SUBDIR += admesh

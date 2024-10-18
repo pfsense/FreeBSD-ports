@@ -10,11 +10,11 @@ WWW=		https://minio.io/
 LICENSE=	AGPLv3
 
 USES=		compiler cpe go:1.21,modules
-GH_TAGNAME=	RELEASE.2024-03-05T04-48-44Z
+GH_TAGNAME=	RELEASE.2024-03-21T23-13-43Z
 CPE_VERSION=	${GH_TAGNAME}
 USE_RC_SUBR=	${PORTNAME}
 
-COMMIT_ID=	1b5f28e99b145b0e3a5d99d1801a9b5cbfbdb091
+COMMIT_ID=	7fd76dbbb71eeba0dd1d7c16e7d96ec1a9deba52
 
 GO_MODULE=	github.com/minio/minio@v0.0.0-${DISTVERSION:S/.//g}-${COMMIT_ID:C/^(.{12}).*/\1/}
 GO_BUILDFLAGS=	-ldflags=' \

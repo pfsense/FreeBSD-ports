@@ -98,7 +98,6 @@
     SUBDIR += clamsmtp
     SUBDIR += clamtk
     SUBDIR += cloak
-    SUBDIR += clusterssh
     SUBDIR += cops
     SUBDIR += courier-authlib
     SUBDIR += courier-authlib-base
@@ -452,6 +451,7 @@
     SUBDIR += openssl31-quictls
     SUBDIR += openssl32
     SUBDIR += openssl33
+    SUBDIR += openssl34
     SUBDIR += openvas
     SUBDIR += openvpn
     SUBDIR += openvpn-admin
@@ -476,6 +476,7 @@
     SUBDIR += p5-Alt-Crypt-RSA-BigInt
     SUBDIR += p5-Apache-Htpasswd
     SUBDIR += p5-App-Acmeman
+    SUBDIR += p5-App-ClusterSSH
     SUBDIR += p5-App-Genpass
     SUBDIR += p5-App-TLSMe
     SUBDIR += p5-Auth-YubikeyDecrypter
