@@ -264,6 +264,7 @@ $pfb['mime_types'] = array_flip(array(	'inode/x-empty',
 					'text/csv',
 					'application/csv',
 					'application/json',
+					'application/x-ndjason',
 					'application/x-tar',
 					'application/gzip',
 					'application/x-gzip',
@@ -7285,14 +7286,26 @@ function sync_package_pfblockerng($cron='') {
 	// Determine max Domain count available for DNSBL TLD analysis (Avoid Unbound memory exhaustion)
 	$pfs_memory = (round(get_single_sysctl('hw.physmem') / (1024*1024)) ?: 1000);
 
-	if (!$pfb['dnsbl_py_blacklist']) {
-		$pfb['pfs_mem'] = array(   '0' => '100000', '1500' =>  '150000', '2000' =>  '200000', '2500' =>  '250000', '3000' =>  '400000',
-					'4000' => '600000', '5000' => '1000000', '6000' => '1500000', '7000' => '2000000', '8000' => '2500000',
-					'12000' => '3000000', '16000' => '4000000', '32000' => '8000000');
-	} else {
-		$pfb['pfs_mem'] = array(   '0' => '200000', '1500' =>  '300000', '2000' =>  '400000', '2500' =>  '500000', '3000' =>  '800000',
-					'4000' => '1200000', '5000' => '2000000', '6000' => '3000000', '7000' => '4000000', '8000' => '5000000',
-					'12000' => '6000000', '16000' => '8000000', '32000' => '16000000');
+	$pfb['pfs_mem'] = [
+		'0' => '100000',
+		'1500' => '150000',
+		'2000' => '200000',
+		'2500' => '250000',
+		'3000' => '400000',
+		'4000' => '600000',
+		'5000' => '1000000',
+		'6000' => '1500000',
+		'7000' => '2000000',
+		'8000' => '2500000',
+		'12000' => '3000000',
+		'16000' => '4000000',
+		'32000' => '8000000'
+	];
+
+	if ($pfb['dnsbl_py_blacklist']) {
+		array_walk($pfb['pfs_mem'], function (&$value) {
+			$value = $value * 3;
+		});
 	}
 
 	foreach ($pfb['pfs_mem'] as $pfb_mem => $domain_max) {
@@ -10635,7 +10648,7 @@ function sync_package_pfblockerng($cron='') {
 	#	XMLRPC - sync process		#
 	#########################################
 
-	if (!platform_booting() && !$g['pfblockerng_install'] && $pfb['conf_mod'] && isset($pfb_config)) {
+	if (!platform_booting() && !$g['pfblockerng_install']) {
 		pfblockerng_sync_on_changes();
 	}
 

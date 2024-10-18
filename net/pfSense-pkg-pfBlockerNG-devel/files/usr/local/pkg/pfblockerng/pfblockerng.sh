@@ -774,7 +774,7 @@ whoisconvert() {
 				if [ "${vtype}" == '_v4' ]; then
 					grep -v ':' "${pfborig}${alias}.wk" > "${pfborig}${alias}.orig"
 				else
-					grep -v '.' "${pfborig}${alias}.wk" > "${pfborig}${alias}.orig"
+					grep -v '\.' "${pfborig}${alias}.wk" > "${pfborig}${alias}.orig"
 				fi
 			fi
 
