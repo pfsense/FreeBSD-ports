@@ -1706,7 +1706,7 @@ if ($_POST) {
 			$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']				?: '';
 			$pfb['geoipconfig']['agateway_out']		= $_POST['agateway_out']				?: '';
 
-			config_set_path('installedpackages/{$conf_type}/config/0', $pfb['geoipconfig']);
+			config_set_path("installedpackages/{$conf_type}/config/0", $pfb['geoipconfig']);
 			write_config("[pfBlockerNG] save GeoIP [ {$continent_display} ] settings");
 			header("Location: /pfblockerng/pfblockerng_{$continent_en}.php");
 			exit;
