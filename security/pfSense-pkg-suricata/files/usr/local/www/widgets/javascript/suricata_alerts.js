@@ -95,5 +95,8 @@ function suricata_alerts_toggle_pause() {
 		suricataisPaused = true;
 	}
 }
-/* start local AJAX engine */
-suricatatimer = setInterval('fetch_new_surialerts()', suricataupdateDelay);
+
+if (typeof suricataupdateDelay !== 'undefined') {
+	/* start local AJAX engine */
+	suricatatimer = setInterval('fetch_new_surialerts()', suricataupdateDelay);
+}
