@@ -1225,20 +1225,20 @@ function squid_resync_general() {
 				}
 				// force squid user permission on /var/squid/lib/ssl_db/
 				squid_chown_recursive(SQUID_SSL_DB, SQUID_UID, SQUID_GID);
-				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, tls-dh, sslflags, sslcontext
+				// cert, key, version, cipher, options, clientca, tls-cafile, capath, crlfile, tls-dh, sslflags, sslcontext
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
 				$crt_cafile = SQUID_LOCALBASE . "/share/certs/ca-root-nss.crt";
-				$sslproxy_options = "NO_SSLv3";
+				$sslproxy_options = "NO_SSLv3, NO_TLSv1, NO_TLSv1_1";
 				/* XXX: Bug #4453, Bug #6592, Feature #6593, Bug #6563
 				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2FEDH_ciphers_usage
 				 */
 				if (empty($settings['sslproxy_compatibility_mode']) || ($settings['sslproxy_compatibility_mode'] == 'modern')) {
 					// Modern cipher suites
-					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!SHA1:!MD5:!EXP:!PSK:!SRP:!DSS";
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!SHA1:!MD5:!EXP:!PSK:!SRP:!DSS";
 					$sslproxy_options .= ",NO_TLSv1";
 				} else {
-					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
 				}
 				if (!empty($settings["dhparams_size"])) {
 					if ($settings['dhparams_size'] == '4096') {
@@ -1248,18 +1248,16 @@ function squid_resync_general() {
 					} elseif ($settings['dhparams_size'] == '1024') {
 						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.1024";
 					}
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
 				} elseif (file_exists("/etc/dh-parameters.2048")) {
 					// Fallback options for defaults on install
 					$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
-					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
 				} else {
 					// Should never get here
 					$sslproxy_dhparams = "";
 				}
 				file_put_contents($crt_pk, unixnewlines(base64_decode($srv_cert['prv']) . "\n" . base64_decode($srv_cert['crt'])));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
-				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} cafile={$crt_cafile} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
+				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} tls-cafile={$crt_cafile} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
 				if ($squid4) {
 					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
 					$interception_checks .= "tls_outgoing_options cafile={$crt_cafile}\n";
