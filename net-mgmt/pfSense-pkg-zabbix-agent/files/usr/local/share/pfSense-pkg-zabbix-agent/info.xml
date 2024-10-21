@@ -18,6 +18,8 @@
 		<configurationfile>zabbixagent.xml</configurationfile>
 		<logging>
 			<logfilename>zabbix-agent/zabbix_agentd.log</logfilename>
+			<logowner>zabbix:zabbix</logowner>
+			<logmode>664</logmode>
 		</logging>
 	</package>
 </pfsensepkgs>
