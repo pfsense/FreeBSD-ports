@@ -345,8 +345,9 @@ EOD;
 
 		$rpz_zones = array();
 		foreach ($bindzone as $zone) {
+			$zoneviewlist = explode(',', $zone['view']);
 			if (isset($zone['rpz']) && ($zone['rpz'] == "on") &&
-			    ($zone['disabled'] != "on") && ($zone['view'] == $viewname)) {
+			   ($zone['disabled'] != "on") && in_array($viewname, $zoneviewlist)) {
 			    $rpz_zones[] = reverse_zonename($zone['name'], $zone['reverso'], $zone['reversv6o']);
 			}
 		}
