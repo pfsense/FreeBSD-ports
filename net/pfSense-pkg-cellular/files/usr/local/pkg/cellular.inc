@@ -137,7 +137,7 @@ function cellular_before_everything() {
 	array_init_path($pkg, 'fields');
 	if (!empty($pkg['fields'])) {
 
-		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR";
+		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR=1";
 
 		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg($custom_str) . " -v", $sig);
 
