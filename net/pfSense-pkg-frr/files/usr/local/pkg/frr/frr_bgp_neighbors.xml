@@ -181,7 +181,7 @@
 		</field>
 		<field>
 			<fielddescr>Auto-Shutdown Keepalive Count</fielddescr>
-			<fieldname>shutdownautortt</fieldname>
+			<fieldname>shutdownautokeepalive</fieldname>
 			<description>Number of keepalive messages to count before shutting down the peer when round-trip-time exceeds the set threshold.</description>
 			<type>input</type>
 			<combinefields>end</combinefields>
