@@ -362,7 +362,7 @@ class CellularInterface:
 
             return infoex.split(",")[6].strip('"')
 
-   def get_model(self, args, silent=False):
+    def get_model(self, args, silent=False):
         """
         get model of module.
         """
@@ -381,7 +381,7 @@ class CellularInterface:
 
         return info
 
-   def get_manufacturer(self, args, silent=False):
+    def get_manufacturer(self, args, silent=False):
         """
         get manufacturer of module.
         """
