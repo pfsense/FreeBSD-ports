@@ -110,11 +110,13 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 	update_status(gettext("Migrating settings to new configuration..."));
 	include '/usr/local/pkg/snort/snort_migrate_config.php';
 	update_status(gettext(" done.") . "\n");
-	syslog(LOG_NOTICE, gettext("[Snort] Downloading and updating configured rule sets."));
-	update_status(gettext("Downloading configured rule sets. This may take some time...") . "\n");
-	include '/usr/local/pkg/snort/snort_check_for_rule_updates.php';
-	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
-	$rebuild_rules = true;
+	if (!is_platform_booting()) {
+		syslog(LOG_NOTICE, gettext("[Snort] Downloading and updating configured rule sets."));
+		update_status(gettext("Downloading configured rule sets. This may take some time...") . "\n");
+		include '/usr/local/pkg/snort/snort_check_for_rule_updates.php';
+		update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
+		$rebuild_rules = true;
+	}
 
 	/* Create the snort.conf files for each enabled interface */
 	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $snortcfg) {

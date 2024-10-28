@@ -182,7 +182,7 @@ function snort_check_rotate_log($log_file, $log_limit, $retention) {
  *************************/
 
 // If firewall is booting, do nothing
-if ($g['booting'] == true)
+if (is_platform_booting())
 	return;
 
 $logs = array ();
