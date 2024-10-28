@@ -432,10 +432,10 @@ $widgetperiod = (config_get_path('widgets/period') !== null) ? config_get_path('
 		<label class="col-sm-4 control-label"><?=gettext('Load Levels')?></label>
 		<div class="col-sm-6">
 			<div class="col-sm-4">
-				<label><?=gettext('Warning')?><input type="text"name="apc_load_warning_threshold" id="apc_load_warning_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Warning')?><input type="text"name="apc_load_warning_threshold" id="apc_load_warning_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]; ?>" class="form-control" /></label>
 			</div>
 			<div class="col-sm-4">
-				<label><?=gettext('Critical')?><input type="text" name="apc_load_critical_threshold" id="apc_load_critical_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Critical')?><input type="text" name="apc_load_critical_threshold" id="apc_load_critical_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"]; ?>" class="form-control" /></label>
 			</div>
 		</div>
 	</div>
@@ -443,10 +443,10 @@ $widgetperiod = (config_get_path('widgets/period') !== null) ? config_get_path('
 		<label class="col-sm-4 control-label"><?=gettext('Temp Levels')?></label>
 		<div class="col-sm-7">
 			<div class="col-sm-5">
-				<label><?=gettext('Warning (°C)')?><input type="text" maxlength="2" size="2"  name="apc_temp_warning_threshold" id="apc_temp_warning_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Warning (°C)')?><input type="text" maxlength="2" size="2"  name="apc_temp_warning_threshold" id="apc_temp_warning_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]; ?>" class="form-control" /></label>
 			</div>
 			<div class="col-sm-5">
-				<label><?=gettext('Critical (°C)')?><input type="text" maxlength="2" size="2" name="apc_temp_critical_threshold" id="apc_temp_critical_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Critical (°C)')?><input type="text" maxlength="2" size="2" name="apc_temp_critical_threshold" id="apc_temp_critical_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"]; ?>" class="form-control" /></label>
 			</div>
 		</div>
 	</div>
@@ -454,10 +454,10 @@ $widgetperiod = (config_get_path('widgets/period') !== null) ? config_get_path('
 		<label class="col-sm-4 control-label"><?=gettext('Charge Levels')?></label>
 		<div class="col-sm-6">
 			<div class="col-sm-4">
-				<label><?=gettext('Warning')?><input type="text" name="apc_charge_warning_threshold" id="apc_charge_warning_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_charge_warning_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Warning')?><input type="text" name="apc_charge_warning_threshold" id="apc_charge_warning_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_charge_warning_threshold"]; ?>" class="form-control" /></label>
 			</div>
 			<div class="col-sm-4">
-				<label><?=gettext('Critical')?><input type="text" name="apc_charge_critical_threshold" id="apc_charge_critical_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Critical')?><input type="text" name="apc_charge_critical_threshold" id="apc_charge_critical_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"]; ?>" class="form-control" /></label>
 			</div>
 		</div>
 	</div>
@@ -465,10 +465,10 @@ $widgetperiod = (config_get_path('widgets/period') !== null) ? config_get_path('
 		<label class="col-sm-4 control-label"><?=gettext('Battery Age Levels')?></label>
 		<div class="col-sm-6">
 			<div class="col-sm-4">
-				<label><?=gettext('Warning')?><input type="text" name="apc_bage_warning_threshold" id="apc_bage_warning_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Warning')?><input type="text" name="apc_bage_warning_threshold" id="apc_bage_warning_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"]; ?>" class="form-control" /></label>
 			</div>
 			<div class="col-sm-4">
-				<label><?=gettext('Critical')?><input type="text" name="apc_bage_critical_threshold" id="apc_bage_critical_threshold" value="<?= gettext($user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"]); ?>" class="form-control" /></label>
+				<label><?=gettext('Critical')?><input type="text" name="apc_bage_critical_threshold" id="apc_bage_critical_threshold" value="<?= $user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"]; ?>" class="form-control" /></label>
 			</div>
 		</div>
 	</div>
