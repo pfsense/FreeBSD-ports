@@ -153,11 +153,13 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 	include '/usr/local/pkg/suricata/suricata_migrate_config.php';
 	update_status(gettext(" done.") . "\n");
 
-	// Update configured rules archives with a fresh download
-	syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
-	include '/usr/local/pkg/suricata/suricata_check_for_rule_updates.php';
-	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
-	$rebuild_rules = true;
+	if (!is_platform_booting()) {
+		// Update configured rules archives with a fresh download
+		syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
+		include '/usr/local/pkg/suricata/suricata_check_for_rule_updates.php';
+		update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
+		$rebuild_rules = true;
+	}
 
 	// Create the suricata.yaml file for each enabled interface
 	foreach (config_get_path('installedpackages/suricata/rule', []) as $suricatacfg) {

@@ -916,7 +916,7 @@ function sync_suricata_package_config() {
 	suricata_rm_blocked_install_cron(config_get_path('installedpackages/suricata/config/0/rm_blocked', '') != "never_b" ? true : false);
 
 	// Do not attempt package sync if reinstalling package or booting
-	if (!isset($g['suricata_postinstall']) && !$g['booting']) {
+	if (!isset($g['suricata_postinstall']) && !is_platform_booting()) {
 		suricata_sync_on_changes();
 	}
 }
@@ -3762,7 +3762,7 @@ function suricata_sync_on_changes() {
 	global $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
-	if ($g['booting'] || $g['suricata_postinstall'] == TRUE) {
+	if (is_platform_booting() || $g['suricata_postinstall'] == TRUE) {
 		syslog(LOG_NOTICE, "[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
@@ -3864,7 +3864,7 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 	global $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
-	if ($g['booting'] || isset($g['suricata_postinstall'])) {
+	if (is_platform_booting() || isset($g['suricata_postinstall'])) {
 		syslog(LOG_NOTICE, "[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
