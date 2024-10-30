@@ -761,7 +761,7 @@ $tab_array = array();
 	$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
 display_top_tabs($tab_array, true);
 
-print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  Disabling preprocessors may result in Snort startup failure unless ") . 
+print_callout('<p>' . gettext("Rules may be dependent on enabled preprocessors!  Disabling preprocessors may result in Snort startup failure unless ") . 
 		gettext("all of the corresponding preprocessor-dependent rules are also disabled.  ") . gettext("Do not disable any default-enabled ") . 
 		gettext("preprocessors on this page unless you are very skilled with using Snort.  If you experience Snort start-up errors or failures ") . 
 		gettext("after making changes to preprocessors, trying resetting all preprocessor configurations to their defaults, and then ") . 
