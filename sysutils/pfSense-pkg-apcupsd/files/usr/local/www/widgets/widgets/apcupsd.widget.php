@@ -39,28 +39,28 @@ if (!function_exists('compose_apc_contents')) {
 			$user_settings["widgets"][$widgetkey]["apc_temp_dis_type_var"] = "1";
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"] = "75";
+			$user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"] = 75;
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"] = "90";
+			$user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"] = 90;
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"] = "27";
+			$user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"] = 27;
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"] = "40";
+			$user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"] = 40;
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_charge_warning_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_charge_warning_threshold"] = "50";
+			$user_settings["widgets"][$widgetkey]["apc_charge_warning_threshold"] = 50;
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"] = "15";
+			$user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"] = 15;
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"] = "365";
+			$user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"] = 365;
 		}
 		if (!isset($user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"])) {
-			$user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"] = "720";
+			$user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"] = 720;
 		}
 
 		if (!(include_once "/usr/local/pkg/apcupsd.inc")) {
@@ -87,7 +87,7 @@ if (!function_exists('compose_apc_contents')) {
 			$rtnstr = "<tr><td>Status</td><td colspan=\"3\">\n";
 
 			if ($results != null) {
-				$bchrg = (($results['BCHARGE'] != "") ? str_replace(" Percent", "", $results['BCHARGE']) : null);
+				$bchrg = (($results['BCHARGE'] != "") ? floatval(str_replace(" Percent", "", $results['BCHARGE'])) : null);
 
 				if ($results['STATUS'] != "") {
 					$mainstatarray = array("ONLINE", "ON-BATTERY", "OVERLOADED", "BATTERY-LOW", "LOWBATT", "REPLACE-BATTERY", "REPLACEBATT", "COMM-LOST", "COMMLOST", "NOBATT"); //Taken from apcupsd source
@@ -179,7 +179,7 @@ if (!function_exists('compose_apc_contents')) {
 
 				if ($results['LOADPCT']) {
 					$rtnstr .= "<tr><td>Load</td><td colspan=\"3\"><div class=\"progress\">";
-					$loadpct = str_replace(" Percent", "", $results['LOADPCT']);
+					$loadpct = floatval(str_replace(" Percent", "", $results['LOADPCT']));
 					if ($loadpct >= $user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"]) {
 						$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"] . "%\"></div>\n";
 						$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ($user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"] - $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]) . "%\"></div>\n";
@@ -195,19 +195,19 @@ if (!function_exists('compose_apc_contents')) {
 
 				if ($results['ITEMP'] != "") {
 					$rtnstr .= "<tr><td>Temp</td><td colspan=\"3\">\n";
-					$degf = ((substr(($results['ITEMP']), -1, 1) === "C") ? (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))*(9/5))+(32)) : (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))) . " F";
-					$degc = ((substr(($results['ITEMP']), -1, 1) === "C") ? (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2))) : (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))-32)*(5/9))) . " C";
+					$degf = ((substr(($results['ITEMP']), -1, 1) === "C") ? ((floatval(substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))*(9/5))+(32)) : (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))) . " F";
+					$degc = ((substr(($results['ITEMP']), -1, 1) === "C") ? (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2))) : ((floatval(substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))-32)*(5/9))) . " C";
 					$rtnstr .= "<div class=\"progress\">\n";
 					$tempmax = 60;
-					if (substr(($degc), 0, (strlen($degc)-2)) >= $user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"]) {
+					if (floatval(substr(($degc), 0, (strlen($degc)-2))) >= $user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"]) {
 						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (($user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]/$tempmax)*100) . "%\"></div>\n";
 						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ((($user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"] - $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"])/$tempmax)*100) . "%\"></div>\n";
-						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (((ceil(substr(($degc), 0, (strlen($degc)-2))) - $user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"])/$tempmax)*100) . "%\"></div>\n";
-					} elseif (substr(($degc), 0, (strlen($degc)-2)) >= $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]) {
+						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (((ceil(floatval(substr(($degc), 0, (strlen($degc)-2)))) - $user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"])/$tempmax)*100) . "%\"></div>\n";
+					} elseif (floatval(substr(($degc), 0, (strlen($degc)-2))) >= $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]) {
 						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\"></div>\n";
-						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (((ceil(substr(($degc), 0, (strlen($degc)-2))) - $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"])/$tempmax)*100) . "%\"></div>\n";
+						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (((ceil(floatval(substr(($degc), 0, (strlen($degc)-2)))) - $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"])/$tempmax)*100) . "%\"></div>\n";
 					} else {
-						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ((ceil(substr(($degc), 0, (strlen($degc)-2)))/$tempmax)*100) . "%\"></div>\n";
+						$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ((ceil(floatval(substr(($degc), 0, (strlen($degc)-2))))/$tempmax)*100) . "%\"></div>\n";
 					}
 
 					$rtnstr .= "</div>\n<span class=\"fas fa-solid fa-thermometer-full\"></span>&nbsp;&nbsp;";
@@ -267,10 +267,10 @@ if (!function_exists('compose_apc_contents')) {
 						}
 					}
 
-					if ($batt_age['TotalDays'] >= $user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"]) {
+					if (floatval($batt_age['TotalDays']) >= $user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"]) {
 						$bageclr = "red";
 						$bageicn = "fa-regular fa-calendar-xmark";
-					} elseif ($batt_age['TotalDays'] >= $user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"]) {
+					} elseif (floatval($batt_age['TotalDays']) >= $user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"]) {
 						$bageclr = "orange";
 						$bageicn = "fa-regular fa-calendar-minus";
 					} else {
@@ -358,28 +358,28 @@ if ($_POST['widgetkey']) {
 		$user_settings["widgets"][$_POST['widgetkey']]["apc_temp_dis_type_var"] = $_POST["apc_temp_dis_type_var"];
 	}
 	if (isset($_POST["apc_load_warning_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_load_warning_threshold"] = $_POST["apc_load_warning_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_load_warning_threshold"] = floatval($_POST["apc_load_warning_threshold"]);
 	}
 	if (isset($_POST["apc_load_critical_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_load_critical_threshold"] = $_POST["apc_load_critical_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_load_critical_threshold"] = floatval($_POST["apc_load_critical_threshold"]);
 	}
 	if (isset($_POST["apc_temp_warning_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_temp_warning_threshold"] = $_POST["apc_temp_warning_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_temp_warning_threshold"] = floatval($_POST["apc_temp_warning_threshold"]);
 	}
 	if (isset($_POST["apc_temp_critical_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_temp_critical_threshold"] = $_POST["apc_temp_critical_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_temp_critical_threshold"] = floatval($_POST["apc_temp_critical_threshold"]);
 	}
 	if (isset($_POST["apc_charge_warning_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_charge_warning_threshold"] = $_POST["apc_charge_warning_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_charge_warning_threshold"] = floatval($_POST["apc_charge_warning_threshold"]);
 	}
 	if (isset($_POST["apc_charge_critical_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_charge_critical_threshold"] = $_POST["apc_charge_critical_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_charge_critical_threshold"] = floatval($_POST["apc_charge_critical_threshold"]);
 	}
 	if (isset($_POST["apc_bage_warning_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_bage_warning_threshold"] = $_POST["apc_bage_warning_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_bage_warning_threshold"] = floatval($_POST["apc_bage_warning_threshold"]);
 	}
 	if (isset($_POST["apc_bage_critical_threshold"])) {
-		$user_settings["widgets"][$_POST['widgetkey']]["apc_bage_critical_threshold"] = $_POST["apc_bage_critical_threshold"];
+		$user_settings["widgets"][$_POST['widgetkey']]["apc_bage_critical_threshold"] = floatval($_POST["apc_bage_critical_threshold"]);
 	}
 
 	save_widget_settings($_SESSION['Username'], $user_settings["widgets"], gettext("Updated apcupsd widget settings via dashboard."));
