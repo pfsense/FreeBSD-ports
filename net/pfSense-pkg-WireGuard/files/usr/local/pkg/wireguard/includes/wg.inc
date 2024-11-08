@@ -38,9 +38,6 @@ global $wgg;
  * This toggles a given tunnel based on index
  */
 function wg_toggle_tunnel($tunnel_name) {
-	// Make sure we have the latest info
-	wg_globals();
-
 	// Assume no changes will be made...
 	$changes = false;
 
@@ -80,9 +77,6 @@ function wg_toggle_tunnel($tunnel_name) {
  * This toggles a given peer based on config array index
  */
 function wg_toggle_peer($peer_idx) {
-	// Make sure we have the latest info
-	wg_globals();
-
 	// Assume no changes will be made...
 	$changes = false;
 
@@ -126,9 +120,6 @@ function wg_toggle_peer($peer_idx) {
  * This deletes a given peer based on config array index
  */
 function wg_delete_peer($peer_idx) {
-	// Make sure we have the latest info
-	wg_globals();
-
 	$changes = false;
 
 	$input_errors = array();
@@ -165,9 +156,6 @@ function wg_delete_peer($peer_idx) {
  * This deletes a given tunnel based on name
  */
 function wg_delete_tunnel($tunnel_name) {
-	// Make sure we have the latest info
-	wg_globals();
-
 	$changes = false;
 
 	$input_errors = array();
@@ -210,8 +198,6 @@ function wg_toggle_wireguard() {
 }
 
 function wg_tunnel_unassign_peers($tunnel_name) {
-	wg_globals();
-
 	// Assume there is no peers to unassign...
 	$changes = false;
 	
@@ -398,8 +384,6 @@ function wg_get_endpoint_resolve_interval() {
 function wg_do_settings_post($post) {
 	global $wgg;
 
-	wg_globals();
-
 	$pconfig = $input_errors = array();
 
 	// Assume no changes will be made...
@@ -439,8 +423,6 @@ function wg_do_settings_post($post) {
  */
 function wg_do_peer_post($post) {
 	global $wgg;
-
-	wg_globals();
 
 	$pconfig = $input_errors = array();
 
@@ -499,8 +481,6 @@ function wg_do_peer_post($post) {
  */
 function wg_do_tunnel_post($post) {
 	global $wgg;
-
-	wg_globals();
 
 	$pconfig = $input_errors = array();
 
@@ -681,9 +661,6 @@ function wg_tunnel_sync($tunnel_names, $restart_services = false, $resolve_endpo
 function wg_tunnel_sync_by_name($tunnel_name, $json = false) {
 	global $wgg;
 
-	// Get the latest info
-	wg_globals();
-
 	$cmds = $errors = $tunnel = array();
 
 	// We've got a tunnel that we need to build...
@@ -785,8 +762,6 @@ function wg_resync() {
  * Returns an array of enabled tunnels
  */
 function wg_get_enabled_tunnels() {
-	wg_globals();
-
 	$ret_tunnels = array();
 
 	foreach (config_get_path('installedpackages/wireguard/tunnels/item', []) as $tunnel) {
@@ -803,8 +778,6 @@ function wg_get_enabled_tunnels() {
  */
 function wg_create_config_files($clean = true) {
 	global $wgg;
-
-	wg_globals();
 
 	// Create configuration path if it is missing
 	if (!file_exists($wgg['conf_path'])) {

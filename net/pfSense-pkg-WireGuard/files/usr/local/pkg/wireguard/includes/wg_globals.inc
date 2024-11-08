@@ -206,7 +206,7 @@ function wg_globals() {
 	global $wgg;
 
 	// Reload config.xml to get any recent changes
-	config_read_file(true);
+	config_read_file(false, true);
 }
 
 // Call this often to read the latest configuration information
