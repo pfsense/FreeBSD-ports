@@ -25,7 +25,7 @@ require_once('config.inc');
 require_once('globals.inc');
 global $g;
 
-config_read_file(true);
+config_read_file(false, true);
 
 // Enable logging if called via pfBlockerNG
 $verbose = FALSE;

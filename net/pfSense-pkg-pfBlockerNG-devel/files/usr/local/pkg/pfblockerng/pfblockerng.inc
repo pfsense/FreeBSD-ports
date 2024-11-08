@@ -690,7 +690,7 @@ function pfb_global() {
 	}
 
 	// Reload config.xml to get any recent changes
-	config_read_file(true);
+	config_read_file(false, true);
 
 	// General variables
 	$pfb['config']		= config_get_path('installedpackages/pfblockerng/config/0', []);
@@ -1861,7 +1861,7 @@ function pfb_create_dnsbl($mode) {
 	pfb_global();
 
 	// Reload config.xml to get any recent changes
-	config_read_file(true);
+	config_read_file(false, true);
 
 	$new_nat = $new_vip = $pfb_ex_nat = $pfb_ex_vip = $dnsbl_ex_nat = $dnsbl_ex_vip = array();
 	$pfb['dnsbl_vip_changed'] = $pfbupdate = FALSE;
@@ -2170,7 +2170,7 @@ function pfb_unbound_dnsbl($mode) {
 	pfb_global();
 
 	// Reload config.xml to get any recent changes
-	config_read_file(true);
+	config_read_file(false, true);
 
 	$pfbupdate = FALSE;
 	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*conf";
@@ -2450,7 +2450,7 @@ function pfb_unbound_python($mode) {
 	pfb_global();
 
 	// Reload config.xml to get any recent changes
-	config_read_file(true);
+	config_read_file(false, true);
 
 	$pfbpython = FALSE;
 
@@ -4737,7 +4737,7 @@ function pfb_aliastables($mode) {
 	$earlyshellcmd = '/usr/local/pkg/pfblockerng/pfblockerng.sh aliastables';
 
 	// Reload config.xml to get any recent changes
-	config_read_file(true);
+	config_read_file(false, true);
 
 	$a_earlyshellcmd = config_get_path('system/earlyshellcmd', []);
 	$a_shellcmdsettings = config_get_path('installedpackages/shellcmdsettings/config', []);
@@ -10089,7 +10089,7 @@ function sync_package_pfblockerng($cron='') {
 	#########################################
 
 	// Reload config.xml to get any recent changes
-	config_read_file(true);
+	config_read_file(false, true);
 
 	$exist_aliases = config_get_path('aliases/alias', []);
 	foreach ($exist_aliases as $cbalias) {
@@ -10134,7 +10134,7 @@ function sync_package_pfblockerng($cron='') {
 			$new_rules = $permit_rules = $match_rules = $other_rules = $fpermit_rules = $fmatch_rules = $fother_rules = array();
 
 			// Reload config.xml to get any recent changes
-			config_read_file(true);
+			config_read_file(false, true);
 
 			// New vs old rules array comparison
 			$orig_rules_nocreated = $new_rules_nocreated = array();
@@ -10537,7 +10537,7 @@ function sync_package_pfblockerng($cron='') {
 		pfb_logger("\nSaving config changes", 1);
 
 		// Reload config.xml to get any recent changes and merge/save changes.
-		config_read_file(true);
+		config_read_file(false, true);
 		config_set_path('', array_replace_recursive(config_get_path(''), $pfb_config));
 		write_config('pfBlockerNG: save settings');
 
@@ -10547,7 +10547,7 @@ function sync_package_pfblockerng($cron='') {
 
 	// Query NAT Rules for previous IPv4 pfBlockerNG aliasnames which are not in the new '_v4' suffix format
 	$pfb_found	= FALSE;
-	config_read_file(true);
+	config_read_file(false, true);
 
 	foreach (config_get_path('nat/rule', []) as $key => $ex_nat) {
 		foreach (array('source', 'destination') as $rtype) {
