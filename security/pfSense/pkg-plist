@@ -382,11 +382,6 @@ share/locale/zh_TW/LC_MESSAGES/pfSense.po
 %%DATADIR%%/ascii-art/pfsense-logo-small.txt
 %%DATADIR%%/fix_for_SA-19-10.ufs
 %%DATADIR%%/iso_3166-1_list_en.xml
-%%DATADIR%%/keys/pkg/revoked/.empty
-%%DATADIR%%/keys/pkg/trusted/beta.pfsense.org.20151223
-%%DATADIR%%/keys/pkg/trusted/pkg.pfsense.org.20160406
-%%DATADIR%%/keys/pkg/trusted/plus-beta.pfsense.org.20151223
-%%DATADIR%%/keys/pkg/trusted/plus-pkg.pfsense.org.20160406
 %%DATADIR%%/ssl/netgate-ca.pem
 %%DATADIR%%/ssl/openssl.cnf
 www/android-chrome-192x192.png
