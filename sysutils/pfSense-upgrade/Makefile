@@ -21,7 +21,7 @@ PLIST_FILES=	libexec/pfSense-upgrade \
 
 .include <bsd.port.pre.mk>
 
-RUN_DEPENDS+=	pfSense-repoc>=0:sysutils/pfSense-repoc
+#RUN_DEPENDS+=	pfSense-repoc>=0:sysutils/pfSense-repoc
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
