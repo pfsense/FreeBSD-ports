@@ -32,6 +32,7 @@ Usage: ${me} [-46bdfhnRUy] [-l logfile] [-p socket] [-c|-u|[-i|-d] pkg_name]
 	-n          - Dry run
 	-p socket   - Write pkg progress to socket
 	-R          - Do not reboot (this can be dangerous)
+	-T seconds  - lockf(1) timeout to wait for another instance
 	-U          - Do not update repository information
 	-y          - Assume yes as the answer to any possible interaction
 
@@ -1895,11 +1896,12 @@ unset force
 unset yes
 unset progress_file
 unset progress_socket
+unset lockf_timeout
 unset action
 unset action_pkg
 unset force_ipv4
 unset force_ipv6
-while getopts 46b:cCdfi:hp:l:nr:RuUy opt; do
+while getopts 46b:cCdfi:hp:l:nr:RT:uUy opt; do
 	case ${opt} in
 		4)
 			if [ -n "${force_ipv6}" ]; then
@@ -1969,6 +1971,10 @@ while getopts 46b:cCdfi:hp:l:nr:RuUy opt; do
 			;;
 		R)
 			dont_reboot=1
+			;;
+		T)
+			# Handled in the wrapper, not used here.
+			lockf_timeout="$(printf "%d" "${OPTARG}" 2> /dev/null)"
 			;;
 		u)
 			if [ -n "${action}" ]; then
