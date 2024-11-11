@@ -26,7 +26,7 @@ PFSENSE_PKG_SET_VERSION?=	${DISTVERSION}
 
 .include <bsd.port.pre.mk>
 
-MIRROR_TYPE?=	srv
+MIRROR_TYPE?=	none
 PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
 PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
 SIGNATURE_TYPE?=	fingerprints
