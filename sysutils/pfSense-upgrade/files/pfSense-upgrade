@@ -1535,7 +1535,7 @@ check_upgrade() {
 					_repopath="${_db_dir}/${_reponame}"
 					# Skip the development builds.
 					if [ "${_rel_sup}" = "1" ] && \
-					    [ "$_is_configured_repo}" = "0" ] && \
+					    [ "${_is_configured_repo}" = "0" ] && \
 					    [ ! -f "${_reporel}" ]; then
 						continue
 					fi
