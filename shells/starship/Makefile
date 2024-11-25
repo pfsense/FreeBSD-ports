@@ -1,13 +1,14 @@
 PORTNAME=	starship
-DISTVERSION=	1.21.0
-PORTREVISION=	0
+DISTVERSION=	1.21.1
+PORTREVISION=	1
 CATEGORIES=	shells
 MASTER_SITES=	CRATESIO
 DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cross-shell prompt for astronauts
-WWW=		https://starship.rs/
+WWW=		https://starship.rs/ \
+		https://github.com/starship/starship
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -281,7 +282,7 @@ CARGO_CRATES=	adler2-2.0.0 \
 		serde-1.0.210 \
 		serde_derive-1.0.210 \
 		serde_derive_internals-0.29.1 \
-		serde_json-1.0.128 \
+		serde_json-1.0.129 \
 		serde_repr-0.1.19 \
 		serde_spanned-0.6.8 \
 		sha1-0.10.6 \

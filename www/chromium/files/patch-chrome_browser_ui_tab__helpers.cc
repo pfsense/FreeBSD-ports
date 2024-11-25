@@ -1,4 +1,4 @@
---- chrome/browser/ui/tab_helpers.cc.orig	2024-09-30 07:45:04 UTC
+--- chrome/browser/ui/tab_helpers.cc.orig	2024-11-14 07:57:23 UTC
 +++ chrome/browser/ui/tab_helpers.cc
 @@ -240,7 +240,7 @@
  #endif
@@ -9,7 +9,7 @@
  #include "chrome/browser/ui/blocked_content/framebust_block_tab_helper.h"
  #include "chrome/browser/ui/browser_finder.h"
  #include "chrome/browser/ui/hats/hats_helper.h"
-@@ -712,12 +712,12 @@ void TabHelpers::AttachTabHelpers(WebContents* web_con
+@@ -718,12 +718,12 @@ void TabHelpers::AttachTabHelpers(WebContents* web_con
  // TODO(crbug.com/40118868): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \

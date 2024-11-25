@@ -1,6 +1,6 @@
 PORTNAME=	xtensa-esp-elf
 DISTVERSION=	13.2.0_20240530
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/espressif/crosstool-NG/releases/download/esp-${DISTVERSION}/:source1 \
 		GNU/gmp:source2 \
@@ -163,7 +163,7 @@ do-install:
 	    ${XARGS} ${CHMOD} +x
 
 	# xtensa-toolchian-wrapper
-	${INSTALL_PROGRAM} ${WRKSRC2}/target/*-unknown-freebsd/release/xtensa-toolchian-wrapper \
+	${INSTALL_PROGRAM} ${WRKSRC2}/target/release/xtensa-toolchian-wrapper \
 	    ${STAGEDIR}${PREFIX}/${PKGBASE}/bin
 .for chip in ${XTENSA_CHIPS}
 .for wrap in ${XTENSA_WRAPPED}

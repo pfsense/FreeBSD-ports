@@ -438,6 +438,7 @@
     SUBDIR += py-skrebate
     SUBDIR += py-spaghetti
     SUBDIR += py-spglib
+    SUBDIR += py-symfc
     SUBDIR += py-tensorflow
     SUBDIR += py-thewalrus
     SUBDIR += py-tobler
@@ -472,6 +473,7 @@
     SUBDIR += salome-kernel
     SUBDIR += scidavis
     SUBDIR += sciplot
+    SUBDIR += seacas
     SUBDIR += segyio
     SUBDIR += serac
     SUBDIR += shelxle

@@ -59,7 +59,6 @@
     SUBDIR += diesel
     SUBDIR += duckdb
     SUBDIR += ejdb
-    SUBDIR += emacs-sqlite3-api
     SUBDIR += emacsql
     SUBDIR += emacsql-devel
     SUBDIR += erlfdb
@@ -141,14 +140,12 @@
     SUBDIR += libiodbc
     SUBDIR += libmemcache
     SUBDIR += libmemcached
-    SUBDIR += libmongo-client
     SUBDIR += libmongocrypt
     SUBDIR += libmswstr
     SUBDIR += libnvpair
     SUBDIR += libodbc++
     SUBDIR += libpbl
     SUBDIR += libpg_query
-    SUBDIR += libpqtypes
     SUBDIR += libsdb
     SUBDIR += libzdb
     SUBDIR += linux-c7-sqlite3
@@ -191,6 +188,7 @@
     SUBDIR += mongodb60
     SUBDIR += mongodb70
     SUBDIR += mongodb80
+    SUBDIR += mongosh
     SUBDIR += movine
     SUBDIR += mroonga
     SUBDIR += mtop
@@ -550,6 +548,7 @@
     SUBDIR += pgFormatter
     SUBDIR += pg_activity
     SUBDIR += pg_citus
+    SUBDIR += pg_cron
     SUBDIR += pg_dirtyread
     SUBDIR += pg_ed25519
     SUBDIR += pg_filedump
@@ -808,6 +807,7 @@
     SUBDIR += py-pickleshare
     SUBDIR += py-pony
     SUBDIR += py-postgresql
+    SUBDIR += py-powa-collector
     SUBDIR += py-psycogreen
     SUBDIR += py-psycopg
     SUBDIR += py-psycopg-c
@@ -955,7 +955,6 @@
     SUBDIR += rubygem-dbf4
     SUBDIR += rubygem-dbi
     SUBDIR += rubygem-dbm
-    SUBDIR += rubygem-discard-rails61
     SUBDIR += rubygem-dm-aggregates
     SUBDIR += rubygem-dm-chunked_query
     SUBDIR += rubygem-dm-constraints
@@ -1015,7 +1014,6 @@
     SUBDIR += rubygem-pghero
     SUBDIR += rubygem-pghero-rails5
     SUBDIR += rubygem-pghero-rails50
-    SUBDIR += rubygem-pghero-rails61
     SUBDIR += rubygem-pl-puppetdb-ruby
     SUBDIR += rubygem-postgres_ext
     SUBDIR += rubygem-puppetdb_cli

@@ -1,5 +1,6 @@
 PORTNAME=	oculante
 DISTVERSION=	0.9.1
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +9,8 @@ WWW=		https://github.com/woelper/oculante
 
 LICENSE=	MIT
 
+BROKEN_FreeBSD_15_armv7=	link failure, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=282705
+BROKEN_aarch64=	compilation failure, cannot find type ucontext_t in crate libc, see https://github.com/Xudong-Huang/generator-rs/issues/69
 BROKEN_i386=	compilation failure, see https://github.com/etemesi254/zune-image/issues/205
 
 BUILD_DEPENDS=	convert:graphics/ImageMagick7

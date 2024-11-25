@@ -1,12 +1,13 @@
 PORTNAME=	solana
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.17.9
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Web-scale blockchain for decentralized apps and marketplaces
-WWW=		https://solana.com/
+WWW=		https://solana.com/ \
+		https://github.com/solana-labs/solana
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -695,7 +696,7 @@ MAKE_ENV=	${XARCH}_UNKNOWN_FREEBSD_OPENSSL_INCLUDE_DIR=${OPENSSLINC} \
 BINARY_ALIAS=	llvm-config=${LOCALBASE}/bin/${LLVM_CONFIG}
 
 do-install:
-	for f in ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/${PORTNAME}*; do \
+	for f in ${CARGO_TARGET_DIR}/*/${PORTNAME}*; do \
 		if [ -f $$f -a -x $$f ]; then \
 			${INSTALL_PROGRAM} $$f ${STAGEDIR}${PREFIX}/bin; \
 		fi \

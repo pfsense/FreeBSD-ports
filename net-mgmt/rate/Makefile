@@ -18,7 +18,7 @@ CFLAGS+=	-DOPEN_BSD=1 -DHAVE_REGEX -DSTREAM_ANALYZER -DIOCTL_GETWINSIZE -DAUTOSE
 PLIST_FILES=	bin/rate share/man/man1/rate.1.gz
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/rate ${STAGEDIR}${PREFIX}/bin/rate
+	${INSTALL_PROGRAM} ${WRKSRC}/rate ${STAGEDIR}${PREFIX}/bin/rate
 	${INSTALL_MAN} ${WRKSRC}/doc/rate.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

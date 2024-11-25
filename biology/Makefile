@@ -108,6 +108,7 @@
     SUBDIR += mafft
     SUBDIR += mapm3
     SUBDIR += mashmap
+    SUBDIR += mca-calling
     SUBDIR += megahit
     SUBDIR += metaeuk
     SUBDIR += migrate
@@ -155,6 +156,7 @@
     SUBDIR += picard-tools
     SUBDIR += plink
     SUBDIR += pooler
+    SUBDIR += preseq
     SUBDIR += primer3
     SUBDIR += prodigal
     SUBDIR += prodigy-lig

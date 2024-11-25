@@ -1,6 +1,7 @@
 PORTNAME=	xdg-desktop-portal-luminous
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.6
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -33,10 +34,9 @@ post-patch:
 		${WRKSRC_crate_clang-sys}/build/common.rs \
 		${WRKSRC_crate_clang-sys}/src/support.rs
 # Make each cargo subcommand very verbose
-# Add explicit <triple> subdir for --target from USES=cargo
 # Adjust for CARGO_TARGET_DIR outside of meson.global_source_root()
 	@${REINPLACE_CMD} -e "s/'build',/ & '--verbose', '--verbose',/" \
-		-e "s,'target','..' / & / '${CARGO_BUILD_TARGET}'," \
+		-e "s,'target','..' / & ," \
 		${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

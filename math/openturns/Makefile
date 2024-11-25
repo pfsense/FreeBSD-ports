@@ -1,15 +1,18 @@
 PORTNAME=	openturns
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.23
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Uncertainty treatment library
-WWW=		https://openturns.github.io/www/
+WWW=		https://openturns.github.io/www/ \
+		https://github.com/openturns/openturns
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
+
+BROKEN_FreeBSD_15=	compilation fails with clang-19, see https://github.com/openturns/openturns/issues/2811
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		flex:textproc/flex \

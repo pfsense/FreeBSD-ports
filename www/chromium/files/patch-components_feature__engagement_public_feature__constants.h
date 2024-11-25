@@ -1,4 +1,4 @@
---- components/feature_engagement/public/feature_constants.h.orig	2024-09-30 07:45:04 UTC
+--- components/feature_engagement/public/feature_constants.h.orig	2024-11-14 07:57:23 UTC
 +++ components/feature_engagement/public/feature_constants.h
 @@ -20,7 +20,7 @@ BASE_DECLARE_FEATURE(kIPHDemoMode);
  BASE_DECLARE_FEATURE(kIPHDummyFeature);
@@ -9,7 +9,7 @@
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
  BASE_DECLARE_FEATURE(kEsbDownloadRowPromoFeature);
  #endif
-@@ -255,7 +255,8 @@ BASE_DECLARE_FEATURE(kDefaultBrowserTriggerCriteriaExp
+@@ -261,7 +261,8 @@ BASE_DECLARE_FEATURE(kDefaultBrowserTriggerCriteriaExp
  #endif  // BUILDFLAG(IS_IOS)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
@@ -19,7 +19,7 @@
  BASE_DECLARE_FEATURE(kIPHAutofillCreditCardBenefitFeature);
  BASE_DECLARE_FEATURE(kIPHAutofillDisabledVirtualCardSuggestionFeature);
  BASE_DECLARE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature);
-@@ -306,7 +307,7 @@ BASE_DECLARE_FEATURE(kIPHScalableIphHelpAppBasedTenFea
+@@ -313,7 +314,7 @@ BASE_DECLARE_FEATURE(kIPHScalableIphHelpAppBasedTenFea
  BASE_DECLARE_FEATURE(kIPHScalableIphGamingFeature);
  #endif
  

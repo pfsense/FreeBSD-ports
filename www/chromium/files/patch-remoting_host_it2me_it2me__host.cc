@@ -1,6 +1,6 @@
---- remoting/host/it2me/it2me_host.cc.orig	2024-09-30 07:45:04 UTC
+--- remoting/host/it2me/it2me_host.cc.orig	2024-11-14 07:57:23 UTC
 +++ remoting/host/it2me/it2me_host.cc
-@@ -56,7 +56,7 @@
+@@ -58,7 +58,7 @@
  #include "remoting/host/chromeos/features.h"
  #endif
  
@@ -18,7 +18,7 @@
    if (IsRunningWayland()) {
      WaylandManager::Get()->Init(host_context_->ui_task_runner());
    }
-@@ -344,7 +344,7 @@ void It2MeHost::ConnectOnNetworkThread(
+@@ -318,7 +318,7 @@ void It2MeHost::ConnectOnNetworkThread(
  
    // Set up the desktop environment options.
    DesktopEnvironmentOptions options(DesktopEnvironmentOptions::CreateDefault());

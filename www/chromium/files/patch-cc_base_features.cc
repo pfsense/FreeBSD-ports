@@ -1,4 +1,4 @@
---- cc/base/features.cc.orig	2024-08-26 12:06:38 UTC
+--- cc/base/features.cc.orig	2024-11-14 07:57:23 UTC
 +++ cc/base/features.cc
 @@ -85,7 +85,7 @@ const base::FeatureParam<int> kDeferImplInvalidationFr
  // be using a separate flag to control the launch on GL.

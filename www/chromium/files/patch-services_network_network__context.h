@@ -1,4 +1,4 @@
---- services/network/network_context.h.orig	2024-09-30 07:45:04 UTC
+--- services/network/network_context.h.orig	2024-11-14 07:57:23 UTC
 +++ services/network/network_context.h
 @@ -696,7 +696,7 @@ class COMPONENT_EXPORT(NETWORK_SERVICE) NetworkContext
     public:

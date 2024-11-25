@@ -1,5 +1,6 @@
 PORTNAME=	iocage-devel
-PORTVERSION=	1.7.20240618
+PORTVERSION=	1.8.20241014
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=6.7:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dnspython>0:dns/py-dnspython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gitpython>=2.1.10:devel/py-gitpython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}libzfs>=1.0.2:devel/py-libzfs@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}libzfs>=1.0.2:filesystems/py-libzfs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-runner>=2.0.0:devel/py-pytest-runner@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.11.1:www/py-requests@${PY_FLAVOR} \
@@ -30,7 +31,7 @@ USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	iocage
-GH_TAGNAME=	6e2b0a0586fe5a6c3ac0ce6bc62bdaa714169720
+GH_TAGNAME=	32de9d515ba54f7635545f20c9f81d7cc0442d66
 
 USE_PYTHON=	autoplist distutils
 

@@ -159,6 +159,7 @@
     SUBDIR += hydroxide
     SUBDIR += ifile
     SUBDIR += im
+    SUBDIR += imap-tools
     SUBDIR += imapdedup
     SUBDIR += imapfilter
     SUBDIR += imapsync
@@ -187,6 +188,7 @@
     SUBDIR += libsrs2
     SUBDIR += libsrs_alt
     SUBDIR += libvmime
+    SUBDIR += linux-r7-organizer
     SUBDIR += linux-r7-organizer-pro
     SUBDIR += listadmin
     SUBDIR += lmtp2nntp
@@ -593,6 +595,7 @@
     SUBDIR += rspamd
     SUBDIR += rspamd-devel
     SUBDIR += rss2email3
+    SUBDIR += ruby-notmuch
     SUBDIR += rubygem-actionmailbox60
     SUBDIR += rubygem-actionmailbox61
     SUBDIR += rubygem-actionmailbox70

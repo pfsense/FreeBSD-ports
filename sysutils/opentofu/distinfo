@@ -1,5 +1,5 @@
-TIMESTAMP = 1728023624
-SHA256 (go/sysutils_opentofu/opentofu-v1.8.3/v1.8.3.mod) = 458b452864b1e42ddff60dc560677a1a6442050ee23cf54dbac332102bd3ceae
-SIZE (go/sysutils_opentofu/opentofu-v1.8.3/v1.8.3.mod) = 13676
-SHA256 (go/sysutils_opentofu/opentofu-v1.8.3/v1.8.3.zip) = 226ee1031bd02f5e17a48247c6eb7e8c6c94cdc909b50e0681c902212f05be3b
-SIZE (go/sysutils_opentofu/opentofu-v1.8.3/v1.8.3.zip) = 6072290
+TIMESTAMP = 1732349342
+SHA256 (go/sysutils_opentofu/opentofu-v1.8.6/v1.8.6.mod) = 2afa6ca36368bd1942a6956c2270f898d84ccfb8f25a69ce99593f2bf22b4166
+SIZE (go/sysutils_opentofu/opentofu-v1.8.6/v1.8.6.mod) = 13676
+SHA256 (go/sysutils_opentofu/opentofu-v1.8.6/v1.8.6.zip) = cc9cf6d598f12951e9acaeac8694aaa1f63a37b402a08a4b94c57298a92de2e9
+SIZE (go/sysutils_opentofu/opentofu-v1.8.6/v1.8.6.zip) = 6084969

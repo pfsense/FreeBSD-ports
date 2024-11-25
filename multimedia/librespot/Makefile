@@ -1,7 +1,7 @@
 PORTNAME=	librespot
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.2
-PORTREVISION=	21
+DISTVERSION=	0.6.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	driesm@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://github.com/librespot-org/librespot
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BUILD_DEPENDS=	bindgen:devel/rust-bindgen-cli
 
 USES=		cargo
 

@@ -5,6 +5,101 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20241122
+  AFFECTS: users of databases/couchdb3
+  AUTHOR: dch@FreeBSD.org
+
+  Users who installed or upgraded to CouchDB 3.3.3 *after* 2024-09-30, and
+  who are also running 14.1-RELEASE or newer, will hit a nasty corruption bug,
+  causing all CPUs to lock up, possibly crashing, and generating a lot of
+  errors in log files.
+
+  This bug is caused by corrupt docs after decompression, due to a clash
+  between improved compiler optimisations in clang18, and a bug in snappy
+  itself. Given the above symptoms, all affected users will have noticed.
+
+  Upgrade to 3.4.2 in ports, to resolve this issue.
+
+  Please read more about this issue here:
+  https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=282217
+
+20241115
+  AFFECTS: users of filesystems/zrepl-dsh2dsh
+  AUTHOR: dsh@bamus.cz
+
+  Users upgrading from before 0.9.0 need to modify configuration file:
+
+      %%PREFIX%%/etc/zrepl/zrepl.yml
+
+  Please read more about this change here:
+  https://github.com/dsh2dsh/zrepl?tab=readme-ov-file#breaking-changes
+
+20241112
+  AFFECTS: users of databases/prometheus-postgres-exporter
+  AUTHOR: lexi@hemlock.eden.le-fay.org
+
+  BREAKING CHANGE: In postgres_exporter 0.16.0 and later, the log message format
+  has changed.  From the upstream release notes:
+
+  The logging system has been replaced with log/slog from the stdlib.  This
+  change is being made across the prometheus ecosystem.  The logging output has
+  changed, but the messages and levels remain the same.  The ts label for the
+  timestamp has been replaced with time, the accuracy is less, and the timezone
+  is not forced to UTC.  The caller field has been replaced by the source field,
+  which now includes the full path to the source file. The level field now
+  exposes the log level in capital letters.
+
+20241110
+  AFFECTS: users of devel/apr1 and www/apache24
+  AUTHOR: brnrd@FreeBSD.org
+
+  The default BerkeleyDB provider for apr-util was changed from BerkeleyDB
+  5 (deprecated) to BerkeleyDB 1 from base libc. The change of version
+  results in a non-compatible database format.
+
+  After upgrading, you must rebuild all BerkeleyDB databases used by
+  apr-util (example: Apache databases created with `httxt2dbm -F db` 
+
+20241109:
+  AFFECTS: all users of i386
+  AUTHOR: asomers@FreeBSD.org
+
+  On i386 the lang/rust port has been updated to require SSE2 by default.  Not
+  only does the compiler itself require SSE2, but it unconditionally generates
+  code that requires it, too.  Over 500 ports include Rust code (www/firefox,
+  security/py-cryptography, etc).  Official binary packages of all of those
+  ports will no longer work on Pentium III and older hardware.  PIII users must
+  now build their own lang/rust packages, clearing the SSE2 option, and rebuild
+  any dependent ports.
+
+20241104:
+  AFFECTS: users of mail/fetchmail
+  AUTHOR: chalpin@cs.wisc.edu
+
+  OPIE and RPA have been made optional because both have significant security
+  problems. OPIE support was not provided by the port on 14.x until the update
+  to 6.5.0, when it was briefly re-activated. Because of its security flaws, it
+  has now been disabled by default on both 13.x and 14.x.
+
+  RPA is currently enabled by default, but this will change in a future update.
+
+20241019:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 4.0 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
 20241004:
   AFFECTS: users of www/c-icap
   AUTHOR: rodrigo@FreeBSD.org

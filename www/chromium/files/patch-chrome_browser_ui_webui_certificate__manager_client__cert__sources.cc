@@ -1,6 +1,6 @@
---- chrome/browser/ui/webui/certificate_manager/client_cert_sources.cc.orig	2024-09-30 07:45:04 UTC
+--- chrome/browser/ui/webui/certificate_manager/client_cert_sources.cc.orig	2024-11-14 07:57:23 UTC
 +++ chrome/browser/ui/webui/certificate_manager/client_cert_sources.cc
-@@ -36,7 +36,7 @@
+@@ -51,7 +51,7 @@
  #include "net/ssl/client_cert_store_mac.h"
  #endif  // BUILDFLAG(IS_MAC)
  
@@ -9,16 +9,16 @@
  #include "chrome/browser/enterprise/client_certificates/certificate_provisioning_service_factory.h"
  #include "components/enterprise/client_certificates/core/certificate_provisioning_service.h"
  #include "components/enterprise/client_certificates/core/client_certificates_service.h"
-@@ -98,7 +98,7 @@ std::unique_ptr<ClientCertStoreLoader> CreatePlatformC
- #endif
+@@ -195,7 +195,7 @@ std::unique_ptr<ClientCertStoreLoader> CreatePlatformC
  }
+ #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  // ClientCertStore implementation that always returns an empty list. The
  // CertificateProvisioningService implementation expects to wrap a platform
  // cert store, but here we only want to get results from the provisioning
-@@ -393,7 +393,7 @@ CreatePlatformClientCertSource(
+@@ -1056,7 +1056,7 @@ CreatePlatformClientCertSource(
  #endif
  }
  

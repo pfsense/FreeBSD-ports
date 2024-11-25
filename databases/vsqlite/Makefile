@@ -1,6 +1,6 @@
 PORTNAME=	vsqlite
 PORTVERSION=	0.3.13
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	databases
 
 MAINTAINER=	kwm@FreeBSD.org
@@ -8,6 +8,9 @@ COMMENT=	Well designed and portable SQLite3 Wrapper for C++
 WWW=		https://github.com/vinzenz/vsqlite--
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=	Abandonware, last release in 2014 and last commit 4 years ago
+EXPIRATION_DATE=2024-11-30
 
 LIB_DEPENDS=	libboost_random.so:devel/boost-libs
 

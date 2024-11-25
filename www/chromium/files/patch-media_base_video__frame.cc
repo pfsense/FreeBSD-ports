@@ -1,4 +1,4 @@
---- media/base/video_frame.cc.orig	2024-09-30 07:45:04 UTC
+--- media/base/video_frame.cc.orig	2024-11-14 07:57:23 UTC
 +++ media/base/video_frame.cc
 @@ -88,7 +88,7 @@ std::string VideoFrame::StorageTypeToString(
        return "OWNED_MEMORY";
@@ -27,7 +27,16 @@
    bool is_native_buffer =
        gpu_memory_buffer
            ? (gpu_memory_buffer->GetType() != gfx::SHARED_MEMORY_BUFFER)
-@@ -822,7 +822,7 @@ scoped_refptr<VideoFrame> VideoFrame::WrapExternalGpuM
+@@ -453,7 +453,7 @@ VideoFrame::CreateFrameForGpuMemoryBufferOrMappableSII
+ }
+ 
+ // static
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ scoped_refptr<VideoFrame> VideoFrame::WrapOOPVDMailbox(
+     VideoPixelFormat format,
+     const gpu::Mailbox& mailbox,
+@@ -769,7 +769,7 @@ scoped_refptr<VideoFrame> VideoFrame::WrapExternalGpuM
    return frame;
  }
  
@@ -36,8 +45,17 @@
  // static
  scoped_refptr<VideoFrame> VideoFrame::WrapExternalDmabufs(
      const VideoFrameLayout& layout,
-@@ -1536,7 +1536,7 @@ scoped_refptr<gpu::ClientSharedImage> VideoFrame::shar
-                         : shared_images_[texture_index];
+@@ -1261,7 +1261,7 @@ bool VideoFrame::IsMappable() const {
+   return IsStorageTypeMappable(storage_type_);
+ }
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD) 
+ bool VideoFrame::HasOOPVDMailbox() const {
+   return wrapped_frame_ ? wrapped_frame_->HasOOPVDMailbox()
+                         : !oopvd_mailbox_.IsZero();
+@@ -1490,7 +1490,7 @@ scoped_refptr<gpu::ClientSharedImage> VideoFrame::shar
+   return wrapped_frame_ ? wrapped_frame_->shared_image() : shared_image_;
  }
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)

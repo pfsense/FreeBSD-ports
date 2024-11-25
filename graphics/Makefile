@@ -215,7 +215,6 @@
     SUBDIR += frei0r-plugins-opencv
     SUBDIR += frogr
     SUBDIR += ftgl
-    SUBDIR += fusefs-gphotofs
     SUBDIR += fv
     SUBDIR += fyre
     SUBDIR += g2
@@ -504,6 +503,7 @@
     SUBDIR += librsvg2-rust
     SUBDIR += librtprocess
     SUBDIR += libsixel
+    SUBDIR += libskiasharp
     SUBDIR += libspiro
     SUBDIR += libspng
     SUBDIR += libsvgtiny
@@ -539,6 +539,7 @@
     SUBDIR += linux-rl9-cairo-gobject
     SUBDIR += linux-rl9-dri
     SUBDIR += linux-rl9-gdk-pixbuf2
+    SUBDIR += linux-rl9-graphene
     SUBDIR += linux-rl9-graphite2
     SUBDIR += linux-rl9-jasper
     SUBDIR += linux-rl9-jbigkit
@@ -546,9 +547,17 @@
     SUBDIR += linux-rl9-libdrm
     SUBDIR += linux-rl9-libepoxy
     SUBDIR += linux-rl9-libglvnd
+    SUBDIR += linux-rl9-libjxl
     SUBDIR += linux-rl9-librsvg2
     SUBDIR += linux-rl9-openjpeg
     SUBDIR += linux-rl9-png
+    SUBDIR += linux-rl9-qt5-qt3d
+    SUBDIR += linux-rl9-qt5-qtgraphicaleffects
+    SUBDIR += linux-rl9-qt5-qtimageformats
+    SUBDIR += linux-rl9-qt5-qtsvg
+    SUBDIR += linux-rl9-qt5-qtwayland
+    SUBDIR += linux-rl9-shaderc
+    SUBDIR += linux-rl9-spirv-tools
     SUBDIR += linux-rl9-tiff
     SUBDIR += linux-rl9-vulkan
     SUBDIR += linux-rl9-wayland
@@ -558,6 +567,9 @@
     SUBDIR += lux
     SUBDIR += lximage-qt
     SUBDIR += magnum
+    SUBDIR += magnum-examples
+    SUBDIR += magnum-extras
+    SUBDIR += magnum-integration
     SUBDIR += magnum-plugins
     SUBDIR += mahotas
     SUBDIR += maim
@@ -979,6 +991,7 @@
     SUBDIR += py-pyzbar
     SUBDIR += py-qpageview
     SUBDIR += py-qrencode
+    SUBDIR += py-qt5-3d
     SUBDIR += py-qt6-3d
     SUBDIR += py-qudida
     SUBDIR += py-railroad-diagrams
@@ -1213,6 +1226,7 @@
     SUBDIR += waffle
     SUBDIR += waifu2x-converter-cpp
     SUBDIR += waifu2x-ncnn-vulkan
+    SUBDIR += wallhaven-cli
     SUBDIR += wayland
     SUBDIR += wayland-protocols
     SUBDIR += wayland-utils

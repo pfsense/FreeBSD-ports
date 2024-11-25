@@ -1,20 +1,20 @@
---- chrome/browser/supervised_user/supervised_user_browser_utils.cc.orig	2024-09-30 07:45:04 UTC
+--- chrome/browser/supervised_user/supervised_user_browser_utils.cc.orig	2024-11-14 07:57:23 UTC
 +++ chrome/browser/supervised_user/supervised_user_browser_utils.cc
 @@ -40,7 +40,7 @@
+ #include "chrome/browser/ash/profiles/profile_helper.h"
+ #include "components/user_manager/user.h"
  #include "components/user_manager/user_type.h"
- #elif BUILDFLAG(IS_CHROMEOS_LACROS)
- #include "chromeos/startup/browser_params_proxy.h"
 -#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
  #include "chrome/browser/supervised_user/supervised_user_verification_controller_client.h"
- #include "chrome/browser/supervised_user/supervised_user_verification_page.h"
+ #include "chrome/browser/supervised_user/supervised_user_verification_page_blocked_sites.h"
+ #include "chrome/browser/supervised_user/supervised_user_verification_page_youtube.h"
+@@ -158,7 +158,7 @@ void AssertChildStatusOfTheUser(Profile* profile, bool
  #endif
-@@ -178,7 +178,7 @@ bool IsAuthenticatedSupervisedProfile(Profile* profile
-          supervised_user::ChildAccountService::AuthState::AUTHENTICATED;
  }
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
- std::string CreateReauthenticationInterstitial(
-     content::NavigationHandle& navigation_handle,
-     SupervisedUserVerificationPage::VerificationPurpose verification_purpose) {
+ std::string CreateReauthenticationInterstitialForYouTube(
+     content::NavigationHandle& navigation_handle) {
+   content::WebContents* web_contents = navigation_handle.GetWebContents();

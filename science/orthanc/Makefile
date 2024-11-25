@@ -1,6 +1,6 @@
 PORTNAME=	orthanc
 DISTVERSION=	1.12.3
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	science
 MASTER_SITES=	https://orthanc.uclouvain.be/downloads/sources/orthanc/
 DISTNAME=	Orthanc-${PORTVERSION}
@@ -11,6 +11,8 @@ WWW=		https://www.orthanc-server.com/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to build with boost-1.86+
 
 BUILD_DEPENDS=	protoc:devel/protobuf
 

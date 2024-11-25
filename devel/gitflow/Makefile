@@ -1,5 +1,6 @@
 PORTNAME=	gitflow
 PORTVERSION=	1.12.3
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	nbari@tequila.io
@@ -9,7 +10,10 @@ WWW=		https://github.com/petervanderdoes/gitflow-avh
 LICENSE=	BSD2CLAUSE LGPL21
 LICENSE_COMB=	multi
 
-RUN_DEPENDS=	${LOCALBASE}/bin/getopt:misc/getopt
+DEPRECATED=	Upstream repo archived Jun 19, 2023
+EXPIRATION_DATE=2024-12-31
+
+RUN_DEPENDS=	getopt>=0:misc/getopt
 
 USES=		gmake
 USE_GITHUB=	yes

@@ -1,5 +1,5 @@
 PORTNAME=	gotify-server
-PORTVERSION=	2.5.0
+PORTVERSION=	2.6.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/mfechner/freebsd-net-gotify-server/raw/refs/heads/main/:yarn_cache
@@ -15,6 +15,7 @@ LICENSE=	MIT
 BUILD_DEPENDS=	yarn${NODEJS_SUFFIX}>=1.10.0:www/yarn${NODEJS_SUFFIX} \
 		
 USES=		go:modules,1.22 nodejs:build
+USE_RC_SUBR=	gotify_server
 GO_MODULE=	github.com/gotify/server/v2
 
 _BUILD_DATE=	$$(date -u "+%Y-%m-%d-%H%M UTC")
@@ -26,7 +27,11 @@ GO_BUILDFLAGS=	-buildmode=pie -modcacherw \
 		-X 'main.BuildDate=${_BUILD_DATE}' \
 		-X 'main.Mode=prod'"
 
-USE_RC_SUBR=	gotify_server
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400000
+MAKE_ENV+=	 NODE_OPTIONS=--openssl-legacy-provider
+.endif
 
 USERS=		gotify
 GROUPS=		gotify
@@ -39,9 +44,8 @@ post-patch:
 	
 pre-build:
 	@cd ${WRKSRC}/ui && ${SETENV} ${MAKE_ENV} HOME=${WRKDIR} PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install --offline
-	@cd ${WRKSRC}/ui && ${SETENV} ${MAKE_ENV} NODE_OPTIONS=--openssl-legacy-provider yarn build
+	@cd ${WRKSRC}/ui && ${SETENV} ${MAKE_ENV} yarn build
 	#${RM} -r ${STAGEDIR}${PREFIX}/share/.cache
-
 
 pre-install:
 	@${RM} ${WRKSRC}/.yarnrc
@@ -68,4 +72,4 @@ make-yarn-cache: patch
 	cd ${WRKDIR} && ${TAR} -czf ${PORTNAME}-yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} yarn-offline-cache
 	@${ECHO_CMD} upload ${PORTNAME}-yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

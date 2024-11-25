@@ -1,7 +1,7 @@
 PORTNAME=	onlyoffice-documentserver
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.0.1.31
-PORTREVISION=	1
+DISTVERSION=	8.2.0.143
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES+=	LOCAL/mikael/v8/:source1 \
 		LOCAL/mikael/onlyoffice/:source2 \
@@ -72,7 +72,8 @@ MYSQL_USES+=	mysql:client
 PGSQL_USES+=	pgsql
 PGSQL_VARS=	WANT_PGSQL=client
 
-BINARY_ALIAS=	python=${PYTHON_CMD}
+BINARY_ALIAS=	python=${PYTHON_CMD} \
+		strip=true
 USE_LDCONFIG=	yes
 
 WWWDIR=		${PREFIX}/www/onlyoffice
@@ -150,6 +151,7 @@ post-patch:
 		${WRKSRC}/core/Common/3dParty/v8_89/v8/build/toolchain/gcc_toolchain.gni \
 		${WRKSRC}/core/Common/3dParty/v8_89/v8/buildtools/third_party/libc++/BUILD.gn \
 		${WRKSRC}/core/DesktopEditor/fontengine/ApplicationFonts.cpp \
+		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-flush-cache.sh.m4 \
 		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-generate-allfonts.sh.m4 \
 		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-jwt-status.sh.m4 \
 		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-pluginsmanager.sh.m4 \
@@ -244,6 +246,10 @@ do-install:
 		 ${STAGEDIR}/var/db/onlyoffice/documentserver/App_Data/docbuilder \
 		 ${STAGEDIR}${WWWDIR}/Data \
 		 ${STAGEDIR}${WWWDIR}/documentserver/fonts
+
+# Remove bak file
+	${RM} ${STAGEDIR}${WWWDIR}/documentserver/server/Common/config/*.bak
+	${RM} ${STAGEDIR}${WWWDIR}/documentserver/dictionaries/sl_SI/hyph_sl_SI.dic.bak
 
 create-caches-tarball:
 	# do some cleanup first

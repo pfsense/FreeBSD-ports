@@ -1,6 +1,6 @@
 PORTNAME=	mesa
-DISTVERSION=	24.2-branchpoint-4200
-DISTVERSIONSUFFIX=	-g9f58d0b0e7e
+DISTVERSION=	24.3-branchpoint-736
+DISTVERSIONSUFFIX=	-g6088a4373c6
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
@@ -9,6 +9,7 @@ PATCHFILES+=	700efacda59c.patch:-p1:github
 PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
 PATCHFILES+=	2930dcbb3329.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22246
 PATCHFILES+=	11aaf934112c.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22941
+PATCHFILES+=	5d48fb19553c.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/31931
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Bleeding edge Mesa drivers (OpenCL, OpenGL, Vulkan)
@@ -33,7 +34,7 @@ USE_GITLAB=	yes
 USE_LDCONFIG=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 BINARY_ALIAS=	python=${PYTHON_CMD}
-SHEBANG_FILES=	src/vulkan/overlay-layer/${PORTNAME}-overlay-control.py
+SHEBANG_FILES=	src/vulkan/*/*control.py
 MESON_ARGS=	-Dgallium-xa=disabled \
 		-Dandroid-libbacktrace=disabled \
 		-Dlibunwind=disabled \
@@ -113,11 +114,7 @@ OPENCL_LIB_DEPENDS=	libLLVMSPIRVLib.so.${OPENCL_SOVERSION}:devel/spirv-llvm-tran
 OPENCL_RUN_DEPENDS=	libclc-${LLVM_PORT:T}>0:devel/libclc@${LLVM_PORT:T}
 OPENCL_SOVERSION=	${LLVM_VERSION}${${LLVM_VERSION}>=18:?.1:}
 OPENCL_CONFIGURE_ENV=	PKG_CONFIG_PATH="${LLVM_PREFIX}/libdata/pkgconfig"
-OPENCL_MESON_FALSE=	b_lundef # environ
-OPENCL_MESON_TRUE=	gallium-rusticl opencl-spirv
-OPENCL_MESON_ON=	-Dgallium-opencl=icd
-OPENCL_MESON_OFF=	-Dgallium-opencl=disabled
-OPENCL_VARS+=		COINST_RUN_DEPENDS+=clover>0:lang/clover # ICD
+OPENCL_MESON_TRUE=	gallium-rusticl
 OPENCL_IMPLIES=		LLVM ${"${PORT_OPTIONS:Miris}":?iris:radeonsi} # any from OPTIONS_GROUP_GALLIUM
 
 VAAPI_DESC=		Hardware encoding/decoding (only r600, radeonsi)
@@ -131,7 +128,8 @@ VDPAU_IMPLIES=		X11
 
 VKLAYERS_DESC=		Vulkan layers: ${VKLAYERS_MESON_ON:C/.*=//} (implies ${VKLAYERS_IMPLIES})
 VKLAYERS_BUILD_DEPENDS=	glslangValidator:graphics/glslang
-VKLAYERS_MESON_ON=	-Dvulkan-layers=device-select,overlay
+VKLAYERS_LIB_DEPENDS=	libpng.so:graphics/png
+VKLAYERS_MESON_ON=	-Dvulkan-layers=device-select,overlay,screenshot
 VKLAYERS_IMPLIES=	${"${PORT_OPTIONS:Manv}":?anv:radv} # any from OPTIONS_GROUP_VULKAN
 
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
@@ -153,8 +151,6 @@ post-patch:
 		${WRKSRC}/bin/git_sha1_gen.py
 
 post-patch-COINST-on:
-	@${MV} ${WRKSRC}/src/gallium/targets/opencl/MesaOpenCL.def.in \
-		${WRKSRC}/src/gallium/targets/opencl/MesaOpenCL${PKGNAMESUFFIX}.def.in
 	@${MV} ${WRKSRC}/src/util/00-${PORTNAME}-defaults.conf \
 		${WRKSRC}/src/util/00-${PKGBASE}-defaults.conf
 	@${MV} ${WRKSRC}/src/util/00-radv-defaults.conf \

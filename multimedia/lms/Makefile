@@ -1,6 +1,6 @@
 PORTNAME=	lms
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.58.0
+DISTVERSION=	3.60.0
 PORTREVISION=	1
 CATEGORIES=	multimedia
 
@@ -53,10 +53,8 @@ USES+=		compiler:c++20-lang
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|"/etc/lms.conf"|"${PREFIX}/etc/lms.conf"|' \
-		${WRKSRC}/src/lms/main.cpp \
-		${WRKSRC}/src/tools/cover/LmsCover.cpp \
-		${WRKSRC}/src/tools/recommendation/LmsRecommendation.cpp
+	@${REINPLACE_CMD} -e 's|"/etc"|"${PREFIX}/etc"|' \
+		${WRKSRC}/src/libs/core/include/core/SystemPaths.hpp
 	@${REINPLACE_CMD} -e 's|"/usr/|"${PREFIX}/|; s|"/var/lms/"|"/var/db/lms/"|' \
 		${WRKSRC}/conf/lms.conf
 

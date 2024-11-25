@@ -11,6 +11,7 @@ COMMENT=	The Network Time Protocol Distribution
 WWW=		https://www.ntp.org/
 
 LIB_DEPENDS=	libevent.so:devel/libevent
+BUILD_DPENDS=	autogen:devel/autogen
 
 CONFLICTS=	ntpsec openntpd
 

@@ -1,6 +1,6 @@
 PORTNAME=	fife
 PORTVERSION=	0.4.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,6 +10,8 @@ WWW=		https://www.fifengine.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BROKEN=		error: no member named 'extension' in namespace 'boost::filesystem'; did you mean 'GetExtension'?
 
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \
 		libtinyxml.so:textproc/tinyxml \

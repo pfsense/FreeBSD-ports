@@ -1,4 +1,5 @@
 PKGNAMESUFFIX=	-${UNIT_MODNAME}
+PORTREVISION=	3
 
 UNIT_MODNAME=	wasm
 
@@ -30,9 +31,5 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/unit/modules/
 	${INSTALL_LIB} ${WRKSRC}/build/lib/unit/modules/${UNIT_MODNAME}.unit.so \
 		${STAGEDIR}${PREFIX}/libexec/unit/modules/
-
-# Overwrite the target in the ${MASTERDIR}/Makefile
-post-install:
-	@${DO_NADA}
 
 .include "${MASTERDIR}/Makefile"

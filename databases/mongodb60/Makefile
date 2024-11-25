@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	6.0.18
+DISTVERSION=	6.0.19
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -97,6 +97,12 @@ NOAVX_MAKE_ARGS=	--experimental-optimization="-sandybridge"
 
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_MAKE_ARGS=		--use-sasl-client
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500026 # llvm 19.1.2 import
+USES+=		llvm:max=18,build
+.endif
 
 .include <bsd.port.pre.mk>
 
