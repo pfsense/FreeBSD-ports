@@ -27,6 +27,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		filterdns>=0:net/filterdns \
 		filterlog>=0:sysutils/filterlog \
 		hostapd>=0:net/hostapd \
+		if_pppoe-kmod>=0:net/if_pppoe-kmod \
 		igmpproxy>=0:net/igmpproxy \
 		ipmitool>=0:sysutils/ipmitool \
 		isc-dhcp44-client>=0:net/isc-dhcp44-client \

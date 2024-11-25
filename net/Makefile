@@ -268,6 +268,7 @@
     SUBDIR += httpry
     SUBDIR += icmpinfo
     SUBDIR += icpld
+    SUBDIR += if_pppoe-kmod
     SUBDIR += ifdepd
     SUBDIR += iffinder
     SUBDIR += ifstat
