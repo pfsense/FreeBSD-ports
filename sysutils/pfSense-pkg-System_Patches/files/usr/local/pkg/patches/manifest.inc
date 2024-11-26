@@ -26,6 +26,49 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '15525',
+  'versions' => ['24.03', '23.09.1', '2.7.2'],
+  'descr' => 'Fix potential XSS in the file browser on diag_edit.php',
+  'links' => [
+      [ 'text' => 'pfSense-SA-24_05.webgui',
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_05.webgui.asc', ],
+      [ 'text' => 'Redmine #15525',
+         'url' => 'https://redmine.pfsense.org/issues/15525', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '15702',
+  'versions' => ['24.03', '23.09.1', '2.7.2'],
+  'descr' => 'Fix potential information disclosure due to misrouted DHCP server responses',
+  'links' => [
+      [ 'text' => 'Trigger a filter reload after applying to activate' ],
+      [ 'text' => 'pfSense-SA-24_07.dhclient',
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_07.dhclient.asc', ],
+      [ 'text' => 'Redmine #15702',
+         'url' => 'https://redmine.pfsense.org/issues/15702', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '15778',
+  'versions' => ['24.03', '23.09.1', '2.7.2'],
+  'descr' => 'Fix potential stored XSS in Interface Groups',
+  'links' => [
+      [ 'text' => 'pfSense-SA-24_08.webgui',
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-24_08.webgui.asc', ],
+      [ 'text' => 'Redmine #15778',
+         'url' => 'https://redmine.pfsense.org/issues/15778', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'CVE-2024-6387-workaround',
   'versions' => ['24.03', '23.09.1', '2.7.2'],
   'descr' => 'Workaround for SSH CVE-2024-6387',
@@ -49,7 +92,8 @@ $recommended_patches = [
   'basedir' => '/',
   'pathstrip' => 2,
   'ignorewhitespace' => true,
-],[
+],
+[
   'uniqid' => '15449',
   'versions' => ['24.03'],
   'descr' => 'Fix IPsec VTI static routes not being added after boot',
@@ -61,7 +105,8 @@ $recommended_patches = [
   'basedir' => '/',
   'pathstrip' => 2,
   'ignorewhitespace' => true,
-],[
+],
+[
   'uniqid' => '15430-24_03',
   'versions' => ['24.03'],
   'descr' => 'Automatically use floating states for IPsec rules',
@@ -73,7 +118,8 @@ $recommended_patches = [
   'basedir' => '/',
   'pathstrip' => 2,
   'ignorewhitespace' => true,
-],[
+],
+[
   'uniqid' => '27fc5a3020fe981b7a5bc98fc9b1660e8773fc7d',
   'versions' => ['24.03'],
   'descr' => 'Fix local CAs not being added to the Trust Store',
@@ -248,7 +294,8 @@ $recommended_patches = [
   'basedir' => '/',
   'pathstrip' => 2,
   'ignorewhitespace' => true,
-],[
+],
+[
   'uniqid' => '7d87d7cbce1bf6f0c8a44888c640e2c29393a9cb',
   'versions' => ['23.09.1', '2.7.2'],
   'descr' => 'Fix overly lenient permissions on tmpfs RAM disk for /var',
