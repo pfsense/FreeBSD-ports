@@ -37,12 +37,9 @@ $id = $_REQUEST['id'];
 $a_mailreports = isset($id) ? config_get_path("mailreports/schedule/{$id}") : null;
 
 if ($a_mailreports) {
-	config_init_path("mailreports/schedule/{$id}/cmd/row");
-	config_init_path("mailreports/schedule/{$id}/log/row");
-
+	$a_cmds = array_get_path($a_mailreports, 'cmd/row', []);
+	$a_logs = array_get_path($a_mailreports, 'log/row', []);
 	$pconfig = $a_mailreports;
-	$a_cmds = $a_mailreports['cmd']['row'];
-	$a_logs = $a_mailreports['log']['row'];
 }
 
 $frequencies = array("daily", "weekly", "monthly", "quarterly", "yearly");
@@ -207,7 +204,7 @@ if ($_POST) {
 	if ($a_mailreports) {
 		config_set_path("mailreports/schedule/{$id}", $pconfig);
 	} else {
-		config_set_path("mailreports/schedule/{$id}/", $pconfig);
+		config_set_path("mailreports/schedule/", $pconfig);
 	}
 
 	// Fix up cron job(s)
