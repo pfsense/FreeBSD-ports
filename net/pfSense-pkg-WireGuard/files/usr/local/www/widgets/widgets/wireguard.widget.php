@@ -37,7 +37,22 @@ global $wgg;
 
 wg_globals();
 
-$widgetkey			= (isset($_POST['widgetkey'])) ? $_POST['widgetkey'] : $widgetkey;
+/*
+ * Validate the "widgetkey" value.
+ * When this widget is present on the Dashboard, $widgetkey is defined before
+ * the Dashboard includes the widget. During other types of requests, such as
+ * saving settings or AJAX, the value may be set via $_POST or similar.
+ */
+if ($_REQUEST['widgetkey']) {
+	[$wname, $wid] = explode('-', $_REQUEST['widgetkey'], 2);
+	if (($wname == basename(__FILE__, '.widget.php')) &&
+	    is_numericint($wid)) {
+		$widgetkey = $_REQUEST['widgetkey'];
+	} else {
+		print gettext("Invalid Widget Key");
+		exit;
+	}
+}
 
 $widget_config			= $user_settings['widgets'][$widgetkey];
 

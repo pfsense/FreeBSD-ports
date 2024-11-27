@@ -25,6 +25,23 @@ require_once("pfsense-utils.inc");
 require_once("functions.inc");
 require_once("/usr/local/www/widgets/include/widget-apcupsd.inc");
 
+/*
+ * Validate the "widgetkey" value.
+ * When this widget is present on the Dashboard, $widgetkey is defined before
+ * the Dashboard includes the widget. During other types of requests, such as
+ * saving settings or AJAX, the value may be set via $_POST or similar.
+ */
+if ($_REQUEST['widgetkey']) {
+	[$wname, $wid] = explode('-', $_REQUEST['widgetkey'], 2);
+	if (($wname == basename(__FILE__, '.widget.php')) &&
+	    is_numericint($wid)) {
+		$widgetkey = $_REQUEST['widgetkey'];
+	} else {
+		print gettext("Invalid Widget Key");
+		exit;
+	}
+}
+
 if (!function_exists('compose_apc_contents')) {
 	function compose_apc_contents($widgetkey) {
 		global $user_settings;
@@ -348,13 +365,16 @@ if ($_POST['widgetkey']) {
 	if (!is_array($user_settings["widgets"][$_POST['widgetkey']])) {
 		$user_settings["widgets"][$_POST['widgetkey']] = array();
 	}
-	if (isset($_POST["apc_temp_dis_type"])) {
+	if (isset($_POST["apc_temp_dis_type"]) &&
+	    in_array($_POST["apc_temp_dis_type"], ['degc', 'degf', 'both_deg'])) {
 		$user_settings["widgets"][$_POST['widgetkey']]["apc_temp_dis_type"] = $_POST["apc_temp_dis_type"];
 	}
-	if (isset($_POST["apc_host_dis"])){
+	if (isset($_POST["apc_host_dis"]) &&
+	    in_array($_POST["apc_host_dis"], ['yes', 'no'])) {
 		$user_settings["widgets"][$_POST['widgetkey']]["apc_host_dis"] = $_POST["apc_host_dis"];
 	}
-	if (isset($_POST["apc_temp_dis_type_var"])) {
+	if (isset($_POST["apc_temp_dis_type_var"]) &&
+	    in_array($_POST["apc_temp_dis_type_var"], ['1', '2'])) {
 		$user_settings["widgets"][$_POST['widgetkey']]["apc_temp_dis_type_var"] = $_POST["apc_temp_dis_type_var"];
 	}
 	if (isset($_POST["apc_load_warning_threshold"])) {
