@@ -31,11 +31,12 @@ require_once("/usr/local/www/widgets/include/widget-apcupsd.inc");
  * the Dashboard includes the widget. During other types of requests, such as
  * saving settings or AJAX, the value may be set via $_POST or similar.
  */
-if ($_REQUEST['widgetkey']) {
-	[$wname, $wid] = explode('-', $_REQUEST['widgetkey'], 2);
+if ($_POST['widgetkey'] || $_GET['widgetkey']) {
+	$rwidgetkey = isset($_POST['widgetkey']) ? $_POST['widgetkey'] : (isset($_GET['widgetkey']) ? $_GET['widgetkey'] : null);
+	[$wname, $wid] = explode('-', $rwidgetkey, 2);
 	if (($wname == basename(__FILE__, '.widget.php')) &&
 	    is_numericint($wid)) {
-		$widgetkey = $_REQUEST['widgetkey'];
+		$widgetkey = $rwidgetkey;
 	} else {
 		print gettext("Invalid Widget Key");
 		exit;
