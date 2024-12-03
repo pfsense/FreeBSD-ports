@@ -8,7 +8,7 @@ COMMENT=	PPPoE Kernel Driver
 
 FETCH_DEPENDS=	curl:ftp/curl
 
-USES=		kmod
+USES=		kmod fakeroot
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
