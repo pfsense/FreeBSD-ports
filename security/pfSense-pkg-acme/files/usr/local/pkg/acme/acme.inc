@@ -500,6 +500,17 @@ $acme_domain_validation_method['dns_ad'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_alviy'] = [
+	'name' => 'DNS-Alviy.com',
+	'fields' => [
+		'Alviy_token' => [
+			'name' => 'alviy_token',
+			'description' => 'API token (https://cloud.alviy.com/token)',
+			'columnheader' => 'API token',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_anx'] = [
 	'name' => 'DNS-Anexia CloudDNS',
 	'fields' => [
@@ -646,6 +657,18 @@ $acme_domain_validation_method['dns_azure'] = [
 			'columnheader' => 'Client Secret',
 			'type' => 'password',
 		],
+		'AZUREDNS_MANAGEDIDENTITY' => [
+			'name' => 'azuredns_managedidentity',
+			'description' => 'Use Managed Identity assigned to a resource instead of a service principal ("true" or "false")',
+			'columnheader' => 'Managed Identity',
+			'type' => 'textbox',
+		],
+		'AZUREDNS_BEARERTOKEN' => [
+			'name' => 'azuredns_bearertoken',
+			'description' => 'Optional token used instead of service principal credentials or managed identity',
+			'columnheader' => 'Bearer Token',
+			'type' => 'password',
+		],
 	]
 ];
 $acme_domain_validation_method['dns_bookmyname'] = [
@@ -725,34 +748,34 @@ $acme_domain_validation_method['dns_cloudns'] = [
 $acme_domain_validation_method['dns_cf'] = [
 	'name' => 'DNS-Cloudflare',
 	'fields' => [
+		'CF_Token' => [
+			'name' => 'cf_token',
+			'description' => 'Token Auth: Cloudflare API Token (https://dash.cloudflare.com/profile/api-tokens)',
+			'columnheader' => 'Token',
+			'type' => 'password',
+		],
+		'CF_Zone_ID' => [
+			'name' => 'cf_zone_id',
+			'description' => 'Token Auth: Cloudflare API Zone ID for single zone certificates',
+			'columnheader' => 'Token Zone ID',
+			'type' => 'textbox',
+		],
+		'CF_Account_ID' => [
+			'name' => 'cf_account_id',
+			'description' => 'Token Auth: Cloudflare API Account ID for multi-zone certificates',
+			'columnheader' => 'Token Account ID',
+			'type' => 'textbox',
+		],
 		'CF_Key' => [
 			'name' => 'cf_key',
-			'description' => 'Cloudflare API Key',
-			'columnheader' => 'Key',
+			'description' => 'Global Auth: Cloudflare Global API Key (https://dash.cloudflare.com/profile/api-tokens)',
+			'columnheader' => 'Global Key',
 			'type' => 'password',
 		],
 		'CF_Email' => [
 			'name' => 'cf_email',
-			'description' => 'Cloudflare API Email Address',
-			'columnheader' => 'Email',
-			'type' => 'textbox',
-		],
-		'CF_Token' => [
-			'name' => 'cf_token',
-			'description' => 'Cloudflare API Token',
-			'columnheader' => 'Token',
-			'type' => 'password',
-		],
-		'CF_Account_ID' => [
-			'name' => 'cf_account_id',
-			'description' => 'Cloudflare API Account ID',
-			'columnheader' => 'Account ID',
-			'type' => 'textbox',
-		],
-		'CF_Zone_ID' => [
-			'name' => 'cf_zone_id',
-			'description' => 'Cloudflare API Zone ID',
-			'columnheader' => 'Zone ID',
+			'description' => 'Global Auth: Cloudflare API Email Address',
+			'columnheader' => 'Global Email',
 			'type' => 'textbox',
 		],
 	]
@@ -1493,6 +1516,17 @@ $acme_domain_validation_method['dns_ionos'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_ionos_cloud'] = [
+	'name' => 'DNS-IONOS Cloud DNS (ionos.com)',
+	'fields' => [
+		'IONOS_TOKEN' => [
+			'name' => 'ionos_token',
+			'description' => 'API Token',
+			'columnheader' => 'API Token',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_ipv64'] = [
 	'name' => 'DNS-IPv64.net',
 	'fields' => [
@@ -1705,7 +1739,7 @@ $acme_domain_validation_method['dns_limacity'] = [
 	]
 ];
 $acme_domain_validation_method['dns_linode'] = [
-	'name' => 'DNS-Linode',
+	'name' => 'DNS-Linode (Deprecated -- Use v4)',
 	'fields' => [
 		'LINODE_API_KEY' => [
 			'name' => 'linode_api_key',
@@ -2039,6 +2073,23 @@ $acme_domain_validation_method['dns_nw'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_omglol'] = [
+	'name' => 'DNS-omg.lol',
+	'fields' => [
+		'OMG_Address' => [
+			'name' => 'omg_address',
+			'description' => 'omg.lol address, without the preceding @ (See https://home.omg.lol/dashboard)',
+			'columnheader' => 'Address',
+			'type' => 'textbox',
+		],
+		'OMG_ApiKey' => [
+			'name' => 'omg_apikey',
+			'description' => 'API Key from omg.lol (https://home.omg.lol/account)',
+			'columnheader' => 'API Key',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_one'] = [
 	'name' => 'DNS-one.com',
 	'fields' => [
@@ -2144,10 +2195,13 @@ $acme_domain_validation_method['dns_ovh'] = [
 					'name' => 'None'
 				],
 				'ovh-eu' => [
-					'name' => 'OVH Europe'
+					'name' => 'OVH Europe (Default)'
 				],
 				'ovh-ca' => [
 					'name' => 'OVH Canada'
+				],
+				'ovh-us' => [
+					'name' => 'OVH USA'
 				],
 				'kimsufi-eu' => [
 					'name' => 'Kimsufi Europe'
@@ -2481,6 +2535,17 @@ $acme_domain_validation_method['dns_tencent'] = [
 		],
 	]
 ];
+$acme_domain_validation_method['dns_timeweb'] = [
+	'name' => 'DNS-Timeweb.Cloud',
+	'fields' => [
+		'TW_Token' => [
+			'name' => 'tw_token',
+			'description' => 'API token (JWT, https://timeweb.cloud/my/api-keys)',
+			'columnheader' => 'API Token',
+			'type' => 'password',
+		],
+	]
+];
 $acme_domain_validation_method['dns_udr'] = [
 	'name' => 'DNS-United-Domains Reselling',
 	'fields' => [
@@ -2516,7 +2581,7 @@ $acme_domain_validation_method['dns_ultra'] = [
 	]
 ];
 $acme_domain_validation_method['dns_unoeuro'] = [
-	'name' => 'DNS-UnoEuro',
+	'name' => 'DNS-UnoEuro (Deprecated -- Now simply.com)',
 	'fields' => [
 		'UNO_User' => [
 			'name' => 'uno_user',
@@ -2651,6 +2716,35 @@ $acme_domain_validation_method['dns_yandex'] = [
 			'name' => 'pdd_token',
 			'description' => 'Yandex PDD Token, generate at <a href="https://pddimp.yandex.ru/api2/admin/get_token">https://pddimp.yandex.ru/api2/admin/get_token</a>',
 			'columnheader' => 'PDD Token',
+			'type' => 'password',
+		],
+	]
+];
+$acme_domain_validation_method['dns_yandex360'] = [
+	'name' => 'DNS-Yandex 360 for Business',
+	'fields' => [
+		'YANDEX360_CLIENT_ID' => [
+			'name' => 'yandex360_client_id',
+			'description' => 'OAuth 2.0 Client ID',
+			'columnheader' => 'Client ID',
+			'type' => 'textbox',
+		],
+		'YANDEX360_CLIENT_SECRET' => [
+			'name' => 'yandex360_client_secret',
+			'description' => 'OAuth 2.0 Client secret',
+			'columnheader' => 'Client Secret',
+			'type' => 'password',
+		],
+		'YANDEX360_ORG_ID' => [
+			'name' => 'yandex360_org_id',
+			'description' => 'Organization ID (Optional)',
+			'columnheader' => 'Address',
+			'type' => 'textbox',
+		],
+		'YANDEX360_ACCESS_TOKEN' => [
+			'name' => 'yandex360_access_token',
+			'description' => 'OAuth 2.0 Access token (Optional)',
+			'columnheader' => 'Access Token',
 			'type' => 'password',
 		],
 	]

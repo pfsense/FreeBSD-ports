@@ -158,6 +158,9 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				<tbody class="user-entries">
 <?php
 		foreach ($a_accountkeys as $accountkey) {
+			if (empty($accountkey) || !is_array($accountkey)) {
+				continue;
+			}
 			$accountname = htmlspecialchars($accountkey['name']);
 			?>
 			<tr id="fr<?=$accountname;?>" <?=$display?> onClick="fr_toggle('<?=$accountname;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$accountname;?>';">
