@@ -19,4 +19,6 @@ ZABBIXINTERNALNAME=	zabbix-proxy7
 ZABBIXTITLE=	Zabbix Proxy 7
 ZABBIXVERSION=	7
 
+PORTREVISION=	1
+
 .include "${MASTERDIR}/Makefile"

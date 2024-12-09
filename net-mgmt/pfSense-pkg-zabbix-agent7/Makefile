@@ -19,4 +19,6 @@ ZABBIXINTERNALNAME=	zabbix-agent7
 ZABBIXTITLE=	Zabbix Agent 7
 ZABBIXVERSION=	7
 
+PORTREVISION=	1
+
 .include "${MASTERDIR}/Makefile"
