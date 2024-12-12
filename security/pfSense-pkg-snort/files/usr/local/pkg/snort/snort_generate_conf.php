@@ -183,10 +183,7 @@ if(!empty($snortcfg['performance']))
 	$snort_performance = $snortcfg['performance'];
 
 /* if user has defined a custom ssh port, use it */
-if(config_path_enabled('system/ssh/port'))
-	$ssh_port = config_get_path('system/ssh/port');
-else
-	$ssh_port = "22";
+$ssh_port = config_get_path('system/ssh/port', '22');
 
 /* Define an array of default values for the various preprocessor ports */
 $snort_ports = array(
