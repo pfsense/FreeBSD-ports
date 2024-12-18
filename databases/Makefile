@@ -757,6 +757,7 @@
     SUBDIR += py-carbon
     SUBDIR += py-cassandra-driver
     SUBDIR += py-couchdb
+    SUBDIR += py-cymysql
     SUBDIR += py-databases
     SUBDIR += py-dbf
     SUBDIR += py-dbt-core
@@ -1109,7 +1110,6 @@
     SUBDIR += valkey
     SUBDIR += vfront
     SUBDIR += virtualpg
-    SUBDIR += vsqlite
     SUBDIR += webdis
     SUBDIR += wfb2sql
     SUBDIR += xapian-bindings

@@ -58,6 +58,8 @@ PLIST_SUB=	ASSET_FILE=${_ASSET_FILE} \
 		CONFTRGT=${CONFIGURE_TARGET} \
 		VER=${DISTVERSION}
 
+PIE_UNSAFE=	yes
+
 OPTIONS_DEFINE=			ASSETS NLS
 .if exists(/usr/lib32/libc.so)
 OPTIONS_DEFINE_amd64+=	MULTILIB
@@ -115,7 +117,7 @@ _TOOLCHAIN_PATHS=	/sbin:/bin:/usr/sbin:/usr/bin:${_GCC6AUX_PATH}:${PREFIX}/bin:$
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == i386 || ${ARCH} == aarch64
+.if ${ARCH} == i386
 LIB_DIR_32=	""
 PLIST_SUB+=	64BITS="@comment "
 .else

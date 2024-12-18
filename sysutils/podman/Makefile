@@ -1,16 +1,18 @@
 PORTNAME=	podman
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.1.1
-PORTREVISION=	7
+DISTVERSION=	5.2.5
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	dfr@FreeBSD.org
 COMMENT=	Manage Pods, Containers and Container Images
 WWW=		https://podman.io/
 
-LICENSE=	GPLv2
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash \
+		ggrep:textproc/gnugrep \
 		go-md2man:textproc/go-md2man \
 		gsed:textproc/gsed
 LIB_DEPENDS=	libgpgme.so:security/gpgme

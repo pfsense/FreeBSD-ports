@@ -26,9 +26,11 @@
     SUBDIR += R-cran-magick
     SUBDIR += R-cran-munsell
     SUBDIR += R-cran-pROC
+    SUBDIR += R-cran-pdftools
     SUBDIR += R-cran-pixmap
     SUBDIR += R-cran-png
     SUBDIR += R-cran-qcc
+    SUBDIR += R-cran-qpdf
     SUBDIR += R-cran-ragg
     SUBDIR += R-cran-s2
     SUBDIR += R-cran-scales
@@ -853,6 +855,7 @@
     SUBDIR += poppler-qt5
     SUBDIR += poppler-qt6
     SUBDIR += poppler-utils
+    SUBDIR += poselib
     SUBDIR += potrace
     SUBDIR += povray-meta
     SUBDIR += povray37
@@ -940,6 +943,8 @@
     SUBDIR += py-momepy
     SUBDIR += py-mpl-interactions
     SUBDIR += py-mpl-scatter-density
+    SUBDIR += py-napari-console
+    SUBDIR += py-napari-plugin-engine
     SUBDIR += py-nwdiag
     SUBDIR += py-opencolorio
     SUBDIR += py-openimageio
@@ -1115,6 +1120,8 @@
     SUBDIR += rubygem-ruby-graphviz
     SUBDIR += rubygem-ruby-vips
     SUBDIR += rubygem-scruffy
+    SUBDIR += rubygem-svg_optimizer
+    SUBDIR += rubygem-svg_sprite
     SUBDIR += rubygem-tanuki_emoji
     SUBDIR += rx
     SUBDIR += s10sh

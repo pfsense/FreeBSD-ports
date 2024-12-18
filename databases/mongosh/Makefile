@@ -22,6 +22,10 @@ WWW=		https://github.com/mongodb-js/mongosh/
 
 LICENSE=	APACHE20
 
+BROKEN_aarch64=	fails to compile: nx/src/native/index.js:147 Error: Unsupported architecture on FreeBSD: arm64
+BROKEN_armv7=	fails to compile: nx/src/native/index.js:147 Error: Unsupported architecture on FreeBSD: arm
+BROKEN_i386=	fails to compile: nx/src/native/index.js:147 Error: Unsupported architecture on FreeBSD: ia32
+
 FETCH_DEPENDS=	npm${NODEJS_SUFFIX}>0:www/npm${NODEJS_SUFFIX}
 BUILD_DEPENDS=	bash>0:shells/bash \
 		brotli>=1.0.9,1:archivers/brotli \
@@ -29,8 +33,7 @@ BUILD_DEPENDS=	bash>0:shells/bash \
 		libnghttp2>=1.45.1:www/libnghttp2 \
 		libuv>=1.42.0:devel/libuv \
 		objdump:devel/binutils \
-		git>0:devel/git \
-		${PREFIX}/include/gssapi/gssapi_generic.h:security/krb5
+		git>0:devel/git
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 LIB_DEPENDS=	libmongocrypt.so:databases/libmongocrypt \
 		libbrotlidec.so:archivers/brotli \
@@ -38,7 +41,7 @@ LIB_DEPENDS=	libmongocrypt.so:databases/libmongocrypt \
 		libnghttp2.so:www/libnghttp2 \
 		libuv.so:devel/libuv
 
-USES=		compiler:c++11-lib gmake localbase pkgconfig nodejs:20,build python:build ssl
+USES=		compiler:c++11-lib gmake gssapi:mit localbase pkgconfig nodejs:20,build python:build ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	VultureProject

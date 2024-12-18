@@ -23,9 +23,9 @@ RUN_DEPENDS=	dnsmasq:dns/dnsmasq
 OPTIONS_DEFINE=	DOCS NLS NSS QEMU READLINE SASL LIBSSH LIBSSH2 ZFS
 OPTIONS_DEFAULT=	READLINE LIBSSH LIBSSH2 ZFS
 OPTIONS_DEFINE_amd64=	XEN
-.if exists(/usr/sbin/bhyve)
-OPTIONS_DEFINE_amd64+=	BHYVE
-OPTIONS_DEFAULT_amd64+=	BHYVE
+.if exists(/usr/sbin/bhyveload)
+OPTIONS_DEFINE+=	BHYVE
+OPTIONS_DEFAULT+=	BHYVE
 .else
 PLIST_SUB+=		BHYVE="@comment "
 SUB_LIST+=		BHYVE="@comment "
@@ -70,8 +70,6 @@ LIBSSH2_MESON_ENABLED=	libssh2
 LIBSSH2_LIB_DEPENDS=	libssh2.so:security/libssh2
 
 ZFS_MESON_ENABLED=	storage_zfs
-
-VARDIR=		/var
 
 MESON_ARGS+=	\
 		-Dapparmor=disabled \
@@ -122,8 +120,7 @@ MESON_ARGS+=	\
 		-Dwireshark_dissector=disabled \
 		-Dinit_script=none \
 		-Dbash_completion=disabled \
-		-Duserfaultfd_sysctl=disabled \
-		-Dlocalstatedir=${VARDIR}
+		-Duserfaultfd_sysctl=disabled
 
 # random_data fix can be removed when 8.x is eol
 CONFIGURE_ENV=	ac_cv_type_struct_random_data=""
@@ -203,7 +200,7 @@ post-install:
 	lib/libvirt/network \
 	lib/libvirt/qemu/channel/target \
 	cache/libvirt/qemu
-	@${MKDIR} "${STAGEDIR}/${VARDIR}/${dir}"
+	@${MKDIR} "${STAGEDIR}/var/${dir}"
 .endfor
 
 .for file in ${CONF_FILES}

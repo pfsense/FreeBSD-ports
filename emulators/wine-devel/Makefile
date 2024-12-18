@@ -1,8 +1,8 @@
 PORTNAME=	wine
-DISTVERSION=	9.22
+DISTVERSION=	10.0-rc2
 PORTEPOCH=	1
 CATEGORIES=	emulators
-MASTER_SITES=	https://dl.winehq.org/wine/source/9.x/
+MASTER_SITES=	https://dl.winehq.org/wine/source/10.0/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -67,6 +67,8 @@ BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${LLVM_VERSION} \
 		lld-link=${LOCALBASE}/bin/lld-link${LLVM_VERSION}
 
 SUB_FILES=	pkg-message
+
+PIE_UNSAFE=	yes
 
 PORTDATA=	wine.inf
 

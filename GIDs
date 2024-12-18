@@ -288,7 +288,7 @@ snmpd:*:344:
 _metronome:*:345:
 ngircd:*:346:
 eturnal:*:347:
-# free: 348
+davfs2:*:348:
 # free: 349
 _sabnzbd:*:350:
 sonarr:*:351:
@@ -752,7 +752,7 @@ bosun:*:807:
 clixon:*:808:
 # free: 809
 # free: 810
-# free: 811
+calibreweb:*:811:
 foreman_proxy:*:812:
 hitch:*:813:
 puppet:*:814:
@@ -806,7 +806,7 @@ plocate:*:860:
 # free: 862
 # free: 863
 # free: 864
-# free: 865
+z2m:*:865:
 vglusers:*:866:
 sqlpage:*:867:
 jellyfin:*:868:

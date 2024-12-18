@@ -1,7 +1,7 @@
 PORTNAME=	coverm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,6 +11,7 @@ WWW=		https://github.com/wwood/CoverM
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENCE.txt
 
+BROKEN_aarch64=	compilation fails, see https://github.com/wwood/CoverM/issues/234
 BROKEN_i386=	compilation fails, see https://github.com/wwood/CoverM/issues/227
 
 USES=		cargo

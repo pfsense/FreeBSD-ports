@@ -1,10 +1,14 @@
 PORTNAME=	spidermonkey
 DISTVERSION=	91.13.0
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source
 PKGNAMESUFFIX=	${SP_VER}
 DISTNAME=	firefox-${DISTVERSION}esr.source
+
+PATCH_SITES=	https://hg.mozilla.org/mozilla-central/raw-rev/
+PATCHFILES+=	223087fdc29f18678f6174e9807b8780e439acf6:-p1 # https://bugzilla.mozilla.org/1894423
+PATCHFILES+=	68ff4d3f7338248b4d67cf03aade5a73f8d396b2:-p1 # https://bugzilla.mozilla.org/1849070
 
 MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Standalone JavaScript based from Mozilla 91-esr

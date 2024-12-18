@@ -189,6 +189,7 @@
     SUBDIR += apache-commons-io
     SUBDIR += apache-commons-jxpath
     SUBDIR += apache-log4j2
+    SUBDIR += apache-orc
     SUBDIR += apache-rat
     SUBDIR += aphpbreakdown
     SUBDIR += aphpunit
@@ -436,8 +437,6 @@
     SUBDIR += clisp-hyperspec
     SUBDIR += clixon
     SUBDIR += clojure-cider
-    SUBDIR += cloudabi
-    SUBDIR += cloudabi-toolchain
     SUBDIR += clthreads
     SUBDIR += cltune
     SUBDIR += clxclient
@@ -829,8 +828,8 @@
     SUBDIR += git-extras
     SUBDIR += git-filter-repo
     SUBDIR += git-filter-repo-devel
-    SUBDIR += git-gui
     SUBDIR += git-graph
+    SUBDIR += git-gui
     SUBDIR += git-lab
     SUBDIR += git-lfs
     SUBDIR += git-merge-changelog
@@ -1529,6 +1528,7 @@
     SUBDIR += linux-rl9-devtools
     SUBDIR += linux-rl9-elfutils-libelf
     SUBDIR += linux-rl9-elfutils-libs
+    SUBDIR += linux-rl9-highway
     SUBDIR += linux-rl9-icu
     SUBDIR += linux-rl9-libatomic
     SUBDIR += linux-rl9-libevent
@@ -1540,13 +1540,15 @@
     SUBDIR += linux-rl9-libthai
     SUBDIR += linux-rl9-libtool-ltdl
     SUBDIR += linux-rl9-libunistring
+    SUBDIR += linux-rl9-lld
+    SUBDIR += linux-rl9-lldb
     SUBDIR += linux-rl9-llvm
+    SUBDIR += linux-rl9-npth
     SUBDIR += linux-rl9-nspr
     SUBDIR += linux-rl9-ocl-icd
     SUBDIR += linux-rl9-orc
     SUBDIR += linux-rl9-qt5
     SUBDIR += linux-rl9-qt5-qtbase
-    SUBDIR += linux-rl9-qt5-qtdeclarative
     SUBDIR += linux-rl9-qt5-qtscript
     SUBDIR += linux-rl9-qt5-qttools
     SUBDIR += linux-rl9-strace
@@ -1793,7 +1795,6 @@
     SUBDIR += ocaml-rresult
     SUBDIR += ocaml-sdl
     SUBDIR += ocaml-sem
-    SUBDIR += ocaml-seq
     SUBDIR += ocaml-sexplib
     SUBDIR += ocaml-sexplib0
     SUBDIR += ocaml-stdio
@@ -4384,6 +4385,7 @@
     SUBDIR += py-apipkg
     SUBDIR += py-apispec
     SUBDIR += py-apispec-webframeworks
+    SUBDIR += py-app-model
     SUBDIR += py-appdirs
     SUBDIR += py-applicationinsights
     SUBDIR += py-apptools
@@ -4583,6 +4585,7 @@
     SUBDIR += py-cabby
     SUBDIR += py-cached-property
     SUBDIR += py-cachetools
+    SUBDIR += py-cachey
     SUBDIR += py-cacheyou
     SUBDIR += py-cachy
     SUBDIR += py-cadquery-pywrap
@@ -4653,6 +4656,7 @@
     SUBDIR += py-cluster
     SUBDIR += py-cmd2
     SUBDIR += py-cmdtest
+    SUBDIR += py-cobble
     SUBDIR += py-codecov
     SUBDIR += py-codegen
     SUBDIR += py-cog
@@ -4932,6 +4936,7 @@
     SUBDIR += py-googleapis-common-protos
     SUBDIR += py-gptscript
     SUBDIR += py-gpxpy
+    SUBDIR += py-gql
     SUBDIR += py-graal
     SUBDIR += py-grab
     SUBDIR += py-graphene
@@ -5000,6 +5005,7 @@
     SUBDIR += py-importlib-metadata6
     SUBDIR += py-importlib-metadata7
     SUBDIR += py-importlib-resources
+    SUBDIR += py-in-n-out
     SUBDIR += py-incremental
     SUBDIR += py-infinity
     SUBDIR += py-inflect
@@ -5509,10 +5515,12 @@
     SUBDIR += py-pycognito
     SUBDIR += py-pycompilation
     SUBDIR += py-pycomplete
+    SUBDIR += py-pyconify
     SUBDIR += py-pycparser
     SUBDIR += py-pycrdt
     SUBDIR += py-pycrdt-websocket
     SUBDIR += py-pydantic
+    SUBDIR += py-pydantic-compat
     SUBDIR += py-pydantic-core
     SUBDIR += py-pydantic-extra-types
     SUBDIR += py-pydantic-settings
@@ -5882,7 +5890,7 @@
     SUBDIR += py-shtab
     SUBDIR += py-signalr-client-aio
     SUBDIR += py-simple-parsing
-    SUBDIR += py-simple-term-menu
+    SUBDIR += py-simple_term_menu
     SUBDIR += py-simpleeval
     SUBDIR += py-simplegeneric
     SUBDIR += py-simplejson
@@ -6709,6 +6717,8 @@
     SUBDIR += rubygem-aws-sdk-networkmanager
     SUBDIR += rubygem-aws-sdk-networkmonitor
     SUBDIR += rubygem-aws-sdk-nimblestudio
+    SUBDIR += rubygem-aws-sdk-notifications
+    SUBDIR += rubygem-aws-sdk-notificationscontacts
     SUBDIR += rubygem-aws-sdk-oam
     SUBDIR += rubygem-aws-sdk-omics
     SUBDIR += rubygem-aws-sdk-opensearchserverless
@@ -7298,6 +7308,7 @@
     SUBDIR += rubygem-google-apis-cloudbilling_v1
     SUBDIR += rubygem-google-apis-cloudkms_v1
     SUBDIR += rubygem-google-apis-cloudresourcemanager_v1
+    SUBDIR += rubygem-google-apis-cloudresourcemanager_v1-gitlab
     SUBDIR += rubygem-google-apis-cloudresourcemanager_v1035
     SUBDIR += rubygem-google-apis-cloudresourcemanager_v2
     SUBDIR += rubygem-google-apis-cloudresourcemanager_v3
@@ -7444,6 +7455,7 @@
     SUBDIR += rubygem-libyajl2
     SUBDIR += rubygem-license_finder
     SUBDIR += rubygem-licensee
+    SUBDIR += rubygem-licensee-gitlab
     SUBDIR += rubygem-listen
     SUBDIR += rubygem-little-plugger
     SUBDIR += rubygem-local_time
@@ -8066,7 +8078,6 @@
     SUBDIR += serdisplib
     SUBDIR += sfml
     SUBDIR += sfml1
-    SUBDIR += sfml251
     SUBDIR += sfsexp
     SUBDIR += sgb
     SUBDIR += shadered

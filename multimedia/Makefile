@@ -215,6 +215,7 @@
     SUBDIR += linux-rl9-libvdpau
     SUBDIR += linux-rl9-libvpx
     SUBDIR += linux-rl9-qt5-qtmultimedia
+    SUBDIR += linux-rl9-vmaf
     SUBDIR += linux-tsmuxer
     SUBDIR += linux_dvbwrapper-kmod
     SUBDIR += livego
@@ -351,6 +352,7 @@
     SUBDIR += rubygem-streamio-ffmpeg
     SUBDIR += scte35dump
     SUBDIR += shotcut
+    SUBDIR += shotcut-qt6
     SUBDIR += simplescreenrecorder
     SUBDIR += smpeg
     SUBDIR += smpeg2
@@ -393,7 +395,6 @@
     SUBDIR += video-trimmer
     SUBDIR += vlc
     SUBDIR += vmaf
-    SUBDIR += vtkmpeg2encode
     SUBDIR += vvdec
     SUBDIR += vvenc
     SUBDIR += w_scan2

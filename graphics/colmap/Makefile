@@ -1,6 +1,5 @@
 PORTNAME=	colmap
-DISTVERSION=	3.10
-PORTREVISION=	1
+DISTVERSION=	3.11.1
 CATEGORIES=	graphics
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -17,13 +16,15 @@ LICENSE_FILE_MIT=	${WRKSRC}/src/thirdparty/PoissonRecon/LICENSE
 LICENSE_FILE_SIFTGPU=	${WRKSRC}/src/thirdparty/SiftGPU/LICENSE
 LICENSE_PERMS_SIFTGPU=	dist-mirror pkg-mirror auto-accept
 
-LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
+LIB_DEPENDS=	libPoseLib.so:graphics/poselib \
+		libboost_filesystem.so:devel/boost-libs \
 		libceres.so:math/ceres-solver \
 		libflann.so:math/flann \
 		libfreeimage.so:graphics/freeimage \
 		libglog.so:devel/glog \
 		liblz4.so:archivers/liblz4 \
 		libmetis.so:math/metis
+TEST_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtest.pc:devel/googletest
 
 USES=		cmake:testing compiler:${OPENMP}c++11-lib desktop-file-utils eigen:3 gl \
 		localbase python:env qt:5 sqlite
@@ -31,7 +32,7 @@ USE_CXXSTD=	c++17
 USE_GITHUB=	yes
 USE_GL=		gl glew
 USE_QT=		core gui widgets buildtools:build opengl:build qmake:build
-CMAKE_OFF=	BOOST_STATIC CUDA_ENABLED
+CMAKE_OFF=	BOOST_STATIC CUDA_ENABLED FETCH_POSELIB
 CMAKE_TESTING_ON=	TESTS_ENABLED
 
 LDFLAGS+=	-Wl,--as-needed # gflags, glu, xi, xmu
@@ -49,20 +50,13 @@ DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx
 
 OPENMP_CMAKE_BOOL=	OPENMP_ENABLED
 .if !exists(/usr/include/omp.h)
-# XXX ports/199603: LLVM openmp in base doesn't support armv6, armv7 yet
+# XXX ports/199603: LLVM openmp in base doesn't support armv7 yet
 OPENMP_VARS=		OPENMP=gcc-
 .endif
 
 SIMD_CMAKE_BOOL=	SIMD_ENABLED
-
-#post-patch:
-# XXX math/flann has -DUSE_OPENMP=OFF and lacks tunning:
-# https://github.com/colmap/colmap/commit/4b594eb85c13
-# https://github.com/colmap/colmap/commit/1e9f1f3324cd
-#.if !defined(DISPLAY) # QApplication
-#	@${REINPLACE_CMD} -e '/opengl_utils_test/d' \
-#		${WRKSRC}/src/util/CMakeLists.txt
-#.endif
+SIMD_CFLAGS_i386=	-msse2
+SIMD_CFLAGS=		${SIMD_CFLAGS_${ARCH}}
 
 post-build-DOCS-on:
 	${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} -C ${WRKSRC}/doc html
@@ -74,5 +68,11 @@ post-install-DOCS-on:
 	(cd ${WRKSRC}/doc/_build/html && ${COPYTREE_SHARE} \
 		. ${STAGEDIR}${DOCSDIR})
 	${RM} ${STAGEDIR}${DOCSDIR}/.buildinfo
+
+# https://github.com/colmap/colmap/issues/3021#issuecomment-2536520512
+pre-test:
+	@${ECHO_MSG} Expected test suite failures on displayless machines:
+	@${ECHO_MSG} "24 - feature/colmap_feature_sift_test (Subprocess aborted)"
+	@${ECHO_MSG} "88 - util/colmap_util_opengl_utils_test (Subprocess aborted)"
 
 .include <bsd.port.mk>

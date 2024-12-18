@@ -1,5 +1,5 @@
 PORTNAME=	cbor
-PORTVERSION=	0.5.9.6
+PORTVERSION=	0.5.9.8
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -10,6 +10,8 @@ WWW=		https://cbor.io/
 LICENSE=	APACHE20
 
 USES=		gem
+
+PIE_UNSAFE=	yes
 
 .include <bsd.port.options.mk>
 

@@ -4,13 +4,17 @@ DISTVERSION=	${ELECTRON_VER}
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
 CATEGORIES=	devel
-MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/:chromium \
+MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v33.3.0/:chromium \
 		https://freedesktop.org/software/pulseaudio/releases/:pulseaudio
 PKGNAMESUFFIX=	${ELECTRON_VER_MAJOR}
-DISTFILES=	chromium-${CHROMIUM_VER}${EXTRACT_SUFX}:chromium \
+DISTFILES=	chromium-${CHROMIUM_VER}${EXTRACT_SUFX}.0:chromium \
+		chromium-${CHROMIUM_VER}${EXTRACT_SUFX}.1:chromium \
+		chromium-${CHROMIUM_VER}${EXTRACT_SUFX}.2:chromium \
 		pulseaudio-${PULSEV}.tar.gz:pulseaudio \
 		electron-yarn-cache-${ELECTRON_VER}${EXTRACT_SUFX}:prefetch
 DIST_SUBDIR=	${PORTNAME}
+EXTRACT_ONLY=	chromium-${CHROMIUM_VER}${EXTRACT_SUFX} \
+		${DISTFILES:C/:[^:]+$//:C/chromium-${CHROMIUM_VER}${EXTRACT_SUFX}\.[0-9]//}
 
 MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Build cross-platform desktop apps with JavaScript, HTML, and CSS
@@ -81,7 +85,6 @@ GH_TUPLE=	nodejs:node:v${NODE_VER}:node \
 		EngFlow:reclient-configs:${ENGFLOW_RECLIENT_CONFIGS_VER}:reclient_configs
 USE_GL=		gbm gl glesv2
 USE_GNOME=	atk cairo gdkpixbuf2 gtk30 libxml2 libxslt pango
-USE_LDCONFIG=	${DATADIR}
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xrandr \
 		xrender xscrnsaver xtst
 
@@ -97,6 +100,7 @@ POST_BUILD_DIST_TARGETS=electron_dist_zip electron_chromedriver_zip \
 
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 BINARY_ALIAS=	python3=${PYTHON_CMD}
+BUNDLE_LIBS=	yes
 
 NO_WRKSUBDIR=	yes
 WRKSRC_SUBDIR=	src
@@ -216,9 +220,9 @@ SNDIO_VARS=		GN_ARGS+=use_sndio=true
 SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 
 # See ${WRKSRC}/electron/DEPS for CHROMIUM_VER
-CHROMIUM_VER=			130.0.6723.118
+CHROMIUM_VER=			130.0.6723.152
 # See ${WRKSRC}/electron/DEPS for NODE_VER
-NODE_VER=			20.18.0
+NODE_VER=			20.18.1
 # See ${WRKSRC}/electron/DEPS for NAN_VER
 NAN_VER=			e14bdcd1f72d62bca1d541b66da43130384ec213
 # See ${WRKSRC}/electron/DEPS for SQUIRREL_MAC_VER
@@ -314,6 +318,12 @@ pre-fetch:
 		${TAR} cJf ${DISTDIR}/${DIST_SUBDIR}/electron-yarn-cache-${ELECTRON_VER}${EXTRACT_SUFX} \
 			@yarn-offline-cache.mtree; \
 		${RM} -r ${WRKDIR}; \
+	fi
+
+post-fetch:
+	@if [ ! -f ${DISTDIR}/${DIST_SUBDIR}/chromium-${CHROMIUM_VER}${EXTRACT_SUFX} ]; then \
+		${CAT} ${DISTDIR}/${DIST_SUBDIR}/chromium-${CHROMIUM_VER}${EXTRACT_SUFX}.? > \
+			${DISTDIR}/${DIST_SUBDIR}/chromium-${CHROMIUM_VER}${EXTRACT_SUFX}; \
 	fi
 
 post-extract:

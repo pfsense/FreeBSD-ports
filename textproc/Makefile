@@ -155,6 +155,7 @@
     SUBDIR += diffutils
     SUBDIR += dikt
     SUBDIR += discount
+    SUBDIR += dmenu-translate
     SUBDIR += doc-mode.el
     SUBDIR += docbook
     SUBDIR += docbook-sgml
@@ -253,6 +254,7 @@
     SUBDIR += go-yq
     SUBDIR += gojq
     SUBDIR += goldendict
+    SUBDIR += goldendict-ng
     SUBDIR += google-ctemplate
     SUBDIR += gpp
     SUBDIR += grap
@@ -344,6 +346,7 @@
     SUBDIR += jid
     SUBDIR += jing
     SUBDIR += jless
+    SUBDIR += jnv
     SUBDIR += jo
     SUBDIR += jq
     SUBDIR += jql
@@ -447,6 +450,7 @@
     SUBDIR += linux-c7-libxml2
     SUBDIR += linux-c7-libxslt
     SUBDIR += linux-rl9-expat
+    SUBDIR += linux-rl9-libstemmer
     SUBDIR += linux-rl9-libxml2
     SUBDIR += linux-rl9-libxslt
     SUBDIR += linux-rl9-qt5-qtxmlpatterns
@@ -470,6 +474,7 @@
     SUBDIR += makefaq
     SUBDIR += makepatch
     SUBDIR += man2html
+    SUBDIR += mandoc
     SUBDIR += mantra
     SUBDIR += markdown
     SUBDIR += markdown-mode.el
@@ -481,7 +486,6 @@
     SUBDIR += mdbook
     SUBDIR += mdbook-linkcheck
     SUBDIR += mdbook-mermaid
-    SUBDIR += mdocml
     SUBDIR += meilisearch
     SUBDIR += meld
     SUBDIR += metauml
@@ -532,8 +536,10 @@
     SUBDIR += opensearch
     SUBDIR += opensearch-dashboards
     SUBDIR += opensearch-dashboards210
+    SUBDIR += opensearch-dashboards213
     SUBDIR += opensearch13
     SUBDIR += opensearch210
+    SUBDIR += opensearch213
     SUBDIR += opensp
     SUBDIR += openvanilla-framework
     SUBDIR += or-aspell
@@ -1446,6 +1452,7 @@
     SUBDIR += py-markdown-include
     SUBDIR += py-markdown-it-py
     SUBDIR += py-markdown2
+    SUBDIR += py-markdownify
     SUBDIR += py-marko
     SUBDIR += py-markuppy
     SUBDIR += py-markups
@@ -2116,6 +2123,7 @@
     SUBDIR += tth
     SUBDIR += tttcmds
     SUBDIR += ttynt
+    SUBDIR += tui-journal
     SUBDIR += turboxsl
     SUBDIR += txt2html
     SUBDIR += txt2man

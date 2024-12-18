@@ -1,6 +1,7 @@
 PORTNAME=	lib${GH_PROJECT}
 PORTVERSION=	27.0.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	osa@FreeBSD.org
@@ -10,7 +11,7 @@ WWW=		https://wasmtime.dev/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS=	armv7 i386
 NOT_FOR_ARCHS_REASON=	build currently failing
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
@@ -480,7 +481,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/crates/c-api/include/wasm.h ${STAGEDIR}${PREFIX}/include
 	(cd ${WRKSRC}/crates/c-api/include && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include)
 	${RM} ${STAGEDIR}${PREFIX}/include/wasmtime/conf.h.in
-	${INSTALL_LIB} ${WRKDIR}/target/release/libwasmtime.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA} ${WRKDIR}/target/release/libwasmtime.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_LIB} ${WRKDIR}/target/release/libwasmtime.so ${STAGEDIR}${PREFIX}/lib
 
 .include <bsd.port.mk>

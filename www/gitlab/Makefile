@@ -123,7 +123,7 @@ MY_DEPENDS=	git>=2.41.0:devel/git \
 	rubygem-google-apis-container_v1>=0.43.0<0.44:devel/rubygem-google-apis-container_v1 \
 	rubygem-google-apis-container_v1beta1>=0.43.0<0.44:devel/rubygem-google-apis-container_v1beta1 \
 	rubygem-google-apis-cloudbilling_v1>=0.21.0<0.22:devel/rubygem-google-apis-cloudbilling_v1 \
-	rubygem-google-apis-cloudresourcemanager_v1>=0.31.0<0.32:devel/rubygem-google-apis-cloudresourcemanager_v1 \
+	rubygem-google-apis-cloudresourcemanager_v1-gitlab>=0.31.0<0.32:devel/rubygem-google-apis-cloudresourcemanager_v1-gitlab \
 	rubygem-google-apis-iam_v1>=0.36.0<0.37:devel/rubygem-google-apis-iam_v1 \
 	rubygem-google-apis-serviceusage_v1>=0.28.0<0.29:devel/rubygem-google-apis-serviceusage_v1 \
 	rubygem-google-apis-sqladmin_v1beta4-gitlab>=0.41.0<0.42:devel/rubygem-google-apis-sqladmin_v1beta4-gitlab \
@@ -195,7 +195,7 @@ MY_DEPENDS=	git>=2.41.0:devel/git \
 	rubygem-sanitize60>=6.0.2<6.1:textproc/rubygem-sanitize60 \
 	rubygem-babosa>=2.0<3:textproc/rubygem-babosa \
 	rubygem-loofah222>=2.22.0<2.23:textproc/rubygem-loofah222 \
-	rubygem-licensee>=9.16<10:devel/rubygem-licensee \
+	rubygem-licensee-gitlab>=9.16<10:devel/rubygem-licensee-gitlab \
 	rubygem-charlock_holmes>=0.7.9<0.8:textproc/rubygem-charlock_holmes \
 	rubygem-ruby-magic>=0.6<1:devel/rubygem-ruby-magic \
 	rubygem-fast_blank>=1.0.1<1.1:devel/rubygem-fast_blank \
@@ -303,7 +303,7 @@ MY_DEPENDS=	git>=2.41.0:devel/git \
 	rubygem-ed25519>=1.3.0<1.4:security/rubygem-ed25519 \
 	rubygem-cvss-suite>=3.0.1<3.1:security/rubygem-cvss-suite \
 	rubygem-arr-pm>=0.0.12<0.1:devel/rubygem-arr-pm \
-	rubygem-devfile>=0.1.0<0.2:net/rubygem-devfile \
+	rubygem-devfile>=0.1.1<0.2:net/rubygem-devfile \
 	rubygem-CFPropertyList>=3.0.0<3.1:devel/rubygem-CFPropertyList \
 	rubygem-app_store_connect>=0:net/rubygem-app_store_connect \
 	rubygem-telesignenterprise>=2.2<3:devel/rubygem-telesignenterprise \

@@ -1,6 +1,5 @@
 PORTNAME=	uv
-DISTVERSION=	0.4.29
-PORTREVISION=	1
+DISTVERSION=	0.5.9
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,6 +13,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
+BROKEN_armv7=	compilation fails: rustc-LLVM ERROR: out of memory
 BROKEN_i386=	compilation of the libopenssl_sys-abc7d27a34743709 crate fails: ld: error: undefined symbol: __atomic_is_lock_free, etc
 
 LIB_DEPENDS=	libgit2.so:devel/libgit2 \

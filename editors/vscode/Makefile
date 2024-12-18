@@ -1,5 +1,5 @@
 PORTNAME=	vscode
-DISTVERSION=	1.95.3
+DISTVERSION=	1.96.0
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules
 DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
@@ -70,7 +70,7 @@ USES=		desktop-file-utils gl gmake gnome iconv:wchar_t jpeg \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	f1a4fb101478ce6ec82fe9627c43efbf9e98c813
+SOURCE_COMMIT_HASH=	138f619c86f1199955d53b4166bef66ef252935c
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -79,13 +79,12 @@ USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 USE_GL=		gbm gl glesv2
 USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
-USE_LDCONFIG=	${DATADIR}
-
 SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*\.sh$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
 
 DATADIR=	${PREFIX}/share/code-oss
 TMPDIR=		${WRKDIR}
+BUNDLE_LIBS=	yes
 
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH}
 # Don't download electron binary distribution on electron node_modules installation

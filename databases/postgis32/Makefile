@@ -1,6 +1,6 @@
 PORTNAME=	postgis
 DISTVERSION=	3.2.7
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	32
@@ -8,6 +8,9 @@ PKGNAMESUFFIX=	32
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Geographic objects support for PostgreSQL databases
 WWW=		https://postgis.net/
+
+DEPRECATED=	Please use newer versions
+EXPIRATION_DATE=	2024-12-31
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

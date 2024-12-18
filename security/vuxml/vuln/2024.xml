@@ -1,3 +1,923 @@
+  <vuln vid="38e6f778-bca3-11ef-8926-9b4f2d14eb53">
+    <topic>gitea -- Fix misuse of PublicKeyCallback</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.22.6</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <h1>Problem Description:</h1>
+       <ul>
+       <li>Misuse of ServerConfig.PublicKeyCallback may cause authorization
+       bypass in golang.org/x/crypto</li>
+       </ul>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/pull/32810</url>
+      <url>https://github.com/advisories/GHSA-v778-237x-gjrc</url>
+    </references>
+    <dates>
+      <discovery>2024-12-12</discovery>
+      <entry>2024-12-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="453cd84e-bca4-11ef-8926-9b4f2d14eb53">
+    <topic>gitea -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.22.5</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <h1>Problem Description:</h1>
+       <ul>
+       <li>Fix delete branch perm checking</li>
+       <li>Upgrade crypto library</li>
+       </ul>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/pull/32791</url>
+      <url>https://github.com/go-gitea/gitea/pull/32654</url>
+    </references>
+    <dates>
+      <discovery>2024-11-27</discovery>
+      <entry>2024-12-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6ea20f0c-bca3-11ef-8926-9b4f2d14eb53">
+    <topic>gitea -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.22.4</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <h1>Problem Description:</h1>
+       <ul>
+       <li>Fix basic auth with webauthn</li>
+       <li>Refactor internal routers (partial backport, auth token const time comparing)</li>
+       </ul>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/pull/32531</url>
+      <url>https://github.com/go-gitea/gitea/pull/32473</url>
+    </references>
+    <dates>
+      <discovery>2024-11-16</discovery>
+      <entry>2024-12-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5ca064a6-bca1-11ef-8926-9b4f2d14eb53">
+    <topic>forgejo -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>forgejo</name>
+	<range><lt>9.0.2</lt></range>
+      </package>
+      <package>
+	<name>forgejo7</name>
+	<range><lt>7.0.11</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <h1>Problem Description:</h1>
+       <ul>
+       <li>It was possible to use a token sent via email for secondary email validation to reset the password instead. In other words, a token sent for a given action (registration, password reset or secondary email validation) could be used to perform a different action. It is no longer possible to use a token for an action that is different from its original purpose.</li>
+       <li>A fork of a public repository would show in the list of forks, even if its owner was not a public user or organization. Such a fork is now hidden from the list of forks of the public repository.</li>
+       <li>The members of an organization team with read access to a repository (e.g. to read issues) but no read access to the code could read the RSS or atom feeds which include the commit activity. Reading the RSS or atom feeds is now denied unless the team has read permissions on the code.</li>
+       <li>The tokens used when replying by email to issues or pull requests were weaker than the rfc2104 recommendations. The tokens are now truncated to 128 bits instead of 80 bits. It is no longer possible to reply to emails sent before the upgrade because the weaker tokens are invalid.</li>
+       <li>A registered user could modify the update frequency of any push mirror (e.g. every 4h instead of every 8h). They are now only able to do that if they have administrative permissions on the repository.</li>
+       <li>It was possible to use basic authorization (i.e. user:password) for requests to the API even when security keys were enrolled for a user. It is no longer possible, an application token must be used instead.</li>
+       <li>Some markup sanitation rules were not as strong as they could be (e.g. allowing emoji somethingelse as well as emoji). The rules are now stricter and do not allow for such cases.</li>
+       <li>When Forgejo is configured to enable instance wide search (e.g. with bleve), results found in the repositories of private or limited users were displayed to anonymous visitors. The results found in private or limited organizations were not displayed. The search results found in the repositories of private or limited user are no longer displayed to anonymous visitors.</li>
+       </ul>
+      </body>
+    </description>
+    <references>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/5974</url>
+    </references>
+    <dates>
+      <discovery>2024-12-12</discovery>
+      <entry>2024-12-17</entry>
+      <modified>2024-12-18</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="25a697de-bca1-11ef-8926-9b4f2d14eb53">
+    <topic>forgejo -- unauthorized user impersonation</topic>
+    <affects>
+      <package>
+	<name>forgejo</name>
+	<range><lt>7.0.12</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <h1>Problem Description:</h1>
+       <ul>
+       <li>When Forgejo is configured to run the internal ssh server with
+       [server].START_SSH_SERVER=true, it was possible for a registered user
+       to impersonate another user.  The rootless container image uses the
+       internal ssh server by default and was vulnerable.  A Forgejo
+       instance running from a binary or from a root container image does
+       not use the internal ssh server by default and was not vulnerable.
+       The incorrect use of the crypto package is the root cause of the
+       vulnerability and was fixed for the internal ssh server.</li>
+       <li>Revert "allow synchronizing user status from OAuth2 login
+       providers"</li>
+       </ul>
+      </body>
+    </description>
+    <references>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/6248</url>
+    </references>
+    <dates>
+      <discovery>2024-12-12</discovery>
+      <entry>2024-12-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6dcf6fc6-bca0-11ef-8926-9b4f2d14eb53">
+    <topic>forgejo -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>forgejo</name>
+	<range><lt>9.0.3</lt></range>
+      </package>
+    </affects>
+    <description>
+       <body xmlns="http://www.w3.org/1999/xhtml">
+       <h1>Problem Description:</h1>
+       <ul>
+       <li>When Forgejo is configured to run the internal ssh server with
+       [server].START_SSH_SERVER=true, it was possible for a registered user
+       to impersonate another user.  The rootless container image uses the
+       internal ssh server by default and was vulnerable.  A Forgejo
+       instance running from a binary or from a root container image does
+       not use the internal ssh server by default and was not vulnerable.
+       The incorrect use of the crypto package is the root cause of the
+       vulnerability and was fixed for the internal ssh server.</li>
+       <li>Revert "allow synchronizing user status from OAuth2 login
+       providers"</li>
+       </ul>
+      </body>
+    </description>
+    <references>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/6248</url>
+      <url>https://codeberg.org/forgejo/forgejo/pulls/6249</url>
+    </references>
+    <dates>
+      <discovery>2024-12-12</discovery>
+      <entry>2024-12-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="71f3e9f0-bafc-11ef-885d-901b0e934d69">
+    <topic>py-matrix-synapse -- multiple vulnerabilities in versions prior to 1.120.1</topic>
+    <affects>
+      <package>
+	<name>py38-matrix-synapse</name>
+	<name>py39-matrix-synapse</name>
+	<name>py310-matrix-synapse</name>
+	<name>py311-matrix-synapse</name>
+	<range><lt>1.120.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+		<p>element-hq/synapse developers report:</p>
+	<blockquote cite="https://github.com/element-hq/synapse/releases/tag/v1.120.2">
+		<p>[The 1.120.1] release fixes multiple security
+		vulnerabilities, some affecting all prior versions of
+		Synapse. Server administrators are encouraged to
+		update Synapse as soon as possible. We are not aware
+		of these vulnerabilities being exploited in the
+		wild.</p>
+		<p>Administrators who are unable to update Synapse may
+		use the workarounds described in the linked GitHub
+		Security Advisory below.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-52805</cvename>
+      <url>https://github.com/element-hq/synapse/security/advisories/GHSA-rfq8-j7rh-8hf2</url>
+      <cvename>CVE-2024-52815</cvename>
+      <url>https://github.com/element-hq/synapse/security/advisories/GHSA-f3r3-h2mq-hx2h</url>
+      <cvename>CVE-2024-53863</cvename>
+      <url>https://github.com/element-hq/synapse/security/advisories/GHSA-vp6v-whfm-rv3g</url>
+      <cvename>CVE-2024-53867</cvename>
+      <url>https://github.com/element-hq/synapse/security/advisories/GHSA-56w4-5538-8v8h</url>
+      <cvename>CVE-2024-37302</cvename>
+      <url>https://github.com/element-hq/synapse/security/advisories/GHSA-4mhg-xv73-xq2x</url>
+      <cvename>CVE-2024-37303</cvename>
+      <url>https://github.com/element-hq/synapse/security/advisories/GHSA-gjgr-7834-rhxr</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ef56065e-81fe-4731-a1e3-606c55925bef">
+    <topic>zeek -- potential DoS vulnerability</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>7.0.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tim Wojtulewicz of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v7.0.5">
+	  <p> Large QUIC packets can cause Zeek to overflow memory
+	  and potentially crash. Due to the possibility of receiving
+	  these packets from remote hosts, this is a DoS risk. </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v7.0.5</url>
+    </references>
+    <dates>
+      <discovery>2024-12-16</discovery>
+      <entry>2024-12-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="275ac414-b847-11ef-9877-2cf05da270f3">
+    <topic>Gitlab -- Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<name>gitlab-ee</name>
+	<range><ge>17.6.0</ge><lt>17.6.2</lt></range>
+	<range><ge>17.5.0</ge><lt>17.5.4</lt></range>
+	<range><ge>9.4.0</ge><lt>17.4.6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2024/12/11/patch-release-gitlab-17-6-2-released/">
+	  <p>Injection of Network Error Logging (NEL) headers in kubernetes proxy response could lead to ATO abusing OAuth flows</p>
+	  <p>Denial of Service by repeatedly sending unauthenticated requests for diff-files</p>
+	  <p>CI_JOB_TOKEN could be used to obtain GitLab session</p>
+	  <p>Open redirect in releases API</p>
+	  <p>Client-Side Path Traversal in Harbor artifact links</p>
+	  <p>HTML injection in vulnerability details could lead to Cross Site Scripting</p>
+	  <p>Leak branch names of projects with confidential repository</p>
+	  <p>Non member can view unresolved threads marked as internal notes</p>
+	  <p>Uncontrolled Resource Consumption through a maliciously crafted file</p>
+	  <p>Certain sensitive information passed as literals inside GraphQL mutations retained in GraphQL logs</p>
+	  <p>Information disclosure of confidential incidents details to a group member in Gitlab Wiki</p>
+	  <p>Domain Confusion in GitLab Pages Unique Domain Implementation</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11274</cvename>
+      <cvename>CVE-2024-8233</cvename>
+      <cvename>CVE-2024-9387</cvename>
+      <cvename>CVE-2024-8647</cvename>
+      <cvename>CVE-2024-8179</cvename>
+      <cvename>CVE-2024-8116</cvename>
+      <cvename>CVE-2024-8650</cvename>
+      <cvename>CVE-2024-9367</cvename>
+      <cvename>CVE-2024-12292</cvename>
+      <cvename>CVE-2024-12292</cvename>
+      <cvename>CVE-2024-10043</cvename>
+      <url>https://about.gitlab.com/releases/2024/12/11/patch-release-gitlab-17-6-2-released/</url>
+    </references>
+    <dates>
+      <discovery>2024-12-11</discovery>
+      <entry>2024-12-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="aeee5ebd-356c-49c1-8959-7c88981de5fd">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>131.0.6778.139</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>131.0.6778.139</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/12/stable-channel-update-for-desktop_10.html">
+	 <p>This update includes 3 security fixes:</p>
+	 <ul>
+	    <li>[381696874] High CVE-2024-12381: Type Confusion in V8. Reported by Seunghyun Lee (@0x10n) on 2024-12-02</li>
+	    <li>[379516109] High CVE-2024-12382: Use after free in Translate. Reported by lime(@limeSec_) from TIANGONG Team of Legendsec at QI-ANXIN Group on 2024-11-18</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-12381</cvename>
+      <cvename>CVE-2024-12382</cvename>
+      <url>https://chromereleases.googleblog.com/2024/12/stable-channel-update-for-desktop_10.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-10</discovery>
+      <entry>2024-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3d5b7860-48ad-48c2-aa36-601b8ab9cc43">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>131.0.6778.108</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>131.0.6778.108</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2024/12/stable-channel-update-for-desktop.html">
+	 <p>This update includes 4 security fixes:</p>
+	 <ul>
+	    <li>[379009132] High CVE-2024-12053: Type Confusion in V8. Reported by gal1ium and chluo on 2024-11-14</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2024-12053</cvename>
+      <url>https://chromereleases.googleblog.com/2024/12/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0e20e42c-b728-11ef-805a-b42e991fc52e">
+    <topic>firefox -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>133.0.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.5,1</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>128.5</lt></range>
+	<range><ge>129</ge><lt>133</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1929600">
+	<ul>
+	<li>CVE-2024-11692: An attacker could cause a select dropdown
+	to be shown over another tab; this could have led to user
+	confusion and possible spoofing attacks.</li>
+	<li>CVE-2024-11696: The application failed to account for
+	exceptions thrown by the `loadManifestFromFile` method during
+	add-on signature verification.  This flaw, triggered by an
+	invalid or unsupported extension manifest, could have caused
+	runtime errors that disrupted the signature validation process.
+	As a result, the enforcement of signature validation for
+	unrelated add-ons may have been bypassed.  Signature validation
+	in this context is used to ensure that third-party
+	applications on the user&apos;s computer have not tampered
+	with the user&apos;s extensions, limiting the impact of this
+	issue.</li>
+	<li>CVE-2024-11697: When handling keypress events, an attacker
+	may have been able to trick a user into bypassing the &quot;
+	Open Executable File?&quot; confirmation dialog.  This could
+	have led to malicious code execution.</li>
+	<li>CVE-2024-11699: Memory safety bugs present in Firefox 132,
+	Firefox ESR 128.4, and Thunderbird 128.4.  Some of these bugs
+	showed evidence of memory corruption and we presume that with
+	enough effort some of these could have been exploited to run
+	arbitrary code.</li>
+	</ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11692</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11692</url>
+      <cvename>CVE-2024-11696</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11696</url>
+      <cvename>CVE-2024-11697</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11697</url>
+      <cvename>CVE-2024-11699</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11699</url>
+    </references>
+    <dates>
+      <discovery>2024-11-26</discovery>
+      <entry>2024-12-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c2fd83e4-b450-11ef-b680-4ccc6adda413">
+    <topic>qt6-webengine -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>qt6-webengine</name>
+	<range><lt>6.7.3_3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Qt qtwebengine-chromium repo reports:</p>
+	<blockquote cite="https://code.qt.io/cgit/qt/qtwebengine-chromium.git/log/?h=118-based">
+	  <p>Backports for 5 security bugs in Chromium:</p>
+	  <ul>
+	    <li>CVE-2024-11110: Inappropriate implementation in Blink</li>
+	    <li>CVE-2024-11112: Use after free in Media</li>
+	    <li>CVE-2024-11114: Inappropriate implementation in Views</li>
+	    <li>CVE-2024-11116: Inappropriate implementation in Paint</li>
+	    <li>CVE-2024-11117: Inappropriate implementation in FileSystem</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11110</cvename>
+      <cvename>CVE-2024-11112</cvename>
+      <cvename>CVE-2024-11114</cvename>
+      <cvename>CVE-2024-11116</cvename>
+      <cvename>CVE-2024-11117</cvename>
+      <url>https://code.qt.io/cgit/qt/qtwebengine-chromium.git/log/?h=118-based</url>
+    </references>
+    <dates>
+      <discovery>2024-11-29</discovery>
+      <entry>2024-12-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7f3a302b-b3e8-11ef-b680-4ccc6adda413">
+    <topic>gstreamer1-plugins-vorbis -- Stack buffer-overflow in Vorbis decoder</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins-vorbis</name>
+	<range><lt>1.24.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/">
+	  <p>Stack buffer-overflow in Vorbis decoder that can cause crashes for
+	    certain input files.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47538</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0022.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7d1b4e5d-b3e8-11ef-b680-4ccc6adda413">
+    <topic>gstreamer1-plugins-opus -- Stack buffer-overflow in Opus decoder</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins-opus</name>
+	<range><lt>1.24.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/">
+	  <p>Stack buffer-overflow in Opus decoder that can cause crashes for
+	    certain input files.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47607</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0024.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7b34ddf7-b3e8-11ef-b680-4ccc6adda413">
+    <topic>gstreamer1-plugins-ogg -- Out-of-bounds write in Ogg demuxer</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins-ogg</name>
+	<range><lt>1.24.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/">
+	  <p>An out-of-bounds write in the Ogg demuxer that can cause crashes
+	    for certain input files.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47615</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0026.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7945c543-b3e8-11ef-b680-4ccc6adda413">
+    <topic>gstreamer1-plugins-jpeg -- NULL-pointer dereferences in JPEG decoder</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins-jpeg</name>
+	<range><lt>1.24.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/">
+	  <p>Insufficient error handling in the JPEG decoder that can lead to
+	    NULL-pointer dereferences, and that can cause crashes for certain
+	    input files.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47599</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0016.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="772d8625-b3e8-11ef-b680-4ccc6adda413">
+    <topic>gstreamer1-plugins-gdkpixbuf -- NULL-pointer dereference</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins-gdkpixbuf</name>
+	<range><lt>1.24.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/">
+	  <p>A NULL-pointer dereference in the gdk-pixbuf decoder that can
+	    cause crashes for certain input files.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47613</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0025.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="750ab972-b3e8-11ef-b680-4ccc6adda413">
+    <topic>gstreamer1-plugins-good -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins-good</name>
+	<range><lt>1.24.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/">
+	  <p>20 security bugs.</p>
+	  <ul>
+	    <li>CVE-2024-47537: Integer overflow in MP4/MOV sample table parser leading to out-of-bounds writes</li>
+	    <li>CVE-2024-47598: MP4/MOV sample table parser out-of-bounds read</li>
+	    <li>CVE-2024-47539: MP4/MOV Closed Caption handling out-of-bounds write</li>
+	    <li>CVE-2024-47543: MP4/MOV demuxer out-of-bounds read</li>
+	    <li>CVE-2024-47545: Integer overflow in MP4/MOV demuxer that can result in out-of-bounds read</li>
+	    <li>CVE-2024-47544: NULL-pointer dereferences in MP4/MOV demuxer CENC handling</li>
+	    <li>CVE-2024-47597: Out-of-bounds reads in MP4/MOV demuxer sample table parser</li>
+	    <li>CVE-2024-47546: Integer underflow in MP4/MOV demuxer that can lead to out-of-bounds reads</li>
+	    <li>CVE-2024-47606: Integer overflows in MP4/MOV demuxer and memory allocator that can lead to out-of-bounds writes</li>
+	    <li>CVE-2024-47596: Integer underflow in MP4/MOV demuxer that can lead to out-of-bounds reads</li>
+	    <li>CVE-2024-47540: Usage of uninitialized stack memory in Matroska/WebM demuxer</li>
+	    <li>CVE-2024-47602: NULL-pointer dereferences and out-of-bounds reads in Matroska/WebM demuxer</li>
+	    <li>CVE-2024-47601: NULL-pointer dereference in Matroska/WebM demuxer</li>
+	    <li>CVE-2024-47603: NULL-pointer dereference in Matroska/WebM demuxer</li>
+	    <li>CVE-2024-47775: Out-of-bounds read in WAV parser</li>
+	    <li>CVE-2024-47776: Out-of-bounds read in WAV parser</li>
+	    <li>CVE-2024-47777: Out-of-bounds read in WAV parser</li>
+	    <li>CVE-2024-47778: Out-of-bounds read in WAV parser</li>
+	    <li>CVE-2024-47774: Integer overflow in AVI subtitle parser that leads to out-of-bounds reads</li>
+	    <li>CVE-2024-47834: Use-after-free in Matroska demuxer</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47537</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0005.html</url>
+      <cvename>CVE-2024-47598</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0006.html</url>
+      <cvename>CVE-2024-47539</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0007.html</url>
+      <cvename>CVE-2024-47543</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0009.html</url>
+      <cvename>CVE-2024-47545</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0010.html</url>
+      <cvename>CVE-2024-47544</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0011.html</url>
+      <cvename>CVE-2024-47597</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0012.html</url>
+      <cvename>CVE-2024-47546</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0013.html</url>
+      <cvename>CVE-2024-47606</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0014.html</url>
+      <cvename>CVE-2024-47596</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0015.html</url>
+      <cvename>CVE-2024-47540</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0017.html</url>
+      <cvename>CVE-2024-47602</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0019.html</url>
+      <cvename>CVE-2024-47601</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0020.html</url>
+      <cvename>CVE-2024-47603</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0021.html</url>
+      <cvename>CVE-2024-47775</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0027.html</url>
+      <cvename>CVE-2024-47776</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0027.html</url>
+      <cvename>CVE-2024-47777</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0027.html</url>
+      <cvename>CVE-2024-47778</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0027.html</url>
+      <cvename>CVE-2024-47835</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0028.html</url>
+      <cvename>CVE-2024-47834</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0030.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7256fae8-b3e8-11ef-b680-4ccc6adda413">
+    <topic>gstreamer1-plugins -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins</name>
+	<range><lt>1.24.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/">
+	  <p>3 security bugs.</p>
+	  <ul>
+	    <li>CVE-2024-47542: ID3v2 parser out-of-bounds read and NULL-pointer dereference</li>
+	    <li>CVE-2024-47600: Out-of-bounds read in gst-discoverer-1.0 commandline tool</li>
+	    <li>CVE-2024-47541: Out-of-bounds write in SSA subtitle parser</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47542</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0008.html</url>
+      <cvename>CVE-2024-47600</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0018.html</url>
+      <cvename>CVE-2024-47541</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2024-0023.html</url>
+    </references>
+    <dates>
+      <discovery>2024-12-03</discovery>
+      <entry>2024-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f0d33375-b0e0-11ef-a724-b42e991fc52e">
+    <topic>zabbix -- SQL injection in user.get API</topic>
+    <affects>
+      <package>
+	<name>zabbix6-frontend</name>
+	<range><lt>6.0.31</lt></range>
+      </package>
+      <package>
+	<name>zabbix64-frontend</name>
+	<range><lt>6.4.16</lt></range>
+      </package>
+      <package>
+	<name>zabbix7-frontend</name>
+	<range><lt>7.0.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@zabbix.com reports:</p>
+	<blockquote cite="https://support.zabbix.com/browse/ZBX-25623">
+	  <p>A non-admin user account on the Zabbix frontend with the default
+	User role, or with any other role that gives API access can exploit
+	this vulnerability.  An SQLi exists in the CUser class in the
+	addRelatedObjects function, this function is being called from the
+	CUser.get function which is available for every user who has API
+	access.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-42327</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-42327</url>
+    </references>
+    <dates>
+      <discovery>2024-11-27</discovery>
+      <entry>2024-12-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8b6e97a9-804e-4366-9f75-d102b22a716d">
+    <topic>electron33 -- Inappropriate implementation in Extensions</topic>
+    <affects>
+      <package>
+	<name>electron33</name>
+	<range><lt>33.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v33.2.1">
+	  <p>This update fixes the following vulnerability:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2024-11110.</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11110</cvename>
+      <url>https://github.com/advisories/GHSA-4mww-gp9h-h59m</url>
+    </references>
+    <dates>
+      <discovery>2024-11-27</discovery>
+      <entry>2024-12-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c5dafd73-adfd-11ef-af27-00e081b7aa2d">
+    <topic>jenkins -- Denial of service vulnerability in bundled json-lib</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.487</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.479.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2024-11-27/">
+	  <h1>Description</h1>
+	  <h5>(High) SECURITY-3463 / CVE-2024-47855</h5>
+	  <p>Denial of service vulnerability in bundled json-lib</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-47855</cvename>
+      <url>https://www.jenkins.io/security/advisory/2024-11-27/</url>
+    </references>
+    <dates>
+      <discovery>2024-11-27</discovery>
+      <entry>2024-11-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7d7a28cd-7f5a-450a-852f-c49aaab3fa7e">
+    <topic>keycloak -- Multiple security fixes</topic>
+    <affects>
+      <package>
+	<name>keycloak</name>
+	<range><lt>26.0.6</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Keycloak reports:</p>
+	<blockquote cite="https://www.keycloak.org/2024/11/keycloak-2606-released.html">
+	  <p>This update includes 5 security fixes:</p>
+	  <ul>
+	    <li>CVE-2024-10451: Sensitive Data Exposure in Keycloak Build Process</li>
+	    <li>CVE-2024-10270: Potential Denial of Service</li>
+	    <li>CVE-2024-10492: Keycloak path trasversal</li>
+	    <li>CVE-2024-9666: Keycloak proxy header handling Denial-of-Service (DoS) vulnerability</li>
+	    <li>CVE-2024-10039: Bypassing mTLS validation</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-9666</cvename>
+      <cvename>CVE-2021-10039</cvename>
+      <cvename>CVE-2021-10270</cvename>
+      <cvename>CVE-2021-10451</cvename>
+      <cvename>CVE-2021-10492</cvename>
+    </references>
+    <dates>
+      <discovery>2024-11-22</discovery>
+      <entry>2024-11-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2263ea04-ac81-11ef-998c-2cf05da270f3">
+    <topic>Gitlab -- vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<name>gitlab-ee</name>
+	<range><ge>17.6.0</ge><lt>17.6.1</lt></range>
+	<range><ge>17.5.0</ge><lt>17.5.3</lt></range>
+	<range><ge>8.12.0</ge><lt>17.4.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2024/11/26/patch-release-gitlab-17-6-1-released/">
+	  <p>Privilege Escalation via LFS Tokens</p>
+	  <p>DoS through uncontrolled resource consumption when viewing a maliciously crafted cargo.toml file</p>
+	  <p>Unintended Access to Usage Data via Scoped Tokens</p>
+	  <p>Gitlab DOS via Harbor registry integration</p>
+	  <p>Resource exhaustion and denial of service with test_report API calls</p>
+	  <p>Streaming endpoint did not invalidate tokens after revocation</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-8114</cvename>
+      <cvename>CVE-2024-8237</cvename>
+      <cvename>CVE-2024-11669</cvename>
+      <cvename>CVE-2024-8177</cvename>
+      <cvename>CVE-2024-11828</cvename>
+      <cvename>CVE-2024-11668</cvename>
+      <url>https://about.gitlab.com/releases/2024/11/26/patch-release-gitlab-17-6-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2024-11-26</discovery>
+      <entry>2024-11-27</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="9dfca0cd-ab09-11ef-8c1c-a8a1599412c6">
     <topic>chromium -- multiple security fixes</topic>
     <affects>
@@ -1489,6 +2409,48 @@
     </references>
     <dates>
       <discovery>2024-10-15</discovery>
+      <entry>2024-10-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3152a474-9390-11ef-87ad-a8a15998b5cb">
+    <topic>halibut -- Segmentation fault, denial of service or possibly other unspecified impact via a crafted text document</topic>
+    <affects>
+      <package>
+	<name>halibut</name>
+	<range><eq>1.2</eq></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cve@mitre.org reports:</p>
+	<blockquote cite="https://carteryagemann.com/halibut-case-study.html#poc-halibut-text-uaf">
+	  <p>CVE-2021-42612: A use after free in cleanup_index in index.c in Halibut 1.2 allows
+	an attacker to cause a segmentation fault or possibly have other
+	unspecified impact via a crafted text document.</p>
+	</blockquote>
+	<blockquote cite="https://carteryagemann.com/halibut-case-study.html#poc-halibut-winhelp-df">
+	  <p>CVE-2021-42613: A double free in cleanup_index in index.c in Halibut 1.2 allows an
+	attacker to cause a denial of service or possibly have other
+	unspecified impact via a crafted text document.</p>
+	</blockquote>
+	<blockquote cite="https://carteryagemann.com/halibut-case-study.html#poc-halibut-info-uaf">
+	  <p>CVE-2021-42614: A use after free in info_width_internal in bk_info.c in Halibut 1.2
+	allows an attacker to cause a segmentation fault or possibly have
+	unspecified other impact via a crafted text document.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2021-42612</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-42612</url>
+      <cvename>CVE-2021-42613</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-42613</url>
+      <cvename>CVE-2021-42614</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-42614</url>
+    </references>
+    <dates>
+      <discovery>2022-05-24</discovery>
       <entry>2024-10-26</entry>
     </dates>
   </vuln>

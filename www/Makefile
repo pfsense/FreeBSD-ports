@@ -143,6 +143,7 @@
     SUBDIR += dolibarr16
     SUBDIR += dolibarr17
     SUBDIR += dolibarr18
+    SUBDIR += dolibarr19
     SUBDIR += domoticz
     SUBDIR += domoticz-devel
     SUBDIR += dooble
@@ -266,6 +267,7 @@
     SUBDIR += httpclient
     SUBDIR += httpcore
     SUBDIR += httptunnel
+    SUBDIR += httpx
     SUBDIR += httrack
     SUBDIR += hurl
     SUBDIR += hypermail
@@ -288,6 +290,7 @@
     SUBDIR += kanboard
     SUBDIR += kannel
     SUBDIR += kannel-sqlbox
+    SUBDIR += katana
     SUBDIR += kcgi
     SUBDIR += kdsoap
     SUBDIR += kf5-khtml
@@ -295,9 +298,9 @@
     SUBDIR += kf5-kjsembed
     SUBDIR += kineto
     SUBDIR += kiwix-tools
-    SUBDIR += kohana
     SUBDIR += ladybird
     SUBDIR += lagrange
+    SUBDIR += lexbor
     SUBDIR += libapreq2
     SUBDIR += libdatachannel
     SUBDIR += libdom
@@ -481,7 +484,6 @@
     SUBDIR += nostromo
     SUBDIR += novnc
     SUBDIR += novnc-websockify
-    SUBDIR += npapi-xine
     SUBDIR += npc
     SUBDIR += npm
     SUBDIR += npm-node18
@@ -1484,6 +1486,7 @@
     SUBDIR += py-cachecontrol
     SUBDIR += py-cachelib
     SUBDIR += py-caldav
+    SUBDIR += py-calibreweb
     SUBDIR += py-channels
     SUBDIR += py-channels-redis
     SUBDIR += py-cheroot
@@ -1499,6 +1502,7 @@
     SUBDIR += py-daphne
     SUBDIR += py-dash
     SUBDIR += py-dj-database-url
+    SUBDIR += py-dj50-channels
     SUBDIR += py-dj50-django-auth-ldap
     SUBDIR += py-dj50-django-choices-field
     SUBDIR += py-dj50-django-cors-headers
@@ -1750,7 +1754,7 @@
     SUBDIR += py-httpretty
     SUBDIR += py-httptools
     SUBDIR += py-httpx
-    SUBDIR += py-httpx-gssapi
+    SUBDIR += py-httpx_gssapi
     SUBDIR += py-httpx-oauth
     SUBDIR += py-httpx-socks
     SUBDIR += py-httpx-ws
@@ -2040,6 +2044,7 @@
     SUBDIR += rubygem-faraday-follow_redirects-gitlab
     SUBDIR += rubygem-faraday-gitlab
     SUBDIR += rubygem-faraday-http-cache
+    SUBDIR += rubygem-faraday-http-cache-gitlab
     SUBDIR += rubygem-faraday-httpclient
     SUBDIR += rubygem-faraday-httpclient1
     SUBDIR += rubygem-faraday-multipart
@@ -2240,6 +2245,7 @@
     SUBDIR += rubygem-rack22
     SUBDIR += rubygem-rack_csrf
     SUBDIR += rubygem-rackup
+    SUBDIR += rubygem-rackup21
     SUBDIR += rubygem-rails-settings-cached
     SUBDIR += rubygem-rails-settings-cached-rails5
     SUBDIR += rubygem-rails-settings-cached-rails50

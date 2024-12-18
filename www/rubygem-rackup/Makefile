@@ -14,6 +14,8 @@ RUN_DEPENDS=	rubygem-rack>=3,3:www/rubygem-rack
 
 USES=		gem
 
+CONFLICTS_INSTALL=	rubygem-rackup21 # bin/rackup
+
 NO_ARCH=	yes
 
 PLIST_FILES=	bin/rackup

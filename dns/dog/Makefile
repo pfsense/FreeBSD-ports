@@ -1,17 +1,15 @@
 PORTNAME=	dog
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.0
-PORTREVISION=	37
+PORTREVISION=	38
 CATEGORIES=	dns net
 
 MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Command-line DNS client
 WWW=		https://dns.lookup.dog/
 
-LICENSE=	EUPL
-LICENSE_NAME=	European Union Public Licence V. 1.2
+LICENSE=	EUPL12
 LICENSE_FILE=	${WRKSRC}/LICENCE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		cargo ssl
 USE_GITHUB=	yes

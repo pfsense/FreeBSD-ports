@@ -1,16 +1,14 @@
 PORTNAME=	tere
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Terminal file explorer
 WWW=		https://github.com/mgunyho/tere
 
-LICENSE=	EUPLv12
-LICENSE_NAME=	EUROPEAN UNION PUBLIC LICENCE v. 1.2
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE=	EUPL12
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cargo

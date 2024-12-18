@@ -351,7 +351,9 @@
     SUBDIR += linux-rl9-libassuan
     SUBDIR += linux-rl9-libgcrypt
     SUBDIR += linux-rl9-libgpg-error
+    SUBDIR += linux-rl9-libksba
     SUBDIR += linux-rl9-libsecret
+    SUBDIR += linux-rl9-libssh
     SUBDIR += linux-rl9-libtasn1
     SUBDIR += linux-rl9-libxcrypt
     SUBDIR += linux-rl9-nettle
@@ -443,6 +445,7 @@
     SUBDIR += openssh-portable
     SUBDIR += openssl
     SUBDIR += openssl-agent
+    SUBDIR += openssl-oqsprovider
     SUBDIR += openssl-quictls
     SUBDIR += openssl-unsafe
     SUBDIR += openssl111
@@ -990,6 +993,7 @@
     SUBDIR += py-oauthlib
     SUBDIR += py-omemo-dr
     SUBDIR += py-onlykey
+    SUBDIR += py-openssh-wrapper
     SUBDIR += py-openssl
     SUBDIR += py-oscrypto
     SUBDIR += py-ospd-openvas
@@ -1344,7 +1348,6 @@
     SUBDIR += teleport
     SUBDIR += testssl.sh
     SUBDIR += tfhe
-    SUBDIR += tfsec
     SUBDIR += theonionbox
     SUBDIR += tinc
     SUBDIR += tinc-devel

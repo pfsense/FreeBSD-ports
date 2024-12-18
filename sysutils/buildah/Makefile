@@ -1,14 +1,15 @@
 PORTNAME=	buildah
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.36.0
-PORTREVISION=	4
+DISTVERSION=	1.37.5
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	dfr@FreeBSD.org
 COMMENT=	Manage Pods, Containers and Container Images
 WWW=		https://buildah.io/
 
-LICENSE=	GPLv2
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash \
 		go-md2man:textproc/go-md2man \
