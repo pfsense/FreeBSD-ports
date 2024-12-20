@@ -1,0 +1,8 @@
+/etc/inc/priv/proftpd-mod_proxy.priv.inc
+pkg/proftpd-mod_proxy.inc
+pkg/proftpd-mod_proxy.xml
+pkg/proftpd-mod_proxy_users.xml
+www/shortcuts/pkg_proftpd-mod_proxy.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc
