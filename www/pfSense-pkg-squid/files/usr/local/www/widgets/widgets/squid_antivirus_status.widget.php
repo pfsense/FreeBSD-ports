@@ -190,7 +190,7 @@ events.push(function(){
 	squidavObject.url = "/widgets/widgets/squid_antivirus_status.widget.php";
 	squidavObject.callback = squidav_callback;
 	squidavObject.parms = postdata;
-	squidavObject.freq = 1;
+	squidavObject.freq = 30;
 
 	// Register the AJAX object
 	register_ajax(squidavObject);

@@ -114,7 +114,7 @@ $wgg = array(
 	'default_port'				=> 51820,
 	'default_resolve_interval'		=> 300,
 	'default_widget_activity_threshold'	=> 120,
-	'default_widget_refresh_interval'	=> 5,
+	'default_widget_refresh_interval'	=> 20,
 	'max_port'				=> 65535,
 	'max_tunnels'				=> 32768
 );

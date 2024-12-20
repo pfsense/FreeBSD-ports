@@ -519,7 +519,7 @@ events.push(function()
 	refreshObject.url = "/widgets/widgets/apcupsd.widget.php";
 	refreshObject.callback = apcupsd_refresh_callback;
 	refreshObject.parms = postdata;
-	refreshObject.freq = 1;
+	refreshObject.freq = 10;
 
 	register_ajax(refreshObject);
 });
