@@ -130,6 +130,7 @@ function step4_submitphpaction() {
 	$new_config = config_get_path('installedpackages');
 	$new_config['pfblockerng']['config'][0]['enable_cb']				= 'on';
 	$new_config['pfblockerng']['config'][0]['pfb_keep']				= 'on';
+	$new_config['pfblockerng']['config'][0]['pfb_resolve']				= 'on';
 
 	$new_config['pfblockerngipsettings']['config'][0]['enable_dup']			= 'on';
 	$new_config['pfblockerngipsettings']['config'][0]['suppression']		= 'on';
