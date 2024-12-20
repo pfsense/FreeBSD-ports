@@ -4601,6 +4601,7 @@
     SUBDIR += py-cachetools
     SUBDIR += py-cachey
     SUBDIR += py-cacheyou
+    SUBDIR += py-cachier
     SUBDIR += py-cachy
     SUBDIR += py-cadquery-pywrap
     SUBDIR += py-calver
