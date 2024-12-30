@@ -8235,6 +8235,7 @@
     SUBDIR += tdl
     SUBDIR += template-glib
     SUBDIR += termbox
+    SUBDIR += termbox2
     SUBDIR += termcolor
     SUBDIR += terminality
     SUBDIR += terraform-ls
