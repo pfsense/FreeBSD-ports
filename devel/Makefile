@@ -7074,7 +7074,6 @@
     SUBDIR += rubygem-cf-uaa-lib
     SUBDIR += rubygem-cheffish
     SUBDIR += rubygem-childprocess
-    SUBDIR += rubygem-childprocess3
     SUBDIR += rubygem-childprocess40
     SUBDIR += rubygem-childprocess41
     SUBDIR += rubygem-chronic
