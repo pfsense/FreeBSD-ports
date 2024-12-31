@@ -6502,6 +6502,7 @@
     SUBDIR += rubygem-aws-sdk-b2bi
     SUBDIR += rubygem-aws-sdk-backup
     SUBDIR += rubygem-aws-sdk-backupgateway
+    SUBDIR += rubygem-aws-sdk-backupsearch
     SUBDIR += rubygem-aws-sdk-backupstorage
     SUBDIR += rubygem-aws-sdk-batch
     SUBDIR += rubygem-aws-sdk-bcmdataexports
