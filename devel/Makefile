@@ -7762,6 +7762,7 @@
     SUBDIR += rubygem-reentrant_flock
     SUBDIR += rubygem-ref
     SUBDIR += rubygem-reline
+    SUBDIR += rubygem-repl_type_completor
     SUBDIR += rubygem-request_store
     SUBDIR += rubygem-request_store15
     SUBDIR += rubygem-require_all
