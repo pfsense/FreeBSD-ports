@@ -482,8 +482,12 @@ if ($_POST && isset($_POST['save'])) {
 			}
 
 			if ($value != 'Disabled' && preg_match("/\W/", $_POST["header-{$key_1}"])) {
+				// Replace non-word characters with underscores
+				$_POST["header-{$key_1}"] = preg_replace("/\W/", "_", $_POST["header-{$key_1}"]);
+				/*
 				$input_errors[] = "{$type} Source Definitions, Line {$line}: "
 							. "Header field cannot contain spaces, special or international characters.";
+				*/
 			}
 
 			if ($value != 'Disabled' && strpos($_POST["url-{$key_1}"], '_API_KEY_') !== FALSE) {
