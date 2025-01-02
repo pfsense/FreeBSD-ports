@@ -1107,6 +1107,7 @@
     SUBDIR += py-pamqp
     SUBDIR += py-pcapy
     SUBDIR += py-pcapy-ng
+    SUBDIR += py-pook
     SUBDIR += py-port-for
     SUBDIR += py-portend
     SUBDIR += py-pychromecast
