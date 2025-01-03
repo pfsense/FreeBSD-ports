@@ -233,7 +233,7 @@ function snort_widget_get_alerts() {
 <script type="text/javascript">
 //<![CDATA[
 <!-- needed in the snort_alerts.js file code -->
-	var snortupdateDelay = 5000; // update every 5 seconds
+	var snortupdateDelay = 15000; // update every 15 seconds
 	var snort_nentries = <?=$snort_nentries;?>; // number of alerts to display (5 is default)
 //]]>
 </script>

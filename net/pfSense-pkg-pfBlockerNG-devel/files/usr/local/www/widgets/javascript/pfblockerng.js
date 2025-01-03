@@ -26,7 +26,7 @@ var pfBlockerNGWidgetTimer;
 
 /* update timers (10000 ms = 10 seconds, 60000 ms = 1 minute, 300000 ms = 5 mins) */
 var pfBlockerNGupdateFailedDelay	= 300000;
-var pfBlockerNGupdateWidgetDelay	= 10000;
+var pfBlockerNGupdateWidgetDelay	= 15000;
 
 function pfBlockerNG_fetch_new_failed_callback(callback_data) {
 	if (callback_data.length > 0) {
@@ -143,7 +143,7 @@ events.push(function() {
 
 					// Reset pfBNG refresh intervals
 					var pfBlockerNGupdateFailedDelay	= 300000;
-					var pfBlockerNGupdateWidgetDelay	= 10000;
+					var pfBlockerNGupdateWidgetDelay	= 15000;
 	
 					clearInterval(pfBlockerNGFailedTimer);
 					clearInterval(pfBlockerNGWidgetTimer);

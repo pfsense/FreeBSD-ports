@@ -307,7 +307,7 @@ function suricata_widget_get_alerts() {
 
 <script type="text/javascript">
 //<![CDATA[
-	var suricataupdateDelay = 5000; // update every 5 seconds
+	var suricataupdateDelay = 15000; // update every 15 seconds
 	var suri_nentries = <?php echo $suri_nentries; ?>; // default is 5
 //]]>
 </script>
