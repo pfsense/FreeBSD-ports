@@ -127,7 +127,7 @@
 			<default_value>on</default_value>
 			<description>
 				<![CDATA[
-				Enable listening on IPv4.
+				Enable listening on IPv4. Note that ntopng currently allows IPv4 or IPv6, but not both.
 				]]>
 			</description>
 		</field>
@@ -137,7 +137,7 @@
 			<type>checkbox</type>
 			<description>
 				<![CDATA[
-				Enable listening on IPv6.
+				Enable listening on IPv6. This setting is currently ignored if IPv4 is enabled.
 				]]>
 			</description>
 		</field>
