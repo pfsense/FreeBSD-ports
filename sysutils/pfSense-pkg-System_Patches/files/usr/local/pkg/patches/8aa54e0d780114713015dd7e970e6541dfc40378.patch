@@ -1,0 +1,97 @@
+commit 8aa54e0d780114713015dd7e970e6541dfc40378
+Author: jim-p <jimp@netgate.com>
+Date:   Fri Dec 6 11:52:28 2024 -0500
+
+    Ensure RO user can't trigger log changes. Fixes #15874
+
+diff --git a/src/usr/local/www/status_logs_common.inc b/src/usr/local/www/status_logs_common.inc
+index 7b0e6e0721..3259ce2041 100644
+--- a/src/usr/local/www/status_logs_common.inc
++++ b/src/usr/local/www/status_logs_common.inc
+@@ -32,7 +32,7 @@ require_once("syslog.inc");
+ // Status Logs Common - Code
+ function status_logs_common_code() {
+ 	global $g, $user_settings, $specific_log, $nentries, $rawfilter, $filterlogentries_qty, $logfile_path, $shortcut_section, $allowed_logs, $logfile;
+-	global $system_logs_filter_form_hidden, $system_logs_manage_log_form_hidden, $view;
++	global $system_logs_filter_form_hidden, $system_logs_manage_log_form_hidden, $view, $input_errors;
+ 
+ 	$logfile_path = "{$g['varlog_path']}/" . basename($logfile);
+ 	/* Only add .log suffix if necessary */
+@@ -56,8 +56,17 @@ function status_logs_common_code() {
+ 		$nentries = g_get('default_log_entries');
+ 	}
+ 
++	phpsession_begin();
++	$guiuser = getUserEntry($_SESSION['Username']);
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
++	phpsession_end();
++
+ 	if ($_POST['clear']) {
+-		clear_log_file($logfile_path);
++		if (!$read_only) {
++			clear_log_file($logfile_path);
++		} else{
++			$input_errors = array(gettext("Insufficient privileges to make the requested change (read only)."));
++		}
+ 	}
+ 
+ 	/* Setup shortcuts if they exist */
+@@ -662,8 +671,14 @@ function manage_log_code() {
+ 
+ 	$save_settings = getGETPOSTsettingvalue('save_settings', null);
+ 
+-	if ($save_settings) {
++	phpsession_begin();
++	$guiuser = getUserEntry($_SESSION['Username']);
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
++	phpsession_end();
++
++	if ($save_settings && !$read_only) {
+ 
++		$input_errors[] = "Shouldn't be here";
+ 		// Common to All Logs
+ 		$cronorder = getGETPOSTsettingvalue('cronorder',  null);
+ 		$nentries = getGETPOSTsettingvalue('nentries', null);
+@@ -815,6 +830,9 @@ function manage_log_code() {
+ 				}
+ 			}
+ 		}
++	} elseif ($save_settings) {
++		/* Save Settings code path, but read only user. */
++		$input_errors = array(gettext("Insufficient privileges to make the requested change (read only)."));
+ 	}
+ }
+ 
+diff --git a/src/usr/local/www/status_logs_settings.php b/src/usr/local/www/status_logs_settings.php
+index 182e1c4dde..dc97d1d58e 100644
+--- a/src/usr/local/www/status_logs_settings.php
++++ b/src/usr/local/www/status_logs_settings.php
+@@ -91,13 +91,26 @@ function is_valid_syslog_server($target) {
+ 		|| is_hostnamewithport($target));
+ }
+ 
++phpsession_begin();
++$guiuser = getUserEntry($_SESSION['Username']);
++$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
++phpsession_end();
++
+ if ($_POST['resetlogs'] == gettext("Reset Log Files")) {
+-	clear_all_log_files(true);
+-	$reset_msg = gettext("The log files have been reset.");
++	if (!$read_only) {
++		clear_all_log_files(true);
++		$reset_msg = gettext("The log files have been reset.");
++	} else {
++		$input_errors = array(gettext("Insufficient privileges to make the requested change (read only)."));
++	}
+ } elseif ($_POST) {
+ 	unset($input_errors);
+ 	$pconfig = $_POST;
+ 
++	if ($read_only) {
++		$input_errors[] = gettext("Insufficient privileges to make the requested change (read only).");
++	}
++
+ 	/* input validation */
+ 	if ($_POST['enable'] && !is_valid_syslog_server($_POST['remoteserver'])) {
+ 		$input_errors[] = gettext("A valid IP address/hostname or IP/hostname:port must be specified for remote syslog server #1.");

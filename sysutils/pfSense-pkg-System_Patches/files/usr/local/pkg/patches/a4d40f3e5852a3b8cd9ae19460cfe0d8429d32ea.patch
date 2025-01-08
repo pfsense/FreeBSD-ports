@@ -1,0 +1,75 @@
+commit a4d40f3e5852a3b8cd9ae19460cfe0d8429d32ea
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Fri Dec 6 11:38:28 2024 -0600
+
+    Pass correct argument when checking for RO user privilege
+    
+    Fix #15282
+    Fix #15318
+    Fix #15908
+
+diff --git a/src/usr/local/www/interfaces_qinq.php b/src/usr/local/www/interfaces_qinq.php
+index 2a9082972d..f907e954a6 100644
+--- a/src/usr/local/www/interfaces_qinq.php
++++ b/src/usr/local/www/interfaces_qinq.php
+@@ -41,7 +41,7 @@ if ($_POST['act'] == "del") {
+ 	 */
+ 	phpsession_begin();
+ 	$guiuser = getUserEntry($_SESSION['Username']);
+-	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
+ 	phpsession_end();
+ 
+ 	if ($read_only) {
+diff --git a/src/usr/local/www/interfaces_qinq_edit.php b/src/usr/local/www/interfaces_qinq_edit.php
+index 26adb92823..696cd23640 100644
+--- a/src/usr/local/www/interfaces_qinq_edit.php
++++ b/src/usr/local/www/interfaces_qinq_edit.php
+@@ -91,7 +91,7 @@ if ($_POST['save']) {
+ 	 */
+ 	phpsession_begin();
+ 	$guiuser = getUserEntry($_SESSION['Username']);
+-	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
+ 	phpsession_end();
+ 
+ 	if ($read_only) {
+diff --git a/src/usr/local/www/interfaces_vlan.php b/src/usr/local/www/interfaces_vlan.php
+index 0e4fe6749b..72bfb5f329 100644
+--- a/src/usr/local/www/interfaces_vlan.php
++++ b/src/usr/local/www/interfaces_vlan.php
+@@ -45,7 +45,7 @@ if ($_POST['act'] == "del") {
+ 	 */
+ 	phpsession_begin();
+ 	$guiuser = getUserEntry($_SESSION['Username']);
+-	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
+ 	phpsession_end();
+ 
+ 	if ($read_only) {
+diff --git a/src/usr/local/www/interfaces_vlan_edit.php b/src/usr/local/www/interfaces_vlan_edit.php
+index 1fb3d0fc2a..a95fcd9126 100644
+--- a/src/usr/local/www/interfaces_vlan_edit.php
++++ b/src/usr/local/www/interfaces_vlan_edit.php
+@@ -87,7 +87,7 @@ if ($_POST['save']) {
+ 	 */
+ 	phpsession_begin();
+ 	$guiuser = getUserEntry($_SESSION['Username']);
+-	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++	$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
+ 	phpsession_end();
+ 
+ 	if ($read_only) {
+diff --git a/src/usr/local/www/system_usermanager_passwordmg.php b/src/usr/local/www/system_usermanager_passwordmg.php
+index 181d8d054d..10330e755d 100644
+--- a/src/usr/local/www/system_usermanager_passwordmg.php
++++ b/src/usr/local/www/system_usermanager_passwordmg.php
+@@ -44,7 +44,7 @@ $input_errors = [];
+ 
+ phpsession_begin();
+ $guiuser = getUserEntry($_SESSION['Username']);
+-$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
++$read_only = (is_array($guiuser) && userHasPrivilege($guiuser['item'], "user-config-readonly"));
+ /* Determine if the current user authenticated locally */
+ $islocal = false;
+ foreach (config_get_path('system/user', []) as $user) {
