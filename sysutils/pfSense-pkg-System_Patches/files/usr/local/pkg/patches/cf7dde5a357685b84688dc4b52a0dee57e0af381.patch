@@ -1,0 +1,32 @@
+commit cf7dde5a357685b84688dc4b52a0dee57e0af381
+Author: jim-p <jimp@netgate.com>
+Date:   Fri Dec 6 14:08:50 2024 -0500
+
+    Mark CA basic constraints as critical. Fixes #15818
+
+diff --git a/src/usr/local/share/pfSense/ssl/openssl.cnf b/src/usr/local/share/pfSense/ssl/openssl.cnf
+index 486d81d4a6..7482b517d1 100644
+--- a/src/usr/local/share/pfSense/ssl/openssl.cnf
++++ b/src/usr/local/share/pfSense/ssl/openssl.cnf
+@@ -268,11 +268,7 @@ subjectKeyIdentifier=hash
+ 
+ authorityKeyIdentifier=keyid:always,issuer:always
+ 
+-# This is what PKIX recommends but some broken software chokes on critical
+-# extensions.
+-#basicConstraints = critical,CA:true
+-# So we do this instead.
+-basicConstraints = CA:true
++basicConstraints = critical,CA:true
+ 
+ # Key usage: this is typical for a CA certificate. However since it will
+ # prevent it being used as an test self-signed certificate it is best
+@@ -298,7 +294,7 @@ keyUsage = cRLSign, keyCertSign
+ # copy of [ v3_ca ] plus nonempty Subject Alternative Names
+ subjectKeyIdentifier=hash
+ authorityKeyIdentifier=keyid:always,issuer:always
+-basicConstraints=CA:true
++basicConstraints=critical,CA:true
+ subjectAltName=$ENV::SAN
+ 
+ [ crl_ext ]

@@ -1,0 +1,24 @@
+commit 714ecd70d2db2fc45273cbf44e9ea6a6008e828b
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Fri Jan 3 13:36:52 2025 -0600
+
+    Don't try getting interface config without an interface. Fix #15961
+
+diff --git a/src/usr/local/www/firewall_rules.php b/src/usr/local/www/firewall_rules.php
+index 63c84d8d72..3491445994 100644
+--- a/src/usr/local/www/firewall_rules.php
++++ b/src/usr/local/www/firewall_rules.php
+@@ -438,11 +438,11 @@ if (!config_path_enabled('system/webgui', 'noantilockout') &&
+ 	$showantilockout = true;
+ }
+ 
+-if (config_path_enabled("interfaces/{$if}", "blockpriv")) {
++if (isset($if) && config_path_enabled("interfaces/{$if}", "blockpriv")) {
+ 	$showprivate = true;
+ }
+ 
+-if (config_path_enabled("interfaces/{$if}", "blockbogons")) {
++if (isset($if) && config_path_enabled("interfaces/{$if}", "blockbogons")) {
+ 	$showblockbogons = true;
+ }
+ 
