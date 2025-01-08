@@ -1585,9 +1585,6 @@ fill_interface_params(zval *val, struct ifaddrs *mb)
 			break;
 		case IFT_TUNNEL:
 		case IFT_GIF:
-#if (__FreeBSD_version < 1100000)
-		case IFT_FAITH:
-#endif
 		case IFT_ENC:
 		case IFT_PFLOG:
 		case IFT_PFSYNC:
