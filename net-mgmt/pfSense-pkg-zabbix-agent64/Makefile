@@ -11,7 +11,6 @@ CONFLICTS+=	pfSense-pkg-zabbix-agent44
 CONFLICTS+=	pfSense-pkg-zabbix-agent5
 CONFLICTS+=	pfSense-pkg-zabbix-agent54
 CONFLICTS+=	pfSense-pkg-zabbix-agent6
-CONFLICTS+=	pfSense-pkg-zabbix-agent7
 
 RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix64-agent
 
