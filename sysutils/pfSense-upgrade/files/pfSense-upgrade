@@ -998,15 +998,6 @@ pkg_upgrade() {
 			unlock_pkg=1
 		fi
 
-		# Before 2.4.5, pfSense-repo used to depend of pfSense-upgrade
-		# and then it is upgraded to latest version in pkg_upgrade_repo
-		# call below.  Detect when a new version is available early on
-		# old versions and make it to exit returning code 99
-		local _new_pfsense_upgrade=""
-		if [ "$(compare_pkg_version ${product}-upgrade)" != "=" ]; then
-			_new_pfsense_upgrade=1
-		fi
-
 		# If a new version of pfSense-upgrade is available, upgrade it
 		# and return a special code 99 used by wrapper to run newer
 		# version again using the same parameters
@@ -1014,12 +1005,6 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update} -f \
 			    ${product}-upgrade" "Upgrading ${product}-upgrade" \
 			    mute
-			_exit 99
-		fi
-
-		# If a new version of pfSense-upgrade was detected early and
-		# was upgraded together with pfSense-repo, exit 99
-		if [ -n "${_new_pfsense_upgrade}" ]; then
 			_exit 99
 		fi
 
