@@ -10,7 +10,6 @@ CONFLICTS=	pfSense-pkg-zabbix-agent \
 		pfSense-pkg-zabbix-agent5 \
 		pfSense-pkg-zabbix-agent54 \
 		pfSense-pkg-zabbix-agent62 \
-		pfSense-pkg-zabbix-agent64 \
 		pfSense-pkg-zabbix-agent7
 
 RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix6-agent
