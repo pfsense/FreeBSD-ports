@@ -62,6 +62,7 @@ pkg/patches/4612721800a1b25bb1fb2d4d7c4ceea6f44f208e.patch
 pkg/patches/46238320e89caa44bbb525849ab170bab6937619.patch
 pkg/patches/46b159032fef8c78783aa1a749d2238cfed7ac0d.patch
 pkg/patches/48aea6ee7e03b5b7f49dd143bd1993d33ba74f5b.patch
+pkg/patches/48b2525bae3addc43e99444869aa19ed60b8c443.patch
 pkg/patches/490c8d19bb6d89d93df32c42705153cc5c995853.patch
 pkg/patches/4e8f6cedd9c4b32b24ac3619f84e33a9a4708a29.patch
 pkg/patches/4fe6481fa35f31b93ed5841c3342cbb5bd76237c.patch
@@ -97,6 +98,7 @@ pkg/patches/88670c6c167418e7d12b010c0ce8b7d06c2b757f.patch
 pkg/patches/892d939ee0473992abece201ed3d5d2bfdfd276f.patch
 pkg/patches/892de1ecdaa23b164f6b2a2251d7538eee2199ea.patch
 pkg/patches/8aa54e0d780114713015dd7e970e6541dfc40378.patch
+pkg/patches/8aa54e0d780114713015dd7e970e6541dfc40378.p2.patch
 pkg/patches/8b962c6a752a654f2def293d93c102d2d20a6887.patch
 pkg/patches/8ddf2b5a999772754080825f07acf9b6326f1f04.patch
 pkg/patches/908e52f9fc52914b8f0a0c1ae71be3c71bef6c3b.patch

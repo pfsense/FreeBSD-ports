@@ -123,6 +123,18 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '8aa54e0d780114713015dd7e970e6541dfc40378.p2',
+  'versions' => ['24.11'],
+  'descr' => 'Fix handling of Deny Config Write privilege for Logging operations (Follow-up fix)',
+  'links' => [
+      [ 'text' => 'Redmine #15874',
+         'url' => 'https://redmine.pfsense.org/issues/15874', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'a4d40f3e5852a3b8cd9ae19460cfe0d8429d32ea',
   'versions' => ['24.11'],
   'descr' => 'Fix handling of Deny Config Write privilege for VLAN, QinQ, and self-service password change pages',
@@ -181,6 +193,18 @@ $recommended_patches = [
   'links' => [
       [ 'text' => 'Redmine #15935',
          'url' => 'https://redmine.pfsense.org/issues/15935', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '48b2525bae3addc43e99444869aa19ed60b8c443',
+  'versions' => ['24.11'],
+  'descr' => 'Fix PHP error in firewall log settings',
+  'links' => [
+      [ 'text' => 'Redmine #15988',
+         'url' => 'https://redmine.pfsense.org/issues/15988', ],
   ],
   'basedir' => '/',
   'pathstrip' => 2,
