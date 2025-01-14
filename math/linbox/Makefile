@@ -68,4 +68,11 @@ CONFIGURE_ARGS+=--disable-sse --disable-sse2 --disable-sse3 --disable-ssse3	\
 		--disable-avx --disable-avx2
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 180
+# See https://github.com/linbox-team/linbox/issues/320
+BROKEN=		compilation errors with clang19
+.endif
+
+.include <bsd.port.post.mk>

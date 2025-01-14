@@ -982,6 +982,7 @@
     SUBDIR += py-pygeos
     SUBDIR += py-pyglet
     SUBDIR += py-pyglet1
+    SUBDIR += py-pyglm
     SUBDIR += py-pygltflib
     SUBDIR += py-pygraph
     SUBDIR += py-pygraphviz
@@ -1020,6 +1021,7 @@
     SUBDIR += py-spectra
     SUBDIR += py-sqlalchemy-imageattach
     SUBDIR += py-svg.path
+    SUBDIR += py-svgelements
     SUBDIR += py-svgwrite
     SUBDIR += py-termtosvg
     SUBDIR += py-tifffile

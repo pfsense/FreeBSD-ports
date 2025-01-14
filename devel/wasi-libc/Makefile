@@ -1,7 +1,6 @@
 PORTNAME=	wasi-libc
 DISTVERSIONPREFIX=	wasi-sdk-
-DISTVERSION=	24-13
-DISTVERSIONSUFFIX=	-gc47daaf
+DISTVERSION=	25
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${FLAVOR}
 
@@ -17,7 +16,10 @@ LICENSE_FILE_LLVM2=	${WRKSRC}/LICENSE-APACHE-LLVM
 LICENSE_NAME_LLVM2=	Apache License 2.0 with LLVM Exceptions
 LICENSE_PERMS_LLVM2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BUILD_DEPENDS=	bash:shells/bash
+
 FLAVORS=	18 19 17
+FLAVOR?=	${FLAVORS:[1]}
 
 USES=		gmake llvm:${FLAVOR}
 USE_GITHUB=	yes

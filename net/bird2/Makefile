@@ -1,5 +1,5 @@
 PORTNAME=	bird
-DISTVERSION=	2.16
+DISTVERSION=	2.16.1
 CATEGORIES=	net
 MASTER_SITES=	https://bird.network.cz/download/
 PKGNAMESUFFIX=	2
@@ -15,8 +15,7 @@ rtsock_PKGNAMESUFFIX=	2-rtsock
 
 USES=		bison cpe gmake ncurses readline
 
-CONFLICTS=	bird
-CONFLICTS+=	bird6
+CONFLICTS=	bird3
 
 CPE_VENDOR=	nic
 
