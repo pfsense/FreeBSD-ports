@@ -944,10 +944,7 @@ function pfb_dnsbl_service() {
 	if [ "\${unbound_mode}" == 'dnsbl_unbound' ]; then
 		/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc queries &
 	elif [ ! -e '/var/unbound/pfb_unbound.py' ]; then
-		cp /usr/local/pkg/pfblockerng/pfb_unbound.py /var/unbound/pfb_unbound.py
-		cp /usr/local/pkg/pfblockerng/pfb_unbound_include.inc /var/unbound/pfb_unbound_include.inc
-		cp /usr/local/pkg/pfblockerng/pfb_py_hsts.txt /var/unbound/pfb_py_hsts.txt
-		/usr/local/sbin/pfSctl -c 'service reload dns'
+		/usr/bin/logger -p daemon.err -t php_pfb "[pfBlockerNG] DNSBL missing python script - forced reload required"
 	fi
 
 EOF;
@@ -7000,17 +6997,6 @@ function sync_package_pfblockerng($cron='') {
 		// Create DNSBL NAT, VIP, Lighttpd service and certs if required on reboot.
 		if ($pfb['dnsbl'] == 'on') {
 			pfb_create_dnsbl('enabled');
-		}
-		if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
-			if (!file_exists("{$g['unbound_chroot_path']}/pfb_unbound.py")) {
-				@copy("/usr/local/pkg/pfblockerng/pfb_unbound.py", "{$g['unbound_chroot_path']}/pfb_unbound.py");
-			}
-			if (!file_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc")) {
-				@copy("/usr/local/pkg/pfblockerng/pfb_unbound_include.inc", "{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
-			}
-			if (!file_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt")) {
-				@copy("/usr/local/pkg/pfblockerng/pfb_py_hsts.txt", "{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
-			}
 		}
 		$log = 'Sync terminated during boot process.';
 		pfb_logger("\n{$log}\nUPDATE PROCESS ENDED [ NOW ]\n", 1);
