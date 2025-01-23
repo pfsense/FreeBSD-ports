@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -604,7 +604,7 @@ if ($_POST['clear']) {
 	}
 
 	// Signal the Suricata instance that logs have been rotated
-	suricata_reload_config($a_instance, "SIGHUP");
+	suricata_reload_config($a_instance, SIGHUP);
 
 	/* XXX: This is needed if suricata is run as suricata user */
 	mwexec('/bin/chmod 660 {$suricatalogdir}*', true);
