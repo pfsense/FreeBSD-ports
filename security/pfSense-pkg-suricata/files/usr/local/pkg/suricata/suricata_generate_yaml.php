@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2024 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1364,6 +1364,14 @@ pcap:
 EOD;
 }
 
-$suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
+// Create UNIX control socket for Suricata binary
+$unix_socket_name = "{$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid}";
+
+// Populate optional user configuration if present
+if (!empty($suricatacfg['configpassthru']))
+	$suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
+else
+	$suricata_config_pass_thru = "";
+
 return true;
 ?>
