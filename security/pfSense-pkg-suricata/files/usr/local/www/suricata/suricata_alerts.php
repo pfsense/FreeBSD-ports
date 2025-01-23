@@ -1001,8 +1001,8 @@ if ($filterlogentries && count($filterfieldsarray)) {
 	<?php
 
 /* make sure alert file exists */
-if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
-	exec("tail -{$anentries} -r {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/alerts_suricata{$suricata_uuid}");
+if (file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
+	exec("tail -{$anentries} -r {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/alerts_suricata{$suricata_uuid}");
 	if (file_exists("{$g['tmp_path']}/alerts_suricata{$suricata_uuid}")) {
 		$tmpblocked = array_flip(suricata_get_blocked_ips());
 		$counter = 0;
