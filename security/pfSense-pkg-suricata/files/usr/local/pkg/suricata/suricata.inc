@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2024 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,18 +64,29 @@ function suricata_is_running($suricata_uuid, $if_real, $type = 'suricata') {
 
 function suricata_stop($suricatacfg, $if_real) {
 	global $g;
-
 	$suricata_uuid = $suricatacfg['uuid'];
-	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-		syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
+	$suricata_ctrl_sock = "{$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid}";
+
+	syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
+
+	// Attempt to use UNIX control socket interface if present
+	if (file_exists($suricata_ctrl_sock)) {
+		if (mwexec("/usr/local/bin/suricatasc -c shutdown {$suricata_ctrl_sock}") == 0) {
+			// Give the Suricata daemon time to stop and cleanup before returning
+			sleep(3);
+			return;
+		}
+	} elseif (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
 		killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+		// Give the Suricata daemon time to stop and cleanup before returning
+		sleep(3);
+		return;
+	} else {
+		if (!isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
+			// Make sure any zombie PID file is deleted so Suricata will start later without error
+			unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+		}
 	}
-
-	// Give the Suricata daemon some to actually stop and cleanup before returning
-	sleep(10);
-
-	// Make sure the PID file is actually deleted so Suricata will restart without error
-	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 }
 
 function suricata_start($suricatacfg, $if_real) {
@@ -141,7 +152,7 @@ function suricata_restart_all_interfaces() {
 	suricata_start_all_interfaces(TRUE);
 }
 
-function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
+function suricata_reload_config($suricatacfg, $signal=SIGUSR2) {
 
 	/**************************************************************/
 	/* This function sends the passed SIGNAL to the Suricata      */
@@ -151,12 +162,13 @@ function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
 	/* as a background process and returns control immediately    */
 	/* to the caller.                                             */
 	/*                                                            */
-	/*  $signal = SIGUSR2 (default) parses and reloads config.    */
+	/*  $signal = SIGUSR2 (default) parses and reloads rules.     */
 	/**************************************************************/
 	global $g;
 
 	$suricata_uuid = $suricatacfg['uuid'];
 	$if_real = get_real_interface($suricatacfg['interface']);
+	$suricata_ctrl_sock = "{$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid}";
 
 	/******************************************************/
 	/* Skip disabled Suricata instances or instances      */
@@ -171,27 +183,33 @@ function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-
-		// Send the SIGNAL to the Suricata process
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-
-		// Log what we did
 		switch ($signal) {
 			case SIGHUP:
 				syslog(LOG_NOTICE, "[Suricata] Suricata LOGS ROTATION initiated for {$suricatacfg['descr']} ({$if_real})...");
+				if (mwexec("/usr/local/bin/suricatasc -c reopen-log-files {$suricata_ctrl_sock}") != 0) {
+					syslog(LOG_WARNING, "[Suricata] Suricata LOGS ROTATION command failed to execute!");
+				}
 				break;
 
 			case SIGUSR2:
 				syslog(LOG_NOTICE, "[Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+				if (mwexec("/usr/local/bin/suricatasc -c ruleset-reload-nonblocking {$suricata_ctrl_sock}") != 0) {
+					syslog(LOG_WARNING, "[Suricata] Suricata LIVE RULE RELOAD command failed to execute!");
+				}
 				break;
 
 			case SIGTERM:
 			case SIGINT:
 				syslog(LOG_NOTICE, "[Suricata] Suricata SHUTDOWN initiated for {$suricatacfg['descr']} ({$if_real})...");
+				if (mwexec("/usr/local/bin/suricatasc -c shutdown {$suricata_ctrl_sock}") != 0) {
+					syslog(LOG_WARNING, "[Suricata] Suricata SHUTDOWN command failed to execute!");
+				}
 				break;
 
 			default:
 				syslog(LOG_NOTICE, "[Suricata] Suricata signalled with {$signal} for {$suricatacfg['descr']} ({$if_real})...");
+				// Send the SIGNAL to the Suricata process
+				mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 		}
 	}
 }
@@ -3536,7 +3554,6 @@ function suricata_create_rc() {
 		{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid {$verbose_logging} > /dev/null 2>&1
 	fi
 
-	sleep 1
 EOE;
 
 		$start_suricata_iface_stop[] = <<<EOE
@@ -3544,7 +3561,11 @@ EOE;
 	if [ -f {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid ]; then
 		pid=`/bin/pgrep -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid`
 		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-		/bin/pkill -TERM -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid
+		if [ -f {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} ]; then
+			/usr/local/bin/suricatasc -c shutdown {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} 2>/dev/null
+		else
+			/bin/pkill -TERM -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid
+		fi
 		time=0 timeout=30
 		while /bin/kill -TERM \$pid 2>/dev/null; do
 			sleep 1
@@ -3560,7 +3581,11 @@ EOE;
 		pid=`/bin/pgrep -fn "suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml "`
 		if [ ! -z \$pid ]; then
 			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-			/bin/pkill -TERM -fn "suricata -i {$if_real} "
+			if [ -f {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} ]; then
+				/usr/local/bin/suricatasc -c shutdown {$g['varrun_path']}/suricata-ctrl-socket-{$suricata_uuid} 2>/dev/null
+			else
+				/bin/pkill -TERM -fn "suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml "
+			fi
 			time=0 timeout=30
 			while /bin/kill -TERM \$pid 2>/dev/null; do
 				sleep 1
@@ -3572,7 +3597,6 @@ EOE;
 		fi
 	fi
 
-	sleep 1
 EOE;
 	}
 
@@ -3609,7 +3633,7 @@ case $1 in
 		if [ ! -f {$g['varrun_path']}/suricata_pkg_starting.lck ]; then
 			rc_start
 		else
-			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Ignoring additional START command since Suricata is already starting..."
+			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Ignoring spurious START command since Suricata is already starting..."
 		fi
 		;;
 	stop)
@@ -3617,7 +3641,7 @@ case $1 in
 		;;
 	restart)
 		rc_stop
-		sleep 5
+		sleep 2
 		rc_start
 		;;
 esac

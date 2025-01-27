@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2024 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +61,7 @@ if (!defined("SURICATA_BIN_VERSION")) {
 		define("SURICATA_BIN_VERSION", $suricataver);
 	else
 		// If we could not find a version, set a safe default
-		define("SURICATA_BIN_VERSION", "7.0.6");
+		define("SURICATA_BIN_VERSION", "7.0.8");
 }
 
 // Define the name of the pf table used for IP blocks

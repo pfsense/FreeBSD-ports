@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -194,9 +194,11 @@ EOD;
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}
 			else {
-				// Forcefully remove the PID file if it exists since we checked already for a running process and stopped it.
+				// Forcefully remove the PID file if it exists but a Suricata instance with that PID is not running.
 				// This allows the user the start Suricata in the event of a failed previous start due to a config error.
-				unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricatacfg['uuid']}.pid");
+				if (!suricata_is_running($suricatacfg['uuid'], $if_real)) {
+					unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricatacfg['uuid']}.pid");
+				}
 				syslog(LOG_NOTICE, "Starting Suricata on {$if_friendly}({$if_real}) per user request...");
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}

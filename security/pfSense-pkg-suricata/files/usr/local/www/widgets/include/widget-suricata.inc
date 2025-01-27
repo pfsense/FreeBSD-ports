@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2023 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,7 @@
  */
 
 require_once("config.inc");
+require_once("/usr/local/pkg/suricata/suricata_defs.inc");
 
 //set variable for custom title
 $suricata_alerts_title = "Suricata Alerts";
