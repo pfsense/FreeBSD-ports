@@ -540,6 +540,7 @@ www/pkg_mgr_installed.php
 www/safari-pinned-tab.svg
 www/services_acb.php
 www/services_acb_backup.php
+www/services_acb_changekey.php
 www/services_acb_settings.php
 www/services_captiveportal.php
 www/services_captiveportal_filemanager.php
