@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2024 Bill Meeks
+ * Copyright (c) 2025 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -94,6 +94,7 @@ rmdir_recursive("/usr/local/share/suricata/GeoLite2");
 
 foreach (config_get_path('installedpackages/suricata/rule', []) as $suricatacfg) {
 	rmdir_recursive("{$suricatadir}suricata_" . $suricatacfg['uuid'] . "_" . get_real_interface($suricatacfg['interface']));
+	unlink_if_exists($g['varrun_path'] . "/suricata-ctrl-socket-" . $suricatacfg['uuid']);
 }
 
 /* Remove our associated Dashboard widget config and files. */
