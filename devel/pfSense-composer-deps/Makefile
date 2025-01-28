@@ -1,5 +1,5 @@
 PORTNAME=	pfSense-composer-deps
-DISTVERSION=	0.2
+DISTVERSION=	0.3
 CATEGORIES=	devel
 
 MAINTAINER=	coreteam@pfSense.org
