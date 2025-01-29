@@ -60,6 +60,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		radvd>=0:net/radvd \
 		rate>=0:net-mgmt/rate \
 		scponly>=0:shells/scponly \
+		smartmontools>=0:sysutils/smartmontools \
 		ssh_tunnel_shell>=0:sysutils/ssh_tunnel_shell \
 		sshguard>=0:security/sshguard \
 		strongswan>=0:security/strongswan \
@@ -109,7 +110,6 @@ DATADIR=	${PREFIX}/share/pfSense
 
 .if ${ARCH} == "amd64"
 RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
-		smartmontools>=0:sysutils/smartmontools \
 		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \
 		beep>=0:audio/beep \
 		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
