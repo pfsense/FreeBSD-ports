@@ -1809,8 +1809,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 			bzero(outputbuf, sizeof outputbuf);
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_addr;
 			if (IN6_IS_ADDR_LINKLOCAL(&tmp6->sin6_addr)) {
-				zval_ptr_dtor(&addr);
-				break;
+				add_assoc_long(&addr, "linklocal", 1);
 			}
 			inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf,
 			    sizeof(outputbuf));
@@ -1823,8 +1822,22 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 			if (ioctl(PFSENSE_G(inets6),
 			    SIOCGIFAFLAG_IN6, &ifr6) == 0) {
 				llflag = ifr6.ifr_ifru.ifru_flags6;
+				if ((llflag & IN6_IFF_ANYCAST) != 0)
+					add_assoc_long(&addr, "anycast", 1);
 				if ((llflag & IN6_IFF_TENTATIVE) != 0)
 					add_assoc_long(&addr, "tentative", 1);
+				if ((llflag & IN6_IFF_DUPLICATED) != 0)
+					add_assoc_long(&addr, "duplicated", 1);
+				if ((llflag & IN6_IFF_DETACHED) != 0)
+					add_assoc_long(&addr, "detached", 1);
+				if ((llflag & IN6_IFF_DEPRECATED) != 0)
+					add_assoc_long(&addr, "deprecated", 1);
+				if ((llflag & IN6_IFF_AUTOCONF) != 0)
+					add_assoc_long(&addr, "autoconf", 1);
+				if ((llflag & IN6_IFF_TEMPORARY) != 0)
+					add_assoc_long(&addr, "temporary", 1);
+				if ((llflag & IN6_IFF_PREFER_SOURCE) != 0)
+					add_assoc_long(&addr, "prefer_source", 1);
 			}
 
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
