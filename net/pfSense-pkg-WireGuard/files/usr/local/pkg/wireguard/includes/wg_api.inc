@@ -249,11 +249,14 @@ function wg_interface_update_addresses($if_name, &$cmds = null) {
 				$current[] = "{$addrs['addr']}/{$addrs['subnetbits']}";
 			}
 			foreach (array_get_path($interface_addresses, 'addrs6', []) as $addrs) {
-				$current[] = "{$addrs['addr']}/{$addrs['subnetbits']}";
+				$current[] = Net_IPv6::uncompress($addrs['addr']) . "/{$addrs['subnetbits']}";
 			}
 
 			// Get an array of the addresses to be assigned to the interface
 			$desired = array_map(function($x) {
+				if (is_ipaddrv6($x['address'])) {
+					$x = Net_IPv6::uncompress($x['address']);
+				}
 				return "{$x['address']}/{$x['mask']}"; 
 			}, $tunnel['addresses']['row']);
 
