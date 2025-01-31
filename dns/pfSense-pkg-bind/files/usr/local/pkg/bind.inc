@@ -211,7 +211,7 @@ EOD;
 			} elseif (is_ipaddr($listenon)) {
 				$bind_listenon .= $listenon."; ";
 			} else {
-				$listenon = pfSense_get_interface_addresses(convert_friendly_interface_to_real_interface_name($listenon));
+				$listenon = get_interface_addresses(convert_friendly_interface_to_real_interface_name($listenon));
 				if (is_ipaddr($listenon['ipaddr'])) {
 					$bind_listenon .= $listenon['ipaddr']."; ";
 				}
