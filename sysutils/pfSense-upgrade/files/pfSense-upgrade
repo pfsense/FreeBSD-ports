@@ -1459,7 +1459,7 @@ get_meta_pkg_name() {
 	elif is_pkg_installed ${product}-php72; then
 		echo "${product}-php72"
 	elif is_pkg_installed ${product}; then
-		echo "${product}"
+		echo "${product}-system"
 	else
 		_echo -o stderr "ERROR: It was not possible to identify which" \
 		    "${product} meta package is installed"
