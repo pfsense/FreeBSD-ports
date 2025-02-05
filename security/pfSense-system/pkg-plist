@@ -860,9 +860,11 @@ www/wizards/traffic_shaper_wizard_dedicated.xml
 www/wizards/traffic_shaper_wizard_multi_all.inc
 www/wizards/traffic_shaper_wizard_multi_all.xml
 www/xmlrpc.php
+/usr/share/doc/radius/dictionary.pfsense
 @dir /cf
 @dir /cf/conf
 @dir /etc/inc/priv
 @dir /etc/inc
 @dir /etc/phpshellsessions
 @dir /etc/skel
+@dir /usr/share/doc/radius
