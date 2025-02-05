@@ -1592,7 +1592,7 @@ check_upgrade() {
 					_version_compare=$(compare_pkg_version "${_package}" "${_new_version}")
 				fi
 				if [ "${_version_compare}" == "<" ]; then
-					_new_version=$(_pkg ${_pkg_args} rquery -U %v ${_package})
+					_new_version="$(_pkg ${_pkg_args} rquery -U %v ${_package} | /usr/bin/cut -f -5 -d.)"
 				fi
 			done
 		done
