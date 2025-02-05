@@ -91,7 +91,6 @@ NO_BUILD=	yes
 CONFLICTS=	pfSense-vmware-[0-9]*
 
 USE_GITHUB=	yes
-#GL_SITE=	https://gitlab.netgate.com
 GH_ACCOUNT=	Christopher-YeTI
 GL_PROJECT=	${PFSENSE_SRC_REPO}
 GH_TAGNAME=	${PFSENSE_COMMITHASH}
