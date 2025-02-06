@@ -3670,7 +3670,7 @@ ATTRIBUTE 		MOTP-Init-Secret 		900 	string
 ATTRIBUTE 		MOTP-PIN 			901 	string
 ATTRIBUTE 		MOTP-Offset 			902 	string
 
-\$INCLUDE /usr/share/doc/radius/dictionary.pfsense
+\$INCLUDE /usr/local/share/pfSense/radius/dictionary.pfsense
 \$INCLUDE /usr/local/pkg/dictionary.mpd
 
 EOD;
