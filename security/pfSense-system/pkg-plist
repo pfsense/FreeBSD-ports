@@ -378,6 +378,7 @@ share/locale/zh_Hant_TW/LC_MESSAGES/pfSense.mo
 share/locale/zh_Hant_TW/LC_MESSAGES/pfSense.po
 share/locale/zh_TW/LC_MESSAGES/pfSense.mo
 share/locale/zh_TW/LC_MESSAGES/pfSense.po
+share/pfSense/radius/dictionary.pfsense
 %%DATADIR%%/ascii-art/pfsense-logo-small.txt
 %%DATADIR%%/fix_for_SA-19-10.ufs
 %%DATADIR%%/iso_3166-1_list_en.xml
@@ -860,11 +861,9 @@ www/wizards/traffic_shaper_wizard_dedicated.xml
 www/wizards/traffic_shaper_wizard_multi_all.inc
 www/wizards/traffic_shaper_wizard_multi_all.xml
 www/xmlrpc.php
-/usr/share/doc/radius/dictionary.pfsense
 @dir /cf/conf
 @dir /cf
 @dir /etc/inc/priv
 @dir /etc/inc
 @dir /etc/phpshellsessions
 @dir /etc/skel
-@dir /usr/share/doc/radius
