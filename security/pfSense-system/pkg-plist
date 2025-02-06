@@ -120,7 +120,6 @@
 @(,,755) /etc/rc.dumpon
 @(,,755) /etc/rc.dyndns.update
 @(,,755) /etc/rc.ecl
-@(,,755) /etc/rc.embedded
 @(,,755) /etc/rc.expireaccounts
 @(,,755) /etc/rc.filter_configure
 @(,,755) /etc/rc.filter_configure_sync
