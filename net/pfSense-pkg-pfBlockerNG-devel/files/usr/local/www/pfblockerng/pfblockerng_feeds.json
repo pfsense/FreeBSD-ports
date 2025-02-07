@@ -124,6 +124,14 @@
 					"url":		"https://www.spamhaus.org/drop/edrop.txt",
 					"delist":	"https://www.spamhaus.org/lookup/",
 					"header":	"Spamhaus_eDrop"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Talos-Snort",
+					"website":	"https://www.talosintelligence.com/",
+					"contact":	"https://www.talosintelligence.com/contact/",
+					"url":		"https://talosintelligence.com/documents/ip-blacklist",
+					"header":	"Talos_BL"
 				}
 			]
 		},
