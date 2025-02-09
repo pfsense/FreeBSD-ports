@@ -309,4 +309,14 @@ EOD;
 		}
 		return false;
 	}
+
+	function deployCertificate($domain, $hook, $envvariables) {
+		$this->execacmesh(""
+			. " --deploy"
+			. " --domain " . escapeshellarg($domain)
+			. " --deploy-hook " . escapeshellarg($hook)
+			. " --accountconf " . escapeshellarg($this->accountconfig)
+			. " --home " . escapeshellarg($this->acmeconf)
+			, $envvariables);
+	}
 }
