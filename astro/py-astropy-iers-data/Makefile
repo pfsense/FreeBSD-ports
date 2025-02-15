@@ -1,5 +1,5 @@
 PORTNAME=	astropy-iers-data
-DISTVERSION=	0.2025.1.6.0.33.42
+DISTVERSION=	0.2025.2.3.0.32.42
 CATEGORIES=	astro
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,5 +18,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLA
 
 USES=		python
 USE_PYTHON=	autoplist pep517
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

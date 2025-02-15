@@ -1,5 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	14.2.1.s20241228
+PORTVERSION=	14.2.1.s20250208
 PORTEPOCH=	1
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
@@ -42,6 +42,8 @@ CFLAGS:=	${CFLAGS:N-mretpoline} -D__USE_ISOC11
 CXXFLAGS:=	${CXXFLAGS:N-mretpoline}
 
 OPTIONS_DEFINE=		GRAPHITE
+OPTIONS_DEFAULT_armv6=	STANDARD_BOOTSTRAP
+OPTIONS_DEFAULT_armv7=	STANDARD_BOOTSTRAP
 OPTIONS_DEFAULT_aarch64=STANDARD_BOOTSTRAP
 OPTIONS_DEFAULT_amd64=	STANDARD_BOOTSTRAP
 OPTIONS_DEFAULT_i386=	STANDARD_BOOTSTRAP
@@ -77,10 +79,6 @@ CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 
 .elif ${ARCH} == powerpc64
 CONFIGURE_ARGS+=	--with-abi=elfv2
-USE_GCC=	yes
-
-.elif ${ARCH} == powerpc64le
-USE_GCC=	yes
 .endif
 
 .if ${ARCH} == i386
@@ -140,7 +138,7 @@ INFO=		gcc${SUFFIX}/cpp \
 .if ${ARCH} == amd64 || ${ARCH} == i386
 INFO+=		gcc${SUFFIX}/libquadmath
 .endif
-.if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == aarch64
+.if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == aarch64 || ${ARCH:Marmv?}
 INFO+=		gcc${SUFFIX}/libitm
 .endif
 SUB_FILES=	pkg-message

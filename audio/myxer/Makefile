@@ -1,6 +1,6 @@
 PORTNAME=	myxer
 DISTVERSION=	1.3.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,8 +9,6 @@ WWW=		https://github.com/Aurailus/Myxer
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
-
-BROKEN_powerpc64le=	rust compiler crashes, see https://github.com/rust-lang/rust/issues/120583
 
 LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 

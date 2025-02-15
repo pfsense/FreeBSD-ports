@@ -1,5 +1,6 @@
 PORTNAME=	spidermonkey
 DISTVERSION=	128.6.0
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source \
 		MOZILLA/firefox/candidates/${DISTVERSION}esr-candidates/build1/source
@@ -65,6 +66,7 @@ USE_GCC=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/js/moz.configure
+	@${REINPLACE_CMD} -e 's|icu-i18n|icu-uc icu-i18n|g' ${WRKSRC}/js/moz.configure
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/lib/libjs_static.ajs

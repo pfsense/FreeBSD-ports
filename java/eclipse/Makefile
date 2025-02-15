@@ -1,6 +1,6 @@
 PORTNAME=	eclipse
 DISTVERSION=	4.34
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java devel
 ECLIPSE_TAG=	R${DISTVERSION:S|.|_|g}
 
@@ -19,7 +19,7 @@ BUILD_DEPENDS=	git:devel/git \
 		zip:archivers/zip
 
 LIB_DEPENDS=	libsecret-1.so:security/libsecret \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3
+		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 
 USES=		compiler:c++17-lang gl gmake java pkgconfig gnome
 # The github repositories.  The repository under NorbertXYZ is for a predefined maven

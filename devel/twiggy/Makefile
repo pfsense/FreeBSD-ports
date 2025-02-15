@@ -1,11 +1,12 @@
 PORTNAME=	twiggy
 DISTVERSION=	0.6.0
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	devel www
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Code size profiler for Wasm
-WWW=		https://rustwasm.github.io/twiggy/
+WWW=		https://rustwasm.github.io/twiggy/ \
+		https://github.com/rustwasm/twiggy
 
 LICENSE=	MIT APACHE20
 LICENSE_COMB=	dual

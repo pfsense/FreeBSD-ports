@@ -1,5 +1,5 @@
 PORTNAME=	hyphy
-DISTVERSION=	2.5.64
+DISTVERSION=	2.5.68
 CATEGORIES=	biology
 
 MAINTAINER=	jrm@FreeBSD.org
@@ -23,6 +23,6 @@ GH_ACCOUNT=	veg
 OPTIONS_DEFINE=	AVX
 AVX_DESC=	Advanced vector extensions support
 
-AVX_CMAKE_OFF=	-DNOAVX:BOOL=ON
+AVX_CMAKE_BOOL_OFF=	NOAVX
 
 .include <bsd.port.mk>

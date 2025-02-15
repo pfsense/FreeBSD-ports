@@ -131,6 +131,7 @@
     SUBDIR += picocom
     SUBDIR += pr
     SUBDIR += predict
+    SUBDIR += py-ModbusTCP
     SUBDIR += py-adafruit-ampy
     SUBDIR += py-elelabs-zigbee-ezsp-utility
     SUBDIR += py-esptool
@@ -148,6 +149,7 @@
     SUBDIR += py-pyocd-pemicro
     SUBDIR += py-pyserial
     SUBDIR += py-pyserial-asyncio
+    SUBDIR += py-sdm_modbus
     SUBDIR += py-spsdk
     SUBDIR += py-streamdeck
     SUBDIR += py-xmodem

@@ -853,9 +853,6 @@
     SUBDIR += pkcs11-tools
     SUBDIR += pkesh
     SUBDIR += pks
-    SUBDIR += plasma5-kscreenlocker
-    SUBDIR += plasma5-ksshaskpass
-    SUBDIR += plasma5-kwallet-pam
     SUBDIR += plasma6-kscreenlocker
     SUBDIR += plasma6-ksshaskpass
     SUBDIR += plasma6-kwallet-pam
@@ -1091,6 +1088,7 @@
     SUBDIR += py-yara
     SUBDIR += py-yara-python-dex
     SUBDIR += py-yubikey-manager
+    SUBDIR += py-zaproxy
     SUBDIR += py-zkg
     SUBDIR += py-zxcvbn
     SUBDIR += pygost

@@ -75,11 +75,11 @@ GUILE_DEFAULT?=		2.2
 IMAGEMAGICK_DEFAULT?=	7
 # Possible values: 8, 11, 17, 18, 19, 20, 21, 22 23
 JAVA_DEFAULT?=		8
-# Possible values: 3.4.0, 3.99
+# Possible values: 3.8.0, 4.99
 .  if (defined(WANT_LAZARUS_DEVEL) && !empty(WANT_LAZARUS_DEVEL)) || ${ARCH:Maarch64}
 LAZARUS_DEFAULT?=	4.99
 .  else
-LAZARUS_DEFAULT?=	3.6.0
+LAZARUS_DEFAULT?=	3.8.0
 .  endif
 # Possible values: rust, legacy
 .  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)
@@ -101,7 +101,7 @@ LUAJIT_DEFAULT?=	luajit-devel
 .  endif
 # Possible values: 5.10, 5.20, 6.8
 MONO_DEFAULT?=		5.20
-# Possible values: 8.0, 8.4, 9.0, 9.1, 10.5m, 10.6m, 10.11m, 11.4m
+# Possible values: 8.0, 8.4, 9.1, 10.5m, 10.6m, 10.11m, 11.4m
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
@@ -144,7 +144,7 @@ PYTHON2_DEFAULT?=	2.7
 RUBY_DEFAULT?=		3.2
 # Possible values: rust, rust-nightly
 RUST_DEFAULT?=		rust
-# Possible values: 4.16, 4.19
+# Possible values: 4.16, 4.19, 4.20
 SAMBA_DEFAULT?=		4.16
 # When updating this, please also update the same list in ssl.mk and the checks
 # for USES=ssl in qa.sh!
@@ -184,7 +184,7 @@ check-makevars::
 # Make sure we have a default in the end
 SSL_DEFAULT?=	base
 .  endif
-# Possible values: 8.5, 8.6, 8.7
+# Possible values: 8.6, 9.0
 TCLTK_DEFAULT?=		8.6
 # Possible values: 6, 7
 VARNISH_DEFAULT?=	6

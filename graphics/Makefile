@@ -4,7 +4,6 @@
     SUBDIR += 4va
     SUBDIR += Coin
     SUBDIR += GraphicsMagick
-    SUBDIR += Hermes
     SUBDIR += ImageMagick6
     SUBDIR += ImageMagick7
     SUBDIR += O2-tools
@@ -62,6 +61,7 @@
     SUBDIR += appleseed
     SUBDIR += argyllcms
     SUBDIR += art
+    SUBDIR += artem
     SUBDIR += asciinema-agg
     SUBDIR += asciio
     SUBDIR += aseprite
@@ -329,7 +329,6 @@
     SUBDIR += guile-cairo
     SUBDIR += guilib
     SUBDIR += gwenview
-    SUBDIR += gwenview-devel
     SUBDIR += h3
     SUBDIR += halftone
     SUBDIR += hdr_tools
@@ -480,7 +479,6 @@
     SUBDIR += libjxr
     SUBDIR += libkdcraw
     SUBDIR += libkexiv2
-    SUBDIR += libkexiv2-devel
     SUBDIR += libkipi
     SUBDIR += libksane
     SUBDIR += libliftoff
@@ -511,6 +509,7 @@
     SUBDIR += libspiro
     SUBDIR += libspng
     SUBDIR += libsvgtiny
+    SUBDIR += libultrahdr
     SUBDIR += libvisual
     SUBDIR += libvisual04
     SUBDIR += libvisual04-plugins
@@ -636,7 +635,6 @@
     SUBDIR += ogre3d19
     SUBDIR += oidn
     SUBDIR += okular
-    SUBDIR += okular-devel
     SUBDIR += open3d
     SUBDIR += opencollada
     SUBDIR += opencolorio
@@ -714,6 +712,7 @@
     SUBDIR += p5-Geo-GDAL-FFI
     SUBDIR += p5-Geo-GML
     SUBDIR += p5-Geo-Gpx
+    SUBDIR += p5-Geo-LibProj-FFI
     SUBDIR += p5-Geometry-Primitive
     SUBDIR += p5-Gimp
     SUBDIR += p5-Google-Chart
@@ -1151,6 +1150,8 @@
     SUBDIR += sdl2_gpu
     SUBDIR += sdl2_image
     SUBDIR += sdl2_ttf
+    SUBDIR += sdl3_image
+    SUBDIR += sdl3_ttf
     SUBDIR += sdl_gfx
     SUBDIR += sdl_image
     SUBDIR += sdl_ttf
@@ -1174,7 +1175,6 @@
     SUBDIR += skanlite
     SUBDIR += skanpage
     SUBDIR += spectacle
-    SUBDIR += spectacle-devel
     SUBDIR += spirv-cross
     SUBDIR += spirv-tools
     SUBDIR += springgraph

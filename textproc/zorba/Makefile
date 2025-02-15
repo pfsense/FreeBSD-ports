@@ -1,6 +1,6 @@
 PORTNAME=	zorba
 PORTVERSION=	2.7.0
-PORTREVISION=	41
+PORTREVISION=	42
 CATEGORIES=	textproc java
 MASTER_SITES=	https://launchpadlibrarian.net/119058962/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -11,6 +11,9 @@ WWW=		http://www.zorba.io/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Unmaintained, outdated and fails to build with ICU 76.1
+EXPIRATION_DATE=2025-02-28
 
 LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3 \
 		libicudata.so:devel/icu \

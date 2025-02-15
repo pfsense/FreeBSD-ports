@@ -1,5 +1,5 @@
 PORTNAME=	urllib3-future
-PORTVERSION=	2.12.905
+PORTVERSION=	2.12.910
 CATEGORIES=	net python
 MASTER_SITES=	PYPI \
 		https://github.com/jawah/urllib3.future/releases/download/${PORTVERSION}/
@@ -16,12 +16,19 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>=1.6.0<2:devel/py-hatchling@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}h11>=0.11.0<1.0.0:net/py-h11@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jh2>=5.0.3<6.0.0:www/py-jh2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}qh3>=1.0.0<2.0.0:www/py-qh3@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}jh2>=5.0.3<6.0.0:www/py-jh2@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
+
+OPTIONS_DEFINE=	BROTLI SOCKS WS ZSTD
+WS_DESC=	WebSockets support
+
+BROTLI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}brotli>=1.0.9:archivers/py-brotli@${PY_FLAVOR}
+SOCKS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-socks>=2.0<2.6.1_99:net/py-python-socks@${PY_FLAVOR}
+WS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}wsproto>=1.2<2:net/py-wsproto@${PY_FLAVOR}
+ZSTD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zstandard>=0.18.0:archivers/py-zstandard@${PY_FLAVOR}
 
 .include <bsd.port.mk>

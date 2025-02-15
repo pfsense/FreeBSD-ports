@@ -76,8 +76,8 @@
     SUBDIR += kf6-ktextwidgets
     SUBDIR += kf6-kwidgetsaddons
     SUBDIR += kf6-kxmlgui
-    SUBDIR += kirigami-addons
-    SUBDIR += kirigami-addons-devel
+    SUBDIR += kirigami-addons-qt5
+    SUBDIR += kirigami-addons-qt6
     SUBDIR += kproperty
     SUBDIR += lesstif
     SUBDIR += libXaw
@@ -167,7 +167,6 @@
     SUBDIR += pangolin
     SUBDIR += pangomm
     SUBDIR += pangox-compat
-    SUBDIR += plasma5-kdeplasma-addons
     SUBDIR += plasma6-kdeplasma-addons
     SUBDIR += plib
     SUBDIR += py-AnyQt
@@ -249,7 +248,6 @@
     SUBDIR += tix
     SUBDIR += tk-wrapper
     SUBDIR += tk86
-    SUBDIR += tk87
     SUBDIR += tk90
     SUBDIR += tkdnd
     SUBDIR += tkshape

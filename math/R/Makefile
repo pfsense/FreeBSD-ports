@@ -1,5 +1,6 @@
 PORTNAME=	R
 DISTVERSION=	4.4.2
+PORTREVISION=	1
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
@@ -121,12 +122,6 @@ X11_USE=			XORG=ice,sm,x11,xext,xmu,xscrnsaver,xt
 X11_CONFIGURE_WITH=		x
 
 _MAJORVER=	${DISTVERSION:R:R}
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc
-LLD_UNSAFE=	yes
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

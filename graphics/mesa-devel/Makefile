@@ -1,6 +1,6 @@
 PORTNAME=	mesa
-DISTVERSION=	24.3-branchpoint-2654
-DISTVERSIONSUFFIX=	-gde1eaa4019e
+DISTVERSION=	25.0-branchpoint-664
+DISTVERSIONSUFFIX=	-g89cc4d98070
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
@@ -9,7 +9,6 @@ PATCHFILES+=	700efacda59c.patch:-p1:github
 PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
 PATCHFILES+=	2930dcbb3329.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22246
 PATCHFILES+=	11aaf934112c.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22941
-PATCHFILES+=	5d48fb19553c.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/31931
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Bleeding edge Mesa drivers (OpenCL, OpenGL, Vulkan)
@@ -98,7 +97,7 @@ COINST_SUB_LIST=	SUFFIX=${PKGNAMESUFFIX}
 COINST_PLIST_SUB_OFF=	SUFFIX=
 
 LLVM_DESC=		Build with LLVM support (see implies)
-LLVM_USES=		llvm:min=15,lib,noexport
+LLVM_USES=		llvm:min=18,lib,noexport
 LLVM_CONFIGURE_ENV=	LLVM_CONFIG=${LLVM_CONFIG}
 LLVM_MESON_ENABLED=	llvm
 LLVM_MESON_TRUE=	amd-use-llvm
@@ -129,7 +128,7 @@ VDPAU_IMPLIES=		X11
 VKLAYERS_DESC=		Vulkan layers: ${VKLAYERS_MESON_ON:C/.*=//} (implies ${VKLAYERS_IMPLIES})
 VKLAYERS_BUILD_DEPENDS=	glslangValidator:graphics/glslang
 VKLAYERS_LIB_DEPENDS=	libpng.so:graphics/png
-VKLAYERS_MESON_ON=	-Dvulkan-layers=device-select,overlay,screenshot
+VKLAYERS_MESON_ON=	-Dvulkan-layers=device-select,overlay,screenshot,vram-report-limit
 VKLAYERS_IMPLIES=	${"${PORT_OPTIONS:Manv}":?anv:radv} # any from OPTIONS_GROUP_VULKAN
 
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols

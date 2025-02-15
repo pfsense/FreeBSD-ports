@@ -1,6 +1,6 @@
 PORTNAME=	pymatgen
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2024.11.13
+DISTVERSION=	2025.1.24
 CATEGORIES=	science python
 #MASTER_SITES=	PYPI # no tests
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}joblib>=1:devel/py-joblib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>=3.8:math/py-matplotlib@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}monty>=2024.10.21:devel/py-monty@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}monty>=2025.1.9:devel/py-monty@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}networkx>=2.7:math/py-networkx@${PY_FLAVOR} \
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}palettable>=3.3.3:misc/py-palettable@${PY_FLAVOR} \
@@ -28,12 +28,16 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}requests>=2.32:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ruamel.yaml>=0.17.0:devel/py-ruamel.yaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=1.13.0:science/py-scipy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scipy>=1.14.1:science/py-scipy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}spglib>=2.5.0:science/py-spglib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sympy>=1.3:math/py-sympy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tabulate>=0.9:devel/py-tabulate@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tqdm>=4.60:misc/py-tqdm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}uncertainties>=3.1.4:math/py-uncertainties@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ase>0:science/py-ase@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}icet>0:science/py-icet@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openbabel>0:science/py-openbabel@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}phonopy>0:science/py-phonopy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}seekpath>0:science/py-seekpath@${PY_FLAVOR} # optional dependencies
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pybtex>0:textproc/py-pybtex@${PY_FLAVOR}
 
 USES=		compiler:c++11-lang python
@@ -42,7 +46,10 @@ USE_PYTHON=	pep517 cython concurrent autoplist pytest
 USE_GITHUB=	yes
 GH_ACCOUNT=	materialsproject
 
-TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} \
+		PMG_TEST_FILES_DIR=${WRKSRC}/tests/files \
+		DISPLAY=${DISPLAY} \
+		XAUTHORITY=${XAUTHORITY}
 TEST_WRKSRC=	${WRKSRC}/tests
 
 post-install: # strip binaries
@@ -51,8 +58,11 @@ post-install: # strip binaries
 		optimization/neighbors*.so \
 		util/coord_cython*.so
 
-# tests fail to find some files: https://github.com/materialsproject/pymatgen/issues/4172
-xpre-test:
-	@cd ${TEST_WRKSRC} && ${PYTHON_CMD} ${PYSETUP} build_ext --inplace
+# tests as of 2025.1.23: see https://github.com/materialsproject/pymatgen/issues/4264
+# Results (4376.26s (1:12:56)):
+#    2814 passed
+#      36 failed
+#     194 skipped
+#     141 skipped
 
 .include <bsd.port.mk>

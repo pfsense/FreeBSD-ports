@@ -1,8 +1,11 @@
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.34-17339 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g1b87e186c4
+DISTVERSION=	0.0.34-17476 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-g159370446f
 CATEGORIES=	emulators wayland
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	1eba3f18e8c4.patch:-p1 # https://github.com/RPCS3/rpcs3/pull/16701
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	PS3 emulator/debugger
@@ -36,9 +39,9 @@ GH_TUPLE=	RPCS3:hidapi:hidapi-0.14.0-2-g8b43a97:hidapi/3rdparty/hidapi/hidapi \
 		miniupnp:miniupnp:miniupnpd_2_3_6:miniupnp/3rdparty/miniupnp/miniupnp \
 		nothings:stb:013ac3b:stb/3rdparty/stblib/stb \
 		wolfSSL:wolfssl:v5.7.6-stable:wolfssl/3rdparty/wolfssl/wolfssl \
-		xioTechnologies:Fusion:v1.2.7:fusion/3rdparty/fusion/fusion
+		xioTechnologies:Fusion:v1.2.8:fusion/3rdparty/fusion/fusion
 
-USES=		cmake gl iconv:wchar_t llvm:min=16,lib localbase:ldflags \
+USES=		cmake gl iconv:wchar_t llvm:min=19,lib localbase:ldflags \
 		openal:soft pkgconfig python:build qt:6 xorg
 USE_GL=		gl glew
 USE_QT=		base multimedia svg

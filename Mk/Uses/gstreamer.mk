@@ -48,7 +48,7 @@ _GST_VER=	${_GST_VER_DEFAULT}
 # - multimedia/gstreamer1-rtsp-server
 # - multimedia/gstreamer1-vaapi
 # - multimedia/py-gstreamer1
-_GST1_VERSION=		1.24.10
+_GST1_VERSION=		1.24.12
 _GST1_LIB_VER=		1.0
 _GST1_SOVERSION=	0.${_GST1_VERSION:R:E}${${_GST1_VERSION:E} > 9:?:0}${_GST1_VERSION:E}.0
 
@@ -348,7 +348,7 @@ gst-resindvd_IMPL=	bad
 
 gst-rust_PORT=		multimedia/gstreamer${_GST_VER}-plugins-rust
 gst-rust_IMPL=		#
-gst-rust_GST1_VERSION=	0.13.3
+gst-rust_GST1_VERSION=	0.13.4
 gst-rust_VERSION=	${gst-rust_GST${_GST_VER}_VERSION}
 
 gst-smoothstreaming_PORT=	multimedia/gstreamer${_GST_VER}-plugins-smoothstreaming

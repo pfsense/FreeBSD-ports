@@ -1,7 +1,7 @@
 PORTNAME=	conduit
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im
 PKGNAMEPREFIX=	matrix-
 
@@ -12,7 +12,6 @@ WWW=		https://conduit.rs/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64le=	compilation failure: called `Option::unwrap()` on a `None` value in ring-0.16.20/build.rs: # see https://gitlab.com/famedly/conduit/-/issues/416
 BROKEN_i386=	fails to build
 
 BUILD_DEPENDS=	${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/libclang.so:devel/llvm${LLVM_DEFAULT}
@@ -35,6 +34,13 @@ USE_GITLAB=	yes
 GL_ACCOUNT=	famedly
 GL_TAGNAME=	f8d7ef04e664580e882bac852877b68e7bd3ab1e
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Marmv?}
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/conduit.toml,${PREFIX}/etc/conduit.toml,' \
 		${WRKSRC}/src/main.rs
@@ -47,4 +53,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/conduit-example.toml ${STAGEDIR}${PREFIX}/etc/${PORTNAME}.toml.sample
 	@${MKDIR} ${STAGEDIR}${DBDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

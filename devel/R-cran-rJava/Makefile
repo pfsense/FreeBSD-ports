@@ -1,5 +1,6 @@
 PORTNAME=	rJava
 DISTVERSION=	1.0-11
+PORTREVISION=	1
 CATEGORIES=	devel java
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libicuuc.so:devel/icu	\
 
 USES=		cran:compiles java
 
-JRE_LIBS=	${JAVA_HOME}/jre/lib/${ARCH:S/armv6/arm/:S/armv7/arm/:S/powerpc64/ppc64/}/server	# JDK8
+JRE_LIBS=	${JAVA_HOME}/jre/lib/${ARCH:S/armv6/arm/:S/armv7/arm/:S/powerpc/ppc/}/server	# JDK8
 #JRE_LIBS=	${JAVA_HOME}/jre/lib/server	# JDK11
 LDFLAGS=	"-Wl,-rpath=${JRE_LIBS} "
 MAKE_ENV=	JAVA_HOME=${JAVA_HOME}	\

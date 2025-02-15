@@ -38,7 +38,7 @@ OPTIONS_DEFINE=		BASH NLS
 OPTIONS_DEFAULT=	BASH
 # The PTP helper requires Rust since GStreamer 1.24.0, so only enable it on
 # platforms that have Rust support.
-.for arch in aarch64 amd64 armv7 i386 powerpc64 powerpc64le powerpc risc64
+.for arch in aarch64 amd64 armv7 i386 powerpc64 powerpc64le powerpc riscv64
 OPTIONS_DEFINE_${arch}=	PTP
 OPTIONS_DEFAULT_${arch}=PTP
 .endfor

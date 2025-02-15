@@ -314,6 +314,7 @@
     SUBDIR += python39
     SUBDIR += qmasm
     SUBDIR += quickjs
+    SUBDIR += quickjs-ng
     SUBDIR += quilc
     SUBDIR += racket
     SUBDIR += racket-minimal
@@ -336,7 +337,6 @@
     SUBDIR += rust
     SUBDIR += rust-bootstrap
     SUBDIR += rust-nightly
-    SUBDIR += rust182
     SUBDIR += rustpython
     SUBDIR += s7
     SUBDIR += s7-nrepl
@@ -378,7 +378,6 @@
     SUBDIR += tcl-manual
     SUBDIR += tcl-wrapper
     SUBDIR += tcl86
-    SUBDIR += tcl87
     SUBDIR += tcl90
     SUBDIR += tclX
     SUBDIR += tolua

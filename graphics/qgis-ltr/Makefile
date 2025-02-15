@@ -1,8 +1,9 @@
 PORTNAME=	qgis
-DISTVERSION=	3.34.14
+DISTVERSION=	3.34.15
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://qgis.org/downloads/
 PKGNAMESUFFIX=	-ltr
+PORTREVISION=	1
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Free and Open Source Geographic Information System

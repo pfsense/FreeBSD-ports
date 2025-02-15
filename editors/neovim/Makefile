@@ -1,6 +1,6 @@
 PORTNAME=	neovim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.3
+DISTVERSION=	0.10.4
 CATEGORIES=	editors
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -11,14 +11,15 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LUA_REFMODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
 		${LUA_REFMODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
-RUN_DEPENDS=	${LUA_REFMODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
-		${LUA_REFMODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
 LIB_DEPENDS=	libluv.so:devel/luv \
 		libmsgpack-c.so:devel/msgpack-c \
 		libtree-sitter.so:devel/tree-sitter \
 		libunibilium.so:devel/unibilium \
 		libuv.so:devel/libuv \
 		libvterm.so:devel/libvterm
+RUN_DEPENDS=	${LUA_REFMODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
+		${LUA_REFMODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
+TEST_DEPENDS=	gmake:devel/gmake
 
 USES=		cmake cpe gettext iconv lua:51,build luajit \
 		pathfix pkgconfig
@@ -70,5 +71,8 @@ post-build:
 post-stage:
 	cd ${BUILD_WRKSRC}/.deps/usr/lib/nvim && ${COPYTREE_SHARE} parser ${STAGEDIR}${PREFIX}/lib/nvim
 	${FIND} ${STAGEDIR}${PREFIX}/lib/nvim -name "*.so" -exec ${STRIP_CMD} {} +
+
+do-test:
+	${GMAKE} -C ${WRKSRC} test
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	miktex
-DISTVERSION=	24.4
-PORTREVISION=	1
+DISTVERSION=	24.12
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	https://miktex.org/download/ctan/systems/win32/miktex/source/ \
 		https://ctan.org/tex-archive/systems/win32/miktex/tm/packages/:bootstrap
@@ -24,6 +24,7 @@ LICENSE_NAME=	Multiple
 LICENSE_TEXT=	This is a collection of many independent packages and does not have a single license
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
+BROKEN=		Fails to build with ICU 76.1
 NOT_FOR_ARCHS=	aarch64 armv7
 NOT_FOR_ARCHS_REASON=	Programs/TeXAndFriends/Knuth/web/tangle.p:1: parse error before `û'
 

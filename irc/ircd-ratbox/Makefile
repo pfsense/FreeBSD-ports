@@ -83,6 +83,7 @@ CONFIGURE_ARGS+=	--with-nicklen=${NICKLEN}
 
 .if ${ARCH} == "i386"
 USE_GCC=	yes
+CFLAGS+=	-fpermissive
 .endif
 
 post-patch:

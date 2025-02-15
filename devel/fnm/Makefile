@@ -1,7 +1,7 @@
 PORTNAME=	fnm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.38.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,8 +10,6 @@ WWW=		https://github.com/Schniz/fnm
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64le=	compilation failure: called `Option::unwrap()` on a `None` value in ring-0.16.20/build.rs: # see https://github.com/Schniz/fnm/issues/1090
 
 BUILD_DEPENDS=	zstd>0:archivers/zstd # statically linked library
 

@@ -1,6 +1,6 @@
 PORTNAME=	closql
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
+DISTVERSION=	2.2.0
 CATEGORIES=	databases elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -21,6 +21,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	magit
 
 MAKE_ENV+=	LOAD_PATH="${LOAD_PATH}"
+MAKE_JOBS_UNSAFE=	Opening input file: No such file or directory, /wrkdirs/usr/ports/databases/closql/work-full/closql-2.2.0/.#closql-autoloads.el
 
 CONFLICTS_INSTALL=	closql closql-devel* closql-emacs_*
 

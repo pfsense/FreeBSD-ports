@@ -2,6 +2,7 @@
 
     SUBDIR += 7-zip
     SUBDIR += 9e
+    SUBDIR += R-cran-brotli
     SUBDIR += R-cran-zip
     SUBDIR += advancecomp
     SUBDIR += amigadepacker
@@ -10,7 +11,6 @@
     SUBDIR += arc
     SUBDIR += arj
     SUBDIR += ark
-    SUBDIR += ark-devel
     SUBDIR += arqiver
     SUBDIR += atool
     SUBDIR += bicom
@@ -289,6 +289,7 @@
     SUBDIR += xdms
     SUBDIR += xmill
     SUBDIR += zchunk
+    SUBDIR += zim-tools
     SUBDIR += zip
     SUBDIR += zipmix
     SUBDIR += zipper

@@ -44,7 +44,6 @@
     SUBDIR += alienarena-data
     SUBDIR += alienblaster
     SUBDIR += alienwave
-    SUBDIR += allacrost
     SUBDIR += amnesia-tdd
     SUBDIR += amoebax
     SUBDIR += an
@@ -790,7 +789,6 @@
     SUBDIR += powder-toy-devel
     SUBDIR += powermanga
     SUBDIR += powwow
-    SUBDIR += prboom
     SUBDIR += prboom-plus
     SUBDIR += primateplunge
     SUBDIR += prismlauncher
@@ -906,7 +904,6 @@
     SUBDIR += seabattle
     SUBDIR += searchandrescue
     SUBDIR += searchandrescue-data
-    SUBDIR += senken
     SUBDIR += sets
     SUBDIR += sex
     SUBDIR += sgt-puzzles

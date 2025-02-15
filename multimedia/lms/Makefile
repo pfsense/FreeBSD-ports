@@ -1,6 +1,7 @@
 PORTNAME=	lms
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.62.1
+DISTVERSION=	3.63.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -24,6 +25,8 @@ USES=		cmake compiler:c++20-lang cpe libarchive pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	epoupon
+
+CMAKE_OFF=	ENABLE_TESTS
 
 USER=		nobody
 GROUP=		nobody

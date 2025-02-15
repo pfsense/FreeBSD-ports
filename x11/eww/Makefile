@@ -1,7 +1,7 @@
 PORTNAME=	eww
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11 wayland
 PKGNAMESUFFIX=	-${FLAVOR}
 
@@ -13,7 +13,6 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_armv7=	mismatched types: expected \`i32\`, found \`i64\`
-BROKEN_powerpc64le=	rust compiler crashes, see https://github.com/rust-lang/rust/issues/120583
 
 LIB_DEPENDS=	libdbusmenu-glib.so:devel/libdbusmenu
 

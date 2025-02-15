@@ -1,6 +1,6 @@
 PORTNAME=	songrec
 DISTVERSION=	0.4.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,8 +9,6 @@ WWW=		https://github.com/marin-m/SongRec
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64le=	rust compiler crashes, see https://github.com/rust-lang/rust/issues/120583
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libdbus-1.so:devel/dbus \

@@ -170,7 +170,6 @@
     SUBDIR += docbookrx
     SUBDIR += docproj
     SUBDIR += docproj-fonts-cjk
-    SUBDIR += docproj-legacy
     SUBDIR += dom4j
     SUBDIR += domc
     SUBDIR += dsssl-docbook-modular
@@ -537,9 +536,11 @@
     SUBDIR += opensearch-dashboards
     SUBDIR += opensearch-dashboards210
     SUBDIR += opensearch-dashboards213
+    SUBDIR += opensearch-dashboards216
     SUBDIR += opensearch13
     SUBDIR += opensearch210
     SUBDIR += opensearch213
+    SUBDIR += opensearch216
     SUBDIR += opensp
     SUBDIR += openvanilla-framework
     SUBDIR += or-aspell
@@ -611,7 +612,6 @@
     SUBDIR += p5-HTML-SuperForm
     SUBDIR += p5-HTML-T5
     SUBDIR += p5-HTML-TagFilter
-    SUBDIR += p5-HTML-Tidy
     SUBDIR += p5-HTML-Tidy5
     SUBDIR += p5-HTML-Tiny
     SUBDIR += p5-HTML-Truncate
@@ -1776,6 +1776,7 @@
     SUBDIR += rubygem-actionpack-xml_parser-rails5
     SUBDIR += rubygem-actionpack-xml_parser-rails52
     SUBDIR += rubygem-actionpack-xml_parser-rails61
+    SUBDIR += rubygem-actionpack-xml_parser-rails72
     SUBDIR += rubygem-actiontext60
     SUBDIR += rubygem-actiontext61
     SUBDIR += rubygem-actiontext70
@@ -2094,7 +2095,6 @@
     SUBDIR += textql
     SUBDIR += the_silver_searcher
     SUBDIR += ti-hunspell
-    SUBDIR += tidyp
     SUBDIR += tinyxml
     SUBDIR += tinyxml2
     SUBDIR += tk-aspell
@@ -2137,6 +2137,7 @@
     SUBDIR += uncle
     SUBDIR += uncrustify
     SUBDIR += uni
+    SUBDIR += uni-algo
     SUBDIR += uni2ascii
     SUBDIR += unoconv
     SUBDIR += unroff

@@ -1,7 +1,7 @@
 PORTNAME=	conserve
 DISTVERSIONPREFIX=	v
 DISTVERSION=	24.8.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,6 @@ WWW=		https://github.com/sourcefrog/conserve
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_armv7=	rust/llvm runs out of memory
 BROKEN_i386=	rust/llvm runs out of memory
 
 USES=		cargo
@@ -339,5 +338,11 @@ CARGO_CRATES=	addr2line-0.21.0 \
 		zeroize-1.7.0
 
 PLIST_FILES=	bin/${PORTNAME}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == armv7 || ${ARCH} == powerpc
+LTO_UNSAFE=	yes
+.endif
 
 .include <bsd.port.mk>

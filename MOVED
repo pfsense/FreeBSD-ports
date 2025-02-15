@@ -3897,7 +3897,6 @@ devel/py-jailconf||2025-01-02|Unknown, port deleted long time ago, entry added t
 devel/py-zeep||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 devel/rubygem-acts-as-taggable-on||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 devel/rubygem-google-apis-serviceusage_v1_041||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
-devel/rubygem-validates_timeliness7||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 devel/sublime-merge||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 devel/vulkan-validation-layers||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
 devel/xlocale||2025-01-02|Unknown, port deleted long time ago, entry added to clean up portscout.freebsd.org
@@ -4024,3 +4023,135 @@ devel/py-zclockfile|devel/py-zc.lockfile|2025-01-11|Switch consumers to latest p
 devel/elixir-hex||2025-01-11|No longer used by any consumers, newer versions are expected to be installed per-user by mix
 devel/elixir-make||2025-01-11|No longer used by any consumers, newer versions are expected to be installed per-user by mix
 audio/gqradio||2025-01-13|Has expired: BKTR devices are not supported anymore
+x11-themes/kf5-breeze-icons|x11-themes/kf6-breeze-icons|2025-01-15|Replaced by the KF6 version
+x11-themes/kf5-oxygen-icons5|x11-themes/oxygen-icons|2025-01-15|Rename in accordance with the upstream
+devel/raknet||2025-01-15|Has expired: Unmaintained upstream, only builds with EOL toolchain
+devel/pas2dox||2025-01-15|Has expired: doesn't compile with moddern clang and gcc, upstream last updated it in 2003
+x11-toolkits/kirigami-addons|x11-toolkits/kirigami-addons-qt5|2025-01-16|Moved to have symmetric names with Qt6
+x11-toolkits/kirigami-addons-devel|x11-toolkits/kirigami-addons-qt6|2025-01-16|Moved to have symmetric names with Qt6
+audio/guitarix-lv2||2025-01-18|Has expired: Broken for more than a year
+net/libproxy-duktape||2025-01-19|Completely rewritten, plugins now built directly into the library
+net/libproxy-gnome3||2025-01-19|Completely rewritten, plugins now built directly into the library
+net/libproxy-kde||2025-01-19|Completely rewritten, plugins now built directly into the library
+net/libproxy-pacrunner||2025-01-19|Completely rewritten, plugins now built directly into the library
+net/libproxy-perl||2025-01-19|Completely rewritten, plugins now built directly into the library
+net/libproxy-python||2025-01-19|Completely rewritten, plugins now built directly into the library
+net/libproxy-webkit3||2025-01-19|Completely rewritten, plugins now built directly into the library
+www/webkit2-gtk3|www/webkit2-gtk@40|2025-01-20|Flavoured
+www/webkit2-gtk4|www/webkit2-gtk@60|2025-01-20|Flavoured
+sysutils/bareos21-traymonitor||2025-01-21|Has expired: not supported upstream
+www/bareos20-webui||2025-01-21|Has expired: not supported upstream
+www/bareos21-webui||2025-01-21|Has expired: not supported upstream
+sysutils/bareos20-traymonitor||2025-01-21|Has expired: not supported upstream
+sysutils/bareos20-client||2025-01-21|Has expired: not supported upstream
+sysutils/bareos20-server||2025-01-21|Has expired: not supported upstream
+sysutils/bareos21-client||2025-01-21|Has expired: not supported upstream
+sysutils/bareos21-server||2025-01-21|Has expired: not supported upstream
+www/mediawiki141||2025-01-22|Has expired: EOL upstream
+audio/plasma5-oxygen-sounds|audio/plasma6-oxygen-sounds|2025-01-23|Superseded by its Plasma 6 counterpart
+devel/kf5-extra-cmake-modules|devel/kf6-extra-cmake-modules|2025-01-23|Superseded by its KF6 counterpart
+devel/kf5-kapidox|devel/kf6-kapidox|2025-01-23|Superseded by its KF6 counterpart
+devel/rubygem-strong_migrations61|devel/rubygem-strong_migrations|2025-01-23|Has expired: Ruby on Rails 6.1.x reached EOL on 2024-10-01
+databases/rubygem-active_model_serializers61|databases/rubygem-active_model_serializers|2025-01-23|Has expired: Ruby on Rails 6.1.x reached EOL on 2024-10-01
+www/rubygem-gollum-grit_adapter10|www/rubygem-gollum-grit_adapter|2025-01-25|Obsolete, use www/rubygem-gollum-grit_adapter instead
+databases/jdbc-oracle11g||2025-01-25|Has expired: Oracle no longer provides public downloads of the old JDBC drivers
+emulators/vxtools||2025-01-25|Has expired: Dist files are no longer available as site returns NXDOMAIN
+java/infobus||2025-01-25|Has expired: Outdated API and is no longer actively developed or maintained
+chinese/eterm||2025-01-27|Has expired: Depends on kcfonts, which is marked DEPRECATED
+mail/queue-fix||2025-01-27|Has expired: Upstream disapeared and distfile is no more available
+games/senken||2025-01-27|Has expired: GENTOO mastersites are no longer available
+chinese/kcfonts||2025-01-27|Has expired: GENTOO MASTER_SITES are no longer available
+x11/fbdesk||2025-01-27|Has expired: Upstream disapear and distfile is no more available
+graphics/Hermes||2025-01-27|Has expired: Unmaintained, and no more public distfiles
+math/PDL|math/p5-PDL|2025-01-28|Move math/PDL to math/p5-PDL
+irc/ezbounce||2025-01-28|Has expired: broken with modern Boost, broken with modern compilers, last release in 2009, upstream is dead
+lang/rust182||2025-01-29|No consumers in ports
+x11-fm/tdfsb||2025-01-30|Has expired: Unmaintained, uses smpeg which has no distfiles anymore
+games/prboom|games/prboom-plus|2025-01-30|Has expired: Unmaintained, use games/prboom-plus instead
+net/akonadi-notes||2025-02-03|Discontinued upstream
+print/print-manager|print/plasma6-print-manager|2025-02-03|Moved to Plasma 6
+archivers/ark-devel|archivers/ark|2025-02-03|Obsoleted by non-devel version
+audio/plasma5-kpipewire|audio/plasma6-kpipewire|2025-02-03|Moved to Plasma 6
+audio/plasma5-plasma-pa|audio/plasma6-plasma-pa|2025-02-03|Moved to Plasma 6
+deskutils/plasma5-milou|deskutils/plasma6-milou|2025-02-03|Moved to Plasma 6
+deskutils/plasma5-sddm-kcm|deskutils/plasma6-sddm-kcm|2025-02-03|Moved to Plasma 6
+deskutils/plasma5-xdg-desktop-portal-kde|deskutils/plasma6-xdg-desktop-portal-kde|2025-02-03|Moved to Plasma 6
+devel/dolphin-plugins-devel|devel/dolphin-plugins|2025-02-03|Obsoleted by non-devel version
+devel/plasma5-khotkeys||2025-02-03|Discontinued upstream
+devel/plasma5-kwrited|devel/plasma6-kwrited|2025-02-03|Moved to Plasma 6
+devel/plasma5-plasma-sdk|devel/plasma6-plasma-sdk|2025-02-03|Moved to Plasma 6
+editors/kate-devel|editors/kate|2025-02-03|Obsoleted by non-devel version
+graphics/gwenview-devel|graphics/gwenview|2025-02-03|Obsoleted by non-devel version
+graphics/libkexiv2-devel|graphics/libkexiv2|2025-02-03|Obsoleted by non-devel version
+graphics/okular-devel|graphics/okular|2025-02-03|Obsoleted by non-devel version
+graphics/spectacle-devel|graphics/spectacle|2025-02-03|Obsoleted by non-devel version
+multimedia/plasma5-plank-player||2025-02-03|No releases for Plasma 6
+security/plasma5-kscreenlocker|security/plasma6-kscreenlocker|2025-02-03|Moved to Plasma 6
+security/plasma5-ksshaskpass|security/plasma6-ksshaskpass|2025-02-03|Moved to Plasma 6
+security/plasma5-kwallet-pam|security/plasma6-kwallet-pam|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-discover|sysutils/plasma6-discover|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-drkonqi|sysutils/plasma6-drkonqi|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-kde-cli-tools|sysutils/plasma6-kde-cli-tools|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-kinfocenter|sysutils/plasma6-kinfocenter|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-kmenuedit|sysutils/plasma6-kmenuedit|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-ksysguard||2025-02-03|Discontinued upstream
+sysutils/plasma5-ksystemstats|sysutils/plasma6-ksystemstats|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-plasma-disks|sysutils/plasma6-plasma-disks|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-plasma-systemmonitor|sysutils/plasma6-plasma-systemmonitor|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-polkit-kde-agent-1|sysutils/plasma6-polkit-kde-agent-1|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-powerdevil|sysutils/plasma6-powerdevil|2025-02-03|Moved to Plasma 6
+sysutils/plasma5-systemsettings|sysutils/plasma6-systemsettings|2025-02-03|Moved to Plasma 6
+www/plasma5-plasma-browser-integration|www/plasma6-plasma-browser-integration|2025-02-03|Moved to Plasma 6
+x11-fm/dolphin-devel|x11-fm/dolphin|2025-02-03|Obsoleted by non-devel version
+x11-themes/plasma5-breeze|x11-themes/plasma6-breeze|2025-02-03|Moved to Plasma 6
+x11-themes/plasma5-breeze-gtk|x11-themes/plasma6-breeze-gtk|2025-02-03|Moved to Plasma 6
+x11-themes/plasma5-kde-gtk-config|x11-themes/plasma6-kde-gtk-config|2025-02-03|Moved to Plasma 6
+x11-themes/plasma5-oxygen|x11-themes/plasma6-oxygen|2025-02-03|Moved to Plasma 6
+x11-themes/plasma5-plasma-workspace-wallpapers|x11-themes/plasma6-plasma-workspace-wallpapers|2025-02-03|Moved to Plasma 6
+x11-toolkits/plasma5-kdeplasma-addons|x11-toolkits/plasma6-kdeplasma-addons|2025-02-03|Moved to Plasma 6
+x11-wm/plasma5-kdecoration|x11-wm/plasma6-kdecoration|2025-02-03|Moved to Plasma 6
+x11-wm/plasma5-kwin|x11-wm/plasma6-kwin|2025-02-03|Moved to Plasma 6
+x11/kde5|x11/kde|2025-02-03|Remove version from KDE metaport
+x11/kde6|x11/kde|2025-02-03|Remove version from KDE metaport
+x11/konsole-devel|x11/konsole|2025-02-03|Obsoleted by non-devel version
+x11/plasma5-kactivitymanagerd|x11/plasma6-kactivitymanagerd|2025-02-03|Moved to Plasma 6
+x11/plasma5-kgamma5|x11/plasma6-kgamma|2025-02-03|Moved to Plasma 6
+x11/plasma5-kscreen|x11/plasma6-kscreen|2025-02-03|Moved to Plasma 6
+x11/plasma5-kwayland-integration||2025-02-03|Not relevant for Plasma 6
+x11/plasma5-layer-shell-qt|x11/plasma6-layer-shell-qt|2025-02-03|Moved to Plasma 6
+x11/plasma5-libkscreen|x11/plasma6-libkscreen|2025-02-03|Moved to Plasma 6
+x11/plasma5-plasma|x11/plasma6-plasma|2025-02-03|Moved to Plasma 6
+x11/plasma5-plasma-bigscreen||2025-02-03|No releases for Plasma 6
+x11/plasma5-plasma-desktop|x11/plasma6-plasma-desktop|2025-02-03|Moved to Plasma 6
+x11/plasma5-plasma-integration|x11/plasma6-plasma-integration|2025-02-03|Moved to Plasma 6
+x11/plasma5-plasma-workspace|x11/plasma6-plasma-workspace|2025-02-03|Moved to Plasma 6
+www/falkon@default|www/falkon@kf6|2025-02-03|Flavor was renamed to use a more standard PKGNAMESUFFIX
+www/falkon@qtonly|www/falkon@qt6|2025-02-03|Flavor was renamed to use a more standard PKGNAMESUFFIX
+x11-toolkits/qml-box2d@qt5||2025-02-03|Unflavorize port, qt5 flavor is no longer used in ports tree
+x11-toolkits/qml-box2d@qt6|x11-toolkits/qml-box2d|2025-02-03|Unflavorize port, as it is now qt6 only
+databases/mysql90-client|databases/mysql91-client|2025-02-04|Has expired: MySQL 9.0 is no longer supported by the vendor
+databases/mysql90-server|databases/mysql91-server|2025-02-04|Has expired: MySQL 9.0 is no longer supported by the vendor
+textproc/docproj-legacy|textproc/docproj|2025-02-04|Has expired: Old version of documentation set
+devel/kore||2025-02-04|Has expired: Unmaintained in tree for years and broken for months
+www/searx||2025-02-04|Has expired: Upstream repo archived Sep 7 2023
+databases/xtrabackup81|databases/xtrabackup84|2025-02-04|Has expired: Unsupported upstream, consider migrating to databases/xtrabackup84
+games/allacrost||2025-02-04|Has expired: Fails to build and upstream is gone
+multimedia/mpeg_encode||2025-02-04|Has expired: Upstream is dead and it's buggy, consider using multimedia/ffmpeg
+sysutils/pcns||2025-02-04|Has expired: not supported upstream
+devel/py-pydrive||2025-02-04|Has expired: Upstream repo archived on Jul 22, 2021
+devel/p5-Test-HTML-Tidy||2025-02-04|Has expired: Depends on expired textproc/p5-HTML-Tidy
+www/p5-CGI-Application-Plugin-HtmlTidy||2025-02-04|Has expired: Depends on expired textproc/p5-HTML-Tidy
+textproc/p5-HTML-Tidy||2025-02-04|Has expired: Depends on expired textproc/tidyp
+textproc/tidyp||2025-02-04|Has expired: The repository has been archived by upstream on Apr 14, 2019
+audio/kid3@kf5|audio/kid3@kf6|2025-02-05|kf5 support has been removed. Use kf6 flavor instead
+audio/liblastfm-qt5||2025-02-05|No ports depend on this. New ports should used Qt6-based audio/liblastfm
+devel/rubygem-cucumber-messages26|devel/rubygem-cucumber-messages|2025-02-07|Remove obsoleted port. Use devel/rubygem-cucumber-messages instead
+x11-toolkits/tk87||2025-02-08|Has expired: Tcl/Tk 8.7 is not scheduled for release, use 8.6 or 9.0
+lang/tcl87||2025-02-08|Has expired: Tcl/Tk 8.7 is not scheduled for release, use 8.6 or 9.0
+devel/lattice-ice40-examples-hx1k||2025-02-08|Listed as BROKEN for months in tree and unmaintained
+devel/lattice-ice40-examples-hx8k||2025-02-08|Listed as BROKEN for months in tree and unmaintained
+devel/lattice-ice40-tools||2025-02-08|Listed as BROKEN for months in tree and unmaintained
+devel/py-yandex-money-sdk||2025-02-11|Has expired: Dead project. Yandex.Money is no more
+devel/astah-community||2025-02-11|Has expired: Upstream no longer provides community edition
+audio/pulseaudio-qt@qt5||2025-02-14|Qt5 support was removed upstream
+audio/pulseaudio-qt@qt6|audio/pulseaudio-qt|2025-02-14|Unflavorize; only Qt6 is supported

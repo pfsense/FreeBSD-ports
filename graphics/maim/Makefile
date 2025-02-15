@@ -1,6 +1,7 @@
 PORTNAME=	maim
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.8.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libslopy.so:x11/slop \
 		libwebp.so:graphics/webp
 
-USES=		cmake compiler:c++11-lang gl jpeg xorg
+USES=		cmake compiler:c++17-lang gl jpeg xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	naelstrof
 USE_GL=		gl

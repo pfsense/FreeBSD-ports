@@ -99,12 +99,6 @@
     SUBDIR += bareos-client
     SUBDIR += bareos-server
     SUBDIR += bareos-traymonitor
-    SUBDIR += bareos20-client
-    SUBDIR += bareos20-server
-    SUBDIR += bareos20-traymonitor
-    SUBDIR += bareos21-client
-    SUBDIR += bareos21-server
-    SUBDIR += bareos21-traymonitor
     SUBDIR += bareos22-client
     SUBDIR += bareos22-server
     SUBDIR += bareos22-traymonitor
@@ -148,6 +142,7 @@
     SUBDIR += bsdhwmon
     SUBDIR += bsdinfo
     SUBDIR += bsdisks
+    SUBDIR += bsdsensors
     SUBDIR += bsdstats
     SUBDIR += bstack
     SUBDIR += btop
@@ -721,6 +716,7 @@
     SUBDIR += modman
     SUBDIR += modules
     SUBDIR += mog
+    SUBDIR += mongodb_exporter
     SUBDIR += monit
     SUBDIR += monitord
     SUBDIR += monitorix
@@ -905,7 +901,6 @@
     SUBDIR += pc-networkmanager
     SUBDIR += pcapfix
     SUBDIR += pciutils
-    SUBDIR += pcns
     SUBDIR += pcpustat
     SUBDIR += pdixtract
     SUBDIR += pdsh
@@ -943,19 +938,7 @@
     SUBDIR += pies
     SUBDIR += pipemeter
     SUBDIR += plasma-pass
-    SUBDIR += plasma5-discover
-    SUBDIR += plasma5-drkonqi
-    SUBDIR += plasma5-kde-cli-tools
-    SUBDIR += plasma5-kinfocenter
-    SUBDIR += plasma5-kmenuedit
-    SUBDIR += plasma5-ksysguard
-    SUBDIR += plasma5-ksystemstats
     SUBDIR += plasma5-libksysguard
-    SUBDIR += plasma5-plasma-disks
-    SUBDIR += plasma5-plasma-systemmonitor
-    SUBDIR += plasma5-polkit-kde-agent-1
-    SUBDIR += plasma5-powerdevil
-    SUBDIR += plasma5-systemsettings
     SUBDIR += plasma6-discover
     SUBDIR += plasma6-drkonqi
     SUBDIR += plasma6-kde-cli-tools
@@ -973,6 +956,7 @@
     SUBDIR += pmt
     SUBDIR += pnscan
     SUBDIR += podman
+    SUBDIR += podman-compose
     SUBDIR += podman-suite
     SUBDIR += polkit
     SUBDIR += polkit-gnome
@@ -1298,6 +1282,7 @@
     SUBDIR += signon-plugin-oauth2
     SUBDIR += signon-ui
     SUBDIR += signond
+    SUBDIR += simplesnap
     SUBDIR += sispmctl
     SUBDIR += skopeo
     SUBDIR += slack
@@ -1497,6 +1482,8 @@
     SUBDIR += upower
     SUBDIR += upsdaemon
     SUBDIR += uptimed
+    SUBDIR += usacloud
+    SUBDIR += usacloud-core
     SUBDIR += usb_modeswitch
     SUBDIR += usbhid-dump
     SUBDIR += usbtop

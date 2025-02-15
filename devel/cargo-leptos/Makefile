@@ -1,7 +1,7 @@
 PORTNAME=	cargo-leptos
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.29
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://github.com/leptos-rs/cargo-leptos
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_armv7=	compilation fails: rustc-LLVM ERROR: out of memory
 
 USES=		cargo
 

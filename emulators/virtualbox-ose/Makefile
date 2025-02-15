@@ -38,8 +38,11 @@ CONFIGURE_ARGS=		--disable-java --passive-mesa --disable-docs
 CONFIGURE_ARGS+=	--with-gcc="${CC}" --with-g++="${CXX}"
 
 CONFLICTS_INSTALL=	virtualbox-ose-legacy \
-			virtualbox-ose-nox11-legacy
+			virtualbox-ose-nox11-legacy \
+			virtualbox-ose-70 \
+			virtualbox-ose-nox11-70
 
+PORTSCOUT=	limit:^6\.
 SUB_FILES=	pkg-message
 SUB_LIST=	VBOXDIR=${VBOX_DIR} \
 		VBOX_ETC=${VBOX_ETC} \
@@ -220,7 +223,6 @@ VBOX_LLVM_VER?=	${LLVM_DEFAULT}
 .endif
 .endif
 PATCH_DEPENDS+=	${LOCALBASE}/share/kBuild/tools/GXX3.kmk:devel/kBuild
-EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Devices-PC-ipxe-Makefile.kmk
 .endif
 
 .if ${PYTHON_MAJOR_VER} >= 3

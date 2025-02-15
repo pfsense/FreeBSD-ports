@@ -1,6 +1,7 @@
 PORTNAME=	vigil
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.27.0
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +10,8 @@ WWW=		https://github.com/valeriansaliou/vigil
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BROKEN_i386=	compilation fails, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=284196
 
 BUILD_DEPENDS=	gmake:devel/gmake
 LIB_DEPENDS=	libzstd.so:archivers/zstd
@@ -327,5 +330,12 @@ OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
 
 PLIST_FILES=	bin/${PORTNAME}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+LIB_DEPENDS+=	libatomic.so:lang/gcc${GCC_DEFAULT}
+LDFLAGS+=	-L/usr/local/lib/gcc${GCC_DEFAULT} -latomic
+.endif
 
 .include <bsd.port.mk>

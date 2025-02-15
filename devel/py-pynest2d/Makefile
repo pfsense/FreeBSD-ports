@@ -1,6 +1,6 @@
 PORTNAME=	pynest2d
 DISTVERSION=	5.3.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,6 +10,8 @@ WWW=		https://github.com/Ultimaker/libnest2d
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_aarch64=	broken with trait error from boost
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sip>=0:devel/py-sip@${PY_FLAVOR} \
 		${LOCALBASE}/include/libnest2d/libnest2d.hpp:devel/libnest2d-ultimaker

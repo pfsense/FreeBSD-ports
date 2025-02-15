@@ -1,6 +1,6 @@
 PORTNAME?=	nginx
-PORTVERSION=	1.27.3
-PORTREVISION=	8
+PORTVERSION=	1.27.4
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa
@@ -254,10 +254,6 @@ LIB_DEPENDS+=		libpcre.so:devel/pcre
 NJS_CONFIGURE_ARGS=	--cc-opt="-I${LOCALBASE}/include/quickjs" \
 			--ld-opt="-L${LOCALBASE}/lib" \
 			--with-quickjs
-.endif
-
-.if ${PORT_OPTIONS:MCT}
-IGNORE=	patching is required for the CT third-party module
 .endif
 
 pre-everything::

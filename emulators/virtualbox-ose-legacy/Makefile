@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 DISTVERSION=	5.2.44
-PORTREVISION?=	25
+PORTREVISION?=	27
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
 		LOCAL/bofh/emulators/virtualbox-ose-legacy:docs
@@ -40,7 +40,9 @@ CONFIGURE_ARGS=		--disable-java --passive-mesa --disable-docs
 CONFIGURE_ARGS+=	--with-gcc="${CC}" --with-g++="${CXX}"
 
 CONFLICTS_INSTALL=	virtualbox-ose \
-			virtualbox-ose-nox11
+			virtualbox-ose-nox11 \
+			virtualbox-ose-70 \
+			virtualbox-ose-nox11-70
 
 PORTSCOUT=	limit:^5\.
 SUB_LIST=	VBOXDIR=${VBOX_DIR} \
@@ -68,9 +70,14 @@ PLIST_SUB=	GUEST_VER=${DISTVERSION} \
 		PYTHON_VERU=${PYTHON_VER:S/./_/}${PYTHON_ABIVER} \
 		VBOXGROUP=${VBOXGROUP}
 
+SLAVE_PORT?=	no
+
 OPTIONS_DEFINE=		ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS PULSEAUDIO \
 			PYTHON QT5 R0LOGGING UDPTUNNEL VDE VNC WEBSERVICE VPX X11
 OPTIONS_DEFAULT=	DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
+.if ${SLAVE_PORT} == no
+OPTIONS_DEFAULT+=	PYTHON
+.endif
 OPTIONS_SUB=		yes
 
 DEBUG_DESC=		Debug symbols, additional logs and assertions
@@ -116,11 +123,13 @@ X11_USES=		sdl xorg
 X11_USE=		SDL=sdl XORG=x11,xcursor,xext,xinerama,xmu,xorgproto,xt
 X11_CONFIGURE_OFF=	--build-headless
 
+ENV=
+.export ENV
+
 .include <bsd.port.options.mk>
 
 .if ${SLAVE_PORT} == no
 CONFLICTS_INSTALL+=	virtualbox-ose-nox11-legacy
-OPTIONS_DEFAULT+=	PYTHON
 .else
 CONFLICTS_INSTALL+=	virtualbox-ose-legacy
 .endif

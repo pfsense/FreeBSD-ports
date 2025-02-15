@@ -1,6 +1,6 @@
 PORTNAME=	spidermonkey
 DISTVERSION=	102.9.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source
 PKGNAMESUFFIX=	${SP_VER}
@@ -70,6 +70,7 @@ USE_GCC=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/js/moz.configure
+	@${REINPLACE_CMD} -e 's|icu-i18n|icu-uc icu-i18n|g' ${WRKSRC}/js/moz.configure
 	@${FIND} ${WRKSRC}/python/mozbuild -name *.py -exec \
 		${REINPLACE_CMD} 's|"rU"|"r"|g' {} \;
 

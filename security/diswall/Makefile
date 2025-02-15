@@ -1,7 +1,7 @@
 PORTNAME=	diswall
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,8 +11,6 @@ WWW=		https://diswall.stream \
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64le=	compilation failure: called `Option::unwrap()` on a `None` value in ring-0.16.20/build.rs: # see https://github.com/dis-works/diswall-rs/issues/7
 
 USES=		cargo sqlite
 

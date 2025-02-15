@@ -187,6 +187,7 @@
     SUBDIR += mindforger
     SUBDIR += moregroupware
     SUBDIR += mozo
+    SUBDIR += mybee-qt
     SUBDIR += mytetra
     SUBDIR += nanonote
     SUBDIR += nautilus-sendto
@@ -214,9 +215,6 @@
     SUBDIR += pipecolor
     SUBDIR += plan
     SUBDIR += plans
-    SUBDIR += plasma5-milou
-    SUBDIR += plasma5-sddm-kcm
-    SUBDIR += plasma5-xdg-desktop-portal-kde
     SUBDIR += plasma6-milou
     SUBDIR += plasma6-sddm-kcm
     SUBDIR += plasma6-xdg-desktop-portal-kde

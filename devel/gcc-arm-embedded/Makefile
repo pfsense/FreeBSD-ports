@@ -7,7 +7,7 @@ DISTNAME=	${ORIGINAL_PACKAGE_NAME}-src
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Complete gcc-based toolcahin for embedded ARM development
-WWW=		https://launchpad.net/gcc-arm-embedded
+WWW=		https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain
 
 LICENSE=	GPLv2 LGPL20 LGPL21 GPLv3 LGPL3
 LICENSE_COMB=	multi
@@ -102,7 +102,7 @@ VAR_TO_SUBMAKE_NOEXPAND=	CONFIGURE_ENV MAKE_ENV
 #.endif
 
 .if ${OPSYS} == FreeBSD
-USE_GCC=	yes
+USE_GCC=	13
 .endif
 
 post-extract:

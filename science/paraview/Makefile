@@ -1,6 +1,6 @@
 PORTNAME=	paraview
 DISTVERSION=	${PARAVIEW_VER}.1
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.paraview.org/files/v${PARAVIEW_VER}/
 DISTNAME=	ParaView-v${PORTVERSION}
@@ -12,6 +12,7 @@ WWW=		https://www.paraview.org/
 # See https://www.paraview.org/license/
 LICENSE=	BSD3CLAUSE
 
+BROKEN=		fails to build with Boost>=1.87
 BROKEN_i386=	no matching member function for call to 'getArrayType'
 
 BUILD_DEPENDS=	${PYNUMPY}	\

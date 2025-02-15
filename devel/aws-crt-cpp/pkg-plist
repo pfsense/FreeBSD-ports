@@ -2,6 +2,7 @@ include/aws/crt/Allocator.h
 include/aws/crt/Api.h
 include/aws/crt/Config.h
 include/aws/crt/DateTime.h
+include/aws/crt/DnsUtils.h
 include/aws/crt/Exports.h
 include/aws/crt/ImdsClient.h
 include/aws/crt/JsonObject.h
@@ -47,8 +48,8 @@ include/aws/iot/Mqtt5Client.h
 include/aws/iot/MqttClient.h
 include/aws/iot/MqttCommon.h
 include/aws/iot/MqttRequestResponseClient.h
-lib/aws-crt-cpp/cmake/aws-crt-cpp-config-version.cmake
-lib/aws-crt-cpp/cmake/aws-crt-cpp-config.cmake
-lib/aws-crt-cpp/cmake/shared/aws-crt-cpp-targets-%%CMAKE_BUILD_TYPE%%.cmake
-lib/aws-crt-cpp/cmake/shared/aws-crt-cpp-targets.cmake
+lib/cmake/aws-crt-cpp/aws-crt-cpp-config-version.cmake
+lib/cmake/aws-crt-cpp/aws-crt-cpp-config.cmake
+lib/cmake/aws-crt-cpp/shared/aws-crt-cpp-targets-%%CMAKE_BUILD_TYPE%%.cmake
+lib/cmake/aws-crt-cpp/shared/aws-crt-cpp-targets.cmake
 lib/libaws-crt-cpp.so
