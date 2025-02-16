@@ -6,6 +6,7 @@
     SUBDIR += R-cran-Defaults
     SUBDIR += R-cran-Hmisc
     SUBDIR += R-cran-ModelMetrics
+    SUBDIR += R-cran-R.cache
     SUBDIR += R-cran-R.methodsS3
     SUBDIR += R-cran-R.oo
     SUBDIR += R-cran-R.utils
@@ -5163,6 +5164,7 @@
     SUBDIR += py-lazy_loader
     SUBDIR += py-libcst
     SUBDIR += py-libcst03
+    SUBDIR += py-libevdev
     SUBDIR += py-libioc
     SUBDIR += py-libpeas
     SUBDIR += py-libplist
