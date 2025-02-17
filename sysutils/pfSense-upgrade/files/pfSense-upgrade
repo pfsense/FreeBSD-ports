@@ -1342,6 +1342,12 @@ pkg_upgrade() {
 			    "Upgrading necessary packages"
 			delete_annotation=""
 
+			# Upgrade drm if it is in use
+			if kldstat -qm i915kms; then
+				_exec "pkg-static upgrade -r ${product} -f drm-\*" \
+				    "Upgrading drm"
+			fi
+
 			# Make sure PHP setup is fine
 			_exec "/etc/rc.d/ldconfig onestart" \
 			    "Updating ldconfig" mute ignore_result
