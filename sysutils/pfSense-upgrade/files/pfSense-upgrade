@@ -336,7 +336,7 @@ _be_prune_guard() {
 _be_prune() {
 	_be_prune_guard && return 1
 	/sbin/bectl list -H |
-	while read _name _status _mp _space _creation; do
+	while read -r _name _status _mp _space _creation; do
 		/sbin/bectl destroy -o "${_name}" 1>/dev/null 2>&1
 	done
 	return 0
@@ -453,7 +453,7 @@ _be_remount_ds() {
 	local _dataset="${1}"
 
 	/sbin/zfs list -rH -o mountpoint,name,canmount,mounted -s mountpoint -t filesystem "${_dataset}" | \
-	while read _mp _name _canmount _mounted ; do
+	while read -r _mp _name _canmount _mounted ; do
 		# skip filesystems that must not be mounted
 		[ "$_canmount" = "off" ] && continue
 		case "$_mp" in
@@ -537,7 +537,7 @@ _be_migrate() {
 	" # END-QUOTE
 
 	# now we do the migrations...
-	echo "${_migration_table}" | while read _path _dataset; do
+	echo "${_migration_table}" | while read -r _path _dataset; do
 		# skip rows beginning with # (intended for comments as above)
 		case "$_path" in "#"*|"") continue; esac
 		_be_do_migration "${_path}" "${_dataset}"
