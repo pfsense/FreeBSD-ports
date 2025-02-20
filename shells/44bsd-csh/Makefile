@@ -1,6 +1,6 @@
 PORTNAME=	44bsd-csh
 PORTVERSION=	20001106
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	shells
 MASTER_SITES=	LOCAL/cy
 
@@ -9,7 +9,7 @@ COMMENT=	The traditional 4.4BSD /bin/csh C-shell
 
 EXTRACT_DEPENDS=	rcs:devel/rcs57
 
-USES=		sbrk tar:bzip2
+USES=		tar:bzip2
 LDFLAGS=	-Wl,--allow-multiple-definition
 NO_WRKSUBDIR=	yes
 PORTDOCS=	paper.ascii.gz

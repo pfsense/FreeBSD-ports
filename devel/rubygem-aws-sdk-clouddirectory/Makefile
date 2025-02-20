@@ -1,5 +1,5 @@
 PORTNAME=	aws-sdk-clouddirectory
-PORTVERSION=	1.70.0
+PORTVERSION=	1.72.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

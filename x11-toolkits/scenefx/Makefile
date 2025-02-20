@@ -4,7 +4,7 @@ PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	wlroots scene API, but with eye candy!
+COMMENT=	wlroots scene API, but with eye candy! (deprecated version)
 WWW=		https://github.com/wlrfx/scenefx
 
 LICENSE=	MIT
@@ -21,6 +21,8 @@ USE_LDCONFIG=	yes
 USE_XORG=	pixman
 GH_ACCOUNT=	wlrfx
 MESON_ARGS=	-Dexamples=false -Drenderers=${RENDERERS:ts,}
+
+PORTSCOUT=	limit:^0\.1\.
 
 OPTIONS_DEFINE=	OPENGL
 OPTIONS_DEFAULT=OPENGL

@@ -1,5 +1,5 @@
 PORTNAME=	curl
-PORTVERSION=	8.12.0
+PORTVERSION=	8.12.1
 CATEGORIES=	ftp net www
 MASTER_SITES=	https://curl.se/download/ \
 		https://github.com/curl/curl/releases/download/curl-${PORTVERSION:S|.|_|g}/
@@ -12,7 +12,7 @@ WWW=		https://curl.se/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe libtool localbase pathfix perl5 shebangfix tar:xz
+USES=		cpe libtool localbase:ldflags pathfix perl5 shebangfix tar:xz
 USE_PERL5=	build
 
 CONFIGURE_ARGS=	--disable-test-bundles \

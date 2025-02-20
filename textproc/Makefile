@@ -3,6 +3,7 @@
     SUBDIR += 2bsd-diff
     SUBDIR += CLDR
     SUBDIR += R-cran-DT
+    SUBDIR += R-cran-R.rsp
     SUBDIR += R-cran-R2HTML
     SUBDIR += R-cran-XML
     SUBDIR += R-cran-bibtex
@@ -2085,6 +2086,7 @@
     SUBDIR += te-aspell
     SUBDIR += te-hunspell
     SUBDIR += teckit
+    SUBDIR += television
     SUBDIR += termshot
     SUBDIR += tet-aspell
     SUBDIR += texi2db

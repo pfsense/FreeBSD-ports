@@ -1,5 +1,5 @@
-TIMESTAMP = 1739530480
-SHA256 (go/sysutils_gomi/gomi-v1.3.2/v1.3.2.mod) = 28442a77e98e30911a277864a10cff6e992fb067ca4cd10ac3e6f1764f7084e1
-SIZE (go/sysutils_gomi/gomi-v1.3.2/v1.3.2.mod) = 2316
-SHA256 (go/sysutils_gomi/gomi-v1.3.2/v1.3.2.zip) = df0318afd839d95ce589371e4b0de73512437e22c6450951789b204e0171a71e
-SIZE (go/sysutils_gomi/gomi-v1.3.2/v1.3.2.zip) = 3063023
+TIMESTAMP = 1739886072
+SHA256 (go/sysutils_gomi/gomi-v1.4.3/v1.4.3.mod) = 94a9a10ccecc266f30f5665b09c7fef7aa6cb2918c978210f6ae5a3884cab9f5
+SIZE (go/sysutils_gomi/gomi-v1.4.3/v1.4.3.mod) = 2355
+SHA256 (go/sysutils_gomi/gomi-v1.4.3/v1.4.3.zip) = 240da9ed9e37f0a81e29b5889b89e2d9fe0eb507ef304d2a996d6e6bb5656daa
+SIZE (go/sysutils_gomi/gomi-v1.4.3/v1.4.3.zip) = 3096511

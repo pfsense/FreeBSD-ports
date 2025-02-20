@@ -9,6 +9,7 @@
     SUBDIR += O2-tools
     SUBDIR += R-cran-DiagrammeR
     SUBDIR += R-cran-GDD
+    SUBDIR += R-cran-R.devices
     SUBDIR += R-cran-RColorBrewer
     SUBDIR += R-cran-colorspace
     SUBDIR += R-cran-cowplot
@@ -151,6 +152,7 @@
     SUBDIR += drm-510-kmod
     SUBDIR += drm-515-kmod
     SUBDIR += drm-61-kmod
+    SUBDIR += drm-66-kmod
     SUBDIR += drm-kmod
     SUBDIR += drm_info
     SUBDIR += dspdfviewer
@@ -559,6 +561,12 @@
     SUBDIR += linux-rl9-qt5-qtimageformats
     SUBDIR += linux-rl9-qt5-qtsvg
     SUBDIR += linux-rl9-qt5-qtwayland
+    SUBDIR += linux-rl9-sdl2_gfx
+    SUBDIR += linux-rl9-sdl2_image
+    SUBDIR += linux-rl9-sdl2_ttf
+    SUBDIR += linux-rl9-sdl_gfx
+    SUBDIR += linux-rl9-sdl_image
+    SUBDIR += linux-rl9-sdl_ttf
     SUBDIR += linux-rl9-shaderc
     SUBDIR += linux-rl9-spirv-tools
     SUBDIR += linux-rl9-tiff
@@ -623,6 +631,7 @@
     SUBDIR += nvidia-drm-510-kmod
     SUBDIR += nvidia-drm-515-kmod
     SUBDIR += nvidia-drm-61-kmod
+    SUBDIR += nvidia-drm-66-kmod
     SUBDIR += nvidia-drm-kmod
     SUBDIR += nvidia-texture-tools
     SUBDIR += ocaml-cairo
@@ -1262,6 +1271,7 @@
     SUBDIR += xfractint
     SUBDIR += xglurbules
     SUBDIR += xgrasp
+    SUBDIR += xiccd
     SUBDIR += ximaging
     SUBDIR += xli
     SUBDIR += xmedcon
