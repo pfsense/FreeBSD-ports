@@ -64,7 +64,7 @@ if ($_POST) {
 
 	// Validate interfaces
 	if (count($pconfig['active_interfaces']) < 2) {
-		$input_errors[] = gettest('A minimum of two interfaces are required');
+		$input_errors[] = gettext('A minimum of two interfaces are required');
 	}
 
 	// Vaidate and normalize the global filter
