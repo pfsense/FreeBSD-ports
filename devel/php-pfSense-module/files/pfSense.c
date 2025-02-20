@@ -523,9 +523,6 @@ PHP_FUNCTION(pfSense_kill_states)
 		goto cleanup1;
 	}
 
-	/* Also match on the pre-NAT address. Redmine #11556 */
-	k.nat = true;
-
 	for (resp[0] = res[0]; resp[0]; resp[0] = resp[0]->ai_next) {
 		if (resp[0]->ai_addr == NULL)
 			continue;
@@ -587,12 +584,21 @@ PHP_FUNCTION(pfSense_kill_states)
 					php_printf("Unknown address family %d", k.af);
 					continue;
 				}
-
+				k.nat = false;
+				if (pfctl_kill_states(dev, &k, &kcount))
+					php_printf("Could not kill states\n");
+				k.nat = true;
 				if (pfctl_kill_states(dev, &k, &kcount))
 					php_printf("Could not kill states\n");
 			}
 			freeaddrinfo(res[1]);
 		} else {
+			k.nat = false;
+			if (pfctl_kill_states(dev, &k, &kcount)) {
+				php_printf("Could not kill states\n");
+				break;
+			}
+			k.nat = true;
 			if (pfctl_kill_states(dev, &k, &kcount)) {
 				php_printf("Could not kill states\n");
 				break;
