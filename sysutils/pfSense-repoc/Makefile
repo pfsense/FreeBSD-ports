@@ -1,5 +1,5 @@
 PORTNAME=	repoc
-DISTVERSION=	20250131
+DISTVERSION=	20250222
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 
@@ -14,7 +14,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	repoc
-GL_COMMIT=	f1810671e54e84cec19e61494be6b7e381426968
+GL_COMMIT=	18750b7e4d7419bc1a602a4d76d055b345a2368b
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 .include <bsd.port.mk>
