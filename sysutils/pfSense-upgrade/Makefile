@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-upgrade
-PORTVERSION=	1.2.19
+PORTVERSION=	1.2.20
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

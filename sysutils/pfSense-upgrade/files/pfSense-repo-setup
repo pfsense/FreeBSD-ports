@@ -179,11 +179,20 @@ abi_setup() {
 		ALTABI=${CUR_ALTABI}
 	fi
 
-	# Make sure pkg.conf is set properly so GUI can work
-	cat << EOF > "${PKG_CONF}"
+	/bin/rm -f "${PKG_CONF}" 2> /dev/null
+	/usr/bin/touch "${PKG_CONF}" 2> /dev/null
+
+	# Do not set the ABI or the ALTABI for the new pkg (>= 2.0.6).
+	local _pkg_ver="$(_pkg query %v pkg)"
+	local _new_pkg="$(_pkg version -t 2.0.6 "${_pkg_ver}")"
+	if [ -n "${_new_pkg}" ] && [ "${_new_pkg}" = ">" ]; then
+		# Make sure pkg.conf is set properly so GUI can work
+		cat << EOF > "${PKG_CONF}"
 ABI=${ABI}
 ALTABI=${ALTABI}
 EOF
+	fi
+
 	if [ -n "${dbdir}" ] && [ -n "${reposdir}" ]; then
 			cat << EOF >> ${PKG_CONF}""
 PKG_DBDIR=${dbdir}
