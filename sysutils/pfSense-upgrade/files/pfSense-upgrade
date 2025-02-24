@@ -1631,7 +1631,7 @@ check_upgrade() {
 					;;
 			esac
 
-		    _new_version=$(_pkg rquery -U %v ${_package})
+			_new_version="$(_pkg ${_pkg} rquery -U %v ${_package} | /usr/bin/cut -f -5 -d.)"
 			if [ -z "${_mute}" ]; then
 				_echo "${_new_version} version of ${product} is available"
 			fi
