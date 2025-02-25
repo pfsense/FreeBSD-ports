@@ -1053,7 +1053,9 @@ function pfblockerng_uc_countries() {
 	}
 
 	// Add Continents to GeoIP ISOs for IPv4/6 Source Field lookup
-	@file_put_contents("{$pfb['geoip_isos']}", 'Africa,Antarctica,Asia,Europe,North_America,Oceania,South_America,Proxy_and_Satellite', FILE_APPEND | LOCK_EX);
+	$add_continents = 'Africa [Continent],Antarctica [Continent],Asia [Continent],Europe [Continent],North_America [Continent],Oceania [Continent]';
+	$add_continents .= ',South_America [Continent],Proxy_and_Satellite [GeoIP]';
+	@file_put_contents("{$pfb['geoip_isos']}", "{$add_continents}", FILE_APPEND | LOCK_EX);
 
 	ksort($pfb_geoip['country'], SORT_NATURAL);
 
