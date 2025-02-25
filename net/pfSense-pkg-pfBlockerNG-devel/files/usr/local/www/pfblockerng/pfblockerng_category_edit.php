@@ -1001,7 +1001,6 @@ if (!isset($input_errors) && (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid
 		$final[] = $data;
 	}
 	$rowdata[$rowid]['row'] = $final;
-	config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row", $rowdata[$rowid]['row']);
 }
 
 $numrows	= (count($rowdata[$rowid]['row']) -1) ?: 0;
