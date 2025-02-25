@@ -40,6 +40,9 @@ if (isAjax() && !empty($_GET['term']) && is_string($_GET['term']) && (mb_strlen(
 			FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
 		);
 	}
+	if (!is_array($_SESSION['pfb_asn_list_data'])) {
+		$_SESSION['pfb_asn_list_data'] = [];
+	}
 	echo json_encode(array_filter($_SESSION['pfb_asn_list_data'], function($asn) use($term) {
 		return str_contains($asn, $term);
 	}));
