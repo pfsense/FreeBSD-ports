@@ -94,8 +94,6 @@ $pfb['dnsbl_cache']	= '/var/unbound/pfb_py_cache.sqlite';
 $pfb['asn_cache']	= "{$pfb['dbdir']}/asn_cache.sqlite";
 $pfb['ip_cache']	= "{$pfb['dbdir']}/ip_cache.sqlite";
 
-$pfb['asn_list']	= '/pfblockerng/pfblockerng_asn.txt';	// used by Ajax function in pfBlockerNG.js
-
 $pfb['script']		= '/usr/local/pkg/pfblockerng/pfblockerng.sh';
 $pfb['feeds']		= '/usr/local/www/pfblockerng/pfblockerng_feeds.json';
 $pfb['aliasarchive']	= '/usr/local/etc/aliastables.tar.bz2';

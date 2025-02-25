@@ -25,6 +25,32 @@ require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
+/**
+ * Used by pfb_autocomplete_function() in pfBlockerNG.js.
+ * Caches the ASN list between PHP session requests while on the same
+ * page and returns the ASNs which contain the given string of a minimum
+ * length of 2.
+ */
+if (isAjax() && !empty($_GET['term']) && is_string($_GET['term']) && (mb_strlen($_GET['term']) > 2)) {
+	$term = $_GET['term'];
+	phpsession_begin();
+	if (empty($_SESSION['pfb_asn_list_data']) && file_exists('/usr/local/www/pfblockerng/pfblockerng_asn.txt')) {
+		$_SESSION['pfb_asn_list_data'] = file(
+			'/usr/local/www/pfblockerng/pfblockerng_asn.txt',
+			FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+		);
+	}
+	echo json_encode(array_filter($_SESSION['pfb_asn_list_data'], function($asn) use($term) {
+		return str_contains($asn, $term);
+	}));
+	exit;
+}
+phpsession_begin();
+if (isset($_SESSION['pfb_asn_list_data'])) {
+	unset($_SESSION['pfb_asn_list_data']);
+}
+phpsession_end(true);
+
 global $group, $pfb;
 pfb_global();
 
@@ -758,6 +784,7 @@ if ($_POST && isset($_POST['save'])) {
 		$savemsg = "Saved [ Type:{$type}, Name:{$name} ] configuration";
 		write_config("pfBlockerNG: {$savemsg}");
 		header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
+		phpsession_end();
 		exit;
 	}
 	else {
@@ -872,6 +899,7 @@ if (isset($Lmove) and isset($Xmove) && isset($rowdata[$rowid]['row'])) {
 	$savemsg = 'The selected row(s) have been moved.';
 	write_config("pfBlockerNG: {$gtype} - Rows(s) moved");
 	header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
+	phpsession_end();
 	exit;
 }
 
@@ -1637,9 +1665,6 @@ if (gtype == 'ipv4' || gtype == 'ipv6') {
 	// GeoIP ISOs Auto-Complete for Source (URL) field lookup
 	var geoip = "<?=$geoip_isos?>";
 	var geoiparray = geoip.split(',');
-
-	// ASN Auto-Complete for Source (URL) field lookup
-	var asnlist = "<?=$pfb['asn_list']?>";
 }
 else if (gtype == 'dnsbl') {
 	var pagetype = 'dnsbl';
