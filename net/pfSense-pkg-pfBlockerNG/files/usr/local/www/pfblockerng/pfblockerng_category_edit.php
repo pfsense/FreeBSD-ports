@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2023 BBcan177@gmail.com
+ * Copyright (c) 2015-2024 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,41 @@ require_once('util.inc');
 require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
+
+/**
+ * Used by pfb_autocomplete_function() in pfBlockerNG.js.
+ * Caches the ASN list between PHP session requests while on the same
+ * page and returns the ASNs which contain the given string of a minimum
+ * length of 2.
+ */
+if (isAjax() && !empty($_GET['term']) && is_string($_GET['term']) && (mb_strlen($_GET['term']) > 2)) {
+	$term = $_GET['term'];
+	phpsession_begin();
+	$session_open = true;
+	if (empty($_SESSION['pfb_asn_list_data']) && file_exists('/usr/local/www/pfblockerng/pfblockerng_asn.txt')) {
+		$_SESSION['pfb_asn_list_data'] = file(
+			'/usr/local/www/pfblockerng/pfblockerng_asn.txt',
+			FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+		);
+		phpsession_end(true);
+		$session_open = false;
+	}
+	if (!is_array($_SESSION['pfb_asn_list_data'])) {
+		$_SESSION['pfb_asn_list_data'] = [];
+	}
+	echo json_encode(array_filter($_SESSION['pfb_asn_list_data'], function($asn) use($term) {
+		return str_contains($asn, $term);
+	}));
+	if ($session_open) {
+		phpsession_end();
+	}
+	exit;
+}
+phpsession_begin();
+if (isset($_SESSION['pfb_asn_list_data'])) {
+	unset($_SESSION['pfb_asn_list_data']);
+}
+phpsession_end(true);
 
 global $group, $pfb;
 pfb_global();
@@ -737,6 +772,9 @@ if ($_POST && isset($_POST['save'])) {
 				if (!empty($value) && $k_field[0] != 'url') {
 					$value = pfb_filter($value, PFB_FILTER_HTML, 'Category_edit save');
 				}
+				if (($k_field[0] == 'url') && ($_POST["format-{$k_field[1]}"] == 'asn')) {
+					$value = htmlentities($value);
+				}
 				config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row/{$k_field[1]}/{$k_field[0]}", $value);
 			}
 		}
@@ -978,7 +1016,6 @@ if (empty($rowdata[$rowid]['row'])) {
 							'state' 	=> 'Disabled',
 							'url'		=> '',
 							'header'	=> '' ) );
-	config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row", $rowdata[$rowid]['row']);
 }
 
 // Sort row by Header/Label field followed by Enabled/Disabled State settings
@@ -999,7 +1036,6 @@ if (!isset($input_errors) && (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid
 		$final[] = $data;
 	}
 	$rowdata[$rowid]['row'] = $final;
-	config_set_path("installedpackages/{$conf_type}/config/{$rowid}/row", $rowdata[$rowid]['row']);
 }
 
 $numrows	= (count($rowdata[$rowid]['row']) -1) ?: 0;
@@ -1063,7 +1099,7 @@ foreach ($rowdata[$rowid] as $tags) {
 				'url-' . $r_id,
 				'',
 				'text',
-				$row['url']
+				(($row['format'] == 'asn') ? html_entity_decode($row['url']) : $row['url'])
 		))->setHelp(($numrows == $rowcounter) ? 'Source' : NULL)
 		  ->setWidth(5);
 
@@ -1636,9 +1672,6 @@ if (gtype == 'ipv4' || gtype == 'ipv6') {
 	// GeoIP ISOs Auto-Complete for Source (URL) field lookup
 	var geoip = "<?=$geoip_isos?>";
 	var geoiparray = geoip.split(',');
-
-	// ASN Auto-Complete for Source (URL) field lookup
-	var asnlist = "<?=$pfb['asn_list']?>";
 }
 else if (gtype == 'dnsbl') {
 	var pagetype = 'dnsbl';

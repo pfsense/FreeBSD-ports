@@ -1,7 +1,7 @@
 #!/bin/sh
 # script_AWS_US_WEST.sh - By BBcan177@gmail.com - 03-20-2022
 # Pre-Script to collect Amazon AWS Region (United States - West)
-# Copyright (c) 2015-2023 BBcan177@gmail.com
+# Copyright (c) 2015-2024 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as

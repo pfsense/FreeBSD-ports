@@ -6,7 +6,7 @@
 			"*",
 			"* part of pfSense (https://www.pfsense.org)",
 			"* Copyright (c) 2016-2025 Rubicon Communications, LLC (Netgate)",
-			"* Copyright (c) 2015-2023 BBcan177@gmail.com",
+			"* Copyright (c) 2015-2024 BBcan177@gmail.com",
 			"* All rights reserved.",
 			"*",
 			"* Licensed under the Apache License, Version 2.0 (the \"License\")",
@@ -111,15 +111,16 @@
 				},
 				{
 					"feed":		"Spamhaus",
-					"website":	"https://www.spamhaus.org/drop/",
-					"contact":	"https://www.spamhaus.org/organization/contacts/",
-					"url":		"https://www.spamhaus.org/drop/drop.txt",
-					"delist":	"https://www.spamhaus.org/lookup/",
+					"website":	"https://www.spamhaus.org/blocklists/do-not-route-or-peer/",
+					"contact":	"https://contact-center.spamhaus.org/",
+					"url":		"https://www.spamhaus.org/drop/drop_v4.json",
+					"delist":	"https://check.spamhaus.org/",
 					"header":	"Spamhaus_Drop"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Spamhaus",
-					"website":	"https://www.spamhaus.org/drop/",
+					"website":	"https://www.spamhaus.org/blocklists/do-not-route-or-peer/",
 					"url":		"https://www.spamhaus.org/drop/edrop.txt",
 					"delist":	"https://www.spamhaus.org/lookup/",
 					"header":	"Spamhaus_eDrop"
@@ -502,6 +503,12 @@
 					"website":	"https://github.com/Sekhan/TheGreatWall",
 					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv4",
 					"header":	"TheGreatWall_DoH_IP"
+				},
+				{
+					"feed":		"Dibdot DoH list",
+					"website":	"https://github.com/dibdot/DoH-IP-blocklists",
+					"url":		"https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-ipv4.txt",
+					"header":	"Dibdot_DoH_IP"
 				}
 			]
 		},
@@ -754,10 +761,10 @@
 			"cron":		"Weekly",
 			"feeds": [
 				{
-					"feed":		"X4BNet VPN",
-					"website":	"https://github.com/X4BNet/lists_vpn",
-					"url":		"https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt",
-					"header":	"X4BNet_VPNv4"
+					"feed":		"Ejrv VPN",
+					"website":	"https://github.com/ejrv/VPNs",
+					"url":		"https://raw.githubusercontent.com/ejrv/VPNs/master/vpn-ipv4.txt",
+					"header":	"Ejrv_VPNv4"
 				}
 			]
 		},
@@ -897,8 +904,10 @@
 				},
 				{
 					"feed":		"Spamhaus",
-					"website":	"https://www.spamhaus.org/drop/",
-					"url":		"https://www.spamhaus.org/drop/dropv6.txt",
+					"website":	"https://www.spamhaus.org/blocklists/do-not-route-or-peer/",
+					"contact":	"https://contact-center.spamhaus.org/",
+					"url":		"https://www.spamhaus.org/drop/drop_v6.json",
+					"delist":	"https://check.spamhaus.org/",
 					"header":	"Spamhaus_Drop6"
 				}
 			]
@@ -914,6 +923,12 @@
 					"website":	"https://github.com/Sekhan/TheGreatWall",
 					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv6",
 					"header":	"TheGreatWall_DoH_IP6"
+				},
+				{
+					"feed":		"Dibdot DoH list",
+					"website":	"https://github.com/dibdot/DoH-IP-blocklists",
+					"url":		"https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-ipv6.txt",
+					"header":	"Dibdot_DoH_IP6"
 				}
 			]
 		},
@@ -1082,7 +1097,7 @@
 				{
 					"feed":		"EasyList Finland",
 					"website":	"https://github.com/finnish-easylist-addition/finnish-easylist-addition",
-					"url":		"https://raw.githubusercontent.com/finnish-easylist-addition/finnish-easylist-addition/master/Finland_adb.txt",
+					"url":		"https://raw.githubusercontent.com/finnish-easylist-addition/finnish-easylist-addition/gh-pages/Finland_adb.txt",
 					"header":	"EasyList_Finland"
 				},
 				{
@@ -1516,6 +1531,12 @@
 					"website":	"https://github.com/oneoffdallas/dohservers",
 					"url":		"https://raw.githubusercontent.com/oneoffdallas/dohservers/master/list.txt",
 					"header":	"Oneoffdallas_DoH"
+				},
+				{
+					"feed":		"Dibdot DoH list",
+					"website":	"https://github.com/dibdot/DoH-IP-blocklists",
+					"url":		"https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-domains.txt",
+					"header":	"Dibdot_DoH"
 				}
 			]
 		},
@@ -1606,6 +1627,7 @@
 					"header":	"Magento"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"H3X",
 					"website":	"https://tracker.h3x.eu/about/",
 					"url":		"https://tracker.h3x.eu/api/sites_1month.php",
