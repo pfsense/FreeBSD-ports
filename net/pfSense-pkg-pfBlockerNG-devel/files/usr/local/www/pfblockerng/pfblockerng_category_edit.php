@@ -34,11 +34,14 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 if (isAjax() && !empty($_GET['term']) && is_string($_GET['term']) && (mb_strlen($_GET['term']) > 2)) {
 	$term = $_GET['term'];
 	phpsession_begin();
+	$session_open = true;
 	if (empty($_SESSION['pfb_asn_list_data']) && file_exists('/usr/local/www/pfblockerng/pfblockerng_asn.txt')) {
 		$_SESSION['pfb_asn_list_data'] = file(
 			'/usr/local/www/pfblockerng/pfblockerng_asn.txt',
 			FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
 		);
+		phpsession_end(true);
+		$session_open = false;
 	}
 	if (!is_array($_SESSION['pfb_asn_list_data'])) {
 		$_SESSION['pfb_asn_list_data'] = [];
@@ -46,6 +49,9 @@ if (isAjax() && !empty($_GET['term']) && is_string($_GET['term']) && (mb_strlen(
 	echo json_encode(array_filter($_SESSION['pfb_asn_list_data'], function($asn) use($term) {
 		return str_contains($asn, $term);
 	}));
+	if ($session_open) {
+		phpsession_end();
+	}
 	exit;
 }
 phpsession_begin();
@@ -787,7 +793,6 @@ if ($_POST && isset($_POST['save'])) {
 		$savemsg = "Saved [ Type:{$type}, Name:{$name} ] configuration";
 		write_config("pfBlockerNG: {$savemsg}");
 		header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
-		phpsession_end();
 		exit;
 	}
 	else {
@@ -902,7 +907,6 @@ if (isset($Lmove) and isset($Xmove) && isset($rowdata[$rowid]['row'])) {
 	$savemsg = 'The selected row(s) have been moved.';
 	write_config("pfBlockerNG: {$gtype} - Rows(s) moved");
 	header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
-	phpsession_end();
 	exit;
 }
 
