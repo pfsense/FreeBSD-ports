@@ -2045,6 +2045,7 @@ function dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain) 
 
 	$ex_dom = $s_txt = '';
 	if ($isExclusion) {
+		$wt_line = rtrim(array_get_path($clists, "tldexclusion/data/{$fields[7]}", ''), "\x00..\x1F");
 		$s_txt  = "Note:&emsp;The following Domain is in the TLD Exclusion customlist:\n\n"
 			. "TLD Exclusion:&emsp;[ {$wt_line} ]\n\n"
 			. "&#8226; TLD Exclusions require a Force Reload when a Domain is initially added.\n"
@@ -2466,7 +2467,7 @@ function convert_dnsbl_log($mode, $fields) {
 			} else {
 				if ($isWhitelist_found) {
 					$s_txt = "\n\nNote:&emsp;The following Domain exists in the DNSBL Whitelist:\n\n"
-						. "Whitelisted:&emsp;[ {$w_line} ]\n\n"
+						. "Whitelisted:&emsp;[ {$wt_line} ]\n\n"
 						. "Unlock this Domain by selecting the Unlock Icon!";
 
 					$unlock_dom = '<i class="fa-solid fa-lock icon-primary text-warning" id="DNSBL_REULCK|'

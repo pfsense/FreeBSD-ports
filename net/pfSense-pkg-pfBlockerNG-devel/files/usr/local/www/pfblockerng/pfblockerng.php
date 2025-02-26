@@ -1507,10 +1507,10 @@ pfb_global();
 
 \$continent			= "{$continent}";	// Continent name (Locale specific)
 \$continent_en			= "{$continent_en}";	// Continent name (English)
-\$options_countries4		= array(${'options4'});
-\$options_countries6		= array(${'options6'});
-\$options_countries4_cnt	= "${'ftotal4'}";
-\$options_countries6_cnt	= "${'ftotal6'}";
+\$options_countries4		= array({$options4});
+\$options_countries6		= array({$options6});
+\$options_countries4_cnt	= "{$ftotal4}";
+\$options_countries6_cnt	= "{$ftotal6}";
 
 EOF;
 $php_data .= <<<'EOF'

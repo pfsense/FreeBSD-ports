@@ -1278,7 +1278,7 @@ closingprocess() {
 	# Execute when 'de-duplication' is enabled
 	if [ "${alias}" == 'on' ]; then
 		echo '==============================================================='; echo
-		if [ "${s1} == ${s2}" ]; then
+		if [ "${s1}" == "${s2}" ]; then
 			echo 'Database Sanity check [  PASSED  ]'
 		else
 			echo 'Database Sanity check [  FAILED  ] ** These two counts should match! **'
