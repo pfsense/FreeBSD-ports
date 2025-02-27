@@ -126,6 +126,7 @@
 					"header":	"Spamhaus_eDrop"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Talos-Snort",
 					"website":	"https://www.talosintelligence.com/",
 					"contact":	"https://www.talosintelligence.com/contact/",
