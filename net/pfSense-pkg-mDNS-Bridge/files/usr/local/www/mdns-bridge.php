@@ -20,8 +20,8 @@
  */
 
 
-require("guiconfig.inc");
-require("/usr/local/pkg/mdns-bridge.inc");
+require_once("guiconfig.inc");
+require_once("mdns-bridge.inc");
 
 $shortcut_section = 'mdns-bridge';
 
