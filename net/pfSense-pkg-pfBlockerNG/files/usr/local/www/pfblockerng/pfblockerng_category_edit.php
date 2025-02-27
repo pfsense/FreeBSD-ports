@@ -32,7 +32,6 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
  * length of 2.
  */
 if (isAjax() && !empty($_GET['term']) && is_string($_GET['term']) && (mb_strlen($_GET['term']) > 2)) {
-	$term = $_GET['term'];
 	phpsession_begin();
 	$session_open = true;
 	if (empty($_SESSION['pfb_asn_list_data']) && file_exists('/usr/local/www/pfblockerng/pfblockerng_asn.txt')) {
@@ -46,9 +45,20 @@ if (isAjax() && !empty($_GET['term']) && is_string($_GET['term']) && (mb_strlen(
 	if (!is_array($_SESSION['pfb_asn_list_data'])) {
 		$_SESSION['pfb_asn_list_data'] = [];
 	}
-	echo json_encode(array_filter($_SESSION['pfb_asn_list_data'], function($asn) use($term) {
-		return str_contains($asn, $term);
-	}));
+
+	$count = 0;
+	$result = [];
+	foreach ($_SESSION['pfb_asn_list_data'] as $asn) {
+		if ($count >= 20) {
+			break;
+		}
+		if (mb_stripos($asn, $_GET['term']) !== false) {
+			$count++;
+			$result[] = $asn;
+		}
+	}
+	echo json_encode($result);
+
 	if ($session_open) {
 		phpsession_end();
 	}

@@ -72,7 +72,7 @@ function pfb_autocomplete_function(input_type, destroy, pageload) {
 
 		$(url_fld).autocomplete( {
 			minLength: 3,
-			delay: 100,
+			delay: 200,
 			source: '/pfblockerng/pfblockerng_category_edit.php',
 			select: function(event,ui) {
 					$(url_fld).val('');
