@@ -25,7 +25,7 @@ PLIST_FILES= \
 	/sbin/pppcfg \
 	/boot/modules/if_pppoe.ko
 
-MAKE_ARGS=MK_TESTS=no
+MAKE_ARGS=MK_TESTS=no IFPPPOE_COMMITHASH=${IFPPPOE_COMMITHASH}
 
 .if !defined(IFPPPOE_COMMITHASH)
 .error "Environment must specify IFPPPOE_COMMITHASH"
