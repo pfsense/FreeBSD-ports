@@ -8,6 +8,10 @@ WWW: https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_pfsens
 Package Changelog
 =================
 
+0.1.5
+
+ * always block ingress+egress traffic with bouncer rules, remove "direction" option
+
 0.1.4
 
  * allow overriding scheme and path in remote LAPI URL

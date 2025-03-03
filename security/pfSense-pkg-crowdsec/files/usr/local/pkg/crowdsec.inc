@@ -550,8 +550,6 @@ function crowdsec_generate_rules($type)
         case 'pfearly':
             global $config;
             $cf = $config['installedpackages']['crowdsec']['config'][0] ?? array();
-            $direction = !empty($cf['rules_direction']) && $cf['rules_direction'] !== 'any' ?
-                $cf['rules_direction'] : '';
             $log = !empty($cf['rules_log']) ? "log" : '';
             $tag = !empty($cf['rules_tag']) ? "tag " . $cf['rules_tag'] : '';
             $interfaces = '';
@@ -569,23 +567,49 @@ function crowdsec_generate_rules($type)
             }
 
             if (!empty($cf['enable_rule_v4'])) {
+                // incoming traffic
+
                 $rules .= "block drop";
-                $rules .= ' ' . $direction . ' '  . $log . ' ' .
+                $rules .= ' in '  . $log . ' ' .
                           ' quick '. $interfaces. ' inet from <crowdsec_blacklists> to any label "CrowdSec IPv4"';
                 if (!empty($tag)) {
                     $rules .= ' ' . $tag;
                 }
                 $rules .= "\n";
-            }
-            if (!empty($cf['enable_rule_v6'])) {
+
+                // outgoing traffic
+
                 $rules .= "block drop";
-                $rules .= ' ' . $direction . ' ' . $log . ' ' .
-                          ' quick '. $interfaces.' inet6 from <crowdsec6_blacklists> to any label "CrowdSec IPv6"';
+                $rules .= ' out ' . $log . ' ' .
+                          ' quick '. $interfaces.' inet from any to <crowdsec_blacklists> label "CrowdSec IPv4 out"';
                 if (!empty($tag)) {
                     $rules .= ' ' . $tag;
                 }
                 $rules .= "\n";
             }
+
+            if (!empty($cf['enable_rule_v6'])) {
+                // incoming traffic
+
+                $rules .= "block drop";
+                $rules .= ' in ' . $log . ' ' .
+                          ' quick '. $interfaces.' inet6 from <crowdsec6_blacklists> to any label "CrowdSec IPv6"';
+                if (!empty($tag)) {
+                    $rules .= ' ' . $tag;
+                }
+                $rules .= "\n";
+
+                // outgoing traffic
+
+                $rules .= "block drop";
+                $rules .= ' out ' . $log . ' ' .
+                          ' quick '. $interfaces.' inet6 from any to <crowdsec6_blacklists> label "CrowdSec IPv6 out"';
+                if (!empty($tag)) {
+                    $rules .= ' ' . $tag;
+                }
+                $rules .= "\n";
+            }
+
             break;
         default:
             break;
