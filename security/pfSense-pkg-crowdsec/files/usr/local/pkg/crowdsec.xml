@@ -87,7 +87,7 @@
             <fielddescr></fielddescr>
             <fieldname>firewall_info</fieldname>
             <type>info</type>
-            <description>Feed the blocklists to the pfSense firewall. Always required, even if you use your own firewall rules.</description>
+            <description>Feed the blocklists to the pfSense firewall. Always required, even if you use your own firewall rules. Disable only for testing.</description>
         </field>
 
         <field>
@@ -246,17 +246,6 @@
             <multiple/>
         </field>
         <field>
-            <fielddescr>Direction</fielddescr>
-            <fieldname>rules_direction</fieldname>
-            <description></description>
-            <type>select</type>
-            <options>
-                <option><name>Any (inbound + outbound)</name><value>any</value></option>
-                <option><name>In (inbound)</name><value>in</value></option>
-            </options>
-            <default_value>in</default_value>
-        </field>
-        <field>
             <fielddescr>Log</fielddescr>
             <fieldname>rules_log</fieldname>
             <type>checkbox</type>
@@ -268,28 +257,29 @@
             <description></description>
         </field>
         <field>
-            <fielddescr></fielddescr>
-            <fieldname>enable_rule_info</fieldname>
-            <type>info</type>
-            <description><![CDATA[The actual rules may be slightly different according to the above options. Check /var/log/system.log]]></description>
-        </field>
-        <field>
             <fielddescr>Enable CrowdSec IPv4 blocklist rule</fielddescr>
             <fieldname>enable_rule_v4</fieldname>
             <default_value>on</default_value>
             <type>checkbox</type>
-            <description><![CDATA[block drop {direction} {log} quick on {interfaces} inet from crowdsec_blacklists to any label "CrowdSec IPv4" tag {tag}]]></description>
         </field>
-        <!-- Crowdsec IPv6 blocklist settings -->
-
         <field>
             <fielddescr>Enable CrowdSec IPv6 blocklist rule</fielddescr>
             <fieldname>enable_rule_v6</fieldname>
             <default_value>on</default_value>
             <type>checkbox</type>
-            <description><![CDATA[block drop {direction} {log} quick on {interfaces} inet6 from crowdsec6_blacklists to any label "CrowdSec IPv6" tag {tag}]]></description>
         </field>
-
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>enable_rule_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[
+              The actual rules may be slightly different according to the above options, following this template:
+              <pre>block drop in {log} quick on {interfaces} inet from crowdsec_blacklists to any label "CrowdSec IPv4" tag {tag}
+block drop out {log} quick on {interfaces} inet from any to crowdsec_blacklists label "CrowdSec IPv4" tag {tag}
+block drop in {log} quick on {interfaces} inet6 from crowdsec6_blacklists to any label "CrowdSec IPv6" tag {tag}
+block drop out {log} quick on {interfaces} inet6 from any to crowdsec6_blacklists label "CrowdSec IPv6" tag {tag}</pre>
+              Check /var/log/system.log to see the exact rules that were applied.]]></description>
+        </field>
     </fields>
 
     <custom_php_install_command>
