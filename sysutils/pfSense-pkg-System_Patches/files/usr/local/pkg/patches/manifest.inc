@@ -227,6 +227,18 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '6bf3e080f56facab1f00e29acd24dff62d5bd707',
+  'versions' => ['24.11', '24.03'],
+  'descr' => 'Fix input validation errors when creating and editing Limiters (Follow-up fix)',
+  'links' => [
+      [ 'text' => 'Redmine #15990',
+         'url' => 'https://redmine.pfsense.org/issues/15990', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '738f647c453a8995c6b411f91efb66c17a0d6c11',
   'versions' => ['24.11', '24.03', '2.7.2'],
   'descr' => 'Fix PHP request processing order',
@@ -291,6 +303,18 @@ $recommended_patches = [
   'links' => [
       [ 'text' => 'Redmine #13662',
          'url' => 'https://redmine.pfsense.org/issues/13662', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '16076',
+  'versions' => ['24.11'],
+  'descr' => 'Fix rule order after deleting or adding a firewall rule',
+  'links' => [
+      [ 'text' => 'Redmine #16076',
+         'url' => 'https://redmine.pfsense.org/issues/16076', ],
   ],
   'basedir' => '/',
   'pathstrip' => 2,
