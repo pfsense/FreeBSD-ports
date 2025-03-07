@@ -51,8 +51,13 @@ $pconfig['interfaces'] = array_get_path($current_config, $path_interfaces, []);
 $avahi_enabled = config_get_path('installedpackages/avahi/config/0/enable', false) &&
 		 config_get_path('installedpackages/avahi/config/0/reflection', false);
 
+// Get the list of available interfaces
 $available_interfaces = get_configured_interface_with_descr();
-unset($available_interfaces['wan']);
+foreach ($available_interfaces as $interface => $name) {
+	if (interface_has_gateway($interface) || interface_has_gatewayv6($interface)) {
+		unset($available_interfaces[$interface]);
+	}
+}
 
 if ($_POST) {
 	unset($input_errors);
