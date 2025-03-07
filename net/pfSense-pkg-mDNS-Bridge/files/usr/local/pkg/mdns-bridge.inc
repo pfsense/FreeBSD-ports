@@ -210,8 +210,6 @@ function mdns_bridge_sync_config() {
 
 // Handle CARP notifications
 function mdns_bridge_plugin_carp($pluginparams) {
-	global $config;
-
 	// If mDNS Bridge is not enabled, or a CARP VHID is not in use, return
 	if (!mdns_bridge_enabled()) {
 		return null;
