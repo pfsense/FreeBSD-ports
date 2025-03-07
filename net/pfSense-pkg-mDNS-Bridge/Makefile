@@ -5,7 +5,7 @@ CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
+MAINTAINER=	dennypage@me.com
 COMMENT=	pfSense package mDNS Bridge
 WWW=		https://github.com/dennypage/mdns-bridge
 
