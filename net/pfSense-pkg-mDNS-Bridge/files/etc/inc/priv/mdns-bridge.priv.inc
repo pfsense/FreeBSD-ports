@@ -23,7 +23,7 @@ global $priv_list;
 
 $priv_list['page-services-mdns-bridge'] = array();
 $priv_list['page-services-mdns-bridge']['name'] = "WebCfg - Services: mDNS Bridge";
-$priv_list['page-services-mdns-bridge']['descr'] = "Access the mDNS Bridge package gui";
+$priv_list['page-services-mdns-bridge']['descr'] = "Access the mDNS Bridge package GUI";
 
 $priv_list['page-services-mdns-bridge']['match'] = array();
 $priv_list['page-services-mdns-bridge']['match'][] = "mdns-bridge.php*";
