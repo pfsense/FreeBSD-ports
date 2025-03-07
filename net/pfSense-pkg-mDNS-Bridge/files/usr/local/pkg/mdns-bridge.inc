@@ -59,7 +59,7 @@ function mdns_bridge_get_carp_list() {
 function mdns_bridge_write_files() {
 	// Get the real interface names
 	$interfaces = array();
-	foreach (explode(',', config_get_path('installedpackages/mdns-bridge/active_interfaces')) as $interface) {
+	foreach (explode(',', config_get_path('installedpackages/mdns-bridge/active_interfaces', '')) as $interface) {
 		$interfaces[$interface] = get_real_interface($interface);
 	}
 
@@ -178,7 +178,7 @@ function mdns_bridge_sync_config() {
 	mdns_bridge_write_files();
 
 	// Take no further action during platform boot
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		return;
 	}
 
