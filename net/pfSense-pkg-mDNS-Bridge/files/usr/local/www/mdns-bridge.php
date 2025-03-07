@@ -67,7 +67,7 @@ if ($_POST) {
 		$input_errors[] = gettext('A minimum of two interfaces are required');
 	}
 
-	// Vaidate and normalize the global filter
+	// Validate and normalize the global filter
 	if ($pconfig['global_filter_type'] != 'none' && trim($pconfig['global_filter_list']) == '') {
 		$pconfig['global_filter_type'] = 'none';
 		$pconfig['global_filter_list'] = '';
