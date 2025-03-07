@@ -39,7 +39,7 @@ $path_interfaces = $package_path . 'interfaces';
 // Get the current configuration
 $pconfig['enable'] = config_get_path($path_enable);
 $pconfig['carp_vhid'] = config_get_path($path_carp_vhid);
-$pconfig['active_interfaces'] = explode(',', config_get_path($path_active_interfaces, 'lan'));
+$pconfig['active_interfaces'] = explode(',', config_get_path($path_active_interfaces, ''));
 $pconfig['global_ip_protocols'] = config_get_path($path_global_ip_protocols, 'both');
 $pconfig['global_filter_type'] = config_get_path($path_global_filter_type, 'none');
 $pconfig['global_filter_list'] = config_get_path($path_global_filter_list, '');
