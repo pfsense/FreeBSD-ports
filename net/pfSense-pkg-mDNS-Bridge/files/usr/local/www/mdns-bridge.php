@@ -26,25 +26,26 @@ require_once("mdns-bridge.inc");
 $shortcut_section = 'mdns-bridge';
 
 // Configuration paths
-$package_path = 'installedpackages/mdns-bridge/';
-$path_enable = $package_path . 'enable';
-$path_carp_vhid = $package_path . 'carp_vhid';
-$path_active_interfaces = $package_path . 'active_interfaces';
-$path_global_ip_protocols = $package_path . 'global_ip_protocols';
-$path_global_filter_type = $package_path . 'global_filter_type';
-$path_global_filter_list = $package_path . 'global_filter_list';
-$path_disable_packet_filtering = $package_path . 'disable_packet_filtering';
-$path_interfaces = $package_path . 'interfaces';
+$package_path = 'installedpackages/mdns-bridge';
+$path_enable = 'enable';
+$path_carp_vhid = 'carp_vhid';
+$path_active_interfaces = 'active_interfaces';
+$path_global_ip_protocols = 'global_ip_protocols';
+$path_global_filter_type = 'global_filter_type';
+$path_global_filter_list = 'global_filter_list';
+$path_disable_packet_filtering = 'disable_packet_filtering';
+$path_interfaces = 'interfaces';
 
 // Get the current configuration
-$pconfig['enable'] = config_get_path($path_enable);
-$pconfig['carp_vhid'] = config_get_path($path_carp_vhid);
-$pconfig['active_interfaces'] = explode(',', config_get_path($path_active_interfaces, ''));
-$pconfig['global_ip_protocols'] = config_get_path($path_global_ip_protocols, 'both');
-$pconfig['global_filter_type'] = config_get_path($path_global_filter_type, 'none');
-$pconfig['global_filter_list'] = config_get_path($path_global_filter_list, '');
-$pconfig['disable_packet_filtering'] = config_get_path($path_disable_packet_filtering, false);
-$pconfig['interfaces'] = config_get_path($path_interfaces, []);
+$current_config = config_get_path($package_path, []);
+$pconfig['enable'] = array_get_path($current_config, $path_enable);
+$pconfig['carp_vhid'] = array_get_path($current_config, $path_carp_vhid);
+$pconfig['active_interfaces'] = explode(',', array_get_path($current_config, $path_active_interfaces, ''));
+$pconfig['global_ip_protocols'] = array_get_path($current_config, $path_global_ip_protocols, 'both');
+$pconfig['global_filter_type'] = array_get_path($current_config, $path_global_filter_type, 'none');
+$pconfig['global_filter_list'] = array_get_path($current_config, $path_global_filter_list, '');
+$pconfig['disable_packet_filtering'] = array_get_path($current_config, $path_disable_packet_filtering, false);
+$pconfig['interfaces'] = array_get_path($current_config, $path_interfaces, []);
 
 // Avahi conflict
 $avahi_enabled = config_get_path('installedpackages/avahi/config/0/enable', false) &&
@@ -138,24 +139,25 @@ if ($_POST) {
 	// Update the config
 	if (!$input_errors) {
 		// Global settings
-		config_set_path($path_enable, $pconfig['enable']);
-		config_set_path($path_carp_vhid, $pconfig['carp_vhid']);
-		config_set_path($path_active_interfaces, implode(',', $pconfig['active_interfaces']));
-		config_set_path($path_global_ip_protocols, $pconfig['global_ip_protocols']);
-		config_set_path($path_global_filter_type, $pconfig['global_filter_type']);
-		config_set_path($path_global_filter_list, $pconfig['global_filter_list']);
-		config_set_path($path_disable_packet_filtering, $pconfig['disable_packet_filtering']);
+		array_set_path($current_config, $path_enable, $pconfig['enable']);
+		array_set_path($current_config, $path_carp_vhid, $pconfig['carp_vhid']);
+		array_set_path($current_config, $path_active_interfaces, implode(',', $pconfig['active_interfaces']));
+		array_set_path($current_config, $path_global_ip_protocols, $pconfig['global_ip_protocols']);
+		array_set_path($current_config, $path_global_filter_type, $pconfig['global_filter_type']);
+		array_set_path($current_config, $path_global_filter_list, $pconfig['global_filter_list']);
+		array_set_path($current_config, $path_disable_packet_filtering, $pconfig['disable_packet_filtering']);
 
 		// Interface settings
 		foreach ($pconfig['active_interfaces'] as $interface) {
-			config_set_path("{$path_interfaces}/{$interface}/ip_protocols", $pconfig['ip_protocols_' . $interface]);
-			config_set_path("{$path_interfaces}/{$interface}/inbound_filter_type", $pconfig['inbound_filter_type_' . $interface]);
-			config_set_path("{$path_interfaces}/{$interface}/inbound_filter_list", $pconfig['inbound_filter_list_' . $interface]);
-			config_set_path("{$path_interfaces}/{$interface}/outbound_filter_type", $pconfig['outbound_filter_type_' . $interface]);
-			config_set_path("{$path_interfaces}/{$interface}/outbound_filter_list", $pconfig['outbound_filter_list_' . $interface]);
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/ip_protocols", $pconfig['ip_protocols_' . $interface]);
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/inbound_filter_type", $pconfig['inbound_filter_type_' . $interface]);
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/inbound_filter_list", $pconfig['inbound_filter_list_' . $interface]);
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/outbound_filter_type", $pconfig['outbound_filter_type_' . $interface]);
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/outbound_filter_list", $pconfig['outbound_filter_list_' . $interface]);
 		}
 
 		// Write the config
+		config_set_path($package_path, $current_config);
 		write_config(gettext("mDNS Bridge settings changed"));
 
 		// Sync the running configuration

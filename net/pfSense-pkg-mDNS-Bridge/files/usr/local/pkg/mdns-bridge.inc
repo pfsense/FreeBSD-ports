@@ -57,9 +57,12 @@ function mdns_bridge_get_carp_list() {
 
 // Write the config and rc files
 function mdns_bridge_write_files() {
+	// Get the current configuration
+	$current_config = config_get_path('installedpackages/mdns-bridge', []);
+
 	// Get the real interface names
 	$interfaces = array();
-	foreach (explode(',', config_get_path('installedpackages/mdns-bridge/active_interfaces', '')) as $interface) {
+	foreach (explode(',', array_get_path($current_config, 'active_interfaces', '')) as $interface) {
 		$interfaces[$interface] = get_real_interface($interface);
 	}
 
@@ -71,7 +74,7 @@ function mdns_bridge_write_files() {
 	$file_array[] = '[global]';
 	$file_array[] = 'interfaces = ' . implode(', ', $interfaces);
 
-	$ip_protocols = config_get_path('installedpackages/mdns-bridge/global_ip_protocols');
+	$ip_protocols = array_get_path($current_config, 'global_ip_protocols');
 	switch ($ip_protocols) {
 		case 'ipv4':
 			$file_array['global_ip_protocols'] = 'disable-ipv6 = yes';
@@ -81,8 +84,8 @@ function mdns_bridge_write_files() {
 			break;
 	}
 
-	$filter_type = config_get_path('installedpackages/mdns-bridge/global_filter_type');
-	$filter_list = config_get_path('installedpackages/mdns-bridge/global_filter_list');
+	$filter_type = array_get_path($current_config, 'global_filter_type');
+	$filter_list = array_get_path($current_config, 'global_filter_list');
 	switch ($filter_type) {
 		case 'allow':
 			$file_array[] = 'allow-inbound-filters = ' . $filter_list;
@@ -91,7 +94,7 @@ function mdns_bridge_write_files() {
 			$file_array[] = 'deny-inbound-filters = ' . $filter_list;
 			break;
 		default:
-			$disable_packet_filtering = config_get_path('installedpackages/mdns-bridge/disable_packet_filtering');
+			$disable_packet_filtering = array_get_path($current_config, 'disable_packet_filtering');
 			if ($disable_packet_filtering)
 			{
 				$file_array['disable-packet-filtering'] = 'disable-packet-filtering = yes';
@@ -105,7 +108,7 @@ function mdns_bridge_write_files() {
 		$file_array[] = "[{$real_interface}]";
 
 		if (!$file_array['global_ip_protocols']) {
-			$ip_protocols = config_get_path("installedpackages/mdns-bridge/interfaces/{$interface}/ip_protocols");
+			$ip_protocols = array_get_path($current_config, "interfaces/{$interface}/ip_protocols");
 			switch ($ip_protocols) {
 				case 'ipv4':
 					$file_array[] = 'disable-ipv6 = yes';
@@ -116,8 +119,8 @@ function mdns_bridge_write_files() {
 			}
 		}
 
-		$filter_type = config_get_path("installedpackages/mdns-bridge/interfaces/{$interface}/inbound_filter_type");
-		$filter_list = config_get_path("installedpackages/mdns-bridge/interfaces/{$interface}/inbound_filter_list");
+		$filter_type = array_get_path($current_config, "interfaces/{$interface}/inbound_filter_type");
+		$filter_list = array_get_path($current_config, "interfaces/{$interface}/inbound_filter_list");
 		switch ($filter_type) {
 			case 'allow':
 				$file_array[] = 'allow-inbound-filters = ' . $filter_list;
@@ -129,8 +132,8 @@ function mdns_bridge_write_files() {
 				break;
 		}
 
-		$filter_type = config_get_path("installedpackages/mdns-bridge/interfaces/{$interface}/outbound_filter_type");
-		$filter_list = config_get_path("installedpackages/mdns-bridge/interfaces/{$interface}/outbound_filter_list");
+		$filter_type = array_get_path($current_config, "interfaces/{$interface}/outbound_filter_type");
+		$filter_list = array_get_path($current_config, "interfaces/{$interface}/outbound_filter_list");
 		switch ($filter_type) {
 			case 'allow':
 				$file_array[] = 'allow-outbound-filters = ' . $filter_list;
