@@ -24,7 +24,7 @@
 require_once("guiconfig.inc");
 require_once("andwatch.inc");
 
-$active_interfaces = explode(',', config_get_path('installedpackages/andwatch/active_interfaces', 'lan'));
+$active_interfaces = explode(',', config_get_path('installedpackages/andwatch/active_interfaces', ''));
 
 if ($_REQUEST['if']) {
 	$if = htmlspecialchars($_REQUEST['if']);
