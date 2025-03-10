@@ -43,9 +43,12 @@ function andwatch_enabled() {
 
 // Write the rc file
 function andwatch_write_rcfile() {
+	// Get the current configuration
+	$current_config = config_get_path('installedpackages/andwatch');
+
 	// Get the real interface names
 	$interfaces = array();
-	foreach (explode(',', config_get_path('installedpackages/andwatch/active_interfaces')) as $interface) {
+	foreach (explode(',', array_get_path($current_config, 'active_interfaces', '')) as $interface) {
 		$interfaces[$interface] = get_real_interface($interface);
 	}
 
@@ -63,19 +66,19 @@ function andwatch_write_rcfile() {
 		$cmd = ANDWATCHD_CMD . " -s -p " . ANDWATCHD_PID_PREFIX . "${real_interface}.pid";
 
 		// Notifications
-		if (config_get_path("installedpackages/andwatch/interfaces/{$interface}/notifications", false)) {
+		if (array_get_path($current_config, "interfaces/{$interface}/notifications", false)) {
 			$cmd .= " -n " . ANDWATCHD_NOTIFY_CMD;
 		}
 
 		// Expiration (andwatchd default is 30)
-		$expiration = config_get_path("installedpackages/andwatch/interfaces/{$interface}/expiration", '30');
+		$expiration = array_get_path($current_config, "interfaces/{$interface}/expiration", '30');
 		if ($expiration != '30') {
 			$cmd .= " -O ${expiration}";
 		}
 
 		// PCAP filter
 		$filter = null;
-		switch (config_get_path("installedpackages/andwatch/interfaces/{$interface}/pcap_filter", 'none')) {
+		switch (array_get_path($current_config, "interfaces/{$interface}/pcap_filter", 'none')) {
 			case 'link-local':
 				$filter = 'not net fe80::0/10';
 				break;
@@ -83,7 +86,7 @@ function andwatch_write_rcfile() {
 				$filter = 'not net fe80::0/10 and not net fc00::0/7';
 				break;
 			case 'custom':
-				$filter = trim(config_get_path("installedpackages/andwatch/interfaces/{$interface}/custom_filter"));
+				$filter = trim(array_get_path($current_config, "interfaces/{$interface}/custom_filter"));
 				break;
 		}
 		if (!empty($filter)) {
@@ -127,7 +130,7 @@ function andwatch_sync_config() {
 	andwatch_write_rcfile();
 
 	// Take no further action during platform boot
-	if (platform_booting()) {
+	if (is_platform_booting()) {
 		return;
 	}
 
