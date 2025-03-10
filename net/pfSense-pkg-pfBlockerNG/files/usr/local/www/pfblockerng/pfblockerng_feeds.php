@@ -676,7 +676,7 @@ print ($section);
 
 								// Print info about Feed if available
 								if (isset($feed['info']) && !empty($feed['info'])) {
-									print ("&emsp;<i class=\"fa-solid fa-info-circle icon-primary\" title=\"{$feed['info']}\"></i>");
+									print ("&emsp;<i class=\"fa-solid fa-info-circle\" title=\"{$feed['info']}\"></i>");
 								}
 
 								// Print Feed offline status

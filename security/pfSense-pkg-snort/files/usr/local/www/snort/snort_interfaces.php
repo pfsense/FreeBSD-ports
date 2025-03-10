@@ -357,23 +357,23 @@ if ($savemsg)
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
 						<?php if ($natent['enable'] == 'on') : ?>
 							<?php if (snort_is_running($snort_uuid) && !file_exists($stop_lck_file)) : ?>
-								<i id="snort_<?=$if_real;?>" class="fa-solid fa-check-circle text-success icon-primary" title="<?=gettext('snort is running on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>" class="fa-solid fa-check-circle text-success" title="<?=gettext('snort is running on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php elseif ($snort_starting[$i] == TRUE || file_exists($start_lck_file) || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
-								<i id="snort_<?=$if_real;?>" class="fa-solid fa-cog fa-spin text-info icon-primary" title="<?=gettext('snort is starting on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>" class="fa-solid fa-cog fa-spin text-info" title="<?=gettext('snort is starting on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real?>_stop" class="fa-regular fa-circle-stop icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php else: ?>
-								<i id="snort_<?=$if_real;?>" class="fa-solid fa-times-circle text-danger icon-primary" title="<?=gettext('snort is stopped on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>" class="fa-solid fa-times-circle text-danger" title="<?=gettext('snort is stopped on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa-solid fa-arrow-rotate-right icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa-solid fa-play-circle icon-pointer text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa-regular fa-circle-stop icon-pointer text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php endif; ?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>&nbsp;
@@ -399,11 +399,11 @@ if ($savemsg)
 						<?=htmlspecialchars($natent['descr'])?>
 					</td>
 					<td>
-						<a href="snort_interfaces_edit.php?id=<?=$i;?>" class="fa-solid fa-pencil icon-primary" title="<?=gettext('Edit this Snort interface mapping');?>"></a>
+						<a href="snort_interfaces_edit.php?id=<?=$i;?>" class="fa-solid fa-pencil" title="<?=gettext('Edit this Snort interface mapping');?>"></a>
 						<?php if ($id_gen < count($ifaces)): ?>
 							<a href="snort_interfaces_edit.php?id=<?=$i?>&action=dup" class="fa-regular fa-clone" title="<?=gettext('Clone this Snort instance to an available interface');?>"></a>
 						<?php endif; ?>
-						<a style="cursor:pointer;" class="fa-solid fa-trash-can no-confirm icon-primary" id="Xldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>"></a>
+						<a style="cursor:pointer;" class="fa-solid fa-trash-can no-confirm" id="Xldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>"></a>
 						<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>">Delete this Snort interface mapping</button>
 					</td>	
 				</tr>
