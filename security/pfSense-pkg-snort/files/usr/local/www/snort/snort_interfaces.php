@@ -507,7 +507,7 @@ if ($savemsg)
 			var service_name = key.substring(0, key.indexOf('_'));
 			if (data[key] != 'DISABLED') {
 				if (data[key] == 'STOPPED') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-cog fa-solid fa-spin text-success text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-cog fa-spin text-success text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-times-circle text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopped on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -515,7 +515,7 @@ if ($savemsg)
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').removeClass('hidden');
 				}
 				if (data[key] == 'STOPPING') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-solid fa-times-circle text-success text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-times-circle text-success text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-solid fa-spin text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopping on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -523,7 +523,7 @@ if ($savemsg)
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'STARTING') {
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-solid fa-times-circle text-success text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-check-circle fa-times-circle text-success text-danger');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-solid fa-spin text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is starting on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
@@ -531,8 +531,8 @@ if ($savemsg)
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'RUNNING') {
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-solid fa-times-circle fa-cog fa-spin text-danger text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-solid fa-check-circle text-success');
-					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-times-circle fa-cog fa-solid fa-spin text-danger text-info');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is running on this interface');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').removeClass('hidden');
 					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
