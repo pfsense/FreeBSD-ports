@@ -25,18 +25,24 @@ require_once("andwatch.inc");
 
 
 // Configuration paths
-$package_path = 'installedpackages/andwatch/';
-$path_enable = $package_path . 'enable';
-$path_active_interfaces = $package_path . 'active_interfaces';
-$path_interfaces = $package_path . 'interfaces';
+$package_path = 'installedpackages/andwatch';
+$path_enable = 'enable';
+$path_active_interfaces = 'active_interfaces';
+$path_interfaces = 'interfaces';
 
 // Get the current configuration
-$pconfig['enable'] = config_get_path($path_enable);
-$pconfig['active_interfaces'] = explode(',', config_get_path($path_active_interfaces, 'lan'));
-$pconfig['interfaces'] = config_get_path($path_interfaces, []);
+$current_config = config_get_path($package_path, []);
+$pconfig['enable'] = array_get_path($current_config, $path_enable);
+$pconfig['active_interfaces'] = explode(',', array_get_path($current_config, $path_active_interfaces, ''));
+$pconfig['interfaces'] = array_get_path($current_config, $path_interfaces, []);
 
+// Get the list of available interfaces
 $available_interfaces = get_configured_interface_with_descr();
-unset($available_interfaces['wan']);
+foreach ($available_interfaces as $interface => $name) {
+	if (interface_has_gateway($interface) || interface_has_gatewayv6($interface)) {
+		unset($available_interfaces[$interface]);
+	}
+}
 
 if ($_POST) {
 	unset($input_errors);
@@ -67,22 +73,23 @@ if ($_POST) {
 	// Update the config
 	if (!$input_errors) {
 		// General settings
-		config_set_path($path_enable, $pconfig['enable']);
-		config_set_path($path_active_interfaces, implode(',', $pconfig['active_interfaces']));
+		array_set_path($current_config, $path_enable, $pconfig['enable']);
+		array_set_path($current_config, $path_active_interfaces, implode(',', $pconfig['active_interfaces']));
 
 		// Interface settings
 		foreach ($pconfig['active_interfaces'] as $interface) {
-			config_set_path("{$path_interfaces}/{$interface}/notifications",
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/notifications",
 					array_get_path($pconfig, "interfaces/{$interface}/notifications"));
-			config_set_path("{$path_interfaces}/{$interface}/expiration",
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/expiration",
 					array_get_path($pconfig, "interfaces/{$interface}/expiration"));
-			config_set_path("{$path_interfaces}/{$interface}/pcap_filter",
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/pcap_filter",
 					array_get_path($pconfig, "interfaces/{$interface}/pcap_filter"));
-			config_set_path("{$path_interfaces}/{$interface}/custom_filter",
+			array_set_path($current_config, "{$path_interfaces}/{$interface}/custom_filter",
 					array_get_path($pconfig, "interfaces/{$interface}/custom_filter"));
 		}
 
 		// Write the config
+		config_set_path($package_path, $current_config);
 		write_config(gettext("ANDwatch settings changed"));
 
 		// Sync the running configuration
