@@ -5,7 +5,7 @@ CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
+MAINTAINER=	dennypage@me.com
 COMMENT=	pfSense package ANDwatch
 WWW=		https://github.com/dennypage/andwatch
 
