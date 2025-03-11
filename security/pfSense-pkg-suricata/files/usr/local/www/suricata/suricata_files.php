@@ -574,7 +574,7 @@ if (file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/eve.json")
 				$file_hash = 'none';
 			}
 
-			$file_check = '<a class="fa-solid fa-info icon-pointer icon-primary" title="Click for File Check."' .
+			$file_check = '<a class="fa-solid fa-info icon-pointer" title="Click for File Check."' .
 				    'target="_blank" href="/suricata/suricata_filecheck.php?filehash=' . $file_hash .
 				    '&uuid=' . $suricata_uuid . '&filename=' . urlencode($file_name) . 
 				    '&filesize=' . urlencode($file_size) . '"></a>';
