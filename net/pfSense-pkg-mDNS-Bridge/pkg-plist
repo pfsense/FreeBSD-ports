@@ -1,0 +1,8 @@
+/etc/inc/priv/mdns-bridge.priv.inc
+pkg/mdns_bridge.xml
+pkg/mdns-bridge.inc
+%%DATADIR%%/info.xml
+www/mdns-bridge.php
+www/shortcuts/pkg_mdns-bridge.inc
+@dir /etc/inc/priv
+@dir /etc/inc
