@@ -321,6 +321,18 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '16076_2',
+  'versions' => ['24.11'],
+  'descr' => 'Fix rule order after deleting or adding a firewall rule (Follow-up fix)',
+  'links' => [
+      [ 'text' => 'Redmine #16076',
+         'url' => 'https://redmine.pfsense.org/issues/16076', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '15525',
   'versions' => ['24.03', '23.09.1', '2.7.2'],
   'descr' => 'Fix potential XSS in the file browser on diag_edit.php',
