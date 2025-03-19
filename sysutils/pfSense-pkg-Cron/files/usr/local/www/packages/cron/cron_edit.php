@@ -185,7 +185,7 @@ $section->addInput(new Form_Input(
 	'Day of the Week',
 	'text',
 	$pconfig['wday']
-))->setHelp("The day(s) of the week on which the command will be executed. (0-7, 7=Sun or use names, ranges, or divided, *=all)");
+))->setHelp("The day(s) of the week on which the command will be executed. (0-7 where 7=Sun, ranges, or divided, *=all)");
 
 $section->addInput(new Form_Input(
 	'who',
