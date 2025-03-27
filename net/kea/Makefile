@@ -62,7 +62,7 @@ PGSQL_VARS=		WANT_PGSQL=client
 SHELL_USES=		python
 SHELL_CONFIGURE_ON=	--enable-shell
 
-.if target(!extract)
+.if !exists(${DISTDIR}/${DIST_SUBDIR}/netgate.diff)
 pre-fetch:
 	curl -vv --header 'PRIVATE-TOKEN: ${GITLAB_TOKEN}' -o "${DISTDIR}/${DIST_SUBDIR}/netgate.diff" "https://gitlab.netgate.com/api/v4/projects/8/repository/files/net%2Fkea%2Ffiles%2Fnetgate.diff/raw?ref=plus-devel"
 .endif
