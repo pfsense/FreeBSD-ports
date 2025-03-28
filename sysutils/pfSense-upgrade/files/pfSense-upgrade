@@ -1482,6 +1482,11 @@ pkg_upgrade() {
 			fi
 		fi
 
+		# Upgrade the boot code before we reboot for the first time
+		LAST_EXEC_CMD="install-boot"
+		_exec "install-boot -y" "Upgrading boot code"
+		unset LAST_EXEC_CMD
+
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
@@ -1581,11 +1586,6 @@ pkg_upgrade() {
 			# Clean up .pkgsave files
 			find / -name \*.pkgsave -delete
 		fi
-
-		# Upgrade the boot code
-		LAST_EXEC_CMD="install-boot"
-		_exec "install-boot -y" "Upgrading boot code"
-		unset LAST_EXEC_CMD
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 3
 		next_stage=3
