@@ -1469,13 +1469,9 @@ pkg_upgrade() {
 			# sqlite database path in pkg.
 			# pkg(8) needs to be updated while the network is up to
 			# update/recreate the local database.
-			# In this specific case - from 23.09 and 23.09.1 - it
-			# is safe to update the pkg before booting the new kernel.
 			# See #15964.
 			#
-			if [ "$(_pkg query %v "${product}" | \
-			    /usr/bin/grep -c "23.09")" = "1" ] && \
-			    [ "$(compare_pkg_version pkg)" = "<" ]; then
+			if [ "$(compare_pkg_version pkg)" = "<" ]; then
 				pkg_unlock pkg
 				_exec "pkg-static upgrade${dont_update} pkg" \
 				    "Upgrading pkg" mute

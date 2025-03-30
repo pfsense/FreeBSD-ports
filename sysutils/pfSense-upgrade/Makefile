@@ -1,5 +1,5 @@
 PORTNAME=	pfSense-upgrade
-PORTVERSION=	1.2.25
+PORTVERSION=	1.2.26
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
