@@ -1,11 +1,10 @@
 PORTNAME=	variety
-PORTVERSION=	0.8.12
-PORTREVISION=	1
+PORTVERSION=	0.8.13
 CATEGORIES=	graphics
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Wallpaper changer
-WWW=		https://peterlevi.com/variety/
+WWW=		https://github.com/varietywalls/variety
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -32,7 +31,7 @@ USES=		desktop-file-utils gettext-tools gnome magick:run python \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	varietywalls
-USE_GNOME=	gdkpixbuf2 gtk30 intltool pygobject3:run
+USE_GNOME=	gdkpixbuf gtk30 intltool pygobject3:run
 USE_PYTHON=	autoplist distutils noflavors
 
 SHEBANG_FILES=	bin/variety data/scripts/*

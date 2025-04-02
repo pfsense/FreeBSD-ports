@@ -8,7 +8,7 @@ WWW=		https://projects.kde.org/projects/kde/workspace/kio-extras
 
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libImath.so:math/Imath \
-		libkdsoap-qt6.so:www/kdsoap@qt6 \
+		libkdsoap-qt6.so:www/kdsoap \
 		libKDSoapWSDiscoveryClient.so:www/kdsoap-ws-discovery-client\
 		libQCoro6Core.so:devel/qcoro@qt6
 

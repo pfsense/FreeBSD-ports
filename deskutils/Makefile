@@ -145,7 +145,6 @@
     SUBDIR += kfind
     SUBDIR += kmail
     SUBDIR += kmail-account-wizard
-    SUBDIR += knotes
     SUBDIR += kodaskanna
     SUBDIR += kongress
     SUBDIR += kontact
@@ -154,6 +153,8 @@
     SUBDIR += kruler
     SUBDIR += ktimetracker
     SUBDIR += kuserfeedback
+    SUBDIR += kweather
+    SUBDIR += kweathercore
     SUBDIR += latte-dock
     SUBDIR += lazycli
     SUBDIR += libcprime
@@ -226,6 +227,7 @@
     SUBDIR += puush
     SUBDIR += py-autokey
     SUBDIR += py-bugwarrior
+    SUBDIR += py-calendar_cli
     SUBDIR += py-i3-gnome-pomodoro
     SUBDIR += py-khal
     SUBDIR += py-khard
@@ -297,6 +299,7 @@
     SUBDIR += xchm
     SUBDIR += xdg-desktop-portal
     SUBDIR += xdg-desktop-portal-lxqt
+    SUBDIR += xdg-terminal-exec
     SUBDIR += xfce4-generic-slider
     SUBDIR += xfce4-notes-plugin
     SUBDIR += xfce4-notifyd

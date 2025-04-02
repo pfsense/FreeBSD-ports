@@ -1,5 +1,6 @@
 PORTNAME=	boringssl
-PORTVERSION=	0.0.0.0.2025.01.29.01
+PORTVERSION=	0.0.0.0.2025.03.27.01
+PORTREVISION=	1
 CATEGORIES=	security
 EXTRACT_ONLY=	${GH_ACCOUNT}-${PORTNAME}-${PORTVERSION}-${GH_TAGNAME}_GH0.tar.gz
 
@@ -10,16 +11,16 @@ WWW=		https://boringssl.googlesource.com/boringssl/
 LICENSE=	OpenSSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:insource cpe go:no_targets,1.23 localbase perl5
+USES=		cmake:insource cpe go:no_targets,1.24 localbase perl5
 
 CONFLICTS_INSTALL=	libressl libressl-devel openssl openssl111 \
-			openssl3[1234] openssl-quictls openssl31-quictls
+			openssl3[12345] openssl-quictls openssl31-quictls
 
 CPE_VENDOR=	google
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-GH_TAGNAME=	2b19cd3
+GH_TAGNAME=	a999361
 CMAKE_ARGS+=	-DBUILD_SHARED_LIBS=1
 
 CFLAGS_i386=	-msse2
@@ -35,16 +36,10 @@ MAKE_ENV+=	GOFLAGS=-mod=readonly \
 MASTER_SITES+=	https://proxy.golang.org/:gomods
 DISTFILES+=	filippo.io/edwards25519/@v/v1.1.0.zip:gomods \
 		filippo.io/edwards25519/@v/v1.1.0.mod:gomods \
-		filippo.io/mlkem768/@v/v0.0.0-20241021091500-d85de16e2039.zip:gomods \
-		filippo.io/mlkem768/@v/v0.0.0-20241021091500-d85de16e2039.mod:gomods \
-		golang.org/x/crypto/@v/v0.31.0.zip:gomods \
-		golang.org/x/crypto/@v/v0.31.0.mod:gomods \
-		golang.org/x/net/@v/v0.27.0.zip:gomods \
-		golang.org/x/net/@v/v0.27.0.mod:gomods \
-		golang.org/x/sys/@v/v0.28.0.zip:gomods \
-		golang.org/x/sys/@v/v0.28.0.mod:gomods \
-		golang.org/x/term/@v/v0.27.0.zip:gomods \
-		golang.org/x/term/@v/v0.27.0.mod:gomods
+		golang.org/x/crypto/@v/v0.33.0.zip:gomods \
+		golang.org/x/crypto/@v/v0.33.0.mod:gomods \
+		golang.org/x/sys/@v/v0.30.0.zip:gomods \
+		golang.org/x/sys/@v/v0.30.0.mod:gomods
 .endif
 
 post-install:

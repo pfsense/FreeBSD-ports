@@ -1,7 +1,6 @@
 PORTNAME=	spotifyd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.5
-PORTREVISION=	14
+DISTVERSION=	0.4.1
 CATEGORIES=	audio
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -9,11 +8,11 @@ COMMENT=	Spotify daemon
 WWW=		https://github.com/Spotifyd/spotifyd
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/cargo-crates/ansi_term-0.12.1/LICENCE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libogg.so:audio/libogg
 
-USES=		cargo ssl:build
+USES=		cargo ssl:build llvm
 USE_GITHUB=	yes
 GH_ACCOUNT=	Spotifyd
 USE_RC_SUBR=	spotifyd

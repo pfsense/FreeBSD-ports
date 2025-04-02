@@ -11,7 +11,6 @@ WWW=		https://sourceforge.net/projects/btcheck/
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 CONFLICTS_INSTALL=	libbt # bin/btcheck
 

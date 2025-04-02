@@ -1,5 +1,5 @@
 PORTNAME=	curl
-DISTVERSION=	6.2.0
+DISTVERSION=	6.2.1
 CATEGORIES=	ftp
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -17,15 +17,14 @@ TEST_DEPENDS=	R-cran-httpuv>=1.4.4:www/R-cran-httpuv \
 		R-cran-later>0:devel/R-cran-later \
 		R-cran-rmarkdown>0:textproc/R-cran-rmarkdown \
 		R-cran-spelling>0:textproc/R-cran-spelling \
-		R-cran-testthat>=1.0.0:devel/R-cran-testthat
+		R-cran-testthat>=1.0.0:devel/R-cran-testthat \
+		R-cran-webutils>0:www/R-cran-webutils
 
 USES=		cran:auto-plist,compiles
 
-TESTING_UNSAFE=	yes
-
-pre-test:
-# R-cran-webutils package does not exist yet
-	@${LOCALBASE}/bin/Rscript -e 'install.packages("webutils", \
-		repos = "https://cloud.r-project.org")'
+do-test:
+	@${FIND} ${WRKSRC} \( -name '*.o' -o -name '*.so' \) -delete
+	@cd ${WRKDIR} ; ${SETENV} ${MAKE_ENV} _R_CHECK_FORCE_SUGGESTS_=FALSE \
+	${LOCALBASE}/bin/R CMD check --no-manual ${PORTNAME}
 
 .include <bsd.port.mk>

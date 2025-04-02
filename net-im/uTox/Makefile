@@ -1,7 +1,7 @@
 PORTNAME=	uTox
 DISTVERSION=	0.17.2
 DISTVERSIONSUFFIX=	-full
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net-im net-p2p
 MASTER_SITES=	https://github.com/uTox/uTox/releases/download/v${DISTVERSION}/
 
@@ -11,6 +11,9 @@ WWW=		https://utox.io/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Unmaintained upstream, consider using net-im/qTox
+EXPIRATION_DATE=2025-04-30
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat

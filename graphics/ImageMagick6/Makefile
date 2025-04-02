@@ -1,6 +1,5 @@
 PORTNAME=	ImageMagick
-DISTVERSION=	6.9.12-77
-PORTREVISION=	10
+DISTVERSION=	6.9.13-23
 PORTEPOCH=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://ftp.acc.umu.se/mirror/imagemagick.org/ftp/releases/ \
@@ -49,7 +48,7 @@ USE_GNOME=	libxml2
 SAMPLE_FILES=	coder.xml colors.xml delegates.xml log.xml magic.xml mime.xml \
 		policy.xml quantization-table.xml thresholds.xml type-apple.xml \
 		type-dejavu.xml type-ghostscript.xml type-urw-base35.xml \
-		type-windows.xml type.xml
+		type-urw-base35-type1.xml type-windows.xml type.xml
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
@@ -163,7 +162,7 @@ RAW_IMPLIES=		LCMS2
 
 SVG_DESC=		SVG vector image format support (via librsvg, implies the x11 option)
 SVG_CONFIGURE_WITH=	rsvg
-SVG_USE=		gnome=cairo,gdkpixbuf2,librsvg2
+SVG_USE=		gnome=cairo,gdkpixbuf,librsvg2
 
 TESTS_TEST_DEPENDS=	gsfonts>=0:print/gsfonts
 

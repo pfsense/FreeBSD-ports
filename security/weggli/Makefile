@@ -1,7 +1,7 @@
 PORTNAME=	weggli
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.4
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	security
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://github.com/googleprojectzero/weggli
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Upstream inactive as last release was in 2022
+EXPIRATION_DATE=2025-04-27
 
 BROKEN_amd64=	link fails: error: version script assignment of 'global' to symbol '__muloti4' failed: symbol not defined
 

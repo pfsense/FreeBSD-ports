@@ -35,11 +35,13 @@ include/glaze/compare/approx.hpp
 include/glaze/compare/compare.hpp
 include/glaze/concepts/container_concepts.hpp
 include/glaze/containers/flat_map.hpp
+include/glaze/core/array_apply.hpp
 include/glaze/core/common.hpp
 include/glaze/core/context.hpp
 include/glaze/core/convert_struct.hpp
 include/glaze/core/custom.hpp
 include/glaze/core/feature_test.hpp
+include/glaze/core/manage.hpp
 include/glaze/core/meta.hpp
 include/glaze/core/opts.hpp
 include/glaze/core/ptr.hpp
@@ -81,7 +83,6 @@ include/glaze/json/json_concepts.hpp
 include/glaze/json/json_format.hpp
 include/glaze/json/json_ptr.hpp
 include/glaze/json/json_t.hpp
-include/glaze/json/manage.hpp
 include/glaze/json/max_write_precision.hpp
 include/glaze/json/minify.hpp
 include/glaze/json/ndjson.hpp
@@ -103,7 +104,9 @@ include/glaze/stencil/stencil.hpp
 include/glaze/stencil/stencilcount.hpp
 include/glaze/thread/async.hpp
 include/glaze/thread/async_string.hpp
+include/glaze/thread/async_vector.hpp
 include/glaze/thread/atomic.hpp
+include/glaze/thread/guard.hpp
 include/glaze/thread/shared_async_map.hpp
 include/glaze/thread/shared_async_vector.hpp
 include/glaze/thread/threadpool.hpp
@@ -138,6 +141,7 @@ include/glaze/util/type_traits.hpp
 include/glaze/util/utility.hpp
 include/glaze/util/validate.hpp
 include/glaze/util/variant.hpp
+include/glaze/version.hpp
 %%DATADIR%%/glazeConfig.cmake
 %%DATADIR%%/glazeConfigVersion.cmake
 %%DATADIR%%/glazeTargets.cmake

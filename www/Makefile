@@ -21,6 +21,7 @@
     SUBDIR += R-cran-shiny
     SUBDIR += R-cran-shinyjs
     SUBDIR += R-cran-webshot
+    SUBDIR += R-cran-webutils
     SUBDIR += UniversalFeedCreator
     SUBDIR += adguardhome
     SUBDIR += adjuster
@@ -100,7 +101,6 @@
     SUBDIR += cgiwrap
     SUBDIR += checkbot
     SUBDIR += chisel
-    SUBDIR += choqok
     SUBDIR += chpasswd
     SUBDIR += chrome-gnome-shell
     SUBDIR += chromium
@@ -115,10 +115,10 @@
     SUBDIR += closure-compiler
     SUBDIR += cntlm
     SUBDIR += cobalt
+    SUBDIR += codeberg-pages-server
     SUBDIR += codeigniter
     SUBDIR += colly
     SUBDIR += coppermine
-    SUBDIR += cplanet
     SUBDIR += cpp-httplib
     SUBDIR += cpr
     SUBDIR += crawl
@@ -150,6 +150,7 @@
     SUBDIR += domoticz-devel
     SUBDIR += dooble
     SUBDIR += dot-http
+    SUBDIR += dothttp
     SUBDIR += dpp
     SUBDIR += drill
     SUBDIR += drupal10
@@ -217,9 +218,9 @@
     SUBDIR += gitlab
     SUBDIR += gitlab-pages
     SUBDIR += gitlab-workhorse
+    SUBDIR += glance
     SUBDIR += glassfish
     SUBDIR += glassfish4
-    SUBDIR += glewlwyd
     SUBDIR += glpi
     SUBDIR += gnome-user-share
     SUBDIR += go-www
@@ -1043,12 +1044,14 @@
     SUBDIR += p5-Mojo-IOLoop-Delay
     SUBDIR += p5-Mojo-IOLoop-ForkCall
     SUBDIR += p5-Mojo-Server-FastCGI
+    SUBDIR += p5-Mojo-UserAgent-Mockable
     SUBDIR += p5-Mojo-Weixin
     SUBDIR += p5-MojoMojo
     SUBDIR += p5-MojoX-Log-Dispatch-Simple
     SUBDIR += p5-MojoX-Renderer-Xslate
     SUBDIR += p5-Mojolicious
     SUBDIR += p5-Mojolicious-Plugin-Authentication
+    SUBDIR += p5-Mojolicious-Plugin-BasicAuthPlus
     SUBDIR += p5-Mojolicious-Plugin-Database
     SUBDIR += p5-Mojolicious-Plugin-HamlRenderer
     SUBDIR += p5-Mojolicious-Plugin-Mongodb
@@ -1437,6 +1440,7 @@
     SUBDIR += phprecipebook
     SUBDIR += phpsysinfo
     SUBDIR += phpvirtualbox
+    SUBDIR += phpvirtualbox-70
     SUBDIR += phpvirtualbox-legacy
     SUBDIR += piwigo
     SUBDIR += plasma6-plasma-browser-integration
@@ -1546,6 +1550,7 @@
     SUBDIR += py-dj51-djangorestframework
     SUBDIR += py-dj51-drf-spectacular
     SUBDIR += py-dj51-drf-spectacular-sidecar
+    SUBDIR += py-dj51-social-auth-app-django
     SUBDIR += py-dj51-strawberry-graphql-django
     SUBDIR += py-django-admin-rangefilter
     SUBDIR += py-django-advanced-filters
@@ -1594,7 +1599,6 @@
     SUBDIR += py-django-hashid-field
     SUBDIR += py-django-haystack
     SUBDIR += py-django-hierarkey
-    SUBDIR += py-django-hijack
     SUBDIR += py-django-htmlmin
     SUBDIR += py-django-htmx
     SUBDIR += py-django-i18nfield
@@ -1715,7 +1719,6 @@
     SUBDIR += py-flask-restful
     SUBDIR += py-flask-restx
     SUBDIR += py-flask-script
-    SUBDIR += py-flask-security
     SUBDIR += py-flask-session
     SUBDIR += py-flask-simpleldap
     SUBDIR += py-flask-smorest
@@ -1744,6 +1747,7 @@
     SUBDIR += py-google-cloud-appengine-logging
     SUBDIR += py-google-cloud-audit-log
     SUBDIR += py-google-cloud-bigquery
+    SUBDIR += py-google-cloud-bigquery-storage
     SUBDIR += py-google-cloud-bigtable
     SUBDIR += py-google-cloud-compute
     SUBDIR += py-google-cloud-core
@@ -1786,17 +1790,16 @@
     SUBDIR += py-httpx
     SUBDIR += py-httpx-oauth
     SUBDIR += py-httpx-socks
+    SUBDIR += py-httpx-sse
     SUBDIR += py-httpx-ws
     SUBDIR += py-httpx_gssapi
     SUBDIR += py-hypercorn
     SUBDIR += py-hyperframe
     SUBDIR += py-hyperlink
     SUBDIR += py-inlinestyler
-    SUBDIR += py-instabot
     SUBDIR += py-internetarchive
     SUBDIR += py-jh2
     SUBDIR += py-jonpy
-    SUBDIR += py-jsonfield
     SUBDIR += py-kiss-headers
     SUBDIR += py-laces
     SUBDIR += py-legacy-cgi
@@ -1971,7 +1974,6 @@
     SUBDIR += radicale
     SUBDIR += rearx
     SUBDIR += reddsaver
-    SUBDIR += redmine50
     SUBDIR += redmine51
     SUBDIR += redmine60
     SUBDIR += rejik
@@ -2053,6 +2055,7 @@
     SUBDIR += rubygem-coverband
     SUBDIR += rubygem-crass
     SUBDIR += rubygem-cssbundling-rails
+    SUBDIR += rubygem-cssbundling-rails-gitlab
     SUBDIR += rubygem-cssbundling-rails-rails70
     SUBDIR += rubygem-cssbundling-rails-rails71
     SUBDIR += rubygem-cssbundling-rails-rails72
@@ -2111,7 +2114,6 @@
     SUBDIR += rubygem-fuzzyurl
     SUBDIR += rubygem-geminabox
     SUBDIR += rubygem-gitlab-flowdock-git-hook
-    SUBDIR += rubygem-gitlab-gollum-lib
     SUBDIR += rubygem-gitlab-gollum-rugged_adapter
     SUBDIR += rubygem-gitlab-turbolinks-classic
     SUBDIR += rubygem-goldfinger
@@ -2438,7 +2440,6 @@
     SUBDIR += snarf
     SUBDIR += so
     SUBDIR += sogo
-    SUBDIR += sogo-activesync
     SUBDIR += sogo2
     SUBDIR += sogo2-activesync
     SUBDIR += spawn-fcgi
@@ -2632,8 +2633,8 @@
     SUBDIR += yaws
     SUBDIR += you-get
     SUBDIR += yourls
+    SUBDIR += youtube
     SUBDIR += yt-dlp
-    SUBDIR += ytdl
     SUBDIR += yuicompressor
     SUBDIR += zenphoto
     SUBDIR += zerowait-httpd

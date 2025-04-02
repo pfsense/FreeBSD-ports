@@ -1,6 +1,6 @@
 PORTNAME=	integration
 PORTVERSION=	0.1.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	https://ftp.defora.org/pub/DeforaOS/Apps/Desktop/src/Integration/
 PKGNAMEPREFIX=	deforaos-
@@ -35,7 +35,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/surfer:www/deforaos-surfer \
 
 USES=		desktop-file-utils gnome pkgconfig xorg
 
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_LDCONFIG=	yes
 USE_XORG=	x11
 

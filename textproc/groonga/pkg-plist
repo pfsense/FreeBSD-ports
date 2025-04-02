@@ -9,6 +9,7 @@ include/groonga/groonga.h
 include/groonga/groonga.hpp
 include/groonga/groonga/accessor.h
 include/groonga/groonga/aggregator.h
+include/groonga/groonga/applier.h
 include/groonga/groonga/array.h
 include/groonga/groonga/arrow.h
 include/groonga/groonga/arrow.hpp
@@ -22,6 +23,7 @@ include/groonga/groonga/command_arguments.hpp
 include/groonga/groonga/config.h
 include/groonga/groonga/dat.h
 include/groonga/groonga/db.h
+include/groonga/groonga/distance.h
 include/groonga/groonga/dump.h
 include/groonga/groonga/error.h
 include/groonga/groonga/expr.h
@@ -29,11 +31,13 @@ include/groonga/groonga/file_reader.h
 include/groonga/groonga/float.h
 include/groonga/groonga/geo.h
 include/groonga/groonga/groonga.h
+include/groonga/groonga/h3.h
 include/groonga/groonga/hash.h
 include/groonga/groonga/highlighter.h
 include/groonga/groonga/id.h
 include/groonga/groonga/ii.h
 include/groonga/groonga/index_column.h
+include/groonga/groonga/language_model.h
 include/groonga/groonga/memory.h
 include/groonga/groonga/msgpack.h
 include/groonga/groonga/nfkc.h
@@ -249,7 +253,6 @@ libdata/pkgconfig/groonga.pc
 %%DATADIR%%/html/admin/assets/jquery-ui-1.12.1/jquery-ui.structure.css
 %%DATADIR%%/html/admin/assets/jquery-ui-1.12.1/jquery-ui.theme.css
 %%DATADIR%%/html/admin/assets/jquery-ui-1.12.1/package.json
-%%DATADIR%%/html/admin/assets/loading.gif
 %%DATADIR%%/html/admin/favicon.ico
 %%DATADIR%%/html/admin/favicon.png
 %%DATADIR%%/html/admin/favicon.svg

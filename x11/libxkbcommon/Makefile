@@ -1,8 +1,7 @@
 PORTNAME=	libxkbcommon
-PORTVERSION=	1.7.0
+PORTVERSION=	1.8.1
 PORTREVISION=	1
 CATEGORIES=	x11
-MASTER_SITES=	https://xkbcommon.org/download/
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Keymap handling library for toolkits and window systems
@@ -14,8 +13,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	xkeyboard-config>0:x11/xkeyboard-config
 
 USES=		bison compiler:c11 cpe gnome meson pkgconfig python:test \
-		shebangfix tar:xz
+		shebangfix
 USE_GNOME=	libxml2
+USE_GITHUB=	yes
+GH_ACCOUNT=	xkbcommon
+GH_TAGNAME=	${GH_ACCOUNT}-${PORTVERSION}
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Denable-docs=false \
 		-Dx-locale-root="${PREFIX}/lib/X11/locale" \
@@ -23,6 +25,8 @@ MESON_ARGS=	-Denable-docs=false \
 CPE_VENDOR=	xkbcommon
 SHEBANG_FILES=	test/xkeyboard-config-test.py.in \
 		test/*.py
+
+HAS_SYMBOL_VERSION=	${PREFIX}/lib/libxkbregistry.so.0.8.1
 
 OPTIONS_DEFINE=	EVDEV WAYLAND X11
 OPTIONS_DEFAULT=EVDEV WAYLAND X11

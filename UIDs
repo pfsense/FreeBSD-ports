@@ -312,8 +312,8 @@ readarr:*:362:362::0:0:Readarr Daemon:/nonexistent:/usr/sbin/nologin
 victoria-logs:*:363:363::0:0:VictoriaLogs Daemon:/nonexistent:/usr/sbin/nologin
 elog:*:364:364::0:0:Elog server:/nonexistent:/usr/sbin/nologin
 gotify:*:365:365::0:0:Gotify User:/var/db/gotify:/usr/sbin/nologin
-# free: 366
-# free: 367
+opengist:*:366:366::0:0:OpenGist User:/var/db/opengist:/usr/sbin/nologin
+velbustcpd:*:367:367::0:0:Velbustcp Deamon:/nonexistent:/usr/sbin/nologin
 # free: 368
 # free: 369
 _wsdd:*:370:370::0:0:Web Service Discovery Daemon:/nonexistent:/usr/sbin/nologin
@@ -323,9 +323,9 @@ _wsdd:*:370:370::0:0:Web Service Discovery Daemon:/nonexistent:/usr/sbin/nologin
 # free: 374
 # free: 375
 # free: 376
-# free: 377
-# free: 378
-# free: 379
+hostd:*:377:377::0:0:hostd Daemon:/nonexistent:/usr/sbin/nologin
+walletd:*:378:378::0:0:walletd Daemon:/nonexistent:/usr/sbin/nologin
+renterd:*:379:379::0:0:renterd Daemon:/nonexistent:/usr/sbin/nologin
 spoofdpi:*:380:380::0:0:SpoofDPI Daemon:/nonexistent:/usr/sbin/nologin
 hydroxide:*:381:381::0:0:Hydroxide Daemon:/var/db/hydroxide:/usr/sbin/nologin
 # free: 382
@@ -446,7 +446,7 @@ openbao:*:482:482:daemon:0:0:OpenBao Daemon:/nonexistent:/usr/sbin/nologin
 # free: 497
 rustypaste:*:498:498::0:0:Minimal file upload/pastebin service:/nonexistent:/usr/sbin/nologin
 # free: 499
-# free: 500
+qw:*:500:500::0:0:QuakeWorld Server:/nonexistent:/usr/sbin/nologin
 qwfwd:*:501:501::0:0:QuakeWorld Proxy:/nonexistent:/usr/sbin/nologin
 # free: 502
 # free: 503
@@ -753,7 +753,7 @@ clickhouse:*:800:800::0:0:ClickHouse Daemon:/var/db/clickhouse:/usr/sbin/nologin
 # free: 803
 # free: 804
 # free: 805
-# free: 806
+act_runner:*:806:806::0:0:Act Runner User:/var/db/act_runner:/usr/sbin/nologin
 bosun:*:807:807::0:0:Bosun Daemon:/nonexistent:/usr/sbin/nologin
 clixon:*:808:808::0:0:Clixon Daemon:/nonexistent:/usr/sbin/nologin
 # free: 809

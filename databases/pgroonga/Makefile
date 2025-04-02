@@ -1,8 +1,12 @@
 PORTNAME=	pgroonga
-DISTVERSION=	3.0.9
+DISTVERSION=	4.0.1
 CATEGORIES=	databases textproc
 MASTER_SITES=	http://packages.groonga.org/source/pgroonga/
 
+# For other MAINTAINERs, please be mindful of the sequences
+# of release of Groonga and PGroonga. Althought the upstream
+# mentions that PGroonga is compatible with other versions of
+# Groonga, it is recommended to follow the sequence of release
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Open-source fulltext search engine for PostGRESQL
 WWW=		https://pgroonga.github.io/

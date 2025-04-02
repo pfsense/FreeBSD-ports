@@ -1,9 +1,9 @@
 PORTNAME=	packmol
 DISTVERSIONPREFIX=	v
-DISTVERSION=	20.15.3
+DISTVERSION=	21.0.1
 CATEGORIES=	science
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Creates Initial Configurations for Molecular Dynamics Simulations
 WWW=		https://m3g.github.io/packmol/ \
 		https://github.com/m3g/packmol/

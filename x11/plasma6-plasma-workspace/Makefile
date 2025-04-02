@@ -21,8 +21,11 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		libxcb-util.so:x11/xcb-util \
 		libxkbcommon.so:x11/libxkbcommon \
 		libQCoro6Core.so:devel/qcoro@qt6
-
-RUN_DEPENDS=	${LOCALBASE}/bin/genv:sysutils/coreutils
+RUN_DEPENDS=	kio-extras>=24.12.3:devel/kio-extras \
+		kio-fuse>=5.1.0_1:filesystems/kio-fuse \
+		mkfontscale:x11-fonts/mkfontscale \
+		oxygen-icons>=0:x11-themes/oxygen-icons \
+		xset:x11/xset
 
 USES=		cmake desktop-file-utils gettext gl kde:6 pkgconfig python \
 		qt:6 shebangfix tar:xz xorg
@@ -46,6 +49,7 @@ SHEBANG_FILES=	components/calendar/kconf_update/migrate-calendar-to-plugin-id.py
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-		${PATCH_WRKSRC}/startkde/startplasma.cpp
+		${PATCH_WRKSRC}/startkde/startplasma.cpp \
+		${PATCH_WRKSRC}/login-sessions/plasmawayland.desktop.cmake
 
 .include <bsd.port.mk>

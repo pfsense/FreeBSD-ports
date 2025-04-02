@@ -1,6 +1,7 @@
 PORTNAME=	sdl3
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	3.2.4
+DISTVERSION=	3.2.8
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -11,11 +12,11 @@ WWW=		https://www.libsdl.org/ \
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake iconv pkgconfig
+USES=		cmake iconv localbase pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	libsdl-org
 GH_PROJECT=	SDL
-CMAKE_OFF=	SDL_RPATH
+CMAKE_OFF=	SDL_RPATH SDL_DEPS_SHARED
 CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_Git
 USE_LDCONFIG=	yes
 
@@ -35,6 +36,7 @@ OPTIONS_DEFINE_powerpc=	ALTIVEC
 OPTIONS_DEFINE_powerpc64=	ALTIVEC
 OPTIONS_DEFAULT_powerpc=	ALTIVEC
 OPTIONS_DEFAULT_powerpc64=	ALTIVEC
+OPTIONS_SUB=		yes
 
 AUDIO_DESC=		Audio drivers
 VIDEO_DESC=		Video drivers
@@ -136,10 +138,6 @@ CFLAGS+=	-B${LOCALBASE}/bin -no-integrated-as
 .if !${PORT_OPTIONS:MX11} && !${PORT_OPTIONS:MWAYLAND}
 CMAKE_ON+=	SDL_UNIX_CONSOLE_BUILD
 .endif
-
-post-patch:
-	@${REINPLACE_CMD} -e '/dep_option.*Dynamically load/ s|ON|OFF|' \
-		${WRKSRC}/CMakeLists.txt
 
 post-patch-FCITX-off:
 	@${REINPLACE_CMD} -e 's|HAVE_FCITX TRUE|HAVE_FCITX FALSE|g' \

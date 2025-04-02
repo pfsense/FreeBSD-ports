@@ -1,12 +1,13 @@
 PORTNAME=	zam-plugins
 DISTVERSION=	4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Collection of LADSPA/LV2/VST/JACK audio plugins
-WWW=		https://www.zamaudio.com/?p=976
+WWW=		https://www.zamaudio.com/?p=976 \
+		https://github.com/zamaudio/zam-plugins
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

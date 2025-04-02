@@ -1,16 +1,15 @@
 PORTNAME=	gtk
-DISTVERSION=	3.24.43 # sync with x11-themes: adwaita-icon-theme, gnome-themes-standard and mate-themes
+DISTVERSION=	3.24.48 # sync with x11-themes: adwaita-icon-theme, gnome-themes-standard and mate-themes
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	GNOME/sources/gtk+/${DISTVERSION:R}
+MASTER_SITES=	GNOME/sources/gtk/${DISTVERSION:R}
 PKGNAMESUFFIX=	3
-DISTNAME=	gtk+-${PORTVERSION}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	desktop@FreeBSD.org
-COMMENT=	Gimp Toolkit for X11 GUI (current stable version)
+COMMENT=	Graphical UI toolkit (GTK3 library)
 WWW=		https://www.gtk.org/
 
-LICENSE=	LGPL20
+LICENSE=	LGPL21+
 
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -22,7 +21,7 @@ RUN_DEPENDS=	adwaita-icon-theme>=0:x11-themes/adwaita-icon-theme \
 USES=		compiler:c11 cpe gettext gnome localbase:ldflags meson ninja \
 		pathfix perl5 pkgconfig python shebangfix tar:xz
 CPE_VENDOR=	gnome
-USE_GNOME=	atk cairo gdkpixbuf2 gtk-update-icon-cache pango \
+USE_GNOME=	atk cairo gdkpixbuf gtk-update-icon-cache pango \
 		introspection:build librsvg2:run
 GLIB_SCHEMAS=	org.gtk.Demo.gschema.xml \
 		org.gtk.Settings.ColorChooser.gschema.xml \
@@ -37,7 +36,7 @@ MESON_ARGS=	-Dtests=false
 
 PORTSCOUT=	limit:1,even
 
-LIBVERSION=	0.2411.32
+LIBVERSION=	0.2416.32
 PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
 OPTIONS_DEFINE=		ATK_BRIDGE COLORD CUPS DEBUG DOCS

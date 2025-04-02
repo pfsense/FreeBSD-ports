@@ -1,6 +1,6 @@
 PORTNAME=	sylpheed
 PORTVERSION=	3.7.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	mail
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/ \
 		LOCAL/ehaupt
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		cpe desktop-file-utils gettext gmake gnome iconv libtool pkgconfig \
 		tar:bzip2
-USE_GNOME=	gtk20 cairo gdkpixbuf2
+USE_GNOME=	gtk20 cairo gdkpixbuf
 USE_LDCONFIG=	yes
 CPE_VENDOR=	sylpheed_project
 

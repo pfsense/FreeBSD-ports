@@ -268,6 +268,7 @@
     SUBDIR += noattach
     SUBDIR += nocc
     SUBDIR += normalizemime
+    SUBDIR += notimail
     SUBDIR += notmuch
     SUBDIR += notmuch-emacs
     SUBDIR += notmuch-mutt
@@ -735,6 +736,7 @@
     SUBDIR += textmail
     SUBDIR += thunderbird
     SUBDIR += thunderbird-dictionaries
+    SUBDIR += thunderbird-esr
     SUBDIR += tlb
     SUBDIR += tmpmail
     SUBDIR += tpop3d

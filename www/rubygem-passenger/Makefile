@@ -1,7 +1,8 @@
 PORTNAME=	passenger
-PORTVERSION=	6.0.25
+PORTVERSION=	6.0.26
 CATEGORIES=	www rubygems
-MASTER_SITES=	RG
+MASTER_SITES=	RG \
+		https://github.com/phusion/passenger/releases/download/release-${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Modules for running Ruby on Rails and Rack applications
@@ -10,8 +11,6 @@ WWW=		https://www.phusionpassenger.com/ \
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_15=	no member named 'sumOfWeights' in 'DiscExpMovingAverageWithStddev<alpha, alphaTimeUnit, maxAge>' # https://github.com/phusion/passenger/issues/2580
 
 BUILD_DEPENDS=	rubygem-rack>=1.6.13,3:www/rubygem-rack \
 		rubygem-rake>=12.3.3:devel/rubygem-rake \
@@ -61,7 +60,6 @@ SYMLINK_SUB_LIST_OFF=	PASSENGER_INSTALL_DIR="${PREFIX}/${GEM_LIB_DIR}"
 
 post-patch:
 # Clean up bundled libraries
-	@${REINPLACE_CMD} 's|"src/cxx_supportlib/vendor-copy/[lu][^"]*".freeze, ||g' ${WRKSRC}/passenger.gemspec
 	@${RM} -r ${WRKSRC}/src/cxx_supportlib/vendor-copy/libuv/
 	@${RM} -r ${WRKSRC}/src/cxx_supportlib/vendor-copy/utf8*
 

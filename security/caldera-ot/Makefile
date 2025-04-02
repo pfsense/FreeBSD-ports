@@ -1,5 +1,6 @@
 PORTNAME=	caldera-ot
-DISTVERSION=	5.0.0
+DISTVERSION=	5.2.0
+PORTREVISION=	1
 CATEGORIES=	security python
 
 MAINTAINER=	acm@FreeBSD.org
@@ -24,7 +25,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>0:www/py-aiohttp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyserial>0:comms/py-pyserial@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pnio-dcp>0:devel/py-pnio-dcp@${PY_FLAVOR} \
-		caldera>=4.2.0:security/caldera
+		caldera>=5.2.0:security/caldera
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mitre

@@ -1,12 +1,13 @@
 PORTNAME=	ollama
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.6
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Run Llama 2, Mistral, and other large language models
-WWW=		https://ollama.com/
+WWW=		https://ollama.com \
+		https://github.com/ollama/ollama
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

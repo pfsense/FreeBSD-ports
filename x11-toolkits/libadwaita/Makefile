@@ -1,5 +1,5 @@
 PORTNAME=	libadwaita
-PORTVERSION=	1.6.4
+PORTVERSION=	1.7.0
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libappstream.so:devel/appstream \
 		libgraphene-1.0.so:graphics/graphene
 
 USES=		gettext gnome meson ninja pkgconfig tar:xz vala:build
-USE_GNOME=	cairo gdkpixbuf2 gtk40 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk40 introspection:build
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

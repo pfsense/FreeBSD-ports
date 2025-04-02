@@ -1,20 +1,20 @@
---- chrome/browser/browser_features.h.orig	2024-12-22 12:24:29 UTC
+--- chrome/browser/browser_features.h.orig	2025-03-18 16:46:04 UTC
 +++ chrome/browser/browser_features.h
-@@ -38,7 +38,7 @@ BASE_DECLARE_FEATURE(kCertificateTransparencyAskBefore
- BASE_DECLARE_FEATURE(kCertVerificationNetworkTime);
- BASE_DECLARE_FEATURE(kClosedTabCache);
+@@ -39,7 +39,7 @@ BASE_DECLARE_FEATURE(kCertVerificationNetworkTime);
+ 
+ BASE_DECLARE_FEATURE(kContentUsesBrowserThemeColorMode);
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  BASE_DECLARE_FEATURE(kDbusSecretPortal);
+ BASE_DECLARE_FEATURE(kUseFreedesktopSecretKeyProvider);
  #endif
- 
-@@ -117,7 +117,7 @@ BASE_DECLARE_FEATURE(kRestartNetworkServiceUnsandboxed
+@@ -101,7 +101,7 @@ BASE_DECLARE_FEATURE(kRestartNetworkServiceUnsandboxed
  BASE_DECLARE_FEATURE(kSandboxExternalProtocolBlocked);
  BASE_DECLARE_FEATURE(kSandboxExternalProtocolBlockedWarning);
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  BASE_DECLARE_FEATURE(kSecretPortalKeyProviderUseForEncryption);
+ BASE_DECLARE_FEATURE(kUseFreedesktopSecretKeyProviderForEncryption);
  #endif
- 

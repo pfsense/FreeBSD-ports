@@ -1,6 +1,7 @@
 PORTNAME=	restic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17.3
+DISTVERSION=	0.18.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -10,7 +11,7 @@ WWW=		https://restic.net/
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.23,modules
 GO_MODULE=	github.com/restic/restic
 GO_TARGET=	./cmd/${PORTNAME}
 

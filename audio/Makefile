@@ -266,6 +266,7 @@
     SUBDIR += gtultra
     SUBDIR += guidoar
     SUBDIR += guidolib
+    SUBDIR += guitarix-lv2
     SUBDIR += gula-plugins-lv2
     SUBDIR += guspat
     SUBDIR += gvolwheel
@@ -517,6 +518,7 @@
     SUBDIR += ncpamixer
     SUBDIR += ncspot
     SUBDIR += netease-music-tui
+    SUBDIR += neuralrack-lv2
     SUBDIR += noise-repellent-lv2
     SUBDIR += noise-suppression-for-voice-lv2
     SUBDIR += normalize
@@ -525,6 +527,7 @@
     SUBDIR += nyquist
     SUBDIR += oaml
     SUBDIR += ocp
+    SUBDIR += odin2-synthesizer
     SUBDIR += ogg2mp3
     SUBDIR += openal-soft
     SUBDIR += opencore-amr
@@ -683,6 +686,7 @@
     SUBDIR += qtractor
     SUBDIR += quimup
     SUBDIR += qxgedit
+    SUBDIR += ratatouille-lv2
     SUBDIR += raul
     SUBDIR += rawrec
     SUBDIR += re
@@ -749,6 +753,7 @@
     SUBDIR += soundtouch
     SUBDIR += soundtracker
     SUBDIR += sox
+    SUBDIR += sox-noise
     SUBDIR += spc2it
     SUBDIR += spectacle-lv2
     SUBDIR += spectmorph
@@ -870,6 +875,7 @@
     SUBDIR += xmmix
     SUBDIR += xmp
     SUBDIR += xoscope
+    SUBDIR += xsynth
     SUBDIR += xsynth-dssi
     SUBDIR += xuidesigner
     SUBDIR += xwave

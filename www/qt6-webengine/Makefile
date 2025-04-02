@@ -37,10 +37,11 @@ USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 CMAKE_ON=	QT_FEATURE_webengine_system_ffmpeg \
 		QT_FEATURE_webengine_proprietary_codecs
 
+USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
+
 .if defined(BUILD_QTPDF)
 CMAKE_ON+=	QT_FEATURE_qtpdf_build
-CMAKE_OFF+=	QT_FEATURE_qtwebengine_build \
-		QT_GENERATE_SBOM
+CMAKE_OFF+=	QT_FEATURE_qtwebengine_build
 
 SYS_LIBS=	freetype
 .else

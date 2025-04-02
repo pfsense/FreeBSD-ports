@@ -63,7 +63,7 @@ GCC_DEFAULT?=		13
 GHOSTSCRIPT_DEFAULT?=	10
 # Possible values: mesa-libs, mesa-devel
 GL_DEFAULT?=		mesa-libs
-# Possible values: 1.20, 1.21, 1.22, 1.23, 1.24-devel
+# Possible values: 1.20, 1.21, 1.22, 1.23, 1.24, 1.25-devel
 GO_DEFAULT?=		1.21
 # Possible values: 1.8, 2.2, 3.0
 GUILE_DEFAULT?=		2.2
@@ -73,7 +73,7 @@ GUILE_DEFAULT?=		2.2
 # Format:	     version[-flavor]
 # Examples:	     6-nox11, 7
 IMAGEMAGICK_DEFAULT?=	7
-# Possible values: 8, 11, 17, 18, 19, 20, 21, 22 23
+# Possible values: 8, 11, 17, 18, 19, 20, 21, 22, 23, 24
 JAVA_DEFAULT?=		8
 # Possible values: 3.8.0, 4.99
 .  if (defined(WANT_LAZARUS_DEVEL) && !empty(WANT_LAZARUS_DEVEL)) || ${ARCH:Maarch64}
@@ -90,7 +90,7 @@ LIBRSVG2_DEFAULT?=	legacy
 # Possible values: c7 rl9
 LINUX_DEFAULT?=		c7
 # Possible values: 11, 12, 13, 14, 15, 16, 17, 18, 19, -devel (to be used when non-base compiler is required)
-LLVM_DEFAULT?=		15
+LLVM_DEFAULT?=		19
 # Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.4
 # Possible values: luajit, luajit-devel, luajit-openresty

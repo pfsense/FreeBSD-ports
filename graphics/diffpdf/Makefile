@@ -1,6 +1,6 @@
 PORTNAME=	diffpdf
 PORTVERSION=	2.1.3
-PORTREVISION=	53
+PORTREVISION=	54
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.qtrac.eu/
 
@@ -9,6 +9,10 @@ COMMENT=	Compare two PDF files-textually or visually
 WWW=		http://www.qtrac.eu/diffpdf-foss.html
 
 LICENSE=	GPLv2+
+
+BROKEN=		unfetchable
+DEPRECATED=	withdrawn from author
+EXPIRATION_DATE=	2025-04-15
 
 LIB_DEPENDS=	libpoppler-qt5.so:graphics/poppler-qt5
 

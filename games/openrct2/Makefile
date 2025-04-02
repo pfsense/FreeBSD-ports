@@ -1,6 +1,6 @@
 PORTNAME=	openrct2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.19.1
+DISTVERSION=	0.4.20
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/:sequence \

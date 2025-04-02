@@ -5,6 +5,104 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20250327:
+  AFFECTS: users of thunderbird
+  AUTHOR: cmt@FreeBSD.org
+
+  The mail/thunderbird port switched to Thunderbird's new release train,
+  with frequent major releases (ca. 4-weeks-cycle). Users wanting to
+  stay with the 128-releases for now and the ESR releases in general
+  should switch to the mail/thunderbird-esr port.
+
+20250325:
+  AFFECTS: users of TeX*
+  AUTHOR: bofh@FreeBSD.org
+
+  TeX system has been updated to 2025 from 2024. Normal pkg upgrade or
+  portmaster -a should handle all the upgrade properly. In case not please
+  create a ticket or send a mail to tex@FreeBSD.org
+
+  Previously users have reported to delete texlive-texmf prior to
+  starting update, or pkg-static will indicate there is a conflict
+  during the upgrade of texlive-base :
+
+  # pkg remove texlive-texmf
+
+20250321:
+  AFFECTS: users of mail/oama
+  AUTHOR: nivit@FreeBSD.org
+
+  Starting from version 0.15, when the GPG backend is used the encrypted
+  credentials are stored in the $XDG_STATE_HOME/oama directory.
+  If the XDG_STATE_HOME environment variable is not set then it defaults to
+  $HOME/.local/state.
+
+  That is a breaking change! If you use the GPG backend you need to manually
+  move your credential ~/.local/var/oama/*.oama files into the new directory.
+
+20250316:
+  AFFECTS: users of graphics/gdk-pixbuf2
+  AUTHOR: vishwin@FreeBSD.org
+
+  Loaders for ANI, BMP, ICNS, ICO, PNM, QTIF, TGA, XBM and XPM have
+  been moved to a separate graphics/gdk-pixbuf-extra port. Install
+  the aforementioned port if artefacts in those formats no longer
+  load or otherwise cause errors, and report them so that
+  USE_GNOME=gdkpixbufextra can be declared. Most should only need
+  USE_GNOME=gdkpixbufextra:run, but for those also needing these
+  loaders for build, leave out the :run.
+
+20250315:
+  AFFECTS: users of sysutils/snmp_exporter
+  AUTHOR: lexi@hemlock.eden.le-fay.org
+
+  BREAKING CHANGE: The new version of sysutils/snmp_exporter (0.28.0)
+  introduces several breaking changes.  If you don't want to migrate yet,
+  switch to the new port sysutils/snmp_exporter20 which contains the previous
+  version (0.20.0).
+
+  1. The exporter uses a new configuration file format for SNMP authentication,
+  and configurations from the previous version will no longer work.  This
+  applies regardless of whether you use the configuration generator or write
+  the configuration by hand.
+
+  For migration instructions, see:
+    https://github.com/prometheus/snmp_exporter/blob/main/auth-split-migration.md
+
+  2. Breaking changes were made affecting the 'synology', 'ddwrt' and
+  'kemp_loadmaster' modules.  For migration instructions, see:
+    https://github.com/prometheus/snmp_exporter/releases/tag/v0.27.0
+
+  3. The sysUpTime metric has been removed from the if_mib module.  For
+  migration instructions, see:
+    https://github.com/prometheus/snmp_exporter/releases/tag/v0.28.0
+
+  4. (FreeBSD-specific) The port no longer patches the generator to hardcode
+  ${PREFIX}/etc in the paths used by snmp_exporter_generator.  If you were
+  relying on this behaviour, you should update your scripts to specify the full
+  pathname.
+
+20250312:
+  AFFECTS: users of net/samba4{19,20}
+  AUTHOR: michaelo@FreeBSD.org
+
+  The MANDOC option has been renamed to MANPAGES to match the option
+  name with other ports and the description from Mk/bsd.options.desc.mk.
+
+20250311:
+  AFFECTS: users of databases/mongodb80
+  AUTHOR: ronald@FreeBSD.org
+
+  Added flavor mongodb80-armv80a.
+  See item 20250217 for the rationale.
+
+20250310:
+  AFFECTS: users of www/wget2
+  AUTHOR: michaelo@FreeBSD.org
+
+  The default NGHTTP2 option has been renamed to HTTP2 to match the option
+  name in ftp/curl and the description from Mk/bsd.options.desc.mk.
+
 20250219:
   AFFECTS: users of comms/ser2net
   AUTHOR: rodrigo@FreeBSD.org

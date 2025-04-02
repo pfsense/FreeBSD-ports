@@ -1,6 +1,6 @@
 PORTNAME=	orange3-single-cell
 DISTVERSION=	0.8.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	biology python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -9,6 +9,9 @@ COMMENT=	Orange add-on for gene expression of single cell data
 WWW=		https://singlecell.biolab.si/
 
 LICENSE=	AGPLv3+
+
+DEPRECATED=	Depends on expire dmath/py-fastdtw
+EXPIRATION_DATE=2025-06-01
 
 RUN_DEPENDS=	orange3>0:misc/orange3 \
 		${PYTHON_PKGNAMEPREFIX}orange3-bioinformatics>0:biology/py-orange3-bioinformatics@${PY_FLAVOR} \

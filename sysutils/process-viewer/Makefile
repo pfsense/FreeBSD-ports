@@ -1,6 +1,6 @@
 PORTNAME=	process-viewer
 DISTVERSION=	g20220909
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libgraphene-1.0.so:graphics/graphene
 
 USES=		cargo gnome
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk40 pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk40 pango
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	guillaumegomez

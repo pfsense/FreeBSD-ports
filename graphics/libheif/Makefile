@@ -1,6 +1,5 @@
 PORTNAME=	libheif
-DISTVERSION=	1.19.5
-PORTREVISION=	1
+DISTVERSION=	1.19.7
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/strukturag/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libsharpyuv.so:graphics/webp
 USES=		cmake:testing compiler:c++11-lang cpe gettext-runtime gnome \
 		localbase:ldflags pathfix pkgconfig
 CPE_VENDOR=	struktur
-USE_GNOME=	gdkpixbuf2 glib20
+USE_GNOME=	gdkpixbuf glib20
 USE_LDCONFIG=	yes
 PLIST_SUB=	LIB_VER=${DISTVERSION}
 

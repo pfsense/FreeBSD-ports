@@ -1,6 +1,7 @@
 PORTNAME=	kitty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.39.1
+DISTVERSION=	0.40.1
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -40,6 +41,7 @@ USES=		compiler:c11 cpe desktop-file-utils gettext-runtime gl gmake \
 CPE_VENDOR=	kitty_project
 
 USE_GL=		gl
+USE_GNOME=	cairo
 USE_XORG=	x11 xcb xcursor xi xinerama xrandr
 
 SHEBANG_FILES=	build-terminfo count-lines-of-code update-on-ox
@@ -95,8 +97,6 @@ post-patch:
 		${WRKSRC}/setup.py
 	${REINPLACE_CMD} -e "s:%%DATADIR%%:${DATADIR}:1" \
 		${WRKSRC}/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish
-	${REINPLACE_CMD} -e "s:^\(go \)1.23:\1${GO_VERSION}:1" \
-		${WRKSRC}/go.mod
 
 # For librsync, we need to set header and library path
 do-build:

@@ -83,7 +83,6 @@
     SUBDIR += chrony-lite
     SUBDIR += citrix_ica
     SUBDIR += cjdns
-    SUBDIR += clash
     SUBDIR += cloud-init
     SUBDIR += cloud-init-devel
     SUBDIR += cloudflared
@@ -133,7 +132,6 @@
     SUBDIR += dpdk-22.11
     SUBDIR += dpinger
     SUBDIR += drawterm
-    SUBDIR += drive
     SUBDIR += dropbox-api-command
     SUBDIR += dropbox-uploader
     SUBDIR += dshell
@@ -203,7 +201,6 @@
     SUBDIR += gnome-connections
     SUBDIR += gnome-nettool
     SUBDIR += gnome-online-accounts
-    SUBDIR += gnome-online-miners
     SUBDIR += gnu-radius
     SUBDIR += go-bapu
     SUBDIR += go-cs
@@ -379,6 +376,7 @@
     SUBDIR += libbgpdump
     SUBDIR += libcapn
     SUBDIR += libcharon
+    SUBDIR += libcloudproviders
     SUBDIR += libcmis
     SUBDIR += libcoap
     SUBDIR += libdaq
@@ -401,7 +399,6 @@
     SUBDIR += libmateweather
     SUBDIR += libmaxminddb
     SUBDIR += libmdf
-    SUBDIR += libmediawiki
     SUBDIR += libnatpmp
     SUBDIR += libndp
     SUBDIR += libnet
@@ -479,6 +476,7 @@
     SUBDIR += micro_inetd
     SUBDIR += micro_proxy
     SUBDIR += microsocks
+    SUBDIR += mihomo
     SUBDIR += mimetreeparser
     SUBDIR += minidlna
     SUBDIR += minissdpd
@@ -527,6 +525,7 @@
     SUBDIR += nemesis
     SUBDIR += net6
     SUBDIR += netatalk3
+    SUBDIR += netatalk4
     SUBDIR += netcat
     SUBDIR += netdiscover
     SUBDIR += netembryo
@@ -554,7 +553,6 @@
     SUBDIR += nss-pam-ldapd
     SUBDIR += nss-pam-ldapd-sasl
     SUBDIR += nss_ldap
-    SUBDIR += nsscache
     SUBDIR += ntimed
     SUBDIR += ntopng
     SUBDIR += ntp
@@ -592,7 +590,6 @@
     SUBDIR += openpgm
     SUBDIR += openradius
     SUBDIR += openrsync
-    SUBDIR += opensips31
     SUBDIR += openslp
     SUBDIR += openvswitch
     SUBDIR += ortp
@@ -1061,7 +1058,6 @@
     SUBDIR += py-dpkt
     SUBDIR += py-duet
     SUBDIR += py-dugong
-    SUBDIR += py-ec2-cli-tools
     SUBDIR += py-ephemeral-port-reserve
     SUBDIR += py-err-backend-discord
     SUBDIR += py-err-backend-mattermost
@@ -1179,7 +1175,6 @@
     SUBDIR += py-sshuttle
     SUBDIR += py-stomp.py
     SUBDIR += py-suds
-    SUBDIR += py-tacacs_plus
     SUBDIR += py-terminado
     SUBDIR += py-tiny-proxy
     SUBDIR += py-tofu
@@ -1219,6 +1214,7 @@
     SUBDIR += rabbiteer
     SUBDIR += rabbitmq
     SUBDIR += rabbitmq-c
+    SUBDIR += rabbitmqadmin
     SUBDIR += radcli
     SUBDIR += raddump
     SUBDIR += radiator
@@ -1672,7 +1668,7 @@
     SUBDIR += wifi-firmware-iwlwifi-kmod
     SUBDIR += wifi-firmware-kmod
     SUBDIR += wifi-firmware-mt76-kmod
-    SUBDIR += wifi-firmware-mtw-kmod
+    SUBDIR += wifi-firmware-mt7601u-kmod
     SUBDIR += wifi-firmware-rtw88-kmod
     SUBDIR += wifi-firmware-rtw89-kmod
     SUBDIR += wifibox

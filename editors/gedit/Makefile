@@ -1,6 +1,6 @@
 PORTNAME=	gedit
 PORTVERSION=	44.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	editors gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -32,10 +32,10 @@ PORTSCOUT=	limitw:1,even
 USES=		compiler:c11 cpe desktop-file-utils gettext gnome localbase \
 		meson pkgconfig python tar:xz vala:build xorg
 USE_CSTD=	c11
-USE_GNOME=	cairo gdkpixbuf2 gtksourceview4 intlhack introspection libxml2 \
+USE_GNOME=	cairo gdkpixbuf gtksourceview4 intlhack introspection libxml2 \
 		pygobject3
 USE_XORG=	sm x11
-USE_LDCONFIG=	yes
+USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 PLIST_SUB=	VERSION=44
 INSTALL_TARGET=	install-strip
 MESON_ARGS+=	--buildtype \

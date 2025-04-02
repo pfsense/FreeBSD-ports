@@ -8,6 +8,7 @@
     SUBDIR += bash
     SUBDIR += bash-completion
     SUBDIR += bash-completion-freebsd
+    SUBDIR += bash-completion-zfs
     SUBDIR += bash-static
     SUBDIR += bashc
     SUBDIR += bicon
@@ -30,6 +31,7 @@
     SUBDIR += ksh
     SUBDIR += ksh-devel
     SUBDIR += ksh93
+    SUBDIR += libpowershell-native
     SUBDIR += mksh
     SUBDIR += modernish
     SUBDIR += murex
@@ -50,6 +52,7 @@
     SUBDIR += p5-Term-ShellUI
     SUBDIR += pdksh
     SUBDIR += pear-PHP_Shell
+    SUBDIR += powershell
     SUBDIR += psh
     SUBDIR += rc
     SUBDIR += rubygem-shellwords

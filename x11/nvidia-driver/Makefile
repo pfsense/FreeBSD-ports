@@ -28,6 +28,11 @@ LICENSE_FILE=	${WRKSRC}/doc/license.txt
 .include "${.CURDIR}/../nvidia-driver/Makefile.version"
 .include "${.CURDIR}/../nvidia-driver/Makefile.common"
 
+# the package provides lib32 versions of the libraries, which then depends
+# themselves in non existing lib32 libraries, so we don't want the package
+# to end up depending on non existing libraries
+NO_SHLIB_REQUIRES_GLOB=*:32
+
 # Pull GNU sed(1) for "binary" patching of obj/libglvnd/libEGL.so.1 and
 # obj/libEGL_nvidia.so.0 (see below)
 .if ${NVVERSION} >= 410.057
@@ -71,7 +76,7 @@ SUB_PATCHES=	extra-patch-src-Makefile \
 SUB_PATCHES+=	extra-patch-src-nvidia_dev.c \
 		extra-patch-src-nvidia_pci.c
 .endif
-.if ${NVVERSION} < 530.03002
+.if ${NVVERSION} < 470.25602 || ${NVVERSION} >= 480.00000 && ${NVVERSION} < 530.03002
 SUB_PATCHES+=	extra-patch-src-nvidia_subr.c
 .endif
 
@@ -267,7 +272,7 @@ post-patch: .SILENT
 		${WRKSRC}/src/${NVSRC}/nvidia_pci.c
 .endif
 # Catch up with pmap_unmapdev() and kmem_*() changes in 14-CURRENT
-.if ${OSVERSION} >= 1400070 && ${NVVERSION} < 530.03002
+.if ${OSVERSION} >= 1400070 && (${NVVERSION} < 470.25602  || ${NVVERSION} >= 480.00000 && ${NVVERSION} < 530.03002)
 	${REINPLACE_CMD} -e '/pmap_unmapdev/s,(vm_offset_t),,' \
 		${WRKSRC}/src/${NVSRC}/nvidia_os.c
 	${REINPLACE_CMD} -e '/vm_offset_t virtual_address/s,vm_offset_t ,char *,' \

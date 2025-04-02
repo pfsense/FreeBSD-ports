@@ -1,5 +1,6 @@
     COMMENT = Miscellaneous utilities
 
+    SUBDIR += R-cran-gapminder
     SUBDIR += R-cran-mime
     SUBDIR += R-cran-optimx
     SUBDIR += R-cran-xfun
@@ -106,6 +107,7 @@
     SUBDIR += exercism
     SUBDIR += explosions
     SUBDIR += ezc3d
+    SUBDIR += fabric
     SUBDIR += far2l
     SUBDIR += fastscapelib
     SUBDIR += felis
@@ -200,7 +202,6 @@
     SUBDIR += iso-codes
     SUBDIR += jargon
     SUBDIR += jbidwatcher
-    SUBDIR += jirust
     SUBDIR += jojodiff
     SUBDIR += json-tui
     SUBDIR += kbdscan
@@ -270,6 +271,7 @@
     SUBDIR += metalink-tools
     SUBDIR += mime-support
     SUBDIR += minidnn
+    SUBDIR += minuet
     SUBDIR += mirmon
     SUBDIR += mmdnn
     SUBDIR += mmv
@@ -435,6 +437,7 @@
     SUBDIR += py-files-to-prompt
     SUBDIR += py-fleep
     SUBDIR += py-fuzzy
+    SUBDIR += py-gguf
     SUBDIR += py-gluoncv
     SUBDIR += py-gluonnlp
     SUBDIR += py-halo
@@ -456,6 +459,7 @@
     SUBDIR += py-llm
     SUBDIR += py-llm-claude-3
     SUBDIR += py-log_symbols
+    SUBDIR += py-mcp
     SUBDIR += py-mffpy
     SUBDIR += py-mixpanel
     SUBDIR += py-mmcv
@@ -470,6 +474,7 @@
     SUBDIR += py-ollama
     SUBDIR += py-onnx
     SUBDIR += py-onnx-tf
+    SUBDIR += py-onnxconverter-common
     SUBDIR += py-openai
     SUBDIR += py-openai-whisper
     SUBDIR += py-openpaperwork-core
@@ -507,6 +512,7 @@
     SUBDIR += py-pytorch-lightning
     SUBDIR += py-pyviz-comms
     SUBDIR += py-safetensors
+    SUBDIR += py-schedulefree
     SUBDIR += py-scikit-fusion
     SUBDIR += py-scikit-quant
     SUBDIR += py-serverfiles
@@ -553,6 +559,7 @@
     SUBDIR += quantum++
     SUBDIR += quary
     SUBDIR += randomx
+    SUBDIR += rash
     SUBDIR += raspberrypi-gpioshutdown
     SUBDIR += raspbsd-led
     SUBDIR += ree

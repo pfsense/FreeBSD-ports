@@ -20,7 +20,6 @@
     SUBDIR += bootstrap-openjdk17
     SUBDIR += bootstrap-openjdk8
     SUBDIR += bouncycastle
-    SUBDIR += cos
     SUBDIR += dbvis
     SUBDIR += eclipse
     SUBDIR += eclipse-EPIC
@@ -92,6 +91,7 @@
     SUBDIR += openjdk21
     SUBDIR += openjdk22
     SUBDIR += openjdk23
+    SUBDIR += openjdk24
     SUBDIR += openjdk8
     SUBDIR += openjdk8-jre
     SUBDIR += openjfx14

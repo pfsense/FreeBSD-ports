@@ -2,8 +2,7 @@ PORTNAME=	ircd-ratbox
 PORTVERSION=	3.0.10
 PORTREVISION=	8
 CATEGORIES=	irc
-MASTER_SITES=	http://www.ratbox.org/download/				\
-		http://www.ratbox.org/download/old/
+MASTER_SITES=	http://www.ratbox.org/download/
 
 MAINTAINER=	moggie@elasticmind.net
 COMMENT=	Advanced, stable IRC daemon, used widely on EFnet
@@ -32,7 +31,7 @@ SUB_LIST=	LOGDIR=${LOGDIR} RUNDIR=${RUNDIR} DBDIR=${DBDIR}
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-confdir=${PREFIX}/etc/${PORTNAME}		\
-		--with-logdir=/var/log/${PORTNAME}			\
+		--with-logdir=${LOGDIR}					\
 		--with-moduledir=${PREFIX}/lib/${PORTNAME}/modules	\
 		--libexecdir=${PREFIX}/libexec				\
 		--with-helpdir=${DATADIR}/help				\

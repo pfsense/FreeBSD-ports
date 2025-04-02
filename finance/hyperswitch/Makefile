@@ -1,6 +1,5 @@
 PORTNAME=	hyperswitch
-DISTVERSION=	2024.12.23.0
-PORTREVISION=	1
+DISTVERSION=	2025.02.27.0
 CATEGORIES=	finance
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -120,6 +119,7 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		base64-0.13.1 \
 		base64-0.21.7 \
 		base64-0.22.1 \
+		base64-serde-0.8.0 \
 		base64-simd-0.8.0 \
 		base64ct-1.6.0 \
 		bb8-0.8.5 \
@@ -447,10 +447,10 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		oorandom-11.1.4 \
 		openidconnect-3.5.0 \
 		opensearch-2.3.0 \
-		openssl-0.10.66 \
+		openssl-0.10.70 \
 		openssl-macros-0.1.1 \
 		openssl-probe-0.1.5 \
-		openssl-sys-0.9.103 \
+		openssl-sys-0.9.105 \
 		opentelemetry-0.27.1 \
 		opentelemetry-aws-0.15.0 \
 		opentelemetry-otlp-0.27.0 \
@@ -770,12 +770,12 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		want-0.3.1 \
 		wasi-0.11.0+wasi-snapshot-preview1 \
 		wasite-0.1.0 \
-		wasm-bindgen-0.2.93 \
-		wasm-bindgen-backend-0.2.93 \
+		wasm-bindgen-0.2.99 \
+		wasm-bindgen-backend-0.2.99 \
 		wasm-bindgen-futures-0.4.43 \
-		wasm-bindgen-macro-0.2.93 \
-		wasm-bindgen-macro-support-0.2.93 \
-		wasm-bindgen-shared-0.2.93 \
+		wasm-bindgen-macro-0.2.99 \
+		wasm-bindgen-macro-support-0.2.99 \
+		wasm-bindgen-shared-0.2.99 \
 		web-sys-0.3.70 \
 		web-time-1.1.0 \
 		webdriver-0.46.0 \
@@ -840,9 +840,17 @@ CARGO_CRATES=	actix-codec-0.5.2 \
 		rust-i18n,rust-i18n-macro,rust-i18n-support@git+https://github.com/kashif-m/rust-i18n?rev=f2d8096aaaff7a87a847c35a5394c269f75e077a\#f2d8096aaaff7a87a847c35a5394c269f75e077a \
 		async-bb8-diesel@git+https://github.com/jarnura/async-bb8-diesel?rev=53b4ab901aab7635c8215fd1c2d542c8db443094\#53b4ab901aab7635c8215fd1c2d542c8db443094 \
 		rusty-money@git+https://github.com/varunsrin/rusty_money?rev=bbc0150742a0fff905225ff11ee09388e9babdcc\#bbc0150742a0fff905225ff11ee09388e9babdcc \
+		josekit@git+https://github.com/sumanmaji4/josekit-rs.git?rev=5ab54876c29a84f86aef8c169413a46026883efe\#5ab54876c29a84f86aef8c169413a46026883efe \
 		scylla,scylla-cql,scylla-macros@git+https://github.com/juspay/scylla-rust-driver.git?rev=5700aa2847b25437cdd4fcf34d707aa90dca8b89\#5700aa2847b25437cdd4fcf34d707aa90dca8b89
 
 RUSTFLAGS+=	--cfg uuid_unstable
+
+# disable LTO due to runaway builds: https://github.com/rust-lang/rust/issues/137496
+WITHOUT_LTO=	yes
+#CARGO_ENV=	CARGO_PROFILE_RELEASE_LTO="thin" \
+		CARGO_PROFILE_RELEASE_PANIC="abort" \
+		CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1 # change LTO to "thin" because otherwise link consumes tens of GB of memory and runs out of memory on arm64 causing runaway builds
+CARGO_ENV=	CARGO_PROFILE_RELEASE_LTO="false"
 
 OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib

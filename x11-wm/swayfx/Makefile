@@ -1,6 +1,5 @@
 PORTNAME=	sway
-DISTVERSION=	0.4
-PORTREVISION=	3
+DISTVERSION=	0.5
 CATEGORIES=	x11-wm wayland
 PKGNAMESUFFIX=	${GH_PROJECT:S/${PORTNAME}//}
 
@@ -17,9 +16,10 @@ LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libevdev.so:devel/libevdev \
 		libudev.so:devel/libudev-devd \
 		libpcre2-8.so:devel/pcre2 \
+		libdrm.so:graphics/libdrm \
 		libwayland-egl.so:graphics/wayland \
-		libscenefx.so:x11-toolkits/scenefx \
-		libwlroots-0.17.so:x11-toolkits/wlroots017 \
+		libscenefx-0.2.so:x11-toolkits/scenefx02 \
+		libwlroots-0.18.so:x11-toolkits/wlroots018 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
@@ -44,7 +44,7 @@ BASU_MESON_ENABLED=	tray
 MANPAGES_BUILD_DEPENDS=	scdoc>=1.9.2:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
 
-PIXBUF_USE=		GNOME=gdkpixbuf2
+PIXBUF_USE=		GNOME=gdkpixbuf
 PIXBUF_MESON_ENABLED=	gdk-pixbuf
 
 SWAYBG_DESC=		Default command to set background
@@ -52,7 +52,6 @@ SWAYBG_RUN_DEPENDS=	swaybg:x11/swaybg
 
 X11_USE=		XORG=xcb
 X11_LIB_DEPENDS=	libxcb-icccm.so:x11/xcb-util-wm
-X11_MESON_ENABLED=	xwayland
 
 post-patch:
 # Let @sample handle default files under etc/

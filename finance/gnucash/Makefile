@@ -1,11 +1,7 @@
 PORTNAME=	gnucash
-PORTVERSION=	5.10
-PORTREVISION=	3
+PORTVERSION=	5.11
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
-
-PATCH_SITES=	https://github.com/Gnucash/gnucash/commit/
-PATCHFILES=	579eed1facc0f7834ea70b1a342ebca0f125d788.patch:-p1
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Quicken-like money and finance manager
@@ -31,7 +27,7 @@ USES=		cmake:insource compiler:c++17-lang cpe desktop-file-utils \
 		gettext-tools gnome guile:2.2,3.0,alias,conflicts localbase \
 		perl5 pkgconfig shebangfix tar:bzip2 xorg
 USE_XORG=	x11
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool libxml2 libxslt
+USE_GNOME=	cairo gdkpixbuf gtk30 intltool libxml2 libxslt
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DCOMPILE_GSCHEMAS=OFF \

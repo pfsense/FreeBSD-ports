@@ -1,5 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	15.0.1.s20250216
+PORTVERSION=	15.0.1.s20250330
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -70,6 +70,9 @@ CONFIGURE_ARGS+=	--disable-multilib
 CFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
 CXXFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
 .endif
+
+GRAPHITE_LIB_DEPENDS=          libisl.so:devel/isl
+GRAPHITE_CONFIGURE_WITH+=      isl
 
 .include <bsd.port.pre.mk>
 
@@ -147,12 +150,11 @@ INFO+=		gcc${SUFFIX}/libitm
 SUB_FILES=	pkg-message
 SUB_LIST+=	TARGLIB=${TARGLIB}
 
-.if ${PORT_OPTIONS:MGRAPHITE}
-LIB_DEPENDS+=	libisl.so:devel/isl
-CONFIGURE_ARGS+=--with-isl=${LOCALBASE}
-.endif
-
 CONFIGURE_ARGS+=--enable-languages=${LANGUAGES}
+
+.if (${ARCH} == amd64 || ${ARCH} == powerpc64) && ${PORT_OPTIONS:MMULTILIB}
+USE_LDCONFIG32=	${TARGLIB32}/gcc${SUFFIX}
+.endif
 
 pre-everything::
 	@${ECHO_MSG} "Making GCC ${PORTVERSION} for ${CONFIGURE_TARGET} [${LANGUAGES}]"

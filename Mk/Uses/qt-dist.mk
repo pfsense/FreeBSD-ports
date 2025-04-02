@@ -140,7 +140,7 @@ _KDE_wayland=		59
 _KDE_webchannel=	3
 # We track the 5.15 branch for www/qt5-webengine to make it easier to
 # stay on top of Chromium security patches.
-_KDE_webengine=			5
+_KDE_webengine=			7
 _KDE_webengine_BRANCH=		5.15
 _KDE_webengine_ORIGIN_TAG=	v5.15.18-lts
 _KDE_webengine_VERSION=		5.15.18
@@ -482,10 +482,10 @@ _sub_need_clean=
 _sub_need_clean=	\#\#
 .    endif
 # The Qt modules have an install- and deinstall-step for wrangling
-# the qconfig-modules.h header, but qmake does not.
-.    if ${PORTNAME} != "qmake"
+# the qconfig-modules.h header, but buildtools and qmake do not.
+.    if ${PORTNAME} != "buildtools" && ${PORTNAME} != "qmake"
 post-install: qt-post-install
-.    endif # PORTNAME != qmake
+.    endif # PORTNAME != buildtools && PORTNAME != qmake
 qt-post-install:
 # We can't use SUB_FILES with the shared pkg-change.in.
 # We need it to be a script instead of a group of @unexecs.
