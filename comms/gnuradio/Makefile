@@ -1,7 +1,7 @@
 PORTNAME=	gnuradio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.8.4.0
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	comms astro hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -9,6 +9,8 @@ COMMENT=	Amateur Radio Software defined radio
 WWW=		https://www.gnuradio.org/
 
 LICENSE=	GPLv3
+
+BROKEN=		Fails to build with Boost 1.87 
 
 BUILD_DEPENDS=	volk>0:devel/volk \
 		doxygen>0:devel/doxygen \

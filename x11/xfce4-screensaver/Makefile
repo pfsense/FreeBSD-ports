@@ -1,5 +1,6 @@
 PORTNAME=	xfce4-screensaver
 PORTVERSION=	4.18.4
+PORTREVISION=	1
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -22,7 +23,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 USES=		compiler:c11 gettext-tools gl gmake gnome pkgconfig python \
 		shebangfix tar:bzip2 xfce xorg
 USE_GL=		gl
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool libwnck3
+USE_GNOME=	cairo gdkpixbuf glib20 gtk30 intltool libwnck3
 USE_XFCE=	garcon xfconf
 USE_XORG=	ice sm x11 xext xrandr xscrnsaver xxf86vm
 

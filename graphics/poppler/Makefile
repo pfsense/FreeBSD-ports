@@ -1,5 +1,5 @@
 PORTNAME=	poppler
-DISTVERSION=	24.12.0
+DISTVERSION=	25.02.0
 CATEGORIES=	graphics print
 MASTER_SITES=	https://poppler.freedesktop.org/
 
@@ -24,7 +24,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/container/small_vector.hpp:devel/boost
 		gsed:textproc/gsed
 RUN_DEPENDS=	poppler-data>0:graphics/poppler-data
 
-USES=		cmake:insource compiler:c++17-lang cpe gperf jpeg \
+USES=		cmake:insource compiler:c++20-lang cpe gperf jpeg \
 		localbase pathfix pkgconfig tar:xz
 CPE_VENDOR=	freedesktop
 USE_LDCONFIG=	yes
@@ -59,7 +59,7 @@ CMAKE_OFF+=	${_POPPLER_SLAVES:N${_SLAVE_PORT}:tu:S/^/ENABLE_/}
 PORTSCOUT=	limitw:1,even
 USES+=		iconv
 CMAKE_ON+=	ENABLE_CPP
-PLIST_SUB+=	SHLIB_VER=144
+PLIST_SUB+=	SHLIB_VER=146
 
 OPTIONS_DEFINE=		CURL OPENJPEG
 OPTIONS_DEFAULT=	OPENJPEG

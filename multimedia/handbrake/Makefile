@@ -1,5 +1,6 @@
 PORTNAME=	handbrake
-DISTVERSION=	1.9.0
+DISTVERSION=	1.9.2
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/HandBrake/HandBrake/releases/download/${DISTVERSION}/
 MASTER_SITES+=	https://github.com/HandBrake/HandBrake-contribs/releases/download/contribs/:contrib
@@ -50,7 +51,7 @@ CONTRIB_FILES=	SVT-AV1-v2.3.0.tar.gz \
 		libbluray-1.3.4.tar.bz2 \
 		libdvdnav-6.1.1.tar.bz2 \
 		libdvdread-6.1.3.tar.bz2 \
-		dav1d-1.5.0.tar.bz2 \
+		dav1d-1.5.1.tar.bz2 \
 		dovi_tool-libdovi-3.1.2.tar.gz \
 		x265_4.1.tar.gz \
 		zimg-3.0.5.tar.gz
@@ -102,7 +103,7 @@ VPL_CONFIGURE_ON=	--enable-qsv
 X11_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 X11_USES=		gettext desktop-file-utils gnome gstreamer
 X11_USE=		gstreamer=gdkpixbuf,libav \
-			gnome=gtk40,intltool,cairo,gdkpixbuf2,libxml2
+			gnome=gtk40,intltool,cairo,gdkpixbuf,libxml2
 X11_CONFIGURE_OFF=	--disable-gtk
 X11_CONFIGURE_ENV=	COMPILER_PATH=${LOCALBASE}/bin
 X11_MAKE_ENV=		COMPILER_PATH=${LOCALBASE}/bin

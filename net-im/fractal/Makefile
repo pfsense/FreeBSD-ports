@@ -1,6 +1,6 @@
 PORTNAME=	fractal
 DISTVERSION=	4.4.2
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	net-im
 MASTER_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/archive/${DISTVERSION}/
 # XXX USES=cargo omits the default source archive by default
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 USES=		cargo cpe desktop-file-utils gettext gnome gstreamer meson \
 		pkgconfig python:build shebangfix ssl
 CPE_VENDOR=	gnome
-USE_GNOME=	cairo gdkpixbuf2 gtk30 gtksourceview4
+USE_GNOME=	cairo gdkpixbuf gtk30 gtksourceview4
 USE_GSTREAMER=	bad editing-services
 
 SHEBANG_FILES=	scripts

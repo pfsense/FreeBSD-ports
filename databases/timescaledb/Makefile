@@ -1,5 +1,5 @@
 PORTNAME=	timescaledb
-PORTVERSION=	2.18.1
+PORTVERSION=	2.19.1
 CATEGORIES=	databases
 
 MAINTAINER=	kbowling@FreeBSD.org
@@ -12,6 +12,8 @@ LICENSE_NAME_TSL=	Timescale License Agreement
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_TSL=	${WRKSRC}/tsl/LICENSE-TIMESCALE
 LICENSE_PERMS_TSL=	dist-mirror pkg-mirror auto-accept
+
+BROKEN_i386=	compilation fails: undeclared type '__uint128_t'
 
 USES=		compiler:c11 cmake gettext-runtime cpe pgsql:14-17
 

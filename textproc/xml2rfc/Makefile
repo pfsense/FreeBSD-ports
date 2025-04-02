@@ -1,5 +1,5 @@
 PORTNAME=	xml2rfc
-PORTVERSION=	3.24.0
+PORTVERSION=	3.28.0
 CATEGORIES=	textproc
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,6 +11,8 @@ WWW=		https://xml2rfc.tools.ietf.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0.44.0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml5>=5.3.0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.5.0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}country>=22.3.5:devel/py-country@${PY_FLAVOR} \
@@ -24,7 +26,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml5>=5.3.0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}platformdirs>=3.6.0:devel/py-platformdirs@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	distutils autoplist concurrent optsuffix
+USE_PYTHON=	pep517 autoplist concurrent optsuffix
 
 NO_ARCH=	yes
 

@@ -40,7 +40,6 @@
     SUBDIR += kaccounts-integration
     SUBDIR += kaccounts-providers
     SUBDIR += kaidan
-    SUBDIR += kopete
     SUBDIR += libaccounts-glib
     SUBDIR += libaccounts-qt
     SUBDIR += libmesode
@@ -120,7 +119,6 @@
     SUBDIR += py-slack-sdk
     SUBDIR += py-slackeventsapi
     SUBDIR += py-slixmpp
-    SUBDIR += py-telepot
     SUBDIR += py-toxcore-c
     SUBDIR += py-unmessage
     SUBDIR += qTox
@@ -134,7 +132,6 @@
     SUBDIR += rubygem-termtter
     SUBDIR += rubygem-tinder
     SUBDIR += ruqola
-    SUBDIR += sayaka
     SUBDIR += scli
     SUBDIR += sendxmpp
     SUBDIR += signal-cli
@@ -145,7 +142,6 @@
     SUBDIR += spectral
     SUBDIR += ssh-chat
     SUBDIR += sshout
-    SUBDIR += talkatu
     SUBDIR += tdlib
     SUBDIR += tdlib-purple
     SUBDIR += telegram-cli
@@ -158,9 +154,7 @@
     SUBDIR += telepathy-glib
     SUBDIR += telepathy-idle
     SUBDIR += telepathy-logger
-    SUBDIR += telepathy-logger-qt5
     SUBDIR += telepathy-mission-control
-    SUBDIR += telepathy-qt
     SUBDIR += telepathy-sofiasip
     SUBDIR += tg_owt
     SUBDIR += tkabber
@@ -173,6 +167,7 @@
     SUBDIR += toxext
     SUBDIR += toxic
     SUBDIR += toxins
+    SUBDIR += tuba
     SUBDIR += twirssi
     SUBDIR += uTox
     SUBDIR += vqcc-gtk

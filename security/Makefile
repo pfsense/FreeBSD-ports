@@ -68,7 +68,6 @@
     SUBDIR += caesarcipher
     SUBDIR += caldera
     SUBDIR += caldera-ot
-    SUBDIR += caldera4
     SUBDIR += calife
     SUBDIR += cardpeek
     SUBDIR += cargo-audit
@@ -168,6 +167,7 @@
     SUBDIR += fwanalog
     SUBDIR += fwknop
     SUBDIR += fwlogwatch
+    SUBDIR += gauth
     SUBDIR += gcr
     SUBDIR += gcr3
     SUBDIR += gef
@@ -180,7 +180,6 @@
     SUBDIR += gitjacker
     SUBDIR += globalprotect-openconnect
     SUBDIR += gnome-keyring
-    SUBDIR += gnome-keyring-sharp
     SUBDIR += gnupg
     SUBDIR += gnupg-pkcs11-scd
     SUBDIR += gnupg1
@@ -215,7 +214,6 @@
     SUBDIR += heaan
     SUBDIR += headscale
     SUBDIR += heimdal
-    SUBDIR += heimdal-devel
     SUBDIR += helib
     SUBDIR += hexl
     SUBDIR += hidden-lake
@@ -455,6 +453,7 @@
     SUBDIR += openssl32
     SUBDIR += openssl33
     SUBDIR += openssl34
+    SUBDIR += openssl35
     SUBDIR += openvas
     SUBDIR += openvpn
     SUBDIR += openvpn-admin
@@ -1035,7 +1034,6 @@
     SUBDIR += py-python-cas
     SUBDIR += py-python-gnupg
     SUBDIR += py-python-gvm
-    SUBDIR += py-python-jose
     SUBDIR += py-python-nss
     SUBDIR += py-python-openid
     SUBDIR += py-python-pam

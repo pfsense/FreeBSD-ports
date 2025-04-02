@@ -168,6 +168,7 @@
     SUBDIR += libxc
     SUBDIR += liggghts
     SUBDIR += linearelasticity
+    SUBDIR += linux-ai-ml-env
     SUBDIR += linux-zotero
     SUBDIR += luscus
     SUBDIR += m-aneos
@@ -349,6 +350,7 @@
     SUBDIR += py-gpaw
     SUBDIR += py-gsd
     SUBDIR += py-h5json
+    SUBDIR += py-h5netcdf
     SUBDIR += py-h5py
     SUBDIR += py-h5pyd
     SUBDIR += py-hiphive
@@ -372,7 +374,6 @@
     SUBDIR += py-mmcif
     SUBDIR += py-mmtf-python
     SUBDIR += py-molmod
-    SUBDIR += py-moltemplate
     SUBDIR += py-mp-api
     SUBDIR += py-mpcontribs-client
     SUBDIR += py-mplhep

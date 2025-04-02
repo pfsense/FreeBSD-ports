@@ -1,9 +1,8 @@
 PORTNAME=	trellis
-PORTVERSION=	g2022100712
-PORTREVISION=	3
+PORTVERSION=	g2025011100
 CATEGORIES=	devel
 
-MAINTAINER=	manu@FreeBSD.Org
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	Documenting the Lattice ECP5 bit-stream format
 WWW=		https://github.com/YosysHQ/prjtrellis
 
@@ -29,8 +28,8 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	YosysHQ
 GH_PROJECT=	prjtrellis
-GH_TAGNAME=	35f5affe10
-GH_TUPLE=	YosysHQ:prjtrellis-db:35d900a94ff:database/database
+GH_TAGNAME=	14ac883fa639b11fdc98f3cdef87a5d01f79e73d
+GH_TUPLE=	YosysHQ:prjtrellis-db:4dda149b9e4f1753ebc8b011ece2fe794be1281a:database/database
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/libtrellis
 

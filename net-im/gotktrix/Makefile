@@ -1,7 +1,7 @@
 PORTNAME=	gotktrix
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.4
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	net-im
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libgraphene-1.0.so:graphics/graphene \
 		libvulkan.so:graphics/vulkan-loader
 
 USES=		gnome go:modules pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk40 introspection pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk40 introspection pango
 GO_MODULE=	github.com/diamondburned/gotktrix
 
 PLIST_FILES=	bin/gotktrix \

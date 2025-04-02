@@ -121,6 +121,8 @@ include/folly/algorithm/simd/detail/SimdForEach.h
 include/folly/algorithm/simd/detail/SimdPlatform.h
 include/folly/algorithm/simd/detail/Traits.h
 include/folly/algorithm/simd/detail/UnrollUtils.h
+include/folly/algorithm/simd/find_first_of.h
+include/folly/algorithm/simd/find_first_of_extra.h
 include/folly/base64.h
 include/folly/channels/Channel-fwd.h
 include/folly/channels/Channel-inl.h
@@ -160,6 +162,7 @@ include/folly/chrono/Conv.h
 include/folly/chrono/Hardware.h
 include/folly/cli/NestedCommandLineApp.h
 include/folly/cli/ProgramOptions.h
+include/folly/codec/Uuid.h
 include/folly/compression/Compression.h
 include/folly/compression/CompressionContextPool.h
 include/folly/compression/CompressionContextPoolSingletons.h
@@ -246,6 +249,7 @@ include/folly/coro/AsyncScope.h
 include/folly/coro/AsyncStack.h
 include/folly/coro/AutoCleanup-fwd.h
 include/folly/coro/AutoCleanup.h
+include/folly/coro/AwaitImmediately.h
 include/folly/coro/Baton.h
 include/folly/coro/BlockingWait.h
 include/folly/coro/BoundedQueue.h
@@ -267,17 +271,20 @@ include/folly/coro/Invoke.h
 include/folly/coro/Merge-inl.h
 include/folly/coro/Merge.h
 include/folly/coro/Mutex.h
+include/folly/coro/Noexcept.h
 include/folly/coro/Promise.h
 include/folly/coro/Result.h
 include/folly/coro/Retry.h
 include/folly/coro/RustAdaptors.h
 include/folly/coro/ScopeExit.h
+include/folly/coro/SerialQueueRunner.h
 include/folly/coro/SharedLock.h
 include/folly/coro/SharedMutex.h
 include/folly/coro/SharedPromise.h
 include/folly/coro/Sleep-inl.h
 include/folly/coro/Sleep.h
 include/folly/coro/SmallUnboundedQueue.h
+include/folly/coro/Synchronized.h
 include/folly/coro/Task.h
 include/folly/coro/TaskWrapper.h
 include/folly/coro/TimedWait.h
@@ -298,6 +305,15 @@ include/folly/coro/detail/InlineTask.h
 include/folly/coro/detail/Malloc.h
 include/folly/coro/detail/ManualLifetime.h
 include/folly/coro/detail/Traits.h
+include/folly/coro/safe/AsyncClosure-fwd.h
+include/folly/coro/safe/AsyncClosure.h
+include/folly/coro/safe/Captures.h
+include/folly/coro/safe/NowTask.h
+include/folly/coro/safe/SafeAlias.h
+include/folly/coro/safe/SafeTask.h
+include/folly/coro/safe/detail/AsyncClosure.h
+include/folly/coro/safe/detail/AsyncClosureBindings.h
+include/folly/coro/safe/detail/DefineMovableDeepConstLrefCopyable.h
 include/folly/crypto/Blake2xb.h
 include/folly/crypto/LtHash-inl.h
 include/folly/crypto/LtHash.h
@@ -368,6 +384,7 @@ include/folly/detail/base64_detail/Base64Simd.h
 include/folly/detail/base64_detail/Base64_SSE4_2.h
 include/folly/detail/base64_detail/Base64_SSE4_2_Platform.h
 include/folly/detail/thread_local_globals.h
+include/folly/detail/tuple.h
 include/folly/dynamic-inl.h
 include/folly/dynamic.h
 include/folly/executors/Async.h
@@ -578,6 +595,7 @@ include/folly/external/aor/asmdefs.h
 include/folly/external/farmhash/farmhash.h
 include/folly/external/fast-crc32/avx512_crc32c_v8s3x4.h
 include/folly/external/fast-crc32/neon_crc32c_v3s4x2e_v2.h
+include/folly/external/fast-crc32/neon_eor3_crc32_v9s3x2e_s3.h
 include/folly/external/fast-crc32/neon_eor3_crc32c_v8s2x4_s3.h
 include/folly/external/fast-crc32/sse_crc32c_v8s3x3.h
 include/folly/external/nvidia/detail/RangeSve2.h
@@ -738,6 +756,7 @@ include/folly/io/async/IoUringBase.h
 include/folly/io/async/IoUringEvent.h
 include/folly/io/async/IoUringEventBaseLocal.h
 include/folly/io/async/IoUringProvidedBufferRing.h
+include/folly/io/async/IoUringZeroCopyBufferPool.h
 include/folly/io/async/Liburing.h
 include/folly/io/async/MuxIOThreadPoolExecutor.h
 include/folly/io/async/NotificationQueue.h
@@ -807,6 +826,7 @@ include/folly/lang/Align.h
 include/folly/lang/Aligned.h
 include/folly/lang/Assume.h
 include/folly/lang/Badge.h
+include/folly/lang/Bindings.h
 include/folly/lang/Bits.h
 include/folly/lang/BitsClass.h
 include/folly/lang/Builtin.h
@@ -878,6 +898,7 @@ include/folly/memory/UninitializedMemoryHacks.h
 include/folly/memory/detail/MallocImpl.h
 include/folly/memory/not_null-inl.h
 include/folly/memory/not_null.h
+include/folly/memory/shared_from_this_ptr.h
 include/folly/net/NetOps.h
 include/folly/net/NetOpsDispatcher.h
 include/folly/net/NetworkSocket.h
@@ -951,9 +972,11 @@ include/folly/python/executor.h
 include/folly/python/futures.h
 include/folly/python/import.h
 include/folly/python/iobuf.h
+include/folly/settings/CommandLineParser.h
 include/folly/settings/Immutables.h
 include/folly/settings/Observer.h
 include/folly/settings/Settings.h
+include/folly/settings/SettingsAccessorProxy.h
 include/folly/settings/Types.h
 include/folly/settings/detail/SettingsImpl.h
 include/folly/small_vector.h

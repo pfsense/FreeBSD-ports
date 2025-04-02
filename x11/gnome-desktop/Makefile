@@ -1,6 +1,5 @@
 PORTNAME=	gnome-desktop
-PORTVERSION=	42.4
-PORTREVISION=	2
+PORTVERSION=	44.1
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -27,11 +26,10 @@ RUN_DEPENDS=	iso-codes>=0:misc/iso-codes \
 
 USES=		bison cpe gettext gnome localbase:ldflags meson \
 		pkgconfig python tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30 gtk40 intltool introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk30 gtk40 intltool introspection:build
 USE_XORG=	x11
 USE_LDCONFIG=	yes
-MESON_ARGS=	-Dgnome_distributor="FreeBSD GNOME Project" \
-		-Dudev=disabled \
+MESON_ARGS=	-Dudev=disabled \
 		-Dsystemd=disabled \
 		-Dgtk_doc=false
 CPE_VENDOR=	gnome

@@ -1,10 +1,10 @@
---- go.mod.orig	1979-11-29 23:00:00 UTC
-+++ go.mod
-@@ -1,6 +1,6 @@ module github.com/AdguardTeam/AdGuardHome
+--- go.mod.orig	2025-03-20 09:34:20.280815000 +0100
++++ go.mod	2025-03-20 09:34:28.867469000 +0100
+@@ -1,6 +1,6 @@
  module github.com/AdguardTeam/AdGuardHome
  
--go 1.23.5
-+go 1.23
+-go 1.24.1
++go 1.24
  
  require (
- 	github.com/AdguardTeam/dnsproxy v0.73.2
+ 	github.com/AdguardTeam/dnsproxy v0.75.1

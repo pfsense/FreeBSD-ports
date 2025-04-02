@@ -1,6 +1,5 @@
 PORTNAME=	calendar
-DISTVERSION=	7.0.0
-PORTREVISION=	1
+DISTVERSION=	8.0.0
 CATEGORIES=	deskutils
 PKGNAMEPREFIX=	elementary-
 
@@ -29,7 +28,7 @@ RUN_DEPENDS=	consolekit2>0:sysutils/consolekit2
 USES=		desktop-file-utils gettext gnome meson pkgconfig vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	elementary
-USE_GNOME=	evolutiondataserver3 gdkpixbuf2 glib20 gtk30
+USE_GNOME=	evolutiondataserver3 gdkpixbuf glib20 gtk30
 GLIB_SCHEMAS=	io.elementary.calendar.gschema.xml
 
 .include <bsd.port.mk>

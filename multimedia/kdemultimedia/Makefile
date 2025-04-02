@@ -4,7 +4,7 @@ CATEGORIES=	multimedia kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Multimedia applications (meta port)
-WWW=		https://multimedia.kde.org
+WWW=		https://apps.kde.org/categories/multimedia/
 
 USES=		kde:6 metaport qt:6
 USE_QT=		#
@@ -26,6 +26,6 @@ KMIX_DESC=		Audio mixer
 KMIX_RUN_DEPENDS=	kmix>=${KDE_APPLICATIONS_VERSION}:audio/kmix
 
 KDENLIVE_DESC=		KDE Non-Linear Video Editor
-KDENLIVE_RUN_DEPENDS=	kdenlive>=18.12.3:multimedia/kdenlive
+KDENLIVE_RUN_DEPENDS=	kdenlive>=${KDE_APPLICATIONS_VERSION}:multimedia/kdenlive
 
 .include <bsd.port.mk>

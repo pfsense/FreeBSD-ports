@@ -1,6 +1,6 @@
 PORTNAME=	mutter
 PORTVERSION=	42.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-wm
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -40,7 +40,7 @@ PORTSCOUT=	limitw:1,even
 USES=		compiler:c++0x gettext gl gnome localbase meson pkgconfig \
 		tar:xz xorg
 USE_GL=		egl gbm
-USE_GNOME=	cairo gdkpixbuf2 gnomedesktop3 introspection
+USE_GNOME=	cairo gdkpixbuf gnomedesktop3 introspection
 USE_XORG=	ice sm x11 xcb xcomposite xcursor xdamage xext xfixes xi \
 		xinerama xrandr xrender xtst
 USE_LDCONFIG=	yes

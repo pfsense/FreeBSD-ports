@@ -1,6 +1,6 @@
 PORTNAME=	brasero
 PORTVERSION=	3.12.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils audio multimedia gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -18,7 +18,7 @@ RUN_DEPENDS=	growisofs:sysutils/dvd+rw-tools \
 
 USES=		desktop-file-utils gettext gmake gnome gstreamer libtool pathfix \
 		pkgconfig shared-mime-info tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 intlhack \
+USE_GNOME=	cairo gdkpixbuf gnomeprefix gtk30 intlhack \
 		introspection:build libxml2
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
@@ -33,14 +33,9 @@ INSTALL_TARGET=	install-strip
 GLIB_SCHEMAS=	org.gnome.brasero.gschema.xml
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	NAUTILUS LIBBURNIA
-OPTIONS_DEFAULT=NAUTILUS
+OPTIONS_DEFINE=	LIBBURNIA
 
-NAUTILUS_DESC=	Build nautilus extension
 LIBBURNIA_DESC=	Build libburnia plug-ins
-
-NAUTILUS_USE=	GNOME=nautilus3
-NAUTILUS_CONFIGURE_ENABLE=	nautilus
 
 LIBBURNIA_LIB_DEPENDS=	libburn.so:devel/libburn \
 			libisofs.so:devel/libisofs

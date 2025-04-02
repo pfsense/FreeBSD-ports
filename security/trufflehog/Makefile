@@ -1,11 +1,12 @@
 PORTNAME=	trufflehog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.88.5
+DISTVERSION=	3.88.20
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Find and verify credentials
-WWW=		https://trufflesecurity.com/ \
+WWW=		https://trufflesecurity.com \
 		https://github.com/trufflesecurity/trufflehog
 
 LICENSE=	AGPLv3

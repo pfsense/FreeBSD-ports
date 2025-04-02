@@ -1,6 +1,5 @@
 PORTNAME=	xpra
-PORTVERSION=	6.1.3
-PORTREVISION=	1
+PORTVERSION=	6.2.5
 CATEGORIES=	x11
 MASTER_SITES=	https://xpra.org/src/
 
@@ -42,7 +41,7 @@ RUN_DEPENDS=	${PY_PILLOW} \
 USES=		desktop-file-utils gettext-runtime gnome localbase pkgconfig \
 		python shared-mime-info shebangfix tar:xz xorg
 
-USE_GNOME=	cairo gdkpixbuf2 gtk30 pygobject3
+USE_GNOME=	cairo gdkpixbuf gtk30 pygobject3
 USE_PYTHON=	cryptography distutils noflavors
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xkbfile xrandr xres xtst
 PLIST_SUB+=	PORTVERSION=${PORTVERSION} \

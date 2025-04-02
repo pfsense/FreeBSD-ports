@@ -232,6 +232,7 @@ include/thrift/lib/cpp2/async/HeaderServerChannel.h
 include/thrift/lib/cpp2/async/HibernatingRequestChannel.h
 include/thrift/lib/cpp2/async/Interaction.h
 include/thrift/lib/cpp2/async/InteractionOverloadPolicy.h
+include/thrift/lib/cpp2/async/InterceptorFrameworkMetadata.h
 include/thrift/lib/cpp2/async/MessageChannel.h
 include/thrift/lib/cpp2/async/MultiplexAsyncProcessor.h
 include/thrift/lib/cpp2/async/PooledRequestChannel.h
@@ -263,7 +264,6 @@ include/thrift/lib/cpp2/async/SinkBridgeUtil.h
 include/thrift/lib/cpp2/async/StreamCallbacks.h
 include/thrift/lib/cpp2/async/TAsyncTransportHandler.h
 include/thrift/lib/cpp2/async/TerminateInteractionOverloadPolicy.h
-include/thrift/lib/cpp2/async/ThreadBoundAdaptorChannel.h
 include/thrift/lib/cpp2/async/TwoWayBridge.h
 include/thrift/lib/cpp2/async/metadata/CursorBasedRequestRpcMetadataAdapter.h
 include/thrift/lib/cpp2/async/metadata/RequestRpcMetadataAdapter.h
@@ -401,6 +401,7 @@ include/thrift/lib/cpp2/protocol/detail/FieldMask.h
 include/thrift/lib/cpp2/protocol/detail/FieldMaskUtil.h
 include/thrift/lib/cpp2/protocol/detail/Object.h
 include/thrift/lib/cpp2/protocol/detail/ReservedId.h
+include/thrift/lib/cpp2/protocol/detail/Patch.h
 include/thrift/lib/cpp2/protocol/detail/index.h
 include/thrift/lib/cpp2/protocol/detail/protocol_methods.h
 include/thrift/lib/cpp2/reflection/gmock_matching.h
@@ -501,9 +502,11 @@ include/thrift/lib/cpp2/server/overload/QpsOverloadChecker.h
 include/thrift/lib/cpp2/server/overload/QueueConcurrencyOverloadChecker.h
 include/thrift/lib/cpp2/server/peeking/PeekingManager.h
 include/thrift/lib/cpp2/server/peeking/TLSHelper.h
+include/thrift/lib/cpp2/server/test/RequestPileTestUtils.h
 include/thrift/lib/cpp2/server/test/util/MockServerConfigs.h
 include/thrift/lib/cpp2/test/Matcher.h
 include/thrift/lib/cpp2/test/MockCpp2ConnContext.h
+include/thrift/lib/cpp2/test/ObjectBenchUtils.h
 include/thrift/lib/cpp2/test/ProtoBufStructs-inl.h
 include/thrift/lib/cpp2/test/Structs.h
 include/thrift/lib/cpp2/test/ThriftStructs-inl.h
@@ -569,15 +572,18 @@ include/thrift/lib/cpp2/transport/rocket/client/RocketClient.h
 include/thrift/lib/cpp2/transport/rocket/client/RocketStreamServerCallback.h
 include/thrift/lib/cpp2/transport/rocket/compression/CompressionAlgorithmSelector.h
 include/thrift/lib/cpp2/transport/rocket/compression/CompressionManager.h
+include/thrift/lib/cpp2/transport/rocket/compression/CustomCompressor.h
+include/thrift/lib/cpp2/transport/rocket/compression/CustomCompressorFactory.h
+include/thrift/lib/cpp2/transport/rocket/compression/CustomCompressorRegistry.h
 include/thrift/lib/cpp2/transport/rocket/flush/FlushManager.h
 include/thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h
 include/thrift/lib/cpp2/transport/rocket/framing/Flags.h
 include/thrift/lib/cpp2/transport/rocket/framing/FrameType.h
 include/thrift/lib/cpp2/transport/rocket/framing/Frames.h
-include/thrift/lib/cpp2/transport/rocket/framing/Parser-inl.h
 include/thrift/lib/cpp2/transport/rocket/framing/Parser.h
 include/thrift/lib/cpp2/transport/rocket/framing/Serializer.h
 include/thrift/lib/cpp2/transport/rocket/framing/Util.h
+include/thrift/lib/cpp2/transport/rocket/framing/parser/AlignedParserStrategy.h
 include/thrift/lib/cpp2/transport/rocket/framing/parser/AllocatingParserStrategy.h
 include/thrift/lib/cpp2/transport/rocket/framing/parser/FrameLengthParserStrategy-inl.h
 include/thrift/lib/cpp2/transport/rocket/framing/parser/FrameLengthParserStrategy.h
@@ -585,6 +591,7 @@ include/thrift/lib/cpp2/transport/rocket/framing/parser/ParserStrategy.h
 include/thrift/lib/cpp2/transport/rocket/framing/parser/test/TestUtil.h
 include/thrift/lib/cpp2/transport/rocket/framing/test/Util.h
 include/thrift/lib/cpp2/transport/rocket/payload/ChecksumPayloadSerializerStrategy.h
+include/thrift/lib/cpp2/transport/rocket/payload/CustomCompressionPayloadSerializerStrategy.h
 include/thrift/lib/cpp2/transport/rocket/payload/DefaultPayloadSerializerStrategy.h
 include/thrift/lib/cpp2/transport/rocket/payload/LegacyPayloadSerializerStrategy.h
 include/thrift/lib/cpp2/transport/rocket/payload/PayloadSerializer.h
@@ -670,7 +677,6 @@ include/thrift/lib/py3/client_wrapper.h
 include/thrift/lib/py3/clientcallbacks.h
 include/thrift/lib/py3/exceptions.h
 include/thrift/lib/py3/serializer.h
-include/thrift/lib/py3/server.h
 include/thrift/lib/py3/stream.h
 include/thrift/lib/py3/test/BinaryTypes.h
 include/thrift/lib/py3/test/cpp_handler.h
@@ -695,7 +701,9 @@ include/thrift/lib/python/client/test/http2_helper.h
 include/thrift/lib/python/flags.h
 include/thrift/lib/python/server/PythonAsyncProcessor.h
 include/thrift/lib/python/server/PythonAsyncProcessorFactory.h
+include/thrift/lib/python/server/event_handler.h
 include/thrift/lib/python/server/flagged/EnableResourcePoolsForPython.h
+include/thrift/lib/python/server/flagged/RcAwareTaskPatch.h
 include/thrift/lib/python/server/flagged/test/EnableResourcePoolsForPythonTest.h
 include/thrift/lib/python/server/util.h
 include/thrift/lib/python/test/event_handlers/handler.h

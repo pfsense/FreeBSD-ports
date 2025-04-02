@@ -1164,7 +1164,7 @@ OSVERSION!=	${AWK} '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${SRC
 .    endif
 _EXPORTED_VARS+=	OSVERSION
 
-.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1304000 || (${OSVERSION} >= 1400000 && ${OSVERSION} < 1401000))
+.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1304000 || (${OSVERSION} >= 1400000 && ${OSVERSION} < 1402000))
 _UNSUPPORTED_SYSTEM_MESSAGE=	Ports Collection support for your ${OPSYS} version has ended, and no ports\
 								are guaranteed to build on this system. Please upgrade to a supported release.
 .      if defined(ALLOW_UNSUPPORTED_SYSTEM)
@@ -1210,7 +1210,7 @@ _EXPORTED_VARS+=	_PKG_TRANSITIONING_TO_NEW_EXT
 WARNING+=	"It is strongly recommended to upgrade to a newer version of pkg first"
 .      endif
 # XXX End of hack
-_PKG_STATUS!=	${PKG_BIN} version -t ${_PKG_VERSION:C/-.*//g} ${MINIMAL_PKG_VERSION}
+_PKG_STATUS!=	${PKG_VERSION} -t ${_PKG_VERSION:C/-.*//g} ${MINIMAL_PKG_VERSION}
 .      if ${_PKG_STATUS} == "<"
 IGNORE=		pkg(8) must be version ${MINIMAL_PKG_VERSION} or greater, but you have ${_PKG_VERSION}. You must upgrade the ${PKG_ORIGIN} port first
 .      endif
@@ -1882,12 +1882,32 @@ USE_LDCONFIG=	${PREFIX}/lib
 IGNORE=			has USE_LDCONFIG32 set to yes, which is not correct
 .    endif
 
+_ALL_LIB_DIRS=	${LIB_DIRS} ${USE_LDCONFIG}
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_NATIVE="${_ALL_LIB_DIRS:O:u:ts,}"
+.    if defined(HAVE_COMPAT_IA32_KERN)
+_ALL_LIB_DIRS_32= /usr/lib32 ${LOCALBASE}/lib32 ${USE_LDCONFIG32}
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_COMPAT_32="${_ALL_LIB_DIRS_32:O:u:ts,}"
+.    endif
+.    if ${LINUX_DEFAULT} == c7 || ${LINUX_DEFAULT} == rl9
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_COMPAT_LINUX="${LINUXBASE}/usr/lib64"
+PKG_ENV+=	SHLIB_PROVIDE_PATHS_COMPAT_LINUX_32="${LINUXBASE}/usr/lib"
+.    else
+.      warning "Unknown Linux distribution ${LINUX_DEFAULT}, SHLIB_PROVIDE_PATHS_COMPAT_LINUX will not be set!"
+.    endif
+
 .    if defined(USE_LDCONFIG) || defined(USE_LDCONFIG32)
 .      if defined(USE_LINUX_PREFIX)
 PLIST_FILES+=	"@ldconfig-linux ${LINUXBASE}"
 .      else
 PLIST_FILES+=	"@ldconfig"
 .      endif
+.    endif
+
+.    if defined(NO_SHLIB_REQUIRES_GLOB)
+PKG_ENV+=	SHLIB_REQUIRE_IGNORE_GLOB="${NO_SHLIB_REQUIRES_GLOB:ts,}"
+.    endif
+.    if defined(NO_SHLIBS_REQUIRES_REGEX)
+PKG_ENV+=	SHLIB_REQUIRE_IGNORE_REGEX="${NO_SHLIBS_REQUIRES_REGEX:ts,}"
 .    endif
 
 PKG_IGNORE_DEPENDS?=		'this_port_does_not_exist'
@@ -5374,6 +5394,12 @@ show-dev-errors:
 .      endif
 .    endif #DEVELOPER
 
+.    if defined(HAS_SYMBOL_VERSION)
+stage-sanity: check_has_symbol_version
+check_has_symbol_version:
+		${SH} ${SCRIPTSDIR}/check_have_symbols.sh ${STAGEDIR} ${HAS_SYMBOL_VERSION}
+.    endif # HAS_SYMBOL_VERSION
+
 ${_PORTS_DIRECTORIES}:
 	@${MKDIR} ${.TARGET}
 
@@ -5443,8 +5469,8 @@ _STAGE_SEQ=		050:stage-message 100:stage-dir 150:run-depends \
 				860:install-rc-script 870:install-ldconfig-file \
 				880:install-license 890:install-desktop-entries \
 				900:add-plist-info 910:add-plist-docs 920:add-plist-examples \
-				930:add-plist-data 940:add-plist-post ${POST_PLIST:C/^/990:/} \
-				${_OPTIONS_install} ${_USES_install} \
+				930:add-plist-data 940:add-plist-post 994:stage-sanity \
+				${_OPTIONS_install} ${_USES_install} ${POST_PLIST:C/^/990:/} \
 				${_OPTIONS_stage} ${_USES_stage} ${_FEATURES_stage}
 .    if defined(DEVELOPER)
 _STAGE_SEQ+=	995:stage-qa

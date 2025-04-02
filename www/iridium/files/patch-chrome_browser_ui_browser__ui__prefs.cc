@@ -1,20 +1,20 @@
---- chrome/browser/ui/browser_ui_prefs.cc.orig	2024-12-22 12:24:29 UTC
+--- chrome/browser/ui/browser_ui_prefs.cc.orig	2025-03-18 16:46:04 UTC
 +++ chrome/browser/ui/browser_ui_prefs.cc
-@@ -72,7 +72,7 @@ void RegisterBrowserPrefs(PrefRegistrySimple* registry
+@@ -71,7 +71,7 @@ void RegisterBrowserPrefs(PrefRegistrySimple* registry
    registry->RegisterIntegerPref(prefs::kDefaultBrowserDeclinedCount, 0);
    registry->RegisterTimePref(prefs::kDefaultBrowserFirstShownTime,
                               base::Time());
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
-   registry->RegisterStringPref(prefs::kEnterpriseCustomLabel, std::string());
-   registry->RegisterStringPref(prefs::kEnterpriseLogoUrl, std::string());
- #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-@@ -182,7 +182,7 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistry
+   registry->RegisterStringPref(prefs::kEnterpriseCustomLabelForBrowser,
+                                std::string());
+   registry->RegisterStringPref(prefs::kEnterpriseLogoUrlForBrowser,
+@@ -184,7 +184,7 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistry
    registry->RegisterDictionaryPref(prefs::kHttpsUpgradeFallbacks);
    registry->RegisterDictionaryPref(prefs::kHttpsUpgradeNavigations);
    registry->RegisterBooleanPref(prefs::kHttpsOnlyModeAutoEnabled, false);
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
-   registry->RegisterStringPref(prefs::kEnterpriseLogoUrl, std::string());
-   registry->RegisterStringPref(prefs::kEnterpriseCustomLabel, std::string());
    registry->RegisterStringPref(prefs::kEnterpriseLogoUrlForProfile,
+                                std::string());
+   registry->RegisterStringPref(prefs::kEnterpriseCustomLabelForProfile,

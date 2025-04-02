@@ -1,6 +1,5 @@
 PORTNAME=	libvirt
-DISTVERSION=	11.0.0
-PORTREVISION=	1
+DISTVERSION=	11.2.0
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/ \
 		ftp://libvirt.org/libvirt/
@@ -78,6 +77,7 @@ MESON_ARGS+=	\
 		-Daudit=disabled \
 		-Dblkid=disabled \
 		-Dcapng=disabled \
+		-Ddriver_ch=disabled \
 		-Ddriver_hyperv=disabled \
 		-Ddriver_interface=disabled \
 		-Ddriver_libxl=disabled \
@@ -120,7 +120,8 @@ MESON_ARGS+=	\
 		-Dwireshark_dissector=disabled \
 		-Dinit_script=none \
 		-Dbash_completion=disabled \
-		-Duserfaultfd_sysctl=disabled
+		-Duserfaultfd_sysctl=disabled \
+		-Drunstatedir=/var/run
 
 # random_data fix can be removed when 8.x is eol
 CONFIGURE_ENV=	ac_cv_type_struct_random_data=""
@@ -139,7 +140,7 @@ USE_PERL5=	build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-SHLIB_VER=	0.11000.0
+SHLIB_VER=	0.11002.0
 PLIST_SUB+=	SHLIB_VER=${SHLIB_VER}
 PORTDOCS=	*
 #SHEBANG_FILES=	src/keycodemapdb/tools/keymap-gen

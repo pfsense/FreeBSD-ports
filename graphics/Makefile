@@ -38,6 +38,7 @@
     SUBDIR += R-cran-viridis
     SUBDIR += R-cran-viridisLite
     SUBDIR += R-cran-visNetwork
+    SUBDIR += R-cran-webp
     SUBDIR += SciPlot
     SUBDIR += a2png
     SUBDIR += aalib
@@ -45,6 +46,7 @@
     SUBDIR += acidwarp-sdl
     SUBDIR += aeskulap
     SUBDIR += agg
+    SUBDIR += agg26
     SUBDIR += airsaned
     SUBDIR += akira
     SUBDIR += alembic
@@ -104,6 +106,7 @@
     SUBDIR += chafa
     SUBDIR += charls
     SUBDIR += cimg
+    SUBDIR += clang-uml
     SUBDIR += cloudcompare
     SUBDIR += clutter
     SUBDIR += clutter-gtk3
@@ -230,6 +233,7 @@
     SUBDIR += gdal
     SUBDIR += gdal-grass
     SUBDIR += gdchart
+    SUBDIR += gdk-pixbuf-extra
     SUBDIR += gdk-pixbuf2
     SUBDIR += gdk-pixbuf2-xlib
     SUBDIR += gdtclft
@@ -338,6 +342,7 @@
     SUBDIR += hiptext
     SUBDIR += hobbes-icons-xpm
     SUBDIR += hppsmtools
+    SUBDIR += hs-tart
     SUBDIR += hugin
     SUBDIR += hyprgraphics
     SUBDIR += icat
@@ -410,7 +415,6 @@
     SUBDIR += khronos-texture
     SUBDIR += kimageannotator
     SUBDIR += kimagemapeditor
-    SUBDIR += kipi-plugins
     SUBDIR += klatexformula
     SUBDIR += kludge3d
     SUBDIR += kmscube
@@ -481,7 +485,6 @@
     SUBDIR += libjxr
     SUBDIR += libkdcraw
     SUBDIR += libkexiv2
-    SUBDIR += libkipi
     SUBDIR += libksane
     SUBDIR += libliftoff
     SUBDIR += liblqr-1
@@ -813,7 +816,6 @@
     SUBDIR += pecl-qrencode
     SUBDIR += pecl-vips
     SUBDIR += pencil2d
-    SUBDIR += peps
     SUBDIR += perceptualdiff
     SUBDIR += peruse
     SUBDIR += pfstools
@@ -848,6 +850,7 @@
     SUBDIR += pixie
     SUBDIR += plantuml
     SUBDIR += plasma-kmod
+    SUBDIR += plasma6-spectacle
     SUBDIR += plotutils
     SUBDIR += plutosvg
     SUBDIR += plutovg
@@ -984,7 +987,6 @@
     SUBDIR += py-pydot
     SUBDIR += py-pydotplus
     SUBDIR += py-pyepsg
-    SUBDIR += py-pygal
     SUBDIR += py-pyganim
     SUBDIR += py-pygeoapi
     SUBDIR += py-pygeos
@@ -1175,7 +1177,6 @@
     SUBDIR += shared-color-profiles
     SUBDIR += sharpconstruct
     SUBDIR += shotwell
-    SUBDIR += showimage
     SUBDIR += silgraphite
     SUBDIR += simage
     SUBDIR += simple-scan
@@ -1183,7 +1184,6 @@
     SUBDIR += simpleviewer
     SUBDIR += skanlite
     SUBDIR += skanpage
-    SUBDIR += spectacle
     SUBDIR += spirv-cross
     SUBDIR += spirv-tools
     SUBDIR += springgraph
@@ -1285,7 +1285,6 @@
     SUBDIR += xpdf
     SUBDIR += xpdf3
     SUBDIR += xpdf4
-    SUBDIR += xpeps
     SUBDIR += xpx
     SUBDIR += xsane
     SUBDIR += xtexcad

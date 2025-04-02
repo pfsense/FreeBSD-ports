@@ -1,5 +1,5 @@
 PORTNAME=	libshumate
-DISTVERSION=	1.3.2
+DISTVERSION=	1.4.0
 CATEGORIES=	x11-toolkits geography
 MASTER_SITES=	GNOME
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 		libgraphene-1.0.so:graphics/graphene
 
 USES=		gettext gnome meson pkgconfig sqlite tar:xz vala:build
-USE_GNOME=	cairo gdkpixbuf2 gtk40 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk40 introspection:build
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Dsysprof=disabled
 

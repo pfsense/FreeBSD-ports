@@ -85,7 +85,7 @@ HTTP_AUTH_JWT_LIB_DEPENDS=	libjwt.so:www/libjwt
 HTTP_AUTH_JWT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_auth_jwt_module.c
 HTTP_AUTH_JWT_VARS=		DSO_EXTMODS+=auth_jwt
 
-HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:b62dadb:auth_krb5
+HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:60f0811:auth_krb5
 HTTP_AUTH_KRB5_VARS=		DSO_EXTMODS+=auth_krb5
 HTTP_AUTH_KRB5_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-spnego-http-auth-nginx-module-config
 
@@ -264,7 +264,7 @@ OTEL_LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 OTEL_BUILD_DEPENDS=	${LOCALBASE}/include/opentelemetry/proto/common/v1/common.proto:devel/opentelemetry-proto
 OTEL_CONFIGURE_ENV+=	NGX_OTEL_PROTO_DIR=${PREFIX}/include
 
-PASSENGER_NGINX_VER=	6.0.24
+PASSENGER_NGINX_VER=	6.0.26
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USES=		ruby
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake

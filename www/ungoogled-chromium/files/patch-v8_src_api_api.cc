@@ -1,6 +1,6 @@
---- v8/src/api/api.cc.orig	2025-01-25 09:34:31 UTC
+--- v8/src/api/api.cc.orig	2025-03-09 21:38:10 UTC
 +++ v8/src/api/api.cc
-@@ -152,7 +152,7 @@
+@@ -153,7 +153,7 @@
  #include "src/wasm/wasm-serialization.h"
  #endif  // V8_ENABLE_WEBASSEMBLY
  
@@ -9,7 +9,7 @@
  #include <signal.h>
  #include <unistd.h>
  
-@@ -6571,7 +6571,7 @@ bool v8::V8::Initialize(const int build_config) {
+@@ -6614,7 +6614,7 @@ bool v8::V8::Initialize(const int build_config) {
    return true;
  }
  

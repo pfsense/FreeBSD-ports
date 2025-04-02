@@ -1,6 +1,6 @@
 PORTNAME=	podcasts
 DISTVERSION=	0.7.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio
 PKGNAMEPREFIX=	gnome-
 
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	bash:shells/bash
 
 USES=		cargo gettext gnome gstreamer meson pkgconfig sqlite ssl
 USE_GITLAB=	yes
-USE_GNOME=	gdkpixbuf2 gtk40 libadwaita
+USE_GNOME=	gdkpixbuf gtk40 libadwaita
 USE_GSTREAMER=	bad good libav
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World

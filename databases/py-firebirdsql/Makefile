@@ -1,5 +1,6 @@
 PORTNAME=	firebirdsql
 DISTVERSION=	1.1.4
+PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +12,7 @@ WWW=		https://github.com/nakagami/pyfirebirdsql
 LICENSE=	BSD2CLAUSE
 
 NO_ARCH=	yes
-USES=		python:3.8-3.9
+USES=		python:3.9
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

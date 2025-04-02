@@ -1,7 +1,7 @@
 PORTNAME=	mailnag
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.2.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -23,7 +23,7 @@ USES=		desktop-file-utils gettext-tools gnome gstreamer python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	pulb
 
-USE_GNOME=	gdkpixbuf2 glib20 gtk30 pygobject3
+USE_GNOME=	gdkpixbuf glib20 gtk30 pygobject3
 USE_PYTHON=	autoplist distutils
 
 SHEBANG_FILES=	mailnag mailnag-config

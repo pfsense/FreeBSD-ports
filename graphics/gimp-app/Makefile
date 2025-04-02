@@ -1,6 +1,6 @@
 PORTNAME=	gimp
 DISTVERSION=	2.10.38
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
@@ -14,9 +14,9 @@ LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
+		gtkdocize:textproc/gtk-doc \
 		glib-networking>=0:net/glib-networking \
 		mypaint-brushes>0:graphics/mypaint-brushes
-
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libbabl-0.1.so:x11/babl \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -44,8 +44,8 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 		glib-networking>=0:net/glib-networking \
 		mypaint-brushes>0:graphics/mypaint-brushes
 
-USES=		cpe compiler:c++14-lang desktop-file-utils gettext gmake gnome \
-		jpeg libtool localbase pkgconfig shebangfix tar:bzip2 xorg
+USES=		autoreconf:2.69 cpe compiler:c++14-lang desktop-file-utils gettext gmake \
+		gnome jpeg libtool localbase pkgconfig shebangfix tar:bzip2 xorg
 CPE_VENDOR=	gimp
 CPE_PRODUCT=	gimp
 USE_GNOME+=	cairo gtk20 intltool librsvg2
@@ -132,6 +132,7 @@ post-patch:
 			${WRKSRC}/plug-ins/pygimp/Makefile.in
 	@${REINPLACE_CMD} \
 		-e 's|x86_64|amd64|g' \
-		${WRKSRC}/configure
+		-e 's|libpixbufloader-svg.so|libpixbufloader_svg.so|g' \
+		${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

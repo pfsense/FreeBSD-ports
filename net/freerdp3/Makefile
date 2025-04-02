@@ -1,9 +1,15 @@
 PORTNAME=	freerdp
-DISTVERSION=	3.12.0
+DISTVERSION=	3.14.1
 CATEGORIES=	net comms
 MASTER_SITES=	https://pub.freerdp.com/releases/ \
 		https://github.com/FreeRDP/FreeRDP/releases/download/${DISTVERSION}/
 PKGNAMESUFFIX=	3
+
+PATCH_SITES=	https://github.com/FreeRDP/FreeRDP/commit/
+# [client,sdl] fix crash on suppress output
+# SDL events might be triggered before the RDP session is up.
+# Check the context for NULL.
+PATCHFILES+=	a82e0dec2f942b143977880654dd783f53c25c33.patch:-p1
 
 MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Free implementation of Remote Desktop Protocol
@@ -39,15 +45,17 @@ CMAKE_OFF=	CHANNEL_TSMF WITH_DSP_EXPERIMENTAL WITH_FUSE WITH_GPROF \
 PLIST_SUB+=	PATCHVERSION="${DISTVERSION}"
 PLIST_SUB+=	MAJORVERSION="${DISTVERSION:R:R}"
 
-OPTIONS_DEFINE=			ALSA BROKENFOCUS CUPS FAAC FAAD FDKAAC FFMPEG GSM ICU \
-				JPEG LAME MANPAGES OPENH264 OPUS PCSC PKCS11 \
-				PULSEAUDIO SDL2 SDL3 SOXR URIPARSER WAYLAND X11
+OPTIONS_DEFINE=			ALSA BROKENFOCUS CUPS FAAC FAAD FDKAAC FFMPEG \
+				GSM ICU JPEG LAME MANPAGES OPENH264 OPUS PCSC \
+				PKCS11 PULSEAUDIO RDPECAM SDL2 SDL3 SOXR \
+				URIPARSER WAYLAND X11
 OPTIONS_DEFINE_aarch64=		SIMD
 OPTIONS_DEFINE_amd64=		SIMD
 OPTIONS_DEFINE_armv7=		SIMD
 OPTIONS_DEFINE_i386=		SIMD
-OPTIONS_DEFAULT=		AAD CUPS GSSAPI_HEIMDAL ICU JSON_C KEYBOARD_LAYOUT \
-				MANPAGES SDL2 SDL3 SWSCALE TIMEZONE_FILE WAYLAND WEBKIT X11
+OPTIONS_DEFAULT=		AAD CUPS FFMPEG GSSAPI_HEIMDAL ICU JSON_C \
+				KEYBOARD_LAYOUT MANPAGES RDPECAM SDL2 SDL3 \
+				SWSCALE TIMEZONE_FILE WAYLAND WEBKIT X11
 OPTIONS_DEFAULT_aarch64=	SIMD
 OPTIONS_DEFAULT_amd64=		SIMD
 OPTIONS_DEFAULT_armv7=		SIMD
@@ -72,6 +80,7 @@ KEYBOARD_LAYOUT_DESC=	Use keyboard definitions from JSON file
 OPENH264_DESC=		H.264 video codec support via OpenH264
 PCSC_DESC=		Smart card support (smart card device redirection)
 PKCS11_DESC=		Use security/pkcs11-helper
+RDPECAM_DESC=		RDP webcam redirection (require FFMPEG and SWSCALE)
 REQUIRE_JSON_DESC=	Options that require JSON
 SDL2_DESC=		Build FreeRDP SDL 2 client
 SDL3_DESC=		Build FreeRDP SDL 3 client
@@ -159,6 +168,13 @@ PNG_CMAKE_BOOL=		WINPR_UTILS_IMAGE_PNG
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_BOOL=	WITH_PULSE
 
+RDPECAM_IMPLIES=	FFMPEG SWSCALE
+RDPECAM_BUILD_DEPENDS=	${LOCALBASE}/include/linux/uvcvideo.h:multimedia/v4l_compat \
+			${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
+RDPECAM_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l \
+			libv4lconvert.so:multimedia/libv4l
+RDPECAM_CMAKE_BOOL=	CHANNEL_RDPECAM_CLIENT
+
 SDL2_USES=		sdl
 SDL2_USE=		sdl=sdl2,ttf2,image2
 SDL2_CMAKE_BOOL=	WITH_CLIENT_SDL2 WITH_SDL_IMAGE_DIALOGS
@@ -201,7 +217,7 @@ _WEBKIT_LIB_DEPENDS=	libsoup-3.0.so:devel/libsoup3 \
 			libharfbuzz.so:print/harfbuzz \
 			libwebkit2gtk-4.1.so:www/webkit2-gtk@41
 _WEBKIT_USES=		gettext gnome
-WEBKIT_USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
+WEBKIT_USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 pango
 WEBKIT_CMAKE_ON=	-DWITH_WEBVIEW:BOOL=ON
 
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp

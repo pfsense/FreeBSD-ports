@@ -1,5 +1,5 @@
 PORTNAME=	ruby-saml
-PORTVERSION=	1.17.0
+PORTVERSION=	1.18.0
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-gitlab
@@ -13,7 +13,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-nokogiri>=1.13.10:textproc/rubygem-nokogiri \
-		rubygem-rexml-gitlab>=0:textproc/rubygem-rexml-gitlab
+		rubygem-rexml>=0:textproc/rubygem-rexml
 
 USES=		gem
 

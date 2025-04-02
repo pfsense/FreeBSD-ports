@@ -74,8 +74,8 @@
     SUBDIR += poudriere-dsh2dsh
     SUBDIR += psearch
     SUBDIR += py-FreeBSD-ports
+    SUBDIR += py-nvchecker
     SUBDIR += py-pnu-portstreelint
-    SUBDIR += py-pytoport
     SUBDIR += py-skog
     SUBDIR += rc-subr-jail
     SUBDIR += reprise

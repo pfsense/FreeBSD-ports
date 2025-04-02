@@ -1,6 +1,6 @@
 PORTNAME=	bugwarrior
 PORTVERSION=	1.8.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -49,10 +49,6 @@ PHABRICATOR_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}phabricator>0:devel/py-phabricat
 TRAC_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}offtrac>0:devel/py-offtrac@${PY_FLAVOR}
 
 .include <bsd.port.pre.mk>
-
-.if ${PYTHON_VER} <= 3.8
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
-.endif
 
 .if ${PYTHON_REL} > 30900
 BROKEN=		python-3.9 or later is not supported

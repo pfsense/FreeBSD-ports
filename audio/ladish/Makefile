@@ -1,5 +1,6 @@
 PORTNAME=	ladish
 DISTVERSION=	1.2
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g4dcd67d7
 CATEGORIES=	audio
 MASTER_SITES=	https://dl.ladish.org/ladish/
@@ -26,7 +27,7 @@ OPTIONS_DEFAULT=	GUI
 OPTIONS_SUB=		yes
 
 GUI_USES=		gettext gnome
-GUI_USE=		GNOME=atkmm,cairo,gdkpixbuf2,gtk20,gtkmm24,libgnomecanvas,pango,intltool:build
+GUI_USE=		GNOME=atkmm,cairo,gdkpixbuf,gtk20,gtkmm24,libgnomecanvas,pango,intltool:build
 GUI_VARS=		CONFIGURE_ARGS=--enable-gladish
 GUI_BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 GUI_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \

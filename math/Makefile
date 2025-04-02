@@ -637,6 +637,7 @@
     SUBDIR += octave-forge-outliers
     SUBDIR += octave-forge-parallel
     SUBDIR += octave-forge-pde1dm
+    SUBDIR += octave-forge-piqp
     SUBDIR += octave-forge-pkg-octave-doc
     SUBDIR += octave-forge-plot
     SUBDIR += octave-forge-ponchon-savarit
@@ -871,8 +872,8 @@
     SUBDIR += pari_nftables
     SUBDIR += pari_seadata
     SUBDIR += paritwine
-    SUBDIR += parmetis
     SUBDIR += parmgridgen
+    SUBDIR += pcalc
     SUBDIR += pdal
     SUBDIR += pear-Math_BigInteger
     SUBDIR += pear-Math_Combinatorics
@@ -907,10 +908,9 @@
     SUBDIR += primesum
     SUBDIR += primme
     SUBDIR += prng
-    SUBDIR += pspp
+    SUBDIR += proxsuite
     SUBDIR += psurface
     SUBDIR += py-CyLP
-    SUBDIR += py-Diofant
     SUBDIR += py-GridDataFormats
     SUBDIR += py-MutatorMath
     SUBDIR += py-POT
@@ -957,6 +957,7 @@
     SUBDIR += py-cvxpy
     SUBDIR += py-cyipopt
     SUBDIR += py-cypari2
+    SUBDIR += py-daqp
     SUBDIR += py-deap
     SUBDIR += py-dgl
     SUBDIR += py-diffcp
@@ -1035,7 +1036,6 @@
     SUBDIR += py-nevergrad
     SUBDIR += py-nlopt
     SUBDIR += py-numba-stats
-    SUBDIR += py-numdifftools
     SUBDIR += py-numexpr
     SUBDIR += py-numpoly
     SUBDIR += py-numpy
@@ -1078,7 +1078,6 @@
     SUBDIR += py-pyreadstat
     SUBDIR += py-pyrr
     SUBDIR += py-pysmt
-    SUBDIR += py-pystan
     SUBDIR += py-pysym
     SUBDIR += py-pytanque
     SUBDIR += py-pytensor

@@ -70,6 +70,7 @@
     SUBDIR += erlang-runtime25
     SUBDIR += erlang-runtime26
     SUBDIR += erlang-runtime27
+    SUBDIR += erlang-runtime28
     SUBDIR += erlang-wx
     SUBDIR += execline
     SUBDIR += expect
@@ -124,6 +125,7 @@
     SUBDIR += go121
     SUBDIR += go122
     SUBDIR += go123
+    SUBDIR += go124
     SUBDIR += gomacro
     SUBDIR += gprolog
     SUBDIR += gptscript
@@ -213,11 +215,9 @@
     SUBDIR += myrddin
     SUBDIR += nawk
     SUBDIR += nbfc
-    SUBDIR += neko
     SUBDIR += neocmakelsp
     SUBDIR += nesasm
     SUBDIR += newlisp
-    SUBDIR += nhc98
     SUBDIR += nickle
     SUBDIR += nim
     SUBDIR += njs
@@ -230,6 +230,7 @@
     SUBDIR += ocaml
     SUBDIR += ocaml-autoconf
     SUBDIR += ocaml-camlidl
+    SUBDIR += odin
     SUBDIR += oo2c
     SUBDIR += opencoarrays
     SUBDIR += opensycl
@@ -310,7 +311,6 @@
     SUBDIR += python3
     SUBDIR += python310
     SUBDIR += python311
-    SUBDIR += python38
     SUBDIR += python39
     SUBDIR += qmasm
     SUBDIR += quickjs
@@ -328,7 +328,6 @@
     SUBDIR += rhino
     SUBDIR += rizin
     SUBDIR += rizin-cutter
-    SUBDIR += ruby31
     SUBDIR += ruby32
     SUBDIR += ruby33
     SUBDIR += rubygem-rb_sys

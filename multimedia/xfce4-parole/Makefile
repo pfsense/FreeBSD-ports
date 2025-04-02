@@ -1,5 +1,6 @@
 PORTNAME=	parole
 PORTVERSION=	4.18.2
+PORTREVISION=	1
 CATEGORIES=	multimedia xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -20,7 +21,7 @@ RUN_DEPENDS=	xdg-screensaver:devel/xdg-utils
 
 USES=		compiler:c++11-lang desktop-file-utils gettext-tools \
 		gmake gnome gstreamer libtool pkgconfig tar:bzip2 xfce xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30 glib20
+USE_GNOME=	cairo gdkpixbuf gtk30 glib20
 USE_GSTREAMER=	core faad flac wavpack x
 USE_XFCE=	libmenu xfconf
 USE_XORG=	ice sm x11

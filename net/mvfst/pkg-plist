@@ -7,6 +7,7 @@ include/quic/api/IoBufQuicBatch.h
 include/quic/api/LibevQuicAsyncUDPSocket.h
 include/quic/api/LibevQuicEventBase.h
 include/quic/api/LoopDetectorCallback.h
+include/quic/api/QuicAckScheduler.h
 include/quic/api/QuicAsyncUDPSocket.h
 include/quic/api/QuicAsyncUDPSocketImpl.h
 include/quic/api/QuicBatchWriter.h
@@ -139,6 +140,9 @@ include/quic/loss/QuicLossFunctions.h
 include/quic/observer/SocketObserverContainer.h
 include/quic/observer/SocketObserverInterface.h
 include/quic/observer/SocketObserverTypes.h
+include/quic/priority/HTTPPriorityQueue.h
+include/quic/priority/PriorityQueue.h
+include/quic/priority/RoundRobin.h
 include/quic/server/AcceptObserver.h
 include/quic/server/QuicHandshakeSocketHolder.h
 include/quic/server/QuicReusePortUDPSocketFactory.h
@@ -197,6 +201,8 @@ include/quic/state/test/Mocks.h
 lib/cmake/mvfst/mvfst-config.cmake
 lib/cmake/mvfst/mvfst-targets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/mvfst/mvfst-targets.cmake
+lib/libmvfst_ack_scheduler.so
+lib/libmvfst_ack_scheduler.so.0
 lib/libmvfst_async_udp_socket.so
 lib/libmvfst_async_udp_socket.so.0
 lib/libmvfst_batch_writer.so
@@ -241,6 +247,8 @@ lib/libmvfst_handshake.so
 lib/libmvfst_handshake.so.0
 lib/libmvfst_happyeyeballs.so
 lib/libmvfst_happyeyeballs.so.0
+lib/libmvfst_http_priority_queue.so
+lib/libmvfst_round_robin.so
 lib/libmvfst_looper.so
 lib/libmvfst_looper.so.0
 lib/libmvfst_loss.so

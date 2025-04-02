@@ -1,6 +1,6 @@
 PORTNAME=	adguardhome
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.107.56
+DISTVERSION=	0.107.59
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONFULL}/
 DISTFILES=	${GH_PROJECT}_frontend${EXTRACT_SUFX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
-USES=		cpe go:1.23,modules
+USES=		cpe go:1.24,modules
 
 GH_ACCOUNT=	AdguardTeam
 GH_PROJECT=	AdGuardHome

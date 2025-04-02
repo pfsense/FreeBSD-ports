@@ -1,5 +1,5 @@
 PORTNAME=	newsraft
-DISTVERSION=	0.28
+DISTVERSION=	0.29
 CATEGORIES=	www
 MASTER_SITES=	https://codeberg.org/${PORTNAME}/${PORTNAME}/archive/
 

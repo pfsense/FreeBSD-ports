@@ -1,6 +1,7 @@
 PORTNAME=	aws-iam-authenticator
 PORTVERSION=	0.6.30
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	danilo@FreeBSD.org

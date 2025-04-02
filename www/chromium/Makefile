@@ -1,5 +1,6 @@
 PORTNAME=	chromium
-PORTVERSION=	133.0.6943.126
+PORTVERSION=	134.0.6998.165
+PORTREVISION=	1
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
 CATEGORIES=	www wayland
@@ -80,7 +81,7 @@ USES=		bison compiler:c++17-lang cpe desktop-file-utils gl gmake gnome \
 CPE_VENDOR=	google
 CPE_PRODUCT=	chrome
 USE_GL=		gbm gl
-USE_GNOME=	atk dconf gdkpixbuf2 glib20 gtk30 libxml2 libxslt
+USE_GNOME=	atk dconf gdkpixbuf glib20 gtk30 libxml2 libxslt
 USE_LDCONFIG=	${DATADIR}
 USE_PERL5=	build
 USE_XORG=	x11 xcb xcomposite xcursor xext xdamage xfixes xi \

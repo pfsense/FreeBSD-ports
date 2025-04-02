@@ -1,6 +1,6 @@
 PORTNAME=	netatalk
 PORTVERSION=	3.2.10
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/netatalk-${PORTVERSION:S/./-/g}/
@@ -73,12 +73,12 @@ MYSQL_MESON_OFF=-Dwith-cnid-mysql-backend=false
 ACL_LIB_DEPENDS=	libsunacl.so:sysutils/libsunacl
 ACL_MESON_OFF=-Dwith-acls=false
 LIBWRAP_MESON_OFF=-Dwith-tcp-wrappers=false
-SPOTLIGHT_LIB_DEPENDS=	libtracker-sparql-3.0.so:sysutils/tracker3
+SPOTLIGHT_LIB_DEPENDS=	libtinysparql-3.0.so:devel/tinysparql
 SPOTLIGHT_MESON_OFF=	-Dwith-spotlight=false
 
 SHEBANG_GLOB=	afpstats
 
-CONFLICTS=	jday yudit # bin/dbd man/man1/uniconv.1.gz
+CONFLICTS=	netatalk4
 
 .include <bsd.port.pre.mk>
 

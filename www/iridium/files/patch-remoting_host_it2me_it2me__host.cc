@@ -1,6 +1,6 @@
---- remoting/host/it2me/it2me_host.cc.orig	2024-12-22 12:24:29 UTC
+--- remoting/host/it2me/it2me_host.cc.orig	2025-03-18 16:46:04 UTC
 +++ remoting/host/it2me/it2me_host.cc
-@@ -58,7 +58,7 @@
+@@ -61,7 +61,7 @@
  #include "remoting/host/chromeos/features.h"
  #endif
  
@@ -9,7 +9,7 @@
  #include "remoting/host/linux/wayland_manager.h"
  #include "remoting/host/linux/wayland_utils.h"
  #endif  // BUILDFLAG(IS_LINUX)
-@@ -184,7 +184,7 @@ void It2MeHost::Connect(
+@@ -224,7 +224,7 @@ void It2MeHost::Connect(
  
    OnPolicyUpdate(std::move(policies));
  
@@ -18,7 +18,7 @@
    if (IsRunningWayland()) {
      WaylandManager::Get()->Init(host_context_->ui_task_runner());
    }
-@@ -318,7 +318,7 @@ void It2MeHost::ConnectOnNetworkThread(
+@@ -376,7 +376,7 @@ void It2MeHost::ConnectOnNetworkThread(
  
    // Set up the desktop environment options.
    DesktopEnvironmentOptions options(DesktopEnvironmentOptions::CreateDefault());

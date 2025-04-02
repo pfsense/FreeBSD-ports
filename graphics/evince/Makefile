@@ -1,6 +1,6 @@
 PORTNAME=	evince
-DISTVERSION=	43.1
-PORTREVISION=	11
+DISTVERSION=	46.3.1
+PORTREVISION=	2
 CATEGORIES=	graphics print gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -30,14 +30,15 @@ PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c++11-lib cpe desktop-file-utils gettext gnome gstreamer libarchive \
 		localbase:ldflags meson pkgconfig tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_LDCONFIG=	yes
 USE_XORG=	ice
 CPE_VENDOR=	gnome
 MESON_ARGS=	-Dgtk_doc=false \
 		-Dpdf=enabled \
 		-Dps=enabled \
-		-Dsystemduserunitdir=no
+		-Dsystemduserunitdir=no \
+		-Dnautilus=false
 
 .if ${FLAVOR} == lite
 MESON_ARGS+=		-Dintrospection=false \
@@ -45,13 +46,13 @@ MESON_ARGS+=		-Dintrospection=false \
 			-Dthumbnail_cache=disabled \
 			-Dthumbnailer=false
 USE_GNOME+=		libxml2
-OPTIONS_EXCLUDE=	DBUS NAUTILUS
+OPTIONS_EXCLUDE=	DBUS
 PLIST=			${.CURDIR}/pkg-plist-lite
 PKGNAMESUFFIX=		-lite
 COMMENT+=		without GNOME dependencies
 CONFLICTS_INSTALL=	evince
 .else
-USE_GNOME+=		introspection:build
+USE_GNOME+=		introspection:build gnomedesktop3
 MESON_ARGS+=		-Dintrospection=true
 CONFLICTS_INSTALL=	evince-lite
 .endif
@@ -61,8 +62,8 @@ GLIB_SCHEMAS=	org.gnome.Evince.gschema.xml
 PLIST_SUB=	VERSION=3.0
 
 OPTIONS_SUB=		yes
-OPTIONS_DEFINE=		COMICS DBUS DJVU DVI KEYRING NAUTILUS SPELL XPS
-OPTIONS_DEFAULT=	COMICS DBUS DJVU KEYRING NAUTILUS SPELL XPS
+OPTIONS_DEFINE=		COMICS DBUS DJVU DVI KEYRING SPELL XPS
+OPTIONS_DEFAULT=	COMICS DBUS DJVU KEYRING SPELL XPS
 
 COMICS_DESC=		Comic book archives support
 COMICS_MESON_ENABLED=	comics
@@ -82,10 +83,6 @@ DVI_MESON_ENABLED=	dvi
 KEYRING_DESC=		Keyring support
 KEYRING_LIB_DEPENDS=	libsecret-1.so:security/libsecret
 KEYRING_MESON_ENABLED=	keyring
-
-NAUTILUS_DESC=		Nautilus plugin
-NAUTILUS_USE=		GNOME=nautilus3
-NAUTILUS_MESON_TRUE=	nautilus
 
 SPELL_DESC=		spell checking support
 SPELL_MESON_ENABLED=	gspell

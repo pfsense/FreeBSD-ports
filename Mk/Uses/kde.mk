@@ -95,7 +95,7 @@ KDE_PLASMA5_VERSION?=		5.27.12
 KDE_PLASMA5_BRANCH?=		stable
 
 # Current KDE Plasma desktop.
-KDE_PLASMA6_VERSION?=		6.3.0
+KDE_PLASMA6_VERSION?=		6.3.3
 KDE_PLASMA6_BRANCH?=		stable
 
 # Legacy KDE frameworks (Qt5 based).
@@ -103,13 +103,13 @@ KDE_FRAMEWORKS5_VERSION?=	5.116.0
 KDE_FRAMEWORKS5_BRANCH?=	stable
 
 # Current KDE Frameworks (Qt6 based).
-KDE_FRAMEWORKS6_VERSION?=	6.10.0
+KDE_FRAMEWORKS6_VERSION?=	6.12.0
 KDE_FRAMEWORKS6_BRANCH?=	stable
 
 # Current KDE applications. Update _${PORTNAME}_PROJECT_VERSION for the following ports:
 # devel/kdevelop, games/libkdegames, games/libkmahjongg, graphics/kgraphviewer
-KDE_APPLICATIONS6_VERSION?=	24.12.2
-KDE_APPLICATIONS6_SHLIB_VER?=	6.3.2
+KDE_APPLICATIONS6_VERSION?=	24.12.3
+KDE_APPLICATIONS6_SHLIB_VER?=	6.3.3
 # G as in KDE Gear, and as in "don't make the variable name longer than required".
 KDE_APPLICATIONS6_SHLIB_G_VER?=	${KDE_APPLICATIONS6_VERSION}
 KDE_APPLICATIONS6_BRANCH?=	stable
@@ -316,7 +316,7 @@ _USE_PLASMA6_ALL=	activities activities-stats activitymanagerd \
 			plasma-sdk plasma-workspace \
 			plasma-workspace-wallpapers plasma5support \
 			polkit-kde-agent-1 powerdevil print-manager \
-			qqc2-breeze-style sddm-kcm systemmonitor \
+			qqc2-breeze-style sddm-kcm spectacle systemmonitor \
 			systemsettings wayland xdg-desktop-portal-kde
 _USE_PLASMA_ALL=	${_USE_PLASMA${_KDE_VERSION}_ALL}
 
@@ -343,9 +343,9 @@ _USE_KDEPIM_ALL=	akonadi akonadicalendar akonadiconsole \
 			pimcommon pimtextedit tnef
 
 # List of frequently used KDE releated software for any KDE/Qt version.
-_USE_KDE_EXTRA5_ALL=	kirigami-addons phonon phonon-backend \
+_USE_KDE_EXTRA5_ALL=	kirigami-addons phonon phonon-vlc \
 			plasma-wayland-protocols
-_USE_KDE_EXTRA6_ALL=	kirigami-addons phonon phonon-backend \
+_USE_KDE_EXTRA6_ALL=	kirigami-addons phonon phonon-mpv phonon-vlc \
 			plasma-wayland-protocols ktextaddons
 _USE_KDE_EXTRA_ALL=	${_USE_KDE_EXTRA${_KDE_VERSION}_ALL}
 
@@ -764,6 +764,10 @@ kde-print-manager_PORT=		print/plasma${_KDE_VERSION}-print-manager
 kde-print-manager_PATH=		${KDE_PREFIX}/bin/kde-add-printer
 kde-print-manager_TYPE=		run
 
+kde-spectacle_PORT=		graphics/plasma${_KDE_VERSION}-spectacle
+kde-spectacle_PATH=		${KDE_PREFIX}/bin/spectacle
+kde-spectacle_TYPE=		run
+
 kde-systemmonitor_PORT=		sysutils/plasma${_KDE_VERSION}-plasma-systemmonitor
 kde-systemmonitor_PATH=		${KDE_PREFIX}/bin/plasma-systemmonitor
 kde-systemmonitor_TYPE=		run
@@ -985,8 +989,14 @@ kde-okular_LIB=			libOkular${_KDE_VERSION}Core.so
 kde-phonon_PORT=		multimedia/phonon@${_QT_RELNAME}
 kde-phonon_LIB=			libphonon4${_QT_RELNAME}.so
 
-kde-phonon-backend_PORT=	multimedia/phonon-vlc@${_QT_RELNAME}
-kde-phonon-backend_PATH=	${QT_PLUGINDIR}/phonon4${_QT_RELNAME}_backend/phonon_vlc_${_QT_RELNAME}.so
+kde-phonon-mpv_PORT=	multimedia/phonon-mpv
+kde-phonon-mpv_PATH=	${QT_PLUGINDIR}/phonon4${_QT_RELNAME}_backend/phonon_mpv_${_QT_RELNAME}.so
+kde-phonon-mpv_TYPE=	run
+
+kde-phonon-vlc_PORT=	multimedia/phonon-vlc@${_QT_RELNAME}
+kde-phonon-vlc_PATH=	${QT_PLUGINDIR}/phonon4${_QT_RELNAME}_backend/phonon_vlc_${_QT_RELNAME}.so
+kde-phonon-vlc_TYPE=	run
+
 # ====================== end of multiversion components ========================
 
 # end of component list ########################################################

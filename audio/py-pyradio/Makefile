@@ -1,5 +1,5 @@
 PORTNAME=	pyradio
-DISTVERSION=	0.9.3.11.4
+DISTVERSION=	0.9.3.11.9
 PORTREVISION=	0
 CATEGORIES=	audio python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,6 +16,7 @@ BUILD_DEPENDS=	${PKGNAMEPREFIX}dnspython>=2.2.1:dns/py-dnspython@${PY_FLAVOR} \
 		${PKGNAMEPREFIX}psutil>=5.9.2:sysutils/py-psutil@${PY_FLAVOR} \
 		${PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PKGNAMEPREFIX}requests>=2.28.1:www/py-requests@${PY_FLAVOR} \
+		${PKGNAMEPREFIX}setuptools>=63.1.0:devel/py-setuptools@${PY_FLAVOR} \
 		${PKGNAMEPREFIX}wheel>=0.38.4:devel/py-wheel@${PY_FLAVOR} \
 		bash:shells/bash
 RUN_DEPENDS=	${PKGNAMEPREFIX}dnspython>=2.2.1:dns/py-dnspython@${PY_FLAVOR} \
@@ -51,6 +52,7 @@ VLC_DESC=	VLC media player support
 
 DOCS_PLIST_FILES=	share/man/man1/pyradio-client.1.gz \
 			share/man/man1/pyradio.1.gz \
+			share/man/man1/pyradio_buf.1.gz \
 			share/man/man1/pyradio_rb.1.gz \
 			share/man/man1/pyradio_rec.1.gz \
 			share/man/man1/pyradio_server.1.gz

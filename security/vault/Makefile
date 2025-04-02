@@ -1,6 +1,7 @@
 PORTNAME=	vault
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.18.4
+DISTVERSION=	1.19.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://raw.githubusercontent.com/hashicorp/vault/${DISTVERSIONFULL}/ \
 		LOCAL/bofh/security/${PORTNAME}/:web_ui
@@ -46,7 +47,7 @@ GROUPS=		vault
 
 PLIST_FILES=	bin/${PORTNAME}
 
-GITID=	503be623a3697e8c10c254dc87d26492c46753e1
+GITID=	2cb3755273dbd63f5b0f8ec50089b57ffd3fa330
 
 .include <bsd.port.pre.mk>
 

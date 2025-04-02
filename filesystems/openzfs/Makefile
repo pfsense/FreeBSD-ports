@@ -1,22 +1,23 @@
 PORTNAME=	openzfs
-PORTVERSION=	2023113000
-DISTVERSIONPREFIX=	v
+PORTVERSION=	2.3.1
 PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	filesystems sysutils
+MASTER_SITES=   https://github.com/openzfs/zfs/releases/download/zfs-${PORTVERSION}/
+DISTNAME=	zfs-${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mm@FreeBSD.org
 COMMENT=	OpenZFS userland for FreeBSD
 WWW=		https://github.com/openzfs/zfs
 
 LICENSE=	CDDL
 
-BROKEN_aarch64=	invokes x86 assembler
 BROKEN_riscv64=	fails to compile: btree_test.c:462:49: result of comparison of constant -1 with expression of type 'char' is always true
 
 BUILD_DEPENDS=	ksh93:shells/ksh93
 RUN_DEPENDS=	openzfs-kmod>=0:filesystems/openzfs-kmod
 
-USES+=		autoreconf:build cpe libtool gmake gettext-runtime python:build shebangfix ssl
+USES+=		cpe libtool gettext-runtime gmake python:build shebangfix ssl
 SHEBANG_GLOB=	*.ksh *.ksh.in *.kshlib *.py.in
 SHEBANG_FILES=	tests/zfs-tests/tests/functional/trim/trim.cfg \
 		cmd/arcstat.in \
@@ -32,10 +33,6 @@ OPTIONS_DEFINE=	DEBUG PYTHON TESTS
 PYTHON_DESC=	Build the pyzfs library, arc_summary, arcstat, and dbufstat utilities
 TESTS_DESC=	Install the ZFS Test Suite
 OPTIONS_SUB=	yes
-
-USE_GITHUB=	yes
-GH_PROJECT=	zfs
-GH_TAGNAME=	494aaae
 
 USE_LDCONFIG=	yes
 
@@ -56,6 +53,8 @@ CONFIGURE_ARGS+=	--without-python
 PYTHON_NO_DEPENDS=yes
 .endif
 
+.include <bsd.port.pre.mk>
+
 post-extract:
 	# Change certain shebangs into something that shebang fix understands
 	cd ${WRKSRC} && ${SED} -i '' '1s:@PYTHON_SHEBANG@:python3:' \
@@ -65,7 +64,13 @@ post-extract:
 		cmd/dbufstat.in \
 		cmd/zilstat.in
 
-pre-configure:
-	cd ${WRKSRC} && ./autogen.sh
+post-patch:
+.if ${ARCH} == i386
+	${REINPLACE_CMD} \
+	-e 's,-c -o lib/libspl/libspl_la-atomic.lo,-Wno-error=atomic-alignment -c -o lib/libspl/libspl_la-atomic.lo,' \
+	-e 's,-c -o module/icp/algs/sha2/libicp_la-sha256_impl.lo,-Wno-unused-function -c -o module/icp/algs/sha2/libicp_la-sha256_impl.lo,' \
+	-e 's,-c -o module/icp/algs/sha2/libicp_la-sha512_impl.lo,-Wno-unused-function -c -o module/icp/algs/sha2/libicp_la-sha512_impl.lo,' \
+	${WRKSRC}/Makefile.in
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

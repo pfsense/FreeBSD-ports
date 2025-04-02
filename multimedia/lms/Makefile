@@ -1,7 +1,6 @@
 PORTNAME=	lms
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.63.0
-PORTREVISION=	1
+DISTVERSION=	3.65.0
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,14 +10,13 @@ WWW=		https://github.com/epoupon/lms
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_13=	compilation fails: error: object of type 'const LiteralString' cannot be compared because its 'operator<=>' is implicitly deleted
-
 BUILD_DEPENDS=	googletest>0:devel/googletest
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libboost_system.so:devel/boost-libs \
 		libconfig++.so:devel/libconfig \
 		libtag.so:audio/taglib \
-		libwthttp.so:www/wt
+		libwthttp.so:www/wt \
+		libxxhash.so:devel/xxhash
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
 USES=		cmake compiler:c++20-lang cpe libarchive pkgconfig

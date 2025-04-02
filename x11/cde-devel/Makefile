@@ -1,6 +1,6 @@
 PORTNAME=	cde
 PORTVERSION=	${COMMIT_DATE}
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	-devel
@@ -13,8 +13,8 @@ WWW=		https://sourceforge.net/p/cdesktopenv/wiki/Home/
 USE_GITHUB=	yes
 GH_ACCOUNT=	cschuber
 GH_PROJECT=	cdesktopenv-code
-GH_TAGNAME=	e4c1e173f
-COMMIT_DATE=	2025.02.03
+GH_TAGNAME=	f0be964d6
+COMMIT_DATE=	2025.03.19
 
 LICENSE=	LGPL21
 
@@ -71,6 +71,9 @@ SUB_FILES=	pkg-message
 CFLAGS+=	-Wno-register -Wno-incompatible-function-pointer-types \
 		-Wno-implicit-function-declaration
 LDFLAGS+=	-z muldefs #--allow-multiple-definition
+
+CFFILES=	Xaccess Xconfig Xfailsafe Xreset Xservers Xsetup Xstartup \
+		sys.dtprofile
 
 pre-configure:
 	@cd ${WRKSRC} && ./autogen.sh
@@ -130,5 +133,8 @@ post-install:
 	@cd ${STAGEDIR}/${DT_PREFIX}; ${LN} -sf share/examples
 	# Only a problem on armv7 so far
 	${FIND} ${STAGEDIR}/${DT_PREFIX} -type f -name 'ecp.*' -delete
+.for f in ${CFFILES}
+	@${MV} ${STAGEDIR}${PREFIX}/dt/config/${f} ${STAGEDIR}${PREFIX}/dt/config/${f}.sample
+.endfor
 
 .include <bsd.port.mk>

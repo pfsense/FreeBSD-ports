@@ -1,6 +1,6 @@
 PORTNAME=	szyszka
 DISTVERSION=	3.0.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cargo gnome
-USE_GNOME=	glib20 gtk40 gdkpixbuf2
+USE_GNOME=	glib20 gtk40 gdkpixbuf
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	qarmin

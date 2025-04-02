@@ -1,16 +1,18 @@
 PORTNAME=	cargo-mutants
 DISTVERSIONPREFIX=	v
 DISTVERSION=	25.0.1
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Mutation testing for Rust
-WWW=		https://mutants.rs/
+WWW=		https://mutants.rs/ \
+		https://github.com/sourcefrog/cargo-mutants
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_armv7=	compilation fails, see https://github.com/sourcefrog/cargo-mutants/issues/380
 BROKEN_i386=	compilation fails, see https://github.com/sourcefrog/cargo-mutants/issues/380
 
 USES=		cargo

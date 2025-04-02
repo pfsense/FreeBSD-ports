@@ -1,5 +1,5 @@
 PORTNAME=	django-htmx
-DISTVERSION=	1.22.0
+DISTVERSION=	1.23.0
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}dj50-
@@ -11,6 +11,9 @@ WWW=		https://github.com/adamchainz/django-htmx
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Extended support of Django 5.0 ends April 2025, upgrade to the Django 5.1+ version of this port. See https://www.djangoproject.com/download/
+EXPIRATION_DATE=2025-05-31
 
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}

@@ -3,8 +3,8 @@ DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	graphics kde
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Graphics utilities for KDE (meta port)
-WWW=		https://www.kde.org
+COMMENT=	Graphics applications for KDE (meta port)
+WWW=		https://apps.kde.org/categories/graphics/
 
 USES=		kde:6 metaport qt:6
 USE_QT=		#
@@ -16,7 +16,6 @@ OPTIONS_DEFINE=	GPHOTO \
 		KRULER \
 		MOBIPOCKET \
 		SKANLITE \
-		SPECTACLE \
 		SVG \
 		THUMBNAILER
 
@@ -38,10 +37,7 @@ KRULER_DESC=			Screen ruler
 KRULER_RUN_DEPENDS=		kruler>=${KDE_APPLICATIONS_VERSION}:deskutils/kruler
 
 SKANLITE_DESC=			Simple scanning application
-SKANLITE_RUN_DEPENDS=		skanlite>=2.1:graphics/skanlite
-
-SPECTACLE_DESC=			Screen capture program
-SPECTACLE_RUN_DEPENDS=		spectacle>=${KDE_APPLICATIONS_VERSION}:graphics/spectacle
+SKANLITE_RUN_DEPENDS=		skanlite>=${KDE_APPLICATIONS_VERSION}:graphics/skanlite
 
 MOBIPOCKET_DESC=		Mobipocket plugins for Strigi indexing and thumbnailers
 MOBIPOCKET_RUN_DEPENDS=		kdegraphics-mobipocket-qt6>=${KDE_APPLICATIONS_VERSION}:graphics/kdegraphics-mobipocket@qt6
