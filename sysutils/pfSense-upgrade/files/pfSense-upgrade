@@ -286,8 +286,7 @@ be_is_path_on_root()
 #
 be_bootenv_check()
 {
-	is_plus \
-		&& be_is_zfs_root \
+	be_is_zfs_root \
 		&& /sbin/bectl check \
 		&& be_is_path_on_root "/cf" \
 		&& be_is_path_on_root "/var/db/pkg"
@@ -1201,14 +1200,6 @@ pkg_upgrade() {
 			rm -f ${logfile}
 		fi
 
-		# Cleanup BEs on incompatible systems.
-		# Note: This is a no-op on UFS
-		be_prune
-
-		# Migrate datasets on systems not compatible with BEs.
-		# Note: This is a no-op on UFS
-		be_migrate
-
 		pkg_update force
 
 		# Lock pkg to avoid having pkg binary for version N+1 installed
@@ -1324,12 +1315,21 @@ pkg_upgrade() {
 			fi
 		fi
 
+		# Cleanup BEs on incompatible systems.
+		# Note: This is a no-op on UFS
+		be_prune
+
+		# Migrate datasets on systems not compatible with BEs.
+		# Note: This is a no-op on UFS
+		be_migrate
+
 		#
 		# Here we branch if we can use the new BE-based upgrade mechanism
 		#
-		if be_bootenv_check; then
-			be_pkg_upgrade
-			_exit 0
+		if is_plus && \
+			be_bootenv_check; then
+				be_pkg_upgrade
+				_exit 0
 		fi
 		#
 		# Otherwise, we continue on through the old update code path
