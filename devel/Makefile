@@ -4909,6 +4909,7 @@
     SUBDIR += py-flufl.lock
     SUBDIR += py-flynt
     SUBDIR += py-foolscap
+    SUBDIR += py-forbiddenfruit
     SUBDIR += py-freebsd
     SUBDIR += py-freebsd-sysctl
     SUBDIR += py-freenas.utils
