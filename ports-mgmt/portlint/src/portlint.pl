@@ -52,7 +52,7 @@ $portdir = '.';
 # version variables
 my $major = 2;
 my $minor = 22;
-my $micro = 5;
+my $micro = 7;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -2394,22 +2394,22 @@ xargs xmkmf
 		} elsif ($gcc_val !~ /\+/) {
 			&perror("WARN", $file, $lineno, "Setting a specific version for ".
 				"USE_GCC should only be done as a last resort.  Unless you ".
-				"have confirmed this port does not build with later ".
-				"versions of GCC, please use USE_GCC=$gcc_val+.");
+				"are unable to get this port to build with current ".
+				"versions of GCC, please use USE_GCC=yes.");
 		}
 	}
 
 	#
 	# whole file: USE_JAVA check
 	#
-	if ($whole =~ /^USE_JAVA[?:]?=\s*(.*)$/m) {
+	if ($makevar{USES} =~ /\bjava(:(build|run))?\b/) {
 		$use_java = 1;
 	}
 
 	#
 	# whole file: USE_ANT check
 	#
-	if ($whole =~ /^USE_ANT[?:]?=\s*(.*)$/m) {
+	if ($makevar{USES} =~ /\bjava:ant/) {
 		$use_ant = 1;
 	}
 
@@ -2429,7 +2429,7 @@ xargs xmkmf
 	# whole file: check for USE_ANT and USES=gmake both defined
 	#
 	if ($use_ant && $makevar{USES} =~ /\bgmake\b/) {
-		&perror("WARN", $file, -1, "a port shall not define both USE_ANT ".
+		&perror("WARN", $file, -1, "a port shall not define both USES=java:ant ".
 			"and USES[+]=gmake");
 	}
 
@@ -3306,6 +3306,7 @@ MAINTAINER COMMENT WWW
 			LICENSE LICENSE_COMB LICENSE_GROUPS LICENSE_NAME
 			LICENSE_TEXT LICENSE_FILE LICENSE_PERMS
 		));
+		&checkearlier($file, $tmp, @varnames);
 	} else {
 		&perror("WARN", $file, -1, "Consider defining LICENSE.");
 	}
@@ -3327,16 +3328,15 @@ NOT_FOR_ARCHS NOT_FOR_ARCHS_REASON(_\w+)? LEGAL_TEXT
 
 	if ($tmp =~ /$brokenpattern/) {
 		$idx++;
+		$tmp = "\n" . $tmp;
+
+		foreach my $i (@linestocheck) {
+			$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
+		}
+
+		push(@varnames, @linestocheck);
+		&checkearlier($file, $tmp, @varnames);
 	}
-
-	$tmp = "\n" . $tmp;
-
-	foreach my $i (@linestocheck) {
-		$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
-	}
-
-	push(@varnames, @linestocheck);
-	&checkearlier($file, $tmp, @varnames);
 
 	#
 	# section 7: *_DEPENDS (may not be there)

@@ -1,5 +1,5 @@
 PORTNAME=	libsemigroups
-PORTVERSION=	2.7.3
+PORTVERSION=	3.0.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 
@@ -18,9 +18,10 @@ USES=		autoreconf compiler:c++11-lang eigen:3,build \
 		libtool pathfix pkgconfig
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-fmt --with-external-fmt=yes	\
-		--with-external-eigen
-#LIBS=		-lexecinfo
+CONFIGURE_ARGS=	--with-external-fmt=yes	\
+		--with-external-eigen	\
+		--enable-hpcombi
+LIBS=		-lm
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check

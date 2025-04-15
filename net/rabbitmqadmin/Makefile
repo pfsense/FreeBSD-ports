@@ -1,6 +1,7 @@
 PORTNAME=	rabbitmqadmin
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.29.0
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	dch@FreeBSD.org
@@ -11,6 +12,8 @@ LICENSE=	APACHE20 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
+
+BROKEN_i386=	compilation fails: ld: error: undefined symbol: __atomic_load
 
 USES=		cargo llvm pkgconfig ssl
 

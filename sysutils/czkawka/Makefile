@@ -1,14 +1,17 @@
 PORTNAME=	czkawka
 DISTVERSION=	9.0.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	uzsolt@FreeBSD.org
-COMMENT=	Smple app to remove unnecessary files from your computer
+COMMENT=	Simple app to remove unnecessary files from your computer
 WWW=		https://github.com/qarmin/czkawka
 
 LICENSE=	CC-BY-4.0 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_MIT=	${WRKSRC}/${PORTNAME}_core/LICENSE
+
+BROKEN_i386=	the trait bound [u64; 4]: BitViewSized is not satisfied
 
 USES=		cargo gnome
 USE_GITHUB=	yes

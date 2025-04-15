@@ -302,7 +302,6 @@
     SUBDIR += python
     SUBDIR += python-doc-html
     SUBDIR += python-doc-pdf-a4
-    SUBDIR += python-doc-pdf-letter
     SUBDIR += python-doc-text
     SUBDIR += python-mode.el
     SUBDIR += python-tools
@@ -311,6 +310,7 @@
     SUBDIR += python3
     SUBDIR += python310
     SUBDIR += python311
+    SUBDIR += python312
     SUBDIR += python39
     SUBDIR += qmasm
     SUBDIR += quickjs

@@ -223,6 +223,7 @@
     SUBDIR += glassfish4
     SUBDIR += glpi
     SUBDIR += gnome-user-share
+    SUBDIR += go-anubis
     SUBDIR += go-www
     SUBDIR += gobuffalo
     SUBDIR += gohugo
@@ -1056,6 +1057,7 @@
     SUBDIR += p5-Mojolicious-Plugin-HamlRenderer
     SUBDIR += p5-Mojolicious-Plugin-Mongodb
     SUBDIR += p5-Mojolicious-Plugin-OpenAPI
+    SUBDIR += p5-Mojolicious-Plugin-RenderFile
     SUBDIR += p5-Mojolicious-Plugin-SetUserGroup
     SUBDIR += p5-Mojolicious-Plugin-TtRenderer
     SUBDIR += p5-Mojolicious-Plugin-YamlConfig
@@ -1666,6 +1668,7 @@
     SUBDIR += py-django42
     SUBDIR += py-django50
     SUBDIR += py-django51
+    SUBDIR += py-django52
     SUBDIR += py-django_compressor
     SUBDIR += py-djangocms-admin-style
     SUBDIR += py-djangoql

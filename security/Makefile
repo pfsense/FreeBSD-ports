@@ -1202,7 +1202,6 @@
     SUBDIR += rubygem-origami
     SUBDIR += rubygem-pbkdf2-ruby
     SUBDIR += rubygem-pundit
-    SUBDIR += rubygem-pundit61
     SUBDIR += rubygem-pwned
     SUBDIR += rubygem-pyu-ruby-sasl
     SUBDIR += rubygem-rack-oauth2
@@ -1336,6 +1335,7 @@
     SUBDIR += su-exec
     SUBDIR += subversion-gnome-keyring
     SUBDIR += sudo
+    SUBDIR += sudo-rs
     SUBDIR += sudoscript
     SUBDIR += super
     SUBDIR += suricata

@@ -348,6 +348,7 @@
     SUBDIR += build
     SUBDIR += build2
     SUBDIR += buildkite-agent
+    SUBDIR += buildkite-cli
     SUBDIR += bullet
     SUBDIR += bunyan
     SUBDIR += busd
@@ -657,6 +658,7 @@
     SUBDIR += electron32
     SUBDIR += electron33
     SUBDIR += electron34
+    SUBDIR += electron35
     SUBDIR += elf
     SUBDIR += elf-dissector
     SUBDIR += elfcat
@@ -4442,6 +4444,7 @@
     SUBDIR += py-atomiclong
     SUBDIR += py-atomicwrites
     SUBDIR += py-atpublic
+    SUBDIR += py-attr
     SUBDIR += py-attrdict
     SUBDIR += py-attrs
     SUBDIR += py-attrs-strict
@@ -4578,7 +4581,7 @@
     SUBDIR += py-blessed
     SUBDIR += py-blessings
     SUBDIR += py-blinker
-    SUBDIR += py-blist
+    SUBDIR += py-blockbuster
     SUBDIR += py-bluelet
     SUBDIR += py-boltons
     SUBDIR += py-boolean.py
@@ -4906,6 +4909,7 @@
     SUBDIR += py-flufl.lock
     SUBDIR += py-flynt
     SUBDIR += py-foolscap
+    SUBDIR += py-forbiddenfruit
     SUBDIR += py-freebsd
     SUBDIR += py-freebsd-sysctl
     SUBDIR += py-freenas.utils
@@ -6148,6 +6152,7 @@
     SUBDIR += py-websockify
     SUBDIR += py-wheel
     SUBDIR += py-wheel-filename
+    SUBDIR += py-wheel044
     SUBDIR += py-whichcraft
     SUBDIR += py-whistle
     SUBDIR += py-widgetsnbextension
@@ -7504,7 +7509,6 @@
     SUBDIR += rubygem-lru_redux
     SUBDIR += rubygem-lumberjack
     SUBDIR += rubygem-main
-    SUBDIR += rubygem-makara61
     SUBDIR += rubygem-manpages
     SUBDIR += rubygem-map
     SUBDIR += rubygem-marcel

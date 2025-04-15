@@ -1,3 +1,1030 @@
+  <vuln vid="8f71ad3b-14f5-11f0-87ba-002590c1f29c">
+    <topic>expat: improper restriction of xml entity expansion depth</topic>
+    <affects>
+      <package>
+	<name>expat</name>
+	<range><lt>2.7.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>secalert@redhat.com reports:</p>
+	<blockquote cite="https://access.redhat.com/errata/RHSA-2025:3531">
+	  <p>A stack overflow vulnerability exists in the libexpat library due
+	  to the way it handles recursive entity expansion in XML documents.
+	  When parsing an XML document with deeply nested entity references,
+	  libexpat can be forced to recurse indefinitely, exhausting the stack
+	  space and causing a crash.  This issue could lead to denial of
+	  service (DoS) or, in some cases, exploitable memory corruption,
+	  depending on the environment and library usage.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-8176</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-8176</url>
+    </references>
+    <dates>
+      <discovery>2025-03-14</discovery>
+      <entry>2025-04-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="34c51a2b-13c8-11f0-a5bd-b42e991fc52e">
+    <topic>Mozilla -- memory corruption</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>137.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>137.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>137.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1894100%2C1934086%2C1950360">
+	  <p>Memory safety bugs present in Firefox 136 and Thunderbird 136.
+	  Some of these bugs showed evidence of memory corruption and
+	  we presume that with enough effort some of these could have
+	  been exploited to run arbitrary code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3034</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3034</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="315f568e-13c8-11f0-a5bd-b42e991fc52e">
+    <topic>Mozilla -- privilege scalation attack</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>137.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>137.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>137.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1949987">
+	  <p>Leaking of file descriptors from the fork server to web
+	    content processes could allow for privilege escalation
+	    attacks.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3032</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3032</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2fc74cae-13c8-11f0-a5bd-b42e991fc52e">
+    <topic>Mozilla -- stack memory read</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>137.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>137.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>137.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1947141">
+	  <p>An attacker could read 32 bits of values spilled onto the stack in
+	a JIT compiled function.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3031</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3031</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2e0ff31b-13c8-11f0-a5bd-b42e991fc52e">
+    <topic>Mozilla -- Memory corruption</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>137.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.9.0</lt></range>
+      </package>
+      <package>
+	<name>firefox</name>
+	<range><lt>137.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1850615%2C1932468%2C1942551%2C1951017%2C1951494">
+	  <p>Memory safety bugs present in Firefox 136, Thunderbird
+	  136, Firefox ESR 128.8, and Thunderbird 128.8. Some of these
+	  bugs showed evidence of memory corruption and we presume
+	  that with enough effort some of these could have been
+	  exploited to run arbitrary code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3030</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3030</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2c0180a5-13c8-11f0-a5bd-b42e991fc52e">
+    <topic>Mozilla -- URL spoofing attack</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>137.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.9</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>137.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>137.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1952213">
+	  <p>A crafted URL containing specific Unicode characters
+	  could have hidden the true origin of the page, resulting in
+	  a potential spoofing attack.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3029</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3029</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="28e5f7be-13c8-11f0-a5bd-b42e991fc52e">
+    <topic>Mozilla -- use-after-free error</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>137.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>115.22</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>137.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>137.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1941002">
+	  <p>JavaScript code running while transforming a document
+	  with the XSLTProcessor could lead to a use-after-free.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3028</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3028</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="789bcfb6-1224-11f0-85f3-a8a1599412c6">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>135.0.7049.52</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>135.0.7049.52</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2025/04/stable-channel-update-for-desktop.html">
+	 <p>This update includes 13 security fixes:</p>
+	 <ul>
+	    <li>[376491759] Medium CVE-2025-3067: Inappropriate implementation in Custom Tabs. Reported by Philipp Beer (TU Wien) on 2024-10-31</li>
+	    <li>[401823929] Medium CVE-2025-3068: Inappropriate implementation in Intents. Reported by Simon Rawet on 2025-03-09</li>
+	    <li>[40060076] Medium CVE-2025-3069: Inappropriate implementation in Extensions. Reported by NDevTK on 2022-06-26</li>
+	    <li>[40086360] Medium CVE-2025-3070: Insufficient validation of untrusted input in Extensions. Reported by Anonymous on 2017-01-01</li>
+	    <li>[40051596] Low CVE-2025-3071: Inappropriate implementation in Navigations. Reported by David Erceg on 2020-02-23</li>
+	    <li>[362545037] Low CVE-2025-3072: Inappropriate implementation in Custom Tabs. Reported by Om Apip on 2024-08-27</li>
+	    <li>[388680893] Low CVE-2025-3073: Inappropriate implementation in Autofill. Reported by Hafiizh on 2025-01-09</li>
+	    <li>[392818696] Low CVE-2025-3074: Inappropriate implementation in Downloads. Reported by Farras Givari on 2025-01-28</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3067</cvename>
+      <cvename>CVE-2025-3068</cvename>
+      <cvename>CVE-2025-3069</cvename>
+      <cvename>CVE-2025-3070</cvename>
+      <cvename>CVE-2025-3071</cvename>
+      <cvename>CVE-2025-3072</cvename>
+      <cvename>CVE-2025-3073</cvename>
+      <cvename>CVE-2025-3074</cvename>
+      <url>https://chromereleases.googleblog.com/2025/04/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1205eccf-116d-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- Memory corruption bug</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.6.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>134.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1827142%2C1932783">
+	  <p>Memory safety bugs present in Firefox 133, Thunderbird 133,
+	  Firefox ESR 128.5, and Thunderbird 128.5.  Some of these
+	  bugs showed evidence of memory corruption and we presume
+	  that with enough effort some of these could have been
+	  exploited to run arbitrary code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0243</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0243</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f9d7b6ae-116c-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- Memory safety bugs</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>134.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1835193%2C1910021%2C1919803%2C1931576%2C1931948%2C1932173">
+	  <p>Memory safety bugs present in Firefox 133 and Thunderbird 133.
+	  Some of these bugs showed evidence of memory corruption and
+	  we presume that with enough effort some of these could have
+	  been exploited to run arbitrary code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0247</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0247</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f7d80111-116c-11f0-8b2c-b42e991fc52e">
+    <topic>firefox -- authentication bypass</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1895342">
+	  <p>Under certain circumstances, a user opt-in setting that
+	  Focus should require authentication before use could have
+	  been be bypassed.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0245</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0245</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f508f81e-116c-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- Memory safety bugs</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>115.19</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>134.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1874523%2C1926454%2C1931873%2C1932169">
+	  <p>Memory safety bugs present in Firefox 133, Thunderbird 133,
+	  Firefox ESR 115.18, Firefox ESR 128.5, Thunderbird 115.18,
+	  and Thunderbird 128.5.  Some of these bugs showed evidence
+	  of memory corruption and we presume that with enough effort
+	  some of these could have been exploited to run arbitrary
+	  code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0242</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0242</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f38dd0f1-116c-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- DoS via segmentation fault</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.6.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>134.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1933023">
+	  <p>When segmenting specially crafted text, segmentation
+	  would corrupt memory leading to a potentially exploitable
+	  crash.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0241</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0241</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f1f92cd3-116c-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- use-after-free while parsing JSON</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.6.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>134.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1929623">
+	  <p>Parsing a JavaScript module as JSON could, under some
+	  circumstances, cause cross-compartment access, which may
+	  result in a use-after-free.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0240</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0240</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f02e3c59-116c-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- redirection to insecure site</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.6.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>134.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1929156">
+	  <p>When using Alt-Svc, ALPN did not properly validate
+	    certificates when the original server is redirecting to an
+	    insecure site.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0239</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0239</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ee407762-116c-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- use-after-free after failed memory allocation</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.6.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>128.6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1915535">
+	  <p>Assuming a controlled failed memory allocation, an
+	  attacker could have caused a use-after-free, leading to a
+	  potentially exploitable crash.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0238</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0238</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ea51e89a-116c-11f0-8b2c-b42e991fc52e">
+    <topic>Mozilla -- privilege scalation attack</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>134.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>134.0</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.6.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>128.6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1915257">
+	  <p>The WebChannel API, which is used to transport various
+	  information across processes, did not check the sending
+	  principal but rather accepted the principal being sent.
+	  This could have led to privilege escalation attacks.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-0237</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-0237</url>
+    </references>
+    <dates>
+      <discovery>2025-01-07</discovery>
+      <entry>2025-04-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="37c368f1-10a2-11f0-8195-b42e991fc52e">
+    <topic>mozilla -- memory corruption</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>136.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1869650%2C1938451%2C1940326%2C1944052%2C1944063%2C1947281">
+	  <p>Memory safety bugs present in Firefox 135 and Thunderbird
+	  135. Some of these bugs showed evidence of memory corruption
+	  and we presume that with enough effort some of these could
+	  have been exploited to run arbitrary code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-1943</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-1943</url>
+    </references>
+    <dates>
+      <discovery>2025-03-04</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b31a4e74-109d-11f0-8195-b42e991fc52e">
+    <topic>mozilla -- memory corruption</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.8,1</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>136.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1922889%2C1935004%2C1943586%2C1943912%2C1948111">
+	<p>CVE-2025-1938: Memory safety bugs present in Firefox 135,
+	Thunderbird 135, Firefox ESR 128.7, and Thunderbird 128.7.
+	Some of these bugs showed evidence of memory corruption and
+	we presume that with enough effort some of these could have
+	been exploited to run arbitrary code.</p>
+	<p>CVE-2025-1935: A web page could trick a user into setting
+	that site as the default handler for a custom URL protocol.</p>
+	<p>CVE-2025-1934: It was possible to interrupt the processing
+	of a RegExp bailout and run additional JavaScript, potentially
+	triggering garbage collection when the engine was not
+	expecting it.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-1938</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-1938</url>
+      <cvename>CVE-2025-1935</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-1935</url>
+      <cvename>CVE-2025-1934</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-1934</url>
+    </references>
+    <dates>
+      <discovery>2025-03-04</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="aeb2ca87-109d-11f0-8195-b42e991fc52e">
+    <topic>mozilla -- Memory safety bugs</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>115.21,1</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>136.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1938471%2C1940716">
+	<p>Memory safety bugs present in Firefox 135, Thunderbird 135,
+	Firefox ESR 115.20, Firefox ESR 128.7, and Thunderbird 128.7.
+	Some of these bugs showed evidence of memory corruption and
+	we presume that with enough effort some of these could have
+	been exploited to run arbitrary code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-1937</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-1937</url>
+    </references>
+    <dates>
+      <discovery>2025-03-04</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="acf902f6-109d-11f0-8195-b42e991fc52e">
+    <topic>mozilla -- use-after-free in WebTransport connection</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>115.21,1</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>136.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1944126">
+	  <p>It was possible to cause a use-after-free in the content
+	  process side of a WebTransport connection, leading to a
+	  potentially exploitable crash.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-1931</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-1931</url>
+    </references>
+    <dates>
+      <discovery>2025-03-04</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a93a1d2a-109d-11f0-8195-b42e991fc52e">
+    <topic>mozilla -- 64 bit JIT WASM read on left over memroy</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>115.21,1</lt></range>
+      </package>
+      <package>
+	<name>librewolf</name>
+	<range><lt>136.0,2</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>136.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1946004">
+	 <p>On 64-bit CPUs, when the JIT compiles WASM i32 return
+	 values they can pick up bits from left over memory.
+	 This can potentially cause them to be treated as a different
+	 type.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-1933</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-1933</url>
+    </references>
+    <dates>
+      <discovery>2025-03-04</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="350b3389-107f-11f0-8195-b42e991fc52e">
+    <topic>MongoDB -- crash due to improper validation of explain command</topic>
+    <affects>
+      <package>
+	<name>mongodb50</name>
+	<range><lt>5.0.31</lt></range>
+      </package>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.20</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.16</lt></range>
+      </package>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.4</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-103153">
+	  <p>When run on commands with certain arguments set, explain may fail
+	to validate these arguments before using them.  This can lead to
+	crashes in router servers.  This affects MongoDB Server v5.0 prior
+	to 5.0.31, MongoDB Server v6.0 prior to 6.0.20, MongoDB Server v7.0
+	prior to 7.0.16 and MongoDB Server v8.0 prior to 8.0.4</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3084</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3084</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="32f5e57f-107f-11f0-8195-b42e991fc52e">
+    <topic>MongoDB -- Malformed wire protocol messages may cause mongos to crash</topic>
+    <affects>
+      <package>
+	<name>mongodb50</name>
+	<range><lt>5.0.31</lt></range>
+      </package>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.20</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.16</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-103152">
+	  <p>Specifically crafted MongoDB wire protocol messages can cause mongos
+	to crash during command validation.  This can occur without using
+	an authenticated connection.  This issue affects MongoDB v5.0
+	versions prior to 5.0.31, MongoDB v6.0 versions prior to6.0.20 and
+	MongoDB v7.0 versions prior to 7.0.16</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3083</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3083</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="30418b26-107f-11f0-8195-b42e991fc52e">
+    <topic>MongoDB -- Unauthorized access to underlying data</topic>
+    <affects>
+      <package>
+	<name>mongodb50</name>
+	<range><lt>5.0.31</lt></range>
+      </package>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.20</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.16</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-103151">
+	  <p>A user authorized to access a view may be able to alter the intended
+	collation, allowing them to access to a different or unintended
+	view of underlying data.  This issue affects MongoDB Server v5.0
+	version prior to 5.0.31, MongoDB Server v6.0 version prior to 6.0.20,
+	MongoDB Server v7.0 version prior to 7.0.14 and MongoDB Server v7.3
+	versions prior to 7.3.4.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3082</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-3082</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-04-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2cad4541-0f5b-11f0-89f8-411aefea0df9">
+    <topic>openvpn -- server-side denial-of-service vulnerability with tls-crypt-v2</topic>
+    <affects>
+      <package>
+	<name>openvpn</name>
+	<range><ge>2.6.1</ge><lt>2.6.14</lt></range>
+      </package>
+      <package>
+	<name>openvpn-devel</name>
+	<range><lt>g20250402,1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gert Doering reports:</p>
+	<blockquote cite="https://github.com/OpenVPN/openvpn/blob/v2.6.14/Changes.rst#overview-of-changes-in-2614">
+	  <p>OpenVPN servers between 2.6.1 and 2.6.13 using
+	    --tls-crypt-v2 can be made to abort with an ASSERT() message by
+	    sending a particular combination of authenticated and malformed packets.</p>
+	  <p>To trigger the bug, a valid tls-crypt-v2 client key is needed, or
+	    network observation of a handshake with a valid tls-crypt-v2 client key</p>
+	  <p>No crypto integrity is violated, no data is leaked, and no remote
+	    code execution is possible.</p>
+	  <p>This bug does not affect OpenVPN clients.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-2704</cvename>
+      <url>https://github.com/OpenVPN/openvpn/blob/v2.6.14/Changes.rst#overview-of-changes-in-2614</url>
+    </references>
+    <dates>
+      <discovery>2025-03-26</discovery>
+      <entry>2025-04-02</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="300f86de-0e4d-11f0-ae40-b42e991fc52e">
     <topic>gitea -- Multiple vulnerabilities</topic>
     <affects>
