@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * collectd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2025 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>collectd</name>
+	<title>Services: Collectd Agent</title>
+	<category>Monitoring</category>
+	<include_file>/usr/local/pkg/collectd.inc</include_file>
+	<addedit_string>Collectd Agent has been created/modified.</addedit_string>
+	<delete_string>Collectd Agent has been deleted.</delete_string>
+	<menu>
+		<name>Collectd Agent</name>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=collectd.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>collectd</name>
+		<startcmd>mwexec_bg("/usr/local/etc/rc.d/collectdmon onestart");</startcmd>
+		<restartcmd>mwexec_bg("/usr/local/etc/rc.d/collectdmon onerestart");</restartcmd>
+		<stopcmd>mwexec_bg("/usr/local/etc/rc.d/collectdmon stop");</stopcmd>
+		<executable>collectd</executable>
+		<description>Collectd Agent Host Monitor Daemon</description>
+	</service>
+	<fields>
+		<field>
+			<name>Collectd Agent Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>agentenabled</fieldname>
+			<description>Enable Collectd Agent service.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Collectd plugins to enable</fielddescr>
+			<fieldname>plugins</fieldname>
+			<description>
+				<![CDATA[
+					Multiple values can be selected<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>cpu</default_value>
+			<options>
+				<option><name>cpu</name><value>cpu</value></option>
+				<option><name>df</name><value>df</value></option>
+				<option><name>disk</name><value>disk</value></option>
+				<option><name>interface</name><value>interface</value></option>
+				<option><name>load</name><value>load</value></option>
+				<option><name>memory</name><value>memory</value></option>
+				<option><name>zfs_arc</name><value>zfs_arc</value></option>
+			</options>
+			<multiple/>
+			<size>7</size>
+		</field>
+		<field>
+			<fielddescr>Server</fielddescr>
+			<fieldname>server</fieldname>
+			<description>List of comma delimited IP addresses or hostnames of Collectd servers.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Bind Address</fielddescr>
+			<fieldname>bindaddress</fieldname>
+			<description>Optional IP Address that the Collectd Agent should send packets from.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Username</fielddescr>
+			<fieldname>username</fieldname>
+			<description>Optional username to be used when using encrypted communication to the Collectd servers.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Password</fielddescr>
+			<fieldname>password</fieldname>
+			<description>Optional password to be used when using encrypted communication to the Collectd servers.</description>
+			<type>password</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Hostname</fielddescr>
+			<fieldname>hostname</fieldname>
+			<description>Optional, unique, case sensitive hostname.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Server Port</fielddescr>
+			<fieldname>serverport</fieldname>
+			<default_value></default_value>
+			<type>input</type>
+			<size>5</size>
+			<description>Optional port to connect to on the server. (Default: 25826)</description>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		sync_package_collectd();
+	</custom_php_install_command>
+	<custom_php_validation_command>
+		validate_input_collectd($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_collectd();
+	</custom_php_resync_config_command>
+	<custom_php_deinstall_command>
+		php_deinstall_collectd();
+	</custom_php_deinstall_command>
+</packagegui>

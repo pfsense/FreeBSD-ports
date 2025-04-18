@@ -1,0 +1,3 @@
+collectd is a small daemon written in C for performance. It reads various
+system & network statistics and can forward them to another collectd server
+for storage.

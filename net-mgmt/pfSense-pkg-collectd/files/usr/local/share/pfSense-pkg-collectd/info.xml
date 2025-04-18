@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>collectd</name>
+		<internal_name>collectd</internal_name>
+		<descr><![CDATA[Collectd Agent.]]></descr>
+		<website>https://www.collectd.org/</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>collectd.xml</configurationfile>
+		<logging>
+			<logfilename>collectd.log</logfilename>
+		</logging>
+	</package>
+</pfsensepkgs>
