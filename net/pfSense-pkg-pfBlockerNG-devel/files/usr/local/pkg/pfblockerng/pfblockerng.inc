@@ -1981,6 +1981,13 @@ function pfb_create_dnsbl($mode) {
 				$pfb_ex_vip[] = $ex_vip;
 			}
 		}
+		
+		if (isset($dnsbl_ex_vip[0]) && !isset($dnsbl_ex_vip[0]['uniqid'])) {
+			$dnsbl_new_vip[0]['uniqid'] = uniqid();
+		}
+		if (isset($dnsbl_ex_vip[1]) && !isset($dnsbl_ex_vip[1]['uniqid'])) {
+			$dnsbl_new_vip[1]['uniqid'] = uniqid();
+		}
 
 		if ($mode == 'enabled') {
 			// Compare existing to new and if they are not identical update
