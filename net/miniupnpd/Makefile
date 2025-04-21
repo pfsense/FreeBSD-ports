@@ -1,15 +1,20 @@
 PORTNAME=	miniupnpd
 DISTVERSION=	2.3.7
 PORTEPOCH=	1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://miniupnp.free.fr/files/ \
 		https://github.com/miniupnp/miniupnp/releases/download/${PORTNAME}_${DISTVERSION:S|.|_|g}/
 
 MAINTAINER=	squat@squat.no
 COMMENT=	Lightweight UPnP IGD & PCP/NAT-PMP daemon which uses pf
+COMMENT.debug=	Debug files for miniupnpd
 WWW=		http://miniupnp.free.fr/
 
 LICENSE=	BSD3CLAUSE
+
+SUBPACKAGES=	debug
+SELF_DEPENDS.debug=	main
 
 LIB_DEPENDS=	libpfctl.so:net/libpfctl
 
@@ -30,6 +35,7 @@ LDFLAGS+=	-L${OPENSSLLIB} -lpfctl
 PLIST_FILES=	etc/miniupnpd.conf.sample \
 		share/man/man8/miniupnpd.8.gz \
 		sbin/miniupnpd
+PLIST_FILES.debug=	sbin/miniupnpd.debug
 
 OPTIONS_DEFINE=			CHECK_PORTINUSE IPV6 LEASEFILE UPNP_IGDV2 \
 				UPNP_STRICT

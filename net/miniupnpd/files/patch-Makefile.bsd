@@ -1,8 +1,23 @@
---- Makefile.bsd.orig	2023-02-17 03:09:33 UTC
+--- Makefile.bsd.orig	2024-06-22 22:28:04 UTC
 +++ Makefile.bsd
-@@ -150,8 +150,8 @@ install:	miniupnpd genuuid
+@@ -14,7 +14,7 @@
+ # $ CONFIG_OPTIONS="--ipv6 --igd2" make
+ #
+ 
+-CFLAGS ?= -pipe -Os
++CFLAGS ?= -pipe -Os -g
+ #CFLAGS = -pipe -O -g -DDEBUG
+ #CFLAGS += -ansi
+ CFLAGS += -Wall
+@@ -144,12 +144,14 @@ install:	miniupnpd genuuid
+ 	$(RM) validateupnppermissions validategetifaddr validatessdppktgen
+ 
+ install:	miniupnpd genuuid
++	cp miniupnpd miniupnpd.debug
+ 	$(STRIP) miniupnpd
  	$(INSTALL) -d $(DESTDIR)$(INSTALLBINDIR)
  	$(INSTALL) -m 755 miniupnpd $(DESTDIR)$(INSTALLBINDIR)
++	$(INSTALL) -m 755 miniupnpd.debug $(DESTDIR)$(INSTALLBINDIR)
  	$(INSTALL) -d $(DESTDIR)$(INSTALLETCDIR)
 -	$(INSTALL) -b miniupnpd.conf $(DESTDIR)$(INSTALLETCDIR)
 -	$(INSTALL) -d $(DESTDIR)$(INSTALLMANDIR)
