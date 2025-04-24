@@ -255,7 +255,7 @@ function wg_interface_update_addresses($if_name, &$cmds = null) {
 			// Get an array of the addresses to be assigned to the interface
 			$desired = array_map(function($x) {
 				if (is_ipaddrv6($x['address'])) {
-					$x = Net_IPv6::uncompress($x['address']);
+					$x['address'] = Net_IPv6::uncompress($x['address']);
 				}
 				return "{$x['address']}/{$x['mask']}"; 
 			}, $tunnel['addresses']['row']);
