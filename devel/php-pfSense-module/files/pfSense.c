@@ -2811,8 +2811,9 @@ pfSense_append_state(struct pfctl_state *s, void *arg) {
 
 	if (nk->af != sk->af || PF_ANEQ(&nk->addr[1], &sk->addr[1], nk->af) ||
 	    nk->port[1] != sk->port[1]) {
+		int idx = (nk->af != sk->af) ? 0 : 1;
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&sk->addr[1], sk->port[1], sk->af, buf,
+		pf_print_host(&sk->addr[idx], sk->port[idx], sk->af, buf,
 		    sizeof(buf));
 		add_assoc_string(&array,
 		    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf);
@@ -2828,8 +2829,9 @@ pfSense_append_state(struct pfctl_state *s, void *arg) {
 
 	if (nk->af != sk->af || PF_ANEQ(&nk->addr[0], &sk->addr[0], nk->af) ||
 	    nk->port[0] != sk->port[0]) {
+		int idx = (nk->af != sk->af) ? 1 : 0;
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&sk->addr[0], sk->port[0], sk->af, buf,
+		pf_print_host(&sk->addr[idx], sk->port[idx], sk->af, buf,
 		    sizeof(buf));
 		add_assoc_string(&array,
 		    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf);
