@@ -1981,12 +1981,11 @@ function pfb_create_dnsbl($mode) {
 				$pfb_ex_vip[] = $ex_vip;
 			}
 		}
-		
-		if (isset($dnsbl_ex_vip[0]) && !isset($dnsbl_ex_vip[0]['uniqid'])) {
-			$dnsbl_new_vip[0]['uniqid'] = uniqid();
-		}
-		if (isset($dnsbl_ex_vip[1]) && !isset($dnsbl_ex_vip[1]['uniqid'])) {
-			$dnsbl_new_vip[1]['uniqid'] = uniqid();
+
+		foreach ($dnsbl_ex_vip as $vip) {
+			$vip_id = $vip['uniqid'] ?? uniqid();
+			$vip_index = ($vip['subnet_bits'] == '32') ? 0 : 1;
+			$dnsbl_new_vip[$vip_index]['uniqid'] = $vip_id;
 		}
 
 		if ($mode == 'enabled') {
