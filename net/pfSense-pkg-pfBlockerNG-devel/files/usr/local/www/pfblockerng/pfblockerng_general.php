@@ -50,6 +50,8 @@ $pconfig['pfb_hour']			= $pfb['gconfig']['pfb_hour']				?: 0;
 $pconfig['pfb_dailystart']		= $pfb['gconfig']['pfb_dailystart']			?: 0;
 $pconfig['skipfeed']			= $pfb['gconfig']['skipfeed']				?: 0;
 
+$pconfig['pfb_resolve']			= $pfb['gconfig']['pfb_resolve']			?: 1;
+
 $pconfig['log_max_log']			= $pfb['gconfig']['log_max_log']			?: 20000;
 $pconfig['log_max_errlog']		= $pfb['gconfig']['log_max_errlog']			?: 20000;
 $pconfig['log_max_extraslog']		= $pfb['gconfig']['log_max_extraslog']			?: 20000;
@@ -131,6 +133,8 @@ if ($_POST) {
 			$pfb['gconfig']['pfb_hour']			= $_POST['pfb_hour']				?: 0;
 			$pfb['gconfig']['pfb_dailystart']		= $_POST['pfb_dailystart']			?: 0;
 			$pfb['gconfig']['skipfeed']			= $_POST['skipfeed']				?: 0;
+
+			$pfb['gconfig']['pfb_resolve']			= pfb_filter($_POST['pfb_resolve'], PFB_FILTER_ON_OFF, 'general', '');
 
 			// Remove old Line Limit setting
 			if (isset($pfb['gconfig']['log_maxlines'])) {
@@ -263,6 +267,21 @@ $section->addInput(new Form_Select(
 		. 'Select max daily download failure threshold via CRON. Clear widget \'failed downloads\' to reset.<br />'
 		. 'On a download failure, the previously downloaded list is reloaded.')
   ->setAttribute('style', 'width: auto');
+$form->add($section);
+
+$section = new Form_Section('Log Settings (options)');
+
+$section->addInput(new Form_Checkbox(
+	'pfb_resolve',
+	'Resolve IP Addresses',
+	gettext('Enable'),
+	$pconfig['pfb_resolve'] === 'on' ? true:false,
+	'on'
+))->setHelp('<span class="text-danger">Note: </span>'
+		. 'With \'Resolve IP Addresses\' enabled, pfBlockerNG will do reverse DNS lookups of IP addresses in the filter log<br>'
+		. 'and log that in the pfBlockerNG logs.<br>'
+		. ' If \'Resolve IP Addresses\' is not \'enabled\', the resolved hostname field of the pfBlockNG logs will always be \'Unknown\'.<br>'
+);
 $form->add($section);
 
 $section = new Form_Section('Log Settings (max lines)');
