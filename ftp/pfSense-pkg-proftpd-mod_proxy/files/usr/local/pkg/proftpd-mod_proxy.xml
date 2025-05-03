@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * proxy-mod_proxy.xml
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>proftpd-mod_proxy</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/FTP Reverse Proxy</title>
+	<aftersaveredirect>pkg_edit.php?xml=proftpd-mod_proxy.xml</aftersaveredirect>
+	<include_file>/usr/local/pkg/proftpd-mod_proxy.inc</include_file>
+	<menu>
+		<name>FTP Reverse Proxy</name>
+		<tooltiptext>Modify FTP Reverse Proxy settings.</tooltiptext>
+		<section>Services</section>
+		<configfile>proftpd-mod_proxy.xml</configfile>
+		<url>/pkg_edit.php?xml=proftpd-mod_proxy.xml</url>
+	</menu>
+	<service>
+		<name>proftpd-mod_proxy</name>
+		<rcfile>proftpd-mod_proxy.sh</rcfile>
+		<executable>proftpd</executable>
+		<description>FTP Reverse Proxy Daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=proftpd-mod_proxy.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=proftpd-mod_proxy_users.xml</url>
+		</tab>
+	</tabs>
+
+	<fields>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Proxy Enabled</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable the FTP Reverse Proxy.</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Server Name</fielddescr>
+			<fieldname>servername</fieldname>
+			<type>input</type>
+			<description>The server name returned to the client. It should match the reverse DNS of the public address.</description>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Bind Interface</fielddescr>
+			<fieldname>bindints</fieldname>
+			<type>interfaces_selection</type>
+			<description>Select the public-facing (WAN type) interface(s) which contain FTP clients, or none to bind to all interfaces.</description>
+			<default_value>wan</default_value>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Bind Port</fielddescr>
+			<fieldname>bindport</fieldname>
+			<type>input</type>
+			<width>1</width>
+			<default_value>21</default_value>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Passive Ports</fielddescr>
+			<fieldname>passiveportsfrom</fieldname>
+			<description>From port</description>
+			<type>input</type>
+			<width>1</width>
+			<default_value>49152</default_value>
+			<required/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>To port</fielddescr>
+			<fieldname>passiveportsto</fieldname>
+			<description>To port</description>
+			<type>input</type>
+			<width>1</width>
+			<default_value>65535</default_value>
+			<required/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Source Address</fielddescr>
+			<fieldname>sourceaddr</fieldname>
+			<type>input</type>
+			<description>Enter the source address to use for requests to the proxied servers.</description>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Max Instances</fielddescr>
+			<fieldname>maxinstances</fieldname>
+			<type>input</type>
+			<description>Maximum number of child processes.</description>
+			<default_value>30</default_value>
+			<required/>
+		</field>
+
+		<field>
+			<name>TLS Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Server Certificate</fielddescr>
+			<fieldname>server_cert</fieldname>
+			<description>The SSL Server Certificate for use with FTPS, or None to disable FTPS.</description>
+			<type>select_source</type>
+			<source><![CDATA[proftpd_mod_proxy_get_certs()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>TLS Required</fielddescr>
+			<fieldname>tlsrequired</fieldname>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+	</fields>
+
+	<custom_php_install_command>
+		install_proftpd_mod_proxy();
+	</custom_php_install_command>
+	<custom_php_resync_config_command>
+		sync_package_proftpd_mod_proxy();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		validate_form_proftpd_mod_proxy($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>
