@@ -1430,7 +1430,7 @@
 				{
 					"feed":		"OpenPhish",
 					"website":	"https://openphish.com/phishing_feeds.html",
-					"url":		"https://openphish.com/feed.txt",
+					"url":		"https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
 					"header":	"OpenPhish"
 				},
 				{
