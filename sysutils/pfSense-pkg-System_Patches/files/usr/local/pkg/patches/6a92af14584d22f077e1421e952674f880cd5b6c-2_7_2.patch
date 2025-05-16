@@ -1,0 +1,81 @@
+diff --git a/src/usr/local/www/services_wol.php b/src/usr/local/www/services_wol.php
+index 067142250d..9abd4a1d9c 100644
+--- a/src/usr/local/www/services_wol.php
++++ b/src/usr/local/www/services_wol.php
+@@ -81,7 +81,7 @@ if ($_POST['Submit'] || $_POST['mac']) {
+ 		$input_errors[] = gettext("A valid MAC address must be specified.");
+ 	}
+ 
+-	if (!$if) {
++	if (!$if || !array_key_exists($if, get_configured_interface_with_descr())) {
+ 		$input_errors[] = gettext("A valid interface must be specified.");
+ 	}
+ 
+@@ -193,10 +193,10 @@ print $form;
+ 					<?php foreach ($a_wol as $i => $wolent): ?>
+ 						<tr>
+ 							<td>
+-								<?=convert_friendly_interface_to_friendly_descr($wolent['interface']);?>
++								<?=htmlspecialchars(convert_friendly_interface_to_friendly_descr($wolent['interface']));?>
+ 							</td>
+ 							<td>
+-								<a href="?mac=<?=$wolent['mac'];?>&amp;if=<?=$wolent['interface'];?>" usepost><?=strtolower($wolent['mac']);?></a>
++								<a href="?mac=<?=$wolent['mac'];?>&amp;if=<?=urlencode($wolent['interface']);?>" usepost><?=strtolower($wolent['mac']);?></a>
+ 							</td>
+ 							<td>
+ 								<?=htmlspecialchars($wolent['descr']);?>
+@@ -204,7 +204,7 @@ print $form;
+ 							<td>
+ 								<a class="fa fa-pencil"	title="<?=gettext('Edit Device')?>"	href="services_wol_edit.php?id=<?=$i?>"></a>
+ 								<a class="fa fa-trash"	title="<?=gettext('Delete Device')?>" href="services_wol.php?act=del&amp;id=<?=$i?>" usepost></a>
+-								<a class="fa fa-power-off" title="<?=gettext('Wake Device')?>" href="?mac=<?=$wolent['mac'];?>&amp;if=<?=$wolent['interface'];?>" usepost></a>
++								<a class="fa fa-power-off" title="<?=gettext('Wake Device')?>" href="?mac=<?=$wolent['mac'];?>&amp;if=<?=urlencode($wolent['interface']);?>" usepost></a>
+ 							</td>
+ 						</tr>
+ 					<?php endforeach?>
+diff --git a/src/usr/local/www/services_wol_edit.php b/src/usr/local/www/services_wol_edit.php
+index bda82b9d29..d74dc7b9ee 100644
+--- a/src/usr/local/www/services_wol_edit.php
++++ b/src/usr/local/www/services_wol_edit.php
+@@ -73,6 +73,10 @@ if ($_POST['save']) {
+ 
+ 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+ 
++	if (!$_POST['interface'] || !array_key_exists($_POST['interface'], get_configured_interface_with_descr())) {
++		$input_errors[] = gettext("A valid interface must be specified.");
++	}
++
+ 	/* normalize MAC addresses - lowercase and convert Windows-ized hyphenated MACs to colon delimited */
+ 	$_POST['mac'] = trim(strtolower(str_replace("-", ":", $_POST['mac'])));
+ 
+diff --git a/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php b/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
+index 00bbdb9f72..8a2e2b28f1 100644
+--- a/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
++++ b/src/usr/local/www/widgets/widgets/wake_on_lan.widget.php
+@@ -35,7 +35,7 @@ if (isset($config['wol']['wolentry']) && is_array($config['wol']['wolentry'])) {
+ // Constructs a unique key that will identify a WoL entry in the filter list.
+ if (!function_exists('get_wolent_key')) {
+ 	function get_wolent_key($wolent) {
+-		return ($wolent['interface'] . "|" . $wolent['mac']);
++		return (htmlspecialchars($wolent['interface']) . "|" . $wolent['mac']);
+ 	}
+ }
+ 
+@@ -105,7 +105,7 @@ if (count($wolcomputers) > 0):
+ 				<?= $wolent['mac'] ?>
+ 			</td>
+ 			<td>
+-				<?= convert_friendly_interface_to_friendly_descr($wolent['interface']) ?>
++				<?= htmlspecialchars(convert_friendly_interface_to_friendly_descr($wolent['interface'])) ?>
+ 			</td>
+ 			<td>
+ 		<?php if ($status == 'expires'): ?>
+@@ -117,7 +117,7 @@ if (count($wolcomputers) > 0):
+ 		<?php endif; ?>
+ 			</td>
+ 			<td>
+-				<a href="services_wol.php?mac=<?= $wolent['mac'] ?>&amp;if=<?= $wolent['interface']?>" usepost>
++				<a href="services_wol.php?mac=<?= $wolent['mac'] ?>&amp;if=<?= urlencode($wolent['interface']) ?>" usepost>
+ 				<i class="fa fa-power-off" data-toggle="tooltip" title="<?= gettext("Wake up!") ?>"></i>
+ 				</a>
+ 			</td>
