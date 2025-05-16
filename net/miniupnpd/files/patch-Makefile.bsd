@@ -1,4 +1,4 @@
---- Makefile.bsd.orig	2024-06-22 22:28:04 UTC
+--- Makefile.bsd.orig	2025-05-16 14:51:20 UTC
 +++ Makefile.bsd
 @@ -14,7 +14,7 @@
  # $ CONFIG_OPTIONS="--ipv6 --igd2" make
@@ -9,20 +9,15 @@
  #CFLAGS = -pipe -O -g -DDEBUG
  #CFLAGS += -ansi
  CFLAGS += -Wall
-@@ -144,12 +144,14 @@ install:	miniupnpd genuuid
+@@ -148,9 +148,11 @@ install:	miniupnpd
  	$(RM) validateupnppermissions validategetifaddr validatessdppktgen
  
- install:	miniupnpd genuuid
+ install:	miniupnpd
 +	cp miniupnpd miniupnpd.debug
  	$(STRIP) miniupnpd
  	$(INSTALL) -d $(DESTDIR)$(INSTALLBINDIR)
  	$(INSTALL) -m 755 miniupnpd $(DESTDIR)$(INSTALLBINDIR)
 +	$(INSTALL) -m 755 miniupnpd.debug $(DESTDIR)$(INSTALLBINDIR)
  	$(INSTALL) -d $(DESTDIR)$(INSTALLETCDIR)
--	$(INSTALL) -b miniupnpd.conf $(DESTDIR)$(INSTALLETCDIR)
--	$(INSTALL) -d $(DESTDIR)$(INSTALLMANDIR)
-+	$(INSTALL) -b miniupnpd.conf $(DESTDIR)$(INSTALLETCDIR)/miniupnpd.conf.sample
-+	$(INSTALL) -d $(DESTDIR)$(INSTALLMANDIR)/man8
- 	$(INSTALL) -m 644 miniupnpd.8 $(DESTDIR)$(INSTALLMANDIR)/man8/miniupnpd.8
- 
- # genuuid is using the uuid cli tool available under OpenBSD 4.0 in
+ 	$(INSTALL) -b miniupnpd.conf $(DESTDIR)$(INSTALLETCDIR)/miniupnpd.conf.sample
+ 	sed -i '' -e "s/^uuid=[-0-9a-fA-F]*/uuid=`$(UUIDBIN)`/" $(DESTDIR)$(INSTALLETCDIR)/miniupnpd.conf.sample
