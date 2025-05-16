@@ -12,6 +12,7 @@ pkg/patches/0d40856c780520b97f618252d9dfb0e6719e1944.patch
 pkg/patches/0d83ed084a987f3446a0cbdcf249fc5b8722726f.patch
 pkg/patches/0e847960910ae9f14ca7b52c84be25fe4b9d1064.patch
 pkg/patches/0fc7765c886ed60555750d12808f493d70918450.patch
+pkg/patches/0ff75cd0b9fb14c04c94c3585831a9f669be0a5d.patch
 pkg/patches/12827workaround.patch
 pkg/patches/12cbb18a93c1f78e05806b6d3c90511e8967f43f.patch
 pkg/patches/13915.patch
@@ -28,6 +29,11 @@ pkg/patches/15606.patch
 pkg/patches/15525.patch
 pkg/patches/15702.patch
 pkg/patches/15778.patch
+pkg/patches/15844-widgetkey-validation-24.11.patch
+pkg/patches/15844-widgetkey-validation-ce-2.7.2.patch
+pkg/patches/15856-openvpn-mgmt-fix.patch
+pkg/patches/16076.patch
+pkg/patches/16076_2.patch
 pkg/patches/17630ffa48e33def331a65ee50f1ba1d2c3a5de5.patch
 pkg/patches/18b8e41591905844627377b76347f8acba88f0a1.patch
 pkg/patches/1a57545864783b3acc5f28d166a79bd92a849759.patch
@@ -63,6 +69,7 @@ pkg/patches/4612721800a1b25bb1fb2d4d7c4ceea6f44f208e.patch
 pkg/patches/46238320e89caa44bbb525849ab170bab6937619.patch
 pkg/patches/46b159032fef8c78783aa1a749d2238cfed7ac0d.patch
 pkg/patches/48aea6ee7e03b5b7f49dd143bd1993d33ba74f5b.patch
+pkg/patches/48b2525bae3addc43e99444869aa19ed60b8c443.patch
 pkg/patches/490c8d19bb6d89d93df32c42705153cc5c995853.patch
 pkg/patches/4e8f6cedd9c4b32b24ac3619f84e33a9a4708a29.patch
 pkg/patches/4fe6481fa35f31b93ed5841c3342cbb5bd76237c.patch
@@ -78,6 +85,9 @@ pkg/patches/6021c3e059885ce3fff09e5b00df037db034ff14.patch
 pkg/patches/611de84ae2d1e65217dbccb7e9db32a019bd8d97.patch
 pkg/patches/66b989e824042c0cf5e75b1cb245b0ae13548949.patch
 pkg/patches/68ed289190a383795194d3499728a0f6023f8a52.patch
+pkg/patches/6a92af14584d22f077e1421e952674f880cd5b6c-2_7_2.patch
+pkg/patches/6a92af14584d22f077e1421e952674f880cd5b6c.patch
+pkg/patches/6bf3e080f56facab1f00e29acd24dff62d5bd707.patch
 pkg/patches/6dc0750874b69373f8adbae9b0af223af13f5f4a.patch
 pkg/patches/6df70417029defed162b539720e8baa03984f653.patch
 pkg/patches/6f59a7f9fdfe3703667819fcbbd8b6f8cbec0d9f.patch
@@ -98,6 +108,7 @@ pkg/patches/88670c6c167418e7d12b010c0ce8b7d06c2b757f.patch
 pkg/patches/892d939ee0473992abece201ed3d5d2bfdfd276f.patch
 pkg/patches/892de1ecdaa23b164f6b2a2251d7538eee2199ea.patch
 pkg/patches/8aa54e0d780114713015dd7e970e6541dfc40378.patch
+pkg/patches/8aa54e0d780114713015dd7e970e6541dfc40378.p2.patch
 pkg/patches/8b962c6a752a654f2def293d93c102d2d20a6887.patch
 pkg/patches/8ddf2b5a999772754080825f07acf9b6326f1f04.patch
 pkg/patches/908e52f9fc52914b8f0a0c1ae71be3c71bef6c3b.patch
@@ -117,6 +128,8 @@ pkg/patches/a99c03dde3df7053747ec61607c0fb2e2c0a7d22.patch
 pkg/patches/a9bdbd97984ff2ddefbceb2fe062fbe3a1c42d88.patch
 pkg/patches/aac5bb5d396a1f1b18d59a532ad262a4d1085a40.patch
 pkg/patches/aad64829622356cd761062e57f4a8224d1b145e4.patch
+pkg/patches/acb-update-24.11.patch
+pkg/patches/acb-update-ce-2.7.2.patch
 pkg/patches/afcc0e9c97c1993ae6b95f886665fcb4375d26c7.patch
 pkg/patches/b2fce958b8a2e80754b49eb3d17795757df6a76c.patch
 pkg/patches/b5360f49fb3c1fdc36ebf13c20b68d4ff1e15fe6.patch
@@ -143,6 +156,7 @@ pkg/patches/d9fa4584e3fb63d6051e9f1db7655f931cb1be19.patch
 pkg/patches/dcb4461336de2fe69ac173787c8bce66e93ce672.patch
 pkg/patches/dcdb461733044d274c742832097b13a312045f37.patch
 pkg/patches/ddb57f79e26e97e2a22f701016fc70a7d1c09ce4.patch
+pkg/patches/dfc70e51d556d8c1724bfc7f1fd5fe4b73faab3b.patch
 pkg/patches/e53f0573d853325dfb463eab8bfe59a9f4d6ce61.patch
 pkg/patches/e573756c98d1181583fee0f7d818c6be0ea3da0e.patch
 pkg/patches/e930812c680fa4adfc8d9330bec871ef57e1d1d5.patch
