@@ -1,0 +1,19 @@
+commit 4fe4822948b0814599c1463269729cfef8aef424
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Jan 13 10:44:58 2025 -0500
+
+    Remove debug print from issue #15874
+
+diff --git a/src/usr/local/www/status_logs_common.inc b/src/usr/local/www/status_logs_common.inc
+index 76d0a953a0..10f9d89e99 100644
+--- a/src/usr/local/www/status_logs_common.inc
++++ b/src/usr/local/www/status_logs_common.inc
+@@ -677,8 +677,6 @@ function manage_log_code() {
+ 	phpsession_end();
+ 
+ 	if ($save_settings && !$read_only) {
+-
+-		$input_errors[] = "Shouldn't be here";
+ 		// Common to All Logs
+ 		$cronorder = getGETPOSTsettingvalue('cronorder',  null);
+ 		$nentries = getGETPOSTsettingvalue('nentries', null);
