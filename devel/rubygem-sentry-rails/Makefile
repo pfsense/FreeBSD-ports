@@ -1,5 +1,5 @@
 PORTNAME=	sentry-rails
-PORTVERSION=	5.22.1
+PORTVERSION=	5.23.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -10,8 +10,8 @@ WWW=		https://github.com/getsentry/sentry-ruby
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-railties70>=5.0.0:www/rubygem-railties70 \
-		rubygem-sentry-ruby>=5.22.1<5.23:devel/rubygem-sentry-ruby
+RUN_DEPENDS=	rubygem-railties-gitlab>=5.0.0:www/rubygem-railties-gitlab \
+		rubygem-sentry-ruby>=5.23.0<5.24:devel/rubygem-sentry-ruby
 
 USES=		gem
 

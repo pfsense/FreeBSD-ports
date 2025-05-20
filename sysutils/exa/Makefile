@@ -1,10 +1,10 @@
 PORTNAME=	exa
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.1
-PORTREVISION=	42
+PORTREVISION=	43
 CATEGORIES=	sysutils
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern replacement for ls
 WWW=		https://the.exa.website/
 

@@ -1,11 +1,11 @@
 PORTNAME=	openiked
-DISTVERSION=	7.3
+DISTVERSION=	7.4
 PORTREVISION=	1
 CATEGORIES=	security net
 MASTER_SITES=	OPENBSD/OpenIKED
 PKGNAMESUFFIX=	-portable
 
-MAINTAINER=	david@lapinbilly.eu
+MAINTAINER=	david.marec@proton.me
 COMMENT=	IKEv2 daemon
 WWW=		https://github.com/openiked/openiked-portable
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libevent.so:devel/libevent
 USES=		cmake ssl
 USE_RC_SUBR=	iked
 
-CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH=${PREFIX}/share/man
+CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH=${PREFIX}/share/man -DCADIR=${PREFIX}/etc/ssl
 
 CONFLICTS_INSTALL=	openiked
 

@@ -62,6 +62,7 @@
     SUBDIR += compat11x
     SUBDIR += compat12x
     SUBDIR += compat13x
+    SUBDIR += compat14x
     SUBDIR += compat4x
     SUBDIR += compat5x
     SUBDIR += compat6x
@@ -115,6 +116,7 @@
     SUBDIR += figlet-fonts
     SUBDIR += findutils
     SUBDIR += flag
+    SUBDIR += flag-icons
     SUBDIR += flashlight
     SUBDIR += fortune-mod-bible
     SUBDIR += fortune-mod-bofh
@@ -250,6 +252,8 @@
     SUBDIR += libxdf
     SUBDIR += lifelines
     SUBDIR += lightgbm
+    SUBDIR += linux-c7-sdl12-extralibs
+    SUBDIR += linux-rl9-sdl12-extralibs
     SUBDIR += llama-cpp
     SUBDIR += locale-en_DK
     SUBDIR += localedata
@@ -423,6 +427,7 @@
     SUBDIR += py-codecarbon
     SUBDIR += py-colorbrewer
     SUBDIR += py-colored
+    SUBDIR += py-colorzero
     SUBDIR += py-crudini
     SUBDIR += py-datasets
     SUBDIR += py-detecta
@@ -440,6 +445,7 @@
     SUBDIR += py-gguf
     SUBDIR += py-gluoncv
     SUBDIR += py-gluonnlp
+    SUBDIR += py-gpiozero
     SUBDIR += py-halo
     SUBDIR += py-hist
     SUBDIR += py-histoprint
@@ -628,6 +634,7 @@
     SUBDIR += thrill
     SUBDIR += timetrace
     SUBDIR += timezonemap
+    SUBDIR += timr-tui
     SUBDIR += tkcron
     SUBDIR += tkinfo
     SUBDIR += tkregexp
@@ -664,6 +671,7 @@
     SUBDIR += viz
     SUBDIR += vote
     SUBDIR += vxl
+    SUBDIR += wavedrom
     SUBDIR += wego
     SUBDIR += whichman
     SUBDIR += window

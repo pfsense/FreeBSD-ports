@@ -14,7 +14,7 @@
 PORTNAME?=	nvidia-driver
 DISTVERSION?=	${NVIDIA_DISTVERSION}
 # Always try to set PORTREVISION as it can be overridden by the slave ports
-PORTREVISION?=	1
+PORTREVISION?=	0
 CATEGORIES=	x11
 MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
@@ -32,6 +32,12 @@ LICENSE_FILE=	${WRKSRC}/doc/license.txt
 # themselves in non existing lib32 libraries, so we don't want the package
 # to end up depending on non existing libraries
 NO_SHLIB_REQUIRES_GLOB=*:32
+
+# Choose proper distinfo file using PKGNAMESUFFIX for slave ports.
+# Kept for switching to centralized distinfo with suffixes.
+.ifdef PKGNAMESUFFIX
+DISTINFO_FILE=	${.CURDIR}/distinfo
+.endif
 
 # Pull GNU sed(1) for "binary" patching of obj/libglvnd/libEGL.so.1 and
 # obj/libEGL_nvidia.so.0 (see below)
@@ -80,9 +86,15 @@ SUB_PATCHES+=	extra-patch-src-nvidia_dev.c \
 SUB_PATCHES+=	extra-patch-src-nvidia_subr.c
 .endif
 
+# Temporarily disable GSP firmware as it is known to cause
+# issues with suspend/resume
+.if ${NVVERSION} >= 565.00000
+SUB_PATCHES+=	extra-gsp-patch-src-common-inc-nv_firmware_registry.h
+.endif
+
 DOCSDIR=	${PREFIX}/share/doc/NVIDIA_GLX-1.0
 MODULESDIR=	lib/xorg/modules
-EXTENSIONSDIR?=	${MODULESDIR}/extensions/.nvidia
+EXTENSIONSDIR=	${MODULESDIR}/extensions/.nvidia
 PORTDOCS=	*
 
 .if ${NVVERSION} >= 331.013
@@ -140,11 +152,6 @@ PLIST_SUB+=	MODULESDIR=${MODULESDIR}
 PLIST_SUB+=	EXTENSIONSDIR=${EXTENSIONSDIR}
 .else
 PLIST_SUB+=	EXTENSIONSDIR="@comment "
-.endif
-.if defined(LIBGLDIR)
-PLIST_SUB+=	LIBGLDIR=${LIBGLDIR} LIBGLMAP="@comment "
-.else
-PLIST_SUB+=	LIBGLDIR="@comment " LIBGLMAP=""
 .endif
 
 # Not part of the pkg-plist because DISTVERSION is not on PLIST_SUB
@@ -404,31 +411,9 @@ post-install: .SILENT
 		${STAGEDIR}${PREFIX}/lib/libGLESv2-NVIDIA.so.2
 	${RM} ${STAGEDIR}${PREFIX}/lib/libGLESv2.so
 .  endif
-# Configuration of Nvidia as secondary GPU requires preserving libglvnd or mesa
-# libraries as default implementation; a libmap must not override in this case.
-.  if !defined(LIBGLDIR)
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/libmap.d/
 	${INSTALL_DATA} ${WRKDIR}/nvidia.conf \
 		${STAGEDIR}${PREFIX}/etc/libmap.d/
-.  else
-# libgl proxies require a library path containing unrenamed lib*GL*.so
-	${MKDIR} ${STAGEDIR}${PREFIX}/${LIBGLDIR}
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libGL-NVIDIA.so.1 \
-		${STAGEDIR}${PREFIX}/${LIBGLDIR}/libGL.so.1
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libEGL-NVIDIA.so.1 \
-		${STAGEDIR}${PREFIX}/${LIBGLDIR}/libEGL.so.1
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libGLESv2-NVIDIA.so.2 \
-		${STAGEDIR}${PREFIX}/${LIBGLDIR}/libGLESv2.so.2
-.  endif
-# Configuration of Nvidia as secondary GPU requires preserving xorg-server's
-# libglx.so and moving Nvidia's glx to where it can be found by a secondary
-# Xorg instance.
-# Not needed since 410.057: Nvidia driver finds libglxserver_nvidia.so instead.
-.  if ${EXTENSIONSDIR} != ${MODULESDIR}/extensions/.nvidia
-	${MKDIR} ${STAGEDIR}${PREFIX}/${EXTENSIONSDIR}
-	${MV} ${STAGEDIR}${PREFIX}/${MODULESDIR}/extensions/.nvidia/* \
-		${STAGEDIR}${PREFIX}/${EXTENSIONSDIR}/
-.  endif
 .else
 	${REINPLACE_CMD} -E '/-NVIDIA/d ; \
 		/lib(Open)?E?GLX?(ESv[12](_CM)?|dispatch)?\.so/d' \

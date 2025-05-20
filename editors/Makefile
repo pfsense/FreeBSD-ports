@@ -81,6 +81,7 @@
     SUBDIR += lapce
     SUBDIR += lazarus
     SUBDIR += lazarus-devel
+    SUBDIR += lazarus-gtk3-devel
     SUBDIR += lazarus-qt5
     SUBDIR += lazarus-qt5-devel
     SUBDIR += lazarus-qt6
@@ -257,7 +258,6 @@
     SUBDIR += sly-asdf
     SUBDIR += sly-named-readtables
     SUBDIR += sly-quicklisp
-    SUBDIR += ssed
     SUBDIR += sted
     SUBDIR += tamago
     SUBDIR += tea

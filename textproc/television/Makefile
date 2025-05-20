@@ -1,6 +1,5 @@
 PORTNAME=	television
-DISTVERSION=	0.10.7
-PORTREVISION=	1
+DISTVERSION=	0.11.9
 CATEGORIES=	textproc
 
 MAINTAINER=	nxjoseph@protonmail.com
@@ -16,6 +15,11 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	alexpasmantier
 
-PLIST_FILES=	bin/tv
+PLIST_FILES=	bin/television \
+		bin/tv
+
+post-install:
+	@(cd ${STAGEDIR}${PREFIX}/bin && \
+		${LN} tv television)
 
 .include <bsd.port.mk>

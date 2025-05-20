@@ -4,12 +4,15 @@ DISTVERSION=	0.1.11
 PORTREVISION=	27
 CATEGORIES=	devel
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast, powerful and easy-to-use CLI for AWS
 WWW=		https://github.com/wallix/awless
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Abandoned upstream
+EXPIRATION_DATE=2025-05-31
 
 USES=		go
 

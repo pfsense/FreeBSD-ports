@@ -1,5 +1,5 @@
 PORTNAME=	qemu
-DISTVERSION=	9.2.0
+DISTVERSION=	10.0.0
 PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
@@ -126,8 +126,9 @@ WITHOUT_CPU_CFLAGS=	yes #to avoid problems with register allocation
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 
 PORTDOCS=	.buildinfo _static/* about/* dbus-dbusindex.html devel/* docs \
-		genindex.html index.html interop/* objects.inv search.html \
-		searchindex.js specs/* system/* tools/* user/*
+		genindex.html glossary.html index.html interop/* objects.inv \
+		qapi-qga-index.html qapi-qmp-index.html qapi-qsd-index.html \
+		search.html searchindex.js specs/* system/* tools/* user/*
 
 OPTIONS_DEFINE=			CAPSTONE CDROM_DMA CURL DEBUG DOCS GNUTLS GTK3 \
 				ISCSI JPEG OPENGL PNG SAMBA SASL STATIC_LINK \
@@ -211,7 +212,8 @@ X11_USE=			GNOME=gdkpixbuf \
 X11_CONFIGURE_ENABLE=		sdl
 .if (empty(FLAVOR) || ${FLAVOR:U} == default || ${FLAVOR:U} == nox11) && \
 	(${FLAVOR:U} != tools || ${PKGNAMESUFFIX} != "-guest-agent")
-X86_TARGETS_LIB_DEPENDS_OFF=	libdw.so:devel/elfutils
+X86_TARGETS_LIB_DEPENDS_OFF=	libdw.so:devel/elfutils \
+	liblzo2.so:archivers/lzo2
 X86_TARGETS_USES_OFF=		xorg
 X86_TARGETS_USE_OFF=		XORG=pixman,x11
 X86_TARGETS_CONFIGURE_ON=	--target-list='i386-softmmu i386-bsd-user x86_64-softmmu x86_64-bsd-user'
@@ -220,7 +222,7 @@ X86_TARGETS_CONFIGURE_ON=	--target-list='i386-softmmu i386-bsd-user x86_64-softm
 .include <bsd.port.options.mk>
 
 .if ${FLAVOR:U} == tools || ${FLAVOR:U} == guestagent
-.if ${ARCH} == "i386" || ${ARCH} == "powerpc"
+.if ${ARCH} == "i386" || ${ARCH} == "powerpc" || ${ARCH:Marmv?}
 PLIST_SUB+=	NO_I386="@comment "
 .else
 PLIST_SUB+=	NO_I386=""

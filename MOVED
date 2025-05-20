@@ -3147,7 +3147,6 @@ emulators/tuxnes||2024-04-04|Has expired: BROKEN for more than 4 months
 sysutils/vordog||2024-04-04|Has expired: BROKEN for more than 4 months
 science/py-qiskit-terra||2024-04-04|Removed: the upstream gutted the old project and re-imported some other repo; it should be re-ported as a totally new project
 misc/py-qiskit-machine-learning||2024-04-05|Removed
-science/py-qiskit||2024-04-05|Removed
 science/py-qiskit-aer||2024-04-05|Removed
 science/py-qiskit-dynamics||2024-04-05|Removed
 science/py-qiskit-experiments||2024-04-05|Removed
@@ -3760,7 +3759,6 @@ x11-toolkits/py-qt6-chart|x11-toolkits/py-qt6-charts|2024-12-08|Renamed to be co
 devel/sfml251|devel/sfml|2024-12-09|Removed pinned port because the last user is gone
 devel/ocaml-seq|lang/ocaml|2024-12-10|Has expired: Seq is provided by lang/ocaml
 textproc/mdocml|textproc/mandoc|2024-12-17|Upstream reanamed
-www/shellinabox|sysutils/ttyd|2024-12-24|Has expired: Abandonware and outdated, last release in 2016. Use sysutils/ttyd instead
 audio/spiralsynth|audio/spiralsynthmodular|2024-12-24|Has expired: SpiralSynth isn't being supported any more, use audio/spiralsynthmodular
 textproc/apache-solr8|textproc/apache-solr|2024-12-24|Has expired: Deprecated upstream 2024-10-25, upgrade to version 9 in textproc/apache-solr instead
 editors/ghostwriter@qt5|editors/ghostwriter|2024-12-29|Flavors removed, now supports only qt6
@@ -4170,6 +4168,7 @@ sysutils/shim||2025-02-22|Has expired: upstream has been inactive for 10 years a
 devel/py-python-gilt|devel/gilt|2025-02-23|Project switched language from python to go
 textproc/uim-gtk|textproc/uim-gtk2|2025-02-23|Rename with versioned suffix
 x11-toolkits/scenefx|x11-toolkits/scenefx02|2025-02-25|Renamed to match versioned API
+textproc/rubygem-rexml-gitlab|textproc/rubygem-rexml|2025-02-25|Use textproc/rubygem-rexml
 www/kdsoap@qt5||2025-02-26|Qt5 flavor is no longer needed
 www/kdsoap@qt6|www/kdsoap|2025-02-26|Unflavorize; only Qt6 support is needed
 net/drive||2025-02-28|Remove expired port
@@ -4191,7 +4190,6 @@ java/cos||2025-03-01|Has expired: Upstream seems gone since 2024-08-22
 sysutils/pass-secrets||2025-03-01|Has expired: Listed as BROKEN and unmaintained for months
 sysutils/fluxengine||2025-03-01|Has expired: Broken for several months
 textproc/py-pyjade||2025-03-01|Has expired: Upstream is inactive for almost 8.5 years
-math/parmetis||2025-03-01|Has expired: Fails to fetch, unmaintained for years in tree
 math/pspp||2025-03-01|Has expired: Listed as broken for more than 5 months
 games/shaaft||2025-03-02|Has expired: Unmaintained upstream for ages, breaks with modern toolchains
 devel/asmutils||2025-03-02|Has expired: latest upstream release is 19 years ago, replaced by a-Linux, does not build with GCC 14
@@ -4254,12 +4252,10 @@ finance/odoo14||2025-03-31|Has expired: Depends on expired converters/wkhtmltopd
 net/nsscache||2025-03-31|Has expired: Depends on expired devel/py-pytest-runner
 security/caldera4||2025-03-31|Has expired: Upgrade to a newer caldera version. 4.2.0 is vulnerable to remote code execution
 net/opensips31||2025-03-31|Has expired: Deprecated upstream
-security/py-python-jose||2025-03-31|Has expired: Depends on expired devel/py-pytest-runner
 textproc/rubygem-nokogumbo||2025-03-31|Has expired: Upstream has merged into textproc/rubygem-nokogiri
 net/libmediawiki||2025-03-31|Has expired: Project abandoned upstream
 net/py-tacacs_plus||2025-03-31|Has expired: Depends on expired devel/py-pytest-runner
 devel/py-imgkit||2025-03-31|Has expired: Depends on expired converters/wkhtmltopdf
-sysutils/py-google-compute-engine||2025-03-31|Has expired: Depends on expired devel/py-boto
 devel/ocaml-type_conv|devel/ocaml-ppxlib|2025-03-31|Has expired: Deprecated, upstream recommends migrating to devel/ocaml-ppxlib
 multimedia/dirac||2025-03-31|Has expired: Legacy video codec superseded by multiple formats. Files can be decoded using FFmpeg
 ports-mgmt/py-pytoport||2025-03-31|Has expired: Depends on expired misc/py-spdx-lookup
@@ -4314,3 +4310,112 @@ databases/rubygem-scenic61||2025-04-04|Has expired: Uses EOL version 6.1.X of Ra
 devel/py-blist||2025-04-04|Has expired: Abandoned project, no consumers, no modern python support
 textproc/rubygem-case_transform61||2025-04-04|Has expired: Uses EOL version 6.1.X of Rails
 lang/python-doc-pdf-letter|lang/python-doc-pdf-a4|2025-04-09|Letter-size PDF no longer provided since 3.12
+net-im/py-punjab||2025-04-13|Has expired: Abandoned project, not compatible with decent python/twisted
+devel/linux-rl9-libsigsegv|emulators/linux_base-rl9|2025-04-15|Integrated into linux_base-rl9
+devel/linux-rl9-libatomic|devel/linux-rl9-devtools|2025-04-15|Integrated into linux-rl9-devtools
+devel/rubygem-sidekiq72|devel/rubygem-sidekiq-gitlab|2025-04-18|Please use devel/sidekiq-gitlab instead
+security/solana|security/agave|2025-04-18|Solana repository is archived, switched to the fork Agave
+graphics/diffpdf||2025-04-20|Has expired: withdrawn from author
+net/linux-rl9-libproxy|emulators/linux_base-rl9|2025-04-21|Merged into linux_base
+graphics/linux-c7-jasper|graphics/linux-c7-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-rl9-jasper|graphics/linux-rl9-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-c7-jbigkit|graphics/linux-c7-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-rl9-jbigkit|graphics/linux-rl9-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-c7-jpeg|graphics/linux-c7-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-rl9-jpeg|graphics/linux-rl9-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-c7-png|graphics/linux-c7-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-rl9-png|graphics/linux-rl9-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-c7-tiff|graphics/linux-c7-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-rl9-tiff|graphics/linux-rl9-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-rl9-openjpeg|graphics/linux-rl9-imageformats-libs|2025-04-21|Merged into imageformats-libs
+graphics/linux-rl9-webp|graphics/linux-rl9-imageformats-libs|2025-04-21|Merged into imageformats-libs
+textproc/py-grapheme||2025-04-21|Has expired: Upstream is inactive for 4 years
+devel/p5-threads|lang/perl5.36|2025-04-24|part of Perl core since 5.7.3, the port was from 5.27.8
+databases/replibyte||2025-04-26|incompatible rust 1.86.0 and seems to be dead upstream
+net-im/chatterino2||2025-04-27|Has expired: Broken for more than a month with no available fixes
+shells/oil|shells/oils|2025-04-27|Project was renamed upstream
+security/weggli||2025-04-28|Has expired: Upstream inactive as last release was in 2022
+databases/py-carbon||2025-04-28|Has expired: In bandaid mode as the concentration is on go-carbon
+x11-toolkits/SoXt||2025-04-28|Has expired: Broken for more than 6 months
+graphics/agg26|graphics/agg|2025-05-01|Merged into agg
+graphics/linux-c7-sdl_ttf|misc/linux-c7-sdl12-extralibs|2025-05-03|Merged into misc/linux-c7-sdl12-extralibs
+graphics/linux-rl9-sdl_image|misc/linux-rl9-sdl12-extralibs|2025-05-03|Merged into misc/linux-rl9-sdl12-extralibs
+graphics/linux-rl9-sdl_ttf|misc/linux-rl9-sdl12-extralibs|2025-05-03|Merged into misc/linux-rl9-sdl12-extralibs
+graphics/linux-rl9-sdl_gfx|misc/linux-rl9-sdl12-extralibs|2025-05-03|Merged into misc/linux-rl9-sdl12-extralibs
+audio/linux-c7-sdl_mixer|misc/linux-c7-sdl12-extralibs|2025-05-03|Merged into misc/linux-c7-sdl12-extralibs
+audio/linux-rl9-sdl_sound|misc/linux-rl9-sdl12-extralibs|2025-05-03|Merged into misc/linux-rl9-sdl12-extralibs
+graphics/acidwarp-sdl||2025-05-04|Has expired: Unmaintained by upstream as last release was in 2022
+games/xjewel||2025-05-04|Has expired: Unmaintained as last release was in 1994
+textproc/mysqlviz||2025-05-04|Has expired: Repo deleted upstream
+textproc/sdif||2025-05-04|Has expired: Deprecated upstream, repo archived Nov 21, 2018
+textproc/xp||2025-05-04|Has expired: Obsolete, never versions of Java already include XML parser(s)
+textproc/turboxsl||2025-05-04|Has expired: Obsolete, supports only legacy versions of XML and XSLT
+textproc/docbook2odf||2025-05-04|Has expired: Upstream is gone and unmaintained in tree for years
+textproc/sxml||2025-05-04|Has expired: No consumers in tree and no active development upstream for over a decade
+textproc/java2html||2025-05-04|Has expired: Upstream is gone and last update 20 years ago
+textproc/word2x||2025-05-04|Has expired: Obsolete converter than only supports ancient versions of Word documents
+textproc/unoconv||2025-05-04|Has expired: Deprecated upstream in 2021
+textproc/syck||2025-05-04|Has expired: Unfetchable, no response from upstream in a year
+textproc/soothsayer||2025-05-04|Has expired: Deprecated upstream, consider using deskutils/presage
+textproc/nux||2025-05-04|Has expired: Depends on deprecated port textproc/saxon-devel
+textproc/saxon-devel|textproc/saxon-he|2025-05-04|Has expired: Deprecated and unsupported upstream, consider using textproc/saxon-he
+textproc/saxon|textproc/saxon-he|2025-05-04|Has expired: Deprecated and unsupported upstream, consider using textproc/saxon-he
+textproc/p5-Search-Saryer||2025-05-04|Has expired: Depends on deprecated port textproc/sary
+textproc/sary||2025-05-04|Has expired: Last release in 2005 and unmaintained in tree for years
+textproc/mifluz||2025-05-04|Has expired: Obsolete, no activity upstream since 2014 and unmaintained in tree for years
+textproc/atom||2025-05-04|Has expired: Upstream is gone and utility is considered obsolete
+textproc/jaxup||2025-05-04|Has expired: Abandonware and obsolete, last release in 2003
+textproc/htdig||2025-05-04|Has expired: Abandonware, multiple unresolved bugs and no unicode support etc
+textproc/gmetadom||2025-05-04|Has expired: Abandonware, last release in 2007
+textproc/flip|converters/dos2unix|2025-05-04|Has expired: Unmaintained and dead upstream, consider using converters/dos2unix
+textproc/dom4j||2025-05-04|Has expired: Outdated and unsupported upstream
+textproc/domc||2025-05-04|Has expired: Obsolete, doesn't support HTML5, DOM Level 4 and DOM 2020-06
+textproc/ekhtml||2025-05-04|Has expired: Abandonware and obsolete, last release in 2002
+textproc/estraier||2025-05-04|Has expired: Obsolete and abandonware, last update in 2005
+textproc/confetti||2025-05-04|Has expired: Outdated and unmaintained in tree since 2018
+textproc/c2man||2025-05-04|Has expired: Not recommended for use in new projects
+textproc/bsddiff||2025-05-04|Has expired: Obsolete, newer version imported into base as 2017
+textproc/aft||2025-05-04|Has expired: Obscure markup language and unmaintained in tree for years
+textproc/resume-extensions||2025-05-04|Has expired: Depends on deprecated port textproc/resume
+textproc/resume||2025-05-04|Has expired: Obsolete XML and XSL based system that targets resumes and curriculae vitae
+textproc/add-css-links||2025-05-04|Has expired: Obsolete and unmaintained in tree for years
+textproc/print-n-times||2025-05-04|Has expired: Obsolete and unmaintained in tree for years
+textproc/cdif||2025-05-04|Has expired: Deprecated upstream, repo archived on Jun 25, 2018
+security/i2p||2025-05-04|Has expired: Outdated and unsupported upstream
+security/libuecc||2025-05-04|Has expired: Deprecated, only user was some never properly ported FreiFunk control plane software
+net-p2p/p5-Net-BitTorrent-PeerPacket||2025-05-04|Has expired: Deprecated, no active development in more than a decade so any "new" functionality is missing and interoperability with recent software is very limited if not completely broken
+net-p2p/p5-Net-BitTorrent||2025-05-04|Has expired: Deprecated, no active development in more than a decade so any "new" functionality is missing and interoperability with recent software is very limited if not completely broken
+net-p2p/p5-Net-BitTorrent-File||2025-05-04|Has expired: Deprecated, no active development in more than a decade so any "new" functionality is missing and interoperability with recent software is very limited if not completely broken
+net-p2p/libswift||2025-05-04|Has expired: Upstream archived repo on Feb 19, 2024 and no active development in several years
+net-p2p/phex|net-p2p/gtk-gnutella|2025-05-04|Has expired: Abandonware, last update upstream in 2009. Consider using net-p2p/gtk-gnutella
+net-p2p/shx||2025-05-04|Has expired: Obsolete protocol that has been superseded by many others
+net/openbgpd||2025-05-04|Has expired: Unsupported upstream, consider using net/openbgpd8
+japanese/namazu|japanese/namazu2|2025-05-04|Has expired: Obsolete and superseded by namazu2, last release in 2000
+games/stuntrally||2025-05-04|Has expired: Broken for months and outdated
+editors/ssed||2025-05-04|Has expired: Legacy "fork" that's based on legacy GNU sed 4.1 and last release in 2005
+devel/rubygem-webby||2025-05-04|Has expired: Deprecated upstream in 2011
+devel/ccdoc||2025-05-04|Has expired: Obsolete utility
+www/moodle43||2025-05-04|Has expired: EOLed upstream
+net/libtnl||2025-05-04|Has expired: Unmaintained upstream and no consumers in the ports tree
+www/moodle41||2025-05-04|Has expired: Outdated version
+www/publicfile||2025-05-04|Has expired: Unmaintained for years upstream and in tree, consider using www/darkhttpd , www/miniserve and/or ftp/tnftpd , ftp/unftp
+science/gtamsanalyzer||2025-05-05|Has expired: Upstream unmaintained as last release was in 2004
+www/dot-http||2025-05-05|Remove broken, unmaintained upstream port
+security/linux-rl9-libxcrypt|emulators/linux_base-rl9|2025-05-06|Integrated into linux_base-rl9
+graphics/quat-gui||2025-05-06|Has expired: Last upstream release was in 2003
+mail/py-milter|mail/py-pymilter|2025-05-08|Renamed to match upstream PyPI package name
+sysutils/pxp-agent||2025-05-09|Has expired: Project got archived, dependencies are broken
+net/cpp-pcp-client||2025-05-09|Has expired: Project got archived, broken
+sysutils/puppetserver7||2025-05-10|Has expired: Reached EOL
+sysutils/puppet7||2025-05-10|Has expired: Reached EOL
+sysutils/facter||2025-05-10|Has expired: Reached EOL
+devel/cpp-hocon||2025-05-10|Has expired: Project got archived
+databases/puppetdb7||2025-05-10|Has expired: Reached EOL
+devel/leatherman||2025-05-10|Has expired: Project got archived
+databases/puppetdb-terminus7||2025-05-10|Has expired: Reached EOL
+games/exult-devel||2025-05-12|exult-devel has been removed, encouraging users to use exult instead
+sysutils/slst||2025-05-16|Has expired: No source. Source went missing in 2018
+databases/py-redis3|databases/py-redis|2025-05-18|Remove obsoleted port. Use databases/py-redis instead
+net/rubygem-devfile-gitlab|net/rubygem-devfile|2025-05-18|Remove obsoleted port. Use net/rubygem-devfile instead
+devel/rubygem-view_component-rails70|devel/rubygem-view_component-rails-gitlab|2025-05-17|Expired, please use devel/rubygem-view_component-rails-gitlab instead
+security/rubygem-devise-two-factor41-rails70|security/rubygem-devise-two-factor-rails-gitlab|2025-05-17|Expired, please use security/rubygem-devise-two-factor-rails-gitlab instead

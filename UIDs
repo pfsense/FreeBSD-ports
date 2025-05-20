@@ -314,7 +314,7 @@ elog:*:364:364::0:0:Elog server:/nonexistent:/usr/sbin/nologin
 gotify:*:365:365::0:0:Gotify User:/var/db/gotify:/usr/sbin/nologin
 opengist:*:366:366::0:0:OpenGist User:/var/db/opengist:/usr/sbin/nologin
 velbustcpd:*:367:367::0:0:Velbustcp Deamon:/nonexistent:/usr/sbin/nologin
-# free: 368
+sshesame:*:368:368::0:0:Sshesame Daemon:/nonexistent:/usr/sbin/nologin
 # free: 369
 _wsdd:*:370:370::0:0:Web Service Discovery Daemon:/nonexistent:/usr/sbin/nologin
 # free: 371
@@ -808,9 +808,9 @@ opensearch:*:855:855::0:0:opensearch user:/nonexistent:/usr/sbin/nologin
 # free: 858
 # free: 859
 # free: 860
-# free: 861
-# free: 862
-# free: 863
+rekor:*:861:861::0:0:rekor user:/nonexistent:/usr/sbin/nologin
+timestamp-authority:*:862:862::0:0:Timestamp Authority:/nonexistent:/usr/sbin/nologin
+trillian:*:863:863::0:0:trillian user:/nonexistent:/usr/sbin/nologin
 mediamtx:*:864:864::0:0:mediamtx:/nonexistent:/usr/sbin/nologin
 z2m:*:865:865::0:0:zigbee2mqtt:/usr/local/z2m:/usr/sbin/nologin
 # free: 866

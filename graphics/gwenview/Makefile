@@ -25,7 +25,7 @@ USE_KDE=	activities auth baloo bookmarks codecs completion config \
 		purpose service solid sonnet textwidgets widgetsaddons \
 		windowsystem xmlgui \
 		ecm:build
-USE_QT=		base
+USE_QT=		base imageformats:run
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS

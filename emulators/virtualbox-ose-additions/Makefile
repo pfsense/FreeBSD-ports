@@ -40,7 +40,9 @@ MAKE_JOBS_UNSAFE=	yes
 CONFLICTS_INSTALL=	virtualbox-ose-additions-legacy \
 			virtualbox-ose-additions-nox11-legacy \
 			virtualbox-ose-additions-70 \
-			virtualbox-ose-additions-nox11-70
+			virtualbox-ose-additions-nox11-70 \
+			virtualbox-ose-additions-71 \
+			virtualbox-ose-additions-nox11-71
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}/files
 EXTRACT_AFTER_ARGS=	--exclude tools/*.x86 --exclude tools/*.amd64 --exclude Firmware
@@ -123,6 +125,10 @@ post-patch:
 	    ${WRKSRC}/src/VBox/Runtime/Makefile.kmk \
 	    ${WRKSRC}/src/VBox/Additions/x11/VBoxClient/Makefile.kmk
 	@${ECHO_CMD} 'VBOX_ICONV_DEFS = LIBICONV_PLUG' >> ${WRKSRC}/LocalConfig.kmk
+.endif
+.if ${OSVERSION} >= 1500038
+	@${ECHO_CMD} 'HAVE_MNTOPTS_IN_LIBUTIL = 1' >> \
+	    ${WRKSRC}/LocalConfig.kmk
 .endif
 
 post-patch-X11-on:

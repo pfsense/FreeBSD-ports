@@ -11,6 +11,9 @@ WWW=		https://popeye.io/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+NOT_FOR_ARCHS_REASON=	Compilation fails due to integer overflow
+NOT_FOR_ARCHS=		armv7 i386
+
 USES=		go:1.23,modules
 
 _BUILD_DATE=	$$(date -u +"%FT%T%z")

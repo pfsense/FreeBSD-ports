@@ -40,7 +40,9 @@ MAKE_JOBS_UNSAFE=	yes
 CONFLICTS_INSTALL=	virtualbox-ose-additions \
 			virtualbox-ose-additions-nox11 \
 			virtualbox-ose-additions-70 \
-			virtualbox-ose-additions-nox11-70
+			virtualbox-ose-additions-nox11-70 \
+			virtualbox-ose-additions-71 \
+			virtualbox-ose-additions-nox11-71
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}-legacy/files
 EXTRACT_AFTER_ARGS=	--exclude tools/*.x86 --exclude tools/*.amd64 --exclude Firmware
@@ -135,6 +137,10 @@ post-patch:
 .endif
 .if ${PORT_OPTIONS:MPAE}
 	@${ECHO_CMD} 'VBOX_FREEBSD = -DPAE' >> ${WRKSRC}/LocalConfig.kmk
+.endif
+.if ${OSVERSION} >= 1500038
+	@${ECHO_CMD} 'HAVE_MNTOPTS_IN_LIBUTIL = 1' >> \
+	    ${WRKSRC}/LocalConfig.kmk
 .endif
 
 post-patch-X11-on:

@@ -1,3 +1,166 @@
+  <vuln vid="a380f43e-19e5-11f0-9568-b42e991fc52e">
+    <topic>Perl -- heap buffer overflow when transliterating non-ASCII bytes</topic>
+    <affects>
+      <package>
+	<name>perl5.36</name>
+	<range><lt>5.36.3</lt></range>
+      </package>
+      <package>
+	<name>perl5.38</name>
+	<range><lt>5.38.4</lt></range>
+      </package>
+      <package>
+	<name>perl5.40</name>
+	<range><lt>5.40.2</lt></range>
+      </package>
+      <package>
+	<name>perl5-devel</name>
+	<range><lt>5.41.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>9b29abf9-4ab0-4765-b253-1875cd9b441e reports:</p>
+	<blockquote cite="https://github.com/Perl/perl5/commit/87f42aa0e0096e9a346c9672aa3a0bd3bef8c1dd.patch">
+	<p>A heap buffer overflow vulnerability was discovered in Perl.
+	When there are non-ASCII bytes in the left-hand-side of the `tr`
+	operator, `S_do_trans_invmap` can overflow the destination pointer
+	`d`.
+	$ perl -e &apos;$_ = &quot;\x{FF}&quot; x 1000000; tr/\xFF/\x{100}/;&apos;
+	Segmentation fault (core dumped)
+	It is believed that this vulnerability can enable Denial of
+	Service and possibly Code Execution attacks on platforms that
+	lack sufficient defenses.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-56406</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-56406</url>
+    </references>
+    <dates>
+      <discovery>2025-04-13</discovery>
+      <entry>2025-04-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0230343c-1908-11f0-accc-b42e991fc52e">
+    <topic>gogs -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gogs</name>
+	<range><lt>0.13.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cve@mitre.org reports:</p>
+	<blockquote cite="https://fysac.github.io/posts/2024/11/unpatched-remote-code-execution-in-gogs/">
+	<p>CVE-2024-44625: Directory Traversal via the editFilePost
+	function of internal/route/repo/editor.go.</p>
+	<p>CVE-2024-39933: Gogs allows argument injection during the
+	tagging of a new release.</p>
+	<p>CVE-2024-39932: Gogs allows argument injection during the
+	previewing of changes.</p>
+	<p>CVE-2024-39931: Gogs allows deletion of internal files.</p>
+	<p>CVE-2024-39930: The built-in SSH server of Gogs allows
+	argument injection in internal/ssh/ssh.go, leading to remote
+	code execution. Authenticated attackers can exploit this by
+	opening an SSH connection and sending a malicious
+	--split-string env request if the built-in SSH server is
+	activated.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-44625</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-44625</url>
+      <cvename>CVE-2024-39933</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39933</url>
+      <cvename>CVE-2024-39932</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39932</url>
+      <cvename>CVE-2024-39931</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39931</url>
+      <cvename>CVE-2024-39930</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-39930</url>
+    </references>
+    <dates>
+      <discovery>2024-11-15</discovery>
+      <entry>2025-04-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ba6361be-1887-11f0-a8ce-b42e991fc52e">
+    <topic>Mozilla -- null pointer dereference</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>133.0,2</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>133.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1923767">
+	  <p>A null pointer dereference may have inadvertently
+	  occurred in `pk12util`, and specifically in the
+	  `SEC_ASN1DecodeItem_Util` function, when handling malformed
+	  or improperly formatted input files.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11706</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11706</url>
+    </references>
+    <dates>
+      <discovery>2024-11-26</discovery>
+      <entry>2025-04-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b65b1217-1887-11f0-a8ce-b42e991fc52e">
+    <topic>mozilla -- double free error</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>133.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>128.7.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>133.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1899402">
+	  <p>A double-free issue could have occurred in
+	  `sec_pkcs7_decoder_start_decrypt()` when handling an error
+	  path. Under specific conditions, the same symmetric key
+	  could have been freed twice, potentially leading to memory
+	  corruption.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-11704</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2024-11704</url>
+    </references>
+    <dates>
+      <discovery>2024-11-26</discovery>
+      <entry>2025-04-13</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="ed0a052a-c5e6-11ef-a457-b42e991fc52e">
     <topic>Apache Tomcat -- RCE due to TOCTOU issue in JSP compilation</topic>
     <affects>

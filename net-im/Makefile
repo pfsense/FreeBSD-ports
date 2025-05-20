@@ -2,7 +2,6 @@
 
     SUBDIR += beebeep
     SUBDIR += biboumi
-    SUBDIR += chatterino2
     SUBDIR += coccinella
     SUBDIR += concord
     SUBDIR += conduit
@@ -18,6 +17,7 @@
     SUBDIR += ejabberd
     SUBDIR += farstream
     SUBDIR += finch
+    SUBDIR += flare
     SUBDIR += folks
     SUBDIR += fractal
     SUBDIR += freetalk
@@ -114,7 +114,6 @@
     SUBDIR += py-matrix-synapse
     SUBDIR += py-mattermostdriver
     SUBDIR += py-nbxmpp
-    SUBDIR += py-punjab
     SUBDIR += py-python-telegram-bot
     SUBDIR += py-slack-sdk
     SUBDIR += py-slackeventsapi

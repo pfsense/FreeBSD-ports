@@ -1,6 +1,6 @@
---- ui/accessibility/accessibility_features.cc.orig	2025-03-18 16:46:04 UTC
+--- ui/accessibility/accessibility_features.cc.orig	2025-05-07 06:48:23 UTC
 +++ ui/accessibility/accessibility_features.cc
-@@ -401,7 +401,7 @@ bool IsBlockRootWindowAccessibleNameChangeEventEnabled
+@@ -472,7 +472,7 @@ bool IsBlockRootWindowAccessibleNameChangeEventEnabled
  }
  #endif  // BUILDFLAG(IS_MAC)
  

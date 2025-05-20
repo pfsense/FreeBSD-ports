@@ -1,9 +1,8 @@
 PORTNAME=	virtualbox-ose
-DISTVERSION=	7.0.24
+DISTVERSION=	7.0.26
 PORTREVISION?=	2
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
-		LOCAL/bofh/emulators/virtualbox-ose:docs \
 		LOCAL/vvd:docs
 PKGNAMESUFFIX?=	-70
 DISTFILES=	VirtualBox-${DISTVERSION}${EXTRACT_SUFX}:src \
@@ -29,9 +28,10 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:emulators/virtualbox-ose-kmod-70
 
-USES=		compiler:c++14-lang cpe gnome iconv qt:5 pkgconfig ssl tar:bzip2
+USES=		compiler:c++14-lang cpe gnome iconv pkgconfig qt:5 ssl tar:bzip2
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
+USE_BINUTILS=	yes
 USE_GNOME=	libxml2
 USE_QT=		buildtools:build linguisttools:build
 USE_RC_SUBR=	vboxheadless vboxwatchdog
@@ -43,7 +43,9 @@ CONFIGURE_ARGS+=	--with-gcc="${CC}" --with-g++="${CXX}"
 CONFLICTS_INSTALL=	virtualbox-ose-legacy \
 			virtualbox-ose-nox11-legacy \
 			virtualbox-ose \
-			virtualbox-ose-nox11
+			virtualbox-ose-nox11 \
+			virtualbox-ose-71 \
+			virtualbox-ose-nox11-71
 
 PORTSCOUT=	limit:^7\.0\.
 SUB_FILES=	pkg-message
@@ -75,8 +77,9 @@ PLIST_SUB=	GUEST_VER=${DISTVERSION} \
 
 SLAVE_PORT?=	no
 
-OPTIONS_DEFINE=		AIO ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS PULSEAUDIO \
-			PYTHON QT5 R0LOGGING UDPTUNNEL VBOXIMG VDE VNC WEBSERVICE VPX X11
+OPTIONS_DEFINE=		AIO ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS OGG PULSEAUDIO \
+			PYTHON QT5 R0LOGGING UDPTUNNEL VBOXIMG VDE VNC VORBIS VPX \
+			WEBSERVICE X11
 OPTIONS_DEFAULT=	AIO DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
 .if ${SLAVE_PORT} == no
 OPTIONS_DEFAULT+=	PYTHON
@@ -90,12 +93,14 @@ AIO_DESC=		Enable Asyncronous IO support (check pkg-message)
 DEBUG_DESC=		Debug symbols, additional logs and assertions
 GUESTADDITIONS_DESC=	Build with Guest Additions
 NLS_DESC=		Native language support (requires QT5)
+OGG_DESC=		Use libogg from audio/libogg instead of bundled one
 QT5_DESC=		Build with QT5 frontend (requires X11)
 R0LOGGING_DESC=		Enable R0 logging (requires DEBUG)
 UDPTUNNEL_DESC=		Build with UDP tunnel support
 VBOXIMG_DESC=		Build vboximg-mount (requires fuse-libs)
 VDE_DESC=		Build with VDE support
 VNC_DESC=		Build with VNC support
+VORBIS_DESC=		Use libvorbis from audio/libvorbis instead of bundled one
 VPX_DESC=		Use libvpx for video recording
 WEBSERVICE_DESC=	Build Webservice
 
@@ -105,6 +110,8 @@ DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 DBUS_CONFIGURE_OFF=	--disable-dbus
 DEBUG_CONFIGURE_ON=	--build-debug
 NLS_IMPLIES=		QT5
+OGG_LIB_DEPENDS=	libogg.so:audio/libogg
+OGG_CONFIGURE_ON=	--enable-libogg
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 PYTHON_USES=		python
@@ -125,6 +132,9 @@ VDE_RUN_DEPENDS=	vde_switch:net/vde2
 VDE_CONFIGURE_ON=	--enable-vde
 VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
 VNC_CONFIGURE_ON=	--enable-vnc
+VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
+			libvorbisenc.so:audio/libvorbis
+VORBIS_CONFIGURE_ON=	--enable-libvorbis
 VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 VPX_CONFIGURE_OFF=	--disable-libvpx
 WEBSERVICE_BUILD_DEPENDS=	soapcpp2:devel/gsoap
@@ -251,6 +261,8 @@ post-patch:
 	    ${WRKSRC}/LocalConfig.kmk
 	@${ECHO_CMD} 'VBOX_WITH_VALIDATIONKIT =' >> ${WRKSRC}/LocalConfig.kmk
 	@${ECHO_CMD} 'VBOX_WITH_X11_ADDITIONS =' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_BLD_PYTHON = ${LOCALBASE}/bin/${PYTHON_VERSION}' >> \
+	    ${WRKSRC}/LocalConfig.kmk
 .if ${PORT_OPTIONS:MR0LOGGING}
 	@${ECHO_CMD} 'VBOX_WITH_R0_LOGGING = 1' >> ${WRKSRC}/LocalConfig.kmk
 .endif

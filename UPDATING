@@ -5,11 +5,182 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20250520:
+  AFFECTS: users of databases/mongodb60
+  AUTHOR: ronald@FreeBSD.org
+
+  MongoDB version 6.0 is End of Life starting August 2025.
+  Please make sure you are running MongoDB version 7.0 or higher.
+  In-place upgrades are supported from version 6.0 to 7.0.
+  For an in-place upgrade it is important that the
+  'featureCompatibilityVersion' is set to 6.0 before the upgrade.
+  See: https://www.mongodb.com/docs/v7.0/release-notes/7.0-upgrade-standalone/#feature-compatibility-version
+
+  TL;DR, run these commands in mongodb60 before upgrading:
+  (see `pkg info -D mongodb60` how to install mongosh)
+  $ npx mongosh mongodb://127.0.0.1:27017/ # or use non-default port
+  > db.adminCommand( { setFeatureCompatibilityVersion: "6.0" } )
+  > exit
+
+20250519:
+  AFFECTS: users of sysutils/screen
+  AUTHOR: cy@FreeBSD.org
+
+  sysutils/screen has been updated to 5.0.1 from 4.9.1. All currently
+  running screen sessions must be terminated before upgrading. Failure
+  to do so will result in orphaning remaining screen sessions. This is
+  expected when updating from one major version of screen to to another.
+
+20250514:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl version has been switched to 5.40.
+
+  See entry 20231017 for updating instructions.
+
+20250511:
+  AFFECTS: users of www/tt-rss
+  AUTHOR: dereks@lifeofadishwasher.com
+
+  tt-rss has dropped support for mysql/mariadb starting with commit
+  4cb8a84df46d46b.  The next update (mid-June) to www/tt-rss will include this
+  update.
+
+  https://community.tt-rss.org/t/support-for-mysql-is-no-more/6897
+
+  You should migrate your data to databases/postgresqlXY-server.
+
+20250510:
+  AFFECTS: users of net-p2p/bitcoin and/or net-p2p/bitcoin-daemon
+  AUTHOR: kbowling@FreeBSD.org
+
+  29.x is the last release series that will support the legacy BDB wallet
+  format.  We are already doing this awkwardly since the format is BDB 4.8
+  and we are building with BDB 5.  This will be removed in 30.0 later this
+  year.
+
+  You should upgrade your wallet now if you are still using a legacy wallet.
+
+  Instructions:
+  https://github.com/bitcoin/bitcoin/blob/29.x/doc/managing-wallets.md#migrating-legacy-wallets-to-descriptor-wallets
+
+  This release switches to CMake which results in a major refacoring of
+  the port and underlying build.  The result seems good, but please
+  provide feedback if there are any unexpected changes or problems.
+
+  This release dropped UPnP support due to security concerns.  NAT-PMP is
+  implemented as an alternative.
+
+20250506:
+  AFFECTS: users of databases/postgresql* and other software using PostgreSQL to run
+  AUTHOR: kbowling@FreeBSD.org
+
+  The default version of PostgreSQL has been switched from 16 to 17.
+  The upgrade procedure can use up twice the space the databases
+  currently needs. If you have a big amount of stored data take a
+  closer look at the manpage of pg_upgrade for avoidance and/or
+  speedup of the upgrade.
+
+  The upgrade instructions consider a basic usage and do not match
+  complex scenarios like replication, sharding, or similar.
+
+  Upgrade instructions:
+
+  First stop your PostgreSQL, create PostgreSQL-binaries and backup your data.
+  If you have another Version of PostgreSQL installed, for example 16, your
+  files are named according to this.
+
+  # service postgresql stop
+  # pkg create postgresql16-server postgresql16-contrib
+  # mkdir /tmp/pg-upgrade
+  # tar xf postgresql16-server-16.8.pkg -C /tmp/pg-upgrade
+  # tar xf postgresql16-contrib-16.8.pkg -C /tmp/pg-upgrade
+  # pkg delete -f databases/postgresql16-server databases/postgresql16-contrib databases/postgresql16-client
+
+  Now update PostgreSQL:
+
+    pkg user:
+    # pkg install databases/postgresql17-server databases/postgresql17-contrib
+    # pkg upgrade
+
+    Portmaster users:
+    # portmaster databases/postgresql17-server databases/postgresql17-contrib
+    # portmaster -a
+
+    Portupgrade users:
+    # portinstall databases/postgresql17-server databases/postgresql17-contrib
+    # portupgrade -a
+
+  After installing the new PostgreSQL version you need to convert
+  all your databases to new version:
+
+  # su -l postgres -c "/usr/local/bin/initdb --encoding=utf-8 --lc-collate=C -D /var/db/postgres/data17 -U postgres"
+  # su -l postgres -c "pg_upgrade -b /tmp/pg-upgrade/usr/local/bin/ -d /var/db/postgres/data16/ -B /usr/local/bin/ -D /var/db/postgres/data17/ -U postgres "
+
+  Now the migration is finished. You can start PostgreSQL again with:
+
+  # service postgresql start
+
+  ATTENTION:
+  1) If you use non-default initdb options, you have to adjust the initdb-command accordingly
+
+20250503:
+  AFFECTS: users of sysutils/bastille
+  AUTHOR: jdhurtado@orbiware.com
+
+  The `rcorder` has been deprecated, and new `boot` and `priority` options have
+  been added to the jails. A boot file will be created with default values of
+  `boot=on` and `priority=99` on jail creation. For existing jails, the boot file
+  will be generated on the next subcommand execution to the jail. If you want to
+  generate the file for all the jails, you can use `bastille restart ALL` to fill
+  in the defaults. To change these values, use `bastille config TARGET set boot off`
+  or `bastille config TARGET set priority 10` or some other number according to
+  your needs.
+
+20250503:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 4.1 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
+20250502:
+  AFFECTS: users of databases/redis
+  AUTHOR: yasu@FreeBSD.org
+
+  The databases/redis port has been updated to 8.0. Users wanting to
+  stay on 7.4 can replace databases/redis with databases/redis74 with
+  one of the following commands.
+
+  If you use pkg with binary packages:
+    # pkg set -o databases/redis:databases/redis74
+    # pkg upgrade
+  If you use portmaster:
+    # portmaster -o databases/redis74 databases/redis
+  If you use portupgrade:
+    # portupgrade -o databases/redis74 databases/redis
+
+  Keep in mind license term has changed with Redis 8.0. Now it is
+  distributed under triple license of Redis Source Available License
+  v2 (RSALv2), Server Side Public License v1 (SSPLv1) and GNU Affero
+  General Public License v3 (AGPLv3).
+
 20250408:
   AFFECTS: users of linux_base-c7 and any Linux application in Ports
   AUTHOR: arrowd@FreeBSD.org
 
-  LINUX_DEFAULT was switched to "rl9" which correspons to the Rocky Linux 9 base.
+  LINUX_DEFAULT was switched to "rl9" which corresponds to the Rocky Linux 9 base.
   All architectures except i386 are affected. To stay on the old base add
   DEFAULT_VERSIONS=linux=c7 to your /etc/make.conf
 

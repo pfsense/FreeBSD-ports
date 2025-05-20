@@ -1,6 +1,5 @@
 PORTNAME=	pycrdt
-PORTVERSION=	0.12.9
-PORTREVISION=	1
+PORTVERSION=	0.12.15
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -8,8 +7,8 @@ DISTFILES=	pycrdt-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python bindings for Yrs
-WWW=		https://jupyter-server.github.io/pycrdt/ \
-		https://github.com/jupyter-server/pycrdt
+WWW=		https://y-crdt.github.io/pycrdt/ \
+		https://github.com/y-crdt/pycrdt
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

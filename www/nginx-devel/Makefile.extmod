@@ -2,7 +2,7 @@
 
 OPTIONS_GROUP+=	THIRDPARTYGRP
 # External modules (arrayvar MUST appear after devel_kit for build-dep)
-OPTIONS_GROUP_THIRDPARTYGRP=	AJP AWS_AUTH BROTLI CACHE_PURGE CT \
+OPTIONS_GROUP_THIRDPARTYGRP=	AJP AWS_AUTH BROTLI CACHE_PURGE \
 	DEVEL_KIT ARRAYVAR DRIZZLE DYNAMIC_UPSTREAM ECHO ENCRYPTSESSION \
 	FIPS_CHECK FORMINPUT GRIDFS HEADERS_MORE HTTP_ACCEPT_LANGUAGE HTTP_AUTH_DIGEST \
 	HTTP_AUTH_JWT HTTP_AUTH_KRB5 HTTP_AUTH_LDAP HTTP_AUTH_PAM HTTP_DAV_EXT \
@@ -32,11 +32,6 @@ BROTLI_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_brotli_filter_config
 
 CACHE_PURGE_GH_TUPLE=	nginx-modules:ngx_cache_purge:a84b0f3:cache_purge
 CACHE_PURGE_VARS=	DSO_EXTMODS+=cache_purge
-
-CT_IMPLIES=		HTTP_SSL
-CT_GH_TUPLE=		BenBE:nginx-ct:71bf4d2:ct
-CT_VARS=		DSO_EXTMODS+=ct
-CT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-ct-LibreSSL
 
 ECHO_GH_TUPLE=		openresty:echo-nginx-module:4eeda3c:echo
 ECHO_VARS=		DSO_EXTMODS+=echo
@@ -80,7 +75,7 @@ HTTP_ACCEPT_LANGUAGE_VARS=	DSO_EXTMODS+=accept_language
 HTTP_AUTH_DIGEST_GH_TUPLE=	atomx:nginx-http-auth-digest:ac91c88:auth_digest
 HTTP_AUTH_DIGEST_VARS=		DSO_EXTMODS+=auth_digest
 
-HTTP_AUTH_JWT_GH_TUPLE=		TeslaGov:ngx-http-auth-jwt-module:2.3.0:auth_jwt
+HTTP_AUTH_JWT_GH_TUPLE=		TeslaGov:ngx-http-auth-jwt-module:2.3.1:auth_jwt
 HTTP_AUTH_JWT_LIB_DEPENDS=	libjwt.so:www/libjwt
 HTTP_AUTH_JWT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_auth_jwt_module.c
 HTTP_AUTH_JWT_VARS=		DSO_EXTMODS+=auth_jwt
@@ -148,10 +143,8 @@ HTTP_PUSH_VARS=			DSO_EXTMODS+=push
 HTTP_PUSH_STREAM_GH_TUPLE=	wandenberg:nginx-push-stream-module:0.6.0:pushstream
 HTTP_PUSH_STREAM_VARS=		DSO_EXTMODS+=pushstream
 
-HTTP_REDIS_MASTER_SITES=	LOCAL/osa:redis
-HTTP_REDIS_DISTFILES=		ngx_http_redis-0.3.9.tar.gz:redis
-HTTP_REDIS_VARS=		DSO_EXTDIRS+=ngx_http_redis-0.3.9
-HTTP_REDIS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_redis_module.c
+HTTP_REDIS_GH_TUPLE=		osokin:ngx_http_redis:ad7d90c:redis
+HTTP_REDIS_VARS=		DSO_EXTMODS+=redis
 
 HTTP_SLICE_AHEAD_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_http_modules_ngx_http_slice_read_ahead.c
 
@@ -233,7 +226,7 @@ MEMC_VARS=		DSO_EXTMODS+=memc
 
 MODSECURITY3_IMPLIES=		HTTP_ADDITION HTTP_IMAGE_FILTER HTTP_GUNZIP_FILTER HTTP_XSLT
 MODSECURITY3_LIB_DEPENDS=	libmodsecurity.so:security/modsecurity3
-MODSECURITY3_GH_TUPLE=		owasp-modsecurity:ModSecurity-nginx:fb678c5:modsecurity3
+MODSECURITY3_GH_TUPLE=		owasp-modsecurity:ModSecurity-nginx:17405e0:modsecurity3
 MODSECURITY3_VARS=		DSO_EXTMODS+=modsecurity3
 
 NAXSI_NGINX_VER=	1.7
@@ -243,7 +236,7 @@ NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 NAXSI_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-naxsi-libinjection__sqli_c \
 			${PATCHDIR}/extra-patch-naxsi_config
 
-NJS_GH_TUPLE=		nginx:njs:0.8.9:njs
+NJS_GH_TUPLE=		nginx:njs:0.9.0:njs
 NJS_CONFIGURE_ON=	--with-cc-opt="-I ${LOCALBASE}/include/quickjs"
 NJS_LIB_DEPENDS=	libquickjs.so:lang/quickjs \
 			libxml2.so:textproc/libxml2 \
@@ -264,7 +257,7 @@ OTEL_LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 OTEL_BUILD_DEPENDS=	${LOCALBASE}/include/opentelemetry/proto/common/v1/common.proto:devel/opentelemetry-proto
 OTEL_CONFIGURE_ENV+=	NGX_OTEL_PROTO_DIR=${PREFIX}/include
 
-PASSENGER_NGINX_VER=	6.0.26
+PASSENGER_NGINX_VER=	6.0.27
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USES=		ruby
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake
@@ -274,8 +267,7 @@ PASSENGER_DISTFILES=	passenger-${PASSENGER_NGINX_VER}.tar.gz:passenger
 PASSENGER_VARS=		WRKSRC_passenger=${WRKDIR}/passenger-${PASSENGER_NGINX_VER} \
 			DSO_EXTDIRS+=passenger-${PASSENGER_NGINX_VER}/src/nginx_module
 PASSENGER_EXTRA_PATCHES=${PATCHDIR}/extra-patch-passenger-build-nginx.rb \
-			${PATCHDIR}/extra-patch-passenger-disable-telemetry \
-			${PATCHDIR}/extra-patch-passenger-implementation.cpp
+			${PATCHDIR}/extra-patch-passenger-disable-telemetry
 
 POSTGRES_USES=		pgsql
 POSTGRES_GH_TUPLE=	konstruxi:ngx_postgres:8aa7359:postgres

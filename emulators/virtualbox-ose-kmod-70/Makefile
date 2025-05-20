@@ -1,5 +1,5 @@
 PORTNAME=	virtualbox-ose
-DISTVERSION=	7.0.24
+DISTVERSION=	7.0.26
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/
 PKGNAMESUFFIX=	-kmod-70
@@ -33,8 +33,9 @@ CONFIGURE_ARGS+=	--disable-alsa \
 			--disable-xpcom
 CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
-CONFLICTS_INSTALL=	virtualbox-ose-kmod \
-			virtualbox-ose-kmod-legacy
+CONFLICTS_INSTALL=	virtualbox-ose-kmod-legacy \
+			virtualbox-ose-kmod \
+			virtualbox-ose-kmod-71
 
 PATCHDIR=		${.CURDIR}/../${PORTNAME}-70/files
 PORTSCOUT=		limit:^7\.0\.
@@ -89,7 +90,7 @@ post-patch:
 .if ${PORT_OPTIONS:MVIMAGE}
 	@${ECHO_CMD} 'VBOX_WITH_NETFLT_VIMAGE = 1' >> ${WRKSRC}/LocalConfig.kmk
 .endif
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
+	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g; s|which \$$\*|which \$$1|g' \
 	    ${WRKSRC}/Config.kmk ${WRKSRC}/configure
 	@${REINPLACE_CMD} \
 	    -e 's|\$$KBUILDDIR_BIN/kmk_sed|${LOCALBASE}/bin/kmk_sed|g' \

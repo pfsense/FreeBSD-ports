@@ -17,10 +17,11 @@ include/hyprutils/os/Process.hpp
 include/hyprutils/path/Path.hpp
 include/hyprutils/signal/Listener.hpp
 include/hyprutils/signal/Signal.hpp
+include/hyprutils/string/ConstVarList.hpp
 include/hyprutils/string/String.hpp
 include/hyprutils/string/VarList.hpp
 include/hyprutils/utils/ScopeGuard.hpp
 lib/libhyprutils.so
-lib/libhyprutils.so.5
+lib/libhyprutils.so.6
 lib/libhyprutils.so.%%VERSION%%
 libdata/pkgconfig/hyprutils.pc

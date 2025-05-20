@@ -1,6 +1,6 @@
 PORTNAME=	code_saturne
 PORTVERSION=	8.1.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science parallel
 MASTER_SITES=	https://www.code-saturne.org/releases/
 
@@ -65,7 +65,7 @@ METIS_CONFIGURE_ON=	--with-metis-include="${LOCALBASE}/include"
 PARMETIS_DESC=		Support of ParMETIS
 PARMETIS_LIB_DEPENDS=	libparmetis.so:math/parmetis
 PARMETIS_CONFIGURE_ON=	--with-metis-include="${LOCALBASE}/include/parmetis"	\
-			--with-metis-lib="${LOCALBASE}/lib/parmetis"
+			--with-metis-lib="${LOCALBASE}/lib"
 PARMETIS_CONFIGURE_ENV=	LIBS=-lexecinfo
 
 TEST_TARGET=	check

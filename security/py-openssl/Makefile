@@ -1,11 +1,11 @@
 PORTNAME=	openssl
-PORTVERSION=	24.1.0
+PORTVERSION=	25.0.0
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	pyOpenSSL-${PORTVERSION}
+DISTNAME=	pyopenssl-${PORTVERSION}
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Python interface to the OpenSSL library
@@ -14,9 +14,9 @@ WWW=		https://github.com/pyca/pyopenssl
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flaky>0:devel/py-flaky@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pretend>0:devel/py-pretend@${PY_FLAVOR} \
-		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.9:devel/py-typing-extensions@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pretend>0:devel/py-pretend@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-rerunfailures>0:devel/py-pytest-rerunfailures@${PY_FLAVOR}
 
 USES=		cpe python
 USE_PYTHON=	autoplist concurrent cryptography distutils pytest pythonprefix

@@ -1,8 +1,7 @@
 PORTNAME=	plasma-workspace
 DISTVERSION=	${KDE_PLASMA_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11 kde kde-plasma
-PATCH_SITES=	https://invent.kde.org/plasma/plasma-workspace/-/commit/
-PATCHFILES=	47d502353720004fa2d0e7b0065994b75b3e0ded.patch:-p1 # fix layout regression in notifications
 
 COMMENT=	KDE Plasma Workspace
 MAINTAINER=	kde@FreeBSD.org
@@ -24,6 +23,8 @@ RUN_DEPENDS=	kio-extras>=24.12.3:devel/kio-extras \
 		kio-fuse>=5.1.0_1:filesystems/kio-fuse \
 		mkfontscale:x11-fonts/mkfontscale \
 		oxygen-icons>=0:x11-themes/oxygen-icons \
+		xmessage:x11/xmessage \
+		xrdb:x11/xrdb \
 		xset:x11/xset
 
 USES=		cmake desktop-file-utils gettext gl kde:6 pkgconfig python \

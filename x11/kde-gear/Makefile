@@ -3,7 +3,7 @@ PORTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	x11 kde
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE Gear distribuition (meta port)
+COMMENT=	KDE Gear distribution (meta port)
 WWW=		https://apps.kde.org/
 
 USES=		kde:6 metaport qt:6
@@ -11,8 +11,8 @@ USE_QT=		# empty
 
 OPTIONS_DEFINE=	KDEADMIN KDEEDU KDEGAMES KDEGRAPHICS KDEMULTIMEDIA KDENETWORK \
 		KDEPIM KDEUTILS
-
 OPTIONS_DEFAULT=${OPTIONS_DEFINE}
+OPTIONS_EXCLUDE_FreeBSD_13=	KDEPIM # OpenSSL 1.1.x is not supported
 
 KDEADMIN_DESC=		Administration utilities
 KDEADMIN_RUN_DEPENDS=	kdeadmin>=${KDE_APPLICATIONS_VERSION}:sysutils/kdeadmin

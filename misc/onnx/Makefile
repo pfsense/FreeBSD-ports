@@ -1,12 +1,12 @@
 PORTNAME=	onnx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.17.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Open Neural Network eXchange
-WWW=		https://onnx.ai/ \
+WWW=		https://onnx.ai \
 		https://github.com/onnx/onnx
 
 LICENSE=	MIT

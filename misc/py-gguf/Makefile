@@ -1,5 +1,5 @@
 PORTNAME=	gguf
-DISTVERSION=	0.16.0.${GH_TAGNAME:S/b//} # the base version is in pyproject.toml, updated by post-patch
+DISTVERSION=	0.16.3.${GH_TAGNAME:S/b//} # the base version is in pyproject.toml, updated by post-patch
 CATEGORIES=	misc python # machine-learning
 #MASTER_SITES=	PYPI # the PYPI version is way behind of llama-cpp
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,7 +24,7 @@ USE_PYTHON=	pep517 autoplist pytest
 USE_GITHUB=	yes
 GH_ACCOUNT=	ggml-org
 GH_PROJECT=	llama.cpp
-GH_TAGNAME=	b5061
+GH_TAGNAME=	b5401
 
 WRKSRC=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}/gguf-py
 
@@ -34,9 +34,9 @@ NO_ARCH=	yes
 
 post-patch: # update version to reflect llama-cpp revision, have to use '.' since '-' is interpreted as "post"
 	@${REINPLACE_CMD} \
-		-e 's/version = "0.16.0"/version = "0.16.0.${GH_TAGNAME:S/b//}"/' \
+		-e 's/version = "${DISTVERSION:R}"/version = "${DISTVERSION:R}.${GH_TAGNAME:S/b//}"/' \
 		${WRKSRC}/pyproject.toml
 
-# tests as of 0.16.0: 5 passed in 1.64s
+# tests as of 0.16.2.5280: 5 passed in 10.59s
 
 .include <bsd.port.mk>

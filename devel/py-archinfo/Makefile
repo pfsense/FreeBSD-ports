@@ -1,11 +1,10 @@
 PORTNAME=	archinfo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	${ANGR_VERSION}
-PORTREVISION=	1
+DISTVERSION=	9.2.154
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	schaiba@gmail.com
 COMMENT=	Classes with architecture-specific information useful to other projects
 WWW=		https://github.com/angr/archinfo
 
@@ -20,6 +19,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	angr
 USE_PYTHON=	autoplist distutils
 
+TESTING_UNSAFE=	nose does not yet support Python 3.11 so 'make test' will fail
+
 NO_ARCH=	yes
+
+post-extract:
+	${CP} ${FILESDIR}/setup.py ${WRKSRC}/
 
 .include <bsd.port.mk>

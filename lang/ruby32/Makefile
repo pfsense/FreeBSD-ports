@@ -14,6 +14,9 @@ LICENSE_COMB=	dual
 LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/BSDL
 LICENSE_FILE_RUBY=	${WRKSRC}/COPYING
 
+DEPRECATED=	Please migrate to newer version. Ruby 3.2 is expected to reach its EoL on March 31, 2026
+EXPIRATION_DATE=	2026-04-30
+
 # Using LIB_DEPENDS finds the libffi from gcc which causes problems
 BUILD_DEPENDS=	libffi>=0:devel/libffi
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
@@ -47,8 +50,6 @@ EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/bin/gem \
 			--exclude ${DISTNAME}/man/irb.1 \
 			--exclude ${DISTNAME}/man/ri.1 \
 			--no-same-owner --no-same-permissions
-
-WRKSRC=		${RUBY_WRKSRC}
 
 RUBY_VER=	3.2
 

@@ -167,7 +167,18 @@ MASTER_SITES+=	${GO_MOD_DIST}
 DISTFILES+=	go.mod
 # Fallback to default GO_PROXY
 .        else
+
+# `GOPROXY` presents sources via the proxy service and in the downloaded
+# `WRKSRC` differently as of v2.x versions of projects. Support this different
+# directory/REST API scheme: https://go.dev/ref/mod#major-version-suffixes .
+# GO_MODVERSION_MAJOR=	${GO_MODVERSION:C/^v//g:C/\..+//g}
+# .if ${GO_MODVERSION_MAJOR} > 1
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}/v${GO_MODVERSION_MAJOR}@${GO_MODVERSION}
+# MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/v${GO_MODVERSION_MAJOR}/@v/
+# .else
+# WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/@v/
+# .endif
 DISTFILES+=	${GO_MODFILE} ${GO_DISTFILE}
 WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
 .        endif

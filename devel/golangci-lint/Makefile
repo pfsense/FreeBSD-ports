@@ -1,23 +1,22 @@
 PORTNAME=	golangci-lint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.62.2
-PORTREVISION=	3
+DISTVERSION=	2.1.6
 CATEGORIES=	devel
 
-MAINTAINER=	lcook@FreeBSD.org
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Linters Runner for Go
 WWW=		https://github.com/golangci/golangci-lint
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake go:1.22,modules
+USES=		gmake go:1.23,modules
 
 _BUILD_VERSION=	${DISTVERSION}
-_BUILD_COMMIT=	89476e7
+_BUILD_COMMIT=	eabc263
 _BUILD_DATE=	$$(date -u "+%Y-%m-%dT%H:%M:%SZ")
 
-GO_MODULE=	github.com/${PORTNAME:S/-lint//}/${PORTNAME}
+GO_MODULE=	github.com/${PORTNAME:S/-lint//}/${PORTNAME}/v2
 GO_TARGET=	./cmd/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "\
 		-s -w \
@@ -41,7 +40,7 @@ BINARY_ALIAS=	make=gmake
 
 post-install-COMPLETIONS-on:
 .for _shell in bash fish zsh
-	${SET_ENV} ${MAKE_ENV} ${GO_ENV} ${GO_WRKDIR_BIN}/${PORTNAME} completion ${_shell} \
+	${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_WRKDIR_BIN}/${PORTNAME} completion ${_shell} \
 		>${STAGEDIR}${PREFIX}/${COMPLETIONS_PLIST_FILES:M*${_shell}*}
 .endfor
 

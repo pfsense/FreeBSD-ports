@@ -251,7 +251,6 @@
     SUBDIR += exhaust-doc
     SUBDIR += exhaust-ma
     SUBDIR += exult
-    SUBDIR += exult-devel
     SUBDIR += ezquake
     SUBDIR += f1spirit-remake
     SUBDIR += fairymax
@@ -947,7 +946,6 @@
     SUBDIR += stonesoup
     SUBDIR += stormbaancoureur
     SUBDIR += stratagus
-    SUBDIR += stuntrally
     SUBDIR += sudsol
     SUBDIR += sulis
     SUBDIR += supertux
@@ -1103,7 +1101,6 @@
     SUBDIR += xinvaders
     SUBDIR += xinvaders3d
     SUBDIR += xisola
-    SUBDIR += xjewel
     SUBDIR += xjig
     SUBDIR += xjump
     SUBDIR += xjumpx

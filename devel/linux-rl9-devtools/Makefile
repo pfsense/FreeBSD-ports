@@ -1,6 +1,6 @@
 PORTNAME=	devtools
 PORTVERSION=	${LINUX_DIST_VER}
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	devel
 
 MAINTAINER=	emulation@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://gcc.gnu.org/
 
 USES=		linux:rl9
 USE_LDCONFIG=	yes
-USE_LINUX=	elfutils-libs libgfortran libsigsegv
+USE_LINUX=	elfutils-libs libgfortran
 USE_LINUX_RPM=	yes
 WANT_LINUX32=	yes
 
@@ -21,8 +21,8 @@ QA_ENV+=		USESLIBTOOL=no
 
 BUVERSION=	2.35.2-54.el9
 GCCVERSION=	11.5.0-5.el9_5
-GLIBCVERSION=	2.34-125.el9_5.1
-KERNELVERSION=	5.14.0-503.26.1.el9_5
+GLIBCVERSION=	2.34-125.el9_5.8
+KERNELVERSION=	5.14.0-503.40.1.el9_5
 MPFRVERSION=	4.1.0-7.el9
 LIBMPCVERSION=	1.2.1-4.el9
 
@@ -31,8 +31,7 @@ BIN_DISTNAMES=	binutils-${BUVERSION} \
 		cpp-${GCCVERSION} \
 		gcc-${GCCVERSION} \
 		gcc-c++-${GCCVERSION} \
-		gcc-gfortran-${GCCVERSION} \
-		mpfr-${MPFRVERSION}
+		gcc-gfortran-${GCCVERSION}
 LIB_DISTNAMES=	binutils-devel-${BUVERSION} \
 		glibc-devel-${GLIBCVERSION} \
 		libatomic-${GCCVERSION} \
@@ -47,7 +46,6 @@ SRC_DISTFILES=	binutils-${BUVERSION}${SRC_SUFX}:SOURCE \
 		glibc-${GLIBCVERSION}${SRC_SUFX}:SOURCE \
 		kernel-${KERNELVERSION}${SRC_SUFX}:SOURCE \
 		libmpc-${LIBMPCVERSION}${SRC_SUFX}:SOURCE \
-		mpfr-${MPFRVERSION}${SRC_SUFX}:SOURCE \
 		gcc-${GCCVERSION}${SRC_SUFX}:SOURCE
 
 CONFLICTS=	linux-c7-${PORTNAME} \

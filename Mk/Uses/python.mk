@@ -96,6 +96,12 @@
 #
 #	cython_test	- Depend on lang/cython for tests.
 #
+#	cython3		- Depend on lang/cython3 at build-time.
+#
+#	cython3_run	- Depend on lang/cython3 at run-time.
+#
+#	cython3_test	- Depend on lang/cython3 for tests.
+#
 #	flavors		- Force creation of flavors for Python 2 and 3 default
 #			  versions, where applicable.
 #
@@ -331,6 +337,9 @@ _VALID_PYTHON_FEATURES=	allflavors \
 			cython \
 			cython_run \
 			cython_test \
+			cython3 \
+			cython3_run \
+			cython3_test \
 			distutils \
 			flavors \
 			noegginfo \
@@ -606,9 +615,9 @@ _PYTHONPKGLIST=	${WRKDIR}/.PLIST.pymodtmp
 
 # cryptography* support
 .  if ${PYCRYPTOGRAPHY_DEFAULT} == rust
-CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=42.0.8,1:security/py-cryptography@${PY_FLAVOR}
+CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=44.0.3,1:security/py-cryptography@${PY_FLAVOR}
 .  else
-CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography-legacy>=3.4.8_1,1:security/py-cryptography-legacy@${PY_FLAVOR}
+CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography-legacy>=3.4.8_3,1:security/py-cryptography-legacy@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CRYPTOGRAPHY_BUILD)
@@ -624,16 +633,29 @@ TEST_DEPENDS+=	${CRYPTOGRAPHY_DEPENDS}
 .  endif
 
 # cython* support
+
 .  if defined(_PYTHON_FEATURE_CYTHON)
-BUILD_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON_RUN)
-RUN_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON_TEST)
-TEST_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CYTHON3)
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.0.12<3.1:lang/cython3@${PY_FLAVOR}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CYTHON3_RUN)
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.0.12<3.1:lang/cython3@${PY_FLAVOR}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CYTHON3_TEST)
+TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.0.12<3.1:lang/cython3@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CONCURRENT)
@@ -835,6 +857,7 @@ PY_SETUPTOOLS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAV
 .  if ${PYTHON_REL} < 31100
 PY_EXCEPTIONGROUP=	${PYTHON_PKGNAMEPREFIX}exceptiongroup>=1.1.1:devel/py-exceptiongroup@${PY_FLAVOR}
 PY_TOMLI=	${PYTHON_PKGNAMEPREFIX}tomli>=2.0.2<3:textproc/py-tomli@${PY_FLAVOR}
+PY_TYPING_EXTENSIONS=	${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
 .  endif
 
 .  if ${PYTHON_REL} >= 30000

@@ -84,6 +84,7 @@ include/qemu-plugin.h
 %%DATADIR%%/firmware/60-edk2-arm.json
 %%DATADIR%%/firmware/60-edk2-i386.json
 %%DATADIR%%/firmware/60-edk2-loongarch64.json
+%%DATADIR%%/firmware/60-edk2-riscv64.json
 %%DATADIR%%/firmware/60-edk2-x86_64.json
 %%DATADIR%%/hppa-firmware.img
 %%DATADIR%%/hppa-firmware64.img
@@ -126,6 +127,7 @@ include/qemu-plugin.h
 %%DATADIR%%/multiboot.bin
 %%DATADIR%%/multiboot_dma.bin
 %%DATADIR%%/npcm7xx_bootrom.bin
+%%DATADIR%%/npcm8xx_bootrom.bin
 %%DATADIR%%/openbios-ppc
 %%DATADIR%%/openbios-sparc32
 %%DATADIR%%/openbios-sparc64
@@ -133,6 +135,7 @@ include/qemu-plugin.h
 %%DATADIR%%/opensbi-riscv64-generic-fw_dynamic.bin
 %%DATADIR%%/palcode-clipper
 %%DATADIR%%/petalogix-ml605.dtb
+%%DATADIR%%/pnv-pnor.bin
 %%DATADIR%%/pxe-e1000.rom
 %%DATADIR%%/pxe-eepro100.rom
 %%DATADIR%%/pxe-ne2k_pci.rom

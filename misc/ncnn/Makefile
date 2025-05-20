@@ -1,6 +1,5 @@
 PORTNAME=	ncnn
-DISTVERSION=	20241226
-PORTREVISION=	2
+DISTVERSION=	20250503
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -32,6 +31,6 @@ VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CMAKE_BOOL=	NCNN_VULKAN
 VULKAN_BROKEN=		most tests are broken with Vulkan, see https://github.com/Tencent/ncnn/issues/4742#issuecomment-1879563662
 
-# tests as of 20241226: 99% tests passed, 1 tests failed out of 127
+# tests as of 20250503: 99% tests passed, 1 tests failed out of 135
 
 .include <bsd.port.mk>

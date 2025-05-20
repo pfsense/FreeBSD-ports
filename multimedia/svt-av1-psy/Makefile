@@ -1,8 +1,7 @@
 PORTNAME=	svt-av1-psy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.0
-DISTVERSIONSUFFIX=	-B # PORTEPOCH workaround
-PORTREVISION=	2
+DISTVERSION=	3.0.2
+#DISTVERSIONSUFFIX=	-A # PORTEPOCH workaround
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -21,7 +20,8 @@ BUILD_DEPENDS_amd64=	nasm:devel/nasm
 USES=		cmake compiler:c11
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-GH_ACCOUNT=	gianni-rosato
+GH_ACCOUNT=	psy-ex
+GH_TUPLE=	1480c1:cpuinfo:e649baa:cpuinfo/third_party/cpuinfo
 CMAKE_ON=	ENABLE_NASM
 CMAKE_OFF=	NATIVE
 PLIST_SUB=	VERSION=${DISTVERSION:C/-.*//}

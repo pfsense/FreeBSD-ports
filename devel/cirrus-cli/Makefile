@@ -1,7 +1,6 @@
 PORTNAME=	cirrus-cli
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.129.1
-PORTREVISION=	4
+DISTVERSION=	0.132.0
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -11,7 +10,7 @@ WWW=		https://github.com/cirruslabs/cirrus-cli
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.22,modules
+USES=		go:1.24,modules
 
 USE_RC_SUBR=	${PORTNAME}
 
@@ -26,9 +25,5 @@ GROUPS=		cirrus
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/cirrus-worker.yml ${STAGEDIR}${PREFIX}/etc/cirrus-worker.yml.sample
-
-.if defined(MAINTAINER_MODE)
-GO_ENV+=	GOTOOLCHAIN=go1.22.6
-.endif
 
 .include <bsd.port.mk>

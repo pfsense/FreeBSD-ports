@@ -1,9 +1,9 @@
 PORTNAME=	re
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.20.0
+DISTVERSION=	3.22.0
 CATEGORIES=	audio devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	herbert@gojira.at
 COMMENT=	Library for real-time comms with async IO support
 WWW=		https://github.com/baresip
 

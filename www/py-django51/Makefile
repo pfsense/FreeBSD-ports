@@ -1,12 +1,15 @@
 PORTNAME=	django
-PORTVERSION=	5.1.8
+PORTVERSION=	5.1.9
 CATEGORIES=	www python
 MASTER_SITES=	PYPI \
 		https://media.djangoproject.com/releases/${PORTVERSION:R}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	51
-DISTNAME=	Django-${PORTVERSION}
+#DISTNAME=	Django-${PORTVERSION}
 DIST_SUBDIR=	python
+
+PATCH_SITES=	https://github.com/django/django/commit/
+PATCHFILES+=	8b9a2bf34e132ccf0ab0a074440dc55f90c76598.patch:-p1
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	High-level Python Web Framework

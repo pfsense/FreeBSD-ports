@@ -1,6 +1,6 @@
---- ui/gfx/x/atom_cache.cc.orig	2025-02-22 18:06:53 UTC
+--- ui/gfx/x/atom_cache.cc.orig	2025-05-07 06:48:23 UTC
 +++ ui/gfx/x/atom_cache.cc
-@@ -155,6 +155,7 @@ constexpr auto kAtomsToCache = std::to_array<const cha
+@@ -157,6 +157,7 @@ constexpr auto kAtomsToCache = std::to_array<const cha
      "application/octet-stream",
      "application/vnd.chromium.test",
      "chromium/filename",

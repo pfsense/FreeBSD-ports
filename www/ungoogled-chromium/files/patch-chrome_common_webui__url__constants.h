@@ -1,6 +1,6 @@
---- chrome/common/webui_url_constants.h.orig	2025-03-09 21:38:10 UTC
+--- chrome/common/webui_url_constants.h.orig	2025-05-06 12:23:00 UTC
 +++ chrome/common/webui_url_constants.h
-@@ -508,18 +508,18 @@ inline constexpr char kChromeUIOsUrlAppURL[] = "chrome
+@@ -513,18 +513,18 @@ inline constexpr char kChromeUIOsUrlAppURL[] = "chrome
  #endif  // BUILDFLAG(IS_CHROMEOS)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -22,7 +22,7 @@
  inline constexpr char kChromeUIWebAppSettingsHost[] = "app-settings";
  inline constexpr char kChromeUIWebAppSettingsURL[] = "chrome://app-settings/";
  inline constexpr char kChromeUIWhatsNewHost[] = "whats-new";
-@@ -531,11 +531,11 @@ inline constexpr char kChromeUILinuxProxyConfigHost[] 
+@@ -536,11 +536,11 @@ inline constexpr char kChromeUILinuxProxyConfigHost[] 
  #endif
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
@@ -36,8 +36,8 @@
  inline constexpr char kChromeUIBrowserSwitchHost[] = "browser-switch";
  inline constexpr char kChromeUIBrowserSwitchURL[] = "chrome://browser-switch/";
  inline constexpr char kChromeUIIntroDefaultBrowserSubPage[] = "default-browser";
-@@ -557,7 +557,7 @@ inline constexpr char kChromeUIProfilePickerGlicQuery[
- inline constexpr char kChromeUIProfilePickerUrl[] = "chrome://profile-picker/";
+@@ -565,7 +565,7 @@ inline constexpr char kChromeUIHistorySyncOptinURL[] =
+     "chrome://history-sync-optin/";
  #endif
  
 -#if ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \

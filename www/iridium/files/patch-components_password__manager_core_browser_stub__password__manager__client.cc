@@ -1,6 +1,6 @@
---- components/password_manager/core/browser/stub_password_manager_client.cc.orig	2025-03-18 16:46:04 UTC
+--- components/password_manager/core/browser/stub_password_manager_client.cc.orig	2025-05-07 06:48:23 UTC
 +++ components/password_manager/core/browser/stub_password_manager_client.cc
-@@ -199,7 +199,7 @@ version_info::Channel StubPasswordManagerClient::GetCh
+@@ -206,7 +206,7 @@ version_info::Channel StubPasswordManagerClient::GetCh
  }
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || \

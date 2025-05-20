@@ -1,8 +1,11 @@
 PORTNAME=	${GH_PROJECT:tl}
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.5.0
+DISTVERSION=	4.5.1
 PORTREVISION=	1
 CATEGORIES=	audio
+
+PATCH_SITES=	https://github.com/musescore/MuseScore/commit/
+PATCHFILES+=	05056ed19520060c3912a09a3adfa0927057f956.patch:-p1 # Fix build with Qt >= 6.9.0
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Free music composition & notation software
@@ -31,7 +34,6 @@ USE_GL=		gl
 
 USE_GITHUB=	yes
 GH_PROJECT=	MuseScore
-GH_TAGNAME=	v4.5
 
 # Each release gets a subdir containing the distfiles for that release,
 # so hope that scanning the parent dir finds new ones.
@@ -52,7 +54,7 @@ CMAKE_OFF=	MUE_BUILD_CRASHPAD_CLIENT \
 CMAKE_BUILD_TYPE=	release
 CMAKE_ARGS=	-DMUSE_APP_BUILD_MODE="release"
 
-post-stage:
+post-install:
 	# workaround for https://github.com/musescore/MuseScore/issues/26103
 	@${RM} -r \
 		${STAGEDIR}${PREFIX}/include \
@@ -60,5 +62,9 @@ post-stage:
 		${STAGEDIR}${PREFIX}/libdata
 	# workaround for https://github.com/musescore/MuseScore/issues/26104
 	@${INSTALL_DATA} ${FILESDIR}/mscore.desktop ${STAGEDIR}${PREFIX}/share/applications/
+	@${REINPLACE_CMD} -i '' -e "\
+		s|^Version=.*|Version=${PORTVERSION}|; \
+		s|^Name=.*|Name=MuseScore|; \
+		"  ${STAGEDIR}${PREFIX}/share/applications/mscore.desktop
 
 .include <bsd.port.mk>

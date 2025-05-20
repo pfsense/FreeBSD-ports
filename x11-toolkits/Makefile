@@ -1,6 +1,5 @@
     COMMENT = X11 toolkits
 
-    SUBDIR += SoXt
     SUBDIR += Xmt
     SUBDIR += amtk
     SUBDIR += aquamarine
@@ -261,6 +260,7 @@
     SUBDIR += wlroots015
     SUBDIR += wlroots017
     SUBDIR += wlroots018
+    SUBDIR += wlroots019
     SUBDIR += wmapp
     SUBDIR += wxgtk30
     SUBDIR += wxgtk32

@@ -32,6 +32,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pyinfra-dev
 USE_PYTHON=	autoplist distutils
 
+NO_ARCH=	yes
 # Most of the ignored tests fail because docker is missing.
 # The *_ensure_newline_* ones fail when pyinfra is not installed first.
 PYTEST_IGNORED_TESTS=	test_int_docker_install_package_ubuntu \
@@ -48,10 +49,6 @@ PYTEST_IGNORED_TESTS=	test_int_docker_install_package_ubuntu \
 # https://github.com/pyinfra-dev/pyinfra/issues/1290
 
 .include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 30900
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}graphlib-backport>0:graphics/py-graphlib-backport@${PY_FLAVOR}
-.endif
 
 .if ${PYTHON_REL} < 31000
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>3.6:devel/py-importlib-metadata@${PY_FLAVOR}

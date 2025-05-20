@@ -115,7 +115,6 @@
     SUBDIR += gramps
     SUBDIR += gromacs
     SUBDIR += gsmc
-    SUBDIR += gtamsanalyzer
     SUBDIR += h5utils
     SUBDIR += h5z-zfp
     SUBDIR += harminv
@@ -420,6 +419,7 @@
     SUBDIR += py-pyteomics
     SUBDIR += py-qcelemental
     SUBDIR += py-qcengine
+    SUBDIR += py-qiskit
     SUBDIR += py-qspin
     SUBDIR += py-quantities
     SUBDIR += py-rmf

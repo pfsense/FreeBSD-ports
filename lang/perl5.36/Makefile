@@ -1,6 +1,6 @@
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	lang devel perl5
 MASTER_SITES=	CPAN/../../src/5.0
 DIST_SUBDIR=	perl
@@ -14,9 +14,8 @@ LICENSE_COMB=	dual
 LICENSE_FILE_ART10=	${WRKSRC}/Artistic
 LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
-# Uncomment when the default Perl is switched to 5.38+
-#DEPRECATED=	Support end three years after .0 release, please upgrade to a more recent version of Perl
-#EXPIRATION_DATE=2025-05-28
+DEPRECATED=	Support end three years after .0 release, please upgrade to a more recent version of Perl
+EXPIRATION_DATE=2025-05-28
 
 USES=		cpe tar:xz
 
@@ -246,6 +245,10 @@ post-patch:
 		/^if.*nopods.*versiononly || /s/.*/if (1) {/' \
 		${WRKSRC}/installperl
 .endif
+	cd ${PATCHDIR}; for patch in patch-*; do \
+		${AWK} -v patch="$$patch" 'seen == 1 && /,NULL/ {print ",\"FreeBSD:" patch "\""} {print} /local_patches\[\]/ { seen=1 }' ${WRKSRC}/patchlevel.h > ${WRKDIR}/patchlevel.h; \
+		mv -f ${WRKDIR}/patchlevel.h ${WRKSRC}/patchlevel.h ; \
+	done
 
 post-install:
 	@${REINPLACE_CMD} -e '/^lddlflags/s|-L${WRKSRC} ||' \

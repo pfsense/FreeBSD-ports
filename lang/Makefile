@@ -97,13 +97,16 @@
     SUBDIR += gcc13-devel
     SUBDIR += gcc14
     SUBDIR += gcc14-devel
+    SUBDIR += gcc15
     SUBDIR += gcc15-devel
+    SUBDIR += gcc16-devel
     SUBDIR += gcc6-aux
     SUBDIR += gforth
     SUBDIR += ghc
     SUBDIR += ghc810
     SUBDIR += ghc92
     SUBDIR += ghc94
+    SUBDIR += ghc96
     SUBDIR += gir-to-d
     SUBDIR += gjs
     SUBDIR += gleam
@@ -330,6 +333,8 @@
     SUBDIR += rizin-cutter
     SUBDIR += ruby32
     SUBDIR += ruby33
+    SUBDIR += ruby34
+    SUBDIR += ruby35
     SUBDIR += rubygem-rb_sys
     SUBDIR += rubygem-ruby_language_server
     SUBDIR += runawk
@@ -347,6 +352,7 @@
     SUBDIR += scheme48
     SUBDIR += scm
     SUBDIR += scratch
+    SUBDIR += scryer-prolog
     SUBDIR += sdcc
     SUBDIR += see
     SUBDIR += seed7
@@ -381,6 +387,7 @@
     SUBDIR += tclX
     SUBDIR += tolua
     SUBDIR += tolua++
+    SUBDIR += trealla-prolog
     SUBDIR += tuareg-mode.el
     SUBDIR += typstfmt
     SUBDIR += typstyle

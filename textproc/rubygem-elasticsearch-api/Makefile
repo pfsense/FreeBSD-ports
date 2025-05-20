@@ -1,5 +1,5 @@
 PORTNAME=	elasticsearch-api
-PORTVERSION=	8.17.1
+PORTVERSION=	9.0.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

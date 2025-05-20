@@ -85,17 +85,13 @@ KDE_APPLICATIONS_BRANCH?=	${KDE_APPLICATIONS6_BRANCH}
 KDE_APPLICATIONS_VERSION?=	${KDE_APPLICATIONS6_VERSION}
 KDE_APPLICATIONS_SHLIB_VER?=	${KDE_APPLICATIONS6_SHLIB_VER}
 KDE_APPLICATIONS_SHLIB_G_VER?=	${KDE_APPLICATIONS6_SHLIB_G_VER}
-# Some projects despite being a part of Gear distribution continue to use
-# their own versioning with mangled KDE_APPLICATIONS_VERSION as a patchlevel.
-# Provide more variables to ease their maintenance.
-KDE_APPS_BASED_PATCHLEVEL?=	${KDE_APPLICATIONS_VERSION:R:S/.//}0${KDE_APPLICATIONS_VERSION:E}
 
 # Legacy KDE Plasma.
 KDE_PLASMA5_VERSION?=		5.27.12
 KDE_PLASMA5_BRANCH?=		stable
 
 # Current KDE Plasma desktop.
-KDE_PLASMA6_VERSION?=		6.3.4
+KDE_PLASMA6_VERSION?=		6.3.5
 KDE_PLASMA6_BRANCH?=		stable
 
 # Legacy KDE frameworks (Qt5 based).
@@ -103,16 +99,28 @@ KDE_FRAMEWORKS5_VERSION?=	5.116.0
 KDE_FRAMEWORKS5_BRANCH?=	stable
 
 # Current KDE Frameworks (Qt6 based).
-KDE_FRAMEWORKS6_VERSION?=	6.12.0
+KDE_FRAMEWORKS6_VERSION?=	6.13.0
 KDE_FRAMEWORKS6_BRANCH?=	stable
 
 # Current KDE applications. Update _${PORTNAME}_PROJECT_VERSION for the following ports:
 # devel/kdevelop, games/libkdegames, games/libkmahjongg, graphics/kgraphviewer
-KDE_APPLICATIONS6_VERSION?=	24.12.3
-KDE_APPLICATIONS6_SHLIB_VER?=	6.3.3
+KDE_APPLICATIONS6_VERSION?=	25.04.1
+KDE_APPLICATIONS6_SHLIB_VER?=	6.4.1
 # G as in KDE Gear, and as in "don't make the variable name longer than required".
 KDE_APPLICATIONS6_SHLIB_G_VER?=	${KDE_APPLICATIONS6_VERSION}
 KDE_APPLICATIONS6_BRANCH?=	stable
+
+# Some projects despite being a part of Gear distribution continue to use
+# their own versioning with mangled KDE_APPLICATIONS_VERSION as a patchlevel.
+# Provide more variables to ease their maintenance.
+KDE_APPS_MAJOR=		${KDE_APPLICATIONS_VERSION:R:R}
+KDE_APPS_MINOR=		${KDE_APPLICATIONS_VERSION:R:E}
+.    if ${KDE_APPLICATIONS_BRANCH:Mstable}
+KDE_APPS_MICRO=			0${KDE_APPLICATIONS_VERSION:E}
+.    else
+KDE_APPS_MICRO=			${KDE_APPLICATIONS_VERSION:E}
+.    endif
+KDE_APPS_BASED_PATCHLEVEL?=	${KDE_APPS_MAJOR}${KDE_APPS_MINOR}${KDE_APPS_MICRO}
 
 # ==============================================================================
 

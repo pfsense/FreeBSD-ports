@@ -370,7 +370,6 @@
     SUBDIR += f-upgrade
     SUBDIR += f2
     SUBDIR += f3
-    SUBDIR += facter
     SUBDIR += fakertc
     SUBDIR += faketty
     SUBDIR += fand
@@ -986,9 +985,7 @@
     SUBDIR += pstree
     SUBDIR += puppet-lint
     SUBDIR += puppet-mode.el
-    SUBDIR += puppet7
     SUBDIR += puppet8
-    SUBDIR += puppetserver7
     SUBDIR += puppetserver8
     SUBDIR += pv
     SUBDIR += pwd_unmkdb
@@ -996,7 +993,6 @@
     SUBDIR += pwol
     SUBDIR += pwsafe
     SUBDIR += pxattr
-    SUBDIR += pxp-agent
     SUBDIR += py-ansible-compat
     SUBDIR += py-ansible-core
     SUBDIR += py-ansible-lint
@@ -1028,6 +1024,7 @@
     SUBDIR += py-filelock
     SUBDIR += py-focker
     SUBDIR += py-glances
+    SUBDIR += py-google-compute-engine
     SUBDIR += py-hared
     SUBDIR += py-hcloud
     SUBDIR += py-honcho
@@ -1042,6 +1039,7 @@
     SUBDIR += py-mitogen
     SUBDIR += py-mqttwarn
     SUBDIR += py-nagiosplugin
+    SUBDIR += py-overlord
     SUBDIR += py-packet-python
     SUBDIR += py-pkginfo
     SUBDIR += py-ploy
@@ -1136,6 +1134,7 @@
     SUBDIR += rsyncbackup
     SUBDIR += rsyncrypto
     SUBDIR += rsyslog8
+    SUBDIR += rtkit-unix
     SUBDIR += rtty
     SUBDIR += rubygem-backup
     SUBDIR += rubygem-bolt
@@ -1289,7 +1288,6 @@
     SUBDIR += skopeo
     SUBDIR += slack
     SUBDIR += sleuthkit
-    SUBDIR += slst
     SUBDIR += slurm-wlm
     SUBDIR += smart
     SUBDIR += smartmontools
@@ -1386,6 +1384,7 @@
     SUBDIR += touchegg
     SUBDIR += toybox
     SUBDIR += tree
+    SUBDIR += treetop
     SUBDIR += triton
     SUBDIR += trueos-libqt5
     SUBDIR += ts
@@ -1423,6 +1422,7 @@
     SUBDIR += u-boot-nanopi-r2s
     SUBDIR += u-boot-nanopi-r4s
     SUBDIR += u-boot-nanopi-r5s
+    SUBDIR += u-boot-nanopi-r6s
     SUBDIR += u-boot-olimex-a20-som-evb
     SUBDIR += u-boot-olinuxino-lime
     SUBDIR += u-boot-olinuxino-lime2
@@ -1435,7 +1435,6 @@
     SUBDIR += u-boot-orangepi-r1
     SUBDIR += u-boot-orangepi-zero
     SUBDIR += u-boot-orangepi-zero-plus
-    SUBDIR += u-boot-pandaboard
     SUBDIR += u-boot-pcduino3
     SUBDIR += u-boot-pine-h64
     SUBDIR += u-boot-pine64
@@ -1447,6 +1446,7 @@
     SUBDIR += u-boot-qemu-riscv64
     SUBDIR += u-boot-quartz64-a
     SUBDIR += u-boot-quartz64-b
+    SUBDIR += u-boot-radxa-zero3
     SUBDIR += u-boot-riotboard
     SUBDIR += u-boot-rock-pi-4
     SUBDIR += u-boot-rock64

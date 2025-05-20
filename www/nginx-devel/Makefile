@@ -1,5 +1,5 @@
 PORTNAME?=	nginx
-PORTVERSION=	1.27.4
+PORTVERSION=	1.28.0
 PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
@@ -16,9 +16,9 @@ LICENSE_FILE?=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	nginx
 
-PORTSCOUT=	limit:^1\.2[7-8]\.[0-9]*
+PORTSCOUT=	limit:^1\.2[8-9]\.[0-9]*
 
-USES=		cpe
+USES=		cpe compiler:env
 
 CPE_VENDOR=	f5
 CPE_PRODUCT=	nginx
@@ -236,6 +236,10 @@ IGNORE=		required at least GSSAPI_HEIMDAL or \
 		'make config' again
 .endif
 
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 191
+CFLAGS+=	-Wno-error=cast-function-type-mismatch
+.endif
+
 .if ${PORT_OPTIONS:MPASSENGER} && empty(PORT_OPTIONS:MDEBUG)
 CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
@@ -251,7 +255,7 @@ LIB_DEPENDS+=		libpcre.so:devel/pcre
 .endif
 
 .if ${PORT_OPTIONS:MNJS}
-NJS_CONFIGURE_ARGS=	--cc-opt="-I${LOCALBASE}/include/quickjs" \
+NJS_CONFIGURE_ARGS=	--cc-opt="${CFLAGS} -I${LOCALBASE}/include/quickjs" \
 			--ld-opt="-L${LOCALBASE}/lib" \
 			--with-quickjs
 .endif
@@ -308,7 +312,7 @@ post-patch-NJS_QJS-on:
 
 post-patch-PASSENGER-on:
 	@${REINPLACE_CMD} \
-		'168,170s!true!false!' \
+		'176,178s!true!false!' \
 		${WRKSRC_PASSENGER}/build/basics.rb
 	@${REINPLACE_CMD} \
 		's!-I/usr/include/libev!!; \

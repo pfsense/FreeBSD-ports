@@ -1,5 +1,5 @@
 PORTNAME=	qownnotes
-PORTVERSION=	25.2.9
+PORTVERSION=	25.4.2
 CATEGORIES=	deskutils
 MASTER_SITES=	https://github.com/pbek/QOwnNotes/releases/download/v${PORTVERSION}/
 
@@ -8,6 +8,9 @@ COMMENT=	Markdown note taking program with cloud integration
 WWW=		https://www.qownnotes.org/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Depends on expired security/botan2
+EXPIRATION_DATE=2025-06-21
 
 LIB_DEPENDS=	libbotan-2.so:security/botan2
 RUN_DEPENDS=	git:devel/git

@@ -4,12 +4,15 @@ DISTVERSION=	0.5.0.2
 PORTREVISION=	1
 CATEGORIES=	editors security
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Minimalist secure text editor and binary encryptor
 WWW=		https://evpo.net/encryptpad/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
+
+DEPRECATED=	Depends on expired security/botan2
+EXPIRATION_DATE=2025-06-21
 
 LIB_DEPENDS=	libbotan-2.so:security/botan2
 

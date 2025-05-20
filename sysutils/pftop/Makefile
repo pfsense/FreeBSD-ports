@@ -1,6 +1,5 @@
 PORTNAME=	pftop
-PORTVERSION=	0.12
-PORTREVISION=	1
+PORTVERSION=	0.13
 CATEGORIES=	sysutils net
 MASTER_SITES=	https://github.com/grembo/pftop/releases/download/${DISTVERSION}/
 

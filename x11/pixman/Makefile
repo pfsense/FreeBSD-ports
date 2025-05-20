@@ -1,5 +1,5 @@
 PORTNAME=	pixman
-DISTVERSION=	0.44.2
+DISTVERSION=	0.46.0
 CATEGORIES=	x11
 MASTER_SITES=	https://cairographics.org/releases/
 
@@ -62,7 +62,7 @@ MESON_ARGS+=	-Dvmx=enabled
 .else
 MESON_ARGS+=	-Dvmx=disabled
 .endif
-.if ${ARCH} == riscv64
+.if ${ARCH} == riscv64 && 0 # XXX Convert to elf_aux_info + HWCAP_ISA_V
 MESON_ARGS+=	-Drvv=enabled
 .else
 MESON_ARGS+=	-Drvv=disabled

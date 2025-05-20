@@ -1,7 +1,6 @@
 PORTNAME=	qbox
 DISTVERSIONPREFIX=	rel
-DISTVERSION=	1_78_2
-PORTREVISION=	3
+DISTVERSION=	1_78_4
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -31,7 +30,8 @@ WRKSRC_SUBDIR=	src
 MAKE_ARGS=	TARGET=freebsd
 
 ALL_TARGET=	qb
-TEST_TARGET=	tests # only builds tests, but doesn't run them: https://github.com/qboxcode/qbox-public/issues/6, tests fail to link, see https://github.com/qboxcode/qbox-public/issues/11
+TEST_TARGET=	tests
+TESTING_UNSAFE=	only builds tests, but doesn't run them: https://github.com/qboxcode/qbox-public/issues/6, tests fail to link, see https://github.com/qboxcode/qbox-public/issues/11
 
 PLIST_FILES=	bin/qb
 
@@ -40,5 +40,7 @@ post-extract:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/qb ${STAGEDIR}${PREFIX}/bin
+
+# tests fail to compile, see https://github.com/qboxcode/qbox-public/issues/12
 
 .include <bsd.port.mk>

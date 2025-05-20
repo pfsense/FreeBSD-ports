@@ -1,5 +1,5 @@
 PORTNAME=	redis
-DISTVERSION=	7.2.7
+DISTVERSION=	7.2.8
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 PKGNAMESUFFIX=	72
@@ -20,7 +20,7 @@ MAKE_ENV=	OPTIMIZATION= \
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
 
-CONFLICTS_INSTALL=	redis redis-devel redis62
+CONFLICTS_INSTALL=	redis redis-devel redis62 redis74
 
 SUB_FILES=	pkg-message
 SUB_LIST=	PORTNAME=${PORTNAME} \

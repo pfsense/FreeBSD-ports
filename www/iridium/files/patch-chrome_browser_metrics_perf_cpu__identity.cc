@@ -1,11 +1,11 @@
---- chrome/browser/metrics/perf/cpu_identity.cc.orig	2025-03-18 16:46:04 UTC
+--- chrome/browser/metrics/perf/cpu_identity.cc.orig	2025-05-07 06:48:23 UTC
 +++ chrome/browser/metrics/perf/cpu_identity.cc
 @@ -146,7 +146,7 @@ CPUIdentity GetCPUIdentity() {
    result.release =
- #if BUILDFLAG(IS_CHROMEOS_ASH)
+ #if BUILDFLAG(IS_CHROMEOS)
        base::SysInfo::KernelVersion();
--#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
        base::SysInfo::OperatingSystemVersion();
  #else
  #error "Unsupported configuration"

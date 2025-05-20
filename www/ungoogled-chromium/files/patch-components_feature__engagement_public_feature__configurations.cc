@@ -1,4 +1,4 @@
---- components/feature_engagement/public/feature_configurations.cc.orig	2025-03-09 21:38:10 UTC
+--- components/feature_engagement/public/feature_configurations.cc.orig	2025-05-06 12:23:00 UTC
 +++ components/feature_engagement/public/feature_configurations.cc
 @@ -100,7 +100,7 @@ std::optional<FeatureConfig> CreateNewUserGestureInPro
  
@@ -16,9 +16,9 @@
 -    BUILDFLAG(IS_CHROMEOS)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (kIPHPasswordsManagementBubbleAfterSaveFeature.name == feature->name) {
-     std::optional<FeatureConfig> config = FeatureConfig();
-     config->valid = true;
-@@ -1724,7 +1724,8 @@ std::optional<FeatureConfig> GetClientSideFeatureConfi
+     FeatureConfig config;
+     config.valid = true;
+@@ -1740,7 +1740,8 @@ std::optional<FeatureConfig> GetClientSideFeatureConfi
  #endif  // BUILDFLAG(IS_ANDROID)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
@@ -27,4 +27,4 @@
 +    BUILDFLAG(IS_BSD)
  
    if (kIPHAutofillCreditCardBenefitFeature.name == feature->name) {
-     // Credit card benefit IPH is shown:
+     // The credit card benefit IPH appears up to three times over 10 years and

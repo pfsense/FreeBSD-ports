@@ -1,8 +1,9 @@
 PORTNAME=	crosshair-tool
-PORTVERSION=	0.0.83
+PORTVERSION=	0.0.86
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	crosshair_tool-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Analyze Python code for correctness using symbolic execution
@@ -22,7 +23,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=4.0.0:devel/py-importlib
 		${PYTHON_PKGNAMEPREFIX}typing-inspect>=0.7.1:devel/py-typing-inspect@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}z3-solver>=4.13.0.0:math/py-z3-solver@${PY_FLAVOR}
 
-USES=		python:3.9+
+USES=		python:3.10+
 USE_PYTHON=	autoplist concurrent pep517
 
 post-install:

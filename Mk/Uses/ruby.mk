@@ -53,7 +53,6 @@
 #			  basename of the ruby distribution tarball.
 # RUBY_PATCHFILES	- PATCHFILES for the standard ruby ports, i.e. the
 #			  basename of the ruby distribution tarball.
-# RUBY_WRKSRC		- WRKSRC for the ruby port.
 # MASTER_SITE_SUBDIR_RUBY	- MASTER_SITE_SUBDIR for the ruby distfiles.
 #
 # RUBY_SHLIBVER		- Major version of libruby (see below for current
@@ -148,14 +147,30 @@ RUBY?=			${LOCALBASE}/bin/ruby${RUBY_SUFFIX}
 #
 # Ruby 3.2
 #
-RUBY_DISTVERSION=	3.2.7
+RUBY_DISTVERSION=	3.2.8
 RUBY_PORTREVISION=	0
 
 .      elif ${RUBY_VER} == 3.3
 #
 # Ruby 3.3
 #
-RUBY_DISTVERSION=	3.3.7
+RUBY_DISTVERSION=	3.3.8
+RUBY_PORTREVISION=	0
+
+
+.      elif ${RUBY_VER} == 3.4
+#
+# Ruby 3.4
+#
+RUBY_DISTVERSION=	3.4.4
+RUBY_PORTREVISION=	0
+
+
+.      elif ${RUBY_VER} == 3.5
+#
+# Ruby 3.5
+#
+RUBY_DISTVERSION=	3.5.0-preview1
 RUBY_PORTREVISION=	0
 
 # When adding a version, please keep the comment in
@@ -164,7 +179,7 @@ RUBY_PORTREVISION=	0
 #
 # Other versions
 #
-IGNORE=	Only ruby 3.2 and 3.3 are supported
+IGNORE=	Only ruby 3,2, 3.3, 3.4 and 3.5 are supported
 _INVALID_RUBY_VER=	1
 .      endif
 RUBY_PORTEPOCH=		1
@@ -175,6 +190,8 @@ RUBY_VERSION=	${RUBY_DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/}
 
 RUBY32?=		"@comment "
 RUBY33?=		"@comment "
+RUBY34?=		"@comment "
+RUBY35?=		"@comment "
 
 .      if defined(BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E})
 .        if ${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}} == "yes"
@@ -183,8 +200,6 @@ BROKEN=			does not build with Ruby ${RUBY_VER}
 BROKEN=			${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}}
 .        endif
 .      endif
-
-RUBY_WRKSRC=		${WRKDIR}/ruby-${RUBY_DISTVERSION}
 
 RUBY_CONFIGURE_ARGS+=	--with-rubyhdrdir="${PREFIX}/include/ruby-${RUBY_VER}/" \
 			--with-rubylibprefix="${PREFIX}/lib/ruby" \
@@ -209,8 +224,6 @@ RUBY_DEFAULT_SUFFIX?=	${RUBY_DEFAULT_VER:S/.//}
 RUBY_PORTVERSION?=	${RUBY_DISTVERSION:tl:C/([a-z])[a-z]+/\1/g:C/([0-9])([a-z])/\1.\2/g:C/:(.)/\1/g:C/[^a-z0-9+]+/./g}
 MASTER_SITE_SUBDIR_RUBY?=	${RUBY_VER}
 RUBY_DISTNAME?=		ruby-${RUBY_DISTVERSION}
-
-RUBY_WRKSRC?=		${WRKDIR}/${RUBY_DISTNAME}
 
 RUBY_RELVERSION_CODE?=	${RUBY_RELVERSION:S/.//g}
 RUBY_VERSION_CODE?=	${RUBY_VERSION:S/.//g}

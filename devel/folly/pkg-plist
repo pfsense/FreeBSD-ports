@@ -164,6 +164,7 @@ include/folly/chrono/Hardware.h
 include/folly/cli/NestedCommandLineApp.h
 include/folly/cli/ProgramOptions.h
 include/folly/codec/Uuid.h
+include/folly/codec/hex.h
 include/folly/compression/Compression.h
 include/folly/compression/CompressionContextPool.h
 include/folly/compression/CompressionContextPoolSingletons.h
@@ -225,6 +226,7 @@ include/folly/container/SparseByteSet.h
 include/folly/container/View.h
 include/folly/container/WeightedEvictingCacheMap.h
 include/folly/container/detail/BitIteratorDetail.h
+include/folly/container/detail/BoolWrapper.h
 include/folly/container/detail/F14Defaults.h
 include/folly/container/detail/F14IntrinsicsAvailability.h
 include/folly/container/detail/F14MapFallback.h
@@ -242,6 +244,7 @@ include/folly/container/span.h
 include/folly/container/tape.h
 include/folly/container/test/F14TestUtil.h
 include/folly/container/test/TrackingTypes.h
+include/folly/container/vector_bool.h
 include/folly/coro/Accumulate-inl.h
 include/folly/coro/Accumulate.h
 include/folly/coro/AsyncGenerator.h
@@ -321,6 +324,7 @@ include/folly/crypto/Blake2xb.h
 include/folly/crypto/LtHash-inl.h
 include/folly/crypto/LtHash.h
 include/folly/crypto/detail/LtHashInternal.h
+include/folly/debugging/exception_tracer/Compatibility.h
 include/folly/debugging/exception_tracer/ExceptionAbi.h
 include/folly/debugging/exception_tracer/ExceptionCounterLib.h
 include/folly/debugging/exception_tracer/ExceptionTracer.h

@@ -1,5 +1,5 @@
 PORTNAME=	njs
-DISTVERSION=	0.8.9
+DISTVERSION=	0.9.0
 PORTREVISION=	1
 CATEGORIES=	lang www
 
@@ -30,7 +30,7 @@ PLIST_FILES=	bin/njs
 .include <bsd.port.pre.mk>
 
 # Fixes build failed for Clang 19.1.3+
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1500026 && ${CHOSEN_COMPILER_TYPE} == clang
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 191
 CFLAGS+=	-Wno-error=cast-function-type-mismatch
 .endif
 

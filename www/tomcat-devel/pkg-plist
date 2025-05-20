@@ -27,7 +27,7 @@
 %%T%%/lib/catalina-storeconfig.jar
 %%T%%/lib/catalina-tribes.jar
 %%T%%/lib/catalina.jar
-%%T%%/lib/ecj-4.34.jar
+%%T%%/lib/ecj-4.35.jar
 %%T%%/lib/el-api.jar
 %%T%%/lib/jakartaee-migration-1.0.9-shaded.jar
 %%T%%/lib/jasper-el.jar
@@ -103,8 +103,14 @@
 %%DOCS%%%%T%%/webapps/docs/architecture/index.html
 %%DOCS%%%%T%%/webapps/docs/architecture/overview.html
 %%DOCS%%%%T%%/webapps/docs/architecture/requestProcess.html
-%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/authentication-process.png
-%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/request-process.png
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/11_nio.plantuml
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/11_nio.png
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/21_http11.plantuml
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/21_http11.png
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/31_synchronous.plantuml
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/31_synchronous.png
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/41_basic.plantuml
+%%DOCS%%%%T%%/webapps/docs/architecture/requestProcess/41_basic.png
 %%DOCS%%%%T%%/webapps/docs/architecture/startup.html
 %%DOCS%%%%T%%/webapps/docs/architecture/startup/1_overview.plantuml
 %%DOCS%%%%T%%/webapps/docs/architecture/startup/1_overview.png
@@ -159,6 +165,7 @@
 %%DOCS%%%%T%%/webapps/docs/config/manager.html
 %%DOCS%%%%T%%/webapps/docs/config/realm.html
 %%DOCS%%%%T%%/webapps/docs/config/resources.html
+%%DOCS%%%%T%%/webapps/docs/config/runtime-attributes.html
 %%DOCS%%%%T%%/webapps/docs/config/server.html
 %%DOCS%%%%T%%/webapps/docs/config/service.html
 %%DOCS%%%%T%%/webapps/docs/config/sessionidgenerator.html

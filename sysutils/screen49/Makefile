@@ -1,6 +1,6 @@
 PORTNAME=	screen
 PORTVERSION=	4.9.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU \
 		ftp://ftp.gnu.org/gnu/screen/ \
@@ -20,6 +20,9 @@ COMMENT=	Multi-screen window manager
 WWW=		https://www.gnu.org/software/screen/
 
 CONFLICTS+=	screen-devel*
+
+DEPRECATED=	Multiple CVEs
+EXPIRATION_DATE=2025-05-31
 
 LICENSE=	GPLv3
 

@@ -1,5 +1,5 @@
 PORTNAME=	libjwt
-PORTVERSION=	2.1.1
+PORTVERSION=	2.1.2
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/benmcollins/libjwt/releases/download/v${PORTVERSION}/
 
@@ -34,6 +34,8 @@ INSTALL_TARGET=	install-strip
 TEST_ARGS=	CFLAGS+=-I${LOCALBASE}/include LIBS+="-L${LOCALBASE}/lib -lcheck"
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
+
+PORTSCOUT=	limit:^2\.
 
 OPTIONS_DEFINE=	GNUTLS
 

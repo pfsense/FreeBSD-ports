@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 DISTVERSION=	6.1.50
-PORTREVISION?=	10
+PORTREVISION?=	14
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${DISTVERSION}/:src \
 		LOCAL/bofh/emulators/virtualbox-ose:docs
@@ -40,7 +40,9 @@ CONFIGURE_ARGS+=	--with-gcc="${CC}" --with-g++="${CXX}"
 CONFLICTS_INSTALL=	virtualbox-ose-legacy \
 			virtualbox-ose-nox11-legacy \
 			virtualbox-ose-70 \
-			virtualbox-ose-nox11-70
+			virtualbox-ose-nox11-70 \
+			virtualbox-ose-71 \
+			virtualbox-ose-nox11-71
 
 PORTSCOUT=	limit:^6\.
 SUB_FILES=	pkg-message
@@ -73,7 +75,7 @@ PLIST_SUB=	GUEST_VER=${DISTVERSION} \
 SLAVE_PORT?=	no
 
 OPTIONS_DEFINE=		AIO ALSA DBUS DEBUG DOCS GUESTADDITIONS NLS OPUS PULSEAUDIO \
-			PYTHON QT5 R0LOGGING UDPTUNNEL VBOXIMG VDE VNC WEBSERVICE VPX X11
+			PYTHON QT5 R0LOGGING UDPTUNNEL VBOXIMG VDE VNC VPX WEBSERVICE X11
 OPTIONS_DEFAULT=	AIO DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
 .if ${SLAVE_PORT} == no
 OPTIONS_DEFAULT+=	PYTHON
@@ -270,6 +272,8 @@ post-patch:
 	    ${WRKSRC}/LocalConfig.kmk
 	@${ECHO_CMD} 'VBOX_WITH_VALIDATIONKIT =' >> ${WRKSRC}/LocalConfig.kmk
 	@${ECHO_CMD} 'VBOX_WITH_X11_ADDITIONS =' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_BLD_PYTHON = ${LOCALBASE}/bin/${PYTHON_VERSION}' >> \
+	    ${WRKSRC}/LocalConfig.kmk
 .if ${PORT_OPTIONS:MR0LOGGING}
 	@${ECHO_CMD} 'VBOX_WITH_R0_LOGGING = 1' >> ${WRKSRC}/LocalConfig.kmk
 .endif

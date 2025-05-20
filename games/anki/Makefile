@@ -1,6 +1,5 @@
 PORTNAME=	anki
-DISTVERSION=	25.02
-PORTREVISION=	2
+DISTVERSION=	25.02.5
 # Don't forget to update ${_MY_BUILDHASH} if DISTVERSION changes
 CATEGORIES=	games education python
 MASTER_SITES=	LOCAL/kai/:yarncache
@@ -40,13 +39,13 @@ RUN_DEPENDS=	lame:audio/lame \
 		${PYTHON_PKGNAMEPREFIX}waitress>=2.0.0:www/py-waitress@${PY_FLAVOR}
 
 # USES=ssl is required for the compilation of the Rust code
-USES=		cargo desktop-file-utils ninja nodejs:build pyqt:6 python:3.9+ \
+USES=		cargo desktop-file-utils ninja nodejs:build pyqt:6 python \
 		shebangfix ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	ankitects
 # Translation files
-GH_TUPLE=	ankitects:anki-core-i18n:b80fd5b:ftlrslib \
-		ankitects:anki-desktop-ftl:9234f98:ftlextra
+GH_TUPLE=	ankitects:anki-core-i18n:3c0418a:ftlrslib \
+		ankitects:anki-desktop-ftl:a4d7503:ftlextra
 
 USE_PYQT=	pyqt6 sip:build webengine
 
@@ -85,7 +84,7 @@ MPV_RUN_DEPENDS=	mpv:multimedia/mpv
 # Should contain the most recent commit that reflects ${DISTVERSION} and must
 # be exactly 8 digits otherwise the check for newer versions won't work as
 # expected.
-_MY_BUILDHASH=	038d85b1
+_MY_BUILDHASH=	29192d15
 # Remove ${CARGO_BUILD_TARGET} from ${CARGO_ENV} to avoid problems with
 # hardcoded paths as the "runner" build system expects its components
 # in ${WRKSRC}/out/rust/debug
@@ -124,7 +123,7 @@ pre-configure:
 pre-build:
 	${ECHO_CMD} -e "${_MY_BUILDHASH}" >> ${WRKSRC}/out/buildhash
 	${ECHO_MSG} "===> Building runner build framework"
-	cd ${WRKSRC} && ${SET_ENV} ${MAKE_ENV} ${_MY_CARGO_ENV} \
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${_MY_CARGO_ENV} \
 		${CARGO} build --package runner --release --verbose --verbose
 do-build:
 	${ECHO_MSG} "===> Executing runner build framework"

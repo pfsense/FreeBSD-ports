@@ -1,9 +1,9 @@
 PORTNAME=	hipercontracer
-DISTVERSION=	2.0.5
+DISTVERSION=	2.0.16
 CATEGORIES=	benchmarks
 MASTER_SITES=	https://www.nntb.no/~dreibh/hipercontracer/download/
 
-MAINTAINER=	dreibh@simula.no
+MAINTAINER=	thomas.dreibholz@gmail.com
 COMMENT=	High-Performance Connectivity Tracer (HiPerConTracer)
 WWW=		https://www.nntb.no/~dreibh/hipercontracer/
 
@@ -18,6 +18,7 @@ LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libboost_system.so:devel/boost-libs \
 		libboost_thread.so:devel/boost-libs \
 		libinotify.so:devel/libinotify
+RUN_DEPENDS=	getopt>=0:misc/getopt
 
 USES=		cmake compiler:c++20-lang desktop-file-utils python \
 		shared-mime-info shebangfix ssl tar:xz
@@ -27,6 +28,9 @@ SHEBANG_FILES=	src/results-examples/r-install-dependencies \
 		src/results-examples/r-ping-example \
 		src/results-examples/r-traceroute-example \
 		src/TestDB/generate-test-certificates
+
+# Work-around for build issue on ARM (https://bugs.freebsd.org/285706):
+MAKE_ENV=	OMP_NUM_THREADS=1
 
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 

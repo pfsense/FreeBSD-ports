@@ -1,10 +1,13 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	5.13.1
-PORTREVISION=	2
+DISTVERSION=	5.14.1
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+
+PATCH_SITES=	https://github.com/telegramdesktop/tdesktop/commit/
+PATCHFILES=	f676d32f96e70874d9d8e78788c37b82b1e3324a.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Telegram Desktop messaging app
@@ -44,6 +47,7 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libqrcodegencpp.so:graphics/qr-code-generator \
 		librnnoise.so:audio/rnnoise \
 		libsrtp2.so:net/libsrtp2 \
+		libtde2e.so:net-im/tdlib \
 		libxxhash.so:devel/xxhash \
 		libvpx.so:multimedia/libvpx
 

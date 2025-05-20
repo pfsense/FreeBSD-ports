@@ -47,8 +47,6 @@ EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/bin/gem \
 			--exclude ${DISTNAME}/man/ri.1 \
 			--no-same-owner --no-same-permissions
 
-WRKSRC=		${RUBY_WRKSRC}
-
 RUBY_VER=	3.3
 
 EXTDOCS=	ripper/README stringio/README.md syslog/syslog.txt

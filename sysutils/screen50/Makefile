@@ -1,14 +1,15 @@
 PORTNAME=	screen
-DISTVERSION=	5.0.0
+DISTVERSION=	5.0.1
+PORTREVISION=	3
 CATEGORIES=	sysutils
-MASTER_SITES=	GNU \
-	        ftp://ftp.gnu.org/gnu/screen/ \
-	        ftp://gnu.mirror.iweb.com/screen/ \
-	        http://gnu.mirror.iweb.com/screen/ \
-	        http://mirror.sdunix.com/gnu/ \
-	        ftp://mirrors.kernel.org/gnu/screen/ \
-	        http://cschubert.com/distfiles/ \
-	        LOCAL/cy
+# MASTER_SITES=	GNU \
+# 	        ftp://ftp.gnu.org/gnu/screen/ \
+# 	        ftp://gnu.mirror.iweb.com/screen/ \
+# 	        http://gnu.mirror.iweb.com/screen/ \
+# 	        http://mirror.sdunix.com/gnu/ \
+# 	        ftp://mirrors.kernel.org/gnu/screen/ \
+# 	        http://cschubert.com/distfiles/ \
+# 	        LOCAL/cy
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	50
 CONFLICTS=      screen-* screen49*
@@ -19,6 +20,10 @@ COMMENT=	Multi-screen window manager
 WWW=		https://www.gnu.org/software/screen/
 
 CONFLICTS+=	screen-devel
+
+GIT_TAGNAME=	v.${DISTVERSION}
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${GIT_TAGNAME}-ad9db35/src
 
 LICENSE=	GPLv3
 
@@ -49,6 +54,7 @@ NCURSES_PORT_USES=	ncurses:port
 OPTIONS_SUB=
 
 USES=		autoreconf:build gmake cpe
+CONFIGURE_ARGS=	--with-system_screenrc=${ETCDIR}/screenrc
 MAKE_ARGS+=	WITH_MAN=1
 
 CPE_VENDOR=	gnu
@@ -57,7 +63,7 @@ CPE_VENDOR=	gnu
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX= ${PREFIX}/share
-CFLAGS+=	-I${NCURSESINC}
+CFLAGS+=	-I${NCURSESINC} -DSVR4 -DGETUTENT
 LDFLAGS+=	-L${NCURSESLIB}
 
 .if ${PORT_OPTIONS:MINFO}
@@ -83,8 +89,15 @@ CONFIGURE_ARGS+=	--disable-socket-dir
 .endif
 
 .if defined(SCREEN_SOCKET_DIR)
-CONFIGURE_ARGS+=	--with-socket-dir=${SCREEN_SOCKET_DIR}
+CONFIGURE_ARGS+=	--enable-socket-dir=${SCREEN_SOCKET_DIR}
 .endif
+
+do-fetch:
+	@cd ${DISTDIR} && \
+	if [ ! -f ${DISTNAME}${EXTRACT_SUFX} ]; then \
+		fetch -o ${DISTNAME}${EXTRACT_SUFX} \
+		    "https://git.savannah.gnu.org/gitweb/?p=screen.git;a=snapshot;h=${GIT_TAGNAME};sf=tgz"; \
+	fi    
 
 post-patch:
 	@${RM} ${WRKSRC}/doc/screen.info*

@@ -5,7 +5,7 @@
          {
              let prev_version = format!("{}.{}.x", source_version.major, source_version.minor - 1);
 -            fail(&format!(
-+            println!(
++            eprintln!(
                  "Unexpected {component_name} version: {stage0_version}, we should use {prev_version}/{source_version} to build source with {source_version}"
 -            ));
 +            );

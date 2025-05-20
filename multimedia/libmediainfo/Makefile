@@ -1,6 +1,5 @@
 PORTNAME=	libmediainfo
-PORTVERSION=	24.12
-PORTREVISION=	1
+PORTVERSION=	25.04
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -14,12 +13,13 @@ WWW=		https://mediaarea.net/en/MediaInfo \
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/../../../License.html
 
-LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2 \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libtinyxml2.so:textproc/tinyxml2 \
 		libzen.so:multimedia/libzen
 
 USES=		compiler:c++11-lang dos2unix libtool localbase pathfix pkgconfig tar:xz
 
-CONFIGURE_ARGS=	--enable-shared --enable-static
+CONFIGURE_ARGS=	--enable-shared --enable-static --with-libcurl=${LOCALBASE}
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 PATHFIX_MAKEFILEIN+=	configure
@@ -29,11 +29,5 @@ WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/MediaInfoLib/Project/GNU/Library
 
 DOS2UNIX_FILES=	../../../Source/MediaInfo/Audio/File_Usac.cpp \
 		../../../Source/MediaInfo/Audio/File_Usac.h
-
-OPTIONS_DEFINE=	CURL
-OPTIONS_DEFAULT=CURL
-
-CURL_CONFIGURE_ON=	--with-libcurl=${LOCALBASE}
-CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
 .include <bsd.port.mk>

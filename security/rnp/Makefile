@@ -1,7 +1,7 @@
 PORTNAME=	rnp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.17.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	se@FreeBSD.org
@@ -17,7 +17,7 @@ LICENSE_PERMS_OCB_Patent=	dist-mirror dist-sell pkg-mirror pkg-sell \
 				auto-accept
 
 BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor
-LIB_DEPENDS=	libbotan-2.so:security/botan2 \
+LIB_DEPENDS=	libbotan-3.so:security/botan3 \
 		libjson-c.so:devel/json-c
 
 USES=		cmake compiler:c++11-lang pkgconfig

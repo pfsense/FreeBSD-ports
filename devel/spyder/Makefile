@@ -1,15 +1,18 @@
 PORTNAME=	spyder
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.0.4
-PORTREVISION=	1
+DISTVERSION=	6.0.5
 CATEGORIES=	devel science python
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Scientific PYthon Development EnviRonment, an alternative to IDLE
-WWW=		https://www.spyder-ide.org/
+WWW=		https://www.spyder-ide.org \
+		https://github.com/spyder-ide/spyder
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Depends on expired devel/py-atomicwrites
+EXPIRATION_DATE=2025-06-21
 
 RUN_DEPENDS=	\
 		${PYTHON_PKGNAMEPREFIX}aiohttp>=3.9.3:www/py-aiohttp@${PY_FLAVOR} \

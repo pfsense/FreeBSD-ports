@@ -305,6 +305,7 @@
     SUBDIR += py-ffmpeg-python
     SUBDIR += py-gstreamer1
     SUBDIR += py-guessit
+    SUBDIR += py-knowit
     SUBDIR += py-mat2
     SUBDIR += py-metadata-cleaner
     SUBDIR += py-mido
@@ -320,6 +321,7 @@
     SUBDIR += py-srt
     SUBDIR += py-subliminal
     SUBDIR += py-tartube
+    SUBDIR += py-trakit
     SUBDIR += py-tvnamer
     SUBDIR += py-ustreamer
     SUBDIR += qmmp-plugin-pack-qt5
