@@ -973,6 +973,11 @@ be_manual_verification_timeout()
 be_pkg_upgrade()
 {
 	local _mp
+	local _primarycache
+
+	if ! be_is_ufs_root; then
+		check_zfs_mem_free
+	fi
 
 	UPGRADE_BE="$(be_active_name)"
 
@@ -1082,9 +1087,22 @@ be_pkg_upgrade()
 		_exit 0
 	fi
 
+	if [ -n "${_primarycache}" ]; then
+		# Reset ZFS caching
+		/sbin/zfs inherit primarycache "$( be_get_root_pool )"
+	fi
+
 	do_reboot
 
 	_exit 0
+}
+
+check_zfs_mem_free() {
+	# If we have less than 1G of RAM free, limit ZFS caching during the upgrade process
+	if [ "$(( ( $(sysctl -n vm.stats.vm.v_free_count) + $(sysctl -n vm.stats.vm.v_inactive_count) ) * $(sysctl -n hw.pagesize) ))" -lt "$(( 1 * 1024 * 1024 * 1024 ))" ]; then
+		zfs_set_prop "$( be_get_root_pool )" primarycache metadata
+		_primarycache=1
+	fi
 }
 
 pkg_upgrade() {
@@ -1516,6 +1534,11 @@ pkg_upgrade() {
 			_force=" -f"
 		fi
 
+		local _primarycache
+		if ! be_is_ufs_root; then
+			check_zfs_mem_free
+		fi
+
 		if upgrade_available; then
 			delete_annotation=1
 
@@ -1594,6 +1617,11 @@ pkg_upgrade() {
 
 		pkg_unlock "${pkg_prefix}*"
 		unlock_additional_pkgs=""
+
+		if [ -n "${_primarycache}" ]; then
+			# Reset ZFS caching
+			/sbin/zfs inherit primarycache "$( be_get_root_pool )"
+		fi
 
 		# 2nd reboot during new major version upgrade
 		if [ -n "${is_pkg_locked}" ]; then
