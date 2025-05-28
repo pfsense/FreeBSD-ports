@@ -382,6 +382,17 @@
 			<advancedfield/>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
+	</plugins>
 	<custom_php_resync_config_command>
 		bind_sync();
 	</custom_php_resync_config_command>
