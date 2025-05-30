@@ -112,8 +112,6 @@ function sudo_write_config() {
 	if (stristr($result, "parsed OK")) {
 		rename($tmpsudoers, SUDO_SUDOERS);
 		chmod(SUDO_SUDOERS, 0440);
-		/* sync the config over XMLRPC */
-		sudo_sync_config();
 	} else {
 		log_error("Sudoers file invalid: {$result}");
 		unlink($tmpsudoers);
@@ -217,49 +215,45 @@ function sudo_validate_commands(&$input_errors) {
 	}
 }
 
-function sudo_sync_config() {
-	$system_carp = config_get_path('hasync');
-	if (!is_array($system_carp) ||
-	    !$system_carp['synchronizetoip'] ||
-	    !$system_carp['username'] ||
-	    !$system_carp['password']) {
-		return -1;
-	}
-	if (config_get_path('system/webgui/protocol') == "http") {
-		$varsyncprotocol = "http";
-		$varsyncport = config_get_path('system/webgui/port') ?: '80';
-	} else {
-		$varsyncprotocol = "https";
-		$varsyncport = config_get_path('system/webgui/port') ?: '443';
-	}
-	sudo_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
-	    $varsyncprotocol, $system_carp['username'],
-	    $system_carp['password'], 100);
+function sudo_plugin_xmlrpc_send() {
+	return [
+		'installedpackages/sudo'
+	];
 }
 
-/* Do the actual XMLRPC sync */
-function sudo_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
-    $password, $synctimeout) {
-	/*
-	 * Send over the <sudo> portion of config.xml
-	 * $xml will hold the section to sync.
-	 */
-	$xml = array();
-	$xml['sudo'] = config_get_path('installedpackages/sudo');
+function sudo_plugin_xmlrpc_recv($new_sections) {
+	$section_paths = [
+		'installedpackages/sudo'
+	];
 
-	$remote_sudo_config_apply = <<<EOD
-require_once('/usr/local/pkg/sudo.inc');
-sudo_write_config();
-EOD;
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
 
-	$synctimeout = intval($synctimeout);
-	$rpc_client = new pfsense_xmlrpc_client();
-	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password,
-	    $protocol);
-	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section',
-	    $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_sudo_config_apply,
-	    $synctimeout);
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function sudo_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'sudo/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	sudo_write_config();
 }
 
 ?>
