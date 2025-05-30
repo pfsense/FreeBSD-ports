@@ -208,7 +208,6 @@ EOD;
 	}
 	fwrite($fd, $nrpe_cfg);
 	fclose($fd);
-	nrpe_sync_config();
 }
 
 function nrpe_custom_php_service() {
@@ -262,55 +261,45 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 	}
 }
 
-function nrpe_sync_config() {
-	config_init_path('hasync');
-	$system_carp = config_get_path('hasync');
-	if (!is_array($system_carp) ||
-	    !$system_carp['synchronizetoip'] ||
-	    !$system_carp['username'] ||
-	    !$system_carp['password']) {
-		return -1;
-	}
-	if (config_get_path('system/webgui/protocol') == "http") {
-		$varsyncprotocol = "http";
-		$varsyncport = config_get_path('system/webgui/port') ?: '80';
-	} else {
-		$varsyncprotocol = "https";
-		$varsyncport = config_get_path('system/webgui/port') ?: '443';
-	}
-	nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
-	    $varsyncprotocol, $system_carp['username'],
-	    $system_carp['password'], 10);
+function nrpe_plugin_xmlrpc_send() {
+	return [
+		'installedpackages/nrpe'
+	];
 }
 
-/* Do the actual XMLRPC sync */
-function nrpe_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
-    $password, $synctimeout) {
-	/*
-	 * Send over the <nrpe> portion of config.xml
-	 * $xml will hold the section to sync.
-	 */
-	$xml = array();
-	$xml['nrpe'] = config_get_path('installedpackages/nrpe');
+function nrpe_plugin_xmlrpc_recv($new_sections) {
+	$section_paths = [
+		'installedpackages/nrpe'
+	];
 
-	/*
-	 * Build a series of commands as a PHP file for
-	 * the secondary host to execute to load the new
-	 * settings.
-	 */
-	$remote_nrpe_config_apply = <<<EOD
-require_once('/usr/local/pkg/nrpe.inc');
-nrpe_resync_package();
-EOD;
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
 
-	$synctimeout = intval($synctimeout);
-	$rpc_client = new pfsense_xmlrpc_client();
-	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password,
-	    $protocol);
-	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section',
-	    $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_nrpe_config_apply,
-	    $synctimeout);
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function nrpe_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'freeradius/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	nrpe_resync_package();
 }
 
 ?>
