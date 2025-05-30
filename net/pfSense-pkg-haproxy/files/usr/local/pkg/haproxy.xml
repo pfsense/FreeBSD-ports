@@ -54,6 +54,15 @@
 		<item>
 			<type>plugin_certificates</type>
 		</item>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
 	</plugins>
 	<configpath>installedpackages->haproxy->config</configpath>
 	<custom_php_install_command>
