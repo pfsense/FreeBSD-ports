@@ -54,6 +54,14 @@
 	</tabs>
 	<fields>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+	</plugins>
 	<custom_php_install_command>
 		<![CDATA[
 		include_once('/usr/local/pkg/pfblockerng/pfblockerng_install.inc');
