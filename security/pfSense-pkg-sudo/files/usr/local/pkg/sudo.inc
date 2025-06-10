@@ -123,30 +123,55 @@ function sudo_write_config() {
  * entries.  Optionally include "ALL" as a user (for use by the Run As list)
  */
 function sudo_get_users($list_all_user = false) {
-	/* Make an entry for root, even though admin is essentially the same
-	 * as root, they are distinct.
-	 */
-	config_set_path('system/user/', ['name' => 'root']);
+	/* Collect users and groups from config */
+	$users_config = config_get_path('system/user', []);
+	$groups_config = config_get_path('system/group', []);
 
-	/* Include users created by other packages */
-	$stdout = '';
-	$stderr = '';
-
+	/* Collect users and groups from packages */
+	$package_users = [];
+	$stdout = $stderr = '';
 	pkg_exec('query %U', $stdout, $stderr);
 	foreach (explode(PHP_EOL, $stdout) as $user) {
 		if ($user == '') {
 			continue;
 		}
-		config_set_path('system/user/', ['name' => $user]);
+		$package_users[$user] = $user;
 	}
-
-	/* Include groups created by other packages */
+	$package_groups = [];
+	$stdout = $stderr = '';
 	pkg_exec('query %G', $stdout, $stderr);
 	foreach (explode(PHP_EOL, $stdout) as $group) {
 		if ($group == '') {
 			continue;
 		}
-		config_set_path('system/group/', ['name' => $group]);
+		$package_groups[$group] = $group;
+	}
+
+	/* Create a map from the list for easier searching */
+	$config_users = array_column($users_config, 'name', 'name');
+	$config_groups = array_column($groups_config, 'name', 'name');
+
+	/* Make an entry for root, even though admin is essentially the same
+	 * as root, they are distinct.
+	 */
+	if (!isset($config_users['root'])) {
+		$users_config[] = ['name' => 'root'];
+	}
+
+	/* Include users created by other packages */
+	foreach ($package_users as $package_user) {
+		if (isset($config_users[$package_user])) {
+			continue;
+		}
+		$users_config[] = ['name' => $package_user];
+	}
+
+	/* Include groups created by other packages */
+	foreach ($package_groups as $package_group) {
+		if (isset($config_groups[$package_group])) {
+			continue;
+		}
+		$groups_config[] = ['name' => $package_group];
 	}
 
 	$users = array();
@@ -159,7 +184,7 @@ function sudo_get_users($list_all_user = false) {
 		$users[] = $tmpuser;
 	}
 
-	foreach (config_get_path('system/user', []) as $user) {
+	foreach ($users_config as $user) {
 		$tmpuser = array();
 		$tmpuser["name"] = "user:{$user['name']}";
 		$tmpuser["descr"] = "User: {$user['name']}";
@@ -175,7 +200,7 @@ function sudo_get_users($list_all_user = false) {
 	$tmpuser["descr"] = "Group: wheel";
 	$users[] = $tmpuser;
 
-	foreach (config_get_path('system/group', []) as $group) {
+	foreach ($groups_config as $group) {
 		/*
 		 * The "all" group is internal and doesn't make sense to use
 		 * here.
