@@ -10,7 +10,7 @@
 		</descr>
 		<version>%%PKGVERSION%%</version>
 		<maintainer>coreteam@pfsense.org</maintainer>
-		<configurationfile>/zeek.xml</configurationfile>
+		<configurationfile>zeek.xml</configurationfile>
 		<only_for_archs>i386 amd64</only_for_archs>
 	</package>
 </pfsensepkgs>
