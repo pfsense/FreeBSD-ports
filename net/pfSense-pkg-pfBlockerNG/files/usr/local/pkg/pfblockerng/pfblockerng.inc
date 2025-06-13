@@ -1969,6 +1969,7 @@ function pfb_create_dnsbl($mode) {
 			}
 		}
 
+		$vip_count = 0;
 		$pfbfound = FALSE;
 		// Collect existing pfSense VIPs
 		foreach (config_get_path('virtualip/vip', []) as $ex_vip) {
@@ -1976,6 +1977,7 @@ function pfb_create_dnsbl($mode) {
 				// Collect DNSBL VIP
 				$dnsbl_ex_vip[] = $ex_vip;
 				$pfbfound = TRUE;
+				$vip_count++;
 			} else {
 				// Collect all 'other' VIPs
 				$pfb_ex_vip[] = $ex_vip;
@@ -2016,7 +2018,6 @@ function pfb_create_dnsbl($mode) {
 		}
 
 		// Validate DNSBL VIP address(es)
-		$pfb['dnsbl_v6'] == 'on' ? $vip_count = 2 : $vip_count = 1;
 		$result = array();
 		foreach (array("inet {$pfb['dnsbl_vip']}", "inet6 ::{$pfb['dnsbl_vip']}") as $g_vip) {
 			$g_vip = escapeshellarg($g_vip);
