@@ -46,6 +46,8 @@ static const struct tok pf_reasons[] = {
 	{ 12,	"state-limit" },
 	{ 13,	"src-limit" },
 	{ 14,	"synproxy" },
+	{ 15,	"map-failed" },
+	{ 16,	"translate" },
 	{ 0,	NULL }
 };
 
