@@ -1969,6 +1969,7 @@ function pfb_create_dnsbl($mode) {
 			}
 		}
 
+		$vip_count = 0;
 		$pfbfound = FALSE;
 		// Collect existing pfSense VIPs
 		foreach (config_get_path('virtualip/vip', []) as $ex_vip) {
@@ -1976,6 +1977,7 @@ function pfb_create_dnsbl($mode) {
 				// Collect DNSBL VIP
 				$dnsbl_ex_vip[] = $ex_vip;
 				$pfbfound = TRUE;
+				$vip_count++;
 			} else {
 				// Collect all 'other' VIPs
 				$pfb_ex_vip[] = $ex_vip;
@@ -2016,7 +2018,6 @@ function pfb_create_dnsbl($mode) {
 		}
 
 		// Validate DNSBL VIP address(es)
-		$pfb['dnsbl_v6'] == 'on' ? $vip_count = 2 : $vip_count = 1;
 		$result = array();
 		foreach (array("inet {$pfb['dnsbl_vip']}", "inet6 ::{$pfb['dnsbl_vip']}") as $g_vip) {
 			$g_vip = escapeshellarg($g_vip);
@@ -10932,35 +10933,6 @@ function pfblockerng_sync_on_changes() {
 					return;
 				}
 				break;
-			case 'auto':
-				$hasync = config_get_path('hasync');
-				if ($hasync != null) {
-					$system_carp			= $hasync;
-					$rs[0]['varsyncipaddress']	= $system_carp['synchronizetoip'];
-					$rs[0]['varsyncusername']	= $system_carp['username'];
-					$rs[0]['varsyncpassword']	= $system_carp['password'];
-					$rs[0]['varsyncdestinenable']	= FALSE;
-
-					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if (config_get_path('system/webgui/protocol') == 'http') {
-						$rs[0]['varsyncprotocol']	= 'http';
-						$rs[0]['varsyncport']		= config_get_path('system/webgui/port', '80');
-					} else {
-						$rs[0]['varsyncprotocol']	= 'https';
-						$rs[0]['varsyncport']		= config_get_path('system/webgui/port', '443');
-					}
-
-					if (empty($system_carp['synchronizetoip'])) {
-						log_error('[pfBlockerNG] Auto XMLRPC sync is enabled but there is no sync IP address configured.');
-						return;
-					} else {
-						$rs[0]['varsyncdestinenable']	= TRUE;
-					}
-				} else {
-					log_error('[pfBlockerNG] Auto XMLRPC sync is enabled but there are no replication targets configured.');
-					return;
-				}
-				break;
 			default:
 				return;
 				break;
@@ -11023,120 +10995,166 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 		$sync_to_ip = "[{$sync_to_ip}]";
 	}
 
-	/* xml will hold the sections to sync */
-	$xml = array();
+	$sections = [];
 
 	// If User Disabled, remove 'General/IP/DNSBL Tab Customizations' from Sync
 	if (config_get_path('installedpackages/pfblockerngsync/config/0/syncinterfaces') != 'on') {
-		if (config_get_path('installedpackages/pfblockerng') != null) {
-			$xml['pfblockerng']		= config_get_path('installedpackages/pfblockerng');
-		}
-		if (config_get_path('installedpackages/pfblockerngipsettings') != null) {
-			$xml['pfblockerngipsettings']	= config_get_path('installedpackages/pfblockerngipsettings');
-		}
-		if (config_get_path('installedpackages/pfblockerngdnsblsettings') != null) {
-			$xml['pfblockerngdnsblsettings']= config_get_path('installedpackages/pfblockerngdnsblsettings');
+		$sections = array_merge($sections, [
+			'pfblockerng',
+			'pfblockerngipsettings',
+			'pfblockerngdnsblsettings'
+		]);
+	}
+	$sections = array_merge($sections, [
+		'pfblockernglistsv4',
+		'pfblockernglistsv6',
+		'pfblockerngreputation',
+		'pfblockerngtopspammers',
+		'pfblockerngafrica',
+		'pfblockerngantarctica',
+		'pfblockerngasia',
+		'pfblockerngeurope',
+		'pfblockerngnorthamerica',
+		'pfblockerngoceania',
+		'pfblockerngsouthamerica',
+		'pfblockerngproxyandsatellite',
+		'pfblockerngdnsbl',
+		'pfblockerngblacklist',
+		'pfblockerngglobal',
+		'pfblockerngsafesearch'
+	]);
 
-			// Increase CARP Advskew value, see https://redmine.pfsense.org/issues/11964
-			if (isset($xml['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip_skew'])) {
-				$advskew = intval($xml['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip_skew']);
-				$advskew += 100;
-				if ($advskew > 254) {
-					$advskew = 254;
-				}
-				$xml['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip_skew'] = $advskew;
-			}
+	/* xml will hold the sections to sync */
+	$xml = array();
+
+	foreach ($sections as $section) {
+		$section_config = config_get_path("installedpackages/{$section}");
+		if (!isset($section_config)) {
+			continue;
+		}
+		$xml[$section] = $section_config;
+	}
+
+	// Increase CARP Advskew value, see https://redmine.pfsense.org/issues/11964
+	$advskew = array_get_path($xml, 'pfblockerngdnsblsettings/config/0/pfb_dnsvip_skew');
+	if (isset($advskew)) {
+		array_set_path($xml, 'pfblockerngdnsblsettings/config/0/pfb_dnsvip_skew', min((intval($advskew) + 100), 254));
+	}
+
+	require_once('xmlrpc_client.inc');
+
+	// xmlrpc cannot encode NULL objects/arrays
+	foreach ($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == 'NULL') {
+			$xml[$xmlkey] = array();
 		}
 	}
 
-	if (config_get_path('installedpackages/pfblockernglistsv4') !== null)
-		$xml['pfblockernglistsv4']		= config_get_path('installedpackages/pfblockernglistsv4');
-	if (config_get_path('installedpackages/pfblockernglistsv6') !== null)
-		$xml['pfblockernglistsv6']		= config_get_path('installedpackages/pfblockernglistsv6');
-	if (config_get_path('installedpackages/pfblockerngreputation') !== null)
-		$xml['pfblockerngreputation']		= config_get_path('installedpackages/pfblockerngreputation');
-	if (config_get_path('installedpackages/pfblockerngtopspammers') !== null)
-		$xml['pfblockerngtopspammers']		= config_get_path('installedpackages/pfblockerngtopspammers');
-	if (config_get_path('installedpackages/pfblockerngafrica') !== null)
-		$xml['pfblockerngafrica']		= config_get_path('installedpackages/pfblockerngafrica');
-	if (config_get_path('installedpackages/pfblockerngantarctica') !== null)
-		$xml['pfblockerngantarctica']		= config_get_path('installedpackages/pfblockerngantarctica');
-	if (config_get_path('installedpackages/pfblockerngasia') !== null)
-		$xml['pfblockerngasia']			= config_get_path('installedpackages/pfblockerngasia');
-	if (config_get_path('installedpackages/pfblockerngeurope') !== null)
-		$xml['pfblockerngeurope']		= config_get_path('installedpackages/pfblockerngeurope');
-	if (config_get_path('installedpackages/pfblockerngnorthamerica') !== null)
-		$xml['pfblockerngnorthamerica']		= config_get_path('installedpackages/pfblockerngnorthamerica');
-	if (config_get_path('installedpackages/pfblockerngoceania') !== null)
-		$xml['pfblockerngoceania']		= config_get_path('installedpackages/pfblockerngoceania');
-	if (config_get_path('installedpackages/pfblockerngsouthamerica') !== null)
-		$xml['pfblockerngsouthamerica']		= config_get_path('installedpackages/pfblockerngsouthamerica');
-	if (config_get_path('installedpackages/pfblockerngproxyandsatellite') !== null)
-		$xml['pfblockerngproxyandsatellite']	= config_get_path('installedpackages/pfblockerngproxyandsatellite');
-	if (config_get_path('installedpackages/pfblockerngdnsbl') !== null)
-		$xml['pfblockerngdnsbl']		= config_get_path('installedpackages/pfblockerngdnsbl');
-	if (config_get_path('installedpackages/pfblockerngblacklist') !== null)
-		$xml['pfblockerngblacklist']		= config_get_path('installedpackages/pfblockerngblacklist');
-	if (config_get_path('installedpackages/pfblockerngglobal') !== null)
-		$xml['pfblockerngglobal']		= config_get_path('installedpackages/pfblockerngglobal');
-	if (config_get_path('installedpackages/pfblockerngsafesearch') !== null)
-		$xml['pfblockerngsafesearch']		= config_get_path('installedpackages/pfblockerngsafesearch');
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
 
-
-	// Execute applicable XMLRPC code as per pfSense version
-	if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.4') {
-
-		require_once('xmlrpc.inc');
-		require_once('xmlrpc_client.inc');
-
-		$url = "{$protocol}://{$sync_to_ip}";
-
-		/* assemble xmlrpc payload */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-		/* set a few variables needed for sync code borrowed from filter.inc */
-		$msg = new XML_RPC_Message('pfsense.merge_installedpackages_section_xmlrpc', $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if ($g['debug']) {
-			$cli->setDebug(1);
-		}
-
-		/* send our XMLRPC message and timeout after defined sync timeout value */
-		$resp = $cli->send($msg, $synctimeout);
-
-		if (!$resp) {
-			log_error("[pfBlockerNG] XMLRPC communications error occurred while attempting sync with {$url}:{$port}.");
-			file_notice('pfBlockerNG Sync settings', $error, 'pfBlockerNG', '/pfblockerng/pfblockerng_sync.php', 2);
-			$success = FALSE;
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			log_error("[pfBlockerNG] XMLRPC errors syncing with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString());
-			file_notice('pfBlockerNG Sync settings', $error, 'pfBlockerNG', '/pfblockerng/pfblockerng_sync.php', 2);
-			$success = FALSE;
-		}
-		return $success;
+	if (!isset($resp)) {
+		return FALSE;
+	} else {
+		return TRUE;
 	}
-	else {
-		require_once('xmlrpc_client.inc');
+}
 
-		// xmlrpc cannot encode NULL objects/arrays
-		foreach ($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == 'NULL') {
-				$xml[$xmlkey] = array();
-			}
-		}
-
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-
-		if (!isset($resp)) {
-			return FALSE;
-		} else {
-			return TRUE;
-		}
+function pfblockerng_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/pfblockerngsync/config/0/varsynconchanges') != 'auto') {
+		return [];
 	}
+
+	$section_paths_temp = [
+		'installedpackages/pfblockerngsync/config/0/varsynconchanges'
+	];
+	// If User Disabled, remove 'General/IP/DNSBL Tab Customizations' from Sync
+	if (config_get_path('installedpackages/pfblockerngsync/config/0/syncinterfaces') != 'on') {
+		$section_paths_temp = array_merge($section_paths_temp, [
+			'installedpackages/pfblockerng',
+			'installedpackages/pfblockerngipsettings',
+			'installedpackages/pfblockerngdnsblsettings'
+		]);
+	}
+	$section_paths_temp = array_merge($section_paths_temp, [
+		'installedpackages/pfblockernglistsv4',
+		'installedpackages/pfblockernglistsv6',
+		'installedpackages/pfblockerngreputation',
+		'installedpackages/pfblockerngtopspammers',
+		'installedpackages/pfblockerngafrica',
+		'installedpackages/pfblockerngantarctica',
+		'installedpackages/pfblockerngasia',
+		'installedpackages/pfblockerngeurope',
+		'installedpackages/pfblockerngnorthamerica',
+		'installedpackages/pfblockerngoceania',
+		'installedpackages/pfblockerngsouthamerica',
+		'installedpackages/pfblockerngproxyandsatellite',
+		'installedpackages/pfblockerngdnsbl',
+		'installedpackages/pfblockerngblacklist',
+		'installedpackages/pfblockerngglobal',
+		'installedpackages/pfblockerngsafesearch'
+	]);
+
+	$section_paths = [];
+	foreach ($section_paths_temp as $path) {
+		$section_config = config_get_path($path);
+		if (!isset($section_config)) {
+			continue;
+		}
+		$section_paths[] = $path;
+	}
+
+	return $section_paths;
+}
+
+function pfblockerng_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/pfblockerngsync/config/0/varsynconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/pfblockerng',
+		'installedpackages/pfblockerngipsettings',
+		'installedpackages/pfblockerngdnsblsettings',
+		'installedpackages/pfblockernglistsv4',
+		'installedpackages/pfblockernglistsv6',
+		'installedpackages/pfblockerngreputation',
+		'installedpackages/pfblockerngtopspammers',
+		'installedpackages/pfblockerngafrica',
+		'installedpackages/pfblockerngantarctica',
+		'installedpackages/pfblockerngasia',
+		'installedpackages/pfblockerngeurope',
+		'installedpackages/pfblockerngnorthamerica',
+		'installedpackages/pfblockerngoceania',
+		'installedpackages/pfblockerngsouthamerica',
+		'installedpackages/pfblockerngproxyandsatellite',
+		'installedpackages/pfblockerngdnsbl',
+		'installedpackages/pfblockerngblacklist',
+		'installedpackages/pfblockerngglobal',
+		'installedpackages/pfblockerngsafesearch'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
 }

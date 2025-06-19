@@ -113,6 +113,17 @@
 			</description>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
+	</plugins>
 	<custom_php_install_command>
 		<![CDATA[
 		sudo_install();

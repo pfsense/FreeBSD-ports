@@ -92,6 +92,9 @@ if ($_POST) {
 						break;
 					case 'varsyncipaddress':
 						// Validate IP Address/Hostname
+						if (($_POST['varsynconchanges'] == 'auto') && (mb_strlen(strval($value)) < 1)) {
+							continue;
+						}
 						$value = pfb_filter($value, PFB_FILTER_HOSTNAME, 'Sync');
 						if (empty($value)) {
 							$input_errors[] = gettext('The Target IP Address is invalid.');

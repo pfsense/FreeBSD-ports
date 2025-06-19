@@ -129,33 +129,6 @@ function filer_sync_on_changes() {
 					return;
 				}
 				break;
-			case "auto":
-				if (is_array(config_get_path('hasync'))) {
-					$system_carp = config_get_path('hasync');
-					$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
-					$rs[0]['username'] = $system_carp['username'];
-					$rs[0]['password'] = $system_carp['password'];
-					$rs[0]['syncdestinenable'] = FALSE;
-
-					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if (config_get_path('system/webgui/protocol') == "http") {
-						$rs[0]['syncprotocol'] = "http";
-						$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '80';
-					} else {
-						$rs[0]['syncprotocol'] = "https";
-						$rs[0]['syncport'] = config_get_path('system/webgui/port') ?: '443';
-					}
-					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[filer] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-						return;
-					} else {
-						$rs[0]['syncdestinenable'] = TRUE;
-					}
-				} else {
-					log_error("[filer] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-					return;
-				}
-				break;
 			default:
 				return;
 				break;
@@ -218,73 +191,65 @@ function filer_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 	$execcmd = "require_once('/usr/local/pkg/filer.inc');\n";
 	$execcmd .= "filer_sync();";
 	
-	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays..
-		foreach($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == "NULL") {
-				$xml[$xmlkey] = array();
-			}
-		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-		// Take care of IPv6 literal address
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-		$url = "{$protocol}://{$sync_to_ip}";
-		/* Assemble XMLRPC payload */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-		/* Set a few variables needed for sync */
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if ($g['debug']) {
-			$cli->setDebug(1);
-		}
-		/* Send our XMLRPC message and timeout after defined sync timeout value*/
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
-			log_error("[filer] {$error}");
-			file_notice("sync_settings", $error, "filer Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[filer] {$error}");
-			file_notice("sync_settings", $error, "filer Settings Sync", "");
-		} else {
-			log_error("[filer] XMLRPC sync successfully completed with {$url}:{$port}.");
-		}
-		/* Tell filer to reload our settings on the destination sync host. */
-		$method = 'pfsense.exec_php';
-
-		/* Assemble XMLRPC payload */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-		log_error("[filer] XMLRPC reload data {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		if (!$resp) {
-			$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error("[filer] {$error}");
-			file_notice("sync_settings", $error, "filer Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[filer] {$error}");
-			file_notice("sync_settings", $error, "filer Settings Sync", "");
-		} else {
-			log_error("[filer] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
+	// xmlrpc cannot encode NULL objects/arrays..
+	foreach($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == "NULL") {
+			$xml[$xmlkey] = array();
 		}
 	}
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+}
+
+function filer_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/filersync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/filersync/config/0/synconchanges',
+		'installedpackages/filer'
+	];
+}
+
+function filer_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/filersync/config/0/synconchanges') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/filer'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function filer_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'filer/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	filer_sync();
 }

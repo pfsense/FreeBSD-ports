@@ -173,10 +173,19 @@
 		</field>
 	</fields>
 	<plugins>
-                <item>
-                        <type>plugin_certificates</type>
-                </item>
-        </plugins>
+		<item>
+			<type>plugin_certificates</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_send</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv</type>
+		</item>
+		<item>
+			<type>plugin_xmlrpc_recv_done</type>
+		</item>
+	</plugins>
 	<custom_add_php_command_late>
 		stunnel_save();
 	</custom_add_php_command_late>

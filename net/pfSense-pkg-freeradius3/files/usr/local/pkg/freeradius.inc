@@ -2394,33 +2394,6 @@ function freeradius_sync_on_changes() {
 				return;
 			}
 			break;
-		case "auto":
-			$system_carp = config_get_path('hasync');
-			if (!is_array($system_carp)) {
-				log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-				return;
-			}
-
-			$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
-			$rs[0]['varsyncusername'] = $system_carp['username'];
-			$rs[0]['varsyncpassword'] = $system_carp['password'];
-			$rs[0]['varsyncdestinenable'] = FALSE;
-
-			// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-			if (config_get_path('system/webgui/protocol') == "http") {
-				$rs[0]['varsyncprotocol'] = "http";
-				$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '80';
-			} else {
-				$rs[0]['varsyncprotocol'] = "https";
-				$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '443';
-			}
-			if ($system_carp['synchronizetoip'] == "") {
-				log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-				return;
-			} else {
-				$rs[0]['varsyncdestinenable'] = TRUE;
-			}
-			break;
 		default:
 			return;
 			break;
@@ -2469,6 +2442,70 @@ if (!function_exists('pf_version')) {
 	}
 }
 
+function freeradius_plugin_xmlrpc_send() {
+	if (config_get_path('installedpackages/freeradiussync/config/0/varsyncenablexmlrpc') != 'auto') {
+		return [];
+	}
+
+	return [
+		'installedpackages/freeradiussync/config/0/varsyncenablexmlrpc',
+		'installedpackages/freeradius',
+		'installedpackages/freeradiusauthorizedmacs',
+		'installedpackages/freeradiusclients',
+		'installedpackages/freeradiusinterfaces',
+		'installedpackages/freeradiussettings',
+		'installedpackages/freeradiuseapconf',
+		'installedpackages/freeradiussqlconf',
+		'installedpackages/freeradiusmodulesldap'
+	];
+}
+
+function freeradius_plugin_xmlrpc_recv($new_sections) {
+	if (array_get_path($new_sections, 'installedpackages/freeradiussync/config/0/varsyncenablexmlrpc') != 'auto') {
+		return [];
+	}
+
+	$section_paths = [
+		'installedpackages/freeradius',
+		'installedpackages/freeradiusauthorizedmacs',
+		'installedpackages/freeradiusclients',
+		'installedpackages/freeradiusinterfaces',
+		'installedpackages/freeradiussettings',
+		'installedpackages/freeradiuseapconf',
+		'installedpackages/freeradiussqlconf',
+		'installedpackages/freeradiusmodulesldap'
+	];
+
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function freeradius_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'freeradius/xmlrpc_recv_result') !== true) {
+		return;
+	}
+	freeradius_all_after_XMLRPC_resync();
+}
+
 /* Do the actual XMLRPC sync */
 function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
 	/* Detect boot process, do nothing during boot. */
@@ -2495,83 +2532,17 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 	$execcmd  = "require_once('/usr/local/pkg/freeradius.inc');\n";
 	$execcmd .= "freeradius_all_after_XMLRPC_resync();";
 
-	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays
-		foreach($xml as $xmlkey => $xmlvalue) {
-			if (gettype($xmlvalue) == "NULL") {
-				$xml[$xmlkey] = array();
-			}
-		}
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	} else {
-		// pfSense before 2.4
-		require_once('xmlrpc.inc');
-
-		/* Take care of IPv6 literal address */
-		if (is_ipaddrv6($sync_to_ip)) {
-			$sync_to_ip = "[{$sync_to_ip}]";
-		}
-
-		$url = "{$varsyncprotocol}://{$sync_to_ip}";
-		$port = $varsyncport;
-
-		/* Assemble XMLRPC payload. */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-		/* Set a few variables needed for sync code */
-		log_error("[FreeRADIUS]: Beginning FreeRADIUS XMLRPC sync with {$url}:{$port}.");
-		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		if (g_has('debug')) {
-			$cli->setDebug(1);
-		}
-		/* Send our XMLRPC message and timeout after defined sync timeout value */
-		$resp = $cli->send($msg, $varsynctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while FreeRADIUS was attempting XMLRPC sync with {$url}:{$port}.";
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $varsynctimeout);
-			$error = "An error code was received while FreeRADIUS XMLRPC was attempting to sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} else {
-			log_error("[FreeRADIUS]: XMLRPC has synced data successfully with {$url}:{$port}.");
-		}
-
-		/* Tell FreeRADIUS to reload our settings on the destionation sync host. */
-		$method = 'pfsense.exec_php';
-
-		/* Assemble XMLRPC payload. */
-		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-
-		log_error("[FreeRADIUS]: XMLRPC is reloading data on {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $varsynctimeout);
-		if (!$resp) {
-			$error = "A communications error occurred while FreeRADIUS was attempting XMLRPC sync with {$url}:{$port} (exec_php).";
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$cli->setDebug(1);
-			$resp = $cli->send($msg, $varsynctimeout);
-			$error = "An error code was received while FreeRADIUS XMLRPC was attempting to sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error("[FreeRADIUS]: {$error}");
-			file_notice("sync_settings", $error, "FreeRADIUS Settings Sync", "");
-		} else {
-			log_error("[FreeRADIUS]: XMLRPC has reloaded data successfully on {$url}:{$port} (exec_php).");
+	// xmlrpc cannot encode NULL objects/arrays
+	foreach($xml as $xmlkey => $xmlvalue) {
+		if (gettype($xmlvalue) == "NULL") {
+			$xml[$xmlkey] = array();
 		}
 	}
+	$synctimeout = intval($varsynctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
 }
 
 // This function restarts all other needed functions after XMLRPC

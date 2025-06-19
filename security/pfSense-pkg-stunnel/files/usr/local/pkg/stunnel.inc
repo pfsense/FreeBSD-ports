@@ -116,7 +116,6 @@ function stunnel_save() {
 	if ($conf != $oldconf) {
 		file_put_contents($stunnel_conf, $conf);
 		write_config('stunnel configuration changed');
-		stunnel_sync_config();
 	}
 
 	// Clean up certs that are no longer in use.
@@ -201,48 +200,45 @@ function stunnel_deinstall() {
 	unlink_if_exists("/usr/local/etc/rc.d/stunnel.sh");
 }
 
-function stunnel_sync_config() {
-	$system_carp = config_get_path('hasync');
-	if (!is_array($system_carp) ||
-	    !$system_carp['synchronizetoip'] ||
-	    !$system_carp['username'] ||
-	    !$system_carp['password']) {
-		return -1;
-	}
-
-	if (config_get_path('system/webgui/protocol') == "http") {
-		$varsyncprotocol = "http";
-		$varsyncport = config_get_path('system/webgui/port') ?: '80';
-	} else {
-		$varsyncprotocol = "https";
-		$varsyncport = config_get_path('system/webgui/port') ?: '443';
-	}
-	stunnel_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
-	    $varsyncprotocol, $system_carp['username'],
-	    $system_carp['password'], 100);
+function stunnel_plugin_xmlrpc_send() {
+	return [
+		'installedpackages/stunnel'
+	];
 }
 
-/* Do the actual XMLRPC sync */
-function stunnel_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
-    $password, $synctimeout) {
-	$xml = array();
-	$xml['stunnel'] = config_get_path('installedpackages/stunnel');
+function stunnel_plugin_xmlrpc_recv($new_sections) {
+	$section_paths = [
+		'installedpackages/stunnel'
+	];
 
-	$remote_stunnel_config_apply = <<<EOD
-if (file_exists('/usr/local/pkg/stunnel.inc')) {
-	require_once('/usr/local/pkg/stunnel.inc');
+	$ret = [
+		'xmlrpc_recv_result' => false
+	];
+	foreach ($section_paths as $path) {
+		$old_section = config_get_path($path, []);
+		$new_section = array_get_path($new_sections, $path, []);
+
+		// Don't save empty configuration sections.
+		if (empty($old_section) && empty($new_section)) {
+			continue;
+		}
+		// Ignore unchanged configuration sections.
+		if ($old_section === $new_section) {
+			continue;
+		}
+
+		$ret[$path] = array_merge($old_section, $new_section);
+		$ret['xmlrpc_recv_result'] = true;
+	}
+
+	return $ret;
+}
+
+function stunnel_plugin_xmlrpc_recv_done($xmlrpc_recv_result) {
+	if (array_get_path($xmlrpc_recv_result, 'stunnel/xmlrpc_recv_result') !== true) {
+		return;
+	}
 	stunnel_save();
-}
-EOD;
-
-	$synctimeout = intval($synctimeout);
-	$rpc_client = new pfsense_xmlrpc_client();
-	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password,
-	    $protocol);
-	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section',
-	    $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_stunnel_config_apply,
-	    $synctimeout);
 }
 
 function stunnel_plugin_certificates($pluginparams) {
