@@ -1,10 +1,10 @@
 PORTNAME=	nwg-menu
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.7
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MenuStart plugin to nwg-panel, also capable of working standalone
 WWW=		https://github.com/nwg-piotr/nwg-menu
 

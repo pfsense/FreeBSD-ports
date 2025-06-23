@@ -60,7 +60,6 @@
     SUBDIR += ffmpegthumbnailer
     SUBDIR += ffms2
     SUBDIR += ffnvcodec-headers
-    SUBDIR += ffsubsync
     SUBDIR += filebot
     SUBDIR += flvmeta
     SUBDIR += fswebcam
@@ -302,7 +301,6 @@
     SUBDIR += py-cec
     SUBDIR += py-decord
     SUBDIR += py-enzyme
-    SUBDIR += py-ffmpeg-python
     SUBDIR += py-gstreamer1
     SUBDIR += py-guessit
     SUBDIR += py-knowit
@@ -346,6 +344,7 @@
     SUBDIR += scte35dump
     SUBDIR += shotcut
     SUBDIR += shotcut-qt6
+    SUBDIR += showtime
     SUBDIR += simplescreenrecorder
     SUBDIR += smpeg
     SUBDIR += smpeg2
@@ -357,6 +356,7 @@
     SUBDIR += subtitlecomposer
     SUBDIR += subtitleoffsetmodifier
     SUBDIR += subtools
+    SUBDIR += supersonic
     SUBDIR += svt-av1
     SUBDIR += svt-av1-psy
     SUBDIR += svt-hevc

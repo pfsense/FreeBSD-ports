@@ -37,7 +37,6 @@
     SUBDIR += canu
     SUBDIR += cd-hit
     SUBDIR += cdbfasta
-    SUBDIR += checkm
     SUBDIR += chip-seq
     SUBDIR += clustal-omega
     SUBDIR += clustalw
@@ -195,6 +194,7 @@
     SUBDIR += py-pandas-charm
     SUBDIR += py-py2bit
     SUBDIR += py-pybigwig
+    SUBDIR += py-pydeseq2
     SUBDIR += py-pyfaidx
     SUBDIR += py-pyrodigal
     SUBDIR += py-pysam

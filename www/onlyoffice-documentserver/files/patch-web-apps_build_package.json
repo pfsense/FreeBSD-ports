@@ -1,6 +1,6 @@
---- web-apps/build/package.json.orig	2023-02-13 11:28:45.073468000 +0100
-+++ web-apps/build/package.json	2023-02-13 11:29:43.714855000 +0100
-@@ -40,8 +40,9 @@
+--- web-apps/build/package.json.orig	2025-02-24 09:04:41 UTC
++++ web-apps/build/package.json
+@@ -44,8 +46,9 @@
      }
    },
    "devDependencies": {

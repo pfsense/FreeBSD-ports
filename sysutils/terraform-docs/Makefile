@@ -1,6 +1,7 @@
 PORTNAME=	terraform-docs
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.20.0
+PORTREVISION=	2
 CATEGORIES=	sysutils textproc
 
 MAINTAINER=	dutra@FreeBSD.org

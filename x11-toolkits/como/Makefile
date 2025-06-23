@@ -1,21 +1,20 @@
 PORTNAME=	como
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	325e41b02b58.patch:-p1 # https://github.com/winft/como/pull/22
 PATCHFILES+=	d250e3a81b91.patch:-p1 # https://github.com/winft/como/pull/22
+PATCHFILES+=	7ad1bc1d9b7b.patch:-p1 # https://github.com/winft/como/pull/31
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Compositor Modules for Wayland and X11
 WWW=		https://github.com/winft/como
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN=		https://github.com/winft/como/issues/30
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \

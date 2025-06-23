@@ -1,6 +1,7 @@
 PORTNAME=	openvdb
 DISTVERSIONPREFIX=	v
 DISTVERSION=	12.0.1
+PORTREVISION=	1
 CATEGORIES=	misc
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -35,7 +36,7 @@ WRKSRC_SUBDIR=	openvdb/openvdb/python
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
-PLIST_FILES=	${PYTHON_SITELIBDIR}/openvdb${PYTHON_EXT_SUFFIX}.so
+PLIST_FILES=	${PYTHON_SITELIBDIR}/openvdb${PYTHON_TAG}.so
 
 do-test: # run an example, since the supplied test appears to be only for Windows
 	@cd ${WRKSRC} && \

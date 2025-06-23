@@ -1,5 +1,6 @@
 PORTNAME=	freeswitch
 DISTVERSION=	1.10.12
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	https://files.freeswitch.org/releases/freeswitch/ \
 		https://files.freeswitch.org/releases/sounds/:sounds
@@ -31,6 +32,7 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 		libodbc.so:databases/unixODBC \
 		libpng.so:graphics/png \
 		libjbig.so:graphics/jbigkit \
+		libshout.so:audio/libshout \
 		libtiff.so:graphics/tiff \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libmariadb.so:databases/mariadb-connector-c \
@@ -189,6 +191,8 @@ post-patch:
 		${REINPLACE_CMD} -Ee 's|^(applications/mod_signalwire)|#\1|' \
 			${WRKSRC}/modules.conf
 		${REINPLACE_CMD} -Ee 's|^(endpoints/mod_verto)|#\1|' \
+			${WRKSRC}/modules.conf
+		${REINPLACE_CMD} -Ee 's|^#(formats/mod_shout)|\1|' \
 			${WRKSRC}/modules.conf
 
 post-patch-PGSQL-off:

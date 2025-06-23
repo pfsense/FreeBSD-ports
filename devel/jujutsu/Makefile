@@ -1,6 +1,6 @@
 PORTNAME=	jujutsu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.29.0
+DISTVERSION=	0.30.0
 CATEGORIES=	devel
 
 MAINTAINER=	se@FreeBSD.org
@@ -9,8 +9,6 @@ WWW=		https://jj-vcs.github.io/jj/latest/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-LIB_DEPENDS=	libssh2.so:security/libssh2
 
 USES=		cargo localbase shebangfix ssl
 USE_GITHUB=	yes

@@ -1,5 +1,6 @@
 PORTNAME=	miktex
 DISTVERSION=	25.4
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	https://miktex.org/download/ctan/systems/win32/miktex/source/ \
 		https://ctan.org/tex-archive/systems/win32/miktex/tm/packages/:bootstrap
@@ -99,5 +100,6 @@ post-patch:
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/share/miktex-texmf/miktex/config/*.log
+	${MV} ${STAGEDIR}${PREFIX}/bin/mpc ${STAGEDIR}${PREFIX}/bin/mpc-miktex
 
 .include <bsd.port.mk>

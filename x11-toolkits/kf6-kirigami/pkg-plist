@@ -35,9 +35,15 @@ lib/libKirigamiDialogs.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKirigamiLayouts.so
 lib/libKirigamiLayouts.so.6
 lib/libKirigamiLayouts.so.%%KDE_FRAMEWORKS_VERSION%%
+lib/libKirigamiLayoutsPrivate.so
+lib/libKirigamiLayoutsPrivate.so.6
+lib/libKirigamiLayoutsPrivate.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKirigamiPlatform.so
 lib/libKirigamiPlatform.so.6
 lib/libKirigamiPlatform.so.%%KDE_FRAMEWORKS_VERSION%%
+lib/libKirigamiPolyfill.so
+lib/libKirigamiPolyfill.so.6
+lib/libKirigamiPolyfill.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libKirigamiPrimitives.so
 lib/libKirigamiPrimitives.so.6
 lib/libKirigamiPrimitives.so.%%KDE_FRAMEWORKS_VERSION%%
@@ -110,6 +116,11 @@ lib/libKirigamiPrivate.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami/layouts/KirigamiLayouts.qmltypes
 %%QT_QMLDIR%%/org/kde/kirigami/layouts/kde-qmlmodule.version
 %%QT_QMLDIR%%/org/kde/kirigami/layouts/libKirigamiLayoutsplugin.so
+%%QT_QMLDIR%%/org/kde/kirigami/layouts/private/ColumnViewSeparator.qml
+%%QT_QMLDIR%%/org/kde/kirigami/layouts/private/KirigamiLayoutsPrivate.qmltypes
+%%QT_QMLDIR%%/org/kde/kirigami/layouts/private/kde-qmlmodule.version
+%%QT_QMLDIR%%/org/kde/kirigami/layouts/private/libKirigamiLayoutsPrivateplugin.so
+%%QT_QMLDIR%%/org/kde/kirigami/layouts/private/qmldir
 %%QT_QMLDIR%%/org/kde/kirigami/layouts/qmldir
 %%QT_QMLDIR%%/org/kde/kirigami/libKirigamiplugin.so
 %%QT_QMLDIR%%/org/kde/kirigami/platform/KirigamiPlatform.qmltypes
@@ -146,6 +157,10 @@ lib/libKirigamiPrivate.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami/private/globaltoolbar/ToolBarPageHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami/private/kde-qmlmodule.version
 %%QT_QMLDIR%%/org/kde/kirigami/private/libKirigamiPrivateplugin.so
+%%QT_QMLDIR%%/org/kde/kirigami/private/polyfill/KirigamiPolyfill.qmltypes
+%%QT_QMLDIR%%/org/kde/kirigami/private/polyfill/kde-qmlmodule.version
+%%QT_QMLDIR%%/org/kde/kirigami/private/polyfill/libKirigamiPolyfillplugin.so
+%%QT_QMLDIR%%/org/kde/kirigami/private/polyfill/qmldir
 %%QT_QMLDIR%%/org/kde/kirigami/private/qmldir
 %%QT_QMLDIR%%/org/kde/kirigami/qmldir
 %%QT_QMLDIR%%/org/kde/kirigami/styles/Material/InlineMessage.qml
@@ -167,6 +182,7 @@ lib/libKirigamiPrivate.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami/templates/private/GenericDrawerIcon.qml
 %%QT_QMLDIR%%/org/kde/kirigami/templates/private/IconPropertiesGroup.qml
 %%QT_QMLDIR%%/org/kde/kirigami/templates/private/MenuIcon.qml
+%%QT_QMLDIR%%/org/kde/kirigami/templates/private/NavigationButton.qml
 %%QT_QMLDIR%%/org/kde/kirigami/templates/private/PassiveNotificationsManager.qml
 %%QT_QMLDIR%%/org/kde/kirigami/templates/private/qmldir
 %%QT_QMLDIR%%/org/kde/kirigami/templates/qmldir

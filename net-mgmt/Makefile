@@ -129,6 +129,7 @@
     SUBDIR += isic
     SUBDIR += jnettop
     SUBDIR += kapacitor
+    SUBDIR += kf6-networkmanager-qt
     SUBDIR += kismet
     SUBDIR += klg
     SUBDIR += lg
@@ -204,6 +205,7 @@
     SUBDIR += netmagis-www
     SUBDIR += netmask
     SUBDIR += netspoc
+    SUBDIR += networkmanager-shim
     SUBDIR += networkmgr
     SUBDIR += netxms
     SUBDIR += nfdump

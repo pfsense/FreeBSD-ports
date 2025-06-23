@@ -1,9 +1,9 @@
 PORTNAME=		fastp
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.24.1
+DISTVERSION=		0.26.0
 CATEGORIES=		biology
 
-MAINTAINER=	jwb@FreeBSD.org
+MAINTAINER=	hayzam@alchemilla.io
 COMMENT=	Ultra-fast all-in-one FASTQ preprocessor
 WWW=		https://github.com/OpenGene/fastp
 

@@ -1,7 +1,6 @@
 PORTNAME=	wx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.6
-PORTREVISION=	1
+DISTVERSION=	3.2.8.1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	https://github.com/wxWidgets/wxWidgets/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	${_SHORT_WX_VER}-${FLAVOR}
@@ -24,7 +23,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre2-32.so:devel/pcre2 \
 		libpng16.so:graphics/png \
 		libsecret-1.so:security/libsecret \
-		libsoup-2.4.so:devel/libsoup \
+		libsoup-3.0.so:devel/libsoup3 \
 		libtiff.so:graphics/tiff \
 		libwayland-egl.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
@@ -65,7 +64,7 @@ CONFIGURE_ARGS=	--disable-epollloop \
 CONFIGURE_ENV=	ac_cv_header_sys_inotify_h=no \
 		X11BASE="${LOCALBASE}"
 
-_SOVER=		0.3.0
+_SOVER=		0.4.1
 PLIST_SUB+=	GTKVER=${FLAVOR} SOVER=${_SOVER}
 
 OPTIONS_DEFINE=		GSTREAMER MSPACK NLS
@@ -83,7 +82,7 @@ MSPACK_CONFIGURE_WITH=	libmspack
 
 NLS_USES=	gettext
 
-WEBKIT_LIB_DEPENDS=		libwebkit2gtk-4.0.so:www/webkit2-gtk@40
+WEBKIT_LIB_DEPENDS=		libwebkit2gtk-4.1.so:www/webkit2-gtk@41
 WEBKIT_CONFIGURE_ENABLE=	webview
 
 .if ${FLAVOR} == gtk3

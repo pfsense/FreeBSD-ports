@@ -1000,7 +1000,8 @@ LC_ALL=		C
 # These need to be absolute since we don't know how deep in the ports
 # tree we are and thus can't go relative.  They can, of course, be overridden
 # by individual Makefiles or local system make configuration.
-_LIST_OF_WITH_FEATURES=	bind_now debug debuginfo lto pie relro sanitize ssp testing
+_LIST_OF_WITH_FEATURES=	bind_now debug debuginfo fortify lto pie relro \
+			sanitize ssp stack_autoinit testing zeroregs
 _DEFAULT_WITH_FEATURES=	ssp
 PORTSDIR?=		/usr/ports
 LOCALBASE?=		/usr/local
@@ -1910,8 +1911,14 @@ PLIST_FILES+=	"@ldconfig"
 .    if defined(NO_SHLIB_REQUIRES_GLOB)
 PKG_ENV+=	SHLIB_REQUIRE_IGNORE_GLOB="${NO_SHLIB_REQUIRES_GLOB:ts,}"
 .    endif
-.    if defined(NO_SHLIBS_REQUIRES_REGEX)
-PKG_ENV+=	SHLIB_REQUIRE_IGNORE_REGEX="${NO_SHLIBS_REQUIRES_REGEX:ts,}"
+.    if defined(NO_SHLIB_REQUIRES_REGEX)
+PKG_ENV+=	SHLIB_REQUIRE_IGNORE_REGEX="${NO_SHLIB_REQUIRES_REGEX:ts,}"
+.    endif
+.    if defined(NO_SHLIB_PROVIDES_GLOB)
+PKG_ENV+=	SHLIB_PROVIDE_IGNORE_GLOB="${NO_SHLIB_PROVIDES_GLOB:ts,}"
+.    endif
+.    if defined(NO_SHLIB_PROVIDES_REGEX)
+PKG_ENV+=	SHLIB_PROVIDE_IGNORE_REGEX="${NO_SHLIB_PROVIDES_REGEX:ts,}"
 .    endif
 
 PKG_IGNORE_DEPENDS?=		'this_port_does_not_exist'

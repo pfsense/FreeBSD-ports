@@ -153,6 +153,9 @@ post-patch:
 .else
 EXTRA_PATCHES+=	files/extra-patch-tools-winebuild-res32
 PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
+
+post-patch:
+	${MV} ${WRKSRC}/loader/*.man.in ${WRKSRC}/tools/wine/
 .endif
 
 pre-build:

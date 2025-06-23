@@ -1,6 +1,6 @@
 PORTNAME=	cadabra2
 DISTVERSION=	2.5.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -51,7 +51,7 @@ GUI_USES=		desktop-file-utils
 GUI_USE=		GNOME=gtkmm30,gdkpixbuf
 GUI_CMAKE_BOOL=		ENABLE_FRONTEND
 
-_PY_SONAME=	${PYTHON_EXT_SUFFIX}
+_PY_SONAME=	${PYTHON_TAG}
 
 post-extract: # unbundle
 	@${RM} -r ${WRKSRC}/libs/jsoncpp ${WRKSRC}/libs/websocketpp

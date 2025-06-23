@@ -16,6 +16,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 .include "${.CURDIR}/../nvidia-driver/Makefile.version"
 .include "${.CURDIR}/../nvidia-driver/Makefile.common"
 
+CONFLICTS_INSTALL=	linux-nvidia-libs*
+
 # Choose proper distinfo file using PKGNAMESUFFIX for slave ports.
 # Kept for switching to centralized distinfo with suffixes.
 .ifdef PKGNAMESUFFIX
@@ -274,7 +276,9 @@ PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-gpucomp\.so,d'
 
 # nvidia-egl-X11 supports (not in x11/nvidia-driver nor separate ports)
 # Estimated to be upgrated often.
-.if ${NVVERSION} >= 570.14400 # 570.144
+.if ${NVVERSION} >= 570.15302 && ${NVVERSION} < 575.00000 || ${NVVERSION} >= 575.05708
+NV_EGL_X_VERSION=	1.0.2
+.elif ${NVVERSION} >= 570.14400 # 570.144
 NV_EGL_X_VERSION=	1.0.1
 .elif ${NVVERSION} >= 570.00000	# 570.00, Intentionally kept to clarify
 				# the start of egl-x11 support.

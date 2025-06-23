@@ -4,6 +4,7 @@
     SUBDIR += adapta-backgrounds
     SUBDIR += adapta-gtk-theme
     SUBDIR += adwaita-icon-theme
+    SUBDIR += adwaita-icon-theme-legacy
     SUBDIR += adwaita-qt5
     SUBDIR += adwaita-qt6
     SUBDIR += ant-dracula-theme
@@ -132,6 +133,7 @@
     SUBDIR += openbox-arc-theme
     SUBDIR += oxygen-icons
     SUBDIR += papirus-icon-theme
+    SUBDIR += plasma6-aurorae
     SUBDIR += plasma6-breeze
     SUBDIR += plasma6-breeze-gtk
     SUBDIR += plasma6-kde-gtk-config
@@ -145,6 +147,7 @@
     SUBDIR += qogir-gtk-themes
     SUBDIR += qogir-icon-themes
     SUBDIR += qt5-style-plugins
+    SUBDIR += qt6gtk2
     SUBDIR += qtcurve
     SUBDIR += qtcurve-gtk2
     SUBDIR += qtcurve-kf5

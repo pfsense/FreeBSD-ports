@@ -1,30 +1,28 @@
 PORTNAME=	libpeas
-PORTVERSION=	1.34.0
-PORTREVISION?=	2
+PORTVERSION=	2.0.7
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT?=	Next evolution of the Gedit plugins engine
-WWW=		https://wiki.gnome.org/Projects/Libpeas
+COMMENT?=	Gobject-based plugins engine (Peas 2 API)
+WWW=		https://gitlab.gnome.org/GNOME/libpeas
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	valac:lang/vala
-
-USES=		cpe gettext gnome meson pkgconfig tar:xz
-USE_GNOME=	cairo introspection libxml2
+USES=		cpe gettext gnome meson pathfix pkgconfig python tar:xz \
+		vala:build
+USE_GNOME=	introspection libxml2 pygobject3
 CPE_VENDOR=	gnome
 
-MESON_ARGS=	-Dglade_catalog=false \
-		-Dlua51=false
+MESON_ARGS=	-Dlua51=false
 
 LIBPEAS_SLAVE?=	no
 
 .if ${LIBPEAS_SLAVE} == no
-PORTSCOUT=	limitw:1,even
+LIB_DEPENDS=	libmozjs-128.so:lang/spidermonkey128 \
+		libgjs.so:lang/gjs
 
 USE_GNOME+=	gtk30
 USE_LDCONFIG=	yes
@@ -32,15 +30,6 @@ USE_LDCONFIG=	yes
 MESON_ARGS+=	-Dvapi=true \
 		-Dpython3=false
 PLIST=		${.CURDIR}/pkg-plist
-
-OPTIONS_DEFINE=	DEMOS DOCS
-OPTIONS_SUB=	yes
-
-DOCS_BUILD_DEPENDS=	gi-docgen:textproc/py-gi-docgen
-DOCS_MESON_TRUE=	gtk_doc
-
-DEMOS_DESC=		Build demo programs
-DEMOS_MESON_TRUE=	demos
 .endif
 
 pre-build:
@@ -49,17 +38,13 @@ pre-build:
 		tests/libpeas/plugins/embedded/embedded-resources.h
 
 .if ${LIBPEAS_SLAVE} == python
-LIB_DEPENDS+=	libpeas-1.0.so:devel/libpeas
-PORTSCOUT=	limitw:1,even
+LIB_DEPENDS+=	libpeas-2.so:devel/libpeas
 
-USES+=		python
 USE_PYTHON=	flavors
 USE_GNOME+=	pygobject3
 MESON_ARGS+=	-Dpython3=true \
-		-Dgtk_doc=false \
-		-Ddemos=false \
-		-Dvapi=false
-ALL_TARGET=	loaders/python3/libpython3loader.so
+		-Dgjs=false
+ALL_TARGET=	loaders/python/libpythonloader.so
 
 post-patch:
 	${REINPLACE_CMD} -e "s|dependency('python3'|dependency('python-${PYTHON_VER}'|" \
@@ -67,9 +52,9 @@ post-patch:
 		${WRKSRC}/meson.build
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/libpeas-1.0/loaders/
-	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/loaders/python3/libpython3loader.so \
-		${STAGEDIR}${PREFIX}/lib/libpeas-1.0/loaders/
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/libpeas-2/loaders/
+	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/loaders/python/libpythonloader.so \
+		${STAGEDIR}${PREFIX}/lib/libpeas-2/loaders/
 .endif
 
 .include <bsd.port.mk>
