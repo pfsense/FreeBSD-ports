@@ -112,6 +112,7 @@ include/folly/Uri.h
 include/folly/Utility.h
 include/folly/Varint.h
 include/folly/VirtualExecutor.h
+include/folly/algorithm/BinaryHeap.h
 include/folly/algorithm/simd/Contains.h
 include/folly/algorithm/simd/FindFixed.h
 include/folly/algorithm/simd/Ignore.h
@@ -607,6 +608,7 @@ include/folly/external/fast-crc32/neon_eor3_crc32c_v8s2x4_s3.h
 include/folly/external/fast-crc32/sse_crc32c_v8s3x3.h
 include/folly/external/nvidia/detail/RangeSve2.h
 include/folly/external/nvidia/hash/detail/Crc32cCombineDetail.h
+include/folly/external/rapidhash/rapidhash.h
 include/folly/fibers/AddTasks-inl.h
 include/folly/fibers/AddTasks.h
 include/folly/fibers/AtomicBatchDispatcher-inl.h
@@ -702,6 +704,7 @@ include/folly/hash/MurmurHash.h
 include/folly/hash/SpookyHashV1.h
 include/folly/hash/SpookyHashV2.h
 include/folly/hash/detail/ChecksumDetail.h
+include/folly/hash/rapidhash.h
 include/folly/hash/traits.h
 include/folly/init/Init.h
 include/folly/init/Phase.h
@@ -854,10 +857,13 @@ include/folly/lang/PropagateConst.h
 include/folly/lang/RValueReferenceWrapper.h
 include/folly/lang/SafeAssert.h
 include/folly/lang/StaticConst.h
+include/folly/lang/Switch.h
 include/folly/lang/Thunk.h
 include/folly/lang/ToAscii.h
 include/folly/lang/TypeInfo.h
 include/folly/lang/UncaughtExceptions.h
+include/folly/lang/VectorTraits.h
+include/folly/lang/named/Bindings.h
 include/folly/logging/AsyncFileWriter.h
 include/folly/logging/AsyncLogWriter.h
 include/folly/logging/AutoTimer.h
@@ -981,6 +987,7 @@ include/folly/python/executor.h
 include/folly/python/futures.h
 include/folly/python/import.h
 include/folly/python/iobuf.h
+include/folly/random/xoshiro256pp.h
 include/folly/result/gtest_helpers.h
 include/folly/result/result.h
 include/folly/result/try.h

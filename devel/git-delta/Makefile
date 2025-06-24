@@ -1,10 +1,10 @@
 PORTNAME=	delta
 DISTVERSION=	0.18.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel
 PKGNAMEPREFIX=	git-
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Syntax-highlighting pager for git/diff
 WWW=		https://dandavison.github.io/delta/
 

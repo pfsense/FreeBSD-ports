@@ -1,11 +1,10 @@
 PORTNAME=	searxng
-DISTVERSION=	20250203
-PORTREVISION=	1
+DISTVERSION=	20250603
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Free internet metasearch engine
 WWW=		https://docs.searxng.org/
 
@@ -40,7 +39,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=0:devel/py-babel@${PY_FLAVOR} \
 
 USES=		python
 USE_GITHUB=	yes
-GH_TAGNAME=	4ab7984edde27b36b158f678d83b993ad4126619
+GH_TAGNAME=	eb36de8d914aee7d3e9087b9046b83de705233dd
 USE_PYTHON=	autoplist distutils
 USE_RC_SUBR=	searxng
 

@@ -315,9 +315,9 @@ gotify:*:365:365::0:0:Gotify User:/var/db/gotify:/usr/sbin/nologin
 opengist:*:366:366::0:0:OpenGist User:/var/db/opengist:/usr/sbin/nologin
 velbustcpd:*:367:367::0:0:Velbustcp Deamon:/nonexistent:/usr/sbin/nologin
 sshesame:*:368:368::0:0:Sshesame Daemon:/nonexistent:/usr/sbin/nologin
-# free: 369
+neo4j:*:369:369::0:0:neo4j Database Daemon:/nonexistent:/usr/sbin/nologin
 _wsdd:*:370:370::0:0:Web Service Discovery Daemon:/nonexistent:/usr/sbin/nologin
-# free: 371
+reposilite:*:371:371::0:0:Reposilite user:/nonexistent:/usr/sbin/nologin
 # free: 372
 # free: 373
 # free: 374
@@ -328,7 +328,7 @@ walletd:*:378:378::0:0:walletd Daemon:/nonexistent:/usr/sbin/nologin
 renterd:*:379:379::0:0:renterd Daemon:/nonexistent:/usr/sbin/nologin
 spoofdpi:*:380:380::0:0:SpoofDPI Daemon:/nonexistent:/usr/sbin/nologin
 hydroxide:*:381:381::0:0:Hydroxide Daemon:/var/db/hydroxide:/usr/sbin/nologin
-# free: 382
+_tlsrpt:*:382:382::0:0:TLSRPT Daemon:/nonexistent:/usr/sbin/nologin
 # free: 383
 # free: 384
 # free: 385
@@ -343,7 +343,7 @@ ldap:*:389:389::0:0:OpenLDAP Server:/nonexistent:/usr/sbin/nologin
 # free: 394
 # free: 395
 # free: 396
-# free: 397
+rtorrent:*:397:397::0:0:rtorrent Daemon User:/nonexistent:/usr/sbin/nologin
 tiarra:*:398:398::0:0:Tiarra IRC Proxy:/nonexistent:/usr/sbin/nologin
 # free: 399
 # free: 400
@@ -476,7 +476,7 @@ dkimproxy:*:525:525::0:0:DKIM Proxy Owner:/nonexistent:/usr/sbin/nologin
 # free: 527
 # free: 528
 # free: 529
-# free: 530
+_bgplgd:*:530:530::0:0:OpenBGP Looking Glass Daemon user:/nonexistent:/usr/sbin/nologin
 # free: 531
 # free: 532
 # free: 533
@@ -781,9 +781,9 @@ cirrus:*:828:828::0:0:Cirrus CI:/usr/local/cirrus:/bin/sh
 # free: 831
 beehive:*:832:832::0:0:beehive user:/nonexistent:/usr/sbin/nologin
 # free: 833
-# free: 834
-# free: 835
-# free: 836
+pocket-id:*:834:834::0:0:OIDC provider that allows users to authenticate with their passkeys:/var/db/pocket-id:/usr/sbin/nologin
+filebrowser:*:835:835::0:0:Web File Browser:/var/db/filebrowser:/usr/sbin/nologin
+tinyauth:*:836:836::0:0:Simplest way to protect your apps with a login screen:/nonexistent:/usr/sbin/nologin
 # free: 837
 # free: 838
 # free: 839
@@ -806,7 +806,7 @@ opensearch:*:855:855::0:0:opensearch user:/nonexistent:/usr/sbin/nologin
 # free: 856
 # free: 857
 # free: 858
-# free: 859
+kanidm:*:859:859::0:0:Kanidm user:/nonexistent:/usr/sbin/nologin
 # free: 860
 rekor:*:861:861::0:0:rekor user:/nonexistent:/usr/sbin/nologin
 timestamp-authority:*:862:862::0:0:Timestamp Authority:/nonexistent:/usr/sbin/nologin

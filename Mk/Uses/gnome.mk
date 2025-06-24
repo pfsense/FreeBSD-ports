@@ -76,16 +76,16 @@ _USE_GNOME_ALL+= atk cairo \
 _USE_GNOME_ALL+=dconf evolutiondataserver3 gnomecontrolcenter3 gnomedesktop3 \
 		gnomemenus3 gsound gtk30 gtkhtml4 gtksourceview3 \
 		gtksourceview4 libgda5 \
-		libgda5-ui libgnomekbd libwnck3 metacity nautilus3 \
+		libgda5-ui libgda6 libgnomekbd libwnck3 \
 		pygobject3 vte3
 
 # GNOME 40 components
-_USE_GNOME_ALL+=gtk40 libadwaita gtksourceview5
+_USE_GNOME_ALL+=gtk40 libadwaita gtksourceview5 gnomedesktop4 nautilus4
 
 # C++ bindings
-_USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm glibmm26 gtkmm24 \
-		gtkmm30 gtksourceviewmm3 libgdamm5 libxml++26 libsigc++20 \
-		libsigc++30 pangomm
+_USE_GNOME_ALL+=atkmm cairomm cairomm11 gconfmm26 glibmm glibmm26 gtkmm24 \
+		gtkmm30 gtkmm40 gtksourceviewmm3 libgdamm5 libxml++26 libsigc++20 \
+		libsigc++30 pangomm pangomm24
 
 # glib-mkenums often fails with C locale
 # https://gitlab.gnome.org/GNOME/glib/issues/1430
@@ -113,6 +113,9 @@ cairo_LIB_DEPENDS=	libcairo.so:graphics/cairo
 cairomm_LIB_DEPENDS=	libcairomm-1.0.so:graphics/cairomm
 cairomm_USE_GNOME_IMPL=	cairo libsigc++20
 
+cairomm11_LIB_DEPENDS=	libcairomm-1.16.so:graphics/cairomm11
+cairomm11_USE_GNOME_IMPL=	cairo libsigc++30
+
 gconfmm26_LIB_DEPENDS=		libgconfmm-2.6.so:devel/gconfmm26
 gconfmm26_USE_GNOME_IMPL=	glibmm gconf2
 
@@ -133,6 +136,9 @@ gtkmm24_USE_GNOME_IMPL=	glibmm cairomm atkmm pangomm gtk20
 gtkmm30_LIB_DEPENDS=	libgtkmm-3.0.so:x11-toolkits/gtkmm30
 gtkmm30_USE_GNOME_IMPL=	atkmm cairomm gdkpixbuf glibmm gtk30 pangomm
 
+gtkmm40_LIB_DEPENDS=	libgtkmm-4.0.so:x11-toolkits/gtkmm40
+gtkmm40_USE_GNOME_IMPL=	cairomm11 gdkpixbuf glibmm26 gtk40 pangomm24
+
 gtksourceviewmm3_LIB_DEPENDS=		libgtksourceviewmm-3.0.so:x11-toolkits/gtksourceviewmm3
 gtksourceviewmm3_USE_GNOME_IMPL=	gtkmm30 gtksourceview3
 
@@ -145,6 +151,9 @@ libsigc++30_LIB_DEPENDS=	libsigc-3.0.so:devel/libsigc++30
 
 pangomm_LIB_DEPENDS=	libpangomm-1.4.so:x11-toolkits/pangomm
 pangomm_USE_GNOME_IMPL=	pango glibmm cairomm
+
+pangomm24_LIB_DEPENDS=	libpangomm-2.48.so:x11-toolkits/pangomm24
+pangomm24_USE_GNOME_IMPL=	pango glibmm26 cairomm11
 
 gnomemimedata_BUILD_DEPENDS=${LOCALBASE}/libdata/pkgconfig/gnome-mime-data-2.0.pc:misc/gnome-mime-data
 gnomemimedata_RUN_DEPENDS=${LOCALBASE}/libdata/pkgconfig/gnome-mime-data-2.0.pc:misc/gnome-mime-data
@@ -227,6 +236,9 @@ libartlgpl2_LIB_DEPENDS=	libart_lgpl_2.so:graphics/libart_lgpl
 gnomedesktop3_LIB_DEPENDS=	libgnome-desktop-3.so:x11/gnome-desktop
 gnomedesktop3_USE_GNOME_IMPL=	gtk30
 
+gnomedesktop4_LIB_DEPENDS=	libgnome-desktop-4.so:x11/gnome-desktop
+gnomedesktop4_USE_GNOME_IMPL=	gtk40
+
 libwnck3_LIB_DEPENDS=	libwnck-3.so:x11-toolkits/libwnck3
 libwnck3_USE_GNOME_IMPL=gtk30
 
@@ -251,20 +263,21 @@ librsvg2_RUN_DEPENDS=	librsvg2>=0:graphics/librsvg2
 .  endif
 librsvg2_USE_GNOME_IMPL=cairo gdkpixbuf
 
-nautilus3_LIB_DEPENDS=	libnautilus-extension.so:x11-fm/nautilus
-nautilus3_USE_GNOME_IMPL=gnomedesktop3 libxml2
-
-metacity_LIB_DEPENDS=	libmetacity.so:x11-wm/metacity
+nautilus4_LIB_DEPENDS=	libnautilus-extension.so:x11-fm/nautilus
+nautilus4_USE_GNOME_IMPL=glib20
 
 gnomecontrolcenter3_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-keybindings.pc:sysutils/gnome-control-center
 gnomecontrolcenter3_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-keybindings.pc:sysutils/gnome-control-center
-gnomecontrolcenter3_USE_GNOME_IMPL=	gnomedesktop3
+gnomecontrolcenter3_USE_GNOME_IMPL=	gnomedesktop4
 
 libgda5_LIB_DEPENDS=	libgda-5.0.so:databases/libgda5
 libgda5_USE_GNOME_IMPL=	glib20 libxslt
 
 libgda5-ui_LIB_DEPENDS=	libgda-ui-5.0.so:databases/libgda5-ui
 libgda5-ui_USE_GNOME_IMPL=glib20 libxslt libgda5
+
+libgda6_LIB_DEPENDS=	libgda-6.0.so:databases/libgda6
+libgda6_USE_GNOME_IMPL=	glib20 libxml2
 
 gtksourceview2_LIB_DEPENDS=	libgtksourceview-2.0.so:x11-toolkits/gtksourceview2
 gtksourceview2_USE_GNOME_IMPL=gtk20 libxml2

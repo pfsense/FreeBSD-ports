@@ -5,11 +5,14 @@ CATEGORIES=	net
 MASTER_SITES=	SF \
 		LOCAL/mat/vtun
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Virtual Tunnels over TCP/IP networks with traffic shaping
 WWW=		https://vtun.sourceforge.net/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Upstream is dead and last release in 2016
+EXPIRATION_DATE=2025-06-30
 
 LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 

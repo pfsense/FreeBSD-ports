@@ -1,5 +1,5 @@
 PORTNAME=	git
-DISTVERSION=	2.49.0
+DISTVERSION=	2.50.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -59,7 +59,6 @@ SHEBANG_FILES=	Documentation/*.perl \
 		contrib/*/*.pl \
 		contrib/*/*/*.perl \
 		contrib/*/*/*.pl \
-		contrib/buildsystems/generate \
 		contrib/contacts/git-contacts \
 		contrib/fast-import/import-zips.py \
 		contrib/hooks/update-paranoid \
@@ -71,8 +70,8 @@ CONFIGURE_ARGS=	--enable-pthreads=-pthread ac_cv_header_libcharset_h=no
 
 .if ${SUBPORT} == core
 
-OPTIONS_DEFINE=	CONTRIB CURL GITWEB HTMLDOCS ICONV NLS PCRE2 PERL SEND_EMAIL \
-		SUBTREE
+OPTIONS_DEFINE=	CONTRIB CURL DOCS GITWEB ICONV NLS PCRE2 PERL SEND_EMAIL \
+		SUBTREE SYSINFO
 OPTIONS_DEFAULT=CONTRIB CURL GITWEB ICONV PCRE2 PERL SEND_EMAIL SUBTREE
 
 . if ${FLAVOR:U} == lite
@@ -91,10 +90,10 @@ OPTIONS_FILE=		${PORT_DBDIR}/${OPTIONS_NAME}/${FLAVOR}-options
 CONTRIB_DESC=	Install contributed scripts
 CURL_DESC=	Install curl support (provides HTTPS transport)
 GITWEB_DESC=	Install gitweb
-HTMLDOCS_DESC=	Install additional documentation
 PCRE2_DESC=	Use Perl Compatible Regular Expressions (v2)
 SEND_EMAIL_DESC=Enable the git-send-email(1) script
 SUBTREE_DESC=	Install git-subtree
+SYSINFO_DESC=	Use libsysinfo
 
 NLS_USES=		gettext
 NLS_MAKE_ARGS_OFF=	NO_GETTEXT=yes
@@ -106,7 +105,6 @@ PERL_RUN_DEPENDS=	p5-Error>=0:lang/p5-Error
 PERL_MAKE_ARGS_OFF=	NO_PERL=1
 
 GITWEB_IMPLIES=		PERL
-GITWEB_RUN_DEPENDS=	p5-CGI>=0:www/p5-CGI
 GITWEB_MAKE_ARGS_OFF=	NO_GITWEB=1
 
 PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
@@ -124,10 +122,14 @@ CURL_RUN_DEPENDS=	curl:ftp/curl
 CURL_LIB_DEPENDS=	libexpat.so:textproc/expat2
 CURL_MAKE_ARGS_OFF=	NO_CURL=1 NO_EXPAT=1
 
-HTMLDOCS_DISTFILES=	${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX}
+DOCS_DISTFILES=	${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX}
 
 SUBTREE_BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor \
 			xmlto:textproc/xmlto
+
+SYSINFO_LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
+SYSINFO_CONFIGURE_ON=	--with-libsysinfo
+SYSINFO_LDFLAGS=	-lsysinfo
 
 .else
 
@@ -190,7 +192,7 @@ RMMAN1+=	git-cvsimport.1 \
 RMMAN7+=	gitcvs-migration.7
 .endif
 
-post-extract-HTMLDOCS-on:
+post-extract-DOCS-on:
 	@${MKDIR} ${WRKDIR}/htmldocs
 	@cd ${WRKDIR}/htmldocs && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
 		${DISTDIR}/${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX} \
@@ -263,7 +265,7 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/scalar \
 		${STAGEDIR}${PREFIX}/libexec/git-core/scalar
 
-post-install-HTMLDOCS-on:
+post-install-DOCS-on:
 	# Manually remove the index.html symlink before installing, and then
 	# recreate it after. This is necessary because the distfile is
 	# extracted with --no-same-owner. If the distfile is extracted as a

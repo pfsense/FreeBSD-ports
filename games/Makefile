@@ -376,7 +376,6 @@
     SUBDIR += gzdoom
     SUBDIR += hangman
     SUBDIR += hedgewars
-    SUBDIR += hedgewars-server
     SUBDIR += help_hannahs_horse
     SUBDIR += heretic
     SUBDIR += heroes
@@ -491,6 +490,7 @@
     SUBDIR += lgeneral
     SUBDIR += lgogdownloader
     SUBDIR += libgnome-games-support
+    SUBDIR += libgnome-games-support2
     SUBDIR += libkdegames
     SUBDIR += libkmahjongg
     SUBDIR += liblcf

@@ -254,6 +254,7 @@
     SUBDIR += lightgbm
     SUBDIR += linux-c7-sdl12-extralibs
     SUBDIR += linux-rl9-sdl12-extralibs
+    SUBDIR += linux-rl9-sdl20-extralibs
     SUBDIR += llama-cpp
     SUBDIR += locale-en_DK
     SUBDIR += localedata
@@ -282,7 +283,6 @@
     SUBDIR += mnn
     SUBDIR += molequeue
     SUBDIR += mtx
-    SUBDIR += mxnet
     SUBDIR += najitool
     SUBDIR += navi
     SUBDIR += ncnn
@@ -443,10 +443,9 @@
     SUBDIR += py-fleep
     SUBDIR += py-fuzzy
     SUBDIR += py-gguf
-    SUBDIR += py-gluoncv
-    SUBDIR += py-gluonnlp
     SUBDIR += py-gpiozero
     SUBDIR += py-halo
+    SUBDIR += py-hf-xet
     SUBDIR += py-hist
     SUBDIR += py-histoprint
     SUBDIR += py-huepy
@@ -473,7 +472,6 @@
     SUBDIR += py-mmengine
     SUBDIR += py-mmsegmentation
     SUBDIR += py-molequeue
-    SUBDIR += py-mxnet
     SUBDIR += py-natten
     SUBDIR += py-npTDMS
     SUBDIR += py-numcodecs
@@ -526,8 +524,6 @@
     SUBDIR += py-shell-gpt
     SUBDIR += py-sigopt
     SUBDIR += py-soapy_power
-    SUBDIR += py-spdx
-    SUBDIR += py-spdx-lookup
     SUBDIR += py-spdx-tools
     SUBDIR += py-spinners
     SUBDIR += py-synced-collections
@@ -564,6 +560,7 @@
     SUBDIR += qt6ct
     SUBDIR += quantum++
     SUBDIR += quary
+    SUBDIR += radio_datetime_analyzer
     SUBDIR += randomx
     SUBDIR += rash
     SUBDIR += raspberrypi-gpioshutdown
@@ -587,6 +584,7 @@
     SUBDIR += rubygem-iesd
     SUBDIR += rubygem-mime-types
     SUBDIR += rubygem-mime-types-data
+    SUBDIR += rubygem-mime-types-gitlab
     SUBDIR += rubygem-mimemagic
     SUBDIR += rubygem-octicons
     SUBDIR += rubygem-rabbit
@@ -598,6 +596,7 @@
     SUBDIR += seabios
     SUBDIR += sent
     SUBDIR += seq2
+    SUBDIR += sff
     SUBDIR += sfm
     SUBDIR += shared-mime-info
     SUBDIR += shc

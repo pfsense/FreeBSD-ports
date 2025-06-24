@@ -1,13 +1,9 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	5.14.1
-PORTREVISION=	1
+DISTVERSION=	5.15.4
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	https://github.com/telegramdesktop/tdesktop/commit/
-PATCHFILES=	f676d32f96e70874d9d8e78788c37b82b1e3324a.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Telegram Desktop messaging app
@@ -28,6 +24,7 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		tl-expected>0:devel/tl-expected \
 		v4l_compat>0:multimedia/v4l_compat \
 		yasm:devel/yasm \
+		${LOCALBASE}/lib/libtde2e.a:net-im/tde2e \
 		${LOCALBASE}/lib/libtg_owt.a:net-im/tg_owt
 LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libada.so:devel/libada \
@@ -38,7 +35,9 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libfmt.so:devel/libfmt \
 		libgeoclue-2.so:net/geoclue \
 		libgeocode-glib-2.so:net/geocode-glib2 \
+		libheif.so:graphics/libheif \
 		libhunspell-1.7.so:textproc/hunspell \
+		libjxl.so:graphics/libjxl \
 		liblz4.so:archivers/liblz4 \
 		libopenh264.so:multimedia/openh264 \
 		libopus.so:audio/opus \
@@ -47,7 +46,6 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		libqrcodegencpp.so:graphics/qr-code-generator \
 		librnnoise.so:audio/rnnoise \
 		libsrtp2.so:net/libsrtp2 \
-		libtde2e.so:net-im/tdlib \
 		libxxhash.so:devel/xxhash \
 		libvpx.so:multimedia/libvpx
 
@@ -66,8 +64,11 @@ USE_GNOME=	glib20 glibmm26 introspection
 
 CMAKE_ARGS=	-DTDESKTOP_API_ID=${TELEGRAM_API_ID} -DTDESKTOP_API_HASH=${TELEGRAM_API_HASH} \
 		-DQT_VERSION_MAJOR=6
-CMAKE_ON=	DESKTOP_APP_USE_PACKAGED DESKTOP_APP_DISABLE_CRASH_REPORTS \
+# The order of the variables is important here due to complex combination validation 
+CMAKE_ON=	DESKTOP_APP_USE_PACKAGED \
+		DESKTOP_APP_DISABLE_CRASH_REPORTS \
 		DESKTOP_APP_DISABLE_JEMALLOC \
+		DESKTOP_APP_DISABLE_QT_PLUGINS \
 		DESKTOP_APP_DISABLE_SCUDO
 
 # Since cmake 3.25.0, BSDs are no longer recognised as Linux (in this port).

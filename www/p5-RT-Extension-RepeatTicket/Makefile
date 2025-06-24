@@ -5,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	RT Extension to repeat tickets base on a schedule
 WWW=		https://metacpan.org/release/RT-Extension-RepeatTicket
 
@@ -23,6 +23,8 @@ NO_ARCH=	yes
 
 RT_VER=		44
 PLIST_SUB=	RTHOME=share/rt${RT_VER}
+
+PORTSCOUT=	limit:^1\.
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|LocalPath/man/man3|LocalPath/share/man/man3|g' ${WRKSRC}/inc/Module/Install/RTx.pm

@@ -65,7 +65,6 @@
     SUBDIR += fyi
     SUBDIR += ganttproject
     SUBDIR += gcal
-    SUBDIR += gcalcli
     SUBDIR += genius
     SUBDIR += glabels
     SUBDIR += gnome-calendar
@@ -87,6 +86,7 @@
     SUBDIR += gnome-shell-extension-filesmenu
     SUBDIR += gnome-shell-extension-hidetopbar
     SUBDIR += gnome-shell-extension-lockkeys
+    SUBDIR += gnome-shell-extension-manager
     SUBDIR += gnome-shell-extension-mediaplayer
     SUBDIR += gnome-shell-extension-openweather
     SUBDIR += gnome-shell-extension-panel-osd

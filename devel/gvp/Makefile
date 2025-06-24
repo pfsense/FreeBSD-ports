@@ -1,7 +1,7 @@
 PORTNAME=	gvp
 PORTVERSION=	0.3.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	24
+PORTREVISION=	26
 CATEGORIES=	devel
 
 MAINTAINER=	lukejee@gmail.com
@@ -10,6 +10,9 @@ WWW=		https://github.com/pote/gvp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
+
+DEPRECATED=	Unmaintained upstream and no longer works as intended
+EXPIRATION_DATE=2025-06-30
 
 RUN_DEPENDS=	bash:shells/bash
 

@@ -1,6 +1,6 @@
 PORTNAME=	pytorch
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.0
+DISTVERSION=	2.7.1
 CATEGORIES=	misc # machine-learning
 MASTER_SITES=	https://github.com/pytorch/pytorch/releases/download/v${DISTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,7 +9,8 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	PyTorch: Tensors and dynamic neural networks in Python
-WWW=		https://pytorch.org/
+WWW=		https://pytorch.org/ \
+		https://github.com/pytorch/pytorch
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -83,8 +84,8 @@ post-patch:
 post-install: # strip binaries
 	@${STRIP_CMD} \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/bin/torch_shm_manager \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/_C${PYTHON_EXT_SUFFIX}.so \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/functorch/_C${PYTHON_EXT_SUFFIX}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/_C${PYTHON_TAG}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/functorch/_C${PYTHON_TAG}.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/torch/lib/lib*.so
 
 fix-plist: # remove the stray %%PYTHON_SITELIBDIR%%/caffe2 file

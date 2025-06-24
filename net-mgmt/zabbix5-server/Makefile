@@ -1,5 +1,5 @@
 PORTNAME=	zabbix5
-DISTVERSION=	5.0.46
+DISTVERSION=	5.0.47
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${DISTVERSION:R}/
@@ -13,6 +13,9 @@ WWW=		https://www.zabbix.com/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=		Upstream EOL reaches on 2025-05-31
+EXPIRATION_DATE=	2025-06-30
+
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
 CONFLICTS_INSTALL=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-46-9]${PKGNAMESUFFIX}
@@ -21,15 +24,20 @@ PORTSCOUT=	limit:^5\.0\.
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
+USES=		pkgconfig iconv
+
 .if ${ZABBIX_BUILD} != "agent"
 CONFIGURE_ARGS+=	--with-libevent=${LOCALBASE} --cache-file=${WRKSRC}/config.cache
 LIB_DEPENDS+=	libevent.so:devel/libevent
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}
+# -server and -proxy depends on libxml2
+.if ${ZABBIX_BUILD} != "java"
+USES+=		gnome
+USE_GNOME=	libxml2
+.endif
 .else
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}d
 .endif
-
-USES=		pkgconfig iconv
 
 USERS=		zabbix
 GROUPS=		zabbix

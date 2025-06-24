@@ -1,10 +1,10 @@
 PORTNAME=	director
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.0
+DISTVERSION=	0.13.1
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Define and run multi-jail environments with AppJail
 WWW=		https://github.com/DtxdF/${PORTNAME}
 

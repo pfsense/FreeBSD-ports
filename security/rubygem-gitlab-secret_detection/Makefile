@@ -1,5 +1,6 @@
 PORTNAME=	gitlab-secret_detection
-PORTVERSION=	0.23.0
+PORTVERSION=	0.31.0
+PORTREVISION=	1
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 
@@ -10,9 +11,8 @@ WWW=		https://gitlab.com/gitlab-org/security-products/secret-detection/secret-de
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-grpc>=1.63.0<2:net/rubygem-grpc \
+RUN_DEPENDS=	rubygem-grpc-gitlab>=1.63.0<2:net/rubygem-grpc-gitlab \
 		rubygem-grpc_reflection>=0.1<1:net/rubygem-grpc_reflection \
-		rubygem-grpc-tools>=1.63<2:net/rubygem-grpc-tools \
 		rubygem-parallel>=1<2:sysutils/rubygem-parallel \
 		rubygem-re2>=2.7<3:devel/rubygem-re2 \
 		rubygem-sentry-ruby>=5.22<6:devel/rubygem-sentry-ruby \

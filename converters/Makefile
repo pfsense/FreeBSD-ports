@@ -167,6 +167,7 @@
     SUBDIR += recode
     SUBDIR += rubygem-base32
     SUBDIR += rubygem-base64
+    SUBDIR += rubygem-base6402
     SUBDIR += rubygem-iconv
     SUBDIR += rubygem-json-ld
     SUBDIR += rubygem-json-ld-preloaded
@@ -182,7 +183,6 @@
     SUBDIR += unix2dos
     SUBDIR += uudeview
     SUBDIR += uulib
-    SUBDIR += wkhtmltopdf
     SUBDIR += xdeview
     SUBDIR += xml2c
     SUBDIR += yj

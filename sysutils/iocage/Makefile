@@ -1,15 +1,11 @@
 PORTNAME=	iocage
-PORTVERSION=	1.10
-PORTREVISION=	3
+PORTVERSION=	1.11
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 # Pull in PR #61 to unbreak default route detection on CURRENT
-# Pull in PR #58 to fix stopping jails that contain
-# dots in their hostuuid
 PATCH_SITES=    https://github.com/freebsd/iocage/commit/
-PATCHFILES=	2120a86d1d4fd3d383a3f0bddfc1e92eb5a7d2e7.patch:-p1 \
-		c55e05aebb305b4013554ec80298113c50d1c74c.patch:-p1
+PATCHFILES=	2120a86d1d4fd3d383a3f0bddfc1e92eb5a7d2e7.patch:-p1
 
 MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	FreeBSD jail manager written in Python3
@@ -38,7 +34,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 USE_PYTHON=	autoplist distutils
 
-CONFLICTS=	py*-iocage py*-iocage-devel
+CONFLICTS=	py*[0-9]-iocage py*-iocage-devel
 NO_ARCH=	yes
 
 PLIST_FILES=	${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}_lib-${PORTVERSION}-py${PYTHON_VER}.egg-info/PKG-INFO \

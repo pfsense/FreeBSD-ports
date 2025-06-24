@@ -42,6 +42,7 @@
     SUBDIR += gtkimageview
     SUBDIR += gtkmm24
     SUBDIR += gtkmm30
+    SUBDIR += gtkmm40
     SUBDIR += gtksourceview2
     SUBDIR += gtksourceview3
     SUBDIR += gtksourceview4
@@ -87,8 +88,10 @@
     SUBDIR += libdazzle
     SUBDIR += libdecor
     SUBDIR += libgdiplus
+    SUBDIR += libgedit-gtksourceview
     SUBDIR += libhandy
     SUBDIR += libhandy0
+    SUBDIR += libpanel
     SUBDIR += libshumate
     SUBDIR += libspelling
     SUBDIR += libunique3
@@ -166,6 +169,7 @@
     SUBDIR += pango
     SUBDIR += pangolin
     SUBDIR += pangomm
+    SUBDIR += pangomm24
     SUBDIR += pangox-compat
     SUBDIR += plasma6-kdeplasma-addons
     SUBDIR += plib
@@ -235,7 +239,7 @@
     SUBDIR += rubygem-uh
     SUBDIR += rubygem-vte3
     SUBDIR += rubygem-vte4
-    SUBDIR += scenefx02
+    SUBDIR += scenefx03
     SUBDIR += scintilla
     SUBDIR += sdl2_pango
     SUBDIR += sdl_pango

@@ -4,7 +4,7 @@
 #
 # Copyright 2006-2007 Vasil Dimov
 # Copyright 2012-2018 Chris Rees
-# Copyright 2016-2024 René Ladan
+# Copyright 2016-2025 René Ladan
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -113,7 +113,7 @@ find_expired()
 		for port in $(make -C ${PORTSDIR}/${category} -V SUBDIR); do
 			DATE="$(make -C ${PORTSDIR}/${category}/${port} -V EXPIRATION_DATE)"
 			# shellcheck disable=SC2039
-			if [ -n "${DATE}" ] && [ ! "${DATE}" \> "$${TODAY}" ] ; then
+			if [ -n "${DATE}" ] && [ ! "${DATE}" \> "${TODAY}" ] ; then
 				if [ "$1" = 1 ] ; then
 					echo -n "${DATE} ${category}/${port}: "
 					make -C ${PORTSDIR}/${category}/${port} -V DEPRECATED
@@ -145,9 +145,19 @@ check_dep_core()
 	err=0
 
 	deps=$(grep -E "${pkgname}" ${INDEX} |grep -vE "^(${rmpkgs})" || :)
-	if [ -n "${deps}" ] ; then
+	# Try to avoid false positives from INDEX when a port has just been
+	# removed but INDEX has not yet been updated.
+	in_MOVED=0
+	MOVED_line="$(grep "${catport}" MOVED)"
+	if [ -n "${MOVED_line}" ] && [ "${TODAY}" = "$(echo "${MOVED_line}" | cut -d \| -f 3)" ] ; then
+		in_MOVED=1
+	fi
+	if [ -n "${deps}" ] && [ ${in_MOVED} -eq 0 ] ; then
 		log "${catport}: some port(s) depend on ${pkgname}:"
-		echo "${deps}" >&2
+		# Skip dependencies in on-screen listing to avoid excessively
+		# long lines. Note that WWW should be field 13 according to
+		# Mk/bsd.port.mk:4492
+		echo "${deps}" | cut -d \| -f -7,10 >&2
 		err=1
 	fi
 

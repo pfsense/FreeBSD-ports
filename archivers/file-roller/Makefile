@@ -2,7 +2,7 @@ PORTNAME=	file-roller
 PORTVERSION=	44.5
 PORTEPOCH=	1
 CATEGORIES=	archivers gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -57,7 +57,7 @@ ZIP_DESC=	ZIP archive support
 ZIP_RUN_DEPENDS=	zip:archivers/zip
 
 NAUTILUS_DESC=	Nautilus context menu actions
-NAUTILUS_USE=	GNOME=nautilus3
+NAUTILUS_USE=	GNOME=nautilus4
 NAUTILUS_MESON_ENABLED=	nautilus-actions
 
 post-patch:

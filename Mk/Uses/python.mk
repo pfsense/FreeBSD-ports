@@ -235,11 +235,28 @@
 #			  interpreter without dots, e.g. 27, 38, ...
 #			  Used for prefixes and suffixes.
 #
+# PYTHON_BASESUFFIX	- PYTHON_SUFFIX without the threaded ABI flag.
+#
+# PYTHON_TAG		- Defined by PEP 3147, magic tag containing
+#			  implementation name and shorthand version,
+#			  primarily for bytecode files. Includes
+#			  preceding dot, e.g. .cpython-312,
+#			  .cpython-313, ...
+#
+# PYTHON_SOABI		- Defined by PEP 3149, tag containing
+#			  implementation name, shorthand version
+#			  and ABI tags, primarily for compiled
+#			  extension modules. Includes preceding
+#			  dot, e.g. .cpython-313, .cpython-313t,
+#			  .cpython-313td, ...
+#
 # PYTHON_MAJOR_VER	- The major release version of the chosen Python
 #			  interpreter, e.g. 2, 3, ...
 #
 # PYTHON_VER		- The major-minor release version of the chosen Python
 #			  interpreter, e.g. 2.7, 3.9, ...
+#
+# PYTHON_BASEVER	- PYTHON_VER without the threaded ABI flag.
 #
 # PYTHON_ABIVER		- Additional ABI flags set by the chosen Python
 #			  interpreter, e.g. md
@@ -284,7 +301,9 @@
 #	PYTHON_PLATFORM=${PYTHON_PLATFORM}
 #	PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR}
 #	PYTHON_SUFFIX=${PYTHON_SUFFIX}
+#	PYTHON_BASESUFFIX=${PYTHON_BASESUFFIX}
 #	PYTHON_VER=${PYTHON_VER}
+#	PYTHON_BASEVER=${PYTHON_BASEVER}
 #	PYTHON_VERSION=${PYTHON_VERSION}
 #
 # where PYTHON_INCLUDEDIR, PYTHON_LIBDIR and PYTHON_SITELIBDIR have their PREFIX
@@ -318,6 +337,8 @@
 
 .if !defined(_INCLUDE_USES_PYTHON_MK)
 _INCLUDE_USES_PYTHON_MK=	yes
+
+ZEROREGS_UNSAFE=	yes
 
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
@@ -458,9 +479,9 @@ IGNORE=	uses unknown USES=python arguments: ${_PYTHON_ARGS}
 _VC=		C/^([1-9]\.)([0-9])$$/\10\2/
 
 .undef _PYTHON_VERSION_NONSUPPORTED
-.  if !empty(_PYTHON_VERSION_MINIMUM) && (${_PYTHON_VERSION:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})
+.  if !empty(_PYTHON_VERSION_MINIMUM) && (${_PYTHON_VERSION:${_VC}:S/t$//} < ${_PYTHON_VERSION_MINIMUM:${_VC}:S/t$//})
 _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MINIMUM} at least
-.  elif !empty(_PYTHON_VERSION_MAXIMUM) && (${_PYTHON_VERSION:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}})
+.  elif !empty(_PYTHON_VERSION_MAXIMUM) && (${_PYTHON_VERSION:${_VC}:S/t$//} > ${_PYTHON_VERSION_MAXIMUM:${_VC}:S/t$//})
 _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 .  endif
 
@@ -471,9 +492,9 @@ _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 __VER=		${ver}
 .      if !defined(_PYTHON_VERSION) && \
 	!(!empty(_PYTHON_VERSION_MINIMUM) && ( \
-		${__VER:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})) && \
+		${__VER:${_VC}:S/t$//} < ${_PYTHON_VERSION_MINIMUM:${_VC}:S/t$//})) && \
 	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
-		${__VER:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}}))
+		${__VER:${_VC}:S/t$//} > ${_PYTHON_VERSION_MAXIMUM:${_VC}:S/t$//}))
 _PYTHON_VERSION=	${ver}
 .      endif
 .    endfor
@@ -488,9 +509,9 @@ IGNORE=		needs an unsupported version of Python
 .    for ver in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${_PYTHON_VERSIONS}
 __VER=		${ver}
 .      if !(!empty(_PYTHON_VERSION_MINIMUM) && ( \
-		${__VER:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})) && \
+		${__VER:${_VC}:S/t$//} < ${_PYTHON_VERSION_MINIMUM:${_VC}:S/t$//})) && \
 	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
-		${__VER:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}}))
+		${__VER:${_VC}:S/t$//} > ${_PYTHON_VERSION_MAXIMUM:${_VC}:S/t$//}))
 .        if empty(_VALID_PYTHON_VERSIONS:M${ver})
 _VALID_PYTHON_VERSIONS+=	${ver}
 .        endif
@@ -523,7 +544,7 @@ FLAVOR=	${FLAVORS:[1]}
 .    endif
 .  endif
 
-.  if ${FLAVOR:Mpy[23][0-9]}${FLAVOR:Mpy[23][1-9][0-9]}
+.  if ${FLAVOR:Mpy[23][0-9]}${FLAVOR:Mpy[23][1-9][0-9]}${FLAVOR:Mpy31[3-9]t}
 _PYTHON_VERSION=	${FLAVOR:S/py//:C/(.)/\1./}
 .  endif
 
@@ -546,7 +567,9 @@ PYTHON_VERSION=	python${_PYTHON_VERSION}
 
 # Got the correct python version, set some publicly accessible variables
 PYTHON_VER=		${_PYTHON_VERSION}
+PYTHON_BASEVER=		${PYTHON_VER:S/t$//}
 PYTHON_SUFFIX=		${_PYTHON_VERSION:S/.//g}
+PYTHON_BASESUFFIX=	${PYTHON_SUFFIX:S/t$//}
 PYTHON_MAJOR_VER=	${PYTHON_VER:R}
 PYTHON_REL=		# empty
 PYTHON_ABIVER=		# empty
@@ -554,12 +577,11 @@ PYTHON_PORTSDIR=	${_PYTHON_RELPORTDIR}${PYTHON_SUFFIX}
 
 # Protect partial checkouts from Mk/Scripts/functions.sh:export_ports_env().
 .  if !defined(_PORTS_ENV_CHECK) || exists(${PORTSDIR}/${PYTHON_PORTSDIR})
-.include "${PORTSDIR}/${PYTHON_PORTSDIR}/Makefile.version"
+.include "${PORTSDIR}/${PYTHON_PORTSDIR:S/t$//}/Makefile.version"
 .  endif
 # Create a 5 integer version string, prefixing 0 to the minor and patch
 # tokens if it's a single character. Only use the first 3 tokens of
-# PORTVERSION to support pre-release versions (rc3, alpha4, etc) of
-# any Python port (lang/pythonXY)
+# DISTVERSION to stay consistent regardless of pre-release or ABI flags
 PYTHON_REL=	${PYTHON_DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/:C/\.([0-9])$/.0\1/:C/\.([0-9]\.[0-9]+)/.0\1/:S/.//g}
 
 # Might be overridden by calling ports
@@ -571,9 +593,11 @@ PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
 .  endif
 
 .  if ${PYTHON_REL} >= 30807
-PYTHON_EXT_SUFFIX=	.cpython-${PYTHON_SUFFIX}
+PYTHON_TAG=	.cpython-${PYTHON_BASESUFFIX}
+PYTHON_SOABI=	.cpython-${PYTHON_SUFFIX}
 .  else
-PYTHON_EXT_SUFFIX=	# empty
+PYTHON_TAG=	# empty
+PYTHON_SOABI=	# empty
 .  endif
 
 .  if ${PYTHON_MAJOR_VER} < 3
@@ -814,7 +838,7 @@ add-plist-pymod:
 # When Python version is 3.2+ we rewrite all the filenames
 # of TMPPLIST that end with .py[co], so that they conform
 # to PEP 3147 (see https://www.python.org/dev/peps/pep-3147/)
-PYMAGICTAG=		${PYTHON_CMD} -c 'import sys; print(sys.implementation.cache_tag)'
+_PYMAGICTAG=		${PYTHON_CMD} -c 'import sys; print(sys.implementation.cache_tag)'
 _USES_stage+=	935:add-plist-python
 add-plist-python:
 	@${AWK} '\
@@ -823,7 +847,7 @@ add-plist-python:
 		/^@dirrmtry / {d = substr($$0, 11); if (d in dirs) {print $$0 "/" pc}; print $$0; next} \
 		{print} \
 		' \
-		pc="__pycache__" mt="$$(${PYMAGICTAG})" pyo="opt-1.pyc" \
+		pc="__pycache__" mt="$$(${_PYMAGICTAG})" pyo="opt-1.pyc" \
 		${TMPPLIST} > ${TMPPLIST}.pyc_tmp
 	@${MV} ${TMPPLIST}.pyc_tmp ${TMPPLIST}
 .    endif # ${PYTHON_REL} >= 30200 && defined(_PYTHON_FEATURE_PY3KPLIST)
@@ -892,8 +916,11 @@ SUB_LIST+=	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR} \
 		PYTHON_PLATFORM=${PYTHON_PLATFORM} \
 		PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR} \
 		PYTHON_SUFFIX=${PYTHON_SUFFIX} \
-		PYTHON_EXT_SUFFIX=${PYTHON_EXT_SUFFIX} \
+		PYTHON_BASESUFFIX=${PYTHON_BASESUFFIX} \
+		PYTHON_TAG=${PYTHON_TAG} \
+		PYTHON_SOABI=${PYTHON_SOABI} \
 		PYTHON_VER=${PYTHON_VER} \
+		PYTHON_BASEVER=${PYTHON_BASEVER} \
 		PYTHON_VERSION=${PYTHON_VERSION}
 
 # Substitutions for pkg-plist
@@ -904,8 +931,11 @@ PLIST_SUB+=	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR:S;${PREFIX}/;;} \
 		PYTHON_PLATFORM=${PYTHON_PLATFORM} \
 		PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;} \
 		PYTHON_SUFFIX=${PYTHON_SUFFIX} \
-		PYTHON_EXT_SUFFIX=${PYTHON_EXT_SUFFIX} \
+		PYTHON_BASESUFFIX=${PYTHON_BASESUFFIX} \
+		PYTHON_TAG=${PYTHON_TAG} \
+		PYTHON_SOABI=${PYTHON_SOABI} \
 		PYTHON_VER=${PYTHON_VER} \
+		PYTHON_BASEVER=${PYTHON_BASEVER} \
 		PYTHON_VERSION=${PYTHON_VERSION}
 .  if ${PYTHON_MAJOR_VER} < 3
 SUB_LIST+=	PYTHON2="" PYTHON3="@comment "

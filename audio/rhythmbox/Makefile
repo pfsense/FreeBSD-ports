@@ -1,6 +1,6 @@
 PORTNAME=	rhythmbox
 PORTVERSION=	3.4.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libtotem-plparser.so:multimedia/totem-pl-parser \
 		libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libsoup-3.0.so:devel/libsoup3 \
-		libpeas-1.0.so:devel/libpeas \
+		libpeas-1.0.so:devel/libpeas1 \
 		libjson-glib-1.0.so:devel/json-glib \
 		libsecret-1.so:security/libsecret \
 		libgudev-1.0.so:devel/libgudev \
@@ -63,7 +63,7 @@ NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
 PYTHON_MESON_ENABLED=	plugins_python
 PYTHON_USES=		python
 PYTHON_USE=		gnome=pygobject3
-PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR}
+PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libpeas1>=0:devel/py-libpeas1@${PY_FLAVOR}
 PYTHON_BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 .include <bsd.port.mk>

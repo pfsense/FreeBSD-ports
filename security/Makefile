@@ -76,6 +76,7 @@
     SUBDIR += ccsrch
     SUBDIR += certificate_maker
     SUBDIR += certmgr
+    SUBDIR += certmonger
     SUBDIR += certspotter
     SUBDIR += cfssl
     SUBDIR += cfv
@@ -197,6 +198,7 @@
     SUBDIR += gosec
     SUBDIR += gost-engine
     SUBDIR += gostsum
+    SUBDIR += govulncheck
     SUBDIR += gpa
     SUBDIR += gpg-gui
     SUBDIR += gpg-tui
@@ -247,6 +249,7 @@
     SUBDIR += ismtp
     SUBDIR += isnprober
     SUBDIR += john
+    SUBDIR += kanidm
     SUBDIR += kbfsd
     SUBDIR += kc
     SUBDIR += kdbxviewer
@@ -379,7 +382,6 @@
     SUBDIR += maltrail
     SUBDIR += masscan
     SUBDIR += mate-pam-helper
-    SUBDIR += mbedtls2
     SUBDIR += mbedtls3
     SUBDIR += mcrypt
     SUBDIR += md5deep
@@ -462,6 +464,7 @@
     SUBDIR += openvpn
     SUBDIR += openvpn-admin
     SUBDIR += openvpn-auth-ldap
+    SUBDIR += openvpn-auth-oauth2
     SUBDIR += openvpn-auth-radius
     SUBDIR += openvpn-auth-script
     SUBDIR += openvpn-devel
@@ -991,7 +994,7 @@
     SUBDIR += py-noiseprotocol
     SUBDIR += py-notus-scanner
     SUBDIR += py-ntlm-auth
-    SUBDIR += py-oauth2client
+    SUBDIR += py-nvdlib
     SUBDIR += py-oauthlib
     SUBDIR += py-omemo-dr
     SUBDIR += py-onlykey
@@ -1101,7 +1104,6 @@
     SUBDIR += qt-sudo
     SUBDIR += qtkeychain
     SUBDIR += quantis-kmod
-    SUBDIR += racoon2
     SUBDIR += rage-encryption
     SUBDIR += ratify
     SUBDIR += ratproxy
@@ -1283,6 +1285,7 @@
     SUBDIR += secure_delete
     SUBDIR += sedutil
     SUBDIR += sequoia
+    SUBDIR += sequoia-chameleon-gnupg
     SUBDIR += sequoia-sq
     SUBDIR += setaudit
     SUBDIR += sha1collisiondetection
@@ -1368,6 +1371,7 @@
     SUBDIR += tpm-quote-tools
     SUBDIR += tpm-tools
     SUBDIR += tpm2-abrmd
+    SUBDIR += tpm2-openssl
     SUBDIR += tpm2-pkcs11
     SUBDIR += tpm2-tools
     SUBDIR += tpm2-tss
@@ -1378,6 +1382,7 @@
     SUBDIR += trivy
     SUBDIR += trousers
     SUBDIR += trufflehog
+    SUBDIR += tscli
     SUBDIR += tthsum
     SUBDIR += u2f-devd
     SUBDIR += uacme

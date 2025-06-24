@@ -1,10 +1,10 @@
 PORTNAME=	overlord
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
+DISTVERSION=	0.10.0
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Deploy FreeBSD jails as fast as you code
 WWW=		https://github.com/DtxdF/${PORTNAME}
 
