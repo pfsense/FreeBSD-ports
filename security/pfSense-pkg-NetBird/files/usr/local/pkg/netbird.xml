@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+    <copyright>
+        <![CDATA[
+/*
+ * netbird.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2022-2025 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+    </copyright>
+    <name>netbird</name>
+    <version>%%PKGVERSION%%</version>
+    <title>VPN/NetBird</title>
+    <include_file>/usr/local/pkg/netbird/netbird.inc</include_file>
+    <aftersaveredirect>/pkg_edit.php?xml=netbird.xml</aftersaveredirect>
+    <menu>
+        <name>NetBird</name>
+        <section>VPN</section>
+        <configfile>netbird.xml</configfile>
+        <url>/pkg_edit.php?xml=netbird/netbird_auth.xml</url>
+    </menu>
+    <menu>
+        <name>NetBird</name>
+        <section>Status</section>
+        <configfile>netbird.xml</configfile>
+        <url>/netbird_status.php</url>
+    </menu>
+    <tabs>
+        <tab>
+            <text>Authentication</text>
+            <url>pkg_edit.php?xml=netbird/netbird_auth.xml</url>
+        </tab>
+        <tab>
+            <text>Settings</text>
+            <url>pkg_edit.php?xml=netbird.xml</url>
+            <active/>
+        </tab>
+        <tab>
+            <text>Status</text>
+            <url>netbird_status.php</url>
+        </tab>
+    </tabs>
+    <fields>
+        <field>
+            <name>General</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>WireGuard Port</fielddescr>
+            <fieldname>wireguardport</fieldname>
+            <description>
+                <![CDATA[
+                Wireguard interface listening port
+                ]]>
+            </description>
+            <type>input</type>
+            <default_value>51820</default_value>
+            <required/>
+        </field>
+
+        <field>
+            <name>Firewall</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Allow Configuration</fielddescr>
+            <fieldname>allowfirewallconfig</fieldname>
+            <description>
+                <![CDATA[
+                Allow the client to manage and enforce firewall rules
+                ]]>
+            </description>
+            <sethelp>
+                <![CDATA[
+                If disabled the client won't modify firewall rules
+                ]]>
+            </sethelp>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+        <field>
+            <fielddescr>Block Inbound Connection</fielddescr>
+            <fieldname>blockinboundconn</fieldname>
+            <description>
+                <![CDATA[
+                Block all inbound connections to the local machine and any routed networks
+                ]]>
+            </description>
+            <sethelp>
+                <![CDATA[
+                This overrides any policies received from the management service
+                ]]>
+            </sethelp>
+            <type>checkbox</type>
+        </field>
+
+        <field>
+            <name>SSH</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Enable</fielddescr>
+            <fieldname>enablessh</fieldname>
+            <description>
+                <![CDATA[
+                Allows incoming SSH connections
+                ]]>
+            </description>
+            <type>checkbox</type>
+        </field>
+
+        <field>
+            <name>DNS</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Enable</fielddescr>
+            <fieldname>enabledns</fieldname>
+            <description>
+                <![CDATA[
+                Allows the client to configure DNS settings
+                ]]>
+            </description>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+
+        <field>
+            <name>Routing</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Access LAN</fielddescr>
+            <fieldname>accesslan</fieldname>
+            <description>
+                <![CDATA[
+                Allow access to local networks (LAN) when using this peer as a router or exit node
+                ]]>
+            </description>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+        <field>
+            <fielddescr>Accept Client Routes</fielddescr>
+            <fieldname>allowclientroutes</fieldname>
+            <description>
+                <![CDATA[
+                Accept and process client routes received from the management
+                ]]>
+            </description>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+        <field>
+            <fielddescr>Allow Server Routes</fielddescr>
+            <fieldname>allowserverroutes</fieldname>
+            <description>
+                <![CDATA[
+                Enable this peer to act as a router for server routes received from the management
+                ]]>
+            </description>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+
+        <field>
+            <name>Post-Quantum</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Enable Rosenpass</fielddescr>
+            <fieldname>enablerosenpass</fieldname>
+            <description>
+                <![CDATA[
+                Enable the Rosenpass to provide post-quantum secure connections
+                ]]>
+            </description>
+            <sethelp>
+                <![CDATA[
+                Experimental
+                ]]>
+            </sethelp>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Rosenpass Permissive Mode</fielddescr>
+            <fieldname>rosenpasspermissive</fieldname>
+            <description>
+                <![CDATA[
+                Enable this peer to accept WireGuard connections from peers that do not have Rosenpass enabled
+                ]]>
+            </description>
+            <sethelp>
+                <![CDATA[
+                Experimental
+                ]]>
+            </sethelp>
+            <type>checkbox</type>
+        </field>
+
+        <field>
+            <name>Logging</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Syslog Logging</fielddescr>
+            <fieldname>syslogenable</fieldname>
+            <description>
+                <![CDATA[
+				Enable syslog output
+				]]>
+            </description>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+        <field>
+            <fielddescr>Syslog Settings</fielddescr>
+            <fieldname>loglevel</fieldname>
+            <description>Set the syslog logging level</description>
+            <type>select</type>
+            <default_value>info</default_value>
+            <options>
+                <option><name>INFO</name><value>info</value></option>
+                <option><name>DEBUG</name><value>debug</value></option>
+            </options>
+            <required/>
+        </field>
+
+    </fields>
+    <note>
+        <![CDATA[
+		Changes to these settings may temporarily disrupt connections and access to NetBird.
+		]]>
+    </note>
+
+    <custom_php_after_head_command>
+        <![CDATA[netbird_display_connection_info();]]>
+    </custom_php_after_head_command>
+    <custom_php_validation_command>
+        <![CDATA[netbird_validate_input($_POST, $input_errors);]]>
+    </custom_php_validation_command>
+    <custom_php_resync_config_command>
+        <![CDATA[netbird_resync_config();]]>
+    </custom_php_resync_config_command>
+</packagegui>
