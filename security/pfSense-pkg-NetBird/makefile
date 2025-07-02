@@ -25,7 +25,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/netbird
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
@@ -36,15 +36,14 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/netbird/*.inc \
 		${STAGEDIR}${PREFIX}/pkg/netbird
 
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/netbird/*.xml \
-		${STAGEDIR}${PREFIX}/pkg/netbird
-
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/*.php \
 		${STAGEDIR}${PREFIX}/www
 
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/*.inc \
+    		${STAGEDIR}${PREFIX}/www/shortcuts
+
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml \
-		${STAGEDIR}${PREFIX}/pkg/netbird.xml \
-		${STAGEDIR}${PREFIX}/pkg/netbird/netbird_auth.xml
+		${STAGEDIR}${PREFIX}/pkg/netbird.xml
 
 .include <bsd.port.mk>

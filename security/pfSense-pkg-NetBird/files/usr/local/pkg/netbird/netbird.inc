@@ -20,47 +20,56 @@
  */
 
 require_once('service-utils.inc');
+require_once("config.inc");
+require_once("util.inc");
 
 define('NETBIRD_BIN', '/usr/local/bin/netbird');
+define('NETBIRD_CONFIG', '/var/db/netbird/config.json');
 define('PKG_BIN', '/usr/sbin/pkg');
 
 
 function netbird_resync_config()
 {
+    $json = file_get_contents(NETBIRD_CONFIG);
+    $config = json_decode($json, true);
+
+    if (!is_array($config)) {
+        log_error("Invalid netbird configuration");
+        return;
+    }
+
+    if (!empty($_POST['wireguardport'])) {
+        $config['WgPort'] = (int)$_POST['wireguardport'];
+    }
+
+    $config_map = [
+        'enablessh' => ['ServerSSHAllowed', true],
+        'blockinboundconn' => ['BlockInbound', true],
+        'allowfirewallconfig' => ['DisableFirewall', false],
+        'enabledns' => ['DisableDNS', false],
+        'accesslan' => ['BlockLANAccess', false],
+        'allowclientroutes' => ['DisableClientRoutes', false],
+        'allowserverroutes' => ['DisableServerRoutes', false],
+        'enablerosenpass' => ['RosenpassEnabled', true],
+        'rosenpasspermissive' => ['RosenpassPermissive', true],
+    ];
+
+    foreach ($config_map as $post_key => [$json_key, $enabled_val]) {
+        $checked = ($_POST[$post_key] ?? '') === 'on';
+        $config[$json_key] = ($checked === $enabled_val);
+    }
+
+    file_put_contents(NETBIRD_CONFIG, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+
     if (netbird_is_connected()) {
         if (!netbird_disconnect()) {
             return;
         }
+
+        $cmd = implode(' ', [NETBIRD_BIN, 'up']);
+        exec($cmd);
     }
-
-
-    $cmd = [NETBIRD_BIN, 'up'];
-
-    if (!empty($_POST['wireguardport'])) {
-        $cmd[] = '--wireguard-port=' . escapeshellarg((int)$_POST['wireguardport']);
-    }
-    if (!empty($_POST['loglevel'])) {
-        $cmd[] = '--log-level=' . escapeshellarg($_POST['loglevel']);
-    }
-
-    $options = [
-        'enablessh'            => ['--allow-server-ssh', true],
-        'blockinboundconn'     => ['--block-inbound', true],
-        'allowfirewallconfig'    => ['--disable-firewall', false],
-        'enabledns'            => ['--disable-dns', false],
-        'accesslan'            => ['--block-lan-access', false],
-        'allowclientroutes'    => ['--disable-client-routes', false],
-        'allowserverroutes'    => ['--disable-server-routes', false],
-        'enablerosenpass'      => ['--enable-rosenpass', true],
-        'rosenpasspermissive'  => ['--rosenpass-permissive', true],
-    ];
-
-    foreach ($options as $key => [$flag, $enabled_value]) {
-        $is_checked = ($_POST[$key] ?? '') === 'on';
-        $cmd[] = $flag . '=' . ($is_checked === $enabled_value ? 'true' : 'false');
-    }
-
-    exec(implode(' ', $cmd));
 }
 
 
@@ -114,7 +123,7 @@ function netbird_display_connection_info(): void
         $type = 'danger';
         $closable = false;
     } elseif (!netbird_is_connected()) {
-        $message = gettext('NetBird is not connected. Refresh or check the NetBird status page.');
+        $message = gettext('NetBird is not connected.');
         $type = 'warning';
         $closable = false;
     } else {
@@ -124,5 +133,39 @@ function netbird_display_connection_info(): void
     }
 
     print_info_box($message, $type, $closable ? 'close' : false);
+}
+
+function netbird_write_rcfile() {
+    $rc['file'] = 'netbird.sh';
+    $rc['start'] .= "/usr/local/bin/netbird service start\n\t";
+    $rc['stop'] .= "/usr/local/bin/netbird service stop\n\t";
+    $rc['restart'] .= "/usr/local/bin/netbird service restart\n\t";
+    write_rcfile($rc);
+}
+
+function netbird_install()
+{
+    netbird_write_rcfile();
+
+    if (!netbird_is_running()){
+        $cmd = implode(' ', [NETBIRD_BIN, 'service', 'start']);
+        exec($cmd);
+    }
+}
+
+function netbird_deinstall()
+{
+    global $config;
+
+    if (netbird_is_running()) {
+        stop_service("netbird");
+    }
+
+    unlink_if_exists(NETBIRD_CONFIG);
+
+    if (isset($config['installedpackages']['netbird'])) {
+        unset($config['installedpackages']['netbird']);
+        write_config("Removed netbird configuration");
+    }
 }
 ?>

@@ -1,7 +1,7 @@
 pkg/netbird.xml
 pkg/netbird/netbird.inc
 pkg/netbird/netbird_status.inc
-pkg/netbird/netbird_auth.inc
-pkg/netbird/netbird_auth.xml
 %%DATADIR%%/info.xml
 www/netbird_status.php
+www/netbird_auth.php
+www/shortcuts/pkg_netbird.inc

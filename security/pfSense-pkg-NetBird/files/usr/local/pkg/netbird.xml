@@ -34,7 +34,7 @@
         <name>NetBird</name>
         <section>VPN</section>
         <configfile>netbird.xml</configfile>
-        <url>/pkg_edit.php?xml=netbird/netbird_auth.xml</url>
+        <url>/netbird_auth.php</url>
     </menu>
     <menu>
         <name>NetBird</name>
@@ -42,10 +42,16 @@
         <configfile>netbird.xml</configfile>
         <url>/netbird_status.php</url>
     </menu>
+    <service>
+        <name>netbird</name>
+        <rcfile>netbird.sh</rcfile>
+        <executable>netbird</executable>
+        <description>NetBird secure overlay network</description>
+    </service>
     <tabs>
         <tab>
             <text>Authentication</text>
-            <url>pkg_edit.php?xml=netbird/netbird_auth.xml</url>
+            <url>netbird_auth.php</url>
         </tab>
         <tab>
             <text>Settings</text>
@@ -250,6 +256,12 @@
 		]]>
     </note>
 
+    <custom_php_install_command>
+        <![CDATA[netbird_install();]]>
+    </custom_php_install_command>
+    <custom_php_pre_deinstall_command>
+        <![CDATA[netbird_deinstall();]]>
+    </custom_php_pre_deinstall_command>
     <custom_php_after_head_command>
         <![CDATA[netbird_display_connection_info();]]>
     </custom_php_after_head_command>
