@@ -1,6 +1,6 @@
 PORTNAME=	bijiben
 PORTVERSION=	40.1
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libtinysparql-3.0.so:devel/tinysparql \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk@40 \
 		libgoa-1.0.so:net/gnome-online-accounts \
 		libical.so:devel/libical \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libhandy-1.so:x11-toolkits/libhandy
 
 PORTSCOUT=	limitw:1,even

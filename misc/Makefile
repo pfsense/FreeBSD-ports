@@ -98,7 +98,6 @@
     SUBDIR += dtach
     SUBDIR += dvorak7min
     SUBDIR += dynomite
-    SUBDIR += e2fsprogs-libuuid
     SUBDIR += ecflow
     SUBDIR += edfbrowser
     SUBDIR += edflib
@@ -249,6 +248,7 @@
     SUBDIR += libsupertone
     SUBDIR += libsweep-lidar
     SUBDIR += libutf
+    SUBDIR += libuuid
     SUBDIR += libxdf
     SUBDIR += lifelines
     SUBDIR += lightgbm
@@ -270,6 +270,7 @@
     SUBDIR += mate-user-guide
     SUBDIR += mbuffer
     SUBDIR += mc
+    SUBDIR += mcp-probe
     SUBDIR += mdp
     SUBDIR += meshoptimizer
     SUBDIR += metalink-checker
@@ -311,7 +312,6 @@
     SUBDIR += opennn
     SUBDIR += openr2
     SUBDIR += openvdb
-    SUBDIR += orange3
     SUBDIR += orville-write
     SUBDIR += osinfo-db
     SUBDIR += ossp-uuid
@@ -398,6 +398,7 @@
     SUBDIR += php82-calendar
     SUBDIR += php83-calendar
     SUBDIR += php84-calendar
+    SUBDIR += php85-calendar
     SUBDIR += pinfo
     SUBDIR += pipe
     SUBDIR += posixtestsuite
@@ -431,7 +432,6 @@
     SUBDIR += py-crudini
     SUBDIR += py-datasets
     SUBDIR += py-detecta
-    SUBDIR += py-dictdiffer
     SUBDIR += py-eemeter
     SUBDIR += py-einops
     SUBDIR += py-emoji
@@ -485,11 +485,6 @@
     SUBDIR += py-openpaperwork-gtk
     SUBDIR += py-openvdb
     SUBDIR += py-optuna
-    SUBDIR += py-orange3-associate
-    SUBDIR += py-orange3-datafusion
-    SUBDIR += py-orange3-educational
-    SUBDIR += py-orange3-network
-    SUBDIR += py-orange3-timeseries
     SUBDIR += py-oterm
     SUBDIR += py-palettable
     SUBDIR += py-papermill

@@ -1,8 +1,8 @@
 PORTNAME=	glslang
-DISTVERSION=	15.3.0
+DISTVERSION=	15.4.0
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL and OpenGL ES shader front end and validator
 WWW=		https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/
 

@@ -1,9 +1,12 @@
 PORTNAME=	seahorse
 PORTVERSION=	41.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/seahorse/-/commit/
+PATCHFILES+=	aa68522cc696fa491ccfdff735b77bcf113168d0.patch:-p1 # Fix build with GpgME 2.0.0
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME application for managing encryption keys (PGP, SSH)

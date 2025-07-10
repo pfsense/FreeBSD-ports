@@ -4,11 +4,14 @@ PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	trociny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight, easy to use replacement for GNU autotools
 WWW=		https://sourceforge.net/projects/mk-configure/
 
 LICENSE=	BSD2CLAUSE
+
+DEPRECATED=	Depends on expired devel/bmake and devel/bmkdep
+EXPIRATION_DATE=2025-09-30
 
 BUILD_DEPENDS=	${BMAKE}:devel/bmake
 RUN_DEPENDS:=	${BUILD_DEPENDS} \

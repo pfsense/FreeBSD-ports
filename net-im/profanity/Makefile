@@ -1,6 +1,6 @@
 PORTNAME=	profanity
 DISTVERSION=	0.14.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	net-im
 MASTER_SITES=	https://profanity-im.github.io/tarballs/
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libotr.so:security/libotr \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libgpgme.so:security/gpgme \
 		libassuan.so:security/libassuan \
 		libgpg-error.so:security/libgpg-error \

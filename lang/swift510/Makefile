@@ -1,5 +1,6 @@
 PORTNAME=	swift510
 DISTVERSION=	5.10.1
+PORTREVISION=	1
 CATEGORIES=	lang
 DIST_SUBDIR=	${PORTNAME}
 
@@ -13,7 +14,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		cmake-core>=3.19.6:devel/cmake-core
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libicuuc.so:devel/icu \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libxml2.so:textproc/libxml2 \
 		libzstd.so:archivers/zstd
 
@@ -93,7 +94,11 @@ post-patch:
 
 do-build:
 	@${MKDIR} ${early_stage_dir}
-	@${SH} ${FILESDIR}/start-build.sh ${WRKSRC} ${early_stage_dir} ${swift_install_prefix} ${WRKDIR}/clang-module-cache
+	${SETENV} \
+		CCACHE_WRAPPER_PATH=${CCACHE_WRAPPER_PATH} \
+		MAKE_JOBS_NUMBER=${MAKE_JOBS_NUMBER} \
+		${SH} -x ${FILESDIR}/start-build.sh ${WRKSRC} ${early_stage_dir} \
+			${swift_install_prefix} ${WRKDIR}/clang-module-cache
 
 do-install:
 	@${FIND} ${early_stage_dir}${swift_install_prefix}/bin -type f -not -name '*.py' -not -name '*.sh' -not -name '*.txt' -exec ${STRIP_CMD} '{}' ';' ; \

@@ -1,5 +1,6 @@
 PORTNAME=	plasma-pass
 DISTVERSION=	1.2.2
+PORTREVISION=	1
 MASTER_SITES=	KDE/stable/${PORTNAME}
 CATEGORIES=	sysutils kde
 
@@ -13,9 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSES/LGPL-2.1-or-later.txt
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpg-error.so:security/libgpg-error \
 		libgpgme.so:security/gpgme \
-		libgpgmepp.so:security/gpgme-cpp  \
+		libgpgmepp.so:security/gpgmepp  \
 		liboath.so:security/oath-toolkit \
-		libqgpgmeqt6.so:security/gpgme-qt@qt6
+		libqgpgmeqt6.so:security/qgpgme@qt6
 RUN_DEPENDS=	pass:sysutils/password-store
 
 USES=		cmake compiler:c++20-lang gettext kde:6 qt:6 tar:xz

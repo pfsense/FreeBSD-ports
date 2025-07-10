@@ -1,9 +1,10 @@
 PORTNAME=	vulkan-validation-layers
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.319
+DISTVERSION=	1.4.320
+PORTREVISION=	1
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Validation layers for the Vulkan graphics API
 WWW=		https://github.com/KhronosGroup/Vulkan-ValidationLayers
 
@@ -18,7 +19,7 @@ USES=		alias cmake compiler:c++11-lib pkgconfig python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	KhronosGroup
 GH_PROJECT=	Vulkan-ValidationLayers
-GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-424-g3b9447d:headers/SPIRV-Headers
+GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-430-g2a611a9:headers/SPIRV-Headers
 CMAKE_OFF=	BUILD_TESTS
 
 OPTIONS_DEFINE=	WAYLAND XCB XLIB

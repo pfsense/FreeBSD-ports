@@ -204,8 +204,7 @@
     SUBDIR += gpg-tui
     SUBDIR += gpgdir
     SUBDIR += gpgme
-    SUBDIR += gpgme-cpp
-    SUBDIR += gpgme-qt
+    SUBDIR += gpgmepp
     SUBDIR += gsa
     SUBDIR += gsad
     SUBDIR += gsasl
@@ -283,11 +282,11 @@
     SUBDIR += lasso
     SUBDIR += lastpass-cli
     SUBDIR += lego
+    SUBDIR += lfacme
     SUBDIR += libaegis
     SUBDIR += libargon2
     SUBDIR += libassuan
     SUBDIR += libcaes
-    SUBDIR += libcryptui
     SUBDIR += libdecaf
     SUBDIR += libecc
     SUBDIR += libfcrypto
@@ -324,7 +323,6 @@
     SUBDIR += libscep
     SUBDIR += libscrypt
     SUBDIR += libsecret
-    SUBDIR += libsectok
     SUBDIR += libsodium
     SUBDIR += libssh
     SUBDIR += libssh2
@@ -458,6 +456,7 @@
     SUBDIR += openssl31-quictls
     SUBDIR += openssl32
     SUBDIR += openssl33
+    SUBDIR += openssl33-quictls
     SUBDIR += openssl34
     SUBDIR += openssl35
     SUBDIR += openvas
@@ -840,6 +839,8 @@
     SUBDIR += php83-sodium
     SUBDIR += php84-filter
     SUBDIR += php84-sodium
+    SUBDIR += php85-filter
+    SUBDIR += php85-sodium
     SUBDIR += picocrypt
     SUBDIR += picosha2
     SUBDIR += pidgin-encryption
@@ -953,7 +954,7 @@
     SUBDIR += py-google-auth
     SUBDIR += py-google-auth-httplib2
     SUBDIR += py-google-auth-oauthlib
-    SUBDIR += py-gpgme
+    SUBDIR += py-gpg
     SUBDIR += py-gpsoauth
     SUBDIR += py-greenbone-feed-sync
     SUBDIR += py-gssapi
@@ -1026,6 +1027,7 @@
     SUBDIR += py-pyelliptic
     SUBDIR += py-pyhanko
     SUBDIR += py-pyhanko-certvalidator
+    SUBDIR += py-pyhanko-cli
     SUBDIR += py-pykeepass
     SUBDIR += py-pykeepass-cache
     SUBDIR += py-pylibacl
@@ -1101,6 +1103,7 @@
     SUBDIR += py-zkg
     SUBDIR += py-zxcvbn
     SUBDIR += pygost
+    SUBDIR += qgpgme
     SUBDIR += qt-sudo
     SUBDIR += qtkeychain
     SUBDIR += quantis-kmod
@@ -1281,7 +1284,6 @@
     SUBDIR += seccure
     SUBDIR += seclists
     SUBDIR += secpanel
-    SUBDIR += sectok
     SUBDIR += secure_delete
     SUBDIR += sedutil
     SUBDIR += sequoia
@@ -1329,6 +1331,7 @@
     SUBDIR += sshguard
     SUBDIR += sshpass
     SUBDIR += ssl-admin
+    SUBDIR += ssl-checker
     SUBDIR += ssllabs-scan
     SUBDIR += sslproxy
     SUBDIR += sslscan

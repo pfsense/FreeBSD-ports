@@ -671,15 +671,15 @@ TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.37<3:lang/cython@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON3)
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.0.12<3.1:lang/cython3@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.1.2:lang/cython3@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON3_RUN)
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.0.12<3.1:lang/cython3@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.1.2:lang/cython3@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CYTHON3_TEST)
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.0.12<3.1:lang/cython3@${PY_FLAVOR}
+TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cython3>=3.1.2:lang/cython3@${PY_FLAVOR}
 .  endif
 
 .  if defined(_PYTHON_FEATURE_CONCURRENT)
@@ -880,7 +880,7 @@ PY_SETUPTOOLS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAV
 # Common Python modules that can be needed but only for some versions of Python.
 .  if ${PYTHON_REL} < 31100
 PY_EXCEPTIONGROUP=	${PYTHON_PKGNAMEPREFIX}exceptiongroup>=1.1.1:devel/py-exceptiongroup@${PY_FLAVOR}
-PY_TOMLI=	${PYTHON_PKGNAMEPREFIX}tomli>=2.0.2<3:textproc/py-tomli@${PY_FLAVOR}
+PY_TOMLI=		${PYTHON_PKGNAMEPREFIX}tomli>=2.2.1<3:textproc/py-tomli@${PY_FLAVOR}
 PY_TYPING_EXTENSIONS=	${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
 .  endif
 

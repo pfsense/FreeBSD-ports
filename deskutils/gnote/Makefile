@@ -1,5 +1,6 @@
 PORTNAME=	gnote
 PORTVERSION=	47.2
+PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libsecret-1.so:security/libsecret \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 PORTSCOUT=	limit:^47\.
 

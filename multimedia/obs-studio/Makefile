@@ -1,6 +1,6 @@
 PORTNAME=	obs-studio
 DISTVERSION=	31.0.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -50,7 +50,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libxcb-render-util.so:x11/xcb-util-renderutil \
 		libxcb-util.so:x11/xcb-util \
 		libxkbcommon.so:x11/libxkbcommon \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libva.so:multimedia/libva
 
 USES=		cmake compiler:c++17-lang desktop-file-utils gl gnome lua luajit \

@@ -1,6 +1,6 @@
 PORTNAME=	gsa
 DISTVERSIONPREFIX=	v
-DISTVERSION=	24.6.1
+DISTVERSION=	25.0.0
 CATEGORIES=	security
 
 MAINTAINER=	acm@FreeBSD.org
@@ -11,10 +11,10 @@ LICENSE=	AGPLv3+
 
 ONLY_FOR_ARCHS=	aarch64 amd64
 
-BUILD_DEPENDS=	npm-node18>0:www/npm-node18
+BUILD_DEPENDS=	npm-node20>0:www/npm-node20
 RUN_DEPENDS=	${LOCALBASE}/sbin/gsad:security/gsad
 
-USES=		nodejs:build
+USES=		nodejs:20,build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	greenbone

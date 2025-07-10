@@ -1,5 +1,6 @@
 PORTNAME=	networkmanager-shim
 DISTVERSION=	1.52.0
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	kde@FreeBSD.org
@@ -13,7 +14,7 @@ BUILD_DEPENDS=	xsltproc:textproc/libxslt
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libndp.so:net/libndp \
 		libudev.so:devel/libudev-devd \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		gnome meson perl5 pkgconfig
 

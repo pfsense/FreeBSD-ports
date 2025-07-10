@@ -1,5 +1,5 @@
 PORTNAME=	gexiv2
-PORTVERSION=	0.14.5
+PORTVERSION=	0.14.6
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 
@@ -27,6 +27,8 @@ OPTIONS_DEFINE=		DOCS
 OPTIONS_SUB=		yes
 DOCS_BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc
 DOCS_CONFIGURE_ON=	-Dgtk_doc=true
+
+PORTSCOUT=	limitw:1,even
 
 pre-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/vala/vapi

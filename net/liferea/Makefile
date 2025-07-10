@@ -1,10 +1,10 @@
 PORTNAME=	liferea
 DISTVERSION=	1.14.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net gnome
 MASTER_SITES=	https://github.com/lwindolf/liferea/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple RSS/RDF feed reader
 WWW=		https://lzone.de/liferea/
 

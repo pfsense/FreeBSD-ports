@@ -1,6 +1,6 @@
 PORTNAME=	netdata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.3
+DISTVERSION=	2.5.4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/:netdata \
 		https://raw.githubusercontent.com/netdata/netdata/refs/tags/v${DISTVERSION}/src/go/:goplugin \
@@ -25,7 +25,7 @@ LIB_DEPENDS=	libabsl_base.so:devel/abseil \
 		liblz4.so:archivers/liblz4 \
 		libpcre2-8.so:devel/pcre2 \
 		libprotobuf.so:devel/protobuf \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libuv.so:devel/libuv \
 		libyaml.so:textproc/libyaml \
 		libzstd.so:archivers/zstd
@@ -75,7 +75,7 @@ NETDATA_CACHE=	/var/cache/${PORTNAME}
 NETDATA_LOG=	/var/log/${PORTNAME}
 NETDATA_PERST=	/var/db/${PORTNAME}
 NETDATA_RUN=	/var/run/${PORTNAME}
-NETDATA_DASHBOARD_VERSION=	20250618
+NETDATA_DASHBOARD_VERSION=	20250629
 
 PLIST_SUB=	NETDATA_CACHE=${NETDATA_CACHE} \
 		NETDATA_LOG=${NETDATA_LOG} \

@@ -21,7 +21,6 @@
     SUBDIR += dsbmd
     SUBDIR += e2fsprogs
     SUBDIR += e2fsprogs-core
-    SUBDIR += e2fsprogs-libblkid
     SUBDIR += e2tools
     SUBDIR += encfs
     SUBDIR += exfat
@@ -43,6 +42,7 @@
     SUBDIR += jmtpfs
     SUBDIR += kio-fuse
     SUBDIR += libbde
+    SUBDIR += libblkid
     SUBDIR += libfsapfs
     SUBDIR += libfsext
     SUBDIR += libfsfat
@@ -122,7 +122,6 @@
     SUBDIR += ufs_copy
     SUBDIR += unionfs
     SUBDIR += unreliablefs
-    SUBDIR += vzvol
     SUBDIR += webdavfs
     SUBDIR += wimlib
     SUBDIR += xfsm

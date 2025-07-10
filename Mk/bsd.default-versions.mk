@@ -98,22 +98,18 @@ LLVM_DEFAULT?=		19
 # Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.4
 # Possible values: luajit, luajit-devel, luajit-openresty
-.  if ${ARCH:Mpowerpc64*}
-LUAJIT_DEFAULT?=	luajit-openresty
-.  else
-LUAJIT_DEFAULT?=	luajit-devel
-.  endif
+LUAJIT_DEFAULT?=	luajit
 # Possible values: 5.10, 5.20, 6.8
 MONO_DEFAULT?=		5.20
 # Possible values: 8.0, 8.4, 9.1, 10.5m, 10.6m, 10.11m, 11.4m
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
-# Possible value: 18, 20, 22, 23, 24, current, lts (Note: current = 24 and lts = 22)
+# Possible value: 18, 20, 22, 24, current, lts (Note: current = 24 and lts = 22)
 NODEJS_DEFAULT?=	lts
 # Possible value: 25, 26
 OPENLDAP_DEFAULT?=	26
-# Possible values: 5.38, 5.40, devel
+# Possible values: 5.38, 5.40, 5.42, devel
 .  if !exists(${LOCALBASE}/bin/perl) || (!defined(_PORTS_ENV_CHECK) && \
     defined(PACKAGE_BUILDING))
 # When changing the default here, make sure the DEPRECATED/EXPIRATION lines in
@@ -132,7 +128,7 @@ PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .  endif
 # Possible values: 13, 14, 15, 16, 17
 PGSQL_DEFAULT?=		17
-# Possible values: 8.1, 8.2, 8.3, 8.4
+# Possible values: 8.1, 8.2, 8.3, 8.4, 8.5
 PHP_DEFAULT?=		8.3
 # Possible values: rust, legacy
 .  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)

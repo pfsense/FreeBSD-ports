@@ -1,7 +1,6 @@
 PORTNAME=	nzbget
 DISTVERSIONPREFIX=	v
-DISTVERSION=	24.8
-PORTREVISION=	1
+DISTVERSION=	25.2
 CATEGORIES=	news
 
 MAINTAINER=	a13xlevy@pm.me
@@ -9,6 +8,7 @@ COMMENT=	Binary newsreader supporting NZB files
 WWW=		https://nzbget.net/
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_json.so:devel/boost-libs
 RUN_DEPENDS=	7-zip>0:archivers/7-zip \
@@ -16,7 +16,7 @@ RUN_DEPENDS=	7-zip>0:archivers/7-zip \
 
 # Since v24.4 nzbget maintainers switched from libpar2 to a fork of par2cmdline-turbo which is in its own repository.
 # See https://github.com/nzbgetcom/nzbget/blob/v24.4/cmake/par2-turbo.cmake for the version to pull
-PAR2CMDLINE_TURBO_VERSION=	1.2.0-nzbget-20250213
+PAR2CMDLINE_TURBO_VERSION=	1.3.0
 
 USES=		cmake:testing,noninja gnome ssl
 USE_GITHUB=	yes

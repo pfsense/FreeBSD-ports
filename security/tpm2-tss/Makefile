@@ -1,6 +1,6 @@
 PORTNAME=	tpm2-tss
 DISTVERSION=	4.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/tpm2-software/tpm2-tss/releases/download/${DISTVERSION}/
 
@@ -11,7 +11,7 @@ LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libcurl.so:ftp/curl \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		compiler:c11 gmake libtool pkgconfig ssl
 USE_LDCONFIG=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	freeswitch
 DISTVERSION=	1.10.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	https://files.freeswitch.org/releases/freeswitch/ \
 		https://files.freeswitch.org/releases/sounds/:sounds
@@ -34,7 +34,7 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 		libjbig.so:graphics/jbigkit \
 		libshout.so:audio/libshout \
 		libtiff.so:graphics/tiff \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libmariadb.so:databases/mariadb-connector-c \
 		libspandsp.so:comms/spandsp \
 		libsofia-sip-ua.so:net/sofia-sip

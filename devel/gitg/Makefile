@@ -1,6 +1,6 @@
 PORTNAME=	gitg
 PORTVERSION=	41
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -8,7 +8,7 @@ DIST_SUBDIR=	gnome
 PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
 PATCHFILES+=	1978973b1284.patch:-p1 # https://gitlab.gnome.org/GNOME/gitg/-/merge_requests/175
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK-based git repository viewer
 WWW=		https://wiki.gnome.org/Apps/Gitg
 

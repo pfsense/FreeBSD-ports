@@ -1,6 +1,6 @@
 PORTNAME=	cyrus-imapd
-PORTVERSION=	3.8.5
-PORTREVISION=	2
+PORTVERSION=	3.8.6
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${DISTVERSION}/
 PKGNAMESUFFIX=	${CYRUS_IMAPD_VER}
@@ -23,7 +23,7 @@ CYRUS_IMAPD_VER=	38
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libicuuc.so:devel/icu \
 		libjansson.so:devel/jansson \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libical.so:devel/libical
 
 CONFLICTS_INSTALL=	cyrus-imapd2? cyrus-imapd3[0-57-] cyrus-imapd3[0-57-]-http

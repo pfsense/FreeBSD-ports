@@ -1,5 +1,6 @@
 PORTNAME=	ardour
 DISTVERSION=	8.12.0
+PORTREVISION=	2
 CATEGORIES=	audio
 # Official source download is tailored to browsers, downloads from github are
 # deliberately made empty. Put the badly named distfile into a subdirectory.
@@ -116,9 +117,7 @@ post-install-VST3-on:
 
 # Some peripheral libraries are only built with libusb-1.0 >= 1.0.16
 .if ${OPSYS} == FreeBSD && \
-    (${OSVERSION} <= 1304500 \
-    || 1400000 <= ${OSVERSION} && ${OSVERSION} <= 1401502 \
-    || 1500000 <= ${OSVERSION} && ${OSVERSION} <= 1500019)
+    (1500000 <= ${OSVERSION} && ${OSVERSION} <= 1500019)
 PLIST_SUB+=	LIBUSB="@comment "
 .else
 PLIST_SUB+=	LIBUSB=""

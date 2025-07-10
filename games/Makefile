@@ -1008,6 +1008,7 @@
     SUBDIR += twind
     SUBDIR += tycho
     SUBDIR += typespeed
+    SUBDIR += typtea
     SUBDIR += tyrian-data
     SUBDIR += ufoai
     SUBDIR += ufoai-data
@@ -1166,6 +1167,7 @@
     SUBDIR += xtron
     SUBDIR += xtruco
     SUBDIR += xtux
+    SUBDIR += xtxf
     SUBDIR += xvier
     SUBDIR += xworm
     SUBDIR += xye
