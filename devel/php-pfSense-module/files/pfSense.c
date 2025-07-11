@@ -1861,7 +1861,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 					inet_ntop(AF_INET,
 					    (void *)&tmp->sin_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(&addr, "tunnel",
+					add_assoc_string(&addr, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -1916,7 +1916,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 					inet_ntop(AF_INET6,
 					    (void *)&tmp6->sin6_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(&addr, "tunnel",
+					add_assoc_string(&addr, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -2014,7 +2014,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 					inet_ntop(AF_INET,
 					    (void *)&tmp->sin_addr, outputbuf,
 					    sizeof(outputbuf));
-					add_assoc_string(return_value, "tunnel",
+					add_assoc_string(return_value, "dstaddr",
 					    outputbuf);
 				}
 			}
@@ -2057,7 +2057,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 					    (void *)&tmp6->sin6_addr, outputbuf,
 					    sizeof(outputbuf));
 					add_assoc_string(return_value,
-					    "tunnel6", outputbuf);
+					    "dstaddr6", outputbuf);
 				}
 			}
 			break;
