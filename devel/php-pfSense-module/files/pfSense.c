@@ -1719,7 +1719,6 @@ fill_interface_tunnel(zval *val, char *ifname, u_short af) {
 	u_long dstcmd;
 	char *zval_key;
 	int sockfd;
-	char test[16];
 
 	switch (af) {
 	case AF_INET:
