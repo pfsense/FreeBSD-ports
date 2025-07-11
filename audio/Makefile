@@ -73,7 +73,6 @@
     SUBDIR += caps-lv2
     SUBDIR += caps-plugins
     SUBDIR += cardinal
-    SUBDIR += carla
     SUBDIR += cava
     SUBDIR += cd-discid
     SUBDIR += cddb-bundle
@@ -424,7 +423,6 @@
     SUBDIR += liquidsfz
     SUBDIR += listener
     SUBDIR += littlefly-lv2
-    SUBDIR += lmms
     SUBDIR += logitechmediaserver
     SUBDIR += logitechmediaserver-dynamicplaylist
     SUBDIR += logitechmediaserver-lazysearch
@@ -650,7 +648,6 @@
     SUBDIR += py-pydub
     SUBDIR += py-pyjacklib
     SUBDIR += py-pylast
-    SUBDIR += py-pyliblo
     SUBDIR += py-pymad
     SUBDIR += py-pyogg
     SUBDIR += py-pyradio

@@ -1,7 +1,7 @@
 PORTNAME=	topologic
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.0.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 PKGNAMESUFFIX=	-space-modeling-library
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libtbb.so:devel/onetbb \
 		libTKernel.so:cad/opencascade \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		cmake compiler:c++14-lang localbase:ldflags
 USE_LDCONFIG=	${PREFIX}/lib/TopologicCore

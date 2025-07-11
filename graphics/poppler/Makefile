@@ -1,6 +1,6 @@
 PORTNAME=	poppler
 DISTVERSION=	25.04.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics print
 MASTER_SITES=	https://poppler.freedesktop.org/
 
@@ -103,7 +103,7 @@ OPENJPEG_CMAKE_OFF=	-DENABLE_LIBOPENJPEG:STRING="none"
 
 GNUPG_CMAKE_BOOL=	ENABLE_GPGME
 GNUPG_LIB_DEPENDS=	libgpgme.so:security/gpgme \
-		libgpgmepp.so:security/gpgme-cpp
+		libgpgmepp.so:security/gpgmepp
 
 post-install:
 .if ${_SLAVE_PORT} == glib

@@ -312,7 +312,7 @@ sshesame:*:368:
 neo4j:*:369:
 _wsdd:*:370:
 reposilite:*:371:
-# free: 372
+beam:*:372:
 # free: 373
 # free: 374
 # free: 375
@@ -731,7 +731,7 @@ stirlingpdf:*:785:
 # free: 787
 # free: 788
 # free: 789
-# free: 790
+healthchecks:*:790:
 # free: 791
 # free: 792
 # free: 793
@@ -778,9 +778,9 @@ beehive:*:832:
 pocket-id:*:834:
 filebrowser:*:835:
 tinyauth:*:836:
-# free: 837
+homebox:*:837:
 # free: 838
-# free: 839
+shiori:*:839:
 netdisco:*:840:
 tcpcryptd:*:841:
 munin:*:842:
@@ -799,7 +799,7 @@ ebusd:*:854:
 opensearch:*:855:
 # free: 856
 # free: 857
-# free: 858
+umurmur:*:858:
 kanidm:*:859:
 plocate:*:860:
 rekor:*:861:

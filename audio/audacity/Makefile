@@ -1,7 +1,7 @@
 PORTNAME=	audacity
 DISTVERSIONPREFIX=	Audacity-
 DISTVERSION=	3.7.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES+=	https://github.com/${PORTNAME}/${PORTNAME}-manual/releases/download/v${DISTVERSION}/:manual
 DISTFILES+=	${PORTNAME}-manual-${DISTVERSION}.tar.gz:manual
@@ -34,7 +34,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libsratom-0.so:audio/sratom \
 		libsqlite3.so:databases/sqlite3 \
 		libsuil-0.so:audio/suil \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libwavpack.so:audio/wavpack
 
 USES=		cmake compiler:c++20-lang cpe desktop-file-utils gettext \

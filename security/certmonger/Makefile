@@ -1,5 +1,6 @@
 PORTNAME=	certmonger
 DISTVERSION=	0.79.20
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://pagure.io/certmonger/archive/${DISTVERSION}/
 
@@ -20,7 +21,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl		\
 		libpopt.so:devel/popt		\
 		libtalloc.so:devel/talloc	\
 		libtevent.so:devel/tevent	\
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		autoreconf gettext gnome gssapi:mit iconv pkgconfig ssl
 USE_GNOME=	libxml2

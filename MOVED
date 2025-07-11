@@ -4529,3 +4529,135 @@ russian/bugzilla44||2025-06-16|Removed, localized version of devel/bugzilla44
 sysutils/plasma6-drkonqi||2025-06-17|Removed, requires Systemd
 devel/artifactory||2025-06-17|Has expired: Outdated with known vulnerabilities and marked as forbidden in 2023
 devel/m17n-inscript2||2025-06-23|Now included in devel/m17n-db
+devel/py-pytest4-cov||2025-06-23|Has expired: Depends on expiring devel/py-pytest4
+devel/py-spyder-unittest||2025-06-23|Has expired: Depends on expiring devel/spyder
+comms/py-pynitrokey||2025-06-23|Has expired: Depends on expiring comms/py-spsdk
+devel/bit||2025-06-23|Has expired: Upstream ceased development
+biology/py-orange3-single-cell||2025-06-23|Has expired: Depends on expired math/py-fastdtw and expiring misc/orange3
+biology/py-orange3-bioinformatics||2025-06-23|Has expired: Depends on expiring misc/orange3
+textproc/py-orange3-text||2025-06-23|Has expired: Depends on expiring misc/orange3
+misc/py-orange3-datafusion||2025-06-23|Has expired: Depends on expiring misc/orange3
+misc/py-orange3-timeseries||2025-06-23|Has expired: Depends on expiring misc/orange3
+misc/py-orange3-educational||2025-06-23|Has expired: Depends on expiring misc/orange3
+misc/py-orange3-associate||2025-06-23|Has expired: Depends on expiring misc/orange3
+misc/py-orange3-network||2025-06-23|Has expired: Depends on expiring misc/orange3
+www/onionshare||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
+deskutils/py-todoman||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
+deskutils/py-khard||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
+devel/py-pytest4-flakes||2025-06-23|Has expired: Depends on expiring devel/py-pytest4
+devel/py-pytest-pep8||2025-06-23|Has expired: Depends on expiring devel/py-pytest4
+devel/py-pytest4-cache||2025-06-23|Has expired: Depends on expiring devel/py-pytest4
+devel/py-pytest4||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
+math/py-fastdtw||2025-06-23|Has expired: Depends on expired devel/py-pytest-runner
+devel/spyder||2025-06-23|Has expired: Depends on expired devel/py-atomicwrites
+misc/orange3||2025-06-23|Has expired: Depends on expiring devel/py-orange-canvas-core
+devel/py-orange-widget-base||2025-06-23|Has expired: Depends on expiring devel/py-orange-canvas-core
+devel/py-orange-canvas-core||2025-06-23|Has expired: Depends on expired misc/py-dictdiffer
+misc/py-dictdiffer||2025-06-23|Has expired: Depends on expired devel/py-pytest-runner
+net-im/biboumi||2025-06-23|Has expired: Depends on expired security/botan2
+sysutils/daggy||2025-06-23|Has expired: Depends on expired security/botan2
+java/jdom||2025-06-23|Has expired: Depends on exired java/jaxen
+java/jaxen||2025-06-23|Has expired: Outdated, unsupported upstream and unmaintained in tree for years
+devel/py-atomicwrites||2025-06-23|Has expired: Upstream repository has been archived on Jul 16, 2022. Upstream suggests os.replace and os.rename instead
+devel/py-pytest-runner||2025-06-23|Has expired: pytest-runner depends on deprecated features of setuptools
+x11-toolkits/scenefx03|x11-toolkits/scenefx04|2025-06-24|No consumers in ports
+net/ziina|net/zmate|2025-06-24|Renamed upstream
+security/py-gpgme|security/py-gpg|2025-06-24|Gpgme Python bindings have been split into a separate project
+security/gpgme-cpp|security/gpgmepp|2025-06-24|Gpgme C++ bindings have been split into a separate project
+security/gpgme-qt@qt5|security/qgpgme@qt5|2025-06-24|Gpgme Qt5 bindings have been split into a separate project
+security/gpgme-qt@qt6|security/qgpgme@qt6|2025-06-24|Gpgme Qt6 bindings have been split into a separate project
+textproc/py-libxml2|textproc/libxml2-python|2025-06-28|Use correct Python package name
+audio/carla||2025-06-29|Remove expired port. Depends on expired audio/py-pyliblo
+audio/lmms||2025-06-29|Remove expired port. Depends on expiring audio/carla
+audio/py-pyliblo||2025-06-29|Remove expired port. Upstream is inactive for over 9 years
+japanese/anthy|japanese/anthy-unicode|2025-06-29|Has expired: Use japanese/anthy-unicode instead
+japanese/kasumi|japanese/kasumi-unicode|2025-06-29|Has expired: Use japanese/kasumi-unicode instead
+japanese/uim-anthy|japanese/uim-anthy-unicode|2025-06-29|Has expired: Use japanese/uim-anthy-unicode instead
+japanese/fcitx-anthy@original|japanese/fcitx-anthy|2025-06-29|Has unflavorized: japanese/anthy was removed and only japanese/anthy-unicode is supported
+japanese/fcitx-anthy@unicode|japanese/fcitx-anthy|2025-06-29|Has unflavorized: japanese/anthy was removed and only japanese/anthy-unicode is supported
+japanese/fcitx5-anthy@original|japanese/fcitx5-anthy|2025-06-29|Has unflavorized: japanese/anthy was removed and only japanese/anthy-unicode is supported
+japanese/fcitx5-anthy@unicode|japanese/fcitx5-anthy|2025-06-29|Has unflavorized: japanese/anthy was removed and only japanese/anthy-unicode is supported
+japanese/ibus-anthy@original|japanese/ibus-anthy|2025-06-29|Has unflavorized: japanese/anthy was removed and only japanese/anthy-unicode is supported
+japanese/ibus-anthy@unicode|japanese/ibus-anthy|2025-06-29|Has unflavorized: japanese/anthy was removed and only japanese/anthy-unicode is supported
+net/vtun||2025-06-30|Has expired: Upstream is dead and last release in 2016
+java/mx4j||2025-06-30|Has expired: Abandoned upstream, no activity since 2010
+devel/inilib||2025-06-30|Has expired: Abandonware, last update upstream in 2005
+textproc/py-jtextfsm|textproc/py-textfsm|2025-06-30|Has expired: Upstream inactive for 9+ years and the port is now obsolete. Please use textproc/py-textfsm instead
+net-mgmt/unifi8|net-mgmt/unifi9|2025-06-30|Has expired: No longer supported by upstream
+devel/openwince-include||2025-06-30|Has expired: Abandoned, last release in 2005 and no consumers in tree
+net/zillion||2025-06-30|Has expired: Unmaintained upstream as last release was in 2003
+devel/libPropList||2025-06-30|Has expired: Deprecated and unsupported upstream
+net-mgmt/zabbix5-agent||2025-06-30|Has expired: Upstream EOL reaches on 2025-05-31
+sysutils/x86info||2025-06-30|Has expired: Abandoned upstream, fails to identify anything remotely new according to upstream issue reports
+math/libsharp2||2025-06-30|Has expired: Deprecated upstream in 2021, upstream recommends migrating to ducc0
+devel/glui||2025-06-30|Has expired: Abandoned upstream, outdated, last release in 2015 and upstream activity in 2019
+databases/gnats4||2025-06-30|Has expired: Abandoned upstream, last release in 2015 and last activity about 9 years ago
+databases/gnatsweb4||2025-06-30|Has expired: Abandoned upstream, last release in 2015 and no active development in the last 10 years
+security/libcryptui||2025-06-30|Has expired: abandoned project
+devel/ksql||2025-06-30|Has expired: Last activity upstream 7 years ago, unmaintained in tree for several years and no consumers
+emulators/qemu8|emulators/qemu|2025-06-30|Has expired: No value in maintaining older QEMU versions on FreeBSD
+devel/electron33||2025-06-30|Has expired: EOLed upstream, switch to newer version
+devel/exercisix||2025-06-30|Has expired: Abandonware, upstream is gone and last release 10+ years ago
+devel/dfuife-curses||2025-06-30|Has expired: Depends on deprecated port devel/libaura
+devel/gpm||2025-06-30|Has expired: Unmaintained upstream and no longer works as intended
+devel/libdfui||2025-06-30|Has expired: Depends on deprecated port devel/libaura
+devel/firmware-utils||2025-06-30|Has expired: Outdated and unsupported upstream
+net/sobby||2025-06-30|Has expired: Abandoned upstream, repo archived Nov 26, 2020
+devel/gvp||2025-06-30|Has expired: Unmaintained upstream and no longer works as intended
+net-mgmt/zabbix5-proxy||2025-06-30|Has expired: Upstream EOL reaches on 2025-05-31
+devel/obby||2025-06-30|Has expired: Abandoned upstream, repo archived Nov 26, 2020
+filesystems/vzvol||2025-06-30|Has expired: Abandoned upstream, no activity in 5+ years and multiple unresolved issue reports upstream
+devel/ireport||2025-06-30|Has expired: Outdated, unsupported upstream and unmaintained for years in tree
+www/ffsend||2025-06-30|Has expired: fails to build with rust 1.87.0
+devel/cgilib||2025-06-30|Has expired: Last upstream release in 2009, last upstream activity in 2017 and no consumers in tree
+security/sectok||2025-06-30|Has expired: Last upstream release in 2003 and no longer maintained
+security/libsectok||2025-06-30|Has expired: Last upstream release in 2003 and no longer maintained
+devel/libdnsres||2025-06-30|Has expired: No consumers in tree, last release in 2005 by upstream
+devel/libaura||2025-06-30|Has expired: Abandonware, upstream is gone and last release in 2005
+net-mgmt/zabbix5-java||2025-06-30|Has expired: Upstream EOL reaches on 2025-05-31
+devel/libcli||2025-06-30|Has expired: Outdated and unmaintained in tree for years
+lang/spl||2025-06-30|Has expired: dead upstream
+devel/glrparser||2025-06-30|Has expired: Unfetchable, unmaintained and upstream is gone
+devel/kyra||2025-06-30|Has expired: Abandonware, last release in 2006 and depdends on deprecated libraries
+devel/libmimedir||2025-06-30|Has expired: Last release in 2008, no consumers in tree and unmaintained for years
+devel/py-openapi-codec|devel/py-openapi-core|2025-06-30|Has expired: Upstream archived the repository. Please use devel/py-openapi-core instead
+devel/linenoise-ng||2025-06-30|Has expired: Upstream repo archived Oct 28, 2020
+devel/libflatarray||2025-06-30|Has expired: Last activity from upstream 5 years ago and last release in 2016
+devel/bogofilter-bdb||2025-06-30|Has expired: The Berkeley DB interface is obsolete. Read UPDATING and use one of the other devel/bogofilter* ports instead
+misc/e2fsprogs-libuuid|misc/libuuid|2025-06-30|Replaced by util-linux based libuuid
+filesystems/e2fsprogs-libblkid|filesystems/libblkid|2025-06-30|Replaced by util-linux based libblkid
+graphics/rigsofrods-pagedgeometry|graphics/pagedgeometry|2025-06-30|Switch to the upstream version
+net/net6||2025-06-30|Has expired: Abandoned upstream, repo archived Nov 26, 2020
+devel/py-coreapi|devel/py-openapi-core|2025-06-30|Has expired: Upstream archived the repository. Please use devel/py-openapi-core instead
+devel/py-coreschema|devel/py-openapi-schema-validator|2025-06-30|Has expired: Upstream archived the repository. Please use devel/py-openapi-schema-validator instead
+devel/py-itypes||2025-06-30|Has expired: Upstream archived repository and suggest using devel/py-pyrsistent instead
+net-mgmt/zabbix5-server||2025-06-30|Has expired: Upstream EOL reaches on 2025-05-31
+www/node23|www/node24|2025-06-30|Remove expired port. Node.js 23.* will reach its EoL on 2024-06-01. Use Node.js 24.* (www/node24) instead
+www/npm-node23|www/npm-node24|2025-06-30|Remove expired port
+net/p5-Net-SPDY||2025-06-30|Remove obsoleted port. SPDY is an obsoleted protocol
+www/p5-HTTP-Tiny-SPDY||2025-06-30|Remove obsoleted port. SPDY is an obsoleted protocol
+www/yarn-node23|www/yarn-node24|2025-06-30|Remove expired port
+devel/rubygem-aws-sdk-alexaforbusiness||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-backupstorage||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-codestar||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-gamesparks||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-honeycode||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-iotroborunner||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-lambdapreview||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-mobile||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-nimblestudio||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-privatenetworks||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-ssooidc||2025-06-30|Remove obsoleted port
+devel/rubygem-aws-sdk-worklink||2025-06-30|Remove obsoleted port
+lang/linux-dotnet11-sdk||2025-07-01|Removed: Depends on expired lang/linux-dotnet11-runtime, MASTER_SITES gone
+lang/linux-dotnet10-runtime||2025-07-01|Has expired: Ancient version, no practical use
+lang/linux-dotnet11-runtime||2025-07-01|Has expired: Ancient version, no practical use
+lang/linux-dotnet-sdk||2025-07-01|Removed: Depends on expired lang/linux-dotnet-runtime, MASTER_SITES gone
+lang/linux-dotnet-runtime||2025-07-01|Has expired: Ancient version, no practical use
+lang/linux-dotnet-cli||2025-07-01|Removed, depends on removed lang/linux-dotnet-runtime
+math/manifold||2025-07-06|Removed, planned to update BRL-CAD, but currently blocked
+shells/bash53||2025-07-07|Removed in favour of updating shells/bash
+devel/etcd31||2025-07-08|Has expired: EOLed upstream, switch to a newer version
+devel/etcd32||2025-07-08|Has expired: EOLed upstream, switch to a newer version
+devel/etcd33||2025-07-08|Has expired: EOLed upstream, switch to a newer version
+lang/luajit-devel|lang/luajit|2025-07-08|Removed, use lang/luajit instead

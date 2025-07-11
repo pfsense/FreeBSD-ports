@@ -1,6 +1,6 @@
 PORTNAME=	msitools
 DISTVERSION=	0.101
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/copyright
 
 LIB_DEPENDS=	libgcab-1.0.so:archivers/gcab \
 		libgsf-1.so:devel/libgsf \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	bash:shells/bash
 TEST_DEPENDS=	gsed:textproc/gsed
 

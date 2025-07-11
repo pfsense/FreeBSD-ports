@@ -49,14 +49,12 @@
     SUBDIR += javahelp
     SUBDIR += javamail
     SUBDIR += javavmwrapper
-    SUBDIR += jaxen
     SUBDIR += jcalendar
     SUBDIR += jcckit
     SUBDIR += jcommon
     SUBDIR += jd-gui
     SUBDIR += jdk11-doc
     SUBDIR += jdk8-doc
-    SUBDIR += jdom
     SUBDIR += jflex
     SUBDIR += jfreechart
     SUBDIR += jgraph
@@ -77,7 +75,6 @@
     SUBDIR += linux-oracle-jre18
     SUBDIR += linux-oracle-serverjre10
     SUBDIR += mmake
-    SUBDIR += mx4j
     SUBDIR += netbeans
     SUBDIR += netrexx
     SUBDIR += netty

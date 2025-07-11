@@ -1,3 +1,1231 @@
+  <vuln vid="20823cc0-5d45-11f0-966e-2cf05da270f3">
+    <topic>Gitlab -- vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<name>gitlab-ee</name>
+	<range><ge>18.1.0</ge><lt>18.1.2</lt></range>
+	<range><ge>18.0.0</ge><lt>18.0.4</lt></range>
+	<range><ge>13.3.0</ge><lt>17.11.6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2025/07/09/patch-release-gitlab-18-1-2-released/">
+	  <p>Cross-site scripting issue impacts GitLab CE/EE</p>
+	  <p>Improper authorization issue impacts GitLab CE/EE</p>
+	  <p>Improper authorization issue impacts GitLab EE</p>
+	  <p>Improper authorization issue impacts GitLab EE</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6948</cvename>
+      <cvename>CVE-2025-3396</cvename>
+      <cvename>CVE-2025-4972</cvename>
+      <cvename>CVE-2025-6168</cvename>
+      <url>https://about.gitlab.com/releases/2025/07/09/patch-release-gitlab-18-1-2-released/</url>
+    </references>
+    <dates>
+      <discovery>2025-07-09</discovery>
+      <entry>2025-07-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2a4472ed-5c0d-11f0-b991-291fce777db8">
+    <topic>git -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>git</name>
+	<name>git-cvs</name>
+	<name>git-gui</name>
+	<name>git-p4</name>
+	<name>git-svn</name>
+	<range><lt>2.50.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Git development team reports:</p>
+	<blockquote cite="https://lore.kernel.org/git/xmqq5xg2wrd1.fsf@gitster.g">
+	  <p>CVE-2025-27613: Gitk:
+	     When a user clones an untrusted repository and runs Gitk without
+	     additional command arguments, any writable file can be created and
+	     truncated. The option "Support per-file encoding" must have been
+	     enabled. The operation "Show origin of this line" is affected as
+	     well, regardless of the option being enabled or not.
+	  </p>
+	  <p>CVE-2025-27614: Gitk:
+	    A Git repository can be crafted in such a way that a user who has
+	    cloned the repository can be tricked into running any script
+	    supplied by the attacker by invoking `gitk filename`, where
+	    `filename` has a particular structure.
+	  </p>
+	  <p>CVE-2025-46835: Git GUI:
+	    When a user clones an untrusted repository and is tricked into
+	    editing a file located in a maliciously named directory in the
+	    repository, then Git GUI can create and overwrite any writable
+	    file.
+	  </p>
+	  <p>CVE-2025-48384: Git:
+	    When reading a config value, Git strips any trailing carriage
+	    return and line feed (CRLF). When writing a config entry, values
+	    with a trailing CR are not quoted, causing the CR to be lost when
+	    the config is later read.  When initializing a submodule, if the
+	    submodule path contains a trailing CR, the altered path is read
+	    resulting in the submodule being checked out to an incorrect
+	    location. If a symlink exists that points the altered path to the
+	    submodule hooks directory, and the submodule contains an executable
+	    post-checkout hook, the script may be unintentionally executed
+	    after checkout.
+	  </p>
+	  <p>CVE-2025-48385: Git:
+	    When cloning a repository Git knows to optionally fetch a bundle
+	    advertised by the remote server, which allows the server-side to
+	    offload parts of the clone to a CDN. The Git client does not
+	    perform sufficient validation of the advertised bundles, which
+	    allows the remote side to perform protocol injection.
+	    This protocol injection can cause the client to write the fetched
+	    bundle to a location controlled by the adversary. The fetched
+	    content is fully controlled by the server, which can in the worst
+	    case lead to arbitrary code execution.
+	  </p>
+	  <p>CVE-2025-48386: Git:
+	    The wincred credential helper uses a static buffer (`target`) as a
+	    unique key for storing and comparing against internal storage. This
+	    credential helper does not properly bounds check the available
+	    space remaining in the buffer before appending to it with
+	    `wcsncat()`, leading to potential buffer overflows.
+	  </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-27613</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-27613</url>
+      <cvename>CVE-2025-27614</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-27614</url>
+      <cvename>CVE-2025-46835</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-46835</url>
+      <cvename>CVE-2025-48384</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-48384</url>
+      <cvename>CVE-2025-48385</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-48385</url>
+      <cvename>CVE-2025-48386</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-48386</url>
+    </references>
+    <dates>
+      <discovery>2025-04-11</discovery>
+      <entry>2025-07-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="79251dc8-5bc5-11f0-834f-b42e991fc52e">
+    <topic>MongoDB -- Incorrect Handling of incomplete data may prevent mongoS from Accepting New Connections</topic>
+    <affects>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.23</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.20</lt></range>
+      </package>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.9</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-106753">
+	 <p>MongoDB Server&apos;s mongos component can become
+	unresponsive to new connections due to incorrect handling of
+	incomplete data. This affects MongoDB when configured with
+	load balancer support.
+	Required Configuration:
+	This affects MongoDB sharded clusters when configured with load
+	balancer support for mongos using HAProxy on specified ports.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6714</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6714</url>
+    </references>
+    <dates>
+      <discovery>2025-07-07</discovery>
+      <entry>2025-07-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="77dc1fc4-5bc5-11f0-834f-b42e991fc52e">
+    <topic>MongoDB -- may be susceptible to privilege escalation due to $mergeCursors stage</topic>
+    <affects>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.22</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.20</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-106752">
+	  <p>An unauthorized user may leverage a specially crafted
+	  aggregation pipeline to access data without proper
+	  authorization due to improper handling of the $mergeCursors
+	  stage in MongoDB Server. This may lead to access to data
+	  without further authorisation.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6713</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6713</url>
+    </references>
+    <dates>
+      <discovery>2025-07-07</discovery>
+      <entry>2025-07-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="764204eb-5bc5-11f0-834f-b42e991fc52e">
+    <topic>MongoDB -- may be susceptible to DoS due to Accumulated Memory Allocation</topic>
+    <affects>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-106751">
+	  <p>MongoDB Server may be susceptible to disruption caused by
+	  high memory usage, potentially leading to server crash. This
+	  condition is linked to inefficiencies in memory management
+	  related to internal operations. In scenarios where certain
+	  internal processes persist longer than anticipated, memory
+	  consumption can increase, potentially impacting server
+	  stability and availability.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6712</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6712</url>
+    </references>
+    <dates>
+      <discovery>2025-07-07</discovery>
+      <entry>2025-07-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="72ddee1f-5bc5-11f0-834f-b42e991fc52e">
+    <topic>MongoDB -- Incomplete Redaction of Sensitive Information in MongoDB Server Logs</topic>
+    <affects>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.21</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.18</lt></range>
+      </package>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-98720">
+	  <p>An issue has been identified in MongoDB Server where
+	  unredacted queries may inadvertently appear in server logs
+	  when certain error conditions are encountered.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6711</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6711</url>
+    </references>
+    <dates>
+      <discovery>2025-07-07</discovery>
+      <entry>2025-07-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c0f3f54c-5bc4-11f0-834f-b42e991fc52e">
+    <topic>ModSecurity -- empty XML tag causes segmentation fault</topic>
+    <affects>
+      <package>
+	<name>ap24-mod_security</name>
+	<range><lt>2.9.11</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security-advisories@github.com reports:</p>
+	<blockquote cite="https://github.com/owasp-modsecurity/ModSecurity/commit/ecd7b9736836eee391d25f35d5bd06a3ce35a45d">
+	  <p>ModSecurity is an open source, cross platform web application
+	firewall (WAF) engine for Apache, IIS and Nginx.  In versions 2.9.8
+	to before 2.9.11, an empty XML tag can cause a segmentation fault.
+	If SecParseXmlIntoArgs is set to On or OnlyArgs, and the request
+	type is application/xml, and at least one XML tag is empty (eg
+	&lt;foo&gt;&lt;/foo&gt;), then a segmentation fault occurs.  This
+	issue has been patched in version 2.9.11.  A workaround involves
+	setting SecParseXmlIntoArgs to Off.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-52891</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-52891</url>
+    </references>
+    <dates>
+      <discovery>2025-07-02</discovery>
+      <entry>2025-07-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7b3e7f71-5b30-11f0-b507-000c295725e4">
+    <topic>redis,valkey -- DoS Vulnerability due to bad connection error handling</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><ge>8.0.0</ge><lt>8.0.3</lt></range>
+      </package>
+      <package>
+	<name>redis74</name>
+	<range><ge>7.4.0</ge><lt>7.4.5</lt></range>
+      </package>
+      <package>
+	<name>redis72</name>
+	<range><ge>7.2.0</ge><lt>7.2.10</lt></range>
+      </package>
+      <package>
+	<name>redis62</name>
+	<range><ge>6.2.0</ge><lt>6.2.19</lt></range>
+      </package>
+      <package>
+	<name>valkey</name>
+	<range><lt>8.1.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>@julienperriercornet reports:</p>
+	<blockquote cite="https://github.com/redis/redis/security/advisories/GHSA-4q32-c38c-pwgq">
+	  <p>
+	     An unauthenticated connection can cause repeated IP
+	     protocol errors, leading to client starvation and,
+	     ultimately, a denial of service.
+	  </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-48367</cvename>
+      <url>https://github.com/redis/redis/security/advisories/GHSA-4q32-c38c-pwgq</url>
+    </references>
+    <dates>
+      <discovery>2025-07-06</discovery>
+      <entry>2025-07-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f11d0a69-5b2d-11f0-b507-000c295725e4">
+    <topic>redis,valkey -- Out of bounds write in hyperloglog commands leads to RCE</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><ge>8.0.0</ge><lt>8.0.3</lt></range>
+      </package>
+      <package>
+	<name>redis74</name>
+	<range><ge>7.4.0</ge><lt>7.4.5</lt></range>
+      </package>
+      <package>
+	<name>redis72</name>
+	<range><ge>7.2.0</ge><lt>7.2.10</lt></range>
+      </package>
+      <package>
+	<name>redis62</name>
+	<range><ge>6.2.0</ge><lt>6.2.19</lt></range>
+      </package>
+      <package>
+	<name>valkey</name>
+	<range><lt>8.1.3</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Seunghyun Lee reports:</p>
+	<blockquote cite="https://github.com/redis/redis/security/advisories/GHSA-rp2m-q4j6-gr43">
+	  <p>
+	    An authenticated user may use a specially crafted string
+	    to trigger a stack/heap out of bounds write on hyperloglog
+	    operations, potentially leading to remote code execution.
+	  </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-32023</cvename>
+      <url>https://github.com/redis/redis/security/advisories/GHSA-rp2m-q4j6-gr43</url>
+    </references>
+    <dates>
+      <discovery>2025-07-06</discovery>
+      <entry>2025-07-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4ea9cbc3-5b28-11f0-b507-000c295725e4">
+    <topic>redis,valkey -- {redis,valkey}-check-aof may lead to stack overflow and potential RCE</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><ge>8.0.0</ge><lt>8.0.2</lt></range>
+      </package>
+      <package>
+	<name>redis74</name>
+	<range><ge>7.4.0</ge><lt>7.4.4</lt></range>
+      </package>
+      <package>
+	<name>redis72</name>
+	<range><ge>7.2.0</ge><lt>7.2.9</lt></range>
+      </package>
+      <package>
+	<name>valkey</name>
+	<range><lt>8.1.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Simcha Kosman &amp; CyberArk Labs reports:</p>
+	<blockquote cite="https://github.com/redis/redis/security/advisories/GHSA-5453-q98w-cmvm">
+	  <p>A user can run the {redis,valkeyu}-check-aof cli and pass
+	  a long file path to trigger a stack buffer overflow, which
+	  may potentially lead to remote code execution.</p>
+	  <p></p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-27151</cvename>
+      <url>https://github.com/redis/redis/security/advisories/GHSA-5453-q98w-cmvm</url>
+    </references>
+    <dates>
+      <discovery>2025-05-28</discovery>
+      <entry>2025-07-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7642ba72-5abf-11f0-87ba-002590c1f29c">
+    <topic>FreeBSD -- Use-after-free in multi-threaded xz decoder</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>14.2</ge><lt>14.2_4</lt></range>
+	<range><ge>13.5</ge><lt>13.5_2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>A worker thread could free its input buffer after decoding,
+	while the main thread might still be writing to it.  This leads to
+	an use-after-free condition on heap memory.</p>
+	<h1>Impact:</h1>
+	<p>An attacker may use specifically crafted .xz file to cause
+	multi-threaded xz decoder to crash, or potentially run arbitrary
+	code under the credential the decoder was executed.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-31115</cvename>
+      <freebsdsa>SA-25:06.xz</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2025-07-02</discovery>
+      <entry>2025-07-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="69bfe2a4-5a39-11f0-8792-4ccc6adda413">
+    <topic>gstreamer1-plugins-bad -- stack buffer overflow in H.266 video parser</topic>
+    <affects>
+      <package>
+	<name>gstreamer1-plugins-bad</name>
+	<range><lt>1.26.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>GStreamer Security Center reports:</p>
+	<blockquote cite="https://gstreamer.freedesktop.org/security/sa-2025-0007.html">
+	  <p>It is possible for a malicious third party to trigger a buffer overflow that can
+	   result in a crash of the application and possibly also allow code execution through
+	   stack manipulation.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6663</cvename>
+      <url>https://gstreamer.freedesktop.org/security/sa-2025-0007.html</url>
+    </references>
+    <dates>
+      <discovery>2025-06-26</discovery>
+      <entry>2025-07-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a55d2120-58cf-11f0-b4ad-b42e991fc52e">
+    <topic>firefox -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>140.0,2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/buglist.cgi?bug_id=1941377%2C1960948%2C1966187%2C1966505%2C1970764">
+	<p>An attacker was able to bypass the `connect-src`
+	  directive of a Content Security Policy by manipulating
+	  subdocuments.  This would have also hidden the connections
+	  from the Network tab in Devtools.</p>
+	<p>When Multi-Account Containers was enabled, DNS requests
+	could have bypassed a SOCKS proxy when the domain name was
+	invalid or the SOCKS proxy was not responding.</p>
+	<p>If a user visited a webpage with an invalid TLS
+	certificate, and granted an exception, the webpage was able to
+	provide a WebAuthn challenge that the user would be prompted
+	to complete.  This is in violation of the WebAuthN spec which
+	requires &quot;a secure transport established without
+	errors&quot;.</p>
+	<p>The exception page for the HTTPS-Only feature, displayed
+	when a website is opened via HTTP, lacked an anti-clickjacking
+	delay, potentially allowing an attacker to trick a user into
+	granting an exception and loading a webpage over HTTP.</p>
+	<p>If a user saved a response from the Network tab in Devtools
+	using the Save As context menu option, that file may not have
+	been saved with the `.download` file extension.
+	This could have led to the user inadvertently running a
+	malicious executable.</p>
+	<p>Memory safety bugs present in Firefox 139 and Thunderbird
+	139. Some of these bugs showed evidence of memory corruption
+	and we presume that with enough effort some of these could
+	have been exploited to run arbitrary code.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6427</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6427</url>
+      <cvename>CVE-2025-6432</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6432</url>
+      <cvename>CVE-2025-6433</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6433</url>
+      <cvename>CVE-2025-6434</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6434</url>
+      <cvename>CVE-2025-6435</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6435</url>
+      <cvename>CVE-2025-6436</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6436</url>
+    </references>
+    <dates>
+      <discovery>2025-06-24</discovery>
+      <entry>2025-07-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9bad6f79-58cf-11f0-b4ad-b42e991fc52e">
+    <topic>firefox -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>128.12.0,2</lt></range>
+	<range><lt>140.0,2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1971140">
+	<p>Firefox could have incorrectly parsed a URL and rewritten
+	it to the youtube.com domain when parsing the URL specified
+	in an `embed` tag. This could have bypassed website security
+	checks that restricted which domains users were allowed to
+	embed.</p>
+	<p>When a file download is specified via the
+	`Content-Disposition` header, that directive would be ignored
+	if the file was included via a `&amp;lt;embed&amp;gt;` or
+	`&amp;lt;object&amp;gt;` tag, potentially making a website
+	vulnerable to a cross-site scripting attack.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6429</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6429</url>
+      <cvename>CVE-2025-6430</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6430</url>
+    </references>
+    <dates>
+      <discovery>2025-06-24</discovery>
+      <entry>2025-07-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9320590b-58cf-11f0-b4ad-b42e991fc52e">
+    <topic>Mozilla -- persistent UUID that identifies browser</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>140.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>115.25.0</lt></range>
+	<range><lt>128.12</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>140.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>128.12</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1717672">
+	  <p>An attacker who enumerated resources from the WebCompat extension
+	could have obtained a persistent UUID that identified the browser,
+	and persisted between containers and normal/private browsing mode,
+	but not profiles.  This vulnerability affects Firefox &lt; 140,
+	Firefox ESR &lt; 115.25, Firefox ESR &lt; 128.12, Thunderbird &lt;
+	140, and Thunderbird &lt; 128.12.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6425</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6425</url>
+    </references>
+    <dates>
+      <discovery>2025-06-24</discovery>
+      <entry>2025-07-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d607b12c-5821-11f0-ab92-f02f7497ecda">
+    <topic>php -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>php81</name>
+	<range><lt>8.1.33</lt></range>
+      </package>
+      <package>
+	<name>php82</name>
+	<range><lt>8.2.29</lt></range>
+      </package>
+      <package>
+	<name>php83</name>
+	<range><lt>8.3.23</lt></range>
+      </package>
+      <package>
+	<name>php84</name>
+	<range><lt>8.4.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>php.net reports:</p>
+    <blockquote cite="https://www.php.net/ChangeLog-8.php">
+    <ul>
+      <li>
+      CVE-2025-1735: pgsql extension does not check for errors during escaping
+      </li>
+      <li>
+      CVE-2025-6491: NULL Pointer Dereference in PHP SOAP Extension via Large XML Namespace Prefix
+      </li>
+      <li>
+      CVE-2025-1220: Null byte termination in hostnames
+      </li>
+    </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-1735</cvename>
+      <cvename>CVE-2025-6491</cvename>
+      <cvename>CVE-2025-1220</cvename>
+    </references>
+    <dates>
+      <discovery>2025-02-27</discovery>
+      <entry>2025-07-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bab7386a-582f-11f0-97d0-b42e991fc52e">
+    <topic>Mozilla -- exploitable crash</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>140.0,2</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>115.25.0</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>140.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@mozilla.org reports:</p>
+	<blockquote cite="https://bugzilla.mozilla.org/show_bug.cgi?id=1966423">
+	  <p>A use-after-free in FontFaceSet resulted in a potentially
+	  exploitable crash.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6424</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6424</url>
+    </references>
+    <dates>
+      <discovery>2025-06-24</discovery>
+      <entry>2025-07-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5c777f88-40ff-4e1e-884b-ad63dfb9bb15">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>138.0.7204.96</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>138.0.7204.96</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2025/06/stable-channel-update-for-desktop_30.html">
+	 <p>This update includes 1 security fix:</p>
+	 <ul>
+	    <li>[427663123] High CVE-2025-6554: Type Confusion in V8.</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6554</cvename>
+      <url>https://chromereleases.googleblog.com/2025/06/stable-channel-update-for-desktop_30.html</url>
+    </references>
+    <dates>
+      <discovery>2025-06-30</discovery>
+      <entry>2025-07-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9c91e1f8-f255-4b57-babe-2e385558f1dc">
+    <topic>chromium -- multiple security fixes</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>138.0.7204.49</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>138.0.7204.49</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2025/06/stable-channel-update-for-desktop_24.html">
+	 <p>This update includes 11 security fixes:</p>
+	 <ul>
+	    <li>[407328533] Medium CVE-2025-6555: Use after free in Animation. Reported by Lyra Rebane (rebane2001) on 2025-03-30</li>
+	    <li>[40062462] Low CVE-2025-6556: Insufficient policy enforcement in Loader. Reported by Shaheen Fazim on 2023-01-02</li>
+	    <li>[406631048] Low CVE-2025-6557: Insufficient data validation in DevTools. Reported by Ameen Basha M K on 2025-03-27</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6555</cvename>
+      <cvename>CVE-2025-6556</cvename>
+      <cvename>CVE-2025-6557</cvename>
+      <url>https://chromereleases.googleblog.com/2025/06/stable-channel-update-for-desktop_24.html</url>
+    </references>
+    <dates>
+      <discovery>2025-06-24</discovery>
+      <entry>2025-07-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="24f4b495-56a1-11f0-9621-93abbef07693">
+    <topic>sudo -- privilege escalation vulnerability through host and chroot options</topic>
+    <affects>
+      <package>
+	<name>sudo</name>
+	<range><lt>1.9.17p1</lt></range>
+      </package>
+      <package>
+	<name>sudo-sssd</name>
+	<range><lt>1.9.17p1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Todd C. Miller reports, crediting Rich Mirch from Stratascale Cyber Research Unit (CRU):</p>
+	<blockquote cite="https://www.sudo.ws/releases/stable/">
+	  <p>Sudo 1.9.17p1:</p>
+	  <ul>
+	    <li>
+	      Fixed CVE-2025-32462. Sudo's -h (--host) option could be specified
+	      when running a command or editing a file. This could enable a
+	      local privilege escalation attack if the sudoers file allows the
+	      user to run commands on a different host. For more information,
+	      see Local Privilege Escalation via host option.
+	    </li>
+	    <li>
+	      Fixed CVE-2025-32463. An attacker can leverage sudo's -R
+	      (--chroot) option to run arbitrary commands as root, even if they
+	      are not listed in the sudoers file. The chroot support has been
+	      deprecated an will be removed entirely in a future release. For
+	      more information, see Local Privilege Escalation via chroot
+	      option.
+	    </li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-32462</cvename>
+      <cvename>CVE-2025-32463</cvename>
+      <url>https://www.sudo.ws/releases/stable/</url>
+      <url>https://www.stratascale.com/vulnerability-alert-CVE-2025-32462-sudo-host</url>
+      <url>https://www.stratascale.com/vulnerability-alert-CVE-2025-32463-sudo-chroot</url>
+    </references>
+    <dates>
+      <discovery>2025-04-01</discovery>
+      <entry>2025-07-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8df49466-5664-11f0-943a-18c04d5ea3dc">
+    <topic>xorg server -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>xorg-server</name>
+	<name>xephyr</name>
+	<name>xorg-vfbserver</name>
+	<range><lt>21.1.18,1</lt></range>
+      </package>
+      <package>
+	<name>xorg-nextserver</name>
+	<range><lt>21.1.18,2</lt></range>
+      </package>
+      <package>
+	<name>xwayland</name>
+	<range><lt>24.1.8,1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.Org project reports:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg-announce/2025-February/003584.html">
+	  <ul>
+	    <li>
+	      CVE-2025-49176: Integer overflow in Big Requests Extension
+	      <p>The Big Requests extension allows requests larger than the 16-bit length
+	      limit.
+	      It uses integers for the request length and checks for the size not to
+	      exceed the maxBigRequestSize limit, but does so after translating the
+	      length to integer by multiplying the given size in bytes by 4.
+	      In doing so, it might overflow the integer size limit before actually
+	      checking for the overflow, defeating the purpose of the test.</p>
+	    </li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-49176</cvename>
+      <url>https://lists.x.org/archives/xorg/2025-June/062055.html</url>
+    </references>
+    <dates>
+      <discovery>2025-06-17</discovery>
+      <entry>2025-07-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b14cabf7-5663-11f0-943a-18c04d5ea3dc">
+    <topic>xorg server -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>xorg-server</name>
+	<name>xephyr</name>
+	<name>xorg-vfbserver</name>
+	<range><lt>21.1.17,1</lt></range>
+      </package>
+      <package>
+	<name>xorg-nextserver</name>
+	<range><lt>21.1.17,2</lt></range>
+      </package>
+      <package>
+	<name>xwayland</name>
+	<range><lt>24.1.7,1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.Org project reports:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg-announce/2025-February/003584.html">
+	  <ul>
+	    <li>
+	      CVE-2025-49175: Out-of-bounds access in X Rendering extension (Animated cursors)
+	      <p>The X Rendering extension allows creating animated cursors providing a
+	      list of cursors.
+	      By default, the Xserver assumes at least one cursor is provided while a
+	      client may actually pass no cursor at all, which causes an out-of-bound
+	      read creating the animated cursor and a crash of the Xserver.</p>
+	    </li>
+	    <li>
+	      CVE-2025-49177: Data leak in XFIXES Extension 6 (XFixesSetClientDisconnectMode)
+
+	      <p>The handler of XFixesSetClientDisconnectMode does not check the client
+	      request length.
+	      A client could send a shorter request and read data from a former
+	      request.</p>
+	    </li>
+	    <li>
+	      CVE-2025-49178: Unprocessed client request via bytes to ignore
+
+	      <p>When reading requests from the clients, the input buffer might be shared
+	      and used between different clients.
+	      If a given client sends a full request with non-zero bytes to ignore,
+	      the bytes to ignore may still be non-zero even though the request is
+	      full, in which case the buffer could be shared with another client who's
+	      request will not be processed because of those bytes to ignore, leading
+	      to a possible hang of the other client request.</p>
+	    </li>
+	    <li>
+	      CVE-2025-49179: Integer overflow in X Record extension
+
+	      <p>The RecordSanityCheckRegisterClients() function in the X Record extension
+	      implementation of the Xserver checks for the request length, but does not
+	      check for integer overflow.
+	      A client might send a very large value for either the number of clients
+	      or the number of protocol ranges that will cause an integer overflow in
+	      the request length computation, defeating the check for request length.</p>
+	    </li>
+	    <li>
+	      CVE-2025-49180: Integer overflow in RandR extension (RRChangeProviderProperty)
+
+	      <p>A client might send a request causing an integer overflow when computing
+	      the total size to allocate in RRChangeProviderProperty().</p>
+	    </li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-49175</cvename>
+      <cvename>CVE-2025-49177</cvename>
+      <cvename>CVE-2025-49178</cvename>
+      <cvename>CVE-2025-49179</cvename>
+      <cvename>CVE-2025-49180</cvename>
+      <url>https://lists.x.org/archives/xorg/2025-June/062055.html</url>
+    </references>
+    <dates>
+      <discovery>2025-06-17</discovery>
+      <entry>2025-07-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6b1b8989-55b0-11f0-ac64-589cfc10a551">
+    <topic>podman -- TLS connection used to pull VM images was not validated</topic>
+    <affects>
+      <package>
+	<name>podman</name>
+	<range><lt>5.5.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>RedHat, Inc. reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2025-6032">
+	  <p>A flaw was found in Podman.  The podman machine init command fails to verify the TLS
+	  certificate when downloading the VM images from an OCI registry.  This issue results
+	  in a Man In The Middle attack.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6032</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6032</url>
+    </references>
+    <dates>
+      <discovery>2025-06-30</discovery>
+      <entry>2025-06-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5e64770c-52aa-11f0-b522-b42e991fc52e">
+    <topic>MongoDB -- Running certain aggregation operations with the SBE engine may lead to unexpected behavior</topic>
+    <affects>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.21</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.17</lt></range>
+      </package>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.4</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-106746">
+	  <p>An authenticated user may trigger a use after free that may result
+	in MongoDB Server crash and other unexpected behavior, even if the
+	user does not have authorization to shut down a server.  The crash
+	is triggered on affected versions by issuing an aggregation framework
+	operation using a specific combination of rarely-used aggregation
+	pipeline expressions.  This issue affects MongoDB Server v6.0 version
+	prior to 6.0.21, MongoDB Server v7.0 version prior to 7.0.17 and
+	MongoDB Server v8.0 version prior to 8.0.4 when the SBE engine is
+	enabled.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6706</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6706</url>
+    </references>
+    <dates>
+      <discovery>2025-06-26</discovery>
+      <entry>2025-06-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5cd2bd2b-52aa-11f0-b522-b42e991fc52e">
+    <topic>MongoDB -- Race condition in privilege cache invalidation cycle</topic>
+    <affects>
+      <package>
+	<name>mongodb50</name>
+	<range><lt>5.0.31</lt></range>
+      </package>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.24</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.21</lt></range>
+      </package>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NVD reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2025-6707">
+	  <p>Under certain conditions, an authenticated user request
+	    may execute with stale privileges following an intentional
+	    change by an authorized administrator.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6707</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6707</url>
+    </references>
+    <dates>
+      <discovery>2025-06-26</discovery>
+      <entry>2025-06-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5b87eef6-52aa-11f0-b522-b42e991fc52e">
+    <topic>MongoDB -- Pre-Authentication Denial of Service Vulnerability in MongoDB Server&apos;s OIDC Authentication</topic>
+    <affects>
+      <package>
+	<name>mongodb60</name>
+	<range><lt>6.0.21</lt></range>
+      </package>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.17</lt></range>
+      </package>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NVD reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2025-6709">
+	  <p>The MongoDB Server is susceptible to a denial of service
+	    vulnerability due to improper handling of specific date
+	    values in JSON input when using OIDC authentication.
+	    This can be reproduced using the mongo shell to send a
+	    malicious JSON payload leading to an invariant failure
+	    and server crash. </p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6709</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6709</url>
+    </references>
+    <dates>
+      <discovery>2025-06-26</discovery>
+      <entry>2025-06-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="59ed4b19-52aa-11f0-b522-b42e991fc52e">
+    <topic>MongoDB -- Pre-authentication Denial of Service Stack Overflow Vulnerability in JSON Parsing via Excessive Recursion in MongoDB</topic>
+    <affects>
+      <package>
+	<name>mongodb70</name>
+	<range><lt>7.0.17</lt></range>
+      </package>
+      <package>
+	<name>mongodb80</name>
+	<range><lt>8.0.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cna@mongodb.com reports:</p>
+	<blockquote cite="https://jira.mongodb.org/browse/SERVER-106749">
+	  <p>MongoDB Server may be susceptible to stack overflow due to JSON
+	parsing mechanism, where specifically crafted JSON inputs may induce
+	unwarranted levels of recursion, resulting in excessive stack space
+	consumption.  Such inputs can lead to a stack overflow that causes
+	the server to crash which could occur pre-authorisation.  This issue
+	affects MongoDB Server v7.0 versions prior to 7.0.17 and MongoDB
+	Server v8.0 versions prior to 8.0.5.
+	The same issue affects MongoDB Server v6.0 versions prior to 6.0.21,
+	but an attacker can only induce denial of service after authenticating.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6710</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-6710</url>
+    </references>
+    <dates>
+      <discovery>2025-06-26</discovery>
+      <entry>2025-06-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e26608ff-5266-11f0-b522-b42e991fc52e">
+    <topic>kanboard -- Password Reset Poisoning via Host Header Injection</topic>
+    <affects>
+      <package>
+	<name>kanboard</name>
+	<range><lt>1.2.45</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>GitHub Security Advisories reports:</p>
+	<blockquote cite="null">
+	<p>
+	Kanboard allows password reset emails to be sent with URLs
+	derived from the unvalidated Host header when the
+	application_url configuration is unset (default behavior).
+	This allows an attacker to craft a malicious password
+	reset link that leaks the token to an attacker-controlled
+	domain. If a victim (including an administrator) clicks
+	the poisoned link, their account can be taken over. This
+	affects all users who initiate a password reset while
+	application_url is not set.
+	</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-52560</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-52560</url>
+    </references>
+    <dates>
+      <discovery>2025-06-26</discovery>
+      <entry>2025-06-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d45dabd9-5232-11f0-9ca4-2cf05da270f3">
+    <topic>Gitlab -- Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<name>gitlab-ee</name>
+	<range><ge>18.1.0</ge><lt>18.1.1</lt></range>
+	<range><ge>18.0.0</ge><lt>18.0.3</lt></range>
+	<range><ge>16.10.0</ge><lt>17.11.5</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2025/06/25/patch-release-gitlab-18-1-1-released/">
+	  <p>Denial of Service impacts GitLab CE/EE</p>
+	  <p>Missing Authentication issue impacts GitLab CE/EE</p>
+	  <p>Improper access control issue impacts GitLab CE/EE</p>
+	  <p>Elevation of Privilege impacts GitLab CE/EE</p>
+	  <p>Improper access control issue impacts GitLab EE</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-3279</cvename>
+      <cvename>CVE-2025-1754</cvename>
+      <cvename>CVE-2025-5315</cvename>
+      <cvename>CVE-2025-2938</cvename>
+      <cvename>CVE-2025-5846</cvename>
+      <url>https://about.gitlab.com/releases/2025/06/25/patch-release-gitlab-18-1-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2025-06-25</discovery>
+      <entry>2025-06-26</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="03ba1cdd-4faf-11f0-af06-00a098b42aeb">
     <topic>cisco -- OpenH264 Decoding Functions Heap Overflow Vulnerability</topic>
     <affects>
@@ -2045,7 +3273,7 @@
   </vuln>
 
   <vuln vid="a8a1a8e7-2e85-11f0-a989-b42e991fc52e">
-    <topic>Mozilla -- memory corrupton</topic>
+    <topic>Mozilla -- memory corruption</topic>
     <affects>
       <package>
 	<name>firefox</name>
@@ -2215,7 +3443,7 @@
   </vuln>
 
   <vuln vid="9c37a02e-2e85-11f0-a989-b42e991fc52e">
-    <topic>Mozilla -- javescript content execution</topic>
+    <topic>Mozilla -- javascript content execution</topic>
     <affects>
       <package>
 	<name>firefox</name>

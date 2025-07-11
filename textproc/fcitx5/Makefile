@@ -1,5 +1,6 @@
 PORTNAME=	fcitx5
 DISTVERSION=	5.1.12
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://download.fcitx-im.org/fcitx5/${PORTNAME}/ \
 		https://download.fcitx-im.org/data/:dict
@@ -20,7 +21,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libexpat.so:textproc/expat2 \
 		libfmt.so:devel/libfmt \
 		libjson-c.so:devel/json-c \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libuv.so:devel/libuv \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	iso-codes>=0:misc/iso-codes \

@@ -1,5 +1,6 @@
 PORTNAME=	nim
 DISTVERSION=	2.2.4
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	https://nim-lang.org/download/
 
@@ -11,7 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/copying.txt
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
-TEST_DEPENDS=	node18>=0:www/node
+TEST_DEPENDS=	node>=0:www/node
 
 USES=		compiler:c11 cpe tar:xz
 CPE_VENDOR=	nim-lang

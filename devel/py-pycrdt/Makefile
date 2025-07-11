@@ -1,5 +1,5 @@
 PORTNAME=	pycrdt
-PORTVERSION=	0.12.20
+PORTVERSION=	0.12.23
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -27,6 +27,10 @@ CARGO_INSTALL=	no
 
 .if ${PYTHON_REL} < 31000
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=3.6:devel/py-importlib-metadata@${PY_FLAVOR}
+.endif
+
+.if ${PYTHON_REL} < 31100
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.14.0:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

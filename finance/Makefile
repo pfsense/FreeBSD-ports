@@ -36,6 +36,7 @@
     SUBDIR += gnucash-docs
     SUBDIR += grisbi
     SUBDIR += homebank
+    SUBDIR += homebox
     SUBDIR += hs-hledger
     SUBDIR += hs-hledger-ui
     SUBDIR += hs-hledger-web
@@ -44,6 +45,7 @@
     SUBDIR += kmymoney
     SUBDIR += kraft
     SUBDIR += ktoblzcheck
+    SUBDIR += ktoblzcheck-data
     SUBDIR += ledger
     SUBDIR += ledgersmb12
     SUBDIR += libbtc

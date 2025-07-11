@@ -42,6 +42,7 @@
     SUBDIR += dnsproxy
     SUBDIR += dnsrecon
     SUBDIR += dnsreflector
+    SUBDIR += dnssec-rr
     SUBDIR += dnstable
     SUBDIR += dnstable-convert
     SUBDIR += dnstop
@@ -169,6 +170,7 @@
     SUBDIR += pear-File_DNS
     SUBDIR += pear-Horde_Idna
     SUBDIR += pear-Net_DNS2
+    SUBDIR += pear-Net_DNS21
     SUBDIR += powerdns
     SUBDIR += powerdns-recursor
     SUBDIR += prometheus-dnssec-exporter
@@ -226,6 +228,7 @@
     SUBDIR += scavenge
     SUBDIR += sleuth
     SUBDIR += subfinder
+    SUBDIR += tldx
     SUBDIR += totd
     SUBDIR += udns
     SUBDIR += unbound

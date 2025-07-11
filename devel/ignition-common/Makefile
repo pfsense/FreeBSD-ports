@@ -1,6 +1,6 @@
 PORTNAME=	ignition-common
 DISTVERSION=	3.0.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4 \
 		libfreeimage.so:graphics/freeimage \
 		libgts.so:graphics/gts \
 		libtinyxml2.so:textproc/tinyxml2 \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libignition-math6.so:math/ignition-math
 
 USES=		cmake compiler:c++17-lang gnome localbase pkgconfig

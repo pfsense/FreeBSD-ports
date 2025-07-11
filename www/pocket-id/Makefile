@@ -1,6 +1,7 @@
 PORTNAME=	pocket-id
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/dtxdf/${PORTNAME}/
 DISTFILES=	${PORTNAME}-${DISTVERSION}.frontend${EXTRACT_SUFX}
@@ -10,6 +11,8 @@ COMMENT=	OIDC provider that allows users to authenticate with their passkeys
 WWW=		https://pocket-id.org
 
 LICENSE=	BSD2CLAUSE
+
+BROKEN_i386=	cannot use int64(off) (value of type int64) as int32 value in assignment
 
 USES=		go:modules
 USE_GITHUB=	yes

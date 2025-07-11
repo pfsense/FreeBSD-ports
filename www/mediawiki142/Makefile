@@ -1,7 +1,8 @@
 PORTNAME=	mediawiki
-PORTVERSION=	1.42.6
+PORTVERSION=	1.42.7
 CATEGORIES=	www
-MASTER_SITES=	https://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
+MASTER_SITES=	https://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/ \
+		LOCAL/wen
 PKGNAMESUFFIX=	142${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	wen@FreeBSD.org
@@ -10,7 +11,10 @@ WWW=		https://www.mediawiki.org/
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki139 mediawiki140 mediawiki141 mediawiki143
+DEPRECATED=	Upstream EOL
+EXPIRATION_DATE=2025-07-31
+
+CONFLICTS=	mediawiki139 mediawiki141 mediawiki143 mediawiki144
 
 USES=		cpe php:flavors shebangfix
 SHEBANG_FILES=	maintenance/storage/make-blobs

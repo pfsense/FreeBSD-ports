@@ -114,6 +114,7 @@
     SUBDIR += colmap
     SUBDIR += colord
     SUBDIR += colord-gtk
+    SUBDIR += colord-kde
     SUBDIR += compupic
     SUBDIR += converseen
     SUBDIR += corrupter
@@ -787,6 +788,7 @@
     SUBDIR += p5-VCG
     SUBDIR += p5-Visio
     SUBDIR += p5-feedgnuplot
+    SUBDIR += pagedgeometry
     SUBDIR += panoglview
     SUBDIR += panomatic
     SUBDIR += partio
@@ -829,6 +831,8 @@
     SUBDIR += php83-gd
     SUBDIR += php84-exif
     SUBDIR += php84-gd
+    SUBDIR += php85-exif
+    SUBDIR += php85-gd
     SUBDIR += phplot
     SUBDIR += picpuz
     SUBDIR += piddle
@@ -1092,7 +1096,6 @@
     SUBDIR += resvg-capi
     SUBDIR += rgbpaint
     SUBDIR += rigsofrods-caelum
-    SUBDIR += rigsofrods-pagedgeometry
     SUBDIR += ristretto
     SUBDIR += rlottie
     SUBDIR += ruby-gd

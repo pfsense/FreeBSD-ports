@@ -1,7 +1,7 @@
 PORTNAME=	bout++
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science math # physics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	gmake:devel/gmake
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libfmt.so:devel/libfmt \
 		libopenblas.so:math/openblas \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>=3.2.1:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}natsort>=8.1.0:devel/py-natsort@${PY_FLAVOR} \

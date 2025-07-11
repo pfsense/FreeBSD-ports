@@ -1,9 +1,10 @@
 PORTNAME=	vulkan-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.319
+DISTVERSION=	1.4.320
+PORTREVISION=	1
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools and demos for the Vulkan graphics API
 WWW=		https://github.com/KhronosGroup/Vulkan-Tools
 

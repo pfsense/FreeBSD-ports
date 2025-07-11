@@ -1,6 +1,5 @@
 PORTNAME=	wagtail
-PORTVERSION=	6.4.1
-PORTREVISION=	1
+PORTVERSION=	7.0.1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,11 +12,11 @@ WWW=		https://wagtail.io/ \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61.0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyascii>=0.1.5:textproc/py-anyascii@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.8<5:www/py-beautifulsoup@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}django42>=4.2<6.0:www/py-django42@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}django42>=4.2:www/py-django42@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-filter>=23.3:www/py-django-filter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-modelcluster>=6.2.1<7.0:www/py-django-modelcluster@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-permissionedforms>=0.1<1.0:www/py-django-permissionedforms@${PY_FLAVOR} \
@@ -31,7 +30,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyascii>=0.1.5:textproc/py-anyascii@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}pillow>=9.1.0<12.0.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.11.1<3.0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}telepath>=0.3.1<1:devel/py-telepath@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}willow>=1.8.0<2:graphics/py-willow@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}willow>=1.10.0<2:graphics/py-willow@${PY_FLAVOR}
 
 USES=		cpe python shebangfix
 USE_PYTHON=	autoplist concurrent pep517
@@ -40,6 +39,6 @@ NO_ARCH=	yes
 
 CPE_VENDOR=	torchbox
 
-SHEBANG_FILES=	wagtail/project_template/manage.py
+SHEBANG_FILES=	wagtail/project_template/manage.py-tpl
 
 .include <bsd.port.mk>
