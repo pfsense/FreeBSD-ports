@@ -65,7 +65,7 @@ if ($_POST) {
 
 	// Check for Avahi conflict
 	if ($pconfig['enable'] && $avahi_enabled) {
-		$input_errors[] = gettext('Avahi relfection must be disabled before enabling mDNS Bridge');
+		$input_errors[] = gettext('Avahi reflection must be disabled before enabling mDNS Bridge');
 	}
 
 	// Validate interfaces
