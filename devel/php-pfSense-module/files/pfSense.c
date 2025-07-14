@@ -54,6 +54,12 @@
  * IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdint.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <net/if.h>
+#include <netinet/in.h>
+
 #include <netinet6/in6_var.h>
 #include <sys/socket.h>
 #ifdef HAVE_CONFIG_H
@@ -1712,7 +1718,7 @@ fill_interface_params(zval *val, struct ifaddrs *mb)
 
 static void
 fill_interface_tunnel(zval *val, char *ifname, u_short af) {
-	struct zval tunnel;
+	zval tunnel;
 	char src[NI_MAXHOST];
 	char dst[NI_MAXHOST];
 	u_long srccmd;
