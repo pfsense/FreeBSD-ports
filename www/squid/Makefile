@@ -1,11 +1,11 @@
 PORTNAME=	squid
-DISTVERSION=	6.10
+DISTVERSION=	7.1
 CATEGORIES=	www
-MASTER_SITES=	http://www2.pl.squid-cache.org/Versions/v6/ \
-		http://www1.il.squid-cache.org/Versions/v6/ \
-		http://www2.gr.squid-cache.org/Versions/v6/ \
-		http://ca2.squid-cache.org/Versions/v6/ \
-		http://www.squid-cache.org/Versions/v6/
+MASTER_SITES=	http://www2.pl.squid-cache.org/Versions/v7/ \
+		http://www1.il.squid-cache.org/Versions/v7/ \
+		http://www2.gr.squid-cache.org/Versions/v7/ \
+		http://ca2.squid-cache.org/Versions/v7/ \
+		http://www.squid-cache.org/Versions/v7/
 
 PATCH_SITES=	http://www2.pl.squid-cache.org/%SUBDIR%/ \
 		http://www1.il.squid-cache.org/%SUBDIR%/ \
@@ -21,7 +21,7 @@ WWW=		http://www.squid-cache.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib cpe gmake localbase:ldflags perl5 shebangfix tar:xz
+USES=		compiler:c++11-lib cpe gmake localbase:ldflags perl5 shebangfix tar:gz
 
 CONFLICTS=	squid-devel
 CPE_VENDOR=	squid-cache
