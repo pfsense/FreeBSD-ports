@@ -21,7 +21,7 @@ WWW=		http://www.squid-cache.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib cpe gmake localbase:ldflags perl5 shebangfix tar:gz
+USES=		compiler:c++11-lib cpe gmake localbase:ldflags perl5 shebangfix tar:tgz
 
 CONFLICTS=	squid-devel
 CPE_VENDOR=	squid-cache
