@@ -82,20 +82,21 @@
         </field>
 
         <field>
-            <name>Firewall</name>
+            <name>Client Firewall</name>
             <type>listtopic</type>
         </field>
         <field>
-            <fielddescr>Allow Configuration</fielddescr>
+            <fielddescr>Enable firewall</fielddescr>
             <fieldname>allowfirewallconfig</fieldname>
             <description>
                 <![CDATA[
-                Allow the client to manage and enforce firewall rules
+                Allow the client to filter traffic with its built-in firewall
                 ]]>
             </description>
             <sethelp>
                 <![CDATA[
-                If disabled the client won't modify firewall rules
+                If disabled, you must assign the NetBird interface and manage firewall rules via PFSense firewall management. 
+		Additionally, NetBird routing and DNS may not function as intended.
                 ]]>
             </sethelp>
             <type>checkbox</type>
@@ -106,7 +107,7 @@
             <fieldname>blockinboundconn</fieldname>
             <description>
                 <![CDATA[
-                Block all inbound connections to the local machine and any routed networks
+                Block all inbound connections to the local machine from the WireGuard interface and any routed networks
                 ]]>
             </description>
             <sethelp>
@@ -141,7 +142,7 @@
             <fieldname>enabledns</fieldname>
             <description>
                 <![CDATA[
-                Allows the client to configure DNS settings
+                Allows the client to resolve and configure DNS on the host 
                 ]]>
             </description>
             <type>checkbox</type>
@@ -157,7 +158,7 @@
             <fieldname>accesslan</fieldname>
             <description>
                 <![CDATA[
-                Allow access to local networks (LAN) when using this peer as a router or exit node
+                Allow access to local networks (LAN) when using this peer as a routing peer or exit-node
                 ]]>
             </description>
             <type>checkbox</type>
@@ -179,7 +180,7 @@
             <fieldname>allowserverroutes</fieldname>
             <description>
                 <![CDATA[
-                Enable this peer to act as a router for server routes received from the management
+                Enable this peer to act as a routing peer for routes received from the management
                 ]]>
             </description>
             <type>checkbox</type>

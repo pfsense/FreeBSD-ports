@@ -38,8 +38,9 @@ function netbird_resync_config()
         return;
     }
 
-    if (!empty($_POST['wireguardport'])) {
-        $config['WgPort'] = (int)$_POST['wireguardport'];
+    $settings = config_get_path('installedpackages/netbird/config/0', []);
+    if (!empty($settings['wireguardport'])) {
+        $config['WgPort'] = (int)$settings['wireguardport'];
     }
 
     $config_map = [
@@ -54,9 +55,11 @@ function netbird_resync_config()
         'rosenpasspermissive' => ['RosenpassPermissive', true],
     ];
 
-    foreach ($config_map as $post_key => [$json_key, $enabled_val]) {
-        $checked = ($_POST[$post_key] ?? '') === 'on';
-        $config[$json_key] = ($checked === $enabled_val);
+    foreach ($config_map as $key => [$json_key, $enabled_val]) {
+        if (array_key_exists($key, $settings)) {
+            $checked = $settings[$key] === 'on';
+            $config[$json_key] = ($checked === $enabled_val);
+        }
     }
 
     file_put_contents(NETBIRD_CONFIG, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
