@@ -1,9 +1,9 @@
 PORTNAME=	vkquake
-DISTVERSION=	1.32.2
+DISTVERSION=	1.32.3.1
 PORTREVISION=	1
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	seafork@disroot.org
 COMMENT=	Vulkan Quake port based on QuakeSpasm
 WWW=		https://github.com/Novum/vkQuake
 
@@ -14,7 +14,7 @@ BUILD_DEPENDS=	glslangValidator:graphics/glslang \
 		vulkan-headers>0:graphics/vulkan-headers
 LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 
-USES=		desktop-file-utils meson pkgconfig sdl
+USES=		meson pkgconfig sdl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Novum
@@ -39,10 +39,10 @@ DEBUG_MESON_OFF=	--buildtype=plain --optimization=2
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
 FLAC_MESON_ENABLED=	use_codec_flac
 MAD_LIB_DEPENDS=	libmad.so:audio/libmad
-MAD_MESON_ARGS=		-Duse_codec_mp3=enabled
+MAD_MESON_ENABLED=	use_codec_mp3
 MAD_MESON_ON=		-Dmp3_lib=mad
 MP3_LIB_DEPENDS=	libmpg123.so:audio/mpg123
-MP3_MESON_ARGS=		-Duse_codec_mp3=enabled
+MP3_MESON_ENABLED=	use_codec_mp3
 MP3_MESON_ON=		-Dmp3_lib=mpg123
 OPUS_LIB_DEPENDS=	libopus.so:audio/opus \
 			libopusfile.so:audio/opusfile
@@ -57,13 +57,16 @@ WAVE_MESON_ENABLED=	use_codec_wave
 post-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${MESON_BUILD_DIR}/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin
-	${MKDIR} ${STAGEDIR}${Q1DIR}
+	${MKDIR} ${STAGEDIR}${Q1DIR} \
+		 ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/apps \
+		 ${STAGEDIR}${PREFIX}/share/icons/hicolor/512x512/apps
 	${INSTALL_DATA} ${WRKSRC}/Quake/vkquake.pak \
 		${STAGEDIR}${Q1DIR}
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/apps
-	${INSTALL_DATA} ${FILESDIR}/vkquake.png \
+	${INSTALL_DATA} ${WRKSRC}/Misc/vkQuake_256.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/apps/vkquake.png
+	${INSTALL_DATA} ${WRKSRC}/Misc/vkQuake_512.png \
+		${STAGEDIR}${PREFIX}/share/icons/hicolor/512x512/apps/vkquake.png
 	${INSTALL_DATA} ${FILESDIR}/vkquake.desktop \
-		${STAGEDIR}${PREFIX}/share/applications
+		${STAGEDIR}${DESKTOPDIR}
 
 .include <bsd.port.mk>

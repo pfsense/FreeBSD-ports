@@ -1,3 +1,384 @@
+  <vuln vid="605a9d1e-6521-11f0-beb2-ac5afc632ba3">
+    <topic>libwasmtime -- host panic with fd_renumber WASIp1 function</topic>
+    <affects>
+      <package>
+	<name>libwasmtime</name>
+	<range><ge>24.0.0</ge><lt>24.0.4</lt></range>
+	<range><ge>33.0.0</ge><lt>33.0.2</lt></range>
+	<range><ge>34.0.0</ge><lt>34.0.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>WasmTime development team reports:</p>
+	<blockquote cite="https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-fm79-3f68-h2fc">
+	  <p>A bug in Wasmtime's implementation of the WASIp1 set of import
+	  functions can lead to a WebAssembly guest inducing a panic in the
+	  host (embedder).</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-53901</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-53901</url>
+    </references>
+    <dates>
+      <discovery>2025-07-18</discovery>
+      <entry>2025-07-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e27ee4fc-cdc9-45a1-8242-09898cdbdc91">
+    <topic>unbound -- Cache poisoning via the ECS-enabled Rebirthday Attack</topic>
+    <affects>
+      <package>
+	<name>unbound</name>
+	<range><gt>1.6.1</gt><lt>1.23.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>sep@nlnetlabs.nl reports:</p>
+	<blockquote cite="https://nlnetlabs.nl/downloads/unbound/CVE-2025-5994.txt">
+	  <p>A multi-vendor cache poisoning vulnerability named &apos;Rebirthday
+	Attack&apos; has been discovered in caching resolvers that support
+	EDNS Client Subnet (ECS).  Unbound is also vulnerable when compiled
+	with ECS support, i.e., &apos;--enable-subnet&apos;, AND configured
+	to send ECS information along with queries to upstream name servers,
+	i.e., at least one of the &apos;send-client-subnet&apos;,
+	&apos;client-subnet-zone&apos; or &apos;client-subnet-always-forward&apos;
+	options is used.  Resolvers supporting ECS need to segregate outgoing
+	queries to accommodate for different outgoing ECS information.  This
+	re-opens up resolvers to a birthday paradox attack (Rebirthday
+	Attack) that tries to match the DNS transaction ID in order to cache
+	non-ECS poisonous replies.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-5994</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-5994</url>
+    </references>
+    <dates>
+      <discovery>2025-07-16</discovery>
+      <entry>2025-07-18</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="aeac223e-60e1-11f0-8baa-8447094a420f">
+    <topic>liboqs -- Secret-dependent branching in HQC</topic>
+    <affects>
+      <package>
+	<name>liboqs</name>
+	<range><lt>0.14.0</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenQuantumSafe project reports:</p>
+	<blockquote cite="https://github.com/open-quantum-safe/liboqs/security/advisories/GHSA-qq3m-rq9v-jfgm">
+	  <p>Secret-dependent branching in HQC reference implementation when compiled with Clang 17-20 for optimizations above -O0</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-52473</cvename>
+      <url>https://github.com/open-quantum-safe/liboqs/security/advisories/GHSA-qq3m-rq9v-jfgm</url>
+    </references>
+    <dates>
+      <discovery>2025-07-10</discovery>
+      <entry>2025-07-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c3e1df74-5e73-11f0-95e5-74563cf9e4e9">
+    <topic>GnuTLS -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gnutls</name>
+	<range><lt>3.8.10</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Daiki Ueno  reports:</p>
+	<blockquote cite="https://lists.gnupg.org/pipermail/gnutls-help/2025-July/004883.html">
+	  <ul>
+	    <li>libgnutls: Fix heap read buffer overrun in parsing X.509 SCTS timestamps
+	      Spotted by oss-fuzz and reported by OpenAI Security Research Team,
+	      and fix developed by Andrew Hamilton. [GNUTLS-SA-2025-07-07-1,
+	      CVSS: medium] [CVE-2025-32989]</li>
+	    <li>libgnutls: Fix double-free upon error when exporting otherName in SAN
+	      Reported by OpenAI Security Research Team. [GNUTLS-SA-2025-07-07-2,
+	      CVSS: low] [CVE-2025-32988]</li>
+	    <li>certtool: Fix 1-byte write buffer overrun when parsing template
+	      Reported by David Aitel. [GNUTLS-SA-2025-07-07-3,
+	      CVSS: low] [CVE-2025-32990]</li>
+	    <li>libgnutls: Fix NULL pointer dereference when 2nd Client Hello omits PSK
+	      Reported by Stefan Bühler. [GNUTLS-SA-2025-07-07-4, CVSS: medium]
+	      [CVE-2025-6395]</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-32989</cvename>
+      <cvename>CVE-2025-32988</cvename>
+      <cvename>CVE-2025-32990</cvename>
+      <cvename>CVE-2025-6395</cvename>
+      <url>https://lists.gnupg.org/pipermail/gnutls-help/2025-July/004883.html</url>
+    </references>
+    <dates>
+      <discovery>2025-07-09</discovery>
+      <entry>2025-07-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b0a3466f-5efc-11f0-ae84-99047d0a6bcc">
+    <topic>libxslt -- unmaintained, with multiple unfixed vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>libxslt</name>
+	<range><lt>2</lt></range> <!-- adjust should libxslt ever be fixed -->
+      </package>
+      <package>
+	<name>linux-c7-libxslt</name>
+	<range><lt>2</lt></range> <!-- adjust should libxslt ever be fixed -->
+      </package>
+      <package>
+	<name>linux-rl9-libxslt</name>
+	<range><lt>2</lt></range> <!-- adjust should libxslt ever be fixed -->
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Alan Coopersmith reports:</p>
+	<blockquote cite="https://www.openwall.com/lists/oss-security/2025/07/11/2">
+	  <p>On 6/16/25 15:12, Alan Coopersmith wrote:</p>
+	  <p><em>
+	    BTW, users of libxml2 may also be using its sibling project, libxslt,
+	    which currently has no active maintainer, but has three unfixed security issues
+	    reported against it according to
+	    <a href="https://gitlab.gnome.org/Teams/Releng/security/-/wikis/2025#libxml2-and-libxslt">
+		https://gitlab.gnome.org/Teams/Releng/security/-/wikis/2025#libxml2-and-libxslt</a>
+	  </em></p>
+	  <p>2 of the 3 have now been disclosed:</p>
+	  <p>(CVE-2025-7424) libxslt: Type confusion in xmlNode.psvi between stylesheet and source nodes<br />
+	    <a href="https://gitlab.gnome.org/GNOME/libxslt/-/issues/139">https://gitlab.gnome.org/GNOME/libxslt/-/issues/139</a>
+	    <a href="https://project-zero.issues.chromium.org/issues/409761909">https://project-zero.issues.chromium.org/issues/409761909</a></p>
+	  <p>(CVE-2025-7425) libxslt: heap-use-after-free in xmlFreeID caused by `atype` corruption<br />
+	    <a href="https://gitlab.gnome.org/GNOME/libxslt/-/issues/140">https://gitlab.gnome.org/GNOME/libxslt/-/issues/140</a><br /><a href="https://project-zero.issues.chromium.org/issues/410569369">https://project-zero.issues.chromium.org/issues/410569369</a></p>
+	  <p>Engineers from Apple &amp; Google have proposed patches in the GNOME gitlab issues,
+	  but neither has had a fix applied to the git repo since there is currently no
+	    maintainer for libxslt.</p>
+	</blockquote>
+	<p>Note that a fourth vulnerability was reported on June 18, 2025, which remains undisclosed to date (GNOME libxslt issue 148, link below), see
+	  <a href="https://gitlab.gnome.org/Teams/Releng/security/-/wikis/2025#libxml2-and-libxslt">
+	    https://gitlab.gnome.org/Teams/Releng/security/-/wikis/2025#libxml2-and-libxslt</a>
+	</p>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-7424</cvename>
+      <cvename>CVE-2025-7425</cvename>
+      <url>https://gitlab.gnome.org/Teams/Releng/security/-/wikis/2025#libxml2-and-libxslt</url>
+      <url>https://gitlab.gnome.org/GNOME/libxslt/-/issues/139</url>
+      <url>https://gitlab.gnome.org/GNOME/libxslt/-/issues/140</url>
+      <url>https://gitlab.gnome.org/GNOME/libxslt/-/issues/144</url>
+      <url>https://gitlab.gnome.org/GNOME/libxslt/-/issues/148</url>
+      <url>https://gitlab.gnome.org/GNOME/libxslt/-/commit/923903c59d668af42e3144bc623c9190a0f65988</url>
+    </references>
+    <dates>
+      <discovery>2025-04-10</discovery>
+      <entry>2025-07-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="abbc8912-5efa-11f0-ae84-99047d0a6bcc">
+    <topic>libxml2 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>libxml2</name>
+	<range><lt>2.14.5</lt></range>
+      </package>
+      <package>
+	<name>linux-c7-libxml2</name>
+	<range><lt>2.14.5</lt></range> <!-- needs update once fixed version appears -->
+      </package>
+      <package>
+	<name>linux-rl9-libxml2</name>
+	<range><lt>2.14.5</lt></range> <!-- needs update once fixed version appears -->
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Alan Coopersmith reports:</p>
+	<blockquote cite="https://www.openwall.com/lists/oss-security/2025/06/16/6">
+	  <p>As discussed in
+	    <a href="https://gitlab.gnome.org/GNOME/libxml2/-/issues/913">https://gitlab.gnome.org/GNOME/libxml2/-/issues/913</a> the
+	  security policy of libxml2 has been changed to disclose vulnerabilities
+	  before fixes are available so that people other than the maintainer can
+	    contribute to fixing security issues in this library.</p>
+	  <p>As part of this, the following 5 CVE's have been disclosed recently:</p>
+	  <p>(CVE-2025-49794) Heap use after free (UAF) leads to Denial of service (DoS)
+	    <a href="https://gitlab.gnome.org/GNOME/libxml2/-/issues/931">https://gitlab.gnome.org/GNOME/libxml2/-/issues/931</a> [...]</p>
+	  <p>(CVE-2025-49795) Null pointer dereference leads to Denial of service (DoS)
+	    <a href="https://gitlab.gnome.org/GNOME/libxml2/-/issues/932">https://gitlab.gnome.org/GNOME/libxml2/-/issues/932</a> [...]</p>
+	  <p>(CVE-2025-49796) Type confusion leads to Denial of service (DoS)
+	    <a href="https://gitlab.gnome.org/GNOME/libxml2/-/issues/933">https://gitlab.gnome.org/GNOME/libxml2/-/issues/933</a> [...]</p>
+	  <p>For all three of the above, note that upstream is considering removing Schematron support completely, as discussed in
+	    <a href="https://gitlab.gnome.org/GNOME/libxml2/-/issues/935">https://gitlab.gnome.org/GNOME/libxml2/-/issues/935</a>.</p>
+	  <p>(CVE-2025-6021) Integer Overflow Leading to Buffer Overflow in xmlBuildQName()
+	    <a href="https://gitlab.gnome.org/GNOME/libxml2/-/issues/926">https://gitlab.gnome.org/GNOME/libxml2/-/issues/926</a> [...]</p>
+	  <p>(CVE-2025-6170) Stack-based Buffer Overflow in xmllint Shell
+	    <a href="https://gitlab.gnome.org/GNOME/libxml2/-/issues/941">https://gitlab.gnome.org/GNOME/libxml2/-/issues/941</a> [...]</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-6021</cvename>
+      <cvename>CVE-2025-6170</cvename>
+      <cvename>CVE-2025-49794</cvename>
+      <cvename>CVE-2025-49795</cvename>
+      <cvename>CVE-2025-49795</cvename>
+      <url>https://www.openwall.com/lists/oss-security/2025/06/16/6</url>
+      <url>https://gitlab.gnome.org/Teams/Releng/security/-/wikis/2025#libxml2-and-libxslt</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/issues/913</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/issues/931</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/issues/932</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/issues/933</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/issues/935</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/issues/926</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/issues/941</url>
+    </references>
+    <dates>
+      <discovery>2025-05-27</discovery>
+      <entry>2025-07-12</entry>
+      <modified>2025-07-15</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="61d74f80-5e9e-11f0-8baa-8447094a420f">
+    <topic>mod_http2 -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mod_http2</name>
+	<range><lt>2.0.33</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The mod_http2 project reports:</p>
+	<blockquote cite="https://github.com/icing/mod_h2/releases/tag/v2.0.33">
+	  <p>a client can increase memory consumption for a HTTP/2 connection
+	    via repeated request header names,leading to denial of service</p>
+	  <p>certain proxy configurations whith mod_proxy_http2 as the
+	    backend, an assertion can be triggered by certain requests, leading
+	    to denial of service</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-53020</cvename>
+      <cvename>CVE-2025-49630</cvename>
+      <url>https://github.com/icing/mod_h2/releases/tag/v2.0.33</url>
+    </references>
+    <dates>
+      <discovery>2025-07-10</discovery>
+      <entry>2025-07-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="342f2a0a-5e9b-11f0-8baa-8447094a420f">
+    <topic>Apache httpd -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>apache24</name>
+	<range><lt>2.4.64</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Apache httpd project reports:</p>
+	<blockquote cite="https://httpd.apache.org/security/vulnerabilities_24.html">
+	  <p>moderate: Apache HTTP Server: HTTP response splitting (CVE-2024-42516)</p>
+	  <p>low: Apache HTTP Server: SSRF with mod_headers setting Content-Type header (CVE-2024-43204)</p>
+	  <p>moderate: Apache HTTP Server: SSRF on Windows due to UNC paths (CVE-2024-43394)</p>
+	  <p>low: Apache HTTP Server: mod_ssl error log variable escaping (CVE-2024-47252)</p>
+	  <p>moderate: Apache HTTP Server: mod_ssl access control bypass with session resumption (CVE-2025-23048)</p>
+	  <p>low: Apache HTTP Server: mod_proxy_http2 denial of service (CVE-2025-49630)</p>
+	  <p>moderate: Apache HTTP Server: mod_ssl TLS upgrade attack (CVE-2025-49812)</p>
+	  <p>moderate: Apache HTTP Server: HTTP/2 DoS by Memory Increase (CVE-2025-53020)</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2024-42516</cvename>
+      <cvename>CVE-2024-43204</cvename>
+      <cvename>CVE-2024-43394</cvename>
+      <cvename>CVE-2024-47252</cvename>
+      <cvename>CVE-2025-23048</cvename>
+      <cvename>CVE-2025-49630</cvename>
+      <cvename>CVE-2025-49812</cvename>
+      <cvename>CVE-2025-53020</cvename>
+      <url>https://httpd.apache.org/security/vulnerabilities_24.html</url>
+    </references>
+    <dates>
+      <discovery>2025-07-10</discovery>
+      <entry>2025-07-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ef87346f-5dd0-11f0-beb2-ac5afc632ba3">
+    <topic>Apache Tomcat -- Multiple Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>tomcat110</name>
+	<range><ge>11.0.0</ge><lt>11.0.9</lt></range>
+      </package>
+      <package>
+	<name>tomcat101</name>
+	<range><ge>10.1.0</ge><lt>10.1.43</lt></range>
+      </package>
+      <package>
+	<name>tomcat9</name>
+	<range><ge>9.0.0</ge><lt>9.0.107</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>security@apache.org reports:</p>
+	<blockquote cite="https://www.mail-archive.com/announce@tomcat.apache.org/msg00710.html">
+	  <p>A race condition on connection close could trigger a JVM crash when using the
+	  APR/Native connector leading to a DoS.  This was particularly noticeable with client
+	  initiated closes of HTTP/2 connections.</p>
+	</blockquote>
+	<blockquote cite="https://www.mail-archive.com/announce@tomcat.apache.org/msg00713.html">
+	  <p>An uncontrolled resource consumption vulnerability if an HTTP/2 client did not
+	  acknowledge the initial settings frame that reduces the maximum permitted
+	  concurrent streams could result in a DoS.</p>
+	</blockquote>
+	<blockquote cite="https://www.mail-archive.com/announce@tomcat.apache.org/msg00714.html">
+	  <p>For some unlikely configurations of multipart upload, an Integer Overflow
+	  vulnerability could lead to a DoS via bypassing of size limits.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2025-52434</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-52434</url>
+      <cvename>CVE-2025-52520</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-52520</url>
+      <cvename>CVE-2025-53506</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2025-53506</url>
+    </references>
+    <dates>
+      <discovery>2025-07-10</discovery>
+      <entry>2025-07-10</entry>
+      <modified>2025-07-15</modified>
+    </dates>
+  </vuln>
+
   <vuln vid="20823cc0-5d45-11f0-966e-2cf05da270f3">
     <topic>Gitlab -- vulnerabilities</topic>
     <affects>
@@ -1231,7 +1612,7 @@
     <affects>
       <package>
 	<name>openh264</name>
-	<range><lt>2.5.1</lt></range>
+	<range><lt>2.5.1,2</lt></range>
       </package>
     </affects>
     <description>

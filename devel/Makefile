@@ -659,6 +659,7 @@
     SUBDIR += electron34
     SUBDIR += electron35
     SUBDIR += electron36
+    SUBDIR += electron37
     SUBDIR += elf
     SUBDIR += elf-dissector
     SUBDIR += elfcat
@@ -783,6 +784,7 @@
     SUBDIR += geany-plugin-latex
     SUBDIR += geany-plugin-lineoperations
     SUBDIR += geany-plugin-lipsum
+    SUBDIR += geany-plugin-lsp
     SUBDIR += geany-plugin-lua
     SUBDIR += geany-plugin-macro
     SUBDIR += geany-plugin-markdown
@@ -1821,6 +1823,7 @@
     SUBDIR += oniguruma
     SUBDIR += open-beagle
     SUBDIR += open62541
+    SUBDIR += openapi-tui
     SUBDIR += opencl
     SUBDIR += opencl-clang
     SUBDIR += opencvs
@@ -1992,6 +1995,7 @@
     SUBDIR += p5-CLI-Osprey
     SUBDIR += p5-CPAN-Changes
     SUBDIR += p5-CPAN-Checksums
+    SUBDIR += p5-CPAN-Common-Index
     SUBDIR += p5-CPAN-DistnameInfo
     SUBDIR += p5-CPAN-Inject
     SUBDIR += p5-CPAN-Meta
@@ -3624,6 +3628,7 @@
     SUBDIR += p5-Test-Bits
     SUBDIR += p5-Test-CPAN-Meta
     SUBDIR += p5-Test-CPAN-Meta-YAML
+    SUBDIR += p5-Test-CPANfile
     SUBDIR += p5-Test-CheckDeps
     SUBDIR += p5-Test-CheckManifest
     SUBDIR += p5-Test-Class
@@ -4683,7 +4688,7 @@
     SUBDIR += py-cmdtest
     SUBDIR += py-cobble
     SUBDIR += py-codegen
-    SUBDIR += py-cog
+    SUBDIR += py-cogapp
     SUBDIR += py-collections-extended
     SUBDIR += py-colorama
     SUBDIR += py-colored-traceback
@@ -4695,6 +4700,7 @@
     SUBDIR += py-comm
     SUBDIR += py-commandlines
     SUBDIR += py-commentjson
+    SUBDIR += py-commoncode
     SUBDIR += py-condense-json
     SUBDIR += py-conditional
     SUBDIR += py-confection
@@ -4834,6 +4840,8 @@
     SUBDIR += py-editables
     SUBDIR += py-editdistance
     SUBDIR += py-ejson
+    SUBDIR += py-electrum-aionostr
+    SUBDIR += py-electrum-ecc
     SUBDIR += py-eliot
     SUBDIR += py-enlighten
     SUBDIR += py-entrypoint2
@@ -5362,6 +5370,7 @@
     SUBDIR += py-orderedmultidict
     SUBDIR += py-orderly-set
     SUBDIR += py-orjson
+    SUBDIR += py-ormsgpack
     SUBDIR += py-os-brick
     SUBDIR += py-os-client-config
     SUBDIR += py-os-service-types
@@ -5480,6 +5489,7 @@
     SUBDIR += py-pluggy
     SUBDIR += py-pluggy0
     SUBDIR += py-pluginbase
+    SUBDIR += py-plugincode
     SUBDIR += py-plux
     SUBDIR += py-ply
     SUBDIR += py-pnio-dcp
@@ -5574,6 +5584,7 @@
     SUBDIR += py-pydantic-compat
     SUBDIR += py-pydantic-core
     SUBDIR += py-pydantic-extra-types
+    SUBDIR += py-pydantic-resolve
     SUBDIR += py-pydantic-settings
     SUBDIR += py-pydantic-vault
     SUBDIR += py-pydantic-yaml
@@ -6073,6 +6084,7 @@
     SUBDIR += py-txi2p-tahoe
     SUBDIR += py-ty
     SUBDIR += py-typechecks
+    SUBDIR += py-typecode
     SUBDIR += py-typeguard
     SUBDIR += py-typer
     SUBDIR += py-types-Flask
@@ -6277,8 +6289,6 @@
     SUBDIR += pycanberra
     SUBDIR += pycdc
     SUBDIR += pycharm
-    SUBDIR += pycharm-ce
-    SUBDIR += pycharm-pro
     SUBDIR += pycomposefile
     SUBDIR += pycos
     SUBDIR += pycount
@@ -6794,6 +6804,7 @@
     SUBDIR += rubygem-aws-sdk-notificationscontacts
     SUBDIR += rubygem-aws-sdk-oam
     SUBDIR += rubygem-aws-sdk-observabilityadmin
+    SUBDIR += rubygem-aws-sdk-odb
     SUBDIR += rubygem-aws-sdk-omics
     SUBDIR += rubygem-aws-sdk-opensearchserverless
     SUBDIR += rubygem-aws-sdk-opensearchservice
@@ -7117,6 +7128,7 @@
     SUBDIR += rubygem-cf-uaa-lib
     SUBDIR += rubygem-cheffish
     SUBDIR += rubygem-childprocess
+    SUBDIR += rubygem-childprocess-gitlab
     SUBDIR += rubygem-chronic
     SUBDIR += rubygem-chronic_duration
     SUBDIR += rubygem-claide
@@ -7175,6 +7187,7 @@
     SUBDIR += rubygem-cucumber-messages22
     SUBDIR += rubygem-cucumber-messages24
     SUBDIR += rubygem-cucumber-messages25
+    SUBDIR += rubygem-cucumber-messages27
     SUBDIR += rubygem-cucumber-rails
     SUBDIR += rubygem-cucumber-tag-expressions
     SUBDIR += rubygem-cucumber-wire
@@ -7232,6 +7245,7 @@
     SUBDIR += rubygem-docile
     SUBDIR += rubygem-docopt
     SUBDIR += rubygem-drb
+    SUBDIR += rubygem-drb-gitlab
     SUBDIR += rubygem-dry-cli
     SUBDIR += rubygem-dry-configurable
     SUBDIR += rubygem-dry-container
@@ -7266,6 +7280,7 @@
     SUBDIR += rubygem-excon
     SUBDIR += rubygem-excon-gitlab
     SUBDIR += rubygem-excon0
+    SUBDIR += rubygem-excon1-gitlab
     SUBDIR += rubygem-execjs
     SUBDIR += rubygem-extlib
     SUBDIR += rubygem-extpp

@@ -143,6 +143,7 @@
     SUBDIR += libpbl
     SUBDIR += libpg_query
     SUBDIR += libsdb
+    SUBDIR += libvalkey
     SUBDIR += libzdb
     SUBDIR += linux-c7-sqlite3
     SUBDIR += linux-c7-unixODBC
@@ -223,6 +224,8 @@
     SUBDIR += ods2sql
     SUBDIR += opendbviewer
     SUBDIR += opendbx
+    SUBDIR += openvoxdb8
+    SUBDIR += openvoxdb-terminus8
     SUBDIR += ora2pg
     SUBDIR += oracle8-client
     SUBDIR += p5-Amazon-SimpleDB
@@ -748,6 +751,7 @@
     SUBDIR += py-Pyrseas
     SUBDIR += py-aesqlapius
     SUBDIR += py-agate-sql
+    SUBDIR += py-aiodataloader
     SUBDIR += py-aiomcache
     SUBDIR += py-aiomysql
     SUBDIR += py-aiopg
@@ -867,6 +871,7 @@
     SUBDIR += py-tiledb
     SUBDIR += py-txredisapi
     SUBDIR += py-unqlite
+    SUBDIR += py-valkey
     SUBDIR += py-varstack
     SUBDIR += py-whisper
     SUBDIR += py-xapian

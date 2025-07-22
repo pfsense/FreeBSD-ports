@@ -1,5 +1,6 @@
 PORTNAME=	calibre
-PORTVERSION=	8.5.0
+PORTVERSION=	8.7.0
+PORTREVISION=	1
 CATEGORIES=	deskutils python
 MASTER_SITES=	https://download.calibre-ebook.com/${PORTVERSION}/:DEFAULT \
 		https://raw.githubusercontent.com/rhasspy/piper/${PIPER_VOICES_HASH}/:piper
@@ -22,7 +23,7 @@ BUILD_DEPENDS=		${LOCALBASE}/bin/cmake:devel/cmake-core \
 			${PYTHON_PKGNAMEPREFIX}css-parser>=1.0.10:www/py-css-parser@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.8.2:devel/py-python-dateutil@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.12:www/py-html5-parser@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}lxml>=4.9.3:devel/py-lxml@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}lxml5>=4.9.3:devel/py-lxml5@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}mechanize>=0.4.8:www/py-mechanize@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}msgpack>=0.3:devel/py-msgpack@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
@@ -49,7 +50,7 @@ RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}apsw>=3.43.0.0:databases/py-apsw@${PY_FLAVO
 			${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.10:textproc/py-feedparser@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.12:www/py-html5-parser@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}jeepney>=0.8.0:devel/py-jeepney@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}lxml>=4.9.3:devel/py-lxml@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}lxml5>=4.9.3:devel/py-lxml5@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}markdown>=3.4.4:textproc/py-markdown@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}mechanize>=0.4.8:www/py-mechanize@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}msgpack>=1.0.7:devel/py-msgpack@${PY_FLAVOR} \
@@ -68,9 +69,9 @@ USES=		desktop-file-utils gettext-runtime:build gl localbase:ldflags \
 		pkgconfig pyqt:6 python:3.11+ qt:6 shared-mime-info shebangfix sqlite ssl \
 		tar:xz xorg
 USE_GITHUB=	nodefault
-GH_TUPLE=	kovidgoyal:calibre-translations:582fb72:translations \
-		LibreOffice:dictionaries:0852a97:hypenation
-PIPER_VOICES_HASH=	c0670df63daf07070c9be36b5c4bed270ad72383
+GH_TUPLE=	kovidgoyal:calibre-translations:8abf932:translations \
+		LibreOffice:dictionaries:537912c:hypenation
+PIPER_VOICES_HASH=	4147f9629e88d3c1d4915a127f2d843f98347303
 USE_GL=		opengl
 USE_PYQT=	pyqt6 pysip webengine qtbuilder:build sip:build
 USE_QT=		base

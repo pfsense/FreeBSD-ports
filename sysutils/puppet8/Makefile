@@ -27,7 +27,7 @@ USES=		cpe ruby
 USE_GITHUB=	yes
 GH_ACCOUNT=	puppetlabs
 
-CONFLICTS_INSTALL=	puppet[0-9]
+CONFLICTS_INSTALL=	openvox-agent[0-9] puppet[0-9]
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 NO_ARCH=	yes
 NO_BUILD=	yes

@@ -255,6 +255,7 @@
     SUBDIR += keepass
     SUBDIR += keepass-plugin-keepassrpc
     SUBDIR += keepassxc
+    SUBDIR += keepassxc276
     SUBDIR += keybase
     SUBDIR += keychain
     SUBDIR += keyprint
@@ -877,6 +878,7 @@
     SUBDIR += putty-nogtk
     SUBDIR += pvk
     SUBDIR += pwauth
+    SUBDIR += pwdsafety
     SUBDIR += pwman
     SUBDIR += pwned-check
     SUBDIR += py-SecretStorage
@@ -937,6 +939,7 @@
     SUBDIR += py-dfdatetime
     SUBDIR += py-dfwinreg
     SUBDIR += py-dirhash
+    SUBDIR += py-distro2sbom
     SUBDIR += py-django-auth-kerberos
     SUBDIR += py-docker-pycreds
     SUBDIR += py-ecdsa
@@ -979,6 +982,7 @@
     SUBDIR += py-keyring
     SUBDIR += py-keyrings.alt
     SUBDIR += py-krb5
+    SUBDIR += py-lib4sbom
     SUBDIR += py-libnacl
     SUBDIR += py-liboqs-python
     SUBDIR += py-m2crypto

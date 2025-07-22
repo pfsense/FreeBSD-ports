@@ -187,6 +187,7 @@
     SUBDIR += ffproxy
     SUBDIR += fgallery
     SUBDIR += filebrowser
+    SUBDIR += filepizza
     SUBDIR += filtron
     SUBDIR += firedm
     SUBDIR += firefox
@@ -358,6 +359,7 @@
     SUBDIR += luakit-devel
     SUBDIR += lux
     SUBDIR += lychee
+    SUBDIR += lycheeorg
     SUBDIR += lynx
     SUBDIR += lynx-current
     SUBDIR += lzr
@@ -2515,6 +2517,7 @@
     SUBDIR += swiggle
     SUBDIR += sws
     SUBDIR += tailwindcss3
+    SUBDIR += tailwindcss4
     SUBDIR += tcexam
     SUBDIR += tclhttpd
     SUBDIR += tclwebtest
